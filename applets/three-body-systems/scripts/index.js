@@ -4,7 +4,7 @@
 	
 	
 	
-	let image_size = 1000;
+	let imageSize = 1000;
 	
 	let image = null;
 	
@@ -12,30 +12,30 @@
 	
 	
 	
-	let planet_1_x = 0;
-	let planet_1_y = 1;
+	let planet1X = 0;
+	let planet1Y = 1;
 	
-	let planet_2_x = -.866;
-	let planet_2_y = -.5;
+	let planet2X = -.866;
+	let planet2Y = -.5;
 	
-	let planet_3_x = .866;
-	let planet_3_y = -.5;
+	let planet3X = .866;
+	let planet3Y = -.5;
 	
-	let crash_threshhold = .1;
+	let crashThreshhold = .1;
 	
 	let dt = .01;
 	
 	
 	
-	let drawn_fractal = false;
+	let drawnFractal = false;
 	
 	let paused = false;
 	
-	let starting_process_id = null;
+	let startingProcessId = null;
 	
 	
 	
-	let frag_shader_source_init = `
+	let fragShaderSourceInit = `
 		precision highp float;
 		
 		varying vec2 uv;
@@ -52,23 +52,23 @@
 	
 	
 	
-	let frag_shader_source_update = `
+	let fragShaderSourceUpdate = `
 		precision highp float;
 		precision highp sampler2D;
 		
 		varying vec2 uv;
 		
-		uniform sampler2D u_texture;
+		uniform sampler2D uTexture;
 		
 		const float dt = .001;
 		
-		uniform vec2 planet_1;
-		uniform vec2 planet_2;
-		uniform vec2 planet_3;
+		uniform vec2 planet1;
+		uniform vec2 planet2;
+		uniform vec2 planet3;
 		
-		const float world_size = 15.0;
+		const float worldSize = 15.0;
 		
-		const float crash_threshhold = .02;
+		const float crashThreshhold = .02;
 		
 		const float G = 1.0;
 		
@@ -76,144 +76,144 @@
 		
 		void main(void)
 		{
-			vec4 state = (texture2D(u_texture, (uv + vec2(1.0, 1.0)) / 2.0) - vec4(.5, .5, .5, .5)) * world_size;
+			vec4 state = (texture2D(uTexture, (uv + vec2(1.0, 1.0)) / 2.0) - vec4(.5, .5, .5, .5)) * worldSize;
 			
-			vec4 d_state = vec4(0.0, 0.0, 0.0, 0.0);
+			vec4 dState = vec4(0.0, 0.0, 0.0, 0.0);
 			
 			
 			
-			float d_x = planet_1.x - state.x;
-			float d_y = planet_1.y - state.y;
+			float dX = planet1.x - state.x;
+			float dY = planet1.y - state.y;
 			
-			if (abs(d_x) > world_size / 2.0)
+			if (abs(dX) > worldSize / 2.0)
 			{
-				if (d_x < 0.0)
+				if (dX < 0.0)
 				{
-					d_x += world_size;
+					dX += worldSize;
 				}
 				
 				else
 				{
-					d_x -= world_size;
+					dX -= worldSize;
 				}
 			}
 			
-			if (abs(d_y) > world_size / 2.0)
+			if (abs(dY) > worldSize / 2.0)
 			{
-				if (d_y < 0.0)
+				if (dY < 0.0)
 				{
-					d_y += world_size;
+					dY += worldSize;
 				}
 				
 				else
 				{
-					d_y -= world_size;
+					dY -= worldSize;
 				}
 			}
 			
-			vec2 planet_direction = vec2(d_x, d_y);
+			vec2 planetDirection = vec2(dX, dY);
 			
-			float r = length(planet_direction);
+			float r = length(planetDirection);
 			
-			if (r < crash_threshhold)
+			if (r < crashThreshhold)
 			{
-				gl_FragColor = vec4(planet_1 / world_size + vec2(.5, .5), 0.5, 0.5);
+				gl_FragColor = vec4(planet1 / worldSize + vec2(.5, .5), 0.5, 0.5);
 				return;
 			}
 			
-			d_state.zw += planet_direction / (r*r*r);
+			dState.zw += planetDirection / (r*r*r);
 			
 			
 			
-			d_x = planet_2.x - state.x;
-			d_y = planet_2.y - state.y;
+			dX = planet2.x - state.x;
+			dY = planet2.y - state.y;
 			
-			if (abs(d_x) > world_size / 2.0)
+			if (abs(dX) > worldSize / 2.0)
 			{
-				if (d_x < 0.0)
+				if (dX < 0.0)
 				{
-					d_x += world_size;
+					dX += worldSize;
 				}
 				
 				else
 				{
-					d_x -= world_size;
+					dX -= worldSize;
 				}
 			}
 			
-			if (abs(d_y) > world_size / 2.0)
+			if (abs(dY) > worldSize / 2.0)
 			{
-				if (d_y < 0.0)
+				if (dY < 0.0)
 				{
-					d_y += world_size;
+					dY += worldSize;
 				}
 				
 				else
 				{
-					d_y -= world_size;
+					dY -= worldSize;
 				}
 			}
 			
-			planet_direction = vec2(d_x, d_y);
+			planetDirection = vec2(dX, dY);
 			
-			r = length(planet_direction);
+			r = length(planetDirection);
 			
-			if (r < crash_threshhold)
+			if (r < crashThreshhold)
 			{
-				gl_FragColor = vec4(planet_2 / world_size + vec2(.5, .5), 0.5, 0.5);
+				gl_FragColor = vec4(planet2 / worldSize + vec2(.5, .5), 0.5, 0.5);
 				return;
 			}
 			
-			d_state.zw += planet_direction / (r*r*r);
+			dState.zw += planetDirection / (r*r*r);
 			
 			
 			
-			d_x = planet_3.x - state.x;
-			d_y = planet_3.y - state.y;
+			dX = planet3.x - state.x;
+			dY = planet3.y - state.y;
 			
-			if (abs(d_x) > world_size / 2.0)
+			if (abs(dX) > worldSize / 2.0)
 			{
-				if (d_x < 0.0)
+				if (dX < 0.0)
 				{
-					d_x += world_size;
+					dX += worldSize;
 				}
 				
 				else
 				{
-					d_x -= world_size;
+					dX -= worldSize;
 				}
 			}
 			
-			if (abs(d_y) > world_size / 2.0)
+			if (abs(dY) > worldSize / 2.0)
 			{
-				if (d_y < 0.0)
+				if (dY < 0.0)
 				{
-					d_y += world_size;
+					dY += worldSize;
 				}
 				
 				else
 				{
-					d_y -= world_size;
+					dY -= worldSize;
 				}
 			}
 			
-			planet_direction = vec2(d_x, d_y);
+			planetDirection = vec2(dX, dY);
 			
-			r = length(planet_direction);
+			r = length(planetDirection);
 			
-			if (r < crash_threshhold)
+			if (r < crashThreshhold)
 			{
-				gl_FragColor = vec4(planet_3 / world_size + vec2(.5, .5), 0.5, 0.5);
+				gl_FragColor = vec4(planet3 / worldSize + vec2(.5, .5), 0.5, 0.5);
 				return;
 			}
 			
-			d_state.zw += planet_direction / (r*r*r);
+			dState.zw += planetDirection / (r*r*r);
 			
 			
 			
-			d_state.xy = state.zw;
+			dState.xy = state.zw;
 			
-			state = ((dt * d_state + state) / world_size) + vec4(.5, .5, .5, .5);
+			state = ((dt * dState + state) / worldSize) + vec4(.5, .5, .5, .5);
 			
 			state.xy = fract(state.xy);
 			
@@ -223,13 +223,13 @@
 	
 	
 	
-	let frag_shader_source_draw = `
+	let fragShaderSourceDraw = `
 		precision highp float;
 		precision highp sampler2D;
 		
 		varying vec2 uv;
 		
-		uniform sampler2D u_texture;
+		uniform sampler2D uTexture;
 		
 		
 		
@@ -244,15 +244,15 @@
 		
 		void main(void)
 		{
-			vec4 state = (texture2D(u_texture, (uv + vec2(1.0, 1.0)) / 2.0) - vec4(.5, .5, .5, .5));
+			vec4 state = (texture2D(uTexture, (uv + vec2(1.0, 1.0)) / 2.0) - vec4(.5, .5, .5, .5));
 			
 			float h = atan(state.y, state.x) / (2.0 * 3.14159265258) + .5;
 			
 			float s = min((state.x * state.x + state.y * state.y) * 100.0, 1.0);
 			
-			float v_add = .9 * (1.0 - 4.0 * ((uv.x * uv.x) / 4.0 + (uv.y * uv.y) / 4.0));
+			float vAdd = .9 * (1.0 - 4.0 * ((uv.x * uv.x) / 4.0 + (uv.y * uv.y) / 4.0));
 			
-			float v = clamp(sqrt(state.z * state.z + state.w * state.w) + v_add, 0.0, 1.0);
+			float v = clamp(sqrt(state.z * state.z + state.w * state.w) + vAdd, 0.0, 1.0);
 			
 			vec3 rgb = hsv2rgb(vec3(h, s, v));
 			
@@ -266,79 +266,79 @@
 	{
 		renderer: "gpu",
 		
-		shader: frag_shader_source_init,
+		shader: fragShaderSourceInit,
 		
-		canvas_width: image_size,
-		canvas_height: image_size,
-		
-		
+		canvasWidth: imageSize,
+		canvasHeight: imageSize,
 		
 		
-		use_fullscreen: true,
 		
-		use_fullscreen_button: true,
 		
-		enter_fullscreen_button_icon_path: "/graphics/general-icons/enter-fullscreen.png",
-		exit_fullscreen_button_icon_path: "/graphics/general-icons/exit-fullscreen.png"
+		useFullscreen: true,
+		
+		useFullscreenButton: true,
+		
+		enterFullscreenButtonIconPath: "/graphics/general-icons/enter-fullscreen.png",
+		exitFullscreenButtonIconPath: "/graphics/general-icons/exit-fullscreen.png"
 	};
 	
 	let wilson = new Wilson(Page.element.querySelector("#output-canvas"), options);
 	
 	
 	
-	wilson.render.load_new_shader(frag_shader_source_update);
+	wilson.render.loadNewShader(fragShaderSourceUpdate);
 	
-	wilson.render.init_uniforms(["planet_1", "planet_2", "planet_3"]);
+	wilson.render.initUniforms(["planet1", "planet2", "planet3"]);
 	
-	wilson.gl.uniform2f(wilson.uniforms["planet_1"], planet_1_x, planet_1_y);
-	wilson.gl.uniform2f(wilson.uniforms["planet_2"], planet_2_x, planet_2_y);
-	wilson.gl.uniform2f(wilson.uniforms["planet_3"], planet_3_x, planet_3_y);
-	
-	
-	
-	wilson.render.load_new_shader(frag_shader_source_draw);
-	
-	wilson.render.create_framebuffer_texture_pair();
-	wilson.render.create_framebuffer_texture_pair();
+	wilson.gl.uniform2f(wilson.uniforms["planet1"], planet1X, planet1Y);
+	wilson.gl.uniform2f(wilson.uniforms["planet2"], planet2X, planet2Y);
+	wilson.gl.uniform2f(wilson.uniforms["planet3"], planet3X, planet3Y);
 	
 	
 	
-	let resolution_input_element = Page.element.querySelector("#resolution-input");
+	wilson.render.loadNewShader(fragShaderSourceDraw);
+	
+	wilson.render.createFramebufferTexturePair();
+	wilson.render.createFramebufferTexturePair();
 	
 	
 	
-	let generate_button_element = Page.element.querySelector("#generate-button");
+	let resolutionInputElement = Page.element.querySelector("#resolution-input");
 	
-	generate_button_element.addEventListener("click", () =>
+	
+	
+	let generateButtonElement = Page.element.querySelector("#generate-button");
+	
+	generateButtonElement.addEventListener("click", () =>
 	{
-		drawn_fractal = false;
+		drawnFractal = false;
 		
-		draw_three_body_problem_fractal();
+		drawThreeBodyProblemFractal();
 	});
 	
 	
 	
-	let switch_planet_drawer_canvas_button_element = Page.element.querySelector("#switch-planet-drawer-canvas-button");
+	let switchPlanetDrawerCanvasButtonElement = Page.element.querySelector("#switch-planet-drawer-canvas-button");
 	
-	switch_planet_drawer_canvas_button_element.style.transition = "filter .125s ease-in-out, opacity .25s ease-in-out";
+	switchPlanetDrawerCanvasButtonElement.style.transition = "filter .125s ease-in-out, opacity .25s ease-in-out";
 	
-	switch_planet_drawer_canvas_button_element.addEventListener("click", () =>
+	switchPlanetDrawerCanvasButtonElement.addEventListener("click", () =>
 	{
 		if (paused)
 		{
 			//What the actual fuck
-			hide_planet_drawer_canvas();
-			window.requestAnimationFrame(hide_planet_drawer_canvas);
+			hidePlanetDrawerCanvas();
+			window.requestAnimationFrame(hidePlanetDrawerCanvas);
 			
 			
 			
-			switch_planet_drawer_canvas_button_element.style.opacity = 0;
+			switchPlanetDrawerCanvasButtonElement.style.opacity = 0;
 			
 			setTimeout(() =>
 			{
-				switch_planet_drawer_canvas_button_element.textContent = "Pick Particle";
+				switchPlanetDrawerCanvasButtonElement.textContent = "Pick Particle";
 				
-				switch_planet_drawer_canvas_button_element.style.opacity = 1;
+				switchPlanetDrawerCanvasButtonElement.style.opacity = 1;
 			}, 250);
 		}
 		
@@ -348,99 +348,99 @@
 			
 			
 			
-			switch_planet_drawer_canvas_button_element.style.opacity = 0;
+			switchPlanetDrawerCanvasButtonElement.style.opacity = 0;
 			
 			setTimeout(() =>
 			{
-				switch_planet_drawer_canvas_button_element.textContent = "Return to Fractal";
+				switchPlanetDrawerCanvasButtonElement.textContent = "Return to Fractal";
 				
-				switch_planet_drawer_canvas_button_element.style.opacity = 1;
+				switchPlanetDrawerCanvasButtonElement.style.opacity = 1;
 			}, 250);
 		}
 	});
 	
 	
 	
-	let download_button_element = Page.element.querySelector("#download-button");
+	let downloadButtonElement = Page.element.querySelector("#download-button");
 	
-	download_button_element.addEventListener("click", () =>
+	downloadButtonElement.addEventListener("click", () =>
 	{
-		wilson.download_frame("a-three-body-system.png");
+		wilson.downloadFrame("a-three-body-system.png");
 	});
 	
 	
 	
-	function draw_three_body_problem_fractal()
+	function drawThreeBodyProblemFractal()
 	{
-		starting_process_id = Site.applet_process_id;
+		startingProcessId = Site.appletProcessId;
 		
-		image_size = parseInt(resolution_input_element.value || 1000);
+		imageSize = parseInt(resolutionInputElement.value || 1000);
 		
-		wilson.change_canvas_size(image_size, image_size);
+		wilson.changeCanvasSize(imageSize, imageSize);
 		
 		
 		
-		wilson.gl.useProgram(wilson.render.shader_programs[1]);
+		wilson.gl.useProgram(wilson.render.shaderPrograms[1]);
 		
 		
 		
 		wilson.gl.bindTexture(wilson.gl.TEXTURE_2D, wilson.render.framebuffers[0].texture);
-		wilson.gl.texImage2D(wilson.gl.TEXTURE_2D, 0, wilson.gl.RGBA, wilson.canvas_width, wilson.canvas_height, 0, wilson.gl.RGBA, wilson.gl.FLOAT, null);
+		wilson.gl.texImage2D(wilson.gl.TEXTURE_2D, 0, wilson.gl.RGBA, wilson.canvasWidth, wilson.canvasHeight, 0, wilson.gl.RGBA, wilson.gl.FLOAT, null);
 		
 		wilson.gl.bindTexture(wilson.gl.TEXTURE_2D, wilson.render.framebuffers[1].texture);
-		wilson.gl.texImage2D(wilson.gl.TEXTURE_2D, 0, wilson.gl.RGBA, wilson.canvas_width, wilson.canvas_height, 0, wilson.gl.RGBA, wilson.gl.FLOAT, null);
+		wilson.gl.texImage2D(wilson.gl.TEXTURE_2D, 0, wilson.gl.RGBA, wilson.canvasWidth, wilson.canvasHeight, 0, wilson.gl.RGBA, wilson.gl.FLOAT, null);
 		
 		
 		
-		wilson.gl.useProgram(wilson.render.shader_programs[0]);
+		wilson.gl.useProgram(wilson.render.shaderPrograms[0]);
 		
 		wilson.gl.bindTexture(wilson.gl.TEXTURE_2D, wilson.render.framebuffers[0].texture);
 		wilson.gl.bindFramebuffer(wilson.gl.FRAMEBUFFER, wilson.render.framebuffers[0].framebuffer);
 		
-		wilson.render.draw_frame();
+		wilson.render.drawFrame();
 	
 	
 		
-		window.requestAnimationFrame(draw_frame);
+		window.requestAnimationFrame(drawFrame);
 		
 		
 		
-		drawn_fractal = true;
+		drawnFractal = true;
 	}
 	
 	
 	
-	function draw_frame(timestamp)
+	function drawFrame(timestamp)
 	{
-		let time_elapsed = timestamp - last_timestamp;
+		let timeElapsed = timestamp - lastTimestamp;
 		
-		last_timestamp = timestamp;
+		lastTimestamp = timestamp;
 		
-		if (time_elapsed === 0)
+		if (timeElapsed === 0)
 		{
 			return;
 		}
 		
 		
 		
-		wilson.gl.useProgram(wilson.render.shader_programs[1]);
+		wilson.gl.useProgram(wilson.render.shaderPrograms[1]);
 		
-		wilson.gl.uniform2f(wilson.uniforms["planet_1"], planet_1_x, planet_1_y);
-		wilson.gl.uniform2f(wilson.uniforms["planet_2"], planet_2_x, planet_2_y);
-		wilson.gl.uniform2f(wilson.uniforms["planet_3"], planet_3_x, planet_3_y);
+		wilson.gl.uniform2f(wilson.uniforms["planet1"], planet1X, planet1Y);
+		wilson.gl.uniform2f(wilson.uniforms["planet2"], planet2X, planet2Y);
+		wilson.gl.uniform2f(wilson.uniforms["planet3"], planet3X, planet3Y);
 		
 		wilson.gl.bindFramebuffer(wilson.gl.FRAMEBUFFER, wilson.render.framebuffers[1].framebuffer);
 		
-		wilson.render.draw_frame();
+		wilson.render.drawFrame();
 		
 		
 		
-		wilson.gl.useProgram(wilson.render.shader_programs[2]);
+		wilson.gl.useProgram(wilson.render.shaderPrograms[2]);
 		
 		wilson.gl.bindTexture(wilson.gl.TEXTURE_2D, wilson.render.framebuffers[1].texture);
 		wilson.gl.bindFramebuffer(wilson.gl.FRAMEBUFFER, null);
 		
-		wilson.render.draw_frame();
+		wilson.render.drawFrame();
 		
 		
 		
@@ -448,24 +448,24 @@
 		
 		
 		
-		wilson.gl.useProgram(wilson.render.shader_programs[1]);
+		wilson.gl.useProgram(wilson.render.shaderPrograms[1]);
 		
 		wilson.gl.bindFramebuffer(wilson.gl.FRAMEBUFFER, wilson.render.framebuffers[0].framebuffer);
 		
-		wilson.render.draw_frame();
+		wilson.render.drawFrame();
 		
 		
 		
-		wilson.gl.useProgram(wilson.render.shader_programs[2]);
+		wilson.gl.useProgram(wilson.render.shaderPrograms[2]);
 		
 		wilson.gl.bindTexture(wilson.gl.TEXTURE_2D, wilson.render.framebuffers[0].texture);
 		wilson.gl.bindFramebuffer(wilson.gl.FRAMEBUFFER, null);
 		
-		wilson.render.draw_frame();
+		wilson.render.drawFrame();
 		
 		
 		
-		if (starting_process_id !== Site.applet_process_id)
+		if (startingProcessId !== Site.appletProcessId)
 		{
 			console.log("Terminated applet process");
 			
@@ -474,7 +474,7 @@
 		
 		if (!paused)
 		{
-			window.requestAnimationFrame(draw_frame);
+			window.requestAnimationFrame(drawFrame);
 		}
 	}
 	
@@ -482,45 +482,45 @@
 	
 	
 	
-	let image_size_planet_drawer = 2000;
+	let imageSizePlanetDrawer = 2000;
 	
-	let planet_drawer_canvas_visible = 0;
-	
-	
-	
-	let world_size = 15;
+	let planetDrawerCanvasVisible = 0;
 	
 	
 	
-	let options_planet_drawer =
+	let worldSize = 15;
+	
+	
+	
+	let optionsPlanetDrawer =
 	{
 		renderer: "cpu",
 		
-		world_width: world_size,
-		world_height: world_size,
+		worldWidth: worldSize,
+		worldHeight: worldSize,
 		
-		canvas_width: image_size_planet_drawer,
-		canvas_height: image_size_planet_drawer,
+		canvasWidth: imageSizePlanetDrawer,
+		canvasHeight: imageSizePlanetDrawer,
 		
-		mousemove_callback: draw_preview_planet,
-		touchmove_callback: draw_preview_planet,
+		mousemoveCallback: drawPreviewPlanet,
+		touchmoveCallback: drawPreviewPlanet,
 		
-		mousedown_callback: start_planet_animation,
-		touchend_callback: start_planet_animation,
+		mousedownCallback: startPlanetAnimation,
+		touchendCallback: startPlanetAnimation,
 		
 		
 		
-		use_draggables: true,
+		useDraggables: true,
 		
-		draggables_mousemove_callback: on_drag_draggable,
-		draggables_touchmove_callback: on_drag_draggable
+		draggablesMousemoveCallback: onDragDraggable,
+		draggablesTouchmoveCallback: onDragDraggable
 	};
 	
-	let wilson_planet_drawer = new Wilson(Page.element.querySelector("#planet-drawer-canvas"), options_planet_drawer);
+	let wilsonPlanetDrawer = new Wilson(Page.element.querySelector("#planet-drawer-canvas"), optionsPlanetDrawer);
 	
-	wilson_planet_drawer.draggables.add(0, 1);
-	wilson_planet_drawer.draggables.add(-.866, -.5);
-	wilson_planet_drawer.draggables.add(.866, -.5);
+	wilsonPlanetDrawer.draggables.add(0, 1);
+	wilsonPlanetDrawer.draggables.add(-.866, -.5);
+	wilsonPlanetDrawer.draggables.add(.866, -.5);
 	
 	let sx = 0;
 	let sy = 0;
@@ -531,16 +531,16 @@
 	
 	let frame = 0;
 	
-	let initial_sx = 0;
-	let initial_sy = 0;
+	let initialSx = 0;
+	let initialSy = 0;
 	
-	let last_timestamp = -1;
+	let lastTimestamp = -1;
 	
-	wilson_planet_drawer.ctx.lineWidth = image_size_planet_drawer / 100;
+	wilsonPlanetDrawer.ctx.lineWidth = imageSizePlanetDrawer / 100;
 		
-	wilson_planet_drawer.ctx.strokeStyle = "rgb(127, 0, 255)";
+	wilsonPlanetDrawer.ctx.strokeStyle = "rgb(127, 0, 255)";
 	
-	wilson_planet_drawer.ctx.fillStyle = "rgb(0, 0, 0)";
+	wilsonPlanetDrawer.ctx.fillStyle = "rgb(0, 0, 0)";
 	
 	
 	
@@ -548,19 +548,19 @@
 	
 	
 	
-	function draw_preview_planet(x, y, x_delta, y_delta, e)
+	function drawPreviewPlanet(x, y, xDelta, yDelta, e)
 	{
 		if (!paused)
 		{
 			return;
 		}
 		
-		if (planet_drawer_canvas_visible === 0)
+		if (planetDrawerCanvasVisible === 0)
 		{
-			show_planet_drawer_canvas_preview();
+			showPlanetDrawerCanvasPreview();
 		}
 		
-		if (planet_drawer_canvas_visible !== 2)
+		if (planetDrawerCanvasVisible !== 2)
 		{
 			sx = x;
 			sy = -y;
@@ -568,97 +568,97 @@
 			vx = 0;
 			vy = 0;
 			
-			window.requestAnimationFrame(draw_frame_planet_drawer);
+			window.requestAnimationFrame(drawFramePlanetDrawer);
 		}
 	}
 	
 	
 	
-	function start_planet_animation(x, y, e)
+	function startPlanetAnimation(x, y, e)
 	{
-		if (planet_drawer_canvas_visible === 1)
+		if (planetDrawerCanvasVisible === 1)
 		{
-			initial_sx = sx;
-			initial_sy = sy;
+			initialSx = sx;
+			initialSy = sy;
 			
 			vx = 0;
 			vy = 0;
 			
 			frame = 0;
 			
-			show_planet_drawer_canvas();
+			showPlanetDrawerCanvas();
 		}
 	}
 	
 	
 	
-	wilson_planet_drawer.draggables.container.addEventListener("mouseleave", () =>
+	wilsonPlanetDrawer.draggables.container.addEventListener("mouseleave", () =>
 	{
-		if (planet_drawer_canvas_visible === 1 || frame < 3)
+		if (planetDrawerCanvasVisible === 1 || frame < 3)
 		{
-			wilson_planet_drawer.canvas.style.opacity = 0;
+			wilsonPlanetDrawer.canvas.style.opacity = 0;
 			
-			planet_drawer_canvas_visible = 0;
+			planetDrawerCanvasVisible = 0;
 		}
 	});
 	
 	
 	
-	function show_planet_drawer_canvas_preview()
+	function showPlanetDrawerCanvasPreview()
 	{
-		if (!drawn_fractal)
+		if (!drawnFractal)
 		{
 			return;
 		}
 		
 		paused = true;
 		
-		wilson_planet_drawer.canvas.style.opacity = .5;
+		wilsonPlanetDrawer.canvas.style.opacity = .5;
 		
-		planet_drawer_canvas_visible = 1;
+		planetDrawerCanvasVisible = 1;
 	}
 	
-	function show_planet_drawer_canvas()
+	function showPlanetDrawerCanvas()
 	{
-		if (!drawn_fractal)
+		if (!drawnFractal)
 		{
 			return;
 		}
 		
-		wilson_planet_drawer.canvas.style.opacity = 1;
+		wilsonPlanetDrawer.canvas.style.opacity = 1;
 		
-		planet_drawer_canvas_visible = 2;
+		planetDrawerCanvasVisible = 2;
 		
-		window.requestAnimationFrame(draw_frame_planet_drawer);
+		window.requestAnimationFrame(drawFramePlanetDrawer);
 	}
 	
-	function hide_planet_drawer_canvas()
+	function hidePlanetDrawerCanvas()
 	{
-		if (!drawn_fractal)
+		if (!drawnFractal)
 		{
 			return;
 		}
 		
 		paused = false;
 		
-		window.requestAnimationFrame(draw_frame);
+		window.requestAnimationFrame(drawFrame);
 		
-		wilson_planet_drawer.canvas.style.opacity = 0;
+		wilsonPlanetDrawer.canvas.style.opacity = 0;
 		
-		planet_drawer_canvas_visible = 0;
+		planetDrawerCanvasVisible = 0;
 	}
 	
 	
 	
-	function draw_frame_planet_drawer(timestamp)
+	function drawFramePlanetDrawer(timestamp)
 	{	
-		let time_elapsed = timestamp - last_timestamp;
+		let timeElapsed = timestamp - lastTimestamp;
 		
-		last_timestamp = timestamp;
+		lastTimestamp = timestamp;
 		
 		
 		
-		if (time_elapsed === 0)
+		if (timeElapsed === 0)
 		{
 			return;
 		}
@@ -667,63 +667,63 @@
 		
 		
 		
-		wilson_planet_drawer.ctx.fillStyle = "rgb(0, 0, 0)";
+		wilsonPlanetDrawer.ctx.fillStyle = "rgb(0, 0, 0)";
 		
-		wilson_planet_drawer.ctx.fillRect(0, 0, image_size_planet_drawer, image_size_planet_drawer);
+		wilsonPlanetDrawer.ctx.fillRect(0, 0, imageSizePlanetDrawer, imageSizePlanetDrawer);
 		
 		
 		
-		let x = sx / world_size;
-		let y = sy / world_size;
+		let x = sx / worldSize;
+		let y = sy / worldSize;
 		
-		let z = vx / world_size;
-		let w = vy / world_size;
+		let z = vx / worldSize;
+		let w = vy / worldSize;
 		
 		let hue = Math.atan2(y, -x) / (2 * Math.PI) + 1;
 		let saturation = Math.min(Math.min((x*x + y*y) * 50, (1 - Math.max(Math.abs(x), Math.abs(y))) * 5), 1);
 		
-		let value_add = .9 * ((1 - initial_sx / (2 * Math.PI)) * (1 - initial_sx / (2 * Math.PI)) + (1 - initial_sy / (2 * Math.PI)) * (1 - initial_sy / (2 * Math.PI))) * 4;
+		let valueAdd = .9 * ((1 - initialSx / (2 * Math.PI)) * (1 - initialSx / (2 * Math.PI)) + (1 - initialSy / (2 * Math.PI)) * (1 - initialSy / (2 * Math.PI))) * 4;
 		
-		let value = Math.min(Math.pow(z*z + w*w, .5) + value_add, 1);
+		let value = Math.min(Math.pow(z*z + w*w, .5) + valueAdd, 1);
 		
 		let rgb = HSVtoRGB(hue, saturation, value);
 		
-		wilson_planet_drawer.ctx.fillStyle = `rgb(${rgb[0]}, ${rgb[1]}, ${rgb[2]})`;
+		wilsonPlanetDrawer.ctx.fillStyle = `rgb(${rgb[0]}, ${rgb[1]}, ${rgb[2]})`;
 		
 		
 		
-		wilson_planet_drawer.ctx.beginPath();
-		wilson_planet_drawer.ctx.arc(image_size_planet_drawer * (x + .5), image_size_planet_drawer * (y + .5), 30, 0, 2 * Math.PI, false);
-		wilson_planet_drawer.ctx.fill();
+		wilsonPlanetDrawer.ctx.beginPath();
+		wilsonPlanetDrawer.ctx.arc(imageSizePlanetDrawer * (x + .5), imageSizePlanetDrawer * (y + .5), 30, 0, 2 * Math.PI, false);
+		wilsonPlanetDrawer.ctx.fill();
 		
 		
 		
-		if (planet_drawer_canvas_visible === 2)
+		if (planetDrawerCanvasVisible === 2)
 		{
-			update_parameters();
+			updateParameters();
 			
-			window.requestAnimationFrame(draw_frame_planet_drawer);
+			window.requestAnimationFrame(drawFramePlanetDrawer);
 		}
 	}
 	
 	
 	
-	function update_parameters()
+	function updateParameters()
 	{
-		let d_vx = 0;
-		let d_vy = 0;
+		let dVx = 0;
+		let dVy = 0;
 		
 		
 		
-		let d_v = get_acceleration_to_planet(planet_1_x, -planet_1_y);
+		let dV = getAccelerationToPlanet(planet1X, -planet1Y);
 		
-		d_vx += d_v[0];
-		d_vy += d_v[1];
+		dVx += dV[0];
+		dVy += dV[1];
 		
-		if (d_v[2] < crash_threshhold)
+		if (dV[2] < crashThreshhold)
 		{
-			sx = planet_1_x;
-			sy = -planet_1_y;
+			sx = planet1X;
+			sy = -planet1Y;
 			vx = 0;
 			vy = 0;
 			
@@ -732,15 +732,15 @@
 		
 		
 		
-		d_v = get_acceleration_to_planet(planet_2_x, -planet_2_y);
+		dV = getAccelerationToPlanet(planet2X, -planet2Y);
 		
-		d_vx += d_v[0];
-		d_vy += d_v[1];
+		dVx += dV[0];
+		dVy += dV[1];
 		
-		if (d_v[2] < crash_threshhold)
+		if (dV[2] < crashThreshhold)
 		{
-			sx = planet_2_x;
-			sy = -planet_2_y;
+			sx = planet2X;
+			sy = -planet2Y;
 			vx = 0;
 			vy = 0;
 			
@@ -749,15 +749,15 @@
 		
 		
 		
-		d_v = get_acceleration_to_planet(planet_3_x, -planet_3_y);
+		dV = getAccelerationToPlanet(planet3X, -planet3Y);
 		
-		d_vx += d_v[0];
-		d_vy += d_v[1];
+		dVx += dV[0];
+		dVy += dV[1];
 		
-		if (d_v[2] < crash_threshhold)
+		if (dV[2] < crashThreshhold)
 		{
-			sx = planet_3_x;
-			sy = -planet_3_y;
+			sx = planet3X;
+			sy = -planet3Y;
 			vx = 0;
 			vy = 0;
 			
@@ -768,94 +768,94 @@
 		
 		sx += vx * dt;
 		sy += vy * dt;
-		vx += d_vx * dt;
-		vy += d_vy * dt;
+		vx += dVx * dt;
+		vy += dVy * dt;
 		
-		while (sx < -world_size / 2)
+		while (sx < -worldSize / 2)
 		{
-			sx += world_size;
+			sx += worldSize;
 		}
 		
-		while (sx > world_size / 2)
+		while (sx > worldSize / 2)
 		{
-			sx -= world_size;
+			sx -= worldSize;
 		}
 		
-		while (sy < -world_size / 2)
+		while (sy < -worldSize / 2)
 		{
-			sy += world_size;
+			sy += worldSize;
 		}
 		
-		while (sy > world_size / 2)
+		while (sy > worldSize / 2)
 		{
-			sy -= world_size;
+			sy -= worldSize;
 		}
 	}
 	
 	
 	
-	function get_acceleration_to_planet(planet_x, planet_y)
+	function getAccelerationToPlanet(planetX, planetY)
 	{
-		let d_x = planet_x - sx;
-		let d_y = planet_y - sy;
+		let dX = planetX - sx;
+		let dY = planetY - sy;
 		
 		let r = 0;
 		
 		
 		
-		if (Math.abs(d_x) > world_size / 2)
+		if (Math.abs(dX) > worldSize / 2)
 		{
-			if (d_x < 0)
+			if (dX < 0)
 			{
-				d_x += world_size;
+				dX += worldSize;
 			}
 			
 			else
 			{
-				d_x -= world_size;
+				dX -= worldSize;
 			}
 		}
 		
-		if (Math.abs(d_y) > world_size / 2)
+		if (Math.abs(dY) > worldSize / 2)
 		{
-			if (d_y < 0)
+			if (dY < 0)
 			{
-				d_y += world_size;
+				dY += worldSize;
 			}
 			
 			else
 			{
-				d_y -= world_size;
+				dY -= worldSize;
 			}
 		}
 		
 		
 		
-		r = Math.sqrt(d_x*d_x + d_y*d_y);
+		r = Math.sqrt(dX*dX + dY*dY);
 		
-		return [d_x / (r*r*r), d_y / (r*r*r), r];
+		return [dX / (r*r*r), dY / (r*r*r), r];
 	}
 	
 	
 	
-	function on_drag_draggable(active_draggable, x, y, event)
+	function onDragDraggable(activeDraggable, x, y, event)
 	{
-		if (active_draggable === 0)
+		if (activeDraggable === 0)
 		{
-			planet_1_x = x;
-			planet_1_y = y;
+			planet1X = x;
+			planet1Y = y;
 		}
 		
-		else if (active_draggable === 1)
+		else if (activeDraggable === 1)
 		{
-			planet_2_x = x;
-			planet_2_y = y;
+			planet2X = x;
+			planet2Y = y;
 		}
 		
 		else
 		{
-			planet_3_x = x;
-			planet_3_y = y;
+			planet3X = x;
+			planet3Y = y;
 		}
 	}
 	
@@ -883,4 +883,4 @@
 	    
 		return [Math.round(r * 255), Math.round(g * 255), Math.round(b * 255)];
 	}
-}()
+	}()

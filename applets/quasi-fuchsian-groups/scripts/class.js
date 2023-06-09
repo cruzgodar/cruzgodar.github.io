@@ -2,32 +2,32 @@
 
 class QuasiFuchsianGroups extends Applet
 {
-	load_promise = null;
+	loadPromise = null;
 	
-	wilson_hidden = null;
+	wilsonHidden = null;
 	
-	resolution_small = 500;
-	resolution_large = 1500;
+	resolutionSmall = 500;
+	resolutionLarge = 1500;
 	
-	image_size = this.resolution_small;
-	image_width = this.resolution_small;
-	image_height = this.resolution_small;
+	imageSize = this.resolutionSmall;
+	imageWidth = this.resolutionSmall;
+	imageHeight = this.resolutionSmall;
 	
-	box_size = 4;
+	boxSize = 4;
 	
-	web_worker = null;
+	webWorker = null;
 	
-	last_timestamp = -1;
+	lastTimestamp = -1;
 	
 	t = [[2, 0], [2, 0]];
 	
 	coefficients = [[[0, 0], [0, 0], [0, 0], [0, 0]], [[0, 0], [0, 0], [0, 0], [0, 0]], [], []];
 	
-	draw_another_frame = false;
-	need_to_restart = true;
+	drawAnotherFrame = false;
+	needToRestart = true;
 	
-	max_depth = 200;
-	max_pixel_brightness = 50;
+	maxDepth = 200;
+	maxPixelBrightness = 50;
 
 	x = 0;
 	y = 0;
@@ -43,15 +43,15 @@ class QuasiFuchsianGroups extends Applet
 		
 		
 		
-		const frag_shader_trim = `
+		const fragShaderTrim = `
 			precision highp float;
 			precision highp sampler2D;
 			
 			varying vec2 uv;
 			
-			uniform sampler2D u_texture;
+			uniform sampler2D uTexture;
 			
-			uniform float texture_step;
+			uniform float textureStep;
 			
 			
 			
@@ -61,14 +61,14 @@ class QuasiFuchsianGroups extends Applet
 				vec2 center = (uv + vec2(1.0, 1.0)) / 2.0;
 				
 				float brightness =
-					texture2D(u_texture, center + vec2(texture_step, 0.0)).z +
-					texture2D(u_texture, center - vec2(texture_step, 0.0)).z +
-					texture2D(u_texture, center + vec2(0.0, texture_step)).z +
-					texture2D(u_texture, center - vec2(0.0, texture_step)).z +
-					texture2D(u_texture, center + vec2(texture_step, texture_step)).z +
-					texture2D(u_texture, center + vec2(texture_step, -texture_step)).z +
-					texture2D(u_texture, center + vec2(-texture_step, texture_step)).z +
-					texture2D(u_texture, center + vec2(-texture_step, -texture_step)).z;
+					texture2D(uTexture, center + vec2(textureStep, 0.0)).z +
+					texture2D(uTexture, center - vec2(textureStep, 0.0)).z +
+					texture2D(uTexture, center + vec2(0.0, textureStep)).z +
+					texture2D(uTexture, center - vec2(0.0, textureStep)).z +
+					texture2D(uTexture, center + vec2(textureStep, textureStep)).z +
+					texture2D(uTexture, center + vec2(textureStep, -textureStep)).z +
+					texture2D(uTexture, center + vec2(-textureStep, textureStep)).z +
+					texture2D(uTexture, center + vec2(-textureStep, -textureStep)).z;
 				
 				if (brightness < 0.1)
 				{
@@ -78,21 +78,21 @@ class QuasiFuchsianGroups extends Applet
 				}
 				
 				
-				gl_FragColor = vec4(0.0, 0.0, texture2D(u_texture, center).z, 1.0);
+				gl_FragColor = vec4(0.0, 0.0, texture2D(uTexture, center).z, 1.0);
 			}
 		`;
 		
 		
 		
-		const frag_shader_dilate = `
+		const fragShaderDilate = `
 			precision highp float;
 			precision highp sampler2D;
 			
 			varying vec2 uv;
 			
-			uniform sampler2D u_texture;
+			uniform sampler2D uTexture;
 			
-			uniform float texture_step;
+			uniform float textureStep;
 			
 			
 			
@@ -102,17 +102,17 @@ class QuasiFuchsianGroups extends Applet
 				vec2 center = (uv + vec2(1.0, 1.0)) / 2.0;
 				
 				float brightness =
-					max(max(max(texture2D(u_texture, center + vec2(texture_step, 0.0)).z,
-					texture2D(u_texture, center - vec2(texture_step, 0.0)).z),
-					max(texture2D(u_texture, center + vec2(0.0, texture_step)).z,
-					texture2D(u_texture, center - vec2(0.0, texture_step)).z)),
+					max(max(max(texture2D(uTexture, center + vec2(textureStep, 0.0)).z,
+					texture2D(uTexture, center - vec2(textureStep, 0.0)).z),
+					max(texture2D(uTexture, center + vec2(0.0, textureStep)).z,
+					texture2D(uTexture, center - vec2(0.0, textureStep)).z)),
 					
-					max(max(texture2D(u_texture, center + vec2(texture_step, texture_step)).z,
-					texture2D(u_texture, center + vec2(texture_step, -texture_step)).z),
-					max(texture2D(u_texture, center + vec2(-texture_step, texture_step)).z,
-					texture2D(u_texture, center + vec2(-texture_step, -texture_step)).z)));
+					max(max(texture2D(uTexture, center + vec2(textureStep, textureStep)).z,
+					texture2D(uTexture, center + vec2(textureStep, -textureStep)).z),
+					max(texture2D(uTexture, center + vec2(-textureStep, textureStep)).z,
+					texture2D(uTexture, center + vec2(-textureStep, -textureStep)).z)));
 					
-				brightness = max(brightness, texture2D(u_texture, center).z);
+				brightness = max(brightness, texture2D(uTexture, center).z);
 				
 				gl_FragColor = vec4(0.0, 0.0, brightness, 1.0);
 			}
@@ -120,13 +120,13 @@ class QuasiFuchsianGroups extends Applet
 		
 		
 		
-		const frag_shader_color = `
+		const fragShaderColor = `
 			precision highp float;
 			precision highp sampler2D;
 			
 			varying vec2 uv;
 			
-			uniform sampler2D u_texture;
+			uniform sampler2D uTexture;
 			
 			void main(void)
 			{
@@ -136,7 +136,7 @@ class QuasiFuchsianGroups extends Applet
 				vec2 z = 3.0 * uv;
 				vec3 color = 1.5 * normalize(vec3(abs(z.x + z.y) / 2.0, abs(z.x) / 2.0, abs(z.y) / 2.0) + .1 / length(z) * vec3(1.0, 1.0, 1.0));
 				
-				gl_FragColor = vec4(color * texture2D(u_texture, center).z, 1.0);
+				gl_FragColor = vec4(color * texture2D(uTexture, center).z, 1.0);
 			}
 		`;
 		
@@ -146,77 +146,77 @@ class QuasiFuchsianGroups extends Applet
 		{
 			renderer: "gpu",
 			
-			shader: frag_shader_trim,
+			shader: fragShaderTrim,
 			
-			canvas_width: this.resolution_small,
-			canvas_height: this.resolution_small,
+			canvasWidth: this.resolutionSmall,
+			canvasHeight: this.resolutionSmall,
 			
-			world_width: 1,
-			world_height: 4,
-			world_center_x: 2,
-			world_center_y: 0,
-			
-			
-			
-			use_draggables: true,
-			
-			draggables_mousedown_callback: this.on_grab_draggable.bind(this),
-			draggables_touchstart_callback: this.on_grab_draggable.bind(this),
-			
-			draggables_mousemove_callback: this.on_drag_draggable.bind(this),
-			draggables_touchmove_callback: this.on_drag_draggable.bind(this),
-			
-			draggables_mouseup_callback: this.on_release_draggable.bind(this),
-			draggables_touchend_callback: this.on_release_draggable.bind(this),
+			worldWidth: 1,
+			worldHeight: 4,
+			worldCenterX: 2,
+			worldCenterY: 0,
 			
 			
 			
-			use_fullscreen: true,
+			useDraggables: true,
 			
-			true_fullscreen: true,
+			draggablesMousedownCallback: this.onGrabDraggable.bind(this),
+			draggablesTouchstartCallback: this.onGrabDraggable.bind(this),
+			
+			draggablesMousemoveCallback: this.onDragDraggable.bind(this),
+			draggablesTouchmoveCallback: this.onDragDraggable.bind(this),
+			
+			draggablesMouseupCallback: this.onReleaseDraggable.bind(this),
+			draggablesTouchendCallback: this.onReleaseDraggable.bind(this),
+			
+			
+			
+			useFullscreen: true,
+			
+			trueFullscreen: true,
 		
-			use_fullscreen_button: true,
+			useFullscreenButton: true,
 			
-			enter_fullscreen_button_icon_path: "/graphics/general-icons/enter-fullscreen.png",
-			exit_fullscreen_button_icon_path: "/graphics/general-icons/exit-fullscreen.png",
+			enterFullscreenButtonIconPath: "/graphics/general-icons/enter-fullscreen.png",
+			exitFullscreenButtonIconPath: "/graphics/general-icons/exit-fullscreen.png",
 			
-			switch_fullscreen_callback: this.change_aspect_ratio.bind(this)
+			switchFullscreenCallback: this.changeAspectRatio.bind(this)
 		};
 		
 		this.wilson = new Wilson(canvas, options);
 		
-		this.wilson.render.load_new_shader(frag_shader_dilate);
-		this.wilson.render.load_new_shader(frag_shader_color);
+		this.wilson.render.loadNewShader(fragShaderDilate);
+		this.wilson.render.loadNewShader(fragShaderColor);
 		
-		this.wilson.gl.useProgram(this.wilson.render.shader_programs[0]);
-		this.wilson.render.init_uniforms(["texture_step"], 0);
+		this.wilson.gl.useProgram(this.wilson.render.shaderPrograms[0]);
+		this.wilson.render.initUniforms(["textureStep"], 0);
 		
-		this.wilson.gl.useProgram(this.wilson.render.shader_programs[1]);
-		this.wilson.render.init_uniforms(["texture_step"], 1);
-		
-		
-	this.wilson.render.create_framebuffer_texture_pair();	this.wilson.render.create_framebuffer_texture_pair(this.wilson.gl.UNSIGNED_BYTE);
-		
-		this.image = new Float32Array(this.image_width * this.image_height * 4);
+		this.wilson.gl.useProgram(this.wilson.render.shaderPrograms[1]);
+		this.wilson.render.initUniforms(["textureStep"], 1);
 		
 		
+	this.wilson.render.createFramebufferTexturePair();	this.wilson.render.createFramebufferTexturePair(this.wilson.gl.UNSIGNED_BYTE);
 		
-		this.regenerate_hue_and_brightness();
+		this.image = new Float32Array(this.imageWidth * this.imageHeight * 4);
 		
 		
 		
-		this.load_promise = new Promise(async(resolve, reject) =>
+		this.regenerateHueAndBrightness();
+		
+		
+		
+		this.loadPromise = new Promise(async(resolve, reject) =>
 		{
-			if (!Site.scripts_loaded["complexjs"])
+			if (!Site.scriptsLoaded["complexjs"])
 			{
-				await Site.load_script("/scripts/complex.min.js");
+				await Site.loadScript("/scripts/complex.min.js");
 				
-				Site.scripts_loaded["complexjs"] = true;
+				Site.scriptsLoaded["complexjs"] = true;
 			}
 			
-			this.init_draggables();
+			this.initDraggables();
 			
-			this.change_recipe(0);
+			this.changeRecipe(0);
 			
 			resolve();
 		});
@@ -224,7 +224,7 @@ class QuasiFuchsianGroups extends Applet
 	
 	
 	
-	grandma_coefficients(x1 = this.wilson.draggables.world_coordinates[0][0], y1 = this.wilson.draggables.world_coordinates[0][1], x2 = this.wilson.draggables.world_coordinates[1][0], y2 = this.wilson.draggables.world_coordinates[1][1])
+	grandmaCoefficients(x1 = this.wilson.draggables.worldCoordinates[0][0], y1 = this.wilson.draggables.worldCoordinates[0][1], x2 = this.wilson.draggables.worldCoordinates[1][0], y2 = this.wilson.draggables.worldCoordinates[1][1])
 	{
 		//Use Grandma's recipe, canidate for the worst-named algorithm of the last two decades.
 		const ta = new Complex(x1, y1);
@@ -293,7 +293,7 @@ class QuasiFuchsianGroups extends Applet
 	
 	
 	
-	riley_coefficients(x1 = this.wilson.draggables.world_coordinates[0][0], y1 = this.wilson.draggables.world_coordinates[0][1])
+	rileyCoefficients(x1 = this.wilson.draggables.worldCoordinates[0][0], y1 = this.wilson.draggables.worldCoordinates[0][1])
 	{
 		this.coefficients[0][0][0] = 1;
 		this.coefficients[0][0][1] = 0;
@@ -337,7 +337,7 @@ class QuasiFuchsianGroups extends Applet
 	
 	
 	
-	grandma_special_coefficients(x1 = this.wilson.draggables.world_coordinates[0][0], y1 = this.wilson.draggables.world_coordinates[0][1], x2 = this.wilson.draggables.world_coordinates[1][0], y2 = this.wilson.draggables.world_coordinates[1][1], x3 = this.wilson.draggables.world_coordinates[2][0], y3 = this.wilson.draggables.world_coordinates[2][1])
+	grandmaSpecialCoefficients(x1 = this.wilson.draggables.worldCoordinates[0][0], y1 = this.wilson.draggables.worldCoordinates[0][1], x2 = this.wilson.draggables.worldCoordinates[1][0], y2 = this.wilson.draggables.worldCoordinates[1][1], x3 = this.wilson.draggables.worldCoordinates[2][0], y3 = this.wilson.draggables.worldCoordinates[2][1])
 	{
 		//Use Grandma's recipe, canidate for the worst-named algorithm of the last two decades.
 		const ta = new Complex(x1, y1);
@@ -413,15 +413,15 @@ class QuasiFuchsianGroups extends Applet
 	
 	
 	
-	bake_coefficients = this.grandma_coefficients;
+	bakeCoefficients = this.grandmaCoefficients;
 	
 	
 	
-	change_recipe(index)
+	changeRecipe(index)
 	{
 		if (index === 0)
 		{
-			this.bake_coefficients = this.grandma_coefficients;
+			this.bakeCoefficients = this.grandmaCoefficients;
 			
 			this.wilson.draggables.draggables[1].style.display = "block";
 			this.wilson.draggables.draggables[2].style.display = "none";
@@ -429,7 +429,7 @@ class QuasiFuchsianGroups extends Applet
 		
 		else if (index === 1)
 		{
-			this.bake_coefficients = this.riley_coefficients;
+			this.bakeCoefficients = this.rileyCoefficients;
 			
 			this.wilson.draggables.draggables[1].style.display = "none";
 			this.wilson.draggables.draggables[2].style.display = "none";
@@ -437,7 +437,7 @@ class QuasiFuchsianGroups extends Applet
 		
 		else if (index === 2)
 		{
-			this.bake_coefficients = this.grandma_special_coefficients;
+			this.bakeCoefficients = this.grandmaSpecialCoefficients;
 			
 			this.wilson.draggables.draggables[1].style.display = "block";
 			this.wilson.draggables.draggables[2].style.display = "block";
@@ -446,71 +446,71 @@ class QuasiFuchsianGroups extends Applet
 	
 	
 	
-	draw_frame(timestamp)
+	drawFrame(timestamp)
 	{
-		const time_elapsed = timestamp - this.last_timestamp;
+		const timeElapsed = timestamp - this.lastTimestamp;
 		
-		this.last_timestamp = timestamp;
+		this.lastTimestamp = timestamp;
 		
-		if (time_elapsed === 0)
+		if (timeElapsed === 0)
 		{
 			return;
 		}
 		
 		
 		
-		this.bake_coefficients();
+		this.bakeCoefficients();
 		
 		for (let i = 0; i < 4; i++)
 		{
-			this.search_step(0, 0, i, -1, -1, 1);
+			this.searchStep(0, 0, i, -1, -1, 1);
 		}
 		
 		
 		
-		let max_brightness = 0;
+		let maxBrightness = 0;
 		
 		for (let i = 0; i < this.brightness.length; i++)
 		{
-			max_brightness = Math.max(max_brightness, this.brightness[i]);
+			maxBrightness = Math.max(maxBrightness, this.brightness[i]);
 		}
 		
 		
 		
-		for (let i = 0; i < this.image_height; i++)
+		for (let i = 0; i < this.imageHeight; i++)
 		{
-			for (let j = 0; j < this.image_width; j++)
+			for (let j = 0; j < this.imageWidth; j++)
 			{
-				const index = i * this.image_width + j;
+				const index = i * this.imageWidth + j;
 				
 				this.image[4 * index] = 0;
 				this.image[4 * index + 1] = 1;
-				this.image[4 * index + 2] = Math.pow(this.brightness[index] / max_brightness, .15);
+				this.image[4 * index + 2] = Math.pow(this.brightness[index] / maxBrightness, .15);
 				this.image[4 * index + 3] = 1;
 			}
 		}
 		
 		
 		
-		this.render_shader_stack();
+		this.renderShaderStack();
 	}
 	
 	
 	
-	render_shader_stack()
+	renderShaderStack()
 	{
-		this.wilson.gl.useProgram(this.wilson.render.shader_programs[0]);
+		this.wilson.gl.useProgram(this.wilson.render.shaderPrograms[0]);
 		
 		this.wilson.gl.bindTexture(this.wilson.gl.TEXTURE_2D, this.wilson.render.framebuffers[0].texture);
 		this.wilson.gl.bindFramebuffer(this.wilson.gl.FRAMEBUFFER, null);
 		
-		this.wilson.gl.texImage2D(this.wilson.gl.TEXTURE_2D, 0, this.wilson.gl.RGBA, this.image_width, this.image_height, 0, this.wilson.gl.RGBA, this.wilson.gl.FLOAT, this.image);
+		this.wilson.gl.texImage2D(this.wilson.gl.TEXTURE_2D, 0, this.wilson.gl.RGBA, this.imageWidth, this.imageHeight, 0, this.wilson.gl.RGBA, this.wilson.gl.FLOAT, this.image);
 		
-		this.wilson.render.draw_frame();
+		this.wilson.render.drawFrame();
 		
 		
 		
-		this.wilson.gl.useProgram(this.wilson.render.shader_programs[1]);
+		this.wilson.gl.useProgram(this.wilson.render.shaderPrograms[1]);
 			
 		this.wilson.gl.bindTexture(this.wilson.gl.TEXTURE_2D, this.wilson.render.framebuffers[1].texture);
 		
@@ -518,78 +518,78 @@ class QuasiFuchsianGroups extends Applet
 		
 		//Dilate the image.
 		
-		const num_dilations = this.image_size >= 1000 ? 1 : 0;
+		const numDilations = this.imageSize >= 1000 ? 1 : 0;
 		
-		for (let i = 0; i < num_dilations; i++)
+		for (let i = 0; i < numDilations; i++)
 		{
-			const pixel_data = this.wilson.render.get_pixel_data();
+			const pixelData = this.wilson.render.getPixelData();
 			
-			this.wilson.gl.texImage2D(this.wilson.gl.TEXTURE_2D, 0, this.wilson.gl.RGBA, this.image_width, this.image_height, 0, this.wilson.gl.RGBA, this.wilson.gl.UNSIGNED_BYTE, pixel_data);
+			this.wilson.gl.texImage2D(this.wilson.gl.TEXTURE_2D, 0, this.wilson.gl.RGBA, this.imageWidth, this.imageHeight, 0, this.wilson.gl.RGBA, this.wilson.gl.UNSIGNED_BYTE, pixelData);
 			
-			this.wilson.render.draw_frame();
+			this.wilson.render.drawFrame();
 		}
 		
 		
 		
-		this.wilson.gl.useProgram(this.wilson.render.shader_programs[2]);
+		this.wilson.gl.useProgram(this.wilson.render.shaderPrograms[2]);
 			
 		this.wilson.gl.bindTexture(this.wilson.gl.TEXTURE_2D, this.wilson.render.framebuffers[1].texture);
 		
-		const pixel_data = this.wilson.render.get_pixel_data();
+		const pixelData = this.wilson.render.getPixelData();
 		
-		this.wilson.gl.texImage2D(this.wilson.gl.TEXTURE_2D, 0, this.wilson.gl.RGBA, this.image_width, this.image_height, 0, this.wilson.gl.RGBA, this.wilson.gl.UNSIGNED_BYTE, pixel_data);
+		this.wilson.gl.texImage2D(this.wilson.gl.TEXTURE_2D, 0, this.wilson.gl.RGBA, this.imageWidth, this.imageHeight, 0, this.wilson.gl.RGBA, this.wilson.gl.UNSIGNED_BYTE, pixelData);
 		
-		this.wilson.render.draw_frame();
+		this.wilson.render.drawFrame();
 	}
 	
 	
 	
-	search_step(start_x, start_y, last_transformation_index, last_row, last_col, depth)
+	searchStep(startX, startY, lastTransformationIndex, lastRow, lastCol, depth)
 	{
-		if (depth === this.max_depth)
+		if (depth === this.maxDepth)
 		{
 			return;
 		}
 		
 		for (let i = 3; i < 6; i++)
 		{
-			this.x = start_x;
-			this.y = start_y;
+			this.x = startX;
+			this.y = startY;
 			
-			const transformation_index = (last_transformation_index + i) % 4;
+			const transformationIndex = (lastTransformationIndex + i) % 4;
 			
-			this.apply_transformation(transformation_index);
-			
-			
-			
-			const row = (this.image_width >= this.image_height) ? Math.floor((-this.y + this.box_size / 2) / this.box_size * this.image_height) : Math.floor((-this.y * (this.image_width / this.image_height) + this.box_size / 2) / this.box_size * this.image_height);
-			
-			const col = (this.image_width >= this.image_height) ? Math.floor((this.x / (this.image_width / this.image_height) + this.box_size / 2) / this.box_size * this.image_width) : Math.floor((this.x + this.box_size / 2) / this.box_size * this.image_width);
+			this.applyTransformation(transformationIndex);
 			
 			
 			
-			if (row >= 0 && row < this.image_height && col >= 0 && col < this.image_width)
+			const row = (this.imageWidth >= this.imageHeight) ? Math.floor((-this.y + this.boxSize / 2) / this.boxSize * this.imageHeight) : Math.floor((-this.y * (this.imageWidth / this.imageHeight) + this.boxSize / 2) / this.boxSize * this.imageHeight);
+			
+			const col = (this.imageWidth >= this.imageHeight) ? Math.floor((this.x / (this.imageWidth / this.imageHeight) + this.boxSize / 2) / this.boxSize * this.imageWidth) : Math.floor((this.x + this.boxSize / 2) / this.boxSize * this.imageWidth);
+			
+			
+			
+			if (row >= 0 && row < this.imageHeight && col >= 0 && col < this.imageWidth)
 			{
-				if (this.brightness[this.image_width * row + col] === this.max_pixel_brightness)
+				if (this.brightness[this.imageWidth * row + col] === this.maxPixelBrightness)
 				{
 					continue;
 				}
 				
-				if (depth > 10 || this.image_size !== this.resolution_small)
+				if (depth > 10 || this.imageSize !== this.resolutionSmall)
 				{
-					this.brightness[this.image_width * row + col]++;
+					this.brightness[this.imageWidth * row + col]++;
 				}
 			}
 			
 			
 			
-			this.search_step(this.x, this.y, transformation_index, row, col, depth + 1);
+			this.searchStep(this.x, this.y, transformationIndex, row, col, depth + 1);
 		}
 	}
 	
 	
 	
-	apply_transformation(index)
+	applyTransformation(index)
 	{
 		const ax = this.coefficients[index][0][0];
 		const ay = this.coefficients[index][0][1];
@@ -602,196 +602,196 @@ class QuasiFuchsianGroups extends Applet
 		
 		
 		
-		const num_x = ax*this.x - ay*this.y + bx;
-		const num_y = ax*this.y + ay*this.x + by;
+		const numX = ax*this.x - ay*this.y + bx;
+		const numY = ax*this.y + ay*this.x + by;
 		
-		const den_x = cx*this.x - cy*this.y + dx;
-		const den_y = cx*this.y + cy*this.x + dy;
+		const denX = cx*this.x - cy*this.y + dx;
+		const denY = cx*this.y + cy*this.x + dy;
 		
-		const new_x = num_x*den_x + num_y*den_y;
-		const new_y = num_y*den_x - num_x*den_y;
+		const newX = numX*denX + numY*denY;
+		const newY = numY*denX - numX*denY;
 		
-		const magnitude = den_x*den_x + den_y*den_y;
+		const magnitude = denX*denX + denY*denY;
 		
-		this.x = new_x / magnitude;
-		this.y = new_y / magnitude;
+		this.x = newX / magnitude;
+		this.y = newY / magnitude;
 	}
 	
 	
 	
-	init_draggables()
+	initDraggables()
 	{
 		this.wilson.draggables.add(2, 0);
 		this.wilson.draggables.add(2, 0);
 		this.wilson.draggables.add(2, -2);
 		
-		window.requestAnimationFrame(this.draw_frame.bind(this));
+		window.requestAnimationFrame(this.drawFrame.bind(this));
 	}
 	
 	
 	
-	on_grab_draggable(active_draggable, x, y, event)
+	onGrabDraggable(activeDraggable, x, y, event)
 	{
-		this.image_size = this.resolution_small;
+		this.imageSize = this.resolutionSmall;
 		
-		if (this.wilson.fullscreen.currently_fullscreen)
+		if (this.wilson.fullscreen.currentlyFullscreen)
 		{
-			if (Page.Layout.aspect_ratio >= 1)
+			if (Page.Layout.aspectRatio >= 1)
 			{
-				this.image_width = Math.floor(this.image_size * Page.Layout.aspect_ratio);
-				this.image_height = this.image_size;
+				this.imageWidth = Math.floor(this.imageSize * Page.Layout.aspectRatio);
+				this.imageHeight = this.imageSize;
 			}
 			
 			else
 			{
-				this.image_width = this.image_size;
-				this.image_height = Math.floor(this.image_size / Page.Layout.aspect_ratio);
+				this.imageWidth = this.imageSize;
+				this.imageHeight = Math.floor(this.imageSize / Page.Layout.aspectRatio);
 			}
 		}
 		
 		else
 		{
-			this.image_width = this.image_size;
-			this.image_height = this.image_size;
+			this.imageWidth = this.imageSize;
+			this.imageHeight = this.imageSize;
 		}
 		
 		
 		
-		this.max_depth = 200;
-		this.max_pixel_brightness = 50;
+		this.maxDepth = 200;
+		this.maxPixelBrightness = 50;
 		
-		this.wilson.change_canvas_size(this.image_width, this.image_height);
+		this.wilson.changeCanvasSize(this.imageWidth, this.imageHeight);
 		
-		this.regenerate_hue_and_brightness();
+		this.regenerateHueAndBrightness();
 		
 		
 		
-		window.requestAnimationFrame(this.draw_frame.bind(this));
+		window.requestAnimationFrame(this.drawFrame.bind(this));
 	}
 	
 	
 	
-	on_release_draggable(active_draggable, x, y, event)
+	onReleaseDraggable(activeDraggable, x, y, event)
 	{
 		if (DEBUG)
 		{
-			console.log(active_draggable, x, y);
+			console.log(activeDraggable, x, y);
 		}
 		
 		
 		
-		this.image_size = this.resolution_large;
+		this.imageSize = this.resolutionLarge;
 		
-		if (this.wilson.fullscreen.currently_fullscreen)
+		if (this.wilson.fullscreen.currentlyFullscreen)
 		{
-			if (Page.Layout.aspect_ratio >= 1)
+			if (Page.Layout.aspectRatio >= 1)
 			{
-				this.image_width = Math.floor(this.image_size * Page.Layout.aspect_ratio);
-				this.image_height = this.image_size;
+				this.imageWidth = Math.floor(this.imageSize * Page.Layout.aspectRatio);
+				this.imageHeight = this.imageSize;
 			}
 			
 			else
 			{
-				this.image_width = this.image_size;
-				this.image_height = Math.floor(this.image_size / Page.Layout.aspect_ratio);
+				this.imageWidth = this.imageSize;
+				this.imageHeight = Math.floor(this.imageSize / Page.Layout.aspectRatio);
 			}
 		}
 		
 		else
 		{
-			this.image_width = this.image_size;
-			this.image_height = this.image_size;
+			this.imageWidth = this.imageSize;
+			this.imageHeight = this.imageSize;
 		}
 		
 		
 		
-		this.max_depth = 200;
-		this.max_pixel_brightness = 50;
+		this.maxDepth = 200;
+		this.maxPixelBrightness = 50;
 		
-		this.wilson.change_canvas_size(this.image_width, this.image_height);
+		this.wilson.changeCanvasSize(this.imageWidth, this.imageHeight);
 		
-		this.regenerate_hue_and_brightness();
+		this.regenerateHueAndBrightness();
 		
 		
 		
-		window.requestAnimationFrame(this.draw_frame.bind(this));
+		window.requestAnimationFrame(this.drawFrame.bind(this));
 	}
 	
 	
 	
-	on_drag_draggable(active_draggable, x, y, event)
+	onDragDraggable(activeDraggable, x, y, event)
 	{
-		for (let i = 0; i < this.image_height; i++)
+		for (let i = 0; i < this.imageHeight; i++)
 		{
-			for (let j = 0; j < this.image_width; j++)
+			for (let j = 0; j < this.imageWidth; j++)
 			{
-				this.brightness[this.image_width * i + j] = 0;
+				this.brightness[this.imageWidth * i + j] = 0;
 			}
 		}
 		
-		window.requestAnimationFrame(this.draw_frame.bind(this));
+		window.requestAnimationFrame(this.drawFrame.bind(this));
 	}
 	
 	
 	
-	request_high_res_frame(image_size, max_depth, max_pixel_brightness, box_size = this.box_size)
+	requestHighResFrame(imageSize, maxDepth, maxPixelBrightness, boxSize = this.boxSize)
 	{
 		return new Promise((resolve, reject) =>
 		{
-			this.image_size = image_size;
-			this.max_depth = max_depth;
-			this.max_pixel_brightness = max_pixel_brightness;
-			this.box_size = box_size;
+			this.imageSize = imageSize;
+			this.maxDepth = maxDepth;
+			this.maxPixelBrightness = maxPixelBrightness;
+			this.boxSize = boxSize;
 			
 			
 			
-			if (this.wilson.fullscreen.currently_fullscreen)
+			if (this.wilson.fullscreen.currentlyFullscreen)
 			{
-				if (Page.Layout.aspect_ratio >= 1)
+				if (Page.Layout.aspectRatio >= 1)
 				{
-					this.image_width = Math.floor(this.image_size * Page.Layout.aspect_ratio);
-					this.image_height = this.image_size;
+					this.imageWidth = Math.floor(this.imageSize * Page.Layout.aspectRatio);
+					this.imageHeight = this.imageSize;
 				}
 				
 				else
 				{
-					this.image_width = this.image_size;
-					this.image_height = Math.floor(this.image_size / Page.Layout.aspect_ratio);
+					this.imageWidth = this.imageSize;
+					this.imageHeight = Math.floor(this.imageSize / Page.Layout.aspectRatio);
 				}
 			}
 			
 			else
 			{
-				this.image_width = this.image_size;
-				this.image_height = this.image_size;
+				this.imageWidth = this.imageSize;
+				this.imageHeight = this.imageSize;
 			}
 			
 			
 			
-			this.regenerate_hue_and_brightness();
+			this.regenerateHueAndBrightness();
 			
 			
 			
-			try {this.web_worker.terminate()}
+			try {this.webWorker.terminate()}
 			catch(ex) {}
 			
-			this.web_worker = new Worker(`/applets/quasi-fuchsian-groups/scripts/worker.${DEBUG ? "" : "min."}js`);
+			this.webWorker = new Worker(`/applets/quasi-fuchsian-groups/scripts/worker.${DEBUG ? "" : "min."}js`);
 			
-			this.workers.push(this.web_worker);
+			this.workers.push(this.webWorker);
 			
 			
 			
-			this.web_worker.onmessage = e =>
+			this.webWorker.onmessage = e =>
 			{
 				this.brightness = e.data[0];
 				
-				this.wilson.change_canvas_size(this.image_width, this.image_height);
+				this.wilson.changeCanvasSize(this.imageWidth, this.imageHeight);
 				
-				for (let i = 0; i < this.image_height; i++)
+				for (let i = 0; i < this.imageHeight; i++)
 				{
-					for (let j = 0; j < this.image_width; j++)
+					for (let j = 0; j < this.imageWidth; j++)
 					{
-						const index = i * this.image_width + j;
+						const index = i * this.imageWidth + j;
 						
 						this.image[4 * index] = 0;
 						this.image[4 * index + 1] = 0;
@@ -800,70 +800,70 @@ class QuasiFuchsianGroups extends Applet
 					}
 				}
 				
-				this.render_shader_stack();
+				this.renderShaderStack();
 				
 				resolve();
 			};
 			
-			this.web_worker.postMessage([this.image_width, this.image_height, this.max_depth, this.max_pixel_brightness, this.box_size, this.coefficients]);
+			this.webWorker.postMessage([this.imageWidth, this.imageHeight, this.maxDepth, this.maxPixelBrightness, this.boxSize, this.coefficients]);
 		});
 	}
 	
 	
 	
-	regenerate_hue_and_brightness()
+	regenerateHueAndBrightness()
 	{
-		this.brightness = new Float32Array(this.image_width * this.image_height);
-		this.image = new Float32Array(this.image_width * this.image_height * 4);
+		this.brightness = new Float32Array(this.imageWidth * this.imageHeight);
+		this.image = new Float32Array(this.imageWidth * this.imageHeight * 4);
 		
-		this.wilson.gl.useProgram(this.wilson.render.shader_programs[0]);
-		this.wilson.gl.uniform1f(this.wilson.uniforms["texture_step"][0], 1 / this.image_size);
+		this.wilson.gl.useProgram(this.wilson.render.shaderPrograms[0]);
+		this.wilson.gl.uniform1f(this.wilson.uniforms["textureStep"][0], 1 / this.imageSize);
 		
-		this.wilson.gl.useProgram(this.wilson.render.shader_programs[1]);
-		this.wilson.gl.uniform1f(this.wilson.uniforms["texture_step"][1], 1 / this.image_size);
+		this.wilson.gl.useProgram(this.wilson.render.shaderPrograms[1]);
+		this.wilson.gl.uniform1f(this.wilson.uniforms["textureStep"][1], 1 / this.imageSize);
 		
-		for (let i = 0; i < this.image_height; i++)
+		for (let i = 0; i < this.imageHeight; i++)
 		{
-			for (let j = 0; j < this.image_width; j++)
+			for (let j = 0; j < this.imageWidth; j++)
 			{
-				this.brightness[this.image_width * i + j] = 0;
+				this.brightness[this.imageWidth * i + j] = 0;
 			}
 		}
 	}
 	
 	
 	
-	change_aspect_ratio()
+	changeAspectRatio()
 	{
-		this.image_size = this.resolution_small;
+		this.imageSize = this.resolutionSmall;
 		
-		if (this.wilson.fullscreen.currently_fullscreen)
+		if (this.wilson.fullscreen.currentlyFullscreen)
 		{
-			if (Page.Layout.aspect_ratio >= 1)
+			if (Page.Layout.aspectRatio >= 1)
 			{
-				this.image_width = Math.floor(this.image_size * Page.Layout.aspect_ratio);
-				this.image_height = this.image_size;
+				this.imageWidth = Math.floor(this.imageSize * Page.Layout.aspectRatio);
+				this.imageHeight = this.imageSize;
 			}
 			
 			else
 			{
-				this.image_width = this.image_size;
-				this.image_height = Math.floor(this.image_size / Page.Layout.aspect_ratio);
+				this.imageWidth = this.imageSize;
+				this.imageHeight = Math.floor(this.imageSize / Page.Layout.aspectRatio);
 			}
 		}
 		
 		else
 		{
-			this.image_width = this.image_size;
-			this.image_height = this.image_size;
+			this.imageWidth = this.imageSize;
+			this.imageHeight = this.imageSize;
 		}
 		
 		
 		
-		this.wilson.change_canvas_size(this.image_width, this.image_height);
+		this.wilson.changeCanvasSize(this.imageWidth, this.imageHeight);
 		
-		this.regenerate_hue_and_brightness();
+		this.regenerateHueAndBrightness();
 		
-		window.requestAnimationFrame(this.draw_frame.bind(this));
+		window.requestAnimationFrame(this.drawFrame.bind(this));
 	}
-}
+	}

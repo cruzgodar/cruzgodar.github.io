@@ -20,59 +20,59 @@
 		{
 			renderer: "cpu",
 			
-			canvas_width: 500,
-			canvas_height: 500,
+			canvasWidth: 500,
+			canvasHeight: 500,
 			
-			world_width: 4,
-			world_height: 4,
-			world_center_x: 0,
-			world_center_y: 0
+			worldWidth: 4,
+			worldHeight: 4,
+			worldCenterX: 0,
+			worldCenterY: 0
 		};
 		
 		let wilson = new Wilson(Page.element.querySelector("#output-canvas-1"), options);
 		
 		
 		
-		let a_input_element = Page.element.querySelector("#a-1-input");
-		let b_input_element = Page.element.querySelector("#b-1-input");
-		let resolution_input_element = Page.element.querySelector("#resolution-1-input");
+		let aInputElement = Page.element.querySelector("#a-1-input");
+		let bInputElement = Page.element.querySelector("#b-1-input");
+		let resolutionInputElement = Page.element.querySelector("#resolution-1-input");
 
-		let generate_button_element = Page.element.querySelector("#generate-1-button");
+		let generateButtonElement = Page.element.querySelector("#generate-1-button");
 
-		generate_button_element.addEventListener("click", () =>
+		generateButtonElement.addEventListener("click", () =>
 		{
-			let a = parseFloat(a_input_element.value || 0);
-			let b = parseFloat(b_input_element.value || 1);
-			let resolution = parseInt(resolution_input_element.value || 500);
+			let a = parseFloat(aInputElement.value || 0);
+			let b = parseFloat(bInputElement.value || 1);
+			let resolution = parseInt(resolutionInputElement.value || 500);
 			
-			wilson.change_canvas_size(resolution, resolution);
+			wilson.changeCanvasSize(resolution, resolution);
 			
-			window.requestAnimationFrame(() => wilson.render.draw_frame(generate_julia_set(a, b, resolution)));
+			window.requestAnimationFrame(() => wilson.render.drawFrame(generateJuliaSet(a, b, resolution)));
 		});
 		
 		
 		
-		function generate_julia_set(a, b, resolution)
+		function generateJuliaSet(a, b, resolution)
 		{
 			let brightnesses = new Array(resolution * resolution);
-			let max_brightness = 0;
-			let brightness_scale = 1.5;
-			const num_iterations = 100;
+			let maxBrightness = 0;
+			let brightnessScale = 1.5;
+			const numIterations = 100;
 			
 			for (let i = 0; i < resolution; i++)
 			{
 				for (let j = 0; j < resolution; j++)
 				{
-					let world_coordinates = wilson.utils.interpolate.canvas_to_world(i, j);
-					let x = world_coordinates[0];
-					let y = world_coordinates[1];
+					let worldCoordinates = wilson.utils.interpolate.canvasToWorld(i, j);
+					let x = worldCoordinates[0];
+					let y = worldCoordinates[1];
 					
 					//This helps remove color banding.
 					let brightness = Math.exp(-Math.sqrt(x*x + y*y));
 					
 					let k = 0;
 					
-					for (k = 0; k < num_iterations; k++)
+					for (k = 0; k < numIterations; k++)
 					{
 						//z = z^2 + c = (x^2 - y^2 + a) + (2xy + b)i
 						let temp = x*x - y*y + a;
@@ -87,7 +87,7 @@
 						}
 					}
 					
-					if (k === num_iterations)
+					if (k === numIterations)
 					{
 						//Color this pixel black.
 						brightnesses[resolution * i + j] = 0;
@@ -97,25 +97,25 @@
 					{
 						brightnesses[resolution * i + j] = brightness;
 						
-						if (brightness > max_brightness)
+						if (brightness > maxBrightness)
 						{
-							max_brightness = brightness;
+							maxBrightness = brightness;
 						}
 					}
 				}
 			}
 			
 			//Now we need to create the actual pixel data in a Uint8ClampedArray to pass to Wilson.
-			let image_data = new Uint8ClampedArray(resolution * resolution * 4);
+			let imageData = new Uint8ClampedArray(resolution * resolution * 4);
 			for (let i = 0; i < resolution * resolution; i++)
 			{
-				image_data[4 * i] = 0; //Red
-				image_data[4 * i + 1] = brightness_scale * brightnesses[i] / max_brightness * 255; //Green
-				image_data[4 * i + 2] = brightness_scale * brightnesses[i] / max_brightness * 255; //Blue
-				image_data[4 * i + 3] = 255; //Alpha
+				imageData[4 * i] = 0; //Red
+				imageData[4 * i + 1] = brightnessScale * brightnesses[i] / maxBrightness * 255; //Green
+				imageData[4 * i + 2] = brightnessScale * brightnesses[i] / maxBrightness * 255; //Blue
+				imageData[4 * i + 3] = 255; //Alpha
 			}
 			
-			return image_data;
+			return imageData;
 		}
 	}
 	
@@ -127,68 +127,68 @@
 		{
 			renderer: "hybrid",
 			
-			canvas_width: 500,
-			canvas_height: 500,
+			canvasWidth: 500,
+			canvasHeight: 500,
 			
-			world_width: 4,
-			world_height: 4,
-			world_center_x: 0,
-			world_center_y: 0
+			worldWidth: 4,
+			worldHeight: 4,
+			worldCenterX: 0,
+			worldCenterY: 0
 		};
 		
 		let wilson = new Wilson(Page.element.querySelector("#output-canvas-2"), options);
 		
 		
 		
-		let a_input_element = Page.element.querySelector("#a-2-input");
-		let b_input_element = Page.element.querySelector("#b-2-input");
-		let resolution_input_element = Page.element.querySelector("#resolution-2-input");
+		let aInputElement = Page.element.querySelector("#a-2-input");
+		let bInputElement = Page.element.querySelector("#b-2-input");
+		let resolutionInputElement = Page.element.querySelector("#resolution-2-input");
 
-		let generate_button_element = Page.element.querySelector("#generate-2-button");
+		let generateButtonElement = Page.element.querySelector("#generate-2-button");
 
-		generate_button_element.addEventListener("click", () =>
+		generateButtonElement.addEventListener("click", () =>
 		{
-			let a = parseFloat(a_input_element.value || 0);
-			let b = parseFloat(b_input_element.value || 1);
-			let resolution = parseInt(resolution_input_element.value || 500);
+			let a = parseFloat(aInputElement.value || 0);
+			let b = parseFloat(bInputElement.value || 1);
+			let resolution = parseInt(resolutionInputElement.value || 500);
 			
-			wilson.change_canvas_size(resolution, resolution);
+			wilson.changeCanvasSize(resolution, resolution);
 			
-			window.requestAnimationFrame(() => wilson.render.draw_frame(generate_julia_set(a, b, resolution)));
+			window.requestAnimationFrame(() => wilson.render.drawFrame(generateJuliaSet(a, b, resolution)));
 		});
 		
 		
 		
-		let download_button_element = Page.element.querySelector("#download-2-button");
+		let downloadButtonElement = Page.element.querySelector("#download-2-button");
 		
-		download_button_element.addEventListener("click", () =>
+		downloadButtonElement.addEventListener("click", () =>
 		{
-			wilson.download_frame("a-julia-set.png");
+			wilson.downloadFrame("a-julia-set.png");
 		});
 		
 		
 		
-		function generate_julia_set(a, b, resolution)
+		function generateJuliaSet(a, b, resolution)
 		{
 			let brightnesses = new Array(resolution * resolution);
-			let max_brightness = 0;
-			let brightness_scale = 1.5;
-			const num_iterations = 100;
+			let maxBrightness = 0;
+			let brightnessScale = 1.5;
+			const numIterations = 100;
 			
 			for (let i = 0; i < resolution; i++)
 			{
 				for (let j = 0; j < resolution; j++)
 				{
-					let world_coordinates = wilson.utils.interpolate.canvas_to_world(i, j);
-					let x = world_coordinates[0];
-					let y = world_coordinates[1];
+					let worldCoordinates = wilson.utils.interpolate.canvasToWorld(i, j);
+					let x = worldCoordinates[0];
+					let y = worldCoordinates[1];
 					
 					//This helps remove color banding.
 					let brightness = Math.exp(-Math.sqrt(x*x + y*y));
 					
 					let k = 0;
 					
-					for (k = 0; k < num_iterations; k++)
+					for (k = 0; k < numIterations; k++)
 					{
 						//z = z^2 + c = (x^2 - y^2 + a) + (2xy + b)i
 						let temp = x*x - y*y + a;
@@ -203,7 +203,7 @@
 						}
 					}
 					
-					if (k === num_iterations)
+					if (k === numIterations)
 					{
 						//Color this pixel black.
 						brightnesses[resolution * i + j] = 0;
@@ -213,29 +213,29 @@
 					{
 						brightnesses[resolution * i + j] = brightness;
 						
-						if (brightness > max_brightness)
+						if (brightness > maxBrightness)
 						{
-							max_brightness = brightness;
+							maxBrightness = brightness;
 						}
 					}
 				}
 			}
 			
 			//Now we need to create the actual pixel data in a Uint8ClampedArray to pass to Wilson.
-			let image_data = new Uint8ClampedArray(resolution * resolution * 4);
+			let imageData = new Uint8ClampedArray(resolution * resolution * 4);
 			for (let i = 0; i < resolution * resolution; i++)
 			{
-				image_data[4 * i] = 0; //Red
-				image_data[4 * i + 1] = brightness_scale * brightnesses[i] / max_brightness * 255; //Green
-				image_data[4 * i + 2] = brightness_scale * brightnesses[i] / max_brightness * 255; //Blue
-				image_data[4 * i + 3] = 255; //Alpha
+				imageData[4 * i] = 0; //Red
+				imageData[4 * i + 1] = brightnessScale * brightnesses[i] / maxBrightness * 255; //Green
+				imageData[4 * i + 2] = brightnessScale * brightnesses[i] / maxBrightness * 255; //Blue
+				imageData[4 * i + 3] = 255; //Alpha
 			}
 			
-			return image_data;
+			return imageData;
 		}
 	}
 	
 	
 	
 	Page.show();
-}()
+	}()

@@ -2,7 +2,7 @@
 {
 	//The scripts we need to count are the site-wide scripts and the page-specific ones.
 	
-	let total_lines = 0;
+	let totalLines = 0;
 	
 	let filenames =
 	[
@@ -28,11 +28,11 @@
 		
 		let data = await response.text();
 		
-		let num_lines = data.split("\n").length;
+		let numLines = data.split("\n").length;
 		
-		console.log(`${filenames[i]}: ${num_lines}`);
+		console.log(`${filenames[i]}: ${numLines}`);
 		
-		total_lines += num_lines;
+		totalLines += numLines;
 	}
 	
 	for (let key in Site.sitemap)
@@ -43,17 +43,17 @@
 		
 		let data = await response.text();
 		
-		let num_lines = data.split("\n").length;
+		let numLines = data.split("\n").length;
 		
-		if (num_lines === 1)
+		if (numLines === 1)
 		{
 			continue;
 		}
 		
-		console.log(`${name}.js: ${num_lines}`);
+		console.log(`${name}.js: ${numLines}`);
 		
-		total_lines += num_lines;
+		totalLines += numLines;
 	}
 	
-	console.log(`Grand total: ${total_lines}`);
+	console.log(`Grand total: ${totalLines}`);
 }()

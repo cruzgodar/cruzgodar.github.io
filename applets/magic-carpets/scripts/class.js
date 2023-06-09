@@ -2,17 +2,17 @@
 
 class MagicCarpet extends Applet
 {
-	grid_size = null;
-	max_cage_size = null;
-	unique_solution = null;
+	gridSize = null;
+	maxCageSize = null;
+	uniqueSolution = null;
 	
 	cages = [];
 	
-	currently_drawing = false;
+	currentlyDrawing = false;
 	
-	cell_size = 200;
+	cellSize = 200;
 	
-	web_worker = null;
+	webWorker = null;
 	
 	
 	
@@ -24,8 +24,8 @@ class MagicCarpet extends Applet
 		{
 			renderer: "cpu",
 			
-			canvas_width: 500,
-			canvas_height: 500
+			canvasWidth: 500,
+			canvasHeight: 500
 		};
 		
 		this.wilson = new Wilson(canvas, options);
@@ -35,60 +35,60 @@ class MagicCarpet extends Applet
 	
 	
 	
-	async run(grid_size = 8, max_cage_size = 16, unique_solution = true)
+	async run(gridSize = 8, maxCageSize = 16, uniqueSolution = true)
 	{
-		if (this.currently_drawing)
+		if (this.currentlyDrawing)
 		{
 			return;
 		}
 		
-		this.grid_size = grid_size;
-		this.max_cage_size = max_cage_size;
+		this.gridSize = gridSize;
+		this.maxCageSize = maxCageSize;
 		
-		this.cell_size = Math.min(200, Math.floor(4000 / this.grid_size));
+		this.cellSize = Math.min(200, Math.floor(4000 / this.gridSize));
 		
-		const canvas_size = this.grid_size * this.cell_size + 9;
+		const canvasSize = this.gridSize * this.cellSize + 9;
 		
-		this.wilson.change_canvas_size(canvas_size, canvas_size);
+		this.wilson.changeCanvasSize(canvasSize, canvasSize);
 		
-		this.wilson.ctx.clearRect(0, 0, canvas_size, canvas_size);
+		this.wilson.ctx.clearRect(0, 0, canvasSize, canvasSize);
 		
 		
 		
-		try {this.web_worker.terminate()}
+		try {this.webWorker.terminate()}
 		catch(ex) {}
 		
-		this.web_worker = new Worker(`/applets/magic-carpets/scripts/worker.${DEBUG ? "" : "min."}js`);
+		this.webWorker = new Worker(`/applets/magic-carpets/scripts/worker.${DEBUG ? "" : "min."}js`);
 		
-		this.workers.push(this.web_worker);
+		this.workers.push(this.webWorker);
 		
 		
 		
-		this.web_worker.onmessage = (e) =>
+		this.webWorker.onmessage = (e) =>
 		{
 			this.cages = e.data[0];
 			
-			this.draw_grid();
+			this.drawGrid();
 		}
 		
-		this.web_worker.postMessage([this.grid_size, this.max_cage_size, unique_solution]);
+		this.webWorker.postMessage([this.gridSize, this.maxCageSize, uniqueSolution]);
 	}
 	
 	
 	
-	draw_grid(rectangles_only = false)
+	drawGrid(rectanglesOnly = false)
 	{
-		const canvas_size = this.grid_size * this.cell_size + 9;
+		const canvasSize = this.gridSize * this.cellSize + 9;
 		
-		if (rectangles_only)
+		if (rectanglesOnly)
 		{
-			this.wilson.ctx.clearRect(0, 0, canvas_size, canvas_size);
+			this.wilson.ctx.clearRect(0, 0, canvasSize, canvasSize);
 		}
 		
 		else
 		{
 			this.wilson.ctx.fillStyle = "rgb(255, 255, 255)";
-			this.wilson.ctx.fillRect(0, 0, canvas_size, canvas_size);
+			this.wilson.ctx.fillRect(0, 0, canvasSize, canvasSize);
 		}
 		
 		this.wilson.ctx.fillStyle = "rgb(0, 0, 0)";
@@ -96,41 +96,41 @@ class MagicCarpet extends Applet
 		
 		
 		//Draw the light gridlines (width 4).
-		if (!rectangles_only)
+		if (!rectanglesOnly)
 		{
-			for (let i = 0; i <= this.grid_size; i++)
+			for (let i = 0; i <= this.gridSize; i++)
 			{
-				this.wilson.ctx.fillRect(this.cell_size * i + 3, 0, 4, canvas_size + 9);
-				this.wilson.ctx.fillRect(0, this.cell_size * i + 3, canvas_size + 9, 4);
+				this.wilson.ctx.fillRect(this.cellSize * i + 3, 0, 4, canvasSize + 9);
+				this.wilson.ctx.fillRect(0, this.cellSize * i + 3, canvasSize + 9, 4);
 			}
 		}
 		
 		
 		
-		this.wilson.ctx.fillRect(0, 0, this.cell_size * this.grid_size + 10, 10);
-		this.wilson.ctx.fillRect(0, this.cell_size * this.grid_size, this.cell_size * this.grid_size + 10, 10);
-		this.wilson.ctx.fillRect(0, 0, 10, this.cell_size * this.grid_size + 10);
-		this.wilson.ctx.fillRect(this.cell_size * this.grid_size, 0, 10, this.cell_size * this.grid_size + 10);
+		this.wilson.ctx.fillRect(0, 0, this.cellSize * this.gridSize + 10, 10);
+		this.wilson.ctx.fillRect(0, this.cellSize * this.gridSize, this.cellSize * this.gridSize + 10, 10);
+		this.wilson.ctx.fillRect(0, 0, 10, this.cellSize * this.gridSize + 10);
+		this.wilson.ctx.fillRect(this.cellSize * this.gridSize, 0, 10, this.cellSize * this.gridSize + 10);
 		
 		
 		
-		if (!rectangles_only)
+		if (!rectanglesOnly)
 		{
-			this.wilson.ctx.font = `${this.cell_size * .6}px sans-serif`;
+			this.wilson.ctx.font = `${this.cellSize * .6}px sans-serif`;
 			
 			//Finally, draw the numbers.
 			for (let i = 0; i < this.cages.length; i++)
 			{
-				this.draw_number(i);
+				this.drawNumber(i);
 			}
 		}
 		
-		this.currently_drawing = false;
+		this.currentlyDrawing = false;
 	}
 	
 	
 	
-	draw_number(i)
+	drawNumber(i)
 	{
 		const row = this.cages[i][0] + this.cages[i][4];
 		const col = this.cages[i][1] + this.cages[i][5];
@@ -138,84 +138,84 @@ class MagicCarpet extends Applet
 		
 		const measurement = this.wilson.ctx.measureText(entry);
 		
-		this.wilson.ctx.fillText(entry, this.cell_size * col + (this.cell_size - measurement.width) / 2 + 5, this.cell_size * (row + 1) - (this.cell_size - measurement.actualBoundingBoxAscent - measurement.actualBoundingBoxDescent) / 2 + 4);
+		this.wilson.ctx.fillText(entry, this.cellSize * col + (this.cellSize - measurement.width) / 2 + 5, this.cellSize * (row + 1) - (this.cellSize - measurement.actualBoundingBoxAscent - measurement.actualBoundingBoxDescent) / 2 + 4);
 	}
 	
 	
 	
-	draw_solution(rectangles_only = false)
+	drawSolution(rectanglesOnly = false)
 	{
-		if (this.currently_drawing)
+		if (this.currentlyDrawing)
 		{
 			return;
 		}
 		
-		this.currently_drawing = true;
+		this.currentlyDrawing = true;
 		
-		const canvas_size = this.grid_size * this.cell_size + 9;
+		const canvasSize = this.gridSize * this.cellSize + 9;
 		
-		if (rectangles_only)
+		if (rectanglesOnly)
 		{
-			this.wilson.ctx.clearRect(0, 0, canvas_size, canvas_size);
+			this.wilson.ctx.clearRect(0, 0, canvasSize, canvasSize);
 		}
 		
 		else
 		{
 			this.wilson.ctx.fillStyle = "rgb(255, 255, 255)";
-			this.wilson.ctx.fillRect(0, 0, canvas_size, canvas_size);
+			this.wilson.ctx.fillRect(0, 0, canvasSize, canvasSize);
 		}
 		
-		this.draw_grid(rectangles_only);
+		this.drawGrid(rectanglesOnly);
 		
 		const delay = 500 / this.cages.length;
 		
-		this.draw_cage(0, delay, rectangles_only);
+		this.drawCage(0, delay, rectanglesOnly);
 	}
 	
 	
 	
-	draw_cage(index, delay, rectangles_only)
+	drawCage(index, delay, rectanglesOnly)
 	{
 		if (index === this.cages.length)
 		{
-			this.currently_drawing = false;
+			this.currentlyDrawing = false;
 			
 			return;
 		}
 		
 		
 		
-		let rgb = this.wilson.utils.hsv_to_rgb(index / this.cages.length * 6/7, 1, 1);
+		let rgb = this.wilson.utils.hsvToRgb(index / this.cages.length * 6/7, 1, 1);
 		
-		this.wilson.ctx.fillStyle = `rgba(${rgb[0]}, ${rgb[1]}, ${rgb[2]}, ${rectangles_only ? .5 : .2})`;
+		this.wilson.ctx.fillStyle = `rgba(${rgb[0]}, ${rgb[1]}, ${rgb[2]}, ${rectanglesOnly ? .5 : .2})`;
 		
-		const row = this.cages[index][0] * this.cell_size;
-		const col = this.cages[index][1] * this.cell_size;
-		const height = this.cages[index][2] * this.cell_size;
-		const width = this.cages[index][3] * this.cell_size;
+		const row = this.cages[index][0] * this.cellSize;
+		const col = this.cages[index][1] * this.cellSize;
+		const height = this.cages[index][2] * this.cellSize;
+		const width = this.cages[index][3] * this.cellSize;
 		
 		this.wilson.ctx.fillRect(col + 10, row + 10, width - 10, height - 10);
 		
 		
 		
-		rgb = this.wilson.utils.hsv_to_rgb(index / this.cages.length * 6/7, 1, .9);
+		rgb = this.wilson.utils.hsvToRgb(index / this.cages.length * 6/7, 1, .9);
 		
 		this.wilson.ctx.fillStyle = `rgba(${rgb[0]}, ${rgb[1]}, ${rgb[2]}, 1)`;
 		
-		const row_adjust = this.cages[index][0] === 0 ? 0 : 5;
-		const col_adjust = this.cages[index][1] === 0 ? 0 : 5;
-		const height_adjust = (this.cages[index][0] + this.cages[index][2] === this.grid_size) || this.cages[index][0] === 0 ? 0 : 5;
-		const width_adjust = (this.cages[index][1] + this.cages[index][3] === this.grid_size) || this.cages[index][1] === 0 ? 0 : 5;
-		const height_adjust_2 = (this.cages[index][0] + this.cages[index][2] === this.grid_size) && this.cages[index][0] === 0 ? 5 : 0;
-		const width_adjust_2 = (this.cages[index][1] + this.cages[index][3] === this.grid_size) && this.cages[index][1] === 0 ? 5 : 0;
+		const rowAdjust = this.cages[index][0] === 0 ? 0 : 5;
+		const colAdjust = this.cages[index][1] === 0 ? 0 : 5;
+		const heightAdjust = (this.cages[index][0] + this.cages[index][2] === this.gridSize) || this.cages[index][0] === 0 ? 0 : 5;
+		const widthAdjust = (this.cages[index][1] + this.cages[index][3] === this.gridSize) || this.cages[index][1] === 0 ? 0 : 5;
+		const heightAdjust2 = (this.cages[index][0] + this.cages[index][2] === this.gridSize) && this.cages[index][0] === 0 ? 5 : 0;
+		const widthAdjust2 = (this.cages[index][1] + this.cages[index][3] === this.gridSize) && this.cages[index][1] === 0 ? 5 : 0;
 		
-		this.wilson.ctx.fillRect(col + 10 - col_adjust, row + 10 - row_adjust, width - 5 + width_adjust - width_adjust_2, 10);
-		this.wilson.ctx.fillRect(col + 10 - col_adjust, row + 10 - row_adjust, 10, height - 5 + height_adjust - height_adjust_2);
-		this.wilson.ctx.fillRect(col + width - 5 - col_adjust + width_adjust - width_adjust_2, row + 10 - row_adjust, 10, height - 5 + height_adjust - height_adjust_2);
-		this.wilson.ctx.fillRect(col + 10 - col_adjust + width_adjust, row + height - 5 - row_adjust + height_adjust - height_adjust_2, width - 5 - width_adjust_2, 10);
+		this.wilson.ctx.fillRect(col + 10 - colAdjust, row + 10 - rowAdjust, width - 5 + widthAdjust - widthAdjust2, 10);
+		this.wilson.ctx.fillRect(col + 10 - colAdjust, row + 10 - rowAdjust, 10, height - 5 + heightAdjust - heightAdjust2);
+		this.wilson.ctx.fillRect(col + width - 5 - colAdjust + widthAdjust - widthAdjust2, row + 10 - rowAdjust, 10, height - 5 + heightAdjust - heightAdjust2);
+		this.wilson.ctx.fillRect(col + 10 - colAdjust + widthAdjust, row + height - 5 - rowAdjust + heightAdjust - heightAdjust2, width - 5 - widthAdjust2, 10);
 		
 		
 		
-		setTimeout(() => this.draw_cage(index + 1, delay, rectangles_only), delay);
+		setTimeout(() => this.drawCage(index + 1, delay, rectanglesOnly), delay);
 	}
-}
+	}

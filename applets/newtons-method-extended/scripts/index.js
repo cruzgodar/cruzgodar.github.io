@@ -4,132 +4,132 @@
 	
 	
 	
-	await Site.load_glsl();
+	await Site.loadGlsl();
 	
 	
 	
 	let wilson = null;
-	let wilson_hidden = null;
+	let wilsonHidden = null;
 	
 	
 	
 	let a = [1, 0];
 	let c = [0, 0];
 	
-	let aspect_ratio = 1;
+	let aspectRatio = 1;
 	
-	let num_iterations = 100;
+	let numIterations = 100;
 	
-	let zoom_level = 1;
+	let zoomLevel = 1;
 	
-	let past_brightness_scales = [];
+	let pastBrightnessScales = [];
 	
 	let resolution = 500;
-	let resolution_hidden = 100;
+	let resolutionHidden = 100;
 	
-	let derivative_precision = 20;
+	let derivativePrecision = 20;
 	
-	let fixed_point_x = 0;
-	let fixed_point_y = 0;
+	let fixedPointX = 0;
+	let fixedPointY = 0;
 	
-	let next_pan_velocity_x = 0;
-	let next_pan_velocity_y = 0;
-	let next_zoom_velocity = 0;
+	let nextPanVelocityX = 0;
+	let nextPanVelocityY = 0;
+	let nextZoomVelocity = 0;
 	
-	let pan_velocity_x = 0;
-	let pan_velocity_y = 0;
-	let zoom_velocity = 0;
+	let panVelocityX = 0;
+	let panVelocityY = 0;
+	let zoomVelocity = 0;
 	
-	const pan_friction = .96;
-	const pan_velocity_start_threshhold = .0025;
-	const pan_velocity_stop_threshhold = .00025;
+	const panFriction = .96;
+	const panVelocityStartThreshhold = .0025;
+	const panVelocityStopThreshhold = .00025;
 	
-	const zoom_friction = .93;
-	const zoom_velocity_start_threshhold = .01;
-	const zoom_velocity_stop_threshhold = .001;
+	const zoomFriction = .93;
+	const zoomVelocityStartThreshhold = .01;
+	const zoomVelocityStopThreshhold = .001;
 	
-	let last_timestamp = -1;
+	let lastTimestamp = -1;
 	
-	let currently_animating_parameters = false;
-	let parameter_animation_frame = 0;
+	let currentlyAnimatingParameters = false;
+	let parameterAnimationFrame = 0;
 	
 	
 	
 	let colors = null;
-	let color_deltas = new Array(12);
-	let old_colors = new Array(12);
+	let colorDeltas = new Array(12);
+	let oldColors = new Array(12);
 	
 	
 	
 	
 	
-	let code_input_element = Page.element.querySelector("#code-textarea");
+	let codeInputElement = Page.element.querySelector("#code-textarea");
 	
-	code_input_element.value = "cmul(csin(z), csin(cmul(z, i)))";
+	codeInputElement.value = "cmul(csin(z), csin(cmul(z, i)))";
 	
-	code_input_element.addEventListener("keydown", (e) =>
+	codeInputElement.addEventListener("keydown", (e) =>
 	{
 		if (e.keyCode === 13)
 		{
 			e.preventDefault();
 			
-			use_new_code();
+			useNewCode();
 		}
 	});
 	
 	
 	
-	let randomize_palette_button = Page.element.querySelector("#randomize-palette-button");
+	let randomizePaletteButton = Page.element.querySelector("#randomize-palette-button");
 	
-	randomize_palette_button.addEventListener("click", animate_palette_change);
+	randomizePaletteButton.addEventListener("click", animatePaletteChange);
 	
 	
 	
-	let generate_button_element = Page.element.querySelector("#generate-button");
+	let generateButtonElement = Page.element.querySelector("#generate-button");
 	
-	generate_button_element.addEventListener("click", use_new_code);
+	generateButtonElement.addEventListener("click", useNewCode);
 	
 	
 	
 
-	let resolution_input_element = Page.element.querySelector("#resolution-input");
+	let resolutionInputElement = Page.element.querySelector("#resolution-input");
 	
-	resolution_input_element.addEventListener("input", () =>
+	resolutionInputElement.addEventListener("input", () =>
 	{
-		resolution = parseInt(resolution_input_element.value || 500);
+		resolution = parseInt(resolutionInputElement.value || 500);
 		
-		wilson.change_canvas_size(resolution, resolution);
+		wilson.changeCanvasSize(resolution, resolution);
 		
-		window.requestAnimationFrame(draw_newtons_method);
+		window.requestAnimationFrame(drawNewtonsMethod);
 	});
 	
 	
 	
-	let derivative_precision_input_element = Page.element.querySelector("#derivative-precision-input");
+	let derivativePrecisionInputElement = Page.element.querySelector("#derivative-precision-input");
 	
-	derivative_precision_input_element.addEventListener("input", () =>
+	derivativePrecisionInputElement.addEventListener("input", () =>
 	{
-		derivative_precision = parseFloat(derivative_precision_input_element.value || 20);
+		derivativePrecision = parseFloat(derivativePrecisionInputElement.value || 20);
 		
-		wilson.gl.uniform1f(wilson.uniforms["derivative_precision"], derivative_precision);
-		wilson_hidden.gl.uniform1f(wilson_hidden.uniforms["derivative_precision"], derivative_precision);
+		wilson.gl.uniform1f(wilson.uniforms["derivativePrecision"], derivativePrecision);
+		wilsonHidden.gl.uniform1f(wilsonHidden.uniforms["derivativePrecision"], derivativePrecision);
 		
-		window.requestAnimationFrame(draw_newtons_method);
+		window.requestAnimationFrame(drawNewtonsMethod);
 	});
 	
 	
 	
 	
-	let download_button_element = Page.element.querySelector("#download-button");
+	let downloadButtonElement = Page.element.querySelector("#download-button");
 	
-	download_button_element.addEventListener("click", () =>
+	downloadButtonElement.addEventListener("click", () =>
 	{
-		wilson.download_frame("newtons-method.png");
+		wilson.downloadFrame("newtons-method.png");
 	});
 	
 	
 	
-	let canvas_location_element = Page.element.querySelector("#canvas-location");
+	let canvasLocationElement = Page.element.querySelector("#canvas-location");
 	
 	
 	
@@ -143,21 +143,21 @@
 		"butterflies": "cmul(sin(z), tan(z))"
 	};
 	
-	const example_selector_dropdown_element = Page.element.querySelector("#example-selector-dropdown");
+	const exampleSelectorDropdownElement = Page.element.querySelector("#example-selector-dropdown");
 	
-	example_selector_dropdown_element.addEventListener("input", () =>
+	exampleSelectorDropdownElement.addEventListener("input", () =>
 	{
-		if (example_selector_dropdown_element.value !== "none")
+		if (exampleSelectorDropdownElement.value !== "none")
 		{
-			code_input_element.value = examples[example_selector_dropdown_element.value];
+			codeInputElement.value = examples[exampleSelectorDropdownElement.value];
 			
-			use_new_code();
+			useNewCode();
 		}
 	});
 	
 	
 	
-	use_new_code();
+	useNewCode();
 	
 	
 	
@@ -165,24 +165,24 @@
 	
 	
 	
-	function use_new_code()
+	function useNewCode()
 	{
-		let generating_code = code_input_element.value || "cmul(csin(z), csin(cmul(z, i)))";
+		let generatingCode = codeInputElement.value || "cmul(csin(z), csin(cmul(z, i)))";
 		
 		
 		
-		let frag_shader_source = `
+		let fragShaderSource = `
 			precision highp float;
 			
 			varying vec2 uv;
 			
-			uniform float aspect_ratio;
+			uniform float aspectRatio;
 			
-			uniform float world_center_x;
-			uniform float world_center_y;
-			uniform float world_size;
+			uniform float worldCenterX;
+			uniform float worldCenterY;
+			uniform float worldSize;
 			
-			uniform float derivative_precision;
+			uniform float derivativePrecision;
 			
 			
 			uniform vec3 colors[4];
@@ -190,20 +190,20 @@
 			uniform vec2 a;
 			uniform vec2 c;
 			
-			uniform float brightness_scale;
+			uniform float brightnessScale;
 			
 			const float threshhold = .01;
 			
 			
 			
-			${Site.get_glsl_bundle(generating_code)}
+			${Site.getGlslBundle(generatingCode)}
 			
 			
 			
 			//Returns f(z) for a polynomial f with given roots.
 			vec2 f(vec2 z)
 			{
-				return ${generating_code};
+				return ${generatingCode};
 			}
 			
 			
@@ -211,7 +211,7 @@
 			//Approximates f'(z) for a polynomial f with given roots.
 			vec2 cderiv(vec2 z)
 			{
-				return derivative_precision * (f(z + vec2(1.0 / (2.0*derivative_precision), 0.0)) - f(z - vec2(1.0 / (2.0*derivative_precision), 0.0)));
+				return derivativePrecision * (f(z + vec2(1.0 / (2.0*derivativePrecision), 0.0)) - f(z - vec2(1.0 / (2.0*derivativePrecision), 0.0)));
 			}
 			
 			
@@ -219,17 +219,17 @@
 			void main(void)
 			{
 				vec2 z;
-				vec2 last_z = vec2(0.0, 0.0);
-				vec2 old_z = vec2(0.0, 0.0);
+				vec2 lastZ = vec2(0.0, 0.0);
+				vec2 oldZ = vec2(0.0, 0.0);
 				
-				if (aspect_ratio >= 1.0)
+				if (aspectRatio >= 1.0)
 				{
-					z = vec2(uv.x * aspect_ratio * world_size + world_center_x, uv.y * world_size + world_center_y);
+					z = vec2(uv.x * aspectRatio * worldSize + worldCenterX, uv.y * worldSize + worldCenterY);
 				}
 				
 				else
 				{
-					z = vec2(uv.x * world_size + world_center_x, uv.y / aspect_ratio * world_size + world_center_y);
+					z = vec2(uv.x * worldSize + worldCenterX, uv.y / aspectRatio * worldSize + worldCenterY);
 				}
 				
 				gl_FragColor = vec4(0.0, 0.0, 0.0, 1.0);
@@ -240,9 +240,9 @@
 				{
 					vec2 temp = cmul(cmul(f(z), cinv(cderiv(z))), a) + c;
 					
-					old_z = last_z;
+					oldZ = lastZ;
 					
-					last_z = z;
+					lastZ = z;
 					
 					z -= temp;
 					
@@ -250,26 +250,26 @@
 					
 					//If we're slowing down, it's reasonably safe to assume that we're near a root.
 					
-					float d_0 = length(last_z - z);
+					float d0 = length(lastZ - z);
 					
-					if (d_0 < threshhold)
+					if (d0 < threshhold)
 					{
-						float d_1 = length(old_z - last_z);
+						float d1 = length(oldZ - lastZ);
 						
-						float brightness_adjust = (log(threshhold) - log(d_0)) / (log(d_1) - log(d_0));
+						float brightnessAdjust = (log(threshhold) - log(d0)) / (log(d1) - log(d0));
 						
-						float brightness = 1.0 - (float(iteration) - brightness_adjust) / brightness_scale;
+						float brightness = 1.0 - (float(iteration) - brightnessAdjust) / brightnessScale;
 						
 						//Round to a square grid so that basin colors are consistent.
-						vec2 theoretical_root = floor(z / (threshhold / 3.0)) * threshhold / 3.0;
+						vec2 theoreticalRoot = floor(z / (threshhold / 3.0)) * threshhold / 3.0;
 						
-						float c0 = sin(theoretical_root.x * 7.239846) + cos(theoretical_root.x * 2.945387) + 2.0;
+						float c0 = sin(theoreticalRoot.x * 7.239846) + cos(theoreticalRoot.x * 2.945387) + 2.0;
 						
-						float c1 = sin(theoretical_root.y * 5.918445) + cos(theoretical_root.y * .987235) + 2.0;
+						float c1 = sin(theoreticalRoot.y * 5.918445) + cos(theoreticalRoot.y * .987235) + 2.0;
 						
-						float c2 = sin((theoretical_root.x + theoretical_root.y) * 1.023974) + cos((theoretical_root.x + theoretical_root.y) * 9.130874) + 2.0;
+						float c2 = sin((theoreticalRoot.x + theoreticalRoot.y) * 1.023974) + cos((theoreticalRoot.x + theoreticalRoot.y) * 9.130874) + 2.0;
 						
-						float c3 = sin((theoretical_root.x - theoretical_root.y) * 3.258342) + cos((theoretical_root.x - theoretical_root.y) * 4.20957) + 2.0;
+						float c3 = sin((theoreticalRoot.x - theoreticalRoot.y) * 3.258342) + cos((theoreticalRoot.x - theoreticalRoot.y) * 4.20957) + 2.0;
 						
 						//Pick an interpolated color between the 4 that we chose earlier.
 						gl_FragColor = vec4((c0 * colors[0] + c1 * colors[1] + c2 * colors[2] + c3 * colors[3]) / (c0 + c1 + c2 + c3) * brightness, 1.0);
@@ -286,69 +286,69 @@
 		{
 			renderer: "gpu",
 			
-			shader: frag_shader_source,
+			shader: fragShaderSource,
 			
-			canvas_width: 500,
-			canvas_height: 500,
+			canvasWidth: 500,
+			canvasHeight: 500,
 			
-			world_width: 12,
-			world_height: 12,
-			world_center_x: 0,
-			world_center_y: 0,
-			
-			
-			
-			use_draggables: true,
-			
-			draggables_mousemove_callback: on_drag_draggable,
-			draggables_touchmove_callback: on_drag_draggable,
+			worldWidth: 12,
+			worldHeight: 12,
+			worldCenterX: 0,
+			worldCenterY: 0,
 			
 			
 			
-			use_fullscreen: true,
+			useDraggables: true,
 			
-			true_fullscreen: true,
+			draggablesMousemoveCallback: onDragDraggable,
+			draggablesTouchmoveCallback: onDragDraggable,
+			
+			
+			
+			useFullscreen: true,
+			
+			trueFullscreen: true,
 		
-			use_fullscreen_button: true,
+			useFullscreenButton: true,
 			
-			enter_fullscreen_button_icon_path: "/graphics/general-icons/enter-fullscreen.png",
-			exit_fullscreen_button_icon_path: "/graphics/general-icons/exit-fullscreen.png",
+			enterFullscreenButtonIconPath: "/graphics/general-icons/enter-fullscreen.png",
+			exitFullscreenButtonIconPath: "/graphics/general-icons/exit-fullscreen.png",
 			
-			switch_fullscreen_callback: change_aspect_ratio,
+			switchFullscreenCallback: changeAspectRatio,
 			
 			
 			
-			mousedown_callback: on_grab_canvas,
-			touchstart_callback: on_grab_canvas,
+			mousedownCallback: onGrabCanvas,
+			touchstartCallback: onGrabCanvas,
 			
-			mousedrag_callback: on_drag_canvas,
-			touchmove_callback: on_drag_canvas,
+			mousedragCallback: onDragCanvas,
+			touchmoveCallback: onDragCanvas,
 			
-			mouseup_callback: on_release_canvas,
-			touchend_callback: on_release_canvas,
+			mouseupCallback: onReleaseCanvas,
+			touchendCallback: onReleaseCanvas,
 			
-			wheel_callback: on_wheel_canvas,
-			pinch_callback: on_pinch_canvas
+			wheelCallback: onWheelCanvas,
+			pinchCallback: onPinchCanvas
 		};
 		
-		let options_hidden =
+		let optionsHidden =
 		{
 			renderer: "gpu",
 			
-			shader: frag_shader_source,
+			shader: fragShaderSource,
 			
-			canvas_width: 100,
-			canvas_height: 100
+			canvasWidth: 100,
+			canvasHeight: 100
 		};
 		
 		
 		
 		try
 		{
-			wilson.output_canvas_container.parentNode.remove();
-			wilson_hidden.output_canvas_container.parentNode.remove();
+			wilson.outputCanvasContainer.parentNode.remove();
+			wilsonHidden.outputCanvasContainer.parentNode.remove();
 			
-			canvas_location_element.insertAdjacentHTML("beforebegin", `
+			canvasLocationElement.insertAdjacentHTML("beforebegin", `
 				<div>
 					<canvas id="output-canvas" class="output-canvas"></canvas>
 					<canvas id="hidden-canvas" class="hidden-canvas"></canvas>
@@ -362,27 +362,27 @@
 		
 		wilson = new Wilson(Page.element.querySelector("#output-canvas"), options);
 
-		wilson.render.init_uniforms(["aspect_ratio", "derivative_precision", "world_center_x", "world_center_y", "world_size", "colors", "a", "c", "brightness_scale"]);
+		wilson.render.initUniforms(["aspectRatio", "derivativePrecision", "worldCenterX", "worldCenterY", "worldSize", "colors", "a", "c", "brightnessScale"]);
 		
 		
 		
-		wilson_hidden = new Wilson(Page.element.querySelector("#hidden-canvas"), options_hidden);
+		wilsonHidden = new Wilson(Page.element.querySelector("#hidden-canvas"), optionsHidden);
 		
-		wilson_hidden.render.init_uniforms(["aspect_ratio", "derivative_precision", "world_center_x", "world_center_y", "world_size", "colors", "a", "c", "brightness_scale"]);
+		wilsonHidden.render.initUniforms(["aspectRatio", "derivativePrecision", "worldCenterX", "worldCenterY", "worldSize", "colors", "a", "c", "brightnessScale"]);
 		
 		
 		
-		past_brightness_scales = [];
+		pastBrightnessScales = [];
 		
-		zoom_level = 2;
+		zoomLevel = 2;
 		
-		next_pan_velocity_x = 0;
-		next_pan_velocity_y = 0;
-		next_zoom_velocity = 0;
+		nextPanVelocityX = 0;
+		nextPanVelocityY = 0;
+		nextZoomVelocity = 0;
 		
-		pan_velocity_x = 0;
-		pan_velocity_y = 0;
-		zoom_velocity = 0;
+		panVelocityX = 0;
+		panVelocityY = 0;
+		zoomVelocity = 0;
 		
 		
 		
@@ -399,242 +399,242 @@
 		
 		
 		
-		colors = generate_new_palette();
+		colors = generateNewPalette();
 		
 		
 		
 		//Render the inital frame.
-		wilson.gl.uniform1f(wilson.uniforms["aspect_ratio"], 1);
-		wilson_hidden.gl.uniform1f(wilson_hidden.uniforms["aspect_ratio"], 1);
+		wilson.gl.uniform1f(wilson.uniforms["aspectRatio"], 1);
+		wilsonHidden.gl.uniform1f(wilsonHidden.uniforms["aspectRatio"], 1);
 		
-		wilson.gl.uniform1f(wilson.uniforms["derivative_precision"], derivative_precision);
-		wilson_hidden.gl.uniform1f(wilson_hidden.uniforms["derivative_precision"], derivative_precision);
+		wilson.gl.uniform1f(wilson.uniforms["derivativePrecision"], derivativePrecision);
+		wilsonHidden.gl.uniform1f(wilsonHidden.uniforms["derivativePrecision"], derivativePrecision);
 		
 		wilson.gl.uniform3fv(wilson.uniforms["colors"], colors);
-		wilson_hidden.gl.uniform3fv(wilson_hidden.uniforms["colors"], colors);
+		wilsonHidden.gl.uniform3fv(wilsonHidden.uniforms["colors"], colors);
 		
 		
 		
-		window.requestAnimationFrame(draw_newtons_method);
+		window.requestAnimationFrame(drawNewtonsMethod);
 	}
 	
 	
 	
 	//Pick 4 colors, each with a bright, medium, and dim component. Each of these colors will be interpolated between based on the target x and y coordinates of the attractive root, forming a quadrilateral in the color plane. Since these 4 corner points are brightish but not overly so and decently saturated, this process almost always produces a pleasing palette.
-	function generate_new_palette()
+	function generateNewPalette()
 	{
-		let new_colors = new Array(12);
+		let newColors = new Array(12);
 		
 		let hue = 0;
 		
 		let restrictions = [];
 		
-		let restriction_width = .1;
+		let restrictionWidth = .1;
 		
 		
 		
 		for (let i = 0; i < 4; i++)
 		{
-			hue = Math.random() * (1 - i * 2 * restriction_width);
+			hue = Math.random() * (1 - i * 2 * restrictionWidth);
 			
 			for (let j = 0; j < i; j++)
 			{
 				if (hue > restrictions[j])
 				{
-					hue += restriction_width*2;
+					hue += restrictionWidth*2;
 				}
 			}
 			
-			restrictions[i] = hue - restriction_width;
+			restrictions[i] = hue - restrictionWidth;
 			
 			restrictions.sort();
 			
 			
 			
-			let rgb = wilson.utils.hsv_to_rgb(hue, Math.random() * .25 + .75, Math.random() * .25 + .75);
+			let rgb = wilson.utils.hsvToRgb(hue, Math.random() * .25 + .75, Math.random() * .25 + .75);
 			
-			new_colors[3*i] = rgb[0] / 255;
-			new_colors[3*i + 1] = rgb[1] / 255;
-			new_colors[3*i + 2] = rgb[2] / 255;
+			newColors[3*i] = rgb[0] / 255;
+			newColors[3*i + 1] = rgb[1] / 255;
+			newColors[3*i + 2] = rgb[2] / 255;
 		}
 		
-		return new_colors;
+		return newColors;
 	}
 	
 	
 	
-	function animate_palette_change()
+	function animatePaletteChange()
 	{
-		if (!currently_animating_parameters)
+		if (!currentlyAnimatingParameters)
 		{
-			currently_animating_parameters = true;
+			currentlyAnimatingParameters = true;
 			
-			parameter_animation_frame = 0;
+			parameterAnimationFrame = 0;
 			
 			
 			
-			let new_colors = generate_new_palette();
-			old_colors = [...colors];
+			let newColors = generateNewPalette();
+			oldColors = [...colors];
 			
 			for (let i = 0; i < 12; i++)
 			{
-				color_deltas[i] = new_colors[i] - colors[i];
+				colorDeltas[i] = newColors[i] - colors[i];
 			}
 			
-			window.requestAnimationFrame(draw_newtons_method);
+			window.requestAnimationFrame(drawNewtonsMethod);
 		}
 	}
 	
 	
 	
-	function animate_palette_change_step()
+	function animatePaletteChangeStep()
 	{
-		let t = .5 * Math.sin(Math.PI * parameter_animation_frame / 30 - Math.PI / 2) + .5;
+		let t = .5 * Math.sin(Math.PI * parameterAnimationFrame / 30 - Math.PI / 2) + .5;
 		
 		for (let i = 0; i < 12; i++)
 		{
-			colors[i] = old_colors[i] + color_deltas[i]*t;
+			colors[i] = oldColors[i] + colorDeltas[i]*t;
 		}
 		
 		wilson.gl.uniform3fv(wilson.uniforms["colors"], colors);
-		wilson_hidden.gl.uniform3fv(wilson_hidden.uniforms["colors"], colors);
+		wilsonHidden.gl.uniform3fv(wilsonHidden.uniforms["colors"], colors);
 		
 		
 		
-		parameter_animation_frame++;
+		parameterAnimationFrame++;
 		
-		if (parameter_animation_frame === 31)
+		if (parameterAnimationFrame === 31)
 		{
-			currently_animating_parameters = false;
+			currentlyAnimatingParameters = false;
 		}
 	}
 	
 	
 	
-	function on_grab_canvas(x, y, event)
+	function onGrabCanvas(x, y, event)
 	{
-		pan_velocity_x = 0;
-		pan_velocity_y = 0;
-		zoom_velocity = 0;
+		panVelocityX = 0;
+		panVelocityY = 0;
+		zoomVelocity = 0;
 		
-		next_pan_velocity_x = 0;
-		next_pan_velocity_y = 0;
-		next_zoom_velocity = 0;
+		nextPanVelocityX = 0;
+		nextPanVelocityY = 0;
+		nextZoomVelocity = 0;
 	}
 	
 	
 	
-	function on_drag_canvas(x, y, x_delta, y_delta, event)
+	function onDragCanvas(x, y, xDelta, yDelta, event)
 	{
-		wilson.world_center_x -= x_delta;
-		wilson.world_center_y -= y_delta;
+		wilson.worldCenterX -= xDelta;
+		wilson.worldCenterY -= yDelta;
 		
-		next_pan_velocity_x = -x_delta / wilson.world_width;
-		next_pan_velocity_y = -y_delta / wilson.world_height;
+		nextPanVelocityX = -xDelta / wilson.worldWidth;
+		nextPanVelocityY = -yDelta / wilson.worldHeight;
 		
-		window.requestAnimationFrame(draw_newtons_method);
+		window.requestAnimationFrame(drawNewtonsMethod);
 		
-		wilson.draggables.recalculate_locations();
+		wilson.draggables.recalculateLocations();
 	}
 	
 	
 	
-	function on_release_canvas(x, y, event)
+	function onReleaseCanvas(x, y, event)
 	{
-		if (Math.sqrt(next_pan_velocity_x * next_pan_velocity_x + next_pan_velocity_y * next_pan_velocity_y) >= pan_velocity_start_threshhold)
+		if (Math.sqrt(nextPanVelocityX * nextPanVelocityX + nextPanVelocityY * nextPanVelocityY) >= panVelocityStartThreshhold)
 		{
-			pan_velocity_x = next_pan_velocity_x;
-			pan_velocity_y = next_pan_velocity_y;
+			panVelocityX = nextPanVelocityX;
+			panVelocityY = nextPanVelocityY;
 		}
 		
-		if (Math.abs(next_zoom_velocity) >= zoom_velocity_start_threshhold)
+		if (Math.abs(nextZoomVelocity) >= zoomVelocityStartThreshhold)
 		{
-			zoom_velocity = next_zoom_velocity;
+			zoomVelocity = nextZoomVelocity;
 		}
 		
-		window.requestAnimationFrame(draw_newtons_method);
+		window.requestAnimationFrame(drawNewtonsMethod);
 	}
 	
 	
 	
-	function on_wheel_canvas(x, y, scroll_amount, event)
+	function onWheelCanvas(x, y, scrollAmount, event)
 	{
-		fixed_point_x = x;
-		fixed_point_y = y;
+		fixedPointX = x;
+		fixedPointY = y;
 		
-		if (Math.abs(scroll_amount / 100) < .3)
+		if (Math.abs(scrollAmount / 100) < .3)
 		{
-			zoom_level += scroll_amount / 100;
+			zoomLevel += scrollAmount / 100;
 		}
 		
 		else
 		{
-			zoom_velocity += Math.sign(scroll_amount) * .05;
+			zoomVelocity += Math.sign(scrollAmount) * .05;
 		}
 		
-		zoom_canvas();
+		zoomCanvas();
 	}
 	
 	
 	
-	function on_pinch_canvas(x, y, touch_distance_delta, event)
+	function onPinchCanvas(x, y, touchDistanceDelta, event)
 	{
-		if (aspect_ratio >= 1)
+		if (aspectRatio >= 1)
 		{
-			zoom_level -= touch_distance_delta / wilson.world_width * 10;
+			zoomLevel -= touchDistanceDelta / wilson.worldWidth * 10;
 			
-			next_zoom_velocity = -touch_distance_delta / wilson.world_width * 10;
+			nextZoomVelocity = -touchDistanceDelta / wilson.worldWidth * 10;
 		}
 		
 		else
 		{
-			zoom_level -= touch_distance_delta / wilson.world_height * 10;
+			zoomLevel -= touchDistanceDelta / wilson.worldHeight * 10;
 			
-			next_zoom_velocity = -touch_distance_delta / wilson.world_height * 10;
+			nextZoomVelocity = -touchDistanceDelta / wilson.worldHeight * 10;
 		}
 		
-		fixed_point_x = x;
-		fixed_point_y = y;
+		fixedPointX = x;
+		fixedPointY = y;
 		
-		zoom_canvas();
+		zoomCanvas();
 	}
 	
 	
 	
-	function zoom_canvas()
+	function zoomCanvas()
 	{
-		if (aspect_ratio >= 1)
+		if (aspectRatio >= 1)
 		{
-			let new_world_center = wilson.input.get_zoomed_world_center(fixed_point_x, fixed_point_y, 3 * Math.pow(2, zoom_level) * aspect_ratio, 3 * Math.pow(2, zoom_level));
+			let newWorldCenter = wilson.input.getZoomedWorldCenter(fixedPointX, fixedPointY, 3 * Math.pow(2, zoomLevel) * aspectRatio, 3 * Math.pow(2, zoomLevel));
 			
-			wilson.world_width = 3 * Math.pow(2, zoom_level) * aspect_ratio;
-			wilson.world_height = 3 * Math.pow(2, zoom_level);
+			wilson.worldWidth = 3 * Math.pow(2, zoomLevel) * aspectRatio;
+			wilson.worldHeight = 3 * Math.pow(2, zoomLevel);
 			
-			wilson.world_center_x = new_world_center[0];
-			wilson.world_center_y = new_world_center[1];
+			wilson.worldCenterX = newWorldCenter[0];
+			wilson.worldCenterY = newWorldCenter[1];
 		}
 		
 		else
 		{
-			let new_world_center = wilson.input.get_zoomed_world_center(fixed_point_x, fixed_point_y, 3 * Math.pow(2, zoom_level), 3 * Math.pow(2, zoom_level) / aspect_ratio);
+			let newWorldCenter = wilson.input.getZoomedWorldCenter(fixedPointX, fixedPointY, 3 * Math.pow(2, zoomLevel), 3 * Math.pow(2, zoomLevel) / aspectRatio);
 			
-			wilson.world_width = 3 * Math.pow(2, zoom_level);
-			wilson.world_height = 3 * Math.pow(2, zoom_level) / aspect_ratio;
+			wilson.worldWidth = 3 * Math.pow(2, zoomLevel);
+			wilson.worldHeight = 3 * Math.pow(2, zoomLevel) / aspectRatio;
 			
-			wilson.world_center_x = new_world_center[0];
-			wilson.world_center_y = new_world_center[1];
+			wilson.worldCenterX = newWorldCenter[0];
+			wilson.worldCenterY = newWorldCenter[1];
 		}
 		
-		window.requestAnimationFrame(draw_newtons_method);
+		window.requestAnimationFrame(drawNewtonsMethod);
 		
-		wilson.draggables.recalculate_locations();
+		wilson.draggables.recalculateLocations();
 	}
 	
 	
 	
-	function on_drag_draggable(active_draggable, x, y, event)
+	function onDragDraggable(activeDraggable, x, y, event)
 	{
-		if (active_draggable === 0)
+		if (activeDraggable === 0)
 		{
 			a = [x, y];
 		}
@@ -644,189 +644,189 @@
 			c = [x, y];
 		}
 		
-		window.requestAnimationFrame(draw_newtons_method);
+		window.requestAnimationFrame(drawNewtonsMethod);
 	}
 
 
 
-	function draw_newtons_method(timestamp)
+	function drawNewtonsMethod(timestamp)
 	{
-		let time_elapsed = timestamp - last_timestamp;
+		let timeElapsed = timestamp - lastTimestamp;
 		
-		last_timestamp = timestamp;
+		lastTimestamp = timestamp;
 		
 		
 		
-		if (time_elapsed === 0)
+		if (timeElapsed === 0)
 		{
 			return;
 		}
 		
 		
 		
-		wilson_hidden.gl.uniform1f(wilson_hidden.uniforms["aspect_ratio"], aspect_ratio);
-		wilson_hidden.gl.uniform1f(wilson_hidden.uniforms["world_center_x"], wilson.world_center_x);
-		wilson_hidden.gl.uniform1f(wilson_hidden.uniforms["world_center_y"], wilson.world_center_y);
+		wilsonHidden.gl.uniform1f(wilsonHidden.uniforms["aspectRatio"], aspectRatio);
+		wilsonHidden.gl.uniform1f(wilsonHidden.uniforms["worldCenterX"], wilson.worldCenterX);
+		wilsonHidden.gl.uniform1f(wilsonHidden.uniforms["worldCenterY"], wilson.worldCenterY);
 		
-		wilson_hidden.gl.uniform1f(wilson_hidden.uniforms["world_size"], Math.min(wilson.world_height, wilson.world_width) / 2);
-		
-		
-		wilson_hidden.gl.uniform2fv(wilson_hidden.uniforms["a"], a);
-		wilson_hidden.gl.uniform2f(wilson_hidden.uniforms["c"], c[0] / 10, c[1] / 10);
-		wilson_hidden.gl.uniform1f(wilson_hidden.uniforms["brightness_scale"], 30);
-		
-		wilson_hidden.render.draw_frame();
+		wilsonHidden.gl.uniform1f(wilsonHidden.uniforms["worldSize"], Math.min(wilson.worldHeight, wilson.worldWidth) / 2);
 		
 		
+		wilsonHidden.gl.uniform2fv(wilsonHidden.uniforms["a"], a);
+		wilsonHidden.gl.uniform2f(wilsonHidden.uniforms["c"], c[0] / 10, c[1] / 10);
+		wilsonHidden.gl.uniform1f(wilsonHidden.uniforms["brightnessScale"], 30);
 		
-		let pixel_data = wilson_hidden.render.get_pixel_data();
+		wilsonHidden.render.drawFrame();
 		
-		let brightnesses = new Array(resolution_hidden * resolution_hidden);
 		
-		for (let i = 0; i < resolution_hidden * resolution_hidden; i++)
+		
+		let pixelData = wilsonHidden.render.getPixelData();
+		
+		let brightnesses = new Array(resolutionHidden * resolutionHidden);
+		
+		for (let i = 0; i < resolutionHidden * resolutionHidden; i++)
 		{
-			brightnesses[i] = Math.max(Math.max(pixel_data[4 * i], pixel_data[4 * i + 1]), pixel_data[4 * i + 2]);
+			brightnesses[i] = Math.max(Math.max(pixelData[4 * i], pixelData[4 * i + 1]), pixelData[4 * i + 2]);
 		}
 		
 		brightnesses.sort((a, b) => a - b);
 		
-		let brightness_scale = Math.min(10000 / (brightnesses[Math.floor(resolution_hidden * resolution_hidden * .96)] + brightnesses[Math.floor(resolution_hidden * resolution_hidden * .98)]), 200);
+		let brightnessScale = Math.min(10000 / (brightnesses[Math.floor(resolutionHidden * resolutionHidden * .96)] + brightnesses[Math.floor(resolutionHidden * resolutionHidden * .98)]), 200);
 		
-		past_brightness_scales.push(brightness_scale);
+		pastBrightnessScales.push(brightnessScale);
 		
-		let denom = past_brightness_scales.length;
+		let denom = pastBrightnessScales.length;
 		
 		if (denom > 10)
 		{
-			past_brightness_scales.shift();
+			pastBrightnessScales.shift();
 		}
 		
-		brightness_scale = Math.max(past_brightness_scales.reduce((a, b) => a + b) / denom, .5);
+		brightnessScale = Math.max(pastBrightnessScales.reduce((a, b) => a + b) / denom, .5);
 		
 		
 		
 		
 		
-		wilson.gl.uniform1f(wilson.uniforms["aspect_ratio"], aspect_ratio);
-		wilson.gl.uniform1f(wilson.uniforms["world_center_x"], wilson.world_center_x);
-		wilson.gl.uniform1f(wilson.uniforms["world_center_y"], wilson.world_center_y);
+		wilson.gl.uniform1f(wilson.uniforms["aspectRatio"], aspectRatio);
+		wilson.gl.uniform1f(wilson.uniforms["worldCenterX"], wilson.worldCenterX);
+		wilson.gl.uniform1f(wilson.uniforms["worldCenterY"], wilson.worldCenterY);
 		
-		wilson.gl.uniform1f(wilson.uniforms["world_size"], Math.min(wilson.world_height, wilson.world_width) / 2);
+		wilson.gl.uniform1f(wilson.uniforms["worldSize"], Math.min(wilson.worldHeight, wilson.worldWidth) / 2);
 		
 		wilson.gl.uniform2fv(wilson.uniforms["a"], a);
 		wilson.gl.uniform2f(wilson.uniforms["c"], c[0] / 10, c[1] / 10);
-		wilson.gl.uniform1f(wilson.uniforms["brightness_scale"], brightness_scale);
+		wilson.gl.uniform1f(wilson.uniforms["brightnessScale"], brightnessScale);
 		
-		wilson.render.draw_frame();
+		wilson.render.drawFrame();
 		
 		
 		
-		let need_new_frame = false;
+		let needNewFrame = false;
 		
-		if (currently_animating_parameters)
+		if (currentlyAnimatingParameters)
 		{
-			animate_palette_change_step();
+			animatePaletteChangeStep();
 			
-			need_new_frame = true;
+			needNewFrame = true;
 		}
 		
 		
 		
-		if (time_elapsed >= 50)
+		if (timeElapsed >= 50)
 		{
-			pan_velocity_x = 0;
-			pan_velocity_y = 0;
-			zoom_velocity = 0;
+			panVelocityX = 0;
+			panVelocityY = 0;
+			zoomVelocity = 0;
 			
-			next_pan_velocity_x = 0;
-			next_pan_velocity_y = 0;
-			next_zoom_velocity = 0;
+			nextPanVelocityX = 0;
+			nextPanVelocityY = 0;
+			nextZoomVelocity = 0;
 		}
 		
 		
 		
-		if (pan_velocity_x !== 0 || pan_velocity_y !== 0 || zoom_velocity !== 0)
+		if (panVelocityX !== 0 || panVelocityY !== 0 || zoomVelocity !== 0)
 		{
-			wilson.world_center_x += pan_velocity_x * wilson.world_width;
-			wilson.world_center_y += pan_velocity_y * wilson.world_height;
+			wilson.worldCenterX += panVelocityX * wilson.worldWidth;
+			wilson.worldCenterY += panVelocityY * wilson.worldHeight;
 			
 			
 			
-			pan_velocity_x *= pan_friction;
-			pan_velocity_y *= pan_friction;
+			panVelocityX *= panFriction;
+			panVelocityY *= panFriction;
 			
-			if (Math.sqrt(pan_velocity_x * pan_velocity_x + pan_velocity_y * pan_velocity_y) < pan_velocity_stop_threshhold)
+			if (Math.sqrt(panVelocityX * panVelocityX + panVelocityY * panVelocityY) < panVelocityStopThreshhold)
 			{
-				pan_velocity_x = 0;
-				pan_velocity_y = 0;
+				panVelocityX = 0;
+				panVelocityY = 0;
 			}
 			
 			
 			
-			zoom_level += zoom_velocity;
+			zoomLevel += zoomVelocity;
 			
-			zoom_canvas(fixed_point_x, fixed_point_y);
+			zoomCanvas(fixedPointX, fixedPointY);
 			
-			zoom_velocity *= zoom_friction;
+			zoomVelocity *= zoomFriction;
 			
-			if (Math.abs(zoom_velocity) < zoom_velocity_stop_threshhold)
+			if (Math.abs(zoomVelocity) < zoomVelocityStopThreshhold)
 			{
-				zoom_velocity = 0;
+				zoomVelocity = 0;
 			}
 			
 			
 			
-			need_new_frame = true;
+			needNewFrame = true;
 			
-			wilson.draggables.recalculate_locations();
+			wilson.draggables.recalculateLocations();
 		}
 		
 		
 		
-		if (need_new_frame)
+		if (needNewFrame)
 		{
-			window.requestAnimationFrame(draw_newtons_method);
+			window.requestAnimationFrame(drawNewtonsMethod);
 		}
 	}
 	
 	
 	
-	function change_aspect_ratio()
+	function changeAspectRatio()
 	{
-		if (wilson.fullscreen.currently_fullscreen)
+		if (wilson.fullscreen.currentlyFullscreen)
 		{
-			aspect_ratio = window.innerWidth / window.innerHeight;
+			aspectRatio = window.innerWidth / window.innerHeight;
 			
-			if (aspect_ratio >= 1)
+			if (aspectRatio >= 1)
 			{
-				wilson.change_canvas_size(resolution, Math.floor(resolution / aspect_ratio));
+				wilson.changeCanvasSize(resolution, Math.floor(resolution / aspectRatio));
 				
-				wilson.world_width = 3 * Math.pow(2, zoom_level) * aspect_ratio;
-				wilson.world_height = 3 * Math.pow(2, zoom_level);
+				wilson.worldWidth = 3 * Math.pow(2, zoomLevel) * aspectRatio;
+				wilson.worldHeight = 3 * Math.pow(2, zoomLevel);
 			}
 			
 			else
 			{
-				wilson.change_canvas_size(Math.floor(resolution * aspect_ratio), resolution);
+				wilson.changeCanvasSize(Math.floor(resolution * aspectRatio), resolution);
 				
-				wilson.world_width = 3 * Math.pow(2, zoom_level);
-				wilson.world_height = 3 * Math.pow(2, zoom_level) / aspect_ratio;
+				wilson.worldWidth = 3 * Math.pow(2, zoomLevel);
+				wilson.worldHeight = 3 * Math.pow(2, zoomLevel) / aspectRatio;
 			}
 		}
 		
 		else
 		{
-			aspect_ratio = 1;
+			aspectRatio = 1;
 			
-			wilson.change_canvas_size(resolution, resolution);
+			wilson.changeCanvasSize(resolution, resolution);
 			
-			wilson.world_width = 3 * Math.pow(2, zoom_level);
-			wilson.world_height = 3 * Math.pow(2, zoom_level);
+			wilson.worldWidth = 3 * Math.pow(2, zoomLevel);
+			wilson.worldHeight = 3 * Math.pow(2, zoomLevel);
 		}
 		
-		window.requestAnimationFrame(draw_newtons_method);
+		window.requestAnimationFrame(drawNewtonsMethod);
 	}
 
-	window.addEventListener("resize", change_aspect_ratio);
-	Page.temporary_handlers["resize"].push(change_aspect_ratio);
-}()
+	window.addEventListener("resize", changeAspectRatio);
+	Page.temporaryHandlers["resize"].push(changeAspectRatio);
+	}()

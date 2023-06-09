@@ -10,63 +10,63 @@ onmessage = function(e)
 	{
 		importScripts("/scripts/wasm-arrays.min.js");
 		
-		generate_sudoku_grid();
+		generateSudokuGrid();
 	};
 }
 
 
 
 //Realistically this is never going to change, but since this code is adapted from the calcudoku applet's, it's easier to just leave this variable as-is.
-let grid_size = 9;
+let gridSize = 9;
 
 let grid = [];
 
-let nonzero_cells = [];
+let nonzeroCells = [];
 
-let num_solutions_found = 0;
-
-
+let numSolutionsFound = 0;
 
 
 
-function generate_sudoku_grid()
+
+
+function generateSudokuGrid()
 {
 	grid = [];
 	
 	
 	
 	//First, we just need a random starting grid.
-	generate_number_grid();
+	generateNumberGrid();
 	
-	for (let i = 0; i < grid_size; i++)
+	for (let i = 0; i < gridSize; i++)
 	{
-		for (let j = 0; j < grid_size; j++)
+		for (let j = 0; j < gridSize; j++)
 		{
-			nonzero_cells.push([i, j]);
+			nonzeroCells.push([i, j]);
 		}
 	}
 	
-	nonzero_cells = shuffle_array(nonzero_cells);
+	nonzeroCells = shuffleArray(nonzeroCells);
 	
 	
 	
-	for (let i = 0; i < nonzero_cells.length; i++)
+	for (let i = 0; i < nonzeroCells.length; i++)
 	{
-		let cell_to_remove = nonzero_cells[i];
-		let number_to_remove = grid[cell_to_remove[0]][cell_to_remove[1]];
+		let cellToRemove = nonzeroCells[i];
+		let numberToRemove = grid[cellToRemove[0]][cellToRemove[1]];
 		
-		grid[cell_to_remove[0]][cell_to_remove[1]] = 0;
+		grid[cellToRemove[0]][cellToRemove[1]] = 0;
 		
-		num_solutions_found = wasm_solve_puzzle(grid);
+		numSolutionsFound = wasmSolvePuzzle(grid);
 		
 		
 		
 		//If this is no longer a unique solution, no problem! We'll just revert to our last uniquely-solvable grid and try a different cell next time.
-		if (num_solutions_found !== 1)
+		if (numSolutionsFound !== 1)
 		{
-			grid[cell_to_remove[0]][cell_to_remove[1]] = number_to_remove;
+			grid[cellToRemove[0]][cellToRemove[1]] = numberToRemove;
 			
-			num_solutions_found = 1;
+			numSolutionsFound = 1;
 		}
 	}
 	
@@ -78,21 +78,21 @@ function generate_sudoku_grid()
 
 
 //Shuffles an array with the Fisher-Yates method.
-function shuffle_array(array)
+function shuffleArray(array)
 {
-	let current_index = array.length;
+	let currentIndex = array.length;
 
 	//While there are still elements to shuffle
-	while (current_index !== 0)
+	while (currentIndex !== 0)
 	{
 		//Pick a remaining element.
-		let random_index = Math.floor(Math.random() * current_index);
-		current_index -= 1;
+		let randomIndex = Math.floor(Math.random() * currentIndex);
+		currentIndex -= 1;
 		
 		//Swap it with the current element.
-		let temp = array[current_index];
-		array[current_index] = array[random_index];
-		array[random_index] = temp;
+		let temp = array[currentIndex];
+		array[currentIndex] = array[randomIndex];
+		array[randomIndex] = temp;
 	}
 	
 	return array;
@@ -100,8 +100,8 @@ function shuffle_array(array)
 
 
 
-//Creates a grid of numbers with side length grid_size such that no column or row contains a repeated number. This is normally a very hard thing to do, becoming pretty much impossible most of the time after a side length of 10. Good news is, we can do things much more simply -- becuase we don't need a uniformly random grid.
-function generate_number_grid()
+//Creates a grid of numbers with side length gridSize such that no column or row contains a repeated number. This is normally a very hard thing to do, becoming pretty much impossible most of the time after a side length of 10. Good news is, we can do things much more simply -- becuase we don't need a uniformly random grid.
+function generateNumberGrid()
 {
 	//I have no clue what the pattern is supposed to be, so I give up. Here's a random one from the internet.
 	grid = [
@@ -120,7 +120,7 @@ function generate_number_grid()
 	
 	//Now we're going to do three things: shuffle some rows (within the same minigrid), shuffle some columns (also within the same minigrid), and shuffle the digits themselves. To top it all off, we'll do these three things in random order, twice each.
 	
-	let shuffles = shuffle_array([shuffle_grid_rows, shuffle_grid_rows, shuffle_grid_columns, shuffle_grid_columns, shuffle_grid_digits, shuffle_grid_digits]);
+	let shuffles = shuffleArray([shuffleGridRows, shuffleGridRows, shuffleGridColumns, shuffleGridColumns, shuffleGridDigits, shuffleGridDigits]);
 	
 	for (let i = 0; i < 6; i++)
 	{
@@ -130,115 +130,115 @@ function generate_number_grid()
 
 
 
-function shuffle_grid_rows()
+function shuffleGridRows()
 {
-	let row_1 = Math.floor(Math.random() * 3);
-	let row_2 = Math.floor(Math.random() * 3);
+	let row1 = Math.floor(Math.random() * 3);
+	let row2 = Math.floor(Math.random() * 3);
 	
-	let row_3 = Math.floor(Math.random() * 3) + 3;
-	let row_4 = Math.floor(Math.random() * 3) + 3;
+	let row3 = Math.floor(Math.random() * 3) + 3;
+	let row4 = Math.floor(Math.random() * 3) + 3;
 	
-	let row_5 = Math.floor(Math.random() * 3) + 6;
-	let row_6 = Math.floor(Math.random() * 3) + 6;
+	let row5 = Math.floor(Math.random() * 3) + 6;
+	let row6 = Math.floor(Math.random() * 3) + 6;
 	
 	
 	
-	for (let j = 0; j < grid_size; j++)
+	for (let j = 0; j < gridSize; j++)
 	{
-		let temp = grid[row_1][j];
-		grid[row_1][j] = grid[row_2][j];
-		grid[row_2][j] = temp;
+		let temp = grid[row1][j];
+		grid[row1][j] = grid[row2][j];
+		grid[row2][j] = temp;
 		
-		temp = grid[row_3][j];
-		grid[row_3][j] = grid[row_4][j];
-		grid[row_4][j] = temp;
+		temp = grid[row3][j];
+		grid[row3][j] = grid[row4][j];
+		grid[row4][j] = temp;
 		
-		temp = grid[row_5][j];
-		grid[row_5][j] = grid[row_6][j];
-		grid[row_6][j] = temp;
+		temp = grid[row5][j];
+		grid[row5][j] = grid[row6][j];
+		grid[row6][j] = temp;
 	}
 }
 
 
 
-function shuffle_grid_columns()
+function shuffleGridColumns()
 {
-	let col_1 = Math.floor(Math.random() * 3);
-	let col_2 = Math.floor(Math.random() * 3);
+	let col1 = Math.floor(Math.random() * 3);
+	let col2 = Math.floor(Math.random() * 3);
 	
-	let col_3 = Math.floor(Math.random() * 3) + 3;
-	let col_4 = Math.floor(Math.random() * 3) + 3;
+	let col3 = Math.floor(Math.random() * 3) + 3;
+	let col4 = Math.floor(Math.random() * 3) + 3;
 	
-	let col_5 = Math.floor(Math.random() * 3) + 6;
-	let col_6 = Math.floor(Math.random() * 3) + 6;
+	let col5 = Math.floor(Math.random() * 3) + 6;
+	let col6 = Math.floor(Math.random() * 3) + 6;
 	
 	
 	
-	for (let i = 0; i < grid_size; i++)
+	for (let i = 0; i < gridSize; i++)
 	{
-		let temp = grid[i][col_1];
-		grid[i][col_1] = grid[i][col_2];
-		grid[i][col_2] = temp;
+		let temp = grid[i][col1];
+		grid[i][col1] = grid[i][col2];
+		grid[i][col2] = temp;
 		
-		temp = grid[i][col_3];
-		grid[i][col_3] = grid[i][col_4];
-		grid[i][col_4] = temp;
+		temp = grid[i][col3];
+		grid[i][col3] = grid[i][col4];
+		grid[i][col4] = temp;
 		
-		temp = grid[i][col_5];
-		grid[i][col_5] = grid[i][col_6];
-		grid[i][col_6] = temp;
+		temp = grid[i][col5];
+		grid[i][col5] = grid[i][col6];
+		grid[i][col6] = temp;
 	}
 }
 
 
 
-function shuffle_grid_digits()
+function shuffleGridDigits()
 {
-	let permutation = shuffle_array([...Array(grid_size).keys()]);
+	let permutation = shuffleArray([...Array(gridSize).keys()]);
 	
 	
 	
-	let temp_grid = [];
+	let tempGrid = [];
 	
-	for (let i = 0; i < grid_size; i++)
+	for (let i = 0; i < gridSize; i++)
 	{
-		temp_grid[i] = [];
+		tempGrid[i] = [];
 		
-		for (let j = 0; j < grid_size; j++)
+		for (let j = 0; j < gridSize; j++)
 		{
-			temp_grid[i][j] = 0;
+			tempGrid[i][j] = 0;
 		}
 	}
 	
 	
 	
-	for (let i = 0; i < grid_size; i++)
+	for (let i = 0; i < gridSize; i++)
 	{
-		for (let j = 0; j < grid_size; j++)
+		for (let j = 0; j < gridSize; j++)
 		{
-			temp_grid[i][j] = permutation[grid[i][j] - 1] + 1;
+			tempGrid[i][j] = permutation[grid[i][j] - 1] + 1;
 		}
 	}
 	
 	
 	
-	grid = JSON.parse(JSON.stringify(temp_grid));
+	grid = JSON.parse(JSON.stringify(tempGrid));
 }
 
 
 
 //By default, we can't pass arrays to C functions. However, with the help of a library, we can pass 1D arrays, but not higher-dimensional ones. Therefore, we need to find a way to pass all of the cage data as a sequence of 1D arrays. Good news is, this isn't so bad.
-function wasm_solve_puzzle()
+function wasmSolvePuzzle()
 {
-	let grid_flat = [];
+	let gridFlat = [];
 	
-	for (let i = 0; i < grid_size; i++)
+	for (let i = 0; i < gridSize; i++)
 	{
-		grid_flat = grid_flat.concat(grid[i]);
+		gridFlat = gridFlat.concat(grid[i]);
 	}
 	
 	
 	
 	//With everything in place, we can now call the C function and let it do the heavy lifting.
-	return ccallArrays("solve_puzzle", "number", ["array"], [grid_flat], {heapIn: "HEAPU8"});
-}
+	return ccallArrays("solve_puzzle", "number", ["array"], [gridFlat], {heapIn: "HEAPU8"});
+	}

@@ -8,8 +8,8 @@
 	{
 		renderer: "cpu",
 		
-		canvas_width: 1000,
-		canvas_height: 1000
+		canvasWidth: 1000,
+		canvasHeight: 1000
 	};
 	
 	let wilson = new Wilson(Page.element.querySelector("#sudoku-grid"), options);
@@ -18,23 +18,23 @@
 	
 	let grid = [];
 	
-	let web_worker = null;
+	let webWorker = null;
 	
-	let generated_first_puzzle = false;
+	let generatedFirstPuzzle = false;
 	
 	
 	
-	let generate_button_element = Page.element.querySelector("#generate-button");
+	let generateButtonElement = Page.element.querySelector("#generate-button");
 
-	generate_button_element.addEventListener("click", request_sudoku_grid);
+	generateButtonElement.addEventListener("click", requestSudokuGrid);
 	
 	
 	
-	let download_button_element = Page.element.querySelector("#download-button");
+	let downloadButtonElement = Page.element.querySelector("#download-button");
 	
-	download_button_element.addEventListener("click", () =>
+	downloadButtonElement.addEventListener("click", () =>
 	{
-		wilson.download_frame("sudoku.png");
+		wilson.downloadFrame("sudoku.png");
 	});
 	
 	
@@ -43,7 +43,7 @@
 	
 	
 	
-	function request_sudoku_grid()
+	function requestSudokuGrid()
 	{
 		grid = new Array(9);
 		
@@ -59,7 +59,7 @@
 		
 		
 		
-		if (generated_first_puzzle)
+		if (generatedFirstPuzzle)
 		{
 			wilson.canvas.style.opacity = 0;
 			
@@ -67,42 +67,42 @@
 			
 			setTimeout(() =>
 			{
-				let canvas_size = 9 * 200 + 9;
+				let canvasSize = 9 * 200 + 9;
 				
-				wilson.ctx.clearRect(0, 0, canvas_size, canvas_size);
-			}, Site.opacity_animation_time);
+				wilson.ctx.clearRect(0, 0, canvasSize, canvasSize);
+			}, Site.opacityAnimationTime);
 		}
 		
 		else
 		{
-			let canvas_size = 9 * 200 + 9;
+			let canvasSize = 9 * 200 + 9;
 			
-			wilson.canvas.setAttribute("width", canvas_size);
-			wilson.canvas.setAttribute("height", canvas_size);
+			wilson.canvas.setAttribute("width", canvasSize);
+			wilson.canvas.setAttribute("height", canvasSize);
 			
-			wilson.ctx.clearRect(0, 0, canvas_size, canvas_size);
+			wilson.ctx.clearRect(0, 0, canvasSize, canvasSize);
 		}
 		
 		
 		
-		try {web_worker.terminate();}
+		try {webWorker.terminate();}
 		catch(ex) {}
 		
 		if (DEBUG)
 		{
-			web_worker = new Worker("/applets/sudoku-generator/scripts/worker.js");
+			webWorker = new Worker("/applets/sudoku-generator/scripts/worker.js");
 		}
 		
 		else
 		{
-			web_worker = new Worker("/applets/sudoku-generator/scripts/worker.min.js");
+			webWorker = new Worker("/applets/sudoku-generator/scripts/worker.min.js");
 		}
 		
-		Page.temporary_web_workers.push(web_worker);
+		Page.temporaryWebWorkers.push(webWorker);
 		
 		
 		
-		web_worker.onmessage = function(e)
+		webWorker.onmessage = function(e)
 		{
 			if (e.data[0] === "log")
 			{
@@ -113,52 +113,52 @@
 			{
 				grid = e.data[0];
 				
-				draw_sudoku_grid(false);
+				drawSudokuGrid(false);
 				
 				wilson.canvas.style.opacity = 1;
 				
-				generated_first_puzzle = true;
+				generatedFirstPuzzle = true;
 			}
 		}
 		
 		
 		
-		if (generated_first_puzzle)
+		if (generatedFirstPuzzle)
 		{
 			setTimeout(() =>
 			{
-				web_worker.postMessage([]);
-			}, Site.opacity_animation_time);
+				webWorker.postMessage([]);
+			}, Site.opacityAnimationTime);
 		}
 		
 		else
 		{
-			web_worker.postMessage([]);
+			webWorker.postMessage([]);
 		}
 	}
 	
 	
 	
-	function draw_sudoku_grid(print_mode)
+	function drawSudokuGrid(printMode)
 	{
-		let canvas_size = 9 * 200 + 9;
+		let canvasSize = 9 * 200 + 9;
 		
 		
 		
-		if (print_mode)
+		if (printMode)
 		{
 			wilson.ctx.fillStyle = "rgb(255, 255, 255)";
-			wilson.ctx.fillRect(0, 0, canvas_size, canvas_size);
+			wilson.ctx.fillRect(0, 0, canvasSize, canvasSize);
 			wilson.ctx.fillStyle = "rgb(0, 0, 0)";
 		}
 		
 		else
 		{
-			wilson.ctx.clearRect(0, 0, canvas_size, canvas_size);
+			wilson.ctx.clearRect(0, 0, canvasSize, canvasSize);
 			
-			if (Site.Settings.url_vars["theme"] === 1)
+			if (Site.Settings.urlVars["theme"] === 1)
 			{
-				if (Site.Settings.url_vars["contrast"] === 1)
+				if (Site.Settings.urlVars["contrast"] === 1)
 				{
 					wilson.ctx.fillStyle = "rgb(255, 255, 255)";
 				}
@@ -171,7 +171,7 @@
 			
 			else
 			{
-				if (Site.Settings.url_vars["contrast"] === 1)
+				if (Site.Settings.urlVars["contrast"] === 1)
 				{
 					wilson.ctx.fillStyle = "rgb(0, 0, 0)";
 				}
@@ -190,12 +190,12 @@
 		{
 			if (i % 3 === 0)
 			{
-				wilson.ctx.fillRect(200 * i, 0, 10, canvas_size + 9);
-				wilson.ctx.fillRect(0, 200 * i, canvas_size + 9, 10);
+				wilson.ctx.fillRect(200 * i, 0, 10, canvasSize + 9);
+				wilson.ctx.fillRect(0, 200 * i, canvasSize + 9, 10);
 			}
 			
-			wilson.ctx.fillRect(200 * i + 4, 0, 2, canvas_size + 9);
-			wilson.ctx.fillRect(0, 200 * i + 4, canvas_size + 9, 2);
+			wilson.ctx.fillRect(200 * i + 4, 0, 2, canvasSize + 9);
+			wilson.ctx.fillRect(0, 200 * i + 4, canvasSize + 9, 2);
 		}		
 		
 		
@@ -214,4 +214,4 @@
 			}
 		}
 	}
-}()
+	}()

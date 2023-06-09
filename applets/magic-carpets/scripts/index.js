@@ -2,7 +2,7 @@
 
 !async function()
 {
-	await Site.load_applet("magic-carpets");
+	await Site.loadApplet("magic-carpets");
 	
 	const applet = new MagicCarpet(Page.element.querySelector("#output-canvas"));
 	
@@ -10,42 +10,42 @@
 	
 	function run()
 	{
-		const grid_size = parseInt(grid_size_input_element.value || 8);
-		const max_cage_size = parseInt(max_cage_size_input_element.value || 16);
-		const unique_solution = unique_solution_checkbox_element.checked;
+		const gridSize = parseInt(gridSizeInputElement.value || 8);
+		const maxCageSize = parseInt(maxCageSizeInputElement.value || 16);
+		const uniqueSolution = uniqueSolutionCheckboxElement.checked;
 		
-		applet.run(grid_size, max_cage_size, unique_solution);
+		applet.run(gridSize, maxCageSize, uniqueSolution);
 	}
 	
 	
 	
-	const generate_button_element = Page.element.querySelector("#generate-button");
+	const generateButtonElement = Page.element.querySelector("#generate-button");
 
-	generate_button_element.addEventListener("click", run);
+	generateButtonElement.addEventListener("click", run);
 	
 	
 	
-	const draw_solution_button_element = Page.element.querySelector("#draw-solution-button");
+	const drawSolutionButtonElement = Page.element.querySelector("#draw-solution-button");
 
-	draw_solution_button_element.addEventListener("click", () =>
+	drawSolutionButtonElement.addEventListener("click", () =>
 	{
-		applet.draw_solution();
+		applet.drawSolution();
 	});
 	
 	
 	
-	const draw_rectangles_button_element = Page.element.querySelector("#draw-rectangles-button");
+	const drawRectanglesButtonElement = Page.element.querySelector("#draw-rectangles-button");
 
-	draw_rectangles_button_element.addEventListener("click", () =>
+	drawRectanglesButtonElement.addEventListener("click", () =>
 	{
-		applet.draw_solution(true);
+		applet.drawSolution(true);
 	});
 	
 	
 	
-	const grid_size_input_element = Page.element.querySelector("#grid-size-input");
+	const gridSizeInputElement = Page.element.querySelector("#grid-size-input");
 	
-	grid_size_input_element.addEventListener("keydown", e =>
+	gridSizeInputElement.addEventListener("keydown", e =>
 	{
 		if (e.keyCode === 13)
 		{
@@ -55,9 +55,9 @@
 	
 	
 	
-	const max_cage_size_input_element = Page.element.querySelector("#max-cage-size-input");
+	const maxCageSizeInputElement = Page.element.querySelector("#max-cage-size-input");
 	
-	max_cage_size_input_element.addEventListener("keydown", e =>
+	maxCageSizeInputElement.addEventListener("keydown", e =>
 	{
 		if (e.keyCode === 13)
 		{
@@ -67,15 +67,15 @@
 	
 	
 	
-	const unique_solution_checkbox_element = Page.element.querySelector("#unique-solution-checkbox");
+	const uniqueSolutionCheckboxElement = Page.element.querySelector("#unique-solution-checkbox");
 	
 	
 	
-	const download_button_element = Page.element.querySelector("#download-button");
+	const downloadButtonElement = Page.element.querySelector("#download-button");
 	
-	download_button_element.addEventListener("click", () =>
+	downloadButtonElement.addEventListener("click", () =>
 	{
-		applet.wilson.download_frame("a-magic-carpet.png");
+		applet.wilson.downloadFrame("a-magic-carpet.png");
 	});
 	
 	

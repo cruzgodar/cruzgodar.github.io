@@ -2,20 +2,20 @@
 
 !async function()
 {
-	await Site.load_applet("plane-partitions");
+	await Site.loadApplet("plane-partitions");
 	
 	const applet = new PlanePartitions(Page.element.querySelector("#output-canvas"), Page.element.querySelector("#numbers-canvas"));
 	
-	applet.load_promise.then(async () =>
+	applet.loadPromise.then(async () =>
 	{
-		const plane_partition = applet.generate_random_plane_partition();
-		array_data_textarea_element.value = applet.array_to_ascii(plane_partition);
-		await applet.add_new_array(0, plane_partition);
+		const planePartition = applet.generateRandomPlanePartition();
+		arrayDataTextareaElement.value = applet.arrayToAscii(planePartition);
+		await applet.addNewArray(0, planePartition);
 	});
 	
-	const section_names = ["view-controls", "add-array", "edit-array", "remove-array", "algorithms"];
+	const sectionNames = ["view-controls", "add-array", "edit-array", "remove-array", "algorithms"];
 	
-	const section_elements = 
+	const sectionElements = 
 	{
 		"view-controls": Page.element.querySelectorAll(".view-controls-section"),
 		"add-array": Page.element.querySelectorAll(".add-array-section"),
@@ -25,23 +25,23 @@
 		"examples": Page.element.querySelectorAll(".examples-section")
 	}
 	
-	const category_holder_element = Page.element.querySelector("#category-holder");
-	const canvas_landscape_left_element = Page.element.querySelector("#canvas-landscape-left");
+	const categoryHolderElement = Page.element.querySelector("#category-holder");
+	const canvasLandscapeLeftElement = Page.element.querySelector("#canvas-landscape-left");
 	
-	let visible_section = "view-controls";
+	let visibleSection = "view-controls";
 	
-	section_names.forEach(section_name =>
+	sectionNames.forEach(sectionName =>
 	{
-		if (section_name !== visible_section)
+		if (sectionName !== visibleSection)
 		{
-			section_elements[section_name].forEach(element =>
+			sectionElements[sectionName].forEach(element =>
 			{
 				element.style.opacity = 0;
 			});
 		}	
 	});
 	
-	section_elements[visible_section].forEach(element => canvas_landscape_left_element.appendChild(element));
+	sectionElements[visibleSection].forEach(element => canvasLandscapeLeftElement.appendChild(element));
 	
 	
 	
@@ -50,211 +50,211 @@
 	
 	
 	
-	if (Page.Layout.aspect_ratio > 1)
+	if (Page.Layout.aspectRatio > 1)
 	{
 		Page.Layout.AppletColumns.equalize();
 	}
 	
 	
 	
-	const category_selector_dropdown_element = Page.element.querySelector("#category-selector-dropdown");
+	const categorySelectorDropdownElement = Page.element.querySelector("#category-selector-dropdown");
 	
-	const resolution_input_element = Page.element.querySelector("#resolution-input");
+	const resolutionInputElement = Page.element.querySelector("#resolution-input");
 	
-	const show_dimers_button_element = Page.element.querySelector("#show-dimers-button");
+	const showDimersButtonElement = Page.element.querySelector("#show-dimers-button");
 	
-	const switch_view_button_element = Page.element.querySelector("#switch-view-button");
+	const switchViewButtonElement = Page.element.querySelector("#switch-view-button");
 	
-	const maximum_speed_checkbox_element = Page.element.querySelector("#maximum-speed-checkbox");
+	const maximumSpeedCheckboxElement = Page.element.querySelector("#maximum-speed-checkbox");
 	
-	const array_data_textarea_element = Page.element.querySelector("#array-data-textarea");
+	const arrayDataTextareaElement = Page.element.querySelector("#array-data-textarea");
 	
-	const add_array_button_element = Page.element.querySelector("#add-array-button");
+	const addArrayButtonElement = Page.element.querySelector("#add-array-button");
 	
-	const edit_array_textarea_element = Page.element.querySelector("#edit-array-textarea");
+	const editArrayTextareaElement = Page.element.querySelector("#edit-array-textarea");
 		
-	const edit_array_index_input_element = Page.element.querySelector("#edit-array-index-input");
+	const editArrayIndexInputElement = Page.element.querySelector("#edit-array-index-input");
 	
-	const edit_array_button_element = Page.element.querySelector("#edit-array-button");
+	const editArrayButtonElement = Page.element.querySelector("#edit-array-button");
 	
-	const remove_array_index_input_element = Page.element.querySelector("#remove-array-index-input");
+	const removeArrayIndexInputElement = Page.element.querySelector("#remove-array-index-input");
 	
-	const remove_array_button_element = Page.element.querySelector("#remove-array-button");
+	const removeArrayButtonElement = Page.element.querySelector("#remove-array-button");
 	
-	const algorithm_index_input_element = Page.element.querySelector("#algorithm-index-input");
+	const algorithmIndexInputElement = Page.element.querySelector("#algorithm-index-input");
 	
-	const hillman_grassl_button_element = Page.element.querySelector("#hillman-grassl-button");
+	const hillmanGrasslButtonElement = Page.element.querySelector("#hillman-grassl-button");
 	
-	const hillman_grassl_inverse_button_element = Page.element.querySelector("#hillman-grassl-inverse-button");
+	const hillmanGrasslInverseButtonElement = Page.element.querySelector("#hillman-grassl-inverse-button");
 	
-	const pak_button_element = Page.element.querySelector("#pak-button");
+	const pakButtonElement = Page.element.querySelector("#pak-button");
 	
-	const pak_inverse_button_element = Page.element.querySelector("#pak-inverse-button");
+	const pakInverseButtonElement = Page.element.querySelector("#pak-inverse-button");
 	
-	const sulzgruber_button_element = Page.element.querySelector("#sulzgruber-button");
+	const sulzgruberButtonElement = Page.element.querySelector("#sulzgruber-button");
 	
-	const sulzgruber_inverse_button_element = Page.element.querySelector("#sulzgruber-inverse-button");
+	const sulzgruberInverseButtonElement = Page.element.querySelector("#sulzgruber-inverse-button");
 	
-	const rsk_button_element = Page.element.querySelector("#rsk-button");
+	const rskButtonElement = Page.element.querySelector("#rsk-button");
 	
-	const rsk_inverse_button_element = Page.element.querySelector("#rsk-inverse-button");
+	const rskInverseButtonElement = Page.element.querySelector("#rsk-inverse-button");
 	
-	const example_1_button_element = Page.element.querySelector("#example-1-button");
+	const example1ButtonElement = Page.element.querySelector("#example-1-button");
 	
-	const example_2_button_element = Page.element.querySelector("#example-2-button");
+	const example2ButtonElement = Page.element.querySelector("#example-2-button");
 	
-	const example_3_button_element = Page.element.querySelector("#example-3-button");
+	const example3ButtonElement = Page.element.querySelector("#example-3-button");
 	
-	const download_button_element = Page.element.querySelector("#download-button");
+	const downloadButtonElement = Page.element.querySelector("#download-button");
 	
 	
 	
-	category_selector_dropdown_element.addEventListener("input", async () =>
+	categorySelectorDropdownElement.addEventListener("input", async () =>
 	{
-		await Promise.all(Array.from(section_elements[visible_section]).map(element => Page.Animate.change_opacity(element, 0, Site.opacity_animation_time)));
+		await Promise.all(Array.from(sectionElements[visibleSection]).map(element => Page.Animate.changeOpacity(element, 0, Site.opacityAnimationTime)));
 		
-		section_elements[visible_section].forEach(element => category_holder_element.appendChild(element));
+		sectionElements[visibleSection].forEach(element => categoryHolderElement.appendChild(element));
 		
-		section_elements[visible_section].forEach(element => element.classList.remove("move-to-left"));
-		section_elements[visible_section].forEach(element => element.classList.remove("move-to-right"));
+		sectionElements[visibleSection].forEach(element => element.classList.remove("move-to-left"));
+		sectionElements[visibleSection].forEach(element => element.classList.remove("move-to-right"));
 		
-		visible_section = category_selector_dropdown_element.value;
+		visibleSection = categorySelectorDropdownElement.value;
 		
-		section_elements[visible_section].forEach(element => canvas_landscape_left_element.appendChild(element));
+		sectionElements[visibleSection].forEach(element => canvasLandscapeLeftElement.appendChild(element));
 		
 		Page.Load.TextButtons.equalize();
 		setTimeout(Page.Load.TextButtons.equalize, 10);
 		
-		if (Page.Layout.aspect_ratio > 1)
+		if (Page.Layout.aspectRatio > 1)
 		{
 			Page.Layout.AppletColumns.equalize();
 		}
 		
-		if (visible_section === "edit-array")
+		if (visibleSection === "edit-array")
 		{
-			let index = parseInt(edit_array_index_input_element.value || 0);
+			let index = parseInt(editArrayIndexInputElement.value || 0);
 		
 			if (index < applet.arrays.length && index >= 0)
 			{
-				edit_array_textarea_element.value = applet.array_to_ascii(applet.arrays[index].numbers);
+				editArrayTextareaElement.value = applet.arrayToAscii(applet.arrays[index].numbers);
 			}
 		}
 		
-		section_elements[visible_section].forEach(element => Page.Animate.change_opacity(element, 1, Site.opacity_animation_time))
+		sectionElements[visibleSection].forEach(element => Page.Animate.changeOpacity(element, 1, Site.opacityAnimationTime))
 	});
 	
 	
 	
-	resolution_input_element.addEventListener("input", () =>
+	resolutionInputElement.addEventListener("input", () =>
 	{
-		applet.resolution = parseInt(resolution_input_element.value || 2000);
+		applet.resolution = parseInt(resolutionInputElement.value || 2000);
 		
 		applet.renderer.setSize(applet.resolution, applet.resolution, false);
 	});
 	
 	
 	
-	show_dimers_button_element.addEventListener("click", () =>
+	showDimersButtonElement.addEventListener("click", () =>
 	{
-		if (applet.dimers_shown)
+		if (applet.dimersShown)
 		{
-			applet.hide_dimers();
+			applet.hideDimers();
 		}
 		
 		else
 		{
-			applet.show_dimers();
+			applet.showDimers();
 		}
 	});
 	
 	
 	
-	switch_view_button_element.addEventListener("click", () =>
+	switchViewButtonElement.addEventListener("click", () =>
 	{
-		if (applet.in_2d_view)
+		if (applet.in2dView)
 		{
-			applet.show_hex_view();
+			applet.showHexView();
 		}
 		
 		else
 		{
-			applet.show_2d_view();
+			applet.show2dView();
 		}
 	});
 	
 	
 	
-	maximum_speed_checkbox_element.addEventListener("input", () =>
+	maximumSpeedCheckboxElement.addEventListener("input", () =>
 	{
-		applet.animation_time = maximum_speed_checkbox_element.checked ? 60 : 600;
+		applet.animationTime = maximumSpeedCheckboxElement.checked ? 60 : 600;
 	});
 	
 	
 	
-	add_array_button_element.addEventListener("click", () =>
+	addArrayButtonElement.addEventListener("click", () =>
 	{
-		applet.add_new_array(applet.arrays.length, applet.parse_array(array_data_textarea_element.value));
+		applet.addNewArray(applet.arrays.length, applet.parseArray(arrayDataTextareaElement.value));
 	});
 	
 	
 	
-	edit_array_index_input_element.addEventListener("input", () =>
+	editArrayIndexInputElement.addEventListener("input", () =>
 	{
-		const index = parseInt(edit_array_index_input_element.value || 0);
+		const index = parseInt(editArrayIndexInputElement.value || 0);
 		
 		if (index >= applet.arrays.length || index < 0)
 		{
 			return;
 		}
 		
-		applet.edit_array_textarea_element.value = applet.array_to_ascii(applet.arrays[index].numbers);
+		applet.editArrayTextareaElement.value = applet.arrayToAscii(applet.arrays[index].numbers);
 	});
 	
 	
 	
-	edit_array_button_element.addEventListener("click", async () =>
+	editArrayButtonElement.addEventListener("click", async () =>
 	{
-		const index = parseInt(edit_array_index_input_element.value || 0);
+		const index = parseInt(editArrayIndexInputElement.value || 0);
 		
-		await applet.edit_array(index, applet.parse_array(edit_array_textarea_element.value));
+		await applet.editArray(index, applet.parseArray(editArrayTextareaElement.value));
 		
-		edit_array_textarea_element.value = applet.array_to_ascii(applet.arrays[index].numbers);
+		editArrayTextareaElement.value = applet.arrayToAscii(applet.arrays[index].numbers);
 	});
 	
 	
 	
-	remove_array_button_element.addEventListener("click", () =>
+	removeArrayButtonElement.addEventListener("click", () =>
 	{
-		applet.remove_array(parseInt(remove_array_index_input_element.value));
+		applet.removeArray(parseInt(removeArrayIndexInputElement.value));
 	});
 	
 	
 	
-	hillman_grassl_button_element.addEventListener("click", () => applet.run_algorithm("hillman_grassl", parseInt(algorithm_index_input_element.value)));
+	hillmanGrasslButtonElement.addEventListener("click", () => applet.runAlgorithm("hillmanGrassl", parseInt(algorithmIndexInputElement.value)));
 	
-	hillman_grassl_inverse_button_element.addEventListener("click", () => applet.run_algorithm("hillman_grassl_inverse", parseInt(algorithm_index_input_element.value)));
+	hillmanGrasslInverseButtonElement.addEventListener("click", () => applet.runAlgorithm("hillmanGrasslInverse", parseInt(algorithmIndexInputElement.value)));
 	
-	pak_button_element.addEventListener("click", () => applet.run_algorithm("pak", parseInt(algorithm_index_input_element.value)));
+	pakButtonElement.addEventListener("click", () => applet.runAlgorithm("pak", parseInt(algorithmIndexInputElement.value)));
 	
-	pak_inverse_button_element.addEventListener("click", () => applet.run_algorithm("pak_inverse", parseInt(algorithm_index_input_element.value)));
+	pakInverseButtonElement.addEventListener("click", () => applet.runAlgorithm("pakInverse", parseInt(algorithmIndexInputElement.value)));
 	
-	sulzgruber_button_element.addEventListener("click", () => applet.run_algorithm("sulzgruber", parseInt(algorithm_index_input_element.value)));
+	sulzgruberButtonElement.addEventListener("click", () => applet.runAlgorithm("sulzgruber", parseInt(algorithmIndexInputElement.value)));
 	
-	sulzgruber_inverse_button_element.addEventListener("click", () => applet.run_algorithm("sulzgruber_inverse", parseInt(algorithm_index_input_element.value)));
+	sulzgruberInverseButtonElement.addEventListener("click", () => applet.runAlgorithm("sulzgruberInverse", parseInt(algorithmIndexInputElement.value)));
 	
-	rsk_button_element.addEventListener("click", () => applet.run_algorithm("rsk", parseInt(algorithm_index_input_element.value)));
+	rskButtonElement.addEventListener("click", () => applet.runAlgorithm("rsk", parseInt(algorithmIndexInputElement.value)));
 	
-	rsk_inverse_button_element.addEventListener("click", () => applet.run_algorithm("rsk_inverse", parseInt(algorithm_index_input_element.value)));
+	rskInverseButtonElement.addEventListener("click", () => applet.runAlgorithm("rskInverse", parseInt(algorithmIndexInputElement.value)));
 	
-	example_1_button_element.addEventListener("click", () => applet.run_example(1));
+	example1ButtonElement.addEventListener("click", () => applet.runExample(1));
 	
-	example_2_button_element.addEventListener("click", () => applet.run_example(2));
+	example2ButtonElement.addEventListener("click", () => applet.runExample(2));
 	
-	example_3_button_element.addEventListener("click", () => applet.run_example(3));
+	example3ButtonElement.addEventListener("click", () => applet.runExample(3));
 	
-	download_button_element.addEventListener("click", () => applet.need_download = true);
+	downloadButtonElement.addEventListener("click", () => applet.needDownload = true);
 	
 	
 	
 	Page.show();
-}()
+	}()

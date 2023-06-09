@@ -3,79 +3,79 @@
 	"use strict";
 	
 	
-	const title_element = Page.element.querySelector("#high-res-viewer-card h1");
-	const description_text_element = Page.element.querySelector("#description-text");
-	const featured_text_element = Page.element.querySelector("#featured-text");
-	const applet_link_element = Page.element.querySelector("#applet-link");
-	const full_res_link_element = Page.element.querySelector("#full-res-link");
+	const titleElement = Page.element.querySelector("#high-res-viewer-card h1");
+	const descriptionTextElement = Page.element.querySelector("#description-text");
+	const featuredTextElement = Page.element.querySelector("#featured-text");
+	const appletLinkElement = Page.element.querySelector("#applet-link");
+	const fullResLinkElement = Page.element.querySelector("#full-res-link");
 	
 	
 	Page.element.querySelectorAll(".gallery-image-1-1 img, .gallery-image-2-2 img, .gallery-image-3-3 img").forEach(element =>
 	{
-		element.addEventListener("click", e => show_card(e.target.getAttribute("data-image-id")));
+		element.addEventListener("click", e => showCard(e.target.getAttribute("data-image-id")));
 	});
 	
 	
 	
-	function show_card(id)
+	function showCard(id)
 	{
-		title_element.innerHTML = gallery_image_data[id]["title"];
+		titleElement.innerHTML = galleryImageData[id]["title"];
 		
 		
 		
-		if (gallery_image_data[id]["parameters"])
+		if (galleryImageData[id]["parameters"])
 		{
-			description_text_element.innerHTML = gallery_image_data[id]["parameters"];
+			descriptionTextElement.innerHTML = galleryImageData[id]["parameters"];
 			
-			description_text_element.parentElement.style.display = "block";
+			descriptionTextElement.parentElement.style.display = "block";
 		}
 		
 		else
 		{
-			description_text_element.parentElement.style.display = "none";
+			descriptionTextElement.parentElement.style.display = "none";
 		}
 		
 		
 		
-		if (gallery_image_data[id]["featured"])
+		if (galleryImageData[id]["featured"])
 		{
-			featured_text_element.innerHTML = gallery_image_data[id]["featured"];
+			featuredTextElement.innerHTML = galleryImageData[id]["featured"];
 			
-			featured_text_element.parentElement.style.display = "block";
+			featuredTextElement.parentElement.style.display = "block";
 		}
 		
 		else
 		{
-			featured_text_element.parentElement.style.display = "none";
+			featuredTextElement.parentElement.style.display = "none";
 		}
 		
 		
 		
-		applet_link_element.setAttribute("href", `/applets/${gallery_image_data[id]["applet_link"]}/`);
-		applet_link_element.setAttribute("onclick", `Page.Navigation.redirect('/applets/${gallery_image_data[id]["applet_link"]}/')`);
+		appletLinkElement.setAttribute("href", `/applets/${galleryImageData[id]["appletLink"]}/`);
+		appletLinkElement.setAttribute("onclick", `Page.Navigation.redirect('/applets/${galleryImageData[id]["appletLink"]}/')`);
 		
-		full_res_link_element.setAttribute("href", gallery_image_data[id]["image_link"]);
-		full_res_link_element.setAttribute("onclick", `Page.Navigation.redirect('${gallery_image_data[id]["image_link"]}', true)`);
+		fullResLinkElement.setAttribute("href", galleryImageData[id]["imageLink"]);
+		fullResLinkElement.setAttribute("onclick", `Page.Navigation.redirect('${galleryImageData[id]["imageLink"]}', true)`);
 		
 		
 		
-		const high_res_image_element = document.createElement("img");
+		const highResImageElement = document.createElement("img");
 		
 		const element = Page.element.querySelector("#high-res-viewer-card img");
-		element.parentNode.insertBefore(high_res_image_element, element);
+		element.parentNode.insertBefore(highResImageElement, element);
 		element.remove();
 		
-		high_res_image_element.onload = () =>
+		highResImageElement.onload = () =>
 		{
 			setTimeout(() => Page.Cards.show("high-res-viewer"), 10);
 		};
 		
-		high_res_image_element.src = `/gallery/high-res/${id}.webp`;
+		highResImageElement.src = `/gallery/high-res/${id}.webp`;
 	}
 	
 	
 	
-	const gallery_image_data = 
+	const galleryImageData = 
 	{
 		"newtons-method-2":
 		{
@@ -87,9 +87,9 @@
 			
 			"featured": "Featured in UO&#x2019;s Erb Memorial Union and currently in University Hall",
 			
-			"applet_link": "newtons-method",
+			"appletLink": "newtons-method",
 			
-			"image_link": "https://drive.google.com/uc?id=1I19shEUp7KEPThaj16eV9H9hqBeSwJm3&export=download"
+			"imageLink": "https://drive.google.com/uc?id=1I19shEUp7KEPThaj16eV9H9hqBeSwJm3&export=download"
 		},
 		
 		"abelian-sandpile":
@@ -100,9 +100,9 @@
 			
 			"featured": "Featured in UO&#x2019;s Erb Memorial Union and currently in University Hall",
 			
-			"applet_link": "abelian-sandpiles",
+			"appletLink": "abelian-sandpiles",
 			
-			"image_link": "https://drive.google.com/uc?id=1pqpf8z08AgJ9oFXQLU0J6eWaJvgg6oME&export=download"
+			"imageLink": "https://drive.google.com/uc?id=1pqpf8z08AgJ9oFXQLU0J6eWaJvgg6oME&export=download"
 		},
 		
 		"aztec-diamond":
@@ -111,9 +111,9 @@
 			
 			"resolution": "5000x5000",
 			
-			"applet_link": "domino-shuffling",
+			"appletLink": "domino-shuffling",
 			
-			"image_link": "https://drive.google.com/uc?id=1XaoTpV0dKscPtOvrjU6sUuD1Mo-pyQzH&export=download"
+			"imageLink": "https://drive.google.com/uc?id=1XaoTpV0dKscPtOvrjU6sUuD1Mo-pyQzH&export=download"
 		},
 		
 		"finite-subdivision-1":
@@ -126,9 +126,9 @@
 			
 			"featured": "Featured in UO&#x2019;s Erb Memorial Union",
 			
-			"applet_link": "finite-subdivisions",
+			"appletLink": "finite-subdivisions",
 			
-			"image_link": "https://drive.google.com/uc?id=1qdHVX58lkTdrcebrzDyQC4690C0IgpJE&export=download"
+			"imageLink": "https://drive.google.com/uc?id=1qdHVX58lkTdrcebrzDyQC4690C0IgpJE&export=download"
 		},
 		
 		"generalized-julia-set-2":
@@ -141,9 +141,9 @@
 			
 			"featured": "Featured in UO&#x2019;s Erb Memorial Union and currently in University Hall",
 			
-			"applet_link": "generalized-julia-sets",
+			"appletLink": "generalized-julia-sets",
 			
-			"image_link": "https://drive.google.com/uc?id=1l7lChOVrzWkJSsydmEte1f3pPZe3Txro&export=download"
+			"imageLink": "https://drive.google.com/uc?id=1l7lChOVrzWkJSsydmEte1f3pPZe3Txro&export=download"
 		},
 		
 		"hitomezashi-pattern-2":
@@ -152,9 +152,9 @@
 			
 			"resolution": "5000x5000",
 			
-			"applet_link": "hitomezashi-patterns",
+			"appletLink": "hitomezashi-patterns",
 			
-			"image_link": "https://drive.google.com/uc?id=1JkngUmUdSEJvzYMRTTUIa3jy26F0c6m8&export=download"
+			"imageLink": "https://drive.google.com/uc?id=1JkngUmUdSEJvzYMRTTUIa3jy26F0c6m8&export=download"
 		},
 		
 		
@@ -167,9 +167,9 @@
 			
 			"featured": "Featured in UO&#x2019;s Erb Memorial Union",
 			
-			"applet_link": "brownian-trees",
+			"appletLink": "brownian-trees",
 			
-			"image_link": "https://drive.google.com/uc?id=1BSuYpCW9jQKqu8NOu6f_6omr_LVMXprh&export=download"
+			"imageLink": "https://drive.google.com/uc?id=1BSuYpCW9jQKqu8NOu6f6omr_LVMXprh&export=download"
 		},
 		
 		"lyapunov-fractal":
@@ -180,9 +180,9 @@
 			
 			"parameters": "Generating string AABB",
 			
-			"applet_link": "lyapunov-fractals",
+			"appletLink": "lyapunov-fractals",
 			
-			"image_link": "https://drive.google.com/uc?id=1Xb5BMuz-iB9f-CN4l5wyZtbCLLOXrz80&export=download"
+			"imageLink": "https://drive.google.com/uc?id=1Xb5BMuz-iB9f-CN4l5wyZtbCLLOXrz80&export=download"
 		},
 		
 		"strange-attractor":
@@ -191,9 +191,9 @@
 			
 			"resolution": "5000x5000",
 			
-			"applet_link": "strange-attractors",
+			"appletLink": "strange-attractors",
 			
-			"image_link": "https://drive.google.com/uc?id=1sRCKC-WE8a2iYNW942uKgAJbHVkAYDrQ&export=download"
+			"imageLink": "https://drive.google.com/uc?id=1sRCKC-WE8a2iYNW942uKgAJbHVkAYDrQ&export=download"
 		},
 		
 		"vector-field":
@@ -204,9 +204,9 @@
 			
 			"parameters": "Generated from (sin(y / 2.5), tan(x / 2.5))",
 			
-			"applet_link": "vector-fields",
+			"appletLink": "vector-fields",
 			
-			"image_link": "https://drive.google.com/uc?id=1016R9thI8dQdvEhTJGNMFehaCRhrbSxA&export=download"
+			"imageLink": "https://drive.google.com/uc?id=1016R9thI8dQdvEhTJGNMFehaCRhrbSxA&export=download"
 		},
 		
 		"julia-set-1":
@@ -215,9 +215,9 @@
 			
 			"resolution": "5000x5000",
 			
-			"applet_link": "julia-set-explorer",
+			"appletLink": "julia-set-explorer",
 			
-			"image_link": "https://drive.google.com/uc?id=1V4B0ULle-Dq0-ludCNyQg5lQ8Hm6cm_X&export=download"
+			"imageLink": "https://drive.google.com/uc?id=1V4B0ULle-Dq0-ludCNyQg5lQ8Hm6cm_X&export=download"
 		},
 		
 		"snowflake":
@@ -230,9 +230,9 @@
 			
 			"featured": "Featured in UO&#x2019;s Erb Memorial Union",
 			
-			"applet_link": "snowflakes",
+			"appletLink": "snowflakes",
 			
-			"image_link": "https://drive.google.com/uc?id=1qCDJIacawSFc8rAJK57YbqQjVC_79Lu9&export=download"
+			"imageLink": "https://drive.google.com/uc?id=1qCDJIacawSFc8rAJK57YbqQjVC79Lu9&export=download"
 		},
 		
 		
@@ -245,9 +245,9 @@
 			
 			"parameters": "Generated with c = (-0.54, -0.25, -0.668, 0)",
 			
-			"applet_link": "quaternionic-julia-sets",
+			"appletLink": "quaternionic-julia-sets",
 			
-			"image_link": "https://drive.google.com/uc?id=1092d-V4qcvcW5_lsf5xsyDQvlDs1LdO9&export=download"
+			"imageLink": "https://drive.google.com/uc?id=1092d-V4qcvcW5Lsf5xsyDQvlDs1LdO9&export=download"
 		},
 		
 		
@@ -262,9 +262,9 @@
 			
 			"featured": "Featured in the Jordan Schnitzer Museum of Art",
 			
-			"applet_link": "newtons-method",
+			"appletLink": "newtons-method",
 			
-			"image_link": "https://drive.google.com/uc?id=1u5HfagNZ0E1SmEu4kcLFCuwGmLOoX-qL&export=download"
+			"imageLink": "https://drive.google.com/uc?id=1u5HfagNZ0E1SmEu4kcLFCuwGmLOoX-qL&export=download"
 		},
 		
 		"kicked-rotator":
@@ -277,9 +277,9 @@
 			
 			"featured": "Featured in the Jordan Schnitzer Museum of Art, UO&#x2019;s Erb Memorial Union, and currently in University Hall",
 			
-			"applet_link": "the-kicked-rotator",
+			"appletLink": "the-kicked-rotator",
 			
-			"image_link": "https://drive.google.com/uc?id=1vXP_8ArZg7F2o7rbFCsksoHDT3nw8y66&export=download"
+			"imageLink": "https://drive.google.com/uc?id=1vXP8ArZg7F2o7rbFCsksoHDT3nw8y66&export=download"
 		},
 		
 		"kaleidoscopic-ifs-1":
@@ -290,9 +290,9 @@
 			
 			"featured": "Featured in UO&#x2019;s Erb Memorial Union and currently in University Hall",
 			
-			"applet_link": "kaleidoscopic-ifs-fractals",
+			"appletLink": "kaleidoscopic-ifs-fractals",
 			
-			"image_link": "https://drive.google.com/uc?id=1XhywTt1u8SY8JR9GUiauZRBnLzzLUOxP&export=download"
+			"imageLink": "https://drive.google.com/uc?id=1XhywTt1u8SY8JR9GUiauZRBnLzzLUOxP&export=download"
 		},
 		
 		"generalized-julia-set-1":
@@ -305,9 +305,9 @@
 			
 			"featured": "Featured in UO&#x2019;s Erb Memorial Union and currently in University Hall",
 			
-			"applet_link": "generalized-julia-sets",
+			"appletLink": "generalized-julia-sets",
 			
-			"image_link": "https://drive.google.com/uc?id=1rgAIVr9Ztfs2EiVtY_39-GQ91ayeMJXu&export=download"
+			"imageLink": "https://drive.google.com/uc?id=1rgAIVr9Ztfs2EiVtY39-GQ91ayeMJXu&export=download"
 		},
 		
 		"quasi-fuchsian-group":
@@ -318,9 +318,9 @@
 			
 			"featured": "Featured in UO&#x2019;s Erb Memorial Union and currently in University Hall",
 			
-			"applet_link": "quasi-fuchsian-groups",
+			"appletLink": "quasi-fuchsian-groups",
 			
-			"image_link": "https://drive.google.com/uc?id=1mAQCyO3bHIL7yAV1I8uxVFmLBGbhQwRQ&export=download"
+			"imageLink": "https://drive.google.com/uc?id=1mAQCyO3bHIL7yAV1I8uxVFmLBGbhQwRQ&export=download"
 		},
 		
 		"chaos-game-1":
@@ -331,9 +331,9 @@
 			
 			"featured": "Featured in UO&#x2019;s Erb Memorial Union",
 			
-			"applet_link": "the-chaos-game",
+			"appletLink": "the-chaos-game",
 			
-			"image_link": "https://drive.google.com/uc?id=15NZyBmIqZxCaTrT9C9m87bqfM1sUmY5i&export=download"
+			"imageLink": "https://drive.google.com/uc?id=15NZyBmIqZxCaTrT9C9m87bqfM1sUmY5i&export=download"
 		},
 		
 		
@@ -346,9 +346,9 @@
 			
 			"featured": "Featured in UO&#x2019;s Erb Memorial Union and currently in University Hall",
 			
-			"applet_link": "wilsons-algorithm",
+			"appletLink": "wilsons-algorithm",
 			
-			"image_link": "https://drive.google.com/uc?id=1EJD5tYppybnvAxK1bWpLEXK2gjKAnMqZ&export=download"
+			"imageLink": "https://drive.google.com/uc?id=1EJD5tYppybnvAxK1bWpLEXK2gjKAnMqZ&export=download"
 		},
 		
 		
@@ -361,9 +361,9 @@
 			
 			"featured": "Featured in UO&#x2019;s Erb Memorial Union and currently in University Hall",
 			
-			"applet_link": "julia-set-mosaic",
+			"appletLink": "julia-set-mosaic",
 			
-			"image_link": "https://drive.google.com/uc?id=17lVqXB7yFmoZRpEievJBV6BbwogOlM5U&export=download"
+			"imageLink": "https://drive.google.com/uc?id=17lVqXB7yFmoZRpEievJBV6BbwogOlM5U&export=download"
 		},
 		
 		"barnsley-fern":
@@ -374,9 +374,9 @@
 			
 			"featured": "Featured in the Jordan Schnitzer Museum of Art",
 			
-			"applet_link": "the-barnsley-fern",
+			"appletLink": "the-barnsley-fern",
 			
-			"image_link": "https://drive.google.com/uc?id=1ED5_vAUhFEF0E3fcnY4NOEYJSVf1P7cA&export=download"
+			"imageLink": "https://drive.google.com/uc?id=1ED5VAUhFEF0E3fcnY4NOEYJSVf1P7cA&export=download"
 		},
 		
 		"generalized-julia-set-3":
@@ -387,9 +387,9 @@
 			
 			"parameters": "Generated from (|z.x| - |z.y|)&#x00B2; + c",
 			
-			"applet_link": "generalized-julia-sets",
+			"appletLink": "generalized-julia-sets",
 			
-			"image_link": "https://drive.google.com/uc?id=1ZOh2bya7QzuvSQqkM55cLxV3v-0MlET3&export=download"
+			"imageLink": "https://drive.google.com/uc?id=1ZOh2bya7QzuvSQqkM55cLxV3v-0MlET3&export=download"
 		},
 		
 		"magic-carpet":
@@ -398,9 +398,9 @@
 			
 			"resolution": "4009x4009",
 			
-			"applet_link": "magic-carpets",
+			"appletLink": "magic-carpets",
 			
-			"image_link": "https://drive.google.com/uc?id=1bD3P4pzIU7M6Ni_lp9oSjtrwoAJQpJ98&export=download"
+			"imageLink": "https://drive.google.com/uc?id=1bD3P4pzIU7M6NiLp9oSjtrwoAJQpJ98&export=download"
 		},
 		
 		"complex-map-1":
@@ -411,9 +411,9 @@
 			
 			"parameters": "Generated from exp(1/z)",
 			
-			"applet_link": "complex-maps",
+			"appletLink": "complex-maps",
 			
-			"image_link": "https://drive.google.com/uc?id=1rcF2qy4gGCJ3lg3X8jQW0Z0_OcFYKv8Q&export=download"
+			"imageLink": "https://drive.google.com/uc?id=1rcF2qy4gGCJ3lg3X8jQW0Z0_OcFYKv8Q&export=download"
 		},
 		
 		"kaleidoscopic-ifs-2":
@@ -422,9 +422,9 @@
 			
 			"resolution": "5000x5000",
 			
-			"applet_link": "kaleidoscopic-ifs-fractals",
+			"appletLink": "kaleidoscopic-ifs-fractals",
 			
-			"image_link": "https://drive.google.com/uc?id=1vmRBT5i-KEq1DbReB87DhDJqzgpzlpWE&export=download"
+			"imageLink": "https://drive.google.com/uc?id=1vmRBT5i-KEq1DbReB87DhDJqzgpzlpWE&export=download"
 		},
 		
 		
@@ -437,9 +437,9 @@
 			
 			"parameters": "Generated from the polynomial z&#x2076; - 1 with a = 1.5",
 			
-			"applet_link": "the-secant-method",
+			"appletLink": "the-secant-method",
 			
-			"image_link": "https://drive.google.com/uc?id=1XaNHxtiX5oA9KcLGs8ZSPFJwpDWt4mPk&export=download"
+			"imageLink": "https://drive.google.com/uc?id=1XaNHxtiX5oA9KcLGs8ZSPFJwpDWt4mPk&export=download"
 		},
 		
 		"juliabulb-1":
@@ -450,9 +450,9 @@
 			
 			"featured": "Featured in UO&#x2019;s Erb Memorial Union",
 			
-			"applet_link": "the-mandelbulb",
+			"appletLink": "the-mandelbulb",
 			
-			"image_link": "https://drive.google.com/uc?id=13vuMeBG2XX-cVar60W9bN_PoDhb9kC8H&export=download"
+			"imageLink": "https://drive.google.com/uc?id=13vuMeBG2XX-cVar60W9bN_PoDhb9kC8H&export=download"
 		},
 		
 		"juliabulb-2":
@@ -463,9 +463,9 @@
 			
 			"featured": "Featured in UO&#x2019;s Erb Memorial Union",
 			
-			"applet_link": "the-mandelbulb",
+			"appletLink": "the-mandelbulb",
 			
-			"image_link": "https://drive.google.com/uc?id=1j9kMfSl5fwTaHysRWROjuhwKgrc0i5SD&export=download"
+			"imageLink": "https://drive.google.com/uc?id=1j9kMfSl5fwTaHysRWROjuhwKgrc0i5SD&export=download"
 		},
 		
 		"newtons-method-extended":
@@ -476,9 +476,9 @@
 			
 			"parameters": "Generated from sin(z)*csin(iz)",
 			
-			"applet_link": "newtons-method-extended",
+			"appletLink": "newtons-method-extended",
 			
-			"image_link": "https://drive.google.com/uc?id=1fzmyXiEIYBxNNFdAgEYhcy8TO04BHnYT&export=download"
+			"imageLink": "https://drive.google.com/uc?id=1fzmyXiEIYBxNNFdAgEYhcy8TO04BHnYT&export=download"
 		},
 		
 		"chaos-game-2":
@@ -489,9 +489,9 @@
 			
 			"featured": "Featured in UO&#x2019;s Erb Memorial Union",
 			
-			"applet_link": "the-chaos-game",
+			"appletLink": "the-chaos-game",
 			
-			"image_link": "https://drive.google.com/uc?id=14ADChQ4KHV426ySW_CIVvTAXe2irMKU0&export=download"
+			"imageLink": "https://drive.google.com/uc?id=14ADChQ4KHV426ySW_CIVvTAXe2irMKU0&export=download"
 		},
 		
 		"juliabulb-3":
@@ -502,9 +502,9 @@
 			
 			"featured": "Featured in UO&#x2019;s Erb Memorial Union",
 			
-			"applet_link": "the-mandelbulb",
+			"appletLink": "the-mandelbulb",
 			
-			"image_link": "https://drive.google.com/uc?id=1UZaqN8xkOc4a2rMtA9_85YllnJDfwqO2&export=download"
+			"imageLink": "https://drive.google.com/uc?id=1UZaqN8xkOc4a2rMtA985YllnJDfwqO2&export=download"
 		},
 		
 		
@@ -517,9 +517,9 @@
 			
 			"featured": "Featured in the 2022 Bridges Conference, as well as UO&#x2019;s Erb Memorial Union and currently in University Hall",
 			
-			"applet_link": "the-mandelbulb",
+			"appletLink": "the-mandelbulb",
 			
-			"image_link": "https://drive.google.com/uc?id=1GfsC_gm0DU1j2X79Ros6lQY4HAUp-iy4&export=download"
+			"imageLink": "https://drive.google.com/uc?id=1GfsCGm0DU1j2X79Ros6lQY4HAUp-iy4&export=download"
 		},
 		
 		
@@ -530,9 +530,9 @@
 			
 			"resolution": "5000x5000",
 			
-			"applet_link": "hitomezashi-patterns",
+			"appletLink": "hitomezashi-patterns",
 			
-			"image_link": "https://drive.google.com/uc?id=1PqAZLMb0u-u8FR5ieN8ysWNOn5GhPGkD&export=download"
+			"imageLink": "https://drive.google.com/uc?id=1PqAZLMb0u-u8FR5ieN8ysWNOn5GhPGkD&export=download"
 		},
 		
 		"quaternionic-julia-set-2":
@@ -541,9 +541,9 @@
 			
 			"resolution": "5000x5000",
 			
-			"applet_link": "quaternionic-julia-sets",
+			"appletLink": "quaternionic-julia-sets",
 			
-			"image_link": "https://drive.google.com/uc?id=17yHyELz5FaAVIgSfBUjYTwy--yOBxGWv&export=download"
+			"imageLink": "https://drive.google.com/uc?id=17yHyELz5FaAVIgSfBUjYTwy--yOBxGWv&export=download"
 		},
 		
 		"wilsons-algorithm-1":
@@ -554,9 +554,9 @@
 			
 			"featured": "Featured in the Jordan Schnitzer Museum of Art",
 			
-			"applet_link": "wilsons-algorithm",
+			"appletLink": "wilsons-algorithm",
 			
-			"image_link": "https://drive.google.com/uc?id=1kgWTqci85uCCkGQksCrqYqjhYH2416pq&export=download"
+			"imageLink": "https://drive.google.com/uc?id=1kgWTqci85uCCkGQksCrqYqjhYH2416pq&export=download"
 		},
 		
 		"newtons-method-3":
@@ -567,9 +567,9 @@
 			
 			"parameters": "Roots at (&#x00B1;1, &#x00B1;1), (.707, .707), (-.707, -.707), (-1.5, 1.5), (1.5, -1.5)",
 			
-			"applet_link": "newtons-method",
+			"appletLink": "newtons-method",
 			
-			"image_link": "https://drive.google.com/uc?id=1NLQJ8ftFYtlLgLuB6ZyG3U4BZtseD8VP&export=download"
+			"imageLink": "https://drive.google.com/uc?id=1NLQJ8ftFYtlLgLuB6ZyG3U4BZtseD8VP&export=download"
 		},
 		
 		"complex-map-2":
@@ -580,9 +580,9 @@
 			
 			"parameters": "Generated from wp(z, rho)",
 			
-			"applet_link": "complex-maps",
+			"appletLink": "complex-maps",
 			
-			"image_link": "https://drive.google.com/uc?id=1ulWn8MMjzNTiTRuZKYWlqHoJOQBUwAnz&export=download"
+			"imageLink": "https://drive.google.com/uc?id=1ulWn8MMjzNTiTRuZKYWlqHoJOQBUwAnz&export=download"
 		},
 		
 		
@@ -593,13 +593,13 @@
 			
 			"resolution": "5000x5000",
 			
-			"applet_link": "double-pendulum-fractal",
+			"appletLink": "double-pendulum-fractal",
 			
-			"image_link": "https://drive.google.com/uc?id=1vyekqHESbwyD7PWBbWxVnw96rhNT-ZtB&export=download"
+			"imageLink": "https://drive.google.com/uc?id=1vyekqHESbwyD7PWBbWxVnw96rhNT-ZtB&export=download"
 		}
 	};
 	
 	
 	
 	Page.show();
-}()
+	}()

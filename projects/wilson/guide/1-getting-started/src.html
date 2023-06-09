@@ -44,27 +44,27 @@ On the JS side, we need to tell Wilson we want it to work with this canvas.
 	{
 		renderer: "cpu",
 		
-		canvas_width: 500,
-		canvas_height: 500
+		canvasWidth: 500,
+		canvasHeight: 500
 	};
 
 	let wilson = new Wilson(document.querySelector("#output-canvas"), options);
 
 
 
-	let a_input_element = document.querySelector("#a-input");
-	let b_input_element = document.querySelector("#b-input");
-	let resolution_input_element = document.querySelector("#resolution-input");
+	let aInputElement = document.querySelector("#a-input");
+	let bInputElement = document.querySelector("#b-input");
+	let resolutionInputElement = document.querySelector("#resolution-input");
 
-	let generate_button_element = document.querySelector("#generate-button");
+	let generateButtonElement = document.querySelector("#generate-button");
 
-	generate_button_element.addEventListener("click", () =>
+	generateButtonElement.addEventListener("click", () =>
 	{
-		let a = parseFloat(a_input_element.value || 0);
-		let b = parseFloat(b_input_element.value || 1);
-		let resolution = parseInt(resolution_input_element.value || 500);
+		let a = parseFloat(aInputElement.value || 0);
+		let b = parseFloat(bInputElement.value || 1);
+		let resolution = parseInt(resolutionInputElement.value || 500);
 		
-		wilson.change_canvas_size(resolution, resolution);
+		wilson.changeCanvasSize(resolution, resolution);
 		
 		//Do something with a and b.
 	});
@@ -72,7 +72,7 @@ On the JS side, we need to tell Wilson we want it to work with this canvas.
 
 
 
-Those initial values of 500 are just placeholders --- they're changed whenever the generate button is pressed. Now we just need to write a function that generates a Julia set given these parameters. The first step for that function will be to convert between pixel coordinates on the canvas and complex numbers in the plane, and this is a common enough occurance in math applets that Wilson has built-in functions for handling it: we need to add information in the options about the "world coordinates", as Wilson calls them, and then we can call `wilson.utils.interpolate.canvas_to_world` and `wilson.utils.interpolate.world_to_canvas`, which convert between pairs (row, col) of canvas coordinates and (x, y) of world coordinates. Note that `row` increases from top to bottom, while `y` does the opposite.
+Those initial values of 500 are just placeholders --- they're changed whenever the generate button is pressed. Now we just need to write a function that generates a Julia set given these parameters. The first step for that function will be to convert between pixel coordinates on the canvas and complex numbers in the plane, and this is a common enough occurance in math applets that Wilson has built-in functions for handling it: we need to add information in the options about the "world coordinates", as Wilson calls them, and then we can call `wilson.utils.interpolate.canvasToWorld` and `wilson.utils.interpolate.worldToCanvas`, which convert between pairs (row, col) of canvas coordinates and (x, y) of world coordinates. Note that `row` increases from top to bottom, while `y` does the opposite.
 
 The algorithm to color a single point $z_0$ of the Julia set corresponding to $c = a + bi$ is relatively simple: with $f(z) = z^2 + c$, we let $z_1 = f(z_0)$, $z_2 = f(z_1)$, and so on. If the $z_n$ grow without bound, then the point $z_0$ is *not* in the Julia set, and we give it a color based on how quickly it grew. If the $z_n$ stay bounded, then $z_0$ is in the set, and we color it black. In practice, we pick a maximum value for $n$, say 100, and see if the sequence is smaller than a certain bound after that many iterations. It can be shown that if the magnitude of any $z_n$ is ever larger than 2, then the subsequent terms will grow without bound, so that's the typical threshhold to measure against.
 
@@ -83,38 +83,38 @@ The algorithm to color a single point $z_0$ of the Julia set corresponding to $c
 	{
 		renderer: "cpu",
 		
-		canvas_width: 500,
-		canvas_height: 500,
+		canvasWidth: 500,
+		canvasHeight: 500,
 		
-		world_width: 4,
-		world_height: 4,
-		world_center_x: 0,
-		world_center_y: 0
+		worldWidth: 4,
+		worldHeight: 4,
+		worldCenterX: 0,
+		worldCenterY: 0
 	};
 ```
 
 ```js
-	function generate_julia_set(a, b, resolution)
+	function generateJuliaSet(a, b, resolution)
 	{
 		let brightnesses = new Array(resolution * resolution);
-		let max_brightness = 0;
-		let brightness_scale = 1.5;
-		const num_iterations = 100;
+		let maxBrightness = 0;
+		let brightnessScale = 1.5;
+		const numIterations = 100;
 		
 		for (let i = 0; i &lt; resolution; i++)
 		{
 			for (let j = 0; j &lt; resolution; j++)
 			{
-				let world_coordinates = wilson.utils.interpolate.canvas_to_world(i, j);
-				let x = world_coordinates[0];
-				let y = world_coordinates[1];
+				let worldCoordinates = wilson.utils.interpolate.canvasToWorld(i, j);
+				let x = worldCoordinates[0];
+				let y = worldCoordinates[1];
 				
 				//This helps remove color banding.
 				let brightness = Math.exp(-Math.sqrt(x*x + y*y));
 				
 				let k = 0;
 				
-				for (k = 0; k &lt; num_iterations; k++)
+				for (k = 0; k &lt; numIterations; k++)
 				{
 					//z = z^2 + c = (x^2 - y^2 + a) + (2xy + b)i
 					let temp = x*x - y*y + a;
@@ -129,7 +129,7 @@ The algorithm to color a single point $z_0$ of the Julia set corresponding to $c
 					}
 				}
 				
-				if (k === num_iterations)
+				if (k === numIterations)
 				{
 					//Color this pixel black.
 					brightnesses[resolution * i + j] = 0;
@@ -139,45 +139,45 @@ The algorithm to color a single point $z_0$ of the Julia set corresponding to $c
 				{
 					brightnesses[resolution * i + j] = brightness;
 					
-					if (brightness > max_brightness)
+					if (brightness > maxBrightness)
 					{
-						max_brightness = brightness;
+						maxBrightness = brightness;
 					}
 				}
 			}
 		}
 		
 		//Now we need to create the actual pixel data in a Uint8ClampedArray to pass to Wilson.
-		let image_data = new Uint8ClampedArray(resolution * resolution * 4);
+		let imageData = new Uint8ClampedArray(resolution * resolution * 4);
 		
 		for (let i = 0; i &lt; resolution * resolution; i++)
 		{
-			image_data[4 * i] = 0; //Red
-			image_data[4 * i + 1] = brightness_scale * brightnesses[i] / max_brightness * 255; //Green
-			image_data[4 * i + 2] = brightness_scale * brightnesses[i] / max_brightness * 255; //Blue
-			image_data[4 * i + 3] = 255; //Alpha
+			imageData[4 * i] = 0; //Red
+			imageData[4 * i + 1] = brightnessScale * brightnesses[i] / maxBrightness * 255; //Green
+			imageData[4 * i + 2] = brightnessScale * brightnesses[i] / maxBrightness * 255; //Blue
+			imageData[4 * i + 3] = 255; //Alpha
 		}
 		
-		return image_data;
+		return imageData;
 	}
 ```
 
 ```js
-	let a_input_element = document.querySelector("#a-input");
-	let b_input_element = document.querySelector("#b-input");
-	let resolution_input_element = document.querySelector("#resolution-input");
+	let aInputElement = document.querySelector("#a-input");
+	let bInputElement = document.querySelector("#b-input");
+	let resolutionInputElement = document.querySelector("#resolution-input");
 
-	let generate_button_element = document.querySelector("#generate-button");
+	let generateButtonElement = document.querySelector("#generate-button");
 
-	generate_button_element.addEventListener("click", () =>
+	generateButtonElement.addEventListener("click", () =>
 	{
-		let a = parseFloat(a_input_element.value || 0);
-		let b = parseFloat(b_input_element.value || 1);
-		let resolution = parseInt(resolution_input_element.value || 500);
+		let a = parseFloat(aInputElement.value || 0);
+		let b = parseFloat(bInputElement.value || 1);
+		let resolution = parseInt(resolutionInputElement.value || 500);
 		
-		wilson.change_canvas_size(resolution, resolution);
+		wilson.changeCanvasSize(resolution, resolution);
 		
-		window.requestAnimationFrame(() => wilson.render.draw_frame(generate_julia_set(a, b, resolution)));
+		window.requestAnimationFrame(() => wilson.render.drawFrame(generateJuliaSet(a, b, resolution)));
 	});
 ```
 
@@ -228,22 +228,22 @@ As another improvement, let's add a button to download the current state of the 
 	{
 		renderer: "hybrid",
 		
-		canvas_width: 500,
-		canvas_height: 500,
+		canvasWidth: 500,
+		canvasHeight: 500,
 		
-		world_width: 4,
-		world_height: 4,
-		world_center_x: 0,
-		world_center_y: 0
+		worldWidth: 4,
+		worldHeight: 4,
+		worldCenterX: 0,
+		worldCenterY: 0
 	};
 ```
 
 ```js
-	let download_button_element = document.querySelector("#download-button");
+	let downloadButtonElement = document.querySelector("#download-button");
 
-	download_button_element.addEventListener("click", () =>
+	downloadButtonElement.addEventListener("click", () =>
 	{
-		wilson.download_frame("a-julia-set.png");
+		wilson.downloadFrame("a-julia-set.png");
 	});
 ```
 

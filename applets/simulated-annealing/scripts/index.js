@@ -8,54 +8,54 @@
 	{
 		renderer: "cpu",
 		
-		canvas_width: 1000,
-		canvas_height: 1000,
+		canvasWidth: 1000,
+		canvasHeight: 1000,
 		
 		
 		
-		use_fullscreen: true,
+		useFullscreen: true,
 	
-		use_fullscreen_button: true,
+		useFullscreenButton: true,
 		
-		enter_fullscreen_button_icon_path: "/graphics/general-icons/enter-fullscreen.png",
-		exit_fullscreen_button_icon_path: "/graphics/general-icons/exit-fullscreen.png"
+		enterFullscreenButtonIconPath: "/graphics/general-icons/enter-fullscreen.png",
+		exitFullscreenButtonIconPath: "/graphics/general-icons/exit-fullscreen.png"
 	};
 	
 	let wilson = new Wilson(Page.element.querySelector("#output-canvas"), options);
 	
 	
 	
-	let web_worker = null;
+	let webWorker = null;
 	
 	
 
-	let generate_button_element = Page.element.querySelector("#generate-button");
+	let generateButtonElement = Page.element.querySelector("#generate-button");
 
-	generate_button_element.addEventListener("click", request_annealing_graph);
+	generateButtonElement.addEventListener("click", requestAnnealingGraph);
 	
 	
 	
-	let num_nodes_input_element = Page.element.querySelector("#num-nodes-input");
+	let numNodesInputElement = Page.element.querySelector("#num-nodes-input");
 	
-	num_nodes_input_element.addEventListener("keydown", function(e)
+	numNodesInputElement.addEventListener("keydown", function(e)
 	{
 		if (e.keyCode === 13)
 		{
-			request_annealing_graph();
+			requestAnnealingGraph();
 		}
 	});
 	
 	
 	
-	let download_button_element = Page.element.querySelector("#download-button");
+	let downloadButtonElement = Page.element.querySelector("#download-button");
 	
-	download_button_element.addEventListener("click", () =>
+	downloadButtonElement.addEventListener("click", () =>
 	{
-		wilson.download_frame("simulated-annealing.png");
+		wilson.downloadFrame("simulated-annealing.png");
 	});
 	
 	
-	let maximum_speed_checkbox_element = Page.element.querySelector("#toggle-maximum-speed-checkbox");
+	let maximumSpeedCheckboxElement = Page.element.querySelector("#toggle-maximum-speed-checkbox");
 	
 	
 	
@@ -63,40 +63,40 @@
 	
 	
 	
-	function request_annealing_graph()
+	function requestAnnealingGraph()
 	{
-		let num_nodes = parseInt(num_nodes_input_element.value || 20);
-		let maximum_speed = maximum_speed_checkbox_element.checked;
+		let numNodes = parseInt(numNodesInputElement.value || 20);
+		let maximumSpeed = maximumSpeedCheckboxElement.checked;
 		
 		let resolution = 1000;
 		
 		
 		
-		wilson.change_canvas_size(resolution, resolution);
+		wilson.changeCanvasSize(resolution, resolution);
 		
 		wilson.ctx.fillStyle = "rgb(0, 0, 0)";
 		wilson.ctx.fillRect(0, 0, resolution, resolution);
 		
 		
 		
-		try {web_worker.terminate();}
+		try {webWorker.terminate();}
 		catch(ex) {}
 		
 		if (DEBUG)
 		{
-			web_worker = new Worker("/applets/simulated-annealing/scripts/worker.js");
+			webWorker = new Worker("/applets/simulated-annealing/scripts/worker.js");
 		}
 		
 		else
 		{
-			web_worker = new Worker("/applets/simulated-annealing/scripts/worker.min.js");
+			webWorker = new Worker("/applets/simulated-annealing/scripts/worker.min.js");
 		}
 		
-		Page.temporary_web_workers.push(web_worker);
+		Page.temporaryWebWorkers.push(webWorker);
 		
 		
 		
-		web_worker.onmessage = function(e)
+		webWorker.onmessage = function(e)
 		{
 			//A circle with arguments (x, y, r, color).
 			if (e.data[0] === 0)
@@ -109,7 +109,7 @@
 				wilson.ctx.fill();
 			}
 			
-			//A line with arguments (x_1, y_1, x_2, y_2, color).
+			//A line with arguments (x1, y1, x2, y2, color).
 			else if (e.data[0] === 1)
 			{
 				wilson.ctx.strokeStyle = e.data[5];
@@ -129,6 +129,6 @@
 		
 		
 		
-		web_worker.postMessage([resolution, num_nodes, maximum_speed]);
+		webWorker.postMessage([resolution, numNodes, maximumSpeed]);
 	}
-}()
+	}()

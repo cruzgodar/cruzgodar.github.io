@@ -4,9 +4,9 @@
 	
 	
 	
-	if (!Site.scripts_loaded["glsl"])
+	if (!Site.scriptsLoaded["glsl"])
 	{
-		await Site.load_glsl();
+		await Site.loadGlsl();
 	}
 	
 
@@ -162,19 +162,19 @@
 	
 	let wilson = null;
 	
-	let canvas_location_element = Page.element.querySelector("#canvas-location");
+	let canvasLocationElement = Page.element.querySelector("#canvas-location");
 	
 	
 	
-	function unit_test(shader)
+	function unitTest(shader)
 	{
 		try
 		{
 			try
 			{
-				wilson.output_canvas_container.parentNode.remove();
+				wilson.outputCanvasContainer.parentNode.remove();
 				
-				canvas_location_element.insertAdjacentHTML("afterend", `
+				canvasLocationElement.insertAdjacentHTML("afterend", `
 					<canvas id="output-canvas" class="output-canvas"></canvas>
 				`);
 			}
@@ -183,18 +183,18 @@
 			
 			
 			
-			let frag_shader_source = `
+			let fragShaderSource = `
 				precision highp float;
 				
 				varying vec2 uv;
 				
 				
 				
-				${Site.get_glsl_bundle(shader)}
+				${Site.getGlslBundle(shader)}
 				
 				
 				
-				bool unit_test(void)
+				bool unitTest(void)
 				{
 					${shader};
 				}
@@ -203,7 +203,7 @@
 				
 				void main(void)
 				{
-					if (unit_test())
+					if (unitTest())
 					{
 						gl_FragColor = vec4(0.0, 1.0, 0.0, 1.0);
 					}
@@ -219,21 +219,21 @@
 			{
 				renderer: "gpu",
 				
-				shader: frag_shader_source,
+				shader: fragShaderSource,
 				
-				canvas_width: 1,
-				canvas_height: 1
+				canvasWidth: 1,
+				canvasHeight: 1
 			};
 			
 			wilson = new Wilson(Page.element.querySelector("#output-canvas"), options);
 			
 			
 			
-			wilson.render.draw_frame();
+			wilson.render.drawFrame();
 			
-			let pixel_data = wilson.render.get_pixel_data();
+			let pixelData = wilson.render.getPixelData();
 			
-			if (pixel_data[0] === 0)
+			if (pixelData[0] === 0)
 			{
 				return 0;
 			}
@@ -255,7 +255,7 @@
 	{
 		console.log(`Starting test ${i}: ${tests[i]}`);
 		
-		let result = unit_test(tests[i]);
+		let result = unitTest(tests[i]);
 		
 		if (result === 0)
 		{
@@ -266,7 +266,7 @@
 		{
 			console.error(`Test ${i} returned false: ${tests[i]}`);
 			
-			passed_everything = false;
+			passedEverything = false;
 			
 			break;
 		}

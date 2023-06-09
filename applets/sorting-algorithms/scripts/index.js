@@ -6,62 +6,62 @@
 	
 	let resolution = 2000;
 	
-	let data_length = null;
+	let dataLength = null;
 	let data = [];
 	let brightness = [];
-	let max_brightness = 40;
+	let maxBrightness = 40;
 	
-	let current_generator = null;
+	let currentGenerator = null;
 	
-	let min_frequency = 20;
-	let max_frequency = 600;
+	let minFrequency = 20;
+	let maxFrequency = 600;
 	
-	let do_play_sound = true;
+	let doPlaySound = true;
 	
-	let last_timestamp = -1;
-	let time_elapsed = 0;
+	let lastTimestamp = -1;
+	let timeElapsed = 0;
 	
-	let starting_process_id = null;
+	let startingProcessId = null;
 	
 	let algorithms =
 	{
-		"bubble": bubble_sort,
-		"insertion": insertion_sort,
-		"selection": selection_sort,
+		"bubble": bubbleSort,
+		"insertion": insertionSort,
+		"selection": selectionSort,
 		"heap": heapsort,
-		"merge": merge_sort,
+		"merge": mergeSort,
 		"quick": quicksort,
-		"cycle": cycle_sort,
-		"msd-radix": msd_radix_sort,
-		"lsd-radix": lsd_radix_sort,
-		"gravity": gravity_sort
+		"cycle": cycleSort,
+		"msd-radix": msdRadixSort,
+		"lsd-radix": lsdRadixSort,
+		"gravity": gravitySort
 	};
 	
-	let generators = [shuffle_array, null, verify_array];
-	let current_generator_index = 0;
+	let generators = [shuffleArray, null, verifyArray];
+	let currentGeneratorIndex = 0;
 	
-	let num_reads = 0;
-	let num_writes = 0;
-	let in_frame_operations = 0;
-	let operations_per_frame = 1;
-	let update_reads_and_writes = false;
+	let numReads = 0;
+	let numWrites = 0;
+	let inFrameOperations = 0;
+	let operationsPerFrame = 1;
+	let updateReadsAndWrites = false;
 	
-	let changing_sound = false;
+	let changingSound = false;
 	
-	let audio_nodes = [];
+	let audioNodes = [];
 	
 	
 	
-	let frag_shader_source = `
+	let fragShaderSource = `
 		precision highp float;
 		
 		varying vec2 uv;
 		
-		uniform float data_length;
+		uniform float dataLength;
 		
-		const float circle_size = .8;
+		const float circleSize = .8;
 		
-		uniform sampler2D u_texture;
+		uniform sampler2D uTexture;
 		
 		
 		
@@ -78,38 +78,38 @@
 		{
 			gl_FragColor = vec4(0.0, 0.0, 0.0, 1.0);
 			
-			if (length(uv) <= circle_size)
+			if (length(uv) <= circleSize)
 			{
 				float sample = mod(atan(uv.y, uv.x) / 6.283, 1.0);
 				
-				vec4 output_1 = texture2D(u_texture, vec2(floor(sample * data_length) / data_length, .5));
-				vec4 output_2 = texture2D(u_texture, vec2(mod(floor(sample * data_length + 1.0) / data_length, 1.0), .5));
+				vec4 output1 = texture2D(uTexture, vec2(floor(sample * dataLength) / dataLength, .5));
+				vec4 output2 = texture2D(uTexture, vec2(mod(floor(sample * dataLength + 1.0) / dataLength, 1.0), .5));
 				
-				float brightness = mix(output_1.z, output_2.z, fract(sample * data_length));
+				float brightness = mix(output1.z, output2.z, fract(sample * dataLength));
 				
-				float h_1 = (output_1.x * 256.0 + output_1.y) / data_length * 255.0;
-				float h_2 = (output_2.x * 256.0 + output_2.y) / data_length * 255.0;
+				float h1 = (output1.x * 256.0 + output1.y) / dataLength * 255.0;
+				float h2 = (output2.x * 256.0 + output2.y) / dataLength * 255.0;
 				
-				if (abs(h_1 - h_2) > .5)
+				if (abs(h1 - h2) > .5)
 				{
-					if (h_1 > h_2)
+					if (h1 > h2)
 					{
-						h_1 -= 1.0;
+						h1 -= 1.0;
 					}
 					
 					else
 					{
-						h_2 -= 1.0;
+						h2 -= 1.0;
 					}
 				}
 				
 				
 				
-				float h = mix(h_1, h_2, fract(sample * data_length));
+				float h = mix(h1, h2, fract(sample * dataLength));
 				
-				float s = clamp((length(uv) / circle_size - .03) * (1.0 - brightness), 0.0, 1.0);
+				float s = clamp((length(uv) / circleSize - .03) * (1.0 - brightness), 0.0, 1.0);
 				
-				float v = clamp((1.0 - length(uv) / circle_size) * 100.0, 0.0, 1.0);
+				float v = clamp((1.0 - length(uv) / circleSize) * 100.0, 0.0, 1.0);
 				
 				gl_FragColor = vec4(hsv2rgb(vec3(h, s, v)), 1.0);
 			}
@@ -120,24 +120,24 @@
 	{
 		renderer: "gpu",
 		
-		shader: frag_shader_source,
+		shader: fragShaderSource,
 		
-		canvas_width: 2000,
-		canvas_height: 2000,
+		canvasWidth: 2000,
+		canvasHeight: 2000,
 		
 		
 		
-		use_fullscreen: true,
+		useFullscreen: true,
 	
-		use_fullscreen_button: true,
+		useFullscreenButton: true,
 		
-		enter_fullscreen_button_icon_path: "/graphics/general-icons/enter-fullscreen.png",
-		exit_fullscreen_button_icon_path: "/graphics/general-icons/exit-fullscreen.png"
+		enterFullscreenButtonIconPath: "/graphics/general-icons/enter-fullscreen.png",
+		exitFullscreenButtonIconPath: "/graphics/general-icons/exit-fullscreen.png"
 	};
 	
 	let wilson = new Wilson(Page.element.querySelector("#output-canvas"), options);
 	
-	wilson.render.init_uniforms(["data_length"]);
+	wilson.render.initUniforms(["dataLength"]);
 	
 	
 	
@@ -155,17 +155,17 @@
 	
 	
 	
-	let algorithm_selector_dropdown_element = Page.element.querySelector("#algorithm-selector-dropdown");
+	let algorithmSelectorDropdownElement = Page.element.querySelector("#algorithm-selector-dropdown");
 	
-	algorithm_selector_dropdown_element.addEventListener("input", () =>
+	algorithmSelectorDropdownElement.addEventListener("input", () =>
 	{
-		Page.set_element_styles(".info-text", "opacity", 0);
+		Page.setElementStyles(".info-text", "opacity", 0);
 		
 		setTimeout(() =>
 		{
-			Page.set_element_styles(".info-text", "display", "none");
+			Page.setElementStyles(".info-text", "display", "none");
 			
-			let element = Page.element.querySelector(`#${algorithm_selector_dropdown_element.value}-info`);
+			let element = Page.element.querySelector(`#${algorithmSelectorDropdownElement.value}-info`);
 			
 			element.style.display = "block";
 			
@@ -173,62 +173,62 @@
 			{
 				element.style.opacity = 1;
 			}, 10);
-		}, Site.opacity_animation_time);	
+		}, Site.opacityAnimationTime);	
 	});
 	
 	
 	
-	let generate_button_element = Page.element.querySelector("#generate-button");
+	let generateButtonElement = Page.element.querySelector("#generate-button");
 
-	generate_button_element.addEventListener("click", draw_sorting_algorithm);
+	generateButtonElement.addEventListener("click", drawSortingAlgorithm);
 	
 	
 	
-	let resolution_input_element = Page.element.querySelector("#resolution-input");
+	let resolutionInputElement = Page.element.querySelector("#resolution-input");
 	
-	resolution_input_element.addEventListener("keydown", (e) =>
+	resolutionInputElement.addEventListener("keydown", (e) =>
 	{
 		if (e.keyCode === 13)
 		{
-			draw_sorting_algorithm();
+			drawSortingAlgorithm();
 		}
 	});
 	
 	
 	
-	let array_size_input_element = Page.element.querySelector("#array-size-input");
+	let arraySizeInputElement = Page.element.querySelector("#array-size-input");
 	
-	array_size_input_element.addEventListener("keydown", (e) =>
+	arraySizeInputElement.addEventListener("keydown", (e) =>
 	{
 		if (e.keyCode === 13)
 		{
-			draw_sorting_algorithm();
+			drawSortingAlgorithm();
 		}
 	});
 	
 	
 	
-	let play_sound_checkbox_element = Page.element.querySelector("#play-sound-checkbox");
+	let playSoundCheckboxElement = Page.element.querySelector("#play-sound-checkbox");
 	
-	play_sound_checkbox_element.checked = true;
+	playSoundCheckboxElement.checked = true;
 	
-	let audio_context = null;
-	let audio_oscillator = null;
-	let audio_gain_node = null;
-	
-	
-	
-	let num_reads_element = Page.element.querySelector("#num-reads");
-	
-	let num_writes_element = Page.element.querySelector("#num-writes");
+	let audioContext = null;
+	let audioOscillator = null;
+	let audioGainNode = null;
 	
 	
 	
-	let download_button_element = Page.element.querySelector("#download-button");
+	let numReadsElement = Page.element.querySelector("#num-reads");
 	
-	download_button_element.addEventListener("click", () =>
+	let numWritesElement = Page.element.querySelector("#num-writes");
+	
+	
+	
+	let downloadButtonElement = Page.element.querySelector("#download-button");
+	
+	downloadButtonElement.addEventListener("click", () =>
 	{
-		wilson.download_frame("an-aztec-diamond.png");
+		wilson.downloadFrame("an-aztec-diamond.png");
 	});
 	
 	
@@ -237,184 +237,184 @@
 	
 	
 	
-	function draw_sorting_algorithm()
+	function drawSortingAlgorithm()
 	{
-		try {audio_nodes[current_generator_index][2].gain.linearRampToValueAtTime(.0001, audio_nodes[current_generator_index][0].currentTime + time_elapsed / 1000);}
+		try {audioNodes[currentGeneratorIndex][2].gain.linearRampToValueAtTime(.0001, audioNodes[currentGeneratorIndex][0].currentTime + timeElapsed / 1000);}
 		catch(ex) {}
 		
 		
 		
-		starting_process_id = Site.applet_process_id;
+		startingProcessId = Site.appletProcessId;
 		
 		
 		
-		resolution = parseInt(resolution_input_element.value || 2000);
+		resolution = parseInt(resolutionInputElement.value || 2000);
 		
-		wilson.change_canvas_size(resolution, resolution);
+		wilson.changeCanvasSize(resolution, resolution);
 		
 		
 		
-		let old_data_length = data_length;
-		data_length = parseInt(array_size_input_element.value || 256);
+		let oldDataLength = dataLength;
+		dataLength = parseInt(arraySizeInputElement.value || 256);
 		
-		if (data_length !== old_data_length)
+		if (dataLength !== oldDataLength)
 		{
-			data = new Array(data_length);
-			brightness = new Array(data_length);
+			data = new Array(dataLength);
+			brightness = new Array(dataLength);
 			
-			for (let i = 0; i < data_length; i++)
+			for (let i = 0; i < dataLength; i++)
 			{
 				data[i] = i;
 				brightness[i] = 0;
 			}
 			
-			wilson.gl.uniform1f(wilson.uniforms["data_length"], data_length);
+			wilson.gl.uniform1f(wilson.uniforms["dataLength"], dataLength);
 		}	
 		
 		
 		
-		num_reads = 0;
-		num_writes = 0;
-		in_frame_operations = 0;
+		numReads = 0;
+		numWrites = 0;
+		inFrameOperations = 0;
 		
-		update_reads_and_writes = false;
+		updateReadsAndWrites = false;
 		
-		num_reads_element.textContent = "0";
-		num_writes_element.textContent = "0";
-		
-		
-		
-		do_play_sound = play_sound_checkbox_element.checked;
+		numReadsElement.textContent = "0";
+		numWritesElement.textContent = "0";
 		
 		
 		
-		generators = [shuffle_array, algorithms[algorithm_selector_dropdown_element.value], verify_array];
-		current_generator_index = 0;
+		doPlaySound = playSoundCheckboxElement.checked;
 		
-		audio_nodes = [];
-		create_audio_nodes();
 		
-		if (do_play_sound)
+		
+		generators = [shuffleArray, algorithms[algorithmSelectorDropdownElement.value], verifyArray];
+		currentGeneratorIndex = 0;
+		
+		audioNodes = [];
+		createAudioNodes();
+		
+		if (doPlaySound)
 		{
-			audio_nodes[current_generator_index][1].start(0);
+			audioNodes[currentGeneratorIndex][1].start(0);
 		}
 		
-		current_generator = generators[0]();
+		currentGenerator = generators[0]();
 		
 		
 		
-		window.requestAnimationFrame(draw_frame);
+		window.requestAnimationFrame(drawFrame);
 	}
 	
 	
 	
-	function draw_frame(timestamp)
+	function drawFrame(timestamp)
 	{
-		time_elapsed = timestamp - last_timestamp;
+		timeElapsed = timestamp - lastTimestamp;
 		
-		last_timestamp = timestamp;
+		lastTimestamp = timestamp;
 		
-		if (time_elapsed === 0)
+		if (timeElapsed === 0)
 		{
 			return;
 		}
 		
 		
 		
-		let texture_data = new Uint8Array(data_length * 4);
+		let textureData = new Uint8Array(dataLength * 4);
 		
-		for (let i = 0; i < data_length; i++)
+		for (let i = 0; i < dataLength; i++)
 		{
-			texture_data[4 * i] = Math.floor(data[i] / 256);
-			texture_data[4 * i + 1] = data[i] % 256;
+			textureData[4 * i] = Math.floor(data[i] / 256);
+			textureData[4 * i + 1] = data[i] % 256;
 			
-			texture_data[4 * i + 2] = Math.floor(brightness[i] / max_brightness * 256);
+			textureData[4 * i + 2] = Math.floor(brightness[i] / maxBrightness * 256);
 		}
 		
-		wilson.gl.texImage2D(wilson.gl.TEXTURE_2D, 0, wilson.gl.RGBA, data_length, 1, 0, wilson.gl.RGBA, wilson.gl.UNSIGNED_BYTE, texture_data);
+		wilson.gl.texImage2D(wilson.gl.TEXTURE_2D, 0, wilson.gl.RGBA, dataLength, 1, 0, wilson.gl.RGBA, wilson.gl.UNSIGNED_BYTE, textureData);
 		
-		wilson.render.draw_frame();
+		wilson.render.drawFrame();
 		
-		decrease_brightness();
+		decreaseBrightness();
 		
-		if (update_reads_and_writes)
+		if (updateReadsAndWrites)
 		{
-			num_reads_element.textContent = num_reads;
-			num_writes_element.textContent = num_writes;
+			numReadsElement.textContent = numReads;
+			numWritesElement.textContent = numWrites;
 		}
 		
-		if (!changing_sound)
+		if (!changingSound)
 		{
-			current_generator.next();
+			currentGenerator.next();
 		}
 		
 		
 		
-		if (starting_process_id !== Site.applet_process_id)
+		if (startingProcessId !== Site.appletProcessId)
 		{
 			console.log("Terminated applet process");
 			
-			try {audio_nodes[current_generator_index][2].gain.linearRampToValueAtTime(.0001, audio_nodes[current_generator_index][0].currentTime + time_elapsed / 1000);}
+			try {audioNodes[currentGeneratorIndex][2].gain.linearRampToValueAtTime(.0001, audioNodes[currentGeneratorIndex][0].currentTime + timeElapsed / 1000);}
 			catch(ex) {}
 			
 			return;
 		}
 		
-		window.requestAnimationFrame(draw_frame);
+		window.requestAnimationFrame(drawFrame);
 	}
 	
 	
 	
-	function create_audio_nodes()
+	function createAudioNodes()
 	{
-		if (do_play_sound)
+		if (doPlaySound)
 		{
 			for (let i = 0; i < generators.length; i++)
 			{
-				let audio_context = new AudioContext();
+				let audioContext = new AudioContext();
 				
-				let audio_oscillator = audio_context.createOscillator();
+				let audioOscillator = audioContext.createOscillator();
 				
-				audio_oscillator.type = "sine";
+				audioOscillator.type = "sine";
 				
-				audio_oscillator.frequency.value = 50;
+				audioOscillator.frequency.value = 50;
 				
-				let audio_gain_node = audio_context.createGain();
+				let audioGainNode = audioContext.createGain();
 				
-				audio_oscillator.connect(audio_gain_node);
+				audioOscillator.connect(audioGainNode);
 				
-				audio_gain_node.connect(audio_context.destination);
+				audioGainNode.connect(audioContext.destination);
 				
 				
 				
-				audio_nodes.push([audio_context, audio_oscillator, audio_gain_node]);
+				audioNodes.push([audioContext, audioOscillator, audioGainNode]);
 			}
 		}
 	}
 	
-	function read_from_position(index, highlight = false)
+	function readFromPosition(index, highlight = false)
 	{
-		num_reads++;
+		numReads++;
 	}
 	
-	function write_to_position(index, highlight = true, sound = true)
+	function writeToPosition(index, highlight = true, sound = true)
 	{
 		if (highlight)
 		{
-			brightness[index] = max_brightness - 1;
+			brightness[index] = maxBrightness - 1;
 		}	
 		
-		num_writes++;
+		numWrites++;
 		
-		in_frame_operations++;
+		inFrameOperations++;
 		
-		if (in_frame_operations >= operations_per_frame)
+		if (inFrameOperations >= operationsPerFrame)
 		{
-			in_frame_operations = 0;
+			inFrameOperations = 0;
 			
 			if (sound)
 			{
-				play_sound(index);
+				playSound(index);
 			}	
 				
 			return true;
@@ -423,109 +423,109 @@
 		return false;
 	}
 	
-	function play_sound(index)
+	function playSound(index)
 	{
-		if (do_play_sound)
+		if (doPlaySound)
 		{
-			audio_nodes[current_generator_index][1].frequency.linearRampToValueAtTime((max_frequency - min_frequency) * data[index] / data_length + min_frequency, audio_nodes[current_generator_index][0].currentTime + time_elapsed / 1000);
+			audioNodes[currentGeneratorIndex][1].frequency.linearRampToValueAtTime((maxFrequency - minFrequency) * data[index] / dataLength + minFrequency, audioNodes[currentGeneratorIndex][0].currentTime + timeElapsed / 1000);
 		}
 	}
 	
-	function decrease_brightness()
+	function decreaseBrightness()
 	{
-		for (let i = 0; i < data_length; i++)
+		for (let i = 0; i < dataLength; i++)
 		{
 			brightness[i] = Math.max(brightness[i] - 1, 0);
 		}
 	}
 	
-	function advance_generator()
+	function advanceGenerator()
 	{
-		changing_sound = true;
+		changingSound = true;
 		
-		if (do_play_sound)
+		if (doPlaySound)
 		{
-			audio_nodes[current_generator_index][2].gain.linearRampToValueAtTime(.0001, audio_nodes[current_generator_index][0].currentTime + time_elapsed / 1000);
+			audioNodes[currentGeneratorIndex][2].gain.linearRampToValueAtTime(.0001, audioNodes[currentGeneratorIndex][0].currentTime + timeElapsed / 1000);
 		}
 		
-		current_generator_index++;
+		currentGeneratorIndex++;
 		
-		if (current_generator_index < generators.length)
+		if (currentGeneratorIndex < generators.length)
 		{
 			setTimeout(() =>
 			{
-				if (do_play_sound)
+				if (doPlaySound)
 				{
-					audio_nodes[current_generator_index][1].start(0);
+					audioNodes[currentGeneratorIndex][1].start(0);
 				}
 				
-				current_generator = generators[current_generator_index]();
+				currentGenerator = generators[currentGeneratorIndex]();
 				
-				changing_sound = false;
+				changingSound = false;
 			}, 1000);
 		}
 	}
 	
 	
 	
-	function* shuffle_array()
+	function* shuffleArray()
 	{
-		operations_per_frame = Math.ceil(data_length / 60);
+		operationsPerFrame = Math.ceil(dataLength / 60);
 		
-		for (let i = 0; i < data_length - 1; i++)
+		for (let i = 0; i < dataLength - 1; i++)
 		{
-			let j = Math.floor(Math.random() * (data_length - i - 1)) + i;
+			let j = Math.floor(Math.random() * (dataLength - i - 1)) + i;
 			
 			let temp = data[i];
 			data[i] = data[j];
 			data[j] = temp;
 			
-			if (write_to_position(i)) {yield}
-			if (write_to_position(j)) {yield}
+			if (writeToPosition(i)) {yield}
+			if (writeToPosition(j)) {yield}
 		}
 		
-		num_reads = 0;
-		num_writes = 0;
+		numReads = 0;
+		numWrites = 0;
 		
-		update_reads_and_writes = true;
+		updateReadsAndWrites = true;
 		
-		advance_generator();
+		advanceGenerator();
 	}
 	
 	
 	
-	function* verify_array()
+	function* verifyArray()
 	{
-		update_reads_and_writes = false;
+		updateReadsAndWrites = false;
 		
-		operations_per_frame = Math.ceil(data_length / 60);
+		operationsPerFrame = Math.ceil(dataLength / 60);
 		
-		for (let i = 0; i < data_length; i++)
+		for (let i = 0; i < dataLength; i++)
 		{
 			//This isn't actually a write, but we want to animate the process.
-			if (write_to_position(i)) {yield}
+			if (writeToPosition(i)) {yield}
 		}
 		
-		if (do_play_sound)
+		if (doPlaySound)
 		{
-			audio_nodes[current_generator_index][2].gain.linearRampToValueAtTime(.0001, audio_nodes[current_generator_index][0].currentTime + time_elapsed / 1000);
+			audioNodes[currentGeneratorIndex][2].gain.linearRampToValueAtTime(.0001, audioNodes[currentGeneratorIndex][0].currentTime + timeElapsed / 1000);
 		}
 	}
 	
 	
 	
-	function* bubble_sort()
+	function* bubbleSort()
 	{
-		operations_per_frame = Math.ceil(data_length * data_length / 2500);
+		operationsPerFrame = Math.ceil(dataLength * dataLength / 2500);
 		
 		while (true)
 		{
 			let done = true;
 			
-			for (let i = 0; i < data_length - 1; i++)
+			for (let i = 0; i < dataLength - 1; i++)
 			{
-				read_from_position(i);
-				read_from_position(i + 1);
+				readFromPosition(i);
+				readFromPosition(i + 1);
 				
 				if (data[i] > data[i + 1])
 				{
@@ -535,8 +535,8 @@
 					data[i] = data[i + 1];
 					data[i + 1] = temp;
 					
-					if (write_to_position(i)) {yield}
-					if (write_to_position(i + 1)) {yield}
+					if (writeToPosition(i)) {yield}
+					if (writeToPosition(i + 1)) {yield}
 				}
 			}
 			
@@ -546,26 +546,26 @@
 			}
 		}
 		
-		advance_generator();
+		advanceGenerator();
 	}
 	
 	
 	
-	function* insertion_sort()
+	function* insertionSort()
 	{
-		operations_per_frame = Math.ceil(data_length * data_length / 5000);
+		operationsPerFrame = Math.ceil(dataLength * dataLength / 5000);
 		
-		for (let i = 1; i < data_length; i++)
+		for (let i = 1; i < dataLength; i++)
 		{
-			read_from_position(i);
-			read_from_position(i - 1);
+			readFromPosition(i);
+			readFromPosition(i - 1);
 			
 			if (data[i] < data[i - 1])
 			{
 				for (let j = 0; j < i; j++)
 				{
-					read_from_position(j);
-					read_from_position(i);
+					readFromPosition(j);
+					readFromPosition(i);
 					
 					if (data[j] > data[i])
 					{
@@ -575,83 +575,83 @@
 						{
 							data[k] = data[k - 1];
 							
-							if (write_to_position(k)) {yield}
+							if (writeToPosition(k)) {yield}
 						}
 						
 						data[j] = temp;
 						
-						if (write_to_position(j)) {yield}
+						if (writeToPosition(j)) {yield}
 					}
 				}
 			}
 		}
 		
-		advance_generator();
+		advanceGenerator();
 	}
 	
 	
 	
-	function* selection_sort()
+	function* selectionSort()
 	{
-		operations_per_frame = Math.ceil(data_length / 1000);
+		operationsPerFrame = Math.ceil(dataLength / 1000);
 		
-		for (let i = 0; i < data_length; i++)
+		for (let i = 0; i < dataLength; i++)
 		{
-			let min_index = -1;
-			let min_element = data_length;
+			let minIndex = -1;
+			let minElement = dataLength;
 			
-			for (let j = i; j < data_length; j++)
+			for (let j = i; j < dataLength; j++)
 			{
-				read_from_position(j);
-				read_from_position(min_element);
+				readFromPosition(j);
+				readFromPosition(minElement);
 				
-				if (data[j] < min_element)
+				if (data[j] < minElement)
 				{
-					min_element = data[j];
-					min_index = j;
+					minElement = data[j];
+					minIndex = j;
 				}
 			}
 			
 			let temp = data[i];
-			data[i] = min_element;
-			data[min_index] = temp;
+			data[i] = minElement;
+			data[minIndex] = temp;
 			
-			if (write_to_position(i)) {yield}
-			if (write_to_position(min_index)) {yield}
+			if (writeToPosition(i)) {yield}
+			if (writeToPosition(minIndex)) {yield}
 		}
 		
-		advance_generator();
+		advanceGenerator();
 	}
 	
 	
 	
 	function* heapsort()
 	{
-		operations_per_frame = Math.ceil(data_length * Math.log(data_length) / 500);
+		operationsPerFrame = Math.ceil(dataLength * Math.log(dataLength) / 500);
 		
 		//Build the heap.
-		for (let i = 1; i < data_length; i++)
+		for (let i = 1; i < dataLength; i++)
 		{
 			let index = i;
-			let index_2 = 0;
+			let index2 = 0;
 			
 			while (index !== 0)
 			{
-				index_2 = Math.floor((index - 1) / 2);
+				index2 = Math.floor((index - 1) / 2);
 				
-				read_from_position(index);
-				read_from_position(index_2);
+				readFromPosition(index);
+				readFromPosition(index2);
 				
-				if (data[index] > data[index_2])
+				if (data[index] > data[index2])
 				{
 					let temp = data[index];
-					data[index] = data[index_2];
-					data[index_2] = temp;
+					data[index] = data[index2];
+					data[index2] = temp;
 					
-					if (write_to_position(index)) {yield}
-					if (write_to_position(index_2)) {yield}
+					if (writeToPosition(index)) {yield}
+					if (writeToPosition(index2)) {yield}
 					
-					index = index_2;
+					index = index2;
 				}
 				
 				else
@@ -662,61 +662,61 @@
 		}
 		
 		//Disassemble the heap.
-		for (let i = data_length - 1; i >= 0; i--)
+		for (let i = dataLength - 1; i >= 0; i--)
 		{
 			let temp = data[0];
 			data[0] = data[i];
 			data[i] = temp;
 			
-			if (write_to_position(0)) {yield}
-			if (write_to_position(i)) {yield}
+			if (writeToPosition(0)) {yield}
+			if (writeToPosition(i)) {yield}
 			
 			
 			
 			let index = 0;
 			
-			let child_1 = 0;
-			let child_2 = 0;
-			let max_child = 0;
+			let child1 = 0;
+			let child2 = 0;
+			let maxChild = 0;
 			
 			while (true)
 			{
-				child_1 = 2 * index + 1;
-				child_2 = child_1 + 1;
+				child1 = 2 * index + 1;
+				child2 = child1 + 1;
 				
-				if (child_1 >= i)
+				if (child1 >= i)
 				{
 					break;
 				}
 				
-				else if (child_2 >= i)
+				else if (child2 >= i)
 				{
-					max_child = child_1;
+					maxChild = child1;
 				}
 				
 				else
 				{
-					read_from_position(child_1);
-					read_from_position(child_2);
+					readFromPosition(child1);
+					readFromPosition(child2);
 					
-					max_child = data[child_1] > data[child_2] ? child_1 : child_2;
+					maxChild = data[child1] > data[child2] ? child1 : child2;
 				}
 				
 				
 				
-				read_from_position(index);
-				read_from_position(max_child);
+				readFromPosition(index);
+				readFromPosition(maxChild);
 				
-				if (data[index] < data[max_child])
+				if (data[index] < data[maxChild])
 				{
 					let temp = data[index];
-					data[index] = data[max_child];
-					data[max_child] = temp;
+					data[index] = data[maxChild];
+					data[maxChild] = temp;
 					
-					if (write_to_position(index)) {yield}
-					if (write_to_position(max_child)) {yield}
+					if (writeToPosition(index)) {yield}
+					if (writeToPosition(maxChild)) {yield}
 					
-					index = max_child;
+					index = maxChild;
 				}
 				
 				else
@@ -726,223 +726,223 @@
 			}
 		}
 		
-		advance_generator();
+		advanceGenerator();
 	}
 	
 	
 	
-	function* merge_sort()
+	function* mergeSort()
 	{
-		operations_per_frame = Math.ceil(data_length * Math.log(data_length) / 450);
+		operationsPerFrame = Math.ceil(dataLength * Math.log(dataLength) / 450);
 		
-		let aux_array = new Array(data_length);
+		let auxArray = new Array(dataLength);
 		
-		let block_size = 1;
+		let blockSize = 1;
 		
 		while (true)
 		{
 			//First iterate over blocks.
-			for (let i = 0; i < data_length; i += 2 * block_size)
+			for (let i = 0; i < dataLength; i += 2 * blockSize)
 			{
 				//Within each block, we need to place things in the right order into the auxiliary array.
-				let index_1 = 0;
-				let index_2 = block_size;
-				let aux_index = 0;
+				let index1 = 0;
+				let index2 = blockSize;
+				let auxIndex = 0;
 				
 				while (true)
 				{
-					if (index_2 + i >= data_length || index_2 >= 2*block_size)
+					if (index2 + i >= dataLength || index2 >= 2*blockSize)
 					{
-						if (index_1 >= block_size || i + index_1 >= data_length)
+						if (index1 >= blockSize || i + index1 >= dataLength)
 						{
 							break;
 						}
 						
-						aux_array[aux_index] = data[i + index_1];
+						auxArray[auxIndex] = data[i + index1];
 						
-						if (write_to_position(i + index_1)) {yield}
+						if (writeToPosition(i + index1)) {yield}
 						
-						index_1++;
-						aux_index++;
+						index1++;
+						auxIndex++;
 					}
 					
-					else if (index_1 >= block_size || i + index_1 >= data_length)
+					else if (index1 >= blockSize || i + index1 >= dataLength)
 					{
-						aux_array[aux_index] = data[i + index_2];
+						auxArray[auxIndex] = data[i + index2];
 						
-						if (write_to_position(i + index_2)) {yield}
+						if (writeToPosition(i + index2)) {yield}
 						
-						index_2++;
-						aux_index++;
+						index2++;
+						auxIndex++;
 					}
 					
 					else
 					{
-						read_from_position(i + index_1);
-						read_from_position(i + index_2);
+						readFromPosition(i + index1);
+						readFromPosition(i + index2);
 						
-						if (data[i + index_1] < data[i + index_2])
+						if (data[i + index1] < data[i + index2])
 						{
-							aux_array[aux_index] = data[i + index_1];
+							auxArray[auxIndex] = data[i + index1];
 							
-							if (write_to_position(i + index_1)) {yield}
+							if (writeToPosition(i + index1)) {yield}
 							
-							index_1++;
-							aux_index++;
+							index1++;
+							auxIndex++;
 						}
 						
 						else
 						{
-							aux_array[aux_index] = data[i + index_2];
+							auxArray[auxIndex] = data[i + index2];
 							
-							if (write_to_position(i + index_2)) {yield}
+							if (writeToPosition(i + index2)) {yield}
 							
-							index_2++;
-							aux_index++;
+							index2++;
+							auxIndex++;
 						}
 					}
 				}
 				
 				//Copy the aux array back into the original one.
-				for (let j = 0; j < 2 * block_size; j++)
+				for (let j = 0; j < 2 * blockSize; j++)
 				{
-					if (i + j >= data_length)
+					if (i + j >= dataLength)
 					{
 						break;
 					}
 					
-					data[i + j] = aux_array[j];
+					data[i + j] = auxArray[j];
 					
-					if (write_to_position(i + j)) {yield}
+					if (writeToPosition(i + j)) {yield}
 				}
 			}
 			
-			block_size *= 2;
+			blockSize *= 2;
 			
-			if (block_size >= data_length)
+			if (blockSize >= dataLength)
 			{
 				break;
 			}
 		}
 		
-		advance_generator();
+		advanceGenerator();
 	}
 	
 	
 	
 	function* quicksort()
 	{
-		operations_per_frame = Math.ceil(data_length * Math.log(data_length) / 2250);
+		operationsPerFrame = Math.ceil(dataLength * Math.log(dataLength) / 2250);
 		
-		let current_endpoints = new Array(data_length);
-		current_endpoints[0] = 0;
-		current_endpoints[1] = data_length - 1;
+		let currentEndpoints = new Array(dataLength);
+		currentEndpoints[0] = 0;
+		currentEndpoints[1] = dataLength - 1;
 		
-		let next_endpoints = new Array(data_length);
+		let nextEndpoints = new Array(dataLength);
 		
-		let num_blocks = 1;
-		let next_num_blocks = 0;
+		let numBlocks = 1;
+		let nextNumBlocks = 0;
 		
 		
 		
-		while (num_blocks > 0)
+		while (numBlocks > 0)
 		{
-			for (let i = 0; i < num_blocks; i++)
+			for (let i = 0; i < numBlocks; i++)
 			{
 				//For each block, pick the middle element as the pivot.
-				let pivot = data[Math.floor((current_endpoints[2 * i] + current_endpoints[2 * i + 1]) / 2)];
-				read_from_position(Math.floor((current_endpoints[2 * i] + current_endpoints[2 * i + 1]) / 2));
+				let pivot = data[Math.floor((currentEndpoints[2 * i] + currentEndpoints[2 * i + 1]) / 2)];
+				readFromPosition(Math.floor((currentEndpoints[2 * i] + currentEndpoints[2 * i + 1]) / 2));
 				
 				//Now we need to split the block so that everything before the pivot is less than it and everything after is greater.
-				let left_index = current_endpoints[2 * i] - 1;
-				let right_index = current_endpoints[2 * i + 1] + 1;
+				let leftIndex = currentEndpoints[2 * i] - 1;
+				let rightIndex = currentEndpoints[2 * i + 1] + 1;
 				
 				while (true)
 				{
 					do
 					{
-						left_index++;
-						read_from_position(left_index);
-					} while (data[left_index] < pivot)
+						leftIndex++;
+						readFromPosition(leftIndex);
+					} while (data[leftIndex] < pivot)
 					
-					read_from_position(left_index);
+					readFromPosition(leftIndex);
 					
 					do
 					{
-						right_index--;
-						read_from_position(right_index);
-					} while (data[right_index] > pivot)
+						rightIndex--;
+						readFromPosition(rightIndex);
+					} while (data[rightIndex] > pivot)
 					
-					read_from_position(right_index);
+					readFromPosition(rightIndex);
 					
-					if (left_index >= right_index)
+					if (leftIndex >= rightIndex)
 					{
 						break;
 					}
 					
-					let temp = data[left_index];
-					data[left_index] = data[right_index];
-					data[right_index] = temp;
+					let temp = data[leftIndex];
+					data[leftIndex] = data[rightIndex];
+					data[rightIndex] = temp;
 					
-					if (write_to_position(left_index)) {yield}
-					if (write_to_position(right_index)) {yield}
+					if (writeToPosition(leftIndex)) {yield}
+					if (writeToPosition(rightIndex)) {yield}
 				}
 				
-				if (right_index > current_endpoints[2 * i])
+				if (rightIndex > currentEndpoints[2 * i])
 				{
-					next_endpoints[2 * next_num_blocks] = current_endpoints[2 * i];
-					next_endpoints[2 * next_num_blocks + 1] = right_index;
+					nextEndpoints[2 * nextNumBlocks] = currentEndpoints[2 * i];
+					nextEndpoints[2 * nextNumBlocks + 1] = rightIndex;
 					
-					next_num_blocks++;
+					nextNumBlocks++;
 				}
 				
-				if (current_endpoints[2 * i + 1] > right_index + 1)
+				if (currentEndpoints[2 * i + 1] > rightIndex + 1)
 				{
-					next_endpoints[2 * next_num_blocks] = right_index + 1;
-					next_endpoints[2 * next_num_blocks + 1] = current_endpoints[2 * i + 1];
+					nextEndpoints[2 * nextNumBlocks] = rightIndex + 1;
+					nextEndpoints[2 * nextNumBlocks + 1] = currentEndpoints[2 * i + 1];
 					
-					next_num_blocks++;
+					nextNumBlocks++;
 				}
 			}
 			
 			
 			
-			num_blocks = next_num_blocks;
-			next_num_blocks = 0;
+			numBlocks = nextNumBlocks;
+			nextNumBlocks = 0;
 			
-			for (let i = 0; i < 2 * num_blocks; i++)
+			for (let i = 0; i < 2 * numBlocks; i++)
 			{
-				current_endpoints[i] = next_endpoints[i];
+				currentEndpoints[i] = nextEndpoints[i];
 			}
 		}
 		
-		advance_generator();
+		advanceGenerator();
 	}
 	
 	
 	
-	function* cycle_sort()
+	function* cycleSort()
 	{
-		operations_per_frame = Math.ceil(data_length / 2000);
+		operationsPerFrame = Math.ceil(dataLength / 2000);
 		
-		let done = new Array(data_length);
+		let done = new Array(dataLength);
 		
-		for (let i = 0; i < data_length; i++)
+		for (let i = 0; i < dataLength; i++)
 		{
 			done[i] = false;
 		}
 		
-		for (let i = 0; i < data_length; i++)
+		for (let i = 0; i < dataLength; i++)
 		{
 			if (done[i])
 			{
 				continue;
 			}
 			
-			read_from_position(i);
+			readFromPosition(i);
 			
-			let popped_entry = data[i];
-			let first_popped_entry = popped_entry;
+			let poppedEntry = data[i];
+			let firstPoppedEntry = poppedEntry;
 			let index = 0;
 			
 			do
@@ -950,139 +950,139 @@
 				//Figure out where this index should go.
 				index = 0;
 				
-				for (let j = 0; j < data_length; j++)
+				for (let j = 0; j < dataLength; j++)
 				{
-					read_from_position(j);
+					readFromPosition(j);
 					
-					if (data[j] < popped_entry)
+					if (data[j] < poppedEntry)
 					{
 						index++;
 					}
 				}
 				
-				if (popped_entry > first_popped_entry)
+				if (poppedEntry > firstPoppedEntry)
 				{
 					index--;
 				}
 				
 				let temp = data[index];
-				data[index] = popped_entry;
-				popped_entry = temp;
+				data[index] = poppedEntry;
+				poppedEntry = temp;
 				
-				if (write_to_position(index)) {yield}
+				if (writeToPosition(index)) {yield}
 				
 				done[index] = true;
 			} while (index !== i)
 		}	
 		
-		advance_generator();
+		advanceGenerator();
 	}
 	
 	
 	
-	function* msd_radix_sort()
+	function* msdRadixSort()
 	{
-		let max_key_length = 0;
+		let maxKeyLength = 0;
 		
 		let denom = 1 / Math.log(2);
 		
-		for (let i = 0; i < data_length; i++)
+		for (let i = 0; i < dataLength; i++)
 		{
-			read_from_position(i);
+			readFromPosition(i);
 			
-			let key_length = Math.log(data[i]) * denom;
+			let keyLength = Math.log(data[i]) * denom;
 			
-			max_key_length = Math.max(max_key_length, key_length);
+			maxKeyLength = Math.max(maxKeyLength, keyLength);
 		}
 		
-		max_key_length = Math.round(max_key_length);
+		maxKeyLength = Math.round(maxKeyLength);
 		
 		
 		
-		operations_per_frame = Math.ceil(data_length * max_key_length / 650);
+		operationsPerFrame = Math.ceil(dataLength * maxKeyLength / 650);
 		
 		
 		
-		let current_endpoints = new Array(data_length);
-		current_endpoints[0] = 0;
-		current_endpoints[1] = data_length - 1;
+		let currentEndpoints = new Array(dataLength);
+		currentEndpoints[0] = 0;
+		currentEndpoints[1] = dataLength - 1;
 		
-		let next_endpoints = new Array(data_length);
+		let nextEndpoints = new Array(dataLength);
 		
-		let num_blocks = 1;
-		let next_num_blocks = 0;
+		let numBlocks = 1;
+		let nextNumBlocks = 0;
 		
-		let aux_array = new Array(data_length);
+		let auxArray = new Array(dataLength);
 		
 		
 		
-		let div = Math.pow(2, max_key_length - 1);
+		let div = Math.pow(2, maxKeyLength - 1);
 		
-		for (let key_pos = 0; key_pos < max_key_length; key_pos++)
+		for (let keyPos = 0; keyPos < maxKeyLength; keyPos++)
 		{
-			for (let i = 0; i < num_blocks; i++)
+			for (let i = 0; i < numBlocks; i++)
 			{
-				let index_0 = current_endpoints[2 * i];
-				let index_1 = current_endpoints[2 * i + 1];
+				let index0 = currentEndpoints[2 * i];
+				let index1 = currentEndpoints[2 * i + 1];
 				
-				for (let j = current_endpoints[2 * i]; j <= current_endpoints[2 * i + 1]; j++)
+				for (let j = currentEndpoints[2 * i]; j <= currentEndpoints[2 * i + 1]; j++)
 				{
-					read_from_position(j);
+					readFromPosition(j);
 					
 					let digit = Math.floor(data[j] / div) % 2;
 					
 					if (digit === 0)
 					{
-						aux_array[index_0] = data[j];
+						auxArray[index0] = data[j];
 						
-						if (write_to_position(index_0)) {yield}
+						if (writeToPosition(index0)) {yield}
 						
-						index_0++;
+						index0++;
 					}
 					
 					else
 					{
-						aux_array[index_1] = data[j];
+						auxArray[index1] = data[j];
 						
-						if (write_to_position(index_1)) {yield}
+						if (writeToPosition(index1)) {yield}
 						
-						index_1--;
+						index1--;
 					}
 				}
 				
-				for (let j = current_endpoints[2 * i]; j <= current_endpoints[2 * i + 1]; j++)
+				for (let j = currentEndpoints[2 * i]; j <= currentEndpoints[2 * i + 1]; j++)
 				{
-					data[j] = aux_array[j];
+					data[j] = auxArray[j];
 					
-					if (write_to_position(j)) {yield}
+					if (writeToPosition(j)) {yield}
 				}
 				
-				index_0--;
-				index_1++;
+				index0--;
+				index1++;
 				
-				if (index_0 > current_endpoints[2 * i])
+				if (index0 > currentEndpoints[2 * i])
 				{
-					next_endpoints[2 * next_num_blocks] = current_endpoints[2 * i];
-					next_endpoints[2 * next_num_blocks + 1] = index_0;
+					nextEndpoints[2 * nextNumBlocks] = currentEndpoints[2 * i];
+					nextEndpoints[2 * nextNumBlocks + 1] = index0;
 					
-					next_num_blocks++;
+					nextNumBlocks++;
 				}	
 				
-				if (current_endpoints[2 * i + 1] > index_1)
+				if (currentEndpoints[2 * i + 1] > index1)
 				{
-					next_endpoints[2 * next_num_blocks] = index_1;
-					next_endpoints[2 * next_num_blocks + 1] = current_endpoints[2 * i + 1];
+					nextEndpoints[2 * nextNumBlocks] = index1;
+					nextEndpoints[2 * nextNumBlocks + 1] = currentEndpoints[2 * i + 1];
 					
-					next_num_blocks++;
+					nextNumBlocks++;
 				}			
 			}
 			
-			num_blocks = next_num_blocks;
-			next_num_blocks = 0;
+			numBlocks = nextNumBlocks;
+			nextNumBlocks = 0;
 			
-			for (let i = 0; i < 2 * num_blocks; i++)
+			for (let i = 0; i < 2 * numBlocks; i++)
 			{
-				current_endpoints[i] = next_endpoints[i];
+				currentEndpoints[i] = nextEndpoints[i];
 			}
 			
 			div /= 2;
@@ -1090,86 +1090,86 @@
 		
 		
 		
-		advance_generator();
+		advanceGenerator();
 	}
 	
 	
 	
-	function* lsd_radix_sort()
+	function* lsdRadixSort()
 	{
-		let max_key_length = 0;
+		let maxKeyLength = 0;
 		
 		let denom = 1 / Math.log(2);
 		
-		for (let i = 0; i < data_length; i++)
+		for (let i = 0; i < dataLength; i++)
 		{
-			read_from_position(i);
+			readFromPosition(i);
 			
-			let key_length = Math.log(data[i]) * denom;
+			let keyLength = Math.log(data[i]) * denom;
 			
-			max_key_length = Math.max(max_key_length, key_length);
+			maxKeyLength = Math.max(maxKeyLength, keyLength);
 		}
 		
-		max_key_length = Math.round(max_key_length);
+		maxKeyLength = Math.round(maxKeyLength);
 		
 		
 		
-		operations_per_frame = Math.ceil(data_length * max_key_length / 650);
+		operationsPerFrame = Math.ceil(dataLength * maxKeyLength / 650);
 		
 		
 		
-		let aux_array = new Array(data_length);
+		let auxArray = new Array(dataLength);
 		
 		
 		
 		let div = 1;
 		
-		for (let key_pos = 0; key_pos < max_key_length; key_pos++)
+		for (let keyPos = 0; keyPos < maxKeyLength; keyPos++)
 		{
-			let index_0 = 0;
-			let index_1 = data_length - 1;
+			let index0 = 0;
+			let index1 = dataLength - 1;
 			
-			for (let j = 0; j < data_length; j++)
+			for (let j = 0; j < dataLength; j++)
 			{
-				read_from_position(j);
+				readFromPosition(j);
 				
 				let digit = Math.floor(data[j] / div) % 2;
 				
 				if (digit === 0)
 				{
-					aux_array[index_0] = data[j];
+					auxArray[index0] = data[j];
 					
-					if (write_to_position(index_0)) {yield}
+					if (writeToPosition(index0)) {yield}
 					
-					index_0++;
+					index0++;
 				}
 				
 				else
 				{
-					aux_array[index_1] = data[j];
+					auxArray[index1] = data[j];
 					
-					if (write_to_position(index_1)) {yield}
+					if (writeToPosition(index1)) {yield}
 					
-					index_1--;
+					index1--;
 				}
 			}
 			
-			index_0--;
-			index_1++;
+			index0--;
+			index1++;
 			
-			for (let j = 0; j <= index_0; j++)
+			for (let j = 0; j <= index0; j++)
 			{
-				data[j] = aux_array[j];
+				data[j] = auxArray[j];
 				
-				if (write_to_position(j)) {yield}
+				if (writeToPosition(j)) {yield}
 			}
 			
-			//We need to take care to reverse the top half of aux_array.
-			for (let j = 0; j < data_length - index_1; j++)
+			//We need to take care to reverse the top half of auxArray.
+			for (let j = 0; j < dataLength - index1; j++)
 			{
-				data[index_1 + j] = aux_array[data_length - 1 - j];
+				data[index1 + j] = auxArray[dataLength - 1 - j];
 				
-				if (write_to_position(index_1 + j)) {yield}
+				if (writeToPosition(index1 + j)) {yield}
 			}
 			
 			div *= 2;
@@ -1177,33 +1177,33 @@
 		
 		
 		
-		advance_generator();
+		advanceGenerator();
 	}
 	
 	
 	
-	function* gravity_sort()
+	function* gravitySort()
 	{
-		operations_per_frame = Math.ceil(data_length * data_length / 1000000);
+		operationsPerFrame = Math.ceil(dataLength * dataLength / 1000000);
 		
-		let beads = new Array(data_length);
+		let beads = new Array(dataLength);
 		
-		for (let i = 0; i < data_length; i++)
+		for (let i = 0; i < dataLength; i++)
 		{
-			beads[i] = new Array(data_length);
+			beads[i] = new Array(dataLength);
 			
-			for (let j = 0; j < data_length; j++)
+			for (let j = 0; j < dataLength; j++)
 			{
 				beads[i][j] = false;
 			}
 		}
 		
-		let max_index = 0;
-		let max_entry = 0;
+		let maxIndex = 0;
+		let maxEntry = 0;
 		
-		for (let i = 0; i < data_length; i++)
+		for (let i = 0; i < dataLength; i++)
 		{
-			read_from_position(i);
+			readFromPosition(i);
 			
 			let size = data[i];
 			
@@ -1212,45 +1212,45 @@
 				beads[i][j] = true;
 			}
 			
-			if (size - i > max_entry)
+			if (size - i > maxEntry)
 			{
-				max_entry = size - i;
-				max_index = i;
+				maxEntry = size - i;
+				maxIndex = i;
 			}
 		}
 		
-		for (let j = 0; j < data_length; j++)
+		for (let j = 0; j < dataLength; j++)
 		{
-			for (let i = data_length - 1; i >= 0; i--)
+			for (let i = dataLength - 1; i >= 0; i--)
 			{
 				if (beads[i][j])
 				{	
-					let target_row = i;
+					let targetRow = i;
 					
 					do
 					{
-						target_row++;
-					} while (target_row < data_length && !beads[target_row][j])
+						targetRow++;
+					} while (targetRow < dataLength && !beads[targetRow][j])
 					
-					target_row--;
+					targetRow--;
 					
 					beads[i][j] = false;
-					beads[target_row][j] = true;
+					beads[targetRow][j] = true;
 					
 					data[i]--;
-					data[target_row]++;
+					data[targetRow]++;
 					
-					write_to_position(i, false, false);
-					write_to_position(target_row, false, false);
+					writeToPosition(i, false, false);
+					writeToPosition(targetRow, false, false);
 				}
 			}
 			
-			if (write_to_position(max_index, false, true)) {yield}
+			if (writeToPosition(maxIndex, false, true)) {yield}
 			
-			num_writes--;
-			in_frame_operations--;
+			numWrites--;
+			inFrameOperations--;
 		}
 		
-		advance_generator();
+		advanceGenerator();
 	}
-}()
+	}()

@@ -4,44 +4,44 @@
 	
 	
 	
-	let frag_shader_source = `
+	let fragShaderSource = `
 		precision highp float;
 		
 		varying vec2 uv;
 		
-		uniform float aspect_ratio_x;
-		uniform float aspect_ratio_y;
+		uniform float aspectRatioX;
+		uniform float aspectRatioY;
 		
-		uniform vec3 camera_pos;
-		uniform vec3 image_plane_center_pos;
-		uniform vec3 forward_vec;
-		uniform vec3 right_vec;
-		uniform vec3 up_vec;
+		uniform vec3 cameraPos;
+		uniform vec3 imagePlaneCenterPos;
+		uniform vec3 forwardVec;
+		uniform vec3 rightVec;
+		uniform vec3 upVec;
 		
-		uniform float focal_length;
+		uniform float focalLength;
 		
-		uniform vec3 light_pos;
-		const float light_brightness = 1.5;
+		uniform vec3 lightPos;
+		const float lightBrightness = 1.5;
 		
-		uniform int image_size;
+		uniform int imageSize;
 		
-		uniform int draw_sphere;
+		uniform int drawSphere;
 		
-		uniform int max_iterations;
+		uniform int maxIterations;
 		
 		
 		
-		const float clip_distance = 1000.0;
-		uniform int max_marches;
-		uniform float step_factor;
-		const vec3 fog_color = vec3(0.0, 0.0, 0.0);
-		const float fog_scaling = .1;
+		const float clipDistance = 1000.0;
+		uniform int maxMarches;
+		uniform float stepFactor;
+		const vec3 fogColor = vec3(0.0, 0.0, 0.0);
+		const float fogScaling = .1;
 		
-		uniform float k_slice;
+		uniform float kSlice;
 		
 		
 		uniform vec3 c;
-		uniform float julia_proportion;
+		uniform float juliaProportion;
 		
 		
 		
@@ -51,84 +51,84 @@
 		}
 		
 		
-		float distance_estimator(vec3 pos)
+		float distanceEstimator(vec3 pos)
 		{
-			vec4 z = vec4(pos, k_slice);
-			vec4 z_prime = vec4(1.0, 0.0, 0.0, 0.0);
+			vec4 z = vec4(pos, kSlice);
+			vec4 zPrime = vec4(1.0, 0.0, 0.0, 0.0);
 			float r;
 			
 			for (int iteration = 0; iteration < 100; iteration++)
 			{
 				r = length(z);
 				
-				if (r > 16.0 || iteration >= max_iterations)
+				if (r > 16.0 || iteration >= maxIterations)
 				{
 					break;
 				}
 				
-				z_prime = 2.0 * qmul(z, z_prime);
+				zPrime = 2.0 * qmul(z, zPrime);
 				
 				z = qmul(z, z);
 				
-				z += mix(vec4(pos, k_slice), vec4(c, k_slice), julia_proportion);
+				z += mix(vec4(pos, kSlice), vec4(c, kSlice), juliaProportion);
 			}
 			
 			
 			r = length(z);
-			float distance_1 = .5 * r * log(r) / length(z_prime);
-			float distance_2 = length(pos - c) - .05;
+			float distance1 = .5 * r * log(r) / length(zPrime);
+			float distance2 = length(pos - c) - .05;
 			
 			
 			
-			if (distance_2 < distance_1 && draw_sphere == 1)
+			if (distance2 < distance1 && drawSphere == 1)
 			{
-				return distance_2;
+				return distance2;
 			}
 			
-			return distance_1;
+			return distance1;
 		}
 		
 		
 		
-		vec3 get_color(vec3 pos)
+		vec3 getColor(vec3 pos)
 		{
-			vec4 z = vec4(pos, k_slice);
-			vec4 z_prime = vec4(1.0, 0.0, 0.0, 0.0);
+			vec4 z = vec4(pos, kSlice);
+			vec4 zPrime = vec4(1.0, 0.0, 0.0, 0.0);
 			float r;
 			
 			vec3 color = vec3(1.0, 1.0, 1.0);
-			float color_scale = .5;
+			float colorScale = .5;
 			
 			for (int iteration = 0; iteration < 100; iteration++)
 			{
 				r = length(z);
 				
-				if (r > 16.0 || iteration >= max_iterations)
+				if (r > 16.0 || iteration >= maxIterations)
 				{
 					break;
 				}
 				
-				z_prime = 2.0 * qmul(z, z_prime);
+				zPrime = 2.0 * qmul(z, zPrime);
 				
 				z = qmul(z, z);
 				
-				z += mix(vec4(pos, k_slice), vec4(c, k_slice), julia_proportion);
+				z += mix(vec4(pos, kSlice), vec4(c, kSlice), juliaProportion);
 				
-				color = mix(color, abs(normalize(z.xyz)), color_scale);
+				color = mix(color, abs(normalize(z.xyz)), colorScale);
 				
-				color_scale *= .5;
+				colorScale *= .5;
 			}
 			
 			color /= max(max(color.x, color.y), color.z);
 			
 			
 			r = length(z);
-			float distance_1 = .5 * r * log(r) / length(z_prime);
-			float distance_2 = length(pos - c) - .05;
+			float distance1 = .5 * r * log(r) / length(zPrime);
+			float distance2 = length(pos - c) - .05;
 			
 			
 			
-			if (distance_2 < distance_1 && draw_sphere == 1)
+			if (distance2 < distance1 && drawSphere == 1)
 			{
 				color = vec3(1.0, 1.0, 1.0);
 			}
@@ -138,103 +138,103 @@
 		
 		
 		
-		vec3 get_surface_normal(vec3 pos)
+		vec3 getSurfaceNormal(vec3 pos)
 		{
-			float x_step_1 = distance_estimator(pos + vec3(.000001, 0.0, 0.0));
-			float y_step_1 = distance_estimator(pos + vec3(0.0, .000001, 0.0));
-			float z_step_1 = distance_estimator(pos + vec3(0.0, 0.0, .000001));
+			float xStep1 = distanceEstimator(pos + vec3(.000001, 0.0, 0.0));
+			float yStep1 = distanceEstimator(pos + vec3(0.0, .000001, 0.0));
+			float zStep1 = distanceEstimator(pos + vec3(0.0, 0.0, .000001));
 			
-			float x_step_2 = distance_estimator(pos - vec3(.000001, 0.0, 0.0));
-			float y_step_2 = distance_estimator(pos - vec3(0.0, .000001, 0.0));
-			float z_step_2 = distance_estimator(pos - vec3(0.0, 0.0, .000001));
+			float xStep2 = distanceEstimator(pos - vec3(.000001, 0.0, 0.0));
+			float yStep2 = distanceEstimator(pos - vec3(0.0, .000001, 0.0));
+			float zStep2 = distanceEstimator(pos - vec3(0.0, 0.0, .000001));
 			
-			return normalize(vec3(x_step_1 - x_step_2, y_step_1 - y_step_2, z_step_1 - z_step_2));
+			return normalize(vec3(xStep1 - xStep2, yStep1 - yStep2, zStep1 - zStep2));
 		}
 		
 		
 		
-		vec3 compute_shading(vec3 pos, int iteration)
+		vec3 computeShading(vec3 pos, int iteration)
 		{
-			vec3 surface_normal = get_surface_normal(pos);
+			vec3 surfaceNormal = getSurfaceNormal(pos);
 			
-			vec3 light_direction = normalize(light_pos - pos);
+			vec3 lightDirection = normalize(lightPos - pos);
 			
-			float dot_product = dot(surface_normal, light_direction);
+			float dotProduct = dot(surfaceNormal, lightDirection);
 			
-			float light_intensity = light_brightness * max(dot_product, -.25 * dot_product);
+			float lightIntensity = lightBrightness * max(dotProduct, -.25 * dotProduct);
 			
 			//The last factor adds ambient occlusion.
-			vec3 color = get_color(pos) * light_intensity * max((1.0 - float(iteration) / float(max_marches)), 0.0);
+			vec3 color = getColor(pos) * lightIntensity * max((1.0 - float(iteration) / float(maxMarches)), 0.0);
 			
 			
 			
 			//Apply fog.
-			return mix(color, fog_color, 1.0 - exp(-distance(pos, camera_pos) * fog_scaling));
+			return mix(color, fogColor, 1.0 - exp(-distance(pos, cameraPos) * fogScaling));
 		}
 		
 		
 		
-		vec3 raymarch(vec3 start_pos)
+		vec3 raymarch(vec3 startPos)
 		{
 			//That factor of .9 is important -- without it, we're always stepping as far as possible, which results in artefacts and weirdness.
-			vec3 ray_direction_vec = normalize(start_pos - camera_pos) * .9 / step_factor;
+			vec3 rayDirectionVec = normalize(startPos - cameraPos) * .9 / stepFactor;
 			
-			vec3 final_color = fog_color;
+			vec3 finalColor = fogColor;
 			
 			float epsilon = 0.0;
 			
 			float t = 0.0;
 			
-			float last_distance = 1000.0;
+			float lastDistance = 1000.0;
 			
-			//int slowed_down = 0;
+			//int slowedDown = 0;
 			
 			
 			
 			for (int iteration = 0; iteration < 1024; iteration++)
 			{
-				if (iteration == max_marches)
+				if (iteration == maxMarches)
 				{
 					break;
 				}
 				
 				
 				
-				vec3 pos = start_pos + t * ray_direction_vec;
+				vec3 pos = startPos + t * rayDirectionVec;
 				
 				//This prevents overstepping, and is honestly a pretty clever fix.
-				float distance = min(distance_estimator(pos), last_distance);
-				last_distance = distance;
+				float distance = min(distanceEstimator(pos), lastDistance);
+				lastDistance = distance;
 				
 				//This lowers the detail far away, which makes everything run nice and fast.
-				epsilon = max(.0000006, .5 * t / float(image_size));
+				epsilon = max(.0000006, .5 * t / float(imageSize));
 				
 				
 				
 				if (distance < epsilon)
 				{
-					final_color = compute_shading(pos, iteration);
+					finalColor = computeShading(pos, iteration);
 					break;
 				}
 				
 				//Uncomment to add aggressive understepping when close to the fractal boundary, which helps to prevent flickering but is a significant performance hit.
 				/*
-				else if (last_distance / distance > .9999 && slowed_down == 0)
+				else if (lastDistance / distance > .9999 && slowedDown == 0)
 				{
-					ray_direction_vec = normalize(start_pos - camera_pos) * .125;
+					rayDirectionVec = normalize(startPos - cameraPos) * .125;
 					
-					slowed_down = 1;
+					slowedDown = 1;
 				}
 				
-				else if (last_distance / distance <= .9999 && slowed_down == 1)
+				else if (lastDistance / distance <= .9999 && slowedDown == 1)
 				{
-					ray_direction_vec = normalize(start_pos - camera_pos) * .9;
+					rayDirectionVec = normalize(startPos - cameraPos) * .9;
 					
-					slowed_down = 0;
+					slowedDown = 0;
 				}
 				*/
 				
-				else if (t > clip_distance)
+				else if (t > clipDistance)
 				{
 					break;
 				}
@@ -246,7 +246,7 @@
 			
 			
 			
-			return final_color;
+			return finalColor;
 		}
 		
 		
@@ -254,9 +254,9 @@
 		void main(void)
 		{
 			//Uncomment to use 2x antialiasing.
-			//vec3 final_color = (raymarch(image_plane_center_pos + right_vec * (uv.x * aspect_ratio + .5 / float(image_size)) + up_vec * (uv.y + .5 / float(image_size))) + raymarch(image_plane_center_pos + right_vec * (uv.x * aspect_ratio + .5 / float(image_size)) + up_vec * (uv.y - .5 / float(image_size))) + raymarch(image_plane_center_pos + right_vec * (uv.x * aspect_ratio - .5 / float(image_size)) + up_vec * (uv.y + .5 / float(image_size))) + raymarch(image_plane_center_pos + right_vec * (uv.x * aspect_ratio - .5 / float(image_size)) + up_vec * (uv.y - .5 / float(image_size)))) / 4.0;
+			//vec3 finalColor = (raymarch(imagePlaneCenterPos + rightVec * (uv.x * aspectRatio + .5 / float(imageSize)) + upVec * (uv.y + .5 / float(imageSize))) + raymarch(imagePlaneCenterPos + rightVec * (uv.x * aspectRatio + .5 / float(imageSize)) + upVec * (uv.y - .5 / float(imageSize))) + raymarch(imagePlaneCenterPos + rightVec * (uv.x * aspectRatio - .5 / float(imageSize)) + upVec * (uv.y + .5 / float(imageSize))) + raymarch(imagePlaneCenterPos + rightVec * (uv.x * aspectRatio - .5 / float(imageSize)) + upVec * (uv.y - .5 / float(imageSize)))) / 4.0;
 			
-			gl_FragColor = vec4(raymarch(image_plane_center_pos + right_vec * (uv.x) * aspect_ratio_x + up_vec * (uv.y) / aspect_ratio_y), 1.0);
+			gl_FragColor = vec4(raymarch(imagePlaneCenterPos + rightVec * (uv.x) * aspectRatioX + upVec * (uv.y) / aspectRatioY), 1.0);
 		}
 	`;
 	
@@ -266,223 +266,223 @@
 	{
 		renderer: "gpu",
 		
-		shader: frag_shader_source,
+		shader: fragShaderSource,
 		
-		canvas_width: 500,
-		canvas_height: 500,
+		canvasWidth: 500,
+		canvasHeight: 500,
 		
 		
 		
-		use_fullscreen: true,
+		useFullscreen: true,
 		
-		true_fullscreen: true,
+		trueFullscreen: true,
 	
-		use_fullscreen_button: true,
+		useFullscreenButton: true,
 		
-		enter_fullscreen_button_icon_path: "/graphics/general-icons/enter-fullscreen.png",
-		exit_fullscreen_button_icon_path: "/graphics/general-icons/exit-fullscreen.png",
+		enterFullscreenButtonIconPath: "/graphics/general-icons/enter-fullscreen.png",
+		exitFullscreenButtonIconPath: "/graphics/general-icons/exit-fullscreen.png",
 		
-		switch_fullscreen_callback: change_resolution,
+		switchFullscreenCallback: changeResolution,
 		
 		
 		
-		mousedown_callback: on_grab_canvas,
-		touchstart_callback: on_grab_canvas,
+		mousedownCallback: onGrabCanvas,
+		touchstartCallback: onGrabCanvas,
 		
-		mousedrag_callback: on_drag_canvas,
-		touchmove_callback: on_drag_canvas,
+		mousedragCallback: onDragCanvas,
+		touchmoveCallback: onDragCanvas,
 		
-		mouseup_callback: on_release_canvas,
-		touchend_callback: on_release_canvas
+		mouseupCallback: onReleaseCanvas,
+		touchendCallback: onReleaseCanvas
 	};
 	
 	let wilson = new Wilson(Page.element.querySelector("#output-canvas"), options);
 	
-	wilson.render.init_uniforms(["aspect_ratio_x", "aspect_ratio_y", "image_size", "camera_pos", "image_plane_center_pos", "forward_vec", "right_vec", "up_vec", "focal_length", "light_pos", "draw_sphere", "c", "julia_proportion", "max_marches", "step_factor", "max_iterations", "k_slice"]);
+	wilson.render.initUniforms(["aspectRatioX", "aspectRatioY", "imageSize", "cameraPos", "imagePlaneCenterPos", "forwardVec", "rightVec", "upVec", "focalLength", "lightPos", "drawSphere", "c", "juliaProportion", "maxMarches", "stepFactor", "maxIterations", "kSlice"]);
 	
 	
 	
 	
-	let currently_drawing = false;
-	let currently_animating_parameters = false;
+	let currentlyDrawing = false;
+	let currentlyAnimatingParameters = false;
 	
-	let currently_dragging = false;
+	let currentlyDragging = false;
 	
-	let draw_start_time = 0;
+	let drawStartTime = 0;
 	
-	let mouse_x = 0;
-	let mouse_y = 0;
+	let mouseX = 0;
+	let mouseY = 0;
 	
-	let moving_forward_keyboard = false;
-	let moving_backward_keyboard = false;
-	let moving_right_keyboard = false;
-	let moving_left_keyboard = false;
+	let movingForwardKeyboard = false;
+	let movingBackwardKeyboard = false;
+	let movingRightKeyboard = false;
+	let movingLeftKeyboard = false;
 	
-	let moving_slice_up_keyboard = false;
-	let moving_slice_down_keyboard = false;
+	let movingSliceUpKeyboard = false;
+	let movingSliceDownKeyboard = false;
 	
-	let moving_forward_touch = false;
-	let moving_backward_touch = false;
+	let movingForwardTouch = false;
+	let movingBackwardTouch = false;
 	
-	let was_moving_touch = false;
+	let wasMovingTouch = false;
 	
-	let moving_speed = 0;
-	
-	
-	
-	let next_move_velocity = [0, 0, 0, 0];
-	
-	let move_velocity = [0, 0, 0, 0];
-	
-	const move_friction = .94;
-	const move_velocity_stop_threshhold = .0005;
+	let movingSpeed = 0;
 	
 	
 	
-	let distance_to_scene = 1;
+	let nextMoveVelocity = [0, 0, 0, 0];
 	
-	let last_timestamp = -1;
+	let moveVelocity = [0, 0, 0, 0];
+	
+	const moveFriction = .94;
+	const moveVelocityStopThreshhold = .0005;
+	
+	
+	
+	let distanceToScene = 1;
+	
+	let lastTimestamp = -1;
 	
 	
 	
 	let theta = 1.21557;
 	let phi =  2.10801;
 	
-	let next_theta_velocity = 0;
-	let next_phi_velocity = 0;
+	let nextThetaVelocity = 0;
+	let nextPhiVelocity = 0;
 	
-	let theta_velocity = 0;
-	let phi_velocity = 0;
+	let thetaVelocity = 0;
+	let phiVelocity = 0;
 	
-	const pan_friction = .94;
-	const pan_velocity_start_threshhold = .005;
-	const pan_velocity_stop_threshhold = .0005;
+	const panFriction = .94;
+	const panVelocityStartThreshhold = .005;
+	const panVelocityStopThreshhold = .0005;
 	
 	
 	
-	let image_size = 500;
-	let image_width = 500;
-	let image_height = 500;
+	let imageSize = 500;
+	let imageWidth = 500;
+	let imageHeight = 500;
 	
-	let max_iterations = 16;
+	let maxIterations = 16;
 	
-	let max_marches = 100;
+	let maxMarches = 100;
 	
-	let image_plane_center_pos = [];
+	let imagePlaneCenterPos = [];
 	
-	let forward_vec = [];
-	let right_vec = [];
-	let up_vec = [];
+	let forwardVec = [];
+	let rightVec = [];
+	let upVec = [];
 	
-	let camera_pos = [-1.11619, -2.63802, 1.67049];
+	let cameraPos = [-1.11619, -2.63802, 1.67049];
 	
-	let focal_length = 2;
+	let focalLength = 2;
 	
-	let light_pos = [-5, -5, 5];
+	let lightPos = [-5, -5, 5];
 	
 	let c = [-.54, -.25, -.668];
-	let c_old = [0, 0, 0];
-	let c_delta = [0, 0, 0];
+	let cOld = [0, 0, 0];
+	let cDelta = [0, 0, 0];
 	
-	let k_slice = 0;
-	let k_slice_old = 0;
-	let k_slice_delta = 0;
+	let kSlice = 0;
+	let kSliceOld = 0;
+	let kSliceDelta = 0;
 	
-	let julia_proportion = 1;
-	let moving_pos = 0;
+	let juliaProportion = 1;
+	let movingPos = 0;
 	
-	let julia_proportion_old = 0;
-	let julia_proportion_delta = 0;
+	let juliaProportionOld = 0;
+	let juliaProportionDelta = 0;
 	
-	let parameter_animation_frame = 0;
-	
-	
-	
-	let resolution_input_element = Page.element.querySelector("#resolution-input");
-	
-	resolution_input_element.addEventListener("input", change_resolution);
+	let parameterAnimationFrame = 0;
 	
 	
 	
-	let iterations_input_element = Page.element.querySelector("#iterations-input");
+	let resolutionInputElement = Page.element.querySelector("#resolution-input");
 	
-	iterations_input_element.addEventListener("input", () =>
+	resolutionInputElement.addEventListener("input", changeResolution);
+	
+	
+	
+	let iterationsInputElement = Page.element.querySelector("#iterations-input");
+	
+	iterationsInputElement.addEventListener("input", () =>
 	{
-		max_iterations = parseInt(iterations_input_element.value || 16);
+		maxIterations = parseInt(iterationsInputElement.value || 16);
 		
-		wilson.gl.uniform1i(wilson.uniforms["max_iterations"], max_iterations);
+		wilson.gl.uniform1i(wilson.uniforms["maxIterations"], maxIterations);
 		
-		window.requestAnimationFrame(draw_frame);
+		window.requestAnimationFrame(drawFrame);
 	});
 	
 	
 	
-	let view_distance_input_element = Page.element.querySelector("#view-distance-input");
+	let viewDistanceInputElement = Page.element.querySelector("#view-distance-input");
 	
-	view_distance_input_element.addEventListener("input", () =>
+	viewDistanceInputElement.addEventListener("input", () =>
 	{
-		max_marches = Math.max(parseInt(view_distance_input_element.value || 100), 32);
+		maxMarches = Math.max(parseInt(viewDistanceInputElement.value || 100), 32);
 		
-		wilson.gl.uniform1i(wilson.uniforms["max_marches"], max_marches);
+		wilson.gl.uniform1i(wilson.uniforms["maxMarches"], maxMarches);
 		
-		window.requestAnimationFrame(draw_frame);
+		window.requestAnimationFrame(drawFrame);
 	});
 	
 	
 	
-	let download_button_element = Page.element.querySelector("#download-button");
+	let downloadButtonElement = Page.element.querySelector("#download-button");
 	
-	download_button_element.addEventListener("click", () =>
+	downloadButtonElement.addEventListener("click", () =>
 	{
-		if (julia_proportion === 0)
+		if (juliaProportion === 0)
 		{	
-			wilson.download_frame("the-quaternionic-mandelbrot-set.png");
+			wilson.downloadFrame("the-quaternionic-mandelbrot-set.png");
 		}
 		
 		else
 		{
-			wilson.download_frame("a-quaternionic-julia-set.png");
+			wilson.downloadFrame("a-quaternionic-julia-set.png");
 		}
 	});
 	
 	
 	
-	let c_x_input_element = Page.element.querySelector("#c-x-input");
-	let c_y_input_element = Page.element.querySelector("#c-y-input");
-	let c_z_input_element = Page.element.querySelector("#c-z-input");
-	let c_w_input_element = Page.element.querySelector("#c-w-input");
+	let cXInputElement = Page.element.querySelector("#c-x-input");
+	let cYInputElement = Page.element.querySelector("#c-y-input");
+	let cZInputElement = Page.element.querySelector("#c-z-input");
+	let cWInputElement = Page.element.querySelector("#c-w-input");
 	
-	let elements = [c_x_input_element, c_y_input_element, c_z_input_element, c_w_input_element];
+	let elements = [cXInputElement, cYInputElement, cZInputElement, cWInputElement];
 	
 	for (let i = 0; i < elements.length; i++)
 	{
-		elements[i].addEventListener("input", update_parameters);
+		elements[i].addEventListener("input", updateParameters);
 	}
 	
 	
 	
 	
-	let randomize_c_button_element = Page.element.querySelector("#randomize-c-button");
+	let randomizeCButtonElement = Page.element.querySelector("#randomize-c-button");
 	
-	randomize_c_button_element.style.opacity = 1;
+	randomizeCButtonElement.style.opacity = 1;
 	
-	randomize_c_button_element.addEventListener("click", randomize_c);
-	
-	
-	
-	let switch_bulb_button_element = Page.element.querySelector("#switch-bulb-button");
-	
-	switch_bulb_button_element.style.opacity = 1;
-	
-	switch_bulb_button_element.addEventListener("click", switch_bulb);
+	randomizeCButtonElement.addEventListener("click", randomizeC);
 	
 	
 	
-	let switch_movement_button_element = Page.element.querySelector("#switch-movement-button");
+	let switchBulbButtonElement = Page.element.querySelector("#switch-bulb-button");
 	
-	switch_movement_button_element.style.opacity = 1;
+	switchBulbButtonElement.style.opacity = 1;
 	
-	switch_movement_button_element.addEventListener("click", switch_movement);
+	switchBulbButtonElement.addEventListener("click", switchBulb);
+	
+	
+	
+	let switchMovementButtonElement = Page.element.querySelector("#switch-movement-button");
+	
+	switchMovementButtonElement.style.opacity = 1;
+	
+	switchMovementButtonElement.addEventListener("click", switchMovement);
 	
 	
 	
@@ -490,47 +490,47 @@
 	
 	
 	
-	calculate_vectors();
+	calculateVectors();
 	
 	
 	
-	if (image_width >= image_height)
+	if (imageWidth >= imageHeight)
 	{
-		wilson.gl.uniform1f(wilson.uniforms["aspect_ratio_x"], image_width / image_height);
-		wilson.gl.uniform1f(wilson.uniforms["aspect_ratio_y"], 1);
+		wilson.gl.uniform1f(wilson.uniforms["aspectRatioX"], imageWidth / imageHeight);
+		wilson.gl.uniform1f(wilson.uniforms["aspectRatioY"], 1);
 	}
 	
 	else
 	{
-		wilson.gl.uniform1f(wilson.uniforms["aspect_ratio_x"], 1);
-		wilson.gl.uniform1f(wilson.uniforms["aspect_ratio_y"], image_width / image_height);
+		wilson.gl.uniform1f(wilson.uniforms["aspectRatioX"], 1);
+		wilson.gl.uniform1f(wilson.uniforms["aspectRatioY"], imageWidth / imageHeight);
 	}
 	
-	wilson.gl.uniform1i(wilson.uniforms["image_size"], image_size);
+	wilson.gl.uniform1i(wilson.uniforms["imageSize"], imageSize);
 	
-	wilson.gl.uniform3fv(wilson.uniforms["camera_pos"], camera_pos);
-	wilson.gl.uniform3fv(wilson.uniforms["image_plane_center_pos"], image_plane_center_pos);
-	wilson.gl.uniform3fv(wilson.uniforms["light_pos"], light_pos);
+	wilson.gl.uniform3fv(wilson.uniforms["cameraPos"], cameraPos);
+	wilson.gl.uniform3fv(wilson.uniforms["imagePlaneCenterPos"], imagePlaneCenterPos);
+	wilson.gl.uniform3fv(wilson.uniforms["lightPos"], lightPos);
 	
-	wilson.gl.uniform3fv(wilson.uniforms["forward_vec"], forward_vec);
-	wilson.gl.uniform3fv(wilson.uniforms["right_vec"], right_vec);
-	wilson.gl.uniform3fv(wilson.uniforms["up_vec"], up_vec);
+	wilson.gl.uniform3fv(wilson.uniforms["forwardVec"], forwardVec);
+	wilson.gl.uniform3fv(wilson.uniforms["rightVec"], rightVec);
+	wilson.gl.uniform3fv(wilson.uniforms["upVec"], upVec);
 	
-	wilson.gl.uniform1f(wilson.uniforms["focal_length"], focal_length);
+	wilson.gl.uniform1f(wilson.uniforms["focalLength"], focalLength);
 	
-	wilson.gl.uniform1i(wilson.uniforms["draw_sphere"], 0);
+	wilson.gl.uniform1i(wilson.uniforms["drawSphere"], 0);
 	
 	wilson.gl.uniform3fv(wilson.uniforms["c"], c);
-	wilson.gl.uniform1f(wilson.uniforms["julia_proportion"], 1);
-	wilson.gl.uniform1i(wilson.uniforms["k_slice"], 0);
+	wilson.gl.uniform1f(wilson.uniforms["juliaProportion"], 1);
+	wilson.gl.uniform1i(wilson.uniforms["kSlice"], 0);
 	
-	wilson.gl.uniform1i(wilson.uniforms["max_marches"], max_marches);
-	wilson.gl.uniform1f(wilson.uniforms["step_factor"], 1);
-	wilson.gl.uniform1i(wilson.uniforms["max_iterations"], max_iterations);
+	wilson.gl.uniform1i(wilson.uniforms["maxMarches"], maxMarches);
+	wilson.gl.uniform1f(wilson.uniforms["stepFactor"], 1);
+	wilson.gl.uniform1i(wilson.uniforms["maxIterations"], maxIterations);
 	
 	
 	
-	window.requestAnimationFrame(draw_frame);
+	window.requestAnimationFrame(drawFrame);
 	
 	
 	
@@ -538,34 +538,34 @@
 	
 	
 	
-	function draw_frame(timestamp)
+	function drawFrame(timestamp)
 	{
-		let time_elapsed = timestamp - last_timestamp;
+		let timeElapsed = timestamp - lastTimestamp;
 		
-		last_timestamp = timestamp;
+		lastTimestamp = timestamp;
 		
 		
 		
-		if (time_elapsed === 0)
+		if (timeElapsed === 0)
 		{
 			return;
 		}
 		
 		
 		
-		wilson.render.draw_frame();
+		wilson.render.drawFrame();
 		
 		
 		
-		let need_new_frame = false;
+		let needNewFrame = false;
 		
 		
 		
-		if (currently_animating_parameters)
+		if (currentlyAnimatingParameters)
 		{
-			animate_parameter_change_step();
+			animateParameterChangeStep();
 			
-			need_new_frame = true;
+			needNewFrame = true;
 		}
 		
 		
@@ -574,41 +574,41 @@
 		
 		
 		
-		if (moving_forward_keyboard || moving_backward_keyboard || moving_right_keyboard || moving_left_keyboard || moving_forward_touch || moving_backward_touch || moving_slice_up_keyboard || moving_slice_down_keyboard)
+		if (movingForwardKeyboard || movingBackwardKeyboard || movingRightKeyboard || movingLeftKeyboard || movingForwardTouch || movingBackwardTouch || movingSliceUpKeyboard || movingSliceDownKeyboard)
 		{
-			update_camera_parameters();
+			updateCameraParameters();
 			
-			need_new_frame = true;
+			needNewFrame = true;
 		}
 		
-		else if (time_elapsed >= 50)
+		else if (timeElapsed >= 50)
 		{
-			next_theta_velocity = 0;
-			next_phi_velocity = 0;
+			nextThetaVelocity = 0;
+			nextPhiVelocity = 0;
 			
-			theta_velocity = 0;
-			phi_velocity = 0;
+			thetaVelocity = 0;
+			phiVelocity = 0;
 			
-			moving_forward_touch = false;
-			moving_backward_touch = false;
+			movingForwardTouch = false;
+			movingBackwardTouch = false;
 			
-			move_velocity[0] = 0;
-			move_velocity[1] = 0;
-			move_velocity[2] = 0;
-			move_velocity[3] = 0;
+			moveVelocity[0] = 0;
+			moveVelocity[1] = 0;
+			moveVelocity[2] = 0;
+			moveVelocity[3] = 0;
 			
-			next_move_velocity[0] = 0;
-			next_move_velocity[1] = 0;
-			next_move_velocity[2] = 0;
-			next_move_velocity[3] = 0;
+			nextMoveVelocity[0] = 0;
+			nextMoveVelocity[1] = 0;
+			nextMoveVelocity[2] = 0;
+			nextMoveVelocity[3] = 0;
 		}
 		
 		
 		
-		if (theta_velocity !== 0 || phi_velocity !== 0)
+		if (thetaVelocity !== 0 || phiVelocity !== 0)
 		{
-			theta += theta_velocity;
-			phi += phi_velocity;
+			theta += thetaVelocity;
+			phi += phiVelocity;
 			
 			
 			
@@ -636,142 +636,142 @@
 			
 			
 			
-			theta_velocity *= pan_friction;
-			phi_velocity *= pan_friction;
+			thetaVelocity *= panFriction;
+			phiVelocity *= panFriction;
 			
-			if (Math.sqrt(theta_velocity * theta_velocity + phi_velocity * phi_velocity) < pan_velocity_stop_threshhold)
+			if (Math.sqrt(thetaVelocity * thetaVelocity + phiVelocity * phiVelocity) < panVelocityStopThreshhold)
 			{
-				theta_velocity = 0;
-				phi_velocity = 0;
+				thetaVelocity = 0;
+				phiVelocity = 0;
 			}
 			
 			
 			
-			calculate_vectors();
+			calculateVectors();
 			
-			need_new_frame = true;
+			needNewFrame = true;
 		}
 		
-		if (move_velocity[0] !== 0 || move_velocity[1] !== 0 || move_velocity[2] !== 0 || move_velocity[3] !== 0)
+		if (moveVelocity[0] !== 0 || moveVelocity[1] !== 0 || moveVelocity[2] !== 0 || moveVelocity[3] !== 0)
 		{
-			if (moving_pos)
+			if (movingPos)
 			{	
-				camera_pos[0] += move_velocity[0];
-				camera_pos[1] += move_velocity[1];
-				camera_pos[2] += move_velocity[2];
+				cameraPos[0] += moveVelocity[0];
+				cameraPos[1] += moveVelocity[1];
+				cameraPos[2] += moveVelocity[2];
 			}
 			
 			else
 			{
-				c[0] += move_velocity[0];
-				c[1] += move_velocity[1];
-				c[2] += move_velocity[2];
+				c[0] += moveVelocity[0];
+				c[1] += moveVelocity[1];
+				c[2] += moveVelocity[2];
 				
-				k_slice += move_velocity[3];
+				kSlice += moveVelocity[3];
 				
-				c_x_input_element.value = Math.round((c[0]) * 1000000) / 1000000;
-				c_y_input_element.value = Math.round((c[1]) * 1000000) / 1000000;
-				c_z_input_element.value = Math.round((c[2]) * 1000000) / 1000000;
+				cXInputElement.value = Math.round((c[0]) * 1000000) / 1000000;
+				cYInputElement.value = Math.round((c[1]) * 1000000) / 1000000;
+				cZInputElement.value = Math.round((c[2]) * 1000000) / 1000000;
 				
-				c_w_input_element.value = Math.round((k_slice) * 1000000) / 1000000;
+				cWInputElement.value = Math.round((kSlice) * 1000000) / 1000000;
 				
 				wilson.gl.uniform3fv(wilson.uniforms["c"], c);
 				
-				wilson.gl.uniform1f(wilson.uniforms["k_slice"], k_slice);
+				wilson.gl.uniform1f(wilson.uniforms["kSlice"], kSlice);
 			}
 			
 			
 			
-			move_velocity[0] *= move_friction;
-			move_velocity[1] *= move_friction;
-			move_velocity[2] *= move_friction;
+			moveVelocity[0] *= moveFriction;
+			moveVelocity[1] *= moveFriction;
+			moveVelocity[2] *= moveFriction;
 			
-			move_velocity[3] *= move_friction;
+			moveVelocity[3] *= moveFriction;
 			
-			if (Math.sqrt(move_velocity[0] * move_velocity[0] + move_velocity[1] * move_velocity[1] + move_velocity[2] * move_velocity[2] + move_velocity[3] * move_velocity[3]) < move_velocity_stop_threshhold * moving_speed)
+			if (Math.sqrt(moveVelocity[0] * moveVelocity[0] + moveVelocity[1] * moveVelocity[1] + moveVelocity[2] * moveVelocity[2] + moveVelocity[3] * moveVelocity[3]) < moveVelocityStopThreshhold * movingSpeed)
 			{
-				move_velocity[0] = 0;
-				move_velocity[1] = 0;
-				move_velocity[2] = 0;
+				moveVelocity[0] = 0;
+				moveVelocity[1] = 0;
+				moveVelocity[2] = 0;
 				
-				move_velocity[3] = 0;
+				moveVelocity[3] = 0;
 			}
 			
 			
 			
-			calculate_vectors();
+			calculateVectors();
 				
-			need_new_frame = true;
+			needNewFrame = true;
 		}
 		
 		
 		
-		if (need_new_frame)
+		if (needNewFrame)
 		{
-			window.requestAnimationFrame(draw_frame);
+			window.requestAnimationFrame(drawFrame);
 		}
 	}
 	
 	
 	
-	function calculate_vectors()
+	function calculateVectors()
 	{
 		//Here comes the serious math. Theta is the angle in the xy-plane and phi the angle down from the z-axis. We can use them get a normalized forward vector:
-		forward_vec = [Math.cos(theta) * Math.sin(phi), Math.sin(theta) * Math.sin(phi), Math.cos(phi)];
+		forwardVec = [Math.cos(theta) * Math.sin(phi), Math.sin(theta) * Math.sin(phi), Math.cos(phi)];
 		
 		//Now the right vector needs to be constrained to the xy-plane, since otherwise the image will appear tilted. For a vector (a, b, c), the orthogonal plane that passes through the origin is ax + by + cz = 0, so we want ax + by = 0. One solution is (b, -a), and that's the one that goes to the "right" of the forward vector (when looking down).
-		right_vec = normalize([forward_vec[1], -forward_vec[0], 0]);
+		rightVec = normalize([forwardVec[1], -forwardVec[0], 0]);
 		
 		//Finally, the upward vector is the cross product of the previous two.
-		up_vec = cross_product(right_vec, forward_vec);
+		upVec = crossProduct(rightVec, forwardVec);
 		
 		
 		
-		distance_to_scene = distance_estimator(camera_pos[0], camera_pos[1], camera_pos[2]);
+		distanceToScene = distanceEstimator(cameraPos[0], cameraPos[1], cameraPos[2]);
 		
 		
 		
-		focal_length = distance_to_scene / 2;
+		focalLength = distanceToScene / 2;
 		
 		//The factor we divide by here sets the fov.
-		right_vec[0] *= focal_length / 2;
-		right_vec[1] *= focal_length / 2;
+		rightVec[0] *= focalLength / 2;
+		rightVec[1] *= focalLength / 2;
 		
-		up_vec[0] *= focal_length / 2;
-		up_vec[1] *= focal_length / 2;
-		up_vec[2] *= focal_length / 2;
-		
-		
-		
-		image_plane_center_pos = [camera_pos[0] + focal_length * forward_vec[0], camera_pos[1] + focal_length * forward_vec[1], camera_pos[2] + focal_length * forward_vec[2]];
+		upVec[0] *= focalLength / 2;
+		upVec[1] *= focalLength / 2;
+		upVec[2] *= focalLength / 2;
 		
 		
 		
-		wilson.gl.uniform3fv(wilson.uniforms["camera_pos"], camera_pos);
-		wilson.gl.uniform3fv(wilson.uniforms["image_plane_center_pos"], image_plane_center_pos);
+		imagePlaneCenterPos = [cameraPos[0] + focalLength * forwardVec[0], cameraPos[1] + focalLength * forwardVec[1], cameraPos[2] + focalLength * forwardVec[2]];
 		
-		wilson.gl.uniform3fv(wilson.uniforms["forward_vec"], forward_vec);
-		wilson.gl.uniform3fv(wilson.uniforms["right_vec"], right_vec);
-		wilson.gl.uniform3fv(wilson.uniforms["up_vec"], up_vec);
 		
-		wilson.gl.uniform1f(wilson.uniforms["focal_length"], focal_length);
+		
+		wilson.gl.uniform3fv(wilson.uniforms["cameraPos"], cameraPos);
+		wilson.gl.uniform3fv(wilson.uniforms["imagePlaneCenterPos"], imagePlaneCenterPos);
+		
+		wilson.gl.uniform3fv(wilson.uniforms["forwardVec"], forwardVec);
+		wilson.gl.uniform3fv(wilson.uniforms["rightVec"], rightVec);
+		wilson.gl.uniform3fv(wilson.uniforms["upVec"], upVec);
+		
+		wilson.gl.uniform1f(wilson.uniforms["focalLength"], focalLength);
 	}
 	
 	
 	
-	function dot_product(vec1, vec2)
+	function dotProduct(vec1, vec2)
 	{
 		return vec1[0] * vec2[0] + vec1[1] * vec2[1] + vec1[2] * vec2[2];
 	}
 	
-	function dot_product_4(vec1, vec2)
+	function dotProduct4(vec1, vec2)
 	{
 		return vec1[0] * vec2[0] + vec1[1] * vec2[1] + vec1[2] * vec2[2] + vec1[3] * vec2[3];
 	}
 	
 	
 	
-	function cross_product(vec1, vec2)
+	function crossProduct(vec1, vec2)
 	{
 		return [vec1[1] * vec2[2] - vec1[2] * vec2[1], vec1[2] * vec2[0] - vec1[0] * vec2[2], vec1[0] * vec2[1] - vec1[1] * vec2[0]];
 	}
@@ -794,50 +794,50 @@
 	
 	
 	
-	function distance_estimator(x, y, z)
+	function distanceEstimator(x, y, z)
 	{
-		let mutable_z = [x, y, z, k_slice];
-		let z_prime = [1.0, 0.0, 0.0, 0.0];
+		let mutableZ = [x, y, z, kSlice];
+		let zPrime = [1.0, 0.0, 0.0, 0.0];
 		
 		let r = 0.0;
 		
-		for (let iteration = 0; iteration < max_iterations * 4; iteration++)
+		for (let iteration = 0; iteration < maxIterations * 4; iteration++)
 		{
-			r = Math.sqrt(dot_product_4(mutable_z, mutable_z));
+			r = Math.sqrt(dotProduct4(mutableZ, mutableZ));
 			
 			if (r > 16.0)
 			{
 				break;
 			}
 			
-			z_prime = qmul(...mutable_z, ...z_prime);
-			z_prime[0] *= 2;
-			z_prime[1] *= 2;
-			z_prime[2] *= 2;
-			z_prime[3] *= 2;
+			zPrime = qmul(...mutableZ, ...zPrime);
+			zPrime[0] *= 2;
+			zPrime[1] *= 2;
+			zPrime[2] *= 2;
+			zPrime[3] *= 2;
 			
 			
 			
-			mutable_z = qmul(...mutable_z, ...mutable_z);
+			mutableZ = qmul(...mutableZ, ...mutableZ);
 			
-			mutable_z[0] += ((1 - julia_proportion) * x + julia_proportion * c[0]);
-			mutable_z[1] += ((1 - julia_proportion) * y + julia_proportion * c[1]);
-			mutable_z[2] += ((1 - julia_proportion) * z + julia_proportion * c[2]);
-			mutable_z[3] += k_slice;
+			mutableZ[0] += ((1 - juliaProportion) * x + juliaProportion * c[0]);
+			mutableZ[1] += ((1 - juliaProportion) * y + juliaProportion * c[1]);
+			mutableZ[2] += ((1 - juliaProportion) * z + juliaProportion * c[2]);
+			mutableZ[3] += kSlice;
 		}
 		
-		return 0.5 * Math.log(r) * r / Math.sqrt(dot_product_4(z_prime, z_prime));
+		return 0.5 * Math.log(r) * r / Math.sqrt(dotProduct4(zPrime, zPrime));
 	}
 	
 	
 	
-	function on_grab_canvas(x, y, event)
+	function onGrabCanvas(x, y, event)
 	{
-		next_theta_velocity = 0;
-		next_phi_velocity = 0;
+		nextThetaVelocity = 0;
+		nextPhiVelocity = 0;
 		
-		theta_velocity = 0;
-		phi_velocity = 0;
+		thetaVelocity = 0;
+		phiVelocity = 0;
 		
 		
 		
@@ -845,69 +845,69 @@
 		{
 			if (event.touches.length === 2)
 			{
-				moving_forward_touch = true;
-				moving_backward_touch = false;
+				movingForwardTouch = true;
+				movingBackwardTouch = false;
 				
-				move_velocity[0] = 0;
-				move_velocity[1] = 0;
-				move_velocity[2] = 0;
+				moveVelocity[0] = 0;
+				moveVelocity[1] = 0;
+				moveVelocity[2] = 0;
 				
-				move_velocity[3] = 0;
+				moveVelocity[3] = 0;
 				
-				next_move_velocity[0] = 0;
-				next_move_velocity[1] = 0;
-				next_move_velocity[2] = 0;
+				nextMoveVelocity[0] = 0;
+				nextMoveVelocity[1] = 0;
+				nextMoveVelocity[2] = 0;
 				
-				next_move_velocity[3] = 0;
+				nextMoveVelocity[3] = 0;
 				
-				window.requestAnimationFrame(draw_frame);
+				window.requestAnimationFrame(drawFrame);
 			}
 			
 			else if (event.touches.length === 3)
 			{
-				moving_forward_touch = false;
-				moving_backward_touch = true;
+				movingForwardTouch = false;
+				movingBackwardTouch = true;
 				
-				move_velocity[0] = 0;
-				move_velocity[1] = 0;
-				move_velocity[2] = 0;
+				moveVelocity[0] = 0;
+				moveVelocity[1] = 0;
+				moveVelocity[2] = 0;
 				
-				move_velocity[3] = 0;
+				moveVelocity[3] = 0;
 				
-				next_move_velocity[0] = 0;
-				next_move_velocity[1] = 0;
-				next_move_velocity[2] = 0;
+				nextMoveVelocity[0] = 0;
+				nextMoveVelocity[1] = 0;
+				nextMoveVelocity[2] = 0;
 				
-				next_move_velocity[3] = 0;
+				nextMoveVelocity[3] = 0;
 				
-				window.requestAnimationFrame(draw_frame);
+				window.requestAnimationFrame(drawFrame);
 			}
 			
 			else
 			{
-				moving_forward_touch = false;
-				moving_backward_touch = false;
+				movingForwardTouch = false;
+				movingBackwardTouch = false;
 			}
 			
-			was_moving_touch = false;
+			wasMovingTouch = false;
 		}
 	}
 	
 	
 	
-	function on_drag_canvas(x, y, x_delta, y_delta, event)
+	function onDragCanvas(x, y, xDelta, yDelta, event)
 	{
-		if (event.type === "touchmove" && was_moving_touch)
+		if (event.type === "touchmove" && wasMovingTouch)
 		{
-			was_moving_touch = false;
+			wasMovingTouch = false;
 			return;
 		}
 		
 		
 		
-		theta += x_delta * Math.PI / 2;
+		theta += xDelta * Math.PI / 2;
 		
-		next_theta_velocity = x_delta * Math.PI / 2;
+		nextThetaVelocity = xDelta * Math.PI / 2;
 		
 		if (theta >= 2 * Math.PI)
 		{
@@ -921,9 +921,9 @@
 		
 		
 		
-		phi += y_delta * Math.PI / 2;
+		phi += yDelta * Math.PI / 2;
 		
-		next_phi_velocity = y_delta * Math.PI / 2;
+		nextPhiVelocity = yDelta * Math.PI / 2;
 		
 		if (phi > Math.PI - .01)
 		{
@@ -937,48 +937,48 @@
 		
 		
 		
-		calculate_vectors();
+		calculateVectors();
 		
-		window.requestAnimationFrame(draw_frame);
+		window.requestAnimationFrame(drawFrame);
 	}
 	
 	
 	
-	function on_release_canvas(x, y, event)
+	function onReleaseCanvas(x, y, event)
 	{
 		if (event.type === "touchend")
 		{
-			moving_forward_touch = false;
-			moving_backward_touch = false;
+			movingForwardTouch = false;
+			movingBackwardTouch = false;
 			
-			was_moving_touch = true;
+			wasMovingTouch = true;
 			
-			if (move_velocity[0] === 0 && move_velocity[1] === 0 && move_velocity[2] === 0)
+			if (moveVelocity[0] === 0 && moveVelocity[1] === 0 && moveVelocity[2] === 0)
 			{
-				move_velocity[0] = next_move_velocity[0];
-				move_velocity[1] = next_move_velocity[1];
-				move_velocity[2] = next_move_velocity[2];
+				moveVelocity[0] = nextMoveVelocity[0];
+				moveVelocity[1] = nextMoveVelocity[1];
+				moveVelocity[2] = nextMoveVelocity[2];
 				
-				move_velocity[3] = next_move_velocity[3];
+				moveVelocity[3] = nextMoveVelocity[3];
 				
-				next_move_velocity[0] = 0;
-				next_move_velocity[1] = 0;
-				next_move_velocity[2] = 0;
+				nextMoveVelocity[0] = 0;
+				nextMoveVelocity[1] = 0;
+				nextMoveVelocity[2] = 0;
 				
-				next_move_velocity[3] = 0;
+				nextMoveVelocity[3] = 0;
 			}
 		}
 		
-		if (((event.type === "touchend" && event.touches,length === 0) || event.type === "mouseup") && (Math.sqrt(next_theta_velocity * next_theta_velocity + next_phi_velocity * next_phi_velocity) >= pan_velocity_start_threshhold))
+		if (((event.type === "touchend" && event.touches,length === 0) || event.type === "mouseup") && (Math.sqrt(nextThetaVelocity * nextThetaVelocity + nextPhiVelocity * nextPhiVelocity) >= panVelocityStartThreshhold))
 		{
-			theta_velocity = next_theta_velocity;
-			phi_velocity = next_phi_velocity;
+			thetaVelocity = nextThetaVelocity;
+			phiVelocity = nextPhiVelocity;
 		}
 	}
 	
 	
 	
-	function handle_keydown_event(e)
+	function handleKeydownEvent(e)
 	{
 		if (document.activeElement.tagName === "INPUT" || !(e.keyCode === 87 || e.keyCode === 83 || e.keyCode === 68 || e.keyCode === 65 || e.keyCode === 69 || e.keyCode === 81))
 		{
@@ -987,33 +987,33 @@
 		
 		
 		
-		next_move_velocity = [0, 0, 0, 0];
-		move_velocity = [0, 0, 0, 0];
+		nextMoveVelocity = [0, 0, 0, 0];
+		moveVelocity = [0, 0, 0, 0];
 		
 		
 		
 		//W
 		if (e.keyCode === 87)
 		{
-			moving_forward_keyboard = true;
+			movingForwardKeyboard = true;
 		}
 		
 		//S
 		else if (e.keyCode === 83)
 		{
-			moving_backward_keyboard = true;
+			movingBackwardKeyboard = true;
 		}
 		
 		//D
 		if (e.keyCode === 68)
 		{
-			moving_right_keyboard = true;
+			movingRightKeyboard = true;
 		}
 		
 		//A
 		else if (e.keyCode === 65)
 		{
-			moving_left_keyboard = true;
+			movingLeftKeyboard = true;
 		}
 		
 		
@@ -1021,23 +1021,23 @@
 		//E
 		if (e.keyCode === 69)
 		{
-			moving_slice_up_keyboard = true;
+			movingSliceUpKeyboard = true;
 		}
 		
 		//Q
 		else if (e.keyCode === 81)
 		{
-			moving_slice_down_keyboard = true;
+			movingSliceDownKeyboard = true;
 		}
 		
 		
 		
-		window.requestAnimationFrame(draw_frame);
+		window.requestAnimationFrame(drawFrame);
 	}
 	
 	
 	
-	function handle_keyup_event(e)
+	function handleKeyupEvent(e)
 	{
 		if (document.activeElement.tagName === "INPUT" || !(e.keyCode === 87 || e.keyCode === 83 || e.keyCode === 68 || e.keyCode === 65 || e.keyCode === 69 || e.keyCode === 81))
 		{
@@ -1046,19 +1046,19 @@
 		
 		
 		
-		if (move_velocity[0] === 0 && move_velocity[1] === 0 && move_velocity[2] === 0 && move_velocity[3] === 0)
+		if (moveVelocity[0] === 0 && moveVelocity[1] === 0 && moveVelocity[2] === 0 && moveVelocity[3] === 0)
 		{
-			move_velocity[0] = next_move_velocity[0];
-			move_velocity[1] = next_move_velocity[1];
-			move_velocity[2] = next_move_velocity[2];
+			moveVelocity[0] = nextMoveVelocity[0];
+			moveVelocity[1] = nextMoveVelocity[1];
+			moveVelocity[2] = nextMoveVelocity[2];
 			
-			move_velocity[3] = next_move_velocity[3];
+			moveVelocity[3] = nextMoveVelocity[3];
 			
-			next_move_velocity[0] = 0;
-			next_move_velocity[1] = 0;
-			next_move_velocity[2] = 0;
+			nextMoveVelocity[0] = 0;
+			nextMoveVelocity[1] = 0;
+			nextMoveVelocity[2] = 0;
 			
-			next_move_velocity[3] = 0;
+			nextMoveVelocity[3] = 0;
 		}
 		
 		
@@ -1066,25 +1066,25 @@
 		//W
 		if (e.keyCode === 87)
 		{
-			moving_forward_keyboard = false;
+			movingForwardKeyboard = false;
 		}
 		
 		//S
 		else if (e.keyCode === 83)
 		{
-			moving_backward_keyboard = false;
+			movingBackwardKeyboard = false;
 		}
 		
 		//D
 		if (e.keyCode === 68)
 		{
-			moving_right_keyboard = false;
+			movingRightKeyboard = false;
 		}
 		
 		//A
 		else if (e.keyCode === 65)
 		{
-			moving_left_keyboard = false;
+			movingLeftKeyboard = false;
 		}
 		
 		
@@ -1092,445 +1092,445 @@
 		//E
 		if (e.keyCode === 69)
 		{
-			moving_slice_up_keyboard = false;
+			movingSliceUpKeyboard = false;
 		}
 		
 		//Q
 		else if (e.keyCode === 81)
 		{
-			moving_slice_down_keyboard = false;
+			movingSliceDownKeyboard = false;
 		}
 	}
 	
 	
 	
-	document.documentElement.addEventListener("keydown", handle_keydown_event);
-	Page.temporary_handlers["keydown"].push(handle_keydown_event);
+	document.documentElement.addEventListener("keydown", handleKeydownEvent);
+	Page.temporaryHandlers["keydown"].push(handleKeydownEvent);
 	
-	document.documentElement.addEventListener("keyup", handle_keyup_event);
-	Page.temporary_handlers["keydown"].push(handle_keyup_event);
+	document.documentElement.addEventListener("keyup", handleKeyupEvent);
+	Page.temporaryHandlers["keydown"].push(handleKeyupEvent);
 	
 	
 	
-	function update_camera_parameters()
+	function updateCameraParameters()
 	{
-		moving_speed = Math.min(Math.max(.000001, distance_to_scene / 20), .02);
+		movingSpeed = Math.min(Math.max(.000001, distanceToScene / 20), .02);
 		
 		
 		
-		if (moving_pos)
+		if (movingPos)
 		{
-			let old_camera_pos = [...camera_pos];
+			let oldCameraPos = [...cameraPos];
 			
 			
 			
-			if (moving_forward_keyboard || moving_forward_touch)
+			if (movingForwardKeyboard || movingForwardTouch)
 			{
-				camera_pos[0] += moving_speed * forward_vec[0];
-				camera_pos[1] += moving_speed * forward_vec[1];
-				camera_pos[2] += moving_speed * forward_vec[2];
+				cameraPos[0] += movingSpeed * forwardVec[0];
+				cameraPos[1] += movingSpeed * forwardVec[1];
+				cameraPos[2] += movingSpeed * forwardVec[2];
 			}
 			
-			else if (moving_backward_keyboard || moving_backward_touch)
+			else if (movingBackwardKeyboard || movingBackwardTouch)
 			{
-				camera_pos[0] -= moving_speed * forward_vec[0];
-				camera_pos[1] -= moving_speed * forward_vec[1];
-				camera_pos[2] -= moving_speed * forward_vec[2];
-			}
-			
-			
-			
-			if (moving_right_keyboard)
-			{
-				camera_pos[0] += moving_speed * right_vec[0] / focal_length;
-				camera_pos[1] += moving_speed * right_vec[1] / focal_length;
-				camera_pos[2] += moving_speed * right_vec[2] / focal_length;
-			}
-			
-			else if (moving_left_keyboard)
-			{
-				camera_pos[0] -= moving_speed * right_vec[0] / focal_length;
-				camera_pos[1] -= moving_speed * right_vec[1] / focal_length;
-				camera_pos[2] -= moving_speed * right_vec[2] / focal_length;
+				cameraPos[0] -= movingSpeed * forwardVec[0];
+				cameraPos[1] -= movingSpeed * forwardVec[1];
+				cameraPos[2] -= movingSpeed * forwardVec[2];
 			}
 			
 			
 			
-			next_move_velocity[0] = camera_pos[0] - old_camera_pos[0];
-			next_move_velocity[1] = camera_pos[1] - old_camera_pos[1];
-			next_move_velocity[2] = camera_pos[2] - old_camera_pos[2];
+			if (movingRightKeyboard)
+			{
+				cameraPos[0] += movingSpeed * rightVec[0] / focalLength;
+				cameraPos[1] += movingSpeed * rightVec[1] / focalLength;
+				cameraPos[2] += movingSpeed * rightVec[2] / focalLength;
+			}
+			
+			else if (movingLeftKeyboard)
+			{
+				cameraPos[0] -= movingSpeed * rightVec[0] / focalLength;
+				cameraPos[1] -= movingSpeed * rightVec[1] / focalLength;
+				cameraPos[2] -= movingSpeed * rightVec[2] / focalLength;
+			}
+			
+			
+			
+			nextMoveVelocity[0] = cameraPos[0] - oldCameraPos[0];
+			nextMoveVelocity[1] = cameraPos[1] - oldCameraPos[1];
+			nextMoveVelocity[2] = cameraPos[2] - oldCameraPos[2];
 		}
 		
 		
 		
 		else
 		{
-			let old_c = [...c];
-			let old_k_slice = k_slice;
+			let oldC = [...c];
+			let oldKSlice = kSlice;
 			
-			if (moving_forward_keyboard || moving_forward_touch)
+			if (movingForwardKeyboard || movingForwardTouch)
 			{
-				c[0] += .5 * moving_speed * forward_vec[0];
-				c[1] += .5 * moving_speed * forward_vec[1];
-				c[2] += .5 * moving_speed * forward_vec[2];
+				c[0] += .5 * movingSpeed * forwardVec[0];
+				c[1] += .5 * movingSpeed * forwardVec[1];
+				c[2] += .5 * movingSpeed * forwardVec[2];
 			}
 			
-			else if (moving_backward_keyboard || moving_backward_touch)
+			else if (movingBackwardKeyboard || movingBackwardTouch)
 			{
-				c[0] -= .5 * moving_speed * forward_vec[0];
-				c[1] -= .5 * moving_speed * forward_vec[1];
-				c[2] -= .5 * moving_speed * forward_vec[2];
-			}
-			
-			
-			
-			if (moving_right_keyboard)
-			{
-				c[0] += .5 * moving_speed * right_vec[0] / focal_length;
-				c[1] += .5 * moving_speed * right_vec[1] / focal_length;
-				c[2] += .5 * moving_speed * right_vec[2] / focal_length;
-			}
-			
-			else if (moving_left_keyboard)
-			{
-				c[0] -= .5 * moving_speed * right_vec[0] / focal_length;
-				c[1] -= .5 * moving_speed * right_vec[1] / focal_length;
-				c[2] -= .5 * moving_speed * right_vec[2] / focal_length;
+				c[0] -= .5 * movingSpeed * forwardVec[0];
+				c[1] -= .5 * movingSpeed * forwardVec[1];
+				c[2] -= .5 * movingSpeed * forwardVec[2];
 			}
 			
 			
 			
-			if (moving_slice_up_keyboard)
+			if (movingRightKeyboard)
 			{
-				k_slice += .5 * moving_speed;
+				c[0] += .5 * movingSpeed * rightVec[0] / focalLength;
+				c[1] += .5 * movingSpeed * rightVec[1] / focalLength;
+				c[2] += .5 * movingSpeed * rightVec[2] / focalLength;
 			}
 			
-			else if (moving_slice_down_keyboard)
+			else if (movingLeftKeyboard)
 			{
-				k_slice -= .5 * moving_speed;
+				c[0] -= .5 * movingSpeed * rightVec[0] / focalLength;
+				c[1] -= .5 * movingSpeed * rightVec[1] / focalLength;
+				c[2] -= .5 * movingSpeed * rightVec[2] / focalLength;
 			}
 			
 			
 			
-			c_x_input_element.value = Math.round((c[0]) * 1000000) / 1000000;
-			c_y_input_element.value = Math.round((c[1]) * 1000000) / 1000000;
-			c_z_input_element.value = Math.round((c[2]) * 1000000) / 1000000;
+			if (movingSliceUpKeyboard)
+			{
+				kSlice += .5 * movingSpeed;
+			}
 			
-			c_w_input_element.value = Math.round((k_slice) * 1000000) / 1000000;
+			else if (movingSliceDownKeyboard)
+			{
+				kSlice -= .5 * movingSpeed;
+			}
+			
+			
+			
+			cXInputElement.value = Math.round((c[0]) * 1000000) / 1000000;
+			cYInputElement.value = Math.round((c[1]) * 1000000) / 1000000;
+			cZInputElement.value = Math.round((c[2]) * 1000000) / 1000000;
+			
+			cWInputElement.value = Math.round((kSlice) * 1000000) / 1000000;
 			
 			
 			
 			wilson.gl.uniform3fv(wilson.uniforms["c"], c);
 			
-			wilson.gl.uniform1f(wilson.uniforms["k_slice"], k_slice);
+			wilson.gl.uniform1f(wilson.uniforms["kSlice"], kSlice);
 			
 			
 			
-			next_move_velocity[0] = c[0] - old_c[0];
-			next_move_velocity[1] = c[1] - old_c[1];
-			next_move_velocity[2] = c[2] - old_c[2];
+			nextMoveVelocity[0] = c[0] - oldC[0];
+			nextMoveVelocity[1] = c[1] - oldC[1];
+			nextMoveVelocity[2] = c[2] - oldC[2];
 			
-			next_move_velocity[3] = k_slice - old_k_slice;
+			nextMoveVelocity[3] = kSlice - oldKSlice;
 		}
 		
 		
 		
-		calculate_vectors();
+		calculateVectors();
 	}
 	
 	
 	
-	function change_resolution()
+	function changeResolution()
 	{
-		image_size = Math.max(100, parseInt(resolution_input_element.value || 500));
+		imageSize = Math.max(100, parseInt(resolutionInputElement.value || 500));
 		
 		
 		
-		if (wilson.fullscreen.currently_fullscreen)
+		if (wilson.fullscreen.currentlyFullscreen)
 		{
-			if (Page.Layout.aspect_ratio >= 1)
+			if (Page.Layout.aspectRatio >= 1)
 			{
-				image_width = image_size;
-				image_height = Math.floor(image_size / Page.Layout.aspect_ratio);
+				imageWidth = imageSize;
+				imageHeight = Math.floor(imageSize / Page.Layout.aspectRatio);
 			}
 			
 			else
 			{
-				image_width = Math.floor(image_size * Page.Layout.aspect_ratio);
-				image_height = image_size;
+				imageWidth = Math.floor(imageSize * Page.Layout.aspectRatio);
+				imageHeight = imageSize;
 			}
 		}
 		
 		else
 		{
-			image_width = image_size;
-			image_height = image_size;
+			imageWidth = imageSize;
+			imageHeight = imageSize;
 		}
 		
 		
 		
-		wilson.change_canvas_size(image_width, image_height);
+		wilson.changeCanvasSize(imageWidth, imageHeight);
 		
 		
 		
-		if (image_width >= image_height)
+		if (imageWidth >= imageHeight)
 		{
-			wilson.gl.uniform1f(wilson.uniforms["aspect_ratio_x"], image_width / image_height);
-			wilson.gl.uniform1f(wilson.uniforms["aspect_ratio_y"], 1);
+			wilson.gl.uniform1f(wilson.uniforms["aspectRatioX"], imageWidth / imageHeight);
+			wilson.gl.uniform1f(wilson.uniforms["aspectRatioY"], 1);
 		}
 		
 		else
 		{
-			wilson.gl.uniform1f(wilson.uniforms["aspect_ratio_x"], 1);
-			wilson.gl.uniform1f(wilson.uniforms["aspect_ratio_y"], image_width / image_height);
+			wilson.gl.uniform1f(wilson.uniforms["aspectRatioX"], 1);
+			wilson.gl.uniform1f(wilson.uniforms["aspectRatioY"], imageWidth / imageHeight);
 		}
 		
-		wilson.gl.uniform1i(wilson.uniforms["image_size"], image_size);
+		wilson.gl.uniform1i(wilson.uniforms["imageSize"], imageSize);
 		
 		
 		
-		window.requestAnimationFrame(draw_frame);
+		window.requestAnimationFrame(drawFrame);
 	}
 	
 	
 	
-	function randomize_c(animate_change = true)
+	function randomizeC(animateChange = true)
 	{
-		if (currently_animating_parameters)
+		if (currentlyAnimatingParameters)
 		{
 			return;
 		}
 		
 		
 		
-		c_old[0] = c[0];
-		c_old[1] = c[1];
-		c_old[2] = c[2];
+		cOld[0] = c[0];
+		cOld[1] = c[1];
+		cOld[2] = c[2];
 		
-		c_delta[0] = Math.random()*2 - 1 - c_old[0];
-		c_delta[1] = Math.random()*2 - 1 - c_old[1];
-		c_delta[2] = Math.random()*2 - 1 - c_old[2];
+		cDelta[0] = Math.random()*2 - 1 - cOld[0];
+		cDelta[1] = Math.random()*2 - 1 - cOld[1];
+		cDelta[2] = Math.random()*2 - 1 - cOld[2];
 		
-		c_x_input_element.value = Math.round((c_old[0] + c_delta[0]) * 1000000) / 1000000;
-		c_y_input_element.value = Math.round((c_old[1] + c_delta[1]) * 1000000) / 1000000;
-		c_z_input_element.value = Math.round((c_old[2] + c_delta[2]) * 1000000) / 1000000;
-		
-		
-		
-		julia_proportion_old = julia_proportion;
-		julia_proportion_delta = 0;
+		cXInputElement.value = Math.round((cOld[0] + cDelta[0]) * 1000000) / 1000000;
+		cYInputElement.value = Math.round((cOld[1] + cDelta[1]) * 1000000) / 1000000;
+		cZInputElement.value = Math.round((cOld[2] + cDelta[2]) * 1000000) / 1000000;
 		
 		
 		
-		k_slice_old = k_slice;
-		k_slice_delta = 0;
+		juliaProportionOld = juliaProportion;
+		juliaProportionDelta = 0;
 		
 		
 		
-		if (animate_change)
+		kSliceOld = kSlice;
+		kSliceDelta = 0;
+		
+		
+		
+		if (animateChange)
 		{
-			animate_parameter_change();
+			animateParameterChange();
 		}
 		
 		else
 		{
-			c[0] = c_old[0] + c_delta[0];
-			c[1] = c_old[1] + c_delta[1];
-			c[2] = c_old[2] + c_delta[2];
+			c[0] = cOld[0] + cDelta[0];
+			c[1] = cOld[1] + cDelta[1];
+			c[2] = cOld[2] + cDelta[2];
 		}
 	}
 	
 	
 	
-	function update_parameters()
+	function updateParameters()
 	{
-		c_old[0] = c[0];
-		c_old[1] = c[1];
-		c_old[2] = c[2];
+		cOld[0] = c[0];
+		cOld[1] = c[1];
+		cOld[2] = c[2];
 		
-		c_delta[0] = (parseFloat(c_x_input_element.value || 0) || 0) - c_old[0];
-		c_delta[1] = (parseFloat(c_y_input_element.value || 0) || 0) - c_old[1];
-		c_delta[2] = (parseFloat(c_z_input_element.value || 0) || 0) - c_old[2];
-		
-		
-		
-		julia_proportion_old = julia_proportion;
-		julia_proportion_delta = 0;
+		cDelta[0] = (parseFloat(cXInputElement.value || 0) || 0) - cOld[0];
+		cDelta[1] = (parseFloat(cYInputElement.value || 0) || 0) - cOld[1];
+		cDelta[2] = (parseFloat(cZInputElement.value || 0) || 0) - cOld[2];
 		
 		
 		
-		k_slice_old = k_slice;
-		k_slice_delta = (parseFloat(c_w_input_element.value || 0) || 0) - k_slice_old;
+		juliaProportionOld = juliaProportion;
+		juliaProportionDelta = 0;
 		
 		
 		
-		animate_parameter_change();
+		kSliceOld = kSlice;
+		kSliceDelta = (parseFloat(cWInputElement.value || 0) || 0) - kSliceOld;
+		
+		
+		
+		animateParameterChange();
 	}
 	
 	
 	
-	function animate_parameter_change()
+	function animateParameterChange()
 	{
-		if (!currently_animating_parameters)
+		if (!currentlyAnimatingParameters)
 		{
-			currently_animating_parameters = true;
+			currentlyAnimatingParameters = true;
 			
-			parameter_animation_frame = 0;
+			parameterAnimationFrame = 0;
 			
-			window.requestAnimationFrame(draw_frame);
+			window.requestAnimationFrame(drawFrame);
 		}
 	}
 	
 	
 	
-	function animate_parameter_change_step()
+	function animateParameterChangeStep()
 	{
-		let t = .5 * Math.sin(Math.PI * parameter_animation_frame / 120 - Math.PI / 2) + .5;
+		let t = .5 * Math.sin(Math.PI * parameterAnimationFrame / 120 - Math.PI / 2) + .5;
 		
 		
 		
-		c[0] = c_old[0] + c_delta[0] * t;
-		c[1] = c_old[1] + c_delta[1] * t;
-		c[2] = c_old[2] + c_delta[2] * t;
+		c[0] = cOld[0] + cDelta[0] * t;
+		c[1] = cOld[1] + cDelta[1] * t;
+		c[2] = cOld[2] + cDelta[2] * t;
 		
 		wilson.gl.uniform3fv(wilson.uniforms["c"], c);
 		
 		
 		
-		julia_proportion = julia_proportion_old + julia_proportion_delta * t;
+		juliaProportion = juliaProportionOld + juliaProportionDelta * t;
 		
-		wilson.gl.uniform1f(wilson.uniforms["julia_proportion"], julia_proportion);
-		
-		
-		
-		k_slice = k_slice_old + k_slice_delta * t;
-		
-		wilson.gl.uniform1f(wilson.uniforms["k_slice"], k_slice);
+		wilson.gl.uniform1f(wilson.uniforms["juliaProportion"], juliaProportion);
 		
 		
 		
-		parameter_animation_frame++;
+		kSlice = kSliceOld + kSliceDelta * t;
 		
-		if (parameter_animation_frame === 121)
+		wilson.gl.uniform1f(wilson.uniforms["kSlice"], kSlice);
+		
+		
+		
+		parameterAnimationFrame++;
+		
+		if (parameterAnimationFrame === 121)
 		{
-			currently_animating_parameters = false;
+			currentlyAnimatingParameters = false;
 		}
 	}
 	
 	
 	
-	function switch_bulb()
+	function switchBulb()
 	{
-		if (currently_animating_parameters)
+		if (currentlyAnimatingParameters)
 		{
 			return;
 		}
 		
 		
 		
-		Page.Animate.change_opacity(switch_bulb_button_element, 0, Site.opacity_animation_time);
+		Page.Animate.changeOpacity(switchBulbButtonElement, 0, Site.opacityAnimationTime);
 		
 		setTimeout(() =>
 		{
-			if (julia_proportion_old === 0)
+			if (juliaProportionOld === 0)
 			{
-				switch_bulb_button_element.textContent = "Switch to Mandelbrot Set";
+				switchBulbButtonElement.textContent = "Switch to Mandelbrot Set";
 			}
 			
 			else
 			{
-				switch_bulb_button_element.textContent = "Switch to Julia Set";
+				switchBulbButtonElement.textContent = "Switch to Julia Set";
 			}
 			
 			Page.Load.TextButtons.equalize();
 			
-			Page.Animate.change_opacity(switch_bulb_button_element, 1, Site.opacity_animation_time);
-		}, Site.opacity_animation_time);
+			Page.Animate.changeOpacity(switchBulbButtonElement, 1, Site.opacityAnimationTime);
+		}, Site.opacityAnimationTime);
 		
 		
 		
-		if (julia_proportion === 0)
+		if (juliaProportion === 0)
 		{
 			wilson.gl.uniform3fv(wilson.uniforms["c"], c);
 			
-			if (!moving_pos)
+			if (!movingPos)
 			{
-				wilson.gl.uniform1i(wilson.uniforms["draw_sphere"], 1);
+				wilson.gl.uniform1i(wilson.uniforms["drawSphere"], 1);
 			}
 			
 			setTimeout(() =>
 			{
-				Page.Animate.change_opacity(switch_movement_button_element, 1, Site.opacity_animation_time);
-				Page.Animate.change_opacity(randomize_c_button_element, 1, Site.opacity_animation_time);
-			}, Site.opacity_animation_time);
+				Page.Animate.changeOpacity(switchMovementButtonElement, 1, Site.opacityAnimationTime);
+				Page.Animate.changeOpacity(randomizeCButtonElement, 1, Site.opacityAnimationTime);
+			}, Site.opacityAnimationTime);
 		}
 		
 		else
 		{
-			moving_pos = true;
+			movingPos = true;
 			
-			wilson.gl.uniform1i(wilson.uniforms["draw_sphere"], 0);
+			wilson.gl.uniform1i(wilson.uniforms["drawSphere"], 0);
 			
-			Page.Animate.change_opacity(switch_movement_button_element, 0, Site.opacity_animation_time);
-			Page.Animate.change_opacity(randomize_c_button_element, 0, Site.opacity_animation_time);
+			Page.Animate.changeOpacity(switchMovementButtonElement, 0, Site.opacityAnimationTime);
+			Page.Animate.changeOpacity(randomizeCButtonElement, 0, Site.opacityAnimationTime);
 		}
 		
 		
 		
-		julia_proportion_old = julia_proportion;
-		julia_proportion_delta = 1 - 2*julia_proportion_old;
+		juliaProportionOld = juliaProportion;
+		juliaProportionDelta = 1 - 2*juliaProportionOld;
 		
-		k_slice_old = k_slice;
-		k_slice_delta = 0;
+		kSliceOld = kSlice;
+		kSliceDelta = 0;
 		
-		c_old[0] = c[0];
-		c_old[1] = c[1];
-		c_old[2] = c[2];
+		cOld[0] = c[0];
+		cOld[1] = c[1];
+		cOld[2] = c[2];
 		
-		c_delta[0] = 0;
-		c_delta[1] = 0;
-		c_delta[2] = 0;
+		cDelta[0] = 0;
+		cDelta[1] = 0;
+		cDelta[2] = 0;
 		
-		animate_parameter_change();
+		animateParameterChange();
 	}
 	
 	
 	
-	function switch_movement()
+	function switchMovement()
 	{
-		moving_pos = !moving_pos;
+		movingPos = !movingPos;
 		
 		
 		
-		Page.Animate.change_opacity(switch_movement_button_element, 0, Site.opacity_animation_time);
+		Page.Animate.changeOpacity(switchMovementButtonElement, 0, Site.opacityAnimationTime);
 		
 		setTimeout(() =>
 		{
-			if (moving_pos)
+			if (movingPos)
 			{
-				switch_movement_button_element.textContent = "Change Julia Set";
+				switchMovementButtonElement.textContent = "Change Julia Set";
 			}
 			
 			else
 			{
-				switch_movement_button_element.textContent = "Move Camera";
+				switchMovementButtonElement.textContent = "Move Camera";
 			}
 			
 			Page.Load.TextButtons.equalize();
 			
-			Page.Animate.change_opacity(switch_movement_button_element, 1, Site.opacity_animation_time);
-		}, Site.opacity_animation_time);
+			Page.Animate.changeOpacity(switchMovementButtonElement, 1, Site.opacityAnimationTime);
+		}, Site.opacityAnimationTime);
 		
 		
 		
-		if (moving_pos)
+		if (movingPos)
 		{
-			wilson.gl.uniform1i(wilson.uniforms["draw_sphere"], 0);
+			wilson.gl.uniform1i(wilson.uniforms["drawSphere"], 0);
 		}
 		
 		else
 		{
-			wilson.gl.uniform1i(wilson.uniforms["draw_sphere"], 1);
+			wilson.gl.uniform1i(wilson.uniforms["drawSphere"], 1);
 		}
 	}
-}()
+	}()

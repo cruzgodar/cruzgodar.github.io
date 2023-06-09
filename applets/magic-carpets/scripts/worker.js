@@ -4,106 +4,106 @@
 
 onmessage = function(e)
 {
-	grid_size = e.data[0];
-	max_cage_size = e.data[1];
-	unique_solution = e.data[2];
+	gridSize = e.data[0];
+	maxCageSize = e.data[1];
+	uniqueSolution = e.data[2];
 	
-	generate_magic_carpet();
+	generateMagicCarpet();
 };
 
 
 
-let grid_size = null;
-let max_cage_size = null;
-let unique_solution = null;
+let gridSize = null;
+let maxCageSize = null;
+let uniqueSolution = null;
 
 //Each element is of the form [top-left row, top-left col, width, height, label row offset, label col offset].
 let cages = [];
 
-//This is a grid_size * grid_size array that holds the index of the cage that each cell is in.
-let cages_by_location = [];
+//This is a gridSize * gridSize array that holds the index of the cage that each cell is in.
+let cagesByLocation = [];
 
-let num_solutions_found = 0;
-
-
+let numSolutionsFound = 0;
 
 
 
-function generate_magic_carpet()
+
+
+function generateMagicCarpet()
 {
 	cages = [];
 	
-	cages_by_location = [];
+	cagesByLocation = [];
 	
 	
 	
 	//First, generate rectangles until we get a unique solution. We start with all 1x1 cages -- we'll make it much harder later.
-	initialize_grid();
+	initializeGrid();
 	
 	
-	let cages_backup = JSON.parse(JSON.stringify(cages));
-	let cages_by_location_backup = JSON.parse(JSON.stringify(cages_by_location));
+	let cagesBackup = JSON.parse(JSON.stringify(cages));
+	let cagesByLocationBackup = JSON.parse(JSON.stringify(cagesByLocation));
 	
 	
 	
 	while (true)
 	{
-		let expanded_a_cage = false;
+		let expandedACage = false;
 		
 		//Go through the cages from smallest to largest, but in a random order for each size.
-		let cage_order = shuffle_array([...Array(cages.length).keys()]);
+		let cageOrder = shuffleArray([...Array(cages.length).keys()]);
 		
-		cage_order.sort((a, b) => cages[a][2]*cages[a][3] - cages[b][2]*cages[b][3]);
+		cageOrder.sort((a, b) => cages[a][2]*cages[a][3] - cages[b][2]*cages[b][3]);
 		
 		
 		
-		for (let i = 0; i < cage_order.length; i++)
+		for (let i = 0; i < cageOrder.length; i++)
 		{
-			const cage_index = cage_order[i];
+			const cageIndex = cageOrder[i];
 			
-			if (expand_cage(cage_index))
+			if (expandCage(cageIndex))
 			{
 				//Shift the rest of the cages in the cage order down so that none is out of bounds.
-				for (let j = 0; j < cage_order.length; j++)
+				for (let j = 0; j < cageOrder.length; j++)
 				{
-					if (cage_order[j] >= cages.length)
+					if (cageOrder[j] >= cages.length)
 					{
-						cage_order[j]--;
+						cageOrder[j]--;
 					}
 				}
 				
-				if (unique_solution)
+				if (uniqueSolution)
 				{
-					num_solutions_found = solve_puzzle();
+					numSolutionsFound = solvePuzzle();
 					
 					//If this is no longer a unique solution, no problem! We'll just try a different cage next time. We'll just revert to our last uniquely-solvable grid and try again.
-					if (num_solutions_found !== 1)
+					if (numSolutionsFound !== 1)
 					{
-						cages = JSON.parse(JSON.stringify(cages_backup));
-						cages_by_location = JSON.parse(JSON.stringify(cages_by_location_backup));
+						cages = JSON.parse(JSON.stringify(cagesBackup));
+						cagesByLocation = JSON.parse(JSON.stringify(cagesByLocationBackup));
 						
-						num_solutions_found = 1;
+						numSolutionsFound = 1;
 					}
 					
 					//Great! We just merged a cage, so we have a harder puzzle, but the solution is still unique. Now we can set a checkpoint here and keep going.
 					else
 					{	
-						expanded_a_cage = true;
-						cages_backup = JSON.parse(JSON.stringify(cages));
-						cages_by_location_backup = JSON.parse(JSON.stringify(cages_by_location));
+						expandedACage = true;
+						cagesBackup = JSON.parse(JSON.stringify(cages));
+						cagesByLocationBackup = JSON.parse(JSON.stringify(cagesByLocation));
 					}
 				}
 				
 				else
 				{
-					expanded_a_cage = true;
+					expandedACage = true;
 				}
 			}
 		}
 		
-		if (!expanded_a_cage || cages.length <= grid_size)
+		if (!expandedACage || cages.length <= gridSize)
 		{
-			postMessage([cages.sort((a, b) => (b[3]*grid_size + b[2]) - (a[3]*grid_size + a[2]))]);
+			postMessage([cages.sort((a, b) => (b[3]*gridSize + b[2]) - (a[3]*gridSize + a[2]))]);
 			return;
 		}
 	}
@@ -111,17 +111,17 @@ function generate_magic_carpet()
 
 
 
-function print_grid()
+function printGrid()
 {
 	let string = "";
 	
-	let labels = new Array(grid_size);
+	let labels = new Array(gridSize);
 	
-	for (let i = 0; i < grid_size; i++)
+	for (let i = 0; i < gridSize; i++)
 	{
-		labels[i] = new Array(grid_size);
+		labels[i] = new Array(gridSize);
 		
-		for (let j = 0; j < grid_size; j++)
+		for (let j = 0; j < gridSize; j++)
 		{
 			labels[i][j] = 0;
 		}
@@ -135,9 +135,9 @@ function print_grid()
 		labels[row][col] = cages[i][2] * cages[i][3];
 	}
 	
-	for (let i = 0; i < grid_size; i++)
+	for (let i = 0; i < gridSize; i++)
 	{
-		for (let j = 0; j < grid_size; j++)
+		for (let j = 0; j < gridSize; j++)
 		{
 			string += `${labels[i][j] !== 0 ? labels[i][j] : " "} `;
 		}
@@ -150,23 +150,23 @@ function print_grid()
 
 
 
-//Makes a grid_size * grid_size grid with all 1x1 rects.
-function initialize_grid()
+//Makes a gridSize * gridSize grid with all 1x1 rects.
+function initializeGrid()
 {
-	cages = new Array(grid_size * grid_size);
+	cages = new Array(gridSize * gridSize);
 	
-	cages_by_location = new Array(grid_size);
+	cagesByLocation = new Array(gridSize);
 	
 	let index = 0;
 	
-	for (let i = 0; i < grid_size; i++)
+	for (let i = 0; i < gridSize; i++)
 	{
-		cages_by_location[i] = new Array(grid_size);
+		cagesByLocation[i] = new Array(gridSize);
 		
-		for (let j = 0; j < grid_size; j++)
+		for (let j = 0; j < gridSize; j++)
 		{
 			cages[index] = [i, j, 1, 1, 0, 0];
-			cages_by_location[i][j] = index;
+			cagesByLocation[i][j] = index;
 			index++;
 		}
 	}
@@ -175,21 +175,21 @@ function initialize_grid()
 
 
 //Shuffles an array with the Fisher-Yates method.
-function shuffle_array(array)
+function shuffleArray(array)
 {
-	let current_index = array.length;
+	let currentIndex = array.length;
 
 	//While there are still elements to shuffle
-	while (current_index !== 0)
+	while (currentIndex !== 0)
 	{
 		//Pick a remaining element.
-		const random_index = Math.floor(Math.random() * current_index);
-		current_index--;
+		const randomIndex = Math.floor(Math.random() * currentIndex);
+		currentIndex--;
 		
 		//Swap it with the current element.
-		const temp = array[current_index];
-		array[current_index] = array[random_index];
-		array[random_index] = temp;
+		const temp = array[currentIndex];
+		array[currentIndex] = array[randomIndex];
+		array[randomIndex] = temp;
 	}
 	
 	return array;
@@ -198,16 +198,16 @@ function shuffle_array(array)
 
 
 
-function expand_cage(cage_index)
+function expandCage(cageIndex)
 {
-	const cage = cages[cage_index];
+	const cage = cages[cageIndex];
 	
 	const row = cage[0];
 	const col = cage[1];
 	const height = cage[2];
 	const width = cage[3];
-	const row_offset = cage[4];
-	const col_offset = cage[5];
+	const rowOffset = cage[4];
+	const colOffset = cage[5];
 	
 	//Cages only merge up and left.
 	let directions = [];
@@ -215,11 +215,11 @@ function expand_cage(cage_index)
 	//First, let's see if we can merge up. We can't leave the boundary.
 	if (row !== 0)
 	{
-		const neighbor = cages[cages_by_location[row - 1][col]];
+		const neighbor = cages[cagesByLocation[row - 1][col]];
 		
 		//We don't care how tall this one is, but we need it to have the same starting column and width.
 		
-		if (neighbor[1] === col && neighbor[3] === width && neighbor[2] * neighbor[3] + width * height <= max_cage_size)
+		if (neighbor[1] === col && neighbor[3] === width && neighbor[2] * neighbor[3] + width * height <= maxCageSize)
 		{
 			directions.push([1, 0]);
 		}
@@ -228,11 +228,11 @@ function expand_cage(cage_index)
 	//Now we'll see if we can move left.
 	if (col !== 0)
 	{
-		const neighbor = cages[cages_by_location[row][col - 1]];
+		const neighbor = cages[cagesByLocation[row][col - 1]];
 		
 		//We don't care how wide this one is, but we need it to have the same starting row and height.
 		
-		if (neighbor[0] === row && neighbor[2] === height && neighbor[2] * neighbor[3] + width * height <= max_cage_size)
+		if (neighbor[0] === row && neighbor[2] === height && neighbor[2] * neighbor[3] + width * height <= maxCageSize)
 		{
 			directions.push([0, 1]);
 		}
@@ -247,41 +247,41 @@ function expand_cage(cage_index)
 	
 	const direction = directions[Math.floor(Math.random() * directions.length)];
 	
-	const neighbor_index = cages_by_location[row - direction[0]][col - direction[1]];
+	const neighborIndex = cagesByLocation[row - direction[0]][col - direction[1]];
 	
 	
 	
 	//There are two easy places to put the label: either we leave it where it was in the neighbor, or we leave it where it was in the merged cage.
 	if (Math.random() < .5)
 	{
-		cages[neighbor_index][4] = cages[neighbor_index][2] * direction[0] + row_offset;
-		cages[neighbor_index][5] = cages[neighbor_index][3] * direction[1] + col_offset;
+		cages[neighborIndex][4] = cages[neighborIndex][2] * direction[0] + rowOffset;
+		cages[neighborIndex][5] = cages[neighborIndex][3] * direction[1] + colOffset;
 	}
 	
 	
 	
 	//This is a cute way of avoiding an if statement. If the column is the same but the row moved, then we want only the height to increase, and vice versa.
-	cages[neighbor_index][2] += height * direction[0];
-	cages[neighbor_index][3] += width * direction[1];
+	cages[neighborIndex][2] += height * direction[0];
+	cages[neighborIndex][3] += width * direction[1];
 	
 	
 	
 	//Now we need to remove any trace of the cage we were passed.
 	
-	cages.splice(cage_index, 1);
+	cages.splice(cageIndex, 1);
 	
-	for (let i = 0; i < grid_size; i++)
+	for (let i = 0; i < gridSize; i++)
 	{
-		for (let j = 0; j < grid_size; j++)
+		for (let j = 0; j < gridSize; j++)
 		{
-			if (cages_by_location[i][j] === cage_index)
+			if (cagesByLocation[i][j] === cageIndex)
 			{
-				cages_by_location[i][j] = neighbor_index;
+				cagesByLocation[i][j] = neighborIndex;
 			}
 			
-			if (cages_by_location[i][j] > cage_index)
+			if (cagesByLocation[i][j] > cageIndex)
 			{
-				cages_by_location[i][j]--;
+				cagesByLocation[i][j]--;
 			}
 		}
 	}
@@ -292,17 +292,17 @@ function expand_cage(cage_index)
 
 
 //Returns the number of solutions to the current cage layout.
-function solve_puzzle()
+function solvePuzzle()
 {
-	let occupied_cage_locations = new Array(grid_size);
+	let occupiedCageLocations = new Array(gridSize);
 	
-	for (let i = 0; i < grid_size; i++)
+	for (let i = 0; i < gridSize; i++)
 	{
-		occupied_cage_locations[i] = new Array(grid_size);
+		occupiedCageLocations[i] = new Array(gridSize);
 		
-		for (let j = 0; j < grid_size; j++)
+		for (let j = 0; j < gridSize; j++)
 		{
-			occupied_cage_locations[i][j] = false;
+			occupiedCageLocations[i][j] = false;
 		}
 	}
 	
@@ -311,82 +311,82 @@ function solve_puzzle()
 		const row = cages[i][0] + cages[i][4];
 		const col = cages[i][1] + cages[i][5];
 		
-		occupied_cage_locations[row][col] = true;
+		occupiedCageLocations[row][col] = true;
 	}
 	
-	return solve_puzzle_step(0, occupied_cage_locations);
+	return solvePuzzleStep(0, occupiedCageLocations);
 }
 
-//Attempts to put a rectangle in all possible ways in cage_index.
-function solve_puzzle_step(cage_index, occupied_cage_locations)
+//Attempts to put a rectangle in all possible ways in cageIndex.
+function solvePuzzleStep(cageIndex, occupiedCageLocations)
 {
-	if (cage_index === cages.length)
+	if (cageIndex === cages.length)
 	{
 		return 1;
 	}
 	
 	
 	
-	const row = cages[cage_index][0] + cages[cage_index][4];
-	const col = cages[cage_index][1] + cages[cage_index][5];
+	const row = cages[cageIndex][0] + cages[cageIndex][4];
+	const col = cages[cageIndex][1] + cages[cageIndex][5];
 	
-	const size = cages[cage_index][2] * cages[cage_index][3];
+	const size = cages[cageIndex][2] * cages[cageIndex][3];
 	
 	if (size === 1)
 	{
 		//Nothing to do here.
-		return solve_puzzle_step(cage_index + 1, occupied_cage_locations);
+		return solvePuzzleStep(cageIndex + 1, occupiedCageLocations);
 	}
 	
-	let num_solutions = 0;
+	let numSolutions = 0;
 	
 	
 	
 	//First loop over sizes.
 	
-	let valid_sides = [];
+	let validSides = [];
 	
 	for (let side = 1; side <= Math.sqrt(size); side++)
 	{
-		if (size % side !== 0 || side > grid_size || size / side > grid_size)
+		if (size % side !== 0 || side > gridSize || size / side > gridSize)
 		{
 			continue;
 		}
 		
-		valid_sides.push(side);
+		validSides.push(side);
 		
 		if (size / side !== side)
 		{
-			valid_sides.push(size / side);
+			validSides.push(size / side);
 		}
 	}
 	
 	
 	
-	valid_sides.forEach(side_1 =>
+	validSides.forEach(side1 =>
 	{
-		const side_2 = size / side_1;
+		const side2 = size / side1;
 		
 		//Now look at positions for the top-left square.
 		
-		const min_row = Math.max(row - side_1 + 1, 0);
-		const max_row = Math.min(row, grid_size - side_1);
+		const minRow = Math.max(row - side1 + 1, 0);
+		const maxRow = Math.min(row, gridSize - side1);
 		
-		const min_col = Math.max(col - side_2 + 1, 0);
-		const max_col = Math.min(col, grid_size - side_2);
+		const minCol = Math.max(col - side2 + 1, 0);
+		const maxCol = Math.min(col, gridSize - side2);
 		
-		for (let i = min_row; i <= max_row; i++)
+		for (let i = minRow; i <= maxRow; i++)
 		{
-			for (let j = min_col; j <= max_col; j++)
+			for (let j = minCol; j <= maxCol; j++)
 			{
 				//Now we need to see which rectangles fit. This is a hard problem, and we're just searching the entire rectangle here.
 				let broken = false;
 				
-				for (let k = 0; k < side_1; k++)
+				for (let k = 0; k < side1; k++)
 				{
-					for (let l = 0; l < side_2; l++)
+					for (let l = 0; l < side2; l++)
 					{
-						if (occupied_cage_locations[i + k][j + l] && !(i + k === row && j + l === col))
+						if (occupiedCageLocations[i + k][j + l] && !(i + k === row && j + l === col))
 						{
 							broken = true;
 							break;
@@ -403,31 +403,31 @@ function solve_puzzle_step(cage_index, occupied_cage_locations)
 				
 				if (!broken)
 				{
-					let new_occupied_cage_locations = new Array(grid_size);
+					let newOccupiedCageLocations = new Array(gridSize);
 					
-					for (let k = 0; k < grid_size; k++)
+					for (let k = 0; k < gridSize; k++)
 					{
-						new_occupied_cage_locations[k] = new Array(grid_size);
+						newOccupiedCageLocations[k] = new Array(gridSize);
 						
-						for (let l = 0; l < grid_size; l++)
+						for (let l = 0; l < gridSize; l++)
 						{
-							new_occupied_cage_locations[k][l] = occupied_cage_locations[k][l];
+							newOccupiedCageLocations[k][l] = occupiedCageLocations[k][l];
 						}
 					}
 					
-					for (let k = 0; k < side_1; k++)
+					for (let k = 0; k < side1; k++)
 					{
-						for (let l = 0; l < side_2; l++)
+						for (let l = 0; l < side2; l++)
 						{
-							new_occupied_cage_locations[i + k][j + l] = true;
+							newOccupiedCageLocations[i + k][j + l] = true;
 						}
 					}
 					
-					num_solutions += solve_puzzle_step(cage_index + 1, new_occupied_cage_locations);
+					numSolutions += solvePuzzleStep(cageIndex + 1, newOccupiedCageLocations);
 				}
 			}
 		}
 	});
 	
-	return num_solutions;
-}
+	return numSolutions;
+	}

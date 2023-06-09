@@ -4,50 +4,50 @@
 
 onmessage = async function(e)
 {
-	grid_size = e.data[0];
+	gridSize = e.data[0];
 	
 	sigma = e.data[1];
 	rho = e.data[2];
 	beta = e.data[3];
 	
-	maximum_speed = e.data[4];
+	maximumSpeed = e.data[4];
 	
-	await draw_lorenz_attractor();
+	await drawLorenzAttractor();
 }
 
 
 
-let grid_size = null;
+let gridSize = null;
 
 let sigma = null;
 let rho = null;
 let beta = null;
 
-let maximum_speed = null;
+let maximumSpeed = null;
 
 let pixels = [];
 
-const box_size = 50;
+const boxSize = 50;
 const dt = .0005;
 
 //Since the attractor is centered at a high z-value, we need to shift the viewport.
-const min_z = 0;
+const minZ = 0;
 
-let steps_per_color = 5000;
-let num_colors = null;
+let stepsPerColor = 5000;
+let numColors = null;
 
-let current_x = 1;
-let current_y = 1;
-let current_z = 25;
+let currentX = 1;
+let currentY = 1;
+let currentZ = 25;
 
-let current_row = null;
-let current_col = null;
+let currentRow = null;
+let currentCol = null;
 
-let num_pixels_at_max = 0;
+let numPixelsAtMax = 0;
 
 
 
-function draw_lorenz_attractor()
+function drawLorenzAttractor()
 {
 	return new Promise(async function(resolve, reject)
 	{
@@ -55,15 +55,15 @@ function draw_lorenz_attractor()
 		
 		let color = 0;
 		
-		num_colors = grid_size;
+		numColors = gridSize;
 		
 		
 		
-		while (steps_per_color > 0)
+		while (stepsPerColor > 0)
 		{
-			if (step === steps_per_color)
+			if (step === stepsPerColor)
 			{
-				postMessage([pixels, HSVtoRGB(color / num_colors / 6.5, 1, 1)]);
+				postMessage([pixels, HSVtoRGB(color / numColors / 6.5, 1, 1)]);
 				
 				pixels = [];
 				
@@ -71,9 +71,9 @@ function draw_lorenz_attractor()
 				
 				step = 0;
 				
-				steps_per_color -= 2*Math.floor(5000 / num_colors);
+				stepsPerColor -= 2*Math.floor(5000 / numColors);
 				
-				if (!maximum_speed)
+				if (!maximumSpeed)
 				{
 					await sleep(8);
 				}
@@ -81,21 +81,21 @@ function draw_lorenz_attractor()
 			
 			
 			
-			let shifted_z = current_z - min_z - box_size / 2;
+			let shiftedZ = currentZ - minZ - boxSize / 2;
 			
-			current_col = Math.floor(((current_x + box_size / 2) / box_size) * grid_size);
-			current_row = Math.floor((1 - (shifted_z + box_size / 2) / box_size) * grid_size);
+			currentCol = Math.floor(((currentX + boxSize / 2) / boxSize) * gridSize);
+			currentRow = Math.floor((1 - (shiftedZ + boxSize / 2) / boxSize) * gridSize);
 			
-			if (current_row >= 0 && current_col >= 0 && current_row < grid_size && current_col < grid_size)
+			if (currentRow >= 0 && currentCol >= 0 && currentRow < gridSize && currentCol < gridSize)
 			{
-				pixels.push([current_row, current_col]);
+				pixels.push([currentRow, currentCol]);
 			}
 			
 			
 			
-			current_x += sigma * (current_y - current_x) * dt;
-			current_y += (current_x * (rho - current_z) - current_y) * dt;
-			current_z += (current_x * current_y - beta * current_z) * dt;
+			currentX += sigma * (currentY - currentX) * dt;
+			currentY += (currentX * (rho - currentZ) - currentY) * dt;
+			currentZ += (currentX * currentY - beta * currentZ) * dt;
 			
 			
 			
@@ -141,4 +141,4 @@ function HSVtoRGB(h, s, v)
 	}
     
 	return [Math.round(r * 255), Math.round(g * 255), Math.round(b * 255)];
-}
+	}

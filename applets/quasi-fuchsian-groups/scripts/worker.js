@@ -4,24 +4,24 @@
 
 onmessage = async function(e)
 {
-	canvas_width = e.data[0];
-	canvas_height = e.data[1];
-	max_depth = e.data[2];
-	max_pixel_brightness = e.data[3];
-	box_size = e.data[4];
+	canvasWidth = e.data[0];
+	canvasHeight = e.data[1];
+	maxDepth = e.data[2];
+	maxPixelBrightness = e.data[3];
+	boxSize = e.data[4];
 	
 	coefficients = e.data[5];
 	
-	await draw_quasi_fuchsian_group();
+	await drawQuasiFuchsianGroup();
 }
 
 
 
-let canvas_width = null;
-let canvas_height = null;
-let max_depth = null;
-let max_pixel_brightness = null;
-let box_size = null;
+let canvasWidth = null;
+let canvasHeight = null;
+let maxDepth = null;
+let maxPixelBrightness = null;
+let boxSize = null;
 
 let coefficients = [];
 
@@ -32,11 +32,11 @@ let y = 0;
 
 
 
-function draw_quasi_fuchsian_group()
+function drawQuasiFuchsianGroup()
 {
 	return new Promise(async function(resolve, reject)
 	{
-		brightness = new Array(canvas_width * canvas_height);
+		brightness = new Array(canvasWidth * canvasHeight);
 		
 		for (let i = 0; i < brightness.length; i++)
 		{
@@ -47,23 +47,23 @@ function draw_quasi_fuchsian_group()
 		
 		for (let i = 0; i < 4; i++)
 		{
-			search_step(0, 0, i, -1, -1, 1);
+			searchStep(0, 0, i, -1, -1, 1);
 		}
 		
 		
 		
-		let max_brightness = 0;
+		let maxBrightness = 0;
 		
 		for (let i = 0; i < brightness.length; i++)
 		{
-			max_brightness = Math.max(max_brightness, brightness[i]);
+			maxBrightness = Math.max(maxBrightness, brightness[i]);
 		}
 		
 		
 		
 		for (let i = 0; i < brightness.length; i++)
 		{
-			brightness[i] = Math.pow(brightness[i] / max_brightness, .15);
+			brightness[i] = Math.pow(brightness[i] / maxBrightness, .15);
 		}
 		
 		
@@ -78,9 +78,9 @@ function draw_quasi_fuchsian_group()
 
 
 
-function search_step(start_x, start_y, last_transformation_index, last_row, last_col, depth)
+function searchStep(startX, startY, lastTransformationIndex, lastRow, lastCol, depth)
 {
-	if (depth === max_depth)
+	if (depth === maxDepth)
 	{
 		return;
 	}
@@ -89,51 +89,51 @@ function search_step(start_x, start_y, last_transformation_index, last_row, last
 	
 	for (let i = 3; i < 6; i++)
 	{
-		x = start_x;
-		y = start_y;
+		x = startX;
+		y = startY;
 		
-		let transformation_index = (last_transformation_index + i) % 4;
+		let transformationIndex = (lastTransformationIndex + i) % 4;
 		
-		apply_transformation(transformation_index);
+		applyTransformation(transformationIndex);
 		
 		
 		
 		let row = 0;
 		let col = 0;
 		
-		if (canvas_width >= canvas_height)
+		if (canvasWidth >= canvasHeight)
 		{
-			row = Math.floor((-y + box_size / 2) / box_size * canvas_height);
-			col = Math.floor((x / (canvas_width / canvas_height) + box_size / 2) / box_size * canvas_width);
+			row = Math.floor((-y + boxSize / 2) / boxSize * canvasHeight);
+			col = Math.floor((x / (canvasWidth / canvasHeight) + boxSize / 2) / boxSize * canvasWidth);
 		}
 		
 		else
 		{
-			row = Math.floor((-y * (canvas_width / canvas_height) + box_size / 2) / box_size * canvas_height);
-			col = Math.floor((x + box_size / 2) / box_size * canvas_width);
+			row = Math.floor((-y * (canvasWidth / canvasHeight) + boxSize / 2) / boxSize * canvasHeight);
+			col = Math.floor((x + boxSize / 2) / boxSize * canvasWidth);
 		}
 		
 		
 		
-		if (row >= 0 && row < canvas_height && col >= 0 && col < canvas_width)
+		if (row >= 0 && row < canvasHeight && col >= 0 && col < canvasWidth)
 		{
-			if (brightness[canvas_width * row + col] === max_pixel_brightness)
+			if (brightness[canvasWidth * row + col] === maxPixelBrightness)
 			{
 				continue;
 			}
 			
-			brightness[canvas_width * row + col]++;
+			brightness[canvasWidth * row + col]++;
 		}
 		
 		
 		
-		search_step(x, y, transformation_index, row, col, depth + 1);
+		searchStep(x, y, transformationIndex, row, col, depth + 1);
 	}
 }
 
 
 
-function apply_transformation(index)
+function applyTransformation(index)
 {
 	let ax = coefficients[index][0][0];
 	let ay = coefficients[index][0][1];
@@ -144,17 +144,17 @@ function apply_transformation(index)
 	let dx = coefficients[index][3][0];
 	let dy = coefficients[index][3][1];
 	
-	let num_x = ax*x - ay*y + bx;
-	let num_y = ax*y + ay*x + by;
+	let numX = ax*x - ay*y + bx;
+	let numY = ax*y + ay*x + by;
 	
-	let den_x = cx*x - cy*y + dx;
-	let den_y = cx*y + cy*x + dy;
+	let denX = cx*x - cy*y + dx;
+	let denY = cx*y + cy*x + dy;
 	
-	let new_x = num_x*den_x + num_y*den_y;
-	let new_y = num_y*den_x - num_x*den_y;
+	let newX = numX*denX + numY*denY;
+	let newY = numY*denX - numX*denY;
 	
-	let magnitude = den_x*den_x + den_y*den_y;
+	let magnitude = denX*denX + denY*denY;
 	
-	x = new_x / magnitude;
-	y = new_y / magnitude;
-}
+	x = newX / magnitude;
+	y = newY / magnitude;
+	}

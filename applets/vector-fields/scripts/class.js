@@ -2,56 +2,56 @@
 
 class VectorField extends Applet
 {
-	load_promise = null;
+	loadPromise = null;
 	
 	resolution = 500;
 	
-	num_particles = 0;
-	max_particles = 5000;
+	numParticles = 0;
+	maxParticles = 5000;
 	
-	aspect_ratio = 1;
-	zoom_level = .6515;
-	fixed_point_x = 0;
-	fixed_point_y = 0;
+	aspectRatio = 1;
+	zoomLevel = .6515;
+	fixedPointX = 0;
+	fixedPointY = 0;
 	
 	dt = .0075;
 	
 	lifetime = 100;
 	
-	last_timestamp = -1;
+	lastTimestamp = -1;
 	
 	//A long array of particles of the form [x, y, remaining lifetime].
 	particles = [];
 	
-	free_particle_slots = [];
+	freeParticleSlots = [];
 	
-	update_texture = null;
-	dim_texture = null;
+	updateTexture = null;
+	dimTexture = null;
 	
-	update_canvas = null;
-	dim_canvas = null;
-	wilson_update = null;
-	wilson_dim = null;
+	updateCanvas = null;
+	dimCanvas = null;
+	wilsonUpdate = null;
+	wilsonDim = null;
 	
-	pan_velocity_x = 0;
-	pan_velocity_y = 0;
-	zoom_velocity = 0;
+	panVelocityX = 0;
+	panVelocityY = 0;
+	zoomVelocity = 0;
 	
-	next_pan_velocity_x = 0;
-	next_pan_velocity_y = 0;
-	next_zoom_velocity = 0;
+	nextPanVelocityX = 0;
+	nextPanVelocityY = 0;
+	nextZoomVelocity = 0;
 	
-	last_pan_velocities_x = [];
-	last_pan_velocities_y = [];
-	last_zoom_velocities = [];
+	lastPanVelocitiesX = [];
+	lastPanVelocitiesY = [];
+	lastZoomVelocities = [];
 
-	pan_friction = .96;
-	pan_velocity_start_threshhold = .00025;
-	pan_velocity_stop_threshhold = .00025;
+	panFriction = .96;
+	panVelocityStartThreshhold = .00025;
+	panVelocityStopThreshhold = .00025;
 	
-	zoom_friction = .9;
-	zoom_velocity_start_threshhold = .002;
-	zoom_velocity_stop_threshhold = .002;
+	zoomFriction = .9;
+	zoomVelocityStartThreshhold = .002;
+	zoomVelocityStopThreshhold = .002;
 	
 	
 	
@@ -59,67 +59,67 @@ class VectorField extends Applet
 	{
 		super(canvas);
 		
-		this.update_canvas = this.create_hidden_canvas();
-		this.dim_canvas = this.create_hidden_canvas();
+		this.updateCanvas = this.createHiddenCanvas();
+		this.dimCanvas = this.createHiddenCanvas();
 		
 		
 		
-		const temp_shader = "precision highp float; varying vec2 uv; void main(void) { gl_FragColor = vec4(0.0, 0.0, 0.0, 1.0); }";
+		const tempShader = "precision highp float; varying vec2 uv; void main(void) { gl_FragColor = vec4(0.0, 0.0, 0.0, 1.0); }";
 		
-		const options_update =
+		const optionsUpdate =
 		{
 			renderer: "gpu",
 			
-			shader: temp_shader,
+			shader: tempShader,
 			
-			canvas_width: 100,
-			canvas_height: 100,
+			canvasWidth: 100,
+			canvasHeight: 100,
 		};
 		
-		this.wilson_update = new Wilson(this.update_canvas, options_update);
+		this.wilsonUpdate = new Wilson(this.updateCanvas, optionsUpdate);
 		
 		
 		
-		this.wilson_update.render.create_framebuffer_texture_pair();
+		this.wilsonUpdate.render.createFramebufferTexturePair();
 		
-		this.wilson_update.gl.bindTexture(this.wilson_update.gl.TEXTURE_2D, this.wilson_update.render.framebuffers[0].texture);
-		this.wilson_update.gl.bindFramebuffer(this.wilson_update.gl.FRAMEBUFFER, null);
+		this.wilsonUpdate.gl.bindTexture(this.wilsonUpdate.gl.TEXTURE_2D, this.wilsonUpdate.render.framebuffers[0].texture);
+		this.wilsonUpdate.gl.bindFramebuffer(this.wilsonUpdate.gl.FRAMEBUFFER, null);
 		
 		
 		
-		const frag_shader_source_dim = `
+		const fragShaderSourceDim = `
 			precision highp float;
 			precision highp sampler2D;
 			
 			varying vec2 uv;
 			
-			uniform sampler2D u_texture;
+			uniform sampler2D uTexture;
 			
 			void main(void)
 			{
-				vec3 v = texture2D(u_texture, (uv + vec2(1.0, 1.0)) / 2.0).xyz;
+				vec3 v = texture2D(uTexture, (uv + vec2(1.0, 1.0)) / 2.0).xyz;
 				
 				gl_FragColor = vec4(v.x - 1.0 / 255.0, v.y, v.z, 1.0);
 			}
 		`;
 		
-		const frag_shader_source_pan = `
+		const fragShaderSourcePan = `
 			precision highp float;
 			precision highp sampler2D;
 			
 			varying vec2 uv;
 			
-			uniform sampler2D u_texture;
+			uniform sampler2D uTexture;
 			
 			uniform vec2 pan;
 			
 			void main(void)
 			{
-				vec2 tex_coord = (uv + vec2(1.0, 1.0)) / 2.0 - pan;
+				vec2 texCoord = (uv + vec2(1.0, 1.0)) / 2.0 - pan;
 				
-				if (tex_coord.x >= 0.0 && tex_coord.x < 1.0 && tex_coord.y >= 0.0 && tex_coord.y < 1.0)
+				if (texCoord.x >= 0.0 && texCoord.x < 1.0 && texCoord.y >= 0.0 && texCoord.y < 1.0)
 				{
-					vec3 v = texture2D(u_texture, tex_coord).xyz;
+					vec3 v = texture2D(uTexture, texCoord).xyz;
 					
 					gl_FragColor = vec4(v.x, v.y, v.z, 1.0);
 					
@@ -130,24 +130,24 @@ class VectorField extends Applet
 			}
 		`;
 		
-		const frag_shader_source_zoom = `
+		const fragShaderSourceZoom = `
 			precision highp float;
 			precision highp sampler2D;
 			
 			varying vec2 uv;
 			
-			uniform sampler2D u_texture;
+			uniform sampler2D uTexture;
 			
 			uniform float scale;
-			uniform vec2 fixed_point;
+			uniform vec2 fixedPoint;
 			
 			void main(void)
 			{
-				vec2 tex_coord = ((uv + vec2(1.0, 1.0)) / 2.0 - fixed_point) * scale + fixed_point;
+				vec2 texCoord = ((uv + vec2(1.0, 1.0)) / 2.0 - fixedPoint) * scale + fixedPoint;
 				
-				if (tex_coord.x >= 0.0 && tex_coord.x < 1.0 && tex_coord.y >= 0.0 && tex_coord.y < 1.0)
+				if (texCoord.x >= 0.0 && texCoord.x < 1.0 && texCoord.y >= 0.0 && texCoord.y < 1.0)
 				{
-					vec3 v = texture2D(u_texture, tex_coord).xyz;
+					vec3 v = texture2D(uTexture, texCoord).xyz;
 					
 					gl_FragColor = vec4(v.x / 1.06, v.y, v.z, 1.0);
 					
@@ -158,54 +158,54 @@ class VectorField extends Applet
 			}
 		`;
 		
-		const options_dim =
+		const optionsDim =
 		{
 			renderer: "gpu",
 			
-			shader: frag_shader_source_dim,
+			shader: fragShaderSourceDim,
 			
-			canvas_width: this.resolution,
-			canvas_height: this.resolution,
+			canvasWidth: this.resolution,
+			canvasHeight: this.resolution,
 		};
 		
-		this.wilson_dim = new Wilson(this.dim_canvas, options_dim);
+		this.wilsonDim = new Wilson(this.dimCanvas, optionsDim);
 		
 		
 			
-		this.wilson_dim.render.load_new_shader(frag_shader_source_pan);
+		this.wilsonDim.render.loadNewShader(fragShaderSourcePan);
 		
-		this.wilson_dim.render.init_uniforms(["pan"], 1);
+		this.wilsonDim.render.initUniforms(["pan"], 1);
 		
-		this.wilson_dim.gl.useProgram(this.wilson_dim.render.shader_programs[0]);
-		
-		
-		
-		this.wilson_dim.render.load_new_shader(frag_shader_source_zoom);
-		
-		this.wilson_dim.render.init_uniforms(["scale", "fixed_point"], 2);
-		
-		this.wilson_dim.gl.useProgram(this.wilson_dim.render.shader_programs[0]);
+		this.wilsonDim.gl.useProgram(this.wilsonDim.render.shaderPrograms[0]);
 		
 		
 		
-		this.wilson_dim.render.create_framebuffer_texture_pair(this.wilson_dim.gl.UNSIGNED_BYTE);
+		this.wilsonDim.render.loadNewShader(fragShaderSourceZoom);
 		
-		this.wilson_dim.gl.bindTexture(this.wilson_dim.gl.TEXTURE_2D, this.wilson_dim.render.framebuffers[0].texture);
-		this.wilson_dim.gl.bindFramebuffer(this.wilson_dim.gl.FRAMEBUFFER, null);
+		this.wilsonDim.render.initUniforms(["scale", "fixedPoint"], 2);
 		
-		this.dim_texture = new Uint8Array(this.resolution * this.resolution * 4);
-		
+		this.wilsonDim.gl.useProgram(this.wilsonDim.render.shaderPrograms[0]);
 		
 		
-		const frag_shader_source_draw = `
+		
+		this.wilsonDim.render.createFramebufferTexturePair(this.wilsonDim.gl.UNSIGNED_BYTE);
+		
+		this.wilsonDim.gl.bindTexture(this.wilsonDim.gl.TEXTURE_2D, this.wilsonDim.render.framebuffers[0].texture);
+		this.wilsonDim.gl.bindFramebuffer(this.wilsonDim.gl.FRAMEBUFFER, null);
+		
+		this.dimTexture = new Uint8Array(this.resolution * this.resolution * 4);
+		
+		
+		
+		const fragShaderSourceDraw = `
 			precision highp float;
 			precision highp sampler2D;
 			
 			varying vec2 uv;
 			
-			uniform sampler2D u_texture;
+			uniform sampler2D uTexture;
 			
-			uniform float max_brightness;
+			uniform float maxBrightness;
 			
 			vec3 hsv2rgb(vec3 c)
 			{
@@ -216,9 +216,9 @@ class VectorField extends Applet
 			
 			void main(void)
 			{
-				vec3 v = texture2D(u_texture, (vec2(1.0 + uv.x, 1.0 - uv.y)) / 2.0).xyz;
+				vec3 v = texture2D(uTexture, (vec2(1.0 + uv.x, 1.0 - uv.y)) / 2.0).xyz;
 				
-				gl_FragColor = vec4(hsv2rgb(vec3(v.y, v.z, v.x / max_brightness)), 1.0);
+				gl_FragColor = vec4(hsv2rgb(vec3(v.y, v.z, v.x / maxBrightness)), 1.0);
 			}
 		`;
 		
@@ -226,59 +226,59 @@ class VectorField extends Applet
 		{
 			renderer: "gpu",
 			
-			shader: frag_shader_source_draw,
+			shader: fragShaderSourceDraw,
 			
-			canvas_width: this.resolution,
-			canvas_height: this.resolution,
+			canvasWidth: this.resolution,
+			canvasHeight: this.resolution,
 			
-			world_width: 2 * Math.PI,
-			world_height: 2 * Math.PI,
-			world_center_x: 0,
-			world_center_y: 0,
-			
-			
-			
-			
-			use_fullscreen: true,
-			
-			true_fullscreen: true,
-			
-			use_fullscreen_button: true,
-			
-			enter_fullscreen_button_icon_path: "/graphics/general-icons/enter-fullscreen.png",
-			exit_fullscreen_button_icon_path: "/graphics/general-icons/exit-fullscreen.png",
-			
-			switch_fullscreen_callback: this.generate_new_field.bind(this),
+			worldWidth: 2 * Math.PI,
+			worldHeight: 2 * Math.PI,
+			worldCenterX: 0,
+			worldCenterY: 0,
 			
 			
 			
-			use_draggables: true,
 			
-			draggables_mousemove_callback: this.on_drag_draggable.bind(this),
-			draggables_touchmove_callback: this.on_drag_draggable.bind(this),
+			useFullscreen: true,
+			
+			trueFullscreen: true,
+			
+			useFullscreenButton: true,
+			
+			enterFullscreenButtonIconPath: "/graphics/general-icons/enter-fullscreen.png",
+			exitFullscreenButtonIconPath: "/graphics/general-icons/exit-fullscreen.png",
+			
+			switchFullscreenCallback: this.generateNewField.bind(this),
 			
 			
 			
-			mousedown_callback: this.on_grab_canvas.bind(this),
-			touchstart_callback: this.on_grab_canvas.bind(this),
+			useDraggables: true,
 			
-			mousedrag_callback: this.on_drag_canvas.bind(this),
-			touchmove_callback: this.on_drag_canvas.bind(this),
+			draggablesMousemoveCallback: this.onDragDraggable.bind(this),
+			draggablesTouchmoveCallback: this.onDragDraggable.bind(this),
 			
-			mouseup_callback: this.on_release_canvas.bind(this),
-			touchend_callback: this.on_release_canvas.bind(this),
 			
-			wheel_callback: this.on_wheel_canvas.bind(this),
-			pinch_callback: this.on_pinch_canvas.bind(this)
+			
+			mousedownCallback: this.onGrabCanvas.bind(this),
+			touchstartCallback: this.onGrabCanvas.bind(this),
+			
+			mousedragCallback: this.onDragCanvas.bind(this),
+			touchmoveCallback: this.onDragCanvas.bind(this),
+			
+			mouseupCallback: this.onReleaseCanvas.bind(this),
+			touchendCallback: this.onReleaseCanvas.bind(this),
+			
+			wheelCallback: this.onWheelCanvas.bind(this),
+			pinchCallback: this.onPinchCanvas.bind(this)
 		};
 		
 		this.wilson = new Wilson(canvas, options);
 		
-		this.wilson.render.init_uniforms(["max_brightness"]);
+		this.wilson.render.initUniforms(["maxBrightness"]);
 		
-		this.wilson.gl.uniform1f(this.wilson.uniforms["max_brightness"], this.lifetime / 255);
+		this.wilson.gl.uniform1f(this.wilson.uniforms["maxBrightness"], this.lifetime / 255);
 		
-		this.wilson.render.create_framebuffer_texture_pair(this.wilson.gl.UNSIGNED_BYTE);
+		this.wilson.render.createFramebufferTexturePair(this.wilson.gl.UNSIGNED_BYTE);
 		
 		this.wilson.gl.bindTexture(this.wilson.gl.TEXTURE_2D, this.wilson.render.framebuffers[0].texture);
 		this.wilson.gl.bindFramebuffer(this.wilson.gl.FRAMEBUFFER, null);
@@ -291,15 +291,15 @@ class VectorField extends Applet
 		
 		
 		
-		const bound_function = this.handle_resize_event.bind(this);
-		window.addEventListener("resize", bound_function);
-		this.handlers.push(window, "resize", bound_function);
+		const boundFunction = this.handleResizeEvent.bind(this);
+		window.addEventListener("resize", boundFunction);
+		this.handlers.push(window, "resize", boundFunction);
 		
 		
 		
-		this.load_promise = new Promise(async (resolve, reject) =>
+		this.loadPromise = new Promise(async (resolve, reject) =>
 		{
-			await Site.load_glsl();
+			await Site.loadGlsl();
 			
 			resolve();
 		});
@@ -307,67 +307,67 @@ class VectorField extends Applet
 	
 	
 	
-	run(generating_code, resolution = 500, max_particles = 10000, dt = .0075, lifetime = 100, world_center_x = 0, world_center_y = 0, zoom_level = .6515)
+	run(generatingCode, resolution = 500, maxParticles = 10000, dt = .0075, lifetime = 100, worldCenterX = 0, worldCenterY = 0, zoomLevel = .6515)
 	{
 		this.dt = dt;
 		
-		const frag_shader_source_update_base = `
+		const fragShaderSourceUpdateBase = `
 			precision highp float;
 			precision highp sampler2D;
 			
 			varying vec2 uv;
 			
-			uniform sampler2D u_texture;
+			uniform sampler2D uTexture;
 			
 			uniform float dt;
 			
-			uniform vec2 draggable_arg;
+			uniform vec2 draggableArg;
 			
 			
 			
-			${Site.get_glsl_bundle(generating_code)}
+			${Site.getGlslBundle(generatingCode)}
 			
 			
 			
 			//Don't know how, but this writes an honest float32 to the 32 bits of output, which JS then decodes.
 			
-			float shift_right(float v, float amt)
+			float shiftRight(float v, float amt)
 			{
 				v = floor(v) + 0.5;
 				return floor(v / exp2(amt));
 			}
 			
-			float shift_left(float v, float amt)
+			float shiftLeft(float v, float amt)
 			{
 				return floor(v * exp2(amt) + 0.5);
 			}
 			
-			float mask_last(float v, float bits)
+			float maskLast(float v, float bits)
 			{
-				return mod(v, shift_left(1.0, bits));
+				return mod(v, shiftLeft(1.0, bits));
 			}
 			
-			float extract_bits(float num, float from, float to)
+			float extractBits(float num, float from, float to)
 			{
 				from = floor(from + 0.5); to = floor(to + 0.5);
-				return mask_last(shift_right(num, from), to - from);
+				return maskLast(shiftRight(num, from), to - from);
 			}
 			
-			vec4 encode_float(float val)
+			vec4 encodeFloat(float val)
 			{
 				if (val == 0.0) return vec4(0, 0, 0, 0);
 				float sign = val > 0.0 ? 0.0 : 1.0;
 				val = abs(val);
 				float exponent = floor(log2(val));
-				float biased_exponent = exponent + 127.0;
+				float biasedExponent = exponent + 127.0;
 				float fraction = ((val / exp2(exponent)) - 1.0) * 8388608.0;
-				float t = biased_exponent / 2.0;
-				float last_bit_of_biased_exponent = fract(t) * 2.0;
-				float remaining_bits_of_biased_exponent = floor(t);
-				float byte4 = extract_bits(fraction, 0.0, 8.0) / 255.0;
-				float byte3 = extract_bits(fraction, 8.0, 16.0) / 255.0;
-				float byte2 = (last_bit_of_biased_exponent * 128.0 + extract_bits(fraction, 16.0, 23.0)) / 255.0;
-				float byte1 = (sign * 128.0 + remaining_bits_of_biased_exponent) / 255.0; 
+				float t = biasedExponent / 2.0;
+				float lastBitOfBiasedExponent = fract(t) * 2.0;
+				float remainingBitsOfBiasedExponent = floor(t);
+				float byte4 = extractBits(fraction, 0.0, 8.0) / 255.0;
+				float byte3 = extractBits(fraction, 8.0, 16.0) / 255.0;
+				float byte2 = (lastBitOfBiasedExponent * 128.0 + extractBits(fraction, 16.0, 23.0)) / 255.0;
+				float byte1 = (sign * 128.0 + remainingBitsOfBiasedExponent) / 255.0; 
 				return vec4(byte4, byte3, byte2, byte1);
 			}
 			
@@ -375,7 +375,7 @@ class VectorField extends Applet
 			
 			void main(void)
 			{
-				vec4 sample = texture2D(u_texture, (uv + vec2(1.0, 1.0)) / 2.0);
+				vec4 sample = texture2D(uTexture, (uv + vec2(1.0, 1.0)) / 2.0);
 				
 				if (int(sample.z) == 0)
 				{
@@ -388,88 +388,88 @@ class VectorField extends Applet
 				float y = v.y;
 		`;
 		
-		const frag_shader_source_update_x = `
-				${frag_shader_source_update_base}
+		const fragShaderSourceUpdateX = `
+				${fragShaderSourceUpdateBase}
 				
-				vec2 d = vec2${generating_code};
+				vec2 d = vec2${generatingCode};
 				
-				gl_FragColor = encode_float(dt * d.x + x);
+				gl_FragColor = encodeFloat(dt * d.x + x);
 			}
 		`;
 		
-		const frag_shader_source_update_y = `
-				${frag_shader_source_update_base}
+		const fragShaderSourceUpdateY = `
+				${fragShaderSourceUpdateBase}
 				
-				vec2 d = vec2${generating_code};
+				vec2 d = vec2${generatingCode};
 				
-				gl_FragColor = encode_float(dt * d.y + y);
+				gl_FragColor = encodeFloat(dt * d.y + y);
 			}
 		`;
 		
-		const frag_shader_source_update_h = `
-				${frag_shader_source_update_base}
+		const fragShaderSourceUpdateH = `
+				${fragShaderSourceUpdateBase}
 				
-				vec2 d = vec2${generating_code};
+				vec2 d = vec2${generatingCode};
 				
-				gl_FragColor = encode_float((atan(d.y, d.x) + 3.14159265) / 6.28318531);
+				gl_FragColor = encodeFloat((atan(d.y, d.x) + 3.14159265) / 6.28318531);
 			}
 		`;
 		
-		const frag_shader_source_update_s = `
-				${frag_shader_source_update_base}
+		const fragShaderSourceUpdateS = `
+				${fragShaderSourceUpdateBase}
 				
-				vec2 d = vec2${generating_code};
+				vec2 d = vec2${generatingCode};
 				
-				gl_FragColor = encode_float(1.0 - exp(-1.2 * (d.x * d.x + d.y * d.y)));
+				gl_FragColor = encodeFloat(1.0 - exp(-1.2 * (d.x * d.x + d.y * d.y)));
 			}
 		`;
 		
-		const frag_shader_source_update_s_2 = `
-				${frag_shader_source_update_base}
+		const fragShaderSourceUpdateS2 = `
+				${fragShaderSourceUpdateBase}
 				
-				vec2 d = vec2${generating_code};
+				vec2 d = vec2${generatingCode};
 				
-				gl_FragColor = encode_float(1.0 - exp(-1.2 * .9 * (d.x * d.x + d.y * d.y)));
+				gl_FragColor = encodeFloat(1.0 - exp(-1.2 * .9 * (d.x * d.x + d.y * d.y)));
 			}
 		`;
 		
-		this.wilson_update.render.shader_programs = [];
+		this.wilsonUpdate.render.shaderPrograms = [];
 		
-		this.wilson_update.render.load_new_shader(frag_shader_source_update_x);
-		this.wilson_update.render.load_new_shader(frag_shader_source_update_y);
-		this.wilson_update.render.load_new_shader(frag_shader_source_update_h);
-		this.wilson_update.render.load_new_shader(frag_shader_source_update_s);
-		this.wilson_update.render.load_new_shader(frag_shader_source_update_s_2);
+		this.wilsonUpdate.render.loadNewShader(fragShaderSourceUpdateX);
+		this.wilsonUpdate.render.loadNewShader(fragShaderSourceUpdateY);
+		this.wilsonUpdate.render.loadNewShader(fragShaderSourceUpdateH);
+		this.wilsonUpdate.render.loadNewShader(fragShaderSourceUpdateS);
+		this.wilsonUpdate.render.loadNewShader(fragShaderSourceUpdateS2);
 		
-		this.wilson_update.render.init_uniforms(["dt", "draggable_arg"], 0);
-		this.wilson_update.render.init_uniforms(["dt", "draggable_arg"], 1);
-		this.wilson_update.render.init_uniforms(["dt", "draggable_arg"], 2);
-		this.wilson_update.render.init_uniforms(["dt", "draggable_arg"], 3);
-		this.wilson_update.render.init_uniforms(["dt", "draggable_arg"], 4);
+		this.wilsonUpdate.render.initUniforms(["dt", "draggableArg"], 0);
+		this.wilsonUpdate.render.initUniforms(["dt", "draggableArg"], 1);
+		this.wilsonUpdate.render.initUniforms(["dt", "draggableArg"], 2);
+		this.wilsonUpdate.render.initUniforms(["dt", "draggableArg"], 3);
+		this.wilsonUpdate.render.initUniforms(["dt", "draggableArg"], 4);
 		
-		this.wilson_update.gl.useProgram(this.wilson_update.render.shader_programs[0]);
-		this.wilson_update.gl.uniform1f(this.wilson_update.uniforms["dt"][0], this.dt);
-		this.wilson_update.gl.uniform2fv(this.wilson_update.uniforms["draggable_arg"][0], this.wilson.draggables.world_coordinates[0]);
+		this.wilsonUpdate.gl.useProgram(this.wilsonUpdate.render.shaderPrograms[0]);
+		this.wilsonUpdate.gl.uniform1f(this.wilsonUpdate.uniforms["dt"][0], this.dt);
+		this.wilsonUpdate.gl.uniform2fv(this.wilsonUpdate.uniforms["draggableArg"][0], this.wilson.draggables.worldCoordinates[0]);
 		
-		this.wilson_update.gl.useProgram(this.wilson_update.render.shader_programs[1]);
-		this.wilson_update.gl.uniform1f(this.wilson_update.uniforms["dt"][1], this.dt);
-		this.wilson_update.gl.uniform2fv(this.wilson_update.uniforms["draggable_arg"][1], this.wilson.draggables.world_coordinates[0]);
+		this.wilsonUpdate.gl.useProgram(this.wilsonUpdate.render.shaderPrograms[1]);
+		this.wilsonUpdate.gl.uniform1f(this.wilsonUpdate.uniforms["dt"][1], this.dt);
+		this.wilsonUpdate.gl.uniform2fv(this.wilsonUpdate.uniforms["draggableArg"][1], this.wilson.draggables.worldCoordinates[0]);
 		
-		this.wilson_update.gl.useProgram(this.wilson_update.render.shader_programs[2]);
-		this.wilson_update.gl.uniform1f(this.wilson_update.uniforms["dt"][2], this.dt);
-		this.wilson_update.gl.uniform2fv(this.wilson_update.uniforms["draggable_arg"][2], this.wilson.draggables.world_coordinates[0]);
+		this.wilsonUpdate.gl.useProgram(this.wilsonUpdate.render.shaderPrograms[2]);
+		this.wilsonUpdate.gl.uniform1f(this.wilsonUpdate.uniforms["dt"][2], this.dt);
+		this.wilsonUpdate.gl.uniform2fv(this.wilsonUpdate.uniforms["draggableArg"][2], this.wilson.draggables.worldCoordinates[0]);
 		
-		this.wilson_update.gl.useProgram(this.wilson_update.render.shader_programs[3]);
-		this.wilson_update.gl.uniform1f(this.wilson_update.uniforms["dt"][3], this.dt);
-		this.wilson_update.gl.uniform2fv(this.wilson_update.uniforms["draggable_arg"][3], this.wilson.draggables.world_coordinates[0]);
+		this.wilsonUpdate.gl.useProgram(this.wilsonUpdate.render.shaderPrograms[3]);
+		this.wilsonUpdate.gl.uniform1f(this.wilsonUpdate.uniforms["dt"][3], this.dt);
+		this.wilsonUpdate.gl.uniform2fv(this.wilsonUpdate.uniforms["draggableArg"][3], this.wilson.draggables.worldCoordinates[0]);
 		
-		this.wilson_update.gl.useProgram(this.wilson_update.render.shader_programs[4]);
-		this.wilson_update.gl.uniform1f(this.wilson_update.uniforms["dt"][4], this.dt);
-		this.wilson_update.gl.uniform2fv(this.wilson_update.uniforms["draggable_arg"][4], this.wilson.draggables.world_coordinates[0]);
+		this.wilsonUpdate.gl.useProgram(this.wilsonUpdate.render.shaderPrograms[4]);
+		this.wilsonUpdate.gl.uniform1f(this.wilsonUpdate.uniforms["dt"][4], this.dt);
+		this.wilsonUpdate.gl.uniform2fv(this.wilsonUpdate.uniforms["draggableArg"][4], this.wilson.draggables.worldCoordinates[0]);
 		
 		
 		
-		if (generating_code.indexOf("draggable_arg") !== -1)
+		if (generatingCode.indexOf("draggableArg") !== -1)
 		{
 			this.wilson.draggables.draggables[0].style.display = "block";
 		}
@@ -481,103 +481,103 @@ class VectorField extends Applet
 		
 		
 		
-		this.generate_new_field(resolution, max_particles, dt, lifetime, world_center_x, world_center_y, zoom_level);
+		this.generateNewField(resolution, maxParticles, dt, lifetime, worldCenterX, worldCenterY, zoomLevel);
 	}
 	
 	
 	
 	
-	generate_new_field(resolution = this.resolution, max_particles = this.max_particles, dt = this.dt, lifetime = this.lifetime, world_center_x = this.wilson.world_center_x, world_center_y = this.wilson.world_center_y, zoom_level = this.zoom_level)
+	generateNewField(resolution = this.resolution, maxParticles = this.maxParticles, dt = this.dt, lifetime = this.lifetime, worldCenterX = this.wilson.worldCenterX, worldCenterY = this.wilson.worldCenterY, zoomLevel = this.zoomLevel)
 	{
 		this.resolution = resolution;
-		this.max_particles = max_particles;
+		this.maxParticles = maxParticles;
 		this.dt = dt;
 		this.lifetime = lifetime;
 		
-		this.wilson.world_center_x = world_center_x;
-		this.wilson.world_center_y = world_center_y;
-		this.zoom_level = zoom_level;
+		this.wilson.worldCenterX = worldCenterX;
+		this.wilson.worldCenterY = worldCenterY;
+		this.zoomLevel = zoomLevel;
 		
-		this.wilson.gl.uniform1f(this.wilson.uniforms["max_brightness"], this.lifetime / 255);
+		this.wilson.gl.uniform1f(this.wilson.uniforms["maxBrightness"], this.lifetime / 255);
 		
-		this.num_particles = 0;
+		this.numParticles = 0;
 		
-		const update_resolution = Math.ceil(Math.sqrt(max_particles));
-		this.wilson_update.change_canvas_size(update_resolution, update_resolution);
+		const updateResolution = Math.ceil(Math.sqrt(maxParticles));
+		this.wilsonUpdate.changeCanvasSize(updateResolution, updateResolution);
 		
-		this.change_aspect_ratio();
+		this.changeAspectRatio();
 		
 		
 		
-		this.particles = new Array(this.max_particles);
-		this.free_particle_slots = new Array(this.max_particles);
+		this.particles = new Array(this.maxParticles);
+		this.freeParticleSlots = new Array(this.maxParticles);
 		
-		for (let i = 0; i < this.max_particles; i++)
+		for (let i = 0; i < this.maxParticles; i++)
 		{
 			//x, y, lifetime, hue, saturation
 			this.particles[i] = [0, 0, 0];
-			this.free_particle_slots[i] = i;
+			this.freeParticleSlots[i] = i;
 		}
 		
 		
 		
-		this.update_texture = new Float32Array(this.wilson_update.canvas_width * this.wilson_update.canvas_height * 4);
+		this.updateTexture = new Float32Array(this.wilsonUpdate.canvasWidth * this.wilsonUpdate.canvasHeight * 4);
 		
-		for (let i = 0; i < this.wilson_update.canvas_height; i++)
+		for (let i = 0; i < this.wilsonUpdate.canvasHeight; i++)
 		{
-			for (let j = 0; j < this.wilson_update.canvas_width; j++)
+			for (let j = 0; j < this.wilsonUpdate.canvasWidth; j++)
 			{
-				const index = this.wilson_update.canvas_width * i + j;
+				const index = this.wilsonUpdate.canvasWidth * i + j;
 				
-				this.update_texture[4 * index] = 0.0;
-				this.update_texture[4 * index + 1] = 0.0;
-				this.update_texture[4 * index + 2] = 0.0;
-				this.update_texture[4 * index + 3] = 0.0;
+				this.updateTexture[4 * index] = 0.0;
+				this.updateTexture[4 * index + 1] = 0.0;
+				this.updateTexture[4 * index + 2] = 0.0;
+				this.updateTexture[4 * index + 3] = 0.0;
 			}
 		}
 		
 		
 		
-		this.dim_texture = new Uint8Array(this.wilson.canvas_width * this.wilson.canvas_height * 4);
+		this.dimTexture = new Uint8Array(this.wilson.canvasWidth * this.wilson.canvasHeight * 4);
 		
-		for (let i = 0; i < this.wilson.canvas_height; i++)
+		for (let i = 0; i < this.wilson.canvasHeight; i++)
 		{
-			for (let j = 0; j < this.wilson.canvas_width; j++)
+			for (let j = 0; j < this.wilson.canvasWidth; j++)
 			{
-				const index = this.wilson.canvas_width * i + j;
+				const index = this.wilson.canvasWidth * i + j;
 				
-				this.dim_texture[4 * index] = 0;
-				this.dim_texture[4 * index + 1] = 0;
-				this.dim_texture[4 * index + 2] = 0;
+				this.dimTexture[4 * index] = 0;
+				this.dimTexture[4 * index + 1] = 0;
+				this.dimTexture[4 * index + 2] = 0;
 			}
 		}
 		
 		
 		
-		window.requestAnimationFrame(this.draw_frame.bind(this));
+		window.requestAnimationFrame(this.drawFrame.bind(this));
 	}
 	
 	
 	
 	resume()
 	{
-		this.animation_paused = false;
+		this.animationPaused = false;
 		
-		window.requestAnimationFrame(this.draw_frame.bind(this));
+		window.requestAnimationFrame(this.drawFrame.bind(this));
 	}
 	
 	
 	
-	draw_frame(timestamp)
+	drawFrame(timestamp)
 	{
 		//Wrapping everything in a try block and eating the occasional error is pretty gross, but it's actually a decent solution: everything is fine unless the user resizes the window faster than the screen refresh rate, meaning we access out of bounds in the middle of this function. We can fix that by just restarting whenever it happens.
 		try
 		{
-			const time_elapsed = timestamp - this.last_timestamp;
+			const timeElapsed = timestamp - this.lastTimestamp;
 			
-			this.last_timestamp = timestamp;
+			this.lastTimestamp = timestamp;
 			
-			if (time_elapsed === 0)
+			if (timeElapsed === 0)
 			{
 				return;
 			}
@@ -585,267 +585,267 @@ class VectorField extends Applet
 			
 			
 			//If there's not enough particles, we add what's missing, capped at 1% of the total particle count.
-			if (this.num_particles < this.max_particles)
+			if (this.numParticles < this.maxParticles)
 			{
 				//We find the first open slot we can and search from the end of the list so that we can slice more efficiently.
-				const num_to_add = Math.min(Math.ceil(this.max_particles / 80), this.max_particles - this.num_particles);
+				const numToAdd = Math.min(Math.ceil(this.maxParticles / 80), this.maxParticles - this.numParticles);
 				
-				for (let i = this.free_particle_slots.length - num_to_add; i < this.free_particle_slots.length; i++)
+				for (let i = this.freeParticleSlots.length - numToAdd; i < this.freeParticleSlots.length; i++)
 				{
-					this.create_particle(this.free_particle_slots[i]);
+					this.createParticle(this.freeParticleSlots[i]);
 				}
 				
-				this.free_particle_slots.splice(this.free_particle_slots.length - num_to_add, num_to_add);
+				this.freeParticleSlots.splice(this.freeParticleSlots.length - numToAdd, numToAdd);
 			}
 			
 			
 			
-			this.last_pan_velocities_x.push(this.next_pan_velocity_x);
-			this.last_pan_velocities_y.push(this.next_pan_velocity_y);
-			this.last_pan_velocities_x.shift();
-			this.last_pan_velocities_y.shift();
+			this.lastPanVelocitiesX.push(this.nextPanVelocityX);
+			this.lastPanVelocitiesY.push(this.nextPanVelocityY);
+			this.lastPanVelocitiesX.shift();
+			this.lastPanVelocitiesY.shift();
 			
 			//This lets us only move the canvas when we have at least one pixel to move.
-			if (this.next_pan_velocity_x !== 0 || this.next_pan_velocity_y !== 0)
+			if (this.nextPanVelocityX !== 0 || this.nextPanVelocityY !== 0)
 			{
-				let x_delta = -this.next_pan_velocity_x;
-				let y_delta = -this.next_pan_velocity_y;
+				let xDelta = -this.nextPanVelocityX;
+				let yDelta = -this.nextPanVelocityY;
 				
 				
 				
-				if (Math.abs(x_delta / this.wilson.world_width * this.wilson.canvas_width) < 1)
+				if (Math.abs(xDelta / this.wilson.worldWidth * this.wilson.canvasWidth) < 1)
 				{
-					x_delta = 0;
+					xDelta = 0;
 				}
 				
 				else
 				{
-					this.next_pan_velocity_x = 0;
+					this.nextPanVelocityX = 0;
 				}
 				
 				
 				
-				if (Math.abs(y_delta / this.wilson.world_height * this.wilson.canvas_height) < 1)
+				if (Math.abs(yDelta / this.wilson.worldHeight * this.wilson.canvasHeight) < 1)
 				{
-					y_delta = 0;
+					yDelta = 0;
 				}
 				
 				else
 				{
-					this.next_pan_velocity_y = 0;
+					this.nextPanVelocityY = 0;
 				}
 				
 				
 				
-				if (x_delta !== 0 || y_delta !== 0)
+				if (xDelta !== 0 || yDelta !== 0)
 				{
-					this.pan_grid(x_delta, y_delta);
+					this.panGrid(xDelta, yDelta);
 					
-					this.wilson.world_center_y -= y_delta;
-					this.wilson.world_center_x -= x_delta;
+					this.wilson.worldCenterY -= yDelta;
+					this.wilson.worldCenterX -= xDelta;
 				}
 			}
 			
-			else if (this.pan_velocity_x !== 0 || this.pan_velocity_y !== 0)
+			else if (this.panVelocityX !== 0 || this.panVelocityY !== 0)
 			{
-				let x_delta = -this.pan_velocity_x;
-				let y_delta = -this.pan_velocity_y;
+				let xDelta = -this.panVelocityX;
+				let yDelta = -this.panVelocityY;
 				
-				if (Math.abs(x_delta / this.wilson.world_width * this.wilson.canvas_width) < 1)
+				if (Math.abs(xDelta / this.wilson.worldWidth * this.wilson.canvasWidth) < 1)
 				{
-					x_delta = 0;
+					xDelta = 0;
 				}
 				
-				if (Math.abs(y_delta / this.wilson.world_height * this.wilson.canvas_height) < 1)
+				if (Math.abs(yDelta / this.wilson.worldHeight * this.wilson.canvasHeight) < 1)
 				{
-					y_delta = 0;
+					yDelta = 0;
 				}
 				
-				this.pan_grid(x_delta, y_delta);
+				this.panGrid(xDelta, yDelta);
 				
-				this.wilson.world_center_y -= y_delta;
-				this.pan_velocity_y *= this.pan_friction;
+				this.wilson.worldCenterY -= yDelta;
+				this.panVelocityY *= this.panFriction;
 				
-				this.wilson.world_center_x -= x_delta;
-				this.pan_velocity_x *= this.pan_friction;
+				this.wilson.worldCenterX -= xDelta;
+				this.panVelocityX *= this.panFriction;
 				
-				if (this.pan_velocity_x * this.pan_velocity_x + this.pan_velocity_y * this.pan_velocity_y < this.pan_velocity_stop_threshhold * this.pan_velocity_stop_threshhold)
+				if (this.panVelocityX * this.panVelocityX + this.panVelocityY * this.panVelocityY < this.panVelocityStopThreshhold * this.panVelocityStopThreshhold)
 				{
-					this.pan_velocity_x = 0;
-					this.pan_velocity_y = 0;
-				}
-			}
-				
-			
-			
-			this.last_zoom_velocities.push(this.next_zoom_velocity);
-			this.last_zoom_velocities.shift();
-			
-			if (this.next_zoom_velocity !== 0)
-			{
-				this.zoom_canvas();
-				
-				this.zoom_grid(this.fixed_point_x, this.fixed_point_y, this.next_zoom_velocity);
-				
-				this.next_zoom_velocity = 0;
-			}
-				
-			if (this.zoom_velocity !== 0)	
-			{
-				this.zoom_canvas(this.fixed_point_x, this.fixed_point_y);
-				
-				this.zoom_grid(this.fixed_point_x, this.fixed_point_y, this.zoom_velocity)
-				
-				this.zoom_level = Math.min(Math.max(this.zoom_level + this.zoom_velocity, -3), 3);
-				
-				this.zoom_velocity *= this.zoom_friction;
-				
-				if (Math.abs(this.zoom_velocity) < this.zoom_velocity_stop_threshhold)
-				{
-					this.zoom_velocity = 0;
+					this.panVelocityX = 0;
+					this.panVelocityY = 0;
 				}
 			}
+				
 			
 			
+			this.lastZoomVelocities.push(this.nextZoomVelocity);
+			this.lastZoomVelocities.shift();
 			
-			this.update_particles();
-			
-			this.draw_field();
-			
-			
-			
-			if (!this.animation_paused)
+			if (this.nextZoomVelocity !== 0)
 			{
-				window.requestAnimationFrame(this.draw_frame.bind(this));
+				this.zoomCanvas();
+				
+				this.zoomGrid(this.fixedPointX, this.fixedPointY, this.nextZoomVelocity);
+				
+				this.nextZoomVelocity = 0;
+			}
+				
+			if (this.zoomVelocity !== 0)	
+			{
+				this.zoomCanvas(this.fixedPointX, this.fixedPointY);
+				
+				this.zoomGrid(this.fixedPointX, this.fixedPointY, this.zoomVelocity)
+				
+				this.zoomLevel = Math.min(Math.max(this.zoomLevel + this.zoomVelocity, -3), 3);
+				
+				this.zoomVelocity *= this.zoomFriction;
+				
+				if (Math.abs(this.zoomVelocity) < this.zoomVelocityStopThreshhold)
+				{
+					this.zoomVelocity = 0;
+				}
+			}
+			
+			
+			
+			this.updateParticles();
+			
+			this.drawField();
+			
+			
+			
+			if (!this.animationPaused)
+			{
+				window.requestAnimationFrame(this.drawFrame.bind(this));
 			}
 		}
 		
 		catch(ex)
 		{
-			this.generate_new_field();
+			this.generateNewField();
 		}
 	}
 	
 	
 	
-	create_particle(index)
+	createParticle(index)
 	{
-		this.particles[index][0] = this.wilson.world_center_x + this.wilson.world_width * (Math.random() - .5);
+		this.particles[index][0] = this.wilson.worldCenterX + this.wilson.worldWidth * (Math.random() - .5);
 		
-		this.particles[index][1] = this.wilson.world_center_y + this.wilson.world_height * (Math.random() - .5);
+		this.particles[index][1] = this.wilson.worldCenterY + this.wilson.worldHeight * (Math.random() - .5);
 		
 		this.particles[index][2] = Math.round(this.lifetime * (Math.random() * .5 + .75));
 		
-		this.num_particles++;
+		this.numParticles++;
 	}
 	
-	destroy_particle(index)
+	destroyParticle(index)
 	{
 		//Set the lifetime to 0 if it wasn't already.
 		this.particles[index][2] = 0;
 		
-		this.free_particle_slots.push(index);
+		this.freeParticleSlots.push(index);
 		
-		this.num_particles--;
+		this.numParticles--;
 	}
 	
-	update_particles()
+	updateParticles()
 	{
-		for (let i = 0; i < this.wilson_update.canvas_height; i++)
+		for (let i = 0; i < this.wilsonUpdate.canvasHeight; i++)
 		{
-			for (let j = 0; j < this.wilson_update.canvas_width; j++)
+			for (let j = 0; j < this.wilsonUpdate.canvasWidth; j++)
 			{
-				const index = this.wilson_update.canvas_width * i + j;
+				const index = this.wilsonUpdate.canvasWidth * i + j;
 				
 				if (index < this.particles.length && this.particles[index][2])
 				{
-					this.update_texture[4 * index] = this.particles[index][0];
-					this.update_texture[4 * index + 1] = this.particles[index][1];
-					this.update_texture[4 * index + 2] = 1.0;
+					this.updateTexture[4 * index] = this.particles[index][0];
+					this.updateTexture[4 * index + 1] = this.particles[index][1];
+					this.updateTexture[4 * index + 2] = 1.0;
 				}
 				
 				else
 				{
-					this.update_texture[4 * index + 2] = 0.0;
+					this.updateTexture[4 * index + 2] = 0.0;
 				}
 			}
 		}
 		
 		
 		
-		this.wilson_update.gl.texImage2D(this.wilson_update.gl.TEXTURE_2D, 0, this.wilson_update.gl.RGBA, this.wilson_update.canvas_width, this.wilson_update.canvas_height, 0, this.wilson_update.gl.RGBA, this.wilson_update.gl.FLOAT, this.update_texture);
+		this.wilsonUpdate.gl.texImage2D(this.wilsonUpdate.gl.TEXTURE_2D, 0, this.wilsonUpdate.gl.RGBA, this.wilsonUpdate.canvasWidth, this.wilsonUpdate.canvasHeight, 0, this.wilsonUpdate.gl.RGBA, this.wilsonUpdate.gl.FLOAT, this.updateTexture);
 		
-		this.wilson_update.gl.useProgram(this.wilson_update.render.shader_programs[0]);
-		this.wilson_update.render.draw_frame();
+		this.wilsonUpdate.gl.useProgram(this.wilsonUpdate.render.shaderPrograms[0]);
+		this.wilsonUpdate.render.drawFrame();
 		
-		const floats_x = new Float32Array(this.wilson_update.render.get_pixel_data().buffer);
-		
-		
-		
-		this.wilson_update.gl.useProgram(this.wilson_update.render.shader_programs[1]);
-		this.wilson_update.render.draw_frame();
-		
-		const floats_y = new Float32Array(this.wilson_update.render.get_pixel_data().buffer);
+		const floatsX = new Float32Array(this.wilsonUpdate.render.getPixelData().buffer);
 		
 		
 		
-		this.wilson_update.gl.useProgram(this.wilson_update.render.shader_programs[2]);
-		this.wilson_update.render.draw_frame();
+		this.wilsonUpdate.gl.useProgram(this.wilsonUpdate.render.shaderPrograms[1]);
+		this.wilsonUpdate.render.drawFrame();
 		
-		const floats_h = new Float32Array(this.wilson_update.render.get_pixel_data().buffer);
+		const floatsY = new Float32Array(this.wilsonUpdate.render.getPixelData().buffer);
 		
 		
 		
-		this.wilson_update.gl.useProgram(this.wilson_update.render.shader_programs[3]);
-		this.wilson_update.render.draw_frame();
+		this.wilsonUpdate.gl.useProgram(this.wilsonUpdate.render.shaderPrograms[2]);
+		this.wilsonUpdate.render.drawFrame();
 		
-		const floats_s = new Float32Array(this.wilson_update.render.get_pixel_data().buffer);
+		const floatsH = new Float32Array(this.wilsonUpdate.render.getPixelData().buffer);
+		
+		
+		
+		this.wilsonUpdate.gl.useProgram(this.wilsonUpdate.render.shaderPrograms[3]);
+		this.wilsonUpdate.render.drawFrame();
+		
+		const floatsS = new Float32Array(this.wilsonUpdate.render.getPixelData().buffer);
 		
 		
 		
 		//Extremely hacky way to fix the saturation bug on iOS.
 		
-		this.wilson_update.gl.useProgram(this.wilson_update.render.shader_programs[4]);
-		this.wilson_update.render.draw_frame();
+		this.wilsonUpdate.gl.useProgram(this.wilsonUpdate.render.shaderPrograms[4]);
+		this.wilsonUpdate.render.drawFrame();
 		
-		const floats_s_2 = new Float32Array(this.wilson_update.render.get_pixel_data().buffer);
+		const floatsS2 = new Float32Array(this.wilsonUpdate.render.getPixelData().buffer);
 		
 		
 		
-		for (let i = 0; i < this.wilson_update.canvas_height; i++)
+		for (let i = 0; i < this.wilsonUpdate.canvasHeight; i++)
 		{
-			for (let j = 0; j < this.wilson_update.canvas_width; j++)
+			for (let j = 0; j < this.wilsonUpdate.canvasWidth; j++)
 			{
-				const index = this.wilson_update.canvas_width * i + j;
+				const index = this.wilsonUpdate.canvasWidth * i + j;
 				
 				if (index < this.particles.length && this.particles[index][2])
 				{
-					this.particles[index][0] = floats_x[index];
-					this.particles[index][1] = floats_y[index];
+					this.particles[index][0] = floatsX[index];
+					this.particles[index][1] = floatsY[index];
 					
-					const row = Math.round((.5 - (this.particles[index][1] - this.wilson.world_center_y) / this.wilson.world_height) * this.wilson.canvas_height);
+					const row = Math.round((.5 - (this.particles[index][1] - this.wilson.worldCenterY) / this.wilson.worldHeight) * this.wilson.canvasHeight);
 					
-					const col = Math.round(((this.particles[index][0] - this.wilson.world_center_x) / this.wilson.world_width + .5) * this.wilson.canvas_width);
+					const col = Math.round(((this.particles[index][0] - this.wilson.worldCenterX) / this.wilson.worldWidth + .5) * this.wilson.canvasWidth);
 					
-					if (row >= 0 && row < this.wilson.canvas_height && col >= 0 && col < this.wilson.canvas_width)
+					if (row >= 0 && row < this.wilson.canvasHeight && col >= 0 && col < this.wilson.canvasWidth)
 					{
-						const new_index = row * this.wilson.canvas_width + col;
+						const newIndex = row * this.wilson.canvasWidth + col;
 						
-						this.dim_texture[4 * new_index] = this.lifetime;
-						this.dim_texture[4 * new_index + 1] = floats_h[index] * 255;
-						this.dim_texture[4 * new_index + 2] = Math.max(floats_s[index], floats_s_2[index]) * 255;
+						this.dimTexture[4 * newIndex] = this.lifetime;
+						this.dimTexture[4 * newIndex + 1] = floatsH[index] * 255;
+						this.dimTexture[4 * newIndex + 2] = Math.max(floatsS[index], floatsS2[index]) * 255;
 						
 						this.particles[index][2]--;
 						
 						if (this.particles[index][2] <= 0)
 						{
-							this.destroy_particle(index);
+							this.destroyParticle(index);
 						}
 					}
 					
 					else
 					{
-						this.destroy_particle(index);
+						this.destroyParticle(index);
 					}
 				}
 			}
@@ -854,75 +854,75 @@ class VectorField extends Applet
 	
 	
 	
-	draw_field()
+	drawField()
 	{
-		this.wilson_dim.gl.texImage2D(this.wilson_dim.gl.TEXTURE_2D, 0, this.wilson_dim.gl.RGBA, this.wilson_dim.canvas_width, this.wilson_dim.canvas_height, 0, this.wilson_dim.gl.RGBA, this.wilson_dim.gl.UNSIGNED_BYTE, this.dim_texture);
+		this.wilsonDim.gl.texImage2D(this.wilsonDim.gl.TEXTURE_2D, 0, this.wilsonDim.gl.RGBA, this.wilsonDim.canvasWidth, this.wilsonDim.canvasHeight, 0, this.wilsonDim.gl.RGBA, this.wilsonDim.gl.UNSIGNED_BYTE, this.dimTexture);
 		
-		this.wilson_dim.render.draw_frame();
+		this.wilsonDim.render.drawFrame();
 		
-		this.dim_texture = this.wilson_dim.render.get_pixel_data();
+		this.dimTexture = this.wilsonDim.render.getPixelData();
 		
-		this.wilson.gl.texImage2D(this.wilson.gl.TEXTURE_2D, 0, this.wilson.gl.RGBA, this.wilson.canvas_width, this.wilson.canvas_height, 0, this.wilson.gl.RGBA, this.wilson.gl.UNSIGNED_BYTE, this.dim_texture);
+		this.wilson.gl.texImage2D(this.wilson.gl.TEXTURE_2D, 0, this.wilson.gl.RGBA, this.wilson.canvasWidth, this.wilson.canvasHeight, 0, this.wilson.gl.RGBA, this.wilson.gl.UNSIGNED_BYTE, this.dimTexture);
 		
-		this.wilson.render.draw_frame();
+		this.wilson.render.drawFrame();
 	}
 	
 	
 	
 	//Call this before changing the world parameters!
-	pan_grid(x_delta, y_delta)
+	panGrid(xDelta, yDelta)
 	{
-		this.wilson_dim.gl.useProgram(this.wilson_dim.render.shader_programs[1]);
+		this.wilsonDim.gl.useProgram(this.wilsonDim.render.shaderPrograms[1]);
 		
-		this.wilson_dim.gl.uniform2f(this.wilson_dim.uniforms["pan"][1], x_delta / this.wilson.world_width, -y_delta / this.wilson.world_height);
+		this.wilsonDim.gl.uniform2f(this.wilsonDim.uniforms["pan"][1], xDelta / this.wilson.worldWidth, -yDelta / this.wilson.worldHeight);
 		
-		this.draw_field();
+		this.drawField();
 		
-		this.wilson_dim.gl.useProgram(this.wilson_dim.render.shader_programs[0]);
+		this.wilsonDim.gl.useProgram(this.wilsonDim.render.shaderPrograms[0]);
 		
-		this.wilson.draggables.recalculate_locations();
+		this.wilson.draggables.recalculateLocations();
 	}
 	
 	
 	
 	//Call this before changing the world parameters!
-	zoom_grid(fixed_point_x, fixed_point_y, zoom_delta)
+	zoomGrid(fixedPointX, fixedPointY, zoomDelta)
 	{
-		if (this.zoom_level <= -3 || this.zoom_level >= 3)
+		if (this.zoomLevel <= -3 || this.zoomLevel >= 3)
 		{
 			return;
 		}
 		
 		//Ex: if the scale is 2 and goes to 3, the delta is +1, so we actually want to multiply things by 2^(-1) to get the source places.
-		const scale = Math.pow(2, zoom_delta);
+		const scale = Math.pow(2, zoomDelta);
 		
-		const fixed_x = (fixed_point_x - this.wilson.world_center_x) / this.wilson.world_width + .5;
-		const fixed_y = (this.wilson.world_center_y - fixed_point_y) / this.wilson.world_height + .5;
+		const fixedX = (fixedPointX - this.wilson.worldCenterX) / this.wilson.worldWidth + .5;
+		const fixedY = (this.wilson.worldCenterY - fixedPointY) / this.wilson.worldHeight + .5;
 		
 		
 		
-		this.wilson_dim.gl.useProgram(this.wilson_dim.render.shader_programs[2]);
+		this.wilsonDim.gl.useProgram(this.wilsonDim.render.shaderPrograms[2]);
 		
-		this.wilson_dim.gl.uniform1f(this.wilson_dim.uniforms["scale"][2], scale);
-		this.wilson_dim.gl.uniform2f(this.wilson_dim.uniforms["fixed_point"][2], fixed_x, fixed_y);
+		this.wilsonDim.gl.uniform1f(this.wilsonDim.uniforms["scale"][2], scale);
+		this.wilsonDim.gl.uniform2f(this.wilsonDim.uniforms["fixedPoint"][2], fixedX, fixedY);
 		
-		this.draw_field();
+		this.drawField();
 		
-		this.wilson_dim.gl.useProgram(this.wilson_dim.render.shader_programs[0]);
+		this.wilsonDim.gl.useProgram(this.wilsonDim.render.shaderPrograms[0]);
 		
-		this.wilson.draggables.recalculate_locations();
+		this.wilson.draggables.recalculateLocations();
 		
 		
 		//When we zoom out, we also cull the particles a little.
-		if (zoom_delta > 0)
+		if (zoomDelta > 0)
 		{
-			const chance = Math.pow(2, zoom_delta * 1.5);
+			const chance = Math.pow(2, zoomDelta * 1.5);
 			
 			for (let i = 0; i < this.particles.length; i++)
 			{
 				if (this.particles[i][2] && (i % chance >= 1))
 				{
-					this.destroy_particle(i);
+					this.destroyParticle(i);
 				}
 			}
 		}
@@ -930,226 +930,226 @@ class VectorField extends Applet
 	
 	
 	
-	on_drag_draggable(active_draggable, x, y, event)
+	onDragDraggable(activeDraggable, x, y, event)
 	{
-		this.wilson_update.gl.useProgram(this.wilson_update.render.shader_programs[0]);
-		this.wilson_update.gl.uniform2f(this.wilson_update.uniforms["draggable_arg"][0], x, y);
+		this.wilsonUpdate.gl.useProgram(this.wilsonUpdate.render.shaderPrograms[0]);
+		this.wilsonUpdate.gl.uniform2f(this.wilsonUpdate.uniforms["draggableArg"][0], x, y);
 		
-		this.wilson_update.gl.useProgram(this.wilson_update.render.shader_programs[1]);
-		this.wilson_update.gl.uniform2f(this.wilson_update.uniforms["draggable_arg"][1], x, y);
+		this.wilsonUpdate.gl.useProgram(this.wilsonUpdate.render.shaderPrograms[1]);
+		this.wilsonUpdate.gl.uniform2f(this.wilsonUpdate.uniforms["draggableArg"][1], x, y);
 		
-		this.wilson_update.gl.useProgram(this.wilson_update.render.shader_programs[2]);
-		this.wilson_update.gl.uniform2f(this.wilson_update.uniforms["draggable_arg"][2], x, y);
+		this.wilsonUpdate.gl.useProgram(this.wilsonUpdate.render.shaderPrograms[2]);
+		this.wilsonUpdate.gl.uniform2f(this.wilsonUpdate.uniforms["draggableArg"][2], x, y);
 		
-		this.wilson_update.gl.useProgram(this.wilson_update.render.shader_programs[3]);
-		this.wilson_update.gl.uniform2f(this.wilson_update.uniforms["draggable_arg"][3], x, y);
+		this.wilsonUpdate.gl.useProgram(this.wilsonUpdate.render.shaderPrograms[3]);
+		this.wilsonUpdate.gl.uniform2f(this.wilsonUpdate.uniforms["draggableArg"][3], x, y);
 		
-		this.wilson_update.gl.useProgram(this.wilson_update.render.shader_programs[4]);
-		this.wilson_update.gl.uniform2f(this.wilson_update.uniforms["draggable_arg"][4], x, y);
+		this.wilsonUpdate.gl.useProgram(this.wilsonUpdate.render.shaderPrograms[4]);
+		this.wilsonUpdate.gl.uniform2f(this.wilsonUpdate.uniforms["draggableArg"][4], x, y);
 	}
 	
 	
 	
-	on_grab_canvas(x, y, event)
+	onGrabCanvas(x, y, event)
 	{
-		this.pan_velocity_x = 0;
-		this.pan_velocity_y = 0;
-		this.zoom_velocity = 0;
+		this.panVelocityX = 0;
+		this.panVelocityY = 0;
+		this.zoomVelocity = 0;
 		
-		this.last_pan_velocities_x = [0, 0, 0, 0];
-		this.last_pan_velocities_y = [0, 0, 0, 0];
-		this.last_zoom_velocities = [0, 0, 0, 0];
+		this.lastPanVelocitiesX = [0, 0, 0, 0];
+		this.lastPanVelocitiesY = [0, 0, 0, 0];
+		this.lastZoomVelocities = [0, 0, 0, 0];
 	}
 	
-	on_drag_canvas(x, y, x_delta, y_delta, event)
+	onDragCanvas(x, y, xDelta, yDelta, event)
 	{
 		//The += here lets us only move the canvas when we have at least one pixel to move.
-		this.next_pan_velocity_x += -x_delta;
-		this.next_pan_velocity_y += -y_delta;
+		this.nextPanVelocityX += -xDelta;
+		this.nextPanVelocityY += -yDelta;
 	}
 	
-	on_release_canvas(x, y, event)
+	onReleaseCanvas(x, y, event)
 	{
-		let max_index = 0;
+		let maxIndex = 0;
 		
-		this.last_pan_velocities_x.forEach((velocity, index) =>
+		this.lastPanVelocitiesX.forEach((velocity, index) =>
 		{
-			if (Math.abs(velocity) > this.pan_velocity_x)
+			if (Math.abs(velocity) > this.panVelocityX)
 			{
-				this.pan_velocity_x = Math.abs(velocity);
-				max_index = index;
+				this.panVelocityX = Math.abs(velocity);
+				maxIndex = index;
 			}
 		});
 		
-		if (this.pan_velocity_x < this.pan_velocity_start_threshhold)
+		if (this.panVelocityX < this.panVelocityStartThreshhold)
 		{
-			this.pan_velocity_x = 0;
+			this.panVelocityX = 0;
 		}
 		
 		else
 		{
-			this.pan_velocity_x = this.last_pan_velocities_x[max_index];
+			this.panVelocityX = this.lastPanVelocitiesX[maxIndex];
 		}
 		
 		
 		
-		this.last_pan_velocities_y.forEach((velocity, index) =>
+		this.lastPanVelocitiesY.forEach((velocity, index) =>
 		{
-			if (Math.abs(velocity) > this.pan_velocity_y)
+			if (Math.abs(velocity) > this.panVelocityY)
 			{
-				this.pan_velocity_y = Math.abs(velocity);
-				max_index = index;
+				this.panVelocityY = Math.abs(velocity);
+				maxIndex = index;
 			}	
 		});
 		
-		if (this.pan_velocity_y < this.pan_velocity_start_threshhold)
+		if (this.panVelocityY < this.panVelocityStartThreshhold)
 		{
-			this.pan_velocity_y = 0;
+			this.panVelocityY = 0;
 		}
 		
 		else
 		{
-			this.pan_velocity_y = this.last_pan_velocities_y[max_index];
+			this.panVelocityY = this.lastPanVelocitiesY[maxIndex];
 		}
 		
 		
 		
-		this.last_zoom_velocities.forEach((velocity, index) =>
+		this.lastZoomVelocities.forEach((velocity, index) =>
 		{
-			if (Math.abs(velocity) > this.zoom_velocity)
+			if (Math.abs(velocity) > this.zoomVelocity)
 			{
-				this.zoom_velocity = Math.abs(velocity);
-				max_index = index;
+				this.zoomVelocity = Math.abs(velocity);
+				maxIndex = index;
 			}	
 		});
 		
-		if (this.zoom_velocity < this.zoom_velocity_start_threshhold)
+		if (this.zoomVelocity < this.zoomVelocityStartThreshhold)
 		{
-			this.zoom_velocity = 0;
+			this.zoomVelocity = 0;
 		}
 		
 		else
 		{
-			this.zoom_velocity = this.last_zoom_velocities[max_index];
+			this.zoomVelocity = this.lastZoomVelocities[maxIndex];
 		}
 	}
 	
 	
 	
-	on_wheel_canvas(x, y, scroll_amount, event)
+	onWheelCanvas(x, y, scrollAmount, event)
 	{
-		this.fixed_point_x = x;
-		this.fixed_point_y = y;
+		this.fixedPointX = x;
+		this.fixedPointY = y;
 		
-		if (Math.abs(scroll_amount / 100) < .3)
+		if (Math.abs(scrollAmount / 100) < .3)
 		{
-			this.next_zoom_velocity = scroll_amount / 100;
+			this.nextZoomVelocity = scrollAmount / 100;
 			
-			this.zoom_level = Math.min(Math.max(this.zoom_level + scroll_amount / 100, -3), 3);
+			this.zoomLevel = Math.min(Math.max(this.zoomLevel + scrollAmount / 100, -3), 3);
 		}
 		
 		else
 		{
-			this.zoom_velocity += Math.sign(scroll_amount) * .05;
+			this.zoomVelocity += Math.sign(scrollAmount) * .05;
 		}
 	}
 	
 	
 	
-	on_pinch_canvas(x, y, touch_distance_delta, event)
+	onPinchCanvas(x, y, touchDistanceDelta, event)
 	{
-		let zoom_delta;
+		let zoomDelta;
 		
-		if (this.aspect_ratio >= 1)
+		if (this.aspectRatio >= 1)
 		{
-			zoom_delta = touch_distance_delta / this.wilson.world_width * 10;
+			zoomDelta = touchDistanceDelta / this.wilson.worldWidth * 10;
 		}
 		
 		else
 		{
-			zoom_delta = touch_distance_delta / this.wilson.world_height * 10;
+			zoomDelta = touchDistanceDelta / this.wilson.worldHeight * 10;
 		}
 		
-		this.zoom_level = Math.min(Math.max(this.zoom_level - zoom_delta, -3), 3);
-		this.next_zoom_velocity = -zoom_delta;
+		this.zoomLevel = Math.min(Math.max(this.zoomLevel - zoomDelta, -3), 3);
+		this.nextZoomVelocity = -zoomDelta;
 		
-		this.fixed_point_x = x;
-		this.fixed_point_y = y;
+		this.fixedPointX = x;
+		this.fixedPointY = y;
 	}
 	
 	
 	
-	zoom_canvas()
+	zoomCanvas()
 	{
-		if (this.aspect_ratio >= 1)
+		if (this.aspectRatio >= 1)
 		{
-			let new_world_center = this.wilson.input.get_zoomed_world_center(this.fixed_point_x, this.fixed_point_y, 4 * Math.pow(2, this.zoom_level) * this.aspect_ratio, 4 * Math.pow(2, this.zoom_level));
+			let newWorldCenter = this.wilson.input.getZoomedWorldCenter(this.fixedPointX, this.fixedPointY, 4 * Math.pow(2, this.zoomLevel) * this.aspectRatio, 4 * Math.pow(2, this.zoomLevel));
 			
-			this.wilson.world_width = 4 * Math.pow(2, this.zoom_level) * this.aspect_ratio;
-			this.wilson.world_height = 4 * Math.pow(2, this.zoom_level);
+			this.wilson.worldWidth = 4 * Math.pow(2, this.zoomLevel) * this.aspectRatio;
+			this.wilson.worldHeight = 4 * Math.pow(2, this.zoomLevel);
 			
-			this.wilson.world_center_x = new_world_center[0];
-			this.wilson.world_center_y = new_world_center[1];
+			this.wilson.worldCenterX = newWorldCenter[0];
+			this.wilson.worldCenterY = newWorldCenter[1];
 		}
 		
 		else
 		{
-			let new_world_center = this.wilson.input.get_zoomed_world_center(this.fixed_point_x, this.fixed_point_y, 4 * Math.pow(2, this.zoom_level), 4 * Math.pow(2, this.zoom_level) / this.aspect_ratio);
+			let newWorldCenter = this.wilson.input.getZoomedWorldCenter(this.fixedPointX, this.fixedPointY, 4 * Math.pow(2, this.zoomLevel), 4 * Math.pow(2, this.zoomLevel) / this.aspectRatio);
 			
-			this.wilson.world_width = 4 * Math.pow(2, this.zoom_level);
-			this.wilson.world_height = 4 * Math.pow(2, this.zoom_level) / this.aspect_ratio;
+			this.wilson.worldWidth = 4 * Math.pow(2, this.zoomLevel);
+			this.wilson.worldHeight = 4 * Math.pow(2, this.zoomLevel) / this.aspectRatio;
 			
-			this.wilson.world_center_x = new_world_center[0];
-			this.wilson.world_center_y = new_world_center[1];
+			this.wilson.worldCenterX = newWorldCenter[0];
+			this.wilson.worldCenterY = newWorldCenter[1];
 		}
 	}
 	
 	
 	
-	change_aspect_ratio()
+	changeAspectRatio()
 	{
-		if (this.wilson.fullscreen.currently_fullscreen)
+		if (this.wilson.fullscreen.currentlyFullscreen)
 		{
-			this.aspect_ratio = window.innerWidth / window.innerHeight;
+			this.aspectRatio = window.innerWidth / window.innerHeight;
 			
-			if (this.aspect_ratio >= 1)
+			if (this.aspectRatio >= 1)
 			{
-				this.wilson.change_canvas_size(Math.ceil(this.resolution * this.aspect_ratio), this.resolution);
-				this.wilson_dim.change_canvas_size(Math.ceil(this.resolution * this.aspect_ratio), this.resolution);
+				this.wilson.changeCanvasSize(Math.ceil(this.resolution * this.aspectRatio), this.resolution);
+				this.wilsonDim.changeCanvasSize(Math.ceil(this.resolution * this.aspectRatio), this.resolution);
 				
-				this.wilson.world_width = 4 * Math.pow(2, this.zoom_level) * this.aspect_ratio;
-				this.wilson.world_height = 4 * Math.pow(2, this.zoom_level);
+				this.wilson.worldWidth = 4 * Math.pow(2, this.zoomLevel) * this.aspectRatio;
+				this.wilson.worldHeight = 4 * Math.pow(2, this.zoomLevel);
 			}
 			
 			else
 			{
-				this.wilson.change_canvas_size(this.resolution, Math.ceil(this.resolution / this.aspect_ratio));
-				this.wilson_dim.change_canvas_size(this.resolution, Math.ceil(this.resolution / this.aspect_ratio));
+				this.wilson.changeCanvasSize(this.resolution, Math.ceil(this.resolution / this.aspectRatio));
+				this.wilsonDim.changeCanvasSize(this.resolution, Math.ceil(this.resolution / this.aspectRatio));
 				
-				this.wilson.world_width = 4 * Math.pow(2, this.zoom_level);
-				this.wilson.world_height = 4 * Math.pow(2, this.zoom_level) / this.aspect_ratio;
+				this.wilson.worldWidth = 4 * Math.pow(2, this.zoomLevel);
+				this.wilson.worldHeight = 4 * Math.pow(2, this.zoomLevel) / this.aspectRatio;
 			}
 		}
 		
 		else
 		{
-			this.aspect_ratio = 1;
+			this.aspectRatio = 1;
 			
-			this.wilson.change_canvas_size(this.resolution, this.resolution);
-			this.wilson_dim.change_canvas_size(this.resolution, this.resolution);
+			this.wilson.changeCanvasSize(this.resolution, this.resolution);
+			this.wilsonDim.changeCanvasSize(this.resolution, this.resolution);
 			
-			this.wilson.world_width = 4 * Math.pow(2, this.zoom_level);
-			this.wilson.world_height = 4 * Math.pow(2, this.zoom_level);
+			this.wilson.worldWidth = 4 * Math.pow(2, this.zoomLevel);
+			this.wilson.worldHeight = 4 * Math.pow(2, this.zoomLevel);
 		}
 	}
 	
 	
 	
-	handle_resize_event()
+	handleResizeEvent()
 	{
-		if (this.wilson.fullscreen.currently_fullscreen)
+		if (this.wilson.fullscreen.currentlyFullscreen)
 		{
-			this.generate_new_field();
+			this.generateNewField();
 		}
 	}
-}
+	}

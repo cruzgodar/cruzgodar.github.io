@@ -2,35 +2,35 @@
 
 !async function()
 {
-	await Site.load_applet("vector-fields");
+	await Site.loadApplet("vector-fields");
 	
 	const applet = new VectorField(Page.element.querySelector("#output-canvas"));
 	
-	applet.load_promise.then(() => run());
+	applet.loadPromise.then(() => run());
 	
 	
 	
 	function run()
 	{
-		const generating_code = code_textarea_element.value;
-		const resolution = parseInt(resolution_input_element.value || 500);
-		const max_particles = Math.max(parseInt(max_particles_input_element.value || 10000), 100);
-		const dt = parseFloat(speed_input_element.value || 1) / 150;
-		const lifetime = Math.min(parseInt(lifetime_input_element.value || 100), 255);
+		const generatingCode = codeTextareaElement.value;
+		const resolution = parseInt(resolutionInputElement.value || 500);
+		const maxParticles = Math.max(parseInt(maxParticlesInputElement.value || 10000), 100);
+		const dt = parseFloat(speedInputElement.value || 1) / 150;
+		const lifetime = Math.min(parseInt(lifetimeInputElement.value || 100), 255);
 		
-		applet.run(generating_code, resolution, max_particles, dt, lifetime, 0, 0, .5);
+		applet.run(generatingCode, resolution, maxParticles, dt, lifetime, 0, 0, .5);
 	}
 	
 	
 	
-	function generate_new_field()
+	function generateNewField()
 	{
-		const resolution = parseInt(resolution_input_element.value || 500);
-		const max_particles = Math.max(parseInt(max_particles_input_element.value || 10000), 100);
-		const dt = parseFloat(speed_input_element.value || 1) / 150;
-		const lifetime = Math.min(parseInt(lifetime_input_element.value || 100), 255);
+		const resolution = parseInt(resolutionInputElement.value || 500);
+		const maxParticles = Math.max(parseInt(maxParticlesInputElement.value || 10000), 100);
+		const dt = parseFloat(speedInputElement.value || 1) / 150;
+		const lifetime = Math.min(parseInt(lifetimeInputElement.value || 100), 255);
 		
-		applet.generate_new_field(resolution, max_particles, dt, lifetime);
+		applet.generateNewField(resolution, maxParticles, dt, lifetime);
 	}
 	
 	
@@ -40,19 +40,19 @@
 		"none": "",
 		"sources-and-sinks": "((.6*x - 1.0) * (.6*x + 1.0), (.6*y + 1.0) * (.6*y - 1.0))",
 		"saddle-points": "(.49*y*y, 1.0 - .49*x*x)",
-		"clockwork": "(sin(1.5*y), -sin(1.5*x))",
+		"clockwork": "(sin(1.5 * y), -sin(1.5 * x))",
 		"df": "(1.0, sin(y) / (x*x + 1.0))",
 		"cross": "(sin(y / 2.5), tan(x / 2.5))",
-		"draggables": "(draggable_arg.x * x - y, x + draggable_arg.y * y)"
+		"draggables": "(draggableArg.x * x - y, x + draggableArg.y * y)"
 	};
 	
-	const example_selector_dropdown_element = Page.element.querySelector("#example-selector-dropdown");
+	const exampleSelectorDropdownElement = Page.element.querySelector("#example-selector-dropdown");
 	
-	example_selector_dropdown_element.addEventListener("input", () =>
+	exampleSelectorDropdownElement.addEventListener("input", () =>
 	{
-		if (example_selector_dropdown_element.value !== "none")
+		if (exampleSelectorDropdownElement.value !== "none")
 		{
-			code_textarea_element.value = examples[example_selector_dropdown_element.value];
+			codeTextareaElement.value = examples[exampleSelectorDropdownElement.value];
 			
 			run();
 		}
@@ -60,9 +60,9 @@
 	
 	
 	
-	const code_textarea_element = Page.element.querySelector("#code-textarea");
+	const codeTextareaElement = Page.element.querySelector("#code-textarea");
 	
-	code_textarea_element.addEventListener("keydown", (e) =>
+	codeTextareaElement.addEventListener("keydown", (e) =>
 	{
 		if (e.keyCode === 13)
 		{
@@ -74,56 +74,56 @@
 	
 	
 	
-	const generate_button_element = Page.element.querySelector("#generate-button");
+	const generateButtonElement = Page.element.querySelector("#generate-button");
 	
-	generate_button_element.addEventListener("click", run);
-	
-	
-	
-	const resolution_input_element = Page.element.querySelector("#resolution-input");
-	
-	resolution_input_element.addEventListener("input", generate_new_field);
+	generateButtonElement.addEventListener("click", run);
 	
 	
 	
-	const max_particles_input_element = Page.element.querySelector("#max-particles-input");
+	const resolutionInputElement = Page.element.querySelector("#resolution-input");
 	
-	max_particles_input_element.addEventListener("input", generate_new_field);
+	resolutionInputElement.addEventListener("input", generateNewField);
 	
 	
 	
-	const speed_input_element = Page.element.querySelector("#speed-input");
+	const maxParticlesInputElement = Page.element.querySelector("#max-particles-input");
 	
-	speed_input_element.addEventListener("input", () =>
+	maxParticlesInputElement.addEventListener("input", generateNewField);
+	
+	
+	
+	const speedInputElement = Page.element.querySelector("#speed-input");
+	
+	speedInputElement.addEventListener("input", () =>
 	{
-		const dt = parseFloat(speed_input_element.value || 1) / 150;
+		const dt = parseFloat(speedInputElement.value || 1) / 150;
 		
-		applet.wilson_update.gl.useProgram(applet.wilson_update.render.shader_programs[0]);
-		applet.wilson_update.gl.uniform1f(applet.wilson_update.uniforms["dt"][0], dt);
+		applet.wilsonUpdate.gl.useProgram(applet.wilsonUpdate.render.shaderPrograms[0]);
+		applet.wilsonUpdate.gl.uniform1f(applet.wilsonUpdate.uniforms["dt"][0], dt);
 		
-		applet.wilson_update.gl.useProgram(applet.wilson_update.render.shader_programs[1]);
-		applet.wilson_update.gl.uniform1f(applet.wilson_update.uniforms["dt"][1], dt);
+		applet.wilsonUpdate.gl.useProgram(applet.wilsonUpdate.render.shaderPrograms[1]);
+		applet.wilsonUpdate.gl.uniform1f(applet.wilsonUpdate.uniforms["dt"][1], dt);
 		
-		applet.wilson_update.gl.useProgram(applet.wilson_update.render.shader_programs[2]);
-		applet.wilson_update.gl.uniform1f(applet.wilson_update.uniforms["dt"][2], dt);
+		applet.wilsonUpdate.gl.useProgram(applet.wilsonUpdate.render.shaderPrograms[2]);
+		applet.wilsonUpdate.gl.uniform1f(applet.wilsonUpdate.uniforms["dt"][2], dt);
 		
-		applet.wilson_update.gl.useProgram(applet.wilson_update.render.shader_programs[3]);
-		applet.wilson_update.gl.uniform1f(applet.wilson_update.uniforms["dt"][3], dt);
+		applet.wilsonUpdate.gl.useProgram(applet.wilsonUpdate.render.shaderPrograms[3]);
+		applet.wilsonUpdate.gl.uniform1f(applet.wilsonUpdate.uniforms["dt"][3], dt);
 	});
 	
 	
 	
-	const lifetime_input_element = Page.element.querySelector("#lifetime-input");
+	const lifetimeInputElement = Page.element.querySelector("#lifetime-input");
 	
-	lifetime_input_element.addEventListener("input", generate_new_field);
+	lifetimeInputElement.addEventListener("input", generateNewField);
 	
 	
 	
-	const download_button_element = Page.element.querySelector("#download-button");
+	const downloadButtonElement = Page.element.querySelector("#download-button");
 	
-	download_button_element.addEventListener("click", () => applet.wilson.download_frame("a-vector-field.png"));
+	downloadButtonElement.addEventListener("click", () => applet.wilson.downloadFrame("a-vector-field.png"));
 	
 	
 	
 	Page.show();
-}()
+	}()

@@ -12,55 +12,55 @@ An explanation of Wilson's properties and methods. At the time of writing, priva
 
 `shader`: a fragment shader for a WebGL canvas. Ignored unless `render` is `"gpu"`.
 
-`canvas_width, canvas_height`: the width and height of the canvas in pixels. Can be left undefined, but if so, the canvas element needs to have its width and height properties defined.
+`canvasWidth, canvasHeight`: the width and height of the canvas in pixels. Can be left undefined, but if so, the canvas element needs to have its width and height properties defined.
 
-`world_width, world_height`: the width and height of the space (i.e. "world") the canvas is representing. For use with interpolation functions and callbacks. Default to `2` to match WebGL.
+`worldWidth, worldHeight`: the width and height of the space (i.e. "world") the canvas is representing. For use with interpolation functions and callbacks. Default to `2` to match WebGL.
 
-`world_center_x, world_center_y`: the coordinates that the center pixel of the canvas represents, similarly to `world_width` and `world_height`. Default to `0`.
+`worldCenterX, worldCenterY`: the coordinates that the center pixel of the canvas represents, similarly to `worldWidth` and `worldHeight`. Default to `0`.
 
-`auto_arrange_canvases`: a boolean indicating whether to the canvas into the container structure necessary to use draggables and fullscreen. Defaults to `true`, and strongly recommended to stay that way unless you know what you're doing.
-
-
-
-`use_draggables`: a boolean indicating whether to add the necessary elements to use draggables. Defaults to `false`.
-
-`draggables_*_callback`: a function `f` to be called when an event of type `*` is fired on a draggable that is currently being held. The callback syntax is `f(index, x, y, event)`, where `index` is the index of the targeted draggable, `x` and `y` are its world coordinates, and `event` is the fired event. Valid values for `*` are `mousedown`, `mousemove`, `mouseup`, `touchstart`, `touchmove`, and `touchend`.
+`autoArrangeCanvases`: a boolean indicating whether to the canvas into the container structure necessary to use draggables and fullscreen. Defaults to `true`, and strongly recommended to stay that way unless you know what you're doing.
 
 
 
-`use_fullscreen`: a boolean indicating whether to add the necessary elements to use fullscreen. Defaults to `false`.
+`useDraggables`: a boolean indicating whether to add the necessary elements to use draggables. Defaults to `false`.
 
-`true_fullscreen`: a boolean indicating whether to stretch the canvas in fullscreen to fit the window. Defaults to `false`.
-
-`canvases_to_resize`: an array of canvases or other elements that need to be resized when entering or exiting fullscreen. The canvas passed in the constructor is automatically, as is the draggables container.
-
-`use_fullscreen_button`: a boolean indicating whether to add a button in the top-right corner of the canvas to enter and exit fullscreen. Defaults to `false`.
-
-`enter_fullscreen_button_icon_path`: a string giving the path to the image to be used for the button to enter fullscreen. Required if `use_fullscreen_button` is `true` and ignored otherwise.
-
-`exit_fullscreen_button_icon_path`: a string giving the path to the image to be used for the button to exit fullscreen. Required if `use_fullscreen_button` is `true` and ignored otherwise.
-
-`switch_fullscreen_callback`: a function to be called when fullscreen is entered or exited. Typically used to change the canvas and/or world size. Not passed any parameters.
+`draggables_*Callback`: a function `f` to be called when an event of type `*` is fired on a draggable that is currently being held. The callback syntax is `f(index, x, y, event)`, where `index` is the index of the targeted draggable, `x` and `y` are its world coordinates, and `event` is the fired event. Valid values for `*` are `mousedown`, `mousemove`, `mouseup`, `touchstart`, `touchmove`, and `touchend`.
 
 
 
-`mousedown_callback`: a function `f` to be called when a `mousedown` event is fired on the canvas. The callback syntax is `f(x, y, event)`, where `x` and `y` are the world coordinates of the event location and `event` is the fired event itself.
+`useFullscreen`: a boolean indicating whether to add the necessary elements to use fullscreen. Defaults to `false`.
 
-`mousemove_callback`: a function `f` to be called when a `mousemove` event is fired on the canvas and the mouse is *not* being held. The callback syntax is `f(x, y, x_delta, y_delta, event)`, where `x` and `y` are the world coordinates of the event location, `x_delta` and `y_delta` are the differences in world coordinates from the last event, and `event` is the fired event itself.
+`trueFullscreen`: a boolean indicating whether to stretch the canvas in fullscreen to fit the window. Defaults to `false`.
 
-`mousedrag_callback`: a function `f` to be called when a `mousemove` event is fired on the canvas and the mouse *is* being held. The callback syntax is `f(x, y, x_delta, y_delta, event)`, where `x` and `y` are the world coordinates of the event location, `x_delta` and `y_delta` are the differences in world coordinates from the last event, and `event` is the fired event itself.
+`canvasesToResize`: an array of canvases or other elements that need to be resized when entering or exiting fullscreen. The canvas passed in the constructor is automatically, as is the draggables container.
 
-`mouseup_callback`: a function `f` to be called when a `mouseup` event is fired on the canvas. The callback syntax is `f(x, y, event)`, where `x` and `y` are the world coordinates of the event location and `event` is the fired event itself.
+`useFullscreenButton`: a boolean indicating whether to add a button in the top-right corner of the canvas to enter and exit fullscreen. Defaults to `false`.
 
-`touchstart_callback`: a function `f` to be called when a `touchstart` event is fired on the canvas. The callback syntax is `f(x, y, event)`, where `x` and `y` are the world coordinates of the event location and `event` is the fired event itself.
+`enterFullscreenButtonIconPath`: a string giving the path to the image to be used for the button to enter fullscreen. Required if `useFullscreenButton` is `true` and ignored otherwise.
 
-`touchmove_callback`: a function `f` to be called when a `touchmove` event is fired on the canvas. The callback syntax is `f(x, y, x_delta, y_delta, event)`, where `x` and `y` are the world coordinates of the event location, `x_delta` and `y_delta` are the differences in world coordinates from the last event, and `event` is the fired event itself.
+`exitFullscreenButtonIconPath`: a string giving the path to the image to be used for the button to exit fullscreen. Required if `useFullscreenButton` is `true` and ignored otherwise.
 
-`touchend_callback`: a function `f` to be called when a `touchend` event is fired on the canvas. The callback syntax is `f(x, y, event)`, where `x` and `y` are the world coordinates of the event location and `event` is the fired event itself.
+`switchFullscreenCallback`: a function to be called when fullscreen is entered or exited. Typically used to change the canvas and/or world size. Not passed any parameters.
 
-`wheel_callback`: a function `f` to be called when a `wheel` event is fired on the canvas. The callback syntax is `f(x, y, scroll_amount, event)`, where `x` and `y` are the world coordinates of the event location, `scroll_amount` is the reported scroll delta amount (which can vary wildly between browers), and `event` is the fired event itself.
 
-`pinch_callback`: a function `f` to be called when a two-finger pinch gesture occurs on the canvas. The callback syntax is `f(x, y, touch_distance_delta, event)`, where `x` and `y` are the world coordinates of the event location, `touch_distance_delta` is the world distance between the two touch points on this event minus that distance on the last event, and `event` is the fired event itself.
+
+`mousedownCallback`: a function `f` to be called when a `mousedown` event is fired on the canvas. The callback syntax is `f(x, y, event)`, where `x` and `y` are the world coordinates of the event location and `event` is the fired event itself.
+
+`mousemoveCallback`: a function `f` to be called when a `mousemove` event is fired on the canvas and the mouse is *not* being held. The callback syntax is `f(x, y, xDelta, yDelta, event)`, where `x` and `y` are the world coordinates of the event location, `xDelta` and `yDelta` are the differences in world coordinates from the last event, and `event` is the fired event itself.
+
+`mousedragCallback`: a function `f` to be called when a `mousemove` event is fired on the canvas and the mouse *is* being held. The callback syntax is `f(x, y, xDelta, yDelta, event)`, where `x` and `y` are the world coordinates of the event location, `xDelta` and `yDelta` are the differences in world coordinates from the last event, and `event` is the fired event itself.
+
+`mouseupCallback`: a function `f` to be called when a `mouseup` event is fired on the canvas. The callback syntax is `f(x, y, event)`, where `x` and `y` are the world coordinates of the event location and `event` is the fired event itself.
+
+`touchstartCallback`: a function `f` to be called when a `touchstart` event is fired on the canvas. The callback syntax is `f(x, y, event)`, where `x` and `y` are the world coordinates of the event location and `event` is the fired event itself.
+
+`touchmoveCallback`: a function `f` to be called when a `touchmove` event is fired on the canvas. The callback syntax is `f(x, y, xDelta, yDelta, event)`, where `x` and `y` are the world coordinates of the event location, `xDelta` and `yDelta` are the differences in world coordinates from the last event, and `event` is the fired event itself.
+
+`touchendCallback`: a function `f` to be called when a `touchend` event is fired on the canvas. The callback syntax is `f(x, y, event)`, where `x` and `y` are the world coordinates of the event location and `event` is the fired event itself.
+
+`wheelCallback`: a function `f` to be called when a `wheel` event is fired on the canvas. The callback syntax is `f(x, y, scrollAmount, event)`, where `x` and `y` are the world coordinates of the event location, `scrollAmount` is the reported scroll delta amount (which can vary wildly between browers), and `event` is the fired event itself.
+
+`pinchCallback`: a function `f` to be called when a two-finger pinch gesture occurs on the canvas. The callback syntax is `f(x, y, touchDistanceDelta, event)`, where `x` and `y` are the world coordinates of the event location, `touchDistanceDelta` is the world distance between the two touch points on this event minus that distance on the last event, and `event` is the fired event itself.
 
 
 
@@ -72,63 +72,63 @@ An explanation of Wilson's properties and methods. At the time of writing, priva
 
 `wilson.gl`: the WebGL context. Only usable if `options.render` is `"hybrid"` or `"gpu"`.
 
-`wilson.uniforms`: a dictionary with all WebGL uniform locations. Only usable if `options.render` is `"gpu"` and after calling `wilson.render.init_uniforms()`.
+`wilson.uniforms`: a dictionary with all WebGL uniform locations. Only usable if `options.render` is `"gpu"` and after calling `wilson.render.initUniforms()`.
 
-`wilson.world_width`, `wilson.world_height`: the width and height of the space (i.e. "world") the canvas is representing. For use with interpolation functions and callbacks.
+`wilson.worldWidth`, `wilson.worldHeight`: the width and height of the space (i.e. "world") the canvas is representing. For use with interpolation functions and callbacks.
 
-`wilson.world_center_x`, `wilson.world_center_y`: the coordinates that the center pixel of the canvas represents, similarly to `world_width` and `world_height`.
+`wilson.worldCenterX`, `wilson.worldCenterY`: the coordinates that the center pixel of the canvas represents, similarly to `worldWidth` and `worldHeight`.
 
-`wilson.change_canvas_size(width, height)`: changes the canvas size and adjusts the gl viewport if needed. If changing the border or padding of a canvas, this should be called to recalculate the size of the draggable container and other internal values.
+`wilson.changeCanvasSize(width, height)`: changes the canvas size and adjusts the gl viewport if needed. If changing the border or padding of a canvas, this should be called to recalculate the size of the draggable container and other internal values.
 
-`wilson.download_frame(filename)`: downloads the current state of the canvas as a png with the specified filename.
+`wilson.downloadFrame(filename)`: downloads the current state of the canvas as a png with the specified filename.
 
 
 
 ## Utility Functions
 
-`wilson.utils.interpolate.canvas_to_world(x, y)`: returns a 2-element array `[row, col]` of canvas coordinates corresponding to the world coordinates given.
+`wilson.utils.interpolate.canvasToWorld(x, y)`: returns a 2-element array `[row, col]` of canvas coordinates corresponding to the world coordinates given.
 
-`wilson.utils.interpolate.world_to_canvas(x, y)`: returns a 2-element array `[x, y]` of world coordinates corresponding to the canvas coordinates given.
+`wilson.utils.interpolate.worldToCanvas(x, y)`: returns a 2-element array `[x, y]` of world coordinates corresponding to the canvas coordinates given.
 
-`wilson.utils.hsv_to_rgb(h, s, v)`: converts an HSV representation of a color to the equivalent RGB representation. Accepts `h`, `s`, `v` between 0 and 1 and returns a 3-element array `[r, g, b]` between 0 and 255, unrounded.
+`wilson.utils.hsvToRgb(h, s, v)`: converts an HSV representation of a color to the equivalent RGB representation. Accepts `h`, `s`, `v` between 0 and 1 and returns a 3-element array `[r, g, b]` between 0 and 255, unrounded.
 
 
 
 ## Rendering
 
-`wilson.render.draw_frame(image_data)`: draws a frame to the canvas. `image_data` is a `Uint8ClampedArray` of length `canvas_width * canvas_height * 4`, where each sequence of 4 elements gives an RGBA representation of a pixel. If `options.render` is `"gpu"`, `image_data` is ignored.
+`wilson.render.drawFrame(imageData)`: draws a frame to the canvas. `imageData` is a `Uint8ClampedArray` of length `canvasWidth * canvasHeight * 4`, where each sequence of 4 elements gives an RGBA representation of a pixel. If `options.render` is `"gpu"`, `imageData` is ignored.
 
-`wilson.render.init_uniforms(uniform_names)`: stores the uniform locations for a shader in `wilson.uniform_locations`. `uniform_names` is an array of strings giving the names of the uniforms in the shader. Only to be used if `options.render` is `"gpu"`.
+`wilson.render.initUniforms(uniformNames)`: stores the uniform locations for a shader in `wilson.uniformLocations`. `uniformNames` is an array of strings giving the names of the uniforms in the shader. Only to be used if `options.render` is `"gpu"`.
 
-`wilson.render.get_pixel_data`: returns a `Uint8Array` of length `canvas_width * canvas_height * 4`, where each sequence of 4 elements gives an RGBA representation of a pixel. Only to be used if `options.render` is `"gpu"`.
+`wilson.render.getPixelData`: returns a `Uint8Array` of length `canvasWidth * canvasHeight * 4`, where each sequence of 4 elements gives an RGBA representation of a pixel. Only to be used if `options.render` is `"gpu"`.
 
 
 
 ## Draggables
 
-`wilson.draggables.world_coordinates`: a list of the world coordinates of each draggable.
+`wilson.draggables.worldCoordinates`: a list of the world coordinates of each draggable.
 
-`wilson.draggables.num_draggables`: the number of draggables that have been added to the canvas.
+`wilson.draggables.numDraggables`: the number of draggables that have been added to the canvas.
 
-`wilson.draggables.draggable_radius`: the radius, including border and padding, of the draggable. Needs to be updated if the style is changed.
+`wilson.draggables.draggableRadius`: the radius, including border and padding, of the draggable. Needs to be updated if the style is changed.
 
 `wilson.draggables.add(x, y)`: adds a new draggable at the specified world coordinates.
 
-`wilson.draggables.recalculate_locations()`: recalculates all of the draggables' page coordinates based on their world coordinates.
+`wilson.draggables.recalculateLocations()`: recalculates all of the draggables' page coordinates based on their world coordinates.
 
 
 
 ## Fullscreen
 
-`wilson.fullscreen.currently_fullscreen`: a boolean indicating whether the canvas is currently fullscreen.
+`wilson.fullscreen.currentlyFullscreen`: a boolean indicating whether the canvas is currently fullscreen.
 
-`wilson.fullscreen.switch_fullscreen()`: toggles fullscreen and windowed mode. To be used when not using the built-in fullscreen button.
+`wilson.fullscreen.switchFullscreen()`: toggles fullscreen and windowed mode. To be used when not using the built-in fullscreen button.
 
 
 
 ## Interactivity
 
-`wilson.input.get_zoomed_world_center(fixed_point_x, fixed_point_y, new_world_width, new_world_height)`: gets the world center that will make the given point a fixed point of a zoom. To be called *before* changing the world width and height, and passed the values they will be changed to.
+`wilson.input.getZoomedWorldCenter(fixedPointX, fixedPointY, newWorldWidth, newWorldHeight)`: gets the world center that will make the given point a fixed point of a zoom. To be called *before* changing the world width and height, and passed the values they will be changed to.
 
 
 

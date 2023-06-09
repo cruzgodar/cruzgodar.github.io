@@ -4,63 +4,63 @@
 
 onmessage = async function(e)
 {
-	grid_size = e.data[0];
+	gridSize = e.data[0];
 	K = e.data[1];
-	orbit_separation = e.data[2];
+	orbitSeparation = e.data[2];
 	
-	await draw_kicked_rotator();
+	await drawKickedRotator();
 }
 
 
 
-let grid_size = null;
+let gridSize = null;
 
 let K = null;
 
-let orbit_separation = null;
+let orbitSeparation = null;
 
 let image = [];
 
-let current_row = null;
-let current_col = null;
+let currentRow = null;
+let currentCol = null;
 
-let current_p = null;
-let current_theta = null;
+let currentP = null;
+let currentTheta = null;
 
-const max_repetitions = 50;
+const maxRepetitions = 50;
 
 
 
-function draw_kicked_rotator()
+function drawKickedRotator()
 {
-	const middle_col = Math.floor(grid_size / 2);
+	const middleCol = Math.floor(gridSize / 2);
 	
-	for (let i = 1; i < grid_size / 2; i += orbit_separation + 1)
+	for (let i = 1; i < gridSize / 2; i += orbitSeparation + 1)
 	{
-		image = new Array(grid_size * grid_size);
+		image = new Array(gridSize * gridSize);
 		
-		for (let j = 0; j < grid_size; j++)
+		for (let j = 0; j < gridSize; j++)
 		{
-			for (let k = 0; k < grid_size; k++)
+			for (let k = 0; k < gridSize; k++)
 			{
-				image[grid_size * j + k] = 0;
+				image[gridSize * j + k] = 0;
 			}
 		}
 		
 		
 		
-		let color = 6/7 * i / (grid_size / 2);
+		let color = 6/7 * i / (gridSize / 2);
 		
 		
 		
 		//This randomness helps keep straight-line artefacts from appearing.
-		let rand = Math.floor(Math.random() * (2 * orbit_separation + 1)) - orbit_separation;
+		let rand = Math.floor(Math.random() * (2 * orbitSeparation + 1)) - orbitSeparation;
 		
-		let upper_half_points_ratio = calculate_orbit(Math.floor(grid_size / 2 + i), middle_col + rand, color);
+		let upperHalfPointsRatio = calculateOrbit(Math.floor(gridSize / 2 + i), middleCol + rand, color);
 		
 		
 		
-		if (upper_half_points_ratio === -1)
+		if (upperHalfPointsRatio === -1)
 		{
 			continue;
 		}
@@ -68,15 +68,15 @@ function draw_kicked_rotator()
 		
 		
 		//Now that we've got our orbit, we can reflect it vertically and horizontally to get the other side -- but this is only necessary, and in fact only a good thing, if the orbit wasn't symmetric in the first place. We test for this by seeing if less than 45% of the points were above the half-way mark.
-		if (upper_half_points_ratio < .45)
+		if (upperHalfPointsRatio < .45)
 		{
-			for (let j = 0; j < grid_size; j++)
+			for (let j = 0; j < gridSize; j++)
 			{
-				for (let k = 0; k < grid_size; k++)
+				for (let k = 0; k < gridSize; k++)
 				{
-					if (image[grid_size * j + k] !== 0)
+					if (image[gridSize * j + k] !== 0)
 					{
-						image[grid_size * (grid_size - j - 1) + grid_size - k - 1] = image[grid_size * j + k];
+						image[gridSize * (gridSize - j - 1) + gridSize - k - 1] = image[gridSize * j + k];
 					}
 				}
 			}
@@ -91,73 +91,73 @@ function draw_kicked_rotator()
 
 
 //Runs through an entire orbit. Returns the fraction of points that were above the halfway mark.
-function calculate_orbit(start_row, start_col, color)
+function calculateOrbit(startRow, startCol, color)
 {
-	let num_upper_half_points = 0;
+	let numUpperHalfPoints = 0;
 	
-	current_row = start_row;
-	current_col = start_col;
+	currentRow = startRow;
+	currentCol = startCol;
 	
-	if (image[grid_size * current_row + current_col] !== 0)
+	if (image[gridSize * currentRow + currentCol] !== 0)
 	{
 		return -1;
 	}
 	
-	current_p = (1 - (current_row / grid_size)) * (2 * Math.PI);
-	current_theta = (current_col / grid_size) * (2 * Math.PI);
+	currentP = (1 - (currentRow / gridSize)) * (2 * Math.PI);
+	currentTheta = (currentCol / gridSize) * (2 * Math.PI);
 	
 	
 	
 	//Here's the idea. We can't just terminate an orbit if the point coincides one of the places we've already been, since the rasterizing makes that happen way too often. We also don't want every orbit to go one forever though, so instead, we'll terminate an orbit if it hits enough points we've already seen in a row.
-	let num_points = 0;
+	let numPoints = 0;
 	
 	while (true)
 	{
 		//Add the current point to the image.
-		image[grid_size * current_row + current_col]++;
+		image[gridSize * currentRow + currentCol]++;
 		
-		num_points++;
+		numPoints++;
 		
-		if (current_row < grid_size / 2)
+		if (currentRow < gridSize / 2)
 		{
-			num_upper_half_points++;
+			numUpperHalfPoints++;
 		}
 		
-		if (image[grid_size * current_row + current_col] === 300)
+		if (image[gridSize * currentRow + currentCol] === 300)
 		{
 			break;
 		}
 		
 		
 		
-		current_p = current_p + K * Math.sin(current_theta);
-		current_theta = current_theta + current_p;
+		currentP = currentP + K * Math.sin(currentTheta);
+		currentTheta = currentTheta + currentP;
 		
-		while (current_p >= 2 * Math.PI)
+		while (currentP >= 2 * Math.PI)
 		{
-			current_p -= 2 * Math.PI;
+			currentP -= 2 * Math.PI;
 		}
 		
-		while (current_theta >= 2 * Math.PI)
+		while (currentTheta >= 2 * Math.PI)
 		{
-			current_theta -= 2 * Math.PI;
+			currentTheta -= 2 * Math.PI;
 		}
 		
-		while (current_p < 0)
+		while (currentP < 0)
 		{
-			current_p += 2 * Math.PI;
+			currentP += 2 * Math.PI;
 		}
 		
-		while (current_theta < 0)
+		while (currentTheta < 0)
 		{
-			current_theta += 2 * Math.PI;
+			currentTheta += 2 * Math.PI;
 		}
 		
-		current_row = Math.floor((1 - (current_p / (2 * Math.PI))) * grid_size);
-		current_col = Math.floor((current_theta / (2 * Math.PI)) * grid_size);
+		currentRow = Math.floor((1 - (currentP / (2 * Math.PI))) * gridSize);
+		currentCol = Math.floor((currentTheta / (2 * Math.PI)) * gridSize);
 	}
 	
 	
 	
-	return num_upper_half_points / num_points;
-}
+	return numUpperHalfPoints / numPoints;
+	}

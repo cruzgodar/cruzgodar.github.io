@@ -2,13 +2,13 @@
 
 class Snowflake extends Applet
 {
-	load_promise = null;
+	loadPromise = null;
 	
 	resolution = 500;
 	
-	last_timestamp = -1;
+	lastTimestamp = -1;
 	
-	computations_per_frame = 20;
+	computationsPerFrame = 20;
 	
 	
 	
@@ -18,13 +18,13 @@ class Snowflake extends Applet
 		
 		
 		
-		const frag_shader_source_init = `
+		const fragShaderSourceInit = `
 			precision highp float;
 			precision highp sampler2D;
 			
 			varying vec2 uv;
 			
-			uniform sampler2D u_texture;
+			uniform sampler2D uTexture;
 			
 			uniform float rho;
 			uniform float beta;
@@ -56,13 +56,13 @@ class Snowflake extends Applet
 		
 		
 		
-		const frag_shader_source_diffuse = `
+		const fragShaderSourceDiffuse = `
 			precision highp float;
 			precision highp sampler2D;
 			
 			varying vec2 uv;
 			
-			uniform sampler2D u_texture;
+			uniform sampler2D uTexture;
 			
 			uniform float rho;
 			uniform float beta;
@@ -80,32 +80,32 @@ class Snowflake extends Applet
 			void main(void)
 			{
 				vec2 center = (uv + vec2(1.0, 1.0)) / 2.0;
-				vec4 state = texture2D(u_texture, center);
-				vec4 new_state = state;
+				vec4 state = texture2D(uTexture, center);
+				vec4 newState = state;
 				
 				if (center.x <= step || center.x >= 1.0 - step || center.y <= step || center.y >= 1.0 - step)
 				{
-					gl_FragColor = vec4(0.0, 0.0, 0.0, new_state.w);
+					gl_FragColor = vec4(0.0, 0.0, 0.0, newState.w);
 					return;
 				}
 				
-				vec4 state_1 = texture2D(u_texture, center + vec2(step, 0.0));
-				vec4 state_2 = texture2D(u_texture, center + vec2(-step, 0.0));
-				vec4 state_3 = texture2D(u_texture, center + vec2(0.0, step));
-				vec4 state_4 = texture2D(u_texture, center + vec2(0.0, -step));
-				vec4 state_5;
-				vec4 state_6;
+				vec4 state1 = texture2D(uTexture, center + vec2(step, 0.0));
+				vec4 state2 = texture2D(uTexture, center + vec2(-step, 0.0));
+				vec4 state3 = texture2D(uTexture, center + vec2(0.0, step));
+				vec4 state4 = texture2D(uTexture, center + vec2(0.0, -step));
+				vec4 state5;
+				vec4 state6;
 				
 				if (mod(floor(center.x * resolution), 2.0) == 0.0)
 				{
-					state_5 = texture2D(u_texture, center + vec2(-step, -step));
-					state_6 = texture2D(u_texture, center + vec2(step, -step));
+					state5 = texture2D(uTexture, center + vec2(-step, -step));
+					state6 = texture2D(uTexture, center + vec2(step, -step));
 				}
 				
 				else
 				{
-					state_5 = texture2D(u_texture, center + vec2(-step, step));
-					state_6 = texture2D(u_texture, center + vec2(step, step));
+					state5 = texture2D(uTexture, center + vec2(-step, step));
+					state6 = texture2D(uTexture, center + vec2(step, step));
 				}
 				
 				
@@ -113,98 +113,98 @@ class Snowflake extends Applet
 				//The diffusion step: distribute the vapor mass. If it's on the boundary, only distribute mass from other cells not in the flake.
 				if (state.x == 0.0)
 				{
-					float nearby_mass = state.w;
+					float nearbyMass = state.w;
 					
 					
 					
-					if (state_1.x == 0.0)
+					if (state1.x == 0.0)
 					{
-						nearby_mass += state_1.w;
+						nearbyMass += state1.w;
 					}
 					
 					else
 					{
-						nearby_mass += state.w;
+						nearbyMass += state.w;
 					}
 					
 					
 					
-					if (state_2.x == 0.0)
+					if (state2.x == 0.0)
 					{
-						nearby_mass += state_2.w;
+						nearbyMass += state2.w;
 					}
 					
 					else
 					{
-						nearby_mass += state.w;
+						nearbyMass += state.w;
 					}
 					
 					
 					
-					if (state_3.x == 0.0)
+					if (state3.x == 0.0)
 					{
-						nearby_mass += state_3.w;
+						nearbyMass += state3.w;
 					}
 					
 					else
 					{
-						nearby_mass += state.w;
+						nearbyMass += state.w;
 					}
 					
 					
 					
-					if (state_4.x == 0.0)
+					if (state4.x == 0.0)
 					{
-						nearby_mass += state_4.w;
+						nearbyMass += state4.w;
 					}
 					
 					else
 					{
-						nearby_mass += state.w;
+						nearbyMass += state.w;
 					}
 					
 					
 					
-					if (state_5.x == 0.0)
+					if (state5.x == 0.0)
 					{
-						nearby_mass += state_5.w;
+						nearbyMass += state5.w;
 					}
 					
 					else
 					{
-						nearby_mass += state.w;
+						nearbyMass += state.w;
 					}
 					
 					
 					
-					if (state_6.x == 0.0)
+					if (state6.x == 0.0)
 					{
-						nearby_mass += state_6.w;
+						nearbyMass += state6.w;
 					}
 					
 					else
 					{
-						nearby_mass += state.w;
+						nearbyMass += state.w;
 					}
 					
 					
 					
-					new_state.w = nearby_mass / 7.0;
+					newState.w = nearbyMass / 7.0;
 				}
 				
-				gl_FragColor = new_state;
+				gl_FragColor = newState;
 			}
 		`;
 		
 		
 		
-		const frag_shader_source_freeze = `
+		const fragShaderSourceFreeze = `
 			precision highp float;
 			precision highp sampler2D;
 			
 			varying vec2 uv;
 			
-			uniform sampler2D u_texture;
+			uniform sampler2D uTexture;
 			
 			uniform float rho;
 			uniform float beta;
@@ -222,58 +222,58 @@ class Snowflake extends Applet
 			void main(void)
 			{
 				vec2 center = (uv + vec2(1.0, 1.0)) / 2.0;
-				vec4 state = texture2D(u_texture, center);
-				vec4 new_state = state;
+				vec4 state = texture2D(uTexture, center);
+				vec4 newState = state;
 				
 				if (center.x <= step || center.x >= 1.0 - step || center.y <= step || center.y >= 1.0 - step)
 				{
-					gl_FragColor = vec4(0.0, 0.0, 0.0, new_state.w);
+					gl_FragColor = vec4(0.0, 0.0, 0.0, newState.w);
 					return;
 				}
 				
-				vec4 state_1 = texture2D(u_texture, center + vec2(step, 0.0));
-				vec4 state_2 = texture2D(u_texture, center + vec2(-step, 0.0));
-				vec4 state_3 = texture2D(u_texture, center + vec2(0.0, step));
-				vec4 state_4 = texture2D(u_texture, center + vec2(0.0, -step));
-				vec4 state_5;
-				vec4 state_6;
+				vec4 state1 = texture2D(uTexture, center + vec2(step, 0.0));
+				vec4 state2 = texture2D(uTexture, center + vec2(-step, 0.0));
+				vec4 state3 = texture2D(uTexture, center + vec2(0.0, step));
+				vec4 state4 = texture2D(uTexture, center + vec2(0.0, -step));
+				vec4 state5;
+				vec4 state6;
 				
 				if (mod(floor(center.x * resolution), 2.0) == 0.0)
 				{
-					state_5 = texture2D(u_texture, center + vec2(-step, -step));
-					state_6 = texture2D(u_texture, center + vec2(step, -step));
+					state5 = texture2D(uTexture, center + vec2(-step, -step));
+					state6 = texture2D(uTexture, center + vec2(step, -step));
 				}
 				
 				else
 				{
-					state_5 = texture2D(u_texture, center + vec2(-step, step));
-					state_6 = texture2D(u_texture, center + vec2(step, step));
+					state5 = texture2D(uTexture, center + vec2(-step, step));
+					state6 = texture2D(uTexture, center + vec2(step, step));
 				}
 				
 				
 				
 				//Figure out if we're on the boundary: if we're not in the flake but a neighbor is.
-				if (state.x == 0.0 && (state_1.x == 1.0 || state_2.x == 1.0 || state_3.x == 1.0 || state_4.x == 1.0 || state_5.x == 1.0 || state_6.x == 1.0))
+				if (state.x == 0.0 && (state1.x == 1.0 || state2.x == 1.0 || state3.x == 1.0 || state4.x == 1.0 || state5.x == 1.0 || state6.x == 1.0))
 				{
 					//The freezing step: add mass on the boundary.
-					new_state.y = state.y + (1.0 - kappa) * state.w;
-					new_state.z = state.z + kappa * state.w;
-					new_state.w = 0.0;
+					newState.y = state.y + (1.0 - kappa) * state.w;
+					newState.z = state.z + kappa * state.w;
+					newState.w = 0.0;
 				}
 				
-				gl_FragColor = new_state;
+				gl_FragColor = newState;
 			}
 		`;
 		
 		
 		
-		const frag_shader_source_attach = `
+		const fragShaderSourceAttach = `
 			precision highp float;
 			precision highp sampler2D;
 			
 			varying vec2 uv;
 			
-			uniform sampler2D u_texture;
+			uniform sampler2D uTexture;
 			
 			uniform float rho;
 			uniform float beta;
@@ -291,129 +291,129 @@ class Snowflake extends Applet
 			void main(void)
 			{
 				vec2 center = (uv + vec2(1.0, 1.0)) / 2.0;
-				vec4 state = texture2D(u_texture, center);
-				vec4 new_state = state;
+				vec4 state = texture2D(uTexture, center);
+				vec4 newState = state;
 				
 				if (center.x <= step || center.x >= 1.0 - step || center.y <= step || center.y >= 1.0 - step)
 				{
-					gl_FragColor = vec4(0.0, 0.0, 0.0, new_state.w);
+					gl_FragColor = vec4(0.0, 0.0, 0.0, newState.w);
 					return;
 				}
 				
-				vec4 state_1 = texture2D(u_texture, center + vec2(step, 0.0));
-				vec4 state_2 = texture2D(u_texture, center + vec2(-step, 0.0));
-				vec4 state_3 = texture2D(u_texture, center + vec2(0.0, step));
-				vec4 state_4 = texture2D(u_texture, center + vec2(0.0, -step));
-				vec4 state_5;
-				vec4 state_6;
+				vec4 state1 = texture2D(uTexture, center + vec2(step, 0.0));
+				vec4 state2 = texture2D(uTexture, center + vec2(-step, 0.0));
+				vec4 state3 = texture2D(uTexture, center + vec2(0.0, step));
+				vec4 state4 = texture2D(uTexture, center + vec2(0.0, -step));
+				vec4 state5;
+				vec4 state6;
 				
 				if (mod(floor(center.x * resolution), 2.0) == 0.0)
 				{
-					state_5 = texture2D(u_texture, center + vec2(-step, -step));
-					state_6 = texture2D(u_texture, center + vec2(step, -step));
+					state5 = texture2D(uTexture, center + vec2(-step, -step));
+					state6 = texture2D(uTexture, center + vec2(step, -step));
 				}
 				
 				else
 				{
-					state_5 = texture2D(u_texture, center + vec2(-step, step));
-					state_6 = texture2D(u_texture, center + vec2(step, step));
+					state5 = texture2D(uTexture, center + vec2(-step, step));
+					state6 = texture2D(uTexture, center + vec2(step, step));
 				}
 				
 				
 				
 				//Figure out if we're on the boundary: if we're not in the flake but a neighbor is.
-				if (state.x == 0.0 && (state_1.x == 1.0 || state_2.x == 1.0 || state_3.x == 1.0 || state_4.x == 1.0 || state_5.x == 1.0 || state_6.x == 1.0))
+				if (state.x == 0.0 && (state1.x == 1.0 || state2.x == 1.0 || state3.x == 1.0 || state4.x == 1.0 || state5.x == 1.0 || state6.x == 1.0))
 				{
 					//The attachment step: add cells to the flake.
-					int num_attached_neighbors = 0;
+					int numAttachedNeighbors = 0;
 					
 					
 					
-					if (state_1.x == 1.0)
+					if (state1.x == 1.0)
 					{
-						num_attached_neighbors += 1;
+						numAttachedNeighbors += 1;
 					}
 					
-					if (state_2.x == 1.0)
+					if (state2.x == 1.0)
 					{
-						num_attached_neighbors += 1;
+						numAttachedNeighbors += 1;
 					}
 					
-					if (state_3.x == 1.0)
+					if (state3.x == 1.0)
 					{
-						num_attached_neighbors += 1;
+						numAttachedNeighbors += 1;
 					}
 					
-					if (state_4.x == 1.0)
+					if (state4.x == 1.0)
 					{
-						num_attached_neighbors += 1;
+						numAttachedNeighbors += 1;
 					}
 					
-					if (state_5.x == 1.0)
+					if (state5.x == 1.0)
 					{
-						num_attached_neighbors += 1;
+						numAttachedNeighbors += 1;
 					}
 					
-					if (state_6.x == 1.0)
+					if (state6.x == 1.0)
 					{
-						num_attached_neighbors += 1;
+						numAttachedNeighbors += 1;
 					}
 					
 					
 					
-					if (num_attached_neighbors == 1 || num_attached_neighbors == 2)
+					if (numAttachedNeighbors == 1 || numAttachedNeighbors == 2)
 					{
 						if (state.y >= beta)
 						{
-							new_state.x = 1.0;
+							newState.x = 1.0;
 						}
 					}
 					
-					else if (num_attached_neighbors == 3)
+					else if (numAttachedNeighbors == 3)
 					{
 						if (state.y >= 1.0)
 						{
-							new_state.x = 1.0;
+							newState.x = 1.0;
 						}
 						
 						else if (state.y >= alpha)
 						{
-							float nearby_mass = state.w + state_1.w + state_2.w + state_3.w + state_4.w + state_5.w + state_6.w;
+							float nearbyMass = state.w + state1.w + state2.w + state3.w + state4.w + state5.w + state6.w;
 							
-							if (nearby_mass < theta)
+							if (nearbyMass < theta)
 							{
-								new_state.x = 1.0;
+								newState.x = 1.0;
 							}
 						}
 					}
 					
-					else if (num_attached_neighbors >= 4)
+					else if (numAttachedNeighbors >= 4)
 					{
-						new_state.x = 1.0;
+						newState.x = 1.0;
 					}
 					
 					
 					
-					if (new_state.x == 1.0)
+					if (newState.x == 1.0)
 					{
-						new_state.z = state.y + state.z;
-						new_state.y = 0.0;
+						newState.z = state.y + state.z;
+						newState.y = 0.0;
 					}
 				}
 				
-				gl_FragColor = new_state;
+				gl_FragColor = newState;
 			}
 		`;
 		
 		
 		
-		const frag_shader_source_melt = `
+		const fragShaderSourceMelt = `
 			precision highp float;
 			precision highp sampler2D;
 			
 			varying vec2 uv;
 			
-			uniform sampler2D u_texture;
+			uniform sampler2D uTexture;
 			
 			uniform float rho;
 			uniform float beta;
@@ -431,63 +431,63 @@ class Snowflake extends Applet
 			void main(void)
 			{
 				vec2 center = (uv + vec2(1.0, 1.0)) / 2.0;
-				vec4 state = texture2D(u_texture, center);
-				vec4 new_state = state;
+				vec4 state = texture2D(uTexture, center);
+				vec4 newState = state;
 				
 				if (center.x <= step || center.x >= 1.0 - step || center.y <= step || center.y >= 1.0 - step)
 				{
-					gl_FragColor = vec4(0.0, 0.0, 0.0, new_state.w);
+					gl_FragColor = vec4(0.0, 0.0, 0.0, newState.w);
 					return;
 				}
 				
-				vec4 state_1 = texture2D(u_texture, center + vec2(step, 0.0));
-				vec4 state_2 = texture2D(u_texture, center + vec2(-step, 0.0));
-				vec4 state_3 = texture2D(u_texture, center + vec2(0.0, step));
-				vec4 state_4 = texture2D(u_texture, center + vec2(0.0, -step));
-				vec4 state_5;
-				vec4 state_6;
+				vec4 state1 = texture2D(uTexture, center + vec2(step, 0.0));
+				vec4 state2 = texture2D(uTexture, center + vec2(-step, 0.0));
+				vec4 state3 = texture2D(uTexture, center + vec2(0.0, step));
+				vec4 state4 = texture2D(uTexture, center + vec2(0.0, -step));
+				vec4 state5;
+				vec4 state6;
 				
 				if (mod(floor(center.x * resolution), 2.0) == 0.0)
 				{
-					state_5 = texture2D(u_texture, center + vec2(-step, -step));
-					state_6 = texture2D(u_texture, center + vec2(step, -step));
+					state5 = texture2D(uTexture, center + vec2(-step, -step));
+					state6 = texture2D(uTexture, center + vec2(step, -step));
 				}
 				
 				else
 				{
-					state_5 = texture2D(u_texture, center + vec2(-step, step));
-					state_6 = texture2D(u_texture, center + vec2(step, step));
+					state5 = texture2D(uTexture, center + vec2(-step, step));
+					state6 = texture2D(uTexture, center + vec2(step, step));
 				}
 				
 				
 				
 				//Figure out if we're on the boundary: if we're not in the flake but a neighbor is.
-				if (state.x == 0.0 && (state_1.x == 1.0 || state_2.x == 1.0 || state_3.x == 1.0 || state_4.x == 1.0 || state_5.x == 1.0 || state_6.x == 1.0))
+				if (state.x == 0.0 && (state1.x == 1.0 || state2.x == 1.0 || state3.x == 1.0 || state4.x == 1.0 || state5.x == 1.0 || state6.x == 1.0))
 				{
 					//The melting step: move around mass on the boundary.
-					new_state.y = (1.0 - mu) * state.y;
-					new_state.z = (1.0 - gamma) * state.z;
-					new_state.w = state.w + mu * state.y + gamma * state.z;
+					newState.y = (1.0 - mu) * state.y;
+					newState.z = (1.0 - gamma) * state.z;
+					newState.w = state.w + mu * state.y + gamma * state.z;
 				}
 				
-				gl_FragColor = new_state;
+				gl_FragColor = newState;
 			}
 		`;
 		
 		
 		
-		const frag_shader_source_draw = `
+		const fragShaderSourceDraw = `
 			precision highp float;
 			precision highp sampler2D;
 			
 			varying vec2 uv;
 			
-			uniform sampler2D u_texture;
+			uniform sampler2D uTexture;
 			
 			void main(void)
 			{
 				//We stretch the y-coordinate by 2/sqrt(3) to account for the squishing of the flake.
-				vec3 v = texture2D(u_texture, vec2(uv.x + 1.0, uv.y / 1.15470053838 + 1.0) / 2.0).zzz;
+				vec3 v = texture2D(uTexture, vec2(uv.x + 1.0, uv.y / 1.15470053838 + 1.0) / 2.0).zzz;
 				
 				gl_FragColor = vec4(v * .8, 1.0);
 			}
@@ -497,38 +497,38 @@ class Snowflake extends Applet
 		{
 			renderer: "gpu",
 			
-			shader: frag_shader_source_init,
+			shader: fragShaderSourceInit,
 			
-			canvas_width: this.resolution,
-			canvas_height: this.resolution,
-			
-			
+			canvasWidth: this.resolution,
+			canvasHeight: this.resolution,
 			
 			
-			use_fullscreen: true,
 			
-			use_fullscreen_button: true,
 			
-			enter_fullscreen_button_icon_path: "/graphics/general-icons/enter-fullscreen.png",
-			exit_fullscreen_button_icon_path: "/graphics/general-icons/exit-fullscreen.png"
+			useFullscreen: true,
+			
+			useFullscreenButton: true,
+			
+			enterFullscreenButtonIconPath: "/graphics/general-icons/enter-fullscreen.png",
+			exitFullscreenButtonIconPath: "/graphics/general-icons/exit-fullscreen.png"
 		};
 		
 		this.wilson = new Wilson(canvas, options);
 		
-		this.wilson.render.load_new_shader(frag_shader_source_diffuse);
-		this.wilson.render.load_new_shader(frag_shader_source_freeze);
-		this.wilson.render.load_new_shader(frag_shader_source_attach);
-		this.wilson.render.load_new_shader(frag_shader_source_melt);
-		this.wilson.render.load_new_shader(frag_shader_source_draw);
+		this.wilson.render.loadNewShader(fragShaderSourceDiffuse);
+		this.wilson.render.loadNewShader(fragShaderSourceFreeze);
+		this.wilson.render.loadNewShader(fragShaderSourceAttach);
+		this.wilson.render.loadNewShader(fragShaderSourceMelt);
+		this.wilson.render.loadNewShader(fragShaderSourceDraw);
 		
-		this.wilson.render.init_uniforms(["rho", "beta", "alpha", "theta", "kappa", "mu", "gamma", "resolution", "step"], 0);
-		this.wilson.render.init_uniforms(["rho", "beta", "alpha", "theta", "kappa", "mu", "gamma", "resolution", "step"], 1);
-		this.wilson.render.init_uniforms(["rho", "beta", "alpha", "theta", "kappa", "mu", "gamma", "resolution", "step"], 2);
-		this.wilson.render.init_uniforms(["rho", "beta", "alpha", "theta", "kappa", "mu", "gamma", "resolution", "step"], 3);
-		this.wilson.render.init_uniforms(["rho", "beta", "alpha", "theta", "kappa", "mu", "gamma", "resolution", "step"], 4);
+		this.wilson.render.initUniforms(["rho", "beta", "alpha", "theta", "kappa", "mu", "gamma", "resolution", "step"], 0);
+		this.wilson.render.initUniforms(["rho", "beta", "alpha", "theta", "kappa", "mu", "gamma", "resolution", "step"], 1);
+		this.wilson.render.initUniforms(["rho", "beta", "alpha", "theta", "kappa", "mu", "gamma", "resolution", "step"], 2);
+		this.wilson.render.initUniforms(["rho", "beta", "alpha", "theta", "kappa", "mu", "gamma", "resolution", "step"], 3);
+		this.wilson.render.initUniforms(["rho", "beta", "alpha", "theta", "kappa", "mu", "gamma", "resolution", "step"], 4);
 		
-		this.wilson.render.create_framebuffer_texture_pair();
-		this.wilson.render.create_framebuffer_texture_pair();
+		this.wilson.render.createFramebufferTexturePair();
+		this.wilson.render.createFramebufferTexturePair();
 		
 		this.wilson.gl.bindTexture(this.wilson.gl.TEXTURE_2D, this.wilson.render.framebuffers[0].texture);
 		this.wilson.gl.bindFramebuffer(this.wilson.gl.FRAMEBUFFER, null);
@@ -536,16 +536,16 @@ class Snowflake extends Applet
 	
 	
 	
-	run(resolution = 500, computations_per_frame = 25, rho = .635, beta = 1.6, alpha = .4, theta = .025, kappa = .0025, mu = .015, gamma = .0005)
+	run(resolution = 500, computationsPerFrame = 25, rho = .635, beta = 1.6, alpha = .4, theta = .025, kappa = .0025, mu = .015, gamma = .0005)
 	{
 		this.resume();
 		
 		this.resolution = resolution;
-		this.computations_per_frame = computations_per_frame;
+		this.computationsPerFrame = computationsPerFrame;
 		
 		for (let i = 0; i <= 4; i++)
 		{
-			this.wilson.gl.useProgram(this.wilson.render.shader_programs[i]);
+			this.wilson.gl.useProgram(this.wilson.render.shaderPrograms[i]);
 			
 			this.wilson.gl.uniform1f(this.wilson.uniforms["resolution"][i], this.resolution);
 			this.wilson.gl.uniform1f(this.wilson.uniforms["step"][i], 1 / this.resolution);
@@ -560,103 +560,103 @@ class Snowflake extends Applet
 		
 		
 		
-		this.wilson.change_canvas_size(this.resolution, this.resolution);
+		this.wilson.changeCanvasSize(this.resolution, this.resolution);
 		
 		this.wilson.gl.bindTexture(this.wilson.gl.TEXTURE_2D, this.wilson.render.framebuffers[0].texture);
-		this.wilson.gl.texImage2D(this.wilson.gl.TEXTURE_2D, 0, this.wilson.gl.RGBA, this.wilson.canvas_width, this.wilson.canvas_height, 0, this.wilson.gl.RGBA, this.wilson.gl.FLOAT, null);
+		this.wilson.gl.texImage2D(this.wilson.gl.TEXTURE_2D, 0, this.wilson.gl.RGBA, this.wilson.canvasWidth, this.wilson.canvasHeight, 0, this.wilson.gl.RGBA, this.wilson.gl.FLOAT, null);
 		
 		this.wilson.gl.bindTexture(this.wilson.gl.TEXTURE_2D, this.wilson.render.framebuffers[1].texture);
-		this.wilson.gl.texImage2D(this.wilson.gl.TEXTURE_2D, 0, this.wilson.gl.RGBA, this.wilson.canvas_width, this.wilson.canvas_height, 0, this.wilson.gl.RGBA, this.wilson.gl.FLOAT, null);
+		this.wilson.gl.texImage2D(this.wilson.gl.TEXTURE_2D, 0, this.wilson.gl.RGBA, this.wilson.canvasWidth, this.wilson.canvasHeight, 0, this.wilson.gl.RGBA, this.wilson.gl.FLOAT, null);
 		
 		
 		
-		this.wilson.gl.useProgram(this.wilson.render.shader_programs[0]);
+		this.wilson.gl.useProgram(this.wilson.render.shaderPrograms[0]);
 		
 		this.wilson.gl.bindTexture(this.wilson.gl.TEXTURE_2D, this.wilson.render.framebuffers[0].texture);
 		this.wilson.gl.bindFramebuffer(this.wilson.gl.FRAMEBUFFER, this.wilson.render.framebuffers[0].framebuffer);
 		
-		this.wilson.render.draw_frame();
+		this.wilson.render.drawFrame();
 		
 		
 		
-		window.requestAnimationFrame(this.draw_frame.bind(this));
+		window.requestAnimationFrame(this.drawFrame.bind(this));
 	}
 	
 	
 	
-	draw_frame(timestamp)
+	drawFrame(timestamp)
 	{
-		const time_elapsed = timestamp - this.last_timestamp;
+		const timeElapsed = timestamp - this.lastTimestamp;
 		
-		this.last_timestamp = timestamp;
+		this.lastTimestamp = timestamp;
 		
-		if (time_elapsed === 0)
+		if (timeElapsed === 0)
 		{
 			return;
 		}
 		
 		
 		
-		for (let i = 0; i < this.computations_per_frame; i++)
+		for (let i = 0; i < this.computationsPerFrame; i++)
 		{
-			this.wilson.gl.useProgram(this.wilson.render.shader_programs[1]);
+			this.wilson.gl.useProgram(this.wilson.render.shaderPrograms[1]);
 			
 			this.wilson.gl.bindFramebuffer(this.wilson.gl.FRAMEBUFFER, this.wilson.render.framebuffers[1].framebuffer);
 			
-			this.wilson.render.draw_frame();
+			this.wilson.render.drawFrame();
 			
 			
 			
-			this.wilson.gl.useProgram(this.wilson.render.shader_programs[2]);
+			this.wilson.gl.useProgram(this.wilson.render.shaderPrograms[2]);
 			
 			this.wilson.gl.bindTexture(this.wilson.gl.TEXTURE_2D, this.wilson.render.framebuffers[1].texture);
 			this.wilson.gl.bindFramebuffer(this.wilson.gl.FRAMEBUFFER, this.wilson.render.framebuffers[0].framebuffer);
 			
-			this.wilson.render.draw_frame();
+			this.wilson.render.drawFrame();
 			
 			
 			
-			this.wilson.gl.useProgram(this.wilson.render.shader_programs[3]);
+			this.wilson.gl.useProgram(this.wilson.render.shaderPrograms[3]);
 			
 			this.wilson.gl.bindTexture(this.wilson.gl.TEXTURE_2D, this.wilson.render.framebuffers[0].texture);
 			this.wilson.gl.bindFramebuffer(this.wilson.gl.FRAMEBUFFER, this.wilson.render.framebuffers[1].framebuffer);
 			
-			this.wilson.render.draw_frame();
+			this.wilson.render.drawFrame();
 			
 			
 			
-			this.wilson.gl.useProgram(this.wilson.render.shader_programs[4]);
+			this.wilson.gl.useProgram(this.wilson.render.shaderPrograms[4]);
 			
 			this.wilson.gl.bindTexture(this.wilson.gl.TEXTURE_2D, this.wilson.render.framebuffers[1].texture);
 			this.wilson.gl.bindFramebuffer(this.wilson.gl.FRAMEBUFFER, this.wilson.render.framebuffers[0].framebuffer);
 			
-			this.wilson.render.draw_frame();
+			this.wilson.render.drawFrame();
 			
 			
 			
 			this.wilson.gl.bindTexture(this.wilson.gl.TEXTURE_2D, this.wilson.render.framebuffers[0].texture);
 		}
 		
-		this.wilson.gl.useProgram(this.wilson.render.shader_programs[5]);
+		this.wilson.gl.useProgram(this.wilson.render.shaderPrograms[5]);
 		
 		this.wilson.gl.bindFramebuffer(this.wilson.gl.FRAMEBUFFER, null);
 		
-		this.wilson.render.draw_frame();
+		this.wilson.render.drawFrame();
 		
 		
 		
-		const pixels = this.wilson.render.get_pixel_data();
+		const pixels = this.wilson.render.getPixelData();
 		
 		const threshhold = Math.floor(this.resolution / 10);
 		
 		for (let i = threshhold; i < this.resolution - threshhold; i++)
 		{
-			const index_1 = this.resolution * i + threshhold;
-			const index_2 = this.resolution * i + (this.resolution - threshhold);
-			const index_3 = this.resolution * threshhold + i;
-			const index_4 = this.resolution * (this.resolution - threshhold) + i;
+			const index1 = this.resolution * i + threshhold;
+			const index2 = this.resolution * i + (this.resolution - threshhold);
+			const index3 = this.resolution * threshhold + i;
+			const index4 = this.resolution * (this.resolution - threshhold) + i;
 			
-			if (pixels[4 * index_1] || pixels[4 * index_2] || pixels[4 * index_3] || pixels[4 * index_4])
+			if (pixels[4 * index1] || pixels[4 * index2] || pixels[4 * index3] || pixels[4 * index4])
 			{
 				this.pause();
 			}
@@ -664,9 +664,9 @@ class Snowflake extends Applet
 		
 		
 		
-		if (!this.animation_paused)
+		if (!this.animationPaused)
 		{
-			window.requestAnimationFrame(this.draw_frame.bind(this));
+			window.requestAnimationFrame(this.drawFrame.bind(this));
 		}
 	}
-}
+	}

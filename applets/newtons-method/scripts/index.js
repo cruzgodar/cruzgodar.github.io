@@ -4,18 +4,18 @@
 	
 	
 	
-	let frag_shader_source = `
+	let fragShaderSource = `
 		precision highp float;
 		
 		varying vec2 uv;
 		
-		uniform float aspect_ratio;
+		uniform float aspectRatio;
 		
-		uniform float world_center_x;
-		uniform float world_center_y;
-		uniform float world_size;
+		uniform float worldCenterX;
+		uniform float worldCenterY;
+		uniform float worldSize;
 		
-		uniform int num_roots;
+		uniform int numRoots;
 		
 		uniform vec2 roots[11];
 		
@@ -24,16 +24,16 @@
 		uniform vec2 a;
 		uniform vec2 c;
 		
-		uniform float brightness_scale;
+		uniform float brightnessScale;
 		
 		const float threshhold = .05;
 		
 		
 		
-		//Returns z_1 * z_2.
-		vec2 cmul(vec2 z_1, vec2 z_2)
+		//Returns z1 * z2.
+		vec2 cmul(vec2 z1, vec2 z2)
 		{
-			return vec2(z_1.x * z_2.x - z_1.y * z_2.y, z_1.x * z_2.y + z_1.y * z_2.x);
+			return vec2(z1.x * z2.x - z1.y * z2.y, z1.x * z2.y + z1.y * z2.x);
 		}
 		
 		
@@ -55,7 +55,7 @@
 			
 			for (int i = 0; i <= 11; i++)
 			{
-				if (i == num_roots)
+				if (i == numRoots)
 				{
 					return result;
 				}
@@ -77,16 +77,16 @@
 		void main(void)
 		{
 			vec2 z;
-			vec2 last_z = vec2(0.0, 0.0);
+			vec2 lastZ = vec2(0.0, 0.0);
 			
-			if (aspect_ratio >= 1.0)
+			if (aspectRatio >= 1.0)
 			{
-				z = vec2(uv.x * aspect_ratio * world_size + world_center_x, uv.y * world_size + world_center_y);
+				z = vec2(uv.x * aspectRatio * worldSize + worldCenterX, uv.y * worldSize + worldCenterY);
 			}
 			
 			else
 			{
-				z = vec2(uv.x * world_size + world_center_x, uv.y / aspect_ratio * world_size + world_center_y);
+				z = vec2(uv.x * worldSize + worldCenterX, uv.y / aspectRatio * worldSize + worldCenterY);
 			}
 			
 			gl_FragColor = vec4(0.0, 0.0, 0.0, 1.0);
@@ -97,7 +97,7 @@
 			{
 				vec2 temp = cmul(cmul(cpoly(z), cinv(cderiv(z))), a) + c;
 				
-				last_z = z;
+				lastZ = z;
 				
 				z -= temp;
 				
@@ -105,20 +105,20 @@
 				
 				for (int i = 0; i <= 11; i++)
 				{
-					if (i == num_roots)
+					if (i == numRoots)
 					{
 						break;
 					}
 					
-					float d_0 = length(z - roots[i]);
+					float d0 = length(z - roots[i]);
 					
-					if (d_0 < threshhold)
+					if (d0 < threshhold)
 					{
-						float d_1 = length(last_z - roots[i]);
+						float d1 = length(lastZ - roots[i]);
 						
-						float brightness_adjust = (log(threshhold) - log(d_0)) / (log(d_1) - log(d_0));
+						float brightnessAdjust = (log(threshhold) - log(d0)) / (log(d1) - log(d0));
 						
-						float brightness = 1.0 - (float(iteration) - brightness_adjust) / brightness_scale;
+						float brightness = 1.0 - (float(iteration) - brightnessAdjust) / brightnessScale;
 						
 						gl_FragColor = vec4(colors[i] * brightness, 1.0);
 						
@@ -135,123 +135,123 @@
 	{
 		renderer: "gpu",
 		
-		shader: frag_shader_source,
+		shader: fragShaderSource,
 		
-		canvas_width: 500,
-		canvas_height: 500,
+		canvasWidth: 500,
+		canvasHeight: 500,
 		
-		world_width: 3,
-		world_height: 3,
-		world_center_x: 0,
-		world_center_y: 0,
-		
-		
-		
-		use_draggables: true,
-		
-		draggables_mousemove_callback: on_drag_draggable,
-		draggables_touchmove_callback: on_drag_draggable,
-		
-		draggables_mouseup_callback: on_release_draggable,
-		draggables_touchend_callback: on_release_draggable,
+		worldWidth: 3,
+		worldHeight: 3,
+		worldCenterX: 0,
+		worldCenterY: 0,
 		
 		
 		
-		use_fullscreen: true,
+		useDraggables: true,
 		
-		true_fullscreen: true,
+		draggablesMousemoveCallback: onDragDraggable,
+		draggablesTouchmoveCallback: onDragDraggable,
+		
+		draggablesMouseupCallback: onReleaseDraggable,
+		draggablesTouchendCallback: onReleaseDraggable,
+		
+		
+		
+		useFullscreen: true,
+		
+		trueFullscreen: true,
 	
-		use_fullscreen_button: true,
+		useFullscreenButton: true,
 		
-		enter_fullscreen_button_icon_path: "/graphics/general-icons/enter-fullscreen.png",
-		exit_fullscreen_button_icon_path: "/graphics/general-icons/exit-fullscreen.png",
+		enterFullscreenButtonIconPath: "/graphics/general-icons/enter-fullscreen.png",
+		exitFullscreenButtonIconPath: "/graphics/general-icons/exit-fullscreen.png",
 		
-		switch_fullscreen_callback: change_aspect_ratio,
+		switchFullscreenCallback: changeAspectRatio,
 		
 		
 		
-		mousedown_callback: on_grab_canvas,
-		touchstart_callback: on_grab_canvas,
+		mousedownCallback: onGrabCanvas,
+		touchstartCallback: onGrabCanvas,
 		
-		mousedrag_callback: on_drag_canvas,
-		touchmove_callback: on_drag_canvas,
+		mousedragCallback: onDragCanvas,
+		touchmoveCallback: onDragCanvas,
 		
-		mouseup_callback: on_release_canvas,
-		touchend_callback: on_release_canvas,
+		mouseupCallback: onReleaseCanvas,
+		touchendCallback: onReleaseCanvas,
 		
-		wheel_callback: on_wheel_canvas,
-		pinch_callback: on_pinch_canvas
+		wheelCallback: onWheelCanvas,
+		pinchCallback: onPinchCanvas
 	};
 	
-	let options_hidden =
+	let optionsHidden =
 	{
 		renderer: "gpu",
 		
-		shader: frag_shader_source,
+		shader: fragShaderSource,
 		
-		canvas_width: 100,
-		canvas_height: 100
+		canvasWidth: 100,
+		canvasHeight: 100
 	};
 	
 	
 	
 	let wilson = new Wilson(Page.element.querySelector("#output-canvas"), options);
 
-	wilson.render.init_uniforms(["aspect_ratio", "world_center_x", "world_center_y", "world_size", "num_roots", "roots", "colors", "a", "c", "brightness_scale"]);
+	wilson.render.initUniforms(["aspectRatio", "worldCenterX", "worldCenterY", "worldSize", "numRoots", "roots", "colors", "a", "c", "brightnessScale"]);
 	
 	
 	
-	let wilson_hidden = new Wilson(Page.element.querySelector("#hidden-canvas"), options_hidden);
+	let wilsonHidden = new Wilson(Page.element.querySelector("#hidden-canvas"), optionsHidden);
 	
-	wilson_hidden.render.init_uniforms(["aspect_ratio", "world_center_x", "world_center_y", "world_size", "num_roots", "roots", "colors", "a", "c", "brightness_scale"]);
+	wilsonHidden.render.initUniforms(["aspectRatio", "worldCenterX", "worldCenterY", "worldSize", "numRoots", "roots", "colors", "a", "c", "brightnessScale"]);
 	
 	
 	
 	let a = [1, 0];
 	let c = [0, 0];
 	
-	let current_roots = [];
+	let currentRoots = [];
 	
-	let last_active_root = 0;
+	let lastActiveRoot = 0;
 	
-	let num_roots = 0;
+	let numRoots = 0;
 	
-	let aspect_ratio = 1;
+	let aspectRatio = 1;
 	
-	let num_iterations = 100;
+	let numIterations = 100;
 	
-	let currently_spreading_roots = false;
-	let parameter_animation_frame = 0;
-	let old_roots = [];
-	let roots_delta = [];
+	let currentlySpreadingRoots = false;
+	let parameterAnimationFrame = 0;
+	let oldRoots = [];
+	let rootsDelta = [];
 	
-	let zoom_level = 0;
+	let zoomLevel = 0;
 	
-	let past_brightness_scales = [];
+	let pastBrightnessScales = [];
 	
 	let resolution = 500;
-	let resolution_hidden = 100;
+	let resolutionHidden = 100;
 	
-	let fixed_point_x = 0;
-	let fixed_point_y = 0;
+	let fixedPointX = 0;
+	let fixedPointY = 0;
 	
-	let next_pan_velocity_x = 0;
-	let next_pan_velocity_y = 0;
-	let next_zoom_velocity = 0;
+	let nextPanVelocityX = 0;
+	let nextPanVelocityY = 0;
+	let nextZoomVelocity = 0;
 	
-	let pan_velocity_x = 0;
-	let pan_velocity_y = 0;
-	let zoom_velocity = 0;
+	let panVelocityX = 0;
+	let panVelocityY = 0;
+	let zoomVelocity = 0;
 	
-	const pan_friction = .96;
-	const pan_velocity_start_threshhold = .0025;
-	const pan_velocity_stop_threshhold = .00025;
+	const panFriction = .96;
+	const panVelocityStartThreshhold = .0025;
+	const panVelocityStopThreshhold = .00025;
 	
-	const zoom_friction = .93;
-	const zoom_velocity_start_threshhold = .01;
-	const zoom_velocity_stop_threshhold = .001;
+	const zoomFriction = .93;
+	const zoomVelocityStartThreshhold = .01;
+	const zoomVelocityStopThreshhold = .001;
 	
-	let last_timestamp = -1;
+	let lastTimestamp = -1;
 	
 	
 	
@@ -265,88 +265,88 @@
 	
 	
 	
-	add_root();
-	add_root();
-	add_root();
+	addRoot();
+	addRoot();
+	addRoot();
 	
-	spread_roots(true);
+	spreadRoots(true);
 	
 	
 
-	let resolution_input_element = Page.element.querySelector("#resolution-input");
+	let resolutionInputElement = Page.element.querySelector("#resolution-input");
 	
-	resolution_input_element.addEventListener("input", () =>
+	resolutionInputElement.addEventListener("input", () =>
 	{
-		resolution = parseInt(resolution_input_element.value || 500);
+		resolution = parseInt(resolutionInputElement.value || 500);
 		
-		wilson.change_canvas_size(resolution, resolution);
+		wilson.changeCanvasSize(resolution, resolution);
 		
-		window.requestAnimationFrame(draw_newtons_method);
+		window.requestAnimationFrame(drawNewtonsMethod);
 	});
 	
 	
 	
-	let add_root_button_element = Page.element.querySelector("#add-root-button");
+	let addRootButtonElement = Page.element.querySelector("#add-root-button");
 	
-	add_root_button_element.addEventListener("click", add_root);
-	
-	
-	
-	let remove_root_button_element = Page.element.querySelector("#remove-root-button");
-	
-	remove_root_button_element.addEventListener("click", remove_root);
+	addRootButtonElement.addEventListener("click", addRoot);
 	
 	
 	
-	let spread_roots_button_element = Page.element.querySelector("#spread-roots-button");
+	let removeRootButtonElement = Page.element.querySelector("#remove-root-button");
 	
-	spread_roots_button_element.addEventListener("click", () => spread_roots(false, false));
-	
-	
-	
-	let randomize_roots_button_element = Page.element.querySelector("#randomize-roots-button");
-	
-	randomize_roots_button_element.addEventListener("click", () => spread_roots(false, true));
+	removeRootButtonElement.addEventListener("click", removeRoot);
 	
 	
 	
-	let download_button_element = Page.element.querySelector("#download-button");
+	let spreadRootsButtonElement = Page.element.querySelector("#spread-roots-button");
 	
-	download_button_element.addEventListener("click", () =>
+	spreadRootsButtonElement.addEventListener("click", () => spreadRoots(false, false));
+	
+	
+	
+	let randomizeRootsButtonElement = Page.element.querySelector("#randomize-roots-button");
+	
+	randomizeRootsButtonElement.addEventListener("click", () => spreadRoots(false, true));
+	
+	
+	
+	let downloadButtonElement = Page.element.querySelector("#download-button");
+	
+	downloadButtonElement.addEventListener("click", () =>
 	{
-		wilson.download_frame("newtons-method.png");
+		wilson.downloadFrame("newtons-method.png");
 	});
 	
 	
 	
-	let root_a_input_element = Page.element.querySelector("#root-a-input");
-	let root_b_input_element = Page.element.querySelector("#root-b-input");
+	let rootAInputElement = Page.element.querySelector("#root-a-input");
+	let rootBInputElement = Page.element.querySelector("#root-b-input");
 	
-	root_a_input_element.addEventListener("input", set_root);
-	root_b_input_element.addEventListener("input", set_root);
-	
-	
-	
-	let root_color_input_element = Page.element.querySelector("#root-color-input");
-	root_color_input_element.addEventListener("input", set_color);
+	rootAInputElement.addEventListener("input", setRoot);
+	rootBInputElement.addEventListener("input", setRoot);
 	
 	
 	
-	let root_setter_element = Page.element.querySelector("#root-setter");
+	let rootColorInputElement = Page.element.querySelector("#root-color-input");
+	rootColorInputElement.addEventListener("input", setColor);
 	
-	let color_setter_element = Page.element.querySelector("#color-setter");
+	
+	
+	let rootSetterElement = Page.element.querySelector("#root-setter");
+	
+	let colorSetterElement = Page.element.querySelector("#color-setter");
 	
 	
 	
 	//Render the inital frame.
-	wilson.gl.uniform1f(wilson.uniforms["aspect_ratio"], 1);
+	wilson.gl.uniform1f(wilson.uniforms["aspectRatio"], 1);
 	
 	let colors = [216/255, 1/255, 42/255,   255/255, 139/255, 56/255,   249/255, 239/255, 20/255,   27/255, 181/255, 61/255,   0/255, 86/255, 195/255,   154/255, 82/255, 164/255,   32/255, 32/255, 32/255,   155/255, 92/255, 15/255,   182/255, 228/255, 254/255,   250/255, 195/255, 218/255,   255/255, 255/255, 255/255];
 	
 	wilson.gl.uniform3fv(wilson.uniforms["colors"], colors);
-	wilson_hidden.gl.uniform3fv(wilson_hidden.uniforms["colors"], colors);
+	wilsonHidden.gl.uniform3fv(wilsonHidden.uniforms["colors"], colors);
 	
-	window.requestAnimationFrame(draw_newtons_method);
+	window.requestAnimationFrame(drawNewtonsMethod);
 	
 	
 	
@@ -354,9 +354,9 @@
 	
 	
 	
-	function add_root()
+	function addRoot()
 	{
-		if (num_roots === 11)
+		if (numRoots === 11)
 		{
 			return;
 		}
@@ -368,48 +368,48 @@
 		
 		wilson.draggables.add(x, y);
 		
-		current_roots.push(x);
-		current_roots.push(y);
+		currentRoots.push(x);
+		currentRoots.push(y);
 		
-		num_roots++;
+		numRoots++;
 		
-		window.requestAnimationFrame(draw_newtons_method);
+		window.requestAnimationFrame(drawNewtonsMethod);
 	}
 	
 	
 	
-	function remove_root()
+	function removeRoot()
 	{
-		if (num_roots === 1)
+		if (numRoots === 1)
 		{
 			return;
 		}
 		
 		
-		num_roots--;
+		numRoots--;
 		
-		current_roots.pop();
-		current_roots.pop();
+		currentRoots.pop();
+		currentRoots.pop();
 		
-		wilson.draggables.draggables[num_roots + 2].remove();
+		wilson.draggables.draggables[numRoots + 2].remove();
 		
 		wilson.draggables.draggables.pop();
-		wilson.draggables.world_coordinates.pop();
+		wilson.draggables.worldCoordinates.pop();
 		
-		wilson.draggables.num_draggables--;
+		wilson.draggables.numDraggables--;
 		
-		window.requestAnimationFrame(draw_newtons_method);
+		window.requestAnimationFrame(drawNewtonsMethod);
 	}
 	
 	
 	
-	function spread_roots(no_animation = false, randomize = false)
+	function spreadRoots(noAnimation = false, randomize = false)
 	{
-		if (!currently_spreading_roots)
+		if (!currentlySpreadingRoots)
 		{
-			currently_spreading_roots = true;
+			currentlySpreadingRoots = true;
 			
-			parameter_animation_frame = 0;
+			parameterAnimationFrame = 0;
 		}
 		
 		else
@@ -417,9 +417,9 @@
 			return;
 		}
 		
-		old_roots = JSON.parse(JSON.stringify(current_roots));
+		oldRoots = JSON.parse(JSON.stringify(currentRoots));
 		
-		for (let i = 0; i < num_roots; i++)
+		for (let i = 0; i < numRoots; i++)
 		{
 			let mag = 1;
 			
@@ -428,105 +428,105 @@
 				mag += .75 * Math.random();
 			}	
 			
-			roots_delta[2 * i] = mag * Math.cos(2 * Math.PI * i / num_roots) - current_roots[2 * i];
-			roots_delta[2 * i + 1] = mag * Math.sin(2 * Math.PI * i / num_roots) - current_roots[2 * i + 1];	
+			rootsDelta[2 * i] = mag * Math.cos(2 * Math.PI * i / numRoots) - currentRoots[2 * i];
+			rootsDelta[2 * i + 1] = mag * Math.sin(2 * Math.PI * i / numRoots) - currentRoots[2 * i + 1];	
 		}
 		
-		if (no_animation)
+		if (noAnimation)
 		{
-			currently_spreading_roots = false;
+			currentlySpreadingRoots = false;
 			
-			for (let i = 0; i < num_roots; i++)
+			for (let i = 0; i < numRoots; i++)
 			{
-				current_roots[2 * i] = old_roots[2 * i] + roots_delta[2 * i];
-				current_roots[2 * i + 1] = old_roots[2 * i + 1] + roots_delta[2 * i + 1];
+				currentRoots[2 * i] = oldRoots[2 * i] + rootsDelta[2 * i];
+				currentRoots[2 * i + 1] = oldRoots[2 * i + 1] + rootsDelta[2 * i + 1];
 				
-				wilson.draggables.world_coordinates[i + 2] = [current_roots[2 * i], current_roots[2 * i + 1]];
+				wilson.draggables.worldCoordinates[i + 2] = [currentRoots[2 * i], currentRoots[2 * i + 1]];
 			}
 			
-			wilson.draggables.recalculate_locations();
+			wilson.draggables.recalculateLocations();
 		}
 		
-		window.requestAnimationFrame(draw_newtons_method);
+		window.requestAnimationFrame(drawNewtonsMethod);
 	}
 	
 	
 	
-	function spread_roots_step()
+	function spreadRootsStep()
 	{
-		let t = .5 * Math.sin(Math.PI * parameter_animation_frame / 120 - Math.PI / 2) + .5;
+		let t = .5 * Math.sin(Math.PI * parameterAnimationFrame / 120 - Math.PI / 2) + .5;
 		
-		for (let i = 0; i < num_roots; i++)
+		for (let i = 0; i < numRoots; i++)
 		{
-			current_roots[2 * i] = old_roots[2 * i] + roots_delta[2 * i] * t;
-			current_roots[2 * i + 1] = old_roots[2 * i + 1] + roots_delta[2 * i + 1] * t;
+			currentRoots[2 * i] = oldRoots[2 * i] + rootsDelta[2 * i] * t;
+			currentRoots[2 * i + 1] = oldRoots[2 * i + 1] + rootsDelta[2 * i + 1] * t;
 			
-			wilson.draggables.world_coordinates[i + 2] = [current_roots[2 * i], current_roots[2 * i + 1]];
+			wilson.draggables.worldCoordinates[i + 2] = [currentRoots[2 * i], currentRoots[2 * i + 1]];
 		}
 		
-		window.requestAnimationFrame(draw_newtons_method);
+		window.requestAnimationFrame(drawNewtonsMethod);
 		
-		wilson.draggables.recalculate_locations();
+		wilson.draggables.recalculateLocations();
 		
-		parameter_animation_frame++;
+		parameterAnimationFrame++;
 		
-		if (parameter_animation_frame === 121)
+		if (parameterAnimationFrame === 121)
 		{
-			currently_spreading_roots = false;
+			currentlySpreadingRoots = false;
 		}
 	}
 	
 	
 	
-	function set_root()
+	function setRoot()
 	{
-		if (last_active_root === 0)
+		if (lastActiveRoot === 0)
 		{
-			a[0] = parseFloat(root_a_input_element.value || 1);
-			a[1] = parseFloat(root_b_input_element.value || 0);
+			a[0] = parseFloat(rootAInputElement.value || 1);
+			a[1] = parseFloat(rootBInputElement.value || 0);
 			
-			wilson.draggables.world_coordinates[0] = [a[0], a[1]];
+			wilson.draggables.worldCoordinates[0] = [a[0], a[1]];
 		}
 		
 		
 		
-		else if (last_active_root === 1)
+		else if (lastActiveRoot === 1)
 		{
-			c[0] = parseFloat(root_a_input_element.value || 0) * 10;
-			c[1] = parseFloat(root_b_input_element.value || 0) * 10;
+			c[0] = parseFloat(rootAInputElement.value || 0) * 10;
+			c[1] = parseFloat(rootBInputElement.value || 0) * 10;
 			
-			wilson.draggables.world_coordinates[1] = [c[0], c[1]];
+			wilson.draggables.worldCoordinates[1] = [c[0], c[1]];
 		}
 		
 		
 		
 		else
 		{
-			current_roots[2 * (last_active_root - 2)] = parseFloat(root_a_input_element.value || 0);
-			current_roots[2 * (last_active_root - 2) + 1] = parseFloat(root_b_input_element.value || 0);
+			currentRoots[2 * (lastActiveRoot - 2)] = parseFloat(rootAInputElement.value || 0);
+			currentRoots[2 * (lastActiveRoot - 2) + 1] = parseFloat(rootBInputElement.value || 0);
 			
-			wilson.draggables.world_coordinates[last_active_root - 2] = [current_roots[2 * (last_active_root - 2)], current_roots[2 * (last_active_root - 2) + 1]];
+			wilson.draggables.worldCoordinates[lastActiveRoot - 2] = [currentRoots[2 * (lastActiveRoot - 2)], currentRoots[2 * (lastActiveRoot - 2) + 1]];
 		}
 		
 		
 		
-		window.requestAnimationFrame(draw_newtons_method);
+		window.requestAnimationFrame(drawNewtonsMethod);
 		
-		wilson.draggables.recalculate_locations();
+		wilson.draggables.recalculateLocations();
 	}
 	
 	
 	
-	function set_color()
+	function setColor()
 	{
-		if (last_active_root < 2)
+		if (lastActiveRoot < 2)
 		{
 			return;
 		}
 		
-		let index = last_active_root - 2;
+		let index = lastActiveRoot - 2;
 			
-		let result = hex_to_rgb(root_color_input_element.value);
+		let result = hexToRgb(rootColorInputElement.value);
 		
 		let r = result.r / 255;
 		let g = result.g / 255;
@@ -550,377 +550,377 @@
 				colors[3 * index + 2] = result.b;
 				
 				wilson.gl.uniform3fv(wilson.uniforms["colors"], colors);
-				wilson_hidden.gl.uniform3fv(wilson_hidden.uniforms["colors"], colors);
+				wilsonHidden.gl.uniform3fv(wilsonHidden.uniforms["colors"], colors);
 				
-				window.requestAnimationFrame(draw_newtons_method);
+				window.requestAnimationFrame(drawNewtonsMethod);
 			}
 		});
 	}
 	
 	
 	
-	function on_grab_canvas(x, y, event)
+	function onGrabCanvas(x, y, event)
 	{
-		pan_velocity_x = 0;
-		pan_velocity_y = 0;
-		zoom_velocity = 0;
+		panVelocityX = 0;
+		panVelocityY = 0;
+		zoomVelocity = 0;
 		
-		next_pan_velocity_x = 0;
-		next_pan_velocity_y = 0;
-		next_zoom_velocity = 0;
+		nextPanVelocityX = 0;
+		nextPanVelocityY = 0;
+		nextZoomVelocity = 0;
 	}
 	
 	
 	
-	function on_drag_canvas(x, y, x_delta, y_delta, event)
+	function onDragCanvas(x, y, xDelta, yDelta, event)
 	{
-		wilson.world_center_x -= x_delta;
-		wilson.world_center_y -= y_delta;
+		wilson.worldCenterX -= xDelta;
+		wilson.worldCenterY -= yDelta;
 		
-		next_pan_velocity_x = -x_delta / wilson.world_width;
-		next_pan_velocity_y = -y_delta / wilson.world_height;
+		nextPanVelocityX = -xDelta / wilson.worldWidth;
+		nextPanVelocityY = -yDelta / wilson.worldHeight;
 		
-		window.requestAnimationFrame(draw_newtons_method);
+		window.requestAnimationFrame(drawNewtonsMethod);
 		
-		wilson.draggables.recalculate_locations();
+		wilson.draggables.recalculateLocations();
 	}
 	
 	
 	
-	function on_release_canvas(x, y, event)
+	function onReleaseCanvas(x, y, event)
 	{
-		if (Math.sqrt(next_pan_velocity_x * next_pan_velocity_x + next_pan_velocity_y * next_pan_velocity_y) >= pan_velocity_start_threshhold)
+		if (Math.sqrt(nextPanVelocityX * nextPanVelocityX + nextPanVelocityY * nextPanVelocityY) >= panVelocityStartThreshhold)
 		{
-			pan_velocity_x = next_pan_velocity_x;
-			pan_velocity_y = next_pan_velocity_y;
+			panVelocityX = nextPanVelocityX;
+			panVelocityY = nextPanVelocityY;
 		}
 		
-		if (Math.abs(next_zoom_velocity) >= zoom_velocity_start_threshhold)
+		if (Math.abs(nextZoomVelocity) >= zoomVelocityStartThreshhold)
 		{
-			zoom_velocity = next_zoom_velocity;
+			zoomVelocity = nextZoomVelocity;
 		}
 		
-		window.requestAnimationFrame(draw_newtons_method);
+		window.requestAnimationFrame(drawNewtonsMethod);
 	}
 	
 	
 	
-	function on_wheel_canvas(x, y, scroll_amount, event)
+	function onWheelCanvas(x, y, scrollAmount, event)
 	{
-		fixed_point_x = x;
-		fixed_point_y = y;
+		fixedPointX = x;
+		fixedPointY = y;
 		
-		if (Math.abs(scroll_amount / 100) < .3)
+		if (Math.abs(scrollAmount / 100) < .3)
 		{
-			zoom_level += scroll_amount / 100;
+			zoomLevel += scrollAmount / 100;
 		}
 		
 		else
 		{
-			zoom_velocity += Math.sign(scroll_amount) * .05;
+			zoomVelocity += Math.sign(scrollAmount) * .05;
 		}
 		
-		zoom_canvas();
+		zoomCanvas();
 	}
 	
 	
 	
-	function on_pinch_canvas(x, y, touch_distance_delta, event)
+	function onPinchCanvas(x, y, touchDistanceDelta, event)
 	{
-		if (aspect_ratio >= 1)
+		if (aspectRatio >= 1)
 		{
-			zoom_level -= touch_distance_delta / wilson.world_width * 10;
+			zoomLevel -= touchDistanceDelta / wilson.worldWidth * 10;
 			
-			next_zoom_velocity = -touch_distance_delta / wilson.world_width * 10;
+			nextZoomVelocity = -touchDistanceDelta / wilson.worldWidth * 10;
 		}
 		
 		else
 		{
-			zoom_level -= touch_distance_delta / wilson.world_height * 10;
+			zoomLevel -= touchDistanceDelta / wilson.worldHeight * 10;
 			
-			next_zoom_velocity = -touch_distance_delta / wilson.world_height * 10;
+			nextZoomVelocity = -touchDistanceDelta / wilson.worldHeight * 10;
 		}
 		
-		fixed_point_x = x;
-		fixed_point_y = y;
+		fixedPointX = x;
+		fixedPointY = y;
 		
-		zoom_canvas();
+		zoomCanvas();
 	}
 	
 	
 	
-	function zoom_canvas()
+	function zoomCanvas()
 	{
-		if (aspect_ratio >= 1)
+		if (aspectRatio >= 1)
 		{
-			let new_world_center = wilson.input.get_zoomed_world_center(fixed_point_x, fixed_point_y, 3 * Math.pow(2, zoom_level) * aspect_ratio, 3 * Math.pow(2, zoom_level));
+			let newWorldCenter = wilson.input.getZoomedWorldCenter(fixedPointX, fixedPointY, 3 * Math.pow(2, zoomLevel) * aspectRatio, 3 * Math.pow(2, zoomLevel));
 			
-			wilson.world_width = 3 * Math.pow(2, zoom_level) * aspect_ratio;
-			wilson.world_height = 3 * Math.pow(2, zoom_level);
+			wilson.worldWidth = 3 * Math.pow(2, zoomLevel) * aspectRatio;
+			wilson.worldHeight = 3 * Math.pow(2, zoomLevel);
 			
-			wilson.world_center_x = new_world_center[0];
-			wilson.world_center_y = new_world_center[1];
+			wilson.worldCenterX = newWorldCenter[0];
+			wilson.worldCenterY = newWorldCenter[1];
 		}
 		
 		else
 		{
-			let new_world_center = wilson.input.get_zoomed_world_center(fixed_point_x, fixed_point_y, 3 * Math.pow(2, zoom_level), 3 * Math.pow(2, zoom_level) / aspect_ratio);
+			let newWorldCenter = wilson.input.getZoomedWorldCenter(fixedPointX, fixedPointY, 3 * Math.pow(2, zoomLevel), 3 * Math.pow(2, zoomLevel) / aspectRatio);
 			
-			wilson.world_width = 3 * Math.pow(2, zoom_level);
-			wilson.world_height = 3 * Math.pow(2, zoom_level) / aspect_ratio;
+			wilson.worldWidth = 3 * Math.pow(2, zoomLevel);
+			wilson.worldHeight = 3 * Math.pow(2, zoomLevel) / aspectRatio;
 			
-			wilson.world_center_x = new_world_center[0];
-			wilson.world_center_y = new_world_center[1];
+			wilson.worldCenterX = newWorldCenter[0];
+			wilson.worldCenterY = newWorldCenter[1];
 		}
 		
-		window.requestAnimationFrame(draw_newtons_method);
+		window.requestAnimationFrame(drawNewtonsMethod);
 		
-		wilson.draggables.recalculate_locations();
+		wilson.draggables.recalculateLocations();
 	}
 	
 	
 	
-	function on_drag_draggable(active_draggable, x, y, event)
+	function onDragDraggable(activeDraggable, x, y, event)
 	{
-		if (active_draggable === 0)
+		if (activeDraggable === 0)
 		{
 			a = [x, y];
 		}
 		
-		else if (active_draggable === 1)
+		else if (activeDraggable === 1)
 		{
 			c = [x, y];
 		}
 		
 		else
 		{
-			current_roots[2 * (active_draggable - 2)] = x;
-			current_roots[2 * (active_draggable - 2) + 1] = y;
+			currentRoots[2 * (activeDraggable - 2)] = x;
+			currentRoots[2 * (activeDraggable - 2) + 1] = y;
 		}
 		
-		window.requestAnimationFrame(draw_newtons_method);
+		window.requestAnimationFrame(drawNewtonsMethod);
 	}
 	
 	
 	
-	function on_release_draggable(active_draggable, x, y, event)
+	function onReleaseDraggable(activeDraggable, x, y, event)
 	{
-		Page.Animate.change_opacity(root_setter_element, 0, Site.opacity_animation_time);
-		Page.Animate.change_opacity(color_setter_element, 0, Site.opacity_animation_time)
+		Page.Animate.changeOpacity(rootSetterElement, 0, Site.opacityAnimationTime);
+		Page.Animate.changeOpacity(colorSetterElement, 0, Site.opacityAnimationTime)
 		
 		.then(() =>
 		{
-			last_active_root = active_draggable;
+			lastActiveRoot = activeDraggable;
 			
-			if (last_active_root === 0)
+			if (lastActiveRoot === 0)
 			{
-				root_a_input_element.value = Math.round(a[0] * 1000) / 1000;
-				root_b_input_element.value = Math.round(a[1] * 1000) / 1000;
+				rootAInputElement.value = Math.round(a[0] * 1000) / 1000;
+				rootBInputElement.value = Math.round(a[1] * 1000) / 1000;
 			}
 			
-			else if (last_active_root === 1)
+			else if (lastActiveRoot === 1)
 			{
-				root_a_input_element.value = Math.round(c[0] * 1000) / 10000;
-				root_b_input_element.value = Math.round(c[1] * 1000) / 10000;
+				rootAInputElement.value = Math.round(c[0] * 1000) / 10000;
+				rootBInputElement.value = Math.round(c[1] * 1000) / 10000;
 			}
 			
 			else
 			{
-				let index = last_active_root - 2;
+				let index = lastActiveRoot - 2;
 				
-				root_a_input_element.value = Math.round(current_roots[2 * index] * 1000) / 1000;
-				root_b_input_element.value = Math.round(current_roots[2 * index + 1] * 1000) / 1000;
+				rootAInputElement.value = Math.round(currentRoots[2 * index] * 1000) / 1000;
+				rootBInputElement.value = Math.round(currentRoots[2 * index + 1] * 1000) / 1000;
 				
-				root_color_input_element.value = rgb_to_hex(colors[3 * index] * 255, colors[3 * index + 1] * 255, colors[3 * index + 2] * 255);
+				rootColorInputElement.value = rgbToHex(colors[3 * index] * 255, colors[3 * index + 1] * 255, colors[3 * index + 2] * 255);
 			}
 			
-			Page.Animate.change_opacity(root_setter_element, 1, Site.opacity_animation_time);
-			Page.Animate.change_opacity(color_setter_element, 1, Site.opacity_animation_time);
+			Page.Animate.changeOpacity(rootSetterElement, 1, Site.opacityAnimationTime);
+			Page.Animate.changeOpacity(colorSetterElement, 1, Site.opacityAnimationTime);
 		});
 	}
 
 
 
-	function draw_newtons_method(timestamp)
+	function drawNewtonsMethod(timestamp)
 	{
-		let time_elapsed = timestamp - last_timestamp;
+		let timeElapsed = timestamp - lastTimestamp;
 		
-		last_timestamp = timestamp;
+		lastTimestamp = timestamp;
 		
 		
 		
-		if (time_elapsed === 0)
+		if (timeElapsed === 0)
 		{
 			return;
 		}
 		
 		
 		
-		wilson_hidden.gl.uniform1f(wilson_hidden.uniforms["aspect_ratio"], aspect_ratio);
-		wilson_hidden.gl.uniform1f(wilson_hidden.uniforms["world_center_x"], wilson.world_center_x);
-		wilson_hidden.gl.uniform1f(wilson_hidden.uniforms["world_center_y"], wilson.world_center_y);
+		wilsonHidden.gl.uniform1f(wilsonHidden.uniforms["aspectRatio"], aspectRatio);
+		wilsonHidden.gl.uniform1f(wilsonHidden.uniforms["worldCenterX"], wilson.worldCenterX);
+		wilsonHidden.gl.uniform1f(wilsonHidden.uniforms["worldCenterY"], wilson.worldCenterY);
 		
-		wilson_hidden.gl.uniform1f(wilson_hidden.uniforms["world_size"], Math.min(wilson.world_height, wilson.world_width) / 2);
+		wilsonHidden.gl.uniform1f(wilsonHidden.uniforms["worldSize"], Math.min(wilson.worldHeight, wilson.worldWidth) / 2);
 		
-		wilson_hidden.gl.uniform1i(wilson_hidden.uniforms["num_roots"], num_roots);
+		wilsonHidden.gl.uniform1i(wilsonHidden.uniforms["numRoots"], numRoots);
 		
-		wilson_hidden.gl.uniform2fv(wilson_hidden.uniforms["roots"], current_roots);
+		wilsonHidden.gl.uniform2fv(wilsonHidden.uniforms["roots"], currentRoots);
 		
-		wilson_hidden.gl.uniform2fv(wilson_hidden.uniforms["a"], a);
-		wilson_hidden.gl.uniform2f(wilson_hidden.uniforms["c"], c[0] / 10, c[1] / 10);
-		wilson_hidden.gl.uniform1f(wilson_hidden.uniforms["brightness_scale"], 30);
+		wilsonHidden.gl.uniform2fv(wilsonHidden.uniforms["a"], a);
+		wilsonHidden.gl.uniform2f(wilsonHidden.uniforms["c"], c[0] / 10, c[1] / 10);
+		wilsonHidden.gl.uniform1f(wilsonHidden.uniforms["brightnessScale"], 30);
 		
-		wilson_hidden.render.draw_frame();
+		wilsonHidden.render.drawFrame();
 		
 		
 		
-		let pixel_data = wilson_hidden.render.get_pixel_data();
+		let pixelData = wilsonHidden.render.getPixelData();
 		
-		let brightnesses = new Array(resolution_hidden * resolution_hidden);
+		let brightnesses = new Array(resolutionHidden * resolutionHidden);
 		
-		for (let i = 0; i < resolution_hidden * resolution_hidden; i++)
+		for (let i = 0; i < resolutionHidden * resolutionHidden; i++)
 		{
-			brightnesses[i] = Math.max(Math.max(pixel_data[4 * i], pixel_data[4 * i + 1]), pixel_data[4 * i + 2]);
+			brightnesses[i] = Math.max(Math.max(pixelData[4 * i], pixelData[4 * i + 1]), pixelData[4 * i + 2]);
 		}
 		
 		brightnesses.sort((a, b) => a - b);
 		
-		let brightness_scale = Math.min(10000 / (brightnesses[Math.floor(resolution_hidden * resolution_hidden * .96)] + brightnesses[Math.floor(resolution_hidden * resolution_hidden * .98)]), 200);
+		let brightnessScale = Math.min(10000 / (brightnesses[Math.floor(resolutionHidden * resolutionHidden * .96)] + brightnesses[Math.floor(resolutionHidden * resolutionHidden * .98)]), 200);
 		
-		past_brightness_scales.push(brightness_scale);
+		pastBrightnessScales.push(brightnessScale);
 		
-		let denom = past_brightness_scales.length;
+		let denom = pastBrightnessScales.length;
 		
 		if (denom > 10)
 		{
-			past_brightness_scales.shift();
+			pastBrightnessScales.shift();
 		}
 		
-		brightness_scale = Math.max(past_brightness_scales.reduce((a, b) => a + b) / denom, .5);
+		brightnessScale = Math.max(pastBrightnessScales.reduce((a, b) => a + b) / denom, .5);
 		
 		
 		
 		
 		
-		wilson.gl.uniform1f(wilson.uniforms["aspect_ratio"], aspect_ratio);
-		wilson.gl.uniform1f(wilson.uniforms["world_center_x"], wilson.world_center_x);
-		wilson.gl.uniform1f(wilson.uniforms["world_center_y"], wilson.world_center_y);
+		wilson.gl.uniform1f(wilson.uniforms["aspectRatio"], aspectRatio);
+		wilson.gl.uniform1f(wilson.uniforms["worldCenterX"], wilson.worldCenterX);
+		wilson.gl.uniform1f(wilson.uniforms["worldCenterY"], wilson.worldCenterY);
 		
-		wilson.gl.uniform1f(wilson.uniforms["world_size"], Math.min(wilson.world_height, wilson.world_width) / 2);
+		wilson.gl.uniform1f(wilson.uniforms["worldSize"], Math.min(wilson.worldHeight, wilson.worldWidth) / 2);
 		
-		wilson.gl.uniform1i(wilson.uniforms["num_roots"], num_roots);
+		wilson.gl.uniform1i(wilson.uniforms["numRoots"], numRoots);
 		
-		wilson.gl.uniform2fv(wilson.uniforms["roots"], current_roots);
+		wilson.gl.uniform2fv(wilson.uniforms["roots"], currentRoots);
 		
 		wilson.gl.uniform2fv(wilson.uniforms["a"], a);
 		wilson.gl.uniform2f(wilson.uniforms["c"], c[0] / 10, c[1] / 10);
-		wilson.gl.uniform1f(wilson.uniforms["brightness_scale"], brightness_scale);
+		wilson.gl.uniform1f(wilson.uniforms["brightnessScale"], brightnessScale);
 		
-		wilson.render.draw_frame();
+		wilson.render.drawFrame();
 		
 		
 		
-		if (currently_spreading_roots)
+		if (currentlySpreadingRoots)
 		{
-			spread_roots_step();
+			spreadRootsStep();
 		}
 		
 		
 		
-		if (time_elapsed >= 50)
+		if (timeElapsed >= 50)
 		{
-			pan_velocity_x = 0;
-			pan_velocity_y = 0;
-			zoom_velocity = 0;
+			panVelocityX = 0;
+			panVelocityY = 0;
+			zoomVelocity = 0;
 			
-			next_pan_velocity_x = 0;
-			next_pan_velocity_y = 0;
-			next_zoom_velocity = 0;
+			nextPanVelocityX = 0;
+			nextPanVelocityY = 0;
+			nextZoomVelocity = 0;
 		}
 		
 		
 		
-		if (pan_velocity_x !== 0 || pan_velocity_y !== 0 || zoom_velocity !== 0)
+		if (panVelocityX !== 0 || panVelocityY !== 0 || zoomVelocity !== 0)
 		{
-			wilson.world_center_x += pan_velocity_x * wilson.world_width;
-			wilson.world_center_y += pan_velocity_y * wilson.world_height;
+			wilson.worldCenterX += panVelocityX * wilson.worldWidth;
+			wilson.worldCenterY += panVelocityY * wilson.worldHeight;
 			
 			
 			
-			pan_velocity_x *= pan_friction;
-			pan_velocity_y *= pan_friction;
+			panVelocityX *= panFriction;
+			panVelocityY *= panFriction;
 			
-			if (Math.sqrt(pan_velocity_x * pan_velocity_x + pan_velocity_y * pan_velocity_y) < pan_velocity_stop_threshhold)
+			if (Math.sqrt(panVelocityX * panVelocityX + panVelocityY * panVelocityY) < panVelocityStopThreshhold)
 			{
-				pan_velocity_x = 0;
-				pan_velocity_y = 0;
+				panVelocityX = 0;
+				panVelocityY = 0;
 			}
 			
 			
 			
-			zoom_level += zoom_velocity;
+			zoomLevel += zoomVelocity;
 			
-			zoom_canvas(fixed_point_x, fixed_point_y);
+			zoomCanvas(fixedPointX, fixedPointY);
 			
-			zoom_velocity *= zoom_friction;
+			zoomVelocity *= zoomFriction;
 			
-			if (Math.abs(zoom_velocity) < zoom_velocity_stop_threshhold)
+			if (Math.abs(zoomVelocity) < zoomVelocityStopThreshhold)
 			{
-				zoom_velocity = 0;
+				zoomVelocity = 0;
 			}
 			
 			
 			
-			window.requestAnimationFrame(draw_newtons_method);
+			window.requestAnimationFrame(drawNewtonsMethod);
 			
-			wilson.draggables.recalculate_locations();
+			wilson.draggables.recalculateLocations();
 		}
 	}
 	
 	
 	
-	function change_aspect_ratio()
+	function changeAspectRatio()
 	{
-		if (wilson.fullscreen.currently_fullscreen)
+		if (wilson.fullscreen.currentlyFullscreen)
 		{
-			aspect_ratio = window.innerWidth / window.innerHeight;
+			aspectRatio = window.innerWidth / window.innerHeight;
 			
-			if (aspect_ratio >= 1)
+			if (aspectRatio >= 1)
 			{
-				wilson.change_canvas_size(resolution, Math.floor(resolution / aspect_ratio));
+				wilson.changeCanvasSize(resolution, Math.floor(resolution / aspectRatio));
 				
-				wilson.world_width = 3 * Math.pow(2, zoom_level) * aspect_ratio;
-				wilson.world_height = 3 * Math.pow(2, zoom_level);
+				wilson.worldWidth = 3 * Math.pow(2, zoomLevel) * aspectRatio;
+				wilson.worldHeight = 3 * Math.pow(2, zoomLevel);
 			}
 			
 			else
 			{
-				wilson.change_canvas_size(Math.floor(resolution * aspect_ratio), resolution);
+				wilson.changeCanvasSize(Math.floor(resolution * aspectRatio), resolution);
 				
-				wilson.world_width = 3 * Math.pow(2, zoom_level);
-				wilson.world_height = 3 * Math.pow(2, zoom_level) / aspect_ratio;
+				wilson.worldWidth = 3 * Math.pow(2, zoomLevel);
+				wilson.worldHeight = 3 * Math.pow(2, zoomLevel) / aspectRatio;
 			}
 		}
 		
 		else
 		{
-			aspect_ratio = 1;
+			aspectRatio = 1;
 			
-			wilson.change_canvas_size(resolution, resolution);
+			wilson.changeCanvasSize(resolution, resolution);
 			
-			wilson.world_width = 3 * Math.pow(2, zoom_level);
-			wilson.world_height = 3 * Math.pow(2, zoom_level);
+			wilson.worldWidth = 3 * Math.pow(2, zoomLevel);
+			wilson.worldHeight = 3 * Math.pow(2, zoomLevel);
 		}
 		
-		window.requestAnimationFrame(draw_newtons_method);
+		window.requestAnimationFrame(drawNewtonsMethod);
 	}
 
-	window.addEventListener("resize", change_aspect_ratio);
-	Page.temporary_handlers["resize"].push(change_aspect_ratio);
+	window.addEventListener("resize", changeAspectRatio);
+	Page.temporaryHandlers["resize"].push(changeAspectRatio);
 	
 	
 	
-	function hex_to_rgb(hex)
+	function hexToRgb(hex)
 	{
 		let result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
 		
@@ -931,14 +931,14 @@
 		} : null;
 	}
 	
-	function component_to_hex(c)
+	function componentToHex(c)
 	{
 		let hex = c.toString(16);
 		return hex.length == 1 ? "0" + hex : hex;
 	}
 
-	function rgb_to_hex(r, g, b)
+	function rgbToHex(r, g, b)
 	{
-		return "#" + component_to_hex(r) + component_to_hex(g) + component_to_hex(b);
+		return "#" + componentToHex(r) + componentToHex(g) + componentToHex(b);
 	}
-}()
+	}()
