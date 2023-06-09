@@ -2,10 +2,10 @@
 {
 	"use strict";
 	
-	Site.load_style("/style/lapsa.min.css");
-	await Site.load_script("/scripts/lapsa.min.js");
+	Site.loadStyle("/style/lapsa.min.css");
+	await Site.loadScript("/scripts/lapsa.min.js");
 	
-	await Site.load_applet("plane-partitions");
+	await Site.loadApplet("plane-partitions");
 	
 	const applet = new PlanePartitions(Page.element.querySelector("#output-canvas"), Page.element.querySelector("#numbers-canvas"), false);
 	
@@ -13,7 +13,7 @@
 	
 	document.body.appendChild(Page.element.querySelector("#lapsa-slide-container"));
 	
-	const canvas_bundle = document.body.querySelector("#canvas-bundle");
+	const canvasBundle = document.body.querySelector("#canvas-bundle");
 	
 	document.body.querySelectorAll(".wilson-draggables-container").forEach(element => element.classList.add("lapsa-interactable"));
 	
@@ -31,21 +31,21 @@
 				{
 					return new Promise(async (resolve, reject) =>
 					{
-						if (slide.contains(canvas_bundle))
+						if (slide.contains(canvasBundle))
 						{
 							resolve();
 							return;
 						}
 						
-						await Page.Animate.change_opacity(canvas_bundle, 0, duration / 2);
+						await Page.Animate.changeOpacity(canvasBundle, 0, duration / 2);
 						
-						applet.animation_time = 0;
+						applet.animationTime = 0;
 						
-						slide.appendChild(canvas_bundle);
+						slide.appendChild(canvasBundle);
 						
-						applet.wilson_numbers.draggables.on_resize();
+						applet.wilsonNumbers.draggables.onResize();
 						
-						const plane_partition = [
+						const planePartition = [
 							[6, 5, 4, 3, 2, 1],
 							[5, 4, 3, 2, 1, 0],
 							[4, 3, 2, 1, 0, 0],
@@ -56,14 +56,14 @@
 						
 						for (let i = applet.arrays.length - 1; i >= 0; i--)
 						{
-							await applet.remove_array(0);
+							await applet.removeArray(0);
 						}
 						
-						await applet.add_new_array(0, plane_partition, false, false);
+						await applet.addNewArray(0, planePartition, false, false);
 						
-						if (!applet.in_exact_hex_view)
+						if (!applet.inExactHexView)
 						{
-							await applet.show_hex_view();
+							await applet.showHexView();
 						}
 						
 						
@@ -76,14 +76,14 @@
 							{
 								for (let k = 0; k < 6 - i; k++)
 								{
-									applet.color_cubes(applet.arrays[0], [[i - j, j, k]], ((hue + 2.5*(5 - i - k)) % 21) / 21 * 6/7);
+									applet.colorCubes(applet.arrays[0], [[i - j, j, k]], ((hue + 2.5*(5 - i - k)) % 21) / 21 * 6/7);
 								}
 								
 								hue++;
 							}
 						}
 						
-						await Page.Animate.change_opacity(canvas_bundle, 1, duration / 2);
+						await Page.Animate.changeOpacity(canvasBundle, 1, duration / 2);
 						
 						resolve();
 					});
@@ -98,21 +98,21 @@
 				{
 					return new Promise(async (resolve, reject) =>
 					{
-						if (slide.contains(canvas_bundle))
+						if (slide.contains(canvasBundle))
 						{
 							resolve();
 							return;
 						}
 						
-						await Page.Animate.change_opacity(canvas_bundle, 0, duration / 2);
+						await Page.Animate.changeOpacity(canvasBundle, 0, duration / 2);
 						
-						applet.animation_time = 0;
+						applet.animationTime = 0;
 						
-						slide.appendChild(canvas_bundle);
+						slide.appendChild(canvasBundle);
 						
-						applet.wilson_numbers.draggables.on_resize();
+						applet.wilsonNumbers.draggables.onResize();
 						
-						const plane_partition = [
+						const planePartition = [
 							[1, 1, 1, 1, 1],
 							[1, 1, 1, 0, 0],
 							[1, 1, 0, 0, 0],
@@ -120,23 +120,23 @@
 							[1, 0, 0, 0, 0]
 						];
 						
-						applet.animation_time = duration;
+						applet.animationTime = duration;
 						
 						for (let i = applet.arrays.length - 1; i >= 0; i--)
 						{
-							await applet.remove_array(0);
+							await applet.removeArray(0);
 						}
 						
-						await applet.add_new_array(0, plane_partition, false, false);
+						await applet.addNewArray(0, planePartition, false, false);
 						
-						await applet.hide_floor();
+						await applet.hideFloor();
 						
-						if (!applet.in_2d_view)
+						if (!applet.in2dView)
 						{
-							await applet.show_2d_view();
+							await applet.show2dView();
 						}
 						
-						await Page.Animate.change_opacity(canvas_bundle, 1, duration / 2);
+						await Page.Animate.changeOpacity(canvasBundle, 1, duration / 2);
 						
 						resolve();
 					});
@@ -151,21 +151,21 @@
 				{
 					return new Promise(async (resolve, reject) =>
 					{
-						if (slide.contains(canvas_bundle))
+						if (slide.contains(canvasBundle))
 						{
 							resolve();
 							return;
 						}
 						
-						await Page.Animate.change_opacity(canvas_bundle, 0, duration / 2);
+						await Page.Animate.changeOpacity(canvasBundle, 0, duration / 2);
 						
-						applet.animation_time = 0;
+						applet.animationTime = 0;
 						
-						slide.appendChild(canvas_bundle);
+						slide.appendChild(canvasBundle);
 						
-						applet.wilson_numbers.draggables.on_resize();
+						applet.wilsonNumbers.draggables.onResize();
 						
-						const plane_partition = [
+						const planePartition = [
 							[6, 4, 3, 1, 1],
 							[4, 3, 2, 0, 0],
 							[3, 2, 0, 0, 0],
@@ -175,17 +175,17 @@
 						
 						for (let i = applet.arrays.length - 1; i >= 0; i--)
 						{
-							await applet.remove_array(0);
+							await applet.removeArray(0);
 						}
 						
-						await applet.add_new_array(0, plane_partition, false, false);
+						await applet.addNewArray(0, planePartition, false, false);
 						
-						if (!applet.in_2d_view)
+						if (!applet.in2dView)
 						{
-							await applet.show_2d_view();
+							await applet.show2dView();
 						}
 						
-						await Page.Animate.change_opacity(canvas_bundle, 1, duration / 2);
+						await Page.Animate.changeOpacity(canvasBundle, 1, duration / 2);
 						
 						resolve();
 					});
@@ -197,16 +197,16 @@
 				{
 					return new Promise(async (resolve, reject) =>
 					{
-						applet.animation_time = duration;
+						applet.animationTime = duration;
 						
 						if (forward)
 						{
-							await applet.show_hex_view();
+							await applet.showHexView();
 						}
 						
 						else
 						{
-							await applet.show_2d_view();
+							await applet.show2dView();
 						}
 						
 						resolve();
@@ -217,16 +217,16 @@
 				{
 					return new Promise(async (resolve, reject) =>
 					{
-						applet.animation_time = duration;
+						applet.animationTime = duration;
 						
 						if (forward)
 						{
-							await applet.show_2d_view();
+							await applet.show2dView();
 						}
 						
 						else
 						{
-							await applet.show_hex_view();
+							await applet.showHexView();
 						}
 						
 						resolve();
@@ -242,11 +242,11 @@
 				{
 					return new Promise(async (resolve, reject) =>
 					{
-						await Page.Animate.change_opacity(canvas_bundle, 0, duration / 2);
+						await Page.Animate.changeOpacity(canvasBundle, 0, duration / 2);
 						
-						slide.appendChild(canvas_bundle);
+						slide.appendChild(canvasBundle);
 						
-						applet.wilson_numbers.draggables.on_resize();
+						applet.wilsonNumbers.draggables.onResize();
 						
 						const rpp =
 						[
@@ -256,22 +256,22 @@
 							[2, 3, 0, 0],
 						];
 						
-						applet.animation_time = 0;
+						applet.animationTime = 0;
 						
 						for (let i = applet.arrays.length - 1; i >= 0; i--)
 						{
-							await applet.remove_array(0);
+							await applet.removeArray(0);
 						}
 						
 						
 						
-						const array = await applet.add_new_array(0, rpp, false, false);
+						const array = await applet.addNewArray(0, rpp, false, false);
 						
-						applet.remove_outside_floor(array);
+						applet.removeOutsideFloor(array);
 						
-						if (!applet.in_2d_view)
+						if (!applet.in2dView)
 						{
-							await applet.show_2d_view();
+							await applet.show2dView();
 						}
 						
 						
@@ -281,7 +281,7 @@
 							await options.builds.hooks[0](slide, true, 0);
 						}
 						
-						await Page.Animate.change_opacity(canvas_bundle, 1, duration / 2);
+						await Page.Animate.changeOpacity(canvasBundle, 1, duration / 2);
 						
 						resolve();
 					});
@@ -293,18 +293,18 @@
 				{
 					return new Promise(async (resolve, reject) =>
 					{
-						applet.animation_time = duration;
+						applet.animationTime = duration;
 						
 						const cubes = [[3, 0, 1], [2, 0, 0], [1, 0, 0], [1, 1, 1], [1, 2, 2]];
 						
 						if (forward)
 						{
-							await applet.color_cubes(applet.arrays[0], cubes, .75);
+							await applet.colorCubes(applet.arrays[0], cubes, .75);
 						}
 						
 						else
 						{
-							await applet.uncolor_cubes(applet.arrays[0], cubes);
+							await applet.uncolorCubes(applet.arrays[0], cubes);
 						}
 						
 						resolve();
@@ -320,11 +320,11 @@
 				{
 					return new Promise(async (resolve, reject) =>
 					{
-						await Page.Animate.change_opacity(canvas_bundle, 0, duration / 2);
+						await Page.Animate.changeOpacity(canvasBundle, 0, duration / 2);
 						
-						slide.appendChild(canvas_bundle);
+						slide.appendChild(canvasBundle);
 						
-						applet.wilson_numbers.draggables.on_resize();
+						applet.wilsonNumbers.draggables.onResize();
 						
 						const rpp =
 						[
@@ -335,18 +335,18 @@
 							[5, 6, 8, 8, 9]	
 						];
 						
-						applet.animation_time = 0;
+						applet.animationTime = 0;
 						
 						for (let i = applet.arrays.length - 1; i >= 0; i--)
 						{
-							await applet.remove_array(0);
+							await applet.removeArray(0);
 						}
 						
-						await applet.add_new_array(0, rpp, false, false);
+						await applet.addNewArray(0, rpp, false, false);
 						
-						if (!applet.in_2d_view)
+						if (!applet.in2dView)
 						{
-							await applet.show_2d_view();
+							await applet.show2dView();
 						}
 						
 						
@@ -358,7 +358,7 @@
 							await options.builds["zigzag-paths"][2](slide, true, 0);
 						}
 						
-						await Page.Animate.change_opacity(canvas_bundle, 1, duration / 2);
+						await Page.Animate.changeOpacity(canvasBundle, 1, duration / 2);
 						
 						resolve();
 					});
@@ -371,7 +371,7 @@
 				{
 					return new Promise(async (resolve, reject) =>
 					{
-						applet.animation_time = duration;
+						applet.animationTime = duration;
 						
 						const cubes = [[4, 0, 4], [4, 1, 5], [3, 1, 5], [3, 2, 6], [3, 3, 7], [2, 3, 7], [2, 4, 8], [1, 4, 8]];
 						
@@ -379,13 +379,13 @@
 						{
 							for (let i = 0; i < cubes.length; i++)
 							{
-								setTimeout(() => applet.color_cubes(applet.arrays[0], [cubes[i]], 0), i * applet.animation_time / 2);
+								setTimeout(() => applet.colorCubes(applet.arrays[0], [cubes[i]], 0), i * applet.animationTime / 2);
 							}
 						}
 						
 						else
 						{
-							await applet.uncolor_cubes(applet.arrays[0], cubes);
+							await applet.uncolorCubes(applet.arrays[0], cubes);
 						}
 						
 						resolve();
@@ -397,18 +397,18 @@
 				{
 					return new Promise(async (resolve, reject) =>
 					{
-						applet.animation_time = duration;
+						applet.animationTime = duration;
 						
 						const cubes = [[1, 0, 0]];
 						
 						if (forward)
 						{
-							await applet.color_cubes(applet.arrays[0], cubes, .6);
+							await applet.colorCubes(applet.arrays[0], cubes, .6);
 						}
 						
 						else
 						{
-							await applet.uncolor_cubes(applet.arrays[0], cubes);
+							await applet.uncolorCubes(applet.arrays[0], cubes);
 						}
 						
 						resolve();
@@ -420,7 +420,7 @@
 				{
 					return new Promise(async (resolve, reject) =>
 					{
-						applet.animation_time = duration;
+						applet.animationTime = duration;
 						
 						const cubes = [[4, 0, 4], [4, 1, 5], [3, 1, 5], [3, 2, 6], [3, 3, 7], [2, 3, 7], [2, 4, 8], [1, 4, 8]];
 						
@@ -428,12 +428,12 @@
 						
 						if (forward)
 						{
-							await applet.move_cubes(applet.arrays[0], cubes, applet.arrays[0], targets);
+							await applet.moveCubes(applet.arrays[0], cubes, applet.arrays[0], targets);
 						}
 						
 						else
 						{
-							await applet.move_cubes(applet.arrays[0], targets, applet.arrays[0], cubes);
+							await applet.moveCubes(applet.arrays[0], targets, applet.arrays[0], cubes);
 						}
 						
 						resolve();
@@ -449,11 +449,11 @@
 				{
 					return new Promise(async (resolve, reject) =>
 					{
-						await Page.Animate.change_opacity(canvas_bundle, 0, duration / 2);
+						await Page.Animate.changeOpacity(canvasBundle, 0, duration / 2);
 						
-						slide.appendChild(canvas_bundle);
+						slide.appendChild(canvasBundle);
 						
-						applet.wilson_numbers.draggables.on_resize();
+						applet.wilsonNumbers.draggables.onResize();
 						
 						const rpp =
 						[
@@ -463,21 +463,21 @@
 							[1, 1, 0, 0]
 						];
 						
-						applet.animation_time = 0;
+						applet.animationTime = 0;
 						
 						for (let i = applet.arrays.length - 1; i >= 0; i--)
 						{
-							await applet.remove_array(0);
+							await applet.removeArray(0);
 						}
 						
-						await applet.add_new_array(0, rpp, false, false);
+						await applet.addNewArray(0, rpp, false, false);
 						
-						if (!applet.in_exact_hex_view)
+						if (!applet.inExactHexView)
 						{
-							await applet.show_hex_view();
+							await applet.showHexView();
 						}
 						
-						await Page.Animate.change_opacity(canvas_bundle, 1, duration / 2);
+						await Page.Animate.changeOpacity(canvasBundle, 1, duration / 2);
 						
 						resolve();
 					});
@@ -491,16 +491,16 @@
 					{
 						if (forward)
 						{
-							applet.animation_time = duration;
+							applet.animationTime = duration;
 							
-							await applet.run_algorithm("hillman_grassl", 0);
+							await applet.runAlgorithm("hillmanGrassl", 0);
 						}
 						
 						else
 						{
-							applet.animation_time = duration / 6;
+							applet.animationTime = duration / 6;
 							
-							await applet.run_algorithm("hillman_grassl_inverse", 0);
+							await applet.runAlgorithm("hillmanGrasslInverse", 0);
 						}
 						
 						resolve();
@@ -511,16 +511,16 @@
 				{
 					return new Promise(async (resolve, reject) =>
 					{
-						applet.animation_time = duration;
+						applet.animationTime = duration;
 						
 						if (forward)
 						{
-							await applet.show_2d_view();
+							await applet.show2dView();
 						}
 						
 						else
 						{
-							await applet.show_hex_view();
+							await applet.showHexView();
 						}
 						
 						resolve();
@@ -531,16 +531,16 @@
 				{
 					return new Promise(async (resolve, reject) =>
 					{
-						applet.animation_time = duration;
+						applet.animationTime = duration;
 						
 						if (forward)
 						{
-							await applet.show_hex_view();
+							await applet.showHexView();
 						}
 						
 						else
 						{
-							await applet.show_2d_view();
+							await applet.show2dView();
 						}
 						
 						resolve();
@@ -553,16 +553,16 @@
 					{
 						if (forward)
 						{
-							applet.animation_time = duration;
+							applet.animationTime = duration;
 							
-							await applet.run_algorithm("hillman_grassl_inverse", 0);
+							await applet.runAlgorithm("hillmanGrasslInverse", 0);
 						}
 						
 						else
 						{
-							applet.animation_time = duration / 3;
+							applet.animationTime = duration / 3;
 							
-							await applet.run_algorithm("hillman_grassl", 0);
+							await applet.runAlgorithm("hillmanGrassl", 0);
 						}
 						
 						resolve();
@@ -578,11 +578,11 @@
 				{
 					return new Promise(async (resolve, reject) =>
 					{
-						await Page.Animate.change_opacity(canvas_bundle, 0, duration / 2);
+						await Page.Animate.changeOpacity(canvasBundle, 0, duration / 2);
 						
-						slide.appendChild(canvas_bundle);
+						slide.appendChild(canvasBundle);
 						
-						applet.wilson_numbers.draggables.on_resize();
+						applet.wilsonNumbers.draggables.onResize();
 						
 						const rpp =
 						[
@@ -592,21 +592,21 @@
 							[1, 1, 0, 0]
 						];
 						
-						applet.animation_time = 0;
+						applet.animationTime = 0;
 						
 						for (let i = applet.arrays.length - 1; i >= 0; i--)
 						{
-							await applet.remove_array(0);
+							await applet.removeArray(0);
 						}
 						
-						await applet.add_new_array(0, rpp, false, false);
+						await applet.addNewArray(0, rpp, false, false);
 						
-						if (!applet.in_exact_hex_view)
+						if (!applet.inExactHexView)
 						{
-							await applet.show_hex_view();
+							await applet.showHexView();
 						}
 						
-						await Page.Animate.change_opacity(canvas_bundle, 1, duration / 2);
+						await Page.Animate.changeOpacity(canvasBundle, 1, duration / 2);
 						
 						resolve();
 					});
@@ -618,16 +618,16 @@
 				{
 					return new Promise(async (resolve, reject) =>
 					{
-						applet.animation_time = duration;
+						applet.animationTime = duration;
 						
 						if (forward)
 						{
-							await applet.show_2d_view();
+							await applet.show2dView();
 						}
 						
 						else
 						{
-							await applet.show_hex_view();
+							await applet.showHexView();
 						}
 						
 						resolve();
@@ -640,16 +640,16 @@
 					{
 						if (forward)
 						{
-							applet.animation_time = duration;
+							applet.animationTime = duration;
 							
-							await applet.run_algorithm("pak", 0);
+							await applet.runAlgorithm("pak", 0);
 						}
 						
 						else
 						{
-							applet.animation_time = duration / 6;
+							applet.animationTime = duration / 6;
 							
-							await applet.run_algorithm("pak_inverse", 0);
+							await applet.runAlgorithm("pakInverse", 0);
 						}
 						
 						resolve();
@@ -662,16 +662,16 @@
 					{
 						if (forward)
 						{
-							applet.animation_time = duration;
+							applet.animationTime = duration;
 							
-							await applet.run_algorithm("pak_inverse", 0);
+							await applet.runAlgorithm("pakInverse", 0);
 						}
 						
 						else
 						{
-							applet.animation_time = duration / 3;
+							applet.animationTime = duration / 3;
 							
-							await applet.run_algorithm("pak", 0);
+							await applet.runAlgorithm("pak", 0);
 						}
 						
 						resolve();
@@ -682,16 +682,16 @@
 				{
 					return new Promise(async (resolve, reject) =>
 					{
-						applet.animation_time = duration;
+						applet.animationTime = duration;
 						
 						if (forward)
 						{
-							await applet.show_hex_view();
+							await applet.showHexView();
 						}
 						
 						else
 						{
-							await applet.show_2d_view();
+							await applet.show2dView();
 						}
 						
 						resolve();
@@ -707,15 +707,15 @@
 				{
 					return new Promise(async (resolve, reject) =>
 					{
-						await Page.Animate.change_opacity(canvas_bundle, 0, duration / 2);
+						await Page.Animate.changeOpacity(canvasBundle, 0, duration / 2);
 						
-						applet.animation_time = 0;
+						applet.animationTime = 0;
 						
-						slide.appendChild(canvas_bundle);
+						slide.appendChild(canvasBundle);
 						
-						applet.wilson_numbers.draggables.on_resize();
+						applet.wilsonNumbers.draggables.onResize();
 						
-						const plane_partition = [
+						const planePartition = [
 							[1, 1, 1, 1, 1, 1, 1, 1],
 							[1, 1, 1, 1, 1, 1, 1, 1],
 							[1, 1, 1, 1, 1, 1, 1, 1],
@@ -726,20 +726,20 @@
 							[1, 1, 0, 0, 0, 0, 0, 0]
 						];
 						
-						applet.animation_time = duration;
+						applet.animationTime = duration;
 						
 						for (let i = applet.arrays.length - 1; i >= 0; i--)
 						{
-							await applet.remove_array(0);
+							await applet.removeArray(0);
 						}
 						
-						await applet.add_new_array(0, plane_partition, false, false);
+						await applet.addNewArray(0, planePartition, false, false);
 						
-						await applet.hide_floor();
+						await applet.hideFloor();
 						
-						if (!applet.in_2d_view)
+						if (!applet.in2dView)
 						{
-							await applet.show_2d_view();
+							await applet.show2dView();
 						}
 						
 						if (!forward)
@@ -750,7 +750,7 @@
 							await options.builds["regions-example"][3](slide, true, 0);
 						}
 						
-						await Page.Animate.change_opacity(canvas_bundle, 1, duration / 2);
+						await Page.Animate.changeOpacity(canvasBundle, 1, duration / 2);
 						
 						resolve();
 					});
@@ -761,18 +761,18 @@
 				{
 					return new Promise(async (resolve, reject) =>
 					{
-						applet.animation_time = duration;
+						applet.animationTime = duration;
 						
 						const cubes = [[0, 5, 0], [1, 6, 0], [2, 7, 0], [0, 2, 0], [1, 3, 0], [2, 4, 0], [3, 5, 0], [1, 0, 0], [2, 1, 0], [3, 2, 0], [4, 3, 0], [5, 4, 0], [3, 0, 0], [4, 1, 0], [5, 2, 0], [6, 3, 0], [6, 0, 0], [7, 1, 0]];
 						
 						if (forward)
 						{
-							await applet.color_cubes(applet.arrays[0], cubes, .6);
+							await applet.colorCubes(applet.arrays[0], cubes, .6);
 						}
 						
 						else
 						{
-							await applet.uncolor_cubes(applet.arrays[0], cubes);
+							await applet.uncolorCubes(applet.arrays[0], cubes);
 						}
 						
 						resolve();
@@ -784,18 +784,18 @@
 				{
 					return new Promise(async (resolve, reject) =>
 					{
-						applet.animation_time = duration;
+						applet.animationTime = duration;
 						
 						const cubes = [[0, 3, 0], [1, 4, 0], [2, 5, 0], [0, 1, 0], [1, 2, 0], [2, 3, 0], [3, 4, 0], [2, 0, 0], [3, 1, 0], [4, 2, 0], [5, 3, 0], [5, 0, 0], [6, 1, 0]];
 						
 						if (forward)
 						{
-							await applet.color_cubes(applet.arrays[0], cubes, .16);
+							await applet.colorCubes(applet.arrays[0], cubes, .16);
 						}
 						
 						else
 						{
-							await applet.uncolor_cubes(applet.arrays[0], cubes);
+							await applet.uncolorCubes(applet.arrays[0], cubes);
 						}
 						
 						resolve();
@@ -807,18 +807,18 @@
 				{
 					return new Promise(async (resolve, reject) =>
 					{
-						applet.animation_time = duration;
+						applet.animationTime = duration;
 						
 						const cubes = [[0, 4, 0], [1, 5, 0], [2, 6, 0], [4, 0, 0], [5, 1, 0], [6, 2, 0], [7, 0, 0]];
 						
 						if (forward)
 						{
-							await applet.color_cubes(applet.arrays[0], cubes, 0);
+							await applet.colorCubes(applet.arrays[0], cubes, 0);
 						}
 						
 						else
 						{
-							await applet.uncolor_cubes(applet.arrays[0], cubes);
+							await applet.uncolorCubes(applet.arrays[0], cubes);
 						}
 						
 						resolve();
@@ -830,18 +830,18 @@
 				{
 					return new Promise(async (resolve, reject) =>
 					{
-						applet.animation_time = duration;
+						applet.animationTime = duration;
 						
 						const cubes = [[0, 7, 0], [0, 6, 0], [1, 7, 0], [0, 0, 0], [1, 1, 0], [2, 2, 0], [3, 3, 0], [4, 4, 0]];
 						
 						if (forward)
 						{
-							await applet.color_cubes(applet.arrays[0], cubes, .33);
+							await applet.colorCubes(applet.arrays[0], cubes, .33);
 						}
 						
 						else
 						{
-							await applet.uncolor_cubes(applet.arrays[0], cubes);
+							await applet.uncolorCubes(applet.arrays[0], cubes);
 						}
 						
 						resolve();
@@ -857,11 +857,11 @@
 				{
 					return new Promise(async (resolve, reject) =>
 					{
-						await Page.Animate.change_opacity(canvas_bundle, 0, duration / 2);
+						await Page.Animate.changeOpacity(canvasBundle, 0, duration / 2);
 						
-						slide.appendChild(canvas_bundle);
+						slide.appendChild(canvasBundle);
 						
-						applet.wilson_numbers.draggables.on_resize();
+						applet.wilsonNumbers.draggables.onResize();
 						
 						const rpp =
 						[
@@ -871,21 +871,21 @@
 							[1, 1, 0, 0]
 						];
 						
-						applet.animation_time = 0;
+						applet.animationTime = 0;
 						
 						for (let i = applet.arrays.length - 1; i >= 0; i--)
 						{
-							await applet.remove_array(0);
+							await applet.removeArray(0);
 						}
 						
-						await applet.add_new_array(0, rpp, false, false);
+						await applet.addNewArray(0, rpp, false, false);
 						
-						if (!applet.in_exact_hex_view)
+						if (!applet.inExactHexView)
 						{
-							await applet.show_hex_view();
+							await applet.showHexView();
 						}
 						
-						await Page.Animate.change_opacity(canvas_bundle, 1, duration / 2);
+						await Page.Animate.changeOpacity(canvasBundle, 1, duration / 2);
 						
 						resolve();
 					});
@@ -899,16 +899,16 @@
 					{
 						if (forward)
 						{
-							applet.animation_time = duration;
+							applet.animationTime = duration;
 							
-							await applet.run_algorithm("sulzgruber", 0);
+							await applet.runAlgorithm("sulzgruber", 0);
 						}
 						
 						else
 						{
-							applet.animation_time = duration / 6;
+							applet.animationTime = duration / 6;
 							
-							await applet.run_algorithm("sulzgruber_inverse", 0);
+							await applet.runAlgorithm("sulzgruberInverse", 0);
 						}
 						
 						resolve();
@@ -919,16 +919,16 @@
 				{
 					return new Promise(async (resolve, reject) =>
 					{
-						applet.animation_time = duration;
+						applet.animationTime = duration;
 						
 						if (forward)
 						{
-							await applet.show_2d_view();
+							await applet.show2dView();
 						}
 						
 						else
 						{
-							await applet.show_hex_view();
+							await applet.showHexView();
 						}
 						
 						resolve();
@@ -939,16 +939,16 @@
 				{
 					return new Promise(async (resolve, reject) =>
 					{
-						applet.animation_time = duration;
+						applet.animationTime = duration;
 						
 						if (forward)
 						{
-							await applet.show_hex_view();
+							await applet.showHexView();
 						}
 						
 						else
 						{
-							await applet.show_2d_view();
+							await applet.show2dView();
 						}
 						
 						resolve();
@@ -961,16 +961,16 @@
 					{
 						if (forward)
 						{
-							applet.animation_time = duration;
+							applet.animationTime = duration;
 							
-							await applet.run_algorithm("sulzgruber_inverse", 0);
+							await applet.runAlgorithm("sulzgruberInverse", 0);
 						}
 						
 						else
 						{
-							applet.animation_time = duration / 3;
+							applet.animationTime = duration / 3;
 							
-							await applet.run_algorithm("sulzgruber", 0);
+							await applet.runAlgorithm("sulzgruber", 0);
 						}
 						
 						resolve();
@@ -986,11 +986,11 @@
 				{
 					return new Promise(async (resolve, reject) =>
 					{
-						await Page.Animate.change_opacity(canvas_bundle, 0, duration / 2);
+						await Page.Animate.changeOpacity(canvasBundle, 0, duration / 2);
 						
-						slide.appendChild(canvas_bundle);
+						slide.appendChild(canvasBundle);
 						
-						applet.wilson_numbers.draggables.on_resize();
+						applet.wilsonNumbers.draggables.onResize();
 						
 						const rpp =
 						[
@@ -999,27 +999,27 @@
 							[4, 1, 1]
 						];
 						
-						const rpp_2 =
+						const rpp2 =
 						[
 							[4, 4, 4],
 							[4, 3, 2],
 							[4, 1, 1]
 						];
 						
-						applet.animation_time = 0;
+						applet.animationTime = 0;
 						
 						for (let i = applet.arrays.length - 1; i >= 0; i--)
 						{
-							await applet.remove_array(0);
+							await applet.removeArray(0);
 						}
 						
-						await applet.add_new_array(0, rpp, false, false);
+						await applet.addNewArray(0, rpp, false, false);
 						
-						await applet.add_new_array(1, rpp_2, false, false);
+						await applet.addNewArray(1, rpp2, false, false);
 						
-						if (!applet.in_exact_hex_view)
+						if (!applet.inExactHexView)
 						{
-							await applet.show_hex_view();
+							await applet.showHexView();
 						}
 						
 						if (!forward)
@@ -1031,7 +1031,7 @@
 							await options.builds["ps-rsk"][5](slide, true, 0);
 						}
 						
-						await Page.Animate.change_opacity(canvas_bundle, 1, duration / 2);
+						await Page.Animate.changeOpacity(canvasBundle, 1, duration / 2);
 						
 						resolve();
 					});
@@ -1045,22 +1045,22 @@
 					{
 						if (forward)
 						{
-							applet.animation_time = duration;
+							applet.animationTime = duration;
 							
-							await applet.show_hex_view();
+							await applet.showHexView();
 							
-							await applet.run_algorithm("sulzgruber", 1);
+							await applet.runAlgorithm("sulzgruber", 1);
 							
-							await applet.show_2d_view();
+							await applet.show2dView();
 						}
 						
 						else
 						{
-							applet.animation_time = duration / 3;
+							applet.animationTime = duration / 3;
 							
-							await applet.show_hex_view();
+							await applet.showHexView();
 							
-							await applet.run_algorithm("sulzgruber_inverse", 1);
+							await applet.runAlgorithm("sulzgruberInverse", 1);
 						}
 						
 						resolve();
@@ -1071,11 +1071,11 @@
 				{
 					return new Promise(async (resolve, reject) =>
 					{
-						applet.animation_time = duration;
+						applet.animationTime = duration;
 						
 						if (forward)
 						{
-							await applet.remove_array(1);
+							await applet.removeArray(1);
 							
 							const tableau =
 							[
@@ -1084,12 +1084,12 @@
 								[3, 0, 0]
 							];
 							
-							await applet.add_new_array(1, tableau, false, false);
+							await applet.addNewArray(1, tableau, false, false);
 						}
 						
 						else
 						{
-							await applet.remove_array(1);
+							await applet.removeArray(1);
 							
 							const tableau =
 							[
@@ -1098,7 +1098,7 @@
 								[2, 1, 1]
 							];
 							
-							await applet.add_new_array(1, tableau, false, false);
+							await applet.addNewArray(1, tableau, false, false);
 						}
 						
 						resolve();
@@ -1109,22 +1109,22 @@
 				{
 					return new Promise(async (resolve, reject) =>
 					{
-						applet.animation_time = duration;
+						applet.animationTime = duration;
 						
 						if (forward)
 						{
-							await applet.run_algorithm("rsk_inverse", 1);
+							await applet.runAlgorithm("rskInverse", 1);
 							
-							const cubes_1 = [[0, 0, 0], [0, 1, 0], [0, 2, 0], [0, 3, 0], [1, 0, 1], [1, 1, 1], [1, 2, 2], [2, 0, 2]];
-							const cubes_2 = [[0, 0, 0], [0, 1, 0], [0, 2, 0], [0, 3, 0], [1, 0, 1], [1, 1, 2], [1, 2, 2], [2, 0, 2]];
+							const cubes1 = [[0, 0, 0], [0, 1, 0], [0, 2, 0], [0, 3, 0], [1, 0, 1], [1, 1, 1], [1, 2, 2], [2, 0, 2]];
+							const cubes2 = [[0, 0, 0], [0, 1, 0], [0, 2, 0], [0, 3, 0], [1, 0, 1], [1, 1, 2], [1, 2, 2], [2, 0, 2]];
 							
-							await applet.uncolor_cubes(applet.arrays[1], cubes_1);
-							await applet.uncolor_cubes(applet.arrays[2], cubes_2);
+							await applet.uncolorCubes(applet.arrays[1], cubes1);
+							await applet.uncolorCubes(applet.arrays[2], cubes2);
 						}
 						
 						else
 						{
-							await applet.run_algorithm("rsk", 1);
+							await applet.runAlgorithm("rsk", 1);
 						}
 						
 						resolve();
@@ -1135,21 +1135,21 @@
 				{
 					return new Promise(async (resolve, reject) =>
 					{
-						applet.animation_time = duration;
+						applet.animationTime = duration;
 						
-						const cubes_0 = [[0, 1, 3], [1, 2, 1]];
-						const cubes_1 = [[0, 0, 0], [0, 1, 0], [0, 2, 0], [0, 3, 0], [1, 0, 1], [1, 1, 1]];
+						const cubes0 = [[0, 1, 3], [1, 2, 1]];
+						const cubes1 = [[0, 0, 0], [0, 1, 0], [0, 2, 0], [0, 3, 0], [1, 0, 1], [1, 1, 1]];
 						
 						if (forward)
 						{
-							await applet.color_cubes(applet.arrays[0], cubes_0, 0);
-							await applet.color_cubes(applet.arrays[1], cubes_1, 0);
+							await applet.colorCubes(applet.arrays[0], cubes0, 0);
+							await applet.colorCubes(applet.arrays[1], cubes1, 0);
 						}
 						
 						else
 						{
-							await applet.uncolor_cubes(applet.arrays[0], cubes_0);
-							await applet.uncolor_cubes(applet.arrays[1], cubes_1);
+							await applet.uncolorCubes(applet.arrays[0], cubes0);
+							await applet.uncolorCubes(applet.arrays[1], cubes1);
 						}
 						
 						resolve();
@@ -1160,21 +1160,21 @@
 				{
 					return new Promise(async (resolve, reject) =>
 					{
-						applet.animation_time = duration;
+						applet.animationTime = duration;
 						
-						const cubes_0 = [[2, 0, 3]];
-						const cubes_2 = [[0, 0, 0], [0, 1, 0], [0, 2, 0], [0, 3, 0]];
+						const cubes0 = [[2, 0, 3]];
+						const cubes2 = [[0, 0, 0], [0, 1, 0], [0, 2, 0], [0, 3, 0]];
 						
 						if (forward)
 						{
-							await applet.color_cubes(applet.arrays[0], cubes_0, .6);
-							await applet.color_cubes(applet.arrays[2], cubes_2, .6);
+							await applet.colorCubes(applet.arrays[0], cubes0, .6);
+							await applet.colorCubes(applet.arrays[2], cubes2, .6);
 						}
 						
 						else
 						{
-							await applet.uncolor_cubes(applet.arrays[0], cubes_0);
-							await applet.uncolor_cubes(applet.arrays[2], cubes_2);
+							await applet.uncolorCubes(applet.arrays[0], cubes0);
+							await applet.uncolorCubes(applet.arrays[2], cubes2);
 						}
 						
 						resolve();
@@ -1190,11 +1190,11 @@
 				{
 					return new Promise(async (resolve, reject) =>
 					{
-						await Page.Animate.change_opacity(canvas_bundle, 0, duration / 2);
+						await Page.Animate.changeOpacity(canvasBundle, 0, duration / 2);
 						
-						slide.appendChild(canvas_bundle);
+						slide.appendChild(canvasBundle);
 						
-						applet.wilson_numbers.draggables.on_resize();
+						applet.wilsonNumbers.draggables.onResize();
 						
 						const rpp =
 						[
@@ -1203,21 +1203,21 @@
 							[7, 8, 9]
 						];
 						
-						applet.animation_time = 0;
+						applet.animationTime = 0;
 						
 						for (let i = applet.arrays.length - 1; i >= 0; i--)
 						{
-							await applet.remove_array(0);
+							await applet.removeArray(0);
 						}
 						
-						await applet.add_new_array(0, rpp, false, false);
+						await applet.addNewArray(0, rpp, false, false);
 						
-						if (!applet.in_2d_view)
+						if (!applet.in2dView)
 						{
-							await applet.show_2d_view();
+							await applet.show2dView();
 						}
 						
-						await Page.Animate.change_opacity(canvas_bundle, 1, duration / 2);
+						await Page.Animate.changeOpacity(canvasBundle, 1, duration / 2);
 						
 						resolve();
 					});
@@ -1232,11 +1232,11 @@
 				{
 					return new Promise(async (resolve, reject) =>
 					{
-						await Page.Animate.change_opacity(canvas_bundle, 0, duration / 2);
+						await Page.Animate.changeOpacity(canvasBundle, 0, duration / 2);
 						
-						slide.appendChild(canvas_bundle);
+						slide.appendChild(canvasBundle);
 						
-						applet.wilson_numbers.draggables.on_resize();
+						applet.wilsonNumbers.draggables.onResize();
 						
 						const rpp =
 						[
@@ -1245,21 +1245,21 @@
 							[0, 0, 1]
 						];
 						
-						applet.animation_time = 0;
+						applet.animationTime = 0;
 						
 						for (let i = applet.arrays.length - 1; i >= 0; i--)
 						{
-							await applet.remove_array(0);
+							await applet.removeArray(0);
 						}
 						
-						await applet.add_new_array(0, rpp, false, false);
+						await applet.addNewArray(0, rpp, false, false);
 						
-						if (!applet.in_2d_view)
+						if (!applet.in2dView)
 						{
-							await applet.show_2d_view();
+							await applet.show2dView();
 						}
 						
-						await Page.Animate.change_opacity(canvas_bundle, 1, duration / 2);
+						await Page.Animate.changeOpacity(canvasBundle, 1, duration / 2);
 						
 						resolve();
 					});
@@ -1274,11 +1274,11 @@
 				{
 					return new Promise(async (resolve, reject) =>
 					{
-						await Page.Animate.change_opacity(canvas_bundle, 0, duration / 2);
+						await Page.Animate.changeOpacity(canvasBundle, 0, duration / 2);
 						
-						slide.appendChild(canvas_bundle);
+						slide.appendChild(canvasBundle);
 						
-						applet.wilson_numbers.draggables.on_resize();
+						applet.wilsonNumbers.draggables.onResize();
 						
 						const rpp =
 						[
@@ -1287,21 +1287,21 @@
 							[0, 0, 1]
 						];
 						
-						applet.animation_time = 0;
+						applet.animationTime = 0;
 						
 						for (let i = applet.arrays.length - 1; i >= 0; i--)
 						{
-							await applet.remove_array(0);
+							await applet.removeArray(0);
 						}
 						
-						await applet.add_new_array(0, rpp, false, false);
+						await applet.addNewArray(0, rpp, false, false);
 						
-						if (!applet.in_2d_view)
+						if (!applet.in2dView)
 						{
-							await applet.show_2d_view();
+							await applet.show2dView();
 						}
 						
-						await Page.Animate.change_opacity(canvas_bundle, 1, duration / 2);
+						await Page.Animate.changeOpacity(canvasBundle, 1, duration / 2);
 						
 						resolve();
 					});
@@ -1316,11 +1316,11 @@
 				{
 					return new Promise(async (resolve, reject) =>
 					{
-						await Page.Animate.change_opacity(canvas_bundle, 0, duration / 2);
+						await Page.Animate.changeOpacity(canvasBundle, 0, duration / 2);
 						
-						slide.appendChild(canvas_bundle);
+						slide.appendChild(canvasBundle);
 						
-						applet.wilson_numbers.draggables.on_resize();
+						applet.wilsonNumbers.draggables.onResize();
 						
 						const rpp =
 						[
@@ -1329,21 +1329,21 @@
 							[2, 4, 5]
 						];
 						
-						applet.animation_time = 0;
+						applet.animationTime = 0;
 						
 						for (let i = applet.arrays.length - 1; i >= 0; i--)
 						{
-							await applet.remove_array(0);
+							await applet.removeArray(0);
 						}
 						
-						await applet.add_new_array(0, rpp, false, false);
+						await applet.addNewArray(0, rpp, false, false);
 						
-						if (!applet.in_2d_view)
+						if (!applet.in2dView)
 						{
-							await applet.show_2d_view();
+							await applet.show2dView();
 						}
 						
-						await Page.Animate.change_opacity(canvas_bundle, 1, duration / 2);
+						await Page.Animate.changeOpacity(canvasBundle, 1, duration / 2);
 						
 						resolve();
 					});
@@ -1358,11 +1358,11 @@
 				{
 					return new Promise(async (resolve, reject) =>
 					{
-						await Page.Animate.change_opacity(canvas_bundle, 0, duration / 2);
+						await Page.Animate.changeOpacity(canvasBundle, 0, duration / 2);
 						
-						slide.appendChild(canvas_bundle);
+						slide.appendChild(canvasBundle);
 						
-						applet.wilson_numbers.draggables.on_resize();
+						applet.wilsonNumbers.draggables.onResize();
 						
 						const app =
 						[
@@ -1373,21 +1373,21 @@
 							[4,        1,        1,        0, 0],
 						];
 						
-						applet.animation_time = 0;
+						applet.animationTime = 0;
 						
 						for (let i = applet.arrays.length - 1; i >= 0; i--)
 						{
-							await applet.remove_array(0);
+							await applet.removeArray(0);
 						}
 						
-						await applet.add_new_array(0, app, false, false);
+						await applet.addNewArray(0, app, false, false);
 						
-						if (!applet.in_2d_view)
+						if (!applet.in2dView)
 						{
-							await applet.show_2d_view();
+							await applet.show2dView();
 						}
 						
-						await Page.Animate.change_opacity(canvas_bundle, 1, duration / 2);
+						await Page.Animate.changeOpacity(canvasBundle, 1, duration / 2);
 						
 						resolve();
 					});
@@ -1396,11 +1396,11 @@
 		}
 	};
 	
-	await applet.load_promise;
+	await applet.loadPromise;
 	
 	const lapsa = new Lapsa(options);
 	
 	document.body.querySelector("#help-link").addEventListener("click", () => lapsa.jumpToSlide(0));
 	
 	Page.show();
-}()
+	}()

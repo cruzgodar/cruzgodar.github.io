@@ -2,17 +2,17 @@
 {
 &#9;renderer: "hybrid",
 &#9;
-&#9;canvas_width: 1000,
-&#9;canvas_height: 1000,
+&#9;canvasWidth: 1000,
+&#9;canvasHeight: 1000,
 &#9;
-&#9;world_width: 4,
-&#9;world_height: 4,
-&#9;world_center_x: 0,
-&#9;world_center_y: 0,
+&#9;worldWidth: 4,
+&#9;worldHeight: 4,
+&#9;worldCenterX: 0,
+&#9;worldCenterY: 0,
 &#9;
 &#9;
 &#9;
-&#9;use_draggables: true
+&#9;useDraggables: true
 };
 
 let wilson = new Wilson(document.querySelector("#output-canvas"), options);
@@ -22,25 +22,25 @@ let draggable = wilson.draggables.add(0, 1);
 {
 &#9;renderer: "hybrid",
 &#9;
-&#9;canvas_width: 1000,
-&#9;canvas_height: 1000,
+&#9;canvasWidth: 1000,
+&#9;canvasHeight: 1000,
 &#9;
-&#9;world_width: 4,
-&#9;world_height: 4,
-&#9;world_center_x: 0,
-&#9;world_center_y: 0,
+&#9;worldWidth: 4,
+&#9;worldHeight: 4,
+&#9;worldCenterX: 0,
+&#9;worldCenterY: 0,
 &#9;
 &#9;
 &#9;
-&#9;use_draggables: true,
+&#9;useDraggables: true,
 &#9;
-&#9;draggables_mousedown_callback: on_grab,
-&#9;draggables_mousemove_callback: on_drag,
-&#9;draggables_mouseup_callback: on_release,
+&#9;draggablesMousedownCallback: onGrab,
+&#9;draggablesMousemoveCallback: onDrag,
+&#9;draggablesMouseupCallback: onRelease,
 &#9;
-&#9;draggables_touchstart_callback: on_grab,
-&#9;draggables_touchmove_callback: on_drag,
-&#9;draggables_touchend_callback: on_release
+&#9;draggablesTouchstartCallback: onGrab,
+&#9;draggablesTouchmoveCallback: onDrag,
+&#9;draggablesTouchendCallback: onRelease
 };
 
 
@@ -51,91 +51,91 @@ let draggable = wilson.draggables.add(0, 1);
 
 
 
-let resolution_input_element = document.querySelector("#resolution-input");
+let resolutionInputElement = document.querySelector("#resolution-input");
 
-let large_resolution = 1000;
-let small_resolution = 200;
+let largeResolution = 1000;
+let smallResolution = 200;
 
-resolution_input_element.addEventListener("input", () =>
+resolutionInputElement.addEventListener("input", () =>
 {
-&#9;large_resolution = parseInt(resolution_input_element.value || 1000);
-&#9;small_resolution = Math.floor(large_resolution / 5);
+&#9;largeResolution = parseInt(resolutionInputElement.value || 1000);
+&#9;smallResolution = Math.floor(largeResolution / 5);
 });
 
 
 
-let download_button_element = document.querySelector("#download-button");
+let downloadButtonElement = document.querySelector("#download-button");
 
-download_button_element.addEventListener("click", () =>
+downloadButtonElement.addEventListener("click", () =>
 {
-&#9;wilson.download_frame("a-julia-set.png");
+&#9;wilson.downloadFrame("a-julia-set.png");
 });
-</code></pre><p class="body-text">Now that we&#x2019;re drawing frames so often, we need to be careful not to draw multiple within a single frame&#x2019;s time. This is why we introduced <code>window.requestAnimationFrame</code> in the previous part, but it&#x2019;s not quite enough on its own &mdash; instead, we&#x2019;ll make a new function <code>draw_julia_set</code> that only calls <code>wilson.render.draw_frame</code> if either some time has passed since the previous frame or the resolution has changed. Note that <code>window.requestAnimationFrame</code> automatically passes the current timestamp to its argument.</p><pre><code class="language-js">let a = 0;
+</code></pre><p class="body-text">Now that we&#x2019;re drawing frames so often, we need to be careful not to draw multiple within a single frame&#x2019;s time. This is why we introduced <code>window.requestAnimationFrame</code> in the previous part, but it&#x2019;s not quite enough on its own &mdash; instead, we&#x2019;ll make a new function <code>drawJuliaSet</code> that only calls <code>wilson.render.drawFrame</code> if either some time has passed since the previous frame or the resolution has changed. Note that <code>window.requestAnimationFrame</code> automatically passes the current timestamp to its argument.</p><pre><code class="language-js">let a = 0;
 let b = 1;
 
 let resolution = 200;
-let last_resolution = 0;
+let lastResolution = 0;
 
-let last_timestamp = -1;
+let lastTimestamp = -1;
 
 
 
-function draw_julia_set(timestamp)
+function drawJuliaSet(timestamp)
 {
-&#9;let time_elapsed = timestamp - last_timestamp;
+&#9;let timeElapsed = timestamp - lastTimestamp;
 &#9;
-&#9;last_timestamp = timestamp;
+&#9;lastTimestamp = timestamp;
 &#9;
 &#9;
 &#9;
-&#9;if (time_elapsed === 0 && last_resolution === resolution)
+&#9;if (timeElapsed === 0 && lastResolution === resolution)
 &#9;{
 &#9;&#9;return;
 &#9;}
 &#9;
-&#9;last_resolution = resolution;
+&#9;lastResolution = resolution;
 &#9;
 &#9;
 &#9;
-&#9;wilson.render.draw_frame(generate_julia_set(a, b, resolution));
+&#9;wilson.render.drawFrame(generateJuliaSet(a, b, resolution));
 }
 
 
 
 //Draw the initial frame.
-wilson.change_canvas_size(small_resolution, small_resolution);
-window.requestAnimationFrame(draw_julia_set);
+wilson.changeCanvasSize(smallResolution, smallResolution);
+window.requestAnimationFrame(drawJuliaSet);
 
 
 
-function on_grab(active_draggable, x, y, event)
+function onGrab(activeDraggable, x, y, event)
 {
-&#9;wilson.change_canvas_size(small_resolution, small_resolution);
+&#9;wilson.changeCanvasSize(smallResolution, smallResolution);
 &#9;
 &#9;a = x;
 &#9;b = y;
-&#9;resolution = small_resolution;
+&#9;resolution = smallResolution;
 &#9;
-&#9;window.requestAnimationFrame(draw_julia_set);
+&#9;window.requestAnimationFrame(drawJuliaSet);
 }
 
-function on_drag(active_draggable, x, y, event)
+function onDrag(activeDraggable, x, y, event)
 {
 &#9;a = x;
 &#9;b = y;
-&#9;resolution = small_resolution;
+&#9;resolution = smallResolution;
 &#9;
-&#9;window.requestAnimationFrame(draw_julia_set);
+&#9;window.requestAnimationFrame(drawJuliaSet);
 }
 
-function on_release(active_draggable, x, y, event)
+function onRelease(activeDraggable, x, y, event)
 {
-&#9;wilson.change_canvas_size(large_resolution, large_resolution);
+&#9;wilson.changeCanvasSize(largeResolution, largeResolution);
 &#9;
 &#9;a = x;
 &#9;b = y;
-&#9;resolution = large_resolution;
+&#9;resolution = largeResolution;
 &#9;
-&#9;window.requestAnimationFrame(draw_julia_set);
+&#9;window.requestAnimationFrame(drawJuliaSet);
 }
 </code></pre><div class="text-boxes"><div class="text-box-container"><input id="resolution-input" class="text-box" type="text" value="1000" tabindex="1"><p class="body-text text-box-subtext">Resolution</p></div></div><div class="center-content"><div id="canvas-landscape-middle"><canvas id="output-canvas" class="output-canvas"></canvas></div></div><div class="text-buttons"><div class="focus-on-child" tabindex="1"><button class="text-button" type="button" id="download-button" tabindex="-1">Download</button></div></div><div style="height: 32px"></div><p class="body-text">We&#x2019;re making progress! In the next section, we&#x2019;ll move the math for this applet onto the GPU, dramatically improving performance.</p><p class="body-text">You can view the code for this page <a href="/projects/wilson/guide/2-draggables/scripts/index.js">here</a>. </p><div class="text-buttons nav-buttons"><div class="focus-on-child tabindex="1"><button class="text-button linked-text-button previous-nav-button" type="button" tabindex="-1">Previous</button></div><div class="focus-on-child" tabindex="1"><button class="text-button linked-text-button home-nav-button" type="button" tabindex="-1">Home</button></div><div class="focus-on-child" tabindex="1"><button class="text-button linked-text-button next-nav-button" type="button" tabindex="-1">Next</button></div></div></section></main><script src="/scripts/init.min.js"></script></body></html>

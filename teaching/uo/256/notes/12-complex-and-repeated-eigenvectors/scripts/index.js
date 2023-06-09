@@ -1,6 +1,6 @@
 !async function()
 {
-	Page.Load.get_desmos_data = () =>
+	Page.Load.getDesmosData = () =>
 	{
 		const data =
 		{
@@ -39,21 +39,21 @@
 		return data;
 	};
 	
-	Page.Load.create_desmos_graphs();
+	Page.Load.createDesmosGraphs();
 	
 	
 	
 	Page.show();
 	
-	await Site.load_applet("vector-fields");
+	await Site.loadApplet("vector-fields");
 	
-	const output_canvas = Page.element.querySelector("#vector-field-canvas");
+	const outputCanvas = Page.element.querySelector("#vector-field-canvas");
 	
-	const applet = new VectorField(output_canvas);
+	const applet = new VectorField(outputCanvas);
 	
-	applet.load_promise.then(() =>
+	applet.loadPromise.then(() =>
 	{
 		applet.run("(.23 * (x + y), .23 * (-2.0 * x + 3.0 * y))", 500, 10000, .0075, 100, 0, 0, 1);
-		applet.pause_when_offscreen();
+		applet.pauseWhenOffscreen();
 	});
 }()

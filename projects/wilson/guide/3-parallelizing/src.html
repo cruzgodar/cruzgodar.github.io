@@ -11,14 +11,14 @@ To get started, we'll change the renderer setting once again, this time to `rend
 
 
 ```glsl
-	let frag_shader_source = `
+	let fragShaderSource = `
 		precision highp float;
 		
 		varying vec2 uv;
 		
 		uniform float a;
 		uniform float b;
-		uniform float brightness_scale;
+		uniform float brightnessScale;
 		
 		
 		
@@ -51,7 +51,7 @@ To get started, we'll change the renderer setting once again, this time to `rend
 			}
 			
 			
-			gl_FragColor = vec4(brightness / brightness_scale * color, 1.0);
+			gl_FragColor = vec4(brightness / brightnessScale * color, 1.0);
 		}
 	`;
 ```
@@ -85,7 +85,7 @@ Now we need to add the shader in the options, and we also have to tell Wilson wh
 	{
 		renderer: "gpu",
 		
-		shader: frag_shader_source,
+		shader: fragShaderSource,
 		
 		...
 	};
@@ -94,12 +94,12 @@ Now we need to add the shader in the options, and we also have to tell Wilson wh
 
 	let wilson = new Wilson(document.querySelector("#output-canvas"), options);
 
-	wilson.render.init_uniforms(["a", "b", "brightness_scale"]);
+	wilson.render.initUniforms(["a", "b", "brightnessScale"]);
 ```
 
 
 
-A few other things need to change. We no longer need `generate_julia_set`, since that computation will be done on the GPU. Similarly, we also no longer pass anything to `wilson.render.draw_frame`. The performance increase will be large enough that 1000 is now a reasonable resolution for most users, and that's high enough that we won't bother with raising the resolution when we let the draggable go. Finally, we need to actually set those uniforms.
+A few other things need to change. We no longer need `generateJuliaSet`, since that computation will be done on the GPU. Similarly, we also no longer pass anything to `wilson.render.drawFrame`. The performance increase will be large enough that 1000 is now a reasonable resolution for most users, and that's high enough that we won't bother with raising the resolution when we let the draggable go. Finally, we need to actually set those uniforms.
 
 
 
@@ -109,54 +109,54 @@ A few other things need to change. We no longer need `generate_julia_set`, since
 
 	let resolution = 1000;
 
-	let last_timestamp = -1;
+	let lastTimestamp = -1;
 
 
 
-	let resolution_input_element = document.querySelector("#resolution-input");
+	let resolutionInputElement = document.querySelector("#resolution-input");
 
-	resolution_input_element.addEventListener("input", () =>
+	resolutionInputElement.addEventListener("input", () =>
 	{
-		resolution = parseInt(resolution_input_element.value || 1000);
+		resolution = parseInt(resolutionInputElement.value || 1000);
 		
-		wilson.change_canvas_size(resolution, resolution);
+		wilson.changeCanvasSize(resolution, resolution);
 	});
 
 
 
-	let download_button_element = document.querySelector("#download-button");
+	let downloadButtonElement = document.querySelector("#download-button");
 
-	download_button_element.addEventListener("click", () =>
+	downloadButtonElement.addEventListener("click", () =>
 	{
-		wilson.download_frame("a-julia-set.png");
+		wilson.downloadFrame("a-julia-set.png");
 	});
 
 
 
 	//Render the inital frame.
-	window.requestAnimationFrame(draw_julia_set);
+	window.requestAnimationFrame(drawJuliaSet);
 
 
 
-	function on_drag(active_draggable, x, y, event)
+	function onDrag(activeDraggable, x, y, event)
 	{
 		a = x;
 		b = y;
 		
-		window.requestAnimationFrame(draw_julia_set);
+		window.requestAnimationFrame(drawJuliaSet);
 	}
 
 
 
-	function draw_julia_set(timestamp)
+	function drawJuliaSet(timestamp)
 	{
-		let time_elapsed = timestamp - last_timestamp;
+		let timeElapsed = timestamp - lastTimestamp;
 		
-		last_timestamp = timestamp;
+		lastTimestamp = timestamp;
 		
 		
 		
-		if (time_elapsed === 0)
+		if (timeElapsed === 0)
 		{
 				return;
 		}
@@ -165,15 +165,15 @@ A few other things need to change. We no longer need `generate_julia_set`, since
 		
 		wilson.gl.uniform1f(wilson.uniforms["a"], a);
 		wilson.gl.uniform1f(wilson.uniforms["b"], b);
-		wilson.gl.uniform1f(wilson.uniforms["brightness_scale"], 10);
+		wilson.gl.uniform1f(wilson.uniforms["brightnessScale"], 10);
 		
-		wilson.render.draw_frame();
+		wilson.render.drawFrame();
 	}
 ```
 
 
 
-The name of the function that sets the uniforms changes depending on the type of the variable: For a single `float`, it's `uniform1f`, but for an `int`, it would be `uniform1i`. Vectors can be set in two ways: to give a `vec2` a value of `2` in its first coordinate and `4` in its second, we can use `uniform2f(wilson.uniforms["var_name"], 2, 4)` or `uniform2fv(wilson.uniforms["var_name"], [2, 4])`.
+The name of the function that sets the uniforms changes depending on the type of the variable: For a single `float`, it's `uniform1f`, but for an `int`, it would be `uniform1i`. Vectors can be set in two ways: to give a `vec2` a value of `2` in its first coordinate and `4` in its second, we can use `uniform2f(wilson.uniforms["varName"], 2, 4)` or `uniform2fv(wilson.uniforms["varName"], [2, 4])`.
 
 Hopefully WebGL doesn't seem quite so scary anymore! If you haven't been copying the code into your own project so far, now is a great time to start --- experimenting with the shader is a great way to get familiar with GLSL.
 

@@ -2,22 +2,22 @@
 
 Direct interaction with the canvas is the only part of Wilson that we haven't discussed yet, and it will require slightly more work on our end than the others, since panning and zooming aren't the only possible effects we could want.
 
-Panning is easier, so let's start with that. As you can probably guess by now, we attach callbacks in the options that fire when different kinds of interaction with the canvas take place, just like with draggables. The mouse movement callbacks are separated into <code>mousemove</code> and <code>mousedrag</code> --- the first is called when the mouse is not being clicked, and the second when it is. We're going for something akin to Google Maps here, so we'll use <code>mousedrag</code>. For touchscreens, there's only one event for movement --- <code>touchmove</code> --- since it's not possible to drag without touching the screen. This callback shouldn't be used for pinch gestures --- we'll handle those later.
+Panning is easier, so let's start with that. As you can probably guess by now, we attach callbacks in the options that fire when different kinds of interaction with the canvas take place, just like with draggables. The mouse movement callbacks are separated into `mousemove` and `mousedrag` --- the first is called when the mouse is not being clicked, and the second when it is. We're going for something akin to Google Maps here, so we'll use `mousedrag`. For touchscreens, there's only one event for movement --- `touchmove` --- since it's not possible to drag without touching the screen. This callback shouldn't be used for pinch gestures --- we'll handle those later.
 
 ```glsl
-	let frag_shader_source = `
+	let fragShaderSource = `
 		precision highp float;
 		
 		varying vec2 uv;
 		
-		uniform float aspect_ratio;
+		uniform float aspectRatio;
 		
-		uniform float world_center_x;
-		uniform float world_center_y;
+		uniform float worldCenterX;
+		uniform float worldCenterY;
 		
 		uniform float a;
 		uniform float b;
-		uniform float brightness_scale;
+		uniform float brightnessScale;
 		
 		
 		
@@ -25,14 +25,14 @@ Panning is easier, so let's start with that. As you can probably guess by now, w
 		{
 			vec2 z;
 			
-			if (aspect_ratio > 1.0)
+			if (aspectRatio > 1.0)
 			{
-				z = vec2(uv.x * aspect_ratio * 2.0 + world_center_x, uv.y * 2.0 + world_center_y);
+				z = vec2(uv.x * aspectRatio * 2.0 + worldCenterX, uv.y * 2.0 + worldCenterY);
 			}
 			
 			else
 			{
-				z = vec2(uv.x * 2.0 + world_center_x, uv.y / aspect_ratio * 2.0 + world_center_y);
+				z = vec2(uv.x * 2.0 + worldCenterX, uv.y / aspectRatio * 2.0 + worldCenterY);
 			}
 			
 			...
@@ -45,28 +45,28 @@ Panning is easier, so let's start with that. As you can probably guess by now, w
 	{
 		...
 		
-		mousedrag_callback: on_drag_canvas,
-		touchmove_callback: on_drag_canvas
+		mousedragCallback: onDragCanvas,
+		touchmoveCallback: onDragCanvas
 	};
 ```
 
 ```js
-	wilson.render.init_uniforms(["aspect_ratio", "world_center_x", "world_center_y", "a", "b", "brightness_scale"]);
-	wilson_hidden.render.init_uniforms(["aspect_ratio", "world_center_x", "world_center_y", "a", "b", "brightness_scale"]);
+	wilson.render.initUniforms(["aspectRatio", "worldCenterX", "worldCenterY", "a", "b", "brightnessScale"]);
+	wilsonHidden.render.initUniforms(["aspectRatio", "worldCenterX", "worldCenterY", "a", "b", "brightnessScale"]);
 ```
 
 ```js
-	function on_drag_canvas(x, y, x_delta, y_delta, event)
+	function onDragCanvas(x, y, xDelta, yDelta, event)
 	{
-		wilson.world_center_x -= x_delta;
-		wilson.world_center_y -= y_delta;
+		wilson.worldCenterX -= xDelta;
+		wilson.worldCenterY -= yDelta;
 		
-		wilson.world_center_x = Math.min(Math.max(wilson.world_center_x, -2), 2);
-		wilson.world_center_y = Math.min(Math.max(wilson.world_center_y, -2), 2);
+		wilson.worldCenterX = Math.min(Math.max(wilson.worldCenterX, -2), 2);
+		wilson.worldCenterY = Math.min(Math.max(wilson.worldCenterY, -2), 2);
 		
-		window.requestAnimationFrame(draw_julia_set);
+		window.requestAnimationFrame(drawJuliaSet);
 		
-		wilson.draggables.recalculate_locations();
+		wilson.draggables.recalculateLocations();
 	}
 ```
 
@@ -100,20 +100,20 @@ This is slightly trickier to implement for a few reasons: we typically want to s
 
 
 ```glsl
-	let frag_shader_source = `
+	let fragShaderSource = `
 		precision highp float;
 		
 		varying vec2 uv;
 		
-		uniform float aspect_ratio;
+		uniform float aspectRatio;
 		
-		uniform float world_center_x;
-		uniform float world_center_y;
-		uniform float world_size;
+		uniform float worldCenterX;
+		uniform float worldCenterY;
+		uniform float worldSize;
 		
 		uniform float a;
 		uniform float b;
-		uniform float brightness_scale;
+		uniform float brightnessScale;
 		
 		
 		
@@ -121,14 +121,14 @@ This is slightly trickier to implement for a few reasons: we typically want to s
 		{
 			vec2 z;
 			
-			if (aspect_ratio > 1.0)
+			if (aspectRatio > 1.0)
 			{
-				z = vec2(uv.x * aspect_ratio * world_size + world_center_x, uv.y * world_size + world_center_y);
+				z = vec2(uv.x * aspectRatio * worldSize + worldCenterX, uv.y * worldSize + worldCenterY);
 			}
 			
 			else
 			{
-				z = vec2(uv.x * world_size + world_center_x, uv.y / aspect_ratio * world_size + world_center_y);
+				z = vec2(uv.x * worldSize + worldCenterX, uv.y / aspectRatio * worldSize + worldCenterY);
 			}
 			
 			...
@@ -137,13 +137,13 @@ This is slightly trickier to implement for a few reasons: we typically want to s
 ```
 
 ```js
-	wilson.render.init_uniforms(["aspect_ratio", "world_center_x", "world_center_y", "world_size", "a", "b", "brightness_scale"]);
-	wilson_hidden.render.init_uniforms(["aspect_ratio", "world_center_x", "world_center_y", "world_size", "a", "b", "brightness_scale"]);
+	wilson.render.initUniforms(["aspectRatio", "worldCenterX", "worldCenterY", "worldSize", "a", "b", "brightnessScale"]);
+	wilsonHidden.render.initUniforms(["aspectRatio", "worldCenterX", "worldCenterY", "worldSize", "a", "b", "brightnessScale"]);
 ```
 
 
 
-So far, this is just a fancier way of doing the same thing. The new uniform <code>world_size</code> replaces the constant <code>2.0</code> in the shader, so making <code>world_size</code> smaller will make the scene zoom in.
+So far, this is just a fancier way of doing the same thing. The new uniform `worldSize` replaces the constant `2.0` in the shader, so making `worldSize` smaller will make the scene zoom in.
 
 
 
@@ -152,140 +152,140 @@ So far, this is just a fancier way of doing the same thing. The new uniform <cod
 	{
 		...
 		
-		mousedrag_callback: on_drag_canvas,
-		touchmove_callback: on_drag_canvas,
+		mousedragCallback: onDragCanvas,
+		touchmoveCallback: onDragCanvas,
 		
-		wheel_callback: on_wheel_canvas,
-		pinch_callback: on_pinch_canvas
+		wheelCallback: onWheelCanvas,
+		pinchCallback: onPinchCanvas
 	};
 ```
 
 ```js
-	let aspect_ratio = 1;
+	let aspectRatio = 1;
 
-	let zoom_level = 0;
+	let zoomLevel = 0;
 
 	let a = 0;
 	let b = 1;
 
 	let resolution = 1000;
-	let resolution_hidden = 100;
+	let resolutionHidden = 100;
 
-	let last_timestamp = -1;
+	let lastTimestamp = -1;
 ```
 
 ```js
-	function on_wheel_canvas(x, y, scroll_amount, event)
+	function onWheelCanvas(x, y, scrollAmount, event)
 	{
-		zoom_level += scroll_amount / 100;
+		zoomLevel += scrollAmount / 100;
 		
-		zoom_level = Math.min(zoom_level, 1);
+		zoomLevel = Math.min(zoomLevel, 1);
 		
-		zoom_canvas(x, y);
+		zoomCanvas(x, y);
 	}
 
 
 
-	function on_pinch_canvas(x, y, touch_distance_delta, event)
+	function onPinchCanvas(x, y, touchDistanceDelta, event)
 	{
-		if (aspect_ratio >= 1)
+		if (aspectRatio >= 1)
 		{
-			zoom_level -= touch_distance_delta / wilson.world_width * 10;
+			zoomLevel -= touchDistanceDelta / wilson.worldWidth * 10;
 		}
 		
 		else
 		{
-			zoom_level -= touch_distance_delta / wilson.world_height * 10;
+			zoomLevel -= touchDistanceDelta / wilson.worldHeight * 10;
 		}
 		
-		zoom_level = Math.min(zoom_level, 1);
+		zoomLevel = Math.min(zoomLevel, 1);
 		
-		zoom_canvas(x, y);
+		zoomCanvas(x, y);
 	}
 ```
 
 
 
-We haven't defined <code>zoom_canvas</code> yet, but the idea here is fairly straightforward. Wheel events can vary wildly in reported scroll amount --- just comparing two of my computers, iOS Safari with a trackpad reports continuous scroll amounts that are typically between -1 and 1, while Firefox on Windows with a discrete scroll wheel reports exclusively 192 and -192. Dividing the scroll amounts by 100 seemed to be a good way to handle this discrepancy without writing different code for different browsers.
+We haven't defined `zoomCanvas` yet, but the idea here is fairly straightforward. Wheel events can vary wildly in reported scroll amount --- just comparing two of my computers, iOS Safari with a trackpad reports continuous scroll amounts that are typically between -1 and 1, while Firefox on Windows with a discrete scroll wheel reports exclusively 192 and -192. Dividing the scroll amounts by 100 seemed to be a good way to handle this discrepancy without writing different code for different browsers.
 
-On the touchscreen side, <code>touch_distance_delta</code> is the difference between two distances --- the current pinch and the last one --- as measured in world coordinates. As with the drag callbacks, there's some complicated stuff going on behind the scenes to ensure that this value is correct even if the last pinch distance was measured relative to different world coordinates. The multiplication by 10 is an experimental value that I found worked well --- ideally, we want the world coordinates at the touch points to always remain the same, so that it feels as much as possible like pinching is physically moving the scene. That's not always possible in practice, but this comes pretty close.
+On the touchscreen side, `touchDistanceDelta` is the difference between two distances --- the current pinch and the last one --- as measured in world coordinates. As with the drag callbacks, there's some complicated stuff going on behind the scenes to ensure that this value is correct even if the last pinch distance was measured relative to different world coordinates. The multiplication by 10 is an experimental value that I found worked well --- ideally, we want the world coordinates at the touch points to always remain the same, so that it feels as much as possible like pinching is physically moving the scene. That's not always possible in practice, but this comes pretty close.
 
 
 
 ```js
-	function zoom_canvas(fixed_point_x, fixed_point_y)
+	function zoomCanvas(fixedPointX, fixedPointY)
 	{
-		if (aspect_ratio >= 1)
+		if (aspectRatio >= 1)
 		{
-			let new_world_center = wilson.input.get_zoomed_world_center(fixed_point_x, fixed_point_y, 4 * Math.pow(2, zoom_level) * aspect_ratio, 4 * Math.pow(2, zoom_level));
+			let newWorldCenter = wilson.input.getZoomedWorldCenter(fixedPointX, fixedPointY, 4 * Math.pow(2, zoomLevel) * aspectRatio, 4 * Math.pow(2, zoomLevel));
 			
-			wilson.world_width = 4 * Math.pow(2, zoom_level) * aspect_ratio;
-			wilson.world_height = 4 * Math.pow(2, zoom_level);
+			wilson.worldWidth = 4 * Math.pow(2, zoomLevel) * aspectRatio;
+			wilson.worldHeight = 4 * Math.pow(2, zoomLevel);
 			
-			wilson.world_center_x = new_world_center[0];
-			wilson.world_center_y = new_world_center[1];
+			wilson.worldCenterX = newWorldCenter[0];
+			wilson.worldCenterY = newWorldCenter[1];
 		}
 		
 		else
 		{
-			let new_world_center = wilson.input.get_zoomed_world_center(fixed_point_x, fixed_point_y, 4 * Math.pow(2, zoom_level), 4 * Math.pow(2, zoom_level) / aspect_ratio);
+			let newWorldCenter = wilson.input.getZoomedWorldCenter(fixedPointX, fixedPointY, 4 * Math.pow(2, zoomLevel), 4 * Math.pow(2, zoomLevel) / aspectRatio);
 			
-			wilson.world_width = 4 * Math.pow(2, zoom_level);
-			wilson.world_height = 4 * Math.pow(2, zoom_level) / aspect_ratio;
+			wilson.worldWidth = 4 * Math.pow(2, zoomLevel);
+			wilson.worldHeight = 4 * Math.pow(2, zoomLevel) / aspectRatio;
 			
-			wilson.world_center_x = new_world_center[0];
-			wilson.world_center_y = new_world_center[1];
+			wilson.worldCenterX = newWorldCenter[0];
+			wilson.worldCenterY = newWorldCenter[1];
 		}
 		
-		window.requestAnimationFrame(draw_julia_set);
+		window.requestAnimationFrame(drawJuliaSet);
 		
-		wilson.draggables.recalculate_locations();
+		wilson.draggables.recalculateLocations();
 	}
 ```
 
 
 
-This isn't as bad as it looks. <code>wilson.input.get_zoomed_world_center</code> tells us what the new world center values should be in order to fix a certain point, given that fixed point along with what the world width and height will be after the zoom --- this is why we have to handle the two aspect ratio cases separately. After that, we use <code>zoom_level</code> as an exponent. To see why this is the case, remember that pinching or scrolling should zoom in a constant speed relative to the current world size, which means we need to scale to a proportion of the it, and repeated multiplication by that proportion gives us an exponential function. Another important thing to note is that we use <code>wilson</code>'s values of world width and height to set <code>wilson_hidden</code>'s uniforms, since we're only keeping track of those values in the non-hidden canvas.
+This isn't as bad as it looks. `wilson.input.getZoomedWorldCenter` tells us what the new world center values should be in order to fix a certain point, given that fixed point along with what the world width and height will be after the zoom --- this is why we have to handle the two aspect ratio cases separately. After that, we use `zoomLevel` as an exponent. To see why this is the case, remember that pinching or scrolling should zoom in a constant speed relative to the current world size, which means we need to scale to a proportion of the it, and repeated multiplication by that proportion gives us an exponential function. Another important thing to note is that we use `wilson`'s values of world width and height to set `wilsonHidden`'s uniforms, since we're only keeping track of those values in the non-hidden canvas.
 
 We're almost done --- all that's left is a small tweak to the aspect ratio changer.
 
 
 
 ```js
-	function change_aspect_ratio()
+	function changeAspectRatio()
 	{
-		if (wilson.fullscreen.currently_fullscreen)
+		if (wilson.fullscreen.currentlyFullscreen)
 		{
-			aspect_ratio = window.innerWidth / window.innerHeight;
+			aspectRatio = window.innerWidth / window.innerHeight;
 			
-			if (aspect_ratio >= 1)
+			if (aspectRatio >= 1)
 			{
-				wilson.change_canvas_size(resolution, Math.floor(resolution / aspect_ratio));
+				wilson.changeCanvasSize(resolution, Math.floor(resolution / aspectRatio));
 				
-				wilson.world_width = 4 * Math.pow(2, zoom_level) * aspect_ratio;
-				wilson.world_height = 4 * Math.pow(2, zoom_level);
+				wilson.worldWidth = 4 * Math.pow(2, zoomLevel) * aspectRatio;
+				wilson.worldHeight = 4 * Math.pow(2, zoomLevel);
 			}
 			
 			else
 			{
-				wilson.change_canvas_size(Math.floor(resolution * aspect_ratio), resolution);
+				wilson.changeCanvasSize(Math.floor(resolution * aspectRatio), resolution);
 				
-				wilson.world_width = 4 * Math.pow(2, zoom_level);
-				wilson.world_height = 4 * Math.pow(2, zoom_level) / aspect_ratio;
+				wilson.worldWidth = 4 * Math.pow(2, zoomLevel);
+				wilson.worldHeight = 4 * Math.pow(2, zoomLevel) / aspectRatio;
 			}
 		}
 		
 		else
 		{
-			aspect_ratio = 1;
+			aspectRatio = 1;
 			
-			wilson.change_canvas_size(resolution, resolution);
+			wilson.changeCanvasSize(resolution, resolution);
 			
-			wilson.world_width = 4 * Math.pow(2, zoom_level);
-			wilson.world_height = 4 * Math.pow(2, zoom_level);
+			wilson.worldWidth = 4 * Math.pow(2, zoomLevel);
+			wilson.worldHeight = 4 * Math.pow(2, zoomLevel);
 		}
 		
-		window.requestAnimationFrame(draw_julia_set);
+		window.requestAnimationFrame(drawJuliaSet);
 	}
 ```
 
@@ -321,51 +321,51 @@ When we stop dragging or pinching, we'll take the last adjustment we made to the
 	{
 		...
 		
-		mousedown_callback: on_grab_canvas,
-		touchstart_callback: on_grab_canvas,
+		mousedownCallback: onGrabCanvas,
+		touchstartCallback: onGrabCanvas,
 		
-		mousedrag_callback: on_drag_canvas,
-		touchmove_callback: on_drag_canvas,
+		mousedragCallback: onDragCanvas,
+		touchmoveCallback: onDragCanvas,
 		
-		mouseup_callback: on_release_canvas,
-		touchend_callback: on_release_canvas,
+		mouseupCallback: onReleaseCanvas,
+		touchendCallback: onReleaseCanvas,
 		
-		wheel_callback: on_wheel_canvas,
-		pinch_callback: on_pinch_canvas
+		wheelCallback: onWheelCanvas,
+		pinchCallback: onPinchCanvas
 	};
 ```
 
 ```js
-	let aspect_ratio = 1;
+	let aspectRatio = 1;
 
-	let zoom_level = 0;
+	let zoomLevel = 0;
 
 	let a = 0;
 	let b = 1;
 
 	let resolution = 1000;
-	let resolution_hidden = 100;
+	let resolutionHidden = 100;
 
-	let fixed_point_x = 0;
-	let fixed_point_y = 0;
+	let fixedPointX = 0;
+	let fixedPointY = 0;
 
-	let next_pan_velocity_x = 0;
-	let next_pan_velocity_y = 0;
-	let next_zoom_velocity = 0;
+	let nextPanVelocityX = 0;
+	let nextPanVelocityY = 0;
+	let nextZoomVelocity = 0;
 
-	let pan_velocity_x = 0;
-	let pan_velocity_y = 0;
-	let zoom_velocity = 0;
+	let panVelocityX = 0;
+	let panVelocityY = 0;
+	let zoomVelocity = 0;
 
-	const pan_friction = .96;
-	const pan_velocity_start_threshhold = .005;
-	const pan_velocity_stop_threshhold = .0005;
+	const panFriction = .96;
+	const panVelocityStartThreshhold = .005;
+	const panVelocityStopThreshhold = .0005;
 
-	const zoom_friction = .93;
-	const zoom_velocity_start_threshhold = .01;
-	const zoom_velocity_stop_threshhold = .001;
+	const zoomFriction = .93;
+	const zoomVelocityStartThreshhold = .01;
+	const zoomVelocityStopThreshhold = .001;
 
-	let last_timestamp = -1;
+	let lastTimestamp = -1;
 ```
 
 
@@ -375,51 +375,51 @@ All of the constant values here were found experimentally --- these seem to give
 
 
 ```js
-	function on_grab_canvas(x, y, event)
+	function onGrabCanvas(x, y, event)
 	{
-		pan_velocity_x = 0;
-		pan_velocity_y = 0;
-		zoom_velocity = 0;
+		panVelocityX = 0;
+		panVelocityY = 0;
+		zoomVelocity = 0;
 		
-		next_pan_velocity_x = 0;
-		next_pan_velocity_y = 0;
-		next_zoom_velocity = 0;
+		nextPanVelocityX = 0;
+		nextPanVelocityY = 0;
+		nextZoomVelocity = 0;
 	}
 
 
 
-	function on_drag_canvas(x, y, x_delta, y_delta, event)
+	function onDragCanvas(x, y, xDelta, yDelta, event)
 	{
-		wilson.world_center_x -= x_delta;
-		wilson.world_center_y -= y_delta;
+		wilson.worldCenterX -= xDelta;
+		wilson.worldCenterY -= yDelta;
 		
-		next_pan_velocity_x = -x_delta;
-		next_pan_velocity_y = -y_delta;
+		nextPanVelocityX = -xDelta;
+		nextPanVelocityY = -yDelta;
 		
-		wilson.world_center_x = Math.min(Math.max(wilson.world_center_x, -2), 2);
-		wilson.world_center_y = Math.min(Math.max(wilson.world_center_y, -2), 2);
+		wilson.worldCenterX = Math.min(Math.max(wilson.worldCenterX, -2), 2);
+		wilson.worldCenterY = Math.min(Math.max(wilson.worldCenterY, -2), 2);
 		
-		window.requestAnimationFrame(draw_julia_set);
+		window.requestAnimationFrame(drawJuliaSet);
 		
-		wilson.draggables.recalculate_locations();
+		wilson.draggables.recalculateLocations();
 	}
 
 
 
-	function on_release_canvas(x, y, event)
+	function onReleaseCanvas(x, y, event)
 	{
-		if (Math.sqrt(next_pan_velocity_x * next_pan_velocity_x + next_pan_velocity_y * next_pan_velocity_y) >= pan_velocity_start_threshhold * Math.min(wilson.world_width, wilson.world_height))
+		if (Math.sqrt(nextPanVelocityX * nextPanVelocityX + nextPanVelocityY * nextPanVelocityY) >= panVelocityStartThreshhold * Math.min(wilson.worldWidth, wilson.worldHeight))
 		{
-				pan_velocity_x = next_pan_velocity_x;
-			pan_velocity_y = next_pan_velocity_y;
+				panVelocityX = nextPanVelocityX;
+			panVelocityY = nextPanVelocityY;
 		}
 		
-		if (Math.abs(next_zoom_velocity) >= zoom_velocity_start_threshhold)
+		if (Math.abs(nextZoomVelocity) >= zoomVelocityStartThreshhold)
 		{
-			zoom_velocity = next_zoom_velocity;
+			zoomVelocity = nextZoomVelocity;
 		}
 		
-		window.requestAnimationFrame(draw_julia_set);
+		window.requestAnimationFrame(drawJuliaSet);
 	}
 ```
 
@@ -430,107 +430,107 @@ While we're dragging, we store what the velocity would be if we released at that
 
 
 ```js
-	function on_wheel_canvas(x, y, scroll_amount, event)
+	function onWheelCanvas(x, y, scrollAmount, event)
 	{
-		fixed_point_x = x;
-		fixed_point_y = y;
+		fixedPointX = x;
+		fixedPointY = y;
 		
-		if (Math.abs(scroll_amount / 100) &lt; .3)
+		if (Math.abs(scrollAmount / 100) &lt; .3)
 		{
-			zoom_level += scroll_amount / 100;
+			zoomLevel += scrollAmount / 100;
 			
-			zoom_level = Math.min(zoom_level, 1);
+			zoomLevel = Math.min(zoomLevel, 1);
 		}
 		
 		else
 		{
-			zoom_velocity += Math.sign(scroll_amount) * .05;
+			zoomVelocity += Math.sign(scrollAmount) * .05;
 		}
 		
-		zoom_canvas(x, y);
+		zoomCanvas(x, y);
 	}
 
 
 
-	function on_pinch_canvas(x, y, touch_distance_delta, event)
+	function onPinchCanvas(x, y, touchDistanceDelta, event)
 	{
-		if (aspect_ratio >= 1)
+		if (aspectRatio >= 1)
 		{
-			zoom_level -= touch_distance_delta / wilson.world_width * 10;
+			zoomLevel -= touchDistanceDelta / wilson.worldWidth * 10;
 			
-			next_zoom_velocity = -touch_distance_delta / wilson.world_width * 10;
+			nextZoomVelocity = -touchDistanceDelta / wilson.worldWidth * 10;
 		}
 		
 		else
 		{
-			zoom_level -= touch_distance_delta / wilson.world_height * 10;
+			zoomLevel -= touchDistanceDelta / wilson.worldHeight * 10;
 			
-			next_zoom_velocity = -touch_distance_delta / wilson.world_height * 10;
+			nextZoomVelocity = -touchDistanceDelta / wilson.worldHeight * 10;
 		}
 		
-		zoom_level = Math.min(zoom_level, 1);
+		zoomLevel = Math.min(zoomLevel, 1);
 		
-		fixed_point_x = x;
-		fixed_point_y = y;
+		fixedPointX = x;
+		fixedPointY = y;
 		
-		zoom_canvas();
+		zoomCanvas();
 	}
 ```
 
 
 
-We do the same thing for zooming. We don't have divide by a factor related to world size, since <code>zoom_level</code> is unitless. The two scroll wheel cases are a way to differentiate continuous ones (like trackpads) from discrete ones. Here, continuous scrolling will directly translate to zooming, just like pinching, while discrete scrolling will only add velocity, giving it a bouncing effect.
+We do the same thing for zooming. We don't have divide by a factor related to world size, since `zoomLevel` is unitless. The two scroll wheel cases are a way to differentiate continuous ones (like trackpads) from discrete ones. Here, continuous scrolling will directly translate to zooming, just like pinching, while discrete scrolling will only add velocity, giving it a bouncing effect.
 
 
 
 ```js
-	function draw_julia_set(timestamp)
+	function drawJuliaSet(timestamp)
 	{
 		...
 		
-		wilson.render.draw_frame();
+		wilson.render.drawFrame();
 		
 		
 		
-		if (pan_velocity_x !== 0 || pan_velocity_y !== 0 || zoom_velocity !== 0)
+		if (panVelocityX !== 0 || panVelocityY !== 0 || zoomVelocity !== 0)
 		{
-			wilson.world_center_x += pan_velocity_x;
-			wilson.world_center_y += pan_velocity_y;
+			wilson.worldCenterX += panVelocityX;
+			wilson.worldCenterY += panVelocityY;
 			
-			wilson.world_center_x = Math.min(Math.max(wilson.world_center_x, -2), 2);
-			wilson.world_center_y = Math.min(Math.max(wilson.world_center_y, -2), 2);
+			wilson.worldCenterX = Math.min(Math.max(wilson.worldCenterX, -2), 2);
+			wilson.worldCenterY = Math.min(Math.max(wilson.worldCenterY, -2), 2);
 			
 			
 			
-			pan_velocity_x *= pan_friction;
-			pan_velocity_y *= pan_friction;
+			panVelocityX *= panFriction;
+			panVelocityY *= panFriction;
 			
-			if (Math.sqrt(pan_velocity_x * pan_velocity_x + pan_velocity_y * pan_velocity_y) &lt; pan_velocity_stop_threshhold * Math.min(wilson.world_width, wilson.world_height))
+			if (Math.sqrt(panVelocityX * panVelocityX + panVelocityY * panVelocityY) &lt; panVelocityStopThreshhold * Math.min(wilson.worldWidth, wilson.worldHeight))
 			{
-				pan_velocity_x = 0;
-				pan_velocity_y = 0;
+				panVelocityX = 0;
+				panVelocityY = 0;
 			}
 			
 			
 			
-			zoom_level += zoom_velocity;
+			zoomLevel += zoomVelocity;
 			
-			zoom_level = Math.min(zoom_level, 1);
+			zoomLevel = Math.min(zoomLevel, 1);
 			
-			zoom_canvas(fixed_point_x, fixed_point_y);
+			zoomCanvas(fixedPointX, fixedPointY);
 			
-			zoom_velocity *= zoom_friction;
+			zoomVelocity *= zoomFriction;
 			
-			if (Math.abs(zoom_velocity) &lt; zoom_velocity_stop_threshhold)
+			if (Math.abs(zoomVelocity) &lt; zoomVelocityStopThreshhold)
 			{
-				zoom_velocity = 0;
+				zoomVelocity = 0;
 			}
 			
 			
 			
-			window.requestAnimationFrame(draw_julia_set);
+			window.requestAnimationFrame(drawJuliaSet);
 			
-			wilson.draggables.recalculate_locations();
+			wilson.draggables.recalculateLocations();
 		}
 	}
 ```

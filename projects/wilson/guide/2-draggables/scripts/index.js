@@ -19,25 +19,25 @@
 	{
 		renderer: "hybrid",
 		
-		canvas_width: 1000,
-		canvas_height: 1000,
+		canvasWidth: 1000,
+		canvasHeight: 1000,
 		
-		world_width: 4,
-		world_height: 4,
-		world_center_x: 0,
-		world_center_y: 0,
+		worldWidth: 4,
+		worldHeight: 4,
+		worldCenterX: 0,
+		worldCenterY: 0,
 		
 		
 		
-		use_draggables: true,
+		useDraggables: true,
 		
-		draggables_mousedown_callback: on_grab,
-		draggables_mousemove_callback: on_drag,
-		draggables_mouseup_callback: on_release,
+		draggablesMousedownCallback: onGrab,
+		draggablesMousemoveCallback: onDrag,
+		draggablesMouseupCallback: onRelease,
 		
-		draggables_touchstart_callback: on_grab,
-		draggables_touchmove_callback: on_drag,
-		draggables_touchend_callback: on_release
+		draggablesTouchstartCallback: onGrab,
+		draggablesTouchmoveCallback: onDrag,
+		draggablesTouchendCallback: onRelease
 	};
 	
 	let wilson = new Wilson(Page.element.querySelector("#output-canvas"), options);
@@ -46,98 +46,98 @@
 	
 	
 	
-	let large_resolution = 1000;
-	let small_resolution = 200;
+	let largeResolution = 1000;
+	let smallResolution = 200;
 	
 	let a = 0;
 	let b = 1;
 	
 	let resolution = 200;
-	let last_resolution = 0;
+	let lastResolution = 0;
 	
-	let last_timestamp = -1;
+	let lastTimestamp = -1;
 	
 	
 	
-	let resolution_input_element = Page.element.querySelector("#resolution-input");
+	let resolutionInputElement = Page.element.querySelector("#resolution-input");
 	
-	resolution_input_element.addEventListener("input", () =>
+	resolutionInputElement.addEventListener("input", () =>
 	{
-		large_resolution = parseInt(resolution_input_element.value || 1000);
-		small_resolution = Math.floor(large_resolution / 5);
+		largeResolution = parseInt(resolutionInputElement.value || 1000);
+		smallResolution = Math.floor(largeResolution / 5);
 	});
 	
 	
 	
-	let download_button_element = Page.element.querySelector("#download-button");
+	let downloadButtonElement = Page.element.querySelector("#download-button");
 	
-	download_button_element.addEventListener("click", () =>
+	downloadButtonElement.addEventListener("click", () =>
 	{
-		wilson.download_frame("a-julia-set.png");
+		wilson.downloadFrame("a-julia-set.png");
 	});
 	
 	
 	
 	//Draw the initial frame.
-	wilson.change_canvas_size(small_resolution, small_resolution);
-	window.requestAnimationFrame(draw_julia_set);
+	wilson.changeCanvasSize(smallResolution, smallResolution);
+	window.requestAnimationFrame(drawJuliaSet);
 	
 	
 	
-	function on_grab(active_draggable, x, y, event)
+	function onGrab(activeDraggable, x, y, event)
 	{
-		wilson.change_canvas_size(small_resolution, small_resolution);
+		wilson.changeCanvasSize(smallResolution, smallResolution);
 		
 		a = x;
 		b = y;
-		resolution = small_resolution;
+		resolution = smallResolution;
 		
-		window.requestAnimationFrame(draw_julia_set);
+		window.requestAnimationFrame(drawJuliaSet);
 	}
 
-	function on_drag(active_draggable, x, y, event)
+	function onDrag(activeDraggable, x, y, event)
 	{
 		a = x;
 		b = y;
-		resolution = small_resolution;
+		resolution = smallResolution;
 		
-		window.requestAnimationFrame(draw_julia_set);
+		window.requestAnimationFrame(drawJuliaSet);
 	}
 
-	function on_release(active_draggable, x, y, event)
+	function onRelease(activeDraggable, x, y, event)
 	{
-		wilson.change_canvas_size(large_resolution, large_resolution);
+		wilson.changeCanvasSize(largeResolution, largeResolution);
 		
 		a = x;
 		b = y;
-		resolution = large_resolution;
+		resolution = largeResolution;
 		
-		window.requestAnimationFrame(draw_julia_set);
+		window.requestAnimationFrame(drawJuliaSet);
 	}
 	
 	
 	
-	function generate_julia_set(a, b, resolution)
+	function generateJuliaSet(a, b, resolution)
 	{
 		let brightnesses = new Array(resolution * resolution);
-		let max_brightness = 0;
-		let brightness_scale = 1.5;
-		const num_iterations = 100;
+		let maxBrightness = 0;
+		let brightnessScale = 1.5;
+		const numIterations = 100;
 		
 		for (let i = 0; i < resolution; i++)
 		{
 			for (let j = 0; j < resolution; j++)
 			{
-				let world_coordinates = wilson.utils.interpolate.canvas_to_world(i, j);
-				let x = world_coordinates[0];
-				let y = world_coordinates[1];
+				let worldCoordinates = wilson.utils.interpolate.canvasToWorld(i, j);
+				let x = worldCoordinates[0];
+				let y = worldCoordinates[1];
 				
 				//This helps remove color banding.
 				let brightness = Math.exp(-Math.sqrt(x*x + y*y));
 				
 				let k = 0;
 				
-				for (k = 0; k < num_iterations; k++)
+				for (k = 0; k < numIterations; k++)
 				{
 					//z = z^2 + c = (x^2 - y^2 + a) + (2xy + b)i
 					let temp = x*x - y*y + a;
@@ -152,7 +152,7 @@
 					}
 				}
 				
-				if (k === num_iterations)
+				if (k === numIterations)
 				{
 					//Color this pixel black.
 					brightnesses[resolution * i + j] = 0;
@@ -162,50 +162,50 @@
 				{
 					brightnesses[resolution * i + j] = brightness;
 					
-					if (brightness > max_brightness)
+					if (brightness > maxBrightness)
 					{
-						max_brightness = brightness;
+						maxBrightness = brightness;
 					}
 				}
 			}
 		}
 		
 		//Now we need to create the actual pixel data in a Uint8ClampedArray to pass to Wilson.
-		let image_data = new Uint8ClampedArray(resolution * resolution * 4);
+		let imageData = new Uint8ClampedArray(resolution * resolution * 4);
 		for (let i = 0; i < resolution * resolution; i++)
 		{
-			image_data[4 * i] = 0; //Red
-			image_data[4 * i + 1] = brightness_scale * brightnesses[i] / max_brightness * 255; //Green
-			image_data[4 * i + 2] = brightness_scale * brightnesses[i] / max_brightness * 255; //Blue
-			image_data[4 * i + 3] = 255; //Alpha
+			imageData[4 * i] = 0; //Red
+			imageData[4 * i + 1] = brightnessScale * brightnesses[i] / maxBrightness * 255; //Green
+			imageData[4 * i + 2] = brightnessScale * brightnesses[i] / maxBrightness * 255; //Blue
+			imageData[4 * i + 3] = 255; //Alpha
 		}
 		
-		return image_data;
+		return imageData;
 	}
 	
 	
 	
-	function draw_julia_set(timestamp)
+	function drawJuliaSet(timestamp)
 	{
-		let time_elapsed = timestamp - last_timestamp;
+		let timeElapsed = timestamp - lastTimestamp;
 		
-		last_timestamp = timestamp;
+		lastTimestamp = timestamp;
 		
 		
 		
-		if (time_elapsed === 0 && last_resolution === resolution)
+		if (timeElapsed === 0 && lastResolution === resolution)
 		{
 			return;
 		}
 		
-		last_resolution = resolution;
+		lastResolution = resolution;
 		
 		
 		
-		wilson.render.draw_frame(generate_julia_set(a, b, resolution));
+		wilson.render.drawFrame(generateJuliaSet(a, b, resolution));
 	}
 	
 	
 	
 	Page.show();
-}()
+	}()

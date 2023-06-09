@@ -1,6 +1,6 @@
 !async function()
 {
-	Page.Load.get_desmos_data = () =>
+	Page.Load.getDesmosData = () =>
 	{
 		const data =
 		{
@@ -225,47 +225,47 @@
 		return data;
 	};
 	
-	Page.Load.create_desmos_graphs();
+	Page.Load.createDesmosGraphs();
 	
 	
 	
 	Page.show();
 	
-	await Site.load_applet("vector-fields");
+	await Site.loadApplet("vector-fields");
 	
 	
 	
-	const output_canvas = Page.element.querySelector("#vector-field-canvas");
+	const outputCanvas = Page.element.querySelector("#vector-field-canvas");
 	
-	const applet = new VectorField(output_canvas);
+	const applet = new VectorField(outputCanvas);
 	
-	applet.load_promise.then(() =>
+	applet.loadPromise.then(() =>
 	{
 		applet.run("((x - 1.0) * (x + 1.0), (y + 1.0) * (y - 1.0))", 500, 10000, .0035, 100, 0, 0, -.15);
-		applet.pause_when_offscreen();
+		applet.pauseWhenOffscreen();
 	});
 	
 	
 	
-	const output_canvas_2 = Page.element.querySelector("#autonomous-system-canvas");
+	const outputCanvas2 = Page.element.querySelector("#autonomous-system-canvas");
 	
-	const applet_2 = new VectorField(output_canvas_2);
+	const applet2 = new VectorField(outputCanvas2);
 	
-	applet_2.load_promise.then(() =>
+	applet2.loadPromise.then(() =>
 	{
-		applet_2.run("(y*y, 1.0 - x*x)", 500, 10000, .0035, 100, 0, 0, 0);
-		applet_2.pause_when_offscreen();
+		applet2.run("(y*y, 1.0 - x*x)", 500, 10000, .0035, 100, 0, 0, 0);
+		applet2.pauseWhenOffscreen();
 	});
 	
 	
 	
-	const output_canvas_3 = Page.element.querySelector("#pendulum-canvas");
+	const outputCanvas3 = Page.element.querySelector("#pendulum-canvas");
 	
-	const applet_3 = new VectorField(output_canvas_3);
+	const applet3 = new VectorField(outputCanvas3);
 	
-	applet_3.load_promise.then(() =>
+	applet3.loadPromise.then(() =>
 	{
-		applet_3.run("(y, -.5*y - sin(x))", 500, 10000, .0035, 100, 0, 0, 2);
-		applet_3.pause_when_offscreen();
+		applet3.run("(y, -.5*y - sin(x))", 500, 10000, .0035, 100, 0, 0, 2);
+		applet3.pauseWhenOffscreen();
 	});
 }()

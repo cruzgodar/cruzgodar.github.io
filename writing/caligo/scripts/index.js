@@ -4,16 +4,16 @@
 	
 	
 	
-	let background_color = 255;
+	let backgroundColor = 255;
 	let opacity = 0;
 	
-	Page.Banner.done_loading = false;
-	Page.Banner.ScrollButton.done_loading = false;
-	let eclipse_done = false;
+	Page.Banner.doneLoading = false;
+	Page.Banner.ScrollButton.doneLoading = false;
+	let eclipseDone = false;
 	
 	
 	
-	setTimeout(adjust_for_settings, 500);
+	setTimeout(adjustForSettings, 500);
 	
 	
 	
@@ -21,14 +21,14 @@
 	Page.element.querySelector("#eclipse").style.height = Page.element.querySelector("#eclipse").offsetWidth + "px";
 	Page.element.querySelector("#eclipse img").style.height = Page.element.querySelector("#eclipse").offsetWidth + "px";
 	
-	window.addEventListener("resize", caligo_resize);
-	Page.temporary_handlers["resize"].push(caligo_resize);
+	window.addEventListener("resize", caligoResize);
+	Page.temporaryHandlers["resize"].push(caligoResize);
 	
-	window.addEventListener("scroll", caligo_scroll);
-	Page.temporary_handlers["scroll"].push(caligo_scroll);
+	window.addEventListener("scroll", caligoScroll);
+	Page.temporaryHandlers["scroll"].push(caligoScroll);
 	
-	setTimeout(caligo_resize, 500);
-	setTimeout(caligo_resize, 1000);
+	setTimeout(caligoResize, 500);
+	setTimeout(caligoResize, 1000);
 	
 	
 	
@@ -37,12 +37,12 @@
 	{
 		document.documentElement.classList.add("background-transition");
 		
-		caligo_scroll();
+		caligoScroll();
 		
 		setTimeout(() =>
 		{
 			document.documentElement.classList.remove("background-transition");
-		}, Site.background_color_animation_time);
+		}, Site.backgroundColorAnimationTime);
 	}
 	
 	setTimeout(Page.Banner.ScrollButton.insert, 7000);
@@ -53,80 +53,80 @@
 	
 	
 	
-	function caligo_scroll()
+	function caligoScroll()
 	{
 		if (Page.scroll >= 0)
 		{
-			update_background();
+			updateBackground();
 			
-			update_scroll_button();
+			updateScrollButton();
 			
-			update_eclipse();
+			updateEclipse();
 		}
 	}
 	
 	
 	
-	function update_background()
+	function updateBackground()
 	{
-		Page.background_color_changed = true;
+		Page.backgroundColorChanged = true;
 		
 		if (Page.scroll === 0)
 		{
-			Page.background_color_changed = false;
+			Page.backgroundColorChanged = false;
 		}
 		
 		
 		
 		else if (Page.scroll <= window.innerHeight / 1.25)
 		{
-			background_color = .5 + .5 * Math.sin(Math.PI * Math.max(1 - 1.25 * Page.scroll / window.innerHeight, 0) - .5 * Math.PI);
+			backgroundColor = .5 + .5 * Math.sin(Math.PI * Math.max(1 - 1.25 * Page.scroll / window.innerHeight, 0) - .5 * Math.PI);
 			
-			if (Site.Settings.url_vars["theme"] === 1)
+			if (Site.Settings.urlVars["theme"] === 1)
 			{
-				if (Site.Settings.url_vars["dark_theme_color"] === 1)
+				if (Site.Settings.urlVars["darkThemeColor"] === 1)
 				{
-					background_color = 0;
+					backgroundColor = 0;
 				}
 				
 				else
 				{
-					background_color *= 24;
+					backgroundColor *= 24;
 				}
 			}
 				
 			else
 			{
-				background_color *= 255;
+				backgroundColor *= 255;
 			}
 			
 			
-			document.documentElement.style.backgroundColor = `rgb(${background_color}, ${background_color}, ${background_color})`;
+			document.documentElement.style.backgroundColor = `rgb(${backgroundColor}, ${backgroundColor}, ${backgroundColor})`;
 			
-			Site.Settings.meta_theme_color_element.setAttribute("content", `rgb(${background_color}, ${background_color}, ${background_color})`);
+			Site.Settings.metaThemeColorElement.setAttribute("content", `rgb(${backgroundColor}, ${backgroundColor}, ${backgroundColor})`);
 			
-			if (background_color === 0)
+			if (backgroundColor === 0)
 			{
-				Page.Banner.done_loading = true;
+				Page.Banner.doneLoading = true;
 			}
 			
 			else
 			{
-				Page.Banner.done_loading = false;
+				Page.Banner.doneLoading = false;
 			}
 		}
 		
-		else if (Page.Banner.done_loading === false)
+		else if (Page.Banner.doneLoading === false)
 		{
 			document.documentElement.style.backgroundColor = "rgb(0, 0, 0)";
-			Site.Settings.meta_theme_color_element.setAttribute("content", "rgb(0, 0, 0)");
-			Page.Banner.done_loading = true;
+			Site.Settings.metaThemeColorElement.setAttribute("content", "rgb(0, 0, 0)");
+			Page.Banner.doneLoading = true;
 		}
 	}
 	
 	
 	
-	function update_scroll_button()
+	function updateScrollButton()
 	{
 		if (Page.scroll <= window.innerHeight / 3)
 		{
@@ -140,27 +140,27 @@
 				try {Page.element.querySelector("#scroll-button").remove();}
 				catch(ex) {}
 				
-				Page.Banner.ScrollButton.done_loading = true;
+				Page.Banner.ScrollButton.doneLoading = true;
 			}
 			
 			else
 			{
-				Page.Banner.ScrollButton.done_loading = false;
+				Page.Banner.ScrollButton.doneLoading = false;
 			}
 		}
 		
-		else if (Page.Banner.ScrollButton.done_loading === false)
+		else if (Page.Banner.ScrollButton.doneLoading === false)
 		{
 			try {Page.element.querySelector("#scroll-button").remove();}
 			catch(ex) {}
 			
-			Page.Banner.ScrollButton.done_loading = true;
+			Page.Banner.ScrollButton.doneLoading = true;
 		}
 	}
 	
 	
 	
-	function update_eclipse()
+	function updateEclipse()
 	{
 		if (Page.scroll >= 4/5 * window.innerHeight && Page.scroll <= window.innerHeight * 6/5)
 		{
@@ -170,60 +170,60 @@
 			
 			if (opacity === 1)
 			{
-				eclipse_done = true;
+				eclipseDone = true;
 			}
 			
 			else
 			{
-				eclipse_done = false;
+				eclipseDone = false;
 			}
 		}
 		
-		else if (scroll >= 6/5 * window.innerHeight && eclipse_done === false)
+		else if (scroll >= 6/5 * window.innerHeight && eclipseDone === false)
 		{
 			Page.element.querySelector("#eclipse").style.opacity = 1;
 			
-			eclipse_done = true;
+			eclipseDone = true;
 		}
 		
-		else if (scroll <= 4/5 * window.innerHeight && eclipse_done === false)
+		else if (scroll <= 4/5 * window.innerHeight && eclipseDone === false)
 		{
 			Page.element.querySelector("#eclipse").style.opacity = 0;
 			
-			eclipse_done = true;
+			eclipseDone = true;
 		}
 	}
 	
 	
 	
-	function caligo_resize()
+	function caligoResize()
 	{
 		Page.element.querySelector("#eclipse").style.height = Page.element.querySelector("#eclipse").offsetWidth + "px";
 		Page.element.querySelector("#eclipse img").style.height = Page.element.querySelector("#eclipse").offsetWidth + "px";
 		
 		
 		
-		let max_width = 0;
+		let maxWidth = 0;
 		
 		Page.element.querySelectorAll(".chapter-link a").forEach(element =>
 		{
 			let width = element.offsetWidth;
 			
-			if (width > max_width)
+			if (width > maxWidth)
 			{
-				max_width = width;
+				maxWidth = width;
 			}
 		});
 		
-		Page.element.querySelectorAll(".chapter-link").forEach(element => element.style.width = max_width + "px");
+		Page.element.querySelectorAll(".chapter-link").forEach(element => element.style.width = maxWidth + "px");
 	}
 	
 	
 	
-	function adjust_for_settings()
+	function adjustForSettings()
 	{
 		//Meet the jankiest solution ever. Putting things in the style files puts them at the top of the head, so even though they have !important, they're before the settings style, which ALSO has to have !important. It's a garbage fire.
-		Site.add_style(`
+		Site.addStyle(`
 			#floating-footer-gradient
 			{
 				background: -moz-linear-gradient(top, rgba(0,0,0,0) 0%, rgba(0,0,0,1) 100%) !important;
@@ -234,15 +234,15 @@
 		
 		
 		
-		if (Site.Settings.url_vars["contrast"] === 1)
+		if (Site.Settings.urlVars["contrast"] === 1)
 		{
-			Page.set_element_styles(".synopsis-text", "color", "rgb(192, 192, 192)");
+			Page.setElementStyles(".synopsis-text", "color", "rgb(192, 192, 192)");
 			
-			Page.set_element_styles(".body-text", "color", "rgb(192, 192, 192)");
+			Page.setElementStyles(".body-text", "color", "rgb(192, 192, 192)");
 			
-			if (Site.Settings.url_vars["theme"] !== 1)
+			if (Site.Settings.urlVars["theme"] !== 1)
 			{
-				Page.set_element_styles(".hook-text", "color", "rgb(120, 120, 120)");
+				Page.setElementStyles(".hook-text", "color", "rgb(120, 120, 120)");
 			}
 			
 			
@@ -251,13 +251,13 @@
 			
 			
 			
-			Page.set_element_styles(".stage-bubble", "border-color", "rgb(192, 192, 192)");
+			Page.setElementStyles(".stage-bubble", "border-color", "rgb(192, 192, 192)");
 			
-			Page.set_element_styles(".stage-bubble span", "background-color", "rgb(192, 192, 192)");
+			Page.setElementStyles(".stage-bubble span", "background-color", "rgb(192, 192, 192)");
 			
 			
 			
-			Site.add_style(`
+			Site.addStyle(`
 				.line-break
 				{
 					background: -moz-linear-gradient(left, rgb(0,0,0) 0%, rgb(140,140,140) 50%, rgb(0,0,0) 100%);
@@ -269,7 +269,7 @@
 		
 		else
 		{
-			Site.add_style(`
+			Site.addStyle(`
 				.line-break
 				{
 					background: -moz-linear-gradient(left, rgb(0,0,0) 0%, rgb(92,92,92) 50%, rgb(0,0,0) 100%);
@@ -280,10 +280,10 @@
 			
 			
 			
-			if (Site.Settings.url_vars["theme"] === 1)
+			if (Site.Settings.urlVars["theme"] === 1)
 			{
-				Page.set_element_styles(".hook-text", "color", "rgb(120, 120, 120)");
+				Page.setElementStyles(".hook-text", "color", "rgb(120, 120, 120)");
 			}
 		}
 	}
-}()
+	}()

@@ -15,14 +15,14 @@
 	
 	
 	
-	let frag_shader_source = `
+	let fragShaderSource = `
 		precision highp float;
 		
 		varying vec2 uv;
 		
 		uniform float a;
 		uniform float b;
-		uniform float brightness_scale;
+		uniform float brightnessScale;
 		
 		
 		
@@ -55,7 +55,7 @@
 			}
 			
 			
-			gl_FragColor = vec4(brightness / brightness_scale * color, 1.0);
+			gl_FragColor = vec4(brightness / brightnessScale * color, 1.0);
 		}
 	`;
 
@@ -65,52 +65,52 @@
 	{
 		renderer: "gpu",
 		
-		shader: frag_shader_source,
+		shader: fragShaderSource,
 		
-		canvas_width: 1000,
-		canvas_height: 1000,
+		canvasWidth: 1000,
+		canvasHeight: 1000,
 		
-		world_width: 4,
-		world_height: 4,
-		world_center_x: 0,
-		world_center_y: 0,
+		worldWidth: 4,
+		worldHeight: 4,
+		worldCenterX: 0,
+		worldCenterY: 0,
 		
 		
 		
-		use_draggables: true,
+		useDraggables: true,
 		
-		draggables_mousemove_callback: on_drag,
-		draggables_touchmove_callback: on_drag
+		draggablesMousemoveCallback: onDrag,
+		draggablesTouchmoveCallback: onDrag
 	};
 	
-	let options_hidden =
+	let optionsHidden =
 	{
 		renderer: "gpu",
 		
-		shader: frag_shader_source,
+		shader: fragShaderSource,
 		
-		canvas_width: 100,
-		canvas_height: 100
+		canvasWidth: 100,
+		canvasHeight: 100
 	};
 	
 	
 	
 	let wilson = new Wilson(Page.element.querySelector("#output-canvas"), options);
 
-	wilson.render.init_uniforms(["a", "b", "brightness_scale"]);
+	wilson.render.initUniforms(["a", "b", "brightnessScale"]);
 
 	let draggable = wilson.draggables.add(0, 1);
 	
 	
 	
-	let wilson_hidden = new Wilson(Page.element.querySelector("#hidden-canvas"), options_hidden);
+	let wilsonHidden = new Wilson(Page.element.querySelector("#hidden-canvas"), optionsHidden);
 	
-	wilson_hidden.render.init_uniforms(["a", "b", "brightness_scale"]);
+	wilsonHidden.render.initUniforms(["a", "b", "brightnessScale"]);
 	
 	
 	
 	wilson.canvas.parentNode.parentNode.style.setProperty("margin-bottom", 0, "important");
-	wilson_hidden.canvas.parentNode.parentNode.style.setProperty("margin-top", 0, "important");
+	wilsonHidden.canvas.parentNode.parentNode.style.setProperty("margin-top", 0, "important");
 	
 	
 	
@@ -118,64 +118,64 @@
 	let b = 1;
 	
 	let resolution = 1000;
-	let resolution_hidden = 100;
+	let resolutionHidden = 100;
 	
-	let last_timestamp = -1;
+	let lastTimestamp = -1;
 	
 	
 
-	let resolution_input_element = Page.element.querySelector("#resolution-input");
+	let resolutionInputElement = Page.element.querySelector("#resolution-input");
 	
-	resolution_input_element.addEventListener("input", () =>
+	resolutionInputElement.addEventListener("input", () =>
 	{
-		resolution = parseInt(resolution_input_element.value || 1000);
+		resolution = parseInt(resolutionInputElement.value || 1000);
 		
-		wilson.change_canvas_size(resolution, resolution);
+		wilson.changeCanvasSize(resolution, resolution);
 	});
 	
 	
 	
-	let download_button_element = Page.element.querySelector("#download-button");
+	let downloadButtonElement = Page.element.querySelector("#download-button");
 	
-	download_button_element.addEventListener("click", () =>
+	downloadButtonElement.addEventListener("click", () =>
 	{
-		wilson.download_frame("a-julia-set.png");
+		wilson.downloadFrame("a-julia-set.png");
 	});
 	
 	
 	
 	//Render the inital frame.
-	window.requestAnimationFrame(draw_julia_set);
+	window.requestAnimationFrame(drawJuliaSet);
 	
 	
 	
-	function on_drag(active_draggable, x, y, event)
+	function onDrag(activeDraggable, x, y, event)
 	{
 		a = x;
 		b = y;
 		
-		window.requestAnimationFrame(draw_julia_set);
+		window.requestAnimationFrame(drawJuliaSet);
 	}
 
 
 
-	function draw_julia_set(timestamp)
+	function drawJuliaSet(timestamp)
 	{
-		let time_elapsed = timestamp - last_timestamp;
+		let timeElapsed = timestamp - lastTimestamp;
 		
-		last_timestamp = timestamp;
+		lastTimestamp = timestamp;
 		
 		
 		
-		if (time_elapsed === 0)
+		if (timeElapsed === 0)
 		{
 			return;
 		}
 		
 		
 		
-		wilson_hidden.gl.uniform1f(wilson_hidden.uniforms["a"], a);
-		wilson_hidden.gl.uniform1f(wilson_hidden.uniforms["b"], b);
+		wilsonHidden.gl.uniform1f(wilsonHidden.uniforms["a"], a);
+		wilsonHidden.gl.uniform1f(wilsonHidden.uniforms["b"], b);
 		
 		/*
 			Like range in a photo, the brightness will get clipped if we let it go above 1.
@@ -183,38 +183,38 @@
 			Too large and everything will get compressed into too few dark values instead,
 			so we need to pick a brightness scale in the middle.
 		*/
-		wilson_hidden.gl.uniform1f(wilson_hidden.uniforms["brightness_scale"], 20);
+		wilsonHidden.gl.uniform1f(wilsonHidden.uniforms["brightnessScale"], 20);
 		
-		wilson_hidden.render.draw_frame();
+		wilsonHidden.render.drawFrame();
 		
 		
 		
-		let pixel_data = wilson_hidden.render.get_pixel_data();
+		let pixelData = wilsonHidden.render.getPixelData();
 		
-		let brightnesses = new Array(resolution_hidden * resolution_hidden);
+		let brightnesses = new Array(resolutionHidden * resolutionHidden);
 		
-		for (let i = 0; i < resolution_hidden * resolution_hidden; i++)
+		for (let i = 0; i < resolutionHidden * resolutionHidden; i++)
 		{
-			brightnesses[i] = pixel_data[4 * i] + pixel_data[4 * i + 1] + pixel_data[4 * i + 2];
+			brightnesses[i] = pixelData[4 * i] + pixelData[4 * i + 1] + pixelData[4 * i + 2];
 		}
 		
 		brightnesses.sort((a, b) => a - b);
 		
 		//Both the .98 and 18 here were found experimentally.
-		let brightness_scale = brightnesses[Math.floor(resolution_hidden * resolution_hidden * .98)] / 255 * 18;
+		let brightnessScale = brightnesses[Math.floor(resolutionHidden * resolutionHidden * .98)] / 255 * 18;
 		
-		brightness_scale = Math.max(brightness_scale, .1);
+		brightnessScale = Math.max(brightnessScale, .1);
 		
 		
 		
 		wilson.gl.uniform1f(wilson.uniforms["a"], a);
 		wilson.gl.uniform1f(wilson.uniforms["b"], b);
-		wilson.gl.uniform1f(wilson.uniforms["brightness_scale"], brightness_scale);
+		wilson.gl.uniform1f(wilson.uniforms["brightnessScale"], brightnessScale);
 		
-		wilson.render.draw_frame();
+		wilson.render.drawFrame();
 	}
 	
 	
 	
 	Page.show();
-}()
+	}()

@@ -2,38 +2,38 @@
 
 Next on the list is making better use of screen space. While JavaScript has a built-in fullscreen API, it's often problematic for use with applets --- it streches the content to fill the screen whether we want it to or not, and it renders any interactivity effectively unusable on mobile, since swiping down always exits fullscreen. Wilson provides its own toolkit to help with this --- let's have a look at how it works.
 
-As usual, we need to update the options. The bare minimum is adding `use_fullscreen: true`, but on its own, we have to handle entering and exiting fullscreen on our own using `wilson.fullscreen.switch_fullscreen()`. Instead, we can add the line `use_fullscreen_button: true`, and Wilson will place a small button in the top-right of our canvas that enters or exits fullscreen when pressed. We also need to tell Wilson where the icons for that button are located --- we can use our own icons, but let's stick with the deafults.
+As usual, we need to update the options. The bare minimum is adding `useFullscreen: true`, but on its own, we have to handle entering and exiting fullscreen on our own using `wilson.fullscreen.switchFullscreen()`. Instead, we can add the line `useFullscreenButton: true`, and Wilson will place a small button in the top-right of our canvas that enters or exits fullscreen when pressed. We also need to tell Wilson where the icons for that button are located --- we can use our own icons, but let's stick with the deafults.
 
 ```js
 	let options =
 	{
 		renderer: "gpu",
 		
-		shader: frag_shader_source,
+		shader: fragShaderSource,
 		
-		canvas_width: 1000,
-		canvas_height: 1000,
+		canvasWidth: 1000,
+		canvasHeight: 1000,
 		
-		world_width: 4,
-		world_height: 4,
-		world_center_x: 0,
-		world_center_y: 0,
-		
-		
-		
-		use_draggables: true,
-		
-		draggables_mousemove_callback: on_drag,
-		draggables_touchmove_callback: on_drag,
+		worldWidth: 4,
+		worldHeight: 4,
+		worldCenterX: 0,
+		worldCenterY: 0,
 		
 		
 		
-		use_fullscreen: true,
+		useDraggables: true,
 		
-		use_fullscreen_button: true,
+		draggablesMousemoveCallback: onDrag,
+		draggablesTouchmoveCallback: onDrag,
 		
-		enter_fullscreen_button_icon_path: "/path/to/enter-fullscreen.png",
-		exit_fullscreen_button_icon_path: "/path/to/exit-fullscreen.png"
+		
+		
+		useFullscreen: true,
+		
+		useFullscreenButton: true,
+		
+		enterFullscreenButtonIconPath: "/path/to/enter-fullscreen.png",
+		exitFullscreenButtonIconPath: "/path/to/exit-fullscreen.png"
 	};
 ```
 
@@ -63,17 +63,17 @@ This is definitely an improvement, but if you mess with it a little, you'll quic
 
 
 ```glsl
-	let frag_shader_source = `
+	let fragShaderSource = `
 		precision highp float;
 		
 		varying vec2 uv;
 		
-		uniform float world_width;
-		uniform float world_height;
+		uniform float worldWidth;
+		uniform float worldHeight;
 		
 		uniform float a;
 		uniform float b;
-		uniform float brightness_scale;
+		uniform float brightnessScale;
 		
 		
 		
@@ -81,14 +81,14 @@ This is definitely an improvement, but if you mess with it a little, you'll quic
 		{
 			vec2 z;
 			
-			if (aspect_ratio >= 1.0)
+			if (aspectRatio >= 1.0)
 			{
-				z = vec2(uv.x * aspect_ratio * 2.0, uv.y * 2.0);
+				z = vec2(uv.x * aspectRatio * 2.0, uv.y * 2.0);
 			}
 			
 			else
 			{
-				z = vec2(uv.x * 2.0, uv.y / aspect_ratio * 2.0);
+				z = vec2(uv.x * 2.0, uv.y / aspectRatio * 2.0);
 			}
 			
 			...
@@ -101,30 +101,30 @@ This is definitely an improvement, but if you mess with it a little, you'll quic
 	{
 		...
 		
-		use_fullscreen: true,
+		useFullscreen: true,
 		
-		true_fullscreen: true,
+		trueFullscreen: true,
 		
-		use_fullscreen_button: true,
+		useFullscreenButton: true,
 		
-		enter_fullscreen_button_image_path: "/path/to/enter-fullscreen.png",
-		exit_fullscreen_button_image_path: "/path/to/exit-fullscreen.png"
+		enterFullscreenButtonImagePath: "/path/to/enter-fullscreen.png",
+		exitFullscreenButtonImagePath: "/path/to/exit-fullscreen.png"
 	};
 ```
 
 ```js
-	wilson.render.init_uniforms(["aspect_ratio", "a", "b", "brightness_scale"]);
-	wilson_hidden.render.init_uniforms(["aspect_ratio", "a", "b", "brightness_scale"]);
+	wilson.render.initUniforms(["aspectRatio", "a", "b", "brightnessScale"]);
+	wilsonHidden.render.initUniforms(["aspectRatio", "a", "b", "brightnessScale"]);
 ```
 
 ```
-	let aspect_ratio = 1;
+	let aspectRatio = 1;
 
 	//Render the first frame.
-	wilson.gl.uniform1f(wilson.uniforms["aspect_ratio"], 1);
-	wilson_hidden.gl.uniform1f(wilson_hidden.uniforms["aspect_ratio"], 1);
+	wilson.gl.uniform1f(wilson.uniforms["aspectRatio"], 1);
+	wilsonHidden.gl.uniform1f(wilsonHidden.uniforms["aspectRatio"], 1);
 
-	window.requestAnimationFrame(draw_julia_set);
+	window.requestAnimationFrame(drawJuliaSet);
 ```
 
 
@@ -138,70 +138,70 @@ Now we're prepared for a canvas that isn't square, but we need to actually resiz
 	{
 		...
 		
-		use_fullscreen: true,
+		useFullscreen: true,
 		
-		true_fullscreen: true,
+		trueFullscreen: true,
 		
-		use_fullscreen_button: true,
+		useFullscreenButton: true,
 		
-		enter_fullscreen_button_image_path: "/path/to/enter-fullscreen.png",
-		exit_fullscreen_button_image_path: "/path/to/exit-fullscreen.png",
+		enterFullscreenButtonImagePath: "/path/to/enter-fullscreen.png",
+		exitFullscreenButtonImagePath: "/path/to/exit-fullscreen.png",
 		
-		switch_fullscreen_callback: change_aspect_ratio
+		switchFullscreenCallback: changeAspectRatio
 	};
 ```
 
 ```js
-	function draw_julia_set(timestamp)
+	function drawJuliaSet(timestamp)
 	{
 		...
 		
-		wilson.gl.uniform1f(wilson.uniforms["aspect_ratio"], aspect_ratio);
+		wilson.gl.uniform1f(wilson.uniforms["aspectRatio"], aspectRatio);
 		
 		wilson.gl.uniform1f(wilson.uniforms["a"], a);
 		wilson.gl.uniform1f(wilson.uniforms["b"], b);
-		wilson.gl.uniform1f(wilson.uniforms["brightness_scale"], brightness_scale);
+		wilson.gl.uniform1f(wilson.uniforms["brightnessScale"], brightnessScale);
 		
-		wilson.render.draw_frame();
+		wilson.render.drawFrame();
 	}
 ```
 
 ```js
-	function change_aspect_ratio()
+	function changeAspectRatio()
 	{
-		if (wilson.fullscreen.currently_fullscreen)
+		if (wilson.fullscreen.currentlyFullscreen)
 		{
-			aspect_ratio = window.innerWidth / window.innerHeight;
+			aspectRatio = window.innerWidth / window.innerHeight;
 			
-			if (aspect_ratio >= 1)
+			if (aspectRatio >= 1)
 			{
-				wilson.change_canvas_size(resolution, Math.floor(resolution / aspect_ratio));
+				wilson.changeCanvasSize(resolution, Math.floor(resolution / aspectRatio));
 				
-				wilson.world_width = 4 * aspect_ratio;
-				wilson.world_height = 4;
+				wilson.worldWidth = 4 * aspectRatio;
+				wilson.worldHeight = 4;
 			}
 			
 			else
 			{
-				wilson.change_canvas_size(Math.floor(resolution * aspect_ratio), resolution);
+				wilson.changeCanvasSize(Math.floor(resolution * aspectRatio), resolution);
 				
-				wilson.world_width = 4;
-				wilson.world_height = 4 / aspect_ratio;
+				wilson.worldWidth = 4;
+				wilson.worldHeight = 4 / aspectRatio;
 			}
 		}
 		
 		else
 		{
-			wilson.change_canvas_size(resolution, resolution);
+			wilson.changeCanvasSize(resolution, resolution);
 			
-			wilson.world_width = 4;
-			wilson.world_height = 4;
+			wilson.worldWidth = 4;
+			wilson.worldHeight = 4;
 		}
 		
-		window.requestAnimationFrame(draw_julia_set);
+		window.requestAnimationFrame(drawJuliaSet);
 	}
 
-	window.addEventListener("resize", change_aspect_ratio);
+	window.addEventListener("resize", changeAspectRatio);
 ```
 
 

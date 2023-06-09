@@ -15,14 +15,14 @@
 	
 	
 	
-	let frag_shader_source = `
+	let fragShaderSource = `
 		precision highp float;
 		
 		varying vec2 uv;
 		
 		uniform float a;
 		uniform float b;
-		uniform float brightness_scale;
+		uniform float brightnessScale;
 		
 		
 		
@@ -55,7 +55,7 @@
 			}
 			
 			
-			gl_FragColor = vec4(brightness / brightness_scale * color, 1.0);
+			gl_FragColor = vec4(brightness / brightnessScale * color, 1.0);
 		}
 	`;
 
@@ -65,29 +65,29 @@
 	{
 		renderer: "gpu",
 		
-		shader: frag_shader_source,
+		shader: fragShaderSource,
 		
-		canvas_width: 1000,
-		canvas_height: 1000,
+		canvasWidth: 1000,
+		canvasHeight: 1000,
 		
-		world_width: 4,
-		world_height: 4,
-		world_center_x: 0,
-		world_center_y: 0,
+		worldWidth: 4,
+		worldHeight: 4,
+		worldCenterX: 0,
+		worldCenterY: 0,
 		
 		
 		
-		use_draggables: true,
+		useDraggables: true,
 		
-		draggables_mousemove_callback: on_drag,
-		draggables_touchmove_callback: on_drag
+		draggablesMousemoveCallback: onDrag,
+		draggablesTouchmoveCallback: onDrag
 	};
 
 
 
 	let wilson = new Wilson(Page.element.querySelector("#output-canvas"), options);
 
-	wilson.render.init_uniforms(["a", "b", "brightness_scale"]);
+	wilson.render.initUniforms(["a", "b", "brightnessScale"]);
 
 	let draggable = wilson.draggables.add(0, 1);
 	
@@ -98,54 +98,54 @@
 	
 	let resolution = 1000;
 	
-	let last_timestamp = -1;
+	let lastTimestamp = -1;
 	
 	
 	
-	let resolution_input_element = Page.element.querySelector("#resolution-input");
+	let resolutionInputElement = Page.element.querySelector("#resolution-input");
 	
-	resolution_input_element.addEventListener("input", () =>
+	resolutionInputElement.addEventListener("input", () =>
 	{
-		resolution = parseInt(resolution_input_element.value || 1000);
+		resolution = parseInt(resolutionInputElement.value || 1000);
 		
-		wilson.change_canvas_size(resolution, resolution);
+		wilson.changeCanvasSize(resolution, resolution);
 	});
 	
 	
 	
-	let download_button_element = Page.element.querySelector("#download-button");
+	let downloadButtonElement = Page.element.querySelector("#download-button");
 	
-	download_button_element.addEventListener("click", () =>
+	downloadButtonElement.addEventListener("click", () =>
 	{
-		wilson.download_frame("a-julia-set.png");
+		wilson.downloadFrame("a-julia-set.png");
 	});
 	
 	
 	
 	//Render the inital frame.
-	window.requestAnimationFrame(draw_julia_set);
+	window.requestAnimationFrame(drawJuliaSet);
 
 
 
-	function on_drag(active_draggable, x, y, event)
+	function onDrag(activeDraggable, x, y, event)
 	{
 		a = x;
 		b = y;
 		
-		window.requestAnimationFrame(draw_julia_set);
+		window.requestAnimationFrame(drawJuliaSet);
 	}
 	
 	
 	
-	function draw_julia_set(timestamp)
+	function drawJuliaSet(timestamp)
 	{
-		let time_elapsed = timestamp - last_timestamp;
+		let timeElapsed = timestamp - lastTimestamp;
 		
-		last_timestamp = timestamp;
+		lastTimestamp = timestamp;
 		
 		
 		
-		if (time_elapsed === 0)
+		if (timeElapsed === 0)
 		{
 			return;
 		}
@@ -154,12 +154,12 @@
 		
 		wilson.gl.uniform1f(wilson.uniforms["a"], a);
 		wilson.gl.uniform1f(wilson.uniforms["b"], b);
-		wilson.gl.uniform1f(wilson.uniforms["brightness_scale"], 10);
+		wilson.gl.uniform1f(wilson.uniforms["brightnessScale"], 10);
 		
-		wilson.render.draw_frame();
+		wilson.render.drawFrame();
 	}
 	
 	
 	
 	Page.show();
-}()
+	}()

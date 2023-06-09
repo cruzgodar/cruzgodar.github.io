@@ -4,20 +4,20 @@
 	
 	
 	
-	let frag_shader_source = `
+	let fragShaderSource = `
 		precision highp float;
 		
 		varying vec2 uv;
 		
-		uniform float aspect_ratio;
+		uniform float aspectRatio;
 		
-		uniform float world_center_x;
-		uniform float world_center_y;
-		uniform float world_size;
+		uniform float worldCenterX;
+		uniform float worldCenterY;
+		uniform float worldSize;
 		
 		uniform float a;
 		uniform float b;
-		uniform float brightness_scale;
+		uniform float brightnessScale;
 		
 		
 		
@@ -25,14 +25,14 @@
 		{
 			vec2 z;
 			
-			if (aspect_ratio >= 1.0)
+			if (aspectRatio >= 1.0)
 			{
-				z = vec2(uv.x * aspect_ratio * world_size + world_center_x, uv.y * world_size + world_center_y);
+				z = vec2(uv.x * aspectRatio * worldSize + worldCenterX, uv.y * worldSize + worldCenterY);
 			}
 			
 			else
 			{
-				z = vec2(uv.x * world_size + world_center_x, uv.y / aspect_ratio * world_size + world_center_y);
+				z = vec2(uv.x * worldSize + worldCenterX, uv.y / aspectRatio * worldSize + worldCenterY);
 			}
 			
 			vec3 color = normalize(vec3(abs(z.x + z.y) / 2.0, abs(z.x) / 2.0, abs(z.y) / 2.0) + .1 / length(z) * vec3(1.0, 1.0, 1.0));
@@ -61,7 +61,7 @@
 			}
 			
 			
-			gl_FragColor = vec4(brightness / brightness_scale * color, 1.0);
+			gl_FragColor = vec4(brightness / brightnessScale * color, 1.0);
 		}
 	`;
 
@@ -71,414 +71,414 @@
 	{
 		renderer: "gpu",
 		
-		shader: frag_shader_source,
+		shader: fragShaderSource,
 		
-		canvas_width: 1000,
-		canvas_height: 1000,
+		canvasWidth: 1000,
+		canvasHeight: 1000,
 		
-		world_width: 4,
-		world_height: 4,
-		world_center_x: 0,
-		world_center_y: 0,
-		
-		
-		
-		use_draggables: true,
-		
-		draggables_mousemove_callback: on_drag,
-		draggables_touchmove_callback: on_drag,
+		worldWidth: 4,
+		worldHeight: 4,
+		worldCenterX: 0,
+		worldCenterY: 0,
 		
 		
 		
-		use_fullscreen: true,
+		useDraggables: true,
 		
-		true_fullscreen: true,
+		draggablesMousemoveCallback: onDrag,
+		draggablesTouchmoveCallback: onDrag,
+		
+		
+		
+		useFullscreen: true,
+		
+		trueFullscreen: true,
 	
-		use_fullscreen_button: true,
+		useFullscreenButton: true,
 		
-		enter_fullscreen_button_icon_path: "/graphics/general-icons/enter-fullscreen.png",
-		exit_fullscreen_button_icon_path: "/graphics/general-icons/exit-fullscreen.png",
+		enterFullscreenButtonIconPath: "/graphics/general-icons/enter-fullscreen.png",
+		exitFullscreenButtonIconPath: "/graphics/general-icons/exit-fullscreen.png",
 		
-		switch_fullscreen_callback: change_aspect_ratio,
+		switchFullscreenCallback: changeAspectRatio,
 		
 		
 		
-		mousedown_callback: on_grab_canvas,
-		touchstart_callback: on_grab_canvas,
+		mousedownCallback: onGrabCanvas,
+		touchstartCallback: onGrabCanvas,
 		
-		mousedrag_callback: on_drag_canvas,
-		touchmove_callback: on_drag_canvas,
+		mousedragCallback: onDragCanvas,
+		touchmoveCallback: onDragCanvas,
 		
-		mouseup_callback: on_release_canvas,
-		touchend_callback: on_release_canvas,
+		mouseupCallback: onReleaseCanvas,
+		touchendCallback: onReleaseCanvas,
 		
-		wheel_callback: on_wheel_canvas,
-		pinch_callback: on_pinch_canvas
+		wheelCallback: onWheelCanvas,
+		pinchCallback: onPinchCanvas
 	};
 	
-	let options_hidden =
+	let optionsHidden =
 	{
 		renderer: "gpu",
 		
-		shader: frag_shader_source,
+		shader: fragShaderSource,
 		
-		canvas_width: 100,
-		canvas_height: 100
+		canvasWidth: 100,
+		canvasHeight: 100
 	};
 	
 	
 	
 	let wilson = new Wilson(Page.element.querySelector("#output-canvas"), options);
 
-	wilson.render.init_uniforms(["aspect_ratio", "world_center_x", "world_center_y", "world_size", "a", "b", "brightness_scale"]);
+	wilson.render.initUniforms(["aspectRatio", "worldCenterX", "worldCenterY", "worldSize", "a", "b", "brightnessScale"]);
 
 	let draggable = wilson.draggables.add(0, 1);
 	
 	
 	
-	let wilson_hidden = new Wilson(Page.element.querySelector("#hidden-canvas"), options_hidden);
+	let wilsonHidden = new Wilson(Page.element.querySelector("#hidden-canvas"), optionsHidden);
 	
-	wilson_hidden.render.init_uniforms(["aspect_ratio", "world_center_x", "world_center_y", "world_size", "a", "b", "brightness_scale"]);
+	wilsonHidden.render.initUniforms(["aspectRatio", "worldCenterX", "worldCenterY", "worldSize", "a", "b", "brightnessScale"]);
 	
 	
 	
 	wilson.canvas.parentNode.parentNode.style.setProperty("margin-bottom", 0, "important");
-	wilson_hidden.canvas.parentNode.parentNode.style.setProperty("margin-top", 0, "important");
+	wilsonHidden.canvas.parentNode.parentNode.style.setProperty("margin-top", 0, "important");
 	
 	
 	
-	let aspect_ratio = 1;
+	let aspectRatio = 1;
 	
-	let zoom_level = 0;
+	let zoomLevel = 0;
 	
 	let a = 0;
 	let b = 1;
 	
 	let resolution = 1000;
-	let resolution_hidden = 100;
+	let resolutionHidden = 100;
 	
-	let fixed_point_x = 0;
-	let fixed_point_y = 0;
+	let fixedPointX = 0;
+	let fixedPointY = 0;
 	
-	let next_pan_velocity_x = 0;
-	let next_pan_velocity_y = 0;
-	let next_zoom_velocity = 0;
+	let nextPanVelocityX = 0;
+	let nextPanVelocityY = 0;
+	let nextZoomVelocity = 0;
 	
-	let pan_velocity_x = 0;
-	let pan_velocity_y = 0;
-	let zoom_velocity = 0;
+	let panVelocityX = 0;
+	let panVelocityY = 0;
+	let zoomVelocity = 0;
 	
-	const pan_friction = .96;
-	const pan_velocity_start_threshhold = .005;
-	const pan_velocity_stop_threshhold = .0005;
+	const panFriction = .96;
+	const panVelocityStartThreshhold = .005;
+	const panVelocityStopThreshhold = .0005;
 	
-	const zoom_friction = .93;
-	const zoom_velocity_start_threshhold = .01;
-	const zoom_velocity_stop_threshhold = .001;
+	const zoomFriction = .93;
+	const zoomVelocityStartThreshhold = .01;
+	const zoomVelocityStopThreshhold = .001;
 	
-	let last_timestamp = -1;
+	let lastTimestamp = -1;
 	
 	
 
-	let resolution_input_element = Page.element.querySelector("#resolution-input");
+	let resolutionInputElement = Page.element.querySelector("#resolution-input");
 	
-	resolution_input_element.addEventListener("input", () =>
+	resolutionInputElement.addEventListener("input", () =>
 	{
-		resolution = parseInt(resolution_input_element.value || 1000);
+		resolution = parseInt(resolutionInputElement.value || 1000);
 		
-		wilson.change_canvas_size(resolution, resolution);
+		wilson.changeCanvasSize(resolution, resolution);
 	});
 	
 	
 	
 	//Render the inital frame.
-	wilson.gl.uniform1f(wilson.uniforms["aspect_ratio"], 1);
-	wilson_hidden.gl.uniform1f(wilson_hidden.uniforms["aspect_ratio"], 1);
+	wilson.gl.uniform1f(wilson.uniforms["aspectRatio"], 1);
+	wilsonHidden.gl.uniform1f(wilsonHidden.uniforms["aspectRatio"], 1);
 	
-	window.requestAnimationFrame(draw_julia_set);
+	window.requestAnimationFrame(drawJuliaSet);
 	
 	
 	
-	function on_drag(active_draggable, x, y, event)
+	function onDrag(activeDraggable, x, y, event)
 	{
 		a = x;
 		b = y;
 		
-		window.requestAnimationFrame(draw_julia_set);
+		window.requestAnimationFrame(drawJuliaSet);
 	}
 	
 	
 	
-	function on_grab_canvas(x, y, event)
+	function onGrabCanvas(x, y, event)
 	{
-		pan_velocity_x = 0;
-		pan_velocity_y = 0;
-		zoom_velocity = 0;
+		panVelocityX = 0;
+		panVelocityY = 0;
+		zoomVelocity = 0;
 		
-		next_pan_velocity_x = 0;
-		next_pan_velocity_y = 0;
-		next_zoom_velocity = 0;
+		nextPanVelocityX = 0;
+		nextPanVelocityY = 0;
+		nextZoomVelocity = 0;
 	}
 	
 	
 	
-	function on_drag_canvas(x, y, x_delta, y_delta, event)
+	function onDragCanvas(x, y, xDelta, yDelta, event)
 	{
-		wilson.world_center_x -= x_delta;
-		wilson.world_center_y -= y_delta;
+		wilson.worldCenterX -= xDelta;
+		wilson.worldCenterY -= yDelta;
 		
-		next_pan_velocity_x = -x_delta;
-		next_pan_velocity_y = -y_delta;
+		nextPanVelocityX = -xDelta;
+		nextPanVelocityY = -yDelta;
 		
-		wilson.world_center_x = Math.min(Math.max(wilson.world_center_x, -2), 2);
-		wilson.world_center_y = Math.min(Math.max(wilson.world_center_y, -2), 2);
+		wilson.worldCenterX = Math.min(Math.max(wilson.worldCenterX, -2), 2);
+		wilson.worldCenterY = Math.min(Math.max(wilson.worldCenterY, -2), 2);
 		
-		window.requestAnimationFrame(draw_julia_set);
+		window.requestAnimationFrame(drawJuliaSet);
 		
-		wilson.draggables.recalculate_locations();
+		wilson.draggables.recalculateLocations();
 	}
 	
 	
 	
-	function on_release_canvas(x, y, event)
+	function onReleaseCanvas(x, y, event)
 	{
-		if (Math.sqrt(next_pan_velocity_x * next_pan_velocity_x + next_pan_velocity_y * next_pan_velocity_y) >= pan_velocity_start_threshhold * Math.min(wilson.world_width, wilson.world_height))
+		if (Math.sqrt(nextPanVelocityX * nextPanVelocityX + nextPanVelocityY * nextPanVelocityY) >= panVelocityStartThreshhold * Math.min(wilson.worldWidth, wilson.worldHeight))
 		{
-			pan_velocity_x = next_pan_velocity_x;
-			pan_velocity_y = next_pan_velocity_y;
+			panVelocityX = nextPanVelocityX;
+			panVelocityY = nextPanVelocityY;
 		}
 		
-		if (Math.abs(next_zoom_velocity) >= zoom_velocity_start_threshhold)
+		if (Math.abs(nextZoomVelocity) >= zoomVelocityStartThreshhold)
 		{
-			zoom_velocity = next_zoom_velocity;
+			zoomVelocity = nextZoomVelocity;
 		}
 		
-		window.requestAnimationFrame(draw_julia_set);
+		window.requestAnimationFrame(drawJuliaSet);
 	}
 	
 	
 	
-	function on_wheel_canvas(x, y, scroll_amount, event)
+	function onWheelCanvas(x, y, scrollAmount, event)
 	{
-		fixed_point_x = x;
-		fixed_point_y = y;
+		fixedPointX = x;
+		fixedPointY = y;
 		
-		if (Math.abs(scroll_amount / 100) < .3)
+		if (Math.abs(scrollAmount / 100) < .3)
 		{
-			zoom_level += scroll_amount / 100;
+			zoomLevel += scrollAmount / 100;
 			
-			zoom_level = Math.min(zoom_level, 1);
+			zoomLevel = Math.min(zoomLevel, 1);
 		}
 		
 		else
 		{
-			zoom_velocity += Math.sign(scroll_amount) * .05;
+			zoomVelocity += Math.sign(scrollAmount) * .05;
 		}
 		
-		zoom_canvas();
+		zoomCanvas();
 	}
 	
 	
 	
-	function on_pinch_canvas(x, y, touch_distance_delta, event)
+	function onPinchCanvas(x, y, touchDistanceDelta, event)
 	{
-		if (aspect_ratio >= 1)
+		if (aspectRatio >= 1)
 		{
-			zoom_level -= touch_distance_delta / wilson.world_width * 10;
+			zoomLevel -= touchDistanceDelta / wilson.worldWidth * 10;
 			
-			next_zoom_velocity = -touch_distance_delta / wilson.world_width * 10;
+			nextZoomVelocity = -touchDistanceDelta / wilson.worldWidth * 10;
 		}
 		
 		else
 		{
-			zoom_level -= touch_distance_delta / wilson.world_height * 10;
+			zoomLevel -= touchDistanceDelta / wilson.worldHeight * 10;
 			
-			next_zoom_velocity = -touch_distance_delta / wilson.world_height * 10;
+			nextZoomVelocity = -touchDistanceDelta / wilson.worldHeight * 10;
 		}
 		
-		zoom_level = Math.min(zoom_level, 1);
+		zoomLevel = Math.min(zoomLevel, 1);
 		
-		fixed_point_x = x;
-		fixed_point_y = y;
+		fixedPointX = x;
+		fixedPointY = y;
 		
-		zoom_canvas();
+		zoomCanvas();
 	}
 	
 	
 	
-	function zoom_canvas()
+	function zoomCanvas()
 	{
-		if (aspect_ratio >= 1)
+		if (aspectRatio >= 1)
 		{
-			let new_world_center = wilson.input.get_zoomed_world_center(fixed_point_x, fixed_point_y, 4 * Math.pow(2, zoom_level) * aspect_ratio, 4 * Math.pow(2, zoom_level));
+			let newWorldCenter = wilson.input.getZoomedWorldCenter(fixedPointX, fixedPointY, 4 * Math.pow(2, zoomLevel) * aspectRatio, 4 * Math.pow(2, zoomLevel));
 			
-			wilson.world_width = 4 * Math.pow(2, zoom_level) * aspect_ratio;
-			wilson.world_height = 4 * Math.pow(2, zoom_level);
+			wilson.worldWidth = 4 * Math.pow(2, zoomLevel) * aspectRatio;
+			wilson.worldHeight = 4 * Math.pow(2, zoomLevel);
 			
-			wilson.world_center_x = new_world_center[0];
-			wilson.world_center_y = new_world_center[1];
+			wilson.worldCenterX = newWorldCenter[0];
+			wilson.worldCenterY = newWorldCenter[1];
 		}
 		
 		else
 		{
-			let new_world_center = wilson.input.get_zoomed_world_center(fixed_point_x, fixed_point_y, 4 * Math.pow(2, zoom_level), 4 * Math.pow(2, zoom_level) / aspect_ratio);
+			let newWorldCenter = wilson.input.getZoomedWorldCenter(fixedPointX, fixedPointY, 4 * Math.pow(2, zoomLevel), 4 * Math.pow(2, zoomLevel) / aspectRatio);
 			
-			wilson.world_width = 4 * Math.pow(2, zoom_level);
-			wilson.world_height = 4 * Math.pow(2, zoom_level) / aspect_ratio;
+			wilson.worldWidth = 4 * Math.pow(2, zoomLevel);
+			wilson.worldHeight = 4 * Math.pow(2, zoomLevel) / aspectRatio;
 			
-			wilson.world_center_x = new_world_center[0];
-			wilson.world_center_y = new_world_center[1];
+			wilson.worldCenterX = newWorldCenter[0];
+			wilson.worldCenterY = newWorldCenter[1];
 		}
 		
-		window.requestAnimationFrame(draw_julia_set);
+		window.requestAnimationFrame(drawJuliaSet);
 		
-		wilson.draggables.recalculate_locations();
+		wilson.draggables.recalculateLocations();
 	}
 
 
 
-	function draw_julia_set(timestamp)
+	function drawJuliaSet(timestamp)
 	{
-		let time_elapsed = timestamp - last_timestamp;
+		let timeElapsed = timestamp - lastTimestamp;
 		
-		last_timestamp = timestamp;
+		lastTimestamp = timestamp;
 		
 		
 		
-		if (time_elapsed === 0)
+		if (timeElapsed === 0)
 		{
 			return;
 		}
 		
 		
 		
-		wilson_hidden.gl.uniform1f(wilson_hidden.uniforms["world_center_x"], wilson.world_center_x);
-		wilson_hidden.gl.uniform1f(wilson_hidden.uniforms["world_center_y"], wilson.world_center_y);
+		wilsonHidden.gl.uniform1f(wilsonHidden.uniforms["worldCenterX"], wilson.worldCenterX);
+		wilsonHidden.gl.uniform1f(wilsonHidden.uniforms["worldCenterY"], wilson.worldCenterY);
 		
-		wilson_hidden.gl.uniform1f(wilson_hidden.uniforms["world_size"], Math.min(wilson.world_height, wilson.world_width) / 2);
+		wilsonHidden.gl.uniform1f(wilsonHidden.uniforms["worldSize"], Math.min(wilson.worldHeight, wilson.worldWidth) / 2);
 		
-		wilson_hidden.gl.uniform1f(wilson_hidden.uniforms["a"], a);
-		wilson_hidden.gl.uniform1f(wilson_hidden.uniforms["b"], b);
-		wilson_hidden.gl.uniform1f(wilson_hidden.uniforms["brightness_scale"], 20);
+		wilsonHidden.gl.uniform1f(wilsonHidden.uniforms["a"], a);
+		wilsonHidden.gl.uniform1f(wilsonHidden.uniforms["b"], b);
+		wilsonHidden.gl.uniform1f(wilsonHidden.uniforms["brightnessScale"], 20);
 		
-		wilson_hidden.render.draw_frame();
+		wilsonHidden.render.drawFrame();
 		
 		
 		
-		let pixel_data = wilson_hidden.render.get_pixel_data();
+		let pixelData = wilsonHidden.render.getPixelData();
 		
-		let brightnesses = new Array(resolution_hidden * resolution_hidden);
+		let brightnesses = new Array(resolutionHidden * resolutionHidden);
 		
-		for (let i = 0; i < resolution_hidden * resolution_hidden; i++)
+		for (let i = 0; i < resolutionHidden * resolutionHidden; i++)
 		{
-			brightnesses[i] = pixel_data[4 * i] + pixel_data[4 * i + 1] + pixel_data[4 * i + 2];
+			brightnesses[i] = pixelData[4 * i] + pixelData[4 * i + 1] + pixelData[4 * i + 2];
 		}
 		
 		brightnesses.sort((a, b) => a - b);
 		
-		let brightness_scale = brightnesses[Math.floor(resolution_hidden * resolution_hidden * .98)] / 255 * 18;
+		let brightnessScale = brightnesses[Math.floor(resolutionHidden * resolutionHidden * .98)] / 255 * 18;
 		
-		brightness_scale = Math.max(brightness_scale, .1);
+		brightnessScale = Math.max(brightnessScale, .1);
 		
 		
 		
-		wilson.gl.uniform1f(wilson.uniforms["aspect_ratio"], aspect_ratio);
+		wilson.gl.uniform1f(wilson.uniforms["aspectRatio"], aspectRatio);
 		
-		wilson.gl.uniform1f(wilson.uniforms["world_center_x"], wilson.world_center_x);
-		wilson.gl.uniform1f(wilson.uniforms["world_center_y"], wilson.world_center_y);
+		wilson.gl.uniform1f(wilson.uniforms["worldCenterX"], wilson.worldCenterX);
+		wilson.gl.uniform1f(wilson.uniforms["worldCenterY"], wilson.worldCenterY);
 		
-		wilson.gl.uniform1f(wilson.uniforms["world_size"], Math.min(wilson.world_height, wilson.world_width) / 2);
+		wilson.gl.uniform1f(wilson.uniforms["worldSize"], Math.min(wilson.worldHeight, wilson.worldWidth) / 2);
 		
 		wilson.gl.uniform1f(wilson.uniforms["a"], a);
 		wilson.gl.uniform1f(wilson.uniforms["b"], b);
-		wilson.gl.uniform1f(wilson.uniforms["brightness_scale"], brightness_scale);
+		wilson.gl.uniform1f(wilson.uniforms["brightnessScale"], brightnessScale);
 		
-		wilson.render.draw_frame();
+		wilson.render.drawFrame();
 		
 		
 		
-		if (pan_velocity_x !== 0 || pan_velocity_y !== 0 || zoom_velocity !== 0)
+		if (panVelocityX !== 0 || panVelocityY !== 0 || zoomVelocity !== 0)
 		{
-			wilson.world_center_x += pan_velocity_x;
-			wilson.world_center_y += pan_velocity_y;
+			wilson.worldCenterX += panVelocityX;
+			wilson.worldCenterY += panVelocityY;
 			
-			wilson.world_center_x = Math.min(Math.max(wilson.world_center_x, -2), 2);
-			wilson.world_center_y = Math.min(Math.max(wilson.world_center_y, -2), 2);
+			wilson.worldCenterX = Math.min(Math.max(wilson.worldCenterX, -2), 2);
+			wilson.worldCenterY = Math.min(Math.max(wilson.worldCenterY, -2), 2);
 			
 			
 			
-			pan_velocity_x *= pan_friction;
-			pan_velocity_y *= pan_friction;
+			panVelocityX *= panFriction;
+			panVelocityY *= panFriction;
 			
-			if (Math.sqrt(pan_velocity_x * pan_velocity_x + pan_velocity_y * pan_velocity_y) < pan_velocity_stop_threshhold * Math.min(wilson.world_width, wilson.world_height))
+			if (Math.sqrt(panVelocityX * panVelocityX + panVelocityY * panVelocityY) < panVelocityStopThreshhold * Math.min(wilson.worldWidth, wilson.worldHeight))
 			{
-				pan_velocity_x = 0;
-				pan_velocity_y = 0;
+				panVelocityX = 0;
+				panVelocityY = 0;
 			}
 			
 			
 			
-			zoom_level += zoom_velocity;
+			zoomLevel += zoomVelocity;
 			
-			zoom_level = Math.min(zoom_level, 1);
+			zoomLevel = Math.min(zoomLevel, 1);
 			
-			zoom_canvas(fixed_point_x, fixed_point_y);
+			zoomCanvas(fixedPointX, fixedPointY);
 			
-			zoom_velocity *= zoom_friction;
+			zoomVelocity *= zoomFriction;
 			
-			if (Math.abs(zoom_velocity) < zoom_velocity_stop_threshhold)
+			if (Math.abs(zoomVelocity) < zoomVelocityStopThreshhold)
 			{
-				zoom_velocity = 0;
+				zoomVelocity = 0;
 			}
 			
 			
 			
-			window.requestAnimationFrame(draw_julia_set);
+			window.requestAnimationFrame(drawJuliaSet);
 			
-			wilson.draggables.recalculate_locations();
+			wilson.draggables.recalculateLocations();
 		}
 	}
 	
 	
 	
-	function change_aspect_ratio()
+	function changeAspectRatio()
 	{
-		if (wilson.fullscreen.currently_fullscreen)
+		if (wilson.fullscreen.currentlyFullscreen)
 		{
-			aspect_ratio = window.innerWidth / window.innerHeight;
+			aspectRatio = window.innerWidth / window.innerHeight;
 			
-			if (aspect_ratio >= 1)
+			if (aspectRatio >= 1)
 			{
-				wilson.change_canvas_size(resolution, Math.floor(resolution / aspect_ratio));
+				wilson.changeCanvasSize(resolution, Math.floor(resolution / aspectRatio));
 				
-				wilson.world_width = 4 * Math.pow(2, zoom_level) * aspect_ratio;
-				wilson.world_height = 4 * Math.pow(2, zoom_level);
+				wilson.worldWidth = 4 * Math.pow(2, zoomLevel) * aspectRatio;
+				wilson.worldHeight = 4 * Math.pow(2, zoomLevel);
 			}
 			
 			else
 			{
-				wilson.change_canvas_size(Math.floor(resolution * aspect_ratio), resolution);
+				wilson.changeCanvasSize(Math.floor(resolution * aspectRatio), resolution);
 				
-				wilson.world_width = 4 * Math.pow(2, zoom_level);
-				wilson.world_height = 4 * Math.pow(2, zoom_level) / aspect_ratio;
+				wilson.worldWidth = 4 * Math.pow(2, zoomLevel);
+				wilson.worldHeight = 4 * Math.pow(2, zoomLevel) / aspectRatio;
 			}
 		}
 		
 		else
 		{
-			aspect_ratio = 1;
+			aspectRatio = 1;
 			
-			wilson.change_canvas_size(resolution, resolution);
+			wilson.changeCanvasSize(resolution, resolution);
 			
-			wilson.world_width = 4 * Math.pow(2, zoom_level);
-			wilson.world_height = 4 * Math.pow(2, zoom_level);
+			wilson.worldWidth = 4 * Math.pow(2, zoomLevel);
+			wilson.worldHeight = 4 * Math.pow(2, zoomLevel);
 		}
 		
-		window.requestAnimationFrame(draw_julia_set);
+		window.requestAnimationFrame(drawJuliaSet);
 	}
 
-	window.addEventListener("resize", change_aspect_ratio);
-	Page.temporary_handlers["resize"].push(change_aspect_ratio);
+	window.addEventListener("resize", changeAspectRatio);
+	Page.temporaryHandlers["resize"].push(changeAspectRatio);
 	
 	
 	
@@ -531,4 +531,4 @@
 	
 	
 	Page.show();
-}()
+	}()

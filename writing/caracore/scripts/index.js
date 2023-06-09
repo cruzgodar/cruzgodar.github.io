@@ -4,10 +4,10 @@
 	
 	document.documentElement.style.backgroundColor = "rgb(0, 0, 0)";
 	
-	Page.background_color_changed = true;
+	Page.backgroundColorChanged = true;
 	
 	anime({
-		targets: Site.Settings.meta_theme_color_element,
+		targets: Site.Settings.metaThemeColorElement,
 		content: "#000000",
 		duration: 500,
 		easing: "cubicBezier(.42, 0, .58, 1)"

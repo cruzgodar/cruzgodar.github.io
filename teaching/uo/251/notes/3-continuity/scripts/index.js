@@ -1,6 +1,6 @@
 !function()
 {
-	Page.Load.get_desmos_data = () =>
+	Page.Load.getDesmosData = () =>
 	{
 		const data =
 		{
@@ -63,7 +63,7 @@
 		return data;
 	}
 	
-	Page.Load.create_desmos_graphs();
+	Page.Load.createDesmosGraphs();
 	
 	Page.show();
 }()

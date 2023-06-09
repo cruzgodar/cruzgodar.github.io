@@ -16,14 +16,14 @@
 	
 	
 	{
-		let frag_shader_source = `
+		let fragShaderSource = `
 			precision highp float;
 			
 			varying vec2 uv;
 			
 			uniform float a;
 			uniform float b;
-			uniform float brightness_scale;
+			uniform float brightnessScale;
 			
 			
 			
@@ -56,7 +56,7 @@
 				}
 				
 				
-				gl_FragColor = vec4(brightness / brightness_scale * color, 1.0);
+				gl_FragColor = vec4(brightness / brightnessScale * color, 1.0);
 			}
 		`;
 
@@ -66,61 +66,61 @@
 		{
 			renderer: "gpu",
 			
-			shader: frag_shader_source,
+			shader: fragShaderSource,
 			
-			canvas_width: 1000,
-			canvas_height: 1000,
+			canvasWidth: 1000,
+			canvasHeight: 1000,
 			
-			world_width: 4,
-			world_height: 4,
-			world_center_x: 0,
-			world_center_y: 0,
-			
-			
-			
-			use_draggables: true,
-			
-			draggables_mousemove_callback: on_drag,
-			draggables_touchmove_callback: on_drag,
+			worldWidth: 4,
+			worldHeight: 4,
+			worldCenterX: 0,
+			worldCenterY: 0,
 			
 			
 			
-			use_fullscreen: true,
+			useDraggables: true,
+			
+			draggablesMousemoveCallback: onDrag,
+			draggablesTouchmoveCallback: onDrag,
+			
+			
+			
+			useFullscreen: true,
 		
-			use_fullscreen_button: true,
+			useFullscreenButton: true,
 			
-			enter_fullscreen_button_icon_path: "/graphics/general-icons/enter-fullscreen.png",
-			exit_fullscreen_button_icon_path: "/graphics/general-icons/exit-fullscreen.png"
+			enterFullscreenButtonIconPath: "/graphics/general-icons/enter-fullscreen.png",
+			exitFullscreenButtonIconPath: "/graphics/general-icons/exit-fullscreen.png"
 		};
 		
-		let options_hidden =
+		let optionsHidden =
 		{
 			renderer: "gpu",
 			
-			shader: frag_shader_source,
+			shader: fragShaderSource,
 			
-			canvas_width: 100,
-			canvas_height: 100
+			canvasWidth: 100,
+			canvasHeight: 100
 		};
 		
 		
 		
 		let wilson = new Wilson(Page.element.querySelector("#output-canvas-1"), options);
 
-		wilson.render.init_uniforms(["a", "b", "brightness_scale"]);
+		wilson.render.initUniforms(["a", "b", "brightnessScale"]);
 
 		let draggable = wilson.draggables.add(0, 1);
 		
 		
 		
-		let wilson_hidden = new Wilson(Page.element.querySelector("#hidden-canvas-1"), options_hidden);
+		let wilsonHidden = new Wilson(Page.element.querySelector("#hidden-canvas-1"), optionsHidden);
 		
-		wilson_hidden.render.init_uniforms(["a", "b", "brightness_scale"]);
+		wilsonHidden.render.initUniforms(["a", "b", "brightnessScale"]);
 		
 		
 		
 		wilson.canvas.parentNode.parentNode.style.setProperty("margin-bottom", 0, "important");
-		wilson_hidden.canvas.parentNode.parentNode.style.setProperty("margin-top", 0, "important");
+		wilsonHidden.canvas.parentNode.parentNode.style.setProperty("margin-top", 0, "important");
 		
 		
 		
@@ -128,109 +128,109 @@
 		let b = 1;
 		
 		let resolution = 1000;
-		let resolution_hidden = 100;
+		let resolutionHidden = 100;
 		
-		let last_timestamp = -1;
+		let lastTimestamp = -1;
 		
 		
 
-		let resolution_input_element = Page.element.querySelector("#resolution-1-input");
+		let resolutionInputElement = Page.element.querySelector("#resolution-1-input");
 		
-		resolution_input_element.addEventListener("input", () =>
+		resolutionInputElement.addEventListener("input", () =>
 		{
-			resolution = parseInt(resolution_input_element.value || 1000);
+			resolution = parseInt(resolutionInputElement.value || 1000);
 			
-			wilson.change_canvas_size(resolution, resolution);
+			wilson.changeCanvasSize(resolution, resolution);
 		});
 		
 		
 		
-		let download_button_element = Page.element.querySelector("#download-1-button");
+		let downloadButtonElement = Page.element.querySelector("#download-1-button");
 		
-		download_button_element.addEventListener("click", () =>
+		downloadButtonElement.addEventListener("click", () =>
 		{
-			wilson.download_frame("a-julia-set.png");
+			wilson.downloadFrame("a-julia-set.png");
 		});
 		
 		
 		
 		//Render the inital frame.
-		wilson.change_canvas_size(resolution, resolution);
-		window.requestAnimationFrame(draw_julia_set);
+		wilson.changeCanvasSize(resolution, resolution);
+		window.requestAnimationFrame(drawJuliaSet);
 		
 		
 		
-		function on_drag(active_draggable, x, y, event)
+		function onDrag(activeDraggable, x, y, event)
 		{
 			a = x;
 			b = y;
 			
-			window.requestAnimationFrame(draw_julia_set);
+			window.requestAnimationFrame(drawJuliaSet);
 		}
 
 
 
-		function draw_julia_set(timestamp)
+		function drawJuliaSet(timestamp)
 		{
-			let time_elapsed = timestamp - last_timestamp;
+			let timeElapsed = timestamp - lastTimestamp;
 			
-			last_timestamp = timestamp;
+			lastTimestamp = timestamp;
 			
 			
 			
-			if (time_elapsed === 0)
+			if (timeElapsed === 0)
 			{
 				return;
 			}
 			
 			
 			
-			wilson_hidden.gl.uniform1f(wilson_hidden.uniforms["a"], a);
-			wilson_hidden.gl.uniform1f(wilson_hidden.uniforms["b"], b);
-			wilson_hidden.gl.uniform1f(wilson_hidden.uniforms["brightness_scale"], 20);
+			wilsonHidden.gl.uniform1f(wilsonHidden.uniforms["a"], a);
+			wilsonHidden.gl.uniform1f(wilsonHidden.uniforms["b"], b);
+			wilsonHidden.gl.uniform1f(wilsonHidden.uniforms["brightnessScale"], 20);
 			
-			wilson_hidden.render.draw_frame();
+			wilsonHidden.render.drawFrame();
 			
 			
 			
-			let pixel_data = wilson_hidden.render.get_pixel_data();
+			let pixelData = wilsonHidden.render.getPixelData();
 			
-			let brightnesses = new Array(resolution_hidden * resolution_hidden);
+			let brightnesses = new Array(resolutionHidden * resolutionHidden);
 			
-			for (let i = 0; i < resolution_hidden * resolution_hidden; i++)
+			for (let i = 0; i < resolutionHidden * resolutionHidden; i++)
 			{
-				brightnesses[i] = pixel_data[4 * i] + pixel_data[4 * i + 1] + pixel_data[4 * i + 2];
+				brightnesses[i] = pixelData[4 * i] + pixelData[4 * i + 1] + pixelData[4 * i + 2];
 			}
 			
 			brightnesses.sort((a, b) => a - b);
 			
-			let brightness_scale = brightnesses[Math.floor(resolution_hidden * resolution_hidden * .98)] / 255 * 18;
+			let brightnessScale = brightnesses[Math.floor(resolutionHidden * resolutionHidden * .98)] / 255 * 18;
 			
-			brightness_scale = Math.max(brightness_scale, .1);
+			brightnessScale = Math.max(brightnessScale, .1);
 			
 			
 			
 			wilson.gl.uniform1f(wilson.uniforms["a"], a);
 			wilson.gl.uniform1f(wilson.uniforms["b"], b);
-			wilson.gl.uniform1f(wilson.uniforms["brightness_scale"], brightness_scale);
+			wilson.gl.uniform1f(wilson.uniforms["brightnessScale"], brightnessScale);
 			
-			wilson.render.draw_frame();
+			wilson.render.drawFrame();
 		}
 	}
 	
 	
 	
 	{
-		let frag_shader_source = `
+		let fragShaderSource = `
 			precision highp float;
 			
 			varying vec2 uv;
 			
-			uniform float aspect_ratio;
+			uniform float aspectRatio;
 			
 			uniform float a;
 			uniform float b;
-			uniform float brightness_scale;
+			uniform float brightnessScale;
 			
 			
 			
@@ -238,14 +238,14 @@
 			{
 				vec2 z;
 				
-				if (aspect_ratio >= 1.0)
+				if (aspectRatio >= 1.0)
 				{
-					z = vec2(uv.x * aspect_ratio * 2.0, uv.y * 2.0);
+					z = vec2(uv.x * aspectRatio * 2.0, uv.y * 2.0);
 				}
 				
 				else
 				{
-					z = vec2(uv.x * 2.0, uv.y / aspect_ratio * 2.0);
+					z = vec2(uv.x * 2.0, uv.y / aspectRatio * 2.0);
 				}
 				
 				vec3 color = normalize(vec3(abs(z.x + z.y) / 2.0, abs(z.x) / 2.0, abs(z.y) / 2.0) + .1 / length(z) * vec3(1.0, 1.0, 1.0));
@@ -274,7 +274,7 @@
 				}
 				
 				
-				gl_FragColor = vec4(brightness / brightness_scale * color, 1.0);
+				gl_FragColor = vec4(brightness / brightnessScale * color, 1.0);
 			}
 		`;
 
@@ -284,210 +284,210 @@
 		{
 			renderer: "gpu",
 			
-			shader: frag_shader_source,
+			shader: fragShaderSource,
 			
-			canvas_width: 1000,
-			canvas_height: 1000,
+			canvasWidth: 1000,
+			canvasHeight: 1000,
 			
-			world_width: 4,
-			world_height: 4,
-			world_center_x: 0,
-			world_center_y: 0,
-			
-			
-			
-			use_draggables: true,
-			
-			draggables_mousemove_callback: on_drag,
-			draggables_touchmove_callback: on_drag,
+			worldWidth: 4,
+			worldHeight: 4,
+			worldCenterX: 0,
+			worldCenterY: 0,
 			
 			
 			
-			use_fullscreen: true,
+			useDraggables: true,
 			
-			true_fullscreen: true,
+			draggablesMousemoveCallback: onDrag,
+			draggablesTouchmoveCallback: onDrag,
+			
+			
+			
+			useFullscreen: true,
+			
+			trueFullscreen: true,
 		
-			use_fullscreen_button: true,
+			useFullscreenButton: true,
 			
-			enter_fullscreen_button_icon_path: "/graphics/general-icons/enter-fullscreen.png",
-			exit_fullscreen_button_icon_path: "/graphics/general-icons/exit-fullscreen.png",
+			enterFullscreenButtonIconPath: "/graphics/general-icons/enter-fullscreen.png",
+			exitFullscreenButtonIconPath: "/graphics/general-icons/exit-fullscreen.png",
 			
-			switch_fullscreen_callback: change_aspect_ratio
+			switchFullscreenCallback: changeAspectRatio
 		};
 		
-		let options_hidden =
+		let optionsHidden =
 		{
 			renderer: "gpu",
 			
-			shader: frag_shader_source,
+			shader: fragShaderSource,
 			
-			canvas_width: 100,
-			canvas_height: 100
+			canvasWidth: 100,
+			canvasHeight: 100
 		};
 		
 		
 		
 		let wilson = new Wilson(Page.element.querySelector("#output-canvas-2"), options);
 
-		wilson.render.init_uniforms(["aspect_ratio", "a", "b", "brightness_scale"]);
+		wilson.render.initUniforms(["aspectRatio", "a", "b", "brightnessScale"]);
 
 		let draggable = wilson.draggables.add(0, 1);
 		
 		
 		
-		let wilson_hidden = new Wilson(Page.element.querySelector("#hidden-canvas-2"), options_hidden);
+		let wilsonHidden = new Wilson(Page.element.querySelector("#hidden-canvas-2"), optionsHidden);
 		
-		wilson_hidden.render.init_uniforms(["aspect_ratio", "a", "b", "brightness_scale"]);
+		wilsonHidden.render.initUniforms(["aspectRatio", "a", "b", "brightnessScale"]);
 		
 		
 		
 		wilson.canvas.parentNode.parentNode.style.setProperty("margin-bottom", 0, "important");
-		wilson_hidden.canvas.parentNode.parentNode.style.setProperty("margin-top", 0, "important");
+		wilsonHidden.canvas.parentNode.parentNode.style.setProperty("margin-top", 0, "important");
 		
 		
 		
-		let aspect_ratio = 1;
+		let aspectRatio = 1;
 		
 		let a = 0;
 		let b = 1;
 		
 		let resolution = 1000;
-		let resolution_hidden = 100;
+		let resolutionHidden = 100;
 		
-		let last_timestamp = -1;
+		let lastTimestamp = -1;
 		
 		
 
-		let resolution_input_element = Page.element.querySelector("#resolution-2-input");
+		let resolutionInputElement = Page.element.querySelector("#resolution-2-input");
 		
-		resolution_input_element.addEventListener("input", () =>
+		resolutionInputElement.addEventListener("input", () =>
 		{
-			resolution = parseInt(resolution_input_element.value || 1000);
+			resolution = parseInt(resolutionInputElement.value || 1000);
 			
-			wilson.change_canvas_size(resolution, resolution);
+			wilson.changeCanvasSize(resolution, resolution);
 		});
 		
 		
 		
-		let download_button_element = Page.element.querySelector("#download-2-button");
+		let downloadButtonElement = Page.element.querySelector("#download-2-button");
 		
-		download_button_element.addEventListener("click", () =>
+		downloadButtonElement.addEventListener("click", () =>
 		{
-			wilson.download_frame("a-julia-set.png");
+			wilson.downloadFrame("a-julia-set.png");
 		});
 		
 		
 		
 		//Render the inital frame.
-		wilson.gl.uniform1f(wilson.uniforms["aspect_ratio"], 1);
-		wilson_hidden.gl.uniform1f(wilson_hidden.uniforms["aspect_ratio"], 1);
+		wilson.gl.uniform1f(wilson.uniforms["aspectRatio"], 1);
+		wilsonHidden.gl.uniform1f(wilsonHidden.uniforms["aspectRatio"], 1);
 		
-		window.requestAnimationFrame(draw_julia_set);
+		window.requestAnimationFrame(drawJuliaSet);
 		
 		
 		
-		function on_drag(active_draggable, x, y, event)
+		function onDrag(activeDraggable, x, y, event)
 		{
 			a = x;
 			b = y;
 			
-			window.requestAnimationFrame(draw_julia_set);
+			window.requestAnimationFrame(drawJuliaSet);
 		}
 
 
 
-		function draw_julia_set(timestamp)
+		function drawJuliaSet(timestamp)
 		{
-			let time_elapsed = timestamp - last_timestamp;
+			let timeElapsed = timestamp - lastTimestamp;
 			
-			last_timestamp = timestamp;
+			lastTimestamp = timestamp;
 			
 			
 			
-			if (time_elapsed === 0)
+			if (timeElapsed === 0)
 			{
 				return;
 			}
 			
 			
 			
-			wilson_hidden.gl.uniform1f(wilson_hidden.uniforms["a"], a);
-			wilson_hidden.gl.uniform1f(wilson_hidden.uniforms["b"], b);
-			wilson_hidden.gl.uniform1f(wilson_hidden.uniforms["brightness_scale"], 20);
+			wilsonHidden.gl.uniform1f(wilsonHidden.uniforms["a"], a);
+			wilsonHidden.gl.uniform1f(wilsonHidden.uniforms["b"], b);
+			wilsonHidden.gl.uniform1f(wilsonHidden.uniforms["brightnessScale"], 20);
 			
-			wilson_hidden.render.draw_frame();
+			wilsonHidden.render.drawFrame();
 			
 			
 			
-			let pixel_data = wilson_hidden.render.get_pixel_data();
+			let pixelData = wilsonHidden.render.getPixelData();
 			
-			let brightnesses = new Array(resolution_hidden * resolution_hidden);
+			let brightnesses = new Array(resolutionHidden * resolutionHidden);
 			
-			for (let i = 0; i < resolution_hidden * resolution_hidden; i++)
+			for (let i = 0; i < resolutionHidden * resolutionHidden; i++)
 			{
-				brightnesses[i] = pixel_data[4 * i] + pixel_data[4 * i + 1] + pixel_data[4 * i + 2];
+				brightnesses[i] = pixelData[4 * i] + pixelData[4 * i + 1] + pixelData[4 * i + 2];
 			}
 			
 			brightnesses.sort((a, b) => a - b);
 			
-			let brightness_scale = brightnesses[Math.floor(resolution_hidden * resolution_hidden * .98)] / 255 * 18;
+			let brightnessScale = brightnesses[Math.floor(resolutionHidden * resolutionHidden * .98)] / 255 * 18;
 			
-			brightness_scale = Math.max(brightness_scale, .1);
+			brightnessScale = Math.max(brightnessScale, .1);
 			
 			
 			
-			wilson.gl.uniform1f(wilson.uniforms["aspect_ratio"], aspect_ratio);
+			wilson.gl.uniform1f(wilson.uniforms["aspectRatio"], aspectRatio);
 			
 			wilson.gl.uniform1f(wilson.uniforms["a"], a);
 			wilson.gl.uniform1f(wilson.uniforms["b"], b);
-			wilson.gl.uniform1f(wilson.uniforms["brightness_scale"], brightness_scale);
+			wilson.gl.uniform1f(wilson.uniforms["brightnessScale"], brightnessScale);
 			
-			wilson.render.draw_frame();
+			wilson.render.drawFrame();
 		}
 		
 		
 		
-		function change_aspect_ratio()
+		function changeAspectRatio()
 		{
-			if (wilson.fullscreen.currently_fullscreen)
+			if (wilson.fullscreen.currentlyFullscreen)
 			{
-				aspect_ratio = window.innerWidth / window.innerHeight;
+				aspectRatio = window.innerWidth / window.innerHeight;
 				
-				if (aspect_ratio >= 1)
+				if (aspectRatio >= 1)
 				{
-					wilson.change_canvas_size(resolution, Math.floor(resolution / aspect_ratio));
+					wilson.changeCanvasSize(resolution, Math.floor(resolution / aspectRatio));
 					
-					wilson.world_width = 4 * aspect_ratio;
-					wilson.world_height = 4;
+					wilson.worldWidth = 4 * aspectRatio;
+					wilson.worldHeight = 4;
 				}
 				
 				else
 				{
-					wilson.change_canvas_size(Math.floor(resolution * aspect_ratio), resolution);
+					wilson.changeCanvasSize(Math.floor(resolution * aspectRatio), resolution);
 					
-					wilson.world_width = 4;
-					wilson.world_height = 4 / aspect_ratio;
+					wilson.worldWidth = 4;
+					wilson.worldHeight = 4 / aspectRatio;
 				}
 			}
 			
 			else
 			{
-				aspect_ratio = 1;
+				aspectRatio = 1;
 				
-				wilson.change_canvas_size(resolution, resolution);
+				wilson.changeCanvasSize(resolution, resolution);
 				
-				wilson.world_width = 4;
-				wilson.world_height = 4;
+				wilson.worldWidth = 4;
+				wilson.worldHeight = 4;
 			}
 			
-			window.requestAnimationFrame(draw_julia_set);
+			window.requestAnimationFrame(drawJuliaSet);
 		}
 
-		window.addEventListener("resize", change_aspect_ratio);
-		Page.temporary_handlers["resize"].push(change_aspect_ratio);
+		window.addEventListener("resize", changeAspectRatio);
+		Page.temporaryHandlers["resize"].push(changeAspectRatio);
 	}
 	
 	
 	
 	Page.show();
-}()
+	}()

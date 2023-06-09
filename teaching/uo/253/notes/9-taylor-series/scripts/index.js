@@ -4,10 +4,10 @@
 	
 	for (let i = 0; i <= 10; i++)
 	{
-		derivatives.push(derivative_string = get_derivative_string(i));
+		derivatives.push(derivativeString = getDerivativeString(i));
 	}
 	
-	Page.Load.get_desmos_data = () =>
+	Page.Load.getDesmosData = () =>
 	{
 		const data =
 		{
@@ -69,7 +69,7 @@
 		return data;
 	};
 	
-	Page.Load.create_desmos_graphs();
+	Page.Load.createDesmosGraphs();
 	
 	
 	
@@ -77,7 +77,7 @@
 	
 	
 	
-	function get_derivative_string(n)
+	function getDerivativeString(n)
 	{
 		let array = ["f"];
 		

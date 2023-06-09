@@ -1,6 +1,6 @@
 !function()
 {
-	Page.Load.get_desmos_data = () =>
+	Page.Load.getDesmosData = () =>
 	{
 		const data =
 		{
@@ -11,26 +11,26 @@
 				expressions:
 				[
 					{latex: String.raw`f(x) = x^2 - 2`, color: DESMOS_PURPLE},
-					{latex: String.raw`x_0 = .5`},
-					{latex: String.raw`(x_0, f(x_0))`, secret: true},
+					{latex: String.raw`x0 = .5`},
+					{latex: String.raw`(x0, f(x0))`, secret: true},
 					
-					{latex: String.raw`x_1 = x_0 - \frac{f(x_0)}{f'(x_0)}`, secret: true},
-					{latex: String.raw`y = f(x_0) + f'(x_0)(x - x_0) \{x_0 \leq x \leq x_1\}`, color: DESMOS_BLUE, secret: true},
-					{latex: String.raw`y = f(x_0) + f'(x_0)(x - x_0) \{x_1 \leq x \leq x_0\}`, color: DESMOS_BLUE, secret: true},
+					{latex: String.raw`x1 = x0 - \frac{f(x0)}{f'(x0)}`, secret: true},
+					{latex: String.raw`y = f(x0) + f'(x0)(x - x0) \{x0 \leq x \leq x1\}`, color: DESMOS_BLUE, secret: true},
+					{latex: String.raw`y = f(x0) + f'(x0)(x - x0) \{x1 \leq x \leq x0\}`, color: DESMOS_BLUE, secret: true},
 					
-					{latex: String.raw`x = x_1\{0 \leq y \leq f(x_1)\}`, color: DESMOS_RED, lineStyle: "DASHED", secret: true},
-					{latex: String.raw`x = x_1\{f(x_1) \leq y \leq 0\}`, color: DESMOS_RED, lineStyle: "DASHED", secret: true},
-					{latex: String.raw`x_2 = x_1 - \frac{f(x_1)}{f'(x_1)}`, secret: true},
-					{latex: String.raw`y = f(x_1) + f'(x_1)(x - x_1) \{x_1 \leq x \leq x_2\}`, color: DESMOS_RED, secret: true},
-					{latex: String.raw`y = f(x_1) + f'(x_1)(x - x_1) \{x_2 \leq x \leq x_1\}`, color: DESMOS_RED, secret: true},
+					{latex: String.raw`x = x1\{0 \leq y \leq f(x1)\}`, color: DESMOS_RED, lineStyle: "DASHED", secret: true},
+					{latex: String.raw`x = x1\{f(x1) \leq y \leq 0\}`, color: DESMOS_RED, lineStyle: "DASHED", secret: true},
+					{latex: String.raw`x2 = x1 - \frac{f(x1)}{f'(x1)}`, secret: true},
+					{latex: String.raw`y = f(x1) + f'(x1)(x - x1) \{x1 \leq x \leq x2\}`, color: DESMOS_RED, secret: true},
+					{latex: String.raw`y = f(x1) + f'(x1)(x - x1) \{x2 \leq x \leq x1\}`, color: DESMOS_RED, secret: true},
 					
-					{latex: String.raw`x = x_2\{0 \leq y \leq f(x_2)\}`, color: DESMOS_GREEN, lineStyle: "DASHED", secret: true},
-					{latex: String.raw`x = x_2\{f(x_2) \leq y \leq 0\}`, color: DESMOS_GREEN, lineStyle: "DASHED", secret: true},
-					{latex: String.raw`x_3 = x_2 - \frac{f(x_2)}{f'(x_2)}`, secret: true},
-					{latex: String.raw`y = f(x_2) + f'(x_2)(x - x_2) \{x_2 \leq x \leq x_3\}`, color: DESMOS_GREEN, secret: true},
-					{latex: String.raw`y = f(x_2) + f'(x_2)(x - x_2) \{x_3 \leq x \leq x_2\}`, color: DESMOS_GREEN, secret: true},
+					{latex: String.raw`x = x2\{0 \leq y \leq f(x2)\}`, color: DESMOS_GREEN, lineStyle: "DASHED", secret: true},
+					{latex: String.raw`x = x2\{f(x2) \leq y \leq 0\}`, color: DESMOS_GREEN, lineStyle: "DASHED", secret: true},
+					{latex: String.raw`x3 = x2 - \frac{f(x2)}{f'(x2)}`, secret: true},
+					{latex: String.raw`y = f(x2) + f'(x2)(x - x2) \{x2 \leq x \leq x3\}`, color: DESMOS_GREEN, secret: true},
+					{latex: String.raw`y = f(x2) + f'(x2)(x - x2) \{x3 \leq x \leq x2\}`, color: DESMOS_GREEN, secret: true},
 					
-					{latex: String.raw`(x_3, 0)`, color: DESMOS_GREEN, showLabel: true, secret: true},
+					{latex: String.raw`(x3, 0)`, color: DESMOS_GREEN, showLabel: true, secret: true},
 				]
 			},
 		};
@@ -38,7 +38,7 @@
 		return data;
 	}
 	
-	Page.Load.create_desmos_graphs();
+	Page.Load.createDesmosGraphs();
 	
 	Page.show();
 }()

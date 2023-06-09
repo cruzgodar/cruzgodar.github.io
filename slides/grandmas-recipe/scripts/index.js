@@ -2,10 +2,10 @@
 {
 	"use strict";
 	
-	Site.load_style("/style/lapsa.min.css");
-	await Site.load_script("/scripts/lapsa.min.js");
+	Site.loadStyle("/style/lapsa.min.css");
+	await Site.loadScript("/scripts/lapsa.min.js");
 	
-	await Site.load_applet("quasi-fuchsian-groups");
+	await Site.loadApplet("quasi-fuchsian-groups");
 	
 	const applet = new QuasiFuchsianGroups(Page.element.querySelector("#output-canvas"));
 	
@@ -14,7 +14,7 @@
 	document.body.appendChild(Page.element.querySelector("#background"));
 	document.body.appendChild(Page.element.querySelector("#lapsa-slide-container"));
 	
-	const canvas_bundle = document.body.querySelector("#canvas-bundle");
+	const canvasBundle = document.body.querySelector("#canvas-bundle");
 	
 	setTimeout(() =>
 	{
@@ -24,8 +24,8 @@
 	
 	
 	const resolution = 1500;
-	const max_depth = 250;
-	const max_pixel_brightness = 50;
+	const maxDepth = 250;
+	const maxPixelBrightness = 50;
 	
 	
 
@@ -41,22 +41,22 @@
 				{
 					return new Promise(async (resolve, reject) =>
 					{
-						if (slide.contains(canvas_bundle))
+						if (slide.contains(canvasBundle))
 						{
 							resolve();
 							return;
 						}
 						
-						await Page.Animate.change_opacity(canvas_bundle, 0, duration / 2);
+						await Page.Animate.changeOpacity(canvasBundle, 0, duration / 2);
 						
-						slide.appendChild(canvas_bundle);
+						slide.appendChild(canvasBundle);
 						
-						applet.change_recipe(0);
-						applet.bake_coefficients(1.75, -.3719, 1.8638, .2691);
+						applet.changeRecipe(0);
+						applet.bakeCoefficients(1.75, -.3719, 1.8638, .2691);
 						
-						await applet.request_high_res_frame(resolution, max_depth, max_pixel_brightness, 4);
+						await applet.requestHighResFrame(resolution, maxDepth, maxPixelBrightness, 4);
 						
-						await Page.Animate.change_opacity(canvas_bundle, 1, duration / 2);
+						await Page.Animate.changeOpacity(canvasBundle, 1, duration / 2);
 						
 						resolve();
 					});
@@ -71,23 +71,23 @@
 				{
 					return new Promise(async (resolve, reject) =>
 					{
-						if (slide.contains(canvas_bundle))
+						if (slide.contains(canvasBundle))
 						{
 							resolve();
 							return;
 						}
 						
-						await Page.Animate.change_opacity(canvas_bundle, 0, duration / 2);
+						await Page.Animate.changeOpacity(canvasBundle, 0, duration / 2);
 						
-						slide.appendChild(canvas_bundle);
+						slide.appendChild(canvasBundle);
 						
-						applet.change_recipe(0);
-						applet.bake_coefficients(1, -2, 3, 2);
+						applet.changeRecipe(0);
+						applet.bakeCoefficients(1, -2, 3, 2);
 						
 						
-						await applet.request_high_res_frame(resolution, max_depth, max_pixel_brightness, 4);
+						await applet.requestHighResFrame(resolution, maxDepth, maxPixelBrightness, 4);
 						
-						await Page.Animate.change_opacity(canvas_bundle, 1, duration / 2);
+						await Page.Animate.changeOpacity(canvasBundle, 1, duration / 2);
 						
 						resolve();
 					});
@@ -102,25 +102,25 @@
 				{
 					return new Promise(async (resolve, reject) =>
 					{
-						if (slide.contains(canvas_bundle))
+						if (slide.contains(canvasBundle))
 						{
 							resolve();
 							return;
 						}
 						
-						await Page.Animate.change_opacity(canvas_bundle, 0, duration / 2);
+						await Page.Animate.changeOpacity(canvasBundle, 0, duration / 2);
 						
-						slide.appendChild(canvas_bundle);
+						slide.appendChild(canvasBundle);
 						
-						applet.wilson.draggables.world_coordinates = [[2, 0], [2, 0], [2, -2]];
-						applet.wilson.draggables.on_resize();
+						applet.wilson.draggables.worldCoordinates = [[2, 0], [2, 0], [2, -2]];
+						applet.wilson.draggables.onResize();
 						
-						applet.change_recipe(0);
-						applet.bake_coefficients(2, 0, 2, 0);
+						applet.changeRecipe(0);
+						applet.bakeCoefficients(2, 0, 2, 0);
 						
-						await applet.request_high_res_frame(resolution, max_depth, max_pixel_brightness, 4);
+						await applet.requestHighResFrame(resolution, maxDepth, maxPixelBrightness, 4);
 						
-						await Page.Animate.change_opacity(canvas_bundle, 1, duration / 2);
+						await Page.Animate.changeOpacity(canvasBundle, 1, duration / 2);
 						
 						resolve();
 					});
@@ -135,25 +135,25 @@
 				{
 					return new Promise(async (resolve, reject) =>
 					{
-						if (slide.contains(canvas_bundle))
+						if (slide.contains(canvasBundle))
 						{
 							resolve();
 							return;
 						}
 						
-						await Page.Animate.change_opacity(canvas_bundle, 0, duration / 2);
+						await Page.Animate.changeOpacity(canvasBundle, 0, duration / 2);
 						
-						slide.appendChild(canvas_bundle);
+						slide.appendChild(canvasBundle);
 						
-						applet.wilson.draggables.world_coordinates = [[2, 0], [2, 0], [2, -2]];
-						applet.wilson.draggables.on_resize();
+						applet.wilson.draggables.worldCoordinates = [[2, 0], [2, 0], [2, -2]];
+						applet.wilson.draggables.onResize();
 						
-						applet.change_recipe(1);
-						applet.bake_coefficients(2, 0);
+						applet.changeRecipe(1);
+						applet.bakeCoefficients(2, 0);
 						
-						await applet.request_high_res_frame(resolution, max_depth, max_pixel_brightness, 4);
+						await applet.requestHighResFrame(resolution, maxDepth, maxPixelBrightness, 4);
 						
-						await Page.Animate.change_opacity(canvas_bundle, 1, duration / 2);
+						await Page.Animate.changeOpacity(canvasBundle, 1, duration / 2);
 						
 						resolve();
 					});
@@ -168,25 +168,25 @@
 				{
 					return new Promise(async (resolve, reject) =>
 					{
-						if (slide.contains(canvas_bundle))
+						if (slide.contains(canvasBundle))
 						{
 							resolve();
 							return;
 						}
 						
-						await Page.Animate.change_opacity(canvas_bundle, 0, duration / 2);
+						await Page.Animate.changeOpacity(canvasBundle, 0, duration / 2);
 						
-						slide.appendChild(canvas_bundle);
+						slide.appendChild(canvasBundle);
 						
-						applet.wilson.draggables.world_coordinates = [[1.737, -0.224], [2.337, 0.987], [2.329, -1.673]];
-						applet.wilson.draggables.on_resize();
+						applet.wilson.draggables.worldCoordinates = [[1.737, -0.224], [2.337, 0.987], [2.329, -1.673]];
+						applet.wilson.draggables.onResize();
 						
-						applet.change_recipe(2);
-						applet.bake_coefficients(1.737, -0.224, 2.337, 0.987, 2.329, -1.673);
+						applet.changeRecipe(2);
+						applet.bakeCoefficients(1.737, -0.224, 2.337, 0.987, 2.329, -1.673);
 						
-						await applet.request_high_res_frame(resolution, max_depth, max_pixel_brightness, 4);
+						await applet.requestHighResFrame(resolution, maxDepth, maxPixelBrightness, 4);
 						
-						await Page.Animate.change_opacity(canvas_bundle, 1, duration / 2);
+						await Page.Animate.changeOpacity(canvasBundle, 1, duration / 2);
 						
 						resolve();
 					});
@@ -201,63 +201,63 @@
 				{
 					return new Promise(async (resolve, reject) =>
 					{
-						if (slide.contains(canvas_bundle))
+						if (slide.contains(canvasBundle))
 						{
 							resolve();
 							return;
 						}
 						
-						await Page.Animate.change_opacity(canvas_bundle, 0, duration / 2);
+						await Page.Animate.changeOpacity(canvasBundle, 0, duration / 2);
 						
-						slide.appendChild(canvas_bundle);
+						slide.appendChild(canvasBundle);
 						
-						applet.wilson.draggables.world_coordinates = [[2, 0], [2, 0], [2, -2]];
-						applet.wilson.draggables.on_resize();
+						applet.wilson.draggables.worldCoordinates = [[2, 0], [2, 0], [2, -2]];
+						applet.wilson.draggables.onResize();
 						
-						applet.change_recipe(0);
-						
-						
-						
-						applet.resolution_small = 500;
-						applet.resolution_large = 1500;
-						applet.change_aspect_ratio();
+						applet.changeRecipe(0);
 						
 						
 						
-						let last_timestamp = 0;
+						applet.resolutionSmall = 500;
+						applet.resolutionLarge = 1500;
+						applet.changeAspectRatio();
+						
+						
+						
+						let lastTimestamp = 0;
 						
 						let frame = 180;
-						let start_1_x = 2;
-						let start_2_x = 2;
-						let start_1_y = 0;
-						let start_2_y = 0;
-						let end_1_x = 2;
-						let end_2_x = 2;
-						let end_1_y = 0;
-						let end_2_y = 0;
+						let start1X = 2;
+						let start2X = 2;
+						let start1Y = 0;
+						let start2Y = 0;
+						let end1X = 2;
+						let end2X = 2;
+						let end1Y = 0;
+						let end2Y = 0;
 						
-						const animation_frame = (timestamp) =>
+						const animationFrame = (timestamp) =>
 						{
-							const time_elapsed = timestamp - last_timestamp;
+							const timeElapsed = timestamp - lastTimestamp;
 							
-							last_timestamp = timestamp;
+							lastTimestamp = timestamp;
 							
-							if (time_elapsed === 0)
+							if (timeElapsed === 0)
 							{
 								return;
 							}
 							
 							if (frame >= 180)
 							{
-								start_1_x = end_1_x;
-								start_2_x = end_2_x;
-								start_1_y = end_1_y;
-								start_2_y = end_2_y;
+								start1X = end1X;
+								start2X = end2X;
+								start1Y = end1Y;
+								start2Y = end2Y;
 								
-								end_1_x = Math.random() * .15 + 1.95;
-								end_2_x = Math.random() * .15 + 1.95;
-								end_1_y = Math.random() * 2 - 1;
-								end_2_y = Math.random() * 2 - 1;
+								end1X = Math.random() * .15 + 1.95;
+								end2X = Math.random() * .15 + 1.95;
+								end1Y = Math.random() * 2 - 1;
+								end2Y = Math.random() * 2 - 1;
 								
 								frame = -10;
 							}
@@ -266,12 +266,12 @@
 							{	
 								const t = (Math.sin(frame / 180 * Math.PI - Math.PI / 2) + 1) / 2;
 								
-								const x1 = (1 - t) * start_1_x + t * end_1_x;
-								const y1 = (1 - t) * start_1_y + t * end_1_y;
-								const x2 = (1 - t) * start_2_x + t * end_2_x;
-								const y2 = (1 - t) * start_2_y + t * end_2_y;
+								const x1 = (1 - t) * start1X + t * end1X;
+								const y1 = (1 - t) * start1Y + t * end1Y;
+								const x2 = (1 - t) * start2X + t * end2X;
+								const y2 = (1 - t) * start2Y + t * end2Y;
 								
-								applet.wilson.draggables.world_coordinates = [[x1, y1], [x2, y2], [2, -2]];
+								applet.wilson.draggables.worldCoordinates = [[x1, y1], [x2, y2], [2, -2]];
 							}
 							
 							frame++;
@@ -279,17 +279,17 @@
 							//Extremely gross and hard-coded --- I'll add a solution for this sort of thing eventually.
 							if (lapsa.currentSlide === 17)
 							{
-								applet.on_drag_draggable();
+								applet.onDragDraggable();
 								
-								window.requestAnimationFrame(animation_frame);
+								window.requestAnimationFrame(animationFrame);
 							}
 						};
 						
-						window.requestAnimationFrame(animation_frame);
+						window.requestAnimationFrame(animationFrame);
 						
 						
 						
-						await Page.Animate.change_opacity(canvas_bundle, 1, duration / 2);
+						await Page.Animate.changeOpacity(canvasBundle, 1, duration / 2);
 						
 						resolve();
 					});
@@ -298,11 +298,11 @@
 		}
 	};
 	
-	await applet.load_promise;
+	await applet.loadPromise;
 	
 	const lapsa = new Lapsa(options);
 	
 	document.body.querySelector("#help-link").addEventListener("click", () => lapsa.jumpToSlide(0));
 	
 	Page.show();
-}()
+	}()
