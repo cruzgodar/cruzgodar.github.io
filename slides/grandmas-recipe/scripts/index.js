@@ -11,7 +11,6 @@
 	
 	document.head.querySelector("#theme-color-meta").setAttribute("content", "#181818");
 	
-	document.body.appendChild(Page.element.querySelector("#background"));
 	document.body.appendChild(Page.element.querySelector("#lapsa-slide-container"));
 	
 	const canvasBundle = document.body.querySelector("#canvas-bundle");

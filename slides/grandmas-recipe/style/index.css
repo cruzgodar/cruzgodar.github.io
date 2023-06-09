@@ -19,15 +19,6 @@ body
 	padding: unset !important;
 }
 
-#background
-{
-	background: linear-gradient(45deg, rgba(173,159,255,1) 0%, rgba(162,195,255,1) 33%, rgba(241,188,230,1) 67%, rgba(232,210,175,1) 100%);
-	
-	position: fixed;
-	width: 100%;
-	height: 100%;
-}
-
 
 .slide
 {
@@ -53,7 +44,7 @@ body
 
 #lapsa-slide-container.lapsa-hover.lapsa-table-view .slide:hover
 {
-	box-shadow: 0px 0px 2vw 0px rgb(127, 127, 127) !important;
+	box-shadow: none !important;
 }
 
 
@@ -160,7 +151,7 @@ body
 	
 	#lapsa-slide-container.lapsa-hover.lapsa-table-view .slide:hover
 	{
-		box-shadow: 0px 0px calc(2 * var(--safe-vh) * 152 / 89) 0px rgb(127, 127, 127) !important;
+		box-shadow: none !important;
 	}
 	
 	.inline-image
