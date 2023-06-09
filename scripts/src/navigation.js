@@ -4,41 +4,41 @@
 
 Page.Navigation =
 {
-	currently_changing_page: false,
+	currentlyChangingPage: false,
 
-	last_page_scroll: 0,
+	lastPageScroll: 0,
 	
-	elements_to_remove: [],
+	elementsToRemove: [],
 	
-	navigation_path: [],
+	navigationPath: [],
 	
-	transition_type: 0,
+	transitionType: 0,
 	
 	
 	
 	//Handles virtually all links.
-	redirect: async function(url, in_new_tab = false, no_state_push = false, restore_scroll = false, no_fade_out = false)
+	redirect: async function(url, inNewTab = false, noStatePush = false, restoreScroll = false, noFadeOut = false)
 	{
-		if (this.currently_changing_page)
+		if (this.currentlyChangingPage)
 		{
 			return;
 		}
 		
 		//If we're going somewhere outside of the site, open it in a new tab and don't screw with the opacity.
-		if (in_new_tab || url.indexOf(".") !== -1)
+		if (inNewTab || url.indexOf(".") !== -1)
 		{
 			window.open(url, "_blank");
 			return;
 		}
 		
-		if (Page.Cards.is_open)
+		if (Page.Cards.isOpen)
 		{
 			await Page.Cards.hide();
 		}
 		
 		
 		
-		this.currently_changing_page = true;
+		this.currentlyChangingPage = true;
 		
 		
 		
@@ -46,24 +46,24 @@ Page.Navigation =
 		
 		
 		
-		Site.applet_process_id++;
+		Site.appletProcessId++;
 		
 		
 		
-		this.transition_type = this.get_transition_type(url);
+		this.transitionType = this.getTransitionType(url);
 		
 		Page.url = url;
 		
-		Page.parent_folder = url.slice(0, url.length);
+		Page.parentFolder = url.slice(0, url.length);
 		
 		document.querySelectorAll("#header-links a").forEach(element => element.classList.remove("active"));
 		
 		
 		
 		//We need to record this in case we can't successfully load the next page and we need to return to the current one.
-		const background_color = document.documentElement.style.backgroundColor;
+		const backgroundColor = document.documentElement.style.backgroundColor;
 		
-		await Page.Unload.fade_out(no_fade_out, url);
+		await Page.Unload.fadeOut(noFadeOut, url);
 		
 		
 		
@@ -100,40 +100,40 @@ Page.Navigation =
 			
 			if (DEBUG)
 			{
-				let new_html = Page.Components.decode(`<div class="page" style="${Site.showing_presentation ? "display: none; " : ""}opacity: 0">\n${data}</div>`);
+				let newHtml = Page.Components.decode(`<div class="page" style="${Site.showingPresentation ? "display: none; " : ""}opacity: 0">\n${data}</div>`);
 				
-				new_html = new_html.slice(new_html.indexOf("<body>") + 6, new_html.indexOf("</body>"));
+				newHtml = newHtml.slice(newHtml.indexOf("<body>") + 6, newHtml.indexOf("</body>"));
 				
-				document.body.firstElementChild.insertAdjacentHTML("beforebegin", new_html);
+				document.body.firstElementChild.insertAdjacentHTML("beforebegin", newHtml);
 			}
 			
 			else
 			{
 				data = data.slice(data.indexOf("<body>") + 6, data.indexOf("</body>"));
 				
-				document.body.firstElementChild.insertAdjacentHTML("beforebegin", `<div class="page" style="${Site.showing_presentation ? "display: none; " : ""}opacity: 0">${data}</div>`);
+				document.body.firstElementChild.insertAdjacentHTML("beforebegin", `<div class="page" style="${Site.showingPresentation ? "display: none; " : ""}opacity: 0">${data}</div>`);
 			}
 			
 			Page.load();
 			
 			
 			
-			let display_url = url;
+			let displayUrl = url;
 			
 			if (DEBUG)
 			{
-				display_url = `/index-testing.html?page=${encodeURIComponent(url)}`;
+				displayUrl = `/index-testing.html?page=${encodeURIComponent(url)}`;
 			}
 			
 			//Record the page change in the url bar and in the browser history.
-			if (!no_state_push)
+			if (!noStatePush)
 			{
-				history.pushState({url: url}, document.title, display_url);
+				history.pushState({url: url}, document.title, displayUrl);
 			}
 			
 			else
 			{
-				history.replaceState({url: url}, document.title, display_url);
+				history.replaceState({url: url}, document.title, displayUrl);
 			}
 			
 			
@@ -147,10 +147,10 @@ Page.Navigation =
 			
 			
 			
-			if (restore_scroll)
+			if (restoreScroll)
 			{
-				window.scrollTo(0, this.last_page_scroll);
-				Page.Banner.on_scroll(this.last_page_scroll);
+				window.scrollTo(0, this.lastPageScroll);
+				Page.Banner.onScroll(this.lastPageScroll);
 			}
 			
 			else
@@ -159,7 +159,7 @@ Page.Navigation =
 				Page.scroll = 0;
 			}
 			
-			this.last_page_scroll = temp;
+			this.lastPageScroll = temp;
 		})
 		
 		
@@ -172,13 +172,13 @@ Page.Navigation =
 			
 			
 			
-			this.currently_changing_page = false;
+			this.currentlyChangingPage = false;
 			
 			setTimeout(() =>
 			{
-				if (!Page.background_color_changed)
+				if (!Page.backgroundColorChanged)
 				{
-					Page.Animate.change_opacity(document.body, 1, Site.opacity_animation_time);
+					Page.Animate.changeOpacity(document.body, 1, Site.opacityAnimationTime);
 				}
 				
 				
@@ -190,8 +190,8 @@ Page.Navigation =
 						document.documentElement.classList.add("background-transition");
 						document.body.classList.add("background-transition");
 						
-						document.documentElement.style.backgroundColor = background_color;
-						document.body.style.backgroundColor = background_color;
+						document.documentElement.style.backgroundColor = backgroundColor;
+						document.body.style.backgroundColor = backgroundColor;
 						
 						setTimeout(() =>
 						{
@@ -202,19 +202,19 @@ Page.Navigation =
 							
 							setTimeout(() =>
 							{
-								Page.Animate.change_opacity(document.body, 1, Site.opacity_animation_time);
-							}, Site.opacity_animation_time);
-						}, Site.background_color_animation_time);
-					}, Site.background_color_animation_time);
+								Page.Animate.changeOpacity(document.body, 1, Site.opacityAnimationTime);
+							}, Site.opacityAnimationTime);
+						}, Site.backgroundColorAnimationTime);
+					}, Site.backgroundColorAnimationTime);
 				}
-			}, Site.opacity_animation_time);
+			}, Site.opacityAnimationTime);
 		});
 	},
 	
 	
 	
 	//Figures out what type of transition to use to get to this url. Returns 1 for deeper, -1 for shallower, 2 for a sibling to the right, -2 for one to the left, and 0 for anything else.
-	get_transition_type: function(url)
+	getTransitionType: function(url)
 	{
 		if (!(url in Site.sitemap) || url === Page.url)
 		{
@@ -273,22 +273,22 @@ Page.Navigation =
 
 Page.Unload =
 {
-	fade_out: function(no_fade_out, url)
+	fadeOut: function(noFadeOut, url)
 	{
 		return new Promise(async (resolve, reject) =>
 		{
-			if (Site.force_dark_theme_pages.includes(url) && Site.Settings.url_vars["theme"] !== 1)
+			if (Site.forceDarkThemePages.includes(url) && Site.Settings.urlVars["theme"] !== 1)
 			{
-				Site.Settings.revert_theme = 0;
+				Site.Settings.revertTheme = 0;
 				
-				Site.Settings.forced_theme = true;
+				Site.Settings.forcedTheme = true;
 				
-				Site.Settings.toggle_theme(false, true);
+				Site.Settings.toggleTheme(false, true);
 			}
 			
 			
 			
-			if (no_fade_out)
+			if (noFadeOut)
 			{
 				Page.element.style.opacity = 0;
 				
@@ -301,53 +301,53 @@ Page.Unload =
 			//Fade out the current page's content.
 			let promise = null;
 			
-			if (Page.Navigation.transition_type === 1)
+			if (Page.Navigation.transitionType === 1)
 			{
-				promise = Page.Animate.fade_up_out(Page.element, Site.page_animation_time);
+				promise = Page.Animate.fadeUpOut(Page.element, Site.pageAnimationTime);
 				
-				if (Page.banner_element !== null)
+				if (Page.bannerElement !== null)
 				{
-					promise = Page.Animate.fade_up_out(Page.banner_element, Site.page_animation_time * 2);
+					promise = Page.Animate.fadeUpOut(Page.bannerElement, Site.pageAnimationTime * 2);
 				}
 			}
 			
-			else if (Page.Navigation.transition_type === -1)
+			else if (Page.Navigation.transitionType === -1)
 			{
-				promise = Page.Animate.fade_down_out(Page.element, Site.page_animation_time);
+				promise = Page.Animate.fadeDownOut(Page.element, Site.pageAnimationTime);
 				
-				if (Page.banner_element !== null)
+				if (Page.bannerElement !== null)
 				{
-					promise = Page.Animate.fade_down_out(Page.banner_element, Site.page_animation_time * 2);
+					promise = Page.Animate.fadeDownOut(Page.bannerElement, Site.pageAnimationTime * 2);
 				}
 			}
 			
-			else if (Page.Navigation.transition_type === 2)
+			else if (Page.Navigation.transitionType === 2)
 			{
-				promise = Page.Animate.fade_left_out(Page.element, Site.page_animation_time);
+				promise = Page.Animate.fadeLeftOut(Page.element, Site.pageAnimationTime);
 				
-				if (Page.banner_element !== null)
+				if (Page.bannerElement !== null)
 				{
-					promise = Page.Animate.fade_left_out(Page.banner_element, Site.page_animation_time * 2);
+					promise = Page.Animate.fadeLeftOut(Page.bannerElement, Site.pageAnimationTime * 2);
 				}
 			}
 			
-			else if (Page.Navigation.transition_type === -2)
+			else if (Page.Navigation.transitionType === -2)
 			{
-				promise = Page.Animate.fade_right_out(Page.element, Site.page_animation_time);
+				promise = Page.Animate.fadeRightOut(Page.element, Site.pageAnimationTime);
 				
-				if (Page.banner_element !== null)
+				if (Page.bannerElement !== null)
 				{
-					promise = Page.Animate.fade_right_out(Page.banner_element, Site.page_animation_time * 2);
+					promise = Page.Animate.fadeRightOut(Page.bannerElement, Site.pageAnimationTime * 2);
 				}
 			}
 			
 			else
 			{
-				promise = Page.Animate.fade_out(Page.element, Site.page_animation_time);
+				promise = Page.Animate.fadeOut(Page.element, Site.pageAnimationTime);
 				
-				if (Page.banner_element !== null)
+				if (Page.bannerElement !== null)
 				{
-					promise = Page.Animate.fade_out(Page.banner_element, Site.page_animation_time * 2);
+					promise = Page.Animate.fadeOut(Page.bannerElement, Site.pageAnimationTime * 2);
 				}
 			}
 			
@@ -356,20 +356,20 @@ Page.Unload =
 				
 				
 			//If necessary, take the time to fade back to the default background color, whatever that is.
-			if (Page.background_color_changed)
+			if (Page.backgroundColorChanged)
 			{
 				document.documentElement.classList.add("background-transition");
 				document.body.classList.add("background-transition");
 				
-				if (Site.Settings.url_vars["theme"] === 1)
+				if (Site.Settings.urlVars["theme"] === 1)
 				{
-					if (Site.Settings.url_vars["dark_theme_color"] === 1)
+					if (Site.Settings.urlVars["darkThemeColor"] === 1)
 					{
 						document.documentElement.style.backgroundColor = "rgb(0, 0, 0)";
 						document.body.style.backgroundColor = "rgb(0, 0, 0)";
 						
 						anime({
-							targets: Site.Settings.meta_theme_color_element,
+							targets: Site.Settings.metaThemeColorElement,
 							content: "#000000",
 							duration: 500,
 							easing: "cubicBezier(.42, 0, .58, 1)"
@@ -382,7 +382,7 @@ Page.Unload =
 						document.body.style.backgroundColor = "rgb(24, 24, 24)";
 						
 						anime({
-							targets: Site.Settings.meta_theme_color_element,
+							targets: Site.Settings.metaThemeColorElement,
 							content: "#181818",
 							duration: 500,
 							easing: "cubicBezier(.42, 0, .58, 1)"
@@ -396,7 +396,7 @@ Page.Unload =
 					document.body.style.backgroundColor = "rgb(255, 255, 255)";
 					
 					anime({
-						targets: Site.Settings.meta_theme_color_element,
+						targets: Site.Settings.metaThemeColorElement,
 						content: "#ffffff",
 						duration: 500,
 						easing: "cubicBezier(.42, 0, .58, 1)"
@@ -409,7 +409,7 @@ Page.Unload =
 					
 					document.documentElement.classList.remove("background-transition");
 					document.body.classList.remove("background-transition");
-				}, Site.background_color_animation_time);
+				}, Site.backgroundColorAnimationTime);
 			}
 			
 			resolve();
@@ -428,39 +428,39 @@ Page.unload = function()
 	
 	//Clear temporary things.
 	//Unbind everything transient from the window and the html element.
-	for (let key in Page.temporary_handlers)
+	for (let key in Page.temporaryHandlers)
 	{
-		for (let j = 0; j < Page.temporary_handlers[key].length; j++)
+		for (let j = 0; j < Page.temporaryHandlers[key].length; j++)
 		{
-			window.removeEventListener(key, Page.temporary_handlers[key][j]);
-			document.documentElement.removeEventListener(key, Page.temporary_handlers[key][j]);
+			window.removeEventListener(key, Page.temporaryHandlers[key][j]);
+			document.documentElement.removeEventListener(key, Page.temporaryHandlers[key][j]);
 		}
 	}
 	
 	
 	
-	Page.temporary_intervals.forEach(refresh_id => clearInterval(refresh_id));
+	Page.temporaryIntervals.forEach(refreshId => clearInterval(refreshId));
 	
-	Page.temporary_intervals = [];
-	
-	
-	
-	Page.temporary_web_workers.forEach(web_worker => web_worker.terminate());
-	
-	Page.temporary_web_workers = [];
+	Page.temporaryIntervals = [];
 	
 	
 	
-	for (let key in Page.desmos_graphs)
+	Page.temporaryWebWorkers.forEach(webWorker => webWorker.terminate());
+	
+	Page.temporaryWebWorkers = [];
+	
+	
+	
+	for (let key in Page.desmosGraphs)
 	{
-		Page.desmos_graphs[key].destroy();
+		Page.desmosGraphs[key].destroy();
 	}
 	
 	
 	
-	Page.current_applets.forEach(applet => applet.destroy());
+	Page.currentApplets.forEach(applet => applet.destroy());
 	
-	Page.current_applets = [];
+	Page.currentApplets = [];
 	
 	
 	

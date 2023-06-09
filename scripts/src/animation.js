@@ -10,87 +10,87 @@ const Site = {};
 
 Page.Animate =
 {
-	change_opacity_js: function(element, end_value, duration, ease_in_out = false)
+	changeOpacityJs: function(element, endValue, duration, easeInOut = false)
 	{
 		return new Promise((resolve, reject) =>
 		{
 			anime({
 				targets: element,
-				opacity: end_value,
+				opacity: endValue,
 				duration: duration,
-				easing: ease_in_out ? "easeInOutQuad" : "easeOutQuad",
+				easing: easeInOut ? "easeInOutQuad" : "easeOutQuad",
 				complete: resolve
 			});
 		});	
 	},
 	
-	change_opacity_css: function(element, end_value, duration, ease_in_out = false)
+	changeOpacityCss: function(element, endValue, duration, easeInOut = false)
 	{
 		return new Promise((resolve, reject) =>
 		{
 			try {clearTimeout(element.getAttribute("data-opacity-timeout-id"))}
 			catch(ex) {}
 			
-			element.style.transition = `opacity ${duration}ms ${ease_in_out ? "ease-in-out" : "ease-out"}`;
+			element.style.transition = `opacity ${duration}ms ${easeInOut ? "ease-in-out" : "ease-out"}`;
 			
 			setTimeout(() =>
 			{
-				element.style.opacity = end_value;
+				element.style.opacity = endValue;
 				
-				const timeout_id = setTimeout(() =>
+				const timeoutId = setTimeout(() =>
 				{
 					element.style.transition = "";
 					resolve();
 				}, duration);
 				
-				element.setAttribute("data-opacity-timeout-id", timeout_id);
+				element.setAttribute("data-opacity-timeout-id", timeoutId);
 			}, 10);
 		});	
 	},
 	
 	
 	
-	change_scale_js: function(element, end_value, duration, ease_in_out = false)
+	changeScaleJs: function(element, endValue, duration, easeInOut = false)
 	{
 		return new Promise((resolve, reject) =>
 		{
 			anime({
 				targets: element,
-				scale: end_value,
+				scale: endValue,
 				duration: duration,
-				easing: ease_in_out ? "easeInOutQuad" : "easeOutQuad",
+				easing: easeInOut ? "easeInOutQuad" : "easeOutQuad",
 				complete: resolve
 			});
 		});	
 	},	
 	
-	change_scale_css: function(element, end_value, duration, ease_in_out = false)
+	changeScaleCss: function(element, endValue, duration, easeInOut = false)
 	{
 		return new Promise((resolve, reject) =>
 		{
 			try {clearTimeout(element.getAttribute("data-scale-timeout-id"))}
 			catch(ex) {}
 			
-			element.style.transition = `transform ${duration}ms ${ease_in_out ? "ease-in-out" : "ease-out"}`;
+			element.style.transition = `transform ${duration}ms ${easeInOut ? "ease-in-out" : "ease-out"}`;
 			
 			setTimeout(() =>
 			{
-				element.style.transform = `scale(${end_value})`;
+				element.style.transform = `scale(${endValue})`;
 				
-				const timeout_id = setTimeout(() =>
+				const timeoutId = setTimeout(() =>
 				{
 					element.style.transition = "";
 					resolve();
 				}, duration);
 				
-				element.setAttribute("data-scale-timeout-id", timeout_id);
+				element.setAttribute("data-scale-timeout-id", timeoutId);
 			}, 10);
 		});	
 	},
 	
 	
 	
-	fade_left_js: function(element, duration, ease_in_out = false)
+	fadeLeftJs: function(element, duration, easeInOut = false)
 	{
 		return new Promise((resolve, reject) =>
 		{
@@ -99,53 +99,53 @@ Page.Animate =
 				translateX: 0,
 				opacity: 1,
 				duration: duration,
-				easing: ease_in_out ? "easeInOutQuad" : "easeOutQuad",
+				easing: easeInOut ? "easeInOutQuad" : "easeOutQuad",
 				complete: resolve
 			});
 		});	
 	},
 	
-	fade_left_css: function(element, duration, ease_in_out = false)
+	fadeLeftCss: function(element, duration, easeInOut = false)
 	{
 		return new Promise((resolve, reject) =>
 		{
 			try {clearTimeout(element.getAttribute("data-fade-left-timeout-id"))}
 			catch(ex) {}
 			
-			element.style.transition = `transform ${duration}ms ${ease_in_out ? "ease-in-out" : "ease-out"}, opacity ${duration}ms ${ease_in_out ? "ease-in-out" : "ease-out"}`;
+			element.style.transition = `transform ${duration}ms ${easeInOut ? "ease-in-out" : "ease-out"}, opacity ${duration}ms ${easeInOut ? "ease-in-out" : "ease-out"}`;
 			
 			setTimeout(() =>
 			{
 				element.style.transform = `translateX(0px)`;
 				element.style.opacity = 1;
 				
-				const timeout_id = setTimeout(() =>
+				const timeoutId = setTimeout(() =>
 				{
 					element.style.transition = "";
 					resolve();
 				}, duration);
 				
-				element.setAttribute("data-fade-left-timeout-id", timeout_id);
+				element.setAttribute("data-fade-left-timeout-id", timeoutId);
 			}, 10);
 		});	
 	},
 	
 	
 	
-	change_right_settings_button_js: function(element, end_value, duration)
+	changeRightSettingsButtonJs: function(element, endValue, duration)
 	{
 		return new Promise((resolve, reject) =>
 		{
 			anime({
 				targets: element,
-				opacity: end_value,
+				opacity: endValue,
 				duration: duration,
 				easing: "easeInOutQuad"
 			});
 			
 			anime({
 				targets: element,
-				right: end_value * 50 - 40,
+				right: endValue * 50 - 40,
 				duration: duration,
 				easing: "easeOutQuad",
 				complete: resolve
@@ -153,7 +153,7 @@ Page.Animate =
 		});	
 	},
 	
-	change_right_settings_button_css: function(element, end_value, duration)
+	changeRightSettingsButtonCss: function(element, endValue, duration)
 	{
 		return new Promise((resolve, reject) =>
 		{
@@ -164,36 +164,36 @@ Page.Animate =
 			
 			setTimeout(() =>
 			{
-				element.style.opacity = end_value;
-				element.style.right = `${end_value * 50 - 40}px`;
+				element.style.opacity = endValue;
+				element.style.right = `${endValue * 50 - 40}px`;
 				
-				const timeout_id = setTimeout(() =>
+				const timeoutId = setTimeout(() =>
 				{
 					element.style.transition = "";
 					resolve();
 				}, duration);
 				
-				element.setAttribute("data-opacity-timeout-id", timeout_id);
+				element.setAttribute("data-opacity-timeout-id", timeoutId);
 			}, 10);
 		});	
 	},
 	
 	
 	
-	change_left_settings_button_js: function(element, end_value, duration)
+	changeLeftSettingsButtonJs: function(element, endValue, duration)
 	{
 		return new Promise((resolve, reject) =>
 		{
 			anime({
 				targets: element,
-				opacity: end_value,
+				opacity: endValue,
 				duration: duration,
 				easing: "easeInOutQuad"
 			});
 			
 			anime({
 				targets: element,
-				left: end_value * 50 - 40,
+				left: endValue * 50 - 40,
 				duration: duration,
 				easing: "easeOutQuad",
 				complete: resolve
@@ -201,7 +201,7 @@ Page.Animate =
 		});
 	},
 	
-	change_left_settings_button_css: function(element, end_value, duration)
+	changeLeftSettingsButtonCss: function(element, endValue, duration)
 	{
 		return new Promise((resolve, reject) =>
 		{
@@ -212,29 +212,29 @@ Page.Animate =
 			
 			setTimeout(() =>
 			{
-				element.style.opacity = end_value;
-				element.style.left = `${end_value * 50 - 40}px`;
+				element.style.opacity = endValue;
+				element.style.left = `${endValue * 50 - 40}px`;
 				
-				const timeout_id = setTimeout(() =>
+				const timeoutId = setTimeout(() =>
 				{
 					element.style.transition = "";
 					resolve();
 				}, duration);
 				
-				element.setAttribute("data-opacity-timeout-id", timeout_id);
+				element.setAttribute("data-opacity-timeout-id", timeoutId);
 			}, 10);
 		});	
 	},
 	
 	
 	
-	hide_slide_shelf_js: function(element, duration)
+	hideSlideShelfJs: function(element, duration)
 	{
 		return new Promise((resolve, reject) =>
 		{
 			anime({
 				targets: element,
-				marginLeft: `${-Site.navigation_animation_distance_horizontal}px`,
+				marginLeft: `${-Site.navigationAnimationDistanceHorizontal}px`,
 				opacity: 0,
 				duration: duration,
 				easing: "cubicBezier(.4, 0.0, .4, 1.0)",
@@ -243,7 +243,7 @@ Page.Animate =
 		});	
 	},
 	
-	show_slide_shelf_js: function(element, duration)
+	showSlideShelfJs: function(element, duration)
 	{
 		return new Promise((resolve, reject) =>
 		{
@@ -260,7 +260,7 @@ Page.Animate =
 	
 	
 	
-	show_fade_up_section_js: function(elements, duration, delays, ease_in_out = false)
+	showFadeUpSectionJs: function(elements, duration, delays, easeInOut = false)
 	{
 		return new Promise((resolve, reject) =>
 		{
@@ -269,14 +269,14 @@ Page.Animate =
 				translateY: 0,
 				opacity: 1,
 				duration: duration,
-				delay: (target, index, num_targets) => delays[index],
-				easing: ease_in_out ? "easeInOutCubic" : "easeOutCubic",
+				delay: (target, index, numTargets) => delays[index],
+				easing: easeInOut ? "easeInOutCubic" : "easeOutCubic",
 				complete: resolve
 			});
 		});	
 	},
 	
-	show_fade_up_section_css: function(elements, duration, delays, ease_in_out = false)
+	showFadeUpSectionCss: function(elements, duration, delays, easeInOut = false)
 	{
 		return new Promise((resolve, reject) =>
 		{
@@ -296,7 +296,7 @@ Page.Animate =
 	
 	
 	
-	show_zoom_out_section_js: function(elements, duration, delays, ease_in_out = false)
+	showZoomOutSectionJs: function(elements, duration, delays, easeInOut = false)
 	{
 		return new Promise((resolve, reject) =>
 		{
@@ -305,14 +305,14 @@ Page.Animate =
 				scale: 1,
 				opacity: 1,
 				duration: duration,
-				delay: (target, index, num_targets) => delays[index],
-				easing: ease_in_out ? "easeInOutCubic" : "easeOutCubic",
+				delay: (target, index, numTargets) => delays[index],
+				easing: easeInOut ? "easeInOutCubic" : "easeOutCubic",
 				complete: resolve
 			});
 		});	
 	},
 	
-	show_zoom_out_section_css: function(elements, duration, delays, ease_in_out = false)
+	showZoomOutSectionCss: function(elements, duration, delays, easeInOut = false)
 	{
 		return new Promise((resolve, reject) =>
 		{
@@ -336,17 +336,17 @@ Page.Animate =
 	////////////////////////////////////////////
 	
 	
-	fade_up_in_js: function(element, duration, target_opacity = 1)
+	fadeUpInJs: function(element, duration, targetOpacity = 1)
 	{
 		return new Promise((resolve, reject) =>
 		{
-			element.style.marginTop = `${Site.navigation_animation_distance_vertical}px`;
+			element.style.marginTop = `${Site.navigationAnimationDistanceVertical}px`;
 			element.style.marginBottom = 0;
 			
 			anime({
 				targets: element,
 				marginTop: "0px",
-				opacity: target_opacity,
+				opacity: targetOpacity,
 				duration: duration,
 				easing: "cubicBezier(.4, 1.0, .7, 1.0)",
 				complete: resolve
@@ -354,7 +354,7 @@ Page.Animate =
 		});	
 	},
 	
-	fade_up_in_css: function(element, duration, target_opacity = 1)
+	fadeUpInCss: function(element, duration, targetOpacity = 1)
 	{
 		return new Promise((resolve, reject) =>
 		{
@@ -365,7 +365,7 @@ Page.Animate =
 			
 			setTimeout(() =>
 			{
-				element.style.marginTop = `${Site.navigation_animation_distance_vertical}px`;
+				element.style.marginTop = `${Site.navigationAnimationDistanceVertical}px`;
 				element.style.marginBottom = 0;
 				
 				//Jesus fuck
@@ -376,15 +376,15 @@ Page.Animate =
 				setTimeout(() =>
 				{
 					element.style.marginTop = 0;
-					element.style.opacity = target_opacity;
+					element.style.opacity = targetOpacity;
 					
-					const timeout_id = setTimeout(() =>
+					const timeoutId = setTimeout(() =>
 					{
 						element.style.transition = "";
 						resolve();
 					}, duration);
 					
-					element.setAttribute("data-fade-up-in-timeout-id", timeout_id);
+					element.setAttribute("data-fade-up-in-timeout-id", timeoutId);
 				}, 10);
 			}, 10);	
 		});
@@ -392,7 +392,7 @@ Page.Animate =
 	
 	
 	
-	fade_up_out_js: function(element, duration, no_opacity_change = false)
+	fadeUpOutJs: function(element, duration, noOpacityChange = false)
 	{
 		return new Promise((resolve, reject) =>
 		{
@@ -401,13 +401,13 @@ Page.Animate =
 			const data =
 			{
 				targets: element,
-				marginTop: `${-Site.navigation_animation_distance_vertical}px`,
+				marginTop: `${-Site.navigationAnimationDistanceVertical}px`,
 				duration: duration,
 				easing: "cubicBezier(.1, 0.0, .2, 0.0)",
 				complete: resolve
 			};
 			
-			if (!no_opacity_change)
+			if (!noOpacityChange)
 			{
 				data.opacity = 0;
 			}
@@ -416,7 +416,7 @@ Page.Animate =
 		});	
 	},
 	
-	fade_up_out_css: function(element, duration, no_opacity_change = false)
+	fadeUpOutCss: function(element, duration, noOpacityChange = false)
 	{
 		return new Promise((resolve, reject) =>
 		{
@@ -435,20 +435,20 @@ Page.Animate =
 				
 				setTimeout(() =>
 				{
-					element.style.marginTop = `-${Site.navigation_animation_distance_vertical}px`;
+					element.style.marginTop = `-${Site.navigationAnimationDistanceVertical}px`;
 					
-					if (!no_opacity_change)
+					if (!noOpacityChange)
 					{
 						element.style.opacity = 0;
 					}		
 					
-					const timeout_id = setTimeout(() =>
+					const timeoutId = setTimeout(() =>
 					{
 						element.style.transition = "";
 						resolve();
 					}, duration);
 					
-					element.setAttribute("data-fade-up-out-timeout-id", timeout_id);
+					element.setAttribute("data-fade-up-out-timeout-id", timeoutId);
 				}, 10);
 			}, 10);	
 		});
@@ -456,17 +456,17 @@ Page.Animate =
 	
 	
 	
-	fade_down_in_js: function(element, duration, target_opacity = 1)
+	fadeDownInJs: function(element, duration, targetOpacity = 1)
 	{
 		return new Promise((resolve, reject) =>
 		{
-			element.style.marginTop = `${-Site.navigation_animation_distance_vertical}px`;
+			element.style.marginTop = `${-Site.navigationAnimationDistanceVertical}px`;
 			element.style.marginBottom = 0;
 			
 			anime({
 				targets: element,
 				marginTop: "0px",
-				opacity: target_opacity,
+				opacity: targetOpacity,
 				duration: duration,
 				easing: "cubicBezier(.4, 1.0, .7, 1.0)",
 				complete: resolve
@@ -474,7 +474,7 @@ Page.Animate =
 		});	
 	},
 	
-	fade_down_in_css: function(element, duration, target_opacity = 1)
+	fadeDownInCss: function(element, duration, targetOpacity = 1)
 	{
 		return new Promise((resolve, reject) =>
 		{
@@ -485,7 +485,7 @@ Page.Animate =
 			
 			setTimeout(() =>
 			{
-				element.style.marginTop = `${-Site.navigation_animation_distance_vertical}px`;
+				element.style.marginTop = `${-Site.navigationAnimationDistanceVertical}px`;
 				element.style.marginBottom = 0;
 				
 				void(element.offsetHeight);
@@ -495,15 +495,15 @@ Page.Animate =
 				setTimeout(() =>
 				{
 					element.style.marginTop = 0;
-					element.style.opacity = target_opacity;
+					element.style.opacity = targetOpacity;
 					
-					const timeout_id = setTimeout(() =>
+					const timeoutId = setTimeout(() =>
 					{
 						element.style.transition = "";
 						resolve();
 					}, duration);
 					
-					element.setAttribute("data-fade-down-in-timeout-id", timeout_id);
+					element.setAttribute("data-fade-down-in-timeout-id", timeoutId);
 				}, 10);
 			}, 10);	
 		});
@@ -511,7 +511,7 @@ Page.Animate =
 	
 	
 	
-	fade_down_out_js: function(element, duration, no_opacity_change = false)
+	fadeDownOutJs: function(element, duration, noOpacityChange = false)
 	{
 		return new Promise((resolve, reject) =>
 		{
@@ -520,13 +520,13 @@ Page.Animate =
 			const data =
 			{
 				targets: element,
-				marginTop: `${Site.navigation_animation_distance_vertical}px`,
+				marginTop: `${Site.navigationAnimationDistanceVertical}px`,
 				duration: duration,
 				easing: "cubicBezier(.1, 0.0, .2, 0.0)",
 				complete: resolve
 			};
 			
-			if (!no_opacity_change)
+			if (!noOpacityChange)
 			{
 				data.opacity = 0;
 			}
@@ -535,7 +535,7 @@ Page.Animate =
 		});	
 	},
 	
-	fade_down_out_css: function(element, duration, no_opacity_change = false)
+	fadeDownOutCss: function(element, duration, noOpacityChange = false)
 	{
 		return new Promise((resolve, reject) =>
 		{
@@ -554,20 +554,20 @@ Page.Animate =
 				
 				setTimeout(() =>
 				{
-					element.style.marginTop = `${Site.navigation_animation_distance_vertical}px`;
+					element.style.marginTop = `${Site.navigationAnimationDistanceVertical}px`;
 					
-					if (!no_opacity_change)
+					if (!noOpacityChange)
 					{
 						element.style.opacity = 0;
 					}
 					
-					const timeout_id = setTimeout(() =>
+					const timeoutId = setTimeout(() =>
 					{
 						element.style.transition = "";
 						resolve();
 					}, duration);
 					
-					element.setAttribute("data-fade-down-out-timeout-id", timeout_id);
+					element.setAttribute("data-fade-down-out-timeout-id", timeoutId);
 				}, 10);
 			}, 10);	
 		});
@@ -575,16 +575,16 @@ Page.Animate =
 	
 	
 	
-	fade_left_in_js: function(element, duration, target_opacity = 1)
+	fadeLeftInJs: function(element, duration, targetOpacity = 1)
 	{
 		return new Promise((resolve, reject) =>
 		{
-			element.style.marginLeft = `${Site.navigation_animation_distance_horizontal}px`;
+			element.style.marginLeft = `${Site.navigationAnimationDistanceHorizontal}px`;
 			
 			anime({
 				targets: element,
 				marginLeft: "0px",
-				opacity: target_opacity,
+				opacity: targetOpacity,
 				duration: duration,
 				easing: "cubicBezier(.4, 1.0, .7, 1.0)",
 				complete: resolve
@@ -592,7 +592,7 @@ Page.Animate =
 		});	
 	},
 	
-	fade_left_in_css: function(element, duration, target_opacity = 1)
+	fadeLeftInCss: function(element, duration, targetOpacity = 1)
 	{
 		return new Promise((resolve, reject) =>
 		{
@@ -603,7 +603,7 @@ Page.Animate =
 			
 			setTimeout(() =>
 			{
-				element.style.marginLeft = `${Site.navigation_animation_distance_horizontal}px`;
+				element.style.marginLeft = `${Site.navigationAnimationDistanceHorizontal}px`;
 				
 				void(element.offsetHeight);
 				
@@ -612,15 +612,15 @@ Page.Animate =
 				setTimeout(() =>
 				{
 					element.style.marginLeft = 0;
-					element.style.opacity = target_opacity;
+					element.style.opacity = targetOpacity;
 					
-					const timeout_id = setTimeout(() =>
+					const timeoutId = setTimeout(() =>
 					{
 						element.style.transition = "";
 						resolve();
 					}, duration);
 					
-					element.setAttribute("data-fade-left-in-timeout-id", timeout_id);
+					element.setAttribute("data-fade-left-in-timeout-id", timeoutId);
 				}, 10);
 			}, 10);	
 		});
@@ -628,20 +628,20 @@ Page.Animate =
 	
 	
 	
-	fade_left_out_js: function(element, duration, no_opacity_change = false)
+	fadeLeftOutJs: function(element, duration, noOpacityChange = false)
 	{
 		return new Promise((resolve, reject) =>
 		{
 			const data =
 			{
 				targets: element,
-				marginLeft: `${-Site.navigation_animation_distance_horizontal}px`,
+				marginLeft: `${-Site.navigationAnimationDistanceHorizontal}px`,
 				duration: duration,
 				easing: "cubicBezier(.1, 0.0, .2, 0.0)",
 				complete: resolve
 			};
 			
-			if (!no_opacity_change)
+			if (!noOpacityChange)
 			{
 				data.opacity = 0;
 			}
@@ -650,7 +650,7 @@ Page.Animate =
 		});	
 	},
 	
-	fade_left_out_css: function(element, duration, no_opacity_change = false)
+	fadeLeftOutCss: function(element, duration, noOpacityChange = false)
 	{
 		return new Promise((resolve, reject) =>
 		{
@@ -667,20 +667,20 @@ Page.Animate =
 				
 				setTimeout(() =>
 				{
-					element.style.marginLeft = `${-Site.navigation_animation_distance_horizontal}px`;
+					element.style.marginLeft = `${-Site.navigationAnimationDistanceHorizontal}px`;
 					
-					if (!no_opacity_change)
+					if (!noOpacityChange)
 					{
 						element.style.opacity = 0;
 					}
 					
-					const timeout_id = setTimeout(() =>
+					const timeoutId = setTimeout(() =>
 					{
 						element.style.transition = "";
 						resolve();
 					}, duration);
 					
-					element.setAttribute("data-fade-left-out-timeout-id", timeout_id);
+					element.setAttribute("data-fade-left-out-timeout-id", timeoutId);
 				}, 10);
 			}, 10);	
 		});
@@ -688,16 +688,16 @@ Page.Animate =
 	
 	
 	
-	fade_right_in_js: function(element, duration, target_opacity = 1)
+	fadeRightInJs: function(element, duration, targetOpacity = 1)
 	{
 		return new Promise((resolve, reject) =>
 		{
-			element.style.marginLeft = `${-Site.navigation_animation_distance_horizontal}px`;
+			element.style.marginLeft = `${-Site.navigationAnimationDistanceHorizontal}px`;
 			
 			anime({
 				targets: element,
 				marginLeft: "0px",
-				opacity: target_opacity,
+				opacity: targetOpacity,
 				duration: duration,
 				easing: "cubicBezier(.4, 1.0, .7, 1.0)",
 				complete: resolve
@@ -705,7 +705,7 @@ Page.Animate =
 		});	
 	},
 	
-	fade_right_in_css: function(element, duration, target_opacity = 1)
+	fadeRightInCss: function(element, duration, targetOpacity = 1)
 	{
 		return new Promise((resolve, reject) =>
 		{
@@ -716,7 +716,7 @@ Page.Animate =
 			
 			setTimeout(() =>
 			{
-				element.style.marginLeft = `${-Site.navigation_animation_distance_horizontal}px`;
+				element.style.marginLeft = `${-Site.navigationAnimationDistanceHorizontal}px`;
 				
 				void(element.offsetHeight);
 				
@@ -725,15 +725,15 @@ Page.Animate =
 				setTimeout(() =>
 				{
 					element.style.marginLeft = 0;
-					element.style.opacity = target_opacity;
+					element.style.opacity = targetOpacity;
 					
-					const timeout_id = setTimeout(() =>
+					const timeoutId = setTimeout(() =>
 					{
 						element.style.transition = "";
 						resolve();
 					}, duration);
 					
-					element.setAttribute("data-fade-right-in-timeout-id", timeout_id);
+					element.setAttribute("data-fade-right-in-timeout-id", timeoutId);
 				}, 10);
 			}, 10);	
 		});
@@ -741,20 +741,20 @@ Page.Animate =
 	
 	
 	
-	fade_right_out_js: function(element, duration, no_opacity_change = false)
+	fadeRightOutJs: function(element, duration, noOpacityChange = false)
 	{
 		return new Promise((resolve, reject) =>
 		{
 			const data =
 			{
 				targets: element,
-				marginLeft: `${Site.navigation_animation_distance_horizontal}px`,
+				marginLeft: `${Site.navigationAnimationDistanceHorizontal}px`,
 				duration: duration,
 				easing: "cubicBezier(.1, 0.0, .2, 0.0)",
 				complete: resolve
 			};
 			
-			if (!no_opacity_change)
+			if (!noOpacityChange)
 			{
 				data.opacity = 0;
 			}
@@ -763,7 +763,7 @@ Page.Animate =
 		});	
 	},
 	
-	fade_right_out_css: function(element, duration, no_opacity_change = false)
+	fadeRightOutCss: function(element, duration, noOpacityChange = false)
 	{
 		return new Promise((resolve, reject) =>
 		{
@@ -780,20 +780,20 @@ Page.Animate =
 				
 				setTimeout(() =>
 				{
-					element.style.marginLeft = `${Site.navigation_animation_distance_horizontal}px`;
+					element.style.marginLeft = `${Site.navigationAnimationDistanceHorizontal}px`;
 					
-					if (!no_opacity_change)
+					if (!noOpacityChange)
 					{
 						element.style.opacity = 0;
 					}
 					
-					const timeout_id = setTimeout(() =>
+					const timeoutId = setTimeout(() =>
 					{
 						element.style.transition = "";
 						resolve();
 					}, duration);
 					
-					element.setAttribute("data-fade-right-out-timeout-id", timeout_id);
+					element.setAttribute("data-fade-right-out-timeout-id", timeoutId);
 				}, 10);
 			}, 10);	
 		});
@@ -801,13 +801,13 @@ Page.Animate =
 	
 	
 	
-	fade_in_js: function(element, duration, target_opacity = 1)
+	fadeInJs: function(element, duration, targetOpacity = 1)
 	{
 		return new Promise((resolve, reject) =>
 		{
 			anime({
 				targets: element,
-				opacity: target_opacity,
+				opacity: targetOpacity,
 				duration: duration,
 				easing: "cubicBezier(.4, 1.0, .7, 1.0)",
 				complete: resolve
@@ -815,7 +815,7 @@ Page.Animate =
 		});	
 	},
 	
-	fade_in_css: function(element, duration, target_opacity = 1)
+	fadeInCss: function(element, duration, targetOpacity = 1)
 	{
 		return new Promise((resolve, reject) =>
 		{
@@ -832,15 +832,15 @@ Page.Animate =
 				
 				setTimeout(() =>
 				{
-					element.style.opacity = target_opacity;
+					element.style.opacity = targetOpacity;
 					
-					const timeout_id = setTimeout(() =>
+					const timeoutId = setTimeout(() =>
 					{
 						element.style.transition = "";
 						resolve();
 					}, duration);
 					
-					element.setAttribute("data-fade-in-timeout-id", timeout_id);
+					element.setAttribute("data-fade-in-timeout-id", timeoutId);
 				}, 10);
 			}, 10);	
 		});
@@ -848,7 +848,7 @@ Page.Animate =
 	
 	
 	
-	fade_out_js: function(element, duration, no_opacity_change = false)
+	fadeOutJs: function(element, duration, noOpacityChange = false)
 	{
 		return new Promise((resolve, reject) =>
 		{
@@ -860,7 +860,7 @@ Page.Animate =
 				complete: resolve
 			};
 			
-			if (!no_opacity_change)
+			if (!noOpacityChange)
 			{
 				data.opacity = 0;
 			}
@@ -869,7 +869,7 @@ Page.Animate =
 		});	
 	},
 	
-	fade_out_css: function(element, duration, no_opacity_change = false)
+	fadeOutCss: function(element, duration, noOpacityChange = false)
 	{
 		return new Promise((resolve, reject) =>
 		{
@@ -886,18 +886,18 @@ Page.Animate =
 				
 				setTimeout(() =>
 				{
-					if (!no_opacity_change)
+					if (!noOpacityChange)
 					{
 						element.style.opacity = 0;
 					}
 					
-					const timeout_id = setTimeout(() =>
+					const timeoutId = setTimeout(() =>
 					{
 						element.style.transition = "";
 						resolve();
 					}, duration);
 					
-					element.setAttribute("data-fade-out-timeout-id", timeout_id);
+					element.setAttribute("data-fade-out-timeout-id", timeoutId);
 				}, 10);
 			}, 10);	
 		});

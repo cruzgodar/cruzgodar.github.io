@@ -6,20 +6,20 @@ let DEBUG = false;
 
 
 Page.element = null;
-Page.last_element = null;
+Page.lastElement = null;
 
-Page.ready_to_show = false;
+Page.readyToShow = false;
 
 
 Page.scroll = 0;
 
 Page.settings = {};
 
-Page.parent_folder = "/";
+Page.parentFolder = "/";
 
 
 
-Site.manual_header_pages =
+Site.manualHeaderPages =
 [
 	"/home/",
 	
@@ -28,7 +28,7 @@ Site.manual_header_pages =
 
 
 
-Page.temporary_handlers =
+Page.temporaryHandlers =
 {
 	"scroll": [],
 	"resize": [],
@@ -45,29 +45,29 @@ Page.temporary_handlers =
 	"keydown": []
 }
 
-Page.temporary_intervals = [];
+Page.temporaryIntervals = [];
 
-Page.temporary_web_workers = [];
+Page.temporaryWebWorkers = [];
 
-Page.background_color_changed = false;
+Page.backgroundColorChanged = false;
 
-Page.using_custom_script = true;
+Page.usingCustomScript = true;
 
 //Sets a whole bunch of elements' styles at once.
-Page.set_element_styles = function(query_string, property, value, important = false)
+Page.setElementStyles = function(queryString, property, value, important = false)
 {
-	const priority_string = important ? "important" : "";
+	const priorityString = important ? "important" : "";
 	
-	Page.element.querySelectorAll(query_string).forEach(element => element.style.setProperty(property, value, priority_string));
+	Page.element.querySelectorAll(queryString).forEach(element => element.style.setProperty(property, value, priorityString));
 }
 
 
 
-Site.visted_homepage = false;
+Site.vistedHomepage = false;
 
 
 
-Site.scripts_loaded =
+Site.scriptsLoaded =
 {
 	"mathjax": false,
 	"complexjs": false,
@@ -79,16 +79,16 @@ Site.scripts_loaded =
 
 
 
-Site.use_js_animation = false;
+Site.useJsAnimation = false;
 
-Site.base_animation_time = 250;
+Site.baseAnimationTime = 250;
 
-Site.navigation_animation_distance_vertical = Math.min(window.innerHeight / 20, 25);
-Site.navigation_animation_distance_horizontal = Math.min(window.innerWidth / 20, 25);
+Site.navigationAnimationDistanceVertical = Math.min(window.innerHeight / 20, 25);
+Site.navigationAnimationDistanceHorizontal = Math.min(window.innerWidth / 20, 25);
 	
-Site.showing_presentation = false;	
+Site.showingPresentation = false;	
 
-Site.applet_process_id = 0;
+Site.appletProcessId = 0;
 
 
 
@@ -119,7 +119,7 @@ Site.load = async function(url)
 			console.log("Showing a presentation!");
 		}
 		
-		Site.showing_presentation = true;
+		Site.showingPresentation = true;
 	}
 	
 	
@@ -128,7 +128,7 @@ Site.load = async function(url)
 	
 	Page.element.classList.add("page");
 	
-	if (Site.showing_presentation)
+	if (Site.showingPresentation)
 	{
 		Page.element.style.display = "none";
 	}
@@ -137,99 +137,99 @@ Site.load = async function(url)
 	
 	
 	
-	const browser_is_ios = Browser.is_ios();
+	const browserIsIos = Browser.isIos();
 	
-	Site.use_js_animation = browser_is_ios;
+	Site.useJsAnimation = browserIsIos;
 	
 	
 	
-	if (Site.use_js_animation)
+	if (Site.useJsAnimation)
 	{
 		if (DEBUG)
 		{
 			console.log("Using JS animation");
 		}
 		
-		this.button_animation_time = this.base_animation_time * .5;
-		this.opacity_animation_time = this.base_animation_time * .8;
-		this.page_animation_time = this.base_animation_time * .55;
-		this.background_color_animation_time = this.base_animation_time * 2;
+		this.buttonAnimationTime = this.baseAnimationTime * .5;
+		this.opacityAnimationTime = this.baseAnimationTime * .8;
+		this.pageAnimationTime = this.baseAnimationTime * .55;
+		this.backgroundColorAnimationTime = this.baseAnimationTime * 2;
 		
-		Page.Animate.change_opacity = Page.Animate.change_opacity_js;
-		Page.Animate.change_scale = Page.Animate.change_scale_js;
-		Page.Animate.fade_left = Page.Animate.fade_left_js;
+		Page.Animate.changeOpacity = Page.Animate.changeOpacityJs;
+		Page.Animate.changeScale = Page.Animate.changeScaleJs;
+		Page.Animate.fadeLeft = Page.Animate.fadeLeftJs;
 		
-		Page.Animate.change_left_settings_button = Page.Animate.change_left_settings_button_js;
-		Page.Animate.change_right_settings_button = Page.Animate.change_right_settings_button_js;
+		Page.Animate.changeLeftSettingsButton = Page.Animate.changeLeftSettingsButtonJs;
+		Page.Animate.changeRightSettingsButton = Page.Animate.changeRightSettingsButtonJs;
 		
-		Page.Animate.show_slide_shelf = Page.Animate.show_slide_shelf_js;
-		Page.Animate.hide_slide_shelf = Page.Animate.hide_slide_shelf_js;
+		Page.Animate.showSlideShelf = Page.Animate.showSlideShelfJs;
+		Page.Animate.hideSlideShelf = Page.Animate.hideSlideShelfJs;
 		
-		Page.Animate.change_footer_image_link_text = Page.Animate.change_footer_image_link_text_js;
+		Page.Animate.changeFooterImageLinkText = Page.Animate.changeFooterImageLinkTextJs;
 		
-		Page.Animate.fade_up_in = Page.Animate.fade_up_in_js;
-		Page.Animate.fade_up_out = Page.Animate.fade_up_out_js;
-		Page.Animate.fade_down_in = Page.Animate.fade_down_in_js;
-		Page.Animate.fade_down_out = Page.Animate.fade_down_out_js;
-		Page.Animate.fade_left_in = Page.Animate.fade_left_in_js;
-		Page.Animate.fade_left_out = Page.Animate.fade_left_out_js;
-		Page.Animate.fade_right_in = Page.Animate.fade_right_in_js;
-		Page.Animate.fade_right_out = Page.Animate.fade_right_out_js;
-		Page.Animate.fade_in = Page.Animate.fade_in_js;
-		Page.Animate.fade_out = Page.Animate.fade_out_js;
+		Page.Animate.fadeUpIn = Page.Animate.fadeUpInJs;
+		Page.Animate.fadeUpOut = Page.Animate.fadeUpOutJs;
+		Page.Animate.fadeDownIn = Page.Animate.fadeDownInJs;
+		Page.Animate.fadeDownOut = Page.Animate.fadeDownOutJs;
+		Page.Animate.fadeLeftIn = Page.Animate.fadeLeftInJs;
+		Page.Animate.fadeLeftOut = Page.Animate.fadeLeftOutJs;
+		Page.Animate.fadeRightIn = Page.Animate.fadeRightInJs;
+		Page.Animate.fadeRightOut = Page.Animate.fadeRightOutJs;
+		Page.Animate.fadeIn = Page.Animate.fadeInJs;
+		Page.Animate.fadeOut = Page.Animate.fadeOutJs;
 		
-		Page.Animate.show_fade_up_section = Page.Animate.show_fade_up_section_js;
-		Page.Animate.show_zoom_out_section = Page.Animate.show_zoom_out_section_js;
+		Page.Animate.showFadeUpSection = Page.Animate.showFadeUpSectionJs;
+		Page.Animate.showZoomOutSection = Page.Animate.showZoomOutSectionJs;
 	}
 	
 	else
 	{
-		this.button_animation_time = this.base_animation_time * .45;
-		this.opacity_animation_time = this.base_animation_time * .75;
-		this.page_animation_time = this.base_animation_time * .55;
-		this.background_color_animation_time = this.base_animation_time * 2;
+		this.buttonAnimationTime = this.baseAnimationTime * .45;
+		this.opacityAnimationTime = this.baseAnimationTime * .75;
+		this.pageAnimationTime = this.baseAnimationTime * .55;
+		this.backgroundColorAnimationTime = this.baseAnimationTime * 2;
 		
-		Page.Animate.change_opacity = Page.Animate.change_opacity_css;
-		Page.Animate.change_scale = Page.Animate.change_scale_css;
-		Page.Animate.fade_left = Page.Animate.fade_left_css;
+		Page.Animate.changeOpacity = Page.Animate.changeOpacityCss;
+		Page.Animate.changeScale = Page.Animate.changeScaleCss;
+		Page.Animate.fadeLeft = Page.Animate.fadeLeftCss;
 		
-		Page.Animate.change_left_settings_button = Page.Animate.change_left_settings_button_css;
-		Page.Animate.change_right_settings_button = Page.Animate.change_right_settings_button_css;
+		Page.Animate.changeLeftSettingsButton = Page.Animate.changeLeftSettingsButtonCss;
+		Page.Animate.changeRightSettingsButton = Page.Animate.changeRightSettingsButtonCss;
 		
-		Page.Animate.show_slide_shelf = Page.Animate.show_slide_shelf_js;
-		Page.Animate.hide_slide_shelf = Page.Animate.hide_slide_shelf_js;
+		Page.Animate.showSlideShelf = Page.Animate.showSlideShelfJs;
+		Page.Animate.hideSlideShelf = Page.Animate.hideSlideShelfJs;
 		
-		Page.Animate.change_footer_image_link_text = Page.Animate.change_footer_image_link_text_css;
+		Page.Animate.changeFooterImageLinkText = Page.Animate.changeFooterImageLinkTextCss;
 		
-		Page.Animate.fade_up_in = Page.Animate.fade_up_in_css;
-		Page.Animate.fade_up_out = Page.Animate.fade_up_out_css;
-		Page.Animate.fade_down_in = Page.Animate.fade_down_in_css;
-		Page.Animate.fade_down_out = Page.Animate.fade_down_out_css;
-		Page.Animate.fade_left_in = Page.Animate.fade_left_in_css;
-		Page.Animate.fade_left_out = Page.Animate.fade_left_out_css;
-		Page.Animate.fade_right_in = Page.Animate.fade_right_in_css;
-		Page.Animate.fade_right_out = Page.Animate.fade_right_out_css;
-		Page.Animate.fade_in = Page.Animate.fade_in_css;
-		Page.Animate.fade_out = Page.Animate.fade_out_css;
+		Page.Animate.fadeUpIn = Page.Animate.fadeUpInCss;
+		Page.Animate.fadeUpOut = Page.Animate.fadeUpOutCss;
+		Page.Animate.fadeDownIn = Page.Animate.fadeDownInCss;
+		Page.Animate.fadeDownOut = Page.Animate.fadeDownOutCss;
+		Page.Animate.fadeLeftIn = Page.Animate.fadeLeftInCss;
+		Page.Animate.fadeLeftOut = Page.Animate.fadeLeftOutCss;
+		Page.Animate.fadeRightIn = Page.Animate.fadeRightInCss;
+		Page.Animate.fadeRightOut = Page.Animate.fadeRightOutCss;
+		Page.Animate.fadeIn = Page.Animate.fadeInCss;
+		Page.Animate.fadeOut = Page.Animate.fadeOutCss;
 		
-		Page.Animate.show_fade_up_section = Page.Animate.show_fade_up_section_css;
-		Page.Animate.show_zoom_out_section = Page.Animate.show_zoom_out_section_css;
+		Page.Animate.showFadeUpSection = Page.Animate.showFadeUpSectionCss;
+		Page.Animate.showZoomOutSection = Page.Animate.showZoomOutSectionCss;
 	}
 	
 	
 	
-	Page.Layout.aspect_ratio = window.innerWidth / window.innerHeight;
+	Page.Layout.aspectRatio = window.innerWidth / window.innerHeight;
 	
 	window.addEventListener("scroll", () =>
 	{
-		Page.Banner.on_scroll(0);
+		Page.Banner.onScroll(0);
 		
-		window.requestAnimationFrame(Page.Load.lazy_load_scroll);
+		window.requestAnimationFrame(Page.Load.lazyLoadScroll);
 	});
 	
 	window.addEventListener("resize", () =>
 	{
-		Page.Layout.on_resize();
+		Page.Layout.onResize();
 	});
 	
 	
@@ -238,7 +238,7 @@ Site.load = async function(url)
 	
 	
 	
-	Site.Interaction.set_up_listeners();
+	Site.Interaction.setUpListeners();
 	
 	
 	
@@ -252,9 +252,9 @@ Site.load = async function(url)
 	
 	await new Promise(async (resolve, reject) =>
 	{
-		await Site.load_script("https://polyfill.io/v3/polyfill.min.js?features=es6");
+		await Site.loadScript("https://polyfill.io/v3/polyfill.min.js?features=es6");
 		
-		await Site.load_script("https://cdn.jsdelivr.net/npm/mathjax@3.2.0/es5/tex-mml-chtml.js")
+		await Site.loadScript("https://cdn.jsdelivr.net/npm/mathjax@3.2.0/es5/tex-mml-chtml.js")
 		
 		resolve();
 	});
@@ -280,7 +280,7 @@ Site.load = async function(url)
 		
 		
 		//Also add a little extra spacing at the top of each page to keep content from feeling too close to the top of the screen.
-		this.add_style(`
+		this.addStyle(`
 			#logo, .name-text-container, .empty-top
 			{
 				margin-top: 2vh;
@@ -314,23 +314,23 @@ Site.load = async function(url)
 	
 	
 	
-	Page.Cards.close_button.addEventListener("click", Page.Cards.hide);
+	Page.Cards.closeButton.addEventListener("click", Page.Cards.hide);
 	
 	
 	
 	Page.Banner.ScrollButton.exists = false;
 	
-	Site.Settings.set_up();
+	Site.Settings.setUp();
 	
-	if (!Site.showing_presentation)
+	if (!Site.showingPresentation)
 	{
-		Page.Load.add_header();
+		Page.Load.addHeader();
 	}
 	
 	
 	
-	Page.Load.HoverEvents.add(Page.Cards.close_button);
-	Page.Cards.close_button.addEventListener("click", Page.Cards.hide);
+	Page.Load.HoverEvents.add(Page.Cards.closeButton);
+	Page.Cards.closeButton.addEventListener("click", Page.Cards.hide);
 	
 	
 	
@@ -350,13 +350,13 @@ Site.load = async function(url)
 
 
 //Loads a script with the given source and returns a promise for when it completes.
-Site.load_script = function(src, is_module = false)
+Site.loadScript = function(src, isModule = false)
 {
 	return new Promise((resolve, reject) =>
 	{
 		const script = document.createElement("script");
 		
-		if (is_module)
+		if (isModule)
 		{
 			script.setAttribute("type", "module");
 		}
@@ -372,7 +372,7 @@ Site.load_script = function(src, is_module = false)
 
 
 //Loads a style with the given href.
-Site.load_style = function(href)
+Site.loadStyle = function(href)
 {
 	const style = document.createElement("link");
 	
@@ -389,7 +389,7 @@ Site.load_style = function(href)
 
 
 //Adds a style tag to <head> with the given content. If temporary is true, it will be removed at the next page load. Returns the style element added.
-Site.add_style = function(content, temporary = true, at_beginning_of_head = false)
+Site.addStyle = function(content, temporary = true, atBeginningOfHead = false)
 {
 	const element = document.createElement("style");
 	
@@ -402,7 +402,7 @@ Site.add_style = function(content, temporary = true, at_beginning_of_head = fals
 	
 	
 	
-	if (at_beginning_of_head)
+	if (atBeginningOfHead)
 	{
 		document.head.insertBefore(element, document.head.firstChild);
 	}
@@ -422,38 +422,38 @@ Site.add_style = function(content, temporary = true, at_beginning_of_head = fals
 Site.Interaction =
 {
 	//Whether this is a touchscreen device on the current page. It's assumed to be false on every page until a touchstart or touchmove event is detected, at which point it's set to true.
-	currently_touch_device: (("ontouchstart" in window) ||
+	currentlyTouchDevice: (("ontouchstart" in window) ||
     (navigator.maxTouchPoints > 0) ||
     (navigator.msMaxTouchPoints > 0)),
 	
-	last_mousemove_event: 0,
+	lastMousemoveEvent: 0,
 	
-	last_touch_x: 0,
-	last_touch_y: 0,
+	lastTouchX: 0,
+	lastTouchY: 0,
 	
 	
 	
-	set_up_listeners: function()
+	setUpListeners: function()
 	{
-		const bound_function = this.handle_touch_event.bind(this);
+		const boundFunction = this.handleTouchEvent.bind(this);
 		
-		document.documentElement.addEventListener("touchstart", bound_function, false);
-		document.documentElement.addEventListener("touchmove", bound_function, false);
+		document.documentElement.addEventListener("touchstart", boundFunction, false);
+		document.documentElement.addEventListener("touchmove", boundFunction, false);
 
 
 
 		document.documentElement.addEventListener("mousemove", () =>
 		{
-			if (this.currently_touch_device)
+			if (this.currentlyTouchDevice)
 			{
-				const time_between_mousemoves = Date.now() - this.last_mousemove_event;
+				const timeBetweenMousemoves = Date.now() - this.lastMousemoveEvent;
 				
-				this.last_mousemove_event = Date.now();
+				this.lastMousemoveEvent = Date.now();
 				
 				//Checking if it's >= 3 kinda sucks, but it seems like touch devices like to fire two mousemoves in quick succession sometimes. They also like to make that delay exactly 33. Look, I hate this too, but it needs to be here.
-				if (time_between_mousemoves >= 3 && time_between_mousemoves <= 50 && time_between_mousemoves !== 33)
+				if (timeBetweenMousemoves >= 3 && timeBetweenMousemoves <= 50 && timeBetweenMousemoves !== 33)
 				{
-					this.currently_touch_device = false;
+					this.currentlyTouchDevice = false;
 				}
 			}
 		});
@@ -477,7 +477,7 @@ Site.Interaction =
 			}
 			
 			//Close cards when escape is pressed.
-			else if (e.keyCode === 27 && Page.Cards.is_open)
+			else if (e.keyCode === 27 && Page.Cards.isOpen)
 			{
 				Page.Cards.hide();
 			}
@@ -503,21 +503,21 @@ Site.Interaction =
 	
 	
 	
-	handle_touch_event: function(e)
+	handleTouchEvent: function(e)
 	{
-		this.last_touch_x = e.touches[0].clientX;
-		this.last_touch_y = e.touches[0].clientY;
+		this.lastTouchX = e.touches[0].clientX;
+		this.lastTouchY = e.touches[0].clientY;
 		
 		if (document.activeElement.tagName !== "INPUT" && document.activeElement.tagName !== "TEXTAREA" && document.activeElement.tagName !== "SELECT")
 		{
 			document.activeElement.blur();
 		}
 		
-		if (!this.currently_touch_device)
+		if (!this.currentlyTouchDevice)
 		{
 			Page.Load.HoverEvents.remove();
 			
-			this.currently_touch_device = true;
+			this.currentlyTouchDevice = true;
 		}
 	}
 };

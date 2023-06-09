@@ -4,66 +4,66 @@
 
 Page.Layout =
 {
-	layout_string: "",
+	layoutString: "",
 	
-	old_layout_string: "",
+	oldLayoutString: "",
 	
 	
 
-	aspect_ratio: 1,
+	aspectRatio: 1,
 	
-	resize_time: 0,
+	resizeTime: 0,
 	
 	
 	
-	on_resize: async function()
+	onResize: async function()
 	{
-		Page.Banner.max_scroll = document.body.offsetHeight > window.innerHeight * 1.5 ? window.innerHeight / 2 : document.body.offsetHeight - window.innerHeight;
+		Page.Banner.maxScroll = document.body.offsetHeight > window.innerHeight * 1.5 ? window.innerHeight / 2 : document.body.offsetHeight - window.innerHeight;
 		
-		Site.navigation_animation_distance_vertical = Math.min(window.innerHeight / 20, 25);
-		Site.navigation_animation_distance_horizontal = Math.min(window.innerWidth / 20, 25);
+		Site.navigationAnimationDistanceVertical = Math.min(window.innerHeight / 20, 25);
+		Site.navigationAnimationDistanceHorizontal = Math.min(window.innerWidth / 20, 25);
 		
-		this.aspect_ratio = window.innerWidth / window.innerHeight;
+		this.aspectRatio = window.innerWidth / window.innerHeight;
 		
 		
 		
-		this.old_layout_string = this.layout_string;
+		this.oldLayoutString = this.layoutString;
 		
 		if (window.innerWidth <= 700)
 		{
-			this.layout_string = "compact";
+			this.layoutString = "compact";
 		}
 		
 		else if (window.innerWidth >= 1400)
 		{
-			this.layout_string = "ultrawide";
+			this.layoutString = "ultrawide";
 		}
 		
 		else
 		{
-			this.layout_string = "default";
+			this.layoutString = "default";
 		}
 		
 		
 		
-		if (this.old_layout_string !== this.layout_string && this.layout_string === "ultrawide")
+		if (this.oldLayoutString !== this.layoutString && this.layoutString === "ultrawide")
 		{
 			this.Multicols.create();
 		}
 		
-		else if (this.old_layout_string !== this.layout_string && this.old_layout_string === "ultrawide")
+		else if (this.oldLayoutString !== this.layoutString && this.oldLayoutString === "ultrawide")
 		{
 			this.Multicols.remove();
 		}
 		
 		
 		
-		if (this.aspect_ratio > 1 && !this.AppletColumns.are_equalized)
+		if (this.aspectRatio > 1 && !this.AppletColumns.areEqualized)
 		{
 			this.AppletColumns.equalize();
 		}
 		
-		else if (this.aspect_ratio <= 1 && this.AppletColumns.are_equalized)
+		else if (this.aspectRatio <= 1 && this.AppletColumns.areEqualized)
 		{
 			this.AppletColumns.remove();
 		}	
@@ -73,14 +73,14 @@ Page.Layout =
 		this.Multicols.texts.forEach((text, index) =>
 		{
 			text.style.marginLeft = this.Multicols.reference.getBoundingClientRect().left + "px";
-			this.Multicols.image_links[index].style.marginLeft = this.Multicols.reference.getBoundingClientRect().left + "px";
+			this.Multicols.imageLinks[index].style.marginLeft = this.Multicols.reference.getBoundingClientRect().left + "px";
 		});
 		
 		
 		
-		if (Page.Cards.is_open)
+		if (Page.Cards.isOpen)
 		{
-			const rect = Page.Cards.current_card.getBoundingClientRect();
+			const rect = Page.Cards.currentCard.getBoundingClientRect();
 			
 			if (rect.height > window.innerHeight - 32)
 			{
@@ -98,7 +98,7 @@ Page.Layout =
 		//Fix the logo cause Firefox is dumb.
 		try
 		{
-			const element = Site.header_element.children[0].children[0];
+			const element = Site.headerElement.children[0].children[0];
 			element.style.width = `${element.getBoundingClientRect().height}px`;
 		}
 		
@@ -106,7 +106,7 @@ Page.Layout =
 		
 		
 		
-		Page.Banner.on_scroll(0);
+		Page.Banner.onScroll(0);
 	},
 
 
@@ -116,7 +116,7 @@ Page.Layout =
 		active: false,
 		
 		texts: [],
-		image_links: [],
+		imageLinks: [],
 		reference: null,
 		
 		
@@ -140,7 +140,7 @@ Page.Layout =
 			}
 			
 			this.texts = [];
-			this.image_links = [];
+			this.imageLinks = [];
 			
 			for (let i = 0; i < parents.length; i++)
 			{
@@ -168,16 +168,16 @@ Page.Layout =
 					{
 						this.texts.push(parents[i].querySelector(".section-text, .heading-text"));
 						
-						this.image_links.push(parents[i].querySelector(".image-links"));
+						this.imageLinks.push(parents[i].querySelector(".image-links"));
 						
 						this.texts[this.texts.length - 1].classList.add("multicol-text");
 						this.texts[this.texts.length - 1].style.marginLeft = this.reference.getBoundingClientRect().left + "px";
 						
-						this.image_links[this.image_links.length - 1].style.gridRowGap = "1.5vw";
-						this.image_links[this.image_links.length - 1].style.gridColumnGap = "1.5vw";
+						this.imageLinks[this.imageLinks.length - 1].style.gridRowGap = "1.5vw";
+						this.imageLinks[this.imageLinks.length - 1].style.gridColumnGap = "1.5vw";
 						
-						this.image_links[this.image_links.length - 1].style.width = "62.5vw";
-						this.image_links[this.image_links.length - 1].style.marginLeft = this.reference.getBoundingClientRect().left + "px";
+						this.imageLinks[this.imageLinks.length - 1].style.width = "62.5vw";
+						this.imageLinks[this.imageLinks.length - 1].style.marginLeft = this.reference.getBoundingClientRect().left + "px";
 					}
 				}
 			}
@@ -211,18 +211,18 @@ Page.Layout =
 				
 				
 				
-				this.image_links[index].style.width = "";
+				this.imageLinks[index].style.width = "";
 				
-				this.image_links[index].style.gridRowGap = "";
-				this.image_links[index].style.gridColumnGap = "";
+				this.imageLinks[index].style.gridRowGap = "";
+				this.imageLinks[index].style.gridColumnGap = "";
 				
-				this.image_links[index].style.marginLeft = "";
+				this.imageLinks[index].style.marginLeft = "";
 			});
 			
 			
 			
 			this.texts = [];
-			this.image_links = [];
+			this.imageLinks = [];
 			this.reference = null;
 			
 			
@@ -244,27 +244,27 @@ Page.Layout =
 	
 	AppletColumns:
 	{
-		are_equalized: false,
+		areEqualized: false,
 		
 		equalize: function()
 		{
-			if (Site.Settings.url_vars["condensed_applets"] === 1)
+			if (Site.Settings.urlVars["condensedApplets"] === 1)
 			{
 				return;
 			}
 			
-			let left_column = null;
-			let right_column = null;
+			let leftColumn = null;
+			let rightColumn = null;
 			
 			try
 			{
-				left_column = Page.element.querySelector("#canvas-landscape-left");
-				right_column = Page.element.querySelector("#canvas-landscape-right");
+				leftColumn = Page.element.querySelector("#canvas-landscape-left");
+				rightColumn = Page.element.querySelector("#canvas-landscape-right");
 			}
 			
 			catch(ex) {}
 			
-			if (left_column === null || right_column === null)
+			if (leftColumn === null || rightColumn === null)
 			{
 				return;
 			}
@@ -273,47 +273,47 @@ Page.Layout =
 			
 			let elements = [];
 			
-			const num_left_children = left_column.children.length;
-			const num_right_children = right_column.children.length;
+			const numLeftChildren = leftColumn.children.length;
+			const numRightChildren = rightColumn.children.length;
 			
-			for (let i = 0; i < num_left_children; i++)
+			for (let i = 0; i < numLeftChildren; i++)
 			{
-				elements.push(left_column.children[i]);
+				elements.push(leftColumn.children[i]);
 			}
 			
-			for (let i = 0; i < num_right_children; i++)
+			for (let i = 0; i < numRightChildren; i++)
 			{
-				elements.push(right_column.children[i]);
+				elements.push(rightColumn.children[i]);
 			}
 			
 			
 			
-			let height_sums = [elements[0].clientHeight];
+			let heightSums = [elements[0].clientHeight];
 			
 			for (let i = 1; i < elements.length; i++)
 			{
-				height_sums.push(height_sums[i - 1] + elements[i].clientHeight);
+				heightSums.push(heightSums[i - 1] + elements[i].clientHeight);
 			}
 			
 			
 			
 			//Find the midpoint.
 			
-			let min_height_difference = Infinity;
+			let minHeightDifference = Infinity;
 			
-			let midpoint_index = 0;
+			let midpointIndex = 0;
 			
 			if (elements.length > 1)
 			{
 				for (let i = 0; i < elements.length; i++)
 				{
-					const height_difference = Math.abs(height_sums[i] - (height_sums[height_sums.length - 1] - height_sums[i]));
+					const heightDifference = Math.abs(heightSums[i] - (heightSums[heightSums.length - 1] - heightSums[i]));
 					
-					if (height_difference < min_height_difference)
+					if (heightDifference < minHeightDifference)
 					{
-						min_height_difference = height_difference;
+						minHeightDifference = heightDifference;
 						
-						midpoint_index = i + 1;
+						midpointIndex = i + 1;
 					}
 				}
 			}
@@ -321,84 +321,84 @@ Page.Layout =
 			
 			
 			//Move elements around.
-			if (midpoint_index < num_left_children)
+			if (midpointIndex < numLeftChildren)
 			{
-				for (let i = midpoint_index; i < num_left_children; i++)
+				for (let i = midpointIndex; i < numLeftChildren; i++)
 				{
-					left_column.children[i].classList.add("move-to-right");
+					leftColumn.children[i].classList.add("move-to-right");
 				}
 				
-				const elements_to_move = Page.element.querySelectorAll(".move-to-right");
+				const elementsToMove = Page.element.querySelectorAll(".move-to-right");
 				
-				for (let i = elements_to_move.length - 1; i >= 0; i--)
+				for (let i = elementsToMove.length - 1; i >= 0; i--)
 				{
-					right_column.insertBefore(elements_to_move[i], right_column.firstElementChild);
+					rightColumn.insertBefore(elementsToMove[i], rightColumn.firstElementChild);
 				}
 			}
 			
 			else
 			{
-				for (let i = 0; i < midpoint_index - num_left_children; i++)
+				for (let i = 0; i < midpointIndex - numLeftChildren; i++)
 				{
-					right_column.children[i].classList.add("move-to-left");
+					rightColumn.children[i].classList.add("move-to-left");
 				}
 				
-				const elements_to_move = Page.element.querySelectorAll(".move-to-left");
+				const elementsToMove = Page.element.querySelectorAll(".move-to-left");
 				
-				for (let i = 0; i < elements_to_move.length; i++)
+				for (let i = 0; i < elementsToMove.length; i++)
 				{
-					left_column.appendChild(elements_to_move[i]);
+					leftColumn.appendChild(elementsToMove[i]);
 				}
 			}
 			
 			
 			
-			this.are_equalized = true;
+			this.areEqualized = true;
 		},
 		
 		remove: function()
 		{
-			let left_column = null;
-			let right_column = null;
+			let leftColumn = null;
+			let rightColumn = null;
 			
 			try
 			{
-				left_column = Page.element.querySelector("#canvas-landscape-left");
-				right_column = Page.element.querySelector("#canvas-landscape-right");
+				leftColumn = Page.element.querySelector("#canvas-landscape-left");
+				rightColumn = Page.element.querySelector("#canvas-landscape-right");
 			}
 			
 			catch(ex) {}
 			
-			if (left_column === null || right_column === null)
+			if (leftColumn === null || rightColumn === null)
 			{
 				return;
 			}
 			
 			
 			
-			let elements_to_move = Page.element.querySelectorAll(".move-to-left");
+			let elementsToMove = Page.element.querySelectorAll(".move-to-left");
 			
-			for (let i = elements_to_move.length - 1; i >= 0; i--)
+			for (let i = elementsToMove.length - 1; i >= 0; i--)
 			{
-				right_column.insertBefore(elements_to_move[i], right_column.firstElementChild);
+				rightColumn.insertBefore(elementsToMove[i], rightColumn.firstElementChild);
 				
-				elements_to_move[i].classList.remove("move-to-left");
+				elementsToMove[i].classList.remove("move-to-left");
 			}
 			
 			
 			
-			elements_to_move = Page.element.querySelectorAll(".move-to-right");
+			elementsToMove = Page.element.querySelectorAll(".move-to-right");
 			
-			for (let i = 0; i < elements_to_move.length; i++)
+			for (let i = 0; i < elementsToMove.length; i++)
 			{
-				left_column.appendChild(elements_to_move[i]);
+				leftColumn.appendChild(elementsToMove[i]);
 				
-				elements_to_move[i].classList.remove("move-to-right");
+				elementsToMove[i].classList.remove("move-to-right");
 			}
 			
 			
 			
-			this.are_equalized = false;
+			this.areEqualized = false;
 		}
 	}
 };

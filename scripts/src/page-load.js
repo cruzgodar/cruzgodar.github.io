@@ -7,21 +7,21 @@ Page.load = async function()
 {
 	Page.element = document.body.querySelector(".page");
 	
-	if (Page.Banner.banner_pages.includes(Page.url))
+	if (Page.Banner.bannerPages.includes(Page.url))
 	{
-		Page.banner_element = Page.element.querySelector("#banner");
-		Page.content_element = Page.element.querySelector("#content");
+		Page.bannerElement = Page.element.querySelector("#banner");
+		Page.contentElement = Page.element.querySelector("#content");
 		
-		Site.add_style(`
+		Site.addStyle(`
 			#banner-small
 			{
-				background: url(${Page.Banner.file_path}small.${Page.Images.file_extension}) no-repeat center center;
+				background: url(${Page.Banner.filePath}small.${Page.Images.fileExtension}) no-repeat center center;
 				background-size: cover;
 			}
 			
 			#banner-large
 			{
-				background: url(${Page.Banner.file_path}large.${Page.Images.file_extension}) no-repeat center center;
+				background: url(${Page.Banner.filePath}large.${Page.Images.fileExtension}) no-repeat center center;
 				background-size: cover;
 			}
 		`);
@@ -30,7 +30,7 @@ Page.load = async function()
 		
 		.then(() =>
 		{
-			Page.Animate.change_opacity(Page.element.querySelector("#banner-small"), 0, 700)
+			Page.Animate.changeOpacity(Page.element.querySelector("#banner-small"), 0, 700)
 			
 			.then(() => Page.element.querySelector("#banner-small").remove());
 		});
@@ -38,21 +38,21 @@ Page.load = async function()
 	
 	else
 	{
-		Page.banner_element = null;
+		Page.bannerElement = null;
 	}	
 	
-	Page.using_custom_script = true;
+	Page.usingCustomScript = true;
 	
-	Page.ready_to_show = false;
-	
-	
-	
-	this.Navigation.currently_changing_page = false;
+	Page.readyToShow = false;
 	
 	
 	
-	this.Load.parse_custom_style();
-	await this.Load.parse_custom_scripts();
+	this.Navigation.currentlyChangingPage = false;
+	
+	
+	
+	this.Load.parseCustomStyle();
+	await this.Load.parseCustomScripts();
 	
 	
 	
@@ -76,16 +76,16 @@ Page.load = async function()
 	
 	Page.Layout.Multicols.active = false;
 	
-	Page.Layout.on_resize();
+	Page.Layout.onResize();
 	
-	if (this.Layout.layout_string === "ultrawide")
+	if (this.Layout.layoutString === "ultrawide")
 	{
 		this.Layout.Multicols.create();
 	}
 	
-	this.Layout.AppletColumns.are_equalized = false;
+	this.Layout.AppletColumns.areEqualized = false;
 	
-	if (this.Layout.aspect_ratio > 1)
+	if (this.Layout.aspectRatio > 1)
 	{
 		this.Layout.AppletColumns.equalize();
 	}
@@ -95,60 +95,60 @@ Page.load = async function()
 	//We do dropdowns here too.
 	Page.element.querySelectorAll("select").forEach(element =>
 	{
-		const button_element = element.previousElementSibling;
+		const buttonElement = element.previousElementSibling;
 		
-		button_element.innerHTML = `${element.querySelector(`[value=${element.value}]`).textContent}  <span style="font-size: 12px">&#x25BC;</span>`;
+		buttonElement.innerHTML = `${element.querySelector(`[value=${element.value}]`).textContent}  <span style="font-size: 12px">&#x25BC;</span>`;
 		
-		button_element.parentNode.parentNode.style.gridTemplateColumns = `repeat(auto-fit, 100%)`;
+		buttonElement.parentNode.parentNode.style.gridTemplateColumns = `repeat(auto-fit, 100%)`;
 		
 		element.addEventListener("input", () =>
 		{
-			button_element.innerHTML = `${element.querySelector(`[value=${element.value}]`).textContent}  <span style="font-size: 12px">&#x25BC;</span>`;
+			buttonElement.innerHTML = `${element.querySelector(`[value=${element.value}]`).textContent}  <span style="font-size: 12px">&#x25BC;</span>`;
 		});
 	});
 	
 	
 	
-	this.Images.add_extensions();
+	this.Images.addExtensions();
 	
 	this.Load.Links.set();
 	
 	this.Load.Links.disable();
 	
-	this.Load.HoverEvents.set_up();
+	this.Load.HoverEvents.setUp();
 	
-	this.Load.TextButtons.set_up();
+	this.Load.TextButtons.setUp();
 	
-	this.Load.show_images();
+	this.Load.showImages();
 	
-	try {this.Load.TextButtons.set_up_nav_buttons();}
+	try {this.Load.TextButtons.setUpNavButtons();}
 	catch(ex) {}
 	
 	
 	
 	setTimeout(() =>
 	{
-		this.Load.FocusEvents.set_up_weird_elements();
+		this.Load.FocusEvents.setUpWeirdElements();
 	}, 50);
 	
 	
 	
-	Page.background_color_changed = false;
+	Page.backgroundColorChanged = false;
 	
-	Site.Settings.handle_theme_revert();
+	Site.Settings.handleThemeRevert();
 	
 	
 	
-	if (Site.Settings.url_vars["condensed_applets"] === 1 && Site.sitemap[Page.url].parent === "/applets/")
+	if (Site.Settings.urlVars["condensedApplets"] === 1 && Site.sitemap[Page.url].parent === "/applets/")
 	{
-		Site.Settings.condense_applet();
+		Site.Settings.condenseApplet();
 	}
 	
 	this.Load.Math.typeset();
 	
 	
 	
-	if (!Page.using_custom_script)
+	if (!Page.usingCustomScript)
 	{
 		//Truly godawful
 		setTimeout(() => Page.show(), 1);
@@ -163,7 +163,7 @@ Page.show = function()
 	{
 		setTimeout(async () =>
 		{
-			await this.Load.fade_in();
+			await this.Load.fadeIn();
 				
 			resolve();
 		}, 10);
@@ -175,15 +175,15 @@ Page.show = function()
 Page.Load =
 {
 	//Right, so this is a pain. One of those things jQuery makes really easy and that you might never notice otherwise is that when using $(element).html(data), any non-external script tags in data are automatically excuted. This is great, but it doesn't happen when using element.innerHTML. Weirdly enough, though, it works with element.appendChild. Therefore, we just need to get all our script tags, and for each one, make a new tag with identical contents, append it to the body, and delete the original script.
-	parse_script_tags: function()
+	parseScriptTags: function()
 	{
 		document.querySelectorAll("script").forEach(script =>
 		{
-			const new_script = document.createElement("script");
+			const newScript = document.createElement("script");
 			
-			new_script.innerHTML = script.textContent;
+			newScript.innerHTML = script.textContent;
 			
-			document.body.appendChild(new_script);
+			document.body.appendChild(newScript);
 			
 			script.remove();
 		});
@@ -192,17 +192,17 @@ Page.Load =
 
 
 	//Finds styles in a folder called "style" inside the page's folder. It first tries to find a minified file, and if it can't, it then tries to find a non-minified one so that testing can still work. The style files must have the same name as the html file.
-	parse_custom_style: function()
+	parseCustomStyle: function()
 	{
-		let page_name = Page.url.split("/");
-		page_name = page_name[page_name.length - 2];
+		let pageName = Page.url.split("/");
+		pageName = pageName[pageName.length - 2];
 		
 		
 		
 		try
 		{
 			//Make sure there's actually something to get.
-			fetch(Page.parent_folder + "style/index.css")
+			fetch(Page.parentFolder + "style/index.css")
 			
 			.then((response) =>
 			{
@@ -214,12 +214,12 @@ Page.Load =
 				
 				if (DEBUG)
 				{
-					element.setAttribute("href", Page.parent_folder + "style/index.css");
+					element.setAttribute("href", Page.parentFolder + "style/index.css");
 				}
 				
 				else
 				{
-					element.setAttribute("href", Page.parent_folder + "style/index.min.css");
+					element.setAttribute("href", Page.parentFolder + "style/index.min.css");
 				}
 				
 				
@@ -236,30 +236,30 @@ Page.Load =
 
 
 
-	parse_custom_scripts: function()
+	parseCustomScripts: function()
 	{
 		return new Promise((resolve, reject) =>
 		{
-			let page_name = Page.url.split("/");
-			page_name = page_name[page_name.length - 2];
+			let pageName = Page.url.split("/");
+			pageName = pageName[pageName.length - 2];
 			
 			
 			
 			//Make sure there's actually something to get.
-			fetch(Page.parent_folder + "scripts/index.js")
+			fetch(Page.parentFolder + "scripts/index.js")
 			
 			.then((response) =>
 			{
 				if (!response.ok)
 				{
-					if (Page.ready_to_show)
+					if (Page.readyToShow)
 					{
 						Page.show();
 					}
 					
 					else
 					{
-						Page.using_custom_script = false;
+						Page.usingCustomScript = false;
 					}
 					
 					resolve();
@@ -267,7 +267,7 @@ Page.Load =
 					return;
 				}
 				
-				Page.ready_to_show = true;
+				Page.readyToShow = true;
 				
 				
 				
@@ -275,12 +275,12 @@ Page.Load =
 				
 				if (DEBUG)
 				{
-					element.setAttribute("src", Page.parent_folder + "scripts/index.js");
+					element.setAttribute("src", Page.parentFolder + "scripts/index.js");
 				}
 				
 				else
 				{
-					element.setAttribute("src", Page.parent_folder + "scripts/index.min.js");
+					element.setAttribute("src", Page.parentFolder + "scripts/index.min.js");
 				}
 				
 				
@@ -296,7 +296,7 @@ Page.Load =
 	
 	
 	
-	add_header: function()
+	addHeader: function()
 	{
 		document.body.firstChild.insertAdjacentHTML("beforebegin", `
 			<div id="header-container"></div>
@@ -339,7 +339,7 @@ Page.Load =
 					</a>
 				</div>
 				
-				<div id="header-theme-button" class="${Site.Settings.url_vars["theme"] === 1 ? "active" : ""}">
+				<div id="header-theme-button" class="${Site.Settings.urlVars["theme"] === 1 ? "active" : ""}">
 					<input type="image" src="/graphics/header-icons/moon.webp">
 				</div>
 			</div>
@@ -347,9 +347,9 @@ Page.Load =
 		
 		setTimeout(() =>
 		{
-			const image_element = document.body.querySelector("#header-logo img");
+			const imageElement = document.body.querySelector("#header-logo img");
 			
-			image_element.style.width = `${image_element.getBoundingClientRect().height}px`;
+			imageElement.style.width = `${imageElement.getBoundingClientRect().height}px`;
 			
 			
 			
@@ -375,69 +375,69 @@ Page.Load =
 			
 			Page.Load.HoverEvents.add(element);
 			
-			element.addEventListener("click", () => Site.Settings.toggle_theme());
+			element.addEventListener("click", () => Site.Settings.toggleTheme());
 			
 			
 			
-			Site.header_element = document.body.querySelector("#header");
+			Site.headerElement = document.body.querySelector("#header");
 		});
 	},
 
 
 
-	fade_in: function()
+	fadeIn: function()
 	{
 		return new Promise(async (resolve, reject) =>
 		{
 			let promise = null;
 			
-			if (Page.Navigation.transition_type === 1)
+			if (Page.Navigation.transitionType === 1)
 			{
-				promise = Page.Animate.fade_up_in(Page.element, Site.page_animation_time * 2);
+				promise = Page.Animate.fadeUpIn(Page.element, Site.pageAnimationTime * 2);
 				
-				if (Page.banner_element !== null)
+				if (Page.bannerElement !== null)
 				{
-					promise = Page.Animate.fade_up_in(Page.banner_element, Site.page_animation_time * 2, Page.Banner.opacity);
+					promise = Page.Animate.fadeUpIn(Page.bannerElement, Site.pageAnimationTime * 2, Page.Banner.opacity);
 				}
 			}
 			
-			else if (Page.Navigation.transition_type === -1)
+			else if (Page.Navigation.transitionType === -1)
 			{
-				promise = Page.Animate.fade_down_in(Page.element, Site.page_animation_time * 2);
+				promise = Page.Animate.fadeDownIn(Page.element, Site.pageAnimationTime * 2);
 				
-				if (Page.banner_element !== null)
+				if (Page.bannerElement !== null)
 				{
-					promise = Page.Animate.fade_down_in(Page.banner_element, Site.page_animation_time * 2, Page.Banner.opacity);
+					promise = Page.Animate.fadeDownIn(Page.bannerElement, Site.pageAnimationTime * 2, Page.Banner.opacity);
 				}
 			}
 			
-			else if (Page.Navigation.transition_type === 2)
+			else if (Page.Navigation.transitionType === 2)
 			{
-				promise = Page.Animate.fade_left_in(Page.element, Site.page_animation_time * 2);
+				promise = Page.Animate.fadeLeftIn(Page.element, Site.pageAnimationTime * 2);
 				
-				if (Page.banner_element !== null)
+				if (Page.bannerElement !== null)
 				{
-					promise = Page.Animate.fade_left_in(Page.banner_element, Site.page_animation_time * 2, Page.Banner.opacity);
+					promise = Page.Animate.fadeLeftIn(Page.bannerElement, Site.pageAnimationTime * 2, Page.Banner.opacity);
 				}
 			}
 			
-			else if (Page.Navigation.transition_type === -2)
+			else if (Page.Navigation.transitionType === -2)
 			{
-				promise = Page.Animate.fade_right_in(Page.element, Site.page_animation_time * 2);
+				promise = Page.Animate.fadeRightIn(Page.element, Site.pageAnimationTime * 2);
 				
-				if (Page.banner_element !== null)
+				if (Page.bannerElement !== null)
 				{
-					promise = Page.Animate.fade_right_in(Page.banner_element, Site.page_animation_time * 2, Page.Banner.opacity);
+					promise = Page.Animate.fadeRightIn(Page.bannerElement, Site.pageAnimationTime * 2, Page.Banner.opacity);
 				}
 			}
 			
 			else
 			{
-				promise = Page.Animate.fade_in(Page.element, Site.page_animation_time * 2);
+				promise = Page.Animate.fadeIn(Page.element, Site.pageAnimationTime * 2);
 				
-				if (Page.banner_element !== null)
+				if (Page.bannerElement !== null)
 				{
-					promise = Page.Animate.fade_in(Page.banner_element, Site.page_animation_time * 2, Page.Banner.opacity);
+					promise = Page.Animate.fadeIn(Page.bannerElement, Site.pageAnimationTime * 2, Page.Banner.opacity);
 				}
 			}
 			
@@ -449,29 +449,29 @@ Page.Load =
 	
 	
 	
-	lazy_loaded_images: [],
+	lazyLoadedImages: [],
 	
-	show_images: function()
+	showImages: function()
 	{
-		Page.element.querySelectorAll("img[data-src]").forEach(element => this.lazy_loaded_images.push([element, element.getBoundingClientRect().top, null]));
+		Page.element.querySelectorAll("img[data-src]").forEach(element => this.lazyLoadedImages.push([element, element.getBoundingClientRect().top, null]));
 		
-		this.lazy_loaded_images.forEach((entry, index) =>
+		this.lazyLoadedImages.forEach((entry, index) =>
 		{
 			if (entry[1] > window.innerHeight + 200)
 			{
-				entry[2] = setTimeout(() => this.load_lazy_element(this.lazy_loaded_images, index), index * 200);
+				entry[2] = setTimeout(() => this.loadLazyElement(this.lazyLoadedImages, index), index * 200);
 			}
 			
 			else
 			{
-				this.load_lazy_element(this.lazy_loaded_images, index);
+				this.loadLazyElement(this.lazyLoadedImages, index);
 			}
 		});
 	},
 	
 	
 	
-	load_lazy_element: function(list, index)
+	loadLazyElement: function(list, index)
 	{
 		list[index][0].src = list[index][0].getAttribute("data-src");
 		
@@ -482,55 +482,55 @@ Page.Load =
 	
 	
 	
-	last_lazy_load_scroll_timestamp: 0,
+	lastLazyLoadScrollTimestamp: 0,
 	
-	lazy_load_scroll: function(timestamp)
+	lazyLoadScroll: function(timestamp)
 	{
-		const elapsed_time = timestamp - Page.Load.last_lazy_load_scroll_timestamp;
+		const elapsedTime = timestamp - Page.Load.lastLazyLoadScrollTimestamp;
 		
-		Page.Load.last_lazy_load_scroll_timestamp = timestamp;
+		Page.Load.lastLazyLoadScrollTimestamp = timestamp;
 		
-		if (elapsed_time < 16)
+		if (elapsedTime < 16)
 		{
 			return;
 		}
 		
 		
 		
-		Page.Load.lazy_loaded_images.forEach((entry, index) =>
+		Page.Load.lazyLoadedImages.forEach((entry, index) =>
 		{
 			if (entry[1] < window.innerHeight + Page.scroll + 200 && entry[2] !== -1)
 			{
 				clearTimeout(entry[2]);
-				Page.Load.load_lazy_element(Page.Load.lazy_loaded_images, index);
+				Page.Load.loadLazyElement(Page.Load.lazyLoadedImages, index);
 			}
 		});
 	},
 	
 	
 	
-	create_desmos_graphs: function(dark = Site.Settings.url_vars["theme"] === 1)
+	createDesmosGraphs: function(dark = Site.Settings.urlVars["theme"] === 1)
 	{
 		return new Promise(async (resolve, reject) =>
 		{
-			if (!Site.scripts_loaded["desmos"])
+			if (!Site.scriptsLoaded["desmos"])
 			{
-				await Site.load_script("https://www.desmos.com/api/v1.7/calculator.js?apiKey=dcb31709b452b1cf9dc26972add0fda6");
+				await Site.loadScript("https://www.desmos.com/api/v1.7/calculator.js?apiKey=dcb31709b452b1cf9dc26972add0fda6");
 				
-				Site.scripts_loaded["desmos"] = true;
+				Site.scriptsLoaded["desmos"] = true;
 			}
 			
-			for (let key in Page.desmos_graphs)
+			for (let key in Page.desmosGraphs)
 			{
-				try {Page.desmos_graphs[key].destroy()}
+				try {Page.desmosGraphs[key].destroy()}
 				catch(ex) {}
 			}
 			
-			Page.desmos_graphs = {};
+			Page.desmosGraphs = {};
 			
 			try
 			{
-				const data = this.get_desmos_data();
+				const data = this.getDesmosData();
 				
 				for (let key in data)
 				{
@@ -569,13 +569,13 @@ Page.Load =
 					
 					
 					
-					Page.desmos_graphs[element.id] = Desmos.GraphingCalculator(element, options);
+					Page.desmosGraphs[element.id] = Desmos.GraphingCalculator(element, options);
 					
-					Page.desmos_graphs[element.id].setMathBounds(data[element.id].bounds);
+					Page.desmosGraphs[element.id].setMathBounds(data[element.id].bounds);
 					
-					Page.desmos_graphs[element.id].setExpressions(data[element.id].expressions);
+					Page.desmosGraphs[element.id].setExpressions(data[element.id].expressions);
 					
-					Page.desmos_graphs[element.id].setDefaultState(Page.desmos_graphs[element.id].getState());
+					Page.desmosGraphs[element.id].setDefaultState(Page.desmosGraphs[element.id].getState());
 				});
 			}
 			
@@ -587,35 +587,35 @@ Page.Load =
 	
 	
 	
-	//Usage: Page.Load.export_desmos_screenshot("");
+	//Usage: Page.Load.exportDesmosScreenshot("");
 	
-	export_desmos_screenshot: function(id, for_pdf = false)
+	exportDesmosScreenshot: function(id, forPdf = false)
 	{
-		Page.desmos_graphs[id].updateSettings({showGrid: for_pdf, xAxisNumbers: for_pdf, yAxisNumbers: for_pdf});
+		Page.desmosGraphs[id].updateSettings({showGrid: forPdf, xAxisNumbers: forPdf, yAxisNumbers: forPdf});
 		
-		let expressions = Page.desmos_graphs[id].getExpressions();
+		let expressions = Page.desmosGraphs[id].getExpressions();
 		
 		for (let i = 0; i < expressions.length; i++)
 		{
-			expressions[i].lineWidth = for_pdf ? 5 : 7.5;
-			expressions[i].pointSize = for_pdf ? 15 : 27;
+			expressions[i].lineWidth = forPdf ? 5 : 7.5;
+			expressions[i].pointSize = forPdf ? 15 : 27;
 			expressions[i].dragMode = "NONE";
 		}
 		
-		Page.desmos_graphs[id].setExpressions(expressions);
+		Page.desmosGraphs[id].setExpressions(expressions);
 		
-		Page.desmos_graphs[id].asyncScreenshot({
+		Page.desmosGraphs[id].asyncScreenshot({
 			width: 500,
 			height: 500,
 			targetPixelRatio: 8
-		}, image_data =>
+		}, imageData =>
 		{
 			const img = document.createElement("img");
 			img.width = 4000;
 			img.height = 4000;
 			img.style.width = "50vmin";
 			img.style.height = "50vmin";
-			img.src = image_data;
+			img.src = imageData;
 			document.body.appendChild(img);
 		});
 	},
@@ -624,12 +624,12 @@ Page.Load =
 	
 	HoverEvents:
 	{
-		element_selectors: `
+		elementSelectors: `
 			a
 		`,
 		
 		//These elements need to have their scale increased when hovered.
-		element_selectors_with_scale:
+		elementSelectorsWithScale:
 		[
 			["#logo img", 1.05],
 			["#scroll-button", 1.1],
@@ -648,20 +648,20 @@ Page.Load =
 		
 		
 		//Adds a listener to every element that needs a hover event. Yes, you could use CSS for this. No, I don't want to.
-		set_up: function()
+		setUp: function()
 		{
-			Page.element.querySelectorAll(this.element_selectors).forEach(element => this.add(element));
+			Page.element.querySelectorAll(this.elementSelectors).forEach(element => this.add(element));
 			
-			this.element_selectors_with_scale.forEach(selector =>
+			this.elementSelectorsWithScale.forEach(selector =>
 			{
-				Page.element.querySelectorAll(selector[0]).forEach(element => this.add_with_scale(element, selector[1]));
+				Page.element.querySelectorAll(selector[0]).forEach(element => this.addWithScale(element, selector[1]));
 			});
 			
 			Page.element.querySelectorAll(".card .tex-holder").forEach(element =>
 			{
-				this.add_for_tex_holder(element);
+				this.addForTexHolder(element);
 				
-				element.addEventListener("click", () => Page.Load.Math.show_tex(element));
+				element.addEventListener("click", () => Page.Load.Math.showTex(element));
 			});
 		},
 
@@ -671,7 +671,7 @@ Page.Load =
 		{
 			element.addEventListener("mouseenter", () =>
 			{
-				if (!Site.Interaction.currently_touch_device)
+				if (!Site.Interaction.currentlyTouchDevice)
 				{
 					element.classList.add("hover");
 					
@@ -689,7 +689,7 @@ Page.Load =
 			
 			element.addEventListener("mouseleave", () =>
 			{
-				if (!Site.Interaction.currently_touch_device)
+				if (!Site.Interaction.currentlyTouchDevice)
 				{
 					element.classList.remove("hover");
 					
@@ -713,11 +713,11 @@ Page.Load =
 		
 		
 		
-		add_with_scale: function(element, scale, force_js = false)
+		addWithScale: function(element, scale, forceJs = false)
 		{
 			element.addEventListener("mouseenter", () =>
 			{
-				if (!Site.Interaction.currently_touch_device)
+				if (!Site.Interaction.currentlyTouchDevice)
 				{
 					if (element.tagName === "SELECT")
 					{
@@ -728,21 +728,21 @@ Page.Load =
 					
 					
 					
-					if (force_js)
+					if (forceJs)
 					{
-						Page.Animate.change_scale_js(element, scale, Site.button_animation_time);
+						Page.Animate.changeScaleJs(element, scale, Site.buttonAnimationTime);
 					}
 					
 					else
 					{
-						Page.Animate.change_scale(element, scale, Site.button_animation_time);
+						Page.Animate.changeScale(element, scale, Site.buttonAnimationTime);
 					}
 				}
 			});
 			
 			element.addEventListener("mouseleave", () =>
 			{
-				if (!Site.Interaction.currently_touch_device)
+				if (!Site.Interaction.currentlyTouchDevice)
 				{
 					if (element.tagName === "SELECT")
 					{
@@ -753,14 +753,14 @@ Page.Load =
 					
 					
 					
-				if (force_js)
+				if (forceJs)
 					{
-						Page.Animate.change_scale_js(element, 1, Site.button_animation_time);
+						Page.Animate.changeScaleJs(element, 1, Site.buttonAnimationTime);
 					}
 					
 					else
 					{
-						Page.Animate.change_scale(element, 1, Site.button_animation_time);
+						Page.Animate.changeScale(element, 1, Site.buttonAnimationTime);
 					}
 				}
 			});
@@ -768,24 +768,24 @@ Page.Load =
 		
 		
 		
-		add_for_tex_holder: function(element)
+		addForTexHolder: function(element)
 		{
 			element.classList.add("active");
 			
 			element.addEventListener("mouseenter", () =>
 			{
-				if (!Site.Interaction.currently_touch_device && element.getAttribute("data-showing-tex") !== "1")
+				if (!Site.Interaction.currentlyTouchDevice && element.getAttribute("data-showing-tex") !== "1")
 				{
 					element.classList.add("hover");
 					
-					const color = Site.Settings.url_vars["theme"] === 1 ? "rgba(24, 24, 24, 1)" : "rgba(255, 255, 255, 1)";
+					const color = Site.Settings.urlVars["theme"] === 1 ? "rgba(24, 24, 24, 1)" : "rgba(255, 255, 255, 1)";
 					
 					anime({
 						targets: element,
 						scale: 1.05,
 						borderRadius: "8px",
 						backgroundColor: color,
-						duration: Site.button_animation_time,
+						duration: Site.buttonAnimationTime,
 						easing: "easeOutQuad",
 					});
 				}
@@ -793,18 +793,18 @@ Page.Load =
 			
 			element.addEventListener("mouseleave", () =>
 			{
-				if (!Site.Interaction.currently_touch_device)
+				if (!Site.Interaction.currentlyTouchDevice)
 				{
 					element.classList.remove("hover");
 					
-					const color = Site.Settings.url_vars["theme"] === 1 ? "rgba(24, 24, 24, 0)" : "rgba(255, 255, 255, 0)";
+					const color = Site.Settings.urlVars["theme"] === 1 ? "rgba(24, 24, 24, 0)" : "rgba(255, 255, 255, 0)";
 					
 					anime({
 						targets: element,
 						scale: 1,
 						borderRadius: "0px",
 						backgroundColor: color,
-						duration: Site.button_animation_time,
+						duration: Site.buttonAnimationTime,
 						easing: "easeInOutQuad",
 					});
 				}
@@ -815,7 +815,7 @@ Page.Load =
 
 		remove: function()
 		{
-			Page.element.querySelectorAll(this.element_selectors).forEach(element => element.classList.remove("hover"));
+			Page.element.querySelectorAll(this.elementSelectors).forEach(element => element.classList.remove("hover"));
 		}
 	},
 	
@@ -823,7 +823,7 @@ Page.Load =
 	
 	FocusEvents:
 	{
-		set_up_weird_elements: function()
+		setUpWeirdElements: function()
 		{
 			Page.element.querySelectorAll(".focus-on-child").forEach(element =>
 			{
@@ -839,21 +839,21 @@ Page.Load =
 	
 	TextButtons:
 	{
-		set_up: function()
+		setUp: function()
 		{
-			const bound_function = this.equalize.bind(this);
+			const boundFunction = this.equalize.bind(this);
 			
-			window.addEventListener("resize", bound_function);
-			Page.temporary_handlers["resize"].push(bound_function);
+			window.addEventListener("resize", boundFunction);
+			Page.temporaryHandlers["resize"].push(boundFunction);
 			
 			setTimeout(() =>
 			{
-				bound_function();
+				boundFunction();
 			}, 50);
 			
 			setTimeout(() =>
 			{
-				bound_function();
+				boundFunction();
 			}, 500);
 		},
 
@@ -862,17 +862,17 @@ Page.Load =
 		//Makes linked text buttons have the same width and height.
 		equalize: function()
 		{
-			Page.element.querySelectorAll(".text-button").forEach(text_button => text_button.parentNode.style.margin = "0 auto");
+			Page.element.querySelectorAll(".text-button").forEach(textButton => textButton.parentNode.style.margin = "0 auto");
 			
 			
 			
 			let heights = [];
 			
-			let max_height = 0;
+			let maxHeight = 0;
 			
 			let widths = [];
 			
-			let max_width = 0;
+			let maxWidth = 0;
 			
 			
 			
@@ -885,16 +885,16 @@ Page.Load =
 				
 				heights.push(element.offsetHeight);
 				
-				if (heights[index] > max_height)
+				if (heights[index] > maxHeight)
 				{
-					max_height = heights[index];
+					maxHeight = heights[index];
 				}
 				
 				widths.push(element.offsetWidth);
 				
-				if (widths[index] > max_width)
+				if (widths[index] > maxWidth)
 				{
-					max_width = widths[index];
+					maxWidth = widths[index];
 				}
 			});
 			
@@ -902,9 +902,9 @@ Page.Load =
 			
 			elements.forEach((element, index) =>
 			{
-				if (heights[index] < max_height)
+				if (heights[index] < maxHeight)
 				{
-					element.style.height = max_height + "px";
+					element.style.height = maxHeight + "px";
 				}
 				
 				else
@@ -914,9 +914,9 @@ Page.Load =
 				
 				
 				
-				if (widths[index] < max_width)
+				if (widths[index] < maxWidth)
 				{
-					element.style.width = max_width + "px";
+					element.style.width = maxWidth + "px";
 				}
 				
 				else
@@ -924,13 +924,13 @@ Page.Load =
 					element.style.width = "fit-content";
 				}
 				
-				element.parentNode.parentNode.style.gridTemplateColumns = `repeat(auto-fit, ${max_width}px)`;
+				element.parentNode.parentNode.style.gridTemplateColumns = `repeat(auto-fit, ${maxWidth}px)`;
 			});
 		},
 		
 		
 		
-		set_up_nav_buttons: function()
+		setUpNavButtons: function()
 		{
 			const list = Site.sitemap[Site.sitemap[Page.url].parent].children;
 			const index = list.indexOf(Page.url);
@@ -1012,7 +1012,7 @@ Page.Load =
 	
 	Math:
 	{
-		length_cap: 250,
+		lengthCap: 250,
 		
 		typeset: async function()
 		{
@@ -1024,7 +1024,7 @@ Page.Load =
 				{
 					Page.element.querySelectorAll(".inline-math").forEach(element =>
 					{
-						if (element.getBoundingClientRect().width >= this.length_cap)
+						if (element.getBoundingClientRect().width >= this.lengthCap)
 						{
 							console.log(`Inline math is too long! Source: ${element.getAttribute("data-source-tex")}`);
 							
@@ -1037,9 +1037,9 @@ Page.Load =
 			});
 		},
 		
-		show_tex: async function(element)
+		showTex: async function(element)
 		{
-			if (!Page.Cards.is_open || element.getAttribute("data-showing-tex") === "1")
+			if (!Page.Cards.isOpen || element.getAttribute("data-showing-tex") === "1")
 			{
 				return;
 			}
@@ -1050,7 +1050,7 @@ Page.Load =
 			element.classList.remove("active");
 			element.classList.remove("hover");
 			
-			const color = Site.Settings.url_vars["theme"] === 1 ? "rgba(24, 24, 24, 0)" : "rgba(255, 255, 255, 0)";
+			const color = Site.Settings.urlVars["theme"] === 1 ? "rgba(24, 24, 24, 0)" : "rgba(255, 255, 255, 0)";
 			
 			await new Promise((resolve, reject) =>
 			{
@@ -1070,59 +1070,59 @@ Page.Load =
 			
 			
 			
-			const old_height = element.getBoundingClientRect().height;
-			const old_width = element.getBoundingClientRect().width;
-			element.style.minHeight = `${old_height}px`;
+			const oldHeight = element.getBoundingClientRect().height;
+			const oldWidth = element.getBoundingClientRect().width;
+			element.style.minHeight = `${oldHeight}px`;
 			
-			const old_padding = element.style.padding;
-			
-			
-			const junk_drawer = document.createElement("div");
-			junk_drawer.style.display = "none";
-			Page.element.appendChild(junk_drawer);
-			junk_drawer.appendChild(element.firstElementChild);
+			const oldPadding = element.style.padding;
 			
 			
+			const junkDrawer = document.createElement("div");
+			junkDrawer.style.display = "none";
+			Page.element.appendChild(junkDrawer);
+			junkDrawer.appendChild(element.firstElementChild);
 			
-			let tex_element = null;
+			
+			
+			let texElement = null;
 			
 			if (tex.indexOf("\n") !== -1)
 			{
-				tex_element = document.createElement("textarea");
-				tex_element.textContent = tex;
-				tex_element.style.minHeight = `${old_height - 17}px`;
-				tex_element.style.width = "100%";
-				tex_element.style.marginLeft = "-6px";
+				texElement = document.createElement("textarea");
+				texElement.textContent = tex;
+				texElement.style.minHeight = `${oldHeight - 17}px`;
+				texElement.style.width = "100%";
+				texElement.style.marginLeft = "-6px";
 				element.style.width = "75%";
 			}
 			
 			else
 			{
-				tex_element = document.createElement("input");
-				tex_element.setAttribute("type", "text");
-				tex_element.setAttribute("value", tex);
-				tex_element.style.height = `${old_height - 13}px`;
-				tex_element.style.width = `${old_width - 13}px`;
+				texElement = document.createElement("input");
+				texElement.setAttribute("type", "text");
+				texElement.setAttribute("value", tex);
+				texElement.style.height = `${oldHeight - 13}px`;
+				texElement.style.width = `${oldWidth - 13}px`;
 			}
 			
-			tex_element.style.fontFamily = "'Source Code Pro', monospace";
-			element.appendChild(tex_element);
+			texElement.style.fontFamily = "'Source Code Pro', monospace";
+			element.appendChild(texElement);
 			
 			element.style.padding = 0;
 			
-			tex_element.select();
-			setTimeout(() => tex_element.select(), 50);
-			setTimeout(() => tex_element.select(), 250);
+			texElement.select();
+			setTimeout(() => texElement.select(), 50);
+			setTimeout(() => texElement.select(), 250);
 			
-			tex_element.onblur = () =>
+			texElement.onblur = () =>
 			{
-				tex_element.remove();
+				texElement.remove();
 				
 				element.style.removeProperty("width");
-				element.style.padding = old_padding;
-				element.appendChild(junk_drawer.firstElementChild);
+				element.style.padding = oldPadding;
+				element.appendChild(junkDrawer.firstElementChild);
 				element.style.minHeight = "";
-				junk_drawer.remove();
+				junkDrawer.remove();
 				
 				element.setAttribute("data-showing-tex", "0");
 				element.classList.add("active");
@@ -1136,18 +1136,18 @@ Page.Load =
 Page.Cards =
 {
 	container: document.querySelector("#card-container"),
-	current_card: null,
-	close_button: document.querySelector("#card-close-button"),
+	currentCard: null,
+	closeButton: document.querySelector("#card-close-button"),
 	
-	close_button_is_fixed: false,
+	closeButtonIsFixed: false,
 	
-	is_open: false,
+	isOpen: false,
 	
-	animation_time: 500,
+	animationTime: 500,
 	
 	show: async function(id)
 	{
-		this.is_open = true;
+		this.isOpen = true;
 		
 		this.container.style.display = "flex";
 		this.container.style.opacity = 0;
@@ -1161,16 +1161,16 @@ Page.Cards =
 		
 		this.container.style.display = "flex";
 		
-		this.current_card = document.querySelector(`#${id}-card`);
+		this.currentCard = document.querySelector(`#${id}-card`);
 		
-		this.container.appendChild(this.current_card);
-		this.current_card.insertBefore(this.close_button, this.current_card.firstElementChild);
+		this.container.appendChild(this.currentCard);
+		this.currentCard.insertBefore(this.closeButton, this.currentCard.firstElementChild);
 		
 		this.container.scroll(0, 0);
 		
 		
 		
-		const rect = this.current_card.getBoundingClientRect();
+		const rect = this.currentCard.getBoundingClientRect();
 		
 		if (rect.height > window.innerHeight - 32)
 		{
@@ -1192,7 +1192,7 @@ Page.Cards =
 		
 		Page.element.style.transformOrigin = `50% calc(50vh + ${window.scrollY}px)`;
 		
-		document.documentElement.addEventListener("click", this.handle_click_event);
+		document.documentElement.addEventListener("click", this.handleClickEvent);
 		
 		
 		
@@ -1202,13 +1202,13 @@ Page.Cards =
 				targets: this.container,
 				opacity: 1,
 				scale: 1,
-				duration: this.animation_time,
+				duration: this.animationTime,
 				easing: "easeOutQuint"
 			});
 			
 			anime({
 				targets: Page.element,
-				duration: this.animation_time,
+				duration: this.animationTime,
 				easing: "easeOutQuint"
 			});
 			
@@ -1216,25 +1216,25 @@ Page.Cards =
 				targets: [Page.element, document.querySelector("#header"), document.querySelector("#header-container")],
 				filter: "brightness(.5)",
 				scale: .975,
-				duration: this.animation_time,
+				duration: this.animationTime,
 				easing: "easeOutQuint"
 			});
 			
-			const theme_color = Site.Settings.url_vars["theme"] === 1 ? "#0c0c0c" : "#7f7f7f";
+			const themeColor = Site.Settings.urlVars["theme"] === 1 ? "#0c0c0c" : "#7f7f7f";
 			
 			anime({
-				targets: Site.Settings.meta_theme_color_element,
-				content: theme_color,
-				duration: this.animation_time,
+				targets: Site.Settings.metaThemeColorElement,
+				content: themeColor,
+				duration: this.animationTime,
 				easing: "easeOutQuint",
 			});
 			
-			const color = Site.Settings.url_vars["theme"] === 1 ? "rgb(12, 12, 12)" : "rgb(127, 127, 127)";
+			const color = Site.Settings.urlVars["theme"] === 1 ? "rgb(12, 12, 12)" : "rgb(127, 127, 127)";
 			
 			anime({
 				targets: document.documentElement,
 				backgroundColor: color,
-				duration: this.animation_time,
+				duration: this.animationTime,
 				easing: "easeOutQuint",
 				complete: resolve
 			});
@@ -1243,7 +1243,7 @@ Page.Cards =
 	
 	hide: async function()
 	{
-		Page.Cards.is_open = false;
+		Page.Cards.isOpen = false;
 		
 		await new Promise((resolve, reject) =>
 		{
@@ -1251,25 +1251,25 @@ Page.Cards =
 				targets: [Page.element, document.querySelector("#header"), document.querySelector("#header-container")],
 				filter: "brightness(1)",
 				scale: 1,
-				duration: Page.Cards.animation_time,
+				duration: Page.Cards.animationTime,
 				easing: "easeOutQuint"
 			});
 			
-			const theme_color = Site.Settings.url_vars["theme"] === 1 ? "#181818" : "#ffffff";
+			const themeColor = Site.Settings.urlVars["theme"] === 1 ? "#181818" : "#ffffff";
 			
 			anime({
-				targets: Site.Settings.meta_theme_color_element,
-				content: theme_color,
-				duration: Page.Cards.animation_time,
+				targets: Site.Settings.metaThemeColorElement,
+				content: themeColor,
+				duration: Page.Cards.animationTime,
 				easing: "easeOutQuint",
 			});
 			
-			const color = Site.Settings.url_vars["theme"] === 1 ? "rgb(24, 24, 24)" : "rgb(255, 255, 255)";
+			const color = Site.Settings.urlVars["theme"] === 1 ? "rgb(24, 24, 24)" : "rgb(255, 255, 255)";
 		
 			anime({
 				targets: document.documentElement,
 				backgroundColor: color,
-				duration: Page.Cards.animation_time,
+				duration: Page.Cards.animationTime,
 				easing: "easeOutQuint"
 			});
 		
@@ -1277,7 +1277,7 @@ Page.Cards =
 				targets: Page.Cards.container,
 				opacity: 0,
 				scale: .95,
-				duration: Page.Cards.animation_time,
+				duration: Page.Cards.animationTime,
 				easing: "easeOutQuint",
 				complete: resolve
 			});
@@ -1285,14 +1285,14 @@ Page.Cards =
 		
 		Page.Cards.container.style.display = "none";
 		
-		Page.element.appendChild(Page.Cards.current_card);
+		Page.element.appendChild(Page.Cards.currentCard);
 		
-		Page.Cards.container.appendChild(Page.Cards.close_button);
+		Page.Cards.container.appendChild(Page.Cards.closeButton);
 		
-		document.documentElement.removeEventListener("click", Page.Cards.handle_click_event);
+		document.documentElement.removeEventListener("click", Page.Cards.handleClickEvent);
 	},
 	
-	handle_click_event: function(e)
+	handleClickEvent: function(e)
 	{
 		if (e.target.id === "card-container")
 		{

@@ -1,19 +1,21 @@
-const parent_folder = args.plainTexts[1];
+const parentFolder = args.plainTexts[1];
 
 const sitemap = JSON.parse(args.plainTexts[2].replace("Site.sitemap =\n", "").replace("};", "}").replaceAll(/[\t]/g, ""));
 
-const manual_header_pages =
+const manualHeaderPages =
 [
 	"/home/",
 	
-	"/writing/caligo/"
+	"/projects/wilson",
+	
+	"/writing/caligo/",
 ]
 
 
 
 const components =
 {
-	get_image_link: function(args)
+	getImageLink: function(args)
 	{
 		let id = args[0].split(".")[0].split("/");
 		
@@ -25,7 +27,7 @@ const components =
 		{
 			const subtext = args.slice(2).join(" ");
 			
-			const src = `${parent_folder}cards/${id}.`;
+			const src = `${parentFolder}cards/${id}.`;
 			
 			return `
 				<div class="image-link">
@@ -40,22 +42,22 @@ const components =
 		
 		else
 		{
-			let in_new_tab = false;
+			let inNewTab = false;
 				
 			if (args.length >= 2 && args[1] === "t")
 			{
-				in_new_tab = true;
+				inNewTab = true;
 				
 				args.splice(1, 1);
 			}
 			
 			
 			
-			let file_path = args[0];
+			let filePath = args[0];
 			
-			if (file_path[0] !== "/")
+			if (filePath[0] !== "/")
 			{
-				file_path = parent_folder + args[0];
+				filePath = parentFolder + args[0];
 			}
 			
 			
@@ -69,16 +71,16 @@ const components =
 			
 			else
 			{
-				subtext = sitemap[file_path].title;
+				subtext = sitemap[filePath].title;
 			}
 			
 			
 			
-			const src = `${file_path.slice(0, file_path.lastIndexOf("/") + 1)}cover.`;
+			const src = `${filePath.slice(0, filePath.lastIndexOf("/") + 1)}cover.`;
 			
 			return `
 				<div class="image-link">
-					<a href="${file_path}" data-in-new-tab="${in_new_tab ? 1 : 0}" tabindex="-1">
+					<a href="${filePath}" data-in-new-tab="${inNewTab ? 1 : 0}" tabindex="-1">
 						<img class="check-webp" src="/graphics/general-icons/placeholder.png" data-image-id="${id}" data-src="${src}" alt="${subtext}" tabindex="1"></img>
 					</a>
 					
@@ -90,7 +92,7 @@ const components =
 	
 	
 	
-	get_gallery_image: function(id, size, ...name)
+	getGalleryImage: function(id, size, ...name)
 	{
 		const text = name.join(" ");
 		
@@ -103,7 +105,7 @@ const components =
 	
 	
 	
-	get_banner: function()
+	getBanner: function()
 	{
 		return `
 			<div id="banner">
@@ -124,7 +126,7 @@ const components =
 	
 	
 	
-	get_text_box: function(args)
+	getTextBox: function(args)
 	{
 		const id = args[0];
 		
@@ -142,7 +144,7 @@ const components =
 	
 	
 	
-	get_text_button: function(args)
+	getTextButton: function(args)
 	{
 		const id = args[0];
 		
@@ -150,11 +152,11 @@ const components =
 		
 		
 		
-		let linked_string = "";
+		let linkedString = "";
 		
 		if (args[1] === "l")
 		{
-			linked_string = " linked-text-button";
+			linkedString = " linked-text-button";
 			
 			text = args.slice(2).join(" ");
 		}
@@ -163,14 +165,14 @@ const components =
 		
 		return `
 			<div class="focus-on-child" tabindex="1">
-				<button class="text-button${linked_string}" type="button" id="${id}-button" tabindex="-1">${text}</button>
+				<button class="text-button${linkedString}" type="button" id="${id}-button" tabindex="-1">${text}</button>
 			</div>
 		`;
 	},
 	
 	
 	
-	get_slider: function(args)
+	getSlider: function(args)
 	{
 		const id = args[0];
 		
@@ -277,30 +279,30 @@ const components =
 			
 			
 			//Add leading tabs and bullet points.
-			let num_tabs = 0;
+			let numTabs = 0;
 			
-			while (html[num_tabs] === ">")
+			while (html[numTabs] === ">")
 			{
-				num_tabs++;
+				numTabs++;
 			}
 			
-			if (num_tabs !== 0)
+			if (numTabs !== 0)
 			{
-				let slice_start = num_tabs;
+				let sliceStart = numTabs;
 				
-				while (html[slice_start] === " ")
+				while (html[sliceStart] === " ")
 				{
-					slice_start++;
+					sliceStart++;
 				}
 				
-				html = html.slice(slice_start);
+				html = html.slice(sliceStart);
 				
 				if (html[0] === "." && html[1] === " ")
 				{
 					html = `<strong>&#8226;</strong> ${html.slice(2)}`;
 				}
 				
-				html = `<span style=[DOUBLEQUOTE]width: ${32 * num_tabs}px[DOUBLEQUOTE]></span>${html}`;
+				html = `<span style=[DOUBLEQUOTE]width: ${32 * numTabs}px[DOUBLEQUOTE]></span>${html}`;
 			}
 			
 			
@@ -343,7 +345,7 @@ const components =
 			
 			content.forEach(line =>
 			{
-				html = `${html}${components.get_image_link(line.split(" "))}`
+				html = `${html}${components.getImageLink(line.split(" "))}`
 			});
 			
 			html = `${html}</div>`
@@ -359,7 +361,7 @@ const components =
 			
 			content.forEach(line =>
 			{
-				html = `${html}${components.get_text_button(line.split(" "))}`
+				html = `${html}${components.getTextButton(line.split(" "))}`
 			});
 			
 			html = `${html}</div>`
@@ -375,7 +377,7 @@ const components =
 			
 			content.forEach(line =>
 			{
-				html = `${html}${components.get_text_box(line.split(" "))}`
+				html = `${html}${components.getTextBox(line.split(" "))}`
 			});
 			
 			html = `${html}</div>`
@@ -391,7 +393,7 @@ const components =
 			
 			content.forEach(line =>
 			{
-				html = `${html}${components.get_slider(line.split(" "))}`
+				html = `${html}${components.getSlider(line.split(" "))}`
 			});
 			
 			html = `${html}</div>`
@@ -438,7 +440,7 @@ const components =
 			
 			content.forEach(line =>
 			{
-				html = `${html}${components.get_gallery_image(...(line.split(" ")))}`;
+				html = `${html}${components.getGalleryImage(...(line.split(" ")))}`;
 			});
 			
 			html = `${html}</div>`
@@ -475,20 +477,20 @@ const components =
 					return `<div class="notes-${id} notes-environment"><p class="body-text"</p><span class="notes-${id}-title">${name.slice(1)}</span></p>`;
 				}
 				
-				else if (name.toLowerCase().includes(components.notes_environments[id].toLowerCase()))
+				else if (name.toLowerCase().includes(components.notesEnvironments[id].toLowerCase()))
 				{
 					return `<div class="notes-${id} notes-environment"><p class="body-text"</p><span class="notes-${id}-title">${name}</span></p>`;
 				}
 				
 				else
 				{
-					return `<div class="notes-${id} notes-environment"><p class="body-text"</p><span class="notes-${id}-title">${components.notes_environments[id]}: ${name}</span></p>`;
+					return `<div class="notes-${id} notes-environment"><p class="body-text"</p><span class="notes-${id}-title">${components.notesEnvironments[id]}: ${name}</span></p>`;
 				}
 			}
 			
 			else
 			{
-				return `<div class="notes-${id} notes-environment"><p class="body-text"</p><span class="notes-${id}-title">${components.notes_environments[id]}</span></p>`;
+				return `<div class="notes-${id} notes-environment"><p class="body-text"</p><span class="notes-${id}-title">${components.notesEnvironments[id]}</span></p>`;
 			}
 		},
 		
@@ -579,9 +581,9 @@ const components =
 		}
 	},
 	
-	single_line_environments: ["banner", "canvas", "card", "center", "checkbox", "desmos", "nav-buttons", "wilson"],
+	singleLineEnvironments: ["banner", "canvas", "card", "center", "checkbox", "desmos", "nav-buttons", "wilson"],
 	
-	notes_environments:
+	notesEnvironments:
 	{
 		"ex": "Example",
 		"exc": "Exercise",
@@ -601,7 +603,7 @@ const components =
 	{
 		const banner = html.indexOf("### banner") !== -1;
 		
-		let in_environment = false;
+		let inEnvironment = false;
 		
 		html = html.replaceAll(/\r/g, "").replaceAll(/    /g, "\t");
 		
@@ -616,9 +618,9 @@ const components =
 		
 		
 		//Automatically add a header if there's not one already here.
-		if (!html.match(/\n#\s/g) && !manual_header_pages.includes(parent_folder))
+		if (!html.match(/\n#\s/g) && !manualHeaderPages.includes(parentFolder))
 		{
-			const title = sitemap[parent_folder].title;
+			const title = sitemap[parentFolder].title;
 			
 			html = html.replaceAll(/(<div.*?>)?(### banner)?([\s\S]+)/g, (match, $1, $2, $3) => `${$1 ? $1 : ""}${$2 ? $2 : ""}\n\n# ${title}\n\n${$3 ? $3 : ""}`);
 		}
@@ -628,16 +630,16 @@ const components =
 		//We need to ignore the scripts at the bottom.
 		const index = html.indexOf("<script");
 		
-		let scripts_data = "";
+		let scriptsData = "";
 		
 		if (index !== -1)
 		{
-			scripts_data = html.slice(index);
+			scriptsData = html.slice(index);
 			
 			html = html.slice(0, index);
 		}
 		
-		let page_title = "";
+		let pageTitle = "";
 		
 		let lines = html.split("\n");
 		
@@ -662,9 +664,9 @@ const components =
 			//Leave math mostly alone (but wrap it in body text).
 			if (lines[i] === "$$")
 			{
-				let source_tex = "";
+				let sourceTex = "";
 				
-				const start_i = i;
+				const startI = i;
 				
 				i++;
 				
@@ -679,7 +681,7 @@ const components =
 					{
 						lines[i] = this.Parse.latex(lines[i]);
 						
-						source_tex = `${source_tex}${i === start_i + 1 ? "" : "\\\\"}[NEWLINE][TAB]${lines[i]}`;
+						sourceTex = `${sourceTex}${i === startI + 1 ? "" : "\\\\"}[NEWLINE][TAB]${lines[i]}`;
 						
 						if ([...lines[i].matchAll(/\\(begin|end){.*?}/g)].length !== 1)
 						{
@@ -690,16 +692,16 @@ const components =
 					}
 				}
 				
-				source_tex = `${source_tex}[NEWLINE]`;
+				sourceTex = `${sourceTex}[NEWLINE]`;
 				
-				if (source_tex.indexOf("&") === -1)
+				if (sourceTex.indexOf("&") === -1)
 				{
-					source_tex = `$$${source_tex}$$`;
+					sourceTex = `$$${sourceTex}$$`;
 				}
 				
 				else
 				{
-					source_tex = `\\begin{align*}${source_tex}\\end{align*}`;
+					sourceTex = `\\begin{align*}${sourceTex}\\end{align*}`;
 				}
 				
 				
@@ -709,7 +711,7 @@ const components =
 				
 				lines[i] = `\\end{align*}$$</span></p>`;
 				
-				lines[start_i] = `<p class="body-text" style="text-align: center"><span class="tex-holder" style="padding: 8px" data-source-tex="${source_tex}">$$\\begin{align*}`;
+				lines[startI] = `<p class="body-text" style="text-align: center"><span class="tex-holder" style="padding: 8px" data-source-tex="${sourceTex}">$$\\begin{align*}`;
 			}
 			
 			
@@ -755,7 +757,7 @@ const components =
 				{
 					//If we find one of these in the wild, we&#x2019;re in an environment and just need to end it.
 					
-					in_environment = false;
+					inEnvironment = false;
 					
 					lines[i] = `</div>`;
 					continue;
@@ -766,28 +768,28 @@ const components =
 				const words = lines[i].slice(4).split(" ");
 				
 				//The first word is the id.
-				if (this.single_line_environments.includes(words[0]))
+				if (this.singleLineEnvironments.includes(words[0]))
 				{
 					lines[i] = this.Parse[words[0]](...(words.slice(1)));
 					
 					if (words[0] === "card")
 					{
-						in_environment = true;
+						inEnvironment = true;
 					}
 				}
 				
-				else if (words[0] in this.notes_environments)
+				else if (words[0] in this.notesEnvironments)
 				{
 					lines[i] = this.Parse["notes-environment"](...words);
 					
-					in_environment = true;
+					inEnvironment = true;
 				}
 				
 				else
 				{
 					let content = [];
 					
-					const start_i = i;
+					const startI = i;
 					
 					i++;
 					
@@ -801,9 +803,9 @@ const components =
 						i++;
 					}
 					
-					lines[start_i] = this.Parse[words[0]](content, ...(words.slice(1)));
+					lines[startI] = this.Parse[words[0]](content, ...(words.slice(1)));
 					
-					for (let j = start_i + 1; j <= i; j++)
+					for (let j = startI + 1; j <= i; j++)
 					{
 						lines[j] = "";
 					}
@@ -816,7 +818,7 @@ const components =
 			{
 				const title = this.Parse.text(lines[i].slice(2));
 				
-				if (in_environment)
+				if (inEnvironment)
 				{
 					lines[i] = `<h2 class="section-text" style="margin-top: 48px">${title}</h2>`;
 				}
@@ -832,12 +834,12 @@ const components =
 			{
 				const title = this.Parse.text(lines[i].slice(2));
 				
-				page_title = title;
+				pageTitle = title;
 				
-				const banner_html = banner ? this.get_banner() :  "";
+				const bannerHtml = banner ? this.getBanner() :  "";
 				
 				lines[i] = `
-					${banner_html}
+					${bannerHtml}
 					<header>
 						<div id="logo">
 							<a href="/home/" tabindex="-1">
@@ -906,18 +908,18 @@ const components =
 		
 		
 		
-		scripts_data = scripts_data.replace(/init\.js/g, "init.min.js");
+		scriptsData = scriptsData.replace(/init\.js/g, "init.min.js");
 		
 		
 		
-		if (page_title === "")
+		if (pageTitle === "")
 		{
-			page_title = "Cruz Godar";
+			pageTitle = "Cruz Godar";
 		}
 		
-		const head_html = `<title>${page_title}</title><meta property="og:title" content="${page_title}"/><meta property="og:type" content="website"/><meta property="og:url" content="https://cruzgodar.com${args.plainTexts[1]}"/><meta property="og:image" content="https://cruzgodar.com${args.plainTexts[1]}cover.webp"/><meta property="og:locale" content="en_US"/><meta property="og:site_name" content="Cruz Godar"/>`;
+		const headHtml = `<title>${pageTitle}</title><meta property="og:title" content="${pageTitle}"/><meta property="og:type" content="website"/><meta property="og:url" content="https://cruzgodar.com${args.plainTexts[1]}"/><meta property="og:image" content="https://cruzgodar.com${args.plainTexts[1]}cover.webp"/><meta property="og:locale" content="en_US"/><meta property="og:site_name" content="Cruz Godar"/>`;
 			
-		html = `<!DOCTYPE html><html lang="en"><head>${head_html}<style>body {opacity: 0;}</style></head><body><noscript><p class="body-text" style="text-align: center">JavaScript is required to use this site and many others. Consider enabling it.</p></noscript>${html}${scripts_data}</body></html>`;
+		html = `<!DOCTYPE html><html lang="en"><head>${headHtml}<style>body {opacity: 0;}</style></head><body><noscript><p class="body-text" style="text-align: center">JavaScript is required to use this site and many others. Consider enabling it.</p></noscript>${html}${scriptsData}</body></html>`;
 		
 		return html;
 	}

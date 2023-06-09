@@ -72,7 +72,7 @@ const Browser =
 		]
 	},
 	
-	is_ios: function()
+	isIos: function()
 	{
 		return [
 			'iPad Simulator',

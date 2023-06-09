@@ -19,7 +19,7 @@ for (let i = 0; i < lines.length; i++)
 
 
 
-let sitemap = `Site.sitemap =\n{${get_page_string("/home/", "", ["/gallery/", "/applets/", "/teaching/", "/slides/", "/writing/", "/about/", "/404/", "/debug/"], "Cruz Godar")}`;
+let sitemap = `Site.sitemap =\n{${getPageString("/home/", "", ["/gallery/", "/applets/", "/teaching/", "/slides/", "/writing/", "/about/", "/404/", "/debug/"], "Cruz Godar")}`;
 
 lines[0] = "/home/";
 
@@ -84,9 +84,9 @@ for (let i = 1; i < lines.length; i++)
 	
 	
 	
-	const real_parent = parent === "/" ? "/home/" : parent;
+	const realParent = parent === "/" ? "/home/" : parent;
 	
-	sitemap = `${sitemap}${get_page_string(lines[i], real_parent, children, title)}`;
+	sitemap = `${sitemap}${getPageString(lines[i], realParent, children, title)}`;
 }
 
 sitemap = `${sitemap.slice(0, sitemap.length - 3)}\n};`;
@@ -95,22 +95,22 @@ return sitemap;
 
 
 
-function get_page_string(url, parent, children, title)
+function getPageString(url, parent, children, title)
 {
 	if (children.length !== 0)
 	{
-		let children_string = "";
+		let childrenString = "";
 		
 		for (let i = 0; i < children.length; i++)
 		{
-			children_string = `${children_string}\t\t\t"${children[i]}"`;
+			childrenString = `${childrenString}\t\t\t"${children[i]}"`;
 			
 			if (i !== children.length - 1)
 			{
-				children_string = `${children_string},`;
+				childrenString = `${childrenString},`;
 			}
 			
-			children_string = `${children_string}\n`;
+			childrenString = `${childrenString}\n`;
 		}
 		
 		return `
@@ -122,7 +122,7 @@ function get_page_string(url, parent, children, title)
 		
 		"children":
 		[
-${children_string}\t\t]
+${childrenString}\t\t]
 	},
 		`;
 	}

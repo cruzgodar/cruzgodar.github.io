@@ -5,27 +5,27 @@ class Wilson
 	ctx = null;
 	gl = null;
 	
-	shader_programs = [];
+	shaderPrograms = [];
 	
 	uniforms = {};
 	
-	canvas_width = null;
-	canvas_height = null;
+	canvasWidth = null;
+	canvasHeight = null;
 	
-	world_width = 2;
-	world_height = 2;
+	worldWidth = 2;
+	worldHeight = 2;
 	
-	world_center_x = 0;
-	world_center_y = 0;
+	worldCenterX = 0;
+	worldCenterY = 0;
 	
-	output_canvas_container = null;
-	use_draggables = false;
+	outputCanvasContainer = null;
+	useDraggables = false;
 	
-	top_padding = 0;
-	left_padding = 0;
+	topPadding = 0;
+	leftPadding = 0;
 	
-	top_border = 0;
-	left_border = 0;
+	topBorder = 0;
+	leftBorder = 0;
 	
 	
 	
@@ -34,57 +34,57 @@ class Wilson
 		{
 			renderer: "cpu", "hybrid", "gpu"
 			
-			canvas_width, canvas_height
+			canvasWidth, canvasHeight
 			
-			world_width, world_height
-			world_center_x, world_center_y
+			worldWidth, worldHeight
+			worldCenterX, worldCenterY
 			
 			shader
 			
-			auto_arrange_canvases
+			autoArrangeCanvases
 			
 			
 			
-			mousedown_callback
-			mouseup_callback
-			mousemove_callback
-			mousedrag_callback
+			mousedownCallback
+			mouseupCallback
+			mousemoveCallback
+			mousedragCallback
 			
-			touchstart_callback
-			touchend_callback
-			touchmove_callback
+			touchstartCallback
+			touchendCallback
+			touchmoveCallback
 			
-			pinch_callback
-			wheel_callback
-			
-			
-			
-			use_draggables
-			
-			draggables_static
-			
-			draggables_mousedown_callback
-			draggables_mouseup_callback
-			draggables_mousemove_callback
-			
-			draggables_touchstart_callback
-			draggables_touchend_callback
-			draggables_touchmove_callback
+			pinchCallback
+			wheelCallback
 			
 			
 			
-			use_fullscreen
+			useDraggables
 			
-			true_fullscreen
+			draggablesStatic
 			
-			canvases_to_resize
+			draggablesMousedownCallback
+			draggablesMouseupCallback
+			draggablesMousemoveCallback
 			
-			use_fullscreen_button
+			draggablesTouchstartCallback
+			draggablesTouchendCallback
+			draggablesTouchmoveCallback
 			
-			enter_fullscreen_button_icon_path
-			exit_fullscreen_button_icon_path
 			
-			switch_fullscreen_callback
+			
+			useFullscreen
+			
+			trueFullscreen
+			
+			canvasesToResize
+			
+			useFullscreenButton
+			
+			enterFullscreenButtonIconPath
+			exitFullscreenButtonIconPath
+			
+			switchFullscreenCallback
 		}
 	*/
 	
@@ -92,21 +92,21 @@ class Wilson
 	{
 		this.canvas = canvas;
 		
-		this.canvas_width = typeof options.canvas_width === "undefined" ? parseInt(this.canvas.getAttribute("width")) : options.canvas_width;
-		this.canvas_height = typeof options.canvas_height === "undefined" ? parseInt(this.canvas.getAttribute("height")) : options.canvas_height;
+		this.canvasWidth = typeof options.canvasWidth === "undefined" ? parseInt(this.canvas.getAttribute("width")) : options.canvasWidth;
+		this.canvasHeight = typeof options.canvasHeight === "undefined" ? parseInt(this.canvas.getAttribute("height")) : options.canvasHeight;
 		
-		this.canvas.setAttribute("width", this.canvas_width);
-		this.canvas.setAttribute("height", this.canvas_height);
+		this.canvas.setAttribute("width", this.canvasWidth);
+		this.canvas.setAttribute("height", this.canvasHeight);
 		
 		
 		
-		let computed_style = window.getComputedStyle(this.canvas);
+		let computedStyle = window.getComputedStyle(this.canvas);
 		
-		this.top_padding = parseFloat(computed_style.paddingTop);
-		this.left_padding = parseFloat(computed_style.paddingLeft);
+		this.topPadding = parseFloat(computedStyle.paddingTop);
+		this.leftPadding = parseFloat(computedStyle.paddingLeft);
 		
-		this.top_border = parseFloat(computed_style.borderTopWidth);
-		this.left_border = parseFloat(computed_style.borderLeftWidth);
+		this.topBorder = parseFloat(computedStyle.borderTopWidth);
+		this.leftBorder = parseFloat(computedStyle.borderLeftWidth);
 		
 		
 		
@@ -120,77 +120,77 @@ class Wilson
 		
 		if (this.canvas.id !== "")
 		{
-			console.log(`[Wilson] Registered a ${this.canvas_width}x${this.canvas_height} canvas with ID ${this.canvas.id}`);
+			console.log(`[Wilson] Registered a ${this.canvasWidth}x${this.canvasHeight} canvas with ID ${this.canvas.id}`);
 		}
 		
 		else
 		{
-			console.log(`[Wilson] Registered a ${this.canvas_width}x${this.canvas_height} canvas`);
+			console.log(`[Wilson] Registered a ${this.canvasWidth}x${this.canvasHeight} canvas`);
 		}
 		
 		
 		
-		if (typeof options.canvases_to_resize === "undefined")
+		if (typeof options.canvasesToResize === "undefined")
 		{
-			options.canvases_to_resize = [this.canvas];
+			options.canvasesToResize = [this.canvas];
 		}
 		
 		
 		
-		if (typeof options.world_width !== "undefined")
+		if (typeof options.worldWidth !== "undefined")
 		{
-			this.world_width = options.world_width;
+			this.worldWidth = options.worldWidth;
 		}
 		
-		if (typeof options.world_height !== "undefined")
+		if (typeof options.worldHeight !== "undefined")
 		{
-			this.world_height = options.world_height;
+			this.worldHeight = options.worldHeight;
 		}
 		
 		
 		
-		if (typeof options.world_center_x !== "undefined")
+		if (typeof options.worldCenterX !== "undefined")
 		{
-			this.world_center_x = options.world_center_x;
+			this.worldCenterX = options.worldCenterX;
 		}
 		
-		if (typeof options.world_center_y !== "undefined")
+		if (typeof options.worldCenterY !== "undefined")
 		{
-			this.world_center_y = options.world_center_y;
+			this.worldCenterY = options.worldCenterY;
 		}
 		
 		
 		
 		if (typeof options.renderer === "undefined" || options.renderer === "hybrid")
 		{
-			this.render.render_type = 1;
+			this.render.renderType = 1;
 		}
 		
 		else if (options.renderer === "cpu")
 		{
-			this.render.render_type = 0;
+			this.render.renderType = 0;
 		}
 		
 		else
 		{
-			this.render.render_type = 2;
+			this.render.renderType = 2;
 		}
 		
 		
-		if (this.render.render_type === 0)
+		if (this.render.renderType === 0)
 		{
 			this.ctx = this.canvas.getContext("2d", {colorSpace: "display-p3"});
 			
-			this.render.img_data = this.ctx.getImageData(0, 0, this.canvas_width, this.canvas_height);
+			this.render.imgData = this.ctx.getImageData(0, 0, this.canvasWidth, this.canvasHeight);
 			
-			this.render.draw_frame = this.render.draw_frame_cpu;
+			this.render.drawFrame = this.render.drawFrameCpu;
 		}
 		
-		else if (this.render.render_type === 1)
+		else if (this.render.renderType === 1)
 		{
-			this.render.init_webgl_hybrid();
+			this.render.initWebglHybrid();
 			
-			this.render.draw_frame = this.render.draw_frame_hybrid;
+			this.render.drawFrame = this.render.drawFrameHybrid;
 			
 			
 			
@@ -207,10 +207,10 @@ class Wilson
 		
 		else
 		{
-			try {this.render.load_new_shader(options.shader);}
+			try {this.render.loadNewShader(options.shader);}
 			catch(ex) {console.error("[Wilson] Error loading shader")}
 			
-			this.render.draw_frame = this.render.draw_frame_gpu;
+			this.render.drawFrame = this.render.drawFrameGpu;
 			
 			
 			
@@ -227,85 +227,85 @@ class Wilson
 		
 		
 		
-		if (typeof options.auto_arrange_canvases === "undefined" || options.auto_arrange_canvases)
+		if (typeof options.autoArrangeCanvases === "undefined" || options.autoArrangeCanvases)
 		{
-			this.arrange_canvases(options);
+			this.arrangeCanvases(options);
 		}
 		
 		
 		
-		this.input.mousedown_callback = typeof options.mousedown_callback === "undefined" ? null : options.mousedown_callback;
-		this.input.mouseup_callback = typeof options.mouseup_callback === "undefined" ? null : options.mouseup_callback;
-		this.input.mousemove_callback = typeof options.mousemove_callback === "undefined" ? null : options.mousemove_callback;
-		this.input.mousedrag_callback = typeof options.mousedrag_callback === "undefined" ? null : options.mousedrag_callback;
+		this.input.mousedownCallback = typeof options.mousedownCallback === "undefined" ? null : options.mousedownCallback;
+		this.input.mouseupCallback = typeof options.mouseupCallback === "undefined" ? null : options.mouseupCallback;
+		this.input.mousemoveCallback = typeof options.mousemoveCallback === "undefined" ? null : options.mousemoveCallback;
+		this.input.mousedragCallback = typeof options.mousedragCallback === "undefined" ? null : options.mousedragCallback;
 		
-		this.input.touchstart_callback = typeof options.touchstart_callback === "undefined" ? null : options.touchstart_callback;
-		this.input.touchend_callback = typeof options.touchend_callback === "undefined" ? null : options.touchend_callback;
-		this.input.touchmove_callback = typeof options.touchmove_callback === "undefined" ? null : options.touchmove_callback;
+		this.input.touchstartCallback = typeof options.touchstartCallback === "undefined" ? null : options.touchstartCallback;
+		this.input.touchendCallback = typeof options.touchendCallback === "undefined" ? null : options.touchendCallback;
+		this.input.touchmoveCallback = typeof options.touchmoveCallback === "undefined" ? null : options.touchmoveCallback;
 		
-		this.input.pinch_callback = typeof options.pinch_callback === "undefined" ? null : options.pinch_callback;
-		this.input.wheel_callback = typeof options.wheel_callback === "undefined" ? null : options.wheel_callback;
+		this.input.pinchCallback = typeof options.pinchCallback === "undefined" ? null : options.pinchCallback;
+		this.input.wheelCallback = typeof options.wheelCallback === "undefined" ? null : options.wheelCallback;
 		
 		this.input.init();
 		
 		
 		
-		this.use_draggables = true;
+		this.useDraggables = true;
 		
-		this.draggables.static = typeof options.draggables_static === "undefined" ? false : options.draggables_static;
+		this.draggables.static = typeof options.draggablesStatic === "undefined" ? false : options.draggablesStatic;
 		
-		this.draggables.mousedown_callback = typeof options.draggables_mousedown_callback === "undefined" ? null : options.draggables_mousedown_callback;
-		this.draggables.mouseup_callback = typeof options.draggables_mouseup_callback === "undefined" ? null : options.draggables_mouseup_callback;
-		this.draggables.mousemove_callback = typeof options.draggables_mousemove_callback === "undefined" ? null : options.draggables_mousemove_callback;
+		this.draggables.mousedownCallback = typeof options.draggablesMousedownCallback === "undefined" ? null : options.draggablesMousedownCallback;
+		this.draggables.mouseupCallback = typeof options.draggablesMouseupCallback === "undefined" ? null : options.draggablesMouseupCallback;
+		this.draggables.mousemoveCallback = typeof options.draggablesMousemoveCallback === "undefined" ? null : options.draggablesMousemoveCallback;
 		
-		this.draggables.touchstart_callback = typeof options.draggables_touchstart_callback === "undefined" ? null : options.draggables_touchstart_callback;
-		this.draggables.touchend_callback = typeof options.draggables_touchend_callback === "undefined" ? null : options.draggables_touchend_callback;
-		this.draggables.touchmove_callback = typeof options.draggables_touchmove_callback === "undefined" ? null : options.draggables_touchmove_callback;
+		this.draggables.touchstartCallback = typeof options.draggablesTouchstartCallback === "undefined" ? null : options.draggablesTouchstartCallback;
+		this.draggables.touchendCallback = typeof options.draggablesTouchendCallback === "undefined" ? null : options.draggablesTouchendCallback;
+		this.draggables.touchmoveCallback = typeof options.draggablesTouchmoveCallback === "undefined" ? null : options.draggablesTouchmoveCallback;
 		
 		this.draggables.init();
 		
 		
 		
-		if (typeof options.use_fullscreen !== "undefined" && options.use_fullscreen)
+		if (typeof options.useFullscreen !== "undefined" && options.useFullscreen)
 		{
-			this.fullscreen.true_fullscreen = typeof options.true_fullscreen === "undefined" ? false : options.true_fullscreen;
+			this.fullscreen.trueFullscreen = typeof options.trueFullscreen === "undefined" ? false : options.trueFullscreen;
 			
 			
 			
-			this.fullscreen.use_fullscreen_button = typeof options.use_fullscreen_button === "undefined" ? false : options.use_fullscreen_button;
+			this.fullscreen.useFullscreenButton = typeof options.useFullscreenButton === "undefined" ? false : options.useFullscreenButton;
 			
 			
 			
-			if (this.fullscreen.use_fullscreen_button && typeof options.enter_fullscreen_button_icon_path === "undefined")
+			if (this.fullscreen.useFullscreenButton && typeof options.enterFullscreenButtonIconPath === "undefined")
 			{
 				console.error("Missing path to Enter Fullscreen button image");
 			}
 			
-			if (this.fullscreen.use_fullscreen_button && typeof options.exit_fullscreen_button_icon_path === "undefined")
+			if (this.fullscreen.useFullscreenButton && typeof options.exitFullscreenButtonIconPath === "undefined")
 			{
 				console.error("Missing path to Exit Fullscreen button image");
 			}
 			
 			
 			
-			this.fullscreen.enter_fullscreen_button_icon_path = options.enter_fullscreen_button_icon_path;
-			this.fullscreen.exit_fullscreen_button_icon_path = options.exit_fullscreen_button_icon_path;
+			this.fullscreen.enterFullscreenButtonIconPath = options.enterFullscreenButtonIconPath;
+			this.fullscreen.exitFullscreenButtonIconPath = options.exitFullscreenButtonIconPath;
 			
 			
 			
-			this.fullscreen.switch_fullscreen_callback = typeof options.switch_fullscreen_callback === "undefined" ? false : options.switch_fullscreen_callback;
+			this.fullscreen.switchFullscreenCallback = typeof options.switchFullscreenCallback === "undefined" ? false : options.switchFullscreenCallback;
 			
 			
 						
 			
-			if (typeof options.canvases_to_resize === "undefined")
+			if (typeof options.canvasesToResize === "undefined")
 			{
 				console.error("Missing canvases to resize");
 			}
 			
 			
 			
-			this.fullscreen.canvases_to_resize = options.canvases_to_resize;
+			this.fullscreen.canvasesToResize = options.canvasesToResize;
 			
 			
 			
@@ -315,7 +315,7 @@ class Wilson
 	
 	
 	
-	arrange_canvases(options)
+	arrangeCanvases(options)
 	{
 		if (document.querySelectorAll("#wilson-style").length === 0)
 		{
@@ -350,32 +350,32 @@ class Wilson
 		
 		
 		
-		let applet_canvas_container = document.createElement("div");
+		let appletCanvasContainer = document.createElement("div");
 		
-		applet_canvas_container.classList.add("wilson-applet-canvas-container");
+		appletCanvasContainer.classList.add("wilson-applet-canvas-container");
 		
-		applet_canvas_container.classList.add("wilson-center-content");
+		appletCanvasContainer.classList.add("wilson-center-content");
 		
-		this.canvas.parentNode.insertBefore(applet_canvas_container, this.canvas);
-		
-		
-		
-		this.output_canvas_container = document.createElement("div");
-		
-		this.output_canvas_container.classList.add("wilson-output-canvas-container");
-		
-		applet_canvas_container.appendChild(this.output_canvas_container);
+		this.canvas.parentNode.insertBefore(appletCanvasContainer, this.canvas);
 		
 		
 		
-		for (let i = 0; i < options.canvases_to_resize.length; i++)
+		this.outputCanvasContainer = document.createElement("div");
+		
+		this.outputCanvasContainer.classList.add("wilson-output-canvas-container");
+		
+		appletCanvasContainer.appendChild(this.outputCanvasContainer);
+		
+		
+		
+		for (let i = 0; i < options.canvasesToResize.length; i++)
 		{
-			applet_canvas_container.appendChild(options.canvases_to_resize[i]);
+			appletCanvasContainer.appendChild(options.canvasesToResize[i]);
 		}
 		
 		
 		
-		this.output_canvas_container.appendChild(this.canvas);
+		this.outputCanvasContainer.appendChild(this.canvas);
 		
 		
 		
@@ -388,57 +388,57 @@ class Wilson
 		
 		this.draggables.container.setAttribute("data-aos-delay-increase", "0");
 		
-		applet_canvas_container.appendChild(this.draggables.container);
+		appletCanvasContainer.appendChild(this.draggables.container);
 		
-		this.fullscreen.canvases_to_resize.push(this.draggables.container);
-		
-		
-		
-		let computed_style = window.getComputedStyle(this.canvas);
-		
-		let width = this.canvas.clientWidth - parseFloat(computed_style.paddingLeft) - parseFloat(computed_style.paddingRight);
-		let height = this.canvas.clientHeight - parseFloat(computed_style.paddingTop) - parseFloat(computed_style.paddingBottom);
-		
-		this.draggables.container.style.width = (width + 2 * this.draggables.draggable_radius) + "px";
-		this.draggables.container.style.height = (height + 2 * this.draggables.draggable_radius) + "px";
-		
-		this.draggables.container_width = width + 2 * this.draggables.draggable_radius;
-		this.draggables.container_height = height + 2 * this.draggables.draggable_radius;
-		
-		this.draggables.restricted_width = width;
-		this.draggables.restricted_height = height;
+		this.fullscreen.canvasesToResize.push(this.draggables.container);
 		
 		
 		
-		this.draggables.container.style.marginTop = (parseFloat(computed_style.borderTopWidth) + parseFloat(computed_style.paddingTop) - this.draggables.draggable_radius) + "px";
+		let computedStyle = window.getComputedStyle(this.canvas);
+		
+		let width = this.canvas.clientWidth - parseFloat(computedStyle.paddingLeft) - parseFloat(computedStyle.paddingRight);
+		let height = this.canvas.clientHeight - parseFloat(computedStyle.paddingTop) - parseFloat(computedStyle.paddingBottom);
+		
+		this.draggables.container.style.width = (width + 2 * this.draggables.draggableRadius) + "px";
+		this.draggables.container.style.height = (height + 2 * this.draggables.draggableRadius) + "px";
+		
+		this.draggables.containerWidth = width + 2 * this.draggables.draggableRadius;
+		this.draggables.containerHeight = height + 2 * this.draggables.draggableRadius;
+		
+		this.draggables.restrictedWidth = width;
+		this.draggables.restrictedHeight = height;
 		
 		
 		
-		this.fullscreen.fullscreen_components_container = document.createElement("div");
-		
-		this.fullscreen.fullscreen_components_container.classList.add("wilson-fullscreen-components-container");
-		
-		applet_canvas_container.parentNode.insertBefore(this.fullscreen.fullscreen_components_container, applet_canvas_container);
-		
-		this.fullscreen.fullscreen_components_container.appendChild(applet_canvas_container);
+		this.draggables.container.style.marginTop = (parseFloat(computedStyle.borderTopWidth) + parseFloat(computedStyle.paddingTop) - this.draggables.draggableRadius) + "px";
 		
 		
 		
-		this.fullscreen.fullscreen_components_container_location = document.createElement("div");
+		this.fullscreen.fullscreenComponentsContainer = document.createElement("div");
 		
-		this.fullscreen.fullscreen_components_container.parentNode.insertBefore(this.fullscreen.fullscreen_components_container_location, this.fullscreen.fullscreen_components_container);
+		this.fullscreen.fullscreenComponentsContainer.classList.add("wilson-fullscreen-components-container");
 		
-		this.fullscreen.fullscreen_components_container_location.appendChild(this.fullscreen.fullscreen_components_container);
+		appletCanvasContainer.parentNode.insertBefore(this.fullscreen.fullscreenComponentsContainer, appletCanvasContainer);
+		
+		this.fullscreen.fullscreenComponentsContainer.appendChild(appletCanvasContainer);
 		
 		
 		
-		for (let i = 0; i < this.fullscreen.canvases_to_resize.length; i++)
+		this.fullscreen.fullscreenComponentsContainerLocation = document.createElement("div");
+		
+		this.fullscreen.fullscreenComponentsContainer.parentNode.insertBefore(this.fullscreen.fullscreenComponentsContainerLocation, this.fullscreen.fullscreenComponentsContainer);
+		
+		this.fullscreen.fullscreenComponentsContainerLocation.appendChild(this.fullscreen.fullscreenComponentsContainer);
+		
+		
+		
+		for (let i = 0; i < this.fullscreen.canvasesToResize.length; i++)
 		{
-			this.fullscreen.canvases_to_resize[i].addEventListener("gesturestart", e => e.preventDefault());
-			this.fullscreen.canvases_to_resize[i].addEventListener("gesturechange", e => e.preventDefault());
-			this.fullscreen.canvases_to_resize[i].addEventListener("gestureend", e => e.preventDefault());
+			this.fullscreen.canvasesToResize[i].addEventListener("gesturestart", e => e.preventDefault());
+			this.fullscreen.canvasesToResize[i].addEventListener("gesturechange", e => e.preventDefault());
+			this.fullscreen.canvasesToResize[i].addEventListener("gestureend", e => e.preventDefault());
 			
-			this.fullscreen.canvases_to_resize[i].addEventListener("click", e => e.preventDefault());
+			this.fullscreen.canvasesToResize[i].addEventListener("click", e => e.preventDefault());
 		}
 	}
 	
@@ -449,21 +449,21 @@ class Wilson
 	{
 		interpolate:
 		{
-			canvas_to_world(row, col)
+			canvasToWorld(row, col)
 			{
-				return [(col / this.parent.canvas_width - .5) * this.parent.world_width + this.parent.world_center_x, (.5 - row / this.parent.canvas_height) * this.parent.world_height + this.parent.world_center_y];
+				return [(col / this.parent.canvasWidth - .5) * this.parent.worldWidth + this.parent.worldCenterX, (.5 - row / this.parent.canvasHeight) * this.parent.worldHeight + this.parent.worldCenterY];
 			},
 			
-			world_to_canvas(x, y)
+			worldToCanvas(x, y)
 			{
-				return [Math.floor((.5 - (y - this.parent.world_center_y) / this.parent.world_height) * this.parent.canvas_height), Math.floor(((x - this.parent.world_center_x) / this.parent.world_width + .5) * this.parent.canvas_width)];
+				return [Math.floor((.5 - (y - this.parent.worldCenterY) / this.parent.worldHeight) * this.parent.canvasHeight), Math.floor(((x - this.parent.worldCenterX) / this.parent.worldWidth + .5) * this.parent.canvasWidth)];
 			}
 		},
 		
 		
 		
 		//A utility function for converting from HSV to RGB. Accepts hsv in [0, 1] and returns rgb in [0, 255], unrounded.
-		hsv_to_rgb(h, s, v)
+		hsvToRgb(h, s, v)
 		{
 			function f(n)
 			{
@@ -480,42 +480,42 @@ class Wilson
 	//Draws an entire frame to a cpu canvas by directly modifying the canvas data. Tends to be significantly faster than looping fillRect, **when the whole canvas needs to be updated**. If that's not the case, sticking to fillRect is generally a better idea. Here, image is a width * height * 4 Uint8ClampedArray, with each sequence of 4 elements corresponding to rgba values.
 	render =
 	{
-		draw_frame: null,
+		drawFrame: null,
 		
-		render_type: null, //0: cpu, 1: hybrid, 2: gpu
+		renderType: null, //0: cpu, 1: hybrid, 2: gpu
 		
-		last_image: null,
+		lastImage: null,
 		
-		img_data: null,
+		imgData: null,
 		
-		shader_program: null,
-		shader_programs: [],
+		shaderProgram: null,
+		shaderPrograms: [],
 		texture: null,
 		
 		framebuffers: [],
 		
 		
 		
-		draw_frame_cpu(image)
+		drawFrameCpu(image)
 		{
-			this.parent.ctx.putImageData(new ImageData(image, this.parent.canvas_width, this.parent.canvas_height), 0, 0);
+			this.parent.ctx.putImageData(new ImageData(image, this.parent.canvasWidth, this.parent.canvasHeight), 0, 0);
 		},
 		
 		
 		
 		//Draws an entire frame to the canvas by converting the frame to a WebGL texture and displaying that. In some cases, this can slightly increase drawing performance, and some browsers can also handle larger WebGL canvases than cpu ones (e.g. iOS Safari). For these reasons, it's recommended to default to this rendering method unless there is a specific reason to avoid WebGL.
-		draw_frame_hybrid(image)
+		drawFrameHybrid(image)
 		{
-			this.last_image = image;
+			this.lastImage = image;
 			
-			this.parent.gl.texImage2D(this.parent.gl.TEXTURE_2D, 0, this.parent.gl.RGBA, this.parent.canvas_width, this.parent.canvas_height, 0, this.parent.gl.RGBA, this.parent.gl.UNSIGNED_BYTE, image);
+			this.parent.gl.texImage2D(this.parent.gl.TEXTURE_2D, 0, this.parent.gl.RGBA, this.parent.canvasWidth, this.parent.canvasHeight, 0, this.parent.gl.RGBA, this.parent.gl.UNSIGNED_BYTE, image);
 			
 			this.parent.gl.drawArrays(this.parent.gl.TRIANGLE_STRIP, 0, 4);
 		},
 		
 		
 		
-		draw_frame_gpu()
+		drawFrameGpu()
 		{
 			this.parent.gl.drawArrays(this.parent.gl.TRIANGLE_STRIP, 0, 4);
 		},
@@ -523,11 +523,11 @@ class Wilson
 		
 		
 		//Gets WebGL started for the canvas.
-		init_webgl_hybrid()
+		initWebglHybrid()
 		{
 			this.parent.gl = this.parent.canvas.getContext("webgl");
 			
-			const vertex_shader_source = `
+			const vertexShaderSource = `
 				attribute vec3 position;
 				varying vec2 uv;
 
@@ -540,18 +540,18 @@ class Wilson
 				}
 			`;
 			
-			const frag_shader_source = `
+			const fragShaderSource = `
 				precision highp float;
 				
 				varying vec2 uv;
 				
-				uniform sampler2D u_texture;
+				uniform sampler2D uTexture;
 				
 				
 				
 				void main(void)
 				{
-					gl_FragColor = texture2D(u_texture, (uv + vec2(1.0, 1.0)) / 2.0);
+					gl_FragColor = texture2D(uTexture, (uv + vec2(1.0, 1.0)) / 2.0);
 				}
 			`;
 			
@@ -559,37 +559,37 @@ class Wilson
 			
 			
 			
-			let vertex_shader = load_shader(this.parent.gl, this.parent.gl.VERTEX_SHADER, vertex_shader_source);
+			let vertexShader = loadShader(this.parent.gl, this.parent.gl.VERTEX_SHADER, vertexShaderSource);
 			
-			let frag_shader = load_shader(this.parent.gl, this.parent.gl.FRAGMENT_SHADER, frag_shader_source);
+			let fragShader = loadShader(this.parent.gl, this.parent.gl.FRAGMENT_SHADER, fragShaderSource);
 			
-			this.shader_program = this.parent.gl.createProgram();
+			this.shaderProgram = this.parent.gl.createProgram();
 			
-			this.parent.gl.attachShader(this.shader_program, vertex_shader);
-			this.parent.gl.attachShader(this.shader_program, frag_shader);
-			this.parent.gl.linkProgram(this.shader_program);
+			this.parent.gl.attachShader(this.shaderProgram, vertexShader);
+			this.parent.gl.attachShader(this.shaderProgram, fragShader);
+			this.parent.gl.linkProgram(this.shaderProgram);
 			
-			if (!this.parent.gl.getProgramParameter(this.shader_program, this.parent.gl.LINK_STATUS))
+			if (!this.parent.gl.getProgramParameter(this.shaderProgram, this.parent.gl.LINK_STATUS))
 			{
 				console.error(`[Wilson] Couldn't link shader program: ${this.parent.gl.getShaderInfoLog(shader)}`);
-				this.parent.gl.deleteProgram(this.shader_program);
+				this.parent.gl.deleteProgram(this.shaderProgram);
 			}
 			
-			this.parent.gl.useProgram(this.shader_program);
+			this.parent.gl.useProgram(this.shaderProgram);
 			
-			let position_buffer = this.parent.gl.createBuffer();
+			let positionBuffer = this.parent.gl.createBuffer();
 			
-			this.parent.gl.bindBuffer(this.parent.gl.ARRAY_BUFFER, position_buffer);
+			this.parent.gl.bindBuffer(this.parent.gl.ARRAY_BUFFER, positionBuffer);
 			
 			this.parent.gl.bufferData(this.parent.gl.ARRAY_BUFFER, new Float32Array(quad), this.parent.gl.STATIC_DRAW);
 			
-			this.shader_program.position_attribute = this.parent.gl.getAttribLocation(this.shader_program, "position");
+			this.shaderProgram.positionAttribute = this.parent.gl.getAttribLocation(this.shaderProgram, "position");
 			
-			this.parent.gl.enableVertexAttribArray(this.shader_program.position_attribute);
+			this.parent.gl.enableVertexAttribArray(this.shaderProgram.positionAttribute);
 			
-			this.parent.gl.vertexAttribPointer(this.shader_program.position_attribute, 3, this.parent.gl.FLOAT, false, 0, 0);
+			this.parent.gl.vertexAttribPointer(this.shaderProgram.positionAttribute, 3, this.parent.gl.FLOAT, false, 0, 0);
 			
-			this.parent.gl.viewport(0, 0, this.parent.canvas_width, this.parent.canvas_height);
+			this.parent.gl.viewport(0, 0, this.parent.canvasWidth, this.parent.canvasHeight);
 			
 			
 			
@@ -611,7 +611,7 @@ class Wilson
 			
 			
 			
-			function load_shader(gl, type, source)
+			function loadShader(gl, type, source)
 			{
 				let shader = gl.createShader(type);
 				
@@ -632,11 +632,11 @@ class Wilson
 		
 		
 		//Gets WebGL started for the canvas.
-		load_new_shader(frag_shader_source)
+		loadNewShader(fragShaderSource)
 		{
 			this.parent.gl = this.parent.canvas.getContext("webgl");
 			
-			const vertex_shader_source = `
+			const vertexShaderSource = `
 				attribute vec3 position;
 				varying vec2 uv;
 
@@ -653,45 +653,45 @@ class Wilson
 			
 			
 			
-			let vertex_shader = load_shader(this.parent.gl, this.parent.gl.VERTEX_SHADER, vertex_shader_source);
+			let vertexShader = loadShader(this.parent.gl, this.parent.gl.VERTEX_SHADER, vertexShaderSource);
 			
-			let frag_shader = load_shader(this.parent.gl, this.parent.gl.FRAGMENT_SHADER, frag_shader_source);
+			let fragShader = loadShader(this.parent.gl, this.parent.gl.FRAGMENT_SHADER, fragShaderSource);
 			
-			this.shader_program = this.parent.gl.createProgram();
+			this.shaderProgram = this.parent.gl.createProgram();
 			
-			this.parent.gl.attachShader(this.shader_program, vertex_shader);
-			this.parent.gl.attachShader(this.shader_program, frag_shader);
-			this.parent.gl.linkProgram(this.shader_program);
+			this.parent.gl.attachShader(this.shaderProgram, vertexShader);
+			this.parent.gl.attachShader(this.shaderProgram, fragShader);
+			this.parent.gl.linkProgram(this.shaderProgram);
 			
-			if (!this.parent.gl.getProgramParameter(this.shader_program, this.parent.gl.LINK_STATUS))
+			if (!this.parent.gl.getProgramParameter(this.shaderProgram, this.parent.gl.LINK_STATUS))
 			{
 				console.log(`[Wilson] Couldn't link shader program: ${this.gl.getShaderInfoLog(shader)}`);
-				this.parent.gl.deleteProgram(this.shader_program);
+				this.parent.gl.deleteProgram(this.shaderProgram);
 			}
 			
-			this.parent.gl.useProgram(this.shader_program);
+			this.parent.gl.useProgram(this.shaderProgram);
 			
-			let position_buffer = this.parent.gl.createBuffer();
+			let positionBuffer = this.parent.gl.createBuffer();
 			
-			this.parent.gl.bindBuffer(this.parent.gl.ARRAY_BUFFER, position_buffer);
+			this.parent.gl.bindBuffer(this.parent.gl.ARRAY_BUFFER, positionBuffer);
 			
 			this.parent.gl.bufferData(this.parent.gl.ARRAY_BUFFER, new Float32Array(quad), this.parent.gl.STATIC_DRAW);
 			
-			this.shader_program.position_attribute = this.parent.gl.getAttribLocation(this.shader_program, "position");
+			this.shaderProgram.positionAttribute = this.parent.gl.getAttribLocation(this.shaderProgram, "position");
 			
-			this.parent.gl.enableVertexAttribArray(this.shader_program.position_attribute);
+			this.parent.gl.enableVertexAttribArray(this.shaderProgram.positionAttribute);
 			
-			this.parent.gl.vertexAttribPointer(this.shader_program.position_attribute, 3, this.parent.gl.FLOAT, false, 0, 0);
+			this.parent.gl.vertexAttribPointer(this.shaderProgram.positionAttribute, 3, this.parent.gl.FLOAT, false, 0, 0);
 			
-			this.parent.gl.viewport(0, 0, this.parent.canvas_width, this.parent.canvas_height);
-			
-			
-			
-			this.shader_programs.push(this.shader_program);
+			this.parent.gl.viewport(0, 0, this.parent.canvasWidth, this.parent.canvasHeight);
 			
 			
 			
-			function load_shader(gl, type, source)
+			this.shaderPrograms.push(this.shaderProgram);
+			
+			
+			
+			function loadShader(gl, type, source)
 			{
 				let shader = gl.createShader(type);
 				
@@ -711,14 +711,14 @@ class Wilson
 		
 		
 		
-		create_framebuffer_texture_pair(type = this.parent.gl.FLOAT)
+		createFramebufferTexturePair(type = this.parent.gl.FLOAT)
 		{
 			let framebuffer = this.parent.gl.createFramebuffer();
 	
 			let texture = this.parent.gl.createTexture();
 			
 			this.parent.gl.bindTexture(this.parent.gl.TEXTURE_2D, texture);
-			this.parent.gl.texImage2D(this.parent.gl.TEXTURE_2D, 0, this.parent.gl.RGBA, this.parent.canvas_width, this.parent.canvas_height, 0, this.parent.gl.RGBA, type, null);
+			this.parent.gl.texImage2D(this.parent.gl.TEXTURE_2D, 0, this.parent.gl.RGBA, this.parent.canvasWidth, this.parent.canvasHeight, 0, this.parent.gl.RGBA, type, null);
 			
 			this.parent.gl.texParameteri(this.parent.gl.TEXTURE_2D, this.parent.gl.TEXTURE_MAG_FILTER, this.parent.gl.NEAREST);
 			this.parent.gl.texParameteri(this.parent.gl.TEXTURE_2D, this.parent.gl.TEXTURE_MIN_FILTER, this.parent.gl.NEAREST);
@@ -738,37 +738,37 @@ class Wilson
 		
 		
 		//Initializes all of the uniforms for a gpu canvas. Takes in an array of variable names as strings (that match the uniforms in the fragment shader), and stores the locations in Wilson.uniforms.
-		init_uniforms(variable_names, shader_program_index = -1)
+		initUniforms(variableNames, shaderProgramIndex = -1)
 		{
-			if (shader_program_index === -1)
+			if (shaderProgramIndex === -1)
 			{
-				for (let i = 0; i < variable_names.length; i++)
+				for (let i = 0; i < variableNames.length; i++)
 				{
-					this.parent.uniforms[variable_names[i]] = this.parent.gl.getUniformLocation(this.shader_program, variable_names[i]);
+					this.parent.uniforms[variableNames[i]] = this.parent.gl.getUniformLocation(this.shaderProgram, variableNames[i]);
 				}
 			}
 			
 			else
 			{
-				for (let i = 0; i < variable_names.length; i++)
+				for (let i = 0; i < variableNames.length; i++)
 				{
-					if (typeof this.parent.uniforms[variable_names[i]] === "undefined")
+					if (typeof this.parent.uniforms[variableNames[i]] === "undefined")
 					{
-						this.parent.uniforms[variable_names[i]] = {};
+						this.parent.uniforms[variableNames[i]] = {};
 					}
 					
-					this.parent.uniforms[variable_names[i]][shader_program_index] = this.parent.gl.getUniformLocation(this.shader_programs[shader_program_index], variable_names[i]);
+					this.parent.uniforms[variableNames[i]][shaderProgramIndex] = this.parent.gl.getUniformLocation(this.shaderPrograms[shaderProgramIndex], variableNames[i]);
 				}
 			}
 		},
 		
 		
 		
-		get_pixel_data()
+		getPixelData()
 		{
-			let pixels = new Uint8Array(this.parent.canvas_width * this.parent.canvas_height * 4);
+			let pixels = new Uint8Array(this.parent.canvasWidth * this.parent.canvasHeight * 4);
 			
-			this.parent.gl.readPixels(0, 0, this.parent.canvas_width, this.parent.canvas_height, this.parent.gl.RGBA, this.parent.gl.UNSIGNED_BYTE, pixels);
+			this.parent.gl.readPixels(0, 0, this.parent.canvasWidth, this.parent.canvasHeight, this.parent.gl.RGBA, this.parent.gl.UNSIGNED_BYTE, pixels);
 			
 			return pixels;
 		}
@@ -782,39 +782,39 @@ class Wilson
 		
 		container: null,
 		
-		container_width: null,
-		container_height: null,
+		containerWidth: null,
+		containerHeight: null,
 		
 		//The container is larger than the canvas so that the centers of the draggables can reach the ends exactly. Therefore, when we calculate world coordinates, we need to use smaller widths and heights than the actual container dimensions.
-		restricted_width: null,
-		restricted_height: null,
+		restrictedWidth: null,
+		restrictedHeight: null,
 		
 		draggables: [],
 		
-		world_coordinates: [],
+		worldCoordinates: [],
 		
-		auto_add_container: true,
+		autoAddContainer: true,
 		
-		num_draggables: 0,
+		numDraggables: 0,
 		
 		static: false,
 		
-		draggable_radius: 12,
+		draggableRadius: 12,
 		
-		active_draggable: -1,
+		activeDraggable: -1,
 		
-		last_active_draggable: -1,
+		lastActiveDraggable: -1,
 		
-		mouse_x: 0,
-		mouse_y: 0,
+		mouseX: 0,
+		mouseY: 0,
 		
-		mousedown_callback: null,
-		mouseup_callback: null,
-		mousemove_callback: null,
+		mousedownCallback: null,
+		mouseupCallback: null,
+		mousemoveCallback: null,
 		
-		touchstart_callback: null,
-		touchend_callback: null,
-		touchmove_callback: null,
+		touchstartCallback: null,
+		touchendCallback: null,
+		touchmoveCallback: null,
 		
 		
 		
@@ -885,35 +885,35 @@ class Wilson
 			
 			
 			
-			this.container_width = this.container.offsetWidth;
-			this.container_height = this.container.offsetHeight;
+			this.containerWidth = this.container.offsetWidth;
+			this.containerHeight = this.container.offsetHeight;
 			
 			
 			
-			let handle_touchstart_event_bound = this.handle_touchstart_event.bind(this);
-			let handle_touchend_event_bound = this.handle_touchend_event.bind(this);
-			let handle_touchmove_event_bound = this.handle_touchmove_event.bind(this);
+			let handleTouchstartEventBound = this.handleTouchstartEvent.bind(this);
+			let handleTouchendEventBound = this.handleTouchendEvent.bind(this);
+			let handleTouchmoveEventBound = this.handleTouchmoveEvent.bind(this);
 			
-			let handle_mousedown_event_bound = this.handle_mousedown_event.bind(this);
-			let handle_mouseup_event_bound = this.handle_mouseup_event.bind(this);
-			let handle_mousemove_event_bound = this.handle_mousemove_event.bind(this);
+			let handleMousedownEventBound = this.handleMousedownEvent.bind(this);
+			let handleMouseupEventBound = this.handleMouseupEvent.bind(this);
+			let handleMousemoveEventBound = this.handleMousemoveEvent.bind(this);
 			
-			let on_resize_bound = this.on_resize.bind(this);
+			let onResizeBound = this.onResize.bind(this);
 			
 			
 			
 			if (!this.static)
 			{	
-				document.documentElement.addEventListener("touchstart", handle_touchstart_event_bound, false);
-				document.documentElement.addEventListener("touchmove", handle_touchmove_event_bound, false);
-				document.documentElement.addEventListener("touchend", handle_touchend_event_bound, false);
+				document.documentElement.addEventListener("touchstart", handleTouchstartEventBound, false);
+				document.documentElement.addEventListener("touchmove", handleTouchmoveEventBound, false);
+				document.documentElement.addEventListener("touchend", handleTouchendEventBound, false);
 				
-				document.documentElement.addEventListener("mousedown", handle_mousedown_event_bound, false);
-				document.documentElement.addEventListener("mousemove", handle_mousemove_event_bound, false);
-				document.documentElement.addEventListener("mouseup", handle_mouseup_event_bound, false);
+				document.documentElement.addEventListener("mousedown", handleMousedownEventBound, false);
+				document.documentElement.addEventListener("mousemove", handleMousemoveEventBound, false);
+				document.documentElement.addEventListener("mouseup", handleMouseupEventBound, false);
 				
-				window.addEventListener("resize", on_resize_bound);
-				Page.temporary_handlers["resize"].push(on_resize_bound);
+				window.addEventListener("resize", onResizeBound);
+				Page.temporaryHandlers["resize"].push(onResizeBound);
 			}
 			
 			else
@@ -928,43 +928,43 @@ class Wilson
 		add(x, y)
 		{
 			//First convert to page coordinates.
-			let row = Math.floor(this.restricted_height * (1 - ((y - this.parent.world_center_y) / this.parent.world_height + .5))) + this.draggable_radius;
-			let col = Math.floor(this.restricted_width * ((x - this.parent.world_center_x) / this.parent.world_width + .5)) + this.draggable_radius;
+			let row = Math.floor(this.restrictedHeight * (1 - ((y - this.parent.worldCenterY) / this.parent.worldHeight + .5))) + this.draggableRadius;
+			let col = Math.floor(this.restrictedWidth * ((x - this.parent.worldCenterX) / this.parent.worldWidth + .5)) + this.draggableRadius;
 			
 			
 			
-			if (row < this.draggable_radius)
+			if (row < this.draggableRadius)
 			{
-				row = this.draggable_radius;
+				row = this.draggableRadius;
 			}
 			
-			if (row > this.container_height - this.draggable_radius)
+			if (row > this.containerHeight - this.draggableRadius)
 			{
-				row = this.container_height - this.draggable_radius;
+				row = this.containerHeight - this.draggableRadius;
 			}
 			
-			if (col < this.draggable_radius)
+			if (col < this.draggableRadius)
 			{
-				col = this.draggable_radius;
+				col = this.draggableRadius;
 			}
 			
-			if (col > this.container_width - this.draggable_radius)
+			if (col > this.containerWidth - this.draggableRadius)
 			{
-				col = this.container_width - this.draggable_radius;
+				col = this.containerWidth - this.draggableRadius;
 			}
 			
 			
 			
 			let element = document.createElement("div");
 			element.classList.add("wilson-draggable");
-			element.classList.add(`wilson-draggable-${this.num_draggables}`);
-			element.style.transform = `translate3d(${col - this.draggable_radius}px, ${row - this.draggable_radius}px, 0)`;
+			element.classList.add(`wilson-draggable-${this.numDraggables}`);
+			element.style.transform = `translate3d(${col - this.draggableRadius}px, ${row - this.draggableRadius}px, 0)`;
 			
-			this.num_draggables++;
+			this.numDraggables++;
 			
 			this.draggables.push(element);
 			
-			this.world_coordinates.push([x, y]);
+			this.worldCoordinates.push([x, y]);
 			
 			this.container.appendChild(element);
 			
@@ -975,25 +975,25 @@ class Wilson
 		
 		
 		
-		handle_mousedown_event(e)
+		handleMousedownEvent(e)
 		{
-			this.active_draggable = -1;
+			this.activeDraggable = -1;
 			
 			//Figure out which marker, if any, this is referencing.
-			for (let i = 0; i < this.num_draggables; i++)
+			for (let i = 0; i < this.numDraggables; i++)
 			{
 				if (e.target.classList.contains(`wilson-draggable-${i}`) && e.target.parentNode === this.container)
 				{
 					e.preventDefault();
 					
-					this.active_draggable = i;
+					this.activeDraggable = i;
 					
-					this.currently_dragging = true;
+					this.currentlyDragging = true;
 					
-					this.mouse_x = e.clientX;
-					this.mouse_y = e.clientY;
+					this.mouseX = e.clientX;
+					this.mouseY = e.clientY;
 					
-					try {this.mousedown_callback(this.active_draggable, ...(this.world_coordinates[this.active_draggable]), e)}
+					try {this.mousedownCallback(this.activeDraggable, ...(this.worldCoordinates[this.activeDraggable]), e)}
 					catch(ex) {}
 					
 					break;
@@ -1003,41 +1003,41 @@ class Wilson
 		
 		
 		
-		handle_mouseup_event(e)
+		handleMouseupEvent(e)
 		{
-			if (this.active_draggable !== -1)
+			if (this.activeDraggable !== -1)
 			{
 				document.body.style.WebkitUserSelect = "";
 				
-				this.last_active_draggable = this.active_draggable;
+				this.lastActiveDraggable = this.activeDraggable;
 				
-				try {this.mouseup_callback(this.active_draggable, ...(this.world_coordinates[this.active_draggable]), e)}
+				try {this.mouseupCallback(this.activeDraggable, ...(this.worldCoordinates[this.activeDraggable]), e)}
 				catch(ex) {}
 			}
 			
-			this.active_draggable = -1;
+			this.activeDraggable = -1;
 			
-			this.currently_dragging = false;
+			this.currentlyDragging = false;
 		},
 		
 		
 		
-		handle_mousemove_event(e)
+		handleMousemoveEvent(e)
 		{
-			if (this.currently_dragging && this.active_draggable !== -1)
+			if (this.currentlyDragging && this.activeDraggable !== -1)
 			{
 				e.preventDefault();
 				
 				
 				
-				let new_mouse_x = e.clientX;
-				let new_mouse_y = e.clientY;
+				let newMouseX = e.clientX;
+				let newMouseY = e.clientY;
 				
-				let mouse_x_delta = new_mouse_x - this.mouse_x;
-				let mouse_y_delta = new_mouse_y - this.mouse_y;
+				let mouseXDelta = newMouseX - this.mouseX;
+				let mouseYDelta = newMouseY - this.mouseY;
 				
-				this.mouse_x = new_mouse_x;
-				this.mouse_y = new_mouse_y;
+				this.mouseX = newMouseX;
+				this.mouseY = newMouseY;
 				
 				
 				
@@ -1048,64 +1048,64 @@ class Wilson
 				
 				
 				
-				if (row < this.draggable_radius)
+				if (row < this.draggableRadius)
 				{
-					row = this.draggable_radius;
+					row = this.draggableRadius;
 				}
 				
-				if (row > this.container_height - this.draggable_radius)
+				if (row > this.containerHeight - this.draggableRadius)
 				{
-					row = this.container_height - this.draggable_radius;
+					row = this.containerHeight - this.draggableRadius;
 				}
 				
-				if (col < this.draggable_radius)
+				if (col < this.draggableRadius)
 				{
-					col = this.draggable_radius;
+					col = this.draggableRadius;
 				}
 				
-				if (col > this.container_width - this.draggable_radius)
+				if (col > this.containerWidth - this.draggableRadius)
 				{
-					col = this.container_width - this.draggable_radius;
+					col = this.containerWidth - this.draggableRadius;
 				}
 				
-				this.draggables[this.active_draggable].style.transform = `translate3d(${col - this.draggable_radius}px, ${row - this.draggable_radius}px, 0)`;
+				this.draggables[this.activeDraggable].style.transform = `translate3d(${col - this.draggableRadius}px, ${row - this.draggableRadius}px, 0)`;
 				
 				
 				
-				let x = ((col - this.draggable_radius - this.restricted_width/2) / this.restricted_width) * this.parent.world_width + this.parent.world_center_x;
-				let y = (-(row - this.draggable_radius - this.restricted_height/2) / this.restricted_height) * this.parent.world_height + this.parent.world_center_y;
+				let x = ((col - this.draggableRadius - this.restrictedWidth/2) / this.restrictedWidth) * this.parent.worldWidth + this.parent.worldCenterX;
+				let y = (-(row - this.draggableRadius - this.restrictedHeight/2) / this.restrictedHeight) * this.parent.worldHeight + this.parent.worldCenterY;
 				
-				this.world_coordinates[this.active_draggable][0] = x;
-				this.world_coordinates[this.active_draggable][1] = y;
+				this.worldCoordinates[this.activeDraggable][0] = x;
+				this.worldCoordinates[this.activeDraggable][1] = y;
 				
 				
 				
-				try {this.mousemove_callback(this.active_draggable, x, y, e)}
+				try {this.mousemoveCallback(this.activeDraggable, x, y, e)}
 				catch(ex) {}
 			}
 		},
 		
 		
 		
-		handle_touchstart_event(e)
+		handleTouchstartEvent(e)
 		{
-			this.active_draggable = -1;
+			this.activeDraggable = -1;
 			
 			//Figure out which marker, if any, this is referencing.
-			for (let i = 0; i < this.num_draggables; i++)
+			for (let i = 0; i < this.numDraggables; i++)
 			{
 				if (e.target.classList.contains(`wilson-draggable-${i}`) && e.target.parentNode === this.container)
 				{
 					e.preventDefault();
 					
-					this.active_draggable = i;
+					this.activeDraggable = i;
 					
-					this.currently_dragging = true;
+					this.currentlyDragging = true;
 					
-					this.mouse_x = e.touches[0].clientX;
-					this.mouse_y = e.touches[0].clientY;
+					this.mouseX = e.touches[0].clientX;
+					this.mouseY = e.touches[0].clientY;
 					
-					try {this.touchstart_callback(this.active_draggable, ...(this.world_coordinates[this.active_draggable]), e)}
+					try {this.touchstartCallback(this.activeDraggable, ...(this.worldCoordinates[this.activeDraggable]), e)}
 					catch(ex) {}
 					
 					break;
@@ -1115,140 +1115,140 @@ class Wilson
 		
 		
 		
-		handle_touchend_event(e)
+		handleTouchendEvent(e)
 		{
-			if (this.active_draggable !== -1)
+			if (this.activeDraggable !== -1)
 			{
 				document.body.style.WebkitUserSelect = "";
 				
-				this.last_active_draggable = this.active_draggable;
+				this.lastActiveDraggable = this.activeDraggable;
 				
-				try {this.touchend_callback(this.active_draggable, ...(this.world_coordinates[this.active_draggable]), e)}
+				try {this.touchendCallback(this.activeDraggable, ...(this.worldCoordinates[this.activeDraggable]), e)}
 				catch(ex) {}
 			}
 			
-			this.active_draggable = -1;
+			this.activeDraggable = -1;
 			
-			this.currently_dragging = false;
+			this.currentlyDragging = false;
 		},
 		
 		
 		
-		handle_touchmove_event(e)
+		handleTouchmoveEvent(e)
 		{
-			if (this.currently_dragging && this.active_draggable !== -1)
+			if (this.currentlyDragging && this.activeDraggable !== -1)
 			{
 				e.preventDefault();
 				
-				this.mouse_x = e.touches[0].clientX;
-				this.mouse_y = e.touches[0].clientY;
+				this.mouseX = e.touches[0].clientX;
+				this.mouseY = e.touches[0].clientY;
 				
 				let rect = this.container.getBoundingClientRect();
 				
-				let row = this.mouse_y - rect.top;
-				let col = this.mouse_x - rect.left;
+				let row = this.mouseY - rect.top;
+				let col = this.mouseX - rect.left;
 				
 				
 				
-				if (row < this.draggable_radius)
+				if (row < this.draggableRadius)
 				{
-					row = this.draggable_radius;
+					row = this.draggableRadius;
 				}
 				
-				if (row > this.container_height - this.draggable_radius)
+				if (row > this.containerHeight - this.draggableRadius)
 				{
-					row = this.container_height - this.draggable_radius;
+					row = this.containerHeight - this.draggableRadius;
 				}
 				
-				if (col < this.draggable_radius)
+				if (col < this.draggableRadius)
 				{
-					col = this.draggable_radius;
+					col = this.draggableRadius;
 				}
 				
-				if (col > this.container_width - this.draggable_radius)
+				if (col > this.containerWidth - this.draggableRadius)
 				{
-					col = this.container_width - this.draggable_radius;
+					col = this.containerWidth - this.draggableRadius;
 				}
 				
-				this.draggables[this.active_draggable].style.transform = `translate3d(${col - this.draggable_radius}px, ${row - this.draggable_radius}px, 0)`;
+				this.draggables[this.activeDraggable].style.transform = `translate3d(${col - this.draggableRadius}px, ${row - this.draggableRadius}px, 0)`;
 				
 				
 				
-				let x = ((col - this.draggable_radius - this.restricted_width/2) / this.restricted_width) * this.parent.world_width + this.parent.world_center_x;
-				let y = (-(row - this.draggable_radius - this.restricted_height/2) / this.restricted_height) * this.parent.world_height + this.parent.world_center_y;
+				let x = ((col - this.draggableRadius - this.restrictedWidth/2) / this.restrictedWidth) * this.parent.worldWidth + this.parent.worldCenterX;
+				let y = (-(row - this.draggableRadius - this.restrictedHeight/2) / this.restrictedHeight) * this.parent.worldHeight + this.parent.worldCenterY;
 				
-				this.world_coordinates[this.active_draggable][0] = x;
-				this.world_coordinates[this.active_draggable][1] = y;
+				this.worldCoordinates[this.activeDraggable][0] = x;
+				this.worldCoordinates[this.activeDraggable][1] = y;
 				
 				
 				
-				try {this.touchmove_callback(this.active_draggable, x, y, e)}
+				try {this.touchmoveCallback(this.activeDraggable, x, y, e)}
 				catch(ex) {}
 			}
 		},
 		
 		
 		
-		recalculate_locations()
+		recalculateLocations()
 		{
-			for (let i = 0; i < this.num_draggables; i++)
+			for (let i = 0; i < this.numDraggables; i++)
 			{
-				let row = Math.floor(this.restricted_height * (1 - ((this.world_coordinates[i][1] - this.parent.world_center_y) / this.parent.world_height + .5))) + this.draggable_radius;
-				let col = Math.floor(this.restricted_width * ((this.world_coordinates[i][0] - this.parent.world_center_x) / this.parent.world_width + .5)) + this.draggable_radius;
+				let row = Math.floor(this.restrictedHeight * (1 - ((this.worldCoordinates[i][1] - this.parent.worldCenterY) / this.parent.worldHeight + .5))) + this.draggableRadius;
+				let col = Math.floor(this.restrictedWidth * ((this.worldCoordinates[i][0] - this.parent.worldCenterX) / this.parent.worldWidth + .5)) + this.draggableRadius;
 				
 				
 				
-				if (row < this.draggable_radius)
+				if (row < this.draggableRadius)
 				{
-					row = this.draggable_radius;
+					row = this.draggableRadius;
 				}
 				
-				if (row > this.container_height - this.draggable_radius)
+				if (row > this.containerHeight - this.draggableRadius)
 				{
-					row = this.container_height - this.draggable_radius;
+					row = this.containerHeight - this.draggableRadius;
 				}
 				
-				if (col < this.draggable_radius)
+				if (col < this.draggableRadius)
 				{
-					col = this.draggable_radius;
+					col = this.draggableRadius;
 				}
 				
-				if (col > this.container_width - this.draggable_radius)
+				if (col > this.containerWidth - this.draggableRadius)
 				{
-					col = this.container_width - this.draggable_radius;
+					col = this.containerWidth - this.draggableRadius;
 				}
 				
 				
 				
-				this.draggables[i].style.transform = `translate3d(${col - this.draggable_radius}px, ${row - this.draggable_radius}px, 0)`;
+				this.draggables[i].style.transform = `translate3d(${col - this.draggableRadius}px, ${row - this.draggableRadius}px, 0)`;
 			}
 		},
 		
 		
 		
-		on_resize()
+		onResize()
 		{
-			let computed_style = window.getComputedStyle(this.parent.canvas);
+			let computedStyle = window.getComputedStyle(this.parent.canvas);
 			
-			let width = this.parent.canvas.clientWidth - parseFloat(computed_style.paddingLeft) - parseFloat(computed_style.paddingRight);
-			let height = this.parent.canvas.clientHeight - parseFloat(computed_style.paddingTop) - parseFloat(computed_style.paddingBottom);
+			let width = this.parent.canvas.clientWidth - parseFloat(computedStyle.paddingLeft) - parseFloat(computedStyle.paddingRight);
+			let height = this.parent.canvas.clientHeight - parseFloat(computedStyle.paddingTop) - parseFloat(computedStyle.paddingBottom);
 			
-			this.container.style.width = (width + 2 * this.draggable_radius) + "px";
-			this.container.style.height = (height + 2 * this.draggable_radius) + "px";
+			this.container.style.width = (width + 2 * this.draggableRadius) + "px";
+			this.container.style.height = (height + 2 * this.draggableRadius) + "px";
 			
-			this.container_width = width + 2 * this.draggable_radius;
-			this.container_height = height + 2 * this.draggable_radius;
+			this.containerWidth = width + 2 * this.draggableRadius;
+			this.containerHeight = height + 2 * this.draggableRadius;
 			
-			this.restricted_width = width;
-			this.restricted_height = height;
-			
-			
-			
-			this.container.style.marginTop = (parseFloat(computed_style.borderTopWidth) + parseFloat(computed_style.paddingTop) - this.draggable_radius) + "px";
+			this.restrictedWidth = width;
+			this.restrictedHeight = height;
 			
 			
 			
-			this.recalculate_locations();
+			this.container.style.marginTop = (parseFloat(computedStyle.borderTopWidth) + parseFloat(computedStyle.paddingTop) - this.draggableRadius) + "px";
+			
+			
+			
+			this.recalculateLocations();
 		}
 	};
 	
@@ -1256,38 +1256,38 @@ class Wilson
 	
 	fullscreen =
 	{
-		currently_fullscreen: false,
+		currentlyFullscreen: false,
 
-		currently_animating: false,
+		currentlyAnimating: false,
 
 		//Contains the output canvas, along with anything attached to it (e.g. draggables containers)
-		canvases_to_resize: [],
+		canvasesToResize: [],
 
 		//True to fill the entire screen (which will strech the aspect ratio unless there's specific code to account for that), and false to letterbox.
-		true_fullscreen: false,
+		trueFullscreen: false,
 
-		switch_fullscreen_callback: null,
+		switchFullscreenCallback: null,
 
-		fullscreen_old_scroll: 0,
+		fullscreenOldScroll: 0,
 		
-		old_footer_button_offset: 0,
+		oldFooterButtonOffset: 0,
 		
-		enter_fullscreen_button: null,
-		exit_fullscreen_button: null,
+		enterFullscreenButton: null,
+		exitFullscreenButton: null,
 		
-		use_fullscreen_button: false,
+		useFullscreenButton: false,
 		
-		enter_fullscreen_button_icon_path: null,
-		exit_fullscreen_button_icon_path: null,
+		enterFullscreenButtonIconPath: null,
+		exitFullscreenButtonIconPath: null,
 		
-		fullscreen_components_container_location: null,
-		fullscreen_components_container: null,
+		fullscreenComponentsContainerLocation: null,
+		fullscreenComponentsContainer: null,
 		
 		
 		
 		init()
 		{
-			if (this.use_fullscreen_button)
+			if (this.useFullscreenButton)
 			{
 				if (document.querySelectorAll("#wilson-fullscreen-button-style").length === 0)
 				{
@@ -1413,67 +1413,67 @@ class Wilson
 			
 			
 			
-			if (this.use_fullscreen_button)
+			if (this.useFullscreenButton)
 			{
-				this.enter_fullscreen_button = document.createElement("input");
+				this.enterFullscreenButton = document.createElement("input");
 				
-				this.enter_fullscreen_button.type = "image";
-				this.enter_fullscreen_button.classList.add("wilson-enter-fullscreen-button");
-				this.enter_fullscreen_button.src = this.enter_fullscreen_button_icon_path;
-				this.enter_fullscreen_button.alt = "Enter Fullscreen";
-				this.enter_fullscreen_button.setAttribute("tabindex", "-1");
+				this.enterFullscreenButton.type = "image";
+				this.enterFullscreenButton.classList.add("wilson-enter-fullscreen-button");
+				this.enterFullscreenButton.src = this.enterFullscreenButtonIconPath;
+				this.enterFullscreenButton.alt = "Enter Fullscreen";
+				this.enterFullscreenButton.setAttribute("tabindex", "-1");
 				
-				this.parent.canvas.parentNode.appendChild(this.enter_fullscreen_button);
+				this.parent.canvas.parentNode.appendChild(this.enterFullscreenButton);
 				
-				Page.Load.HoverEvents.add_with_scale(this.enter_fullscreen_button, 1.1);
+				Page.Load.HoverEvents.addWithScale(this.enterFullscreenButton, 1.1);
 				
-				this.enter_fullscreen_button.addEventListener("click", () =>
+				this.enterFullscreenButton.addEventListener("click", () =>
 				{
-					this.switch_fullscreen();
+					this.switchFullscreen();
 				});
 			}
 			
 			
 			
-			let on_resize_bound = this.on_resize.bind(this);
-			window.addEventListener("resize", on_resize_bound);
-			Page.temporary_handlers["resize"].push(on_resize_bound);
+			let onResizeBound = this.onResize.bind(this);
+			window.addEventListener("resize", onResizeBound);
+			Page.temporaryHandlers["resize"].push(onResizeBound);
 			
-			let on_scroll_bound = this.on_scroll.bind(this);
-			window.addEventListener("scroll", on_scroll_bound);
-			Page.temporary_handlers["scroll"].push(on_scroll_bound);
+			let onScrollBound = this.onScroll.bind(this);
+			window.addEventListener("scroll", onScrollBound);
+			Page.temporaryHandlers["scroll"].push(onScrollBound);
 			
-			let on_keypress_bound = this.on_keypress.bind(this);
-			document.documentElement.addEventListener("keydown", on_keypress_bound);
-			Page.temporary_handlers["keydown"].push(on_keypress_bound);
+			let onKeypressBound = this.onKeypress.bind(this);
+			document.documentElement.addEventListener("keydown", onKeypressBound);
+			Page.temporaryHandlers["keydown"].push(onKeypressBound);
 		},
 
 
 
-		switch_fullscreen()
+		switchFullscreen()
 		{
-			if (!this.currently_fullscreen)
+			if (!this.currentlyFullscreen)
 			{
-				if (this.currently_animating)
+				if (this.currentlyAnimating)
 				{
 					return;
 				}
 				
 				
 				
-				this.currently_fullscreen = true;
+				this.currentlyFullscreen = true;
 				
-				this.currently_animating = true;
+				this.currentlyAnimating = true;
 				
-				this.fullscreen_old_scroll = window.scrollY;
+				this.fullscreenOldScroll = window.scrollY;
 				
 				
 				
-				Page.Animate.change_opacity(document.body, 0, Site.opacity_animation_time);
+				Page.Animate.changeOpacity(document.body, 0, Site.opacityAnimationTime);
 				
 				setTimeout(() =>
 				{
-					document.body.appendChild(this.fullscreen_components_container);
+					document.body.appendChild(this.fullscreenComponentsContainer);
 					
 					try
 					{
@@ -1487,38 +1487,38 @@ class Wilson
 					
 					this.parent.canvas.classList.add("wilson-fullscreen");
 					this.parent.canvas.parentNode.classList.add("wilson-fullscreen");
-					this.fullscreen_components_container.classList.add("wilson-fullscreen");
+					this.fullscreenComponentsContainer.classList.add("wilson-fullscreen");
 					
 					
 					
-					try {this.enter_fullscreen_button.remove();}
+					try {this.enterFullscreenButton.remove();}
 					catch(ex) {}
 					
 					
 					
-					if (this.use_fullscreen_button)
+					if (this.useFullscreenButton)
 					{
-						this.exit_fullscreen_button = document.createElement("input");
+						this.exitFullscreenButton = document.createElement("input");
 						
-						this.exit_fullscreen_button.type = "image";
-						this.exit_fullscreen_button.classList.add("wilson-exit-fullscreen-button");
-						this.exit_fullscreen_button.src = this.exit_fullscreen_button_icon_path;
-						this.exit_fullscreen_button.alt = "Exit Fullscreen";
-						this.exit_fullscreen_button.setAttribute("tabindex", "-1");
+						this.exitFullscreenButton.type = "image";
+						this.exitFullscreenButton.classList.add("wilson-exit-fullscreen-button");
+						this.exitFullscreenButton.src = this.exitFullscreenButtonIconPath;
+						this.exitFullscreenButton.alt = "Exit Fullscreen";
+						this.exitFullscreenButton.setAttribute("tabindex", "-1");
 						
-						document.body.appendChild(this.exit_fullscreen_button);
+						document.body.appendChild(this.exitFullscreenButton);
 						
-						Page.Load.HoverEvents.add_with_scale(this.exit_fullscreen_button, 1.1);
+						Page.Load.HoverEvents.addWithScale(this.exitFullscreenButton, 1.1);
 						
-						this.exit_fullscreen_button.addEventListener("click", () =>
+						this.exitFullscreenButton.addEventListener("click", () =>
 						{
-							this.switch_fullscreen();
+							this.switchFullscreen();
 						});
 					}
 					
 					
 					
-					this.old_meta_theme_color = Site.Settings.meta_theme_color_element.getAttribute("content");
+					this.oldMetaThemeColor = Site.Settings.metaThemeColorElement.getAttribute("content");
 					
 					
 					
@@ -1531,36 +1531,36 @@ class Wilson
 					document.documentElement.style.userSelect = "none";
 					document.documentElement.style.WebkitUserSelect = "none";
 					
-					document.addEventListener("gesturestart", this.prevent_gestures);
-					document.addEventListener("gesturechange", this.prevent_gestures);
-					document.addEventListener("gestureend", this.prevent_gestures);
+					document.addEventListener("gesturestart", this.preventGestures);
+					document.addEventListener("gesturechange", this.preventGestures);
+					document.addEventListener("gestureend", this.preventGestures);
 					
 					
 					
 					anime({
-						targets: Site.Settings.meta_theme_color_element,
+						targets: Site.Settings.metaThemeColorElement,
 						content: "#000000",
-						duration: Site.opacity_animation_time,
+						duration: Site.opacityAnimationTime,
 						easing: "cubicBezier(.42, 0, .58, 1)"
 					});
 					
 					
 					
-					if (this.true_fullscreen)
+					if (this.trueFullscreen)
 					{
-						this.fullscreen_components_container.classList.add("wilson-true-fullscreen-canvas");
+						this.fullscreenComponentsContainer.classList.add("wilson-true-fullscreen-canvas");
 						
-						for (let i = 0; i < this.canvases_to_resize.length; i++)
+						for (let i = 0; i < this.canvasesToResize.length; i++)
 						{
-							this.canvases_to_resize[i].classList.add("wilson-true-fullscreen-canvas");
+							this.canvasesToResize[i].classList.add("wilson-true-fullscreen-canvas");
 							
 							//We do this to accomodate weirdly-set-up applets like the ones with draggable inputs, since they rely on their canvas container to keep the content below flowing properly.
 							this.parent.canvas.parentNode.parentNode.classList.add("wilson-black-background");
 							
-							try {this.switch_fullscreen_callback();}
+							try {this.switchFullscreenCallback();}
 							catch(ex) {}
 							
-							this.parent.draggables.on_resize();
+							this.parent.draggables.onResize();
 						}
 						
 						window.scroll(0, 0);
@@ -1570,14 +1570,14 @@ class Wilson
 					
 					else
 					{
-						for (let i = 0; i < this.canvases_to_resize.length; i++)
+						for (let i = 0; i < this.canvasesToResize.length; i++)
 						{
-							this.canvases_to_resize[i].classList.add("wilson-letterboxed-fullscreen-canvas");
+							this.canvasesToResize[i].classList.add("wilson-letterboxed-fullscreen-canvas");
 							
-							try {this.switch_fullscreen_callback();}
+							try {this.switchFullscreenCallback();}
 							catch(ex) {}
 							
-							this.parent.draggables.on_resize();
+							this.parent.draggables.onResize();
 						}
 						
 						
@@ -1591,58 +1591,58 @@ class Wilson
 						
 						
 						
-						this.on_resize();
+						this.onResize();
 					}
 					
 					
 					
-					if (this.parent.use_draggables)
+					if (this.parent.useDraggables)
 					{
-						this.parent.draggables.on_resize();
+						this.parent.draggables.onResize();
 					}
 					
 					
 					
-					Page.Animate.change_opacity(document.body, 1, Site.opacity_animation_time);
+					Page.Animate.changeOpacity(document.body, 1, Site.opacityAnimationTime);
 					
 					setTimeout(() =>
 					{
-						this.currently_animating = false;
+						this.currentlyAnimating = false;
 						
-						this.on_resize();
-					}, Site.opacity_animation_time);
-				}, Site.opacity_animation_time);
+						this.onResize();
+					}, Site.opacityAnimationTime);
+				}, Site.opacityAnimationTime);
 			}
 			
 			
 			
 			else
 			{
-				if (this.currently_animating)
+				if (this.currentlyAnimating)
 				{
 					return;
 				}
 				
 				
 				
-				this.currently_fullscreen = false;
+				this.currentlyFullscreen = false;
 				
-				this.currently_animating = true;
+				this.currentlyAnimating = true;
 				
 				
 				
 				anime({
-					targets: Site.Settings.meta_theme_color_element,
-					content: this.old_meta_theme_color,
-					duration: Site.opacity_animation_time,
+					targets: Site.Settings.metaThemeColorElement,
+					content: this.oldMetaThemeColor,
+					duration: Site.opacityAnimationTime,
 					easing: "cubicBezier(.42, 0, .58, 1)"
 				});
 				
-				Page.Animate.change_opacity(document.body, 0, Site.opacity_animation_time);
+				Page.Animate.changeOpacity(document.body, 0, Site.opacityAnimationTime);
 				
 				setTimeout(() =>
 				{
-					this.fullscreen_components_container_location.appendChild(this.fullscreen_components_container);
+					this.fullscreenComponentsContainerLocation.appendChild(this.fullscreenComponentsContainer);
 					
 					try
 					{
@@ -1656,7 +1656,7 @@ class Wilson
 					
 					this.parent.canvas.classList.remove("wilson-fullscreen");
 					this.parent.canvas.parentNode.classList.remove("wilson-fullscreen");
-					this.fullscreen_components_container.classList.remove("wilson-fullscreen");
+					this.fullscreenComponentsContainer.classList.remove("wilson-fullscreen");
 					
 					
 					
@@ -1669,45 +1669,45 @@ class Wilson
 					document.documentElement.style.userSelect = "auto";
 					document.documentElement.style.WebkitUserSelect = "auto";
 					
-					document.removeEventListener("gesturestart", this.prevent_gestures);
-					document.removeEventListener("gesturechange", this.prevent_gestures);
-					document.removeEventListener("gestureend", this.prevent_gestures);
+					document.removeEventListener("gesturestart", this.preventGestures);
+					document.removeEventListener("gesturechange", this.preventGestures);
+					document.removeEventListener("gestureend", this.preventGestures);
 					
 					
 					
-					try {this.exit_fullscreen_button.remove();}
+					try {this.exitFullscreenButton.remove();}
 					catch(ex) {}
 					
 					
 					
-					if (this.use_fullscreen_button)
+					if (this.useFullscreenButton)
 					{
-						this.enter_fullscreen_button = document.createElement("input");
+						this.enterFullscreenButton = document.createElement("input");
 						
-						this.enter_fullscreen_button.type = "image";
-						this.enter_fullscreen_button.classList.add("wilson-enter-fullscreen-button");
-						this.enter_fullscreen_button.src = this.enter_fullscreen_button_icon_path;
-						this.enter_fullscreen_button.alt = "Enter Fullscreen";
-						this.enter_fullscreen_button.setAttribute("tabindex", "-1");
+						this.enterFullscreenButton.type = "image";
+						this.enterFullscreenButton.classList.add("wilson-enter-fullscreen-button");
+						this.enterFullscreenButton.src = this.enterFullscreenButtonIconPath;
+						this.enterFullscreenButton.alt = "Enter Fullscreen";
+						this.enterFullscreenButton.setAttribute("tabindex", "-1");
 						
-						this.parent.canvas.parentNode.appendChild(this.enter_fullscreen_button);
+						this.parent.canvas.parentNode.appendChild(this.enterFullscreenButton);
 						
-						Page.Load.HoverEvents.add_with_scale(this.enter_fullscreen_button, 1.1);
+						Page.Load.HoverEvents.addWithScale(this.enterFullscreenButton, 1.1);
 						
-						this.enter_fullscreen_button.addEventListener("click", () =>
+						this.enterFullscreenButton.addEventListener("click", () =>
 						{
-							this.switch_fullscreen();
+							this.switchFullscreen();
 						});
 					}
 					
 					
 					
-					this.fullscreen_components_container.classList.remove("wilson-true-fullscreen-canvas");
+					this.fullscreenComponentsContainer.classList.remove("wilson-true-fullscreen-canvas");
 					
-					for (let i = 0; i < this.canvases_to_resize.length; i++)
+					for (let i = 0; i < this.canvasesToResize.length; i++)
 					{
-						this.canvases_to_resize[i].classList.remove("wilson-true-fullscreen-canvas");
-						this.canvases_to_resize[i].classList.remove("wilson-letterboxed-fullscreen-canvas");
+						this.canvasesToResize[i].classList.remove("wilson-true-fullscreen-canvas");
+						this.canvasesToResize[i].classList.remove("wilson-letterboxed-fullscreen-canvas");
 						
 						this.parent.canvas.parentNode.parentNode.classList.remove("wilson-black-background");
 						
@@ -1725,40 +1725,40 @@ class Wilson
 						
 						
 						
-						try {this.switch_fullscreen_callback();}
+						try {this.switchFullscreenCallback();}
 						catch(ex) {}
 						
-						this.parent.draggables.on_resize();
+						this.parent.draggables.onResize();
 					}
 					
 					
 					
-					if (this.parent.use_draggables)
+					if (this.parent.useDraggables)
 					{
-						this.parent.draggables.on_resize();
+						this.parent.draggables.onResize();
 					}
 					
 					
 					setTimeout(() =>
 					{
-						window.scroll(0, this.fullscreen_old_scroll);
+						window.scroll(0, this.fullscreenOldScroll);
 						
-						Page.Animate.change_opacity(document.body, 1, Site.opacity_animation_time);
+						Page.Animate.changeOpacity(document.body, 1, Site.opacityAnimationTime);
 						
 						setTimeout(() =>
 						{
-							this.currently_animating = false;
-						}, Site.opacity_animation_time);
+							this.currentlyAnimating = false;
+						}, Site.opacityAnimationTime);
 					}, 10);
-				}, Site.opacity_animation_time);
+				}, Site.opacityAnimationTime);
 			}
 		},
 
 
 
-		on_resize()
+		onResize()
 		{
-			if (!this.currently_fullscreen)
+			if (!this.currentlyFullscreen)
 			{
 				return;
 			}
@@ -1777,29 +1777,29 @@ class Wilson
 
 
 
-		on_scroll()
+		onScroll()
 		{
-			if (!this.currently_fullscreen)
+			if (!this.currentlyFullscreen)
 			{
 				return;
 			}
 			
-			window.scroll(0, this.fullscreen_locked_scroll);
+			window.scroll(0, this.fullscreenLockedScroll);
 		},
 		
 		
 		
-		on_keypress(e)
+		onKeypress(e)
 		{
-			if (e.keyCode === 27 && this.currently_fullscreen)
+			if (e.keyCode === 27 && this.currentlyFullscreen)
 			{
-				this.switch_fullscreen();
+				this.switchFullscreen();
 			}
 		},
 		
 		
 		
-		prevent_gestures(e)
+		preventGestures(e)
 		{
 			e.preventDefault();
 		}
@@ -1810,88 +1810,88 @@ class Wilson
 	//Contains methods for handling input.
 	input = 
 	{
-		mouse_x: null,
-		mouse_y: null,
+		mouseX: null,
+		mouseY: null,
 		
 		//These are stored before converting to world coordinates. This prevents problems that occur when using callbacks that reference the world coordinates to change those world coordinates.
-		last_row_1: -1,
-		last_col_1: -1,
+		lastRow1: -1,
+		lastCol1: -1,
 		
-		last_row_2: -1,
-		last_col_2: -1,
+		lastRow2: -1,
+		lastCol2: -1,
 		
-		currently_dragging: false,
+		currentlyDragging: false,
 		
-		was_pinching: false,
-		
-		
-		
-		mousedown_callback: null,
-		mouseup_callback: null,
-		mousemove_callback: null,
-		mousedrag_callback: null,
-		
-		touchstart_callback: null,
-		touchup_callback: null,
-		touchmove_callback: null,
-		
-		pinch_callback: null,
-		wheel_callback: null,
+		wasPinching: false,
 		
 		
 		
-		on_mousedown_bound: null,
-		on_mouseup_bound: null,
-		on_mousemove_bound: null,
+		mousedownCallback: null,
+		mouseupCallback: null,
+		mousemoveCallback: null,
+		mousedragCallback: null,
 		
-		on_touchstart_bound: null,
-		on_touchup_bound: null,
-		on_touchmove_bound: null,
+		touchstartCallback: null,
+		touchupCallback: null,
+		touchmoveCallback: null,
 		
-		on_wheel_bound: null,
+		pinchCallback: null,
+		wheelCallback: null,
+		
+		
+		
+		onMousedownBound: null,
+		onMouseupBound: null,
+		onMousemoveBound: null,
+		
+		onTouchstartBound: null,
+		onTouchupBound: null,
+		onTouchmoveBound: null,
+		
+		onWheelBound: null,
 		
 		
 		
 		init()
 		{
-			for (let i = 0; i < this.parent.fullscreen.canvases_to_resize.length; i++)
+			for (let i = 0; i < this.parent.fullscreen.canvasesToResize.length; i++)
 			{
-				this.on_mousedown_bound = this.on_mousedown.bind(this);
-				this.parent.fullscreen.canvases_to_resize[i].addEventListener("mousedown", this.on_mousedown_bound);
+				this.onMousedownBound = this.onMousedown.bind(this);
+				this.parent.fullscreen.canvasesToResize[i].addEventListener("mousedown", this.onMousedownBound);
 				
-				this.on_mouseup_bound = this.on_mouseup.bind(this);
-				this.parent.fullscreen.canvases_to_resize[i].addEventListener("mouseup", this.on_mouseup_bound);
+				this.onMouseupBound = this.onMouseup.bind(this);
+				this.parent.fullscreen.canvasesToResize[i].addEventListener("mouseup", this.onMouseupBound);
 				
-				this.on_mousemove_bound = this.on_mousemove.bind(this);
-				this.parent.fullscreen.canvases_to_resize[i].addEventListener("mousemove", this.on_mousemove_bound);
-				
-				
-				
-				this.on_touchstart_bound = this.on_touchstart.bind(this);
-				this.parent.fullscreen.canvases_to_resize[i].addEventListener("touchstart", this.on_touchstart_bound);
-				
-				this.on_touchend_bound = this.on_touchend.bind(this);
-				this.parent.fullscreen.canvases_to_resize[i].addEventListener("touchend", this.on_touchend_bound);
-				
-				this.on_touchmove_bound = this.on_touchmove.bind(this);
-				this.parent.fullscreen.canvases_to_resize[i].addEventListener("touchmove", this.on_touchmove_bound);
+				this.onMousemoveBound = this.onMousemove.bind(this);
+				this.parent.fullscreen.canvasesToResize[i].addEventListener("mousemove", this.onMousemoveBound);
 				
 				
 				
-				this.on_wheel_bound = this.on_wheel.bind(this);
-				this.parent.fullscreen.canvases_to_resize[i].addEventListener("wheel", this.on_wheel_bound);
+				this.onTouchstartBound = this.onTouchstart.bind(this);
+				this.parent.fullscreen.canvasesToResize[i].addEventListener("touchstart", this.onTouchstartBound);
+				
+				this.onTouchendBound = this.onTouchend.bind(this);
+				this.parent.fullscreen.canvasesToResize[i].addEventListener("touchend", this.onTouchendBound);
+				
+				this.onTouchmoveBound = this.onTouchmove.bind(this);
+				this.parent.fullscreen.canvasesToResize[i].addEventListener("touchmove", this.onTouchmoveBound);
 				
 				
 				
-				this.parent.fullscreen.canvases_to_resize[i].addEventListener("mouseleave", (e) =>
+				this.onWheelBound = this.onWheel.bind(this);
+				this.parent.fullscreen.canvasesToResize[i].addEventListener("wheel", this.onWheelBound);
+				
+				
+				
+				this.parent.fullscreen.canvasesToResize[i].addEventListener("mouseleave", (e) =>
 				{
-					let last_world_coordinates = this.parent.utils.interpolate.canvas_to_world(this.last_row_1, this.last_col_1);
+					let lastWorldCoordinates = this.parent.utils.interpolate.canvasToWorld(this.lastRow1, this.lastCol1);
 					
-					if (this.currently_dragging)
+					if (this.currentlyDragging)
 					{
-						this.currently_dragging = false;
+						this.currentlyDragging = false;
 						
-						try {this.mouseup_callback(...last_world_coordinates, e);}
+						try {this.mouseupCallback(...lastWorldCoordinates, e);}
 						catch(ex) {}
 					}
 				});
@@ -1900,7 +1900,7 @@ class Wilson
 		
 		
 		
-		on_mousedown(e)
+		onMousedown(e)
 		{
 			if (e.target.classList.contains("wilson-draggable"))
 			{
@@ -1909,38 +1909,38 @@ class Wilson
 			
 			
 			
-			this.mouse_x = e.clientX;
-			this.mouse_y = e.clientY;
+			this.mouseX = e.clientX;
+			this.mouseY = e.clientY;
 			
-			this.currently_dragging = true;
+			this.currentlyDragging = true;
 			
 			
 			
 			let rect = this.parent.canvas.getBoundingClientRect();
 			
-			let row = (this.mouse_y - rect.top - this.parent.top_border - this.parent.top_padding) * this.parent.canvas_height / this.parent.draggables.restricted_height;
-			let col = (this.mouse_x - rect.left - this.parent.left_border - this.parent.left_padding) * this.parent.canvas_width / this.parent.draggables.restricted_width;
+			let row = (this.mouseY - rect.top - this.parent.topBorder - this.parent.topPadding) * this.parent.canvasHeight / this.parent.draggables.restrictedHeight;
+			let col = (this.mouseX - rect.left - this.parent.leftBorder - this.parent.leftPadding) * this.parent.canvasWidth / this.parent.draggables.restrictedWidth;
 			
-			let world_coordinates = this.parent.utils.interpolate.canvas_to_world(row, col);
+			let worldCoordinates = this.parent.utils.interpolate.canvasToWorld(row, col);
 			
-			this.last_row_1 = row;
-			this.last_col_1 = col;
+			this.lastRow1 = row;
+			this.lastCol1 = col;
 			
 			
 			
-			if (this.mousedown_callback === null)
+			if (this.mousedownCallback === null)
 			{
 				return;
 			}
 			
 			e.preventDefault();
 			
-			this.mousedown_callback(...world_coordinates, e);
+			this.mousedownCallback(...worldCoordinates, e);
 		},
 		
 		
 		
-		on_mouseup(e)
+		onMouseup(e)
 		{
 			if (e.target.classList.contains("wilson-draggable"))
 			{
@@ -1951,14 +1951,14 @@ class Wilson
 			
 			e.preventDefault();
 			
-			this.mouse_x = e.clientX;
-			this.mouse_y = e.clientY;
+			this.mouseX = e.clientX;
+			this.mouseY = e.clientY;
 			
-			this.currently_dragging = false;
+			this.currentlyDragging = false;
 			
 			
 			
-			if (this.mouseup_callback === null)
+			if (this.mouseupCallback === null)
 			{
 				return;
 			}
@@ -1967,20 +1967,20 @@ class Wilson
 			
 			let rect = this.parent.canvas.getBoundingClientRect();
 			
-			let row = (this.mouse_y - rect.top - this.parent.top_border - this.parent.top_padding) * this.parent.canvas_height / this.parent.draggables.restricted_height;
-			let col = (this.mouse_x - rect.left - this.parent.left_border - this.parent.left_padding) * this.parent.canvas_width / this.parent.draggables.restricted_width;
+			let row = (this.mouseY - rect.top - this.parent.topBorder - this.parent.topPadding) * this.parent.canvasHeight / this.parent.draggables.restrictedHeight;
+			let col = (this.mouseX - rect.left - this.parent.leftBorder - this.parent.leftPadding) * this.parent.canvasWidth / this.parent.draggables.restrictedWidth;
 			
-			let world_coordinates = this.parent.utils.interpolate.canvas_to_world(row, col);
+			let worldCoordinates = this.parent.utils.interpolate.canvasToWorld(row, col);
 			
-			this.mouseup_callback(...world_coordinates, e);
+			this.mouseupCallback(...worldCoordinates, e);
 			
-			this.last_row_1 = row;
-			this.last_col_1 = col;
+			this.lastRow1 = row;
+			this.lastCol1 = col;
 		},
 		
 		
 		
-		on_mousemove(e)
+		onMousemove(e)
 		{
 			if (e.target.classList.contains("wilson-draggable"))
 			{
@@ -1991,44 +1991,44 @@ class Wilson
 			
 			e.preventDefault();
 			
-			this.mouse_x = e.clientX;
-			this.mouse_y = e.clientY;
+			this.mouseX = e.clientX;
+			this.mouseY = e.clientY;
 			
 			
 			
 			
 			let rect = this.parent.canvas.getBoundingClientRect();
 			
-			let row = (this.mouse_y - rect.top - this.parent.top_border - this.parent.top_padding) * this.parent.canvas_height / this.parent.draggables.restricted_height;
-			let col = (this.mouse_x - rect.left - this.parent.left_border - this.parent.left_padding) * this.parent.canvas_width / this.parent.draggables.restricted_width;
+			let row = (this.mouseY - rect.top - this.parent.topBorder - this.parent.topPadding) * this.parent.canvasHeight / this.parent.draggables.restrictedHeight;
+			let col = (this.mouseX - rect.left - this.parent.leftBorder - this.parent.leftPadding) * this.parent.canvasWidth / this.parent.draggables.restrictedWidth;
 			
-			let world_coordinates = this.parent.utils.interpolate.canvas_to_world(row, col);
-			
-			
-			
-			let last_world_coordinates = this.parent.utils.interpolate.canvas_to_world(this.last_row_1, this.last_col_1);
+			let worldCoordinates = this.parent.utils.interpolate.canvasToWorld(row, col);
 			
 			
 			
-			if (this.mousedrag_callback !== null && this.currently_dragging)
+			let lastWorldCoordinates = this.parent.utils.interpolate.canvasToWorld(this.lastRow1, this.lastCol1);
+			
+			
+			
+			if (this.mousedragCallback !== null && this.currentlyDragging)
 			{
-				this.mousedrag_callback(...world_coordinates, world_coordinates[0] - last_world_coordinates[0], world_coordinates[1] - last_world_coordinates[1], e);
+				this.mousedragCallback(...worldCoordinates, worldCoordinates[0] - lastWorldCoordinates[0], worldCoordinates[1] - lastWorldCoordinates[1], e);
 			}
 			
-			else if (this.mousemove_callback !== null && !this.currently_dragging)
+			else if (this.mousemoveCallback !== null && !this.currentlyDragging)
 			{
-				this.mousemove_callback(...world_coordinates, world_coordinates[0] - last_world_coordinates[0], world_coordinates[1] - last_world_coordinates[1], e);
+				this.mousemoveCallback(...worldCoordinates, worldCoordinates[0] - lastWorldCoordinates[0], worldCoordinates[1] - lastWorldCoordinates[1], e);
 			}
 			
 			
 			
-			this.last_row_1 = row;
-			this.last_col_1 = col;
+			this.lastRow1 = row;
+			this.lastCol1 = col;
 		},
 		
 		
 		
-		on_touchstart(e)
+		onTouchstart(e)
 		{
 			if (e.target.classList.contains("wilson-draggable"))
 			{
@@ -2037,24 +2037,24 @@ class Wilson
 			
 			
 			
-			this.mouse_x = e.touches[0].clientX;
-			this.mouse_y = e.touches[0].clientY;
+			this.mouseX = e.touches[0].clientX;
+			this.mouseY = e.touches[0].clientY;
 			
 			
 			
 			let rect = this.parent.canvas.getBoundingClientRect();
 			
-			let row = (this.mouse_y - rect.top - this.parent.top_border - this.parent.top_padding) * this.parent.canvas_height / this.parent.draggables.restricted_height;
-			let col = (this.mouse_x - rect.left - this.parent.left_border - this.parent.left_padding) * this.parent.canvas_width / this.parent.draggables.restricted_width;
+			let row = (this.mouseY - rect.top - this.parent.topBorder - this.parent.topPadding) * this.parent.canvasHeight / this.parent.draggables.restrictedHeight;
+			let col = (this.mouseX - rect.left - this.parent.leftBorder - this.parent.leftPadding) * this.parent.canvasWidth / this.parent.draggables.restrictedWidth;
 			
-			let world_coordinates = this.parent.utils.interpolate.canvas_to_world(row, col);
+			let worldCoordinates = this.parent.utils.interpolate.canvasToWorld(row, col);
 			
-			this.last_row_1 = row;
-			this.last_col_1 = col;
+			this.lastRow1 = row;
+			this.lastCol1 = col;
 			
 			
 			
-			if (this.touchstart_callback === null)
+			if (this.touchstartCallback === null)
 			{
 				return;
 			}
@@ -2063,12 +2063,12 @@ class Wilson
 			
 			e.preventDefault();
 			
-			this.touchstart_callback(...world_coordinates, e);
+			this.touchstartCallback(...worldCoordinates, e);
 		},
 		
 		
 		
-		on_touchend(e)
+		onTouchend(e)
 		{
 			if (e.target.classList.contains("wilson-draggable"))
 			{
@@ -2079,36 +2079,36 @@ class Wilson
 			
 			
 			
-			this.touch_distance = -1;
+			this.touchDistance = -1;
 			
-			this.last_row_2 = -1;
-			this.last_col_2 = -1;
+			this.lastRow2 = -1;
+			this.lastCol2 = -1;
 			
 			if (e.touches.length === 0)
 			{
-				this.was_pinching = false;
+				this.wasPinching = false;
 			}
 			
 			
 			
-			if (this.touchend_callback === null)
+			if (this.touchendCallback === null)
 			{
 				return;
 			}
 			
 			
 			
-			if (this.last_row_1 !== -1)
+			if (this.lastRow1 !== -1)
 			{
-				let last_world_coordinates = this.parent.utils.interpolate.canvas_to_world(this.last_row_1, this.last_col_1);
+				let lastWorldCoordinates = this.parent.utils.interpolate.canvasToWorld(this.lastRow1, this.lastCol1);
 				
-				this.touchend_callback(...last_world_coordinates, e);
+				this.touchendCallback(...lastWorldCoordinates, e);
 			}
 		},
 		
 		
 		
-		on_touchmove(e)
+		onTouchmove(e)
 		{
 			if (e.target.classList.contains("wilson-draggable"))
 			{
@@ -2125,200 +2125,200 @@ class Wilson
 			
 			
 			
-			if (e.touches.length >= 2 && this.pinch_callback !== null)
+			if (e.touches.length >= 2 && this.pinchCallback !== null)
 			{
-				this.was_pinching = true;
+				this.wasPinching = true;
 				
 				
 				
-				let row_1 = (e.touches[0].clientY - rect.top - this.parent.top_border - this.parent.top_padding) * this.parent.canvas_height / this.parent.draggables.restricted_height;
-				let col_1 = (e.touches[0].clientX - rect.left - this.parent.left_border - this.parent.left_padding) * this.parent.canvas_width / this.parent.draggables.restricted_width;
+				let row1 = (e.touches[0].clientY - rect.top - this.parent.topBorder - this.parent.topPadding) * this.parent.canvasHeight / this.parent.draggables.restrictedHeight;
+				let col1 = (e.touches[0].clientX - rect.left - this.parent.leftBorder - this.parent.leftPadding) * this.parent.canvasWidth / this.parent.draggables.restrictedWidth;
 				
-				let row_2 = (e.touches[1].clientY - rect.top - this.parent.top_border - this.parent.top_padding) * this.parent.canvas_height / this.parent.draggables.restricted_height;
-				let col_2 = (e.touches[1].clientX - rect.left - this.parent.left_border - this.parent.left_padding) * this.parent.canvas_width / this.parent.draggables.restricted_width;
+				let row2 = (e.touches[1].clientY - rect.top - this.parent.topBorder - this.parent.topPadding) * this.parent.canvasHeight / this.parent.draggables.restrictedHeight;
+				let col2 = (e.touches[1].clientX - rect.left - this.parent.leftBorder - this.parent.leftPadding) * this.parent.canvasWidth / this.parent.draggables.restrictedWidth;
 				
-				let world_coordinates_1 = this.parent.utils.interpolate.canvas_to_world(row_1, col_1);
-				let world_coordinates_2 = this.parent.utils.interpolate.canvas_to_world(row_2, col_2);
+				let worldCoordinates1 = this.parent.utils.interpolate.canvasToWorld(row1, col1);
+				let worldCoordinates2 = this.parent.utils.interpolate.canvasToWorld(row2, col2);
 				
-				let x_distance = world_coordinates_1[0] - world_coordinates_2[0];
-				let y_distance = world_coordinates_1[1] - world_coordinates_2[1];
+				let xDistance = worldCoordinates1[0] - worldCoordinates2[0];
+				let yDistance = worldCoordinates1[1] - worldCoordinates2[1];
 				
-				let touch_distance = Math.sqrt(x_distance * x_distance + y_distance * y_distance);
-				
-				
-				
-				let center_x = (world_coordinates_1[0] + world_coordinates_2[0]) / 2;
-				let center_y = (world_coordinates_1[1] + world_coordinates_2[1]) / 2;
+				let touchDistance = Math.sqrt(xDistance * xDistance + yDistance * yDistance);
 				
 				
 				
-				let last_world_coordinates_1 = this.parent.utils.interpolate.canvas_to_world(this.last_row_1, this.last_col_1);
-				let last_world_coordinates_2 = this.parent.utils.interpolate.canvas_to_world(this.last_row_2, this.last_col_2);
-				
-				let last_x_distance = last_world_coordinates_1[0] - last_world_coordinates_2[0];
-				let last_y_distance = last_world_coordinates_1[1] - last_world_coordinates_2[1];
-				
-				let last_touch_distance = Math.sqrt(last_x_distance * last_x_distance + last_y_distance * last_y_distance);
+				let centerX = (worldCoordinates1[0] + worldCoordinates2[0]) / 2;
+				let centerY = (worldCoordinates1[1] + worldCoordinates2[1]) / 2;
 				
 				
-				if (this.last_row_2 !== -1)
+				
+				let lastWorldCoordinates1 = this.parent.utils.interpolate.canvasToWorld(this.lastRow1, this.lastCol1);
+				let lastWorldCoordinates2 = this.parent.utils.interpolate.canvasToWorld(this.lastRow2, this.lastCol2);
+				
+				let lastXDistance = lastWorldCoordinates1[0] - lastWorldCoordinates2[0];
+				let lastYDistance = lastWorldCoordinates1[1] - lastWorldCoordinates2[1];
+				
+				let lastTouchDistance = Math.sqrt(lastXDistance * lastXDistance + lastYDistance * lastYDistance);
+				
+				
+				if (this.lastRow2 !== -1)
 				{
-					this.pinch_callback(center_x, center_y, touch_distance - last_touch_distance, e);
+					this.pinchCallback(centerX, centerY, touchDistance - lastTouchDistance, e);
 				}
 			}
 			
 			
 			
-			else if (this.was_pinching)
+			else if (this.wasPinching)
 			{
 				return;
 			}
 			
 			
 			
-			this.mouse_x = e.touches[0].clientX;
-			this.mouse_y = e.touches[0].clientY;
+			this.mouseX = e.touches[0].clientX;
+			this.mouseY = e.touches[0].clientY;
 			
 			
 			
-			if (this.touchmove_callback === null)
+			if (this.touchmoveCallback === null)
 			{
 				return;
 			}
 			
 			
 			
-			let row = (this.mouse_y - rect.top - this.parent.top_border - this.parent.top_padding) * this.parent.canvas_height / this.parent.draggables.restricted_height;
-			let col = (this.mouse_x - rect.left - this.parent.left_border - this.parent.left_padding) * this.parent.canvas_width / this.parent.draggables.restricted_width;
+			let row = (this.mouseY - rect.top - this.parent.topBorder - this.parent.topPadding) * this.parent.canvasHeight / this.parent.draggables.restrictedHeight;
+			let col = (this.mouseX - rect.left - this.parent.leftBorder - this.parent.leftPadding) * this.parent.canvasWidth / this.parent.draggables.restrictedWidth;
 			
-			let world_coordinates = this.parent.utils.interpolate.canvas_to_world(row, col);
+			let worldCoordinates = this.parent.utils.interpolate.canvasToWorld(row, col);
 			
-			let last_world_coordinates = this.parent.utils.interpolate.canvas_to_world(this.last_row_1, this.last_col_1);
+			let lastWorldCoordinates = this.parent.utils.interpolate.canvasToWorld(this.lastRow1, this.lastCol1);
 			
 			
 			
 			if (e.touches.length === 1)
 			{
-				this.touchmove_callback(...world_coordinates, world_coordinates[0] - last_world_coordinates[0], world_coordinates[1] - last_world_coordinates[1], e);
+				this.touchmoveCallback(...worldCoordinates, worldCoordinates[0] - lastWorldCoordinates[0], worldCoordinates[1] - lastWorldCoordinates[1], e);
 			}
 			
 			else
 			{
 				//Only fire a touchmove event if both touches are moving in a similar direction.
-				let x_delta_1 = world_coordinates[0] - last_world_coordinates[0];
-				let y_delta_1 = world_coordinates[1] - last_world_coordinates[1];
+				let xDelta1 = worldCoordinates[0] - lastWorldCoordinates[0];
+				let yDelta1 = worldCoordinates[1] - lastWorldCoordinates[1];
 				
 				
 				
-				let mouse_x_2 = e.touches[1].clientX;
-				let mouse_y_2 = e.touches[1].clientY;
+				let mouseX2 = e.touches[1].clientX;
+				let mouseY2 = e.touches[1].clientY;
 				
-				let row_2 = (mouse_y_2 - rect.top - this.parent.top_border - this.parent.top_padding) * this.parent.canvas_height / this.parent.draggables.restricted_height;
-			let col_2 = (mouse_x_2 - rect.left - this.parent.left_border - this.parent.left_padding) * this.parent.canvas_width / this.parent.draggables.restricted_width;
+				let row2 = (mouseY2 - rect.top - this.parent.topBorder - this.parent.topPadding) * this.parent.canvasHeight / this.parent.draggables.restrictedHeight;
+			let col2 = (mouseX2 - rect.left - this.parent.leftBorder - this.parent.leftPadding) * this.parent.canvasWidth / this.parent.draggables.restrictedWidth;
 				
-				let world_coordinates_2 = this.parent.utils.interpolate.canvas_to_world(row_2, col_2);
+				let worldCoordinates2 = this.parent.utils.interpolate.canvasToWorld(row2, col2);
 				
-				let last_world_coordinates_2 = this.parent.utils.interpolate.canvas_to_world(this.last_row_2, this.last_col_2);
+				let lastWorldCoordinates2 = this.parent.utils.interpolate.canvasToWorld(this.lastRow2, this.lastCol2);
 				
-				let x_delta_2 = world_coordinates_2[0] - last_world_coordinates_2[0];
-				let y_delta_2 = world_coordinates_2[1] - last_world_coordinates_2[1];
+				let xDelta2 = worldCoordinates2[0] - lastWorldCoordinates2[0];
+				let yDelta2 = worldCoordinates2[1] - lastWorldCoordinates2[1];
 				
 				
 				
-				if (Math.abs(x_delta_1 - x_delta_2) / this.parent.world_width < .005 && Math.abs(y_delta_1 - y_delta_2) / this.parent.world_height < .005)
+				if (Math.abs(xDelta1 - xDelta2) / this.parent.worldWidth < .005 && Math.abs(yDelta1 - yDelta2) / this.parent.worldHeight < .005)
 				{
-					this.touchmove_callback((world_coordinates[0] + world_coordinates_2[0]) / 2, (world_coordinates[1] + world_coordinates_2[1]) / 2, (x_delta_1 + x_delta_2) / 2, (y_delta_1 + y_delta_2) / 2, e);
+					this.touchmoveCallback((worldCoordinates[0] + worldCoordinates2[0]) / 2, (worldCoordinates[1] + worldCoordinates2[1]) / 2, (xDelta1 + xDelta2) / 2, (yDelta1 + yDelta2) / 2, e);
 				}
 				
 				
 				
-				this.last_row_2 = row_2;
-				this.last_col_2 = col_2;
+				this.lastRow2 = row2;
+				this.lastCol2 = col2;
 			}
 			
 			
 			
-			this.last_row_1 = row;
-			this.last_col_1 = col;
+			this.lastRow1 = row;
+			this.lastCol1 = col;
 		},
 		
 		
 		
-		on_wheel(e)
+		onWheel(e)
 		{
-			if (this.wheel_callback === null)
+			if (this.wheelCallback === null)
 			{
 				return;
 			}
 			
 			e.preventDefault();
 			
-			if (this.last_row_1 !== -1)
+			if (this.lastRow1 !== -1)
 			{
-				let last_world_coordinates = this.parent.utils.interpolate.canvas_to_world(this.last_row_1, this.last_col_1);
+				let lastWorldCoordinates = this.parent.utils.interpolate.canvasToWorld(this.lastRow1, this.lastCol1);
 				
-				this.wheel_callback(...last_world_coordinates, e.deltaY, e);
+				this.wheelCallback(...lastWorldCoordinates, e.deltaY, e);
 			}
 		},
 		
 		
 		
 		//Returns what the world center should be to make zooms look correct.
-		get_zoomed_world_center(fixed_point_x, fixed_point_y, new_world_width, new_world_height)
+		getZoomedWorldCenter(fixedPointX, fixedPointY, newWorldWidth, newWorldHeight)
 		{
-			let mouse_x_proportion = (fixed_point_x - this.parent.world_center_x) / this.parent.world_width;
-			let mouse_y_proportion = (fixed_point_y - this.parent.world_center_y) / this.parent.world_height;
+			let mouseXProportion = (fixedPointX - this.parent.worldCenterX) / this.parent.worldWidth;
+			let mouseYProportion = (fixedPointY - this.parent.worldCenterY) / this.parent.worldHeight;
 			
-			let new_fixed_point_x = mouse_x_proportion * new_world_width;
-			let new_fixed_point_y = mouse_y_proportion * new_world_height;
+			let newFixedPointX = mouseXProportion * newWorldWidth;
+			let newFixedPointY = mouseYProportion * newWorldHeight;
 			
-			let zoomed_center_x = fixed_point_x - new_fixed_point_x;
-			let zoomed_center_y = fixed_point_y - new_fixed_point_y;
+			let zoomedCenterX = fixedPointX - newFixedPointX;
+			let zoomedCenterY = fixedPointY - newFixedPointY;
 			
-			return [zoomed_center_x, zoomed_center_y];
+			return [zoomedCenterX, zoomedCenterY];
 		}
 	}
 	
 	
 	
 	//Resizes the canvas.
-	change_canvas_size(width, height)
+	changeCanvasSize(width, height)
 	{
-		this.canvas_width = width;
-		this.canvas_height = height;
+		this.canvasWidth = width;
+		this.canvasHeight = height;
 		
 		this.canvas.setAttribute("width", width);
 		this.canvas.setAttribute("height", height);
 		
-		if (this.render.render_type !== 0)
+		if (this.render.renderType !== 0)
 		{
 			this.gl.viewport(0, 0, width, height);
 		}
 		
 		
 		
-		let computed_style = window.getComputedStyle(this.canvas);
+		let computedStyle = window.getComputedStyle(this.canvas);
 		
-		this.top_padding = parseFloat(computed_style.paddingTop);
-		this.left_padding = parseFloat(computed_style.paddingLeft);
+		this.topPadding = parseFloat(computedStyle.paddingTop);
+		this.leftPadding = parseFloat(computedStyle.paddingLeft);
 		
-		this.top_border = parseFloat(computed_style.borderTopWidth);
-		this.left_border = parseFloat(computed_style.borderLeftWidth);
+		this.topBorder = parseFloat(computedStyle.borderTopWidth);
+		this.leftBorder = parseFloat(computedStyle.borderLeftWidth);
 	}
 	
 	
 	
 	//Downloads the current state of the canvas as a png. If using a WebGL canvas, another frame will be drawn before downloading.
-	download_frame(filename)
+	downloadFrame(filename)
 	{
-		if (this.render.render_type === 1)
+		if (this.render.renderType === 1)
 		{
-			this.render.draw_frame(this.render.last_image);
+			this.render.drawFrame(this.render.lastImage);
 		}
 		
-		else if (this.render.render_type === 2)
+		else if (this.render.renderType === 2)
 		{
-			this.render.draw_frame();
+			this.render.drawFrame();
 		}
 		
 		this.canvas.toBlob((blob) => 

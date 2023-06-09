@@ -2,24 +2,24 @@
 
 
 
-Page.banner_element = null;
-Page.content_element = null;
+Page.bannerElement = null;
+Page.contentElement = null;
 
 
 
 Page.Banner =
 {
-	done_loading: false,
+	doneLoading: false,
 
-	file_name: "",
-	file_path: "",
+	fileName: "",
+	filePath: "",
 	
 	opacity: 1,
 	
-	max_scroll: null,
+	maxScroll: null,
 	
 	
-	banner_pages:
+	bannerPages:
 	[
 		"/home/",
 		
@@ -29,19 +29,19 @@ Page.Banner =
 		"/writing/desolation-point/"
 	],
 
-	multibanner_pages:
+	multibannerPages:
 	{
 		"/home/":
 		{
-			"current_banner": Math.floor(Math.random() * 11) + 1,
-			"num_banners": 11
+			"currentBanner": Math.floor(Math.random() * 11) + 1,
+			"numBanners": 11
 		}
 	},
 
 	//Filled in with pages when banners are preloaded so the console isn't spammed and caches aren't needlessly checked.
-	pages_already_fetched: [],
+	pagesAlreadyFetched: [],
 	
-	other_size_pages_already_fetched: [],
+	otherSizePagesAlreadyFetched: [],
 
 
 
@@ -50,7 +50,7 @@ Page.Banner =
 		return new Promise((resolve, reject) =>
 		{
 			//Only do banner things if the banner things are in the standard places.
-			if (!(this.banner_pages.includes(Page.url)))
+			if (!(this.bannerPages.includes(Page.url)))
 			{
 				resolve();
 			}
@@ -59,21 +59,21 @@ Page.Banner =
 			
 			else
 			{
-				this.file_name = `${large ? "large." : "small."}${Page.Images.file_extension}`;
+				this.fileName = `${large ? "large." : "small."}${Page.Images.fileExtension}`;
 				
 					
 				
-				this.file_path = Page.parent_folder + "banners/";
+				this.filePath = Page.parentFolder + "banners/";
 				
-				if (this.multibanner_pages.hasOwnProperty(Page.url))
+				if (this.multibannerPages.hasOwnProperty(Page.url))
 				{
-					this.file_path += this.multibanner_pages[Page.url]["current_banner"] + "/";
+					this.filePath += this.multibannerPages[Page.url]["currentBanner"] + "/";
 				}
 				
 				
 				
 				//Fetch the banner file. If that works, great! Set the background and fade in the page. If not, that means the html was cached but the banner was not (this is common on the homepage). In that case, we need to abort, so we remove the banner entirely.
-				fetch(this.file_path + this.file_name)
+				fetch(this.filePath + this.fileName)
 				
 				.then((response) =>
 				{
@@ -85,7 +85,7 @@ Page.Banner =
 						
 						if (!large)
 						{
-							this.ScrollButton.timeout_id = setTimeout(() =>
+							this.ScrollButton.timeoutId = setTimeout(() =>
 							{
 								this.ScrollButton.insert();
 							}, 2000);
@@ -101,7 +101,7 @@ Page.Banner =
 					
 					setTimeout(() =>
 					{
-						img.src = this.file_path + this.file_name;
+						img.src = this.filePath + this.fileName;
 					}, 20);
 				})
 				
@@ -121,84 +121,84 @@ Page.Banner =
 
 	
 	
-	last_scroll_timestamp: -1,
+	lastScrollTimestamp: -1,
 
-	on_scroll: function(scroll_position_override)
+	onScroll: function(scrollPositionOverride)
 	{
-		if (scroll_position_override === 0)
+		if (scrollPositionOverride === 0)
 		{
 			Page.scroll = window.scrollY;
 		}
 		
 		else
 		{
-			Page.scroll = scroll_position_override;
-			this.done_loading = false;
-			this.ScrollButton.done_loading = false;
+			Page.scroll = scrollPositionOverride;
+			this.doneLoading = false;
+			this.ScrollButton.doneLoading = false;
 		}
 		
-		window.requestAnimationFrame(this.scroll_animation_frame);
+		window.requestAnimationFrame(this.scrollAnimationFrame);
 	},
 		
-	scroll_animation_frame: function(timestamp)
+	scrollAnimationFrame: function(timestamp)
 	{
-		const time_elapsed = timestamp - Page.Banner.last_scroll_timestamp;
+		const timeElapsed = timestamp - Page.Banner.lastScrollTimestamp;
 		
-		Page.Banner.last_scroll_timestamp = timestamp;
+		Page.Banner.lastScrollTimestamp = timestamp;
 		
-		if (time_elapsed === 0)
+		if (timeElapsed === 0)
 		{
 			return;
 		}
 		
-		Page.Banner.scroll_handler();
+		Page.Banner.scrollHandler();
 	},
 	
-	scroll_handler: function()
+	scrollHandler: function()
 	{
-		if (Page.scroll <= this.max_scroll)
+		if (Page.scroll <= this.maxScroll)
 		{
-			this.opacity = Math.min(Math.max(1 - Page.scroll / this.max_scroll, 0), 1);
+			this.opacity = Math.min(Math.max(1 - Page.scroll / this.maxScroll, 0), 1);
 			
 			try
 			{
-				Page.banner_element.style.opacity = this.opacity;
-				Page.content_element.style.opacity = 1 - this.opacity;
+				Page.bannerElement.style.opacity = this.opacity;
+				Page.contentElement.style.opacity = 1 - this.opacity;
 			}
 			
 			catch(ex) {}
 			
 			if (this.opacity === 0)
 			{
-				this.done_loading = true;
+				this.doneLoading = true;
 			}
 			
 			else
 			{
-				this.done_loading = false;
+				this.doneLoading = false;
 			}
 		}
 		
-		else if (!this.done_loading)
+		else if (!this.doneLoading)
 		{
 			this.opacity = 0;
 			
 			try 
 			{
-				Page.banner_element.style.opacity = 0;
-				Page.content_element.style.opacity = 1;
+				Page.bannerElement.style.opacity = 0;
+				Page.contentElement.style.opacity = 1;
 			}
 			
 			catch(ex) {}
 			
-			this.done_loading = true;
+			this.doneLoading = true;
 		}
 		
 		
 		
-		if (Page.scroll <= this.max_scroll / 2.5)
+		if (Page.scroll <= this.maxScroll / 2.5)
 		{
-			const opacity = Math.min(Math.max(1 - Page.scroll / (this.max_scroll / 2.5), 0), 1);
+			const opacity = Math.min(Math.max(1 - Page.scroll / (this.maxScroll / 2.5), 0), 1);
 			
 			if (this.ScrollButton.exists)
 			{
@@ -220,18 +220,18 @@ Page.Banner =
 			
 			if (opacity === 0)
 			{
-				this.ScrollButton.done_loading = true;
+				this.ScrollButton.doneLoading = true;
 			}
 			
 			else
 			{
-				this.ScrollButton.done_loading = false;
+				this.ScrollButton.doneLoading = false;
 			}
 		}
 		
 		
 		
-		else if (this.ScrollButton.done_loading === false)
+		else if (this.ScrollButton.doneLoading === false)
 		{
 			try
 			{
@@ -244,7 +244,7 @@ Page.Banner =
 			try {Page.element.querySelector("#scroll-button").style.opacity = 0}
 			catch(ex) {}
 			
-			this.ScrollButton.done_loading = true;
+			this.ScrollButton.doneLoading = true;
 		}
 		
 		else
@@ -257,24 +257,24 @@ Page.Banner =
 
 
 	//For every banner page linked to by the current page, this fetches that banner so that the waiting time between pages is minimized.
-	fetch_other_page_banners_in_background: function()
+	fetchOtherPageBannersInBackground: function()
 	{
 		Page.element.querySelectorAll("a").forEach(link =>
 		{
 			const href = link.getAttribute("href");
 			
-			if (this.banner_pages.includes(href) && !(this.pages_already_fetched.includes(href)))
+			if (this.bannerPages.includes(href) && !(this.pagesAlreadyFetched.includes(href)))
 			{
-				this.pages_already_fetched.push(href);
+				this.pagesAlreadyFetched.push(href);
 				
-				let file_path = href.slice(0, href.lastIndexOf("/") + 1) + "banners/";
+				let filePath = href.slice(0, href.lastIndexOf("/") + 1) + "banners/";
 				
-				if (this.multibanner_pages.hasOwnProperty(href))
+				if (this.multibannerPages.hasOwnProperty(href))
 				{
-					file_path += (this.multibanner_pages[href]["current_banner"] + 1) + "/";
+					filePath += (this.multibannerPages[href]["currentBanner"] + 1) + "/";
 				}
 				
-				file_path += `small.${Page.Images.file_extension}`;
+				filePath += `small.${Page.Images.fileExtension}`;
 			}
 		});
 	},
@@ -283,30 +283,30 @@ Page.Banner =
 	
 	ScrollButton:
 	{
-		done_loading: false,
+		doneLoading: false,
 		
 		exists: false,
 
-		timeout_id: null,
+		timeoutId: null,
 		
 		
 		
 		insert: function()
 		{
-			if (Page.scroll > Page.Banner.max_scroll / 2.5)
+			if (Page.scroll > Page.Banner.maxScroll / 2.5)
 			{
 				return;
 			}
 			
 			
 			
-			const opacity = Math.min(Math.max(1 - Page.scroll / (Page.Banner.max_scroll / 2.5), 0), 1);
+			const opacity = Math.min(Math.max(1 - Page.scroll / (Page.Banner.maxScroll / 2.5), 0), 1);
 			
-			let chevron_name = "chevron-down";
+			let chevronName = "chevron-down";
 			
-			if (Site.Settings.url_vars["contrast"] === 1)
+			if (Site.Settings.urlVars["contrast"] === 1)
 			{
-				chevron_name += "-dark";
+				chevronName += "-dark";
 			}
 			
 			
@@ -316,7 +316,7 @@ Page.Banner =
 			{
 				document.querySelector("#banner-cover").insertAdjacentHTML("beforebegin", `
 					<div id="new-banner-cover" data-aos="fade-down">
-						<input type="image" id="scroll-button" src="/graphics/general-icons/${chevron_name}.png" style="opacity: 0" alt="Scroll down" onclick="Page.Banner.ScrollButton.animate_to(document.querySelector('#scroll-to'))">
+						<input type="image" id="scroll-button" src="/graphics/general-icons/${chevronName}.png" style="opacity: 0" alt="Scroll down" onclick="Page.Banner.ScrollButton.animateTo(document.querySelector('#scroll-to'))">
 					</div>
 				`);
 				
@@ -329,7 +329,7 @@ Page.Banner =
 						targets: Page.element.querySelector("#new-banner-cover"),
 						opacity: 1,
 						translateY: 0,
-						duration: Site.opacity_animation_time * 4,
+						duration: Site.opacityAnimationTime * 4,
 						easing: "easeOutCubic"
 					});
 					
@@ -337,15 +337,15 @@ Page.Banner =
 						targets: Page.element.querySelector("#scroll-button"),
 						opacity: opacity,
 						translateY: 0,
-						duration: Site.opacity_animation_time * 4,
+						duration: Site.opacityAnimationTime * 4,
 						easing: "easeOutCubic"
 					});
 					
 					
 					
-					setTimeout(() => this.exists = true, Site.opacity_animation_time * 4);
+					setTimeout(() => this.exists = true, Site.opacityAnimationTime * 4);
 					
-					try {Page.Load.HoverEvents.add_with_scale(document.querySelector("#scroll-button"), 1.1);}
+					try {Page.Load.HoverEvents.addWithScale(document.querySelector("#scroll-button"), 1.1);}
 					catch(ex) {}
 				}, 100);
 				
@@ -357,9 +357,9 @@ Page.Banner =
 
 
 
-		animate_to: function(target_element)
+		animateTo: function(targetElement)
 		{
-			target_element.scrollIntoView({behavior: "smooth"});
+			targetElement.scrollIntoView({behavior: "smooth"});
 		}
 	}
 };

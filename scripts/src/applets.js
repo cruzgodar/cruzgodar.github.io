@@ -6,12 +6,12 @@ class Applet
 	//Temporary things that should be destroyed when calling Applet.destroy.
 	
 	workers = [];
-	timeout_ids = [];
-	refresh_ids = [];
-	//Every entry is a length-3 array, e.g. [window, "scroll", listener_function]
+	timeoutIds = [];
+	refreshIds = [];
+	//Every entry is a length-3 array, e.g. [window, "scroll", listenerFunction]
 	handlers = [];
 	
-	animation_paused = false;
+	animationPaused = false;
 	
 	
 	
@@ -19,28 +19,28 @@ class Applet
 	{
 		this.canvas = canvas;
 		
-		Page.current_applets.push(this);
+		Page.currentApplets.push(this);
 	}
 	
 	
 	
 	pause()
 	{
-		this.animation_paused = true;
+		this.animationPaused = true;
 	}
 	
 	
 	
 	resume()
 	{
-		this.animation_paused = false;
+		this.animationPaused = false;
 	}
 	
 	
 	
 	destroy()
 	{
-		this.animation_paused = true;
+		this.animationPaused = true;
 		
 		this.workers.forEach(worker =>
 		{
@@ -48,15 +48,15 @@ class Applet
 			catch(ex) {}
 		});
 		
-		this.timeout_ids.forEach(timeout_id =>
+		this.timeoutIds.forEach(timeoutId =>
 		{
-			try {clearTimeout(timeout_id)}
+			try {clearTimeout(timeoutId)}
 			catch(ex) {}
 		});
 		
-		this.refresh_ids.forEach(refresh_id =>
+		this.refreshIds.forEach(refreshId =>
 		{
-			try {clearTimeout(refresh_id)}
+			try {clearTimeout(refreshId)}
 			catch(ex) {}
 		});
 		
@@ -66,7 +66,7 @@ class Applet
 			catch(ex) {}
 		});
 		
-		try {this.hidden_canvas_container.remove()}
+		try {this.hiddenCanvasContainer.remove()}
 		catch(ex) {}
 		
 		if (DEBUG)
@@ -77,9 +77,9 @@ class Applet
 	
 	
 	
-	pause_when_offscreen()
+	pauseWhenOffscreen()
 	{
-		const on_scroll = () =>
+		const onScroll = () =>
 		{
 			const rect = this.canvas.getBoundingClientRect(); 
 			const top = rect.top;
@@ -96,47 +96,47 @@ class Applet
 			}
 		};
 		
-		window.addEventListener("scroll", on_scroll);
-		this.handlers.push([window, "scroll", on_scroll]);
+		window.addEventListener("scroll", onScroll);
+		this.handlers.push([window, "scroll", onScroll]);
 		
-		on_scroll();
+		onScroll();
 	}
 	
 	
 	
-	hidden_canvas_container = null;
+	hiddenCanvasContainer = null;
 	
-	create_hidden_canvas()
+	createHiddenCanvas()
 	{
-		const hidden_canvas = document.createElement("canvas");
-		hidden_canvas.classList.add("hidden-canvas");
+		const hiddenCanvas = document.createElement("canvas");
+		hiddenCanvas.classList.add("hidden-canvas");
 		
-		if (this.hidden_canvas_container === null)
+		if (this.hiddenCanvasContainer === null)
 		{
-			this.hidden_canvas_container = document.createElement("div");
-			this.hidden_canvas_container.style.display = "none";
-			Page.element.appendChild(this.hidden_canvas_container);
+			this.hiddenCanvasContainer = document.createElement("div");
+			this.hiddenCanvasContainer.style.display = "none";
+			Page.element.appendChild(this.hiddenCanvasContainer);
 		}
 		
-		this.hidden_canvas_container.appendChild(hidden_canvas);
+		this.hiddenCanvasContainer.appendChild(hiddenCanvas);
 		
-		return hidden_canvas;
+		return hiddenCanvas;
 	}
 }
 
 
 
-Page.current_applets = [];
+Page.currentApplets = [];
 
-Site.loaded_applets = [];
+Site.loadedApplets = [];
 
 
 
-Site.load_applet = function(id)
+Site.loadApplet = function(id)
 {
 	return new Promise(async (resolve, reject) =>
 	{
-		if (Site.loaded_applets.includes(id))
+		if (Site.loadedApplets.includes(id))
 		{
 			if (DEBUG)
 			{
@@ -151,9 +151,9 @@ Site.load_applet = function(id)
 				console.log(`Loading ${id}`);
 			}
 			
-			await Site.load_script(`/applets/${id}/scripts/class.${DEBUG ? "" : "min."}js`);
+			await Site.loadScript(`/applets/${id}/scripts/class.${DEBUG ? "" : "min."}js`);
 			
-			Site.loaded_applets.push(id);
+			Site.loadedApplets.push(id);
 		}
 		
 		resolve();

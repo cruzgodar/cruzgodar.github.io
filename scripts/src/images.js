@@ -5,14 +5,14 @@
 Page.Images =
 {
 	//Whether the browser supports WebP images or not. Given a boolean value when decided.
-	webp_support: true,
+	webpSupport: true,
 	
-	file_extension: "webp",
+	fileExtension: "webp",
 	
 	
 	
-	add_extensions: function()
+	addExtensions: function()
 	{
-		Page.element.querySelectorAll(".check-webp").forEach(image => image.setAttribute("data-src", image.getAttribute("data-src") + this.file_extension));
+		Page.element.querySelectorAll(".check-webp").forEach(image => image.setAttribute("data-src", image.getAttribute("data-src") + this.fileExtension));
 	}
 };

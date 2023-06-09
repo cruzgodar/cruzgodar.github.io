@@ -2,13 +2,13 @@
 
 
 
-Site.force_dark_theme_pages =
+Site.forceDarkThemePages =
 [
 	"/gallery/",
 	"/slides/oral-exam/"
 ];
 
-Site.prevent_theme_change_pages =
+Site.preventThemeChangePages =
 [
 	"/gallery/",
 	"/slides/oral-exam/",
@@ -20,15 +20,15 @@ Site.prevent_theme_change_pages =
 
 Site.Settings =
 {
-	url_vars: {},
+	urlVars: {},
 	
 	//Set to either 0 or 1 if a page has forced a theme and it needs to change back.
-	revert_theme: -1,
-	forced_theme: false,
+	revertTheme: -1,
+	forcedTheme: false,
 	
 	
 	
-	get_url_var: function(id)
+	getUrlVar: function(id)
 	{
 		const query = window.location.search.substring(1);
 		const vars = query.split("&");
@@ -48,54 +48,54 @@ Site.Settings =
 	
 	
 	
-	set_up: function()
+	setUp: function()
 	{
-		this.url_vars =
+		this.urlVars =
 		{
-			"theme": this.get_url_var("theme"),
-			"condensed_applets": this.get_url_var("condensed_applets")
+			"theme": this.getUrlVar("theme"),
+			"condensedApplets": this.getUrlVar("condensedApplets")
 		};
 		
 		
 		
 		window.matchMedia("(prefers-color-scheme: dark)").addListener((e) =>
 		{
-			if (this.revert_theme !== -1 || Page.Cards.is_open)
+			if (this.revertTheme !== -1 || Page.Cards.isOpen)
 			{
 				return;
 			}
 			
 			
 			
-			if ((e.matches && this.url_vars["theme"] !== 1) || (!e.matches && this.url_vars["theme"] === 1))
+			if ((e.matches && this.urlVars["theme"] !== 1) || (!e.matches && this.urlVars["theme"] === 1))
 			{
-				this.toggle_theme();
+				this.toggleTheme();
 			}
 		});
 
-		if (window.matchMedia("(prefers-color-scheme: dark)").matches && this.url_vars["theme"] === null)
+		if (window.matchMedia("(prefers-color-scheme: dark)").matches && this.urlVars["theme"] === null)
 		{
-			this.url_vars["theme"] = 1;
+			this.urlVars["theme"] = 1;
 		}
 		
 		
 		
-		if (this.url_vars["theme"] == null)
+		if (this.urlVars["theme"] == null)
 		{
-			this.url_vars["theme"] = 0;
+			this.urlVars["theme"] = 0;
 		}
 		
-		else if (this.url_vars["theme"] == 1)
+		else if (this.urlVars["theme"] == 1)
 		{
-			this.url_vars["theme"] = 0;
-			this.toggle_theme(true);
+			this.urlVars["theme"] = 0;
+			this.toggleTheme(true);
 		}
 		
 		
 		
-		if (this.url_vars["condensed_applets"] == null)
+		if (this.urlVars["condensedApplets"] == null)
 		{
-			this.url_vars["condensed_applets"] = 0;
+			this.urlVars["condensedApplets"] = 0;
 		}
 		
 		
@@ -104,9 +104,9 @@ Site.Settings =
 		
 		let element = null;
 		
-		if (this.url_vars["theme"] === 1)
+		if (this.urlVars["theme"] === 1)
 		{
-			element = Site.add_style(this.dark_theme_style, false);
+			element = Site.addStyle(this.darkThemeStyle, false);
 		}
 		
 		try {document.querySelector("#theme-contrast-adjust").remove();}
@@ -118,73 +118,73 @@ Site.Settings =
 	
 	
 	
-	meta_theme_color_element: document.querySelector("#theme-color-meta"),
+	metaThemeColorElement: document.querySelector("#theme-color-meta"),
 	
 	
 	
-	handle_theme_revert: function()
+	handleThemeRevert: function()
 	{
-		if (Site.Settings.forced_theme)
+		if (Site.Settings.forcedTheme)
 		{
-			Site.Settings.forced_theme = false;
+			Site.Settings.forcedTheme = false;
 			return;
 		}
 		
 		
 		
-		if (this.revert_theme === 0)
+		if (this.revertTheme === 0)
 		{
-			this.revert_theme = -1;
+			this.revertTheme = -1;
 			
-			this.toggle_theme();
+			this.toggleTheme();
 		}
 		
-		else if (Site.Settings.revert_theme === 1)
+		else if (Site.Settings.revertTheme === 1)
 		{
-			this.revert_theme = -1;
+			this.revertTheme = -1;
 			
-			this.toggle_theme();
+			this.toggleTheme();
 		}
 	},
 	
 
 
 	//Changes a setting.
-	toggle_theme: function(no_animation = false, force = false)
+	toggleTheme: function(noAnimation = false, force = false)
 	{
-		if (!force && Site.prevent_theme_change_pages.includes(Page.url))
+		if (!force && Site.preventThemeChangePages.includes(Page.url))
 		{
 			return;
 		}
 		
 		let element = null;
 		
-		if (no_animation === false)
+		if (noAnimation === false)
 		{
-			element = Site.add_style(`
+			element = Site.addStyle(`
 				html, #header-container
 				{
-					transition: background-color ${Site.opacity_animation_time * 2 / 1000}s ease !important;
+					transition: background-color ${Site.opacityAnimationTime * 2 / 1000}s ease !important;
 				}
 				
 				p, span, h1, h2, a, q, em, strong, dfn, #card-close-button
 				{
-					transition: color ${Site.opacity_animation_time * 2 / 1000}s ease !important;
+					transition: color ${Site.opacityAnimationTime * 2 / 1000}s ease !important;
 				}
 				
 				 .text-box, .text-field, .checkbox-container, .checkbox-container > input ~ .checkbox, .radio-button-container, .radio-button-container > input ~ .radio-button, .loading-spinner:after, #floating-footer-content, #floating-footer-button-background, .footer-button, .text-button, .nav-button, .slider-container > input
 				{
-					transition: background-color ${Site.opacity_animation_time * 2 / 1000}s ease, border-color ${Site.opacity_animation_time * 2 / 1000}s ease, color ${Site.opacity_animation_time * 2 / 1000}s ease !important;
+					transition: background-color ${Site.opacityAnimationTime * 2 / 1000}s ease, border-color ${Site.opacityAnimationTime * 2 / 1000}s ease, color ${Site.opacityAnimationTime * 2 / 1000}s ease !important;
 				}
 				
 				.tex-holder, .card
 				{
-					transition: background-color ${Site.opacity_animation_time * 2 / 1000}s ease, box-shadow ${Site.opacity_animation_time * 2 / 1000}s ease;
+					transition: background-color ${Site.opacityAnimationTime * 2 / 1000}s ease, box-shadow ${Site.opacityAnimationTime * 2 / 1000}s ease;
 				}
 				
 				#header-logo img, #header-links a img
 				{
-					transition: filter ${Site.opacity_animation_time * 2 / 1000}s ease;
+					transition: filter ${Site.opacityAnimationTime * 2 / 1000}s ease;
 				}
 			`);
 		}
@@ -192,11 +192,11 @@ Site.Settings =
 		
 		
 		//Light to dark
-		if (this.url_vars["theme"] === 0)
+		if (this.urlVars["theme"] === 0)
 		{
 			setTimeout(() =>
 			{
-				const element = Site.add_style(this.dark_theme_style, false);
+				const element = Site.addStyle(this.darkThemeStyle, false);
 				
 				try {document.querySelector("#theme-contrast-adjust").remove();}
 				catch(ex) {}
@@ -204,10 +204,10 @@ Site.Settings =
 				try {element.id = "theme-contrast-adjust";}
 				catch(ex) {}
 				
-				this.clear_weird_inline_styles();
-			}, Site.opacity_animation_time * 2);
+				this.clearWeirdInlineStyles();
+			}, Site.opacityAnimationTime * 2);
 			
-			this.url_vars["theme"] = 1;
+			this.urlVars["theme"] = 1;
 		}
 		
 		//Dark to light
@@ -218,52 +218,52 @@ Site.Settings =
 				try {document.querySelector("#theme-contrast-adjust").remove();}
 				catch(ex) {}
 				
-				this.clear_weird_inline_styles();
-			}, Site.opacity_animation_time * 2);
+				this.clearWeirdInlineStyles();
+			}, Site.opacityAnimationTime * 2);
 			
-			this.url_vars["theme"] = 0;
+			this.urlVars["theme"] = 0;
 		}
 		
 		
 		
-		try {this.animate_theme(this.url_vars["theme"] === 1)}
+		try {this.animateTheme(this.urlVars["theme"] === 1)}
 		catch(ex) {}
 		
 		
 		
-		if (!no_animation)
+		if (!noAnimation)
 		{
 			anime({
-				targets: this.meta_theme_color_element,
-				content: this.url_vars["theme"] === 1 ? "#181818" : "#ffffff",
-				duration: Site.opacity_animation_time * 2,
+				targets: this.metaThemeColorElement,
+				content: this.urlVars["theme"] === 1 ? "#181818" : "#ffffff",
+				duration: Site.opacityAnimationTime * 2,
 				easing: "cubicBezier(.25, .1, .25, 1)",
 			});
 		}
 		
 		else
 		{
-			this.meta_theme_color_element.setAttribute("content", this.url_vars["theme"] === 1 ? "#181818" : "#ffffff");
+			this.metaThemeColorElement.setAttribute("content", this.urlVars["theme"] === 1 ? "#181818" : "#ffffff");
 			
-			document.querySelector(":root").style.setProperty("--invert", this.url_vars["theme"] === 1 ? 1 : 0);
+			document.querySelector(":root").style.setProperty("--invert", this.urlVars["theme"] === 1 ? 1 : 0);
 		}
 		
 		
 		
-		if (!no_animation)
+		if (!noAnimation)
 		{
 			setTimeout(() =>
 			{
 				element.remove();
-			}, Site.opacity_animation_time * 2);
+			}, Site.opacityAnimationTime * 2);
 		}
 	},
 	
 	
 	
-	condense_applet: function()
+	condenseApplet: function()
 	{
-		Site.add_style(`
+		Site.addStyle(`
 			p:not(.text-box-subtext, .checkbox-subtext, .radio-button-subtext, .slider-subtext), h1, h2, header, footer, br
 			{
 				display: none;
@@ -297,7 +297,7 @@ Site.Settings =
 
 
 
-	animate_theme: function(dark = true)
+	animateTheme: function(dark = true)
 	{
 		if (!dark)
 		{
@@ -309,16 +309,16 @@ Site.Settings =
 				
 				document.body.querySelectorAll("#header-logo img, #header-links a img").forEach(element => element.style.filter = "invert(0)");
 				
-				const root_selector = document.querySelector(":root");
+				const rootSelector = document.querySelector(":root");
 				
 				let dummy = {t: 1};
 				
 				anime({
 					targets: dummy,
 					t: 0,
-					duration: Site.opacity_animation_time * 2,
+					duration: Site.opacityAnimationTime * 2,
 					easing: "cubicBezier(.25, .1, .25, 1)",
-					update: () => root_selector.style.setProperty("--invert", dummy.t)
+					update: () => rootSelector.style.setProperty("--invert", dummy.t)
 				});
 			}
 			
@@ -328,19 +328,19 @@ Site.Settings =
 			
 			document.documentElement.style.backgroundColor = "rgb(255, 255, 255)";
 			
-			Page.set_element_styles(".heading-text, .date-text, .title-text", "color", "rgb(0, 0, 0)");
+			Page.setElementStyles(".heading-text, .date-text, .title-text", "color", "rgb(0, 0, 0)");
 			
-			Page.set_element_styles(".section-text, .quote-attribution, #card-close-button", "color", "rgb(48, 48, 48)");
+			Page.setElementStyles(".section-text, .quote-attribution, #card-close-button", "color", "rgb(48, 48, 48)");
 			
-			Page.set_element_styles(".body-text, .body-text span, .body-text em, .body-text strong, .body-text dfn, .song-lyrics, .image-link-subtext, .floating-settings-button-text, .quote-text q, .text-box, .text-field", "color", "rgb(96, 96, 96)");
+			Page.setElementStyles(".body-text, .body-text span, .body-text em, .body-text strong, .body-text dfn, .song-lyrics, .image-link-subtext, .floating-settings-button-text, .quote-text q, .text-box, .text-field", "color", "rgb(96, 96, 96)");
 			
-			Page.set_element_styles("a", "color", "rgb(127, 192, 127)");
+			Page.setElementStyles("a", "color", "rgb(127, 192, 127)");
 			
-			Page.set_element_styles(".text-box, .text-field, .checkbox-container > input ~ .checkbox, .radio-button-container > input ~ .radio-button", "background-color", "rgb(255, 255, 255)");
+			Page.setElementStyles(".text-box, .text-field, .checkbox-container > input ~ .checkbox, .radio-button-container > input ~ .radio-button", "background-color", "rgb(255, 255, 255)");
 			
-			Page.set_element_styles(".text-box, .text-field, .text-button, .checkbox-container, #output-canvas", "border-color", "rgb(96, 96, 96)");
+			Page.setElementStyles(".text-box, .text-field, .text-button, .checkbox-container, #output-canvas", "border-color", "rgb(96, 96, 96)");
 			
-			Page.set_element_styles(".checkbox-container > input:checked ~ .checkbox, .radio-button-container > input:checked ~ .radio-button", "background-color", "rgb(96, 96, 96)");
+			Page.setElementStyles(".checkbox-container > input:checked ~ .checkbox, .radio-button-container > input:checked ~ .radio-button", "background-color", "rgb(96, 96, 96)");
 			
 			
 			
@@ -348,7 +348,7 @@ Site.Settings =
 			catch(ex) {}
 			
 			
-			Page.element.querySelectorAll(".desmos-border").forEach(element => Page.Animate.change_opacity(element, 0, Site.opacity_animation_time));
+			Page.element.querySelectorAll(".desmos-border").forEach(element => Page.Animate.changeOpacity(element, 0, Site.opacityAnimationTime));
 			
 			setTimeout(() =>
 			{
@@ -358,14 +358,14 @@ Site.Settings =
 				DESMOS_GREEN = "#2fbf2f";
 				DESMOS_BLACK = "#000000";
 				
-				try {Page.Load.create_desmos_graphs(false);}
+				try {Page.Load.createDesmosGraphs(false);}
 				catch(ex) {}
 				
 				setTimeout(() =>
 				{
-					Page.element.querySelectorAll(".desmos-border").forEach(element => Page.Animate.change_opacity(element, 1, Site.opacity_animation_time));
-				}, Site.opacity_animation_time);
-			}, 2 * Site.opacity_animation_time);
+					Page.element.querySelectorAll(".desmos-border").forEach(element => Page.Animate.changeOpacity(element, 1, Site.opacityAnimationTime));
+				}, Site.opacityAnimationTime);
+			}, 2 * Site.opacityAnimationTime);
 		}
 		
 		
@@ -381,16 +381,16 @@ Site.Settings =
 				
 				document.querySelectorAll("#header-logo img, #header-links a img").forEach(element => element.style.filter = "invert(1)");
 				
-				const root_selector = document.querySelector(":root");
+				const rootSelector = document.querySelector(":root");
 				
 				let dummy = {t: 0};
 				
 				anime({
 					targets: dummy,
 					t: 1,
-					duration: Site.opacity_animation_time * 2,
+					duration: Site.opacityAnimationTime * 2,
 					easing: "cubicBezier(.25, .1, .25, 1)",
-					update: () => root_selector.style.setProperty("--invert", dummy.t)
+					update: () => rootSelector.style.setProperty("--invert", dummy.t)
 				});
 			}
 			
@@ -400,25 +400,25 @@ Site.Settings =
 			
 			document.documentElement.style.backgroundColor = "rgb(24, 24, 24)";
 			
-			Page.set_element_styles(".heading-text, .date-text, .title-text", "color", "rgb(255, 255, 255)");
+			Page.setElementStyles(".heading-text, .date-text, .title-text", "color", "rgb(255, 255, 255)");
 			
-			Page.set_element_styles(".section-text, .quote-attribution, #card-close-button", "color", "rgb(220, 220, 220)");
+			Page.setElementStyles(".section-text, .quote-attribution, #card-close-button", "color", "rgb(220, 220, 220)");
 			
-			Page.set_element_styles(".body-text, .body-text span, .body-text em, .body-text strong, .body-text dfn, .song-lyrics, .image-link-subtext, .floating-settings-button-text, .quote-text q, .text-box, .text-field", "color", "rgb(172, 172, 172)");
+			Page.setElementStyles(".body-text, .body-text span, .body-text em, .body-text strong, .body-text dfn, .song-lyrics, .image-link-subtext, .floating-settings-button-text, .quote-text q, .text-box, .text-field", "color", "rgb(172, 172, 172)");
 			
-			Page.set_element_styles("a", "color", "rgb(144, 216, 144)");
+			Page.setElementStyles("a", "color", "rgb(144, 216, 144)");
 			
-			Page.set_element_styles(".text-box, .text-field, .checkbox-container > input ~ .checkbox, .radio-button-container > input ~ .radio-button", "background-color", "rgb(24, 24, 24)");
+			Page.setElementStyles(".text-box, .text-field, .checkbox-container > input ~ .checkbox, .radio-button-container > input ~ .radio-button", "background-color", "rgb(24, 24, 24)");
 			
-			Page.set_element_styles(".text-box, .text-field, .text-button, .checkbox-container, #output-canvas", "border-color", "rgb(172, 172, 172)");
+			Page.setElementStyles(".text-box, .text-field, .text-button, .checkbox-container, #output-canvas", "border-color", "rgb(172, 172, 172)");
 			
-			Page.set_element_styles(".checkbox-container > input:checked ~ .checkbox, .radio-button-container > input:checked ~ .radio-button", "background-color", "rgb(172, 172, 172)");
-			
-			
+			Page.setElementStyles(".checkbox-container > input:checked ~ .checkbox, .radio-button-container > input:checked ~ .radio-button", "background-color", "rgb(172, 172, 172)");
 			
 			
 			
-			Page.element.querySelectorAll(".desmos-border").forEach(element => Page.Animate.change_opacity(element, 0, Site.opacity_animation_time));
+			
+			
+			Page.element.querySelectorAll(".desmos-border").forEach(element => Page.Animate.changeOpacity(element, 0, Site.opacityAnimationTime));
 			
 			setTimeout(() =>
 			{
@@ -428,18 +428,18 @@ Site.Settings =
 				DESMOS_GREEN = "#c000c0";
 				DESMOS_BLACK = "#000000";
 				
-				try {Page.Load.create_desmos_graphs(true);}
+				try {Page.Load.createDesmosGraphs(true);}
 				catch(ex) {}
 				
 				setTimeout(() =>
 				{
-					Page.element.querySelectorAll(".desmos-border").forEach(element => Page.Animate.change_opacity(element, 1, Site.opacity_animation_time));
-				}, Site.opacity_animation_time);
-			}, 2 * Site.opacity_animation_time);
+					Page.element.querySelectorAll(".desmos-border").forEach(element => Page.Animate.changeOpacity(element, 1, Site.opacityAnimationTime));
+				}, Site.opacityAnimationTime);
+			}, 2 * Site.opacityAnimationTime);
 			
 			
 			
-			const element = Site.add_style(`
+			const element = Site.addStyle(`
 				.slider-container > input
 				{
 					background-color: rgb(127, 127, 127) !important;
@@ -491,20 +491,20 @@ Site.Settings =
 
 
 
-	clear_weird_inline_styles: function()
+	clearWeirdInlineStyles: function()
 	{
-		Page.set_element_styles(".checkbox-container > input ~ .checkbox, .checkbox-container > input:checked ~ .checkbox, .radio-button-container > input ~ .radio-button, .radio-button-container > input:checked ~ .radio-button, .text-box, .text-field", "background-color", "");
+		Page.setElementStyles(".checkbox-container > input ~ .checkbox, .checkbox-container > input:checked ~ .checkbox, .radio-button-container > input ~ .radio-button, .radio-button-container > input:checked ~ .radio-button, .text-box, .text-field", "background-color", "");
 		
-		Page.set_element_styles(".text-box, .text-field", "color", "");
+		Page.setElementStyles(".text-box, .text-field", "color", "");
 		
-		Page.set_element_styles(".text-box, .text-field", "border-color", "");
+		Page.setElementStyles(".text-box, .text-field", "border-color", "");
 		
 		document.body.querySelectorAll("#header-logo span, #header-links a span").forEach(element => element.style.removeProperty("color"));
 	},
 	
 	
 	
-	dark_theme_style: `
+	darkThemeStyle: `
 		#header-container, .card
 		{
 			background-color: rgb(24, 24, 24);
@@ -617,7 +617,7 @@ Site.Settings =
 
 
 
-Page.url = decodeURIComponent(Site.Settings.get_url_var("page")).replace("index.html", "").replace("src.html", "");
+Page.url = decodeURIComponent(Site.Settings.getUrlVar("page")).replace("index.html", "").replace("src.html", "");
 
 if (Page.url === "null")
 {
