@@ -4,47 +4,47 @@
 	
 	
 	
-	let frag_shader_source = `
+	let fragShaderSource = `
 		precision highp float;
 		
 		varying vec2 uv;
 		
-		uniform float aspect_ratio_x;
-		uniform float aspect_ratio_y;
+		uniform float aspectRatioX;
+		uniform float aspectRatioY;
 		
-		uniform vec3 camera_pos;
-		uniform vec3 image_plane_center_pos;
-		uniform vec3 forward_vec;
-		uniform vec3 right_vec;
-		uniform vec3 up_vec;
+		uniform vec3 cameraPos;
+		uniform vec3 imagePlaneCenterPos;
+		uniform vec3 forwardVec;
+		uniform vec3 rightVec;
+		uniform vec3 upVec;
 		
-		uniform float focal_length;
+		uniform float focalLength;
 		
-		uniform vec3 light_pos;
-		const float light_brightness = 2.0;
+		uniform vec3 lightPos;
+		const float lightBrightness = 2.0;
 		
-		uniform int image_size;
-		
-		
-		
-		const float clip_distance = 1000.0;
-		const int max_marches = 32;
-		const vec3 fog_color = vec3(0.0, 0.0, 0.0);
-		const float fog_scaling = .2;
-		const int max_iterations = 24;
+		uniform int imageSize;
 		
 		
 		
-		const vec3 color_1 = vec3(1.0, 0.0, 0.0);
-		const vec3 color_2 = vec3(0.0, 1.0, 0.0);
-		const vec3 color_3 = vec3(0.0, 0.0, 1.0);
-		const vec3 color_4 = vec3(1.0, 1.0, 0.0);
+		const float clipDistance = 1000.0;
+		const int maxMarches = 32;
+		const vec3 fogColor = vec3(0.0, 0.0, 0.0);
+		const float fogScaling = .2;
+		const int maxIterations = 24;
 		
 		
 		
-		uniform vec3 scale_center;
+		const vec3 color1 = vec3(1.0, 0.0, 0.0);
+		const vec3 color2 = vec3(0.0, 1.0, 0.0);
+		const vec3 color3 = vec3(0.0, 0.0, 1.0);
+		const vec3 color4 = vec3(1.0, 1.0, 0.0);
 		
-		uniform int num_ns;
+		
+		
+		uniform vec3 scaleCenter;
+		
+		uniform int numNs;
 		
 		uniform vec3 n1;
 		uniform vec3 n2;
@@ -57,127 +57,127 @@
 		
 		
 		
-		uniform mat3 rotation_matrix_1;
-		uniform mat3 rotation_matrix_2;
+		uniform mat3 rotationMatrix1;
+		uniform mat3 rotationMatrix2;
 		
 		
 		
-		float distance_estimator(vec3 pos)
+		float distanceEstimator(vec3 pos)
 		{
-			vec3 mutable_pos = pos;
+			vec3 mutablePos = pos;
 			
 			//We'll find the closest vertex, scale everything by a factor of 2 centered on that vertex (so that we don't need to recalculate the vertices), and repeat.
-			for (int iteration = 0; iteration < max_iterations; iteration++)
+			for (int iteration = 0; iteration < maxIterations; iteration++)
 			{
 				//Fold space over on itself so that we can reference only the top vertex.
-				float t1 = dot(mutable_pos, n1);
+				float t1 = dot(mutablePos, n1);
 				
 				if (t1 < 0.0)
 				{
-					mutable_pos -= 2.0 * t1 * n1;
+					mutablePos -= 2.0 * t1 * n1;
 				}
 				
-				float t2 = dot(mutable_pos, n2);
+				float t2 = dot(mutablePos, n2);
 				
 				if (t2 < 0.0)
 				{
-					mutable_pos -= 2.0 * t2 * n2;
+					mutablePos -= 2.0 * t2 * n2;
 				}
 				
-				float t3 = dot(mutable_pos, n3);
+				float t3 = dot(mutablePos, n3);
 				
 				if (t3 < 0.0)
 				{
-					mutable_pos -= 2.0 * t3 * n3;
+					mutablePos -= 2.0 * t3 * n3;
 				}
 				
-				if (num_ns >= 4)
+				if (numNs >= 4)
 				{
-					float t4 = dot(mutable_pos, n4);
+					float t4 = dot(mutablePos, n4);
 					
 					if (t4 < 0.0)
 					{
-						mutable_pos -= 2.0 * t4 * n4;
+						mutablePos -= 2.0 * t4 * n4;
 					}
 				}
 				
 				
 				
-				mutable_pos = rotation_matrix_1 * mutable_pos;
+				mutablePos = rotationMatrix1 * mutablePos;
 				
 				//Scale the system -- this one takes me a fair bit of thinking to get. What's happening here is that we're stretching from a vertex, but since we never scale the vertices, the four new ones are the four closest to the vertex we scaled from. Now (x, y, z) will get farther and farther away from the origin, but that makes sense -- we're really just zooming in on the tetrahedron.
-				mutable_pos = scale * mutable_pos - (scale - 1.0) * scale_center;
+				mutablePos = scale * mutablePos - (scale - 1.0) * scaleCenter;
 				
-				mutable_pos = rotation_matrix_2 * mutable_pos;
+				mutablePos = rotationMatrix2 * mutablePos;
 			}
 			
-			return length(mutable_pos) * pow(1.0/scale, float(max_iterations));
+			return length(mutablePos) * pow(1.0/scale, float(maxIterations));
 		}
 		
 		
 		
-		vec3 get_color(vec3 pos)
+		vec3 getColor(vec3 pos)
 		{
-			vec3 mutable_pos = pos;
+			vec3 mutablePos = pos;
 			
 			vec3 color = vec3(1.0, 1.0, 1.0);
-			float color_scale = .5;
+			float colorScale = .5;
 			
 			
 			
 			//We'll find the closest vertex, scale everything by a factor of 2 centered on that vertex (so that we don't need to recalculate the vertices), and repeat.
-			for (int iteration = 0; iteration < max_iterations; iteration++)
+			for (int iteration = 0; iteration < maxIterations; iteration++)
 			{
 				//Fold space over on itself so that we can reference only the top vertex.
-				float t1 = dot(mutable_pos, n1);
+				float t1 = dot(mutablePos, n1);
 				
 				if (t1 < 0.0)
 				{
-					mutable_pos -= 2.0 * t1 * n1;
+					mutablePos -= 2.0 * t1 * n1;
 					
-					color = mix(color, color_1, color_scale);
+					color = mix(color, color1, colorScale);
 				}
 				
-				float t2 = dot(mutable_pos, n2);
+				float t2 = dot(mutablePos, n2);
 				
 				if (t2 < 0.0)
 				{
-					mutable_pos -= 2.0 * t2 * n2;
+					mutablePos -= 2.0 * t2 * n2;
 					
-					color = mix(color, color_2, color_scale);
+					color = mix(color, color2, colorScale);
 				}
 				
-				float t3 = dot(mutable_pos, n3);
+				float t3 = dot(mutablePos, n3);
 				
 				if (t3 < 0.0)
 				{
-					mutable_pos -= 2.0 * t3 * n3;
+					mutablePos -= 2.0 * t3 * n3;
 					
-					color = mix(color, color_3, color_scale);
+					color = mix(color, color3, colorScale);
 				}
 				
-				if (num_ns >= 4)
+				if (numNs >= 4)
 				{
-					float t4 = dot(mutable_pos, n4);
+					float t4 = dot(mutablePos, n4);
 					
 					if (t4 < 0.0)
 					{
-						mutable_pos -= 2.0 * t4 * n4;
+						mutablePos -= 2.0 * t4 * n4;
 						
-						color = mix(color, color_4, color_scale);
+						color = mix(color, color4, colorScale);
 					}
 				}
 				
 				
 				
-				mutable_pos = rotation_matrix_1 * mutable_pos;
+				mutablePos = rotationMatrix1 * mutablePos;
 				
 				//Scale the system -- this one takes me a fair bit of thinking to get. What's happening here is that we're stretching from a vertex, but since we never scale the vertices, the four new ones are the four closest to the vertex we scaled from. Now (x, y, z) will get farther and farther away from the origin, but that makes sense -- we're really just zooming in on the tetrahedron.
-				mutable_pos = scale * mutable_pos - (scale - 1.0) * scale_center;
+				mutablePos = scale * mutablePos - (scale - 1.0) * scaleCenter;
 				
-				mutable_pos = rotation_matrix_2 * mutable_pos;
+				mutablePos = rotationMatrix2 * mutablePos;
 				
-				color_scale *= .5;
+				colorScale *= .5;
 			}
 			
 			
@@ -187,48 +187,48 @@
 		
 		
 		
-		vec3 get_surface_normal(vec3 pos)
+		vec3 getSurfaceNormal(vec3 pos)
 		{
-			float x_step_1 = distance_estimator(pos + vec3(.000001, 0.0, 0.0));
-			float y_step_1 = distance_estimator(pos + vec3(0.0, .000001, 0.0));
-			float z_step_1 = distance_estimator(pos + vec3(0.0, 0.0, .000001));
+			float xStep1 = distanceEstimator(pos + vec3(.000001, 0.0, 0.0));
+			float yStep1 = distanceEstimator(pos + vec3(0.0, .000001, 0.0));
+			float zStep1 = distanceEstimator(pos + vec3(0.0, 0.0, .000001));
 			
-			float x_step_2 = distance_estimator(pos - vec3(.000001, 0.0, 0.0));
-			float y_step_2 = distance_estimator(pos - vec3(0.0, .000001, 0.0));
-			float z_step_2 = distance_estimator(pos - vec3(0.0, 0.0, .000001));
+			float xStep2 = distanceEstimator(pos - vec3(.000001, 0.0, 0.0));
+			float yStep2 = distanceEstimator(pos - vec3(0.0, .000001, 0.0));
+			float zStep2 = distanceEstimator(pos - vec3(0.0, 0.0, .000001));
 			
-			return normalize(vec3(x_step_1 - x_step_2, y_step_1 - y_step_2, z_step_1 - z_step_2));
+			return normalize(vec3(xStep1 - xStep2, yStep1 - yStep2, zStep1 - zStep2));
 		}
 		
 		
 		
-		vec3 compute_shading(vec3 pos, int iteration)
+		vec3 computeShading(vec3 pos, int iteration)
 		{
-			vec3 surface_normal = get_surface_normal(pos);
+			vec3 surfaceNormal = getSurfaceNormal(pos);
 			
-			vec3 light_direction = normalize(light_pos - pos);
+			vec3 lightDirection = normalize(lightPos - pos);
 			
-			float dot_product = dot(surface_normal, light_direction);
+			float dotProduct = dot(surfaceNormal, lightDirection);
 			
-			float light_intensity = light_brightness * max(dot_product, -.25 * dot_product);
+			float lightIntensity = lightBrightness * max(dotProduct, -.25 * dotProduct);
 			
 			//The last factor adds ambient occlusion.
-			vec3 color = get_color(pos) * light_intensity * max((1.0 - float(iteration) / float(max_marches)), 0.0);
+			vec3 color = getColor(pos) * lightIntensity * max((1.0 - float(iteration) / float(maxMarches)), 0.0);
 			
 			
 			
 			//Apply fog.
-			return mix(color, fog_color, 1.0 - exp(-distance(pos, camera_pos) * fog_scaling));
+			return mix(color, fogColor, 1.0 - exp(-distance(pos, cameraPos) * fogScaling));
 		}
 		
 		
 		
-		vec3 raymarch(vec3 start_pos)
+		vec3 raymarch(vec3 startPos)
 		{
 			//That factor of .9 is important -- without it, we're always stepping as far as possible, which results in artefacts and weirdness.
-			vec3 ray_direction_vec = normalize(start_pos - camera_pos) * .9;
+			vec3 rayDirectionVec = normalize(startPos - cameraPos) * .9;
 			
-			vec3 final_color = fog_color;
+			vec3 finalColor = fogColor;
 			
 			float epsilon = .0000001;
 			
@@ -236,24 +236,24 @@
 			
 			
 			
-			for (int iteration = 0; iteration < max_marches; iteration++)
+			for (int iteration = 0; iteration < maxMarches; iteration++)
 			{
-				vec3 pos = start_pos + t * ray_direction_vec;
+				vec3 pos = startPos + t * rayDirectionVec;
 				
-				float distance = distance_estimator(pos);
+				float distance = distanceEstimator(pos);
 				
 				//This lowers the detail far away, which makes everything run nice and fast.
-				epsilon = max(.0000006, 3.0 * t / float(image_size));
+				epsilon = max(.0000006, 3.0 * t / float(imageSize));
 				
 				
 				
 				if (distance < epsilon)
 				{
-					final_color = compute_shading(pos, iteration);
+					finalColor = computeShading(pos, iteration);
 					break;
 				}
 				
-				else if (t > clip_distance)
+				else if (t > clipDistance)
 				{
 					break;
 				}
@@ -265,7 +265,7 @@
 			
 			
 			
-			return final_color;
+			return finalColor;
 		}
 		
 		
@@ -273,11 +273,11 @@
 		void main(void)
 		{
 			//Uncomment to use 2x antialiasing.
-			//vec3 final_color = (raymarch(image_plane_center_pos + right_vec * (uv.x * aspect_ratio + .5 / float(image_size)) + up_vec * (uv.y + .5 / float(image_size))) + raymarch(image_plane_center_pos + right_vec * (uv.x * aspect_ratio + .5 / float(image_size)) + up_vec * (uv.y - .5 / float(image_size))) + raymarch(image_plane_center_pos + right_vec * (uv.x * aspect_ratio - .5 / float(image_size)) + up_vec * (uv.y + .5 / float(image_size))) + raymarch(image_plane_center_pos + right_vec * (uv.x * aspect_ratio - .5 / float(image_size)) + up_vec * (uv.y - .5 / float(image_size)))) / 4.0;
+			//vec3 finalColor = (raymarch(imagePlaneCenterPos + rightVec * (uv.x * aspectRatio + .5 / float(imageSize)) + upVec * (uv.y + .5 / float(imageSize))) + raymarch(imagePlaneCenterPos + rightVec * (uv.x * aspectRatio + .5 / float(imageSize)) + upVec * (uv.y - .5 / float(imageSize))) + raymarch(imagePlaneCenterPos + rightVec * (uv.x * aspectRatio - .5 / float(imageSize)) + upVec * (uv.y + .5 / float(imageSize))) + raymarch(imagePlaneCenterPos + rightVec * (uv.x * aspectRatio - .5 / float(imageSize)) + upVec * (uv.y - .5 / float(imageSize)))) / 4.0;
 				
-			vec3 final_color = raymarch(image_plane_center_pos + right_vec * uv.x * aspect_ratio_x + up_vec * uv.y / aspect_ratio_y);
+			vec3 finalColor = raymarch(imagePlaneCenterPos + rightVec * uv.x * aspectRatioX + upVec * uv.y / aspectRatioY);
 			
-			gl_FragColor = vec4(final_color.xyz, 1.0);
+			gl_FragColor = vec4(finalColor.xyz, 1.0);
 		}
 	`;
 	
@@ -287,256 +287,256 @@
 	{
 		renderer: "gpu",
 		
-		shader: frag_shader_source,
+		shader: fragShaderSource,
 		
-		canvas_width: 500,
-		canvas_height: 500,
+		canvasWidth: 500,
+		canvasHeight: 500,
 		
 		
 		
-		use_fullscreen: true,
+		useFullscreen: true,
 		
-		true_fullscreen: true,
+		trueFullscreen: true,
 	
-		use_fullscreen_button: true,
+		useFullscreenButton: true,
 		
-		enter_fullscreen_button_icon_path: "/graphics/general-icons/enter-fullscreen.png",
-		exit_fullscreen_button_icon_path: "/graphics/general-icons/exit-fullscreen.png",
+		enterFullscreenButtonIconPath: "/graphics/general-icons/enter-fullscreen.png",
+		exitFullscreenButtonIconPath: "/graphics/general-icons/exit-fullscreen.png",
 		
-		switch_fullscreen_callback: change_resolution,
+		switchFullscreenCallback: changeResolution,
 		
 		
 		
-		mousedown_callback: on_grab_canvas,
-		touchstart_callback: on_grab_canvas,
+		mousedownCallback: onGrabCanvas,
+		touchstartCallback: onGrabCanvas,
 		
-		mousedrag_callback: on_drag_canvas,
-		touchmove_callback: on_drag_canvas,
+		mousedragCallback: onDragCanvas,
+		touchmoveCallback: onDragCanvas,
 		
-		mouseup_callback: on_release_canvas,
-		touchend_callback: on_release_canvas
+		mouseupCallback: onReleaseCanvas,
+		touchendCallback: onReleaseCanvas
 	};
 	
 	let wilson = new Wilson(Page.element.querySelector("#output-canvas"), options);
 	
-	wilson.render.init_uniforms(["aspect_ratio_x", "aspect_ratio_y", "image_size", "camera_pos", "image_plane_center_pos", "forward_vec", "right_vec", "up_vec", "focal_length", "light_pos", "scale_center", "n1", "n2", "n3", "n4", "num_ns", "rotation_matrix_1", "rotation_matrix_2"]);
+	wilson.render.initUniforms(["aspectRatioX", "aspectRatioY", "imageSize", "cameraPos", "imagePlaneCenterPos", "forwardVec", "rightVec", "upVec", "focalLength", "lightPos", "scaleCenter", "n1", "n2", "n3", "n4", "numNs", "rotationMatrix1", "rotationMatrix2"]);
 	
 	
 	
 	
 	
-	let currently_drawing = false;
-	let currently_animating_parameters = false;
+	let currentlyDrawing = false;
+	let currentlyAnimatingParameters = false;
 	
-	let currently_dragging = false;
+	let currentlyDragging = false;
 	
-	let draw_start_time = 0;
+	let drawStartTime = 0;
 	
-	let mouse_x = 0;
-	let mouse_y = 0;
+	let mouseX = 0;
+	let mouseY = 0;
 	
-	let moving_forward_keyboard = false;
-	let moving_backward_keyboard = false;
-	let moving_right_keyboard = false;
-	let moving_left_keyboard = false;
+	let movingForwardKeyboard = false;
+	let movingBackwardKeyboard = false;
+	let movingRightKeyboard = false;
+	let movingLeftKeyboard = false;
 	
-	let moving_forward_touch = false;
-	let moving_backward_touch = false;
+	let movingForwardTouch = false;
+	let movingBackwardTouch = false;
 	
-	let was_moving_touch = false;
+	let wasMovingTouch = false;
 	
-	let moving_speed = 0;
-	
-	
-	
-	let next_move_velocity = [0, 0, 0];
-	
-	let move_velocity = [0, 0, 0];
-	
-	const move_friction = .94;
-	const move_velocity_stop_threshhold = .0005;
+	let movingSpeed = 0;
 	
 	
 	
-	let distance_to_scene = 1;
+	let nextMoveVelocity = [0, 0, 0];
 	
-	let last_timestamp = -1;
+	let moveVelocity = [0, 0, 0];
+	
+	const moveFriction = .94;
+	const moveVelocityStopThreshhold = .0005;
+	
+	
+	
+	let distanceToScene = 1;
+	
+	let lastTimestamp = -1;
 	
 	
 	
 	let theta = 3.2954;
 	let phi = 1.9657;
 	
-	let next_theta_velocity = 0;
-	let next_phi_velocity = 0;
+	let nextThetaVelocity = 0;
+	let nextPhiVelocity = 0;
 	
-	let theta_velocity = 0;
-	let phi_velocity = 0;
+	let thetaVelocity = 0;
+	let phiVelocity = 0;
 	
-	const pan_friction = .94;
-	const pan_velocity_start_threshhold = .005;
-	const pan_velocity_stop_threshhold = .0005;
+	const panFriction = .94;
+	const panVelocityStartThreshhold = .005;
+	const panVelocityStopThreshhold = .0005;
 	
 	
 	
-	let image_size = 500;
-	let image_width = 500;
-	let image_height = 500;
+	let imageSize = 500;
+	let imageWidth = 500;
+	let imageHeight = 500;
 	
-	let num_sierpinski_iterations = 24;
+	let numSierpinskiIterations = 24;
 	
 	const scale = 2.0;
 	
-	let image_plane_center_pos = [];
+	let imagePlaneCenterPos = [];
 	
-	let forward_vec = [];
-	let right_vec = [];
-	let up_vec = [];
+	let forwardVec = [];
+	let rightVec = [];
+	let upVec = [];
 	
-	let camera_pos = [2.1089, .41345, .95325];
+	let cameraPos = [2.1089, .41345, .95325];
 	
-	let polyhedron_index = 0;
+	let polyhedronIndex = 0;
 	
-	let focal_length = 2;
+	let focalLength = 2;
 	
-	let light_pos = [[0, 0, 5], [5, 5, 5], [0, 0, 5]];
+	let lightPos = [[0, 0, 5], [5, 5, 5], [0, 0, 5]];
 	
 	let n1 = [[-.577350, 0, .816496],  [1, 0, 0], [.707107, 0, .707107]];
 	let n2 = [[.288675, -.5, .816496], [0, 1, 0], [0, .707107, .707107]];
 	let n3 = [[.288675, .5, .816496],  [0, 0, 1], [-.707107, 0, .707107]];
 	let n4 = [[],                      [],        [0, -.707107, .707107]];
 	
-	let num_ns = [3, 3, 4];
+	let numNs = [3, 3, 4];
 	
-	let scale_center = [[0, 0, 1], [.577350, .577350, .577350], [0, 0, 1]];
+	let scaleCenter = [[0, 0, 1], [.577350, .577350, .577350], [0, 0, 1]];
 	
-	let rotation_angle_x_1 = 0;
-	let rotation_angle_y_1 = 0;
-	let rotation_angle_z_1 = 0;
-	let rotation_angle_x_2 = 0;
-	let rotation_angle_y_2 = 0;
-	let rotation_angle_z_2 = 0;
+	let rotationAngleX1 = 0;
+	let rotationAngleY1 = 0;
+	let rotationAngleZ1 = 0;
+	let rotationAngleX2 = 0;
+	let rotationAngleY2 = 0;
+	let rotationAngleZ2 = 0;
 	
-	let rotation_angle_x_1_old = 0;
-	let rotation_angle_y_1_old = 0;
-	let rotation_angle_z_1_old = 0;
-	let rotation_angle_x_2_old = 0;
-	let rotation_angle_y_2_old = 0;
-	let rotation_angle_z_2_old = 0;
+	let rotationAngleX1Old = 0;
+	let rotationAngleY1Old = 0;
+	let rotationAngleZ1Old = 0;
+	let rotationAngleX2Old = 0;
+	let rotationAngleY2Old = 0;
+	let rotationAngleZ2Old = 0;
 	
-	let rotation_angle_x_1_delta = 0;
-	let rotation_angle_y_1_delta = 0;
-	let rotation_angle_z_1_delta = 0;
-	let rotation_angle_x_2_delta = 0;
-	let rotation_angle_y_2_delta = 0;
-	let rotation_angle_z_2_delta = 0;
+	let rotationAngleX1Delta = 0;
+	let rotationAngleY1Delta = 0;
+	let rotationAngleZ1Delta = 0;
+	let rotationAngleX2Delta = 0;
+	let rotationAngleY2Delta = 0;
+	let rotationAngleZ2Delta = 0;
 	
-	let parameter_animation_frame = 0;
-	
-	
-	
-	let resolution_input_element = Page.element.querySelector("#resolution-input");
-	
-	resolution_input_element.addEventListener("input", change_resolution);
+	let parameterAnimationFrame = 0;
 	
 	
 	
-	let download_button_element = Page.element.querySelector("#download-button");
+	let resolutionInputElement = Page.element.querySelector("#resolution-input");
 	
-	download_button_element.addEventListener("click", () =>
+	resolutionInputElement.addEventListener("input", changeResolution);
+	
+	
+	
+	let downloadButtonElement = Page.element.querySelector("#download-button");
+	
+	downloadButtonElement.addEventListener("click", () =>
 	{
-		wilson.download_frame("a-kaleidoscopic-ifs-fractal.png");
+		wilson.downloadFrame("a-kaleidoscopic-ifs-fractal.png");
 	});
 	
 	
 	
-	let polyhedron_selector_dropdown_element = Page.element.querySelector("#polyhedron-selector-dropdown");
+	let polyhedronSelectorDropdownElement = Page.element.querySelector("#polyhedron-selector-dropdown");
 	
-	polyhedron_selector_dropdown_element.addEventListener("input", () =>
+	polyhedronSelectorDropdownElement.addEventListener("input", () =>
 	{
-		if (polyhedron_selector_dropdown_element.value === "tetrahedron")
+		if (polyhedronSelectorDropdownElement.value === "tetrahedron")
 		{
-			change_polyhedron(0);
+			changePolyhedron(0);
 		}
 		
-		else if (polyhedron_selector_dropdown_element.value === "cube")
+		else if (polyhedronSelectorDropdownElement.value === "cube")
 		{
-			change_polyhedron(1);
+			changePolyhedron(1);
 		}
 		
 		else
 		{
-			change_polyhedron(2);
+			changePolyhedron(2);
 		}
 	});
 	
 	
 	
-	let rotation_angle_x_1_input_element = Page.element.querySelector("#rotation-angle-x-1-input");
-	let rotation_angle_y_1_input_element = Page.element.querySelector("#rotation-angle-y-1-input");
-	let rotation_angle_z_1_input_element = Page.element.querySelector("#rotation-angle-z-1-input");
+	let rotationAngleX1InputElement = Page.element.querySelector("#rotation-angle-x-1-input");
+	let rotationAngleY1InputElement = Page.element.querySelector("#rotation-angle-y-1-input");
+	let rotationAngleZ1InputElement = Page.element.querySelector("#rotation-angle-z-1-input");
 	
-	let rotation_angle_x_2_input_element = Page.element.querySelector("#rotation-angle-x-2-input");
-	let rotation_angle_y_2_input_element = Page.element.querySelector("#rotation-angle-y-2-input");
-	let rotation_angle_z_2_input_element = Page.element.querySelector("#rotation-angle-z-2-input");
+	let rotationAngleX2InputElement = Page.element.querySelector("#rotation-angle-x-2-input");
+	let rotationAngleY2InputElement = Page.element.querySelector("#rotation-angle-y-2-input");
+	let rotationAngleZ2InputElement = Page.element.querySelector("#rotation-angle-z-2-input");
 	
-	let elements = [rotation_angle_x_1_input_element, rotation_angle_y_1_input_element, rotation_angle_z_1_input_element, rotation_angle_x_2_input_element, rotation_angle_y_2_input_element, rotation_angle_z_2_input_element];
+	let elements = [rotationAngleX1InputElement, rotationAngleY1InputElement, rotationAngleZ1InputElement, rotationAngleX2InputElement, rotationAngleY2InputElement, rotationAngleZ2InputElement];
 	
 	for (let i = 0; i < 6; i++)
 	{
-		elements[i].addEventListener("input", update_parameters);
+		elements[i].addEventListener("input", updateParameters);
 	}
 	
 	
 	
-	let randomize_parameters_button_element = Page.element.querySelector("#randomize-parameters-button");
+	let randomizeParametersButtonElement = Page.element.querySelector("#randomize-parameters-button");
 	
-	randomize_parameters_button_element.addEventListener("click", randomize_parameters);
-	
-	
-	
-	calculate_vectors();
+	randomizeParametersButtonElement.addEventListener("click", randomizeParameters);
 	
 	
 	
-	if (image_width >= image_height)
+	calculateVectors();
+	
+	
+	
+	if (imageWidth >= imageHeight)
 	{
-		wilson.gl.uniform1f(wilson.uniforms["aspect_ratio_x"], image_width / image_height);
-		wilson.gl.uniform1f(wilson.uniforms["aspect_ratio_y"], 1);
+		wilson.gl.uniform1f(wilson.uniforms["aspectRatioX"], imageWidth / imageHeight);
+		wilson.gl.uniform1f(wilson.uniforms["aspectRatioY"], 1);
 	}
 	
 	else
 	{
-		wilson.gl.uniform1f(wilson.uniforms["aspect_ratio_x"], 1);
-		wilson.gl.uniform1f(wilson.uniforms["aspect_ratio_y"], image_width / image_height);
+		wilson.gl.uniform1f(wilson.uniforms["aspectRatioX"], 1);
+		wilson.gl.uniform1f(wilson.uniforms["aspectRatioY"], imageWidth / imageHeight);
 	}
 	
-	wilson.gl.uniform1i(wilson.uniforms["image_size"], image_size);
+	wilson.gl.uniform1i(wilson.uniforms["imageSize"], imageSize);
 	
-	wilson.gl.uniform3fv(wilson.uniforms["camera_pos"], camera_pos);
-	wilson.gl.uniform3fv(wilson.uniforms["image_plane_center_pos"], image_plane_center_pos);
-	wilson.gl.uniform3fv(wilson.uniforms["light_pos"], light_pos[polyhedron_index]);
-	wilson.gl.uniform3fv(wilson.uniforms["scale_center"], scale_center[polyhedron_index]);
+	wilson.gl.uniform3fv(wilson.uniforms["cameraPos"], cameraPos);
+	wilson.gl.uniform3fv(wilson.uniforms["imagePlaneCenterPos"], imagePlaneCenterPos);
+	wilson.gl.uniform3fv(wilson.uniforms["lightPos"], lightPos[polyhedronIndex]);
+	wilson.gl.uniform3fv(wilson.uniforms["scaleCenter"], scaleCenter[polyhedronIndex]);
 	
-	wilson.gl.uniform3fv(wilson.uniforms["forward_vec"], forward_vec);
-	wilson.gl.uniform3fv(wilson.uniforms["right_vec"], right_vec);
-	wilson.gl.uniform3fv(wilson.uniforms["up_vec"], up_vec);
+	wilson.gl.uniform3fv(wilson.uniforms["forwardVec"], forwardVec);
+	wilson.gl.uniform3fv(wilson.uniforms["rightVec"], rightVec);
+	wilson.gl.uniform3fv(wilson.uniforms["upVec"], upVec);
 	
-	wilson.gl.uniform1f(wilson.uniforms["focal_length"], focal_length);
+	wilson.gl.uniform1f(wilson.uniforms["focalLength"], focalLength);
 	
-	wilson.gl.uniform3fv(wilson.uniforms["n1"], n1[polyhedron_index]);
-	wilson.gl.uniform3fv(wilson.uniforms["n2"], n2[polyhedron_index]);
-	wilson.gl.uniform3fv(wilson.uniforms["n3"], n3[polyhedron_index]);
-	wilson.gl.uniform3fv(wilson.uniforms["n4"], n4[polyhedron_index]);
+	wilson.gl.uniform3fv(wilson.uniforms["n1"], n1[polyhedronIndex]);
+	wilson.gl.uniform3fv(wilson.uniforms["n2"], n2[polyhedronIndex]);
+	wilson.gl.uniform3fv(wilson.uniforms["n3"], n3[polyhedronIndex]);
+	wilson.gl.uniform3fv(wilson.uniforms["n4"], n4[polyhedronIndex]);
 	
-	wilson.gl.uniform1i(wilson.uniforms["num_ns"], num_ns[polyhedron_index]);
+	wilson.gl.uniform1i(wilson.uniforms["numNs"], numNs[polyhedronIndex]);
 	
-	wilson.gl.uniformMatrix3fv(wilson.uniforms["rotation_matrix_1"], false, [1, 0, 0, 0, 1, 0, 0, 0, 1]);
-	wilson.gl.uniformMatrix3fv(wilson.uniforms["rotation_matrix_2"], false, [1, 0, 0, 0, 1, 0, 0, 0, 1]);
+	wilson.gl.uniformMatrix3fv(wilson.uniforms["rotationMatrix1"], false, [1, 0, 0, 0, 1, 0, 0, 0, 1]);
+	wilson.gl.uniformMatrix3fv(wilson.uniforms["rotationMatrix2"], false, [1, 0, 0, 0, 1, 0, 0, 0, 1]);
 	
 	
 	
-	window.requestAnimationFrame(draw_frame);
+	window.requestAnimationFrame(drawFrame);
 	
 	
 	
@@ -544,71 +544,71 @@
 	
 	
 	
-	function draw_frame(timestamp)
+	function drawFrame(timestamp)
 	{
-		let time_elapsed = timestamp - last_timestamp;
+		let timeElapsed = timestamp - lastTimestamp;
 		
-		last_timestamp = timestamp;
+		lastTimestamp = timestamp;
 		
 		
 		
-		if (time_elapsed === 0)
+		if (timeElapsed === 0)
 		{
 			return;
 		}
 		
 		
 		
-		wilson.render.draw_frame();
+		wilson.render.drawFrame();
 		
 		
 		
-		let need_new_frame = false;
+		let needNewFrame = false;
 		
 		
 		
-		if (currently_animating_parameters)
+		if (currentlyAnimatingParameters)
 		{
-			animate_parameter_change_step();
+			animateParameterChangeStep();
 			
-			need_new_frame = true;
+			needNewFrame = true;
 		}
 		
 		
 		
-		if (moving_forward_keyboard || moving_backward_keyboard || moving_right_keyboard || moving_left_keyboard || moving_forward_touch || moving_backward_touch)
+		if (movingForwardKeyboard || movingBackwardKeyboard || movingRightKeyboard || movingLeftKeyboard || movingForwardTouch || movingBackwardTouch)
 		{
-			update_camera_parameters();
+			updateCameraParameters();
 			
-			need_new_frame = true;
+			needNewFrame = true;
 		}
 		
-		else if (time_elapsed >= 50)
+		else if (timeElapsed >= 50)
 		{
-			next_theta_velocity = 0;
-			next_phi_velocity = 0;
+			nextThetaVelocity = 0;
+			nextPhiVelocity = 0;
 			
-			theta_velocity = 0;
-			phi_velocity = 0;
+			thetaVelocity = 0;
+			phiVelocity = 0;
 			
-			moving_forward_touch = false;
-			moving_backward_touch = false;
+			movingForwardTouch = false;
+			movingBackwardTouch = false;
 			
-			move_velocity[0] = 0;
-			move_velocity[1] = 0;
-			move_velocity[2] = 0;
+			moveVelocity[0] = 0;
+			moveVelocity[1] = 0;
+			moveVelocity[2] = 0;
 			
-			next_move_velocity[0] = 0;
-			next_move_velocity[1] = 0;
-			next_move_velocity[2] = 0;
+			nextMoveVelocity[0] = 0;
+			nextMoveVelocity[1] = 0;
+			nextMoveVelocity[2] = 0;
 		}
 		
 		
 		
-		if (theta_velocity !== 0 || phi_velocity !== 0)
+		if (thetaVelocity !== 0 || phiVelocity !== 0)
 		{
-			theta += theta_velocity;
-			phi += phi_velocity;
+			theta += thetaVelocity;
+			phi += phiVelocity;
 			
 			
 			
@@ -636,116 +636,116 @@
 			
 			
 			
-			theta_velocity *= pan_friction;
-			phi_velocity *= pan_friction;
+			thetaVelocity *= panFriction;
+			phiVelocity *= panFriction;
 			
-			if (Math.sqrt(theta_velocity * theta_velocity + phi_velocity * phi_velocity) < pan_velocity_stop_threshhold)
+			if (Math.sqrt(thetaVelocity * thetaVelocity + phiVelocity * phiVelocity) < panVelocityStopThreshhold)
 			{
-				theta_velocity = 0;
-				phi_velocity = 0;
+				thetaVelocity = 0;
+				phiVelocity = 0;
 			}
 			
 			
 			
-			calculate_vectors();
+			calculateVectors();
 			
-			need_new_frame = true;
+			needNewFrame = true;
 		}
 		
-		if (move_velocity[0] !== 0 || move_velocity[1] !== 0 || move_velocity[2] !== 0)
+		if (moveVelocity[0] !== 0 || moveVelocity[1] !== 0 || moveVelocity[2] !== 0)
 		{
-			camera_pos[0] += move_velocity[0];
-			camera_pos[1] += move_velocity[1];
-			camera_pos[2] += move_velocity[2];
+			cameraPos[0] += moveVelocity[0];
+			cameraPos[1] += moveVelocity[1];
+			cameraPos[2] += moveVelocity[2];
 			
-			move_velocity[0] *= move_friction;
-			move_velocity[1] *= move_friction;
-			move_velocity[2] *= move_friction;
+			moveVelocity[0] *= moveFriction;
+			moveVelocity[1] *= moveFriction;
+			moveVelocity[2] *= moveFriction;
 			
-			if (Math.sqrt(move_velocity[0] * move_velocity[0] + move_velocity[1] * move_velocity[1] + move_velocity[2] * move_velocity[2]) < move_velocity_stop_threshhold * moving_speed)
+			if (Math.sqrt(moveVelocity[0] * moveVelocity[0] + moveVelocity[1] * moveVelocity[1] + moveVelocity[2] * moveVelocity[2]) < moveVelocityStopThreshhold * movingSpeed)
 			{
-				move_velocity[0] = 0;
-				move_velocity[1] = 0;
-				move_velocity[2] = 0;
+				moveVelocity[0] = 0;
+				moveVelocity[1] = 0;
+				moveVelocity[2] = 0;
 			}
 			
 			
 			
-			calculate_vectors();
+			calculateVectors();
 				
-			need_new_frame = true;
+			needNewFrame = true;
 		}
 		
 		
 		
-		if (need_new_frame)
+		if (needNewFrame)
 		{
-			window.requestAnimationFrame(draw_frame);
+			window.requestAnimationFrame(drawFrame);
 		}
 	}
 	
 	
 	
-	function calculate_vectors()
+	function calculateVectors()
 	{
 		//Here comes the serious math. Theta is the angle in the xy-plane and phi the angle down from the z-axis. We can use them get a normalized forward vector:
-		forward_vec = [Math.cos(theta) * Math.sin(phi), Math.sin(theta) * Math.sin(phi), Math.cos(phi)];
+		forwardVec = [Math.cos(theta) * Math.sin(phi), Math.sin(theta) * Math.sin(phi), Math.cos(phi)];
 		
 		//Now the right vector needs to be constrained to the xy-plane, since otherwise the image will appear tilted. For a vector (a, b, c), the orthogonal plane that passes through the origin is ax + by + cz = 0, so we want ax + by = 0. One solution is (b, -a), and that's the one that goes to the "right" of the forward vector (when looking down).
-		right_vec = normalize([forward_vec[1], -forward_vec[0], 0]);
+		rightVec = normalize([forwardVec[1], -forwardVec[0], 0]);
 		
 		//Finally, the upward vector is the cross product of the previous two.
-		up_vec = cross_product(right_vec, forward_vec);
+		upVec = crossProduct(rightVec, forwardVec);
 		
 		
 		
-		distance_to_scene = distance_estimator(camera_pos[0], camera_pos[1], camera_pos[2]);
+		distanceToScene = distanceEstimator(cameraPos[0], cameraPos[1], cameraPos[2]);
 		
 		
 		
-		focal_length = distance_to_scene / 2;
+		focalLength = distanceToScene / 2;
 		
 		//The factor we divide by here sets the fov.
-		right_vec[0] *= focal_length / 2;
-		right_vec[1] *= focal_length / 2;
+		rightVec[0] *= focalLength / 2;
+		rightVec[1] *= focalLength / 2;
 		
-		up_vec[0] *= focal_length / 2;
-		up_vec[1] *= focal_length / 2;
-		up_vec[2] *= focal_length / 2;
-		
-		
-		
-		image_plane_center_pos = [camera_pos[0] + focal_length * forward_vec[0], camera_pos[1] + focal_length * forward_vec[1], camera_pos[2] + focal_length * forward_vec[2]];
+		upVec[0] *= focalLength / 2;
+		upVec[1] *= focalLength / 2;
+		upVec[2] *= focalLength / 2;
 		
 		
 		
-		wilson.gl.uniform3fv(wilson.uniforms["camera_pos"], camera_pos);
-		wilson.gl.uniform3fv(wilson.uniforms["image_plane_center_pos"], image_plane_center_pos);
+		imagePlaneCenterPos = [cameraPos[0] + focalLength * forwardVec[0], cameraPos[1] + focalLength * forwardVec[1], cameraPos[2] + focalLength * forwardVec[2]];
 		
-		wilson.gl.uniform3fv(wilson.uniforms["forward_vec"], forward_vec);
-		wilson.gl.uniform3fv(wilson.uniforms["right_vec"], right_vec);
-		wilson.gl.uniform3fv(wilson.uniforms["up_vec"], up_vec);
 		
-		wilson.gl.uniform1f(wilson.uniforms["focal_length"], focal_length);
+		
+		wilson.gl.uniform3fv(wilson.uniforms["cameraPos"], cameraPos);
+		wilson.gl.uniform3fv(wilson.uniforms["imagePlaneCenterPos"], imagePlaneCenterPos);
+		
+		wilson.gl.uniform3fv(wilson.uniforms["forwardVec"], forwardVec);
+		wilson.gl.uniform3fv(wilson.uniforms["rightVec"], rightVec);
+		wilson.gl.uniform3fv(wilson.uniforms["upVec"], upVec);
+		
+		wilson.gl.uniform1f(wilson.uniforms["focalLength"], focalLength);
 	}
 	
 	
 	
-	function dot_product(vec1, vec2)
+	function dotProduct(vec1, vec2)
 	{
 		return vec1[0] * vec2[0] + vec1[1] * vec2[1] + vec1[2] * vec2[2];
 	}
 	
 	
 	
-	function cross_product(vec1, vec2)
+	function crossProduct(vec1, vec2)
 	{
 		return [vec1[1] * vec2[2] - vec1[2] * vec2[1], vec1[2] * vec2[0] - vec1[0] * vec2[2], vec1[0] * vec2[1] - vec1[1] * vec2[0]];
 	}
 	
 	
 	
-	function mat_mul(mat1, mat2)
+	function matMul(mat1, mat2)
 	{
 		return [
 			[mat1[0][0]*mat2[0][0] + mat1[0][1]*mat2[1][0] + mat1[0][2]*mat2[2][0],
@@ -773,48 +773,48 @@
 	
 	
 	
-	function distance_estimator(x, y, z)
+	function distanceEstimator(x, y, z)
 	{
 		//We'll find the closest vertex, scale everything by a factor of 2 centered on that vertex (so that we don't need to recalculate the vertices), and repeat.
-		for (let iteration = 0; iteration < num_sierpinski_iterations; iteration++)
+		for (let iteration = 0; iteration < numSierpinskiIterations; iteration++)
 		{
 			//Fold space over on itself so that we can reference only the top vertex.
-			let t1 = dot_product([x, y, z], n1[polyhedron_index]);
+			let t1 = dotProduct([x, y, z], n1[polyhedronIndex]);
 			
 			if (t1 < 0)
 			{
-				x -= 2 * t1 * n1[polyhedron_index][0];
-				y -= 2 * t1 * n1[polyhedron_index][1];
-				z -= 2 * t1 * n1[polyhedron_index][2];
+				x -= 2 * t1 * n1[polyhedronIndex][0];
+				y -= 2 * t1 * n1[polyhedronIndex][1];
+				z -= 2 * t1 * n1[polyhedronIndex][2];
 			}
 			
-			let t2 = dot_product([x, y, z], n2[polyhedron_index]);
+			let t2 = dotProduct([x, y, z], n2[polyhedronIndex]);
 			
 			if (t2 < 0)
 			{
-				x -= 2 * t2 * n2[polyhedron_index][0];
-				y -= 2 * t2 * n2[polyhedron_index][1];
-				z -= 2 * t2 * n2[polyhedron_index][2];
+				x -= 2 * t2 * n2[polyhedronIndex][0];
+				y -= 2 * t2 * n2[polyhedronIndex][1];
+				z -= 2 * t2 * n2[polyhedronIndex][2];
 			}
 			
-			let t3 = dot_product([x, y, z], n3[polyhedron_index]);
+			let t3 = dotProduct([x, y, z], n3[polyhedronIndex]);
 			
 			if (t3 < 0)
 			{
-				x -= 2 * t3 * n3[polyhedron_index][0];
-				y -= 2 * t3 * n3[polyhedron_index][1];
-				z -= 2 * t3 * n3[polyhedron_index][2];
+				x -= 2 * t3 * n3[polyhedronIndex][0];
+				y -= 2 * t3 * n3[polyhedronIndex][1];
+				z -= 2 * t3 * n3[polyhedronIndex][2];
 			}
 			
-			if (num_ns[polyhedron_index] >= 4)
+			if (numNs[polyhedronIndex] >= 4)
 			{
-				let t4 = dot_product([x, y, z], n4[polyhedron_index]);
+				let t4 = dotProduct([x, y, z], n4[polyhedronIndex]);
 				
 				if (t4 < 0)
 				{
-					x -= 2 * t4 * n4[polyhedron_index][0];
-					y -= 2 * t4 * n4[polyhedron_index][1];
-					z -= 2 * t4 * n4[polyhedron_index][2];
+					x -= 2 * t4 * n4[polyhedronIndex][0];
+					y -= 2 * t4 * n4[polyhedronIndex][1];
+					z -= 2 * t4 * n4[polyhedronIndex][2];
 				}
 			}
 			
@@ -822,61 +822,61 @@
 			
 			//Apply the first rotation matrix.
 			
-			let temp_x = x;
-			let temp_y = y;
-			let temp_z = z;
+			let tempX = x;
+			let tempY = y;
+			let tempZ = z;
 			
-			let mat_z = [[Math.cos(rotation_angle_z_1), -Math.sin(rotation_angle_z_1), 0], [Math.sin(rotation_angle_z_1), Math.cos(rotation_angle_z_1), 0], [0, 0, 1]];
-			let mat_y = [[Math.cos(rotation_angle_y_1), 0, -Math.sin(rotation_angle_y_1)], [0, 1, 0],[Math.sin(rotation_angle_y_1), 0, Math.cos(rotation_angle_y_1)]];
-			let mat_x = [[1, 0, 0], [0, Math.cos(rotation_angle_x_1), -Math.sin(rotation_angle_x_1)], [0, Math.sin(rotation_angle_x_1), Math.cos(rotation_angle_x_1)]];
+			let matZ = [[Math.cos(rotationAngleZ1), -Math.sin(rotationAngleZ1), 0], [Math.sin(rotationAngleZ1), Math.cos(rotationAngleZ1), 0], [0, 0, 1]];
+			let matY = [[Math.cos(rotationAngleY1), 0, -Math.sin(rotationAngleY1)], [0, 1, 0],[Math.sin(rotationAngleY1), 0, Math.cos(rotationAngleY1)]];
+			let matX = [[1, 0, 0], [0, Math.cos(rotationAngleX1), -Math.sin(rotationAngleX1)], [0, Math.sin(rotationAngleX1), Math.cos(rotationAngleX1)]];
 			
-			let mat_total = mat_mul(mat_mul(mat_z, mat_y), mat_x);
+			let matTotal = matMul(matMul(matZ, matY), matX);
 			
-			x = mat_total[0][0] * temp_x + mat_total[0][1] * temp_y + mat_total[0][2] * temp_z;
-			y = mat_total[1][0] * temp_x + mat_total[1][1] * temp_y + mat_total[1][2] * temp_z;
-			z = mat_total[2][0] * temp_x + mat_total[2][1] * temp_y + mat_total[2][2] * temp_z;
+			x = matTotal[0][0] * tempX + matTotal[0][1] * tempY + matTotal[0][2] * tempZ;
+			y = matTotal[1][0] * tempX + matTotal[1][1] * tempY + matTotal[1][2] * tempZ;
+			z = matTotal[2][0] * tempX + matTotal[2][1] * tempY + matTotal[2][2] * tempZ;
 			
 			
 			
 			//This one takes a fair bit of thinking to get. What's happening here is that we're stretching from a vertex, but since we never scale the vertices, the four new ones are the four closest to the vertex we scaled from. Now (x, y, z) will get farther and farther away from the origin, but that makes sense -- we're really just zooming in on the tetrahedron.
-			x = scale * x - (scale - 1) * scale_center[polyhedron_index][0];
-			y = scale * y - (scale - 1) * scale_center[polyhedron_index][1];
-			z = scale * z - (scale - 1) * scale_center[polyhedron_index][2];
+			x = scale * x - (scale - 1) * scaleCenter[polyhedronIndex][0];
+			y = scale * y - (scale - 1) * scaleCenter[polyhedronIndex][1];
+			z = scale * z - (scale - 1) * scaleCenter[polyhedronIndex][2];
 			
 			
 			
 			//Apply the second rotation matrix.
 			
-			temp_x = x;
-			temp_y = y;
-			temp_z = z;
+			tempX = x;
+			tempY = y;
+			tempZ = z;
 			
-			mat_z = [[Math.cos(rotation_angle_z_2), -Math.sin(rotation_angle_z_2), 0], [Math.sin(rotation_angle_z_2), Math.cos(rotation_angle_z_2), 0], [0, 0, 1]];
-			mat_y = [[Math.cos(rotation_angle_y_2), 0, -Math.sin(rotation_angle_y_2)], [0, 1, 0],[Math.sin(rotation_angle_y_2), 0, Math.cos(rotation_angle_y_2)]];
-			mat_x = [[1, 0, 0], [0, Math.cos(rotation_angle_x_2), -Math.sin(rotation_angle_x_2)], [0, Math.sin(rotation_angle_x_2), Math.cos(rotation_angle_x_2)]];
+			matZ = [[Math.cos(rotationAngleZ2), -Math.sin(rotationAngleZ2), 0], [Math.sin(rotationAngleZ2), Math.cos(rotationAngleZ2), 0], [0, 0, 1]];
+			matY = [[Math.cos(rotationAngleY2), 0, -Math.sin(rotationAngleY2)], [0, 1, 0],[Math.sin(rotationAngleY2), 0, Math.cos(rotationAngleY2)]];
+			matX = [[1, 0, 0], [0, Math.cos(rotationAngleX2), -Math.sin(rotationAngleX2)], [0, Math.sin(rotationAngleX2), Math.cos(rotationAngleX2)]];
 			
-			mat_total = mat_mul(mat_mul(mat_z, mat_y), mat_x);
+			matTotal = matMul(matMul(matZ, matY), matX);
 			
-			x = mat_total[0][0] * temp_x + mat_total[0][1] * temp_y + mat_total[0][2] * temp_z;
-			y = mat_total[1][0] * temp_x + mat_total[1][1] * temp_y + mat_total[1][2] * temp_z;
-			z = mat_total[2][0] * temp_x + mat_total[2][1] * temp_y + mat_total[2][2] * temp_z;
+			x = matTotal[0][0] * tempX + matTotal[0][1] * tempY + matTotal[0][2] * tempZ;
+			y = matTotal[1][0] * tempX + matTotal[1][1] * tempY + matTotal[1][2] * tempZ;
+			z = matTotal[2][0] * tempX + matTotal[2][1] * tempY + matTotal[2][2] * tempZ;
 		}
 		
 		
 		
-		//So at this point we've scaled up by 2x a total of num_iterations times. The final distance is therefore:
-		return Math.sqrt(x*x + y*y + z*z) * Math.pow(scale, -num_sierpinski_iterations);
+		//So at this point we've scaled up by 2x a total of numIterations times. The final distance is therefore:
+		return Math.sqrt(x*x + y*y + z*z) * Math.pow(scale, -numSierpinskiIterations);
 	}
 	
 	
 	
-	function on_grab_canvas(x, y, event)
+	function onGrabCanvas(x, y, event)
 	{
-		next_theta_velocity = 0;
-		next_phi_velocity = 0;
+		nextThetaVelocity = 0;
+		nextPhiVelocity = 0;
 		
-		theta_velocity = 0;
-		phi_velocity = 0;
+		thetaVelocity = 0;
+		phiVelocity = 0;
 		
 		
 		
@@ -884,61 +884,61 @@
 		{
 			if (event.touches.length === 2)
 			{
-				moving_forward_touch = true;
-				moving_backward_touch = false;
+				movingForwardTouch = true;
+				movingBackwardTouch = false;
 				
-				move_velocity[0] = 0;
-				move_velocity[1] = 0;
-				move_velocity[2] = 0;
+				moveVelocity[0] = 0;
+				moveVelocity[1] = 0;
+				moveVelocity[2] = 0;
 				
-				next_move_velocity[0] = 0;
-				next_move_velocity[1] = 0;
-				next_move_velocity[2] = 0;
+				nextMoveVelocity[0] = 0;
+				nextMoveVelocity[1] = 0;
+				nextMoveVelocity[2] = 0;
 				
-				window.requestAnimationFrame(draw_frame);
+				window.requestAnimationFrame(drawFrame);
 			}
 			
 			else if (event.touches.length === 3)
 			{
-				moving_forward_touch = false;
-				moving_backward_touch = true;
+				movingForwardTouch = false;
+				movingBackwardTouch = true;
 				
-				move_velocity[0] = 0;
-				move_velocity[1] = 0;
-				move_velocity[2] = 0;
+				moveVelocity[0] = 0;
+				moveVelocity[1] = 0;
+				moveVelocity[2] = 0;
 				
-				next_move_velocity[0] = 0;
-				next_move_velocity[1] = 0;
-				next_move_velocity[2] = 0;
+				nextMoveVelocity[0] = 0;
+				nextMoveVelocity[1] = 0;
+				nextMoveVelocity[2] = 0;
 				
-				window.requestAnimationFrame(draw_frame);
+				window.requestAnimationFrame(drawFrame);
 			}
 			
 			else
 			{
-				moving_forward_touch = false;
-				moving_backward_touch = false;
+				movingForwardTouch = false;
+				movingBackwardTouch = false;
 			}
 			
-			was_moving_touch = false;
+			wasMovingTouch = false;
 		}
 	}
 	
 	
 	
-	function on_drag_canvas(x, y, x_delta, y_delta, event)
+	function onDragCanvas(x, y, xDelta, yDelta, event)
 	{
-		if (event.type === "touchmove" && was_moving_touch)
+		if (event.type === "touchmove" && wasMovingTouch)
 		{
-			was_moving_touch = false;
+			wasMovingTouch = false;
 			return;
 		}
 		
 		
 		
-		theta += x_delta * Math.PI / 2;
+		theta += xDelta * Math.PI / 2;
 		
-		next_theta_velocity = x_delta * Math.PI / 2;
+		nextThetaVelocity = xDelta * Math.PI / 2;
 		
 		if (theta >= 2 * Math.PI)
 		{
@@ -952,9 +952,9 @@
 		
 		
 		
-		phi += y_delta * Math.PI / 2;
+		phi += yDelta * Math.PI / 2;
 		
-		next_phi_velocity = y_delta * Math.PI / 2;
+		nextPhiVelocity = yDelta * Math.PI / 2;
 		
 		if (phi > Math.PI - .01)
 		{
@@ -968,44 +968,44 @@
 		
 		
 		
-		calculate_vectors();
+		calculateVectors();
 		
-		window.requestAnimationFrame(draw_frame);
+		window.requestAnimationFrame(drawFrame);
 	}
 	
 	
 	
-	function on_release_canvas(x, y, event)
+	function onReleaseCanvas(x, y, event)
 	{
 		if (event.type === "touchend")
 		{
-			moving_forward_touch = false;
-			moving_backward_touch = false;
+			movingForwardTouch = false;
+			movingBackwardTouch = false;
 			
-			was_moving_touch = true;
+			wasMovingTouch = true;
 			
-			if (move_velocity[0] === 0 && move_velocity[1] === 0 && move_velocity[2] === 0)
+			if (moveVelocity[0] === 0 && moveVelocity[1] === 0 && moveVelocity[2] === 0)
 			{
-				move_velocity[0] = next_move_velocity[0];
-				move_velocity[1] = next_move_velocity[1];
-				move_velocity[2] = next_move_velocity[2];
+				moveVelocity[0] = nextMoveVelocity[0];
+				moveVelocity[1] = nextMoveVelocity[1];
+				moveVelocity[2] = nextMoveVelocity[2];
 				
-				next_move_velocity[0] = 0;
-				next_move_velocity[1] = 0;
-				next_move_velocity[2] = 0;
+				nextMoveVelocity[0] = 0;
+				nextMoveVelocity[1] = 0;
+				nextMoveVelocity[2] = 0;
 			}
 		}
 		
-		if (((event.type === "touchend" && event.touches,length === 0) || event.type === "mouseup") && (Math.sqrt(next_theta_velocity * next_theta_velocity + next_phi_velocity * next_phi_velocity) >= pan_velocity_start_threshhold))
+		if (((event.type === "touchend" && event.touches,length === 0) || event.type === "mouseup") && (Math.sqrt(nextThetaVelocity * nextThetaVelocity + nextPhiVelocity * nextPhiVelocity) >= panVelocityStartThreshhold))
 		{
-			theta_velocity = next_theta_velocity;
-			phi_velocity = next_phi_velocity;
+			thetaVelocity = nextThetaVelocity;
+			phiVelocity = nextPhiVelocity;
 		}
 	}
 	
 	
 	
-	function handle_keydown_event(e)
+	function handleKeydownEvent(e)
 	{
 		if (document.activeElement.tagName === "INPUT" || !(e.keyCode === 87 || e.keyCode === 83 || e.keyCode === 68 || e.keyCode === 65))
 		{
@@ -1014,43 +1014,43 @@
 		
 		
 		
-		next_move_velocity = [0, 0, 0];
-		move_velocity = [0, 0, 0];
+		nextMoveVelocity = [0, 0, 0];
+		moveVelocity = [0, 0, 0];
 		
 		
 		
 		//W
 		if (e.keyCode === 87)
 		{
-			moving_forward_keyboard = true;
+			movingForwardKeyboard = true;
 		}
 		
 		//S
 		else if (e.keyCode === 83)
 		{
-			moving_backward_keyboard = true;
+			movingBackwardKeyboard = true;
 		}
 		
 		//D
 		if (e.keyCode === 68)
 		{
-			moving_right_keyboard = true;
+			movingRightKeyboard = true;
 		}
 		
 		//A
 		else if (e.keyCode === 65)
 		{
-			moving_left_keyboard = true;
+			movingLeftKeyboard = true;
 		}
 		
 		
 		
-		window.requestAnimationFrame(draw_frame);
+		window.requestAnimationFrame(drawFrame);
 	}
 	
 	
 	
-	function handle_keyup_event(e)
+	function handleKeyupEvent(e)
 	{
 		if (document.activeElement.tagName === "INPUT" || !(e.keyCode === 87 || e.keyCode === 83 || e.keyCode === 68 || e.keyCode === 65))
 		{
@@ -1059,15 +1059,15 @@
 		
 		
 		
-		if (move_velocity[0] === 0 && move_velocity[1] === 0 && move_velocity[2] === 0)
+		if (moveVelocity[0] === 0 && moveVelocity[1] === 0 && moveVelocity[2] === 0)
 		{
-			move_velocity[0] = next_move_velocity[0];
-			move_velocity[1] = next_move_velocity[1];
-			move_velocity[2] = next_move_velocity[2];
+			moveVelocity[0] = nextMoveVelocity[0];
+			moveVelocity[1] = nextMoveVelocity[1];
+			moveVelocity[2] = nextMoveVelocity[2];
 			
-			next_move_velocity[0] = 0;
-			next_move_velocity[1] = 0;
-			next_move_velocity[2] = 0;
+			nextMoveVelocity[0] = 0;
+			nextMoveVelocity[1] = 0;
+			nextMoveVelocity[2] = 0;
 		}
 		
 		
@@ -1075,274 +1075,274 @@
 		//W
 		if (e.keyCode === 87)
 		{
-			moving_forward_keyboard = false;
+			movingForwardKeyboard = false;
 		}
 		
 		//S
 		else if (e.keyCode === 83)
 		{
-			moving_backward_keyboard = false;
+			movingBackwardKeyboard = false;
 		}
 		
 		//D
 		if (e.keyCode === 68)
 		{
-			moving_right_keyboard = false;
+			movingRightKeyboard = false;
 		}
 		
 		//A
 		else if (e.keyCode === 65)
 		{
-			moving_left_keyboard = false;
+			movingLeftKeyboard = false;
 		}
 	}
 	
 	
 	
-	document.documentElement.addEventListener("keydown", handle_keydown_event);
-	Page.temporary_handlers["keydown"].push(handle_keydown_event);
+	document.documentElement.addEventListener("keydown", handleKeydownEvent);
+	Page.temporaryHandlers["keydown"].push(handleKeydownEvent);
 	
-	document.documentElement.addEventListener("keyup", handle_keyup_event);
-	Page.temporary_handlers["keydown"].push(handle_keyup_event);
+	document.documentElement.addEventListener("keyup", handleKeyupEvent);
+	Page.temporaryHandlers["keydown"].push(handleKeyupEvent);
 	
 	
 	
-	function update_camera_parameters()
+	function updateCameraParameters()
 	{
-		moving_speed = Math.min(Math.max(.000001, distance_to_scene / 20), .02);
+		movingSpeed = Math.min(Math.max(.000001, distanceToScene / 20), .02);
 		
 		
 		
-		let old_camera_pos = [...camera_pos];
+		let oldCameraPos = [...cameraPos];
 		
 		
 		
-		if (moving_forward_keyboard || moving_forward_touch)
+		if (movingForwardKeyboard || movingForwardTouch)
 		{
-			camera_pos[0] += moving_speed * forward_vec[0];
-			camera_pos[1] += moving_speed * forward_vec[1];
-			camera_pos[2] += moving_speed * forward_vec[2];
+			cameraPos[0] += movingSpeed * forwardVec[0];
+			cameraPos[1] += movingSpeed * forwardVec[1];
+			cameraPos[2] += movingSpeed * forwardVec[2];
 		}
 		
-		else if (moving_backward_keyboard || moving_backward_touch)
+		else if (movingBackwardKeyboard || movingBackwardTouch)
 		{
-			camera_pos[0] -= moving_speed * forward_vec[0];
-			camera_pos[1] -= moving_speed * forward_vec[1];
-			camera_pos[2] -= moving_speed * forward_vec[2];
-		}
-		
-		
-		
-		if (moving_right_keyboard)
-		{
-			camera_pos[0] += moving_speed * right_vec[0] / focal_length;
-			camera_pos[1] += moving_speed * right_vec[1] / focal_length;
-			camera_pos[2] += moving_speed * right_vec[2] / focal_length;
-		}
-		
-		else if (moving_left_keyboard)
-		{
-			camera_pos[0] -= moving_speed * right_vec[0] / focal_length;
-			camera_pos[1] -= moving_speed * right_vec[1] / focal_length;
-			camera_pos[2] -= moving_speed * right_vec[2] / focal_length;
+			cameraPos[0] -= movingSpeed * forwardVec[0];
+			cameraPos[1] -= movingSpeed * forwardVec[1];
+			cameraPos[2] -= movingSpeed * forwardVec[2];
 		}
 		
 		
 		
-		next_move_velocity[0] = camera_pos[0] - old_camera_pos[0];
-		next_move_velocity[1] = camera_pos[1] - old_camera_pos[1];
-		next_move_velocity[2] = camera_pos[2] - old_camera_pos[2];
+		if (movingRightKeyboard)
+		{
+			cameraPos[0] += movingSpeed * rightVec[0] / focalLength;
+			cameraPos[1] += movingSpeed * rightVec[1] / focalLength;
+			cameraPos[2] += movingSpeed * rightVec[2] / focalLength;
+		}
+		
+		else if (movingLeftKeyboard)
+		{
+			cameraPos[0] -= movingSpeed * rightVec[0] / focalLength;
+			cameraPos[1] -= movingSpeed * rightVec[1] / focalLength;
+			cameraPos[2] -= movingSpeed * rightVec[2] / focalLength;
+		}
 		
 		
 		
-		calculate_vectors();
+		nextMoveVelocity[0] = cameraPos[0] - oldCameraPos[0];
+		nextMoveVelocity[1] = cameraPos[1] - oldCameraPos[1];
+		nextMoveVelocity[2] = cameraPos[2] - oldCameraPos[2];
+		
+		
+		
+		calculateVectors();
 	}
 	
 	
 	
-	function change_resolution()
+	function changeResolution()
 	{
-		image_size = Math.max(100, parseInt(resolution_input_element.value || 500));
+		imageSize = Math.max(100, parseInt(resolutionInputElement.value || 500));
 		
 		
 		
-		if (wilson.fullscreen.currently_fullscreen)
+		if (wilson.fullscreen.currentlyFullscreen)
 		{
-			if (Page.Layout.aspect_ratio >= 1)
+			if (Page.Layout.aspectRatio >= 1)
 			{
-				image_width = image_size;
-				image_height = Math.floor(image_size / Page.Layout.aspect_ratio);
+				imageWidth = imageSize;
+				imageHeight = Math.floor(imageSize / Page.Layout.aspectRatio);
 			}
 			
 			else
 			{
-				image_width = Math.floor(image_size * Page.Layout.aspect_ratio);
-				image_height = image_size;
+				imageWidth = Math.floor(imageSize * Page.Layout.aspectRatio);
+				imageHeight = imageSize;
 			}
 		}
 		
 		else
 		{
-			image_width = image_size;
-			image_height = image_size;
+			imageWidth = imageSize;
+			imageHeight = imageSize;
 		}
 		
 		
 		
-		wilson.change_canvas_size(image_width, image_height);
+		wilson.changeCanvasSize(imageWidth, imageHeight);
 		
 		
 		
-		if (image_width >= image_height)
+		if (imageWidth >= imageHeight)
 		{
-			wilson.gl.uniform1f(wilson.uniforms["aspect_ratio_x"], image_width / image_height);
-			wilson.gl.uniform1f(wilson.uniforms["aspect_ratio_y"], 1);
+			wilson.gl.uniform1f(wilson.uniforms["aspectRatioX"], imageWidth / imageHeight);
+			wilson.gl.uniform1f(wilson.uniforms["aspectRatioY"], 1);
 		}
 		
 		else
 		{
-			wilson.gl.uniform1f(wilson.uniforms["aspect_ratio_x"], 1);
-			wilson.gl.uniform1f(wilson.uniforms["aspect_ratio_y"], image_width / image_height);
+			wilson.gl.uniform1f(wilson.uniforms["aspectRatioX"], 1);
+			wilson.gl.uniform1f(wilson.uniforms["aspectRatioY"], imageWidth / imageHeight);
 		}
 		
-		wilson.gl.uniform1i(wilson.uniforms["image_size"], image_size);
+		wilson.gl.uniform1i(wilson.uniforms["imageSize"], imageSize);
 		
 		
 		
-		window.requestAnimationFrame(draw_frame);
+		window.requestAnimationFrame(drawFrame);
 	}
 	
 	
 	
-	function randomize_parameters(animate_change = true)
+	function randomizeParameters(animateChange = true)
 	{
-		if (currently_animating_parameters)
+		if (currentlyAnimatingParameters)
 		{
 			return;
 		}
 		
 		
 		
-		rotation_angle_x_1_old = rotation_angle_x_1;
-		rotation_angle_y_1_old = rotation_angle_y_1;
-		rotation_angle_z_1_old = rotation_angle_z_1;
-		rotation_angle_x_2_old = rotation_angle_x_2;
-		rotation_angle_y_2_old = rotation_angle_y_2;
-		rotation_angle_z_2_old = rotation_angle_z_2;
+		rotationAngleX1Old = rotationAngleX1;
+		rotationAngleY1Old = rotationAngleY1;
+		rotationAngleZ1Old = rotationAngleZ1;
+		rotationAngleX2Old = rotationAngleX2;
+		rotationAngleY2Old = rotationAngleY2;
+		rotationAngleZ2Old = rotationAngleZ2;
 		
-		rotation_angle_x_1_delta = Math.random()*.375 - .1875 - rotation_angle_x_1_old;
-		rotation_angle_y_1_delta = Math.random()*.375 - .1875 - rotation_angle_y_1_old;
-		rotation_angle_z_1_delta = Math.random()*.75 - .375 - rotation_angle_z_1_old;
-		rotation_angle_x_2_delta = Math.random()*.375 - .1875 - rotation_angle_x_2_old;
-		rotation_angle_y_2_delta = Math.random()*.375 - .1875 - rotation_angle_y_2_old;
-		rotation_angle_z_2_delta = Math.random()*.75 - .375 - rotation_angle_z_2_old;
+		rotationAngleX1Delta = Math.random()*.375 - .1875 - rotationAngleX1Old;
+		rotationAngleY1Delta = Math.random()*.375 - .1875 - rotationAngleY1Old;
+		rotationAngleZ1Delta = Math.random()*.75 - .375 - rotationAngleZ1Old;
+		rotationAngleX2Delta = Math.random()*.375 - .1875 - rotationAngleX2Old;
+		rotationAngleY2Delta = Math.random()*.375 - .1875 - rotationAngleY2Old;
+		rotationAngleZ2Delta = Math.random()*.75 - .375 - rotationAngleZ2Old;
 		
-		rotation_angle_x_1_input_element.value = Math.round((rotation_angle_x_1_old + rotation_angle_x_1_delta) * 1000000) / 1000000;
-		rotation_angle_y_1_input_element.value = Math.round((rotation_angle_y_1_old + rotation_angle_y_1_delta) * 1000000) / 1000000;
-		rotation_angle_z_1_input_element.value = Math.round((rotation_angle_z_1_old + rotation_angle_z_1_delta) * 1000000) / 1000000;
-		rotation_angle_x_2_input_element.value = Math.round((rotation_angle_x_2_old + rotation_angle_x_2_delta) * 1000000) / 1000000;
-		rotation_angle_y_2_input_element.value = Math.round((rotation_angle_y_2_old + rotation_angle_y_2_delta) * 1000000) / 1000000;
-		rotation_angle_z_2_input_element.value = Math.round((rotation_angle_z_2_old + rotation_angle_z_2_delta) * 1000000) / 1000000;
+		rotationAngleX1InputElement.value = Math.round((rotationAngleX1Old + rotationAngleX1Delta) * 1000000) / 1000000;
+		rotationAngleY1InputElement.value = Math.round((rotationAngleY1Old + rotationAngleY1Delta) * 1000000) / 1000000;
+		rotationAngleZ1InputElement.value = Math.round((rotationAngleZ1Old + rotationAngleZ1Delta) * 1000000) / 1000000;
+		rotationAngleX2InputElement.value = Math.round((rotationAngleX2Old + rotationAngleX2Delta) * 1000000) / 1000000;
+		rotationAngleY2InputElement.value = Math.round((rotationAngleY2Old + rotationAngleY2Delta) * 1000000) / 1000000;
+		rotationAngleZ2InputElement.value = Math.round((rotationAngleZ2Old + rotationAngleZ2Delta) * 1000000) / 1000000;
 		
 		
 		
-		if (animate_change)
+		if (animateChange)
 		{
-			animate_parameter_change();
+			animateParameterChange();
 		}
 		
 		else
 		{
-			rotation_angle_x_1 = rotation_angle_x_1_old + rotation_angle_x_1_delta;
-			rotation_angle_y_1 = rotation_angle_y_1_old + rotation_angle_y_1_delta;
-			rotation_angle_z_1 = rotation_angle_z_1_old + rotation_angle_z_1_delta;
-			rotation_angle_x_2 = rotation_angle_x_2_old + rotation_angle_x_2_delta;
-			rotation_angle_y_2 = rotation_angle_y_2_old + rotation_angle_y_2_delta;
-			rotation_angle_z_2 = rotation_angle_z_2_old + rotation_angle_z_2_delta;
+			rotationAngleX1 = rotationAngleX1Old + rotationAngleX1Delta;
+			rotationAngleY1 = rotationAngleY1Old + rotationAngleY1Delta;
+			rotationAngleZ1 = rotationAngleZ1Old + rotationAngleZ1Delta;
+			rotationAngleX2 = rotationAngleX2Old + rotationAngleX2Delta;
+			rotationAngleY2 = rotationAngleY2Old + rotationAngleY2Delta;
+			rotationAngleZ2 = rotationAngleZ2Old + rotationAngleZ2Delta;
 		}
 	}
 	
 	
 	
-	function update_parameters()
+	function updateParameters()
 	{
-		rotation_angle_x_1_old = rotation_angle_x_1;
-		rotation_angle_y_1_old = rotation_angle_y_1;
-		rotation_angle_z_1_old = rotation_angle_z_1;
-		rotation_angle_x_2_old = rotation_angle_x_2;
-		rotation_angle_y_2_old = rotation_angle_y_2;
-		rotation_angle_z_2_old = rotation_angle_z_2;
+		rotationAngleX1Old = rotationAngleX1;
+		rotationAngleY1Old = rotationAngleY1;
+		rotationAngleZ1Old = rotationAngleZ1;
+		rotationAngleX2Old = rotationAngleX2;
+		rotationAngleY2Old = rotationAngleY2;
+		rotationAngleZ2Old = rotationAngleZ2;
 		
-		rotation_angle_x_1_delta = (parseFloat(rotation_angle_x_1_input_element.value || 0) || 0) - rotation_angle_x_1_old;
-		rotation_angle_y_1_delta = (parseFloat(rotation_angle_y_1_input_element.value || 0) || 0) - rotation_angle_y_1_old;
-		rotation_angle_z_1_delta = (parseFloat(rotation_angle_z_1_input_element.value || 0) || 0) - rotation_angle_z_1_old;
-		rotation_angle_x_2_delta = (parseFloat(rotation_angle_x_2_input_element.value || 0) || 0) - rotation_angle_x_2_old;
-		rotation_angle_y_2_delta = (parseFloat(rotation_angle_y_2_input_element.value || 0) || 0) - rotation_angle_y_2_old;
-		rotation_angle_z_2_delta = (parseFloat(rotation_angle_z_2_input_element.value || 0) || 0) - rotation_angle_z_2_old;
+		rotationAngleX1Delta = (parseFloat(rotationAngleX1InputElement.value || 0) || 0) - rotationAngleX1Old;
+		rotationAngleY1Delta = (parseFloat(rotationAngleY1InputElement.value || 0) || 0) - rotationAngleY1Old;
+		rotationAngleZ1Delta = (parseFloat(rotationAngleZ1InputElement.value || 0) || 0) - rotationAngleZ1Old;
+		rotationAngleX2Delta = (parseFloat(rotationAngleX2InputElement.value || 0) || 0) - rotationAngleX2Old;
+		rotationAngleY2Delta = (parseFloat(rotationAngleY2InputElement.value || 0) || 0) - rotationAngleY2Old;
+		rotationAngleZ2Delta = (parseFloat(rotationAngleZ2InputElement.value || 0) || 0) - rotationAngleZ2Old;
 		
-		animate_parameter_change();
+		animateParameterChange();
 	}
 	
 	
 	
-	function animate_parameter_change()
+	function animateParameterChange()
 	{
-		if (!currently_animating_parameters)
+		if (!currentlyAnimatingParameters)
 		{
-			currently_animating_parameters = true;
+			currentlyAnimatingParameters = true;
 			
-			parameter_animation_frame = 0;
+			parameterAnimationFrame = 0;
 			
-			window.requestAnimationFrame(draw_frame);
+			window.requestAnimationFrame(drawFrame);
 		}
 	}
 	
 	
 	
-	function animate_parameter_change_step()
+	function animateParameterChangeStep()
 	{
-		let t = .5 * Math.sin(Math.PI * parameter_animation_frame / 120 - Math.PI / 2) + .5;
+		let t = .5 * Math.sin(Math.PI * parameterAnimationFrame / 120 - Math.PI / 2) + .5;
 		
-		rotation_angle_x_1 = rotation_angle_x_1_old + rotation_angle_x_1_delta * t;
-		rotation_angle_y_1 = rotation_angle_y_1_old + rotation_angle_y_1_delta * t;
-		rotation_angle_z_1 = rotation_angle_z_1_old + rotation_angle_z_1_delta * t;
-		rotation_angle_x_2 = rotation_angle_x_2_old + rotation_angle_x_2_delta * t;
-		rotation_angle_y_2 = rotation_angle_y_2_old + rotation_angle_y_2_delta * t;
-		rotation_angle_z_2 = rotation_angle_z_2_old + rotation_angle_z_2_delta * t;
-		
-		
-		
-		let mat_z = [[Math.cos(rotation_angle_z_1), -Math.sin(rotation_angle_z_1), 0], [Math.sin(rotation_angle_z_1), Math.cos(rotation_angle_z_1), 0], [0, 0, 1]];
-		let mat_y = [[Math.cos(rotation_angle_y_1), 0, -Math.sin(rotation_angle_y_1)], [0, 1, 0],[Math.sin(rotation_angle_y_1), 0, Math.cos(rotation_angle_y_1)]];
-		let mat_x = [[1, 0, 0], [0, Math.cos(rotation_angle_x_1), -Math.sin(rotation_angle_x_1)], [0, Math.sin(rotation_angle_x_1), Math.cos(rotation_angle_x_1)]];
-		
-		let mat_total = mat_mul(mat_mul(mat_z, mat_y), mat_x);
-		
-		wilson.gl.uniformMatrix3fv(wilson.uniforms["rotation_matrix_1"], false, [mat_total[0][0], mat_total[1][0], mat_total[2][0], mat_total[0][1], mat_total[1][1], mat_total[2][1], mat_total[0][2], mat_total[1][2], mat_total[2][2]]);
+		rotationAngleX1 = rotationAngleX1Old + rotationAngleX1Delta * t;
+		rotationAngleY1 = rotationAngleY1Old + rotationAngleY1Delta * t;
+		rotationAngleZ1 = rotationAngleZ1Old + rotationAngleZ1Delta * t;
+		rotationAngleX2 = rotationAngleX2Old + rotationAngleX2Delta * t;
+		rotationAngleY2 = rotationAngleY2Old + rotationAngleY2Delta * t;
+		rotationAngleZ2 = rotationAngleZ2Old + rotationAngleZ2Delta * t;
 		
 		
 		
-		mat_z = [[Math.cos(rotation_angle_z_2), -Math.sin(rotation_angle_z_2), 0], [Math.sin(rotation_angle_z_2), Math.cos(rotation_angle_z_2), 0], [0, 0, 1]];
-		mat_y = [[Math.cos(rotation_angle_y_2), 0, -Math.sin(rotation_angle_y_2)], [0, 1, 0],[Math.sin(rotation_angle_y_2), 0, Math.cos(rotation_angle_y_2)]];
-		mat_x = [[1, 0, 0], [0, Math.cos(rotation_angle_x_2), -Math.sin(rotation_angle_x_2)], [0, Math.sin(rotation_angle_x_2), Math.cos(rotation_angle_x_2)]];
+		let matZ = [[Math.cos(rotationAngleZ1), -Math.sin(rotationAngleZ1), 0], [Math.sin(rotationAngleZ1), Math.cos(rotationAngleZ1), 0], [0, 0, 1]];
+		let matY = [[Math.cos(rotationAngleY1), 0, -Math.sin(rotationAngleY1)], [0, 1, 0],[Math.sin(rotationAngleY1), 0, Math.cos(rotationAngleY1)]];
+		let matX = [[1, 0, 0], [0, Math.cos(rotationAngleX1), -Math.sin(rotationAngleX1)], [0, Math.sin(rotationAngleX1), Math.cos(rotationAngleX1)]];
 		
-		mat_total = mat_mul(mat_mul(mat_z, mat_y), mat_x);
+		let matTotal = matMul(matMul(matZ, matY), matX);
 		
-		wilson.gl.uniformMatrix3fv(wilson.uniforms["rotation_matrix_2"], false, [mat_total[0][0], mat_total[1][0], mat_total[2][0], mat_total[0][1], mat_total[1][1], mat_total[2][1], mat_total[0][2], mat_total[1][2], mat_total[2][2]]);
+		wilson.gl.uniformMatrix3fv(wilson.uniforms["rotationMatrix1"], false, [matTotal[0][0], matTotal[1][0], matTotal[2][0], matTotal[0][1], matTotal[1][1], matTotal[2][1], matTotal[0][2], matTotal[1][2], matTotal[2][2]]);
 		
 		
 		
-		parameter_animation_frame++;
+		matZ = [[Math.cos(rotationAngleZ2), -Math.sin(rotationAngleZ2), 0], [Math.sin(rotationAngleZ2), Math.cos(rotationAngleZ2), 0], [0, 0, 1]];
+		matY = [[Math.cos(rotationAngleY2), 0, -Math.sin(rotationAngleY2)], [0, 1, 0],[Math.sin(rotationAngleY2), 0, Math.cos(rotationAngleY2)]];
+		matX = [[1, 0, 0], [0, Math.cos(rotationAngleX2), -Math.sin(rotationAngleX2)], [0, Math.sin(rotationAngleX2), Math.cos(rotationAngleX2)]];
 		
-		if (parameter_animation_frame === 121)
+		matTotal = matMul(matMul(matZ, matY), matX);
+		
+		wilson.gl.uniformMatrix3fv(wilson.uniforms["rotationMatrix2"], false, [matTotal[0][0], matTotal[1][0], matTotal[2][0], matTotal[0][1], matTotal[1][1], matTotal[2][1], matTotal[0][2], matTotal[1][2], matTotal[2][2]]);
+		
+		
+		
+		parameterAnimationFrame++;
+		
+		if (parameterAnimationFrame === 121)
 		{
-			currently_animating_parameters = false;
+			currentlyAnimatingParameters = false;
 		}
 	}
 	
 	
 	
-	function change_polyhedron(new_polyhedron_index)
+	function changePolyhedron(newPolyhedronIndex)
 	{
 		wilson.canvas.classList.add("animated-opacity");
 		
@@ -1350,24 +1350,24 @@
 		
 		setTimeout(() =>
 		{
-			polyhedron_index = new_polyhedron_index;
+			polyhedronIndex = newPolyhedronIndex;
 			
 			
 			
-			wilson.gl.uniform3fv(wilson.uniforms["light_pos"], light_pos[polyhedron_index]);
+			wilson.gl.uniform3fv(wilson.uniforms["lightPos"], lightPos[polyhedronIndex]);
 			
-			wilson.gl.uniform3fv(wilson.uniforms["scale_center"], scale_center[polyhedron_index]);
+			wilson.gl.uniform3fv(wilson.uniforms["scaleCenter"], scaleCenter[polyhedronIndex]);
 			
-			wilson.gl.uniform3fv(wilson.uniforms["n1"], n1[polyhedron_index]);
-			wilson.gl.uniform3fv(wilson.uniforms["n2"], n2[polyhedron_index]);
-			wilson.gl.uniform3fv(wilson.uniforms["n3"], n3[polyhedron_index]);
-			wilson.gl.uniform3fv(wilson.uniforms["n4"], n4[polyhedron_index]);
+			wilson.gl.uniform3fv(wilson.uniforms["n1"], n1[polyhedronIndex]);
+			wilson.gl.uniform3fv(wilson.uniforms["n2"], n2[polyhedronIndex]);
+			wilson.gl.uniform3fv(wilson.uniforms["n3"], n3[polyhedronIndex]);
+			wilson.gl.uniform3fv(wilson.uniforms["n4"], n4[polyhedronIndex]);
 			
-			wilson.gl.uniform1i(wilson.uniforms["num_ns"], num_ns[polyhedron_index]);
+			wilson.gl.uniform1i(wilson.uniforms["numNs"], numNs[polyhedronIndex]);
 			
 			
 			
-			window.requestAnimationFrame(draw_frame);
+			window.requestAnimationFrame(drawFrame);
 			
 			wilson.canvas.style.opacity = 1;
 			
@@ -1375,6 +1375,6 @@
 			{
 				wilson.canvas.classList.remove("animated-opacity");
 			});
-		}, Site.opacity_animation_time);
+		}, Site.opacityAnimationTime);
 	}
-}()
+	}()

@@ -2,7 +2,7 @@
 
 !async function()
 {
-	await Site.load_applet("brownian-trees");
+	await Site.loadApplet("brownian-trees");
 	
 	const applet = new BrownianTree(Page.element.querySelector("#output-canvas"));
 	
@@ -10,22 +10,22 @@
 	
 	function run()
 	{
-		const resolution = parseInt(resolution_input_element.value || 1000);
+		const resolution = parseInt(resolutionInputElement.value || 1000);
 		
 		applet.run(resolution);
 	}
 	
 	
 	
-	const generate_button_element = Page.element.querySelector("#generate-button");
+	const generateButtonElement = Page.element.querySelector("#generate-button");
 
-	generate_button_element.addEventListener("click", run);
+	generateButtonElement.addEventListener("click", run);
 	
 	
 	
-	const resolution_input_element = Page.element.querySelector("#resolution-input");
+	const resolutionInputElement = Page.element.querySelector("#resolution-input");
 	
-	resolution_input_element.addEventListener("keydown", (e) =>
+	resolutionInputElement.addEventListener("keydown", (e) =>
 	{
 		if (e.keyCode === 13)
 		{
@@ -35,9 +35,9 @@
 	
 	
 	
-	const download_button_element = Page.element.querySelector("#download-button");
+	const downloadButtonElement = Page.element.querySelector("#download-button");
 	
-	download_button_element.addEventListener("click", () => wilson.download_frame("a-brownian-tree.png"));
+	downloadButtonElement.addEventListener("click", () => wilson.downloadFrame("a-brownian-tree.png"));
 	
 	
 	

@@ -2,7 +2,7 @@
 
 !async function()
 {
-	await Site.load_applet("domino-shuffling");
+	await Site.loadApplet("domino-shuffling");
 	
 	const applet = new DominoShuffling(Page.element.querySelector("#output-canvas"));
 	
@@ -10,24 +10,24 @@
 	
 	function run()
 	{
-		const resolution = parseInt(resolution_input_element.value || 2000);
-		const diamond_size = parseInt(diamond_size_input_element.value || 20) + 1;
-		const use_smooth_colors = use_smooth_colors_checkbox_element.checked;
+		const resolution = parseInt(resolutionInputElement.value || 2000);
+		const diamondSize = parseInt(diamondSizeInputElement.value || 20) + 1;
+		const useSmoothColors = useSmoothColorsCheckboxElement.checked;
 		
-		applet.run(resolution, diamond_size, use_smooth_colors);
+		applet.run(resolution, diamondSize, useSmoothColors);
 	}
 	
 	
 	
-	const generate_button_element = Page.element.querySelector("#generate-button");
+	const generateButtonElement = Page.element.querySelector("#generate-button");
 	
-	generate_button_element.addEventListener("click", run);
+	generateButtonElement.addEventListener("click", run);
 	
 	
 	
-	const resolution_input_element = Page.element.querySelector("#resolution-input");
+	const resolutionInputElement = Page.element.querySelector("#resolution-input");
 	
-	resolution_input_element.addEventListener("keydown", (e) =>
+	resolutionInputElement.addEventListener("keydown", (e) =>
 	{
 		if (e.keyCode === 13)
 		{
@@ -37,9 +37,9 @@
 	
 	
 	
-	const diamond_size_input_element = Page.element.querySelector("#diamond-size-input");
+	const diamondSizeInputElement = Page.element.querySelector("#diamond-size-input");
 	
-	diamond_size_input_element.addEventListener("keydown", (e) =>
+	diamondSizeInputElement.addEventListener("keydown", (e) =>
 	{
 		if (e.keyCode === 13)
 		{
@@ -49,14 +49,14 @@
 	
 	
 	
-	const use_smooth_colors_checkbox_element = Page.element.querySelector("#use-smooth-colors-checkbox");
-	use_smooth_colors_checkbox_element.checked = true;
+	const useSmoothColorsCheckboxElement = Page.element.querySelector("#use-smooth-colors-checkbox");
+	useSmoothColorsCheckboxElement.checked = true;
 	
 	
 	
-	const download_button_element = Page.element.querySelector("#download-button");
+	const downloadButtonElement = Page.element.querySelector("#download-button");
 	
-	download_button_element.addEventListener("click", () => applet.wilson.download_frame("an-aztec-diamond.png"));
+	downloadButtonElement.addEventListener("click", () => applet.wilson.downloadFrame("an-aztec-diamond.png"));
 	
 	
 	

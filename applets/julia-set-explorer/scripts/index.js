@@ -4,67 +4,67 @@
 	
 	
 	
-	let frag_shader_source = `
+	let fragShaderSource = `
 		precision highp float;
 		
 		varying vec2 uv;
 		
-		uniform int julia_mode;
-		uniform int double_precision;
+		uniform int juliaMode;
+		uniform int doublePrecision;
 		
-		uniform float aspect_ratio;
+		uniform float aspectRatio;
 		
-		uniform vec2 world_center_x;
-		uniform vec2 world_center_y;
-		uniform float world_size;
+		uniform vec2 worldCenterX;
+		uniform vec2 worldCenterY;
+		uniform float worldSize;
 		
 		uniform float a;
 		uniform float b;
-		uniform int num_iterations;
-		uniform float brightness_scale;
+		uniform int numIterations;
+		uniform float brightnessScale;
 		
 		
 		
-		float times_frc(float a, float b)
+		float timesFrc(float a, float b)
 		{
 			return mix(0.0, a * b, b != 0.0 ? 1.0 : 0.0);
 		}
 
-		float plus_frc(float a, float b)
+		float plusFrc(float a, float b)
 		{
 			return mix(a, a + b, b != 0.0 ? 1.0 : 0.0);
 		}
 
-		float minus_frc(float a, float b)
+		float minusFrc(float a, float b)
 		{
 			return mix(a, a - b, b != 0.0 ? 1.0 : 0.0);
 		}
 
 		// Double emulation based on GLSL Mandelbrot Shader by Henry Thasler (www.thasler.org/blog)
 		// Emulation based on Fortran-90 double-single package. See http://crd.lbl.gov/~dhbailey/mpdist/
-		// Add: res = ds_add(a, b) => res = a + b
+		// Add: res = dsAdd(a, b) => res = a + b
 		vec2 add (vec2 dsa, vec2 dsb)
 		{
 			vec2 dsc;
 			float t1, t2, e;
-			t1 = plus_frc(dsa.x, dsb.x);
-			e = minus_frc(t1, dsa.x);
-			t2 = plus_frc(plus_frc(plus_frc(minus_frc(dsb.x, e), minus_frc(dsa.x, minus_frc(t1, e))), dsa.y), dsb.y);
-			dsc.x = plus_frc(t1, t2);
-			dsc.y = minus_frc(t2, minus_frc(dsc.x, t1));
+			t1 = plusFrc(dsa.x, dsb.x);
+			e = minusFrc(t1, dsa.x);
+			t2 = plusFrc(plusFrc(plusFrc(minusFrc(dsb.x, e), minusFrc(dsa.x, minusFrc(t1, e))), dsa.y), dsb.y);
+			dsc.x = plusFrc(t1, t2);
+			dsc.y = minusFrc(t2, minusFrc(dsc.x, t1));
 			return dsc;
 		}
 
-		// Subtract: res = ds_sub(a, b) => res = a - b
+		// Subtract: res = dsSub(a, b) => res = a - b
 		vec2 sub (vec2 dsa, vec2 dsb)
 		{
 			vec2 dsc;
 			float e, t1, t2;
-			t1 = minus_frc(dsa.x, dsb.x);
-			e = minus_frc(t1, dsa.x);
-			t2 = minus_frc(plus_frc(plus_frc(minus_frc(minus_frc(0.0, dsb.x), e), minus_frc(dsa.x, minus_frc(t1, e))), dsa.y), dsb.y);
-			dsc.x = plus_frc(t1, t2);
-			dsc.y = minus_frc(t2, minus_frc(dsc.x, t1));
+			t1 = minusFrc(dsa.x, dsb.x);
+			e = minusFrc(t1, dsa.x);
+			t2 = minusFrc(plusFrc(plusFrc(minusFrc(minusFrc(0.0, dsb.x), e), minusFrc(dsa.x, minusFrc(t1, e))), dsa.y), dsb.y);
+			dsc.x = plusFrc(t1, t2);
+			dsc.y = minusFrc(t2, minusFrc(dsc.x, t1));
 			return dsc;
 		}
 
@@ -94,27 +94,27 @@
 			return 0.;
 		}
 
-		// Multiply: res = ds_mul(a, b) => res = a * b
+		// Multiply: res = dsMul(a, b) => res = a * b
 
 		vec2 mul (vec2 dsa, vec2 dsb)
 		{
 			vec2 dsc;
 			float c11, c21, c2, e, t1, t2;
 			float a1, a2, b1, b2, cona, conb, split = 8193.;
-			cona = times_frc(dsa.x, split);
-			conb = times_frc(dsb.x, split);
-			a1 = minus_frc(cona, minus_frc(cona, dsa.x));
-			b1 = minus_frc(conb, minus_frc(conb, dsb.x));
-			a2 = minus_frc(dsa.x, a1);
-			b2 = minus_frc(dsb.x, b1);
-			c11 = times_frc(dsa.x, dsb.x);
-			c21 = plus_frc(times_frc(a2, b2), plus_frc(times_frc(a2, b1), plus_frc(times_frc(a1, b2), minus_frc(times_frc(a1, b1), c11))));
-			c2 = plus_frc(times_frc(dsa.x, dsb.y), times_frc(dsa.y, dsb.x));
-			t1 = plus_frc(c11, c2);
-			e = minus_frc(t1, c11);
-			t2 = plus_frc(plus_frc(times_frc(dsa.y, dsb.y), plus_frc(minus_frc(c2, e), minus_frc(c11, minus_frc(t1, e)))), c21);
-			dsc.x = plus_frc(t1, t2);
-			dsc.y = minus_frc(t2, minus_frc(dsc.x, t1));
+			cona = timesFrc(dsa.x, split);
+			conb = timesFrc(dsb.x, split);
+			a1 = minusFrc(cona, minusFrc(cona, dsa.x));
+			b1 = minusFrc(conb, minusFrc(conb, dsb.x));
+			a2 = minusFrc(dsa.x, a1);
+			b2 = minusFrc(dsb.x, b1);
+			c11 = timesFrc(dsa.x, dsb.x);
+			c21 = plusFrc(timesFrc(a2, b2), plusFrc(timesFrc(a2, b1), plusFrc(timesFrc(a1, b2), minusFrc(timesFrc(a1, b1), c11))));
+			c2 = plusFrc(timesFrc(dsa.x, dsb.y), timesFrc(dsa.y, dsb.x));
+			t1 = plusFrc(c11, c2);
+			e = minusFrc(t1, c11);
+			t2 = plusFrc(plusFrc(timesFrc(dsa.y, dsb.y), plusFrc(minusFrc(c2, e), minusFrc(c11, minusFrc(t1, e)))), c21);
+			dsc.x = plusFrc(t1, t2);
+			dsc.y = minusFrc(t2, minusFrc(dsc.x, t1));
 			return dsc;
 		}
 
@@ -172,18 +172,18 @@
 		
 		void main(void)
 		{
-			if (double_precision == 0)
+			if (doublePrecision == 0)
 			{
 				vec2 z;
 				
-				if (aspect_ratio >= 1.0)
+				if (aspectRatio >= 1.0)
 				{
-					z = vec2(uv.x * aspect_ratio * world_size + world_center_x.x, uv.y * world_size + world_center_y.x);
+					z = vec2(uv.x * aspectRatio * worldSize + worldCenterX.x, uv.y * worldSize + worldCenterY.x);
 				}
 				
 				else
 				{
-					z = vec2(uv.x * world_size + world_center_x.x, uv.y / aspect_ratio * world_size + world_center_y.x);
+					z = vec2(uv.x * worldSize + worldCenterX.x, uv.y / aspectRatio * worldSize + worldCenterY.x);
 				}
 				
 				vec3 color = normalize(vec3(abs(z.x + z.y) / 2.0, abs(z.x) / 2.0, abs(z.y) / 2.0) + .1 / length(z) * vec3(1.0, 1.0, 1.0));
@@ -191,13 +191,13 @@
 				
 				
 				
-				if (julia_mode == 0)
+				if (juliaMode == 0)
 				{
 					vec2 c = z;
 					
 					for (int iteration = 0; iteration < 3001; iteration++)
 					{
-						if (iteration == num_iterations)
+						if (iteration == numIterations)
 						{
 							gl_FragColor = vec4(0.0, 0.0, 0.0, 1.0);
 							return;
@@ -214,18 +214,18 @@
 					}
 					
 					
-					gl_FragColor = vec4(brightness / brightness_scale * color, 1.0);
+					gl_FragColor = vec4(brightness / brightnessScale * color, 1.0);
 				}
 				
 				
 				
-				else if (julia_mode == 1)
+				else if (juliaMode == 1)
 				{
 					vec2 c = vec2(a, b);
 					
 					for (int iteration = 0; iteration < 3001; iteration++)
 					{
-						if (iteration == num_iterations)
+						if (iteration == numIterations)
 						{
 							gl_FragColor = vec4(0.0, 0.0, 0.0, 1.0);
 							return;
@@ -242,7 +242,7 @@
 					}
 					
 					
-					gl_FragColor = vec4(brightness / brightness_scale * color, 1.0);
+					gl_FragColor = vec4(brightness / brightnessScale * color, 1.0);
 				}
 				
 				
@@ -255,7 +255,7 @@
 					
 					for (int iteration = 0; iteration < 3001; iteration++)
 					{
-						if (iteration == num_iterations)
+						if (iteration == numIterations)
 						{
 							gl_FragColor = vec4(0.0, 0.0, 0.0, 1.0);
 							
@@ -278,12 +278,12 @@
 					
 					if (!broken)
 					{
-						gl_FragColor = vec4(.5 * brightness / brightness_scale * color, 1.0);
+						gl_FragColor = vec4(.5 * brightness / brightnessScale * color, 1.0);
 					}
 					
 					
 					
-					z = vec2(uv.x * aspect_ratio * 2.0, uv.y * 2.0);
+					z = vec2(uv.x * aspectRatio * 2.0, uv.y * 2.0);
 					color = normalize(vec3(abs(z.x + z.y) / 2.0, abs(z.x) / 2.0, abs(z.y) / 2.0) + .1 / length(z) * vec3(1.0, 1.0, 1.0));
 					brightness = exp(-length(z));
 					
@@ -293,7 +293,7 @@
 					
 					for (int iteration = 0; iteration < 3001; iteration++)
 					{
-						if (iteration == num_iterations)
+						if (iteration == numIterations)
 						{
 							gl_FragColor.xyz /= 4.0;
 							
@@ -314,7 +314,7 @@
 					
 					if (!broken)
 					{
-						gl_FragColor += vec4(brightness / brightness_scale * color, 0.0);
+						gl_FragColor += vec4(brightness / brightnessScale * color, 0.0);
 					}
 				}
 			}
@@ -325,14 +325,14 @@
 			{
 				vec4 z;
 				
-				if (aspect_ratio >= 1.0)
+				if (aspectRatio >= 1.0)
 				{
-					z = dcAdd(dcMul(vec4(uv.x * aspect_ratio, 0.0, uv.y, 0.0), vec2(world_size, 0.0)), vec4(world_center_x, world_center_y));
+					z = dcAdd(dcMul(vec4(uv.x * aspectRatio, 0.0, uv.y, 0.0), vec2(worldSize, 0.0)), vec4(worldCenterX, worldCenterY));
 				}
 				
 				else
 				{
-					z = dcAdd(dcMul(vec4(uv.x, 0.0, uv.y / aspect_ratio, 0.0), vec2(world_size, 0.0)), vec4(world_center_x, world_center_y));
+					z = dcAdd(dcMul(vec4(uv.x, 0.0, uv.y / aspectRatio, 0.0), vec2(worldSize, 0.0)), vec4(worldCenterX, worldCenterY));
 				}
 				
 				vec3 color = normalize(vec3(abs(z.x + z.z) / 2.0, abs(z.x) / 2.0, abs(z.z) / 2.0) + .1 / length(z) * vec3(1.0, 1.0, 1.0));
@@ -340,13 +340,13 @@
 				
 				
 				
-				if (julia_mode == 0)
+				if (juliaMode == 0)
 				{
 					vec4 c = z;
 					
 					for (int iteration = 0; iteration < 3001; iteration++)
 					{
-						if (iteration == num_iterations)
+						if (iteration == numIterations)
 						{
 							gl_FragColor = vec4(0.0, 0.0, 0.0, 1.0);
 							return;
@@ -363,16 +363,16 @@
 					}
 					
 					
-					gl_FragColor = vec4(brightness / brightness_scale * color, 1.0);
+					gl_FragColor = vec4(brightness / brightnessScale * color, 1.0);
 				}
 				
-				else if (julia_mode == 1)
+				else if (juliaMode == 1)
 				{
 					vec4 c = vec4(a, 0.0, b, 0.0);
 					
 					for (int iteration = 0; iteration < 3001; iteration++)
 					{
-						if (iteration == num_iterations)
+						if (iteration == numIterations)
 						{
 							gl_FragColor = vec4(0.0, 0.0, 0.0, 1.0);
 							return;
@@ -389,7 +389,7 @@
 					}
 					
 					
-					gl_FragColor = vec4(brightness / brightness_scale * color, 1.0);
+					gl_FragColor = vec4(brightness / brightnessScale * color, 1.0);
 				}
 				
 				else
@@ -400,7 +400,7 @@
 					
 					for (int iteration = 0; iteration < 3001; iteration++)
 					{
-						if (iteration == num_iterations)
+						if (iteration == numIterations)
 						{
 							gl_FragColor = vec4(0.0, 0.0, 0.0, 1.0);
 							
@@ -423,7 +423,7 @@
 					
 					if (!broken)
 					{
-						gl_FragColor = vec4(.5 * brightness / brightness_scale * color, 1.0);
+						gl_FragColor = vec4(.5 * brightness / brightnessScale * color, 1.0);
 					}
 					
 					
@@ -438,7 +438,7 @@
 					
 					for (int iteration = 0; iteration < 3001; iteration++)
 					{
-						if (iteration == num_iterations)
+						if (iteration == numIterations)
 						{
 							gl_FragColor.xyz /= 4.0;
 							
@@ -459,7 +459,7 @@
 					
 					if (!broken)
 					{
-						gl_FragColor += vec4(brightness / brightness_scale * color, 0.0);
+						gl_FragColor += vec4(brightness / brightnessScale * color, 0.0);
 					}
 				}
 			}	
@@ -472,206 +472,206 @@
 	{
 		renderer: "gpu",
 		
-		shader: frag_shader_source,
+		shader: fragShaderSource,
 		
-		canvas_width: 1000,
-		canvas_height: 1000,
+		canvasWidth: 1000,
+		canvasHeight: 1000,
 		
-		world_width: 4,
-		world_height: 4,
-		world_center_x: -.75,
-		world_center_y: 0,
+		worldWidth: 4,
+		worldHeight: 4,
+		worldCenterX: -.75,
+		worldCenterY: 0,
 		
 		
 		
-		use_fullscreen: true,
+		useFullscreen: true,
 		
-		true_fullscreen: true,
+		trueFullscreen: true,
 	
-		use_fullscreen_button: true,
+		useFullscreenButton: true,
 		
-		enter_fullscreen_button_icon_path: "/graphics/general-icons/enter-fullscreen.png",
-		exit_fullscreen_button_icon_path: "/graphics/general-icons/exit-fullscreen.png",
+		enterFullscreenButtonIconPath: "/graphics/general-icons/enter-fullscreen.png",
+		exitFullscreenButtonIconPath: "/graphics/general-icons/exit-fullscreen.png",
 		
-		switch_fullscreen_callback: change_aspect_ratio,
+		switchFullscreenCallback: changeAspectRatio,
 		
 		
 		
-		mousedown_callback: on_grab_canvas,
-		touchstart_callback: on_grab_canvas,
+		mousedownCallback: onGrabCanvas,
+		touchstartCallback: onGrabCanvas,
 		
-		mousemove_callback: on_hover_canvas,
-		mousedrag_callback: on_drag_canvas,
-		touchmove_callback: on_drag_canvas,
+		mousemoveCallback: onHoverCanvas,
+		mousedragCallback: onDragCanvas,
+		touchmoveCallback: onDragCanvas,
 		
-		mouseup_callback: on_release_canvas,
-		touchend_callback: on_release_canvas,
+		mouseupCallback: onReleaseCanvas,
+		touchendCallback: onReleaseCanvas,
 		
-		wheel_callback: on_wheel_canvas,
-		pinch_callback: on_pinch_canvas
+		wheelCallback: onWheelCanvas,
+		pinchCallback: onPinchCanvas
 	};
 	
-	let options_hidden =
+	let optionsHidden =
 	{
 		renderer: "gpu",
 		
-		shader: frag_shader_source,
+		shader: fragShaderSource,
 		
-		canvas_width: 100,
-		canvas_height: 100
+		canvasWidth: 100,
+		canvasHeight: 100
 	};
 	
 	
 	
 	let wilson = new Wilson(Page.element.querySelector("#output-canvas"), options);
 
-	wilson.render.init_uniforms(["julia_mode", "double_precision", "aspect_ratio", "world_center_x", "world_center_y", "world_size", "a", "b", "num_iterations", "brightness_scale"]);
+	wilson.render.initUniforms(["juliaMode", "doublePrecision", "aspectRatio", "worldCenterX", "worldCenterY", "worldSize", "a", "b", "numIterations", "brightnessScale"]);
 	
-	wilson.gl.uniform1i(wilson.uniforms["double_precision"], 0);
-	
-	
-	
-	let wilson_hidden = new Wilson(Page.element.querySelector("#hidden-canvas"), options_hidden);
-	
-	wilson_hidden.render.init_uniforms(["julia_mode", "double_precision", "aspect_ratio", "world_center_x", "world_center_y", "world_size", "a", "b", "num_iterations", "brightness_scale"]);
-	
-	wilson_hidden.gl.uniform1i(wilson_hidden.uniforms["double_precision"], 0);
+	wilson.gl.uniform1i(wilson.uniforms["doublePrecision"], 0);
 	
 	
 	
-	let julia_mode = 0;
+	let wilsonHidden = new Wilson(Page.element.querySelector("#hidden-canvas"), optionsHidden);
 	
-	let aspect_ratio = 1;
+	wilsonHidden.render.initUniforms(["juliaMode", "doublePrecision", "aspectRatio", "worldCenterX", "worldCenterY", "worldSize", "a", "b", "numIterations", "brightnessScale"]);
 	
-	let num_iterations = 100;
+	wilsonHidden.gl.uniform1i(wilsonHidden.uniforms["doublePrecision"], 0);
 	
-	let zoom_level = 0;
-	let double_precision = false;
+	
+	
+	let juliaMode = 0;
+	
+	let aspectRatio = 1;
+	
+	let numIterations = 100;
+	
+	let zoomLevel = 0;
+	let doublePrecision = false;
 	
 	//Experimentally, the level at which a 2k x 2k canvas can see the grain of single precision rendering.
-	const double_precision_zoom_threshhold = -16;
+	const doublePrecisionZoomThreshhold = -16;
 	
-	let past_brightness_scales = [];
+	let pastBrightnessScales = [];
 	
 	let a = 0;
 	let b = 1;
 	
 	let resolution = 1000;
-	let resolution_hidden = 100;
+	let resolutionHidden = 100;
 	
-	let fixed_point_x = 0;
-	let fixed_point_y = 0;
+	let fixedPointX = 0;
+	let fixedPointY = 0;
 	
-	let next_pan_velocity_x = 0;
-	let next_pan_velocity_y = 0;
-	let next_zoom_velocity = 0;
+	let nextPanVelocityX = 0;
+	let nextPanVelocityY = 0;
+	let nextZoomVelocity = 0;
 	
-	let pan_velocity_x = 0;
-	let pan_velocity_y = 0;
-	let zoom_velocity = 0;
+	let panVelocityX = 0;
+	let panVelocityY = 0;
+	let zoomVelocity = 0;
 	
-	const pan_friction = .96;
-	const pan_velocity_start_threshhold = .0025;
-	const pan_velocity_stop_threshhold = .00025;
+	const panFriction = .96;
+	const panVelocityStartThreshhold = .0025;
+	const panVelocityStopThreshhold = .00025;
 	
-	const zoom_friction = .93;
-	const zoom_velocity_start_threshhold = .01;
-	const zoom_velocity_stop_threshhold = .001;
+	const zoomFriction = .93;
+	const zoomVelocityStartThreshhold = .01;
+	const zoomVelocityStopThreshhold = .001;
 	
-	let last_timestamp = -1;
+	let lastTimestamp = -1;
 	
 	
 
-	let resolution_input_element = Page.element.querySelector("#resolution-input");
+	let resolutionInputElement = Page.element.querySelector("#resolution-input");
 	
-	resolution_input_element.addEventListener("input", () =>
+	resolutionInputElement.addEventListener("input", () =>
 	{
-		resolution = parseInt(resolution_input_element.value || 1000);
+		resolution = parseInt(resolutionInputElement.value || 1000);
 		
-		wilson.change_canvas_size(resolution, resolution);
+		wilson.changeCanvasSize(resolution, resolution);
 		
-		window.requestAnimationFrame(draw_julia_set);
+		window.requestAnimationFrame(drawJuliaSet);
 	});
 	
 	
 	
-	let force_floats_checkbox_element = Page.element.querySelector("#force-floats-checkbox");
+	let forceFloatsCheckboxElement = Page.element.querySelector("#force-floats-checkbox");
 	
-	force_floats_checkbox_element.addEventListener("input", () =>
+	forceFloatsCheckboxElement.addEventListener("input", () =>
 	{
-		if (force_floats_checkbox_element.checked)
+		if (forceFloatsCheckboxElement.checked)
 		{
-			try {force_doubles_checkbox_element.checked = false;}
+			try {forceDoublesCheckboxElement.checked = false;}
 			catch(ex) {}
 			
-			force_doubles = false;
+			forceDoubles = false;
 		}
 		
-		if (force_floats_checkbox_element.checked && double_precision)
+		if (forceFloatsCheckboxElement.checked && doublePrecision)
 		{
-			double_precision = false;
+			doublePrecision = false;
 			
-			wilson_hidden.gl.uniform1i(wilson_hidden.uniforms["double_precision"], 0);
-			wilson.gl.uniform1i(wilson.uniforms["double_precision"], 0);
+			wilsonHidden.gl.uniform1i(wilsonHidden.uniforms["doublePrecision"], 0);
+			wilson.gl.uniform1i(wilson.uniforms["doublePrecision"], 0);
 			
 			wilson.canvas.style.borderColor = "rgb(127, 127, 127)";
 			
-			window.requestAnimationFrame(draw_julia_set);
+			window.requestAnimationFrame(drawJuliaSet);
 		}
 		
-		else if (!force_floats_checkbox_element.checked && !double_precision && zoom_level < double_precision_zoom_threshhold)
+		else if (!forceFloatsCheckboxElement.checked && !doublePrecision && zoomLevel < doublePrecisionZoomThreshhold)
 		{
-			double_precision = true;
+			doublePrecision = true;
 			
-			wilson_hidden.gl.uniform1i(wilson_hidden.uniforms["double_precision"], 1);
-			wilson.gl.uniform1i(wilson.uniforms["double_precision"], 1);
+			wilsonHidden.gl.uniform1i(wilsonHidden.uniforms["doublePrecision"], 1);
+			wilson.gl.uniform1i(wilson.uniforms["doublePrecision"], 1);
 			
 			wilson.canvas.style.borderColor = "rgb(127, 0, 0)";
 			
-			window.requestAnimationFrame(draw_julia_set);
+			window.requestAnimationFrame(drawJuliaSet);
 		}
 	});
 	
 	
 	
-	let force_doubles = false;
+	let forceDoubles = false;
 	
-	let force_doubles_checkbox_element = Page.element.querySelector("#force-doubles-checkbox");
+	let forceDoublesCheckboxElement = Page.element.querySelector("#force-doubles-checkbox");
 	
 	if (DEBUG)
 	{
-		force_doubles_checkbox_element.addEventListener("input", () =>
+		forceDoublesCheckboxElement.addEventListener("input", () =>
 		{
-			if (force_doubles_checkbox_element.checked)
+			if (forceDoublesCheckboxElement.checked)
 			{
-				force_floats_checkbox_element.checked = false;
+				forceFloatsCheckboxElement.checked = false;
 			}
 			
-			if (force_doubles_checkbox_element.checked && !double_precision)
+			if (forceDoublesCheckboxElement.checked && !doublePrecision)
 			{
-				double_precision = true;
+				doublePrecision = true;
 				
-				wilson_hidden.gl.uniform1i(wilson_hidden.uniforms["double_precision"], 1);
-				wilson.gl.uniform1i(wilson.uniforms["double_precision"], 1);
+				wilsonHidden.gl.uniform1i(wilsonHidden.uniforms["doublePrecision"], 1);
+				wilson.gl.uniform1i(wilson.uniforms["doublePrecision"], 1);
 				
 				wilson.canvas.style.borderColor = "rgb(127, 0, 0)";
 				
-				window.requestAnimationFrame(draw_julia_set);
+				window.requestAnimationFrame(drawJuliaSet);
 			}
 			
-			else if (!force_doubles_checkbox_element.checked && double_precision && zoom_level > double_precision_zoom_threshhold)
+			else if (!forceDoublesCheckboxElement.checked && doublePrecision && zoomLevel > doublePrecisionZoomThreshhold)
 			{
-				double_precision = false;
+				doublePrecision = false;
 				
-				wilson_hidden.gl.uniform1i(wilson_hidden.uniforms["double_precision"], 0);
-				wilson.gl.uniform1i(wilson.uniforms["double_precision"], 0);
+				wilsonHidden.gl.uniform1i(wilsonHidden.uniforms["doublePrecision"], 0);
+				wilson.gl.uniform1i(wilson.uniforms["doublePrecision"], 0);
 				
 				wilson.canvas.style.borderColor = "rgb(127, 127, 127)";
 				
-				window.requestAnimationFrame(draw_julia_set);
+				window.requestAnimationFrame(drawJuliaSet);
 			}
 			
-			force_doubles = force_doubles_checkbox_element.checked;
+			forceDoubles = forceDoublesCheckboxElement.checked;
 		});
 	}	
 	
@@ -682,83 +682,83 @@
 	
 	
 	
-	let download_button_element = Page.element.querySelector("#download-button");
+	let downloadButtonElement = Page.element.querySelector("#download-button");
 	
-	download_button_element.addEventListener("click", () =>
+	downloadButtonElement.addEventListener("click", () =>
 	{
-		wilson.download_frame("a-julia-set.png");
+		wilson.downloadFrame("a-julia-set.png");
 	});
 	
 	
 	
-	let switch_julia_mode_button_element = Page.element.querySelector("#switch-julia-mode-button");
+	let switchJuliaModeButtonElement = Page.element.querySelector("#switch-julia-mode-button");
 	
-	switch_julia_mode_button_element.style.opacity = 1;
+	switchJuliaModeButtonElement.style.opacity = 1;
 	
-	switch_julia_mode_button_element.addEventListener("click", () =>
+	switchJuliaModeButtonElement.addEventListener("click", () =>
 	{
-		Page.Animate.change_opacity(switch_julia_mode_button_element, 0, Site.opacity_animation_time);
+		Page.Animate.changeOpacity(switchJuliaModeButtonElement, 0, Site.opacityAnimationTime);
 		
 		setTimeout(() =>
 		{
-			if (julia_mode === 2)
+			if (juliaMode === 2)
 			{
-				switch_julia_mode_button_element.textContent = "Return to Mandelbrot Set";
+				switchJuliaModeButtonElement.textContent = "Return to Mandelbrot Set";
 			}
 			
-			else if (julia_mode === 0)
+			else if (juliaMode === 0)
 			{
-				switch_julia_mode_button_element.textContent = "Pick Julia Set";
+				switchJuliaModeButtonElement.textContent = "Pick Julia Set";
 				
-				Page.Animate.change_opacity(switch_julia_mode_button_element, 1, Site.opacity_animation_time);
+				Page.Animate.changeOpacity(switchJuliaModeButtonElement, 1, Site.opacityAnimationTime);
 			}
-		}, Site.opacity_animation_time);
+		}, Site.opacityAnimationTime);
 		
 		
 		
-		if (julia_mode === 0)
+		if (juliaMode === 0)
 		{
-			julia_mode = 2;
+			juliaMode = 2;
 			
 			a = 0;
 			b = 0;
 			
-			pan_velocity_x = 0;
-			pan_velocity_y = 0;
-			zoom_velocity = 0;
+			panVelocityX = 0;
+			panVelocityY = 0;
+			zoomVelocity = 0;
 			
-			next_pan_velocity_x = 0;
-			next_pan_velocity_y = 0;
-			next_zoom_velocity = 0;
+			nextPanVelocityX = 0;
+			nextPanVelocityY = 0;
+			nextZoomVelocity = 0;
 			
-			past_brightness_scales = [];
+			pastBrightnessScales = [];
 			
-			window.requestAnimationFrame(draw_julia_set);
+			window.requestAnimationFrame(drawJuliaSet);
 		}
 		
-		else if (julia_mode === 1)
+		else if (juliaMode === 1)
 		{
-			julia_mode = 0;
+			juliaMode = 0;
 			
-			wilson.world_center_x = -.75;
-			wilson.world_center_y = 0;
-			wilson.world_width = 4;
-			wilson.world_height = 4;
-			zoom_level = 0;
+			wilson.worldCenterX = -.75;
+			wilson.worldCenterY = 0;
+			wilson.worldWidth = 4;
+			wilson.worldHeight = 4;
+			zoomLevel = 0;
 			
-			past_brightness_scales = [];
+			pastBrightnessScales = [];
 			
-			window.requestAnimationFrame(draw_julia_set);
+			window.requestAnimationFrame(drawJuliaSet);
 		}
 	});
 	
 	
 	
 	//Render the inital frame.
-	wilson.gl.uniform1f(wilson.uniforms["aspect_ratio"], 1);
-	wilson_hidden.gl.uniform1f(wilson_hidden.uniforms["aspect_ratio"], 1);
+	wilson.gl.uniform1f(wilson.uniforms["aspectRatio"], 1);
+	wilsonHidden.gl.uniform1f(wilsonHidden.uniforms["aspectRatio"], 1);
 	
-	window.requestAnimationFrame(draw_julia_set);
+	window.requestAnimationFrame(drawJuliaSet);
 	
 	
 	
@@ -766,41 +766,41 @@
 	
 	
 	
-	function on_grab_canvas(x, y, event)
+	function onGrabCanvas(x, y, event)
 	{
-		pan_velocity_x = 0;
-		pan_velocity_y = 0;
-		zoom_velocity = 0;
+		panVelocityX = 0;
+		panVelocityY = 0;
+		zoomVelocity = 0;
 		
-		next_pan_velocity_x = 0;
-		next_pan_velocity_y = 0;
-		next_zoom_velocity = 0;
+		nextPanVelocityX = 0;
+		nextPanVelocityY = 0;
+		nextZoomVelocity = 0;
 		
 		
 		
-		if (julia_mode === 2 && event.type === "mousedown")
+		if (juliaMode === 2 && event.type === "mousedown")
 		{
-			julia_mode = 1;
+			juliaMode = 1;
 			
-			wilson.world_center_x = 0;
-			wilson.world_center_y = 0;
-			wilson.world_width = 4;
-			wilson.world_height = 4;
-			zoom_level = 0;
+			wilson.worldCenterX = 0;
+			wilson.worldCenterY = 0;
+			wilson.worldWidth = 4;
+			wilson.worldHeight = 4;
+			zoomLevel = 0;
 			
-			past_brightness_scales = [];
+			pastBrightnessScales = [];
 			
-			Page.Animate.change_opacity(switch_julia_mode_button_element, 1, Site.opacity_animation_time);
+			Page.Animate.changeOpacity(switchJuliaModeButtonElement, 1, Site.opacityAnimationTime);
 			
-			window.requestAnimationFrame(draw_julia_set);
+			window.requestAnimationFrame(drawJuliaSet);
 		}
 	}
 	
 	
 	
-	function on_drag_canvas(x, y, x_delta, y_delta, event)
+	function onDragCanvas(x, y, xDelta, yDelta, event)
 	{
-		if (julia_mode === 2 && event.type === "touchmove")
+		if (juliaMode === 2 && event.type === "touchmove")
 		{
 			a = x;
 			b = y;
@@ -808,354 +808,354 @@
 		
 		else
 		{
-			wilson.world_center_x -= x_delta;
-			wilson.world_center_y -= y_delta;
+			wilson.worldCenterX -= xDelta;
+			wilson.worldCenterY -= yDelta;
 			
-			next_pan_velocity_x = -x_delta / wilson.world_width;
-			next_pan_velocity_y = -y_delta / wilson.world_height;
+			nextPanVelocityX = -xDelta / wilson.worldWidth;
+			nextPanVelocityY = -yDelta / wilson.worldHeight;
 			
-			wilson.world_center_x = Math.min(Math.max(wilson.world_center_x, -2), 2);
-			wilson.world_center_y = Math.min(Math.max(wilson.world_center_y, -2), 2);
+			wilson.worldCenterX = Math.min(Math.max(wilson.worldCenterX, -2), 2);
+			wilson.worldCenterY = Math.min(Math.max(wilson.worldCenterY, -2), 2);
 		}
 		
-		window.requestAnimationFrame(draw_julia_set);
+		window.requestAnimationFrame(drawJuliaSet);
 	}
 	
 	
 	
-	function on_hover_canvas(x, y, x_delta, y_delta, event)
+	function onHoverCanvas(x, y, xDelta, yDelta, event)
 	{
-		if (julia_mode === 2 && event.type === "mousemove")
+		if (juliaMode === 2 && event.type === "mousemove")
 		{
 			a = x;
 			b = y;
 			
-			window.requestAnimationFrame(draw_julia_set);
+			window.requestAnimationFrame(drawJuliaSet);
 		}
 	}
 	
 	
 	
-	function on_release_canvas(x, y, event)
+	function onReleaseCanvas(x, y, event)
 	{
-		if (julia_mode === 2 && event.type === "touchend")
+		if (juliaMode === 2 && event.type === "touchend")
 		{
-			julia_mode = 1;
+			juliaMode = 1;
 			
-			wilson.world_center_x = 0;
-			wilson.world_center_y = 0;
-			wilson.world_width = 4;
-			wilson.world_height = 4;
-			zoom_level = 0;
+			wilson.worldCenterX = 0;
+			wilson.worldCenterY = 0;
+			wilson.worldWidth = 4;
+			wilson.worldHeight = 4;
+			zoomLevel = 0;
 			
-			past_brightness_scales = [];
+			pastBrightnessScales = [];
 			
-			Page.Animate.change_opacity(switch_julia_mode_button_element, 1, Site.opacity_animation_time);
+			Page.Animate.changeOpacity(switchJuliaModeButtonElement, 1, Site.opacityAnimationTime);
 			
-			window.requestAnimationFrame(draw_julia_set);
+			window.requestAnimationFrame(drawJuliaSet);
 		}
 		
 		else
 		{
-			if (Math.sqrt(next_pan_velocity_x * next_pan_velocity_x + next_pan_velocity_y * next_pan_velocity_y) >= pan_velocity_start_threshhold)
+			if (Math.sqrt(nextPanVelocityX * nextPanVelocityX + nextPanVelocityY * nextPanVelocityY) >= panVelocityStartThreshhold)
 			{
-				pan_velocity_x = next_pan_velocity_x;
-				pan_velocity_y = next_pan_velocity_y;
+				panVelocityX = nextPanVelocityX;
+				panVelocityY = nextPanVelocityY;
 			}
 			
-			if (Math.abs(next_zoom_velocity) >= zoom_velocity_start_threshhold)
+			if (Math.abs(nextZoomVelocity) >= zoomVelocityStartThreshhold)
 			{
-				zoom_velocity = next_zoom_velocity;
+				zoomVelocity = nextZoomVelocity;
 			}
 		}
 		
-		window.requestAnimationFrame(draw_julia_set);
+		window.requestAnimationFrame(drawJuliaSet);
 	}
 	
 	
 	
-	function on_wheel_canvas(x, y, scroll_amount, event)
+	function onWheelCanvas(x, y, scrollAmount, event)
 	{
-		fixed_point_x = x;
-		fixed_point_y = y;
+		fixedPointX = x;
+		fixedPointY = y;
 		
-		if (Math.abs(scroll_amount / 100) < .3)
+		if (Math.abs(scrollAmount / 100) < .3)
 		{
-			zoom_level += scroll_amount / 100;
+			zoomLevel += scrollAmount / 100;
 			
-			zoom_level = Math.min(zoom_level, 1);
+			zoomLevel = Math.min(zoomLevel, 1);
 		}
 		
 		else
 		{
-			zoom_velocity += Math.sign(scroll_amount) * .05;
+			zoomVelocity += Math.sign(scrollAmount) * .05;
 		}
 		
-		zoom_canvas();
+		zoomCanvas();
 	}
 	
 	
 	
-	function on_pinch_canvas(x, y, touch_distance_delta, event)
+	function onPinchCanvas(x, y, touchDistanceDelta, event)
 	{
-		if (julia_mode === 2)
+		if (juliaMode === 2)
 		{
 			return;
 		}
 		
 		
 		
-		if (aspect_ratio >= 1)
+		if (aspectRatio >= 1)
 		{
-			zoom_level -= touch_distance_delta / wilson.world_width * 10;
+			zoomLevel -= touchDistanceDelta / wilson.worldWidth * 10;
 			
-			next_zoom_velocity = -touch_distance_delta / wilson.world_width * 10;
+			nextZoomVelocity = -touchDistanceDelta / wilson.worldWidth * 10;
 		}
 		
 		else
 		{
-			zoom_level -= touch_distance_delta / wilson.world_height * 10;
+			zoomLevel -= touchDistanceDelta / wilson.worldHeight * 10;
 			
-			next_zoom_velocity = -touch_distance_delta / wilson.world_height * 10;
+			nextZoomVelocity = -touchDistanceDelta / wilson.worldHeight * 10;
 		}
 		
-		zoom_level = Math.min(zoom_level, 1);
+		zoomLevel = Math.min(zoomLevel, 1);
 		
-		fixed_point_x = x;
-		fixed_point_y = y;
+		fixedPointX = x;
+		fixedPointY = y;
 		
-		zoom_canvas();
+		zoomCanvas();
 	}
 	
 	
 	
-	function zoom_canvas()
+	function zoomCanvas()
 	{
-		if (aspect_ratio >= 1)
+		if (aspectRatio >= 1)
 		{
-			let new_world_center = wilson.input.get_zoomed_world_center(fixed_point_x, fixed_point_y, 4 * Math.pow(2, zoom_level) * aspect_ratio, 4 * Math.pow(2, zoom_level));
+			let newWorldCenter = wilson.input.getZoomedWorldCenter(fixedPointX, fixedPointY, 4 * Math.pow(2, zoomLevel) * aspectRatio, 4 * Math.pow(2, zoomLevel));
 			
-			wilson.world_width = 4 * Math.pow(2, zoom_level) * aspect_ratio;
-			wilson.world_height = 4 * Math.pow(2, zoom_level);
+			wilson.worldWidth = 4 * Math.pow(2, zoomLevel) * aspectRatio;
+			wilson.worldHeight = 4 * Math.pow(2, zoomLevel);
 			
-			wilson.world_center_x = new_world_center[0];
-			wilson.world_center_y = new_world_center[1];
+			wilson.worldCenterX = newWorldCenter[0];
+			wilson.worldCenterY = newWorldCenter[1];
 		}
 		
 		else
 		{
-			let new_world_center = wilson.input.get_zoomed_world_center(fixed_point_x, fixed_point_y, 4 * Math.pow(2, zoom_level), 4 * Math.pow(2, zoom_level) / aspect_ratio);
+			let newWorldCenter = wilson.input.getZoomedWorldCenter(fixedPointX, fixedPointY, 4 * Math.pow(2, zoomLevel), 4 * Math.pow(2, zoomLevel) / aspectRatio);
 			
-			wilson.world_width = 4 * Math.pow(2, zoom_level);
-			wilson.world_height = 4 * Math.pow(2, zoom_level) / aspect_ratio;
+			wilson.worldWidth = 4 * Math.pow(2, zoomLevel);
+			wilson.worldHeight = 4 * Math.pow(2, zoomLevel) / aspectRatio;
 			
-			wilson.world_center_x = new_world_center[0];
-			wilson.world_center_y = new_world_center[1];
+			wilson.worldCenterX = newWorldCenter[0];
+			wilson.worldCenterY = newWorldCenter[1];
 		}
 		
-		num_iterations = (-zoom_level * 30) + 200;
+		numIterations = (-zoomLevel * 30) + 200;
 		
 		
 		
-		if (!double_precision && zoom_level < double_precision_zoom_threshhold && !force_floats_checkbox_element.checked)
+		if (!doublePrecision && zoomLevel < doublePrecisionZoomThreshhold && !forceFloatsCheckboxElement.checked)
 		{
-			double_precision = true;
-			wilson_hidden.gl.uniform1i(wilson_hidden.uniforms["double_precision"], 1);
-			wilson.gl.uniform1i(wilson.uniforms["double_precision"], 1);
+			doublePrecision = true;
+			wilsonHidden.gl.uniform1i(wilsonHidden.uniforms["doublePrecision"], 1);
+			wilson.gl.uniform1i(wilson.uniforms["doublePrecision"], 1);
 			
 			wilson.canvas.style.borderColor = "rgb(127, 0, 0)";
 		}
 		
-		else if (double_precision && zoom_level > double_precision_zoom_threshhold && !force_doubles)
+		else if (doublePrecision && zoomLevel > doublePrecisionZoomThreshhold && !forceDoubles)
 		{
-			double_precision = false;
-			wilson_hidden.gl.uniform1i(wilson_hidden.uniforms["double_precision"], 0);
-			wilson.gl.uniform1i(wilson.uniforms["double_precision"], 0);
+			doublePrecision = false;
+			wilsonHidden.gl.uniform1i(wilsonHidden.uniforms["doublePrecision"], 0);
+			wilson.gl.uniform1i(wilson.uniforms["doublePrecision"], 0);
 			
 			wilson.canvas.style.borderColor = "rgb(127, 127, 127)";
 		}
 		
-		window.requestAnimationFrame(draw_julia_set);
+		window.requestAnimationFrame(drawJuliaSet);
 	}
 
 
 
-	function draw_julia_set(timestamp)
+	function drawJuliaSet(timestamp)
 	{
-		let time_elapsed = timestamp - last_timestamp;
+		let timeElapsed = timestamp - lastTimestamp;
 		
-		last_timestamp = timestamp;
+		lastTimestamp = timestamp;
 		
 		
 		
-		if (time_elapsed === 0)
+		if (timeElapsed === 0)
 		{
 			return;
 		}
 		
 		
 		
-		let cx = double_to_df(wilson.world_center_x);
-		let cy = double_to_df(wilson.world_center_y);
+		let cx = doubleToDf(wilson.worldCenterX);
+		let cy = doubleToDf(wilson.worldCenterY);
 		
 		
 		
-		wilson_hidden.gl.uniform1i(wilson_hidden.uniforms["julia_mode"], julia_mode);
-		wilson_hidden.gl.uniform2fv(wilson_hidden.uniforms["world_center_x"], cx);
-		wilson_hidden.gl.uniform2fv(wilson_hidden.uniforms["world_center_y"], cy);
+		wilsonHidden.gl.uniform1i(wilsonHidden.uniforms["juliaMode"], juliaMode);
+		wilsonHidden.gl.uniform2fv(wilsonHidden.uniforms["worldCenterX"], cx);
+		wilsonHidden.gl.uniform2fv(wilsonHidden.uniforms["worldCenterY"], cy);
 		
-		wilson_hidden.gl.uniform1f(wilson_hidden.uniforms["world_size"], Math.min(wilson.world_height, wilson.world_width) / 2);
+		wilsonHidden.gl.uniform1f(wilsonHidden.uniforms["worldSize"], Math.min(wilson.worldHeight, wilson.worldWidth) / 2);
 		
-		wilson_hidden.gl.uniform1i(wilson_hidden.uniforms["num_iterations"], num_iterations);
-		wilson_hidden.gl.uniform1f(wilson_hidden.uniforms["a"], a);
-		wilson_hidden.gl.uniform1f(wilson_hidden.uniforms["b"], b);
-		wilson_hidden.gl.uniform1f(wilson_hidden.uniforms["brightness_scale"], 20 * (Math.abs(zoom_level) + 1));
+		wilsonHidden.gl.uniform1i(wilsonHidden.uniforms["numIterations"], numIterations);
+		wilsonHidden.gl.uniform1f(wilsonHidden.uniforms["a"], a);
+		wilsonHidden.gl.uniform1f(wilsonHidden.uniforms["b"], b);
+		wilsonHidden.gl.uniform1f(wilsonHidden.uniforms["brightnessScale"], 20 * (Math.abs(zoomLevel) + 1));
 		
-		wilson_hidden.render.draw_frame();
+		wilsonHidden.render.drawFrame();
 		
 		
 		
-		let pixel_data = wilson_hidden.render.get_pixel_data();
+		let pixelData = wilsonHidden.render.getPixelData();
 		
-		let brightnesses = new Array(resolution_hidden * resolution_hidden);
+		let brightnesses = new Array(resolutionHidden * resolutionHidden);
 		
-		for (let i = 0; i < resolution_hidden * resolution_hidden; i++)
+		for (let i = 0; i < resolutionHidden * resolutionHidden; i++)
 		{
-			brightnesses[i] = pixel_data[4 * i] + pixel_data[4 * i + 1] + pixel_data[4 * i + 2];
+			brightnesses[i] = pixelData[4 * i] + pixelData[4 * i + 1] + pixelData[4 * i + 2];
 		}
 		
 		brightnesses.sort((a, b) => a - b);
 		
-		let brightness_scale = (brightnesses[Math.floor(resolution_hidden * resolution_hidden * .96)] + brightnesses[Math.floor(resolution_hidden * resolution_hidden * .98)]) / 255 * 15 * (Math.abs(zoom_level / 2) + 1);
+		let brightnessScale = (brightnesses[Math.floor(resolutionHidden * resolutionHidden * .96)] + brightnesses[Math.floor(resolutionHidden * resolutionHidden * .98)]) / 255 * 15 * (Math.abs(zoomLevel / 2) + 1);
 		
-		past_brightness_scales.push(brightness_scale);
+		pastBrightnessScales.push(brightnessScale);
 		
-		let denom = past_brightness_scales.length;
+		let denom = pastBrightnessScales.length;
 		
 		if (denom > 10)
 		{
-			past_brightness_scales.shift();
+			pastBrightnessScales.shift();
 		}
 		
-		brightness_scale = Math.max(past_brightness_scales.reduce((a, b) => a + b) / denom, .5);
+		brightnessScale = Math.max(pastBrightnessScales.reduce((a, b) => a + b) / denom, .5);
 		
 		
 		
-		wilson.gl.uniform1i(wilson.uniforms["julia_mode"], julia_mode);
+		wilson.gl.uniform1i(wilson.uniforms["juliaMode"], juliaMode);
 		
-		wilson.gl.uniform1f(wilson.uniforms["aspect_ratio"], aspect_ratio);
+		wilson.gl.uniform1f(wilson.uniforms["aspectRatio"], aspectRatio);
 		
-		wilson.gl.uniform2fv(wilson.uniforms["world_center_x"], cx);
-		wilson.gl.uniform2fv(wilson.uniforms["world_center_y"], cy);
+		wilson.gl.uniform2fv(wilson.uniforms["worldCenterX"], cx);
+		wilson.gl.uniform2fv(wilson.uniforms["worldCenterY"], cy);
 		
-		wilson.gl.uniform1f(wilson.uniforms["world_size"], Math.min(wilson.world_height, wilson.world_width) / 2);
+		wilson.gl.uniform1f(wilson.uniforms["worldSize"], Math.min(wilson.worldHeight, wilson.worldWidth) / 2);
 		
-		wilson.gl.uniform1i(wilson.uniforms["num_iterations"], num_iterations);
+		wilson.gl.uniform1i(wilson.uniforms["numIterations"], numIterations);
 		wilson.gl.uniform1f(wilson.uniforms["a"], a);
 		wilson.gl.uniform1f(wilson.uniforms["b"], b);
-		wilson.gl.uniform1f(wilson.uniforms["brightness_scale"], brightness_scale);
+		wilson.gl.uniform1f(wilson.uniforms["brightnessScale"], brightnessScale);
 		
-		wilson.render.draw_frame();
+		wilson.render.drawFrame();
 		
 		
 		
-		if (time_elapsed >= 50)
+		if (timeElapsed >= 50)
 		{
-			pan_velocity_x = 0;
-			pan_velocity_y = 0;
-			zoom_velocity = 0;
+			panVelocityX = 0;
+			panVelocityY = 0;
+			zoomVelocity = 0;
 			
-			next_pan_velocity_x = 0;
-			next_pan_velocity_y = 0;
-			next_zoom_velocity = 0;
+			nextPanVelocityX = 0;
+			nextPanVelocityY = 0;
+			nextZoomVelocity = 0;
 		}
 		
 		
 		
-		if (pan_velocity_x !== 0 || pan_velocity_y !== 0 || zoom_velocity !== 0)
+		if (panVelocityX !== 0 || panVelocityY !== 0 || zoomVelocity !== 0)
 		{
-			wilson.world_center_x += pan_velocity_x * wilson.world_width;
-			wilson.world_center_y += pan_velocity_y * wilson.world_height;
+			wilson.worldCenterX += panVelocityX * wilson.worldWidth;
+			wilson.worldCenterY += panVelocityY * wilson.worldHeight;
 			
-			wilson.world_center_x = Math.min(Math.max(wilson.world_center_x, -2), 2);
-			wilson.world_center_y = Math.min(Math.max(wilson.world_center_y, -2), 2);
+			wilson.worldCenterX = Math.min(Math.max(wilson.worldCenterX, -2), 2);
+			wilson.worldCenterY = Math.min(Math.max(wilson.worldCenterY, -2), 2);
 			
 			
 			
-			pan_velocity_x *= pan_friction;
-			pan_velocity_y *= pan_friction;
+			panVelocityX *= panFriction;
+			panVelocityY *= panFriction;
 			
-			if (Math.sqrt(pan_velocity_x * pan_velocity_x + pan_velocity_y * pan_velocity_y) < pan_velocity_stop_threshhold)
+			if (Math.sqrt(panVelocityX * panVelocityX + panVelocityY * panVelocityY) < panVelocityStopThreshhold)
 			{
-				pan_velocity_x = 0;
-				pan_velocity_y = 0;
+				panVelocityX = 0;
+				panVelocityY = 0;
 			}
 			
 			
 			
-			zoom_level += zoom_velocity;
+			zoomLevel += zoomVelocity;
 			
-			zoom_level = Math.min(zoom_level, 1);
+			zoomLevel = Math.min(zoomLevel, 1);
 			
-			zoom_canvas(fixed_point_x, fixed_point_y);
+			zoomCanvas(fixedPointX, fixedPointY);
 			
-			zoom_velocity *= zoom_friction;
+			zoomVelocity *= zoomFriction;
 			
-			if (Math.abs(zoom_velocity) < zoom_velocity_stop_threshhold)
+			if (Math.abs(zoomVelocity) < zoomVelocityStopThreshhold)
 			{
-				zoom_velocity = 0;
+				zoomVelocity = 0;
 			}
 			
 			
 			
-			window.requestAnimationFrame(draw_julia_set);
+			window.requestAnimationFrame(drawJuliaSet);
 		}
 	}
 	
 	
 	
-	function change_aspect_ratio()
+	function changeAspectRatio()
 	{
-		if (wilson.fullscreen.currently_fullscreen)
+		if (wilson.fullscreen.currentlyFullscreen)
 		{
-			aspect_ratio = window.innerWidth / window.innerHeight;
+			aspectRatio = window.innerWidth / window.innerHeight;
 			
-			if (aspect_ratio >= 1)
+			if (aspectRatio >= 1)
 			{
-				wilson.change_canvas_size(resolution, Math.floor(resolution / aspect_ratio));
+				wilson.changeCanvasSize(resolution, Math.floor(resolution / aspectRatio));
 				
-				wilson.world_width = 4 * Math.pow(2, zoom_level) * aspect_ratio;
-				wilson.world_height = 4 * Math.pow(2, zoom_level);
+				wilson.worldWidth = 4 * Math.pow(2, zoomLevel) * aspectRatio;
+				wilson.worldHeight = 4 * Math.pow(2, zoomLevel);
 			}
 			
 			else
 			{
-				wilson.change_canvas_size(Math.floor(resolution * aspect_ratio), resolution);
+				wilson.changeCanvasSize(Math.floor(resolution * aspectRatio), resolution);
 				
-				wilson.world_width = 4 * Math.pow(2, zoom_level);
-				wilson.world_height = 4 * Math.pow(2, zoom_level) / aspect_ratio;
+				wilson.worldWidth = 4 * Math.pow(2, zoomLevel);
+				wilson.worldHeight = 4 * Math.pow(2, zoomLevel) / aspectRatio;
 			}
 		}
 		
 		else
 		{
-			aspect_ratio = 1;
+			aspectRatio = 1;
 			
-			wilson.change_canvas_size(resolution, resolution);
+			wilson.changeCanvasSize(resolution, resolution);
 			
-			wilson.world_width = 4 * Math.pow(2, zoom_level);
-			wilson.world_height = 4 * Math.pow(2, zoom_level);
+			wilson.worldWidth = 4 * Math.pow(2, zoomLevel);
+			wilson.worldHeight = 4 * Math.pow(2, zoomLevel);
 		}
 		
-		window.requestAnimationFrame(draw_julia_set);
+		window.requestAnimationFrame(drawJuliaSet);
 	}
 
-	window.addEventListener("resize", change_aspect_ratio);
-	Page.temporary_handlers["resize"].push(change_aspect_ratio);
+	window.addEventListener("resize", changeAspectRatio);
+	Page.temporaryHandlers["resize"].push(changeAspectRatio);
 	
 	
 	
-	function double_to_df(d)
+	function doubleToDf(d)
 	{
 		let df = new Float32Array(2);
 		const split = (1 << 29) + 1;
@@ -1169,4 +1169,4 @@
 		
 		return [df[0], df[1]];
 	}	
-}()
+	}()

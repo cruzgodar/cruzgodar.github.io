@@ -2,10 +2,10 @@
 
 class BarnsleyFern extends Applet
 {
-	num_iterations = 10000000;
+	numIterations = 10000000;
 	resolution = 1000;
 	
-	web_worker = null;
+	webWorker = null;
 	
 	
 	
@@ -17,17 +17,17 @@ class BarnsleyFern extends Applet
 		{
 			renderer: "hybrid",
 			
-			canvas_width: this.resolution,
-			canvas_height: this.resolution,
+			canvasWidth: this.resolution,
+			canvasHeight: this.resolution,
 			
 			
 			
-			use_fullscreen: true,
+			useFullscreen: true,
 		
-			use_fullscreen_button: true,
+			useFullscreenButton: true,
 			
-			enter_fullscreen_button_icon_path: "/graphics/general-icons/enter-fullscreen.png",
-			exit_fullscreen_button_icon_path: "/graphics/general-icons/exit-fullscreen.png"
+			enterFullscreenButtonIconPath: "/graphics/general-icons/enter-fullscreen.png",
+			exitFullscreenButtonIconPath: "/graphics/general-icons/exit-fullscreen.png"
 		};
 		
 		this.wilson = new Wilson(canvas, options);
@@ -35,25 +35,25 @@ class BarnsleyFern extends Applet
 	
 	
 	
-	run(num_iterations)
+	run(numIterations)
 	{
-		this.num_iterations = num_iterations;
+		this.numIterations = numIterations;
 		
-		this.resolution = Math.floor(Math.sqrt(this.num_iterations / 10));
+		this.resolution = Math.floor(Math.sqrt(this.numIterations / 10));
 		
-		this.wilson.change_canvas_size(this.resolution, this.resolution);
+		this.wilson.changeCanvasSize(this.resolution, this.resolution);
 		
 		
 		
-		try {web_worker.terminate()}
+		try {webWorker.terminate()}
 		catch(ex) {}
 		
-		this.web_worker = new Worker(`/applets/barnsley-fern/scripts/worker.${DEBUG ? "" : "min."}js`);
+		this.webWorker = new Worker(`/applets/barnsley-fern/scripts/worker.${DEBUG ? "" : "min."}js`);
 		
-		this.workers.push(this.web_worker);
+		this.workers.push(this.webWorker);
 		
-		this.web_worker.onmessage = (e) => this.wilson.render.draw_frame(e.data[0]);
+		this.webWorker.onmessage = (e) => this.wilson.render.drawFrame(e.data[0]);
 		
-		this.web_worker.postMessage([this.resolution, this.num_iterations]);
+		this.webWorker.postMessage([this.resolution, this.numIterations]);
 	}
 }

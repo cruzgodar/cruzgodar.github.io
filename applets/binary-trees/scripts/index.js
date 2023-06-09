@@ -2,15 +2,15 @@
 
 !async function()
 {
-	await Site.load_applet("binary-trees");
+	await Site.loadApplet("binary-trees");
 	
 	const applet = new BinaryTree(Page.element.querySelector("#output-canvas"));
 	
 	
 	
-	const download_button_element = Page.element.querySelector("#download-button");
+	const downloadButtonElement = Page.element.querySelector("#download-button");
 	
-	download_button_element.addEventListener("click", () => applet.wilson.download_frame("a-binary-tree.png"));
+	downloadButtonElement.addEventListener("click", () => applet.wilson.downloadFrame("a-binary-tree.png"));
 	
 	
 	

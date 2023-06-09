@@ -4,75 +4,75 @@
 
 onmessage = async function(e)
 {
-	num_vertices = e.data[0];
-	grid_size = e.data[1];
+	numVertices = e.data[0];
+	gridSize = e.data[1];
 	
-	await draw_chaos_game();
+	await drawChaosGame();
 }
 
 
 
-let num_vertices = null;
-let grid_size = null;
+let numVertices = null;
+let gridSize = null;
 
 let image = [];
 
 let vertices = [];
 
-let center_row = null;
-let center_col = null;
+let centerRow = null;
+let centerCol = null;
 
-let current_row = null;
-let current_col = null;
+let currentRow = null;
+let currentCol = null;
 
-let num_pixels_at_max = 0;
+let numPixelsAtMax = 0;
 
 
 
-function draw_chaos_game()
+function drawChaosGame()
 {
 	return new Promise((resolve, reject) =>
 	{
-		image = new Uint8ClampedArray(grid_size * grid_size * 4);
+		image = new Uint8ClampedArray(gridSize * gridSize * 4);
 		
-		for (let i = 0; i < grid_size; i++)
+		for (let i = 0; i < gridSize; i++)
 		{
-			for (let j = 0; j < grid_size; j++)
+			for (let j = 0; j < gridSize; j++)
 			{
-				image[4 * (grid_size * i + j)] = 0;
-				image[4 * (grid_size * i + j) + 1] = 0;
-				image[4 * (grid_size * i + j) + 2] = 0;
+				image[4 * (gridSize * i + j)] = 0;
+				image[4 * (gridSize * i + j) + 1] = 0;
+				image[4 * (gridSize * i + j) + 2] = 0;
 				
-				image[4 * (grid_size * i + j) + 3] = 255;
+				image[4 * (gridSize * i + j) + 3] = 255;
 			}
 		}
 		
 		
 		
 		//This makes the size of the black bars on the top and bottom equal.
-		let middle_angle = Math.floor(num_vertices / 2) * 2 * Math.PI / num_vertices;
+		let middleAngle = Math.floor(numVertices / 2) * 2 * Math.PI / numVertices;
 		
-		let top_row = grid_size / 2 - grid_size / 2.5;
-		let bottom_row = grid_size / 2 - grid_size / 2.5 * Math.cos(middle_angle);
+		let topRow = gridSize / 2 - gridSize / 2.5;
+		let bottomRow = gridSize / 2 - gridSize / 2.5 * Math.cos(middleAngle);
 		
-		let total_margin = top_row + (grid_size - bottom_row);
+		let totalMargin = topRow + (gridSize - bottomRow);
 		
-		center_row = Math.floor(total_margin / 2 + grid_size / 2.5);
-		center_col = Math.floor(grid_size / 2);
+		centerRow = Math.floor(totalMargin / 2 + gridSize / 2.5);
+		centerCol = Math.floor(gridSize / 2);
 		
-		current_row = center_row;
-		current_col = center_col;
+		currentRow = centerRow;
+		currentCol = centerCol;
 		
 		
 		
 		vertices = [];
 		
-		for (let i = 0; i < num_vertices; i++)
+		for (let i = 0; i < numVertices; i++)
 		{
-			let angle = i / num_vertices * 2 * Math.PI;
+			let angle = i / numVertices * 2 * Math.PI;
 			
-			let row = Math.floor(-Math.cos(angle) * grid_size / 2.5 + center_row);
-			let col = Math.floor(Math.sin(angle) * grid_size / 2.5 + center_col);
+			let row = Math.floor(-Math.cos(angle) * gridSize / 2.5 + centerRow);
+			let col = Math.floor(Math.sin(angle) * gridSize / 2.5 + centerCol);
 			
 			vertices.push([row, col]);
 		}
@@ -83,43 +83,43 @@ function draw_chaos_game()
 		
 		while (true)
 		{
-			if (step % (grid_size * 100) === 0)
+			if (step % (gridSize * 100) === 0)
 			{
 				postMessage([image]);
 			}
 			
 			
 			
-			let attractor_vertex = Math.floor(Math.random() * num_vertices);
+			let attractorVertex = Math.floor(Math.random() * numVertices);
 			
-			current_row = Math.floor((current_row + vertices[attractor_vertex][0]) / 2);
-			current_col = Math.floor((current_col + vertices[attractor_vertex][1]) / 2);
+			currentRow = Math.floor((currentRow + vertices[attractorVertex][0]) / 2);
+			currentCol = Math.floor((currentCol + vertices[attractorVertex][1]) / 2);
 			
 			
 			
-			let new_hue = (Math.atan2(current_col - grid_size / 2, current_row - grid_size / 2) + Math.PI) / (2 * Math.PI);
+			let newHue = (Math.atan2(currentCol - gridSize / 2, currentRow - gridSize / 2) + Math.PI) / (2 * Math.PI);
 			
-			let new_saturation = ((current_row - grid_size / 2) * (current_row - grid_size / 2) + (current_col - grid_size / 2) * (current_col - grid_size / 2)) / (grid_size * grid_size / 13);
+			let newSaturation = ((currentRow - gridSize / 2) * (currentRow - gridSize / 2) + (currentCol - gridSize / 2) * (currentCol - gridSize / 2)) / (gridSize * gridSize / 13);
 			
-			let current_color = HSVtoRGB(new_hue, new_saturation, 1);
+			let currentColor = HSVtoRGB(newHue, newSaturation, 1);
 			
-			current_color[0] /= 255;
-			current_color[1] /= 255;
-			current_color[2] /= 255;
+			currentColor[0] /= 255;
+			currentColor[1] /= 255;
+			currentColor[2] /= 255;
 			
 			
 			
 			for (let i = 0; i < 3; i++)
 			{
-				image[4 * (grid_size * current_row + current_col) + i] += 8 * current_color[i];
+				image[4 * (gridSize * currentRow + currentCol) + i] += 8 * currentColor[i];
 				
-				if (image[4 * (grid_size * current_row + current_col) + i] >= 255)
+				if (image[4 * (gridSize * currentRow + currentCol) + i] >= 255)
 				{
-					num_pixels_at_max++;
+					numPixelsAtMax++;
 					
-					image[4 * (grid_size * current_row + current_col) + i] = 255;
+					image[4 * (gridSize * currentRow + currentCol) + i] = 255;
 					
-					if (num_pixels_at_max / (grid_size * grid_size) > .004)
+					if (numPixelsAtMax / (gridSize * gridSize) > .004)
 					{
 						postMessage([image]);
 						
@@ -168,4 +168,4 @@ function HSVtoRGB(h, s, v)
 	}
     
 	return [Math.round(r * 255), Math.round(g * 255), Math.round(b * 255)];
-}
+	}

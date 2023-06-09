@@ -2,7 +2,7 @@
 
 !async function()
 {
-	await Site.load_applet("complex-maps");
+	await Site.loadApplet("complex-maps");
 	
 	const applet = new ComplexMap(Page.element.querySelector("#output-canvas"), "cexp(cinv(z))");
 	
@@ -10,16 +10,16 @@
 	
 	function run()
 	{
-		const generating_code = code_input_element.value || "cexp(cinv(z))";
+		const generatingCode = codeInputElement.value || "cexp(cinv(z))";
 		
-		applet.run(generating_code);
+		applet.run(generatingCode);
 	}
 	
 	
 	
-	const code_input_element = Page.element.querySelector("#code-textarea");
+	const codeInputElement = Page.element.querySelector("#code-textarea");
 	
-	code_input_element.addEventListener("keydown", (e) =>
+	codeInputElement.addEventListener("keydown", (e) =>
 	{
 		if (e.keyCode === 13)
 		{
@@ -31,21 +31,21 @@
 	
 	
 	
-	const generate_button_element = Page.element.querySelector("#generate-button");
+	const generateButtonElement = Page.element.querySelector("#generate-button");
 	
-	generate_button_element.addEventListener("click", run);
-	
-	
-	
-	const selector_mode_button_element = Page.element.querySelector("#selector-mode-button");
-	
-	selector_mode_button_element.addEventListener("click", () => applet.use_selector_mode = true);
+	generateButtonElement.addEventListener("click", run);
 	
 	
 	
-	const benchmark_button_element = Page.element.querySelector("#benchmark-button");
+	const selectorModeButtonElement = Page.element.querySelector("#selector-mode-button");
 	
-	benchmark_button_element.addEventListener("click", () => applet.run_benchmark());
+	selectorModeButtonElement.addEventListener("click", () => applet.useSelectorMode = true);
+	
+	
+	
+	const benchmarkButtonElement = Page.element.querySelector("#benchmark-button");
+	
+	benchmarkButtonElement.addEventListener("click", () => applet.runBenchmark());
 	
 	
 	
@@ -56,44 +56,44 @@
 	
 	
 	
-	const resolution_input_element = Page.element.querySelector("#resolution-input");
+	const resolutionInputElement = Page.element.querySelector("#resolution-input");
 	
-	resolution_input_element.addEventListener("input", () =>
+	resolutionInputElement.addEventListener("input", () =>
 	{
-		applet.resolution = parseInt(resolution_input_element.value || 500);
+		applet.resolution = parseInt(resolutionInputElement.value || 500);
 		
-		applet.wilson.change_canvas_size(applet.resolution, applet.resolution);
+		applet.wilson.changeCanvasSize(applet.resolution, applet.resolution);
 		
-		applet.draw_frame();
+		applet.drawFrame();
 	});
 	
 	
 	
-	const black_point_input_element = Page.element.querySelector("#black-point-input");
+	const blackPointInputElement = Page.element.querySelector("#black-point-input");
 	
-	black_point_input_element.addEventListener("input", () =>
+	blackPointInputElement.addEventListener("input", () =>
 	{
-		applet.black_point = parseFloat(black_point_input_element.value || 1);
+		applet.blackPoint = parseFloat(blackPointInputElement.value || 1);
 		
-		applet.draw_frame();
+		applet.drawFrame();
 	});
 	
 	
 	
-	const white_point_input_element = Page.element.querySelector("#white-point-input");
+	const whitePointInputElement = Page.element.querySelector("#white-point-input");
 	
-	white_point_input_element.addEventListener("input", () =>
+	whitePointInputElement.addEventListener("input", () =>
 	{
-		applet.white_point = parseFloat(white_point_input_element.value || 1);
+		applet.whitePoint = parseFloat(whitePointInputElement.value || 1);
 		
-		applet.draw_frame();
+		applet.drawFrame();
 	});
 	
 	
 	
-	const download_button_element = Page.element.querySelector("#download-button");
+	const downloadButtonElement = Page.element.querySelector("#download-button");
 	
-	download_button_element.addEventListener("click", () => applet.wilson.download_frame("a-complex-map.png"));
+	downloadButtonElement.addEventListener("click", () => applet.wilson.downloadFrame("a-complex-map.png"));
 	
 	
 	
@@ -104,16 +104,16 @@
 		"poles": "cinv(cmul(csub(cpow(z, 6.0), 1.0), csub(cpow(z, 3.0), 1.0)))",
 		"es": "cexp(cinv(z))",
 		"tet": "ctet(z, 100.0)",
-		"lattices": "wp(z, draggable_arg)"
+		"lattices": "wp(z, draggableArg)"
 	};
 	
-	const example_selector_dropdown_element = Page.element.querySelector("#example-selector-dropdown");
+	const exampleSelectorDropdownElement = Page.element.querySelector("#example-selector-dropdown");
 	
-	example_selector_dropdown_element.addEventListener("input", () =>
+	exampleSelectorDropdownElement.addEventListener("input", () =>
 	{
-		if (example_selector_dropdown_element.value !== "none")
+		if (exampleSelectorDropdownElement.value !== "none")
 		{
-			code_input_element.value = examples[example_selector_dropdown_element.value];
+			codeInputElement.value = examples[exampleSelectorDropdownElement.value];
 			
 			run();
 		}
@@ -122,4 +122,4 @@
 	
 	
 	Page.show();
-}()
+	}()

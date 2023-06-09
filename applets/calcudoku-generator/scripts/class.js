@@ -2,15 +2,15 @@
 
 class CalcudokuGenerator extends Applet
 {
-	grid_size = null;
+	gridSize = null;
 	
 	grid = [];
 	cages = [];
-	cages_by_location = [];
+	cagesByLocation = [];
 	
-	animate_next_draw = false;
+	animateNextDraw = false;
 	
-	web_worker = null;
+	webWorker = null;
 	
 	
 	
@@ -22,8 +22,8 @@ class CalcudokuGenerator extends Applet
 		{
 			renderer: "cpu",
 			
-			canvas_width: 500,
-			canvas_height: 500
+			canvasWidth: 500,
+			canvasHeight: 500
 		};
 		
 		this.wilson = new Wilson(canvas, options);
@@ -31,100 +31,100 @@ class CalcudokuGenerator extends Applet
 	
 	
 	
-	async run(grid_size, max_cage_size)
+	async run(gridSize, maxCageSize)
 	{
 		if (this.canvas.style.opacity == 1)
 		{
-			await Page.Animate.change_opacity(this.canvas, 0, Site.opacity_animation_time);
+			await Page.Animate.changeOpacity(this.canvas, 0, Site.opacityAnimationTime);
 		}
 		
 		
 		
-		this.grid_size = grid_size;
+		this.gridSize = gridSize;
 		
-		this.max_cage_size = max_cage_size;
+		this.maxCageSize = maxCageSize;
 		
 		
 		
-		for (let i = 0; i < this.grid_size; i++)
+		for (let i = 0; i < this.gridSize; i++)
 		{
-			this.cages_by_location.push([]);
+			this.cagesByLocation.push([]);
 			
-			for (let j = 0; j < this.grid_size; j++)
+			for (let j = 0; j < this.gridSize; j++)
 			{
-				this.cages_by_location[i].push(0);
+				this.cagesByLocation[i].push(0);
 			}
 		}
 		
 		
 		
-		const timeout_id = setTimeout(() =>
+		const timeoutId = setTimeout(() =>
 		{
-			const canvas_size = this.grid_size * 200 + 9;
+			const canvasSize = this.gridSize * 200 + 9;
 			
-			this.wilson.change_canvas_size(canvas_size, canvas_size);
+			this.wilson.changeCanvasSize(canvasSize, canvasSize);
 			
-			this.wilson.ctx.clearRect(0, 0, canvas_size, canvas_size);
-		}, Site.opacity_animation_time);
+			this.wilson.ctx.clearRect(0, 0, canvasSize, canvasSize);
+		}, Site.opacityAnimationTime);
 		
-		this.timeout_ids.push(timeout_id);
+		this.timeoutIds.push(timeoutId);
 		
 		
 		
-		try {this.web_worker.terminate();}
+		try {this.webWorker.terminate();}
 		catch(ex) {}
 		
-		this.web_worker = new Worker(`/applets/calcudoku-generator/scripts/worker.${DEBUG ? "" : "min."}js`);
+		this.webWorker = new Worker(`/applets/calcudoku-generator/scripts/worker.${DEBUG ? "" : "min."}js`);
 		
-		this.workers.push(this.web_worker);
+		this.workers.push(this.webWorker);
 		
 		
 		
-		this.animate_next_draw = true;
+		this.animateNextDraw = true;
 		
-		this.web_worker.onmessage = (e) =>
+		this.webWorker.onmessage = (e) =>
 		{
 			this.grid = e.data[0];
 			this.cages = e.data[1];
-			this.cages_by_location = e.data[2];
+			this.cagesByLocation = e.data[2];
 			
-			this.draw_grid(false);
+			this.drawGrid(false);
 			
 			
-			if (this.animate_next_draw)
+			if (this.animateNextDraw)
 			{
-				this.animate_next_draw = false;
+				this.animateNextDraw = false;
 				
-				Page.Animate.change_opacity(this.canvas, 1, Site.opacity_animation_time);
+				Page.Animate.changeOpacity(this.canvas, 1, Site.opacityAnimationTime);
 			}
 		}
 		
-		const timeout_id_2 = setTimeout(() =>
+		const timeoutId2 = setTimeout(() =>
 		{
-			this.web_worker.postMessage([this.grid_size, this.max_cage_size]);
-		}, Site.opacity_animation_time);
+			this.webWorker.postMessage([this.gridSize, this.maxCageSize]);
+		}, Site.opacityAnimationTime);
 		
-		this.timeout_ids.push(timeout_id_2);
+		this.timeoutIds.push(timeoutId2);
 	}
 	
 	
 	
-	draw_grid(print_mode)
+	drawGrid(printMode)
 	{
-		const canvas_size = this.grid_size * 200 + 9;
+		const canvasSize = this.gridSize * 200 + 9;
 		
-		if (print_mode)
+		if (printMode)
 		{
 			this.wilson.ctx.fillStyle = "rgb(255, 255, 255)";
-			this.wilson.ctx.fillRect(0, 0, canvas_size, canvas_size);
+			this.wilson.ctx.fillRect(0, 0, canvasSize, canvasSize);
 			this.wilson.ctx.fillStyle = "rgb(0, 0, 0)";
 		}
 		
 		else
 		{
-			this.wilson.ctx.clearRect(0, 0, canvas_size, canvas_size);
+			this.wilson.ctx.clearRect(0, 0, canvasSize, canvasSize);
 			
-			if (Site.Settings.url_vars["theme"] === 1)
+			if (Site.Settings.urlVars["theme"] === 1)
 			{
 				this.wilson.ctx.fillStyle = "rgb(192, 192, 192)";
 			}
@@ -138,35 +138,35 @@ class CalcudokuGenerator extends Applet
 		
 		
 		//Draw the light gridlines (width 2).
-		for (let i = 0; i <= this.grid_size; i++)
+		for (let i = 0; i <= this.gridSize; i++)
 		{
-			this.wilson.ctx.fillRect(200 * i + 4, 0, 2, canvas_size + 9);
-			this.wilson.ctx.fillRect(0, 200 * i + 4, canvas_size + 9, 2);
+			this.wilson.ctx.fillRect(200 * i + 4, 0, 2, canvasSize + 9);
+			this.wilson.ctx.fillRect(0, 200 * i + 4, canvasSize + 9, 2);
 		}
 		
 		
 		
 		//Now draw the cages. For each cell of the grid, we draw a line with width 10 if an adjacent cell is part of a different cage.
-		for (let i = 0; i < this.grid_size; i++)
+		for (let i = 0; i < this.gridSize; i++)
 		{
-			for (let j = 0; j < this.grid_size; j++)
+			for (let j = 0; j < this.gridSize; j++)
 			{
-				if (i === 0 || this.cages_by_location[i - 1][j] !== this.cages_by_location[i][j])
+				if (i === 0 || this.cagesByLocation[i - 1][j] !== this.cagesByLocation[i][j])
 				{
 					this.wilson.ctx.fillRect(200 * j, 200 * i, 210, 10);
 				}
 				
-				if (i === this.grid_size - 1 || this.cages_by_location[i + 1][j] !== this.cages_by_location[i][j])
+				if (i === this.gridSize - 1 || this.cagesByLocation[i + 1][j] !== this.cagesByLocation[i][j])
 				{
 					this.wilson.ctx.fillRect(200 * j, 200 * (i + 1), 210, 10);
 				}
 				
-				if (j === 0 || this.cages_by_location[i][j - 1] !== this.cages_by_location[i][j])
+				if (j === 0 || this.cagesByLocation[i][j - 1] !== this.cagesByLocation[i][j])
 				{
 					this.wilson.ctx.fillRect(200 * j, 200 * i, 10, 210);
 				}
 				
-				if (j === this.grid_size - 1 || this.cages_by_location[i][j + 1] !== this.cages_by_location[i][j])
+				if (j === this.gridSize - 1 || this.cagesByLocation[i][j + 1] !== this.cagesByLocation[i][j])
 				{
 					this.wilson.ctx.fillRect(200 * (j + 1), 200 * i, 10, 210);
 				}
@@ -179,21 +179,21 @@ class CalcudokuGenerator extends Applet
 		for (let i = 0; i < this.cages.length; i++)
 		{
 			//Find the leftmost cell in the top row of the cage.
-			let top_left_cell = [this.grid_size, this.grid_size];
+			let topLeftCell = [this.gridSize, this.gridSize];
 			
 			for (let j = 0; j < this.cages[i][2].length; j++)
 			{
 				const row = this.cages[i][2][j][0];
 				const col = this.cages[i][2][j][1];
 				
-				if (row < top_left_cell[0])
+				if (row < topLeftCell[0])
 				{
-					top_left_cell = [row, col];
+					topLeftCell = [row, col];
 				}
 				
-				else if (row === top_left_cell[0] && col < top_left_cell[1])
+				else if (row === topLeftCell[0] && col < topLeftCell[1])
 				{
-					top_left_cell = [row, col];
+					topLeftCell = [row, col];
 				}
 			}
 			
@@ -228,23 +228,23 @@ class CalcudokuGenerator extends Applet
 			
 			
 			
-			let font_size = null;
+			let fontSize = null;
 			
 			if (label.length <= 6)
 			{
 				this.wilson.ctx.font = "50px sans-serif";
 				
-				font_size = 50;
+				fontSize = 50;
 			}
 			
 			else
 			{
 				this.wilson.ctx.font = (300 / label.length) + "px sans-serif";
 				
-				font_size = 300 / label.length;
+				fontSize = 300 / label.length;
 			}
 			
-			this.wilson.ctx.fillText(label, 200 * top_left_cell[1] + 15, 200 * top_left_cell[0] + font_size + 5);
+			this.wilson.ctx.fillText(label, 200 * topLeftCell[1] + 15, 200 * topLeftCell[0] + fontSize + 5);
 		}
 	}
 }

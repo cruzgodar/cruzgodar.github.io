@@ -2,116 +2,116 @@
 
 class ComplexMap extends Applet
 {
-	load_promise = null;
+	loadPromise = null;
 	
-	generating_code = "";
-	uniform_code = "";
+	generatingCode = "";
+	uniformCode = "";
 	
-	aspect_ratio = 1;
+	aspectRatio = 1;
 	
-	zoom_level = -.585;
+	zoomLevel = -.585;
 	
-	past_brightness_scales = [];
+	pastBrightnessScales = [];
 	
 	resolution = 500;
 	
-	black_point = 1;
-	white_point = 1;
+	blackPoint = 1;
+	whitePoint = 1;
 	
-	fixed_point_x = 0;
-	fixed_point_y = 0;
+	fixedPointX = 0;
+	fixedPointY = 0;
 	
-	draggable_callback = null;
+	draggableCallback = null;
 	
-	next_pan_velocity_x = 0;
-	next_pan_velocity_y = 0;
-	next_zoom_velocity = 0;
+	nextPanVelocityX = 0;
+	nextPanVelocityY = 0;
+	nextZoomVelocity = 0;
 	
-	pan_velocity_x = 0;
-	pan_velocity_y = 0;
-	zoom_velocity = 0;
+	panVelocityX = 0;
+	panVelocityY = 0;
+	zoomVelocity = 0;
 	
-	pan_friction = .96;
-	pan_velocity_start_threshhold = .0025;
-	pan_velocity_stop_threshhold = .00025;
+	panFriction = .96;
+	panVelocityStartThreshhold = .0025;
+	panVelocityStopThreshhold = .00025;
 	
-	zoom_friction = .93;
-	zoom_velocity_start_threshhold = .01;
-	zoom_velocity_stop_threshhold = .001;
+	zoomFriction = .93;
+	zoomVelocityStartThreshhold = .01;
+	zoomVelocityStopThreshhold = .001;
 	
-	last_timestamp = -1;
+	lastTimestamp = -1;
 	
-	add_indicator_draggable = false;
-	use_selector_mode = false;
+	addIndicatorDraggable = false;
+	useSelectorMode = false;
 	
-	total_benchmark_time = 0;
-	benchmarks_left = 0;
-	benchmark_cycles = 10;
-	benchmark_resolution = 4000;
+	totalBenchmarkTime = 0;
+	benchmarksLeft = 0;
+	benchmarkCycles = 10;
+	benchmarkResolution = 4000;
 	
 	
 	
-	constructor(canvas, generating_code, uniform_code = "", world_center_x = 0, world_center_y = 0, zoom_level = -.585, add_indicator_draggable = false, draggable_callback = null, selector_mode = false)
+	constructor(canvas, generatingCode, uniformCode = "", worldCenterX = 0, worldCenterY = 0, zoomLevel = -.585, addIndicatorDraggable = false, draggableCallback = null, selectorMode = false)
 	{
 		super(canvas);
 		
-		const temp_shader = "precision highp float; varying vec2 uv; void main(void) { gl_FragColor = vec4(0.0, 0.0, 0.0, 1.0); }";
+		const tempShader = "precision highp float; varying vec2 uv; void main(void) { gl_FragColor = vec4(0.0, 0.0, 0.0, 1.0); }";
 		
 		const options =
 		{
 			renderer: "gpu",
 			
-			shader: temp_shader,
+			shader: tempShader,
 			
-			canvas_width: this.resolution,
-			canvas_height: this.resolution,
-			
-			
-			
-			use_draggables: true,
-			
-			draggables_mousemove_callback: this.on_drag_draggable.bind(this),
-			draggables_touchmove_callback: this.on_drag_draggable.bind(this),
+			canvasWidth: this.resolution,
+			canvasHeight: this.resolution,
 			
 			
 			
-			use_fullscreen: true,
+			useDraggables: true,
 			
-			true_fullscreen: true,
+			draggablesMousemoveCallback: this.onDragDraggable.bind(this),
+			draggablesTouchmoveCallback: this.onDragDraggable.bind(this),
+			
+			
+			
+			useFullscreen: true,
+			
+			trueFullscreen: true,
 		
-			use_fullscreen_button: true,
+			useFullscreenButton: true,
 			
-			enter_fullscreen_button_icon_path: "/graphics/general-icons/enter-fullscreen.png",
-			exit_fullscreen_button_icon_path: "/graphics/general-icons/exit-fullscreen.png",
+			enterFullscreenButtonIconPath: "/graphics/general-icons/enter-fullscreen.png",
+			exitFullscreenButtonIconPath: "/graphics/general-icons/exit-fullscreen.png",
 			
-			switch_fullscreen_callback: this.change_aspect_ratio.bind(this),
+			switchFullscreenCallback: this.changeAspectRatio.bind(this),
 			
 			
 			
-			mousedown_callback: this.on_grab_canvas.bind(this),
-			touchstart_callback: this.on_grab_canvas.bind(this),
+			mousedownCallback: this.onGrabCanvas.bind(this),
+			touchstartCallback: this.onGrabCanvas.bind(this),
 			
-			mousedrag_callback: this.on_drag_canvas.bind(this),
-			touchmove_callback: this.on_drag_canvas.bind(this),
+			mousedragCallback: this.onDragCanvas.bind(this),
+			touchmoveCallback: this.onDragCanvas.bind(this),
 			
-			mouseup_callback: this.on_release_canvas.bind(this),
-			touchend_callback: this.on_release_canvas.bind(this),
+			mouseupCallback: this.onReleaseCanvas.bind(this),
+			touchendCallback: this.onReleaseCanvas.bind(this),
 			
-			wheel_callback: this.on_wheel_canvas.bind(this),
-			pinch_callback: this.on_pinch_canvas.bind(this)
+			wheelCallback: this.onWheelCanvas.bind(this),
+			pinchCallback: this.onPinchCanvas.bind(this)
 		};
 		
 		this.wilson = new Wilson(canvas, options);
 		
-		const bound_function = this.change_aspect_ratio.bind(this);
-		window.addEventListener("resize", bound_function);
-		this.handlers.push([window, "resize", bound_function]);
+		const boundFunction = this.changeAspectRatio.bind(this);
+		window.addEventListener("resize", boundFunction);
+		this.handlers.push([window, "resize", boundFunction]);
 		
-		this.load_promise = new Promise(async (resolve, reject) =>
+		this.loadPromise = new Promise(async (resolve, reject) =>
 		{
-			await Site.load_glsl();
+			await Site.loadGlsl();
 			
-			this.run(generating_code, uniform_code, world_center_x, world_center_y, zoom_level, add_indicator_draggable, draggable_callback, selector_mode);
+			this.run(generatingCode, uniformCode, worldCenterX, worldCenterY, zoomLevel, addIndicatorDraggable, draggableCallback, selectorMode);
 			
 			resolve();
 		});
@@ -119,37 +119,37 @@ class ComplexMap extends Applet
 		
 		
 		
-	run(generating_code, uniform_code = "", world_center_x = 0, world_center_y = 0, zoom_level = -.585, add_indicator_draggable = false, draggable_callback = null, selector_mode = false)
+	run(generatingCode, uniformCode = "", worldCenterX = 0, worldCenterY = 0, zoomLevel = -.585, addIndicatorDraggable = false, draggableCallback = null, selectorMode = false)
 	{
-		this.generating_code = generating_code;
-		this.uniform_code = uniform_code;
+		this.generatingCode = generatingCode;
+		this.uniformCode = uniformCode;
 		
-		this.zoom_level = zoom_level;
+		this.zoomLevel = zoomLevel;
 		
-		this.wilson.world_width = 3 * Math.pow(2, this.zoom_level);
-		this.wilson.world_height = this.wilson.world_width;
+		this.wilson.worldWidth = 3 * Math.pow(2, this.zoomLevel);
+		this.wilson.worldHeight = this.wilson.worldWidth;
 		
-		this.wilson.world_center_x = world_center_x;
-		this.wilson.world_center_y = world_center_y;
+		this.wilson.worldCenterX = worldCenterX;
+		this.wilson.worldCenterY = worldCenterY;
 		
-		this.add_indicator_draggable = add_indicator_draggable;
-		this.draggable_callback = draggable_callback;
+		this.addIndicatorDraggable = addIndicatorDraggable;
+		this.draggableCallback = draggableCallback;
 		
-		let selector_mode_string = "";
+		let selectorModeString = "";
 		
-		if (selector_mode)
+		if (selectorMode)
 		{
-			selector_mode_string = `
-				image_z.x += 127.0;
-				image_z.y += 127.0;
+			selectorModeString = `
+				imageZ.x += 127.0;
+				imageZ.y += 127.0;
 				
-				float whole_1 = floor(image_z.x);
-				float whole_2 = floor(image_z.y);
+				float whole1 = floor(imageZ.x);
+				float whole2 = floor(imageZ.y);
 				
-				float fract_1 = (image_z.x - whole_1);
-				float fract_2 = (image_z.y - whole_2);
+				float fract1 = (imageZ.x - whole1);
+				float fract2 = (imageZ.y - whole2);
 				
-				gl_FragColor = vec4(whole_1 / 256.0, fract_1, whole_2 / 256.0, fract_2);
+				gl_FragColor = vec4(whole1 / 256.0, fract1, whole2 / 256.0, fract2);
 				
 				return;
 			`;
@@ -157,27 +157,27 @@ class ComplexMap extends Applet
 		
 		
 		
-		const frag_shader_source = `
+		const fragShaderSource = `
 			precision highp float;
 			
 			varying vec2 uv;
 			
-			uniform float aspect_ratio;
+			uniform float aspectRatio;
 			
-			uniform float world_center_x;
-			uniform float world_center_y;
-			uniform float world_size;
+			uniform float worldCenterX;
+			uniform float worldCenterY;
+			uniform float worldSize;
 			
-			uniform float black_point;
-			uniform float white_point;
+			uniform float blackPoint;
+			uniform float whitePoint;
 			
-			uniform vec2 draggable_arg;
+			uniform vec2 draggableArg;
 			
-			${uniform_code}
+			${uniformCode}
 			
 			
 			
-			${Site.get_glsl_bundle(generating_code)}
+			${Site.getGlslBundle(generatingCode)}
 			
 			
 			
@@ -193,7 +193,7 @@ class ComplexMap extends Applet
 			//Returns f(z) for a polynomial f with given roots.
 			vec2 f(vec2 z)
 			{
-				return ${generating_code};
+				return ${generatingCode};
 			}
 			
 			
@@ -202,66 +202,66 @@ class ComplexMap extends Applet
 			{
 				vec2 z;
 				
-				if (aspect_ratio >= 1.0)
+				if (aspectRatio >= 1.0)
 				{
-					z = vec2(uv.x * aspect_ratio * world_size + world_center_x, uv.y * world_size + world_center_y);
+					z = vec2(uv.x * aspectRatio * worldSize + worldCenterX, uv.y * worldSize + worldCenterY);
 				}
 				
 				else
 				{
-					z = vec2(uv.x * world_size + world_center_x, uv.y / aspect_ratio * world_size + world_center_y);
+					z = vec2(uv.x * worldSize + worldCenterX, uv.y / aspectRatio * worldSize + worldCenterY);
 				}
 				
 				
 				
-				vec2 image_z = f(z);
+				vec2 imageZ = f(z);
 				
 				
 				
-				${selector_mode_string}
+				${selectorModeString}
 				
 				
 				
-				float modulus = length(image_z);
+				float modulus = length(imageZ);
 				
-				float h = atan(image_z.y, image_z.x) / 6.283;
-				float s = clamp(1.0 / (1.0 + .01 * (modulus / white_point / white_point)), 0.0, 1.0);
-				float v = clamp(1.0 / (1.0 + .01 / (modulus * black_point * black_point)), 0.0, 1.0);
+				float h = atan(imageZ.y, imageZ.x) / 6.283;
+				float s = clamp(1.0 / (1.0 + .01 * (modulus / whitePoint / whitePoint)), 0.0, 1.0);
+				float v = clamp(1.0 / (1.0 + .01 / (modulus * blackPoint * blackPoint)), 0.0, 1.0);
 				
 				gl_FragColor = vec4(hsv2rgb(vec3(h, s, v)), 1.0);
 			}
 		`;
 		
-		this.wilson.render.shader_programs = [];
-		this.wilson.render.load_new_shader(frag_shader_source);
-		this.wilson.gl.useProgram(this.wilson.render.shader_programs[0]);
-		this.wilson.render.init_uniforms(["aspect_ratio", "world_center_x", "world_center_y", "world_size", "black_point", "white_point", "draggable_arg"]);
-		this.wilson.gl.uniform1f(this.wilson.uniforms["aspect_ratio"], 1);
+		this.wilson.render.shaderPrograms = [];
+		this.wilson.render.loadNewShader(fragShaderSource);
+		this.wilson.gl.useProgram(this.wilson.render.shaderPrograms[0]);
+		this.wilson.render.initUniforms(["aspectRatio", "worldCenterX", "worldCenterY", "worldSize", "blackPoint", "whitePoint", "draggableArg"]);
+		this.wilson.gl.uniform1f(this.wilson.uniforms["aspectRatio"], 1);
 		
 		
 		
-		this.next_pan_velocity_x = 0;
-		this.next_pan_velocity_y = 0;
-		this.next_zoom_velocity = 0;
+		this.nextPanVelocityX = 0;
+		this.nextPanVelocityY = 0;
+		this.nextZoomVelocity = 0;
 		
-		this.pan_velocity_x = 0;
-		this.pan_velocity_y = 0;
-		this.zoom_velocity = 0;
+		this.panVelocityX = 0;
+		this.panVelocityY = 0;
+		this.zoomVelocity = 0;
 		
 		
 		
-		const need_draggable = add_indicator_draggable || (generating_code.indexOf("draggable_arg") !== -1);
+		const needDraggable = addIndicatorDraggable || (generatingCode.indexOf("draggableArg") !== -1);
 		
-		if (need_draggable && this.wilson.draggables.num_draggables === 0)
+		if (needDraggable && this.wilson.draggables.numDraggables === 0)
 		{
-			this.wilson.draggables.add(.5, .5, !add_indicator_draggable);
+			this.wilson.draggables.add(.5, .5, !addIndicatorDraggable);
 			
-			this.wilson.gl.uniform2f(this.wilson.uniforms["draggable_arg"], .5, .5);
+			this.wilson.gl.uniform2f(this.wilson.uniforms["draggableArg"], .5, .5);
 		}
 		
-		else if (!need_draggable && this.wilson.draggables.num_draggables !== 0)
+		else if (!needDraggable && this.wilson.draggables.numDraggables !== 0)
 		{
-			this.wilson.draggables.num_draggables--;
+			this.wilson.draggables.numDraggables--;
 			
 			this.wilson.draggables.draggables[0].remove();
 			
@@ -270,326 +270,326 @@ class ComplexMap extends Applet
 		
 		
 		
-		window.requestAnimationFrame(this.draw_frame.bind(this));
+		window.requestAnimationFrame(this.drawFrame.bind(this));
 	}
 	
 	
 	
-	on_grab_canvas(x, y, event)
+	onGrabCanvas(x, y, event)
 	{
-		this.pan_velocity_x = 0;
-		this.pan_velocity_y = 0;
-		this.zoom_velocity = 0;
+		this.panVelocityX = 0;
+		this.panVelocityY = 0;
+		this.zoomVelocity = 0;
 		
-		this.next_pan_velocity_x = 0;
-		this.next_pan_velocity_y = 0;
-		this.next_zoom_velocity = 0;
+		this.nextPanVelocityX = 0;
+		this.nextPanVelocityY = 0;
+		this.nextZoomVelocity = 0;
 		
 		
 		
-		if (this.use_selector_mode)
+		if (this.useSelectorMode)
 		{
-			this.run(this.generating_code, this.uniform_code, this.wilson.world_center_x, this.wilson.world_center_y, this.zoom_level, this.force_add_draggable, true);
+			this.run(this.generatingCode, this.uniformCode, this.wilson.worldCenterX, this.wilson.worldCenterY, this.zoomLevel, this.forceAddDraggable, true);
 			
-			const timeout_id = setTimeout(() =>
+			const timeoutId = setTimeout(() =>
 			{
-				this.wilson.render.draw_frame();
+				this.wilson.render.drawFrame();
 				
-				const coordinates = this.wilson.utils.interpolate.world_to_canvas(x, y);
+				const coordinates = this.wilson.utils.interpolate.worldToCanvas(x, y);
 				
 				let pixel = new Uint8Array(4);
 				
-				this.wilson.gl.readPixels(coordinates[1], this.wilson.canvas_height - coordinates[0], 1, 1, this.wilson.gl.RGBA, this.wilson.gl.UNSIGNED_BYTE, pixel);
+				this.wilson.gl.readPixels(coordinates[1], this.wilson.canvasHeight - coordinates[0], 1, 1, this.wilson.gl.RGBA, this.wilson.gl.UNSIGNEDBYTE, pixel);
 				
-				const z_x = (pixel[0] - 127) + pixel[1] / 256;
-				const z_y = (pixel[2] - 127) + pixel[3] / 256;
+				const zX = (pixel[0] - 127) + pixel[1] / 256;
+				const zY = (pixel[2] - 127) + pixel[3] / 256;
 				
 				
 				
-				let plus_1 = "+";
+				let plus1 = "+";
 				
 				if (y < 0)
 				{
-					plus_1 = "-";
+					plus1 = "-";
 				}
 				
-				let plus_2 = "+";
+				let plus2 = "+";
 				
-				if (z_y < 0)
+				if (zY < 0)
 				{
-					plus_2 = "-";
+					plus2 = "-";
 				}
 				
-				console.log(`${x} ${plus_1} ${Math.abs(y)}i |---> ${z_x} ${plus_2} ${Math.abs(z_y)}i`);
+				console.log(`${x} ${plus1} ${Math.abs(y)}i |---> ${zX} ${plus2} ${Math.abs(zY)}i`);
 				
-				this.run(this.generating_code, this.uniform_code, this.wilson.world_center_x, this.wilson.world_center_y, this.zoom_level, this.force_add_draggable, false);
+				this.run(this.generatingCode, this.uniformCode, this.wilson.worldCenterX, this.wilson.worldCenterY, this.zoomLevel, this.forceAddDraggable, false);
 				
-				this.use_selector_mode = false;
+				this.useSelectorMode = false;
 			}, 20);
 			
-			this.timeout_ids.push(timeout_id);
+			this.timeoutIds.push(timeoutId);
 		}
 	}
 	
 	
 	
-	on_drag_canvas(x, y, x_delta, y_delta, event)
+	onDragCanvas(x, y, xDelta, yDelta, event)
 	{
-		this.wilson.world_center_x -= x_delta;
-		this.wilson.world_center_y -= y_delta;
+		this.wilson.worldCenterX -= xDelta;
+		this.wilson.worldCenterY -= yDelta;
 		
-		this.next_pan_velocity_x = -x_delta / this.wilson.world_width;
-		this.next_pan_velocity_y = -y_delta / this.wilson.world_height;
+		this.nextPanVelocityX = -xDelta / this.wilson.worldWidth;
+		this.nextPanVelocityY = -yDelta / this.wilson.worldHeight;
 		
-		try {this.wilson.draggables.recalculate_locations();}
+		try {this.wilson.draggables.recalculateLocations();}
 		catch(ex) {}
 		
-		window.requestAnimationFrame(this.draw_frame.bind(this));
+		window.requestAnimationFrame(this.drawFrame.bind(this));
 	}
 	
 	
 	
-	on_release_canvas(x, y, event)
+	onReleaseCanvas(x, y, event)
 	{
-		if (Math.sqrt(this.next_pan_velocity_x * this.next_pan_velocity_x + this.next_pan_velocity_y * this.next_pan_velocity_y) >= this.pan_velocity_start_threshhold)
+		if (Math.sqrt(this.nextPanVelocityX * this.nextPanVelocityX + this.nextPanVelocityY * this.nextPanVelocityY) >= this.panVelocityStartThreshhold)
 		{
-			this.pan_velocity_x = this.next_pan_velocity_x;
-			this.pan_velocity_y = this.next_pan_velocity_y;
+			this.panVelocityX = this.nextPanVelocityX;
+			this.panVelocityY = this.nextPanVelocityY;
 		}
 		
-		if (Math.abs(this.next_zoom_velocity) >= this.zoom_velocity_start_threshhold)
+		if (Math.abs(this.nextZoomVelocity) >= this.zoomVelocityStartThreshhold)
 		{
-			this.zoom_velocity = this.next_zoom_velocity;
+			this.zoomVelocity = this.nextZoomVelocity;
 		}
 		
-		window.requestAnimationFrame(this.draw_frame.bind(this));
+		window.requestAnimationFrame(this.drawFrame.bind(this));
 	}
 	
 	
 	
-	on_wheel_canvas(x, y, scroll_amount, event)
+	onWheelCanvas(x, y, scrollAmount, event)
 	{
-		this.fixed_point_x = x;
-		this.fixed_point_y = y;
+		this.fixedPointX = x;
+		this.fixedPointY = y;
 		
-		if (Math.abs(scroll_amount / 100) < .3)
+		if (Math.abs(scrollAmount / 100) < .3)
 		{
-			this.zoom_level += scroll_amount / 100;
+			this.zoomLevel += scrollAmount / 100;
 		}
 		
 		else
 		{
-			this.zoom_velocity += Math.sign(scroll_amount) * .05;
+			this.zoomVelocity += Math.sign(scrollAmount) * .05;
 		}
 		
-		this.zoom_canvas();
+		this.zoomCanvas();
 	}
 	
 	
 	
-	on_pinch_canvas(x, y, touch_distance_delta, event)
+	onPinchCanvas(x, y, touchDistanceDelta, event)
 	{
-		if (this.aspect_ratio >= 1)
+		if (this.aspectRatio >= 1)
 		{
-			this.zoom_level -= touch_distance_delta / this.wilson.world_width * 10;
+			this.zoomLevel -= touchDistanceDelta / this.wilson.worldWidth * 10;
 			
-			this.next_zoom_velocity = -touch_distance_delta / this.wilson.world_width * 10;
+			this.nextZoomVelocity = -touchDistanceDelta / this.wilson.worldWidth * 10;
 		}
 		
 		else
 		{
-			this.zoom_level -= touch_distance_delta / this.wilson.world_height * 10;
+			this.zoomLevel -= touchDistanceDelta / this.wilson.worldHeight * 10;
 			
-			this.next_zoom_velocity = -touch_distance_delta / this.wilson.world_height * 10;
+			this.nextZoomVelocity = -touchDistanceDelta / this.wilson.worldHeight * 10;
 		}
 		
-		this.fixed_point_x = x;
-		this.fixed_point_y = y;
+		this.fixedPointX = x;
+		this.fixedPointY = y;
 		
-		this.zoom_canvas();
+		this.zoomCanvas();
 	}
 	
 	
 	
-	zoom_canvas()
+	zoomCanvas()
 	{
-		if (this.aspect_ratio >= 1)
+		if (this.aspectRatio >= 1)
 		{
-			const new_world_center = this.wilson.input.get_zoomed_world_center(this.fixed_point_x, this.fixed_point_y, 3 * Math.pow(2, this.zoom_level) * this.aspect_ratio, 3 * Math.pow(2, this.zoom_level));
+			const newWorldCenter = this.wilson.input.getZoomedWorldCenter(this.fixedPointX, this.fixedPointY, 3 * Math.pow(2, this.zoomLevel) * this.aspectRatio, 3 * Math.pow(2, this.zoomLevel));
 			
-			this.wilson.world_width = 3 * Math.pow(2, this.zoom_level) * this.aspect_ratio;
-			this.wilson.world_height = 3 * Math.pow(2, this.zoom_level);
+			this.wilson.worldWidth = 3 * Math.pow(2, this.zoomLevel) * this.aspectRatio;
+			this.wilson.worldHeight = 3 * Math.pow(2, this.zoomLevel);
 			
-			this.wilson.world_center_x = new_world_center[0];
-			this.wilson.world_center_y = new_world_center[1];
+			this.wilson.worldCenterX = newWorldCenter[0];
+			this.wilson.worldCenterY = newWorldCenter[1];
 		}
 		
 		else
 		{
-			const new_world_center = this.wilson.input.get_zoomed_world_center(this.fixed_point_x, this.fixed_point_y, 3 * Math.pow(2, this.zoom_level), 3 * Math.pow(2, this.zoom_level) / this.aspect_ratio);
+			const newWorldCenter = this.wilson.input.getZoomedWorldCenter(this.fixedPointX, this.fixedPointY, 3 * Math.pow(2, this.zoomLevel), 3 * Math.pow(2, this.zoomLevel) / this.aspectRatio);
 			
-			this.wilson.world_width = 3 * Math.pow(2, this.zoom_level);
-			this.wilson.world_height = 3 * Math.pow(2, this.zoom_level) / this.aspect_ratio;
+			this.wilson.worldWidth = 3 * Math.pow(2, this.zoomLevel);
+			this.wilson.worldHeight = 3 * Math.pow(2, this.zoomLevel) / this.aspectRatio;
 			
-			this.wilson.world_center_x = new_world_center[0];
-			this.wilson.world_center_y = new_world_center[1];
+			this.wilson.worldCenterX = newWorldCenter[0];
+			this.wilson.worldCenterY = newWorldCenter[1];
 		}
 		
-		try {this.wilson.draggables.recalculate_locations();}
+		try {this.wilson.draggables.recalculateLocations();}
 		catch(ex) {}
 		
-		window.requestAnimationFrame(this.draw_frame.bind(this));
+		window.requestAnimationFrame(this.drawFrame.bind(this));
 	}
 	
 	
 	
-	on_drag_draggable(active_draggable, x, y, event)
+	onDragDraggable(activeDraggable, x, y, event)
 	{
-		try {this.draggable_callback(active_draggable, x, y, event)}
+		try {this.draggableCallback(activeDraggable, x, y, event)}
 		catch(ex) {}
 		
-		this.wilson.gl.uniform2f(this.wilson.uniforms["draggable_arg"], x, y);
+		this.wilson.gl.uniform2f(this.wilson.uniforms["draggableArg"], x, y);
 		
-		window.requestAnimationFrame(this.draw_frame.bind(this));
+		window.requestAnimationFrame(this.drawFrame.bind(this));
 	}
 	
 	
 
-	draw_frame(timestamp)
+	drawFrame(timestamp)
 	{
-		const time_elapsed = timestamp - this.last_timestamp;
+		const timeElapsed = timestamp - this.lastTimestamp;
 		
-		this.last_timestamp = timestamp;
+		this.lastTimestamp = timestamp;
 		
 		
 		
-		if (time_elapsed === 0)
+		if (timeElapsed === 0)
 		{
 			return;
 		}
 		
 		
 		
-		this.wilson.gl.uniform1f(this.wilson.uniforms["aspect_ratio"], this.aspect_ratio);
-		this.wilson.gl.uniform1f(this.wilson.uniforms["world_center_x"], this.wilson.world_center_x);
-		this.wilson.gl.uniform1f(this.wilson.uniforms["world_center_y"], this.wilson.world_center_y);
+		this.wilson.gl.uniform1f(this.wilson.uniforms["aspectRatio"], this.aspectRatio);
+		this.wilson.gl.uniform1f(this.wilson.uniforms["worldCenterX"], this.wilson.worldCenterX);
+		this.wilson.gl.uniform1f(this.wilson.uniforms["worldCenterY"], this.wilson.worldCenterY);
 		
-		this.wilson.gl.uniform1f(this.wilson.uniforms["world_size"], Math.min(this.wilson.world_height, this.wilson.world_width) / 2);
+		this.wilson.gl.uniform1f(this.wilson.uniforms["worldSize"], Math.min(this.wilson.worldHeight, this.wilson.worldWidth) / 2);
 		
-		this.wilson.gl.uniform1f(this.wilson.uniforms["black_point"], this.black_point);
-		this.wilson.gl.uniform1f(this.wilson.uniforms["white_point"], this.white_point);
+		this.wilson.gl.uniform1f(this.wilson.uniforms["blackPoint"], this.blackPoint);
+		this.wilson.gl.uniform1f(this.wilson.uniforms["whitePoint"], this.whitePoint);
 		
-		this.wilson.render.draw_frame();
+		this.wilson.render.drawFrame();
 		
 		
 		
-		if (time_elapsed >= 50)
+		if (timeElapsed >= 50)
 		{
-			this.pan_velocity_x = 0;
-			this.pan_velocity_y = 0;
-			this.zoom_velocity = 0;
+			this.panVelocityX = 0;
+			this.panVelocityY = 0;
+			this.zoomVelocity = 0;
 			
-			this.next_pan_velocity_x = 0;
-			this.next_pan_velocity_y = 0;
-			this.next_zoom_velocity = 0;
+			this.nextPanVelocityX = 0;
+			this.nextPanVelocityY = 0;
+			this.nextZoomVelocity = 0;
 		}
 		
 		
 		
-		if (this.pan_velocity_x !== 0 || this.pan_velocity_y !== 0 || this.zoom_velocity !== 0)
+		if (this.panVelocityX !== 0 || this.panVelocityY !== 0 || this.zoomVelocity !== 0)
 		{
-			this.wilson.world_center_x += this.pan_velocity_x * this.wilson.world_width;
-			this.wilson.world_center_y += this.pan_velocity_y * this.wilson.world_height;
+			this.wilson.worldCenterX += this.panVelocityX * this.wilson.worldWidth;
+			this.wilson.worldCenterY += this.panVelocityY * this.wilson.worldHeight;
 			
-			this.pan_velocity_x *= this.pan_friction;
-			this.pan_velocity_y *= this.pan_friction;
+			this.panVelocityX *= this.panFriction;
+			this.panVelocityY *= this.panFriction;
 			
-			if (Math.sqrt(this.pan_velocity_x * this.pan_velocity_x + this.pan_velocity_y * this.pan_velocity_y) < this.pan_velocity_stop_threshhold)
+			if (Math.sqrt(this.panVelocityX * this.panVelocityX + this.panVelocityY * this.panVelocityY) < this.panVelocityStopThreshhold)
 			{
-				this.pan_velocity_x = 0;
-				this.pan_velocity_y = 0;
+				this.panVelocityX = 0;
+				this.panVelocityY = 0;
 			}
 			
 			
 			
-			this.zoom_level += this.zoom_velocity;
+			this.zoomLevel += this.zoomVelocity;
 			
-			this.zoom_canvas(this.fixed_point_x, this.fixed_point_y);
+			this.zoomCanvas(this.fixedPointX, this.fixedPointY);
 			
-			this.zoom_velocity *= this.zoom_friction;
+			this.zoomVelocity *= this.zoomFriction;
 			
-			if (Math.abs(this.zoom_velocity) < this.zoom_velocity_stop_threshhold)
+			if (Math.abs(this.zoomVelocity) < this.zoomVelocityStopThreshhold)
 			{
-				this.zoom_velocity = 0;
+				this.zoomVelocity = 0;
 			}
 			
 			
 			
-			window.requestAnimationFrame(this.draw_frame.bind(this));
+			window.requestAnimationFrame(this.drawFrame.bind(this));
 		}
 	}
 	
 	
 	
-	change_aspect_ratio()
+	changeAspectRatio()
 	{
-		if (this.wilson.fullscreen.currently_fullscreen)
+		if (this.wilson.fullscreen.currentlyFullscreen)
 		{
-			this.aspect_ratio = window.innerWidth / window.innerHeight;
+			this.aspectRatio = window.innerWidth / window.innerHeight;
 			
-			if (this.aspect_ratio >= 1)
+			if (this.aspectRatio >= 1)
 			{
-				this.wilson.change_canvas_size(this.resolution, Math.floor(this.resolution / this.aspect_ratio));
+				this.wilson.changeCanvasSize(this.resolution, Math.floor(this.resolution / this.aspectRatio));
 				
-				this.wilson.world_width = 3 * Math.pow(2, this.zoom_level) * this.aspect_ratio;
-				this.wilson.world_height = 3 * Math.pow(2, this.zoom_level);
+				this.wilson.worldWidth = 3 * Math.pow(2, this.zoomLevel) * this.aspectRatio;
+				this.wilson.worldHeight = 3 * Math.pow(2, this.zoomLevel);
 			}
 			
 			else
 			{
-				this.wilson.change_canvas_size(Math.floor(this.resolution * this.aspect_ratio), this.resolution);
+				this.wilson.changeCanvasSize(Math.floor(this.resolution * this.aspectRatio), this.resolution);
 				
-				this.wilson.world_width = 3 * Math.pow(2, this.zoom_level);
-				this.wilson.world_height = 3 * Math.pow(2, this.zoom_level) / this.aspect_ratio;
+				this.wilson.worldWidth = 3 * Math.pow(2, this.zoomLevel);
+				this.wilson.worldHeight = 3 * Math.pow(2, this.zoomLevel) / this.aspectRatio;
 			}
 		}
 		
 		else
 		{
-			this.aspect_ratio = 1;
+			this.aspectRatio = 1;
 			
-			this.wilson.change_canvas_size(this.resolution, this.resolution);
+			this.wilson.changeCanvasSize(this.resolution, this.resolution);
 			
-			this.wilson.world_width = 3 * Math.pow(2, this.zoom_level);
-			this.wilson.world_height = 3 * Math.pow(2, this.zoom_level);
+			this.wilson.worldWidth = 3 * Math.pow(2, this.zoomLevel);
+			this.wilson.worldHeight = 3 * Math.pow(2, this.zoomLevel);
 		}
 		
-		window.requestAnimationFrame(this.draw_frame.bind(this));
+		window.requestAnimationFrame(this.drawFrame.bind(this));
 	}
 	
 	
 	
-	run_benchmark()
+	runBenchmark()
 	{
-		this.wilson.change_canvas_size(this.benchmark_resolution, this.benchmark_resolution);
+		this.wilson.changeCanvasSize(this.benchmarkResolution, this.benchmarkResolution);
 		
-		const start_time = Date.now();
+		const startTime = Date.now();
 		
 		let pixel = new Uint8Array(4);
 		
-		for (let i = 0; i < this.benchmark_cycles; i++)
+		for (let i = 0; i < this.benchmarkCycles; i++)
 		{
-			this.wilson.render.draw_frame();
+			this.wilson.render.drawFrame();
 			
-			this.wilson.gl.readPixels(0, 0, 1, 1, this.wilson.gl.RGBA, this.wilson.gl.UNSIGNED_BYTE, pixel);
+			this.wilson.gl.readPixels(0, 0, 1, 1, this.wilson.gl.RGBA, this.wilson.gl.UNSIGNEDBYTE, pixel);
 		}
 		
-		const average_time = (Date.now() - start_time) / this.benchmark_cycles;
+		const averageTime = (Date.now() - startTime) / this.benchmarkCycles;
 				
-		console.log(`Finished benchmark --- average time to draw a ${this.benchmark_resolution}x${this.benchmark_resolution} frame is ${average_time}ms`);
+		console.log(`Finished benchmark --- average time to draw a ${this.benchmarkResolution}x${this.benchmarkResolution} frame is ${averageTime}ms`);
 		
-		this.wilson.change_canvas_size(this.resolution, this.resolution);
+		this.wilson.changeCanvasSize(this.resolution, this.resolution);
 		
-		this.wilson.render.draw_frame();
+		this.wilson.render.drawFrame();
 	}
-}
+	}

@@ -4,134 +4,134 @@
 
 onmessage = async function(e)
 {
-	grid_size = e.data[0];
+	gridSize = e.data[0];
 	
-	await draw_brownian_tree();
+	await drawBrownianTree();
 }
 
 
 
-let grid_size = null;
+let gridSize = null;
 
 let margin = null;
 
-let brownian_tree_graph = [];
+let brownianTreeGraph = [];
 
 let color = [];
 
-let current_brightness = 255;
+let currentBrightness = 255;
 
-let progress_threshhold = 5;
+let progressThreshhold = 5;
 
-let current_row = null;
-let current_col = null;
+let currentRow = null;
+let currentCol = null;
 
 //New points will start on a circle with this as its radius.
-let spawn_radius = null;
+let spawnRadius = null;
 
 const directions = [[-1, 0], [0, 1], [1, 0], [0, -1]];
 
 
 
-function draw_brownian_tree()
+function drawBrownianTree()
 {
 	return new Promise(function(resolve, reject)
 	{
-		brownian_tree_graph = [];
+		brownianTreeGraph = [];
 		color = [];
 			
-		for (let i = 0; i < grid_size; i++)
+		for (let i = 0; i < gridSize; i++)
 		{
-			brownian_tree_graph[i] = [];
+			brownianTreeGraph[i] = [];
 			color[i] = [];
 			
-			for (let j = 0; j < grid_size; j++)
+			for (let j = 0; j < gridSize; j++)
 			{
-				brownian_tree_graph[i][j] = 0;
+				brownianTreeGraph[i][j] = 0;
 				color[i][j] = [0, 0, 0];
 			}
 		}
 		
-		brownian_tree_graph[Math.floor(grid_size / 2)][Math.floor(grid_size / 2)] = 1;
-		color[Math.floor(grid_size / 2)][Math.floor(grid_size / 2)] = [255, 255, 255];
+		brownianTreeGraph[Math.floor(gridSize / 2)][Math.floor(gridSize / 2)] = 1;
+		color[Math.floor(gridSize / 2)][Math.floor(gridSize / 2)] = [255, 255, 255];
 		
-		postMessage([2, Math.floor(grid_size / 2), Math.floor(grid_size / 2), `rgb(255, 255, 255)`]);
+		postMessage([2, Math.floor(gridSize / 2), Math.floor(gridSize / 2), `rgb(255, 255, 255)`]);
 		
 		
 		
 		margin = 10;
 
-		spawn_radius = 5;
+		spawnRadius = 5;
 		
 		
 		
-		while (grid_size - 2 * spawn_radius > 2 * margin)
+		while (gridSize - 2 * spawnRadius > 2 * margin)
 		{
 			const angle = Math.random() * 2 * Math.PI;
-			current_row = Math.floor(spawn_radius * Math.cos(angle) + grid_size / 2);
-			current_col = Math.floor(spawn_radius * Math.sin(angle) + grid_size / 2);
+			currentRow = Math.floor(spawnRadius * Math.cos(angle) + gridSize / 2);
+			currentCol = Math.floor(spawnRadius * Math.sin(angle) + gridSize / 2);
 			
 			
 			
 			while (true)
 			{
-				let possible_directions = [];
+				let possibleDirections = [];
 				
-				if (current_row > grid_size / 2 - spawn_radius)
+				if (currentRow > gridSize / 2 - spawnRadius)
 				{
-					possible_directions.push(0);
+					possibleDirections.push(0);
 				}
 				
-				if (current_col < grid_size / 2 + spawn_radius)
+				if (currentCol < gridSize / 2 + spawnRadius)
 				{
-					possible_directions.push(1);
+					possibleDirections.push(1);
 				}
 				
-				if (current_row < grid_size / 2 + spawn_radius)
+				if (currentRow < gridSize / 2 + spawnRadius)
 				{
-					possible_directions.push(2);
+					possibleDirections.push(2);
 				}
 				
-				if (current_col > grid_size / 2 - spawn_radius)
+				if (currentCol > gridSize / 2 - spawnRadius)
 				{
-					possible_directions.push(3);
+					possibleDirections.push(3);
 				}
 				
 				
 				
-				const direction = possible_directions[Math.floor(Math.random() * possible_directions.length)];
+				const direction = possibleDirections[Math.floor(Math.random() * possibleDirections.length)];
 				
-				const new_row = current_row + directions[direction][0];
-				const new_col = current_col + directions[direction][1];
+				const newRow = currentRow + directions[direction][0];
+				const newCol = currentCol + directions[direction][1];
 				
-				if (brownian_tree_graph[new_row][new_col] === 1)
+				if (brownianTreeGraph[newRow][newCol] === 1)
 				{
-					brownian_tree_graph[current_row][current_col] = 1;
+					brownianTreeGraph[currentRow][currentCol] = 1;
 					
-					const new_hue = (Math.atan2(current_col - Math.floor(grid_size / 2), Math.floor(grid_size / 2) - current_row) + Math.PI) / (2 * Math.PI);
+					const newHue = (Math.atan2(currentCol - Math.floor(gridSize / 2), Math.floor(gridSize / 2) - currentRow) + Math.PI) / (2 * Math.PI);
 					
-					const new_color = HSVtoRGB(new_hue, 1, 1);
+					const newColor = HSVtoRGB(newHue, 1, 1);
 					
-					color[current_row][current_col] = [.9925 * color[new_row][new_col][0] + .0075 * new_color[0], .9925 * color[new_row][new_col][1] + .0075 * new_color[1], .9925 * color[new_row][new_col][2] + .0075 * new_color[2]];
+					color[currentRow][currentCol] = [.9925 * color[newRow][newCol][0] + .0075 * newColor[0], .9925 * color[newRow][newCol][1] + .0075 * newColor[1], .9925 * color[newRow][newCol][2] + .0075 * newColor[2]];
 					
-					postMessage([2, current_col, current_row, `rgb(${current_brightness / 255 * color[current_row][current_col][0]}, ${current_brightness / 255 * color[current_row][current_col][1]}, ${current_brightness / 255 * color[current_row][current_col][2]})`]);
+					postMessage([2, currentCol, currentRow, `rgb(${currentBrightness / 255 * color[currentRow][currentCol][0]}, ${currentBrightness / 255 * color[currentRow][currentCol][1]}, ${currentBrightness / 255 * color[currentRow][currentCol][2]})`]);
 					
 					
 					
-					if (spawn_radius * spawn_radius - (current_row - grid_size / 2) * (current_row - grid_size / 2) - (current_col - grid_size / 2) * (current_col - grid_size / 2) <= 5)
+					if (spawnRadius * spawnRadius - (currentRow - gridSize / 2) * (currentRow - gridSize / 2) - (currentCol - gridSize / 2) * (currentCol - gridSize / 2) <= 5)
 					{
-						spawn_radius++;
+						spawnRadius++;
 						
-						current_brightness = Math.floor(255 * (grid_size / 2 - 10 - spawn_radius) / (grid_size / 2 - 10));
+						currentBrightness = Math.floor(255 * (gridSize / 2 - 10 - spawnRadius) / (gridSize / 2 - 10));
 						
 						//We raise the progress to 2.71 to keep the speed effectively constant.
-						const progress = Math.pow((255 - current_brightness) / 255, 2.71) * 100;
+						const progress = Math.pow((255 - currentBrightness) / 255, 2.71) * 100;
 						
-						if (progress > progress_threshhold)
+						if (progress > progressThreshhold)
 						{
-							postMessage([0, progress_threshhold]);
+							postMessage([0, progressThreshhold]);
 							
-							progress_threshhold += 5;
+							progressThreshhold += 5;
 						}
 					}
 					
@@ -140,8 +140,8 @@ function draw_brownian_tree()
 					break;
 				}
 				
-				current_row = new_row;
-				current_col = new_col;
+				currentRow = newRow;
+				currentCol = newCol;
 			}
 		}
 		
@@ -183,4 +183,4 @@ function HSVtoRGB(h, s, v)
 	}
     
 	return [Math.round(r * 255), Math.round(g * 255), Math.round(b * 255)];
-}
+	}

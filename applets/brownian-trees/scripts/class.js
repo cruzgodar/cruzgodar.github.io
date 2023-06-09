@@ -4,7 +4,7 @@ class BrownianTree extends Applet
 {
 	resolution = 500;
 	
-	web_worker = null;
+	webWorker = null;
 	
 	
 	
@@ -16,17 +16,17 @@ class BrownianTree extends Applet
 		{
 			renderer: "cpu",
 			
-			canvas_width: this.resolution,
-			canvas_height: this.resolution,
+			canvasWidth: this.resolution,
+			canvasHeight: this.resolution,
 			
 			
 			
-			use_fullscreen: true,
+			useFullscreen: true,
 		
-			use_fullscreen_button: true,
+			useFullscreenButton: true,
 			
-			enter_fullscreen_button_icon_path: "/graphics/general-icons/enter-fullscreen.png",
-			exit_fullscreen_button_icon_path: "/graphics/general-icons/exit-fullscreen.png"
+			enterFullscreenButtonIconPath: "/graphics/general-icons/enter-fullscreen.png",
+			exitFullscreenButtonIconPath: "/graphics/general-icons/exit-fullscreen.png"
 		};
 		
 		this.wilson = new Wilson(canvas, options);
@@ -38,21 +38,21 @@ class BrownianTree extends Applet
 	{
 		this.resolution = resolution;
 		
-		this.wilson.change_canvas_size(this.resolution, this.resolution);
+		this.wilson.changeCanvasSize(this.resolution, this.resolution);
 		
 		this.wilson.ctx.fillStyle = "rgb(0, 0, 0)";
 		this.wilson.ctx.fillRect(0, 0, this.resolution, this.resolution);
 		
 		
 		
-		try {this.web_worker.terminate()}
+		try {this.webWorker.terminate()}
 		catch(ex) {}
 		
-		this.web_worker = new Worker(`/applets/brownian-trees/scripts/worker.${DEBUG ? "" : "min."}js`);
+		this.webWorker = new Worker(`/applets/brownian-trees/scripts/worker.${DEBUG ? "" : "min."}js`);
 		
-		this.workers.push(this.web_worker);
+		this.workers.push(this.webWorker);
 		
-		this.web_worker.onmessage = (e) =>
+		this.webWorker.onmessage = (e) =>
 		{
 			if (e.data[0] !== 0 && e.data[0] !== 1)
 			{
@@ -62,6 +62,6 @@ class BrownianTree extends Applet
 			}
 		}
 		
-		this.web_worker.postMessage([this.resolution]);
+		this.webWorker.postMessage([this.resolution]);
 	}
 }

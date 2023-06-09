@@ -2,7 +2,7 @@
 
 !async function()
 {
-	await Site.load_applet("barnsley-fern");
+	await Site.loadApplet("barnsley-fern");
 	
 	const applet = new BarnsleyFern(Page.element.querySelector("#output-canvas"));
 	
@@ -10,22 +10,22 @@
 	
 	function run()
 	{
-		const num_iterations = 1000 * parseInt(num_iterations_input_element.value || 10000);
+		const numIterations = 1000 * parseInt(numIterationsInputElement.value || 10000);
 		
-		applet.run(num_iterations);
+		applet.run(numIterations);
 	}
 	
 	
 	
-	const generate_button_element = Page.element.querySelector("#generate-button");
+	const generateButtonElement = Page.element.querySelector("#generate-button");
 
-	generate_button_element.addEventListener("click", run);
+	generateButtonElement.addEventListener("click", run);
 	
 	
 	
-	const num_iterations_input_element = Page.element.querySelector("#num-iterations-input");
+	const numIterationsInputElement = Page.element.querySelector("#num-iterations-input");
 	
-	num_iterations_input_element.addEventListener("keydown", (e) =>
+	numIterationsInputElement.addEventListener("keydown", (e) =>
 	{
 		if (e.keyCode === 13)
 		{
@@ -35,9 +35,9 @@
 	
 	
 	
-	const download_button_element = Page.element.querySelector("#download-button");
+	const downloadButtonElement = Page.element.querySelector("#download-button");
 	
-	download_button_element.addEventListener("click", () => applet.wilson.download_frame("the-barnsley-fern.png"));
+	downloadButtonElement.addEventListener("click", () => applet.wilson.downloadFrame("the-barnsley-fern.png"));
 	
 	
 	

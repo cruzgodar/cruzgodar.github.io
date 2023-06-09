@@ -2,7 +2,7 @@
 
 !async function()
 {
-	await Site.load_applet("calcudoku-generator");
+	await Site.loadApplet("calcudoku-generator");
 	
 	const applet = new CalcudokuGenerator(Page.element.querySelector("#output-canvas"));
 	
@@ -10,24 +10,24 @@
 	
 	function run()
 	{
-		const grid_size = parseInt(grid_size_input_element.value || 6);
+		const gridSize = parseInt(gridSizeInputElement.value || 6);
 		
-		const max_cage_size = parseInt(max_cage_size_input_element.value || 1000);
+		const maxCageSize = parseInt(maxCageSizeInputElement.value || 1000);
 		
-		applet.run(grid_size, max_cage_size);
+		applet.run(gridSize, maxCageSize);
 	}
 	
 	
 	
-	const generate_button_element = Page.element.querySelector("#generate-button");
+	const generateButtonElement = Page.element.querySelector("#generate-button");
 
-	generate_button_element.addEventListener("click", run);
+	generateButtonElement.addEventListener("click", run);
 	
 	
 	
-	const grid_size_input_element = Page.element.querySelector("#grid-size-input");
+	const gridSizeInputElement = Page.element.querySelector("#grid-size-input");
 	
-	grid_size_input_element.addEventListener("keydown", (e) =>
+	gridSizeInputElement.addEventListener("keydown", (e) =>
 	{
 		if (e.keyCode === 13)
 		{
@@ -37,9 +37,9 @@
 	
 	
 	
-	const max_cage_size_input_element = Page.element.querySelector("#max-cage-size-input");
+	const maxCageSizeInputElement = Page.element.querySelector("#max-cage-size-input");
 	
-	max_cage_size_input_element.addEventListener("keydown", (e) =>
+	maxCageSizeInputElement.addEventListener("keydown", (e) =>
 	{
 		if (e.keyCode === 13)
 		{
@@ -49,15 +49,15 @@
 	
 	
 	
-	const download_button_element = Page.element.querySelector("#download-button");
+	const downloadButtonElement = Page.element.querySelector("#download-button");
 	
-	download_button_element.addEventListener("click", () =>
+	downloadButtonElement.addEventListener("click", () =>
 	{
-		applet.draw_grid(true);
+		applet.drawGrid(true);
 		
-		applet.wilson.download_frame("a-calcudoku-puzzle.png");
+		applet.wilson.downloadFrame("a-calcudoku-puzzle.png");
 		
-		applet.draw_grid(false);
+		applet.drawGrid(false);
 	});
 	
 	

@@ -4,24 +4,24 @@
 	
 	
 	
-	const frag_shader_source = `
+	const fragShaderSource = `
 		precision highp float;
 		
 		varying vec2 uv;
 		
-		uniform float julia_sets_per_side;
-		uniform float julia_set_size;
-		uniform float image_size;
-		uniform int num_iterations;
+		uniform float juliaSetsPerSide;
+		uniform float juliaSetSize;
+		uniform float imageSize;
+		uniform int numIterations;
 		
 		
 		
 		void main(void)
 		{
-			float a = (floor((uv.x + 1.0) / 2.0 * julia_sets_per_side) / julia_sets_per_side * 2.0 - 1.0) * 1.5 - .75;
-			float b = (floor((uv.y + 1.0) / 2.0 * julia_sets_per_side) / julia_sets_per_side * 2.0 - 1.0) * 1.5;
+			float a = (floor((uv.x + 1.0) / 2.0 * juliaSetsPerSide) / juliaSetsPerSide * 2.0 - 1.0) * 1.5 - .75;
+			float b = (floor((uv.y + 1.0) / 2.0 * juliaSetsPerSide) / juliaSetsPerSide * 2.0 - 1.0) * 1.5;
 			
-			vec2 z = vec2((mod((uv.x + 1.0) / 2.0 * image_size, julia_set_size) / julia_set_size * 2.0 - 1.0) * 1.5, (mod((uv.y + 1.0) / 2.0 * image_size, julia_set_size) / julia_set_size * 2.0 - 1.0) * 1.5);
+			vec2 z = vec2((mod((uv.x + 1.0) / 2.0 * imageSize, juliaSetSize) / juliaSetSize * 2.0 - 1.0) * 1.5, (mod((uv.y + 1.0) / 2.0 * imageSize, juliaSetSize) / juliaSetSize * 2.0 - 1.0) * 1.5);
 			float brightness = exp(-length(z));
 			
 			vec3 color = normalize(vec3(abs(z.x + z.y) / 2.0, abs(z.x) / 2.0, abs(z.y) / 2.0) + .1 / length(z) * vec3(1.0, 1.0, 1.0));
@@ -30,7 +30,7 @@
 			
 			for (int iteration = 0; iteration < 100; iteration++)
 			{
-				if (iteration == num_iterations)
+				if (iteration == numIterations)
 				{
 					gl_FragColor = vec4(0.0, 0.0, 0.0, 1.0);
 					return;
@@ -58,64 +58,64 @@
 	{
 		renderer: "gpu",
 		
-		shader: frag_shader_source,
+		shader: fragShaderSource,
 		
-		canvas_width: 2000,
-		canvas_height: 2000,
+		canvasWidth: 2000,
+		canvasHeight: 2000,
 		
 		
 		
-		use_fullscreen: true,
+		useFullscreen: true,
 		
-		use_fullscreen_button: true,
+		useFullscreenButton: true,
 		
-		enter_fullscreen_button_icon_path: "/graphics/general-icons/enter-fullscreen.png",
-		exit_fullscreen_button_icon_path: "/graphics/general-icons/exit-fullscreen.png"
+		enterFullscreenButtonIconPath: "/graphics/general-icons/enter-fullscreen.png",
+		exitFullscreenButtonIconPath: "/graphics/general-icons/exit-fullscreen.png"
 	};
 	
 	let wilson = new Wilson(Page.element.querySelector("#output-canvas"), options);
 	
-	wilson.render.init_uniforms(["julia_sets_per_side", "julia_set_size", "image_size", "num_iterations"]);
+	wilson.render.initUniforms(["juliaSetsPerSide", "juliaSetSize", "imageSize", "numIterations"]);
 	
 	
 	
-	let image_size = 2000;
-	const num_iterations = 50;
+	let imageSize = 2000;
+	const numIterations = 50;
 	
 	
 	
-	let generate_button_element = Page.element.querySelector("#generate-button");
+	let generateButtonElement = Page.element.querySelector("#generate-button");
 
-	generate_button_element.addEventListener("click", draw_frame);
+	generateButtonElement.addEventListener("click", drawFrame);
 	
 	
 	
-	let num_julias_input_element = Page.element.querySelector("#num-julias-input");
-	let julia_size_input_element = Page.element.querySelector("#julia-size-input");
+	let numJuliasInputElement = Page.element.querySelector("#num-julias-input");
+	let juliaSizeInputElement = Page.element.querySelector("#julia-size-input");
 	
-	num_julias_input_element.addEventListener("keydown", function(e)
+	numJuliasInputElement.addEventListener("keydown", function(e)
 	{
 		if (e.keyCode === 13)
 		{
-			draw_frame();
+			drawFrame();
 		}
 	});
 	
-	julia_size_input_element.addEventListener("keydown", function(e)
+	juliaSizeInputElement.addEventListener("keydown", function(e)
 	{
 		if (e.keyCode === 13)
 		{
-			draw_frame();
+			drawFrame();
 		}
 	});
 	
 	
 	
-	let download_button_element = Page.element.querySelector("#download-button");
+	let downloadButtonElement = Page.element.querySelector("#download-button");
 	
-	download_button_element.addEventListener("click", () =>
+	downloadButtonElement.addEventListener("click", () =>
 	{
-		wilson.download_frame("a-julia-set-mosaic.png");
+		wilson.downloadFrame("a-julia-set-mosaic.png");
 	});
 	
 	
@@ -124,25 +124,25 @@
 	
 	
 	
-	function draw_frame()
+	function drawFrame()
 	{	
-		let julia_sets_per_side = parseInt(num_julias_input_element.value || 100);
-		let julia_set_size = parseInt(julia_size_input_element.value || 20);
-		image_size = julia_sets_per_side * julia_set_size;
+		let juliaSetsPerSide = parseInt(numJuliasInputElement.value || 100);
+		let juliaSetSize = parseInt(juliaSizeInputElement.value || 20);
+		imageSize = juliaSetsPerSide * juliaSetSize;
 		
 		
 		
-		wilson.change_canvas_size(image_size, image_size);
+		wilson.changeCanvasSize(imageSize, imageSize);
 		
 		
 		
-		wilson.gl.uniform1f(wilson.uniforms["julia_sets_per_side"], julia_sets_per_side);
-		wilson.gl.uniform1f(wilson.uniforms["julia_set_size"], julia_set_size);
-		wilson.gl.uniform1f(wilson.uniforms["image_size"], image_size);
-		wilson.gl.uniform1i(wilson.uniforms["num_iterations"], num_iterations);
+		wilson.gl.uniform1f(wilson.uniforms["juliaSetsPerSide"], juliaSetsPerSide);
+		wilson.gl.uniform1f(wilson.uniforms["juliaSetSize"], juliaSetSize);
+		wilson.gl.uniform1f(wilson.uniforms["imageSize"], imageSize);
+		wilson.gl.uniform1i(wilson.uniforms["numIterations"], numIterations);
 		
 		
 		
-		wilson.render.draw_frame();
+		wilson.render.drawFrame();
 	}
-}()
+	}()

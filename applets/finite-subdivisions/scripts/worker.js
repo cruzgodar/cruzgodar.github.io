@@ -4,21 +4,21 @@
 
 onmessage = async function(e)
 {
-	num_vertices = e.data[0];
-	num_iterations = e.data[1];
-	grid_size = e.data[2];
-	maximum_speed = e.data[3];
+	numVertices = e.data[0];
+	numIterations = e.data[1];
+	gridSize = e.data[2];
+	maximumSpeed = e.data[3];
 	
-	await draw_finite_subdivisions();
+	await drawFiniteSubdivisions();
 }
 
 
 
-let num_vertices = null;
-let num_iterations = null;
-let current_iteration = null;
-let grid_size = null;
-let maximum_speed = null;
+let numVertices = null;
+let numIterations = null;
+let currentIteration = null;
+let gridSize = null;
+let maximumSpeed = null;
 
 let polygons = [];
 
@@ -26,48 +26,48 @@ let polygons = [];
 
 
 
-function draw_finite_subdivisions()
+function drawFiniteSubdivisions()
 {
 	return new Promise(async function(resolve, reject)
 	{
 		polygons = [[]];
 		
-		current_iteration = 0;
+		currentIteration = 0;
 		
 		
 		
 		//This makes the size of the black bars on the top and bottom equal.
-		let middle_angle = Math.floor(num_vertices / 2) * 2 * Math.PI / num_vertices;
+		let middleAngle = Math.floor(numVertices / 2) * 2 * Math.PI / numVertices;
 		
-		let top_row = grid_size / 2 - grid_size / 2.5;
-		let bottom_row = grid_size / 2 - grid_size / 2.5 * Math.cos(middle_angle);
+		let topRow = gridSize / 2 - gridSize / 2.5;
+		let bottomRow = gridSize / 2 - gridSize / 2.5 * Math.cos(middleAngle);
 		
-		let total_margin = top_row + (grid_size - bottom_row);
+		let totalMargin = topRow + (gridSize - bottomRow);
 		
-		let center_row = Math.floor(total_margin / 2 + grid_size / 2.5);
-		let center_col = Math.floor(grid_size / 2);
+		let centerRow = Math.floor(totalMargin / 2 + gridSize / 2.5);
+		let centerCol = Math.floor(gridSize / 2);
 		
-		for (let i = 0; i < num_vertices; i++)
+		for (let i = 0; i < numVertices; i++)
 		{
-			let angle = i / num_vertices * 2 * Math.PI;
+			let angle = i / numVertices * 2 * Math.PI;
 			
-			let row = Math.floor(-Math.cos(angle) * grid_size / 2.5 + center_row);
-			let col = Math.floor(Math.sin(angle) * grid_size / 2.5 + center_col);
+			let row = Math.floor(-Math.cos(angle) * gridSize / 2.5 + centerRow);
+			let col = Math.floor(Math.sin(angle) * gridSize / 2.5 + centerCol);
 			
 			polygons[0].push([row, col]);
 		}
 		
 		
 		
-		await draw_outer_polygon();
+		await drawOuterPolygon();
 		
 		
 		
-		for (let i = 0; i < num_iterations; i++)
+		for (let i = 0; i < numIterations; i++)
 		{
-			await draw_lines(calculate_lines());
+			await drawLines(calculateLines());
 			
-			current_iteration++;
+			currentIteration++;
 		}
 		
 		
@@ -78,22 +78,22 @@ function draw_finite_subdivisions()
 
 
 
-function draw_outer_polygon()
+function drawOuterPolygon()
 {
 	return new Promise(async function(resolve, reject)
 	{
-		if (maximum_speed === false)
+		if (maximumSpeed === false)
 		{
 			for (let i = 0; i < 120; i++)
 			{
 				//Draw 1/120 of each line.
-				for (let j = 0; j < num_vertices; j++)
+				for (let j = 0; j < numVertices; j++)
 				{
-					let rgb = HSVtoRGB((2 * j + 1) / (2 * num_vertices), 1, 1);
+					let rgb = HSVtoRGB((2 * j + 1) / (2 * numVertices), 1, 1);
 					
 					let color = `rgb(${rgb[0]}, ${rgb[1]}, ${rgb[2]})`;
 					
-					postMessage([polygons[0][j][0], polygons[0][j][1], polygons[0][j][0] + ((i + 1) / 120) * (polygons[0][(j + 1) % num_vertices][0] - polygons[0][j][0]), polygons[0][j][1] + ((i + 1) / 120) * (polygons[0][(j + 1) % num_vertices][1] - polygons[0][j][1]), color]);
+					postMessage([polygons[0][j][0], polygons[0][j][1], polygons[0][j][0] + ((i + 1) / 120) * (polygons[0][(j + 1) % numVertices][0] - polygons[0][j][0]), polygons[0][j][1] + ((i + 1) / 120) * (polygons[0][(j + 1) % numVertices][1] - polygons[0][j][1]), color]);
 				}
 				
 				await sleep(8);
@@ -104,13 +104,13 @@ function draw_outer_polygon()
 		
 		else
 		{
-			for (let j = 0; j < num_vertices; j++)
+			for (let j = 0; j < numVertices; j++)
 			{
-				let rgb = HSVtoRGB((2 * j + 1) / (2 * num_vertices), 1, 1);
+				let rgb = HSVtoRGB((2 * j + 1) / (2 * numVertices), 1, 1);
 				
 				let color = `rgb(${rgb[0]}, ${rgb[1]}, ${rgb[2]})`;
 				
-				postMessage([polygons[0][j][0], polygons[0][j][1], polygons[0][(j + 1) % num_vertices][0], polygons[0][(j + 1) % num_vertices][1], color]);
+				postMessage([polygons[0][j][0], polygons[0][j][1], polygons[0][(j + 1) % numVertices][0], polygons[0][(j + 1) % numVertices][1], color]);
 			}
 		}
 		
@@ -122,57 +122,57 @@ function draw_outer_polygon()
 
 
 
-function calculate_lines()
+function calculateLines()
 {
-	let new_lines = [];
+	let newLines = [];
 	
-	let new_polygons = [];
+	let newPolygons = [];
 	
 	for (let i = 0; i < polygons.length; i++)
 	{
-		let barycenter_row = 0;
-		let barycenter_col = 0;
+		let barycenterRow = 0;
+		let barycenterCol = 0;
 		
 		for (let j = 0; j < polygons[i].length; j++)
 		{
-			barycenter_row += polygons[i][j][0];
-			barycenter_col += polygons[i][j][1];
+			barycenterRow += polygons[i][j][0];
+			barycenterCol += polygons[i][j][1];
 		}
 		
-		barycenter_row /= polygons[i].length;
-		barycenter_col /= polygons[i].length;
+		barycenterRow /= polygons[i].length;
+		barycenterCol /= polygons[i].length;
 		
 		for (let j = 0; j < polygons[i].length; j++)
 		{
-			new_lines.push([polygons[i][j], [barycenter_row, barycenter_col]]);
+			newLines.push([polygons[i][j], [barycenterRow, barycenterCol]]);
 			
-			new_polygons.push([[barycenter_row, barycenter_col], polygons[i][j], polygons[i][(j + 1) % polygons[i].length]]);
+			newPolygons.push([[barycenterRow, barycenterCol], polygons[i][j], polygons[i][(j + 1) % polygons[i].length]]);
 		}
 	}
 	
-	polygons = new_polygons;
+	polygons = newPolygons;
 	
-	return new_lines;
+	return newLines;
 }
 
 
 
-function draw_lines(new_lines)
+function drawLines(newLines)
 {
 	return new Promise(async function(resolve, reject)
 	{
-		if (maximum_speed === false)
+		if (maximumSpeed === false)
 		{
 			for (let i = 0; i < 120; i++)
 			{
 				//Draw 1/120 of each line.
-				for (let j = 0; j < new_lines.length; j++)
+				for (let j = 0; j < newLines.length; j++)
 				{
-					let rgb = HSVtoRGB(j / (new_lines.length - 1), 1, 1);
+					let rgb = HSVtoRGB(j / (newLines.length - 1), 1, 1);
 					
 					let color = `rgb(${rgb[0]}, ${rgb[1]}, ${rgb[2]})`;
 					
-					postMessage([new_lines[j][0][0], new_lines[j][0][1], new_lines[j][0][0] + ((i + 1) / 120) * (new_lines[j][1][0] - new_lines[j][0][0]) + 1, new_lines[j][0][1] + ((i + 1) / 120) * (new_lines[j][1][1] - new_lines[j][0][1]), color]);
+					postMessage([newLines[j][0][0], newLines[j][0][1], newLines[j][0][0] + ((i + 1) / 120) * (newLines[j][1][0] - newLines[j][0][0]) + 1, newLines[j][0][1] + ((i + 1) / 120) * (newLines[j][1][1] - newLines[j][0][1]), color]);
 				}
 				
 				await sleep(8);
@@ -182,13 +182,13 @@ function draw_lines(new_lines)
 		
 		else
 		{
-			for (let j = 0; j < new_lines.length; j++)
+			for (let j = 0; j < newLines.length; j++)
 			{
-				let rgb = HSVtoRGB(j / (new_lines.length - 1), 1, 1);
+				let rgb = HSVtoRGB(j / (newLines.length - 1), 1, 1);
 				
 				let color = `rgb(${rgb[0]}, ${rgb[1]}, ${rgb[2]})`;
 				
-				postMessage([new_lines[j][0][0], new_lines[j][0][1], new_lines[j][1][0], new_lines[j][1][1], color]);
+				postMessage([newLines[j][0][0], newLines[j][0][1], newLines[j][1][0], newLines[j][1][1], color]);
 			}
 		}
 		
@@ -231,4 +231,4 @@ function HSVtoRGB(h, s, v)
 	}
     
 	return [Math.round(r * 255), Math.round(g * 255), Math.round(b * 255)];
-}
+	}

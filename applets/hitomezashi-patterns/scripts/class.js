@@ -2,29 +2,29 @@
 
 class HitomezashiPattern extends Applet
 {
-	do_draw_boundaries = true;
-	do_draw_regions = true;
-	maximum_speed = false;
+	doDrawBoundaries = true;
+	doDrawRegions = true;
+	maximumSpeed = false;
 	
 	resolution = null;
-	grid_size = null;
-	row_prob = null;
-	col_prob = null;
+	gridSize = null;
+	rowProb = null;
+	colProb = null;
 	
-	pattern_rows = [];
-	pattern_cols = [];
+	patternRows = [];
+	patternCols = [];
 	regions = [];
-	regions_ordered = [];
-	region_sizes = [];
-	num_regions = 0;
-	num_unique_region_sizes = 0;
-	cells_by_radius = [];
+	regionsOrdered = [];
+	regionSizes = [];
+	numRegions = 0;
+	numUniqueRegionSizes = 0;
+	cellsByRadius = [];
 	
-	current_row = 1;
-	current_col = 1;
-	current_region = 0;
+	currentRow = 1;
+	currentCol = 1;
+	currentRegion = 0;
 	
-	line_width = null;
+	lineWidth = null;
 	
 	
 	
@@ -36,17 +36,17 @@ class HitomezashiPattern extends Applet
 		{
 			renderer: "cpu",
 			
-			canvas_width: 1000,
-			canvas_height: 1000,
+			canvasWidth: 1000,
+			canvasHeight: 1000,
 			
 			
 			
-			use_fullscreen: true,
+			useFullscreen: true,
 		
-			use_fullscreen_button: true,
+			useFullscreenButton: true,
 			
-			enter_fullscreen_button_icon_path: "/graphics/general-icons/enter-fullscreen.png",
-			exit_fullscreen_button_icon_path: "/graphics/general-icons/exit-fullscreen.png"
+			enterFullscreenButtonIconPath: "/graphics/general-icons/enter-fullscreen.png",
+			exitFullscreenButtonIconPath: "/graphics/general-icons/exit-fullscreen.png"
 		};
 		
 		this.wilson = new Wilson(canvas, options);
@@ -54,17 +54,17 @@ class HitomezashiPattern extends Applet
 	
 	
 	
-	run(resolution = 2000, grid_size = 50, row_prob = .5, col_prob = .5, do_draw_boundaries = true, do_draw_regions = true, maximum_speed = false)
+	run(resolution = 2000, gridSize = 50, rowProb = .5, colProb = .5, doDrawBoundaries = true, doDrawRegions = true, maximumSpeed = false)
 	{
 		this.resolution = resolution;
-		this.grid_size = grid_size;
-		this.row_prob = row_prob;
-		this.col_prob = col_prob;
-		this.do_draw_boundaries = do_draw_boundaries;
-		this.do_draw_regions = do_draw_regions;
-		this.maximum_speed = maximum_speed;
+		this.gridSize = gridSize;
+		this.rowProb = rowProb;
+		this.colProb = colProb;
+		this.doDrawBoundaries = doDrawBoundaries;
+		this.doDrawRegions = doDrawRegions;
+		this.maximumSpeed = maximumSpeed;
 		
-		this.wilson.change_canvas_size(this.resolution, this.resolution);
+		this.wilson.changeCanvasSize(this.resolution, this.resolution);
 		
 		
 		
@@ -73,100 +73,100 @@ class HitomezashiPattern extends Applet
 		
 		this.wilson.ctx.strokeStyle = "rgb(127, 127, 127)";
 		
-		this.line_width = this.resolution / this.grid_size / 20;
+		this.lineWidth = this.resolution / this.gridSize / 20;
 		
-		this.wilson.ctx.lineWidth = this.line_width;
+		this.wilson.ctx.lineWidth = this.lineWidth;
 		
 		
 		
 		//These are 0 if there is not a row/col in that position, and 1 if there is.
-		this.pattern_rows = new Array(this.grid_size + 1);
-		this.pattern_cols = new Array(this.grid_size + 1);
-		this.regions = new Array(this.grid_size);
-		this.regions_ordered = [];
-		this.region_sizes = [];
-		this.num_regions = 0;
-		this.cells_by_radius = new Array(this.grid_size + 1);
+		this.patternRows = new Array(this.gridSize + 1);
+		this.patternCols = new Array(this.gridSize + 1);
+		this.regions = new Array(this.gridSize);
+		this.regionsOrdered = [];
+		this.regionSizes = [];
+		this.numRegions = 0;
+		this.cellsByRadius = new Array(this.gridSize + 1);
 		
-		for (let i = 0; i < this.grid_size + 1; i++)
+		for (let i = 0; i < this.gridSize + 1; i++)
 		{
-			this.pattern_rows[i] = new Array(this.grid_size + 1);
-			this.pattern_cols[i] = new Array(this.grid_size + 1);
+			this.patternRows[i] = new Array(this.gridSize + 1);
+			this.patternCols[i] = new Array(this.gridSize + 1);
 			
-			for (let j = 0; j < this.grid_size + 1; j++)
+			for (let j = 0; j < this.gridSize + 1; j++)
 			{
-				this.pattern_rows[i][j] = 0;
-				this.pattern_cols[i][j] = 0;
+				this.patternRows[i][j] = 0;
+				this.patternCols[i][j] = 0;
 			}
 		}
 		
-		for (let i = 0; i < this.grid_size; i++)
+		for (let i = 0; i < this.gridSize; i++)
 		{
-			this.regions[i] = new Array(this.grid_size);
+			this.regions[i] = new Array(this.gridSize);
 			
-			for (let j = 0; j < this.grid_size; j++)
+			for (let j = 0; j < this.gridSize; j++)
 			{
 				this.regions[i][j] = -1;
 			}
 		}
 		
-		for (let i = 0; i < this.grid_size + 1; i++)
+		for (let i = 0; i < this.gridSize + 1; i++)
 		{
-			this.cells_by_radius[i] = [];
+			this.cellsByRadius[i] = [];
 		}
 		
 		
 		
-		const middle_row = Math.floor(this.grid_size / 2);
+		const middleRow = Math.floor(this.gridSize / 2);
 		
-		for (let i = 0; i < this.grid_size; i++)
+		for (let i = 0; i < this.gridSize; i++)
 		{
-			for (let j = 0; j < this.grid_size; j++)
+			for (let j = 0; j < this.gridSize; j++)
 			{
-				this.cells_by_radius[Math.abs(i - middle_row) + Math.abs(j - middle_row)].push([i, j]);
+				this.cellsByRadius[Math.abs(i - middleRow) + Math.abs(j - middleRow)].push([i, j]);
 			}
 		}
 		
 		
 		
 		//Place the rows.
-		for (let i = 0; i < this.grid_size + 1; i++)
+		for (let i = 0; i < this.gridSize + 1; i++)
 		{
-			const offset = Math.random() < this.row_prob ? 1 : 0;
+			const offset = Math.random() < this.rowProb ? 1 : 0;
 			
-			for (let j = offset; j < this.grid_size; j += 2)
+			for (let j = offset; j < this.gridSize; j += 2)
 			{
-				this.pattern_rows[i][j] = 1;
+				this.patternRows[i][j] = 1;
 			}
 		}
 		
 		
 		
 		//Place the columns.
-		for (let i = 0; i < this.grid_size + 1; i++)
+		for (let i = 0; i < this.gridSize + 1; i++)
 		{
-			const offset = Math.random() < this.col_prob ? 1 : 0;
+			const offset = Math.random() < this.colProb ? 1 : 0;
 			
-			for (let j = offset; j < this.grid_size; j += 2)
+			for (let j = offset; j < this.gridSize; j += 2)
 			{
-				this.pattern_cols[j][i] = 1;
+				this.patternCols[j][i] = 1;
 			}
 		}
 		
 		
 		
-		if (this.maximum_speed)
+		if (this.maximumSpeed)
 		{
-			if (this.do_draw_boundaries)
+			if (this.doDrawBoundaries)
 			{
-				this.draw_boundaries();
+				this.drawBoundaries();
 			}
 			
-			if (this.do_draw_regions)
+			if (this.doDrawRegions)
 			{
-				this.identify_regions();
+				this.identifyRegions();
 				
-				this.draw_regions();
+				this.drawRegions();
 			}
 		}
 		
@@ -174,39 +174,39 @@ class HitomezashiPattern extends Applet
 		
 		else
 		{
-			if (this.do_draw_boundaries)
+			if (this.doDrawBoundaries)
 			{
-				this.current_row = 1;
-				this.current_col = 1;
+				this.currentRow = 1;
+				this.currentCol = 1;
 				
-				this.draw_boundary_row_step();
+				this.drawBoundaryRowStep();
 			}
 			
-			else if (this.do_draw_regions)
+			else if (this.doDrawRegions)
 			{
-				this.identify_regions();
+				this.identifyRegions();
 				
-				this.current_region = 0;
+				this.currentRegion = 0;
 				
-				this.draw_regions_step();
+				this.drawRegionsStep();
 			}
 		}
 	}
 	
 	
 	
-	draw_boundaries()
+	drawBoundaries()
 	{
 		//We don't include things on the boundary, since they don't play nice with the lines already drawn there.
-		for (let i = 1; i < this.grid_size; i++)
+		for (let i = 1; i < this.gridSize; i++)
 		{
-			for (let j = 0; j < this.grid_size; j++)
+			for (let j = 0; j < this.gridSize; j++)
 			{
-				if (this.pattern_rows[i][j])
+				if (this.patternRows[i][j])
 				{			
 					this.wilson.ctx.beginPath();
-					this.wilson.ctx.moveTo((this.resolution / this.grid_size) * j, (this.resolution / this.grid_size) * i);
-					this.wilson.ctx.lineTo((this.resolution / this.grid_size) * (j + 1), (this.resolution / this.grid_size) * i);
+					this.wilson.ctx.moveTo((this.resolution / this.gridSize) * j, (this.resolution / this.gridSize) * i);
+					this.wilson.ctx.lineTo((this.resolution / this.gridSize) * (j + 1), (this.resolution / this.gridSize) * i);
 					this.wilson.ctx.stroke();
 				}
 			}
@@ -214,15 +214,15 @@ class HitomezashiPattern extends Applet
 		
 		
 		
-		for (let i = 0; i < this.grid_size; i++)
+		for (let i = 0; i < this.gridSize; i++)
 		{
-			for (let j = 1; j < this.grid_size; j++)
+			for (let j = 1; j < this.gridSize; j++)
 			{
-				if (this.pattern_cols[i][j])
+				if (this.patternCols[i][j])
 				{			
 					this.wilson.ctx.beginPath();
-					this.wilson.ctx.moveTo((this.resolution / this.grid_size) * j, (this.resolution / this.grid_size) * i);
-					this.wilson.ctx.lineTo((this.resolution / this.grid_size) * j, (this.resolution / this.grid_size) * (i + 1));
+					this.wilson.ctx.moveTo((this.resolution / this.gridSize) * j, (this.resolution / this.gridSize) * i);
+					this.wilson.ctx.lineTo((this.resolution / this.gridSize) * j, (this.resolution / this.gridSize) * (i + 1));
 					this.wilson.ctx.stroke();
 				}
 			}
@@ -231,168 +231,168 @@ class HitomezashiPattern extends Applet
 	
 	
 	
-	draw_boundary_row_step()
+	drawBoundaryRowStep()
 	{
-		for (let j = 0; j < this.grid_size; j++)
+		for (let j = 0; j < this.gridSize; j++)
 		{
-			if (this.pattern_rows[this.current_row][j])
+			if (this.patternRows[this.currentRow][j])
 			{			
 				this.wilson.ctx.beginPath();
-				this.wilson.ctx.moveTo((this.resolution / this.grid_size) * j, (this.resolution / this.grid_size) * this.current_row);
-				this.wilson.ctx.lineTo((this.resolution / this.grid_size) * (j + 1), (this.resolution / this.grid_size) * this.current_row);
+				this.wilson.ctx.moveTo((this.resolution / this.gridSize) * j, (this.resolution / this.gridSize) * this.currentRow);
+				this.wilson.ctx.lineTo((this.resolution / this.gridSize) * (j + 1), (this.resolution / this.gridSize) * this.currentRow);
 				this.wilson.ctx.stroke();
 			}
 		}
 		
-		this.current_row++;
+		this.currentRow++;
 		
-		if (this.current_row < this.grid_size)
+		if (this.currentRow < this.gridSize)
 		{
-			window.requestAnimationFrame(this.draw_boundary_row_step.bind(this));
+			window.requestAnimationFrame(this.drawBoundaryRowStep.bind(this));
 		}
 		
 		else
 		{
-			window.requestAnimationFrame(this.draw_boundary_col_step.bind(this));
+			window.requestAnimationFrame(this.drawBoundaryColStep.bind(this));
 		}
 		
 	}
 	
-	draw_boundary_col_step()
+	drawBoundaryColStep()
 	{
-		for (let i = 0; i < this.grid_size; i++)
+		for (let i = 0; i < this.gridSize; i++)
 		{
-			if (this.pattern_cols[i][this.current_col])
+			if (this.patternCols[i][this.currentCol])
 			{			
 				this.wilson.ctx.beginPath();
-				this.wilson.ctx.moveTo((this.resolution / this.grid_size) * this.current_col, (this.resolution / this.grid_size) * i);
-				this.wilson.ctx.lineTo((this.resolution / this.grid_size) * this.current_col, (this.resolution / this.grid_size) * (i + 1));
+				this.wilson.ctx.moveTo((this.resolution / this.gridSize) * this.currentCol, (this.resolution / this.gridSize) * i);
+				this.wilson.ctx.lineTo((this.resolution / this.gridSize) * this.currentCol, (this.resolution / this.gridSize) * (i + 1));
 				this.wilson.ctx.stroke();
 			}
 		}
 		
-		this.current_col++;
+		this.currentCol++;
 		
-		if (this.current_col < this.grid_size)
+		if (this.currentCol < this.gridSize)
 		{
-			window.requestAnimationFrame(this.draw_boundary_col_step.bind(this));
+			window.requestAnimationFrame(this.drawBoundaryColStep.bind(this));
 		}
 		
-		else if (this.do_draw_regions)
+		else if (this.doDrawRegions)
 		{
-			this.identify_regions();
+			this.identifyRegions();
 			
-			this.current_region = 0;
+			this.currentRegion = 0;
 			
-			setTimeout(this.draw_regions_step.bind(this), 1000);
+			setTimeout(this.drawRegionsStep.bind(this), 1000);
 		}
 	}
 	
 	
 	
-	identify_regions()
+	identifyRegions()
 	{
 		//This is kind of a mess, but we're just going to floodfill one region at a time and just use constant colors that range from red in the top left to magenta in the bottom right. That's the goal at least.
 		
-		let start_row = 0;
-		let start_col = 0;
+		let startRow = 0;
+		let startCol = 0;
 		
 		while (true)
 		{
-			let active_squares = [[start_row, start_col]];
+			let activeSquares = [[startRow, startCol]];
 			
-			this.regions[start_row][start_col] = this.num_regions;
+			this.regions[startRow][startCol] = this.numRegions;
 			
-			this.regions_ordered.push([[start_row, start_col]]);
+			this.regionsOrdered.push([[startRow, startCol]]);
 			
 			
 			
-			while (active_squares.length !== 0)
+			while (activeSquares.length !== 0)
 			{
-				let num_active_squares = active_squares.length;
+				let numActiveSquares = activeSquares.length;
 				
-				for (let i = 0; i < num_active_squares; i++)
+				for (let i = 0; i < numActiveSquares; i++)
 				{
-					const row = active_squares[i][0];
-					const col = active_squares[i][1];
+					const row = activeSquares[i][0];
+					const col = activeSquares[i][1];
 					
-					if (row > 0 && this.regions[row - 1][col] === -1 && !(this.pattern_rows[row][col]))
+					if (row > 0 && this.regions[row - 1][col] === -1 && !(this.patternRows[row][col]))
 					{
-						active_squares.push([row - 1, col]);
+						activeSquares.push([row - 1, col]);
 						
-						this.regions[row - 1][col] = this.num_regions;
+						this.regions[row - 1][col] = this.numRegions;
 						
-						this.regions_ordered[this.num_regions].push([row - 1, col]);
+						this.regionsOrdered[this.numRegions].push([row - 1, col]);
 					}
 					
-					if (row < this.grid_size - 1 && this.regions[row + 1][col] === -1 && !(this.pattern_rows[row + 1][col]))
+					if (row < this.gridSize - 1 && this.regions[row + 1][col] === -1 && !(this.patternRows[row + 1][col]))
 					{
-						active_squares.push([row + 1, col]);
+						activeSquares.push([row + 1, col]);
 						
-						this.regions[row + 1][col] = this.num_regions;
+						this.regions[row + 1][col] = this.numRegions;
 						
-						this.regions_ordered[this.num_regions].push([row + 1, col]);
+						this.regionsOrdered[this.numRegions].push([row + 1, col]);
 					}
 					
-					if (col > 0 && this.regions[row][col - 1] === -1 && !(this.pattern_cols[row][col]))
+					if (col > 0 && this.regions[row][col - 1] === -1 && !(this.patternCols[row][col]))
 					{
-						active_squares.push([row, col - 1]);
+						activeSquares.push([row, col - 1]);
 						
-						this.regions[row][col - 1] = this.num_regions;
+						this.regions[row][col - 1] = this.numRegions;
 						
-						this.regions_ordered[this.num_regions].push([row, col - 1]);
+						this.regionsOrdered[this.numRegions].push([row, col - 1]);
 					}
 					
-					if (col < this.grid_size - 1 && this.regions[row][col + 1] === -1 && !(this.pattern_cols[row][col + 1]))
+					if (col < this.gridSize - 1 && this.regions[row][col + 1] === -1 && !(this.patternCols[row][col + 1]))
 					{
-						active_squares.push([row, col + 1]);
+						activeSquares.push([row, col + 1]);
 						
-						this.regions[row][col + 1] = this.num_regions;
+						this.regions[row][col + 1] = this.numRegions;
 						
-						this.regions_ordered[this.num_regions].push([row, col + 1]);
+						this.regionsOrdered[this.numRegions].push([row, col + 1]);
 					}
 				}
 				
-				active_squares.splice(0, num_active_squares);
+				activeSquares.splice(0, numActiveSquares);
 			}
 			
 			
 			
-			this.region_sizes.push(this.regions_ordered[this.num_regions].length);
+			this.regionSizes.push(this.regionsOrdered[this.numRegions].length);
 			
 			
 			
 			//Now search radially outward from the center for the next starting square.
 			
-			let found_new_start = false;
+			let foundNewStart = false;
 			
-			for (let radius = 0; radius <= this.grid_size; radius++)
+			for (let radius = 0; radius <= this.gridSize; radius++)
 			{
-				for (let i = 0; i < this.cells_by_radius[radius].length; i++)
+				for (let i = 0; i < this.cellsByRadius[radius].length; i++)
 				{
-					const row = this.cells_by_radius[radius][i][0];
-					const col = this.cells_by_radius[radius][i][1];
+					const row = this.cellsByRadius[radius][i][0];
+					const col = this.cellsByRadius[radius][i][1];
 					
 					if (this.regions[row][col] === -1)
 					{
-						start_row = row;
-						start_col = col;
+						startRow = row;
+						startCol = col;
 						
-						found_new_start = true;
+						foundNewStart = true;
 						
 						break;
 					}
 				}
 				
-				if (found_new_start)
+				if (foundNewStart)
 				{
 					break;
 				}
 			}
 			
-			this.num_regions++;
+			this.numRegions++;
 			
-			if (!found_new_start)
+			if (!foundNewStart)
 			{
 				break;
 			}
@@ -401,100 +401,100 @@ class HitomezashiPattern extends Applet
 		
 		
 		//Get unique values.
-		this.region_sizes = [...new Set(this.region_sizes)];
+		this.regionSizes = [...new Set(this.regionSizes)];
 		
 		//Sort descending.
-		this.region_sizes.sort((a, b) => b - a);
+		this.regionSizes.sort((a, b) => b - a);
 		
-		this.num_unique_region_sizes = this.region_sizes.length;
+		this.numUniqueRegionSizes = this.regionSizes.length;
 	}
 	
 	
 	
-	draw_regions()
+	drawRegions()
 	{
 		this.wilson.ctx.fillStyle = "rgb(0, 0, 0)";
 		this.wilson.ctx.fillRect(0, 0, this.resolution, this.resolution);
 		
 		
 		
-		for (let i = 0; i < this.num_regions; i++)
+		for (let i = 0; i < this.numRegions; i++)
 		{
-			const region_length = this.regions_ordered[i].length;
+			const regionLength = this.regionsOrdered[i].length;
 			
-			//Cycle colors every 2 * grid_size regions (this is just an experimentally good value).
-			const h = (i % (2 * this.grid_size)) / (2 * this.grid_size);
+			//Cycle colors every 2 * gridSize regions (this is just an experimentally good value).
+			const h = (i % (2 * this.gridSize)) / (2 * this.gridSize);
 			
 			//Color the largest regions darkest, but linearly according to the list of lengths, so that all the medium regions aren't extremely bright when there's a very large region.
-			const v = region_length === 1 ? .5 : Math.sqrt(this.region_sizes.indexOf(region_length) / (this.num_unique_region_sizes - 2));
+			const v = regionLength === 1 ? .5 : Math.sqrt(this.regionSizes.indexOf(regionLength) / (this.numUniqueRegionSizes - 2));
 			
-			const rgb = this.wilson.utils.hsv_to_rgb(h, 1, v);
+			const rgb = this.wilson.utils.hsvToRgb(h, 1, v);
 			
 			this.wilson.ctx.fillStyle = `rgb(${rgb[0]}, ${rgb[1]}, ${rgb[2]})`;
 			
 			
 			
-			for (let j = 0; j < region_length; j++)
+			for (let j = 0; j < regionLength; j++)
 			{
-				const row = this.regions_ordered[i][j][0];
-				const col = this.regions_ordered[i][j][1];
+				const row = this.regionsOrdered[i][j][0];
+				const col = this.regionsOrdered[i][j][1];
 				
-				this.wilson.ctx.fillRect((this.resolution / this.grid_size) * col + this.line_width / 2, (this.resolution / this.grid_size) * row + this.line_width / 2, this.resolution / this.grid_size - this.line_width, this.resolution / this.grid_size - this.line_width);
+				this.wilson.ctx.fillRect((this.resolution / this.gridSize) * col + this.lineWidth / 2, (this.resolution / this.gridSize) * row + this.lineWidth / 2, this.resolution / this.gridSize - this.lineWidth, this.resolution / this.gridSize - this.lineWidth);
 			}
 		}
 	}
 	
 	
 	
-	draw_regions_step()
+	drawRegionsStep()
 	{
-		for (let i = 0; i < Math.ceil(this.grid_size / 50); i++)
+		for (let i = 0; i < Math.ceil(this.gridSize / 50); i++)
 		{
-			const region_length = this.regions_ordered[this.current_region].length;
+			const regionLength = this.regionsOrdered[this.currentRegion].length;
 			
-			//Cycle colors every grid_size regions (this is just an experimentally good value).
-			const h = (this.current_region % (2 * this.grid_size)) / (2 * this.grid_size);
+			//Cycle colors every gridSize regions (this is just an experimentally good value).
+			const h = (this.currentRegion % (2 * this.gridSize)) / (2 * this.gridSize);
 			
 			//Color the largest regions darkest, but linearly according to the list of lengths, so that all the medium regions aren't extremely bright when there's a very large region.
-			const v = region_length === 1 ? .5 : Math.sqrt(this.region_sizes.indexOf(region_length) / (this.num_unique_region_sizes - 2));
+			const v = regionLength === 1 ? .5 : Math.sqrt(this.regionSizes.indexOf(regionLength) / (this.numUniqueRegionSizes - 2));
 			
-			const rgb = this.wilson.utils.hsv_to_rgb(h, 1, v);
+			const rgb = this.wilson.utils.hsvToRgb(h, 1, v);
 			
 			
 			this.wilson.ctx.fillStyle = "rgb(0, 0, 0)";
 			
-			for (let j = 0; j < region_length; j++)
+			for (let j = 0; j < regionLength; j++)
 			{
-				const row = this.regions_ordered[this.current_region][j][0];
-				const col = this.regions_ordered[this.current_region][j][1];
+				const row = this.regionsOrdered[this.currentRegion][j][0];
+				const col = this.regionsOrdered[this.currentRegion][j][1];
 				
-				this.wilson.ctx.fillRect((this.resolution / this.grid_size) * col, (this.resolution / this.grid_size) * row, this.resolution / this.grid_size, this.resolution / this.grid_size);
+				this.wilson.ctx.fillRect((this.resolution / this.gridSize) * col, (this.resolution / this.gridSize) * row, this.resolution / this.gridSize, this.resolution / this.gridSize);
 			}
 			
 			
 			this.wilson.ctx.fillStyle = `rgb(${rgb[0]}, ${rgb[1]}, ${rgb[2]})`;
 			
-			for (let j = 0; j < region_length; j++)
+			for (let j = 0; j < regionLength; j++)
 			{
-				const row = this.regions_ordered[this.current_region][j][0];
-				const col = this.regions_ordered[this.current_region][j][1];
+				const row = this.regionsOrdered[this.currentRegion][j][0];
+				const col = this.regionsOrdered[this.currentRegion][j][1];
 				
-				this.wilson.ctx.fillRect((this.resolution / this.grid_size) * col + this.line_width / 2, (this.resolution / this.grid_size) * row + this.line_width / 2, this.resolution / this.grid_size - this.line_width, this.resolution / this.grid_size - this.line_width);
+				this.wilson.ctx.fillRect((this.resolution / this.gridSize) * col + this.lineWidth / 2, (this.resolution / this.gridSize) * row + this.lineWidth / 2, this.resolution / this.gridSize - this.lineWidth, this.resolution / this.gridSize - this.lineWidth);
 			}
 			
 			
 			
-			this.current_region++;
+			this.currentRegion++;
 			
-			if (this.current_region === this.num_regions)
+			if (this.currentRegion === this.numRegions)
 			{
 				return;
 			}
 		}
 		
-		if (this.current_region < this.num_regions)
+		if (this.currentRegion < this.numRegions)
 		{
-			window.requestAnimationFrame(this.draw_regions_step.bind(this));
+			window.requestAnimationFrame(this.drawRegionsStep.bind(this));
 		}
 	}
-}
+	}

@@ -2,7 +2,7 @@
 
 !async function()
 {
-	await Site.load_applet("finite-subdivisions");
+	await Site.loadApplet("finite-subdivisions");
 	
 	const applet = new FiniteSubdivision(Page.element.querySelector("#output-canvas"));
 	
@@ -10,24 +10,24 @@
 	
 	function run()
 	{
-		const num_vertices = parseInt(num_vertices_input_element.value || 6);
-		const num_iterations = parseInt(num_iterations_input_element.value || 5);
-		const maximum_speed = maximum_speed_checkbox_element.checked;
+		const numVertices = parseInt(numVerticesInputElement.value || 6);
+		const numIterations = parseInt(numIterationsInputElement.value || 5);
+		const maximumSpeed = maximumSpeedCheckboxElement.checked;
 		
-		applet.run(num_vertices, num_iterations, maximum_speed);
+		applet.run(numVertices, numIterations, maximumSpeed);
 	}
 	
 
 	
-	const generate_button_element = Page.element.querySelector("#generate-button");
+	const generateButtonElement = Page.element.querySelector("#generate-button");
 
-	generate_button_element.addEventListener("click", run);
+	generateButtonElement.addEventListener("click", run);
 	
 	
 	
-	const num_vertices_input_element = Page.element.querySelector("#num-vertices-input");
+	const numVerticesInputElement = Page.element.querySelector("#num-vertices-input");
 	
-	num_vertices_input_element.addEventListener("keydown", (e) =>
+	numVerticesInputElement.addEventListener("keydown", (e) =>
 	{
 		if (e.keyCode === 13)
 		{
@@ -37,9 +37,9 @@
 	
 	
 	
-	const num_iterations_input_element = Page.element.querySelector("#num-iterations-input");
+	const numIterationsInputElement = Page.element.querySelector("#num-iterations-input");
 	
-	num_iterations_input_element.addEventListener("keydown", (e) =>
+	numIterationsInputElement.addEventListener("keydown", (e) =>
 	{
 		if (e.keyCode === 13)
 		{
@@ -49,13 +49,13 @@
 	
 	
 	
-	const maximum_speed_checkbox_element = Page.element.querySelector("#toggle-maximum-speed-checkbox");
+	const maximumSpeedCheckboxElement = Page.element.querySelector("#toggle-maximum-speed-checkbox");
 	
 	
 	
-	const download_button_element = Page.element.querySelector("#download-button");
+	const downloadButtonElement = Page.element.querySelector("#download-button");
 	
-	download_button_element.addEventListener("click", () => applet.wilson.download_frame("a-finite-subdivision.png"));
+	downloadButtonElement.addEventListener("click", () => applet.wilson.downloadFrame("a-finite-subdivision.png"));
 	
 	
 	

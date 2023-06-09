@@ -4,22 +4,22 @@
 
 onmessage = async function(e)
 {
-	grid_size = e.data[0];
-	num_iterations = e.data[1];
+	gridSize = e.data[0];
+	numIterations = e.data[1];
 	
-	await draw_fern();
+	await drawFern();
 }
 
 
 
-let grid_size = null;
-let num_iterations = null;
+let gridSize = null;
+let numIterations = null;
 
-let fern_graph = null;
+let fernGraph = null;
 
-let randomization_coefficients = [.1, .1, .1, .1, .5, .5];
+let randomizationCoefficients = [.1, .1, .1, .1, .5, .5];
 
-let transformation_coefficients =
+let transformationCoefficients =
 [
 	[0, 0, 0, .16, 0, 0],
 	[.85, .04, -.04, .85, 0, 1.6],
@@ -27,38 +27,38 @@ let transformation_coefficients =
 	[-.15, .28, .26, .24, 0, .44]
 ];
 
-let current_x = 0;
-let current_y = 0;
+let currentX = 0;
+let currentY = 0;
 
-const min_x = -6;
-const max_x = 6;
-const min_y = -1;
-const max_y = 11;
-
-
+const minX = -6;
+const maxX = 6;
+const minY = -1;
+const maxY = 11;
 
 
-function draw_fern()
+
+
+function drawFern()
 {
 	return new Promise(function(resolve, reject)
 	{
-		fern_graph = new Uint8ClampedArray(grid_size * grid_size * 4);
+		fernGraph = new Uint8ClampedArray(gridSize * gridSize * 4);
 		
-		for (let i = 0; i < grid_size; i++)
+		for (let i = 0; i < gridSize; i++)
 		{
-			for (let j = 0; j < grid_size; j++)
+			for (let j = 0; j < gridSize; j++)
 			{
-				fern_graph[4 * (grid_size * i + j) + 3] = 255;
+				fernGraph[4 * (gridSize * i + j) + 3] = 255;
 			}
 		}
 		
 		
 		
-		for (let iteration = 0; iteration < num_iterations; iteration++)
+		for (let iteration = 0; iteration < numIterations; iteration++)
 		{
-			if (iteration % Math.floor(num_iterations / 10) === 0)
+			if (iteration % Math.floor(numIterations / 10) === 0)
 			{
-				postMessage([fern_graph]);
+				postMessage([fernGraph]);
 			}
 			
 			
@@ -82,11 +82,11 @@ function draw_fern()
 				index = 2;
 			}
 			
-			affine_transformation(index);
+			affineTransformation(index);
 			
 			
 			
-			if (current_x >= max_x || current_x <= min_x || current_y >= max_y || current_y <= min_y)
+			if (currentX >= maxX || currentX <= minX || currentY >= maxY || currentY <= minY)
 			{
 				continue;
 			}
@@ -94,21 +94,21 @@ function draw_fern()
 			
 			
 			//This scales col to [0, 1].
-			let col = (current_x - min_x) / (max_x - min_x);
+			let col = (currentX - minX) / (maxX - minX);
 			
-			col = Math.floor(grid_size * col);
+			col = Math.floor(gridSize * col);
 			
 			//This scales row to [0, 1].
-			let row = (current_y - min_y) / (max_y - min_y);
+			let row = (currentY - minY) / (maxY - minY);
 			
-			row = Math.floor(grid_size * (1 - row));
+			row = Math.floor(gridSize * (1 - row));
 			
-			fern_graph[4 * (grid_size * row + col) + 1]++;
+			fernGraph[4 * (gridSize * row + col) + 1]++;
 		}
 		
 		
 		
-		postMessage([fern_graph]);
+		postMessage([fernGraph]);
 		
 		
 		
@@ -118,11 +118,11 @@ function draw_fern()
 
 
 
-function affine_transformation(index)
+function affineTransformation(index)
 {
-	let temp = transformation_coefficients[index][0] * current_x + transformation_coefficients[index][1] * current_y + transformation_coefficients[index][4];
+	let temp = transformationCoefficients[index][0] * currentX + transformationCoefficients[index][1] * currentY + transformationCoefficients[index][4];
 	
-	current_y = transformation_coefficients[index][2] * current_x + transformation_coefficients[index][3] * current_y + transformation_coefficients[index][5];
+	currentY = transformationCoefficients[index][2] * currentX + transformationCoefficients[index][3] * currentY + transformationCoefficients[index][5];
 	
-	current_x = temp;
+	currentX = temp;
 }

@@ -2,163 +2,163 @@
 
 class FractalSounds extends Applet
 {
-	load_promise = null;
+	loadPromise = null;
 	
-	wilson_hidden = null;
-	wilson_line_drawer = null;
+	wilsonHidden = null;
+	wilsonLineDrawer = null;
 	
-	julia_mode = 0;
+	juliaMode = 0;
 	
-	aspect_ratio = 1;
+	aspectRatio = 1;
 	
-	num_iterations = 200;
+	numIterations = 200;
 	
 	exposure = 1;
 	
-	zoom_level = 0;
+	zoomLevel = 0;
 	
-	past_brightness_scales = [];
+	pastBrightnessScales = [];
 	
 	resolution = 500;
-	resolution_hidden = 200;
+	resolutionHidden = 200;
 	
-	need_to_clear = false;
+	needToClear = false;
 	
-	fixed_point_x = 0;
-	fixed_point_y = 0;
+	fixedPointX = 0;
+	fixedPointY = 0;
 	
-	num_touches = 0;
+	numTouches = 0;
 	
 	moved = 0;
 	
-	last_x = 0;
-	last_y = 0;	
-	zooming_with_mouse = false;
+	lastX = 0;
+	lastY = 0;	
+	zoomingWithMouse = false;
 	
-	next_pan_velocity_x = 0;
-	next_pan_velocity_y = 0;
-	next_zoom_velocity = 0;
+	nextPanVelocityX = 0;
+	nextPanVelocityY = 0;
+	nextZoomVelocity = 0;
 	
-	pan_velocity_x = 0;
-	pan_velocity_y = 0;
-	zoom_velocity = 0;
+	panVelocityX = 0;
+	panVelocityY = 0;
+	zoomVelocity = 0;
 	
-	pan_friction = .96;
-	pan_velocity_start_threshhold = .0025;
-	pan_velocity_stop_threshhold = .00025;
+	panFriction = .96;
+	panVelocityStartThreshhold = .0025;
+	panVelocityStopThreshhold = .00025;
 	
-	zoom_friction = .93;
-	zoom_velocity_start_threshhold = .01;
-	zoom_velocity_stop_threshhold = .001;
+	zoomFriction = .93;
+	zoomVelocityStartThreshhold = .01;
+	zoomVelocityStopThreshhold = .001;
 	
-	last_timestamp = -1;
+	lastTimestamp = -1;
 	
 	
 	
-	constructor(canvas, line_drawer_canvas)
+	constructor(canvas, lineDrawerCanvas)
 	{
 		super(canvas);
 		
-		const temp_shader = "precision highp float; varying vec2 uv; void main(void) { gl_FragColor = vec4(0.0, 0.0, 0.0, 1.0); }";
+		const tempShader = "precision highp float; varying vec2 uv; void main(void) { gl_FragColor = vec4(0.0, 0.0, 0.0, 1.0); }";
 		
 		const options =
 		{
 			renderer: "gpu",
 			
-			shader: temp_shader,
+			shader: tempShader,
 			
-			canvas_width: this.resolution,
-			canvas_height: this.resolution,
+			canvasWidth: this.resolution,
+			canvasHeight: this.resolution,
 			
-			world_width: 4,
-			world_height: 4,
-			world_center_x: 0,
-			world_center_y: 0,
+			worldWidth: 4,
+			worldHeight: 4,
+			worldCenterX: 0,
+			worldCenterY: 0,
 			
-			use_fullscreen: true,
+			useFullscreen: true,
 		
-			true_fullscreen: true,
+			trueFullscreen: true,
 		
-			use_fullscreen_button: true,
+			useFullscreenButton: true,
 			
-			enter_fullscreen_button_icon_path: "/graphics/general-icons/enter-fullscreen.png",
-			exit_fullscreen_button_icon_path: "/graphics/general-icons/exit-fullscreen.png",
+			enterFullscreenButtonIconPath: "/graphics/general-icons/enter-fullscreen.png",
+			exitFullscreenButtonIconPath: "/graphics/general-icons/exit-fullscreen.png",
 			
-			switch_fullscreen_callback: this.switch_fullscreen.bind(this)
+			switchFullscreenCallback: this.switchFullscreen.bind(this)
 		};
 		
 		this.wilson = new Wilson(canvas, options);
 		
 		
 		
-		const hidden_canvas = this.create_hidden_canvas();
+		const hiddenCanvas = this.createHiddenCanvas();
 		
-		const options_hidden =
+		const optionsHidden =
 		{
 			renderer: "gpu",
 			
-			shader: temp_shader,
+			shader: tempShader,
 			
-			canvas_width: this.resolution_hidden,
-			canvas_height: this.resolution_hidden
+			canvasWidth: this.resolutionHidden,
+			canvasHeight: this.resolutionHidden
 		};
 		
-		this.wilson_hidden = new Wilson(hidden_canvas, options_hidden);
+		this.wilsonHidden = new Wilson(hiddenCanvas, optionsHidden);
 		
 		
 		
-		const options_line_drawer =
+		const optionsLineDrawer =
 		{
 			renderer: "cpu",
 			
-			canvas_width: this.resolution,
-			canvas_height: this.resolution,
+			canvasWidth: this.resolution,
+			canvasHeight: this.resolution,
 			
-			world_width: 4,
-			world_height: 4,
-			world_center_x: 0,
-			world_center_y: 0,
+			worldWidth: 4,
+			worldHeight: 4,
+			worldCenterX: 0,
+			worldCenterY: 0,
 			
-			mousemove_callback: this.on_hover_canvas.bind(this),
-			mousedown_callback: this.on_grab_canvas.bind(this),
-			touchstart_callback: this.on_grab_canvas.bind(this),
+			mousemoveCallback: this.onHoverCanvas.bind(this),
+			mousedownCallback: this.onGrabCanvas.bind(this),
+			touchstartCallback: this.onGrabCanvas.bind(this),
 			
-			mousedrag_callback: this.on_drag_canvas.bind(this),
-			touchmove_callback: this.on_drag_canvas.bind(this),
+			mousedragCallback: this.onDragCanvas.bind(this),
+			touchmoveCallback: this.onDragCanvas.bind(this),
 			
-			mouseup_callback: this.on_release_canvas.bind(this),
-			touchend_callback: this.on_release_canvas.bind(this),
+			mouseupCallback: this.onReleaseCanvas.bind(this),
+			touchendCallback: this.onReleaseCanvas.bind(this),
 			
-			wheel_callback: this.on_wheel_canvas.bind(this),
-			pinch_callback: this.on_pinch_canvas.bind(this),
+			wheelCallback: this.onWheelCanvas.bind(this),
+			pinchCallback: this.onPinchCanvas.bind(this),
 			
-			use_fullscreen: true,
+			useFullscreen: true,
 		
-			true_fullscreen: true,
+			trueFullscreen: true,
 		
-			use_fullscreen_button: false
+			useFullscreenButton: false
 		};
 		
-		this.wilson_line_drawer = new Wilson(line_drawer_canvas, options_line_drawer);
+		this.wilsonLineDrawer = new Wilson(lineDrawerCanvas, optionsLineDrawer);
 		
 		const elements = Page.element.querySelectorAll(".wilson-fullscreen-components-container");
 		
 		elements[0].style.setProperty("z-index", 200, "important");
 		elements[1].style.setProperty("z-index", 300, "important");
 		
-		this.wilson_line_drawer.ctx.lineWidth = 40;
+		this.wilsonLineDrawer.ctx.lineWidth = 40;
 		
 		
 		
-		const bound_function = this.change_aspect_ratio.bind(this);
-		window.addEventListener("resize", bound_function);
-		this.handlers.push([window, "resize", bound_function]);
+		const boundFunction = this.changeAspectRatio.bind(this);
+		window.addEventListener("resize", boundFunction);
+		this.handlers.push([window, "resize", boundFunction]);
 		
 		
 		
-		this.load_promise = new Promise(async (resolve, reject) =>
+		this.loadPromise = new Promise(async (resolve, reject) =>
 		{
-			await Site.load_glsl();
+			await Site.loadGlsl();
 			
 			resolve();
 		});
@@ -166,48 +166,48 @@ class FractalSounds extends Applet
 	
 	
 	
-	run(glsl_code, js_code, resolution, exposure, num_iterations)
+	run(glslCode, jsCode, resolution, exposure, numIterations)
 	{
-		this.current_fractal_function = js_code;
+		this.currentFractalFunction = jsCode;
 		
 		this.resolution = resolution;
 		this.exposure = exposure;
-		this.num_iterations = num_iterations;
+		this.numIterations = numIterations;
 		
-		const frag_shader_source = `
+		const fragShaderSource = `
 			precision highp float;
 			
 			varying vec2 uv;
 			
-			uniform float aspect_ratio;
+			uniform float aspectRatio;
 			
-			uniform float world_center_x;
-			uniform float world_center_y;
-			uniform float world_size;
+			uniform float worldCenterX;
+			uniform float worldCenterY;
+			uniform float worldSize;
 			
 			uniform float exposure;
-			uniform int num_iterations;
-			uniform float brightness_scale;
+			uniform int numIterations;
+			uniform float brightnessScale;
 			
-			const float hue_multiplier = 100.0;
+			const float hueMultiplier = 100.0;
 			
-			const vec3 color_1 = vec3(1.0, 0.0, 0.0);
-			const vec3 color_2 = vec3(1.0, .4157, 0.0);
-			const vec3 color_3 = vec3(1.0, .8471, 0.0);
-			const vec3 color_4 = vec3(.7333, 1.0, 0.0);
-			const vec3 color_5 = vec3(.2980, 1.0, 0.0);
-			const vec3 color_6 = vec3(0.0, 1.0, .1137);
-			const vec3 color_7 = vec3(0.0, 1.0, .5490);
-			const vec3 color_8 = vec3(0.0, 1.0, .9647);
-			const vec3 color_9 = vec3(0.0, .6, 1.0);
-			const vec3 color_10 = vec3(0.0, .1804, 1.0);
-			const vec3 color_11 = vec3(.2471, 0.0, 1.0);
-			const vec3 color_12 = vec3(.6667, 0.0, 1.0);
-			const vec3 color_13 = vec3(1.0, 0.0, .8980);
+			const vec3 color1 = vec3(1.0, 0.0, 0.0);
+			const vec3 color2 = vec3(1.0, .4157, 0.0);
+			const vec3 color3 = vec3(1.0, .8471, 0.0);
+			const vec3 color4 = vec3(.7333, 1.0, 0.0);
+			const vec3 color5 = vec3(.2980, 1.0, 0.0);
+			const vec3 color6 = vec3(0.0, 1.0, .1137);
+			const vec3 color7 = vec3(0.0, 1.0, .5490);
+			const vec3 color8 = vec3(0.0, 1.0, .9647);
+			const vec3 color9 = vec3(0.0, .6, 1.0);
+			const vec3 color10 = vec3(0.0, .1804, 1.0);
+			const vec3 color11 = vec3(.2471, 0.0, 1.0);
+			const vec3 color12 = vec3(.6667, 0.0, 1.0);
+			const vec3 color13 = vec3(1.0, 0.0, .8980);
 			
 			
 			
-			${Site.get_glsl_bundle(glsl_code)}
+			${Site.getGlslBundle(glslCode)}
 			
 			
 			
@@ -224,14 +224,14 @@ class FractalSounds extends Applet
 			{
 				vec2 z;
 				
-				if (aspect_ratio >= 1.0)
+				if (aspectRatio >= 1.0)
 				{
-					z = vec2(uv.x * aspect_ratio * world_size + world_center_x, uv.y * world_size + world_center_y);
+					z = vec2(uv.x * aspectRatio * worldSize + worldCenterX, uv.y * worldSize + worldCenterY);
 				}
 				
 				else
 				{
-					z = vec2(uv.x * world_size + world_center_x, uv.y / aspect_ratio * world_size + world_center_y);
+					z = vec2(uv.x * worldSize + worldCenterX, uv.y / aspectRatio * worldSize + worldCenterY);
 				}
 				
 				float brightness = exp(-max(length(z), .5));
@@ -242,42 +242,42 @@ class FractalSounds extends Applet
 				
 				
 				
-				vec2 last_z_1 = vec2(0.0, 0.0);
-				vec2 last_z_2 = vec2(0.0, 0.0);
-				vec2 last_z_3 = vec2(0.0, 0.0);
-				vec2 last_z_4 = vec2(0.0, 0.0);
-				vec2 last_z_5 = vec2(0.0, 0.0);
-				vec2 last_z_6 = vec2(0.0, 0.0);
-				vec2 last_z_7 = vec2(0.0, 0.0);
-				vec2 last_z_8 = vec2(0.0, 0.0);
-				vec2 last_z_9 = vec2(0.0, 0.0);
-				vec2 last_z_10 = vec2(0.0, 0.0);
-				vec2 last_z_11 = vec2(0.0, 0.0);
-				vec2 last_z_12 = vec2(0.0, 0.0);
-				vec2 last_z_13 = vec2(0.0, 0.0);
+				vec2 lastZ1 = vec2(0.0, 0.0);
+				vec2 lastZ2 = vec2(0.0, 0.0);
+				vec2 lastZ3 = vec2(0.0, 0.0);
+				vec2 lastZ4 = vec2(0.0, 0.0);
+				vec2 lastZ5 = vec2(0.0, 0.0);
+				vec2 lastZ6 = vec2(0.0, 0.0);
+				vec2 lastZ7 = vec2(0.0, 0.0);
+				vec2 lastZ8 = vec2(0.0, 0.0);
+				vec2 lastZ9 = vec2(0.0, 0.0);
+				vec2 lastZ10 = vec2(0.0, 0.0);
+				vec2 lastZ11 = vec2(0.0, 0.0);
+				vec2 lastZ12 = vec2(0.0, 0.0);
+				vec2 lastZ13 = vec2(0.0, 0.0);
 				
-				float hue_1 = 0.0;
-				float hue_2 = 0.0;
-				float hue_3 = 0.0;
-				float hue_4 = 0.0;
-				float hue_5 = 0.0;
-				float hue_6 = 0.0;
-				float hue_7 = 0.0;
-				float hue_8 = 0.0;
-				float hue_9 = 0.0;
-				float hue_10 = 0.0;
-				float hue_11 = 0.0;
-				float hue_12 = 0.0;
-				float hue_13 = 0.0;
+				float hue1 = 0.0;
+				float hue2 = 0.0;
+				float hue3 = 0.0;
+				float hue4 = 0.0;
+				float hue5 = 0.0;
+				float hue6 = 0.0;
+				float hue7 = 0.0;
+				float hue8 = 0.0;
+				float hue9 = 0.0;
+				float hue10 = 0.0;
+				float hue11 = 0.0;
+				float hue12 = 0.0;
+				float hue13 = 0.0;
 				
 				
 				
 				for (int iteration = 0; iteration < 3001; iteration++)
 				{
-					if (iteration == num_iterations)
+					if (iteration == numIterations)
 					{
-						vec3 color = hue_1 * color_1 + hue_2 * color_2 + hue_3 * color_3 + hue_4 * color_4 + hue_5 * color_5 + hue_6 * color_6 + hue_7 * color_7 + hue_8 * color_8 + hue_9 * color_9 + hue_10 * color_10 + hue_11 * color_11 + hue_12 * color_12 + hue_13 * color_13;
-						gl_FragColor = vec4(brightness / brightness_scale * exposure * normalize(color), 1.0);
+						vec3 color = hue1 * color1 + hue2 * color2 + hue3 * color3 + hue4 * color4 + hue5 * color5 + hue6 * color6 + hue7 * color7 + hue8 * color8 + hue9 * color9 + hue10 * color10 + hue11 * color11 + hue12 * color12 + hue13 * color13;
+						gl_FragColor = vec4(brightness / brightnessScale * exposure * normalize(color), 1.0);
 						return;
 					}
 					
@@ -287,211 +287,211 @@ class FractalSounds extends Applet
 						return;
 					}
 					
-					last_z_13 = last_z_12;
-					last_z_12 = last_z_11;
-					last_z_11 = last_z_10;
-					last_z_10 = last_z_9;
-					last_z_9 = last_z_8;
-					last_z_8 = last_z_7;
-					last_z_7 = last_z_6;
-					last_z_6 = last_z_5;
-					last_z_5 = last_z_4;
-					last_z_4 = last_z_3;
-					last_z_3 = last_z_2;
-					last_z_2 = last_z_1;
-					last_z_1 = z;
-					z = ${glsl_code};
+					lastZ13 = lastZ12;
+					lastZ12 = lastZ11;
+					lastZ11 = lastZ10;
+					lastZ10 = lastZ9;
+					lastZ9 = lastZ8;
+					lastZ8 = lastZ7;
+					lastZ7 = lastZ6;
+					lastZ6 = lastZ5;
+					lastZ5 = lastZ4;
+					lastZ4 = lastZ3;
+					lastZ3 = lastZ2;
+					lastZ2 = lastZ1;
+					lastZ1 = z;
+					z = ${glslCode};
 					
 					
 					
 					brightness += exp(-max(length(z), .5));
 					
-					hue_1 += exp(-hue_multiplier * length(z - last_z_1));
-					hue_2 += exp(-hue_multiplier * length(z - last_z_2));
-					hue_3 += exp(-hue_multiplier * length(z - last_z_3));
-					hue_4 += exp(-hue_multiplier * length(z - last_z_4));
-					hue_5 += exp(-hue_multiplier * length(z - last_z_5));
-					hue_6 += exp(-hue_multiplier * length(z - last_z_6));
-					hue_7 += exp(-hue_multiplier * length(z - last_z_7));
-					hue_8 += exp(-hue_multiplier * length(z - last_z_8));
-					hue_9 += exp(-hue_multiplier * length(z - last_z_9));
-					hue_10 += exp(-hue_multiplier * length(z - last_z_10));
-					hue_11 += exp(-hue_multiplier * length(z - last_z_11));
-					hue_12 += exp(-hue_multiplier * length(z - last_z_12));
-					hue_13 += exp(-hue_multiplier * length(z - last_z_13));
+					hue1 += exp(-hueMultiplier * length(z - lastZ1));
+					hue2 += exp(-hueMultiplier * length(z - lastZ2));
+					hue3 += exp(-hueMultiplier * length(z - lastZ3));
+					hue4 += exp(-hueMultiplier * length(z - lastZ4));
+					hue5 += exp(-hueMultiplier * length(z - lastZ5));
+					hue6 += exp(-hueMultiplier * length(z - lastZ6));
+					hue7 += exp(-hueMultiplier * length(z - lastZ7));
+					hue8 += exp(-hueMultiplier * length(z - lastZ8));
+					hue9 += exp(-hueMultiplier * length(z - lastZ9));
+					hue10 += exp(-hueMultiplier * length(z - lastZ10));
+					hue11 += exp(-hueMultiplier * length(z - lastZ11));
+					hue12 += exp(-hueMultiplier * length(z - lastZ12));
+					hue13 += exp(-hueMultiplier * length(z - lastZ13));
 				}
 			}
 		`;
 
-		this.wilson.render.shader_programs = [];
-		this.wilson.render.load_new_shader(frag_shader_source);
-		this.wilson.gl.useProgram(this.wilson.render.shader_programs[0]);
+		this.wilson.render.shaderPrograms = [];
+		this.wilson.render.loadNewShader(fragShaderSource);
+		this.wilson.gl.useProgram(this.wilson.render.shaderPrograms[0]);
 
-		this.wilson.render.init_uniforms(["julia_mode", "aspect_ratio", "world_center_x", "world_center_y", "world_size", "a", "b", "num_iterations", "exposure", "brightness_scale"], 0);
+		this.wilson.render.initUniforms(["juliaMode", "aspectRatio", "worldCenterX", "worldCenterY", "worldSize", "a", "b", "numIterations", "exposure", "brightnessScale"], 0);
 		
 		
 		
-		this.wilson_hidden.render.shader_programs = [];
-		this.wilson_hidden.render.load_new_shader(frag_shader_source);
-		this.wilson_hidden.gl.useProgram(this.wilson_hidden.render.shader_programs[0]);
+		this.wilsonHidden.render.shaderPrograms = [];
+		this.wilsonHidden.render.loadNewShader(fragShaderSource);
+		this.wilsonHidden.gl.useProgram(this.wilsonHidden.render.shaderPrograms[0]);
 		
-		this.wilson_hidden.render.init_uniforms(["julia_mode", "aspect_ratio", "world_center_x", "world_center_y", "world_size", "a", "b", "num_iterations", "exposure", "brightness_scale"], 0);
+		this.wilsonHidden.render.initUniforms(["juliaMode", "aspectRatio", "worldCenterX", "worldCenterY", "worldSize", "a", "b", "numIterations", "exposure", "brightnessScale"], 0);
 		
 		
-		this.julia_mode = 0;
-		this.zoom_level = 0;
+		this.juliaMode = 0;
+		this.zoomLevel = 0;
 		
-		this.past_brightness_scales = [];
+		this.pastBrightnessScales = [];
 		
-		this.wilson_line_drawer.world_width = 4;
-		this.wilson_line_drawer.world_height = 4;
-		this.wilson_line_drawer.world_center_x = 0;
-		this.wilson_line_drawer.world_center_y = 0;
+		this.wilsonLineDrawer.worldWidth = 4;
+		this.wilsonLineDrawer.worldHeight = 4;
+		this.wilsonLineDrawer.worldCenterX = 0;
+		this.wilsonLineDrawer.worldCenterY = 0;
 		
 		
 		
 		//Render the inital frame.
-		this.wilson.gl.uniform1f(this.wilson.uniforms["aspect_ratio"][0], 1);
-		this.wilson_hidden.gl.uniform1f(this.wilson_hidden.uniforms["aspect_ratio"][0], 1);
+		this.wilson.gl.uniform1f(this.wilson.uniforms["aspectRatio"][0], 1);
+		this.wilsonHidden.gl.uniform1f(this.wilsonHidden.uniforms["aspectRatio"][0], 1);
 		
-		window.requestAnimationFrame(this.draw_frame.bind(this));
+		window.requestAnimationFrame(this.drawFrame.bind(this));
 	}
 	
 	
 	
-	on_grab_canvas(x, y, event)
+	onGrabCanvas(x, y, event)
 	{
-		this.pan_velocity_x = 0;
-		this.pan_velocity_y = 0;
-		this.zoom_velocity = 0;
+		this.panVelocityX = 0;
+		this.panVelocityY = 0;
+		this.zoomVelocity = 0;
 		
-		this.next_pan_velocity_x = 0;
-		this.next_pan_velocity_y = 0;
-		this.next_zoom_velocity = 0;
+		this.nextPanVelocityX = 0;
+		this.nextPanVelocityY = 0;
+		this.nextZoomVelocity = 0;
 		
-		this.wilson_line_drawer.canvas.style.opacity = 1;
+		this.wilsonLineDrawer.canvas.style.opacity = 1;
 		
 		
 		
 		if (event.type === "touchstart")
 		{
-			this.num_touches = event.touches.length;
+			this.numTouches = event.touches.length;
 			
-			if (this.num_touches === 1)
+			if (this.numTouches === 1)
 			{
-				this.show_orbit(x, y);
-				this.play_sound(x, y);
+				this.showOrbit(x, y);
+				this.playSound(x, y);
 			}
 		}
 		
 		else
 		{
 			this.moved = 0;
-			this.show_orbit(x, y);
+			this.showOrbit(x, y);
 		}
 	}
 	
 	
 	
-	on_drag_canvas(x, y, x_delta, y_delta, event)
+	onDragCanvas(x, y, xDelta, yDelta, event)
 	{
-		if (event.type === "mousemove" || this.num_touches >= 2)
+		if (event.type === "mousemove" || this.numTouches >= 2)
 		{
-			if (this.num_touches >= 2 || Math.abs(x_delta) > 0 || Math.abs(y_delta) > 0)
+			if (this.numTouches >= 2 || Math.abs(xDelta) > 0 || Math.abs(yDelta) > 0)
 			{
-				this.wilson_line_drawer.ctx.clearRect(0, 0, this.resolution, this.resolution);
+				this.wilsonLineDrawer.ctx.clearRect(0, 0, this.resolution, this.resolution);
 			}	
 			
-			this.wilson_line_drawer.world_center_x -= x_delta;
-			this.wilson_line_drawer.world_center_y -= y_delta;
+			this.wilsonLineDrawer.worldCenterX -= xDelta;
+			this.wilsonLineDrawer.worldCenterY -= yDelta;
 			
-			this.next_pan_velocity_x = -x_delta / this.wilson.world_width;
-			this.next_pan_velocity_y = -y_delta / this.wilson.world_height;
+			this.nextPanVelocityX = -xDelta / this.wilson.worldWidth;
+			this.nextPanVelocityY = -yDelta / this.wilson.worldHeight;
 			
-			this.wilson_line_drawer.world_center_x = Math.min(Math.max(this.wilson_line_drawer.world_center_x, -2), 2);
-			this.wilson_line_drawer.world_center_y = Math.min(Math.max(this.wilson_line_drawer.world_center_y, -2), 2);
+			this.wilsonLineDrawer.worldCenterX = Math.min(Math.max(this.wilsonLineDrawer.worldCenterX, -2), 2);
+			this.wilsonLineDrawer.worldCenterY = Math.min(Math.max(this.wilsonLineDrawer.worldCenterY, -2), 2);
 			
 			this.moved++;
 			
-			window.requestAnimationFrame(this.draw_frame.bind(this));
+			window.requestAnimationFrame(this.drawFrame.bind(this));
 		}
 		
 		else
 		{
-			this.show_orbit(x, y);
+			this.showOrbit(x, y);
 		}	
 	}
 	
 	
 	
-	on_hover_canvas(x, y, x_delta, y_delta, event)
+	onHoverCanvas(x, y, xDelta, yDelta, event)
 	{
-		this.show_orbit(x, y);
+		this.showOrbit(x, y);
 		
 		this.moved = 0;
 	}
 	
 	
 	
-	on_release_canvas(x, y, event)
+	onReleaseCanvas(x, y, event)
 	{
-		if (event.type === "mouseup" || this.num_touches >= 2)
+		if (event.type === "mouseup" || this.numTouches >= 2)
 		{
-			if (this.next_pan_velocity_x * this.next_pan_velocity_x + this.next_pan_velocity_y * this.next_pan_velocity_y >= this.pan_velocity_start_threshhold * this.pan_velocity_start_threshhold)
+			if (this.nextPanVelocityX * this.nextPanVelocityX + this.nextPanVelocityY * this.nextPanVelocityY >= this.panVelocityStartThreshhold * this.panVelocityStartThreshhold)
 			{
-				this.pan_velocity_x = this.next_pan_velocity_x;
-				this.pan_velocity_y = this.next_pan_velocity_y;
+				this.panVelocityX = this.nextPanVelocityX;
+				this.panVelocityY = this.nextPanVelocityY;
 				
 				this.moved = 10;
 			}
 			
-			if (Math.abs(this.next_zoom_velocity) >= this.zoom_velocity_start_threshhold)
+			if (Math.abs(this.nextZoomVelocity) >= this.zoomVelocityStartThreshhold)
 			{
-				this.zoom_velocity = this.next_zoom_velocity;
+				this.zoomVelocity = this.nextZoomVelocity;
 				
 				this.moved = 10;
 			}
 			
 			if (this.moved < 10 && event.type === "mouseup")
 			{
-				this.play_sound(x, y);
+				this.playSound(x, y);
 			}
 		}
 		
 		else
 		{
 			anime({
-				targets: this.wilson_line_drawer.canvas,
+				targets: this.wilsonLineDrawer.canvas,
 				opacity: 0,
 				easing: "linear",
 				duration: 300
 			});
 		}
 		
-		setTimeout(() => this.num_touches = 0, 50);
+		setTimeout(() => this.numTouches = 0, 50);
 		this.moved = 0;
 	}
 	
 	
 	
-	show_orbit(x_0, y_0)
+	showOrbit(x0, y0)
 	{
-		this.wilson_line_drawer.ctx.lineWidth = 2;
+		this.wilsonLineDrawer.ctx.lineWidth = 2;
 		
-		this.wilson_line_drawer.canvas.style.opacity = 1;
-		this.wilson_line_drawer.ctx.strokeStyle = "rgb(255, 255, 255)";
-		this.wilson_line_drawer.ctx.clearRect(0, 0, this.resolution, this.resolution);
+		this.wilsonLineDrawer.canvas.style.opacity = 1;
+		this.wilsonLineDrawer.ctx.strokeStyle = "rgb(255, 255, 255)";
+		this.wilsonLineDrawer.ctx.clearRect(0, 0, this.resolution, this.resolution);
 		
-		this.wilson_line_drawer.ctx.beginPath();
-		let coords = this.wilson_line_drawer.utils.interpolate.world_to_canvas(x_0, y_0);
-		this.wilson_line_drawer.ctx.moveTo(coords[1], coords[0]);
+		this.wilsonLineDrawer.ctx.beginPath();
+		let coords = this.wilsonLineDrawer.utils.interpolate.worldToCanvas(x0, y0);
+		this.wilsonLineDrawer.ctx.moveTo(coords[1], coords[0]);
 		
-		let x = x_0;
-		let y = y_0;
-		let a = x_0;
-		let b = y_0;
+		let x = x0;
+		let y = y0;
+		let a = x0;
+		let b = y0;
 		
-		let next = this.current_fractal_function(x, y, a, b);
+		let next = this.currentFractalFunction(x, y, a, b);
 		
 		x = 0;
 		y = 0;
@@ -506,333 +506,333 @@ class FractalSounds extends Applet
 			x = next[0];
 			y = next[1];
 			
-			next = this.current_fractal_function(x, y, a, b);
+			next = this.currentFractalFunction(x, y, a, b);
 			
-			coords = this.wilson_line_drawer.utils.interpolate.world_to_canvas(x, y);
-			this.wilson_line_drawer.ctx.lineTo(coords[1], coords[0]);
+			coords = this.wilsonLineDrawer.utils.interpolate.worldToCanvas(x, y);
+			this.wilsonLineDrawer.ctx.lineTo(coords[1], coords[0]);
 		}
 		
-		this.wilson_line_drawer.ctx.stroke();
+		this.wilsonLineDrawer.ctx.stroke();
 	}
 	
 	
 	
-	play_sound(x_0, y_0)
+	playSound(x0, y0)
 	{
-		const audio_context = new AudioContext();
+		const audioContext = new AudioContext();
 		
-		const sample_rate = 44100;
-		const num_frames = 44100;
-		const samples_per_frame = 12;
-		const num_samples = Math.floor(num_frames / samples_per_frame);
+		const sampleRate = 44100;
+		const numFrames = 44100;
+		const samplesPerFrame = 12;
+		const numSamples = Math.floor(numFrames / samplesPerFrame);
 		
-		let x = x_0;
-		let y = y_0;
-		let a = x_0;
-		let b = y_0;
+		let x = x0;
+		let y = y0;
+		let a = x0;
+		let b = y0;
 		
-		let next = this.current_fractal_function(x, y, a, b);
+		let next = this.currentFractalFunction(x, y, a, b);
 		
 		x = 0;
 		y = 0;
 		
-		let max_value = 0;
+		let maxValue = 0;
 		
-		let unscaled_left_data = new Array(num_samples);
-		let unscaled_right_data = new Array(num_samples);
+		let unscaledLeftData = new Array(numSamples);
+		let unscaledRightData = new Array(numSamples);
 		
 		
 		
-		let buffer = audio_context.createBuffer(2, num_frames, sample_rate);
+		let buffer = audioContext.createBuffer(2, numFrames, sampleRate);
 		
-		let left_data = buffer.getChannelData(0);
-		let right_data = buffer.getChannelData(1);
+		let leftData = buffer.getChannelData(0);
+		let rightData = buffer.getChannelData(1);
 		
-		for (let i = 0; i < num_samples; i++)
+		for (let i = 0; i < numSamples; i++)
 		{
 			if (Math.abs(next[0]) > 100 || Math.abs(next[1]) > 100)
 			{
 				return;
 			}
 			
-			if (Math.abs(next[0]) > max_value)
+			if (Math.abs(next[0]) > maxValue)
 			{
-				max_value = Math.abs(next[0]);
+				maxValue = Math.abs(next[0]);
 			}
 			
-			if (Math.abs(next[1]) > max_value)
+			if (Math.abs(next[1]) > maxValue)
 			{
-				max_value = Math.abs(next[1]);
+				maxValue = Math.abs(next[1]);
 			}
 			
-			unscaled_left_data[i] = x;
-			unscaled_right_data[i] = y;
+			unscaledLeftData[i] = x;
+			unscaledRightData[i] = y;
 			
 			x = next[0];
 			y = next[1];
 			
-			next = this.current_fractal_function(x, y, a, b);
+			next = this.currentFractalFunction(x, y, a, b);
 		}
 		
 		
 		
-		for (let i = 0; i < num_samples; i++)
+		for (let i = 0; i < numSamples; i++)
 		{
-			unscaled_left_data[i] /= max_value;
-			unscaled_right_data[i] /= max_value;
+			unscaledLeftData[i] /= maxValue;
+			unscaledRightData[i] /= maxValue;
 		}
 		
 		
 		
-		for (let i = 0; i < num_samples - 1; i++)
+		for (let i = 0; i < numSamples - 1; i++)
 		{
-			for (let j = 0; j < samples_per_frame; j++)
+			for (let j = 0; j < samplesPerFrame; j++)
 			{
-				let t = .5 + .5 * Math.sin(Math.PI * j / samples_per_frame - Math.PI / 2);
+				let t = .5 + .5 * Math.sin(Math.PI * j / samplesPerFrame - Math.PI / 2);
 				
-				left_data[samples_per_frame * i + j] = (1 - t) * (unscaled_left_data[i] / 2) + t * (unscaled_left_data[i + 1] / 2);
-				right_data[samples_per_frame * i + j] = (1 - t) * (unscaled_right_data[i] / 2) + t * (unscaled_right_data[i + 1] / 2);
+				leftData[samplesPerFrame * i + j] = (1 - t) * (unscaledLeftData[i] / 2) + t * (unscaledLeftData[i + 1] / 2);
+				rightData[samplesPerFrame * i + j] = (1 - t) * (unscaledRightData[i] / 2) + t * (unscaledRightData[i + 1] / 2);
 			}
 		}
 		
 		
 		
-		let source = audio_context.createBufferSource();
+		let source = audioContext.createBufferSource();
 		source.buffer = buffer;
 		
-		let audio_gain_node = audio_context.createGain();
-		source.connect(audio_gain_node);
-		audio_gain_node.connect(audio_context.destination);
+		let audioGainNode = audioContext.createGain();
+		source.connect(audioGainNode);
+		audioGainNode.connect(audioContext.destination);
 
 		source.start(0);
-		audio_gain_node.gain.exponentialRampToValueAtTime(.0001, num_frames / 44100);
+		audioGainNode.gain.exponentialRampToValueAtTime(.0001, numFrames / 44100);
 	}
 	
 	
 	
-	on_wheel_canvas(x, y, scroll_amount, event)
+	onWheelCanvas(x, y, scrollAmount, event)
 	{
-		this.fixed_point_x = x;
-		this.fixed_point_y = y;
+		this.fixedPointX = x;
+		this.fixedPointY = y;
 		
-		if (Math.abs(scroll_amount / 100) < .3)
+		if (Math.abs(scrollAmount / 100) < .3)
 		{
-			this.zoom_level += scroll_amount / 100;
+			this.zoomLevel += scrollAmount / 100;
 			
-			this.zoom_level = Math.min(this.zoom_level, 1);
+			this.zoomLevel = Math.min(this.zoomLevel, 1);
 		}
 		
 		else
 		{
-			this.zoom_velocity += Math.sign(scroll_amount) * .05;
+			this.zoomVelocity += Math.sign(scrollAmount) * .05;
 		}
 		
-		this.last_x = x;
-		this.last_y = y;
-		this.zooming_with_mouse = true;
+		this.lastX = x;
+		this.lastY = y;
+		this.zoomingWithMouse = true;
 		
-		this.zoom_canvas();
+		this.zoomCanvas();
 	}
 	
 	
 	
-	on_pinch_canvas(x, y, touch_distance_delta, event)
+	onPinchCanvas(x, y, touchDistanceDelta, event)
 	{
-		if (this.julia_mode === 2)
+		if (this.juliaMode === 2)
 		{
 			return;
 		}
 		
 		
 		
-		if (this.aspect_ratio >= 1)
+		if (this.aspectRatio >= 1)
 		{
-			this.zoom_level -= touch_distance_delta / this.wilson_line_drawer.world_width * 10;
+			this.zoomLevel -= touchDistanceDelta / this.wilsonLineDrawer.worldWidth * 10;
 			
-			this.next_zoom_velocity = -touch_distance_delta / this.wilson_line_drawer.world_width * 10;
+			this.nextZoomVelocity = -touchDistanceDelta / this.wilsonLineDrawer.worldWidth * 10;
 		}
 		
 		else
 		{
-			this.zoom_level -= touch_distance_delta / this.wilson_line_drawer.world_height * 10;
+			this.zoomLevel -= touchDistanceDelta / this.wilsonLineDrawer.worldHeight * 10;
 			
-			this.next_zoom_velocity = -touch_distance_delta / this.wilson_line_drawer.world_height * 10;
+			this.nextZoomVelocity = -touchDistanceDelta / this.wilsonLineDrawer.worldHeight * 10;
 		}
 		
-		this.zoom_level = Math.min(this.zoom_level, 1);
+		this.zoomLevel = Math.min(this.zoomLevel, 1);
 		
-		this.fixed_point_x = x;
-		this.fixed_point_y = y;
+		this.fixedPointX = x;
+		this.fixedPointY = y;
 		
-		this.zooming_with_mouse = false;
+		this.zoomingWithMouse = false;
 		
-		this.zoom_canvas();
+		this.zoomCanvas();
 	}
 	
 	
 	
-	zoom_canvas()
+	zoomCanvas()
 	{
-		if (this.aspect_ratio >= 1)
+		if (this.aspectRatio >= 1)
 		{
-			const new_world_center = this.wilson_line_drawer.input.get_zoomed_world_center(this.fixed_point_x, this.fixed_point_y, 4 * Math.pow(2, this.zoom_level) * this.aspect_ratio, 4 * Math.pow(2, this.zoom_level));
+			const newWorldCenter = this.wilsonLineDrawer.input.getZoomedWorldCenter(this.fixedPointX, this.fixedPointY, 4 * Math.pow(2, this.zoomLevel) * this.aspectRatio, 4 * Math.pow(2, this.zoomLevel));
 			
-			this.wilson_line_drawer.world_width = 4 * Math.pow(2, this.zoom_level) * this.aspect_ratio;
-			this.wilson_line_drawer.world_height = 4 * Math.pow(2, this.zoom_level);
+			this.wilsonLineDrawer.worldWidth = 4 * Math.pow(2, this.zoomLevel) * this.aspectRatio;
+			this.wilsonLineDrawer.worldHeight = 4 * Math.pow(2, this.zoomLevel);
 			
-			this.wilson_line_drawer.world_center_x = new_world_center[0];
-			this.wilson_line_drawer.world_center_y = new_world_center[1];
+			this.wilsonLineDrawer.worldCenterX = newWorldCenter[0];
+			this.wilsonLineDrawer.worldCenterY = newWorldCenter[1];
 		}
 		
 		else
 		{
-			const new_world_center = this.wilson_line_drawer.input.get_zoomed_world_center(this.fixed_point_x, this.fixed_point_y, 4 * Math.pow(2, this.zoom_level), 4 * Math.pow(2, this.zoom_level) / this.aspect_ratio);
+			const newWorldCenter = this.wilsonLineDrawer.input.getZoomedWorldCenter(this.fixedPointX, this.fixedPointY, 4 * Math.pow(2, this.zoomLevel), 4 * Math.pow(2, this.zoomLevel) / this.aspectRatio);
 			
-			this.wilson_line_drawer.world_width = 4 * Math.pow(2, this.zoom_level);
-			this.wilson_line_drawer.world_height = 4 * Math.pow(2, this.zoom_level) / this.aspect_ratio;
+			this.wilsonLineDrawer.worldWidth = 4 * Math.pow(2, this.zoomLevel);
+			this.wilsonLineDrawer.worldHeight = 4 * Math.pow(2, this.zoomLevel) / this.aspectRatio;
 			
-			this.wilson_line_drawer.world_center_x = this.new_world_center[0];
-			this.wilson_line_drawer.world_center_y = this.new_world_center[1];
+			this.wilsonLineDrawer.worldCenterX = this.newWorldCenter[0];
+			this.wilsonLineDrawer.worldCenterY = this.newWorldCenter[1];
 		}
 		
-		if (this.zooming_with_mouse)
+		if (this.zoomingWithMouse)
 		{
-			this.show_orbit(this.last_x, this.last_y);
+			this.showOrbit(this.lastX, this.lastY);
 		}	
 		
-		window.requestAnimationFrame(this.draw_frame.bind(this));
+		window.requestAnimationFrame(this.drawFrame.bind(this));
 	}
 
 
 
-	draw_frame(timestamp)
+	drawFrame(timestamp)
 	{
-		const time_elapsed = timestamp - this.last_timestamp;
+		const timeElapsed = timestamp - this.lastTimestamp;
 		
-		this.last_timestamp = timestamp;
+		this.lastTimestamp = timestamp;
 		
 		
 		
-		if (time_elapsed === 0)
+		if (timeElapsed === 0)
 		{
 			return;
 		}
 		
 		
 		
-		this.wilson_hidden.gl.uniform1f(this.wilson_hidden.uniforms["world_center_x"][0], this.wilson_line_drawer.world_center_x);
-		this.wilson_hidden.gl.uniform1f(this.wilson_hidden.uniforms["world_center_y"][0], this.wilson_line_drawer.world_center_y);
+		this.wilsonHidden.gl.uniform1f(this.wilsonHidden.uniforms["worldCenterX"][0], this.wilsonLineDrawer.worldCenterX);
+		this.wilsonHidden.gl.uniform1f(this.wilsonHidden.uniforms["worldCenterY"][0], this.wilsonLineDrawer.worldCenterY);
 		
-		this.wilson_hidden.gl.uniform1f(this.wilson_hidden.uniforms["world_size"][0], Math.min(this.wilson_line_drawer.world_height, this.wilson_line_drawer.world_width) / 2);
+		this.wilsonHidden.gl.uniform1f(this.wilsonHidden.uniforms["worldSize"][0], Math.min(this.wilsonLineDrawer.worldHeight, this.wilsonLineDrawer.worldWidth) / 2);
 		
-		this.wilson_hidden.gl.uniform1i(this.wilson_hidden.uniforms["num_iterations"][0], this.num_iterations);
-		this.wilson_hidden.gl.uniform1f(this.wilson_hidden.uniforms["exposure"][0], 1);
-		this.wilson_hidden.gl.uniform1f(this.wilson_hidden.uniforms["brightness_scale"][0], 20 * (Math.abs(this.zoom_level) + 1));
+		this.wilsonHidden.gl.uniform1i(this.wilsonHidden.uniforms["numIterations"][0], this.numIterations);
+		this.wilsonHidden.gl.uniform1f(this.wilsonHidden.uniforms["exposure"][0], 1);
+		this.wilsonHidden.gl.uniform1f(this.wilsonHidden.uniforms["brightnessScale"][0], 20 * (Math.abs(this.zoomLevel) + 1));
 		
-		this.wilson_hidden.render.draw_frame();
+		this.wilsonHidden.render.drawFrame();
 		
 		
 		
-		const pixel_data = this.wilson_hidden.render.get_pixel_data();
+		const pixelData = this.wilsonHidden.render.getPixelData();
 		
-		let brightnesses = new Array(this.resolution_hidden * this.resolution_hidden);
+		let brightnesses = new Array(this.resolutionHidden * this.resolutionHidden);
 		
-		for (let i = 0; i < this.resolution_hidden * this.resolution_hidden; i++)
+		for (let i = 0; i < this.resolutionHidden * this.resolutionHidden; i++)
 		{
-			brightnesses[i] = pixel_data[4 * i] + pixel_data[4 * i + 1] + pixel_data[4 * i + 2];
+			brightnesses[i] = pixelData[4 * i] + pixelData[4 * i + 1] + pixelData[4 * i + 2];
 		}
 		
 		brightnesses.sort((a, b) => a - b);
 		
-		let brightness_scale = (brightnesses[Math.floor(this.resolution_hidden * this.resolution_hidden * .96)] + brightnesses[Math.floor(this.resolution_hidden * this.resolution_hidden * .98)]) / 255 * 15 * (Math.abs(this.zoom_level / 2) + 1);
+		let brightnessScale = (brightnesses[Math.floor(this.resolutionHidden * this.resolutionHidden * .96)] + brightnesses[Math.floor(this.resolutionHidden * this.resolutionHidden * .98)]) / 255 * 15 * (Math.abs(this.zoomLevel / 2) + 1);
 		
-		this.past_brightness_scales.push(brightness_scale);
+		this.pastBrightnessScales.push(brightnessScale);
 		
-		const denom = this.past_brightness_scales.length;
+		const denom = this.pastBrightnessScales.length;
 		
 		if (denom > 10)
 		{
-			this.past_brightness_scales.shift();
+			this.pastBrightnessScales.shift();
 		}
 		
-		brightness_scale = Math.max(this.past_brightness_scales.reduce((a, b) => a + b) / denom, .5);
+		brightnessScale = Math.max(this.pastBrightnessScales.reduce((a, b) => a + b) / denom, .5);
 		
 		
 		
-		this.wilson.gl.uniform1f(this.wilson.uniforms["aspect_ratio"][0], this.aspect_ratio);
+		this.wilson.gl.uniform1f(this.wilson.uniforms["aspectRatio"][0], this.aspectRatio);
 		
-		this.wilson.gl.uniform1f(this.wilson.uniforms["world_center_x"][0], this.wilson_line_drawer.world_center_x);
-		this.wilson.gl.uniform1f(this.wilson.uniforms["world_center_y"][0], this.wilson_line_drawer.world_center_y);
+		this.wilson.gl.uniform1f(this.wilson.uniforms["worldCenterX"][0], this.wilsonLineDrawer.worldCenterX);
+		this.wilson.gl.uniform1f(this.wilson.uniforms["worldCenterY"][0], this.wilsonLineDrawer.worldCenterY);
 		
-		this.wilson.gl.uniform1f(this.wilson.uniforms["world_size"][0], Math.min(this.wilson_line_drawer.world_height, this.wilson_line_drawer.world_width) / 2);
+		this.wilson.gl.uniform1f(this.wilson.uniforms["worldSize"][0], Math.min(this.wilsonLineDrawer.worldHeight, this.wilsonLineDrawer.worldWidth) / 2);
 		
-		this.wilson.gl.uniform1i(this.wilson.uniforms["num_iterations"][0], this.num_iterations);
+		this.wilson.gl.uniform1i(this.wilson.uniforms["numIterations"][0], this.numIterations);
 		
 		this.wilson.gl.uniform1f(this.wilson.uniforms["exposure"][0], this.exposure);
-		this.wilson.gl.uniform1f(this.wilson.uniforms["brightness_scale"][0], brightness_scale);
+		this.wilson.gl.uniform1f(this.wilson.uniforms["brightnessScale"][0], brightnessScale);
 		
-		this.wilson.render.draw_frame();
+		this.wilson.render.drawFrame();
 		
 		
 		
-		if (time_elapsed >= 50)
+		if (timeElapsed >= 50)
 		{
-			this.pan_velocity_x = 0;
-			this.pan_velocity_y = 0;
-			this.zoom_velocity = 0;
+			this.panVelocityX = 0;
+			this.panVelocityY = 0;
+			this.zoomVelocity = 0;
 			
-			this.next_pan_velocity_x = 0;
-			this.next_pan_velocity_y = 0;
-			this.next_zoom_velocity = 0;
+			this.nextPanVelocityX = 0;
+			this.nextPanVelocityY = 0;
+			this.nextZoomVelocity = 0;
 		}
 		
 		
 		
-		if (this.pan_velocity_x !== 0 || this.pan_velocity_y !== 0 || this.zoom_velocity !== 0)
+		if (this.panVelocityX !== 0 || this.panVelocityY !== 0 || this.zoomVelocity !== 0)
 		{
-			this.wilson_line_drawer.world_center_x += this.pan_velocity_x * this.wilson_line_drawer.world_width;
-			this.wilson_line_drawer.world_center_y += this.pan_velocity_y * this.wilson_line_drawer.world_height;
+			this.wilsonLineDrawer.worldCenterX += this.panVelocityX * this.wilsonLineDrawer.worldWidth;
+			this.wilsonLineDrawer.worldCenterY += this.panVelocityY * this.wilsonLineDrawer.worldHeight;
 			
-			this.wilson_line_drawer.world_center_x = Math.min(Math.max(this.wilson_line_drawer.world_center_x, -2), 2);
-			this.wilson_line_drawer.world_center_y = Math.min(Math.max(this.wilson_line_drawer.world_center_y, -2), 2);
+			this.wilsonLineDrawer.worldCenterX = Math.min(Math.max(this.wilsonLineDrawer.worldCenterX, -2), 2);
+			this.wilsonLineDrawer.worldCenterY = Math.min(Math.max(this.wilsonLineDrawer.worldCenterY, -2), 2);
 			
 			
 			
-			this.pan_velocity_x *= this.pan_friction;
-			this.pan_velocity_y *= this.pan_friction;
+			this.panVelocityX *= this.panFriction;
+			this.panVelocityY *= this.panFriction;
 			
-			if (this.pan_velocity_x * this.pan_velocity_x + this.pan_velocity_y * this.pan_velocity_y < this.pan_velocity_stop_threshhold * this.pan_velocity_stop_threshhold)
+			if (this.panVelocityX * this.panVelocityX + this.panVelocityY * this.panVelocityY < this.panVelocityStopThreshhold * this.panVelocityStopThreshhold)
 			{
-				this.pan_velocity_x = 0;
-				this.pan_velocity_y = 0;
+				this.panVelocityX = 0;
+				this.panVelocityY = 0;
 			}
 			
 			
 			
-			this.zoom_level += this.zoom_velocity;
+			this.zoomLevel += this.zoomVelocity;
 			
-			this.zoom_level = Math.min(this.zoom_level, 1);
+			this.zoomLevel = Math.min(this.zoomLevel, 1);
 			
-			this.zoom_canvas();
+			this.zoomCanvas();
 			
-			this.zoom_velocity *= this.zoom_friction;
+			this.zoomVelocity *= this.zoomFriction;
 			
-			if (Math.abs(this.zoom_velocity) < this.zoom_velocity_stop_threshhold)
+			if (Math.abs(this.zoomVelocity) < this.zoomVelocityStopThreshhold)
 			{
-				this.zoom_velocity = 0;
+				this.zoomVelocity = 0;
 			}
 			
 			
 			
-			window.requestAnimationFrame(this.draw_frame.bind(this));
+			window.requestAnimationFrame(this.drawFrame.bind(this));
 		}
 	}
 	
 	
 	
-	switch_fullscreen()
+	switchFullscreen()
 	{
-		this.change_aspect_ratio();
+		this.changeAspectRatio();
 		
 		try
 		{
@@ -843,47 +843,47 @@ class FractalSounds extends Applet
 		
 		catch(ex) {}
 		
-		this.wilson_line_drawer.fullscreen.switch_fullscreen();
+		this.wilsonLineDrawer.fullscreen.switchFullscreen();
 	}
 	
 	
 	
-	change_aspect_ratio()
+	changeAspectRatio()
 	{
-		if (this.wilson.fullscreen.currently_fullscreen)
+		if (this.wilson.fullscreen.currentlyFullscreen)
 		{
-			this.aspect_ratio = window.innerWidth / window.innerHeight;
+			this.aspectRatio = window.innerWidth / window.innerHeight;
 			
-			if (this.aspect_ratio >= 1)
+			if (this.aspectRatio >= 1)
 			{
-				this.wilson_line_drawer.change_canvas_size(this.resolution, Math.floor(this.resolution / this.aspect_ratio));
-				this.wilson.change_canvas_size(this.resolution, Math.floor(this.resolution / this.aspect_ratio));
+				this.wilsonLineDrawer.changeCanvasSize(this.resolution, Math.floor(this.resolution / this.aspectRatio));
+				this.wilson.changeCanvasSize(this.resolution, Math.floor(this.resolution / this.aspectRatio));
 				
-				this.wilson_line_drawer.world_width = 4 * Math.pow(2, this.zoom_level) * this.aspect_ratio;
-				this.wilson_line_drawer.world_height = 4 * Math.pow(2, this.zoom_level);
+				this.wilsonLineDrawer.worldWidth = 4 * Math.pow(2, this.zoomLevel) * this.aspectRatio;
+				this.wilsonLineDrawer.worldHeight = 4 * Math.pow(2, this.zoomLevel);
 			}
 			
 			else
 			{
-				this.wilson_line_drawer.change_canvas_size(Math.floor(this.resolution * this.aspect_ratio), this.resolution);
-				this.wilson.change_canvas_size(Math.floor(this.resolution * this.aspect_ratio), this.resolution);
+				this.wilsonLineDrawer.changeCanvasSize(Math.floor(this.resolution * this.aspectRatio), this.resolution);
+				this.wilson.changeCanvasSize(Math.floor(this.resolution * this.aspectRatio), this.resolution);
 				
-				this.wilson_line_drawer.world_width = 4 * Math.pow(2, this.zoom_level);
-				this.wilson_line_drawer.world_height = 4 * Math.pow(2, this.zoom_level) / this.aspect_ratio;
+				this.wilsonLineDrawer.worldWidth = 4 * Math.pow(2, this.zoomLevel);
+				this.wilsonLineDrawer.worldHeight = 4 * Math.pow(2, this.zoomLevel) / this.aspectRatio;
 			}
 		}
 		
 		else
 		{
-			this.aspect_ratio = 1;
+			this.aspectRatio = 1;
 			
-			this.wilson_line_drawer.change_canvas_size(this.resolution, this.resolution);
-			this.wilson.change_canvas_size(this.resolution, this.resolution);
+			this.wilsonLineDrawer.changeCanvasSize(this.resolution, this.resolution);
+			this.wilson.changeCanvasSize(this.resolution, this.resolution);
 			
-			this.wilson_line_drawer.world_width = 4 * Math.pow(2, this.zoom_level);
-			this.wilson_line_drawer.world_height = 4 * Math.pow(2, this.zoom_level);
+			this.wilsonLineDrawer.worldWidth = 4 * Math.pow(2, this.zoomLevel);
+			this.wilsonLineDrawer.worldHeight = 4 * Math.pow(2, this.zoomLevel);
 		}
 		
-		window.requestAnimationFrame(this.draw_frame.bind(this));
+		window.requestAnimationFrame(this.drawFrame.bind(this));
 	}
-}
+	}

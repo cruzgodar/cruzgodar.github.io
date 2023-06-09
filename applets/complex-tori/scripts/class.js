@@ -7,7 +7,7 @@ class EllipticCurve extends Applet
 	g2 = -2;
 	g3 = 0;
 	
-	last_timestamp = -1;
+	lastTimestamp = -1;
 	
 	
 	
@@ -15,23 +15,23 @@ class EllipticCurve extends Applet
 	{
 		super(canvas);
 		
-		const frag_shader_source = `
+		const fragShaderSource = `
 			precision highp float;
 			
 			varying vec2 uv;
 			
 			uniform float step;
 			
-			uniform float g2_arg;
-			uniform float g3_arg;
+			uniform float g2Arg;
+			uniform float g3Arg;
 			
-			const int max_iterations = 200;
+			const int maxIterations = 200;
 			
 			
 			
 			float f(vec2 z)
 			{
-				return z.y * z.y   -   z.x * z.x * z.x   -   g2_arg * z.x   -   g3_arg;
+				return z.y * z.y   -   z.x * z.x * z.x   -   g2Arg * z.x   -   g3Arg;
 			}
 			
 			
@@ -48,15 +48,15 @@ class EllipticCurve extends Applet
 				
 				
 				
-				for (int i = 0; i < max_iterations; i++)
+				for (int i = 0; i < maxIterations; i++)
 				{
 					float score = abs(f(z)) / threshhold;
 					
 					if (score < 1.0)
 					{
-						float adjacent_score = (abs(f(z + vec2(step, 0.0))) + abs(f(z - vec2(step, 0.0))) + abs(f(z + vec2(0.0, step))) + abs(f(z - vec2(0.0, step)))) / threshhold;
+						float adjacentScore = (abs(f(z + vec2(step, 0.0))) + abs(f(z - vec2(step, 0.0))) + abs(f(z + vec2(0.0, step))) + abs(f(z - vec2(0.0, step)))) / threshhold;
 						
-						if (adjacent_score >= 6.0)
+						if (adjacentScore >= 6.0)
 						{
 							gl_FragColor = vec4(1.0, 1.0, 1.0, 1.0);
 							
@@ -71,15 +71,15 @@ class EllipticCurve extends Applet
 		
 		
 		
-		const frag_shader_source_2 = `
+		const fragShaderSource2 = `
 			precision highp float;
 			precision highp sampler2D;
 			
 			varying vec2 uv;
 			
-			uniform sampler2D u_texture;
+			uniform sampler2D uTexture;
 			
-			uniform float texture_step;
+			uniform float textureStep;
 			
 			
 			
@@ -88,17 +88,17 @@ class EllipticCurve extends Applet
 				//Dilate the pixels to make a thicker line.
 				vec2 center = (uv + vec2(1.0, 1.0)) / 2.0;
 				
-				float state = (4.0 * texture2D(u_texture, center).y +
+				float state = (4.0 * texture2D(uTexture, center).y +
 				
-					texture2D(u_texture, center + vec2(texture_step, 0.0)).y +
-					texture2D(u_texture, center - vec2(texture_step, 0.0)).y +
-					texture2D(u_texture, center + vec2(0.0, texture_step)).y +
-					texture2D(u_texture, center - vec2(0.0, texture_step)).y +
+					texture2D(uTexture, center + vec2(textureStep, 0.0)).y +
+					texture2D(uTexture, center - vec2(textureStep, 0.0)).y +
+					texture2D(uTexture, center + vec2(0.0, textureStep)).y +
+					texture2D(uTexture, center - vec2(0.0, textureStep)).y +
 					
-					texture2D(u_texture, center + vec2(texture_step, texture_step)).y +
-					texture2D(u_texture, center + vec2(texture_step, -texture_step)).y +
-					texture2D(u_texture, center + vec2(-texture_step, texture_step)).y +
-					texture2D(u_texture, center + vec2(-texture_step, -texture_step)).y
+					texture2D(uTexture, center + vec2(textureStep, textureStep)).y +
+					texture2D(uTexture, center + vec2(textureStep, -textureStep)).y +
+					texture2D(uTexture, center + vec2(-textureStep, textureStep)).y +
+					texture2D(uTexture, center + vec2(-textureStep, -textureStep)).y
 				) / 2.0;
 				
 				gl_FragColor = vec4(state, state, state, 1.0);
@@ -109,37 +109,37 @@ class EllipticCurve extends Applet
 		{
 			renderer: "gpu",
 			
-			shader: frag_shader_source,
+			shader: fragShaderSource,
 			
-			canvas_width: this.resolution,
-			canvas_height: this.resolution,
+			canvasWidth: this.resolution,
+			canvasHeight: this.resolution,
 			
-			world_width: 8,
-			world_height: 8,
-			world_center_x: 0,
-			world_center_y: 0
+			worldWidth: 8,
+			worldHeight: 8,
+			worldCenterX: 0,
+			worldCenterY: 0
 		};
 		
 		
 		this.wilson = new Wilson(canvas, options);
 		
-		this.wilson.render.init_uniforms(["step", "g2_arg", "g3_arg"]);
+		this.wilson.render.initUniforms(["step", "g2Arg", "g3Arg"]);
 		
-		this.wilson.gl.uniform1f(this.wilson.uniforms["step"], this.wilson.world_width / this.resolution);
+		this.wilson.gl.uniform1f(this.wilson.uniforms["step"], this.wilson.worldWidth / this.resolution);
 		
-		this.wilson.render.load_new_shader(frag_shader_source_2);
+		this.wilson.render.loadNewShader(fragShaderSource2);
 		
-		this.wilson.render.init_uniforms(["texture_step"]);
+		this.wilson.render.initUniforms(["textureStep"]);
 		
-		this.wilson.gl.uniform1f(this.wilson.uniforms["texture_step"], 1 / this.resolution);
+		this.wilson.gl.uniform1f(this.wilson.uniforms["textureStep"], 1 / this.resolution);
 		
-		this.wilson.render.create_framebuffer_texture_pair();
+		this.wilson.render.createFramebufferTexturePair();
 		
 		this.wilson.gl.bindFramebuffer(this.wilson.gl.FRAMEBUFFER, null);
 		
 		
 		
-		window.requestAnimationFrame(this.draw_frame.bind(this));
+		window.requestAnimationFrame(this.drawFrame.bind(this));
 	}
 	
 	
@@ -149,70 +149,70 @@ class EllipticCurve extends Applet
 		this.g2 = g2;
 		this.g3 = g3;
 		
-		window.requestAnimationFrame(this.draw_frame.bind(this));
+		window.requestAnimationFrame(this.drawFrame.bind(this));
 	}
 	
 	
 	
-	draw_frame(timestamp)
+	drawFrame(timestamp)
 	{
-		const time_elapsed = timestamp - this.last_timestamp;
+		const timeElapsed = timestamp - this.lastTimestamp;
 		
-		this.last_timestamp = timestamp;
+		this.lastTimestamp = timestamp;
 		
 		
 		
-		if (time_elapsed === 0)
+		if (timeElapsed === 0)
 		{
 			return;
 		}
 		
 		
 		
-		this.wilson.gl.useProgram(this.wilson.render.shader_programs[0]);
+		this.wilson.gl.useProgram(this.wilson.render.shaderPrograms[0]);
 		
-		this.wilson.gl.uniform1f(this.wilson.uniforms["g2_arg"], this.g2);
+		this.wilson.gl.uniform1f(this.wilson.uniforms["g2Arg"], this.g2);
 		
-		this.wilson.gl.uniform1f(this.wilson.uniforms["g3_arg"], this.g3);
+		this.wilson.gl.uniform1f(this.wilson.uniforms["g3Arg"], this.g3);
 		
-		this.wilson.render.draw_frame();
+		this.wilson.render.drawFrame();
 		
 		
 		
-		let pixels = this.wilson.render.get_pixel_data();
+		let pixels = this.wilson.render.getPixelData();
 		
 		let endpoints = [];
 		
 		const width = this.resolution;
 		
-		let max_interpolation_distance = this.wilson.canvas_width;
+		let maxInterpolationDistance = this.wilson.canvasWidth;
 		
 		//If the distance is at least this small, the number of neighbors is ignored.
-		const min_guaranteed_interpolation_distance = 3;
+		const minGuaranteedInterpolationDistance = 3;
 		
 		//This means a 5x5 square will be searched around each endpoint...
-		const isolation_search_radius = 2;
+		const isolationSearchRadius = 2;
 		
 		//...and it will be considered isolated if there are at most 2 pixels in the square.
-		const isolation_threshhold = 1;
+		const isolationThreshhold = 1;
 		
-		for (let i = isolation_search_radius; i < this.wilson.canvas_height - isolation_search_radius; i++)
+		for (let i = isolationSearchRadius; i < this.wilson.canvasHeight - isolationSearchRadius; i++)
 		{
-			for (let j = isolation_search_radius; j < width - isolation_search_radius; j++)
+			for (let j = isolationSearchRadius; j < width - isolationSearchRadius; j++)
 			{
 				let index = width * i + j;
 				
 				if (pixels[4 * index] !== 0)
 				{
 					//This is the sum of a radius 3 square centered at this pixel. It's an endpoint if there are 
-					const close_total = pixels[4 * (index - 1)] + pixels[4 * (index + 1)] + pixels[4 * (index - width)] + pixels[4 * (index + width)] + pixels[4 * (index - 1 - width)] + pixels[4 * (index + 1 - width)] + pixels[4 * (index - 1 + width)] + pixels[4 * (index + 1 + width)];
+					const closeTotal = pixels[4 * (index - 1)] + pixels[4 * (index + 1)] + pixels[4 * (index - width)] + pixels[4 * (index + width)] + pixels[4 * (index - 1 - width)] + pixels[4 * (index + 1 - width)] + pixels[4 * (index - 1 + width)] + pixels[4 * (index + 1 + width)];
 					
-					if (close_total <= 255)
+					if (closeTotal <= 255)
 					{
-						const far_total = pixels[4 * (index - 2 * width - 2)] + pixels[4 * (index - 2 * width - 1)] + pixels[4 * (index - 2 * width)] + pixels[4 * (index - 2 * width + 1)] + pixels[4 * (index - 2 * width + 2)]   +   pixels[4 * (index + 2 * width - 2)] + pixels[4 * (index + 2 * width - 1)] + pixels[4 * (index + 2 * width)] + pixels[4 * (index + 2 * width + 1)] + pixels[4 * (index + 2 * width + 2)]   +   pixels[4 * (index - width - 2)] + pixels[4 * (index - 2)] + pixels[4 * (index + width - 2)]   +   pixels[4 * (index - width + 2)] + pixels[4 * (index + 2)] + pixels[4 * (index + width + 2)];
+						const farTotal = pixels[4 * (index - 2 * width - 2)] + pixels[4 * (index - 2 * width - 1)] + pixels[4 * (index - 2 * width)] + pixels[4 * (index - 2 * width + 1)] + pixels[4 * (index - 2 * width + 2)]   +   pixels[4 * (index + 2 * width - 2)] + pixels[4 * (index + 2 * width - 1)] + pixels[4 * (index + 2 * width)] + pixels[4 * (index + 2 * width + 1)] + pixels[4 * (index + 2 * width + 2)]   +   pixels[4 * (index - width - 2)] + pixels[4 * (index - 2)] + pixels[4 * (index + width - 2)]   +   pixels[4 * (index - width + 2)] + pixels[4 * (index + 2)] + pixels[4 * (index + width + 2)];
 						
 						//This is an endpoint. Now we'll check to see if it's isolated, which means it's connected to only at most two other pixels.
-						if (far_total === 0)
+						if (farTotal === 0)
 						{
 							endpoints.push([i, j, true]);
 						}
@@ -231,22 +231,22 @@ class EllipticCurve extends Applet
 		//Connect every endpoint to the nearest other endpoint within a given radius.
 		for (let i = 0; i < endpoints.length; i++)
 		{
-			if (endpoints[i][0] < this.wilson.canvas_width / 20 || endpoints[i][1] < this.wilson.canvas_height / 20 || endpoints[i][0] > 19 * this.wilson.canvas_width / 20 || endpoints[i][1] > 19 * this.wilson.canvas_height / 20)
+			if (endpoints[i][0] < this.wilson.canvasWidth / 20 || endpoints[i][1] < this.wilson.canvasHeight / 20 || endpoints[i][0] > 19 * this.wilson.canvasWidth / 20 || endpoints[i][1] > 19 * this.wilson.canvasHeight / 20)
 			{
 				continue;
 			}
 			
 			
 			
-			let num_nearby_points = 0;
-			let average_nearby_distance = 0;
+			let numNearbyPoints = 0;
+			let averageNearbyDistance = 0;
 			
-			let min_open_j = -1;
-			let min_open_distance = max_interpolation_distance;
+			let minOpenJ = -1;
+			let minOpenDistance = maxInterpolationDistance;
 			
 			if (!(endpoints[i][2]))
 			{
-				min_open_distance = max_interpolation_distance / 20;
+				minOpenDistance = maxInterpolationDistance / 20;
 			}
 			
 			
@@ -262,52 +262,52 @@ class EllipticCurve extends Applet
 				
 				const distance = Math.sqrt((endpoints[i][0] - endpoints[j][0])*(endpoints[i][0] - endpoints[j][0]) + (endpoints[i][1] - endpoints[j][1])*(endpoints[i][1] - endpoints[j][1]));
 				
-				if (distance < min_open_distance && distance >= 2)
+				if (distance < minOpenDistance && distance >= 2)
 				{
 					//Only connect here if there are no white points in that general direction. General direction here means a 3x3 square centered at the shifted coordinate that doesn't intersect the endpoint itself.
-					let row_movement = (endpoints[j][0] - endpoints[i][0]) / distance * 1.414214;
-					let col_movement = (endpoints[j][1] - endpoints[i][1]) / distance * 1.414214;
+					let rowMovement = (endpoints[j][0] - endpoints[i][0]) / distance * 1.414214;
+					let colMovement = (endpoints[j][1] - endpoints[i][1]) / distance * 1.414214;
 					
-					row_movement = Math.sign(row_movement) * Math.floor(Math.abs(row_movement));
-					col_movement = Math.sign(col_movement) * Math.floor(Math.abs(col_movement));
+					rowMovement = Math.sign(rowMovement) * Math.floor(Math.abs(rowMovement));
+					colMovement = Math.sign(colMovement) * Math.floor(Math.abs(colMovement));
 					
 					
 					
 					let test = 0;
 					
-					if (row_movement === 0)
+					if (rowMovement === 0)
 					{
-						let index = width * (endpoints[i][0] + row_movement) + (endpoints[i][1] + col_movement);
+						let index = width * (endpoints[i][0] + rowMovement) + (endpoints[i][1] + colMovement);
 						test += pixels[4 * index];
 						
-						index = width * (endpoints[i][0] + row_movement + 1) + (endpoints[i][1] + col_movement);
+						index = width * (endpoints[i][0] + rowMovement + 1) + (endpoints[i][1] + colMovement);
 						test += pixels[4 * index];
 						
-						index = width * (endpoints[i][0] + row_movement - 1) + (endpoints[i][1] + col_movement);
+						index = width * (endpoints[i][0] + rowMovement - 1) + (endpoints[i][1] + colMovement);
 						test += pixels[4 * index];
 					}
 					
-					else if (col_movement === 0)
+					else if (colMovement === 0)
 					{
-						let index = width * (endpoints[i][0] + row_movement) + (endpoints[i][1] + col_movement);
+						let index = width * (endpoints[i][0] + rowMovement) + (endpoints[i][1] + colMovement);
 						test += pixels[4 * index];
 						
-						index = width * (endpoints[i][0] + row_movement) + (endpoints[i][1] + col_movement + 1);
+						index = width * (endpoints[i][0] + rowMovement) + (endpoints[i][1] + colMovement + 1);
 						test += pixels[4 * index];
 						
-						index = width * (endpoints[i][0] + row_movement) + (endpoints[i][1] + col_movement - 1);
+						index = width * (endpoints[i][0] + rowMovement) + (endpoints[i][1] + colMovement - 1);
 						test += pixels[4 * index];
 					}
 					
 					else
 					{
-						let index = width * (endpoints[i][0] + row_movement) + (endpoints[i][1] + col_movement);
+						let index = width * (endpoints[i][0] + rowMovement) + (endpoints[i][1] + colMovement);
 						test += pixels[4 * index];
 						
-						index = width * (endpoints[i][0]) + (endpoints[i][1] + col_movement);
+						index = width * (endpoints[i][0]) + (endpoints[i][1] + colMovement);
 						test += pixels[4 * index];
 						
-						index = width * (endpoints[i][0] + row_movement) + (endpoints[i][1]);
+						index = width * (endpoints[i][0] + rowMovement) + (endpoints[i][1]);
 						test += pixels[4 * index];
 					}
 					
@@ -315,21 +315,21 @@ class EllipticCurve extends Applet
 					
 					if (test === 0)
 					{
-						min_open_j = j;
-						min_open_distance = distance;
+						minOpenJ = j;
+						minOpenDistance = distance;
 					}
 				}
 			}
 			
-			if (min_open_j !== -1)
+			if (minOpenJ !== -1)
 			{
 				//Interpolate between the two points.
-				for (let k = 1; k < 2 * min_open_distance; k++)
+				for (let k = 1; k < 2 * minOpenDistance; k++)
 				{
-					const t = k / (2 * min_open_distance);
+					const t = k / (2 * minOpenDistance);
 					
-					const row = Math.round((1 - t) * endpoints[i][0] + t * endpoints[min_open_j][0]);
-					const col = Math.round((1 - t) * endpoints[i][1] + t * endpoints[min_open_j][1]);
+					const row = Math.round((1 - t) * endpoints[i][0] + t * endpoints[minOpenJ][0]);
+					const col = Math.round((1 - t) * endpoints[i][1] + t * endpoints[minOpenJ][1]);
 					
 					const index = width * row + col;
 					
@@ -342,29 +342,29 @@ class EllipticCurve extends Applet
 		
 		
 		
-		this.wilson.gl.texImage2D(this.wilson.gl.TEXTURE_2D, 0, this.wilson.gl.RGBA, this.wilson.canvas_width, this.wilson.canvas_height, 0, this.wilson.gl.RGBA, this.wilson.gl.UNSIGNED_BYTE, pixels);
+		this.wilson.gl.texImage2D(this.wilson.gl.TEXTURE_2D, 0, this.wilson.gl.RGBA, this.wilson.canvasWidth, this.wilson.canvasHeight, 0, this.wilson.gl.RGBA, this.wilson.gl.UNSIGNED_BYTE, pixels);
 		
-		this.wilson.gl.useProgram(this.wilson.render.shader_programs[1]);
+		this.wilson.gl.useProgram(this.wilson.render.shaderPrograms[1]);
 		
-		this.wilson.render.draw_frame(pixels);
+		this.wilson.render.drawFrame(pixels);
 	}
 	
 	
 	
-	change_resolution(resolution)
+	changeResolution(resolution)
 	{
 		this.resolution = resolution;
 		
-		this.wilson.change_canvas_size(this.resolution, this.resolution);
+		this.wilson.changeCanvasSize(this.resolution, this.resolution);
 		
-		this.wilson.gl.useProgram(this.wilson.render.shader_programs[0]);
+		this.wilson.gl.useProgram(this.wilson.render.shaderPrograms[0]);
 		
-		this.wilson.gl.uniform1f(this.wilson.uniforms["step"], this.wilson.world_width / this.resolution);
+		this.wilson.gl.uniform1f(this.wilson.uniforms["step"], this.wilson.worldWidth / this.resolution);
 		
-		this.wilson.gl.useProgram(this.wilson.render.shader_programs[1]);
+		this.wilson.gl.useProgram(this.wilson.render.shaderPrograms[1]);
 		
-		this.wilson.gl.uniform1f(this.wilson.uniforms["texture_step"], 1 / this.resolution);
+		this.wilson.gl.uniform1f(this.wilson.uniforms["textureStep"], 1 / this.resolution);
 		
-		window.requestAnimationFrame(this.draw_frame.bind(this));
+		window.requestAnimationFrame(this.drawFrame.bind(this));
 	}
 }

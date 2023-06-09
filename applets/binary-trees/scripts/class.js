@@ -3,11 +3,11 @@
 class BinaryTree extends Applet
 {
 	root = [];
-	branch_points = [];
+	branchPoints = [];
 	
-	num_preview_iterations = 5;
+	numPreviewIterations = 5;
 	
-	web_worker = null;
+	webWorker = null;
 	
 	
 	
@@ -19,77 +19,77 @@ class BinaryTree extends Applet
 		{
 			renderer: "cpu",
 			
-			canvas_width: 2000,
-			canvas_height: 2000,
+			canvasWidth: 2000,
+			canvasHeight: 2000,
 			
 			
 			
-			use_draggables: true,
+			useDraggables: true,
 			
-			draggables_mousedown_callback: this.on_grab_draggable.bind(this),
-			draggables_touchstart_callback: this.on_grab_draggable.bind(this),
+			draggablesMousedownCallback: this.onGrabDraggable.bind(this),
+			draggablesTouchstartCallback: this.onGrabDraggable.bind(this),
 			
-			draggables_mousemove_callback: this.on_drag_draggable.bind(this),
-			draggables_touchmove_callback: this.on_drag_draggable.bind(this),
+			draggablesMousemoveCallback: this.onDragDraggable.bind(this),
+			draggablesTouchmoveCallback: this.onDragDraggable.bind(this),
 			
-			draggables_mouseup_callback: this.on_release_draggable.bind(this),
-			draggables_touchend_callback: this.on_release_draggable.bind(this),
+			draggablesMouseupCallback: this.onReleaseDraggable.bind(this),
+			draggablesTouchendCallback: this.onReleaseDraggable.bind(this),
 			
 			
 			
-			use_fullscreen: true,
+			useFullscreen: true,
 			
-			true_fullscreen: true,
+			trueFullscreen: true,
 		
-			use_fullscreen_button: true,
+			useFullscreenButton: true,
 			
-			enter_fullscreen_button_icon_path: "/graphics/general-icons/enter-fullscreen.png",
-			exit_fullscreen_button_icon_path: "/graphics/general-icons/exit-fullscreen.png",
+			enterFullscreenButtonIconPath: "/graphics/general-icons/enter-fullscreen.png",
+			exitFullscreenButtonIconPath: "/graphics/general-icons/exit-fullscreen.png",
 			
-			switch_fullscreen_callback: this.change_aspect_ratio.bind(this)
+			switchFullscreenCallback: this.changeAspectRatio.bind(this)
 		};
 		
 		this.wilson = new Wilson(canvas, options);
 		
 		this.wilson.ctx.fillStyle = "rgb(0, 0, 0)";
-		this.wilson.ctx.fillRect(0, 0, this.wilson.canvas_width, this.wilson.canvas_height);
+		this.wilson.ctx.fillRect(0, 0, this.wilson.canvasWidth, this.wilson.canvasHeight);
 		
-		this.init_branch_markers();
+		this.initBranchMarkers();
 	}
 	
 	
 	
-	preview(root, branch_points)
+	preview(root, branchPoints)
 	{
 		this.root = root;
-		this.branch_points = branch_points;
+		this.branchPoints = branchPoints;
 		
 		
 			
 		this.wilson.ctx.fillStyle = "rgb(0, 0, 0)";
-		this.wilson.ctx.fillRect(0, 0, this.wilson.canvas_width, this.wilson.canvas_height);
+		this.wilson.ctx.fillRect(0, 0, this.wilson.canvasWidth, this.wilson.canvasHeight);
 		
 		
 		
-		let angles = [Math.atan2(this.branch_points[0][0] - this.root[0], this.branch_points[0][1] - this.root[1]), Math.atan2(this.branch_points[1][0] - this.root[0], this.branch_points[1][1] - this.root[1])];
+		let angles = [Math.atan2(this.branchPoints[0][0] - this.root[0], this.branchPoints[0][1] - this.root[1]), Math.atan2(this.branchPoints[1][0] - this.root[0], this.branchPoints[1][1] - this.root[1])];
 		
-		let angle_step = (angles[0] - angles[1]) / 2;
+		let angleStep = (angles[0] - angles[1]) / 2;
 		
 		
 		
-		let distances = [Math.sqrt((this.branch_points[0][0] - this.root[0])*(this.branch_points[0][0] - this.root[0]) + (this.branch_points[0][1] - this.root[1])*(this.branch_points[0][1] - this.root[1])), Math.sqrt((this.branch_points[1][0] - this.root[0])*(this.branch_points[1][0] - this.root[0]) + (this.branch_points[1][1] - this.root[1])*(this.branch_points[1][1] - this.root[1]))];
+		let distances = [Math.sqrt((this.branchPoints[0][0] - this.root[0])*(this.branchPoints[0][0] - this.root[0]) + (this.branchPoints[0][1] - this.root[1])*(this.branchPoints[0][1] - this.root[1])), Math.sqrt((this.branchPoints[1][0] - this.root[0])*(this.branchPoints[1][0] - this.root[0]) + (this.branchPoints[1][1] - this.root[1])*(this.branchPoints[1][1] - this.root[1]))];
 		
-		let starting_points = [this.root];
+		let startingPoints = [this.root];
 		
 		let scale = 1;
 		
 		
 		
-		for (let iteration = 0; iteration < this.num_preview_iterations; iteration++)
+		for (let iteration = 0; iteration < this.numPreviewIterations; iteration++)
 		{
-			let new_starting_points = [];
+			let newStartingPoints = [];
 			
-			let new_angles = [];
+			let newAngles = [];
 			
 			
 			
@@ -102,46 +102,46 @@ class BinaryTree extends Applet
 			
 			
 			
-			for (let i = 0; i < starting_points.length; i++)
+			for (let i = 0; i < startingPoints.length; i++)
 			{
-				let start_x = starting_points[i][1];
-				let start_y = starting_points[i][0];
-				let end_x = starting_points[i][1] + distances[0] * scale * Math.cos(angles[2*i]);
-				let end_y = starting_points[i][0] + distances[0] * scale * Math.sin(angles[2*i]);
+				let startX = startingPoints[i][1];
+				let startY = startingPoints[i][0];
+				let endX = startingPoints[i][1] + distances[0] * scale * Math.cos(angles[2*i]);
+				let endY = startingPoints[i][0] + distances[0] * scale * Math.sin(angles[2*i]);
 				
 				this.wilson.ctx.beginPath();
-				this.wilson.ctx.moveTo(start_x, start_y);
-				this.wilson.ctx.lineTo(end_x, end_y);
+				this.wilson.ctx.moveTo(startX, startY);
+				this.wilson.ctx.lineTo(endX, endY);
 				this.wilson.ctx.stroke();
 				
-				new_starting_points.push([end_y, end_x]);
+				newStartingPoints.push([endY, endX]);
 				
-				new_angles.push(angles[2*i] - angle_step);
-				new_angles.push(angles[2*i] + angle_step);
+				newAngles.push(angles[2*i] - angleStep);
+				newAngles.push(angles[2*i] + angleStep);
 				
 				
 				
-				start_x = starting_points[i][1];
-				start_y = starting_points[i][0];
-				end_x = starting_points[i][1] + distances[1] * scale * Math.cos(angles[2*i + 1]);
-				end_y = starting_points[i][0] + distances[1] * scale * Math.sin(angles[2*i + 1]);
+				startX = startingPoints[i][1];
+				startY = startingPoints[i][0];
+				endX = startingPoints[i][1] + distances[1] * scale * Math.cos(angles[2*i + 1]);
+				endY = startingPoints[i][0] + distances[1] * scale * Math.sin(angles[2*i + 1]);
 				
 				this.wilson.ctx.beginPath();
-				this.wilson.ctx.moveTo(start_x, start_y);
-				this.wilson.ctx.lineTo(end_x, end_y);
+				this.wilson.ctx.moveTo(startX, startY);
+				this.wilson.ctx.lineTo(endX, endY);
 				this.wilson.ctx.stroke();
 				
-				new_starting_points.push([end_y, end_x]);
+				newStartingPoints.push([endY, endX]);
 				
-				new_angles.push(angles[2*i + 1] - angle_step);
-				new_angles.push(angles[2*i + 1] + angle_step);
+				newAngles.push(angles[2*i + 1] - angleStep);
+				newAngles.push(angles[2*i + 1] + angleStep);
 			}
 			
 			
 			
-			starting_points = new_starting_points;
+			startingPoints = newStartingPoints;
 			
-			angles = new_angles;
+			angles = newAngles;
 			
 			scale *= .675;
 		}
@@ -149,30 +149,30 @@ class BinaryTree extends Applet
 	
 	
 	
-	animate(root, branch_points)
+	animate(root, branchPoints)
 	{
 		this.root = root;
-		this.branch_points = branch_points;
+		this.branchPoints = branchPoints;
 		
-		try {this.web_worker.terminate()}
+		try {this.webWorker.terminate()}
 		catch(ex) {}
 		
-		this.web_worker = new Worker(`/applets/binary-trees/scripts/worker.${DEBUG ? "" : "min."}js`);
+		this.webWorker = new Worker(`/applets/binary-trees/scripts/worker.${DEBUG ? "" : "min."}js`);
 		
-		this.workers.push(this.web_worker);
+		this.workers.push(this.webWorker);
 		
 		
 		
-		this.web_worker.onmessage = (e) =>
+		this.webWorker.onmessage = (e) =>
 		{
 			if (e.data[0] === "done")
 			{
-				const timeout_id = setTimeout(() =>
+				const timeoutId = setTimeout(() =>
 				{
-					Page.set_element_styles(".wilson-draggable", "opacity", 1);
+					Page.setElementStyles(".wilson-draggable", "opacity", 1);
 				}, 500);
 				
-				this.timeout_ids.push(timeout_id);	
+				this.timeoutIds.push(timeoutId);	
 				
 				return;
 			}
@@ -190,59 +190,59 @@ class BinaryTree extends Applet
 		
 		
 		
-		this.web_worker.postMessage([this.root, this.branch_points]);
+		this.webWorker.postMessage([this.root, this.branchPoints]);
 	}
 	
 	
 	
-	init_branch_markers()
+	initBranchMarkers()
 	{
 		this.wilson.draggables.add(-1/7, -1/3);
 		this.wilson.draggables.add(1/7, -1/3);
 		
 		
 		
-		this.root = this.wilson.utils.interpolate.world_to_canvas(0, -4/5);
+		this.root = this.wilson.utils.interpolate.worldToCanvas(0, -4/5);
 		
-		this.branch_points[0] = this.wilson.utils.interpolate.world_to_canvas(-1/7, -1/3);
-		this.branch_points[1] = this.wilson.utils.interpolate.world_to_canvas(1/7, -1/3);
+		this.branchPoints[0] = this.wilson.utils.interpolate.worldToCanvas(-1/7, -1/3);
+		this.branchPoints[1] = this.wilson.utils.interpolate.worldToCanvas(1/7, -1/3);
 		
 		
 		
-		this.preview(this.root, this.branch_points);
+		this.preview(this.root, this.branchPoints);
 	}
 	
 	
 	
-	on_grab_draggable(active_draggable, x, y, event)
+	onGrabDraggable(activeDraggable, x, y, event)
 	{
-		try {this.web_worker.terminate()}
+		try {this.webWorker.terminate()}
 		catch(ex) {}
 		
-		Page.set_element_styles(".wilson-draggable", "opacity", 1);
+		Page.setElementStyles(".wilson-draggable", "opacity", 1);
 		
 		this.wilson.ctx.fillStyle = "rgb(0, 0, 0)";
-		this.wilson.ctx.fillRect(0, 0, this.wilson.canvas_width, this.wilson.canvas_height);
+		this.wilson.ctx.fillRect(0, 0, this.wilson.canvasWidth, this.wilson.canvasHeight);
 		
-		this.preview(this.root, this.branch_points);
+		this.preview(this.root, this.branchPoints);
 	}
 	
 	
 	
-	on_drag_draggable(active_draggable, x, y, event)
+	onDragDraggable(activeDraggable, x, y, event)
 	{
-		this.branch_points[active_draggable] = this.wilson.utils.interpolate.world_to_canvas(x, y);
+		this.branchPoints[activeDraggable] = this.wilson.utils.interpolate.worldToCanvas(x, y);
 		
-		this.preview(this.root, this.branch_points);
+		this.preview(this.root, this.branchPoints);
 	}
 	
 	
 	
-	on_release_draggable(active_draggable, x, y, event)
+	onReleaseDraggable(activeDraggable, x, y, event)
 	{
 		document.body.style.WebkitUserSelect = "";
 		
-		Page.set_element_styles(".wilson-draggable", "opacity", 0);
+		Page.setElementStyles(".wilson-draggable", "opacity", 0);
 		
 		
 		
@@ -250,70 +250,70 @@ class BinaryTree extends Applet
 		
 		const that = this;
 		
-		const refresh_id = setInterval(() =>
+		const refreshId = setInterval(() =>
 		{
 			let alpha = step / 37;
 			that.wilson.ctx.fillStyle = `rgba(0, 0, 0, ${alpha})`;
-			that.wilson.ctx.fillRect(0, 0, that.wilson.canvas_width, that.wilson.canvas_height);
+			that.wilson.ctx.fillRect(0, 0, that.wilson.canvasWidth, that.wilson.canvasHeight);
 			
 			step++;
 		}, 8);
 		
-		this.refresh_ids.push(refresh_id);
+		this.refreshIds.push(refreshId);
 		
 		
 		
-		const timeout_id = setTimeout(() =>
+		const timeoutId = setTimeout(() =>
 		{
-			clearInterval(refresh_id);
+			clearInterval(refreshId);
 			
 			that.wilson.ctx.fillStyle = "rgb(0, 0, 0)";
-			that.wilson.ctx.fillRect(0, 0, that.wilson.canvas_width, that.wilson.canvas_height);
+			that.wilson.ctx.fillRect(0, 0, that.wilson.canvasWidth, that.wilson.canvasHeight);
 			
-			that.animate(that.root, that.branch_points);
-		}, Site.opacity_animation_time);
+			that.animate(that.root, that.branchPoints);
+		}, Site.opacityAnimationTime);
 		
-		this.timeout_ids.push(timeout_id);
+		this.timeoutIds.push(timeoutId);
 	}
 	
 	
 	
-	change_aspect_ratio()
+	changeAspectRatio()
 	{
-		try {this.web_worker.terminate()}
+		try {this.webWorker.terminate()}
 		catch(ex) {}
 		
-		Page.set_element_styles(".wilson-draggable", "opacity", 1);
+		Page.setElementStyles(".wilson-draggable", "opacity", 1);
 		
 		
 		
-		if (this.wilson.fullscreen.currently_fullscreen)
+		if (this.wilson.fullscreen.currentlyFullscreen)
 		{
-			if (Page.Layout.aspect_ratio >= 1)
+			if (Page.Layout.aspectRatio >= 1)
 			{
-				this.wilson.change_canvas_size(2000, 2000 / Page.Layout.aspect_ratio);
+				this.wilson.changeCanvasSize(2000, 2000 / Page.Layout.aspectRatio);
 			}
 			
 			else
 			{
-				this.wilson.change_canvas_size(2000 * Page.Layout.aspect_ratio, 2000);
+				this.wilson.changeCanvasSize(2000 * Page.Layout.aspectRatio, 2000);
 			}
 		}
 		
 		else
 		{
-			this.wilson.change_canvas_size(2000, 2000);
+			this.wilson.changeCanvasSize(2000, 2000);
 		}
 		
-		this.wilson.draggables.recalculate_locations();
+		this.wilson.draggables.recalculateLocations();
 		
 		
 		
-		this.root = this.wilson.utils.interpolate.world_to_canvas(0, -4/5);
+		this.root = this.wilson.utils.interpolate.worldToCanvas(0, -4/5);
 		
-		this.branch_points[0] = this.wilson.utils.interpolate.world_to_canvas(...this.wilson.draggables.world_coordinates[0]);
-		this.branch_points[1] = this.wilson.utils.interpolate.world_to_canvas(...this.wilson.draggables.world_coordinates[1]);
+		this.branchPoints[0] = this.wilson.utils.interpolate.worldToCanvas(...this.wilson.draggables.worldCoordinates[0]);
+		this.branchPoints[1] = this.wilson.utils.interpolate.worldToCanvas(...this.wilson.draggables.worldCoordinates[1]);
 		
-		this.preview(this.root, this.branch_points);
+		this.preview(this.root, this.branchPoints);
 	}
 }
