@@ -177,7 +177,7 @@ class ComplexMap extends Applet
 			
 			
 			
-			${Site.getGlslBundle(generatingCode)}
+			${Site.getGLSLBundle(generatingCode)}
 			
 			
 			

@@ -196,7 +196,7 @@
 			
 			
 			
-			${Site.getGlslBundle(generatingCode)}
+			${Site.getGLSLBundle(generatingCode)}
 			
 			
 			

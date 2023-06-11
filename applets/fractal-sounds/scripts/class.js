@@ -207,7 +207,7 @@ class FractalSounds extends Applet
 			
 			
 			
-			${Site.getGlslBundle(glslCode)}
+			${Site.getGLSLBundle(glslCode)}
 			
 			
 			

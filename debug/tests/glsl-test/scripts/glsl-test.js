@@ -190,7 +190,7 @@
 				
 				
 				
-				${Site.getGlslBundle(shader)}
+				${Site.getGLSLBundle(shader)}
 				
 				
 				

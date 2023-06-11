@@ -325,7 +325,7 @@ class VectorField extends Applet
 			
 			
 			
-			${Site.getGlslBundle(generatingCode)}
+			${Site.getGLSLBundle(generatingCode)}
 			
 			${Site.doubleEncodingGLSL}
 			
