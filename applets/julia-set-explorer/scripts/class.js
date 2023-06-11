@@ -651,9 +651,9 @@ class JuliaSet extends Applet
 			window.requestAnimationFrame(this.drawFrame.bind(this));
 			
 			
-			const bound_function = this.changeAspectRatio.bind(this);
-			window.addEventListener("resize", bound_function);
-			this.handlers.push([window, "resize", bound_function]);
+			const boundFunction = this.changeAspectRatio.bind(this);
+			window.addEventListener("resize", boundFunction);
+			this.handlers.push([window, "resize", boundFunction]);
 		});
 	}
 	
