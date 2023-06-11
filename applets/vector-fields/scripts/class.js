@@ -385,8 +385,6 @@ class VectorField extends Applet
 			}
 		`;
 		
-		console.log(fragShaderSourceUpdateX);
-		
 		this.wilsonUpdate.render.shaderPrograms = [];
 		
 		this.wilsonUpdate.render.loadNewShader(fragShaderSourceUpdateX);
