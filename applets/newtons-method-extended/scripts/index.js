@@ -4,7 +4,7 @@
 	
 	
 	
-	await Site.loadGlsl();
+	await Site.loadGLSL();
 	
 	
 	

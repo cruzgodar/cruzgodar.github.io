@@ -126,25 +126,42 @@ class Applet
 	
 	
 	//Turns expressions like 2(3x^2+1) into something equivalent to 2.0 * (3.0 * pow(x, 2.0) + 1.0).
-	static parseNaturalGLSL(glsl)
+	static parseNaturalGLSL(GLSL)
 	{
-		let new_glsl =  glsl.replaceAll(/\s/g, ""); //Remove spaces
+		let newGLSL = GLSL.replaceAll(/\s/g, ""); //Remove spaces
 		
-		while (new_glsl.match(/([^\.0-9])([0-9]+)([^\.0-9])/g))
+		while (newGLSL.match(/([^\.0-9])([0-9]+)([^\.0-9])/g))
 		{
-			new_glsl = new_glsl.replaceAll(/([^\.0-9])([0-9]+)([^\.0-9])/g, (match, $1, $2, $3) => `${$1}${$2}.0${$3}`); //Convert ints to floats
+			newGLSL = newGLSL.replaceAll(/([^\.0-9])([0-9]+)([^\.0-9])/g, (match, $1, $2, $3) => `${$1}${$2}.0${$3}`); //Convert ints to floats
 		}
 		
-		new_glsl = new_glsl.replaceAll(/([^0-9])(\.[0-9])/g, (match, $1, $2) => `${$1}0${$2}`) //Lead decimals with zeros
+		newGLSL = newGLSL.replaceAll(/([^0-9])(\.[0-9])/g, (match, $1, $2) => `${$1}0${$2}`) //Lead decimals with zeros
 		.replaceAll(/([0-9]\.)([^0-9])/g, (match, $1, $2) => `${$1}0${$2}`) //End decimals with zeros
 		.replaceAll(/([0-9\)])([a-z\(])/g, (match, $1, $2) => `${$1} * ${$2}`); //Juxtaposition to multiplication
 		
-		while (new_glsl.match(/([xyz])([xyz])/g))
+		while (newGLSL.match(/([xyz])([xyz])/g))
 		{
-			new_glsl = new_glsl.replaceAll(/([xyz])([xyz])/g, (match, $1, $2) => `${$1} * ${$2}`); //Particular juxtaposition to multiplication
+			newGLSL = newGLSL.replaceAll(/([xyz])([xyz])/g, (match, $1, $2) => `${$1} * ${$2}`); //Particular juxtaposition to multiplication
 		}
 		
-		return new_glsl.replaceAll(/([a-z0-9\.]+)\^([a-z0-9\.]+)/g, (match, $1, $2) => `pow(${$1}, ${$2})`); //Carats to power
+		return newGLSL.replaceAll(/([a-z0-9\.]+)\^([a-z0-9\.]+)/g, (match, $1, $2) => `pow(${$1}, ${$2})`); //Carats to power
+	}
+	
+	
+	
+	static doubleToDf(d)
+	{
+		let df = new Float32Array(2);
+		const split = (1 << 29) + 1;
+		
+		let a = d * split;
+		let hi = a - (a - d);
+		let lo = d - hi;
+		
+		df[0] = hi;
+		df[1] = lo;
+		
+		return [df[0], df[1]];
 	}
 }
 

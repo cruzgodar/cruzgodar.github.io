@@ -123,7 +123,7 @@ class GeneralizedJuliaSet extends Applet
 		
 		this.loadPromise = new Promise(async (resolve, reject) =>
 		{
-			await Site.loadGlsl();
+			await Site.loadGLSL();
 			
 			resolve();
 		});

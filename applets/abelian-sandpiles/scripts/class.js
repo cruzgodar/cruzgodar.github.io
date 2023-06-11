@@ -2,8 +2,6 @@
 
 class AbelianSandpile extends Applet
 {
-	loadPromise = null;
-	
 	wilsonUpscale = null;
 	
 	numGrains = 10000;
