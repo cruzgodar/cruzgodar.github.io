@@ -6,28 +6,16 @@
 {
 	display: grid;
 	
-	grid-template-columns: repeat(4, 1fr);
+	grid-row-gap: 18px;
+	grid-column-gap: 10px;
+	grid-template-columns: repeat(auto-fill, 150px);
+	justify-content: space-between;
 	
 	/* Make the rows and columns have the same spacing. */
-	grid-row-gap: 5vw;
-	grid-column-gap: 5vw;
-	
-	width: 70vw;
+	width: min(700px, 90vw);
 	margin: 0 auto;
 	
 	margin-top: 48px;
-}
-
-.image-links-double-column-container
-{
-	width: 70vw;
-	margin: 0 auto;
-	
-	display: flex;
-	flex-direction: row;
-	flex-wrap: wrap;
-	
-	justify-content: space-between;
 }
 
 .image-link
@@ -55,10 +43,10 @@
 
 .image-link-subtext
 {
-	margin-top: 1vh;
-	margin-bottom: calc(-1vh - 16px);
-	margin-left: -1.5vw;
-	margin-right: -1.5vw;
+	margin-top: 10px;
+	width: calc(100% + 10px);
+	margin-left: -5px;
+	
 	
 	color: rgb(96, 96, 96);
 	text-align: center;
@@ -67,8 +55,10 @@
 
 .one-image-link
 {
-	grid-template-columns: repeat(1, 1fr) !important;
-	width: 13.75vw !important;
+	grid-template-columns: repeat(1, 150px) !important;
+	grid-column-gap: 0;
+	width: 150px;
+	justify-content: center;
 }
 
 
@@ -107,66 +97,4 @@ img[src="/about/cover.webp"]
 {
 	background-color: rgb(88.76% 88.76% 88.76%);
 	background-color: lch(90% 0 0);
-}
-
-
-
-/* Compact layout: reduce to two images per row. */
-@media (max-width: 700px)
-{
-	.image-links
-	{
-		width: 90vw;
-		
-		grid-template-columns: repeat(2, 1fr);
-		
-		grid-row-gap: 10vw;
-		grid-column-gap: 10vw;
-	}
-	
-	.one-image-link
-	{
-		width: 40vw !important;
-	}
-	
-	.new-pages .image-links
-	{
-		width: 90vw !important;
-	}
-}
-
-
-
-/* Ultrawide layout: increase to six images per row. */
-@media (min-width: 1400px)
-{
-	.image-links
-	{
-		grid-template-columns: repeat(6, 1fr);
-		
-		grid-row-gap: 3vw;
-		grid-column-gap: 3vw;
-	}
-	
-	.image-link-subtext
-	{
-		margin-bottom: calc(-1vh - 20px);
-	}
-	
-	.one-image-link
-	{
-		width: 9.167vw !important;
-	}
-	
-	.narrow-image-links .image-links
-	{
-		width: 45.667vw !important;
-		
-		grid-template-columns: repeat(4, 1fr) !important;
-	}
-	
-	.new-pages .image-links
-	{
-		width: 33.5vw !important;
-	}
 }
