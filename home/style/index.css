@@ -7,14 +7,14 @@
 .quote-row
 {
 	display: flex;
-	width: 90vw;
+	width: min(90vw, 1320px);
 	justify-content: space-between;
 	margin: 0 auto;
 }
 
 .quote-container
 {
-	width: 25vw;
+	width: 30%;
 }
 
 .quote-text
@@ -64,7 +64,7 @@
 	margin: 0 auto;
 	font-size: 150%;
 	color: rgb(0, 0, 0);
-	width: 70vw;
+	width: 90vw;
 	text-align: center;
 }
 
@@ -72,13 +72,8 @@
 
 
 /* Compact layout: stack the quote columns on top of one another. */
-@media (max-width: 700px)
+@media (max-width: 1000px)
 {
-	.title-text
-	{
-		width: 90vw;
-	}
-
 	.quote-container
 	{
 		width: 90vw;
@@ -88,15 +83,5 @@
 	.quote-row
 	{
 		flex-direction: column;
-	}
-}
-
-
-
-@media (min-width: 1400px)
-{
-	.title-text
-	{
-		width: 50vw;
 	}
 }

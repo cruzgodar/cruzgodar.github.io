@@ -7,9 +7,9 @@
 	display: grid;
 	
 	grid-row-gap: 18px;
-	grid-column-gap: 10px;
+	grid-column-gap: 30px;
 	grid-template-columns: repeat(auto-fill, 150px);
-	justify-content: space-between;
+	justify-content: center;
 	
 	/* Make the rows and columns have the same spacing. */
 	width: min(700px, 90vw);
@@ -97,4 +97,43 @@ img[src="/about/cover.webp"]
 {
 	background-color: rgb(88.76% 88.76% 88.76%);
 	background-color: lch(90% 0 0);
+}
+
+
+
+@media (max-width: 776px)
+{
+	.image-links
+	{
+		grid-template-columns: repeat(3, 1fr);
+	}
+}
+
+@media (max-width: 574px)
+{
+	.image-links
+	{
+		grid-template-columns: repeat(2, 1fr);
+	}
+}
+
+@media (max-width: 330px)
+{
+	.image-links
+	{
+		grid-template-columns: repeat(1, 200px);
+	}
+}
+
+@media (max-width: 222px)
+{
+	.image-links
+	{
+		grid-template-columns: repeat(1, 1fr);
+	}
+	
+	.image-link-subtext
+	{
+		font-size: 75%;
+	}
 }
