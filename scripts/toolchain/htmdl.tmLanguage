@@ -7,9 +7,9 @@
 		<string>html</string>
 	</array>
 	<key>name</key>
-	<string>Markdown HTML</string>
+	<string>HTMDL</string>
 	<key>scopeName</key>
-	<string>source.mdhtml</string>
+	<string>source.htmdl</string>
 	<key>firstLineMatch</key>
 	<string>^#+\s+</string>
 	<key>patterns</key>
@@ -60,7 +60,7 @@
 		<!-- Single-line page elements -->
 		<dict>
 			<key>match</key>
-			<string>^\t*?(###) (banner|canvas|checkbox|desmos|nav\-buttons|wilson)(.*?)$</string>
+			<string>^\t*?(###) (banner|canvas|checkbox|desmos|nav\-buttons|glsl\-docs|wilson)(.*?)$</string>
 			<key>captures</key>
 			<dict>
 				<key>1</key>

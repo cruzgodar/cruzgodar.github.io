@@ -546,6 +546,13 @@ Page.Components =
 		
 		
 		
+		"glsl-docs": () =>
+		{
+			return Page.Components.GLSLDocs;
+		},
+		
+		
+		
 		"nav-buttons": () =>
 		{
 			return `
@@ -567,13 +574,18 @@ Page.Components =
 		
 		
 		
-		"wilson": () =>
+		"wilson": (glsl) =>
 		{
+			if (glsl === "glsl")
+			{
+				return `<p class="body-text">This applet was made with <a href="/projects/wilson/">Wilson</a>, a library I wrote to make high-performance, polished applets easier to create. Much of the code implementing complex functions was contributed by <a href="https://ahuchala.com">Andy Huchala.</a> (<a onclick="Page.Cards.show('glsl-docs')">View the documentation!</a>)</p>`;
+			}
+			
 			return `<p class="body-text">This applet was made with <a href="/projects/wilson/">Wilson</a>, a library I wrote to make high-performance, polished applets easier to create.</p>`;
 		}
 	},
 	
-	singleLineEnvironments: ["banner", "canvas", "card", "center", "checkbox", "desmos", "nav-buttons", "wilson"],
+	singleLineEnvironments: ["banner", "canvas", "card", "center", "checkbox", "desmos", "glsl-docs", "nav-buttons", "wilson"],
 	
 	notesEnvironments:
 	{
@@ -903,5 +915,9 @@ Page.Components =
 		html = `<html><body>${html}${scriptsData}</body></html>`;
 		
 		return html;
-	}
+	},
+	
+	
+	
+	GLSLDocs: String.raw`<div id="glsl-docs-card" class="card"><h1 class="heading-text">Complex GLSL Documentation</h1><p class="body-text">These functions implement many common operations on complex numbers, as well as a handful of more complicated number-theoretic functions. Unless otherwise specified, <code>float</code>s refer to real numbers and <code>vec2</code>s to complex ones.</p><h2 class="section-text" style="margin-top: 48px"> Constants</h2><p class="body-text"><code>ZERO = vec2(0.0, 0.0)</code>.</p><p class="body-text"><code>ONE = vec2(1.0, 0.0)</code>.</p><p class="body-text"><code>I = i = vec2(0.0, 1.0)</code>.</p><h2 class="section-text" style="margin-top: 48px"> Arithmetic</h2><p class="body-text"><code>[float | vec2] cadd([float | vec2] z, [float | vec2] w)</code>: returns <span class="tex-holder inline-math" data-source-tex="z + w">$z + w$</span>.</p><p class="body-text"><code>[float | vec2] csub([float | vec2] z, [float | vec2] w)</code>: returns <span class="tex-holder inline-math" data-source-tex="z - w">$z - w$</span>.</p><p class="body-text"><code>[float | vec2] cmul([float | vec2] z, [float | vec2] w)</code>: returns <span class="tex-holder inline-math" data-source-tex="zw">$zw$</span>.</p><p class="body-text"><code>[float | vec2] cdiv([float | vec2] z, [float | vec2] w)</code>: returns <span class="tex-holder inline-math" data-source-tex="\dfrac{z}{w}">$\dfrac{z}{w}$</span>.</p><p class="body-text"><code>[float | vec2] cinv([float | vec2] z)</code>: returns <span class="tex-holder inline-math" data-source-tex="\frac{1}{z}">$\frac{1}{z}$</span>.</p><p class="body-text"><code>float cabs([float | vec2] z)</code>: returns <span class="tex-holder inline-math" data-source-tex="|z|">$|z|$</span>, where e.g. <span class="tex-holder inline-math" data-source-tex="|3 + 4i| = 5">$|3 + 4i| = 5$</span>.</p><p class="body-text"><code>float cmag([float | vec2] z)</code>: returns <span class="tex-holder inline-math" data-source-tex="|z|^2">$|z|^2$</span>. Avoids taking a square root to compute <span class="tex-holder inline-math" data-source-tex="|z|">$|z|$</span>.</p><p class="body-text"><code>float carg([float | vec2] z)</code>: returns the principal argument of <span class="tex-holder inline-math" data-source-tex="z">$z$</span>, i.e. the angle in <span class="tex-holder inline-math" data-source-tex="(-\pi, \pi]">$(-\pi, \pi]$</span> that <span class="tex-holder inline-math" data-source-tex="z">$z$</span> makes with the positive <span class="tex-holder inline-math" data-source-tex="x">$x$</span>-axis.</p><p class="body-text"><code>[float | vec2] cconj([float | vec2] z)</code>: returns <span class="tex-holder inline-math" data-source-tex="\overline{z}">$\overline{z}$</span>, the complex conjugate of <span class="tex-holder inline-math" data-source-tex="z">$z$</span>.</p><p class="body-text"><code>[float | vec2] csign([float | vec2] z)</code>: returns the normalized vector <span class="tex-holder inline-math" data-source-tex="\dfrac{z}{|z|}">$\dfrac{z}{|z|}$</span>, generalizing the sign function on the real numbers.</p><h2 class="section-text" style="margin-top: 48px"> Exponential Functions</h2><p class="body-text"><code>[float | vec2] cpow([float | vec2] z, [float | vec2] w)</code>: returns <span class="tex-holder inline-math" data-source-tex="z^w">$z^w$</span>. If both <span class="tex-holder inline-math" data-source-tex="z">$z$</span> and <span class="tex-holder inline-math" data-source-tex="w">$w$</span> are real but the power is complex, at least one of the two must be passed in as a <code>vec2</code>.</p><p class="body-text"><code>vec2 cpow_logz(float z, float logz, float w)</code>: returns <span class="tex-holder inline-math" data-source-tex="z^w">$z^w$</span>. Saves operations in the case <span class="tex-holder inline-math" data-source-tex="\log(z)">$\log(z)$</span> is already known. Requires <span class="tex-holder inline-math" data-source-tex="z > 0">$z > 0$</span>.</p><p class="body-text"><code>vec2 csqrt([float | vec2] z)</code>: returns <span class="tex-holder inline-math" data-source-tex="\sqrt{z}">$\sqrt{z}$</span>.</p><p class="body-text"><code>[float | vec2] cexp([float | vec2] z)</code>: returns <span class="tex-holder inline-math" data-source-tex="e^z">$e^z$</span>.</p><p class="body-text"><code>[float | vec2] clog([float | vec2] z)</code>: returns <span class="tex-holder inline-math" data-source-tex="\log(z)">$\log(z)$</span>, the natural log of <span class="tex-holder inline-math" data-source-tex="z">$z$</span>.</p><p class="body-text"><code>[float | vec2] ctet([float | vec2] z, float w)</code>: returns <span class="tex-holder inline-math" data-source-tex="z \uparrow\uparrow w">$z \uparrow\uparrow w$</span>, e.g. <span class="tex-holder inline-math" data-source-tex="2 \uparrow\uparrow 3 = 2^{2^2} = 16">$2 \uparrow\uparrow 3 = 2^{2^2} = 16$</span>.</p><p class="body-text"><code>int powermod(int a, int b, int c)</code>: returns <span class="tex-holder inline-math" data-source-tex="a^b \mod c">$a^b \mod c$</span>.</p></div>`
 };

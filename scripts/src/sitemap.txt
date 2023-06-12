@@ -191,3 +191,4 @@ home Cruz Godar
 	debug Debug
 		tests/glsl-test GLSL Tests
 		js-lines JS Line Counter
+		glsl-docs GLSL Docs

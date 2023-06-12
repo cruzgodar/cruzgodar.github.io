@@ -1790,7 +1790,8 @@ Site.sitemap =
 		"children":
 		[
 			"/debug/tests/glsl-test/",
-			"/debug/js-lines/"
+			"/debug/js-lines/",
+			"/debug/glsl-docs/"
 		]
 	},
 		
@@ -1806,6 +1807,15 @@ Site.sitemap =
 	"/debug/js-lines/":
 	{
 		"title": "JS Line Counter",
+		
+		"parent": "/debug/",
+		
+		"children": []
+	},
+	
+	"/debug/glsl-docs/":
+	{
+		"title": "GLSL Docs",
 		
 		"parent": "/debug/",
 		

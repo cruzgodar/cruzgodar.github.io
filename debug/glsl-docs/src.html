@@ -1,0 +1,63 @@
+### image-links
+	glsl-docs c GLSL Card
+###
+
+### card glsl-docs Complex GLSL Documentation
+			
+	These functions implement many common operations on complex numbers, as well as a handful of more complicated number-theoretic functions. Unless otherwise specified, `float`s refer to real numbers and `vec2`s to complex ones.
+	
+	## Constants
+	
+	`ZERO = vec2(0.0, 0.0)`.
+	
+	`ONE = vec2(1.0, 0.0)`.
+	
+	`I = i = vec2(0.0, 1.0)`.
+	
+	
+	
+	## Arithmetic
+	
+	`[float | vec2] cadd([float | vec2] z, [float | vec2] w)`: returns $z + w$.
+	
+	`[float | vec2] csub([float | vec2] z, [float | vec2] w)`: returns $z - w$.
+	
+	`[float | vec2] cmul([float | vec2] z, [float | vec2] w)`: returns $zw$.
+	
+	`[float | vec2] cdiv([float | vec2] z, [float | vec2] w)`: returns $\dfrac{z}{w}$.
+	
+	`[float | vec2] cinv([float | vec2] z)`: returns $\frac{1}{z}$.
+	
+	`float cabs([float | vec2] z)`: returns $|z|$, where e.g. $|3 + 4i| = 5$.
+	
+	`float cmag([float | vec2] z)`: returns $|z|^2$. Avoids taking a square root to compute $|z|$.
+	
+	`float carg([float | vec2] z)`: returns the principal argument of $z$, i.e. the angle in $(-\pi, \pi]$ that $z$ makes with the positive $x$-axis.
+	
+	`[float | vec2] cconj([float | vec2] z)`: returns $\overline{z}$, the complex conjugate of $z$.
+	
+	`[float | vec2] csign([float | vec2] z)`: returns the normalized vector $\dfrac{z}{|z|}$, generalizing the sign function on the real numbers.
+	
+	
+	
+	## Exponential Functions
+	
+	`[float | vec2] cpow([float | vec2] z, [float | vec2] w)`: returns $z^w$. If both $z$ and $w$ are real but the power is complex, at least one of the two must be passed in as a `vec2`.
+	
+	`vec2 cpow_logz(float z, float logz, float w)`: returns $z^w$. Saves operations in the case $\log(z)$ is already known. Requires $z > 0$.
+	
+	`vec2 csqrt([float | vec2] z)`: returns $\sqrt{z}$.
+	
+	`[float | vec2] cexp([float | vec2] z)`: returns $e^z$.
+	
+	`[float | vec2] clog([float | vec2] z)`: returns $\log(z)$, the natural log of $z$.
+	
+	`[float | vec2] ctet([float | vec2] z, float w)`: returns $z \uparrow\uparrow w$, e.g. $2 \uparrow\uparrow 3 = 2^{2^2} = 16$.
+	
+	`int powermod(int a, int b, int c)`: returns $a^b \mod c$.
+	
+###
+
+
+
+<script src="/scripts/init.js"></script>
