@@ -90,6 +90,14 @@ float binomial(float n, float k)
 	return prod;
 }
 
+float binomial(float n, int k) {
+	return binomial(n, float(k));
+}
+
+float binomial(int n, float k) {
+	return binomial(float(n), k);
+}
+
 float binomial(int n, int k) {
 	return binomial(float(n),float(k));
 }
