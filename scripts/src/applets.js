@@ -19,6 +19,8 @@ class Applet
 	{
 		this.canvas = canvas;
 		
+		this.pan.parent = this;
+		
 		Page.currentApplets.push(this);
 	}
 	
@@ -122,6 +124,132 @@ class Applet
 		
 		return hiddenCanvas;
 	}
+	
+	
+	
+	pan =
+	{
+		parent: null,
+		frame: 0,
+		velocityX: 0,
+		velocityY: 0,
+		nextVelocityX: 0,
+		nextVelocityY: 0,
+		velocityListLength: 8,
+		lastVelocitiesX: new Array(this.velocityListLength),
+		lastVelocitiesY: new Array(this.velocityListLength),
+		friction: .91,
+		velocityStartThreshhold: .0005,
+		velocityStopThreshhold: .0005,
+		
+		onGrabCanvas: function(x, y)
+		{
+			this.velocityX = 0;
+			this.velocityY = 0;
+			
+			for (let i = 0; i < this.velocityListLength; i++)
+			{
+				this.lastVelocitiesX[i] = 0;
+				this.lastVelocitiesY[i] = 0;
+			}
+			
+			this.frame = 0;
+		},
+		
+		onDragCanvas: function(x, y, xDelta, yDelta)
+		{
+			this.parent.wilson.worldCenterX -= xDelta;
+			this.parent.wilson.worldCenterY -= yDelta;
+			
+			this.nextVelocityX = -xDelta / this.parent.wilson.worldWidth;
+			this.nextVelocityY = -yDelta / this.parent.wilson.worldHeight;
+		},
+		
+		onReleaseCanvas: function()
+		{
+			//Find the max absolute value.
+			for (let i = 0; i < this.velocityListLength; i++)
+			{
+				if (Math.abs(this.lastVelocitiesX[i]) > Math.abs(this.velocityX))
+				{
+					this.velocityX = this.lastVelocitiesX[i];
+				}
+				
+				if (Math.abs(this.lastVelocitiesY[i]) > Math.abs(this.velocityY))
+				{
+					this.velocityY = this.lastVelocitiesY[i];
+				}
+			}
+			
+			const magnitude = this.velocityX * this.velocityX + this.velocityY * this.velocityY;
+			
+			if (magnitude < this.velocityStartThreshhold * this.velocityStartThreshhold)
+			{
+				this.velocityX = 0;
+				this.velocityY = 0;
+				this.nextVelocityX = 0;
+				this.nextVelocityY = 0;
+				
+				for (let i = 0; i < this.velocityListLength; i++)
+				{
+					this.lastVelocitiesX[i] = 0;
+					this.lastVelocitiesY[i] = 0;
+				}
+			}
+		},
+		
+		//Call this in the drawFrame loop.
+		update: function()
+		{
+			this.lastVelocitiesX[this.frame] = this.nextVelocityX;
+			this.lastVelocitiesY[this.frame] = this.nextVelocityY;
+			
+			this.frame = (this.frame + 1) % this.velocityListLength;
+			
+			//This ensures that velocities don't get double-counted.
+			this.nextVelocityX = 0;
+			this.nextVelocityY = 0;
+			
+			const magnitude = this.velocityX * this.velocityX + this.velocityY * this.velocityY;
+			
+			if (magnitude < this.velocityStopThreshhold * this.velocityStopThreshhold)
+			{
+				this.velocityX = 0;
+				this.velocityY = 0;
+			}
+			
+			else
+			{
+				this.parent.wilson.worldCenterX += this.velocityX * this.parent.wilson.worldWidth;
+				this.parent.wilson.worldCenterY += this.velocityY * this.parent.wilson.worldHeight;
+				
+				this.velocityX *= this.friction;
+				this.velocityY *= this.friction;
+			}
+		}
+	}
+	
+	
+	
+	
+		/*
+		fixedPointX: 0;
+		fixedPointY: 0;
+		
+		
+		lastZoomVelocities = [0, 0, 0, 0];
+		
+		
+		zoomVelocity = 0;
+		
+		panFriction = .95;
+		panVelocityStartThreshhold = .005;
+		panVelocityStopThreshhold = .0005;
+		
+		zoomFriction = .93;
+		zoomVelocityStartThreshhold = .01;
+		zoomVelocityStopThreshhold = .001;
+		*/
 	
 	
 	
