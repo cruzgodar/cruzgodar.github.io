@@ -9,8 +9,6 @@ class ComplexMap extends Applet
 	
 	aspectRatio = 1;
 	
-	zoomLevel = -.585;
-	
 	pastBrightnessScales = [];
 	
 	resolution = 500;
@@ -18,26 +16,7 @@ class ComplexMap extends Applet
 	blackPoint = 1;
 	whitePoint = 1;
 	
-	fixedPointX = 0;
-	fixedPointY = 0;
-	
 	draggableCallback = null;
-	
-	nextPanVelocityX = 0;
-	nextPanVelocityY = 0;
-	nextZoomVelocity = 0;
-	
-	panVelocityX = 0;
-	panVelocityY = 0;
-	zoomVelocity = 0;
-	
-	panFriction = .96;
-	panVelocityStartThreshhold = .0025;
-	panVelocityStopThreshhold = .00025;
-	
-	zoomFriction = .93;
-	zoomVelocityStartThreshhold = .01;
-	zoomVelocityStopThreshhold = .001;
 	
 	lastTimestamp = -1;
 	
@@ -124,9 +103,9 @@ class ComplexMap extends Applet
 		this.generatingCode = generatingCode;
 		this.uniformCode = uniformCode;
 		
-		this.zoomLevel = zoomLevel;
+		this.zoom.level = zoomLevel;
 		
-		this.wilson.worldWidth = 3 * Math.pow(2, this.zoomLevel);
+		this.wilson.worldWidth = 3 * Math.pow(2, this.zoom.level);
 		this.wilson.worldHeight = this.wilson.worldWidth;
 		
 		this.wilson.worldCenterX = worldCenterX;
@@ -240,16 +219,6 @@ class ComplexMap extends Applet
 		
 		
 		
-		this.nextPanVelocityX = 0;
-		this.nextPanVelocityY = 0;
-		this.nextZoomVelocity = 0;
-		
-		this.panVelocityX = 0;
-		this.panVelocityY = 0;
-		this.zoomVelocity = 0;
-		
-		
-		
 		const needDraggable = addIndicatorDraggable || (generatingCode.indexOf("draggableArg") !== -1);
 		
 		if (needDraggable && this.wilson.draggables.numDraggables === 0)
@@ -277,19 +246,14 @@ class ComplexMap extends Applet
 	
 	onGrabCanvas(x, y, event)
 	{
-		this.panVelocityX = 0;
-		this.panVelocityY = 0;
-		this.zoomVelocity = 0;
-		
-		this.nextPanVelocityX = 0;
-		this.nextPanVelocityY = 0;
-		this.nextZoomVelocity = 0;
+		this.pan.onGrabCanvas();
+		this.zoom.onGrabCanvas();
 		
 		
 		
 		if (this.useSelectorMode)
 		{
-			this.run(this.generatingCode, this.uniformCode, this.wilson.worldCenterX, this.wilson.worldCenterY, this.zoomLevel, this.forceAddDraggable, true);
+			this.run(this.generatingCode, this.uniformCode, this.wilson.worldCenterX, this.wilson.worldCenterY, this.zoom.level, this.forceAddDraggable, true);
 			
 			const timeoutId = setTimeout(() =>
 			{
@@ -322,7 +286,7 @@ class ComplexMap extends Applet
 				
 				console.log(`${x} ${plus1} ${Math.abs(y)}i |---> ${zX} ${plus2} ${Math.abs(zY)}i`);
 				
-				this.run(this.generatingCode, this.uniformCode, this.wilson.worldCenterX, this.wilson.worldCenterY, this.zoomLevel, this.forceAddDraggable, false);
+				this.run(this.generatingCode, this.uniformCode, this.wilson.worldCenterX, this.wilson.worldCenterY, this.zoom.level, this.forceAddDraggable, false);
 				
 				this.useSelectorMode = false;
 			}, 20);
@@ -335,110 +299,32 @@ class ComplexMap extends Applet
 	
 	onDragCanvas(x, y, xDelta, yDelta, event)
 	{
-		this.wilson.worldCenterX -= xDelta;
-		this.wilson.worldCenterY -= yDelta;
-		
-		this.nextPanVelocityX = -xDelta / this.wilson.worldWidth;
-		this.nextPanVelocityY = -yDelta / this.wilson.worldHeight;
+		this.pan.onDragCanvas(x, y, xDelta, yDelta);
 		
 		try {this.wilson.draggables.recalculateLocations();}
 		catch(ex) {}
-		
-		window.requestAnimationFrame(this.drawFrame.bind(this));
 	}
 	
 	
 	
 	onReleaseCanvas(x, y, event)
 	{
-		if (Math.sqrt(this.nextPanVelocityX * this.nextPanVelocityX + this.nextPanVelocityY * this.nextPanVelocityY) >= this.panVelocityStartThreshhold)
-		{
-			this.panVelocityX = this.nextPanVelocityX;
-			this.panVelocityY = this.nextPanVelocityY;
-		}
-		
-		if (Math.abs(this.nextZoomVelocity) >= this.zoomVelocityStartThreshhold)
-		{
-			this.zoomVelocity = this.nextZoomVelocity;
-		}
-		
-		window.requestAnimationFrame(this.drawFrame.bind(this));
+		this.pan.onReleaseCanvas();
+		this.zoom.onReleaseCanvas();
 	}
 	
 	
 	
 	onWheelCanvas(x, y, scrollAmount, event)
 	{
-		this.fixedPointX = x;
-		this.fixedPointY = y;
-		
-		if (Math.abs(scrollAmount / 100) < .3)
-		{
-			this.zoomLevel += scrollAmount / 100;
-		}
-		
-		else
-		{
-			this.zoomVelocity += Math.sign(scrollAmount) * .05;
-		}
-		
-		this.zoomCanvas();
+		this.zoom.onWheelCanvas(x, y, scrollAmount);
 	}
 	
 	
 	
 	onPinchCanvas(x, y, touchDistanceDelta, event)
 	{
-		if (this.aspectRatio >= 1)
-		{
-			this.zoomLevel -= touchDistanceDelta / this.wilson.worldWidth * 10;
-			
-			this.nextZoomVelocity = -touchDistanceDelta / this.wilson.worldWidth * 10;
-		}
-		
-		else
-		{
-			this.zoomLevel -= touchDistanceDelta / this.wilson.worldHeight * 10;
-			
-			this.nextZoomVelocity = -touchDistanceDelta / this.wilson.worldHeight * 10;
-		}
-		
-		this.fixedPointX = x;
-		this.fixedPointY = y;
-		
-		this.zoomCanvas();
-	}
-	
-	
-	
-	zoomCanvas()
-	{
-		if (this.aspectRatio >= 1)
-		{
-			const newWorldCenter = this.wilson.input.getZoomedWorldCenter(this.fixedPointX, this.fixedPointY, 3 * Math.pow(2, this.zoomLevel) * this.aspectRatio, 3 * Math.pow(2, this.zoomLevel));
-			
-			this.wilson.worldWidth = 3 * Math.pow(2, this.zoomLevel) * this.aspectRatio;
-			this.wilson.worldHeight = 3 * Math.pow(2, this.zoomLevel);
-			
-			this.wilson.worldCenterX = newWorldCenter[0];
-			this.wilson.worldCenterY = newWorldCenter[1];
-		}
-		
-		else
-		{
-			const newWorldCenter = this.wilson.input.getZoomedWorldCenter(this.fixedPointX, this.fixedPointY, 3 * Math.pow(2, this.zoomLevel), 3 * Math.pow(2, this.zoomLevel) / this.aspectRatio);
-			
-			this.wilson.worldWidth = 3 * Math.pow(2, this.zoomLevel);
-			this.wilson.worldHeight = 3 * Math.pow(2, this.zoomLevel) / this.aspectRatio;
-			
-			this.wilson.worldCenterX = newWorldCenter[0];
-			this.wilson.worldCenterY = newWorldCenter[1];
-		}
-		
-		try {this.wilson.draggables.recalculateLocations();}
-		catch(ex) {}
-		
-		window.requestAnimationFrame(this.drawFrame.bind(this));
+		this.zoom.onPinchCanvas(x, y, touchDistanceDelta);
 	}
 	
 	
@@ -449,8 +335,6 @@ class ComplexMap extends Applet
 		catch(ex) {}
 		
 		this.wilson.gl.uniform2f(this.wilson.uniforms["draggableArg"], x, y);
-		
-		window.requestAnimationFrame(this.drawFrame.bind(this));
 	}
 	
 	
@@ -461,12 +345,15 @@ class ComplexMap extends Applet
 		
 		this.lastTimestamp = timestamp;
 		
-		
-		
 		if (timeElapsed === 0)
 		{
 			return;
 		}
+		
+		
+		
+		this.pan.update();
+		this.zoom.update();
 		
 		
 		
@@ -483,50 +370,7 @@ class ComplexMap extends Applet
 		
 		
 		
-		if (timeElapsed >= 50)
-		{
-			this.panVelocityX = 0;
-			this.panVelocityY = 0;
-			this.zoomVelocity = 0;
-			
-			this.nextPanVelocityX = 0;
-			this.nextPanVelocityY = 0;
-			this.nextZoomVelocity = 0;
-		}
-		
-		
-		
-		if (this.panVelocityX !== 0 || this.panVelocityY !== 0 || this.zoomVelocity !== 0)
-		{
-			this.wilson.worldCenterX += this.panVelocityX * this.wilson.worldWidth;
-			this.wilson.worldCenterY += this.panVelocityY * this.wilson.worldHeight;
-			
-			this.panVelocityX *= this.panFriction;
-			this.panVelocityY *= this.panFriction;
-			
-			if (Math.sqrt(this.panVelocityX * this.panVelocityX + this.panVelocityY * this.panVelocityY) < this.panVelocityStopThreshhold)
-			{
-				this.panVelocityX = 0;
-				this.panVelocityY = 0;
-			}
-			
-			
-			
-			this.zoomLevel += this.zoomVelocity;
-			
-			this.zoomCanvas(this.fixedPointX, this.fixedPointY);
-			
-			this.zoomVelocity *= this.zoomFriction;
-			
-			if (Math.abs(this.zoomVelocity) < this.zoomVelocityStopThreshhold)
-			{
-				this.zoomVelocity = 0;
-			}
-			
-			
-			
-			window.requestAnimationFrame(this.drawFrame.bind(this));
-		}
+		window.requestAnimationFrame(this.drawFrame.bind(this));
 	}
 	
 	
@@ -541,16 +385,16 @@ class ComplexMap extends Applet
 			{
 				this.wilson.changeCanvasSize(this.resolution, Math.floor(this.resolution / this.aspectRatio));
 				
-				this.wilson.worldWidth = 3 * Math.pow(2, this.zoomLevel) * this.aspectRatio;
-				this.wilson.worldHeight = 3 * Math.pow(2, this.zoomLevel);
+				this.wilson.worldWidth = 3 * Math.pow(2, this.zoom.level) * this.aspectRatio;
+				this.wilson.worldHeight = 3 * Math.pow(2, this.zoom.level);
 			}
 			
 			else
 			{
 				this.wilson.changeCanvasSize(Math.floor(this.resolution * this.aspectRatio), this.resolution);
 				
-				this.wilson.worldWidth = 3 * Math.pow(2, this.zoomLevel);
-				this.wilson.worldHeight = 3 * Math.pow(2, this.zoomLevel) / this.aspectRatio;
+				this.wilson.worldWidth = 3 * Math.pow(2, this.zoom.level);
+				this.wilson.worldHeight = 3 * Math.pow(2, this.zoom.level) / this.aspectRatio;
 			}
 		}
 		
@@ -560,11 +404,9 @@ class ComplexMap extends Applet
 			
 			this.wilson.changeCanvasSize(this.resolution, this.resolution);
 			
-			this.wilson.worldWidth = 3 * Math.pow(2, this.zoomLevel);
-			this.wilson.worldHeight = 3 * Math.pow(2, this.zoomLevel);
+			this.wilson.worldWidth = 3 * Math.pow(2, this.zoom.level);
+			this.wilson.worldHeight = 3 * Math.pow(2, this.zoom.level);
 		}
-		
-		window.requestAnimationFrame(this.drawFrame.bind(this));
 	}
 	
 	
@@ -592,4 +434,4 @@ class ComplexMap extends Applet
 		
 		this.wilson.render.drawFrame();
 	}
-	}
+}

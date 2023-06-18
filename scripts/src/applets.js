@@ -20,6 +20,7 @@ class Applet
 		this.canvas = canvas;
 		
 		this.pan.parent = this;
+		this.zoom.parent = this;
 		
 		Page.currentApplets.push(this);
 	}
@@ -135,14 +136,14 @@ class Applet
 		velocityY: 0,
 		nextVelocityX: 0,
 		nextVelocityY: 0,
-		velocityListLength: 8,
+		velocityListLength: 4,
 		lastVelocitiesX: new Array(this.velocityListLength),
 		lastVelocitiesY: new Array(this.velocityListLength),
 		friction: .91,
 		velocityStartThreshhold: .0005,
 		velocityStopThreshhold: .0005,
 		
-		onGrabCanvas: function(x, y)
+		onGrabCanvas: function()
 		{
 			this.velocityX = 0;
 			this.velocityY = 0;
@@ -225,6 +226,163 @@ class Applet
 				
 				this.velocityX *= this.friction;
 				this.velocityY *= this.friction;
+			}
+		}
+	}
+	
+	
+	
+	zoom =
+	{
+		parent: null,
+		frame: 0,
+		pinchMultiplier: 8.5,
+		level: 0,
+		fixedPointX: 0,
+		fixedPointY: 0,
+		velocity: 0,
+		nextVelocity: 0,
+		velocityListLength: 4,
+		lastVelocities: new Array(this.velocityListLength),
+		friction: .88,
+		velocityStartThreshhold: .001,
+		velocityStopThreshhold: .001,
+		
+		onGrabCanvas: function()
+		{
+			this.velocity = 0;
+			
+			for (let i = 0; i < this.velocityListLength; i++)
+			{
+				this.lastVelocities[i] = 0;
+			}
+			
+			this.frame = 0;
+		},
+		
+		onWheelCanvas: function(x, y, scrollAmount)
+		{
+			this.fixedPointX = x;
+			this.fixedPointY = y;
+			
+			if (Math.abs(scrollAmount / 100) < .3)
+			{
+				this.level += scrollAmount / 100;
+			}
+			
+			else
+			{
+				this.velocity += Math.sign(scrollAmount) * .085;
+			}
+			
+			this.zoomCanvas();
+		},
+		
+		onDragCanvas: function(x, y, xDelta, yDelta)
+		{
+			this.parent.wilson.worldCenterX -= xDelta;
+			this.parent.wilson.worldCenterY -= yDelta;
+			
+			this.nextVelocityX = -xDelta / this.parent.wilson.worldWidth;
+			this.nextVelocityY = -yDelta / this.parent.wilson.worldHeight;
+		},
+		
+		onPinchCanvas: function(x, y, touchDistanceDelta, event)
+		{
+			if (this.parent.wilson.worldWidth >= this.parent.wilson.worldHeight)
+			{
+				this.level -= touchDistanceDelta / this.parent.wilson.worldWidth * this.pinchMultiplier;
+				
+				this.nextVelocity = -touchDistanceDelta / this.parent.wilson.worldWidth * this.pinchMultiplier;
+			}
+			
+			else
+			{
+				this.level -= touchDistanceDelta / this.parent.wilson.worldHeight * this.pinchMultiplier;
+				
+				this.nextVelocity = -touchDistanceDelta / this.parent.wilson.worldHeight * this.pinchMultiplier;
+			}
+			
+			this.fixedPointX = x;
+			this.fixedPointY = y;
+			
+			this.zoomCanvas();
+		},
+		
+		onReleaseCanvas: function()
+		{
+			//Find the max absolute value.
+			for (let i = 0; i < this.velocityListLength; i++)
+			{
+				if (Math.abs(this.lastVelocities[i]) > Math.abs(this.velocity))
+				{
+					this.velocity = this.lastVelocities[i];
+				}
+			}
+			
+			if (Math.abs(this.velocity) < this.velocityStartThreshhold)
+			{
+				this.velocity = 0;
+				this.nextVelocity = 0;
+				
+				for (let i = 0; i < this.velocityListLength; i++)
+				{
+					this.lastVelocities[i] = 0;
+				}
+			}
+		},
+		
+		zoomCanvas: function()
+		{
+			const aspectRatio = this.parent.wilson.worldWidth / this.parent.wilson.worldHeight;
+			
+			if (aspectRatio >= 1)
+			{
+				const newWorldCenter = this.parent.wilson.input.getZoomedWorldCenter(this.fixedPointX, this.fixedPointY, 3 * Math.pow(2, this.level) * aspectRatio, 3 * Math.pow(2, this.level));
+				
+				this.parent.wilson.worldWidth = 3 * Math.pow(2, this.level) * aspectRatio;
+				this.parent.wilson.worldHeight = 3 * Math.pow(2, this.level);
+				
+				this.parent.wilson.worldCenterX = newWorldCenter[0];
+				this.parent.wilson.worldCenterY = newWorldCenter[1];
+			}
+			
+			else
+			{
+				const newWorldCenter = this.parent.wilson.input.getZoomedWorldCenter(this.fixedPointX, this.fixedPointY, 3 * Math.pow(2, this.level), 3 * Math.pow(2, this.level) / aspectRatio);
+				
+				this.parent.wilson.worldWidth = 3 * Math.pow(2, this.level);
+				this.parent.wilson.worldHeight = 3 * Math.pow(2, this.level) / aspectRatio;
+				
+				this.parent.wilson.worldCenterX = newWorldCenter[0];
+				this.parent.wilson.worldCenterY = newWorldCenter[1];
+			}
+		},
+		
+		//Call this in the drawFrame loop.
+		update: function()
+		{
+			this.lastVelocities[this.frame] = this.nextVelocity;
+			
+			this.frame = (this.frame + 1) % this.velocityListLength;
+			
+			//This ensures that velocities don't get double-counted.
+			this.nextVelocity = 0;
+			
+			const magnitude = this.velocityX * this.velocityX + this.velocityY * this.velocityY;
+			
+			if (Math.abs(this.velocity) < this.velocityStopThreshhold)
+			{
+				this.velocity = 0;
+			}
+			
+			else
+			{
+				this.level += this.velocity;
+				
+				this.zoomCanvas();
+				
+				this.velocity *= this.friction;
 			}
 		}
 	}
