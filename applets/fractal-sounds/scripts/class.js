@@ -43,6 +43,17 @@ class FractalSounds extends Applet
 	{
 		super(canvas);
 		
+		
+		
+		this.pan.minX = -3;
+		this.pan.maxX = 3;
+		this.pan.minY = -3;
+		this.pan.maxY = 3;
+		
+		this.zoom.level = Math.log2(Math.max(this.pan.maxX - this.pan.minX, this.pan.maxY - this.pan.minY) / 3);
+		
+		
+		
 		const tempShader = "precision highp float; varying vec2 uv; void main(void) { gl_FragColor = vec4(0.0, 0.0, 0.0, 1.0); }";
 		
 		const optionsJulia =
@@ -53,11 +64,6 @@ class FractalSounds extends Applet
 			
 			canvasWidth: this.resolution,
 			canvasHeight: this.resolution,
-			
-			worldWidth: 4,
-			worldHeight: 4,
-			worldCenterX: 0,
-			worldCenterY: 0,
 			
 			useFullscreen: true,
 		
@@ -323,7 +329,6 @@ class FractalSounds extends Applet
 		
 		
 		this.juliaMode = 0;
-		this.zoomLevel = 0;
 		
 		this.pastBrightnessScales = [];
 		
@@ -331,6 +336,8 @@ class FractalSounds extends Applet
 		this.wilson.worldHeight = 4;
 		this.wilson.worldCenterX = 0;
 		this.wilson.worldCenterY = 0;
+		
+		this.zoom.init();
 		
 		
 		

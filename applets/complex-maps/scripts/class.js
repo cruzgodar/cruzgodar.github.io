@@ -34,6 +34,15 @@ class ComplexMap extends Applet
 	{
 		super(canvas);
 		
+		
+		
+		this.pan.minX = -10;
+		this.pan.maxX = 10;
+		this.pan.minY = -10;
+		this.pan.maxY = 10;
+		
+		
+		
 		const tempShader = "precision highp float; varying vec2 uv; void main(void) { gl_FragColor = vec4(0.0, 0.0, 0.0, 1.0); }";
 		
 		const options =
