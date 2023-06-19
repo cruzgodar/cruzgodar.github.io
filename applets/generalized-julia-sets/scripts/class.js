@@ -313,7 +313,7 @@ class GeneralizedJuliaSet extends Applet
 		this.wilson.worldCenterY = 0;
 		
 		this.juliaMode = 0;
-		this.zoom.level = 0;
+		this.zoom.init();
 		
 		this.pastBrightnessScales = [];
 		
@@ -371,7 +371,7 @@ class GeneralizedJuliaSet extends Applet
 			this.wilson.worldCenterY = 0;
 			this.wilson.worldWidth = 4;
 			this.wilson.worldHeight = 4;
-			this.zoom.level = 0;
+			this.zoom.init();
 			
 			this.pastBrightnessScales = [];
 		}
@@ -394,7 +394,7 @@ class GeneralizedJuliaSet extends Applet
 			this.wilson.worldCenterY = 0;
 			this.wilson.worldWidth = 4;
 			this.wilson.worldHeight = 4;
-			this.zoom.level = 0;
+			this.zoom.init();
 			
 			this.pastBrightnessScales = [];
 			
@@ -442,7 +442,7 @@ class GeneralizedJuliaSet extends Applet
 			this.wilson.worldCenterY = 0;
 			this.wilson.worldWidth = 4;
 			this.wilson.worldHeight = 4;
-			this.zoom.level = 0;
+			this.zoom.init();
 			
 			this.pastBrightnessScales = [];
 			
@@ -565,42 +565,6 @@ class GeneralizedJuliaSet extends Applet
 		if (!this.animationPaused)
 		{
 			window.requestAnimationFrame(this.drawFrame.bind(this));
-		}
-	}
-	
-	
-	
-	changeAspectRatio()
-	{
-		if (this.wilson.fullscreen.currentlyFullscreen)
-		{
-			this.aspectRatio = window.innerWidth / window.innerHeight;
-			
-			if (this.aspectRatio >= 1)
-			{
-				this.wilson.changeCanvasSize(this.resolution, Math.floor(this.resolution / this.aspectRatio));
-				
-				this.wilson.worldWidth = 4 * Math.pow(2, this.zoom.level) * this.aspectRatio;
-				this.wilson.worldHeight = 4 * Math.pow(2, this.zoom.level);
-			}
-			
-			else
-			{
-				this.wilson.changeCanvasSize(Math.floor(this.resolution * this.aspectRatio), this.resolution);
-				
-				this.wilson.worldWidth = 4 * Math.pow(2, this.zoom.level);
-				this.wilson.worldHeight = 4 * Math.pow(2, this.zoom.level) / this.aspectRatio;
-			}
-		}
-		
-		else
-		{
-			this.aspectRatio = 1;
-			
-			this.wilson.changeCanvasSize(this.resolution, this.resolution);
-			
-			this.wilson.worldWidth = 4 * Math.pow(2, this.zoom.level);
-			this.wilson.worldHeight = 4 * Math.pow(2, this.zoom.level);
 		}
 	}
 }
