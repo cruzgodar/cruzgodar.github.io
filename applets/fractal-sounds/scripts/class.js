@@ -5,7 +5,7 @@ class FractalSounds extends Applet
 	loadPromise = null;
 	
 	wilsonHidden = null;
-	wilsonLineDrawer = null;
+	wilsonJulia = null;
 	
 	juliaMode = 0;
 	
@@ -35,22 +35,6 @@ class FractalSounds extends Applet
 	lastY = 0;	
 	zoomingWithMouse = false;
 	
-	nextPanVelocityX = 0;
-	nextPanVelocityY = 0;
-	nextZoomVelocity = 0;
-	
-	panVelocityX = 0;
-	panVelocityY = 0;
-	zoomVelocity = 0;
-	
-	panFriction = .96;
-	panVelocityStartThreshhold = .0025;
-	panVelocityStopThreshhold = .00025;
-	
-	zoomFriction = .93;
-	zoomVelocityStartThreshhold = .01;
-	zoomVelocityStopThreshhold = .001;
-	
 	lastTimestamp = -1;
 	
 	
@@ -61,7 +45,7 @@ class FractalSounds extends Applet
 		
 		const tempShader = "precision highp float; varying vec2 uv; void main(void) { gl_FragColor = vec4(0.0, 0.0, 0.0, 1.0); }";
 		
-		const options =
+		const optionsJulia =
 		{
 			renderer: "gpu",
 			
@@ -87,7 +71,7 @@ class FractalSounds extends Applet
 			switchFullscreenCallback: this.switchFullscreen.bind(this)
 		};
 		
-		this.wilson = new Wilson(canvas, options);
+		this.wilsonJulia = new Wilson(canvas, optionsJulia);
 		
 		
 		
@@ -107,7 +91,7 @@ class FractalSounds extends Applet
 		
 		
 		
-		const optionsLineDrawer =
+		const options =
 		{
 			renderer: "cpu",
 			
@@ -139,14 +123,14 @@ class FractalSounds extends Applet
 			useFullscreenButton: false
 		};
 		
-		this.wilsonLineDrawer = new Wilson(lineDrawerCanvas, optionsLineDrawer);
+		this.wilson = new Wilson(lineDrawerCanvas, options);
 		
 		const elements = Page.element.querySelectorAll(".wilson-fullscreen-components-container");
 		
 		elements[0].style.setProperty("z-index", 200, "important");
 		elements[1].style.setProperty("z-index", 300, "important");
 		
-		this.wilsonLineDrawer.ctx.lineWidth = 40;
+		this.wilson.ctx.lineWidth = 40;
 		
 		
 		
@@ -323,11 +307,11 @@ class FractalSounds extends Applet
 			}
 		`;
 
-		this.wilson.render.shaderPrograms = [];
-		this.wilson.render.loadNewShader(fragShaderSource);
-		this.wilson.gl.useProgram(this.wilson.render.shaderPrograms[0]);
+		this.wilsonJulia.render.shaderPrograms = [];
+		this.wilsonJulia.render.loadNewShader(fragShaderSource);
+		this.wilsonJulia.gl.useProgram(this.wilsonJulia.render.shaderPrograms[0]);
 
-		this.wilson.render.initUniforms(["juliaMode", "aspectRatio", "worldCenterX", "worldCenterY", "worldSize", "a", "b", "numIterations", "exposure", "brightnessScale"], 0);
+		this.wilsonJulia.render.initUniforms(["juliaMode", "aspectRatio", "worldCenterX", "worldCenterY", "worldSize", "a", "b", "numIterations", "exposure", "brightnessScale"], 0);
 		
 		
 		
@@ -343,15 +327,15 @@ class FractalSounds extends Applet
 		
 		this.pastBrightnessScales = [];
 		
-		this.wilsonLineDrawer.worldWidth = 4;
-		this.wilsonLineDrawer.worldHeight = 4;
-		this.wilsonLineDrawer.worldCenterX = 0;
-		this.wilsonLineDrawer.worldCenterY = 0;
+		this.wilson.worldWidth = 4;
+		this.wilson.worldHeight = 4;
+		this.wilson.worldCenterX = 0;
+		this.wilson.worldCenterY = 0;
 		
 		
 		
 		//Render the inital frame.
-		this.wilson.gl.uniform1f(this.wilson.uniforms["aspectRatio"][0], 1);
+		this.wilsonJulia.gl.uniform1f(this.wilsonJulia.uniforms["aspectRatio"][0], 1);
 		this.wilsonHidden.gl.uniform1f(this.wilsonHidden.uniforms["aspectRatio"][0], 1);
 		
 		window.requestAnimationFrame(this.drawFrame.bind(this));
@@ -361,15 +345,10 @@ class FractalSounds extends Applet
 	
 	onGrabCanvas(x, y, event)
 	{
-		this.panVelocityX = 0;
-		this.panVelocityY = 0;
-		this.zoomVelocity = 0;
+		this.pan.onGrabCanvas();
+		this.zoom.onGrabCanvas();
 		
-		this.nextPanVelocityX = 0;
-		this.nextPanVelocityY = 0;
-		this.nextZoomVelocity = 0;
-		
-		this.wilsonLineDrawer.canvas.style.opacity = 1;
+		this.wilson.canvas.style.opacity = 1;
 		
 		
 		
@@ -380,7 +359,11 @@ class FractalSounds extends Applet
 			if (this.numTouches === 1)
 			{
 				this.showOrbit(x, y);
-				this.playSound(x, y);
+			}
+			
+			else
+			{
+				Page.Animate.changeOpacity(this.wilson.canvas, 0, Site.opacityAnimationTime);
 			}
 		}
 		
@@ -395,25 +378,16 @@ class FractalSounds extends Applet
 	
 	onDragCanvas(x, y, xDelta, yDelta, event)
 	{
-		if (event.type === "mousemove" || this.numTouches >= 2)
+		if (event.type === "mousemove" || (event.type === "touchmove" && this.numTouches >= 2))
 		{
-			if (this.numTouches >= 2 || Math.abs(xDelta) > 0 || Math.abs(yDelta) > 0)
-			{
-				this.wilsonLineDrawer.ctx.clearRect(0, 0, this.resolution, this.resolution);
-			}	
-			
-			this.wilsonLineDrawer.worldCenterX -= xDelta;
-			this.wilsonLineDrawer.worldCenterY -= yDelta;
-			
-			this.nextPanVelocityX = -xDelta / this.wilson.worldWidth;
-			this.nextPanVelocityY = -yDelta / this.wilson.worldHeight;
-			
-			this.wilsonLineDrawer.worldCenterX = Math.min(Math.max(this.wilsonLineDrawer.worldCenterX, -2), 2);
-			this.wilsonLineDrawer.worldCenterY = Math.min(Math.max(this.wilsonLineDrawer.worldCenterY, -2), 2);
+			this.pan.onDragCanvas(x, y, xDelta, yDelta);
 			
 			this.moved++;
 			
-			window.requestAnimationFrame(this.drawFrame.bind(this));
+			if (this.moved >= 10)
+			{
+				this.wilson.ctx.clearRect(0, 0, this.resolution, this.resolution);
+			}
 		}
 		
 		else
@@ -435,40 +409,22 @@ class FractalSounds extends Applet
 	
 	onReleaseCanvas(x, y, event)
 	{
-		if (event.type === "mouseup" || this.numTouches >= 2)
+		this.pan.onReleaseCanvas();
+		this.zoom.onReleaseCanvas();
+		
+		
+		if ((event.type === "touchend" && this.numTouches === 1) || this.moved < 10)
 		{
-			if (this.nextPanVelocityX * this.nextPanVelocityX + this.nextPanVelocityY * this.nextPanVelocityY >= this.panVelocityStartThreshhold * this.panVelocityStartThreshhold)
-			{
-				this.panVelocityX = this.nextPanVelocityX;
-				this.panVelocityY = this.nextPanVelocityY;
-				
-				this.moved = 10;
-			}
+			this.playSound(x, y);
 			
-			if (Math.abs(this.nextZoomVelocity) >= this.zoomVelocityStartThreshhold)
-			{
-				this.zoomVelocity = this.nextZoomVelocity;
-				
-				this.moved = 10;
-			}
-			
-			if (this.moved < 10 && event.type === "mouseup")
-			{
-				this.playSound(x, y);
-			}
+			setTimeout(() => this.numTouches = 0, 50);
 		}
 		
 		else
 		{
-			anime({
-				targets: this.wilsonLineDrawer.canvas,
-				opacity: 0,
-				easing: "linear",
-				duration: 300
-			});
+			Page.Animate.changeOpacity(this.wilson.canvas, 0, Site.opacityAnimationTime);
 		}
 		
-		setTimeout(() => this.numTouches = 0, 50);
 		this.moved = 0;
 	}
 	
@@ -476,15 +432,15 @@ class FractalSounds extends Applet
 	
 	showOrbit(x0, y0)
 	{
-		this.wilsonLineDrawer.ctx.lineWidth = 2;
+		this.wilson.ctx.lineWidth = 2;
 		
-		this.wilsonLineDrawer.canvas.style.opacity = 1;
-		this.wilsonLineDrawer.ctx.strokeStyle = "rgb(255, 255, 255)";
-		this.wilsonLineDrawer.ctx.clearRect(0, 0, this.resolution, this.resolution);
+		this.wilson.canvas.style.opacity = 1;
+		this.wilson.ctx.strokeStyle = "rgb(255, 255, 255)";
+		this.wilson.ctx.clearRect(0, 0, this.resolution, this.resolution);
 		
-		this.wilsonLineDrawer.ctx.beginPath();
-		let coords = this.wilsonLineDrawer.utils.interpolate.worldToCanvas(x0, y0);
-		this.wilsonLineDrawer.ctx.moveTo(coords[1], coords[0]);
+		this.wilson.ctx.beginPath();
+		let coords = this.wilson.utils.interpolate.worldToCanvas(x0, y0);
+		this.wilson.ctx.moveTo(coords[1], coords[0]);
 		
 		let x = x0;
 		let y = y0;
@@ -508,11 +464,11 @@ class FractalSounds extends Applet
 			
 			next = this.currentFractalFunction(x, y, a, b);
 			
-			coords = this.wilsonLineDrawer.utils.interpolate.worldToCanvas(x, y);
-			this.wilsonLineDrawer.ctx.lineTo(coords[1], coords[0]);
+			coords = this.wilson.utils.interpolate.worldToCanvas(x, y);
+			this.wilson.ctx.lineTo(coords[1], coords[0]);
 		}
 		
-		this.wilsonLineDrawer.ctx.stroke();
+		this.wilson.ctx.stroke();
 	}
 	
 	
@@ -612,95 +568,14 @@ class FractalSounds extends Applet
 	
 	onWheelCanvas(x, y, scrollAmount, event)
 	{
-		this.fixedPointX = x;
-		this.fixedPointY = y;
-		
-		if (Math.abs(scrollAmount / 100) < .3)
-		{
-			this.zoomLevel += scrollAmount / 100;
-			
-			this.zoomLevel = Math.min(this.zoomLevel, 1);
-		}
-		
-		else
-		{
-			this.zoomVelocity += Math.sign(scrollAmount) * .05;
-		}
-		
-		this.lastX = x;
-		this.lastY = y;
-		this.zoomingWithMouse = true;
-		
-		this.zoomCanvas();
+		this.zoom.onWheelCanvas(x, y, scrollAmount);
 	}
 	
 	
 	
 	onPinchCanvas(x, y, touchDistanceDelta, event)
 	{
-		if (this.juliaMode === 2)
-		{
-			return;
-		}
-		
-		
-		
-		if (this.aspectRatio >= 1)
-		{
-			this.zoomLevel -= touchDistanceDelta / this.wilsonLineDrawer.worldWidth * 10;
-			
-			this.nextZoomVelocity = -touchDistanceDelta / this.wilsonLineDrawer.worldWidth * 10;
-		}
-		
-		else
-		{
-			this.zoomLevel -= touchDistanceDelta / this.wilsonLineDrawer.worldHeight * 10;
-			
-			this.nextZoomVelocity = -touchDistanceDelta / this.wilsonLineDrawer.worldHeight * 10;
-		}
-		
-		this.zoomLevel = Math.min(this.zoomLevel, 1);
-		
-		this.fixedPointX = x;
-		this.fixedPointY = y;
-		
-		this.zoomingWithMouse = false;
-		
-		this.zoomCanvas();
-	}
-	
-	
-	
-	zoomCanvas()
-	{
-		if (this.aspectRatio >= 1)
-		{
-			const newWorldCenter = this.wilsonLineDrawer.input.getZoomedWorldCenter(this.fixedPointX, this.fixedPointY, 4 * Math.pow(2, this.zoomLevel) * this.aspectRatio, 4 * Math.pow(2, this.zoomLevel));
-			
-			this.wilsonLineDrawer.worldWidth = 4 * Math.pow(2, this.zoomLevel) * this.aspectRatio;
-			this.wilsonLineDrawer.worldHeight = 4 * Math.pow(2, this.zoomLevel);
-			
-			this.wilsonLineDrawer.worldCenterX = newWorldCenter[0];
-			this.wilsonLineDrawer.worldCenterY = newWorldCenter[1];
-		}
-		
-		else
-		{
-			const newWorldCenter = this.wilsonLineDrawer.input.getZoomedWorldCenter(this.fixedPointX, this.fixedPointY, 4 * Math.pow(2, this.zoomLevel), 4 * Math.pow(2, this.zoomLevel) / this.aspectRatio);
-			
-			this.wilsonLineDrawer.worldWidth = 4 * Math.pow(2, this.zoomLevel);
-			this.wilsonLineDrawer.worldHeight = 4 * Math.pow(2, this.zoomLevel) / this.aspectRatio;
-			
-			this.wilsonLineDrawer.worldCenterX = this.newWorldCenter[0];
-			this.wilsonLineDrawer.worldCenterY = this.newWorldCenter[1];
-		}
-		
-		if (this.zoomingWithMouse)
-		{
-			this.showOrbit(this.lastX, this.lastY);
-		}	
-		
-		window.requestAnimationFrame(this.drawFrame.bind(this));
+		this.zoom.onPinchCanvas(x, y, touchDistanceDelta);
 	}
 
 
@@ -711,8 +586,6 @@ class FractalSounds extends Applet
 		
 		this.lastTimestamp = timestamp;
 		
-		
-		
 		if (timeElapsed === 0)
 		{
 			return;
@@ -720,14 +593,19 @@ class FractalSounds extends Applet
 		
 		
 		
-		this.wilsonHidden.gl.uniform1f(this.wilsonHidden.uniforms["worldCenterX"][0], this.wilsonLineDrawer.worldCenterX);
-		this.wilsonHidden.gl.uniform1f(this.wilsonHidden.uniforms["worldCenterY"][0], this.wilsonLineDrawer.worldCenterY);
+		this.pan.update();
+		this.zoom.update();
 		
-		this.wilsonHidden.gl.uniform1f(this.wilsonHidden.uniforms["worldSize"][0], Math.min(this.wilsonLineDrawer.worldHeight, this.wilsonLineDrawer.worldWidth) / 2);
+		
+		
+		this.wilsonHidden.gl.uniform1f(this.wilsonHidden.uniforms["worldCenterX"][0], this.wilson.worldCenterX);
+		this.wilsonHidden.gl.uniform1f(this.wilsonHidden.uniforms["worldCenterY"][0], this.wilson.worldCenterY);
+		
+		this.wilsonHidden.gl.uniform1f(this.wilsonHidden.uniforms["worldSize"][0], Math.min(this.wilson.worldHeight, this.wilson.worldWidth) / 2);
 		
 		this.wilsonHidden.gl.uniform1i(this.wilsonHidden.uniforms["numIterations"][0], this.numIterations);
 		this.wilsonHidden.gl.uniform1f(this.wilsonHidden.uniforms["exposure"][0], 1);
-		this.wilsonHidden.gl.uniform1f(this.wilsonHidden.uniforms["brightnessScale"][0], 20 * (Math.abs(this.zoomLevel) + 1));
+		this.wilsonHidden.gl.uniform1f(this.wilsonHidden.uniforms["brightnessScale"][0], 20 * (Math.abs(this.zoom.level) + 1));
 		
 		this.wilsonHidden.render.drawFrame();
 		
@@ -744,7 +622,7 @@ class FractalSounds extends Applet
 		
 		brightnesses.sort((a, b) => a - b);
 		
-		let brightnessScale = (brightnesses[Math.floor(this.resolutionHidden * this.resolutionHidden * .96)] + brightnesses[Math.floor(this.resolutionHidden * this.resolutionHidden * .98)]) / 255 * 15 * (Math.abs(this.zoomLevel / 2) + 1);
+		let brightnessScale = (brightnesses[Math.floor(this.resolutionHidden * this.resolutionHidden * .96)] + brightnesses[Math.floor(this.resolutionHidden * this.resolutionHidden * .98)]) / 255 * 15 * (Math.abs(this.zoom.level / 2) + 1);
 		
 		this.pastBrightnessScales.push(brightnessScale);
 		
@@ -759,73 +637,23 @@ class FractalSounds extends Applet
 		
 		
 		
-		this.wilson.gl.uniform1f(this.wilson.uniforms["aspectRatio"][0], this.aspectRatio);
+		this.wilsonJulia.gl.uniform1f(this.wilsonJulia.uniforms["aspectRatio"][0], this.aspectRatio);
 		
-		this.wilson.gl.uniform1f(this.wilson.uniforms["worldCenterX"][0], this.wilsonLineDrawer.worldCenterX);
-		this.wilson.gl.uniform1f(this.wilson.uniforms["worldCenterY"][0], this.wilsonLineDrawer.worldCenterY);
+		this.wilsonJulia.gl.uniform1f(this.wilsonJulia.uniforms["worldCenterX"][0], this.wilson.worldCenterX);
+		this.wilsonJulia.gl.uniform1f(this.wilsonJulia.uniforms["worldCenterY"][0], this.wilson.worldCenterY);
 		
-		this.wilson.gl.uniform1f(this.wilson.uniforms["worldSize"][0], Math.min(this.wilsonLineDrawer.worldHeight, this.wilsonLineDrawer.worldWidth) / 2);
+		this.wilsonJulia.gl.uniform1f(this.wilsonJulia.uniforms["worldSize"][0], Math.min(this.wilson.worldHeight, this.wilson.worldWidth) / 2);
 		
-		this.wilson.gl.uniform1i(this.wilson.uniforms["numIterations"][0], this.numIterations);
+		this.wilsonJulia.gl.uniform1i(this.wilsonJulia.uniforms["numIterations"][0], this.numIterations);
 		
-		this.wilson.gl.uniform1f(this.wilson.uniforms["exposure"][0], this.exposure);
-		this.wilson.gl.uniform1f(this.wilson.uniforms["brightnessScale"][0], brightnessScale);
+		this.wilsonJulia.gl.uniform1f(this.wilsonJulia.uniforms["exposure"][0], this.exposure);
+		this.wilsonJulia.gl.uniform1f(this.wilsonJulia.uniforms["brightnessScale"][0], brightnessScale);
 		
-		this.wilson.render.drawFrame();
-		
-		
-		
-		if (timeElapsed >= 50)
-		{
-			this.panVelocityX = 0;
-			this.panVelocityY = 0;
-			this.zoomVelocity = 0;
-			
-			this.nextPanVelocityX = 0;
-			this.nextPanVelocityY = 0;
-			this.nextZoomVelocity = 0;
-		}
+		this.wilsonJulia.render.drawFrame();
 		
 		
 		
-		if (this.panVelocityX !== 0 || this.panVelocityY !== 0 || this.zoomVelocity !== 0)
-		{
-			this.wilsonLineDrawer.worldCenterX += this.panVelocityX * this.wilsonLineDrawer.worldWidth;
-			this.wilsonLineDrawer.worldCenterY += this.panVelocityY * this.wilsonLineDrawer.worldHeight;
-			
-			this.wilsonLineDrawer.worldCenterX = Math.min(Math.max(this.wilsonLineDrawer.worldCenterX, -2), 2);
-			this.wilsonLineDrawer.worldCenterY = Math.min(Math.max(this.wilsonLineDrawer.worldCenterY, -2), 2);
-			
-			
-			
-			this.panVelocityX *= this.panFriction;
-			this.panVelocityY *= this.panFriction;
-			
-			if (this.panVelocityX * this.panVelocityX + this.panVelocityY * this.panVelocityY < this.panVelocityStopThreshhold * this.panVelocityStopThreshhold)
-			{
-				this.panVelocityX = 0;
-				this.panVelocityY = 0;
-			}
-			
-			
-			
-			this.zoomLevel += this.zoomVelocity;
-			
-			this.zoomLevel = Math.min(this.zoomLevel, 1);
-			
-			this.zoomCanvas();
-			
-			this.zoomVelocity *= this.zoomFriction;
-			
-			if (Math.abs(this.zoomVelocity) < this.zoomVelocityStopThreshhold)
-			{
-				this.zoomVelocity = 0;
-			}
-			
-			
-			
-			window.requestAnimationFrame(this.drawFrame.bind(this));
-		}
+		window.requestAnimationFrame(this.drawFrame.bind(this));
 	}
 	
 	
@@ -843,33 +671,33 @@ class FractalSounds extends Applet
 		
 		catch(ex) {}
 		
-		this.wilsonLineDrawer.fullscreen.switchFullscreen();
+		this.wilson.fullscreen.switchFullscreen();
 	}
 	
 	
 	
 	changeAspectRatio()
 	{
-		if (this.wilson.fullscreen.currentlyFullscreen)
+		if (this.wilsonJulia.fullscreen.currentlyFullscreen)
 		{
 			this.aspectRatio = window.innerWidth / window.innerHeight;
 			
 			if (this.aspectRatio >= 1)
 			{
-				this.wilsonLineDrawer.changeCanvasSize(this.resolution, Math.floor(this.resolution / this.aspectRatio));
 				this.wilson.changeCanvasSize(this.resolution, Math.floor(this.resolution / this.aspectRatio));
+				this.wilsonJulia.changeCanvasSize(this.resolution, Math.floor(this.resolution / this.aspectRatio));
 				
-				this.wilsonLineDrawer.worldWidth = 4 * Math.pow(2, this.zoomLevel) * this.aspectRatio;
-				this.wilsonLineDrawer.worldHeight = 4 * Math.pow(2, this.zoomLevel);
+				this.wilson.worldWidth = 4 * Math.pow(2, this.zoom.level) * this.aspectRatio;
+				this.wilson.worldHeight = 4 * Math.pow(2, this.zoom.level);
 			}
 			
 			else
 			{
-				this.wilsonLineDrawer.changeCanvasSize(Math.floor(this.resolution * this.aspectRatio), this.resolution);
 				this.wilson.changeCanvasSize(Math.floor(this.resolution * this.aspectRatio), this.resolution);
+				this.wilsonJulia.changeCanvasSize(Math.floor(this.resolution * this.aspectRatio), this.resolution);
 				
-				this.wilsonLineDrawer.worldWidth = 4 * Math.pow(2, this.zoomLevel);
-				this.wilsonLineDrawer.worldHeight = 4 * Math.pow(2, this.zoomLevel) / this.aspectRatio;
+				this.wilson.worldWidth = 4 * Math.pow(2, this.zoom.level);
+				this.wilson.worldHeight = 4 * Math.pow(2, this.zoom.level) / this.aspectRatio;
 			}
 		}
 		
@@ -877,13 +705,11 @@ class FractalSounds extends Applet
 		{
 			this.aspectRatio = 1;
 			
-			this.wilsonLineDrawer.changeCanvasSize(this.resolution, this.resolution);
 			this.wilson.changeCanvasSize(this.resolution, this.resolution);
+			this.wilsonJulia.changeCanvasSize(this.resolution, this.resolution);
 			
-			this.wilsonLineDrawer.worldWidth = 4 * Math.pow(2, this.zoomLevel);
-			this.wilsonLineDrawer.worldHeight = 4 * Math.pow(2, this.zoomLevel);
+			this.wilson.worldWidth = 4 * Math.pow(2, this.zoom.level);
+			this.wilson.worldHeight = 4 * Math.pow(2, this.zoom.level);
 		}
-		
-		window.requestAnimationFrame(this.drawFrame.bind(this));
 	}
-	}
+}

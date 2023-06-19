@@ -140,7 +140,7 @@ class Applet
 		lastVelocitiesX: new Array(this.velocityListLength),
 		lastVelocitiesY: new Array(this.velocityListLength),
 		friction: .91,
-		velocityStartThreshhold: .0005,
+		velocityStartThreshhold: .005,
 		velocityStopThreshhold: .0005,
 		
 		onGrabCanvas: function()
@@ -227,6 +227,9 @@ class Applet
 				this.velocityX *= this.friction;
 				this.velocityY *= this.friction;
 			}
+			
+			try {this.parent.wilson.draggables.recalculateLocations()}
+			catch(ex) {}
 		}
 	}
 	
@@ -384,6 +387,9 @@ class Applet
 				
 				this.velocity *= this.friction;
 			}
+			
+			try {this.parent.wilson.draggables.recalculateLocations()}
+			catch(ex) {}
 		}
 	}
 	
