@@ -300,9 +300,6 @@ class ComplexMap extends Applet
 	onDragCanvas(x, y, xDelta, yDelta, event)
 	{
 		this.pan.onDragCanvas(x, y, xDelta, yDelta);
-		
-		try {this.wilson.draggables.recalculateLocations();}
-		catch(ex) {}
 	}
 	
 	
