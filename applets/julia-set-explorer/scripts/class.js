@@ -935,8 +935,10 @@ class JuliaSet extends Applet
 		this.wilson.render.drawFrame();
 		
 		
-		
-		window.requestAnimationFrame(this.drawFrame.bind(this));
+		if (!this.animationPaused)
+		{
+			window.requestAnimationFrame(this.drawFrame.bind(this));
+		}
 	}
 	
 	
@@ -973,7 +975,5 @@ class JuliaSet extends Applet
 			this.wilson.worldWidth = 4 * Math.pow(2, this.zoom.level);
 			this.wilson.worldHeight = 4 * Math.pow(2, this.zoom.level);
 		}
-		
-		window.requestAnimationFrame(this.drawFrame.bind(this));
 	}
 }

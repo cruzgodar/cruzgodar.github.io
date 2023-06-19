@@ -481,7 +481,10 @@ class JuliaSetMosaic extends Applet
 			
 			
 			
-			window.requestAnimationFrame(this.drawFrame.bind(this));
+			if (!this.animationPaused)
+			{
+				window.requestAnimationFrame(this.drawFrame.bind(this));
+			}
 		}
 	}
 	

@@ -131,7 +131,14 @@ class Applet
 	pan =
 	{
 		parent: null,
+		
 		frame: 0,
+		
+		minX: -Infinity,
+		maxX: Infinity,
+		minY: -Infinity,
+		maxY: Infinity,
+		
 		velocityX: 0,
 		velocityY: 0,
 		nextVelocityX: 0,
@@ -139,9 +146,16 @@ class Applet
 		velocityListLength: 4,
 		lastVelocitiesX: new Array(this.velocityListLength),
 		lastVelocitiesY: new Array(this.velocityListLength),
+		
 		friction: .91,
 		velocityStartThreshhold: .005,
 		velocityStopThreshhold: .0005,
+		
+		clamp: function()
+		{
+			this.parent.wilson.worldCenterX = Math.min(Math.max(this.parent.wilson.worldCenterX, this.minX + this.parent.wilson.worldWidth / 2), this.maxX - this.parent.wilson.worldWidth / 2);
+			this.parent.wilson.worldCenterY = Math.min(Math.max(this.parent.wilson.worldCenterY, this.minY + this.parent.wilson.worldHeight / 2), this.maxY - this.parent.wilson.worldHeight / 2);
+		},
 		
 		onGrabCanvas: function()
 		{
@@ -161,6 +175,8 @@ class Applet
 		{
 			this.parent.wilson.worldCenterX -= xDelta;
 			this.parent.wilson.worldCenterY -= yDelta;
+			
+			this.clamp();
 			
 			this.nextVelocityX = -xDelta / this.parent.wilson.worldWidth;
 			this.nextVelocityY = -yDelta / this.parent.wilson.worldHeight;
@@ -224,6 +240,8 @@ class Applet
 				this.parent.wilson.worldCenterX += this.velocityX * this.parent.wilson.worldWidth;
 				this.parent.wilson.worldCenterY += this.velocityY * this.parent.wilson.worldHeight;
 				
+				this.clamp();
+				
 				this.velocityX *= this.friction;
 				this.velocityY *= this.friction;
 			}
@@ -239,17 +257,39 @@ class Applet
 	{
 		parent: null,
 		frame: 0,
-		pinchMultiplier: 8.5,
+		
+		pinchMultiplier: 9,
+		
 		level: 0,
+		minLevel: -Infinity,
+		
 		fixedPointX: 0,
 		fixedPointY: 0,
+		
 		velocity: 0,
 		nextVelocity: 0,
 		velocityListLength: 4,
 		lastVelocities: new Array(this.velocityListLength),
+		
 		friction: .88,
 		velocityStartThreshhold: .001,
 		velocityStopThreshhold: .001,
+		
+		init: function()
+		{
+			this.level = Math.log2(Math.max(this.parent.wilson.worldWidth, this.parent.wilson.worldHeight) / 3);
+		},
+		
+		clamp: function()
+		{
+			const width = Math.max(this.parent.pan.maxX - this.parent.pan.minX, this.parent.pan.maxY - this.parent.pan.minY);
+			
+			const maxLevel = Math.log2(width / 3);
+			
+			this.level = Math.min(Math.max(this.level, this.minLevel), maxLevel);
+			
+			this.parent.pan.clamp();
+		},
 		
 		onGrabCanvas: function()
 		{
@@ -271,6 +311,7 @@ class Applet
 			if (Math.abs(scrollAmount / 100) < .3)
 			{
 				this.level += scrollAmount / 100;
+				this.clamp();
 			}
 			
 			else
@@ -295,6 +336,7 @@ class Applet
 			if (this.parent.wilson.worldWidth >= this.parent.wilson.worldHeight)
 			{
 				this.level -= touchDistanceDelta / this.parent.wilson.worldWidth * this.pinchMultiplier;
+				this.clamp();
 				
 				this.nextVelocity = -touchDistanceDelta / this.parent.wilson.worldWidth * this.pinchMultiplier;
 			}
@@ -302,6 +344,7 @@ class Applet
 			else
 			{
 				this.level -= touchDistanceDelta / this.parent.wilson.worldHeight * this.pinchMultiplier;
+				this.clamp();
 				
 				this.nextVelocity = -touchDistanceDelta / this.parent.wilson.worldHeight * this.pinchMultiplier;
 			}
@@ -382,6 +425,7 @@ class Applet
 			else
 			{
 				this.level += this.velocity;
+				this.clamp();
 				
 				this.zoomCanvas();
 				

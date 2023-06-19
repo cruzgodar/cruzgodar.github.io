@@ -212,7 +212,10 @@ class DominoShuffling extends Applet
 		
 		else
 		{
-			window.requestAnimationFrame(this.drawFrame.bind(this));
+			if (!this.animationPaused)
+			{
+				window.requestAnimationFrame(this.drawFrame.bind(this));
+			}
 		}
 	}
 	

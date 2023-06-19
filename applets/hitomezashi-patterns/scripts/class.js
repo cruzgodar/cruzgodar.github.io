@@ -248,12 +248,18 @@ class HitomezashiPattern extends Applet
 		
 		if (this.currentRow < this.gridSize)
 		{
-			window.requestAnimationFrame(this.drawBoundaryRowStep.bind(this));
+			if (!this.animationPaused)
+			{
+				window.requestAnimationFrame(this.drawBoundaryRowStep.bind(this));
+			}
 		}
 		
 		else
 		{
-			window.requestAnimationFrame(this.drawBoundaryColStep.bind(this));
+			if (!this.animationPaused)
+			{
+				window.requestAnimationFrame(this.drawBoundaryColStep.bind(this));
+			}
 		}
 		
 	}
@@ -275,7 +281,10 @@ class HitomezashiPattern extends Applet
 		
 		if (this.currentCol < this.gridSize)
 		{
-			window.requestAnimationFrame(this.drawBoundaryColStep.bind(this));
+			if (!this.animationPaused)
+			{
+				window.requestAnimationFrame(this.drawBoundaryColStep.bind(this));
+			}
 		}
 		
 		else if (this.doDrawRegions)
@@ -494,7 +503,10 @@ class HitomezashiPattern extends Applet
 		
 		if (this.currentRegion < this.numRegions)
 		{
-			window.requestAnimationFrame(this.drawRegionsStep.bind(this));
+			if (!this.animationPaused)
+			{
+				window.requestAnimationFrame(this.drawRegionsStep.bind(this));
+			}
 		}
 	}
-	}
+}
