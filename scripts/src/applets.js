@@ -277,17 +277,33 @@ class Applet
 		
 		init: function()
 		{
-			this.level = Math.log2(Math.max(this.parent.wilson.worldWidth, this.parent.wilson.worldHeight) / 3);
+			this.level = Math.log2(Math.min(this.parent.wilson.worldWidth, this.parent.wilson.worldHeight) / 3);
 		},
 		
 		clamp: function()
 		{
-			const width = Math.max(this.parent.pan.maxX - this.parent.pan.minX, this.parent.pan.maxY - this.parent.pan.minY);
+			const aspectRatio = this.parent.wilson.worldWidth / this.parent.wilson.worldHeight;
 			
-			const maxLevel = Math.log2(width / 3);
+			if (this.parent.wilson.worldWidth > this.parent.pan.maxX - this.parent.pan.minX)
+			{
+				this.parent.wilson.worldWidth = this.parent.pan.maxX - this.parent.pan.minX;
+				
+				this.parent.wilson.worldHeight = this.parent.wilson.worldWidth / aspectRatio;
+				
+				this.level = Math.log2(Math.min(this.parent.wilson.worldWidth, this.parent.wilson.worldHeight) / 3);
+			}
 			
-			this.level = Math.min(Math.max(this.level, this.minLevel), maxLevel);
+			if (this.parent.wilson.worldHeight > this.parent.pan.maxY - this.parent.pan.minY)
+			{
+				this.parent.wilson.worldHeight = this.parent.pan.maxY - this.parent.pan.minY;
+				
+				this.parent.wilson.worldWidth = this.parent.wilson.worldHeight * aspectRatio;
+				
+				this.level = Math.log2(Math.min(this.parent.wilson.worldWidth, this.parent.wilson.worldHeight) / 3);
+			}
 			
+			this.level = Math.max(this.level, this.minLevel);
+
 			this.parent.pan.clamp();
 		},
 		
@@ -403,6 +419,8 @@ class Applet
 				this.parent.wilson.worldCenterX = newWorldCenter[0];
 				this.parent.wilson.worldCenterY = newWorldCenter[1];
 			}
+			
+			this.clamp();
 		},
 		
 		//Call this in the drawFrame loop.
@@ -425,7 +443,6 @@ class Applet
 			else
 			{
 				this.level += this.velocity;
-				this.clamp();
 				
 				this.zoomCanvas();
 				

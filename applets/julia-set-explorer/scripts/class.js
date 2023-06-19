@@ -953,16 +953,16 @@ class JuliaSet extends Applet
 			{
 				this.wilson.changeCanvasSize(this.resolution, Math.floor(this.resolution / this.aspectRatio));
 				
-				this.wilson.worldWidth = 4 * Math.pow(2, this.zoom.level) * this.aspectRatio;
-				this.wilson.worldHeight = 4 * Math.pow(2, this.zoom.level);
+				this.wilson.worldWidth = 3 * Math.pow(2, this.zoom.level) * this.aspectRatio;
+				this.wilson.worldHeight = 3 * Math.pow(2, this.zoom.level);
 			}
 			
 			else
 			{
 				this.wilson.changeCanvasSize(Math.floor(this.resolution * this.aspectRatio), this.resolution);
 				
-				this.wilson.worldWidth = 4 * Math.pow(2, this.zoom.level);
-				this.wilson.worldHeight = 4 * Math.pow(2, this.zoom.level) / this.aspectRatio;
+				this.wilson.worldWidth = 3 * Math.pow(2, this.zoom.level);
+				this.wilson.worldHeight = 3 * Math.pow(2, this.zoom.level) / this.aspectRatio;
 			}
 		}
 		
@@ -972,8 +972,10 @@ class JuliaSet extends Applet
 			
 			this.wilson.changeCanvasSize(this.resolution, this.resolution);
 			
-			this.wilson.worldWidth = 4 * Math.pow(2, this.zoom.level);
-			this.wilson.worldHeight = 4 * Math.pow(2, this.zoom.level);
+			this.wilson.worldWidth = 3 * Math.pow(2, this.zoom.level);
+			this.wilson.worldHeight = 3 * Math.pow(2, this.zoom.level);
 		}
+		
+		this.zoom.clamp();
 	}
 }

@@ -36,13 +36,6 @@ class ComplexMap extends Applet
 		
 		
 		
-		this.pan.minX = -10;
-		this.pan.maxX = 10;
-		this.pan.minY = -10;
-		this.pan.maxY = 10;
-		
-		
-		
 		const tempShader = "precision highp float; varying vec2 uv; void main(void) { gl_FragColor = vec4(0.0, 0.0, 0.0, 1.0); }";
 		
 		const options =
@@ -379,7 +372,10 @@ class ComplexMap extends Applet
 		
 		
 		
-		window.requestAnimationFrame(this.drawFrame.bind(this));
+		if (!this.animationPaused)
+		{
+			window.requestAnimationFrame(this.drawFrame.bind(this));
+		}
 	}
 	
 	
@@ -416,6 +412,8 @@ class ComplexMap extends Applet
 			this.wilson.worldWidth = 3 * Math.pow(2, this.zoom.level);
 			this.wilson.worldHeight = 3 * Math.pow(2, this.zoom.level);
 		}
+		
+		this.zoom.clamp();
 	}
 	
 	
