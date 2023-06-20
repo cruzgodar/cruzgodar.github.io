@@ -863,6 +863,14 @@ class JuliaSet extends Applet
 		
 		
 		
+		if ((!this.doublePrecision && this.zoom.level < this.doublePrecisionZoomThreshhold && this.useDoublePrecision) || (this.doublePrecision && (this.zoom.level > this.doublePrecisionZoomThreshhold || !this.useDoublePrecision)))
+		{
+			this.toggleDoublePrecision();
+		}
+
+		
+		
+		
 		const cx = Applet.doubleToDf(this.wilson.worldCenterX);
 		const cy = Applet.doubleToDf(this.wilson.worldCenterY);
 		
