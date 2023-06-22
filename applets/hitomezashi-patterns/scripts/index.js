@@ -48,17 +48,7 @@
 	drawRegionsCheckboxElement.checked = true;
 	
 	
-	
-	[resolutionInputElement, gridSizeInputElement, rowProbInputElement, colProbInputElement].forEach(element =>
-	{
-		element.addEventListener("keydown", (e) =>
-		{
-			if (e.keyCode === 13)
-			{
-				run();
-			}
-		});
-	});
+	applet.listenToInputElements([resolutionInputElement, gridSizeInputElement, rowProbInputElement, colProbInputElement], run);
 	
 	
 	

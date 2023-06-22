@@ -31,31 +31,7 @@
 	
 	const orbitSeparationInputElement = Page.element.querySelector("#orbit-separation-input");
 	
-	
-	
-	resolutionInputElement.addEventListener("keydown", e =>
-	{
-		if (e.keyCode === 13)
-		{
-			run();
-		}
-	});
-	
-	kInputElement.addEventListener("keydown", e =>
-	{
-		if (e.keyCode === 13)
-		{
-			run();
-		}
-	});
-	
-	orbitSeparationInputElement.addEventListener("keydown", e =>
-	{
-		if (e.keyCode === 13)
-		{
-			run();
-		}
-	});
+	applet.listenToInputElements([resolutionInputElement, kInputElement, orbitSeparationInputElement], run);
 	
 	
 	

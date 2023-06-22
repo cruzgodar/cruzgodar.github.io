@@ -17,6 +17,8 @@
 	
 	const resolutionInputElement = Page.element.querySelector("#resolution-input");
 	
+	applet.listenToInputElements([resolutionInputElement], run);
+	
 	
 	
 	const generateButtonElement = Page.element.querySelector("#generate-button");

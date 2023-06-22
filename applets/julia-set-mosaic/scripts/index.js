@@ -26,9 +26,7 @@
 	{
 		applet.resolution = parseInt(resolutionInputElement.value || 500);
 		
-		applet.wilson.changeCanvasSize(applet.resolution, applet.resolution);
-		
-		applet.drawFrame();
+		applet.changeAspectRatio();
 	});
 	
 	
@@ -38,8 +36,6 @@
 	setDensityInputElement.addEventListener("input", () =>
 	{
 		applet.setDensity = parseFloat(setDensityInputElement.value || 10);
-		
-		applet.drawFrame();
 	});
 	
 	
@@ -49,8 +45,6 @@
 	exposureInputElement.addEventListener("input", () =>
 	{
 		applet.exposure = parseFloat(exposureInputElement.value || 1);
-		
-		applet.drawFrame();
 	});
 	
 	
@@ -60,8 +54,6 @@
 	numIterationsInputElement.addEventListener("input", () =>
 	{
 		applet.numIterations = parseInt(numIterationsInputElement.value || 200);
-		
-		applet.drawFrame();
 	});
 	
 	

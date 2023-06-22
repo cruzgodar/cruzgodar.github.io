@@ -45,7 +45,7 @@
 	{
 		applet.resolution = parseInt(resolutionInputElement.value || 500);
 		
-		applet.changeAspectRatio();
+		applet.changeAspectRatio(true);
 	});
 	
 	
@@ -55,8 +55,6 @@
 	exposureInputElement.addEventListener("input", () =>
 	{
 		applet.exposure = parseFloat(exposureInputElement.value || 1);
-		
-		applet.drawFrame();
 	});
 	
 	
@@ -66,8 +64,6 @@
 	numIterationsInputElement.addEventListener("input", () =>
 	{
 		applet.numIterations = parseInt(numIterationsInputElement.value || 200);
-		
-		applet.drawFrame();
 	});
 	
 	

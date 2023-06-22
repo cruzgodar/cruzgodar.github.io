@@ -80,6 +80,23 @@ class Applet
 	
 	
 	
+	listenToInputElements(elements, run)
+	{
+		elements.forEach(element =>
+		{
+			element.addEventListener("keydown", (e) =>
+			{
+				if (e.keyCode === 13)
+				{
+					e.preventDefault();
+					run();
+				}
+			});
+		});
+	}
+	
+	
+	
 	pauseWhenOffscreen()
 	{
 		const onScroll = () =>

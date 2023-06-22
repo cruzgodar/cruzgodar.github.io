@@ -31,15 +31,7 @@
 	
 	codeInputElement.value = "cadd(cpow(z, 2.0), c)";
 	
-	codeInputElement.addEventListener("keydown", (e) =>
-	{
-		if (e.keyCode === 13)
-		{
-			e.preventDefault();
-			
-			useNewCode();
-		}
-	});
+	applet.listenToInputElements([codeInputElement], run);
 	
 	
 	
@@ -75,9 +67,7 @@
 	{
 		applet.resolution = parseInt(resolutionInputElement.value || 500);
 		
-		applet.wilson.changeCanvasSize(applet.resolution, applet.resolution);
-		
-		applet.drawFrame();
+		applet.changeResolution();
 	});
 	
 	
@@ -87,8 +77,6 @@
 	exposureInputElement.addEventListener("input", () =>
 	{
 		applet.exposure = parseFloat(exposureInputElement.value || 1);
-		
-		applet.drawFrame();
 	});
 	
 	
@@ -98,8 +86,6 @@
 	numIterationsInputElement.addEventListener("input", () =>
 	{
 		applet.numIterations = parseInt(numIterationsInputElement.value || 200);
-		
-		applet.drawFrame();
 	});
 	
 	
@@ -124,4 +110,4 @@
 	
 	
 	Page.show();
-	}()
+}()

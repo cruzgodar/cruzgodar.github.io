@@ -19,7 +19,10 @@
 	
 	
 	const numGrainsInputElement = Page.element.querySelector("#num-grains-input");
+	
 	const computationsPerFrameInputElement = Page.element.querySelector("#computations-per-frame-input");
+	
+	applet.listenToInputElements([numGrainsInputElement, computationsPerFrameInputElement], run);
 	
 	
 	

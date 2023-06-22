@@ -19,6 +19,8 @@
 	
 	const generatingStringInputElement = Page.element.querySelector("#generating-string-input");
 	
+	applet.listenToInputElements([generatingStringInputElement], run);
+	
 	
 	
 	const generateButtonElement = Page.element.querySelector("#generate-button");

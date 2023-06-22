@@ -26,25 +26,9 @@
 	
 	const resolutionInputElement = Page.element.querySelector("#resolution-input");
 	
-	resolutionInputElement.addEventListener("keydown", (e) =>
-	{
-		if (e.keyCode === 13)
-		{
-			run();
-		}
-	});
-	
-	
-	
 	const numVerticesInputElement = Page.element.querySelector("#num-vertices-input");
 	
-	numVerticesInputElement.addEventListener("keydown", (e) =>
-	{
-		if (e.keyCode === 13)
-		{
-			run();
-		}
-	});
+	applet.listenToInputElements([resolutionInputElement, numVerticesInputElement], run);
 	
 	
 	

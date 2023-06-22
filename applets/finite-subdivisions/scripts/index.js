@@ -27,25 +27,9 @@
 	
 	const numVerticesInputElement = Page.element.querySelector("#num-vertices-input");
 	
-	numVerticesInputElement.addEventListener("keydown", (e) =>
-	{
-		if (e.keyCode === 13)
-		{
-			run();
-		}
-	});
-	
-	
-	
 	const numIterationsInputElement = Page.element.querySelector("#num-iterations-input");
 	
-	numIterationsInputElement.addEventListener("keydown", (e) =>
-	{
-		if (e.keyCode === 13)
-		{
-			run();
-		}
-	});
+	applet.listenToInputElements([numVerticesInputElement, numIterationsInputElement], run);
 	
 	
 	

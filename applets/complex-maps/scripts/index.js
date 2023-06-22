@@ -19,15 +19,7 @@
 	
 	const codeInputElement = Page.element.querySelector("#code-textarea");
 	
-	codeInputElement.addEventListener("keydown", (e) =>
-	{
-		if (e.keyCode === 13)
-		{
-			e.preventDefault();
-			
-			run();
-		}
-	});
+	applet.listenToInputElements([codeInputElement], run);
 	
 	
 	
@@ -62,9 +54,7 @@
 	{
 		applet.resolution = parseInt(resolutionInputElement.value || 500);
 		
-		applet.wilson.changeCanvasSize(applet.resolution, applet.resolution);
-		
-		applet.drawFrame();
+		applet.changeAspectRatio(true);
 	});
 	
 	
@@ -74,8 +64,6 @@
 	blackPointInputElement.addEventListener("input", () =>
 	{
 		applet.blackPoint = parseFloat(blackPointInputElement.value || 1);
-		
-		applet.drawFrame();
 	});
 	
 	
@@ -85,8 +73,6 @@
 	whitePointInputElement.addEventListener("input", () =>
 	{
 		applet.whitePoint = parseFloat(whitePointInputElement.value || 1);
-		
-		applet.drawFrame();
 	});
 	
 	
@@ -122,4 +108,4 @@
 	
 	
 	Page.show();
-	}()
+}()

@@ -25,13 +25,7 @@
 	
 	const resolutionInputElement = Page.element.querySelector("#resolution-input");
 	
-	resolutionInputElement.addEventListener("keydown", (e) =>
-	{
-		if (e.keyCode === 13)
-		{
-			run();
-		}
-	});
+	applet.listenToInputElements([resolutionInputElement], run);
 	
 	
 	

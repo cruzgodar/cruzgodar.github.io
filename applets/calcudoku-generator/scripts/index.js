@@ -27,25 +27,9 @@
 	
 	const gridSizeInputElement = Page.element.querySelector("#grid-size-input");
 	
-	gridSizeInputElement.addEventListener("keydown", (e) =>
-	{
-		if (e.keyCode === 13)
-		{
-			run();
-		}
-	});
-	
-	
-	
 	const maxCageSizeInputElement = Page.element.querySelector("#max-cage-size-input");
 	
-	maxCageSizeInputElement.addEventListener("keydown", (e) =>
-	{
-		if (e.keyCode === 13)
-		{
-			run();
-		}
-	});
+	applet.listenToInputElements([gridSizeInputElement, maxCageSizeInputElement], run);
 	
 	
 	

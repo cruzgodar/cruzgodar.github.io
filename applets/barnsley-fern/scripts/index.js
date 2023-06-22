@@ -25,13 +25,7 @@
 	
 	const numIterationsInputElement = Page.element.querySelector("#num-iterations-input");
 	
-	numIterationsInputElement.addEventListener("keydown", (e) =>
-	{
-		if (e.keyCode === 13)
-		{
-			run();
-		}
-	});
+	applet.listenToInputElements([numIterationsInputElement], run);
 	
 	
 	
