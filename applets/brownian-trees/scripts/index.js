@@ -4,7 +4,7 @@
 {
 	await Site.loadApplet("brownian-trees");
 	
-	const applet = new BrownianTree(Page.element.querySelector("#output-canvas"));
+	const applet = new BrownianTree($("#output-canvas"));
 	
 	
 	
@@ -17,19 +17,19 @@
 	
 	
 	
-	const generateButtonElement = Page.element.querySelector("#generate-button");
+	const generateButtonElement = $("#generate-button");
 
 	generateButtonElement.addEventListener("click", run);
 	
 	
 	
-	const resolutionInputElement = Page.element.querySelector("#resolution-input");
+	const resolutionInputElement = $("#resolution-input");
 	
 	applet.listenToInputElements([resolutionInputElement], run);
 	
 	
 	
-	const downloadButtonElement = Page.element.querySelector("#download-button");
+	const downloadButtonElement = $("#download-button");
 	
 	downloadButtonElement.addEventListener("click", () => wilson.downloadFrame("a-brownian-tree.png"));
 	

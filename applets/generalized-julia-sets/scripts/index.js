@@ -4,11 +4,11 @@
 {
 	await Site.loadApplet("generalized-julia-sets");
 	
-	const switchJuliaModeButtonElement = Page.element.querySelector("#switch-julia-mode-button");
+	const switchJuliaModeButtonElement = $("#switch-julia-mode-button");
 	
 	switchJuliaModeButtonElement.style.opacity = 1;
 	
-	const applet = new GeneralizedJuliaSet(Page.element.querySelector("#output-canvas"), "cadd(cpow(z, 2.0), c)", switchJuliaModeButtonElement);
+	const applet = new GeneralizedJuliaSet($("#output-canvas"), "cadd(cpow(z, 2.0), c)", switchJuliaModeButtonElement);
 	
 	applet.loadPromise.then(() => run());
 	
@@ -27,7 +27,7 @@
 	
 	
 	
-	const codeInputElement = Page.element.querySelector("#code-textarea");
+	const codeInputElement = $("#code-textarea");
 	
 	codeInputElement.value = "cadd(cpow(z, 2.0), c)";
 	
@@ -45,7 +45,7 @@
 		"mandelbrot-dust": "cadd(csub(cpow(z, 2.0), vec2(0.0, cmul(.05, cpow(z, -2.0).y))), c)"
 	};
 	
-	const exampleSelectorDropdownElement = Page.element.querySelector("#example-selector-dropdown");
+	const exampleSelectorDropdownElement = $("#example-selector-dropdown");
 	
 	exampleSelectorDropdownElement.addEventListener("input", () =>
 	{
@@ -61,7 +61,7 @@
 	
 	
 	
-	const resolutionInputElement = Page.element.querySelector("#resolution-input");
+	const resolutionInputElement = $("#resolution-input");
 	
 	resolutionInputElement.addEventListener("input", () =>
 	{
@@ -72,7 +72,7 @@
 	
 	
 	
-	const exposureInputElement = Page.element.querySelector("#exposure-input");
+	const exposureInputElement = $("#exposure-input");
 	
 	exposureInputElement.addEventListener("input", () =>
 	{
@@ -81,7 +81,7 @@
 	
 	
 	
-	const numIterationsInputElement = Page.element.querySelector("#num-iterations-input");
+	const numIterationsInputElement = $("#num-iterations-input");
 	
 	numIterationsInputElement.addEventListener("input", () =>
 	{
@@ -90,7 +90,7 @@
 	
 	
 	
-	const generateButtonElement = Page.element.querySelector("#generate-button");
+	const generateButtonElement = $("#generate-button");
 	
 	generateButtonElement.addEventListener("click", run);
 	
@@ -100,7 +100,7 @@
 	
 	
 	
-	const downloadButtonElement = Page.element.querySelector("#download-button");
+	const downloadButtonElement = $("#download-button");
 	
 	downloadButtonElement.addEventListener("click", () =>
 	{

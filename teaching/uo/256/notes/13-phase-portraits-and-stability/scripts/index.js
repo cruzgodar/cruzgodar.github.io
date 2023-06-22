@@ -235,7 +235,7 @@
 	
 	
 	
-	const outputCanvas = Page.element.querySelector("#vector-field-canvas");
+	const outputCanvas = $("#vector-field-canvas");
 	
 	const applet = new VectorField(outputCanvas);
 	
@@ -247,7 +247,7 @@
 	
 	
 	
-	const outputCanvas2 = Page.element.querySelector("#autonomous-system-canvas");
+	const outputCanvas2 = $("#autonomous-system-canvas");
 	
 	const applet2 = new VectorField(outputCanvas2);
 	
@@ -259,7 +259,7 @@
 	
 	
 	
-	const outputCanvas3 = Page.element.querySelector("#pendulum-canvas");
+	const outputCanvas3 = $("#pendulum-canvas");
 	
 	const applet3 = new VectorField(outputCanvas3);
 	

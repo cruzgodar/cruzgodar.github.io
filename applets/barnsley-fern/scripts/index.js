@@ -4,7 +4,7 @@
 {
 	await Site.loadApplet("barnsley-fern");
 	
-	const applet = new BarnsleyFern(Page.element.querySelector("#output-canvas"));
+	const applet = new BarnsleyFern($("#output-canvas"));
 	
 	
 	
@@ -17,19 +17,19 @@
 	
 	
 	
-	const generateButtonElement = Page.element.querySelector("#generate-button");
+	const generateButtonElement = $("#generate-button");
 
 	generateButtonElement.addEventListener("click", run);
 	
 	
 	
-	const numIterationsInputElement = Page.element.querySelector("#num-iterations-input");
+	const numIterationsInputElement = $("#num-iterations-input");
 	
 	applet.listenToInputElements([numIterationsInputElement], run);
 	
 	
 	
-	const downloadButtonElement = Page.element.querySelector("#download-button");
+	const downloadButtonElement = $("#download-button");
 	
 	downloadButtonElement.addEventListener("click", () => applet.wilson.downloadFrame("the-barnsley-fern.png"));
 	

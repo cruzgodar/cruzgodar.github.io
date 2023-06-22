@@ -47,17 +47,17 @@
 		exitFullscreenButtonIconPath: "/graphics/general-icons/exit-fullscreen.png"
 	};
 	
-	let wilson = new Wilson(Page.element.querySelector("#output-canvas"), options);
+	let wilson = new Wilson($("#output-canvas"), options);
 	
 
 	
-	let generateButtonElement = Page.element.querySelector("#generate-button");
+	let generateButtonElement = $("#generate-button");
 
 	generateButtonElement.addEventListener("click", drawPascalsTriangle);
 	
 	
 	
-	let resolutionInputElement = Page.element.querySelector("#resolution-input");
+	let resolutionInputElement = $("#resolution-input");
 	
 	resolutionInputElement.addEventListener("keydown", (e) =>
 	{
@@ -69,7 +69,7 @@
 	
 	
 	
-	let triangleSizeInputElement = Page.element.querySelector("#triangle-size-input");
+	let triangleSizeInputElement = $("#triangle-size-input");
 	
 	triangleSizeInputElement.addEventListener("keydown", (e) =>
 	{
@@ -81,7 +81,7 @@
 	
 	
 	
-	let numColorsInputElement = Page.element.querySelector("#num-colors-input");
+	let numColorsInputElement = $("#num-colors-input");
 	
 	numColorsInputElement.addEventListener("keydown", (e) =>
 	{
@@ -93,7 +93,7 @@
 	
 	
 	
-	let downloadButtonElement = Page.element.querySelector("#download-button");
+	let downloadButtonElement = $("#download-button");
 	
 	downloadButtonElement.addEventListener("click", () =>
 	{

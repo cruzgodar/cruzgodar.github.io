@@ -162,7 +162,7 @@
 	
 	let wilson = null;
 	
-	let canvasLocationElement = Page.element.querySelector("#canvas-location");
+	let canvasLocationElement = $("#canvas-location");
 	
 	
 	
@@ -225,7 +225,7 @@
 				canvasHeight: 1
 			};
 			
-			wilson = new Wilson(Page.element.querySelector("#output-canvas"), options);
+			wilson = new Wilson($("#output-canvas"), options);
 			
 			
 			

@@ -129,7 +129,7 @@ class FractalSounds extends Applet
 		
 		this.wilson = new Wilson(lineDrawerCanvas, options);
 		
-		const elements = Page.element.querySelectorAll(".wilson-fullscreen-components-container");
+		const elements = $$(".wilson-fullscreen-components-container");
 		
 		elements[0].style.setProperty("z-index", 200, "important");
 		elements[1].style.setProperty("z-index", 300, "important");

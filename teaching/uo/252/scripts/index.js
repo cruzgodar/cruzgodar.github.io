@@ -4,7 +4,7 @@
 	
 	setTimeout(() =>
 	{
-		let element = Page.element.querySelector("[data-image-id='webwork']");
+		let element = $("[data-image-id='webwork']");
 		
 		element.parentNode.setAttribute("href", "https://webwork.uoregon.edu/webwork2/Math252-23113/");
 		

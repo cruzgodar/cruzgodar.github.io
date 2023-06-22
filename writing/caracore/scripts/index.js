@@ -13,14 +13,14 @@
 		easing: "cubicBezier(.42, 0, .58, 1)"
 	});
 	
-	Page.element.querySelector("#flame-gradient-container").style.opacity = 1;
+	$("#flame-gradient-container").style.opacity = 1;
 	
 	setTimeout(() =>
 	{
-		Page.element.querySelector("#flame-container").style.opacity = 1;
+		$("#flame-container").style.opacity = 1;
 		
-		Page.element.querySelector("#flame-cover").style.height = 0;
-		Page.element.querySelector("#flame-gradient-space").style.height = 0;
+		$("#flame-cover").style.height = 0;
+		$("#flame-gradient-space").style.height = 0;
 	}, 1000);
 	
 	Page.show();

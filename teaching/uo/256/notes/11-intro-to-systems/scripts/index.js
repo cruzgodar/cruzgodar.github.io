@@ -51,7 +51,7 @@
 	
 	await Site.loadApplet("vector-fields");
 	
-	const outputCanvas = Page.element.querySelector("#vector-field-canvas");
+	const outputCanvas = $("#vector-field-canvas");
 	
 	const applet = new VectorField(outputCanvas);
 	

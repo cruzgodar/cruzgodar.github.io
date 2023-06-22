@@ -4,7 +4,7 @@
 {
 	await Site.loadApplet("calcudoku-generator");
 	
-	const applet = new CalcudokuGenerator(Page.element.querySelector("#output-canvas"));
+	const applet = new CalcudokuGenerator($("#output-canvas"));
 	
 	
 	
@@ -19,21 +19,21 @@
 	
 	
 	
-	const generateButtonElement = Page.element.querySelector("#generate-button");
+	const generateButtonElement = $("#generate-button");
 
 	generateButtonElement.addEventListener("click", run);
 	
 	
 	
-	const gridSizeInputElement = Page.element.querySelector("#grid-size-input");
+	const gridSizeInputElement = $("#grid-size-input");
 	
-	const maxCageSizeInputElement = Page.element.querySelector("#max-cage-size-input");
+	const maxCageSizeInputElement = $("#max-cage-size-input");
 	
 	applet.listenToInputElements([gridSizeInputElement, maxCageSizeInputElement], run);
 	
 	
 	
-	const downloadButtonElement = Page.element.querySelector("#download-button");
+	const downloadButtonElement = $("#download-button");
 	
 	downloadButtonElement.addEventListener("click", () =>
 	{

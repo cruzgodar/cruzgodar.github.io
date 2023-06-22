@@ -135,7 +135,7 @@
 		exitFullscreenButtonIconPath: "/graphics/general-icons/exit-fullscreen.png"
 	};
 	
-	let wilson = new Wilson(Page.element.querySelector("#output-canvas"), options);
+	let wilson = new Wilson($("#output-canvas"), options);
 	
 	wilson.render.initUniforms(["dataLength"]);
 	
@@ -155,7 +155,7 @@
 	
 	
 	
-	let algorithmSelectorDropdownElement = Page.element.querySelector("#algorithm-selector-dropdown");
+	let algorithmSelectorDropdownElement = $("#algorithm-selector-dropdown");
 	
 	algorithmSelectorDropdownElement.addEventListener("input", () =>
 	{
@@ -165,7 +165,7 @@
 		{
 			Page.setElementStyles(".info-text", "display", "none");
 			
-			let element = Page.element.querySelector(`#${algorithmSelectorDropdownElement.value}-info`);
+			let element = $(`#${algorithmSelectorDropdownElement.value}-info`);
 			
 			element.style.display = "block";
 			
@@ -178,13 +178,13 @@
 	
 	
 	
-	let generateButtonElement = Page.element.querySelector("#generate-button");
+	let generateButtonElement = $("#generate-button");
 
 	generateButtonElement.addEventListener("click", drawSortingAlgorithm);
 	
 	
 	
-	let resolutionInputElement = Page.element.querySelector("#resolution-input");
+	let resolutionInputElement = $("#resolution-input");
 	
 	resolutionInputElement.addEventListener("keydown", (e) =>
 	{
@@ -196,7 +196,7 @@
 	
 	
 	
-	let arraySizeInputElement = Page.element.querySelector("#array-size-input");
+	let arraySizeInputElement = $("#array-size-input");
 	
 	arraySizeInputElement.addEventListener("keydown", (e) =>
 	{
@@ -208,7 +208,7 @@
 	
 	
 	
-	let playSoundCheckboxElement = Page.element.querySelector("#play-sound-checkbox");
+	let playSoundCheckboxElement = $("#play-sound-checkbox");
 	
 	playSoundCheckboxElement.checked = true;
 	
@@ -218,13 +218,13 @@
 	
 	
 	
-	let numReadsElement = Page.element.querySelector("#num-reads");
+	let numReadsElement = $("#num-reads");
 	
-	let numWritesElement = Page.element.querySelector("#num-writes");
+	let numWritesElement = $("#num-writes");
 	
 	
 	
-	let downloadButtonElement = Page.element.querySelector("#download-button");
+	let downloadButtonElement = $("#download-button");
 	
 	downloadButtonElement.addEventListener("click", () =>
 	{

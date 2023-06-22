@@ -195,13 +195,13 @@
 	
 	
 	
-	let wilson = new Wilson(Page.element.querySelector("#output-canvas"), options);
+	let wilson = new Wilson($("#output-canvas"), options);
 
 	wilson.render.initUniforms(["aspectRatio", "worldCenterX", "worldCenterY", "worldSize", "numRoots", "roots", "colors", "a", "c", "brightnessScale"]);
 	
 	
 	
-	let wilsonHidden = new Wilson(Page.element.querySelector("#hidden-canvas"), optionsHidden);
+	let wilsonHidden = new Wilson($("#hidden-canvas"), optionsHidden);
 	
 	wilsonHidden.render.initUniforms(["aspectRatio", "worldCenterX", "worldCenterY", "worldSize", "numRoots", "roots", "colors", "a", "c", "brightnessScale"]);
 	
@@ -273,7 +273,7 @@
 	
 	
 
-	let resolutionInputElement = Page.element.querySelector("#resolution-input");
+	let resolutionInputElement = $("#resolution-input");
 	
 	resolutionInputElement.addEventListener("input", () =>
 	{
@@ -286,31 +286,31 @@
 	
 	
 	
-	let addRootButtonElement = Page.element.querySelector("#add-root-button");
+	let addRootButtonElement = $("#add-root-button");
 	
 	addRootButtonElement.addEventListener("click", addRoot);
 	
 	
 	
-	let removeRootButtonElement = Page.element.querySelector("#remove-root-button");
+	let removeRootButtonElement = $("#remove-root-button");
 	
 	removeRootButtonElement.addEventListener("click", removeRoot);
 	
 	
 	
-	let spreadRootsButtonElement = Page.element.querySelector("#spread-roots-button");
+	let spreadRootsButtonElement = $("#spread-roots-button");
 	
 	spreadRootsButtonElement.addEventListener("click", () => spreadRoots(false, false));
 	
 	
 	
-	let randomizeRootsButtonElement = Page.element.querySelector("#randomize-roots-button");
+	let randomizeRootsButtonElement = $("#randomize-roots-button");
 	
 	randomizeRootsButtonElement.addEventListener("click", () => spreadRoots(false, true));
 	
 	
 	
-	let downloadButtonElement = Page.element.querySelector("#download-button");
+	let downloadButtonElement = $("#download-button");
 	
 	downloadButtonElement.addEventListener("click", () =>
 	{
@@ -319,22 +319,22 @@
 	
 	
 	
-	let rootAInputElement = Page.element.querySelector("#root-a-input");
-	let rootBInputElement = Page.element.querySelector("#root-b-input");
+	let rootAInputElement = $("#root-a-input");
+	let rootBInputElement = $("#root-b-input");
 	
 	rootAInputElement.addEventListener("input", setRoot);
 	rootBInputElement.addEventListener("input", setRoot);
 	
 	
 	
-	let rootColorInputElement = Page.element.querySelector("#root-color-input");
+	let rootColorInputElement = $("#root-color-input");
 	rootColorInputElement.addEventListener("input", setColor);
 	
 	
 	
-	let rootSetterElement = Page.element.querySelector("#root-setter");
+	let rootSetterElement = $("#root-setter");
 	
-	let colorSetterElement = Page.element.querySelector("#color-setter");
+	let colorSetterElement = $("#color-setter");
 	
 	
 	

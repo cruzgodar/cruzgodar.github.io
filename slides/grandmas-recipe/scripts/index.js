@@ -7,11 +7,11 @@
 	
 	await Site.loadApplet("quasi-fuchsian-groups");
 	
-	const applet = new QuasiFuchsianGroups(Page.element.querySelector("#output-canvas"));
+	const applet = new QuasiFuchsianGroups($("#output-canvas"));
 	
 	document.head.querySelector("#theme-color-meta").setAttribute("content", "#181818");
 	
-	document.body.appendChild(Page.element.querySelector("#lapsa-slide-container"));
+	document.body.appendChild($("#lapsa-slide-container"));
 	
 	const canvasBundle = document.body.querySelector("#canvas-bundle");
 	

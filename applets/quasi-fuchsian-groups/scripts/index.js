@@ -4,11 +4,11 @@
 {
 	await Site.loadApplet("quasi-fuchsian-groups");
 	
-	const applet = new QuasiFuchsianGroups(Page.element.querySelector("#output-canvas"));
+	const applet = new QuasiFuchsianGroups($("#output-canvas"));
 	
 	
 	
-	const resolutionInputElement = Page.element.querySelector("#resolution-input");
+	const resolutionInputElement = $("#resolution-input");
 	
 	resolutionInputElement.addEventListener("input", () =>
 	{
@@ -20,13 +20,13 @@
 	
 	
 	
-	const highResolutionInputElement = Page.element.querySelector("#high-resolution-input");
+	const highResolutionInputElement = $("#high-resolution-input");
 	
-	const maxDepthInputElement = Page.element.querySelector("#max-depth-input");
+	const maxDepthInputElement = $("#max-depth-input");
 	
-	const maxPixelBrightnessInputElement = Page.element.querySelector("#max-pixel-brightness-input");
+	const maxPixelBrightnessInputElement = $("#max-pixel-brightness-input");
 	
-	const generateButtonElement = Page.element.querySelector("#generate-button");
+	const generateButtonElement = $("#generate-button");
 	
 	generateButtonElement.addEventListener("click", async () =>
 	{

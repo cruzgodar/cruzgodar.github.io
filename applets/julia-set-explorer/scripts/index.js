@@ -4,15 +4,15 @@
 {
 	await Site.loadApplet("julia-set-explorer");
 	
-	const switchJuliaModeButtonElement = Page.element.querySelector("#switch-julia-mode-button");
+	const switchJuliaModeButtonElement = $("#switch-julia-mode-button");
 	
-	const applet = new JuliaSet(Page.element.querySelector("#output-canvas"), switchJuliaModeButtonElement);
+	const applet = new JuliaSet($("#output-canvas"), switchJuliaModeButtonElement);
 	
 	
 	
-	const resolutionInputElement = Page.element.querySelector("#resolution-input");
+	const resolutionInputElement = $("#resolution-input");
 	
-	const doublePrecisionCheckboxElement = Page.element.querySelector("#double-precision-checkbox");
+	const doublePrecisionCheckboxElement = $("#double-precision-checkbox");
 	
 	
 	
@@ -34,7 +34,7 @@
 	
 	
 	
-	const downloadButtonElement = Page.element.querySelector("#download-button");
+	const downloadButtonElement = $("#download-button");
 	
 	downloadButtonElement.addEventListener("click", () => 
 	{

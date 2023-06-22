@@ -4,7 +4,7 @@
 {
 	await Site.loadApplet("domino-shuffling");
 	
-	const applet = new DominoShuffling(Page.element.querySelector("#output-canvas"));
+	const applet = new DominoShuffling($("#output-canvas"));
 	
 	
 	
@@ -19,26 +19,26 @@
 	
 	
 	
-	const generateButtonElement = Page.element.querySelector("#generate-button");
+	const generateButtonElement = $("#generate-button");
 	
 	generateButtonElement.addEventListener("click", run);
 	
 	
 	
-	const resolutionInputElement = Page.element.querySelector("#resolution-input");
+	const resolutionInputElement = $("#resolution-input");
 	
-	const diamondSizeInputElement = Page.element.querySelector("#diamond-size-input");
+	const diamondSizeInputElement = $("#diamond-size-input");
 	
 	applet.listenToInputElements([resolutionInputElement, diamondSizeInputElement], run);
 	
 	
 	
-	const useSmoothColorsCheckboxElement = Page.element.querySelector("#use-smooth-colors-checkbox");
+	const useSmoothColorsCheckboxElement = $("#use-smooth-colors-checkbox");
 	useSmoothColorsCheckboxElement.checked = true;
 	
 	
 	
-	const downloadButtonElement = Page.element.querySelector("#download-button");
+	const downloadButtonElement = $("#download-button");
 	
 	downloadButtonElement.addEventListener("click", () => applet.wilson.downloadFrame("an-aztec-diamond.png"));
 	

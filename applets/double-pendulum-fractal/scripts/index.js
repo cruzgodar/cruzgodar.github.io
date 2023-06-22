@@ -2,7 +2,7 @@
 {
 	await Site.loadApplet("double-pendulum-fractal");
 	
-	const applet = new DoublePendulumFractal(Page.element.querySelector("#output-canvas"), Page.element.querySelector("#pendulum-canvas"));
+	const applet = new DoublePendulumFractal($("#output-canvas"), $("#pendulum-canvas"));
 	
 	
 	
@@ -15,19 +15,19 @@
 	
 	
 	
-	const resolutionInputElement = Page.element.querySelector("#resolution-input");
+	const resolutionInputElement = $("#resolution-input");
 	
 	applet.listenToInputElements([resolutionInputElement], run);
 	
 	
 	
-	const generateButtonElement = Page.element.querySelector("#generate-button");
+	const generateButtonElement = $("#generate-button");
 	
 	generateButtonElement.addEventListener("click", run);
 	
 	
 	
-	const switchPendulumCanvasButtonElement = Page.element.querySelector("#switch-pendulum-canvas-button");
+	const switchPendulumCanvasButtonElement = $("#switch-pendulum-canvas-button");
 	
 	switchPendulumCanvasButtonElement.addEventListener("click", () =>
 	{
@@ -67,7 +67,7 @@
 	
 	
 	
-	const downloadButtonElement = Page.element.querySelector("#download-button");
+	const downloadButtonElement = $("#download-button");
 	
 	downloadButtonElement.addEventListener("click", () => applet.wilson.downloadFrame("the-double-pendulum-fractal.png"));
 	

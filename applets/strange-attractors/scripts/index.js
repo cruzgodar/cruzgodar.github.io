@@ -21,7 +21,7 @@
 		exitFullscreenButtonIconPath: "/graphics/general-icons/exit-fullscreen.png"
 	};
 	
-	let wilson = new Wilson(Page.element.querySelector("#output-canvas"), options);
+	let wilson = new Wilson($("#output-canvas"), options);
 	
 	
 	
@@ -33,19 +33,19 @@
 	
 	
 	
-	let generateButtonElement = Page.element.querySelector("#generate-button");
+	let generateButtonElement = $("#generate-button");
 
 	generateButtonElement.addEventListener("click", requestLorenzAttractor);
 	
 	
 	
-	let gridSizeInputElement = Page.element.querySelector("#grid-size-input");
+	let gridSizeInputElement = $("#grid-size-input");
 	
-	let sigmaInputElement = Page.element.querySelector("#sigma-input");
+	let sigmaInputElement = $("#sigma-input");
 	
-	let rhoInputElement = Page.element.querySelector("#rho-input");
+	let rhoInputElement = $("#rho-input");
 	
-	let betaInputElement = Page.element.querySelector("#beta-input");
+	let betaInputElement = $("#beta-input");
 	
 	
 	
@@ -83,7 +83,7 @@
 	
 	
 	
-	let downloadButtonElement = Page.element.querySelector("#download-button");
+	let downloadButtonElement = $("#download-button");
 	
 	downloadButtonElement.addEventListener("click", () =>
 	{
@@ -92,7 +92,7 @@
 	
 	
 	
-	let maximumSpeedCheckboxElement = Page.element.querySelector("#toggle-maximum-speed-checkbox");
+	let maximumSpeedCheckboxElement = $("#toggle-maximum-speed-checkbox");
 	
 	
 	

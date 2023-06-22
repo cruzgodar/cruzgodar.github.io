@@ -4,7 +4,7 @@
 	
 	
 	
-	let elements = Page.element.querySelectorAll("pre code");
+	let elements = $$("pre code");
 	
 	for (let i = 0; i < elements.length; i++)
 	{
@@ -29,15 +29,15 @@
 			worldCenterY: 0
 		};
 		
-		let wilson = new Wilson(Page.element.querySelector("#output-canvas-1"), options);
+		let wilson = new Wilson($("#output-canvas-1"), options);
 		
 		
 		
-		let aInputElement = Page.element.querySelector("#a-1-input");
-		let bInputElement = Page.element.querySelector("#b-1-input");
-		let resolutionInputElement = Page.element.querySelector("#resolution-1-input");
+		let aInputElement = $("#a-1-input");
+		let bInputElement = $("#b-1-input");
+		let resolutionInputElement = $("#resolution-1-input");
 
-		let generateButtonElement = Page.element.querySelector("#generate-1-button");
+		let generateButtonElement = $("#generate-1-button");
 
 		generateButtonElement.addEventListener("click", () =>
 		{
@@ -136,15 +136,15 @@
 			worldCenterY: 0
 		};
 		
-		let wilson = new Wilson(Page.element.querySelector("#output-canvas-2"), options);
+		let wilson = new Wilson($("#output-canvas-2"), options);
 		
 		
 		
-		let aInputElement = Page.element.querySelector("#a-2-input");
-		let bInputElement = Page.element.querySelector("#b-2-input");
-		let resolutionInputElement = Page.element.querySelector("#resolution-2-input");
+		let aInputElement = $("#a-2-input");
+		let bInputElement = $("#b-2-input");
+		let resolutionInputElement = $("#resolution-2-input");
 
-		let generateButtonElement = Page.element.querySelector("#generate-2-button");
+		let generateButtonElement = $("#generate-2-button");
 
 		generateButtonElement.addEventListener("click", () =>
 		{
@@ -159,7 +159,7 @@
 		
 		
 		
-		let downloadButtonElement = Page.element.querySelector("#download-2-button");
+		let downloadButtonElement = $("#download-2-button");
 		
 		downloadButtonElement.addEventListener("click", () =>
 		{

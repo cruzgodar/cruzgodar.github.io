@@ -4,11 +4,11 @@
 {
 	await Site.loadApplet("kaleidoscopic-ifs-fractals");
 	
-	const applet = new KaleidoscopicIFSFractal(Page.element.querySelector("#output-canvas"));
+	const applet = new KaleidoscopicIFSFractal($("#output-canvas"));
 	
 	
 	
-	const resolutionInputElement = Page.element.querySelector("#resolution-input");
+	const resolutionInputElement = $("#resolution-input");
 	
 	resolutionInputElement.addEventListener("input", () =>
 	{
@@ -19,7 +19,7 @@
 	
 	
 	
-	const downloadButtonElement = Page.element.querySelector("#download-button");
+	const downloadButtonElement = $("#download-button");
 	
 	downloadButtonElement.addEventListener("click", () =>
 	{
@@ -28,7 +28,7 @@
 	
 	
 	
-	const polyhedronSelectorDropdownElement = Page.element.querySelector("#polyhedron-selector-dropdown");
+	const polyhedronSelectorDropdownElement = $("#polyhedron-selector-dropdown");
 	
 	polyhedronSelectorDropdownElement.addEventListener("input", () =>
 	{
@@ -50,13 +50,13 @@
 	
 	
 	
-	const rotationAngleX1InputElement = Page.element.querySelector("#rotation-angle-x-1-input");
-	const rotationAngleY1InputElement = Page.element.querySelector("#rotation-angle-y-1-input");
-	const rotationAngleZ1InputElement = Page.element.querySelector("#rotation-angle-z-1-input");
+	const rotationAngleX1InputElement = $("#rotation-angle-x-1-input");
+	const rotationAngleY1InputElement = $("#rotation-angle-y-1-input");
+	const rotationAngleZ1InputElement = $("#rotation-angle-z-1-input");
 	
-	const rotationAngleX2InputElement = Page.element.querySelector("#rotation-angle-x-2-input");
-	const rotationAngleY2InputElement = Page.element.querySelector("#rotation-angle-y-2-input");
-	const rotationAngleZ2InputElement = Page.element.querySelector("#rotation-angle-z-2-input");
+	const rotationAngleX2InputElement = $("#rotation-angle-x-2-input");
+	const rotationAngleY2InputElement = $("#rotation-angle-y-2-input");
+	const rotationAngleZ2InputElement = $("#rotation-angle-z-2-input");
 	
 	const elements = [rotationAngleX1InputElement, rotationAngleY1InputElement, rotationAngleZ1InputElement, rotationAngleX2InputElement, rotationAngleY2InputElement, rotationAngleZ2InputElement];
 	
@@ -76,7 +76,7 @@
 	
 	
 	
-	const randomizeParametersButtonElement = Page.element.querySelector("#randomize-parameters-button");
+	const randomizeParametersButtonElement = $("#randomize-parameters-button");
 	
 	randomizeParametersButtonElement.addEventListener("click", () =>
 	{

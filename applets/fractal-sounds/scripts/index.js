@@ -4,7 +4,7 @@
 {
 	await Site.loadApplet("fractal-sounds");
 	
-	const applet = new FractalSounds(Page.element.querySelector("#output-canvas"), Page.element.querySelector("#line-drawer-canvas"));
+	const applet = new FractalSounds($("#output-canvas"), $("#line-drawer-canvas"));
 	
 	applet.loadPromise.then(() => run());
 	
@@ -33,13 +33,13 @@
 		"ikeda": ["vec2(1.0 + c.x * (z.x * cos(.4 - 6.0 / (1.0 + dot(z, z))) - z.y * sin(.4 - 6.0 / (1.0 + dot(z, z)))), c.y * (z.x * sin(.4 - 6.0 / (1.0 + dot(z, z))) + z.y * cos(.4 - 6.0 / (1.0 + dot(z, z)))))", (x, y, a, b) => [1.0 + a * (x * Math.cos(.4 - 6.0 / (1.0 + x*x + y*y)) - y * Math.sin(.4 - 6.0 / (1.0 + x*x + y*y))), b * (x * Math.sin(.4 - 6.0 / (1.0 + x*x + y*y)) + y * Math.cos(.4 - 6.0 / (1.0 + x*x + y*y)))]]
 	};
 	
-	const fractalSelectorDropdownElement = Page.element.querySelector("#fractal-selector-dropdown");
+	const fractalSelectorDropdownElement = $("#fractal-selector-dropdown");
 	
 	fractalSelectorDropdownElement.addEventListener("input", run);
 	
 	
 
-	const resolutionInputElement = Page.element.querySelector("#resolution-input");
+	const resolutionInputElement = $("#resolution-input");
 	
 	resolutionInputElement.addEventListener("input", () =>
 	{
@@ -50,7 +50,7 @@
 	
 	
 	
-	const exposureInputElement = Page.element.querySelector("#exposure-input");
+	const exposureInputElement = $("#exposure-input");
 	
 	exposureInputElement.addEventListener("input", () =>
 	{
@@ -59,7 +59,7 @@
 	
 	
 	
-	const numIterationsInputElement = Page.element.querySelector("#num-iterations-input");
+	const numIterationsInputElement = $("#num-iterations-input");
 	
 	numIterationsInputElement.addEventListener("input", () =>
 	{
@@ -68,7 +68,7 @@
 	
 	
 	
-	const downloadButtonElement = Page.element.querySelector("#download-button");
+	const downloadButtonElement = $("#download-button");
 	
 	downloadButtonElement.addEventListener("click", () =>
 	{

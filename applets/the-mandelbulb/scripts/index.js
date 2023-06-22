@@ -318,7 +318,7 @@
 		touchendCallback: onReleaseCanvas
 	};
 	
-	let wilson = new Wilson(Page.element.querySelector("#output-canvas"), options);
+	let wilson = new Wilson($("#output-canvas"), options);
 	
 	wilson.render.initUniforms(["aspectRatioX", "aspectRatioY", "imageSize", "cameraPos", "imagePlaneCenterPos", "forwardVec", "rightVec", "upVec", "focalLength", "lightPos", "drawSphere", "power", "c", "juliaProportion", "rotationMatrix", "maxMarches", "stepFactor", "maxIterations"]);
 	
@@ -428,13 +428,13 @@
 	
 	
 	
-	let resolutionInputElement = Page.element.querySelector("#resolution-input");
+	let resolutionInputElement = $("#resolution-input");
 	
 	resolutionInputElement.addEventListener("input", changeResolution);
 	
 	
 	
-	let iterationsInputElement = Page.element.querySelector("#iterations-input");
+	let iterationsInputElement = $("#iterations-input");
 	
 	iterationsInputElement.addEventListener("input", () =>
 	{
@@ -447,7 +447,7 @@
 	
 	
 	
-	let viewDistanceInputElement = Page.element.querySelector("#view-distance-input");
+	let viewDistanceInputElement = $("#view-distance-input");
 	
 	viewDistanceInputElement.addEventListener("input", () =>
 	{
@@ -460,7 +460,7 @@
 	
 	
 	
-	let downloadButtonElement = Page.element.querySelector("#download-button");
+	let downloadButtonElement = $("#download-button");
 	
 	downloadButtonElement.addEventListener("click", () =>
 	{
@@ -487,15 +487,15 @@
 	
 	
 	
-	let rotationAngleXInputElement = Page.element.querySelector("#rotation-angle-x-input");
-	let rotationAngleYInputElement = Page.element.querySelector("#rotation-angle-y-input");
-	let rotationAngleZInputElement = Page.element.querySelector("#rotation-angle-z-input");
+	let rotationAngleXInputElement = $("#rotation-angle-x-input");
+	let rotationAngleYInputElement = $("#rotation-angle-y-input");
+	let rotationAngleZInputElement = $("#rotation-angle-z-input");
 	
-	let cXInputElement = Page.element.querySelector("#c-x-input");
-	let cYInputElement = Page.element.querySelector("#c-y-input");
-	let cZInputElement = Page.element.querySelector("#c-z-input");
+	let cXInputElement = $("#c-x-input");
+	let cYInputElement = $("#c-y-input");
+	let cZInputElement = $("#c-z-input");
 	
-	let powerInputElement = Page.element.querySelector("#power-input");
+	let powerInputElement = $("#power-input");
 	
 	let elements = [rotationAngleXInputElement, rotationAngleYInputElement, rotationAngleZInputElement, cXInputElement, cYInputElement, cZInputElement, powerInputElement];
 	
@@ -506,7 +506,7 @@
 	
 	
 	
-	let randomizeRotationButtonElement = Page.element.querySelector("#randomize-rotation-button");
+	let randomizeRotationButtonElement = $("#randomize-rotation-button");
 	
 	randomizeRotationButtonElement.style.opacity = 1;
 	
@@ -514,7 +514,7 @@
 	
 	
 	
-	let randomizeCButtonElement = Page.element.querySelector("#randomize-c-button");
+	let randomizeCButtonElement = $("#randomize-c-button");
 	
 	randomizeCButtonElement.style.opacity = 1;
 	
@@ -522,7 +522,7 @@
 	
 	
 	
-	let switchBulbButtonElement = Page.element.querySelector("#switch-bulb-button");
+	let switchBulbButtonElement = $("#switch-bulb-button");
 	
 	switchBulbButtonElement.style.opacity = 1;
 	
@@ -530,7 +530,7 @@
 	
 	
 	
-	let switchMovementButtonElement = Page.element.querySelector("#switch-movement-button");
+	let switchMovementButtonElement = $("#switch-movement-button");
 	
 	switchMovementButtonElement.style.opacity = 0;
 	

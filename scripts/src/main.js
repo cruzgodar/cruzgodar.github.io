@@ -10,8 +10,6 @@ Page.lastElement = null;
 let $ = (queryString) => Page.element.querySelector(queryString);
 let $$ = (queryString) => Page.element.querySelectorAll(queryString);
 
-console.log($, $$)
-
 Page.readyToShow = false;
 
 

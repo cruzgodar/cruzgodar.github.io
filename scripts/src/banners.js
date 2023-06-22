@@ -107,8 +107,8 @@ Page.Banner =
 				
 				.catch((error) =>
 				{
-					Page.element.querySelector("#banner").remove();
-					Page.element.querySelector("#banner-cover").remove();
+					$("#banner").remove();
+					$("#banner-cover").remove();
 					
 					
 					
@@ -202,7 +202,7 @@ Page.Banner =
 			
 			if (this.ScrollButton.exists)
 			{
-				try {Page.element.querySelector("#scroll-button").style.opacity = opacity;}
+				try {$("#scroll-button").style.opacity = opacity;}
 				catch(ex) {}
 			}
 			
@@ -210,8 +210,8 @@ Page.Banner =
 			
 			try
 			{
-				Page.element.querySelector("#cruz-text").parentNode.style.opacity = opacity;
-				Page.element.querySelector("#godar-text").parentNode.style.opacity = opacity;
+				$("#cruz-text").parentNode.style.opacity = opacity;
+				$("#godar-text").parentNode.style.opacity = opacity;
 			}
 			
 			catch(ex) {}
@@ -235,13 +235,13 @@ Page.Banner =
 		{
 			try
 			{
-				Page.element.querySelector("#cruz-text").parentNode.style.opacity = 0;
-				Page.element.querySelector("#godar-text").parentNode.style.opacity = 0;
+				$("#cruz-text").parentNode.style.opacity = 0;
+				$("#godar-text").parentNode.style.opacity = 0;
 			}
 			
 			catch(ex) {}
 			
-			try {Page.element.querySelector("#scroll-button").style.opacity = 0}
+			try {$("#scroll-button").style.opacity = 0}
 			catch(ex) {}
 			
 			this.ScrollButton.doneLoading = true;
@@ -259,7 +259,7 @@ Page.Banner =
 	//For every banner page linked to by the current page, this fetches that banner so that the waiting time between pages is minimized.
 	fetchOtherPageBannersInBackground: function()
 	{
-		Page.element.querySelectorAll("a").forEach(link =>
+		$$("a").forEach(link =>
 		{
 			const href = link.getAttribute("href");
 			
@@ -322,11 +322,11 @@ Page.Banner =
 				
 				setTimeout(() =>
 				{
-					Page.element.querySelector("#new-banner-cover").style.opacity = 0;
-					Page.element.querySelector("#new-banner-cover").style.transform = "translateY(-100px)";
+					$("#new-banner-cover").style.opacity = 0;
+					$("#new-banner-cover").style.transform = "translateY(-100px)";
 					
 					anime({
-						targets: Page.element.querySelector("#new-banner-cover"),
+						targets: $("#new-banner-cover"),
 						opacity: 1,
 						translateY: 0,
 						duration: Site.opacityAnimationTime * 4,
@@ -334,7 +334,7 @@ Page.Banner =
 					});
 					
 					anime({
-						targets: Page.element.querySelector("#scroll-button"),
+						targets: $("#scroll-button"),
 						opacity: opacity,
 						translateY: 0,
 						duration: Site.opacityAnimationTime * 4,

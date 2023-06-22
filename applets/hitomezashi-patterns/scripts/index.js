@@ -4,7 +4,7 @@
 {
 	await Site.loadApplet("hitomezashi-patterns");
 	
-	const applet = new HitomezashiPattern(Page.element.querySelector("#output-canvas"));
+	const applet = new HitomezashiPattern($("#output-canvas"));
 	
 	
 	
@@ -23,25 +23,25 @@
 	
 	
 	
-	const generateButtonElement = Page.element.querySelector("#generate-button");
+	const generateButtonElement = $("#generate-button");
 
 	generateButtonElement.addEventListener("click", run);
 	
 	
 	
-	const resolutionInputElement = Page.element.querySelector("#resolution-input");
+	const resolutionInputElement = $("#resolution-input");
 	
-	const gridSizeInputElement = Page.element.querySelector("#grid-size-input");
+	const gridSizeInputElement = $("#grid-size-input");
 	
-	const rowProbInputElement = Page.element.querySelector("#row-prob-input");
+	const rowProbInputElement = $("#row-prob-input");
 	
-	const colProbInputElement = Page.element.querySelector("#col-prob-input");
+	const colProbInputElement = $("#col-prob-input");
 	
-	const drawBoundariesCheckboxElement = Page.element.querySelector("#toggle-draw-boundaries-checkbox");
+	const drawBoundariesCheckboxElement = $("#toggle-draw-boundaries-checkbox");
 	
-	const drawRegionsCheckboxElement = Page.element.querySelector("#toggle-draw-regions-checkbox");
+	const drawRegionsCheckboxElement = $("#toggle-draw-regions-checkbox");
 	
-	const maximumSpeedCheckboxElement = Page.element.querySelector("#toggle-maximum-speed-checkbox");
+	const maximumSpeedCheckboxElement = $("#toggle-maximum-speed-checkbox");
 	
 	drawBoundariesCheckboxElement.checked = true;
 	
@@ -70,7 +70,7 @@
 	
 	
 	
-	const downloadButtonElement = Page.element.querySelector("#download-button");
+	const downloadButtonElement = $("#download-button");
 	
 	downloadButtonElement.addEventListener("click", () =>
 	{

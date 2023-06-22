@@ -296,7 +296,7 @@
 		touchendCallback: onReleaseCanvas
 	};
 	
-	let wilson = new Wilson(Page.element.querySelector("#output-canvas"), options);
+	let wilson = new Wilson($("#output-canvas"), options);
 	
 	wilson.render.initUniforms(["aspectRatioX", "aspectRatioY", "imageSize", "cameraPos", "imagePlaneCenterPos", "forwardVec", "rightVec", "upVec", "focalLength", "lightPos", "drawSphere", "c", "juliaProportion", "maxMarches", "stepFactor", "maxIterations", "kSlice"]);
 	
@@ -398,13 +398,13 @@
 	
 	
 	
-	let resolutionInputElement = Page.element.querySelector("#resolution-input");
+	let resolutionInputElement = $("#resolution-input");
 	
 	resolutionInputElement.addEventListener("input", changeResolution);
 	
 	
 	
-	let iterationsInputElement = Page.element.querySelector("#iterations-input");
+	let iterationsInputElement = $("#iterations-input");
 	
 	iterationsInputElement.addEventListener("input", () =>
 	{
@@ -417,7 +417,7 @@
 	
 	
 	
-	let viewDistanceInputElement = Page.element.querySelector("#view-distance-input");
+	let viewDistanceInputElement = $("#view-distance-input");
 	
 	viewDistanceInputElement.addEventListener("input", () =>
 	{
@@ -430,7 +430,7 @@
 	
 	
 	
-	let downloadButtonElement = Page.element.querySelector("#download-button");
+	let downloadButtonElement = $("#download-button");
 	
 	downloadButtonElement.addEventListener("click", () =>
 	{
@@ -447,10 +447,10 @@
 	
 	
 	
-	let cXInputElement = Page.element.querySelector("#c-x-input");
-	let cYInputElement = Page.element.querySelector("#c-y-input");
-	let cZInputElement = Page.element.querySelector("#c-z-input");
-	let cWInputElement = Page.element.querySelector("#c-w-input");
+	let cXInputElement = $("#c-x-input");
+	let cYInputElement = $("#c-y-input");
+	let cZInputElement = $("#c-z-input");
+	let cWInputElement = $("#c-w-input");
 	
 	let elements = [cXInputElement, cYInputElement, cZInputElement, cWInputElement];
 	
@@ -462,7 +462,7 @@
 	
 	
 	
-	let randomizeCButtonElement = Page.element.querySelector("#randomize-c-button");
+	let randomizeCButtonElement = $("#randomize-c-button");
 	
 	randomizeCButtonElement.style.opacity = 1;
 	
@@ -470,7 +470,7 @@
 	
 	
 	
-	let switchBulbButtonElement = Page.element.querySelector("#switch-bulb-button");
+	let switchBulbButtonElement = $("#switch-bulb-button");
 	
 	switchBulbButtonElement.style.opacity = 1;
 	
@@ -478,7 +478,7 @@
 	
 	
 	
-	let switchMovementButtonElement = Page.element.querySelector("#switch-movement-button");
+	let switchMovementButtonElement = $("#switch-movement-button");
 	
 	switchMovementButtonElement.style.opacity = 1;
 	

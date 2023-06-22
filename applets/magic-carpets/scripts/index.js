@@ -4,7 +4,7 @@
 {
 	await Site.loadApplet("magic-carpets");
 	
-	const applet = new MagicCarpet(Page.element.querySelector("#output-canvas"));
+	const applet = new MagicCarpet($("#output-canvas"));
 	
 	
 	
@@ -19,13 +19,13 @@
 	
 	
 	
-	const generateButtonElement = Page.element.querySelector("#generate-button");
+	const generateButtonElement = $("#generate-button");
 
 	generateButtonElement.addEventListener("click", run);
 	
 	
 	
-	const drawSolutionButtonElement = Page.element.querySelector("#draw-solution-button");
+	const drawSolutionButtonElement = $("#draw-solution-button");
 
 	drawSolutionButtonElement.addEventListener("click", () =>
 	{
@@ -34,7 +34,7 @@
 	
 	
 	
-	const drawRectanglesButtonElement = Page.element.querySelector("#draw-rectangles-button");
+	const drawRectanglesButtonElement = $("#draw-rectangles-button");
 
 	drawRectanglesButtonElement.addEventListener("click", () =>
 	{
@@ -43,7 +43,7 @@
 	
 	
 	
-	const gridSizeInputElement = Page.element.querySelector("#grid-size-input");
+	const gridSizeInputElement = $("#grid-size-input");
 	
 	gridSizeInputElement.addEventListener("keydown", e =>
 	{
@@ -55,7 +55,7 @@
 	
 	
 	
-	const maxCageSizeInputElement = Page.element.querySelector("#max-cage-size-input");
+	const maxCageSizeInputElement = $("#max-cage-size-input");
 	
 	maxCageSizeInputElement.addEventListener("keydown", e =>
 	{
@@ -67,11 +67,11 @@
 	
 	
 	
-	const uniqueSolutionCheckboxElement = Page.element.querySelector("#unique-solution-checkbox");
+	const uniqueSolutionCheckboxElement = $("#unique-solution-checkbox");
 	
 	
 	
-	const downloadButtonElement = Page.element.querySelector("#download-button");
+	const downloadButtonElement = $("#download-button");
 	
 	downloadButtonElement.addEventListener("click", () =>
 	{

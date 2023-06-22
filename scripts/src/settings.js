@@ -291,7 +291,7 @@ Site.Settings =
 			}
 		`);
 		
-		try {Page.element.querySelector("#download-button").parentNode.parentNode.style.display = "none"}
+		try {$("#download-button").parentNode.parentNode.style.display = "none"}
 		catch(ex) {}
 	},
 
@@ -348,7 +348,7 @@ Site.Settings =
 			catch(ex) {}
 			
 			
-			Page.element.querySelectorAll(".desmos-border").forEach(element => Page.Animate.changeOpacity(element, 0, Site.opacityAnimationTime));
+			$$(".desmos-border").forEach(element => Page.Animate.changeOpacity(element, 0, Site.opacityAnimationTime));
 			
 			setTimeout(() =>
 			{
@@ -363,7 +363,7 @@ Site.Settings =
 				
 				setTimeout(() =>
 				{
-					Page.element.querySelectorAll(".desmos-border").forEach(element => Page.Animate.changeOpacity(element, 1, Site.opacityAnimationTime));
+					$$(".desmos-border").forEach(element => Page.Animate.changeOpacity(element, 1, Site.opacityAnimationTime));
 				}, Site.opacityAnimationTime);
 			}, 2 * Site.opacityAnimationTime);
 		}
@@ -418,7 +418,7 @@ Site.Settings =
 			
 			
 			
-			Page.element.querySelectorAll(".desmos-border").forEach(element => Page.Animate.changeOpacity(element, 0, Site.opacityAnimationTime));
+			$$(".desmos-border").forEach(element => Page.Animate.changeOpacity(element, 0, Site.opacityAnimationTime));
 			
 			setTimeout(() =>
 			{
@@ -433,7 +433,7 @@ Site.Settings =
 				
 				setTimeout(() =>
 				{
-					Page.element.querySelectorAll(".desmos-border").forEach(element => Page.Animate.changeOpacity(element, 1, Site.opacityAnimationTime));
+					$$(".desmos-border").forEach(element => Page.Animate.changeOpacity(element, 1, Site.opacityAnimationTime));
 				}, Site.opacityAnimationTime);
 			}, 2 * Site.opacityAnimationTime);
 			

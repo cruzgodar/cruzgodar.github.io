@@ -282,7 +282,7 @@
 		exitFullscreenButtonIconPath: "/graphics/general-icons/exit-fullscreen.png"
 	};
 	
-	let wilson = new Wilson(Page.element.querySelector("#output-canvas"), options);
+	let wilson = new Wilson($("#output-canvas"), options);
 	
 	
 	
@@ -303,11 +303,11 @@
 	
 	
 	
-	let resolutionInputElement = Page.element.querySelector("#resolution-input");
+	let resolutionInputElement = $("#resolution-input");
 	
 	
 	
-	let generateButtonElement = Page.element.querySelector("#generate-button");
+	let generateButtonElement = $("#generate-button");
 	
 	generateButtonElement.addEventListener("click", () =>
 	{
@@ -318,7 +318,7 @@
 	
 	
 	
-	let switchPlanetDrawerCanvasButtonElement = Page.element.querySelector("#switch-planet-drawer-canvas-button");
+	let switchPlanetDrawerCanvasButtonElement = $("#switch-planet-drawer-canvas-button");
 	
 	switchPlanetDrawerCanvasButtonElement.style.transition = "filter .125s ease-in-out, opacity .25s ease-in-out";
 	
@@ -361,7 +361,7 @@
 	
 	
 	
-	let downloadButtonElement = Page.element.querySelector("#download-button");
+	let downloadButtonElement = $("#download-button");
 	
 	downloadButtonElement.addEventListener("click", () =>
 	{
@@ -516,7 +516,7 @@
 		draggablesTouchmoveCallback: onDragDraggable
 	};
 	
-	let wilsonPlanetDrawer = new Wilson(Page.element.querySelector("#planet-drawer-canvas"), optionsPlanetDrawer);
+	let wilsonPlanetDrawer = new Wilson($("#planet-drawer-canvas"), optionsPlanetDrawer);
 	
 	wilsonPlanetDrawer.draggables.add(0, 1);
 	wilsonPlanetDrawer.draggables.add(-.866, -.5);

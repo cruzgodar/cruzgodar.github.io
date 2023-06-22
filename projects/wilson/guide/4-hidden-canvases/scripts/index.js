@@ -4,7 +4,7 @@
 	
 	
 	
-	let elements = Page.element.querySelectorAll("pre code");
+	let elements = $$("pre code");
 	
 	for (let i = 0; i < elements.length; i++)
 	{
@@ -95,7 +95,7 @@
 	
 	
 	
-	let wilson = new Wilson(Page.element.querySelector("#output-canvas"), options);
+	let wilson = new Wilson($("#output-canvas"), options);
 
 	wilson.render.initUniforms(["a", "b", "brightnessScale"]);
 
@@ -103,7 +103,7 @@
 	
 	
 	
-	let wilsonHidden = new Wilson(Page.element.querySelector("#hidden-canvas"), optionsHidden);
+	let wilsonHidden = new Wilson($("#hidden-canvas"), optionsHidden);
 	
 	wilsonHidden.render.initUniforms(["a", "b", "brightnessScale"]);
 	
@@ -124,7 +124,7 @@
 	
 	
 
-	let resolutionInputElement = Page.element.querySelector("#resolution-input");
+	let resolutionInputElement = $("#resolution-input");
 	
 	resolutionInputElement.addEventListener("input", () =>
 	{
@@ -135,7 +135,7 @@
 	
 	
 	
-	let downloadButtonElement = Page.element.querySelector("#download-button");
+	let downloadButtonElement = $("#download-button");
 	
 	downloadButtonElement.addEventListener("click", () =>
 	{

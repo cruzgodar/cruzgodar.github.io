@@ -6,7 +6,7 @@
 	
 	if (Site.vistedHomepage)
 	{
-		Page.element.querySelector("#return-scroll-to").scrollIntoView();
+		$("#return-scroll-to").scrollIntoView();
 		
 		Page.Banner.opacity = 0;
 		Page.Banner.doneLoading = true;
@@ -20,11 +20,11 @@
 	
 	setTimeout(() =>
 	{
-		Page.Animate.fadeLeft(Page.element.querySelector("#cruz-text"), Site.opacityAnimationTime * 3.5);
+		Page.Animate.fadeLeft($("#cruz-text"), Site.opacityAnimationTime * 3.5);
 		
 		setTimeout(() =>
 		{
-			Page.Animate.fadeLeft(Page.element.querySelector("#godar-text"), Site.opacityAnimationTime * 3.5);
+			Page.Animate.fadeLeft($("#godar-text"), Site.opacityAnimationTime * 3.5);
 		}, Site.opacityAnimationTime);	
 	}, Site.opacityAnimationTime);
 	
@@ -49,7 +49,7 @@
 			opacity = Math.min(Math.max(1 - Page.scroll / (Page.Banner.maxScroll / 2.5), 0), 1);
 		}
 		
-		Page.element.querySelector("#cruz-text").parentNode.style.opacity = opacity;
-		Page.element.querySelector("#godar-text").parentNode.style.opacity = opacity;
+		$("#cruz-text").parentNode.style.opacity = opacity;
+		$("#godar-text").parentNode.style.opacity = opacity;
 	}
 }()

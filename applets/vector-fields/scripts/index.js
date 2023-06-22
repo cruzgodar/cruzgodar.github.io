@@ -4,7 +4,7 @@
 {
 	await Site.loadApplet("vector-fields");
 	
-	const applet = new VectorField(Page.element.querySelector("#output-canvas"));
+	const applet = new VectorField($("#output-canvas"));
 	
 	applet.loadPromise.then(() => run());
 	
@@ -47,7 +47,7 @@
 		"draggables": "(draggableArg.x * x - y, x + draggableArg.y * y)"
 	};
 	
-	const exampleSelectorDropdownElement = Page.element.querySelector("#example-selector-dropdown");
+	const exampleSelectorDropdownElement = $("#example-selector-dropdown");
 	
 	exampleSelectorDropdownElement.addEventListener("input", () =>
 	{
@@ -61,7 +61,7 @@
 	
 	
 	
-	const codeTextareaElement = Page.element.querySelector("#code-textarea");
+	const codeTextareaElement = $("#code-textarea");
 	
 	codeTextareaElement.addEventListener("keydown", (e) =>
 	{
@@ -75,29 +75,29 @@
 	
 	
 	
-	const rawGLSLCheckboxElement = Page.element.querySelector("#raw-glsl-checkbox");
+	const rawGLSLCheckboxElement = $("#raw-glsl-checkbox");
 	
 	
 	
-	const generateButtonElement = Page.element.querySelector("#generate-button");
+	const generateButtonElement = $("#generate-button");
 	
 	generateButtonElement.addEventListener("click", run);
 	
 	
 	
-	const resolutionInputElement = Page.element.querySelector("#resolution-input");
+	const resolutionInputElement = $("#resolution-input");
 	
 	resolutionInputElement.addEventListener("input", generateNewField);
 	
 	
 	
-	const maxParticlesInputElement = Page.element.querySelector("#max-particles-input");
+	const maxParticlesInputElement = $("#max-particles-input");
 	
 	maxParticlesInputElement.addEventListener("input", generateNewField);
 	
 	
 	
-	const speedInputElement = Page.element.querySelector("#speed-input");
+	const speedInputElement = $("#speed-input");
 	
 	speedInputElement.addEventListener("input", () =>
 	{
@@ -118,13 +118,13 @@
 	
 	
 	
-	const lifetimeInputElement = Page.element.querySelector("#lifetime-input");
+	const lifetimeInputElement = $("#lifetime-input");
 	
 	lifetimeInputElement.addEventListener("input", generateNewField);
 	
 	
 	
-	const downloadButtonElement = Page.element.querySelector("#download-button");
+	const downloadButtonElement = $("#download-button");
 	
 	downloadButtonElement.addEventListener("click", () => applet.wilson.downloadFrame("a-vector-field.png"));
 	

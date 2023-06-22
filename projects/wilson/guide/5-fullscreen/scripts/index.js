@@ -4,7 +4,7 @@
 	
 	
 	
-	let elements = Page.element.querySelectorAll("pre code");
+	let elements = $$("pre code");
 	
 	for (let i = 0; i < elements.length; i++)
 	{
@@ -105,7 +105,7 @@
 		
 		
 		
-		let wilson = new Wilson(Page.element.querySelector("#output-canvas-1"), options);
+		let wilson = new Wilson($("#output-canvas-1"), options);
 
 		wilson.render.initUniforms(["a", "b", "brightnessScale"]);
 
@@ -113,7 +113,7 @@
 		
 		
 		
-		let wilsonHidden = new Wilson(Page.element.querySelector("#hidden-canvas-1"), optionsHidden);
+		let wilsonHidden = new Wilson($("#hidden-canvas-1"), optionsHidden);
 		
 		wilsonHidden.render.initUniforms(["a", "b", "brightnessScale"]);
 		
@@ -134,7 +134,7 @@
 		
 		
 
-		let resolutionInputElement = Page.element.querySelector("#resolution-1-input");
+		let resolutionInputElement = $("#resolution-1-input");
 		
 		resolutionInputElement.addEventListener("input", () =>
 		{
@@ -145,7 +145,7 @@
 		
 		
 		
-		let downloadButtonElement = Page.element.querySelector("#download-1-button");
+		let downloadButtonElement = $("#download-1-button");
 		
 		downloadButtonElement.addEventListener("click", () =>
 		{
@@ -327,7 +327,7 @@
 		
 		
 		
-		let wilson = new Wilson(Page.element.querySelector("#output-canvas-2"), options);
+		let wilson = new Wilson($("#output-canvas-2"), options);
 
 		wilson.render.initUniforms(["aspectRatio", "a", "b", "brightnessScale"]);
 
@@ -335,7 +335,7 @@
 		
 		
 		
-		let wilsonHidden = new Wilson(Page.element.querySelector("#hidden-canvas-2"), optionsHidden);
+		let wilsonHidden = new Wilson($("#hidden-canvas-2"), optionsHidden);
 		
 		wilsonHidden.render.initUniforms(["aspectRatio", "a", "b", "brightnessScale"]);
 		
@@ -358,7 +358,7 @@
 		
 		
 
-		let resolutionInputElement = Page.element.querySelector("#resolution-2-input");
+		let resolutionInputElement = $("#resolution-2-input");
 		
 		resolutionInputElement.addEventListener("input", () =>
 		{
@@ -369,7 +369,7 @@
 		
 		
 		
-		let downloadButtonElement = Page.element.querySelector("#download-2-button");
+		let downloadButtonElement = $("#download-2-button");
 		
 		downloadButtonElement.addEventListener("click", () =>
 		{

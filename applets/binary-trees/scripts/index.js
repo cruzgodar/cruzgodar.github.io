@@ -4,11 +4,11 @@
 {
 	await Site.loadApplet("binary-trees");
 	
-	const applet = new BinaryTree(Page.element.querySelector("#output-canvas"));
+	const applet = new BinaryTree($("#output-canvas"));
 	
 	
 	
-	const downloadButtonElement = Page.element.querySelector("#download-button");
+	const downloadButtonElement = $("#download-button");
 	
 	downloadButtonElement.addEventListener("click", () => applet.wilson.downloadFrame("a-binary-tree.png"));
 	

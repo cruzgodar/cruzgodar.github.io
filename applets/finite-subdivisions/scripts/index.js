@@ -4,7 +4,7 @@
 {
 	await Site.loadApplet("finite-subdivisions");
 	
-	const applet = new FiniteSubdivision(Page.element.querySelector("#output-canvas"));
+	const applet = new FiniteSubdivision($("#output-canvas"));
 	
 	
 	
@@ -19,25 +19,25 @@
 	
 
 	
-	const generateButtonElement = Page.element.querySelector("#generate-button");
+	const generateButtonElement = $("#generate-button");
 
 	generateButtonElement.addEventListener("click", run);
 	
 	
 	
-	const numVerticesInputElement = Page.element.querySelector("#num-vertices-input");
+	const numVerticesInputElement = $("#num-vertices-input");
 	
-	const numIterationsInputElement = Page.element.querySelector("#num-iterations-input");
+	const numIterationsInputElement = $("#num-iterations-input");
 	
 	applet.listenToInputElements([numVerticesInputElement, numIterationsInputElement], run);
 	
 	
 	
-	const maximumSpeedCheckboxElement = Page.element.querySelector("#toggle-maximum-speed-checkbox");
+	const maximumSpeedCheckboxElement = $("#toggle-maximum-speed-checkbox");
 	
 	
 	
-	const downloadButtonElement = Page.element.querySelector("#download-button");
+	const downloadButtonElement = $("#download-button");
 	
 	downloadButtonElement.addEventListener("click", () => applet.wilson.downloadFrame("a-finite-subdivision.png"));
 	

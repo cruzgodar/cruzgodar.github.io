@@ -4,7 +4,7 @@
 {
 	await Site.loadApplet("lyapunov-fractals");
 	
-	const applet = new LyapunovFractal(Page.element.querySelector("#output-canvas"));
+	const applet = new LyapunovFractal($("#output-canvas"));
 	
 	
 	
@@ -17,20 +17,20 @@
 	
 	
 	
-	const generatingStringInputElement = Page.element.querySelector("#generating-string-input");
+	const generatingStringInputElement = $("#generating-string-input");
 	
 	applet.listenToInputElements([generatingStringInputElement], run);
 	
 	
 	
-	const generateButtonElement = Page.element.querySelector("#generate-button");
+	const generateButtonElement = $("#generate-button");
 	
 	generateButtonElement.addEventListener("click", run);
 	
 	
 	
 
-	const resolutionInputElement = Page.element.querySelector("#resolution-input");
+	const resolutionInputElement = $("#resolution-input");
 	
 	resolutionInputElement.addEventListener("input", () =>
 	{
@@ -43,7 +43,7 @@
 	
 	
 	
-	const downloadButtonElement = Page.element.querySelector("#download-button");
+	const downloadButtonElement = $("#download-button");
 	
 	downloadButtonElement.addEventListener("click", () =>
 	{

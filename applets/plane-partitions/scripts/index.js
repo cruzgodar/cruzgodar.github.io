@@ -4,7 +4,7 @@
 {
 	await Site.loadApplet("plane-partitions");
 	
-	const applet = new PlanePartitions(Page.element.querySelector("#output-canvas"), Page.element.querySelector("#numbers-canvas"));
+	const applet = new PlanePartitions($("#output-canvas"), $("#numbers-canvas"));
 	
 	applet.loadPromise.then(async () =>
 	{
@@ -17,16 +17,16 @@
 	
 	const sectionElements = 
 	{
-		"view-controls": Page.element.querySelectorAll(".view-controls-section"),
-		"add-array": Page.element.querySelectorAll(".add-array-section"),
-		"edit-array": Page.element.querySelectorAll(".edit-array-section"),
-		"remove-array": Page.element.querySelectorAll(".remove-array-section"),
-		"algorithms": Page.element.querySelectorAll(".algorithms-section"),
-		"examples": Page.element.querySelectorAll(".examples-section")
+		"view-controls": $$(".view-controls-section"),
+		"add-array": $$(".add-array-section"),
+		"edit-array": $$(".edit-array-section"),
+		"remove-array": $$(".remove-array-section"),
+		"algorithms": $$(".algorithms-section"),
+		"examples": $$(".examples-section")
 	}
 	
-	const categoryHolderElement = Page.element.querySelector("#category-holder");
-	const canvasLandscapeLeftElement = Page.element.querySelector("#canvas-landscape-left");
+	const categoryHolderElement = $("#category-holder");
+	const canvasLandscapeLeftElement = $("#canvas-landscape-left");
 	
 	let visibleSection = "view-controls";
 	
@@ -57,55 +57,55 @@
 	
 	
 	
-	const categorySelectorDropdownElement = Page.element.querySelector("#category-selector-dropdown");
+	const categorySelectorDropdownElement = $("#category-selector-dropdown");
 	
-	const resolutionInputElement = Page.element.querySelector("#resolution-input");
+	const resolutionInputElement = $("#resolution-input");
 	
-	const showDimersButtonElement = Page.element.querySelector("#show-dimers-button");
+	const showDimersButtonElement = $("#show-dimers-button");
 	
-	const switchViewButtonElement = Page.element.querySelector("#switch-view-button");
+	const switchViewButtonElement = $("#switch-view-button");
 	
-	const maximumSpeedCheckboxElement = Page.element.querySelector("#maximum-speed-checkbox");
+	const maximumSpeedCheckboxElement = $("#maximum-speed-checkbox");
 	
-	const arrayDataTextareaElement = Page.element.querySelector("#array-data-textarea");
+	const arrayDataTextareaElement = $("#array-data-textarea");
 	
-	const addArrayButtonElement = Page.element.querySelector("#add-array-button");
+	const addArrayButtonElement = $("#add-array-button");
 	
-	const editArrayTextareaElement = Page.element.querySelector("#edit-array-textarea");
+	const editArrayTextareaElement = $("#edit-array-textarea");
 		
-	const editArrayIndexInputElement = Page.element.querySelector("#edit-array-index-input");
+	const editArrayIndexInputElement = $("#edit-array-index-input");
 	
-	const editArrayButtonElement = Page.element.querySelector("#edit-array-button");
+	const editArrayButtonElement = $("#edit-array-button");
 	
-	const removeArrayIndexInputElement = Page.element.querySelector("#remove-array-index-input");
+	const removeArrayIndexInputElement = $("#remove-array-index-input");
 	
-	const removeArrayButtonElement = Page.element.querySelector("#remove-array-button");
+	const removeArrayButtonElement = $("#remove-array-button");
 	
-	const algorithmIndexInputElement = Page.element.querySelector("#algorithm-index-input");
+	const algorithmIndexInputElement = $("#algorithm-index-input");
 	
-	const hillmanGrasslButtonElement = Page.element.querySelector("#hillman-grassl-button");
+	const hillmanGrasslButtonElement = $("#hillman-grassl-button");
 	
-	const hillmanGrasslInverseButtonElement = Page.element.querySelector("#hillman-grassl-inverse-button");
+	const hillmanGrasslInverseButtonElement = $("#hillman-grassl-inverse-button");
 	
-	const pakButtonElement = Page.element.querySelector("#pak-button");
+	const pakButtonElement = $("#pak-button");
 	
-	const pakInverseButtonElement = Page.element.querySelector("#pak-inverse-button");
+	const pakInverseButtonElement = $("#pak-inverse-button");
 	
-	const sulzgruberButtonElement = Page.element.querySelector("#sulzgruber-button");
+	const sulzgruberButtonElement = $("#sulzgruber-button");
 	
-	const sulzgruberInverseButtonElement = Page.element.querySelector("#sulzgruber-inverse-button");
+	const sulzgruberInverseButtonElement = $("#sulzgruber-inverse-button");
 	
-	const rskButtonElement = Page.element.querySelector("#rsk-button");
+	const rskButtonElement = $("#rsk-button");
 	
-	const rskInverseButtonElement = Page.element.querySelector("#rsk-inverse-button");
+	const rskInverseButtonElement = $("#rsk-inverse-button");
 	
-	const example1ButtonElement = Page.element.querySelector("#example-1-button");
+	const example1ButtonElement = $("#example-1-button");
 	
-	const example2ButtonElement = Page.element.querySelector("#example-2-button");
+	const example2ButtonElement = $("#example-2-button");
 	
-	const example3ButtonElement = Page.element.querySelector("#example-3-button");
+	const example3ButtonElement = $("#example-3-button");
 	
-	const downloadButtonElement = Page.element.querySelector("#download-button");
+	const downloadButtonElement = $("#download-button");
 	
 	
 	

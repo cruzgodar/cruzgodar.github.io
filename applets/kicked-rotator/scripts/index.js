@@ -4,7 +4,7 @@
 {
 	await Site.loadApplet("kicked-rotator");
 	
-	const applet = new KickedRotator(Page.element.querySelector("#output-canvas"));
+	const applet = new KickedRotator($("#output-canvas"));
 	
 	
 	
@@ -19,23 +19,23 @@
 
 
 
-	const generateButtonElement = Page.element.querySelector("#generate-button");
+	const generateButtonElement = $("#generate-button");
 
 	generateButtonElement.addEventListener("click", run);
 	
 	
 	
-	const resolutionInputElement = Page.element.querySelector("#resolution-input");
+	const resolutionInputElement = $("#resolution-input");
 	
-	const kInputElement = Page.element.querySelector("#k-input");
+	const kInputElement = $("#k-input");
 	
-	const orbitSeparationInputElement = Page.element.querySelector("#orbit-separation-input");
+	const orbitSeparationInputElement = $("#orbit-separation-input");
 	
 	applet.listenToInputElements([resolutionInputElement, kInputElement, orbitSeparationInputElement], run);
 	
 	
 	
-	const downloadButtonElement = Page.element.querySelector("#download-button");
+	const downloadButtonElement = $("#download-button");
 	
 	downloadButtonElement.addEventListener("click", () =>
 	{

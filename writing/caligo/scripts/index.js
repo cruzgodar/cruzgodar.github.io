@@ -18,8 +18,8 @@
 	
 	
 	//Make the eclipse image have a 1:1 aspect ratio.
-	Page.element.querySelector("#eclipse").style.height = Page.element.querySelector("#eclipse").offsetWidth + "px";
-	Page.element.querySelector("#eclipse img").style.height = Page.element.querySelector("#eclipse").offsetWidth + "px";
+	$("#eclipse").style.height = $("#eclipse").offsetWidth + "px";
+	$("#eclipse img").style.height = $("#eclipse").offsetWidth + "px";
 	
 	window.addEventListener("resize", caligoResize);
 	Page.temporaryHandlers["resize"].push(caligoResize);
@@ -132,12 +132,12 @@
 		{
 			opacity = .5 + .5 * Math.sin(Math.PI * Math.max(1 - 3 * Page.scroll / window.innerHeight, 0) - .5 * Math.PI);
 			
-			try {Page.element.querySelector("#scroll-button").style.opacity = opacity;}
+			try {$("#scroll-button").style.opacity = opacity;}
 			catch(ex) {}
 			
 			if (opacity === 0)
 			{
-				try {Page.element.querySelector("#scroll-button").remove();}
+				try {$("#scroll-button").remove();}
 				catch(ex) {}
 				
 				Page.Banner.ScrollButton.doneLoading = true;
@@ -151,7 +151,7 @@
 		
 		else if (Page.Banner.ScrollButton.doneLoading === false)
 		{
-			try {Page.element.querySelector("#scroll-button").remove();}
+			try {$("#scroll-button").remove();}
 			catch(ex) {}
 			
 			Page.Banner.ScrollButton.doneLoading = true;
@@ -166,7 +166,7 @@
 		{
 			opacity = .5 + .5 * Math.sin(Math.PI * Math.max(1 - 3.5 * (Page.scroll - (4/5 * window.innerHeight)) / window.innerHeight, 0) - .5 * Math.PI);
 			
-			Page.element.querySelector("#eclipse").style.opacity = 1 - opacity;
+			$("#eclipse").style.opacity = 1 - opacity;
 			
 			if (opacity === 1)
 			{
@@ -181,14 +181,14 @@
 		
 		else if (scroll >= 6/5 * window.innerHeight && eclipseDone === false)
 		{
-			Page.element.querySelector("#eclipse").style.opacity = 1;
+			$("#eclipse").style.opacity = 1;
 			
 			eclipseDone = true;
 		}
 		
 		else if (scroll <= 4/5 * window.innerHeight && eclipseDone === false)
 		{
-			Page.element.querySelector("#eclipse").style.opacity = 0;
+			$("#eclipse").style.opacity = 0;
 			
 			eclipseDone = true;
 		}
@@ -198,14 +198,14 @@
 	
 	function caligoResize()
 	{
-		Page.element.querySelector("#eclipse").style.height = Page.element.querySelector("#eclipse").offsetWidth + "px";
-		Page.element.querySelector("#eclipse img").style.height = Page.element.querySelector("#eclipse").offsetWidth + "px";
+		$("#eclipse").style.height = $("#eclipse").offsetWidth + "px";
+		$("#eclipse img").style.height = $("#eclipse").offsetWidth + "px";
 		
 		
 		
 		let maxWidth = 0;
 		
-		Page.element.querySelectorAll(".chapter-link a").forEach(element =>
+		$$(".chapter-link a").forEach(element =>
 		{
 			let width = element.offsetWidth;
 			
@@ -215,7 +215,7 @@
 			}
 		});
 		
-		Page.element.querySelectorAll(".chapter-link").forEach(element => element.style.width = maxWidth + "px");
+		$$(".chapter-link").forEach(element => element.style.width = maxWidth + "px");
 	}
 	
 	
@@ -247,7 +247,7 @@
 			
 			
 			
-			Page.element.querySelector("#email img").style.filter = "brightness(150%)";
+			$("#email img").style.filter = "brightness(150%)";
 			
 			
 			

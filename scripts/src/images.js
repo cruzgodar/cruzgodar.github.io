@@ -13,6 +13,6 @@ Page.Images =
 	
 	addExtensions: function()
 	{
-		Page.element.querySelectorAll(".check-webp").forEach(image => image.setAttribute("data-src", image.getAttribute("data-src") + this.fileExtension));
+		$$(".check-webp").forEach(image => image.setAttribute("data-src", image.getAttribute("data-src") + this.fileExtension));
 	}
 };

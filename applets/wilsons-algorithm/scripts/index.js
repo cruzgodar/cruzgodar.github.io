@@ -21,7 +21,7 @@
 		exitFullscreenButtonIconPath: "/graphics/general-icons/exit-fullscreen.png"
 	};
 	
-	let wilson = new Wilson(Page.element.querySelector("#output-canvas"), options);
+	let wilson = new Wilson($("#output-canvas"), options);
 	
 	
 	
@@ -35,7 +35,7 @@
 
 	
 	
-	let generateButtonElement = Page.element.querySelector("#generate-button");
+	let generateButtonElement = $("#generate-button");
 
 	generateButtonElement.addEventListener("click", () =>
 	{
@@ -44,7 +44,7 @@
 	
 	
 	
-	let gridSizeInputElement = Page.element.querySelector("#grid-size-input");
+	let gridSizeInputElement = $("#grid-size-input");
 	
 	gridSizeInputElement.addEventListener("keydown", (e) =>
 	{
@@ -56,7 +56,7 @@
 	
 	
 	
-	let downloadButtonElement = Page.element.querySelector("#download-button");
+	let downloadButtonElement = $("#download-button");
 	
 	downloadButtonElement.addEventListener("click", () =>
 	{
@@ -65,13 +65,13 @@
 	
 	
 	
-	let maximumSpeedCheckboxElement = Page.element.querySelector("#toggle-maximum-speed-checkbox");
+	let maximumSpeedCheckboxElement = $("#toggle-maximum-speed-checkbox");
 	
-	let noBordersCheckboxElement = Page.element.querySelector("#no-borders-checkbox");
+	let noBordersCheckboxElement = $("#no-borders-checkbox");
 	
-	let progressBarElement = Page.element.querySelector("#progress-bar");
+	let progressBarElement = $("#progress-bar");
 	
-	let progressBarChildElement = Page.element.querySelector("#progress-bar span");
+	let progressBarChildElement = $("#progress-bar span");
 	
 	
 	
@@ -140,8 +140,8 @@
 			catch(ex) {}
 		}
 		
-		Page.element.querySelector("#progress-bar span").insertAdjacentHTML("afterend", `<span></span>`);
-		Page.element.querySelector("#progress-bar span").remove();
+		$("#progress-bar span").insertAdjacentHTML("afterend", `<span></span>`);
+		$("#progress-bar span").remove();
 		
 		
 		

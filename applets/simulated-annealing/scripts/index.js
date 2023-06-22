@@ -21,7 +21,7 @@
 		exitFullscreenButtonIconPath: "/graphics/general-icons/exit-fullscreen.png"
 	};
 	
-	let wilson = new Wilson(Page.element.querySelector("#output-canvas"), options);
+	let wilson = new Wilson($("#output-canvas"), options);
 	
 	
 	
@@ -29,13 +29,13 @@
 	
 	
 
-	let generateButtonElement = Page.element.querySelector("#generate-button");
+	let generateButtonElement = $("#generate-button");
 
 	generateButtonElement.addEventListener("click", requestAnnealingGraph);
 	
 	
 	
-	let numNodesInputElement = Page.element.querySelector("#num-nodes-input");
+	let numNodesInputElement = $("#num-nodes-input");
 	
 	numNodesInputElement.addEventListener("keydown", function(e)
 	{
@@ -47,7 +47,7 @@
 	
 	
 	
-	let downloadButtonElement = Page.element.querySelector("#download-button");
+	let downloadButtonElement = $("#download-button");
 	
 	downloadButtonElement.addEventListener("click", () =>
 	{
@@ -55,7 +55,7 @@
 	});
 	
 	
-	let maximumSpeedCheckboxElement = Page.element.querySelector("#toggle-maximum-speed-checkbox");
+	let maximumSpeedCheckboxElement = $("#toggle-maximum-speed-checkbox");
 	
 	
 	

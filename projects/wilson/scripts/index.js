@@ -128,7 +128,7 @@
 	
 	
 	
-	let wilson = new Wilson(Page.element.querySelector("#output-canvas"), options);
+	let wilson = new Wilson($("#output-canvas"), options);
 
 	wilson.render.initUniforms(["aspectRatio", "worldCenterX", "worldCenterY", "worldSize", "a", "b", "brightnessScale"]);
 
@@ -136,7 +136,7 @@
 	
 	
 	
-	let wilsonHidden = new Wilson(Page.element.querySelector("#hidden-canvas"), optionsHidden);
+	let wilsonHidden = new Wilson($("#hidden-canvas"), optionsHidden);
 	
 	wilsonHidden.render.initUniforms(["aspectRatio", "worldCenterX", "worldCenterY", "worldSize", "a", "b", "brightnessScale"]);
 	
@@ -180,7 +180,7 @@
 	
 	
 
-	let resolutionInputElement = Page.element.querySelector("#resolution-input");
+	let resolutionInputElement = $("#resolution-input");
 	
 	resolutionInputElement.addEventListener("input", () =>
 	{
@@ -484,46 +484,46 @@
 	
 	
 	
-	Page.element.querySelector("#part-1-button").addEventListener("click", () =>
+	$("#part-1-button").addEventListener("click", () =>
 	{
 		Page.Navigation.redirect("/projects/wilson/guide/1-getting-started/");
 	});
 	
-	Page.element.querySelector("#part-2-button").addEventListener("click", () =>
+	$("#part-2-button").addEventListener("click", () =>
 	{
 		Page.Navigation.redirect("/projects/wilson/guide/2-draggables/");
 	});
 	
-	Page.element.querySelector("#part-3-button").addEventListener("click", () =>
+	$("#part-3-button").addEventListener("click", () =>
 	{
 		Page.Navigation.redirect("/projects/wilson/guide/3-parallelizing/");
 	});
 	
-	Page.element.querySelector("#part-4-button").addEventListener("click", () =>
+	$("#part-4-button").addEventListener("click", () =>
 	{
 		Page.Navigation.redirect("/projects/wilson/guide/4-hidden-canvases/");
 	});
 	
-	Page.element.querySelector("#part-5-button").addEventListener("click", () =>
+	$("#part-5-button").addEventListener("click", () =>
 	{
 		Page.Navigation.redirect("/projects/wilson/guide/5-fullscreen/");
 	});
 	
-	Page.element.querySelector("#part-6-button").addEventListener("click", () =>
+	$("#part-6-button").addEventListener("click", () =>
 	{
 		Page.Navigation.redirect("/projects/wilson/guide/6-interactivity/");
 	});
 	
 	
 	
-	Page.element.querySelector("#docs-button").addEventListener("click", () =>
+	$("#docs-button").addEventListener("click", () =>
 	{
 		Page.Navigation.redirect("/projects/wilson/docs/");
 	});
 	
 	
 	
-	Page.element.querySelector("#download-button").addEventListener("click", () =>
+	$("#download-button").addEventListener("click", () =>
 	{
 		Page.Navigation.redirect("https://github.com/90259025/wilson/releases", true);
 	});

@@ -4,7 +4,7 @@
 {
 	await Site.loadApplet("snowflakes");
 	
-	const applet = new Snowflake(Page.element.querySelector("#output-canvas"));
+	const applet = new Snowflake($("#output-canvas"));
 	
 	
 	
@@ -25,19 +25,19 @@
 	
 	
 	
-	const resolutionInputElement = Page.element.querySelector("#resolution-input");
-	const computationsPerFrameInputElement = Page.element.querySelector("#computations-per-frame-input");
-	const rhoInputElement = Page.element.querySelector("#rho-input");
-	const betaInputElement = Page.element.querySelector("#beta-input");
-	const alphaInputElement = Page.element.querySelector("#alpha-input");
-	const thetaInputElement = Page.element.querySelector("#theta-input");
-	const kappaInputElement = Page.element.querySelector("#kappa-input");
-	const muInputElement = Page.element.querySelector("#mu-input");
-	const gammaInputElement = Page.element.querySelector("#gamma-input");
+	const resolutionInputElement = $("#resolution-input");
+	const computationsPerFrameInputElement = $("#computations-per-frame-input");
+	const rhoInputElement = $("#rho-input");
+	const betaInputElement = $("#beta-input");
+	const alphaInputElement = $("#alpha-input");
+	const thetaInputElement = $("#theta-input");
+	const kappaInputElement = $("#kappa-input");
+	const muInputElement = $("#mu-input");
+	const gammaInputElement = $("#gamma-input");
 	
 	
 	
-	const randomizeParametersButtonElement = Page.element.querySelector("#randomize-parameters-button");
+	const randomizeParametersButtonElement = $("#randomize-parameters-button");
 
 	randomizeParametersButtonElement.addEventListener("click", () =>
 	{
@@ -52,13 +52,13 @@
 	
 	
 	
-	const generateButtonElement = Page.element.querySelector("#generate-button");
+	const generateButtonElement = $("#generate-button");
 	
 	generateButtonElement.addEventListener("click", run);
 	
 	
 	
-	const downloadButtonElement = Page.element.querySelector("#download-button");
+	const downloadButtonElement = $("#download-button");
 	
 	downloadButtonElement.addEventListener("click", () => applet.wilson.downloadFrame("a-gravner-griffeath-snowflake.png"));
 	

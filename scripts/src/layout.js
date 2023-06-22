@@ -132,7 +132,7 @@ Page.Layout =
 			
 			
 			
-			const parents = Page.element.querySelectorAll(".multicol-block");
+			const parents = $$(".multicol-block");
 			
 			if (parents.length === 0)
 			{
@@ -196,7 +196,7 @@ Page.Layout =
 			
 			
 			
-			const containers = Page.element.querySelectorAll(".image-links-double-column-container");
+			const containers = $$(".image-links-double-column-container");
 			
 			if (containers.length === 0)
 			{
@@ -258,8 +258,8 @@ Page.Layout =
 			
 			try
 			{
-				leftColumn = Page.element.querySelector("#canvas-landscape-left");
-				rightColumn = Page.element.querySelector("#canvas-landscape-right");
+				leftColumn = $("#canvas-landscape-left");
+				rightColumn = $("#canvas-landscape-right");
 			}
 			
 			catch(ex) {}
@@ -328,7 +328,7 @@ Page.Layout =
 					leftColumn.children[i].classList.add("move-to-right");
 				}
 				
-				const elementsToMove = Page.element.querySelectorAll(".move-to-right");
+				const elementsToMove = $$(".move-to-right");
 				
 				for (let i = elementsToMove.length - 1; i >= 0; i--)
 				{
@@ -343,7 +343,7 @@ Page.Layout =
 					rightColumn.children[i].classList.add("move-to-left");
 				}
 				
-				const elementsToMove = Page.element.querySelectorAll(".move-to-left");
+				const elementsToMove = $$(".move-to-left");
 				
 				for (let i = 0; i < elementsToMove.length; i++)
 				{
@@ -363,8 +363,8 @@ Page.Layout =
 			
 			try
 			{
-				leftColumn = Page.element.querySelector("#canvas-landscape-left");
-				rightColumn = Page.element.querySelector("#canvas-landscape-right");
+				leftColumn = $("#canvas-landscape-left");
+				rightColumn = $("#canvas-landscape-right");
 			}
 			
 			catch(ex) {}
@@ -376,7 +376,7 @@ Page.Layout =
 			
 			
 			
-			let elementsToMove = Page.element.querySelectorAll(".move-to-left");
+			let elementsToMove = $$(".move-to-left");
 			
 			for (let i = elementsToMove.length - 1; i >= 0; i--)
 			{
@@ -387,7 +387,7 @@ Page.Layout =
 			
 			
 			
-			elementsToMove = Page.element.querySelectorAll(".move-to-right");
+			elementsToMove = $$(".move-to-right");
 			
 			for (let i = 0; i < elementsToMove.length; i++)
 			{

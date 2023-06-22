@@ -7,11 +7,11 @@
 	
 	await Site.loadApplet("plane-partitions");
 	
-	const applet = new PlanePartitions(Page.element.querySelector("#output-canvas"), Page.element.querySelector("#numbers-canvas"), false);
+	const applet = new PlanePartitions($("#output-canvas"), $("#numbers-canvas"), false);
 	
 	document.head.querySelector("#theme-color-meta").setAttribute("content", "#181818");
 	
-	document.body.appendChild(Page.element.querySelector("#lapsa-slide-container"));
+	document.body.appendChild($("#lapsa-slide-container"));
 	
 	const canvasBundle = document.body.querySelector("#canvas-bundle");
 	

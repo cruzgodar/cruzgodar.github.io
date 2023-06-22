@@ -4,7 +4,7 @@
 {
 	await Site.loadApplet("abelian-sandpiles");
 	
-	const applet = new AbelianSandpile(Page.element.querySelector("#output-canvas"));
+	const applet = new AbelianSandpile($("#output-canvas"));
 	
 	
 	
@@ -18,21 +18,21 @@
 	
 	
 	
-	const numGrainsInputElement = Page.element.querySelector("#num-grains-input");
+	const numGrainsInputElement = $("#num-grains-input");
 	
-	const computationsPerFrameInputElement = Page.element.querySelector("#computations-per-frame-input");
+	const computationsPerFrameInputElement = $("#computations-per-frame-input");
 	
 	applet.listenToInputElements([numGrainsInputElement, computationsPerFrameInputElement], run);
 	
 	
 	
-	const generateButtonElement = Page.element.querySelector("#generate-button");
+	const generateButtonElement = $("#generate-button");
 	
 	generateButtonElement.addEventListener("click", run);
 	
 	
 	
-	const downloadButtonElement = Page.element.querySelector("#download-button");
+	const downloadButtonElement = $("#download-button");
 	
 	downloadButtonElement.addEventListener("click", () => applet.wilson.downloadFrame("an-abelian-sandpile.png"));
 	

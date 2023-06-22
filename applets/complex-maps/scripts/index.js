@@ -4,7 +4,7 @@
 {
 	await Site.loadApplet("complex-maps");
 	
-	const applet = new ComplexMap(Page.element.querySelector("#output-canvas"), "cexp(cinv(z))");
+	const applet = new ComplexMap($("#output-canvas"), "cexp(cinv(z))");
 	
 	
 	
@@ -17,25 +17,25 @@
 	
 	
 	
-	const codeInputElement = Page.element.querySelector("#code-textarea");
+	const codeInputElement = $("#code-textarea");
 	
 	applet.listenToInputElements([codeInputElement], run);
 	
 	
 	
-	const generateButtonElement = Page.element.querySelector("#generate-button");
+	const generateButtonElement = $("#generate-button");
 	
 	generateButtonElement.addEventListener("click", run);
 	
 	
 	
-	const selectorModeButtonElement = Page.element.querySelector("#selector-mode-button");
+	const selectorModeButtonElement = $("#selector-mode-button");
 	
 	selectorModeButtonElement.addEventListener("click", () => applet.useSelectorMode = true);
 	
 	
 	
-	const benchmarkButtonElement = Page.element.querySelector("#benchmark-button");
+	const benchmarkButtonElement = $("#benchmark-button");
 	
 	benchmarkButtonElement.addEventListener("click", () => applet.runBenchmark());
 	
@@ -43,12 +43,12 @@
 	
 	if (!DEBUG)
 	{
-		Page.element.querySelector("#debug-buttons").remove();
+		$("#debug-buttons").remove();
 	}
 	
 	
 	
-	const resolutionInputElement = Page.element.querySelector("#resolution-input");
+	const resolutionInputElement = $("#resolution-input");
 	
 	resolutionInputElement.addEventListener("input", () =>
 	{
@@ -59,7 +59,7 @@
 	
 	
 	
-	const blackPointInputElement = Page.element.querySelector("#black-point-input");
+	const blackPointInputElement = $("#black-point-input");
 	
 	blackPointInputElement.addEventListener("input", () =>
 	{
@@ -68,7 +68,7 @@
 	
 	
 	
-	const whitePointInputElement = Page.element.querySelector("#white-point-input");
+	const whitePointInputElement = $("#white-point-input");
 	
 	whitePointInputElement.addEventListener("input", () =>
 	{
@@ -77,7 +77,7 @@
 	
 	
 	
-	const downloadButtonElement = Page.element.querySelector("#download-button");
+	const downloadButtonElement = $("#download-button");
 	
 	downloadButtonElement.addEventListener("click", () => applet.wilson.downloadFrame("a-complex-map.png"));
 	
@@ -93,7 +93,7 @@
 		"lattices": "wp(z, draggableArg)"
 	};
 	
-	const exampleSelectorDropdownElement = Page.element.querySelector("#example-selector-dropdown");
+	const exampleSelectorDropdownElement = $("#example-selector-dropdown");
 	
 	exampleSelectorDropdownElement.addEventListener("input", () =>
 	{

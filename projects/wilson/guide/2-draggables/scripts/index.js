@@ -4,7 +4,7 @@
 	
 	
 	
-	let elements = Page.element.querySelectorAll("pre code");
+	let elements = $$("pre code");
 	
 	for (let i = 0; i < elements.length; i++)
 	{
@@ -40,7 +40,7 @@
 		draggablesTouchendCallback: onRelease
 	};
 	
-	let wilson = new Wilson(Page.element.querySelector("#output-canvas"), options);
+	let wilson = new Wilson($("#output-canvas"), options);
 	
 	let draggable = wilson.draggables.add(0, 1);
 	
@@ -59,7 +59,7 @@
 	
 	
 	
-	let resolutionInputElement = Page.element.querySelector("#resolution-input");
+	let resolutionInputElement = $("#resolution-input");
 	
 	resolutionInputElement.addEventListener("input", () =>
 	{
@@ -69,7 +69,7 @@
 	
 	
 	
-	let downloadButtonElement = Page.element.querySelector("#download-button");
+	let downloadButtonElement = $("#download-button");
 	
 	downloadButtonElement.addEventListener("click", () =>
 	{

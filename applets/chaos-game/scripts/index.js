@@ -4,7 +4,7 @@
 {
 	await Site.loadApplet("chaos-game");
 	
-	const applet = new ChaosGame(Page.element.querySelector("#output-canvas"));
+	const applet = new ChaosGame($("#output-canvas"));
 	
 	
 	
@@ -18,21 +18,21 @@
 	
 	
 	
-	const generateButtonElement = Page.element.querySelector("#generate-button");
+	const generateButtonElement = $("#generate-button");
 
 	generateButtonElement.addEventListener("click", run);
 	
 	
 	
-	const resolutionInputElement = Page.element.querySelector("#resolution-input");
+	const resolutionInputElement = $("#resolution-input");
 	
-	const numVerticesInputElement = Page.element.querySelector("#num-vertices-input");
+	const numVerticesInputElement = $("#num-vertices-input");
 	
 	applet.listenToInputElements([resolutionInputElement, numVerticesInputElement], run);
 	
 	
 	
-	const downloadButtonElement = Page.element.querySelector("#download-button");
+	const downloadButtonElement = $("#download-button");
 	
 	downloadButtonElement.addEventListener("click", () => applet.wilson.downloadFrame("a-chaos-game.png"));
 	

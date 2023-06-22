@@ -3,14 +3,14 @@
 	"use strict";
 	
 	
-	const titleElement = Page.element.querySelector("#high-res-viewer-card h1");
-	const descriptionTextElement = Page.element.querySelector("#description-text");
-	const featuredTextElement = Page.element.querySelector("#featured-text");
-	const appletLinkElement = Page.element.querySelector("#applet-link");
-	const fullResLinkElement = Page.element.querySelector("#full-res-link");
+	const titleElement = $("#high-res-viewer-card h1");
+	const descriptionTextElement = $("#description-text");
+	const featuredTextElement = $("#featured-text");
+	const appletLinkElement = $("#applet-link");
+	const fullResLinkElement = $("#full-res-link");
 	
 	
-	Page.element.querySelectorAll(".gallery-image-1-1 img, .gallery-image-2-2 img, .gallery-image-3-3 img").forEach(element =>
+	$$(".gallery-image-1-1 img, .gallery-image-2-2 img, .gallery-image-3-3 img").forEach(element =>
 	{
 		element.addEventListener("click", e => showCard(e.target.getAttribute("data-image-id")));
 	});
@@ -61,7 +61,7 @@
 		
 		const highResImageElement = document.createElement("img");
 		
-		const element = Page.element.querySelector("#high-res-viewer-card img");
+		const element = $("#high-res-viewer-card img");
 		element.parentNode.insertBefore(highResImageElement, element);
 		element.remove();
 		

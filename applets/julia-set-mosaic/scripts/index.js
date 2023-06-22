@@ -4,7 +4,7 @@
 {
 	await Site.loadApplet("julia-set-mosaic");
 	
-	const applet = new JuliaSetMosaic(Page.element.querySelector("#output-canvas"));
+	const applet = new JuliaSetMosaic($("#output-canvas"));
 	
 	
 	
@@ -20,7 +20,7 @@
 	
 	
 	
-	const resolutionInputElement = Page.element.querySelector("#resolution-input");
+	const resolutionInputElement = $("#resolution-input");
 	
 	resolutionInputElement.addEventListener("input", () =>
 	{
@@ -31,7 +31,7 @@
 	
 	
 	
-	const setDensityInputElement = Page.element.querySelector("#set-density-input");
+	const setDensityInputElement = $("#set-density-input");
 	
 	setDensityInputElement.addEventListener("input", () =>
 	{
@@ -40,7 +40,7 @@
 	
 	
 	
-	const exposureInputElement = Page.element.querySelector("#exposure-input");
+	const exposureInputElement = $("#exposure-input");
 	
 	exposureInputElement.addEventListener("input", () =>
 	{
@@ -49,7 +49,7 @@
 	
 	
 	
-	const numIterationsInputElement = Page.element.querySelector("#num-iterations-input");
+	const numIterationsInputElement = $("#num-iterations-input");
 	
 	numIterationsInputElement.addEventListener("input", () =>
 	{
@@ -62,7 +62,7 @@
 	
 	
 	
-	const downloadButtonElement = Page.element.querySelector("#download-button");
+	const downloadButtonElement = $("#download-button");
 	
 	downloadButtonElement.addEventListener("click", () =>
 	{

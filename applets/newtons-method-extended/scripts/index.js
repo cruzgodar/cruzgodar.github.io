@@ -63,7 +63,7 @@
 	
 	
 	
-	let codeInputElement = Page.element.querySelector("#code-textarea");
+	let codeInputElement = $("#code-textarea");
 	
 	codeInputElement.value = "cmul(csin(z), csin(cmul(z, i)))";
 	
@@ -79,20 +79,20 @@
 	
 	
 	
-	let randomizePaletteButton = Page.element.querySelector("#randomize-palette-button");
+	let randomizePaletteButton = $("#randomize-palette-button");
 	
 	randomizePaletteButton.addEventListener("click", animatePaletteChange);
 	
 	
 	
-	let generateButtonElement = Page.element.querySelector("#generate-button");
+	let generateButtonElement = $("#generate-button");
 	
 	generateButtonElement.addEventListener("click", useNewCode);
 	
 	
 	
 
-	let resolutionInputElement = Page.element.querySelector("#resolution-input");
+	let resolutionInputElement = $("#resolution-input");
 	
 	resolutionInputElement.addEventListener("input", () =>
 	{
@@ -105,7 +105,7 @@
 	
 	
 	
-	let derivativePrecisionInputElement = Page.element.querySelector("#derivative-precision-input");
+	let derivativePrecisionInputElement = $("#derivative-precision-input");
 	
 	derivativePrecisionInputElement.addEventListener("input", () =>
 	{
@@ -120,7 +120,7 @@
 	
 	
 	
-	let downloadButtonElement = Page.element.querySelector("#download-button");
+	let downloadButtonElement = $("#download-button");
 	
 	downloadButtonElement.addEventListener("click", () =>
 	{
@@ -129,7 +129,7 @@
 	
 	
 	
-	let canvasLocationElement = Page.element.querySelector("#canvas-location");
+	let canvasLocationElement = $("#canvas-location");
 	
 	
 	
@@ -143,7 +143,7 @@
 		"butterflies": "cmul(sin(z), tan(z))"
 	};
 	
-	const exampleSelectorDropdownElement = Page.element.querySelector("#example-selector-dropdown");
+	const exampleSelectorDropdownElement = $("#example-selector-dropdown");
 	
 	exampleSelectorDropdownElement.addEventListener("input", () =>
 	{
@@ -360,13 +360,13 @@
 		
 		
 		
-		wilson = new Wilson(Page.element.querySelector("#output-canvas"), options);
+		wilson = new Wilson($("#output-canvas"), options);
 
 		wilson.render.initUniforms(["aspectRatio", "derivativePrecision", "worldCenterX", "worldCenterY", "worldSize", "colors", "a", "c", "brightnessScale"]);
 		
 		
 		
-		wilsonHidden = new Wilson(Page.element.querySelector("#hidden-canvas"), optionsHidden);
+		wilsonHidden = new Wilson($("#hidden-canvas"), optionsHidden);
 		
 		wilsonHidden.render.initUniforms(["aspectRatio", "derivativePrecision", "worldCenterX", "worldCenterY", "worldSize", "colors", "a", "c", "brightnessScale"]);
 		
