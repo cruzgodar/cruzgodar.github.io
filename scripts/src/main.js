@@ -4,9 +4,13 @@
 
 let DEBUG = false;
 
-
 Page.element = null;
 Page.lastElement = null;
+
+let $ = (queryString) => Page.element.querySelector(queryString);
+let $$ = (queryString) => Page.element.querySelectorAll(queryString);
+
+console.log($, $$)
 
 Page.readyToShow = false;
 
@@ -58,7 +62,7 @@ Page.setElementStyles = function(queryString, property, value, important = false
 {
 	const priorityString = important ? "important" : "";
 	
-	Page.element.querySelectorAll(queryString).forEach(element => element.style.setProperty(property, value, priorityString));
+	$$(queryString).forEach(element => element.style.setProperty(property, value, priorityString));
 }
 
 
@@ -275,7 +279,7 @@ Site.load = async function(url)
 		document.documentElement.style.userSelect = "none";
 		document.documentElement.style.WebkitTouchCallout = "none";
 		
-		Page.element.querySelectorAll("body *").forEach(element => element.setAttribute("draggable", "false"));
+		$$("body *").forEach(element => element.setAttribute("draggable", "false"));
 		
 		
 		

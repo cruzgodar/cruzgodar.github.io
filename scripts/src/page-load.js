@@ -6,11 +6,13 @@
 Page.load = async function()
 {
 	Page.element = document.body.querySelector(".page");
+	$ = (queryString) => Page.element.querySelector(queryString);
+	$$ = (queryString) => Page.element.querySelectorAll(queryString);
 	
 	if (Page.Banner.bannerPages.includes(Page.url))
 	{
-		Page.bannerElement = Page.element.querySelector("#banner");
-		Page.contentElement = Page.element.querySelector("#content");
+		Page.bannerElement = $("#banner");
+		Page.contentElement = $("#content");
 		
 		Site.addStyle(`
 			#banner-small
@@ -30,9 +32,9 @@ Page.load = async function()
 		
 		.then(() =>
 		{
-			Page.Animate.changeOpacity(Page.element.querySelector("#banner-small"), 0, 700)
+			Page.Animate.changeOpacity($("#banner-small"), 0, 700)
 			
-			.then(() => Page.element.querySelector("#banner-small").remove());
+			.then(() => $("#banner-small").remove());
 		});
 	}
 	
@@ -66,7 +68,7 @@ Page.load = async function()
 		
 		else
 		{
-			document.head.querySelector("title").textContent = Page.element.querySelector("h1").textContent;
+			document.head.querySelector("title").textContent = $("h1").textContent;
 		}
 	}
 	
@@ -93,7 +95,7 @@ Page.load = async function()
 	
 	
 	//We do dropdowns here too.
-	Page.element.querySelectorAll("select").forEach(element =>
+	$$("select").forEach(element =>
 	{
 		const buttonElement = element.previousElementSibling;
 		
@@ -453,7 +455,7 @@ Page.Load =
 	
 	showImages: function()
 	{
-		Page.element.querySelectorAll("img[data-src]").forEach(element => this.lazyLoadedImages.push([element, element.getBoundingClientRect().top, null]));
+		$$("img[data-src]").forEach(element => this.lazyLoadedImages.push([element, element.getBoundingClientRect().top, null]));
 		
 		this.lazyLoadedImages.forEach((entry, index) =>
 		{
@@ -544,7 +546,7 @@ Page.Load =
 					});
 				}
 				
-				Page.element.querySelectorAll(".desmos-container").forEach(element =>
+				$$(".desmos-container").forEach(element =>
 				{
 					const options = {
 						keypad: false,
@@ -650,14 +652,14 @@ Page.Load =
 		//Adds a listener to every element that needs a hover event. Yes, you could use CSS for this. No, I don't want to.
 		setUp: function()
 		{
-			Page.element.querySelectorAll(this.elementSelectors).forEach(element => this.add(element));
+			$$(this.elementSelectors).forEach(element => this.add(element));
 			
 			this.elementSelectorsWithScale.forEach(selector =>
 			{
-				Page.element.querySelectorAll(selector[0]).forEach(element => this.addWithScale(element, selector[1]));
+				$$(selector[0]).forEach(element => this.addWithScale(element, selector[1]));
 			});
 			
-			Page.element.querySelectorAll(".card .tex-holder").forEach(element =>
+			$$(".card .tex-holder").forEach(element =>
 			{
 				this.addForTexHolder(element);
 				
@@ -815,7 +817,7 @@ Page.Load =
 
 		remove: function()
 		{
-			Page.element.querySelectorAll(this.elementSelectors).forEach(element => element.classList.remove("hover"));
+			$$(this.elementSelectors).forEach(element => element.classList.remove("hover"));
 		}
 	},
 	
@@ -825,7 +827,7 @@ Page.Load =
 	{
 		setUpWeirdElements: function()
 		{
-			Page.element.querySelectorAll(".focus-on-child").forEach(element =>
+			$$(".focus-on-child").forEach(element =>
 			{
 				element.addEventListener("focus", () =>
 				{
@@ -862,7 +864,7 @@ Page.Load =
 		//Makes linked text buttons have the same width and height.
 		equalize: function()
 		{
-			Page.element.querySelectorAll(".text-button").forEach(textButton => textButton.parentNode.style.margin = "0 auto");
+			$$(".text-button").forEach(textButton => textButton.parentNode.style.margin = "0 auto");
 			
 			
 			
@@ -876,7 +878,7 @@ Page.Load =
 			
 			
 			
-			const elements = Page.element.querySelectorAll(".linked-text-button");
+			const elements = $$(".linked-text-button");
 			
 			elements.forEach((element, index) =>
 			{
@@ -946,28 +948,28 @@ Page.Load =
 			
 			if (index > 0)
 			{
-				Page.element.querySelectorAll(".previous-nav-button").forEach(element => element.setAttribute("onclick", `Page.Navigation.redirect("${list[index - 1]}")`));
+				$$(".previous-nav-button").forEach(element => element.setAttribute("onclick", `Page.Navigation.redirect("${list[index - 1]}")`));
 			}
 			
 			else
 			{
-				Page.element.querySelectorAll(".previous-nav-button").forEach(element => element.parentNode.remove());
+				$$(".previous-nav-button").forEach(element => element.parentNode.remove());
 			}
 			
 			
 			
-			Page.element.querySelectorAll(".home-nav-button").forEach(element => element.setAttribute("onclick", `Page.Navigation.redirect("${Site.sitemap[Page.url].parent}")`));
+			$$(".home-nav-button").forEach(element => element.setAttribute("onclick", `Page.Navigation.redirect("${Site.sitemap[Page.url].parent}")`));
 			
 			
 			
 			if (index < list.length - 1)
 			{
-				Page.element.querySelectorAll(".next-nav-button").forEach(element => element.setAttribute("onclick", `Page.Navigation.redirect("${list[index + 1]}")`));
+				$$(".next-nav-button").forEach(element => element.setAttribute("onclick", `Page.Navigation.redirect("${list[index + 1]}")`));
 			}
 			
 			else
 			{
-				Page.element.querySelectorAll(".next-nav-button").forEach(element => element.parentNode.remove());
+				$$(".next-nav-button").forEach(element => element.parentNode.remove());
 			}
 		}
 	},
@@ -979,7 +981,7 @@ Page.Load =
 	{
 		set: function()
 		{
-			Page.element.querySelectorAll("a").forEach(link =>
+			$$("a").forEach(link =>
 			{
 				let href = link.getAttribute("href");
 				
@@ -1004,7 +1006,7 @@ Page.Load =
 
 		disable: function()
 		{
-			Page.element.querySelectorAll("a:not(.real-link)").forEach(link => link.addEventListener("click", e => e.preventDefault()));
+			$$("a:not(.real-link)").forEach(link => link.addEventListener("click", e => e.preventDefault()));
 		}
 	},
 	
@@ -1022,7 +1024,7 @@ Page.Load =
 				
 				if (DEBUG)
 				{
-					Page.element.querySelectorAll(".inline-math").forEach(element =>
+					$$(".inline-math").forEach(element =>
 					{
 						if (element.getBoundingClientRect().width >= this.lengthCap)
 						{
