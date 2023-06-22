@@ -127,6 +127,42 @@ class Applet
 	}
 	
 	
+	onGrabCanvas(x, y, event)
+	{
+		this.pan.onGrabCanvas();
+		this.zoom.onGrabCanvas();
+	}
+	
+	
+	
+	onDragCanvas(x, y, xDelta, yDelta, event)
+	{
+		this.pan.onDragCanvas(x, y, xDelta, yDelta);
+	}
+	
+	
+	
+	onReleaseCanvas(x, y, event)
+	{
+		this.pan.onReleaseCanvas();
+		this.zoom.onReleaseCanvas();
+	}
+	
+	
+	
+	onWheelCanvas(x, y, scrollAmount, event)
+	{
+		this.zoom.onWheelCanvas(x, y, scrollAmount);
+	}
+	
+	
+	
+	onPinchCanvas(x, y, touchDistanceDelta, event)
+	{
+		this.zoom.onPinchCanvas(x, y, touchDistanceDelta);
+	}
+	
+	
 	
 	changeAspectRatio(useZoomLevel = false, wilsons = [this.wilson])
 	{

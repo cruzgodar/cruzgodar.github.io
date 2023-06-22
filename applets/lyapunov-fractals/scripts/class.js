@@ -1,24 +1,19 @@
 "use strict";
 
-class JuliaSetMosaic extends Applet
+class LyapunovFractal extends Applet
 {
 	wilsonHidden = null;
+	
+	
 	
 	aspectRatio = 1;
 	
 	numIterations = 100;
 	
-	exposure = 1;
-	
-	zoomLevel = 0;
-	
 	pastBrightnessScales = [];
 	
-	a = 0;
-	b = 0;
-	
 	resolution = 500;
-	resolutionHidden = 50;
+	resolutionHidden = 100;
 	
 	lastTimestamp = -1;
 	
@@ -28,16 +23,12 @@ class JuliaSetMosaic extends Applet
 	{
 		super(canvas);
 		
+		this.pan.minX = 0;
+		this.pan.maxX = 4;
+		this.pan.minY = 0;
+		this.pan.maxY = 4;
+		
 		const hiddenCanvas = this.createHiddenCanvas();
-		
-		
-		
-		this.pan.minX = -2.75;
-		this.pan.maxX = 1.25;
-		this.pan.minY = -2;
-		this.pan.maxY = 2;
-		
-		
 		
 		const tempShader = "precision highp float; varying vec2 uv; void main(void) { gl_FragColor = vec4(0.0, 0.0, 0.0, 1.0); }";
 		
@@ -47,11 +38,13 @@ class JuliaSetMosaic extends Applet
 			
 			shader: tempShader,
 			
-			canvasWidth: this.resolution,
-			canvasHeight: this.resolution,
+			canvasWidth: 500,
+			canvasHeight: 500,
 			
-			worldCenterX: -.75,
-			worldCenterY: 0,
+			worldWidth: 4,
+			worldHeight: 4,
+			worldCenterX: 2,
+			worldCenterY: 2,
 			
 			
 			
@@ -81,25 +74,23 @@ class JuliaSetMosaic extends Applet
 			pinchCallback: this.onPinchCanvas.bind(this)
 		};
 		
-		this.wilson = new Wilson(canvas, options);
-		
 		const optionsHidden =
 		{
 			renderer: "gpu",
 			
 			shader: tempShader,
 			
-			canvasWidth: this.resolutionHidden,
-			canvasHeight: this.resolutionHidden
+			canvasWidth: 100,
+			canvasHeight: 100
 		};
+		
+		this.wilson = new Wilson(canvas, options);
 		
 		this.wilsonHidden = new Wilson(hiddenCanvas, optionsHidden);
 		
-		
-		
 		this.zoom.init();
 		
-		
+		console.log(this.zoom.level);
 		
 		const boundFunction = this.changeAspectRatio.bind(this, true);
 		window.addEventListener("resize", boundFunction);
@@ -108,15 +99,22 @@ class JuliaSetMosaic extends Applet
 	
 	
 	
-	run(resolution = 1000, setDensity = 10, exposure = 1, numIterations = 100)
+	run(generatingString)
 	{
-		this.resolution = resolution;
+		let generatingCode = [];
 		
-		this.wilson.changeCanvasSize(this.resolution, this.resolution);
-		
-		this.setDensity = setDensity;
-		this.exposure = exposure;
-		this.numIterations = numIterations;
+		for (let i = 0; i < generatingString.length; i++)
+		{
+			if (generatingString[i] === "B")
+			{
+				generatingCode.push(1);
+			}
+			
+			else
+			{
+				generatingCode.push(0);
+			}
+		}
 		
 		
 		
@@ -125,19 +123,15 @@ class JuliaSetMosaic extends Applet
 			
 			varying vec2 uv;
 			
-			uniform float setDensity;
-			
 			uniform float aspectRatio;
 			
 			uniform float worldCenterX;
 			uniform float worldCenterY;
 			uniform float worldSize;
 			
-			uniform float a;
-			uniform float b;
-			uniform float exposure;
-			uniform int numIterations;
 			uniform float brightnessScale;
+			
+			uniform int seq[12];
 			
 			
 			
@@ -155,74 +149,82 @@ class JuliaSetMosaic extends Applet
 					z = vec2(uv.x * worldSize + worldCenterX, uv.y / aspectRatio * worldSize + worldCenterY);
 				}
 				
-				vec3 color = normalize(vec3(abs(z.x + z.y) / 2.0, abs(z.x) / 2.0, abs(z.y) / 2.0) + .1 / length(z) * vec3(1.0, 1.0, 1.0));
-				float brightness = exp(-length(z));
+				gl_FragColor = vec4(0.0, 0.0, 0.0, 1.0);
 				
 				
 				
-				vec2 c = floor(z * setDensity) / setDensity;
-				z = (mod(z, 1.0 / setDensity) * setDensity - vec2(.5, .5)) * 3.0;
+				float x = .5;
 				
-				for (int iteration = 0; iteration < 3001; iteration++)
+				float lambda = 0.0;
+				
+				vec3 color = vec3(0.0, 0.0, 0.0);
+				
+				for (int iteration = 0; iteration < ${Math.floor(250 / generatingString.length)}; iteration++)
 				{
-					if (iteration == numIterations)
+					for (int index = 0; index < ${generatingString.length}; index++)
 					{
-						gl_FragColor = vec4(0.0, 0.0, 0.0, 1.0);
-						return;
+						if (seq[index] == 0)
+						{
+							x = z.x * x * (1.0 - x);
+							
+							color.x += abs(z.x) / 40.0;
+						}
+						
+						else
+						{
+							x = z.y * x * (1.0 - x);
+							
+							color.y += abs(z.y) / 40.0;
+						}
+						
+						lambda += log(abs(1.0 - 2.0*x));
+						
+						color.z = -lambda / 100.0;
 					}
-					
-					if (length(z) >= 1000.0)
-					{
-						break;
-					}
-					
-					z = vec2(z.x * z.x - z.y * z.y + c.x, 2.0 * z.x * z.y + c.y);
-					
-					brightness += exp(-length(z));
 				}
 				
+				lambda /= 10000.0;
 				
-				gl_FragColor = vec4(brightness / brightnessScale * exposure * color, 1.0);
+				if (lambda <= 0.0)
+				{
+					gl_FragColor = vec4(-lambda / brightnessScale * color, 1.0);
+					
+					return;
+				}
 			}
 		`;
-		
-		
 		
 		this.wilson.render.shaderPrograms = [];
 		this.wilson.render.loadNewShader(fragShaderSource);
 		this.wilson.gl.useProgram(this.wilson.render.shaderPrograms[0]);
-		this.wilson.render.initUniforms(["setDensity", "aspectRatio", "worldCenterX", "worldCenterY", "worldSize", "a", "b", "exposure", "numIterations", "brightnessScale"]);
+		this.wilson.render.initUniforms(["aspectRatio", "worldCenterX", "worldCenterY", "worldSize", "brightnessScale", "seq"]);
 		this.wilson.gl.uniform1f(this.wilson.uniforms["aspectRatio"], 1);
 		
 		this.wilsonHidden.render.shaderPrograms = [];
 		this.wilsonHidden.render.loadNewShader(fragShaderSource);
 		this.wilsonHidden.gl.useProgram(this.wilsonHidden.render.shaderPrograms[0]);
-		this.wilsonHidden.render.initUniforms(["setDensity", "aspectRatio", "worldCenterX", "worldCenterY", "worldSize", "a", "b", "exposure", "numIterations", "brightnessScale"]);
+		this.wilsonHidden.render.initUniforms(["aspectRatio", "worldCenterX", "worldCenterY", "worldSize", "brightnessScale", "seq"]);
 		this.wilsonHidden.gl.uniform1f(this.wilsonHidden.uniforms["aspectRatio"], 1);
 		
-		this.wilson.worldWidth = 4;
-		this.wilson.worldHeight = 4;
-		this.wilson.worldCenterX = -.75;
-		this.wilson.worldCenterY = 0;
 		
-		this.juliaMode = 0;
-		this.zoom.level = 0;
 		
 		this.pastBrightnessScales = [];
 		
+		this.zoom.init();
+		
+		this.wilson.gl.uniform1iv(this.wilson.uniforms["seq"], generatingCode);
+		this.wilsonHidden.gl.uniform1iv(this.wilsonHidden.uniforms["seq"], generatingCode);
 		
 		
-		//Render the inital frame.
-		this.wilsonHidden.gl.uniform1f(this.wilsonHidden.uniforms["aspectRatio"], 1);
 		
 		window.requestAnimationFrame(this.drawFrame.bind(this));
 	}
-
+	
 
 
 	drawFrame(timestamp)
 	{
-		const timeElapsed = timestamp - this.lastTimestamp;
+		let timeElapsed = timestamp - this.lastTimestamp;
 		
 		this.lastTimestamp = timestamp;
 		
@@ -238,19 +240,13 @@ class JuliaSetMosaic extends Applet
 		
 		
 		
-		this.numIterations = (-this.zoomLevel * 30) + 200;
-		
-		this.wilsonHidden.gl.uniform1f(this.wilsonHidden.uniforms["setDensity"], this.setDensity);
+		this.wilsonHidden.gl.uniform1f(this.wilsonHidden.uniforms["aspectRatio"], this.aspectRatio);
 		this.wilsonHidden.gl.uniform1f(this.wilsonHidden.uniforms["worldCenterX"], this.wilson.worldCenterX);
 		this.wilsonHidden.gl.uniform1f(this.wilsonHidden.uniforms["worldCenterY"], this.wilson.worldCenterY);
 		
 		this.wilsonHidden.gl.uniform1f(this.wilsonHidden.uniforms["worldSize"], Math.min(this.wilson.worldHeight, this.wilson.worldWidth) / 2);
 		
-		this.wilsonHidden.gl.uniform1i(this.wilsonHidden.uniforms["numIterations"], this.numIterations);
-		this.wilsonHidden.gl.uniform1f(this.wilsonHidden.uniforms["exposure"], 1);
-		this.wilsonHidden.gl.uniform1f(this.wilsonHidden.uniforms["a"], this.a);
-		this.wilsonHidden.gl.uniform1f(this.wilsonHidden.uniforms["b"], this.b);
-		this.wilsonHidden.gl.uniform1f(this.wilsonHidden.uniforms["brightnessScale"], 20 * (Math.abs(this.zoomLevel) + 1));
+		this.wilsonHidden.gl.uniform1f(this.wilsonHidden.uniforms["brightnessScale"], 20);
 		
 		this.wilsonHidden.render.drawFrame();
 		
@@ -267,7 +263,7 @@ class JuliaSetMosaic extends Applet
 		
 		brightnesses.sort((a, b) => a - b);
 		
-		let brightnessScale = (brightnesses[Math.floor(this.resolutionHidden * this.resolutionHidden * .96)] + brightnesses[Math.floor(this.resolutionHidden * this.resolutionHidden * .98)]) / 255 * 15 * (Math.abs(this.zoomLevel / 2) + 1);
+		let brightnessScale = (brightnesses[Math.floor(this.resolutionHidden * this.resolutionHidden * .96)] + brightnesses[Math.floor(this.resolutionHidden * this.resolutionHidden * .98)]) / 255 * 6;
 		
 		this.pastBrightnessScales.push(brightnessScale);
 		
@@ -282,19 +278,12 @@ class JuliaSetMosaic extends Applet
 		
 		
 		
-		this.wilson.gl.uniform1f(this.wilson.uniforms["setDensity"], this.setDensity);
-		
 		this.wilson.gl.uniform1f(this.wilson.uniforms["aspectRatio"], this.aspectRatio);
-		
 		this.wilson.gl.uniform1f(this.wilson.uniforms["worldCenterX"], this.wilson.worldCenterX);
 		this.wilson.gl.uniform1f(this.wilson.uniforms["worldCenterY"], this.wilson.worldCenterY);
 		
 		this.wilson.gl.uniform1f(this.wilson.uniforms["worldSize"], Math.min(this.wilson.worldHeight, this.wilson.worldWidth) / 2);
 		
-		this.wilson.gl.uniform1i(this.wilson.uniforms["numIterations"], this.numIterations);
-		this.wilson.gl.uniform1f(this.wilson.uniforms["exposure"], this.exposure);
-		this.wilson.gl.uniform1f(this.wilson.uniforms["a"], this.a);
-		this.wilson.gl.uniform1f(this.wilson.uniforms["b"], this.b);
 		this.wilson.gl.uniform1f(this.wilson.uniforms["brightnessScale"], brightnessScale);
 		
 		this.wilson.render.drawFrame();

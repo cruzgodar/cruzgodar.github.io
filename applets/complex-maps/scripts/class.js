@@ -302,35 +302,6 @@ class ComplexMap extends Applet
 	
 	
 	
-	onDragCanvas(x, y, xDelta, yDelta, event)
-	{
-		this.pan.onDragCanvas(x, y, xDelta, yDelta);
-	}
-	
-	
-	
-	onReleaseCanvas(x, y, event)
-	{
-		this.pan.onReleaseCanvas();
-		this.zoom.onReleaseCanvas();
-	}
-	
-	
-	
-	onWheelCanvas(x, y, scrollAmount, event)
-	{
-		this.zoom.onWheelCanvas(x, y, scrollAmount);
-	}
-	
-	
-	
-	onPinchCanvas(x, y, touchDistanceDelta, event)
-	{
-		this.zoom.onPinchCanvas(x, y, touchDistanceDelta);
-	}
-	
-	
-	
 	onDragDraggable(activeDraggable, x, y, event)
 	{
 		try {this.draggableCallback(activeDraggable, x, y, event)}

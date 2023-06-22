@@ -570,20 +570,6 @@ class FractalSounds extends Applet
 		source.start(0);
 		audioGainNode.gain.exponentialRampToValueAtTime(.0001, numFrames / 44100);
 	}
-	
-	
-	
-	onWheelCanvas(x, y, scrollAmount, event)
-	{
-		this.zoom.onWheelCanvas(x, y, scrollAmount);
-	}
-	
-	
-	
-	onPinchCanvas(x, y, touchDistanceDelta, event)
-	{
-		this.zoom.onPinchCanvas(x, y, touchDistanceDelta);
-	}
 
 
 
