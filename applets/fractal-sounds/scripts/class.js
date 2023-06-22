@@ -50,8 +50,6 @@ class FractalSounds extends Applet
 		this.pan.minY = -3;
 		this.pan.maxY = 3;
 		
-		this.zoom.level = Math.log2(Math.max(this.pan.maxX - this.pan.minX, this.pan.maxY - this.pan.minY) / 3);
-		
 		
 		
 		const tempShader = "precision highp float; varying vec2 uv; void main(void) { gl_FragColor = vec4(0.0, 0.0, 0.0, 1.0); }";
@@ -140,7 +138,9 @@ class FractalSounds extends Applet
 		
 		
 		
-		const boundFunction = this.changeAspectRatio.bind(this);
+		this.zoom.init();
+		
+		const boundFunction = this.changeAspectRatio.bind(this, true, [this.wilson, this.wilsonJulia]);
 		window.addEventListener("resize", boundFunction);
 		this.handlers.push([window, "resize", boundFunction]);
 		
@@ -670,8 +670,6 @@ class FractalSounds extends Applet
 	
 	switchFullscreen()
 	{
-		this.changeAspectRatio();
-		
 		try
 		{
 			document.body.querySelectorAll(".wilson-applet-canvas-container").forEach(element => element.style.setProperty("background-color", "rgba(0, 0, 0, 0)", "important"));
@@ -682,44 +680,7 @@ class FractalSounds extends Applet
 		catch(ex) {}
 		
 		this.wilson.fullscreen.switchFullscreen();
-	}
-	
-	
-	
-	changeAspectRatio()
-	{
-		if (this.wilsonJulia.fullscreen.currentlyFullscreen)
-		{
-			this.aspectRatio = window.innerWidth / window.innerHeight;
-			
-			if (this.aspectRatio >= 1)
-			{
-				this.wilson.changeCanvasSize(this.resolution, Math.floor(this.resolution / this.aspectRatio));
-				this.wilsonJulia.changeCanvasSize(this.resolution, Math.floor(this.resolution / this.aspectRatio));
-				
-				this.wilson.worldWidth = 4 * Math.pow(2, this.zoom.level) * this.aspectRatio;
-				this.wilson.worldHeight = 4 * Math.pow(2, this.zoom.level);
-			}
-			
-			else
-			{
-				this.wilson.changeCanvasSize(Math.floor(this.resolution * this.aspectRatio), this.resolution);
-				this.wilsonJulia.changeCanvasSize(Math.floor(this.resolution * this.aspectRatio), this.resolution);
-				
-				this.wilson.worldWidth = 4 * Math.pow(2, this.zoom.level);
-				this.wilson.worldHeight = 4 * Math.pow(2, this.zoom.level) / this.aspectRatio;
-			}
-		}
 		
-		else
-		{
-			this.aspectRatio = 1;
-			
-			this.wilson.changeCanvasSize(this.resolution, this.resolution);
-			this.wilsonJulia.changeCanvasSize(this.resolution, this.resolution);
-			
-			this.wilson.worldWidth = 4 * Math.pow(2, this.zoom.level);
-			this.wilson.worldHeight = 4 * Math.pow(2, this.zoom.level);
-		}
+		this.changeAspectRatio(true, [this.wilson, this.wilsonJulia]);
 	}
 }

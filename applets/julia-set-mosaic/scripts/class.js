@@ -20,25 +20,6 @@ class JuliaSetMosaic extends Applet
 	resolution = 500;
 	resolutionHidden = 50;
 	
-	fixedPointX = 0;
-	fixedPointY = 0;
-	
-	nextPanVelocityX = 0;
-	nextPanVelocityY = 0;
-	nextZoomVelocity = 0;
-	
-	panVelocityX = 0;
-	panVelocityY = 0;
-	zoomVelocity = 0;
-	
-	panFriction = .96;
-	panVelocityStartThreshhold = .0025;
-	panVelocityStopThreshhold = .00025;
-	
-	zoomFriction = .93;
-	zoomVelocityStartThreshhold = .01;
-	zoomVelocityStopThreshhold = .001;
-	
 	lastTimestamp = -1;
 	
 	
@@ -48,6 +29,13 @@ class JuliaSetMosaic extends Applet
 		super(canvas);
 		
 		const hiddenCanvas = this.createHiddenCanvas();
+		
+		
+		
+		this.pan.minX = -2.75;
+		this.pan.maxX = 1.25;
+		this.pan.minY = -2;
+		this.pan.maxY = 2;
 		
 		
 		
@@ -76,7 +64,7 @@ class JuliaSetMosaic extends Applet
 			enterFullscreenButtonIconPath: "/graphics/general-icons/enter-fullscreen.png",
 			exitFullscreenButtonIconPath: "/graphics/general-icons/exit-fullscreen.png",
 			
-			switchFullscreenCallback: this.changeAspectRatio.bind(this),
+			switchFullscreenCallback: this.changeAspectRatio.bind(this, true),
 			
 			
 			
@@ -109,7 +97,11 @@ class JuliaSetMosaic extends Applet
 		
 		
 		
-		const boundFunction = this.changeAspectRatio.bind(this);
+		this.zoom.init();
+		
+		
+		
+		const boundFunction = this.changeAspectRatio.bind(this, true);
 		window.addEventListener("resize", boundFunction);
 		this.handlers.push([window, "resize", boundFunction]);
 	}
@@ -208,21 +200,13 @@ class JuliaSetMosaic extends Applet
 		this.wilsonHidden.render.initUniforms(["setDensity", "aspectRatio", "worldCenterX", "worldCenterY", "worldSize", "a", "b", "exposure", "numIterations", "brightnessScale"]);
 		this.wilsonHidden.gl.uniform1f(this.wilsonHidden.uniforms["aspectRatio"], 1);
 		
-		this.nextPanVelocityX = 0;
-		this.nextPanVelocityY = 0;
-		this.nextZoomVelocity = 0;
-		
-		this.panVelocityX = 0;
-		this.panVelocityY = 0;
-		this.zoomVelocity = 0;
-		
 		this.wilson.worldWidth = 4;
 		this.wilson.worldHeight = 4;
 		this.wilson.worldCenterX = -.75;
 		this.wilson.worldCenterY = 0;
 		
 		this.juliaMode = 0;
-		this.zoomLevel = 0;
+		this.zoom.level = 0;
 		
 		this.pastBrightnessScales = [];
 		
@@ -238,123 +222,37 @@ class JuliaSetMosaic extends Applet
 	
 	onGrabCanvas(x, y, event)
 	{
-		this.panVelocityX = 0;
-		this.panVelocityY = 0;
-		this.zoomVelocity = 0;
-		
-		this.nextPanVelocityX = 0;
-		this.nextPanVelocityY = 0;
-		this.nextZoomVelocity = 0;
+		this.pan.onGrabCanvas();
+		this.zoom.onGrabCanvas();
 	}
 	
 	
 	
 	onDragCanvas(x, y, xDelta, yDelta, event)
 	{
-		this.wilson.worldCenterX -= xDelta;
-		this.wilson.worldCenterY -= yDelta;
-		
-		this.nextPanVelocityX = -xDelta / this.wilson.worldWidth;
-		this.nextPanVelocityY = -yDelta / this.wilson.worldHeight;
-		
-		window.requestAnimationFrame(this.drawFrame.bind(this));
+		this.pan.onDragCanvas(x, y, xDelta, yDelta);
 	}
 	
 	
 	
 	onReleaseCanvas(x, y, event)
 	{
-		if (this.nextPanVelocityX * this.nextPanVelocityX + this.nextPanVelocityY * this.nextPanVelocityY >= this.panVelocityStartThreshhold * this.panVelocityStartThreshhold)
-		{
-			this.panVelocityX = this.nextPanVelocityX;
-			this.panVelocityY = this.nextPanVelocityY;
-		}
-		
-		if (Math.abs(this.nextZoomVelocity) >= this.zoomVelocityStartThreshhold)
-		{
-			this.zoomVelocity = this.nextZoomVelocity;
-		}
-		
-		window.requestAnimationFrame(this.drawFrame.bind(this));
+		this.pan.onReleaseCanvas();
+		this.zoom.onReleaseCanvas();
 	}
 	
 	
 	
 	onWheelCanvas(x, y, scrollAmount, event)
 	{
-		this.fixedPointX = x;
-		this.fixedPointY = y;
-		
-		if (Math.abs(scrollAmount / 100) < .3)
-		{
-			this.zoomLevel += scrollAmount / 100;
-			
-			this.zoomLevel = Math.min(this.zoomLevel, 1);
-		}
-		
-		else
-		{
-			this.zoomVelocity += Math.sign(scrollAmount) * .05;
-		}
-		
-		this.zoomCanvas();
+		this.zoom.onWheelCanvas(x, y, scrollAmount);
 	}
 	
 	
 	
 	onPinchCanvas(x, y, touchDistanceDelta, event)
 	{
-		if (this.aspectRatio >= 1)
-		{
-			this.zoomLevel -= touchDistanceDelta / this.wilson.worldWidth * 10;
-			
-			this.nextZoomVelocity = -touchDistanceDelta / this.wilson.worldWidth * 10;
-		}
-		
-		else
-		{
-			this.zoomLevel -= touchDistanceDelta / this.wilson.worldHeight * 10;
-			
-			this.nextZoomVelocity = -touchDistanceDelta / this.wilson.worldHeight * 10;
-		}
-		
-		this.zoomLevel = Math.min(this.zoomLevel, 1);
-		
-		this.fixedPointX = x;
-		this.fixedPointY = y;
-		
-		this.zoomCanvas();
-	}
-	
-	
-	
-	zoomCanvas()
-	{
-		if (this.aspectRatio >= 1)
-		{
-			const newWorldCenter = this.wilson.input.getZoomedWorldCenter(this.fixedPointX, this.fixedPointY, 4 * Math.pow(2, this.zoomLevel) * this.aspectRatio, 4 * Math.pow(2, this.zoomLevel));
-			
-			this.wilson.worldWidth = 4 * Math.pow(2, this.zoomLevel) * this.aspectRatio;
-			this.wilson.worldHeight = 4 * Math.pow(2, this.zoomLevel);
-			
-			this.wilson.worldCenterX = newWorldCenter[0];
-			this.wilson.worldCenterY = newWorldCenter[1];
-		}
-		
-		else
-		{
-			const newWorldCenter = this.wilson.input.getZoomedWorldCenter(this.fixedPointX, this.fixedPointY, 4 * Math.pow(2, this.zoomLevel), 4 * Math.pow(2, this.zoomLevel) / this.aspectRatio);
-			
-			this.wilson.worldWidth = 4 * Math.pow(2, this.zoomLevel);
-			this.wilson.worldHeight = 4 * Math.pow(2, this.zoomLevel) / this.aspectRatio;
-			
-			this.wilson.worldCenterX = newWorldCenter[0];
-			this.wilson.worldCenterY = newWorldCenter[1];
-		}
-		
-		this.numIterations = (-this.zoomLevel * 30) + 200;
-		
-		window.requestAnimationFrame(this.drawFrame.bind(this));
+		this.zoom.onPinchCanvas(x, y, touchDistanceDelta);
 	}
 
 
@@ -365,14 +263,19 @@ class JuliaSetMosaic extends Applet
 		
 		this.lastTimestamp = timestamp;
 		
-		
-		
 		if (timeElapsed === 0)
 		{
 			return;
 		}
 		
 		
+		
+		this.pan.update();
+		this.zoom.update();
+		
+		
+		
+		this.numIterations = (-this.zoomLevel * 30) + 200;
 		
 		this.wilsonHidden.gl.uniform1f(this.wilsonHidden.uniforms["setDensity"], this.setDensity);
 		this.wilsonHidden.gl.uniform1f(this.wilsonHidden.uniforms["worldCenterX"], this.wilson.worldCenterX);
@@ -434,94 +337,6 @@ class JuliaSetMosaic extends Applet
 		this.wilson.render.drawFrame();
 		
 		
-		
-		if (timeElapsed >= 50)
-		{
-			this.panVelocityX = 0;
-			this.panVelocityY = 0;
-			this.zoomVelocity = 0;
-			
-			this.nextPanVelocityX = 0;
-			this.nextPanVelocityY = 0;
-			this.nextZoomVelocity = 0;
-		}
-		
-		
-		
-		if (this.panVelocityX !== 0 || this.panVelocityY !== 0 || this.zoomVelocity !== 0)
-		{
-			this.wilson.worldCenterX += this.panVelocityX * this.wilson.worldWidth;
-			this.wilson.worldCenterY += this.panVelocityY * this.wilson.worldHeight;
-			
-			
-			
-			this.panVelocityX *= this.panFriction;
-			this.panVelocityY *= this.panFriction;
-			
-			if (this.panVelocityX * this.panVelocityX + this.panVelocityY * this.panVelocityY < this.panVelocityStopThreshhold * this.panVelocityStopThreshhold)
-			{
-				this.panVelocityX = 0;
-				this.panVelocityY = 0;
-			}
-			
-			
-			
-			this.zoomLevel += this.zoomVelocity;
-			
-			this.zoomLevel = Math.min(this.zoomLevel, 1);
-			
-			this.zoomCanvas();
-			
-			this.zoomVelocity *= this.zoomFriction;
-			
-			if (Math.abs(this.zoomVelocity) < this.zoomVelocityStopThreshhold)
-			{
-				this.zoomVelocity = 0;
-			}
-			
-			
-			
-			if (!this.animationPaused)
-			{
-				window.requestAnimationFrame(this.drawFrame.bind(this));
-			}
-		}
-	}
-	
-	
-	
-	changeAspectRatio()
-	{
-		if (this.wilson.fullscreen.currentlyFullscreen)
-		{
-			this.aspectRatio = window.innerWidth / window.innerHeight;
-			
-			if (this.aspectRatio >= 1)
-			{
-				this.wilson.changeCanvasSize(this.resolution, Math.floor(this.resolution / this.aspectRatio));
-				
-				this.wilson.worldWidth = 4 * Math.pow(2, this.zoomLevel) * this.aspectRatio;
-				this.wilson.worldHeight = 4 * Math.pow(2, this.zoomLevel);
-			}
-			
-			else
-			{
-				this.wilson.changeCanvasSize(Math.floor(this.resolution * this.aspectRatio), this.resolution);
-				
-				this.wilson.worldWidth = 4 * Math.pow(2, this.zoomLevel);
-				this.wilson.worldHeight = 4 * Math.pow(2, this.zoomLevel) / this.aspectRatio;
-			}
-		}
-		
-		else
-		{
-			this.aspectRatio = 1;
-			
-			this.wilson.changeCanvasSize(this.resolution, this.resolution);
-			
-			this.wilson.worldWidth = 4 * Math.pow(2, this.zoomLevel);
-			this.wilson.worldHeight = 4 * Math.pow(2, this.zoomLevel);
-		}
 		
 		window.requestAnimationFrame(this.drawFrame.bind(this));
 	}

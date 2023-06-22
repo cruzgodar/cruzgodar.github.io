@@ -128,40 +128,55 @@ class Applet
 	
 	
 	
-	changeAspectRatio()
+	changeAspectRatio(useZoomLevel = false, wilsons = [this.wilson])
 	{
-		if (this.wilson.fullscreen.currentlyFullscreen)
+		wilsons.forEach(wilson =>
 		{
-			this.aspectRatio = window.innerWidth / window.innerHeight;
-			
-			if (this.aspectRatio >= 1)
+			if (wilson.fullscreen.currentlyFullscreen)
 			{
-				this.wilson.changeCanvasSize(this.resolution, Math.floor(this.resolution / this.aspectRatio));
+				this.aspectRatio = window.innerWidth / window.innerHeight;
 				
-				this.wilson.worldWidth = 3 * Math.pow(2, this.zoom.level) * this.aspectRatio;
-				this.wilson.worldHeight = 3 * Math.pow(2, this.zoom.level);
+				if (this.aspectRatio >= 1)
+				{
+					wilson.changeCanvasSize(this.resolution, Math.floor(this.resolution / this.aspectRatio));
+					
+					if (useZoomLevel)
+					{
+						wilson.worldWidth = 3 * Math.pow(2, this.zoom.level) * this.aspectRatio;
+						wilson.worldHeight = 3 * Math.pow(2, this.zoom.level);
+					}
+				}
+				
+				else
+				{
+					wilson.changeCanvasSize(Math.floor(this.resolution * this.aspectRatio), this.resolution);
+					
+					if (useZoomLevel)
+					{
+						wilson.worldWidth = 3 * Math.pow(2, this.zoom.level);
+						wilson.worldHeight = 3 * Math.pow(2, this.zoom.level) / this.aspectRatio;
+					}
+				}
 			}
 			
 			else
 			{
-				this.wilson.changeCanvasSize(Math.floor(this.resolution * this.aspectRatio), this.resolution);
+				this.aspectRatio = 1;
 				
-				this.wilson.worldWidth = 3 * Math.pow(2, this.zoom.level);
-				this.wilson.worldHeight = 3 * Math.pow(2, this.zoom.level) / this.aspectRatio;
+				wilson.changeCanvasSize(this.resolution, this.resolution);
+				
+				if (useZoomLevel)
+				{
+					wilson.worldWidth = 3 * Math.pow(2, this.zoom.level);
+					wilson.worldHeight = 3 * Math.pow(2, this.zoom.level);
+				}
 			}
-		}
+		});
 		
-		else
+		if (useZoomLevel)
 		{
-			this.aspectRatio = 1;
-			
-			this.wilson.changeCanvasSize(this.resolution, this.resolution);
-			
-			this.wilson.worldWidth = 3 * Math.pow(2, this.zoom.level);
-			this.wilson.worldHeight = 3 * Math.pow(2, this.zoom.level);
+			this.zoom.clamp();
 		}
-		
-		this.zoom.clamp();
 	}
 	
 	
