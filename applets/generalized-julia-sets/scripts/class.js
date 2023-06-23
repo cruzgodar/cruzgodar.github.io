@@ -62,7 +62,7 @@ class GeneralizedJuliaSet extends Applet
 			enterFullscreenButtonIconPath: "/graphics/general-icons/enter-fullscreen.png",
 			exitFullscreenButtonIconPath: "/graphics/general-icons/exit-fullscreen.png",
 			
-			switchFullscreenCallback: this.changeAspectRatio.bind(this, true),
+			switchFullscreenCallback: () => this.changeAspectRatio(true),
 			
 			
 			
@@ -96,7 +96,7 @@ class GeneralizedJuliaSet extends Applet
 		
 		
 		
-		const boundFunction = this.changeAspectRatio.bind(this, true);
+		const boundFunction = () => this.changeAspectRatio(true);
 		window.addEventListener("resize", boundFunction);
 		this.handlers.push([window, "resize", boundFunction]);
 		

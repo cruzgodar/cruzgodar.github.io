@@ -57,7 +57,7 @@ class LyapunovFractal extends Applet
 			enterFullscreenButtonIconPath: "/graphics/general-icons/enter-fullscreen.png",
 			exitFullscreenButtonIconPath: "/graphics/general-icons/exit-fullscreen.png",
 			
-			switchFullscreenCallback: this.changeAspectRatio.bind(this, true),
+			switchFullscreenCallback: () => this.changeAspectRatio(true),
 			
 			
 			
@@ -92,7 +92,7 @@ class LyapunovFractal extends Applet
 		
 		console.log(this.zoom.level);
 		
-		const boundFunction = this.changeAspectRatio.bind(this, true);
+		const boundFunction = () => this.changeAspectRatio(true);
 		window.addEventListener("resize", boundFunction);
 		this.handlers.push([window, "resize", boundFunction]);
 	}

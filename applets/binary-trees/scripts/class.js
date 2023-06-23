@@ -46,7 +46,7 @@ class BinaryTree extends Applet
 			enterFullscreenButtonIconPath: "/graphics/general-icons/enter-fullscreen.png",
 			exitFullscreenButtonIconPath: "/graphics/general-icons/exit-fullscreen.png",
 			
-			switchFullscreenCallback: this.changeAspectRatio.bind(this)
+			switchFullscreenCallback: () => this.changeAspectRatio()
 		};
 		
 		this.wilson = new Wilson(canvas, options);

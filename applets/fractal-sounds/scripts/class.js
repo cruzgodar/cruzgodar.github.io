@@ -140,7 +140,7 @@ class FractalSounds extends Applet
 		
 		this.zoom.init();
 		
-		const boundFunction = this.changeAspectRatio.bind(this, true, [this.wilson, this.wilsonJulia]);
+		const boundFunction = () => this.changeAspectRatio(true, [this.wilson, this.wilsonJulia]);
 		window.addEventListener("resize", boundFunction);
 		this.handlers.push([window, "resize", boundFunction]);
 		

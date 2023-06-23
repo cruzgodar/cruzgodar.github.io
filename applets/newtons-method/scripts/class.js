@@ -208,7 +208,7 @@ class NewtonsMethod extends Applet
 			enterFullscreenButtonIconPath: "/graphics/general-icons/enter-fullscreen.png",
 			exitFullscreenButtonIconPath: "/graphics/general-icons/exit-fullscreen.png",
 			
-			switchFullscreenCallback: this.changeAspectRatio.bind(this, true),
+			switchFullscreenCallback: () => this.changeAspectRatio(true),
 			
 			
 			
@@ -249,7 +249,7 @@ class NewtonsMethod extends Applet
 		
 		
 		
-		const boundFunction = this.changeAspectRatio.bind(this, true, [this.wilson])
+		const boundFunction = () => this.changeAspectRatio(true);
 		window.addEventListener("resize", boundFunction);
 		Page.temporaryHandlers["resize"].push(boundFunction);
 		
