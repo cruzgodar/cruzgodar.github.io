@@ -251,7 +251,7 @@ class NewtonsMethod extends Applet
 		
 		const boundFunction = () => this.changeAspectRatio(true);
 		window.addEventListener("resize", boundFunction);
-		Page.temporaryHandlers["resize"].push(boundFunction);
+		this.handlers.push(window, "resize", boundFunction);
 		
 		
 		

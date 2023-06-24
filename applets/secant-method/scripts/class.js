@@ -251,7 +251,7 @@ class SecantMethod extends Applet
 		
 		const boundFunction = () => this.changeAspectRatio();
 		window.addEventListener("resize", boundFunction);
-		Page.temporaryHandlers["resize"].push(boundFunction);
+		this.handlers.push(window, "resize", boundFunction);
 		
 		
 		
