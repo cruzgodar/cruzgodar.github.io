@@ -138,6 +138,8 @@ class Applet
 				}
 			}
 			
+			wordElement.remove();
+			
 			element.nextElementSibling.innerHTML = `<span>${words.slice(0, startIndex).join(" ")}${startIndex !== 0 ? " " : ""}</span><span style="white-space: nowrap">${words.slice(startIndex).join(" ")}<span class="triangle">&#x25BC;</span></span>`;
 			
 			
