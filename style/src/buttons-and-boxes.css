@@ -177,7 +177,7 @@
 	font-size: 100%;
 	text-align: center;
 	
-	transition: border-color .25s ease-in-out, color .25s ease-in-out;
+	transition: border-color .25s ease-out, color .25s ease-out;
 }
 
 .text-box:focus
@@ -195,14 +195,69 @@
 	align-items: center;
 }
 
-.text-box-container .body-text
+.text-box-subtext
 {
 	width: 100% !important;
 	height: fit-content;
 	
 	margin-bottom: 0 !important;
 	
-	text-align: center;
+	text-align: center !important;
+}
+
+.text-box-subtext span
+{
+	transition: color .25s ease-out;
+}
+
+.text-box-container.capped-input .text-box
+{
+	border-bottom: 2px solid rgb(192, 0, 0) !important;
+	color: rgb(192, 0, 0) !important;
+}
+
+.text-box-container.capped-input .text-box-subtext span
+{
+	color: rgb(192, 0, 0) !important;
+	cursor: pointer;
+}
+
+.text-box-subtext .triangle
+{
+	width: 0;
+	padding-left: 0;
+	opacity: 0;
+	
+	font-size: 12px;
+	
+	transition: width .25s ease-out, opacity .25s ease-out, padding .25s ease-out, color .25s ease-out;
+}
+
+.text-box-container.capped-input .body-text .triangle
+{
+	width: 12px;
+	padding-left: 2px;
+	opacity: 1;
+}
+
+.input-cap-dialog
+{
+	max-width: min(360px, calc(100vw - 72px));
+	background-color: rgb(255, 255, 255);
+	color: rgb(96, 96, 96);
+	text-align: justify;
+	
+	padding: 12px;
+	padding-top: 10px;
+	border-radius: 12px;
+	box-shadow: 0px 0px 8px 0px rgba(0, 0, 0, .4);
+	position: absolute;
+	z-index: 100;
+}
+
+.input-cap-dialog .checkbox-row
+{
+	margin-top: 16px !important;
 }
 
 

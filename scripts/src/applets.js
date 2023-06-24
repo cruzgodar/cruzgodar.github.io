@@ -97,6 +97,192 @@ class Applet
 	
 	
 	
+	uncapEverything = false;
+	
+	//Adds a friendly cap on these inputs: if a higher number is entered, the whole thing turns red and a the label turns into a modal with an option to remove the limit.
+	setInputCaps(elements, caps)
+	{
+		elements.forEach((element, index) =>
+		{
+			const cap = caps[index];
+			
+			
+			
+			//Find the words on the last line.
+			const words = element.nextElementSibling.innerHTML.split(" ");
+			
+			const wordElement = document.createElement("p");
+			wordElement.classList.add("body-text");
+			wordElement.style.position = "fixed";
+			wordElement.style.opacity = 0;
+			wordElement.style.top = "-100vh";
+			wordElement.style.width = "fit-content";
+			wordElement.textContent = "";
+			Page.element.appendChild(wordElement);
+			
+			
+			
+			let startIndex = 0;
+			
+			for (let i = 0; i < words.length; i++)
+			{
+				wordElement.textContent = `${wordElement.textContent}${i === startIndex ? "" : " "}${words[i]}`;
+				
+				const width = wordElement.getBoundingClientRect().width;
+				
+				if (width >= 100)
+				{
+					startIndex = i;
+					i--;
+					wordElement.textContent = "";
+				}
+			}
+			
+			element.nextElementSibling.innerHTML = `<span>${words.slice(0, startIndex).join(" ")}${startIndex !== 0 ? " " : ""}</span><span style="white-space: nowrap">${words.slice(startIndex).join(" ")}<span class="triangle">&#x25BC;</span></span>`;
+			
+			
+			element.addEventListener("input", () =>
+			{
+				const value = parseFloat(element.value);
+				
+				if (value > cap && !this.uncapEverything)
+				{
+					element.value = cap;
+					
+					element.parentNode.classList.add("capped-input");
+				}
+				
+				else
+				{
+					element.parentNode.classList.remove("capped-input");
+				}
+			});
+			
+			element.nextElementSibling.addEventListener("click", () =>
+			{
+				if (element.parentNode.classList.contains("capped-input"))
+				{
+					this.hideCapDialogs();
+					
+					this.showCapDialog(element);
+				}
+			});
+		});
+		
+		
+		
+		const listener = (e) =>
+		{
+			if (!(e.target.classList.contains("keep-dialog-open")))
+			{
+				this.hideCapDialogs();
+			}
+		};
+		
+		const boundFunction = listener.bind(this);
+		document.documentElement.addEventListener("pointerdown", boundFunction);
+		this.handlers.push([document.documentElement, "pointerdown", boundFunction]);
+	}
+	
+	showCapDialog(element)
+	{
+		const dialog = document.createElement("div");
+		
+		dialog.classList.add("input-cap-dialog");
+		dialog.classList.add("keep-dialog-open");
+		
+		dialog.style.opacity = 0;
+		dialog.style.transform = "scale(.95)";
+		
+		dialog.innerHTML = `Higher values than this may take an extremely long time to complete, cause substantial lag, or crash the tab or entire browser. Only continue if you know what you&#x2019;re doing!
+		<div class="checkbox-row keep-dialog-open">
+			<div class="checkbox-container click-on-child keep-dialog-open">
+				<input type="checkbox" class="uncap-inputs-checkbox keep-dialog-open"/>
+				<div class="checkbox keep-dialog-open"></div>
+			</div>
+			<div style="margin-left: 10px" class="keep-dialog-open">
+				<p class="body-text checkbox-subtext keep-dialog-open">Uncap all inputs</p>
+			</div>
+		</div>`;
+		
+		Page.element.appendChild(dialog);
+		
+		
+		
+		const boundFunction = () => this.updateCapDialogLocation(element, dialog);
+		window.addEventListener("resize", boundFunction);
+		this.handlers.push([window, "resize", boundFunction]);
+		boundFunction();
+		
+		
+		
+		setTimeout(() =>
+		{
+			const checkboxElement = dialog.querySelector(".uncap-inputs-checkbox");
+			
+			checkboxElement.checked = this.uncapEverything;
+			
+			checkboxElement.addEventListener("input", () =>
+			{
+				this.uncapEverything = checkboxElement.checked;
+				
+				if (this.uncapEverything)
+				{
+					$$(".capped-input").forEach(cappedInputElement => cappedInputElement.classList.remove("capped-input"));
+				}
+			});
+			
+			Page.Load.HoverEvents.addWithScale(checkboxElement.parentNode, 1.1);
+			
+			anime({
+				targets: dialog,
+				opacity: 1,
+				scale: 1,
+				duration: 250,
+				easing: "easeOutQuad"
+			});
+		}, 16);
+	}
+	
+	hideCapDialogs()
+	{
+		try
+		{
+			const dialogs = $$(".input-cap-dialog");
+			
+			anime({
+				targets: dialogs,
+				opacity: 0,
+				scale: .95,
+				duration: 250,
+				easing: "easeOutQuad",
+				complete: () =>
+				{
+					dialogs.forEach(dialog => dialog.remove())
+				}
+			});
+		}
+		
+		catch(ex) {}
+	}
+	
+	updateCapDialogLocation(element, dialog)
+	{
+		try
+		{
+			const rect = element.nextElementSibling.getBoundingClientRect();
+			const dialogRect = dialog.getBoundingClientRect();
+			
+			dialog.style.top = `${window.scrollY + rect.top + rect.height + 4}px`;
+			
+			dialog.style.left = `${Math.min(Math.max(rect.left - (dialogRect.width + 12 - rect.width) / 2, 12), window.innerWidth - 12 - dialogRect.width)}px`;
+		}
+		
+		catch(ex) {}
+	}
+	
+	
+	
 	pauseWhenOffscreen()
 	{
 		const onScroll = () =>

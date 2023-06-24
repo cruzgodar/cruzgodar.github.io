@@ -172,7 +172,7 @@ Site.Settings =
 					transition: color ${Site.opacityAnimationTime * 2 / 1000}s ease !important;
 				}
 				
-				 .text-box, .text-field, .checkbox-container, .checkbox-container > input ~ .checkbox, .radio-button-container, .radio-button-container > input ~ .radio-button, .loading-spinner:after, #floating-footer-content, #floating-footer-button-background, .footer-button, .text-button, .nav-button, .slider-container > input
+				 .text-box, .text-field, .checkbox-container, .checkbox-container > input ~ .checkbox, .radio-button-container, .radio-button-container > input ~ .radio-button, .loading-spinner:after, #floating-footer-content, #floating-footer-button-background, .footer-button, .text-button, .nav-button, .slider-container > input, .input-cap-dialog
 				{
 					transition: background-color ${Site.opacityAnimationTime * 2 / 1000}s ease, border-color ${Site.opacityAnimationTime * 2 / 1000}s ease, color ${Site.opacityAnimationTime * 2 / 1000}s ease !important;
 				}
@@ -332,13 +332,13 @@ Site.Settings =
 			
 			Page.setElementStyles(".section-text, .quote-attribution, #card-close-button", "color", "rgb(48, 48, 48)");
 			
-			Page.setElementStyles(".body-text, .body-text span, .body-text em, .body-text strong, .body-text dfn, .song-lyrics, .image-link-subtext, .floating-settings-button-text, .quote-text q, .text-box, .text-field", "color", "rgb(96, 96, 96)");
+			Page.setElementStyles(".body-text, .body-text span, .body-text em, .body-text strong, .body-text dfn, .song-lyrics, .image-link-subtext, .floating-settings-button-text, .quote-text q, .text-box, .text-field, .input-cap-dialog", "color", "rgb(96, 96, 96)");
 			
 			Page.setElementStyles("a", "color", "rgb(127, 192, 127)");
 			
-			Page.setElementStyles(".text-box, .text-field, .checkbox-container > input ~ .checkbox, .radio-button-container > input ~ .radio-button", "background-color", "rgb(255, 255, 255)");
+			Page.setElementStyles(".text-box, .text-field, .checkbox-container > input ~ .checkbox, .radio-button-container > input ~ .radio-button, .input-cap-dialog", "background-color", "rgb(255, 255, 255)");
 			
-			Page.setElementStyles(".text-box, .text-field, .text-button, .checkbox-container, #output-canvas", "border-color", "rgb(96, 96, 96)");
+			Page.setElementStyles(".text-box, .text-field, .text-button, .checkbox-container, #output-canvas, .input-cap-dialog", "border-color", "rgb(96, 96, 96)");
 			
 			Page.setElementStyles(".checkbox-container > input:checked ~ .checkbox, .radio-button-container > input:checked ~ .radio-button", "background-color", "rgb(96, 96, 96)");
 			
@@ -404,13 +404,13 @@ Site.Settings =
 			
 			Page.setElementStyles(".section-text, .quote-attribution, #card-close-button", "color", "rgb(220, 220, 220)");
 			
-			Page.setElementStyles(".body-text, .body-text span, .body-text em, .body-text strong, .body-text dfn, .song-lyrics, .image-link-subtext, .floating-settings-button-text, .quote-text q, .text-box, .text-field", "color", "rgb(172, 172, 172)");
+			Page.setElementStyles(".body-text, .body-text span, .body-text em, .body-text strong, .body-text dfn, .song-lyrics, .image-link-subtext, .floating-settings-button-text, .quote-text q, .text-box, .text-field, .input-cap-dialog", "color", "rgb(172, 172, 172)");
 			
 			Page.setElementStyles("a", "color", "rgb(144, 216, 144)");
 			
-			Page.setElementStyles(".text-box, .text-field, .checkbox-container > input ~ .checkbox, .radio-button-container > input ~ .radio-button", "background-color", "rgb(24, 24, 24)");
+			Page.setElementStyles(".text-box, .text-field, .checkbox-container > input ~ .checkbox, .radio-button-container > input ~ .radio-button, .input-cap-dialog", "background-color", "rgb(24, 24, 24)");
 			
-			Page.setElementStyles(".text-box, .text-field, .text-button, .checkbox-container, #output-canvas", "border-color", "rgb(172, 172, 172)");
+			Page.setElementStyles(".text-box, .text-field, .text-button, .checkbox-container, #output-canvas, .input-cap-dialog", "border-color", "rgb(172, 172, 172)");
 			
 			Page.setElementStyles(".checkbox-container > input:checked ~ .checkbox, .radio-button-container > input:checked ~ .radio-button", "background-color", "rgb(172, 172, 172)");
 			
@@ -554,7 +554,7 @@ Site.Settings =
 		
 		
 		
-		.text-box, .text-field
+		.text-box, .text-field, .input-cap-dialog
 		{
 			background-color: rgb(24, 24, 24);
 			color: rgb(172, 172, 172);
