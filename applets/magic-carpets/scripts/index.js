@@ -45,6 +45,12 @@
 	
 	const gridSizeInputElement = $("#grid-size-input");
 	
+	const maxCageSizeInputElement = $("#max-cage-size-input");
+	
+	applet.setInputCaps([gridSizeInputElement], [100]);
+	
+	
+	
 	gridSizeInputElement.addEventListener("keydown", e =>
 	{
 		if (e.keyCode === 13)
@@ -52,10 +58,6 @@
 			run();
 		}
 	});
-	
-	
-	
-	const maxCageSizeInputElement = $("#max-cage-size-input");
 	
 	maxCageSizeInputElement.addEventListener("keydown", e =>
 	{

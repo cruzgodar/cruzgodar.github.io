@@ -19,6 +19,8 @@
 	
 	applet.listenToInputElements([resolutionInputElement], run);
 	
+	applet.setInputCaps([resolutionInputElement], [2000]);
+	
 	
 	
 	const generateButtonElement = $("#generate-button");

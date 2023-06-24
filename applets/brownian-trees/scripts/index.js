@@ -27,6 +27,8 @@
 	
 	applet.listenToInputElements([resolutionInputElement], run);
 	
+	applet.setInputCaps([resolutionInputElement], [2000]);
+	
 	
 	
 	const downloadButtonElement = $("#download-button");

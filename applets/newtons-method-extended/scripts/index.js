@@ -44,6 +44,12 @@
 
 	const resolutionInputElement = $("#resolution-input");
 	
+	const derivativePrecisionInputElement = $("#derivative-precision-input");
+	
+	applet.setInputCaps([resolutionInputElement, derivativePrecisionInputElement], [2000, 100]);
+	
+	
+	
 	resolutionInputElement.addEventListener("input", () =>
 	{
 		applet.resolution = parseInt(resolutionInputElement.value || 500);
@@ -51,16 +57,12 @@
 		applet.changeAspectRatio(true);
 	});
 	
-	
-	
-	const derivativePrecisionInputElement = $("#derivative-precision-input");
-	
 	derivativePrecisionInputElement.addEventListener("input", () =>
 	{
-		derivativePrecision = parseFloat(derivativePrecisionInputElement.value || 20);
+		applet.derivativePrecision = parseFloat(derivativePrecisionInputElement.value || 20);
 		
-		this.wilson.gl.uniform1f(this.wilson.uniforms["derivativePrecision"], derivativePrecision);
-		this.wilsonHidden.gl.uniform1f(this.wilsonHidden.uniforms["derivativePrecision"], derivativePrecision);
+		applet.wilson.gl.uniform1f(applet.wilson.uniforms["derivativePrecision"], applet.derivativePrecision);
+		applet.wilsonHidden.gl.uniform1f(applet.wilsonHidden.uniforms["derivativePrecision"], applet.derivativePrecision);
 	});
 	
 	

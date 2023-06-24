@@ -50,6 +50,8 @@
 	
 	applet.listenToInputElements([resolutionInputElement, gridSizeInputElement, rowProbInputElement, colProbInputElement], run);
 	
+	applet.setInputCaps([resolutionInputElement, gridSizeInputElement], [4000, 200]);
+	
 	
 	
 	drawBoundariesCheckboxElement.addEventListener("input", () =>

@@ -20,7 +20,7 @@ class NewtonsMethodExtended extends Applet
 	resolution = 500;
 	resolutionHidden = 100;
 	
-	derivativePrecision = 20;
+	derivativePrecision = 6;
 	
 	lastTimestamp = -1;
 	

@@ -108,14 +108,6 @@ class SecantMethod extends Applet
 			
 			
 			
-			//Approximates f'(z) for a polynomial f with given roots.
-			vec2 cderiv(vec2 z)
-			{
-				return 20.0 * (cpoly(z + vec2(.025, 0.0)) - cpoly(z - vec2(.025, 0.0)));
-			}
-			
-			
-			
 			void main(void)
 			{
 				vec2 z;

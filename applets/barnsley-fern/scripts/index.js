@@ -27,6 +27,8 @@
 	
 	applet.listenToInputElements([numIterationsInputElement], run);
 	
+	applet.setInputCaps([numIterationsInputElement], [100000]);
+	
 	
 	
 	const downloadButtonElement = $("#download-button");

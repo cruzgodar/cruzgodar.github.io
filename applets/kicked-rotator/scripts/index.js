@@ -33,6 +33,8 @@
 	
 	applet.listenToInputElements([resolutionInputElement, kInputElement, orbitSeparationInputElement], run);
 	
+	applet.setInputCaps([resolutionInputElement, kInputElement], [1000, 2]);
+	
 	
 	
 	const downloadButtonElement = $("#download-button");

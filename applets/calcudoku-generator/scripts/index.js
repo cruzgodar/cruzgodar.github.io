@@ -31,6 +31,8 @@
 	
 	applet.listenToInputElements([gridSizeInputElement, maxCageSizeInputElement], run);
 	
+	applet.setInputCaps([gridSizeInputElement, maxCageSizeInputElement], [10, 5]);
+	
 	
 	
 	const downloadButtonElement = $("#download-button");

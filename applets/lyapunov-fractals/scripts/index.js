@@ -32,6 +32,8 @@
 
 	const resolutionInputElement = $("#resolution-input");
 	
+	applet.setInputCaps([resolutionInputElement], [2000]);
+	
 	resolutionInputElement.addEventListener("input", () =>
 	{
 		const resolution = parseInt(resolutionInputElement.value || 500);

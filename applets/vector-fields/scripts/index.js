@@ -87,17 +87,19 @@
 	
 	const resolutionInputElement = $("#resolution-input");
 	
-	resolutionInputElement.addEventListener("input", generateNewField);
-	
-	
-	
 	const maxParticlesInputElement = $("#max-particles-input");
 	
-	maxParticlesInputElement.addEventListener("input", generateNewField);
-	
-	
-	
 	const speedInputElement = $("#speed-input");
+	
+	const lifetimeInputElement = $("#lifetime-input");
+	
+	applet.setInputCaps([resolutionInputElement, maxParticlesInputElement], [1000, 50000]);
+	
+	
+	
+	resolutionInputElement.addEventListener("input", generateNewField);
+	
+	maxParticlesInputElement.addEventListener("input", generateNewField);
 	
 	speedInputElement.addEventListener("input", () =>
 	{
@@ -115,10 +117,6 @@
 		applet.wilsonUpdate.gl.useProgram(applet.wilsonUpdate.render.shaderPrograms[3]);
 		applet.wilsonUpdate.gl.uniform1f(applet.wilsonUpdate.uniforms["dt"][3], dt);
 	});
-	
-	
-	
-	const lifetimeInputElement = $("#lifetime-input");
 	
 	lifetimeInputElement.addEventListener("input", generateNewField);
 	

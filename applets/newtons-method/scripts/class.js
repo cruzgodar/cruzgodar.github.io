@@ -68,6 +68,8 @@ class NewtonsMethod extends Applet
 			
 			uniform float brightnessScale;
 			
+			const float derivativePrecision = 6.0;
+			
 			const float threshhold = .05;
 			
 			
@@ -111,7 +113,7 @@ class NewtonsMethod extends Applet
 			//Approximates f'(z) for a polynomial f with given roots.
 			vec2 cderiv(vec2 z)
 			{
-				return 20.0 * (cpoly(z + vec2(.025, 0.0)) - cpoly(z - vec2(.025, 0.0)));
+				return derivativePrecision * (cpoly(z + vec2(1.0 / (2.0*derivativePrecision), 0.0)) - cpoly(z - vec2(1.0 / (2.0*derivativePrecision), 0.0)));
 			}
 			
 			

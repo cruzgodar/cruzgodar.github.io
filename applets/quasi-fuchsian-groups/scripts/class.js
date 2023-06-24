@@ -6,8 +6,8 @@ class QuasiFuchsianGroups extends Applet
 	
 	wilsonHidden = null;
 	
-	resolutionSmall = 500;
-	resolutionLarge = 1500;
+	resolutionSmall = 400;
+	resolutionLarge = 1200;
 	
 	imageSize = this.resolutionSmall;
 	imageWidth = this.resolutionSmall;
@@ -673,13 +673,6 @@ class QuasiFuchsianGroups extends Applet
 	
 	onReleaseDraggable(activeDraggable, x, y, event)
 	{
-		if (DEBUG)
-		{
-			console.log(activeDraggable, x, y);
-		}
-		
-		
-		
 		this.imageSize = this.resolutionLarge;
 		
 		if (this.wilson.fullscreen.currentlyFullscreen)

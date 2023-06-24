@@ -41,6 +41,9 @@ class ChaosGame extends Applet
 		
 		this.wilson.changeCanvasSize(this.resolution, this.resolution);
 		
+		this.wilson.ctx.fillStyle = "rgb(0, 0, 0)";
+		this.wilson.ctx.fillRect(0, 0, this.resolution, this.resolution);
+		
 		
 		
 		try {this.webWorker.terminate()}

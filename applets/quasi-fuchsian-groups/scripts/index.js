@@ -10,6 +10,16 @@
 	
 	const resolutionInputElement = $("#resolution-input");
 	
+	const highResolutionInputElement = $("#high-resolution-input");
+	
+	const maxDepthInputElement = $("#max-depth-input");
+	
+	const maxPixelBrightnessInputElement = $("#max-pixel-brightness-input");
+	
+	applet.setInputCaps([resolutionInputElement, highResolutionInputElement, maxDepthInputElement, maxPixelBrightnessInputElement], [500, 3000, 1000, 500]);
+	
+	
+	
 	resolutionInputElement.addEventListener("input", () =>
 	{
 		applet.resolutionSmall = parseInt(resolutionInputElement.value || 300);
@@ -19,12 +29,6 @@
 	});
 	
 	
-	
-	const highResolutionInputElement = $("#high-resolution-input");
-	
-	const maxDepthInputElement = $("#max-depth-input");
-	
-	const maxPixelBrightnessInputElement = $("#max-pixel-brightness-input");
 	
 	const generateButtonElement = $("#generate-button");
 	

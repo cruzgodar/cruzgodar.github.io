@@ -33,6 +33,8 @@
 	
 	applet.listenToInputElements([resolutionInputElement, gridSizeInputElement, numColorsInputElement], run);
 	
+	applet.setInputCaps([resolutionInputElement, gridSizeInputElement, numColorsInputElement], [4000, 243, Infinity]);
+	
 	
 	
 	const downloadButtonElement = $("#download-button");

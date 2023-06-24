@@ -31,6 +31,8 @@
 	
 	applet.listenToInputElements([resolutionInputElement, diamondSizeInputElement], run);
 	
+	applet.setInputCaps([resolutionInputElement, diamondSizeInputElement], [3000, 200]);
+	
 	
 	
 	const useSmoothColorsCheckboxElement = $("#use-smooth-colors-checkbox");

@@ -31,6 +31,8 @@
 	
 	applet.listenToInputElements([numVerticesInputElement, numIterationsInputElement], run);
 	
+	applet.setInputCaps([numVerticesInputElement, numIterationsInputElement], [10, 7]);
+	
 	
 	
 	const maximumSpeedCheckboxElement = $("#toggle-maximum-speed-checkbox");

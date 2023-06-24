@@ -22,6 +22,16 @@
 	
 	const resolutionInputElement = $("#resolution-input");
 	
+	const setDensityInputElement = $("#set-density-input");
+	
+	const exposureInputElement = $("#exposure-input");
+	
+	const numIterationsInputElement = $("#num-iterations-input");
+	
+	applet.setInputCaps([resolutionInputElement, setDensityInputElement, numIterationsInputElement], [2000, 200, 500]);
+	
+	
+	
 	resolutionInputElement.addEventListener("input", () =>
 	{
 		applet.resolution = parseInt(resolutionInputElement.value || 500);
@@ -29,27 +39,15 @@
 		applet.changeAspectRatio();
 	});
 	
-	
-	
-	const setDensityInputElement = $("#set-density-input");
-	
 	setDensityInputElement.addEventListener("input", () =>
 	{
 		applet.setDensity = parseFloat(setDensityInputElement.value || 10);
 	});
 	
-	
-	
-	const exposureInputElement = $("#exposure-input");
-	
 	exposureInputElement.addEventListener("input", () =>
 	{
 		applet.exposure = parseFloat(exposureInputElement.value || 1);
 	});
-	
-	
-	
-	const numIterationsInputElement = $("#num-iterations-input");
 	
 	numIterationsInputElement.addEventListener("input", () =>
 	{

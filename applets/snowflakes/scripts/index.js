@@ -35,6 +35,8 @@
 	const muInputElement = $("#mu-input");
 	const gammaInputElement = $("#gamma-input");
 	
+	applet.setInputCaps([resolutionInputElement, computationsPerFrameInputElement], [1000, 20]);
+	
 	
 	
 	const randomizeParametersButtonElement = $("#randomize-parameters-button");

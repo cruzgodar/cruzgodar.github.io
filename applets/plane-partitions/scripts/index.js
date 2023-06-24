@@ -107,6 +107,8 @@
 	
 	const downloadButtonElement = $("#download-button");
 	
+	applet.setInputCaps([resolutionInputElement], [3000]);
+	
 	
 	
 	categorySelectorDropdownElement.addEventListener("input", async () =>

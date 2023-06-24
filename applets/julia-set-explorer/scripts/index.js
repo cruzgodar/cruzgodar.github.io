@@ -12,6 +12,8 @@
 	
 	const resolutionInputElement = $("#resolution-input");
 	
+	applet.setInputCaps([resolutionInputElement], [2000]);
+	
 	const doublePrecisionCheckboxElement = $("#double-precision-checkbox");
 	
 	

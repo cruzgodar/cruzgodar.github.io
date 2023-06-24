@@ -60,6 +60,8 @@
 	
 	const resolutionInputElement = $("#resolution-input");
 	
+	ecApplet.setInputCaps([resolutionInputElement], [1000]);
+	
 	resolutionInputElement.addEventListener("input", () =>
 	{
 		const resolution = parseInt(resolutionInputElement.value || 500);

@@ -24,6 +24,8 @@
 	
 	applet.listenToInputElements([numGrainsInputElement, computationsPerFrameInputElement], run);
 	
+	applet.setInputCaps([numGrainsInputElement, computationsPerFrameInputElement], [1000000, 20]);
+	
 	
 	
 	const generateButtonElement = $("#generate-button");
