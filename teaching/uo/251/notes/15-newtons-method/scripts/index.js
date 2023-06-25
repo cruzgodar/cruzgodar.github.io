@@ -44,7 +44,7 @@
 	
 	
 	
-	await Site.loadApplet("newtons-method");
+	await Applet.load("newtons-method");
 	
 	const outputCanvas = $("#newtons-method-canvas");
 	

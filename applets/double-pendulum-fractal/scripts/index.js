@@ -1,6 +1,6 @@
 !async function()
 {
-	await Site.loadApplet("double-pendulum-fractal");
+	await Applet.load("double-pendulum-fractal");
 	
 	const applet = new DoublePendulumFractal($("#output-canvas"), $("#pendulum-canvas"));
 	

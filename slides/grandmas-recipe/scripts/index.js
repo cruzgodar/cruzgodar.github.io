@@ -5,7 +5,7 @@
 	Site.loadStyle("/style/lapsa.min.css");
 	await Site.loadScript("/scripts/lapsa.min.js");
 	
-	await Site.loadApplet("quasi-fuchsian-groups");
+	await Applet.load("quasi-fuchsian-groups");
 	
 	const applet = new QuasiFuchsianGroups($("#output-canvas"));
 	

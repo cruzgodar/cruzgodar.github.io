@@ -2,7 +2,7 @@
 
 !async function()
 {
-	await Site.loadApplet("calcudoku-generator");
+	await Applet.load("calcudoku-generator");
 	
 	const applet = new CalcudokuGenerator($("#output-canvas"));
 	

@@ -2,7 +2,7 @@
 
 !async function()
 {
-	await Site.loadApplet("chaos-game");
+	await Applet.load("chaos-game");
 	
 	const applet = new ChaosGame($("#output-canvas"));
 	

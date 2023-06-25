@@ -2,7 +2,7 @@
 
 !async function()
 {
-	await Site.loadApplet("newtons-method-extended");
+	await Applet.load("newtons-method-extended");
 	
 	const applet = new NewtonsMethodExtended($("#output-canvas"));
 	

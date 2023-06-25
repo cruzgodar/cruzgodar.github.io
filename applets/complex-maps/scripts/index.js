@@ -2,7 +2,7 @@
 
 !async function()
 {
-	await Site.loadApplet("complex-maps");
+	await Applet.load("complex-maps");
 	
 	const applet = new ComplexMap($("#output-canvas"), "cexp(cinv(z))");
 	

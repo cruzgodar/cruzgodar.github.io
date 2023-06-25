@@ -2,7 +2,7 @@
 
 !async function()
 {
-	await Site.loadApplet("abelian-sandpiles");
+	await Applet.load("abelian-sandpiles");
 	
 	const applet = new AbelianSandpile($("#output-canvas"));
 	

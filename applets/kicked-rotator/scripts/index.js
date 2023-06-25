@@ -2,7 +2,7 @@
 
 !async function()
 {
-	await Site.loadApplet("kicked-rotator");
+	await Applet.load("kicked-rotator");
 	
 	const applet = new KickedRotator($("#output-canvas"));
 	

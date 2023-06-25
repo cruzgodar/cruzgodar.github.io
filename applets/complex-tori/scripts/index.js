@@ -7,8 +7,8 @@
 	
 	
 	
-	await Site.loadApplet("complex-maps");
-	await Site.loadApplet("complex-tori");
+	await Applet.load("complex-maps");
+	await Applet.load("complex-tori");
 	
 	const ecApplet = new EllipticCurve($("#ec-plot-canvas"));
 	

@@ -2,7 +2,7 @@
 
 !async function()
 {
-	await Site.loadApplet("barnsley-fern");
+	await Applet.load("barnsley-fern");
 	
 	const applet = new BarnsleyFern($("#output-canvas"));
 	

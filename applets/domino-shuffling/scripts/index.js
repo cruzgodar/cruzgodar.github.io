@@ -2,7 +2,7 @@
 
 !async function()
 {
-	await Site.loadApplet("domino-shuffling");
+	await Applet.load("domino-shuffling");
 	
 	const applet = new DominoShuffling($("#output-canvas"));
 	

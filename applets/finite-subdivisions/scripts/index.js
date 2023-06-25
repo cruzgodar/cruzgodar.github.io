@@ -2,7 +2,7 @@
 
 !async function()
 {
-	await Site.loadApplet("finite-subdivisions");
+	await Applet.load("finite-subdivisions");
 	
 	const applet = new FiniteSubdivision($("#output-canvas"));
 	

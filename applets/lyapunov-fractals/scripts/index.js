@@ -2,7 +2,7 @@
 
 !async function()
 {
-	await Site.loadApplet("lyapunov-fractals");
+	await Applet.load("lyapunov-fractals");
 	
 	const applet = new LyapunovFractal($("#output-canvas"));
 	

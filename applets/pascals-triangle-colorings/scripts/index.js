@@ -2,7 +2,7 @@
 
 !async function()
 {
-	await Site.loadApplet("pascals-triangle-colorings");
+	await Applet.load("pascals-triangle-colorings");
 	
 	const applet = new PascalsTriangleColoring($("#output-canvas"));
 	

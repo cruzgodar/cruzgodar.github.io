@@ -2,7 +2,7 @@
 
 !async function()
 {
-	await Site.loadApplet("fractal-sounds");
+	await Applet.load("fractal-sounds");
 	
 	const applet = new FractalSounds($("#output-canvas"), $("#line-drawer-canvas"));
 	

@@ -2,7 +2,7 @@
 
 !async function()
 {
-	await Site.loadApplet("julia-set-mosaic");
+	await Applet.load("julia-set-mosaic");
 	
 	const applet = new JuliaSetMosaic($("#output-canvas"));
 	

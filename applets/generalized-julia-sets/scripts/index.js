@@ -2,7 +2,7 @@
 
 !async function()
 {
-	await Site.loadApplet("generalized-julia-sets");
+	await Applet.load("generalized-julia-sets");
 	
 	const switchJuliaModeButtonElement = $("#switch-julia-mode-button");
 	

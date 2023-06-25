@@ -2,7 +2,7 @@
 
 !async function()
 {
-	await Site.loadApplet("hitomezashi-patterns");
+	await Applet.load("hitomezashi-patterns");
 	
 	const applet = new HitomezashiPattern($("#output-canvas"));
 	

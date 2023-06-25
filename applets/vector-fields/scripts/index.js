@@ -2,7 +2,7 @@
 
 !async function()
 {
-	await Site.loadApplet("vector-fields");
+	await Applet.load("vector-fields");
 	
 	const applet = new VectorField($("#output-canvas"));
 	

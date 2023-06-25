@@ -2,7 +2,7 @@
 
 !async function()
 {
-	await Site.loadApplet("binary-trees");
+	await Applet.load("binary-trees");
 	
 	const applet = new BinaryTree($("#output-canvas"));
 	

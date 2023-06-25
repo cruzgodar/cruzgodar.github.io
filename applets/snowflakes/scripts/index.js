@@ -2,7 +2,7 @@
 
 !async function()
 {
-	await Site.loadApplet("snowflakes");
+	await Applet.load("snowflakes");
 	
 	const applet = new Snowflake($("#output-canvas"));
 	

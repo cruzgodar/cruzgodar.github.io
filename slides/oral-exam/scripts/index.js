@@ -5,7 +5,7 @@
 	Site.loadStyle("/style/lapsa.min.css");
 	await Site.loadScript("/scripts/lapsa.min.js");
 	
-	await Site.loadApplet("plane-partitions");
+	await Applet.load("plane-partitions");
 	
 	const applet = new PlanePartitions($("#output-canvas"), $("#numbers-canvas"), false);
 	

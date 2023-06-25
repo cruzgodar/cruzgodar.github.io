@@ -2,7 +2,7 @@
 
 !async function()
 {
-	await Site.loadApplet("brownian-trees");
+	await Applet.load("brownian-trees");
 	
 	const applet = new BrownianTree($("#output-canvas"));
 	

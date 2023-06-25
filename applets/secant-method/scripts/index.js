@@ -2,7 +2,7 @@
 
 !async function()
 {
-	await Site.loadApplet("secant-method");
+	await Applet.load("secant-method");
 	
 	const rootSetterElement = $("#root-setter");
 	

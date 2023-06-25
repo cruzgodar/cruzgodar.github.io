@@ -2,7 +2,7 @@
 
 !async function()
 {
-	await Site.loadApplet("magic-carpets");
+	await Applet.load("magic-carpets");
 	
 	const applet = new MagicCarpet($("#output-canvas"));
 	

@@ -2,7 +2,7 @@
 
 !async function()
 {
-	await Site.loadApplet("kaleidoscopic-ifs-fractals");
+	await Applet.load("kaleidoscopic-ifs-fractals");
 	
 	const applet = new KaleidoscopicIFSFractal($("#output-canvas"));
 	

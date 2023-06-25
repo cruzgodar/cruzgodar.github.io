@@ -2,7 +2,7 @@
 
 !async function()
 {
-	await Site.loadApplet("quasi-fuchsian-groups");
+	await Applet.load("quasi-fuchsian-groups");
 	
 	const applet = new QuasiFuchsianGroups($("#output-canvas"));
 	

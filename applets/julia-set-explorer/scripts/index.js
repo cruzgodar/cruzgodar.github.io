@@ -2,7 +2,7 @@
 
 !async function()
 {
-	await Site.loadApplet("julia-set-explorer");
+	await Applet.load("julia-set-explorer");
 	
 	const switchJuliaModeButtonElement = $("#switch-julia-mode-button");
 	

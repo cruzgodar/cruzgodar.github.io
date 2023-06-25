@@ -2,7 +2,7 @@
 
 !async function()
 {
-	await Site.loadApplet("plane-partitions");
+	await Applet.load("plane-partitions");
 	
 	const applet = new PlanePartitions($("#output-canvas"), $("#numbers-canvas"));
 	
