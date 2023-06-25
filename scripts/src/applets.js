@@ -140,7 +140,7 @@ class Applet
 			
 			wordElement.remove();
 			
-			element.nextElementSibling.innerHTML = `<span>${words.slice(0, startIndex).join(" ")}${startIndex !== 0 ? " " : ""}</span><span style="white-space: nowrap">${words.slice(startIndex).join(" ")}<span class="triangle">&#x25BC;</span></span>`;
+			element.nextElementSibling.innerHTML = `<span>${words.slice(0, startIndex).join(" ")}</span>${startIndex !== 0 ? " " : ""}<span style="white-space: nowrap">${words.slice(startIndex).join(" ")}<span class="triangle">&#x25BC;</span></span>`;
 			
 			
 			element.addEventListener("input", () =>
