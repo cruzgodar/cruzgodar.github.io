@@ -750,25 +750,35 @@ class Applet
 	
 	
 	
+	static loaded = [];
 	
-		/*
-		fixedPointX: 0;
-		fixedPointY: 0;
-		
-		
-		lastZoomVelocities = [0, 0, 0, 0];
-		
-		
-		zoomVelocity = 0;
-		
-		panFriction = .95;
-		panVelocityStartThreshhold = .005;
-		panVelocityStopThreshhold = .0005;
-		
-		zoomFriction = .93;
-		zoomVelocityStartThreshhold = .01;
-		zoomVelocityStopThreshhold = .001;
-		*/
+	static load(id)
+	{
+		return new Promise(async (resolve, reject) =>
+		{
+			if (Applet.loaded.includes(id))
+			{
+				if (DEBUG)
+				{
+					console.log(`Refusing to load duplicate ${id}`);
+				}
+			}
+			
+			else
+			{
+				if (DEBUG)
+				{
+					console.log(`Loading ${id}`);
+				}
+				
+				await Site.loadScript(`/applets/${id}/scripts/class.${DEBUG ? "" : "min."}js`);
+				
+				Applet.loaded.push(id);
+			}
+			
+			resolve();
+		});
+	}
 	
 	
 	
@@ -815,35 +825,3 @@ class Applet
 
 
 Page.currentApplets = [];
-
-Site.loadedApplets = [];
-
-
-
-Site.loadApplet = function(id)
-{
-	return new Promise(async (resolve, reject) =>
-	{
-		if (Site.loadedApplets.includes(id))
-		{
-			if (DEBUG)
-			{
-				console.log(`Refusing to load duplicate ${id}`);
-			}
-		}
-		
-		else
-		{
-			if (DEBUG)
-			{
-				console.log(`Loading ${id}`);
-			}
-			
-			await Site.loadScript(`/applets/${id}/scripts/class.${DEBUG ? "" : "min."}js`);
-			
-			Site.loadedApplets.push(id);
-		}
-		
-		resolve();
-	});
-};

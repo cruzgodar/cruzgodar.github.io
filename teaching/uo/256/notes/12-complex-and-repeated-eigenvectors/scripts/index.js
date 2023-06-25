@@ -45,7 +45,7 @@
 	
 	Page.show();
 	
-	await Site.loadApplet("vector-fields");
+	await Applet.load("vector-fields");
 	
 	const outputCanvas = $("#vector-field-canvas");
 	
