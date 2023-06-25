@@ -21,7 +21,7 @@
 	
 	const codeInputElement = $("#code-textarea");
 	
-	codeInputElement.value = "cmul(csin(z), csin(cmul(z, i)))";
+	codeInputElement.value = "cmul(csin(z), sin(cmul(z, i)))";
 	
 	
 	
@@ -80,11 +80,11 @@
 	const examples =
 	{
 		"none": "",
-		"polynomial": "csub(cpow(z, 6.0), 1.0)",
 		"trig": "csin(z)",
-		"crosshatch": "cmul(csin(z), csin(cmul(z, i)))",
-		"palette": "cmul(sin(z), csin(cmul(z, i)))",
-		"butterflies": "cmul(sin(z), tan(z))"
+		"crosshatch": "cmul(csin(z), csinh(z))",
+		"palette": "cmul(sin(z), csinh(z))",
+		"butterflies": "cmul(sin(z), tan(z))",
+		"swatches": "cmul(csin(z), sin(cmul(z, i)))"
 	};
 	
 	const exampleSelectorDropdownElement = $("#example-selector-dropdown");

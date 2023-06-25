@@ -45,8 +45,8 @@ class NewtonsMethodExtended extends Applet
 			canvasWidth: 500,
 			canvasHeight: 500,
 			
-			worldWidth: 12,
-			worldHeight: 12,
+			worldWidth: 32,
+			worldHeight: 32,
 			worldCenterX: 0,
 			worldCenterY: 0,
 			
@@ -265,8 +265,8 @@ class NewtonsMethodExtended extends Applet
 
 		this.wilson.worldCenterX = 0;
 		this.wilson.worldCenterY = 0;
-		this.wilson.worldWidth = 10;
-		this.wilson.worldHeight = 10;
+		this.wilson.worldWidth = 32;
+		this.wilson.worldHeight = 32;
 		
 		this.zoom.init();
 		
