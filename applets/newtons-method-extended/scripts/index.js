@@ -84,7 +84,7 @@
 		"crosshatch": "cmul(csin(z), csinh(z))",
 		"palette": "cmul(sin(z), csinh(z))",
 		"butterflies": "cmul(sin(z), tan(z))",
-		"swatches": "cmul(csin(z), sin(cmul(z, i)))"
+		"swatches": "cmul(csin(vec2(z.x, sign(z.y) * min(abs(z.y), mod(abs(z.y), 2.0*PI) + 2.0*PI))), sin(cmul(vec2(z.x, sign(z.y) * min(abs(z.y), mod(abs(z.y), 2.0*PI) + 2.0*PI)), i)))"
 	};
 	
 	const exampleSelectorDropdownElement = $("#example-selector-dropdown");

@@ -474,11 +474,11 @@
 			
 			"resolution": "5000x5000",
 			
-			"parameters": "Generated from sin(z)*csin(iz)",
+			"parameters": "Generated from cmul(csin(z), sin(cmul(z, i)))",
 			
 			"appletLink": "newtons-method-extended",
 			
-			"imageLink": "https://drive.google.com/uc?id=1fzmyXiEIYBxNNFdAgEYhcy8TO04BHnYT&export=download"
+			"imageLink": "https://drive.google.com/uc?id=1yQCt0FaiBzQKM5h9RKh5akHs3wihil7B&export=download"
 		},
 		
 		"chaos-game-2":
