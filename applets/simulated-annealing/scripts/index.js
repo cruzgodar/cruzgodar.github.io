@@ -1,134 +1,50 @@
-!function()
+"use strict";
+
+!async function()
 {
-	"use strict";
+	await Applet.load("simulated-annealing");
+	
+	const applet = new SimulatedAnnealing($("#output-canvas"));
 	
 	
 	
-	let options =
+	function run()
 	{
-		renderer: "cpu",
+		const resolution = parseInt(resolutionInputElement.value || 1000);
+		const numNodes = parseInt(numNodesInputElement.value || 20);
+		const maximumSpeed = maximumSpeedCheckboxElement.checked;
 		
-		canvasWidth: 1000,
-		canvasHeight: 1000,
-		
-		
-		
-		useFullscreen: true,
-	
-		useFullscreenButton: true,
-		
-		enterFullscreenButtonIconPath: "/graphics/general-icons/enter-fullscreen.png",
-		exitFullscreenButtonIconPath: "/graphics/general-icons/exit-fullscreen.png"
-	};
-	
-	let wilson = new Wilson($("#output-canvas"), options);
-	
-	
-	
-	let webWorker = null;
+		applet.run(resolution, numNodes, maximumSpeed);
+	}
 	
 	
 
-	let generateButtonElement = $("#generate-button");
+	const generateButtonElement = $("#generate-button");
 
-	generateButtonElement.addEventListener("click", requestAnnealingGraph);
+	generateButtonElement.addEventListener("click", run);
 	
 	
 	
-	let numNodesInputElement = $("#num-nodes-input");
+	const resolutionInputElement = $("#resolution-input");
 	
-	numNodesInputElement.addEventListener("keydown", function(e)
-	{
-		if (e.keyCode === 13)
-		{
-			requestAnnealingGraph();
-		}
-	});
+	const numNodesInputElement = $("#num-nodes-input");
+	
+	const maximumSpeedCheckboxElement = $("#toggle-maximum-speed-checkbox");
+	
+	applet.listenToInputElements([resolutionInputElement, numNodesInputElement], run);
+	
+	applet.setInputCaps([resolutionInputElement, numNodesInputElement], [3000, 100]);
 	
 	
 	
-	let downloadButtonElement = $("#download-button");
+	const downloadButtonElement = $("#download-button");
 	
 	downloadButtonElement.addEventListener("click", () =>
 	{
-		wilson.downloadFrame("simulated-annealing.png");
+		applet.wilson.downloadFrame("simulated-annealing.png");
 	});
-	
-	
-	let maximumSpeedCheckboxElement = $("#toggle-maximum-speed-checkbox");
 	
 	
 	
 	Page.show();
-	
-	
-	
-	function requestAnnealingGraph()
-	{
-		let numNodes = parseInt(numNodesInputElement.value || 20);
-		let maximumSpeed = maximumSpeedCheckboxElement.checked;
-		
-		let resolution = 1000;
-		
-		
-		
-		wilson.changeCanvasSize(resolution, resolution);
-		
-		wilson.ctx.fillStyle = "rgb(0, 0, 0)";
-		wilson.ctx.fillRect(0, 0, resolution, resolution);
-		
-		
-		
-		try {webWorker.terminate();}
-		catch(ex) {}
-		
-		if (DEBUG)
-		{
-			webWorker = new Worker("/applets/simulated-annealing/scripts/worker.js");
-		}
-		
-		else
-		{
-			webWorker = new Worker("/applets/simulated-annealing/scripts/worker.min.js");
-		}
-		
-		Page.temporaryWebWorkers.push(webWorker);
-		
-		
-		
-		webWorker.onmessage = function(e)
-		{
-			//A circle with arguments (x, y, r, color).
-			if (e.data[0] === 0)
-			{
-				wilson.ctx.fillStyle = e.data[4];
-				
-				wilson.ctx.beginPath();
-				wilson.ctx.moveTo(e.data[1], e.data[2]);
-				wilson.ctx.arc(e.data[1], e.data[2], e.data[3], 0, 2 * Math.PI, false);
-				wilson.ctx.fill();
-			}
-			
-			//A line with arguments (x1, y1, x2, y2, color).
-			else if (e.data[0] === 1)
-			{
-				wilson.ctx.strokeStyle = e.data[5];
-				
-				wilson.ctx.beginPath();
-				wilson.ctx.moveTo(e.data[1], e.data[2]);
-				wilson.ctx.lineTo(e.data[3], e.data[4]);
-				wilson.ctx.stroke();
-			}
-			
-			else
-			{
-				wilson.ctx.fillStyle = "rgb(0, 0, 0)";
-				wilson.ctx.fillRect(0, 0, resolution, resolution);
-			}
-		}
-		
-		
-		
-		webWorker.postMessage([resolution, numNodes, maximumSpeed]);
-	}
-	}()
+}()

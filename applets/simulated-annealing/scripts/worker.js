@@ -179,7 +179,7 @@ async function drawAnnealingGraph()
 			//Erase the old lines and draw new ones.
 			iteration++;
 			
-			if (!maximumSpeed && iteration % 50 === 0)
+			if (!maximumSpeed && iteration % (numNodes * numNodes) === 0)
 			{
 				await drawLines();
 			}
