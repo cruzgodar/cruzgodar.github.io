@@ -58,6 +58,8 @@
 
 	applet.listenToInputElements([resolutionInputElement, arraySizeInputElement], run);
 	
+	applet.setInputCaps([resolutionInputElement, arraySizeInputElement], [4000, 2048]);
+	
 	const playSoundCheckboxElement = $("#play-sound-checkbox");
 	
 	playSoundCheckboxElement.checked = true;
