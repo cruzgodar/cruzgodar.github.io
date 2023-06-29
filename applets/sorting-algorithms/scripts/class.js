@@ -11,7 +11,7 @@ class SortingAlgorithm extends Applet
 	
 	currentGenerator = null;
 	
-	minFrequency = 20;
+	minFrequency = 30;
 	maxFrequency = 600;
 	
 	doPlaySound = true;
@@ -27,6 +27,8 @@ class SortingAlgorithm extends Applet
 		"heap": this.heapsort,
 		"merge": this.mergeSort,
 		"quick": this.quicksort,
+		"shell": this.shellsort,
+		"patience": this.patienceSort,
 		"cycle": this.cycleSort,
 		"msd-radix": this.msdRadixSort,
 		"lsd-radix": this.lsdRadixSort,
@@ -842,6 +844,120 @@ class SortingAlgorithm extends Applet
 			{
 				currentEndpoints[i] = nextEndpoints[i];
 			}
+		}
+		
+		this.advanceGenerator();
+	}
+	
+	
+	
+	* shellsort()
+	{
+		this.operationsPerFrame = Math.ceil(this.dataLength / 100);
+		
+		let gaps = [];
+		
+		const gamma = 2.2436091;
+		
+		let k = 1;
+		
+		while (true)
+		{
+			const entry = Math.ceil((Math.pow(gamma, k) - 1) / (gamma - 1));
+			
+			if (entry >= this.dataLength)
+			{
+				break;
+			}
+			
+			gaps.unshift(entry);
+			
+			k++;
+		}
+		
+		for (let i = 0; i < gaps.length; i++)
+		{
+			const gap = gaps[i];
+			
+			for (let j = gap; j < this.dataLength; j++)
+			{
+				const temp = this.data[j];
+				
+				this.readFromPosition(j);
+				
+				let k = j;
+				
+				for (; k >= gap && this.data[k - gap] > temp; k -= gap)
+				{
+					this.data[k] = this.data[k - gap];
+					
+					if (this.writeToPosition(k)) {yield}
+				}
+				
+				this.data[k] = temp;
+				
+				if (this.writeToPosition(k)) {yield}
+			}
+		}
+		
+		this.advanceGenerator();
+	}
+	
+	
+	
+	* patienceSort()
+	{
+		this.operationsPerFrame = Math.ceil(this.dataLength / 1000);
+		
+		let piles = [[this.data[0]]];
+		
+		//Put every element on a pile.
+		for (let i = 1; i < this.dataLength; i++)
+		{
+			let foundPile = false;
+			
+			this.readFromPosition(i);
+			
+			for (let j = 0; j < piles.length; j++)
+			{
+				if (piles[j][piles[j].length - 1] >= this.data[i])
+				{
+					piles[j].push(this.data[i]);
+					
+					foundPile = true;
+					
+					break;
+				}
+			}
+			
+			if (!foundPile)
+			{
+				piles.push([this.data[i]]);
+			}
+			
+			if (this.writeToPosition(i)) {yield}
+		}
+		
+		//Take the elements off.
+		for (let i = 0; i < this.dataLength; i++)
+		{
+			let minIndex = 0;
+			let minElement = Infinity;
+			
+			this.readFromPosition(i);
+			
+			for (let j = 0; j < piles.length; j++)
+			{
+				if (piles[j][piles[j].length - 1] < minElement)
+				{
+					minIndex = j;
+					minElement = piles[j][piles[j].length - 1];
+				}
+			}
+			
+			this.data[i] = piles[minIndex].pop();
+			
+			if (this.writeToPosition(i)) {yield}
 		}
 		
 		this.advanceGenerator();

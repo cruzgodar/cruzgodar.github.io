@@ -1,4 +1,4 @@
-How do you sort a long list of numbers? Or, more accurately, how do you instruct a computer to? This question has compelled computer scientists from as early as the 1950s, and dozens upon dozens of algorithms have been created, each with pros and cons. These days, high-level programming languages mostly abstract this away &mdash; in JavaScript, it's as easy as calling `array.sort()`, and no thought needs to be given to how the sorting should actually be done. This is a very good thing for the most part, but it's interesting &mdash; and often mesmerizing &mdash; to watch particular sorting algorithms do their job, so for this applet, I've implemented ten very different ones. The list to be sorted is represented as a color wheel &mdash; presing the Sort button first shuffles it, then sorts it with the method of choice, and then verifies that it has been correctly sorted.
+How do you sort a long list of numbers? Or, more accurately, how do you instruct a computer to? This question has compelled computer scientists from as early as the 1950s, and dozens upon dozens of algorithms have been created, each with pros and cons. These days, high-level programming languages mostly abstract this away &mdash; in JavaScript, it's as easy as calling `array.sort()`, and no thought needs to be given to how the sorting should actually be done. This is a very good thing for the most part, but it's interesting &mdash; and often mesmerizing &mdash; to watch particular sorting algorithms do their job, so for this applet, I've implemented twelve very different ones. The list to be sorted is represented as a color wheel &mdash; presing the Sort button first shuffles it, then sorts it with the method of choice, and then verifies that it has been correctly sorted.
 
 Every algorithm is explained in more detail below, but there are a few general things to mention beforehand. When comparing the speed of algorithms, we need a measurement of time that doesn't depend on the power of the computer running it. Because of this, we typically don't use actual time units, like seconds, but instead something called **big-O notation**. If a sorting algorithm is $O(n^2)$, then the time it takes to run increases with the square of the amount of data given to it. We may not know how long it will take to sort a list of length 500, but it will take about 4 times as long to sort a list that's twice as long. An algorithm that's $O(n)$, on the other hand, will only take about twice the time.
 
@@ -21,6 +21,10 @@ Whenever a sorting algorithm modifies the list, that location in the color wheel
 	merge Merge sort
 	
 	quick Quicksort
+	
+	shell Shellsort
+	
+	patience Patience sort
 	
 	cycle Cycle Sort
 	
@@ -46,6 +50,10 @@ Whenever a sorting algorithm modifies the list, that location in the color wheel
 
 <p class="body-text info-text" id="quick-info">Quicksort is one of the most commonly-used algorithms in practice. It's similar to merge sort, but rather than splitting the list in half every time, it first chooses the entry halfway through the list and places smaller entries before it and larger ones after it, resulting in two unevenly-sized blocks. Each of those are then partitioned based on their middle entries in the same way, and the process is repeated until every block is sorted. Like the previous two, it runs in $O(n\log(n))$ time.</p>
 
+<p class="body-text info-text" id="shell-info">Shellsort is a variant of insertion sort that drastically reduces the distance entries need to move. It begins by taking a large gap size &mdash; say 100 &mdash; and partitioning the array into 100 smaller arrays whose elements are each 100 apart in the original. It then runs insertion sort on each one, and then the gap size is reduced and insertion sort is run again, and we repeat the process until the gap size is 1 and we're just running insertion sort itself. Sorting the larger gap sizes first results in much less shorter distances for insertion sort on the smaller gaps, and the algorithm is such an improvement that it runs in $O(n\log(n))$ time.</p>
+
+<p class="body-text info-text" id="patience-info">Based on the card game patience, this algorithm thinks of every array entry as a playing card. We deal the cards out one-by-one into a row of piles &mdash; every card is placed on the first pile whose top card is larger, and if no piles have a larger top card, then we begin a new pile. Once every card is dealt, we just assemble the cards back into a deck by taking the lowest-valued card visible at each step. The efficiency of splitting into a usually small number of piles results in the algorithm running in $O(n\log(n))$ time.</p>
+
 <p class="body-text info-text" id="cycle-info">With most of the common algorithms out of the way, we can look at some stranger ones. Where most algorithms try to minimize the total number of operations, cycle sort only concerns itself with writing to the list as little as possible &mdash; in fact, it only writes once to each location, with the correct entry each time. The idea is that we know exactly where any entry should go &mdash; if there are 102 entries smaller than $x$, then $x$ should be the 103rd entry in the sorted list. So we just put it there and remove whatever was in its place, and repeat the process with that entry. This continues until we get back to where we started, at which point we find the next entry we haven't moved yet. Since the algorithm needs to read <strong>the entire list</strong> every time it moves an entry, it takes $O(n^2)$ time, but for memory devices whose performance degrades quickly when written to, this can be an acceptable tradeoff.</p>
 
 <p class="body-text info-text" id="msd-radix-info">Where insertion sort is the way most people tend to sort money in a wallet or playing cards in a hand, radix sort is the way you'd probably go about sorting words into a dictionary. First put them into 26 different buckets based on their first letter, and then for each bucket, split the words into 26 sub-buckets based on their second letter. Here, we only need two buckets at each level instead of 26, since we sort based on digits in the binary representation of the entries, which are either 0 or 1. MSD stands for most significant digit &mdash; i.e. we sort first based on the first digit, not the last. With $n$ entries to sort and $\log(n)$ binary digits to consider, the algorithm takes $O(n\log(n))$ time. It's also the first algorithm in the list that's not a comparision sort, since entries are never compared against one another, just put into buckets.</p>
@@ -64,7 +72,7 @@ Whenever a sorting algorithm modifies the list, that location in the color wheel
 	
 	resolution 2000 Resolution
 	
-	array-size 256 List size
+	array-size 512 List size
 	
 ###
 
