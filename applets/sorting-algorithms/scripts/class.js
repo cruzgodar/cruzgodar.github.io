@@ -28,7 +28,6 @@ class SortingAlgorithm extends Applet
 		"merge": this.mergeSort,
 		"quick": this.quicksort,
 		"shell": this.shellsort,
-		"patience": this.patienceSort,
 		"cycle": this.cycleSort,
 		"msd-radix": this.msdRadixSort,
 		"lsd-radix": this.lsdRadixSort,
@@ -434,6 +433,11 @@ class SortingAlgorithm extends Applet
 		{
 			//This isn't actually a write, but we want to animate the process.
 			if (this.writeToPosition(i)) {yield}
+			
+			if (i !== this.dataLength - 1 && this.data[i] > this.data[i + 1])
+			{
+				console.log("Not sorted!", this.data);
+			}
 		}
 		
 		if (this.doPlaySound)
@@ -661,101 +665,175 @@ class SortingAlgorithm extends Applet
 	
 	
 	
-	* mergeSort()
+	* mergeSort(start = 0, end = this.dataLength)
 	{
-		this.operationsPerFrame = Math.ceil(this.dataLength * Math.log(this.dataLength) / 450);
+		if (end - start === 2)
+		{
+			this.readFromPosition(start);
+			this.readFromPosition(end - 1);
+			
+			if (this.data[start] > this.data[end - 1])
+			{
+				if (this.writeToPosition(start)) {yield}
+				if (this.writeToPosition(end - 1)) {yield}
+				
+				const temp = this.data[start];
+				this.data[start] = this.data[end - 1];
+				this.data[end - 1] = temp;
+			}
+			
+			return;
+		}	
 		
-		let auxArray = new Array(this.dataLength);
+		if (end - start <= 1)
+		{
+			return;
+		}
 		
-		let blockSize = 1;
+		this.operationsPerFrame = Math.ceil(this.dataLength * Math.log(this.dataLength) / 200);
+		
+		
+		
+		//First recursively sort the last half.
+		
+		let rightHalfStart = start + Math.floor((end - start) / 2);
+		yield* this.mergeSort(rightHalfStart, end);
 		
 		while (true)
 		{
-			//First iterate over blocks.
-			for (let i = 0; i < this.dataLength; i += 2 * blockSize)
+			if (rightHalfStart === start + 1)
 			{
-				//Within each block, we need to place things in the right order into the auxiliary array.
-				let index1 = 0;
-				let index2 = blockSize;
-				let auxIndex = 0;
+				//Insertion sort the single element up.
 				
-				while (true)
+				let i = start;
+				
+				while (i < end - 1 && this.data[i] > this.data[i + 1])
 				{
-					if (index2 + i >= this.dataLength || index2 >= 2*blockSize)
-					{
-						if (index1 >= blockSize || i + index1 >= this.dataLength)
-						{
-							break;
-						}
-						
-						auxArray[auxIndex] = this.data[i + index1];
-						
-						if (this.writeToPosition(i + index1)) {yield}
-						
-						index1++;
-						auxIndex++;
-					}
+					this.readFromPosition(i);
+					this.readFromPosition(i + 1);
 					
-					else if (index1 >= blockSize || i + index1 >= this.dataLength)
-					{
-						auxArray[auxIndex] = this.data[i + index2];
-						
-						if (this.writeToPosition(i + index2)) {yield}
-						
-						index2++;
-						auxIndex++;
-					}
+					if (this.writeToPosition(i)) {yield}
+					if (this.writeToPosition(i + 1)) {yield}
 					
-					else
-					{
-						this.readFromPosition(i + index1);
-						this.readFromPosition(i + index2);
-						
-						if (this.data[i + index1] < this.data[i + index2])
-						{
-							auxArray[auxIndex] = this.data[i + index1];
-							
-							if (this.writeToPosition(i + index1)) {yield}
-							
-							index1++;
-							auxIndex++;
-						}
-						
-						else
-						{
-							auxArray[auxIndex] = this.data[i + index2];
-							
-							if (this.writeToPosition(i + index2)) {yield}
-							
-							index2++;
-							auxIndex++;
-						}
-					}
+					const temp = this.data[i];
+					this.data[i] = this.data[i + 1];
+					this.data[i + 1] = temp;
+					
+					i++;
 				}
 				
-				//Copy the aux array back into the original one.
-				for (let j = 0; j < 2 * blockSize; j++)
+				break;
+			}
+			
+			//Sort the first quarter.
+			const bufferStart = start + Math.floor((rightHalfStart - start) / 2);
+			yield* this.mergeSort(start, bufferStart);
+			
+			//Now merge those together by using the middle area as a buffer.
+			
+			let left = start;
+			let buffer = bufferStart;
+			let right = rightHalfStart;
+			
+			while (true)
+			{
+				if (buffer === right)
 				{
-					if (i + j >= this.dataLength)
-					{
-						break;
-					}
+					break;
+				}
+				
+				//Compare the current elements of the left and right sorted parts.
+				if (buffer !== left && (right === end || this.data[left] < this.data[right]))
+				{
+					this.readFromPosition(left);
+					this.readFromPosition(buffer);
 					
-					this.data[i + j] = auxArray[j];
+					if (this.writeToPosition(left)) {yield}
+					if (this.writeToPosition(buffer)) {yield}
 					
-					if (this.writeToPosition(i + j)) {yield}
+					const temp = this.data[left];
+					this.data[left] = this.data[buffer];
+					this.data[buffer] = temp;
+					
+					left++;
+					buffer++;
+				}
+				
+				else if (right < end && this.data[right] <= this.data[left])
+				{
+					this.readFromPosition(right);
+					this.readFromPosition(buffer);
+					
+					if (this.writeToPosition(right)) {yield}
+					if (this.writeToPosition(buffer)) {yield}
+					
+					const temp = this.data[right];
+					this.data[right] = this.data[buffer];
+					this.data[buffer] = temp;
+					
+					right++;
+					buffer++;
+				}
+				
+				else
+				{
+					break;
 				}
 			}
 			
-			blockSize *= 2;
 			
-			if (blockSize >= this.dataLength)
+			
+			//Now increase the amount marked as sorted.
+			rightHalfStart = start + (rightHalfStart - bufferStart);
+			
+			
+			
+			//The last place to move needs to be insertion sorted to the correct place.
+			
+			let i = buffer - 1;
+			
+			while (i > rightHalfStart && this.data[i - 1] > this.data[i])
+			{
+				this.readFromPosition(i);
+				this.readFromPosition(i - 1);
+				
+				if (this.writeToPosition(i)) {yield}
+				if (this.writeToPosition(i - 1)) {yield}
+				
+				const temp = this.data[i];
+				this.data[i] = this.data[i - 1];
+				this.data[i - 1] = temp;
+				
+				i--;
+			}
+			
+			while (i < end - 1 && this.data[i + 1] < this.data[i])
+			{
+				this.readFromPosition(i);
+				this.readFromPosition(i + 1);
+				
+				if (this.writeToPosition(i)) {yield}
+				if (this.writeToPosition(i + 1)) {yield}
+				
+				const temp = this.data[i];
+				this.data[i] = this.data[i + 1];
+				this.data[i + 1] = temp;
+				
+				i++;
+			}
+			
+			
+			
+			if (rightHalfStart === start)
 			{
 				break;
 			}
 		}
 		
-		this.advanceGenerator();
+		if (start === 0 && end === this.dataLength)
+		{
+			this.advanceGenerator();
+		}
 	}
 	
 	
@@ -898,66 +976,6 @@ class SortingAlgorithm extends Applet
 				
 				if (this.writeToPosition(k)) {yield}
 			}
-		}
-		
-		this.advanceGenerator();
-	}
-	
-	
-	
-	* patienceSort()
-	{
-		this.operationsPerFrame = Math.ceil(this.dataLength / 1000);
-		
-		let piles = [[this.data[0]]];
-		
-		//Put every element on a pile.
-		for (let i = 1; i < this.dataLength; i++)
-		{
-			let foundPile = false;
-			
-			this.readFromPosition(i);
-			
-			for (let j = 0; j < piles.length; j++)
-			{
-				if (piles[j][piles[j].length - 1] >= this.data[i])
-				{
-					piles[j].push(this.data[i]);
-					
-					foundPile = true;
-					
-					break;
-				}
-			}
-			
-			if (!foundPile)
-			{
-				piles.push([this.data[i]]);
-			}
-			
-			if (this.writeToPosition(i)) {yield}
-		}
-		
-		//Take the elements off.
-		for (let i = 0; i < this.dataLength; i++)
-		{
-			let minIndex = 0;
-			let minElement = Infinity;
-			
-			this.readFromPosition(i);
-			
-			for (let j = 0; j < piles.length; j++)
-			{
-				if (piles[j][piles[j].length - 1] < minElement)
-				{
-					minIndex = j;
-					minElement = piles[j][piles[j].length - 1];
-				}
-			}
-			
-			this.data[i] = piles[minIndex].pop();
-			
-			if (this.writeToPosition(i)) {yield}
 		}
 		
 		this.advanceGenerator();
