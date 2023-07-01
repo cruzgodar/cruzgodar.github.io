@@ -1,8 +1,4 @@
-"use strict";
 
-const root = process.argv[1].replace(/(\/90259025.github.io\/).+$/, (match, $1) => $1);
-
-console.log(process.argv);
 
 // const parentFolder = 
 
