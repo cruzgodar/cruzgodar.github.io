@@ -6,7 +6,11 @@ import {sitemapPath} from "./build-sitemap.mjs"
 
 const root = process.argv[1].replace(/(\/90259025.github.io\/).+$/, (match, $1) => $1);
 
-const excludeFromBuild = [/build\/[^\/]+\./];
+const excludeFromBuild = 
+[
+	/build\/[^\/]+\./,
+	/scripts\/init\.js/
+];
 
 const clean = process.argv.slice(2).includes("-c");
 

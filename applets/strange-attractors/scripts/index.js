@@ -1,177 +1,55 @@
-!function()
-{
-	"use strict";
-	
-	
-	
-	let options =
-	{
-		renderer: "cpu",
-		
-		canvasWidth: 1000,
-		canvasHeight: 1000,
-		
-		
-		
-		useFullscreen: true,
-	
-		useFullscreenButton: true,
-		
-		enterFullscreenButtonIconPath: "/graphics/general-icons/enter-fullscreen.png",
-		exitFullscreenButtonIconPath: "/graphics/general-icons/exit-fullscreen.png"
-	};
-	
-	let wilson = new Wilson($("#output-canvas"), options);
-	
-	
-	
-	let webWorker = null;
-	
-	let image = [];
-	
-	let brightnessScale = 10;
-	
-	
-	
-	let generateButtonElement = $("#generate-button");
+"use strict";
 
-	generateButtonElement.addEventListener("click", requestLorenzAttractor);
+!async function()
+{
+	await Applet.load("strange-attractors");
+	
+	const applet = new StrangeAttractor($("#output-canvas"));
 	
 	
 	
-	let gridSizeInputElement = $("#grid-size-input");
-	
-	let sigmaInputElement = $("#sigma-input");
-	
-	let rhoInputElement = $("#rho-input");
-	
-	let betaInputElement = $("#beta-input");
-	
-	
-	
-	gridSizeInputElement.addEventListener("keydown", (e) =>
+	function run()
 	{
-		if (e.keyCode === 13)
-		{
-			requestLorenzAttractor();
-		}
-	});
-	
-	sigmaInputElement.addEventListener("keydown", (e) =>
-	{
-		if (e.keyCode === 13)
-		{
-			requestLorenzAttractor();
-		}
-	});
-	
-	rhoInputElement.addEventListener("keydown", (e) =>
-	{
-		if (e.keyCode === 13)
-		{
-			requestLorenzAttractor();
-		}
-	});
-	
-	betaInputElement.addEventListener("keydown", (e) =>
-	{
-		if (e.keyCode === 13)
-		{
-			requestLorenzAttractor();
-		}
-	});
+		const resolution = parseInt(resolutionInputElement.value || 1000);
+		const sigma = parseFloat(sigmaInputElement.value || 10);
+		const rho = parseFloat(rhoInputElement.value || 28);
+		const beta = parseFloat(betaInputElement.value || 2.67);
+		const maximumSpeed = maximumSpeedCheckboxElement.checked;
+		
+		applet.run(resolution, sigma, rho, beta, maximumSpeed);
+	}
+
+
+
+	const generateButtonElement = $("#generate-button");
+
+	generateButtonElement.addEventListener("click", run);
 	
 	
 	
-	let downloadButtonElement = $("#download-button");
+	const resolutionInputElement = $("#resolution-input");
 	
-	downloadButtonElement.addEventListener("click", () =>
-	{
-		wilson.downloadFrame("a-lorenz-attractor.png");
-	});
+	const sigmaInputElement = $("#sigma-input");
+	
+	const rhoInputElement = $("#rho-input");
+	
+	const betaInputElement = $("#beta-input");
+
+	applet.listenToInputElements([resolutionInputElement, sigmaInputElement, rhoInputElement, betaInputElement], run);
+
+	applet.setInputCaps([resolutionInputElement, sigmaInputElement, rhoInputElement, betaInputElement], [1500, 20, 50, 3.6]);
+	
+
+
+	const maximumSpeedCheckboxElement = $("#toggle-maximum-speed-checkbox");
+
 	
 	
+	const downloadButtonElement = $("#download-button");
 	
-	let maximumSpeedCheckboxElement = $("#toggle-maximum-speed-checkbox");
+	downloadButtonElement.addEventListener("click", () => applet.wilson.downloadFrame("a-strange-attractor.png"));
 	
 	
 	
 	Page.show();
-	
-	
-	
-	function requestLorenzAttractor()
-	{
-		let gridSize = parseInt(gridSizeInputElement.value || 1000);
-		
-		let sigma = parseFloat(sigmaInputElement.value || 10);
-		
-		let rho = parseFloat(rhoInputElement.value || 28);
-		
-		let beta = parseFloat(betaInputElement.value || 2.666667);
-		
-		let maximumSpeed = maximumSpeedCheckboxElement.checked;
-		
-		
-		
-		wilson.changeCanvasSize(gridSize, gridSize);
-		
-		wilson.ctx.fillStyle = "rgb(0, 0, 0)";
-		wilson.ctx.fillRect(0, 0, gridSize, gridSize);
-		
-		
-		
-		image = new Array(gridSize * gridSize);
-		
-		for (let i = 0; i < gridSize; i++)
-		{
-			for (let j = 0; j < gridSize; j++)
-			{
-				image[gridSize * i + j] = 0;
-			}
-		}
-		
-		
-		
-		try {webWorker.terminate();}
-		catch(ex) {}
-		
-		if (DEBUG)
-		{
-			webWorker = new Worker("/applets/strange-attractors/scripts/worker.js");
-		}
-		
-		else
-		{
-			webWorker = new Worker("/applets/strange-attractors/scripts/worker.min.js");
-		}
-		
-		Page.temporaryWebWorkers.push(webWorker);
-		
-		
-		
-		webWorker.onmessage = function(e)
-		{
-			let pixels = e.data[0];
-			
-			let rgb = e.data[1];
-			
-			
-			
-			for (let i = 0; i < pixels.length; i++)
-			{
-				image[gridSize * pixels[i][0] + pixels[i][1]]++;
-				
-				let brightnessAdjust = image[gridSize * pixels[i][0] + pixels[i][1]] / brightnessScale;
-				
-				wilson.ctx.fillStyle = `rgb(${rgb[0] * brightnessAdjust}, ${rgb[1] * brightnessAdjust}, ${rgb[2] * brightnessAdjust})`;
-						
-				wilson.ctx.fillRect(pixels[i][1], pixels[i][0], 1, 1);
-			}
-		}
-		
-		
-		
-		webWorker.postMessage([gridSize, sigma, rho, beta, maximumSpeed]);
-	}
-	}()
+}()
