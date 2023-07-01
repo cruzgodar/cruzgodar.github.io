@@ -45,20 +45,23 @@ function parseModifiedFiles(files, sitemap)
 		}
 
 		const filename = end.slice(0, index);
-		const extension = end.slice(index + 1);
+		const extension = end.slice(index + 1)
 
 		if (extension === "html" && filename === "src")
 		{
+			console.log(file);
 			buildHTMLFile(await read(file), "/" + file.slice(0, lastSlashIndex), sitemap);
 		}
 
 		else if (extension === "mjs" || extension === "js")
 		{
+			console.log(file);
 			buildJSFile(file);
 		}
 
 		else if (extension === "css")
 		{
+			console.log(file);
 			buildCSSFile(file);
 		}
 	});
