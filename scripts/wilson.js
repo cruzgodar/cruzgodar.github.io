@@ -384,10 +384,6 @@ class Wilson
 		
 		this.draggables.container.classList.add("wilson-draggables-container");
 		
-		this.draggables.container.setAttribute("data-aos", "fade-up");
-		
-		this.draggables.container.setAttribute("data-aos-delay-increase", "0");
-		
 		appletCanvasContainer.appendChild(this.draggables.container);
 		
 		this.fullscreen.canvasesToResize.push(this.draggables.container);

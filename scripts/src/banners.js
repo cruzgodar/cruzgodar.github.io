@@ -315,7 +315,7 @@ Page.Banner =
 			try
 			{
 				document.querySelector("#banner-cover").insertAdjacentHTML("beforebegin", `
-					<div id="new-banner-cover" data-aos="fade-down">
+					<div id="new-banner-cover">
 						<input type="image" id="scroll-button" src="/graphics/general-icons/${chevronName}.png" style="opacity: 0" alt="Scroll down" onclick="Page.Banner.ScrollButton.animateTo(document.querySelector('#scroll-to'))">
 					</div>
 				`);
