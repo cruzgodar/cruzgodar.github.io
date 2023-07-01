@@ -1,6 +1,8 @@
 import {exec} from "child_process"
 import {read, write} from "./file-io.mjs"
 import buildSitemap from "./build-sitemap.mjs"
+import buildHTMLFile from "./build-html-file.mjs";
+import {sitemapPath} from "./build-sitemap.mjs"
 
 const root = process.argv[1].replace(/(\/90259025.github.io\/).+$/, (match, $1) => $1);
 
@@ -10,15 +12,18 @@ const excludeFromBuild = [/build\/[^\/]+\./];
 
 async function buildSite()
 {
-	buildSitemap()
+	await buildSitemap();
 
-	.then(() =>
+	const text = await read(sitemapPath);
+	const sitemap = JSON.parse(text.slice(text.indexOf("{")));
+
+	exec(`git -C ${root} ls-files -m -o`, (error, stdout, stderr) =>
 	{
-		exec(`git -C ${root} ls-files -m -o`, (error, stdout, stderr) => parseModifiedFiles(stdout.split("\n")));
+		parseModifiedFiles(stdout.split("\n"), sitemap);
 	});
 }
 
-function parseModifiedFiles(files)
+function parseModifiedFiles(files, sitemap)
 {
 	files.forEach(async file =>
 	{
@@ -30,7 +35,8 @@ function parseModifiedFiles(files)
 			}
 		}
 
-		const end = file.slice(file.lastIndexOf("/") + 1);
+		const lastSlashIndex = file.lastIndexOf("/") + 1;
+		const end = file.slice(lastSlashIndex);
 		const index = end.indexOf(".");
 		
 		if (index <= 0)
@@ -43,10 +49,9 @@ function parseModifiedFiles(files)
 
 		if (extension === "html" && filename === "src")
 		{
-			const text = await read(file);
-			//const html = buildHTMLFile(text);
+			buildHTMLFile(await read(file), "/" + file.slice(0, lastSlashIndex), sitemap);
 		}
-	})
+	});
 }
 
 

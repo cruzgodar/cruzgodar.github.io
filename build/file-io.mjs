@@ -17,7 +17,7 @@ export function write(filepath, content)
 	return new Promise((resolve, reject) =>
 	{
 		const fullPath = filepath[0] === "/" ? root + filepath.slice(1) : root + filepath;
-		console.log(`printf "${content}" > ${fullPath}`);
-		exec(`printf "${content}" > ${fullPath}`, (error, stdout, stderr) => resolve(stdout));
+		const escapedContent = content.replaceAll(/\t/g, "\\\\t").replaceAll(/\n/g, "\\\\n").replaceAll(/"/g, "\\\"");
+		exec(`printf "${escapedContent}" > ${fullPath}`, (error, stdout, stderr) => resolve(stdout));
 	});
 }

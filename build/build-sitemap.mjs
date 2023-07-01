@@ -1,7 +1,7 @@
 import {read, write} from "./file-io.mjs"
 
 const textSitemapPath = "/build/sitemap.txt";
-const jsSitemapPath = "/scripts/src/sitemap.js";
+export const sitemapPath = "/scripts/src/sitemap.js";
 
 export default async () =>
 {
@@ -96,11 +96,9 @@ export default async () =>
 		sitemap = `${sitemap}${getPageString(lines[i], realParent, children, title)}`;
 	}
 
-	sitemap = `${sitemap.slice(0, sitemap.length - 3)}\n};`;
+	sitemap = `${sitemap.slice(0, sitemap.length - 3)}\n}`;
 
-	sitemap = sitemap.replaceAll(/\t/g, "\\\\t").replaceAll(/\n/g, "\\\\n").replaceAll(/"/g, "\\\"");
-
-	await write(jsSitemapPath, sitemap);
+	await write(sitemapPath, sitemap);
 }
 
 
