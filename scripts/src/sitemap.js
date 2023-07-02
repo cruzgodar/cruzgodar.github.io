@@ -856,7 +856,7 @@ Site.sitemap =
 	
 	"/teaching/uo/252/notes/6-u-sub/":
 	{
-		"title": "Section 6: hBcSubstitution",
+		"title": "Section 6: $u$-Substitution",
 		
 		"parent": "/teaching/uo/252/",
 		

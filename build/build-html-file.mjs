@@ -662,7 +662,7 @@ const components =
 		
 		for (let i = 0; i < lines.length; i++)
 		{
-			//filtering out lines beginning with < is a little rough, but pretty much necessary.
+			//Filtering out lines beginning with < is a little rough, but pretty much necessary.
 			if (lines[i].length === 0 || lines[i][0] === "<")
 			{
 				continue;
@@ -903,7 +903,7 @@ const components =
 			}
 		}
 		
-		
+
 		
 		html = lines.join("");
 		
@@ -935,7 +935,7 @@ const components =
 		const headHtml = `<title>${pageTitle}</title><meta property="og:title" content="${pageTitle}"/><meta property="og:type" content="website"/><meta property="og:url" content="https://cruzgodar.com${parentFolder}"/><meta property="og:image" content="https://cruzgodar.com${parentFolder}cover.webp"/><meta property="og:locale" content="en_US"/><meta property="og:site_name" content="Cruz Godar"/>`;
 			
 		html = `<!DOCTYPE html><html lang="en"><head>${headHtml}<style>body {opacity: 0;}</style></head><body><noscript><p class="body-text" style="text-align: center">JavaScript is required to use this site and many others. Consider enabling it.</p></noscript>${html}${scriptsData}</body></html>`;
-		
+
 		return html;
 	}
 };

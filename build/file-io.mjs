@@ -1,4 +1,4 @@
-import {exec} from "child_process"
+import fs from "fs"
 
 const root = process.argv[1].replace(/(\/90259025.github.io\/).+$/, (match, $1) => $1);
 
@@ -8,7 +8,16 @@ export function read(filepath)
 	{
 		const fullPath = filepath[0] === "/" ? root + filepath.slice(1) : root + filepath;
 		
-		exec(`cat ${fullPath}`, (error, stdout, stderr) => resolve(stdout));
+		fs.readFile(fullPath, "utf8", (err, data) =>
+		{
+			if (err)
+			{
+				console.error(err);
+				return;
+			}
+
+			resolve(data);
+		});
 	});
 }
 
@@ -17,7 +26,15 @@ export function write(filepath, content)
 	return new Promise((resolve, reject) =>
 	{
 		const fullPath = filepath[0] === "/" ? root + filepath.slice(1) : root + filepath;
-		const escapedContent = content.replaceAll(/\t/g, "\\\\t").replaceAll(/\n/g, "\\\\n").replaceAll(/"/g, "\\\"");
-		exec(`printf "${escapedContent}" > ${fullPath}`, (error, stdout, stderr) => resolve(stdout));
+
+		fs.writeFile(fullPath, content, err =>
+		{
+			if (err)
+			{
+				console.error(err);
+			}
+		});
+
+		resolve();
 	});
 }

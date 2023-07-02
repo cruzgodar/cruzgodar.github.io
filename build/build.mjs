@@ -1,5 +1,5 @@
 import {exec} from "child_process"
-import {read, write} from "./file-io.mjs"
+import {read} from "./file-io.mjs"
 import buildSitemap from "./build-sitemap.mjs"
 import buildHTMLFile from "./build-html-file.mjs";
 import {sitemapPath} from "./build-sitemap.mjs"
@@ -17,7 +17,7 @@ const clean = process.argv.slice(2).includes("-c");
 async function buildSite()
 {
 	await buildSitemap();
-
+	
 	const text = await read(sitemapPath);
 	const sitemap = JSON.parse(text.slice(text.indexOf("{")));
 
