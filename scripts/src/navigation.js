@@ -68,7 +68,7 @@ Page.Navigation =
 		
 		
 		//Get the new data, fade out the page, and preload the next page's banner if it exists. When all of those things are successfully done, replace the current html with the new stuff.
-		Promise.all([fetch(url + `${DEBUG ? "src" : "index"}.html`), Page.Banner.load()])
+		Promise.all([fetch(`${url}index.html`), Page.Banner.load()])
 		
 		.then((response) =>
 		{
@@ -98,42 +98,23 @@ Page.Navigation =
 			}
 			
 			
-			if (DEBUG)
-			{
-				let newHtml = Page.Components.decode(`<div class="page" style="${Site.showingPresentation ? "display: none; " : ""}opacity: 0">\n${data}</div>`);
+			data = data.slice(data.indexOf("<body>") + 6, data.indexOf("</body>"));
 				
-				newHtml = newHtml.slice(newHtml.indexOf("<body>") + 6, newHtml.indexOf("</body>"));
-				
-				document.body.firstElementChild.insertAdjacentHTML("beforebegin", newHtml);
-			}
-			
-			else
-			{
-				data = data.slice(data.indexOf("<body>") + 6, data.indexOf("</body>"));
-				
-				document.body.firstElementChild.insertAdjacentHTML("beforebegin", `<div class="page" style="${Site.showingPresentation ? "display: none; " : ""}opacity: 0">${data}</div>`);
-			}
+			document.body.firstElementChild.insertAdjacentHTML("beforebegin", `<div class="page" style="${Site.showingPresentation ? "display: none; " : ""}opacity: 0">${data}</div>`);
 			
 			Page.load();
 			
 			
 			
-			let displayUrl = url;
-			
-			if (DEBUG)
-			{
-				displayUrl = `/index-testing.html?page=${encodeURIComponent(url)}`;
-			}
-			
 			//Record the page change in the url bar and in the browser history.
 			if (!noStatePush)
 			{
-				history.pushState({url: url}, document.title, displayUrl);
+				history.pushState({url: url}, document.title, url);
 			}
 			
 			else
 			{
-				history.replaceState({url: url}, document.title, displayUrl);
+				history.replaceState({url: url}, document.title, url);
 			}
 			
 			
