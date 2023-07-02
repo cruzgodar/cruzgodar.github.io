@@ -1,16 +1,29 @@
 "use strict";
 
-class QuaternionicJuliaSet extends Applet
+class Mandelbulb extends Applet
 {
+	cXInputElement = null;
+	cYInputElement = null;
+	cZInputElement = null;
+
+	rotationAngleXInputElement = null;
+	rotationAngleYInputElement = null;
+	rotationAngleZInputElement = null;
+
+	currentlyDrawing = false;
+	currentlyAnimatingParameters = false;
+	
 	currentlyDragging = false;
+	
+	drawStartTime = 0;
+	
+	mouseX = 0;
+	mouseY = 0;
 	
 	movingForwardKeyboard = false;
 	movingBackwardKeyboard = false;
 	movingRightKeyboard = false;
 	movingLeftKeyboard = false;
-	
-	movingSliceUpKeyboard = false;
-	movingSliceDownKeyboard = false;
 	
 	movingForwardTouch = false;
 	movingBackwardTouch = false;
@@ -19,19 +32,11 @@ class QuaternionicJuliaSet extends Applet
 	
 	movingSpeed = 0;
 	
-	switchBulbButtonElement = null;
-	switchMovementButtonElement = null;
-	randomizeCButtonElement = null;
-	cXInputElement = null;
-	cYInputElement = null;
-	cZInputElement = null;
-	cWInputElement = null;
 	
 	
+	nextMoveVelocity = [0, 0, 0];
 	
-	nextMoveVelocity = [0, 0, 0, 0];
-	
-	moveVelocity = [0, 0, 0, 0];
+	moveVelocity = [0, 0, 0];
 	
 	moveFriction = .91;
 	moveVelocityStopThreshhold = .0005;
@@ -44,8 +49,8 @@ class QuaternionicJuliaSet extends Applet
 	
 	
 	
-	theta = 1.21557;
-	phi =  2.10801;
+	theta = 4.6601;
+	phi = 2.272;
 	
 	nextThetaVelocity = 0;
 	nextPhiVelocity = 0;
@@ -73,37 +78,38 @@ class QuaternionicJuliaSet extends Applet
 	rightVec = [];
 	upVec = [];
 	
-	cameraPos = [-1.11619, -2.63802, 1.67049];
+	cameraPos = [.0828, 2.17, 1.8925];
 	
 	focalLength = 2;
 	
-	lightPos = [-5, -5, 5];
+	lightPos = [0, 0, 5];
 	
-	c = [-.54, -.25, -.668];
+	power = 8;
+	c = [0, 0, 0];
+	cOld = [0, 0, 0];
+	cDelta = [0, 0, 0];
 	
-	kSlice = 0;
+	rotationAngleX = 0;
+	rotationAngleY = 0;
+	rotationAngleZ = 0;
 	
-	juliaProportion = 1;
-	movingPos = 0;
-	
-	
-	
-	constructor(canvas, switchBulbButtonElement, switchMovementButtonElement, randomizeCButtonElement, cXInputElement, cYInputElement, cZInputElement, cWInputElement)
+	juliaProportion = 0;
+	movingPos = 1;
+
+
+
+	constructor(canvas, cXInputElement, cYInputElement, cZInputElement, rotationAngleXInputElement, rotationAngleYInputElement, rotationAngleZInputElement)
 	{
 		super(canvas);
-		
-		
-		
-		this.switchBulbButtonElement = switchBulbButtonElement;
-		this.switchMovementButtonElement = switchMovementButtonElement;
-		this.randomizeCButtonElement = randomizeCButtonElement;
+
 		this.cXInputElement = cXInputElement;
 		this.cYInputElement = cYInputElement;
 		this.cZInputElement = cZInputElement;
-		this.cWInputElement = cWInputElement;
-		
-		
-		
+
+		this.rotationAngleXInputElement = rotationAngleXInputElement;
+		this.rotationAngleYInputElement = rotationAngleYInputElement;
+		this.rotationAngleZInputElement = rotationAngleZInputElement;
+
 		const fragShaderSource = `
 			precision highp float;
 			
@@ -137,45 +143,52 @@ class QuaternionicJuliaSet extends Applet
 			const vec3 fogColor = vec3(0.0, 0.0, 0.0);
 			const float fogScaling = .1;
 			
-			uniform float kSlice;
 			
 			
+			uniform mat3 rotationMatrix;
+			
+			uniform float power;
 			uniform vec3 c;
 			uniform float juliaProportion;
 			
 			
 			
-			vec4 qmul(vec4 z, vec4 w)
-			{
-				return vec4(z.x*w.x - z.y*w.y - z.z*w.z - z.w*w.w, z.x*w.y + z.y*w.x + z.z*w.w - z.w*w.z, z.x*w.z - z.y*w.w + z.z*w.x + z.w*w.y, z.x*w.w + z.y*w.z - z.z*w.y + z.w*w.x);
-			}
-			
-			
 			float distanceEstimator(vec3 pos)
 			{
-				vec4 z = vec4(pos, kSlice);
-				vec4 zPrime = vec4(1.0, 0.0, 0.0, 0.0);
-				float r;
+				vec3 z = pos;
+				
+				float r = length(z);
+				float dr = 1.0;
 				
 				for (int iteration = 0; iteration < 100; iteration++)
 				{
-					r = length(z);
-					
 					if (r > 16.0 || iteration >= maxIterations)
 					{
 						break;
 					}
 					
-					zPrime = 2.0 * qmul(z, zPrime);
+					float theta = acos(z.z / r);
 					
-					z = qmul(z, z);
+					float phi = atan(z.y, z.x);
 					
-					z += mix(vec4(pos, kSlice), vec4(c, kSlice), juliaProportion);
+					dr = pow(r, power - 1.0) * power * dr + 1.0;
+					
+					theta *= power;
+					
+					phi *= power;
+					
+					z = pow(r, power) * vec3(sin(theta)*cos(phi), sin(phi)*sin(theta), cos(theta));
+					
+					z += mix(pos, c, juliaProportion);
+					
+					z = rotationMatrix * z;
+					
+					r = length(z);
 				}
 				
 				
-				r = length(z);
-				float distance1 = .5 * r * log(r) / length(zPrime);
+				
+				float distance1 = .5 * log(r) * r / dr;
 				float distance2 = length(pos - c) - .05;
 				
 				
@@ -185,6 +198,8 @@ class QuaternionicJuliaSet extends Applet
 					return distance2;
 				}
 				
+				
+				
 				return distance1;
 			}
 			
@@ -192,29 +207,40 @@ class QuaternionicJuliaSet extends Applet
 			
 			vec3 getColor(vec3 pos)
 			{
-				vec4 z = vec4(pos, kSlice);
-				vec4 zPrime = vec4(1.0, 0.0, 0.0, 0.0);
-				float r;
+				vec3 z = pos;
+				
+				float r = length(z);
+				float dr = 1.0;
 				
 				vec3 color = vec3(1.0, 1.0, 1.0);
 				float colorScale = .5;
 				
 				for (int iteration = 0; iteration < 100; iteration++)
 				{
-					r = length(z);
-					
 					if (r > 16.0 || iteration >= maxIterations)
 					{
 						break;
 					}
 					
-					zPrime = 2.0 * qmul(z, zPrime);
+					float theta = acos(z.z / r);
 					
-					z = qmul(z, z);
+					float phi = atan(z.y, z.x);
 					
-					z += mix(vec4(pos, kSlice), vec4(c, kSlice), juliaProportion);
+					dr = pow(r, power - 1.0) * power * dr + 1.0;
 					
-					color = mix(color, abs(normalize(z.xyz)), colorScale);
+					theta *= power;
+					
+					phi *= power;
+					
+					z = pow(r, power) * vec3(sin(theta)*cos(phi), sin(phi)*sin(theta), cos(theta));
+					
+					z += mix(pos, c, juliaProportion);
+					
+					z = rotationMatrix * z;
+					
+					r = length(z);
+					
+					color = mix(color, abs(z / r), colorScale);
 					
 					colorScale *= .5;
 				}
@@ -222,8 +248,8 @@ class QuaternionicJuliaSet extends Applet
 				color /= max(max(color.x, color.y), color.z);
 				
 				
-				r = length(z);
-				float distance1 = .5 * r * log(r) / length(zPrime);
+				
+				float distance1 = .5 * log(r) * r / dr;
 				float distance2 = length(pos - c) - .05;
 				
 				
@@ -232,6 +258,8 @@ class QuaternionicJuliaSet extends Applet
 				{
 					color = vec3(1.0, 1.0, 1.0);
 				}
+				
+				
 				
 				return color;
 			}
@@ -356,12 +384,12 @@ class QuaternionicJuliaSet extends Applet
 				//Uncomment to use 2x antialiasing.
 				//vec3 finalColor = (raymarch(imagePlaneCenterPos + rightVec * (uv.x * aspectRatio + .5 / float(imageSize)) + upVec * (uv.y + .5 / float(imageSize))) + raymarch(imagePlaneCenterPos + rightVec * (uv.x * aspectRatio + .5 / float(imageSize)) + upVec * (uv.y - .5 / float(imageSize))) + raymarch(imagePlaneCenterPos + rightVec * (uv.x * aspectRatio - .5 / float(imageSize)) + upVec * (uv.y + .5 / float(imageSize))) + raymarch(imagePlaneCenterPos + rightVec * (uv.x * aspectRatio - .5 / float(imageSize)) + upVec * (uv.y - .5 / float(imageSize)))) / 4.0;
 				
-				gl_FragColor = vec4(raymarch(imagePlaneCenterPos + rightVec * (uv.x) * aspectRatioX + upVec * (uv.y) / aspectRatioY), 1.0);
+				gl_FragColor = vec4(raymarch(imagePlaneCenterPos + rightVec * uv.x * aspectRatioX + upVec * uv.y / aspectRatioY), 1.0);
 			}
 		`;
-
-
-
+		
+		
+		
 		const options =
 		{
 			renderer: "gpu",
@@ -376,13 +404,13 @@ class QuaternionicJuliaSet extends Applet
 			useFullscreen: true,
 			
 			trueFullscreen: true,
-
+		
 			useFullscreenButton: true,
 			
 			enterFullscreenButtonIconPath: "/graphics/general-icons/enter-fullscreen.png",
 			exitFullscreenButtonIconPath: "/graphics/general-icons/exit-fullscreen.png",
 			
-			switchFullscreenCallback: () => this.changeResolution(this.imageSize),
+			switchFullscreenCallback: () => this.changeResolution(),
 			
 			
 			
@@ -395,11 +423,12 @@ class QuaternionicJuliaSet extends Applet
 			mouseupCallback: this.onReleaseCanvas.bind(this),
 			touchendCallback: this.onReleaseCanvas.bind(this)
 		};
-
-		this.wilson = new Wilson(canvas, options);
-
-		this.wilson.render.initUniforms(["aspectRatioX", "aspectRatioY", "imageSize", "cameraPos", "imagePlaneCenterPos", "forwardVec", "rightVec", "upVec", "focalLength", "lightPos", "drawSphere", "c", "juliaProportion", "maxMarches", "stepFactor", "maxIterations", "kSlice"]);
 		
+		this.wilson = new Wilson(canvas, options);
+		
+		this.wilson.render.initUniforms(["aspectRatioX", "aspectRatioY", "imageSize", "cameraPos", "imagePlaneCenterPos", "forwardVec", "rightVec", "upVec", "focalLength", "lightPos", "drawSphere", "power", "c", "juliaProportion", "rotationMatrix", "maxMarches", "stepFactor", "maxIterations"]);
+
+
 		this.calculateVectors();
 		
 		
@@ -430,16 +459,18 @@ class QuaternionicJuliaSet extends Applet
 		
 		this.wilson.gl.uniform1i(this.wilson.uniforms["drawSphere"], 0);
 		
+		this.wilson.gl.uniform1f(this.wilson.uniforms["power"], 8);
 		this.wilson.gl.uniform3fv(this.wilson.uniforms["c"], this.c);
-		this.wilson.gl.uniform1f(this.wilson.uniforms["juliaProportion"], 1);
-		this.wilson.gl.uniform1f(this.wilson.uniforms["kSlice"], 0);
+		this.wilson.gl.uniform1f(this.wilson.uniforms["juliaProportion"], 0);
+		
+		this.wilson.gl.uniformMatrix3fv(this.wilson.uniforms["rotationMatrix"], false, [1, 0, 0, 0, 1, 0, 0, 0, 1]);
 		
 		this.wilson.gl.uniform1i(this.wilson.uniforms["maxMarches"], this.maxMarches);
 		this.wilson.gl.uniform1f(this.wilson.uniforms["stepFactor"], 1);
 		this.wilson.gl.uniform1i(this.wilson.uniforms["maxIterations"], this.maxIterations);
-		
-		
-		
+
+
+
 		const boundFunction = this.handleKeydownEvent.bind(this);
 		document.documentElement.addEventListener("keydown", boundFunction);
 		this.handlers.push([document.documentElement, "keydown", boundFunction]);
@@ -447,6 +478,10 @@ class QuaternionicJuliaSet extends Applet
 		const boundFunction2 = this.handleKeyupEvent.bind(this);
 		document.documentElement.addEventListener("keyup", boundFunction2);
 		this.handlers.push([document.documentElement, "keyup", boundFunction2]);
+
+		const boundFunction3 = () => this.changeResolution();
+		window.addEventListener("resize", boundFunction3);
+		this.handlers.push([window, "resize", boundFunction3]);
 		
 		
 		
@@ -466,16 +501,36 @@ class QuaternionicJuliaSet extends Applet
 			return;
 		}
 		
-		
-		
 		this.wilson.render.drawFrame();
+
+
 		
-		
-		
-		if (this.movingForwardKeyboard || this.movingBackwardKeyboard || this.movingRightKeyboard || this.movingLeftKeyboard || this.movingForwardTouch || this.movingBackwardTouch || this.movingSliceUpKeyboard || this.movingSliceDownKeyboard)
+		if (this.movingForwardKeyboard || this.movingBackwardKeyboard || this.movingRightKeyboard || this.movingLeftKeyboard || this.movingForwardTouch || this.movingBackwardTouch)
 		{
 			this.updateCameraParameters();
 		}
+		
+		else if (timeElapsed >= 50)
+		{
+			this.nextThetaVelocity = 0;
+			this.nextPhiVelocity = 0;
+			
+			this.thetaVelocity = 0;
+			this.phiVelocity = 0;
+			
+			this.movingForwardTouch = false;
+			this.movingBackwardTouch = false;
+			
+			this.moveVelocity[0] = 0;
+			this.moveVelocity[1] = 0;
+			this.moveVelocity[2] = 0;
+			
+			this.nextMoveVelocity[0] = 0;
+			this.nextMoveVelocity[1] = 0;
+			this.nextMoveVelocity[2] = 0;
+		}
+		
+		
 		
 		if (this.thetaVelocity !== 0 || this.phiVelocity !== 0)
 		{
@@ -522,7 +577,7 @@ class QuaternionicJuliaSet extends Applet
 			this.calculateVectors();
 		}
 		
-		if (this.moveVelocity[0] !== 0 || this.moveVelocity[1] !== 0 || this.moveVelocity[2] !== 0 || this.moveVelocity[3] !== 0)
+		if (this.moveVelocity[0] !== 0 || this.moveVelocity[1] !== 0 || this.moveVelocity[2] !== 0)
 		{
 			if (this.movingPos)
 			{	
@@ -537,22 +592,16 @@ class QuaternionicJuliaSet extends Applet
 				this.c[1] += this.moveVelocity[1];
 				this.c[2] += this.moveVelocity[2];
 				
-				this.kSlice += this.moveVelocity[3];
-				
 				try
 				{
-					this.cXInputElement.value = Math.round((this.c[0]) * 1000000) / 1000000;
-					this.cYInputElement.value = Math.round((this.c[1]) * 1000000) / 1000000;
-					this.cZInputElement.value = Math.round((this.c[2]) * 1000000) / 1000000;
-					
-					this.cWInputElement.value = Math.round((this.kSlice) * 1000000) / 1000000;
+					this.cXInputElement.value = Math.round((c[0]) * 1000000) / 1000000;
+					this.cYInputElement.value = Math.round((c[1]) * 1000000) / 1000000;
+					this.cZInputElement.value = Math.round((c[2]) * 1000000) / 1000000;
 				}
-				
+
 				catch(ex) {}
 				
 				this.wilson.gl.uniform3fv(this.wilson.uniforms["c"], this.c);
-				
-				this.wilson.gl.uniform1f(this.wilson.uniforms["kSlice"], this.kSlice);
 			}
 			
 			
@@ -561,15 +610,11 @@ class QuaternionicJuliaSet extends Applet
 			this.moveVelocity[1] *= this.moveFriction;
 			this.moveVelocity[2] *= this.moveFriction;
 			
-			this.moveVelocity[3] *= this.moveFriction;
-			
-			if (this.moveVelocity[0] * this.moveVelocity[0] + this.moveVelocity[1] * this.moveVelocity[1] + this.moveVelocity[2] * this.moveVelocity[2] + this.moveVelocity[3] * this.moveVelocity[3] < this.moveVelocityStopThreshhold * this.movingSpeed * this.moveVelocityStopThreshhold * this.movingSpeed)
+			if (this.moveVelocity[0] * this.moveVelocity[0] + this.moveVelocity[1] * this.moveVelocity[1] + this.moveVelocity[2] * this.moveVelocity[2] < this.moveVelocityStopThreshhold * this.movingSpeed * this.moveVelocityStopThreshhold * this.movingSpeed)
 			{
 				this.moveVelocity[0] = 0;
 				this.moveVelocity[1] = 0;
 				this.moveVelocity[2] = 0;
-				
-				this.moveVelocity[3] = 0;
 			}
 			
 			
@@ -579,10 +624,7 @@ class QuaternionicJuliaSet extends Applet
 		
 		
 		
-		if (!this.animationPaused)
-		{
-			window.requestAnimationFrame(this.drawFrame.bind(this));
-		}
+		window.requestAnimationFrame(this.drawFrame.bind(this));
 	}
 	
 	
@@ -600,7 +642,7 @@ class QuaternionicJuliaSet extends Applet
 		
 		
 		
-		this.distanceToScene = this.distanceEstimator(this.cameraPos[0], this.cameraPos[1], this.cameraPos[2]);
+		this.distanceToScene =this.distanceEstimator(this.cameraPos[0], this.cameraPos[1], this.cameraPos[2]);
 		
 		
 		
@@ -637,16 +679,43 @@ class QuaternionicJuliaSet extends Applet
 		return vec1[0] * vec2[0] + vec1[1] * vec2[1] + vec1[2] * vec2[2];
 	}
 	
-	dotProduct4(vec1, vec2)
-	{
-		return vec1[0] * vec2[0] + vec1[1] * vec2[1] + vec1[2] * vec2[2] + vec1[3] * vec2[3];
-	}
-	
 	
 	
 	crossProduct(vec1, vec2)
 	{
 		return [vec1[1] * vec2[2] - vec1[2] * vec2[1], vec1[2] * vec2[0] - vec1[0] * vec2[2], vec1[0] * vec2[1] - vec1[1] * vec2[0]];
+	}
+	
+	
+	
+	matMul(mat1, mat2)
+	{
+		return [
+			[mat1[0][0]*mat2[0][0] + mat1[0][1]*mat2[1][0] + mat1[0][2]*mat2[2][0],
+			mat1[0][0]*mat2[0][1] + mat1[0][1]*mat2[1][1] + mat1[0][2]*mat2[2][1],
+			mat1[0][0]*mat2[0][2] + mat1[0][1]*mat2[1][2] + mat1[0][2]*mat2[2][2]],
+			
+			[mat1[1][0]*mat2[0][0] + mat1[1][1]*mat2[1][0] + mat1[1][2]*mat2[2][0],
+			mat1[1][0]*mat2[0][1] + mat1[1][1]*mat2[1][1] + mat1[1][2]*mat2[2][1],
+			mat1[1][0]*mat2[0][2] + mat1[1][1]*mat2[1][2] + mat1[1][2]*mat2[2][2]],
+			
+			[mat1[2][0]*mat2[0][0] + mat1[2][1]*mat2[1][0] + mat1[2][2]*mat2[2][0],
+			mat1[2][0]*mat2[0][1] + mat1[2][1]*mat2[1][1] + mat1[2][2]*mat2[2][1],
+			mat1[2][0]*mat2[0][2] + mat1[2][1]*mat2[1][2] + mat1[2][2]*mat2[2][2]]
+		];
+	}
+
+
+
+	updateRotationMatrix()
+	{
+		const matZ = [[Math.cos(this.rotationAngleZ), -Math.sin(this.rotationAngleZ), 0], [Math.sin(this.rotationAngleZ), Math.cos(this.rotationAngleZ), 0], [0, 0, 1]];
+		const matY = [[Math.cos(this.rotationAngleY), 0, -Math.sin(this.rotationAngleY)], [0, 1, 0],[Math.sin(this.rotationAngleY), 0, Math.cos(this.rotationAngleY)]];
+		const matX = [[1, 0, 0], [0, Math.cos(this.rotationAngleX), -Math.sin(this.rotationAngleX)], [0, Math.sin(this.rotationAngleX), Math.cos(this.rotationAngleX)]];
+		
+		const matTotal = this.matMul(this.matMul(matZ, matY), matX);
+
+		this.wilson.gl.uniformMatrix3fv(this.wilson.uniforms["rotationMatrix"], false, [matTotal[0][0], matTotal[1][0], matTotal[2][0], matTotal[0][1], matTotal[1][1], matTotal[2][1], matTotal[0][2], matTotal[1][2], matTotal[2][2]]);
 	}
 	
 	
@@ -660,46 +729,60 @@ class QuaternionicJuliaSet extends Applet
 	
 	
 	
-	qmul(x1, y1, z1, w1, x2, y2, z2, w2)
-	{
-		return [x1*x2 - y1*y2 - z1*z1 - w1*w2, x1*y2 + y1*x2 + z1*w2 - w1*z2, x1*z2 - y1*w2 + z1*x2 + w1*y2, x1*w2 + y1*z2 - z1*y2 + w1*x2];
-	}
-	
-	
-	
 	distanceEstimator(x, y, z)
 	{
-		let mutableZ = [x, y, z, this.kSlice];
-		let zPrime = [1.0, 0.0, 0.0, 0.0];
+		const mutableZ = [x, y, z];
 		
 		let r = 0.0;
+		let dr = 1.0;
 		
 		for (let iteration = 0; iteration < this.maxIterations * 4; iteration++)
 		{
-			r = Math.sqrt(this.dotProduct4(mutableZ, mutableZ));
+			r = Math.sqrt(this.dotProduct(mutableZ, mutableZ));
 			
 			if (r > 16.0)
 			{
 				break;
 			}
 			
-			zPrime = this.qmul(...mutableZ, ...zPrime);
-			zPrime[0] *= 2;
-			zPrime[1] *= 2;
-			zPrime[2] *= 2;
-			zPrime[3] *= 2;
+			let theta = Math.acos(mutableZ[2] / r);
+			
+			let phi = Math.atan2(mutableZ[1], mutableZ[0]);
+			
+			dr = Math.pow(r, this.power - 1.0) * this.power * dr + 1.0;
+			
+			theta = theta * this.power;
+			
+			phi = phi * this.power;
+			
+			const scaledR = Math.pow(r, this.power);
+			
+			mutableZ[0] = scaledR * Math.sin(this.theta) * Math.cos(this.phi) + ((1 - this.juliaProportion) * x + this.juliaProportion * this.c[0]);
+			mutableZ[1] = scaledR * Math.sin(this.theta) * Math.sin(this.phi) + ((1 - this.juliaProportion) * y + this.juliaProportion * this.c[1]);
+			mutableZ[2] = scaledR * Math.cos(this.theta) + ((1 - this.juliaProportion) * z + this.juliaProportion * this.c[2]);
 			
 			
 			
-			mutableZ = this.qmul(...mutableZ, ...mutableZ);
+			//Apply the rotation matrix.
 			
-			mutableZ[0] += ((1 - this.juliaProportion) * x + this.juliaProportion * this.c[0]);
-			mutableZ[1] += ((1 - this.juliaProportion) * y + this.juliaProportion * this.c[1]);
-			mutableZ[2] += ((1 - this.juliaProportion) * z + this.juliaProportion * this.c[2]);
-			mutableZ[3] += this.kSlice;
+			const tempX = mutableZ[0];
+			const tempY = mutableZ[1];
+			const tempZ = mutableZ[2];
+			
+			const matZ = [[Math.cos(this.rotationAngleZ), -Math.sin(this.rotationAngleZ), 0], [Math.sin(this.rotationAngleZ), Math.cos(this.rotationAngleZ), 0], [0, 0, 1]];
+			const matY = [[Math.cos(this.rotationAngleY), 0, -Math.sin(this.rotationAngleY)], [0, 1, 0],[Math.sin(this.rotationAngleY), 0, Math.cos(this.rotationAngleY)]];
+			const matX = [[1, 0, 0], [0, Math.cos(this.rotationAngleX), -Math.sin(this.rotationAngleX)], [0, Math.sin(this.rotationAngleX), Math.cos(this.rotationAngleX)]];
+			
+			const matTotal = this.matMul(this.matMul(matZ, matY), matX);
+			
+			mutableZ[0] = matTotal[0][0] * tempX + matTotal[0][1] * tempY + matTotal[0][2] * tempZ;
+			mutableZ[1] = matTotal[1][0] * tempX + matTotal[1][1] * tempY + matTotal[1][2] * tempZ;
+			mutableZ[2] = matTotal[2][0] * tempX + matTotal[2][1] * tempY + matTotal[2][2] * tempZ;
 		}
 		
-		return 0.5 * Math.log(r) * r / Math.sqrt(this.dotProduct4(zPrime, zPrime));
+		
+		
+		return 0.5 * Math.log(r) * r / dr;
 	}
 	
 	
@@ -725,13 +808,9 @@ class QuaternionicJuliaSet extends Applet
 				this.moveVelocity[1] = 0;
 				this.moveVelocity[2] = 0;
 				
-				this.moveVelocity[3] = 0;
-				
 				this.nextMoveVelocity[0] = 0;
 				this.nextMoveVelocity[1] = 0;
 				this.nextMoveVelocity[2] = 0;
-				
-				this.nextMoveVelocity[3] = 0;
 			}
 			
 			else if (event.touches.length === 3)
@@ -743,13 +822,9 @@ class QuaternionicJuliaSet extends Applet
 				this.moveVelocity[1] = 0;
 				this.moveVelocity[2] = 0;
 				
-				this.moveVelocity[3] = 0;
-				
 				this.nextMoveVelocity[0] = 0;
 				this.nextMoveVelocity[1] = 0;
 				this.nextMoveVelocity[2] = 0;
-				
-				this.nextMoveVelocity[3] = 0;
 			}
 			
 			else
@@ -826,17 +901,13 @@ class QuaternionicJuliaSet extends Applet
 				this.moveVelocity[1] = this.nextMoveVelocity[1];
 				this.moveVelocity[2] = this.nextMoveVelocity[2];
 				
-				this.moveVelocity[3] = this.nextMoveVelocity[3];
-				
 				this.nextMoveVelocity[0] = 0;
 				this.nextMoveVelocity[1] = 0;
 				this.nextMoveVelocity[2] = 0;
-				
-				this.nextMoveVelocity[3] = 0;
 			}
 		}
 		
-		if (((event.type === "touchend" && event.touches.length === 0) || event.type === "mouseup") && (this.nextThetaVelocity * this.nextThetaVelocity + this.nextPhiVelocity * this.nextPhiVelocity >= this.panVelocityStartThreshhold * this.panVelocityStartThreshhold))
+		if (((event.type === "touchend" && event.touches,length === 0) || event.type === "mouseup") && (this.nextThetaVelocity * this.nextThetaVelocity + this.nextPhiVelocity * this.nextPhiVelocity >= this.panVelocityStartThreshhold * this.panVelocityStartThreshhold))
 		{
 			this.thetaVelocity = this.nextThetaVelocity;
 			this.phiVelocity = this.nextPhiVelocity;
@@ -847,15 +918,15 @@ class QuaternionicJuliaSet extends Applet
 	
 	handleKeydownEvent(e)
 	{
-		if (document.activeElement.tagName === "INPUT" || !(e.keyCode === 87 || e.keyCode === 83 || e.keyCode === 68 || e.keyCode === 65 || e.keyCode === 69 || e.keyCode === 81))
+		if (document.activeElement.tagName === "INPUT" || !(e.keyCode === 87 || e.keyCode === 83 || e.keyCode === 68 || e.keyCode === 65))
 		{
 			return;
 		}
 		
 		
 		
-		this.nextMoveVelocity = [0, 0, 0, 0];
-		this.moveVelocity = [0, 0, 0, 0];
+		this.nextMoveVelocity = [0, 0, 0];
+		this.moveVelocity = [0, 0, 0];
 		
 		
 		
@@ -882,46 +953,28 @@ class QuaternionicJuliaSet extends Applet
 		{
 			this.movingLeftKeyboard = true;
 		}
-		
-		
-		
-		//E
-		if (e.keyCode === 69)
-		{
-			this.movingSliceUpKeyboard = true;
-		}
-		
-		//Q
-		else if (e.keyCode === 81)
-		{
-			this.movingSliceDownKeyboard = true;
-		}
 	}
 	
 	
 	
 	handleKeyupEvent(e)
 	{
-		if (document.activeElement.tagName === "INPUT" || !(e.keyCode === 87 || e.keyCode === 83 || e.keyCode === 68 || e.keyCode === 65 || e.keyCode === 69 || e.keyCode === 81))
+		if (document.activeElement.tagName === "INPUT" || !(e.keyCode === 87 || e.keyCode === 83 || e.keyCode === 68 || e.keyCode === 65))
 		{
 			return;
 		}
 		
 		
 		
-		if (this.moveVelocity[0] === 0 && this.moveVelocity[1] === 0 && this.moveVelocity[2] === 0 && this.moveVelocity[3] === 0)
+		if (this.moveVelocity[0] === 0 && this.moveVelocity[1] === 0 && this.moveVelocity[2] === 0)
 		{
 			this.moveVelocity[0] = this.nextMoveVelocity[0];
 			this.moveVelocity[1] = this.nextMoveVelocity[1];
 			this.moveVelocity[2] = this.nextMoveVelocity[2];
 			
-			this.moveVelocity[3] = this.nextMoveVelocity[3];
-			
 			this.nextMoveVelocity[0] = 0;
 			this.nextMoveVelocity[1] = 0;
 			this.nextMoveVelocity[2] = 0;
-			
-			this.nextMoveVelocity[3] = 0;
 		}
 		
 		
@@ -948,20 +1001,6 @@ class QuaternionicJuliaSet extends Applet
 		else if (e.keyCode === 65)
 		{
 			this.movingLeftKeyboard = false;
-		}
-		
-		
-		
-		//E
-		if (e.keyCode === 69)
-		{
-			this.movingSliceUpKeyboard = false;
-		}
-		
-		//Q
-		else if (e.keyCode === 81)
-		{
-			this.movingSliceDownKeyboard = false;
 		}
 	}
 	
@@ -1007,7 +1046,7 @@ class QuaternionicJuliaSet extends Applet
 				this.cameraPos[0] -= this.movingSpeed * this.rightVec[0] / this.focalLength;
 				this.cameraPos[1] -= this.movingSpeed * this.rightVec[1] / this.focalLength;
 				this.cameraPos[2] -= this.movingSpeed * this.rightVec[2] / this.focalLength;
-			}
+			}	
 			
 			
 			
@@ -1021,7 +1060,6 @@ class QuaternionicJuliaSet extends Applet
 		else
 		{
 			const oldC = [...this.c];
-			const oldKSlice = this.kSlice;
 			
 			if (this.movingForwardKeyboard || this.movingForwardTouch)
 			{
@@ -1055,41 +1093,24 @@ class QuaternionicJuliaSet extends Applet
 			
 			
 			
-			if (this.movingSliceUpKeyboard)
-			{
-				this.kSlice += .5 * this.movingSpeed;
-			}
-			
-			else if (this.movingSliceDownKeyboard)
-			{
-				this.kSlice -= .5 * this.movingSpeed;
-			}
-			
-			
-			
 			try
 			{
-				this.cXInputElement.value = Math.round((this.c[0]) * 1000000) / 1000000;
-				this.cYInputElement.value = Math.round((this.c[1]) * 1000000) / 1000000;
-				this.cZInputElement.value = Math.round((this.c[2]) * 1000000) / 1000000;
-				
-				this.cWInputElement.value = Math.round((this.kSlice) * 1000000) / 1000000;
+				cXInputElement.value = Math.round((this.c[0]) * 1000000) / 1000000;
+				cYInputElement.value = Math.round((this.c[1]) * 1000000) / 1000000;
+				cZInputElement.value = Math.round((this.c[2]) * 1000000) / 1000000;
 			}
-			
+
 			catch(ex) {}
 			
 			
-			this.wilson.gl.uniform3fv(this.wilson.uniforms["c"], this.c);
 			
-			this.wilson.gl.uniform1f(this.wilson.uniforms["kSlice"], this.kSlice);
+			this.wilson.gl.uniform3fv(this.wilson.uniforms["c"], this.c);
 			
 			
 			
 			this.nextMoveVelocity[0] = this.c[0] - oldC[0];
 			this.nextMoveVelocity[1] = this.c[1] - oldC[1];
 			this.nextMoveVelocity[2] = this.c[2] - oldC[2];
-			
-			this.nextMoveVelocity[3] = this.kSlice - oldKSlice;
 		}
 		
 		
@@ -1099,9 +1120,11 @@ class QuaternionicJuliaSet extends Applet
 	
 	
 	
-	changeResolution(resolution)
+	changeResolution(resolution = this.imageSize)
 	{
 		this.imageSize = resolution;
+		
+		
 		
 		if (this.wilson.fullscreen.currentlyFullscreen)
 		{
@@ -1147,41 +1170,75 @@ class QuaternionicJuliaSet extends Applet
 	
 	
 	
-	randomizeC(animateChange = true)
+	randomizeRotation(animateChange = true)
 	{
-		this.updateC([Math.random()*2 - 1, Math.random()*2 - 1, Math.random()*2 - 1, this.c[3]], animateChange);
+		const dummy = {t: 0};
+
+		const xOld = this.rotationAngleX;
+		const yOld = this.rotationAngleY;
+		const zOld = this.rotationAngleZ;
+		const xNew = Math.random()*2 - 1;
+		const yNew = Math.random()*2 - 1;
+		const zNew = Math.random()*2 - 1;
+
+		try
+		{
+			this.rotationAngleXInputElement.value = Math.round(xNew * 1000000) / 1000000;
+			this.rotationAngleYInputElement.value = Math.round(yNew * 1000000) / 1000000;
+			this.rotationAngleZInputElement.value = Math.round(zNew * 1000000) / 1000000;
+		}
+
+		catch(ex) {}
+
+		anime({
+			targets: dummy,
+			t: 1,
+			duration: 1000 * animateChange + 10,
+			easing: "easeOutSine",
+			update: () =>
+			{
+				this.rotationAngleX = (1 - dummy.t) * xOld + dummy.t * xNew;
+				this.rotationAngleY = (1 - dummy.t) * yOld + dummy.t * yNew;
+				this.rotationAngleZ = (1 - dummy.t) * zOld + dummy.t * zNew;
+
+				this.updateRotationMatrix();
+			}
+		});
 	}
 	
 	
 	
-	updateC(newC, animateChange = true)
+	randomizeC(animateChange = true)
 	{
+		const dummy = {t: 0};
+
+		const xOld = this.c[0];
+		const yOld = this.c[1];
+		const zOld = this.c[2];
+		const xNew = Math.random()*1.5 - .75;
+		const yNew = Math.random()*1.5 - .75;
+		const zNew = Math.random()*1.5 - .75;
+
 		try
 		{
-			this.cXInputElement.value = Math.round(newC[0] * 1000000) / 1000000;
-			this.cYInputElement.value = Math.round(newC[1] * 1000000) / 1000000;
-			this.cZInputElement.value = Math.round(newC[2] * 1000000) / 1000000;
+			this.cXInputElement.value = Math.round(xNew * 1000000) / 1000000;
+			this.cYInputElement.value = Math.round(yNew * 1000000) / 1000000;
+			this.cZInputElement.value = Math.round(zNew * 1000000) / 1000000;
 		}
-		
+
 		catch(ex) {}
-		
-		
-		
-		let dummy = {t: 0};
-		
-		const oldC = [...this.c];
-		
+
 		anime({
 			targets: dummy,
 			t: 1,
-			duration: 1500 * animateChange + 10,
-			easing: "easeOutQuad",
+			duration: 1000 * animateChange + 10,
+			easing: "easeOutSine",
 			update: () =>
 			{
-				this.c[0] = (1 - dummy.t) * oldC[0] + dummy.t * newC[0];
-				this.c[1] = (1 - dummy.t) * oldC[1] + dummy.t * newC[1];
-				this.c[2] = (1 - dummy.t) * oldC[2] + dummy.t * newC[2];
-				
+				this.c[0] = (1 - dummy.t) * xOld + dummy.t * xNew;
+				this.c[1] = (1 - dummy.t) * yOld + dummy.t * yNew;
+				this.c[2] = (1 - dummy.t) * zOld + dummy.t * zNew;
+
 				this.wilson.gl.uniform3fv(this.wilson.uniforms["c"], this.c);
 			}
 		});
@@ -1191,40 +1248,6 @@ class QuaternionicJuliaSet extends Applet
 	
 	switchBulb()
 	{
-		if (this.juliaProportion !== 0 && this.juliaProportion !== 1)
-		{
-			return;
-		}
-		
-		
-		
-		const oldJuliaProportion = this.juliaProportion;
-		const newJuliaProportion = 1 - this.juliaProportion;
-		
-		try
-		{
-			Page.Animate.changeOpacity(this.switchBulbButtonElement, 0, Site.opacityAnimationTime)
-			
-			setTimeout(() =>
-			{
-				if (oldJuliaProportion === 0)
-				{
-					this.switchBulbButtonElement.textContent = "Switch to Mandelbrot Set";
-				}
-				
-				else
-				{
-					this.switchBulbButtonElement.textContent = "Switch to Julia Set";
-				}
-				
-				Page.Animate.changeOpacity(this.switchBulbButtonElement, 1, Site.opacityAnimationTime);
-			}, Site.opacityAnimationTime);
-		}
-		
-		catch(ex) {}
-		
-		
-		
 		if (this.juliaProportion === 0)
 		{
 			this.wilson.gl.uniform3fv(this.wilson.uniforms["c"], this.c);
@@ -1233,17 +1256,6 @@ class QuaternionicJuliaSet extends Applet
 			{
 				this.wilson.gl.uniform1i(this.wilson.uniforms["drawSphere"], 1);
 			}
-			
-			setTimeout(() =>
-			{
-				try
-				{
-					Page.Animate.changeOpacity(this.switchMovementButtonElement, 1, Site.opacityAnimationTime);
-					Page.Animate.changeOpacity(this.randomizeCButtonElement, 1, Site.opacityAnimationTime);
-				}
-				
-				catch(ex) {}
-			}, Site.opacityAnimationTime);
 		}
 		
 		else
@@ -1251,29 +1263,22 @@ class QuaternionicJuliaSet extends Applet
 			this.movingPos = true;
 			
 			this.wilson.gl.uniform1i(this.wilson.uniforms["drawSphere"], 0);
-			
-			try
-			{
-				Page.Animate.changeOpacity(this.switchMovementButtonElement, 0, Site.opacityAnimationTime);
-				Page.Animate.changeOpacity(this.randomizeCButtonElement, 0, Site.opacityAnimationTime);
-			}
-			
-			catch(ex) {}
 		}
-		
-		
-		
-		let dummy = {t: 0};
-		
+
+		const dummy = {t: 0};
+
+		const oldJuliaProportion = this.juliaProportion;
+		const newJuliaProportion = this.juliaProportion === 0 ? 1 : 0;
+
 		anime({
 			targets: dummy,
 			t: 1,
-			duration: 1500,
-			easing: "easeOutQuad",
+			duration: 1000,
+			easing: "easeOutSine",
 			update: () =>
 			{
 				this.juliaProportion = (1 - dummy.t) * oldJuliaProportion + dummy.t * newJuliaProportion;
-				
+
 				this.wilson.gl.uniform1f(this.wilson.uniforms["juliaProportion"], this.juliaProportion);
 			}
 		});
@@ -1284,30 +1289,6 @@ class QuaternionicJuliaSet extends Applet
 	switchMovement()
 	{
 		this.movingPos = !this.movingPos;
-		
-		try
-		{
-			Page.Animate.changeOpacity(this.switchMovementButtonElement, 0, Site.opacityAnimationTime);
-			
-			setTimeout(() =>
-			{
-				if (this.movingPos)
-				{
-					this.switchMovementButtonElement.textContent = "Change Julia Set";
-				}
-				
-				else
-				{
-					this.switchMovementButtonElement.textContent = "Move Camera";
-				}
-				
-				Page.Animate.changeOpacity(this.switchMovementButtonElement, 1, Site.opacityAnimationTime);
-			}, Site.opacityAnimationTime);
-		}
-		
-		catch(ex) {}
-		
-		
 		
 		if (this.movingPos)
 		{

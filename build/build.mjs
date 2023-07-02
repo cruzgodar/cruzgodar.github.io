@@ -27,15 +27,22 @@ async function buildSite()
 	});
 }
 
-function parseModifiedFiles(files, sitemap)
+async function parseModifiedFiles(files, sitemap)
 {
-	files.forEach(async file =>
+	for (let k = 0; k < files.length; k++)
 	{
+		const file = files[k];
+
+		if (file.indexOf(".") === -1)
+		{
+			continue;
+		}
+
 		for (let i = 0; i < excludeFromBuild.length; i++)
 		{
 			if (excludeFromBuild[i].test(file))
 			{
-				return;
+				continue;
 			}
 		}
 
@@ -45,7 +52,7 @@ function parseModifiedFiles(files, sitemap)
 		
 		if (index <= 0)
 		{
-			return;
+			continue;
 		}
 
 		const filename = end.slice(0, index);
@@ -54,7 +61,8 @@ function parseModifiedFiles(files, sitemap)
 		if (extension === "html" && filename === "src")
 		{
 			console.log(file);
-			buildHTMLFile(await read(file), "/" + file.slice(0, lastSlashIndex), sitemap);
+			const text = await read(file);
+			buildHTMLFile(text, "/" + file.slice(0, lastSlashIndex), sitemap);
 		}
 
 		else if (extension === "mjs" || extension === "js")
@@ -68,7 +76,7 @@ function parseModifiedFiles(files, sitemap)
 			console.log(file);
 			buildCSSFile(file);
 		}
-	});
+	}
 }
 
 function buildJSFile(file)
