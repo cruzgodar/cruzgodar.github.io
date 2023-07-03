@@ -1,14 +1,14 @@
-import {exec} from "child_process"
-import {read} from "./file-io.mjs"
+import { exec } from "child_process"
+import { read, write } from "./file-io.mjs"
 import buildSitemap from "./build-sitemap.mjs"
 import buildHTMLFile from "./build-html-file.mjs";
-import {sitemapPath} from "./build-sitemap.mjs"
+import { sitemapPath } from "./build-sitemap.mjs"
 
 const root = process.argv[1].replace(/(\/90259025.github.io\/).+$/, (match, $1) => $1);
 
 const excludeFromBuild = 
 [
-	/build\/[^\/]+\./,
+	/build.+/,
 	/scripts\/init\.js/
 ];
 
@@ -38,12 +38,20 @@ async function parseModifiedFiles(files, sitemap)
 			continue;
 		}
 
+		let broken = false;
+
 		for (let i = 0; i < excludeFromBuild.length; i++)
 		{
 			if (excludeFromBuild[i].test(file))
 			{
-				continue;
+				broken = true;
+				break;
 			}
+		}
+
+		if (broken)
+		{
+			continue;
 		}
 
 		const lastSlashIndex = file.lastIndexOf("/") + 1;
@@ -68,7 +76,7 @@ async function parseModifiedFiles(files, sitemap)
 		else if (extension === "mjs" || extension === "js")
 		{
 			console.log(file);
-			buildJSFile(file);
+			await buildJSFile(file);
 		}
 
 		else if (extension === "css")
@@ -81,16 +89,26 @@ async function parseModifiedFiles(files, sitemap)
 
 function buildJSFile(file)
 {
-	const outputFile = file.replace(/(\.m*js)/, (match, $1) => `.min${$1}`);
+	return new Promise(async (resolve, reject) =>
+	{
+		const outputFile = file.replace(/(\.m*js)/, (match, $1) => `.min${$1}`);
 
-	exec(`google-closure-compiler --js ${file} --js_output_file ${outputFile} --language_in UNSTABLE --language_out UNSTABLE`);
+		exec(`uglifyjs ${root + file} --output ${outputFile} --compress --mangle`, async () =>
+		{
+			const js = await read(outputFile);
+
+			write(outputFile, js.replace(/(import.*?)\.mjs/g, (match, $1) => `${$1}.min.mjs`));
+
+			resolve();
+		});
+	});
 }
 
 function buildCSSFile(file)
 {
 	const outputFile = file.replace(/(\.css)/, (match, $1) => `.min${$1}`);
 
-	exec(`uglifycss ${file} --output ${outputFile}`);
+	exec(`uglifycss ${root + file} --output ${outputFile}`);
 }
 
 

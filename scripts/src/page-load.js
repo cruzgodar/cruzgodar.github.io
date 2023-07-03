@@ -45,8 +45,6 @@ Page.load = async function()
 	
 	Page.usingCustomScript = true;
 	
-	Page.readyToShow = false;
-	
 	
 	
 	this.Navigation.currentlyChangingPage = false;
@@ -54,7 +52,7 @@ Page.load = async function()
 	
 	
 	this.Load.parseCustomStyle();
-	await this.Load.parseCustomScripts();
+	this.Load.parseCustomScripts();
 	
 	
 	
@@ -147,14 +145,6 @@ Page.load = async function()
 	}
 	
 	this.Load.Math.typeset();
-	
-	
-	
-	if (!Page.usingCustomScript)
-	{
-		//Truly godawful
-		setTimeout(() => Page.show(), 1);
-	}
 };
 
 
@@ -240,60 +230,20 @@ Page.Load =
 
 	parseCustomScripts: function()
 	{
-		return new Promise((resolve, reject) =>
+		let pageName = Page.url.split("/");
+		pageName = pageName[pageName.length - 2];
+		
+		import(Page.parentFolder + "scripts/index.mjs")
+
+		.then((Module) =>
 		{
-			let pageName = Page.url.split("/");
-			pageName = pageName[pageName.length - 2];
-			
-			
-			
-			//Make sure there's actually something to get.
-			fetch(Page.parentFolder + "scripts/index.js")
-			
-			.then((response) =>
-			{
-				if (!response.ok)
-				{
-					if (Page.readyToShow)
-					{
-						Page.show();
-					}
-					
-					else
-					{
-						Page.usingCustomScript = false;
-					}
-					
-					resolve();
-					
-					return;
-				}
-				
-				Page.readyToShow = true;
-				
-				
-				
-				const element = document.createElement("script");
-				
-				if (DEBUG)
-				{
-					element.setAttribute("src", Page.parentFolder + "scripts/index.js");
-				}
-				
-				else
-				{
-					element.setAttribute("src", Page.parentFolder + "scripts/index.min.js");
-				}
-				
-				
-				
-				element.classList.add("temporary-script");
-				
-				document.body.appendChild(element);
-				
-				resolve();
-			});
-		});	
+			Module.load();
+		})
+
+		.catch(() =>
+		{
+			setTimeout(() => Page.show(), 1);
+		})
 	},
 	
 	

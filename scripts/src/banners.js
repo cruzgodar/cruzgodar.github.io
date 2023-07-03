@@ -1,6 +1,6 @@
 "use strict";
 
-
+Page.currentApplets = [];
 
 Page.bannerElement = null;
 Page.contentElement = null;
