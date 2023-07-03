@@ -1,4 +1,5 @@
 import { EllipticCurve } from "./class.mjs";
+import { ComplexMap } from "../../complex-maps/scripts/class.mjs"
 
 export function load()
 {
