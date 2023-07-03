@@ -109,12 +109,12 @@ Page.Navigation =
 			//Record the page change in the url bar and in the browser history.
 			if (!noStatePush)
 			{
-				history.pushState({url: url}, document.title, url);
+				history.pushState({url: url}, document.title, url + (DEBUG && "src.html"));
 			}
 			
 			else
 			{
-				history.replaceState({url: url}, document.title, url);
+				history.replaceState({url: url}, document.title, url + (DEBUG && "src.html"));
 			}
 			
 			

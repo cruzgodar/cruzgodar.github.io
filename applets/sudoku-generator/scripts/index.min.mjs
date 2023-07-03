@@ -1,0 +1,1 @@
+import{SudokuGenerator}from"./class.min.mjs";function load(){const o=new SudokuGenerator($("#output-canvas"));$("#generate-button").addEventListener("click",function(){o.run()}),$("#download-button").addEventListener("click",()=>{o.wilson.downloadFrame("sudoku.png")}),Page.show()}export{load};

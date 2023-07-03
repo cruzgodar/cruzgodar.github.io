@@ -1,0 +1,1 @@
+import{BinaryTree}from"./class.min.mjs";function load(){const n=new BinaryTree($("#output-canvas"));$("#download-button").addEventListener("click",()=>n.wilson.downloadFrame("a-binary-tree.png")),Page.show()}export{load};

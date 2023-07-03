@@ -5,7 +5,7 @@ export function load()
 	const applet = new AbelianSandpile($("#output-canvas"));
 
 
-
+	
 	function run()
 	{
 		const numGrains = parseInt(numGrainsInputElement.value || 10000);

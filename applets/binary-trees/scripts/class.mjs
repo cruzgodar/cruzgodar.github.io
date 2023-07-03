@@ -1,0 +1,319 @@
+import { Applet } from "../../../scripts/src/applets.mjs"
+
+export class BinaryTree extends Applet
+{
+	root = [];
+	branchPoints = [];
+	
+	numPreviewIterations = 5;
+	
+	webWorker = null;
+	
+	
+	
+	constructor(canvas)
+	{
+		super(canvas);
+		
+		const options =
+		{
+			renderer: "cpu",
+			
+			canvasWidth: 2000,
+			canvasHeight: 2000,
+			
+			
+			
+			useDraggables: true,
+			
+			draggablesMousedownCallback: this.onGrabDraggable.bind(this),
+			draggablesTouchstartCallback: this.onGrabDraggable.bind(this),
+			
+			draggablesMousemoveCallback: this.onDragDraggable.bind(this),
+			draggablesTouchmoveCallback: this.onDragDraggable.bind(this),
+			
+			draggablesMouseupCallback: this.onReleaseDraggable.bind(this),
+			draggablesTouchendCallback: this.onReleaseDraggable.bind(this),
+			
+			
+			
+			useFullscreen: true,
+			
+			trueFullscreen: true,
+		
+			useFullscreenButton: true,
+			
+			enterFullscreenButtonIconPath: "/graphics/general-icons/enter-fullscreen.png",
+			exitFullscreenButtonIconPath: "/graphics/general-icons/exit-fullscreen.png",
+			
+			switchFullscreenCallback: () => this.changeAspectRatio()
+		};
+		
+		this.wilson = new Wilson(canvas, options);
+		
+		this.wilson.ctx.fillStyle = "rgb(0, 0, 0)";
+		this.wilson.ctx.fillRect(0, 0, this.wilson.canvasWidth, this.wilson.canvasHeight);
+		
+		this.initBranchMarkers();
+	}
+	
+	
+	
+	preview(root, branchPoints)
+	{
+		this.root = root;
+		this.branchPoints = branchPoints;
+		
+		
+			
+		this.wilson.ctx.fillStyle = "rgb(0, 0, 0)";
+		this.wilson.ctx.fillRect(0, 0, this.wilson.canvasWidth, this.wilson.canvasHeight);
+		
+		
+		
+		let angles = [Math.atan2(this.branchPoints[0][0] - this.root[0], this.branchPoints[0][1] - this.root[1]), Math.atan2(this.branchPoints[1][0] - this.root[0], this.branchPoints[1][1] - this.root[1])];
+		
+		let angleStep = (angles[0] - angles[1]) / 2;
+		
+		
+		
+		let distances = [Math.sqrt((this.branchPoints[0][0] - this.root[0])*(this.branchPoints[0][0] - this.root[0]) + (this.branchPoints[0][1] - this.root[1])*(this.branchPoints[0][1] - this.root[1])), Math.sqrt((this.branchPoints[1][0] - this.root[0])*(this.branchPoints[1][0] - this.root[0]) + (this.branchPoints[1][1] - this.root[1])*(this.branchPoints[1][1] - this.root[1]))];
+		
+		let startingPoints = [this.root];
+		
+		let scale = 1;
+		
+		
+		
+		for (let iteration = 0; iteration < this.numPreviewIterations; iteration++)
+		{
+			let newStartingPoints = [];
+			
+			let newAngles = [];
+			
+			
+			
+			this.wilson.ctx.lineWidth = 20 * scale + 1;
+			
+			const r = Math.sqrt(scale) * 139;
+			const g = Math.sqrt(scale) * 69 + (1 - Math.sqrt(scale)) * 128;
+			const b = Math.sqrt(scale) * 19;
+			this.wilson.ctx.strokeStyle = `rgb(${r}, ${g}, ${b})`;
+			
+			
+			
+			for (let i = 0; i < startingPoints.length; i++)
+			{
+				let startX = startingPoints[i][1];
+				let startY = startingPoints[i][0];
+				let endX = startingPoints[i][1] + distances[0] * scale * Math.cos(angles[2*i]);
+				let endY = startingPoints[i][0] + distances[0] * scale * Math.sin(angles[2*i]);
+				
+				this.wilson.ctx.beginPath();
+				this.wilson.ctx.moveTo(startX, startY);
+				this.wilson.ctx.lineTo(endX, endY);
+				this.wilson.ctx.stroke();
+				
+				newStartingPoints.push([endY, endX]);
+				
+				newAngles.push(angles[2*i] - angleStep);
+				newAngles.push(angles[2*i] + angleStep);
+				
+				
+				
+				startX = startingPoints[i][1];
+				startY = startingPoints[i][0];
+				endX = startingPoints[i][1] + distances[1] * scale * Math.cos(angles[2*i + 1]);
+				endY = startingPoints[i][0] + distances[1] * scale * Math.sin(angles[2*i + 1]);
+				
+				this.wilson.ctx.beginPath();
+				this.wilson.ctx.moveTo(startX, startY);
+				this.wilson.ctx.lineTo(endX, endY);
+				this.wilson.ctx.stroke();
+				
+				newStartingPoints.push([endY, endX]);
+				
+				newAngles.push(angles[2*i + 1] - angleStep);
+				newAngles.push(angles[2*i + 1] + angleStep);
+			}
+			
+			
+			
+			startingPoints = newStartingPoints;
+			
+			angles = newAngles;
+			
+			scale *= .675;
+		}
+	}
+	
+	
+	
+	animate(root, branchPoints)
+	{
+		this.root = root;
+		this.branchPoints = branchPoints;
+		
+		try {this.webWorker.terminate()}
+		catch(ex) {}
+		
+		this.webWorker = new Worker(`/applets/binary-trees/scripts/worker.${DEBUG ? "" : "min."}js`);
+		
+		this.workers.push(this.webWorker);
+		
+		
+		
+		this.webWorker.onmessage = (e) =>
+		{
+			if (e.data[0] === "done")
+			{
+				const timeoutId = setTimeout(() =>
+				{
+					Page.setElementStyles(".wilson-draggable", "opacity", 1);
+				}, 500);
+				
+				this.timeoutIds.push(timeoutId);	
+				
+				return;
+			}
+			
+			
+			
+			this.wilson.ctx.strokeStyle = e.data[4];
+			this.wilson.ctx.lineWidth = e.data[5];
+			
+			this.wilson.ctx.beginPath();
+			this.wilson.ctx.moveTo(e.data[0], e.data[1]);
+			this.wilson.ctx.lineTo(e.data[2], e.data[3]);
+			this.wilson.ctx.stroke();
+		}
+		
+		
+		
+		this.webWorker.postMessage([this.root, this.branchPoints]);
+	}
+	
+	
+	
+	initBranchMarkers()
+	{
+		this.wilson.draggables.add(-1/7, -1/3);
+		this.wilson.draggables.add(1/7, -1/3);
+		
+		
+		
+		this.root = this.wilson.utils.interpolate.worldToCanvas(0, -4/5);
+		
+		this.branchPoints[0] = this.wilson.utils.interpolate.worldToCanvas(-1/7, -1/3);
+		this.branchPoints[1] = this.wilson.utils.interpolate.worldToCanvas(1/7, -1/3);
+		
+		
+		
+		this.preview(this.root, this.branchPoints);
+	}
+	
+	
+	
+	onGrabDraggable(activeDraggable, x, y, event)
+	{
+		try {this.webWorker.terminate()}
+		catch(ex) {}
+		
+		Page.setElementStyles(".wilson-draggable", "opacity", 1);
+		
+		this.wilson.ctx.fillStyle = "rgb(0, 0, 0)";
+		this.wilson.ctx.fillRect(0, 0, this.wilson.canvasWidth, this.wilson.canvasHeight);
+		
+		this.preview(this.root, this.branchPoints);
+	}
+	
+	
+	
+	onDragDraggable(activeDraggable, x, y, event)
+	{
+		this.branchPoints[activeDraggable] = this.wilson.utils.interpolate.worldToCanvas(x, y);
+		
+		this.preview(this.root, this.branchPoints);
+	}
+	
+	
+	
+	onReleaseDraggable(activeDraggable, x, y, event)
+	{
+		document.body.style.WebkitUserSelect = "";
+		
+		Page.setElementStyles(".wilson-draggable", "opacity", 0);
+		
+		
+		
+		let step = 0;
+		
+		const that = this;
+		
+		const refreshId = setInterval(() =>
+		{
+			let alpha = step / 37;
+			that.wilson.ctx.fillStyle = `rgba(0, 0, 0, ${alpha})`;
+			that.wilson.ctx.fillRect(0, 0, that.wilson.canvasWidth, that.wilson.canvasHeight);
+			
+			step++;
+		}, 8);
+		
+		this.refreshIds.push(refreshId);
+		
+		
+		
+		const timeoutId = setTimeout(() =>
+		{
+			clearInterval(refreshId);
+			
+			that.wilson.ctx.fillStyle = "rgb(0, 0, 0)";
+			that.wilson.ctx.fillRect(0, 0, that.wilson.canvasWidth, that.wilson.canvasHeight);
+			
+			that.animate(that.root, that.branchPoints);
+		}, Site.opacityAnimationTime);
+		
+		this.timeoutIds.push(timeoutId);
+	}
+	
+	
+	
+	changeAspectRatio()
+	{
+		try {this.webWorker.terminate()}
+		catch(ex) {}
+		
+		Page.setElementStyles(".wilson-draggable", "opacity", 1);
+		
+		
+		
+		if (this.wilson.fullscreen.currentlyFullscreen)
+		{
+			if (Page.Layout.aspectRatio >= 1)
+			{
+				this.wilson.changeCanvasSize(2000, 2000 / Page.Layout.aspectRatio);
+			}
+			
+			else
+			{
+				this.wilson.changeCanvasSize(2000 * Page.Layout.aspectRatio, 2000);
+			}
+		}
+		
+		else
+		{
+			this.wilson.changeCanvasSize(2000, 2000);
+		}
+		
+		this.wilson.draggables.recalculateLocations();
+		
+		
+		
+		this.root = this.wilson.utils.interpolate.worldToCanvas(0, -4/5);
+		
+		this.branchPoints[0] = this.wilson.utils.interpolate.worldToCanvas(...this.wilson.draggables.worldCoordinates[0]);
+		this.branchPoints[1] = this.wilson.utils.interpolate.worldToCanvas(...this.wilson.draggables.worldCoordinates[1]);
+		
+		this.preview(this.root, this.branchPoints);
+	}
+}
