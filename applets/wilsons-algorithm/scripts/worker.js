@@ -617,7 +617,7 @@ function colorGraph()
 			
 			for (j = distanceBreaks[i]; j < distanceBreaks[i + 1] - 1; j++)
 			{
-				let rgb = HSVtoRGB(edgesByDistance[j][2] / maxDistance, 1, 1);
+				const rgb = HSVtoRGB(edgesByDistance[j][2] / maxDistance, 1, 1);
 				
 				drawLine(edgesByDistance[j][0][0], edgesByDistance[j][0][1], edgesByDistance[j][1][0], edgesByDistance[j][1][1], `rgb(${rgb[0]}, ${rgb[1]}, ${rgb[2]})`, 0);
 			}
@@ -625,9 +625,17 @@ function colorGraph()
 			
 			
 			//We only wait for this one.
-			let rgb = HSVtoRGB(edgesByDistance[j][2] / maxDistance, 1, 1);
+			try
+			{
+				const rgb = HSVtoRGB(edgesByDistance[j][2] / maxDistance, 1, 1);
 				
-			await drawLine(edgesByDistance[j][0][0], edgesByDistance[j][0][1], edgesByDistance[j][1][0], edgesByDistance[j][1][1], `rgb(${rgb[0]}, ${rgb[1]}, ${rgb[2]})`, 24);
+				await drawLine(edgesByDistance[j][0][0], edgesByDistance[j][0][1], edgesByDistance[j][1][0], edgesByDistance[j][1][1], `rgb(${rgb[0]}, ${rgb[1]}, ${rgb[2]})`, 24);
+			}
+
+			catch(ex)
+			{
+				break;
+			}
 		}
 		
 		
