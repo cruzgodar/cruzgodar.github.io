@@ -13,6 +13,7 @@
 	z-index: 105;
 	
 	transform-origin: 50% calc(40px + 100vh);
+	transform: scale(1);
 }
 
 
