@@ -1,6 +1,6 @@
 import {read, write} from "./file-io.mjs"
 
-const root = process.argv[1].replace(/(\/90259025.github.io\/).+$/, (match, $1) => $1);
+const root = process.argv[1].replace(/(\/cruzgodar.github.io\/).+$/, (match, $1) => $1);
 
 let sitemap = null;
 let parentFolder = null;
