@@ -4,7 +4,7 @@ import buildSitemap from "./build-sitemap.mjs"
 import buildHTMLFile from "./build-html-file.mjs";
 import { sitemapPath } from "./build-sitemap.mjs"
 
-const root = process.argv[1].replace(/(\/90259025.github.io\/).+$/, (match, $1) => $1);
+const root = process.argv[1].replace(/(\/cruzgodar.github.io\/).+$/, (match, $1) => $1);
 
 const excludeFromBuild = 
 [

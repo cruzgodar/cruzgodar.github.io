@@ -525,7 +525,7 @@
 	
 	$("#download-button").addEventListener("click", () =>
 	{
-		Page.Navigation.redirect("https://github.com/90259025/wilson/releases", true);
+		Page.Navigation.redirect("https://github.com/cruzgodar/wilson/releases", true);
 	});
 	
 	
