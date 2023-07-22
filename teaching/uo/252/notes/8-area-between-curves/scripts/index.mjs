@@ -1,4 +1,4 @@
-!function()
+export function load()
 {
 	Page.Load.getDesmosData = () =>
 	{
@@ -88,6 +88,7 @@
 			},
 			
 			
+			
 			"area-between-curves-6":
 			{
 				bounds: {left: -1, right: 2, bottom: -1, top: 2},
@@ -109,7 +110,5 @@
 	
 	Page.Load.createDesmosGraphs();
 	
-	
-	
 	Page.show();
-}()
+}

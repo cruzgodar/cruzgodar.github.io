@@ -1,4 +1,6 @@
-!async function()
+import { VectorField } from "/applets/vector-fields/scripts/class.mjs"
+
+export function load()
 {
 	Page.Load.getDesmosData = () =>
 	{
@@ -102,10 +104,6 @@
 	
 	
 	
-	Page.show();
-	
-	await Applet.load("vector-fields");
-	
 	const outputCanvas = $("#vector-field-canvas");
 	
 	const applet = new VectorField(outputCanvas);
@@ -115,4 +113,8 @@
 		applet.run("(1.0, sin(y) / (x*x + 1.0))", 500, 10000, .0075, 100, 0, 0, 1.3219);
 		applet.pauseWhenOffscreen();
 	});
-}()
+	
+	
+	
+	Page.show();
+}

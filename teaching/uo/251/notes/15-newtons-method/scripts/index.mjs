@@ -42,8 +42,6 @@ export function load()
 	
 	Page.Load.createDesmosGraphs();
 	
-	Page.show();
-	
 	
 	
 	const outputCanvas = $("#newtons-method-canvas");
@@ -54,4 +52,8 @@ export function load()
 	{
 		applet.pauseWhenOffscreen();
 	});
+	
+	
+	
+	Page.show();
 }
