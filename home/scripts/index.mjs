@@ -1,9 +1,18 @@
-!function()
+function setNameTextOpacity()
 {
-	"use strict";
+	let opacity = 0;
 	
+	if (Page.scroll <= Page.Banner.maxScroll / 2.5)
+	{
+		opacity = Math.min(Math.max(1 - Page.scroll / (Page.Banner.maxScroll / 2.5), 0), 1);
+	}
 	
-	
+	$("#cruz-text").parentNode.style.opacity = opacity;
+	$("#godar-text").parentNode.style.opacity = opacity;
+}
+
+export function load()
+{
 	if (Site.vistedHomepage)
 	{
 		$("#return-scroll-to").scrollIntoView();
@@ -37,19 +46,4 @@
 	
 	
 	Page.show();
-	
-	
-	
-	function setNameTextOpacity()
-	{
-		let opacity = 0;
-		
-		if (Page.scroll <= Page.Banner.maxScroll / 2.5)
-		{
-			opacity = Math.min(Math.max(1 - Page.scroll / (Page.Banner.maxScroll / 2.5), 0), 1);
-		}
-		
-		$("#cruz-text").parentNode.style.opacity = opacity;
-		$("#godar-text").parentNode.style.opacity = opacity;
-	}
-}()
+}
