@@ -1,7 +1,5 @@
-!function()
+export function load()
 {
-	"use strict";
-	
 	document.documentElement.style.backgroundColor = "rgb(0, 0, 0)";
 	
 	Page.backgroundColorChanged = true;
@@ -24,4 +22,4 @@
 	}, 1000);
 	
 	Page.show();
-}()
+}
