@@ -1,4 +1,4 @@
-!function()
+export function load()
 {
 	Page.Load.getDesmosData = () =>
 	{
@@ -62,4 +62,4 @@
 	Page.Load.createDesmosGraphs();
 	
 	Page.show();
-}()
+}

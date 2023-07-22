@@ -1,4 +1,6 @@
-!async function()
+import { NewtonsMethod } from "/applets/newtons-method/scripts/class.mjs"
+
+export function load()
 {
 	Page.Load.getDesmosData = () =>
 	{
@@ -44,8 +46,6 @@
 	
 	
 	
-	await Applet.load("newtons-method");
-	
 	const outputCanvas = $("#newtons-method-canvas");
 	
 	const applet = new NewtonsMethod(outputCanvas);
@@ -54,4 +54,4 @@
 	{
 		applet.pauseWhenOffscreen();
 	});
-}()
+}
