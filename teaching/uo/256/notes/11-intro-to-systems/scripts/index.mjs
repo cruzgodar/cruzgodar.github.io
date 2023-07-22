@@ -1,4 +1,6 @@
-!async function()
+import { VectorField } from "/applets/vector-fields/scripts/class.mjs"
+
+export function load()
 {
 	Page.Load.getDesmosData = () =>
 	{
@@ -47,10 +49,6 @@
 	
 	
 	
-	Page.show();
-	
-	await Applet.load("vector-fields");
-	
 	const outputCanvas = $("#vector-field-canvas");
 	
 	const applet = new VectorField(outputCanvas);
@@ -60,4 +58,8 @@
 		applet.run("((x + 3.0 * y) / 8.0, (4.0 * x + 2.0 * y) / 8.0)", 500, 10000, .0075, 100, 0, 0, 1);
 		applet.pauseWhenOffscreen();
 	});
-}()
+	
+	
+	
+	Page.show();
+}

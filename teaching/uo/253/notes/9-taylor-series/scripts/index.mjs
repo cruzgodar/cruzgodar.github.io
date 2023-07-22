@@ -1,4 +1,20 @@
-!function()
+function getDerivativeString(n)
+{
+	let array = ["f"];
+	
+	for (let i = 0; i < n; i++)
+	{
+		array.push("'");
+	}
+	
+	array.push("(a)");
+	
+	return array.join("");
+}
+
+
+
+export function load()
 {
 	let derivatives = [];
 	
@@ -71,23 +87,5 @@
 	
 	Page.Load.createDesmosGraphs();
 	
-	
-	
 	Page.show();
-	
-	
-	
-	function getDerivativeString(n)
-	{
-		let array = ["f"];
-		
-		for (let i = 0; i < n; i++)
-		{
-			array.push("'");
-		}
-		
-		array.push("(a)");
-		
-		return array.join("");
-	}
-}()
+}
