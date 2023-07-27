@@ -331,7 +331,7 @@ export class GeneralizedJuliaSet extends Applet
 	{
 		try
 		{
-			Page.Animate.changeOpacity(this.switchJuliaModeButtonElement, 0, Site.opacityAnimationTime);
+			changeOpacity(this.switchJuliaModeButtonElement, 0, Site.opacityAnimationTime);
 			
 			setTimeout(() =>
 			{
@@ -344,7 +344,7 @@ export class GeneralizedJuliaSet extends Applet
 				{
 					this.switchJuliaModeButtonElement.textContent = "Pick Julia Set";
 					
-					Page.Animate.changeOpacity(this.switchJuliaModeButtonElement, 1, Site.opacityAnimationTime);
+					changeOpacity(this.switchJuliaModeButtonElement, 1, Site.opacityAnimationTime);
 				}
 			}, Site.opacityAnimationTime);
 		}
@@ -398,7 +398,7 @@ export class GeneralizedJuliaSet extends Applet
 			
 			this.pastBrightnessScales = [];
 			
-			try {Page.Animate.changeOpacity(this.switchJuliaModeButtonElement, 1, Site.opacityAnimationTime)}
+			try {changeOpacity(this.switchJuliaModeButtonElement, 1, Site.opacityAnimationTime)}
 			catch(ex) {}
 		}
 	}
@@ -446,7 +446,7 @@ export class GeneralizedJuliaSet extends Applet
 			
 			this.pastBrightnessScales = [];
 			
-			try {Page.Animate.changeOpacity(this.switchJuliaModeButtonElement, 1, Site.opacityAnimationTime)}
+			try {changeOpacity(this.switchJuliaModeButtonElement, 1, Site.opacityAnimationTime)}
 			catch(ex) {}
 		}
 		

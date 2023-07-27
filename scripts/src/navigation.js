@@ -159,7 +159,7 @@ Page.Navigation =
 			{
 				if (!Page.backgroundColorChanged)
 				{
-					Page.Animate.changeOpacity(document.body, 1, Site.opacityAnimationTime);
+					changeOpacity(document.body, 1, Site.opacityAnimationTime);
 				}
 				
 				
@@ -183,7 +183,7 @@ Page.Navigation =
 							
 							setTimeout(() =>
 							{
-								Page.Animate.changeOpacity(document.body, 1, Site.opacityAnimationTime);
+								changeOpacity(document.body, 1, Site.opacityAnimationTime);
 							}, Site.opacityAnimationTime);
 						}, Site.backgroundColorAnimationTime);
 					}, Site.backgroundColorAnimationTime);
@@ -284,51 +284,51 @@ Page.Unload =
 			
 			if (Page.Navigation.transitionType === 1)
 			{
-				promise = Page.Animate.fadeUpOut(Page.element, Site.pageAnimationTime);
+				promise = fadeUpOut(Page.element, Site.pageAnimationTime);
 				
 				if (Page.bannerElement !== null)
 				{
-					promise = Page.Animate.fadeUpOut(Page.bannerElement, Site.pageAnimationTime * 2);
+					promise = fadeUpOut(Page.bannerElement, Site.pageAnimationTime * 2);
 				}
 			}
 			
 			else if (Page.Navigation.transitionType === -1)
 			{
-				promise = Page.Animate.fadeDownOut(Page.element, Site.pageAnimationTime);
+				promise = fadeDownOut(Page.element, Site.pageAnimationTime);
 				
 				if (Page.bannerElement !== null)
 				{
-					promise = Page.Animate.fadeDownOut(Page.bannerElement, Site.pageAnimationTime * 2);
+					promise = fadeDownOut(Page.bannerElement, Site.pageAnimationTime * 2);
 				}
 			}
 			
 			else if (Page.Navigation.transitionType === 2)
 			{
-				promise = Page.Animate.fadeLeftOut(Page.element, Site.pageAnimationTime);
+				promise = fadeLeftOut(Page.element, Site.pageAnimationTime);
 				
 				if (Page.bannerElement !== null)
 				{
-					promise = Page.Animate.fadeLeftOut(Page.bannerElement, Site.pageAnimationTime * 2);
+					promise = fadeLeftOut(Page.bannerElement, Site.pageAnimationTime * 2);
 				}
 			}
 			
 			else if (Page.Navigation.transitionType === -2)
 			{
-				promise = Page.Animate.fadeRightOut(Page.element, Site.pageAnimationTime);
+				promise = fadeRightOut(Page.element, Site.pageAnimationTime);
 				
 				if (Page.bannerElement !== null)
 				{
-					promise = Page.Animate.fadeRightOut(Page.bannerElement, Site.pageAnimationTime * 2);
+					promise = fadeRightOut(Page.bannerElement, Site.pageAnimationTime * 2);
 				}
 			}
 			
 			else
 			{
-				promise = Page.Animate.fadeOut(Page.element, Site.pageAnimationTime);
+				promise = fadeOut(Page.element, Site.pageAnimationTime);
 				
 				if (Page.bannerElement !== null)
 				{
-					promise = Page.Animate.fadeOut(Page.bannerElement, Site.pageAnimationTime * 2);
+					promise = fadeOut(Page.bannerElement, Site.pageAnimationTime * 2);
 				}
 			}
 			

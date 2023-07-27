@@ -370,7 +370,7 @@ export class FractalSounds extends Applet
 			
 			else
 			{
-				Page.Animate.changeOpacity(this.wilson.canvas, 0, Site.opacityAnimationTime);
+				changeOpacity(this.wilson.canvas, 0, Site.opacityAnimationTime);
 			}
 		}
 		
@@ -429,7 +429,7 @@ export class FractalSounds extends Applet
 		
 		else
 		{
-			Page.Animate.changeOpacity(this.wilson.canvas, 0, Site.opacityAnimationTime);
+			changeOpacity(this.wilson.canvas, 0, Site.opacityAnimationTime);
 		}
 		
 		this.moved = 0;

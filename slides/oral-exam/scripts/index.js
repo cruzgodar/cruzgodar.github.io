@@ -37,7 +37,7 @@
 							return;
 						}
 						
-						await Page.Animate.changeOpacity(canvasBundle, 0, duration / 2);
+						await changeOpacity(canvasBundle, 0, duration / 2);
 						
 						applet.animationTime = 0;
 						
@@ -83,7 +83,7 @@
 							}
 						}
 						
-						await Page.Animate.changeOpacity(canvasBundle, 1, duration / 2);
+						await changeOpacity(canvasBundle, 1, duration / 2);
 						
 						resolve();
 					});
@@ -104,7 +104,7 @@
 							return;
 						}
 						
-						await Page.Animate.changeOpacity(canvasBundle, 0, duration / 2);
+						await changeOpacity(canvasBundle, 0, duration / 2);
 						
 						applet.animationTime = 0;
 						
@@ -136,7 +136,7 @@
 							await applet.show2dView();
 						}
 						
-						await Page.Animate.changeOpacity(canvasBundle, 1, duration / 2);
+						await changeOpacity(canvasBundle, 1, duration / 2);
 						
 						resolve();
 					});
@@ -157,7 +157,7 @@
 							return;
 						}
 						
-						await Page.Animate.changeOpacity(canvasBundle, 0, duration / 2);
+						await changeOpacity(canvasBundle, 0, duration / 2);
 						
 						applet.animationTime = 0;
 						
@@ -185,7 +185,7 @@
 							await applet.show2dView();
 						}
 						
-						await Page.Animate.changeOpacity(canvasBundle, 1, duration / 2);
+						await changeOpacity(canvasBundle, 1, duration / 2);
 						
 						resolve();
 					});
@@ -242,7 +242,7 @@
 				{
 					return new Promise(async (resolve, reject) =>
 					{
-						await Page.Animate.changeOpacity(canvasBundle, 0, duration / 2);
+						await changeOpacity(canvasBundle, 0, duration / 2);
 						
 						slide.appendChild(canvasBundle);
 						
@@ -281,7 +281,7 @@
 							await options.builds.hooks[0](slide, true, 0);
 						}
 						
-						await Page.Animate.changeOpacity(canvasBundle, 1, duration / 2);
+						await changeOpacity(canvasBundle, 1, duration / 2);
 						
 						resolve();
 					});
@@ -320,7 +320,7 @@
 				{
 					return new Promise(async (resolve, reject) =>
 					{
-						await Page.Animate.changeOpacity(canvasBundle, 0, duration / 2);
+						await changeOpacity(canvasBundle, 0, duration / 2);
 						
 						slide.appendChild(canvasBundle);
 						
@@ -358,7 +358,7 @@
 							await options.builds["zigzag-paths"][2](slide, true, 0);
 						}
 						
-						await Page.Animate.changeOpacity(canvasBundle, 1, duration / 2);
+						await changeOpacity(canvasBundle, 1, duration / 2);
 						
 						resolve();
 					});
@@ -449,7 +449,7 @@
 				{
 					return new Promise(async (resolve, reject) =>
 					{
-						await Page.Animate.changeOpacity(canvasBundle, 0, duration / 2);
+						await changeOpacity(canvasBundle, 0, duration / 2);
 						
 						slide.appendChild(canvasBundle);
 						
@@ -477,7 +477,7 @@
 							await applet.showHexView();
 						}
 						
-						await Page.Animate.changeOpacity(canvasBundle, 1, duration / 2);
+						await changeOpacity(canvasBundle, 1, duration / 2);
 						
 						resolve();
 					});
@@ -578,7 +578,7 @@
 				{
 					return new Promise(async (resolve, reject) =>
 					{
-						await Page.Animate.changeOpacity(canvasBundle, 0, duration / 2);
+						await changeOpacity(canvasBundle, 0, duration / 2);
 						
 						slide.appendChild(canvasBundle);
 						
@@ -606,7 +606,7 @@
 							await applet.showHexView();
 						}
 						
-						await Page.Animate.changeOpacity(canvasBundle, 1, duration / 2);
+						await changeOpacity(canvasBundle, 1, duration / 2);
 						
 						resolve();
 					});
@@ -707,7 +707,7 @@
 				{
 					return new Promise(async (resolve, reject) =>
 					{
-						await Page.Animate.changeOpacity(canvasBundle, 0, duration / 2);
+						await changeOpacity(canvasBundle, 0, duration / 2);
 						
 						applet.animationTime = 0;
 						
@@ -750,7 +750,7 @@
 							await options.builds["regions-example"][3](slide, true, 0);
 						}
 						
-						await Page.Animate.changeOpacity(canvasBundle, 1, duration / 2);
+						await changeOpacity(canvasBundle, 1, duration / 2);
 						
 						resolve();
 					});
@@ -857,7 +857,7 @@
 				{
 					return new Promise(async (resolve, reject) =>
 					{
-						await Page.Animate.changeOpacity(canvasBundle, 0, duration / 2);
+						await changeOpacity(canvasBundle, 0, duration / 2);
 						
 						slide.appendChild(canvasBundle);
 						
@@ -885,7 +885,7 @@
 							await applet.showHexView();
 						}
 						
-						await Page.Animate.changeOpacity(canvasBundle, 1, duration / 2);
+						await changeOpacity(canvasBundle, 1, duration / 2);
 						
 						resolve();
 					});
@@ -986,7 +986,7 @@
 				{
 					return new Promise(async (resolve, reject) =>
 					{
-						await Page.Animate.changeOpacity(canvasBundle, 0, duration / 2);
+						await changeOpacity(canvasBundle, 0, duration / 2);
 						
 						slide.appendChild(canvasBundle);
 						
@@ -1031,7 +1031,7 @@
 							await options.builds["ps-rsk"][5](slide, true, 0);
 						}
 						
-						await Page.Animate.changeOpacity(canvasBundle, 1, duration / 2);
+						await changeOpacity(canvasBundle, 1, duration / 2);
 						
 						resolve();
 					});
@@ -1190,7 +1190,7 @@
 				{
 					return new Promise(async (resolve, reject) =>
 					{
-						await Page.Animate.changeOpacity(canvasBundle, 0, duration / 2);
+						await changeOpacity(canvasBundle, 0, duration / 2);
 						
 						slide.appendChild(canvasBundle);
 						
@@ -1217,7 +1217,7 @@
 							await applet.show2dView();
 						}
 						
-						await Page.Animate.changeOpacity(canvasBundle, 1, duration / 2);
+						await changeOpacity(canvasBundle, 1, duration / 2);
 						
 						resolve();
 					});
@@ -1232,7 +1232,7 @@
 				{
 					return new Promise(async (resolve, reject) =>
 					{
-						await Page.Animate.changeOpacity(canvasBundle, 0, duration / 2);
+						await changeOpacity(canvasBundle, 0, duration / 2);
 						
 						slide.appendChild(canvasBundle);
 						
@@ -1259,7 +1259,7 @@
 							await applet.show2dView();
 						}
 						
-						await Page.Animate.changeOpacity(canvasBundle, 1, duration / 2);
+						await changeOpacity(canvasBundle, 1, duration / 2);
 						
 						resolve();
 					});
@@ -1274,7 +1274,7 @@
 				{
 					return new Promise(async (resolve, reject) =>
 					{
-						await Page.Animate.changeOpacity(canvasBundle, 0, duration / 2);
+						await changeOpacity(canvasBundle, 0, duration / 2);
 						
 						slide.appendChild(canvasBundle);
 						
@@ -1301,7 +1301,7 @@
 							await applet.show2dView();
 						}
 						
-						await Page.Animate.changeOpacity(canvasBundle, 1, duration / 2);
+						await changeOpacity(canvasBundle, 1, duration / 2);
 						
 						resolve();
 					});
@@ -1316,7 +1316,7 @@
 				{
 					return new Promise(async (resolve, reject) =>
 					{
-						await Page.Animate.changeOpacity(canvasBundle, 0, duration / 2);
+						await changeOpacity(canvasBundle, 0, duration / 2);
 						
 						slide.appendChild(canvasBundle);
 						
@@ -1343,7 +1343,7 @@
 							await applet.show2dView();
 						}
 						
-						await Page.Animate.changeOpacity(canvasBundle, 1, duration / 2);
+						await changeOpacity(canvasBundle, 1, duration / 2);
 						
 						resolve();
 					});
@@ -1358,7 +1358,7 @@
 				{
 					return new Promise(async (resolve, reject) =>
 					{
-						await Page.Animate.changeOpacity(canvasBundle, 0, duration / 2);
+						await changeOpacity(canvasBundle, 0, duration / 2);
 						
 						slide.appendChild(canvasBundle);
 						
@@ -1387,7 +1387,7 @@
 							await applet.show2dView();
 						}
 						
-						await Page.Animate.changeOpacity(canvasBundle, 1, duration / 2);
+						await changeOpacity(canvasBundle, 1, duration / 2);
 						
 						resolve();
 					});

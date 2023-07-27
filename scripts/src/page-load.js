@@ -32,7 +32,7 @@ Page.load = async function()
 		
 		.then(() =>
 		{
-			Page.Animate.changeOpacity($("#banner-small"), 0, 700)
+			changeOpacity($("#banner-small"), 0, 700)
 			
 			.then(() => $("#banner-small").remove());
 		});
@@ -345,51 +345,51 @@ Page.Load =
 			
 			if (Page.Navigation.transitionType === 1)
 			{
-				promise = Page.Animate.fadeUpIn(Page.element, Site.pageAnimationTime * 2);
+				promise = fadeUpIn(Page.element, Site.pageAnimationTime * 2);
 				
 				if (Page.bannerElement !== null)
 				{
-					promise = Page.Animate.fadeUpIn(Page.bannerElement, Site.pageAnimationTime * 2, Page.Banner.opacity);
+					promise = fadeUpIn(Page.bannerElement, Site.pageAnimationTime * 2, Page.Banner.opacity);
 				}
 			}
 			
 			else if (Page.Navigation.transitionType === -1)
 			{
-				promise = Page.Animate.fadeDownIn(Page.element, Site.pageAnimationTime * 2);
+				promise = fadeDownIn(Page.element, Site.pageAnimationTime * 2);
 				
 				if (Page.bannerElement !== null)
 				{
-					promise = Page.Animate.fadeDownIn(Page.bannerElement, Site.pageAnimationTime * 2, Page.Banner.opacity);
+					promise = fadeDownIn(Page.bannerElement, Site.pageAnimationTime * 2, Page.Banner.opacity);
 				}
 			}
 			
 			else if (Page.Navigation.transitionType === 2)
 			{
-				promise = Page.Animate.fadeLeftIn(Page.element, Site.pageAnimationTime * 2);
+				promise = fadeLeftIn(Page.element, Site.pageAnimationTime * 2);
 				
 				if (Page.bannerElement !== null)
 				{
-					promise = Page.Animate.fadeLeftIn(Page.bannerElement, Site.pageAnimationTime * 2, Page.Banner.opacity);
+					promise = fadeLeftIn(Page.bannerElement, Site.pageAnimationTime * 2, Page.Banner.opacity);
 				}
 			}
 			
 			else if (Page.Navigation.transitionType === -2)
 			{
-				promise = Page.Animate.fadeRightIn(Page.element, Site.pageAnimationTime * 2);
+				promise = fadeRightIn(Page.element, Site.pageAnimationTime * 2);
 				
 				if (Page.bannerElement !== null)
 				{
-					promise = Page.Animate.fadeRightIn(Page.bannerElement, Site.pageAnimationTime * 2, Page.Banner.opacity);
+					promise = fadeRightIn(Page.bannerElement, Site.pageAnimationTime * 2, Page.Banner.opacity);
 				}
 			}
 			
 			else
 			{
-				promise = Page.Animate.fadeIn(Page.element, Site.pageAnimationTime * 2);
+				promise = fadeIn(Page.element, Site.pageAnimationTime * 2);
 				
 				if (Page.bannerElement !== null)
 				{
-					promise = Page.Animate.fadeIn(Page.bannerElement, Site.pageAnimationTime * 2, Page.Banner.opacity);
+					promise = fadeIn(Page.bannerElement, Site.pageAnimationTime * 2, Page.Banner.opacity);
 				}
 			}
 			
@@ -682,12 +682,12 @@ Page.Load =
 					
 					if (forceJs)
 					{
-						Page.Animate.changeScaleJs(element, scale, Site.buttonAnimationTime);
+						changeScaleJs(element, scale, Site.buttonAnimationTime);
 					}
 					
 					else
 					{
-						Page.Animate.changeScale(element, scale, Site.buttonAnimationTime);
+						changeScale(element, scale, Site.buttonAnimationTime);
 					}
 				}
 			});
@@ -707,12 +707,12 @@ Page.Load =
 					
 				if (forceJs)
 					{
-						Page.Animate.changeScaleJs(element, 1, Site.buttonAnimationTime);
+						changeScaleJs(element, 1, Site.buttonAnimationTime);
 					}
 					
 					else
 					{
-						Page.Animate.changeScale(element, 1, Site.buttonAnimationTime);
+						changeScale(element, 1, Site.buttonAnimationTime);
 					}
 				}
 			});

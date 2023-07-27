@@ -129,7 +129,11 @@
 	
 	<script src="/scripts/wilson.js"></script>
 	
-	<script>
+	<script type="module">
+		import * as Animate from "/scripts/src/animation.mjs";
+		
+		Object.keys(Animate).forEach(key => window[key] = Animate[key]);
+		
 		DEBUG = true;
 		
 		if (typeof Page.url !== "undefined" && Page.url !== null && Page.url !== "null")

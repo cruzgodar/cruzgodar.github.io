@@ -35,7 +35,7 @@ export class CalcudokuGenerator extends Applet
 	{
 		if (this.canvas.style.opacity == 1)
 		{
-			await Page.Animate.changeOpacity(this.canvas, 0, Site.opacityAnimationTime);
+			await changeOpacity(this.canvas, 0, Site.opacityAnimationTime);
 		}
 		
 		
@@ -95,7 +95,7 @@ export class CalcudokuGenerator extends Applet
 			{
 				this.animateNextDraw = false;
 				
-				Page.Animate.changeOpacity(this.canvas, 1, Site.opacityAnimationTime);
+				changeOpacity(this.canvas, 1, Site.opacityAnimationTime);
 			}
 		}
 		

@@ -891,7 +891,7 @@ export class PlanePartitions extends Applet
 			
 			if (this.in2dView && !keepNumbersCanvasVisible)
 			{
-				await Page.Animate.changeOpacity(this.wilsonNumbers.canvas, 0, this.animationTime / 5);
+				await changeOpacity(this.wilsonNumbers.canvas, 0, this.animationTime / 5);
 			}
 			
 			
@@ -1258,7 +1258,7 @@ export class PlanePartitions extends Applet
 			
 			if (this.in2dView && !keepNumbersCanvasVisible)
 			{
-				await Page.Animate.changeOpacity(this.wilsonNumbers.canvas, 0, this.animationTime / 5);
+				await changeOpacity(this.wilsonNumbers.canvas, 0, this.animationTime / 5);
 			}
 			
 			
@@ -1513,7 +1513,7 @@ export class PlanePartitions extends Applet
 			
 			if (this.in2dView)
 			{
-				await Page.Animate.changeOpacity(this.wilsonNumbers.canvas, 0, this.animationTime / 5);
+				await changeOpacity(this.wilsonNumbers.canvas, 0, this.animationTime / 5);
 			}
 			
 			this.in2dView = false;
@@ -1629,7 +1629,7 @@ export class PlanePartitions extends Applet
 			{
 				this.drawAll2dViewText();
 				
-				Page.Animate.changeOpacity(this.wilsonNumbers.canvas, 1, this.animationTime / 5)
+				changeOpacity(this.wilsonNumbers.canvas, 1, this.animationTime / 5)
 				
 				.then(() =>
 				{
@@ -1715,7 +1715,7 @@ export class PlanePartitions extends Applet
 			{
 				this.drawAll2dViewText();
 				
-				Page.Animate.changeOpacity(this.wilsonNumbers.canvas, 1, this.animationTime / 5);
+				changeOpacity(this.wilsonNumbers.canvas, 1, this.animationTime / 5);
 			}, this.animationTime);
 		}
 		
@@ -5699,7 +5699,7 @@ export class PlanePartitions extends Applet
 			
 			if (this.wilsonNumbers.canvas.style.opacity !== "0")
 			{
-				await Page.Animate.changeOpacity(this.wilsonNumbers.canvas, 0, this.animationTime / 3);
+				await changeOpacity(this.wilsonNumbers.canvas, 0, this.animationTime / 3);
 			}
 			
 			this.wilsonNumbers.ctx.clearRect(0, 0, this.wilsonNumbers.canvasWidth, this.wilsonNumbers.canvasHeight);
@@ -5770,7 +5770,7 @@ export class PlanePartitions extends Applet
 			
 			
 			
-			await Page.Animate.changeOpacity(this.wilsonNumbers.canvas, 1, this.animationTime / 3);
+			await changeOpacity(this.wilsonNumbers.canvas, 1, this.animationTime / 3);
 			
 			this.wilsonNumbers.ctx.fillStyle = "rgb(255, 255, 255)";
 			

@@ -46,7 +46,7 @@
 							return;
 						}
 						
-						await Page.Animate.changeOpacity(canvasBundle, 0, duration / 2);
+						await changeOpacity(canvasBundle, 0, duration / 2);
 						
 						slide.appendChild(canvasBundle);
 						
@@ -55,7 +55,7 @@
 						
 						await applet.requestHighResFrame(resolution, maxDepth, maxPixelBrightness, 4);
 						
-						await Page.Animate.changeOpacity(canvasBundle, 1, duration / 2);
+						await changeOpacity(canvasBundle, 1, duration / 2);
 						
 						resolve();
 					});
@@ -76,7 +76,7 @@
 							return;
 						}
 						
-						await Page.Animate.changeOpacity(canvasBundle, 0, duration / 2);
+						await changeOpacity(canvasBundle, 0, duration / 2);
 						
 						slide.appendChild(canvasBundle);
 						
@@ -86,7 +86,7 @@
 						
 						await applet.requestHighResFrame(resolution, maxDepth, maxPixelBrightness, 4);
 						
-						await Page.Animate.changeOpacity(canvasBundle, 1, duration / 2);
+						await changeOpacity(canvasBundle, 1, duration / 2);
 						
 						resolve();
 					});
@@ -107,7 +107,7 @@
 							return;
 						}
 						
-						await Page.Animate.changeOpacity(canvasBundle, 0, duration / 2);
+						await changeOpacity(canvasBundle, 0, duration / 2);
 						
 						slide.appendChild(canvasBundle);
 						
@@ -119,7 +119,7 @@
 						
 						await applet.requestHighResFrame(resolution, maxDepth, maxPixelBrightness, 4);
 						
-						await Page.Animate.changeOpacity(canvasBundle, 1, duration / 2);
+						await changeOpacity(canvasBundle, 1, duration / 2);
 						
 						resolve();
 					});
@@ -140,7 +140,7 @@
 							return;
 						}
 						
-						await Page.Animate.changeOpacity(canvasBundle, 0, duration / 2);
+						await changeOpacity(canvasBundle, 0, duration / 2);
 						
 						slide.appendChild(canvasBundle);
 						
@@ -152,7 +152,7 @@
 						
 						await applet.requestHighResFrame(resolution, maxDepth, maxPixelBrightness, 4);
 						
-						await Page.Animate.changeOpacity(canvasBundle, 1, duration / 2);
+						await changeOpacity(canvasBundle, 1, duration / 2);
 						
 						resolve();
 					});
@@ -173,7 +173,7 @@
 							return;
 						}
 						
-						await Page.Animate.changeOpacity(canvasBundle, 0, duration / 2);
+						await changeOpacity(canvasBundle, 0, duration / 2);
 						
 						slide.appendChild(canvasBundle);
 						
@@ -185,7 +185,7 @@
 						
 						await applet.requestHighResFrame(resolution, maxDepth, maxPixelBrightness, 4);
 						
-						await Page.Animate.changeOpacity(canvasBundle, 1, duration / 2);
+						await changeOpacity(canvasBundle, 1, duration / 2);
 						
 						resolve();
 					});
@@ -206,7 +206,7 @@
 							return;
 						}
 						
-						await Page.Animate.changeOpacity(canvasBundle, 0, duration / 2);
+						await changeOpacity(canvasBundle, 0, duration / 2);
 						
 						slide.appendChild(canvasBundle);
 						
@@ -288,7 +288,7 @@
 						
 						
 						
-						await Page.Animate.changeOpacity(canvasBundle, 1, duration / 2);
+						await changeOpacity(canvasBundle, 1, duration / 2);
 						
 						resolve();
 					});

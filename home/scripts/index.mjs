@@ -29,11 +29,11 @@ export function load()
 	
 	setTimeout(() =>
 	{
-		Page.Animate.fadeLeft($("#cruz-text"), Site.opacityAnimationTime * 3.5);
+		fadeLeft($("#cruz-text"), Site.opacityAnimationTime * 3.5);
 		
 		setTimeout(() =>
 		{
-			Page.Animate.fadeLeft($("#godar-text"), Site.opacityAnimationTime * 3.5);
+			fadeLeft($("#godar-text"), Site.opacityAnimationTime * 3.5);
 		}, Site.opacityAnimationTime);	
 	}, Site.opacityAnimationTime);
 	

@@ -348,7 +348,7 @@ Site.Settings =
 			catch(ex) {}
 			
 			
-			$$(".desmos-border").forEach(element => Page.Animate.changeOpacity(element, 0, Site.opacityAnimationTime));
+			$$(".desmos-border").forEach(element => changeOpacity(element, 0, Site.opacityAnimationTime));
 			
 			setTimeout(() =>
 			{
@@ -363,7 +363,7 @@ Site.Settings =
 				
 				setTimeout(() =>
 				{
-					$$(".desmos-border").forEach(element => Page.Animate.changeOpacity(element, 1, Site.opacityAnimationTime));
+					$$(".desmos-border").forEach(element => changeOpacity(element, 1, Site.opacityAnimationTime));
 				}, Site.opacityAnimationTime);
 			}, 2 * Site.opacityAnimationTime);
 		}
@@ -418,7 +418,7 @@ Site.Settings =
 			
 			
 			
-			$$(".desmos-border").forEach(element => Page.Animate.changeOpacity(element, 0, Site.opacityAnimationTime));
+			$$(".desmos-border").forEach(element => changeOpacity(element, 0, Site.opacityAnimationTime));
 			
 			setTimeout(() =>
 			{
@@ -433,7 +433,7 @@ Site.Settings =
 				
 				setTimeout(() =>
 				{
-					$$(".desmos-border").forEach(element => Page.Animate.changeOpacity(element, 1, Site.opacityAnimationTime));
+					$$(".desmos-border").forEach(element => changeOpacity(element, 1, Site.opacityAnimationTime));
 				}, Site.opacityAnimationTime);
 			}, 2 * Site.opacityAnimationTime);
 			

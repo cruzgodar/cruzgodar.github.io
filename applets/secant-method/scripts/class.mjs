@@ -474,8 +474,8 @@ export class SecantMethod extends Applet
 		
 		try
 		{
-			Page.Animate.changeOpacity(this.rootSetterElement, 0, Site.opacityAnimationTime);
-			await Page.Animate.changeOpacity(this.colorSetterElement, 0, Site.opacityAnimationTime);
+			changeOpacity(this.rootSetterElement, 0, Site.opacityAnimationTime);
+			await changeOpacity(this.colorSetterElement, 0, Site.opacityAnimationTime);
 			
 			if (this.lastActiveRoot === 0)
 			{
@@ -499,8 +499,8 @@ export class SecantMethod extends Applet
 				this.colorSetterElement.value = this.rgbToHex(this.colors[3 * index] * 255, this.colors[3 * index + 1] * 255, this.colors[3 * index + 2] * 255);
 			}
 			
-			Page.Animate.changeOpacity(this.rootSetterElement, 1, Site.opacityAnimationTime);
-			Page.Animate.changeOpacity(this.colorSetterElement, 1, Site.opacityAnimationTime);
+			changeOpacity(this.rootSetterElement, 1, Site.opacityAnimationTime);
+			changeOpacity(this.colorSetterElement, 1, Site.opacityAnimationTime);
 		}
 		
 		catch(ex) {}

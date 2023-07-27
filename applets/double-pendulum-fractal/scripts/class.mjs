@@ -192,7 +192,7 @@ export class DoublePendulumFractal extends Applet
 		{
 			if (this.pendulumCanvasVisible === 1 || this.frame < 3)
 			{
-				Page.Animate.changeOpacity(this.pendulumCanvas, 0, Site.buttonAnimationTime);
+				changeOpacity(this.pendulumCanvas, 0, Site.buttonAnimationTime);
 				
 				this.pendulumCanvasVisible = 0;
 			}
@@ -347,7 +347,7 @@ export class DoublePendulumFractal extends Applet
 		
 		this.drawingFractal = false;
 		
-		Page.Animate.changeOpacity(this.pendulumCanvas, .5, Site.buttonAnimationTime);
+		changeOpacity(this.pendulumCanvas, .5, Site.buttonAnimationTime);
 		
 		this.pendulumCanvasVisible = 1;
 	}
@@ -359,7 +359,7 @@ export class DoublePendulumFractal extends Applet
 			return;
 		}
 		
-		Page.Animate.changeOpacity(this.pendulumCanvas, 1, Site.buttonAnimationTime);
+		changeOpacity(this.pendulumCanvas, 1, Site.buttonAnimationTime);
 		
 		this.pendulumCanvasVisible = 2;
 		
@@ -375,7 +375,7 @@ export class DoublePendulumFractal extends Applet
 		
 		this.drawingFractal = true;
 		
-		Page.Animate.changeOpacity(this.pendulumCanvas, 0, Site.buttonAnimationTime);
+		changeOpacity(this.pendulumCanvas, 0, Site.buttonAnimationTime);
 		
 		this.pendulumCanvasVisible = 0;
 		

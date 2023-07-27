@@ -37,13 +37,13 @@ export function load()
 		{
 			applet.drawingFractal = false;
 			
-			Page.Animate.changeOpacity(switchPendulumCanvasButtonElement, 0, Site.opacityAnimationTime)
+			changeOpacity(switchPendulumCanvasButtonElement, 0, Site.opacityAnimationTime)
 			
 			.then(() =>
 			{
 				switchPendulumCanvasButtonElement.textContent = "Return to Fractal";
 				
-				Page.Animate.changeOpacity(switchPendulumCanvasButtonElement, 1, Site.opacityAnimationTime);
+				changeOpacity(switchPendulumCanvasButtonElement, 1, Site.opacityAnimationTime);
 			});
 		}
 		
@@ -56,13 +56,13 @@ export function load()
 			
 			
 			
-			Page.Animate.changeOpacity(switchPendulumCanvasButtonElement, 0, Site.opacityAnimationTime)
+			changeOpacity(switchPendulumCanvasButtonElement, 0, Site.opacityAnimationTime)
 			
 			.then(() =>
 			{
 				switchPendulumCanvasButtonElement.textContent = "Pick Pendulum";
 				
-				Page.Animate.changeOpacity(switchPendulumCanvasButtonElement, 1, Site.opacityAnimationTime);
+				changeOpacity(switchPendulumCanvasButtonElement, 1, Site.opacityAnimationTime);
 			});
 		}
 	});

@@ -686,7 +686,7 @@ export class JuliaSet extends Applet
 			
 			try
 			{
-				Page.Animate.changeOpacity(this.switchJuliaModeButtonElement, 0, Site.opacityAnimationTime)
+				changeOpacity(this.switchJuliaModeButtonElement, 0, Site.opacityAnimationTime)
 				
 				.then(() =>
 				{
@@ -717,13 +717,13 @@ export class JuliaSet extends Applet
 			
 			try
 			{
-				Page.Animate.changeOpacity(this.switchJuliaModeButtonElement, 0, Site.opacityAnimationTime)
+				changeOpacity(this.switchJuliaModeButtonElement, 0, Site.opacityAnimationTime)
 				
 				.then(() =>
 				{
 					this.switchJuliaModeButtonElement.textContent = "Pick Julia Set";
 					
-					Page.Animate.changeOpacity(this.switchJuliaModeButtonElement, 1, Site.opacityAnimationTime)
+					changeOpacity(this.switchJuliaModeButtonElement, 1, Site.opacityAnimationTime)
 				});
 			}
 			
@@ -758,7 +758,7 @@ export class JuliaSet extends Applet
 			
 			this.pastBrightnessScales = [];
 			
-			try {Page.Animate.changeOpacity(this.switchJuliaModeButtonElement, 1, Site.opacityAnimationTime)}
+			try {changeOpacity(this.switchJuliaModeButtonElement, 1, Site.opacityAnimationTime)}
 			catch(ex) {}
 		}
 	}
@@ -812,7 +812,7 @@ export class JuliaSet extends Applet
 			
 			this.pastBrightnessScales = [];
 			
-			try {Page.Animate.changeOpacity(this.switchJuliaModeButtonElement, 1, Site.opacityAnimationTime)}
+			try {changeOpacity(this.switchJuliaModeButtonElement, 1, Site.opacityAnimationTime)}
 			catch(ex) {}
 		}
 		

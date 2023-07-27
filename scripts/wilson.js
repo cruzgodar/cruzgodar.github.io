@@ -1465,7 +1465,7 @@ class Wilson
 				
 				
 				
-				Page.Animate.changeOpacity(document.body, 0, Site.opacityAnimationTime);
+				changeOpacity(document.body, 0, Site.opacityAnimationTime);
 				
 				setTimeout(() =>
 				{
@@ -1599,7 +1599,7 @@ class Wilson
 					
 					
 					
-					Page.Animate.changeOpacity(document.body, 1, Site.opacityAnimationTime);
+					changeOpacity(document.body, 1, Site.opacityAnimationTime);
 					
 					setTimeout(() =>
 					{
@@ -1634,7 +1634,7 @@ class Wilson
 					easing: "cubicBezier(.42, 0, .58, 1)"
 				});
 				
-				Page.Animate.changeOpacity(document.body, 0, Site.opacityAnimationTime);
+				changeOpacity(document.body, 0, Site.opacityAnimationTime);
 				
 				setTimeout(() =>
 				{
@@ -1739,7 +1739,7 @@ class Wilson
 					{
 						window.scroll(0, this.fullscreenOldScroll);
 						
-						Page.Animate.changeOpacity(document.body, 1, Site.opacityAnimationTime);
+						changeOpacity(document.body, 1, Site.opacityAnimationTime);
 						
 						setTimeout(() =>
 						{

@@ -163,15 +163,15 @@ export function load()
 	
 	function switchBulb()
 	{
-		Page.Animate.changeOpacity(switchBulbButtonElement, 0, Site.opacityAnimationTime);
-		Page.Animate.changeOpacity(switchMovementButtonElement, 0, Site.opacityAnimationTime);
+		changeOpacity(switchBulbButtonElement, 0, Site.opacityAnimationTime);
+		changeOpacity(switchMovementButtonElement, 0, Site.opacityAnimationTime);
 		
 		setTimeout(() =>
 		{
 			if (applet.juliaProportion < .5)
 			{
 				switchBulbButtonElement.textContent = "Switch to Mandelbulb";
-				Page.Animate.changeOpacity(switchMovementButtonElement, 1, Site.opacityAnimationTime);
+				changeOpacity(switchMovementButtonElement, 1, Site.opacityAnimationTime);
 			}
 			
 			else
@@ -181,7 +181,7 @@ export function load()
 			
 			Page.Load.TextButtons.equalize();
 			
-			Page.Animate.changeOpacity(switchBulbButtonElement, 1, Site.opacityAnimationTime);
+			changeOpacity(switchBulbButtonElement, 1, Site.opacityAnimationTime);
 		}, Site.opacityAnimationTime);
 		
 		applet.switchBulb();
@@ -191,7 +191,7 @@ export function load()
 	
 	function switchMovement()
 	{
-		Page.Animate.changeOpacity(switchMovementButtonElement, 0, Site.opacityAnimationTime);
+		changeOpacity(switchMovementButtonElement, 0, Site.opacityAnimationTime);
 		
 		setTimeout(() =>
 		{
@@ -207,7 +207,7 @@ export function load()
 			
 			Page.Load.TextButtons.equalize();
 			
-			Page.Animate.changeOpacity(switchMovementButtonElement, 1, Site.opacityAnimationTime);
+			changeOpacity(switchMovementButtonElement, 1, Site.opacityAnimationTime);
 		}, Site.opacityAnimationTime);
 		
 		applet.switchMovement();

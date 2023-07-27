@@ -1203,7 +1203,7 @@ export class QuaternionicJuliaSet extends Applet
 		
 		try
 		{
-			Page.Animate.changeOpacity(this.switchBulbButtonElement, 0, Site.opacityAnimationTime)
+			changeOpacity(this.switchBulbButtonElement, 0, Site.opacityAnimationTime)
 			
 			setTimeout(() =>
 			{
@@ -1217,7 +1217,7 @@ export class QuaternionicJuliaSet extends Applet
 					this.switchBulbButtonElement.textContent = "Switch to Julia Set";
 				}
 				
-				Page.Animate.changeOpacity(this.switchBulbButtonElement, 1, Site.opacityAnimationTime);
+				changeOpacity(this.switchBulbButtonElement, 1, Site.opacityAnimationTime);
 			}, Site.opacityAnimationTime);
 		}
 		
@@ -1238,8 +1238,8 @@ export class QuaternionicJuliaSet extends Applet
 			{
 				try
 				{
-					Page.Animate.changeOpacity(this.switchMovementButtonElement, 1, Site.opacityAnimationTime);
-					Page.Animate.changeOpacity(this.randomizeCButtonElement, 1, Site.opacityAnimationTime);
+					changeOpacity(this.switchMovementButtonElement, 1, Site.opacityAnimationTime);
+					changeOpacity(this.randomizeCButtonElement, 1, Site.opacityAnimationTime);
 				}
 				
 				catch(ex) {}
@@ -1254,8 +1254,8 @@ export class QuaternionicJuliaSet extends Applet
 			
 			try
 			{
-				Page.Animate.changeOpacity(this.switchMovementButtonElement, 0, Site.opacityAnimationTime);
-				Page.Animate.changeOpacity(this.randomizeCButtonElement, 0, Site.opacityAnimationTime);
+				changeOpacity(this.switchMovementButtonElement, 0, Site.opacityAnimationTime);
+				changeOpacity(this.randomizeCButtonElement, 0, Site.opacityAnimationTime);
 			}
 			
 			catch(ex) {}
@@ -1287,7 +1287,7 @@ export class QuaternionicJuliaSet extends Applet
 		
 		try
 		{
-			Page.Animate.changeOpacity(this.switchMovementButtonElement, 0, Site.opacityAnimationTime);
+			changeOpacity(this.switchMovementButtonElement, 0, Site.opacityAnimationTime);
 			
 			setTimeout(() =>
 			{
@@ -1301,7 +1301,7 @@ export class QuaternionicJuliaSet extends Applet
 					this.switchMovementButtonElement.textContent = "Move Camera";
 				}
 				
-				Page.Animate.changeOpacity(this.switchMovementButtonElement, 1, Site.opacityAnimationTime);
+				changeOpacity(this.switchMovementButtonElement, 1, Site.opacityAnimationTime);
 			}, Site.opacityAnimationTime);
 		}
 		

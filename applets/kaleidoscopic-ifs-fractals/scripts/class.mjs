@@ -1196,7 +1196,7 @@ export class KaleidoscopicIFSFractal extends Applet
 	
 	async changePolyhedron(newPolyhedronIndex)
 	{
-		await Page.Animate.changeOpacity(this.wilson.canvas, 0, Site.opacityAnimationTime);
+		await changeOpacity(this.wilson.canvas, 0, Site.opacityAnimationTime);
 		
 		this.polyhedronIndex = newPolyhedronIndex;
 		
@@ -1213,6 +1213,6 @@ export class KaleidoscopicIFSFractal extends Applet
 		
 		window.requestAnimationFrame(this.drawFrame.bind(this));
 		
-		Page.Animate.changeOpacity(this.wilson.canvas, 1, Site.opacityAnimationTime);
+		changeOpacity(this.wilson.canvas, 1, Site.opacityAnimationTime);
 	}
 }
