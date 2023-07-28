@@ -68,7 +68,7 @@ Page.Navigation =
 		
 		
 		//Get the new data, fade out the page, and preload the next page's banner if it exists. When all of those things are successfully done, replace the current html with the new stuff.
-		Promise.all([fetch(`${url}index.html`), Page.Banner.load()])
+		Promise.all([fetch(`${url}index.html`), loadBanner()])
 		
 		.then((response) =>
 		{
@@ -131,7 +131,7 @@ Page.Navigation =
 			if (restoreScroll)
 			{
 				window.scrollTo(0, this.lastPageScroll);
-				Page.Banner.onScroll(this.lastPageScroll);
+				bannerOnScroll(this.lastPageScroll);
 			}
 			
 			else
@@ -286,9 +286,9 @@ Page.Unload =
 			{
 				promise = fadeUpOut(Page.element, Site.pageAnimationTime);
 				
-				if (Page.bannerElement !== null)
+				if (bannerElement)
 				{
-					promise = fadeUpOut(Page.bannerElement, Site.pageAnimationTime * 2);
+					promise = fadeUpOut(bannerElement, Site.pageAnimationTime * 2);
 				}
 			}
 			
@@ -296,9 +296,9 @@ Page.Unload =
 			{
 				promise = fadeDownOut(Page.element, Site.pageAnimationTime);
 				
-				if (Page.bannerElement !== null)
+				if (bannerElement)
 				{
-					promise = fadeDownOut(Page.bannerElement, Site.pageAnimationTime * 2);
+					promise = fadeDownOut(bannerElement, Site.pageAnimationTime * 2);
 				}
 			}
 			
@@ -306,9 +306,9 @@ Page.Unload =
 			{
 				promise = fadeLeftOut(Page.element, Site.pageAnimationTime);
 				
-				if (Page.bannerElement !== null)
+				if (bannerElement)
 				{
-					promise = fadeLeftOut(Page.bannerElement, Site.pageAnimationTime * 2);
+					promise = fadeLeftOut(bannerElement, Site.pageAnimationTime * 2);
 				}
 			}
 			
@@ -316,9 +316,9 @@ Page.Unload =
 			{
 				promise = fadeRightOut(Page.element, Site.pageAnimationTime);
 				
-				if (Page.bannerElement !== null)
+				if (bannerElement)
 				{
-					promise = fadeRightOut(Page.bannerElement, Site.pageAnimationTime * 2);
+					promise = fadeRightOut(bannerElement, Site.pageAnimationTime * 2);
 				}
 			}
 			
@@ -326,9 +326,9 @@ Page.Unload =
 			{
 				promise = fadeOut(Page.element, Site.pageAnimationTime);
 				
-				if (Page.bannerElement !== null)
+				if (bannerElement)
 				{
-					promise = fadeOut(Page.bannerElement, Site.pageAnimationTime * 2);
+					promise = fadeOut(bannerElement, Site.pageAnimationTime * 2);
 				}
 			}
 			
@@ -438,13 +438,16 @@ Page.unload = function()
 	}
 	
 	
+	//TODO: Remove
+	try 
+	{
+		Applet.current.forEach(applet => applet.destroy());
+		
+		Applet.current = [];
+	}
 	
-	Page.currentApplets.forEach(applet => applet.destroy());
-	
-	Page.currentApplets = [];
+	catch(ex) {}
 	
 	
-	
-	//Remove everything that's not a script from the page element.
 	Page.element.remove();
 }

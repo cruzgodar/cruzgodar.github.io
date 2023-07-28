@@ -102,8 +102,10 @@
 	<script src="/scripts/highlight.min.js"></script>
 	
 	
-	
-	<script src="/scripts/src/banners.js"></script>
+	<script>
+		let Site = {};
+		let Page = {};
+	</script>
 	
 	<script src="/scripts/src/browser.js"></script>
 	
@@ -129,8 +131,10 @@
 	
 	<script type="module">
 		import * as Animate from "/scripts/src/animation.mjs";
+		import * as Banner from "/scripts/src/banners.mjs";
 		
 		Object.keys(Animate).forEach(key => window[key] = Animate[key]);
+		Object.keys(Banner).forEach(key => window[key] = Banner[key]);
 		
 		DEBUG = true;
 		

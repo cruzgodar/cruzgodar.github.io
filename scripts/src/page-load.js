@@ -9,26 +9,9 @@ Page.load = async function()
 	$ = (queryString) => Page.element.querySelector(queryString);
 	$$ = (queryString) => Page.element.querySelectorAll(queryString);
 	
-	if (Page.Banner.bannerPages.includes(Page.url))
+	if (bannerPages.includes(Page.url))
 	{
-		Page.bannerElement = $("#banner");
-		Page.contentElement = $("#content");
-		
-		Site.addStyle(`
-			#banner-small
-			{
-				background: url(${Page.Banner.filePath}small.${Page.Images.fileExtension}) no-repeat center center;
-				background-size: cover;
-			}
-			
-			#banner-large
-			{
-				background: url(${Page.Banner.filePath}large.${Page.Images.fileExtension}) no-repeat center center;
-				background-size: cover;
-			}
-		`);
-		
-		Page.Banner.load(true)
+		loadBanner(true)
 		
 		.then(() =>
 		{
@@ -40,7 +23,7 @@ Page.load = async function()
 	
 	else
 	{
-		Page.bannerElement = null;
+		setBannerElement(null);
 	}	
 	
 	Page.usingCustomScript = true;
@@ -347,9 +330,9 @@ Page.Load =
 			{
 				promise = fadeUpIn(Page.element, Site.pageAnimationTime * 2);
 				
-				if (Page.bannerElement !== null)
+				if (bannerElement)
 				{
-					promise = fadeUpIn(Page.bannerElement, Site.pageAnimationTime * 2, Page.Banner.opacity);
+					promise = fadeUpIn(bannerElement, Site.pageAnimationTime * 2, bannerOpacity);
 				}
 			}
 			
@@ -357,9 +340,9 @@ Page.Load =
 			{
 				promise = fadeDownIn(Page.element, Site.pageAnimationTime * 2);
 				
-				if (Page.bannerElement !== null)
+				if (bannerElement)
 				{
-					promise = fadeDownIn(Page.bannerElement, Site.pageAnimationTime * 2, Page.Banner.opacity);
+					promise = fadeDownIn(bannerElement, Site.pageAnimationTime * 2, bannerOpacity);
 				}
 			}
 			
@@ -367,9 +350,9 @@ Page.Load =
 			{
 				promise = fadeLeftIn(Page.element, Site.pageAnimationTime * 2);
 				
-				if (Page.bannerElement !== null)
+				if (bannerElement)
 				{
-					promise = fadeLeftIn(Page.bannerElement, Site.pageAnimationTime * 2, Page.Banner.opacity);
+					promise = fadeLeftIn(bannerElement, Site.pageAnimationTime * 2, bannerOpacity);
 				}
 			}
 			
@@ -377,9 +360,9 @@ Page.Load =
 			{
 				promise = fadeRightIn(Page.element, Site.pageAnimationTime * 2);
 				
-				if (Page.bannerElement !== null)
+				if (bannerElement)
 				{
-					promise = fadeRightIn(Page.bannerElement, Site.pageAnimationTime * 2, Page.Banner.opacity);
+					promise = fadeRightIn(bannerElement, Site.pageAnimationTime * 2, bannerOpacity);
 				}
 			}
 			
@@ -387,9 +370,9 @@ Page.Load =
 			{
 				promise = fadeIn(Page.element, Site.pageAnimationTime * 2);
 				
-				if (Page.bannerElement !== null)
+				if (Page.bannerElement)
 				{
-					promise = fadeIn(Page.bannerElement, Site.pageAnimationTime * 2, Page.Banner.opacity);
+					promise = fadeIn(bannerElement, Site.pageAnimationTime * 2, bannerOpacity);
 				}
 			}
 			

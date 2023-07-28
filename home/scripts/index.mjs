@@ -1,11 +1,6 @@
 function setNameTextOpacity()
 {
-	let opacity = 0;
-	
-	if (Page.scroll <= Page.Banner.maxScroll / 2.5)
-	{
-		opacity = Math.min(Math.max(1 - Page.scroll / (Page.Banner.maxScroll / 2.5), 0), 1);
-	}
+	const opacity = Page.scroll <= bannerMaxScroll / 2.5 ? Math.min(Math.max(1 - Page.scroll / (bannerMaxScroll / 2.5), 0), 1) : 0;
 	
 	$("#cruz-text").parentNode.style.opacity = opacity;
 	$("#godar-text").parentNode.style.opacity = opacity;

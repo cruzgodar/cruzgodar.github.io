@@ -22,7 +22,7 @@ export class Applet
 		this.pan.parent = this;
 		this.zoom.parent = this;
 		
-		Page.currentApplets.push(this);
+		Applet.current.push(this);
 	}
 	
 	
@@ -751,6 +751,8 @@ export class Applet
 	}
 	
 	
+	
+	static current = [];
 	
 	static loaded = [];
 	

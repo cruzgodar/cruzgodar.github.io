@@ -18,7 +18,7 @@ Page.Layout =
 	
 	onResize: async function()
 	{
-		Page.Banner.maxScroll = document.body.offsetHeight > window.innerHeight * 1.5 ? window.innerHeight / 2 : document.body.offsetHeight - window.innerHeight;
+		setBannerMaxScroll(document.body.offsetHeight > window.innerHeight * 1.5 ? window.innerHeight / 2 : document.body.offsetHeight - window.innerHeight);
 		
 		Site.navigationAnimationDistanceVertical = Math.min(window.innerHeight / 20, 25);
 		Site.navigationAnimationDistanceHorizontal = Math.min(window.innerWidth / 20, 25);
@@ -106,7 +106,7 @@ Page.Layout =
 		
 		
 		
-		Page.Banner.onScroll(0);
+		bannerOnScroll(0);
 	},
 
 

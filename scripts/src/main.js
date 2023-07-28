@@ -172,7 +172,7 @@ Site.load = async function(url)
 	
 	window.addEventListener("scroll", () =>
 	{
-		Page.Banner.onScroll(0);
+		bannerOnScroll(0);
 		
 		window.requestAnimationFrame(Page.Load.lazyLoadScroll);
 	});
@@ -268,7 +268,7 @@ Site.load = async function(url)
 	
 	
 	
-	Page.Banner.ScrollButton.exists = false;
+	setScrollButtonExists(false);
 	
 	Site.Settings.setUp();
 	
