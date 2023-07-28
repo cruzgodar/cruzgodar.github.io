@@ -1,4 +1,4 @@
-import { Applet } from "../../../scripts/src/applets.mjs"
+import { Applet } from "/scripts/src/applets.mjs"
 
 export class StrangeAttractor extends Applet
 {

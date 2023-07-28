@@ -1,5 +1,8 @@
 "use strict";
 
+let Site = {};
+let Page = {};
+
 Page.currentApplets = [];
 
 Page.bannerElement = null;

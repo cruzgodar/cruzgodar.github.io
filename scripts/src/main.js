@@ -156,32 +156,6 @@ Site.load = async function(url)
 		this.opacityAnimationTime = this.baseAnimationTime * .8;
 		this.pageAnimationTime = this.baseAnimationTime * .55;
 		this.backgroundColorAnimationTime = this.baseAnimationTime * 2;
-		
-		Page.Animate.changeOpacity = Page.Animate.changeOpacityJs;
-		Page.Animate.changeScale = Page.Animate.changeScaleJs;
-		Page.Animate.fadeLeft = Page.Animate.fadeLeftJs;
-		
-		Page.Animate.changeLeftSettingsButton = Page.Animate.changeLeftSettingsButtonJs;
-		Page.Animate.changeRightSettingsButton = Page.Animate.changeRightSettingsButtonJs;
-		
-		Page.Animate.showSlideShelf = Page.Animate.showSlideShelfJs;
-		Page.Animate.hideSlideShelf = Page.Animate.hideSlideShelfJs;
-		
-		Page.Animate.changeFooterImageLinkText = Page.Animate.changeFooterImageLinkTextJs;
-		
-		Page.Animate.fadeUpIn = Page.Animate.fadeUpInJs;
-		Page.Animate.fadeUpOut = Page.Animate.fadeUpOutJs;
-		Page.Animate.fadeDownIn = Page.Animate.fadeDownInJs;
-		Page.Animate.fadeDownOut = Page.Animate.fadeDownOutJs;
-		Page.Animate.fadeLeftIn = Page.Animate.fadeLeftInJs;
-		Page.Animate.fadeLeftOut = Page.Animate.fadeLeftOutJs;
-		Page.Animate.fadeRightIn = Page.Animate.fadeRightInJs;
-		Page.Animate.fadeRightOut = Page.Animate.fadeRightOutJs;
-		Page.Animate.fadeIn = Page.Animate.fadeInJs;
-		Page.Animate.fadeOut = Page.Animate.fadeOutJs;
-		
-		Page.Animate.showFadeUpSection = Page.Animate.showFadeUpSectionJs;
-		Page.Animate.showZoomOutSection = Page.Animate.showZoomOutSectionJs;
 	}
 	
 	else
@@ -190,32 +164,6 @@ Site.load = async function(url)
 		this.opacityAnimationTime = this.baseAnimationTime * .75;
 		this.pageAnimationTime = this.baseAnimationTime * .55;
 		this.backgroundColorAnimationTime = this.baseAnimationTime * 2;
-		
-		Page.Animate.changeOpacity = Page.Animate.changeOpacityCss;
-		Page.Animate.changeScale = Page.Animate.changeScaleCss;
-		Page.Animate.fadeLeft = Page.Animate.fadeLeftCss;
-		
-		Page.Animate.changeLeftSettingsButton = Page.Animate.changeLeftSettingsButtonCss;
-		Page.Animate.changeRightSettingsButton = Page.Animate.changeRightSettingsButtonCss;
-		
-		Page.Animate.showSlideShelf = Page.Animate.showSlideShelfJs;
-		Page.Animate.hideSlideShelf = Page.Animate.hideSlideShelfJs;
-		
-		Page.Animate.changeFooterImageLinkText = Page.Animate.changeFooterImageLinkTextCss;
-		
-		Page.Animate.fadeUpIn = Page.Animate.fadeUpInCss;
-		Page.Animate.fadeUpOut = Page.Animate.fadeUpOutCss;
-		Page.Animate.fadeDownIn = Page.Animate.fadeDownInCss;
-		Page.Animate.fadeDownOut = Page.Animate.fadeDownOutCss;
-		Page.Animate.fadeLeftIn = Page.Animate.fadeLeftInCss;
-		Page.Animate.fadeLeftOut = Page.Animate.fadeLeftOutCss;
-		Page.Animate.fadeRightIn = Page.Animate.fadeRightInCss;
-		Page.Animate.fadeRightOut = Page.Animate.fadeRightOutCss;
-		Page.Animate.fadeIn = Page.Animate.fadeInCss;
-		Page.Animate.fadeOut = Page.Animate.fadeOutCss;
-		
-		Page.Animate.showFadeUpSection = Page.Animate.showFadeUpSectionCss;
-		Page.Animate.showZoomOutSection = Page.Animate.showZoomOutSectionCss;
 	}
 	
 	
