@@ -228,8 +228,6 @@
 			
 			"parameters": "Generated with &#x03c1; = .3673, &#x03b2; = 1.1016, &#x03b1; = .4022, &#x03b8; = .0311, &#x03ba; = .0013, &#x03bc; = .019, &#x03b3; = .0005",
 			
-			"featured": "Featured in UO&#x2019;s Erb Memorial Union",
-			
 			"appletLink": "snowflakes",
 			
 			"imageLink": "https://drive.google.com/uc?id=1qCDJIacawSFc8rAJK57YbqQjVC79Lu9&export=download"
@@ -244,6 +242,8 @@
 			"resolution": "5000x5000",
 			
 			"parameters": "Generated with c = (-0.54, -0.25, -0.668, 0)",
+			
+			"featured": "Featured in the 2023 Bridges Conference",
 			
 			"appletLink": "quaternionic-julia-sets",
 			
@@ -437,7 +437,7 @@
 			
 			"parameters": "Generated from the polynomial z&#x2076; - 1 with a = 1.5",
 			
-			"appletLink": "the-secant-method",
+			"appletLink": "secant-method",
 			
 			"imageLink": "https://drive.google.com/uc?id=1XaNHxtiX5oA9KcLGs8ZSPFJwpDWt4mPk&export=download"
 		},
