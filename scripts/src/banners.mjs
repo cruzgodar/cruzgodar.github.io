@@ -5,6 +5,8 @@ export function setBannerElement(newBannerElement)
 	bannerElement = newBannerElement;
 }
 
+
+
 export let contentElement = null;
 
 export function setContentElement(newContentElement)
@@ -12,14 +14,55 @@ export function setContentElement(newContentElement)
 	contentElement = newContentElement;
 }
 
-let doneLoading = false;
 
-let bannerFilename = "";
-let bannerFilepath = "";
+
+export let bannerDoneLoading = false;
+
+export function setBannerDoneLoading(newBannerDoneLoading)
+{
+	bannerDoneLoading = newBannerDoneLoading;
+}
+
+
 
 let bannerOpacity = 1;
 
+export function setBannerOpacity(newBannerOpacity)
+{
+	bannerOpacity = newBannerOpacity;
+	
+	try
+	{
+		bannerElement.style.opacity = bannerOpacity;
+		contentElement.style.opacity = 1 - bannerOpacity;
+	}
+	
+	catch(ex) {}
+	
+	if (bannerOpacity)
+	{
+		bannerDoneLoading = false;
+	}
+	
+	else
+	{
+		bannerDoneLoading = true;
+	}
+}
+
+
+
 export let bannerMaxScroll = null;
+
+export function setBannerMaxScroll(newBannerMaxScroll)
+{
+	bannerMaxScroll = newBannerMaxScroll;
+}
+
+
+
+let bannerFilename = "";
+let bannerFilepath = "";
 
 let lastScrollTimestamp = -1;
 
@@ -51,13 +94,13 @@ let scrollButtonExists = false;
 
 let scrollButtonTimeoutId = null;
 
+
+
 let scrollButtonDoneLoading = false;
 
-
-
-export function setBannerMaxScroll(newBannerMaxScroll)
+export function setScrollButtonDoneLoading(newScrollButtonDoneLoading)
 {
-	bannerMaxScroll = newBannerMaxScroll;
+	scrollButtonDoneLoading = newScrollButtonDoneLoading;
 }
 
 
@@ -157,7 +200,7 @@ export function bannerOnScroll(scrollPositionOverride)
 	else
 	{
 		Page.scroll = scrollPositionOverride;
-		doneLoading = false;
+		bannerDoneLoading = false;
 		scrollButtonDoneLoading = false;
 	}
 	
@@ -194,16 +237,16 @@ function scrollHandler()
 		
 		if (bannerOpacity === 0)
 		{
-			doneLoading = true;
+			bannerDoneLoading = true;
 		}
 		
 		else
 		{
-			doneLoading = false;
+			bannerDoneLoading = false;
 		}
 	}
 	
-	else if (!doneLoading)
+	else if (!bannerDoneLoading)
 	{
 		bannerOpacity = 0;
 		
@@ -215,7 +258,7 @@ function scrollHandler()
 		
 		catch(ex) {}
 		
-		doneLoading = true;
+		bannerDoneLoading = true;
 	}
 	
 	
@@ -303,7 +346,7 @@ export function fetchOtherPageBannersInBackground()
 
 
 
-function insertScrollButton()
+export function insertScrollButton()
 {
 	if (Page.scroll > bannerMaxScroll / 2.5)
 	{
@@ -328,7 +371,7 @@ function insertScrollButton()
 	{
 		document.querySelector("#banner-cover").insertAdjacentHTML("beforebegin", `
 			<div id="new-banner-cover">
-				<input type="image" id="scroll-button" src="/graphics/general-icons/${chevronName}.png" style="opacity: 0" alt="Scroll down" onclick="Page.Banner.ScrollButton.animateTo(document.querySelector('#scroll-to'))">
+				<input type="image" id="scroll-button" src="/graphics/general-icons/${chevronName}.png" style="opacity: 0" alt="Scroll down">
 			</div>
 		`);
 		
@@ -370,11 +413,4 @@ function insertScrollButton()
 export function setScrollButtonExists(newScrollButtonExists)
 {
 	scrollButtonExists = newScrollButtonExists;
-}
-
-
-
-function animateTo(targetElement)
-{
-	targetElement.scrollIntoView({behavior: "smooth"});
 }

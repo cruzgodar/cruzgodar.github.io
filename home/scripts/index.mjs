@@ -12,10 +12,7 @@ export function load()
 	{
 		$("#return-scroll-to").scrollIntoView();
 		
-		Page.Banner.opacity = 0;
-		Page.Banner.doneLoading = true;
-		Page.bannerElement.style.opacity = 0;
-		Page.contentElement.style.opacity = 1;
+		setBannerOpacity(0);
 	}
 	
 	Site.vistedHomepage = true;

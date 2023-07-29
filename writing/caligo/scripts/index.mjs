@@ -8,8 +8,6 @@ function caligoScroll()
 	{
 		updateBackground();
 		
-		updateScrollButton();
-		
 		updateEclipse();
 	}
 }
@@ -56,54 +54,20 @@ function updateBackground()
 		
 		if (backgroundColor === 0)
 		{
-			Page.Banner.doneLoading = true;
+			setBannerDoneLoading(true);
 		}
 		
 		else
 		{
-			Page.Banner.doneLoading = false;
+			setBannerDoneLoading(false);
 		}
 	}
 	
-	else if (Page.Banner.doneLoading === false)
+	else if (!bannerDoneLoading)
 	{
 		document.documentElement.style.backgroundColor = "rgb(0, 0, 0)";
 		Site.Settings.metaThemeColorElement.setAttribute("content", "rgb(0, 0, 0)");
-		Page.Banner.doneLoading = true;
-	}
-}
-
-
-
-function updateScrollButton()
-{
-	if (Page.scroll <= window.innerHeight / 3)
-	{
-		opacity = .5 + .5 * Math.sin(Math.PI * Math.max(1 - 3 * Page.scroll / window.innerHeight, 0) - .5 * Math.PI);
-		
-		try {$("#scroll-button").style.opacity = opacity;}
-		catch(ex) {}
-		
-		if (opacity === 0)
-		{
-			try {$("#scroll-button").remove();}
-			catch(ex) {}
-			
-			Page.Banner.ScrollButton.doneLoading = true;
-		}
-		
-		else
-		{
-			Page.Banner.ScrollButton.doneLoading = false;
-		}
-	}
-	
-	else if (Page.Banner.ScrollButton.doneLoading === false)
-	{
-		try {$("#scroll-button").remove();}
-		catch(ex) {}
-		
-		Page.Banner.ScrollButton.doneLoading = true;
+		setBannerDoneLoading(true);
 	}
 }
 
@@ -128,14 +92,14 @@ function updateEclipse()
 		}
 	}
 	
-	else if (scroll >= 6/5 * window.innerHeight && eclipseDone === false)
+	else if (scroll >= 6/5 * window.innerHeight && !eclipseDone)
 	{
 		$("#eclipse").style.opacity = 1;
 		
 		eclipseDone = true;
 	}
 	
-	else if (scroll <= 4/5 * window.innerHeight && eclipseDone === false)
+	else if (scroll <= 4/5 * window.innerHeight && !eclipseDone)
 	{
 		$("#eclipse").style.opacity = 0;
 		
@@ -243,8 +207,9 @@ export function load()
 	backgroundColor = 255;
 	opacity = 0;
 	
-	Page.Banner.doneLoading = false;
-	Page.Banner.ScrollButton.doneLoading = false;
+	setBannerOpacity(1);
+	setScrollButtonDoneLoading(true);
+	
 	eclipseDone = false;
 	
 	
@@ -281,7 +246,7 @@ export function load()
 		}, Site.backgroundColorAnimationTime);
 	}
 	
-	setTimeout(Page.Banner.ScrollButton.insert, 7000);
+	setTimeout(insertScrollButton, 7000);
 	
 	
 	

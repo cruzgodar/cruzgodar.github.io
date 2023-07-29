@@ -370,7 +370,7 @@ Page.Load =
 			{
 				promise = fadeIn(Page.element, Site.pageAnimationTime * 2);
 				
-				if (Page.bannerElement)
+				if (bannerElement)
 				{
 					promise = fadeIn(bannerElement, Site.pageAnimationTime * 2, bannerOpacity);
 				}
