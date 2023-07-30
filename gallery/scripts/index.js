@@ -169,7 +169,7 @@
 			
 			"appletLink": "brownian-trees",
 			
-			"imageLink": "https://drive.google.com/uc?id=1BSuYpCW9jQKqu8NOu6f6omr_LVMXprh&export=download"
+			"imageLink": "https://drive.google.com/uc?id=1BSuYpCW9jQKqu8NOu6f_6omr_LVMXprh&export=download"
 		},
 		
 		"lyapunov-fractal":
@@ -230,7 +230,7 @@
 			
 			"appletLink": "snowflakes",
 			
-			"imageLink": "https://drive.google.com/uc?id=1qCDJIacawSFc8rAJK57YbqQjVC79Lu9&export=download"
+			"imageLink": "https://drive.google.com/uc?id=1qCDJIacawSFc8rAJK57YbqQjVC_79Lu9&export=download"
 		},
 		
 		
@@ -247,7 +247,7 @@
 			
 			"appletLink": "quaternionic-julia-sets",
 			
-			"imageLink": "https://drive.google.com/uc?id=1092d-V4qcvcW5Lsf5xsyDQvlDs1LdO9&export=download"
+			"imageLink": "https://drive.google.com/uc?id=1092d-V4qcvcW5_lsf5xsyDQvlDs1LdO9&export=download"
 		},
 		
 		
@@ -279,7 +279,7 @@
 			
 			"appletLink": "the-kicked-rotator",
 			
-			"imageLink": "https://drive.google.com/uc?id=1vXP8ArZg7F2o7rbFCsksoHDT3nw8y66&export=download"
+			"imageLink": "https://drive.google.com/uc?id=1vXP_8ArZg7F2o7rbFCsksoHDT3nw8y66&export=download"
 		},
 		
 		"kaleidoscopic-ifs-1":
@@ -307,7 +307,7 @@
 			
 			"appletLink": "generalized-julia-sets",
 			
-			"imageLink": "https://drive.google.com/uc?id=1rgAIVr9Ztfs2EiVtY39-GQ91ayeMJXu&export=download"
+			"imageLink": "https://drive.google.com/uc?id=1rgAIVr9Ztfs2EiVtY_39-GQ91ayeMJXu&export=download"
 		},
 		
 		"quasi-fuchsian-group":
@@ -376,7 +376,7 @@
 			
 			"appletLink": "the-barnsley-fern",
 			
-			"imageLink": "https://drive.google.com/uc?id=1ED5VAUhFEF0E3fcnY4NOEYJSVf1P7cA&export=download"
+			"imageLink": "https://drive.google.com/uc?id=1ED5_vAUhFEF0E3fcnY4NOEYJSVf1P7cA&export=download"
 		},
 		
 		"generalized-julia-set-3":
@@ -400,7 +400,7 @@
 			
 			"appletLink": "magic-carpets",
 			
-			"imageLink": "https://drive.google.com/uc?id=1bD3P4pzIU7M6NiLp9oSjtrwoAJQpJ98&export=download"
+			"imageLink": "https://drive.google.com/uc?id=1bD3P4pzIU7M6Ni_lp9oSjtrwoAJQpJ98&export=download"
 		},
 		
 		"complex-map-1":
@@ -504,7 +504,7 @@
 			
 			"appletLink": "the-mandelbulb",
 			
-			"imageLink": "https://drive.google.com/uc?id=1UZaqN8xkOc4a2rMtA985YllnJDfwqO2&export=download"
+			"imageLink": "https://drive.google.com/uc?id=1UZaqN8xkOc4a2rMtA9_85YllnJDfwqO2&export=download"
 		},
 		
 		
@@ -519,7 +519,7 @@
 			
 			"appletLink": "the-mandelbulb",
 			
-			"imageLink": "https://drive.google.com/uc?id=1GfsCGm0DU1j2X79Ros6lQY4HAUp-iy4&export=download"
+			"imageLink": "https://drive.google.com/uc?id=1GfsC_gm0DU1j2X79Ros6lQY4HAUp-iy4&export=download"
 		},
 		
 		
