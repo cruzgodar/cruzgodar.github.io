@@ -137,10 +137,6 @@ Site.load = async function(url)
 	
 	document.body.insertBefore(Page.element, document.body.firstChild);
 	
-	
-	
-	const browserIsIos = Browser.isIos();
-	
 	Site.useJsAnimation = browserIsIos;
 	
 	
@@ -181,10 +177,6 @@ Site.load = async function(url)
 	{
 		Page.Layout.onResize();
 	});
-	
-	
-	
-	Browser.detect();
 	
 	
 	

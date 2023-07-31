@@ -1,4 +1,6 @@
-const useJsAnimation = false;
+import { browserIsIos } from "./browser.mjs"
+
+const useJsAnimation = browserIsIos;
 
 
 

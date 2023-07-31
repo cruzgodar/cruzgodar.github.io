@@ -107,8 +107,6 @@
 		let Page = {};
 	</script>
 	
-	<script src="/scripts/src/browser.js"></script>
-	
 	<script src="/scripts/src/complex-glsl.js"></script>
 	
 	<script src="/scripts/src/components.js"></script>
@@ -132,9 +130,11 @@
 	<script type="module">
 		import * as Animate from "/scripts/src/animation.mjs";
 		import * as Banner from "/scripts/src/banners.mjs";
+		import * as Browser from "/scripts/src/browser.mjs";
 		
 		Object.keys(Animate).forEach(key => window[key] = Animate[key]);
 		Object.keys(Banner).forEach(key => window[key] = Banner[key]);
+		Object.keys(Browser).forEach(key => window[key] = Browser[key]);
 		
 		DEBUG = true;
 		

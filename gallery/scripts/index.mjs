@@ -92,7 +92,7 @@ const galleryImageData =
 		
 		"appletLink": "brownian-trees",
 		
-		"imageLink": "https://drive.google.com/uc?id=1BSuYpCW9jQKqu8NOu6f6omr_LVMXprh&export=download"
+		"imageLink": "https://drive.google.com/uc?id=1BSuYpCW9jQKqu8NOu6f_6omr_LVMXprh&export=download"
 	},
 	
 	"lyapunov-fractal":
@@ -151,11 +151,9 @@ const galleryImageData =
 		
 		"parameters": "Generated with &#x03c1; = .3673, &#x03b2; = 1.1016, &#x03b1; = .4022, &#x03b8; = .0311, &#x03ba; = .0013, &#x03bc; = .019, &#x03b3; = .0005",
 		
-		"featured": "Featured in UO&#x2019;s Erb Memorial Union",
-		
 		"appletLink": "snowflakes",
 		
-		"imageLink": "https://drive.google.com/uc?id=1qCDJIacawSFc8rAJK57YbqQjVC79Lu9&export=download"
+		"imageLink": "https://drive.google.com/uc?id=1qCDJIacawSFc8rAJK57YbqQjVC_79Lu9&export=download"
 	},
 	
 	
@@ -168,9 +166,11 @@ const galleryImageData =
 		
 		"parameters": "Generated with c = (-0.54, -0.25, -0.668, 0)",
 		
+		"featured": "Featured in the 2023 Bridges Conference",
+		
 		"appletLink": "quaternionic-julia-sets",
 		
-		"imageLink": "https://drive.google.com/uc?id=1092d-V4qcvcW5Lsf5xsyDQvlDs1LdO9&export=download"
+		"imageLink": "https://drive.google.com/uc?id=1092d-V4qcvcW5_lsf5xsyDQvlDs1LdO9&export=download"
 	},
 	
 	
@@ -202,7 +202,7 @@ const galleryImageData =
 		
 		"appletLink": "the-kicked-rotator",
 		
-		"imageLink": "https://drive.google.com/uc?id=1vXP8ArZg7F2o7rbFCsksoHDT3nw8y66&export=download"
+		"imageLink": "https://drive.google.com/uc?id=1vXP_8ArZg7F2o7rbFCsksoHDT3nw8y66&export=download"
 	},
 	
 	"kaleidoscopic-ifs-1":
@@ -230,7 +230,7 @@ const galleryImageData =
 		
 		"appletLink": "generalized-julia-sets",
 		
-		"imageLink": "https://drive.google.com/uc?id=1rgAIVr9Ztfs2EiVtY39-GQ91ayeMJXu&export=download"
+		"imageLink": "https://drive.google.com/uc?id=1rgAIVr9Ztfs2EiVtY_39-GQ91ayeMJXu&export=download"
 	},
 	
 	"quasi-fuchsian-group":
@@ -299,7 +299,7 @@ const galleryImageData =
 		
 		"appletLink": "the-barnsley-fern",
 		
-		"imageLink": "https://drive.google.com/uc?id=1ED5VAUhFEF0E3fcnY4NOEYJSVf1P7cA&export=download"
+		"imageLink": "https://drive.google.com/uc?id=1ED5_vAUhFEF0E3fcnY4NOEYJSVf1P7cA&export=download"
 	},
 	
 	"generalized-julia-set-3":
@@ -323,7 +323,7 @@ const galleryImageData =
 		
 		"appletLink": "magic-carpets",
 		
-		"imageLink": "https://drive.google.com/uc?id=1bD3P4pzIU7M6NiLp9oSjtrwoAJQpJ98&export=download"
+		"imageLink": "https://drive.google.com/uc?id=1bD3P4pzIU7M6Ni_lp9oSjtrwoAJQpJ98&export=download"
 	},
 	
 	"complex-map-1":
@@ -360,7 +360,7 @@ const galleryImageData =
 		
 		"parameters": "Generated from the polynomial z&#x2076; - 1 with a = 1.5",
 		
-		"appletLink": "the-secant-method",
+		"appletLink": "secant-method",
 		
 		"imageLink": "https://drive.google.com/uc?id=1XaNHxtiX5oA9KcLGs8ZSPFJwpDWt4mPk&export=download"
 	},
@@ -427,7 +427,7 @@ const galleryImageData =
 		
 		"appletLink": "the-mandelbulb",
 		
-		"imageLink": "https://drive.google.com/uc?id=1UZaqN8xkOc4a2rMtA985YllnJDfwqO2&export=download"
+		"imageLink": "https://drive.google.com/uc?id=1UZaqN8xkOc4a2rMtA9_85YllnJDfwqO2&export=download"
 	},
 	
 	
@@ -442,7 +442,7 @@ const galleryImageData =
 		
 		"appletLink": "the-mandelbulb",
 		
-		"imageLink": "https://drive.google.com/uc?id=1GfsCGm0DU1j2X79Ros6lQY4HAUp-iy4&export=download"
+		"imageLink": "https://drive.google.com/uc?id=1GfsC_gm0DU1j2X79Ros6lQY4HAUp-iy4&export=download"
 	},
 	
 	
