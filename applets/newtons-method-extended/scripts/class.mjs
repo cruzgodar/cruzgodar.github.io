@@ -1,4 +1,5 @@
 import { Applet } from "/scripts/src/applets.mjs"
+import { loadGlsl, getGlslBundle } from "/scripts/src/complex-glsl.mjs"
 
 export class NewtonsMethodExtended extends Applet
 {
@@ -130,7 +131,7 @@ export class NewtonsMethodExtended extends Applet
 		
 		this.loadPromise = new Promise(async (resolve, reject) =>
 		{
-			await Site.loadGLSL();
+			await loadGlsl();
 			
 			resolve();
 		});
@@ -165,7 +166,7 @@ export class NewtonsMethodExtended extends Applet
 			
 			
 			
-			${Site.getGLSLBundle(generatingCode)}
+			${getGlslBundle(generatingCode)}
 			
 			
 			

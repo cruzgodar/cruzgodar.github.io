@@ -1,4 +1,5 @@
 import { Applet } from "/scripts/src/applets.mjs"
+import { loadGlsl, doubleEmulationGlsl } from "/scripts/src/complex-glsl.mjs"
 
 export class JuliaSet extends Applet
 {
@@ -53,7 +54,7 @@ export class JuliaSet extends Applet
 		
 		this.loadPromise = new Promise(async (resolve, reject) =>
 		{
-			await Site.loadGLSL();
+			await loadGlsl();
 			
 			//Modes: 0 is a Mandelbrot set, 1 is a Julia set, and 2 is a Mandelbrot set with a Julia set preview.
 			
@@ -317,7 +318,7 @@ export class JuliaSet extends Applet
 				
 				
 				
-				${Site.doubleEmulationGLSL}
+				${doubleEmulationGlsl}
 				
 				
 				
@@ -383,7 +384,7 @@ export class JuliaSet extends Applet
 				
 				
 				
-				${Site.doubleEmulationGLSL}
+				${doubleEmulationGlsl}
 				
 				
 				
@@ -452,7 +453,7 @@ export class JuliaSet extends Applet
 				
 				
 				
-				${Site.doubleEmulationGLSL}
+				${doubleEmulationGlsl}
 				
 				
 				

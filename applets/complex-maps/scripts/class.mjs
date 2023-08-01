@@ -1,4 +1,5 @@
 import { Applet } from "/scripts/src/applets.mjs"
+import { loadGlsl, getGlslBundle } from "/scripts/src/complex-glsl.mjs"
 
 export class ComplexMap extends Applet
 {
@@ -90,7 +91,7 @@ export class ComplexMap extends Applet
 		
 		this.loadPromise = new Promise(async (resolve, reject) =>
 		{
-			await Site.loadGLSL();
+			await loadGlsl();
 			
 			this.run(generatingCode, uniformCode, worldCenterX, worldCenterY, zoomLevel, addIndicatorDraggable, draggableCallback, selectorMode);
 			
@@ -158,7 +159,7 @@ export class ComplexMap extends Applet
 			
 			
 			
-			${Site.getGLSLBundle(generatingCode)}
+			${getGlslBundle(generatingCode)}
 			
 			
 			

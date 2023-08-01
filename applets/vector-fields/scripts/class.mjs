@@ -1,4 +1,5 @@
 import { Applet } from "/scripts/src/applets.mjs"
+import { loadGlsl, getGlslBundle, doubleEncodingGlsl } from "/scripts/src/complex-glsl.mjs"
 
 export class VectorField extends Applet
 {
@@ -299,7 +300,7 @@ export class VectorField extends Applet
 		
 		this.loadPromise = new Promise(async (resolve, reject) =>
 		{
-			await Site.loadGLSL();
+			await loadGlsl();
 			
 			resolve();
 		});
@@ -325,9 +326,9 @@ export class VectorField extends Applet
 			
 			
 			
-			${Site.getGLSLBundle(generatingCode)}
+			${getGlslBundle(generatingCode)}
 			
-			${Site.doubleEncodingGLSL}
+			${doubleEncodingGlsl}
 			
 			
 			

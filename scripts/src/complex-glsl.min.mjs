@@ -1,4 +1,4 @@
-Site.GLSLFilenames =
+const glslFilenames =
 [
 	"equality",
 	"powers",
@@ -13,7 +13,7 @@ Site.GLSLFilenames =
 	"zeta"
 ];
 
-Site.GLSLFiles = 
+const glslFiles = 
 {
 	"main":
 	{
@@ -30,12 +30,12 @@ Site.GLSLFiles =
 	}
 };
 
-Site.doubleEmulationGLSL = "";
-Site.doubleEncodingGLSL = "";
+let doubleEmulationGlsl = null;
+let doubleEncodingGlsl = null;
 
 
 
-Site.splitGLSLFile = function(filename, text)
+function splitGlslFile(filename, text)
 {
 	text = text.replaceAll("\r", "");
 	
@@ -83,7 +83,7 @@ Site.splitGLSLFile = function(filename, text)
 		
 		
 		
-		Site.GLSLFiles[keywords[0]] =
+		glslFiles[keywords[0]] =
 		{
 			keywords: keywords
 		};
@@ -109,29 +109,29 @@ Site.splitGLSLFile = function(filename, text)
 				}
 			}
 			
-			Site.GLSLFiles[keywords[0]].dependencies = dependencies;
+			glslFiles[keywords[0]].dependencies = dependencies;
 			
-			Site.GLSLFiles[keywords[0]].content = text.slice(endDependenciesIndex + 1, endFunctionIndex);
+			glslFiles[keywords[0]].content = text.slice(endDependenciesIndex + 1, endFunctionIndex);
 		}
 		
 		else
 		{
-			Site.GLSLFiles[keywords[0]].dependencies = [];
+			glslFiles[keywords[0]].dependencies = [];
 			
-			Site.GLSLFiles[keywords[0]].content = text.slice(endIndex + 1, endFunctionIndex);
+			glslFiles[keywords[0]].content = text.slice(endIndex + 1, endFunctionIndex);
 		}
 		
 		
 		
 		startSearchIndex = endFunctionIndex + 13;
 	}
-};
+}
 
 
 
-Site.GLSLFilesByDepth = [];
+const glslFilesByDepth = [];
 
-Site.loadGLSL = function()
+function loadGlsl()
 {
 	if (Site.scriptsLoaded["glsl"] === 0)
 	{
@@ -144,7 +144,7 @@ Site.loadGLSL = function()
 			
 			const text = await response.text();
 				
-			this.GLSLFiles["constants"].content = text;
+			glslFiles["constants"].content = text;
 			
 			
 			
@@ -152,7 +152,7 @@ Site.loadGLSL = function()
 			
 			const text2 = await response2.text();
 				
-			this.GLSLFiles["main"].content = text2;
+			glslFiles["main"].content = text2;
 			
 			
 			
@@ -160,7 +160,7 @@ Site.loadGLSL = function()
 			
 			const text3 = await response3.text();
 				
-			this.doubleEmulationGLSL = text3;
+			doubleEmulationGLSL = text3;
 			
 			
 			
@@ -168,13 +168,13 @@ Site.loadGLSL = function()
 			
 			const text4 = await response4.text();
 				
-			this.doubleEncodingGLSL = text4;
+			doubleEncodingGLSL = text4;
 			
 			
 			
 			const texts = {};
 			
-			await Promise.all(this.GLSLFilenames.map(filename => new Promise(async (resolve, reject) =>
+			await Promise.all(glslFilenames.map(filename => new Promise(async (resolve, reject) =>
 			{
 				const response = await fetch(`/scripts/glsl/${filename}.frag`);
 				
@@ -183,52 +183,52 @@ Site.loadGLSL = function()
 				resolve();
 			})));
 			
-			this.GLSLFilenames.forEach(filename => this.splitGLSLFile(filename, texts[filename]));
+			glslFilenames.forEach(filename => splitGlslFile(filename, texts[filename]));
 			
 			
 			
 			//Figure out the depth of everything.
 			
-			const filenames = Object.keys(this.GLSLFiles);
+			const filenames = Object.keys(glslFiles);
 			
-			filenames.forEach(filename => this.GLSLFiles[filename].parents = []);
+			filenames.forEach(filename => glslFiles[filename].parents = []);
 			
 			filenames.forEach(filename =>
 			{
-				const dependencies = this.GLSLFiles[filename].dependencies;
+				const dependencies = glslFiles[filename].dependencies;
 				
-				dependencies.forEach(dependency => this.GLSLFiles[dependency].parents.push(filename));
+				dependencies.forEach(dependency => glslFiles[dependency].parents.push(filename));
 				
 				if (dependencies.length === 0 && filename !== "main")
 				{
-					this.GLSLFiles["main"].parents.push(filename);
+					glslFiles["main"].parents.push(filename);
 				}
 			});
 			
 			
 			
-			let activeNodes = ["main"];
+			const activeNodes = ["main"];
 			let depth = 0;
 			
 			while (activeNodes.length !== 0)
 			{
 				let nextActiveNodes = [];
 				
-				Site.GLSLFilesByDepth.push([]);
+				glslFilesByDepth.push([]);
 				
 				activeNodes.forEach(filename =>
 				{
-					if (typeof this.GLSLFiles[filename].depth === "undefined")
+					if (typeof glslFiles[filename].depth === "undefined")
 					{
-						this.GLSLFiles[filename].depth = depth;
+						glslFiles[filename].depth = depth;
 					}
 					
 					else
 					{
-						this.GLSLFiles[filename].depth = Math.max(this.GLSLFiles[filename].depth, depth);
+						glslFiles[filename].depth = Math.max(glslFiles[filename].depth, depth);
 					}
 					
-					const parents = this.GLSLFiles[filename].parents;
+					const parents = glslFiles[filename].parents;
 					
 					parents.forEach(parent =>
 					{
@@ -245,7 +245,7 @@ Site.loadGLSL = function()
 			
 			
 			
-			filenames.forEach(filename => Site.GLSLFilesByDepth[this.GLSLFiles[filename].depth].push(filename));
+			filenames.forEach(filename => glslFilesByDepth[glslFiles[filename].depth].push(filename));
 			
 			
 			
@@ -279,21 +279,21 @@ Site.loadGLSL = function()
 	{
 		return new Promise((resolve, reject) => resolve());
 	}
-};
+}
 
 
 
 //Returns a bundle of all required glsl to handle the given function.
-Site.getGLSLBundle = function(codeString)
+export function getGlslBundle(codeString)
 {
 	//First, we need to identify the keywords in the provided string.
 	const keywords = codeString.match(/[a-zA-Z_][a-zA-Z0-9_]*/g);
 	
 	let bundle = "";
 	
-	const filenames = Object.keys(this.GLSLFiles);
+	const filenames = Object.keys(glslFiles);
 	
-	let filesToInclude = {};
+	const filesToInclude = {};
 	
 	filenames.forEach(filename => filesToInclude[filename] = false);
 	
@@ -318,7 +318,7 @@ Site.getGLSLBundle = function(codeString)
 			debugMessage += "\n                     " + "   ".repeat(depth) + `↳ ${filename}`;
 		}
 		
-		Site.GLSLFiles[filename].dependencies.forEach(dependency => addToBundle(dependency, depth + 1));
+		glslFiles[filename].dependencies.forEach(dependency => addToBundle(dependency, depth + 1));
 	}
 	
 	
@@ -332,7 +332,7 @@ Site.getGLSLBundle = function(codeString)
 		
 		keywords.forEach(keyword =>
 		{
-			if (Site.GLSLFiles[filename].keywords.indexOf(keyword) !== -1)
+			if (glslFiles[filename].keywords.indexOf(keyword) !== -1)
 			{
 				debugMessage = `[GLSL bundling] Adding ${filename}`;
 				
@@ -349,15 +349,15 @@ Site.getGLSLBundle = function(codeString)
 	
 	
 	//constants.frag and main.glsl are always included.
-	bundle = Site.GLSLFiles["constants"].content + Site.GLSLFiles["main"].content;
+	bundle = glslFiles["constants"].content + glslFiles["main"].content;
 	
-	for (let i = 1; i < Site.GLSLFilesByDepth.length; i++)
+	for (let i = 1; i < glslFilesByDepth.length; i++)
 	{
-		Site.GLSLFilesByDepth[i].forEach(filename =>
+		glslFilesByDepth[i].forEach(filename =>
 		{
 			if (filesToInclude[filename])
 			{
-				bundle += Site.GLSLFiles[filename].content;
+				bundle += glslFiles[filename].content;
 			}
 		});
 	}

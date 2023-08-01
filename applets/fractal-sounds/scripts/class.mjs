@@ -1,4 +1,5 @@
 import { Applet } from "/scripts/src/applets.mjs"
+import { loadGlsl, getGlslBundle } from "/scripts/src/complex-glsl.mjs"
 
 export class FractalSounds extends Applet
 {
@@ -148,7 +149,7 @@ export class FractalSounds extends Applet
 		
 		this.loadPromise = new Promise(async (resolve, reject) =>
 		{
-			await Site.loadGLSL();
+			await loadGlsl();
 			
 			resolve();
 		});
@@ -197,7 +198,7 @@ export class FractalSounds extends Applet
 			
 			
 			
-			${Site.getGLSLBundle(glslCode)}
+			${getGlslBundle(glslCode)}
 			
 			
 			
