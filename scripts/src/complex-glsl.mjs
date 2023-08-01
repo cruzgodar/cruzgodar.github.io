@@ -33,8 +33,6 @@ const glslFiles =
 export let doubleEmulationGlsl = null;
 export let doubleEncodingGlsl = null;
 
-
-
 function splitGlslFile(filename, text)
 {
 	text = text.replaceAll("\r", "");
@@ -83,10 +81,7 @@ function splitGlslFile(filename, text)
 		
 		
 		
-		glslFiles[keywords[0]] =
-		{
-			keywords: keywords
-		};
+		glslFiles[keywords[0]] = {keywords};
 		
 		
 		
@@ -144,7 +139,7 @@ export function loadGlsl()
 			
 			const text = await response.text();
 				
-			glslFiles["constants"].content = text;
+			glslFiles.constants.content = text;
 			
 			
 			
@@ -152,7 +147,7 @@ export function loadGlsl()
 			
 			const text2 = await response2.text();
 				
-			glslFiles["main"].content = text2;
+			glslFiles.main.content = text2;
 			
 			
 			
@@ -160,7 +155,7 @@ export function loadGlsl()
 			
 			const text3 = await response3.text();
 				
-			doubleEmulationGLSL = text3;
+			doubleEmulationGlsl = text3;
 			
 			
 			
@@ -168,7 +163,7 @@ export function loadGlsl()
 			
 			const text4 = await response4.text();
 				
-			doubleEncodingGLSL = text4;
+			doubleEncodingGlsl = text4;
 			
 			
 			
@@ -207,18 +202,18 @@ export function loadGlsl()
 			
 			
 			
-			const activeNodes = ["main"];
+			let activeNodes = ["main"];
 			let depth = 0;
 			
 			while (activeNodes.length !== 0)
 			{
-				let nextActiveNodes = [];
+				const nextActiveNodes = [];
 				
 				glslFilesByDepth.push([]);
 				
 				activeNodes.forEach(filename =>
 				{
-					if (typeof glslFiles[filename].depth === "undefined")
+					if (glslFiles[filename].depth === undefined)
 					{
 						glslFiles[filename].depth = depth;
 					}
