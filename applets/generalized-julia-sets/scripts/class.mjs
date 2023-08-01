@@ -54,6 +54,13 @@ export class GeneralizedJuliaSet extends Applet
 			
 			
 			
+			useDraggables: true,
+			
+			draggablesMousemoveCallback: this.onDragDraggable.bind(this),
+			draggablesTouchmoveCallback: this.onDragDraggable.bind(this),
+			
+			
+			
 			useFullscreen: true,
 			
 			trueFullscreen: true,
@@ -139,6 +146,8 @@ export class GeneralizedJuliaSet extends Applet
 			uniform float exposure;
 			uniform int numIterations;
 			uniform float brightnessScale;
+			
+			uniform vec2 draggableArg;
 			
 			
 			
@@ -299,13 +308,13 @@ export class GeneralizedJuliaSet extends Applet
 		this.wilson.render.shaderPrograms = [];
 		this.wilson.render.loadNewShader(fragShaderSource);
 		this.wilson.gl.useProgram(this.wilson.render.shaderPrograms[0]);
-		this.wilson.render.initUniforms(["juliaMode", "aspectRatio", "worldCenterX", "worldCenterY", "worldSize", "a", "b", "exposure", "numIterations", "brightnessScale"]);
+		this.wilson.render.initUniforms(["juliaMode", "aspectRatio", "worldCenterX", "worldCenterY", "worldSize", "a", "b", "exposure", "numIterations", "brightnessScale", "draggableArg"]);
 		this.wilson.gl.uniform1f(this.wilson.uniforms["aspectRatio"], 1);
 		
 		this.wilsonHidden.render.shaderPrograms = [];
 		this.wilsonHidden.render.loadNewShader(fragShaderSource);
 		this.wilsonHidden.gl.useProgram(this.wilsonHidden.render.shaderPrograms[0]);
-		this.wilsonHidden.render.initUniforms(["juliaMode", "aspectRatio", "worldCenterX", "worldCenterY", "worldSize", "a", "b", "exposure", "numIterations", "brightnessScale"]);
+		this.wilsonHidden.render.initUniforms(["juliaMode", "aspectRatio", "worldCenterX", "worldCenterY", "worldSize", "a", "b", "exposure", "numIterations", "brightnessScale", "draggableArg"]);
 		this.wilsonHidden.gl.uniform1f(this.wilsonHidden.uniforms["aspectRatio"], 1);
 		
 		this.wilson.worldWidth = 4;
@@ -322,6 +331,26 @@ export class GeneralizedJuliaSet extends Applet
 		
 		//Render the inital frame.
 		this.wilsonHidden.gl.uniform1f(this.wilsonHidden.uniforms["aspectRatio"], 1);
+		
+		
+		
+		const needDraggable = generatingCode.indexOf("draggableArg") !== -1;
+		
+		if (needDraggable && this.wilson.draggables.numDraggables === 0)
+		{
+			this.wilson.draggables.add(.5, .5);
+			
+			this.wilson.gl.uniform2f(this.wilson.uniforms["draggableArg"], .5, .5);
+		}
+		
+		else if (!needDraggable && this.wilson.draggables.numDraggables !== 0)
+		{
+			this.wilson.draggables.numDraggables--;
+			
+			this.wilson.draggables.draggables[0].remove();
+			
+			this.wilson.draggables.draggables = [];
+		}
 		
 		window.requestAnimationFrame(this.drawFrame.bind(this));
 	}
@@ -476,6 +505,13 @@ export class GeneralizedJuliaSet extends Applet
 		{
 			this.zoom.onPinchCanvas(x, y, touchDistanceDelta);
 		}
+	}
+	
+	
+	
+	onDragDraggable(activeDraggable, x, y, event)
+	{
+		this.wilson.gl.uniform2f(this.wilson.uniforms["draggableArg"], x, y);
 	}
 
 

@@ -237,7 +237,7 @@ export class ComplexMap extends Applet
 			
 			this.wilson.draggables.draggables[0].remove();
 			
-			this.wilson.draggables = [];
+			this.wilson.draggables.draggables = [];
 		}
 		
 		
