@@ -66,7 +66,9 @@ async function parseModifiedFiles(files, sitemap)
 		const filename = end.slice(0, index);
 		const extension = end.slice(index + 1)
 
-		if (extension === "html" && filename === "src")
+		console.log(filename, extension)
+
+		if (extension === "htmdl" && filename === "index")
 		{
 			console.log(file);
 			const text = await read(file);

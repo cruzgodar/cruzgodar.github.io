@@ -951,4 +951,6 @@ export default async (file, fileParentFolder, sitemapArgument) =>
 	const html = components.decode("\n" + file);
 
 	await write(`${fileParentFolder}index.html`, html);
+
+	await write(`${fileParentFolder}index.htmdl`, file.replace(/[\s\n\t]*<script src="\/scripts\/init\.js"><\/script>/g, ""));
 }
