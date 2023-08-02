@@ -6,7 +6,3 @@
 		<canvas id="output-canvas" class="output-canvas"></canvas>
 	</div>
 </div>
-
-
-
-<script src="/scripts/init.js"></script>

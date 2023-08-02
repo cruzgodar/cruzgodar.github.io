@@ -173,8 +173,3 @@
 <div id="canvas-bundle">
 	<canvas id="output-canvas"></canvas>
 </div>
-
-
-
-
-<script src="/scripts/init.js"></script>

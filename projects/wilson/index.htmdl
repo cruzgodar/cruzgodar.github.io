@@ -77,7 +77,3 @@ Try dragging on the canvas to move the scene, pinching on a touchscreen or scrol
 		<button class="text-button no-floating-footer" type="button" id="docs-button" tabindex="-1">Browse</button>
 	</div>
 </div>
-
-
-
-<script src="/scripts/init.js"></script>

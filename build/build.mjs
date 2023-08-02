@@ -12,7 +12,22 @@ const excludeFromBuild =
 	/scripts\/init\.js/
 ];
 
+const siteCSSFiles =
+[
+	"applets",
+	"banners",
+	"buttons-and-boxes",
+	"header",
+	"image-links",
+	"main",
+	"notes",
+	"progress",
+	"writing"
+];
+
 const clean = process.argv.slice(2).includes("-c");
+
+
 
 async function buildSite()
 {
@@ -21,10 +36,17 @@ async function buildSite()
 	const text = await read(sitemapPath);
 	const sitemap = JSON.parse(text.slice(text.indexOf("{")));
 
-	exec(`git -C ${root} ls-files${clean ? "" : " -m -o"}`, (error, stdout, stderr) =>
+	await new Promise((resolve, reject) =>
 	{
-		parseModifiedFiles(stdout.split("\n"), sitemap);
+		exec(`git -C ${root} ls-files${clean ? "" : " -m -o"}`, async (error, stdout, stderr) =>
+		{
+			await parseModifiedFiles(stdout.split("\n"), sitemap);
+
+			resolve();
+		});
 	});
+
+	buildSiteCSS();
 }
 
 async function parseModifiedFiles(files, sitemap)
@@ -65,8 +87,6 @@ async function parseModifiedFiles(files, sitemap)
 
 		const filename = end.slice(0, index);
 		const extension = end.slice(index + 1)
-
-		console.log(filename, extension)
 
 		if (extension === "htmdl" && filename === "index")
 		{
@@ -111,6 +131,20 @@ function buildCSSFile(file)
 	const outputFile = file.replace(/(\.css)/, (match, $1) => `.min${$1}`);
 
 	exec(`uglifycss ${root + file} --output ${outputFile}`);
+}
+
+async function buildSiteCSS()
+{
+	let bundle = "";
+
+	for (let i = 0; i < siteCSSFiles.length; i++)
+	{
+		const text = await read(`/style/src/${siteCSSFiles[i]}.min.css`);
+
+		bundle += text;
+	}
+
+	await write("/style/css-bundle.min.css", bundle);
 }
 
 

@@ -149,7 +149,3 @@ The idea is that we can solve for $y$ by integrating $f(x)$, but that will leave
 
 
 ### nav-buttons
-
-
-
-<script src="/scripts/init.js"></script>

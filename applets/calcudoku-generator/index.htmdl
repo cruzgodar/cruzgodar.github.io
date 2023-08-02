@@ -45,7 +45,3 @@ The core of the algorithm is written in a language called WebAssembly that runs 
 </div>
 
 </div>
-
-
-
-<script src="/scripts/init.js"></script>

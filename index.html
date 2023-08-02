@@ -93,19 +93,44 @@
 	<script src="/scripts/smoothscroll-polyfill.min.js"></script>
 	
 	<script src="/scripts/highlight.min.js"></script>
+
+	<script>
+		let Site = {};
+		let Page = {};
+	</script>
 	
+	<script src="/scripts/src/components.js"></script>
 	
+	<script src="/scripts/src/images.js"></script>
 	
-	<script src="/scripts/js-bundle.min.js"></script>
+	<script src="/scripts/src/layout.js"></script>
 	
+	<script src="/scripts/src/main.js"></script>
 	
+	<script src="/scripts/src/navigation.js"></script>
+	
+	<script src="/scripts/src/page-load.js"></script>
+	
+	<script src="/scripts/src/settings.js"></script>
+	
+	<script src="/scripts/src/sitemap.js"></script>
 	
 	<script src="/scripts/wilson.js"></script>
 	
-	<script>
+	<script type="module">
+		import * as Animate from "/scripts/src/animation.min.mjs";
+		import * as Banner from "/scripts/src/banners.min.mjs";
+		import * as Browser from "/scripts/src/browser.min.mjs";
+		
+		Object.keys(Animate).forEach(key => window[key] = Animate[key]);
+		Object.keys(Banner).forEach(key => window[key] = Banner[key]);
+		Object.keys(Browser).forEach(key => window[key] = Browser[key]);
+		
+		DEBUG = true;
+		
 		if (typeof Page.url !== "undefined" && Page.url !== null && Page.url !== "null")
 		{
-			Site.load(Page.url.replace("index.html", "").replace("src.html", ""));
+			Site.load(Page.url.replace("index.html", ""));
 		}
 		
 		else

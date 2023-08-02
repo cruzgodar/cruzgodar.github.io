@@ -113,7 +113,3 @@
 	`vec2 hypergeometricf1(float a, float b1, float b2, float c, [float | vec2] x, [float | vec2] y)`: returns the hypergeometric function $F_1(b_1, b_2; c_1, c_2; x, y)$. The types of $x$ and $y$ must match.
 	
 ###
-
-
-
-<script src="/scripts/init.js"></script>

@@ -277,7 +277,3 @@ With the Jacobian in hand, we can approximate complex systems and determine the 
 
 
 ### nav-buttons
-
-
-
-<script src="/scripts/init.js"></script>
