@@ -22,21 +22,21 @@
 
 .desmos-border, .desmos-container, .dcg-container
 {
-	width: min(min(calc(700px - 4px), calc(90vw - 4px)), calc(50vh - 4px)) !important;
-	height: min(min(calc(700px - 4px), calc(90vw - 4px)), calc(50vh - 4px)) !important;
+	width: min(min(calc(900px - 4px), calc(90vw - 4px)), calc(50vh - 4px)) !important;
+	height: min(min(calc(900px - 4px), calc(90vw - 4px)), calc(50vh - 4px)) !important;
 }
 
 .notes-environment .desmos-border, .notes-environment .desmos-container, .notes-environment .dcg-container
 {
-	width: min(min(calc(700px - 20px), calc(90vw - 20px)), calc(50vh - 20px)) !important;
-	height: min(min(calc(700px - 20px), calc(90vw - 20px)), calc(50vh - 20px)) !important;
+	width: min(min(calc(900px - 20px), calc(90vw - 20px)), calc(50vh - 20px)) !important;
+	height: min(min(calc(900px - 20px), calc(90vw - 20px)), calc(50vh - 20px)) !important;
 }
 
 
 
 .notes-image
 {
-	width: min(min(calc(700px - 32px), calc(90vw - 32px)), calc(50vh - 32px)) !important;
+	width: min(min(calc(900px - 32px), calc(90vw - 32px)), calc(50vh - 32px)) !important;
 	margin: 0 auto;
 	border-radius: 15px;
 	margin-bottom: 16px;
@@ -46,7 +46,7 @@
 
 .notes-environment
 {
-	width: min(calc(700px - 12px), calc(90% - 12px)) !important;
+	width: min(calc(900px - 12px), calc(90% - 12px)) !important;
 	margin: 0 auto;
 	margin-bottom: 16px;
 	border-width: 0 0 0 4px;
