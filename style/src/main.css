@@ -99,7 +99,7 @@ code
 pre code.highlightable
 {
 	position: relative;
-	width: min(calc(90% - 24px), 700px);
+	width: min(calc(90% - 24px), 900px);
 	margin: 0 auto;
 	tab-size: 4;
 	-moz-tab-size: 4;
@@ -146,7 +146,7 @@ img
 .heading-text, .section-text, .body-text, .date-text, .song-lyrics
 {
 	position: relative;
-	width: min(90%, 700px);
+	width: min(90%, 900px);
 	margin: 0 auto;
 	margin-bottom: 16px;
 }
@@ -315,7 +315,7 @@ mjx-container
 	
 	opacity: 1;
 	
-	width: min(700px, 100% - 64px);
+	width: min(900px, 100% - 64px);
 	padding: 16px;
 	
 	margin-left: 16px;

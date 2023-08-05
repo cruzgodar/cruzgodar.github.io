@@ -53,6 +53,11 @@ async function parseModifiedFiles(files, sitemap)
 {
 	for (let k = 0; k < files.length; k++)
 	{
+		if (!files[k])
+		{
+			continue;
+		}
+		
 		const file = files[k];
 
 		if (file.indexOf(".") === -1)

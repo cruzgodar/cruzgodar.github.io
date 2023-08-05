@@ -12,7 +12,7 @@
 	justify-content: center;
 	
 	/* Make the rows and columns have the same spacing. */
-	width: min(700px, 90vw);
+	width: min(900px, 90vw);
 	margin: 0 auto;
 	
 	margin-top: 48px;
