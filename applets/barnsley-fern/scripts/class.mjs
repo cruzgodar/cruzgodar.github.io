@@ -48,7 +48,7 @@ export class BarnsleyFern extends Applet
 		try {webWorker.terminate()}
 		catch(ex) {}
 		
-		this.webWorker = new Worker(`/applets/barnsley-fern/scripts/worker.${DEBUG ? "" : "min."}js`);
+		this.webWorker = new Worker(`/applets/barnsley-fern/scripts/worker.min.js`);
 		
 		this.workers.push(this.webWorker);
 		

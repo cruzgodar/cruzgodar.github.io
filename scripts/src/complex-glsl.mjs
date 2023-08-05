@@ -308,7 +308,7 @@ export function getGlslBundle(codeString)
 		
 		filesToInclude[filename] = true;
 		
-		if (DEBUG && depth !== 0)
+		if (depth !== 0)
 		{
 			debugMessage += "\n                     " + "   ".repeat(depth) + `↳ ${filename}`;
 		}
@@ -333,10 +333,7 @@ export function getGlslBundle(codeString)
 				
 				addToBundle(filename, 0);
 				
-				if (DEBUG)
-				{
-					console.log(debugMessage);
-				}
+				console.log(debugMessage);
 			}
 		});
 	});

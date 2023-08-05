@@ -58,7 +58,7 @@ export class MagicCarpet extends Applet
 		try {this.webWorker.terminate()}
 		catch(ex) {}
 		
-		this.webWorker = new Worker(`/applets/magic-carpets/scripts/worker.${DEBUG ? "" : "min."}js`);
+		this.webWorker = new Worker(`/applets/magic-carpets/scripts/worker.min.js`);
 		
 		this.workers.push(this.webWorker);
 		

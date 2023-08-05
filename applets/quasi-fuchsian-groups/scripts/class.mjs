@@ -1,4 +1,5 @@
 import { Applet } from "/scripts/src/applets.mjs"
+import { aspectRatio } from "/scripts/src/layout.mjs";
 
 export class QuasiFuchsianGroups extends Applet
 {
@@ -636,16 +637,16 @@ export class QuasiFuchsianGroups extends Applet
 		
 		if (this.wilson.fullscreen.currentlyFullscreen)
 		{
-			if (Page.Layout.aspectRatio >= 1)
+			if (aspectRatio >= 1)
 			{
-				this.imageWidth = Math.floor(this.imageSize * Page.Layout.aspectRatio);
+				this.imageWidth = Math.floor(this.imageSize * aspectRatio);
 				this.imageHeight = this.imageSize;
 			}
 			
 			else
 			{
 				this.imageWidth = this.imageSize;
-				this.imageHeight = Math.floor(this.imageSize / Page.Layout.aspectRatio);
+				this.imageHeight = Math.floor(this.imageSize / aspectRatio);
 			}
 		}
 		
@@ -677,16 +678,16 @@ export class QuasiFuchsianGroups extends Applet
 		
 		if (this.wilson.fullscreen.currentlyFullscreen)
 		{
-			if (Page.Layout.aspectRatio >= 1)
+			if (aspectRatio >= 1)
 			{
-				this.imageWidth = Math.floor(this.imageSize * Page.Layout.aspectRatio);
+				this.imageWidth = Math.floor(this.imageSize * aspectRatio);
 				this.imageHeight = this.imageSize;
 			}
 			
 			else
 			{
 				this.imageWidth = this.imageSize;
-				this.imageHeight = Math.floor(this.imageSize / Page.Layout.aspectRatio);
+				this.imageHeight = Math.floor(this.imageSize / aspectRatio);
 			}
 		}
 		
@@ -740,16 +741,16 @@ export class QuasiFuchsianGroups extends Applet
 			
 			if (this.wilson.fullscreen.currentlyFullscreen)
 			{
-				if (Page.Layout.aspectRatio >= 1)
+				if (aspectRatio >= 1)
 				{
-					this.imageWidth = Math.floor(this.imageSize * Page.Layout.aspectRatio);
+					this.imageWidth = Math.floor(this.imageSize * aspectRatio);
 					this.imageHeight = this.imageSize;
 				}
 				
 				else
 				{
 					this.imageWidth = this.imageSize;
-					this.imageHeight = Math.floor(this.imageSize / Page.Layout.aspectRatio);
+					this.imageHeight = Math.floor(this.imageSize / aspectRatio);
 				}
 			}
 			
@@ -768,7 +769,7 @@ export class QuasiFuchsianGroups extends Applet
 			try {this.webWorker.terminate()}
 			catch(ex) {}
 			
-			this.webWorker = new Worker(`/applets/quasi-fuchsian-groups/scripts/worker.${DEBUG ? "" : "min."}js`);
+			this.webWorker = new Worker(`/applets/quasi-fuchsian-groups/scripts/worker.min.js`);
 			
 			this.workers.push(this.webWorker);
 			
@@ -832,16 +833,16 @@ export class QuasiFuchsianGroups extends Applet
 		
 		if (this.wilson.fullscreen.currentlyFullscreen)
 		{
-			if (Page.Layout.aspectRatio >= 1)
+			if (aspectRatio >= 1)
 			{
-				this.imageWidth = Math.floor(this.imageSize * Page.Layout.aspectRatio);
+				this.imageWidth = Math.floor(this.imageSize * aspectRatio);
 				this.imageHeight = this.imageSize;
 			}
 			
 			else
 			{
 				this.imageWidth = this.imageSize;
-				this.imageHeight = Math.floor(this.imageSize / Page.Layout.aspectRatio);
+				this.imageHeight = Math.floor(this.imageSize / aspectRatio);
 			}
 		}
 		

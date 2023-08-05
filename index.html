@@ -90,16 +90,12 @@
 	
 	<script src="/scripts/anime.min.js"></script>
 	
-	<script src="/scripts/smoothscroll-polyfill.min.js"></script>
-	
 	<script src="/scripts/highlight.min.js"></script>
 
 	<script>
 		let Site = {};
 		let Page = {};
 	</script>
-	
-	<script src="/scripts/src/layout.js"></script>
 	
 	<script src="/scripts/src/main.js"></script>
 	
@@ -117,12 +113,12 @@
 		import * as Animate from "/scripts/src/animation.min.mjs";
 		import * as Banner from "/scripts/src/banners.min.mjs";
 		import * as Browser from "/scripts/src/browser.min.mjs";
+		import * as Layout from "/scripts/src/layout.min.mjs";
 		
 		Object.keys(Animate).forEach(key => window[key] = Animate[key]);
 		Object.keys(Banner).forEach(key => window[key] = Banner[key]);
 		Object.keys(Browser).forEach(key => window[key] = Browser[key]);
-		
-		DEBUG = true;
+		Object.keys(Layout).forEach(key => window[key] = Layout[key]);
 		
 		if (typeof Page.url !== "undefined" && Page.url !== null && Page.url !== "null")
 		{

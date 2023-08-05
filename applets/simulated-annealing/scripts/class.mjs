@@ -56,7 +56,7 @@ export class SimulatedAnnealing extends Applet
 		try {this.webWorker.terminate()}
 		catch(ex) {}
 		
-		this.webWorker = new Worker(`/applets/simulated-annealing/scripts/worker.${DEBUG ? "" : "min."}js`);
+		this.webWorker = new Worker(`/applets/simulated-annealing/scripts/worker.min.js`);
 		
 		this.workers.push(this.webWorker);
 		

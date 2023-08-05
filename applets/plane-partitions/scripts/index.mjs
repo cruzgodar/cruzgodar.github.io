@@ -48,13 +48,6 @@ export function load()
 	
 	
 	
-	if (Page.Layout.aspectRatio > 1)
-	{
-		Page.Layout.AppletColumns.equalize();
-	}
-	
-	
-	
 	const categorySelectorDropdownElement = $("#category-selector-dropdown");
 	
 	const resolutionInputElement = $("#resolution-input");
@@ -124,11 +117,6 @@ export function load()
 		
 		Page.Load.TextButtons.equalize();
 		setTimeout(Page.Load.TextButtons.equalize, 10);
-		
-		if (Page.Layout.aspectRatio > 1)
-		{
-			Page.Layout.AppletColumns.equalize();
-		}
 		
 		if (visibleSection === "edit-array")
 		{

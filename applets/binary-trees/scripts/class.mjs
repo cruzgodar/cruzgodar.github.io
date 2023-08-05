@@ -1,4 +1,5 @@
 import { Applet } from "/scripts/src/applets.mjs"
+import { aspectRatio } from "/scripts/src/layout.mjs";
 
 export class BinaryTree extends Applet
 {
@@ -157,7 +158,7 @@ export class BinaryTree extends Applet
 		try {this.webWorker.terminate()}
 		catch(ex) {}
 		
-		this.webWorker = new Worker(`/applets/binary-trees/scripts/worker.${DEBUG ? "" : "min."}js`);
+		this.webWorker = new Worker(`/applets/binary-trees/scripts/worker.min.js`);
 		
 		this.workers.push(this.webWorker);
 		
@@ -289,14 +290,14 @@ export class BinaryTree extends Applet
 		
 		if (this.wilson.fullscreen.currentlyFullscreen)
 		{
-			if (Page.Layout.aspectRatio >= 1)
+			if (aspectRatio >= 1)
 			{
-				this.wilson.changeCanvasSize(2000, 2000 / Page.Layout.aspectRatio);
+				this.wilson.changeCanvasSize(2000, 2000 / aspectRatio);
 			}
 			
 			else
 			{
-				this.wilson.changeCanvasSize(2000 * Page.Layout.aspectRatio, 2000);
+				this.wilson.changeCanvasSize(2000 * aspectRatio, 2000);
 			}
 		}
 		

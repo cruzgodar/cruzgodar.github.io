@@ -1,4 +1,5 @@
 import { Applet } from "/scripts/src/applets.mjs"
+import { aspectRatio } from "/scripts/src/layout.mjs";
 
 export class QuaternionicJuliaSet extends Applet
 {
@@ -1105,15 +1106,15 @@ export class QuaternionicJuliaSet extends Applet
 		
 		if (this.wilson.fullscreen.currentlyFullscreen)
 		{
-			if (Page.Layout.aspectRatio >= 1)
+			if (aspectRatio >= 1)
 			{
 				this.imageWidth = this.imageSize;
-				this.imageHeight = Math.floor(this.imageSize / Page.Layout.aspectRatio);
+				this.imageHeight = Math.floor(this.imageSize / aspectRatio);
 			}
 			
 			else
 			{
-				this.imageWidth = Math.floor(this.imageSize * Page.Layout.aspectRatio);
+				this.imageWidth = Math.floor(this.imageSize * aspectRatio);
 				this.imageHeight = this.imageSize;
 			}
 		}

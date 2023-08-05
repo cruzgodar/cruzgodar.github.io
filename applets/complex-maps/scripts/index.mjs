@@ -39,10 +39,7 @@ export function load()
 	
 	
 	
-	if (!DEBUG)
-	{
-		$("#debug-buttons").remove();
-	}
+	$("#debug-buttons").remove();
 	
 	
 	

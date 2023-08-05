@@ -70,7 +70,7 @@ export class SudokuGenerator extends Applet
 		try {this.webWorker.terminate();}
 		catch(ex) {}
 		
-		this.webWorker = new Worker(`/applets/sudoku-generator/scripts/worker.${DEBUG ? "" : "min."}js`);
+		this.webWorker = new Worker(`/applets/sudoku-generator/scripts/worker.min.js`);
 		
 		this.workers.push(this.webWorker);
 		

@@ -74,7 +74,7 @@ export class CalcudokuGenerator extends Applet
 		try {this.webWorker.terminate();}
 		catch(ex) {}
 		
-		this.webWorker = new Worker(`/applets/calcudoku-generator/scripts/worker.${DEBUG ? "" : "min."}js`);
+		this.webWorker = new Worker(`/applets/calcudoku-generator/scripts/worker.min.js`);
 		
 		this.workers.push(this.webWorker);
 		

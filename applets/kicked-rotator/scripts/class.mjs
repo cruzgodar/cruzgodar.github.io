@@ -59,15 +59,7 @@ export class KickedRotator extends Applet
 		try {this.webWorker.terminate()}
 		catch(ex) {}
 		
-		if (DEBUG)
-		{
-			this.webWorker = new Worker("/applets/kicked-rotator/scripts/worker.js");
-		}
-		
-		else
-		{
-			this.webWorker = new Worker("/applets/kicked-rotator/scripts/worker.min.js");
-		}
+		this.webWorker = new Worker("/applets/kicked-rotator/scripts/worker.min.js");
 		
 		this.workers.push(this.webWorker);
 		

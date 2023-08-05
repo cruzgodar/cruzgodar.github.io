@@ -1,9 +1,5 @@
 "use strict";
 
-
-
-let DEBUG = false;
-
 Page.element = null;
 Page.lastElement = null;
 
@@ -116,11 +112,6 @@ Site.load = async function(url)
 {
 	if (Site.sitemap["/slides/"].children.includes(Page.url))
 	{
-		if (DEBUG)
-		{
-			console.log("Showing a presentation!");
-		}
-		
 		Site.showingPresentation = true;
 	}
 	
@@ -143,11 +134,6 @@ Site.load = async function(url)
 	
 	if (Site.useJsAnimation)
 	{
-		if (DEBUG)
-		{
-			console.log("Using JS animation");
-		}
-		
 		this.buttonAnimationTime = this.baseAnimationTime * .5;
 		this.opacityAnimationTime = this.baseAnimationTime * .8;
 		this.pageAnimationTime = this.baseAnimationTime * .55;
@@ -164,16 +150,9 @@ Site.load = async function(url)
 	
 	
 	
-	Page.Layout.aspectRatio = window.innerWidth / window.innerHeight;
-	
 	window.addEventListener("scroll", () =>
 	{
 		bannerOnScroll(0);
-	});
-	
-	window.addEventListener("resize", () =>
-	{
-		Page.Layout.onResize();
 	});
 	
 	

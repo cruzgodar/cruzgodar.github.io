@@ -72,10 +72,7 @@ export class Applet
 		try {this.hiddenCanvasContainer.remove()}
 		catch(ex) {}
 		
-		if (DEBUG)
-		{
-			console.log(`Destroyed an applet of type ${this.constructor.name}`)
-		}
+		console.log(`Destroyed an applet of type ${this.constructor.name}`)
 	}
 	
 	
@@ -762,18 +759,12 @@ export class Applet
 		{
 			if (Applet.loaded.includes(id))
 			{
-				if (DEBUG)
-				{
-					console.log(`Refusing to load duplicate ${id}`);
-				}
+				console.log(`Refusing to load duplicate ${id}`);
 			}
 			
 			else
 			{
-				if (DEBUG)
-				{
-					console.log(`Loading ${id}`);
-				}
+				console.log(`Loading ${id}`);
 				
 				await Site.loadScript(`/applets/${id}/scripts/class.${DEBUG ? "" : "min."}js`);
 				

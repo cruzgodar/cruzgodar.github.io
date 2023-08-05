@@ -57,7 +57,7 @@ export class WilsonsAlgorithm extends Applet
 		try {this.webWorker.terminate();}
 		catch(ex) {}
 		
-		this.webWorker = new Worker(`/applets/wilsons-algorithm/scripts/worker.${DEBUG ? "" : "min."}js`);
+		this.webWorker = new Worker(`/applets/wilsons-algorithm/scripts/worker.min.js`);
 
 		this.workers.push(this.webWorker);
 		

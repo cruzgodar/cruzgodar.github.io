@@ -54,24 +54,8 @@ Page.load = async function()
 	}
 	
 	catch(ex) {}
-	
-	
-	
-	Page.Layout.Multicols.active = false;
-	
-	Page.Layout.onResize();
-	
-	if (this.Layout.layoutString === "ultrawide")
-	{
-		this.Layout.Multicols.create();
-	}
-	
-	this.Layout.AppletColumns.areEqualized = false;
-	
-	if (this.Layout.aspectRatio > 1)
-	{
-		this.Layout.AppletColumns.equalize();
-	}
+
+	equalizeAppletColumns();
 	
 	
 	
@@ -183,15 +167,7 @@ Page.Load =
 				
 				
 				
-				if (DEBUG)
-				{
-					element.setAttribute("href", Page.parentFolder + "style/index.css");
-				}
-				
-				else
-				{
-					element.setAttribute("href", Page.parentFolder + "style/index.min.css");
-				}
+				element.setAttribute("href", Page.parentFolder + "style/index.min.css");
 				
 				
 				
@@ -884,27 +860,9 @@ Page.Load =
 	{
 		lengthCap: 250,
 		
-		typeset: async function()
+		typeset: function()
 		{
-			return new Promise(async (resolve, reject) =>
-			{
-				await MathJax.typesetPromise();
-				
-				if (DEBUG)
-				{
-					$$(".inline-math").forEach(element =>
-					{
-						if (element.getBoundingClientRect().width >= this.lengthCap)
-						{
-							console.log(`Inline math is too long! Source: ${element.getAttribute("data-source-tex")}`);
-							
-							element.classList.add("bad-math");
-						}
-					});
-				}
-				
-				resolve();
-			});
+			return MathJax.typesetPromise();
 		},
 		
 		showTex: async function(element)
