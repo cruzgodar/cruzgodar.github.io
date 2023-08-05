@@ -2,7 +2,7 @@
 # CARACORE
 
 <div id="flame-container">
-	<img class="check-webp" data-src="/writing/caracore/graphics/flame." alt="Caracore">
+	<img src="/writing/caracore/graphics/flame.webp" alt="Caracore">
 	<div id="flame-cover"></div>
 	<div id="flame-gradient-container">
 		<div id="flame-gradient-space"></div>

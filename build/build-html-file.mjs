@@ -30,12 +30,12 @@ const components =
 		{
 			const subtext = args.slice(2).join(" ");
 			
-			const src = `${parentFolder}cards/${id}.`;
+			const src = `${parentFolder}cards/${id}.webp`;
 			
 			return `
 				<div class="image-link">
 					<a onclick="Page.Cards.show('${id}')" tabindex="-1">
-						<img class="check-webp" src="/graphics/general-icons/placeholder.png" data-image-id="${id}" data-src="${src}" alt="${subtext}" tabindex="1"></img>
+						<img src="${src}" alt="${subtext}" tabindex="1"></img>
 					</a>
 					
 					<p class="image-link-subtext">${subtext}</p>
@@ -79,12 +79,12 @@ const components =
 			
 			
 			
-			const src = `${filePath.slice(0, filePath.lastIndexOf("/") + 1)}cover.`;
+			const src = `${filePath.slice(0, filePath.lastIndexOf("/") + 1)}cover.webp`;
 			
 			return `
 				<div class="image-link">
 					<a href="${filePath}" data-in-new-tab="${inNewTab ? 1 : 0}" tabindex="-1">
-						<img class="check-webp" src="/graphics/general-icons/placeholder.png" data-image-id="${id}" data-src="${src}" alt="${subtext}" tabindex="1"></img>
+						<img src="${src}" alt="${subtext}" tabindex="1"></img>
 					</a>
 					
 					<p class="image-link-subtext">${subtext}</p>
@@ -101,7 +101,7 @@ const components =
 		
 		return `
 			<div class="gallery-image-${size}-${size}">
-				<img class="check-webp" data-image-id="${id}" onclick="" src="/graphics/general-icons/placeholder.png" data-src="/gallery/thumbnails/${id}." alt="${name}"></img>
+				<img src="/gallery/thumbnails/${id}.webp" data-image-id="${id}" alt="${name}"></img>
 			</div>
 		`;
 	},

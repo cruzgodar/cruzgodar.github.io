@@ -90,9 +90,7 @@ Page.load = async function()
 		});
 	});
 	
-	
-	
-	this.Images.addExtensions();
+
 	
 	this.Load.Links.set();
 	
@@ -101,8 +99,6 @@ Page.load = async function()
 	this.Load.HoverEvents.setUp();
 	
 	this.Load.TextButtons.setUp();
-	
-	this.Load.showImages();
 	
 	try {this.Load.TextButtons.setUpNavButtons();}
 	catch(ex) {}
@@ -381,67 +377,6 @@ Page.Load =
 			resolve();
 		});
 	},
-	
-	
-	
-	lazyLoadedImages: [],
-	
-	showImages: function()
-	{
-		$$("img[data-src]").forEach(element => this.lazyLoadedImages.push([element, element.getBoundingClientRect().top, null]));
-		
-		this.lazyLoadedImages.forEach((entry, index) =>
-		{
-			if (entry[1] > window.innerHeight + 200)
-			{
-				entry[2] = setTimeout(() => this.loadLazyElement(this.lazyLoadedImages, index), index * 200);
-			}
-			
-			else
-			{
-				this.loadLazyElement(this.lazyLoadedImages, index);
-			}
-		});
-	},
-	
-	
-	
-	loadLazyElement: function(list, index)
-	{
-		list[index][0].src = list[index][0].getAttribute("data-src");
-		
-		list[index][0].setAttribute("data-src", "");
-		
-		list[index][2] = -1;
-	},
-	
-	
-	
-	lastLazyLoadScrollTimestamp: 0,
-	
-	lazyLoadScroll: function(timestamp)
-	{
-		const elapsedTime = timestamp - Page.Load.lastLazyLoadScrollTimestamp;
-		
-		Page.Load.lastLazyLoadScrollTimestamp = timestamp;
-		
-		if (elapsedTime < 16)
-		{
-			return;
-		}
-		
-		
-		
-		Page.Load.lazyLoadedImages.forEach((entry, index) =>
-		{
-			if (entry[1] < window.innerHeight + Page.scroll + 200 && entry[2] !== -1)
-			{
-				clearTimeout(entry[2]);
-				Page.Load.loadLazyElement(Page.Load.lazyLoadedImages, index);
-			}
-		});
-	},
-	
 	
 	
 	createDesmosGraphs: function(dark = Site.Settings.urlVars["theme"] === 1)

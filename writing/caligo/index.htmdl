@@ -43,7 +43,7 @@
 		<h1 class="title-text">CALIGO</h1>
 
 		<div id="eclipse">
-			<img class="check-webp" data-src="/writing/caligo/graphics/eclipse." alt="Caligo">
+			<img src="/writing/caligo/graphics/eclipse.webp" alt="Caligo">
 		</div>
 
 		<p class="synopsis-text">Los Angeles, separated only by a thin glass dome from the hushed apocalypse without, holds tentatively to life. Political tension mounts among its citizens, and change, in some direction, is imminent.</p>

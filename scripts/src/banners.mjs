@@ -118,7 +118,7 @@ export function loadBanner(large = false)
 		bannerElement = $("#banner");
 		contentElement = $("#content");
 		
-		bannerFilename = `${large ? "large." : "small."}${Page.Images.fileExtension}`;
+		bannerFilename = `${large ? "large" : "small"}.webp`;
 		
 		bannerFilepath = Page.parentFolder + "banners/";
 		
@@ -132,13 +132,13 @@ export function loadBanner(large = false)
 		Site.addStyle(`
 			#banner-small
 			{
-				background: url(${bannerFilepath}small.${Page.Images.fileExtension}) no-repeat center center;
+				background: url(${bannerFilepath}small.webp) no-repeat center center;
 				background-size: cover;
 			}
 			
 			#banner-large
 			{
-				background: url(${bannerFilepath}large.${Page.Images.fileExtension}) no-repeat center center;
+				background: url(${bannerFilepath}large.webp) no-repeat center center;
 				background-size: cover;
 			}
 		`);
@@ -339,7 +339,7 @@ export function fetchOtherPageBannersInBackground()
 				bannerFilepath += (multibannerPages[href]["currentBanner"] + 1) + "/";
 			}
 			
-			bannerFilepath += `small.${Page.Images.fileExtension}`;
+			bannerFilepath += `small.webp`;
 		}
 	});
 }

@@ -106,15 +106,11 @@ That image is actually taken from an interactive applet I created and worked on 
 
 
 
-<div class="image-links one-image-link" style="margin-bottom: 5vh">
-	<div class="image-link">
-		<a href="/applets/newtons-method/" tabindex="-1">
-			<img class="check-webp no-floating-footer" data-src="/applets/newtons-method/cover." alt="Calculus I Notes" tabindex="1"></img>
-		</a>
-		
-		<p class="image-link-subtext">Newton's Method</p>
-	</div>
-</div>
+### image-links
+	/applets/newtons-method/ Newton's Method
+###
+
+<div style="height: 64px"></div>
 
 
 
