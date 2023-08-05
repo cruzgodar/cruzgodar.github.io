@@ -750,31 +750,7 @@ export class Applet
 	
 	
 	static current = [];
-	
-	static loaded = [];
-	
-	static load(id)
-	{
-		return new Promise(async (resolve, reject) =>
-		{
-			if (Applet.loaded.includes(id))
-			{
-				console.log(`Refusing to load duplicate ${id}`);
-			}
-			
-			else
-			{
-				console.log(`Loading ${id}`);
-				
-				await Site.loadScript(`/applets/${id}/scripts/class.${DEBUG ? "" : "min."}js`);
-				
-				Applet.loaded.push(id);
-			}
-			
-			resolve();
-		});
-	}
-	
+		
 	
 	
 	//Turns expressions like 2(3x^2+1) into something equivalent to 2.0 * (3.0 * pow(x, 2.0) + 1.0).

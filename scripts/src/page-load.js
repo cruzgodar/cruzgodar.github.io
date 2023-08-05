@@ -5,6 +5,9 @@
 //Gets the page ready to be shown but doesn't do anything that needs the page to be visible.
 Page.load = async function()
 {
+	window.dispatchEvent(new Event("scroll"));
+	window.dispatchEvent(new Event("resize"));
+
 	Page.element = document.body.querySelector(".page");
 	$ = (queryString) => Page.element.querySelector(queryString);
 	$$ = (queryString) => Page.element.querySelectorAll(queryString);

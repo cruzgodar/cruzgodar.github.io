@@ -1,6 +1,21 @@
+import { bannerMaxScroll } from "../../scripts/src/banners.mjs";
+
 function setNameTextOpacity()
 {
-	const opacity = Page.scroll <= bannerMaxScroll / 2.5 ? Math.min(Math.max(1 - Page.scroll / (bannerMaxScroll / 2.5), 0), 1) : 0;
+	let opacity = 0;
+
+	if (Page.scroll === 0)
+	{
+		if (bannerMaxScroll)
+		{
+			opacity = Page.scroll <= bannerMaxScroll / 2.5 ? Math.min(Math.max(1 - Page.scroll / (bannerMaxScroll / 2.5), 0), 1) : 0;
+		}
+
+		else
+		{
+			opacity = 1;
+		}
+	}
 	
 	$("#cruz-text").parentNode.style.opacity = opacity;
 	$("#godar-text").parentNode.style.opacity = opacity;
