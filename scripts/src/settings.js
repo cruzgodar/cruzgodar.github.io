@@ -617,7 +617,7 @@ Site.Settings =
 
 
 
-Page.url = decodeURIComponent(Site.Settings.getUrlVar("page")).replace("index.html", "").replace("src.html", "");
+Page.url = decodeURIComponent(Site.Settings.getUrlVar("page")).replace("index.html", "");
 
 if (Page.url === "null")
 {
