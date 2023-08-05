@@ -10,13 +10,12 @@ export function read(filepath)
 		
 		fs.readFile(fullPath, "utf8", (err, data) =>
 		{
-			if (err)
+			if (!err && data)
 			{
-				console.error(err);
-				return;
+				resolve(data);
 			}
 
-			resolve(data);
+			resolve(null);
 		});
 	});
 }

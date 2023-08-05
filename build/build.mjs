@@ -21,8 +21,6 @@ const siteCSSFiles =
 	"image-links",
 	"main",
 	"notes",
-	"progress",
-	"writing"
 ];
 
 const clean = process.argv.slice(2).includes("-c");
@@ -34,6 +32,13 @@ async function buildSite()
 	await buildSitemap();
 	
 	const text = await read(sitemapPath);
+
+	if (!text)
+	{
+		console.error("Cannot read sitemap");
+		return;
+	}
+
 	const sitemap = JSON.parse(text.slice(text.indexOf("{")));
 
 	await new Promise((resolve, reject) =>
@@ -95,21 +100,38 @@ async function parseModifiedFiles(files, sitemap)
 
 		if (extension === "htmdl" && filename === "index")
 		{
-			console.log(file);
 			const text = await read(file);
-			buildHTMLFile(text, "/" + file.slice(0, lastSlashIndex), sitemap);
+
+			if (text)
+			{
+				console.log(file);
+				
+				buildHTMLFile(text, "/" + file.slice(0, lastSlashIndex), sitemap);
+			}
 		}
 
 		else if (extension === "mjs" || extension === "js")
 		{
-			console.log(file);
-			await buildJSFile(file);
+			const text = await read(file);
+
+			if (text)
+			{
+				console.log(file);
+				
+				await buildJSFile(file);
+			}
 		}
 
 		else if (extension === "css")
 		{
-			console.log(file);
-			buildCSSFile(file);
+			const text = await read(file);
+
+			if (text)
+			{
+				console.log(file);
+				
+				buildCSSFile(file);
+			}
 		}
 	}
 }
