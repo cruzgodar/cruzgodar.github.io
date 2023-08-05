@@ -169,8 +169,6 @@ Site.load = async function(url)
 	window.addEventListener("scroll", () =>
 	{
 		bannerOnScroll(0);
-		
-		window.requestAnimationFrame(Page.Load.lazyLoadScroll);
 	});
 	
 	window.addEventListener("resize", () =>

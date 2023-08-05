@@ -107,14 +107,16 @@ Page.Navigation =
 			
 			
 			//Record the page change in the url bar and in the browser history.
+			const displayUrl = url.replace(/\/home\//, "/");
+
 			if (!noStatePush)
 			{
-				history.pushState({url: url}, document.title, url);
+				history.pushState({url: url}, document.title, displayUrl);
 			}
 			
 			else
 			{
-				history.replaceState({url: url}, document.title, url);
+				history.replaceState({url: url}, document.title, displayUrl);
 			}
 			
 			
