@@ -33,10 +33,6 @@ Page.load = async function()
 	
 	
 	
-	this.Navigation.currentlyChangingPage = false;
-	
-	
-	
 	this.Load.parseCustomStyle();
 	this.Load.parseCustomScripts();
 	
@@ -275,7 +271,7 @@ Page.Load =
 				{
 					e.preventDefault();
 					
-					Page.Navigation.redirect(href);
+					redirect({ url: href });
 				});
 			});
 			
@@ -300,55 +296,30 @@ Page.Load =
 		return new Promise(async (resolve, reject) =>
 		{
 			let promise = null;
-			
-			if (Page.Navigation.transitionType === 1)
+
+			if (navigationTransitionType === 1)
 			{
-				promise = fadeUpIn(Page.element, Site.pageAnimationTime * 2);
-				
-				if (bannerElement)
-				{
-					promise = fadeUpIn(bannerElement, Site.pageAnimationTime * 2, bannerOpacity);
-				}
+				promise = bannerElement ? Promise.all([fadeUpIn(bannerElement, Site.pageAnimationTime * 2, bannerOpacity), fadeUpIn(Page.element, Site.pageAnimationTime * 2)]) : fadeUpIn(Page.element, Site.pageAnimationTime * 2);
 			}
 			
-			else if (Page.Navigation.transitionType === -1)
+			else if (navigationTransitionType === -1)
 			{
-				promise = fadeDownIn(Page.element, Site.pageAnimationTime * 2);
-				
-				if (bannerElement)
-				{
-					promise = fadeDownIn(bannerElement, Site.pageAnimationTime * 2, bannerOpacity);
-				}
+				promise = bannerElement ? Promise.all([fadeDownIn(bannerElement, Site.pageAnimationTime * 2, bannerOpacity), fadeDownIn(Page.element, Site.pageAnimationTime * 2)]) : fadeDownIn(Page.element, Site.pageAnimationTime * 2);
 			}
 			
-			else if (Page.Navigation.transitionType === 2)
+			else if (navigationTransitionType === 2)
 			{
-				promise = fadeLeftIn(Page.element, Site.pageAnimationTime * 2);
-				
-				if (bannerElement)
-				{
-					promise = fadeLeftIn(bannerElement, Site.pageAnimationTime * 2, bannerOpacity);
-				}
+				promise = bannerElement ? Promise.all([fadeLeftIn(bannerElement, Site.pageAnimationTime * 2, bannerOpacity), fadeLeftIn(Page.element, Site.pageAnimationTime * 2)]) : fadeLeftIn(Page.element, Site.pageAnimationTime * 2);
 			}
 			
-			else if (Page.Navigation.transitionType === -2)
+			else if (navigationTransitionType === -2)
 			{
-				promise = fadeRightIn(Page.element, Site.pageAnimationTime * 2);
-				
-				if (bannerElement)
-				{
-					promise = fadeRightIn(bannerElement, Site.pageAnimationTime * 2, bannerOpacity);
-				}
+				promise = bannerElement ? Promise.all([fadeRightIn(bannerElement, Site.pageAnimationTime * 2, bannerOpacity), fadeRightIn(Page.element, Site.pageAnimationTime * 2)]) : fadeRightIn(Page.element, Site.pageAnimationTime * 2);
 			}
 			
 			else
 			{
-				promise = fadeIn(Page.element, Site.pageAnimationTime * 2);
-				
-				if (bannerElement)
-				{
-					promise = fadeIn(bannerElement, Site.pageAnimationTime * 2, bannerOpacity);
-				}
+				promise = bannerElement ? Promise.all([fadeIn(bannerElement, Site.pageAnimationTime * 2, bannerOpacity), fadeIn(Page.element, Site.pageAnimationTime * 2)]) : fadeIn(Page.element, Site.pageAnimationTime * 2);
 			}
 			
 			await promise;
@@ -795,7 +766,10 @@ Page.Load =
 			
 			if (index > 0)
 			{
-				$$(".previous-nav-button").forEach(element => element.setAttribute("onclick", `Page.Navigation.redirect("${list[index - 1]}")`));
+				$$(".previous-nav-button").forEach(element =>
+				{
+					element.addEventListener("click", () => redirect({ url: list[index - 1] }));
+				});
 			}
 			
 			else
@@ -805,13 +779,19 @@ Page.Load =
 			
 			
 			
-			$$(".home-nav-button").forEach(element => element.setAttribute("onclick", `Page.Navigation.redirect("${Site.sitemap[Page.url].parent}")`));
+			$$(".home-nav-button").forEach(element => 
+			{
+				element.addEventListener("click", () => redirect({ url: Site.sitemap[Page.url].parent }));
+			});
 			
 			
 			
 			if (index < list.length - 1)
 			{
-				$$(".next-nav-button").forEach(element => element.setAttribute("onclick", `Page.Navigation.redirect("${list[index + 1]}")`));
+				$$(".next-nav-button").forEach(element =>
+				{
+					element.addEventListener("click", () => redirect({ url: list[index + 1] }));
+				});
 			}
 			
 			else
@@ -830,22 +810,16 @@ Page.Load =
 		{
 			$$("a").forEach(link =>
 			{
-				let href = link.getAttribute("href");
+				const href = link.getAttribute("href");
 				
 				if (href === null)
 				{
 					return;
 				}
+
+				const inNewTab = !(href.slice(0, 5) !== "https" && href.slice(0, 4) !== "data" && !(link.getAttribute("data-in-new-tab") == 1));
 				
-				if (href.slice(0, 5) !== "https" && href.slice(0, 4) !== "data" && !(link.getAttribute("data-in-new-tab") == 1))
-				{
-					link.setAttribute("onclick", `Page.Navigation.redirect("${href}")`);
-				}
-				
-				else
-				{
-					link.setAttribute("onclick", `Page.Navigation.redirect("${href}", true)`);
-				}
+				link.addEventListener("click", () => redirect({ url: href, inNewTab }));
 			});
 		},
 

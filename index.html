@@ -99,8 +99,6 @@
 	
 	<script src="/scripts/src/main.js"></script>
 	
-	<script src="/scripts/src/navigation.js"></script>
-	
 	<script src="/scripts/src/page-load.js"></script>
 	
 	<script src="/scripts/src/settings.js"></script>
@@ -110,15 +108,17 @@
 	<script src="/scripts/wilson.js"></script>
 	
 	<script type="module">
-		import * as Animate from "/scripts/src/animation.min.mjs";
-		import * as Banner from "/scripts/src/banners.min.mjs";
-		import * as Browser from "/scripts/src/browser.min.mjs";
-		import * as Layout from "/scripts/src/layout.min.mjs";
+		import * as Animate from "/scripts/src/animation.mjs";
+		import * as Banner from "/scripts/src/banners.mjs";
+		import * as Browser from "/scripts/src/browser.mjs";
+		import * as Layout from "/scripts/src/layout.mjs";
+		import * as Navigation from "/scripts/src/navigation.mjs";
 		
 		Object.keys(Animate).forEach(key => window[key] = Animate[key]);
 		Object.keys(Banner).forEach(key => window[key] = Banner[key]);
 		Object.keys(Browser).forEach(key => window[key] = Browser[key]);
 		Object.keys(Layout).forEach(key => window[key] = Layout[key]);
+		Object.keys(Navigation).forEach(key => window[key] = Navigation[key]);
 		
 		if (typeof Page.url !== "undefined" && Page.url !== null && Page.url !== "null")
 		{

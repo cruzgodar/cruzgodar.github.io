@@ -4,9 +4,9 @@
 	let glslTestsButtonElement = $("#glsl-tests-button");
 	let jsLinesButtonElement = $("#js-lines-button");
 	
-	collectorButtonElement.addEventListener("click", () => Page.Navigation.redirect("/debug/collector/"));
-	glslTestsButtonElement.addEventListener("click", () => Page.Navigation.redirect("/debug/tests/glsl-test/"));
-	jsLinesButtonElement.addEventListener("click", () => Page.Navigation.redirect("/debug/js-lines/"));
+	collectorButtonElement.addEventListener("click", () => redirect({ url: "/debug/collector/" }));
+	glslTestsButtonElement.addEventListener("click", () => redirect({ url: "/debug/tests/glsl-test/" } ));
+	jsLinesButtonElement.addEventListener("click", () => redirect({ url: "/debug/js-lines/" }));
 	
 	Page.show();
 }()

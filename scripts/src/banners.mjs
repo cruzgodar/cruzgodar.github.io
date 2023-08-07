@@ -25,7 +25,7 @@ export function setBannerDoneLoading(newBannerDoneLoading)
 
 
 
-let bannerOpacity = 1;
+export let bannerOpacity = 1;
 
 export function setBannerOpacity(newBannerOpacity)
 {
@@ -167,8 +167,10 @@ export function loadBanner(large = false)
 				resolve();
 			};
 			
-			img.style.display = "hidden";
 			img.style.opacity = 0;
+			img.style.position = "fixed";
+			img.style.top = "-100vh";
+			img.style.left = "-100vw";
 			
 			Page.element.appendChild(img);
 			

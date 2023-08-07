@@ -218,7 +218,7 @@ Site.load = async function(url)
 			return;
 		}
 		
-		Page.Navigation.redirect(e.state.url, false, true, true);
+		redirect({ url: e.state.url, noStatePush: true, restoreScroll: true });
 	});
 	
 	
@@ -262,7 +262,7 @@ Site.load = async function(url)
 	
 	else
 	{
-		Page.Navigation.redirect(url, false, true, false, true);
+		redirect({ url, noStatePush: true, noFadeOut: true });
 	}
 };
 

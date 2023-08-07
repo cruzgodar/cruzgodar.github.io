@@ -1,3 +1,5 @@
+import { redirect } from "/scripts/src/navigation.mjs";
+
 const galleryImageData = 
 {
 	"newtons-method-2":
@@ -528,10 +530,12 @@ const featuredTextElement = $("#featured-text");
 const appletLinkElement = $("#applet-link");
 const fullResLinkElement = $("#full-res-link");
 
-
+let currentId = "";
 
 function showCard(id)
 {
+	currentId = id;
+
 	titleElement.innerHTML = galleryImageData[id]["title"];
 	
 	
@@ -565,10 +569,8 @@ function showCard(id)
 	
 	
 	appletLinkElement.setAttribute("href", `/applets/${galleryImageData[id]["appletLink"]}/`);
-	appletLinkElement.setAttribute("onclick", `Page.Navigation.redirect('/applets/${galleryImageData[id]["appletLink"]}/')`);
 	
 	fullResLinkElement.setAttribute("href", galleryImageData[id]["imageLink"]);
-	fullResLinkElement.setAttribute("onclick", `Page.Navigation.redirect('${galleryImageData[id]["imageLink"]}', true)`);
 	
 	
 	
@@ -594,8 +596,16 @@ export function load()
 	{
 		element.addEventListener("click", e => showCard(e.target.getAttribute("data-image-id")));
 	});
-	
-	
+
+	appletLinkElement.addEventListener("click", () =>
+	{
+		redirect({ url: `/applets/${galleryImageData[currentId].appletLink}/` })
+	});
+
+	fullResLinkElement.addEventListener("click", () =>
+	{
+		redirect({ url: galleryImageData[currentId].imageLink, inNewTab: true })
+	});
 	
 	Page.show();
 }
