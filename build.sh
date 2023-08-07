@@ -8,7 +8,7 @@ done
 
 if [[ $clean == "true" ]]
 then
-	node ./build/build.mjs -c
+	node ~/Desktop/cruzgodar.github.io/build/build.mjs -c
 else
-	node ./build/build.mjs
+	node ~/Desktop/cruzgodar.github.io/build/build.mjs
 fi

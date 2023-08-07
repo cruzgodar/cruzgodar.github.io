@@ -187,7 +187,7 @@ Page.Load =
 		let pageName = Page.url.split("/");
 		pageName = pageName[pageName.length - 2];
 		
-		import(Page.parentFolder + "scripts/index.mjs")
+		import(`${Page.parentFolder}scripts/index.${window.DEBUG ? "mjs" : "min.mjs"}`)
 
 		.then((Module) =>
 		{
@@ -328,6 +328,7 @@ Page.Load =
 		});
 	},
 	
+	// File break
 	
 	createDesmosGraphs: function(dark = Site.Settings.urlVars["theme"] === 1)
 	{
@@ -440,7 +441,7 @@ Page.Load =
 		});
 	},
 	
-
+	// File break
 	
 	HoverEvents:
 	{
@@ -655,7 +656,7 @@ Page.Load =
 		}
 	},
 	
-	
+	// File break
 	
 	TextButtons:
 	{
@@ -801,7 +802,7 @@ Page.Load =
 		}
 	},
 
-
+	// Keep in page-load
 
 	//To keep expected link functionality (open in new tab, draggable, etc.), all elements with calls to redirect() are wrapped in <a> tags. Presses of <a> tags (without .real-link) are ignored, but to extend the functionality of url variables to the times they are used, we need to target them all and add the url variables onto them. Also, since the website is a single page app, we need to format them correctly, too, using the page variable.
 	Links:
@@ -831,7 +832,7 @@ Page.Load =
 		}
 	},
 	
-
+	// File break
 	
 	Math:
 	{
@@ -936,7 +937,7 @@ Page.Load =
 	},
 };
 
-
+// File break
 
 Page.Cards =
 {

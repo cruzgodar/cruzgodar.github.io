@@ -108,13 +108,13 @@
 	<script src="/scripts/wilson.js"></script>
 	
 	<script type="module">
-		window.DEBUG = false;
-
-		import * as Animate from "/scripts/src/animation.min.mjs";
-		import * as Banner from "/scripts/src/banners.min.mjs";
-		import * as Browser from "/scripts/src/browser.min.mjs";
-		import * as Layout from "/scripts/src/layout.min.mjs";
-		import * as Navigation from "/scripts/src/navigation.min.mjs";
+		window.DEBUG = true;
+		
+		import * as Animate from "/scripts/src/animation.mjs";
+		import * as Banner from "/scripts/src/banners.mjs";
+		import * as Browser from "/scripts/src/browser.mjs";
+		import * as Layout from "/scripts/src/layout.mjs";
+		import * as Navigation from "/scripts/src/navigation.mjs";
 		
 		Object.keys(Animate).forEach(key => window[key] = Animate[key]);
 		Object.keys(Banner).forEach(key => window[key] = Banner[key]);
