@@ -192,6 +192,29 @@ export function loadBanner(large = false)
 
 
 
+//The function called by pageLoad to load a small banner that fades into a large one when ready.
+export function setUpBanner()
+{
+	if (bannerPages.includes(Page.url))
+	{
+		loadBanner(true)
+		
+		.then(() =>
+		{
+			changeOpacity($("#banner-small"), 0, 700)
+			
+			.then(() => $("#banner-small").remove());
+		});
+	}
+	
+	else
+	{
+		setBannerElement(null);
+	}
+}
+
+
+
 export function bannerOnScroll(scrollPositionOverride)
 {
 	if (scrollPositionOverride === 0)
