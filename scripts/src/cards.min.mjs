@@ -1,4 +1,4 @@
-import { addHoverEvent } from "./hover-events.mjs"
+import { addHoverEvent } from "./hover-events.min.min.mjs"
 
 const container = document.querySelector("#card-container");
 

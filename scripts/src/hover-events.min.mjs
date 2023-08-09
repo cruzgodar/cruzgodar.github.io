@@ -1,5 +1,5 @@
-import { changeScale } from "./animation.mjs"
-import { showTex } from "./math.mjs";
+import { changeScale } from "./animation.min.min.mjs"
+import { showTex } from "./math.min.min.mjs";
 
 const elementSelectors = `
 	a

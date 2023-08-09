@@ -225,8 +225,6 @@ class Wilson
 			}
 		}
 		
-		
-		
 		if (typeof options.autoArrangeCanvases === "undefined" || options.autoArrangeCanvases)
 		{
 			this.arrangeCanvases(options);
@@ -297,6 +295,8 @@ class Wilson
 			
 			
 						
+
+		
 			
 			if (typeof options.canvasesToResize === "undefined")
 			{
@@ -306,8 +306,6 @@ class Wilson
 			
 			
 			this.fullscreen.canvasesToResize = options.canvasesToResize;
-			
-			
 			
 			this.fullscreen.init();
 		}
@@ -1421,7 +1419,7 @@ class Wilson
 				
 				this.parent.canvas.parentNode.appendChild(this.enterFullscreenButton);
 				
-				Page.Load.HoverEvents.addWithScale(this.enterFullscreenButton, 1.1);
+				addHoverEventWithScale(this.enterFullscreenButton, 1.1);
 				
 				this.enterFullscreenButton.addEventListener("click", () =>
 				{
@@ -1504,7 +1502,7 @@ class Wilson
 						
 						document.body.appendChild(this.exitFullscreenButton);
 						
-						Page.Load.HoverEvents.addWithScale(this.exitFullscreenButton, 1.1);
+						addHoverEventWithScale(this.exitFullscreenButton, 1.1);
 						
 						this.exitFullscreenButton.addEventListener("click", () =>
 						{
@@ -1688,7 +1686,7 @@ class Wilson
 						
 						this.parent.canvas.parentNode.appendChild(this.enterFullscreenButton);
 						
-						Page.Load.HoverEvents.addWithScale(this.enterFullscreenButton, 1.1);
+						addHoverEventWithScale(this.enterFullscreenButton, 1.1);
 						
 						this.enterFullscreenButton.addEventListener("click", () =>
 						{

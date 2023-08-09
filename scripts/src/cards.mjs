@@ -25,6 +25,14 @@ export let cardIsOpen = false;
 
 const animationTime = 500;
 
+export function setUpCards()
+{
+	$$("[data-card-id]").forEach(element =>
+	{
+		element.addEventListener("click", showCard(element.getAttribute("data-card-id")))
+	});
+}
+
 export async function showCard(id)
 {
 	cardIsOpen = true;

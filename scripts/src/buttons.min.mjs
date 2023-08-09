@@ -1,4 +1,4 @@
-import { redirect } from "./navigation.mjs"
+import { redirect } from "./navigation.min.min.mjs"
 
 export function setUpTextButtons()
 {

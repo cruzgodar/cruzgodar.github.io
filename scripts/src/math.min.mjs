@@ -1,4 +1,4 @@
-import { cardIsOpen } from "./cards.mjs";
+import { cardIsOpen } from "./cards.min.mjs";
 
 export function typesetMath()
 {

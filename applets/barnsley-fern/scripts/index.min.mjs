@@ -1,2 +1,2 @@
-import { showPage } from "/scripts/src/load-page.mjs"
-import{BarnsleyFern}from"./class.min.mjs";function load(){const e=new BarnsleyFern($("#output-canvas"));function n(){var n=1e3*parseInt(t.value||1e4);e.run(n)}$("#generate-button").addEventListener("click",n);const t=$("#num-iterations-input");e.listenToInputElements([t],n),e.setInputCaps([t],[1e5]),$("#download-button").addEventListener("click",()=>e.wilson.downloadFrame("the-barnsley-fern.png")),showPage()}export{load};
+import { showPage } from "/scripts/src/load-page.min.min.mjs"
+import{BarnsleyFern}from"./class.min.min.min.mjs";function load(){const e=new BarnsleyFern($("#output-canvas"));function n(){var n=1e3*parseInt(t.value||1e4);e.run(n)}$("#generate-button").addEventListener("click",n);const t=$("#num-iterations-input");e.listenToInputElements([t],n),e.setInputCaps([t],[1e5]),$("#download-button").addEventListener("click",()=>e.wilson.downloadFrame("the-barnsley-fern.png")),showPage()}export{load};

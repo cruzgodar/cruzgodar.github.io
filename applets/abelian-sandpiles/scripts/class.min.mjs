@@ -1,4 +1,4 @@
-import{Applet}from"/scripts/src/applets.min.mjs";class AbelianSandpile extends Applet{wilsonUpscale=null;numGrains=1e4;resolution=500;lastTimestamp=-1;computationsPerFrame=20;lastPixelData=null;constructor(e){super(e);var t=this.createHiddenCanvas(),s={renderer:"gpu",shader:`
+import{Applet}from"/scripts/src/applets.min.min.min.mjs";class AbelianSandpile extends Applet{wilsonUpscale=null;numGrains=1e4;resolution=500;lastTimestamp=-1;computationsPerFrame=20;lastPixelData=null;constructor(e){super(e);var t=this.createHiddenCanvas(),s={renderer:"gpu",shader:`
 			precision highp float;
 			precision highp sampler2D;
 			

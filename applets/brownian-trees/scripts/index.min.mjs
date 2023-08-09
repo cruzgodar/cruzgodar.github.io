@@ -1,2 +1,2 @@
-import { showPage } from "/scripts/src/load-page.mjs"
-import{BrownianTree}from"./class.min.mjs";function load(){const e=new BrownianTree($("#output-canvas"));function n(){var n=parseInt(t.value||1e3);e.run(n)}$("#generate-button").addEventListener("click",n);const t=$("#resolution-input");e.listenToInputElements([t],n),e.setInputCaps([t],[2e3]),$("#download-button").addEventListener("click",()=>wilson.downloadFrame("a-brownian-tree.png")),showPage()}export{load};
+import { showPage } from "/scripts/src/load-page.min.min.mjs"
+import{BrownianTree}from"./class.min.min.min.mjs";function load(){const e=new BrownianTree($("#output-canvas"));function n(){var n=parseInt(t.value||1e3);e.run(n)}$("#generate-button").addEventListener("click",n);const t=$("#resolution-input");e.listenToInputElements([t],n),e.setInputCaps([t],[2e3]),$("#download-button").addEventListener("click",()=>wilson.downloadFrame("a-brownian-tree.png")),showPage()}export{load};

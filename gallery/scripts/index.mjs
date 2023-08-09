@@ -534,7 +534,7 @@ const fullResLinkElement = $("#full-res-link");
 
 let currentId = "";
 
-function showCard(id)
+function showGalleryCard(id)
 {
 	currentId = id;
 
@@ -596,7 +596,7 @@ export function load()
 {
 	$$(".gallery-image-1-1 img, .gallery-image-2-2 img, .gallery-image-3-3 img").forEach(element =>
 	{
-		element.addEventListener("click", e => showCard(e.target.getAttribute("data-image-id")));
+		element.addEventListener("click", e => showGalleryCard(e.target.getAttribute("data-image-id")));
 	});
 
 	appletLinkElement.addEventListener("click", () =>

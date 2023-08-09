@@ -1,2 +1,2 @@
-import { showPage } from "/scripts/src/load-page.mjs"
-import{SudokuGenerator}from"./class.min.mjs";function load(){const o=new SudokuGenerator($("#output-canvas"));$("#generate-button").addEventListener("click",function(){o.run()}),$("#download-button").addEventListener("click",()=>{o.wilson.downloadFrame("sudoku.png")}),showPage()}export{load};
+import { showPage } from "/scripts/src/load-page.min.min.mjs"
+import{SudokuGenerator}from"./class.min.min.min.mjs";function load(){const o=new SudokuGenerator($("#output-canvas"));$("#generate-button").addEventListener("click",function(){o.run()}),$("#download-button").addEventListener("click",()=>{o.wilson.downloadFrame("sudoku.png")}),showPage()}export{load};

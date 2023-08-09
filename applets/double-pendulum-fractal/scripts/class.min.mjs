@@ -1,4 +1,4 @@
-import{Applet}from"/scripts/src/applets.min.mjs";class DoublePendulumFractal extends Applet{resolution=1e3;dt=.01;drawnFractal=!1;pendulumCanvas=null;lastTimestamp=-1;drawingFractal=!0;wilsonPendulum=null;resolutionPendulum=2e3;lastTimestampPendulum=-1;pendulumCanvasVisible=0;theta1=0;theta2=0;p1=0;p2=0;frame=0;initialTheta1=0;initialTheta2=0;constructor(t,i){super(t),this.pendulumCanvas=i;i={renderer:"gpu",shader:`
+import{Applet}from"/scripts/src/applets.min.min.min.mjs";class DoublePendulumFractal extends Applet{resolution=1e3;dt=.01;drawnFractal=!1;pendulumCanvas=null;lastTimestamp=-1;drawingFractal=!0;wilsonPendulum=null;resolutionPendulum=2e3;lastTimestampPendulum=-1;pendulumCanvasVisible=0;theta1=0;theta2=0;p1=0;p2=0;frame=0;initialTheta1=0;initialTheta2=0;constructor(t,i){super(t),this.pendulumCanvas=i;i={renderer:"gpu",shader:`
 			precision highp float;
 			
 			varying vec2 uv;
