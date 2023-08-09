@@ -1,2 +1,1 @@
-import { showPage } from "/scripts/src/load-page.min.mjs"
-function load(){Page.Load.getDesmosData=()=>{return{antiderivative:{bounds:{left:-3,right:3,bottom:-1,top:5},expressions:[{latex:String.raw`f(x) = \frac{x^3}{3} + C`,color:purple},{latex:String.raw`f'(x)`,color:blue},{latex:String.raw`C = 2`}]}}},Page.Load.createDesmosGraphs(),showPage()}export{load};
+import{showPage}from"/scripts/src/load-page.mjs";import{createDesmosGraphs,setGetDesmosData}from"/scripts/src/desmos.mjs";function load(){setGetDesmosData((s,t,r,e,o)=>{return{antiderivative:{bounds:{left:-3,right:3,bottom:-1,top:5},expressions:[{latex:String.raw`f(x) = \frac{x^3}{3} + C`,color:s},{latex:String.raw`f'(x)`,color:t},{latex:String.raw`C = 2`}]}}}),createDesmosGraphs(),showPage()}export{load};

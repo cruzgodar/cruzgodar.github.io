@@ -12,7 +12,7 @@ export function setUpTextButtons()
 
 
 //Makes linked text buttons have the same width and height.
-function equalizeTextButtons()
+export function equalizeTextButtons()
 {
 	$$(".text-button").forEach(textButton => textButton.parentNode.style.margin = "0 auto");
 	
@@ -78,7 +78,7 @@ export function setUpNavButtons()
 	{
 		return;
 	}
-	
+
 	const list = Site.sitemap[Site.sitemap[Page.url].parent].children;
 	const index = list.indexOf(Page.url);
 	

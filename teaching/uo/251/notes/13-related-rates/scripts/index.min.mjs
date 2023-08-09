@@ -1,2 +1,1 @@
-import { showPage } from "/scripts/src/load-page.min.mjs"
-function load(){Page.Load.getDesmosData=()=>{return{"related-rates":{bounds:{left:-10,right:110,bottom:-10,top:110},expressions:[{latex:String.raw`(0, 0), (10t, 100), (10t, 0), (0, 0)`,color:purple,lines:!0},{latex:String.raw`t = 10`}]}}},Page.Load.createDesmosGraphs(),showPage()}export{load};
+import{showPage}from"/scripts/src/load-page.mjs";import{createDesmosGraphs,setGetDesmosData}from"/scripts/src/desmos.mjs";function load(){setGetDesmosData((s,t,e,r,o)=>{return{"related-rates":{bounds:{left:-10,right:110,bottom:-10,top:110},expressions:[{latex:String.raw`(0, 0), (10t, 100), (10t, 0), (0, 0)`,color:s,lines:!0},{latex:String.raw`t = 10`}]}}}),createDesmosGraphs(),showPage()}export{load};

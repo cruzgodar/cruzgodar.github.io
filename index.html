@@ -97,13 +97,11 @@
 		let Page = {};
 	</script>
 	
-	<script src="/scripts/src/main.js"></script>
+	<script src="/scripts/src/main.min.js"></script>
 	
-	<script src="/scripts/src/page-load.js"></script>
+	<script src="/scripts/src/settings.min.js"></script>
 	
-	<script src="/scripts/src/settings.js"></script>
-	
-	<script src="/scripts/src/sitemap.js"></script>
+	<script src="/scripts/src/sitemap.min.js"></script>
 	
 	<script src="/scripts/wilson.js"></script>
 	
@@ -113,13 +111,25 @@
 		import * as Animate from "/scripts/src/animation.min.mjs";
 		import * as Banner from "/scripts/src/banners.min.mjs";
 		import * as Browser from "/scripts/src/browser.min.mjs";
-		import * as Layout from "/scripts/src/layout.min.mjs";
+		import * as Buttons from "/scripts/src/buttons.min.mjs";
+		import * as Cards from "/scripts/src/cards.min.mjs";
+		import * as D from "/scripts/src/desmos.min.mjs";
+		import * as H from "/scripts/src/hover-events.min.mjs";
+		import * as L from "/scripts/src/load-page.min.mjs"
+		import * as Layout from "/scripts/src/layout.min.mjs"
+		import * as M from "/scripts/src/math.min.mjs";
 		import * as Navigation from "/scripts/src/navigation.min.mjs";
 		
 		Object.keys(Animate).forEach(key => window[key] = Animate[key]);
 		Object.keys(Banner).forEach(key => window[key] = Banner[key]);
 		Object.keys(Browser).forEach(key => window[key] = Browser[key]);
+		Object.keys(Buttons).forEach(key => window[key] = Buttons[key]);
+		Object.keys(Cards).forEach(key => window[key] = Cards[key]);
+		Object.keys(D).forEach(key => window[key] = D[key]);
+		Object.keys(H).forEach(key => window[key] = H[key]);
+		Object.keys(L).forEach(key => window[key] = L[key]);
 		Object.keys(Layout).forEach(key => window[key] = Layout[key]);
+		Object.keys(M).forEach(key => window[key] = M[key]);
 		Object.keys(Navigation).forEach(key => window[key] = Navigation[key]);
 		
 		if (typeof Page.url !== "undefined" && Page.url !== null && Page.url !== "null")

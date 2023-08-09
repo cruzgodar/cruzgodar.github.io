@@ -1,5 +1,6 @@
-import { showPage } from "/scripts/src/load-page.mjs"
-import { bannerMaxScroll } from "../../scripts/src/banners.mjs";
+import { fadeLeft } from "/scripts/src/animation.mjs"
+import { showPage, disableLinks } from "/scripts/src/load-page.mjs"
+import { bannerMaxScroll, setBannerOpacity } from "/scripts/src/banners.mjs";
 
 function setNameTextOpacity()
 {
@@ -27,13 +28,11 @@ export function load()
 	if (Site.vistedHomepage)
 	{
 		$("#return-scroll-to").scrollIntoView();
-		
+
 		setBannerOpacity(0);
 	}
 	
 	Site.vistedHomepage = true;
-	
-	
 	
 	setTimeout(() =>
 	{
@@ -47,11 +46,7 @@ export function load()
 	
 	setTimeout(() => setNameTextOpacity(), 100);
 	
-	
-	
-	Page.Load.Links.disable();
-	
-	
+	disableLinks();
 	
 	showPage();
 }

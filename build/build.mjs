@@ -141,12 +141,13 @@ function buildJSFile(file)
 	return new Promise(async (resolve, reject) =>
 	{
 		const outputFile = file.replace(/(\.m*js)/, (match, $1) => `.min${$1}`);
-
-		exec(`uglifyjs ${root + file} --output ${outputFile} --compress --mangle`, async () =>
+		
+		exec(`uglifyjs ${root + file} --output ${root + outputFile} --compress --mangle`, async () =>
 		{
 			const js = await read(outputFile);
-
-			write(outputFile, js.replace(/(import.*?)\.mjs/g, (match, $1) => `${$1}.min.mjs`));
+			
+			//The space after the import is very import -- that prevents dynamic imports from getting screwed up.
+			write(outputFile, js.replace(/(import .*?)\.mjs/g, (match, $1) => `${$1}.min.mjs`));
 
 			resolve();
 		});

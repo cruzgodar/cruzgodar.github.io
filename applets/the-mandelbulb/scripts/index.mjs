@@ -1,3 +1,4 @@
+import { equalizeTextButtons } from "/scripts/src/buttons.mjs";
 import { showPage } from "/scripts/src/load-page.mjs"
 import { Mandelbulb } from "./class.mjs";
 
@@ -118,7 +119,7 @@ export function load()
 	
 	
 	
-	Page.Load.TextButtons.equalize();
+	equalizeTextButtons();
 	
 	
 	
@@ -180,7 +181,7 @@ export function load()
 				switchBulbButtonElement.textContent = "Switch to Juliabulb";
 			}
 			
-			Page.Load.TextButtons.equalize();
+			equalizeTextButtons();
 			
 			changeOpacity(switchBulbButtonElement, 1, Site.opacityAnimationTime);
 		}, Site.opacityAnimationTime);
@@ -206,7 +207,7 @@ export function load()
 				switchMovementButtonElement.textContent = "Move Camera";
 			}
 			
-			Page.Load.TextButtons.equalize();
+			equalizeTextButtons();
 			
 			changeOpacity(switchMovementButtonElement, 1, Site.opacityAnimationTime);
 		}, Site.opacityAnimationTime);

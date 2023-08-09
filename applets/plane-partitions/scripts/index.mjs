@@ -1,54 +1,11 @@
+import { equalizeTextButtons } from "/scripts/src/buttons.mjs";
 import { showPage } from "/scripts/src/load-page.mjs"
 import { PlanePartitions } from "./class.mjs";
 
 export function load()
 {
 	const applet = new PlanePartitions($("#output-canvas"), $("#numbers-canvas"));
-	
-	applet.loadPromise.then(async () =>
-	{
-		const planePartition = applet.generateRandomPlanePartition();
-		arrayDataTextareaElement.value = applet.arrayToAscii(planePartition);
-		await applet.addNewArray(0, planePartition);
-	});
-	
-	const sectionNames = ["view-controls", "add-array", "edit-array", "remove-array", "algorithms"];
-	
-	const sectionElements = 
-	{
-		"view-controls": $$(".view-controls-section"),
-		"add-array": $$(".add-array-section"),
-		"edit-array": $$(".edit-array-section"),
-		"remove-array": $$(".remove-array-section"),
-		"algorithms": $$(".algorithms-section"),
-		"examples": $$(".examples-section")
-	}
-	
-	const categoryHolderElement = $("#category-holder");
-	const canvasLandscapeLeftElement = $("#canvas-landscape-left");
-	
-	let visibleSection = "view-controls";
-	
-	sectionNames.forEach(sectionName =>
-	{
-		if (sectionName !== visibleSection)
-		{
-			sectionElements[sectionName].forEach(element =>
-			{
-				element.style.opacity = 0;
-			});
-		}	
-	});
-	
-	sectionElements[visibleSection].forEach(element => canvasLandscapeLeftElement.appendChild(element));
-	
-	
-	
-	Page.Load.TextButtons.equalize();
-	setTimeout(Page.Load.TextButtons.equalize, 10);
-	
-	
-	
+
 	const categorySelectorDropdownElement = $("#category-selector-dropdown");
 	
 	const resolutionInputElement = $("#resolution-input");
@@ -101,6 +58,48 @@ export function load()
 	
 	applet.setInputCaps([resolutionInputElement], [3000]);
 	
+	applet.loadPromise.then(async () =>
+	{
+		const planePartition = applet.generateRandomPlanePartition();
+		arrayDataTextareaElement.value = applet.arrayToAscii(planePartition);
+		await applet.addNewArray(0, planePartition);
+	});
+	
+	const sectionNames = ["view-controls", "add-array", "edit-array", "remove-array", "algorithms"];
+	
+	const sectionElements = 
+	{
+		"view-controls": $$(".view-controls-section"),
+		"add-array": $$(".add-array-section"),
+		"edit-array": $$(".edit-array-section"),
+		"remove-array": $$(".remove-array-section"),
+		"algorithms": $$(".algorithms-section"),
+		"examples": $$(".examples-section")
+	}
+	
+	const categoryHolderElement = $("#category-holder");
+	const canvasLandscapeLeftElement = $("#canvas-landscape-left");
+	
+	let visibleSection = "view-controls";
+	
+	sectionNames.forEach(sectionName =>
+	{
+		if (sectionName !== visibleSection)
+		{
+			sectionElements[sectionName].forEach(element =>
+			{
+				element.style.opacity = 0;
+			});
+		}	
+	});
+	
+	sectionElements[visibleSection].forEach(element => canvasLandscapeLeftElement.appendChild(element));
+	
+	
+	
+	equalizeTextButtons();
+	setTimeout(equalizeTextButtons, 10);
+	
 	
 	
 	categorySelectorDropdownElement.addEventListener("input", async () =>
@@ -116,8 +115,8 @@ export function load()
 		
 		sectionElements[visibleSection].forEach(element => canvasLandscapeLeftElement.appendChild(element));
 		
-		Page.Load.TextButtons.equalize();
-		setTimeout(Page.Load.TextButtons.equalize, 10);
+		equalizeTextButtons();
+		setTimeout(equalizeTextButtons, 10);
 		
 		if (visibleSection === "edit-array")
 		{

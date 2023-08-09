@@ -7,7 +7,7 @@ export function typesetMath()
 
 export async function showTex(element)
 {
-	if (cardIsOpen || element.getAttribute("data-showing-tex") === "1")
+	if (!cardIsOpen || element.getAttribute("data-showing-tex") === "1")
 	{
 		return;
 	}

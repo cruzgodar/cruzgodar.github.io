@@ -1,6 +1,7 @@
 import { fadeUpIn, fadeDownIn, fadeLeftIn, fadeRightIn, fadeIn } from "./animation.mjs"
-import { setUpBanner, bannerElement } from "./banners.mjs"
+import { setUpBanner, bannerElement, bannerOpacity } from "./banners.mjs"
 import { setUpTextButtons, setUpNavButtons, setUpDropdowns } from "./buttons.mjs"
+import { setUpCards } from "./cards.mjs"
 import { addHoverEvent, setUpHoverEvents, setUpFocusEvents } from "./hover-events.mjs"
 import { typesetMath } from "./math.mjs"
 import { redirect, navigationTransitionType } from "./navigation.mjs"
@@ -44,6 +45,8 @@ export async function loadPage()
 	setUpDropdowns();
 	
 	typesetMath();
+
+	setUpCards();
 	
 	
 	
@@ -250,7 +253,7 @@ function setLinks()
 	});
 }
 
-function disableLinks()
+export function disableLinks()
 {
 	$$("a:not(.real-link)").forEach(link => link.addEventListener("click", e => e.preventDefault()));
 }
