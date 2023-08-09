@@ -8,10 +8,9 @@
 	
 	grid-row-gap: 18px;
 	grid-column-gap: 30px;
-	grid-template-columns: repeat(auto-fill, 150px);
+	grid-template-columns: repeat(5, 1fr);
 	justify-content: center;
 	
-	/* Make the rows and columns have the same spacing. */
 	width: min(900px, 90vw);
 	margin: 0 auto;
 	
@@ -55,10 +54,7 @@
 
 .one-image-link
 {
-	grid-template-columns: repeat(1, 150px) !important;
-	grid-column-gap: 0;
-	width: 150px;
-	justify-content: center;
+	grid-template-columns: repeat(2, 1fr) !important;
 }
 
 
@@ -100,6 +96,14 @@ img[src="/about/cover.webp"]
 }
 
 
+
+@media (max-width: 967px)
+{
+	.image-links
+	{
+		grid-template-columns: repeat(4, 1fr);
+	}
+}
 
 @media (max-width: 776px)
 {

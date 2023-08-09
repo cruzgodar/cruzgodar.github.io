@@ -244,6 +244,12 @@
 	{
 		height: 30px;
 	}
+
+	#header-container
+	{
+		height: calc(30px + 50vh);
+		transform-origin: 50% calc(30px + 100vh);
+	}
 }
 
 @media (max-width: 200px)
@@ -251,5 +257,11 @@
 	#header
 	{
 		height: 20px;
+	}
+
+	#header-container
+	{
+		height: calc(20px + 50vh);
+		transform-origin: 50% calc(20px + 100vh);
 	}
 }

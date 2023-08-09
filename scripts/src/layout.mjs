@@ -1,5 +1,6 @@
 import { bannerOnScroll } from "./banners.mjs"
 import { resizeCard } from "./cards.mjs";
+import { headerElement } from "./load-page.mjs"
 
 export let aspectRatio = window.innerWidth / window.innerHeight;
 
@@ -31,11 +32,26 @@ function onResize()
 	//Fix the logo cause Firefox is dumb.
 	try
 	{
-		const element = Site.headerElement.children[0].children[0];
+		const element = headerElement.children[0].children[0];
 		element.style.width = `${element.getBoundingClientRect().height}px`;
 	}
 	
 	catch(ex) {}
+
+
+
+	//Handle single image link rows.
+	$$(".one-image-link").forEach(element =>
+	{
+		const childRect = element.children[0].getBoundingClientRect();
+
+		element.style.margin = 0;
+
+		if (window.innerWidth > 330)
+		{
+			element.style.marginLeft = `${(window.innerWidth - childRect.width) / 2}px`;
+		}
+	});
 	
 	
 	

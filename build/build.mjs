@@ -51,7 +51,7 @@ async function buildSite()
 		});
 	});
 
-	buildSiteCSS();
+	await buildSiteCSS();
 }
 
 async function parseModifiedFiles(files, sitemap)
@@ -158,7 +158,7 @@ function buildCSSFile(file)
 {
 	const outputFile = file.replace(/(\.css)/, (match, $1) => `.min${$1}`);
 
-	exec(`uglifycss ${root + file} --output ${outputFile}`);
+	exec(`uglifycss ${root + file} --output ${root + outputFile}`);
 }
 
 async function buildSiteCSS()
@@ -171,6 +171,9 @@ async function buildSiteCSS()
 
 		bundle += text;
 	}
+
+	// :(
+	void(bundle);
 
 	await write("/style/css-bundle.min.css", bundle);
 }
