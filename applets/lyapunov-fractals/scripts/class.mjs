@@ -90,8 +90,6 @@ export class LyapunovFractal extends Applet
 		
 		this.zoom.init();
 		
-		console.log(this.zoom.level);
-		
 		const boundFunction = () => this.changeAspectRatio(true);
 		window.addEventListener("resize", boundFunction);
 		this.handlers.push([window, "resize", boundFunction]);
