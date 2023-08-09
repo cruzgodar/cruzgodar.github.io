@@ -34,7 +34,7 @@ const components =
 			
 			return `
 				<div class="image-link">
-					<a onclick="Page.Cards.show('${id}')" tabindex="-1">
+					<a data-card-id="${id}" tabindex="-1">
 						<img src="${src}" alt="${subtext}" tabindex="1"></img>
 					</a>
 					

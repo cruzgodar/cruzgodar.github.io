@@ -1,3 +1,4 @@
+import { showCard } from "/scripts/src/cards.mjs";
 import { showPage } from "/scripts/src/load-page.mjs"
 import { redirect } from "/scripts/src/navigation.mjs";
 
@@ -583,7 +584,7 @@ function showCard(id)
 	
 	highResImageElement.onload = () =>
 	{
-		setTimeout(() => Page.Cards.show("high-res-viewer"), 10);
+		setTimeout(() => showCard("high-res-viewer"), 10);
 	};
 	
 	highResImageElement.src = `/gallery/high-res/${id}.webp`;

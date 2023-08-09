@@ -1,3 +1,5 @@
+import { addHoverEventWithScale } from "./hover-events.mjs"
+
 export let bannerElement = null;
 
 export function setBannerElement(newBannerElement)
@@ -425,7 +427,7 @@ export function insertScrollButton()
 			
 			setTimeout(() => scrollButtonExists = true, Site.opacityAnimationTime * 4);
 			
-			try {Page.Load.HoverEvents.addWithScale(document.querySelector("#scroll-button"), 1.1);}
+			try {addHoverEventWithScale(document.querySelector("#scroll-button"), 1.1);}
 			catch(ex) {}
 		}, 100);
 		

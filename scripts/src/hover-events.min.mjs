@@ -42,7 +42,7 @@ export function setUpHoverEvents()
 	});
 }
 
-export function addHoverEvent(element)
+function addHoverEvent(element)
 {
 	element.addEventListener("mouseenter", () =>
 	{
@@ -86,7 +86,7 @@ export function addHoverEvent(element)
 	});
 }
 
-export function addHoverEventWithScale(element, scale, forceJs = false)
+function addHoverEventWithScale(element, scale, forceJs = false)
 {
 	element.addEventListener("mouseenter", () =>
 	{

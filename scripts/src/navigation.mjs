@@ -1,5 +1,7 @@
 import { fadeUpOut, fadeDownOut, fadeLeftOut, fadeRightOut, fadeOut } from "./animation.mjs"
 import { loadBanner, bannerOnScroll, bannerElement } from "./banners.mjs"
+import { cardIsOpen, hideCard } from "./cards.mjs";
+import { loadPage } from "./load-page.mjs";
 
 let currentlyRedirecting = false;
 
@@ -30,9 +32,9 @@ export async function redirect({
 		return;
 	}
 	
-	if (Page.Cards.isOpen)
+	if (cardIsOpen)
 	{
-		await Page.Cards.hide();
+		await hideCard();
 	}
 	
 	currentlyRedirecting = true;
@@ -89,7 +91,7 @@ export async function redirect({
 		
 		currentlyRedirecting = false;
 
-		Page.load();
+		loadPage();
 		
 		
 		

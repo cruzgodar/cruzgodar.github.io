@@ -1,7 +1,5 @@
 "use strict";
 
-import { removeHoverEvents } from "./hover-events.mjs";
-
 Page.element = null;
 Page.lastElement = null;
 
@@ -215,10 +213,6 @@ Site.load = async function(url)
 	
 	
 	
-	Page.Cards.closeButton.addEventListener("click", Page.Cards.hide);
-	
-	
-	
 	setScrollButtonExists(false);
 	
 	Site.Settings.setUp();
@@ -227,11 +221,6 @@ Site.load = async function(url)
 	{
 		addHeader();
 	}
-	
-	
-	
-	Page.Load.HoverEvents.add(Page.Cards.closeButton);
-	Page.Cards.closeButton.addEventListener("click", Page.Cards.hide);
 	
 	
 	
@@ -375,12 +364,6 @@ Site.Interaction =
 				{
 					document.activeElement.click();
 				}
-			}
-			
-			//Close cards when escape is pressed.
-			else if (e.keyCode === 27 && Page.Cards.isOpen)
-			{
-				Page.Cards.hide();
 			}
 		});
 

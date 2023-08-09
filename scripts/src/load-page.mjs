@@ -1,6 +1,8 @@
 import { fadeUpIn, fadeDownIn, fadeLeftIn, fadeRightIn, fadeIn } from "./animation.mjs"
 import { setUpBanner, bannerElement } from "./banners.mjs"
-import { setUpHoverEvents, setUpFocusEvents } from "./hover-events.mjs"
+import { setUpTextButtons, setUpNavButtons, setUpDropdowns } from "./buttons.mjs"
+import { addHoverEvent, setUpHoverEvents, setUpFocusEvents } from "./hover-events.mjs"
+import { typesetMath } from "./math.mjs"
 import { redirect, navigationTransitionType } from "./navigation.mjs"
 
 export let headerElement = null;
@@ -29,8 +31,6 @@ export async function loadPage()
 
 	equalizeAppletColumns();
 	
-	setUpDropdowns();
-	
 	setLinks();
 	
 	disableLinks();
@@ -40,6 +40,8 @@ export async function loadPage()
 	setUpTextButtons();
 	
 	setUpNavButtons();
+
+	setUpDropdowns();
 	
 	typesetMath();
 	
@@ -168,7 +170,7 @@ export function addHeader()
 		
 		document.body.querySelectorAll("#header-logo, #header-links a").forEach(link =>
 		{
-			Page.Load.HoverEvents.add(link);
+			addHoverEvent(link);
 			
 			const href = link.getAttribute("href");
 	
@@ -186,7 +188,7 @@ export function addHeader()
 		
 		const element = document.body.querySelector("#header-theme-button");
 		
-		Page.Load.HoverEvents.add(element);
+		addHoverEvent(element);
 		
 		element.addEventListener("click", () => Site.Settings.toggleTheme());
 		
@@ -231,473 +233,24 @@ async function fadeInPage()
 
 
 
-Page.Load =
+function setLinks()
 {
-	
-	// File break
-	
-	TextButtons:
+	$$("a").forEach(link =>
 	{
-		setUp: function()
-		{
-			const boundFunction = this.equalize.bind(this);
-			
-			window.addEventListener("resize", boundFunction);
-			Page.temporaryHandlers["resize"].push(boundFunction);
-			
-			setTimeout(() =>
-			{
-				boundFunction();
-			}, 50);
-			
-			setTimeout(() =>
-			{
-				boundFunction();
-			}, 500);
-		},
-
-
-
-		//Makes linked text buttons have the same width and height.
-		equalize: function()
-		{
-			$$(".text-button").forEach(textButton => textButton.parentNode.style.margin = "0 auto");
-			
-			
-			
-			let heights = [];
-			
-			let maxHeight = 0;
-			
-			let widths = [];
-			
-			let maxWidth = 0;
-			
-			
-			
-			const elements = $$(".linked-text-button");
-			
-			elements.forEach((element, index) =>
-			{
-				element.style.height = "fit-content";
-				element.style.width = "fit-content";
-				
-				heights.push(element.offsetHeight);
-				
-				if (heights[index] > maxHeight)
-				{
-					maxHeight = heights[index];
-				}
-				
-				widths.push(element.offsetWidth);
-				
-				if (widths[index] > maxWidth)
-				{
-					maxWidth = widths[index];
-				}
-			});
-			
-			
-			
-			elements.forEach((element, index) =>
-			{
-				if (heights[index] < maxHeight)
-				{
-					element.style.height = maxHeight + "px";
-				}
-				
-				else
-				{
-					element.style.height = "fit-content";
-				}
-				
-				
-				
-				if (widths[index] < maxWidth)
-				{
-					element.style.width = maxWidth + "px";
-				}
-				
-				else
-				{
-					element.style.width = "fit-content";
-				}
-				
-				element.parentNode.parentNode.style.gridTemplateColumns = `repeat(auto-fit, ${maxWidth}px)`;
-			});
-		},
+		const href = link.getAttribute("href");
 		
-		
-		
-		setUpNavButtons: function()
+		if (href === null)
 		{
-			const list = Site.sitemap[Site.sitemap[Page.url].parent].children;
-			const index = list.indexOf(Page.url);
-			
-			if (index === -1)
-			{
-				console.error("Page not found in page list!");
-				
-				return;
-			}
-			
-			
-			
-			if (index > 0)
-			{
-				$$(".previous-nav-button").forEach(element =>
-				{
-					element.addEventListener("click", () => redirect({ url: list[index - 1] }));
-				});
-			}
-			
-			else
-			{
-				$$(".previous-nav-button").forEach(element => element.parentNode.remove());
-			}
-			
-			
-			
-			$$(".home-nav-button").forEach(element => 
-			{
-				element.addEventListener("click", () => redirect({ url: Site.sitemap[Page.url].parent }));
-			});
-			
-			
-			
-			if (index < list.length - 1)
-			{
-				$$(".next-nav-button").forEach(element =>
-				{
-					element.addEventListener("click", () => redirect({ url: list[index + 1] }));
-				});
-			}
-			
-			else
-			{
-				$$(".next-nav-button").forEach(element => element.parentNode.remove());
-			}
+			return;
 		}
-	},
-	
-	function setUpDropdowns()
-	{
-		$$("select").forEach(element =>
-		{
-			const buttonElement = element.previousElementSibling;
-			
-			buttonElement.innerHTML = `${element.querySelector(`[value=${element.value}]`).textContent}  <span style="font-size: 12px">&#x25BC;</span>`;
-			
-			buttonElement.parentNode.parentNode.style.gridTemplateColumns = `repeat(auto-fit, 100%)`;
-			
-			element.addEventListener("input", () =>
-			{
-				buttonElement.innerHTML = `${element.querySelector(`[value=${element.value}]`).textContent}  <span style="font-size: 12px">&#x25BC;</span>`;
-			});
-		});
-	}
 
-	// Keep in page-load
-
-	//To keep expected link functionality (open in new tab, draggable, etc.), all elements with calls to redirect() are wrapped in <a> tags. Presses of <a> tags (without .real-link) are ignored, but to extend the functionality of url variables to the times they are used, we need to target them all and add the url variables onto them. Also, since the website is a single page app, we need to format them correctly, too, using the page variable.
-	Links:
-	{
-		set: function()
-		{
-			$$("a").forEach(link =>
-			{
-				const href = link.getAttribute("href");
-				
-				if (href === null)
-				{
-					return;
-				}
-
-				const inNewTab = !(href.slice(0, 5) !== "https" && href.slice(0, 4) !== "data" && !(link.getAttribute("data-in-new-tab") == 1));
-				
-				link.addEventListener("click", () => redirect({ url: href, inNewTab }));
-			});
-		},
-
-
-
-		disable: function()
-		{
-			$$("a:not(.real-link)").forEach(link => link.addEventListener("click", e => e.preventDefault()));
-		}
-	},
-	
-	// File break
-	
-	Math:
-	{
-		lengthCap: 250,
+		const inNewTab = !(href.slice(0, 5) !== "https" && href.slice(0, 4) !== "data" && !(link.getAttribute("data-in-new-tab") == 1));
 		
-		typeset: function()
-		{
-			return MathJax.typesetPromise();
-		},
-		
-		showTex: async function(element)
-		{
-			if (!Page.Cards.isOpen || element.getAttribute("data-showing-tex") === "1")
-			{
-				return;
-			}
-			
-			element.setAttribute("data-showing-tex", "1");
-			
-			
-			element.classList.remove("active");
-			element.classList.remove("hover");
-			
-			const color = Site.Settings.urlVars["theme"] === 1 ? "rgba(24, 24, 24, 0)" : "rgba(255, 255, 255, 0)";
-			
-			await new Promise((resolve, reject) =>
-			{
-				anime({
-					targets: element,
-					scale: 1,
-					borderRadius: "0px",
-					backgroundColor: color,
-					duration: 0,
-					complete: resolve
-				});
-			});
-			
-			
-			
-			const tex = element.getAttribute("data-source-tex").replaceAll(/\[NEWLINE\]/g, "\n").replaceAll(/\[TAB\]/g, "\t");
-			
-			
-			
-			const oldHeight = element.getBoundingClientRect().height;
-			const oldWidth = element.getBoundingClientRect().width;
-			element.style.minHeight = `${oldHeight}px`;
-			
-			const oldPadding = element.style.padding;
-			
-			
-			const junkDrawer = document.createElement("div");
-			junkDrawer.style.display = "none";
-			Page.element.appendChild(junkDrawer);
-			junkDrawer.appendChild(element.firstElementChild);
-			
-			
-			
-			let texElement = null;
-			
-			if (tex.indexOf("\n") !== -1)
-			{
-				texElement = document.createElement("textarea");
-				texElement.textContent = tex;
-				texElement.style.minHeight = `${oldHeight - 17}px`;
-				texElement.style.width = "100%";
-				texElement.style.marginLeft = "-6px";
-				element.style.width = "75%";
-			}
-			
-			else
-			{
-				texElement = document.createElement("input");
-				texElement.setAttribute("type", "text");
-				texElement.setAttribute("value", tex);
-				texElement.style.height = `${oldHeight - 13}px`;
-				texElement.style.width = `${oldWidth - 13}px`;
-			}
-			
-			texElement.style.fontFamily = "'Source Code Pro', monospace";
-			element.appendChild(texElement);
-			
-			element.style.padding = 0;
-			
-			texElement.select();
-			setTimeout(() => texElement.select(), 50);
-			setTimeout(() => texElement.select(), 250);
-			
-			texElement.onblur = () =>
-			{
-				texElement.remove();
-				
-				element.style.removeProperty("width");
-				element.style.padding = oldPadding;
-				element.appendChild(junkDrawer.firstElementChild);
-				element.style.minHeight = "";
-				junkDrawer.remove();
-				
-				element.setAttribute("data-showing-tex", "0");
-				element.classList.add("active");
-			};
-		}
-	},
-};
+		link.addEventListener("click", () => redirect({ url: href, inNewTab }));
+	});
+}
 
-// File break
-
-Page.Cards =
+function disableLinks()
 {
-	container: document.querySelector("#card-container"),
-	currentCard: null,
-	closeButton: document.querySelector("#card-close-button"),
-	
-	closeButtonIsFixed: false,
-	
-	isOpen: false,
-	
-	animationTime: 500,
-	
-	show: async function(id)
-	{
-		this.isOpen = true;
-		
-		this.container.style.display = "flex";
-		this.container.style.opacity = 0;
-		this.container.style.transform = "scale(1)";
-		
-		
-		
-		//Makes the animation look a little nicer (since it doesn't cut off the bottom of long cards).
-		
-		
-		
-		this.container.style.display = "flex";
-		
-		this.currentCard = document.querySelector(`#${id}-card`);
-		
-		this.container.appendChild(this.currentCard);
-		this.currentCard.insertBefore(this.closeButton, this.currentCard.firstElementChild);
-		
-		this.container.scroll(0, 0);
-		
-		
-		
-		const rect = this.currentCard.getBoundingClientRect();
-		
-		if (rect.height > window.innerHeight - 32)
-		{
-			this.container.style.justifyContent = "flex-start";
-		}
-		
-		else
-		{
-			this.container.style.justifyContent = "center";
-		}
-		
-		
-		
-		this.container.style.transform = "scale(.95)";
-		
-		Page.element.style.filter = "brightness(1)";
-		document.querySelector("#header").style.filter = "brightness(1)";
-		document.querySelector("#header-container").style.filter = "brightness(1)";
-		
-		Page.element.style.transformOrigin = `50% calc(50vh + ${window.scrollY}px)`;
-		
-		document.documentElement.addEventListener("click", this.handleClickEvent);
-		
-		
-		
-		await new Promise((resolve, reject) =>
-		{
-			anime({
-				targets: this.container,
-				opacity: 1,
-				scale: 1,
-				duration: this.animationTime,
-				easing: "easeOutQuint"
-			});
-			
-			anime({
-				targets: Page.element,
-				duration: this.animationTime,
-				easing: "easeOutQuint"
-			});
-			
-			anime({
-				targets: [Page.element, document.querySelector("#header"), document.querySelector("#header-container")],
-				filter: "brightness(.5)",
-				scale: .975,
-				duration: this.animationTime,
-				easing: "easeOutQuint"
-			});
-			
-			const themeColor = Site.Settings.urlVars["theme"] === 1 ? "#0c0c0c" : "#7f7f7f";
-			
-			anime({
-				targets: Site.Settings.metaThemeColorElement,
-				content: themeColor,
-				duration: this.animationTime,
-				easing: "easeOutQuint",
-			});
-			
-			const color = Site.Settings.urlVars["theme"] === 1 ? "rgb(12, 12, 12)" : "rgb(127, 127, 127)";
-			
-			anime({
-				targets: document.documentElement,
-				backgroundColor: color,
-				duration: this.animationTime,
-				easing: "easeOutQuint",
-				complete: resolve
-			});
-		});
-	},
-	
-	hide: async function()
-	{
-		Page.Cards.isOpen = false;
-		
-		await new Promise((resolve, reject) =>
-		{
-			anime({
-				targets: [Page.element, document.querySelector("#header"), document.querySelector("#header-container")],
-				filter: "brightness(1)",
-				scale: 1,
-				duration: Page.Cards.animationTime,
-				easing: "easeOutQuint"
-			});
-			
-			const themeColor = Site.Settings.urlVars["theme"] === 1 ? "#181818" : "#ffffff";
-			
-			anime({
-				targets: Site.Settings.metaThemeColorElement,
-				content: themeColor,
-				duration: Page.Cards.animationTime,
-				easing: "easeOutQuint",
-			});
-			
-			const color = Site.Settings.urlVars["theme"] === 1 ? "rgb(24, 24, 24)" : "rgb(255, 255, 255)";
-		
-			anime({
-				targets: document.documentElement,
-				backgroundColor: color,
-				duration: Page.Cards.animationTime,
-				easing: "easeOutQuint"
-			});
-		
-			anime({
-				targets: Page.Cards.container,
-				opacity: 0,
-				scale: .95,
-				duration: Page.Cards.animationTime,
-				easing: "easeOutQuint",
-				complete: resolve
-			});
-		});
-		
-		Page.Cards.container.style.display = "none";
-		
-		Page.element.appendChild(Page.Cards.currentCard);
-		
-		Page.Cards.container.appendChild(Page.Cards.closeButton);
-		
-		document.documentElement.removeEventListener("click", Page.Cards.handleClickEvent);
-	},
-	
-	handleClickEvent: function(e)
-	{
-		if (e.target.id === "card-container")
-		{
-			Page.Cards.hide();
-		}
-	}
-};
+	$$("a:not(.real-link)").forEach(link => link.addEventListener("click", e => e.preventDefault()));
+}

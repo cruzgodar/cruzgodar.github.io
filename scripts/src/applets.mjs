@@ -1,3 +1,5 @@
+import { addHoverEventWithScale } from "./hover-events.mjs"
+
 export class Applet
 {
 	canvas;
@@ -233,7 +235,7 @@ export class Applet
 				}
 			});
 			
-			Page.Load.HoverEvents.addWithScale(checkboxElement.parentNode, 1.1);
+			addHoverEventWithScale(checkboxElement.parentNode, 1.1);
 			
 			anime({
 				targets: dialog,

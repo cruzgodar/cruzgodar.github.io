@@ -352,12 +352,6 @@ Site.Settings =
 			
 			setTimeout(() =>
 			{
-				purple = "#772fbf";
-				blue = "#2f77bf";
-				red = "#bf2f2f";
-				green = "#2fbf2f";
-				black = "#000000";
-				
 				try {createDesmosGraphs(false);}
 				catch(ex) {}
 				

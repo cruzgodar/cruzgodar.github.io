@@ -1,5 +1,5 @@
 import { bannerOnScroll } from "./banners.mjs"
-import { headerElement } from "./load-page.mjs"
+import { resizeCard } from "./cards.mjs";
 
 export let aspectRatio = window.innerWidth / window.innerHeight;
 
@@ -24,22 +24,7 @@ function onResize()
 		destroyAppletColumns();
 	}
 	
-	
-	
-	if (Page.Cards.isOpen)
-	{
-		const rect = Page.Cards.currentCard.getBoundingClientRect();
-		
-		if (rect.height > window.innerHeight - 32)
-		{
-			Page.Cards.container.style.justifyContent = "flex-start";
-		}
-		
-		else
-		{
-			Page.Cards.container.style.justifyContent = "center";
-		}
-	}
+	resizeCard();
 	
 	
 	
