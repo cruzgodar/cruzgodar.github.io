@@ -52,11 +52,6 @@
 	font-size: 100%;
 }
 
-.one-image-link
-{
-	grid-template-columns: repeat(2, 1fr) !important;
-}
-
 
 
 img[src="/gallery/cover.webp"]

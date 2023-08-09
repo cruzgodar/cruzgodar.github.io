@@ -172,10 +172,10 @@ async function buildSiteCSS()
 		bundle += text;
 	}
 
-	// :(
 	void(bundle);
 
 	await write("/style/css-bundle.min.css", bundle);
+	console.log("style/css-bundle.min.css");
 }
 
 
