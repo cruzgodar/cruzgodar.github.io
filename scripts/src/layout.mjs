@@ -1,4 +1,5 @@
 import { bannerOnScroll } from "./banners.mjs"
+import { headerElement } from "./load-page.mjs"
 
 export let aspectRatio = window.innerWidth / window.innerHeight;
 

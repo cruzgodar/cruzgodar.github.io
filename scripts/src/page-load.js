@@ -117,7 +117,7 @@ Page.show = function()
 	{
 		setTimeout(async () =>
 		{
-			await this.Load.fadeIn();
+			await fadeInPage();
 				
 			resolve();
 		}, 10);

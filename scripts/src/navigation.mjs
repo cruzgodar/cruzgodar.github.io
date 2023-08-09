@@ -202,93 +202,84 @@ function getTransitionType(url)
 
 
 
-function fadeOutPage({ url, noFadeOut })
+async function fadeOutPage({ url, noFadeOut })
 {
-	return new Promise(async (resolve, reject) =>
+	if (Site.forceDarkThemePages.includes(url) && Site.Settings.urlVars["theme"] !== 1)
 	{
-		if (Site.forceDarkThemePages.includes(url) && Site.Settings.urlVars["theme"] !== 1)
-		{
-			Site.Settings.revertTheme = 0;
-			
-			Site.Settings.forcedTheme = true;
-			
-			Site.Settings.toggleTheme(false, true);
-		}
+		Site.Settings.revertTheme = 0;
 		
+		Site.Settings.forcedTheme = true;
 		
+		Site.Settings.toggleTheme(false, true);
+	}
+	
+	
+	
+	if (noFadeOut)
+	{
+		Page.element.style.opacity = 0;
 		
-		if (noFadeOut)
-		{
-			Page.element.style.opacity = 0;
-			
-			resolve();
-			return;
-		}
-		
-		
-		
-		//Fade out the current page's content.
-		let promise = null;
-		
+		return;
+	}
+	
+	
+	
+	//Fade out the current page's content.
+	await (() =>
+	{
 		if (navigationTransitionType === 1)
 		{
-			promise = bannerElement ? Promise.all([fadeUpOut(Page.element, Site.pageAnimationTime), fadeUpOut(bannerElement, Site.pageAnimationTime * 2)]) : fadeUpOut(Page.element, Site.pageAnimationTime);
+			return bannerElement ? Promise.all([fadeUpOut(Page.element, Site.pageAnimationTime), fadeUpOut(bannerElement, Site.pageAnimationTime * 2)]) : fadeUpOut(Page.element, Site.pageAnimationTime);
 		}
 		
 		else if (navigationTransitionType === -1)
 		{
-			promise = bannerElement ? Promise.all([fadeDownOut(bannerElement, Site.pageAnimationTime * 2), fadeDownOut(Page.element, Site.pageAnimationTime)]) : fadeDownOut(Page.element, Site.pageAnimationTime);
+			return bannerElement ? Promise.all([fadeDownOut(bannerElement, Site.pageAnimationTime * 2), fadeDownOut(Page.element, Site.pageAnimationTime)]) : fadeDownOut(Page.element, Site.pageAnimationTime);
 		}
 		
 		else if (navigationTransitionType === 2)
 		{
-			promise = bannerElement ? Promise.all([fadeLeftOut(bannerElement, Site.pageAnimationTime * 2), fadeLeftOut(Page.element, Site.pageAnimationTime)]) : fadeLeftOut(Page.element, Site.pageAnimationTime);
+			return bannerElement ? Promise.all([fadeLeftOut(bannerElement, Site.pageAnimationTime * 2), fadeLeftOut(Page.element, Site.pageAnimationTime)]) : fadeLeftOut(Page.element, Site.pageAnimationTime);
 		}
 		
 		else if (navigationTransitionType === -2)
 		{
-			promise = bannerElement ? Promise.all([fadeRightOut(bannerElement, Site.pageAnimationTime * 2), fadeRightOut(Page.element, Site.pageAnimationTime)]) : fadeRightOut(Page.element, Site.pageAnimationTime);
+			return bannerElement ? Promise.all([fadeRightOut(bannerElement, Site.pageAnimationTime * 2), fadeRightOut(Page.element, Site.pageAnimationTime)]) : fadeRightOut(Page.element, Site.pageAnimationTime);
 		}
 		
 		else
 		{
-			promise = bannerElement ? Promise.all([fadeOut(bannerElement, Site.pageAnimationTime * 2), fadeOut(Page.element, Site.pageAnimationTime)]) : fadeOut(Page.element, Site.pageAnimationTime);
+			return bannerElement ? Promise.all([fadeOut(bannerElement, Site.pageAnimationTime * 2), fadeOut(Page.element, Site.pageAnimationTime)]) : fadeOut(Page.element, Site.pageAnimationTime);
 		}
+	})()
 		
-		await promise;
-			
-			
-			
-		//If necessary, take the time to fade back to the default background color, whatever that is.
-		if (Page.backgroundColorChanged)
-		{
-			document.documentElement.classList.add("background-transition");
-			document.body.classList.add("background-transition");
-
-			const backgroundColor = Site.Settings.urlVars["theme"] === 1 ? "rgb(24, 24, 24)" : "rgb(255, 255, 255)";
-
-			document.documentElement.style.backgroundColor = backgroundColor;
-			document.body.style.backgroundColor = backgroundColor;
-			
-			anime({
-				targets: Site.Settings.metaThemeColorElement,
-				content: Site.Settings.urlVars["theme"] === 1 ? "#181818" : "#ffffff",
-				duration: Site.backgroundColorAnimationTime,
-				easing: "cubicBezier(.42, 0, .58, 1)",
-				complete: () =>
-				{
-					document.body.style.backgroundColor = "";
-					
-					document.documentElement.classList.remove("background-transition");
-					document.body.classList.remove("background-transition");
-				}
-			});
-		}
-
-
 		
-		resolve();
-	});
+		
+	//If necessary, take the time to fade back to the default background color, whatever that is.
+	if (Page.backgroundColorChanged)
+	{
+		document.documentElement.classList.add("background-transition");
+		document.body.classList.add("background-transition");
+
+		const backgroundColor = Site.Settings.urlVars["theme"] === 1 ? "rgb(24, 24, 24)" : "rgb(255, 255, 255)";
+
+		document.documentElement.style.backgroundColor = backgroundColor;
+		document.body.style.backgroundColor = backgroundColor;
+		
+		anime({
+			targets: Site.Settings.metaThemeColorElement,
+			content: Site.Settings.urlVars["theme"] === 1 ? "#181818" : "#ffffff",
+			duration: Site.backgroundColorAnimationTime,
+			easing: "cubicBezier(.42, 0, .58, 1)",
+			complete: () =>
+			{
+				document.body.style.backgroundColor = "";
+				
+				document.documentElement.classList.remove("background-transition");
+				document.body.classList.remove("background-transition");
+			}
+		});
+	}
 }
 
 

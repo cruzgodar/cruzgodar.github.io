@@ -243,7 +243,7 @@ Site.load = async function(url)
 	
 	if (!Site.showingPresentation)
 	{
-		Page.Load.addHeader();
+		addHeader();
 	}
 	
 	
