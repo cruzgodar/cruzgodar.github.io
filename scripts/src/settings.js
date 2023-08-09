@@ -352,13 +352,13 @@ Site.Settings =
 			
 			setTimeout(() =>
 			{
-				DESMOS_PURPLE = "#772fbf";
-				DESMOS_BLUE = "#2f77bf";
-				DESMOS_RED = "#bf2f2f";
-				DESMOS_GREEN = "#2fbf2f";
-				DESMOS_BLACK = "#000000";
+				purple = "#772fbf";
+				blue = "#2f77bf";
+				red = "#bf2f2f";
+				green = "#2fbf2f";
+				black = "#000000";
 				
-				try {Page.Load.createDesmosGraphs(false);}
+				try {createDesmosGraphs(false);}
 				catch(ex) {}
 				
 				setTimeout(() =>
@@ -422,13 +422,7 @@ Site.Settings =
 			
 			setTimeout(() =>
 			{
-				DESMOS_PURPLE = "#60c000";
-				DESMOS_BLUE = "#c06000";
-				DESMOS_RED = "#00c0c0";
-				DESMOS_GREEN = "#c000c0";
-				DESMOS_BLACK = "#000000";
-				
-				try {Page.Load.createDesmosGraphs(true);}
+				try {createDesmosGraphs(true);}
 				catch(ex) {}
 				
 				setTimeout(() =>

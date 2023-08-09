@@ -1,3 +1,4 @@
+import { showPage } from "/scripts/src/load-page.mjs"
 import { redirect } from "/scripts/src/navigation.mjs";
 
 const galleryImageData = 
@@ -607,5 +608,5 @@ export function load()
 		redirect({ url: galleryImageData[currentId].imageLink, inNewTab: true })
 	});
 	
-	Page.show();
+	showPage();
 }

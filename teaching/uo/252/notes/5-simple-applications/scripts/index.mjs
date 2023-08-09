@@ -1,6 +1,9 @@
+import { showPage } from "/scripts/src/load-page.mjs"
+import { createDesmosGraphs, setGetDesmosData } from "/scripts/src/desmos.mjs"
+
 export function load()
 {
-	Page.Load.getDesmosData = () =>
+	setGetDesmosData((purple, blue, red, green, black) =>
 	{
 		const data =
 		{
@@ -10,10 +13,10 @@ export function load()
 				
 				expressions:
 				[
-					{latex: String.raw`v(t) = 3t - 5 \left\{0 \leq t \leq 3\right\}`, color: DESMOS_PURPLE},
-					{latex: String.raw`s(t) = \int_0^t v(x) dx`, color: DESMOS_BLUE},
-					{latex: String.raw`v_{pos}(t) = \left|v(t)\right|`, color: DESMOS_RED},
-					{latex: String.raw`s_{tot}(t) = \int_0^t v_{pos}(x) dx`, color: DESMOS_GREEN}
+					{latex: String.raw`v(t) = 3t - 5 \left\{0 \leq t \leq 3\right\}`, color: purple},
+					{latex: String.raw`s(t) = \int_0^t v(x) dx`, color: blue},
+					{latex: String.raw`v_{pos}(t) = \left|v(t)\right|`, color: red},
+					{latex: String.raw`s_{tot}(t) = \int_0^t v_{pos}(x) dx`, color: green}
 				]
 			},
 			
@@ -25,16 +28,16 @@ export function load()
 				
 				expressions:
 				[
-					{latex: String.raw`x^4 - x^2`, color: DESMOS_PURPLE},
-					{latex: String.raw`\sin(x)`, color: DESMOS_BLUE}
+					{latex: String.raw`x^4 - x^2`, color: purple},
+					{latex: String.raw`\sin(x)`, color: blue}
 				]
 			}
 		};
 		
 		return data;
-	};
+	});
 	
-	Page.Load.createDesmosGraphs();
+	createDesmosGraphs();
 	
-	Page.show();
+	showPage();
 }

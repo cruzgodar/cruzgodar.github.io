@@ -1,5 +1,7 @@
 "use strict";
 
+import { removeHoverEvents } from "./hover-events.mjs";
+
 Page.element = null;
 Page.lastElement = null;
 
@@ -85,26 +87,6 @@ Site.navigationAnimationDistanceVertical = Math.min(window.innerHeight / 20, 25)
 Site.navigationAnimationDistanceHorizontal = Math.min(window.innerWidth / 20, 25);
 	
 Site.showingPresentation = false;	
-
-Site.appletProcessId = 0;
-
-
-
-let DESMOS_PURPLE = "#772fbf";
-let DESMOS_BLUE = "#2f77bf";
-let DESMOS_RED = "#bf2f2f";
-let DESMOS_GREEN = "#2fbf2f";
-let DESMOS_BLACK = "#000000";
-
-/*
-//Dark theme versions
-DESMOS_PURPLE = "#60c000";
-DESMOS_BLUE = "#c06000";
-DESMOS_RED = "#00c0c0";
-DESMOS_GREEN = "#c000c0";
-DESMOS_BLACK = "#000000";
-*/
-
 	
 	
 //Redirects to the chosen page and sets up all the miscellaneous things that make the site work.
@@ -434,7 +416,7 @@ Site.Interaction =
 		
 		if (!this.currentlyTouchDevice)
 		{
-			Page.Load.HoverEvents.remove();
+			removeHoverEvents();
 			
 			this.currentlyTouchDevice = true;
 		}

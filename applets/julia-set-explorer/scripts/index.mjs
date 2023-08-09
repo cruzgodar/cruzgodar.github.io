@@ -1,3 +1,4 @@
+import { showPage } from "/scripts/src/load-page.mjs"
 import { JuliaSet } from "./class.mjs";
 
 export function load()
@@ -51,5 +52,5 @@ export function load()
 	
 	
 	
-	Page.show();
+	showPage();
 }

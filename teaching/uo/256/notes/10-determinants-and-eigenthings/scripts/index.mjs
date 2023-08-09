@@ -1,6 +1,9 @@
+import { showPage } from "/scripts/src/load-page.mjs"
+import { createDesmosGraphs, setGetDesmosData } from "/scripts/src/desmos.mjs"
+
 export function load()
 {
-	Page.Load.getDesmosData = () =>
+	setGetDesmosData((purple, blue, red, green, black) =>
 	{
 		const data =
 		{
@@ -10,33 +13,33 @@ export function load()
 				
 				expressions:
 				[
-					{latex: String.raw`v_1 = (1, 2)`, color: DESMOS_PURPLE},
-					{latex: String.raw`v_2 = (4, 0)`, color: DESMOS_PURPLE},
+					{latex: String.raw`v_1 = (1, 2)`, color: purple},
+					{latex: String.raw`v_2 = (4, 0)`, color: purple},
 					
 					{latex: String.raw`\lambda_1 = 3`},
 					{latex: String.raw`\lambda_2 = 2`},
 					
 					{latex: String.raw`\lambda_1\lambda_2`},
 					
-					{latex: String.raw`(0, 0), v_1, v_1 + v_2`, points: false, lines: true, color: DESMOS_PURPLE, secret: true},
-					{latex: String.raw`(0, 0), v_2, v_1 + v_2`, points: false, lines: true, color: DESMOS_PURPLE, secret: true},
+					{latex: String.raw`(0, 0), v_1, v_1 + v_2`, points: false, lines: true, color: purple, secret: true},
+					{latex: String.raw`(0, 0), v_2, v_1 + v_2`, points: false, lines: true, color: purple, secret: true},
 					
-					{latex: String.raw`(0, 0), \lambda_1 v_1, \lambda_1 v_1 + \lambda_2 v_2`, points: false, lines: true, color: DESMOS_BLUE, secret: true},
-					{latex: String.raw`(0, 0), \lambda_2 v_2, \lambda_1 v_1 + \lambda_2 v_2`, points: false, lines: true, color: DESMOS_BLUE, secret: true},
+					{latex: String.raw`(0, 0), \lambda_1 v_1, \lambda_1 v_1 + \lambda_2 v_2`, points: false, lines: true, color: blue, secret: true},
+					{latex: String.raw`(0, 0), \lambda_2 v_2, \lambda_1 v_1 + \lambda_2 v_2`, points: false, lines: true, color: blue, secret: true},
 					
-					{latex: String.raw`\frac{v_1}{2}`, label: String.raw`v₁`, showLabel: true, labelOrientation: Desmos.LabelOrientations.RIGHT, color: DESMOS_PURPLE, hidden: true, secret: true},
-					{latex: String.raw`\frac{v_2}{2}`, label: String.raw`v₂`, showLabel: true, labelOrientation: Desmos.LabelOrientations.BELOW, color: DESMOS_PURPLE, hidden: true, secret: true},
+					{latex: String.raw`\frac{v_1}{2}`, label: String.raw`v₁`, showLabel: true, labelOrientation: Desmos.LabelOrientations.RIGHT, color: purple, hidden: true, secret: true},
+					{latex: String.raw`\frac{v_2}{2}`, label: String.raw`v₂`, showLabel: true, labelOrientation: Desmos.LabelOrientations.BELOW, color: purple, hidden: true, secret: true},
 					
-					{latex: String.raw`\frac{\lambda_1 v_1}{1.5}`, label: String.raw` λ₁v₁`, showLabel: true, labelOrientation: Desmos.LabelOrientations.RIGHT, color: DESMOS_BLUE, hidden: true, secret: true},
-					{latex: String.raw`\frac{\lambda_2 v_2}{1.5}`, label: String.raw`λ₂v₂`, showLabel: true, labelOrientation: Desmos.LabelOrientations.BELOW, color: DESMOS_BLUE, hidden: true, secret: true},
+					{latex: String.raw`\frac{\lambda_1 v_1}{1.5}`, label: String.raw` λ₁v₁`, showLabel: true, labelOrientation: Desmos.LabelOrientations.RIGHT, color: blue, hidden: true, secret: true},
+					{latex: String.raw`\frac{\lambda_2 v_2}{1.5}`, label: String.raw`λ₂v₂`, showLabel: true, labelOrientation: Desmos.LabelOrientations.BELOW, color: blue, hidden: true, secret: true},
 				]
 			},
 		};
 		
 		return data;
-	};
+	});
 	
-	Page.Load.createDesmosGraphs();
+	createDesmosGraphs();
 	
-	Page.show();
+	showPage();
 }

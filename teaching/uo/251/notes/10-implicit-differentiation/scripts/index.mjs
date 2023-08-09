@@ -1,6 +1,9 @@
+import { showPage } from "/scripts/src/load-page.mjs"
+import { createDesmosGraphs, setGetDesmosData } from "/scripts/src/desmos.mjs"
+
 export function load()
 {
-	Page.Load.getDesmosData = () =>
+	setGetDesmosData((purple, blue, red, green, black) =>
 	{
 		const data =
 		{
@@ -10,13 +13,13 @@ export function load()
 				
 				expressions:
 				[
-					{latex: String.raw`x^2+y^2 = 1`, color: DESMOS_PURPLE},
+					{latex: String.raw`x^2+y^2 = 1`, color: purple},
 					{latex: String.raw`a = .5`, sliderBounds: {min: -1, max: 1}},
 					{latex: String.raw`f(x) = \sqrt{1 - x^2}`, hidden: true, secret: true},
-					{latex: String.raw`(a, f(a))`, secret: true, color: DESMOS_BLUE},
-					{latex: String.raw`(a, -f(a))`, secret: true, color: DESMOS_BLUE},
-					{latex: String.raw`y = f(a) + f'(a)(x - a)`, color: DESMOS_RED, secret: true},
-					{latex: String.raw`y = -f(a) + -f'(a)(x - a)`, color: DESMOS_RED, secret: true}
+					{latex: String.raw`(a, f(a))`, secret: true, color: blue},
+					{latex: String.raw`(a, -f(a))`, secret: true, color: blue},
+					{latex: String.raw`y = f(a) + f'(a)(x - a)`, color: red, secret: true},
+					{latex: String.raw`y = -f(a) + -f'(a)(x - a)`, color: red, secret: true}
 				]
 			},
 			
@@ -28,7 +31,7 @@ export function load()
 				
 				expressions:
 				[
-					{latex: String.raw`\cos(\sin(y)) = \cos(x)`, color: DESMOS_PURPLE}
+					{latex: String.raw`\cos(\sin(y)) = \cos(x)`, color: purple}
 				]
 			},
 			
@@ -40,15 +43,15 @@ export function load()
 				
 				expressions:
 				[
-					{latex: String.raw`x\sin(xy) = y`, color: DESMOS_PURPLE}
+					{latex: String.raw`x\sin(xy) = y`, color: purple}
 				]
 			},
 		};
 		
 		return data;
-	}
+	});
 	
-	Page.Load.createDesmosGraphs();
+	createDesmosGraphs();
 	
-	Page.show();
+	showPage();
 }

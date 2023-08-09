@@ -1,6 +1,9 @@
+import { showPage } from "/scripts/src/load-page.mjs"
+import { createDesmosGraphs, setGetDesmosData } from "/scripts/src/desmos.mjs"
+
 export function load()
 {
-	Page.Load.getDesmosData = () =>
+	setGetDesmosData((purple, blue, red, green, black) =>
 	{
 		const data =
 		{
@@ -10,12 +13,12 @@ export function load()
 				
 				expressions:
 				[
-					{latex: String.raw`f(x) = x^3 - 2x^2 + 2`, color: DESMOS_PURPLE},
+					{latex: String.raw`f(x) = x^3 - 2x^2 + 2`, color: purple},
 					{latex: String.raw`a = 0`},
 					{latex: String.raw`b = 2`},
 					
-					{latex: String.raw`x = [a, b] \{0 \leq y \leq f(x)\} `, color: DESMOS_PURPLE, secret: true},
-					{latex: String.raw`0 \leq y \leq f(x) \{a \leq x \leq b\}`, color: DESMOS_PURPLE, secret: true}
+					{latex: String.raw`x = [a, b] \{0 \leq y \leq f(x)\} `, color: purple, secret: true},
+					{latex: String.raw`0 \leq y \leq f(x) \{a \leq x \leq b\}`, color: purple, secret: true}
 				]
 			},
 			
@@ -27,8 +30,8 @@ export function load()
 				
 				expressions:
 				[
-					{latex: String.raw`f(x) = \frac{\sin(x)}{x}`, color: DESMOS_BLUE},
-					{latex: String.raw`(0, 1)`, color: DESMOS_BLUE, pointStyle: "OPEN"}
+					{latex: String.raw`f(x) = \frac{\sin(x)}{x}`, color: blue},
+					{latex: String.raw`(0, 1)`, color: blue, pointStyle: "OPEN"}
 				]
 			},
 			
@@ -40,14 +43,14 @@ export function load()
 				
 				expressions:
 				[
-					{latex: String.raw`f(x) = x^2`, color: DESMOS_PURPLE},
+					{latex: String.raw`f(x) = x^2`, color: purple},
 					{latex: String.raw`a = 1`},
 					{latex: String.raw`h = 0.1`},
 					{latex: String.raw`m = \frac{f(a + h) - f(a)}{h}`},
 					
-					{latex: String.raw`(a, f(a))`, color: DESMOS_BLUE, secret: true},
-					{latex: String.raw`(a + h, f(a + h))`, color: DESMOS_BLUE, secret: true},
-					{latex: String.raw`y - f(a) = m(x - a)`, color: DESMOS_BLUE, secret: true}
+					{latex: String.raw`(a, f(a))`, color: blue, secret: true},
+					{latex: String.raw`(a + h, f(a + h))`, color: blue, secret: true},
+					{latex: String.raw`y - f(a) = m(x - a)`, color: blue, secret: true}
 				]
 			},
 			
@@ -59,17 +62,17 @@ export function load()
 				
 				expressions:
 				[
-					{latex: String.raw`f(x) = x^3`, color: DESMOS_BLUE},
+					{latex: String.raw`f(x) = x^3`, color: blue},
 					{latex: String.raw`a = -2`},
 					{latex: String.raw`b = 4`},
 					{latex: String.raw`\int_a^b f(x)\ dx`},
 					
-					{latex: String.raw`(a, f(a))`, color: DESMOS_BLUE, secret: true},
-					{latex: String.raw`(b, f(b))`, color: DESMOS_BLUE, secret: true},
-					{latex: String.raw`x = [a, b] \{0 \leq y \leq f(x)\}`, color: DESMOS_BLUE, secret: true},
-					{latex: String.raw`x = [a, b] \{f(x) \leq y \leq 0\}`, color: DESMOS_BLUE, secret: true},
-					{latex: String.raw`0 \leq y \leq f(x) \{a \leq x \leq b\}`, color: DESMOS_BLUE, secret: true},
-					{latex: String.raw`f(x) \leq y \leq 0 \{a \leq x \leq b\}`, color: DESMOS_BLUE, secret: true}
+					{latex: String.raw`(a, f(a))`, color: blue, secret: true},
+					{latex: String.raw`(b, f(b))`, color: blue, secret: true},
+					{latex: String.raw`x = [a, b] \{0 \leq y \leq f(x)\}`, color: blue, secret: true},
+					{latex: String.raw`x = [a, b] \{f(x) \leq y \leq 0\}`, color: blue, secret: true},
+					{latex: String.raw`0 \leq y \leq f(x) \{a \leq x \leq b\}`, color: blue, secret: true},
+					{latex: String.raw`f(x) \leq y \leq 0 \{a \leq x \leq b\}`, color: blue, secret: true}
 				]
 			},
 			
@@ -81,25 +84,25 @@ export function load()
 				
 				expressions:
 				[
-					{latex: String.raw`f(x) = x\sin(x^2)`, color: DESMOS_PURPLE},
+					{latex: String.raw`f(x) = x\sin(x^2)`, color: purple},
 					{latex: String.raw`F(x) = \int_0^x f(t)\ dt`, hidden: true},
 					{latex: String.raw`F(\sqrt{\pi}) - F(0)`},
 					
 					
 					{latex: String.raw`a = 0`, secret: true},
 					{latex: String.raw`b = \sqrt{\pi}`, secret: true},
-					{latex: String.raw`x = [a, b] \{0 \leq y \leq f(x)\}`, color: DESMOS_PURPLE, secret: true},
-					{latex: String.raw`x = [a, b] \{f(x) \leq y \leq 0\}`, color: DESMOS_PURPLE, secret: true},
-					{latex: String.raw`0 \leq y \leq f(x) \{a \leq x \leq b\}`, color: DESMOS_PURPLE, secret: true},
-					{latex: String.raw`f(x) \leq y \leq 0 \{a \leq x \leq b\}`, color: DESMOS_PURPLE, secret: true}
+					{latex: String.raw`x = [a, b] \{0 \leq y \leq f(x)\}`, color: purple, secret: true},
+					{latex: String.raw`x = [a, b] \{f(x) \leq y \leq 0\}`, color: purple, secret: true},
+					{latex: String.raw`0 \leq y \leq f(x) \{a \leq x \leq b\}`, color: purple, secret: true},
+					{latex: String.raw`f(x) \leq y \leq 0 \{a \leq x \leq b\}`, color: purple, secret: true}
 				]
 			}
 		};
 		
 		return data;
-	};
+	});
 	
-	Page.Load.createDesmosGraphs();
+	createDesmosGraphs();
 	
-	Page.show();
+	showPage();
 }

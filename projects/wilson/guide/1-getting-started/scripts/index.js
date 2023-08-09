@@ -1,3 +1,4 @@
+import { showPage } from "/scripts/src/load-page.mjs"
 !function()
 {
 	"use strict";
@@ -237,5 +238,5 @@
 	
 	
 	
-	Page.show();
+	showPage();
 	}()

@@ -1,6 +1,9 @@
+import { showPage } from "/scripts/src/load-page.mjs"
+import { createDesmosGraphs, setGetDesmosData } from "/scripts/src/desmos.mjs"
+
 function getDerivativeString(n)
 {
-	let array = ["f"];
+	const array = ["f"];
 	
 	for (let i = 0; i < n; i++)
 	{
@@ -23,7 +26,7 @@ export function load()
 		derivatives.push(derivativeString = getDerivativeString(i));
 	}
 	
-	Page.Load.getDesmosData = () =>
+	setGetDesmosData((purple, blue, red, green, black) =>
 	{
 		const data =
 		{
@@ -33,13 +36,13 @@ export function load()
 				
 				expressions:
 				[
-					{latex: String.raw`f(x) = \sin(x)`, color: DESMOS_PURPLE},
+					{latex: String.raw`f(x) = \sin(x)`, color: purple},
 					{latex: String.raw`N = 5`, sliderBounds: {min: 0, max: 10, step: 1}},
 					{latex: String.raw`a = 0`},
 					
-					{latex: String.raw`(a, f(a))`, color: DESMOS_BLUE, secret: true},
+					{latex: String.raw`(a, f(a))`, color: blue, secret: true},
 					{latex: String.raw`D = [${derivatives.join(", ")}]`, secret: true},
-					{latex: String.raw`\sum_{n = 0}^N \frac{D[n + 1]}{n!} (x-a)^n`, color: DESMOS_BLUE, secret: true}
+					{latex: String.raw`\sum_{n = 0}^N \frac{D[n + 1]}{n!} (x-a)^n`, color: blue, secret: true}
 				]
 			},
 			
@@ -56,10 +59,10 @@ export function load()
 					
 					{latex: String.raw`n = [1, ..., 12]`, secret: true},
 					{latex: String.raw`a(x) = 1 + (-\frac{1}{2})^x`, hidden: true, secret: true},
-					{latex: String.raw`(n, a(n))`, color: DESMOS_PURPLE, secret: true},
-					{latex: String.raw`y = 1 \{x \geq 1\}`, color: DESMOS_PURPLE, secret: true},
-					{latex: String.raw`\left| y - 1 \right| < \varepsilon \{ x \geq N \}`, color: DESMOS_BLUE, secret: true},
-					{latex: String.raw`x = N \{ \left| y - 1 \right| < \varepsilon \}`, color: DESMOS_BLUE, secret: true},
+					{latex: String.raw`(n, a(n))`, color: purple, secret: true},
+					{latex: String.raw`y = 1 \{x \geq 1\}`, color: purple, secret: true},
+					{latex: String.raw`\left| y - 1 \right| < \varepsilon \{ x \geq N \}`, color: blue, secret: true},
+					{latex: String.raw`x = N \{ \left| y - 1 \right| < \varepsilon \}`, color: blue, secret: true},
 					{latex: String.raw`N = \ceil(-\log_2( \varepsilon ))`, secret: true}
 				]
 			},
@@ -77,19 +80,19 @@ export function load()
 					{latex: String.raw`c(n) = \frac{1}{n}`, hidden: true},
 					
 					{latex: String.raw`N = [1, ..., 100]`, secret: true},
-					{latex: String.raw`(N, a(N))`, color: DESMOS_BLUE, secret: true},
-					{latex: String.raw`(N, c(N))`, color: DESMOS_RED, secret: true},
-					{latex: String.raw`(N, b(N))`, color: DESMOS_PURPLE, secret: true}
+					{latex: String.raw`(N, a(N))`, color: blue, secret: true},
+					{latex: String.raw`(N, c(N))`, color: red, secret: true},
+					{latex: String.raw`(N, b(N))`, color: purple, secret: true}
 				]
 			}
 		};
 		
 		return data;
-	};
+	});
 	
-	Page.Load.createDesmosGraphs();
+	createDesmosGraphs();
 	
 	
 	
-	Page.show();
+	showPage();
 }

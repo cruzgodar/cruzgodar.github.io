@@ -1,6 +1,9 @@
+import { showPage } from "/scripts/src/load-page.mjs"
+import { createDesmosGraphs, setGetDesmosData } from "/scripts/src/desmos.mjs"
+
 export function load()
 {
-	Page.Load.getDesmosData = () =>
+	setGetDesmosData((purple, blue, red, green, black) =>
 	{
 		const data =
 		{
@@ -10,16 +13,16 @@ export function load()
 				
 				expressions:
 				[
-					{latex: String.raw`(0, 0), (10t, 100), (10t, 0), (0, 0)`, color: DESMOS_PURPLE, lines: true},
+					{latex: String.raw`(0, 0), (10t, 100), (10t, 0), (0, 0)`, color: purple, lines: true},
 					{latex: String.raw`t = 10`},
 				]
 			},
 		};
 		
 		return data;
-	}
+	});
 	
-	Page.Load.createDesmosGraphs();
+	createDesmosGraphs();
 	
-	Page.show();
+	showPage();
 }

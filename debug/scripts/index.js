@@ -1,3 +1,4 @@
+import { showPage } from "/scripts/src/load-page.mjs"
 !function()
 {
 	let collectorButtonElement = $("#collector-button");
@@ -8,5 +9,5 @@
 	glslTestsButtonElement.addEventListener("click", () => redirect({ url: "/debug/tests/glsl-test/" } ));
 	jsLinesButtonElement.addEventListener("click", () => redirect({ url: "/debug/js-lines/" }));
 	
-	Page.show();
+	showPage();
 }()

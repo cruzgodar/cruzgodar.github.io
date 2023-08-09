@@ -26,8 +26,14 @@ export async function createDesmosGraphs(dark = Site.Settings.urlVars["theme"] =
 	}
 	
 	desmosGraphs = {};
+
+	const purple = dark ? "#60c000" : "#772fbf";
+	const blue = dark ? "#c06000" : "#2f77bf";
+	const red = dark ? "#00c0c0" : "#bf2f2f";
+	const green = dark ? "#c000c0" : "#2fbf2f";
+	const black = "#000000";
 	
-	const data = getDesmosData();
+	const data = getDesmosData(purple, blue, red, green, black);
 	
 	for (let key in data)
 	{

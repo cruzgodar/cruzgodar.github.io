@@ -1,6 +1,9 @@
+import { showPage } from "/scripts/src/load-page.mjs"
+import { createDesmosGraphs, setGetDesmosData } from "/scripts/src/desmos.mjs"
+
 export function load()
 {
-	Page.Load.getDesmosData = () =>
+	setGetDesmosData((purple, blue, red, green, black) =>
 	{
 		const data =
 		{
@@ -12,12 +15,12 @@ export function load()
 				
 				expressions:
 				[
-					{latex: String.raw`y = 0`, color: DESMOS_BLACK, secret: true},
+					{latex: String.raw`y = 0`, color: black, secret: true},
 					{latex: String.raw`b = 6.6667`, sliderBounds: {min: 0, max: 10}},
 					{latex: String.raw`a = 20 - 2b`, secret: true},
 					{latex: String.raw`A = 20b - 2b^2`},
-					{latex: String.raw`(-\frac{a}{2}, b)`, color: DESMOS_PURPLE, secret: true},
-					{latex: String.raw`(-\frac{a}{2}, 0), (-\frac{a}{2}, b), (\frac{a}{2}, b), (\frac{a}{2}, 0)`, points: false, lines: true, color: DESMOS_PURPLE, secret: true},
+					{latex: String.raw`(-\frac{a}{2}, b)`, color: purple, secret: true},
+					{latex: String.raw`(-\frac{a}{2}, 0), (-\frac{a}{2}, b), (\frac{a}{2}, b), (\frac{a}{2}, 0)`, points: false, lines: true, color: purple, secret: true},
 				]
 			},
 			
@@ -29,12 +32,12 @@ export function load()
 				
 				expressions:
 				[
-					{latex: String.raw`\frac{x^2}{4} + \frac{y^2}{9} = 1`, color: DESMOS_PURPLE, secret: true},
+					{latex: String.raw`\frac{x^2}{4} + \frac{y^2}{9} = 1`, color: purple, secret: true},
 					{latex: String.raw`a = 1`, sliderBounds: {min: 0, max: 2}},
 					{latex: String.raw`A = 4a\sqrt{9(1 - \frac{a^2}{4})}`},
 					{latex: String.raw`b = \sqrt{9(1 - \frac{a^2}{4})}`, secret: true},
-					{latex: String.raw`(a, b)`, color: DESMOS_BLUE, secret: true},
-					{latex: String.raw`(a, b), (-a, b), (-a, -b), (a, -b), (a, b)`, points: false, lines: true, color: DESMOS_BLUE, secret: true},
+					{latex: String.raw`(a, b)`, color: blue, secret: true},
+					{latex: String.raw`(a, b), (-a, b), (-a, -b), (a, -b), (a, b)`, points: false, lines: true, color: blue, secret: true},
 				]
 			},
 			
@@ -48,18 +51,18 @@ export function load()
 				
 				expressions:
 				[
-					{latex: String.raw`0 \leq y \leq 100`, color: DESMOS_BLUE, secret: true},
+					{latex: String.raw`0 \leq y \leq 100`, color: blue, secret: true},
 					{latex: String.raw`a = 100`, sliderBounds: {min: 0, max: 500}},
-					{latex: String.raw`(a, 0)`, color: DESMOS_PURPLE, secret: true},
-					{latex: String.raw`(0, 0), (a, 0), (500, 100)`, points: false, lines: true, color: DESMOS_PURPLE, secret: true},
+					{latex: String.raw`(a, 0)`, color: purple, secret: true},
+					{latex: String.raw`(0, 0), (a, 0), (500, 100)`, points: false, lines: true, color: purple, secret: true},
 				]
 			},
 		};
 		
 		return data;
-	}
+	});
 	
-	Page.Load.createDesmosGraphs();
+	createDesmosGraphs();
 	
-	Page.show();
+	showPage();
 }

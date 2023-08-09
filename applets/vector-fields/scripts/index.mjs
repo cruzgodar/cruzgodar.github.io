@@ -1,3 +1,4 @@
+import { showPage } from "/scripts/src/load-page.mjs"
 import { VectorField } from "./class.mjs";
 import { Applet } from "../../../scripts/src/applets.mjs";
 
@@ -127,5 +128,5 @@ export function load()
 	
 	
 	
-	Page.show();
+	showPage();
 	}

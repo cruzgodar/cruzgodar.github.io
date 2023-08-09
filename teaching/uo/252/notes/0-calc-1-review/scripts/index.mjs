@@ -1,6 +1,9 @@
+import { showPage } from "/scripts/src/load-page.mjs"
+import { createDesmosGraphs, setGetDesmosData } from "/scripts/src/desmos.mjs"
+
 export function load()
 {
-	Page.Load.getDesmosData = () =>
+	setGetDesmosData((purple, blue, red, green, black) =>
 	{
 		const data =
 		{
@@ -10,12 +13,12 @@ export function load()
 				
 				expressions:
 				[
-					{latex: String.raw`f(x) = x^3 - 2x^2 + 2`, color: DESMOS_PURPLE},
+					{latex: String.raw`f(x) = x^3 - 2x^2 + 2`, color: purple},
 					{latex: String.raw`a = 0`},
 					{latex: String.raw`b = 2`},
 					
-					{latex: String.raw`x = [a, b] \{0 \leq y \leq f(x)\} `, color: DESMOS_PURPLE, secret: true},
-					{latex: String.raw`0 \leq y \leq f(x) \{a \leq x \leq b\}`, color: DESMOS_PURPLE, secret: true}
+					{latex: String.raw`x = [a, b] \{0 \leq y \leq f(x)\} `, color: purple, secret: true},
+					{latex: String.raw`0 \leq y \leq f(x) \{a \leq x \leq b\}`, color: purple, secret: true}
 				]
 			},
 			
@@ -27,9 +30,9 @@ export function load()
 				
 				expressions:
 				[
-					{latex: String.raw`f(x) = \frac{\sin(x)}{x}`, color: DESMOS_BLUE},
-					{latex: String.raw`(0, 1)`, color: DESMOS_BLUE, pointStyle: "OPEN"},
-					{latex: String.raw`(0, -1)`, color: DESMOS_BLUE}
+					{latex: String.raw`f(x) = \frac{\sin(x)}{x}`, color: blue},
+					{latex: String.raw`(0, 1)`, color: blue, pointStyle: "OPEN"},
+					{latex: String.raw`(0, -1)`, color: blue}
 				]
 			},
 			
@@ -41,12 +44,12 @@ export function load()
 				
 				expressions:
 				[
-					{latex: String.raw`f(x) = \left\{0 \leq x \leq 1: 2x, 1 < x < 3: \frac{1}{x} + 1, 3 \leq x: -\frac{2}{3} + \frac{2}{3}x\right\}`, color: DESMOS_PURPLE},
-					{latex: String.raw`(0, 0)`, color: DESMOS_PURPLE, secret: true},
+					{latex: String.raw`f(x) = \left\{0 \leq x \leq 1: 2x, 1 < x < 3: \frac{1}{x} + 1, 3 \leq x: -\frac{2}{3} + \frac{2}{3}x\right\}`, color: purple},
+					{latex: String.raw`(0, 0)`, color: purple, secret: true},
 					
-					{latex: String.raw`g(x) = \left\{ 0 \leq x < 1: x - 1, 1 < x < 3: -\frac{1}{x}, 3 \leq x: -\frac{2}{3} \right\}`, color: DESMOS_BLUE},
-					{latex: String.raw`(0, -1), (3, -\frac{2}{3})`, color: DESMOS_BLUE, secret: true},
-					{latex: String.raw`(1, 0), (1, -1), (3, -\frac{1}{3})`, color: DESMOS_BLUE, pointStyle: "OPEN", secret: true}
+					{latex: String.raw`g(x) = \left\{ 0 \leq x < 1: x - 1, 1 < x < 3: -\frac{1}{x}, 3 \leq x: -\frac{2}{3} \right\}`, color: blue},
+					{latex: String.raw`(0, -1), (3, -\frac{2}{3})`, color: blue, secret: true},
+					{latex: String.raw`(1, 0), (1, -1), (3, -\frac{1}{3})`, color: blue, pointStyle: "OPEN", secret: true}
 				]
 			},
 			
@@ -58,12 +61,12 @@ export function load()
 				
 				expressions:
 				[
-					{latex: String.raw`f(x) = x^3 - 2x^2 + 2`, color: DESMOS_PURPLE},
+					{latex: String.raw`f(x) = x^3 - 2x^2 + 2`, color: purple},
 					{latex: String.raw`a = .667`, secret: true},
-					{latex: String.raw`(a, f(a))`, color: DESMOS_BLUE, secret: true},
-					{latex: String.raw`y - f(a) = f'(a)(x - a)`, color: DESMOS_BLUE, secret: true},
-					{latex: String.raw`f'(x)`, color: DESMOS_RED, secret: true},
-					{latex: String.raw`(a, f'(a))`, color: DESMOS_RED, dragMode: "NONE", showLabel: true, secret: true},
+					{latex: String.raw`(a, f(a))`, color: blue, secret: true},
+					{latex: String.raw`y - f(a) = f'(a)(x - a)`, color: blue, secret: true},
+					{latex: String.raw`f'(x)`, color: red, secret: true},
+					{latex: String.raw`(a, f'(a))`, color: red, dragMode: "NONE", showLabel: true, secret: true},
 				]
 			},
 			
@@ -75,22 +78,22 @@ export function load()
 				
 				expressions:
 				[
-					{latex: String.raw`f(x) = x^3 - 2x^2 + 2`, color: DESMOS_PURPLE, secret: true, hidden: true},
-					{latex: String.raw`f(x)`, color: DESMOS_PURPLE},
+					{latex: String.raw`f(x) = x^3 - 2x^2 + 2`, color: purple, secret: true, hidden: true},
+					{latex: String.raw`f(x)`, color: purple},
 					
-					{latex: String.raw`f'(x)`, color: DESMOS_BLUE},
-					{latex: String.raw`(0, f(0)), (\frac{4}{3}, f(\frac{4}{3}))`, color: DESMOS_BLUE, secret: true},
+					{latex: String.raw`f'(x)`, color: blue},
+					{latex: String.raw`(0, f(0)), (\frac{4}{3}, f(\frac{4}{3}))`, color: blue, secret: true},
 					
-					{latex: String.raw`f''(x)`, color: DESMOS_RED},
-					{latex: String.raw`(\frac{2}{3}, f(\frac{2}{3}))`, color: DESMOS_RED, secret: true},
+					{latex: String.raw`f''(x)`, color: red},
+					{latex: String.raw`(\frac{2}{3}, f(\frac{2}{3}))`, color: red, secret: true},
 				]
 			}
 		};
 		
 		return data;
-	}
+	});
 	
-	Page.Load.createDesmosGraphs();
+	createDesmosGraphs();
 	
-	Page.show();
+	showPage();
 }

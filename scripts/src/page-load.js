@@ -1,3 +1,4 @@
+import { showPage } from "/scripts/src/load-page.mjs"
 "use strict";
 
 
@@ -196,7 +197,7 @@ Page.Load =
 
 		.catch(() =>
 		{
-			setTimeout(() => Page.show(), 1);
+			setTimeout(() => showPage(), 1);
 		})
 	},
 	

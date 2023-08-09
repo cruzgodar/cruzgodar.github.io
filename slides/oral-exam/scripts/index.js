@@ -1,3 +1,4 @@
+import { showPage } from "/scripts/src/load-page.mjs"
 !async function()
 {
 	"use strict";
@@ -1402,5 +1403,5 @@
 	
 	document.body.querySelector("#help-link").addEventListener("click", () => lapsa.jumpToSlide(0));
 	
-	Page.show();
+	showPage();
 	}()

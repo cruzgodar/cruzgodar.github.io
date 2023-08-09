@@ -1,3 +1,4 @@
+import { showPage } from "/scripts/src/load-page.mjs"
 !async function()
 {
 	const response = await fetch("/debug/glsl-docs/src.html");
@@ -11,5 +12,5 @@
 	
 	console.log(html.slice(index1, index2 + 6));
 	
-	Page.show();
+	showPage();
 }()

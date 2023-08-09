@@ -1,3 +1,4 @@
+import { showPage } from "/scripts/src/load-page.mjs"
 import { EllipticCurve } from "./class.mjs";
 import { ComplexMap } from "../../complex-maps/scripts/class.mjs"
 
@@ -131,5 +132,5 @@ export function load()
 	
 	
 	
-	Page.show();
+	showPage();
 }

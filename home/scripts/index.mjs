@@ -1,3 +1,4 @@
+import { showPage } from "/scripts/src/load-page.mjs"
 import { bannerMaxScroll } from "../../scripts/src/banners.mjs";
 
 function setNameTextOpacity()
@@ -52,5 +53,5 @@ export function load()
 	
 	
 	
-	Page.show();
+	showPage();
 }

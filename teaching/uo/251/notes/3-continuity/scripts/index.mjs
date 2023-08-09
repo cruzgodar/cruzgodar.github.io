@@ -1,6 +1,9 @@
+import { showPage } from "/scripts/src/load-page.mjs"
+import { createDesmosGraphs, setGetDesmosData } from "/scripts/src/desmos.mjs"
+
 export function load()
 {
-	Page.Load.getDesmosData = () =>
+	setGetDesmosData((purple, blue, red, green, black) =>
 	{
 		const data =
 		{
@@ -10,10 +13,10 @@ export function load()
 				
 				expressions:
 				[
-					{latex: String.raw`f(x) = \{x \leq -3: x, -3 \leq x \leq 3: \frac{1}{27} x^3, 3 \leq x: \frac{1}{(4 - x)^2}\}`, color: DESMOS_PURPLE, hidden: true, secret: true},
-					{latex: String.raw`f(x)`, color: DESMOS_PURPLE},
-					{latex: String.raw`(-3, -3), (0, 0)`, color: DESMOS_PURPLE, pointStyle: "OPEN"},
-					{latex: String.raw`(-3, -1), (0, 1)`, color: DESMOS_PURPLE},
+					{latex: String.raw`f(x) = \{x \leq -3: x, -3 \leq x \leq 3: \frac{1}{27} x^3, 3 \leq x: \frac{1}{(4 - x)^2}\}`, color: purple, hidden: true, secret: true},
+					{latex: String.raw`f(x)`, color: purple},
+					{latex: String.raw`(-3, -3), (0, 0)`, color: purple, pointStyle: "OPEN"},
+					{latex: String.raw`(-3, -1), (0, 1)`, color: purple},
 				]
 			},
 			
@@ -25,7 +28,7 @@ export function load()
 				
 				expressions:
 				[
-					{latex: String.raw`\frac{\cos(x^2) - x}{2 - \tan(x)}`, color: DESMOS_PURPLE},
+					{latex: String.raw`\frac{\cos(x^2) - x}{2 - \tan(x)}`, color: purple},
 				]
 			},
 			
@@ -37,11 +40,11 @@ export function load()
 				
 				expressions:
 				[
-					{latex: String.raw`(1, 2), (3, 1)`, color: DESMOS_BLACK},
+					{latex: String.raw`(1, 2), (3, 1)`, color: black},
 					
-					{latex: String.raw`f(x) = \frac{2}{x^{\frac{\ln(2)}{\ln(3)}}}`, color: DESMOS_PURPLE},
-					{latex: String.raw`g(x) = \frac{1}{2}\sin(\frac{\pi}{2}x) + \frac{3}{2}`, color: DESMOS_BLUE},
-					{latex: String.raw`h(x) = \frac{3}{2}x^2 - \frac{13}{2}x + 7`, color: DESMOS_RED},
+					{latex: String.raw`f(x) = \frac{2}{x^{\frac{\ln(2)}{\ln(3)}}}`, color: purple},
+					{latex: String.raw`g(x) = \frac{1}{2}\sin(\frac{\pi}{2}x) + \frac{3}{2}`, color: blue},
+					{latex: String.raw`h(x) = \frac{3}{2}x^2 - \frac{13}{2}x + 7`, color: red},
 				]
 			},
 			
@@ -53,17 +56,17 @@ export function load()
 				
 				expressions:
 				[
-					{latex: String.raw`f(x) = x - \cos(x)`, color: DESMOS_PURPLE},
+					{latex: String.raw`f(x) = x - \cos(x)`, color: purple},
 					
-					{latex: String.raw`(0, f(0)), (\frac{\pi}{2}, f(\frac{\pi}{2}))`, color: DESMOS_BLUE},
+					{latex: String.raw`(0, f(0)), (\frac{\pi}{2}, f(\frac{\pi}{2}))`, color: blue},
 				]
 			}
 		};
 		
 		return data;
-	}
+	});
 	
-	Page.Load.createDesmosGraphs();
+	createDesmosGraphs();
 	
-	Page.show();
+	showPage();
 }

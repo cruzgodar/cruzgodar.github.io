@@ -1,3 +1,4 @@
+import { showPage } from "/scripts/src/load-page.mjs"
 import { HitomezashiPattern } from "./class.mjs";
 
 export function load()
@@ -79,5 +80,5 @@ export function load()
 	
 	
 	
-	Page.show();
+	showPage();
 }

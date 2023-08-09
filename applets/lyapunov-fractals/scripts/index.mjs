@@ -1,3 +1,4 @@
+import { showPage } from "/scripts/src/load-page.mjs"
 import { LyapunovFractal } from "./class.mjs";
 
 export function load()
@@ -54,5 +55,5 @@ export function load()
 	
 	run();
 	
-	Page.show();
+	showPage();
 }

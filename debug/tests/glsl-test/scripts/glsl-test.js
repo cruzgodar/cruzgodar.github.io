@@ -1,3 +1,4 @@
+import { showPage } from "/scripts/src/load-page.mjs"
 !async function()
 {
 	"use strict";
@@ -274,5 +275,5 @@
 	
 	
 	
-	Page.show();
+	showPage();
 }()

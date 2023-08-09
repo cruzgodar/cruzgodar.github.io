@@ -1,3 +1,4 @@
+import { showPage } from "/scripts/src/load-page.mjs"
 import { AbelianSandpile } from "./class.mjs";
 
 export function load()
@@ -38,5 +39,5 @@ export function load()
 
 
 
-	Page.show();
+	showPage();
 }
