@@ -1,4 +1,4 @@
-import{Applet}from"/scripts/src/applets.mjs";class SecantMethod extends Applet{wilsonHidden=null;rootSetterElement=null;rootAInputElement=null;rootBInputElement=null;colorSetterElement=null;a=[1,0];c=[0,0];colors=[];currentRoots=[];lastActiveRoot=0;numRoots=0;aspectRatio=1;numIterations=100;pastBrightnessScales=[];resolution=500;resolutionHidden=100;lastTimestamp=-1;constructor(t,s,i,o,e){super(t),this.rootSetterElement=s,this.rootAInputElement=i,this.rootBInputElement=o,this.colorSetterElement=e;s=this.createHiddenCanvas(),i=`
+import{Applet}from"/scripts/src/applets.min.mjs";class SecantMethod extends Applet{wilsonHidden=null;rootSetterElement=null;rootAInputElement=null;rootBInputElement=null;colorSetterElement=null;a=[1,0];c=[0,0];colors=[];currentRoots=[];lastActiveRoot=0;numRoots=0;aspectRatio=1;numIterations=100;pastBrightnessScales=[];resolution=500;resolutionHidden=100;lastTimestamp=-1;constructor(t,s,i,o,e){super(t),this.rootSetterElement=s,this.rootAInputElement=i,this.rootBInputElement=o,this.colorSetterElement=e;s=this.createHiddenCanvas(),i=`
 			precision highp float;
 			
 			varying vec2 uv;

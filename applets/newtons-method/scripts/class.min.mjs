@@ -1,4 +1,4 @@
-import{Applet}from"/scripts/src/applets.mjs";class NewtonsMethod extends Applet{wilsonHidden=null;rootSetterElement=null;rootAInputElement=null;rootBInputElement=null;colorSetterElement=null;a=[1,0];c=[0,0];colors=[];currentRoots=[];lastActiveRoot=0;numRoots=0;aspectRatio=1;numIterations=100;pastBrightnessScales=[];resolution=500;resolutionHidden=100;lastTimestamp=-1;constructor(t,i,s,o,e){super(t),this.rootSetterElement=i,this.rootAInputElement=s,this.rootBInputElement=o,this.colorSetterElement=e;i=this.createHiddenCanvas(),s=`
+import{Applet}from"/scripts/src/applets.min.mjs";class NewtonsMethod extends Applet{wilsonHidden=null;rootSetterElement=null;rootAInputElement=null;rootBInputElement=null;colorSetterElement=null;a=[1,0];c=[0,0];colors=[];currentRoots=[];lastActiveRoot=0;numRoots=0;aspectRatio=1;numIterations=100;pastBrightnessScales=[];resolution=500;resolutionHidden=100;lastTimestamp=-1;constructor(t,i,s,o,e){super(t),this.rootSetterElement=i,this.rootAInputElement=s,this.rootBInputElement=o,this.colorSetterElement=e;i=this.createHiddenCanvas(),s=`
 			precision highp float;
 			
 			varying vec2 uv;

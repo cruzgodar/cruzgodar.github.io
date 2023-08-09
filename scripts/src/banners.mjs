@@ -5,6 +5,7 @@ export let bannerElement = null;
 export function setBannerElement(newBannerElement)
 {
 	bannerElement = newBannerElement;
+	console.log(bannerElement)
 }
 
 
@@ -37,6 +38,8 @@ export function setBannerOpacity(newBannerOpacity)
 	{
 		bannerElement.style.opacity = bannerOpacity;
 		contentElement.style.opacity = 1 - bannerOpacity;
+
+		console.log(bannerElement)
 	}
 	
 	catch(ex) {}
@@ -122,14 +125,12 @@ export function loadBanner(large = false)
 		
 		bannerFilename = `${large ? "large" : "small"}.webp`;
 		
-		bannerFilepath = Page.parentFolder + "banners/";
+		bannerFilepath = Page.url + "banners/";
 		
 		if (multibannerPages.hasOwnProperty(Page.url))
 		{
 			bannerFilepath += multibannerPages[Page.url].currentBanner + "/";
 		}
-		
-		
 		
 		Site.addStyle(`
 			#banner-small
@@ -211,7 +212,7 @@ export function setUpBanner()
 	
 	else
 	{
-		setBannerElement(null);
+		bannerElement = null;
 	}
 }
 

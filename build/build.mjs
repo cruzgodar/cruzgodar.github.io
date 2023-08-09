@@ -147,7 +147,7 @@ function buildJSFile(file)
 			const js = await read(outputFile);
 			
 			//The space after the import is very import -- that prevents dynamic imports from getting screwed up.
-			write(outputFile, js.replace(/(import .*?)\.mjs/g, (match, $1) => `${$1}.min.mjs`));
+			write(outputFile, js.replace(/(import[^\(].*?)\.mjs/g, (match, $1) => `${$1}.min.mjs`));
 
 			resolve();
 		});
