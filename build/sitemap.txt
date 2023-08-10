@@ -128,59 +128,6 @@ home Cruz Godar
 	
 	
 	writing Writing
-		caracore Caracore
-		caligo Caligo
-			chapters/p Prologue
-			chapters/1 I: Bright Lights
-			chapters/2 II: Industry
-			chapters/3 III: The Point
-			chapters/4 IV: A Day in The Life
-			chapters/5 V: Dividends
-			chapters/6 VI: Ivory
-			chapters/7 VII: High Interest
-			chapters/8 VIII: Hid Men
-			chapters/9 IX: Grounding Wires
-			chapters/10 X: Late
-			chapters/i1 Interlude I
-			chapters/11 XI: Repetition
-			chapters/12 XII: Negotiation
-			chapters/13 XIII: Brawl Talk
-			chapters/14 XIV: Investigated Journalism
-			chapters/15 XV: Lizards and Trains
-			chapters/16 XVI: Making Connections
-			chapters/17 XVII: Speaking of Sneaking
-			chapters/18 XVIII: Assurances
-			chapters/19 XIX: Daylight and Dark Night
-			chapters/20 XX: Base Invaders
-			chapters/21 XXI: Arctic
-			chapters/22 XXII: Beasts and Burdens
-			chapters/23 XXIII: Out Running
-			chapters/24 XXIV: Quotients
-			chapters/i2 Interlude II
-			chapters/25 XXV: The Best Laid Plans
-			chapters/26 XXVI: Loud and Clear
-			chapters/27 XXVII: Foiled
-			chapters/28 XXVIII: Once More
-			chapters/29 XXIX: Whiplash
-			chapters/30 XXX: Sentences
-			chapters/31 XXXI: Morbid Curiosity
-			chapters/32 XXXII: Bound, Together
-			chapters/33 XXXIII: Breaking it Down
-			chapters/34 XXXIV: Stage Left
-			chapters/i3 Interlude III
-			chapters/35 XXXV: Back
-			chapters/36 XXXVI: Coming up for Air
-			chapters/37 XXXVII: Cold Blood
-			chapters/38 XXXVIII: Inward-Facing
-			chapters/39 XXXIX: Surging In
-			chapters/40 XXXX: Jug Money
-			chapters/41 XXXXI: Dawn
-			chapters/42 XXXXII: Moments Past
-			chapters/43 XXXXIII: Convergent Revolution
-			chapters/44 XXXXIV: End Behavior
-			chapters/45 XXXXV: Titanic
-			chapters/46 XXXXVI: Leaving the New World Behind
-		
 		desolation-point Desolation Point
 		mist Mist
 	
