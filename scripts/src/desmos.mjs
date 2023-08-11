@@ -1,3 +1,5 @@
+import { siteSettings } from "./settings.mjs";
+
 let desmosLoaded = false;
 let desmosGraphs = {};
 
@@ -10,7 +12,7 @@ export function setGetDesmosData(newGetDesmosData)
 
 
 
-export async function createDesmosGraphs(dark = Site.Settings.urlVars["theme"] === 1)
+export async function createDesmosGraphs()
 {
 	if (!desmosLoaded)
 	{
@@ -27,10 +29,10 @@ export async function createDesmosGraphs(dark = Site.Settings.urlVars["theme"] =
 	
 	desmosGraphs = {};
 
-	const purple = dark ? "#60c000" : "#772fbf";
-	const blue = dark ? "#c06000" : "#2f77bf";
-	const red = dark ? "#00c0c0" : "#bf2f2f";
-	const green = dark ? "#c000c0" : "#2fbf2f";
+	const purple = siteSettings.darkTheme ? "#60c000" : "#772fbf";
+	const blue = siteSettings.darkTheme ? "#c06000" : "#2f77bf";
+	const red = siteSettings.darkTheme ? "#00c0c0" : "#bf2f2f";
+	const green = siteSettings.darkTheme ? "#c000c0" : "#2fbf2f";
 	const black = "#000000";
 	
 	const data = getDesmosData(purple, blue, red, green, black);
@@ -56,7 +58,7 @@ export async function createDesmosGraphs(dark = Site.Settings.urlVars["theme"] =
 			showResetButtonOnGraphpaper: true,
 			border: false,
 			expressionsCollapsed: true,
-			invertedColors: dark,
+			invertedColors: siteSettings.darkTheme,
 			
 			xAxisMinorSubdivisions: 1,
 			yAxisMinorSubdivisions: 1

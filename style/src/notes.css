@@ -2,7 +2,7 @@
 {
 	margin: 0 auto;
 	
-	border: 2px solid rgb(96, 96, 96);
+	border: 2px solid var(--normal-contrast);
 	border-radius: 15px;
 	padding: 2px;
 	
@@ -124,7 +124,7 @@
 
 .notes-ex-title, .notes-exc-title, .notes-def-title, .notes-prop-title, .notes-thm-title, .notes-pf-title, .notes-cor-title, .notes-lem-title, .notes-ax-title, .notes-as-title
 {
-	color: rgb(255, 255, 255) !important;
+	color: rgb(255, 255, 255);
 	
 	border-radius: 5px;
 	padding: 0px 6px 0px 6px;

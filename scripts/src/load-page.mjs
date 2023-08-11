@@ -5,6 +5,7 @@ import { setUpCards } from "./cards.mjs"
 import { addHoverEvent, setUpHoverEvents, setUpFocusEvents } from "./hover-events.mjs"
 import { typesetMath } from "./math.mjs"
 import { redirect, navigationTransitionType } from "./navigation.mjs"
+import { siteSettings, toggleDarkTheme, revertTheme, condenseApplet } from "./settings.mjs"
 
 export let headerElement = null;
 
@@ -52,13 +53,13 @@ export async function loadPage()
 	
 	Page.backgroundColorChanged = false;
 	
-	Site.Settings.handleThemeRevert();
+	revertTheme();
 	
 	
 	
-	if (Site.Settings.urlVars["condensedApplets"] === 1 && Site.sitemap[Page.url].parent === "/applets/")
+	if (siteSettings.condensedApplets && Site.sitemap[Page.url].parent === "/applets/")
 	{
-		Site.Settings.condenseApplet();
+		condenseApplet();
 	}
 	
 	
@@ -157,7 +158,7 @@ export function addHeader()
 				</a>
 			</div>
 			
-			<div id="header-theme-button" class="${Site.Settings.urlVars["theme"] === 1 ? "active" : ""}">
+			<div id="header-theme-button">
 				<input type="image" src="/graphics/header-icons/moon.webp">
 			</div>
 		</div>
@@ -193,7 +194,7 @@ export function addHeader()
 		
 		addHoverEvent(element);
 		
-		element.addEventListener("click", () => Site.Settings.toggleTheme());
+		element.addEventListener("click", () => toggleDarkTheme({}));
 		
 		
 		

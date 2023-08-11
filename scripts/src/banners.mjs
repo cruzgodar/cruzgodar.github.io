@@ -1,4 +1,4 @@
-import { addHoverEventWithScale } from "./hover-events.mjs"
+import { addHoverEventWithScale } from "./hover-events.mjs";
 
 export let bannerElement = null;
 
@@ -33,13 +33,15 @@ export function setBannerOpacity(newBannerOpacity)
 {
 	bannerOpacity = newBannerOpacity;
 	
-	try
+	if (bannerElement)
 	{
 		bannerElement.style.opacity = bannerOpacity;
-		contentElement.style.opacity = 1 - bannerOpacity;
 	}
 	
-	catch(ex) {}
+	if (contentElement)
+	{
+		contentElement.style.opacity = 1 - bannerOpacity;
+	}
 	
 	if (bannerOpacity)
 	{
@@ -66,6 +68,8 @@ export function setBannerMaxScroll(newBannerMaxScroll)
 let bannerFilename = "";
 let bannerFilepath = "";
 
+let scrollButtonTimeoutId;
+
 let lastScrollTimestamp = -1;
 
 export const bannerPages =
@@ -90,11 +94,7 @@ export const multibannerPages =
 //Filled in with pages when banners are preloaded so the console isn't spammed and caches aren't needlessly checked.
 const pagesAlreadyFetched = [];
 
-const otherSizePagesAlreadyFetched = [];
-
 let scrollButtonExists = false;
-
-let scrollButtonTimeoutId = null;
 
 
 
@@ -147,46 +147,46 @@ export function loadBanner(large = false)
 		
 		//Fetch the banner file. If that works, great! Set the background and fade in the page. If not, that means the html was cached but the banner was not (this is common on the homepage). In that case, we need to abort, so we remove the banner entirely.
 		fetch(bannerFilepath + bannerFilename)
-		
-		.then((response) =>
-		{
-			const img = new Image();
 			
-			img.onload = () =>
+			.then((response) =>
 			{
-				img.remove();
+				const img = new Image();
 				
-				if (!large)
+				img.onload = () =>
 				{
-					scrollButtonTimeoutId = setTimeout(() =>
+					img.remove();
+					
+					if (!large)
 					{
-						insertScrollButton();
-					}, 2000);
-				}
+						scrollButtonTimeoutId = setTimeout(() =>
+						{
+							insertScrollButton();
+						}, 2000);
+					}
+					
+					resolve();
+				};
+				
+				img.style.opacity = 0;
+				img.style.position = "fixed";
+				img.style.top = "-100vh";
+				img.style.left = "-100vw";
+				
+				Page.element.appendChild(img);
+				
+				setTimeout(() =>
+				{
+					img.src = bannerFilepath + bannerFilename;
+				}, 20);
+			})
+
+			.catch((error) =>
+			{
+				$("#banner").remove();
+				$("#banner-cover").remove();
 				
 				resolve();
-			};
-			
-			img.style.opacity = 0;
-			img.style.position = "fixed";
-			img.style.top = "-100vh";
-			img.style.left = "-100vw";
-			
-			Page.element.appendChild(img);
-			
-			setTimeout(() =>
-			{
-				img.src = bannerFilepath + bannerFilename;
-			}, 20);
-		})
-		
-		.catch((error) =>
-		{
-			$("#banner").remove();
-			$("#banner-cover").remove();
-			
-			resolve();
-		});
+			});
 	});
 }
 
@@ -378,25 +378,14 @@ export function insertScrollButton()
 		return;
 	}
 	
-	
-	
 	const opacity = Math.min(Math.max(1 - Page.scroll / (bannerMaxScroll / 2.5), 0), 1);
-	
-	let chevronName = "chevron-down";
-	
-	if (Site.Settings.urlVars["contrast"] === 1)
-	{
-		chevronName += "-dark";
-	}
-	
-	
 	
 	//Gotta have a try block here in case the user loads a banner page then navigates to a non-banner page within 3 seconds.
 	try
 	{
 		document.querySelector("#banner-cover").insertAdjacentHTML("beforebegin", `
 			<div id="new-banner-cover">
-				<input type="image" id="scroll-button" src="/graphics/general-icons/${chevronName}.png" style="opacity: 0" alt="Scroll down">
+				<input type="image" id="scroll-button" src="/graphics/general-icons/chevron-down.png" style="opacity: 0" alt="Scroll down">
 			</div>
 		`);
 		

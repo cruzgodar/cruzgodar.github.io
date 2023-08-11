@@ -2,7 +2,7 @@ import { fadeUpOut, fadeDownOut, fadeLeftOut, fadeRightOut, fadeOut } from "./an
 import { loadBanner, bannerOnScroll, bannerElement } from "./banners.mjs"
 import { cardIsOpen, hideCard } from "./cards.mjs";
 import { loadPage } from "./load-page.mjs";
-import { forceDarkThemePages } from "./settings.mjs";
+import { siteSettings, forceThemePages, setRevertThemeTo, setForcedTheme, toggleDarkTheme } from "./settings.mjs";
 
 let currentlyRedirecting = false;
 
@@ -207,13 +207,13 @@ function getTransitionType(url)
 
 async function fadeOutPage({ url, noFadeOut })
 {
-	if (forceDarkThemePages.includes(url) && Site.Settings.urlVars["theme"] !== 1)
+	if (forceThemePages[url] !== undefined && siteSettings.darkTheme !== forceThemePages[url])
 	{
-		Site.Settings.revertTheme = 0;
-		
-		Site.Settings.forcedTheme = true;
-		
-		Site.Settings.toggleTheme(false, true);
+		setRevertThemeTo(siteSettings.darkTheme);
+
+		setForcedTheme(true);
+
+		toggleDarkTheme({ force: true });
 	}
 	
 	

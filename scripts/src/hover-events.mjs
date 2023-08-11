@@ -1,5 +1,6 @@
 import { changeScale } from "./animation.mjs"
 import { showTex } from "./math.mjs";
+import { siteSettings } from "./settings.mjs";
 
 const elementSelectors = `
 	a
@@ -129,13 +130,10 @@ function addHoverEventForTexHolder(element)
 		{
 			element.classList.add("hover");
 			
-			const color = Site.Settings.urlVars["theme"] === 1 ? "rgba(24, 24, 24, 1)" : "rgba(255, 255, 255, 1)";
-			
 			anime({
 				targets: element,
 				scale: 1.05,
 				borderRadius: "8px",
-				backgroundColor: color,
 				duration: Site.buttonAnimationTime,
 				easing: "easeOutQuad",
 			});
@@ -148,13 +146,10 @@ function addHoverEventForTexHolder(element)
 		{
 			element.classList.remove("hover");
 			
-			const color = Site.Settings.urlVars["theme"] === 1 ? "rgba(24, 24, 24, 0)" : "rgba(255, 255, 255, 0)";
-			
 			anime({
 				targets: element,
 				scale: 1,
 				borderRadius: "0px",
-				backgroundColor: color,
 				duration: Site.buttonAnimationTime,
 				easing: "easeInOutQuad",
 			});

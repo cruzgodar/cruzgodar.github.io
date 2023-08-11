@@ -41,7 +41,14 @@
 
 <link rel="manifest" href="/manifest.json">
 
-<link rel="stylesheet" type="text/css" href="/style/css-bundle.min.css">
+<link rel="stylesheet" type="text/css" href="/style/src/main.css">
+<link rel="stylesheet" type="text/css" href="/style/src/applets.css">
+<link rel="stylesheet" type="text/css" href="/style/src/banners.css">
+<link rel="stylesheet" type="text/css" href="/style/src/buttons-and-boxes.css">
+<link rel="stylesheet" type="text/css" href="/style/src/header.css">
+<link rel="stylesheet" type="text/css" href="/style/src/image-links.css">
+<link rel="stylesheet" type="text/css" href="/style/src/notes.css">
+
 <link rel="stylesheet" type="text/css" href="/style/highlight.min.css">
 
 <link href="https://fonts.googleapis.com/css2?family=Gentium+Book+Basic&family=Rubik&family=Source+Code+Pro&display=swap" rel="stylesheet">
@@ -99,8 +106,6 @@
 	
 	<script src="/scripts/src/main.js"></script>
 	
-	<script src="/scripts/src/settings.js"></script>
-	
 	<script src="/scripts/src/sitemap.js"></script>
 	
 	<script src="/scripts/wilson.js"></script>
@@ -119,6 +124,7 @@
 		import * as Layout from "/scripts/src/layout.mjs"
 		import * as M from "/scripts/src/math.mjs";
 		import * as Navigation from "/scripts/src/navigation.mjs";
+		import * as Settings from "/scripts/src/settings.mjs";
 		
 		Object.keys(Animate).forEach(key => window[key] = Animate[key]);
 		Object.keys(Banner).forEach(key => window[key] = Banner[key]);
@@ -131,6 +137,16 @@
 		Object.keys(Layout).forEach(key => window[key] = Layout[key]);
 		Object.keys(M).forEach(key => window[key] = M[key]);
 		Object.keys(Navigation).forEach(key => window[key] = Navigation[key]);
+		Object.keys(Settings).forEach(key => window[key] = Settings[key]);
+
+		const params = new URLSearchParams(document.location.search);
+
+		Page.url = decodeURIComponent(params.get("page")).replace("index.html", "");
+
+		if (Page.url === "null")
+		{
+			Page.url = "/home/";
+		}
 		
 		if (typeof Page.url !== "undefined" && Page.url !== null && Page.url !== "null")
 		{

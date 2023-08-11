@@ -1,9 +1,32 @@
 /* Provides support for the various kinds of text, the logo, and the footer. */
 
+:root
+{
+	--theme: 0;
 
+	--background-component: calc(255 + (var(--theme) * (24 - 255)));
+	--background: rgb(var(--background-component), var(--background-component), var(--background-component));
+
+	/* E.g. heading text */
+	--max-contrast-component: calc(0 + (var(--theme) * 255));
+	--max-contrast: rgb(var(--max-contrast-component), var(--max-contrast-component), var(--max-contrast-component));
+
+	/* E.g. section text */
+	--high-contrast-component: calc(48 + (var(--theme) * (220 - 48)));
+	--high-contrast: rgb(var(--high-contrast-component), var(--high-contrast-component), var(--high-contrast-component));
+
+	/* E.g. heading text */
+	--normal-contrast-component: calc(96 + (var(--theme) * (172 - 96)));
+	--normal-contrast: rgb(var(--normal-contrast-component), var(--normal-contrast-component), var(--normal-contrast-component));
+
+	--neutral-hover-component: calc(220 + (var(--theme) * (64 - 220)));
+	--neutral-hover: rgb(var(--neutral-hover-component), var(--neutral-hover-component), var(--neutral-hover-component));
+}
 
 html
 {
+	background-color: var(--background);
+
 	font-size: 16px;
 	font-family: "Rubik", sans-serif;
 	
@@ -143,7 +166,7 @@ img
 
 
 
-.heading-text, .section-text, .body-text, .date-text, .song-lyrics
+.heading-text, .section-text, .body-text, .song-lyrics
 {
 	position: relative;
 	width: min(90%, 900px);
@@ -154,28 +177,21 @@ img
 .heading-text
 {
 	font-size: 175%;
-	color: rgb(0, 0, 0);
-	text-align: center;
-}
-
-.date-text
-{
-	font-size: 100%;
-	color: rgb(0, 0, 0);
+	color: var(--max-contrast);
 	text-align: center;
 }
 
 .section-text
 {
 	font-size: 125%;
-	color: rgb(48, 48, 48);
+	color: var(--high-contrast);
 	text-align: center;
 }
 
 .body-text
 {
 	font-size: 100%;
-	color: rgb(96, 96, 96);
+	color: var(--normal-contrast);
 	text-align: justify;
 	line-height: 1.55;
 }
@@ -206,21 +222,6 @@ img
 
 
 
-.foreign-language
-{
-	font-style: italic;
-}
-
-
-
-/* Applied whenever things need an opacity animation. Usually a substitute for $().animate. */
-.animated-opacity
-{
-	transition: opacity .25s ease-in-out;
-}
-
-
-
 /* Used on pages with nonstandard background colors to fade to the default. */
 .background-transition
 {
@@ -243,7 +244,7 @@ mjx-container
 
 .tex-holder
 {
-	background-color: rgba(255, 255, 255, 0);
+	background-color: var(--background);
 	
 	box-shadow: 0px 0px 0px 0px rgba(0, 0, 0, .2);
 	
@@ -252,7 +253,7 @@ mjx-container
 
 .tex-holder.hover
 {
-	box-shadow: 0px 0px 16px 0px rgba(0, 0, 0, .2);
+	box-shadow: 0px 0px 16px calc(var(--theme) * 4px) rgba(0, 0, 0, calc(.2 + (var(--theme) * (1 - .2))));
 }
 
 .tex-holder.active
@@ -326,7 +327,7 @@ mjx-container
 	
 	border-radius: 16px;
 	
-	background-color: rgb(255, 255, 255);
+	background-color: var(--background);
 	box-shadow: 0px 0px 16px 0px rgba(0, 0, 0, .3);
 }
 
@@ -369,7 +370,7 @@ mjx-container
 	right: 0;
 	
 	font-size: 32px;
-	color: rgb(48, 48, 48);
+	color: var(--high-contrast);
 	
 	cursor: pointer;
 	
@@ -379,7 +380,7 @@ mjx-container
 	justify-content: center;
 	align-items: center;
 	
-	background-color: rgb(255, 255, 255);
+	background-color: var(--background);
 	
 	width: 38px;
 	
@@ -390,7 +391,7 @@ mjx-container
 
 #card-close-button.hover
 {
-	background-color: rgb(224, 224, 224);
+	background-color: var(--neutral-hover);
 }
 
 #card-close-button span

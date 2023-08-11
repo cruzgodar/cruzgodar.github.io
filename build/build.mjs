@@ -14,12 +14,12 @@ const excludeFromBuild =
 
 const siteCSSFiles =
 [
+	"main",
 	"applets",
 	"banners",
 	"buttons-and-boxes",
 	"header",
 	"image-links",
-	"main",
 	"notes",
 ];
 

@@ -23,6 +23,14 @@ function setNameTextOpacity()
 	$("#godar-text").parentNode.style.opacity = opacity;
 }
 
+//On large screens, make the content be centered at the bottom of the page.
+function centerContent()
+{
+	const contentHeight = $("main").getBoundingClientRect().height;
+	const marginBottom = Math.max(128, (window.innerHeight - contentHeight) / 2);
+	$("section:last-of-type").style.marginBottom = `${marginBottom}px`;
+}
+
 export function load()
 {
 	if (Site.vistedHomepage)
@@ -33,6 +41,10 @@ export function load()
 	}
 	
 	Site.vistedHomepage = true;
+
+	window.addEventListener("resize", centerContent);
+	Page.temporaryHandlers["resize"].push(centerContent);
+	centerContent();
 	
 	setTimeout(() =>
 	{

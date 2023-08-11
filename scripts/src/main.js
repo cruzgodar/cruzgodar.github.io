@@ -215,8 +215,6 @@ Site.load = async function(url)
 	
 	setScrollButtonExists(false);
 	
-	Site.Settings.setUp();
-	
 	if (!Site.showingPresentation)
 	{
 		addHeader();

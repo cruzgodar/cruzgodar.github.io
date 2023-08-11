@@ -14,11 +14,8 @@ export async function showTex(element)
 	
 	element.setAttribute("data-showing-tex", "1");
 	
-	
 	element.classList.remove("active");
 	element.classList.remove("hover");
-	
-	const color = Site.Settings.urlVars["theme"] === 1 ? "rgba(24, 24, 24, 0)" : "rgba(255, 255, 255, 0)";
 	
 	await new Promise((resolve, reject) =>
 	{
@@ -26,7 +23,6 @@ export async function showTex(element)
 			targets: element,
 			scale: 1,
 			borderRadius: "0px",
-			backgroundColor: color,
 			duration: 0,
 			complete: resolve
 		});

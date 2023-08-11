@@ -47,7 +47,7 @@
 	margin-left: -5px;
 	
 	
-	color: rgb(96, 96, 96);
+	color: var(--normal-contrast);
 	text-align: center;
 	font-size: 100%;
 }

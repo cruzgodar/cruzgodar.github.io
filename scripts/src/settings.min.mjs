@@ -1,200 +1,135 @@
-"use strict";Site.forceDarkThemePages=["/gallery/","/slides/oral-exam/"],Site.preventThemeChangePages=["/gallery/","/slides/oral-exam/","/writing/caracore/","/writing/caligo/"],Site.Settings={urlVars:{},revertTheme:-1,forcedTheme:!1,getUrlVar:function(t){var o=window.location.search.substring(1).split("&");for(let e=0;e<o.length;e++){var r=o[e].split("=");if(r[0]===t)return r[1]}return null},setUp:function(){this.urlVars={theme:this.getUrlVar("theme"),condensedApplets:this.getUrlVar("condensedApplets")},window.matchMedia("(prefers-color-scheme: dark)").addListener(e=>{-1!==this.revertTheme||Page.Cards.isOpen||(e.matches&&1!==this.urlVars.theme||!e.matches&&1===this.urlVars.theme)&&this.toggleTheme()}),window.matchMedia("(prefers-color-scheme: dark)").matches&&null===this.urlVars.theme&&(this.urlVars.theme=1),null==this.urlVars.theme?this.urlVars.theme=0:1==this.urlVars.theme&&(this.urlVars.theme=0,this.toggleTheme(!0)),null==this.urlVars.condensedApplets&&(this.urlVars.condensedApplets=0);let e=null;1===this.urlVars.theme&&(e=Site.addStyle(this.darkThemeStyle,!1));try{document.querySelector("#theme-contrast-adjust").remove()}catch(e){}try{e.id="theme-contrast-adjust"}catch(e){}},metaThemeColorElement:document.querySelector("#theme-color-meta"),handleThemeRevert:function(){Site.Settings.forcedTheme?Site.Settings.forcedTheme=!1:0!==this.revertTheme&&1!==Site.Settings.revertTheme||(this.revertTheme=-1,this.toggleTheme())},toggleTheme:function(t=!1,e=!1){if(e||!Site.preventThemeChangePages.includes(Page.url)){let e=null;!1===t&&(e=Site.addStyle(`
-				html, #header-container
-				{
-					transition: background-color ${2*Site.opacityAnimationTime/1e3}s ease !important;
-				}
-				
-				p, span, h1, h2, a, q, em, strong, dfn, #card-close-button
-				{
-					transition: color ${2*Site.opacityAnimationTime/1e3}s ease !important;
-				}
-				
-				 .text-box, .text-field, .checkbox-container, .checkbox-container > input ~ .checkbox, .radio-button-container, .radio-button-container > input ~ .radio-button, .loading-spinner:after, #floating-footer-content, #floating-footer-button-background, .footer-button, .text-button, .nav-button, .slider-container > input, .input-cap-dialog
-				{
-					transition: background-color ${2*Site.opacityAnimationTime/1e3}s ease, border-color ${2*Site.opacityAnimationTime/1e3}s ease, color ${2*Site.opacityAnimationTime/1e3}s ease !important;
-				}
-				
-				.tex-holder, .card
-				{
-					transition: background-color ${2*Site.opacityAnimationTime/1e3}s ease, box-shadow ${2*Site.opacityAnimationTime/1e3}s ease;
-				}
-				
-				#header-logo img, #header-links a img
-				{
-					transition: filter ${2*Site.opacityAnimationTime/1e3}s ease;
-				}
-			`)),0===this.urlVars.theme?(setTimeout(()=>{var e=Site.addStyle(this.darkThemeStyle,!1);try{document.querySelector("#theme-contrast-adjust").remove()}catch(e){}try{e.id="theme-contrast-adjust"}catch(e){}this.clearWeirdInlineStyles()},2*Site.opacityAnimationTime),this.urlVars.theme=1):(setTimeout(()=>{try{document.querySelector("#theme-contrast-adjust").remove()}catch(e){}this.clearWeirdInlineStyles()},2*Site.opacityAnimationTime),this.urlVars.theme=0);try{this.animateTheme(1===this.urlVars.theme)}catch(e){}t?(this.metaThemeColorElement.setAttribute("content",1===this.urlVars.theme?"#181818":"#ffffff"),document.querySelector(":root").style.setProperty("--invert",1===this.urlVars.theme?1:0)):anime({targets:this.metaThemeColorElement,content:1===this.urlVars.theme?"#181818":"#ffffff",duration:2*Site.opacityAnimationTime,easing:"cubicBezier(.25, .1, .25, 1)"}),t||setTimeout(()=>{e.remove()},2*Site.opacityAnimationTime)}},condenseApplet:function(){Site.addStyle(`
-			p:not(.text-box-subtext, .checkbox-subtext, .radio-button-subtext, .slider-subtext), h1, h2, header, footer, br
-			{
-				display: none;
-			}
-			
-			section:first-of-type
-			{
-				margin-top: 0 !important;
-				margin-bottom: 0 !important;
-			}
-			
-			body
-			{
-				margin-top: -5vh;
-			}
-
-			#canvas-landscape
-			{
-				flex-direction: column !important;
-			}
-
-			#canvas-landscape-left, #canvas-landscape-middle, #canvas-landscape-right
-			{
-				width: 80% !important;
-			}
-		`);try{$("#download-button").parentNode.parentNode.style.display="none"}catch(e){}},animateTheme:function(e=!0){if(e){try{document.body.querySelector("#header-container").style.backgroundColor="rgb(24, 24, 24)",document.body.querySelectorAll("#header-logo span, #header-links a:not(.hover) span").forEach(e=>e.style.setProperty("color","rgb(255, 255, 255)","important")),document.body.querySelectorAll("#header-links a.hover span").forEach(e=>e.style.removeProperty("color")),document.querySelectorAll("#header-logo img, #header-links a img").forEach(e=>e.style.filter="invert(1)");const t=document.querySelector(":root");let e={t:0};anime({targets:e,t:1,duration:2*Site.opacityAnimationTime,easing:"cubicBezier(.25, .1, .25, 1)",update:()=>t.style.setProperty("--invert",e.t)})}catch(e){}document.documentElement.style.backgroundColor="rgb(24, 24, 24)",Page.setElementStyles(".heading-text, .date-text, .title-text","color","rgb(255, 255, 255)"),Page.setElementStyles(".section-text, .quote-attribution, #card-close-button","color","rgb(220, 220, 220)"),Page.setElementStyles(".body-text, .body-text span, .body-text em, .body-text strong, .body-text dfn, .song-lyrics, .image-link-subtext, .floating-settings-button-text, .quote-text q, .text-box, .text-field, .input-cap-dialog","color","rgb(172, 172, 172)"),Page.setElementStyles("a","color","rgb(144, 216, 144)"),Page.setElementStyles(".text-box, .text-field, .checkbox-container > input ~ .checkbox, .radio-button-container > input ~ .radio-button, .input-cap-dialog","background-color","rgb(24, 24, 24)"),Page.setElementStyles(".text-box, .text-field, .text-button, .checkbox-container, #output-canvas, .input-cap-dialog","border-color","rgb(172, 172, 172)"),Page.setElementStyles(".checkbox-container > input:checked ~ .checkbox, .radio-button-container > input:checked ~ .radio-button","background-color","rgb(172, 172, 172)"),$$(".desmos-border").forEach(e=>changeOpacity(e,0,Site.opacityAnimationTime)),setTimeout(()=>{try{createDesmosGraphs(!0)}catch(e){}setTimeout(()=>{$$(".desmos-border").forEach(e=>changeOpacity(e,1,Site.opacityAnimationTime))},Site.opacityAnimationTime)},2*Site.opacityAnimationTime);e=Site.addStyle(`
-				.slider-container > input
-				{
-					background-color: rgb(127, 127, 127) !important;
-				}
-
-				.slider-container > input::-webkit-slider-thumb
-				{
-					background-color: rgb(172, 172, 172) !important;
-				}
-
-				.slider-container > input::-moz-slider-thumb
-				{
-					background-color: rgb(172, 172, 172) !important;
-				}
-
-				.slider-container > input:active
-				{
-					background-color: rgb(220, 220, 220) !important;
-				}
-
-				.slider-container > input:hover::-webkit-slider-thumb
-				{
-					background-color: rgb(220, 220, 220) !important;
-				}
-
-				.slider-container > input:hover::-moz-slider-thumb
-				{
-					background-color: rgb(220, 220, 220) !important;
-				}
-
-				.slider-container > input:active::-webkit-slider-thumb
-				{
-					background-color: rgb(255, 255, 255) !important;
-				}
-
-				.slider-container > input:active::-moz-slider-thumb
-				{
-					background-color: rgb(255, 255, 255) !important;
-				}
-			`,!1);try{document.querySelector("#slider-style").remove()}catch(e){}try{e.id="slider-style"}catch(e){}}else{try{document.body.querySelector("#header-container").style.backgroundColor="rgb(255, 255, 255)",document.body.querySelectorAll("#header-logo span, #header-links a span").forEach(e=>e.style.color="rgb(0, 0, 0)"),document.body.querySelectorAll("#header-logo img, #header-links a img").forEach(e=>e.style.filter="invert(0)");const o=document.querySelector(":root");let e={t:1};anime({targets:e,t:0,duration:2*Site.opacityAnimationTime,easing:"cubicBezier(.25, .1, .25, 1)",update:()=>o.style.setProperty("--invert",e.t)})}catch(e){}document.documentElement.style.backgroundColor="rgb(255, 255, 255)",Page.setElementStyles(".heading-text, .date-text, .title-text","color","rgb(0, 0, 0)"),Page.setElementStyles(".section-text, .quote-attribution, #card-close-button","color","rgb(48, 48, 48)"),Page.setElementStyles(".body-text, .body-text span, .body-text em, .body-text strong, .body-text dfn, .song-lyrics, .image-link-subtext, .floating-settings-button-text, .quote-text q, .text-box, .text-field, .input-cap-dialog","color","rgb(96, 96, 96)"),Page.setElementStyles("a","color","rgb(127, 192, 127)"),Page.setElementStyles(".text-box, .text-field, .checkbox-container > input ~ .checkbox, .radio-button-container > input ~ .radio-button, .input-cap-dialog","background-color","rgb(255, 255, 255)"),Page.setElementStyles(".text-box, .text-field, .text-button, .checkbox-container, #output-canvas, .input-cap-dialog","border-color","rgb(96, 96, 96)"),Page.setElementStyles(".checkbox-container > input:checked ~ .checkbox, .radio-button-container > input:checked ~ .radio-button","background-color","rgb(96, 96, 96)");try{document.querySelector("#slider-style").remove()}catch(e){}$$(".desmos-border").forEach(e=>changeOpacity(e,0,Site.opacityAnimationTime)),setTimeout(()=>{try{createDesmosGraphs(!1)}catch(e){}setTimeout(()=>{$$(".desmos-border").forEach(e=>changeOpacity(e,1,Site.opacityAnimationTime))},Site.opacityAnimationTime)},2*Site.opacityAnimationTime)}},clearWeirdInlineStyles:function(){Page.setElementStyles(".checkbox-container > input ~ .checkbox, .checkbox-container > input:checked ~ .checkbox, .radio-button-container > input ~ .radio-button, .radio-button-container > input:checked ~ .radio-button, .text-box, .text-field","background-color",""),Page.setElementStyles(".text-box, .text-field","color",""),Page.setElementStyles(".text-box, .text-field","border-color",""),document.body.querySelectorAll("#header-logo span, #header-links a span").forEach(e=>e.style.removeProperty("color"))},darkThemeStyle:`
-		#header-container, .card
+import{cardIsOpen}from"./cards.min.mjs";const forceThemePages={"/gallery/":!0,"/slides/oral-exam/":!0},preventThemeChangePages=["/gallery/","/slides/oral-exam/","/writing/caracore/","/writing/caligo/"],rootElement=document.querySelector(":root"),metaThemeColorElement=document.querySelector("#theme-color-meta"),params=new URLSearchParams(document.location.search),siteSettings={darkTheme:window.matchMedia("(prefers-color-scheme: dark)").matches&&null===params.get("theme")||"1"===params.get("theme"),condensedApplets:"1"===params.get("condensedapplets")};let revertThemeTo=null;function setRevertThemeTo(e){revertThemeTo=e}let forcedTheme=!1;function setForcedTheme(e){forcedTheme=e}function revertTheme(){forcedTheme?forcedTheme=!1:null!==revertThemeTo&&(revertThemeTo=null,siteSettings.darkTheme!==revertThemeTo)&&toggleDarkTheme()}function toggleDarkTheme({noAnimation:e=!1,force:t=!1}){if(t||!preventThemeChangePages.includes(Page.url))if(siteSettings.darkTheme=!siteSettings.darkTheme,e){anime({targets:metaThemeColorElement,content:siteSettings.darkTheme?"#181818":"#ffffff",duration:2*Site.opacityAnimationTime,easing:"cubicBezier(.25, .1, .25, 1)"});const o={t:siteSettings.darkTheme?0:1};anime({targets:o,t:siteSettings.darkTheme?1:0,duration:2*Site.opacityAnimationTime,easing:"cubicBezier(.25, .1, .25, 1)",update:()=>{rootElement.style.setProperty("--theme",o.t)}})}else metaThemeColorElement.setAttribute("content",siteSettings.darkTheme?"#181818":"#ffffff"),rootElement.style.setProperty("--theme",siteSettings.darkTheme?1:0)}function condenseApplet(){Site.addStyle(`
+		p:not(.text-box-subtext, .checkbox-subtext, .radio-button-subtext, .slider-subtext), h1, h2, header, footer, br
 		{
-			background-color: rgb(24, 24, 24);
+			display: none;
 		}
 		
-		#header-logo span, #header-links a span
+		section:first-of-type
 		{
-			color: rgb(255, 255, 255);
+			margin-top: 0 !important;
+			margin-bottom: 0 !important;
 		}
 		
-		#header-logo.hover span, #header-links a.hover span
+		body
 		{
-			color: rgb(0, 0, 0);
-		}
-		
-		#header-logo img, #header-links a img
-		{
-			filter: invert(1);
-		}
-		
-		#header-logo.hover img, #header-links a.hover imginput
-		{
-			filter: invert(0) !important;
-		}
-		
-		
-		
-		.heading-text, .date-text, .title-text
-		{
-			color: rgb(255, 255, 255);
-		}
-		
-		.section-text, .quote-attribution, #card-close-button
-		{
-			color: rgb(220, 220, 220);
-		}
-		
-		.body-text, .body-text span, .song-lyrics, .image-link-subtext, .quote-text
-		{
-			color: rgb(172, 172, 172);
-		}
-		
-		a
-		{
-			color: rgb(144, 216, 144);
-		}
-		
-		
-		
-		.text-box, .text-field, .input-cap-dialog
-		{
-			background-color: rgb(24, 24, 24);
-			color: rgb(172, 172, 172);
-			border-color: rgb(172, 172, 172);
-		}
-		
-		.text-box:focus, .text-field:focus
-		{
-			color: rgb(255, 255, 255);
-			border-color: rgb(255, 255, 255);
-		}
-		
-		
-		
-		.checkbox-container > input ~ .checkbox, .radio-button-container > input ~ .radio-button
-		{
-			background-color: rgb(24, 24, 24);
+			margin-top: -5vh;
 		}
 
-		.checkbox-container > input:checked ~ .checkbox, .radio-button-container > input:checked ~ .radio-button
+		#canvas-landscape
 		{
-			background-color: rgb(172, 172, 172);
+			flex-direction: column !important;
 		}
-		
-		.text-button, .checkbox-container, .output-canvas, .desmos-border
+
+		#canvas-landscape-left, #canvas-landscape-middle, #canvas-landscape-right
 		{
-			border-color: rgb(172, 172, 172);
+			width: 80% !important;
 		}
+	`);try{$("#download-button").parentNode.parentNode.style.display="none"}catch(e){}}window.matchMedia("(prefers-color-scheme: dark)").addListener(e=>{-1!==revertTheme||cardIsOpen||(e.matches&&!siteSettings.darkTheme||!e.matches&&siteSettings.darkTheme)&&toggleDarkTheme()}),siteSettings.darkTheme&&(siteSettings.darkTheme=!1,toggleTheme({noAnimation:!0}));const darkThemeStyle=`
+	#header-container, .card
+	{
+		background-color: rgb(24, 24, 24);
+	}
+	
+	#header-logo span, #header-links a span
+	{
+		color: rgb(255, 255, 255);
+	}
+	
+	#header-logo.hover span, #header-links a.hover span
+	{
+		color: rgb(0, 0, 0);
+	}
+	
+	#header-logo img, #header-links a img
+	{
+		filter: invert(1);
+	}
+	
+	#header-logo.hover img, #header-links a.hover imginput
+	{
+		filter: invert(0) !important;
+	}
+	
+	
+	
+	.heading-text, .date-text, .title-text
+	{
+		color: rgb(255, 255, 255);
+	}
+	
+	.section-text, .quote-attribution, #card-close-button
+	{
+		color: rgb(220, 220, 220);
+	}
+	
+	.body-text, .body-text span, .song-lyrics, .image-link-subtext, .quote-text
+	{
+		color: rgb(172, 172, 172);
+	}
+	
+	a
+	{
+		color: rgb(144, 216, 144);
+	}
+	
+	
+	
+	.text-box, .text-field, .input-cap-dialog
+	{
+		background-color: rgb(24, 24, 24);
+		color: rgb(172, 172, 172);
+		border-color: rgb(172, 172, 172);
+	}
+	
+	.text-box:focus, .text-field:focus
+	{
+		color: rgb(255, 255, 255);
+		border-color: rgb(255, 255, 255);
+	}
+	
+	
+	
+	.checkbox-container > input ~ .checkbox, .radio-button-container > input ~ .radio-button
+	{
+		background-color: rgb(24, 24, 24);
+	}
+
+	.checkbox-container > input:checked ~ .checkbox, .radio-button-container > input:checked ~ .radio-button
+	{
+		background-color: rgb(172, 172, 172);
+	}
+	
+	.text-button, .checkbox-container, .output-canvas, .desmos-border
+	{
+		border-color: rgb(172, 172, 172);
+	}
+	
+	
+	
+	.tex-holder
+	{
+		background-color: rgba(24, 24, 24, 0);
 		
-		
-		
-		.tex-holder
-		{
-			background-color: rgba(24, 24, 24, 0);
-			
-			box-shadow: 0px 0px 0px 0px rgba(0, 0, 0, 1);
-		}
-		
-		.tex-holder.hover
-		{
-			box-shadow: 0px 0px 16px 2px rgba(0, 0, 0, 1);
-		}
-		
-		.card
-		{
-			box-shadow: 0px 0px 16px 4px rgba(0, 0, 0, 1);
-		}
-		
-		#card-close-button
-		{
-			background-color: rgb(24, 24, 24);
-		}
-		
-		#card-close-button.hover
-		{
-			background-color: rgb(64, 64, 64);
-		}
-	`},Page.url=decodeURIComponent(Site.Settings.getUrlVar("page")).replace("index.html",""),"null"===Page.url&&(Page.url="/home/");
+		box-shadow: 0px 0px 0px 0px rgba(0, 0, 0, 1);
+	}
+	
+	.tex-holder.hover
+	{
+		box-shadow: 0px 0px 16px 2px rgba(0, 0, 0, 1);
+	}
+	
+	.card
+	{
+		box-shadow: 0px 0px 16px 4px rgba(0, 0, 0, 1);
+	}
+	
+	#card-close-button
+	{
+		background-color: rgb(24, 24, 24);
+	}
+	
+	#card-close-button.hover
+	{
+		background-color: rgb(64, 64, 64);
+	}
+`;export{forceThemePages,metaThemeColorElement,siteSettings,setRevertThemeTo,setForcedTheme,revertTheme,toggleDarkTheme,condenseApplet};

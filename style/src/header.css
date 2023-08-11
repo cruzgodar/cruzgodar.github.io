@@ -7,7 +7,7 @@
 	height: calc(40px + 50vh);
 	width: calc(100% + 100vw);
 	
-	background-color: rgb(255, 255, 255);
+	background-color: var(--background);
 	box-shadow: 0px 0px 15px 0px rgba(0, 0, 0, .15);
 	
 	z-index: 105;
@@ -41,10 +41,10 @@
 	top: 5px;
 	left: 5px;
 	
-	padding: 5px;
+	padding: 2.5px;
 	border-radius: 5px;
 	
-	height: calc(100% - 20px);
+	height: calc(100% - 15px);
 	width: fit-content;
 	
 	display: flex;
@@ -56,11 +56,12 @@
 #header-logo img
 {
 	height: 100%;
+	filter: invert(var(--theme));
 }
 
 #header-logo span
 {
-	color: rgb(0, 0, 0);
+	color: var(--max-contrast);
 	padding-left: 5px;
 }
 
@@ -71,7 +72,12 @@
 
 #header-logo.hover span
 {
-	color: rgb(0, 0, 0) !important;
+	color: rgb(0, 0, 0);
+}
+
+#header-logo.hover img
+{
+	filter: invert(0);
 }
 
 
@@ -110,66 +116,60 @@
 
 #header-links a span
 {
-	color: rgb(0, 0, 0);
+	color: var(--max-contrast);
 }
 
 #header-links a img
 {
 	height: 100%;
 	display: none;
+	filter: invert(var(--theme));
+}
+
+#header-links a.hover span
+{
+	color: rgb(0, 0, 0);
+}
+
+#header-links a.hover img
+{
+	filter: invert(0);
 }
 
 #header-gallery-link.hover
 {
 	background-color: rgb(74.84% 93.59% 73.79%);
 	background-color: lch(90% 30 140);
-	
-	color: rgb(0, 0, 0) !important;
 }
 
 #header-applets-link.hover
 {
 	background-color: rgb(100% 81.25% 82.79%);
 	background-color: lch(87.5% 32.5 15);
-	
-	color: rgb(0, 0, 0) !important;
 }
 
 #header-teaching-link.hover
 {
 	background-color: rgb(96.61% 88.19% 58.38%);
 	background-color: lch(95% 35 90);
-	
-	color: rgb(0, 0, 0) !important;
 }
 
 #header-slides-link.hover
 {
 	background-color: rgb(91.32% 86.89% 100%);
 	background-color: lch(90% 32.5 300);
-	
-	color: rgb(0, 0, 0) !important;
 }
 
 #header-writing-link.hover
 {
 	background-color: rgb(80.89% 90.01% 100%);
 	background-color: lch(90% 20 255);
-	
-	color: rgb(0, 0, 0) !important;
 }
 
 #header-about-link.hover
 {
 	background-color: rgb(88.76% 88.76% 88.76%);
 	background-color: lch(90% 0 0);
-	
-	color: rgb(0, 0, 0) !important;
-}
-
-:root
-{
-	--invert: 0;
 }
 
 #header-theme-button
@@ -177,7 +177,7 @@
 	position: absolute;
 	top: 5px;
 	right: 5px;
-	
+
 	aspect-ratio: 1;
 	
 	padding: 6px;
@@ -201,7 +201,7 @@
 {
 	height: 100%;
 	
-	filter: invert(var(--invert));
+	filter: invert(var(--theme));
 }
 
 #header-theme-button.hover input
@@ -230,8 +230,14 @@
 	{
 		display: block;
 	}
+
+	#header-logo, #header-links a, #header-theme-button
+	{
+		/* Wrap around the little image link glyphs nicely. */
+		border-radius: 7.5px;
+	}
 	
-	#header-logo, #header-links a
+	#header-links a
 	{
 		padding: 2.5px;
 		height: calc(100% - 15px);

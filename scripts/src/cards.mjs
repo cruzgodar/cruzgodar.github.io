@@ -1,4 +1,5 @@
 import { addHoverEvent } from "./hover-events.mjs"
+import { siteSettings, metaThemeColorElement } from "./settings.mjs";
 
 const container = document.querySelector("#card-container");
 
@@ -77,8 +78,11 @@ export async function showCard(id)
 	
 	document.documentElement.addEventListener("click", handleClickEvent);
 	
-	const color = Site.Settings.urlVars["theme"] === 1 ? "rgb(12, 12, 12)" : "rgb(127, 127, 127)";
-	const themeColor = Site.Settings.urlVars["theme"] === 1 ? "#0c0c0c" : "#7f7f7f";
+	const color = siteSettings.darkTheme ? "rgb(12, 12, 12)" : "rgb(127, 127, 127)";
+	const themeColor = siteSettings.darkTheme ? "#0c0c0c" : "#7f7f7f";
+
+	//Unfortunately necessary to make the animation work. We reset it later!
+	document.documentElement.style.backgroundColor = siteSettings.darkTheme ? "rgb(24, 24, 24)" : "rgb(255, 255, 255)";
 	
 	await Promise.all([
 		new Promise((resolve, reject) =>
@@ -96,16 +100,6 @@ export async function showCard(id)
 		new Promise((resolve, reject) =>
 		{
 			anime({
-				targets: Page.element,
-				duration: animationTime,
-				easing: "easeOutQuint",
-				complete: resolve
-			})
-		}),
-		
-		new Promise((resolve, reject) =>
-		{
-			anime({
 				targets: [Page.element, document.querySelector("#header"), document.querySelector("#header-container")],
 				filter: "brightness(.5)",
 				scale: .975,
@@ -118,7 +112,7 @@ export async function showCard(id)
 		new Promise((resolve, reject) =>
 		{
 			anime({
-				targets: Site.Settings.metaThemeColorElement,
+				targets: metaThemeColorElement,
 				content: themeColor,
 				duration: animationTime,
 				easing: "easeOutQuint",
@@ -143,8 +137,8 @@ export async function hideCard()
 {
 	cardIsOpen = false;
 
-	const color = Site.Settings.urlVars["theme"] === 1 ? "rgb(24, 24, 24)" : "rgb(255, 255, 255)";
-	const themeColor = Site.Settings.urlVars["theme"] === 1 ? "#181818" : "#ffffff";
+	const color = siteSettings.darkTheme ? "rgb(24, 24, 24)" : "rgb(255, 255, 255)";
+	const themeColor = siteSettings.darkTheme ? "#181818" : "#ffffff";
 	
 	await Promise.all([
 		new Promise((resolve, reject) =>
@@ -162,7 +156,7 @@ export async function hideCard()
 		new Promise((resolve, reject) =>
 		{
 			anime({
-				targets: Site.Settings.metaThemeColorElement,
+				targets: metaThemeColorElement,
 				content: themeColor,
 				duration: animationTime,
 				easing: "easeOutQuint",
@@ -189,7 +183,11 @@ export async function hideCard()
 				scale: .95,
 				duration: animationTime,
 				easing: "easeOutQuint",
-				complete: resolve
+				complete: () =>
+				{
+					document.documentElement.style.backgroundColor = "var(--background)";
+					resolve();
+				}
 			});
 		})
 	]);

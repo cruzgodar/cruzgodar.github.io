@@ -7,7 +7,7 @@
 .quote-row
 {
 	display: flex;
-	width: min(90vw, 1320px);
+	width: min(90vw, 900px);
 	justify-content: space-between;
 	margin: 0 auto;
 }
@@ -20,7 +20,7 @@
 .quote-text
 {
 	font-size: 100%;
-	color: rgb(96, 96, 96);
+	color: var(--normal-contrast);
 	text-align: justify;
 	padding-right: .1em;
 }
@@ -28,7 +28,7 @@
 .quote-attribution
 {
 	font-size: 100%;
-	color: rgb(48, 48, 48);
+	color: var(--high-contrast);
 	text-align: right;
 }
 
@@ -63,7 +63,7 @@
 {
 	margin: 0 auto;
 	font-size: 150%;
-	color: rgb(0, 0, 0);
+	color: var(--max-contrast);
 	width: 90vw;
 	text-align: center;
 }
@@ -72,7 +72,7 @@
 
 
 /* Compact layout: stack the quote columns on top of one another. */
-@media (max-width: 1000px)
+@media (max-width: 900px)
 {
 	.quote-container
 	{
