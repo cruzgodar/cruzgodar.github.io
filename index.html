@@ -99,8 +99,6 @@
 	
 	<script src="/scripts/src/main.min.js"></script>
 	
-	<script src="/scripts/src/settings.min.js"></script>
-	
 	<script src="/scripts/src/sitemap.min.js"></script>
 	
 	<script src="/scripts/wilson.js"></script>
@@ -119,6 +117,7 @@
 		import * as Layout from "/scripts/src/layout.min.mjs"
 		import * as M from "/scripts/src/math.min.mjs";
 		import * as Navigation from "/scripts/src/navigation.min.mjs";
+		import * as Settings from "/scripts/src/settings.min.mjs";
 		
 		Object.keys(Animate).forEach(key => window[key] = Animate[key]);
 		Object.keys(Banner).forEach(key => window[key] = Banner[key]);
@@ -131,7 +130,17 @@
 		Object.keys(Layout).forEach(key => window[key] = Layout[key]);
 		Object.keys(M).forEach(key => window[key] = M[key]);
 		Object.keys(Navigation).forEach(key => window[key] = Navigation[key]);
+		Object.keys(Settings).forEach(key => window[key] = Settings[key]);
 		
+		const params = new URLSearchParams(document.location.search);
+
+		Page.url = decodeURIComponent(params.get("page")).replace("index.html", "");
+
+		if (Page.url === "null")
+		{
+			Page.url = "/home/";
+		}
+
 		if (typeof Page.url !== "undefined" && Page.url !== null && Page.url !== "null")
 		{
 			Site.load(Page.url.replace("index.html", ""));

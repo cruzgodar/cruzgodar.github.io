@@ -66,7 +66,7 @@ if (siteSettings.darkTheme)
 {
 	siteSettings.darkTheme = false;
 	
-	toggleTheme({ noAnimation: true });
+	toggleDarkTheme({ noAnimation: true });
 }
 
 
