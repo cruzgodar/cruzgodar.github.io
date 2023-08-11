@@ -3,6 +3,7 @@ import { setUpBanner, bannerElement, bannerOpacity } from "./banners.mjs"
 import { setUpTextButtons, setUpNavButtons, setUpDropdowns } from "./buttons.mjs"
 import { setUpCards } from "./cards.mjs"
 import { addHoverEvent, setUpHoverEvents, setUpFocusEvents } from "./hover-events.mjs"
+import { onResize } from "./layout.mjs"
 import { typesetMath } from "./math.mjs"
 import { redirect, navigationTransitionType } from "./navigation.mjs"
 import { siteSettings, toggleDarkTheme, revertTheme, condenseApplet } from "./settings.mjs"
@@ -13,7 +14,6 @@ export let headerElement = null;
 export async function loadPage()
 {
 	window.dispatchEvent(new Event("scroll"));
-	window.dispatchEvent(new Event("resize"));
 
 	Page.element = document.body.querySelector(".page");
 	$ = (queryString) => Page.element.querySelector(queryString);
@@ -49,20 +49,16 @@ export async function loadPage()
 
 	setUpCards();
 	
-	
+	onResize();
 	
 	Page.backgroundColorChanged = false;
 	
 	revertTheme();
 	
-	
-	
 	if (siteSettings.condensedApplets && Site.sitemap[Page.url].parent === "/applets/")
 	{
 		condenseApplet();
 	}
-	
-	
 	
 	setTimeout(() => setUpFocusEvents(), 50);
 }

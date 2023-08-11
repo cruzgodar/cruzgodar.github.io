@@ -2,7 +2,7 @@ import { fadeUpOut, fadeDownOut, fadeLeftOut, fadeRightOut, fadeOut } from "./an
 import { loadBanner, bannerOnScroll, bannerElement } from "./banners.mjs"
 import { cardIsOpen, hideCard } from "./cards.mjs";
 import { loadPage } from "./load-page.mjs";
-import { siteSettings, forceThemePages, setRevertThemeTo, setForcedTheme, toggleDarkTheme } from "./settings.mjs";
+import { siteSettings, forceThemePages, preventThemeChangePages, setRevertThemeTo, setForcedTheme, toggleDarkTheme } from "./settings.mjs";
 
 let currentlyRedirecting = false;
 
@@ -44,8 +44,6 @@ export async function redirect({
 	
 	navigationTransitionType = getTransitionType(url);
 	
-	Page.url = url;
-	
 	Page.parentFolder = url.slice(0, url.length);
 	
 	
@@ -55,7 +53,7 @@ export async function redirect({
 	
 	await fadeOutPage({url, noFadeOut});
 	
-	
+	Page.url = url;
 	
 	//Get the new data, fade out the page, and preload the next page's banner if it exists. When all of those things are successfully done, replace the current html with the new stuff.
 	Promise.all([fetch(`${url}index.html`), loadBanner()])
@@ -207,7 +205,7 @@ function getTransitionType(url)
 
 async function fadeOutPage({ url, noFadeOut })
 {
-	if (forceThemePages[url] !== undefined && siteSettings.darkTheme !== forceThemePages[url])
+	if (forceThemePages[url] !== undefined && siteSettings.darkTheme !== forceThemePages[url] && !(preventThemeChangePages.includes(Page.url)))
 	{
 		setRevertThemeTo(siteSettings.darkTheme);
 

@@ -6,7 +6,7 @@ export const forceThemePages =
 	"/slides/oral-exam/": true
 };
 
-const preventThemeChangePages =
+export const preventThemeChangePages =
 [
 	"/gallery/",
 	"/slides/oral-exam/",
@@ -88,7 +88,7 @@ export function revertTheme()
 	
 	if (siteSettings.darkTheme !== revertThemeTo)
 	{
-		toggleDarkTheme();
+		toggleDarkTheme({});
 	}
 }
 
@@ -112,6 +112,13 @@ export function toggleDarkTheme({ noAnimation = false, force = false })
 	
 	else
 	{
+		const element = Site.addStyle(`
+			*
+			{
+				transition: none !important;
+			}
+		`);
+
 		anime({
 			targets: metaThemeColorElement,
 			content: siteSettings.darkTheme ? "#181818" : "#ffffff",
@@ -129,7 +136,8 @@ export function toggleDarkTheme({ noAnimation = false, force = false })
 			update: () =>
 			{
 				rootElement.style.setProperty("--theme", dummy.t);
-			}
+			},
+			complete: () => element.remove()
 		});
 	}
 }
@@ -169,115 +177,3 @@ export function condenseApplet()
 	try {$("#download-button").parentNode.parentNode.style.display = "none"}
 	catch(ex) {}
 }
-
-
-
-const darkThemeStyle = `
-	#header-container, .card
-	{
-		background-color: rgb(24, 24, 24);
-	}
-	
-	#header-logo span, #header-links a span
-	{
-		color: rgb(255, 255, 255);
-	}
-	
-	#header-logo.hover span, #header-links a.hover span
-	{
-		color: rgb(0, 0, 0);
-	}
-	
-	#header-logo img, #header-links a img
-	{
-		filter: invert(1);
-	}
-	
-	#header-logo.hover img, #header-links a.hover imginput
-	{
-		filter: invert(0) !important;
-	}
-	
-	
-	
-	.heading-text, .date-text, .title-text
-	{
-		color: rgb(255, 255, 255);
-	}
-	
-	.section-text, .quote-attribution, #card-close-button
-	{
-		color: rgb(220, 220, 220);
-	}
-	
-	.body-text, .body-text span, .song-lyrics, .image-link-subtext, .quote-text
-	{
-		color: rgb(172, 172, 172);
-	}
-	
-	a
-	{
-		color: rgb(144, 216, 144);
-	}
-	
-	
-	
-	.text-box, .text-field, .input-cap-dialog
-	{
-		background-color: rgb(24, 24, 24);
-		color: rgb(172, 172, 172);
-		border-color: rgb(172, 172, 172);
-	}
-	
-	.text-box:focus, .text-field:focus
-	{
-		color: rgb(255, 255, 255);
-		border-color: rgb(255, 255, 255);
-	}
-	
-	
-	
-	.checkbox-container > input ~ .checkbox, .radio-button-container > input ~ .radio-button
-	{
-		background-color: rgb(24, 24, 24);
-	}
-
-	.checkbox-container > input:checked ~ .checkbox, .radio-button-container > input:checked ~ .radio-button
-	{
-		background-color: rgb(172, 172, 172);
-	}
-	
-	.text-button, .checkbox-container, .output-canvas, .desmos-border
-	{
-		border-color: rgb(172, 172, 172);
-	}
-	
-	
-	
-	.tex-holder
-	{
-		background-color: rgba(24, 24, 24, 0);
-		
-		box-shadow: 0px 0px 0px 0px rgba(0, 0, 0, 1);
-	}
-	
-	.tex-holder.hover
-	{
-		box-shadow: 0px 0px 16px 2px rgba(0, 0, 0, 1);
-	}
-	
-	.card
-	{
-		box-shadow: 0px 0px 16px 4px rgba(0, 0, 0, 1);
-	}
-	
-	#card-close-button
-	{
-		background-color: rgb(24, 24, 24);
-	}
-	
-	#card-close-button.hover
-	{
-		background-color: rgb(64, 64, 64);
-	}
-`;

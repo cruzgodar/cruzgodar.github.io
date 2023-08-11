@@ -5,7 +5,7 @@ import { siteSettings } from "./settings.mjs"
 
 export let aspectRatio = window.innerWidth / window.innerHeight;
 
-function onResize()
+export function onResize()
 {
 	setBannerMaxScroll(document.body.offsetHeight > window.innerHeight * 1.5 ? window.innerHeight / 2 : document.body.offsetHeight - window.innerHeight);
 	

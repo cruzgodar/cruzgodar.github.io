@@ -3,7 +3,7 @@
 	width: calc(100% - 8px) !important;
 	height: auto;
 	
-	border: 2px solid rgb(96, 96, 96);
+	border: 2px solid var(--normal-contrast);
 	border-radius: 15px;
 	padding: 2px;
 	
