@@ -114,9 +114,9 @@ function loadCustomScripts()
 export function addHeader()
 {
 	document.body.firstChild.insertAdjacentHTML("beforebegin", `
-		<div id="header-container"></div>
+		<div id="header-container" style="opacity: 0"></div>
 		
-		<div id="header">
+		<div id="header" style="opacity: 0">
 			<a id="header-logo" href="/home/">
 				<img src="/graphics/header-icons/logo.webp"></img>
 				<span>Cruz Godar</span>
@@ -202,6 +202,9 @@ export function addHeader()
 
 async function fadeInPage()
 {
+	fadeIn(document.querySelector("#header"), Site.pageAnimationTime * 2);
+	document.querySelector("#header-container").style.opacity = 1;
+
 	await (() =>
 	{
 		if (navigationTransitionType === 1)

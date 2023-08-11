@@ -220,8 +220,6 @@ Site.load = async function(url)
 		addHeader();
 	}
 	
-	
-	
 	//If it's not an html file, it shouldn't be anywhere near redirect().
 	if (url.indexOf(".") !== -1)
 	{
