@@ -1,6 +1,7 @@
 import { showCard } from "/scripts/src/cards.mjs";
 import { showPage } from "/scripts/src/load-page.mjs";
 import { redirect } from "/scripts/src/navigation.mjs";
+import { $, $$ } from "/scripts/src/main.mjs";
 
 const galleryImageData = 
 {

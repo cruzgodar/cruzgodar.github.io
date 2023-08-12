@@ -1,5 +1,6 @@
-import { showPage } from "/scripts/src/load-page.mjs"
 import { BrownianTree } from "./class.mjs";
+import { showPage } from "/scripts/src/load-page.mjs";
+import { $ } from "/scripts/src/main.mjs";
 
 export function load()
 {

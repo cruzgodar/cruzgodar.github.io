@@ -1,4 +1,5 @@
 import { changeScale } from "./animation.mjs";
+import { $$ } from "./main.mjs";
 import { showTex } from "./math.mjs";
 
 const elementSelectors = `

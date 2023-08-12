@@ -1,5 +1,5 @@
-import { Applet } from "/scripts/src/applets.mjs"
-import { loadGlsl, getGlslBundle, doubleEncodingGlsl } from "/scripts/src/complex-glsl.mjs"
+import { Applet } from "/scripts/src/applets.mjs";
+import { doubleEncodingGlsl, getGlslBundle, loadGlsl } from "/scripts/src/complex-glsl.mjs";
 
 export class VectorField extends Applet
 {

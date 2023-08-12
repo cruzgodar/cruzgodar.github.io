@@ -1,4 +1,5 @@
 import { cardIsOpen } from "./cards.mjs";
+import { $ } from "./main.mjs";
 
 export const forceThemePages =
 {

@@ -1,4 +1,5 @@
 import { addHoverEventWithScale } from "./hover-events.mjs";
+import { $$, pageElement } from "./main.mjs";
 
 export class Applet
 {
@@ -117,7 +118,7 @@ export class Applet
 			wordElement.style.top = "-100vh";
 			wordElement.style.width = "fit-content";
 			wordElement.textContent = "";
-			Page.element.appendChild(wordElement);
+			pageElement.appendChild(wordElement);
 			
 			
 			
@@ -206,7 +207,7 @@ export class Applet
 			</div>
 		</div>`;
 		
-		Page.element.appendChild(dialog);
+		pageElement.appendChild(dialog);
 		
 		
 		
@@ -324,7 +325,7 @@ export class Applet
 		{
 			this.hiddenCanvasContainer = document.createElement("div");
 			this.hiddenCanvasContainer.style.display = "none";
-			Page.element.appendChild(this.hiddenCanvasContainer);
+			pageElement.appendChild(this.hiddenCanvasContainer);
 		}
 		
 		this.hiddenCanvasContainer.appendChild(hiddenCanvas);

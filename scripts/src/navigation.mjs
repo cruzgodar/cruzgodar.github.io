@@ -1,7 +1,7 @@
 import { fadeDownOut, fadeLeftOut, fadeOut, fadeRightOut, fadeUpOut } from "./animation.mjs";
 import { bannerElement, bannerOnScroll, loadBanner } from "./banners.mjs";
 import { cardIsOpen, hideCard } from "./cards.mjs";
-import { loadPage } from "./load-page.mjs";
+import { loadPage, pageElement } from "./load-page.mjs";
 import { forceThemePages, preventThemeChangePages, setForcedTheme, setRevertThemeTo, siteSettings, toggleDarkTheme } from "./settings.mjs";
 
 let currentlyRedirecting = false;
@@ -216,7 +216,7 @@ async function fadeOutPage({ url, noFadeOut })
 	
 	if (noFadeOut)
 	{
-		Page.element.style.opacity = 0;
+		pageElement.style.opacity = 0;
 		
 		return;
 	}
@@ -228,27 +228,27 @@ async function fadeOutPage({ url, noFadeOut })
 	{
 		if (navigationTransitionType === 1)
 		{
-			return bannerElement ? Promise.all([fadeUpOut(Page.element, Site.pageAnimationTime), fadeUpOut(bannerElement, Site.pageAnimationTime * 2)]) : fadeUpOut(Page.element, Site.pageAnimationTime);
+			return bannerElement ? Promise.all([fadeUpOut(pageElement, Site.pageAnimationTime), fadeUpOut(bannerElement, Site.pageAnimationTime * 2)]) : fadeUpOut(pageElement, Site.pageAnimationTime);
 		}
 		
 		else if (navigationTransitionType === -1)
 		{
-			return bannerElement ? Promise.all([fadeDownOut(bannerElement, Site.pageAnimationTime * 2), fadeDownOut(Page.element, Site.pageAnimationTime)]) : fadeDownOut(Page.element, Site.pageAnimationTime);
+			return bannerElement ? Promise.all([fadeDownOut(bannerElement, Site.pageAnimationTime * 2), fadeDownOut(pageElement, Site.pageAnimationTime)]) : fadeDownOut(pageElement, Site.pageAnimationTime);
 		}
 		
 		else if (navigationTransitionType === 2)
 		{
-			return bannerElement ? Promise.all([fadeLeftOut(bannerElement, Site.pageAnimationTime * 2), fadeLeftOut(Page.element, Site.pageAnimationTime)]) : fadeLeftOut(Page.element, Site.pageAnimationTime);
+			return bannerElement ? Promise.all([fadeLeftOut(bannerElement, Site.pageAnimationTime * 2), fadeLeftOut(pageElement, Site.pageAnimationTime)]) : fadeLeftOut(pageElement, Site.pageAnimationTime);
 		}
 		
 		else if (navigationTransitionType === -2)
 		{
-			return bannerElement ? Promise.all([fadeRightOut(bannerElement, Site.pageAnimationTime * 2), fadeRightOut(Page.element, Site.pageAnimationTime)]) : fadeRightOut(Page.element, Site.pageAnimationTime);
+			return bannerElement ? Promise.all([fadeRightOut(bannerElement, Site.pageAnimationTime * 2), fadeRightOut(pageElement, Site.pageAnimationTime)]) : fadeRightOut(pageElement, Site.pageAnimationTime);
 		}
 		
 		else
 		{
-			return bannerElement ? Promise.all([fadeOut(bannerElement, Site.pageAnimationTime * 2), fadeOut(Page.element, Site.pageAnimationTime)]) : fadeOut(Page.element, Site.pageAnimationTime);
+			return bannerElement ? Promise.all([fadeOut(bannerElement, Site.pageAnimationTime * 2), fadeOut(pageElement, Site.pageAnimationTime)]) : fadeOut(pageElement, Site.pageAnimationTime);
 		}
 	})()
 		
@@ -331,5 +331,5 @@ function unloadPage()
 	catch(ex) {}
 	
 	
-	Page.element.remove();
+	pageElement.remove();
 }

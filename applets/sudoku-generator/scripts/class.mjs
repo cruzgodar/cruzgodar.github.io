@@ -1,4 +1,4 @@
-import { Applet } from "/scripts/src/applets.mjs"
+import { Applet } from "/scripts/src/applets.mjs";
 
 export class SudokuGenerator extends Applet
 {
@@ -22,7 +22,7 @@ export class SudokuGenerator extends Applet
 			canvasHeight: 1000
 		};
 		
-		this.wilson = new Wilson($("#sudoku-grid"), options);
+		this.wilson = new Wilson(canvas, options);
 	}
 	
 	

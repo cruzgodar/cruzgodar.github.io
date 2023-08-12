@@ -1,15 +1,21 @@
-export let pageElement = null;
-
 export let $ = (queryString) => pageElement.querySelector(queryString);
 export let $$ = (queryString) => pageElement.querySelectorAll(queryString);
 
-let pageIsReadyToShow = false;
+export let pageElement = document.createElement("div");
+
+export function updatePageElement()
+{
+	pageElement = document.body.querySelector(".page");
+
+	$ = (queryString) => pageElement.querySelector(queryString);
+	$$ = (queryString) => pageElement.querySelectorAll(queryString);
+}
 
 export let pageScroll = 0;
 
+let pageIsReadyToShow = false;
+
 const pageSettings = {};
-
-
 
 Page.temporaryHandlers =
 {
@@ -82,16 +88,14 @@ Site.load = async function(url)
 	
 	
 	
-	Page.element = document.createElement("div");
-	
-	Page.element.classList.add("page");
+	pageElement.classList.add("page");
 	
 	if (Site.showingPresentation)
 	{
-		Page.element.style.display = "none";
+		pageElement.style.display = "none";
 	}
 	
-	document.body.insertBefore(Page.element, document.body.firstChild);
+	document.body.insertBefore(pageElement, document.body.firstChild);
 	
 	Site.useJsAnimation = browserIsIos;
 	

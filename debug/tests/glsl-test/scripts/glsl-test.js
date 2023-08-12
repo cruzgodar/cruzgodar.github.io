@@ -1,4 +1,6 @@
 import { showPage } from "/scripts/src/load-page.mjs";
+import { $ } from "/scripts/src/main.mjs";
+
 !async function()
 {
 	"use strict";

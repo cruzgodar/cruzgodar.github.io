@@ -2,6 +2,7 @@ import { fadeLeft } from "/scripts/src/animation.mjs";
 import { bannerMaxScroll, setBannerOpacity } from "/scripts/src/banners.mjs";
 import { disableLinks, showPage } from "/scripts/src/load-page.mjs";
 import { pageScroll } from "/scripts/src/main.mjs";
+import { $ } from "/scripts/src/main.mjs";
 
 function setNameTextOpacity()
 {

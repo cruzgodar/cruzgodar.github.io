@@ -4,6 +4,7 @@ import { setUpDropdowns, setUpNavButtons, setUpTextButtons } from "./buttons.mjs
 import { setUpCards } from "./cards.mjs"
 import { addHoverEvent, setUpFocusEvents, setUpHoverEvents } from "./hover-events.mjs"
 import { onResize } from "./layout.mjs"
+import { $$, pageElement, updatePageElement } from "./main.mjs"
 import { typesetMath } from "./math.mjs"
 import { navigationTransitionType, redirect } from "./navigation.mjs"
 import { condenseApplet, revertTheme, siteSettings, toggleDarkTheme } from "./settings.mjs"
@@ -15,9 +16,7 @@ export async function loadPage()
 {
 	window.dispatchEvent(new Event("scroll"));
 
-	Page.element = document.body.querySelector(".page");
-	$ = (queryString) => Page.element.querySelector(queryString);
-	$$ = (queryString) => Page.element.querySelectorAll(queryString);
+	updatePageElement();
 	
 	//Set the page title.
 	try {document.head.querySelector("title").textContent = Site.sitemap[Page.url].title}
@@ -209,27 +208,27 @@ async function fadeInPage()
 	{
 		if (navigationTransitionType === 1)
 		{
-			return bannerElement ? Promise.all([fadeUpIn(bannerElement, Site.pageAnimationTime * 2, bannerOpacity), fadeUpIn(Page.element, Site.pageAnimationTime * 2)]) : fadeUpIn(Page.element, Site.pageAnimationTime * 2);
+			return bannerElement ? Promise.all([fadeUpIn(bannerElement, Site.pageAnimationTime * 2, bannerOpacity), fadeUpIn(pageElement, Site.pageAnimationTime * 2)]) : fadeUpIn(pageElement, Site.pageAnimationTime * 2);
 		}
 		
 		else if (navigationTransitionType === -1)
 		{
-			return bannerElement ? Promise.all([fadeDownIn(bannerElement, Site.pageAnimationTime * 2, bannerOpacity), fadeDownIn(Page.element, Site.pageAnimationTime * 2)]) : fadeDownIn(Page.element, Site.pageAnimationTime * 2);
+			return bannerElement ? Promise.all([fadeDownIn(bannerElement, Site.pageAnimationTime * 2, bannerOpacity), fadeDownIn(pageElement, Site.pageAnimationTime * 2)]) : fadeDownIn(pageElement, Site.pageAnimationTime * 2);
 		}
 		
 		else if (navigationTransitionType === 2)
 		{
-			return bannerElement ? Promise.all([fadeLeftIn(bannerElement, Site.pageAnimationTime * 2, bannerOpacity), fadeLeftIn(Page.element, Site.pageAnimationTime * 2)]) : fadeLeftIn(Page.element, Site.pageAnimationTime * 2);
+			return bannerElement ? Promise.all([fadeLeftIn(bannerElement, Site.pageAnimationTime * 2, bannerOpacity), fadeLeftIn(pageElement, Site.pageAnimationTime * 2)]) : fadeLeftIn(pageElement, Site.pageAnimationTime * 2);
 		}
 		
 		else if (navigationTransitionType === -2)
 		{
-			return bannerElement ? Promise.all([fadeRightIn(bannerElement, Site.pageAnimationTime * 2, bannerOpacity), fadeRightIn(Page.element, Site.pageAnimationTime * 2)]) : fadeRightIn(Page.element, Site.pageAnimationTime * 2);
+			return bannerElement ? Promise.all([fadeRightIn(bannerElement, Site.pageAnimationTime * 2, bannerOpacity), fadeRightIn(pageElement, Site.pageAnimationTime * 2)]) : fadeRightIn(pageElement, Site.pageAnimationTime * 2);
 		}
 		
 		else
 		{
-			return bannerElement ? Promise.all([fadeIn(bannerElement, Site.pageAnimationTime * 2, bannerOpacity), fadeIn(Page.element, Site.pageAnimationTime * 2)]) : fadeIn(Page.element, Site.pageAnimationTime * 2);
+			return bannerElement ? Promise.all([fadeIn(bannerElement, Site.pageAnimationTime * 2, bannerOpacity), fadeIn(pageElement, Site.pageAnimationTime * 2)]) : fadeIn(pageElement, Site.pageAnimationTime * 2);
 		}
 	})();
 }

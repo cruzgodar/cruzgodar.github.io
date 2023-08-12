@@ -1,4 +1,5 @@
 import { addHoverEvent } from "./hover-events.mjs";
+import { $$, pageElement } from "./main.mjs";
 import { metaThemeColorElement, siteSettings } from "./settings.mjs";
 
 const container = document.querySelector("#card-container");
@@ -70,11 +71,11 @@ export async function showCard(id)
 	
 	container.style.transform = "scale(.95)";
 	
-	Page.element.style.filter = "brightness(1)";
+	pageElement.style.filter = "brightness(1)";
 	document.querySelector("#header").style.filter = "brightness(1)";
 	document.querySelector("#header-container").style.filter = "brightness(1)";
 	
-	Page.element.style.transformOrigin = `50% calc(50vh + ${window.scrollY}px)`;
+	pageElement.style.transformOrigin = `50% calc(50vh + ${window.scrollY}px)`;
 	
 	document.documentElement.addEventListener("click", handleClickEvent);
 	
@@ -100,7 +101,7 @@ export async function showCard(id)
 		new Promise((resolve, reject) =>
 		{
 			anime({
-				targets: [Page.element, document.querySelector("#header"), document.querySelector("#header-container")],
+				targets: [pageElement, document.querySelector("#header"), document.querySelector("#header-container")],
 				filter: "brightness(.5)",
 				scale: .975,
 				duration: animationTime,
@@ -144,7 +145,7 @@ export async function hideCard()
 		new Promise((resolve, reject) =>
 		{
 			anime({
-				targets: [Page.element, document.querySelector("#header"), document.querySelector("#header-container")],
+				targets: [pageElement, document.querySelector("#header"), document.querySelector("#header-container")],
 				filter: "brightness(1)",
 				scale: 1,
 				duration: animationTime,
@@ -194,7 +195,7 @@ export async function hideCard()
 	
 	container.style.display = "none";
 	
-	Page.element.appendChild(currentCard);
+	pageElement.appendChild(currentCard);
 	
 	container.appendChild(closeButton);
 	

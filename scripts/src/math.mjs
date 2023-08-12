@@ -1,4 +1,5 @@
 import { cardIsOpen } from "./cards.mjs";
+import { pageElement } from "./main.mjs";
 
 export function typesetMath()
 {
@@ -43,7 +44,7 @@ export async function showTex(element)
 	
 	const junkDrawer = document.createElement("div");
 	junkDrawer.style.display = "none";
-	Page.element.appendChild(junkDrawer);
+	pageElement.appendChild(junkDrawer);
 	junkDrawer.appendChild(element.firstElementChild);
 	
 	

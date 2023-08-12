@@ -142,7 +142,7 @@ export class SortingAlgorithm extends Applet
 			exitFullscreenButtonIconPath: "/graphics/general-icons/exit-fullscreen.png"
 		};
 		
-		this.wilson = new Wilson($("#output-canvas"), options);
+		this.wilson = new Wilson(canvas, options);
 		
 		this.wilson.render.initUniforms(["dataLength"]);
 		

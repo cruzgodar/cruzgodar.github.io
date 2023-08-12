@@ -1,6 +1,7 @@
-import { showPage } from "/scripts/src/load-page.mjs"
+import { ComplexMap } from "../../complex-maps/scripts/class.mjs";
 import { EllipticCurve } from "./class.mjs";
-import { ComplexMap } from "../../complex-maps/scripts/class.mjs"
+import { showPage } from "/scripts/src/load-page.mjs";
+import { $ } from "/scripts/src/main.mjs";
 
 export function load()
 {

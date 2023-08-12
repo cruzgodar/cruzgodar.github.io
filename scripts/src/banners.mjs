@@ -1,4 +1,5 @@
 import { addHoverEventWithScale } from "./hover-events.mjs";
+import { $$, pageElement } from "./main.mjs";
 
 export let bannerElement = null;
 
@@ -172,7 +173,7 @@ export function loadBanner(large = false)
 				img.style.top = "-100vh";
 				img.style.left = "-100vw";
 				
-				Page.element.appendChild(img);
+				pageElement.appendChild(img);
 				
 				setTimeout(() =>
 				{

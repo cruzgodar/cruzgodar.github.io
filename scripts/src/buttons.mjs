@@ -1,3 +1,4 @@
+import { $$ } from "./main.mjs";
 import { redirect } from "./navigation.mjs";
 
 export function setUpTextButtons()
