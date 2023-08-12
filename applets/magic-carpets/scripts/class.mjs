@@ -1,3 +1,4 @@
+import { addTemporaryWorker } from "/scripts/src/main.mjs";
 import { Applet } from "/scripts/src/applets.mjs";
 
 export class MagicCarpet extends Applet
@@ -55,12 +56,7 @@ export class MagicCarpet extends Applet
 		
 		
 		
-		try {this.webWorker.terminate()}
-		catch(ex) {}
-		
-		this.webWorker = new Worker(`/applets/magic-carpets/scripts/worker.min.js`);
-		
-		this.workers.push(this.webWorker);
+		this.webWorker = addTemporaryWorker("/applets/magic-carpets/scripts/worker.js");
 		
 		
 		

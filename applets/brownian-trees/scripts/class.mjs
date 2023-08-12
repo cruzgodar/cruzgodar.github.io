@@ -1,3 +1,4 @@
+import { addTemporaryWorker } from "/scripts/src/main.mjs";
 import { Applet } from "/scripts/src/applets.mjs"
 
 export class BrownianTree extends Applet
@@ -45,12 +46,7 @@ export class BrownianTree extends Applet
 		
 		
 		
-		try {this.webWorker.terminate()}
-		catch(ex) {}
-		
-		this.webWorker = new Worker(`/applets/brownian-trees/scripts/worker.min.js`);
-		
-		this.workers.push(this.webWorker);
+		this.webWorker = addTemporaryWorker("/applets/brownian-trees/scripts/worker.js");
 		
 		this.webWorker.onmessage = (e) =>
 		{

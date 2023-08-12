@@ -1,6 +1,6 @@
 import { Applet } from "/scripts/src/applets.mjs";
 import { getGlslBundle, loadGlsl } from "/scripts/src/complex-glsl.mjs";
-import { $$ } from "/scripts/src/main.mjs";
+import { $$, addTemporaryListener } from "/scripts/src/main.mjs";
 
 export class FractalSounds extends Applet
 {
@@ -143,8 +143,11 @@ export class FractalSounds extends Applet
 		this.zoom.init();
 		
 		const boundFunction = () => this.changeAspectRatio(true, [this.wilson, this.wilsonJulia]);
-		window.addEventListener("resize", boundFunction);
-		this.handlers.push([window, "resize", boundFunction]);
+		addTemporaryListener({
+			object: window,
+			event: "resize",
+			callback: boundFunction
+		});
 		
 		
 		
@@ -372,7 +375,7 @@ export class FractalSounds extends Applet
 			
 			else
 			{
-				changeOpacity(this.wilson.canvas, 0, Site.opacityAnimationTime);
+				changeOpacity(this.wilson.canvas, 0);
 			}
 		}
 		
@@ -431,7 +434,7 @@ export class FractalSounds extends Applet
 		
 		else
 		{
-			changeOpacity(this.wilson.canvas, 0, Site.opacityAnimationTime);
+			changeOpacity(this.wilson.canvas, 0);
 		}
 		
 		this.moved = 0;

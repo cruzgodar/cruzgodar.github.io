@@ -1,5 +1,6 @@
+import { opacityAnimationTime } from "/scripts/src/animation.mjs";
 import { cardIsOpen } from "./cards.mjs";
-import { $ } from "./main.mjs";
+import { $, addStyle } from "./main.mjs";
 
 export const forceThemePages =
 {
@@ -113,7 +114,7 @@ export function toggleDarkTheme({ noAnimation = false, force = false })
 	
 	else
 	{
-		const element = Site.addStyle(`
+		const element = addStyle(`
 			*
 			{
 				transition: none !important;
@@ -123,7 +124,7 @@ export function toggleDarkTheme({ noAnimation = false, force = false })
 		anime({
 			targets: metaThemeColorElement,
 			content: siteSettings.darkTheme ? "#181818" : "#ffffff",
-			duration: Site.opacityAnimationTime * 2,
+			duration: opacityAnimationTime * 2,
 			easing: "cubicBezier(.25, .1, .25, 1)",
 		});
 
@@ -132,7 +133,7 @@ export function toggleDarkTheme({ noAnimation = false, force = false })
 		anime({
 			targets: dummy,
 			t: siteSettings.darkTheme ? 1 : 0,
-			duration: Site.opacityAnimationTime * 2,
+			duration: opacityAnimationTime * 2,
 			easing: "cubicBezier(.25, .1, .25, 1)",
 			update: () =>
 			{
@@ -147,7 +148,7 @@ export function toggleDarkTheme({ noAnimation = false, force = false })
 
 export function condenseApplet()
 {
-	Site.addStyle(`
+	addStyle(`
 		p:not(.text-box-subtext, .checkbox-subtext, .radio-button-subtext, .slider-subtext), h1, h2, header, footer, br
 		{
 			display: none;

@@ -1,4 +1,5 @@
-import { Applet } from "/scripts/src/applets.mjs"
+import { addTemporaryWorker } from "/scripts/src/main.mjs";import { Applet } from "/scripts/src/applets.mjs"
+
 
 export class WilsonsAlgorithm extends Applet
 {
@@ -54,12 +55,7 @@ export class WilsonsAlgorithm extends Applet
 		
 		
 		
-		try {this.webWorker.terminate();}
-		catch(ex) {}
-		
-		this.webWorker = new Worker(`/applets/wilsons-algorithm/scripts/worker.min.js`);
-
-		this.workers.push(this.webWorker);
+		this.webWorker = addTemporaryWorker("/applets/wilsons-algorithm/scripts/worker.js");
 		
 		
 		

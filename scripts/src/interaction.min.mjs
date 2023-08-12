@@ -1,4 +1,4 @@
-import { setUpInteractionListeners } from "./interaction.mjs";
+import { sitemap } from "./sitemap.mjs";
 
 export let $ = (queryString) => pageElement.querySelector(queryString);
 export let $$ = (queryString) => pageElement.querySelectorAll(queryString);
@@ -26,6 +26,10 @@ if (pageUrl === "null")
 
 
 export let pageScroll = 0;
+
+let pageIsReadyToShow = false;
+
+const pageSettings = {};
 
 
 
@@ -107,7 +111,7 @@ const scriptsLoaded =
 	
 	
 
-export async function loadSite(url = pageUrl)
+export async function loadSite(url)
 {
 	pageElement.classList.add("page");
 	
@@ -115,14 +119,37 @@ export async function loadSite(url = pageUrl)
 	
 	window.addEventListener("scroll", () => bannerOnScroll(0));
 	
-	setUpInteractionListeners();
 	
-
-
+	
+	Site.Interaction.setUpListeners();
+	
+	
+	
+	window.MathJax =
+	{
+		tex:
+		{
+			inlineMath: [["$", "$"], ["\\(", "\\)"]]
+		}
+	};
+	
+	await new Promise(async (resolve, reject) =>
+	{
+		await Site.loadScript("https://polyfill.io/v3/polyfill.min.js?features=es6");
+		
+		await Site.loadScript("https://cdn.jsdelivr.net/npm/mathjax@3.2.0/es5/tex-mml-chtml.js")
+		
+		resolve();
+	});
+	
+	
+	
 	if ("scrollRestoration" in history)
 	{
 		history.scrollRestoration = "manual";
 	}
+	
+	
 	
 	//When in PWA form, disable text selection and drag-and-drop.
 	if (window.matchMedia("(display-mode: standalone)").matches)
@@ -133,6 +160,8 @@ export async function loadSite(url = pageUrl)
 		
 		$$("body *").forEach(element => element.setAttribute("draggable", "false"));
 		
+		
+		
 		//Also add a little extra spacing at the top of each page to keep content from feeling too close to the top of the screen.
 		addStyle(`
 			#logo, .name-text-container, .empty-top
@@ -141,6 +170,8 @@ export async function loadSite(url = pageUrl)
 			}
 		`, false);
 	}
+	
+	
 	
 	//Fade in the opacity when the user presses the back button.
 	window.addEventListener("popstate", (e) =>
@@ -154,6 +185,8 @@ export async function loadSite(url = pageUrl)
 		redirect({ url: e.state.url, noStatePush: true, restoreScroll: true });
 	});
 	
+	
+	
 	if ("serviceWorker" in navigator)
 	{
 		window.addEventListener("load", () =>
@@ -161,12 +194,15 @@ export async function loadSite(url = pageUrl)
 			navigator.serviceWorker.register("/service-worker.js");
 		});
 	}
-
-
+	
+	
 	
 	setScrollButtonExists(false);
 	
-	addHeader();
+	if (!Site.showingPresentation)
+	{
+		addHeader();
+	}
 	
 	//If it's not an html file, it shouldn't be anywhere near redirect().
 	if (url.indexOf(".") !== -1)
@@ -179,12 +215,12 @@ export async function loadSite(url = pageUrl)
 	{
 		redirect({ url, noStatePush: true, noFadeOut: true });
 	}
-}
+};
 
 
 
 //Loads a script with the given source and returns a promise for when it completes.
-export function loadScript(src, isModule = false)
+Site.loadScript = function(src, isModule = false)
 {
 	return new Promise((resolve, reject) =>
 	{
@@ -201,12 +237,12 @@ export function loadScript(src, isModule = false)
 		script.async = true;
 		script.src = src;
 	});
-}
+};
 
 
 
 //Loads a style with the given href.
-export function loadStyle(href)
+Site.loadStyle = function(href)
 {
 	const style = document.createElement("link");
 	
@@ -223,7 +259,7 @@ export function loadStyle(href)
 
 
 //Adds a style tag to <head> with the given content. If temporary is true, it will be removed at the next page load. Returns the style element added.
-export function addStyle(content, temporary = true, atBeginningOfHead = false)
+Site.addStyle = function(content, temporary = true, atBeginningOfHead = false)
 {
 	const element = document.createElement("style");
 	
@@ -233,6 +269,8 @@ export function addStyle(content, temporary = true, atBeginningOfHead = false)
 	{
 		element.classList.add("temporary-style");
 	}
+	
+	
 	
 	if (atBeginningOfHead)
 	{
@@ -244,5 +282,106 @@ export function addStyle(content, temporary = true, atBeginningOfHead = false)
 		document.head.appendChild(element);
 	}
 	
+	
+	
 	return element;
-}
+};
+
+
+
+Site.Interaction =
+{
+	//Whether this is a touchscreen device on the current page. It's assumed to be false on every page until a touchstart or touchmove event is detected, at which point it's set to true.
+	currentlyTouchDevice: (("ontouchstart" in window) ||
+    (navigator.maxTouchPoints > 0) ||
+    (navigator.msMaxTouchPoints > 0)),
+	
+	lastMousemoveEvent: 0,
+	
+	lastTouchX: 0,
+	lastTouchY: 0,
+	
+	
+	
+	setUpListeners: function()
+	{
+		const boundFunction = this.handleTouchEvent.bind(this);
+		
+		document.documentElement.addEventListener("touchstart", boundFunction, false);
+		document.documentElement.addEventListener("touchmove", boundFunction, false);
+
+
+
+		document.documentElement.addEventListener("mousemove", () =>
+		{
+			if (this.currentlyTouchDevice)
+			{
+				const timeBetweenMousemoves = Date.now() - this.lastMousemoveEvent;
+				
+				this.lastMousemoveEvent = Date.now();
+				
+				//Checking if it's >= 3 kinda sucks, but it seems like touch devices like to fire two mousemoves in quick succession sometimes. They also like to make that delay exactly 33. Look, I hate this too, but it needs to be here.
+				if (timeBetweenMousemoves >= 3 && timeBetweenMousemoves <= 50 && timeBetweenMousemoves !== 33)
+				{
+					this.currentlyTouchDevice = false;
+				}
+			}
+		});
+
+
+
+		document.documentElement.addEventListener("keydown", (e) =>
+		{
+			//Click the focused element when the enter key is pressed.
+			if (e.keyCode === 13)
+			{
+				if (document.activeElement.classList.contains("click-on-child"))
+				{
+					document.activeElement.children[0].click();
+				}
+				
+				else if (!(document.activeElement.tagName === "BUTTON" || (document.activeElement.tagName === "INPUT" && document.activeElement.getAttribute("type") !== "button")))
+				{
+					document.activeElement.click();
+				}
+			}
+		});
+
+
+
+		//Remove focus when moving the mouse or touching anything.
+		document.documentElement.addEventListener("mousedown", () =>
+		{
+			if (document.activeElement.tagName !== "INPUT" && document.activeElement.tagName !== "TEXTAREA" && document.activeElement.tagName !== "SELECT")
+			{
+				document.activeElement.blur();
+			}
+			
+			else if (document.activeElement.tagName !== "SELECT")
+			{
+				try {element.previousElementSibling.classList.remove("hover");}
+				catch(ex) {}
+			}
+		});
+	},
+	
+	
+	
+	handleTouchEvent: function(e)
+	{
+		this.lastTouchX = e.touches[0].clientX;
+		this.lastTouchY = e.touches[0].clientY;
+		
+		if (document.activeElement.tagName !== "INPUT" && document.activeElement.tagName !== "TEXTAREA" && document.activeElement.tagName !== "SELECT")
+		{
+			document.activeElement.blur();
+		}
+		
+		if (!this.currentlyTouchDevice)
+		{
+			removeHoverEvents();
+			
+			this.currentlyTouchDevice = true;
+		}
+	}
+};

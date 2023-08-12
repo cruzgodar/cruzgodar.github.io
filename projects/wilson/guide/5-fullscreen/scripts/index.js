@@ -1,5 +1,5 @@
 import { showPage } from "/scripts/src/load-page.mjs";
-import { $, $$ } from "/scripts/src/main.mjs";
+import { $, $$, addTemporaryListener } from "/scripts/src/main.mjs";
 
 !function()
 {
@@ -486,11 +486,14 @@ import { $, $$ } from "/scripts/src/main.mjs";
 			window.requestAnimationFrame(drawJuliaSet);
 		}
 
-		window.addEventListener("resize", changeAspectRatio);
-		Page.temporaryHandlers["resize"].push(changeAspectRatio);
+		addTemporaryListener({
+			object: window,
+			event: "resize",
+			callback: changeAspectRatio
+		});
 	}
 	
 	
 	
 	showPage();
-	}()
+}()

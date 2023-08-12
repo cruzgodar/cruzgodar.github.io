@@ -1,7 +1,7 @@
 import { ComplexMap } from "../../complex-maps/scripts/class.mjs";
 import { EllipticCurve } from "./class.mjs";
 import { showPage } from "/scripts/src/load-page.mjs";
-import { $ } from "/scripts/src/main.mjs";
+import { $, $$ } from "/scripts/src/main.mjs";
 
 export function load()
 {
@@ -32,10 +32,13 @@ export function load()
 		run();
 	});
 	
-	
-	
-	Page.setElementStyles(".wilson-applet-canvas-container", "margin-top", "0", true);
-	Page.setElementStyles(".wilson-applet-canvas-container", "margin-bottom", "0", true);
+
+
+	$$(".wilson-applet-canvas-container").forEach(element =>
+	{
+		element.style.setProperty("margin-top", 0, "important");
+		element.style.setProperty("margin-bottom", 0, "important");
+	});
 	
 	
 	

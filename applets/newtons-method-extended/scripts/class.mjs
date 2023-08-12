@@ -1,5 +1,6 @@
 import { Applet } from "/scripts/src/applets.mjs"
 import { loadGlsl, getGlslBundle } from "/scripts/src/complex-glsl.mjs"
+import { addTemporaryListener } from "/scripts/src/main.mjs";
 
 export class NewtonsMethodExtended extends Applet
 {
@@ -124,8 +125,11 @@ export class NewtonsMethodExtended extends Applet
 		
 		
 		const boundFunction = () => this.changeAspectRatio(true);
-		window.addEventListener("resize", boundFunction);
-		this.handlers.push(window, "resize", boundFunction);
+		addTemporaryListener({
+			object: window,
+			event: "resize",
+			callback: boundFunction
+		});
 		
 		
 		

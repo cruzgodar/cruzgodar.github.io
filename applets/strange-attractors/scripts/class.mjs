@@ -1,3 +1,4 @@
+import { addTemporaryWorker } from "/scripts/src/main.mjs";
 import { Applet } from "/scripts/src/applets.mjs"
 
 export class StrangeAttractor extends Applet
@@ -57,12 +58,7 @@ export class StrangeAttractor extends Applet
 		
 		
 		
-		try {this.webWorker.terminate();}
-		catch(ex) {}
-		
-		this.webWorker = new Worker(`/applets/strange-attractors/scripts/worker.min.js`);
-		
-		this.workers.push(this.webWorker);
+		this.webWorker = addTemporaryWorker("/applets/strange-attractors/scripts/worker.js");
 		
 		
 		

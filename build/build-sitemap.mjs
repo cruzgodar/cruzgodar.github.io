@@ -1,7 +1,7 @@
 import { read, write } from "./file-io.mjs";
 
 const textSitemapPath = "/build/sitemap.txt";
-export const sitemapPath = "/scripts/src/sitemap.js";
+export const sitemapPath = "/scripts/src/sitemap.mjs";
 
 export default async () =>
 {
@@ -26,7 +26,7 @@ export default async () =>
 
 
 
-	let sitemap = `Site.sitemap =\n{${getPageString("/home/", "", ["/gallery/", "/applets/", "/teaching/", "/slides/", "/writing/", "/about/", "/404/", "/debug/"], "Cruz Godar")}`;
+	let sitemap = `export const sitemap =\n{${getPageString("/home/", "", ["/gallery/", "/applets/", "/teaching/", "/slides/", "/writing/", "/about/", "/404/", "/debug/"], "Cruz Godar")}`;
 
 	lines[0] = "/home/";
 
@@ -96,7 +96,7 @@ export default async () =>
 		sitemap = `${sitemap}${getPageString(lines[i], realParent, children, title)}`;
 	}
 
-	sitemap = `${sitemap.slice(0, sitemap.length - 3)}\n}`;
+	sitemap = `${sitemap.slice(0, sitemap.length - 3)}\n};`;
 
 	await write(sitemapPath, sitemap);
 }

@@ -1,3 +1,4 @@
+import { opacityAnimationTime } from "/scripts/src/animation.mjs";
 import { Mandelbulb } from "./class.mjs";
 import { equalizeTextButtons } from "/scripts/src/buttons.mjs";
 import { showPage } from "/scripts/src/load-page.mjs";
@@ -166,15 +167,15 @@ export function load()
 	
 	function switchBulb()
 	{
-		changeOpacity(switchBulbButtonElement, 0, Site.opacityAnimationTime);
-		changeOpacity(switchMovementButtonElement, 0, Site.opacityAnimationTime);
+		changeOpacity(switchBulbButtonElement, 0);
+		changeOpacity(switchMovementButtonElement, 0);
 		
 		setTimeout(() =>
 		{
 			if (applet.juliaProportion < .5)
 			{
 				switchBulbButtonElement.textContent = "Switch to Mandelbulb";
-				changeOpacity(switchMovementButtonElement, 1, Site.opacityAnimationTime);
+				changeOpacity(switchMovementButtonElement, 1);
 			}
 			
 			else
@@ -184,8 +185,8 @@ export function load()
 			
 			equalizeTextButtons();
 			
-			changeOpacity(switchBulbButtonElement, 1, Site.opacityAnimationTime);
-		}, Site.opacityAnimationTime);
+			changeOpacity(switchBulbButtonElement, 1);
+		}, opacityAnimationTime);
 		
 		applet.switchBulb();
 	}
@@ -194,7 +195,7 @@ export function load()
 	
 	function switchMovement()
 	{
-		changeOpacity(switchMovementButtonElement, 0, Site.opacityAnimationTime);
+		changeOpacity(switchMovementButtonElement, 0);
 		
 		setTimeout(() =>
 		{
@@ -210,8 +211,8 @@ export function load()
 			
 			equalizeTextButtons();
 			
-			changeOpacity(switchMovementButtonElement, 1, Site.opacityAnimationTime);
-		}, Site.opacityAnimationTime);
+			changeOpacity(switchMovementButtonElement, 1);
+		}, opacityAnimationTime);
 		
 		applet.switchMovement();
 	}

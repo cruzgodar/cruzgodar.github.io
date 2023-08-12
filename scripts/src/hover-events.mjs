@@ -1,6 +1,7 @@
 import { changeScale } from "./animation.mjs";
 import { $$ } from "./main.mjs";
 import { showTex } from "./math.mjs";
+import { currentlyTouchDevice } from "./interaction.mjs";
 
 const elementSelectors = `
 	a
@@ -47,7 +48,7 @@ export function addHoverEvent(element)
 {
 	element.addEventListener("mouseenter", () =>
 	{
-		if (!Site.Interaction.currentlyTouchDevice)
+		if (!currentlyTouchDevice)
 		{
 			element.classList.add("hover");
 			
@@ -65,7 +66,7 @@ export function addHoverEvent(element)
 	
 	element.addEventListener("mouseleave", () =>
 	{
-		if (!Site.Interaction.currentlyTouchDevice)
+		if (!currentlyTouchDevice)
 		{
 			element.classList.remove("hover");
 			
@@ -91,7 +92,7 @@ export function addHoverEventWithScale(element, scale, forceJs = false)
 {
 	element.addEventListener("mouseenter", () =>
 	{
-		if (!Site.Interaction.currentlyTouchDevice)
+		if (!currentlyTouchDevice)
 		{
 			if (element.tagName === "SELECT")
 			{
@@ -100,13 +101,13 @@ export function addHoverEventWithScale(element, scale, forceJs = false)
 			
 			element.classList.add("hover");
 			
-			changeScale(element, scale, Site.buttonAnimationTime);
+			changeScale(element, scale);
 		}
 	});
 	
 	element.addEventListener("mouseleave", () =>
 	{
-		if (!Site.Interaction.currentlyTouchDevice)
+		if (!currentlyTouchDevice)
 		{
 			if (element.tagName === "SELECT")
 			{
@@ -115,7 +116,7 @@ export function addHoverEventWithScale(element, scale, forceJs = false)
 			
 			element.classList.remove("hover");
 			
-			changeScale(element, 1, Site.buttonAnimationTime);
+			changeScale(element, 1);
 		}
 	});
 }
@@ -126,7 +127,7 @@ function addHoverEventForTexHolder(element)
 	
 	element.addEventListener("mouseenter", () =>
 	{
-		if (!Site.Interaction.currentlyTouchDevice && element.getAttribute("data-showing-tex") !== "1")
+		if (!currentlyTouchDevice && element.getAttribute("data-showing-tex") !== "1")
 		{
 			element.classList.add("hover");
 			
@@ -142,7 +143,7 @@ function addHoverEventForTexHolder(element)
 	
 	element.addEventListener("mouseleave", () =>
 	{
-		if (!Site.Interaction.currentlyTouchDevice)
+		if (!currentlyTouchDevice)
 		{
 			element.classList.remove("hover");
 			

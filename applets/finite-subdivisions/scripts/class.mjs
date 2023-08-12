@@ -1,3 +1,4 @@
+import { addTemporaryWorker } from "/scripts/src/main.mjs";
 import { Applet } from "/scripts/src/applets.mjs"
 
 export class FiniteSubdivision extends Applet
@@ -59,12 +60,7 @@ export class FiniteSubdivision extends Applet
 		
 		
 		
-		try {this.webWorker.terminate()}
-		catch(ex) {}
-		
-		this.webWorker = new Worker(`/applets/finite-subdivisions/scripts/worker.min.js`);
-		
-		this.workers.push(this.webWorker);
+		this.webWorker = addTemporaryWorker("/applets/finite-subdivisions/scripts/worker.js");
 		
 		
 		

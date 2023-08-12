@@ -1,5 +1,7 @@
+import { opacityAnimationTime } from "/scripts/src/animation.mjs";
 import { Applet } from "/scripts/src/applets.mjs";
 import { aspectRatio } from "/scripts/src/layout.mjs";
+import { addTemporaryListener } from "/scripts/src/main.mjs";
 
 export class QuaternionicJuliaSet extends Applet
 {
@@ -442,12 +444,18 @@ export class QuaternionicJuliaSet extends Applet
 		
 		
 		const boundFunction = this.handleKeydownEvent.bind(this);
-		document.documentElement.addEventListener("keydown", boundFunction);
-		this.handlers.push([document.documentElement, "keydown", boundFunction]);
+		addTemporaryListener({
+			object: document.documentElement,
+			event: "keydown",
+			callback: boundFunction
+		});
 		
 		const boundFunction2 = this.handleKeyupEvent.bind(this);
-		document.documentElement.addEventListener("keyup", boundFunction2);
-		this.handlers.push([document.documentElement, "keyup", boundFunction2]);
+		addTemporaryListener({
+			object: document.documentElement,
+			event: "keyup",
+			callback: boundFunction2
+		});
 		
 		
 		
@@ -1204,7 +1212,7 @@ export class QuaternionicJuliaSet extends Applet
 		
 		try
 		{
-			changeOpacity(this.switchBulbButtonElement, 0, Site.opacityAnimationTime)
+			changeOpacity(this.switchBulbButtonElement, 0)
 			
 			setTimeout(() =>
 			{
@@ -1218,8 +1226,8 @@ export class QuaternionicJuliaSet extends Applet
 					this.switchBulbButtonElement.textContent = "Switch to Julia Set";
 				}
 				
-				changeOpacity(this.switchBulbButtonElement, 1, Site.opacityAnimationTime);
-			}, Site.opacityAnimationTime);
+				changeOpacity(this.switchBulbButtonElement, 1);
+			}, opacityAnimationTime);
 		}
 		
 		catch(ex) {}
@@ -1239,12 +1247,12 @@ export class QuaternionicJuliaSet extends Applet
 			{
 				try
 				{
-					changeOpacity(this.switchMovementButtonElement, 1, Site.opacityAnimationTime);
-					changeOpacity(this.randomizeCButtonElement, 1, Site.opacityAnimationTime);
+					changeOpacity(this.switchMovementButtonElement, 1);
+					changeOpacity(this.randomizeCButtonElement, 1);
 				}
 				
 				catch(ex) {}
-			}, Site.opacityAnimationTime);
+			}, opacityAnimationTime);
 		}
 		
 		else
@@ -1255,8 +1263,8 @@ export class QuaternionicJuliaSet extends Applet
 			
 			try
 			{
-				changeOpacity(this.switchMovementButtonElement, 0, Site.opacityAnimationTime);
-				changeOpacity(this.randomizeCButtonElement, 0, Site.opacityAnimationTime);
+				changeOpacity(this.switchMovementButtonElement, 0);
+				changeOpacity(this.randomizeCButtonElement, 0);
 			}
 			
 			catch(ex) {}
@@ -1288,7 +1296,7 @@ export class QuaternionicJuliaSet extends Applet
 		
 		try
 		{
-			changeOpacity(this.switchMovementButtonElement, 0, Site.opacityAnimationTime);
+			changeOpacity(this.switchMovementButtonElement, 0);
 			
 			setTimeout(() =>
 			{
@@ -1302,8 +1310,8 @@ export class QuaternionicJuliaSet extends Applet
 					this.switchMovementButtonElement.textContent = "Move Camera";
 				}
 				
-				changeOpacity(this.switchMovementButtonElement, 1, Site.opacityAnimationTime);
-			}, Site.opacityAnimationTime);
+				changeOpacity(this.switchMovementButtonElement, 1);
+			}, opacityAnimationTime);
 		}
 		
 		catch(ex) {}

@@ -105,7 +105,7 @@ export function load()
 	
 	categorySelectorDropdownElement.addEventListener("input", async () =>
 	{
-		await Promise.all(Array.from(sectionElements[visibleSection]).map(element => changeOpacity(element, 0, Site.opacityAnimationTime)));
+		await Promise.all(Array.from(sectionElements[visibleSection]).map(element => changeOpacity(element, 0)));
 		
 		sectionElements[visibleSection].forEach(element => categoryHolderElement.appendChild(element));
 		
@@ -129,7 +129,7 @@ export function load()
 			}
 		}
 		
-		sectionElements[visibleSection].forEach(element => changeOpacity(element, 1, Site.opacityAnimationTime))
+		sectionElements[visibleSection].forEach(element => changeOpacity(element, 1))
 	});
 	
 	

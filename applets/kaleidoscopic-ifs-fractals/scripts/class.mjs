@@ -1,5 +1,6 @@
 import { Applet } from "/scripts/src/applets.mjs";
 import { aspectRatio } from "/scripts/src/layout.mjs";
+import { addTemporaryListener } from "/scripts/src/main.mjs";
 
 export class KaleidoscopicIFSFractal extends Applet
 {
@@ -476,19 +477,25 @@ export class KaleidoscopicIFSFractal extends Applet
 		
 		
 		const boundFunction = this.handleKeydownEvent.bind(this);
-		document.documentElement.addEventListener("keydown", boundFunction);
-		this.handlers.push([document.documentElement, "keydown", boundFunction]);
+		addTemporaryListener({
+			object: document.documentElement,
+			event: "keydown",
+			callback: boundFunction
+		});
 		
 		const boundFunction2 = this.handleKeyupEvent.bind(this);
-		document.documentElement.addEventListener("keyup", boundFunction2);
-		this.handlers.push([document.documentElement, "keyup", boundFunction2]);
+		addTemporaryListener({
+			object: document.documentElement,
+			event: "keyup",
+			callback: boundFunction2
+		});
 		
-		const boundFunction3 = () =>
-		{
-			this.changeResolution();
-		};
-		window.addEventListener("resize", boundFunction3);
-		this.handlers.push([window, "resize", boundFunction3]);
+		const boundFunction3 = () => this.changeResolution();
+		addTemporaryListener({
+			object: window,
+			event: "resize",
+			callback: boundFunction3
+		});
 
 
 
@@ -1197,7 +1204,7 @@ export class KaleidoscopicIFSFractal extends Applet
 	
 	async changePolyhedron(newPolyhedronIndex)
 	{
-		await changeOpacity(this.wilson.canvas, 0, Site.opacityAnimationTime);
+		await changeOpacity(this.wilson.canvas, 0);
 		
 		this.polyhedronIndex = newPolyhedronIndex;
 		
@@ -1214,6 +1221,6 @@ export class KaleidoscopicIFSFractal extends Applet
 		
 		window.requestAnimationFrame(this.drawFrame.bind(this));
 		
-		changeOpacity(this.wilson.canvas, 1, Site.opacityAnimationTime);
+		changeOpacity(this.wilson.canvas, 1);
 	}
 }

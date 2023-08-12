@@ -1,3 +1,6 @@
+import { opacityAnimationTime } from "/scripts/src/animation.mjs";
+import { addTemporaryListener } from "./src/main.mjs";
+
 class Wilson
 {
 	canvas = null;
@@ -898,16 +901,47 @@ class Wilson
 			
 			if (!this.static)
 			{	
-				document.documentElement.addEventListener("touchstart", handleTouchstartEventBound, false);
-				document.documentElement.addEventListener("touchmove", handleTouchmoveEventBound, false);
-				document.documentElement.addEventListener("touchend", handleTouchendEventBound, false);
+				addTemporaryListener({
+					object: document.documentElement,
+					event: "touchstart",
+					callback: handleTouchstartEventBound
+				});
+
+				addTemporaryListener({
+					object: document.documentElement,
+					event: "touchmove",
+					callback: handleTouchmoveEventBound
+				});
+
+				addTemporaryListener({
+					object: document.documentElement,
+					event: "touchend",
+					callback: handleTouchendEventBound
+				});
+
+				addTemporaryListener({
+					object: document.documentElement,
+					event: "mousedown",
+					callback: handleMousedownEventBound
+				});
+
+				addTemporaryListener({
+					object: document.documentElement,
+					event: "mousemove",
+					callback: handleMousemoveEventBound
+				});
+
+				addTemporaryListener({
+					object: document.documentElement,
+					event: "mouseup",
+					callback: handleMouseupEventBound
+				});
 				
-				document.documentElement.addEventListener("mousedown", handleMousedownEventBound, false);
-				document.documentElement.addEventListener("mousemove", handleMousemoveEventBound, false);
-				document.documentElement.addEventListener("mouseup", handleMouseupEventBound, false);
-				
-				window.addEventListener("resize", onResizeBound);
-				Page.temporaryHandlers["resize"].push(onResizeBound);
+				addTemporaryListener({
+					object: window,
+					event: "resize",
+					callback: onResizeBound
+				});
 			}
 			
 			else
@@ -1430,16 +1464,25 @@ class Wilson
 			
 			
 			let onResizeBound = this.onResize.bind(this);
-			window.addEventListener("resize", onResizeBound);
-			Page.temporaryHandlers["resize"].push(onResizeBound);
+			addTemporaryListener({
+				object: window,
+				event: "resize",
+				callback: onResizeBound
+			});
 			
 			let onScrollBound = this.onScroll.bind(this);
-			window.addEventListener("scroll", onScrollBound);
-			Page.temporaryHandlers["scroll"].push(onScrollBound);
+			addTemporaryListener({
+				object: window,
+				event: "scroll",
+				callback: onScrollBound
+			});
 			
 			let onKeypressBound = this.onKeypress.bind(this);
-			document.documentElement.addEventListener("keydown", onKeypressBound);
-			Page.temporaryHandlers["keydown"].push(onKeypressBound);
+			addTemporaryListener({
+				object: document.documentElement,
+				event: "keydown",
+				callback: onKeypressBound
+			});
 		},
 
 
@@ -1463,7 +1506,7 @@ class Wilson
 				
 				
 				
-				changeOpacity(document.body, 0, Site.opacityAnimationTime);
+				changeOpacity(document.body, 0);
 				
 				setTimeout(() =>
 				{
@@ -1534,7 +1577,7 @@ class Wilson
 					anime({
 						targets: Site.Settings.metaThemeColorElement,
 						content: "#000000",
-						duration: Site.opacityAnimationTime,
+						duration: opacityAnimationTime,
 						easing: "cubicBezier(.42, 0, .58, 1)"
 					});
 					
@@ -1597,15 +1640,15 @@ class Wilson
 					
 					
 					
-					changeOpacity(document.body, 1, Site.opacityAnimationTime);
+					changeOpacity(document.body, 1);
 					
 					setTimeout(() =>
 					{
 						this.currentlyAnimating = false;
 						
 						this.onResize();
-					}, Site.opacityAnimationTime);
-				}, Site.opacityAnimationTime);
+					}, opacityAnimationTime);
+				}, opacityAnimationTime);
 			}
 			
 			
@@ -1628,11 +1671,11 @@ class Wilson
 				anime({
 					targets: Site.Settings.metaThemeColorElement,
 					content: this.oldMetaThemeColor,
-					duration: Site.opacityAnimationTime,
+					duration: opacityAnimationTime,
 					easing: "cubicBezier(.42, 0, .58, 1)"
 				});
 				
-				changeOpacity(document.body, 0, Site.opacityAnimationTime);
+				changeOpacity(document.body, 0);
 				
 				setTimeout(() =>
 				{
@@ -1737,14 +1780,14 @@ class Wilson
 					{
 						window.scroll(0, this.fullscreenOldScroll);
 						
-						changeOpacity(document.body, 1, Site.opacityAnimationTime);
+						changeOpacity(document.body, 1);
 						
 						setTimeout(() =>
 						{
 							this.currentlyAnimating = false;
-						}, Site.opacityAnimationTime);
+						}, opacityAnimationTime);
 					}, 10);
-				}, Site.opacityAnimationTime);
+				}, opacityAnimationTime);
 			}
 		},
 

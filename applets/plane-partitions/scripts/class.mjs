@@ -1,4 +1,5 @@
 import { Applet } from "/scripts/src/applets.mjs";
+import { $$ } from "/scripts/src/main.mjs";
 
 export class PlanePartitions extends Applet
 {
@@ -190,7 +191,7 @@ export class PlanePartitions extends Applet
 		
 		document.body.querySelector(".wilson-fullscreen-components-container").style.setProperty("z-index", 200, "important");
 		
-		Page.setElementStyles(".wilson-applet-canvas-container", "background-color", "rgba(0, 0, 0, 0)", true);
+		$$(".wilson-applet-canvas-container").forEach(element => element.style.setProperty("background-color", "rgba(0, 0, 0, 0)", "important"));
 		
 		
 		

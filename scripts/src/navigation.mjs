@@ -2,6 +2,7 @@ import { fadeDownOut, fadeLeftOut, fadeOut, fadeRightOut, fadeUpOut } from "./an
 import { bannerElement, bannerOnScroll, loadBanner } from "./banners.mjs";
 import { cardIsOpen, hideCard } from "./cards.mjs";
 import { loadPage, pageElement } from "./load-page.mjs";
+import { temporaryListeners, clearTemporaryListeners, temporaryIntervals, clearTemporaryIntervals } from "./main.mjs";
 import { forceThemePages, preventThemeChangePages, setForcedTheme, setRevertThemeTo, siteSettings, toggleDarkTheme } from "./settings.mjs";
 
 let currentlyRedirecting = false;
@@ -228,27 +229,27 @@ async function fadeOutPage({ url, noFadeOut })
 	{
 		if (navigationTransitionType === 1)
 		{
-			return bannerElement ? Promise.all([fadeUpOut(pageElement, Site.pageAnimationTime), fadeUpOut(bannerElement, Site.pageAnimationTime * 2)]) : fadeUpOut(pageElement, Site.pageAnimationTime);
+			return bannerElement ? Promise.all([fadeUpOut(pageElement), fadeUpOut(bannerElement)]) : fadeUpOut(pageElement);
 		}
 		
 		else if (navigationTransitionType === -1)
 		{
-			return bannerElement ? Promise.all([fadeDownOut(bannerElement, Site.pageAnimationTime * 2), fadeDownOut(pageElement, Site.pageAnimationTime)]) : fadeDownOut(pageElement, Site.pageAnimationTime);
+			return bannerElement ? Promise.all([fadeDownOut(bannerElement), fadeDownOut(pageElement)]) : fadeDownOut(pageElement);
 		}
 		
 		else if (navigationTransitionType === 2)
 		{
-			return bannerElement ? Promise.all([fadeLeftOut(bannerElement, Site.pageAnimationTime * 2), fadeLeftOut(pageElement, Site.pageAnimationTime)]) : fadeLeftOut(pageElement, Site.pageAnimationTime);
+			return bannerElement ? Promise.all([fadeLeftOut(bannerElement), fadeLeftOut(pageElement)]) : fadeLeftOut(pageElement);
 		}
 		
 		else if (navigationTransitionType === -2)
 		{
-			return bannerElement ? Promise.all([fadeRightOut(bannerElement, Site.pageAnimationTime * 2), fadeRightOut(pageElement, Site.pageAnimationTime)]) : fadeRightOut(pageElement, Site.pageAnimationTime);
+			return bannerElement ? Promise.all([fadeRightOut(bannerElement), fadeRightOut(pageElement)]) : fadeRightOut(pageElement);
 		}
 		
 		else
 		{
-			return bannerElement ? Promise.all([fadeOut(bannerElement, Site.pageAnimationTime * 2), fadeOut(pageElement, Site.pageAnimationTime)]) : fadeOut(pageElement, Site.pageAnimationTime);
+			return bannerElement ? Promise.all([fadeOut(bannerElement), fadeOut(pageElement)]) : fadeOut(pageElement);
 		}
 	})()
 		
@@ -285,27 +286,21 @@ async function fadeOutPage({ url, noFadeOut })
 
 function unloadPage()
 {
-	//Remove JS so it's not executed twice.
-	document.querySelectorAll("script, style.temporary-style, link.temporary-style").forEach(element => element.remove());
-	
-	//document.querySelectorAll("#header-links a").forEach(element => element.classList.remove("active"));
-	
-	//Clear temporary things.
-	//Unbind everything transient from the window and the html element.
-	for (let key in Page.temporaryHandlers)
+	//Remove temporary things outside the page element.
+	document.querySelectorAll("script, .temporary-style").forEach(element => element.remove());
+
+	temporaryListeners.forEach(temporaryListener =>
 	{
-		for (let j = 0; j < Page.temporaryHandlers[key].length; j++)
-		{
-			window.removeEventListener(key, Page.temporaryHandlers[key][j]);
-			document.documentElement.removeEventListener(key, Page.temporaryHandlers[key][j]);
-		}
-	}
+		temporaryListener[0].removeEventListener(temporaryListener[1], temporaryListener[2]);
+	});
+
+	clearTemporaryListeners();
 	
 	
 	
-	Page.temporaryIntervals.forEach(refreshId => clearInterval(refreshId));
+	temporaryIntervals.forEach(refreshId => clearInterval(refreshId));
 	
-	Page.temporaryIntervals = [];
+	clearTemporaryIntervals();
 	
 	
 	

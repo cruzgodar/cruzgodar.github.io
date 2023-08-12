@@ -132,14 +132,7 @@
 		Object.keys(Navigation).forEach(key => window[key] = Navigation[key]);
 		Object.keys(Settings).forEach(key => window[key] = Settings[key]);
 		
-		const params = new URLSearchParams(document.location.search);
-
-		Page.url = decodeURIComponent(params.get("page")).replace("index.html", "");
-
-		if (Page.url === "null")
-		{
-			Page.url = "/home/";
-		}
+		
 
 		if (typeof Page.url !== "undefined" && Page.url !== null && Page.url !== "null")
 		{

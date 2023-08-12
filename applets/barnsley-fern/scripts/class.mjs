@@ -1,3 +1,4 @@
+import { addTemporaryWorker } from "/scripts/src/main.mjs";
 import { Applet } from "/scripts/src/applets.mjs"
 
 export class BarnsleyFern extends Applet
@@ -43,14 +44,7 @@ export class BarnsleyFern extends Applet
 		
 		this.wilson.changeCanvasSize(this.resolution, this.resolution);
 		
-		
-		
-		try {webWorker.terminate()}
-		catch(ex) {}
-		
-		this.webWorker = new Worker(`/applets/barnsley-fern/scripts/worker.min.js`);
-		
-		this.workers.push(this.webWorker);
+		this.webWorker = addTemporaryWorker("/applets/barnsley-fern/scripts/worker.js");
 		
 		this.webWorker.onmessage = (e) => this.wilson.render.drawFrame(e.data[0]);
 		

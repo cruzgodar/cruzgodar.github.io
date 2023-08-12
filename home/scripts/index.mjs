@@ -1,8 +1,8 @@
+import { opacityAnimationTime } from "/scripts/src/animation.mjs";
 import { fadeLeft } from "/scripts/src/animation.mjs";
 import { bannerMaxScroll, setBannerOpacity } from "/scripts/src/banners.mjs";
 import { disableLinks, showPage } from "/scripts/src/load-page.mjs";
-import { pageScroll } from "/scripts/src/main.mjs";
-import { $ } from "/scripts/src/main.mjs";
+import { $, addTemporaryListener, pageScroll, setVisitedHomepage, visitedHomepage } from "/scripts/src/main.mjs";
 
 function setNameTextOpacity()
 {
@@ -35,28 +35,32 @@ function centerContent()
 
 export function load()
 {
-	if (Site.vistedHomepage)
+	if (visitedHomepage)
 	{
 		$("#return-scroll-to").scrollIntoView();
 
 		setBannerOpacity(0);
 	}
 	
-	Site.vistedHomepage = true;
+	setVisitedHomepage(true);
 
-	window.addEventListener("resize", centerContent);
-	Page.temporaryHandlers["resize"].push(centerContent);
+	addTemporaryListener({
+		object: window,
+		event: "resize",
+		callback: centerContent
+	});
+
 	centerContent();
 	
 	setTimeout(() =>
 	{
-		fadeLeft($("#cruz-text"), Site.opacityAnimationTime * 3.5);
+		fadeLeft($("#cruz-text"));
 		
 		setTimeout(() =>
 		{
-			fadeLeft($("#godar-text"), Site.opacityAnimationTime * 3.5);
-		}, Site.opacityAnimationTime);	
-	}, Site.opacityAnimationTime);
+			fadeLeft($("#godar-text"));
+		}, opacityAnimationTime);	
+	}, opacityAnimationTime);
 	
 	setTimeout(() => setNameTextOpacity(), 100);
 	

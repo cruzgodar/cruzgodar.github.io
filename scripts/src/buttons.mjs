@@ -1,10 +1,13 @@
-import { $$ } from "./main.mjs";
+import { $$, addTemporaryListener } from "./main.mjs";
 import { redirect } from "./navigation.mjs";
 
 export function setUpTextButtons()
 {
-	window.addEventListener("resize", equalizeTextButtons);
-	Page.temporaryHandlers["resize"].push(equalizeTextButtons);
+	addTemporaryListener({
+		object: window,
+		event: "resize",
+		callback: equalizeTextButtons
+	});
 	
 	setTimeout(equalizeTextButtons, 50);
 	setTimeout(equalizeTextButtons, 500);

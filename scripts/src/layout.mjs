@@ -5,13 +5,15 @@ import { $, $$ } from "./main.mjs";
 import { siteSettings } from "./settings.mjs";
 
 export let aspectRatio = window.innerWidth / window.innerHeight;
+export let navigationAnimationDistanceVertical = Math.min(window.innerHeight / 20, 25);
+export let navigationAnimationDistanceHorizontal = Math.min(window.innerWidth / 20, 25);
 
 export function onResize()
 {
 	setBannerMaxScroll(document.body.offsetHeight > window.innerHeight * 1.5 ? window.innerHeight / 2 : document.body.offsetHeight - window.innerHeight);
 	
-	Site.navigationAnimationDistanceVertical = Math.min(window.innerHeight / 20, 25);
-	Site.navigationAnimationDistanceHorizontal = Math.min(window.innerWidth / 20, 25);
+	navigationAnimationDistanceVertical = Math.min(window.innerHeight / 20, 25);
+	navigationAnimationDistanceHorizontal = Math.min(window.innerWidth / 20, 25);
 	
 	aspectRatio = window.innerWidth / window.innerHeight;
 	

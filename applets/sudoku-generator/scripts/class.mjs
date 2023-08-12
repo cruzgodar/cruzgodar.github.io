@@ -1,3 +1,5 @@
+import { opacityAnimationTime } from "/scripts/src/animation.mjs";
+import { addTemporaryWorker } from "/scripts/src/main.mjs";
 import { Applet } from "/scripts/src/applets.mjs";
 
 export class SudokuGenerator extends Applet
@@ -52,7 +54,7 @@ export class SudokuGenerator extends Applet
 				const canvasSize = 9 * 200 + 9;
 				
 				this.wilson.ctx.clearRect(0, 0, canvasSize, canvasSize);
-			}, Site.opacityAnimationTime);
+			}, opacityAnimationTime);
 		}
 		
 		else
@@ -67,12 +69,7 @@ export class SudokuGenerator extends Applet
 		
 		
 		
-		try {this.webWorker.terminate();}
-		catch(ex) {}
-		
-		this.webWorker = new Worker(`/applets/sudoku-generator/scripts/worker.min.js`);
-		
-		this.workers.push(this.webWorker);
+		this.webWorker = addTemporaryWorker("/applets/sudoku-generator/scripts/worker.js");
 		
 		
 		
@@ -94,7 +91,7 @@ export class SudokuGenerator extends Applet
 			setTimeout(() =>
 			{
 				this.webWorker.postMessage([]);
-			}, Site.opacityAnimationTime);
+			}, opacityAnimationTime);
 		}
 		
 		else

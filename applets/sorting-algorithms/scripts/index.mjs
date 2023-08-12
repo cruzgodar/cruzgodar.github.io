@@ -1,6 +1,7 @@
+import { opacityAnimationTime } from "/scripts/src/animation.mjs";
 import { SortingAlgorithm } from "./class.mjs";
 import { showPage } from "/scripts/src/load-page.mjs";
-import { $ } from "/scripts/src/main.mjs";
+import { $, $$ } from "/scripts/src/main.mjs";
 
 export function load()
 {
@@ -27,11 +28,11 @@ export function load()
 	
 	algorithmSelectorDropdownElement.addEventListener("input", () =>
 	{
-		Page.setElementStyles(".info-text", "opacity", 0);
+		$$(".info-text").forEach(element => element.style.opacity = 0);
 		
 		setTimeout(() =>
 		{
-			Page.setElementStyles(".info-text", "display", "none");
+			$$(".info-text").forEach(element => element.style.display = "none");
 			
 			const element = $(`#${algorithmSelectorDropdownElement.value}-info`);
 			
@@ -41,7 +42,7 @@ export function load()
 			{
 				element.style.opacity = 1;
 			}, 10);
-		}, Site.opacityAnimationTime);	
+		}, opacityAnimationTime);	
 	});
 	
 	

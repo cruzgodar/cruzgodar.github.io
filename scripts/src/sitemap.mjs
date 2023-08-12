@@ -1,4 +1,4 @@
-Site.sitemap =
+export const sitemap =
 {
 	"/home/":
 	{
@@ -1299,4 +1299,4 @@ Site.sitemap =
 		
 		"children": []
 	}
-}
+};

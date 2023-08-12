@@ -1,5 +1,6 @@
 import { Applet } from "/scripts/src/applets.mjs"
 import { loadGlsl, getGlslBundle } from "/scripts/src/complex-glsl.mjs"
+import { addTemporaryListener } from "/scripts/src/main.mjs";
 
 export class ComplexMap extends Applet
 {
@@ -85,9 +86,12 @@ export class ComplexMap extends Applet
 		
 		this.wilson = new Wilson(canvas, options);
 		
-		const boundFunction = () => this.changeAspectRatio(true)
-		window.addEventListener("resize", boundFunction);
-		this.handlers.push([window, "resize", boundFunction]);
+		const boundFunction = () => this.changeAspectRatio(true);
+		addTemporaryListener({
+			object: window,
+			event: "resize",
+			callback: boundFunction
+		});
 		
 		this.loadPromise = new Promise(async (resolve, reject) =>
 		{

@@ -1,4 +1,5 @@
 import { Applet } from "/scripts/src/applets.mjs";
+import { addTemporaryListener } from "/scripts/src/main.mjs";
 
 export class NewtonsMethod extends Applet
 {
@@ -252,8 +253,11 @@ export class NewtonsMethod extends Applet
 		
 		
 		const boundFunction = () => this.changeAspectRatio(true);
-		window.addEventListener("resize", boundFunction);
-		this.handlers.push(window, "resize", boundFunction);
+		addTemporaryListener({
+			object: window,
+			event: "resize",
+			callback: boundFunction
+		});
 		
 		
 		
@@ -484,8 +488,8 @@ export class NewtonsMethod extends Applet
 		
 		try
 		{
-			changeOpacity(this.rootSetterElement, 0, Site.opacityAnimationTime);
-			await changeOpacity(this.colorSetterElement, 0, Site.opacityAnimationTime);
+			changeOpacity(this.rootSetterElement, 0);
+			await changeOpacity(this.colorSetterElement, 0);
 			
 			if (this.lastActiveRoot === 0)
 			{
@@ -509,8 +513,8 @@ export class NewtonsMethod extends Applet
 				this.colorSetterElement.value = this.rgbToHex(this.colors[3 * index] * 255, this.colors[3 * index + 1] * 255, this.colors[3 * index + 2] * 255);
 			}
 			
-			changeOpacity(this.rootSetterElement, 1, Site.opacityAnimationTime);
-			changeOpacity(this.colorSetterElement, 1, Site.opacityAnimationTime);
+			changeOpacity(this.rootSetterElement, 1);
+			changeOpacity(this.colorSetterElement, 1);
 		}
 		
 		catch(ex) {}

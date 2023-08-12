@@ -1,5 +1,6 @@
+import { opacityAnimationTime } from "/scripts/src/animation.mjs";
 import { addHoverEventWithScale } from "./hover-events.mjs";
-import { $$, pageElement } from "./main.mjs";
+import { $$, pageElement, addStyle } from "./main.mjs";
 
 export let bannerElement = null;
 
@@ -130,7 +131,7 @@ export function loadBanner(large = false)
 			bannerFilepath += multibannerPages[Page.url].currentBanner + "/";
 		}
 		
-		Site.addStyle(`
+		addStyle(`
 			#banner-small
 			{
 				background: url(${bannerFilepath}small.webp) no-repeat center center;
@@ -399,7 +400,7 @@ export function insertScrollButton()
 				targets: $("#new-banner-cover"),
 				opacity: 1,
 				translateY: 0,
-				duration: Site.opacityAnimationTime * 4,
+				duration: opacityAnimationTime * 4,
 				easing: "easeOutCubic"
 			});
 			
@@ -407,13 +408,13 @@ export function insertScrollButton()
 				targets: $("#scroll-button"),
 				opacity,
 				translateY: 0,
-				duration: Site.opacityAnimationTime * 4,
+				duration: opacityAnimationTime * 4,
 				easing: "easeOutCubic"
 			});
 			
 			
 			
-			setTimeout(() => scrollButtonExists = true, Site.opacityAnimationTime * 4);
+			setTimeout(() => scrollButtonExists = true, opacityAnimationTime * 4);
 			
 			try {addHoverEventWithScale(document.querySelector("#scroll-button"), 1.1);}
 			catch(ex) {}

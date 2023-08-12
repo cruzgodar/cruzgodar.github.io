@@ -1,4 +1,5 @@
 import { Applet } from "/scripts/src/applets.mjs"
+import { addTemporaryListener } from "/scripts/src/main.mjs";
 
 export class JuliaSetMosaic extends Applet
 {
@@ -102,8 +103,11 @@ export class JuliaSetMosaic extends Applet
 		
 		
 		const boundFunction = () => this.changeAspectRatio(true);
-		window.addEventListener("resize", boundFunction);
-		this.handlers.push([window, "resize", boundFunction]);
+		addTemporaryListener({
+			object: window,
+			event: "resize",
+			callback: boundFunction
+		});
 	}
 	
 	

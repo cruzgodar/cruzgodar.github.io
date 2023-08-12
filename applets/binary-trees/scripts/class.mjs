@@ -1,5 +1,7 @@
-import { Applet } from "/scripts/src/applets.mjs"
+import { opacityAnimationTime } from "/scripts/src/animation.mjs";
+import { Applet } from "/scripts/src/applets.mjs";
 import { aspectRatio } from "/scripts/src/layout.mjs";
+import { $$, addTemporaryInterval, addTemporaryWorker } from "/scripts/src/main.mjs";
 
 export class BinaryTree extends Applet
 {
@@ -155,12 +157,7 @@ export class BinaryTree extends Applet
 		this.root = root;
 		this.branchPoints = branchPoints;
 		
-		try {this.webWorker.terminate()}
-		catch(ex) {}
-		
-		this.webWorker = new Worker(`/applets/binary-trees/scripts/worker.min.js`);
-		
-		this.workers.push(this.webWorker);
+		this.webWorker = addTemporaryWorker("/applets/binary-trees/scripts/worker.js");
 		
 		
 		
@@ -170,7 +167,7 @@ export class BinaryTree extends Applet
 			{
 				const timeoutId = setTimeout(() =>
 				{
-					Page.setElementStyles(".wilson-draggable", "opacity", 1);
+					$$(".wilson-draggable").forEach(element => element.style.opacity = 1);
 				}, 500);
 				
 				this.timeoutIds.push(timeoutId);	
@@ -220,7 +217,7 @@ export class BinaryTree extends Applet
 		try {this.webWorker.terminate()}
 		catch(ex) {}
 		
-		Page.setElementStyles(".wilson-draggable", "opacity", 1);
+		$$(".wilson-draggable").forEach(element => element.style.opacity = 1);
 		
 		this.wilson.ctx.fillStyle = "rgb(0, 0, 0)";
 		this.wilson.ctx.fillRect(0, 0, this.wilson.canvasWidth, this.wilson.canvasHeight);
@@ -243,24 +240,24 @@ export class BinaryTree extends Applet
 	{
 		document.body.style.WebkitUserSelect = "";
 		
-		Page.setElementStyles(".wilson-draggable", "opacity", 0);
+		$$(".wilson-draggable").forEach(element => element.style.opacity = 0);
 		
 		
 		
 		let step = 0;
 		
 		const that = this;
-		
-		const refreshId = setInterval(() =>
+
+		const callback = () =>
 		{
 			let alpha = step / 37;
 			that.wilson.ctx.fillStyle = `rgba(0, 0, 0, ${alpha})`;
 			that.wilson.ctx.fillRect(0, 0, that.wilson.canvasWidth, that.wilson.canvasHeight);
 			
 			step++;
-		}, 8);
-		
-		this.refreshIds.push(refreshId);
+		};
+
+		const refreshId = addTemporaryInterval({ callback, delay: 8 })
 		
 		
 		
@@ -272,7 +269,7 @@ export class BinaryTree extends Applet
 			that.wilson.ctx.fillRect(0, 0, that.wilson.canvasWidth, that.wilson.canvasHeight);
 			
 			that.animate(that.root, that.branchPoints);
-		}, Site.opacityAnimationTime);
+		}, opacityAnimationTime);
 		
 		this.timeoutIds.push(timeoutId);
 	}
@@ -284,7 +281,7 @@ export class BinaryTree extends Applet
 		try {this.webWorker.terminate()}
 		catch(ex) {}
 		
-		Page.setElementStyles(".wilson-draggable", "opacity", 1);
+		$$(".wilson-draggable").forEach(element => element.style.opacity = 1);
 		
 		
 		

@@ -1,5 +1,5 @@
 import { addHoverEventWithScale } from "./hover-events.mjs";
-import { $$, pageElement } from "./main.mjs";
+import { $$, pageElement, addTemporaryListener } from "./main.mjs";
 
 export class Applet
 {
@@ -10,9 +10,6 @@ export class Applet
 	
 	workers = [];
 	timeoutIds = [];
-	refreshIds = [];
-	//Every entry is a length-3 array, e.g. [window, "scroll", listenerFunction]
-	handlers = [];
 	
 	animationPaused = false;
 	
@@ -57,18 +54,6 @@ export class Applet
 		this.timeoutIds.forEach(timeoutId =>
 		{
 			try {clearTimeout(timeoutId)}
-			catch(ex) {}
-		});
-		
-		this.refreshIds.forEach(refreshId =>
-		{
-			try {clearTimeout(refreshId)}
-			catch(ex) {}
-		});
-		
-		this.handlers.forEach(handler =>
-		{
-			try {handler[0].removeEventListener(handler[1], handler[2])}
 			catch(ex) {}
 		});
 		
@@ -182,8 +167,11 @@ export class Applet
 		};
 		
 		const boundFunction = listener.bind(this);
-		document.documentElement.addEventListener("pointerdown", boundFunction);
-		this.handlers.push([document.documentElement, "pointerdown", boundFunction]);
+		addTemporaryListener({
+			object: documentElement,
+			event: "pointerdown",
+			callback: boundFunction
+		});
 	}
 	
 	showCapDialog(element)
@@ -212,8 +200,12 @@ export class Applet
 		
 		
 		const boundFunction = () => this.updateCapDialogLocation(element, dialog);
-		window.addEventListener("resize", boundFunction);
-		this.handlers.push([window, "resize", boundFunction]);
+		addTemporaryListener({
+			object: window,
+			event: "resize",
+			callback: boundFunction
+		});
+
 		boundFunction();
 		
 		dialog.style.transform = "scale(.95)";
@@ -305,9 +297,12 @@ export class Applet
 				this.pause();
 			}
 		};
-		
-		window.addEventListener("scroll", onScroll);
-		this.handlers.push([window, "scroll", onScroll]);
+
+		addTemporaryListener({
+			object: window,
+			event: "scroll",
+			callback: onScroll
+		});
 		
 		onScroll();
 	}

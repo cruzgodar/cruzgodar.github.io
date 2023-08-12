@@ -1,4 +1,4 @@
-import { fadeDownIn, fadeIn, fadeLeftIn, fadeRightIn, fadeUpIn } from "./animation.mjs"
+import { fadeDownIn, fadeIn, fadeLeftIn, fadeRightIn, fadeUpIn, pageAnimationTime } from "./animation.mjs"
 import { bannerElement, bannerOpacity, setUpBanner } from "./banners.mjs"
 import { setUpDropdowns, setUpNavButtons, setUpTextButtons } from "./buttons.mjs"
 import { setUpCards } from "./cards.mjs"
@@ -201,34 +201,34 @@ export function addHeader()
 
 async function fadeInPage()
 {
-	fadeIn(document.querySelector("#header"), Site.pageAnimationTime * 2);
+	fadeIn(document.querySelector("#header"));
 	document.querySelector("#header-container").style.opacity = 1;
 
 	await (() =>
 	{
 		if (navigationTransitionType === 1)
 		{
-			return bannerElement ? Promise.all([fadeUpIn(bannerElement, Site.pageAnimationTime * 2, bannerOpacity), fadeUpIn(pageElement, Site.pageAnimationTime * 2)]) : fadeUpIn(pageElement, Site.pageAnimationTime * 2);
+			return bannerElement ? Promise.all([fadeUpIn(bannerElement, pageAnimationTime * 2, bannerOpacity), fadeUpIn(pageElement)]) : fadeUpIn(pageElement);
 		}
 		
 		else if (navigationTransitionType === -1)
 		{
-			return bannerElement ? Promise.all([fadeDownIn(bannerElement, Site.pageAnimationTime * 2, bannerOpacity), fadeDownIn(pageElement, Site.pageAnimationTime * 2)]) : fadeDownIn(pageElement, Site.pageAnimationTime * 2);
+			return bannerElement ? Promise.all([fadeDownIn(bannerElement, pageAnimationTime * 2, bannerOpacity), fadeDownIn(pageElement)]) : fadeDownIn(pageElement);
 		}
 		
 		else if (navigationTransitionType === 2)
 		{
-			return bannerElement ? Promise.all([fadeLeftIn(bannerElement, Site.pageAnimationTime * 2, bannerOpacity), fadeLeftIn(pageElement, Site.pageAnimationTime * 2)]) : fadeLeftIn(pageElement, Site.pageAnimationTime * 2);
+			return bannerElement ? Promise.all([fadeLeftIn(bannerElement, pageAnimationTime * 2, bannerOpacity), fadeLeftIn(pageElement)]) : fadeLeftIn(pageElement);
 		}
 		
 		else if (navigationTransitionType === -2)
 		{
-			return bannerElement ? Promise.all([fadeRightIn(bannerElement, Site.pageAnimationTime * 2, bannerOpacity), fadeRightIn(pageElement, Site.pageAnimationTime * 2)]) : fadeRightIn(pageElement, Site.pageAnimationTime * 2);
+			return bannerElement ? Promise.all([fadeRightIn(bannerElement, pageAnimationTime * 2, bannerOpacity), fadeRightIn(pageElement)]) : fadeRightIn(pageElement);
 		}
 		
 		else
 		{
-			return bannerElement ? Promise.all([fadeIn(bannerElement, Site.pageAnimationTime * 2, bannerOpacity), fadeIn(pageElement, Site.pageAnimationTime * 2)]) : fadeIn(pageElement, Site.pageAnimationTime * 2);
+			return bannerElement ? Promise.all([fadeIn(bannerElement, pageAnimationTime * 2, bannerOpacity), fadeIn(pageElement)]) : fadeIn(pageElement);
 		}
 	})();
 }

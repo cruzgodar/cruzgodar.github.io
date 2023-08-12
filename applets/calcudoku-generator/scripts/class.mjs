@@ -1,3 +1,5 @@
+import { opacityAnimationTime } from "/scripts/src/animation.mjs";
+import { addTemporaryWorker } from "/scripts/src/main.mjs";
 import { Applet } from "/scripts/src/applets.mjs";
 
 export class CalcudokuGenerator extends Applet
@@ -35,7 +37,7 @@ export class CalcudokuGenerator extends Applet
 	{
 		if (this.canvas.style.opacity == 1)
 		{
-			await changeOpacity(this.canvas, 0, Site.opacityAnimationTime);
+			await changeOpacity(this.canvas, 0);
 		}
 		
 		
@@ -65,18 +67,13 @@ export class CalcudokuGenerator extends Applet
 			this.wilson.changeCanvasSize(canvasSize, canvasSize);
 			
 			this.wilson.ctx.clearRect(0, 0, canvasSize, canvasSize);
-		}, Site.opacityAnimationTime);
+		}, opacityAnimationTime);
 		
 		this.timeoutIds.push(timeoutId);
 		
 		
 		
-		try {this.webWorker.terminate();}
-		catch(ex) {}
-		
-		this.webWorker = new Worker(`/applets/calcudoku-generator/scripts/worker.min.js`);
-		
-		this.workers.push(this.webWorker);
+		this.webWorker = addTemporaryWorker("/applets/calcudoku-generator/scripts/worker.js");
 		
 		
 		
@@ -95,14 +92,14 @@ export class CalcudokuGenerator extends Applet
 			{
 				this.animateNextDraw = false;
 				
-				changeOpacity(this.canvas, 1, Site.opacityAnimationTime);
+				changeOpacity(this.canvas, 1);
 			}
 		}
 		
 		const timeoutId2 = setTimeout(() =>
 		{
 			this.webWorker.postMessage([this.gridSize, this.maxCageSize]);
-		}, Site.opacityAnimationTime);
+		}, opacityAnimationTime);
 		
 		this.timeoutIds.push(timeoutId2);
 	}

@@ -1,5 +1,6 @@
 import { Applet } from "/scripts/src/applets.mjs"
 import { loadGlsl, doubleEmulationGlsl } from "/scripts/src/complex-glsl.mjs"
+import { addTemporaryListener } from "/scripts/src/main.mjs";
 
 export class JuliaSet extends Applet
 {
@@ -641,8 +642,11 @@ export class JuliaSet extends Applet
 			
 			
 			const boundFunction = () => this.changeAspectRatio(true);
-			window.addEventListener("resize", boundFunction);
-			this.handlers.push([window, "resize", boundFunction]);
+			addTemporaryListener({
+				object: window,
+				event: "resize",
+				callback: boundFunction
+			});
 		});
 	}
 	
@@ -687,7 +691,7 @@ export class JuliaSet extends Applet
 			
 			try
 			{
-				changeOpacity(this.switchJuliaModeButtonElement, 0, Site.opacityAnimationTime)
+				changeOpacity(this.switchJuliaModeButtonElement, 0)
 				
 				.then(() =>
 				{
@@ -718,13 +722,13 @@ export class JuliaSet extends Applet
 			
 			try
 			{
-				changeOpacity(this.switchJuliaModeButtonElement, 0, Site.opacityAnimationTime)
+				changeOpacity(this.switchJuliaModeButtonElement, 0)
 				
 				.then(() =>
 				{
 					this.switchJuliaModeButtonElement.textContent = "Pick Julia Set";
 					
-					changeOpacity(this.switchJuliaModeButtonElement, 1, Site.opacityAnimationTime)
+					changeOpacity(this.switchJuliaModeButtonElement, 1)
 				});
 			}
 			
@@ -759,7 +763,7 @@ export class JuliaSet extends Applet
 			
 			this.pastBrightnessScales = [];
 			
-			try {changeOpacity(this.switchJuliaModeButtonElement, 1, Site.opacityAnimationTime)}
+			try {changeOpacity(this.switchJuliaModeButtonElement, 1)}
 			catch(ex) {}
 		}
 	}
@@ -813,7 +817,7 @@ export class JuliaSet extends Applet
 			
 			this.pastBrightnessScales = [];
 			
-			try {changeOpacity(this.switchJuliaModeButtonElement, 1, Site.opacityAnimationTime)}
+			try {changeOpacity(this.switchJuliaModeButtonElement, 1)}
 			catch(ex) {}
 		}
 		

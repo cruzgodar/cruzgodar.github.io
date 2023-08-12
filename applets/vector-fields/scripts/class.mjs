@@ -1,5 +1,6 @@
 import { Applet } from "/scripts/src/applets.mjs";
 import { doubleEncodingGlsl, getGlslBundle, loadGlsl } from "/scripts/src/complex-glsl.mjs";
+import { addTemporaryListener } from "/scripts/src/main.mjs";
 
 export class VectorField extends Applet
 {
@@ -293,8 +294,11 @@ export class VectorField extends Applet
 		
 		
 		const boundFunction = this.handleResizeEvent.bind(this);
-		window.addEventListener("resize", boundFunction);
-		this.handlers.push(window, "resize", boundFunction);
+		addTemporaryListener({
+			object: window,
+			event: "resize",
+			callback: boundFunction
+		});
 		
 		
 		
