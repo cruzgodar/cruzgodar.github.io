@@ -1,9 +1,11 @@
 import { fadeDownOut, fadeLeftOut, fadeOut, fadeRightOut, fadeUpOut } from "./animation.mjs";
 import { bannerElement, bannerOnScroll, loadBanner } from "./banners.mjs";
 import { cardIsOpen, hideCard } from "./cards.mjs";
-import { loadPage, pageElement } from "./load-page.mjs";
-import { clearTemporaryIntervals, clearTemporaryListeners, temporaryIntervals, temporaryListeners } from "./main.mjs";
+import { clearDesmosGraphs, desmosGraphs } from "./desmos.mjs";
+import { loadPage } from "./load-page.mjs";
+import { clearTemporaryIntervals, clearTemporaryListeners, clearTemporaryWorkers, pageElement, pageUrl, setPageScroll, setPageUrl, temporaryIntervals, temporaryListeners, temporaryWorkers } from "./main.mjs";
 import { forceThemePages, preventThemeChangePages, setForcedTheme, setRevertThemeTo, siteSettings, toggleDarkTheme } from "./settings.mjs";
+import { sitemap } from "./sitemap.mjs";
 
 let currentlyRedirecting = false;
 
@@ -52,8 +54,6 @@ export async function redirect({
 	
 	await fadeOutPage({url, noFadeOut});
 	
-	Page.url = url;
-	
 	//Get the new data, fade out the page, and preload the next page's banner if it exists. When all of those things are successfully done, replace the current html with the new stuff.
 	Promise.all([fetch(`${url}index.html`), loadBanner()])
 	
@@ -85,9 +85,11 @@ export async function redirect({
 		
 		data = data.slice(data.indexOf("<body>") + 6, data.indexOf("</body>"));
 			
-		document.body.firstElementChild.insertAdjacentHTML("beforebegin", `<div class="page" style="${Site.showingPresentation ? "display: none; " : ""}opacity: 0">${data}</div>`);
+		document.body.firstElementChild.insertAdjacentHTML("beforebegin", `<div class="page" style="opacity: 0">${data}</div>`);
 		
 		currentlyRedirecting = false;
+
+		setPageUrl(url);
 
 		loadPage();
 		
@@ -126,19 +128,10 @@ export async function redirect({
 		else
 		{
 			window.scrollTo(0, 0);
-			Page.scroll = 0;
+			setPageScroll(0);
 		}
 		
 		lastPageScroll = temp;
-	})
-	
-	
-	
-	.catch((error) =>
-	{
-		console.error(error.message);
-		
-		console.error("Failed to load new page :(");
 	});
 }
 
@@ -147,18 +140,18 @@ export async function redirect({
 //Figures out what type of transition to use to get to this url. Returns 1 for deeper, -1 for shallower, 2 for a sibling to the right, -2 for one to the left, and 0 for anything else.
 function getTransitionType(url)
 {
-	if (!(url in Site.sitemap) || url === Page.url)
+	if (!(url in sitemap) || url === pageUrl)
 	{
 		return 0;
 	}
 	
 	
 	
-	let parent = Page.url;
+	let parent = pageUrl;
 	
 	while (parent !== "")
 	{
-		parent = Site.sitemap[parent].parent;
+		parent = sitemap[parent].parent;
 		
 		if (url === parent)
 		{
@@ -172,9 +165,9 @@ function getTransitionType(url)
 	
 	while (parent !== "")
 	{
-		parent = Site.sitemap[parent].parent;
+		parent = sitemap[parent].parent;
 		
-		if (Page.url === parent)
+		if (pageUrl === parent)
 		{
 			return 1;
 		}
@@ -182,11 +175,11 @@ function getTransitionType(url)
 	
 	
 	
-	if (Site.sitemap[url].parent === Site.sitemap[Page.url].parent)
+	if (sitemap[url].parent === sitemap[pageUrl].parent)
 	{
-		const parent = Site.sitemap[url].parent;
+		const parent = sitemap[url].parent;
 		
-		if (Site.sitemap[parent].children.indexOf(url) > Site.sitemap[parent].children.indexOf(Page.url))
+		if (sitemap[parent].children.indexOf(url) > sitemap[parent].children.indexOf(pageUrl))
 		{
 			return 2;
 		}
@@ -204,7 +197,7 @@ function getTransitionType(url)
 
 async function fadeOutPage({ url, noFadeOut })
 {
-	if (forceThemePages[url] !== undefined && siteSettings.darkTheme !== forceThemePages[url] && !(preventThemeChangePages.includes(Page.url)))
+	if (forceThemePages[url] !== undefined && siteSettings.darkTheme !== forceThemePages[url] && !(preventThemeChangePages.includes(pageUrl)))
 	{
 		setRevertThemeTo(siteSettings.darkTheme);
 
@@ -252,34 +245,6 @@ async function fadeOutPage({ url, noFadeOut })
 			return bannerElement ? Promise.all([fadeOut(bannerElement), fadeOut(pageElement)]) : fadeOut(pageElement);
 		}
 	})()
-		
-		
-		
-	//If necessary, take the time to fade back to the default background color, whatever that is.
-	if (Page.backgroundColorChanged)
-	{
-		document.documentElement.classList.add("background-transition");
-		document.body.classList.add("background-transition");
-
-		const backgroundColor = Site.Settings.urlVars["theme"] === 1 ? "rgb(24, 24, 24)" : "rgb(255, 255, 255)";
-
-		document.documentElement.style.backgroundColor = backgroundColor;
-		document.body.style.backgroundColor = backgroundColor;
-		
-		anime({
-			targets: Site.Settings.metaThemeColorElement,
-			content: Site.Settings.urlVars["theme"] === 1 ? "#181818" : "#ffffff",
-			duration: Site.backgroundColorAnimationTime,
-			easing: "cubicBezier(.42, 0, .58, 1)",
-			complete: () =>
-			{
-				document.body.style.backgroundColor = "";
-				
-				document.documentElement.classList.remove("background-transition");
-				document.body.classList.remove("background-transition");
-			}
-		});
-	}
 }
 
 
@@ -301,19 +266,25 @@ function unloadPage()
 	temporaryIntervals.forEach(refreshId => clearInterval(refreshId));
 	
 	clearTemporaryIntervals();
-	
-	
-	
-	Page.temporaryWebWorkers.forEach(webWorker => webWorker.terminate());
-	
-	Page.temporaryWebWorkers = [];
-	
-	
-	
-	for (let key in Page.desmosGraphs)
+
+
+
+	for (let key in temporaryWorkers)
 	{
-		Page.desmosGraphs[key].destroy();
+		try {temporaryWorkers[key].terminate()}
+		catch(ex) {}
 	}
+
+	clearTemporaryWorkers()
+	
+	
+	
+	for (let key in desmosGraphs)
+	{
+		desmosGraphs[key].destroy();
+	}
+
+	clearDesmosGraphs();
 	
 	
 	try 

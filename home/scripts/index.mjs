@@ -11,7 +11,7 @@ function setNameTextOpacity()
 	{
 		if (bannerMaxScroll)
 		{
-			opacity = Page.scroll <= bannerMaxScroll / 2.5 ? Math.min(Math.max(1 - Page.scroll / (bannerMaxScroll / 2.5), 0), 1) : 0;
+			opacity = pageScroll <= bannerMaxScroll / 2.5 ? Math.min(Math.max(1 - pageScroll / (bannerMaxScroll / 2.5), 0), 1) : 0;
 		}
 
 		else

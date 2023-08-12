@@ -2,14 +2,13 @@ import { fadeDownIn, fadeIn, fadeLeftIn, fadeRightIn, fadeUpIn, pageAnimationTim
 import { bannerElement, bannerOpacity, setUpBanner } from "./banners.mjs"
 import { setUpDropdowns, setUpNavButtons, setUpTextButtons } from "./buttons.mjs"
 import { setUpCards } from "./cards.mjs"
-import { addHoverEvent, setUpFocusEvents, setUpHoverEvents } from "./hover-events.mjs"
-import { onResize } from "./layout.mjs"
-import { $$, pageElement, updatePageElement } from "./main.mjs"
+import { setUpFocusEvents, setUpHoverEvents } from "./hover-events.mjs"
+import { equalizeAppletColumns, onResize } from "./layout.mjs"
+import { $$, pageElement, pageUrl, updatePageElement } from "./main.mjs"
 import { typesetMath } from "./math.mjs"
 import { navigationTransitionType, redirect } from "./navigation.mjs"
-import { condenseApplet, revertTheme, siteSettings, toggleDarkTheme } from "./settings.mjs"
-
-export let headerElement = null;
+import { condenseApplet, revertTheme, siteSettings } from "./settings.mjs"
+import { sitemap } from "./sitemap.mjs"
 
 //The big one. Gets a page ready to be shown but doesn't do anything that requires it to be visible.
 export async function loadPage()
@@ -19,7 +18,7 @@ export async function loadPage()
 	updatePageElement();
 	
 	//Set the page title.
-	try {document.head.querySelector("title").textContent = Site.sitemap[Page.url].title}
+	try {document.head.querySelector("title").textContent = sitemap[pageUrl].title}
 	catch(ex) {}
 	
 	
@@ -50,11 +49,9 @@ export async function loadPage()
 	
 	onResize();
 	
-	Page.backgroundColorChanged = false;
-	
 	revertTheme();
 	
-	if (siteSettings.condensedApplets && Site.sitemap[Page.url].parent === "/applets/")
+	if (siteSettings.condensedApplets && sitemap[pageUrl].parent === "/applets/")
 	{
 		condenseApplet();
 	}
@@ -75,7 +72,7 @@ export async function showPage()
 
 function loadCustomStyle()
 {
-	fetch(`${Page.url}style/index.${window.DEBUG ? "css" : "min.css"}`)
+	fetch(`${pageUrl}style/index.${window.DEBUG ? "css" : "min.css"}`)
 	
 	.then(response => response.text())
 	
@@ -98,7 +95,7 @@ function loadCustomStyle()
 
 function loadCustomScripts()
 {
-	import(`${Page.url}scripts/index.${window.DEBUG ? "mjs" : "min.mjs"}`)
+	import(`${pageUrl}scripts/index.${window.DEBUG ? "mjs" : "min.mjs"}`)
 
 	.then(Module => Module.load())
 
@@ -107,97 +104,6 @@ function loadCustomScripts()
 		setTimeout(() => showPage(), 1);
 	});
 }
-
-
-
-export function addHeader()
-{
-	document.body.firstChild.insertAdjacentHTML("beforebegin", `
-		<div id="header-container" style="opacity: 0"></div>
-		
-		<div id="header" style="opacity: 0">
-			<a id="header-logo" href="/home/">
-				<img src="/graphics/header-icons/logo.webp"></img>
-				<span>Cruz Godar</span>
-			</a>
-			
-			<div id="header-links">
-				<a id="header-gallery-link" href="/gallery/">
-					<span>Gallery</span>
-					<img src="/graphics/header-icons/gallery.webp"></img>
-				</a>
-				
-				<a id="header-applets-link" href="/applets/">
-					<span>Applets</span>
-					<img src="/graphics/header-icons/applets.webp"></img>
-				</a>
-				
-				<a id="header-teaching-link" href="/teaching/">
-					<span>Teaching</span>
-					<img src="/graphics/header-icons/teaching.webp"></img>
-				</a>
-				
-				<a id="header-slides-link" href="/slides/">
-					<span>Slides</span>
-					<img src="/graphics/header-icons/slides.webp"></img>
-				</a>
-				
-				<a id="header-writing-link" href="/writing/">
-					<span>Writing</span>
-					<img src="/graphics/header-icons/writing.webp"></img>
-				</a>
-				
-				<a id="header-about-link" href="/about/">
-					<span>About</span>
-					<img src="/graphics/header-icons/about.webp"></img>
-				</a>
-			</div>
-			
-			<div id="header-theme-button">
-				<input type="image" src="/graphics/header-icons/moon.webp">
-			</div>
-		</div>
-	`);
-	
-	setTimeout(() =>
-	{
-		const imageElement = document.body.querySelector("#header-logo img");
-		
-		imageElement.style.width = `${imageElement.getBoundingClientRect().height}px`;
-		
-		
-		
-		document.body.querySelectorAll("#header-logo, #header-links a").forEach(link =>
-		{
-			addHoverEvent(link);
-			
-			const href = link.getAttribute("href");
-	
-			link.setAttribute("href", "/index.html?page=" + encodeURIComponent(href));
-			
-			link.addEventListener("click", e =>
-			{
-				e.preventDefault();
-				
-				redirect({ url: href });
-			});
-		});
-		
-		
-		
-		const element = document.body.querySelector("#header-theme-button");
-		
-		addHoverEvent(element);
-		
-		element.addEventListener("click", () => toggleDarkTheme({}));
-		
-		
-		
-		headerElement = document.body.querySelector("#header");
-	});
-}
-
-
 
 async function fadeInPage()
 {

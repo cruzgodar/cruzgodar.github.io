@@ -1,6 +1,7 @@
 import { opacityAnimationTime } from "/scripts/src/animation.mjs";
 import { Applet } from "/scripts/src/applets.mjs";
 import { addTemporaryWorker } from "/scripts/src/main.mjs";
+import { siteSettings } from "/scripts/src/settings.mjs";
 
 export class SudokuGenerator extends Applet
 {
@@ -119,30 +120,14 @@ export class SudokuGenerator extends Applet
 		{
 			this.wilson.ctx.clearRect(0, 0, canvasSize, canvasSize);
 			
-			if (Site.Settings.urlVars["theme"] === 1)
+			if (siteSettings.darkTheme)
 			{
-				if (Site.Settings.urlVars["contrast"] === 1)
-				{
-					this.wilson.ctx.fillStyle = "rgb(255, 255, 255)";
-				}
-				
-				else
-				{
-					this.wilson.ctx.fillStyle = "rgb(192, 192, 192)";
-				}
+				this.wilson.ctx.fillStyle = "rgb(192, 192, 192)";
 			}
 			
 			else
 			{
-				if (Site.Settings.urlVars["contrast"] === 1)
-				{
-					this.wilson.ctx.fillStyle = "rgb(0, 0, 0)";
-				}
-				
-				else
-				{
-					this.wilson.ctx.fillStyle = "rgb(64, 64, 64)";
-				}
+				this.wilson.ctx.fillStyle = "rgb(64, 64, 64)";
 			}
 		}
 		

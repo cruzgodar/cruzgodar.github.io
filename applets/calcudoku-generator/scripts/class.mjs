@@ -1,6 +1,7 @@
 import { opacityAnimationTime } from "/scripts/src/animation.mjs";
 import { Applet } from "/scripts/src/applets.mjs";
 import { addTemporaryWorker } from "/scripts/src/main.mjs";
+import { siteSettings } from "/scripts/src/settings.mjs";
 
 export class CalcudokuGenerator extends Applet
 {
@@ -121,7 +122,7 @@ export class CalcudokuGenerator extends Applet
 		{
 			this.wilson.ctx.clearRect(0, 0, canvasSize, canvasSize);
 			
-			if (Site.Settings.urlVars["theme"] === 1)
+			if (siteSettings.darkTheme)
 			{
 				this.wilson.ctx.fillStyle = "rgb(192, 192, 192)";
 			}

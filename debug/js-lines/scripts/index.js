@@ -1,3 +1,5 @@
+import { sitemap } from "/scripts/src/sitemap.mjs";
+
 !async function()
 {
 	//The scripts we need to count are the site-wide scripts and the page-specific ones.
@@ -35,7 +37,7 @@
 		totalLines += numLines;
 	}
 	
-	for (let key in Site.sitemap)
+	for (let key in sitemap)
 	{
 		let name = key.slice(key.lastIndexOf("/", key.length - 2) + 1, key.length - 1);
 		

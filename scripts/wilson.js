@@ -1,5 +1,6 @@
-import { addTemporaryListener } from "./src/main.mjs";
 import { opacityAnimationTime } from "/scripts/src/animation.mjs";
+import { addTemporaryListener } from "/scripts/src/main.mjs";
+import { metaThemeColorElement } from "/scripts/src/settings.mjs";
 
 class Wilson
 {
@@ -1555,7 +1556,7 @@ class Wilson
 					
 					
 					
-					this.oldMetaThemeColor = Site.Settings.metaThemeColorElement.getAttribute("content");
+					this.oldMetaThemeColor = metaThemeColorElement.getAttribute("content");
 					
 					
 					
@@ -1575,7 +1576,7 @@ class Wilson
 					
 					
 					anime({
-						targets: Site.Settings.metaThemeColorElement,
+						targets: metaThemeColorElement,
 						content: "#000000",
 						duration: opacityAnimationTime,
 						easing: "cubicBezier(.42, 0, .58, 1)"
@@ -1669,7 +1670,7 @@ class Wilson
 				
 				
 				anime({
-					targets: Site.Settings.metaThemeColorElement,
+					targets: metaThemeColorElement,
 					content: this.oldMetaThemeColor,
 					duration: opacityAnimationTime,
 					easing: "cubicBezier(.42, 0, .58, 1)"

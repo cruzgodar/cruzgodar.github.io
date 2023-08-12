@@ -1,4 +1,4 @@
-import { changeScale } from "./animation.mjs";
+import { buttonAnimationTime, changeScale } from "./animation.mjs";
 import { currentlyTouchDevice } from "./interaction.mjs";
 import { $$ } from "./main.mjs";
 import { showTex } from "./math.mjs";
@@ -135,7 +135,7 @@ function addHoverEventForTexHolder(element)
 				targets: element,
 				scale: 1.05,
 				borderRadius: "8px",
-				duration: Site.buttonAnimationTime,
+				duration: buttonAnimationTime,
 				easing: "easeOutQuad",
 			});
 		}
@@ -151,7 +151,7 @@ function addHoverEventForTexHolder(element)
 				targets: element,
 				scale: 1,
 				borderRadius: "0px",
-				duration: Site.buttonAnimationTime,
+				duration: buttonAnimationTime,
 				easing: "easeInOutQuad",
 			});
 		}

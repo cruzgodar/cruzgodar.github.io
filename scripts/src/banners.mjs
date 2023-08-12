@@ -1,5 +1,6 @@
+import { changeOpacity } from "./animation.mjs";
 import { addHoverEventWithScale } from "./hover-events.mjs";
-import { $$, addStyle, pageElement } from "./main.mjs";
+import { $, $$, addStyle, pageElement, pageScroll, pageUrl, setPageScroll } from "./main.mjs";
 import { opacityAnimationTime } from "/scripts/src/animation.mjs";
 
 export let bannerElement = null;
@@ -98,6 +99,11 @@ const pagesAlreadyFetched = [];
 
 let scrollButtonExists = false;
 
+export function setScrollButtonExists(newScrollButtonExists)
+{
+	scrollButtonExists = newScrollButtonExists;
+}
+
 
 
 let scrollButtonDoneLoading = false;
@@ -114,7 +120,7 @@ export function loadBanner(large = false)
 	return new Promise((resolve, reject) =>
 	{
 		//Only do banner things if the banner things are in the standard places.
-		if (!(bannerPages.includes(Page.url)))
+		if (!(bannerPages.includes(pageUrl)))
 		{
 			resolve();
 		}
@@ -124,11 +130,11 @@ export function loadBanner(large = false)
 		
 		bannerFilename = `${large ? "large" : "small"}.webp`;
 		
-		bannerFilepath = Page.url + "banners/";
+		bannerFilepath = pageUrl + "banners/";
 		
-		if (multibannerPages.hasOwnProperty(Page.url))
+		if (multibannerPages.hasOwnProperty(pageUrl))
 		{
-			bannerFilepath += multibannerPages[Page.url].currentBanner + "/";
+			bannerFilepath += multibannerPages[pageUrl].currentBanner + "/";
 		}
 		
 		addStyle(`
@@ -197,7 +203,7 @@ export function loadBanner(large = false)
 //The function called by pageLoad to load a small banner that fades into a large one when ready.
 export function setUpBanner()
 {
-	if (bannerPages.includes(Page.url))
+	if (bannerPages.includes(pageUrl))
 	{
 		loadBanner(true)
 		
@@ -221,12 +227,12 @@ export function bannerOnScroll(scrollPositionOverride)
 {
 	if (scrollPositionOverride === 0)
 	{
-		Page.scroll = window.scrollY;
+		setPageScroll(window.scrollY);
 	}
 	
 	else
 	{
-		Page.scroll = scrollPositionOverride;
+		setPageScroll(scrollPositionOverride);
 		bannerDoneLoading = false;
 		scrollButtonDoneLoading = false;
 	}
@@ -250,9 +256,9 @@ function scrollAnimationFrame(timestamp)
 
 function scrollHandler()
 {
-	if (Page.scroll <= bannerMaxScroll)
+	if (pageScroll <= bannerMaxScroll)
 	{
-		bannerOpacity = Math.min(Math.max(1 - Page.scroll / bannerMaxScroll, 0), 1);
+		bannerOpacity = Math.min(Math.max(1 - pageScroll / bannerMaxScroll, 0), 1);
 		
 		try
 		{
@@ -290,9 +296,9 @@ function scrollHandler()
 	
 	
 	
-	if (Page.scroll <= bannerMaxScroll / 2.5)
+	if (pageScroll <= bannerMaxScroll / 2.5)
 	{
-		const scrollButtonOpacity = Math.min(Math.max(1 - Page.scroll / (bannerMaxScroll / 2.5), 0), 1);
+		const scrollButtonOpacity = Math.min(Math.max(1 - pageScroll / (bannerMaxScroll / 2.5), 0), 1);
 		
 		if (scrollButtonExists)
 		{
@@ -375,12 +381,12 @@ export function fetchOtherPageBannersInBackground()
 
 export function insertScrollButton()
 {
-	if (Page.scroll > bannerMaxScroll / 2.5)
+	if (pageScroll > bannerMaxScroll / 2.5)
 	{
 		return;
 	}
 	
-	const opacity = Math.min(Math.max(1 - Page.scroll / (bannerMaxScroll / 2.5), 0), 1);
+	const opacity = Math.min(Math.max(1 - pageScroll / (bannerMaxScroll / 2.5), 0), 1);
 	
 	//Gotta have a try block here in case the user loads a banner page then navigates to a non-banner page within 3 seconds.
 	try
@@ -424,9 +430,4 @@ export function insertScrollButton()
 	}
 	
 	catch(ex) {}
-}
-
-export function setScrollButtonExists(newScrollButtonExists)
-{
-	scrollButtonExists = newScrollButtonExists;
 }

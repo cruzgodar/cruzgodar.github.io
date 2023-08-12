@@ -1,4 +1,7 @@
+import { bannerOnScroll } from "./banners.mjs";
+import { addHeader } from "./header.mjs";
 import { setUpInteractionListeners } from "./interaction.mjs";
+import { redirect } from "./navigation.mjs";
 
 export let $ = (queryString) => pageElement.querySelector(queryString);
 export let $$ = (queryString) => pageElement.querySelectorAll(queryString);
@@ -19,6 +22,11 @@ const params = new URLSearchParams(document.location.search);
 
 export let pageUrl = decodeURIComponent(params.get("page")).replace("index.html", "");
 
+export function setPageUrl(newPageUrl)
+{
+	pageUrl = newPageUrl;
+}
+
 if (pageUrl === "null")
 {
 	pageUrl = "/home/";
@@ -27,9 +35,14 @@ if (pageUrl === "null")
 
 export let pageScroll = 0;
 
+export function setPageScroll(newPageScroll)
+{
+	pageScroll = newPageScroll;
+}
 
 
-export const temporaryListeners = [];
+
+export let temporaryListeners = [];
 
 export function addTemporaryListener({ object, event, callback })
 {
@@ -45,7 +58,7 @@ export function clearTemporaryListeners()
 
 
 
-export const temporaryIntervals = [];
+export let temporaryIntervals = [];
 
 export function addTemporaryInterval({ callback, delay })
 {
@@ -63,7 +76,7 @@ export function clearTemporaryIntervals()
 
 
 
-export const temporaryWorkers = {};
+export let temporaryWorkers = {};
 
 export function addTemporaryWorker(src, id = src)
 {
@@ -97,11 +110,6 @@ export function setVisitedHomepage(newVisitedHomepage)
 
 const scriptsLoaded =
 {
-	"mathjax": false,
-	"complexjs": false,
-	"three": false,
-	"lodash": false,
-	"desmos": false,
 	"glsl": 0
 };
 	
@@ -164,8 +172,6 @@ export async function loadSite(url = pageUrl)
 
 
 	
-	setScrollButtonExists(false);
-	
 	addHeader();
 	
 	//If it's not an html file, it shouldn't be anywhere near redirect().
@@ -188,6 +194,11 @@ export function loadScript(src, isModule = false)
 {
 	return new Promise((resolve, reject) =>
 	{
+		if (scriptsLoaded[src])
+		{
+			return;
+		}
+
 		const script = document.createElement("script");
 		
 		if (isModule)
@@ -196,7 +207,12 @@ export function loadScript(src, isModule = false)
 		}
 		
 		document.body.appendChild(script);
-		script.onload = resolve;
+		script.onload = () =>
+		{
+			scriptsLoaded[src] = true;
+
+			resolve()
+		};
 		script.onerror = reject;
 		script.async = true;
 		script.src = src;

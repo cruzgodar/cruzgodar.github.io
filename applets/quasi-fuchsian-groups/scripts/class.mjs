@@ -1,6 +1,6 @@
 import { Applet } from "/scripts/src/applets.mjs";
 import { aspectRatio } from "/scripts/src/layout.mjs";
-import { addTemporaryWorker } from "/scripts/src/main.mjs";
+import { addTemporaryWorker, loadScript } from "/scripts/src/main.mjs";
 
 export class QuasiFuchsianGroups extends Applet
 {
@@ -209,12 +209,7 @@ export class QuasiFuchsianGroups extends Applet
 		
 		this.loadPromise = new Promise(async(resolve, reject) =>
 		{
-			if (!Site.scriptsLoaded["complexjs"])
-			{
-				await Site.loadScript("/scripts/complex.min.js");
-				
-				Site.scriptsLoaded["complexjs"] = true;
-			}
+			await loadScript("/scripts/complex.min.js");
 			
 			this.initDraggables();
 			

@@ -1,3 +1,4 @@
+import { getGlslBundle, loadGlsl } from "/scripts/src/complex-glsl.mjs";
 import { showPage } from "/scripts/src/load-page.mjs";
 import { $ } from "/scripts/src/main.mjs";
 
@@ -7,10 +8,7 @@ import { $ } from "/scripts/src/main.mjs";
 	
 	
 	
-	if (!Site.scriptsLoaded["glsl"])
-	{
-		await Site.loadGlsl();
-	}
+	await loadGlsl();
 	
 
 
@@ -193,7 +191,7 @@ import { $ } from "/scripts/src/main.mjs";
 				
 				
 				
-				${Site.getGLSLBundle(shader)}
+				${getGlslBundle(shader)}
 				
 				
 				

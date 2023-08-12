@@ -1,6 +1,6 @@
-import { bannerOnScroll } from "./banners.mjs";
+import { bannerOnScroll, setBannerMaxScroll } from "./banners.mjs";
 import { resizeCard } from "./cards.mjs";
-import { headerElement } from "./load-page.mjs";
+import { headerElement } from "./header.mjs";
 import { $, $$ } from "./main.mjs";
 import { siteSettings } from "./settings.mjs";
 

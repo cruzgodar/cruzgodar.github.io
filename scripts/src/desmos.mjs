@@ -1,8 +1,12 @@
-import { $$ } from "./main.mjs";
+import { $$, loadScript } from "./main.mjs";
 import { siteSettings } from "./settings.mjs";
 
-let desmosLoaded = false;
-let desmosGraphs = {};
+export let desmosGraphs = {};
+
+export function clearDesmosGraphs()
+{
+	desmosGraphs = {};
+}
 
 let getDesmosData = () => {{}};
 
@@ -15,12 +19,7 @@ export function setGetDesmosData(newGetDesmosData)
 
 export async function createDesmosGraphs()
 {
-	if (!desmosLoaded)
-	{
-		await Site.loadScript("https://www.desmos.com/api/v1.7/calculator.js?apiKey=dcb31709b452b1cf9dc26972add0fda6");
-		
-		desmosLoaded = true;
-	}
+	await loadScript("https://www.desmos.com/api/v1.7/calculator.js?apiKey=dcb31709b452b1cf9dc26972add0fda6");
 	
 	for (let key in desmosGraphs)
 	{
@@ -85,9 +84,6 @@ export async function createDesmosGraphs()
 	});
 }
 
-
-
-//Usage: Page.Load.exportDesmosScreenshot("");
 export function getDesmosScreenshot(id, forPdf = false)
 {
 	desmosGraphs[id].updateSettings({showGrid: forPdf, xAxisNumbers: forPdf, yAxisNumbers: forPdf});

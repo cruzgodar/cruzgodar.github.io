@@ -1,6 +1,6 @@
+import { opacityAnimationTime } from "./animation.mjs";
 import { cardIsOpen } from "./cards.mjs";
-import { $, addStyle } from "./main.mjs";
-import { opacityAnimationTime } from "/scripts/src/animation.mjs";
+import { $, addStyle, pageUrl } from "./main.mjs";
 
 export const forceThemePages =
 {
@@ -98,7 +98,7 @@ export function revertTheme()
 
 export function toggleDarkTheme({ noAnimation = false, force = false })
 {
-	if (!force && preventThemeChangePages.includes(Page.url))
+	if (!force && preventThemeChangePages.includes(pageUrl))
 	{
 		return;
 	}
@@ -115,7 +115,7 @@ export function toggleDarkTheme({ noAnimation = false, force = false })
 	else
 	{
 		const element = addStyle(`
-			*
+			*:not(.page)
 			{
 				transition: none !important;
 			}

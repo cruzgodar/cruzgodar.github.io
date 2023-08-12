@@ -1,5 +1,5 @@
 import { Applet } from "/scripts/src/applets.mjs";
-import { $$ } from "/scripts/src/main.mjs";
+import { $$, loadScript } from "/scripts/src/main.mjs";
 
 export class PlanePartitions extends Applet
 {
@@ -281,19 +281,9 @@ export class PlanePartitions extends Applet
 		
 		this.loadPromise = new Promise(async (resolve, reject) =>
 		{
-			if (!Site.scriptsLoaded["three"])
-			{
-				await Site.loadScript("/scripts/three.min.js")
-				
-				Site.scriptsLoaded["three"] = true;
-			}
+			await loadScript("/scripts/three.min.js")
 			
-			if (!Site.scriptsLoaded["lodash"])
-			{
-				await Site.loadScript("/scripts/lodash.min.js");
-				
-				Site.scriptsLoaded["lodash"] = true;
-			}
+			await loadScript("/scripts/lodash.min.js");
 			
 			this.scene = new THREE.Scene();
 			this.scene.background = new THREE.Color(0x000000);

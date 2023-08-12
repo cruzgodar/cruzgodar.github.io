@@ -1,5 +1,6 @@
 import { showPage } from "/scripts/src/load-page.mjs";
 import { $, addTemporaryListener } from "/scripts/src/main.mjs";
+import { redirect } from "/scripts/src/navigation.mjs";
 
 !function()
 {
@@ -492,46 +493,46 @@ import { $, addTemporaryListener } from "/scripts/src/main.mjs";
 	
 	$("#part-1-button").addEventListener("click", () =>
 	{
-		Page.Navigation.redirect("/projects/wilson/guide/1-getting-started/");
+		redirect({ url: "/projects/wilson/guide/1-getting-started/" });
 	});
 	
 	$("#part-2-button").addEventListener("click", () =>
 	{
-		Page.Navigation.redirect("/projects/wilson/guide/2-draggables/");
+		redirect({ url: "/projects/wilson/guide/2-draggables/" });
 	});
 	
 	$("#part-3-button").addEventListener("click", () =>
 	{
-		Page.Navigation.redirect("/projects/wilson/guide/3-parallelizing/");
+		redirect({ url: "/projects/wilson/guide/3-parallelizing/" });
 	});
 	
 	$("#part-4-button").addEventListener("click", () =>
 	{
-		Page.Navigation.redirect("/projects/wilson/guide/4-hidden-canvases/");
+		redirect({ url: "/projects/wilson/guide/4-hidden-canvases/" });
 	});
 	
 	$("#part-5-button").addEventListener("click", () =>
 	{
-		Page.Navigation.redirect("/projects/wilson/guide/5-fullscreen/");
+		redirect({ url: "/projects/wilson/guide/5-fullscreen/" });
 	});
 	
 	$("#part-6-button").addEventListener("click", () =>
 	{
-		Page.Navigation.redirect("/projects/wilson/guide/6-interactivity/");
+		redirect({ url: "/projects/wilson/guide/6-interactivity/" });
 	});
 	
 	
 	
 	$("#docs-button").addEventListener("click", () =>
 	{
-		Page.Navigation.redirect("/projects/wilson/docs/");
+		redirect({ url: "/projects/wilson/docs/" });
 	});
 	
 	
 	
 	$("#download-button").addEventListener("click", () =>
 	{
-		Page.Navigation.redirect("https://github.com/cruzgodar/wilson/releases", true);
+		redirect({ url: "https://github.com/cruzgodar/wilson/releases", inNewTab: true });
 	});
 	
 	

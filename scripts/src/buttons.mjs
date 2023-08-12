@@ -1,5 +1,6 @@
-import { $$, addTemporaryListener } from "./main.mjs";
+import { $$, addTemporaryListener, pageUrl } from "./main.mjs";
 import { redirect } from "./navigation.mjs";
+import { sitemap } from "./sitemap.mjs";
 
 export function setUpTextButtons()
 {
@@ -76,15 +77,15 @@ export function equalizeTextButtons()
 
 export function setUpNavButtons()
 {
-	const parent = Site.sitemap[Page.url].parent;
+	const parent = sitemap[pageUrl].parent;
 
 	if (!parent)
 	{
 		return;
 	}
 
-	const list = Site.sitemap[Site.sitemap[Page.url].parent].children;
-	const index = list.indexOf(Page.url);
+	const list = sitemap[sitemap[pageUrl].parent].children;
+	const index = list.indexOf(pageUrl);
 	
 	if (index === -1)
 	{
@@ -110,7 +111,7 @@ export function setUpNavButtons()
 	
 	$$(".home-nav-button").forEach(element => 
 	{
-		element.addEventListener("click", () => redirect({ url: Site.sitemap[Page.url].parent }));
+		element.addEventListener("click", () => redirect({ url: sitemap[pageUrl].parent }));
 	});
 	
 	
