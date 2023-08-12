@@ -1,4 +1,4 @@
-import { Applet } from "/scripts/src/applets.mjs"
+import { Applet } from "/scripts/src/applets.mjs";
 import { addTemporaryListener } from "/scripts/src/main.mjs";
 
 export class JuliaSetMosaic extends Applet

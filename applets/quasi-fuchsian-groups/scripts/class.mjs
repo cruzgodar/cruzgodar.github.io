@@ -1,6 +1,6 @@
-import { addTemporaryWorker } from "/scripts/src/main.mjs";
-import { Applet } from "/scripts/src/applets.mjs"
+import { Applet } from "/scripts/src/applets.mjs";
 import { aspectRatio } from "/scripts/src/layout.mjs";
+import { addTemporaryWorker } from "/scripts/src/main.mjs";
 
 export class QuasiFuchsianGroups extends Applet
 {

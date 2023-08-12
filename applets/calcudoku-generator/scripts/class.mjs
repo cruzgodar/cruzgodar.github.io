@@ -1,6 +1,6 @@
 import { opacityAnimationTime } from "/scripts/src/animation.mjs";
-import { addTemporaryWorker } from "/scripts/src/main.mjs";
 import { Applet } from "/scripts/src/applets.mjs";
+import { addTemporaryWorker } from "/scripts/src/main.mjs";
 
 export class CalcudokuGenerator extends Applet
 {

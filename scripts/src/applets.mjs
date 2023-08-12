@@ -1,5 +1,5 @@
 import { addHoverEventWithScale } from "./hover-events.mjs";
-import { $$, pageElement, addTemporaryListener } from "./main.mjs";
+import { $$, addTemporaryListener, pageElement } from "./main.mjs";
 
 export class Applet
 {

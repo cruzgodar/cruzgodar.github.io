@@ -1,6 +1,6 @@
-import { opacityAnimationTime } from "/scripts/src/animation.mjs";
 import { addHoverEventWithScale } from "./hover-events.mjs";
-import { $$, pageElement, addStyle } from "./main.mjs";
+import { $$, addStyle, pageElement } from "./main.mjs";
+import { opacityAnimationTime } from "/scripts/src/animation.mjs";
 
 export let bannerElement = null;
 

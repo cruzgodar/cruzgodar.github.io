@@ -1,5 +1,4 @@
-import { opacityAnimationTime } from "/scripts/src/animation.mjs";
-import { fadeLeft } from "/scripts/src/animation.mjs";
+import { fadeLeft, opacityAnimationTime } from "/scripts/src/animation.mjs";
 import { bannerMaxScroll, setBannerOpacity } from "/scripts/src/banners.mjs";
 import { disableLinks, showPage } from "/scripts/src/load-page.mjs";
 import { $, addTemporaryListener, pageScroll, setVisitedHomepage, visitedHomepage } from "/scripts/src/main.mjs";

@@ -1,5 +1,5 @@
-import { Applet } from "/scripts/src/applets.mjs"
-import { loadGlsl, getGlslBundle } from "/scripts/src/complex-glsl.mjs"
+import { Applet } from "/scripts/src/applets.mjs";
+import { getGlslBundle, loadGlsl } from "/scripts/src/complex-glsl.mjs";
 import { addTemporaryListener } from "/scripts/src/main.mjs";
 
 export class NewtonsMethodExtended extends Applet

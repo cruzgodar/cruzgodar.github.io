@@ -1,5 +1,5 @@
-import { opacityAnimationTime } from "/scripts/src/animation.mjs";
 import { addTemporaryListener } from "./src/main.mjs";
+import { opacityAnimationTime } from "/scripts/src/animation.mjs";
 
 class Wilson
 {

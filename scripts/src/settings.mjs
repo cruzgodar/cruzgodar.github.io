@@ -1,6 +1,6 @@
-import { opacityAnimationTime } from "/scripts/src/animation.mjs";
 import { cardIsOpen } from "./cards.mjs";
 import { $, addStyle } from "./main.mjs";
+import { opacityAnimationTime } from "/scripts/src/animation.mjs";
 
 export const forceThemePages =
 {

@@ -1,5 +1,5 @@
-import { opacityAnimationTime } from "/scripts/src/animation.mjs";
 import { Mandelbulb } from "./class.mjs";
+import { opacityAnimationTime } from "/scripts/src/animation.mjs";
 import { equalizeTextButtons } from "/scripts/src/buttons.mjs";
 import { showPage } from "/scripts/src/load-page.mjs";
 import { $ } from "/scripts/src/main.mjs";

@@ -1,7 +1,7 @@
 import { changeScale } from "./animation.mjs";
+import { currentlyTouchDevice } from "./interaction.mjs";
 import { $$ } from "./main.mjs";
 import { showTex } from "./math.mjs";
-import { currentlyTouchDevice } from "./interaction.mjs";
 
 const elementSelectors = `
 	a

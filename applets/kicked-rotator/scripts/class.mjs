@@ -1,5 +1,5 @@
-import { addTemporaryWorker } from "/scripts/src/main.mjs";
 import { Applet } from "/scripts/src/applets.mjs";
+import { addTemporaryWorker } from "/scripts/src/main.mjs";
 
 export class KickedRotator extends Applet
 {

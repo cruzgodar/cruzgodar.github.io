@@ -2,7 +2,7 @@ import { fadeDownOut, fadeLeftOut, fadeOut, fadeRightOut, fadeUpOut } from "./an
 import { bannerElement, bannerOnScroll, loadBanner } from "./banners.mjs";
 import { cardIsOpen, hideCard } from "./cards.mjs";
 import { loadPage, pageElement } from "./load-page.mjs";
-import { temporaryListeners, clearTemporaryListeners, temporaryIntervals, clearTemporaryIntervals } from "./main.mjs";
+import { clearTemporaryIntervals, clearTemporaryListeners, temporaryIntervals, temporaryListeners } from "./main.mjs";
 import { forceThemePages, preventThemeChangePages, setForcedTheme, setRevertThemeTo, siteSettings, toggleDarkTheme } from "./settings.mjs";
 
 let currentlyRedirecting = false;
