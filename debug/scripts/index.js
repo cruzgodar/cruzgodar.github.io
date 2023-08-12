@@ -1,4 +1,4 @@
-import { showPage } from "/scripts/src/load-page.mjs"
+import { showPage } from "/scripts/src/load-page.mjs";
 !function()
 {
 	let collectorButtonElement = $("#collector-button");

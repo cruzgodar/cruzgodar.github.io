@@ -1,7 +1,7 @@
-import { bannerOnScroll } from "./banners.mjs"
+import { bannerOnScroll } from "./banners.mjs";
 import { resizeCard } from "./cards.mjs";
-import { headerElement } from "./load-page.mjs"
-import { siteSettings } from "./settings.mjs"
+import { headerElement } from "./load-page.mjs";
+import { siteSettings } from "./settings.mjs";
 
 export let aspectRatio = window.innerWidth / window.innerHeight;
 

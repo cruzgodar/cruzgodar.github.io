@@ -1,4 +1,4 @@
-import {write} from "./file-io.mjs"
+import { write } from "./file-io.mjs";
 
 const root = process.argv[1].replace(/(\/cruzgodar.github.io\/).+$/, (match, $1) => $1);
 

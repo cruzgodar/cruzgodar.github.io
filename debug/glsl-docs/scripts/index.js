@@ -1,4 +1,4 @@
-import { showPage } from "/scripts/src/load-page.mjs"
+import { showPage } from "/scripts/src/load-page.mjs";
 !async function()
 {
 	const response = await fetch("/debug/glsl-docs/src.html");

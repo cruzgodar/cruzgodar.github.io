@@ -1,5 +1,5 @@
-import { showPage } from "/scripts/src/load-page.mjs"
 import { SortingAlgorithm } from "./class.mjs";
+import { showPage } from "/scripts/src/load-page.mjs";
 
 export function load()
 {

@@ -1,5 +1,5 @@
-import { addHoverEvent } from "./hover-events.mjs"
-import { siteSettings, metaThemeColorElement } from "./settings.mjs";
+import { addHoverEvent } from "./hover-events.mjs";
+import { metaThemeColorElement, siteSettings } from "./settings.mjs";
 
 const container = document.querySelector("#card-container");
 

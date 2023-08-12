@@ -1,8 +1,7 @@
-import { exec } from "child_process"
-import { read, write } from "./file-io.mjs"
-import buildSitemap from "./build-sitemap.mjs"
+import { exec } from "child_process";
 import buildHTMLFile from "./build-html-file.mjs";
-import { sitemapPath } from "./build-sitemap.mjs"
+import buildSitemap, { sitemapPath } from "./build-sitemap.mjs";
+import { read, write } from "./file-io.mjs";
 
 const root = process.argv[1].replace(/(\/cruzgodar.github.io\/).+$/, (match, $1) => $1);
 

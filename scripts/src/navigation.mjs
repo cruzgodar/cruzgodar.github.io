@@ -1,8 +1,8 @@
-import { fadeUpOut, fadeDownOut, fadeLeftOut, fadeRightOut, fadeOut } from "./animation.mjs"
-import { loadBanner, bannerOnScroll, bannerElement } from "./banners.mjs"
+import { fadeDownOut, fadeLeftOut, fadeOut, fadeRightOut, fadeUpOut } from "./animation.mjs";
+import { bannerElement, bannerOnScroll, loadBanner } from "./banners.mjs";
 import { cardIsOpen, hideCard } from "./cards.mjs";
 import { loadPage } from "./load-page.mjs";
-import { siteSettings, forceThemePages, preventThemeChangePages, setRevertThemeTo, setForcedTheme, toggleDarkTheme } from "./settings.mjs";
+import { forceThemePages, preventThemeChangePages, setForcedTheme, setRevertThemeTo, siteSettings, toggleDarkTheme } from "./settings.mjs";
 
 let currentlyRedirecting = false;
 
@@ -43,8 +43,6 @@ export async function redirect({
 	const temp = window.scrollY;
 	
 	navigationTransitionType = getTransitionType(url);
-	
-	Page.parentFolder = url.slice(0, url.length);
 	
 	
 	

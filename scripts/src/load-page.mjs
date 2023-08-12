@@ -1,12 +1,12 @@
-import { fadeUpIn, fadeDownIn, fadeLeftIn, fadeRightIn, fadeIn } from "./animation.mjs"
-import { setUpBanner, bannerElement, bannerOpacity } from "./banners.mjs"
-import { setUpTextButtons, setUpNavButtons, setUpDropdowns } from "./buttons.mjs"
+import { fadeDownIn, fadeIn, fadeLeftIn, fadeRightIn, fadeUpIn } from "./animation.mjs"
+import { bannerElement, bannerOpacity, setUpBanner } from "./banners.mjs"
+import { setUpDropdowns, setUpNavButtons, setUpTextButtons } from "./buttons.mjs"
 import { setUpCards } from "./cards.mjs"
-import { addHoverEvent, setUpHoverEvents, setUpFocusEvents } from "./hover-events.mjs"
+import { addHoverEvent, setUpFocusEvents, setUpHoverEvents } from "./hover-events.mjs"
 import { onResize } from "./layout.mjs"
 import { typesetMath } from "./math.mjs"
-import { redirect, navigationTransitionType } from "./navigation.mjs"
-import { siteSettings, toggleDarkTheme, revertTheme, condenseApplet } from "./settings.mjs"
+import { navigationTransitionType, redirect } from "./navigation.mjs"
+import { condenseApplet, revertTheme, siteSettings, toggleDarkTheme } from "./settings.mjs"
 
 export let headerElement = null;
 

@@ -52,7 +52,7 @@ function splitGlslFile(filename, text)
 		
 		if (endIndex === -1)
 		{
-			console.error(`[GLSL bundling] Invalid function name in file ${filename}.frag`);
+			console.error(`[GLSL bundling] Invalid function name in file ${filename}`);
 			return;
 		}
 		
@@ -75,7 +75,7 @@ function splitGlslFile(filename, text)
 		
 		if (endFunctionIndex === -1)
 		{
-			console.error(`[GLSL bundling] Missing #endfunction in file ${filename}.frag`);
+			console.error(`[GLSL bundling] Missing #endfunction in file ${filename}`);
 			return;
 		}
 		
@@ -134,8 +134,8 @@ export function loadGlsl()
 		
 		return new Promise(async (resolve, reject) =>
 		{
-			//constants.frag and main.frag are always fetched.
-			const response = await fetch("/scripts/glsl/constants.frag");
+			//constants and main are always fetched.
+			const response = await fetch("/scripts/glsl/constants");
 			
 			const text = await response.text();
 				
@@ -143,7 +143,7 @@ export function loadGlsl()
 			
 			
 			
-			const response2 = await fetch("/scripts/glsl/main.frag");
+			const response2 = await fetch("/scripts/glsl/main");
 			
 			const text2 = await response2.text();
 				
@@ -151,7 +151,7 @@ export function loadGlsl()
 			
 			
 			
-			const response3 = await fetch("/scripts/glsl/double_emulation.frag");
+			const response3 = await fetch("/scripts/glsl/double_emulation");
 			
 			const text3 = await response3.text();
 				
@@ -159,7 +159,7 @@ export function loadGlsl()
 			
 			
 			
-			const response4 = await fetch("/scripts/glsl/double_encoding.frag");
+			const response4 = await fetch("/scripts/glsl/double_encoding");
 			
 			const text4 = await response4.text();
 				
@@ -171,7 +171,7 @@ export function loadGlsl()
 			
 			await Promise.all(glslFilenames.map(filename => new Promise(async (resolve, reject) =>
 			{
-				const response = await fetch(`/scripts/glsl/${filename}.frag`);
+				const response = await fetch(`/scripts/glsl/${filename}`);
 				
 				texts[filename] = await response.text();
 				
@@ -292,7 +292,7 @@ export function getGlslBundle(codeString)
 	
 	filenames.forEach(filename => filesToInclude[filename] = false);
 	
-	//main.frag is always required.
+	//main is always required.
 	filesToInclude["main"] = true;
 	
 	
@@ -340,7 +340,7 @@ export function getGlslBundle(codeString)
 	
 	
 	
-	//constants.frag and main.glsl are always included.
+	//constants and main are always included.
 	bundle = glslFiles["constants"].content + glslFiles["main"].content;
 	
 	for (let i = 1; i < glslFilesByDepth.length; i++)

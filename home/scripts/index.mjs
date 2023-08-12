@@ -1,12 +1,13 @@
-import { fadeLeft } from "/scripts/src/animation.mjs"
-import { showPage, disableLinks } from "/scripts/src/load-page.mjs"
+import { fadeLeft } from "/scripts/src/animation.mjs";
 import { bannerMaxScroll, setBannerOpacity } from "/scripts/src/banners.mjs";
+import { disableLinks, showPage } from "/scripts/src/load-page.mjs";
+import { pageScroll } from "/scripts/src/main.mjs";
 
 function setNameTextOpacity()
 {
 	let opacity = 0;
 
-	if (Page.scroll === 0)
+	if (pageScroll === 0)
 	{
 		if (bannerMaxScroll)
 		{

@@ -1,5 +1,5 @@
-import { showPage } from "/scripts/src/load-page.mjs"
 import { GeneralizedJuliaSet } from "./class.mjs";
+import { showPage } from "/scripts/src/load-page.mjs";
 
 export function load()
 {

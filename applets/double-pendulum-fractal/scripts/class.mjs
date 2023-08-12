@@ -49,8 +49,6 @@ export class DoublePendulumFractal extends Applet
 			
 			varying vec2 uv;
 			
-			
-			
 			void main(void)
 			{
 				gl_FragColor = vec4((uv + vec2(1.0, 1.0)) / 2.0, 0.5, 0.5);

@@ -1,4 +1,4 @@
-import { browserIsIos } from "./browser.mjs"
+import { browserIsIos } from "./browser.mjs";
 
 const useJsAnimation = browserIsIos;
 

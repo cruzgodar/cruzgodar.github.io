@@ -1,4 +1,4 @@
-import { read, write } from "./file-io.mjs"
+import { read, write } from "./file-io.mjs";
 
 const textSitemapPath = "/build/sitemap.txt";
 export const sitemapPath = "/scripts/src/sitemap.js";

@@ -1,6 +1,5 @@
-import { changeScale } from "./animation.mjs"
+import { changeScale } from "./animation.mjs";
 import { showTex } from "./math.mjs";
-import { siteSettings } from "./settings.mjs";
 
 const elementSelectors = `
 	a

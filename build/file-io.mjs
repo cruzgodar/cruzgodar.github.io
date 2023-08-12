@@ -1,4 +1,4 @@
-import fs from "fs"
+import fs from "fs";
 
 const root = process.argv[1].replace(/(\/cruzgodar.github.io\/).+$/, (match, $1) => $1);
 

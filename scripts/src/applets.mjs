@@ -1,4 +1,4 @@
-import { addHoverEventWithScale } from "./hover-events.mjs"
+import { addHoverEventWithScale } from "./hover-events.mjs";
 
 export class Applet
 {

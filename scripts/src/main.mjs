@@ -1,28 +1,13 @@
-"use strict";
+export let pageElement = null;
 
-Page.element = null;
-Page.lastElement = null;
+export let $ = (queryString) => pageElement.querySelector(queryString);
+export let $$ = (queryString) => pageElement.querySelectorAll(queryString);
 
-let $ = (queryString) => Page.element.querySelector(queryString);
-let $$ = (queryString) => Page.element.querySelectorAll(queryString);
+let pageIsReadyToShow = false;
 
-Page.readyToShow = false;
+export let pageScroll = 0;
 
-
-Page.scroll = 0;
-
-Page.settings = {};
-
-Page.parentFolder = "/";
-
-
-
-Site.manualHeaderPages =
-[
-	"/home/",
-	
-	"/writing/caligo/"
-];
+const pageSettings = {};
 
 
 
