@@ -1,7 +1,7 @@
 import { showCard } from "/scripts/src/cards.mjs";
 import { showPage } from "/scripts/src/load-page.mjs";
-import { redirect } from "/scripts/src/navigation.mjs";
 import { $, $$ } from "/scripts/src/main.mjs";
+import { redirect } from "/scripts/src/navigation.mjs";
 
 const galleryImageData = 
 {
@@ -527,7 +527,11 @@ const galleryImageData =
 	}
 };
 
-const titleElement = $("#high-res-viewer-card h1");
+
+
+export function load()
+{
+	const titleElement = $("#high-res-viewer-card h1");
 const descriptionTextElement = $("#description-text");
 const featuredTextElement = $("#featured-text");
 const appletLinkElement = $("#applet-link");
@@ -535,66 +539,64 @@ const fullResLinkElement = $("#full-res-link");
 
 let currentId = "";
 
-function showGalleryCard(id)
-{
-	currentId = id;
-
-	titleElement.innerHTML = galleryImageData[id]["title"];
-	
-	
-	
-	if (galleryImageData[id]["parameters"])
+	function showGalleryCard(id)
 	{
-		descriptionTextElement.innerHTML = galleryImageData[id]["parameters"];
+		currentId = id;
+
+		titleElement.innerHTML = galleryImageData[id]["title"];
 		
-		descriptionTextElement.parentElement.style.display = "block";
-	}
-	
-	else
-	{
-		descriptionTextElement.parentElement.style.display = "none";
-	}
-	
-	
-	
-	if (galleryImageData[id]["featured"])
-	{
-		featuredTextElement.innerHTML = galleryImageData[id]["featured"];
 		
-		featuredTextElement.parentElement.style.display = "block";
+		
+		if (galleryImageData[id]["parameters"])
+		{
+			descriptionTextElement.innerHTML = galleryImageData[id]["parameters"];
+			
+			descriptionTextElement.parentElement.style.display = "block";
+		}
+		
+		else
+		{
+			descriptionTextElement.parentElement.style.display = "none";
+		}
+		
+		
+		
+		if (galleryImageData[id]["featured"])
+		{
+			featuredTextElement.innerHTML = galleryImageData[id]["featured"];
+			
+			featuredTextElement.parentElement.style.display = "block";
+		}
+		
+		else
+		{
+			featuredTextElement.parentElement.style.display = "none";
+		}
+		
+		
+		
+		appletLinkElement.setAttribute("href", `/applets/${galleryImageData[id]["appletLink"]}/`);
+		
+		fullResLinkElement.setAttribute("href", galleryImageData[id]["imageLink"]);
+		
+		
+		
+		const highResImageElement = document.createElement("img");
+		
+		const element = $("#high-res-viewer-card img");
+		element.parentNode.insertBefore(highResImageElement, element);
+		element.remove();
+		
+		highResImageElement.onload = () =>
+		{
+			setTimeout(() => showCard("high-res-viewer"), 10);
+		};
+		
+		highResImageElement.src = `/gallery/high-res/${id}.webp`;
 	}
-	
-	else
-	{
-		featuredTextElement.parentElement.style.display = "none";
-	}
-	
-	
-	
-	appletLinkElement.setAttribute("href", `/applets/${galleryImageData[id]["appletLink"]}/`);
-	
-	fullResLinkElement.setAttribute("href", galleryImageData[id]["imageLink"]);
-	
-	
-	
-	const highResImageElement = document.createElement("img");
-	
-	const element = $("#high-res-viewer-card img");
-	element.parentNode.insertBefore(highResImageElement, element);
-	element.remove();
-	
-	highResImageElement.onload = () =>
-	{
-		setTimeout(() => showCard("high-res-viewer"), 10);
-	};
-	
-	highResImageElement.src = `/gallery/high-res/${id}.webp`;
-}
 
 
-
-export function load()
-{
+	
 	$$(".gallery-image-1-1 img, .gallery-image-2-2 img, .gallery-image-3-3 img").forEach(element =>
 	{
 		element.addEventListener("click", e => showGalleryCard(e.target.getAttribute("data-image-id")));

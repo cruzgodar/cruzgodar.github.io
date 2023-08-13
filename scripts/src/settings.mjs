@@ -94,6 +94,17 @@ export function setUpDarkTheme()
 		}
 	});
 
+	if (forceThemePages[pageUrl] !== undefined)
+	{
+		siteSettings.darkTheme = forceThemePages[pageUrl];
+
+		siteSettings.darkTheme = false;
+		
+		toggleDarkTheme({ noAnimation: true, force: true });
+
+		return;
+	}
+
 	if (siteSettings.darkTheme)
 	{
 		siteSettings.darkTheme = false;
