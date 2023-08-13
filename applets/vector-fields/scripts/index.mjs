@@ -127,7 +127,7 @@ export function load()
 	
 	downloadButtonElement.addEventListener("click", () => applet.wilson.downloadFrame("a-vector-field.png"));
 	
-	
+	console.log("hi!")
 	
 	showPage();
 }

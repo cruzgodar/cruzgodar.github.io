@@ -96,7 +96,7 @@ export default async () =>
 		sitemap = `${sitemap}${getPageString(lines[i], realParent, children, title)}`;
 	}
 
-	sitemap = `${sitemap.slice(0, sitemap.length - 3)}\n};`;
+	sitemap = `${sitemap.slice(0, sitemap.length - 3)}\n}`;
 
 	await write(sitemapPath, sitemap);
 }
