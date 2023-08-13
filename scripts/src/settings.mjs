@@ -46,16 +46,28 @@ export const siteSettings =
 
 export function getQueryParams()
 {
+	const params = [];
+
 	if (siteSettings.darkTheme && !window.matchMedia("(prefers-color-scheme: dark)").matches)
 	{
-		return "?theme=1";
+		params.push("theme=1");
 	}
 
-	if (!siteSettings.darkTheme && window.matchMedia("(prefers-color-scheme: dark)").matches)
+	else if (!siteSettings.darkTheme && window.matchMedia("(prefers-color-scheme: dark)").matches)
 	{
-		return "?theme=0";
+		params.push("theme=0");
 	}
 
+	if (window.DEBUG)
+	{
+		params.push("debug=1");
+	}
+
+	if (params.length !== 0)
+	{
+		return "?" + params.join("&");
+	}
+	
 	return "";
 }
 
