@@ -1,5 +1,6 @@
 import { opacityAnimationTime } from "./animation.mjs";
 import { cardIsOpen } from "./cards.mjs";
+import { recreateDesmosGraphs } from "./desmos.mjs";
 import { $, addStyle, pageUrl } from "./main.mjs";
 import { getDisplayUrl } from "./navigation.mjs";
 
@@ -138,7 +139,7 @@ export function revertTheme()
 
 
 
-export function toggleDarkTheme({ noAnimation = false, force = false })
+export async function toggleDarkTheme({ noAnimation = false, force = false })
 {
 	if (!force && preventThemeChangePages.includes(pageUrl))
 	{
@@ -146,6 +147,8 @@ export function toggleDarkTheme({ noAnimation = false, force = false })
 	}
 
 	siteSettings.darkTheme = !siteSettings.darkTheme;
+
+	recreateDesmosGraphs();
 
 	history.replaceState({url: pageUrl}, document.title, getDisplayUrl());
 
@@ -158,32 +161,39 @@ export function toggleDarkTheme({ noAnimation = false, force = false })
 	
 	else
 	{
-		const element = addStyle(`
-			*:not(.page)
-			{
-				transition: none !important;
-			}
-		`);
+		await new Promise(async (resolve, reject) =>
+		{
+			const element = addStyle(`
+				*:not(.page, .desmos-container)
+				{
+					transition: none !important;
+				}
+			`);
 
-		anime({
-			targets: metaThemeColorElement,
-			content: siteSettings.darkTheme ? "#181818" : "#ffffff",
-			duration: opacityAnimationTime * 2,
-			easing: "cubicBezier(.25, .1, .25, 1)",
-		});
+			anime({
+				targets: metaThemeColorElement,
+				content: siteSettings.darkTheme ? "#181818" : "#ffffff",
+				duration: opacityAnimationTime * 2,
+				easing: "cubicBezier(.25, .1, .25, 1)",
+			});
 
-		const dummy = {t: siteSettings.darkTheme ? 0 : 1};
+			const dummy = {t: siteSettings.darkTheme ? 0 : 1};
 
-		anime({
-			targets: dummy,
-			t: siteSettings.darkTheme ? 1 : 0,
-			duration: opacityAnimationTime * 2,
-			easing: "cubicBezier(.25, .1, .25, 1)",
-			update: () =>
-			{
-				rootElement.style.setProperty("--theme", dummy.t);
-			},
-			complete: () => element.remove()
+			anime({
+				targets: dummy,
+				t: siteSettings.darkTheme ? 1 : 0,
+				duration: opacityAnimationTime * 2,
+				easing: "cubicBezier(.25, .1, .25, 1)",
+				update: () =>
+				{
+					rootElement.style.setProperty("--theme", dummy.t);
+				},
+				complete: () =>
+				{
+					element.remove();
+					resolve();
+				}
+			});
 		});
 	}
 }

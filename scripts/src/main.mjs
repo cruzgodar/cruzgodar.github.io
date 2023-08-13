@@ -199,6 +199,7 @@ export function loadScript(src, isModule = false)
 	{
 		if (scriptsLoaded[src])
 		{
+			resolve();
 			return;
 		}
 
@@ -210,12 +211,14 @@ export function loadScript(src, isModule = false)
 		}
 		
 		document.body.appendChild(script);
+		
 		script.onload = () =>
 		{
 			scriptsLoaded[src] = true;
 
-			resolve()
+			resolve();
 		};
+
 		script.onerror = reject;
 		script.async = true;
 		script.src = src;

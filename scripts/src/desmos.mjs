@@ -1,3 +1,4 @@
+import { changeOpacity } from "./animation.mjs";
 import { $$, loadScript } from "./main.mjs";
 import { siteSettings } from "./settings.mjs";
 
@@ -82,6 +83,22 @@ export async function createDesmosGraphs()
 		
 		desmosGraphs[element.id].setDefaultState(desmosGraphs[element.id].getState());
 	});
+}
+
+//Animates out and back in all the Desmos graphs. Used when switching themes.
+
+export async function recreateDesmosGraphs()
+{
+	const elements = Array.from($$(".desmos-container"));
+
+	if (elements)
+	{
+		await Promise.all(elements.map(element => changeOpacity(element, 0)));
+
+		await createDesmosGraphs();
+
+		await Promise.all(elements.map(element => changeOpacity(element, 1)));
+	}
 }
 
 export function getDesmosScreenshot(id, forPdf = false)
