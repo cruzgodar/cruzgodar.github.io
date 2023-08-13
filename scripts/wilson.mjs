@@ -1,5 +1,5 @@
-import { addHoverEventWithScale } from "./src/hover-events.mjs";
-import { opacityAnimationTime } from "/scripts/src/animation.mjs";
+import { changeOpacity, opacityAnimationTime } from "/scripts/src/animation.mjs";
+import { addHoverEventWithScale } from "/scripts/src/hover-events.mjs";
 import { addTemporaryListener } from "/scripts/src/main.mjs";
 import { metaThemeColorElement } from "/scripts/src/settings.mjs";
 

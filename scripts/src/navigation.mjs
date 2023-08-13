@@ -1,4 +1,5 @@
 import { fadeDownOut, fadeLeftOut, fadeOut, fadeRightOut, fadeUpOut } from "./animation.mjs";
+import { Applet } from "./applets.mjs";
 import { bannerElement, bannerOnScroll, loadBanner } from "./banners.mjs";
 import { cardIsOpen, hideCard } from "./cards.mjs";
 import { clearDesmosGraphs, desmosGraphs } from "./desmos.mjs";

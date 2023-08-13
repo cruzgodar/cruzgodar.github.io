@@ -44,10 +44,10 @@ export function setPageScroll(newPageScroll)
 
 export let temporaryListeners = [];
 
-export function addTemporaryListener({ object, event, callback })
+export function addTemporaryListener({ object, event, callback, log = false })
 {
 	object.addEventListener(event, callback);
-
+	
 	temporaryListeners.push([object, event, callback]);
 }
 

@@ -167,10 +167,12 @@ export class Applet
 		};
 		
 		const boundFunction = listener.bind(this);
+
 		addTemporaryListener({
-			object: documentElement,
+			object: document.documentElement,
 			event: "pointerdown",
-			callback: boundFunction
+			callback: boundFunction,
+			log: true
 		});
 	}
 	

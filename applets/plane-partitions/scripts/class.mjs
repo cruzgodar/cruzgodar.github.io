@@ -1,3 +1,4 @@
+import { changeOpacity } from "/scripts/src/animation.mjs";
 import { Applet } from "/scripts/src/applets.mjs";
 import { $$, loadScript } from "/scripts/src/main.mjs";
 import { Wilson } from "/scripts/wilson.mjs";

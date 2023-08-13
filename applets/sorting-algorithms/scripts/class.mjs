@@ -228,8 +228,10 @@ export class SortingAlgorithm extends Applet
 		this.currentGenerator = this.generators[0]();
 		
 		
-		
-		window.requestAnimationFrame(this.drawFrame.bind(this));
+		if (!this.animationPaused)
+		{
+			window.requestAnimationFrame(this.drawFrame.bind(this));
+		}
 	}
 	
 	
