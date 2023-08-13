@@ -1,4 +1,4 @@
-import { opacityAnimationTime } from "/scripts/src/animation.mjs";
+import { changeOpacity, opacityAnimationTime } from "/scripts/src/animation.mjs";
 import { Applet } from "/scripts/src/applets.mjs";
 import { addTemporaryWorker } from "/scripts/src/main.mjs";
 import { siteSettings } from "/scripts/src/settings.mjs";

@@ -27,6 +27,7 @@ export class SudokuGenerator extends Applet
 		};
 		
 		this.wilson = new Wilson(canvas, options);
+		
 	}
 	
 	

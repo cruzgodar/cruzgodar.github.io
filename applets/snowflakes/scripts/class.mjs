@@ -1,4 +1,5 @@
 import { Applet } from "/scripts/src/applets.mjs";
+import { Wilson } from "/scripts/wilson.mjs";
 
 export class Snowflake extends Applet
 {
@@ -669,4 +670,4 @@ export class Snowflake extends Applet
 			window.requestAnimationFrame(this.drawFrame.bind(this));
 		}
 	}
-	}
+}
