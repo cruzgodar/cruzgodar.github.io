@@ -3,11 +3,11 @@
 #banner, #banner-small, #banner-large
 {
 	position: fixed;
-	width: calc(100vw + 10vmin);
-	height: calc(100vh + 10vmin);
+	width: calc(100% + 50px);
+	height: calc(100% + 50px);
 	
-	top: -5vmin;
-	left: -5vmin;
+	top: -25px;
+	left: -25px;
 	
 	background: url("") no-repeat center center;
 	background-size: cover;
