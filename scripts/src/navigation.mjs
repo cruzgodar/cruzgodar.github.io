@@ -5,7 +5,7 @@ import { cardIsOpen, hideCard } from "./cards.mjs";
 import { clearDesmosGraphs, desmosGraphs } from "./desmos.mjs";
 import { loadPage } from "./load-page.mjs";
 import { clearTemporaryIntervals, clearTemporaryListeners, clearTemporaryWorkers, pageElement, pageUrl, setPageScroll, setPageUrl, temporaryIntervals, temporaryListeners, temporaryWorkers } from "./main.mjs";
-import { forceThemePages, preventThemeChangePages, setForcedTheme, setRevertThemeTo, siteSettings, toggleDarkTheme } from "./settings.mjs";
+import { forceThemePages, getQueryParams, preventThemeChangePages, setForcedTheme, setRevertThemeTo, siteSettings, toggleDarkTheme } from "./settings.mjs";
 import { sitemap } from "./sitemap.mjs";
 
 let currentlyRedirecting = false;
@@ -95,18 +95,16 @@ export async function redirect({
 		loadPage();
 		
 		
-		
-		//Record the page change in the url bar and in the browser history.
-		const displayUrl = url.replace(/\/home\//, "/");
 
+		//Record the page change in the url bar and in the browser history.
 		if (noStatePush)
 		{
-			history.replaceState({url}, document.title, displayUrl);
+			history.replaceState({url}, document.title, getDisplayUrl());
 		}
 		
 		else
 		{
-			history.pushState({url}, document.title, displayUrl);
+			history.pushState({url}, document.title, getDisplayUrl());
 		}
 		
 		
@@ -191,6 +189,13 @@ function getTransitionType(url)
 	
 	
 	return 0;
+}
+
+
+
+export function getDisplayUrl()
+{
+	return pageUrl.replace(/\/home\//, "/") + getQueryParams();
 }
 
 

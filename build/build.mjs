@@ -46,11 +46,14 @@ async function buildSite()
 		{
 			await parseModifiedFiles(stdout.split("\n"), sitemap);
 
+			if (stdout.search(/style\/src/) !== -1)
+			{
+				await buildSiteCSS();
+			}
+
 			resolve();
 		});
 	});
-
-	await buildSiteCSS();
 }
 
 async function parseModifiedFiles(files, sitemap)

@@ -1,6 +1,7 @@
 import { opacityAnimationTime } from "./animation.mjs";
 import { cardIsOpen } from "./cards.mjs";
 import { $, addStyle, pageUrl } from "./main.mjs";
+import { getDisplayUrl } from "./navigation.mjs";
 
 export const forceThemePages =
 {
@@ -22,13 +23,40 @@ export const metaThemeColorElement = document.querySelector("#theme-color-meta")
 
 
 
-const params = new URLSearchParams(document.location.search);
+const params = new URLSearchParams(window.location.search);
+
+const darkTheme = (() =>
+{
+	if (params.get("theme") === null)
+	{
+		return window.matchMedia("(prefers-color-scheme: dark)").matches;
+	}
+
+	return params.get("theme") === "1";
+})();
 
 export const siteSettings =
 {
-	darkTheme: (window.matchMedia("(prefers-color-scheme: dark)").matches && params.get("theme") === null) || params.get("theme") === "1",
+	darkTheme,
 	condensedApplets: params.get("condensedapplets") === "1"
 };
+
+
+
+export function getQueryParams()
+{
+	if (siteSettings.darkTheme && !window.matchMedia("(prefers-color-scheme: dark)").matches)
+	{
+		return "?theme=1";
+	}
+
+	if (!siteSettings.darkTheme && window.matchMedia("(prefers-color-scheme: dark)").matches)
+	{
+		return "?theme=0";
+	}
+
+	return "";
+}
 
 
 
@@ -107,6 +135,8 @@ export function toggleDarkTheme({ noAnimation = false, force = false })
 	}
 
 	siteSettings.darkTheme = !siteSettings.darkTheme;
+
+	history.replaceState({url: pageUrl}, document.title, getDisplayUrl());
 
 	if (noAnimation)
 	{
