@@ -1,6 +1,7 @@
 import { showPage } from "/scripts/src/load-page.mjs";
 import { $, addTemporaryListener } from "/scripts/src/main.mjs";
 import { redirect } from "/scripts/src/navigation.mjs";
+import { Wilson } from "/scripts/wilson.mjs";
 
 !function()
 {

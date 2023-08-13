@@ -1,6 +1,7 @@
 import { Applet } from "/scripts/src/applets.mjs";
 import { getGlslBundle, loadGlsl } from "/scripts/src/complex-glsl.mjs";
 import { addTemporaryListener } from "/scripts/src/main.mjs";
+import { Wilson } from "/scripts/wilson.mjs";
 
 export class NewtonsMethodExtended extends Applet
 {

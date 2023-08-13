@@ -1,5 +1,6 @@
 import { Applet } from "/scripts/src/applets.mjs";
 import { addTemporaryWorker } from "/scripts/src/main.mjs";
+import { Wilson } from "/scripts/wilson.mjs";
 
 export class ChaosGame extends Applet
 {

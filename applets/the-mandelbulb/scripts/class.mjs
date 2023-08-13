@@ -1,6 +1,7 @@
 import { Applet } from "/scripts/src/applets.mjs";
 import { aspectRatio } from "/scripts/src/layout.mjs";
 import { addTemporaryListener } from "/scripts/src/main.mjs";
+import { Wilson } from "/scripts/wilson.mjs";
 
 export class Mandelbulb extends Applet
 {

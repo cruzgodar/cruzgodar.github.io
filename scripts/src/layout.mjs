@@ -198,7 +198,7 @@ function destroyAppletColumns()
 	
 	
 	
-	const elementsToMove = $$(".move-to-left");
+	let elementsToMove = $$(".move-to-left");
 	
 	for (let i = elementsToMove.length - 1; i >= 0; i--)
 	{

@@ -6,6 +6,13 @@ export function load()
 {
 	const applet = new DominoShuffling($("#output-canvas"));
 	
+	const resolutionInputElement = $("#resolution-input");
+	
+	const diamondSizeInputElement = $("#diamond-size-input");
+	
+	applet.listenToInputElements([resolutionInputElement, diamondSizeInputElement], run);
+	
+	applet.setInputCaps([resolutionInputElement, diamondSizeInputElement], [3000, 200]);
 	
 	
 	function run()
@@ -22,16 +29,6 @@ export function load()
 	const generateButtonElement = $("#generate-button");
 	
 	generateButtonElement.addEventListener("click", run);
-	
-	
-	
-	const resolutionInputElement = $("#resolution-input");
-	
-	const diamondSizeInputElement = $("#diamond-size-input");
-	
-	applet.listenToInputElements([resolutionInputElement, diamondSizeInputElement], run);
-	
-	applet.setInputCaps([resolutionInputElement, diamondSizeInputElement], [3000, 200]);
 	
 	
 	

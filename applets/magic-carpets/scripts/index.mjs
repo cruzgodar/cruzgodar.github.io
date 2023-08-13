@@ -5,6 +5,34 @@ import { $ } from "/scripts/src/main.mjs";
 export function load()
 {
 	const applet = new MagicCarpet($("#output-canvas"));
+
+	const gridSizeInputElement = $("#grid-size-input");
+	
+	const maxCageSizeInputElement = $("#max-cage-size-input");
+	
+	applet.setInputCaps([gridSizeInputElement], [100]);
+	
+	
+	
+	gridSizeInputElement.addEventListener("keydown", e =>
+	{
+		if (e.keyCode === 13)
+		{
+			run();
+		}
+	});
+	
+	maxCageSizeInputElement.addEventListener("keydown", e =>
+	{
+		if (e.keyCode === 13)
+		{
+			run();
+		}
+	});
+	
+	
+	
+	const uniqueSolutionCheckboxElement = $("#unique-solution-checkbox");
 	
 	
 	
@@ -40,36 +68,6 @@ export function load()
 	{
 		applet.drawSolution(true);
 	});
-	
-	
-	
-	const gridSizeInputElement = $("#grid-size-input");
-	
-	const maxCageSizeInputElement = $("#max-cage-size-input");
-	
-	applet.setInputCaps([gridSizeInputElement], [100]);
-	
-	
-	
-	gridSizeInputElement.addEventListener("keydown", e =>
-	{
-		if (e.keyCode === 13)
-		{
-			run();
-		}
-	});
-	
-	maxCageSizeInputElement.addEventListener("keydown", e =>
-	{
-		if (e.keyCode === 13)
-		{
-			run();
-		}
-	});
-	
-	
-	
-	const uniqueSolutionCheckboxElement = $("#unique-solution-checkbox");
 	
 	
 	

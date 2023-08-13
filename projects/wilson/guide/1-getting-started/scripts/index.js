@@ -1,5 +1,6 @@
 import { showPage } from "/scripts/src/load-page.mjs";
 import { $, $$ } from "/scripts/src/main.mjs";
+import { Wilson } from "/scripts/wilson.mjs";
 
 !function()
 {

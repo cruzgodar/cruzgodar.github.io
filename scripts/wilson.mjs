@@ -1,8 +1,9 @@
+import { addHoverEventWithScale } from "./src/hover-events.mjs";
 import { opacityAnimationTime } from "/scripts/src/animation.mjs";
 import { addTemporaryListener } from "/scripts/src/main.mjs";
 import { metaThemeColorElement } from "/scripts/src/settings.mjs";
 
-class Wilson
+export class Wilson
 {
 	canvas = null;
 	

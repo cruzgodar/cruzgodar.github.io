@@ -1,4 +1,5 @@
-import { Applet } from "/scripts/src/applets.mjs"
+import { Applet } from "/scripts/src/applets.mjs";
+import { Wilson } from "/scripts/wilson.mjs";
 
 export class AbelianSandpile extends Applet
 {

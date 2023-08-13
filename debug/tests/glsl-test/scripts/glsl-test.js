@@ -1,6 +1,7 @@
 import { getGlslBundle, loadGlsl } from "/scripts/src/complex-glsl.mjs";
 import { showPage } from "/scripts/src/load-page.mjs";
 import { $ } from "/scripts/src/main.mjs";
+import { Wilson } from "/scripts/wilson.mjs";
 
 !async function()
 {
