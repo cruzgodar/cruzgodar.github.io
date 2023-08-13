@@ -1110,4 +1110,4 @@ export class VectorField extends Applet
 			this.generateNewField();
 		}
 	}
-	}
+}

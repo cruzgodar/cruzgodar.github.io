@@ -134,6 +134,7 @@ export function loadGlsl()
 	{
 		if (loadedGlsl)
 		{
+			resolve();
 			return;
 		}
 		
