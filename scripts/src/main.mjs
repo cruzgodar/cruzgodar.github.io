@@ -2,6 +2,7 @@ import { bannerOnScroll } from "./banners.mjs";
 import { addHeader } from "./header.mjs";
 import { setUpInteractionListeners } from "./interaction.mjs";
 import { redirect } from "./navigation.mjs";
+import { setUpDarkTheme } from "./settings.mjs";
 
 export let $ = (queryString) => pageElement.querySelector(queryString);
 export let $$ = (queryString) => pageElement.querySelectorAll(queryString);
@@ -117,6 +118,8 @@ const scriptsLoaded =
 
 export async function loadSite(url = pageUrl)
 {
+	setUpDarkTheme();
+	
 	pageElement.classList.add("page");
 	
 	document.body.insertBefore(pageElement, document.body.firstChild);

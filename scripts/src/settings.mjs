@@ -51,24 +51,27 @@ export function setForcedTheme(newForcedTheme)
 
 
 
-window.matchMedia("(prefers-color-scheme: dark)").addListener((e) =>
+export function setUpDarkTheme()
 {
-	if (revertTheme !== -1 || cardIsOpen)
+	window.matchMedia("(prefers-color-scheme: dark)").addListener((e) =>
 	{
-		return;
-	}
-	
-	if ((e.matches && !siteSettings.darkTheme) || (!e.matches && siteSettings.darkTheme))
-	{
-		toggleDarkTheme();
-	}
-});
+		if (revertTheme !== -1 || cardIsOpen)
+		{
+			return;
+		}
+		
+		if ((e.matches && !siteSettings.darkTheme) || (!e.matches && siteSettings.darkTheme))
+		{
+			toggleDarkTheme();
+		}
+	});
 
-if (siteSettings.darkTheme)
-{
-	siteSettings.darkTheme = false;
-	
-	toggleDarkTheme({ noAnimation: true });
+	if (siteSettings.darkTheme)
+	{
+		siteSettings.darkTheme = false;
+		
+		toggleDarkTheme({ noAnimation: true });
+	}
 }
 
 
