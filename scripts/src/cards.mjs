@@ -5,13 +5,17 @@ import { metaThemeColorElement, siteSettings } from "./settings.mjs";
 const container = document.querySelector("#card-container");
 
 const closeButton = document.querySelector("#card-close-button");
-addHoverEvent(closeButton);
+
+if (closeButton)
+{
+	addHoverEvent(closeButton);
+	
+	closeButton.addEventListener("click", hideCard);
+}
 
 let currentCard = null;
 
 
-
-closeButton.addEventListener("click", hideCard);
 
 document.documentElement.addEventListener("keydown", (e) =>
 {

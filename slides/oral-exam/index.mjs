@@ -1,7 +1,6 @@
 import { Lapsa } from "/scripts/lapsa.js";
-import { PlanePartitions } from "/applets/plane-partitions/class.mjs";
-
-console.log("hi!");
+import { PlanePartitions } from "/applets/plane-partitions/scripts/class.mjs";
+import { changeOpacity } from "/scripts/animation.mjs";
 
 const applet = new PlanePartitions(document.body.querySelector("#output-canvas"), document.body.querySelector("#numbers-canvas"), false);
 
@@ -1391,6 +1390,4 @@ const options =
 applet.loadPromise.then(() =>
 {
 	const lapsa = new Lapsa(options);
-	
-	document.body.querySelector("#help-link").addEventListener("click", () => lapsa.jumpToSlide(0));
 });
