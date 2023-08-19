@@ -126,7 +126,7 @@ body
 	position: absolute;
 	
 	left: calc((95vw - 55.625vw) / 2);
-	bottom: 0;
+	top: 0;
 }
 
 

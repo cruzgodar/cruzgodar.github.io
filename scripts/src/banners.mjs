@@ -164,10 +164,7 @@ export function loadBanner(large = false)
 					
 					if (!large)
 					{
-						scrollButtonTimeoutId = setTimeout(() =>
-						{
-							insertScrollButton();
-						}, 2000);
+						setTimeout(() => insertScrollButton(), 2000);
 					}
 					
 					resolve();

@@ -23,6 +23,8 @@ body
 .slide
 {
 	background-color: rgb(0, 0, 0);
+
+	box-shadow: none !important;
 	
 	border: .25vw solid rgb(127, 127, 127) !important;
 }
@@ -120,7 +122,7 @@ body
 	position: absolute;
 	
 	left: calc((95vw - 55.625vw) / 2);
-	bottom: 0;
+	top: 0;
 }
 
 
