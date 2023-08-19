@@ -6,7 +6,7 @@ import { setUpFocusEvents, setUpHoverEvents } from "./hover-events.mjs"
 import { equalizeAppletColumns, onResize } from "./layout.mjs"
 import { $$, pageElement, pageUrl, updatePageElement } from "./main.mjs"
 import { typesetMath } from "./math.mjs"
-import { navigationTransitionType, redirect } from "./navigation.mjs"
+import { navigationTransitionType, redirect, setCurrentlyRedirecting } from "./navigation.mjs"
 import { condenseApplet, revertTheme, siteSettings } from "./settings.mjs"
 import { sitemap } from "./sitemap.mjs"
 
@@ -66,6 +66,8 @@ export async function showPage()
 	await new Promise((resolve, reject) => setTimeout(resolve, 10));
 	
 	await fadeInPage();
+
+	setCurrentlyRedirecting(false);
 }
 
 

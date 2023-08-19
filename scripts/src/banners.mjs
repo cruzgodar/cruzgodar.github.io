@@ -121,6 +121,7 @@ export function loadBanner(large = false)
 		if (!(bannerPages.includes(pageUrl)))
 		{
 			resolve();
+			return;
 		}
 		
 		bannerElement = $("#banner");

@@ -10,6 +10,11 @@ import { sitemap } from "./sitemap.mjs";
 
 let currentlyRedirecting = false;
 
+export function setCurrentlyRedirecting(newCurrentlyRedirecting)
+{
+	currentlyRedirecting = newCurrentlyRedirecting;
+}
+
 let lastPageScroll = 0;
 
 export let navigationTransitionType = 0;
@@ -36,13 +41,14 @@ export async function redirect({
 		window.open(url, "_blank");
 		return;
 	}
+
+	currentlyRedirecting = true;
 	
 	if (cardIsOpen)
 	{
 		await hideCard();
 	}
 	
-	currentlyRedirecting = true;
 	
 	const temp = window.scrollY;
 	
@@ -87,8 +93,6 @@ export async function redirect({
 		data = data.slice(data.indexOf("<body>") + 6, data.indexOf("</body>"));
 			
 		document.body.firstElementChild.insertAdjacentHTML("beforebegin", `<div class="page" style="opacity: 0">${data}</div>`);
-		
-		currentlyRedirecting = false;
 
 		setPageUrl(url);
 
