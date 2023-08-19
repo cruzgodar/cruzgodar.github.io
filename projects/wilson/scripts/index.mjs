@@ -3,13 +3,9 @@ import { $, addTemporaryListener } from "/scripts/src/main.mjs";
 import { redirect } from "/scripts/src/navigation.mjs";
 import { Wilson } from "/scripts/wilson.mjs";
 
-!function()
+export function load()
 {
-	"use strict";
-	
-	
-	
-	let fragShaderSource = `
+	const fragShaderSource = `
 		precision highp float;
 		
 		varying vec2 uv;
@@ -72,7 +68,7 @@ import { Wilson } from "/scripts/wilson.mjs";
 
 
 
-	let options =
+	const options =
 	{
 		renderer: "gpu",
 		
@@ -121,7 +117,7 @@ import { Wilson } from "/scripts/wilson.mjs";
 		pinchCallback: onPinchCanvas
 	};
 	
-	let optionsHidden =
+	const optionsHidden =
 	{
 		renderer: "gpu",
 		
@@ -133,15 +129,15 @@ import { Wilson } from "/scripts/wilson.mjs";
 	
 	
 	
-	let wilson = new Wilson($("#output-canvas"), options);
+	const wilson = new Wilson($("#output-canvas"), options);
 
 	wilson.render.initUniforms(["aspectRatio", "worldCenterX", "worldCenterY", "worldSize", "a", "b", "brightnessScale"]);
 
-	let draggable = wilson.draggables.add(0, 1);
+	const draggable = wilson.draggables.add(0, 1);
 	
 	
 	
-	let wilsonHidden = new Wilson($("#hidden-canvas"), optionsHidden);
+	const wilsonHidden = new Wilson($("#hidden-canvas"), optionsHidden);
 	
 	wilsonHidden.render.initUniforms(["aspectRatio", "worldCenterX", "worldCenterY", "worldSize", "a", "b", "brightnessScale"]);
 	
@@ -160,7 +156,7 @@ import { Wilson } from "/scripts/wilson.mjs";
 	let b = 1;
 	
 	let resolution = 1000;
-	let resolutionHidden = 100;
+	const resolutionHidden = 100;
 	
 	let fixedPointX = 0;
 	let fixedPointY = 0;
@@ -185,7 +181,7 @@ import { Wilson } from "/scripts/wilson.mjs";
 	
 	
 
-	let resolutionInputElement = $("#resolution-input");
+	const resolutionInputElement = $("#resolution-input");
 	
 	resolutionInputElement.addEventListener("input", () =>
 	{
@@ -315,7 +311,7 @@ import { Wilson } from "/scripts/wilson.mjs";
 	{
 		if (aspectRatio >= 1)
 		{
-			let newWorldCenter = wilson.input.getZoomedWorldCenter(fixedPointX, fixedPointY, 4 * Math.pow(2, zoomLevel) * aspectRatio, 4 * Math.pow(2, zoomLevel));
+			const newWorldCenter = wilson.input.getZoomedWorldCenter(fixedPointX, fixedPointY, 4 * Math.pow(2, zoomLevel) * aspectRatio, 4 * Math.pow(2, zoomLevel));
 			
 			wilson.worldWidth = 4 * Math.pow(2, zoomLevel) * aspectRatio;
 			wilson.worldHeight = 4 * Math.pow(2, zoomLevel);
@@ -326,7 +322,7 @@ import { Wilson } from "/scripts/wilson.mjs";
 		
 		else
 		{
-			let newWorldCenter = wilson.input.getZoomedWorldCenter(fixedPointX, fixedPointY, 4 * Math.pow(2, zoomLevel), 4 * Math.pow(2, zoomLevel) / aspectRatio);
+			const newWorldCenter = wilson.input.getZoomedWorldCenter(fixedPointX, fixedPointY, 4 * Math.pow(2, zoomLevel), 4 * Math.pow(2, zoomLevel) / aspectRatio);
 			
 			wilson.worldWidth = 4 * Math.pow(2, zoomLevel);
 			wilson.worldHeight = 4 * Math.pow(2, zoomLevel) / aspectRatio;
@@ -344,7 +340,7 @@ import { Wilson } from "/scripts/wilson.mjs";
 
 	function drawJuliaSet(timestamp)
 	{
-		let timeElapsed = timestamp - lastTimestamp;
+		const timeElapsed = timestamp - lastTimestamp;
 		
 		lastTimestamp = timestamp;
 		
@@ -370,9 +366,9 @@ import { Wilson } from "/scripts/wilson.mjs";
 		
 		
 		
-		let pixelData = wilsonHidden.render.getPixelData();
+		const pixelData = wilsonHidden.render.getPixelData();
 		
-		let brightnesses = new Array(resolutionHidden * resolutionHidden);
+		const brightnesses = new Array(resolutionHidden * resolutionHidden);
 		
 		for (let i = 0; i < resolutionHidden * resolutionHidden; i++)
 		{
@@ -539,4 +535,4 @@ import { Wilson } from "/scripts/wilson.mjs";
 	
 	
 	showPage();
-	}()
+}

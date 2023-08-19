@@ -1,0 +1,60 @@
+import{showPage}from"/scripts/src/load-page.min.mjs";import{$,addTemporaryListener}from"/scripts/src/main.min.mjs";import{redirect}from"/scripts/src/navigation.min.mjs";import{Wilson}from"/scripts/wilson.min.mjs";function load(){var e=`
+		precision highp float;
+		
+		varying vec2 uv;
+		
+		uniform float aspectRatio;
+		
+		uniform float worldCenterX;
+		uniform float worldCenterY;
+		uniform float worldSize;
+		
+		uniform float a;
+		uniform float b;
+		uniform float brightnessScale;
+		
+		
+		
+		void main(void)
+		{
+			vec2 z;
+			
+			if (aspectRatio >= 1.0)
+			{
+				z = vec2(uv.x * aspectRatio * worldSize + worldCenterX, uv.y * worldSize + worldCenterY);
+			}
+			
+			else
+			{
+				z = vec2(uv.x * worldSize + worldCenterX, uv.y / aspectRatio * worldSize + worldCenterY);
+			}
+			
+			vec3 color = normalize(vec3(abs(z.x + z.y) / 2.0, abs(z.x) / 2.0, abs(z.y) / 2.0) + .1 / length(z) * vec3(1.0, 1.0, 1.0));
+			float brightness = exp(-length(z));
+			
+			
+			
+			vec2 c = vec2(a, b);
+			
+			for (int iteration = 0; iteration < 100; iteration++)
+			{
+				if (iteration == 99)
+				{
+					gl_FragColor = vec4(0.0, 0.0, 0.0, 1.0);
+					return;
+				}
+				
+				if (length(z) >= 10.0)
+				{
+					break;
+				}
+				
+				z = vec2(z.x * z.x - z.y * z.y, 2.0 * z.x * z.y) + c;
+				
+				brightness += exp(-length(z));
+			}
+			
+			
+			gl_FragColor = vec4(brightness / brightnessScale * color, 1.0);
+		}
+	`,r={renderer:"gpu",shader:e,canvasWidth:1e3,canvasHeight:1e3,worldWidth:4,worldHeight:4,worldCenterX:0,worldCenterY:0,useDraggables:!0,draggablesMousemoveCallback:x,draggablesTouchmoveCallback:x,useFullscreen:!0,trueFullscreen:!0,useFullscreenButton:!0,enterFullscreenButtonIconPath:"/graphics/general-icons/enter-fullscreen.png",exitFullscreenButtonIconPath:"/graphics/general-icons/exit-fullscreen.png",switchFullscreenCallback:L,mousedownCallback:F,touchstartCallback:F,mousedragCallback:X,touchmoveCallback:X,mouseupCallback:Y,touchendCallback:Y,wheelCallback:function(e,r,t,o){u=e,w=r,Math.abs(t/100)<.3?(l+=t/100,l=Math.min(l,1)):C+=.05*Math.sign(t);y()},pinchCallback:function(e,r,t,o){g=1<=a?(l-=t/i.worldWidth*10,-t/i.worldWidth*10):(l-=t/i.worldHeight*10,-t/i.worldHeight*10);l=Math.min(l,1),u=e,w=r,y()}},e={renderer:"gpu",shader:e,canvasWidth:100,canvasHeight:100};const i=new Wilson($("#output-canvas"),r);i.render.initUniforms(["aspectRatio","worldCenterX","worldCenterY","worldSize","a","b","brightnessScale"]);i.draggables.add(0,1);const n=new Wilson($("#hidden-canvas"),e);n.render.initUniforms(["aspectRatio","worldCenterX","worldCenterY","worldSize","a","b","brightnessScale"]),i.canvas.parentNode.parentNode.style.setProperty("margin-bottom",0,"important"),n.canvas.parentNode.parentNode.style.setProperty("margin-top",0,"important");let a=1,l=0,s=0,d=1,t=1e3;const c=100;let u=0,w=0,h=0,m=0,g=0,f=0,p=0,C=0;const b=.96,o=.005,v=5e-4,M=.93,z=.01,k=.001;let W=-1;const S=$("#resolution-input");function x(e,r,t,o){s=r,d=t,window.requestAnimationFrame(H)}function F(e,r,t){f=0,p=0,C=0,h=0,m=0,g=0}function X(e,r,t,o,n){i.worldCenterX-=t,i.worldCenterY-=o,h=-t,m=-o,i.worldCenterX=Math.min(Math.max(i.worldCenterX,-2),2),i.worldCenterY=Math.min(Math.max(i.worldCenterY,-2),2),window.requestAnimationFrame(H),i.draggables.recalculateLocations()}function Y(e,r,t){Math.sqrt(h*h+m*m)>=o*Math.min(i.worldWidth,i.worldHeight)&&(f=h,p=m),Math.abs(g)>=z&&(C=g),window.requestAnimationFrame(H)}function y(){var e;1<=a?(e=i.input.getZoomedWorldCenter(u,w,4*Math.pow(2,l)*a,4*Math.pow(2,l)),i.worldWidth=4*Math.pow(2,l)*a,i.worldHeight=4*Math.pow(2,l),i.worldCenterX=e[0],i.worldCenterY=e[1]):(e=i.input.getZoomedWorldCenter(u,w,4*Math.pow(2,l),4*Math.pow(2,l)/a),i.worldWidth=4*Math.pow(2,l),i.worldHeight=4*Math.pow(2,l)/a,i.worldCenterX=e[0],i.worldCenterY=e[1]),window.requestAnimationFrame(H),i.draggables.recalculateLocations()}function H(e){var r=e-W;if(W=e,0!=r){n.gl.uniform1f(n.uniforms.worldCenterX,i.worldCenterX),n.gl.uniform1f(n.uniforms.worldCenterY,i.worldCenterY),n.gl.uniform1f(n.uniforms.worldSize,Math.min(i.worldHeight,i.worldWidth)/2),n.gl.uniform1f(n.uniforms.a,s),n.gl.uniform1f(n.uniforms.b,d),n.gl.uniform1f(n.uniforms.brightnessScale,20),n.render.drawFrame();var t=n.render.getPixelData(),o=new Array(c*c);for(let e=0;e<c*c;e++)o[e]=t[4*e]+t[4*e+1]+t[4*e+2];o.sort((e,r)=>e-r);e=o[Math.floor(c*c*.98)]/255*18,e=Math.max(e,.1);i.gl.uniform1f(i.uniforms.aspectRatio,a),i.gl.uniform1f(i.uniforms.worldCenterX,i.worldCenterX),i.gl.uniform1f(i.uniforms.worldCenterY,i.worldCenterY),i.gl.uniform1f(i.uniforms.worldSize,Math.min(i.worldHeight,i.worldWidth)/2),i.gl.uniform1f(i.uniforms.a,s),i.gl.uniform1f(i.uniforms.b,d),i.gl.uniform1f(i.uniforms.brightnessScale,e),i.render.drawFrame(),0===f&&0===p&&0===C||(i.worldCenterX+=f,i.worldCenterY+=p,i.worldCenterX=Math.min(Math.max(i.worldCenterX,-2),2),i.worldCenterY=Math.min(Math.max(i.worldCenterY,-2),2),f*=b,p*=b,Math.sqrt(f*f+p*p)<v*Math.min(i.worldWidth,i.worldHeight)&&(f=0,p=0),l+=C,l=Math.min(l,1),y(u,w),C*=M,Math.abs(C)<k&&(C=0),window.requestAnimationFrame(H),i.draggables.recalculateLocations())}}function L(){i.fullscreen.currentlyFullscreen?1<=(a=window.innerWidth/window.innerHeight)?(i.changeCanvasSize(t,Math.floor(t/a)),i.worldWidth=4*Math.pow(2,l)*a,i.worldHeight=4*Math.pow(2,l)):(i.changeCanvasSize(Math.floor(t*a),t),i.worldWidth=4*Math.pow(2,l),i.worldHeight=4*Math.pow(2,l)/a):(a=1,i.changeCanvasSize(t,t),i.worldWidth=4*Math.pow(2,l),i.worldHeight=4*Math.pow(2,l)),window.requestAnimationFrame(H)}S.addEventListener("input",()=>{t=parseInt(S.value||1e3),i.changeCanvasSize(t,t)}),i.gl.uniform1f(i.uniforms.aspectRatio,1),n.gl.uniform1f(n.uniforms.aspectRatio,1),window.requestAnimationFrame(H),addTemporaryListener({object:window,event:"resize",callback:L}),$("#part-1-button").addEventListener("click",()=>{redirect({url:"/projects/wilson/guide/1-getting-started/"})}),$("#part-2-button").addEventListener("click",()=>{redirect({url:"/projects/wilson/guide/2-draggables/"})}),$("#part-3-button").addEventListener("click",()=>{redirect({url:"/projects/wilson/guide/3-parallelizing/"})}),$("#part-4-button").addEventListener("click",()=>{redirect({url:"/projects/wilson/guide/4-hidden-canvases/"})}),$("#part-5-button").addEventListener("click",()=>{redirect({url:"/projects/wilson/guide/5-fullscreen/"})}),$("#part-6-button").addEventListener("click",()=>{redirect({url:"/projects/wilson/guide/6-interactivity/"})}),$("#docs-button").addEventListener("click",()=>{redirect({url:"/projects/wilson/docs/"})}),$("#download-button").addEventListener("click",()=>{redirect({url:"https://github.com/cruzgodar/wilson/releases",inNewTab:!0})}),showPage()}export{load};

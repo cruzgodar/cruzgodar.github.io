@@ -33,15 +33,6 @@
 	z-index: 3;
 }
 
-#container .output-canvas
-{
-	position: absolute;
-	
-	margin-left: -25vmin;
-	
-	z-index: 1;
-}
-
 #container .wilson-draggables-container
 {
 	z-index: 5;
