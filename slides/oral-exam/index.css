@@ -43,6 +43,8 @@ body
 
 .slide p dfn
 {
+	font-weight: bold;
+	font-style: normal;
 	color: rgb(224, 224, 224) !important;
 }
 

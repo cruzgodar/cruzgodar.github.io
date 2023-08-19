@@ -9,7 +9,7 @@ export function clearDesmosGraphs()
 	desmosGraphs = {};
 }
 
-let getDesmosData = () => {{}};
+let getDesmosData = () => {return {}};
 
 export function setGetDesmosData(newGetDesmosData)
 {

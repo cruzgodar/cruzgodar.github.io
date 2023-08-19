@@ -1,4 +1,4 @@
-import { Lapsa } from "/scripts/lapsa.js";
+import { Lapsa } from "../../scripts/lapsa.mjs";
 
 const options =
 {

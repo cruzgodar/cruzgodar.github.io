@@ -1,6 +1,7 @@
 import { bannerOnScroll } from "./banners.mjs";
 import { addHeader } from "./header.mjs";
 import { setUpInteractionListeners } from "./interaction.mjs";
+import { setUpOnResize } from "./layout.mjs";
 import { redirect } from "./navigation.mjs";
 import { setUpDarkTheme } from "./settings.mjs";
 
@@ -127,6 +128,8 @@ export async function loadSite(url = pageUrl)
 	window.addEventListener("scroll", () => bannerOnScroll(0));
 	
 	setUpInteractionListeners();
+
+	setUpOnResize();
 	
 
 

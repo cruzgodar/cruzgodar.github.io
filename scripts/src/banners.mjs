@@ -71,8 +71,6 @@ export function setBannerMaxScroll(newBannerMaxScroll)
 let bannerFilename = "";
 let bannerFilepath = "";
 
-let scrollButtonTimeoutId;
-
 let lastScrollTimestamp = -1;
 
 export const bannerPages =

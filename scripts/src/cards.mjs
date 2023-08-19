@@ -4,6 +4,8 @@ import { metaThemeColorElement, siteSettings } from "./settings.mjs";
 
 const container = document.querySelector("#card-container");
 
+let currentCard;
+
 const closeButton = document.querySelector("#card-close-button");
 
 if (closeButton)
@@ -11,19 +13,15 @@ if (closeButton)
 	addHoverEvent(closeButton);
 	
 	closeButton.addEventListener("click", hideCard);
-}
 
-let currentCard = null;
-
-
-
-document.documentElement.addEventListener("keydown", (e) =>
-{
-	if (e.keyCode === 27 && cardIsOpen)
+	document.documentElement.addEventListener("keydown", (e) =>
 	{
-		hideCard();
-	}
-});
+		if (e.keyCode === 27 && cardIsOpen)
+		{
+			hideCard();
+		}
+	});
+}
 
 	
 

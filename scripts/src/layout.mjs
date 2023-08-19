@@ -62,7 +62,10 @@ export function onResize()
 	bannerOnScroll(0);
 }
 
-window.addEventListener("resize", onResize);
+export function setUpOnResize()
+{
+	window.addEventListener("resize", onResize);
+}
 
 
 
