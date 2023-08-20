@@ -39,6 +39,9 @@
 	display: flex;
 	align-items: center;
 	justify-content: center;
+	position: absolute;
+	width: 100%;
+	z-index: 20;
 }
 
 
@@ -58,13 +61,9 @@
 	padding: 10px;
 	
 	margin-bottom: -25vh;
-	
-	outline: none;
-}
 
-#scroll-button:not(:hover):focus
-{
-	transform: scale(1.1);
+	cursor: default;
+	
 	outline: none;
 }
 

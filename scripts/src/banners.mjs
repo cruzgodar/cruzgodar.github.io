@@ -1,7 +1,6 @@
-import { changeOpacity } from "./animation.mjs";
-import { addHoverEventWithScale } from "./hover-events.mjs";
-import { $, $$, addStyle, pageElement, pageScroll, pageUrl, setPageScroll } from "./main.mjs";
-import { opacityAnimationTime } from "/scripts/src/animation.mjs";
+import { changeOpacity, opacityAnimationTime } from "./animation.mjs";
+import { $, addStyle, pageElement, pageScroll, pageUrl, setPageScroll } from "./main.mjs";
+import anime from "/scripts/anime.js";
 
 export let bannerElement = null;
 
@@ -92,10 +91,11 @@ export const multibannerPages =
 	}
 };
 
-//Filled in with pages when banners are preloaded so the console isn't spammed and caches aren't needlessly checked.
-const pagesAlreadyFetched = [];
+let scrollButtonElement;
 
-let scrollButtonExists = false;
+export let scrollButtonOpacity = 0;
+
+export let scrollButtonExists = false;
 
 export function setScrollButtonExists(newScrollButtonExists)
 {
@@ -104,94 +104,75 @@ export function setScrollButtonExists(newScrollButtonExists)
 
 
 
-let scrollButtonDoneLoading = false;
-
-export function setScrollButtonDoneLoading(newScrollButtonDoneLoading)
+export async function loadBanner(large = false)
 {
-	scrollButtonDoneLoading = newScrollButtonDoneLoading;
-}
-
-
-
-export function loadBanner(large = false)
-{
-	return new Promise((resolve, reject) =>
+	//Only do banner things if the banner things are in the standard places.
+	if (!(bannerPages.includes(pageUrl)))
 	{
-		//Only do banner things if the banner things are in the standard places.
-		if (!(bannerPages.includes(pageUrl)))
+		return;
+	}
+	
+	bannerElement = $("#banner");
+	contentElement = $("#content");
+	
+	bannerFilename = `${large ? "large" : "small"}.webp`;
+	
+	bannerFilepath = pageUrl + "banners/";
+	
+	if (pageUrl in multibannerPages)
+	{
+		bannerFilepath += multibannerPages[pageUrl].currentBanner + "/";
+	}
+	
+	addStyle(`
+		#banner-small
 		{
-			resolve();
-			return;
+			background: url(${bannerFilepath}small.webp) no-repeat center center;
+			background-size: cover;
 		}
 		
-		bannerElement = $("#banner");
-		contentElement = $("#content");
-		
-		bannerFilename = `${large ? "large" : "small"}.webp`;
-		
-		bannerFilepath = pageUrl + "banners/";
-		
-		if (multibannerPages.hasOwnProperty(pageUrl))
+		#banner-large
 		{
-			bannerFilepath += multibannerPages[pageUrl].currentBanner + "/";
+			background: url(${bannerFilepath}large.webp) no-repeat center center;
+			background-size: cover;
 		}
-		
-		addStyle(`
-			#banner-small
-			{
-				background: url(${bannerFilepath}small.webp) no-repeat center center;
-				background-size: cover;
-			}
-			
-			#banner-large
-			{
-				background: url(${bannerFilepath}large.webp) no-repeat center center;
-				background-size: cover;
-			}
-		`);
-		
-		
-		
-		//Fetch the banner file. If that works, great! Set the background and fade in the page. If not, that means the html was cached but the banner was not (this is common on the homepage). In that case, we need to abort, so we remove the banner entirely.
-		fetch(bannerFilepath + bannerFilename)
-			
-			.then((response) =>
-			{
-				const img = new Image();
-				
-				img.onload = () =>
-				{
-					img.remove();
-					
-					if (!large)
-					{
-						setTimeout(() => insertScrollButton(), 2000);
-					}
-					
-					resolve();
-				};
-				
-				img.style.opacity = 0;
-				img.style.position = "fixed";
-				img.style.top = "-100vh";
-				img.style.left = "-100vw";
-				
-				pageElement.appendChild(img);
-				
-				setTimeout(() =>
-				{
-					img.src = bannerFilepath + bannerFilename;
-				}, 20);
-			})
+	`);
+	
+	
+	
+	//Fetch the banner file. If that works, great! Set the background and fade in the page. If not, that means the html was cached but the banner was not (this is common on the homepage). In that case, we need to abort, so we remove the banner entirely.
+	await fetch(bannerFilepath + bannerFilename);
+	
+	const img = new Image();
 
-			.catch((error) =>
+	const promise = new Promise(resolve =>
+	{
+		img.onload = () =>
+		{
+			img.remove();
+			
+			if (!large)
 			{
-				$("#banner").remove();
-				$("#banner-cover").remove();
-				
-				resolve();
-			});
+				setTimeout(() => insertScrollButton(), 2000);
+			}
+
+			resolve();
+		};
 	});
+	
+	img.style.opacity = 0;
+	img.style.position = "fixed";
+	img.style.top = "-100vh";
+	img.style.left = "-100vw";
+	
+	pageElement.appendChild(img);
+	
+	setTimeout(() =>
+	{
+		img.src = bannerFilepath + bannerFilename;
+	}, 20);
+
+	await promise;
 }
 
 
@@ -202,13 +183,11 @@ export function setUpBanner()
 	if (bannerPages.includes(pageUrl))
 	{
 		loadBanner(true)
-		
-		.then(() =>
-		{
-			changeOpacity($("#banner-small"), 0, 700)
-			
-			.then(() => $("#banner-small").remove());
-		});
+			.then(() =>
+			{
+				changeOpacity($("#banner-small"), 0, 700)
+					.then(() => $("#banner-small").remove());
+			});
 	}
 	
 	else
@@ -230,7 +209,6 @@ export function bannerOnScroll(scrollPositionOverride)
 	{
 		setPageScroll(scrollPositionOverride);
 		bannerDoneLoading = false;
-		scrollButtonDoneLoading = false;
 	}
 	
 	window.requestAnimationFrame(scrollAnimationFrame);
@@ -252,17 +230,17 @@ function scrollAnimationFrame(timestamp)
 
 function scrollHandler()
 {
+	if (!bannerElement || !contentElement)
+	{
+		return;
+	}
+
 	if (pageScroll <= bannerMaxScroll)
 	{
 		bannerOpacity = Math.min(Math.max(1 - pageScroll / bannerMaxScroll, 0), 1);
 		
-		try
-		{
-			bannerElement.style.opacity = bannerOpacity;
-			contentElement.style.opacity = 1 - bannerOpacity;
-		}
-		
-		catch(ex) {}
+		bannerElement.style.opacity = bannerOpacity;
+		contentElement.style.opacity = 1 - bannerOpacity;
 		
 		if (bannerOpacity === 0)
 		{
@@ -279,98 +257,27 @@ function scrollHandler()
 	{
 		bannerOpacity = 0;
 		
-		try 
-		{
-			bannerElement.style.opacity = 0;
-			contentElement.style.opacity = 1;
-		}
-		
-		catch(ex) {}
+		bannerElement.style.opacity = 0;
+		contentElement.style.opacity = 1;
 		
 		bannerDoneLoading = true;
 	}
 	
+
 	
+	scrollButtonOpacity = Math.min(Math.max(1 - pageScroll / (bannerMaxScroll / 2.5), 0), 1);
 	
-	if (pageScroll <= bannerMaxScroll / 2.5)
+	if (scrollButtonExists)
 	{
-		const scrollButtonOpacity = Math.min(Math.max(1 - pageScroll / (bannerMaxScroll / 2.5), 0), 1);
-		
-		if (scrollButtonExists)
-		{
-			try {$("#scroll-button").style.opacity = scrollButtonOpacity;}
-			catch(ex) {}
-		}
-		
-		
-		
-		try
-		{
-			$("#cruz-text").parentNode.style.opacity = scrollButtonOpacity;
-			$("#godar-text").parentNode.style.opacity = scrollButtonOpacity;
-		}
-		
-		catch(ex) {}
-		
-		
-		
+		scrollButtonElement.style.opacity = scrollButtonOpacity;
+
 		if (scrollButtonOpacity === 0)
 		{
-			scrollButtonDoneLoading = true;
-		}
-		
-		else
-		{
-			scrollButtonDoneLoading = false;
+			scrollButtonExists = false;
+
+			scrollButtonElement.remove();
 		}
 	}
-	
-	else if (!scrollButtonDoneLoading)
-	{
-		try
-		{
-			$("#cruz-text").parentNode.style.opacity = 0;
-			$("#godar-text").parentNode.style.opacity = 0;
-		}
-		
-		catch(ex) {}
-		
-		try {$("#scroll-button").style.opacity = 0}
-		catch(ex) {}
-		
-		scrollButtonDoneLoading = true;
-	}
-	
-	else
-	{
-		try {document.querySelector("#scroll-button").remove();}
-		catch(ex) {}
-	}
-}
-
-
-
-//For every banner page linked to by the current page, this fetches that banner so that the waiting time between pages is minimized.
-export function fetchOtherPageBannersInBackground()
-{
-	$$("a").forEach(link =>
-	{
-		const href = link.getAttribute("href");
-		
-		if (bannerPages.includes(href) && !pagesAlreadyFetched.includes(href))
-		{
-			pagesAlreadyFetched.push(href);
-			
-			let bannerFilepath = href.slice(0, href.lastIndexOf("/") + 1) + "banners/";
-			
-			if (multibannerPages.hasOwnProperty(href))
-			{
-				bannerFilepath += (multibannerPages[href]["currentBanner"] + 1) + "/";
-			}
-			
-			bannerFilepath += `small.webp`;
-		}
-	});
 }
 
 
@@ -381,49 +288,51 @@ export function insertScrollButton()
 	{
 		return;
 	}
+
+	const bannerCoverElement = document.querySelector("#banner-cover");
 	
-	const opacity = Math.min(Math.max(1 - pageScroll / (bannerMaxScroll / 2.5), 0), 1);
-	
-	//Gotta have a try block here in case the user loads a banner page then navigates to a non-banner page within 3 seconds.
-	try
+	if (!bannerCoverElement)
 	{
-		document.querySelector("#banner-cover").insertAdjacentHTML("beforebegin", `
-			<div id="new-banner-cover">
-				<input type="image" id="scroll-button" src="/graphics/general-icons/chevron-down.png" style="opacity: 0" alt="Scroll down">
-			</div>
-		`);
-		
-		setTimeout(() =>
-		{
-			$("#new-banner-cover").style.opacity = 0;
-			$("#new-banner-cover").style.transform = "translateY(-100px)";
-			
-			anime({
-				targets: $("#new-banner-cover"),
-				opacity: 1,
-				translateY: 0,
-				duration: opacityAnimationTime * 4,
-				easing: "easeOutCubic"
-			});
-			
-			anime({
-				targets: $("#scroll-button"),
-				opacity,
-				translateY: 0,
-				duration: opacityAnimationTime * 4,
-				easing: "easeOutCubic"
-			});
-			
-			
-			
-			setTimeout(() => scrollButtonExists = true, opacityAnimationTime * 4);
-			
-			try {addHoverEventWithScale(document.querySelector("#scroll-button"), 1.1);}
-			catch(ex) {}
-		}, 100);
-		
-		document.querySelector("#banner-cover").remove();
+		return;
 	}
+
+	bannerCoverElement.insertAdjacentHTML("beforebegin", `
+		<div id="new-banner-cover">
+			<input type="image" id="scroll-button" src="/graphics/general-icons/chevron-down.png" style="opacity: 0" alt="Scroll down">
+		</div>
+	`);
 	
-	catch(ex) {}
+	setTimeout(() =>
+	{
+		const newBannerCoverElement = $("#new-banner-cover");
+
+		if (!newBannerCoverElement)
+		{
+			return;
+		}
+		
+		scrollButtonElement = $("#scroll-button");
+
+		newBannerCoverElement.style.opacity = 0;
+		newBannerCoverElement.style.transform = "translateY(-100px)";
+		
+		anime({
+			targets: newBannerCoverElement,
+			opacity: 1,
+			translateY: 0,
+			duration: opacityAnimationTime * 4,
+			easing: "easeOutCubic"
+		});
+		
+		anime({
+			targets: scrollButtonElement,
+			opacity: scrollButtonOpacity,
+			duration: opacityAnimationTime * 4,
+			easing: "easeOutCubic"
+		});
+		
+		setTimeout(() => scrollButtonExists = true, opacityAnimationTime * 4);
+	}, 100);
+	
+	document.querySelector("#banner-cover").remove();
 }

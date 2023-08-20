@@ -11,7 +11,6 @@ const elementSelectors = `
 const elementSelectorsWithScale =
 [
 	["#logo img", 1.05],
-	["#scroll-button", 1.1],
 	[".text-button:not(.dropdown)", 1.075],
 	["select", 1.075],
 	[".checkbox-container", 1.1],
@@ -88,7 +87,7 @@ export function addHoverEvent(element)
 	});
 }
 
-export function addHoverEventWithScale(element, scale, forceJs = false)
+export function addHoverEventWithScale(element, scale)
 {
 	element.addEventListener("mouseenter", () =>
 	{

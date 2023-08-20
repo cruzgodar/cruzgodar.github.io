@@ -1,6 +1,6 @@
 import { fadeDownOut, fadeLeftOut, fadeOut, fadeRightOut, fadeUpOut } from "./animation.mjs";
 import { Applet } from "./applets.mjs";
-import { bannerElement, bannerOnScroll, loadBanner } from "./banners.mjs";
+import { bannerElement, bannerOnScroll, loadBanner, setScrollButtonExists } from "./banners.mjs";
 import { cardIsOpen, hideCard } from "./cards.mjs";
 import { clearDesmosGraphs, desmosGraphs } from "./desmos.mjs";
 import { loadPage } from "./load-page.mjs";
@@ -285,7 +285,7 @@ function unloadPage()
 		catch(ex) {}
 	}
 
-	clearTemporaryWorkers()
+	clearTemporaryWorkers();
 	
 	
 	
@@ -305,6 +305,10 @@ function unloadPage()
 	}
 	
 	catch(ex) {}
+
+
+
+	setScrollButtonExists(false);
 	
 	
 	pageElement.remove();
