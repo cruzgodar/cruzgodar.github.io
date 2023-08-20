@@ -959,7 +959,7 @@ export class KaleidoscopicIFSFractal extends Applet
 	
 	handleKeydownEvent(e)
 	{
-		if (document.activeElement.tagName === "INPUT" || !(e.keyCode === 87 || e.keyCode === 83 || e.keyCode === 68 || e.keyCode === 65))
+		if (document.activeElement.tagName === "INPUT" || !(e.key === "w" || e.key === "s" || e.key === "d" || e.key === "a"))
 		{
 			return;
 		}
@@ -972,25 +972,25 @@ export class KaleidoscopicIFSFractal extends Applet
 		
 		
 		//W
-		if (e.keyCode === 87)
+		if (e.key === "w")
 		{
 			this.movingForwardKeyboard = true;
 		}
 		
 		//S
-		else if (e.keyCode === 83)
+		else if (e.key === "s")
 		{
 			this.movingBackwardKeyboard = true;
 		}
 		
 		//D
-		if (e.keyCode === 68)
+		if (e.key === "d")
 		{
 			this.movingRightKeyboard = true;
 		}
 		
 		//A
-		else if (e.keyCode === 65)
+		else if (e.key === "a")
 		{
 			this.movingLeftKeyboard = true;
 		}
@@ -1004,7 +1004,7 @@ export class KaleidoscopicIFSFractal extends Applet
 	
 	handleKeyupEvent(e)
 	{
-		if (document.activeElement.tagName === "INPUT" || !(e.keyCode === 87 || e.keyCode === 83 || e.keyCode === 68 || e.keyCode === 65))
+		if (document.activeElement.tagName === "INPUT" || !(e.key === "w" || e.key === "s" || e.key === "d" || e.key === "a"))
 		{
 			return;
 		}
@@ -1025,25 +1025,25 @@ export class KaleidoscopicIFSFractal extends Applet
 		
 		
 		//W
-		if (e.keyCode === 87)
+		if (e.key === "w")
 		{
 			this.movingForwardKeyboard = false;
 		}
 		
 		//S
-		else if (e.keyCode === 83)
+		else if (e.key === "s")
 		{
 			this.movingBackwardKeyboard = false;
 		}
 		
 		//D
-		if (e.keyCode === 68)
+		if (e.key === "d")
 		{
 			this.movingRightKeyboard = false;
 		}
 		
 		//A
-		else if (e.keyCode === 65)
+		else if (e.key === "a")
 		{
 			this.movingLeftKeyboard = false;
 		}

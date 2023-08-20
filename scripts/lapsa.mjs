@@ -1281,12 +1281,12 @@ export class Lapsa
 	
 	_handleKeydownEvent(e)
 	{
-		if (e.keyCode === 39 || e.keyCode === 40 || e.keyCode === 32 || e.keyCode === 13)
+		if (e.key === "ArrowRight" || e.key === "ArrowDown" || e.key === " " || e.key === "Enter")
 		{
 			this.nextSlide();
 		}
 		
-		else if (e.keyCode === 37 || e.keyCode === 38)
+		else if (e.key === "ArrowLeft" || e.key === "ArrowUp")
 		{
 			this.previousSlide();
 		}

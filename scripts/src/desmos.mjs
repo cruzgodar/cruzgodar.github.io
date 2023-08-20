@@ -9,7 +9,7 @@ export function clearDesmosGraphs()
 	desmosGraphs = {};
 }
 
-let getDesmosData = () => {return {}};
+let getDesmosData = () => { return {}; };
 
 export function setGetDesmosData(newGetDesmosData)
 {
@@ -24,8 +24,10 @@ export async function createDesmosGraphs()
 	
 	for (let key in desmosGraphs)
 	{
-		try {desmosGraphs[key].destroy()}
-		catch(ex) {}
+		if (desmosGraphs[key]?.destroy)
+		{
+			desmosGraphs[key].destroy();
+		}
 	}
 	
 	desmosGraphs = {};
@@ -75,6 +77,7 @@ export async function createDesmosGraphs()
 		
 		
 		
+		// eslint-disable-next-line no-undef
 		desmosGraphs[element.id] = Desmos.GraphingCalculator(element, options);
 		
 		desmosGraphs[element.id].setMathBounds(data[element.id].bounds);

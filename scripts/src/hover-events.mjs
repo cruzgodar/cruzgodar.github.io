@@ -2,6 +2,7 @@ import { buttonAnimationTime, changeScale } from "./animation.mjs";
 import { currentlyTouchDevice } from "./interaction.mjs";
 import { $$ } from "./main.mjs";
 import { showTex } from "./math.mjs";
+import anime from "/scripts/anime.js";
 
 const elementSelectors = `
 	a

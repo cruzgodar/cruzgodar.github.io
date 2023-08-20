@@ -16,7 +16,7 @@ export function load()
 	
 	gridSizeInputElement.addEventListener("keydown", e =>
 	{
-		if (e.keyCode === 13)
+		if (e.key === "Enter")
 		{
 			run();
 		}
@@ -24,7 +24,7 @@ export function load()
 	
 	maxCageSizeInputElement.addEventListener("keydown", e =>
 	{
-		if (e.keyCode === 13)
+		if (e.key === "Enter")
 		{
 			run();
 		}

@@ -17,7 +17,7 @@ if (closeButton)
 
 	document.documentElement.addEventListener("keydown", (e) =>
 	{
-		if (e.keyCode === 27 && cardIsOpen)
+		if (e.key === "Escape" && cardIsOpen)
 		{
 			hideCard();
 		}

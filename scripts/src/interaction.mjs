@@ -5,9 +5,6 @@ export let currentlyTouchDevice = (("ontouchstart" in window) || (navigator.maxT
 
 let lastMousemoveEvent = 0;
 
-let lastTouchX = 0;
-let lastTouchY = 0;
-
 export function setUpInteractionListeners()
 {
 	const boundFunction = handleTouchEvent.bind(this);
@@ -36,7 +33,7 @@ export function setUpInteractionListeners()
 	document.documentElement.addEventListener("keydown", (e) =>
 	{
 		//Click the focused element when the enter key is pressed.
-		if (e.keyCode === 13)
+		if (e.key === "Enter")
 		{
 			if (document.activeElement.classList.contains("click-on-child"))
 			{
@@ -59,22 +56,13 @@ export function setUpInteractionListeners()
 		{
 			document.activeElement.blur();
 		}
-		
-		else if (document.activeElement.tagName !== "SELECT")
-		{
-			try {element.previousElementSibling.classList.remove("hover");}
-			catch(ex) {}
-		}
 	});
 }
 
 
 
-function handleTouchEvent(e)
+function handleTouchEvent()
 {
-	lastTouchX = e.touches[0].clientX;
-	lastTouchY = e.touches[0].clientY;
-	
 	if (document.activeElement.tagName !== "INPUT" && document.activeElement.tagName !== "TEXTAREA" && document.activeElement.tagName !== "SELECT")
 	{
 		document.activeElement.blur();

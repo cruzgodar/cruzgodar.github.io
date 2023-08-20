@@ -39,7 +39,7 @@ function splitGlslFile(filename, text)
 	
 	let startSearchIndex = 0;
 	
-	while (true)
+	for (;;)
 	{
 		const index = text.indexOf("#function", startSearchIndex);
 		
@@ -128,130 +128,132 @@ const glslFilesByDepth = [];
 
 let loadedGlsl = false;
 
-export function loadGlsl()
+export async function loadGlsl()
 {
-	return new Promise(async (resolve, reject) =>
+	if (loadedGlsl)
 	{
-		if (loadedGlsl)
+		return;
+	}
+	
+	//constants and main are always fetched.
+	const response = await fetch("/scripts/glsl/constants");
+	
+	const text = await response.text();
+		
+	glslFiles.constants.content = text;
+	
+	
+	
+	const response2 = await fetch("/scripts/glsl/main");
+	
+	const text2 = await response2.text();
+		
+	glslFiles.main.content = text2;
+	
+	
+	
+	const response3 = await fetch("/scripts/glsl/double_emulation");
+	
+	const text3 = await response3.text();
+		
+	doubleEmulationGlsl = text3;
+	
+	
+	
+	const response4 = await fetch("/scripts/glsl/double_encoding");
+	
+	const text4 = await response4.text();
+		
+	doubleEncodingGlsl = text4;
+	
+	
+	
+	const texts = {};
+	
+	await Promise.all(glslFilenames.map(filename =>
+	{
+		return new Promise(resolve =>
 		{
-			resolve();
-			return;
+			fetch(`/scripts/glsl/${filename}`)
+
+				.then(response => response.text())
+				
+				.then(text =>
+				{
+					texts[filename] = text;
+
+					resolve();
+				});
+		});
+	}));
+	
+	glslFilenames.forEach(filename => splitGlslFile(filename, texts[filename]));
+	
+	
+	
+	//Figure out the depth of everything.
+	
+	const filenames = Object.keys(glslFiles);
+	
+	filenames.forEach(filename => glslFiles[filename].parents = []);
+	
+	filenames.forEach(filename =>
+	{
+		const dependencies = glslFiles[filename].dependencies;
+		
+		dependencies.forEach(dependency => glslFiles[dependency].parents.push(filename));
+		
+		if (dependencies.length === 0 && filename !== "main")
+		{
+			glslFiles["main"].parents.push(filename);
 		}
+	});
+	
+	
+	
+	let activeNodes = ["main"];
+	let depth = 0;
+	
+	while (activeNodes.length !== 0)
+	{
+		const nextActiveNodes = [];
 		
-		//constants and main are always fetched.
-		const response = await fetch("/scripts/glsl/constants");
+		glslFilesByDepth.push([]);
 		
-		const text = await response.text();
-			
-		glslFiles.constants.content = text;
-		
-		
-		
-		const response2 = await fetch("/scripts/glsl/main");
-		
-		const text2 = await response2.text();
-			
-		glslFiles.main.content = text2;
-		
-		
-		
-		const response3 = await fetch("/scripts/glsl/double_emulation");
-		
-		const text3 = await response3.text();
-			
-		doubleEmulationGlsl = text3;
-		
-		
-		
-		const response4 = await fetch("/scripts/glsl/double_encoding");
-		
-		const text4 = await response4.text();
-			
-		doubleEncodingGlsl = text4;
-		
-		
-		
-		const texts = {};
-		
-		await Promise.all(glslFilenames.map(filename => new Promise(async (resolve, reject) =>
+		activeNodes.forEach(filename =>
 		{
-			const response = await fetch(`/scripts/glsl/${filename}`);
-			
-			texts[filename] = await response.text();
-			
-			resolve();
-		})));
-		
-		glslFilenames.forEach(filename => splitGlslFile(filename, texts[filename]));
-		
-		
-		
-		//Figure out the depth of everything.
-		
-		const filenames = Object.keys(glslFiles);
-		
-		filenames.forEach(filename => glslFiles[filename].parents = []);
-		
-		filenames.forEach(filename =>
-		{
-			const dependencies = glslFiles[filename].dependencies;
-			
-			dependencies.forEach(dependency => glslFiles[dependency].parents.push(filename));
-			
-			if (dependencies.length === 0 && filename !== "main")
+			if (glslFiles[filename].depth === undefined)
 			{
-				glslFiles["main"].parents.push(filename);
+				glslFiles[filename].depth = depth;
 			}
+			
+			else
+			{
+				glslFiles[filename].depth = Math.max(glslFiles[filename].depth, depth);
+			}
+			
+			const parents = glslFiles[filename].parents;
+			
+			parents.forEach(parent =>
+			{
+				if (!nextActiveNodes.includes(parent))
+				{
+					nextActiveNodes.push(parent);
+				}	
+			});
 		});
 		
-		
-		
-		let activeNodes = ["main"];
-		let depth = 0;
-		
-		while (activeNodes.length !== 0)
-		{
-			const nextActiveNodes = [];
-			
-			glslFilesByDepth.push([]);
-			
-			activeNodes.forEach(filename =>
-			{
-				if (glslFiles[filename].depth === undefined)
-				{
-					glslFiles[filename].depth = depth;
-				}
-				
-				else
-				{
-					glslFiles[filename].depth = Math.max(glslFiles[filename].depth, depth);
-				}
-				
-				const parents = glslFiles[filename].parents;
-				
-				parents.forEach(parent =>
-				{
-					if (!nextActiveNodes.includes(parent))
-					{
-						nextActiveNodes.push(parent);
-					}	
-				});
-			});
-			
-			depth++;
-			activeNodes = nextActiveNodes;
-		}
-		
-		
-		
-		filenames.forEach(filename => glslFilesByDepth[glslFiles[filename].depth].push(filename));
-		
-		
-		
-		loadedGlsl = true;
-		
-		resolve();
-	});
+		depth++;
+		activeNodes = nextActiveNodes;
+	}
+	
+	
+	
+	filenames.forEach(filename => glslFilesByDepth[glslFiles[filename].depth].push(filename));
+	
+	
+	
+	loadedGlsl = true;
 }
 
 

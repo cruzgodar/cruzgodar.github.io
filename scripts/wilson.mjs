@@ -1830,7 +1830,7 @@ export class Wilson
 		
 		onKeypress(e)
 		{
-			if (e.keyCode === 27 && this.currentlyFullscreen)
+			if (e.key === "Escape" && this.currentlyFullscreen)
 			{
 				this.switchFullscreen();
 			}
