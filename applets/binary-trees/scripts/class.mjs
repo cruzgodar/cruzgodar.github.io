@@ -185,7 +185,7 @@ export class BinaryTree extends Applet
 			this.wilson.ctx.moveTo(e.data[0], e.data[1]);
 			this.wilson.ctx.lineTo(e.data[2], e.data[3]);
 			this.wilson.ctx.stroke();
-		}
+		};
 		
 		
 		
@@ -213,10 +213,12 @@ export class BinaryTree extends Applet
 	
 	
 	
-	onGrabDraggable(activeDraggable, x, y, event)
+	onGrabDraggable()
 	{
-		try {this.webWorker.terminate()}
-		catch(ex) {}
+		if (this.webWorker?.terminate)
+		{
+			this.webWorker.terminate();
+		}
 		
 		$$(".wilson-draggable").forEach(element => element.style.opacity = 1);
 		
@@ -228,7 +230,7 @@ export class BinaryTree extends Applet
 	
 	
 	
-	onDragDraggable(activeDraggable, x, y, event)
+	onDragDraggable(activeDraggable, x, y)
 	{
 		this.branchPoints[activeDraggable] = this.wilson.utils.interpolate.worldToCanvas(x, y);
 		
@@ -237,7 +239,7 @@ export class BinaryTree extends Applet
 	
 	
 	
-	onReleaseDraggable(activeDraggable, x, y, event)
+	onReleaseDraggable()
 	{
 		document.body.style.WebkitUserSelect = "";
 		
@@ -258,7 +260,7 @@ export class BinaryTree extends Applet
 			step++;
 		};
 
-		const refreshId = addTemporaryInterval({ callback, delay: 8 })
+		const refreshId = addTemporaryInterval({ callback, delay: 8 });
 		
 		
 		
@@ -279,8 +281,10 @@ export class BinaryTree extends Applet
 	
 	changeAspectRatio()
 	{
-		try {this.webWorker.terminate()}
-		catch(ex) {}
+		if (this.webWorker?.terminate)
+		{
+			this.webWorker.terminate();
+		}
 		
 		$$(".wilson-draggable").forEach(element => element.style.opacity = 1);
 		

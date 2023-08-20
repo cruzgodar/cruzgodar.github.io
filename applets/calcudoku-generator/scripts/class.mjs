@@ -96,7 +96,7 @@ export class CalcudokuGenerator extends Applet
 				
 				changeOpacity(this.canvas, 1);
 			}
-		}
+		};
 		
 		const timeoutId2 = setTimeout(() =>
 		{
@@ -217,7 +217,7 @@ export class CalcudokuGenerator extends Applet
 			
 			else if (this.cages[i][0] === ":")
 			{
-				label = this.cages[i][1] + "\uA789";
+				label = this.cages[i][1] + ":";
 			}
 			
 			else

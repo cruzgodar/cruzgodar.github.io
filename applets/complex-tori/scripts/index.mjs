@@ -117,7 +117,7 @@ export function load()
 	
 	
 	
-	function onDragDraggable(activeDraggable, x, y, event)
+	function onDragDraggable(activeDraggable, x, y)
 	{
 		g2 = x;
 		g3 = y;

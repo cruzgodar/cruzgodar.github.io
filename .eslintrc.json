@@ -2,17 +2,22 @@
     "env": {
         "browser": true,
         "es2021": true,
-		"node": true,
+		"node": true
     },
     "extends": "eslint:recommended",
     "parserOptions": {
         "ecmaVersion": "latest",
         "sourceType": "module"
     },
+	"ignorePatterns": [
+		"**/*.min.*",
+		"**/solver.js"
+	],
     "rules": {
         "indent": [
             "error",
-            "tab"
+            "tab",
+			{ "SwitchCase": 1 }
         ],
         "linebreak-style": [
             "error",
@@ -30,5 +35,5 @@
 			"error",
 			{ "args": "after-used" }
 		]
-    }
+	}
 }

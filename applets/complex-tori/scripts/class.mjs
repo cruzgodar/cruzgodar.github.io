@@ -188,14 +188,8 @@ export class EllipticCurve extends Applet
 		
 		let maxInterpolationDistance = this.wilson.canvasWidth;
 		
-		//If the distance is at least this small, the number of neighbors is ignored.
-		const minGuaranteedInterpolationDistance = 3;
-		
 		//This means a 5x5 square will be searched around each endpoint...
 		const isolationSearchRadius = 2;
-		
-		//...and it will be considered isolated if there are at most 2 pixels in the square.
-		const isolationThreshhold = 1;
 		
 		for (let i = isolationSearchRadius; i < this.wilson.canvasHeight - isolationSearchRadius; i++)
 		{
@@ -236,11 +230,6 @@ export class EllipticCurve extends Applet
 			{
 				continue;
 			}
-			
-			
-			
-			let numNearbyPoints = 0;
-			let averageNearbyDistance = 0;
 			
 			let minOpenJ = -1;
 			let minOpenDistance = maxInterpolationDistance;

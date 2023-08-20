@@ -40,9 +40,9 @@ async function buildSite()
 
 	const sitemap = JSON.parse(text.slice(text.indexOf("{"), text.length - 1));
 
-	await new Promise((resolve, reject) =>
+	await new Promise(resolve =>
 	{
-		exec(`git -C ${root} ls-files${clean ? "" : " -m -o"}`, async (error, stdout, stderr) =>
+		exec(`git -C ${root} ls-files${clean ? "" : " -m -o"}`, async (error, stdout) =>
 		{
 			await parseModifiedFiles(stdout.split("\n"), sitemap);
 
@@ -98,7 +98,7 @@ async function parseModifiedFiles(files, sitemap)
 		}
 
 		const filename = end.slice(0, index);
-		const extension = end.slice(index + 1)
+		const extension = end.slice(index + 1);
 
 		if (extension === "htmdl" && filename === "index")
 		{
@@ -140,7 +140,7 @@ async function parseModifiedFiles(files, sitemap)
 
 function buildJSFile(file)
 {
-	return new Promise(async (resolve, reject) =>
+	return new Promise(resolve =>
 	{
 		const outputFile = file.replace(/(\.m*js)/, (match, $1) => `.min${$1}`);
 		
@@ -149,7 +149,7 @@ function buildJSFile(file)
 			const js = await read(outputFile);
 			
 			//The space after the import is very import -- that prevents dynamic imports from getting screwed up.
-			write(outputFile, js.replace(/(import[^\(].*?)\.mjs/g, (match, $1) => `${$1}.min.mjs`));
+			write(outputFile, js.replace(/(import[^(].*?)\.mjs/g, (match, $1) => `${$1}.min.mjs`));
 
 			resolve();
 		});

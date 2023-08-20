@@ -2,13 +2,13 @@
 
 
 
-onmessage = async function(e)
+onmessage = (e) =>
 {
 	gridSize = e.data[0];
 	numIterations = e.data[1];
 	
-	await drawFern();
-}
+	drawFern();
+};
 
 
 
@@ -16,8 +16,6 @@ let gridSize = null;
 let numIterations = null;
 
 let fernGraph = null;
-
-let randomizationCoefficients = [.1, .1, .1, .1, .5, .5];
 
 let transformationCoefficients =
 [
@@ -40,80 +38,73 @@ const maxY = 11;
 
 function drawFern()
 {
-	return new Promise(function(resolve, reject)
+	fernGraph = new Uint8ClampedArray(gridSize * gridSize * 4);
+	
+	for (let i = 0; i < gridSize; i++)
 	{
-		fernGraph = new Uint8ClampedArray(gridSize * gridSize * 4);
-		
-		for (let i = 0; i < gridSize; i++)
+		for (let j = 0; j < gridSize; j++)
 		{
-			for (let j = 0; j < gridSize; j++)
-			{
-				fernGraph[4 * (gridSize * i + j) + 3] = 255;
-			}
+			fernGraph[4 * (gridSize * i + j) + 3] = 255;
+		}
+	}
+	
+	
+	
+	for (let iteration = 0; iteration < numIterations; iteration++)
+	{
+		if (iteration % Math.floor(numIterations / 10) === 0)
+		{
+			postMessage([fernGraph]);
 		}
 		
 		
 		
-		for (let iteration = 0; iteration < numIterations; iteration++)
+		let rand = Math.random();
+		
+		let index = 3;
+		
+		if (rand < .01)
 		{
-			if (iteration % Math.floor(numIterations / 10) === 0)
-			{
-				postMessage([fernGraph]);
-			}
-			
-			
-			
-			let rand = Math.random();
-			
-			let index = 3;
-			
-			if (rand < .01)
-			{
-				index = 0;
-			}
-			
-			else if (rand < .86)
-			{
-				index = 1;
-			}
-			
-			else if (rand < .93)
-			{
-				index = 2;
-			}
-			
-			affineTransformation(index);
-			
-			
-			
-			if (currentX >= maxX || currentX <= minX || currentY >= maxY || currentY <= minY)
-			{
-				continue;
-			}
-			
-			
-			
-			//This scales col to [0, 1].
-			let col = (currentX - minX) / (maxX - minX);
-			
-			col = Math.floor(gridSize * col);
-			
-			//This scales row to [0, 1].
-			let row = (currentY - minY) / (maxY - minY);
-			
-			row = Math.floor(gridSize * (1 - row));
-			
-			fernGraph[4 * (gridSize * row + col) + 1]++;
+			index = 0;
+		}
+		
+		else if (rand < .86)
+		{
+			index = 1;
+		}
+		
+		else if (rand < .93)
+		{
+			index = 2;
+		}
+		
+		affineTransformation(index);
+		
+		
+		
+		if (currentX >= maxX || currentX <= minX || currentY >= maxY || currentY <= minY)
+		{
+			continue;
 		}
 		
 		
 		
-		postMessage([fernGraph]);
+		//This scales col to [0, 1].
+		let col = (currentX - minX) / (maxX - minX);
 		
+		col = Math.floor(gridSize * col);
 		
+		//This scales row to [0, 1].
+		let row = (currentY - minY) / (maxY - minY);
 		
-		resolve();
-	});
+		row = Math.floor(gridSize * (1 - row));
+		
+		fernGraph[4 * (gridSize * row + col) + 1]++;
+	}
+	
+	
+	
+	postMessage([fernGraph]);
 }
 
 

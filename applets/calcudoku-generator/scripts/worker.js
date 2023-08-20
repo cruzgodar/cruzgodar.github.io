@@ -1,21 +1,22 @@
 "use strict";
 
-
-
-onmessage = function(e)
+onmessage = (e) =>
 {
 	gridSize = e.data[0];
 	maxCageSize = e.data[1];
 	
+	// eslint-disable-next-line no-undef
 	importScripts("/applets/calcudoku-generator/scripts/solver.js");
 
+	// eslint-disable-next-line no-undef
 	Module["onRuntimeInitialized"] = function()
 	{
+		// eslint-disable-next-line no-undef
 		importScripts("/scripts/wasm-arrays.min.js");
 		
 		generateCalcudokuGrid();
 	};
-}
+};
 
 
 
@@ -58,7 +59,7 @@ function generateCalcudokuGrid()
 	
 	
 	
-	while (true)
+	for (;;)
 	{
 		let expandedACage = false;
 		
@@ -619,20 +620,6 @@ function wasmSolvePuzzle()
 	
 	
 	//With everything in place, we can now call the C function and let it do the heavy lifting. We'd be fine with using HEAPU8 for everything, except for the fact that cageValues can have entries that are quite large.
+	// eslint-disable-next-line no-undef
 	return ccallArrays("solve_puzzle", "number", ["number", "array", "array", "array", "array", "array", "array", "array"], [gridSize, cageOperations, cageValues, cageLengths, cageMaxDigits, cageSums, cageProducts, cagesByLocationFlat], {heapIn: "HEAPU32"});
-}
-
-
-
-function pairInArray(element, array)
-{
-	for (let i = 0; i < array.length; i++)
-	{
-		if (array[i][0] === element[0] && array[i][1] === element[1])
-		{
-			return i;
-		}
-	}
-	
-	return -1;
 }

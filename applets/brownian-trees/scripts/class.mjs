@@ -57,7 +57,7 @@ export class BrownianTree extends Applet
 				
 				this.wilson.ctx.fillRect(e.data[1], e.data[2], 1, 1);
 			}
-		}
+		};
 		
 		this.webWorker.postMessage([this.resolution]);
 	}

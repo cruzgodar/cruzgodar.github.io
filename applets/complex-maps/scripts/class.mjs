@@ -37,8 +37,6 @@ export class ComplexMap extends Applet
 	{
 		super(canvas);
 		
-		
-		
 		const tempShader = "precision highp float; varying vec2 uv; void main(void) { gl_FragColor = vec4(0.0, 0.0, 0.0, 1.0); }";
 		
 		const options =
@@ -94,13 +92,16 @@ export class ComplexMap extends Applet
 			callback: boundFunction
 		});
 		
-		this.loadPromise = new Promise(async (resolve, reject) =>
+		this.loadPromise = new Promise(resolve =>
 		{
-			await loadGlsl();
-			
-			this.run(generatingCode, uniformCode, worldCenterX, worldCenterY, zoomLevel, addIndicatorDraggable, draggableCallback, selectorMode);
-			
-			resolve();
+			loadGlsl()
+
+				.then(() =>
+				{
+					this.run(generatingCode, uniformCode, worldCenterX, worldCenterY, zoomLevel, addIndicatorDraggable, draggableCallback, selectorMode);
+					
+					resolve();
+				});
 		});
 	}
 		
@@ -255,7 +256,7 @@ export class ComplexMap extends Applet
 	
 	
 	
-	onGrabCanvas(x, y, event)
+	onGrabCanvas(x, y)
 	{
 		this.pan.onGrabCanvas();
 		this.zoom.onGrabCanvas();
@@ -310,8 +311,10 @@ export class ComplexMap extends Applet
 	
 	onDragDraggable(activeDraggable, x, y, event)
 	{
-		try {this.draggableCallback(activeDraggable, x, y, event)}
-		catch(ex) {}
+		if (this.draggableCallback)
+		{
+			this.draggableCallback(activeDraggable, x, y, event);
+		}
 		
 		this.wilson.gl.uniform2f(this.wilson.uniforms["draggableArg"], x, y);
 	}
