@@ -141,11 +141,38 @@ export function load()
 		
 		applet.renderer.setSize(applet.resolution, applet.resolution, false);
 	});
+
+
+
+	async function switchDimersButton(dimersShown = applet.dimersShown)
+	{
+		await changeOpacity(showDimersButtonElement, 0);
+
+		showDimersButtonElement.textContent = dimersShown ? "Show Dimers" : "Hide Dimers";
+
+		await changeOpacity(showDimersButtonElement, 1);
+	}
+
+	async function switchViewButton(in2dView = applet.in2dView)
+	{
+		await changeOpacity(switchViewButtonElement, 0);
+
+		switchViewButtonElement.textContent = in2dView ? "Show 2D View" : "Show Hex View";
+
+		await changeOpacity(switchViewButtonElement, 1);
+	}
 	
 	
 	
 	showDimersButtonElement.addEventListener("click", () =>
 	{
+		switchDimersButton();
+
+		if (!applet.dimersShown && applet.in2dView)
+		{
+			switchViewButton();
+		}
+
 		if (applet.dimersShown)
 		{
 			applet.hideDimers();
@@ -161,6 +188,13 @@ export function load()
 	
 	switchViewButtonElement.addEventListener("click", () =>
 	{
+		switchViewButton();
+
+		if (applet.dimersShown && !applet.in2dView)
+		{
+			switchDimersButton();
+		}
+		
 		if (applet.in2dView)
 		{
 			applet.showHexView();
