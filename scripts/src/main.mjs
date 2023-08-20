@@ -167,14 +167,6 @@ export async function loadSite(url = pageUrl)
 		
 		redirect({ url: e.state.url, noStatePush: true, restoreScroll: true });
 	});
-	
-	if ("serviceWorker" in navigator)
-	{
-		window.addEventListener("load", () =>
-		{
-			navigator.serviceWorker.register("/service-worker.js");
-		});
-	}
 
 
 	
