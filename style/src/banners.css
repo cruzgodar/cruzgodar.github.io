@@ -3,10 +3,9 @@
 #banner, #banner-small, #banner-large
 {
 	position: fixed;
-	width: calc(100vw + 50px);
-	height: calc(100vh + 50px);
+	width: calc(100vw + 75px);
+	height: calc(100vh + 75px);
 	
-	top: -25px;
 	left: -25px;
 	
 	background: url("") no-repeat center center;

@@ -56,7 +56,8 @@ export async function loadPage()
 		condenseApplet();
 	}
 	
-	setTimeout(() => setUpFocusEvents(), 50);
+	setTimeout(setUpFocusEvents, 50);
+	setTimeout(equalizeAppletColumns, 100);
 }
 
 
