@@ -1,4 +1,4 @@
-import { buttonAnimationTime } from "/scripts/src/animation.mjs";
+import { buttonAnimationTime, changeOpacity } from "/scripts/src/animation.mjs";
 import { Applet } from "/scripts/src/applets.mjs";
 import { Wilson } from "/scripts/wilson.mjs";
 
@@ -294,7 +294,7 @@ export class DoublePendulumFractal extends Applet
 	
 	
 	
-	drawPreviewPendulum(x, y, xDelta, yDelta, e)
+	drawPreviewPendulum(x, y)
 	{
 		if (this.drawingFractal)
 		{
@@ -320,7 +320,7 @@ export class DoublePendulumFractal extends Applet
 	
 	
 	
-	startPendulumAnimation(x, y, e)
+	startPendulumAnimation()
 	{
 		if (this.pendulumCanvasVisible === 1)
 		{
@@ -485,4 +485,4 @@ export class DoublePendulumFractal extends Applet
 			this.theta2 += 2*Math.PI;
 		}
 	}
-	}
+}

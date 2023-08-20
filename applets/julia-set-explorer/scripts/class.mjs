@@ -693,11 +693,10 @@ export class JuliaSet extends Applet
 			try
 			{
 				changeOpacity(this.switchJuliaModeButtonElement, 0)
-				
-				.then(() =>
-				{
-					this.switchJuliaModeButtonElement.textContent = "Return to Mandelbrot";
-				});
+					.then(() =>
+					{
+						this.switchJuliaModeButtonElement.textContent = "Return to Mandelbrot";
+					});
 			}
 				
 			catch(ex) {}
@@ -724,13 +723,12 @@ export class JuliaSet extends Applet
 			try
 			{
 				changeOpacity(this.switchJuliaModeButtonElement, 0)
-				
-				.then(() =>
-				{
-					this.switchJuliaModeButtonElement.textContent = "Pick Julia Set";
-					
-					changeOpacity(this.switchJuliaModeButtonElement, 1)
-				});
+					.then(() =>
+					{
+						this.switchJuliaModeButtonElement.textContent = "Pick Julia Set";
+						
+						changeOpacity(this.switchJuliaModeButtonElement, 1)
+					});
 			}
 			
 			catch(ex) {}

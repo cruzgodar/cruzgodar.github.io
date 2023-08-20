@@ -60,7 +60,6 @@ export async function redirect({
 	
 	//Get the new data, fade out the page, and preload the next page's banner if it exists. When all of those things are successfully done, replace the current html with the new stuff.
 	Promise.all([fetch(`${url}index.html`), loadBanner()])
-		
 		.then((response) =>
 		{
 			if (!response[0].ok)
@@ -73,8 +72,6 @@ export async function redirect({
 				return response[0].text();
 			}
 		})
-			
-		
 		.then((data) =>
 		{
 			unloadPage();

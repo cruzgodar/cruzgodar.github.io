@@ -175,9 +175,7 @@ export async function loadGlsl()
 		return new Promise(resolve =>
 		{
 			fetch(`/scripts/glsl/${filename}`)
-
 				.then(response => response.text())
-				
 				.then(text =>
 				{
 					texts[filename] = text;

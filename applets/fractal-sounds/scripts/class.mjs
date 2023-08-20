@@ -1,3 +1,4 @@
+import { changeOpacity } from "/scripts/src/animation.mjs";
 import { Applet } from "/scripts/src/applets.mjs";
 import { getGlslBundle, loadGlsl } from "/scripts/src/complex-glsl.mjs";
 import { $$, addTemporaryListener } from "/scripts/src/main.mjs";
@@ -152,12 +153,7 @@ export class FractalSounds extends Applet
 		
 		
 		
-		this.loadPromise = new Promise(async (resolve, reject) =>
-		{
-			await loadGlsl();
-			
-			resolve();
-		});
+		this.loadPromise = loadGlsl();
 	}
 	
 	
@@ -411,7 +407,7 @@ export class FractalSounds extends Applet
 	
 	
 	
-	onHoverCanvas(x, y, xDelta, yDelta, event)
+	onHoverCanvas(x, y)
 	{
 		this.showOrbit(x, y);
 		
@@ -662,14 +658,14 @@ export class FractalSounds extends Applet
 	
 	switchFullscreen()
 	{
-		try
+		document.body.querySelectorAll(".wilson-applet-canvas-container").forEach(element => element.style.setProperty("background-color", "rgba(0, 0, 0, 0)", "important"));
+
+		const exitFullScreenButtonElement = document.body.querySelector(".wilson-exit-fullscreen-button");
+
+		if (exitFullScreenButtonElement)
 		{
-			document.body.querySelectorAll(".wilson-applet-canvas-container").forEach(element => element.style.setProperty("background-color", "rgba(0, 0, 0, 0)", "important"));
-			
-			document.body.querySelector(".wilson-exit-fullscreen-button").style.setProperty("z-index", "300", "important")
+			exitFullScreenButtonElement.style.setProperty("z-index", "300", "important");
 		}
-		
-		catch(ex) {}
 		
 		this.wilson.fullscreen.switchFullscreen();
 		

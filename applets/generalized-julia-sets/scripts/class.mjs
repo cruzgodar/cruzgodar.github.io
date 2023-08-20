@@ -1,4 +1,4 @@
-import { opacityAnimationTime } from "/scripts/src/animation.mjs";
+import { changeOpacity } from "/scripts/src/animation.mjs";
 import { Applet } from "/scripts/src/applets.mjs";
 import { getGlslBundle, loadGlsl } from "/scripts/src/complex-glsl.mjs";
 import { addTemporaryListener } from "/scripts/src/main.mjs";
@@ -114,12 +114,7 @@ export class GeneralizedJuliaSet extends Applet
 			callback: boundFunction
 		});
 		
-		this.loadPromise = new Promise(async (resolve, reject) =>
-		{
-			await loadGlsl();
-			
-			resolve();
-		});
+		this.loadPromise = loadGlsl();
 	}
 	
 	
@@ -365,27 +360,24 @@ export class GeneralizedJuliaSet extends Applet
 	
 	switchJuliaMode()
 	{
-		try
+		if (this.switchJuliaModeButtonElement)
 		{
-			changeOpacity(this.switchJuliaModeButtonElement, 0);
-			
-			setTimeout(() =>
-			{
-				if (this.juliaMode === 2)
+			changeOpacity(this.switchJuliaModeButtonElement, 0)
+				.then(() =>
 				{
-					this.switchJuliaModeButtonElement.textContent = "Return to Mandelbrot Set";
-				}
-				
-				else if (this.juliaMode === 0)
-				{
-					this.switchJuliaModeButtonElement.textContent = "Pick Julia Set";
+					if (this.juliaMode === 2)
+					{
+						this.switchJuliaModeButtonElement.textContent = "Return to Mandelbrot Set";
+					}
 					
-					changeOpacity(this.switchJuliaModeButtonElement, 1);
-				}
-			}, opacityAnimationTime);
+					else if (this.juliaMode === 0)
+					{
+						this.switchJuliaModeButtonElement.textContent = "Pick Julia Set";
+						
+						changeOpacity(this.switchJuliaModeButtonElement, 1);
+					}
+				});
 		}
-		
-		catch(ex) {}
 		
 		
 		
@@ -434,8 +426,10 @@ export class GeneralizedJuliaSet extends Applet
 			
 			this.pastBrightnessScales = [];
 			
-			try {changeOpacity(this.switchJuliaModeButtonElement, 1)}
-			catch(ex) {}
+			if (this.switchJuliaModeButtonElement)
+			{
+				changeOpacity(this.switchJuliaModeButtonElement, 1);
+			}
 		}
 	}
 	
@@ -482,8 +476,10 @@ export class GeneralizedJuliaSet extends Applet
 			
 			this.pastBrightnessScales = [];
 			
-			try {changeOpacity(this.switchJuliaModeButtonElement, 1)}
-			catch(ex) {}
+			if (this.switchJuliaModeButtonElement)
+			{
+				changeOpacity(this.switchJuliaModeButtonElement, 1);
+			}
 		}
 		
 		else
@@ -495,7 +491,7 @@ export class GeneralizedJuliaSet extends Applet
 	
 	
 	
-	onWheelCanvas(x, y, scrollAmount, event)
+	onWheelCanvas(x, y, scrollAmount)
 	{
 		if (this.juliaMode !== 2)
 		{
@@ -505,7 +501,7 @@ export class GeneralizedJuliaSet extends Applet
 	
 	
 	
-	onPinchCanvas(x, y, touchDistanceDelta, event)
+	onPinchCanvas(x, y, touchDistanceDelta)
 	{
 		if (this.juliaMode !== 2)
 		{
@@ -515,7 +511,7 @@ export class GeneralizedJuliaSet extends Applet
 	
 	
 	
-	onDragDraggable(activeDraggable, x, y, event)
+	onDragDraggable(activeDraggable, x, y)
 	{
 		this.wilson.gl.uniform2f(this.wilson.uniforms["draggableArg"], x, y);
 	}

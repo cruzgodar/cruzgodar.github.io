@@ -80,9 +80,7 @@ export async function showPage()
 function loadCustomStyle()
 {
 	fetch(`${pageUrl}style/index.${window.DEBUG ? "css" : "min.css"}`)
-		
 		.then(response => response.text())
-		
 		.then(text =>
 		{
 			const element = document.createElement("style");
@@ -101,9 +99,7 @@ function loadCustomStyle()
 function loadCustomScripts()
 {
 	import(`${pageUrl}scripts/index.${window.DEBUG ? "mjs" : "min.mjs"}`)
-
 		.then(Module => Module.load())
-
 		.catch(() => window.requestAnimationFrame(showPage));
 }
 

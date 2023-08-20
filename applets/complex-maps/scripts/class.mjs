@@ -95,7 +95,6 @@ export class ComplexMap extends Applet
 		this.loadPromise = new Promise(resolve =>
 		{
 			loadGlsl()
-
 				.then(() =>
 				{
 					this.run(generatingCode, uniformCode, worldCenterX, worldCenterY, zoomLevel, addIndicatorDraggable, draggableCallback, selectorMode);

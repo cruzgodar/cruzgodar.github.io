@@ -79,7 +79,7 @@ async function drawAnimatedBinaryTree()
 			
 			
 			
-			await new Promise(resolve => window.requestAnimationFrame(resolve));
+			await new Promise(resolve => setTimeout(resolve, 8));
 		}
 		
 		

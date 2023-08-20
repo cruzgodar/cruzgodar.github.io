@@ -1,4 +1,5 @@
 import { DoublePendulumFractal } from "./class.mjs";
+import { changeOpacity } from "/scripts/src/animation.mjs";
 import { showPage } from "/scripts/src/load-page.mjs";
 import { $ } from "/scripts/src/main.mjs";
 
@@ -40,13 +41,12 @@ export function load()
 			applet.drawingFractal = false;
 			
 			changeOpacity(switchPendulumCanvasButtonElement, 0)
-			
-			.then(() =>
-			{
-				switchPendulumCanvasButtonElement.textContent = "Return to Fractal";
-				
-				changeOpacity(switchPendulumCanvasButtonElement, 1);
-			});
+				.then(() =>
+				{
+					switchPendulumCanvasButtonElement.textContent = "Return to Fractal";
+					
+					changeOpacity(switchPendulumCanvasButtonElement, 1);
+				});
 		}
 		
 		else
@@ -59,13 +59,12 @@ export function load()
 			
 			
 			changeOpacity(switchPendulumCanvasButtonElement, 0)
-			
-			.then(() =>
-			{
-				switchPendulumCanvasButtonElement.textContent = "Pick Pendulum";
-				
-				changeOpacity(switchPendulumCanvasButtonElement, 1);
-			});
+				.then(() =>
+				{
+					switchPendulumCanvasButtonElement.textContent = "Pick Pendulum";
+					
+					changeOpacity(switchPendulumCanvasButtonElement, 1);
+				});
 		}
 	});
 	

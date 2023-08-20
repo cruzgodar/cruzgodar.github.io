@@ -307,7 +307,7 @@ export class HitomezashiPattern extends Applet
 		let startRow = 0;
 		let startCol = 0;
 		
-		while (true)
+		for (;;)
 		{
 			let activeSquares = [[startRow, startCol]];
 			

@@ -435,4 +435,4 @@ export class DominoShuffling extends Applet
 			}
 		}
 	}
-	}
+}

@@ -2,21 +2,20 @@
 
 
 
-onmessage = async function(e)
+onmessage = (e) =>
 {
 	numVertices = e.data[0];
 	numIterations = e.data[1];
 	gridSize = e.data[2];
 	maximumSpeed = e.data[3];
 	
-	await drawFiniteSubdivisions();
-}
+	drawFiniteSubdivisions();
+};
 
 
 
 let numVertices = null;
 let numIterations = null;
-let currentIteration = null;
 let gridSize = null;
 let maximumSpeed = null;
 
@@ -26,98 +25,78 @@ let polygons = [];
 
 
 
-function drawFiniteSubdivisions()
+async function drawFiniteSubdivisions()
 {
-	return new Promise(async function(resolve, reject)
+	polygons = [[]];
+	
+	
+	
+	//This makes the size of the black bars on the top and bottom equal.
+	let middleAngle = Math.floor(numVertices / 2) * 2 * Math.PI / numVertices;
+	
+	let topRow = gridSize / 2 - gridSize / 2.5;
+	let bottomRow = gridSize / 2 - gridSize / 2.5 * Math.cos(middleAngle);
+	
+	let totalMargin = topRow + (gridSize - bottomRow);
+	
+	let centerRow = Math.floor(totalMargin / 2 + gridSize / 2.5);
+	let centerCol = Math.floor(gridSize / 2);
+	
+	for (let i = 0; i < numVertices; i++)
 	{
-		polygons = [[]];
+		let angle = i / numVertices * 2 * Math.PI;
 		
-		currentIteration = 0;
+		let row = Math.floor(-Math.cos(angle) * gridSize / 2.5 + centerRow);
+		let col = Math.floor(Math.sin(angle) * gridSize / 2.5 + centerCol);
 		
-		
-		
-		//This makes the size of the black bars on the top and bottom equal.
-		let middleAngle = Math.floor(numVertices / 2) * 2 * Math.PI / numVertices;
-		
-		let topRow = gridSize / 2 - gridSize / 2.5;
-		let bottomRow = gridSize / 2 - gridSize / 2.5 * Math.cos(middleAngle);
-		
-		let totalMargin = topRow + (gridSize - bottomRow);
-		
-		let centerRow = Math.floor(totalMargin / 2 + gridSize / 2.5);
-		let centerCol = Math.floor(gridSize / 2);
-		
-		for (let i = 0; i < numVertices; i++)
-		{
-			let angle = i / numVertices * 2 * Math.PI;
-			
-			let row = Math.floor(-Math.cos(angle) * gridSize / 2.5 + centerRow);
-			let col = Math.floor(Math.sin(angle) * gridSize / 2.5 + centerCol);
-			
-			polygons[0].push([row, col]);
-		}
-		
-		
-		
-		await drawOuterPolygon();
-		
-		
-		
-		for (let i = 0; i < numIterations; i++)
-		{
-			await drawLines(calculateLines());
-			
-			currentIteration++;
-		}
-		
-		
-		
-		resolve();
-	});
+		polygons[0].push([row, col]);
+	}
+	
+	
+	
+	await drawOuterPolygon();
+	
+	
+	
+	for (let i = 0; i < numIterations; i++)
+	{
+		await drawLines(calculateLines());
+	}
 }
 
 
 
-function drawOuterPolygon()
+async function drawOuterPolygon()
 {
-	return new Promise(async function(resolve, reject)
+	if (!maximumSpeed)
 	{
-		if (maximumSpeed === false)
+		for (let i = 0; i < 120; i++)
 		{
-			for (let i = 0; i < 120; i++)
-			{
-				//Draw 1/120 of each line.
-				for (let j = 0; j < numVertices; j++)
-				{
-					let rgb = HSVtoRGB((2 * j + 1) / (2 * numVertices), 1, 1);
-					
-					let color = `rgb(${rgb[0]}, ${rgb[1]}, ${rgb[2]})`;
-					
-					postMessage([polygons[0][j][0], polygons[0][j][1], polygons[0][j][0] + ((i + 1) / 120) * (polygons[0][(j + 1) % numVertices][0] - polygons[0][j][0]), polygons[0][j][1] + ((i + 1) / 120) * (polygons[0][(j + 1) % numVertices][1] - polygons[0][j][1]), color]);
-				}
-				
-				await sleep(8);
-			}
-		}
-		
-		
-		
-		else
-		{
+			//Draw 1/120 of each line.
 			for (let j = 0; j < numVertices; j++)
 			{
 				let rgb = HSVtoRGB((2 * j + 1) / (2 * numVertices), 1, 1);
 				
 				let color = `rgb(${rgb[0]}, ${rgb[1]}, ${rgb[2]})`;
 				
-				postMessage([polygons[0][j][0], polygons[0][j][1], polygons[0][(j + 1) % numVertices][0], polygons[0][(j + 1) % numVertices][1], color]);
+				postMessage([polygons[0][j][0], polygons[0][j][1], polygons[0][j][0] + ((i + 1) / 120) * (polygons[0][(j + 1) % numVertices][0] - polygons[0][j][0]), polygons[0][j][1] + ((i + 1) / 120) * (polygons[0][(j + 1) % numVertices][1] - polygons[0][j][1]), color]);
 			}
+			
+			await new Promise(resolve => setTimeout(resolve, 8));
 		}
-		
-		
-		
-		resolve();
-	});
+	}
+	
+	else
+	{
+		for (let j = 0; j < numVertices; j++)
+		{
+			let rgb = HSVtoRGB((2 * j + 1) / (2 * numVertices), 1, 1);
+			
+			let color = `rgb(${rgb[0]}, ${rgb[1]}, ${rgb[2]})`;
+			
+			postMessage([polygons[0][j][0], polygons[0][j][1], polygons[0][(j + 1) % numVertices][0], polygons[0][(j + 1) % numVertices][1], color]);
+		}
+	}
 }
 
 
@@ -157,55 +136,38 @@ function calculateLines()
 
 
 
-function drawLines(newLines)
+async function drawLines(newLines)
 {
-	return new Promise(async function(resolve, reject)
+	if (maximumSpeed === false)
 	{
-		if (maximumSpeed === false)
+		for (let i = 0; i < 120; i++)
 		{
-			for (let i = 0; i < 120; i++)
-			{
-				//Draw 1/120 of each line.
-				for (let j = 0; j < newLines.length; j++)
-				{
-					let rgb = HSVtoRGB(j / (newLines.length - 1), 1, 1);
-					
-					let color = `rgb(${rgb[0]}, ${rgb[1]}, ${rgb[2]})`;
-					
-					postMessage([newLines[j][0][0], newLines[j][0][1], newLines[j][0][0] + ((i + 1) / 120) * (newLines[j][1][0] - newLines[j][0][0]) + 1, newLines[j][0][1] + ((i + 1) / 120) * (newLines[j][1][1] - newLines[j][0][1]), color]);
-				}
-				
-				await sleep(8);
-			}
-		}
-		
-		
-		else
-		{
+			//Draw 1/120 of each line.
 			for (let j = 0; j < newLines.length; j++)
 			{
 				let rgb = HSVtoRGB(j / (newLines.length - 1), 1, 1);
 				
 				let color = `rgb(${rgb[0]}, ${rgb[1]}, ${rgb[2]})`;
 				
-				postMessage([newLines[j][0][0], newLines[j][0][1], newLines[j][1][0], newLines[j][1][1], color]);
+				postMessage([newLines[j][0][0], newLines[j][0][1], newLines[j][0][0] + ((i + 1) / 120) * (newLines[j][1][0] - newLines[j][0][0]) + 1, newLines[j][0][1] + ((i + 1) / 120) * (newLines[j][1][1] - newLines[j][0][1]), color]);
 			}
+			
+			await new Promise(resolve => setTimeout(resolve, 8));
 		}
-		
-		
-		
-		resolve();
-	});
-}
-
-
-
-function sleep(ms)
-{
-	return new Promise(function(resolve, reject)
+	}
+	
+	
+	else
 	{
-		setTimeout(resolve, ms);
-	});
+		for (let j = 0; j < newLines.length; j++)
+		{
+			let rgb = HSVtoRGB(j / (newLines.length - 1), 1, 1);
+			
+			let color = `rgb(${rgb[0]}, ${rgb[1]}, ${rgb[2]})`;
+			
+			postMessage([newLines[j][0][0], newLines[j][0][1], newLines[j][1][0], newLines[j][1][1], color]);
+		}
+	}
 }
 
 
@@ -231,4 +193,4 @@ function HSVtoRGB(h, s, v)
 	}
     
 	return [Math.round(r * 255), Math.round(g * 255), Math.round(b * 255)];
-	}
+}
