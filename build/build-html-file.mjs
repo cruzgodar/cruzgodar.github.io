@@ -1,6 +1,6 @@
 import { write } from "./file-io.mjs";
 
-const root = process.argv[1].replace(/(\/cruzgodar.github.io\/).+$/, (match, $1) => $1);
+//const root = process.argv[1].replace(/(\/cruzgodar.github.io\/).+$/, (match, $1) => $1)
 
 let sitemap = null;
 let parentFolder = null;
@@ -14,7 +14,7 @@ const manualHeaderPages =
 	"/writing/caligo/",
 ];
 
-const GLSLDocs = String.raw`<div id="glsl-docs-card" class="card"><h1 class="heading-text">Complex GLSL Documentation</h1><p class="body-text">These functions implement many common operations on complex numbers, as well as a handful of more complicated number-theoretic functions. Unless otherwise specified, <code>float</code>s refer to real numbers and <code>vec2</code>s to complex ones.</p><h2 class="section-text" style="margin-top: 48px"> Constants</h2><p class="body-text"><code>ZERO = vec2(0.0, 0.0)</code>.</p><p class="body-text"><code>ONE = vec2(1.0, 0.0)</code>.</p><p class="body-text"><code>I = i = vec2(0.0, 1.0)</code>.</p><h2 class="section-text" style="margin-top: 48px"> Arithmetic Functions</h2><p class="body-text"><code>[float | vec2] cadd([float | vec2] z, [float | vec2] w)</code>: returns <span class="tex-holder inline-math" data-source-tex="z + w">$z + w$</span>.</p><p class="body-text"><code>[float | vec2] csub([float | vec2] z, [float | vec2] w)</code>: returns <span class="tex-holder inline-math" data-source-tex="z - w">$z - w$</span>.</p><p class="body-text"><code>[float | vec2] cmul([float | vec2] z, [float | vec2] w)</code>: returns <span class="tex-holder inline-math" data-source-tex="zw">$zw$</span>.</p><p class="body-text"><code>[float | vec2] cdiv([float | vec2] z, [float | vec2] w)</code>: returns <span class="tex-holder inline-math" data-source-tex="\dfrac{z}{w}">$\dfrac{z}{w}$</span>.</p><p class="body-text"><code>[float | vec2] cinv([float | vec2] z)</code>: returns <span class="tex-holder inline-math" data-source-tex="\frac{1}{z}">$\frac{1}{z}$</span>.</p><p class="body-text"><code>float cabs([float | vec2] z)</code>: returns <span class="tex-holder inline-math" data-source-tex="|z|">$|z|$</span>, where e.g. <span class="tex-holder inline-math" data-source-tex="|3 + 4i| = 5">$|3 + 4i| = 5$</span>.</p><p class="body-text"><code>float cmag([float | vec2] z)</code>: returns <span class="tex-holder inline-math" data-source-tex="|z|^2">$|z|^2$</span>. Avoids taking a square root to compute <span class="tex-holder inline-math" data-source-tex="|z|">$|z|$</span>.</p><p class="body-text"><code>float carg([float | vec2] z)</code>: returns the principal argument of <span class="tex-holder inline-math" data-source-tex="z">$z$</span>, i.e. the angle in <span class="tex-holder inline-math" data-source-tex="(-\pi, \pi]">$(-\pi, \pi]$</span> that <span class="tex-holder inline-math" data-source-tex="z">$z$</span> makes with the positive <span class="tex-holder inline-math" data-source-tex="x">$x$</span>-axis.</p><p class="body-text"><code>[float | vec2] cconj([float | vec2] z)</code>: returns <span class="tex-holder inline-math" data-source-tex="\overline{z}">$\overline{z}$</span>, the complex conjugate of <span class="tex-holder inline-math" data-source-tex="z">$z$</span>.</p><p class="body-text"><code>[float | vec2] csign([float | vec2] z)</code>: returns the normalized vector <span class="tex-holder inline-math" data-source-tex="\dfrac{z}{|z|}">$\dfrac{z}{|z|}$</span>, generalizing the sign function on the real numbers.</p><h2 class="section-text" style="margin-top: 48px"> Exponential Functions</h2><p class="body-text"><code>[float | vec2] cpow([float | vec2] z, [float | vec2] w)</code>: returns <span class="tex-holder inline-math" data-source-tex="z^w">$z^w$</span>. If both <span class="tex-holder inline-math" data-source-tex="z">$z$</span> and <span class="tex-holder inline-math" data-source-tex="w">$w$</span> are real but the power is complex, at least one of the two must be passed in as a <code>vec2</code>.</p><p class="body-text"><code>vec2 cpow_logz(float z, float logz, float w)</code>: returns <span class="tex-holder inline-math" data-source-tex="z^w">$z^w$</span>. Saves operations in the case <span class="tex-holder inline-math" data-source-tex="\log(z)">$\log(z)$</span> is already known. Requires <span class="tex-holder inline-math" data-source-tex="z > 0">$z > 0$</span>.</p><p class="body-text"><code>vec2 csqrt([float | vec2] z)</code>: returns <span class="tex-holder inline-math" data-source-tex="\sqrt{z}">$\sqrt{z}$</span>.</p><p class="body-text"><code>[float | vec2] cexp([float | vec2] z)</code>: returns <span class="tex-holder inline-math" data-source-tex="e^z">$e^z$</span>.</p><p class="body-text"><code>[float | vec2] clog([float | vec2] z)</code>: returns <span class="tex-holder inline-math" data-source-tex="\log(z)">$\log(z)$</span>, the natural log of <span class="tex-holder inline-math" data-source-tex="z">$z$</span>.</p><p class="body-text"><code>[float | vec2] ctet([float | vec2] z, float w)</code>: returns <span class="tex-holder inline-math" data-source-tex="z \uparrow\uparrow w">$z \uparrow\uparrow w$</span>, e.g. <span class="tex-holder inline-math" data-source-tex="2 \uparrow\uparrow 3 = 2^{2^2} = 16">$2 \uparrow\uparrow 3 = 2^{2^2} = 16$</span>.</p><p class="body-text"><code>int powermod(int a, int b, int c)</code>: returns <span class="tex-holder inline-math" data-source-tex="a^b \mod c">$a^b \mod c$</span>.</p><h2 class="section-text" style="margin-top: 48px"> Trigonometric Functions</h2><p class="body-text">All six standard trigonometric functions are implemented, along with their inverses, hyperbolic versions, and hyperbolic inverses. For example, <code>csin(z)</code> returns <span class="tex-holder inline-math" data-source-tex="\sin(z)">$\sin(z)$</span>, <code>casin(z)</code> returns <span class="tex-holder inline-math" data-source-tex="\arcsin(z)">$\arcsin(z)$</span>, <code>csinh(z)</code> returns <span class="tex-holder inline-math" data-source-tex="\sinh(z)">$\sinh(z)$</span>, and <code>casinh(z)</code> returns <span class="tex-holder inline-math" data-source-tex="\operatorname{arcsinh}(z)">$\operatorname{arcsinh}(z)$</span>.</p><p class="body-text"><code>[float | vec2] c[a]sin[h]([float | vec2] z)</code>.</p><p class="body-text"><code>[float | vec2] c[a]cos[h]([float | vec2] z)</code>.</p><p class="body-text"><code>[float | vec2] c[a]tan[h]([float | vec2] z)</code>.</p><p class="body-text"><code>[float | vec2] c[a]csc[h]([float | vec2] z)</code>.</p><p class="body-text"><code>[float | vec2] c[a]sec[h]([float | vec2] z)</code>.</p><p class="body-text"><code>[float | vec2] c[a]cot[h]([float | vec2] z)</code>.</p><h2 class="section-text" style="margin-top: 48px"> Combinatorial Functions</h2><p class="body-text"><code>float factorial([int | float] n)</code>: returns <span class="tex-holder inline-math" data-source-tex="n!">$n!$</span>.</p><p class="body-text"><code>float binomial([int | float] n, [int | float] k)</code>: returns <span class="tex-holder inline-math" data-source-tex="\binom{n}{k}">$\displaystyle \binom{n}{k}$</span>.</p><p class="body-text"><code>float divisor(float n, float k = 1.0)</code>: returns the sum of all <span class="tex-holder inline-math" data-source-tex="k">$k$</span>th powers of divisors of <span class="tex-holder inline-math" data-source-tex="n">$n$</span>.</p><p class="body-text"><code>float bernoulli(float n)</code>: returns the <span class="tex-holder inline-math" data-source-tex="n">$n$</span>th Bernoulli number <span class="tex-holder inline-math" data-source-tex="B_n">$B_n$</span>.</p><p class="body-text"><code>float rising_factorial(float a, [int | float] n)</code>: returns <span class="tex-holder inline-math" data-source-tex="(a)(a + 1)\cdots(a+n-1)">$(a)(a + 1)\cdots(a+n-1)$</span>.</p><h2 class="section-text" style="margin-top: 48px"> Number-Theoretic Functions</h2><p class="body-text"><code>[float | vec2] zeta([float | vec2] z)</code>: returns <span class="tex-holder inline-math" data-source-tex="\zeta(z)">$\zeta(z)$</span>, where <span class="tex-holder inline-math" data-source-tex="\zeta">$\zeta$</span> is the Riemann zeta function.</p><p class="body-text"><code>vec2 hurwitz_zeta(vec2 z, [float | vec2] a)</code>: returns <span class="tex-holder inline-math" data-source-tex="\zeta(z, a)">$\zeta(z, a)$</span>, where <span class="tex-holder inline-math" data-source-tex="\zeta">$\zeta$</span> is the Hurwitz zeta function, a generalization of the Riemann zeta function.</p><p class="body-text"><code>vec2 su3_character([int | float] p, [int | float] p, vec2 z)</code>: returns the character of the irreducible <span class="tex-holder inline-math" data-source-tex="SU(3)">$SU(3)$</span> representation with highest weight <span class="tex-holder inline-math" data-source-tex="(p, q)">$(p, q)$</span>.</p><p class="body-text"><code>[float | vec2] gamma([int | float | vec2] a)</code>: returns <span class="tex-holder inline-math" data-source-tex="\Gamma(a)">$\Gamma(a)$</span>, where <span class="tex-holder inline-math" data-source-tex="\Gamma">$\Gamma$</span> is the gamma function, a generalization of the factorial operation.</p><p class="body-text"><code>vec2 digamma(vec2 a)</code>: returns the logarithmic derivative of the <span class="tex-holder inline-math" data-source-tex="\Gamma">$\Gamma$</span> function, i.e. <span class="tex-holder inline-math" data-source-tex="\dfrac{\Gamma'(a)}{\Gamma(a)}">$\dfrac{\Gamma'(a)}{\Gamma(a)}$</span>.</p><p class="body-text"><code>vec2 polygamma([int | float] n, vec2 a)</code>: returns the <span class="tex-holder inline-math" data-source-tex="(n + 1)">$(n + 1)$</span>st logarithmic derivative of the <span class="tex-holder inline-math" data-source-tex="\Gamma">$\Gamma$</span> function at <span class="tex-holder inline-math" data-source-tex="a">$a$</span>.</p><p class="body-text"><code>vec2 hypergeometric2f1(float a, float b, float c, [float | vec2] z)</code>: returns the hypergeometric function <span class="tex-holder inline-math" data-source-tex="_2F_1(a, b; c; z)">$_2F_1(a, b; c; z)$</span>.</p><p class="body-text"><code>vec2 hypergeometricf2(float a, float b1, float b2, float c1, float c2, [float | vec2] x, [float | vec2] y)</code>: returns the hypergeometric function <span class="tex-holder inline-math" data-source-tex="F_2(a, b_1, b_2; c_1, c_2; x, y)">$F_2(a, b_1, b_2; c_1, c_2; x, y)$</span>. The types of <span class="tex-holder inline-math" data-source-tex="x">$x$</span> and <span class="tex-holder inline-math" data-source-tex="y">$y$</span> must match.</p><p class="body-text"><code>vec2 hypergeometricg2(float b1, float b2, float c1, float c2, [float | vec2] x, [float | vec2] y)</code>: returns the hypergeometric function <span class="tex-holder inline-math" data-source-tex="G_2(b_1, b_2; c_1, c_2; x, y)">$G_2(b_1, b_2; c_1, c_2; x, y)$</span>. The types of <span class="tex-holder inline-math" data-source-tex="x">$x$</span> and <span class="tex-holder inline-math" data-source-tex="y">$y$</span> must match.</p><p class="body-text"><code>vec2 hypergeometricf1(float a, float b1, float b2, float c, [float | vec2] x, [float | vec2] y)</code>: returns the hypergeometric function <span class="tex-holder inline-math" data-source-tex="F_1(b_1, b_2; c_1, c_2; x, y)">$F_1(b_1, b_2; c_1, c_2; x, y)$</span>. The types of <span class="tex-holder inline-math" data-source-tex="x">$x$</span> and <span class="tex-holder inline-math" data-source-tex="y">$y$</span> must match.</p></div>`
+const GLSLDocs = String.raw`<div id="glsl-docs-card" class="card"><h1 class="heading-text">Complex GLSL Documentation</h1><p class="body-text">These functions implement many common operations on complex numbers, as well as a handful of more complicated number-theoretic functions. Unless otherwise specified, <code>float</code>s refer to real numbers and <code>vec2</code>s to complex ones.</p><h2 class="section-text" style="margin-top: 48px"> Constants</h2><p class="body-text"><code>ZERO = vec2(0.0, 0.0)</code>.</p><p class="body-text"><code>ONE = vec2(1.0, 0.0)</code>.</p><p class="body-text"><code>I = i = vec2(0.0, 1.0)</code>.</p><h2 class="section-text" style="margin-top: 48px"> Arithmetic Functions</h2><p class="body-text"><code>[float | vec2] cadd([float | vec2] z, [float | vec2] w)</code>: returns <span class="tex-holder inline-math" data-source-tex="z + w">$z + w$</span>.</p><p class="body-text"><code>[float | vec2] csub([float | vec2] z, [float | vec2] w)</code>: returns <span class="tex-holder inline-math" data-source-tex="z - w">$z - w$</span>.</p><p class="body-text"><code>[float | vec2] cmul([float | vec2] z, [float | vec2] w)</code>: returns <span class="tex-holder inline-math" data-source-tex="zw">$zw$</span>.</p><p class="body-text"><code>[float | vec2] cdiv([float | vec2] z, [float | vec2] w)</code>: returns <span class="tex-holder inline-math" data-source-tex="\dfrac{z}{w}">$\dfrac{z}{w}$</span>.</p><p class="body-text"><code>[float | vec2] cinv([float | vec2] z)</code>: returns <span class="tex-holder inline-math" data-source-tex="\frac{1}{z}">$\frac{1}{z}$</span>.</p><p class="body-text"><code>float cabs([float | vec2] z)</code>: returns <span class="tex-holder inline-math" data-source-tex="|z|">$|z|$</span>, where e.g. <span class="tex-holder inline-math" data-source-tex="|3 + 4i| = 5">$|3 + 4i| = 5$</span>.</p><p class="body-text"><code>float cmag([float | vec2] z)</code>: returns <span class="tex-holder inline-math" data-source-tex="|z|^2">$|z|^2$</span>. Avoids taking a square root to compute <span class="tex-holder inline-math" data-source-tex="|z|">$|z|$</span>.</p><p class="body-text"><code>float carg([float | vec2] z)</code>: returns the principal argument of <span class="tex-holder inline-math" data-source-tex="z">$z$</span>, i.e. the angle in <span class="tex-holder inline-math" data-source-tex="(-\pi, \pi]">$(-\pi, \pi]$</span> that <span class="tex-holder inline-math" data-source-tex="z">$z$</span> makes with the positive <span class="tex-holder inline-math" data-source-tex="x">$x$</span>-axis.</p><p class="body-text"><code>[float | vec2] cconj([float | vec2] z)</code>: returns <span class="tex-holder inline-math" data-source-tex="\overline{z}">$\overline{z}$</span>, the complex conjugate of <span class="tex-holder inline-math" data-source-tex="z">$z$</span>.</p><p class="body-text"><code>[float | vec2] csign([float | vec2] z)</code>: returns the normalized vector <span class="tex-holder inline-math" data-source-tex="\dfrac{z}{|z|}">$\dfrac{z}{|z|}$</span>, generalizing the sign function on the real numbers.</p><h2 class="section-text" style="margin-top: 48px"> Exponential Functions</h2><p class="body-text"><code>[float | vec2] cpow([float | vec2] z, [float | vec2] w)</code>: returns <span class="tex-holder inline-math" data-source-tex="z^w">$z^w$</span>. If both <span class="tex-holder inline-math" data-source-tex="z">$z$</span> and <span class="tex-holder inline-math" data-source-tex="w">$w$</span> are real but the power is complex, at least one of the two must be passed in as a <code>vec2</code>.</p><p class="body-text"><code>vec2 cpow_logz(float z, float logz, float w)</code>: returns <span class="tex-holder inline-math" data-source-tex="z^w">$z^w$</span>. Saves operations in the case <span class="tex-holder inline-math" data-source-tex="\log(z)">$\log(z)$</span> is already known. Requires <span class="tex-holder inline-math" data-source-tex="z > 0">$z > 0$</span>.</p><p class="body-text"><code>vec2 csqrt([float | vec2] z)</code>: returns <span class="tex-holder inline-math" data-source-tex="\sqrt{z}">$\sqrt{z}$</span>.</p><p class="body-text"><code>[float | vec2] cexp([float | vec2] z)</code>: returns <span class="tex-holder inline-math" data-source-tex="e^z">$e^z$</span>.</p><p class="body-text"><code>[float | vec2] clog([float | vec2] z)</code>: returns <span class="tex-holder inline-math" data-source-tex="\log(z)">$\log(z)$</span>, the natural log of <span class="tex-holder inline-math" data-source-tex="z">$z$</span>.</p><p class="body-text"><code>[float | vec2] ctet([float | vec2] z, float w)</code>: returns <span class="tex-holder inline-math" data-source-tex="z \uparrow\uparrow w">$z \uparrow\uparrow w$</span>, e.g. <span class="tex-holder inline-math" data-source-tex="2 \uparrow\uparrow 3 = 2^{2^2} = 16">$2 \uparrow\uparrow 3 = 2^{2^2} = 16$</span>.</p><p class="body-text"><code>int powermod(int a, int b, int c)</code>: returns <span class="tex-holder inline-math" data-source-tex="a^b \mod c">$a^b \mod c$</span>.</p><h2 class="section-text" style="margin-top: 48px"> Trigonometric Functions</h2><p class="body-text">All six standard trigonometric functions are implemented, along with their inverses, hyperbolic versions, and hyperbolic inverses. For example, <code>csin(z)</code> returns <span class="tex-holder inline-math" data-source-tex="\sin(z)">$\sin(z)$</span>, <code>casin(z)</code> returns <span class="tex-holder inline-math" data-source-tex="\arcsin(z)">$\arcsin(z)$</span>, <code>csinh(z)</code> returns <span class="tex-holder inline-math" data-source-tex="\sinh(z)">$\sinh(z)$</span>, and <code>casinh(z)</code> returns <span class="tex-holder inline-math" data-source-tex="\operatorname{arcsinh}(z)">$\operatorname{arcsinh}(z)$</span>.</p><p class="body-text"><code>[float | vec2] c[a]sin[h]([float | vec2] z)</code>.</p><p class="body-text"><code>[float | vec2] c[a]cos[h]([float | vec2] z)</code>.</p><p class="body-text"><code>[float | vec2] c[a]tan[h]([float | vec2] z)</code>.</p><p class="body-text"><code>[float | vec2] c[a]csc[h]([float | vec2] z)</code>.</p><p class="body-text"><code>[float | vec2] c[a]sec[h]([float | vec2] z)</code>.</p><p class="body-text"><code>[float | vec2] c[a]cot[h]([float | vec2] z)</code>.</p><h2 class="section-text" style="margin-top: 48px"> Combinatorial Functions</h2><p class="body-text"><code>float factorial([int | float] n)</code>: returns <span class="tex-holder inline-math" data-source-tex="n!">$n!$</span>.</p><p class="body-text"><code>float binomial([int | float] n, [int | float] k)</code>: returns <span class="tex-holder inline-math" data-source-tex="\binom{n}{k}">$\displaystyle \binom{n}{k}$</span>.</p><p class="body-text"><code>float divisor(float n, float k = 1.0)</code>: returns the sum of all <span class="tex-holder inline-math" data-source-tex="k">$k$</span>th powers of divisors of <span class="tex-holder inline-math" data-source-tex="n">$n$</span>.</p><p class="body-text"><code>float bernoulli(float n)</code>: returns the <span class="tex-holder inline-math" data-source-tex="n">$n$</span>th Bernoulli number <span class="tex-holder inline-math" data-source-tex="B_n">$B_n$</span>.</p><p class="body-text"><code>float rising_factorial(float a, [int | float] n)</code>: returns <span class="tex-holder inline-math" data-source-tex="(a)(a + 1)\cdots(a+n-1)">$(a)(a + 1)\cdots(a+n-1)$</span>.</p><h2 class="section-text" style="margin-top: 48px"> Number-Theoretic Functions</h2><p class="body-text"><code>[float | vec2] zeta([float | vec2] z)</code>: returns <span class="tex-holder inline-math" data-source-tex="\zeta(z)">$\zeta(z)$</span>, where <span class="tex-holder inline-math" data-source-tex="\zeta">$\zeta$</span> is the Riemann zeta function.</p><p class="body-text"><code>vec2 hurwitz_zeta(vec2 z, [float | vec2] a)</code>: returns <span class="tex-holder inline-math" data-source-tex="\zeta(z, a)">$\zeta(z, a)$</span>, where <span class="tex-holder inline-math" data-source-tex="\zeta">$\zeta$</span> is the Hurwitz zeta function, a generalization of the Riemann zeta function.</p><p class="body-text"><code>vec2 su3_character([int | float] p, [int | float] p, vec2 z)</code>: returns the character of the irreducible <span class="tex-holder inline-math" data-source-tex="SU(3)">$SU(3)$</span> representation with highest weight <span class="tex-holder inline-math" data-source-tex="(p, q)">$(p, q)$</span>.</p><p class="body-text"><code>[float | vec2] gamma([int | float | vec2] a)</code>: returns <span class="tex-holder inline-math" data-source-tex="\Gamma(a)">$\Gamma(a)$</span>, where <span class="tex-holder inline-math" data-source-tex="\Gamma">$\Gamma$</span> is the gamma function, a generalization of the factorial operation.</p><p class="body-text"><code>vec2 digamma(vec2 a)</code>: returns the logarithmic derivative of the <span class="tex-holder inline-math" data-source-tex="\Gamma">$\Gamma$</span> function, i.e. <span class="tex-holder inline-math" data-source-tex="\dfrac{\Gamma'(a)}{\Gamma(a)}">$\dfrac{\Gamma'(a)}{\Gamma(a)}$</span>.</p><p class="body-text"><code>vec2 polygamma([int | float] n, vec2 a)</code>: returns the <span class="tex-holder inline-math" data-source-tex="(n + 1)">$(n + 1)$</span>st logarithmic derivative of the <span class="tex-holder inline-math" data-source-tex="\Gamma">$\Gamma$</span> function at <span class="tex-holder inline-math" data-source-tex="a">$a$</span>.</p><p class="body-text"><code>vec2 hypergeometric2f1(float a, float b, float c, [float | vec2] z)</code>: returns the hypergeometric function <span class="tex-holder inline-math" data-source-tex="_2F_1(a, b; c; z)">$_2F_1(a, b; c; z)$</span>.</p><p class="body-text"><code>vec2 hypergeometricf2(float a, float b1, float b2, float c1, float c2, [float | vec2] x, [float | vec2] y)</code>: returns the hypergeometric function <span class="tex-holder inline-math" data-source-tex="F_2(a, b_1, b_2; c_1, c_2; x, y)">$F_2(a, b_1, b_2; c_1, c_2; x, y)$</span>. The types of <span class="tex-holder inline-math" data-source-tex="x">$x$</span> and <span class="tex-holder inline-math" data-source-tex="y">$y$</span> must match.</p><p class="body-text"><code>vec2 hypergeometricg2(float b1, float b2, float c1, float c2, [float | vec2] x, [float | vec2] y)</code>: returns the hypergeometric function <span class="tex-holder inline-math" data-source-tex="G_2(b_1, b_2; c_1, c_2; x, y)">$G_2(b_1, b_2; c_1, c_2; x, y)$</span>. The types of <span class="tex-holder inline-math" data-source-tex="x">$x$</span> and <span class="tex-holder inline-math" data-source-tex="y">$y$</span> must match.</p><p class="body-text"><code>vec2 hypergeometricf1(float a, float b1, float b2, float c, [float | vec2] x, [float | vec2] y)</code>: returns the hypergeometric function <span class="tex-holder inline-math" data-source-tex="F_1(b_1, b_2; c_1, c_2; x, y)">$F_1(b_1, b_2; c_1, c_2; x, y)$</span>. The types of <span class="tex-holder inline-math" data-source-tex="x">$x$</span> and <span class="tex-holder inline-math" data-source-tex="y">$y$</span> must match.</p></div>`;
 
 const components =
 {
@@ -97,8 +97,6 @@ const components =
 	
 	getGalleryImage: function(id, size, ...name)
 	{
-		const text = name.join(" ");
-		
 		return `
 			<div class="gallery-image-${size}-${size}">
 				<img src="/gallery/thumbnails/${id}.webp" data-image-id="${id}" alt="${name}"></img>
@@ -203,52 +201,52 @@ const components =
 			
 			//First, we replace ending dollar signs with [END$] to differentiate them for later. Otherwise, delimiters between dollar signs would be matched too. We also replace escaped characters.
 			let html = text
-			.replaceAll(/\\\$/g, "[DOLLARSIGN]")
-			.replaceAll(/\\`/g, "[BACKTICK]")
-			.replaceAll(/\\\*/g, "[ASTERISK]")
-			.replaceAll(/\\\"/g, "[DOUBLEQUOTE]")
-			.replaceAll(/\\\'/g, "[SINGLEQUOTE]")
-			.replaceAll(/\$\$(.*?)\$\$/g, (match, $1) => `\$\\displaystyle ${$1}\$`)
-			.replaceAll(/\$(.*?)\$/g, (match, $1) => `\$${components.Parse.latex($1)}[END\$]`);
+				.replaceAll(/\\\$/g, "[DOLLARSIGN]")
+				.replaceAll(/\\`/g, "[BACKTICK]")
+				.replaceAll(/\\\*/g, "[ASTERISK]")
+				.replaceAll(/\\"/g, "[DOUBLEQUOTE]")
+				.replaceAll(/\\'/g, "[SINGLEQUOTE]")
+				.replaceAll(/\$\$(.*?)\$\$/g, (match, $1) => `$\\displaystyle ${$1}$`)
+				.replaceAll(/\$(.*?)\$/g, (match, $1) => `$${components.Parse.latex($1)}[END$]`);
 			
 			
 			
 			//Escape every asterisk, backtick, and quote inside dollar signs.
-			while (html.match(/\$([^\$]*?)\*([^\$]*?)\[END\$\]/))
+			while (html.match(/\$([^$]*?)\*([^$]*?)\[END\$\]/))
 			{
-				html = html.replaceAll(/\$([^\$]*?)\*([^\$]*?)\[END\$\]/g, (match, $1, $2) => `\$${$1}[ASTERISK]${$2}[END\$]`);
+				html = html.replaceAll(/\$([^$]*?)\*([^$]*?)\[END\$\]/g, (match, $1, $2) => `$${$1}[ASTERISK]${$2}[END$]`);
 			}
 			
-			while (html.match(/\$([^\$]*?)`([^\$]*?)\[END\$\]/))
+			while (html.match(/\$([^$]*?)`([^$]*?)\[END\$\]/))
 			{
-				html = html.replaceAll(/\$([^\$]*?)`([^\$]*?)\[END\$\]/g, (match, $1, $2) => `\$${$1}[BACKTICK]${$2}[END\$]`);
+				html = html.replaceAll(/\$([^$]*?)`([^$]*?)\[END\$\]/g, (match, $1, $2) => `$${$1}[BACKTICK]${$2}[END$]`);
 			}
 			
-			while (html.match(/\$([^\$]*?)\"([^\$]*?)\[END\$\]/))
+			while (html.match(/\$([^$]*?)"([^$]*?)\[END\$\]/))
 			{
-				html = html.replaceAll(/\$([^\$]*?)\"([^\$]*?)\[END\$\]/g, (match, $1, $2) => `\$${$1}[DOUBLEQUOTE]${$2}[END\$]`);
+				html = html.replaceAll(/\$([^$]*?)"([^$]*?)\[END\$\]/g, (match, $1, $2) => `$${$1}[DOUBLEQUOTE]${$2}[END$]`);
 			}
 			
-			while (html.match(/\$([^\$]*?)\'([^\$]*?)\[END\$\]/))
+			while (html.match(/\$([^$]*?)'([^$]*?)\[END\$\]/))
 			{
-				html = html.replaceAll(/\$([^\$]*?)\'([^\$]*?)\[END\$\]/g, (match, $1, $2) => `\$${$1}[SINGLEQUOTE]${$2}[END\$]`);
+				html = html.replaceAll(/\$([^$]*?)'([^$]*?)\[END\$\]/g, (match, $1, $2) => `$${$1}[SINGLEQUOTE]${$2}[END$]`);
 			}
 			
-			while (html.match(/\$([^\$]*?)\[END\$\]([^<])/))
+			while (html.match(/\$([^$]*?)\[END\$\]([^<])/))
 			{
-				html = html.replaceAll(/\$([^\$]*?)\[END\$\]([^<])/g, (match, $1, $2) => `<span class="tex-holder">\$${$1}[END\$]</span>${$2}`);
+				html = html.replaceAll(/\$([^$]*?)\[END\$\]([^<])/g, (match, $1, $2) => `<span class="tex-holder">$${$1}[END$]</span>${$2}`);
 			}
 			
-			while (html.match(/\$([^\$]*?)\[END\$\]$/))
+			while (html.match(/\$([^$]*?)\[END\$\]$/))
 			{
-				html = html.replaceAll(/\$([^\$]*?)\[END\$\]$/g, (match, $1) => `<span class="tex-holder">\$${$1}[END\$]</span>`);
+				html = html.replaceAll(/\$([^$]*?)\[END\$\]$/g, (match, $1) => `<span class="tex-holder">$${$1}[END$]</span>`);
 			}
 			
 			
 			
 			//Now we can handle the backticks. Since all of the ones still present aren't inside math mode, we know they must be code. That means we need to play the same game we just did. First we can put back the dollar signs though.
 			
-			html = html.replaceAll(/\[END\$\]/g, "\$").replaceAll(/`(.*?)`/g, (match, $1) => `\`${$1}[END\`]`);
+			html = html.replaceAll(/\[END\$\]/g, "$").replaceAll(/`(.*?)`/g, (match, $1) => `\`${$1}[END\`]`);
 			
 			//Escape every asterisk and quote inside backticks.
 			while (html.match(/`([^`]*?)\*([^`]*?)\[END`\]/))
@@ -256,27 +254,27 @@ const components =
 				html = html.replaceAll(/`([^`]*?)\*([^`]*?)\[END`\]/g, (match, $1, $2) => `\`${$1}[ASTERISK]${$2}[END\`]`);
 			}
 			
-			while (html.match(/`([^`]*?)\"([^`]*?)\[END`\]/))
+			while (html.match(/`([^`]*?)"([^`]*?)\[END`\]/))
 			{
-				html = html.replaceAll(/`([^`]*?)\"([^`]*?)\[END`\]/g, (match, $1, $2) => `\`${$1}[DOUBLEQUOTE]${$2}[END\`]`);
+				html = html.replaceAll(/`([^`]*?)"([^`]*?)\[END`\]/g, (match, $1, $2) => `\`${$1}[DOUBLEQUOTE]${$2}[END\`]`);
 			}
 			
-			while (html.match(/`([^`]*?)\'([^`]*?)\[END`\]/))
+			while (html.match(/`([^`]*?)'([^`]*?)\[END`\]/))
 			{
-				html = html.replaceAll(/`([^`]*?)\'([^`]*?)\[END`\]/g, (match, $1, $2) => `\`${$1}[SINGLEQUOTE]${$2}[END\`]`);
+				html = html.replaceAll(/`([^`]*?)'([^`]*?)\[END`\]/g, (match, $1, $2) => `\`${$1}[SINGLEQUOTE]${$2}[END\`]`);
 			}
 			
 			
 			
 			//Escape every quote inside a tag.
-			while (html.match(/<([^<>]*?)\"([^<>]*?)>/))
+			while (html.match(/<([^<>]*?)"([^<>]*?)>/))
 			{
-				html = html.replaceAll(/<([^<>]*?)\"([^<>]*?)>/g, (match, $1, $2) => `<${$1}[DOUBLEQUOTE]${$2}>`);
+				html = html.replaceAll(/<([^<>]*?)"([^<>]*?)>/g, (match, $1, $2) => `<${$1}[DOUBLEQUOTE]${$2}>`);
 			}
 			
-			while (html.match(/<([^<>]*?)\'([^<>]*?)>/))
+			while (html.match(/<([^<>]*?)'([^<>]*?)>/))
 			{
-				html = html.replaceAll(/<([^<>]*?)\'([^<>]*?)>/g, (match, $1, $2) => `<${$1}[SINGLEQUOTE]${$2}>`);
+				html = html.replaceAll(/<([^<>]*?)'([^<>]*?)>/g, (match, $1, $2) => `<${$1}[SINGLEQUOTE]${$2}>`);
 			}
 			
 			
@@ -312,23 +310,23 @@ const components =
 			
 			//Now we're finally ready to add the code tags, and then the remaining em and strong tags, and then modify the quotes. Then at long last, we can unescape the remaining characters.
 			return html
-			.replaceAll(/`(.*?)\[END`\]/g, (match, $1) => `<code>${$1}</code>`)
-			.replaceAll(/\*\*(.*?)\*\*/g, (match, $1) => `<strong>${$1}</strong>`)
-			.replaceAll(/\*(.*?)\*/g, (match, $1) => `<em>${$1}</em>`)
-			.replaceAll(/(\s)\"(\S)/g, (match, $1, $2) => `${$1}&#x201C;${$2}`)
-			.replaceAll(/^\"(\S)/g, (match, $1) => `&#x201C;${$1}`)
-			.replaceAll(/\"/g, "&#x201D;")
-			.replaceAll(/(\s)\'(\S)/g, (match, $1, $2) => `${$1}&#x2018;${$2}`)
-			.replaceAll(/^\'(\S)/g, (match, $1) => `&#x2018;${$1}`)
-			.replaceAll(/\'/g, "&#x2019;")
-			.replaceAll(/---/g, "&mdash;")
-			.replaceAll(/--/g, "&ndash;")
-			.replaceAll(/\[DOUBLEQUOTE\]/g, "\"")
-			.replaceAll(/\[SINGLEQUOTE\]/g, "\'")
-			.replaceAll(/\[ASTERISK\]/g, "*")
-			.replaceAll(/\[BACKTICK\]/g, "`")
-			.replaceAll(/\[DOLLARSIGN\]/g, "\\$")
-			.replaceAll(/<span class="tex-holder">\$(.*?)\$<\/span>/g, (match, $1) => `<span class="tex-holder inline-math" data-source-tex="${$1.replaceAll(/\\displaystyle\s*/g, "")}">\$${$1}\$</span>`);
+				.replaceAll(/`(.*?)\[END`\]/g, (match, $1) => `<code>${$1}</code>`)
+				.replaceAll(/\*\*(.*?)\*\*/g, (match, $1) => `<strong>${$1}</strong>`)
+				.replaceAll(/\*(.*?)\*/g, (match, $1) => `<em>${$1}</em>`)
+				.replaceAll(/(\s)"(\S)/g, (match, $1, $2) => `${$1}&#x201C;${$2}`)
+				.replaceAll(/^"(\S)/g, (match, $1) => `&#x201C;${$1}`)
+				.replaceAll(/"/g, "&#x201D;")
+				.replaceAll(/(\s)'(\S)/g, (match, $1, $2) => `${$1}&#x2018;${$2}`)
+				.replaceAll(/^'(\S)/g, (match, $1) => `&#x2018;${$1}`)
+				.replaceAll(/'/g, "&#x2019;")
+				.replaceAll(/---/g, "&mdash;")
+				.replaceAll(/--/g, "&ndash;")
+				.replaceAll(/\[DOUBLEQUOTE\]/g, "\"")
+				.replaceAll(/\[SINGLEQUOTE\]/g, "'")
+				.replaceAll(/\[ASTERISK\]/g, "*")
+				.replaceAll(/\[BACKTICK\]/g, "`")
+				.replaceAll(/\[DOLLARSIGN\]/g, "\\$")
+				.replaceAll(/<span class="tex-holder">\$(.*?)\$<\/span>/g, (match, $1) => `<span class="tex-holder inline-math" data-source-tex="${$1.replaceAll(/\\displaystyle\s*/g, "")}">$${$1}$</span>`);
 		},
 		
 		
@@ -336,7 +334,7 @@ const components =
 		"latex": (content) =>
 		{
 			return content.replaceAll(/[^\\]\\te([^a-zA-Z])/g, (match, $1) => `\\ \\times\\!\\!=${$1}`)
-			.replaceAll(/[^\\]\\pe([^a-zA-Z])/g, (match, $1) => `\\ +\\!\\!=${$1}`);
+				.replaceAll(/[^\\]\\pe([^a-zA-Z])/g, (match, $1) => `\\ +\\!\\!=${$1}`);
 		},
 		
 		
@@ -348,10 +346,10 @@ const components =
 			
 			content.forEach(line =>
 			{
-				html = `${html}${components.getImageLink(line.split(" "))}`
+				html = `${html}${components.getImageLink(line.split(" "))}`;
 			});
 			
-			html = `${html}</div>`
+			html = `${html}</div>`;
 			
 			return html;
 		},
@@ -360,14 +358,14 @@ const components =
 		
 		"buttons": (content) =>
 		{
-			let html = `<div class="text-buttons">`;
+			let html = "<div class='text-buttons'>";
 			
 			content.forEach(line =>
 			{
-				html = `${html}${components.getTextButton(line.split(" "))}`
+				html = `${html}${components.getTextButton(line.split(" "))}`;
 			});
 			
-			html = `${html}</div>`
+			html = `${html}</div>`;
 			
 			return html;
 		},
@@ -376,14 +374,14 @@ const components =
 		
 		"text-boxes": (content) =>
 		{
-			let html = `<div class="text-boxes">`;
+			let html = "<div class='text-boxes'>";
 			
 			content.forEach(line =>
 			{
-				html = `${html}${components.getTextBox(line.split(" "))}`
+				html = `${html}${components.getTextBox(line.split(" "))}`;
 			});
 			
-			html = `${html}</div>`
+			html = `${html}</div>`;
 			
 			return html;
 		},
@@ -392,14 +390,14 @@ const components =
 		
 		"sliders": (content) =>
 		{
-			let html = `<div class="sliders">`;
+			let html = "<div class='sliders'>";
 			
 			content.forEach(line =>
 			{
-				html = `${html}${components.getSlider(line.split(" "))}`
+				html = `${html}${components.getSlider(line.split(" "))}`;
 			});
 			
-			html = `${html}</div>`
+			html = `${html}</div>`;
 			
 			return html;
 		},
@@ -430,7 +428,7 @@ const components =
 				html += `<option value="${value}">${text}</option>`;
 			}
 			
-			html += `</select></div></div>`;
+			html += "</select></div></div>";
 			
 			return html;
 		},
@@ -439,14 +437,14 @@ const components =
 		
 		"gallery-block": (content) =>
 		{
-			let html = `<div class="gallery-block">`;
+			let html = "<div class='gallery-block'>";
 			
 			content.forEach(line =>
 			{
 				html = `${html}${components.getGalleryImage(...(line.split(" ")))}`;
 			});
 			
-			html = `${html}</div>`
+			html = `${html}</div>`;
 			
 			return html;
 		},
@@ -515,7 +513,7 @@ const components =
 			
 			else
 			{
-				return `<canvas id="output-canvas" class="output-canvas"></canvas>`;
+				return "<canvas id='output-canvas' class='output-canvas'></canvas>";
 			}
 		},
 		
@@ -589,10 +587,10 @@ const components =
 		{
 			if (glsl === "glsl")
 			{
-				return `<p class="body-text">This applet was made with <a href="/projects/wilson/">Wilson</a>, a library I wrote to make high-performance, polished applets easier to create. Much of the code implementing complex functions was contributed by <a href="https://ahuchala.com">Andy Huchala.</a> (<a data-card-id="glsl-docs">View the documentation!</a>)</p>`;
+				return "<p class='body-text'>This applet was made with <a href='/projects/wilson/'>Wilson</a>, a library I wrote to make high-performance, polished applets easier to create. Much of the code implementing complex functions was contributed by <a href='https://ahuchala.com'>Andy Huchala.</a> (<a data-card-id='glsl-docs'>View the documentation!</a>)</p>";
 			}
 			
-			return `<p class="body-text">This applet was made with <a href="/projects/wilson/">Wilson</a>, a library I wrote to make high-performance, polished applets easier to create.</p>`;
+			return "<p class='body-text'>This applet was made with <a href='/projects/wilson/'>Wilson</a>, a library I wrote to make high-performance, polished applets easier to create.</p>";
 		}
 	},
 	
@@ -620,7 +618,7 @@ const components =
 		
 		let inEnvironment = false;
 		
-		html = html.replaceAll(/\r/g, "").replaceAll(/    /g, "\t");
+		html = html.replaceAll(/\r/g, "").replaceAll(/ {4}/g, "\t");
 		
 		//Tabs in code blocks stay, but the rest can go. We match two tabs here so that we can still indent the whole block by one.
 		while (html.match(/(```.+\n[\s\S]*?)\t\t([\s\S]*?```\n)/))
@@ -712,7 +710,7 @@ const components =
 				//Remove the last line break.
 				lines[i - 1] = lines[i - 1].replace(/\\\\\[4px\]$/, "");
 				
-				lines[i] = `\\end{align*}$$</span></p>`;
+				lines[i] = "\\end{align*}$$</span></p>";
 				
 				lines[startI] = `<p class="body-text" style="text-align: center"><span class="tex-holder" style="padding: 8px" data-source-tex="${sourceTex}">$$\\begin{align*}`;
 			}
@@ -729,7 +727,7 @@ const components =
 				
 				else
 				{
-					lines[i] = `<pre><code>`;
+					lines[i] = "<pre><code>";
 				}
 				
 				lines[i] = `${lines[i]}${lines[i + 1]}[ESCAPEDNEWLINE]`;
@@ -762,7 +760,7 @@ const components =
 					
 					inEnvironment = false;
 					
-					lines[i] = `</div>`;
+					lines[i] = "</div>";
 					continue;
 				}
 				
@@ -926,7 +924,7 @@ const components =
 
 
 
-export default async (file, fileParentFolder, sitemapArgument) =>
+export default async function buildHTMLFile(file, fileParentFolder, sitemapArgument)
 {
 	parentFolder = fileParentFolder;
 

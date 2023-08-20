@@ -3,9 +3,9 @@ import { read, write } from "./file-io.mjs";
 const textSitemapPath = "/build/sitemap.txt";
 export const sitemapPath = "/scripts/src/sitemap.mjs";
 
-export default async () =>
+export default async function buildSitemap()
 {
-	const lines = (await read(textSitemapPath)).replaceAll(/\r/g, "").replaceAll(/    /g, "\t").replaceAll(/\n\t*?\n/g, "\n").split("\n");
+	const lines = (await read(textSitemapPath)).replaceAll(/\r/g, "").replaceAll(/ {4}/g, "\t").replaceAll(/\n\t*?\n/g, "\n").split("\n");
 
 	const depths = new Array(lines.length);
 
