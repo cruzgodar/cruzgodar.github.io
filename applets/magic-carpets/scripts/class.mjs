@@ -66,7 +66,7 @@ export class MagicCarpet extends Applet
 			this.cages = e.data[0];
 			
 			this.drawGrid();
-		}
+		};
 		
 		this.webWorker.postMessage([this.gridSize, this.maxCageSize, uniqueSolution]);
 	}
@@ -215,4 +215,4 @@ export class MagicCarpet extends Applet
 		
 		setTimeout(() => this.drawCage(index + 1, delay, rectanglesOnly), delay);
 	}
-	}
+}

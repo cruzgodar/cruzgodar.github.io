@@ -59,13 +59,8 @@ export function load()
 	const downloadButtonElement = $("#download-button");
 	
 	applet.setInputCaps([resolutionInputElement], [3000]);
-	
-	applet.loadPromise.then(async () =>
-	{
-		const planePartition = applet.generateRandomPlanePartition();
-		arrayDataTextareaElement.value = applet.arrayToAscii(planePartition);
-		await applet.addNewArray(0, planePartition);
-	});
+
+
 	
 	const sectionNames = ["view-controls", "add-array", "edit-array", "remove-array", "algorithms"];
 	
@@ -77,7 +72,7 @@ export function load()
 		"remove-array": $$(".remove-array-section"),
 		"algorithms": $$(".algorithms-section"),
 		"examples": $$(".examples-section")
-	}
+	};
 	
 	const categoryHolderElement = $("#category-holder");
 	const canvasLandscapeLeftElement = $("#canvas-landscape-left");
@@ -130,7 +125,7 @@ export function load()
 			}
 		}
 		
-		sectionElements[visibleSection].forEach(element => changeOpacity(element, 1))
+		sectionElements[visibleSection].forEach(element => changeOpacity(element, 1));
 	});
 	
 	
@@ -278,7 +273,13 @@ export function load()
 	
 	downloadButtonElement.addEventListener("click", () => applet.needDownload = true);
 	
-	
+
+
+	const planePartition = applet.generateRandomPlanePartition();
+	arrayDataTextareaElement.value = applet.arrayToAscii(planePartition);
+	applet.addNewArray(0, planePartition);
+
+
 	
 	showPage();
-	}
+}

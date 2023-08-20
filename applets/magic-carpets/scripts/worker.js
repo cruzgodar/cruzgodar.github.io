@@ -46,7 +46,7 @@ function generateMagicCarpet()
 	
 	
 	
-	while (true)
+	for (;;)
 	{
 		let expandedACage = false;
 		
@@ -107,45 +107,6 @@ function generateMagicCarpet()
 			return;
 		}
 	}
-}
-
-
-
-function printGrid()
-{
-	let string = "";
-	
-	let labels = new Array(gridSize);
-	
-	for (let i = 0; i < gridSize; i++)
-	{
-		labels[i] = new Array(gridSize);
-		
-		for (let j = 0; j < gridSize; j++)
-		{
-			labels[i][j] = 0;
-		}
-	}
-	
-	for (let i = 0; i < cages.length; i++)
-	{
-		const row = cages[i][0] + cages[i][4];
-		const col = cages[i][1] + cages[i][5];
-		
-		labels[row][col] = cages[i][2] * cages[i][3];
-	}
-	
-	for (let i = 0; i < gridSize; i++)
-	{
-		for (let j = 0; j < gridSize; j++)
-		{
-			string += `${labels[i][j] !== 0 ? labels[i][j] : " "} `;
-		}
-		
-		string += "\n";
-	}
-	
-	postMessage(string);
 }
 
 
@@ -430,4 +391,4 @@ function solvePuzzleStep(cageIndex, occupiedCageLocations)
 	});
 	
 	return numSolutions;
-	}
+}

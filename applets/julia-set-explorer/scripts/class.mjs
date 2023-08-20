@@ -1,3 +1,4 @@
+import { changeOpacity } from "/scripts/src/animation.mjs";
 import { Applet } from "/scripts/src/applets.mjs";
 import { doubleEmulationGlsl, loadGlsl } from "/scripts/src/complex-glsl.mjs";
 import { addTemporaryListener } from "/scripts/src/main.mjs";
@@ -5,8 +6,6 @@ import { Wilson } from "/scripts/wilson.mjs";
 
 export class JuliaSet extends Applet
 {
-	loadPromise = null;
-	
 	wilsonHidden = null;
 	
 	juliaMode = 0;
@@ -50,604 +49,604 @@ export class JuliaSet extends Applet
 		
 		this.switchJuliaModeButtonElement = switchJuliaModeButtonElement;
 		
+		
+
+		loadGlsl().then(() => this.run(canvas));
+	}
+
+
+
+	run(canvas)
+	{
+		const fragShaderSourceSingle0 = `
+			precision highp float;
+			
+			varying vec2 uv;
+			
+			uniform float aspectRatio;
+			
+			uniform vec2 worldCenterX;
+			uniform vec2 worldCenterY;
+			uniform float worldSize;
+			
+			uniform float a;
+			uniform float b;
+			uniform int numIterations;
+			uniform float brightnessScale;
+			
+			
+			
+			void main(void)
+			{
+				vec2 z;
+				
+				if (aspectRatio >= 1.0)
+				{
+					z = vec2(uv.x * aspectRatio * worldSize + worldCenterX.x, uv.y * worldSize + worldCenterY.x);
+				}
+				
+				else
+				{
+					z = vec2(uv.x * worldSize + worldCenterX.x, uv.y / aspectRatio * worldSize + worldCenterY.x);
+				}
+				
+				vec2 c = z;
+				
+				vec3 color = normalize(vec3(abs(z.x + z.y) / 2.0, abs(z.x) / 2.0, abs(z.y) / 2.0) + .1 / length(z) * vec3(1.0, 1.0, 1.0));
+				
+				float brightness = exp(-length(z));
+				
+				
+				
+				for (int iteration = 0; iteration < 3001; iteration++)
+				{
+					if (iteration == numIterations)
+					{
+						gl_FragColor = vec4(0.0, 0.0, 0.0, 1.0);
+						return;
+					}
+					
+					if (length(z) >= 4.0)
+					{
+						break;
+					}
+					
+					z = vec2(z.x * z.x - z.y * z.y, 2.0 * z.x * z.y) + c;
+					
+					brightness += exp(-length(z));
+				}
+				
+				
+				gl_FragColor = vec4(brightness / brightnessScale * color, 1.0);
+			}
+		`;
+		
+		
+		
+		const fragShaderSourceSingle1 = `
+			precision highp float;
+			
+			varying vec2 uv;
+			
+			uniform float aspectRatio;
+			
+			uniform vec2 worldCenterX;
+			uniform vec2 worldCenterY;
+			uniform float worldSize;
+			
+			uniform float a;
+			uniform float b;
+			uniform int numIterations;
+			uniform float brightnessScale;
+			
+			
+			
+			void main(void)
+			{
+				vec2 z;
+				
+				if (aspectRatio >= 1.0)
+				{
+					z = vec2(uv.x * aspectRatio * worldSize + worldCenterX.x, uv.y * worldSize + worldCenterY.x);
+				}
+				
+				else
+				{
+					z = vec2(uv.x * worldSize + worldCenterX.x, uv.y / aspectRatio * worldSize + worldCenterY.x);
+				}
+				
+				vec2 c = vec2(a, b);
+				
+				vec3 color = normalize(vec3(abs(z.x + z.y) / 2.0, abs(z.x) / 2.0, abs(z.y) / 2.0) + .1 / length(z) * vec3(1.0, 1.0, 1.0));
+				
+				float brightness = exp(-length(z));
+				
+				
+				
+				for (int iteration = 0; iteration < 3001; iteration++)
+				{
+					if (iteration == numIterations)
+					{
+						gl_FragColor = vec4(0.0, 0.0, 0.0, 1.0);
+						return;
+					}
+					
+					if (length(z) >= 4.0)
+					{
+						break;
+					}
+					
+					z = vec2(z.x * z.x - z.y * z.y, 2.0 * z.x * z.y) + c;
+					
+					brightness += exp(-length(z));
+				}
+				
+				
+				gl_FragColor = vec4(brightness / brightnessScale * color, 1.0);
+			}
+		`;
+		
+		
+		
+		const fragShaderSourceSingle2 = `
+			precision highp float;
+			
+			varying vec2 uv;
+			
+			uniform float aspectRatio;
+			
+			uniform vec2 worldCenterX;
+			uniform vec2 worldCenterY;
+			uniform float worldSize;
+			
+			uniform float a;
+			uniform float b;
+			uniform int numIterations;
+			uniform float brightnessScale;
+			
+			
+			
+			void main(void)
+			{
+				vec2 z;
+				
+				if (aspectRatio >= 1.0)
+				{
+					z = vec2(uv.x * aspectRatio * worldSize + worldCenterX.x, uv.y * worldSize + worldCenterY.x);
+				}
+				
+				else
+				{
+					z = vec2(uv.x * worldSize + worldCenterX.x, uv.y / aspectRatio * worldSize + worldCenterY.x);
+				}
+				
+				vec2 c = z;
+				
+				vec3 color = normalize(vec3(abs(z.x + z.y) / 2.0, abs(z.x) / 2.0, abs(z.y) / 2.0) + .1 / length(z) * vec3(1.0, 1.0, 1.0));
+				
+				float brightness = exp(-length(z));
+				
+				
+				
+				bool broken = false;
+				
+				for (int iteration = 0; iteration < 3001; iteration++)
+				{
+					if (iteration == numIterations)
+					{
+						gl_FragColor = vec4(0.0, 0.0, 0.0, 1.0);
+						
+						broken = true;
+						
+						break;
+					}
+					
+					if (length(z) >= 4.0)
+					{
+						break;
+					}
+					
+					z = vec2(z.x * z.x - z.y * z.y, 2.0 * z.x * z.y) + c;
+					
+					brightness += exp(-length(z));
+				}
+				
+				
+				
+				if (!broken)
+				{
+					gl_FragColor = vec4(.5 * brightness / brightnessScale * color, 1.0);
+				}
+				
+				
+				
+				z = vec2(uv.x * aspectRatio * 2.0, uv.y * 2.0);
+				
+				color = normalize(vec3(abs(z.x + z.y) / 2.0, abs(z.x) / 2.0, abs(z.y) / 2.0) + .1 / length(z) * vec3(1.0, 1.0, 1.0));
+				
+				brightness = exp(-length(z));
+				
+				broken = false;
+				
+				c = vec2(a, b);
+				
+				for (int iteration = 0; iteration < 3001; iteration++)
+				{
+					if (iteration == numIterations)
+					{
+						gl_FragColor.xyz /= 4.0;
+						
+						broken = true;
+						
+						break;
+					}
+					
+					if (length(z) >= 4.0)
+					{
+						break;
+					}
+					
+					z = vec2(z.x * z.x - z.y * z.y, 2.0 * z.x * z.y) + c;
+					
+					brightness += exp(-length(z));
+				}
+				
+				if (!broken)
+				{
+					gl_FragColor += vec4(brightness / brightnessScale * color, 0.0);
+				}
+			}
+		`;
+		
+		
+		
+		const fragShaderSourceDouble0 = `
+			precision highp float;
+			
+			varying vec2 uv;
+			
+			uniform float aspectRatio;
+			
+			uniform vec2 worldCenterX;
+			uniform vec2 worldCenterY;
+			uniform float worldSize;
+			
+			uniform float a;
+			uniform float b;
+			uniform int numIterations;
+			uniform float brightnessScale;
+			
+			
+			
+			${doubleEmulationGlsl}
+			
+			
+			
+			void main(void)
+			{
+				vec4 z;
+				
+				if (aspectRatio >= 1.0)
+				{
+					z = dcAdd(dcMul(vec4(uv.x * aspectRatio, 0.0, uv.y, 0.0), vec2(worldSize, 0.0)), vec4(worldCenterX, worldCenterY));
+				}
+				
+				else
+				{
+					z = dcAdd(dcMul(vec4(uv.x, 0.0, uv.y / aspectRatio, 0.0), vec2(worldSize, 0.0)), vec4(worldCenterX, worldCenterY));
+				}
+				
+				vec4 c = z;
+				
+				vec3 color = normalize(vec3(abs(z.x + z.z) / 2.0, abs(z.x) / 2.0, abs(z.z) / 2.0) + .1 / length(z) * vec3(1.0, 1.0, 1.0));
+				
+				float brightness = exp(-length(z));
+				
+				for (int iteration = 0; iteration < 3001; iteration++)
+				{
+					if (iteration == numIterations)
+					{
+						gl_FragColor = vec4(0.0, 0.0, 0.0, 1.0);
+						return;
+					}
+					
+					if (length(z) >= 4.0)
+					{
+						break;
+					}
+					
+					z = dcAdd(dcMul(z, z), c);
+					
+					brightness += exp(-length(z));
+				}
+				
+				gl_FragColor = vec4(brightness / brightnessScale * color, 1.0);
+			}
+		`;
+		
+		
+		
+		const fragShaderSourceDouble1 = `
+			precision highp float;
+			
+			varying vec2 uv;
+			
+			uniform float aspectRatio;
+			
+			uniform vec2 worldCenterX;
+			uniform vec2 worldCenterY;
+			uniform float worldSize;
+			
+			uniform float a;
+			uniform float b;
+			uniform int numIterations;
+			uniform float brightnessScale;
+			
+			
+			
+			${doubleEmulationGlsl}
+			
+			
+			
+			void main(void)
+			{
+				vec4 z;
+				
+				if (aspectRatio >= 1.0)
+				{
+					z = dcAdd(dcMul(vec4(uv.x * aspectRatio, 0.0, uv.y, 0.0), vec2(worldSize, 0.0)), vec4(worldCenterX, worldCenterY));
+				}
+				
+				else
+				{
+					z = dcAdd(dcMul(vec4(uv.x, 0.0, uv.y / aspectRatio, 0.0), vec2(worldSize, 0.0)), vec4(worldCenterX, worldCenterY));
+				}
+				
+				vec4 c = vec4(a, 0.0, b, 0.0);
+				
+				vec3 color = normalize(vec3(abs(z.x + z.z) / 2.0, abs(z.x) / 2.0, abs(z.z) / 2.0) + .1 / length(z) * vec3(1.0, 1.0, 1.0));
+				
+				float brightness = exp(-length(z));
+				
+				
+				
+				for (int iteration = 0; iteration < 3001; iteration++)
+				{
+					if (iteration == numIterations)
+					{
+						gl_FragColor = vec4(0.0, 0.0, 0.0, 1.0);
+						return;
+					}
+					
+					if (length(z) >= 4.0)
+					{
+						break;
+					}
+					
+					z = dcAdd(dcMul(z, z), c);
+					
+					brightness += exp(-length(z));
+				}
+				
+				
+				gl_FragColor = vec4(brightness / brightnessScale * color, 1.0);
+			}
+		`;
+		
+		
+		
+		const fragShaderSourceDouble2 = `
+			precision highp float;
+			
+			varying vec2 uv;
+			
+			uniform float aspectRatio;
+			
+			uniform vec2 worldCenterX;
+			uniform vec2 worldCenterY;
+			uniform float worldSize;
+			
+			uniform float a;
+			uniform float b;
+			uniform int numIterations;
+			uniform float brightnessScale;
+			
+			
+			
+			${doubleEmulationGlsl}
+			
+			
+			
+			void main(void)
+			{
+				vec4 z;
+				
+				if (aspectRatio >= 1.0)
+				{
+					z = dcAdd(dcMul(vec4(uv.x * aspectRatio, 0.0, uv.y, 0.0), vec2(worldSize, 0.0)), vec4(worldCenterX, worldCenterY));
+				}
+				
+				else
+				{
+					z = dcAdd(dcMul(vec4(uv.x, 0.0, uv.y / aspectRatio, 0.0), vec2(worldSize, 0.0)), vec4(worldCenterX, worldCenterY));
+				}
+				
+				vec4 c = z;
+				
+				vec3 color = normalize(vec3(abs(z.x + z.z) / 2.0, abs(z.x) / 2.0, abs(z.z) / 2.0) + .1 / length(z) * vec3(1.0, 1.0, 1.0));
+				
+				float brightness = exp(-length(z));
+				
+				
+				
+				bool broken = false;
+				
+				for (int iteration = 0; iteration < 3001; iteration++)
+				{
+					if (iteration == numIterations)
+					{
+						gl_FragColor = vec4(0.0, 0.0, 0.0, 1.0);
+						
+						broken = true;
+						
+						break;
+					}
+					
+					if (length(z) >= 4.0)
+					{
+						break;
+					}
+					
+					z = dcAdd(dcMul(z, z), c);
+					
+					brightness += exp(-length(z));
+				}
+				
+				
+				
+				if (!broken)
+				{
+					gl_FragColor = vec4(.5 * brightness / brightnessScale * color, 1.0);
+				}
+				
+				
+				
+				z = c;
+				
+				c = vec4(a, 0.0, b, 0.0);
+				
+				color = normalize(vec3(abs(z.x + z.z) / 2.0, abs(z.x) / 2.0, abs(z.z) / 2.0) + .1 / length(z) * vec3(1.0, 1.0, 1.0));
+				
+				brightness = exp(-length(z));
+				
+				broken = false;
+				
+				for (int iteration = 0; iteration < 3001; iteration++)
+				{
+					if (iteration == numIterations)
+					{
+						gl_FragColor.xyz /= 4.0;
+						
+						broken = true;
+						
+						break;
+					}
+					
+					if (length(z) >= 4.0)
+					{
+						break;
+					}
+					
+					z = dcAdd(dcMul(z, z), c);
+					
+					brightness += exp(-length(z));
+				}
+				
+				if (!broken)
+				{
+					gl_FragColor += vec4(brightness / brightnessScale * color, 0.0);
+				}
+			}
+		`;
+			
+		
+		
+		const options =
+		{
+			renderer: "gpu",
+			
+			shader: fragShaderSourceSingle0,
+			
+			canvasWidth: 1000,
+			canvasHeight: 1000,
+			
+			worldWidth: 4,
+			worldHeight: 4,
+			worldCenterX: -.75,
+			worldCenterY: 0,
+			
+			
+			
+			useFullscreen: true,
+			
+			trueFullscreen: true,
+		
+			useFullscreenButton: true,
+			
+			enterFullscreenButtonIconPath: "/graphics/general-icons/enter-fullscreen.png",
+			exitFullscreenButtonIconPath: "/graphics/general-icons/exit-fullscreen.png",
+			
+			switchFullscreenCallback: () => this.changeAspectRatio(true),
+			
+			
+			
+			mousedownCallback: this.onGrabCanvas.bind(this),
+			touchstartCallback: this.onGrabCanvas.bind(this),
+			
+			mousemoveCallback: this.onHoverCanvas.bind(this),
+			mousedragCallback: this.onDragCanvas.bind(this),
+			touchmoveCallback: this.onDragCanvas.bind(this),
+			
+			mouseupCallback: this.onReleaseCanvas.bind(this),
+			touchendCallback: this.onReleaseCanvas.bind(this),
+			
+			wheelCallback: this.onWheelCanvas.bind(this),
+			pinchCallback: this.onPinchCanvas.bind(this)
+		};
+		
+		const optionsHidden =
+		{
+			renderer: "gpu",
+			
+			shader: fragShaderSourceSingle0,
+			
+			canvasWidth: 100,
+			canvasHeight: 100
+		};
+		
+		
+		
+		this.wilson = new Wilson(canvas, options);
+		
+		this.wilson.render.loadNewShader(fragShaderSourceSingle1);
+		this.wilson.render.loadNewShader(fragShaderSourceSingle2);
+		this.wilson.render.loadNewShader(fragShaderSourceDouble0);
+		this.wilson.render.loadNewShader(fragShaderSourceDouble1);
+		this.wilson.render.loadNewShader(fragShaderSourceDouble2);
+
+		for (let i = 0; i < 6; i++)
+		{
+			this.wilson.render.initUniforms(["aspectRatio", "worldCenterX", "worldCenterY", "worldSize", "a", "b", "numIterations", "brightnessScale"], i);
+		}
+		
+		
+
 		const hiddenCanvas = this.createHiddenCanvas();
 		
+		this.wilsonHidden = new Wilson(hiddenCanvas, optionsHidden);
 		
+		this.wilsonHidden.render.loadNewShader(fragShaderSourceSingle1);
+		this.wilsonHidden.render.loadNewShader(fragShaderSourceSingle2);
+		this.wilsonHidden.render.loadNewShader(fragShaderSourceDouble0);
+		this.wilsonHidden.render.loadNewShader(fragShaderSourceDouble1);
+		this.wilsonHidden.render.loadNewShader(fragShaderSourceDouble2);
 		
-		this.loadPromise = new Promise(async (resolve, reject) =>
+		for (let i = 0; i < 6; i++)
 		{
-			await loadGlsl();
-			
-			//Modes: 0 is a Mandelbrot set, 1 is a Julia set, and 2 is a Mandelbrot set with a Julia set preview.
-			
-			const fragShaderSourceSingle0 = `
-				precision highp float;
-				
-				varying vec2 uv;
-				
-				uniform float aspectRatio;
-				
-				uniform vec2 worldCenterX;
-				uniform vec2 worldCenterY;
-				uniform float worldSize;
-				
-				uniform float a;
-				uniform float b;
-				uniform int numIterations;
-				uniform float brightnessScale;
-				
-				
-				
-				void main(void)
-				{
-					vec2 z;
-					
-					if (aspectRatio >= 1.0)
-					{
-						z = vec2(uv.x * aspectRatio * worldSize + worldCenterX.x, uv.y * worldSize + worldCenterY.x);
-					}
-					
-					else
-					{
-						z = vec2(uv.x * worldSize + worldCenterX.x, uv.y / aspectRatio * worldSize + worldCenterY.x);
-					}
-					
-					vec2 c = z;
-					
-					vec3 color = normalize(vec3(abs(z.x + z.y) / 2.0, abs(z.x) / 2.0, abs(z.y) / 2.0) + .1 / length(z) * vec3(1.0, 1.0, 1.0));
-					
-					float brightness = exp(-length(z));
-					
-					
-					
-					for (int iteration = 0; iteration < 3001; iteration++)
-					{
-						if (iteration == numIterations)
-						{
-							gl_FragColor = vec4(0.0, 0.0, 0.0, 1.0);
-							return;
-						}
-						
-						if (length(z) >= 4.0)
-						{
-							break;
-						}
-						
-						z = vec2(z.x * z.x - z.y * z.y, 2.0 * z.x * z.y) + c;
-						
-						brightness += exp(-length(z));
-					}
-					
-					
-					gl_FragColor = vec4(brightness / brightnessScale * color, 1.0);
-				}
-			`;
-			
-			
-			
-			const fragShaderSourceSingle1 = `
-				precision highp float;
-				
-				varying vec2 uv;
-				
-				uniform float aspectRatio;
-				
-				uniform vec2 worldCenterX;
-				uniform vec2 worldCenterY;
-				uniform float worldSize;
-				
-				uniform float a;
-				uniform float b;
-				uniform int numIterations;
-				uniform float brightnessScale;
-				
-				
-				
-				void main(void)
-				{
-					vec2 z;
-					
-					if (aspectRatio >= 1.0)
-					{
-						z = vec2(uv.x * aspectRatio * worldSize + worldCenterX.x, uv.y * worldSize + worldCenterY.x);
-					}
-					
-					else
-					{
-						z = vec2(uv.x * worldSize + worldCenterX.x, uv.y / aspectRatio * worldSize + worldCenterY.x);
-					}
-					
-					vec2 c = vec2(a, b);
-					
-					vec3 color = normalize(vec3(abs(z.x + z.y) / 2.0, abs(z.x) / 2.0, abs(z.y) / 2.0) + .1 / length(z) * vec3(1.0, 1.0, 1.0));
-					
-					float brightness = exp(-length(z));
-					
-					
-					
-					for (int iteration = 0; iteration < 3001; iteration++)
-					{
-						if (iteration == numIterations)
-						{
-							gl_FragColor = vec4(0.0, 0.0, 0.0, 1.0);
-							return;
-						}
-						
-						if (length(z) >= 4.0)
-						{
-							break;
-						}
-						
-						z = vec2(z.x * z.x - z.y * z.y, 2.0 * z.x * z.y) + c;
-						
-						brightness += exp(-length(z));
-					}
-					
-					
-					gl_FragColor = vec4(brightness / brightnessScale * color, 1.0);
-				}
-			`;
-			
-			
-			
-			const fragShaderSourceSingle2 = `
-				precision highp float;
-				
-				varying vec2 uv;
-				
-				uniform float aspectRatio;
-				
-				uniform vec2 worldCenterX;
-				uniform vec2 worldCenterY;
-				uniform float worldSize;
-				
-				uniform float a;
-				uniform float b;
-				uniform int numIterations;
-				uniform float brightnessScale;
-				
-				
-				
-				void main(void)
-				{
-					vec2 z;
-					
-					if (aspectRatio >= 1.0)
-					{
-						z = vec2(uv.x * aspectRatio * worldSize + worldCenterX.x, uv.y * worldSize + worldCenterY.x);
-					}
-					
-					else
-					{
-						z = vec2(uv.x * worldSize + worldCenterX.x, uv.y / aspectRatio * worldSize + worldCenterY.x);
-					}
-					
-					vec2 c = z;
-					
-					vec3 color = normalize(vec3(abs(z.x + z.y) / 2.0, abs(z.x) / 2.0, abs(z.y) / 2.0) + .1 / length(z) * vec3(1.0, 1.0, 1.0));
-					
-					float brightness = exp(-length(z));
-					
-					
-					
-					bool broken = false;
-					
-					for (int iteration = 0; iteration < 3001; iteration++)
-					{
-						if (iteration == numIterations)
-						{
-							gl_FragColor = vec4(0.0, 0.0, 0.0, 1.0);
-							
-							broken = true;
-							
-							break;
-						}
-						
-						if (length(z) >= 4.0)
-						{
-							break;
-						}
-						
-						z = vec2(z.x * z.x - z.y * z.y, 2.0 * z.x * z.y) + c;
-						
-						brightness += exp(-length(z));
-					}
-					
-					
-					
-					if (!broken)
-					{
-						gl_FragColor = vec4(.5 * brightness / brightnessScale * color, 1.0);
-					}
-					
-					
-					
-					z = vec2(uv.x * aspectRatio * 2.0, uv.y * 2.0);
-					
-					color = normalize(vec3(abs(z.x + z.y) / 2.0, abs(z.x) / 2.0, abs(z.y) / 2.0) + .1 / length(z) * vec3(1.0, 1.0, 1.0));
-					
-					brightness = exp(-length(z));
-					
-					broken = false;
-					
-					c = vec2(a, b);
-					
-					for (int iteration = 0; iteration < 3001; iteration++)
-					{
-						if (iteration == numIterations)
-						{
-							gl_FragColor.xyz /= 4.0;
-							
-							broken = true;
-							
-							break;
-						}
-						
-						if (length(z) >= 4.0)
-						{
-							break;
-						}
-						
-						z = vec2(z.x * z.x - z.y * z.y, 2.0 * z.x * z.y) + c;
-						
-						brightness += exp(-length(z));
-					}
-					
-					if (!broken)
-					{
-						gl_FragColor += vec4(brightness / brightnessScale * color, 0.0);
-					}
-				}
-			`;
-			
-			
-			
-			const fragShaderSourceDouble0 = `
-				precision highp float;
-				
-				varying vec2 uv;
-				
-				uniform float aspectRatio;
-				
-				uniform vec2 worldCenterX;
-				uniform vec2 worldCenterY;
-				uniform float worldSize;
-				
-				uniform float a;
-				uniform float b;
-				uniform int numIterations;
-				uniform float brightnessScale;
-				
-				
-				
-				${doubleEmulationGlsl}
-				
-				
-				
-				void main(void)
-				{
-					vec4 z;
-					
-					if (aspectRatio >= 1.0)
-					{
-						z = dcAdd(dcMul(vec4(uv.x * aspectRatio, 0.0, uv.y, 0.0), vec2(worldSize, 0.0)), vec4(worldCenterX, worldCenterY));
-					}
-					
-					else
-					{
-						z = dcAdd(dcMul(vec4(uv.x, 0.0, uv.y / aspectRatio, 0.0), vec2(worldSize, 0.0)), vec4(worldCenterX, worldCenterY));
-					}
-					
-					vec4 c = z;
-					
-					vec3 color = normalize(vec3(abs(z.x + z.z) / 2.0, abs(z.x) / 2.0, abs(z.z) / 2.0) + .1 / length(z) * vec3(1.0, 1.0, 1.0));
-					
-					float brightness = exp(-length(z));
-					
-					for (int iteration = 0; iteration < 3001; iteration++)
-					{
-						if (iteration == numIterations)
-						{
-							gl_FragColor = vec4(0.0, 0.0, 0.0, 1.0);
-							return;
-						}
-						
-						if (length(z) >= 4.0)
-						{
-							break;
-						}
-						
-						z = dcAdd(dcMul(z, z), c);
-						
-						brightness += exp(-length(z));
-					}
-					
-					gl_FragColor = vec4(brightness / brightnessScale * color, 1.0);
-				}
-			`;
-			
-			
-			
-			const fragShaderSourceDouble1 = `
-				precision highp float;
-				
-				varying vec2 uv;
-				
-				uniform float aspectRatio;
-				
-				uniform vec2 worldCenterX;
-				uniform vec2 worldCenterY;
-				uniform float worldSize;
-				
-				uniform float a;
-				uniform float b;
-				uniform int numIterations;
-				uniform float brightnessScale;
-				
-				
-				
-				${doubleEmulationGlsl}
-				
-				
-				
-				void main(void)
-				{
-					vec4 z;
-					
-					if (aspectRatio >= 1.0)
-					{
-						z = dcAdd(dcMul(vec4(uv.x * aspectRatio, 0.0, uv.y, 0.0), vec2(worldSize, 0.0)), vec4(worldCenterX, worldCenterY));
-					}
-					
-					else
-					{
-						z = dcAdd(dcMul(vec4(uv.x, 0.0, uv.y / aspectRatio, 0.0), vec2(worldSize, 0.0)), vec4(worldCenterX, worldCenterY));
-					}
-					
-					vec4 c = vec4(a, 0.0, b, 0.0);
-					
-					vec3 color = normalize(vec3(abs(z.x + z.z) / 2.0, abs(z.x) / 2.0, abs(z.z) / 2.0) + .1 / length(z) * vec3(1.0, 1.0, 1.0));
-					
-					float brightness = exp(-length(z));
-					
-					
-					
-					for (int iteration = 0; iteration < 3001; iteration++)
-					{
-						if (iteration == numIterations)
-						{
-							gl_FragColor = vec4(0.0, 0.0, 0.0, 1.0);
-							return;
-						}
-						
-						if (length(z) >= 4.0)
-						{
-							break;
-						}
-						
-						z = dcAdd(dcMul(z, z), c);
-						
-						brightness += exp(-length(z));
-					}
-					
-					
-					gl_FragColor = vec4(brightness / brightnessScale * color, 1.0);
-				}
-			`;
-			
-			
-			
-			const fragShaderSourceDouble2 = `
-				precision highp float;
-				
-				varying vec2 uv;
-				
-				uniform float aspectRatio;
-				
-				uniform vec2 worldCenterX;
-				uniform vec2 worldCenterY;
-				uniform float worldSize;
-				
-				uniform float a;
-				uniform float b;
-				uniform int numIterations;
-				uniform float brightnessScale;
-				
-				
-				
-				${doubleEmulationGlsl}
-				
-				
-				
-				void main(void)
-				{
-					vec4 z;
-					
-					if (aspectRatio >= 1.0)
-					{
-						z = dcAdd(dcMul(vec4(uv.x * aspectRatio, 0.0, uv.y, 0.0), vec2(worldSize, 0.0)), vec4(worldCenterX, worldCenterY));
-					}
-					
-					else
-					{
-						z = dcAdd(dcMul(vec4(uv.x, 0.0, uv.y / aspectRatio, 0.0), vec2(worldSize, 0.0)), vec4(worldCenterX, worldCenterY));
-					}
-					
-					vec4 c = z;
-					
-					vec3 color = normalize(vec3(abs(z.x + z.z) / 2.0, abs(z.x) / 2.0, abs(z.z) / 2.0) + .1 / length(z) * vec3(1.0, 1.0, 1.0));
-					
-					float brightness = exp(-length(z));
-					
-					
-					
-					bool broken = false;
-					
-					for (int iteration = 0; iteration < 3001; iteration++)
-					{
-						if (iteration == numIterations)
-						{
-							gl_FragColor = vec4(0.0, 0.0, 0.0, 1.0);
-							
-							broken = true;
-							
-							break;
-						}
-						
-						if (length(z) >= 4.0)
-						{
-							break;
-						}
-						
-						z = dcAdd(dcMul(z, z), c);
-						
-						brightness += exp(-length(z));
-					}
-					
-					
-					
-					if (!broken)
-					{
-						gl_FragColor = vec4(.5 * brightness / brightnessScale * color, 1.0);
-					}
-					
-					
-					
-					z = c;
-					
-					c = vec4(a, 0.0, b, 0.0);
-					
-					color = normalize(vec3(abs(z.x + z.z) / 2.0, abs(z.x) / 2.0, abs(z.z) / 2.0) + .1 / length(z) * vec3(1.0, 1.0, 1.0));
-					
-					brightness = exp(-length(z));
-					
-					broken = false;
-					
-					for (int iteration = 0; iteration < 3001; iteration++)
-					{
-						if (iteration == numIterations)
-						{
-							gl_FragColor.xyz /= 4.0;
-							
-							broken = true;
-							
-							break;
-						}
-						
-						if (length(z) >= 4.0)
-						{
-							break;
-						}
-						
-						z = dcAdd(dcMul(z, z), c);
-						
-						brightness += exp(-length(z));
-					}
-					
-					if (!broken)
-					{
-						gl_FragColor += vec4(brightness / brightnessScale * color, 0.0);
-					}
-				}
-			`;
-				
-			
-			
-			const options =
-			{
-				renderer: "gpu",
-				
-				shader: fragShaderSourceSingle0,
-				
-				canvasWidth: 1000,
-				canvasHeight: 1000,
-				
-				worldWidth: 4,
-				worldHeight: 4,
-				worldCenterX: -.75,
-				worldCenterY: 0,
-				
-				
-				
-				useFullscreen: true,
-				
-				trueFullscreen: true,
-			
-				useFullscreenButton: true,
-				
-				enterFullscreenButtonIconPath: "/graphics/general-icons/enter-fullscreen.png",
-				exitFullscreenButtonIconPath: "/graphics/general-icons/exit-fullscreen.png",
-				
-				switchFullscreenCallback: () => this.changeAspectRatio(true),
-				
-				
-				
-				mousedownCallback: this.onGrabCanvas.bind(this),
-				touchstartCallback: this.onGrabCanvas.bind(this),
-				
-				mousemoveCallback: this.onHoverCanvas.bind(this),
-				mousedragCallback: this.onDragCanvas.bind(this),
-				touchmoveCallback: this.onDragCanvas.bind(this),
-				
-				mouseupCallback: this.onReleaseCanvas.bind(this),
-				touchendCallback: this.onReleaseCanvas.bind(this),
-				
-				wheelCallback: this.onWheelCanvas.bind(this),
-				pinchCallback: this.onPinchCanvas.bind(this)
-			};
-			
-			const optionsHidden =
-			{
-				renderer: "gpu",
-				
-				shader: fragShaderSourceSingle0,
-				
-				canvasWidth: 100,
-				canvasHeight: 100
-			};
-			
-			
-			
-			this.wilson = new Wilson(canvas, options);
-			
-			this.wilson.render.loadNewShader(fragShaderSourceSingle1);
-			this.wilson.render.loadNewShader(fragShaderSourceSingle2);
-			this.wilson.render.loadNewShader(fragShaderSourceDouble0);
-			this.wilson.render.loadNewShader(fragShaderSourceDouble1);
-			this.wilson.render.loadNewShader(fragShaderSourceDouble2);
-
-			for (let i = 0; i < 6; i++)
-			{
-				this.wilson.render.initUniforms(["aspectRatio", "worldCenterX", "worldCenterY", "worldSize", "a", "b", "numIterations", "brightnessScale"], i);
-			}
-			
-			
-			
-			this.wilsonHidden = new Wilson(hiddenCanvas, optionsHidden);
-			
-			this.wilsonHidden.render.loadNewShader(fragShaderSourceSingle1);
-			this.wilsonHidden.render.loadNewShader(fragShaderSourceSingle2);
-			this.wilsonHidden.render.loadNewShader(fragShaderSourceDouble0);
-			this.wilsonHidden.render.loadNewShader(fragShaderSourceDouble1);
-			this.wilsonHidden.render.loadNewShader(fragShaderSourceDouble2);
-			
-			for (let i = 0; i < 6; i++)
-			{
-				this.wilsonHidden.render.initUniforms(["aspectRatio", "worldCenterX", "worldCenterY", "worldSize", "a", "b", "numIterations", "brightnessScale"], i);
-			}
-			
-			this.zoom.init();
-			
-			//Render the inital frame.
-			window.requestAnimationFrame(this.drawFrame.bind(this));
-			
-			
-			const boundFunction = () => this.changeAspectRatio(true);
-			addTemporaryListener({
-				object: window,
-				event: "resize",
-				callback: boundFunction
-			});
+			this.wilsonHidden.render.initUniforms(["aspectRatio", "worldCenterX", "worldCenterY", "worldSize", "a", "b", "numIterations", "brightnessScale"], i);
+		}
+		
+		this.zoom.init();
+		
+		//Render the inital frame.
+		window.requestAnimationFrame(this.drawFrame.bind(this));
+		
+		
+		const boundFunction = () => this.changeAspectRatio(true);
+		addTemporaryListener({
+			object: window,
+			event: "resize",
+			callback: boundFunction
 		});
 	}
 	
@@ -690,7 +689,7 @@ export class JuliaSet extends Applet
 			
 			this.pastBrightnessScales = [];
 			
-			try
+			if (this.switchJuliaModeButtonElement)
 			{
 				changeOpacity(this.switchJuliaModeButtonElement, 0)
 					.then(() =>
@@ -698,8 +697,6 @@ export class JuliaSet extends Applet
 						this.switchJuliaModeButtonElement.textContent = "Return to Mandelbrot";
 					});
 			}
-				
-			catch(ex) {}
 		}
 		
 		else if (this.juliaMode === 1)
@@ -720,18 +717,16 @@ export class JuliaSet extends Applet
 			
 			this.pastBrightnessScales = [];
 			
-			try
+			if (this.switchJuliaModeButtonElement)
 			{
 				changeOpacity(this.switchJuliaModeButtonElement, 0)
 					.then(() =>
 					{
 						this.switchJuliaModeButtonElement.textContent = "Pick Julia Set";
 						
-						changeOpacity(this.switchJuliaModeButtonElement, 1)
+						changeOpacity(this.switchJuliaModeButtonElement, 1);
 					});
 			}
-			
-			catch(ex) {}
 		}
 	}
 	
@@ -762,8 +757,10 @@ export class JuliaSet extends Applet
 			
 			this.pastBrightnessScales = [];
 			
-			try {changeOpacity(this.switchJuliaModeButtonElement, 1)}
-			catch(ex) {}
+			if (this.switchJuliaModeButtonElement)
+			{
+				changeOpacity(this.switchJuliaModeButtonElement, 1);
+			}
 		}
 	}
 	
@@ -816,8 +813,10 @@ export class JuliaSet extends Applet
 			
 			this.pastBrightnessScales = [];
 			
-			try {changeOpacity(this.switchJuliaModeButtonElement, 1)}
-			catch(ex) {}
+			if (this.switchJuliaModeButtonElement)
+			{
+				changeOpacity(this.switchJuliaModeButtonElement, 1);
+			}
 		}
 		
 		else
@@ -829,7 +828,7 @@ export class JuliaSet extends Applet
 	
 	
 	
-	onWheelCanvas(x, y, scrollAmount, event)
+	onWheelCanvas(x, y, scrollAmount)
 	{
 		if (this.juliaMode !== 2)
 		{
@@ -839,7 +838,7 @@ export class JuliaSet extends Applet
 	
 	
 	
-	onPinchCanvas(x, y, touchDistanceDelta, event)
+	onPinchCanvas(x, y, touchDistanceDelta)
 	{
 		if (this.juliaMode !== 2)
 		{

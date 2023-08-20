@@ -524,7 +524,7 @@ export class Wilson
 		//Gets WebGL started for the canvas.
 		initWebglHybrid()
 		{
-			this.parent.gl = this.parent.canvas.getContext("webgl");
+			this.parent.gl = this.parent.canvas.getContext("webgl2");
 			
 			const vertexShaderSource = `
 				attribute vec3 position;

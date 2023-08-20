@@ -1,3 +1,4 @@
+import anime from "/scripts/anime.js";
 import { Applet } from "/scripts/src/applets.mjs";
 import { getGlslBundle, loadGlsl } from "/scripts/src/complex-glsl.mjs";
 import { addTemporaryListener } from "/scripts/src/main.mjs";
@@ -134,12 +135,7 @@ export class NewtonsMethodExtended extends Applet
 		
 		
 		
-		this.loadPromise = new Promise(async (resolve, reject) =>
-		{
-			await loadGlsl();
-			
-			resolve();
-		});
+		this.loadPromise = loadGlsl();
 	}
 	
 	
@@ -369,7 +365,7 @@ export class NewtonsMethodExtended extends Applet
 	
 	
 	
-	onDragDraggable(activeDraggable, x, y, event)
+	onDragDraggable(activeDraggable, x, y)
 	{
 		if (activeDraggable === 0)
 		{

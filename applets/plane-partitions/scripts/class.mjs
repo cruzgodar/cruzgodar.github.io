@@ -1,12 +1,12 @@
+import anime from "/scripts/anime.js";
 import { changeOpacity } from "/scripts/src/animation.mjs";
 import { Applet } from "/scripts/src/applets.mjs";
-import { $$, loadScript } from "/scripts/src/main.mjs";
+import { $$ } from "/scripts/src/main.mjs";
+import * as THREE from "/scripts/three.js";
 import { Wilson } from "/scripts/wilson.mjs";
 
 export class PlanePartitions extends Applet
 {
-	loadPromise = null;
-	
 	wilsonNumbers = null;
 	
 	wilsonHidden = null;
@@ -20,9 +20,9 @@ export class PlanePartitions extends Applet
 	
 	animationTime = 600;
 	
-	asymptoteLightness = .6;
-	cubeLightness = .4;
-	floorLightness = .4;
+	asymptoteLightness = 1;
+	cubeLightness = 1;
+	floorLightness = 1;
 	
 	infiniteHeight = 100;
 	
@@ -53,7 +53,6 @@ export class PlanePartitions extends Applet
 	
 	dimersShown = false;
 	
-	ambientLight = null;
 	pointLight = null;
 	
 	rotationY = 0;
@@ -85,8 +84,7 @@ export class PlanePartitions extends Applet
 	hexViewCameraPos = [15, 15, 15];
 	_2dViewCameraPos = [0, 20, 0];
 	
-	algorithmData =
-	{
+	algorithmData = {
 		hillmanGrassl:
 		{
 			method: this.hillmanGrassl,
@@ -232,23 +230,21 @@ export class PlanePartitions extends Applet
 		this.wilsonHidden.ctx.strokeStyle = "rgb(255, 255, 255)";
 		this.wilsonHidden.ctx._alpha = 1;
 		
-		this.wilsonHidden.ctx.fillStyle = "rgba(64, 64, 64, 1)"
+		this.wilsonHidden.ctx.fillStyle = "rgba(64, 64, 64, 1)";
 		this.wilsonHidden.ctx.fillRect(0, 0, 64, 64);
 		
-		this.wilsonHidden.ctx.fillStyle = "rgba(128, 128, 128, 1)"
+		this.wilsonHidden.ctx.fillStyle = "rgba(128, 128, 128, 1)";
 		this.wilsonHidden.ctx.fillRect(4, 4, 56, 56);
 		
 		this.wilsonHidden.ctx.lineWidth = 6;
 		
-		
-		
 		this.wilsonHidden2.ctx.strokeStyle = "rgb(255, 255, 255)";
 		this.wilsonHidden2.ctx._alpha = 1;
 		
-		this.wilsonHidden2.ctx.fillStyle = "rgba(64, 64, 64, 1)"
+		this.wilsonHidden2.ctx.fillStyle = "rgba(64, 64, 64, 1)";
 		this.wilsonHidden2.ctx.fillRect(0, 0, 64, 64);
 		
-		this.wilsonHidden2.ctx.fillStyle = "rgba(128, 128, 128, 1)"
+		this.wilsonHidden2.ctx.fillStyle = "rgba(128, 128, 128, 1)";
 		this.wilsonHidden2.ctx.fillRect(4, 4, 56, 56);
 		
 		this.wilsonHidden2.ctx.lineWidth = 6;
@@ -279,74 +275,65 @@ export class PlanePartitions extends Applet
 		
 		this.wilsonHidden4.ctx.lineWidth = 6;
 		
+		this.scene = new THREE.Scene();
+		this.scene.background = new THREE.Color(0x000000);
+		
+		this.orthographicCamera = new THREE.OrthographicCamera(-5, 5, 5, -5, .1, 1000);
 		
 		
-		this.loadPromise = new Promise(async (resolve, reject) =>
-		{
-			await loadScript("/scripts/three.min.js")
-			
-			await loadScript("/scripts/lodash.min.js");
-			
-			this.scene = new THREE.Scene();
-			this.scene.background = new THREE.Color(0x000000);
-			
-			this.orthographicCamera = new THREE.OrthographicCamera(-5, 5, 5, -5, .1, 1000);
-			
-			
-			
-			this.renderer = new THREE.WebGLRenderer({canvas: this.wilson.canvas, antialias: true});
-			
-			this.renderer.setSize(this.resolution, this.resolution, false);
-			
-			
-			
-			this.loader = new THREE.TextureLoader();
-			
-			this.cubeTexture = new THREE.CanvasTexture(this.wilsonHidden.canvas);
-			this.cubeTexture.minFilter = THREE.LinearFilter;
-			this.cubeTexture.magFilter = THREE.NearestFilter;
-			
-			this.cubeTexture2 = new THREE.CanvasTexture(this.wilsonHidden2.canvas);
-			this.cubeTexture2.minFilter = THREE.LinearFilter;
-			this.cubeTexture2.magFilter = THREE.NearestFilter;
-			
-			this.floorTexture = new THREE.CanvasTexture(this.wilsonHidden3.canvas);
-			this.floorTexture.minFilter = THREE.LinearFilter;
-			this.floorTexture.magFilter = THREE.NearestFilter;
-			
-			this.floorTexture2 = new THREE.CanvasTexture(this.wilsonHidden4.canvas);
-			this.floorTexture2.minFilter = THREE.LinearFilter;
-			this.floorTexture2.magFilter = THREE.NearestFilter;
-			
-			this.cubeGeometry = new THREE.BoxGeometry();
-			
-			
-			
-			this.dimersShown = false;
-			
-			
-			
-			this.floorGeometry = new THREE.BoxGeometry(1, .001, 1);
-			this.wallLeftGeometry = new THREE.BoxGeometry(.001, 1, 1);
-			this.wallRightGeometry = new THREE.BoxGeometry(1, 1, .001);
-			
-			
-			this.ambientLight = new THREE.AmbientLight(0xffffff, .2);
-			this.scene.add(this.ambientLight);
-			
-			this.pointLight = new THREE.PointLight(0xffffff, 3, 10000);
-			this.pointLight.position.set(750, 1000, 500);
-			this.scene.add(this.pointLight);
-			
-			this.drawFrame();
-			
-			resolve();
-		});
+		
+		this.renderer = new THREE.WebGLRenderer({canvas: this.wilson.canvas, antialias: true});
+		
+		this.renderer.setSize(this.resolution, this.resolution, false);
+		
+		this.renderer.useLegacyLights = true;
+
+		
+		
+		this.loader = new THREE.TextureLoader();
+		
+		this.cubeTexture = new THREE.CanvasTexture(this.wilsonHidden.canvas);
+		this.cubeTexture.minFilter = THREE.LinearFilter;
+		this.cubeTexture.magFilter = THREE.NearestFilter;
+		
+		this.cubeTexture2 = new THREE.CanvasTexture(this.wilsonHidden2.canvas);
+		this.cubeTexture2.minFilter = THREE.LinearFilter;
+		this.cubeTexture2.magFilter = THREE.NearestFilter;
+		
+		this.floorTexture = new THREE.CanvasTexture(this.wilsonHidden3.canvas);
+		this.floorTexture.minFilter = THREE.LinearFilter;
+		this.floorTexture.magFilter = THREE.NearestFilter;
+		
+		this.floorTexture2 = new THREE.CanvasTexture(this.wilsonHidden4.canvas);
+		this.floorTexture2.minFilter = THREE.LinearFilter;
+		this.floorTexture2.magFilter = THREE.NearestFilter;
+		
+		this.cubeGeometry = new THREE.BoxGeometry();
+		
+		
+		
+		this.dimersShown = false;
+		
+		
+		
+		this.floorGeometry = new THREE.BoxGeometry(1, .001, 1);
+		this.wallLeftGeometry = new THREE.BoxGeometry(.001, 1, 1);
+		this.wallRightGeometry = new THREE.BoxGeometry(1, 1, .001);
+		
+		
+		this.ambientLight = new THREE.AmbientLight(0xffffff, .2);
+		this.scene.add(this.ambientLight);
+		
+		this.pointLight = new THREE.PointLight(0xffffff, 1, 10000);
+		this.pointLight.position.set(750, 1000, 500);
+		this.scene.add(this.pointLight);
+		
+		this.drawFrame();
 	}
 	
 	
 	
-	onGrabCanvas(x, y, event)
+	onGrabCanvas()
 	{
 		this.inExactHexView = false;
 		
@@ -355,7 +342,7 @@ export class PlanePartitions extends Applet
 		this.lastRotationYVelocities = [0, 0, 0, 0];
 	}
 	
-	onDragCanvas(x, y, xDelta, yDelta, event)
+	onDragCanvas(x, y, xDelta)
 	{
 		if (this.in2dView)
 		{
@@ -379,7 +366,7 @@ export class PlanePartitions extends Applet
 		this.nextRotationYVelocity = xDelta;
 	}
 	
-	onReleaseCanvas(x, y, event)
+	onReleaseCanvas()
 	{
 		if (!this.in2dView)
 		{
@@ -476,9 +463,12 @@ export class PlanePartitions extends Applet
 	{
 		if (this.useFullscreenButton)
 		{
-			//Needs to be document.body because that's where Wilson puts this stuff.
-			try {document.body.querySelector(".wilson-exit-fullscreen-button").style.setProperty("z-index", "300", "important")}
-			catch(ex) {}
+			const exitFullscreenButtonElement = document.body.querySelector(".wilson-exit-fullscreen-button");
+
+			if (exitFullscreenButtonElement)
+			{
+				exitFullscreenButtonElement.style.setProperty("z-index", "300", "important");
+			}
 		}
 		
 		if (!this.in2dView)
@@ -846,474 +836,62 @@ export class PlanePartitions extends Applet
 	
 	
 	
-	displayError(message)
+	async addNewArray(index, numbers, keepNumbersCanvasVisible = false, horizontalLegs = true)
 	{
+		if (this.currentlyAnimating)
+		{
+			return;
+		}
 		
-	}
-	
-	
-	
-	addNewArray(index, numbers, keepNumbersCanvasVisible = false, horizontalLegs = true)
-	{
-		return new Promise(async (resolve, reject) =>
+		
+		
+		let array = {
+			numbers: numbers,
+			cubes: [],
+			floor: [],
+			leftWall: [],
+			rightWall: [],
+			
+			cubeGroup: null,
+			
+			centerOffset: 0,
+			partialFootprintSum: 0,
+			
+			footprint: 0,
+			height: 0,
+			size: 0
+		};
+		
+		if (this.in2dView && !keepNumbersCanvasVisible)
 		{
-			if (this.currentlyAnimating)
-			{
-				resolve();
-				return;
-			}
-			
-			
-			
-			let array = {
-				numbers: numbers,
-				cubes: [],
-				floor: [],
-				leftWall: [],
-				rightWall: [],
-				
-				cubeGroup: null,
-				
-				centerOffset: 0,
-				partialFootprintSum: 0,
-				
-				footprint: 0,
-				height: 0,
-				size: 0
-			};
-			
-			if (this.in2dView && !keepNumbersCanvasVisible)
-			{
-				await changeOpacity(this.wilsonNumbers.canvas, 0, this.animationTime / 5);
-			}
-			
-			
-			
-			this.arrays.splice(index, 0, array);
-			
-			array.footprint = array.numbers.length;
-			
-			//Update the other arrays.
-			for (let i = index; i < this.arrays.length; i++)
-			{
-				this.arrays[i].partialFootprintSum = this.arrays[i].footprint;
-				
-				if (i !== 0)
-				{
-					this.arrays[i].centerOffset = this.arrays[i - 1].centerOffset + this.arrays[i - 1].footprint / 2 + this.arrays[i].footprint / 2 + 1;
-					
-					this.arrays[i].partialFootprintSum += this.arrays[i - 1].partialFootprintSum + 1;
-				}
-				
-				else
-				{
-					this.arrays[i].centerOffset = 0;
-				}
-				
-				if (i !== index)
-				{
-					if (this.in2dView)
-					{
-						anime({
-							targets: this.arrays[i].cubeGroup.position,
-							x: this.arrays[i].centerOffset,
-							y: 0,
-							z: 0,
-							duration: this.animationTime,
-							easing: "easeInOutQuad"
-						});
-					}
-					
-					else
-					{
-						anime({
-							targets: this.arrays[i].cubeGroup.position,
-							x: this.arrays[i].centerOffset,
-							y: 0,
-							z: -this.arrays[i].centerOffset,
-							duration: this.animationTime,
-							easing: "easeInOutQuad"
-						});
-					}
-				}
-			}
-			
-			
-			
-			array.cubeGroup = new THREE.Object3D();
-			this.scene.add(array.cubeGroup);
-			
-			if (!this.addWalls)
-			{
-				if (this.in2dView)
-				{
-					array.cubeGroup.position.set(array.centerOffset, 0, 0);
-				}
-				
-				else
-				{
-					array.cubeGroup.position.set(array.centerOffset, 0, -array.centerOffset);
-				}
-			}
-			
-			array.cubeGroup.rotation.y = this.rotationY;
-			
-			
-			
-			array.cubes = new Array(array.footprint);
-			array.floor = new Array(array.footprint);
-			
-			for (let i = 0; i < array.footprint; i++)
-			{
-				array.cubes[i] = new Array(array.footprint);
-				array.floor[i] = new Array(array.footprint);
-				
-				for (let j = 0; j < array.footprint; j++)
-				{
-					if (array.numbers[i][j] !== Infinity)
-					{
-						array.cubes[i][j] = new Array(array.numbers[i][j]);
-						
-						if (array.numbers[i][j] > array.height)
-						{
-							array.height = array.numbers[i][j];
-						}
-						
-						array.floor[i][j] = this.addFloor(array, j, i);
-						
-						
-						
-						if (horizontalLegs)
-						{
-							const legHeight = Math.max(array.numbers[i][array.footprint - 1], array.numbers[array.footprint - 1][j]);
-							
-							for (let k = 0; k < legHeight; k++)
-							{
-								array.cubes[i][j][k] = this.addCube(array, j, k, i, 0, 0, this.asymptoteLightness);
-							}
-							
-							for (let k = legHeight; k < array.numbers[i][j]; k++)
-							{
-								array.cubes[i][j][k] = this.addCube(array, j, k, i);
-							}
-						}
-						
-						else
-						{
-							for (let k = 0; k < array.numbers[i][j]; k++)
-							{
-								array.cubes[i][j][k] = this.addCube(array, j, k, i);
-							}
-						}
-					}
-					
-					
-					else
-					{
-						array.cubes[i][j] = new Array(this.infiniteHeight);
-						
-						array.floor[i][j] = this.addFloor(array, j, i);
-						
-						for (let k = 0; k < this.infiniteHeight; k++)
-						{
-							array.cubes[i][j][k] = this.addCube(array, j, k, i, 0, 0, this.asymptoteLightness);
-						}
-					}	
-				}
-			}
-			
-			
-			
-			//Add walls. Disabled by default.
-			if (this.addWalls)
-			{
-				array.leftWall = new Array(this.wallSize);
-				array.rightWall = new Array(this.wallSize);
-				
-				for (let i = 0; i < this.wallSize; i++)
-				{
-					array.leftWall[i] = new Array(2 * this.wallSize);
-					array.rightWall[i] = new Array(2 * this.wallSize);
-				}
-				
-				for (let i = 0; i < this.wallSize; i++)
-				{
-					for (let j = 0; j < 2 * this.wallSize; j++)
-					{
-						array.leftWall[i][j] = this.addLeftWall(array, j, i);
-						array.rightWall[i][j] = this.addRightWall(array, i, j);
-					}
-				}
-			}
-			
-			
-			array.size = Math.max(array.footprint, array.height);
-			
-			this.totalArrayFootprint += array.footprint + 1;
-			this.totalArrayHeight = Math.max(this.totalArrayHeight, array.height);
-			this.totalArraySize = Math.max(this.totalArrayFootprint, this.totalArrayHeight);
-			
-			
-			
-			if (this.arrays.length === 1 && !keepNumbersCanvasVisible)
-			{
-				this.hexViewCameraPos = [this.totalArraySize, this.totalArraySize + this.totalArrayHeight / 3, this.totalArraySize];
-				this._2dViewCameraPos = [0, this.totalArraySize + 10, 0];
-				
-				if (this.in2dView && !keepNumbersCanvasVisible)
-				{
-					this.updateCameraHeight(true);
-				}
-				
-				else
-				{
-					this.orthographicCamera.left = -this.totalArraySize;
-					this.orthographicCamera.right = this.totalArraySize;
-					this.orthographicCamera.top = this.totalArraySize;
-					this.orthographicCamera.bottom = -this.totalArraySize;
-					this.orthographicCamera.position.set(this.hexViewCameraPos[0], this.hexViewCameraPos[1], this.hexViewCameraPos[2]);
-					this.orthographicCamera.rotation.set(-0.785398163, 0.615479709, 0.523598775);
-					this.orthographicCamera.updateProjectionMatrix();
-				}
-			}
-			
-			else if (!this.addWalls && !keepNumbersCanvasVisible)
-			{
-				this.updateCameraHeight(true);
-			}
-			
-			
-			
-			if (index !== this.arrays.length - 1)
-			{
-				await new Promise((resolve, reject) => setTimeout(resolve, this.animationTime));
-			}
-			
-			
-			
-			let thingsToAnimate = [];
-			
-			array.cubeGroup.traverse(node =>
-			{
-				if (node.material)
-				{
-					node.material.forEach(material => thingsToAnimate.push(material));
-				}
-			});
-			
-			await anime({
-				targets: thingsToAnimate,
-				opacity: 1,
-				duration: this.animationTime / 2,
-				easing: "easeOutQuad",
-			}).finished;
-			
-			
-			
-			if (this.in2dView && !keepNumbersCanvasVisible)
-			{
-				this.drawAll2dViewText();
-			}
-			
-			resolve(array);
-		});	
-	}
-	
-	
-	
-	editArray(index, numbers)
-	{
-		return new Promise(async (resolve, reject) =>
+			await changeOpacity(this.wilsonNumbers.canvas, 0, this.animationTime / 5);
+		}
+		
+		
+		
+		this.arrays.splice(index, 0, array);
+		
+		array.footprint = array.numbers.length;
+		
+		//Update the other arrays.
+		for (let i = index; i < this.arrays.length; i++)
 		{
-			if (this.currentlyAnimating)
+			this.arrays[i].partialFootprintSum = this.arrays[i].footprint;
+			
+			if (i !== 0)
 			{
-				resolve();
-				return;
-			}
-			
-			
-			
-			if (index >= this.arrays.length || index < 0)
-			{
-				this.displayError(`No array at index ${index}`);
+				this.arrays[i].centerOffset = this.arrays[i - 1].centerOffset + this.arrays[i - 1].footprint / 2 + this.arrays[i].footprint / 2 + 1;
 				
-				return;
+				this.arrays[i].partialFootprintSum += this.arrays[i - 1].partialFootprintSum + 1;
 			}
 			
-			await this.removeArray(index);
-			
-			await this.addNewArray(index, numbers);
-			
-			if (!this.in2dView)
+			else
 			{
-				this.updateCameraHeight();
-			}	
-			
-			resolve();
-		});	
-	}
-	
-	
-	//Resizes the array into the minimum possible square.
-	trimArray(index)
-	{
-		return new Promise(async (resolve, reject) =>
-		{
-			if (this.currentlyAnimating)
-			{
-				resolve();
-				return;
+				this.arrays[i].centerOffset = 0;
 			}
 			
-			
-			
-			if (index >= this.arrays.length || index < 0)
+			if (i !== index)
 			{
-				this.displayError(`No array at index ${index}`);
-				
-				return;
-			}
-			
-			let array = arrays[index];
-			
-			let numbers = array.numbers;
-			
-			
-			
-			let minSize = 0;
-			
-			for (let i = 0; i < numbers.length; i++)
-			{
-				for (let j = 0; j < numbers.length; j++)
-				{
-					if (numbers[i][j] !== 0)
-					{
-						minSize = Math.max(minSize, Math.max(i + 1, j + 1));
-					}
-				}
-			}
-			
-			
-			
-			let newNumbers = new Array(minSize);
-			
-			for (let i = 0; i < minSize; i++)
-			{
-				newNumbers[i] = new Array(minSize);
-				
-				for (let j = 0; j < minSize; j++)
-				{
-					newNumbers[i][j] = numbers[i][j];
-				}
-			}
-			
-			
-			
-			await this.removeArray(index);
-			
-			await this.addNewArray(index, newNumbers);
-			
-			if (!this.in2dView)
-			{
-				this.updateCameraHeight();
-			}	
-			
-			resolve();
-		});	
-	}
-	
-	
-	
-	removeArray(index, keepNumbersCanvasVisible = false)
-	{
-		return new Promise(async (resolve, reject) =>
-		{
-			if (this.currentlyAnimating)
-			{
-				resolve();
-				return;
-			}
-			
-			
-			
-			if (index >= this.arrays.length || index < 0)
-			{
-				this.displayError(`No array at index ${index}`);
-				
-				return;
-			}
-			
-			
-			
-			if (this.in2dView && !keepNumbersCanvasVisible)
-			{
-				await changeOpacity(this.wilsonNumbers.canvas, 0, this.animationTime / 5);
-			}
-			
-			
-			
-			let thingsToAnimate = [];
-			
-			this.arrays[index].cubeGroup.traverse(node =>
-			{
-				if (node.material)
-				{
-					node.material.forEach(material => thingsToAnimate.push(material));
-				}
-			});
-			
-			await anime({
-				targets: thingsToAnimate,
-				opacity: 0,
-				duration: this.animationTime / 2,
-				easing: "easeOutQuad",
-			}).finished;
-			
-			
-			
-			//Dispose of all the materials.
-			for (let i = 0; i < this.arrays[index].cubes.length; i++)
-			{
-				for (let j = 0; j < this.arrays[index].cubes[i].length; j++)
-				{
-					if (this.arrays[index].cubes[i][j])
-					{
-						for (let k = 0; k < this.arrays[index].cubes[i][j].length; k++)
-						{
-							if (this.arrays[index].cubes[i][j][k])
-							{
-								this.arrays[index].cubes[i][j][k].material.forEach(material => material.dispose());
-							}	
-						}
-					}	
-				}
-			}
-			
-			this.scene.remove(this.arrays[index].cubeGroup);
-			
-			this.totalArrayFootprint -= this.arrays[index].footprint + 1;
-			
-			this.arrays.splice(index, 1);
-			
-			
-			
-			//Update the other arrays.
-			for (let i = index; i < this.arrays.length; i++)
-			{
-				this.arrays[i].partialFootprintSum = this.arrays[i].footprint;
-				
-				if (i !== 0)
-				{
-					this.arrays[i].centerOffset = this.arrays[i - 1].centerOffset + this.arrays[i - 1].footprint / 2 + this.arrays[i].footprint / 2 + 1;
-					
-					this.arrays[i].partialFootprintSum += this.arrays[i - 1].partialFootprintSum + 1;
-				}
-				
-				else
-				{
-					this.arrays[i].centerOffset = 0;
-				}
-				
 				if (this.in2dView)
 				{
 					anime({
@@ -1338,15 +916,396 @@ export class PlanePartitions extends Applet
 					});
 				}
 			}
+		}
+		
+		
+		
+		array.cubeGroup = new THREE.Object3D();
+		this.scene.add(array.cubeGroup);
+		
+		if (!this.addWalls)
+		{
+			if (this.in2dView)
+			{
+				array.cubeGroup.position.set(array.centerOffset, 0, 0);
+			}
 			
+			else
+			{
+				array.cubeGroup.position.set(array.centerOffset, 0, -array.centerOffset);
+			}
+		}
+		
+		array.cubeGroup.rotation.y = this.rotationY;
+		
+		
+		
+		array.cubes = new Array(array.footprint);
+		array.floor = new Array(array.footprint);
+		
+		for (let i = 0; i < array.footprint; i++)
+		{
+			array.cubes[i] = new Array(array.footprint);
+			array.floor[i] = new Array(array.footprint);
 			
-			if (this.arrays.length !== 0 && !keepNumbersCanvasVisible)
+			for (let j = 0; j < array.footprint; j++)
+			{
+				if (array.numbers[i][j] !== Infinity)
+				{
+					array.cubes[i][j] = new Array(array.numbers[i][j]);
+					
+					if (array.numbers[i][j] > array.height)
+					{
+						array.height = array.numbers[i][j];
+					}
+					
+					array.floor[i][j] = this.addFloor(array, j, i);
+					
+					
+					
+					if (horizontalLegs)
+					{
+						const legHeight = Math.max(array.numbers[i][array.footprint - 1], array.numbers[array.footprint - 1][j]);
+						
+						for (let k = 0; k < legHeight; k++)
+						{
+							array.cubes[i][j][k] = this.addCube(array, j, k, i, 0, 0, this.asymptoteLightness);
+						}
+						
+						for (let k = legHeight; k < array.numbers[i][j]; k++)
+						{
+							array.cubes[i][j][k] = this.addCube(array, j, k, i);
+						}
+					}
+					
+					else
+					{
+						for (let k = 0; k < array.numbers[i][j]; k++)
+						{
+							array.cubes[i][j][k] = this.addCube(array, j, k, i);
+						}
+					}
+				}
+				
+				
+				else
+				{
+					array.cubes[i][j] = new Array(this.infiniteHeight);
+					
+					array.floor[i][j] = this.addFloor(array, j, i);
+					
+					for (let k = 0; k < this.infiniteHeight; k++)
+					{
+						array.cubes[i][j][k] = this.addCube(array, j, k, i, 0, 0, this.asymptoteLightness);
+					}
+				}	
+			}
+		}
+		
+		
+		
+		//Add walls. Disabled by default.
+		if (this.addWalls)
+		{
+			array.leftWall = new Array(this.wallSize);
+			array.rightWall = new Array(this.wallSize);
+			
+			for (let i = 0; i < this.wallSize; i++)
+			{
+				array.leftWall[i] = new Array(2 * this.wallSize);
+				array.rightWall[i] = new Array(2 * this.wallSize);
+			}
+			
+			for (let i = 0; i < this.wallSize; i++)
+			{
+				for (let j = 0; j < 2 * this.wallSize; j++)
+				{
+					array.leftWall[i][j] = this.addLeftWall(array, j, i);
+					array.rightWall[i][j] = this.addRightWall(array, i, j);
+				}
+			}
+		}
+		
+		
+		array.size = Math.max(array.footprint, array.height);
+		
+		this.totalArrayFootprint += array.footprint + 1;
+		this.totalArrayHeight = Math.max(this.totalArrayHeight, array.height);
+		this.totalArraySize = Math.max(this.totalArrayFootprint, this.totalArrayHeight);
+		
+		
+		
+		if (this.arrays.length === 1 && !keepNumbersCanvasVisible)
+		{
+			this.hexViewCameraPos = [this.totalArraySize, this.totalArraySize + this.totalArrayHeight / 3, this.totalArraySize];
+			this._2dViewCameraPos = [0, this.totalArraySize + 10, 0];
+			
+			if (this.in2dView && !keepNumbersCanvasVisible)
 			{
 				this.updateCameraHeight(true);
-			}	
+			}
 			
-			resolve();
-		});	
+			else
+			{
+				this.orthographicCamera.left = -this.totalArraySize;
+				this.orthographicCamera.right = this.totalArraySize;
+				this.orthographicCamera.top = this.totalArraySize;
+				this.orthographicCamera.bottom = -this.totalArraySize;
+				this.orthographicCamera.position.set(this.hexViewCameraPos[0], this.hexViewCameraPos[1], this.hexViewCameraPos[2]);
+				this.orthographicCamera.rotation.set(-0.785398163, 0.615479709, 0.523598775);
+				this.orthographicCamera.updateProjectionMatrix();
+			}
+		}
+		
+		else if (!this.addWalls && !keepNumbersCanvasVisible)
+		{
+			this.updateCameraHeight(true);
+		}
+		
+		
+		
+		if (index !== this.arrays.length - 1)
+		{
+			await new Promise(resolve => setTimeout(resolve, this.animationTime));
+		}
+		
+		
+		
+		let thingsToAnimate = [];
+		
+		array.cubeGroup.traverse(node =>
+		{
+			if (node.material)
+			{
+				node.material.forEach(material => thingsToAnimate.push(material));
+			}
+		});
+		
+		await anime({
+			targets: thingsToAnimate,
+			opacity: 1,
+			duration: this.animationTime / 2,
+			easing: "easeOutQuad",
+		}).finished;
+		
+		
+		
+		if (this.in2dView && !keepNumbersCanvasVisible)
+		{
+			this.drawAll2dViewText();
+		}
+		
+		return array;
+	}
+	
+	
+	
+	async editArray(index, numbers)
+	{
+		if (this.currentlyAnimating)
+		{
+			return;
+		}
+		
+		if (index >= this.arrays.length || index < 0)
+		{
+			this.displayError(`No array at index ${index}`);
+			
+			return;
+		}
+		
+		await this.removeArray(index);
+		
+		await this.addNewArray(index, numbers);
+		
+		if (!this.in2dView)
+		{
+			this.updateCameraHeight();
+		}	
+	}
+	
+	
+	//Resizes the array into the minimum possible square.
+	async trimArray(index)
+	{
+		if (this.currentlyAnimating)
+		{
+			return;
+		}
+		
+
+
+		if (index >= this.arrays.length || index < 0)
+		{
+			this.displayError(`No array at index ${index}`);
+			
+			return;
+		}
+		
+		let array = this.arrays[index];
+		
+		let numbers = array.numbers;
+		
+		
+		
+		let minSize = 0;
+		
+		for (let i = 0; i < numbers.length; i++)
+		{
+			for (let j = 0; j < numbers.length; j++)
+			{
+				if (numbers[i][j] !== 0)
+				{
+					minSize = Math.max(minSize, Math.max(i + 1, j + 1));
+				}
+			}
+		}
+		
+		
+		
+		let newNumbers = new Array(minSize);
+		
+		for (let i = 0; i < minSize; i++)
+		{
+			newNumbers[i] = new Array(minSize);
+			
+			for (let j = 0; j < minSize; j++)
+			{
+				newNumbers[i][j] = numbers[i][j];
+			}
+		}
+		
+		
+		
+		await this.removeArray(index);
+		
+		await this.addNewArray(index, newNumbers);
+		
+		if (!this.in2dView)
+		{
+			this.updateCameraHeight();
+		}
+	}
+	
+	
+	
+	async removeArray(index, keepNumbersCanvasVisible = false)
+	{
+		if (this.currentlyAnimating)
+		{
+			return;
+		}
+		
+		
+		
+		if (index >= this.arrays.length || index < 0)
+		{
+			this.displayError(`No array at index ${index}`);
+			
+			return;
+		}
+		
+		
+		
+		if (this.in2dView && !keepNumbersCanvasVisible)
+		{
+			await changeOpacity(this.wilsonNumbers.canvas, 0, this.animationTime / 5);
+		}
+		
+		
+		
+		let thingsToAnimate = [];
+		
+		this.arrays[index].cubeGroup.traverse(node =>
+		{
+			if (node.material)
+			{
+				node.material.forEach(material => thingsToAnimate.push(material));
+			}
+		});
+		
+		await anime({
+			targets: thingsToAnimate,
+			opacity: 0,
+			duration: this.animationTime / 2,
+			easing: "easeOutQuad",
+		}).finished;
+		
+		
+		
+		//Dispose of all the materials.
+		for (let i = 0; i < this.arrays[index].cubes.length; i++)
+		{
+			for (let j = 0; j < this.arrays[index].cubes[i].length; j++)
+			{
+				if (this.arrays[index].cubes[i][j])
+				{
+					for (let k = 0; k < this.arrays[index].cubes[i][j].length; k++)
+					{
+						if (this.arrays[index].cubes[i][j][k])
+						{
+							this.arrays[index].cubes[i][j][k].material.forEach(material => material.dispose());
+						}	
+					}
+				}	
+			}
+		}
+		
+		this.scene.remove(this.arrays[index].cubeGroup);
+		
+		this.totalArrayFootprint -= this.arrays[index].footprint + 1;
+		
+		this.arrays.splice(index, 1);
+		
+		
+		
+		//Update the other arrays.
+		for (let i = index; i < this.arrays.length; i++)
+		{
+			this.arrays[i].partialFootprintSum = this.arrays[i].footprint;
+			
+			if (i !== 0)
+			{
+				this.arrays[i].centerOffset = this.arrays[i - 1].centerOffset + this.arrays[i - 1].footprint / 2 + this.arrays[i].footprint / 2 + 1;
+				
+				this.arrays[i].partialFootprintSum += this.arrays[i - 1].partialFootprintSum + 1;
+			}
+			
+			else
+			{
+				this.arrays[i].centerOffset = 0;
+			}
+			
+			if (this.in2dView)
+			{
+				anime({
+					targets: this.arrays[i].cubeGroup.position,
+					x: this.arrays[i].centerOffset,
+					y: 0,
+					z: 0,
+					duration: this.animationTime,
+					easing: "easeInOutQuad"
+				});
+			}
+			
+			else
+			{
+				anime({
+					targets: this.arrays[i].cubeGroup.position,
+					x: this.arrays[i].centerOffset,
+					y: 0,
+					z: -this.arrays[i].centerOffset,
+					duration: this.animationTime,
+					easing: "easeInOutQuad"
+				});
+			}
+		}
+		
+		
+		if (this.arrays.length !== 0 && !keepNumbersCanvasVisible)
+		{
+			this.updateCameraHeight(true);
+		}
 	}
 	
 	
@@ -2117,8 +2076,6 @@ export class PlanePartitions extends Applet
 		
 		
 		
-		let oldTotalArrayHeight = this.totalArrayHeight;
-		
 		this.totalArrayHeight = 0;
 		
 		this.arrays.forEach(array => this.totalArrayHeight = Math.max(array.height, this.totalArrayHeight));
@@ -2202,7 +2159,7 @@ export class PlanePartitions extends Applet
 		let v = this.cubeLightness + 1 * Math.min(this.cubeLightness, 1 - this.cubeLightness);
 		let s = v === 0 ? 0 : 2 * (1 - this.cubeLightness / v);
 		
-		let targetColors = targets.map(color => this.wilson.utils.hsvToRgb(hue, s, v));
+		let targetColors = targets.map(() => this.wilson.utils.hsvToRgb(hue, s, v));
 		
 		
 		
@@ -2451,7 +2408,7 @@ export class PlanePartitions extends Applet
 			while (this.arrays.length > 1)
 			{
 				await this.removeArray(1);
-				await new Promise((resolve, reject) => setTimeout(resolve, this.animationTime / 2));
+				await new Promise(resolve => setTimeout(resolve, this.animationTime / 2));
 			}
 			
 			if (this.arrays.length === 0)
@@ -2463,10 +2420,10 @@ export class PlanePartitions extends Applet
 			else if (!this.verifyPp(this.arrays[0].numbers))
 			{
 				await this.removeArray(0);
-				await new Promise((resolve, reject) => setTimeout(resolve, this.animationTime / 2));
+				await new Promise(resolve => setTimeout(resolve, this.animationTime / 2));
 				
 				const planePartition = this.parseArray(this.generateRandomPlanePartition());
-				await addNewArray(this.arrays.length, planePartition);
+				await this.addNewArray(this.arrays.length, planePartition);
 			}
 			
 			
@@ -2475,7 +2432,7 @@ export class PlanePartitions extends Applet
 			{
 				await this.runAlgorithm("hillmanGrassl", 0);
 				
-				await new Promise((resolve, reject) => setTimeout(resolve, 3 * this.animationTime));
+				await new Promise(resolve => setTimeout(resolve, 3 * this.animationTime));
 				
 				await this.runAlgorithm("hillmanGrasslInverse", 0);
 			}
@@ -2484,11 +2441,11 @@ export class PlanePartitions extends Applet
 			{
 				await this.runAlgorithm("pak", 0);
 				
-				await new Promise((resolve, reject) => setTimeout(resolve, 3 * this.animationTime));
+				await new Promise(resolve => setTimeout(resolve, 3 * this.animationTime));
 				
 				await this.showHexView();
 				
-				await new Promise((resolve, reject) => setTimeout(resolve, this.animationTime));
+				await new Promise(resolve => setTimeout(resolve, this.animationTime));
 				
 				await this.runAlgorithm("sulzgruberInverse", 0);
 			}
@@ -2501,7 +2458,7 @@ export class PlanePartitions extends Applet
 			while (this.arrays.length > 0)
 			{
 				await this.removeArray(0);
-				await new Promise((resolve, reject) => setTimeout(resolve, this.animationTime / 2));
+				await new Promise(resolve => setTimeout(resolve, this.animationTime / 2));
 			}
 			
 			await this.addNewArray(this.arrays.length, this.generateRandomTableau());
@@ -2510,11 +2467,11 @@ export class PlanePartitions extends Applet
 			
 			await this.show2dView();
 			
-			await new Promise((resolve, reject) => setTimeout(resolve, this.animationTime));
+			await new Promise(resolve => setTimeout(resolve, this.animationTime));
 			
-			await this.runAlgorithm("rskInverse", 0)
+			await this.runAlgorithm("rskInverse", 0);
 			
-			await new Promise((resolve, reject) => setTimeout(resolve, 3 * this.animationTime));
+			await new Promise(resolve => setTimeout(resolve, 3 * this.animationTime));
 			
 			await this.runAlgorithm("rsk", 0);
 		}
@@ -2678,7 +2635,7 @@ export class PlanePartitions extends Applet
 	{
 		let array = this.arrays[index];
 		
-		let planePartition = _.cloneDeep(array.numbers);
+		let planePartition = structuredClone(array.numbers);
 		
 		
 		
@@ -2716,7 +2673,7 @@ export class PlanePartitions extends Applet
 		
 		let zigzagPaths = [];
 		
-		while (true)
+		for (;;)
 		{
 			//Find the right-most nonzero entry at the top of its column.
 			let startingCol = planePartition[0].length - 1;
@@ -2738,7 +2695,7 @@ export class PlanePartitions extends Applet
 			
 			let path = [[currentRow, currentCol, planePartition[currentRow][currentCol] - 1]];
 			
-			while (true)
+			for (;;)
 			{
 				if (currentRow < planePartition.length - 1 && planePartition[currentRow + 1][currentCol] === planePartition[currentRow][currentCol])
 				{
@@ -2784,7 +2741,7 @@ export class PlanePartitions extends Applet
 		
 		let outputArray = await this.addNewArray(index + 1, emptyArray);
 		
-		await new Promise((resolve, reject) => setTimeout(resolve, this.animationTime));
+		await new Promise(resolve => setTimeout(resolve, this.animationTime));
 		
 		
 		
@@ -2817,7 +2774,7 @@ export class PlanePartitions extends Applet
 			
 			
 			
-			await new Promise((resolve, reject) => setTimeout(resolve, this.animationTime / 5));
+			await new Promise(resolve => setTimeout(resolve, this.animationTime / 5));
 			
 			//Find the pivot and rearrange the shape into a hook.
 			let pivot = [zigzagPaths[i][zigzagPaths[i].length - 1][0], zigzagPaths[i][0][1]];
@@ -2884,7 +2841,7 @@ export class PlanePartitions extends Applet
 			
 			
 			
-			await new Promise((resolve, reject) => setTimeout(resolve, this.animationTime));
+			await new Promise(resolve => setTimeout(resolve, this.animationTime));
 		}
 		
 		
@@ -2898,7 +2855,7 @@ export class PlanePartitions extends Applet
 	{
 		let array = this.arrays[index];
 		
-		let tableau = _.cloneDeep(array.numbers);
+		let tableau = structuredClone(array.numbers);
 		
 		let zigzagPaths = [];
 		
@@ -2948,7 +2905,7 @@ export class PlanePartitions extends Applet
 			}
 		}
 		
-		let planePartition = _.cloneDeep(emptyArray);
+		let planePartition = structuredClone(emptyArray);
 		
 		let outputArray = await this.addNewArray(index + 1, emptyArray);
 		
@@ -3018,7 +2975,7 @@ export class PlanePartitions extends Applet
 		
 		
 		
-		await new Promise((resolve, reject) => setTimeout(resolve, this.animationTime / 2));
+		await new Promise(resolve => setTimeout(resolve, this.animationTime / 2));
 		
 		
 		
@@ -3126,7 +3083,7 @@ export class PlanePartitions extends Applet
 			
 			
 			
-			await new Promise((resolve, reject) => setTimeout(resolve, this.animationTime / 2));
+			await new Promise(resolve => setTimeout(resolve, this.animationTime / 2));
 		}
 		
 		
@@ -3366,7 +3323,7 @@ export class PlanePartitions extends Applet
 				
 				if (coordinatesToColor.length !== 0)
 				{
-					await new Promise((resolve, reject) => setTimeout(resolve, this.animationTime));
+					await new Promise(resolve => setTimeout(resolve, this.animationTime));
 				}
 			}
 		}
@@ -3518,7 +3475,7 @@ export class PlanePartitions extends Applet
 					continue;
 				}
 				
-				await new Promise((resolve, reject) => setTimeout(resolve, this.animationTime));
+				await new Promise(resolve => setTimeout(resolve, this.animationTime));
 				
 				
 				
@@ -3588,7 +3545,7 @@ export class PlanePartitions extends Applet
 				
 				this.recalculateHeights(array);
 				
-				await new Promise((resolve, reject) => setTimeout(resolve, this.animationTime));
+				await new Promise(resolve => setTimeout(resolve, this.animationTime));
 			}
 		}
 		
@@ -3603,7 +3560,7 @@ export class PlanePartitions extends Applet
 	{
 		let array = this.arrays[index];
 		
-		let planePartition = _.cloneDeep(array.numbers);
+		let planePartition = structuredClone(array.numbers);
 		
 		
 		
@@ -3728,7 +3685,7 @@ export class PlanePartitions extends Applet
 			
 			
 			
-			while (true)
+			for (;;)
 			{
 				let foundCandidate = false;	
 				
@@ -3759,7 +3716,7 @@ export class PlanePartitions extends Applet
 				
 				let path = [[row, col, planePartition[row][col] - 1]];
 				
-				while (true)
+				for (;;)
 				{
 					let currentContent = col - row;
 					
@@ -3803,7 +3760,7 @@ export class PlanePartitions extends Applet
 		
 		let outputArray = await this.addNewArray(index + 1, emptyArray);
 		
-		await new Promise((resolve, reject) => setTimeout(resolve, this.animationTime));
+		await new Promise(resolve => setTimeout(resolve, this.animationTime));
 		
 		
 		
@@ -3836,7 +3793,7 @@ export class PlanePartitions extends Applet
 			
 			
 			
-			await new Promise((resolve, reject) => setTimeout(resolve, this.animationTime / 5));
+			await new Promise(resolve => setTimeout(resolve, this.animationTime / 5));
 			
 			//Find the pivot and rearrange the shape into a hook. The end of the Q-path is the same as the end of the rim-hook, so it defines the row. To find the column, we need to go row boxes down, and then use the rest of the length to go right.
 			let row = qPaths[i][qPaths[i].length - 1][0];
@@ -3904,7 +3861,7 @@ export class PlanePartitions extends Applet
 			
 			
 			
-			await new Promise((resolve, reject) => setTimeout(resolve, this.animationTime));
+			await new Promise(resolve => setTimeout(resolve, this.animationTime));
 		}
 		
 		
@@ -4103,7 +4060,7 @@ export class PlanePartitions extends Applet
 					
 					for (let k = startContent; k <= endContent; k++)
 					{
-						targetCoordinates.push(_.clone(diagonalStarts[k]));
+						targetCoordinates.push(structuredClone(diagonalStarts[k]));
 					}
 					
 					
@@ -4126,7 +4083,7 @@ export class PlanePartitions extends Applet
 					
 					let currentHeight = outputArray.numbers[targetCoordinates[0][0]][targetCoordinates[0][1]];
 					
-					while (true)
+					for (;;)
 					{
 						let nextIndex = currentIndex;
 						
@@ -4165,7 +4122,7 @@ export class PlanePartitions extends Applet
 							{
 								coordinates.forEach(entry =>
 								{
-									this.drawSingleCell2dViewText(outputArray, entry[0], entry[1])
+									this.drawSingleCell2dViewText(outputArray, entry[0], entry[1]);
 								});
 							}
 							
@@ -4174,7 +4131,7 @@ export class PlanePartitions extends Applet
 						
 						else
 						{
-							let oldTargetCoordinates = _.cloneDeep(targetCoordinates.slice(currentIndex));
+							let oldTargetCoordinates = structuredClone(targetCoordinates.slice(currentIndex));
 							
 							//Shift the rest of the coordinates down and right by 1.
 							for (let k = currentIndex; k < targetCoordinates.length; k++)
@@ -4208,7 +4165,7 @@ export class PlanePartitions extends Applet
 					
 					currentHueIndex++;
 					
-					await new Promise((resolve, reject) => setTimeout(resolve, this.animationTime / 2));
+					await new Promise(resolve => setTimeout(resolve, this.animationTime / 2));
 				}	
 			}
 		}	
@@ -4455,7 +4412,7 @@ export class PlanePartitions extends Applet
 			
 			hueIndex++;
 			
-			await new Promise((resolve, reject) => setTimeout(resolve, this.animationTime / 2));
+			await new Promise(resolve => setTimeout(resolve, this.animationTime / 2));
 		}
 		
 		
@@ -4463,7 +4420,7 @@ export class PlanePartitions extends Applet
 		
 		await this.removeArray(index);
 		
-		await new Promise((resolve, reject) => setTimeout(resolve, this.animationTime));
+		await new Promise(resolve => setTimeout(resolve, this.animationTime));
 		
 		await this.removeArray(index);
 	}
@@ -4474,7 +4431,7 @@ export class PlanePartitions extends Applet
 	{
 		let array = this.arrays[index];
 		
-		let tableau = _.cloneDeep(array.numbers);
+		let tableau = structuredClone(array.numbers);
 		
 		let numEntries = 0;
 		
@@ -4529,7 +4486,7 @@ export class PlanePartitions extends Applet
 					
 					let path = [];
 					
-					while (true)
+					for (;;)
 					{
 						j = pRowLengths[i];
 						
@@ -4592,11 +4549,11 @@ export class PlanePartitions extends Applet
 		
 		let pArray = await this.addNewArray(index + 1, pSsyt);
 		
-		await new Promise((resolve, reject) => setTimeout(resolve, this.animationTime / 2));
+		await new Promise(resolve => setTimeout(resolve, this.animationTime / 2));
 		
 		let qArray = await this.addNewArray(index + 2, qSsyt);
 		
-		await new Promise((resolve, reject) => setTimeout(resolve, this.animationTime / 2));
+		await new Promise(resolve => setTimeout(resolve, this.animationTime / 2));
 		
 		
 		
@@ -4757,7 +4714,7 @@ export class PlanePartitions extends Applet
 			
 			hueIndex++;
 			
-			await new Promise((resolve, reject) => setTimeout(resolve, this.animationTime / 2));
+			await new Promise(resolve => setTimeout(resolve, this.animationTime / 2));
 		}
 		
 		
@@ -4832,11 +4789,11 @@ export class PlanePartitions extends Applet
 		
 		await this.addNewArray(index + 1, newArray);
 		
-		await new Promise((resolve, reject) => setTimeout(resolve, this.animationTime / 2));
+		await new Promise(resolve => setTimeout(resolve, this.animationTime / 2));
 		
 		await this.removeArray(index);
 		
-		await new Promise((resolve, reject) => setTimeout(resolve, this.animationTime / 2));
+		await new Promise(resolve => setTimeout(resolve, this.animationTime / 2));
 		
 		array = this.arrays[index];
 		planePartition = array.numbers;
@@ -4860,7 +4817,7 @@ export class PlanePartitions extends Applet
 		
 		await this.runAlgorithm("pak", index, true);
 		
-		await new Promise((resolve, reject) => setTimeout(resolve, this.animationTime * 2));
+		await new Promise(resolve => setTimeout(resolve, this.animationTime * 2));
 		
 		array = this.arrays[index];
 		planePartition = array.numbers;
@@ -4908,7 +4865,7 @@ export class PlanePartitions extends Applet
 		
 		await this.addNewArray(index, finiteArray);
 		
-		await new Promise((resolve, reject) => setTimeout(resolve, this.animationTime / 2));
+		await new Promise(resolve => setTimeout(resolve, this.animationTime / 2));
 		
 		
 		
@@ -4916,7 +4873,7 @@ export class PlanePartitions extends Applet
 		
 		await this.runAlgorithm("pakInverse", index, true);
 		
-		await new Promise((resolve, reject) => setTimeout(resolve, this.animationTime * 2));
+		await new Promise(resolve => setTimeout(resolve, this.animationTime * 2));
 		
 		
 
@@ -5022,7 +4979,7 @@ export class PlanePartitions extends Applet
 			}
 		}
 		
-		await new Promise((resolve, reject) => setTimeout(resolve, this.animationTime * 3));
+		await new Promise(resolve => setTimeout(resolve, this.animationTime * 3));
 		
 		
 		
@@ -5052,7 +5009,7 @@ export class PlanePartitions extends Applet
 		{
 			rppArray = await this.addNewArray(index + 1, rpp);
 			
-			await new Promise((resolve, reject) => setTimeout(resolve, this.animationTime / 2));
+			await new Promise(resolve => setTimeout(resolve, this.animationTime / 2));
 		}
 		
 		
@@ -5117,7 +5074,7 @@ export class PlanePartitions extends Applet
 		
 		
 		
-		await new Promise((resolve, reject) => setTimeout(resolve, this.animationTime * 3));
+		await new Promise(resolve => setTimeout(resolve, this.animationTime * 3));
 		
 		//Now it's time for the palindromic toggle.
 		
@@ -5176,13 +5133,13 @@ export class PlanePartitions extends Applet
 		
 		await this.runAlgorithm("pak", index, true);
 		
-		await new Promise((resolve, reject) => setTimeout(resolve, this.animationTime / 2));
+		await new Promise(resolve => setTimeout(resolve, this.animationTime / 2));
 		
 		await this.runAlgorithm("pak", index + 1, true);
 		
 		
 		
-		await new Promise((resolve, reject) => setTimeout(resolve, this.animationTime * 3));
+		await new Promise(resolve => setTimeout(resolve, this.animationTime * 3));
 		
 		
 		
@@ -5383,7 +5340,7 @@ export class PlanePartitions extends Applet
 		
 		
 		
-		await new Promise((resolve, reject) => setTimeout(resolve, this.animationTime * 3));
+		await new Promise(resolve => setTimeout(resolve, this.animationTime * 3));
 		
 		
 		
@@ -5409,7 +5366,7 @@ export class PlanePartitions extends Applet
 		
 		let appArray = await this.addNewArray(index + 2, app);
 		
-		await new Promise((resolve, reject) => setTimeout(resolve, this.animationTime / 2));
+		await new Promise(resolve => setTimeout(resolve, this.animationTime / 2));
 		
 		
 		
@@ -5488,19 +5445,19 @@ export class PlanePartitions extends Applet
 		
 		await this.removeArray(index);
 		
-		await new Promise((resolve, reject) => setTimeout(resolve, this.animationTime / 2));
+		await new Promise(resolve => setTimeout(resolve, this.animationTime / 2));
 		
 		await this.removeArray(index);
 		
 		
 		
-		await new Promise((resolve, reject) => setTimeout(resolve, this.animationTime * 3));
+		await new Promise(resolve => setTimeout(resolve, this.animationTime * 3));
 		
 		
 		
 		await this.runAlgorithm("pakInverse", index, true);
 		
-		await new Promise((resolve, reject) => setTimeout(resolve, this.animationTime));
+		await new Promise(resolve => setTimeout(resolve, this.animationTime));
 	}
 	
 	

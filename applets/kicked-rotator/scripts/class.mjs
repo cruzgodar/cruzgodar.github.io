@@ -62,7 +62,7 @@ export class KickedRotator extends Applet
 		
 		
 		
-		this.webWorker.onmessage = e =>
+		this.webWorker.onmessage = (e) =>
 		{
 			let valueDelta = e.data[0];
 			let hue = e.data[1];
@@ -83,7 +83,7 @@ export class KickedRotator extends Applet
 					}
 				}
 			}
-		}
+		};
 		
 		
 		

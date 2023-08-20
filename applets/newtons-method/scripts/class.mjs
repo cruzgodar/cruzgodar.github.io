@@ -1,3 +1,5 @@
+import anime from "/scripts/anime.js";
+import { changeOpacity } from "/scripts/src/animation.mjs";
 import { Applet } from "/scripts/src/applets.mjs";
 import { addTemporaryListener } from "/scripts/src/main.mjs";
 import { Wilson } from "/scripts/wilson.mjs";
@@ -350,7 +352,7 @@ export class NewtonsMethod extends Applet
 			const mag = 1 + randomize * .75 * Math.random();
 			
 			newRoots[2 * i] = mag * Math.cos(2 * Math.PI * i / this.numRoots);
-			newRoots[2 * i + 1] = mag * Math.sin(2 * Math.PI * i / this.numRoots)
+			newRoots[2 * i + 1] = mag * Math.sin(2 * Math.PI * i / this.numRoots);
 		}
 		
 		let dummy = {t: 0};
@@ -462,7 +464,7 @@ export class NewtonsMethod extends Applet
 	
 	
 	
-	onDragDraggable(activeDraggable, x, y, event)
+	onDragDraggable(activeDraggable, x, y)
 	{
 		if (activeDraggable === 0)
 		{
@@ -483,14 +485,16 @@ export class NewtonsMethod extends Applet
 	
 	
 	
-	async onReleaseDraggable(activeDraggable, x, y, event)
+	async onReleaseDraggable(activeDraggable)
 	{
 		this.lastActiveRoot = activeDraggable;
 		
-		try
+		if (this.rootSetterElement && this.colorSetterElement)
 		{
-			changeOpacity(this.rootSetterElement, 0);
-			await changeOpacity(this.colorSetterElement, 0);
+			await Promise.all([
+				changeOpacity(this.rootSetterElement, 0),
+				changeOpacity(this.colorSetterElement, 0)
+			]);
 			
 			if (this.lastActiveRoot === 0)
 			{
@@ -517,8 +521,6 @@ export class NewtonsMethod extends Applet
 			changeOpacity(this.rootSetterElement, 1);
 			changeOpacity(this.colorSetterElement, 1);
 		}
-		
-		catch(ex) {}
 	}
 
 

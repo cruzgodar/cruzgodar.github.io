@@ -2,14 +2,14 @@
 
 
 
-onmessage = async function(e)
+onmessage = (e) =>
 {
 	gridSize = e.data[0];
 	K = e.data[1];
 	orbitSeparation = e.data[2];
 	
-	await drawKickedRotator();
-}
+	drawKickedRotator();
+};
 
 
 
@@ -26,8 +26,6 @@ let currentCol = null;
 
 let currentP = null;
 let currentTheta = null;
-
-const maxRepetitions = 50;
 
 
 
@@ -91,7 +89,7 @@ function drawKickedRotator()
 
 
 //Runs through an entire orbit. Returns the fraction of points that were above the halfway mark.
-function calculateOrbit(startRow, startCol, color)
+function calculateOrbit(startRow, startCol)
 {
 	let numUpperHalfPoints = 0;
 	
@@ -111,7 +109,7 @@ function calculateOrbit(startRow, startCol, color)
 	//Here's the idea. We can't just terminate an orbit if the point coincides one of the places we've already been, since the rasterizing makes that happen way too often. We also don't want every orbit to go one forever though, so instead, we'll terminate an orbit if it hits enough points we've already seen in a row.
 	let numPoints = 0;
 	
-	while (true)
+	for (;;)
 	{
 		//Add the current point to the image.
 		image[gridSize * currentRow + currentCol]++;
@@ -160,4 +158,4 @@ function calculateOrbit(startRow, startCol, color)
 	
 	
 	return numUpperHalfPoints / numPoints;
-	}
+}
