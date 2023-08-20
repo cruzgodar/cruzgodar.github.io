@@ -31,6 +31,7 @@
 #banner-cover
 {
 	height: 60vh;
+	position: absolute;
 }
 
 #new-banner-cover
@@ -74,6 +75,7 @@
 	background: rgba(0, 0, 0, 0);
 	position: relative;
 	margin: 0 auto;
+	margin-top: 60vh;
 	
 	opacity: 0;
 	
