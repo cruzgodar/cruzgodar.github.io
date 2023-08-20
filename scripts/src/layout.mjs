@@ -34,13 +34,12 @@ export function onResize()
 	
 	
 	//Fix the logo cause Firefox is dumb.
-	try
+	const element = headerElement?.children[0]?.children[0];
+	
+	if (element)
 	{
-		const element = headerElement.children[0].children[0];
 		element.style.width = `${element.getBoundingClientRect().height}px`;
 	}
-	
-	catch(ex) {}
 
 
 
@@ -78,16 +77,8 @@ export function equalizeAppletColumns()
 		return;
 	}
 	
-	let leftColumn = null;
-	let rightColumn = null;
-	
-	try
-	{
-		leftColumn = $("#canvas-landscape-left");
-		rightColumn = $("#canvas-landscape-right");
-	}
-	
-	catch(ex) {}
+	const leftColumn = $("#canvas-landscape-left");
+	const rightColumn = $("#canvas-landscape-right");
 	
 	if (!leftColumn || !rightColumn)
 	{
@@ -183,16 +174,8 @@ export function equalizeAppletColumns()
 
 function destroyAppletColumns()
 {
-	let leftColumn = null;
-	let rightColumn = null;
-	
-	try
-	{
-		leftColumn = $("#canvas-landscape-left");
-		rightColumn = $("#canvas-landscape-right");
-	}
-	
-	catch(ex) {}
+	const leftColumn = $("#canvas-landscape-left");
+	const rightColumn = $("#canvas-landscape-right");
 	
 	if (!leftColumn || !rightColumn)
 	{

@@ -57,7 +57,7 @@ body
 
 .purple-wave
 {
-	background-image: url("/themes/wave.png");
+	background-image: url("wave.png");
 	background-size: contain;
 	
 	position: absolute;

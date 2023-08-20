@@ -1299,4 +1299,4 @@ export const sitemap =
 		
 		"children": []
 	}
-}
+};

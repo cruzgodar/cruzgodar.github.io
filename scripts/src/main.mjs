@@ -82,8 +82,10 @@ export let temporaryWorkers = {};
 
 export function addTemporaryWorker(src, id = src)
 {
-	try {temporaryWorkers[id].terminate()}
-	catch(ex) {}
+	if (temporaryWorkers[id]?.terminate)
+	{
+		temporaryWorkers[id].terminate();
+	}
 
 	const replacedSrc = window.DEBUG ? src.replace(".js", ".min.js") : src;
 
@@ -235,7 +237,7 @@ export function loadStyle(href)
 	style.setAttribute("href", href);
 	
 	return style;
-};
+}
 
 
 

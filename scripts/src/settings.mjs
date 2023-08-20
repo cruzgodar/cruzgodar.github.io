@@ -3,6 +3,7 @@ import { cardIsOpen } from "./cards.mjs";
 import { recreateDesmosGraphs } from "./desmos.mjs";
 import { $, addStyle, pageUrl } from "./main.mjs";
 import { getDisplayUrl } from "./navigation.mjs";
+import anime from "/scripts/anime.js";
 
 export const forceThemePages =
 {
@@ -237,7 +238,11 @@ export function condenseApplet()
 			width: 80% !important;
 		}
 	`);
-	
-	try {$("#download-button").parentNode.parentNode.style.display = "none"}
-	catch(ex) {}
+
+	const dounloadButtonElement = $("#download-button");
+
+	if (dounloadButtonElement?.parentNode?.parentNode)
+	{
+		dounloadButtonElement.parentNode.parentNode.style.display = "none";
+	}
 }

@@ -38,7 +38,7 @@ async function buildSite()
 		return;
 	}
 
-	const sitemap = JSON.parse(text.slice(text.indexOf("{")));
+	const sitemap = JSON.parse(text.slice(text.indexOf("{"), text.length - 1));
 
 	await new Promise((resolve, reject) =>
 	{

@@ -1,14 +1,14 @@
-import { fadeDownIn, fadeIn, fadeLeftIn, fadeRightIn, fadeUpIn, pageAnimationTime } from "./animation.mjs"
-import { bannerElement, bannerOpacity, setUpBanner } from "./banners.mjs"
-import { setUpDropdowns, setUpNavButtons, setUpTextButtons } from "./buttons.mjs"
-import { setUpCards } from "./cards.mjs"
-import { setUpFocusEvents, setUpHoverEvents } from "./hover-events.mjs"
-import { equalizeAppletColumns, onResize } from "./layout.mjs"
-import { $$, pageElement, pageUrl, updatePageElement } from "./main.mjs"
-import { typesetMath } from "./math.mjs"
-import { navigationTransitionType, redirect, setCurrentlyRedirecting } from "./navigation.mjs"
-import { condenseApplet, revertTheme, siteSettings } from "./settings.mjs"
-import { sitemap } from "./sitemap.mjs"
+import { fadeDownIn, fadeIn, fadeLeftIn, fadeRightIn, fadeUpIn, pageAnimationTime } from "./animation.mjs";
+import { bannerElement, bannerOpacity, setUpBanner } from "./banners.mjs";
+import { setUpDropdowns, setUpNavButtons, setUpTextButtons } from "./buttons.mjs";
+import { setUpCards } from "./cards.mjs";
+import { setUpFocusEvents, setUpHoverEvents } from "./hover-events.mjs";
+import { equalizeAppletColumns, onResize } from "./layout.mjs";
+import { $$, pageElement, pageUrl, updatePageElement } from "./main.mjs";
+import { typesetMath } from "./math.mjs";
+import { navigationTransitionType, redirect, setCurrentlyRedirecting } from "./navigation.mjs";
+import { condenseApplet, revertTheme, siteSettings } from "./settings.mjs";
+import { sitemap } from "./sitemap.mjs";
 
 //The big one. Gets a page ready to be shown but doesn't do anything that requires it to be visible.
 export async function loadPage()
@@ -18,8 +18,12 @@ export async function loadPage()
 	updatePageElement();
 	
 	//Set the page title.
-	try {document.head.querySelector("title").textContent = sitemap[pageUrl].title}
-	catch(ex) {}
+	const titleElement = document.head.querySelector("title");
+	
+	if (titleElement)
+	{
+		titleElement.textContent = sitemap[pageUrl].title;
+	}
 	
 	
 	
@@ -64,7 +68,7 @@ export async function loadPage()
 
 export async function showPage()
 {
-	await new Promise((resolve, reject) => setTimeout(resolve, 10));
+	await new Promise(resolve => setTimeout(resolve, 10));
 	
 	await fadeInPage();
 
@@ -76,22 +80,20 @@ export async function showPage()
 function loadCustomStyle()
 {
 	fetch(`${pageUrl}style/index.${window.DEBUG ? "css" : "min.css"}`)
-	
-	.then(response => response.text())
-	
-	.then(text =>
-	{
-		const element = document.createElement("style");
 		
-		element.textContent = text;
+		.then(response => response.text())
 		
-		//This is kind of subtle. If we append this new style to the end of the head, then it will take precendence over settings styles, which is terrible -- for example, the homepage will render all of its custom classes like quote-text and quote-attribution incorrectly. Therefore, we need to *prepend* it, ensuring it has the lowest-possible priority.
-		element.classList.add("temporary-style");
-		
-		document.head.insertBefore(element, document.head.firstChild);
-	})
-	
-	.catch(ex => {});
+		.then(text =>
+		{
+			const element = document.createElement("style");
+			
+			element.textContent = text;
+			
+			//This is kind of subtle. If we append this new style to the end of the head, then it will take precendence over settings styles, which is terrible -- for example, the homepage will render all of its custom classes like quote-text and quote-attribution incorrectly. Therefore, we need to *prepend* it, ensuring it has the lowest-possible priority.
+			element.classList.add("temporary-style");
+			
+			document.head.insertBefore(element, document.head.firstChild);
+		});
 }
 
 
@@ -100,12 +102,9 @@ function loadCustomScripts()
 {
 	import(`${pageUrl}scripts/index.${window.DEBUG ? "mjs" : "min.mjs"}`)
 
-	.then(Module => Module.load())
+		.then(Module => Module.load())
 
-	.catch(() =>
-	{
-		setTimeout(() => showPage(), 1);
-	});
+		.catch(() => window.requestAnimationFrame(showPage));
 }
 
 async function fadeInPage()

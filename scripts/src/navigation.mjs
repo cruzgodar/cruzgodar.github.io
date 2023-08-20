@@ -54,88 +54,85 @@ export async function redirect({
 	
 	navigationTransitionType = getTransitionType(url);
 	
-	
-	
-	//We need to record this in case we can't successfully load the next page and we need to return to the current one.
-	const backgroundColor = document.documentElement.style.backgroundColor;
+
 	
 	await fadeOutPage({url, noFadeOut});
 	
 	//Get the new data, fade out the page, and preload the next page's banner if it exists. When all of those things are successfully done, replace the current html with the new stuff.
 	Promise.all([fetch(`${url}index.html`), loadBanner()])
-	
-	.then((response) =>
-	{
-		if (!response[0].ok)
+		
+		.then((response) =>
 		{
-			window.location.replace("/404.html");
-		}
-		
-		else
-		{
-			return response[0].text();
-		}
-	})
-		
-	
-	.then((data) =>
-	{
-		unloadPage();
-		
-		const index = data.indexOf("</head>");
-		
-		if (index !== -1)
-		{
-			data = data.slice(index + 7);
-		}
-		
-		
-		data = data.slice(data.indexOf("<body>") + 6, data.indexOf("</body>"));
+			if (!response[0].ok)
+			{
+				window.location.replace("/404.html");
+			}
 			
-		document.body.firstElementChild.insertAdjacentHTML("beforebegin", `<div class="page" style="opacity: 0">${data}</div>`);
+			else
+			{
+				return response[0].text();
+			}
+		})
+			
+		
+		.then((data) =>
+		{
+			unloadPage();
+			
+			const index = data.indexOf("</head>");
+			
+			if (index !== -1)
+			{
+				data = data.slice(index + 7);
+			}
+			
+			
+			data = data.slice(data.indexOf("<body>") + 6, data.indexOf("</body>"));
+				
+			document.body.firstElementChild.insertAdjacentHTML("beforebegin", `<div class="page" style="opacity: 0">${data}</div>`);
 
-		setPageUrl(url);
+			setPageUrl(url);
 
-		loadPage();
-		
-		
+			loadPage();
+			
+			
 
-		//Record the page change in the url bar and in the browser history.
-		if (noStatePush)
-		{
-			history.replaceState({url}, document.title, getDisplayUrl());
-		}
-		
-		else
-		{
-			history.pushState({url}, document.title, getDisplayUrl());
-		}
-		
-		
-		
-		//Restore the ability to scroll in case it was removed.
-		document.documentElement.style.overflowY = "visible";
-		document.body.style.overflowY = "visible";
-		
-		document.body.style.userSelect = "auto";
-		document.body.style.WebkitUserSelect = "auto";
-		
-		
-		
-		if (restoreScroll)
-		{
-			window.scrollTo(0, lastPageScroll);
-			bannerOnScroll(lastPageScroll);
-		}
-		
-		else
-		{
-			window.scrollTo(0, 0);
-			setPageScroll(0);
-		}
-		
-		lastPageScroll = temp;
-	});
+			//Record the page change in the url bar and in the browser history.
+			if (noStatePush)
+			{
+				history.replaceState({url}, document.title, getDisplayUrl());
+			}
+			
+			else
+			{
+				history.pushState({url}, document.title, getDisplayUrl());
+			}
+			
+			
+			
+			//Restore the ability to scroll in case it was removed.
+			document.documentElement.style.overflowY = "visible";
+			document.body.style.overflowY = "visible";
+			
+			document.body.style.userSelect = "auto";
+			document.body.style.WebkitUserSelect = "auto";
+			
+			
+			
+			if (restoreScroll)
+			{
+				window.scrollTo(0, lastPageScroll);
+				bannerOnScroll(lastPageScroll);
+			}
+			
+			else
+			{
+				window.scrollTo(0, 0);
+				setPageScroll(0);
+			}
+			
+			lastPageScroll = temp;
+		});
 }
 
 
@@ -254,7 +251,7 @@ async function fadeOutPage({ url, noFadeOut })
 		{
 			return bannerElement ? Promise.all([fadeOut(bannerElement), fadeOut(pageElement)]) : fadeOut(pageElement);
 		}
-	})()
+	})();
 }
 
 
@@ -281,8 +278,10 @@ function unloadPage()
 
 	for (let key in temporaryWorkers)
 	{
-		try {temporaryWorkers[key].terminate()}
-		catch(ex) {}
+		if (temporaryWorkers[key]?.terminate)
+		{
+			temporaryWorkers[key].terminate();
+		}
 	}
 
 	clearTemporaryWorkers();
@@ -297,14 +296,15 @@ function unloadPage()
 	clearDesmosGraphs();
 	
 	
-	try 
+	Applet.current.forEach(applet =>
 	{
-		Applet.current.forEach(applet => applet.destroy());
-		
-		Applet.current = [];
-	}
+		if (applet?.destroy)
+		{
+			applet.destroy();
+		}
+	});
 	
-	catch(ex) {}
+	Applet.current = [];
 
 
 
