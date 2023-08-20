@@ -11,7 +11,7 @@ onmessage = async function(e)
 	coolingFactor = 1 / (numNodes * numNodes * numNodes);
 	
 	await drawAnnealingGraph();
-}
+};
 
 
 
@@ -229,4 +229,4 @@ function drawLines()
 		
 		setTimeout(resolve, 50);
 	});
-	}
+}

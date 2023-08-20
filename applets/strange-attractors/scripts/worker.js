@@ -13,7 +13,7 @@ onmessage = async function(e)
 	maximumSpeed = e.data[4];
 	
 	await drawLorenzAttractor();
-}
+};
 
 
 
@@ -141,4 +141,4 @@ function HSVtoRGB(h, s, v)
 	}
     
 	return [Math.round(r * 255), Math.round(g * 255), Math.round(b * 255)];
-	}
+}

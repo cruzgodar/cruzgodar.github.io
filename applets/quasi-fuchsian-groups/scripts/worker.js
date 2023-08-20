@@ -13,7 +13,7 @@ onmessage = async function(e)
 	coefficients = e.data[5];
 	
 	await drawQuasiFuchsianGroup();
-}
+};
 
 
 
@@ -157,4 +157,4 @@ function applyTransformation(index)
 	
 	x = newX / magnitude;
 	y = newY / magnitude;
-	}
+}

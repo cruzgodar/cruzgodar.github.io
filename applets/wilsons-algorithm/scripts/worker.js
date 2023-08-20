@@ -21,7 +21,7 @@ onmessage = async function(e)
 		
 		postMessage(["done"]);
 	};
-}
+};
 
 
 
@@ -276,7 +276,7 @@ function wasmRandomWalk(fixedLength = 0)
 	let newVerticesPtr = ccallArrays("random_walk", "number", ["number", "array", "number", "number", "number"], [gridSize, grid, fixedLength, currentRow, currentColumn], {heapIn: "HEAPU32"});
 	
 	//The length of the array is stored as its first element.
-	let numNewVertices = Module.HEAPU32[newVerticesPtr / Uint32Array.BYTES_PER_ELEMENT]
+	let numNewVertices = Module.HEAPU32[newVerticesPtr / Uint32Array.BYTES_PER_ELEMENT];
 	
 	for (let i = 2; i < 2 * numNewVertices; i += 2)
 	{
@@ -339,7 +339,7 @@ function jsRandomWalk(fixedLength = 0)
 
 		else if (currentRow === gridSize - 1 && currentColumn === gridSize - 1)
 		{
-			possibleDirections = [0, 3]
+			possibleDirections = [0, 3];
 		}
 
 
@@ -726,4 +726,4 @@ function HSVtoRGB(h, s, v)
 	}
     
 	return [Math.round(r * 255), Math.round(g * 255), Math.round(b * 255)];
-	}
+}

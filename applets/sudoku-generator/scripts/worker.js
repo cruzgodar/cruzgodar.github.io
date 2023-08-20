@@ -12,7 +12,7 @@ onmessage = function(e)
 		
 		generateSudokuGrid();
 	};
-}
+};
 
 
 
@@ -241,4 +241,4 @@ function wasmSolvePuzzle()
 	
 	//With everything in place, we can now call the C function and let it do the heavy lifting.
 	return ccallArrays("solve_puzzle", "number", ["array"], [gridFlat], {heapIn: "HEAPU8"});
-	}
+}

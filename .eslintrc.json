@@ -11,7 +11,13 @@
     },
 	"ignorePatterns": [
 		"**/*.min.*",
-		"**/solver.js"
+		"/scripts/three.*",
+		"/scripts/anime.*",
+		"/debug/*",
+		"/projects/wilson/*",
+		"/applets/calcudoku-generator/scripts/solver.*",
+		"/applets/sudoku-generator/scripts/solver.*",
+		"/applets/wilsons-algorithm/scripts/random-walk.*"
 	],
     "rules": {
         "indent": [
