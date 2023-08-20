@@ -1,5 +1,6 @@
 import { addHoverEventWithScale } from "./hover-events.mjs";
 import { $$, addTemporaryListener, pageElement } from "./main.mjs";
+import anime from "/scripts/anime.js";
 
 export class Applet
 {
@@ -47,20 +48,26 @@ export class Applet
 		
 		this.workers.forEach(worker =>
 		{
-			try {worker.terminate()}
-			catch(ex) {}
+			if (worker?.terminate)
+			{
+				worker?.terminate();
+			}
 		});
 		
 		this.timeoutIds.forEach(timeoutId =>
 		{
-			try {clearTimeout(timeoutId)}
-			catch(ex) {}
+			if (timeoutId != null)
+			{
+				clearTimeout(timeoutId);
+			}
 		});
+
+		if (this.hiddenCanvasContainer)
+		{
+			this.hiddenCanvasContainer.remove();
+		}
 		
-		try {this.hiddenCanvasContainer.remove()}
-		catch(ex) {}
-		
-		console.log(`Destroyed an applet of type ${this.constructor.name}`)
+		console.log(`Destroyed an applet of type ${this.constructor.name}`);
 	}
 	
 	
@@ -244,10 +251,10 @@ export class Applet
 	
 	hideCapDialogs()
 	{
-		try
+		const dialogs = $$(".input-cap-dialog");
+		
+		if (dialogs)
 		{
-			const dialogs = $$(".input-cap-dialog");
-			
 			anime({
 				targets: dialogs,
 				opacity: 0,
@@ -256,27 +263,20 @@ export class Applet
 				easing: "easeOutQuad",
 				complete: () =>
 				{
-					dialogs.forEach(dialog => dialog.remove())
+					dialogs.forEach(dialog => dialog.remove());
 				}
 			});
 		}
-		
-		catch(ex) {}
 	}
 	
 	updateCapDialogLocation(element, dialog)
 	{
-		try
-		{
-			const rect = element.nextElementSibling.getBoundingClientRect();
-			const dialogRect = dialog.getBoundingClientRect();
-			
-			dialog.style.top = `${window.scrollY + rect.top + rect.height + 4}px`;
-			
-			dialog.style.left = `${Math.min(Math.max(rect.left - (dialogRect.width + 12 - rect.width) / 2, 12), window.innerWidth - 12 - dialogRect.width)}px`;
-		}
+		const rect = element.nextElementSibling.getBoundingClientRect();
+		const dialogRect = dialog.getBoundingClientRect();
 		
-		catch(ex) {}
+		dialog.style.top = `${window.scrollY + rect.top + rect.height + 4}px`;
+		
+		dialog.style.left = `${Math.min(Math.max(rect.left - (dialogRect.width + 12 - rect.width) / 2, 12), window.innerWidth - 12 - dialogRect.width)}px`;
 	}
 	
 	
@@ -331,7 +331,7 @@ export class Applet
 	}
 	
 	
-	onGrabCanvas(x, y, event)
+	onGrabCanvas()
 	{
 		this.pan.onGrabCanvas();
 		this.zoom.onGrabCanvas();
@@ -339,14 +339,14 @@ export class Applet
 	
 	
 	
-	onDragCanvas(x, y, xDelta, yDelta, event)
+	onDragCanvas(x, y, xDelta, yDelta)
 	{
 		this.pan.onDragCanvas(x, y, xDelta, yDelta);
 	}
 	
 	
 	
-	onReleaseCanvas(x, y, event)
+	onReleaseCanvas()
 	{
 		this.pan.onReleaseCanvas();
 		this.zoom.onReleaseCanvas();
@@ -354,14 +354,14 @@ export class Applet
 	
 	
 	
-	onWheelCanvas(x, y, scrollAmount, event)
+	onWheelCanvas(x, y, scrollAmount)
 	{
 		this.zoom.onWheelCanvas(x, y, scrollAmount);
 	}
 	
 	
 	
-	onPinchCanvas(x, y, touchDistanceDelta, event)
+	onPinchCanvas(x, y, touchDistanceDelta)
 	{
 		this.zoom.onPinchCanvas(x, y, touchDistanceDelta);
 	}
@@ -421,8 +421,7 @@ export class Applet
 	
 	
 	
-	pan =
-	{
+	pan = {
 		parent: null,
 		
 		frame: 0,
@@ -539,15 +538,16 @@ export class Applet
 				this.velocityY *= this.friction;
 			}
 			
-			try {this.parent.wilson.draggables.recalculateLocations()}
-			catch(ex) {}
+			if (this.parent?.wilson?.draggables?.recalculateLocations)
+			{
+				this.parent.wilson.draggables.recalculateLocations();
+			}
 		}
-	}
+	};
 	
 	
 	
-	zoom =
-	{
+	zoom = {
 		parent: null,
 		frame: 0,
 		
@@ -640,7 +640,7 @@ export class Applet
 			this.nextVelocityY = -yDelta / this.parent.wilson.worldHeight;
 		},
 		
-		onPinchCanvas: function(x, y, touchDistanceDelta, event)
+		onPinchCanvas: function(x, y, touchDistanceDelta)
 		{
 			if (this.parent.wilson.worldWidth >= this.parent.wilson.worldHeight)
 			{
@@ -726,8 +726,6 @@ export class Applet
 			//This ensures that velocities don't get double-counted.
 			this.nextVelocity = 0;
 			
-			const magnitude = this.velocityX * this.velocityX + this.velocityY * this.velocityY;
-			
 			if (Math.abs(this.velocity) < this.velocityStopThreshhold)
 			{
 				this.velocity = 0;
@@ -742,10 +740,12 @@ export class Applet
 				this.velocity *= this.friction;
 			}
 			
-			try {this.parent.wilson.draggables.recalculateLocations()}
-			catch(ex) {}
+			if (this.parent?.wilson?.draggables?.recalculateLocations)
+			{
+				this.parent.wilson.draggables.recalculateLocations();
+			}
 		}
-	}
+	};
 	
 	
 	
@@ -758,21 +758,25 @@ export class Applet
 	{
 		let newGLSL = GLSL.replaceAll(/\s/g, ""); //Remove spaces
 		
-		while (newGLSL.match(/([^\.0-9])([0-9]+)([^\.0-9])/g))
+		while (newGLSL.match(/([^.0-9])([0-9]+)([^.0-9])/g))
 		{
-			newGLSL = newGLSL.replaceAll(/([^\.0-9])([0-9]+)([^\.0-9])/g, (match, $1, $2, $3) => `${$1}${$2}.0${$3}`); //Convert ints to floats
+			newGLSL = newGLSL.replaceAll(/([^.0-9])([0-9]+)([^.0-9])/g, (match, $1, $2, $3) => `${$1}${$2}.0${$3}`); //Convert ints to floats
 		}
 		
 		newGLSL = newGLSL.replaceAll(/([^0-9])(\.[0-9])/g, (match, $1, $2) => `${$1}0${$2}`) //Lead decimals with zeros
-		.replaceAll(/([0-9]\.)([^0-9])/g, (match, $1, $2) => `${$1}0${$2}`) //End decimals with zeros
-		.replaceAll(/([0-9\)])([a-z\(])/g, (match, $1, $2) => `${$1} * ${$2}`); //Juxtaposition to multiplication
+			.replaceAll(/([0-9]\.)([^0-9])/g, (match, $1, $2) => `${$1}0${$2}`) //End decimals with zeros
+			.replaceAll(/([0-9)])([a-z(])/g, (match, $1, $2) => `${$1} * ${$2}`); //Juxtaposition to multiplication
 		
 		while (newGLSL.match(/([xyz])([xyz])/g))
 		{
 			newGLSL = newGLSL.replaceAll(/([xyz])([xyz])/g, (match, $1, $2) => `${$1} * ${$2}`); //Particular juxtaposition to multiplication
 		}
+
+		newGLSL = newGLSL.replaceAll(/([a-z0-9.]+)\^([a-z0-9.]+)/g, (match, $1, $2) => `pow(${$1}, ${$2})`); //Carats to power
+
+		console.log(newGLSL);
 		
-		return newGLSL.replaceAll(/([a-z0-9\.]+)\^([a-z0-9\.]+)/g, (match, $1, $2) => `pow(${$1}, ${$2})`); //Carats to power
+		return newGLSL;
 	}
 	
 	

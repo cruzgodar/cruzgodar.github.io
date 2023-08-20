@@ -1,5 +1,6 @@
 import { browserIsIos } from "./browser.mjs";
 import { navigationAnimationDistanceHorizontal, navigationAnimationDistanceVertical } from "./layout.mjs";
+import anime from "/scripts/anime.js";
 
 const useJsAnimation = browserIsIos;
 
@@ -14,7 +15,7 @@ export const backgroundColorAnimationTime = baseAnimationTime * 2;
 
 function changeOpacityJs(element, endValue, duration = opacityAnimationTime, easeInOut = false)
 {
-	return new Promise((resolve, reject) =>
+	return new Promise(resolve =>
 	{
 		anime({
 			targets: element,
@@ -28,10 +29,14 @@ function changeOpacityJs(element, endValue, duration = opacityAnimationTime, eas
 
 function changeOpacityCss(element, endValue, duration = opacityAnimationTime, easeInOut = false)
 {
-	return new Promise((resolve, reject) =>
+	return new Promise(resolve =>
 	{
-		try {clearTimeout(element.getAttribute("data-opacity-timeout-id"))}
-		catch(ex) {}
+		const timeoutId = element.getAttribute("data-opacity-timeout-id");
+		
+		if (timeoutId != null)
+		{
+			clearTimeout(timeoutId);
+		}
 		
 		element.style.transition = `opacity ${duration}ms ${easeInOut ? "ease-in-out" : "ease-out"}`;
 		
@@ -56,7 +61,7 @@ export const changeOpacity = useJsAnimation ? changeOpacityJs : changeOpacityCss
 
 export function changeScaleJs(element, endValue, duration = buttonAnimationTime, easeInOut = false)
 {
-	return new Promise((resolve, reject) =>
+	return new Promise(resolve =>
 	{
 		anime({
 			targets: element,
@@ -70,10 +75,14 @@ export function changeScaleJs(element, endValue, duration = buttonAnimationTime,
 
 function changeScaleCss(element, endValue, duration = buttonAnimationTime, easeInOut = false)
 {
-	return new Promise((resolve, reject) =>
+	return new Promise(resolve =>
 	{
-		try {clearTimeout(element.getAttribute("data-scale-timeout-id"))}
-		catch(ex) {}
+		const timeoutId = element.getAttribute("data-scale-timeout-id");
+		
+		if (timeoutId != null)
+		{
+			clearTimeout(timeoutId);
+		}
 		
 		element.style.transition = `transform ${duration}ms ${easeInOut ? "ease-in-out" : "ease-out"}`;
 		
@@ -98,7 +107,7 @@ export const changeScale = useJsAnimation ? changeScaleJs : changeScaleCss;
 
 function fadeLeftJs(element, duration = opacityAnimationTime * 3.5, easeInOut = false)
 {
-	return new Promise((resolve, reject) =>
+	return new Promise(resolve =>
 	{
 		anime({
 			targets: element,
@@ -113,16 +122,20 @@ function fadeLeftJs(element, duration = opacityAnimationTime * 3.5, easeInOut = 
 
 function fadeLeftCss(element, duration = opacityAnimationTime * 3.5, easeInOut = false)
 {
-	return new Promise((resolve, reject) =>
+	return new Promise(resolve =>
 	{
-		try {clearTimeout(element.getAttribute("data-fade-left-timeout-id"))}
-		catch(ex) {}
+		const timeoutId = element.getAttribute("data-fade-left-timeout-id");
+		
+		if (timeoutId != null)
+		{
+			clearTimeout(timeoutId);
+		}
 		
 		element.style.transition = `transform ${duration}ms ${easeInOut ? "ease-in-out" : "ease-out"}, opacity ${duration}ms ${easeInOut ? "ease-in-out" : "ease-out"}`;
 		
 		setTimeout(() =>
 		{
-			element.style.transform = `translateX(0px)`;
+			element.style.transform = "translateX(0px)";
 			element.style.opacity = 1;
 			
 			const timeoutId = setTimeout(() =>
@@ -142,7 +155,7 @@ export const fadeLeft = useJsAnimation ? fadeLeftJs : fadeLeftCss;
 
 function fadeUpInJs(element, duration = pageAnimationTime * 2, targetOpacity = 1)
 {
-	return new Promise((resolve, reject) =>
+	return new Promise(resolve =>
 	{
 		element.style.marginTop = `${navigationAnimationDistanceVertical}px`;
 		element.style.marginBottom = 0;
@@ -160,10 +173,14 @@ function fadeUpInJs(element, duration = pageAnimationTime * 2, targetOpacity = 1
 
 function fadeUpInCss(element, duration = pageAnimationTime * 2, targetOpacity = 1)
 {
-	return new Promise((resolve, reject) =>
+	return new Promise(resolve =>
 	{
-		try {clearTimeout(element.getAttribute("data-fade-up-in-timeout-id"))}
-		catch(ex) {}
+		const timeoutId = element.getAttribute("data-fade-up-in-timeout-id");
+		
+		if (timeoutId != null)
+		{
+			clearTimeout(timeoutId);
+		}
 		
 		element.style.transition = "";
 		
@@ -200,7 +217,7 @@ export const fadeUpIn = useJsAnimation ? fadeUpInJs : fadeUpInCss;
 
 function fadeUpOutJs(element, duration = pageAnimationTime, noOpacityChange = false)
 {
-	return new Promise((resolve, reject) =>
+	return new Promise(resolve =>
 	{
 		element.style.marginBottom = "20vmin";
 		
@@ -224,10 +241,14 @@ function fadeUpOutJs(element, duration = pageAnimationTime, noOpacityChange = fa
 
 function fadeUpOutCss(element, duration = pageAnimationTime, noOpacityChange = false)
 {
-	return new Promise((resolve, reject) =>
+	return new Promise(resolve =>
 	{
-		try {clearTimeout(element.getAttribute("data-fade-up-out-timeout-id"))}
-		catch(ex) {}
+		const timeoutId = element.getAttribute("data-fade-up-out-timeout-id");
+		
+		if (timeoutId != null)
+		{
+			clearTimeout(timeoutId);
+		}
 		
 		element.style.transition = "";
 		
@@ -266,7 +287,7 @@ export const fadeUpOut = useJsAnimation ? fadeUpOutJs : fadeUpOutCss;
 
 function fadeDownInJs(element, duration = pageAnimationTime * 2, targetOpacity = 1)
 {
-	return new Promise((resolve, reject) =>
+	return new Promise(resolve =>
 	{
 		element.style.marginTop = `${-navigationAnimationDistanceVertical}px`;
 		element.style.marginBottom = 0;
@@ -284,10 +305,14 @@ function fadeDownInJs(element, duration = pageAnimationTime * 2, targetOpacity =
 
 function fadeDownInCss(element, duration = pageAnimationTime * 2, targetOpacity = 1)
 {
-	return new Promise((resolve, reject) =>
+	return new Promise(resolve =>
 	{
-		try {clearTimeout(element.getAttribute("data-fade-down-in-timeout-id"))}
-		catch(ex) {}
+		const timeoutId = element.getAttribute("data-fade-down-in-timeout-id");
+		
+		if (timeoutId != null)
+		{
+			clearTimeout(timeoutId);
+		}
 		
 		element.style.transition = "";
 		
@@ -323,7 +348,7 @@ export const fadeDownIn = useJsAnimation ? fadeDownInJs : fadeDownInCss;
 
 function fadeDownOutJs(element, duration = pageAnimationTime, noOpacityChange = false)
 {
-	return new Promise((resolve, reject) =>
+	return new Promise(resolve =>
 	{
 		element.style.marginBottom = "20vmin";
 		
@@ -347,10 +372,14 @@ function fadeDownOutJs(element, duration = pageAnimationTime, noOpacityChange = 
 
 function fadeDownOutCss(element, duration = pageAnimationTime, noOpacityChange = false)
 {
-	return new Promise((resolve, reject) =>
+	return new Promise(resolve =>
 	{
-		try {clearTimeout(element.getAttribute("data-fade-down-out-timeout-id"))}
-		catch(ex) {}
+		const timeoutId = element.getAttribute("data-fade-down-out-timeout-id");
+		
+		if (timeoutId != null)
+		{
+			clearTimeout(timeoutId);
+		}
 		
 		element.style.transition = "";
 		
@@ -389,7 +418,7 @@ export const fadeDownOut = useJsAnimation ? fadeDownOutJs : fadeDownOutCss;
 
 function fadeLeftInJs(element, duration = pageAnimationTime * 2, targetOpacity = 1)
 {
-	return new Promise((resolve, reject) =>
+	return new Promise(resolve =>
 	{
 		element.style.marginLeft = `${navigationAnimationDistanceHorizontal}px`;
 		
@@ -406,10 +435,14 @@ function fadeLeftInJs(element, duration = pageAnimationTime * 2, targetOpacity =
 
 function fadeLeftInCss(element, duration = pageAnimationTime * 2, targetOpacity = 1)
 {
-	return new Promise((resolve, reject) =>
+	return new Promise(resolve =>
 	{
-		try {clearTimeout(element.getAttribute("data-fade-left-in-timeout-id"))}
-		catch(ex) {}
+		const timeoutId = element.getAttribute("data-fade-left-in-timeout-id");
+		
+		if (timeoutId != null)
+		{
+			clearTimeout(timeoutId);
+		}
 		
 		element.style.transition = "";
 		
@@ -444,7 +477,7 @@ export const fadeLeftIn = useJsAnimation ? fadeLeftInJs : fadeLeftInCss;
 
 function fadeLeftOutJs(element, duration = pageAnimationTime, noOpacityChange = false)
 {
-	return new Promise((resolve, reject) =>
+	return new Promise(resolve =>
 	{
 		const data =
 		{
@@ -466,10 +499,14 @@ function fadeLeftOutJs(element, duration = pageAnimationTime, noOpacityChange = 
 
 function fadeLeftOutCss(element, duration = pageAnimationTime, noOpacityChange = false)
 {
-	return new Promise((resolve, reject) =>
+	return new Promise(resolve =>
 	{
-		try {clearTimeout(element.getAttribute("data-fade-left-out-timeout-id"))}
-		catch(ex) {}
+		const timeoutId = element.getAttribute("data-fade-left-out-timeout-id");
+		
+		if (timeoutId != null)
+		{
+			clearTimeout(timeoutId);
+		}
 		
 		element.style.transition = "";
 		
@@ -506,7 +543,7 @@ export const fadeLeftOut = useJsAnimation ? fadeLeftOutJs : fadeLeftOutCss;
 
 function fadeRightInJs(element, duration = pageAnimationTime * 2, targetOpacity = 1)
 {
-	return new Promise((resolve, reject) =>
+	return new Promise(resolve =>
 	{
 		element.style.marginLeft = `${-navigationAnimationDistanceHorizontal}px`;
 		
@@ -523,10 +560,14 @@ function fadeRightInJs(element, duration = pageAnimationTime * 2, targetOpacity 
 
 function fadeRightInCss(element, duration = pageAnimationTime * 2, targetOpacity = 1)
 {
-	return new Promise((resolve, reject) =>
+	return new Promise(resolve =>
 	{
-		try {clearTimeout(element.getAttribute("data-fade-right-in-timeout-id"))}
-		catch(ex) {}
+		const timeoutId = element.getAttribute("data-fade-right-in-timeout-id");
+		
+		if (timeoutId != null)
+		{
+			clearTimeout(timeoutId);
+		}
 		
 		element.style.transition = "";
 		
@@ -561,7 +602,7 @@ export const fadeRightIn = useJsAnimation ? fadeRightInJs : fadeRightInCss;
 
 function fadeRightOutJs(element, duration = pageAnimationTime, noOpacityChange = false)
 {
-	return new Promise((resolve, reject) =>
+	return new Promise(resolve =>
 	{
 		const data =
 		{
@@ -583,10 +624,14 @@ function fadeRightOutJs(element, duration = pageAnimationTime, noOpacityChange =
 
 function fadeRightOutCss(element, duration = pageAnimationTime, noOpacityChange = false)
 {
-	return new Promise((resolve, reject) =>
+	return new Promise(resolve =>
 	{
-		try {clearTimeout(element.getAttribute("data-fade-right-out-timeout-id"))}
-		catch(ex) {}
+		const timeoutId = element.getAttribute("data-fade-right-out-timeout-id");
+		
+		if (timeoutId != null)
+		{
+			clearTimeout(timeoutId);
+		}
 		
 		element.style.transition = "";
 		
@@ -623,7 +668,7 @@ export const fadeRightOut = useJsAnimation ? fadeRightOutJs : fadeRightOutCss;
 
 function fadeInJs(element, duration = pageAnimationTime * 2, targetOpacity = 1)
 {
-	return new Promise((resolve, reject) =>
+	return new Promise(resolve =>
 	{
 		anime({
 			targets: element,
@@ -637,10 +682,14 @@ function fadeInJs(element, duration = pageAnimationTime * 2, targetOpacity = 1)
 
 function fadeInCss(element, duration = pageAnimationTime * 2, targetOpacity = 1)
 {
-	return new Promise((resolve, reject) =>
+	return new Promise(resolve =>
 	{
-		try {clearTimeout(element.getAttribute("data-fade-in-timeout-id"))}
-		catch(ex) {}
+		const timeoutId = element.getAttribute("data-fade-in-timeout-id");
+		
+		if (timeoutId != null)
+		{
+			clearTimeout(timeoutId);
+		}
 		
 		element.style.transition = "";
 		
@@ -672,7 +721,7 @@ export const fadeIn = useJsAnimation ? fadeInJs : fadeInCss;
 
 function fadeOutJs(element, duration = pageAnimationTime, noOpacityChange = false)
 {
-	return new Promise((resolve, reject) =>
+	return new Promise(resolve =>
 	{
 		const data =
 		{
@@ -693,10 +742,14 @@ function fadeOutJs(element, duration = pageAnimationTime, noOpacityChange = fals
 
 function fadeOutCss(element, duration = pageAnimationTime, noOpacityChange = false)
 {
-	return new Promise((resolve, reject) =>
+	return new Promise(resolve =>
 	{
-		try {clearTimeout(element.getAttribute("data-fade-out-timeout-id"))}
-		catch(ex) {}
+		const timeoutId = element.getAttribute("data-fade-out-timeout-id");
+		
+		if (timeoutId != null)
+		{
+			clearTimeout(timeoutId);
+		}
 		
 		element.style.transition = "";
 		
