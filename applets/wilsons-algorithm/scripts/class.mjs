@@ -67,7 +67,7 @@ export class WilsonsAlgorithm extends Applet
 			this.wilson.ctx.fillStyle = e.data[4];
 			
 			this.wilson.ctx.fillRect(e.data[0] * canvasScaleFactor, e.data[1] * canvasScaleFactor, e.data[2] * canvasScaleFactor, e.data[3] * canvasScaleFactor);
-		}
+		};
 		
 		
 		
@@ -76,7 +76,7 @@ export class WilsonsAlgorithm extends Applet
 		{
 			timeoutId = setTimeout(() =>
 			{
-				try {this.webWorker.terminate()}
+				try {this.webWorker.terminate();}
 				catch(ex) {}
 
 				this.run(gridSize, maximumSpeed, noBorders, true);

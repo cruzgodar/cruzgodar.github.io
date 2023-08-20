@@ -602,7 +602,7 @@ export class Lapsa
 					promises.push(new Promise((resolve, reject) => setTimeout(resolve, this.transitionAnimationTime)));
 				});
 				
-				try {promises.push(this.callbacks[this.slides[this.currentSlide].id][this.buildState](this.slides[this.currentSlide], true))}
+				try {promises.push(this.callbacks[this.slides[this.currentSlide].id][this.buildState](this.slides[this.currentSlide], true));}
 				catch(ex) {}
 				
 				await Promise.all(promises);
@@ -633,7 +633,7 @@ export class Lapsa
 			{
 				try
 				{
-					await this.callbacks[this.slides[this.currentSlide].id].reset(this.slides[this.currentSlide], true, 0)
+					await this.callbacks[this.slides[this.currentSlide].id].reset(this.slides[this.currentSlide], true, 0);
 				}
 				
 				catch(ex) {}
@@ -651,7 +651,7 @@ export class Lapsa
 			
 			try
 			{
-				await this.callbacks[this.slides[this.currentSlide].id].reset(this.slides[this.currentSlide], true, 0)
+				await this.callbacks[this.slides[this.currentSlide].id].reset(this.slides[this.currentSlide], true, 0);
 			}
 			
 			catch(ex) {}
@@ -695,7 +695,7 @@ export class Lapsa
 				
 				this.slides[this.currentSlide].querySelectorAll(`[data-build="${this.buildState}"]`).forEach(element => promises.push(this.buildOut(element, this.transitionAnimationTime)));
 				
-				try {promises.push(this.callbacks[this.slides[this.currentSlide].id][this.buildState](this.slides[this.currentSlide], false))}
+				try {promises.push(this.callbacks[this.slides[this.currentSlide].id][this.buildState](this.slides[this.currentSlide], false));}
 				catch(ex) {}
 				
 				await Promise.all(promises);
@@ -824,7 +824,7 @@ export class Lapsa
 			
 			try
 			{
-				await this.callbacks[this.slides[this.currentSlide].id].reset(this.slides[this.currentSlide], true, 0)
+				await this.callbacks[this.slides[this.currentSlide].id].reset(this.slides[this.currentSlide], true, 0);
 			}
 			
 			catch(ex) {}
@@ -934,7 +934,7 @@ export class Lapsa
 				});
 				
 				//We don't await this one because we want it to run concurrently with the table view animation.
-				try {this.callbacks[this.slides[this.currentSlide].id].reset(this.slides[this.currentSlide], false, duration / 2)}
+				try {this.callbacks[this.slides[this.currentSlide].id].reset(this.slides[this.currentSlide], false, duration / 2);}
 				catch(ex) {}
 				
 				setTimeout(() =>
@@ -1090,7 +1090,7 @@ export class Lapsa
 			});
 			
 			//We don't await this one because we want it to run concurrently with the table view animation.
-			try {this.callbacks[this.slides[this.currentSlide].id].reset(this.slides[this.currentSlide], true, duration / 3)}
+			try {this.callbacks[this.slides[this.currentSlide].id].reset(this.slides[this.currentSlide], true, duration / 3);}
 			catch(ex) {}
 			
 			setTimeout(() =>

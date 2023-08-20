@@ -1213,7 +1213,7 @@ export class QuaternionicJuliaSet extends Applet
 		
 		try
 		{
-			changeOpacity(this.switchBulbButtonElement, 0)
+			changeOpacity(this.switchBulbButtonElement, 0);
 			
 			setTimeout(() =>
 			{

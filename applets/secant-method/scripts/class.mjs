@@ -340,7 +340,7 @@ export class SecantMethod extends Applet
 			const mag = 1 + randomize * .75 * Math.random();
 			
 			newRoots[2 * i] = mag * Math.cos(2 * Math.PI * i / this.numRoots);
-			newRoots[2 * i + 1] = mag * Math.sin(2 * Math.PI * i / this.numRoots)
+			newRoots[2 * i + 1] = mag * Math.sin(2 * Math.PI * i / this.numRoots);
 		}
 		
 		let dummy = {t: 0};

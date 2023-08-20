@@ -532,12 +532,12 @@ const galleryImageData =
 export function load()
 {
 	const titleElement = $("#high-res-viewer-card h1");
-const descriptionTextElement = $("#description-text");
-const featuredTextElement = $("#featured-text");
-const appletLinkElement = $("#applet-link");
-const fullResLinkElement = $("#full-res-link");
+	const descriptionTextElement = $("#description-text");
+	const featuredTextElement = $("#featured-text");
+	const appletLinkElement = $("#applet-link");
+	const fullResLinkElement = $("#full-res-link");
 
-let currentId = "";
+	let currentId = "";
 
 	function showGalleryCard(id)
 	{
@@ -604,12 +604,12 @@ let currentId = "";
 
 	appletLinkElement.addEventListener("click", () =>
 	{
-		redirect({ url: `/applets/${galleryImageData[currentId].appletLink}/` })
+		redirect({ url: `/applets/${galleryImageData[currentId].appletLink}/` });
 	});
 
 	fullResLinkElement.addEventListener("click", () =>
 	{
-		redirect({ url: galleryImageData[currentId].imageLink, inNewTab: true })
+		redirect({ url: galleryImageData[currentId].imageLink, inNewTab: true });
 	});
 	
 	showPage();

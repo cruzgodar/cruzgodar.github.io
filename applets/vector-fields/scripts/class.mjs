@@ -652,7 +652,7 @@ export class VectorField extends Applet
 			{
 				this.zoomCanvas(this.fixedPointX, this.fixedPointY);
 				
-				this.zoomGrid(this.fixedPointX, this.fixedPointY, this.zoomVelocity)
+				this.zoomGrid(this.fixedPointX, this.fixedPointY, this.zoomVelocity);
 				
 				this.zoomLevel = Math.min(Math.max(this.zoomLevel + this.zoomVelocity, -3), 3);
 				

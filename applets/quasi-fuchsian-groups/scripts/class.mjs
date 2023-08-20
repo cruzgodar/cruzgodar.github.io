@@ -198,7 +198,7 @@ export class QuasiFuchsianGroups extends Applet
 		this.wilson.render.initUniforms(["textureStep"], 1);
 		
 		
-	this.wilson.render.createFramebufferTexturePair();	this.wilson.render.createFramebufferTexturePair(this.wilson.gl.UNSIGNED_BYTE);
+		this.wilson.render.createFramebufferTexturePair();	this.wilson.render.createFramebufferTexturePair(this.wilson.gl.UNSIGNED_BYTE);
 		
 		this.image = new Float32Array(this.imageWidth * this.imageHeight * 4);
 		
@@ -852,4 +852,4 @@ export class QuasiFuchsianGroups extends Applet
 		
 		window.requestAnimationFrame(this.drawFrame.bind(this));
 	}
-	}
+}

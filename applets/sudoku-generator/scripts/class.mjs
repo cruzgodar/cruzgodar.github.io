@@ -85,7 +85,7 @@ export class SudokuGenerator extends Applet
 			this.wilson.canvas.style.opacity = 1;
 			
 			this.generatedFirstPuzzle = true;
-		}
+		};
 		
 		
 		
