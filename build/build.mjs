@@ -51,6 +51,8 @@ async function buildSite()
 				await buildSiteCSS();
 			}
 
+			await eslint();
+
 			resolve();
 		});
 	});
@@ -178,6 +180,19 @@ async function buildSiteCSS()
 
 	await write("/style/css-bundle.min.css", bundle);
 	console.log("style/css-bundle.min.css");
+}
+
+async function eslint()
+{
+	await new Promise(resolve =>
+	{
+		exec(`eslint --ext .js,.mjs ${root}`, (error, stdout) =>
+		{
+			console.log(stdout);
+
+			resolve();
+		});
+	});
 }
 
 
