@@ -173,23 +173,22 @@ export async function toggleDarkTheme({ noAnimation = false, force = false })
 	
 	else
 	{
-		await new Promise(async (resolve, reject) =>
-		{
-			const element = addStyle(`
-				*:not(.page, .desmos-container)
-				{
-					transition: none !important;
-				}
-			`);
+		const element = addStyle(`
+			*:not(.page, .desmos-container)
+			{
+				transition: none !important;
+			}
+		`);
 
+		const dummy = {t: siteSettings.darkTheme ? 0 : 1};
+
+		await Promise.all([
 			anime({
 				targets: metaThemeColorElement,
 				content: siteSettings.darkTheme ? "#181818" : "#ffffff",
 				duration: opacityAnimationTime * 2,
 				easing: "cubicBezier(.25, .1, .25, 1)",
-			});
-
-			const dummy = {t: siteSettings.darkTheme ? 0 : 1};
+			}).finished,
 
 			anime({
 				targets: dummy,
@@ -200,13 +199,10 @@ export async function toggleDarkTheme({ noAnimation = false, force = false })
 				{
 					rootElement.style.setProperty("--theme", dummy.t);
 				},
-				complete: () =>
-				{
-					element.remove();
-					resolve();
-				}
-			});
-		});
+			}).finished
+		]);
+
+		element.remove();
 	}
 }
 

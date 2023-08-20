@@ -1,6 +1,7 @@
 import { addHoverEvent } from "./hover-events.mjs";
 import { $$, pageElement } from "./main.mjs";
 import { metaThemeColorElement, siteSettings } from "./settings.mjs";
+import anime from "/scripts/anime.js";
 
 const container = document.querySelector("#card-container");
 
@@ -33,7 +34,7 @@ export function setUpCards()
 {
 	$$("[data-card-id]").forEach(element =>
 	{
-		element.addEventListener("click", () => showCard(element.getAttribute("data-card-id")))
+		element.addEventListener("click", () => showCard(element.getAttribute("data-card-id")));
 	});
 }
 
@@ -88,51 +89,35 @@ export async function showCard(id)
 	document.documentElement.style.backgroundColor = siteSettings.darkTheme ? "rgb(24, 24, 24)" : "rgb(255, 255, 255)";
 	
 	await Promise.all([
-		new Promise((resolve, reject) =>
-		{
-			anime({
-				targets: container,
-				opacity: 1,
-				scale: 1,
-				duration: animationTime,
-				easing: "easeOutQuint",
-				complete: resolve
-			});
-		}),
+		anime({
+			targets: container,
+			opacity: 1,
+			scale: 1,
+			duration: animationTime,
+			easing: "easeOutQuint",
+		}).finished,
 		
-		new Promise((resolve, reject) =>
-		{
-			anime({
-				targets: [pageElement, document.querySelector("#header"), document.querySelector("#header-container")],
-				filter: "brightness(.5)",
-				scale: .975,
-				duration: animationTime,
-				easing: "easeOutQuint",
-				complete: resolve
-			});
-		}),
+		anime({
+			targets: [pageElement, document.querySelector("#header"), document.querySelector("#header-container")],
+			filter: "brightness(.5)",
+			scale: .975,
+			duration: animationTime,
+			easing: "easeOutQuint",
+		}).finished,
 		
-		new Promise((resolve, reject) =>
-		{
-			anime({
-				targets: metaThemeColorElement,
-				content: themeColor,
-				duration: animationTime,
-				easing: "easeOutQuint",
-				complete: resolve
-			});
-		}),
+		anime({
+			targets: metaThemeColorElement,
+			content: themeColor,
+			duration: animationTime,
+			easing: "easeOutQuint",
+		}).finished,
 
-		new Promise((resolve, reject) =>
-		{
-			anime({
-				targets: document.documentElement,
-				backgroundColor: color,
-				duration: animationTime,
-				easing: "easeOutQuint",
-				complete: resolve
-			});
-		})
+		anime({
+			targets: document.documentElement,
+			backgroundColor: color,
+			duration: animationTime,
+			easing: "easeOutQuint",
+		}).finished,
 	]);
 }
 
@@ -144,56 +129,38 @@ export async function hideCard()
 	const themeColor = siteSettings.darkTheme ? "#181818" : "#ffffff";
 	
 	await Promise.all([
-		new Promise((resolve, reject) =>
-		{
-			anime({
-				targets: [pageElement, document.querySelector("#header"), document.querySelector("#header-container")],
-				filter: "brightness(1)",
-				scale: 1,
-				duration: animationTime,
-				easing: "easeOutQuint",
-				complete: resolve
-			});
-		}),
-		
-		new Promise((resolve, reject) =>
-		{
-			anime({
-				targets: metaThemeColorElement,
-				content: themeColor,
-				duration: animationTime,
-				easing: "easeOutQuint",
-				complete: resolve
-			});
-		}),
-		
-		new Promise((resolve, reject) =>
-		{
-			anime({
-				targets: document.documentElement,
-				backgroundColor: color,
-				duration: animationTime,
-				easing: "easeOutQuint",
-				complete: resolve
-			});
-		}),
+		anime({
+			targets: [pageElement, document.querySelector("#header"), document.querySelector("#header-container")],
+			filter: "brightness(1)",
+			scale: 1,
+			duration: animationTime,
+			easing: "easeOutQuint",
+		}).finished,
 
-		new Promise((resolve, reject) =>
-		{
-			anime({
-				targets: container,
-				opacity: 0,
-				scale: .95,
-				duration: animationTime,
-				easing: "easeOutQuint",
-				complete: () =>
-				{
-					document.documentElement.style.backgroundColor = "var(--background)";
-					resolve();
-				}
-			});
-		})
+		anime({
+			targets: metaThemeColorElement,
+			content: themeColor,
+			duration: animationTime,
+			easing: "easeOutQuint",
+		}).finished,
+		
+		anime({
+			targets: document.documentElement,
+			backgroundColor: color,
+			duration: animationTime,
+			easing: "easeOutQuint",
+		}).finished,
+
+		anime({
+			targets: container,
+			opacity: 0,
+			scale: .95,
+			duration: animationTime,
+			easing: "easeOutQuint",
+		}).finished,
 	]);
+
+	document.documentElement.style.backgroundColor = "var(--background)";
 	
 	container.style.display = "none";
 	

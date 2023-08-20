@@ -138,7 +138,7 @@ export function setUpDropdowns()
 		
 		buttonElement.innerHTML = `${element.querySelector(`[value=${element.value}]`).textContent}  <span style="font-size: 12px">&#x25BC;</span>`;
 		
-		buttonElement.parentNode.parentNode.style.gridTemplateColumns = `repeat(auto-fit, 100%)`;
+		buttonElement.parentNode.parentNode.style.gridTemplateColumns = "repeat(auto-fit, 100%)";
 		
 		element.addEventListener("input", () =>
 		{

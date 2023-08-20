@@ -230,7 +230,7 @@ export class PlanePartitions extends Applet
 		this.wilsonHidden4 = new Wilson(hiddenCanvas4, optionsHidden);
 		
 		this.wilsonHidden.ctx.strokeStyle = "rgb(255, 255, 255)";
-		this.wilsonHidden.ctx.Alpha = 1;
+		this.wilsonHidden.ctx._alpha = 1;
 		
 		this.wilsonHidden.ctx.fillStyle = "rgba(64, 64, 64, 1)"
 		this.wilsonHidden.ctx.fillRect(0, 0, 64, 64);
@@ -243,7 +243,7 @@ export class PlanePartitions extends Applet
 		
 		
 		this.wilsonHidden2.ctx.strokeStyle = "rgb(255, 255, 255)";
-		this.wilsonHidden2.ctx.Alpha = 1;
+		this.wilsonHidden2.ctx._alpha = 1;
 		
 		this.wilsonHidden2.ctx.fillStyle = "rgba(64, 64, 64, 1)"
 		this.wilsonHidden2.ctx.fillRect(0, 0, 64, 64);
@@ -256,7 +256,7 @@ export class PlanePartitions extends Applet
 		
 		
 		this.wilsonHidden3.ctx.strokeStyle = "rgb(255, 255, 255)";
-		this.wilsonHidden3.ctx.Alpha = 1;
+		this.wilsonHidden3.ctx._alpha = 1;
 		
 		this.wilsonHidden3.ctx.fillStyle = `rgba(32, 32, 32, ${this.addWalls ? 0 : 1})`;
 		this.wilsonHidden3.ctx.fillRect(0, 0, 64, 64);
@@ -269,7 +269,7 @@ export class PlanePartitions extends Applet
 		
 		
 		this.wilsonHidden4.ctx.strokeStyle = "rgb(255, 255, 255)";
-		this.wilsonHidden4.ctx.Alpha = 1;
+		this.wilsonHidden4.ctx._alpha = 1;
 		
 		this.wilsonHidden4.ctx.fillStyle = `rgba(32, 32, 32, ${this.addWalls ? 0 : 1})`;
 		this.wilsonHidden4.ctx.fillRect(0, 0, 64, 64);
@@ -1101,16 +1101,12 @@ export class PlanePartitions extends Applet
 				}
 			});
 			
-			await new Promise(async (resolve, reject) =>
-			{
-				anime({
-					targets: thingsToAnimate,
-					opacity: 1,
-					duration: this.animationTime / 2,
-					easing: "easeOutQuad",
-					complete: resolve
-				});
-			});
+			await anime({
+				targets: thingsToAnimate,
+				opacity: 1,
+				duration: this.animationTime / 2,
+				easing: "easeOutQuad",
+			}).finished;
 			
 			
 			
@@ -1256,26 +1252,22 @@ export class PlanePartitions extends Applet
 			
 			
 			
-			await new Promise((resolve, reject) =>
+			let thingsToAnimate = [];
+			
+			this.arrays[index].cubeGroup.traverse(node =>
 			{
-				let thingsToAnimate = [];
-				
-				this.arrays[index].cubeGroup.traverse(node =>
+				if (node.material)
 				{
-					if (node.material)
-					{
-						node.material.forEach(material => thingsToAnimate.push(material));
-					}
-				});
-				
-				anime({
-					targets: thingsToAnimate,
-					opacity: 0,
-					duration: this.animationTime / 2,
-					easing: "easeOutQuad",
-					complete: resolve
-				});
+					node.material.forEach(material => thingsToAnimate.push(material));
+				}
 			});
+			
+			await anime({
+				targets: thingsToAnimate,
+				opacity: 0,
+				duration: this.animationTime / 2,
+				easing: "easeOutQuad",
+			}).finished;
 			
 			
 			
@@ -1490,36 +1482,32 @@ export class PlanePartitions extends Applet
 	
 	
 	
-	showHexView()
+	async showHexView()
 	{
-		return new Promise(async (resolve, reject) =>
+		if (this.currentlyAnimatingCamera)
 		{
-			if (this.currentlyAnimatingCamera)
-			{
-				resolve();
-				return;
-			}
-			
-			
-			
-			this.currentlyAnimatingCamera = true;
-			
-			if (this.in2dView)
-			{
-				await changeOpacity(this.wilsonNumbers.canvas, 0, this.animationTime / 5);
-			}
-			
-			this.in2dView = false;
-			this.inExactHexView = true;
-			
-			this.rotationYVelocity = 0;
-			
-			this.lastRotationYVelocities = [0, 0, 0, 0];
-			
-			
-			
-			this.updateCameraHeight(true);
-			
+			return;
+		}
+		
+		this.currentlyAnimatingCamera = true;
+		
+		if (this.in2dView)
+		{
+			await changeOpacity(this.wilsonNumbers.canvas, 0, this.animationTime / 5);
+		}
+		
+		this.in2dView = false;
+		this.inExactHexView = true;
+		
+		this.rotationYVelocity = 0;
+		
+		this.lastRotationYVelocities = [0, 0, 0, 0];
+		
+		
+		
+		this.updateCameraHeight(true);
+		
+		await Promise.all([
 			anime({
 				targets: this.orthographicCamera.rotation,
 				x: -0.785398163,
@@ -1527,67 +1515,67 @@ export class PlanePartitions extends Applet
 				z: 0.523598775,
 				duration: this.animationTime,
 				easing: "easeInOutQuad",
-				complete: () =>
+			}).finished
+		]
+			.concat(
+				this.arrays.map(array =>
 				{
-					this.currentlyAnimatingCamera = false;
-					resolve();
-				}	
-			});
-			
-			this.arrays.forEach(array =>
-			{
-				anime({
-					targets: array.cubeGroup.rotation,
-					y: 0,
-					duration: this.animationTime,
-					easing: "easeInOutQuad"
-				});
-				
-				anime({
-					targets: array.cubeGroup.position,
-					x: array.centerOffset,
-					y: 0,
-					z: -array.centerOffset,
-					duration: this.animationTime,
-					easing: "easeInOutQuad"
-				});
-			});
-			
-			this.rotationY = 0;
-		});	
+					return anime({
+						targets: array.cubeGroup.rotation,
+						y: 0,
+						duration: this.animationTime,
+						easing: "easeInOutQuad"
+					}).finished;
+				}),
+
+				this.arrays.map(array =>
+				{
+					return anime({
+						targets: array.cubeGroup.position,
+						x: array.centerOffset,
+						y: 0,
+						z: -array.centerOffset,
+						duration: this.animationTime,
+						easing: "easeInOutQuad"
+					}).finished;
+				})
+			)
+		);
+		
+		this.currentlyAnimatingCamera = false;
+
+		this.rotationY = 0;
 	}
 	
-	show2dView()
+	async show2dView()
 	{
-		return new Promise(async (resolve, reject) =>
+		if (this.currentlyAnimatingCamera || this.in2dView)
 		{
-			if (this.currentlyAnimatingCamera || this.in2dView)
-			{
-				resolve();
-				return;
-			}
-			
-			
-			if (this.dimersShown)
-			{
-				await this.hideDimers();
-			}
-			
-			
-			
-			this.currentlyAnimatingCamera = true;
-			
-			this.in2dView = true;
-			this.inExactHexView = false;
-			
-			this.rotationYVelocity = 0;
-			
-			this.lastRotationYVelocities = [0, 0, 0, 0];
-			
-			
-			
-			this.updateCameraHeight(true);
-			
+			return;
+		}
+		
+		
+		if (this.dimersShown)
+		{
+			await this.hideDimers();
+		}
+		
+		
+		
+		this.currentlyAnimatingCamera = true;
+		
+		this.in2dView = true;
+		this.inExactHexView = false;
+		
+		this.rotationYVelocity = 0;
+		
+		this.lastRotationYVelocities = [0, 0, 0, 0];
+		
+		
+		
+		this.updateCameraHeight(true);
+
+		await Promise.all([
 			anime({
 				targets: this.orthographicCamera.rotation,
 				x: -1.570796327,
@@ -1595,51 +1583,48 @@ export class PlanePartitions extends Applet
 				z: 0,
 				duration: this.animationTime,
 				easing: "easeInOutQuad"
-			});
-			
-			this.arrays.forEach(array =>
-			{
-				anime({
-					targets: array.cubeGroup.rotation,
-					y: 0,
-					duration: this.animationTime,
-					easing: "easeInOutQuad"
-				});
-				
-				anime({
-					targets: array.cubeGroup.position,
-					x: array.centerOffset,
-					y: 0,
-					z: 0,
-					duration: this.animationTime,
-					easing: "easeInOutQuad"
-				});
-			});
-			
-			
-			
-			setTimeout(() =>
-			{
-				this.drawAll2dViewText();
-				
-				changeOpacity(this.wilsonNumbers.canvas, 1, this.animationTime / 5)
-				
-				.then(() =>
+			}).finished
+		]
+			.concat(
+				this.arrays.map(array =>
 				{
-					this.currentlyAnimatingCamera = false;
-					
-					this.rotationY = 0;
-					
-					resolve();
-				});
-			}, this.animationTime);
-		});	
+					return anime({
+						targets: array.cubeGroup.rotation,
+						y: 0,
+						duration: this.animationTime,
+						easing: "easeInOutQuad"
+					}).finished;
+				}),
+
+				this.arrays.map(array =>
+				{
+					return anime({
+						targets: array.cubeGroup.position,
+						x: array.centerOffset,
+						y: 0,
+						z: 0,
+						duration: this.animationTime,
+						easing: "easeInOutQuad"
+					}).finished;
+				})
+			)
+		);
+		
+		
+		
+		this.drawAll2dViewText();
+		
+		await changeOpacity(this.wilsonNumbers.canvas, 1, this.animationTime / 5);
+		
+		this.currentlyAnimatingCamera = false;
+		
+		this.rotationY = 0;
 	}
 	
 	
 	
 	//Makes sure everything is in frame but doesn't affect rotation.
-	updateCameraHeight(force = false)
+	async updateCameraHeight(force = false)
 	{
 		if (!force)
 		{
@@ -1679,423 +1664,393 @@ export class PlanePartitions extends Applet
 		
 		if (this.in2dView)
 		{
-			anime({
-				targets: this.orthographicCamera.position,
-				x: this._2dViewCameraPos[0],
-				y: this._2dViewCameraPos[1],
-				z: this._2dViewCameraPos[2],
-				duration: this.animationTime,
-				easing: "easeInOutQuad"
-			});
-			
-			anime({
-				targets: this.orthographicCamera,
-				left: -(this.totalArrayFootprint / 2 + .5),
-				right: this.totalArrayFootprint / 2 + .5,
-				top: this.totalArrayFootprint / 2 + .5,
-				bottom: -(this.totalArrayFootprint / 2 + .5),
-				duration: this.animationTime,
-				easing: "easeInOutQuad",
-				update: () => this.orthographicCamera.updateProjectionMatrix(),
-				complete: () =>
-				{
-					this.orthographicCamera.updateProjectionMatrix();
-					this.currentlyAnimatingCamera = false;
-				}
-			});
-			
-			setTimeout(() =>
-			{
-				this.drawAll2dViewText();
+			await Promise.all([
+				anime({
+					targets: this.orthographicCamera.position,
+					x: this._2dViewCameraPos[0],
+					y: this._2dViewCameraPos[1],
+					z: this._2dViewCameraPos[2],
+					duration: this.animationTime,
+					easing: "easeInOutQuad"
+				}).finished,
 				
-				changeOpacity(this.wilsonNumbers.canvas, 1, this.animationTime / 5);
-			}, this.animationTime);
+				anime({
+					targets: this.orthographicCamera,
+					left: -(this.totalArrayFootprint / 2 + .5),
+					right: this.totalArrayFootprint / 2 + .5,
+					top: this.totalArrayFootprint / 2 + .5,
+					bottom: -(this.totalArrayFootprint / 2 + .5),
+					duration: this.animationTime,
+					easing: "easeInOutQuad",
+					update: () => this.orthographicCamera.updateProjectionMatrix(),
+				}).finished
+			]);
+			
+			this.orthographicCamera.updateProjectionMatrix();
+			this.currentlyAnimatingCamera = false;
+
+			this.drawAll2dViewText();
+			
+			changeOpacity(this.wilsonNumbers.canvas, 1, this.animationTime / 5);
 		}
 		
 		else
 		{
-			anime({
-				targets: this.orthographicCamera.position,
-				x: this.hexViewCameraPos[0],
-				y: this.hexViewCameraPos[1],
-				z: this.hexViewCameraPos[2],
-				duration: this.animationTime,
-				easing: "easeInOutQuad"
-			});
-			
-			anime({
-				targets: this.orthographicCamera,
-				left: -this.totalArraySize,
-				right: this.totalArraySize,
-				top: this.totalArraySize,
-				bottom: -this.totalArraySize,
-				duration: this.animationTime,
-				easing: "easeInOutQuad",
-				update: () => this.orthographicCamera.updateProjectionMatrix(),
-				complete: () =>
-				{
-					this.orthographicCamera.updateProjectionMatrix();
-					this.currentlyAnimatingCamera = false;
-				}
-			});
+			await Promise.all([
+				anime({
+					targets: this.orthographicCamera.position,
+					x: this.hexViewCameraPos[0],
+					y: this.hexViewCameraPos[1],
+					z: this.hexViewCameraPos[2],
+					duration: this.animationTime,
+					easing: "easeInOutQuad"
+				}).finished,
+				
+				anime({
+					targets: this.orthographicCamera,
+					left: -this.totalArraySize,
+					right: this.totalArraySize,
+					top: this.totalArraySize,
+					bottom: -this.totalArraySize,
+					duration: this.animationTime,
+					easing: "easeInOutQuad",
+					update: () => this.orthographicCamera.updateProjectionMatrix(),
+				}).finished
+			]);
+
+			this.orthographicCamera.updateProjectionMatrix();
+			this.currentlyAnimatingCamera = false;
 		}	
 	}
 	
 	
 	
-	showDimers()
+	async showDimers()
 	{
-		return new Promise(async (resolve, reject) =>
+		if (this.currentlyAnimatingCamera)
 		{
-			if (this.currentlyAnimatingCamera)
+			return;
+		}
+		
+		this.dimersShown = true;
+		
+		
+		
+		if (!this.inExactHexView)
+		{
+			await this.showHexView();
+		}	
+		
+		this.currentlyAnimatingCamera = true;
+		
+		
+		
+		let targets = [];
+		
+		//Hide everything not visible by the camera.
+		this.arrays.forEach(array =>
+		{
+			for (let i = 0; i < array.footprint; i++)
 			{
-				resolve();
-				return;
+				for (let j = 0; j < array.footprint; j++)
+				{
+					for (let k = 0; k < array.cubes[i][j].length; k++)
+					{
+						//Remove the top face.
+						if (k < array.cubes[i][j].length - 1)
+						{
+							targets.push(array.cubes[i][j][k].material[2]);
+						}
+						
+						//The left face.
+						if (i < array.footprint - 1 && array.cubes[i + 1][j].length >= k + 1)
+						{
+							targets.push(array.cubes[i][j][k].material[4]);
+						}
+						
+						//The right face.
+						if (j < array.footprint - 1 && array.cubes[i][j + 1].length >= k + 1)
+						{
+							targets.push(array.cubes[i][j][k].material[0]);
+						}
+						
+						targets.push(array.cubes[i][j][k].material[1]);
+						targets.push(array.cubes[i][j][k].material[3]);
+						targets.push(array.cubes[i][j][k].material[5]);
+					}
+					
+					if (array.cubes[i][j].length !== 0)
+					{
+						targets.push(array.floor[i][j].material[2]);
+					}
+				}
 			}
 			
-			this.dimersShown = true;
 			
 			
-			
-			if (!this.inExactHexView)
+			if (this.addWalls)
 			{
-				await this.showHexView();
-			}	
-			
-			this.currentlyAnimatingCamera = true;
-			
-			
-			
-			let targets = [];
-			
-			//Hide everything not visible by the camera.
-			this.arrays.forEach(array =>
-			{
-				for (let i = 0; i < array.footprint; i++)
+				for (let i = 0; i < this.wallSize; i++)
 				{
-					for (let j = 0; j < array.footprint; j++)
+					for (let j = 0; j < 2 * this.wallSize; j++)
 					{
-						for (let k = 0; k < array.cubes[i][j].length; k++)
-						{
-							//Remove the top face.
-							if (k < array.cubes[i][j].length - 1)
-							{
-								targets.push(array.cubes[i][j][k].material[2]);
-							}
-							
-							//The left face.
-							if (i < array.footprint - 1 && array.cubes[i + 1][j].length >= k + 1)
-							{
-								targets.push(array.cubes[i][j][k].material[4]);
-							}
-							
-							//The right face.
-							if (j < array.footprint - 1 && array.cubes[i][j + 1].length >= k + 1)
-							{
-								targets.push(array.cubes[i][j][k].material[0]);
-							}
-							
-							targets.push(array.cubes[i][j][k].material[1]);
-							targets.push(array.cubes[i][j][k].material[3]);
-							targets.push(array.cubes[i][j][k].material[5]);
-						}
-						
-						if (array.cubes[i][j].length !== 0)
-						{
-							targets.push(array.floor[i][j].material[2]);
-						}
+						targets.push(array.rightWall[i][j].material[0]);
+						targets.push(array.leftWall[i][j].material[4]);
 					}
 				}
-				
-				
-				
-				if (this.addWalls)
-				{
-					for (let i = 0; i < this.wallSize; i++)
-					{
-						for (let j = 0; j < 2 * this.wallSize; j++)
-						{
-							targets.push(array.rightWall[i][j].material[0]);
-							targets.push(array.leftWall[i][j].material[4]);
-						}
-					}
-				}
-			});
-			
-			targets.forEach(material => material.opacity = 0);
-			
-			
-			
-			await new Promise((resolve, reject) =>
+			}
+		});
+		
+		targets.forEach(material => material.opacity = 0);
+		
+		
+		
+		await anime({
+			targets: [this.wilsonHidden.ctx, this.wilsonHidden2.ctx, this.wilsonHidden3.ctx, this.wilsonHidden4.ctx],
+			strokeStyle: "rgba(255, 255, 255, 1)",
+			_alpha: 0,
+			duration: this.animationTime / 2,
+			easing: "easeOutQuad",
+			update: () =>
 			{
-				anime({
-					targets: [this.wilsonHidden.ctx, this.wilsonHidden2.ctx, this.wilsonHidden3.ctx, this.wilsonHidden4.ctx],
-					strokeStyle: "rgba(255, 255, 255, 1)",
-					Alpha: 0,
-					duration: this.animationTime / 2,
-					easing: "easeOutQuad",
-					complete: resolve,
-					update: () =>
-					{
-						this.wilsonHidden.ctx.clearRect(0, 0, 64, 64);
-						
-						this.wilsonHidden.ctx.fillStyle = `rgba(64, 64, 64, ${this.wilsonHidden.ctx.Alpha})`;
-						this.wilsonHidden.ctx.fillRect(0, 0, 64, 64);
-						
-						this.wilsonHidden.ctx.fillStyle = `rgba(128, 128, 128, ${this.wilsonHidden.ctx.Alpha})`;
-						this.wilsonHidden.ctx.fillRect(4, 4, 56, 56);
-						
-						this.wilsonHidden.ctx.moveTo(42.7, 21.3);
-						this.wilsonHidden.ctx.lineTo(21.3, 42.7);
-						this.wilsonHidden.ctx.stroke();
-						
-						this.cubeTexture.needsUpdate = true;
-						
-						
-						
-						this.wilsonHidden2.ctx.clearRect(0, 0, 64, 64);
-						
-						this.wilsonHidden2.ctx.fillStyle = `rgba(64, 64, 64, ${this.wilsonHidden2.ctx.Alpha})`;
-						this.wilsonHidden2.ctx.fillRect(0, 0, 64, 64);
-						
-						this.wilsonHidden2.ctx.fillStyle = `rgba(128, 128, 128, ${this.wilsonHidden2.ctx.Alpha})`;
-						this.wilsonHidden2.ctx.fillRect(4, 4, 56, 56);
-						
-						this.wilsonHidden2.ctx.moveTo(21.3, 21.3);
-						this.wilsonHidden2.ctx.lineTo(42.7, 42.7);
-						this.wilsonHidden2.ctx.stroke();
-						
-						this.cubeTexture2.needsUpdate = true;
-						
-						
-						
-						this.wilsonHidden3.ctx.clearRect(0, 0, 64, 64);
-						
-						this.wilsonHidden3.ctx.fillStyle = `rgba(32, 32, 32, ${this.addWalls ? 0 : this.wilsonHidden3.ctx.Alpha})`;
-						this.wilsonHidden3.ctx.fillRect(0, 0, 64, 64);
-						
-						this.wilsonHidden3.ctx.fillStyle = `rgba(64, 64, 64, ${this.addWalls ? 0 : this.wilsonHidden3.ctx.Alpha})`;
-						this.wilsonHidden3.ctx.fillRect(4, 4, 56, 56);
-						
-						this.wilsonHidden3.ctx.moveTo(42.7, 21.3);
-						this.wilsonHidden3.ctx.lineTo(21.3, 42.7);
-						this.wilsonHidden3.ctx.stroke();
-						
-						this.floorTexture.needsUpdate = true;
-						
-						
-						
-						this.wilsonHidden4.ctx.clearRect(0, 0, 64, 64);
-						
-						this.wilsonHidden4.ctx.fillStyle = `rgba(32, 32, 32, ${this.addWalls ? 0 : this.wilsonHidden4.ctx.Alpha})`;
-						this.wilsonHidden4.ctx.fillRect(0, 0, 64, 64);
-						
-						this.wilsonHidden4.ctx.fillStyle = `rgba(64, 64, 64, ${this.addWalls ? 0 : this.wilsonHidden4.ctx.Alpha})`;
-						this.wilsonHidden4.ctx.fillRect(4, 4, 56, 56);
-						
-						this.wilsonHidden4.ctx.moveTo(21.3, 21.3);
-						this.wilsonHidden4.ctx.lineTo(42.7, 42.7);
-						this.wilsonHidden4.ctx.stroke();
-						
-						this.floorTexture2.needsUpdate = true;
-					}
-				});
-			});
-			
-			this.currentlyAnimatingCamera = false;
-			
-			resolve();
-		});	
+				this.wilsonHidden.ctx.clearRect(0, 0, 64, 64);
+				
+				this.wilsonHidden.ctx.fillStyle = `rgba(64, 64, 64, ${this.wilsonHidden.ctx._alpha})`;
+				this.wilsonHidden.ctx.fillRect(0, 0, 64, 64);
+				
+				this.wilsonHidden.ctx.fillStyle = `rgba(128, 128, 128, ${this.wilsonHidden.ctx._alpha})`;
+				this.wilsonHidden.ctx.fillRect(4, 4, 56, 56);
+				
+				this.wilsonHidden.ctx.moveTo(42.7, 21.3);
+				this.wilsonHidden.ctx.lineTo(21.3, 42.7);
+				this.wilsonHidden.ctx.stroke();
+				
+				this.cubeTexture.needsUpdate = true;
+				
+				
+				
+				this.wilsonHidden2.ctx.clearRect(0, 0, 64, 64);
+				
+				this.wilsonHidden2.ctx.fillStyle = `rgba(64, 64, 64, ${this.wilsonHidden2.ctx._alpha})`;
+				this.wilsonHidden2.ctx.fillRect(0, 0, 64, 64);
+				
+				this.wilsonHidden2.ctx.fillStyle = `rgba(128, 128, 128, ${this.wilsonHidden2.ctx._alpha})`;
+				this.wilsonHidden2.ctx.fillRect(4, 4, 56, 56);
+				
+				this.wilsonHidden2.ctx.moveTo(21.3, 21.3);
+				this.wilsonHidden2.ctx.lineTo(42.7, 42.7);
+				this.wilsonHidden2.ctx.stroke();
+				
+				this.cubeTexture2.needsUpdate = true;
+				
+				
+				
+				this.wilsonHidden3.ctx.clearRect(0, 0, 64, 64);
+				
+				this.wilsonHidden3.ctx.fillStyle = `rgba(32, 32, 32, ${this.addWalls ? 0 : this.wilsonHidden3.ctx._alpha})`;
+				this.wilsonHidden3.ctx.fillRect(0, 0, 64, 64);
+				
+				this.wilsonHidden3.ctx.fillStyle = `rgba(64, 64, 64, ${this.addWalls ? 0 : this.wilsonHidden3.ctx._alpha})`;
+				this.wilsonHidden3.ctx.fillRect(4, 4, 56, 56);
+				
+				this.wilsonHidden3.ctx.moveTo(42.7, 21.3);
+				this.wilsonHidden3.ctx.lineTo(21.3, 42.7);
+				this.wilsonHidden3.ctx.stroke();
+				
+				this.floorTexture.needsUpdate = true;
+				
+				
+				
+				this.wilsonHidden4.ctx.clearRect(0, 0, 64, 64);
+				
+				this.wilsonHidden4.ctx.fillStyle = `rgba(32, 32, 32, ${this.addWalls ? 0 : this.wilsonHidden4.ctx._alpha})`;
+				this.wilsonHidden4.ctx.fillRect(0, 0, 64, 64);
+				
+				this.wilsonHidden4.ctx.fillStyle = `rgba(64, 64, 64, ${this.addWalls ? 0 : this.wilsonHidden4.ctx._alpha})`;
+				this.wilsonHidden4.ctx.fillRect(4, 4, 56, 56);
+				
+				this.wilsonHidden4.ctx.moveTo(21.3, 21.3);
+				this.wilsonHidden4.ctx.lineTo(42.7, 42.7);
+				this.wilsonHidden4.ctx.stroke();
+				
+				this.floorTexture2.needsUpdate = true;
+			}
+		}).finished;
+		
+		this.currentlyAnimatingCamera = false;
 	}
 	
 	
 	
-	hideDimers()
+	async hideDimers()
 	{
-		return new Promise(async (resolve, reject) =>
+		if (this.currentlyAnimatingCamera)
 		{
-			if (this.currentlyAnimatingCamera)
+			return;
+		}
+		
+		this.dimersShown = false;
+		
+		
+		
+		let targets = [];
+		
+		//Show everything not visible by the camera.
+		this.arrays.forEach(array =>
+		{
+			for (let i = 0; i < array.footprint; i++)
 			{
-				resolve();
-				return;
+				for (let j = 0; j < array.footprint; j++)
+				{
+					for (let k = 0; k < array.cubes[i][j].length; k++)
+					{
+						//Remove the top face.
+						if (k < array.cubes[i][j].length - 1)
+						{
+							targets.push(array.cubes[i][j][k].material[2]);
+						}
+						
+						//The left face.
+						if (i < array.footprint - 1 && array.cubes[i + 1][j].length >= k + 1)
+						{
+							targets.push(array.cubes[i][j][k].material[4]);
+						}
+						
+						//The right face.
+						if (j < array.footprint - 1 && array.cubes[i][j + 1].length >= k + 1)
+						{
+							targets.push(array.cubes[i][j][k].material[0]);
+						}
+						
+						targets.push(array.cubes[i][j][k].material[1]);
+						targets.push(array.cubes[i][j][k].material[3]);
+						targets.push(array.cubes[i][j][k].material[5]);
+					}
+					
+					if (array.cubes[i][j].length !== 0)
+					{
+						targets.push(array.floor[i][j].material[2]);
+					}
+				}
 			}
 			
-			this.dimersShown = false;
 			
 			
-			
-			let targets = [];
-			
-			//Show everything not visible by the camera.
-			this.arrays.forEach(array =>
+			if (this.addWalls)
 			{
-				for (let i = 0; i < array.footprint; i++)
+				for (let i = 0; i < this.wallSize; i++)
 				{
-					for (let j = 0; j < array.footprint; j++)
+					for (let j = 0; j < 2 * this.wallSize; j++)
 					{
-						for (let k = 0; k < array.cubes[i][j].length; k++)
-						{
-							//Remove the top face.
-							if (k < array.cubes[i][j].length - 1)
-							{
-								targets.push(array.cubes[i][j][k].material[2]);
-							}
-							
-							//The left face.
-							if (i < array.footprint - 1 && array.cubes[i + 1][j].length >= k + 1)
-							{
-								targets.push(array.cubes[i][j][k].material[4]);
-							}
-							
-							//The right face.
-							if (j < array.footprint - 1 && array.cubes[i][j + 1].length >= k + 1)
-							{
-								targets.push(array.cubes[i][j][k].material[0]);
-							}
-							
-							targets.push(array.cubes[i][j][k].material[1]);
-							targets.push(array.cubes[i][j][k].material[3]);
-							targets.push(array.cubes[i][j][k].material[5]);
-						}
-						
-						if (array.cubes[i][j].length !== 0)
-						{
-							targets.push(array.floor[i][j].material[2]);
-						}
+						targets.push(array.leftWall[i][j].material[0]);
+						targets.push(array.rightWall[i][j].material[4]);
 					}
 				}
-				
-				
-				
-				if (this.addWalls)
-				{
-					for (let i = 0; i < this.wallSize; i++)
-					{
-						for (let j = 0; j < 2 * this.wallSize; j++)
-						{
-							targets.push(array.leftWall[i][j].material[0]);
-							targets.push(array.rightWall[i][j].material[4]);
-						}
-					}
-				}
-			});
-			
-			
-			
-			await new Promise((resolve, reject) =>
+			}
+		});
+		
+		
+		
+		await anime({
+			targets: [this.wilsonHidden.ctx, this.wilsonHidden2.ctx, this.wilsonHidden3.ctx, this.wilsonHidden4.ctx],
+			strokeStyle: "rgba(255, 255, 255, 0)",
+			_alpha: 1,
+			duration: this.animationTime / 2,
+			easing: "easeOutQuad",
+			update: () =>
 			{
-				anime({
-					targets: [this.wilsonHidden.ctx, this.wilsonHidden2.ctx, this.wilsonHidden3.ctx, this.wilsonHidden4.ctx],
-					strokeStyle: "rgba(255, 255, 255, 0)",
-					Alpha: 1,
-					duration: this.animationTime / 2,
-					easing: "easeOutQuad",
-					complete: resolve,
-					update: () =>
-					{
-						this.wilsonHidden.ctx.clearRect(0, 0, 64, 64);
-						
-						this.wilsonHidden.ctx.fillStyle = `rgba(64, 64, 64, ${this.wilsonHidden.ctx.Alpha})`;
-						this.wilsonHidden.ctx.fillRect(0, 0, 64, 64);
-						
-						this.wilsonHidden.ctx.fillStyle = `rgba(128, 128, 128, ${this.wilsonHidden.ctx.Alpha})`;
-						this.wilsonHidden.ctx.fillRect(4, 4, 56, 56);
-						
-						this.wilsonHidden.ctx.moveTo(42.7, 21.3);
-						this.wilsonHidden.ctx.lineTo(21.3, 42.7);
-						this.wilsonHidden.ctx.stroke();
-						
-						this.cubeTexture.needsUpdate = true;
-						
-						
-						
-						this.wilsonHidden2.ctx.clearRect(0, 0, 64, 64);
-						
-						this.wilsonHidden2.ctx.fillStyle = `rgba(64, 64, 64, ${this.wilsonHidden2.ctx.Alpha})`;
-						this.wilsonHidden2.ctx.fillRect(0, 0, 64, 64);
-						
-						this.wilsonHidden2.ctx.fillStyle = `rgba(128, 128, 128, ${this.wilsonHidden2.ctx.Alpha})`;
-						this.wilsonHidden2.ctx.fillRect(4, 4, 56, 56);
-						
-						this.wilsonHidden2.ctx.moveTo(21.3, 21.3);
-						this.wilsonHidden2.ctx.lineTo(42.7, 42.7);
-						this.wilsonHidden2.ctx.stroke();
-						
-						this.cubeTexture2.needsUpdate = true;
-						
-						
-						
-						this.wilsonHidden3.ctx.clearRect(0, 0, 64, 64);
-						
-						this.wilsonHidden3.ctx.fillStyle = `rgba(32, 32, 32, ${this.addWalls ? 0 : this.wilsonHidden3.ctx.Alpha})`;
-						this.wilsonHidden3.ctx.fillRect(0, 0, 64, 64);
-						
-						this.wilsonHidden3.ctx.fillStyle = `rgba(64, 64, 64, ${this.addWalls ? 0 : this.wilsonHidden3.ctx.Alpha})`;
-						this.wilsonHidden3.ctx.fillRect(4, 4, 56, 56);
-						
-						this.wilsonHidden3.ctx.moveTo(42.7, 21.3);
-						this.wilsonHidden3.ctx.lineTo(21.3, 42.7);
-						this.wilsonHidden3.ctx.stroke();
-						
-						this.floorTexture.needsUpdate = true;
-						
-						
-						
-						this.wilsonHidden4.ctx.clearRect(0, 0, 64, 64);
-						
-						this.wilsonHidden4.ctx.fillStyle = `rgba(32, 32, 32, ${this.addWalls ? 0 : this.wilsonHidden4.ctx.Alpha})`;
-						this.wilsonHidden4.ctx.fillRect(0, 0, 64, 64);
-						
-						this.wilsonHidden4.ctx.fillStyle = `rgba(64, 64, 64, ${this.addWalls ? 0 : this.wilsonHidden4.ctx.Alpha})`;
-						this.wilsonHidden4.ctx.fillRect(4, 4, 56, 56);
-						
-						this.wilsonHidden4.ctx.moveTo(21.3, 21.3);
-						this.wilsonHidden4.ctx.lineTo(42.7, 42.7);
-						this.wilsonHidden4.ctx.stroke();
-						
-						this.floorTexture2.needsUpdate = true;
-					}
-				});
-			});
-			
-			targets.forEach(material => material.opacity = 1);
-			
-			this.currentlyAnimatingCamera = false;
-			
-			resolve();
-		});	
+				this.wilsonHidden.ctx.clearRect(0, 0, 64, 64);
+				
+				this.wilsonHidden.ctx.fillStyle = `rgba(64, 64, 64, ${this.wilsonHidden.ctx._alpha})`;
+				this.wilsonHidden.ctx.fillRect(0, 0, 64, 64);
+				
+				this.wilsonHidden.ctx.fillStyle = `rgba(128, 128, 128, ${this.wilsonHidden.ctx._alpha})`;
+				this.wilsonHidden.ctx.fillRect(4, 4, 56, 56);
+				
+				this.wilsonHidden.ctx.moveTo(42.7, 21.3);
+				this.wilsonHidden.ctx.lineTo(21.3, 42.7);
+				this.wilsonHidden.ctx.stroke();
+				
+				this.cubeTexture.needsUpdate = true;
+				
+				
+				
+				this.wilsonHidden2.ctx.clearRect(0, 0, 64, 64);
+				
+				this.wilsonHidden2.ctx.fillStyle = `rgba(64, 64, 64, ${this.wilsonHidden2.ctx._alpha})`;
+				this.wilsonHidden2.ctx.fillRect(0, 0, 64, 64);
+				
+				this.wilsonHidden2.ctx.fillStyle = `rgba(128, 128, 128, ${this.wilsonHidden2.ctx._alpha})`;
+				this.wilsonHidden2.ctx.fillRect(4, 4, 56, 56);
+				
+				this.wilsonHidden2.ctx.moveTo(21.3, 21.3);
+				this.wilsonHidden2.ctx.lineTo(42.7, 42.7);
+				this.wilsonHidden2.ctx.stroke();
+				
+				this.cubeTexture2.needsUpdate = true;
+				
+				
+				
+				this.wilsonHidden3.ctx.clearRect(0, 0, 64, 64);
+				
+				this.wilsonHidden3.ctx.fillStyle = `rgba(32, 32, 32, ${this.addWalls ? 0 : this.wilsonHidden3.ctx._alpha})`;
+				this.wilsonHidden3.ctx.fillRect(0, 0, 64, 64);
+				
+				this.wilsonHidden3.ctx.fillStyle = `rgba(64, 64, 64, ${this.addWalls ? 0 : this.wilsonHidden3.ctx._alpha})`;
+				this.wilsonHidden3.ctx.fillRect(4, 4, 56, 56);
+				
+				this.wilsonHidden3.ctx.moveTo(42.7, 21.3);
+				this.wilsonHidden3.ctx.lineTo(21.3, 42.7);
+				this.wilsonHidden3.ctx.stroke();
+				
+				this.floorTexture.needsUpdate = true;
+				
+				
+				
+				this.wilsonHidden4.ctx.clearRect(0, 0, 64, 64);
+				
+				this.wilsonHidden4.ctx.fillStyle = `rgba(32, 32, 32, ${this.addWalls ? 0 : this.wilsonHidden4.ctx._alpha})`;
+				this.wilsonHidden4.ctx.fillRect(0, 0, 64, 64);
+				
+				this.wilsonHidden4.ctx.fillStyle = `rgba(64, 64, 64, ${this.addWalls ? 0 : this.wilsonHidden4.ctx._alpha})`;
+				this.wilsonHidden4.ctx.fillRect(4, 4, 56, 56);
+				
+				this.wilsonHidden4.ctx.moveTo(21.3, 21.3);
+				this.wilsonHidden4.ctx.lineTo(42.7, 42.7);
+				this.wilsonHidden4.ctx.stroke();
+				
+				this.floorTexture2.needsUpdate = true;
+			}
+		}).finished;
+		
+		targets.forEach(material => material.opacity = 1);
+		
+		this.currentlyAnimatingCamera = false;
 	}
 	
 	
 	
-	showFloor(opacity = 1)
+	async showFloor(opacity = 1)
 	{
-		return new Promise(async (resolve, reject) =>
+		let targets = [];
+		
+		this.arrays.forEach(array =>
 		{
-			let targets = [];
-			
-			this.arrays.forEach(array =>
+			array.floor.forEach(row =>
 			{
-				array.floor.forEach(row =>
+				row.forEach(floor =>
 				{
-					row.forEach(floor =>
-					{
-						floor.material.forEach(material => targets.push(material));
-					});
+					floor.material.forEach(material => targets.push(material));
 				});
 			});
-			
-			anime({
-				targets: targets,
-				opacity: opacity,
-				duration: this.animationTime / 2,
-				easing: "easeOutQuad",
-				complete: () =>
-				{
-					resolve();
-				}
-			});	
-		});	
+		});
+		
+		return anime({
+			targets: targets,
+			opacity: opacity,
+			duration: this.animationTime / 2,
+			easing: "easeOutQuad",
+		}).finished;
 	}
 	
 	hideFloor()
@@ -2227,642 +2182,1595 @@ export class PlanePartitions extends Applet
 	
 	
 	//coordinates is a list of length-3 arrays [i, j, k] containing the coordinates of the cubes to highlight.
-	colorCubes(array, coordinates, hue)
+	async colorCubes(array, coordinates, hue)
 	{
-		return new Promise((resolve, reject) =>
+		if (coordinates.length === 0)
 		{
-			if (coordinates.length === 0)
-			{
-				resolve();
-				return;
-			}
-			
-			let targets = [];
-			
-			coordinates.forEach(xyz =>
-			{
-				array.cubes[xyz[0]][xyz[1]][xyz[2]].material.forEach(material => targets.push(material.color));
-			});
-			
-			targets.forEach(color => color.getRGB(color));
-			
-			//Convert HSV to HSL.
-			let v = this.cubeLightness + 1 * Math.min(this.cubeLightness, 1 - this.cubeLightness);
-			let s = v === 0 ? 0 : 2 * (1 - this.cubeLightness / v);
-			
-			let targetColors = targets.map(color => this.wilson.utils.hsvToRgb(hue, s, v));
-			
-			
-			
-			anime({
-				targets: targets,
-				r: (element, index) => targetColors[index][0] / 255,
-				g: (element, index) => targetColors[index][1] / 255,
-				b: (element, index) => targetColors[index][2] / 255,
-				duration: this.animationTime,
-				delay: (element, index) => Math.floor(index / 6) * this.animationTime / 10,
-				easing: "easeOutQuad",
-				update: () => targets.forEach(color => color.setRGB(color.r, color.g, color.b)),
-				complete: resolve
-			});
+			return;
+		}
+		
+		let targets = [];
+		
+		coordinates.forEach(xyz =>
+		{
+			array.cubes[xyz[0]][xyz[1]][xyz[2]].material.forEach(material => targets.push(material.color));
 		});
+		
+		targets.forEach(color => color.getRGB(color));
+		
+		//Convert HSV to HSL.
+		let v = this.cubeLightness + 1 * Math.min(this.cubeLightness, 1 - this.cubeLightness);
+		let s = v === 0 ? 0 : 2 * (1 - this.cubeLightness / v);
+		
+		let targetColors = targets.map(color => this.wilson.utils.hsvToRgb(hue, s, v));
+		
+		
+		
+		await anime({
+			targets: targets,
+			r: (element, index) => targetColors[index][0] / 255,
+			g: (element, index) => targetColors[index][1] / 255,
+			b: (element, index) => targetColors[index][2] / 255,
+			duration: this.animationTime,
+			delay: (element, index) => Math.floor(index / 6) * this.animationTime / 10,
+			easing: "easeOutQuad",
+			update: () => targets.forEach(color => color.setRGB(color.r, color.g, color.b)),
+		}).finished;
 	}
 	
 	
 	
-	uncolorCubes(array, coordinates)
+	async uncolorCubes(array, coordinates)
 	{
-		return new Promise((resolve, reject) =>
+		let targets = [];
+		
+		coordinates.forEach(xyz =>
 		{
-			let targets = [];
-			
-			coordinates.forEach(xyz =>
-			{
-				array.cubes[xyz[0]][xyz[1]][xyz[2]].material.forEach(material => targets.push(material.color));
-			});
-			
-			targets.forEach(color => color.getHSL(color));
-			
-			anime({
-				targets: targets,
-				s: 0,
-				duration: this.animationTime,
-				easing: "easeOutQuad",
-				update: () => targets.forEach(color => color.setHSL(color.h, color.s, this.cubeLightness)),
-				complete: resolve
-			});
+			array.cubes[xyz[0]][xyz[1]][xyz[2]].material.forEach(material => targets.push(material.color));
 		});
+		
+		targets.forEach(color => color.getHSL(color));
+		
+		await anime({
+			targets: targets,
+			s: 0,
+			duration: this.animationTime,
+			easing: "easeOutQuad",
+			update: () => targets.forEach(color => color.setHSL(color.h, color.s, this.cubeLightness)),
+		}).finished;
 	}
 	
 	
 	
 	//Lifts the specified cubes to the specified height. The animation is skipped in 2d mode.
-	raiseCubes(array, coordinates, height)
+	async raiseCubes(array, coordinates, height)
 	{
-		return new Promise((resolve, reject) =>
+		let duration = this.in2dView ? 0 : this.animationTime;
+		
+		let targets = [];
+		
+		coordinates.forEach(xyz =>
 		{
-			let duration = this.in2dView ? 0 : this.animationTime;
+			targets.push(array.cubes[xyz[0]][xyz[1]][xyz[2]].position);
 			
-			let targets = [];
-			
-			coordinates.forEach(xyz =>
+			if (array.numbers[xyz[0]][xyz[1]] === Infinity)
 			{
-				targets.push(array.cubes[xyz[0]][xyz[1]][xyz[2]].position);
-				
-				if (array.numbers[xyz[0]][xyz[1]] === Infinity)
-				{
-					console.error("Cannot raise cubes from an infinite height");
-				}
-			});
-			
-			anime({
-				targets: targets,
-				y: height,
-				duration: duration,
-				easing: "easeInOutQuad",
-				complete: resolve
-			});
-		});	
+				console.error("Cannot raise cubes from an infinite height");
+			}
+		});
+		
+		await anime({
+			targets: targets,
+			y: height,
+			duration: duration,
+			easing: "easeInOutQuad",
+		}).finished;
 	}
 	
 	
 	
 	//Lowers the specified cubes onto the array. The animation is skipped in 2d mode.
-	lowerCubes(array, coordinates)
+	async lowerCubes(array, coordinates)
 	{
-		return new Promise((resolve, reject) =>
+		let duration = this.in2dView ? 0 : this.animationTime;
+		
+		let targets = [];
+		
+		coordinates.forEach(xyz =>
 		{
-			let duration = this.in2dView ? 0 : this.animationTime;
+			targets.push(array.cubes[xyz[0]][xyz[1]][xyz[2]].position);
 			
-			let targets = [];
-			
-			coordinates.forEach(xyz =>
+			if (array.numbers[xyz[0]][xyz[1]] === Infinity)
 			{
-				targets.push(array.cubes[xyz[0]][xyz[1]][xyz[2]].position);
-				
-				if (array.numbers[xyz[0]][xyz[1]] === Infinity)
-				{
-					console.error("Cannot lower cubes onto an infinite height");
-				}
-			});
+				console.error("Cannot lower cubes onto an infinite height");
+			}
+		});
+		
+		await anime({
+			targets: targets,
+			y: (element, index) => array.numbers[coordinates[index][0]][coordinates[index][1]],
+			duration: duration,
+			easing: "easeInOutQuad"
+		}).finished;
+
+		coordinates.forEach(xyz =>
+		{	
+			array.cubes[xyz[0]][xyz[1]][array.numbers[xyz[0]][xyz[1]]] = array.cubes[xyz[0]][xyz[1]][xyz[2]];
 			
-			anime({
-				targets: targets,
-				y: (element, index) => array.numbers[coordinates[index][0]][coordinates[index][1]],
-				duration: duration,
-				easing: "easeInOutQuad",
-				complete: () =>
-				{
-					coordinates.forEach(xyz =>
-					{	
-						array.cubes[xyz[0]][xyz[1]][array.numbers[xyz[0]][xyz[1]]] = array.cubes[xyz[0]][xyz[1]][xyz[2]];
-						
-						array.cubes[xyz[0]][xyz[1]][xyz[2]] = null;
-					});
-					
-					resolve();
-				}
-			});
-		});	
+			array.cubes[xyz[0]][xyz[1]][xyz[2]] = null;
+		});
 	}
 	
 	
 	
 	//Moves cubes from one array to another and changes their group.
-	moveCubes(sourceArray, sourceCoordinates, targetArray, targetCoordinates, updateCubeArray = true)
+	async moveCubes(sourceArray, sourceCoordinates, targetArray, targetCoordinates, updateCubeArray = true)
 	{
-		return new Promise((resolve, reject) =>
+		let targets = [];
+		
+		sourceCoordinates.forEach(xyz =>
 		{
-			let targets = [];
+			targets.push(sourceArray.cubes[xyz[0]][xyz[1]][xyz[2]].position);
+			targetArray.cubeGroup.attach(sourceArray.cubes[xyz[0]][xyz[1]][xyz[2]]);
 			
-			sourceCoordinates.forEach(xyz =>
+			if (sourceArray.numbers[xyz[0]][xyz[1]] === Infinity)
 			{
-				targets.push(sourceArray.cubes[xyz[0]][xyz[1]][xyz[2]].position);
-				targetArray.cubeGroup.attach(sourceArray.cubes[xyz[0]][xyz[1]][xyz[2]]);
-				
-				if (sourceArray.numbers[xyz[0]][xyz[1]] === Infinity)
-				{
-					console.error("Cannot move cubes from an infinite height");
-				}
-			});
-			
-			
-			
-			anime({
-				targets: targets,
-				x: (element, index) => targetCoordinates[index][1] - (targetArray.footprint - 1) / 2,
-				y: (element, index) => targetCoordinates[index][2],
-				z: (element, index) => targetCoordinates[index][0] - (targetArray.footprint - 1) / 2,
-				duration: this.animationTime,
-				easing: "easeInOutQuad",
-				complete: () =>
-				{
-					if (updateCubeArray)
-					{
-						//This is necessary in case the source and target arrays are the same.
-						let sourceCubes = sourceCoordinates.map(xyz => sourceArray.cubes[xyz[0]][xyz[1]][xyz[2]]);
-						
-						sourceCoordinates.forEach(xyz => sourceArray.cubes[xyz[0]][xyz[1]][xyz[2]] = null);
-						
-						targetCoordinates.forEach((xyz, index) =>
-						{
-							if (targetArray.numbers[xyz[0]][xyz[1]] === Infinity)
-							{
-								console.error("Cannot move cubes to an infinite height");
-							}
-							
-							if (targetArray.cubes[xyz[0]][xyz[1]][xyz[2]] && !sourceCoordinates.some(e => e[0] === xyz[0] && e[1] === xyz[1] && e[2] === xyz[2]))
-							{
-								console.warn(`Moving a cube to a location that's already occupied: ${xyz}. This is probably not what you want to do.`);
-							}
-							
-							targetArray.cubes[xyz[0]][xyz[1]][xyz[2]] = sourceCubes[index];
-						});
-					}
-					
-					resolve();
-				}	
-			});
+				console.error("Cannot move cubes from an infinite height");
+			}
 		});
+		
+		await anime({
+			targets: targets,
+			x: (element, index) => targetCoordinates[index][1] - (targetArray.footprint - 1) / 2,
+			y: (element, index) => targetCoordinates[index][2],
+			z: (element, index) => targetCoordinates[index][0] - (targetArray.footprint - 1) / 2,
+			duration: this.animationTime,
+			easing: "easeInOutQuad",
+		}).finished;
+
+		if (updateCubeArray)
+		{
+			//This is necessary in case the source and target arrays are the same.
+			let sourceCubes = sourceCoordinates.map(xyz => sourceArray.cubes[xyz[0]][xyz[1]][xyz[2]]);
+			
+			sourceCoordinates.forEach(xyz => sourceArray.cubes[xyz[0]][xyz[1]][xyz[2]] = null);
+			
+			targetCoordinates.forEach((xyz, index) =>
+			{
+				if (targetArray.numbers[xyz[0]][xyz[1]] === Infinity)
+				{
+					console.error("Cannot move cubes to an infinite height");
+				}
+				
+				if (targetArray.cubes[xyz[0]][xyz[1]][xyz[2]] && !sourceCoordinates.some(e => e[0] === xyz[0] && e[1] === xyz[1] && e[2] === xyz[2]))
+				{
+					console.warn(`Moving a cube to a location that's already occupied: ${xyz}. This is probably not what you want to do.`);
+				}
+				
+				targetArray.cubes[xyz[0]][xyz[1]][xyz[2]] = sourceCubes[index];
+			});
+		}
 	}
 	
 	
 	
 	//Fades the specified cubes' opacity to 1.
-	revealCubes(array, coordinates)
+	async revealCubes(array, coordinates)
 	{
-		return new Promise((resolve, reject) =>
+		if (coordinates.length === 0)
 		{
-			if (coordinates.length === 0)
+			return;
+		}
+		
+		let targets = [];
+		
+		coordinates.forEach(xyz =>
+		{
+			array.cubes[xyz[0]][xyz[1]][xyz[2]].material.forEach(material => targets.push(material));
+			
+			if (array.numbers[xyz[0]][xyz[1]] === Infinity)
 			{
-				resolve();
-				return;
+				console.error("Cannot reveal cubes at an infinite height");
 			}
-			
-			
-			
-			let targets = [];
-			
-			coordinates.forEach(xyz =>
-			{
-				array.cubes[xyz[0]][xyz[1]][xyz[2]].material.forEach(material => targets.push(material));
-				
-				if (array.numbers[xyz[0]][xyz[1]] === Infinity)
-				{
-					console.error("Cannot reveal cubes at an infinite height");
-				}
-			});
-			
-			anime({
-				targets: targets,
-				opacity: 1,
-				duration: this.animationTime / 2,
-				delay: (element, index) => Math.floor(index / 6) * this.animationTime / 10,
-				easing: "easeOutQuad",
-				complete: resolve
-			});
 		});
+		
+		await anime({
+			targets: targets,
+			opacity: 1,
+			duration: this.animationTime / 2,
+			delay: (element, index) => Math.floor(index / 6) * this.animationTime / 10,
+			easing: "easeOutQuad",
+		}).finished;
 	}
 	
 	
 	
 	//Fades the specified cubes' opacity to zero, and then deletes them.
-	deleteCubes(array, coordinates, instant = false, noAnimation = false)
+	async deleteCubes(array, coordinates, instant = false, noAnimation = false)
 	{
-		return new Promise((resolve, reject) =>
+		let targets = [];
+		
+		coordinates.forEach(xyz =>
 		{
-			let targets = [];
+			array.cubes[xyz[0]][xyz[1]][xyz[2]].material.forEach(material => targets.push(material));
+		});
+					
+		await anime({
+			targets: targets,
+			opacity: 0,
+			duration: this.animationTime / 2 * !noAnimation,
+			delay: (element, index) => (!instant) * Math.floor(index / 6) * this.animationTime / 10,
+			easing: "easeOutQuad",
+		}).finished;
+
+		targets.forEach(material => material.dispose());
+		
+		coordinates.forEach(xyz =>
+		{
+			array.cubeGroup.remove(array.cubes[xyz[0]][xyz[1]][xyz[2]]);
 			
-			coordinates.forEach(xyz =>
-			{
-				array.cubes[xyz[0]][xyz[1]][xyz[2]].material.forEach(material => targets.push(material));
-			});
-						
-			anime({
-				targets: targets,
-				opacity: 0,
-				duration: this.animationTime / 2 * !noAnimation,
-				delay: (element, index) => (!instant) * Math.floor(index / 6) * this.animationTime / 10,
-				easing: "easeOutQuad",
-				complete: () =>
-				{
-					targets.forEach(material => material.dispose());
-					
-					coordinates.forEach(xyz =>
-					{
-						array.cubeGroup.remove(array.cubes[xyz[0]][xyz[1]][xyz[2]]);
-						
-						array.cubes[xyz[0]][xyz[1]][xyz[2]] = null;
-					});
-					
-					resolve();
-				}
-			});	
+			array.cubes[xyz[0]][xyz[1]][xyz[2]] = null;
 		});
 	}
 	
 	
 	
 	//For use with tableaux of skew shape.
-	deleteFloor(array, coordinates)
+	async deleteFloor(array, coordinates)
 	{
-		return new Promise((resolve, reject) =>
+		let targets = [];
+		
+		coordinates.forEach(xyz =>
 		{
-			let targets = [];
+			array.floor[xyz[0]][xyz[1]].material.forEach(material => targets.push(material));
+		});
+					
+		await anime({
+			targets: targets,
+			opacity: 0,
+			duration: this.animationTime / 2,
+			easing: "easeOutQuad",
+		}).finished;
+
+		targets.forEach(material => material.dispose());
+		
+		coordinates.forEach(xyz =>
+		{
+			array.cubeGroup.remove(array.floor[xyz[0]][xyz[1]]);
 			
-			coordinates.forEach(xyz =>
-			{
-				array.floor[xyz[0]][xyz[1]].material.forEach(material => targets.push(material));
-			});
-						
-			anime({
-				targets: targets,
-				opacity: 0,
-				duration: this.animationTime / 2,
-				easing: "easeOutQuad",
-				complete: () =>
-				{
-					targets.forEach(material => material.dispose());
-					
-					coordinates.forEach(xyz =>
-					{
-						array.cubeGroup.remove(array.floor[xyz[0]][xyz[1]]);
-						
-						array.cubes[xyz[0]][xyz[1]] = null;
-					});
-					
-					resolve();
-				}
-			});	
+			array.cubes[xyz[0]][xyz[1]] = null;
 		});
 	}
 	
 	
 	
-	runExample(index)
+	async runExample(index)
 	{
-		return new Promise(async (resolve, reject) =>
+		if (index === 1 || index === 2)
 		{
-			if (index === 1 || index === 2)
+			while (this.arrays.length > 1)
 			{
-				while (this.arrays.length > 1)
+				await this.removeArray(1);
+				await new Promise((resolve, reject) => setTimeout(resolve, this.animationTime / 2));
+			}
+			
+			if (this.arrays.length === 0)
+			{
+				const planePartition = this.parseArray(this.generateRandomPlanePartition());
+				await this.addNewArray(this.arrays.length, planePartition);
+			}
+			
+			else if (!this.verifyPp(this.arrays[0].numbers))
+			{
+				await this.removeArray(0);
+				await new Promise((resolve, reject) => setTimeout(resolve, this.animationTime / 2));
+				
+				const planePartition = this.parseArray(this.generateRandomPlanePartition());
+				await addNewArray(this.arrays.length, planePartition);
+			}
+			
+			
+			
+			if (index === 1)
+			{
+				await this.runAlgorithm("hillmanGrassl", 0);
+				
+				await new Promise((resolve, reject) => setTimeout(resolve, 3 * this.animationTime));
+				
+				await this.runAlgorithm("hillmanGrasslInverse", 0);
+			}
+			
+			else
+			{
+				await this.runAlgorithm("pak", 0);
+				
+				await new Promise((resolve, reject) => setTimeout(resolve, 3 * this.animationTime));
+				
+				await this.showHexView();
+				
+				await new Promise((resolve, reject) => setTimeout(resolve, this.animationTime));
+				
+				await this.runAlgorithm("sulzgruberInverse", 0);
+			}
+		}
+		
+		
+		
+		else if (index === 3)
+		{
+			while (this.arrays.length > 0)
+			{
+				await this.removeArray(0);
+				await new Promise((resolve, reject) => setTimeout(resolve, this.animationTime / 2));
+			}
+			
+			await this.addNewArray(this.arrays.length, this.generateRandomTableau());
+			
+			
+			
+			await this.show2dView();
+			
+			await new Promise((resolve, reject) => setTimeout(resolve, this.animationTime));
+			
+			await this.runAlgorithm("rskInverse", 0)
+			
+			await new Promise((resolve, reject) => setTimeout(resolve, 3 * this.animationTime));
+			
+			await this.runAlgorithm("rsk", 0);
+		}
+	}
+	
+	
+	
+	async runAlgorithm(name, index, subAlgorithm = false)
+	{
+		if (!subAlgorithm && this.currentlyRunningAlgorithm)
+		{
+			return;
+		}
+		
+		this.currentlyRunningAlgorithm = true;
+		
+		
+		
+		const data = this.algorithmData[name];
+		
+		const numArrays = data.inputType.length;
+		
+		if (index > this.arrays.length - 1 || index < 0)
+		{
+			console.log(`No array at index ${index}!`);
+			
+			this.currentlyRunningAlgorithm = false;
+			
+			return;
+		}
+		
+		else if (numArrays > 1 && index > this.arrays.length - numArrays)
+		{
+			console.log(`No array at index ${index + numArrays - 1}! (This algorithm needs ${numArrays} arrays)`);
+			
+			this.currentlyRunningAlgorithm = false;
+			
+			return;
+		}
+		
+		
+		
+		for (let i = 0; i < numArrays; i++)
+		{
+			let type = data.inputType[i];
+			
+			if (type === "pp" && !this.verifyPp(this.arrays[index + i].numbers))
+			{
+				console.log(`Array at index ${index + i} is not a plane partition!`);
+				
+				this.currentlyRunningAlgorithm = false;
+				
+				return;
+			}
+			
+			if (type === "ssyt" && !this.verifySsyt(this.arrays[index + i].numbers))
+			{
+				console.log(`Array at index ${index + i} is not an SSYT!`);
+				
+				this.currentlyRunningAlgorithm = false;
+				
+				return;
+			}
+		}
+		
+		
+		
+		if (numArrays > 1 && data.sameShape !== undefined && data.sameShape)
+		{
+			let rowLengths = new Array(numArrays);
+			
+			let maxNumRows = 0;
+			
+			for (let i = 0; i < numArrays; i++)
+			{
+				maxNumRows = Math.max(maxNumRows, this.arrays[index + i].numbers.length);
+			}	
+			
+			for (let i = 0; i < numArrays; i++)
+			{
+				rowLengths[i] = new Array(maxNumRows);
+				
+				for (let j = 0; j < maxNumRows; j++)
 				{
-					await this.removeArray(1);
-					await new Promise((resolve, reject) => setTimeout(resolve, this.animationTime / 2));
+					rowLengths[i][j] = 0;
 				}
 				
-				if (this.arrays.length === 0)
+				for (let j = 0; j < this.arrays[index + i].numbers.length; j++)
 				{
-					const planePartition = this.parseArray(this.generateRandomPlanePartition());
-					await this.addNewArray(this.arrays.length, planePartition);
+					let k = 0;
+					
+					while (k < this.arrays[index + i].numbers[j].length && this.arrays[index + i].numbers[j][k] !== 0)
+					{
+						k++;
+					}
+					
+					rowLengths[i][j] = k;
+				}	
+			}
+			
+			
+			
+			for (let i = 1; i < numArrays; i++)
+			{
+				for (let j = 0; j < maxNumRows; j++)
+				{
+					if (rowLengths[i][j] !== rowLengths[0][j])
+					{
+						this.displayError("Arrays are not the same shape!");
+						
+						this.currentlyRunningAlgorithm = false;
+						
+						return;
+					}
+				}	
+			}
+		}
+		
+		
+		
+		//Uncolor everything.
+		for (let i = 0; i < numArrays; i++)
+		{
+			let coordinates = [];
+			
+			const numbers = this.arrays[index + i].numbers;
+			
+			for (let j = 0; j < numbers.length; j++)
+			{
+				for (let k = 0; k < numbers.length; k++)
+				{
+					if (numbers[j][k] !== Infinity)
+					{
+						for (let l = 0; l < numbers[j][k]; l++)
+						{
+							coordinates.push([j, k, l]);
+						}
+					}	
+				}
+			}
+			
+			this.uncolorCubes(this.arrays[index + i], coordinates);
+		}	
+		
+		
+		
+		const boundFunction = data.method.bind(this);
+		
+		await boundFunction(index);
+		
+		
+		
+		if (!this.subAlgorithm)
+		{
+			this.currentlyRunningAlgorithm = false;
+		}
+	}
+	
+	
+	async hillmanGrassl(index)
+	{
+		let array = this.arrays[index];
+		
+		let planePartition = _.cloneDeep(array.numbers);
+		
+		
+		
+		let columnStarts = new Array(planePartition.length);
+		
+		for (let i = 0; i < planePartition.length; i++)
+		{
+			let j = 0;
+			
+			while (j < planePartition.length && planePartition[j][i] === Infinity)
+			{
+				j++;
+			}
+			
+			columnStarts[i] = j;
+		}
+		
+		
+		
+		let rowStarts = new Array(planePartition.length);
+		
+		for (let i = 0; i < planePartition.length; i++)
+		{
+			let j = 0;
+			
+			while (j < planePartition.length && planePartition[i][j] === Infinity)
+			{
+				j++;
+			}
+			
+			rowStarts[i] = j;
+		}
+		
+		
+		
+		let zigzagPaths = [];
+		
+		while (true)
+		{
+			//Find the right-most nonzero entry at the top of its column.
+			let startingCol = planePartition[0].length - 1;
+			
+			while (startingCol >= 0 && columnStarts[startingCol] < planePartition.length && planePartition[columnStarts[startingCol]][startingCol] === 0)
+			{
+				startingCol--;
+			}
+			
+			if (startingCol < 0 || columnStarts[startingCol] === planePartition.length)
+			{
+				break;
+			}
+			
+			
+			
+			let currentRow = columnStarts[startingCol];
+			let currentCol = startingCol;
+			
+			let path = [[currentRow, currentCol, planePartition[currentRow][currentCol] - 1]];
+			
+			while (true)
+			{
+				if (currentRow < planePartition.length - 1 && planePartition[currentRow + 1][currentCol] === planePartition[currentRow][currentCol])
+				{
+					currentRow++;
 				}
 				
-				else if (!this.verifyPp(this.arrays[0].numbers))
+				else if (currentCol > 0 && planePartition[currentRow][currentCol - 1] !== Infinity)
 				{
-					await this.removeArray(0);
-					await new Promise((resolve, reject) => setTimeout(resolve, this.animationTime / 2));
-					
-					const planePartition = this.parseArray(this.generateRandomPlanePartition());
-					await addNewArray(this.arrays.length, planePartition);
-				}
-				
-				
-				
-				if (index === 1)
-				{
-					await this.runAlgorithm("hillmanGrassl", 0);
-					
-					await new Promise((resolve, reject) => setTimeout(resolve, 3 * this.animationTime));
-					
-					await this.runAlgorithm("hillmanGrasslInverse", 0);
+					currentCol--;
 				}
 				
 				else
 				{
-					await this.runAlgorithm("pak", 0);
-					
-					await new Promise((resolve, reject) => setTimeout(resolve, 3 * this.animationTime));
-					
-					await this.showHexView();
-					
-					await new Promise((resolve, reject) => setTimeout(resolve, this.animationTime));
-					
-					await this.runAlgorithm("sulzgruberInverse", 0);
-				}	
+					break;
+				}
 				
-				resolve();
+				path.push([currentRow, currentCol, planePartition[currentRow][currentCol] - 1]);
 			}
 			
 			
 			
-			else if (index === 3)
+			for (let i = 0; i < path.length; i++)
 			{
-				while (this.arrays.length > 0)
+				planePartition[path[i][0]][path[i][1]]--;
+			}
+			
+			zigzagPaths.push(path);
+		}
+		
+		
+		
+		let emptyArray = new Array(planePartition.length);
+		
+		for (let i = 0; i < planePartition.length; i++)
+		{
+			emptyArray[i] = new Array(planePartition.length);
+			
+			for (let j = 0; j < planePartition.length; j++)
+			{
+				emptyArray[i][j] = planePartition[i][j] === Infinity ? Infinity : 0;
+			}
+		}
+		
+		let outputArray = await this.addNewArray(index + 1, emptyArray);
+		
+		await new Promise((resolve, reject) => setTimeout(resolve, this.animationTime));
+		
+		
+		
+		//Now we'll animate those paths actually decrementing, one-by-one.
+		for (let i = 0; i < zigzagPaths.length; i++)
+		{
+			let hue = i / zigzagPaths.length * 6/7;
+			
+			await this.colorCubes(array, zigzagPaths[i], hue);
+			
+			
+			
+			//Lift all the cubes up. There's no need to do this if we're in the 2d view.
+			await this.raiseCubes(array, zigzagPaths[i], array.height);
+			
+			
+			
+			//Now we actually delete the cubes.
+			for (let j = 0; j < zigzagPaths[i].length; j++)
+			{
+				array.numbers[zigzagPaths[i][j][0]][zigzagPaths[i][j][1]]--;
+				
+				if (this.in2dView)
 				{
-					await this.removeArray(0);
-					await new Promise((resolve, reject) => setTimeout(resolve, this.animationTime / 2));
+					this.drawSingleCell2dViewText(array, zigzagPaths[i][j][0], zigzagPaths[i][j][1]);
+				}	
+			}
+			
+			this.recalculateHeights(array);
+			
+			
+			
+			await new Promise((resolve, reject) => setTimeout(resolve, this.animationTime / 5));
+			
+			//Find the pivot and rearrange the shape into a hook.
+			let pivot = [zigzagPaths[i][zigzagPaths[i].length - 1][0], zigzagPaths[i][0][1]];
+			
+			let targetCoordinates = [];
+			
+			let targetHeight = outputArray.height + 1;
+			
+			//This is the vertical part of the hook.
+			for (let j = columnStarts[pivot[1]]; j <= pivot[0]; j++)
+			{
+				targetCoordinates.push([j, pivot[1], targetHeight]);
+			}
+			
+			let pivotCoordinates = targetCoordinates[targetCoordinates.length - 1];
+			
+			//And this is the horizontal part.
+			for (let j = pivot[1] - 1; j >= rowStarts[pivot[0]]; j--)
+			{
+				targetCoordinates.push([pivot[0], j, targetHeight]);
+			}
+			
+			await this.moveCubes(array, zigzagPaths[i], outputArray, targetCoordinates);
+			
+			
+			
+			//Now delete everything but the pivot and move that down. To make the deletion look nice, we'll put these coordinates in a different order and send two lists total.
+			targetCoordinates = [];
+			
+			for (let j = pivot[0] - 1; j >= columnStarts[pivot[1]]; j--)
+			{
+				targetCoordinates.push([j, pivot[1], targetHeight]);
+			}
+			
+			this.deleteCubes(outputArray, targetCoordinates);
+			
+			targetCoordinates = [];
+			
+			for (let j = pivot[1] - 1; j >= rowStarts[pivot[0]]; j--)
+			{
+				targetCoordinates.push([pivot[0], j, targetHeight]);
+			}
+			
+			this.deleteCubes(outputArray, targetCoordinates);
+			
+			
+			
+			await this.lowerCubes(outputArray, [pivotCoordinates]);
+			
+			
+			
+			outputArray.numbers[pivotCoordinates[0]][pivotCoordinates[1]]++;
+			
+			this.recalculateHeights(outputArray);
+			
+			if (this.in2dView)
+			{
+				this.drawSingleCell2dViewText(outputArray, pivotCoordinates[0], pivotCoordinates[1]);
+			}
+			
+			outputArray.height = Math.max(outputArray.height, outputArray.numbers[pivotCoordinates[0]][pivotCoordinates[1]]);
+			
+			outputArray.size = Math.max(outputArray.size, outputArray.height);
+			
+			
+			
+			await new Promise((resolve, reject) => setTimeout(resolve, this.animationTime));
+		}
+		
+		
+		
+		await this.removeArray(index);
+	}
+	
+	
+	
+	async hillmanGrasslInverse(index)
+	{
+		let array = this.arrays[index];
+		
+		let tableau = _.cloneDeep(array.numbers);
+		
+		let zigzagPaths = [];
+		
+		
+		
+		let columnStarts = new Array(tableau.length);
+		
+		for (let i = 0; i < tableau.length; i++)
+		{
+			let j = 0;
+			
+			while (j < tableau.length && tableau[j][i] === Infinity)
+			{
+				j++;
+			}
+			
+			columnStarts[i] = j;
+		}
+		
+		
+		
+		let rowStarts = new Array(tableau.length);
+		
+		for (let i = 0; i < tableau.length; i++)
+		{
+			let j = 0;
+			
+			while (j < tableau.length && tableau[i][j] === Infinity)
+			{
+				j++;
+			}
+			
+			rowStarts[i] = j;
+		}
+			
+		
+		
+		let emptyArray = new Array(tableau.length);
+		
+		for (let i = 0; i < tableau.length; i++)
+		{
+			emptyArray[i] = new Array(tableau.length);
+			
+			for (let j = 0; j < tableau.length; j++)
+			{
+				emptyArray[i][j] = tableau[i][j] === Infinity ? Infinity : 0;
+			}
+		}
+		
+		let planePartition = _.cloneDeep(emptyArray);
+		
+		let outputArray = await this.addNewArray(index + 1, emptyArray);
+		
+		
+		
+		//Loop through the tableau in weirdo lex order and reassemble the paths.
+		for (let j = 0; j < tableau.length; j++)
+		{
+			for (let i = tableau.length - 1; i >= columnStarts[j]; i--)
+			{
+				while (tableau[i][j] !== 0)
+				{
+					let path = [];
+					
+					let currentRow = i;
+					let currentCol = rowStarts[i];
+					
+					while (currentRow >= 0)
+					{
+						//Go up at the last possible place with a matching entry.
+						let k = currentCol;
+						
+						if (currentRow !== 0)
+						{
+							while (planePartition[currentRow][k] !== planePartition[currentRow - 1][k] && k < j)
+							{
+								k++;
+							}
+						}
+						
+						else
+						{
+							k = j;
+						}
+						
+						//Add all of these boxes.
+						for (let l = currentCol; l <= k; l++)
+						{
+							path.push([currentRow, l, planePartition[currentRow][l]]);
+						}
+						
+						if (currentRow - 1 >= columnStarts[k])
+						{
+							currentRow--;
+							currentCol = k;
+						}
+						
+						else
+						{
+							break;
+						}		
+					}
+					
+					
+					
+					for (let k = 0; k < path.length; k++)
+					{
+						planePartition[path[k][0]][path[k][1]]++;
+					}
+					
+					zigzagPaths.push([path, [i, j, tableau[i][j] - 1]]);
+					
+					tableau[i][j]--;
+				}
+			}
+		}
+		
+		
+		
+		await new Promise((resolve, reject) => setTimeout(resolve, this.animationTime / 2));
+		
+		
+		
+		//Now we'll animate those paths actually incrementing, one-by-one.
+		for (let i = 0; i < zigzagPaths.length; i++)
+		{
+			let hue = i / zigzagPaths.length * 6/7;
+			
+			await this.colorCubes(array, [zigzagPaths[i][1]], hue);
+			
+			
+			
+			let row = zigzagPaths[i][1][0];
+			let col = zigzagPaths[i][1][1];
+			let height = array.size;
+			
+			//Add a bunch of cubes corresponding to the hook that this thing is a part of.
+			for (let j = columnStarts[col]; j < row; j++)
+			{
+				array.cubes[j][col][height] = this.addCube(array, col, height, j);
+				array.cubes[j][col][height].material.forEach(material => material.color.setHSL(hue, 1, this.cubeLightness));
+			}
+			
+			for (let j = rowStarts[row]; j < col; j++)
+			{
+				array.cubes[row][j][height] = this.addCube(array, j, height, row);
+				array.cubes[row][j][height].material.forEach(material => material.color.setHSL(hue, 1, this.cubeLightness));
+			}
+			
+			
+			
+			await this.raiseCubes(array, [zigzagPaths[i][1]], height);
+			
+			
+			
+			let coordinates = [];
+			
+			for (let j = row - 1; j >= columnStarts[col]; j--)
+			{
+				coordinates.push([j, col, height]);
+			}
+			
+			let promise1 = this.revealCubes(array, coordinates);
+			
+			coordinates = [];
+			
+			for (let j = col - 1; j >= rowStarts[row]; j--)
+			{
+				coordinates.push([row, j, height]);
+			}
+			
+			let promise2 = this.revealCubes(array, coordinates);
+			
+			await Promise.all([promise1, promise2]);
+			
+			
+			
+			//The coordinates now need to be in a different order to match the zigzag path.
+			coordinates = [];
+			
+			for (let j = rowStarts[row]; j < col; j++)
+			{
+				coordinates.push([row, j, height]);
+			}
+			
+			coordinates.push([row, col, array.numbers[row][col] - 1]);
+			
+			for (let j = row - 1; j >= columnStarts[col]; j--)
+			{
+				coordinates.push([j, col, height]);
+			}
+			
+			let targetCoordinates = zigzagPaths[i][0];
+			
+			let targetHeight = outputArray.height + 1;
+			
+			targetCoordinates.forEach(entry => entry[2] = targetHeight);
+			
+			array.numbers[row][col]--;
+			
+			this.recalculateHeights(array);
+			
+			if (this.in2dView)
+			{
+				this.drawSingleCell2dViewText(array, row, col);
+			}
+			
+			await this.moveCubes(array, coordinates, outputArray, targetCoordinates);
+			
+			
+			
+			await this.lowerCubes(outputArray, targetCoordinates);
+			
+			targetCoordinates.forEach((entry) =>
+			{
+				outputArray.numbers[entry[0]][entry[1]]++;
+			});
+			
+			this.recalculateHeights(outputArray);
+			
+			if (this.in2dView)
+			{
+				targetCoordinates.forEach(entry => this.drawSingleCell2dViewText(outputArray, entry[0], entry[1]));
+			}
+			
+			
+			
+			await new Promise((resolve, reject) => setTimeout(resolve, this.animationTime / 2));
+		}
+		
+		
+		
+		await this.removeArray(index);
+	}
+	
+	
+	
+	async pak(index)
+	{
+		let array = this.arrays[index];
+		
+		let planePartition = array.numbers;
+		
+		if (!this.in2dView)
+		{
+			await this.show2dView();
+		}
+		
+		
+		
+		let rightLegSize = 0;
+		let bottomLegSize = 0;
+		
+		while (rightLegSize < array.footprint && array.numbers[rightLegSize][array.footprint - 1] !== 0)
+		{
+			rightLegSize++;
+		}
+		
+		while (bottomLegSize < array.footprint && array.numbers[array.footprint - 1][bottomLegSize] !== 0)
+		{
+			bottomLegSize++;
+		}
+		
+		//Todo: remove eventually
+		rightLegSize = 0;
+		bottomLegSize = 0;
+		
+		let numCorners = 0;
+		
+		for (let row = array.footprint - 1 - bottomLegSize; row >= 0; row--)
+		{
+			for (let col = array.footprint - 1 - rightLegSize; col >= 0; col--)
+			{
+				if (planePartition[row][col] !== Infinity)
+				{
+					numCorners++;
+				}
+			}
+		}
+		
+		
+		
+		let hueIndex = 0;
+		
+		//Get outer corners by just scanning through the array forwards.
+		for (let row = 0; row < array.footprint - bottomLegSize; row++)
+		{
+			for (let col = 0; col < array.footprint - rightLegSize; col++)
+			{
+				if (planePartition[row][col] === Infinity)
+				{
+					continue;
 				}
 				
-				await this.addNewArray(this.arrays.length, this.generateRandomTableau());
+				//Highlight this diagonal.
+				let diagonalCoordinates = [];
+				
+				let i = 0;
+				
+				while (row + i < array.footprint && col + i < array.footprint)
+				{
+					diagonalCoordinates.push([row + i, col + i, planePartition[row + i][col + i] - 1]);
+					
+					i++;
+				}
 				
 				
 				
-				await this.show2dView();
+				i = diagonalCoordinates[0][0];
+				let j = diagonalCoordinates[0][1];
+				
+				let coordinatesToColor = [];
+				
+				for (let k = planePartition[i][j] - 2; k >= 0; k--)
+				{
+					coordinatesToColor.push([i, j, k]);
+				}
+				
+				this.colorCubes(array, coordinatesToColor, hueIndex / numCorners * 6/7);
+				
+				
+				
+				coordinatesToColor = [];
+				
+				diagonalCoordinates.forEach(coordinate =>
+				{
+					if (coordinate[2] >= 0)
+					{
+						coordinatesToColor.push(coordinate);
+					}
+				});
+				
+				await this.colorCubes(array, coordinatesToColor, hueIndex / numCorners * 6/7);
+				
+				
+				
+				//For each coordinate in the diagonal, we need to find the toggled value. The first and last will always be a little different, since they don't have as many neighbors.
+				let newDiagonalHeight = new Array(diagonalCoordinates.length);
+				
+				diagonalCoordinates.forEach((coordinate, index) =>
+				{
+					let i = coordinate[0];
+					let j = coordinate[1];
+					
+					let neighbor1 = 0;
+					let neighbor2 = 0;
+					
+					if (i < array.footprint - 1)
+					{
+						neighbor1 = planePartition[i + 1][j];
+					}
+					
+					if (j < array.footprint - 1)
+					{
+						neighbor2 = planePartition[i][j + 1];
+					}
+					
+					newDiagonalHeight[index] = Math.max(neighbor1, neighbor2);
+					
+					
+					
+					if (index > 0)
+					{
+						neighbor1 = planePartition[i - 1][j];
+						neighbor2 = planePartition[i][j - 1];
+						
+						newDiagonalHeight[index] += Math.min(neighbor1, neighbor2) - planePartition[i][j];
+					}
+					
+					else
+					{
+						newDiagonalHeight[index] = planePartition[i][j] - newDiagonalHeight[index];
+					}
+				});	
+				
+				
+				
+				//This is async, so we can't use forEach easily.
+				for (let index = 0; index < diagonalCoordinates.length; index++)
+				{
+					i = diagonalCoordinates[index][0];
+					j = diagonalCoordinates[index][1];
+					
+					if (newDiagonalHeight[index] > planePartition[i][j])
+					{
+						let coordinatesToReveal = [];
+						
+						for (let k = planePartition[i][j]; k < newDiagonalHeight[index]; k++)
+						{
+							array.cubes[i][j][k] = this.addCube(array, j, k, i);
+							
+							coordinatesToReveal.push([i, j, k]);
+						}
+						
+						if (this.in2dView)
+						{
+							this.revealCubes(array, coordinatesToReveal);
+						}
+						
+						else
+						{
+							await this.revealCubes(array, coordinatesToReveal);
+						}	
+					}
+					
+					
+					
+					else if (newDiagonalHeight[index] < planePartition[i][j])
+					{
+						let coordinatesToDelete = [];
+						
+						for (let k = planePartition[i][j] - 1; k >= newDiagonalHeight[index]; k--)
+						{
+							coordinatesToDelete.push([i, j, k]);
+						}
+						
+						if (this.in2dView)
+						{
+							this.deleteCubes(array, coordinatesToDelete);
+						}
+						
+						else
+						{
+							await this.deleteCubes(array, coordinatesToDelete);
+						}
+					}
+					
+					
+					
+					planePartition[i][j] = newDiagonalHeight[index];
+					
+					if (this.in2dView)
+					{
+						this.drawSingleCell2dViewText(array, i, j);
+					}
+				}
+				
+				
+				
+				let coordinatesToUncolor = [];
+				
+				coordinatesToColor.forEach((coordinate, index) =>
+				{
+					if (index !== 0 && coordinate[2] < planePartition[coordinate[0]][coordinate[1]])
+					{
+						coordinatesToUncolor.push(coordinate);
+					}
+				});
+				
+				if (this.in2dView)
+				{
+					this.uncolorCubes(array, coordinatesToUncolor);
+				}
+				
+				else
+				{
+					await this.uncolorCubes(array, coordinatesToUncolor);
+				}		
+				
+				
+				
+				hueIndex++;
+				
+				this.recalculateHeights(array);
+				
+				if (coordinatesToColor.length !== 0)
+				{
+					await new Promise((resolve, reject) => setTimeout(resolve, this.animationTime));
+				}
+			}
+		}
+		
+		
+		
+		this.updateCameraHeight(true);
+	}
+	
+	
+	
+	async pakInverse(index, rightLegSize = 0, bottomLegSize = 0)
+	{
+		let array = this.arrays[index];
+		
+		let tableau = array.numbers;
+		
+		
+		
+		if (!this.in2dView)
+		{
+			await this.show2dView();
+		}
+		
+		
+		
+		let numCorners = 0;
+		
+		for (let row = array.footprint - 1 - bottomLegSize; row >= 0; row--)
+		{
+			for (let col = array.footprint - 1 - rightLegSize; col >= 0; col--)
+			{
+				if (tableau[row][col] !== Infinity)
+				{
+					numCorners++;
+				}
+			}
+		}
+		
+		
+		
+		let hueIndex = 0;
+		
+		//Get outer corners by just scanning through the array backwards.
+		for (let row = array.footprint - 1 - bottomLegSize; row >= 0; row--)
+		{
+			for (let col = array.footprint - 1 - rightLegSize; col >= 0; col--)
+			{
+				if (tableau[row][col] === Infinity)
+				{
+					continue;
+				}
+				
+				
+				
+				//Highlight this diagonal.
+				let diagonalCoordinates = [];
+				
+				let i = 0;
+				
+				while (row + i < array.footprint && col + i < array.footprint)
+				{
+					diagonalCoordinates.push([row + i, col + i, tableau[row + i][col + i] - 1]);
+					
+					i++;
+				}
+				
+				
+				
+				i = diagonalCoordinates[0][0];
+				let j = diagonalCoordinates[0][1];
+				
+				
+				
+				//For each coordinate in the diagonal, we need to find the toggled value. The first and last will always be a little different, since they don't have as many neighbors.
+				let newDiagonalHeight = new Array(diagonalCoordinates.length);
+				
+				let anyChange = false;
+				
+				diagonalCoordinates.forEach((coordinate, index) =>
+				{
+					let i = coordinate[0];
+					let j = coordinate[1];
+					
+					let neighbor1 = 0;
+					let neighbor2 = 0;
+					
+					if (i < array.footprint - 1)
+					{
+						neighbor1 = tableau[i + 1][j];
+					}
+					
+					if (j < array.footprint - 1)
+					{
+						neighbor2 = tableau[i][j + 1];
+					}
+					
+					newDiagonalHeight[index] = Math.max(neighbor1, neighbor2);
+					
+					
+					
+					if (index > 0)
+					{
+						neighbor1 = tableau[i - 1][j];
+						neighbor2 = tableau[i][j - 1];
+						
+						newDiagonalHeight[index] += Math.min(neighbor1, neighbor2) - tableau[i][j];
+					}
+					
+					else
+					{
+						newDiagonalHeight[index] += tableau[i][j];
+					}
+					
+					
+					
+					if (!anyChange && newDiagonalHeight[index] !== tableau[i][j])
+					{
+						anyChange = true;
+					}
+				});
+				
+				
+				
+				if (tableau[i][j] !== 0)
+				{
+					let coordinatesToColor = [];
+					
+					for (let k = tableau[i][j] - 1; k >= 0; k--)
+					{
+						coordinatesToColor.push([i, j, k]);
+					}
+					
+					this.colorCubes(array, coordinatesToColor, hueIndex / numCorners * 6/7);
+				}
+				
+				else if (newDiagonalHeight[0] !== 0)
+				{
+					array.cubes[i][j][0] = this.addCube(array, j, 0, i, hueIndex / numCorners * 6/7, 1, this.cubeLightness);
+					
+					tableau[i][j] = 1;
+					
+					this.revealCubes(array, [[i, j, 0]]);
+				}
+				
+				else if (!anyChange)
+				{
+					hueIndex++;
+					continue;
+				}
 				
 				await new Promise((resolve, reject) => setTimeout(resolve, this.animationTime));
 				
-				await this.runAlgorithm("rskInverse", 0)
 				
-				await new Promise((resolve, reject) => setTimeout(resolve, 3 * this.animationTime));
 				
-				await this.runAlgorithm("rsk", 0);
+				//This is async, so we can't use forEach easily.
+				for (let index = 0; index < diagonalCoordinates.length; index++)
+				{
+					i = diagonalCoordinates[index][0];
+					j = diagonalCoordinates[index][1];
+					
+					if (newDiagonalHeight[index] > tableau[i][j])
+					{
+						let coordinatesToReveal = [];
+						
+						for (let k = tableau[i][j]; k < newDiagonalHeight[index]; k++)
+						{
+							array.cubes[i][j][k] = this.addCube(array, j, k, i, hueIndex / numCorners * 6/7, 1, this.cubeLightness);
+							
+							coordinatesToReveal.push([i, j, k]);
+						}
+						
+						if (this.in2dView)
+						{
+							this.revealCubes(array, coordinatesToReveal);
+						}
+						
+						else
+						{
+							await this.revealCubes(array, coordinatesToReveal);
+						}
+					}
+					
+					
+					
+					else if (newDiagonalHeight[index] < tableau[i][j])
+					{
+						let coordinatesToDelete = [];
+						
+						for (let k = tableau[i][j] - 1; k >= newDiagonalHeight[index]; k--)
+						{
+							coordinatesToDelete.push([i, j, k]);
+						}
+						
+						if (this.in2dView)
+						{
+							this.deleteCubes(array, coordinatesToDelete);
+						}
+						
+						else
+						{
+							await this.deleteCubes(array, coordinatesToDelete);
+						}
+					}
+					
+					
+					
+					tableau[i][j] = newDiagonalHeight[index];
+					
+					if (this.in2dView)
+					{
+						this.drawSingleCell2dViewText(array, i, j);
+					}
+				}
 				
-				resolve();
+				
+				
+				hueIndex++;
+				
+				this.recalculateHeights(array);
+				
+				await new Promise((resolve, reject) => setTimeout(resolve, this.animationTime));
 			}
-		});
+		}
+		
+		
+		
+		this.updateCameraHeight(true);
 	}
 	
 	
 	
-	runAlgorithm(name, index, subAlgorithm = false)
+	async sulzgruber(index)
 	{
-		return new Promise(async (resolve, reject) =>
+		let array = this.arrays[index];
+		
+		let planePartition = _.cloneDeep(array.numbers);
+		
+		
+		
+		let columnStarts = new Array(planePartition.length);
+		
+		for (let i = 0; i < planePartition.length; i++)
 		{
-			if (!subAlgorithm && this.currentlyRunningAlgorithm)
+			let j = 0;
+			
+			while (j < planePartition.length && planePartition[j][i] === Infinity)
 			{
-				resolve();
-				return;
+				j++;
 			}
 			
-			this.currentlyRunningAlgorithm = true;
-			
-			
-			
-			const data = this.algorithmData[name];
-			
-			const numArrays = data.inputType.length;
-			
-			if (index > this.arrays.length - 1 || index < 0)
-			{
-				console.log(`No array at index ${index}!`);
-				
-				this.currentlyRunningAlgorithm = false;
-				
-				resolve();
-				return;
-			}
-			
-			else if (numArrays > 1 && index > this.arrays.length - numArrays)
-			{
-				console.log(`No array at index ${index + numArrays - 1}! (This algorithm needs ${numArrays} arrays)`);
-				
-				this.currentlyRunningAlgorithm = false;
-				
-				resolve();
-				return;
-			}
-			
-			
-			
-			for (let i = 0; i < numArrays; i++)
-			{
-				let type = data.inputType[i];
-				
-				if (type === "pp" && !this.verifyPp(this.arrays[index + i].numbers))
-				{
-					console.log(`Array at index ${index + i} is not a plane partition!`);
-					
-					this.currentlyRunningAlgorithm = false;
-					
-					reject();
-					return;
-				}
-				
-				if (type === "ssyt" && !this.verifySsyt(this.arrays[index + i].numbers))
-				{
-					console.log(`Array at index ${index + i} is not an SSYT!`);
-					
-					this.currentlyRunningAlgorithm = false;
-					
-					resolve();
-					return;
-				}
-			}
-			
-			
-			
-			if (numArrays > 1 && data.sameShape !== undefined && data.sameShape)
-			{
-				let rowLengths = new Array(numArrays);
-				
-				let maxNumRows = 0;
-				
-				for (let i = 0; i < numArrays; i++)
-				{
-					maxNumRows = Math.max(maxNumRows, this.arrays[index + i].numbers.length);
-				}	
-				
-				for (let i = 0; i < numArrays; i++)
-				{
-					rowLengths[i] = new Array(maxNumRows);
-					
-					for (let j = 0; j < maxNumRows; j++)
-					{
-						rowLengths[i][j] = 0;
-					}
-					
-					for (let j = 0; j < this.arrays[index + i].numbers.length; j++)
-					{
-						let k = 0;
-						
-						while (k < this.arrays[index + i].numbers[j].length && this.arrays[index + i].numbers[j][k] !== 0)
-						{
-							k++;
-						}
-						
-						rowLengths[i][j] = k;
-					}	
-				}
-				
-				
-				
-				for (let i = 1; i < numArrays; i++)
-				{
-					for (let j = 0; j < maxNumRows; j++)
-					{
-						if (rowLengths[i][j] !== rowLengths[0][j])
-						{
-							this.displayError(`Arrays are not the same shape!`);
-							
-							this.currentlyRunningAlgorithm = false;
-							
-							resolve();
-							return;
-						}
-					}	
-				}
-			}
-			
-			
-			
-			//Uncolor everything.
-			for (let i = 0; i < numArrays; i++)
-			{
-				let coordinates = [];
-				
-				const numbers = this.arrays[index + i].numbers;
-				
-				for (let j = 0; j < numbers.length; j++)
-				{
-					for (let k = 0; k < numbers.length; k++)
-					{
-						if (numbers[j][k] !== Infinity)
-						{
-							for (let l = 0; l < numbers[j][k]; l++)
-							{
-								coordinates.push([j, k, l]);
-							}
-						}	
-					}
-				}
-				
-				this.uncolorCubes(this.arrays[index + i], coordinates);
-			}	
-			
-			
-			
-			const boundFunction = data.method.bind(this);
-			
-			await boundFunction(index);
-			
-			
-			
-			if (!this.subAlgorithm)
-			{
-				this.currentlyRunningAlgorithm = false;
-			}
-			
-			resolve();
-		});
-	}
-	
-	
-	hillmanGrassl(index)
-	{
-		return new Promise(async (resolve, reject) =>
+			columnStarts[i] = j;
+		}
+		
+		
+		
+		let rowStarts = new Array(planePartition.length);
+		
+		for (let i = 0; i < planePartition.length; i++)
 		{
-			let array = this.arrays[index];
+			let j = 0;
 			
-			let planePartition = _.cloneDeep(array.numbers);
-			
-			
-			
-			let columnStarts = new Array(planePartition.length);
-			
-			for (let i = 0; i < planePartition.length; i++)
+			while (j < planePartition.length && planePartition[i][j] === Infinity)
 			{
-				let j = 0;
-				
-				while (j < planePartition.length && planePartition[j][i] === Infinity)
-				{
-					j++;
-				}
-				
-				columnStarts[i] = j;
+				j++;
+			}
+			
+			rowStarts[i] = j;
+		}
+		
+		
+		
+		//First, find the candidates. This first requires categorizing the diagonals.
+		let diagonals = {};
+		
+		let diagonalStarts = {};
+		
+		
+		
+		//First the ones along the left edge.
+		for (let i = 0; i < planePartition.length; i++)
+		{
+			diagonalStarts[-i] = [i, 0];
+		}
+		
+		//Now the ones along the top edge.
+		for (let i = 1; i < planePartition.length; i++)
+		{
+			diagonalStarts[i] = [0, i];
+		}
+		
+		
+		
+		//First the ones along the left edge.
+		for (let i = -planePartition.length + 1; i < planePartition.length; i++)
+		{
+			let row = diagonalStarts[i][0];
+			let col = diagonalStarts[i][1];
+			
+			while (row < planePartition.length && col < planePartition.length && planePartition[row][col] === Infinity)
+			{
+				row++;
+				col++;
+			}
+			
+			diagonalStarts[i] = [row, col];
+			
+			if (row === planePartition.length || col === planePartition.length)
+			{
+				diagonals[i] = -1;
+				continue;
 			}
 			
 			
 			
-			let rowStarts = new Array(planePartition.length);
+			let boundaryLeft = col === 0 || planePartition[row][col - 1] === Infinity;
+			let boundaryUp = row === 0 || planePartition[row - 1][col] === Infinity;
 			
-			for (let i = 0; i < planePartition.length; i++)
+			if (boundaryLeft && boundaryUp)
 			{
-				let j = 0;
-				
-				while (j < planePartition.length && planePartition[i][j] === Infinity)
-				{
-					j++;
-				}
-				
-				rowStarts[i] = j;
+				diagonals[i] = 0;
+			}
+			
+			else if (boundaryLeft)
+			{
+				diagonals[i] = 3;
+			}
+			
+			else if (boundaryUp)
+			{
+				diagonals[i] = 2;
+			}
+			
+			else
+			{
+				diagonals[i] = 1;
+			}
+		}
+		
+		
+		
+		//Now we need to move through the candidates. They only occur in A and O regions, so we only scan those diagonals, top-left to bottom-right, and then bottom-left to top-right in terms of diagonals.
+		let qPaths = [];
+		
+		for (let i = -planePartition.length + 1; i < planePartition.length; i++)
+		{
+			if (diagonals[i] === 1 || diagonals[i] === 3)
+			{
+				continue;
+			}
+			
+			let startRow = diagonalStarts[i][0];
+			let startCol = diagonalStarts[i][1];
+			
+			if (planePartition[startRow][startCol] === 0)
+			{
+				continue;
 			}
 			
 			
-			
-			let zigzagPaths = [];
 			
 			while (true)
 			{
-				//Find the right-most nonzero entry at the top of its column.
-				let startingCol = planePartition[0].length - 1;
+				let foundCandidate = false;	
 				
-				while (startingCol >= 0 && columnStarts[startingCol] < planePartition.length && planePartition[columnStarts[startingCol]][startingCol] === 0)
+				while (startRow < planePartition.length && startCol < planePartition.length && planePartition[startRow][startCol] !== 0)
 				{
-					startingCol--;
+					if ((startCol < planePartition.length - 1 && planePartition[startRow][startCol] > planePartition[startRow][startCol + 1]) || (startCol === planePartition.length - 1 && planePartition[startRow][startCol] > 0))
+					{
+						if (diagonals[i] === 0 || (diagonals[i] === 2 && ((startRow < planePartition.length - 1 && planePartition[startRow][startCol] > planePartition[startRow + 1][startCol]) || (startRow === planePartition.length - 1 && planePartition[startRow][startCol] > 0))))
+						{
+							foundCandidate = true;
+							break;
+						}	
+					}
+					
+					startRow++;
+					startCol++;
 				}
 				
-				if (startingCol < 0 || columnStarts[startingCol] === planePartition.length)
+				if (!foundCandidate)
 				{
 					break;
 				}
 				
 				
 				
-				let currentRow = columnStarts[startingCol];
-				let currentCol = startingCol;
+				let row = startRow;
+				let col = startCol;
 				
-				let path = [[currentRow, currentCol, planePartition[currentRow][currentCol] - 1]];
+				let path = [[row, col, planePartition[row][col] - 1]];
 				
 				while (true)
 				{
-					if (currentRow < planePartition.length - 1 && planePartition[currentRow + 1][currentCol] === planePartition[currentRow][currentCol])
+					let currentContent = col - row;
+					
+					if (row < planePartition.length - 1 && planePartition[row][col] === planePartition[row + 1][col] && (diagonals[currentContent] === 0 || diagonals[currentContent] === 3))
 					{
-						currentRow++;
+						row++;
 					}
 					
-					else if (currentCol > 0 && planePartition[currentRow][currentCol - 1] !== Infinity)
+					else if (col > rowStarts[row] && (row === planePartition.length - 1 || (row < planePartition.length - 1 && planePartition[row][col] > planePartition[row + 1][col])))
 					{
-						currentCol--;
+						col--;
 					}
 					
 					else
@@ -2870,2878 +3778,1764 @@ export class PlanePartitions extends Applet
 						break;
 					}
 					
-					path.push([currentRow, currentCol, planePartition[currentRow][currentCol] - 1]);
+					path.push([row, col, planePartition[row][col] - 1]);
 				}
 				
+				path.forEach(box => planePartition[box[0]][box[1]]--);
 				
-				
-				for (let i = 0; i < path.length; i++)
-				{
-					planePartition[path[i][0]][path[i][1]]--;
-				}
-				
-				zigzagPaths.push(path);
-			}
+				qPaths.push(path);
+			}	
+		}
+		
+		
+		
+		let emptyArray = new Array(planePartition.length);
+		
+		for (let i = 0; i < planePartition.length; i++)
+		{
+			emptyArray[i] = new Array(planePartition.length);
 			
-			
-			
-			let emptyArray = new Array(planePartition.length);
-			
-			for (let i = 0; i < planePartition.length; i++)
+			for (let j = 0; j < planePartition.length; j++)
 			{
-				emptyArray[i] = new Array(planePartition.length);
+				emptyArray[i][j] = planePartition[i][j] === Infinity ? Infinity : 0;
+			}
+		}
+		
+		let outputArray = await this.addNewArray(index + 1, emptyArray);
+		
+		await new Promise((resolve, reject) => setTimeout(resolve, this.animationTime));
+		
+		
+		
+		//Now we'll animate those paths actually decrementing, one-by-one. We're using a for loop because we need to await.
+		for (let i = 0; i < qPaths.length; i++)
+		{
+			let hue = i / qPaths.length * 6/7;
+			
+			await this.colorCubes(array, qPaths[i], hue);
+			
+			
+			
+			//Lift all the cubes up. There's no need to do this if we're in the 2d view.
+			await this.raiseCubes(array, qPaths[i], array.height + 1);
+			
+			
+			
+			//Now we actually delete the cubes.
+			qPaths[i].forEach(box =>
+			{
+				array.numbers[box[0]][box[1]]--;
 				
-				for (let j = 0; j < planePartition.length; j++)
+				if (this.in2dView)
 				{
-					emptyArray[i][j] = planePartition[i][j] === Infinity ? Infinity : 0;
-				}
+					this.drawSingleCell2dViewText(array, box[0], box[1]);
+				}	
+			});
+			
+			this.recalculateHeights(array);
+			
+			
+			
+			await new Promise((resolve, reject) => setTimeout(resolve, this.animationTime / 5));
+			
+			//Find the pivot and rearrange the shape into a hook. The end of the Q-path is the same as the end of the rim-hook, so it defines the row. To find the column, we need to go row boxes down, and then use the rest of the length to go right.
+			let row = qPaths[i][qPaths[i].length - 1][0];
+			
+			let startContent = qPaths[i][qPaths[i].length - 1][1] - row;
+			
+			//Every step along the rim-hook increases the content by one.
+			let endContent = startContent + qPaths[i].length - 1;
+			
+			let col = diagonalStarts[endContent][1];
+			
+			
+			
+			let targetCoordinates = [];
+			
+			let targetHeight = Math.max(array.height + 1, outputArray.height + 1);
+			
+			for (let j = columnStarts[col]; j <= row; j++)
+			{
+				targetCoordinates.push([j, col, targetHeight]);
 			}
 			
-			let outputArray = await this.addNewArray(index + 1, emptyArray);
+			for (let j = col - 1; j >= rowStarts[row]; j--)
+			{
+				targetCoordinates.push([row, j, targetHeight]);
+			}
+			
+			await this.moveCubes(array, qPaths[i], outputArray, targetCoordinates);
+			
+			
+			
+			//Now delete everything but the pivot and move that down. To make the deletion look nice, we'll put these coordinates in a different order and send two lists total.
+			targetCoordinates = [];
+			
+			for (let j = row - 1; j >= columnStarts[col]; j--)
+			{
+				targetCoordinates.push([j, col, targetHeight]);
+			}
+			
+			this.deleteCubes(outputArray, targetCoordinates);
+			
+			targetCoordinates = [];
+			
+			for (let j = col - 1; j >= rowStarts[row]; j--)
+			{
+				targetCoordinates.push([row, j, targetHeight]);
+			}
+			
+			this.deleteCubes(outputArray, targetCoordinates);
+			
+			
+			
+			await this.lowerCubes(outputArray, [[row, col, targetHeight]]);
+			
+			
+			
+			outputArray.numbers[row][col]++;
+			
+			if (this.in2dView)
+			{
+				this.drawSingleCell2dViewText(outputArray, row, col);
+			}
+			
+			this.recalculateHeights(outputArray);
+			
+			
 			
 			await new Promise((resolve, reject) => setTimeout(resolve, this.animationTime));
-			
-			
-			
-			//Now we'll animate those paths actually decrementing, one-by-one.
-			for (let i = 0; i < zigzagPaths.length; i++)
-			{
-				let hue = i / zigzagPaths.length * 6/7;
-				
-				await this.colorCubes(array, zigzagPaths[i], hue);
-				
-				
-				
-				//Lift all the cubes up. There's no need to do this if we're in the 2d view.
-				await this.raiseCubes(array, zigzagPaths[i], array.height);
-				
-				
-				
-				//Now we actually delete the cubes.
-				for (let j = 0; j < zigzagPaths[i].length; j++)
-				{
-					array.numbers[zigzagPaths[i][j][0]][zigzagPaths[i][j][1]]--;
-					
-					if (this.in2dView)
-					{
-						this.drawSingleCell2dViewText(array, zigzagPaths[i][j][0], zigzagPaths[i][j][1]);
-					}	
-				}
-				
-				this.recalculateHeights(array);
-				
-				
-				
-				await new Promise((resolve, reject) => setTimeout(resolve, this.animationTime / 5));
-				
-				//Find the pivot and rearrange the shape into a hook.
-				let pivot = [zigzagPaths[i][zigzagPaths[i].length - 1][0], zigzagPaths[i][0][1]];
-				
-				let targetCoordinates = [];
-				
-				let targetHeight = outputArray.height + 1;
-				
-				//This is the vertical part of the hook.
-				for (let j = columnStarts[pivot[1]]; j <= pivot[0]; j++)
-				{
-					targetCoordinates.push([j, pivot[1], targetHeight]);
-				}
-				
-				let pivotCoordinates = targetCoordinates[targetCoordinates.length - 1];
-				
-				//And this is the horizontal part.
-				for (let j = pivot[1] - 1; j >= rowStarts[pivot[0]]; j--)
-				{
-					targetCoordinates.push([pivot[0], j, targetHeight]);
-				}
-				
-				await this.moveCubes(array, zigzagPaths[i], outputArray, targetCoordinates);
-				
-				
-				
-				//Now delete everything but the pivot and move that down. To make the deletion look nice, we'll put these coordinates in a different order and send two lists total.
-				targetCoordinates = [];
-				
-				for (let j = pivot[0] - 1; j >= columnStarts[pivot[1]]; j--)
-				{
-					targetCoordinates.push([j, pivot[1], targetHeight]);
-				}
-				
-				this.deleteCubes(outputArray, targetCoordinates);
-				
-				targetCoordinates = [];
-				
-				for (let j = pivot[1] - 1; j >= rowStarts[pivot[0]]; j--)
-				{
-					targetCoordinates.push([pivot[0], j, targetHeight]);
-				}
-				
-				this.deleteCubes(outputArray, targetCoordinates);
-				
-				
-				
-				await this.lowerCubes(outputArray, [pivotCoordinates]);
-				
-				
-				
-				outputArray.numbers[pivotCoordinates[0]][pivotCoordinates[1]]++;
-				
-				this.recalculateHeights(outputArray);
-				
-				if (this.in2dView)
-				{
-					this.drawSingleCell2dViewText(outputArray, pivotCoordinates[0], pivotCoordinates[1]);
-				}
-				
-				outputArray.height = Math.max(outputArray.height, outputArray.numbers[pivotCoordinates[0]][pivotCoordinates[1]]);
-				
-				outputArray.size = Math.max(outputArray.size, outputArray.height);
-				
-				
-				
-				await new Promise((resolve, reject) => setTimeout(resolve, this.animationTime));
-			}
-			
-			
-			
-			await this.removeArray(index);
-			
-			resolve();
-		});	
+		}
+		
+		
+		
+		await this.removeArray(index);
 	}
 	
 	
 	
-	hillmanGrasslInverse(index)
+	async sulzgruberInverse(index)
 	{
-		return new Promise(async (resolve, reject) =>
+		let array = this.arrays[index];
+		
+		let tableau = array.numbers;
+		
+		
+		
+		let columnStarts = new Array(tableau.length);
+		
+		for (let i = 0; i < tableau.length; i++)
 		{
-			let array = this.arrays[index];
+			let j = 0;
 			
-			let tableau = _.cloneDeep(array.numbers);
-			
-			let zigzagPaths = [];
-			
-			
-			
-			let columnStarts = new Array(tableau.length);
-			
-			for (let i = 0; i < tableau.length; i++)
+			while (j < tableau.length && tableau[j][i] === Infinity)
 			{
-				let j = 0;
-				
-				while (j < tableau.length && tableau[j][i] === Infinity)
-				{
-					j++;
-				}
-				
-				columnStarts[i] = j;
+				j++;
 			}
 			
+			columnStarts[i] = j;
+		}
+		
+		
+		
+		let rowStarts = new Array(tableau.length);
+		
+		for (let i = 0; i < tableau.length; i++)
+		{
+			let j = 0;
 			
-			
-			let rowStarts = new Array(tableau.length);
-			
-			for (let i = 0; i < tableau.length; i++)
+			while (j < tableau.length && tableau[i][j] === Infinity)
 			{
-				let j = 0;
-				
-				while (j < tableau.length && tableau[i][j] === Infinity)
-				{
-					j++;
-				}
-				
-				rowStarts[i] = j;
-			}
-				
-			
-			
-			let emptyArray = new Array(tableau.length);
-			
-			for (let i = 0; i < tableau.length; i++)
-			{
-				emptyArray[i] = new Array(tableau.length);
-				
-				for (let j = 0; j < tableau.length; j++)
-				{
-					emptyArray[i][j] = tableau[i][j] === Infinity ? Infinity : 0;
-				}
+				j++;
 			}
 			
-			let planePartition = _.cloneDeep(emptyArray);
+			rowStarts[i] = j;
+		}
+		
+		
+		
+		//First, find the candidates. This first requires categorizing the diagonals.
+		let diagonalStarts = {};
+		
+		//First the ones along the left edge.
+		for (let i = 0; i < tableau.length; i++)
+		{
+			diagonalStarts[-i] = [i, 0];
+		}
+		
+		//Now the ones along the top edge.
+		for (let i = 1; i < tableau.length; i++)
+		{
+			diagonalStarts[i] = [0, i];
+		}
+		
+		for (let i = -tableau.length + 1; i < tableau.length; i++)
+		{
+			let row = diagonalStarts[i][0];
+			let col = diagonalStarts[i][1];
 			
-			let outputArray = await this.addNewArray(index + 1, emptyArray);
+			while (row < tableau.length && col < tableau.length && tableau[row][col] === Infinity)
+			{
+				row++;
+				col++;
+			}
 			
+			diagonalStarts[i] = [row, col];
+		}
+		
+		
+		
+		let numHues = 0;
+		
+		let emptyArray = new Array(tableau.length);
+		
+		for (let i = 0; i < tableau.length; i++)
+		{
+			emptyArray[i] = new Array(tableau.length);
 			
-			
-			//Loop through the tableau in weirdo lex order and reassemble the paths.
 			for (let j = 0; j < tableau.length; j++)
 			{
-				for (let i = tableau.length - 1; i >= columnStarts[j]; i--)
+				if (tableau[i][j] === Infinity)
 				{
-					while (tableau[i][j] !== 0)
-					{
-						let path = [];
-						
-						let currentRow = i;
-						let currentCol = rowStarts[i];
-						
-						while (currentRow >= 0)
-						{
-							//Go up at the last possible place with a matching entry.
-							let k = currentCol;
-							
-							if (currentRow !== 0)
-							{
-								while (planePartition[currentRow][k] !== planePartition[currentRow - 1][k] && k < j)
-								{
-									k++;
-								}
-							}
-							
-							else
-							{
-								k = j;
-							}
-							
-							//Add all of these boxes.
-							for (let l = currentCol; l <= k; l++)
-							{
-								path.push([currentRow, l, planePartition[currentRow][l]]);
-							}
-							
-							if (currentRow - 1 >= columnStarts[k])
-							{
-								currentRow--;
-								currentCol = k;
-							}
-							
-							else
-							{
-								break;
-							}		
-						}
-						
-						
-						
-						for (let k = 0; k < path.length; k++)
-						{
-							planePartition[path[k][0]][path[k][1]]++;
-						}
-						
-						zigzagPaths.push([path, [i, j, tableau[i][j] - 1]]);
-						
-						tableau[i][j]--;
-					}
-				}
-			}
-			
-			
-			
-			await new Promise((resolve, reject) => setTimeout(resolve, this.animationTime / 2));
-			
-			
-			
-			//Now we'll animate those paths actually incrementing, one-by-one.
-			for (let i = 0; i < zigzagPaths.length; i++)
-			{
-				let hue = i / zigzagPaths.length * 6/7;
-				
-				await this.colorCubes(array, [zigzagPaths[i][1]], hue);
-				
-				
-				
-				let row = zigzagPaths[i][1][0];
-				let col = zigzagPaths[i][1][1];
-				let height = array.size;
-				
-				//Add a bunch of cubes corresponding to the hook that this thing is a part of.
-				for (let j = columnStarts[col]; j < row; j++)
-				{
-					array.cubes[j][col][height] = this.addCube(array, col, height, j);
-					array.cubes[j][col][height].material.forEach(material => material.color.setHSL(hue, 1, this.cubeLightness));
-				}
-				
-				for (let j = rowStarts[row]; j < col; j++)
-				{
-					array.cubes[row][j][height] = this.addCube(array, j, height, row);
-					array.cubes[row][j][height].material.forEach(material => material.color.setHSL(hue, 1, this.cubeLightness));
-				}
-				
-				
-				
-				await this.raiseCubes(array, [zigzagPaths[i][1]], height);
-				
-				
-				
-				let coordinates = [];
-				
-				for (let j = row - 1; j >= columnStarts[col]; j--)
-				{
-					coordinates.push([j, col, height]);
-				}
-				
-				let promise1 = this.revealCubes(array, coordinates);
-				
-				coordinates = [];
-				
-				for (let j = col - 1; j >= rowStarts[row]; j--)
-				{
-					coordinates.push([row, j, height]);
-				}
-				
-				let promise2 = this.revealCubes(array, coordinates);
-				
-				await Promise.all([promise1, promise2]);
-				
-				
-				
-				//The coordinates now need to be in a different order to match the zigzag path.
-				coordinates = [];
-				
-				for (let j = rowStarts[row]; j < col; j++)
-				{
-					coordinates.push([row, j, height]);
-				}
-				
-				coordinates.push([row, col, array.numbers[row][col] - 1]);
-				
-				for (let j = row - 1; j >= columnStarts[col]; j--)
-				{
-					coordinates.push([j, col, height]);
-				}
-				
-				let targetCoordinates = zigzagPaths[i][0];
-				
-				let targetHeight = outputArray.height + 1;
-				
-				targetCoordinates.forEach(entry => entry[2] = targetHeight);
-				
-				array.numbers[row][col]--;
-				
-				this.recalculateHeights(array);
-				
-				if (this.in2dView)
-				{
-					this.drawSingleCell2dViewText(array, row, col);
-				}
-				
-				await this.moveCubes(array, coordinates, outputArray, targetCoordinates);
-				
-				
-				
-				await this.lowerCubes(outputArray, targetCoordinates);
-				
-				targetCoordinates.forEach((entry) =>
-				{
-					outputArray.numbers[entry[0]][entry[1]]++;
-				});
-				
-				this.recalculateHeights(outputArray);
-				
-				if (this.in2dView)
-				{
-					targetCoordinates.forEach(entry => this.drawSingleCell2dViewText(outputArray, entry[0], entry[1]));
-				}
-				
-				
-				
-				await new Promise((resolve, reject) => setTimeout(resolve, this.animationTime / 2));
-			}
-			
-			
-			
-			await this.removeArray(index);
-			
-			resolve();
-		});	
-	}
-	
-	
-	
-	pak(index)
-	{
-		return new Promise(async (resolve, reject) =>
-		{
-			let array = this.arrays[index];
-			
-			let planePartition = array.numbers;
-			
-			if (!this.in2dView)
-			{
-				await this.show2dView();
-			}
-			
-			
-			
-			let rightLegSize = 0;
-			let bottomLegSize = 0;
-			
-			while (rightLegSize < array.footprint && array.numbers[rightLegSize][array.footprint - 1] !== 0)
-			{
-				rightLegSize++;
-			}
-			
-			while (bottomLegSize < array.footprint && array.numbers[array.footprint - 1][bottomLegSize] !== 0)
-			{
-				bottomLegSize++;
-			}
-			
-			//Todo: remove eventually
-			rightLegSize = 0;
-			bottomLegSize = 0;
-			
-			let numCorners = 0;
-			
-			for (let row = array.footprint - 1 - bottomLegSize; row >= 0; row--)
-			{
-				for (let col = array.footprint - 1 - rightLegSize; col >= 0; col--)
-				{
-					if (planePartition[row][col] !== Infinity)
-					{
-						numCorners++;
-					}
-				}
-			}
-			
-			
-			
-			let hueIndex = 0;
-			
-			//Get outer corners by just scanning through the array forwards.
-			for (let row = 0; row < array.footprint - bottomLegSize; row++)
-			{
-				for (let col = 0; col < array.footprint - rightLegSize; col++)
-				{
-					if (planePartition[row][col] === Infinity)
-					{
-						continue;
-					}
-					
-					//Highlight this diagonal.
-					let diagonalCoordinates = [];
-					
-					let i = 0;
-					
-					while (row + i < array.footprint && col + i < array.footprint)
-					{
-						diagonalCoordinates.push([row + i, col + i, planePartition[row + i][col + i] - 1]);
-						
-						i++;
-					}
-					
-					
-					
-					i = diagonalCoordinates[0][0];
-					let j = diagonalCoordinates[0][1];
-					
-					let coordinatesToColor = [];
-					
-					for (let k = planePartition[i][j] - 2; k >= 0; k--)
-					{
-						coordinatesToColor.push([i, j, k]);
-					}
-					
-					this.colorCubes(array, coordinatesToColor, hueIndex / numCorners * 6/7);
-					
-					
-					
-					coordinatesToColor = [];
-					
-					diagonalCoordinates.forEach(coordinate =>
-					{
-						if (coordinate[2] >= 0)
-						{
-							coordinatesToColor.push(coordinate);
-						}
-					});
-					
-					await this.colorCubes(array, coordinatesToColor, hueIndex / numCorners * 6/7);
-					
-					
-					
-					//For each coordinate in the diagonal, we need to find the toggled value. The first and last will always be a little different, since they don't have as many neighbors.
-					let newDiagonalHeight = new Array(diagonalCoordinates.length);
-					
-					diagonalCoordinates.forEach((coordinate, index) =>
-					{
-						let i = coordinate[0];
-						let j = coordinate[1];
-						
-						let neighbor1 = 0;
-						let neighbor2 = 0;
-						
-						if (i < array.footprint - 1)
-						{
-							neighbor1 = planePartition[i + 1][j];
-						}
-						
-						if (j < array.footprint - 1)
-						{
-							neighbor2 = planePartition[i][j + 1];
-						}
-						
-						newDiagonalHeight[index] = Math.max(neighbor1, neighbor2);
-						
-						
-						
-						if (index > 0)
-						{
-							neighbor1 = planePartition[i - 1][j];
-							neighbor2 = planePartition[i][j - 1];
-							
-							newDiagonalHeight[index] += Math.min(neighbor1, neighbor2) - planePartition[i][j];
-						}
-						
-						else
-						{
-							newDiagonalHeight[index] = planePartition[i][j] - newDiagonalHeight[index];
-						}
-					});	
-					
-					
-					
-					//This is async, so we can't use forEach easily.
-					for (let index = 0; index < diagonalCoordinates.length; index++)
-					{
-						i = diagonalCoordinates[index][0];
-						j = diagonalCoordinates[index][1];
-						
-						if (newDiagonalHeight[index] > planePartition[i][j])
-						{
-							let coordinatesToReveal = [];
-							
-							for (let k = planePartition[i][j]; k < newDiagonalHeight[index]; k++)
-							{
-								array.cubes[i][j][k] = this.addCube(array, j, k, i);
-								
-								coordinatesToReveal.push([i, j, k]);
-							}
-							
-							if (this.in2dView)
-							{
-								this.revealCubes(array, coordinatesToReveal);
-							}
-							
-							else
-							{
-								await this.revealCubes(array, coordinatesToReveal);
-							}	
-						}
-						
-						
-						
-						else if (newDiagonalHeight[index] < planePartition[i][j])
-						{
-							let coordinatesToDelete = [];
-							
-							for (let k = planePartition[i][j] - 1; k >= newDiagonalHeight[index]; k--)
-							{
-								coordinatesToDelete.push([i, j, k]);
-							}
-							
-							if (this.in2dView)
-							{
-								this.deleteCubes(array, coordinatesToDelete);
-							}
-							
-							else
-							{
-								await this.deleteCubes(array, coordinatesToDelete);
-							}
-						}
-						
-						
-						
-						planePartition[i][j] = newDiagonalHeight[index];
-						
-						if (this.in2dView)
-						{
-							this.drawSingleCell2dViewText(array, i, j);
-						}
-					}
-					
-					
-					
-					let coordinatesToUncolor = [];
-					
-					coordinatesToColor.forEach((coordinate, index) =>
-					{
-						if (index !== 0 && coordinate[2] < planePartition[coordinate[0]][coordinate[1]])
-						{
-							coordinatesToUncolor.push(coordinate);
-						}
-					});
-					
-					if (this.in2dView)
-					{
-						this.uncolorCubes(array, coordinatesToUncolor);
-					}
-					
-					else
-					{
-						await this.uncolorCubes(array, coordinatesToUncolor);
-					}		
-					
-					
-					
-					hueIndex++;
-					
-					this.recalculateHeights(array);
-					
-					if (coordinatesToColor.length !== 0)
-					{
-						await new Promise((resolve, reject) => setTimeout(resolve, this.animationTime));
-					}
-				}
-			}
-			
-			
-			
-			this.updateCameraHeight(true);
-			
-			resolve();
-		});	
-	}
-	
-	
-	
-	pakInverse(index, rightLegSize = 0, bottomLegSize = 0)
-	{
-		return new Promise(async (resolve, reject) =>
-		{
-			let array = this.arrays[index];
-			
-			let tableau = array.numbers;
-			
-			
-			
-			if (!this.in2dView)
-			{
-				await this.show2dView();
-			}
-			
-			
-			
-			let numCorners = 0;
-			
-			for (let row = array.footprint - 1 - bottomLegSize; row >= 0; row--)
-			{
-				for (let col = array.footprint - 1 - rightLegSize; col >= 0; col--)
-				{
-					if (tableau[row][col] !== Infinity)
-					{
-						numCorners++;
-					}
-				}
-			}
-			
-			
-			
-			let hueIndex = 0;
-			
-			//Get outer corners by just scanning through the array backwards.
-			for (let row = array.footprint - 1 - bottomLegSize; row >= 0; row--)
-			{
-				for (let col = array.footprint - 1 - rightLegSize; col >= 0; col--)
-				{
-					if (tableau[row][col] === Infinity)
-					{
-						continue;
-					}
-					
-					
-					
-					//Highlight this diagonal.
-					let diagonalCoordinates = [];
-					
-					let i = 0;
-					
-					while (row + i < array.footprint && col + i < array.footprint)
-					{
-						diagonalCoordinates.push([row + i, col + i, tableau[row + i][col + i] - 1]);
-						
-						i++;
-					}
-					
-					
-					
-					i = diagonalCoordinates[0][0];
-					let j = diagonalCoordinates[0][1];
-					
-					
-					
-					//For each coordinate in the diagonal, we need to find the toggled value. The first and last will always be a little different, since they don't have as many neighbors.
-					let newDiagonalHeight = new Array(diagonalCoordinates.length);
-					
-					let anyChange = false;
-					
-					diagonalCoordinates.forEach((coordinate, index) =>
-					{
-						let i = coordinate[0];
-						let j = coordinate[1];
-						
-						let neighbor1 = 0;
-						let neighbor2 = 0;
-						
-						if (i < array.footprint - 1)
-						{
-							neighbor1 = tableau[i + 1][j];
-						}
-						
-						if (j < array.footprint - 1)
-						{
-							neighbor2 = tableau[i][j + 1];
-						}
-						
-						newDiagonalHeight[index] = Math.max(neighbor1, neighbor2);
-						
-						
-						
-						if (index > 0)
-						{
-							neighbor1 = tableau[i - 1][j];
-							neighbor2 = tableau[i][j - 1];
-							
-							newDiagonalHeight[index] += Math.min(neighbor1, neighbor2) - tableau[i][j];
-						}
-						
-						else
-						{
-							newDiagonalHeight[index] += tableau[i][j];
-						}
-						
-						
-						
-						if (!anyChange && newDiagonalHeight[index] !== tableau[i][j])
-						{
-							anyChange = true;
-						}
-					});
-					
-					
-					
-					if (tableau[i][j] !== 0)
-					{
-						let coordinatesToColor = [];
-						
-						for (let k = tableau[i][j] - 1; k >= 0; k--)
-						{
-							coordinatesToColor.push([i, j, k]);
-						}
-						
-						this.colorCubes(array, coordinatesToColor, hueIndex / numCorners * 6/7);
-					}
-					
-					else if (newDiagonalHeight[0] !== 0)
-					{
-						array.cubes[i][j][0] = this.addCube(array, j, 0, i, hueIndex / numCorners * 6/7, 1, this.cubeLightness);
-						
-						tableau[i][j] = 1;
-						
-						this.revealCubes(array, [[i, j, 0]]);
-					}
-					
-					else if (!anyChange)
-					{
-						hueIndex++;
-						continue;
-					}
-					
-					await new Promise((resolve, reject) => setTimeout(resolve, this.animationTime));
-					
-					
-					
-					//This is async, so we can't use forEach easily.
-					for (let index = 0; index < diagonalCoordinates.length; index++)
-					{
-						i = diagonalCoordinates[index][0];
-						j = diagonalCoordinates[index][1];
-						
-						if (newDiagonalHeight[index] > tableau[i][j])
-						{
-							let coordinatesToReveal = [];
-							
-							for (let k = tableau[i][j]; k < newDiagonalHeight[index]; k++)
-							{
-								array.cubes[i][j][k] = this.addCube(array, j, k, i, hueIndex / numCorners * 6/7, 1, this.cubeLightness);
-								
-								coordinatesToReveal.push([i, j, k]);
-							}
-							
-							if (this.in2dView)
-							{
-								this.revealCubes(array, coordinatesToReveal);
-							}
-							
-							else
-							{
-								await this.revealCubes(array, coordinatesToReveal);
-							}
-						}
-						
-						
-						
-						else if (newDiagonalHeight[index] < tableau[i][j])
-						{
-							let coordinatesToDelete = [];
-							
-							for (let k = tableau[i][j] - 1; k >= newDiagonalHeight[index]; k--)
-							{
-								coordinatesToDelete.push([i, j, k]);
-							}
-							
-							if (this.in2dView)
-							{
-								this.deleteCubes(array, coordinatesToDelete);
-							}
-							
-							else
-							{
-								await this.deleteCubes(array, coordinatesToDelete);
-							}
-						}
-						
-						
-						
-						tableau[i][j] = newDiagonalHeight[index];
-						
-						if (this.in2dView)
-						{
-							this.drawSingleCell2dViewText(array, i, j);
-						}
-					}
-					
-					
-					
-					hueIndex++;
-					
-					this.recalculateHeights(array);
-					
-					await new Promise((resolve, reject) => setTimeout(resolve, this.animationTime));
-				}
-			}
-			
-			
-			
-			this.updateCameraHeight(true);
-			
-			resolve();
-		});	
-	}
-	
-	
-	
-	sulzgruber(index)
-	{
-		return new Promise(async (resolve, reject) =>
-		{
-			let array = this.arrays[index];
-			
-			let planePartition = _.cloneDeep(array.numbers);
-			
-			
-			
-			let columnStarts = new Array(planePartition.length);
-			
-			for (let i = 0; i < planePartition.length; i++)
-			{
-				let j = 0;
-				
-				while (j < planePartition.length && planePartition[j][i] === Infinity)
-				{
-					j++;
-				}
-				
-				columnStarts[i] = j;
-			}
-			
-			
-			
-			let rowStarts = new Array(planePartition.length);
-			
-			for (let i = 0; i < planePartition.length; i++)
-			{
-				let j = 0;
-				
-				while (j < planePartition.length && planePartition[i][j] === Infinity)
-				{
-					j++;
-				}
-				
-				rowStarts[i] = j;
-			}
-			
-			
-			
-			//First, find the candidates. This first requires categorizing the diagonals.
-			let diagonals = {};
-			
-			let diagonalStarts = {};
-			
-			
-			
-			//First the ones along the left edge.
-			for (let i = 0; i < planePartition.length; i++)
-			{
-				diagonalStarts[-i] = [i, 0];
-			}
-			
-			//Now the ones along the top edge.
-			for (let i = 1; i < planePartition.length; i++)
-			{
-				diagonalStarts[i] = [0, i];
-			}
-			
-			
-			
-			//First the ones along the left edge.
-			for (let i = -planePartition.length + 1; i < planePartition.length; i++)
-			{
-				let row = diagonalStarts[i][0];
-				let col = diagonalStarts[i][1];
-				
-				while (row < planePartition.length && col < planePartition.length && planePartition[row][col] === Infinity)
-				{
-					row++;
-					col++;
-				}
-				
-				diagonalStarts[i] = [row, col];
-				
-				if (row === planePartition.length || col === planePartition.length)
-				{
-					diagonals[i] = -1;
-					continue;
-				}
-				
-				
-				
-				let boundaryLeft = col === 0 || planePartition[row][col - 1] === Infinity;
-				let boundaryUp = row === 0 || planePartition[row - 1][col] === Infinity;
-				
-				if (boundaryLeft && boundaryUp)
-				{
-					diagonals[i] = 0;
-				}
-				
-				else if (boundaryLeft)
-				{
-					diagonals[i] = 3;
-				}
-				
-				else if (boundaryUp)
-				{
-					diagonals[i] = 2;
+					emptyArray[i][j] = Infinity;
 				}
 				
 				else
 				{
-					diagonals[i] = 1;
-				}
-			}
-			
-			
-			
-			//Now we need to move through the candidates. They only occur in A and O regions, so we only scan those diagonals, top-left to bottom-right, and then bottom-left to top-right in terms of diagonals.
-			let qPaths = [];
-			let rimHooks = [];
-			
-			for (let i = -planePartition.length + 1; i < planePartition.length; i++)
-			{
-				if (diagonals[i] === 1 || diagonals[i] === 3)
-				{
-					continue;
-				}
-				
-				let startRow = diagonalStarts[i][0];
-				let startCol = diagonalStarts[i][1];
-				
-				if (planePartition[startRow][startCol] === 0)
-				{
-					continue;
-				}
-				
-				
-				
-				while (true)
-				{
-					let foundCandidate = false;	
+					emptyArray[i][j] = 0;
 					
-					while (startRow < planePartition.length && startCol < planePartition.length && planePartition[startRow][startCol] !== 0)
-					{
-						if ((startCol < planePartition.length - 1 && planePartition[startRow][startCol] > planePartition[startRow][startCol + 1]) || (startCol === planePartition.length - 1 && planePartition[startRow][startCol] > 0))
-						{
-							if (diagonals[i] === 0 || (diagonals[i] === 2 && ((startRow < planePartition.length - 1 && planePartition[startRow][startCol] > planePartition[startRow + 1][startCol]) || (startRow === planePartition.length - 1 && planePartition[startRow][startCol] > 0))))
-							{
-								foundCandidate = true;
-								break;
-							}	
-						}
-						
-						startRow++;
-						startCol++;
-					}
-					
-					if (!foundCandidate)
-					{
-						break;
-					}
-					
-					
-					
-					let row = startRow;
-					let col = startCol;
-					
-					let path = [[row, col, planePartition[row][col] - 1]];
-					
-					while (true)
-					{
-						let currentContent = col - row;
-						
-						if (row < planePartition.length - 1 && planePartition[row][col] === planePartition[row + 1][col] && (diagonals[currentContent] === 0 || diagonals[currentContent] === 3))
-						{
-							row++;
-						}
-						
-						else if (col > rowStarts[row] && (row === planePartition.length - 1 || (row < planePartition.length - 1 && planePartition[row][col] > planePartition[row + 1][col])))
-						{
-							col--;
-						}
-						
-						else
-						{
-							break;
-						}
-						
-						path.push([row, col, planePartition[row][col] - 1]);
-					}
-					
-					path.forEach(box => planePartition[box[0]][box[1]]--);
-					
-					qPaths.push(path);
+					numHues += tableau[i][j];
 				}	
 			}
-			
-			
-			
-			let emptyArray = new Array(planePartition.length);
-			
-			for (let i = 0; i < planePartition.length; i++)
+		}
+		
+		let outputArray = await this.addNewArray(index + 1, emptyArray);
+		
+		
+		
+		let currentHueIndex = 0;
+		
+		//Loop through the tableau in weirdo lex order and reassemble the paths.
+		for (let j = tableau.length - 1; j >= 0; j--)
+		{
+			for (let i = tableau.length - 1; i >= 0; i--)
 			{
-				emptyArray[i] = new Array(planePartition.length);
-				
-				for (let j = 0; j < planePartition.length; j++)
+				if (tableau[i][j] === Infinity)
 				{
-					emptyArray[i][j] = planePartition[i][j] === Infinity ? Infinity : 0;
+					continue;
 				}
-			}
-			
-			let outputArray = await this.addNewArray(index + 1, emptyArray);
-			
-			await new Promise((resolve, reject) => setTimeout(resolve, this.animationTime));
-			
-			
-			
-			//Now we'll animate those paths actually decrementing, one-by-one. We're using a for loop because we need to await.
-			for (let i = 0; i < qPaths.length; i++)
-			{
-				let hue = i / qPaths.length * 6/7;
-				
-				await this.colorCubes(array, qPaths[i], hue);
 				
 				
 				
-				//Lift all the cubes up. There's no need to do this if we're in the 2d view.
-				await this.raiseCubes(array, qPaths[i], array.height + 1);
-				
-				
-				
-				//Now we actually delete the cubes.
-				qPaths[i].forEach(box =>
+				while (tableau[i][j] !== 0)
 				{
-					array.numbers[box[0]][box[1]]--;
+					let hue = currentHueIndex / numHues * 6/7;
+					
+					let height = Math.max(array.size + 1, outputArray.size + 1);
+					
+					await this.colorCubes(array, [[i, j, tableau[i][j] - 1]], hue);
+					
+					await this.raiseCubes(array, [[i, j, tableau[i][j] - 1]], height);
+					
+					
+					
+					let row = i;
+					let col = j;
+					
+					//Add a bunch of cubes corresponding to the hook that this thing is a part of.
+					for (let k = columnStarts[col]; k < row; k++)
+					{
+						array.cubes[k][col][height] = this.addCube(array, col, height, k);
+						array.cubes[k][col][height].material.forEach(material => material.color.setHSL(hue, 1, this.cubeLightness));
+					}
+					
+					for (let k = rowStarts[row]; k < col; k++)
+					{
+						array.cubes[row][k][height] = this.addCube(array, k, height, row);
+						array.cubes[row][k][height].material.forEach(material => material.color.setHSL(hue, 1, this.cubeLightness));
+					}
+					
+					
+					
+					let coordinates = [];
+					
+					for (let k = row - 1; k >= columnStarts[col]; k--)
+					{
+						coordinates.push([k, col, height]);
+					}
+					
+					let promise1 = this.revealCubes(array, coordinates);
+					
+					coordinates = [];
+					
+					for (let k = col - 1; k >= rowStarts[row]; k--)
+					{
+						coordinates.push([row, k, height]);
+					}
+					
+					let promise2 = this.revealCubes(array, coordinates);
+					
+					await Promise.all([promise1, promise2]);
+					
+					
+					
+					//In order to animate this nicely, we won't just jump straight to the Q-path -- we'll turn it into a rim-hook first.
+					coordinates = [];
+					
+					for (let k = rowStarts[row]; k < col; k++)
+					{
+						coordinates.push([row, k, height]);
+					}
+					
+					coordinates.push([row, col, array.numbers[row][col] - 1]);
+					
+					for (let k = row - 1; k >= columnStarts[col]; k--)
+					{
+						coordinates.push([k, col, height]);
+					}
+					
+					
+					
+					let startContent = rowStarts[row] - row;
+					let endContent = startContent + coordinates.length - 1;
+					
+					let targetCoordinates = [];
+					
+					for (let k = startContent; k <= endContent; k++)
+					{
+						targetCoordinates.push(_.clone(diagonalStarts[k]));
+					}
+					
+					
+					
+					tableau[row][col]--;
+					
+					this.recalculateHeights(array);
 					
 					if (this.in2dView)
 					{
-						this.drawSingleCell2dViewText(array, box[0], box[1]);
-					}	
-				});
-				
-				this.recalculateHeights(array);
-				
-				
-				
-				await new Promise((resolve, reject) => setTimeout(resolve, this.animationTime / 5));
-				
-				//Find the pivot and rearrange the shape into a hook. The end of the Q-path is the same as the end of the rim-hook, so it defines the row. To find the column, we need to go row boxes down, and then use the rest of the length to go right.
-				let row = qPaths[i][qPaths[i].length - 1][0];
-				
-				let startContent = qPaths[i][qPaths[i].length - 1][1] - row;
-				
-				//Every step along the rim-hook increases the content by one.
-				let endContent = startContent + qPaths[i].length - 1;
-				
-				let col = diagonalStarts[endContent][1];
-				
-				
-				
-				let targetCoordinates = [];
-				
-				let targetHeight = Math.max(array.height + 1, outputArray.height + 1);
-				
-				for (let j = columnStarts[col]; j <= row; j++)
-				{
-					targetCoordinates.push([j, col, targetHeight]);
-				}
-				
-				for (let j = col - 1; j >= rowStarts[row]; j--)
-				{
-					targetCoordinates.push([row, j, targetHeight]);
-				}
-				
-				await this.moveCubes(array, qPaths[i], outputArray, targetCoordinates);
-				
-				
-				
-				//Now delete everything but the pivot and move that down. To make the deletion look nice, we'll put these coordinates in a different order and send two lists total.
-				targetCoordinates = [];
-				
-				for (let j = row - 1; j >= columnStarts[col]; j--)
-				{
-					targetCoordinates.push([j, col, targetHeight]);
-				}
-				
-				this.deleteCubes(outputArray, targetCoordinates);
-				
-				targetCoordinates = [];
-				
-				for (let j = col - 1; j >= rowStarts[row]; j--)
-				{
-					targetCoordinates.push([row, j, targetHeight]);
-				}
-				
-				this.deleteCubes(outputArray, targetCoordinates);
-				
-				
-				
-				await this.lowerCubes(outputArray, [[row, col, targetHeight]]);
-				
-				
-				
-				outputArray.numbers[row][col]++;
-				
-				if (this.in2dView)
-				{
-					this.drawSingleCell2dViewText(outputArray, row, col);
-				}
-				
-				this.recalculateHeights(outputArray);
-				
-				
-				
-				await new Promise((resolve, reject) => setTimeout(resolve, this.animationTime));
-			}
-			
-			
-			
-			await this.removeArray(index);
-			
-			resolve();
-		});	
-	}
-	
-	
-	
-	sulzgruberInverse(index)
-	{
-		return new Promise(async (resolve, reject) =>
-		{
-			let array = this.arrays[index];
-			
-			let tableau = array.numbers;
-			
-			let qPaths = [];
-			
-			
-			
-			let columnStarts = new Array(tableau.length);
-			
-			for (let i = 0; i < tableau.length; i++)
-			{
-				let j = 0;
-				
-				while (j < tableau.length && tableau[j][i] === Infinity)
-				{
-					j++;
-				}
-				
-				columnStarts[i] = j;
-			}
-			
-			
-			
-			let rowStarts = new Array(tableau.length);
-			
-			for (let i = 0; i < tableau.length; i++)
-			{
-				let j = 0;
-				
-				while (j < tableau.length && tableau[i][j] === Infinity)
-				{
-					j++;
-				}
-				
-				rowStarts[i] = j;
-			}
-			
-			
-			
-			//First, find the candidates. This first requires categorizing the diagonals.
-			let diagonalStarts = {};
-			
-			//First the ones along the left edge.
-			for (let i = 0; i < tableau.length; i++)
-			{
-				diagonalStarts[-i] = [i, 0];
-			}
-			
-			//Now the ones along the top edge.
-			for (let i = 1; i < tableau.length; i++)
-			{
-				diagonalStarts[i] = [0, i];
-			}
-			
-			for (let i = -tableau.length + 1; i < tableau.length; i++)
-			{
-				let row = diagonalStarts[i][0];
-				let col = diagonalStarts[i][1];
-				
-				while (row < tableau.length && col < tableau.length && tableau[row][col] === Infinity)
-				{
-					row++;
-					col++;
-				}
-				
-				diagonalStarts[i] = [row, col];
-			}
-			
-			
-			
-			let numHues = 0;
-			
-			let emptyArray = new Array(tableau.length);
-			
-			for (let i = 0; i < tableau.length; i++)
-			{
-				emptyArray[i] = new Array(tableau.length);
-				
-				for (let j = 0; j < tableau.length; j++)
-				{
-					if (tableau[i][j] === Infinity)
-					{
-						emptyArray[i][j] = Infinity;
+						this.drawSingleCell2dViewText(array, row, col);
 					}
 					
-					else
-					{
-						emptyArray[i][j] = 0;
-						
-						numHues += tableau[i][j];
-					}	
-				}
-			}
-			
-			let outputArray = await this.addNewArray(index + 1, emptyArray);
-			
-			let planePartition = outputArray.numbers;
-			
-			
-			
-			let currentHueIndex = 0;
-			
-			//Loop through the tableau in weirdo lex order and reassemble the paths.
-			for (let j = tableau.length - 1; j >= 0; j--)
-			{
-				for (let i = tableau.length - 1; i >= 0; i--)
-				{
-					if (tableau[i][j] === Infinity)
-					{
-						continue;
-					}
+					await this.moveCubes(array, coordinates, outputArray, targetCoordinates);
 					
 					
 					
-					while (tableau[i][j] !== 0)
+					//Now we'll lower one part at a time.
+					let currentIndex = 0;
+					
+					let currentHeight = outputArray.numbers[targetCoordinates[0][0]][targetCoordinates[0][1]];
+					
+					while (true)
 					{
-						let hue = currentHueIndex / numHues * 6/7;
+						let nextIndex = currentIndex;
 						
-						let height = Math.max(array.size + 1, outputArray.size + 1);
-						
-						await this.colorCubes(array, [[i, j, tableau[i][j] - 1]], hue);
-						
-						await this.raiseCubes(array, [[i, j, tableau[i][j] - 1]], height);
-						
-						
-						
-						let row = i;
-						let col = j;
-						
-						//Add a bunch of cubes corresponding to the hook that this thing is a part of.
-						for (let k = columnStarts[col]; k < row; k++)
+						while (nextIndex < targetCoordinates.length && targetCoordinates[nextIndex][0] === targetCoordinates[currentIndex][0])
 						{
-							array.cubes[k][col][height] = this.addCube(array, col, height, k);
-							array.cubes[k][col][height].material.forEach(material => material.color.setHSL(hue, 1, this.cubeLightness));
+							nextIndex++;
 						}
 						
-						for (let k = rowStarts[row]; k < col; k++)
+						coordinates = targetCoordinates.slice(currentIndex, nextIndex);
+						
+						
+						
+						//Check if this part can all be inserted at the same height.
+						let insertionWorks = true;
+						
+						for (let k = 0; k < coordinates.length; k++)
 						{
-							array.cubes[row][k][height] = this.addCube(array, k, height, row);
-							array.cubes[row][k][height].material.forEach(material => material.color.setHSL(hue, 1, this.cubeLightness));
-						}
-						
-						
-						
-						let coordinates = [];
-						
-						for (let k = row - 1; k >= columnStarts[col]; k--)
-						{
-							coordinates.push([k, col, height]);
-						}
-						
-						let promise1 = this.revealCubes(array, coordinates);
-						
-						coordinates = [];
-						
-						for (let k = col - 1; k >= rowStarts[row]; k--)
-						{
-							coordinates.push([row, k, height]);
-						}
-						
-						let promise2 = this.revealCubes(array, coordinates);
-						
-						await Promise.all([promise1, promise2]);
-						
-						
-						
-						//In order to animate this nicely, we won't just jump straight to the Q-path -- we'll turn it into a rim-hook first.
-						coordinates = [];
-						
-						for (let k = rowStarts[row]; k < col; k++)
-						{
-							coordinates.push([row, k, height]);
-						}
-						
-						coordinates.push([row, col, array.numbers[row][col] - 1]);
-						
-						for (let k = row - 1; k >= columnStarts[col]; k--)
-						{
-							coordinates.push([k, col, height]);
-						}
-						
-						
-						
-						let startContent = rowStarts[row] - row;
-						let endContent = startContent + coordinates.length - 1;
-						
-						let targetCoordinates = [];
-						
-						for (let k = startContent; k <= endContent; k++)
-						{
-							targetCoordinates.push(_.clone(diagonalStarts[k]));
-						}
-						
-						
-						
-						tableau[row][col]--;
-						
-						this.recalculateHeights(array);
-						
-						if (this.in2dView)
-						{
-							this.drawSingleCell2dViewText(array, row, col);
-						}
-						
-						await this.moveCubes(array, coordinates, outputArray, targetCoordinates);
-						
-						
-						
-						//Now we'll lower one part at a time.
-						let currentIndex = 0;
-						
-						let currentHeight = outputArray.numbers[targetCoordinates[0][0]][targetCoordinates[0][1]];
-						
-						while (true)
-						{
-							let nextIndex = currentIndex;
-							
-							while (nextIndex < targetCoordinates.length && targetCoordinates[nextIndex][0] === targetCoordinates[currentIndex][0])
+							if (outputArray.numbers[coordinates[k][0]][coordinates[k][1]] !== currentHeight)
 							{
-								nextIndex++;
-							}
-							
-							coordinates = targetCoordinates.slice(currentIndex, nextIndex);
-							
-							
-							
-							//Check if this part can all be inserted at the same height.
-							let insertionWorks = true;
-							
-							for (let k = 0; k < coordinates.length; k++)
-							{
-								if (outputArray.numbers[coordinates[k][0]][coordinates[k][1]] !== currentHeight)
-								{
-									insertionWorks = false;
-									break;
-								}
-							}
-							
-							
-							
-							if (insertionWorks)
-							{
-								await this.lowerCubes(outputArray, coordinates);
-								
-								coordinates.forEach(coordinate => outputArray.numbers[coordinate[0]][coordinate[1]]++);
-								
-								this.recalculateHeights(outputArray);
-								
-								if (this.in2dView)
-								{
-									coordinates.forEach(entry =>
-									{
-										this.drawSingleCell2dViewText(outputArray, entry[0], entry[1])
-									});
-								}
-								
-								currentIndex = nextIndex;
-							}
-							
-							else
-							{
-								let oldTargetCoordinates = _.cloneDeep(targetCoordinates.slice(currentIndex));
-								
-								//Shift the rest of the coordinates down and right by 1.
-								for (let k = currentIndex; k < targetCoordinates.length; k++)
-								{
-									targetCoordinates[k][0]++;
-									targetCoordinates[k][1]++;
-									
-									if (targetCoordinates[k][0] > outputArray.footprint || targetCoordinates[k][1] > outputArray.footprint)
-									{
-										console.error("Insertion failed!");
-										return;
-									}
-								}
-								
-								let newTargetCoordinates = targetCoordinates.slice(currentIndex);
-								
-								await this.moveCubes(outputArray, oldTargetCoordinates, outputArray, newTargetCoordinates);
-								
-								currentHeight = outputArray.numbers[targetCoordinates[currentIndex][0]][targetCoordinates[currentIndex][1]];
-							}
-							
-							
-							
-							if (currentIndex === targetCoordinates.length)
-							{
+								insertionWorks = false;
 								break;
 							}
 						}
 						
 						
 						
-						currentHueIndex++;
-						
-						await new Promise((resolve, reject) => setTimeout(resolve, this.animationTime / 2));
-					}	
-				}
-			}	
-			
-			
-			
-			await this.removeArray(index);
-			
-			resolve();
-		});	
-	}
-	
-	
-	
-	rsk(index)
-	{
-		return new Promise(async (resolve, reject) =>
-		{
-			let pArray = this.arrays[index];
-			let qArray = this.arrays[index + 1];
-			
-			let pSsyt = pArray.numbers;
-			let qSsyt = qArray.numbers;
-			
-			let arraySize = 0;
-			
-			let numHues = 0;
-			
-			//Remove any color that's here.
-			for (let i = 0; i < pSsyt.length; i++)
-			{
-				for (let j = 0; j < pSsyt.length; j++)
-				{
-					if (pSsyt[i][j] === Infinity || qSsyt[i][j] === Infinity)
-					{
-						this.displayError(`The SSYT contain infinite values, which is not allowed in RSK!`);
-						
-						this.currentlyRunningAlgorithm = false;
-						
-						resolve();
-						return;
-					}
-					
-					if (pSsyt[i][j] !== 0)
-					{
-						numHues++;
-					}
-					
-					arraySize = Math.max(Math.max(arraySize, pSsyt[i][j]), qSsyt[i][j]);
-				}
-			}
-			
-			if (arraySize === 0)
-			{
-				displayError(`The SSYT are empty!`);
-				
-				currentlyRunningAlgorithm = false;
-				
-				resolve();
-				return;
-			}
-			
-			
-			
-			let emptyArray = new Array(arraySize);
-			
-			for (let i = 0; i < arraySize; i++)
-			{
-				emptyArray[i] = new Array(arraySize);
-				
-				for (let j = 0; j < arraySize; j++)
-				{
-					emptyArray[i][j] = 0;
-				}
-			}
-			
-			let outputArray = await this.addNewArray(index + 2, emptyArray);
-			
-			
-			
-			//Start building up the entries in w. The first thing to do is to undo the insertion operations in P, using the entries in Q to ensure they're in the right order. The most recently added entry is the rightmost largest number in Q.
-			let w = [];
-			
-			let hueIndex = 0;
-			
-			while (qSsyt[0][0] !== 0)
-			{
-				let hue = hueIndex / numHues * 6/7;
-				
-				let maxEntry = 0;
-				let row = 0;
-				let col = 0;
-				
-				for (let i = 0; i < qSsyt.length; i++)
-				{
-					let j = qSsyt.length - 1;
-					
-					while (j >= 0 && qSsyt[i][j] === 0)
-					{
-						j--;
-					}
-					
-					if (j >= 0)
-					{
-						maxEntry = Math.max(maxEntry, qSsyt[i][j]);
-					}
-				}
-				
-				for (let i = 0; i < qSsyt.length; i++)
-				{
-					let j = qSsyt.length - 1;
-					
-					while (j >= 0 && qSsyt[i][j] === 0)
-					{
-						j--;
-					}
-					
-					if (qSsyt[i][j] === maxEntry)
-					{
-						row = i;
-						col = j;
-						break;
-					}
-				}
-				
-				
-				
-				//Now row and col are the coordinates of the most recently added element. We just need to un-insert the corresponding element from P.
-				let pSourceCoordinatesLocal = [];
-				let pTargetCoordinatesLocal = [];
-				let pSourceCoordinatesExternal = [];
-				let pTargetCoordinatesExternal = [];
-				
-				let qSourceCoordinatesExternal = [];
-				let qTargetCoordinatesExternal = [];
-				
-				let i = row;
-				let j = col;
-				let pEntry = pSsyt[i][j];
-				let qEntry = qSsyt[i][j];
-				
-				let pCoordinatePath = [[i, j]];
-				
-				
-				
-				while (i !== 0)
-				{
-					//Find the rightmost element in the row above that's strictly smaller than this.
-					let newJ = pSsyt.length - 1;
-					
-					while (pSsyt[i - 1][newJ] === 0 || pEntry <= pSsyt[i - 1][newJ])
-					{
-						newJ--;
-					}
-					
-					for (let k = 0; k < pEntry; k++)
-					{
-						pSourceCoordinatesLocal.push([i, j, k]);
-						pTargetCoordinatesLocal.push([i - 1, newJ, k]);
-					}
-					
-					i--;
-					j = newJ;
-					pEntry = pSsyt[i][j];
-					
-					pCoordinatePath.push([i, j]);
-				}
-				
-				
-				
-				//Alright, time for a stupid hack. The visual result we want is to take the stacks getting popped from both P and Q, move them to the first row and column of the output array to form a hook, delete all but one box (the top box of P), and then lower the other. The issue is that this will risk overwriting one of the two overlapping boxes, causing a memory leak and a glitchy state. The solution is to do a couple things. Only the P corner box will actually move to the output array -- the one from Q will appear to, but it will stay in its own array.
-				
-				let height = outputArray.height + 1;
-				
-				for (let k = 0; k < pEntry; k++)
-				{
-					pSourceCoordinatesExternal.push([i, j, k]);
-					pTargetCoordinatesExternal.push([qEntry - 1, k, height]);
-				}
-				
-				for (let k = 0; k < qEntry - 1; k++)
-				{
-					qSourceCoordinatesExternal.push([row, col, k]);
-					qTargetCoordinatesExternal.push([k, pEntry - 1, height]);
-				}
-				
-				
-				
-				this.colorCubes(qArray, qSourceCoordinatesExternal.concat([[row, col, qEntry - 1]]), hue);
-				this.colorCubes(pArray, pSourceCoordinatesLocal, hue);
-				await this.colorCubes(pArray, pSourceCoordinatesExternal, hue);
-				
-				
-				
-				//Update all the numbers.
-				qSsyt[row][col] = 0;
-				
-				for (let k = pCoordinatePath.length - 1; k > 0; k--)
-				{
-					pSsyt[pCoordinatePath[k][0]][pCoordinatePath[k][1]] = pSsyt[pCoordinatePath[k - 1][0]][pCoordinatePath[k - 1][1]];
-				}
-				
-				pSsyt[row][col] = 0;
-				
-				if (this.in2dView)
-				{
-					this.drawSingleCell2dViewText(pArray, row, col);
-					
-					for (let k = pCoordinatePath.length - 1; k > 0; k--)
-					{
-						this.drawSingleCell2dViewText(pArray, pCoordinatePath[k][0], pCoordinatePath[k][1]);
-					}
-					
-					this.drawSingleCell2dViewText(qArray, row, col);
-				}
-				
-				
-				
-				this.moveCubes(qArray, qSourceCoordinatesExternal, outputArray, qTargetCoordinatesExternal);
-				this.moveCubes(pArray, pSourceCoordinatesExternal, outputArray, pTargetCoordinatesExternal);
-				this.moveCubes(pArray, pSourceCoordinatesLocal, pArray, pTargetCoordinatesLocal);
-				await this.moveCubes(qArray, [[row, col, qEntry - 1]], outputArray, [[qEntry - 1, pEntry - 1, height]], false);
-				
-				
-				
-				this.uncolorCubes(pArray, pTargetCoordinatesLocal);
-				
-				
-				
-				//Delete the non-corner parts of the hook (animated), delete one of the overlapping corner cubes (instantly), and drop the other.
-				
-				//Gross but necessary. deleteCubes() needs to detach the object from its parent cube group, but what we pass isn't actually its parent, so we have to do it manually.
-				outputArray.cubeGroup.remove(qArray.cubes[row][col][qEntry - 1]);
-				this.deleteCubes(qArray, [[row, col, qEntry - 1]], true, true);
-				
-				pTargetCoordinatesExternal.reverse();
-				qTargetCoordinatesExternal.reverse();
-				
-				this.deleteCubes(outputArray, pTargetCoordinatesExternal.slice(1));
-				this.deleteCubes(outputArray, qTargetCoordinatesExternal);
-				
-				await this.lowerCubes(outputArray, [[qEntry - 1, pEntry - 1, height]]);
-				
-				emptyArray[qEntry - 1][pEntry - 1]++;
-				
-				if (this.in2dView)
-				{
-					this.drawSingleCell2dViewText(outputArray, qEntry - 1, pEntry - 1);
-				}
-				
-				this.recalculateHeights(outputArray);
-				
-				
-				
-				hueIndex++;
-				
-				await new Promise((resolve, reject) => setTimeout(resolve, this.animationTime / 2));
-			}
-			
-			
-			
-			
-			await this.removeArray(index);
-			
-			await new Promise((resolve, reject) => setTimeout(resolve, this.animationTime));
-			
-			await this.removeArray(index);
-			
-			resolve();
-		});	
-	}
-	
-	
-	
-	rskInverse(index)
-	{
-		return new Promise(async (resolve, reject) =>
-		{
-			let array = this.arrays[index];
-			
-			let tableau = _.cloneDeep(array.numbers);
-			
-			let numEntries = 0;
-			
-			tableau.forEach(row => row.forEach(entry => numEntries += entry));
-			
-			//The largest possible shape for these two is a straight line, requiring all the inserted elements to be increasing or decreasing.
-			let pSsyt = new Array(numEntries);
-			let qSsyt = new Array(numEntries);
-			
-			for (let i = 0; i < numEntries; i++)
-			{
-				pSsyt[i] = new Array(numEntries);
-				qSsyt[i] = new Array(numEntries);
-				
-				for (let j = 0; j < numEntries; j++)
-				{
-					pSsyt[i][j] = 0;
-					qSsyt[i][j] = 0;
-				}
-			}
-			
-			
-			
-			let pRowLengths = new Array(tableau.length);
-			
-			for (let i = 0; i < tableau.length; i++)
-			{
-				pRowLengths[i] = 0;
-			}
-			
-			let pNumRows = 0;
-			
-			
-			
-			//Unfortunately, there's no way to know the shape of P and Q without actually doing RSK, so we need to do all the calculations ahead of time, and only then animate things around.
-			let pInsertionPaths = [];
-			let qInsertionLocations = [];
-			let tableauRemovalLocations = [];
-			
-			for (let row = 0; row < tableau.length; row++)
-			{
-				for (let col = 0; col < tableau.length; col++)
-				{
-					while (tableau[row][col] !== 0)
-					{
-						tableau[row][col]--;
-						
-						let newNum = col + 1;
-						
-						let i = 0;
-						let j = 0;
-						
-						let path = [];
-						
-						while (true)
+						if (insertionWorks)
 						{
-							j = pRowLengths[i];
+							await this.lowerCubes(outputArray, coordinates);
 							
-							while (j !== 0 && pSsyt[i][j - 1] > newNum)
-							{
-								j--;
-							}
+							coordinates.forEach(coordinate => outputArray.numbers[coordinate[0]][coordinate[1]]++);
 							
-							if (j === pRowLengths[i])
+							this.recalculateHeights(outputArray);
+							
+							if (this.in2dView)
 							{
-								pSsyt[i][j] = newNum;
-								
-								pRowLengths[i]++;
-								
-								if (j === 0)
+								coordinates.forEach(entry =>
 								{
-									pNumRows++;
-								}
-								
-								path.push([i, j]);
-								
-								break;
+									this.drawSingleCell2dViewText(outputArray, entry[0], entry[1])
+								});
 							}
 							
-							let temp = pSsyt[i][j];
-							pSsyt[i][j] = newNum;
-							newNum = temp;
-							path.push([i, j]);
-							
-							i++;
-						}
-						
-						pInsertionPaths.push(path);
-						qInsertionLocations.push([i, j]);
-						tableauRemovalLocations.push([row, col]);
-						
-						qSsyt[i][j] = row + 1;
-					}
-				}
-			}
-			
-			
-	
-			let ssytSize = Math.max(pRowLengths[0], pNumRows);
-			
-			pSsyt = new Array(ssytSize);
-			qSsyt = new Array(ssytSize);
-			
-			for (let i = 0; i < ssytSize; i++)
-			{
-				pSsyt[i] = new Array(ssytSize);
-				qSsyt[i] = new Array(ssytSize);
-				
-				for (let j = 0; j < ssytSize; j++)
-				{
-					pSsyt[i][j] = 0;
-					qSsyt[i][j] = 0;
-				}
-			}
-			
-			let pArray = await this.addNewArray(index + 1, pSsyt);
-			
-			await new Promise((resolve, reject) => setTimeout(resolve, this.animationTime / 2));
-			
-			let qArray = await this.addNewArray(index + 2, qSsyt);
-			
-			await new Promise((resolve, reject) => setTimeout(resolve, this.animationTime / 2));
-			
-			
-			
-			let hueIndex = 0;
-			
-			//Loop through the tableau in weirdo lex order and reassemble the paths.
-			for (let i = 0; i < tableauRemovalLocations.length; i++)
-			{
-				let row = tableauRemovalLocations[i][0];
-				let col = tableauRemovalLocations[i][1];
-				
-				let height = array.height + 1;
-				
-				let hue = hueIndex / numEntries * 6/7;
-				
-				
-				
-				//Add a bunch of cubes corresponding to the hook that this thing is a part of.
-				for (let j = col; j >= 0; j--)
-				{
-					array.cubes[row][j][height] = this.addCube(array, j, height, row);
-					array.cubes[row][j][height].material.forEach(material => material.color.setHSL(hue, 1, this.cubeLightness));
-				}
-				
-				for (let j = row - 1; j >= 0; j--)
-				{
-					array.cubes[j][col][height] = this.addCube(array, col, height, j);
-					array.cubes[j][col][height].material.forEach(material => material.color.setHSL(hue, 1, this.cubeLightness));
-				}
-				
-				//This is the duplicate cube. As usual, we need to store it somewhere else in the array -- here, we're going to place it one space vertically above its actual location.
-				
-				array.cubes[row][col][height + 1] = this.addCube(array, col, height, row);
-				array.cubes[row][col][height + 1].material.forEach(material => material.color.setHSL(hue, 1, this.cubeLightness));
-				
-				
-				
-				await this.colorCubes(array, [[row, col, array.numbers[row][col] - 1]], hue);
-				
-				await this.raiseCubes(array, [[row, col, array.numbers[row][col] - 1]], height);
-				
-				
-				
-				let promise1 = this.revealCubes(array, [[row, col, height + 1]]);
-				
-				let coordinates = [];
-				
-				for (let j = col - 1; j >= 0; j--)
-				{
-					coordinates.push([row, j, height]);
-				}
-				
-				let promise2 = this.revealCubes(array, coordinates);
-				
-				coordinates = [];
-				
-				for (let j = row - 1; j >= 0; j--)
-				{
-					coordinates.push([j, col, height]);
-				}
-				
-				let promise3 = this.revealCubes(array, coordinates);
-				
-				await Promise.all([promise1, promise2, promise3]);
-				
-				
-				
-				//First of all, we'll handle the insertion into P. As always, this takes some care. The strictly proper way to animate this would be to move the stacks one at a time, but just like with the forward direction, it is *much* easier (and time-efficient) to just move everything at once.
-				let path = pInsertionPaths[hueIndex];
-				
-				let pSourceCoordinatesLocal = [];
-				let pTargetCoordinatesLocal = [];
-				
-				let pSourceCoordinatesExternal = [[row, col, array.numbers[row][col] - 1]];
-				let pTargetCoordinatesExternal = [[path[0][0], path[0][1], col]];
-				
-				let qSourceCoordinatesExternal = [[row, col, height + 1]];
-				let qTargetCoordinatesExternal = [[qInsertionLocations[hueIndex][0], qInsertionLocations[hueIndex][1], row]];
-				
-				
-				
-				for (let j = col - 1; j >= 0; j--)
-				{
-					pSourceCoordinatesExternal.push([row, j, height]);
-					pTargetCoordinatesExternal.push([path[0][0], path[0][1], j]);
-				}
-				
-				for (let j = 0; j < path.length - 1; j++)
-				{
-					for (let k = 0; k < pSsyt[path[j][0]][path[j][1]]; k++)
-					{
-						pSourceCoordinatesLocal.push([path[j][0], path[j][1], k]);
-						pTargetCoordinatesLocal.push([path[j + 1][0], path[j + 1][1], k]);
-					}
-				}
-				
-				for (let j = row - 1; j >= 0; j--)
-				{
-					qSourceCoordinatesExternal.push([j, col, height]);
-					qTargetCoordinatesExternal.push([qInsertionLocations[hueIndex][0], qInsertionLocations[hueIndex][1], j]);
-				}
-				
-				await this.colorCubes(pArray, pSourceCoordinatesLocal, hue);
-				
-				
-				
-				for (let j = path.length - 1; j > 0; j--)
-				{
-					pSsyt[path[j][0]][path[j][1]] = pSsyt[path[j - 1][0]][path[j - 1][1]];
-				}
-				
-				if (path.length !== 0)
-				{
-					pSsyt[path[0][0]][path[0][1]] = 0;
-				}
-				
-				if (this.in2dView)
-				{
-					this.drawAll2dViewText();
-				}
-				
-				if (pSourceCoordinatesLocal.length !== 0)
-				{
-					await this.moveCubes(pArray, pSourceCoordinatesLocal, pArray, pTargetCoordinatesLocal);	
-				}	
-				
-				
-				
-				array.numbers[row][col]--;
-				
-				if (this.in2dView)
-				{
-					this.drawAll2dViewText();
-				}
-				
-				this.moveCubes(array, pSourceCoordinatesExternal, pArray, pTargetCoordinatesExternal);
-				
-				await this.moveCubes(array, qSourceCoordinatesExternal, qArray, qTargetCoordinatesExternal);
-				
-				
-				
-				pSsyt[path[0][0]][path[0][1]] = col + 1;
-				
-				qSsyt[qInsertionLocations[hueIndex][0]][qInsertionLocations[hueIndex][1]] = row + 1;
-				
-				if (this.in2dView)
-				{
-					this.drawAll2dViewText();
-				}
-				
-				
-				
-				this.recalculateHeights(array);
-				this.recalculateHeights(pArray);
-				this.recalculateHeights(qArray);
-				
-				
-				
-				hueIndex++;
-				
-				await new Promise((resolve, reject) => setTimeout(resolve, this.animationTime / 2));
-			}
-			
-			
-			
-			await this.removeArray(index);
-			
-			resolve();
-		});	
-	}
-	
-	
-	
-	godar1(index)
-	{
-		return new Promise(async (resolve, reject) =>
-		{
-			//Figure out the shape of nu.
-			let array = this.arrays[index];
-			let planePartition = array.numbers;
-			
-			let nuRowLengths = new Array(2 * planePartition.length);
-			let nuColLengths = new Array(2 * planePartition.length);
-			
-			for (let i = 0; i < planePartition.length; i++)
-			{
-				let j = 0;
-				
-				while (j < planePartition.length && planePartition[i][j] === Infinity)
-				{
-					j++;
-				}
-				
-				nuRowLengths[i] = j;
-				
-				
-				
-				j = 0;
-				
-				while (j < planePartition.length && planePartition[j][i] === Infinity)
-				{
-					j++;
-				}
-				
-				nuColLengths[i] = j;
-			}
-			
-			for (let i = planePartition.length; i < 2 * planePartition.length; i++)
-			{
-				nuRowLengths[i] = 0;
-				
-				nuColLengths[i] = 0;
-			}
-			
-			let rppSize = Math.max(nuRowLengths[0], nuColLengths[0]);
-			
-			
-			
-			let newArray = new Array(planePartition.length);
-			
-			for (let i = 0; i < planePartition.length; i++)
-			{
-				newArray[i] = new Array(planePartition.length);
-				
-				for (let j = 0; j < planePartition.length; j++)
-				{
-					if (planePartition[i][j] === Infinity)
-					{
-						newArray[i][j] = this.infiniteHeight;
-					}
-					
-					else
-					{
-						newArray[i][j] = planePartition[i][j];
-					}
-				}
-			}
-			
-			await this.addNewArray(index + 1, newArray);
-			
-			await new Promise((resolve, reject) => setTimeout(resolve, this.animationTime / 2));
-			
-			await this.removeArray(index);
-			
-			await new Promise((resolve, reject) => setTimeout(resolve, this.animationTime / 2));
-			
-			array = this.arrays[index];
-			planePartition = array.numbers;
-			
-			
-			
-			let rightLegSize = 0;
-			let bottomLegSize = 0;
-			
-			while (rightLegSize < planePartition.length && planePartition[rightLegSize][planePartition.length - 1] !== 0)
-			{
-				rightLegSize++;
-			}
-			
-			while (bottomLegSize < planePartition.length && planePartition[planePartition.length - 1][bottomLegSize] !== 0)
-			{
-				bottomLegSize++;
-			}
-			
-			
-			
-			await this.runAlgorithm("pak", index, true);
-			
-			await new Promise((resolve, reject) => setTimeout(resolve, this.animationTime * 2));
-			
-			array = this.arrays[index];
-			planePartition = array.numbers;
-			
-			
-			
-			//Clip out the finite part of the array.
-			
-			//The -1 is there to ensure the new array has the padding that indicates it's finite on the edges.
-			const legSize = Math.max(rightLegSize, bottomLegSize);
-			
-			let finiteArray = new Array(planePartition.length - legSize + 1);
-			
-			let cubesToDelete = [];
-			
-			for (let i = 0; i < finiteArray.length - 1; i++)
-			{
-				finiteArray[i] = new Array(finiteArray.length);
-				
-				for (let j = 0; j < finiteArray.length - 1; j++)
-				{
-					finiteArray[i][j] = planePartition[i][j];
-					
-					for (let k = 0; k < planePartition[i][j]; k++)
-					{
-						cubesToDelete.push([i, j, k]);
-					}
-					
-					planePartition[i][j] = 0;
-				}
-				
-				finiteArray[i][finiteArray.length - 1] = 0;
-			}
-			
-			finiteArray[finiteArray.length - 1] = new Array(finiteArray.length);
-			
-			for (let j = 0; j < finiteArray.length; j++)
-			{
-				finiteArray[finiteArray.length - 1][j] = 0;
-			}
-			
-			
-			
-			this.deleteCubes(array, cubesToDelete, true, true);
-			
-			await this.addNewArray(index, finiteArray);
-			
-			await new Promise((resolve, reject) => setTimeout(resolve, this.animationTime / 2));
-			
-			
-			
-			//Now we unPak the second array.
-			
-			await this.runAlgorithm("pakInverse", index, true);
-			
-			await new Promise((resolve, reject) => setTimeout(resolve, this.animationTime * 2));
-			
-			
-	
-			//We're now clear to pull apart the negative RPP from the finite part.n
-			
-			
-			
-			//In order for the bijection to actually be correct, we need to make sure the rearrangement works the same way each time. The easiest way to do this is to ensure that every hook length actually in the APP has a *full* array of possible locations, so that its index in that is correct.
-			
-			
-			
-			//Organize everything by hook length.
-			let maxAppHookLength = 2 * planePartition.length - nuRowLengths[planePartition.length - 1] - nuColLengths[planePartition.length - 1];
-			let maxRppHookLength = nuRowLengths[0] + nuColLengths[0];
-			
-			let appPivotsByHookLength = new Array(4 * planePartition.length);
-			let rppPivotsByHookLength = new Array(maxRppHookLength);
-			let ppPivotsByHookLength = new Array(4 * planePartition.length);
-			
-			for (let i = 0; i < 4 * planePartition.length; i++)
-			{
-				appPivotsByHookLength[i] = new Array();
-			}
-			
-			for (let i = 0; i < maxRppHookLength; i++)
-			{
-				rppPivotsByHookLength[i] = new Array();
-			}
-			
-			for (let i = 0; i < 4 * planePartition.length; i++)
-			{
-				ppPivotsByHookLength[i] = new Array();
-			}
-			
-			let ppSize = 1;
-			
-			//If nu = (3, 1) and the APP given is 3x3, then its maximum hook length is 5, and we need to check an 8x8 square.
-			
-			for (let i = 0; i < 2 * planePartition.length; i++)
-			{
-				for (let j = 0; j < 2 * planePartition.length; j++)
-				{
-					if (j >= nuRowLengths[i])
-					{
-						appPivotsByHookLength[i + j + 1 - nuRowLengths[i] - nuColLengths[j]].push([i, j]);
-					}
-					
-					else
-					{
-						//.unshift rather than .push makes the hooks move in the correct order.
-						rppPivotsByHookLength[nuRowLengths[i] + nuColLengths[j] - i - j - 1].unshift([rppSize - i - 1, rppSize - j - 1]);
-					}
-					
-					ppPivotsByHookLength[i + j + 1].push([i, j]);
-				}
-			}
-			
-			
-			
-			let hookMap = new Array(2 * planePartition.length);
-			
-			for (let i = 0; i < 2 * planePartition.length; i++)
-			{
-				hookMap[i] = new Array(2 * planePartition.length);
-			}
-			
-			for (let i = 1; i < maxAppHookLength; i++)
-			{
-				let coordinates = [];
-				
-				for (let j = 0; j < appPivotsByHookLength[i].length; j++)
-				{
-					let row = appPivotsByHookLength[i][j][0];
-					let col = appPivotsByHookLength[i][j][1];
-					
-					if (row < planePartition.length - bottomLegSize && col < planePartition.length - rightLegSize)
-					{
-						for (let k = 0; k < this.arrays[index].numbers[row][col]; k++)
-						{
-							coordinates.push([row, col, k]);
-						}
-					}
-					
-					if (j < ppPivotsByHookLength[i].length)
-					{
-						hookMap[row][col] = [1, ppPivotsByHookLength[i][j]];
-						
-						if (row < planePartition.length && col < planePartition.length && this.arrays[index].numbers[row][col] > 0)
-						{
-							ppSize = Math.max(Math.max(ppSize, ppPivotsByHookLength[i][j][0] + 1), ppPivotsByHookLength[i][j][1] + 1);
-						}
-					}
-					
-					else
-					{
-						hookMap[row][col] = [0, rppPivotsByHookLength[i][j - ppPivotsByHookLength[i].length]];
-					}
-				}
-				
-				if (coordinates.length !== 0)
-				{
-					this.colorCubes(this.arrays[index], coordinates, (i - 1) / (maxAppHookLength - 1) * 6/7);
-				}
-			}
-			
-			await new Promise((resolve, reject) => setTimeout(resolve, this.animationTime * 3));
-			
-			
-			
-			let rpp = new Array(rppSize);
-			
-			for (let i = 0; i < rppSize; i++)
-			{
-				rpp[i] = new Array(rppSize);
-				
-				for (let j = 0; j < rppSize; j++)
-				{
-					if (j < rppSize - nuRowLengths[rppSize - i - 1])
-					{
-						rpp[i][j] = Infinity;
-					}
-					
-					else
-					{
-						rpp[i][j] = 0;
-					}
-				}
-			}
-			
-			let rppArray = null;
-			
-			if (rppSize > 0)
-			{
-				rppArray = await this.addNewArray(index + 1, rpp);
-				
-				await new Promise((resolve, reject) => setTimeout(resolve, this.animationTime / 2));
-			}
-			
-			
-			
-			let pp = new Array(ppSize);
-			
-			for (let i = 0; i < ppSize; i++)
-			{
-				pp[i] = new Array(ppSize);
-				
-				for (let j = 0; j < ppSize; j++)
-				{
-					pp[i][j] = 0;
-				}
-			}
-			
-			let ppArray = await this.addNewArray(index + 2, pp);
-			
-			
-			
-			for (let i = 0; i < planePartition.length - bottomLegSize; i++)
-			{
-				for (let j = nuRowLengths[i]; j < planePartition.length - rightLegSize; j++)
-				{
-					if (this.arrays[index].numbers[i][j] > 0)
-					{
-						let sourceCoordinates = [];
-						let targetCoordinates = [];
-						
-						let targetRow = hookMap[i][j][1][0];
-						let targetCol = hookMap[i][j][1][1];
-						
-						for (let k = 0; k < this.arrays[index].numbers[i][j]; k++)
-						{
-							sourceCoordinates.push([i, j, k]);
-							targetCoordinates.push([targetRow, targetCol, k]);
-						}
-						
-						if (hookMap[i][j][0] === 0)
-						{
-							await this.moveCubes(this.arrays[index], sourceCoordinates, rppArray, targetCoordinates);
-							
-							rpp[targetRow][targetCol] = this.arrays[index].numbers[i][j];
-							this.arrays[index].numbers[i][j] = 0;
+							currentIndex = nextIndex;
 						}
 						
 						else
 						{
-							await this.moveCubes(this.arrays[index], sourceCoordinates, ppArray, targetCoordinates);
+							let oldTargetCoordinates = _.cloneDeep(targetCoordinates.slice(currentIndex));
 							
-							pp[targetRow][targetCol] = this.arrays[index].numbers[i][j];
-							this.arrays[index].numbers[i][j] = 0;
+							//Shift the rest of the coordinates down and right by 1.
+							for (let k = currentIndex; k < targetCoordinates.length; k++)
+							{
+								targetCoordinates[k][0]++;
+								targetCoordinates[k][1]++;
+								
+								if (targetCoordinates[k][0] > outputArray.footprint || targetCoordinates[k][1] > outputArray.footprint)
+								{
+									console.error("Insertion failed!");
+									return;
+								}
+							}
+							
+							let newTargetCoordinates = targetCoordinates.slice(currentIndex);
+							
+							await this.moveCubes(outputArray, oldTargetCoordinates, outputArray, newTargetCoordinates);
+							
+							currentHeight = outputArray.numbers[targetCoordinates[currentIndex][0]][targetCoordinates[currentIndex][1]];
 						}
 						
-						if (this.in2dView)
+						
+						
+						if (currentIndex === targetCoordinates.length)
 						{
-							this.drawAll2dViewText();
+							break;
 						}
-					}	
-				}
+					}
+					
+					
+					
+					currentHueIndex++;
+					
+					await new Promise((resolve, reject) => setTimeout(resolve, this.animationTime / 2));
+				}	
 			}
-			
-			
-			
-			await new Promise((resolve, reject) => setTimeout(resolve, this.animationTime * 3));
-			
-			//Now it's time for the palindromic toggle.
-			
-			await this.runAlgorithm("pakInverse", index, true);
-				
-			if (rppSize > 0)
-			{
-				await this.runAlgorithm("hillmanGrasslInverse", index + 1, true);
-			}	
-			
-			this.resolve();
-		});	
+		}	
+		
+		
+		
+		await this.removeArray(index);
 	}
 	
 	
 	
-	godar1Inverse(index)
+	async rsk(index)
 	{
-		return new Promise(async (resolve, reject) =>
+		let pArray = this.arrays[index];
+		let qArray = this.arrays[index + 1];
+		
+		let pSsyt = pArray.numbers;
+		let qSsyt = qArray.numbers;
+		
+		let arraySize = 0;
+		
+		let numHues = 0;
+		
+		//Remove any color that's here.
+		for (let i = 0; i < pSsyt.length; i++)
 		{
-			let ppArray = this.arrays[index + 1];
-			let pp = ppArray.numbers;
-			
-			let rppArray = this.arrays[index];
-			let rpp = rppArray.numbers;
-			
-			let nuRowLengths = new Array(pp.length + 2 * rpp.length);
-			let nuColLengths = new Array(pp.length + 2 * rpp.length);
-			
-			for (let i = 0; i < pp.length + 2 * rpp.length; i++)
+			for (let j = 0; j < pSsyt.length; j++)
 			{
-				nuRowLengths[i] = 0;
-				nuColLengths[i] = 0;
-			}
-			
-			//Figure out the shape of nu.
-			for (let i = 0; i < rpp.length; i++)
-			{
-				let j = rpp.length - 1;
+				if (pSsyt[i][j] === Infinity || qSsyt[i][j] === Infinity)
+				{
+					this.displayError("The SSYT contain infinite values, which is not allowed in RSK!");
+					
+					this.currentlyRunningAlgorithm = false;
+					
+					return;
+				}
 				
-				while (j >= 0 && rpp[i][j] !== Infinity)
+				if (pSsyt[i][j] !== 0)
+				{
+					numHues++;
+				}
+				
+				arraySize = Math.max(Math.max(arraySize, pSsyt[i][j]), qSsyt[i][j]);
+			}
+		}
+		
+		if (arraySize === 0)
+		{
+			this.displayError("The SSYT are empty!");
+			
+			this.currentlyRunningAlgorithm = false;
+			
+			return;
+		}
+		
+		
+		
+		let emptyArray = new Array(arraySize);
+		
+		for (let i = 0; i < arraySize; i++)
+		{
+			emptyArray[i] = new Array(arraySize);
+			
+			for (let j = 0; j < arraySize; j++)
+			{
+				emptyArray[i][j] = 0;
+			}
+		}
+		
+		let outputArray = await this.addNewArray(index + 2, emptyArray);
+		
+		
+		
+		let hueIndex = 0;
+		
+		while (qSsyt[0][0] !== 0)
+		{
+			let hue = hueIndex / numHues * 6/7;
+			
+			let maxEntry = 0;
+			let row = 0;
+			let col = 0;
+			
+			for (let i = 0; i < qSsyt.length; i++)
+			{
+				let j = qSsyt.length - 1;
+				
+				while (j >= 0 && qSsyt[i][j] === 0)
 				{
 					j--;
 				}
 				
-				nuRowLengths[rpp.length - i - 1] = rpp.length - j - 1;
+				if (j >= 0)
+				{
+					maxEntry = Math.max(maxEntry, qSsyt[i][j]);
+				}
+			}
+			
+			for (let i = 0; i < qSsyt.length; i++)
+			{
+				let j = qSsyt.length - 1;
 				
-				
-				
-				j = rpp.length - 1;
-				
-				while (j >= 0 && rpp[j][i] !== Infinity)
+				while (j >= 0 && qSsyt[i][j] === 0)
 				{
 					j--;
 				}
 				
-				nuColLengths[rpp.length - i - 1] = rpp.length - j - 1;
+				if (qSsyt[i][j] === maxEntry)
+				{
+					row = i;
+					col = j;
+					break;
+				}
 			}
 			
 			
 			
-			await this.runAlgorithm("pak", index, true);
+			//Now row and col are the coordinates of the most recently added element. We just need to un-insert the corresponding element from P.
+			let pSourceCoordinatesLocal = [];
+			let pTargetCoordinatesLocal = [];
+			let pSourceCoordinatesExternal = [];
+			let pTargetCoordinatesExternal = [];
+			
+			let qSourceCoordinatesExternal = [];
+			let qTargetCoordinatesExternal = [];
+			
+			let i = row;
+			let j = col;
+			let pEntry = pSsyt[i][j];
+			let qEntry = qSsyt[i][j];
+			
+			let pCoordinatePath = [[i, j]];
+			
+			
+			
+			while (i !== 0)
+			{
+				//Find the rightmost element in the row above that's strictly smaller than this.
+				let newJ = pSsyt.length - 1;
+				
+				while (pSsyt[i - 1][newJ] === 0 || pEntry <= pSsyt[i - 1][newJ])
+				{
+					newJ--;
+				}
+				
+				for (let k = 0; k < pEntry; k++)
+				{
+					pSourceCoordinatesLocal.push([i, j, k]);
+					pTargetCoordinatesLocal.push([i - 1, newJ, k]);
+				}
+				
+				i--;
+				j = newJ;
+				pEntry = pSsyt[i][j];
+				
+				pCoordinatePath.push([i, j]);
+			}
+			
+			
+			
+			//Alright, time for a stupid hack. The visual result we want is to take the stacks getting popped from both P and Q, move them to the first row and column of the output array to form a hook, delete all but one box (the top box of P), and then lower the other. The issue is that this will risk overwriting one of the two overlapping boxes, causing a memory leak and a glitchy state. The solution is to do a couple things. Only the P corner box will actually move to the output array -- the one from Q will appear to, but it will stay in its own array.
+			
+			let height = outputArray.height + 1;
+			
+			for (let k = 0; k < pEntry; k++)
+			{
+				pSourceCoordinatesExternal.push([i, j, k]);
+				pTargetCoordinatesExternal.push([qEntry - 1, k, height]);
+			}
+			
+			for (let k = 0; k < qEntry - 1; k++)
+			{
+				qSourceCoordinatesExternal.push([row, col, k]);
+				qTargetCoordinatesExternal.push([k, pEntry - 1, height]);
+			}
+			
+			
+			
+			this.colorCubes(qArray, qSourceCoordinatesExternal.concat([[row, col, qEntry - 1]]), hue);
+			this.colorCubes(pArray, pSourceCoordinatesLocal, hue);
+			await this.colorCubes(pArray, pSourceCoordinatesExternal, hue);
+			
+			
+			
+			//Update all the numbers.
+			qSsyt[row][col] = 0;
+			
+			for (let k = pCoordinatePath.length - 1; k > 0; k--)
+			{
+				pSsyt[pCoordinatePath[k][0]][pCoordinatePath[k][1]] = pSsyt[pCoordinatePath[k - 1][0]][pCoordinatePath[k - 1][1]];
+			}
+			
+			pSsyt[row][col] = 0;
+			
+			if (this.in2dView)
+			{
+				this.drawSingleCell2dViewText(pArray, row, col);
+				
+				for (let k = pCoordinatePath.length - 1; k > 0; k--)
+				{
+					this.drawSingleCell2dViewText(pArray, pCoordinatePath[k][0], pCoordinatePath[k][1]);
+				}
+				
+				this.drawSingleCell2dViewText(qArray, row, col);
+			}
+			
+			
+			
+			this.moveCubes(qArray, qSourceCoordinatesExternal, outputArray, qTargetCoordinatesExternal);
+			this.moveCubes(pArray, pSourceCoordinatesExternal, outputArray, pTargetCoordinatesExternal);
+			this.moveCubes(pArray, pSourceCoordinatesLocal, pArray, pTargetCoordinatesLocal);
+			await this.moveCubes(qArray, [[row, col, qEntry - 1]], outputArray, [[qEntry - 1, pEntry - 1, height]], false);
+			
+			
+			
+			this.uncolorCubes(pArray, pTargetCoordinatesLocal);
+			
+			
+			
+			//Delete the non-corner parts of the hook (animated), delete one of the overlapping corner cubes (instantly), and drop the other.
+			
+			//Gross but necessary. deleteCubes() needs to detach the object from its parent cube group, but what we pass isn't actually its parent, so we have to do it manually.
+			outputArray.cubeGroup.remove(qArray.cubes[row][col][qEntry - 1]);
+			this.deleteCubes(qArray, [[row, col, qEntry - 1]], true, true);
+			
+			pTargetCoordinatesExternal.reverse();
+			qTargetCoordinatesExternal.reverse();
+			
+			this.deleteCubes(outputArray, pTargetCoordinatesExternal.slice(1));
+			this.deleteCubes(outputArray, qTargetCoordinatesExternal);
+			
+			await this.lowerCubes(outputArray, [[qEntry - 1, pEntry - 1, height]]);
+			
+			emptyArray[qEntry - 1][pEntry - 1]++;
+			
+			if (this.in2dView)
+			{
+				this.drawSingleCell2dViewText(outputArray, qEntry - 1, pEntry - 1);
+			}
+			
+			this.recalculateHeights(outputArray);
+			
+			
+			
+			hueIndex++;
 			
 			await new Promise((resolve, reject) => setTimeout(resolve, this.animationTime / 2));
+		}
+		
+		
+		
+		
+		await this.removeArray(index);
+		
+		await new Promise((resolve, reject) => setTimeout(resolve, this.animationTime));
+		
+		await this.removeArray(index);
+	}
+	
+	
+	
+	async rskInverse(index)
+	{
+		let array = this.arrays[index];
+		
+		let tableau = _.cloneDeep(array.numbers);
+		
+		let numEntries = 0;
+		
+		tableau.forEach(row => row.forEach(entry => numEntries += entry));
+		
+		//The largest possible shape for these two is a straight line, requiring all the inserted elements to be increasing or decreasing.
+		let pSsyt = new Array(numEntries);
+		let qSsyt = new Array(numEntries);
+		
+		for (let i = 0; i < numEntries; i++)
+		{
+			pSsyt[i] = new Array(numEntries);
+			qSsyt[i] = new Array(numEntries);
 			
-			await this.runAlgorithm("pak", index + 1, true);
-			
-			
-			
-			await new Promise((resolve, reject) => setTimeout(resolve, this.animationTime * 3));
-			
-			
-			
-			//Uncolor everything.
-			let coordinates = [];
-			
-			let numbers = this.arrays[index].numbers;
-			
-			for (let i = 0; i < numbers.length; i++)
+			for (let j = 0; j < numEntries; j++)
 			{
-				for (let j = 0; j < numbers.length; j++)
+				pSsyt[i][j] = 0;
+				qSsyt[i][j] = 0;
+			}
+		}
+		
+		
+		
+		let pRowLengths = new Array(tableau.length);
+		
+		for (let i = 0; i < tableau.length; i++)
+		{
+			pRowLengths[i] = 0;
+		}
+		
+		let pNumRows = 0;
+		
+		
+		
+		//Unfortunately, there's no way to know the shape of P and Q without actually doing RSK, so we need to do all the calculations ahead of time, and only then animate things around.
+		let pInsertionPaths = [];
+		let qInsertionLocations = [];
+		let tableauRemovalLocations = [];
+		
+		for (let row = 0; row < tableau.length; row++)
+		{
+			for (let col = 0; col < tableau.length; col++)
+			{
+				while (tableau[row][col] !== 0)
 				{
-					if (numbers[i][j] !== Infinity)
+					tableau[row][col]--;
+					
+					let newNum = col + 1;
+					
+					let i = 0;
+					let j = 0;
+					
+					let path = [];
+					
+					while (true)
 					{
-						for (let k = 0; k < numbers[i][j]; k++)
+						j = pRowLengths[i];
+						
+						while (j !== 0 && pSsyt[i][j - 1] > newNum)
 						{
-							coordinates.push([i, j, k]);
+							j--;
 						}
-					}	
+						
+						if (j === pRowLengths[i])
+						{
+							pSsyt[i][j] = newNum;
+							
+							pRowLengths[i]++;
+							
+							if (j === 0)
+							{
+								pNumRows++;
+							}
+							
+							path.push([i, j]);
+							
+							break;
+						}
+						
+						let temp = pSsyt[i][j];
+						pSsyt[i][j] = newNum;
+						newNum = temp;
+						path.push([i, j]);
+						
+						i++;
+					}
+					
+					pInsertionPaths.push(path);
+					qInsertionLocations.push([i, j]);
+					tableauRemovalLocations.push([row, col]);
+					
+					qSsyt[i][j] = row + 1;
 				}
 			}
+		}
+		
+		
+
+		let ssytSize = Math.max(pRowLengths[0], pNumRows);
+		
+		pSsyt = new Array(ssytSize);
+		qSsyt = new Array(ssytSize);
+		
+		for (let i = 0; i < ssytSize; i++)
+		{
+			pSsyt[i] = new Array(ssytSize);
+			qSsyt[i] = new Array(ssytSize);
 			
-			this.uncolorCubes(this.arrays[index], coordinates);
+			for (let j = 0; j < ssytSize; j++)
+			{
+				pSsyt[i][j] = 0;
+				qSsyt[i][j] = 0;
+			}
+		}
+		
+		let pArray = await this.addNewArray(index + 1, pSsyt);
+		
+		await new Promise((resolve, reject) => setTimeout(resolve, this.animationTime / 2));
+		
+		let qArray = await this.addNewArray(index + 2, qSsyt);
+		
+		await new Promise((resolve, reject) => setTimeout(resolve, this.animationTime / 2));
+		
+		
+		
+		let hueIndex = 0;
+		
+		//Loop through the tableau in weirdo lex order and reassemble the paths.
+		for (let i = 0; i < tableauRemovalLocations.length; i++)
+		{
+			let row = tableauRemovalLocations[i][0];
+			let col = tableauRemovalLocations[i][1];
+			
+			let height = array.height + 1;
+			
+			let hue = hueIndex / numEntries * 6/7;
 			
 			
+			
+			//Add a bunch of cubes corresponding to the hook that this thing is a part of.
+			for (let j = col; j >= 0; j--)
+			{
+				array.cubes[row][j][height] = this.addCube(array, j, height, row);
+				array.cubes[row][j][height].material.forEach(material => material.color.setHSL(hue, 1, this.cubeLightness));
+			}
+			
+			for (let j = row - 1; j >= 0; j--)
+			{
+				array.cubes[j][col][height] = this.addCube(array, col, height, j);
+				array.cubes[j][col][height].material.forEach(material => material.color.setHSL(hue, 1, this.cubeLightness));
+			}
+			
+			//This is the duplicate cube. As usual, we need to store it somewhere else in the array -- here, we're going to place it one space vertically above its actual location.
+			
+			array.cubes[row][col][height + 1] = this.addCube(array, col, height, row);
+			array.cubes[row][col][height + 1].material.forEach(material => material.color.setHSL(hue, 1, this.cubeLightness));
+			
+			
+			
+			await this.colorCubes(array, [[row, col, array.numbers[row][col] - 1]], hue);
+			
+			await this.raiseCubes(array, [[row, col, array.numbers[row][col] - 1]], height);
+			
+			
+			
+			let promise1 = this.revealCubes(array, [[row, col, height + 1]]);
+			
+			let coordinates = [];
+			
+			for (let j = col - 1; j >= 0; j--)
+			{
+				coordinates.push([row, j, height]);
+			}
+			
+			let promise2 = this.revealCubes(array, coordinates);
 			
 			coordinates = [];
 			
-			numbers = this.arrays[index + 1].numbers;
-			
-			for (let i = 0; i < numbers.length; i++)
+			for (let j = row - 1; j >= 0; j--)
 			{
-				for (let j = 0; j < numbers.length; j++)
+				coordinates.push([j, col, height]);
+			}
+			
+			let promise3 = this.revealCubes(array, coordinates);
+			
+			await Promise.all([promise1, promise2, promise3]);
+			
+			
+			
+			//First of all, we'll handle the insertion into P. As always, this takes some care. The strictly proper way to animate this would be to move the stacks one at a time, but just like with the forward direction, it is *much* easier (and time-efficient) to just move everything at once.
+			let path = pInsertionPaths[hueIndex];
+			
+			let pSourceCoordinatesLocal = [];
+			let pTargetCoordinatesLocal = [];
+			
+			let pSourceCoordinatesExternal = [[row, col, array.numbers[row][col] - 1]];
+			let pTargetCoordinatesExternal = [[path[0][0], path[0][1], col]];
+			
+			let qSourceCoordinatesExternal = [[row, col, height + 1]];
+			let qTargetCoordinatesExternal = [[qInsertionLocations[hueIndex][0], qInsertionLocations[hueIndex][1], row]];
+			
+			
+			
+			for (let j = col - 1; j >= 0; j--)
+			{
+				pSourceCoordinatesExternal.push([row, j, height]);
+				pTargetCoordinatesExternal.push([path[0][0], path[0][1], j]);
+			}
+			
+			for (let j = 0; j < path.length - 1; j++)
+			{
+				for (let k = 0; k < pSsyt[path[j][0]][path[j][1]]; k++)
 				{
-					if (numbers[i][j] !== Infinity)
-					{
-						for (let k = 0; k < numbers[i][j]; k++)
-						{
-							coordinates.push([i, j, k]);
-						}
-					}	
+					pSourceCoordinatesLocal.push([path[j][0], path[j][1], k]);
+					pTargetCoordinatesLocal.push([path[j + 1][0], path[j + 1][1], k]);
 				}
 			}
 			
-			await this.uncolorCubes(arrays[index + 1], coordinates);
-			
-			
-			
-			//Organize everything by hook length. The largest the APP can be is determined by the maximum hook in the plane partition -- we'll narrow this down later but it suffices for now.
-			let appSize = Math.max(nuRowLengths[0], nuColLengths[0]) + 2 * pp.length - 1;
-			let maxAppHookLength = 2 * appSize;
-			let maxRppHookLength = nuRowLengths[0] + nuColLengths[0];
-			let maxPpHookLength = 2 * pp.length;
-			
-			let appPivotsByHookLength = new Array(maxAppHookLength);
-			let rppPivotsByHookLength = new Array(maxRppHookLength);
-			let ppPivotsByHookLength = new Array(maxPpHookLength);
-			
-			for (let i = 0; i < maxAppHookLength; i++)
+			for (let j = row - 1; j >= 0; j--)
 			{
-				appPivotsByHookLength[i] = new Array();
+				qSourceCoordinatesExternal.push([j, col, height]);
+				qTargetCoordinatesExternal.push([qInsertionLocations[hueIndex][0], qInsertionLocations[hueIndex][1], j]);
 			}
 			
-			for (let i = 0; i < maxRppHookLength; i++)
+			await this.colorCubes(pArray, pSourceCoordinatesLocal, hue);
+			
+			
+			
+			for (let j = path.length - 1; j > 0; j--)
 			{
-				rppPivotsByHookLength[i] = new Array();
+				pSsyt[path[j][0]][path[j][1]] = pSsyt[path[j - 1][0]][path[j - 1][1]];
 			}
 			
-			for (let i = 0; i < maxPpHookLength; i++)
+			if (path.length !== 0)
 			{
-				ppPivotsByHookLength[i] = new Array(i);
-				
-				for (let j = 0; j < i; j++)
-				{
-					ppPivotsByHookLength[i][j] = -1;
-				}
+				pSsyt[path[0][0]][path[0][1]] = 0;
 			}
 			
-			
-			
-			while (nuRowLengths.length < appSize)
+			if (this.in2dView)
 			{
-				nuRowLengths.push(0);
+				this.drawAll2dViewText();
 			}
 			
-			while (nuColLengths.length < appSize)
+			if (pSourceCoordinatesLocal.length !== 0)
 			{
-				nuColLengths.push(0);
+				await this.moveCubes(pArray, pSourceCoordinatesLocal, pArray, pTargetCoordinatesLocal);	
+			}	
+			
+			
+			
+			array.numbers[row][col]--;
+			
+			if (this.in2dView)
+			{
+				this.drawAll2dViewText();
 			}
 			
+			this.moveCubes(array, pSourceCoordinatesExternal, pArray, pTargetCoordinatesExternal);
+			
+			await this.moveCubes(array, qSourceCoordinatesExternal, qArray, qTargetCoordinatesExternal);
 			
 			
-			for (let i = 0; i < appSize; i++)
+			
+			pSsyt[path[0][0]][path[0][1]] = col + 1;
+			
+			qSsyt[qInsertionLocations[hueIndex][0]][qInsertionLocations[hueIndex][1]] = row + 1;
+			
+			if (this.in2dView)
 			{
-				for (let j = 0; j < appSize; j++)
-				{
-					if (j >= nuRowLengths[i])
-					{
-						appPivotsByHookLength[i + j + 1 - nuRowLengths[i] - nuColLengths[j]].push([i, j]);
-					}
-					
-					else
-					{
-						//.unshift rather than .push makes the hooks move in the correct order.
-						rppPivotsByHookLength[nuRowLengths[i] + nuColLengths[j] - i - j - 1].unshift([rpp.length - i - 1, rpp.length - j - 1]);
-					}
-					
-					
-					
-					if (i < pp.length && j < pp.length)
-					{
-						//We can't just use .push here -- there will be more hooks of any given length that aren't included in the square.
-						ppPivotsByHookLength[i + j + 1][i] = [i, j];
-					}	
-				}
-			}
-			
-			let ppHookMap = new Array(pp.length);
-			
-			for (let i = 0; i < pp.length; i++)
-			{
-				ppHookMap[i] = new Array(pp.length);
-			}
-			
-			let rppHookMap = new Array(rpp.length);
-			
-			for (let i = 0; i < rpp.length; i++)
-			{
-				rppHookMap[i] = new Array(rpp.length);
+				this.drawAll2dViewText();
 			}
 			
 			
 			
-			appSize = 1;
-			
-			for (let i = 1; i < maxRppHookLength; i++)
-			{
-				let coordinates = [];
-				
-				for (let j = 0; j < rppPivotsByHookLength[i].length; j++)
-				{
-					let row = rppPivotsByHookLength[i][j][0];
-					let col = rppPivotsByHookLength[i][j][1];
-					
-					for (let k = 0; k < arrays[index].numbers[row][col]; k++)
-					{
-						coordinates.push([row, col, k]);
-					}
-					
-					rppHookMap[row][col] = appPivotsByHookLength[i][j + ppPivotsByHookLength[i].length];
-					
-					if (this.arrays[index].numbers[row][col] !== 0)
-					{
-						appSize = Math.max(Math.max(appSize, rppHookMap[row][col][0] + 1), rppHookMap[row][col][1] + 1);
-					}
-				}
-				
-				if (coordinates.length !== 0)
-				{
-					this.colorCubes(this.arrays[index], coordinates, (i - 1) / (maxRppHookLength - 1) * 6/7);
-				}
-			}
+			this.recalculateHeights(array);
+			this.recalculateHeights(pArray);
+			this.recalculateHeights(qArray);
 			
 			
 			
-			for (let i = 1; i < maxPpHookLength; i++)
-			{
-				let coordinates = [];
-				
-				for (let j = 0; j < ppPivotsByHookLength[i].length; j++)
-				{
-					if (ppPivotsByHookLength[i][j] === -1)
-					{
-						continue;
-					}
-					
-					let row = ppPivotsByHookLength[i][j][0];
-					let col = ppPivotsByHookLength[i][j][1];
-					
-					for (let k = 0; k < arrays[index + 1].numbers[row][col]; k++)
-					{
-						coordinates.push([row, col, k]);
-					}
-					
-					ppHookMap[row][col] = appPivotsByHookLength[i][j];
-					
-					if (this.arrays[index + 1].numbers[row][col] !== 0)
-					{
-						appSize = Math.max(Math.max(appSize, ppHookMap[row][col][0] + 1), ppHookMap[row][col][1] + 1);
-					}
-				}
-				
-				if (coordinates.length !== 0)
-				{
-					this.colorCubes(this.arrays[index + 1], coordinates, (i - 1) / (maxPpHookLength - 1) * 6/7);
-				}
-			}
-			
-			
-			
-			await new Promise((resolve, reject) => setTimeout(resolve, this.animationTime * 3));
-			
-			
-			
-			let app = new Array(appSize);
-			
-			for (let i = 0; i < appSize; i++)
-			{
-				app[i] = new Array(appSize);
-				
-				for (let j = 0; j < appSize; j++)
-				{
-					if (j < nuRowLengths[i])
-					{
-						app[i][j] = Infinity;
-					}
-					
-					else
-					{
-						app[i][j] = 0;
-					}	
-				}
-			}
-			
-			let appArray = await this.addNewArray(index + 2, app);
+			hueIndex++;
 			
 			await new Promise((resolve, reject) => setTimeout(resolve, this.animationTime / 2));
+		}
+		
+		
+		
+		await this.removeArray(index);
+	}
+	
+	
+	
+	async godar1(index)
+	{
+		//Figure out the shape of nu.
+		let array = this.arrays[index];
+		let planePartition = array.numbers;
+		
+		let nuRowLengths = new Array(2 * planePartition.length);
+		let nuColLengths = new Array(2 * planePartition.length);
+		
+		for (let i = 0; i < planePartition.length; i++)
+		{
+			let j = 0;
 			
-			
-			
-			for (let i = 0; i < rpp.length; i++)
+			while (j < planePartition.length && planePartition[i][j] === Infinity)
 			{
-				for (let j = 0; j < rpp.length; j++)
+				j++;
+			}
+			
+			nuRowLengths[i] = j;
+			
+			
+			
+			j = 0;
+			
+			while (j < planePartition.length && planePartition[j][i] === Infinity)
+			{
+				j++;
+			}
+			
+			nuColLengths[i] = j;
+		}
+		
+		for (let i = planePartition.length; i < 2 * planePartition.length; i++)
+		{
+			nuRowLengths[i] = 0;
+			
+			nuColLengths[i] = 0;
+		}
+		
+		let rppSize = Math.max(nuRowLengths[0], nuColLengths[0]);
+		
+		
+		
+		let newArray = new Array(planePartition.length);
+		
+		for (let i = 0; i < planePartition.length; i++)
+		{
+			newArray[i] = new Array(planePartition.length);
+			
+			for (let j = 0; j < planePartition.length; j++)
+			{
+				if (planePartition[i][j] === Infinity)
 				{
-					if (arrays[index].numbers[i][j] > 0 && this.arrays[index].numbers[i][j] !== Infinity)
+					newArray[i][j] = this.infiniteHeight;
+				}
+				
+				else
+				{
+					newArray[i][j] = planePartition[i][j];
+				}
+			}
+		}
+		
+		await this.addNewArray(index + 1, newArray);
+		
+		await new Promise((resolve, reject) => setTimeout(resolve, this.animationTime / 2));
+		
+		await this.removeArray(index);
+		
+		await new Promise((resolve, reject) => setTimeout(resolve, this.animationTime / 2));
+		
+		array = this.arrays[index];
+		planePartition = array.numbers;
+		
+		
+		
+		let rightLegSize = 0;
+		let bottomLegSize = 0;
+		
+		while (rightLegSize < planePartition.length && planePartition[rightLegSize][planePartition.length - 1] !== 0)
+		{
+			rightLegSize++;
+		}
+		
+		while (bottomLegSize < planePartition.length && planePartition[planePartition.length - 1][bottomLegSize] !== 0)
+		{
+			bottomLegSize++;
+		}
+		
+		
+		
+		await this.runAlgorithm("pak", index, true);
+		
+		await new Promise((resolve, reject) => setTimeout(resolve, this.animationTime * 2));
+		
+		array = this.arrays[index];
+		planePartition = array.numbers;
+		
+		
+		
+		//Clip out the finite part of the array.
+		
+		//The -1 is there to ensure the new array has the padding that indicates it's finite on the edges.
+		const legSize = Math.max(rightLegSize, bottomLegSize);
+		
+		let finiteArray = new Array(planePartition.length - legSize + 1);
+		
+		let cubesToDelete = [];
+		
+		for (let i = 0; i < finiteArray.length - 1; i++)
+		{
+			finiteArray[i] = new Array(finiteArray.length);
+			
+			for (let j = 0; j < finiteArray.length - 1; j++)
+			{
+				finiteArray[i][j] = planePartition[i][j];
+				
+				for (let k = 0; k < planePartition[i][j]; k++)
+				{
+					cubesToDelete.push([i, j, k]);
+				}
+				
+				planePartition[i][j] = 0;
+			}
+			
+			finiteArray[i][finiteArray.length - 1] = 0;
+		}
+		
+		finiteArray[finiteArray.length - 1] = new Array(finiteArray.length);
+		
+		for (let j = 0; j < finiteArray.length; j++)
+		{
+			finiteArray[finiteArray.length - 1][j] = 0;
+		}
+		
+		
+		
+		this.deleteCubes(array, cubesToDelete, true, true);
+		
+		await this.addNewArray(index, finiteArray);
+		
+		await new Promise((resolve, reject) => setTimeout(resolve, this.animationTime / 2));
+		
+		
+		
+		//Now we unPak the second array.
+		
+		await this.runAlgorithm("pakInverse", index, true);
+		
+		await new Promise((resolve, reject) => setTimeout(resolve, this.animationTime * 2));
+		
+		
+
+		//We're now clear to pull apart the negative RPP from the finite part.n
+		
+		
+		
+		//In order for the bijection to actually be correct, we need to make sure the rearrangement works the same way each time. The easiest way to do this is to ensure that every hook length actually in the APP has a *full* array of possible locations, so that its index in that is correct.
+		
+		
+		
+		//Organize everything by hook length.
+		let maxAppHookLength = 2 * planePartition.length - nuRowLengths[planePartition.length - 1] - nuColLengths[planePartition.length - 1];
+		let maxRppHookLength = nuRowLengths[0] + nuColLengths[0];
+		
+		let appPivotsByHookLength = new Array(4 * planePartition.length);
+		let rppPivotsByHookLength = new Array(maxRppHookLength);
+		let ppPivotsByHookLength = new Array(4 * planePartition.length);
+		
+		for (let i = 0; i < 4 * planePartition.length; i++)
+		{
+			appPivotsByHookLength[i] = new Array();
+		}
+		
+		for (let i = 0; i < maxRppHookLength; i++)
+		{
+			rppPivotsByHookLength[i] = new Array();
+		}
+		
+		for (let i = 0; i < 4 * planePartition.length; i++)
+		{
+			ppPivotsByHookLength[i] = new Array();
+		}
+		
+		let ppSize = 1;
+		
+		//If nu = (3, 1) and the APP given is 3x3, then its maximum hook length is 5, and we need to check an 8x8 square.
+		
+		for (let i = 0; i < 2 * planePartition.length; i++)
+		{
+			for (let j = 0; j < 2 * planePartition.length; j++)
+			{
+				if (j >= nuRowLengths[i])
+				{
+					appPivotsByHookLength[i + j + 1 - nuRowLengths[i] - nuColLengths[j]].push([i, j]);
+				}
+				
+				else
+				{
+					//.unshift rather than .push makes the hooks move in the correct order.
+					rppPivotsByHookLength[nuRowLengths[i] + nuColLengths[j] - i - j - 1].unshift([rppSize - i - 1, rppSize - j - 1]);
+				}
+				
+				ppPivotsByHookLength[i + j + 1].push([i, j]);
+			}
+		}
+		
+		
+		
+		let hookMap = new Array(2 * planePartition.length);
+		
+		for (let i = 0; i < 2 * planePartition.length; i++)
+		{
+			hookMap[i] = new Array(2 * planePartition.length);
+		}
+		
+		for (let i = 1; i < maxAppHookLength; i++)
+		{
+			let coordinates = [];
+			
+			for (let j = 0; j < appPivotsByHookLength[i].length; j++)
+			{
+				let row = appPivotsByHookLength[i][j][0];
+				let col = appPivotsByHookLength[i][j][1];
+				
+				if (row < planePartition.length - bottomLegSize && col < planePartition.length - rightLegSize)
+				{
+					for (let k = 0; k < this.arrays[index].numbers[row][col]; k++)
 					{
-						let sourceCoordinates = [];
-						let targetCoordinates = [];
+						coordinates.push([row, col, k]);
+					}
+				}
+				
+				if (j < ppPivotsByHookLength[i].length)
+				{
+					hookMap[row][col] = [1, ppPivotsByHookLength[i][j]];
+					
+					if (row < planePartition.length && col < planePartition.length && this.arrays[index].numbers[row][col] > 0)
+					{
+						ppSize = Math.max(Math.max(ppSize, ppPivotsByHookLength[i][j][0] + 1), ppPivotsByHookLength[i][j][1] + 1);
+					}
+				}
+				
+				else
+				{
+					hookMap[row][col] = [0, rppPivotsByHookLength[i][j - ppPivotsByHookLength[i].length]];
+				}
+			}
+			
+			if (coordinates.length !== 0)
+			{
+				this.colorCubes(this.arrays[index], coordinates, (i - 1) / (maxAppHookLength - 1) * 6/7);
+			}
+		}
+		
+		await new Promise((resolve, reject) => setTimeout(resolve, this.animationTime * 3));
+		
+		
+		
+		let rpp = new Array(rppSize);
+		
+		for (let i = 0; i < rppSize; i++)
+		{
+			rpp[i] = new Array(rppSize);
+			
+			for (let j = 0; j < rppSize; j++)
+			{
+				if (j < rppSize - nuRowLengths[rppSize - i - 1])
+				{
+					rpp[i][j] = Infinity;
+				}
+				
+				else
+				{
+					rpp[i][j] = 0;
+				}
+			}
+		}
+		
+		let rppArray = null;
+		
+		if (rppSize > 0)
+		{
+			rppArray = await this.addNewArray(index + 1, rpp);
+			
+			await new Promise((resolve, reject) => setTimeout(resolve, this.animationTime / 2));
+		}
+		
+		
+		
+		let pp = new Array(ppSize);
+		
+		for (let i = 0; i < ppSize; i++)
+		{
+			pp[i] = new Array(ppSize);
+			
+			for (let j = 0; j < ppSize; j++)
+			{
+				pp[i][j] = 0;
+			}
+		}
+		
+		let ppArray = await this.addNewArray(index + 2, pp);
+		
+		
+		
+		for (let i = 0; i < planePartition.length - bottomLegSize; i++)
+		{
+			for (let j = nuRowLengths[i]; j < planePartition.length - rightLegSize; j++)
+			{
+				if (this.arrays[index].numbers[i][j] > 0)
+				{
+					let sourceCoordinates = [];
+					let targetCoordinates = [];
+					
+					let targetRow = hookMap[i][j][1][0];
+					let targetCol = hookMap[i][j][1][1];
+					
+					for (let k = 0; k < this.arrays[index].numbers[i][j]; k++)
+					{
+						sourceCoordinates.push([i, j, k]);
+						targetCoordinates.push([targetRow, targetCol, k]);
+					}
+					
+					if (hookMap[i][j][0] === 0)
+					{
+						await this.moveCubes(this.arrays[index], sourceCoordinates, rppArray, targetCoordinates);
 						
-						let targetRow = rppHookMap[i][j][0];
-						let targetCol = rppHookMap[i][j][1];
-						
-						for (let k = 0; k < this.arrays[index].numbers[i][j]; k++)
-						{
-							sourceCoordinates.push([i, j, k]);
-							targetCoordinates.push([targetRow, targetCol, k]);
-						}
-						
-						await this.moveCubes(this.arrays[index], sourceCoordinates, appArray, targetCoordinates);
-						
-						app[targetRow][targetCol] = this.arrays[index].numbers[i][j];
-						
+						rpp[targetRow][targetCol] = this.arrays[index].numbers[i][j];
 						this.arrays[index].numbers[i][j] = 0;
-						
-						
-						
-						if (this.in2dView)
-						{
-							this.drawAll2dViewText();
-						}
-					}	
-				}
-			}
-			
-			
-			
-			for (let i = 0; i < pp.length; i++)
-			{
-				for (let j = 0; j < pp.length; j++)
-				{
-					if (this.arrays[index + 1].numbers[i][j] > 0 && arrays[index + 1].numbers[i][j] !== Infinity)
+					}
+					
+					else
 					{
-						let sourceCoordinates = [];
-						let targetCoordinates = [];
+						await this.moveCubes(this.arrays[index], sourceCoordinates, ppArray, targetCoordinates);
 						
-						let targetRow = ppHookMap[i][j][0];
-						let targetCol = ppHookMap[i][j][1];
-						
-						for (let k = 0; k < this.arrays[index + 1].numbers[i][j]; k++)
-						{
-							sourceCoordinates.push([i, j, k]);
-							targetCoordinates.push([targetRow, targetCol, k]);
-						}
-						
-						
-						
-						await this.moveCubes(this.arrays[index + 1], sourceCoordinates, appArray, targetCoordinates);
-						
-						app[targetRow][targetCol] = this.arrays[index + 1].numbers[i][j];
-						this.arrays[index + 1].numbers[i][j] = 0;
-						
-						
-						
-						if (this.in2dView)
-						{
-							this.drawAll2dViewText();
-						}
-					}	
+						pp[targetRow][targetCol] = this.arrays[index].numbers[i][j];
+						this.arrays[index].numbers[i][j] = 0;
+					}
+					
+					if (this.in2dView)
+					{
+						this.drawAll2dViewText();
+					}
+				}	
+			}
+		}
+		
+		
+		
+		await new Promise((resolve, reject) => setTimeout(resolve, this.animationTime * 3));
+		
+		//Now it's time for the palindromic toggle.
+		
+		await this.runAlgorithm("pakInverse", index, true);
+			
+		if (rppSize > 0)
+		{
+			await this.runAlgorithm("hillmanGrasslInverse", index + 1, true);
+		}
+	}
+	
+	
+	
+	async godar1Inverse(index)
+	{
+		let ppArray = this.arrays[index + 1];
+		let pp = ppArray.numbers;
+		
+		let rppArray = this.arrays[index];
+		let rpp = rppArray.numbers;
+		
+		let nuRowLengths = new Array(pp.length + 2 * rpp.length);
+		let nuColLengths = new Array(pp.length + 2 * rpp.length);
+		
+		for (let i = 0; i < pp.length + 2 * rpp.length; i++)
+		{
+			nuRowLengths[i] = 0;
+			nuColLengths[i] = 0;
+		}
+		
+		//Figure out the shape of nu.
+		for (let i = 0; i < rpp.length; i++)
+		{
+			let j = rpp.length - 1;
+			
+			while (j >= 0 && rpp[i][j] !== Infinity)
+			{
+				j--;
+			}
+			
+			nuRowLengths[rpp.length - i - 1] = rpp.length - j - 1;
+			
+			
+			
+			j = rpp.length - 1;
+			
+			while (j >= 0 && rpp[j][i] !== Infinity)
+			{
+				j--;
+			}
+			
+			nuColLengths[rpp.length - i - 1] = rpp.length - j - 1;
+		}
+		
+		
+		
+		await this.runAlgorithm("pak", index, true);
+		
+		await new Promise((resolve, reject) => setTimeout(resolve, this.animationTime / 2));
+		
+		await this.runAlgorithm("pak", index + 1, true);
+		
+		
+		
+		await new Promise((resolve, reject) => setTimeout(resolve, this.animationTime * 3));
+		
+		
+		
+		//Uncolor everything.
+		let coordinates = [];
+		
+		let numbers = this.arrays[index].numbers;
+		
+		for (let i = 0; i < numbers.length; i++)
+		{
+			for (let j = 0; j < numbers.length; j++)
+			{
+				if (numbers[i][j] !== Infinity)
+				{
+					for (let k = 0; k < numbers[i][j]; k++)
+					{
+						coordinates.push([i, j, k]);
+					}
+				}	
+			}
+		}
+		
+		this.uncolorCubes(this.arrays[index], coordinates);
+		
+		
+		
+		coordinates = [];
+		
+		numbers = this.arrays[index + 1].numbers;
+		
+		for (let i = 0; i < numbers.length; i++)
+		{
+			for (let j = 0; j < numbers.length; j++)
+			{
+				if (numbers[i][j] !== Infinity)
+				{
+					for (let k = 0; k < numbers[i][j]; k++)
+					{
+						coordinates.push([i, j, k]);
+					}
+				}	
+			}
+		}
+		
+		await this.uncolorCubes(this.arrays[index + 1], coordinates);
+		
+		
+		
+		//Organize everything by hook length. The largest the APP can be is determined by the maximum hook in the plane partition -- we'll narrow this down later but it suffices for now.
+		let appSize = Math.max(nuRowLengths[0], nuColLengths[0]) + 2 * pp.length - 1;
+		let maxAppHookLength = 2 * appSize;
+		let maxRppHookLength = nuRowLengths[0] + nuColLengths[0];
+		let maxPpHookLength = 2 * pp.length;
+		
+		let appPivotsByHookLength = new Array(maxAppHookLength);
+		let rppPivotsByHookLength = new Array(maxRppHookLength);
+		let ppPivotsByHookLength = new Array(maxPpHookLength);
+		
+		for (let i = 0; i < maxAppHookLength; i++)
+		{
+			appPivotsByHookLength[i] = new Array();
+		}
+		
+		for (let i = 0; i < maxRppHookLength; i++)
+		{
+			rppPivotsByHookLength[i] = new Array();
+		}
+		
+		for (let i = 0; i < maxPpHookLength; i++)
+		{
+			ppPivotsByHookLength[i] = new Array(i);
+			
+			for (let j = 0; j < i; j++)
+			{
+				ppPivotsByHookLength[i][j] = -1;
+			}
+		}
+		
+		
+		
+		while (nuRowLengths.length < appSize)
+		{
+			nuRowLengths.push(0);
+		}
+		
+		while (nuColLengths.length < appSize)
+		{
+			nuColLengths.push(0);
+		}
+		
+		
+		
+		for (let i = 0; i < appSize; i++)
+		{
+			for (let j = 0; j < appSize; j++)
+			{
+				if (j >= nuRowLengths[i])
+				{
+					appPivotsByHookLength[i + j + 1 - nuRowLengths[i] - nuColLengths[j]].push([i, j]);
+				}
+				
+				else
+				{
+					//.unshift rather than .push makes the hooks move in the correct order.
+					rppPivotsByHookLength[nuRowLengths[i] + nuColLengths[j] - i - j - 1].unshift([rpp.length - i - 1, rpp.length - j - 1]);
+				}
+				
+				
+				
+				if (i < pp.length && j < pp.length)
+				{
+					//We can't just use .push here -- there will be more hooks of any given length that aren't included in the square.
+					ppPivotsByHookLength[i + j + 1][i] = [i, j];
+				}	
+			}
+		}
+		
+		let ppHookMap = new Array(pp.length);
+		
+		for (let i = 0; i < pp.length; i++)
+		{
+			ppHookMap[i] = new Array(pp.length);
+		}
+		
+		let rppHookMap = new Array(rpp.length);
+		
+		for (let i = 0; i < rpp.length; i++)
+		{
+			rppHookMap[i] = new Array(rpp.length);
+		}
+		
+		
+		
+		appSize = 1;
+		
+		for (let i = 1; i < maxRppHookLength; i++)
+		{
+			let coordinates = [];
+			
+			for (let j = 0; j < rppPivotsByHookLength[i].length; j++)
+			{
+				let row = rppPivotsByHookLength[i][j][0];
+				let col = rppPivotsByHookLength[i][j][1];
+				
+				for (let k = 0; k < this.arrays[index].numbers[row][col]; k++)
+				{
+					coordinates.push([row, col, k]);
+				}
+				
+				rppHookMap[row][col] = appPivotsByHookLength[i][j + ppPivotsByHookLength[i].length];
+				
+				if (this.arrays[index].numbers[row][col] !== 0)
+				{
+					appSize = Math.max(Math.max(appSize, rppHookMap[row][col][0] + 1), rppHookMap[row][col][1] + 1);
 				}
 			}
 			
+			if (coordinates.length !== 0)
+			{
+				this.colorCubes(this.arrays[index], coordinates, (i - 1) / (maxRppHookLength - 1) * 6/7);
+			}
+		}
+		
+		
+		
+		for (let i = 1; i < maxPpHookLength; i++)
+		{
+			let coordinates = [];
 			
+			for (let j = 0; j < ppPivotsByHookLength[i].length; j++)
+			{
+				if (ppPivotsByHookLength[i][j] === -1)
+				{
+					continue;
+				}
+				
+				let row = ppPivotsByHookLength[i][j][0];
+				let col = ppPivotsByHookLength[i][j][1];
+				
+				for (let k = 0; k < this.arrays[index + 1].numbers[row][col]; k++)
+				{
+					coordinates.push([row, col, k]);
+				}
+				
+				ppHookMap[row][col] = appPivotsByHookLength[i][j];
+				
+				if (this.arrays[index + 1].numbers[row][col] !== 0)
+				{
+					appSize = Math.max(Math.max(appSize, ppHookMap[row][col][0] + 1), ppHookMap[row][col][1] + 1);
+				}
+			}
 			
-			await this.removeArray(index);
+			if (coordinates.length !== 0)
+			{
+				this.colorCubes(this.arrays[index + 1], coordinates, (i - 1) / (maxPpHookLength - 1) * 6/7);
+			}
+		}
+		
+		
+		
+		await new Promise((resolve, reject) => setTimeout(resolve, this.animationTime * 3));
+		
+		
+		
+		let app = new Array(appSize);
+		
+		for (let i = 0; i < appSize; i++)
+		{
+			app[i] = new Array(appSize);
 			
-			await new Promise((resolve, reject) => setTimeout(resolve, this.animationTime / 2));
-			
-			await this.removeArray(index);
-			
-			
-			
-			await new Promise((resolve, reject) => setTimeout(resolve, this.animationTime * 3));
-			
-			
-			
-			await this.runAlgorithm("pakInverse", index, true);
-			
-			await new Promise((resolve, reject) => setTimeout(resolve, this.animationTime));
-			
-			
-			
-			resolve();
-		});
+			for (let j = 0; j < appSize; j++)
+			{
+				if (j < nuRowLengths[i])
+				{
+					app[i][j] = Infinity;
+				}
+				
+				else
+				{
+					app[i][j] = 0;
+				}	
+			}
+		}
+		
+		let appArray = await this.addNewArray(index + 2, app);
+		
+		await new Promise((resolve, reject) => setTimeout(resolve, this.animationTime / 2));
+		
+		
+		
+		for (let i = 0; i < rpp.length; i++)
+		{
+			for (let j = 0; j < rpp.length; j++)
+			{
+				if (this.arrays[index].numbers[i][j] > 0 && this.arrays[index].numbers[i][j] !== Infinity)
+				{
+					let sourceCoordinates = [];
+					let targetCoordinates = [];
+					
+					let targetRow = rppHookMap[i][j][0];
+					let targetCol = rppHookMap[i][j][1];
+					
+					for (let k = 0; k < this.arrays[index].numbers[i][j]; k++)
+					{
+						sourceCoordinates.push([i, j, k]);
+						targetCoordinates.push([targetRow, targetCol, k]);
+					}
+					
+					await this.moveCubes(this.arrays[index], sourceCoordinates, appArray, targetCoordinates);
+					
+					app[targetRow][targetCol] = this.arrays[index].numbers[i][j];
+					
+					this.arrays[index].numbers[i][j] = 0;
+					
+					
+					
+					if (this.in2dView)
+					{
+						this.drawAll2dViewText();
+					}
+				}	
+			}
+		}
+		
+		
+		
+		for (let i = 0; i < pp.length; i++)
+		{
+			for (let j = 0; j < pp.length; j++)
+			{
+				if (this.arrays[index + 1].numbers[i][j] > 0 && this.arrays[index + 1].numbers[i][j] !== Infinity)
+				{
+					let sourceCoordinates = [];
+					let targetCoordinates = [];
+					
+					let targetRow = ppHookMap[i][j][0];
+					let targetCol = ppHookMap[i][j][1];
+					
+					for (let k = 0; k < this.arrays[index + 1].numbers[i][j]; k++)
+					{
+						sourceCoordinates.push([i, j, k]);
+						targetCoordinates.push([targetRow, targetCol, k]);
+					}
+					
+					
+					
+					await this.moveCubes(this.arrays[index + 1], sourceCoordinates, appArray, targetCoordinates);
+					
+					app[targetRow][targetCol] = this.arrays[index + 1].numbers[i][j];
+					this.arrays[index + 1].numbers[i][j] = 0;
+					
+					
+					
+					if (this.in2dView)
+					{
+						this.drawAll2dViewText();
+					}
+				}	
+			}
+		}
+		
+		
+		
+		await this.removeArray(index);
+		
+		await new Promise((resolve, reject) => setTimeout(resolve, this.animationTime / 2));
+		
+		await this.removeArray(index);
+		
+		
+		
+		await new Promise((resolve, reject) => setTimeout(resolve, this.animationTime * 3));
+		
+		
+		
+		await this.runAlgorithm("pakInverse", index, true);
+		
+		await new Promise((resolve, reject) => setTimeout(resolve, this.animationTime));
 	}
 	
 	
 	
 	//A demonstration of the n-quotient, not currently public-facing in the applet. It uses the numbers canvas to draw the appropriate edges and move them around. To call this function, the canvas should be in 2d mode but the numbers should be gone.
-	drawBoundary(index, n)
+	async drawBoundary(index, n)
 	{
-		return new Promise(async (resolve, reject) =>
+		if (!this.in2dView)
 		{
-			if (!this.in2dView)
+			await this.show2dView();
+		}
+		
+		if (this.wilsonNumbers.canvas.style.opacity !== "0")
+		{
+			await changeOpacity(this.wilsonNumbers.canvas, 0, this.animationTime / 3);
+		}
+		
+		this.wilsonNumbers.ctx.clearRect(0, 0, this.wilsonNumbers.canvasWidth, this.wilsonNumbers.canvasHeight);
+		
+		
+		
+		let array = this.arrays[index];
+		let planePartition = array.numbers;
+		
+		let rects = [];
+		
+		let hueIndex = 0;
+		
+		let j = 0;
+		
+		for (let i = array.footprint - 1; i >= 0; i--)
+		{
+			while (j < array.footprint && planePartition[i][j] === Infinity)
 			{
-				await this.show2dView();
-			}
-			
-			if (this.wilsonNumbers.canvas.style.opacity !== "0")
-			{
-				await changeOpacity(this.wilsonNumbers.canvas, 0, this.animationTime / 3);
-			}
-			
-			this.wilsonNumbers.ctx.clearRect(0, 0, this.wilsonNumbers.canvasWidth, this.wilsonNumbers.canvasHeight);
-			
-			
-			
-			let array = this.arrays[index];
-			let planePartition = array.numbers;
-			
-			let rects = [];
-			
-			let hueIndex = 0;
-			
-			let j = 0;
-			
-			for (let i = array.footprint - 1; i >= 0; i--)
-			{
-				while (j < array.footprint && planePartition[i][j] === Infinity)
-				{
-					//Add horizontal edges.
-					if (i === array.footprint - 1 || planePartition[i + 1][j] !== Infinity)
-					{
-						let h = (hueIndex % n) / n;
-						
-						let rgb = this.wilson.utils.hsvToRgb(h, 1, 1);
-						
-						rects.push([i, j, true, `rgba(${rgb[0]}, ${rgb[1]}, ${rgb[2]}, `]);
-						
-						hueIndex++;
-					}
-					
-					j++;
-				}
-				
-				//Add a vertical edge.
-				let h = (hueIndex % n) / n;
-				
-				let rgb = this.wilson.utils.hsvToRgb(h, 1, 1);
-				
-				rects.push([i, j, false, `rgba(${rgb[0]}, ${rgb[1]}, ${rgb[2]}, `]);
-				
-				hueIndex++;
-			}
-			
-			//Add all the horizontal edges we missed.
-			let i = -1;
-			
-			while (j < array.footprint)
-			{
+				//Add horizontal edges.
 				if (i === array.footprint - 1 || planePartition[i + 1][j] !== Infinity)
 				{
 					let h = (hueIndex % n) / n;
@@ -5756,223 +5550,221 @@ export class PlanePartitions extends Applet
 				j++;
 			}
 			
-			rects.forEach(rect =>
+			//Add a vertical edge.
+			let h = (hueIndex % n) / n;
+			
+			let rgb = this.wilson.utils.hsvToRgb(h, 1, 1);
+			
+			rects.push([i, j, false, `rgba(${rgb[0]}, ${rgb[1]}, ${rgb[2]}, `]);
+			
+			hueIndex++;
+		}
+		
+		//Add all the horizontal edges we missed.
+		let i = -1;
+		
+		while (j < array.footprint)
+		{
+			if (i === array.footprint - 1 || planePartition[i + 1][j] !== Infinity)
 			{
-				this.drawBoundaryRect(array, rect[0], rect[1], rect[2], `${rect[3]} 1)`);
-			});
+				let h = (hueIndex % n) / n;
+				
+				let rgb = this.wilson.utils.hsvToRgb(h, 1, 1);
+				
+				rects.push([i, j, true, `rgba(${rgb[0]}, ${rgb[1]}, ${rgb[2]}, `]);
+				
+				hueIndex++;
+			}
 			
-			
-			
-			await changeOpacity(this.wilsonNumbers.canvas, 1, this.animationTime / 3);
-			
-			this.wilsonNumbers.ctx.fillStyle = "rgb(255, 255, 255)";
-			
-			resolve(rects);
+			j++;
+		}
+		
+		rects.forEach(rect =>
+		{
+			this.drawBoundaryRect(array, rect[0], rect[1], rect[2], `${rect[3]} 1)`);
 		});
+		
+		
+		
+		await changeOpacity(this.wilsonNumbers.canvas, 1, this.animationTime / 3);
+		
+		this.wilsonNumbers.ctx.fillStyle = "rgb(255, 255, 255)";
+		
+		return rects;
 	}
 	
 	
 	
-	drawNQuotient(index, n, m, rects)
+	async drawNQuotient(index, n, m, rects)
 	{
-		return new Promise(async (resolve, reject) =>
+		let array = this.arrays[index];
+		
+		//Fade out the ones we don't care about.
+		
+		let dummy = {t: 1};
+		
+		await anime({
+			targets: dummy,
+			t: 0,
+			duration: this.animationTime,
+			easing: "easeOutQuad",
+
+			update: () => 
+			{
+				this.wilsonNumbers.ctx.clearRect(0, 0, this.wilsonNumbers.canvasWidth, this.wilsonNumbers.canvasHeight);
+				
+				rects.forEach((rect, index) =>
+				{
+					let opacity = index % n === m ? 1 : dummy.t;
+					
+					this.drawBoundaryRect(array, rect[0], rect[1], rect[2], `${rect[3]} ${opacity})`);
+				});
+			}
+		}).finished;
+
+		this.wilsonNumbers.ctx.clearRect(0, 0, this.wilsonNumbers.canvasWidth, this.wilsonNumbers.canvasHeight);
+		
+		rects.forEach((rect, index) =>
 		{
-			let array = this.arrays[index];
+			let opacity = index % n === m ? 1 : 0;
 			
-			//Fade out the ones we don't care about.
+			this.drawBoundaryRect(array, rect[0], rect[1], rect[2], `${rect[3]} ${opacity})`);
+		});
+		
+		
+		
+		//Collapse the remaining ones. This assumes that the first and last rectangles are part of the endless border.
+		rects = rects.filter((rect, index) => index % n === m);
+		
+		//If we start from the bottom-left, the only difficult thing to do is figure out the correct starting column. Thankfully, that's easy: it's just the number of vertical edges total.
+		
+		let numVerticalEdges = rects.filter(rect => !rect[2]).length;
+		
+		let targetRects = new Array(rects.length);
+		
+		let row = numVerticalEdges - 1;
+		let col = 0;
+		
+		rects.forEach((rect, index) =>
+		{
+			targetRects[index] = [row, col];
 			
-			let dummy = {t: 1};
-			
-			await new Promise((resolve, reject) =>
+			if (rect[2])
 			{
-				anime({
-					targets: dummy,
-					t: 0,
-					duration: this.animationTime,
-					easing: "easeOutQuad",
-					
-					complete: () => 
-					{
-						this.wilsonNumbers.ctx.clearRect(0, 0, this.wilsonNumbers.canvasWidth, this.wilsonNumbers.canvasHeight);
-						
-						rects.forEach((rect, index) =>
-						{
-							let opacity = index % n === m ? 1 : 0;
-							
-							this.drawBoundaryRect(array, rect[0], rect[1], rect[2], `${rect[3]} ${opacity})`);
-						});
-						
-						resolve();
-					},
-					
-					update: () => 
-					{
-						this.wilsonNumbers.ctx.clearRect(0, 0, this.wilsonNumbers.canvasWidth, this.wilsonNumbers.canvasHeight);
-						
-						rects.forEach((rect, index) =>
-						{
-							let opacity = index % n === m ? 1 : dummy.t;
-							
-							this.drawBoundaryRect(array, rect[0], rect[1], rect[2], `${rect[3]} ${opacity})`);
-						});
-					}
-				});
-			});
+				col++;
+			}
 			
-			
-			
-			//Collapse the remaining ones. This assumes that the first and last rectangles are part of the endless border.
-			rects = rects.filter((rect, index) => index % n === m);
-			
-			//If we start from the bottom-left, the only difficult thing to do is figure out the correct starting column. Thankfully, that's easy: it's just the number of vertical edges total.
-			
-			let numVerticalEdges = rects.filter(rect => !rect[2]).length;
-			
-			let targetRects = new Array(rects.length);
-			
-			let row = numVerticalEdges - 1;
-			let col = 0;
-			
-			rects.forEach((rect, index) =>
+			else
 			{
-				targetRects[index] = [row, col];
+				row--;
+			}
+		});
+		
+		
+		
+		dummy.t = 0;
+		
+		await anime({
+			targets: dummy,
+			t: 1,
+			duration: this.animationTime,
+			easing: "easeInOutQuad",
+			
+			update: () => 
+			{
+				this.wilsonNumbers.ctx.clearRect(0, 0, this.wilsonNumbers.canvasWidth, this.wilsonNumbers.canvasHeight);
 				
-				if (rect[2])
+				rects.forEach((rect, index) =>
 				{
-					col++;
-				}
-				
-				else
-				{
-					row--;
-				}
-			});
-			
-			
-			
-			dummy.t = 0;
-			
-			await new Promise((resolve, reject) =>
-			{
-				anime({
-					targets: dummy,
-					t: 1,
-					duration: this.animationTime,
-					easing: "easeInOutQuad",
-					
-					complete: () =>
-					{
-						this.wilsonNumbers.ctx.clearRect(0, 0, this.wilsonNumbers.canvasWidth, this.wilsonNumbers.canvasHeight);
-						
-						rects.forEach((rect, index) =>
-						{
-							this.drawBoundaryRect(array, targetRects[index][0], targetRects[index][1], rect[2], `${rect[3]} 1)`);
-						});
-						
-						resolve();
-					},
-					
-					update: () => 
-					{
-						this.wilsonNumbers.ctx.clearRect(0, 0, this.wilsonNumbers.canvasWidth, this.wilsonNumbers.canvasHeight);
-						
-						rects.forEach((rect, index) =>
-						{
-							this.drawBoundaryRect(array, (1 - dummy.t) * rect[0] + dummy.t * targetRects[index][0], (1 - dummy.t) * rect[1] + dummy.t * targetRects[index][1], rect[2], `${rect[3]} 1)`);
-						});
-					}
+					this.drawBoundaryRect(array, (1 - dummy.t) * rect[0] + dummy.t * targetRects[index][0], (1 - dummy.t) * rect[1] + dummy.t * targetRects[index][1], rect[2], `${rect[3]} 1)`);
 				});
-			});
-			
-			
-			
-			//We'll start the next animation without waiting for it so that it plays concurrently: any asymptotes where there should no longer be any need to be removed.
-			
-			let cubesToDelete = [];
-			
-			targetRects.forEach((rect, index) =>
+			}
+		}).finished;
+
+		this.wilsonNumbers.ctx.clearRect(0, 0, this.wilsonNumbers.canvasWidth, this.wilsonNumbers.canvasHeight);
+		
+		rects.forEach((rect, index) =>
+		{
+			this.drawBoundaryRect(array, targetRects[index][0], targetRects[index][1], rect[2], `${rect[3]} 1)`);
+		});
+		
+		
+		
+		//We'll start the next animation without waiting for it so that it plays concurrently: any asymptotes where there should no longer be any need to be removed.
+		
+		let cubesToDelete = [];
+		
+		targetRects.forEach((rect, index) =>
+		{
+			if (!rects[index][2])
 			{
-				if (!rects[index][2])
+				for (let j = rect[1]; j < array.footprint; j++)
 				{
-					for (let j = rect[1]; j < array.footprint; j++)
+					if (array.numbers[rect[0]][j] === Infinity)
 					{
-						if (array.numbers[rect[0]][j] === Infinity)
+						for (let k = 0; k < this.infiniteHeight; k++)
 						{
-							for (let k = 0; k < this.infiniteHeight; k++)
-							{
-								cubesToDelete.push([rect[0], j, k]);
-							}
+							cubesToDelete.push([rect[0], j, k]);
 						}
 					}
 				}
-			});
-			
-			this.deleteCubes(array, cubesToDelete, true);
-			
-			
-			
-			//Now we'll go through and add more edges to make the whole thing look nicer.
-			let bonusRects = [];
-			
-			for (let i = array.footprint - 1; i > targetRects[0][0]; i--)
-			{
-				bonusRects.push([i, 0, false]);
 			}
-			
-			for (let j = targetRects[targetRects.length - 1][1]; j < array.footprint; j++)
-			{
-				bonusRects.push([-1, j, true]);
-			}
-			
-			dummy.t = 0;
-			
-			await new Promise((resolve, reject) =>
-			{
-				anime({
-					targets: dummy,
-					t: 1,
-					duration: this.animationTime / 2,
-					easing: "easeInQuad",
-					
-					complete: () =>
-					{
-						this.wilsonNumbers.ctx.clearRect(0, 0, this.wilsonNumbers.canvasWidth, this.wilsonNumbers.canvasHeight);
-						
-						rects.forEach((rect, index) =>
-						{
-							this.drawBoundaryRect(array, targetRects[index][0], targetRects[index][1], rect[2], `${rect[3]} 1)`);
-						});
-						
-						bonusRects.forEach((rect, index) =>
-						{
-							this.drawBoundaryRect(array, rect[0], rect[1], rect[2], `${rects[0][3]} 1)`);
-						});
-						
-						resolve();
-					},
-					
-					update: () => 
-					{
-						this.wilsonNumbers.ctx.clearRect(0, 0, this.wilsonNumbers.canvasWidth, this.wilsonNumbers.canvasHeight);
-						
-						rects.forEach((rect, index) =>
-						{
-							this.drawBoundaryRect(array, targetRects[index][0], targetRects[index][1], rect[2], `${rect[3]} 1)`);
-						});
-						
-						bonusRects.forEach((rect, index) =>
-						{
-							this.drawBoundaryRect(array, rect[0], rect[1], rect[2], `${rects[0][3]} ${dummy.t})`);
-						});
-					}
-				});
-			});
-			
-			
-			this.wilsonNumbers.ctx.fillStyle = "rgb(255, 255, 255)";
-			
-			resolve();
 		});
+		
+		this.deleteCubes(array, cubesToDelete, true);
+		
+		
+		
+		//Now we'll go through and add more edges to make the whole thing look nicer.
+		let bonusRects = [];
+		
+		for (let i = array.footprint - 1; i > targetRects[0][0]; i--)
+		{
+			bonusRects.push([i, 0, false]);
+		}
+		
+		for (let j = targetRects[targetRects.length - 1][1]; j < array.footprint; j++)
+		{
+			bonusRects.push([-1, j, true]);
+		}
+		
+		dummy.t = 0;
+		
+		await anime({
+			targets: dummy,
+			t: 1,
+			duration: this.animationTime / 2,
+			easing: "easeInQuad",
+
+			update: () => 
+			{
+				this.wilsonNumbers.ctx.clearRect(0, 0, this.wilsonNumbers.canvasWidth, this.wilsonNumbers.canvasHeight);
+				
+				rects.forEach((rect, index) =>
+				{
+					this.drawBoundaryRect(array, targetRects[index][0], targetRects[index][1], rect[2], `${rect[3]} 1)`);
+				});
+				
+				bonusRects.forEach(rect =>
+				{
+					this.drawBoundaryRect(array, rect[0], rect[1], rect[2], `${rects[0][3]} ${dummy.t})`);
+				});
+			}
+		}).finished;
+
+		this.wilsonNumbers.ctx.clearRect(0, 0, this.wilsonNumbers.canvasWidth, this.wilsonNumbers.canvasHeight);
+		
+		rects.forEach((rect, index) =>
+		{
+			this.drawBoundaryRect(array, targetRects[index][0], targetRects[index][1], rect[2], `${rect[3]} 1)`);
+		});
+		
+		bonusRects.forEach(rect =>
+		{
+			this.drawBoundaryRect(array, rect[0], rect[1], rect[2], `${rects[0][3]} 1)`);
+		});
+		
+		this.wilsonNumbers.ctx.fillStyle = "rgb(255, 255, 255)";
 	}
 	
 	
@@ -5994,4 +5786,4 @@ export class PlanePartitions extends Applet
 			this.wilsonNumbers.ctx.fillRect(this.wilsonNumbers.canvasWidth * (j + left + 15/16) / (this.totalArrayFootprint + 1), this.wilsonNumbers.canvasHeight * (i + top + 1) / (this.totalArrayFootprint + 1) + 1, this.wilsonNumbers.canvasWidth * (1/16) / (this.totalArrayFootprint + 1), this.wilsonNumbers.canvasHeight / (this.totalArrayFootprint + 1));
 		}
 	}
-	}
+}

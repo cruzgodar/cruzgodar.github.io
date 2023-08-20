@@ -1,5 +1,6 @@
 import { cardIsOpen } from "./cards.mjs";
 import { pageElement } from "./main.mjs";
+import anime from "/scripts/anime.js";
 
 export function typesetMath()
 {
@@ -18,16 +19,12 @@ export async function showTex(element)
 	element.classList.remove("active");
 	element.classList.remove("hover");
 	
-	await new Promise((resolve, reject) =>
-	{
-		anime({
-			targets: element,
-			scale: 1,
-			borderRadius: "0px",
-			duration: 0,
-			complete: resolve
-		});
-	});
+	await anime({
+		targets: element,
+		scale: 1,
+		borderRadius: "0px",
+		duration: 0,
+	}).finished;
 	
 	
 	
