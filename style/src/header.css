@@ -61,7 +61,7 @@
 
 #header-logo span
 {
-	color: var(--max-contrast);
+	color: var(--high-contrast);
 	padding-left: 5px;
 }
 
@@ -116,7 +116,7 @@
 
 #header-links a span
 {
-	color: var(--max-contrast);
+	color: var(--high-contrast);
 }
 
 #header-links a img

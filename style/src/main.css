@@ -7,19 +7,15 @@
 	--background-component: calc(255 + (var(--theme) * (24 - 255)));
 	--background: rgb(var(--background-component), var(--background-component), var(--background-component));
 
-	/* E.g. heading text */
-	--max-contrast-component: calc(0 + (var(--theme) * 255));
-	--max-contrast: rgb(var(--max-contrast-component), var(--max-contrast-component), var(--max-contrast-component));
-
 	/* E.g. section text */
-	--high-contrast-component: calc(48 + (var(--theme) * (220 - 48)));
+	--high-contrast-component: calc(0 + (var(--theme) * 255));
 	--high-contrast: rgb(var(--high-contrast-component), var(--high-contrast-component), var(--high-contrast-component));
 
 	/* E.g. heading text */
-	--normal-contrast-component: calc(96 + (var(--theme) * (172 - 96)));
+	--normal-contrast-component: calc(64 + (var(--theme) * (208 - 64)));
 	--normal-contrast: rgb(var(--normal-contrast-component), var(--normal-contrast-component), var(--normal-contrast-component));
 
-	--neutral-hover-component: calc(220 + (var(--theme) * (64 - 220)));
+	--neutral-hover-component: calc(208 + (var(--theme) * (64 - 208)));
 	--neutral-hover: rgb(var(--neutral-hover-component), var(--neutral-hover-component), var(--neutral-hover-component));
 }
 
@@ -177,7 +173,7 @@ img
 .heading-text
 {
 	font-size: 175%;
-	color: var(--max-contrast);
+	color: var(--high-contrast);
 	text-align: center;
 }
 

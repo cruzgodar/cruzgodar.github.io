@@ -183,8 +183,8 @@
 
 .text-box:focus
 {
-	border-color: var(--max-contrast);
-	color: var(--max-contrast);
+	border-color: var(--high-contrast);
+	color: var(--high-contrast);
 }
 
 .text-box-container
@@ -293,8 +293,8 @@
 
 .text-field:focus
 {
-	border-color: var(--max-contrast);
-	color: var(--max-contrast);
+	border-color: var(--high-contrast);
+	color: var(--high-contrast);
 }
 
 .text-field-container
@@ -375,7 +375,7 @@
 
 .slider-container > input:active, .slider-container > input:active::-webkit-slider-thumb, .slider-container > input:active::-moz-slider-thumb
 {
-	background-color: var(--max-contrast) !important;
+	background-color: var(--high-contrast) !important;
 }
 
 .slider-container > input:hover::-webkit-slider-thumb, .slider-container > input:hover::-moz-slider-thumb

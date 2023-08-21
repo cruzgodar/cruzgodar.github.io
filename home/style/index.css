@@ -63,7 +63,7 @@
 {
 	margin: 0 auto;
 	font-size: 150%;
-	color: var(--max-contrast);
+	color: var(--high-contrast);
 	width: 90vw;
 	text-align: center;
 }
