@@ -86,7 +86,7 @@ section
 #high-res-viewer-card img
 {
 	max-width: 100%;
-	max-height: calc(100vh - 100px);
+	max-height: calc(100vh - 300px);
 	border-radius: 16px;
 }
 
