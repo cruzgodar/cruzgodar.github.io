@@ -8,7 +8,7 @@ const root = process.argv[1].replace(/(\/cruzgodar.github.io\/).+$/, (match, $1)
 const excludeFromBuild = 
 [
 	/build.+/,
-	/slides\/.+\/index\..+/
+	/slides\/.+\/index\.htmdl/
 ];
 
 const siteCSSFiles =

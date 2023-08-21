@@ -20,9 +20,9 @@ export class PlanePartitions extends Applet
 	
 	animationTime = 600;
 	
-	asymptoteLightness = 1;
-	cubeLightness = 1;
-	floorLightness = 1;
+	asymptoteLightness = .6;
+	cubeLightness = .4;
+	floorLightness = .4;
 	
 	infiniteHeight = 100;
 	
@@ -324,7 +324,7 @@ export class PlanePartitions extends Applet
 		this.ambientLight = new THREE.AmbientLight(0xffffff, .2);
 		this.scene.add(this.ambientLight);
 		
-		this.pointLight = new THREE.PointLight(0xffffff, 1, 10000);
+		this.pointLight = new THREE.PointLight(0xffffff, 3, 10000);
 		this.pointLight.position.set(750, 1000, 500);
 		this.scene.add(this.pointLight);
 		
@@ -2159,15 +2159,15 @@ export class PlanePartitions extends Applet
 		let v = this.cubeLightness + 1 * Math.min(this.cubeLightness, 1 - this.cubeLightness);
 		let s = v === 0 ? 0 : 2 * (1 - this.cubeLightness / v);
 		
-		let targetColors = targets.map(() => this.wilson.utils.hsvToRgb(hue, s, v));
+		const targetColor = this.wilson.utils.hsvToRgb(hue, s, v);
 		
 		
 		
 		await anime({
 			targets: targets,
-			r: (element, index) => targetColors[index][0] / 255,
-			g: (element, index) => targetColors[index][1] / 255,
-			b: (element, index) => targetColors[index][2] / 255,
+			r: targetColor[0] / 255,
+			g: targetColor[1] / 255,
+			b: targetColor[2] / 255,
 			duration: this.animationTime,
 			delay: (element, index) => Math.floor(index / 6) * this.animationTime / 10,
 			easing: "easeOutQuad",

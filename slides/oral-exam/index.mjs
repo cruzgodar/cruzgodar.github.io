@@ -1174,7 +1174,4 @@ const options =
 	}
 };
 
-applet.loadPromise.then(() =>
-{
-	new Lapsa(options);
-});
+new Lapsa(options);
