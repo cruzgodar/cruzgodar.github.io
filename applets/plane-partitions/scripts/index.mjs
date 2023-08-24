@@ -1,6 +1,7 @@
 import { PlanePartitions } from "./class.mjs";
 import { changeOpacity } from "/scripts/src/animation.mjs";
 import { equalizeTextButtons } from "/scripts/src/buttons.mjs";
+import { equalizeAppletColumns } from "/scripts/src/layout.mjs";
 import { showPage } from "/scripts/src/load-page.mjs";
 import { $, $$ } from "/scripts/src/main.mjs";
 
@@ -114,6 +115,9 @@ export function load()
 		
 		equalizeTextButtons();
 		setTimeout(equalizeTextButtons, 10);
+
+		equalizeAppletColumns();
+		setTimeout(equalizeAppletColumns, 10);
 		
 		if (visibleSection === "edit-array")
 		{
