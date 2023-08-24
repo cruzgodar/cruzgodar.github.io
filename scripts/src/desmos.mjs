@@ -38,7 +38,7 @@ export async function createDesmosGraphs()
 	const green = siteSettings.darkTheme ? "#c000c0" : "#2fbf2f";
 	const black = "#000000";
 	
-	const data = getDesmosData(purple, blue, red, green, black);
+	const data = getDesmosData({ purple, blue, red, green, black });
 	
 	for (let key in data)
 	{

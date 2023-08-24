@@ -5,7 +5,7 @@ import { $ } from "/scripts/src/main.mjs";
 
 export function load()
 {
-	setGetDesmosData((purple, blue, red, green, black) =>
+	setGetDesmosData(({ purple, blue, red, black }) =>
 	{
 		const data =
 		{

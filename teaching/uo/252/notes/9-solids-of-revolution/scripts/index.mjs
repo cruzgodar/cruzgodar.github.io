@@ -1,9 +1,9 @@
-import { showPage } from "/scripts/src/load-page.mjs";
 import { createDesmosGraphs, setGetDesmosData } from "/scripts/src/desmos.mjs";
+import { showPage } from "/scripts/src/load-page.mjs";
 
 export function load()
 {
-	setGetDesmosData((purple, blue, red, green, black) =>
+	setGetDesmosData(({ purple, blue, red, green, black }) =>
 	{
 		const data =
 		{

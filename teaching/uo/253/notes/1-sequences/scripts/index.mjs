@@ -1,5 +1,5 @@
-import { showPage } from "/scripts/src/load-page.mjs";
 import { createDesmosGraphs, setGetDesmosData } from "/scripts/src/desmos.mjs";
+import { showPage } from "/scripts/src/load-page.mjs";
 
 function getDerivativeString(n)
 {
@@ -23,10 +23,10 @@ export function load()
 	
 	for (let i = 0; i <= 10; i++)
 	{
-		derivatives.push(derivativeString = getDerivativeString(i));
+		derivatives.push(getDerivativeString(i));
 	}
 	
-	setGetDesmosData((purple, blue, red, green, black) =>
+	setGetDesmosData(({ purple, blue, red }) =>
 	{
 		const data =
 		{

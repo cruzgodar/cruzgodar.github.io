@@ -3,7 +3,7 @@ import { showPage } from "/scripts/src/load-page.mjs";
 
 export function load()
 {
-	setGetDesmosData((purple, blue, red, green, black) =>
+	setGetDesmosData(({ purple, blue, red, black }) =>
 	{
 		const data =
 		{
