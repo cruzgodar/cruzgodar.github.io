@@ -87,7 +87,7 @@ export function addTemporaryWorker(src, id = src)
 		temporaryWorkers[id].terminate();
 	}
 
-	const replacedSrc = window.DEBUG ? src.replace(".js", ".min.js") : src;
+	const replacedSrc = window.DEBUG ? src : src.replace(".js", ".min.js");
 
 	const worker = new Worker(replacedSrc);
 

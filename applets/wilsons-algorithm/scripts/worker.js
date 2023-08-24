@@ -422,7 +422,7 @@ function jsRandomWalk(fixedLength = 0)
 
 
 
-async function colorGraph()
+async function colorGraph(linearColoring = false)
 {
 	//First, create an array whose (i, j) entry is a list of all the connection directions from vertex (i, j).
 	let connectionDirections = [];
@@ -573,7 +573,7 @@ async function colorGraph()
 	edgesByDistance.sort((a, b) => a[2] - b[2]);
 	
 	//The factor of 7/6 makes the farthest color from red be colored pink rather than red again.
-	let maxDistance = edgesByDistance[edgesByDistance.length - 1][2] * 7/6;
+	const maxDistance = edgesByDistance[edgesByDistance.length - 1][2] * 7/6;
 	
 	
 	
@@ -593,33 +593,38 @@ async function colorGraph()
 	
 	distanceBreaks.push(edgesByDistance.length);
 	
-	
-	
 	//Now, finally, we can draw the colors.
 	for (let i = 0; i < distanceBreaks.length; i++)
 	{
 		let j = 0;
+
+		const index = Math.min(distanceBreaks[i], edgesByDistance.length - 1);
+
+		const hue = linearColoring
+			? edgesByDistance[index][2] / maxDistance
+			: distanceBreaks[i + 1] / edgesByDistance.length * 6/7;
+		
+		const rgb = HSVtoRGB(hue, 1, 1);
 		
 		for (j = distanceBreaks[i]; j < distanceBreaks[i + 1] - 1; j++)
 		{
-			const rgb = HSVtoRGB(edgesByDistance[j][2] / maxDistance, 1, 1);
-			
 			drawLine(edgesByDistance[j][0][0], edgesByDistance[j][0][1], edgesByDistance[j][1][0], edgesByDistance[j][1][1], `rgb(${rgb[0]}, ${rgb[1]}, ${rgb[2]})`, 0);
 		}
-		
-		
-		
-		//We only wait for this one.
-		try
+
+		if (!edgesByDistance[j])
 		{
-			const rgb = HSVtoRGB(edgesByDistance[j][2] / maxDistance, 1, 1);
-			
-			await drawLine(edgesByDistance[j][0][0], edgesByDistance[j][0][1], edgesByDistance[j][1][0], edgesByDistance[j][1][1], `rgb(${rgb[0]}, ${rgb[1]}, ${rgb[2]})`, 24);
+			continue;
 		}
 
-		catch(ex)
+		//We only wait for this one.
+		if (maximumSpeed)
 		{
-			break;
+			drawLine(edgesByDistance[j][0][0], edgesByDistance[j][0][1], edgesByDistance[j][1][0], edgesByDistance[j][1][1], `rgb(${rgb[0]}, ${rgb[1]}, ${rgb[2]})`, 24);
+		}
+
+		else
+		{
+			await drawLine(edgesByDistance[j][0][0], edgesByDistance[j][0][1], edgesByDistance[j][1][0], edgesByDistance[j][1][1], `rgb(${rgb[0]}, ${rgb[1]}, ${rgb[2]})`, 24);
 		}
 	}
 }
