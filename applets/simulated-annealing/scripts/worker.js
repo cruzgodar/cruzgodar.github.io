@@ -27,17 +27,14 @@ let coolingFactor = null;
 let nodes = [];
 
 let currentPath = [];
-let currentDistance = null;
 
 
 
 
 async function drawAnnealingGraph()
 {
-	
 	nodes = [];
 	currentPath = [];
-	currentDistance = 0;
 	temperature = initialTemperature;
 	let iteration = 0;
 	
@@ -63,13 +60,9 @@ async function drawAnnealingGraph()
 	for (let i = 0; i < numNodes - 1; i++)
 	{
 		postMessage([1, nodes[i][1], nodes[i][0], nodes[i + 1][1], nodes[i + 1][0], "rgb(255, 0, 0)"]);
-		
-		currentDistance += euclideanDistance(i, i + 1);
 	}
 	
 	postMessage([1, nodes[numNodes - 1][1], nodes[numNodes - 1][0], nodes[0][1], nodes[0][0], "rgb(255, 0, 0)"]);
-	
-	currentDistance += euclideanDistance(numNodes - 1, 0);
 	
 	
 	
@@ -172,8 +165,6 @@ async function drawAnnealingGraph()
 			currentPath[transposition[0]] = currentPath[transposition[1]];
 			currentPath[transposition[1]] = temp;
 			
-			currentDistance += distanceDifference;
-			
 			
 			
 			//Erase the old lines and draw new ones.
@@ -203,30 +194,21 @@ function euclideanDistance(node1Index, node2Index)
 
 
 
-function drawLines()
+async function drawLines()
 {
-	return new Promise(function(resolve, reject)
+	postMessage([2]);
+	
+	for (let i = 0; i < numNodes; i++)
 	{
-		postMessage([2]);
-		
-		
-		
-		for (let i = 0; i < numNodes; i++)
-		{
-			postMessage([0, nodes[i][1], nodes[i][0], 4, `rgb(255, ${255 * (initialTemperature - temperature) / initialTemperature}, ${255 * (initialTemperature - temperature) / initialTemperature})`]);
-		}
-		
-		
-		
-		for (let i = 0; i < numNodes - 1; i++)
-		{
-			postMessage([1, nodes[currentPath[i]][1], nodes[currentPath[i]][0], nodes[currentPath[i + 1]][1], nodes[currentPath[i + 1]][0], `rgb(255, ${255 * (initialTemperature - temperature) / initialTemperature}, ${255 * (initialTemperature - temperature) / initialTemperature})`]);
-		}
-		
-		postMessage([1, nodes[currentPath[numNodes - 1]][1], nodes[currentPath[numNodes - 1]][0], nodes[currentPath[0]][1], nodes[currentPath[0]][0], `rgb(255, ${255 * (initialTemperature - temperature) / initialTemperature}, ${255 * (initialTemperature - temperature) / initialTemperature})`]);
-		
-		
-		
-		setTimeout(resolve, 50);
-	});
+		postMessage([0, nodes[i][1], nodes[i][0], 4, `rgb(255, ${255 * (initialTemperature - temperature) / initialTemperature}, ${255 * (initialTemperature - temperature) / initialTemperature})`]);
+	}
+	
+	for (let i = 0; i < numNodes - 1; i++)
+	{
+		postMessage([1, nodes[currentPath[i]][1], nodes[currentPath[i]][0], nodes[currentPath[i + 1]][1], nodes[currentPath[i + 1]][0], `rgb(255, ${255 * (initialTemperature - temperature) / initialTemperature}, ${255 * (initialTemperature - temperature) / initialTemperature})`]);
+	}
+	
+	postMessage([1, nodes[currentPath[numNodes - 1]][1], nodes[currentPath[numNodes - 1]][0], nodes[currentPath[0]][1], nodes[currentPath[0]][0], `rgb(255, ${255 * (initialTemperature - temperature) / initialTemperature}, ${255 * (initialTemperature - temperature) / initialTemperature})`]);
+	
+	await new Promise(resolve => setTimeout(resolve, 50));
 }

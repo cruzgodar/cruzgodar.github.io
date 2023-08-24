@@ -1,3 +1,4 @@
+import anime from "/scripts/anime.js";
 import { Applet } from "/scripts/src/applets.mjs";
 import { aspectRatio } from "/scripts/src/layout.mjs";
 import { addTemporaryListener } from "/scripts/src/main.mjs";
@@ -604,14 +605,12 @@ export class Mandelbulb extends Applet
 				this.c[1] += this.moveVelocity[1];
 				this.c[2] += this.moveVelocity[2];
 				
-				try
+				if (this.cXInputElement && this.cYInputElement && this.cZInputElement)
 				{
-					this.cXInputElement.value = Math.round((c[0]) * 1000000) / 1000000;
-					this.cYInputElement.value = Math.round((c[1]) * 1000000) / 1000000;
-					this.cZInputElement.value = Math.round((c[2]) * 1000000) / 1000000;
+					this.cXInputElement.value = Math.round((this.c[0]) * 1000000) / 1000000;
+					this.cYInputElement.value = Math.round((this.c[1]) * 1000000) / 1000000;
+					this.cZInputElement.value = Math.round((this.c[2]) * 1000000) / 1000000;
 				}
-
-				catch(ex) {}
 				
 				this.wilson.gl.uniform3fv(this.wilson.uniforms["c"], this.c);
 			}
@@ -706,17 +705,23 @@ export class Mandelbulb extends Applet
 	matMul(mat1, mat2)
 	{
 		return [
-			[mat1[0][0]*mat2[0][0] + mat1[0][1]*mat2[1][0] + mat1[0][2]*mat2[2][0],
-			mat1[0][0]*mat2[0][1] + mat1[0][1]*mat2[1][1] + mat1[0][2]*mat2[2][1],
-			mat1[0][0]*mat2[0][2] + mat1[0][1]*mat2[1][2] + mat1[0][2]*mat2[2][2]],
+			[
+				mat1[0][0]*mat2[0][0] + mat1[0][1]*mat2[1][0] + mat1[0][2]*mat2[2][0],
+				mat1[0][0]*mat2[0][1] + mat1[0][1]*mat2[1][1] + mat1[0][2]*mat2[2][1],
+				mat1[0][0]*mat2[0][2] + mat1[0][1]*mat2[1][2] + mat1[0][2]*mat2[2][2]
+			],
 			
-			[mat1[1][0]*mat2[0][0] + mat1[1][1]*mat2[1][0] + mat1[1][2]*mat2[2][0],
-			mat1[1][0]*mat2[0][1] + mat1[1][1]*mat2[1][1] + mat1[1][2]*mat2[2][1],
-			mat1[1][0]*mat2[0][2] + mat1[1][1]*mat2[1][2] + mat1[1][2]*mat2[2][2]],
-			
-			[mat1[2][0]*mat2[0][0] + mat1[2][1]*mat2[1][0] + mat1[2][2]*mat2[2][0],
-			mat1[2][0]*mat2[0][1] + mat1[2][1]*mat2[1][1] + mat1[2][2]*mat2[2][1],
-			mat1[2][0]*mat2[0][2] + mat1[2][1]*mat2[1][2] + mat1[2][2]*mat2[2][2]]
+			[
+				mat1[1][0]*mat2[0][0] + mat1[1][1]*mat2[1][0] + mat1[1][2]*mat2[2][0],
+				mat1[1][0]*mat2[0][1] + mat1[1][1]*mat2[1][1] + mat1[1][2]*mat2[2][1],
+				mat1[1][0]*mat2[0][2] + mat1[1][1]*mat2[1][2] + mat1[1][2]*mat2[2][2]
+			],
+		
+			[
+				mat1[2][0]*mat2[0][0] + mat1[2][1]*mat2[1][0] + mat1[2][2]*mat2[2][0],
+				mat1[2][0]*mat2[0][1] + mat1[2][1]*mat2[1][1] + mat1[2][2]*mat2[2][1],
+				mat1[2][0]*mat2[0][2] + mat1[2][1]*mat2[1][2] + mat1[2][2]*mat2[2][2]
+			]
 		];
 	}
 
@@ -1108,14 +1113,12 @@ export class Mandelbulb extends Applet
 			
 			
 			
-			try
+			if (this.cXInputElement && this.cYInputElement && this.cZInputElement)
 			{
-				cXInputElement.value = Math.round((this.c[0]) * 1000000) / 1000000;
-				cYInputElement.value = Math.round((this.c[1]) * 1000000) / 1000000;
-				cZInputElement.value = Math.round((this.c[2]) * 1000000) / 1000000;
+				this.cXInputElement.value = Math.round((this.c[0]) * 1000000) / 1000000;
+				this.cYInputElement.value = Math.round((this.c[1]) * 1000000) / 1000000;
+				this.cZInputElement.value = Math.round((this.c[2]) * 1000000) / 1000000;
 			}
-
-			catch(ex) {}
 			
 			
 			
@@ -1196,14 +1199,12 @@ export class Mandelbulb extends Applet
 		const yNew = Math.random()*2 - 1;
 		const zNew = Math.random()*2 - 1;
 
-		try
+		if (this.rotationAngleXInputElement && this.rotationAngleYInputElement && this.rotationAngleZInputElement)
 		{
 			this.rotationAngleXInputElement.value = Math.round(xNew * 1000000) / 1000000;
 			this.rotationAngleYInputElement.value = Math.round(yNew * 1000000) / 1000000;
 			this.rotationAngleZInputElement.value = Math.round(zNew * 1000000) / 1000000;
 		}
-
-		catch(ex) {}
 
 		anime({
 			targets: dummy,
@@ -1234,14 +1235,12 @@ export class Mandelbulb extends Applet
 		const yNew = Math.random()*1.5 - .75;
 		const zNew = Math.random()*1.5 - .75;
 
-		try
+		if (this.cXInputElement && this.cYInputElement && this.cZInputElement)
 		{
 			this.cXInputElement.value = Math.round(xNew * 1000000) / 1000000;
 			this.cYInputElement.value = Math.round(yNew * 1000000) / 1000000;
 			this.cZInputElement.value = Math.round(zNew * 1000000) / 1000000;
 		}
-
-		catch(ex) {}
 
 		anime({
 			targets: dummy,

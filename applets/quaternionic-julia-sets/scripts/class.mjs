@@ -1,4 +1,5 @@
-import { opacityAnimationTime } from "/scripts/src/animation.mjs";
+import anime from "/scripts/anime.js";
+import { changeOpacity, opacityAnimationTime } from "/scripts/src/animation.mjs";
 import { Applet } from "/scripts/src/applets.mjs";
 import { aspectRatio } from "/scripts/src/layout.mjs";
 import { addTemporaryListener } from "/scripts/src/main.mjs";
@@ -549,7 +550,7 @@ export class QuaternionicJuliaSet extends Applet
 				
 				this.kSlice += this.moveVelocity[3];
 				
-				try
+				if (this.cXInputElement && this.cYInputElement && this.cZInputElement && this.cWInputElement)
 				{
 					this.cXInputElement.value = Math.round((this.c[0]) * 1000000) / 1000000;
 					this.cYInputElement.value = Math.round((this.c[1]) * 1000000) / 1000000;
@@ -557,8 +558,6 @@ export class QuaternionicJuliaSet extends Applet
 					
 					this.cWInputElement.value = Math.round((this.kSlice) * 1000000) / 1000000;
 				}
-				
-				catch(ex) {}
 				
 				this.wilson.gl.uniform3fv(this.wilson.uniforms["c"], this.c);
 				
@@ -1077,7 +1076,7 @@ export class QuaternionicJuliaSet extends Applet
 			
 			
 			
-			try
+			if (this.cXInputElement && this.cYInputElement && this.cZInputElement && this.cWInputElement)
 			{
 				this.cXInputElement.value = Math.round((this.c[0]) * 1000000) / 1000000;
 				this.cYInputElement.value = Math.round((this.c[1]) * 1000000) / 1000000;
@@ -1085,8 +1084,6 @@ export class QuaternionicJuliaSet extends Applet
 				
 				this.cWInputElement.value = Math.round((this.kSlice) * 1000000) / 1000000;
 			}
-			
-			catch(ex) {}
 			
 			
 			this.wilson.gl.uniform3fv(this.wilson.uniforms["c"], this.c);
@@ -1166,14 +1163,12 @@ export class QuaternionicJuliaSet extends Applet
 	
 	updateC(newC, animateChange = true)
 	{
-		try
+		if (this.cXInputElement && this.cYInputElement && this.cZInputElement)
 		{
 			this.cXInputElement.value = Math.round(newC[0] * 1000000) / 1000000;
 			this.cYInputElement.value = Math.round(newC[1] * 1000000) / 1000000;
 			this.cZInputElement.value = Math.round(newC[2] * 1000000) / 1000000;
 		}
-		
-		catch(ex) {}
 		
 		
 		
@@ -1211,27 +1206,16 @@ export class QuaternionicJuliaSet extends Applet
 		const oldJuliaProportion = this.juliaProportion;
 		const newJuliaProportion = 1 - this.juliaProportion;
 		
-		try
+		if (this.switchBulbButtonElement)
 		{
-			changeOpacity(this.switchBulbButtonElement, 0);
-			
-			setTimeout(() =>
-			{
-				if (oldJuliaProportion === 0)
+			changeOpacity(this.switchBulbButtonElement, 0)
+				.then(() =>
 				{
-					this.switchBulbButtonElement.textContent = "Switch to Mandelbrot Set";
-				}
-				
-				else
-				{
-					this.switchBulbButtonElement.textContent = "Switch to Julia Set";
-				}
-				
-				changeOpacity(this.switchBulbButtonElement, 1);
-			}, opacityAnimationTime);
+					this.switchBulbButtonElement.textContent = oldJuliaProportion === 0 ? "Switch to Mandelbrot Set" : "Switch to Julia Set";
+					
+					changeOpacity(this.switchBulbButtonElement, 1);
+				});
 		}
-		
-		catch(ex) {}
 		
 		
 		
@@ -1246,13 +1230,11 @@ export class QuaternionicJuliaSet extends Applet
 			
 			setTimeout(() =>
 			{
-				try
+				if (this.switchBulbButtonElement && this.randomizeCButtonElement)
 				{
 					changeOpacity(this.switchMovementButtonElement, 1);
 					changeOpacity(this.randomizeCButtonElement, 1);
 				}
-				
-				catch(ex) {}
 			}, opacityAnimationTime);
 		}
 		
@@ -1262,13 +1244,11 @@ export class QuaternionicJuliaSet extends Applet
 			
 			this.wilson.gl.uniform1i(this.wilson.uniforms["drawSphere"], 0);
 			
-			try
+			if (this.switchBulbButtonElement && this.randomizeCButtonElement)
 			{
 				changeOpacity(this.switchMovementButtonElement, 0);
 				changeOpacity(this.randomizeCButtonElement, 0);
 			}
-			
-			catch(ex) {}
 		}
 		
 		
@@ -1295,38 +1275,19 @@ export class QuaternionicJuliaSet extends Applet
 	{
 		this.movingPos = !this.movingPos;
 		
-		try
+		if (this.switchMovementButtonElement)
 		{
-			changeOpacity(this.switchMovementButtonElement, 0);
-			
-			setTimeout(() =>
-			{
-				if (this.movingPos)
+			changeOpacity(this.switchMovementButtonElement, 0)
+				.then(() =>
 				{
-					this.switchMovementButtonElement.textContent = "Change Julia Set";
-				}
-				
-				else
-				{
-					this.switchMovementButtonElement.textContent = "Move Camera";
-				}
-				
-				changeOpacity(this.switchMovementButtonElement, 1);
-			}, opacityAnimationTime);
+					this.switchMovementButtonElement.textContent = this.movingPos ? "Change Julia Set" : "Move Camera";
+					
+					changeOpacity(this.switchMovementButtonElement, 1);
+				});
 		}
 		
-		catch(ex) {}
-		
-		
-		
-		if (this.movingPos)
-		{
-			this.wilson.gl.uniform1i(this.wilson.uniforms["drawSphere"], 0);
-		}
-		
-		else
-		{
-			this.wilson.gl.uniform1i(this.wilson.uniforms["drawSphere"], 1);
-		}
+
+
+		this.wilson.gl.uniform1i(this.wilson.uniforms["drawSphere"], this.movingPos ? 0 : 1);
 	}
 }

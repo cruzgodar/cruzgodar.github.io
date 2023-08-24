@@ -2,12 +2,15 @@
 
 
 
-onmessage = function(e)
+onmessage = () =>
 {
+	// eslint-disable-next-line no-undef
 	importScripts("/applets/sudoku-generator/scripts/solver.js");
 
-	Module["onRuntimeInitialized"] = function()
+	// eslint-disable-next-line no-undef
+	Module["onRuntimeInitialized"] = () =>
 	{
+		// eslint-disable-next-line no-undef
 		importScripts("/scripts/wasm-arrays.min.js");
 		
 		generateSudokuGrid();
@@ -240,5 +243,6 @@ function wasmSolvePuzzle()
 	
 	
 	//With everything in place, we can now call the C function and let it do the heavy lifting.
+	// eslint-disable-next-line no-undef
 	return ccallArrays("solve_puzzle", "number", ["array"], [gridFlat], {heapIn: "HEAPU8"});
 }

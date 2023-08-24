@@ -2,7 +2,7 @@
 
 
 
-onmessage = async function(e)
+onmessage = (e) =>
 {
 	canvasWidth = e.data[0];
 	canvasHeight = e.data[1];
@@ -12,7 +12,7 @@ onmessage = async function(e)
 	
 	coefficients = e.data[5];
 	
-	await drawQuasiFuchsianGroup();
+	drawQuasiFuchsianGroup();
 };
 
 
@@ -34,46 +34,39 @@ let y = 0;
 
 function drawQuasiFuchsianGroup()
 {
-	return new Promise(async function(resolve, reject)
+	brightness = new Array(canvasWidth * canvasHeight);
+	
+	for (let i = 0; i < brightness.length; i++)
 	{
-		brightness = new Array(canvasWidth * canvasHeight);
-		
-		for (let i = 0; i < brightness.length; i++)
-		{
-			brightness[i] = 0;
-		}
-		
-		
-		
-		for (let i = 0; i < 4; i++)
-		{
-			searchStep(0, 0, i, -1, -1, 1);
-		}
-		
-		
-		
-		let maxBrightness = 0;
-		
-		for (let i = 0; i < brightness.length; i++)
-		{
-			maxBrightness = Math.max(maxBrightness, brightness[i]);
-		}
-		
-		
-		
-		for (let i = 0; i < brightness.length; i++)
-		{
-			brightness[i] = Math.pow(brightness[i] / maxBrightness, .15);
-		}
-		
-		
-		
-		postMessage([brightness]);
-		
-		
-		
-		resolve();
-	});
+		brightness[i] = 0;
+	}
+	
+	
+	
+	for (let i = 0; i < 4; i++)
+	{
+		searchStep(0, 0, i, -1, -1, 1);
+	}
+	
+	
+	
+	let maxBrightness = 0;
+	
+	for (let i = 0; i < brightness.length; i++)
+	{
+		maxBrightness = Math.max(maxBrightness, brightness[i]);
+	}
+	
+	
+	
+	for (let i = 0; i < brightness.length; i++)
+	{
+		brightness[i] = Math.pow(brightness[i] / maxBrightness, .15);
+	}
+	
+	
+	
+	postMessage([brightness]);
 }
 
 

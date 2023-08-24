@@ -5,8 +5,6 @@ import { Wilson } from "/scripts/wilson.mjs";
 
 export class QuasiFuchsianGroups extends Applet
 {
-	loadPromise = null;
-	
 	wilsonHidden = null;
 	
 	resolutionSmall = 400;
@@ -37,6 +35,8 @@ export class QuasiFuchsianGroups extends Applet
 	
 	brightness = null;
 	image = null;
+
+	Complex;
 	
 	
 	
@@ -207,17 +207,17 @@ export class QuasiFuchsianGroups extends Applet
 		this.regenerateHueAndBrightness();
 		
 		
-		
-		this.loadPromise = new Promise(async(resolve, reject) =>
-		{
-			await loadScript("/scripts/complex.min.js");
-			
-			this.initDraggables();
-			
-			this.changeRecipe(0);
-			
-			resolve();
-		});
+
+		loadScript("/scripts/complex.min.js")
+			.then(() =>
+			{
+				// eslint-disable-next-line no-undef
+				this.Complex = Complex;
+
+				this.initDraggables();
+				
+				this.changeRecipe(0);
+			});
 	}
 	
 	
@@ -225,8 +225,8 @@ export class QuasiFuchsianGroups extends Applet
 	grandmaCoefficients(x1 = this.wilson.draggables.worldCoordinates[0][0], y1 = this.wilson.draggables.worldCoordinates[0][1], x2 = this.wilson.draggables.worldCoordinates[1][0], y2 = this.wilson.draggables.worldCoordinates[1][1])
 	{
 		//Use Grandma's recipe, canidate for the worst-named algorithm of the last two decades.
-		const ta = new Complex(x1, y1);
-		const tb = new Complex(x2, y2);
+		const ta = new this.Complex(x1, y1);
+		const tb = new this.Complex(x2, y2);
 		
 		const b = ta.mul(tb);
 		
@@ -236,16 +236,16 @@ export class QuasiFuchsianGroups extends Applet
 		
 		const tab = discriminant.arg() > 0 ? b.sub(discriminant.sqrt()).div(2) : b.add(discriminant.sqrt()).div(2);
 		
-		const z0 = tab.sub(2).mul(tb).div(tb.mul(tab).sub(ta.mul(2)).add(tab.mul(new Complex([0, 2]))));
+		const z0 = tab.sub(2).mul(tb).div(tb.mul(tab).sub(ta.mul(2)).add(tab.mul(new this.Complex([0, 2]))));
 		
 		
 		
 		const c1 = ta.div(2);
-		const c2 = ta.mul(tab).sub(tb.mul(2)).add(new Complex([0, 4])).div(tab.mul(2).add(4).mul(z0));
-		const c3 = ta.mul(tab).sub(tb.mul(2)).sub(new Complex([0, 4])).mul(z0).div(tab.mul(2).sub(4));
-		const c4 = tb.sub(new Complex([0, 2])).div(2);
+		const c2 = ta.mul(tab).sub(tb.mul(2)).add(new this.Complex([0, 4])).div(tab.mul(2).add(4).mul(z0));
+		const c3 = ta.mul(tab).sub(tb.mul(2)).sub(new this.Complex([0, 4])).mul(z0).div(tab.mul(2).sub(4));
+		const c4 = tb.sub(new this.Complex([0, 2])).div(2);
 		const c5 = tb.div(2);
-		const c6 = tb.add(new Complex([0, 2])).div(2);
+		const c6 = tb.add(new this.Complex([0, 2])).div(2);
 		
 		this.coefficients[0][0][0] = c1.re;
 		this.coefficients[0][0][1] = c1.im;
@@ -338,11 +338,11 @@ export class QuasiFuchsianGroups extends Applet
 	grandmaSpecialCoefficients(x1 = this.wilson.draggables.worldCoordinates[0][0], y1 = this.wilson.draggables.worldCoordinates[0][1], x2 = this.wilson.draggables.worldCoordinates[1][0], y2 = this.wilson.draggables.worldCoordinates[1][1], x3 = this.wilson.draggables.worldCoordinates[2][0], y3 = this.wilson.draggables.worldCoordinates[2][1])
 	{
 		//Use Grandma's recipe, canidate for the worst-named algorithm of the last two decades.
-		const ta = new Complex(x1, y1);
-		const tb = new Complex(x2, y2);
-		const tab = new Complex(x3, y3);
-		const I = new Complex(0, 1);
-		const TWO = new Complex(2, 0);
+		const ta = new this.Complex(x1, y1);
+		const tb = new this.Complex(x2, y2);
+		const tab = new this.Complex(x3, y3);
+		const I = new this.Complex(0, 1);
+		const TWO = new this.Complex(2, 0);
 		
 		const tc = ta.mul(ta).add(tb.mul(tb)).add(tab.mul(tab)).sub(ta.mul(tb).mul(tab)).sub(2);
 		
@@ -628,7 +628,7 @@ export class QuasiFuchsianGroups extends Applet
 	
 	
 	
-	onGrabDraggable(activeDraggable, x, y, event)
+	onGrabDraggable()
 	{
 		this.imageSize = this.resolutionSmall;
 		
@@ -669,7 +669,7 @@ export class QuasiFuchsianGroups extends Applet
 	
 	
 	
-	onReleaseDraggable(activeDraggable, x, y, event)
+	onReleaseDraggable()
 	{
 		this.imageSize = this.resolutionLarge;
 		
@@ -710,7 +710,7 @@ export class QuasiFuchsianGroups extends Applet
 	
 	
 	
-	onDragDraggable(activeDraggable, x, y, event)
+	onDragDraggable()
 	{
 		for (let i = 0; i < this.imageHeight; i++)
 		{
@@ -725,48 +725,48 @@ export class QuasiFuchsianGroups extends Applet
 	
 	
 	
-	requestHighResFrame(imageSize, maxDepth, maxPixelBrightness, boxSize = this.boxSize)
+	async requestHighResFrame(imageSize, maxDepth, maxPixelBrightness, boxSize = this.boxSize)
 	{
-		return new Promise((resolve, reject) =>
+		this.imageSize = imageSize;
+		this.maxDepth = maxDepth;
+		this.maxPixelBrightness = maxPixelBrightness;
+		this.boxSize = boxSize;
+		
+		
+		
+		if (this.wilson.fullscreen.currentlyFullscreen)
 		{
-			this.imageSize = imageSize;
-			this.maxDepth = maxDepth;
-			this.maxPixelBrightness = maxPixelBrightness;
-			this.boxSize = boxSize;
-			
-			
-			
-			if (this.wilson.fullscreen.currentlyFullscreen)
+			if (aspectRatio >= 1)
 			{
-				if (aspectRatio >= 1)
-				{
-					this.imageWidth = Math.floor(this.imageSize * aspectRatio);
-					this.imageHeight = this.imageSize;
-				}
-				
-				else
-				{
-					this.imageWidth = this.imageSize;
-					this.imageHeight = Math.floor(this.imageSize / aspectRatio);
-				}
+				this.imageWidth = Math.floor(this.imageSize * aspectRatio);
+				this.imageHeight = this.imageSize;
 			}
 			
 			else
 			{
 				this.imageWidth = this.imageSize;
-				this.imageHeight = this.imageSize;
+				this.imageHeight = Math.floor(this.imageSize / aspectRatio);
 			}
-			
-			
-			
-			this.regenerateHueAndBrightness();
-			
-			
-			
-			this.webWorker = addTemporaryWorker("/applets/quasi-fuchsian-groups/scripts/worker.js");
-			
-			
-			
+		}
+		
+		else
+		{
+			this.imageWidth = this.imageSize;
+			this.imageHeight = this.imageSize;
+		}
+		
+		
+		
+		this.regenerateHueAndBrightness();
+		
+		
+		
+		this.webWorker = addTemporaryWorker("/applets/quasi-fuchsian-groups/scripts/worker.js");
+		
+		
+		
+		const workerPromise = new Promise(resolve =>
+		{
 			this.webWorker.onmessage = e =>
 			{
 				this.brightness = e.data[0];
@@ -790,9 +790,11 @@ export class QuasiFuchsianGroups extends Applet
 				
 				resolve();
 			};
-			
-			this.webWorker.postMessage([this.imageWidth, this.imageHeight, this.maxDepth, this.maxPixelBrightness, this.boxSize, this.coefficients]);
 		});
+		
+		this.webWorker.postMessage([this.imageWidth, this.imageHeight, this.maxDepth, this.maxPixelBrightness, this.boxSize, this.coefficients]);
+
+		await workerPromise;
 	}
 	
 	

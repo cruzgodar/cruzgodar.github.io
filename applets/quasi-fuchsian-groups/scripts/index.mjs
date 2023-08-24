@@ -6,7 +6,7 @@ export function load()
 {
 	const applet = new QuasiFuchsianGroups($("#output-canvas"));
 	
-	
+
 	
 	const resolutionInputElement = $("#resolution-input");
 	

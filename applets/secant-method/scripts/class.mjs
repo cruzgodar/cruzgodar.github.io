@@ -1,3 +1,5 @@
+import anime from "/scripts/anime.js";
+import { changeOpacity } from "/scripts/src/animation.mjs";
 import { Applet } from "/scripts/src/applets.mjs";
 import { addTemporaryListener } from "/scripts/src/main.mjs";
 import { Wilson } from "/scripts/wilson.mjs";
@@ -452,7 +454,7 @@ export class SecantMethod extends Applet
 	
 	
 	
-	onDragDraggable(activeDraggable, x, y, event)
+	onDragDraggable(activeDraggable, x, y)
 	{
 		if (activeDraggable === 0)
 		{
@@ -473,11 +475,11 @@ export class SecantMethod extends Applet
 	
 	
 	
-	async onReleaseDraggable(activeDraggable, x, y, event)
+	async onReleaseDraggable(activeDraggable)
 	{
 		this.lastActiveRoot = activeDraggable;
 		
-		try
+		if (this.rootSetterElement && this.colorSetterElement && this.rootAInputElement && this.rootBInputElement)
 		{
 			changeOpacity(this.rootSetterElement, 0);
 			await changeOpacity(this.colorSetterElement, 0);
@@ -507,8 +509,6 @@ export class SecantMethod extends Applet
 			changeOpacity(this.rootSetterElement, 1);
 			changeOpacity(this.colorSetterElement, 1);
 		}
-		
-		catch(ex) {}
 	}
 
 

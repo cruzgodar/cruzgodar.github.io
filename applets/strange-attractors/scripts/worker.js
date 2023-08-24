@@ -2,7 +2,7 @@
 
 
 
-onmessage = async function(e)
+onmessage = (e) =>
 {
 	gridSize = e.data[0];
 	
@@ -12,7 +12,7 @@ onmessage = async function(e)
 	
 	maximumSpeed = e.data[4];
 	
-	await drawLorenzAttractor();
+	drawLorenzAttractor();
 };
 
 
@@ -43,79 +43,60 @@ let currentZ = 25;
 let currentRow = null;
 let currentCol = null;
 
-let numPixelsAtMax = 0;
 
 
-
-function drawLorenzAttractor()
+async function drawLorenzAttractor()
 {
-	return new Promise(async function(resolve, reject)
+	let step = 0;
+	
+	let color = 0;
+	
+	numColors = gridSize;
+	
+	
+	
+	while (stepsPerColor > 0)
 	{
-		let step = 0;
-		
-		let color = 0;
-		
-		numColors = gridSize;
-		
-		
-		
-		while (stepsPerColor > 0)
+		if (step === stepsPerColor)
 		{
-			if (step === stepsPerColor)
+			postMessage([pixels, HSVtoRGB(color / numColors / 6.5, 1, 1)]);
+			
+			pixels = [];
+			
+			color++;
+			
+			step = 0;
+			
+			stepsPerColor -= 2*Math.floor(5000 / numColors);
+			
+			if (!maximumSpeed)
 			{
-				postMessage([pixels, HSVtoRGB(color / numColors / 6.5, 1, 1)]);
-				
-				pixels = [];
-				
-				color++;
-				
-				step = 0;
-				
-				stepsPerColor -= 2*Math.floor(5000 / numColors);
-				
-				if (!maximumSpeed)
-				{
-					await sleep(8);
-				}
+				await new Promise(resolve => setTimeout(resolve, 8));
 			}
-			
-			
-			
-			let shiftedZ = currentZ - minZ - boxSize / 2;
-			
-			currentCol = Math.floor(((currentX + boxSize / 2) / boxSize) * gridSize);
-			currentRow = Math.floor((1 - (shiftedZ + boxSize / 2) / boxSize) * gridSize);
-			
-			if (currentRow >= 0 && currentCol >= 0 && currentRow < gridSize && currentCol < gridSize)
-			{
-				pixels.push([currentRow, currentCol]);
-			}
-			
-			
-			
-			currentX += sigma * (currentY - currentX) * dt;
-			currentY += (currentX * (rho - currentZ) - currentY) * dt;
-			currentZ += (currentX * currentY - beta * currentZ) * dt;
-			
-			
-			
-			step++;
 		}
 		
 		
 		
-		resolve();
-	});
-}
-
-
-
-function sleep(ms)
-{
-	return new Promise(function(resolve, reject)
-	{
-		setTimeout(resolve, ms);
-	});
+		let shiftedZ = currentZ - minZ - boxSize / 2;
+		
+		currentCol = Math.floor(((currentX + boxSize / 2) / boxSize) * gridSize);
+		currentRow = Math.floor((1 - (shiftedZ + boxSize / 2) / boxSize) * gridSize);
+		
+		if (currentRow >= 0 && currentCol >= 0 && currentRow < gridSize && currentCol < gridSize)
+		{
+			pixels.push([currentRow, currentCol]);
+		}
+		
+		
+		
+		currentX += sigma * (currentY - currentX) * dt;
+		currentY += (currentX * (rho - currentZ) - currentY) * dt;
+		currentZ += (currentX * currentY - beta * currentZ) * dt;
+		
+		
+		
+		step++;
+	}
 }
 
 

@@ -20,8 +20,7 @@ export class SortingAlgorithm extends Applet
 	lastTimestamp = -1;
 	timeElapsed = 0;
 	
-	algorithms =
-	{
+	algorithms = {
 		"bubble": this.bubbleSort,
 		"insertion": this.insertionSort,
 		"selection": this.selectionSort,
@@ -178,8 +177,10 @@ export class SortingAlgorithm extends Applet
 
 
 
-		try {this.audioNodes[this.currentGeneratorIndex][2].gain.linearRampToValueAtTime(.0001, this.audioNodes[this.currentGeneratorIndex][0].currentTime + this.timeElapsed / 1000);}
-		catch(ex) {}
+		if (this.audioNodes[this.currentGeneratorIndex])
+		{
+			this.audioNodes[this.currentGeneratorIndex][2].gain.linearRampToValueAtTime(.0001, this.audioNodes[this.currentGeneratorIndex][0].currentTime + this.timeElapsed / 1000);
+		}
 
 		this.wilson.changeCanvasSize(this.resolution, this.resolution);
 
@@ -207,13 +208,11 @@ export class SortingAlgorithm extends Applet
 		
 		this.updateReadsAndWrites = false;
 		
-		try
+		if (this.numReadsElement && this.numWritesElement)
 		{
 			this.numReadsElement.textContent = "0";
 			this.numWritesElement.textContent = "0";
 		}
-
-		catch(ex) {}
 		
 		
 
@@ -267,13 +266,11 @@ export class SortingAlgorithm extends Applet
 		
 		if (this.updateReadsAndWrites)
 		{
-			try
+			if (this.numReadsElement && this.numWritesElement)
 			{
 				this.numReadsElement.textContent = this.numReads;
 				this.numWritesElement.textContent = this.numWrites;
 			}
-
-			catch(ex) {}
 		}
 		
 		if (!this.changingSound)
@@ -285,8 +282,10 @@ export class SortingAlgorithm extends Applet
 		
 		if (this.animationPaused)
 		{
-			try {this.audioNodes[this.currentGeneratorIndex][2].gain.linearRampToValueAtTime(.0001, this.audioNodes[this.currentGeneratorIndex][0].currentTime + this.timeElapsed / 1000);}
-			catch(ex) {}
+			if (this.audioNodes[this.currentGeneratorIndex])
+			{
+				this.audioNodes[this.currentGeneratorIndex][2].gain.linearRampToValueAtTime(.0001, this.audioNodes[this.currentGeneratorIndex][0].currentTime + this.timeElapsed / 1000);
+			}
 		}
 		
 		else
@@ -412,8 +411,8 @@ export class SortingAlgorithm extends Applet
 			this.data[i] = this.data[j];
 			this.data[j] = temp;
 			
-			if (this.writeToPosition(i)) {yield}
-			if (this.writeToPosition(j)) {yield}
+			if (this.writeToPosition(i)) {yield;}
+			if (this.writeToPosition(j)) {yield;}
 		}
 		
 		this.numReads = 0;
@@ -435,7 +434,7 @@ export class SortingAlgorithm extends Applet
 		for (let i = 0; i < this.dataLength; i++)
 		{
 			//This isn't actually a write, but we want to animate the process.
-			if (this.writeToPosition(i)) {yield}
+			if (this.writeToPosition(i)) {yield;}
 			
 			if (i !== this.dataLength - 1 && this.data[i] > this.data[i + 1])
 			{
@@ -472,8 +471,8 @@ export class SortingAlgorithm extends Applet
 					this.data[i] = this.data[i + 1];
 					this.data[i + 1] = temp;
 					
-					if (this.writeToPosition(i)) {yield}
-					if (this.writeToPosition(i + 1)) {yield}
+					if (this.writeToPosition(i)) {yield;}
+					if (this.writeToPosition(i + 1)) {yield;}
 				}
 			}
 			
@@ -512,12 +511,12 @@ export class SortingAlgorithm extends Applet
 						{
 							this.data[k] = this.data[k - 1];
 							
-							if (this.writeToPosition(k)) {yield}
+							if (this.writeToPosition(k)) {yield;}
 						}
 						
 						this.data[j] = temp;
 						
-						if (this.writeToPosition(j)) {yield}
+						if (this.writeToPosition(j)) {yield;}
 					}
 				}
 			}
@@ -553,8 +552,8 @@ export class SortingAlgorithm extends Applet
 			this.data[i] = minElement;
 			this.data[minIndex] = temp;
 			
-			if (this.writeToPosition(i)) {yield}
-			if (this.writeToPosition(minIndex)) {yield}
+			if (this.writeToPosition(i)) {yield;}
+			if (this.writeToPosition(minIndex)) {yield;}
 		}
 		
 		this.advanceGenerator();
@@ -585,8 +584,8 @@ export class SortingAlgorithm extends Applet
 					this.data[index] = this.data[index2];
 					this.data[index2] = temp;
 					
-					if (this.writeToPosition(index)) {yield}
-					if (this.writeToPosition(index2)) {yield}
+					if (this.writeToPosition(index)) {yield;}
+					if (this.writeToPosition(index2)) {yield;}
 					
 					index = index2;
 				}
@@ -605,8 +604,8 @@ export class SortingAlgorithm extends Applet
 			this.data[0] = this.data[i];
 			this.data[i] = temp;
 			
-			if (this.writeToPosition(0)) {yield}
-			if (this.writeToPosition(i)) {yield}
+			if (this.writeToPosition(0)) {yield;}
+			if (this.writeToPosition(i)) {yield;}
 			
 			
 			
@@ -650,8 +649,8 @@ export class SortingAlgorithm extends Applet
 					this.data[index] = this.data[maxChild];
 					this.data[maxChild] = temp;
 					
-					if (this.writeToPosition(index)) {yield}
-					if (this.writeToPosition(maxChild)) {yield}
+					if (this.writeToPosition(index)) {yield;}
+					if (this.writeToPosition(maxChild)) {yield;}
 					
 					index = maxChild;
 				}
@@ -677,8 +676,8 @@ export class SortingAlgorithm extends Applet
 			
 			if (this.data[start] > this.data[end - 1])
 			{
-				if (this.writeToPosition(start)) {yield}
-				if (this.writeToPosition(end - 1)) {yield}
+				if (this.writeToPosition(start)) {yield;}
+				if (this.writeToPosition(end - 1)) {yield;}
 				
 				const temp = this.data[start];
 				this.data[start] = this.data[end - 1];
@@ -715,8 +714,8 @@ export class SortingAlgorithm extends Applet
 					this.readFromPosition(i);
 					this.readFromPosition(i + 1);
 					
-					if (this.writeToPosition(i)) {yield}
-					if (this.writeToPosition(i + 1)) {yield}
+					if (this.writeToPosition(i)) {yield;}
+					if (this.writeToPosition(i + 1)) {yield;}
 					
 					const temp = this.data[i];
 					this.data[i] = this.data[i + 1];
@@ -751,8 +750,8 @@ export class SortingAlgorithm extends Applet
 					this.readFromPosition(left);
 					this.readFromPosition(buffer);
 					
-					if (this.writeToPosition(left)) {yield}
-					if (this.writeToPosition(buffer)) {yield}
+					if (this.writeToPosition(left)) {yield;}
+					if (this.writeToPosition(buffer)) {yield;}
 					
 					const temp = this.data[left];
 					this.data[left] = this.data[buffer];
@@ -767,8 +766,8 @@ export class SortingAlgorithm extends Applet
 					this.readFromPosition(right);
 					this.readFromPosition(buffer);
 					
-					if (this.writeToPosition(right)) {yield}
-					if (this.writeToPosition(buffer)) {yield}
+					if (this.writeToPosition(right)) {yield;}
+					if (this.writeToPosition(buffer)) {yield;}
 					
 					const temp = this.data[right];
 					this.data[right] = this.data[buffer];
@@ -800,8 +799,8 @@ export class SortingAlgorithm extends Applet
 				this.readFromPosition(i);
 				this.readFromPosition(i - 1);
 				
-				if (this.writeToPosition(i)) {yield}
-				if (this.writeToPosition(i - 1)) {yield}
+				if (this.writeToPosition(i)) {yield;}
+				if (this.writeToPosition(i - 1)) {yield;}
 				
 				const temp = this.data[i];
 				this.data[i] = this.data[i - 1];
@@ -815,8 +814,8 @@ export class SortingAlgorithm extends Applet
 				this.readFromPosition(i);
 				this.readFromPosition(i + 1);
 				
-				if (this.writeToPosition(i)) {yield}
-				if (this.writeToPosition(i + 1)) {yield}
+				if (this.writeToPosition(i)) {yield;}
+				if (this.writeToPosition(i + 1)) {yield;}
 				
 				const temp = this.data[i];
 				this.data[i] = this.data[i + 1];
@@ -874,7 +873,7 @@ export class SortingAlgorithm extends Applet
 					{
 						leftIndex++;
 						this.readFromPosition(leftIndex);
-					} while (this.data[leftIndex] < pivot)
+					} while (this.data[leftIndex] < pivot);
 					
 					this.readFromPosition(leftIndex);
 					
@@ -882,7 +881,7 @@ export class SortingAlgorithm extends Applet
 					{
 						rightIndex--;
 						this.readFromPosition(rightIndex);
-					} while (this.data[rightIndex] > pivot)
+					} while (this.data[rightIndex] > pivot);
 					
 					this.readFromPosition(rightIndex);
 					
@@ -895,8 +894,8 @@ export class SortingAlgorithm extends Applet
 					this.data[leftIndex] = this.data[rightIndex];
 					this.data[rightIndex] = temp;
 					
-					if (this.writeToPosition(leftIndex)) {yield}
-					if (this.writeToPosition(rightIndex)) {yield}
+					if (this.writeToPosition(leftIndex)) {yield;}
+					if (this.writeToPosition(rightIndex)) {yield;}
 				}
 				
 				if (rightIndex > currentEndpoints[2 * i])
@@ -942,7 +941,7 @@ export class SortingAlgorithm extends Applet
 		
 		let k = 1;
 		
-		while (true)
+		for (;;)
 		{
 			const entry = Math.ceil((Math.pow(gamma, k) - 1) / (gamma - 1));
 			
@@ -972,12 +971,12 @@ export class SortingAlgorithm extends Applet
 				{
 					this.data[k] = this.data[k - gap];
 					
-					if (this.writeToPosition(k)) {yield}
+					if (this.writeToPosition(k)) {yield;}
 				}
 				
 				this.data[k] = temp;
 				
-				if (this.writeToPosition(k)) {yield}
+				if (this.writeToPosition(k)) {yield;}
 			}
 		}
 		
@@ -1034,10 +1033,10 @@ export class SortingAlgorithm extends Applet
 				this.data[index] = poppedEntry;
 				poppedEntry = temp;
 				
-				if (this.writeToPosition(index)) {yield}
+				if (this.writeToPosition(index)) {yield;}
 				
 				done[index] = true;
-			} while (index !== i)
+			} while (index !== i);
 		}	
 		
 		this.advanceGenerator();
@@ -1100,7 +1099,7 @@ export class SortingAlgorithm extends Applet
 					{
 						auxArray[index0] = this.data[j];
 						
-						if (this.writeToPosition(index0)) {yield}
+						if (this.writeToPosition(index0)) {yield;}
 						
 						index0++;
 					}
@@ -1109,7 +1108,7 @@ export class SortingAlgorithm extends Applet
 					{
 						auxArray[index1] = this.data[j];
 						
-						if (this.writeToPosition(index1)) {yield}
+						if (this.writeToPosition(index1)) {yield;}
 						
 						index1--;
 					}
@@ -1119,7 +1118,7 @@ export class SortingAlgorithm extends Applet
 				{
 					this.data[j] = auxArray[j];
 					
-					if (this.writeToPosition(j)) {yield}
+					if (this.writeToPosition(j)) {yield;}
 				}
 				
 				index0--;
@@ -1204,7 +1203,7 @@ export class SortingAlgorithm extends Applet
 				{
 					auxArray[index0] = this.data[j];
 					
-					if (this.writeToPosition(index0)) {yield}
+					if (this.writeToPosition(index0)) {yield;}
 					
 					index0++;
 				}
@@ -1213,7 +1212,7 @@ export class SortingAlgorithm extends Applet
 				{
 					auxArray[index1] = this.data[j];
 					
-					if (this.writeToPosition(index1)) {yield}
+					if (this.writeToPosition(index1)) {yield;}
 					
 					index1--;
 				}
@@ -1226,7 +1225,7 @@ export class SortingAlgorithm extends Applet
 			{
 				this.data[j] = auxArray[j];
 				
-				if (this.writeToPosition(j)) {yield}
+				if (this.writeToPosition(j)) {yield;}
 			}
 			
 			//We need to take care to reverse the top half of auxArray.
@@ -1234,7 +1233,7 @@ export class SortingAlgorithm extends Applet
 			{
 				this.data[index1 + j] = auxArray[this.dataLength - 1 - j];
 				
-				if (this.writeToPosition(index1 + j)) {yield}
+				if (this.writeToPosition(index1 + j)) {yield;}
 			}
 			
 			div *= 2;
@@ -1295,7 +1294,7 @@ export class SortingAlgorithm extends Applet
 					do
 					{
 						targetRow++;
-					} while (targetRow < this.dataLength && !beads[targetRow][j])
+					} while (targetRow < this.dataLength && !beads[targetRow][j]);
 					
 					targetRow--;
 					
@@ -1310,7 +1309,7 @@ export class SortingAlgorithm extends Applet
 				}
 			}
 			
-			if (this.writeToPosition(maxIndex, false, true)) {yield}
+			if (this.writeToPosition(maxIndex, false, true)) {yield;}
 			
 			this.numWrites--;
 			this.inFrameOperations--;

@@ -9,10 +9,13 @@ onmessage = async function(e)
 	noBorders = e.data[2];
 	reverseGenerateSkeleton = e.data[3];
 	
+	// eslint-disable-next-line no-undef
 	importScripts("/applets/wilsons-algorithm/scripts/random-walk.js");
 
+	// eslint-disable-next-line no-undef
 	Module["onRuntimeInitialized"] = async function()
 	{
+		// eslint-disable-next-line no-undef
 		importScripts("/scripts/wasm-arrays.min.js");
 		
 		await drawWilsonGraph();
@@ -48,8 +51,6 @@ let currentRowBaseCamp = null;
 let currentColumnBaseCamp = null;
 let randomWalkFromEndpointAttmepts = 0;
 
-let lastDirection = null;
-
 let randomWalk = wasmRandomWalk;
 let numShortPathsInARow = 0;
 
@@ -57,215 +58,197 @@ let percentStep = 1;
 
 
 
-function drawWilsonGraph()
+async function drawWilsonGraph()
 {
-	return new Promise(async function(resolve, reject)
+	edgesInTree = [];
+	
+	//This is a one-dimensional list of length n*n, where the vertex (i, j) is at position n*i + j.
+	verticesNotInTree = [];
+	
+	for (let i = 0; i < gridSize; i++)
 	{
-		edgesInTree = [];
-		
-		//This is a one-dimensional list of length n*n, where the vertex (i, j) is at position n*i + j.
-		verticesNotInTree = [];
-		
-		for (let i = 0; i < gridSize; i++)
+		for (let j = 0; j < gridSize; j++)
 		{
-			for (let j = 0; j < gridSize; j++)
-			{
-				verticesNotInTree[gridSize * i + j] = [i, j];
-				
-				grid[gridSize * i + j] = 0;
-			}
+			verticesNotInTree[gridSize * i + j] = [i, j];
+			
+			grid[gridSize * i + j] = 0;
+		}
+	}
+	
+	
+	
+	while (verticesNotInTree.length > 0)
+	{
+		if (maximumSpeed)
+		{
+			wilsonStep();
+		}
+		
+		else
+		{
+			await wilsonStep();
 		}
 		
 		
 		
-		while (verticesNotInTree.length > 0)
+		if (verticesInTree.length >= (gridSize * gridSize / 100) * percentStep)
 		{
-			if (maximumSpeed)
-			{
-				wilsonStep();
-			}
+			postMessage(["progress", percentStep]);
 			
-			else
-			{
-				await wilsonStep();
-			}
-			
-			
-			
-			if (verticesInTree.length >= (gridSize * gridSize / 100) * percentStep)
-			{
-				postMessage(["progress", percentStep]);
-				
-				percentStep++;
-			}
+			percentStep++;
 		}
-		
-		
-		
-		resolve();
-	});
+	}
 }
 
 
 
-function wilsonStep()
+async function wilsonStep()
 {
-	//We need a promise so that we can have this function actually take time to run.
-	return new Promise(async function(resolve, reject)
+	newVertices = [];
+	
+	
+	
+	if (reverseGenerateSkeleton)
 	{
-		newVertices = [];
+		//The correct way to run Wilson's algorithm is to take a random point not on the tree and so a LERW until the tree is hit. When the tree is small and the graph is large, though, this is not feasible. The effect is that graphs above 1000x1000 are pretty much impossible. To make things faster, we'll instead use this method when the usual one takes longer than 3 seconds without response. Here, we start by drawing a relatively short line, then picking a point *on* the line and making a LERW away from that.
 		
 		
 		
-		if (reverseGenerateSkeleton)
+		//This is a little subtle. If we've never drawn a single line, then we start somewhere pretty close to the center. Otherwise, we don't set currentRow and currentColumn to anything, thereby leaving them as the endpoints of the previous random walk.
+		
+		if (verticesInTree.length === 0)
 		{
-			//The correct way to run Wilson's algorithm is to take a random point not on the tree and so a LERW until the tree is hit. When the tree is small and the graph is large, though, this is not feasible. The effect is that graphs above 1000x1000 are pretty much impossible. To make things faster, we'll instead use this method when the usual one takes longer than 3 seconds without response. Here, we start by drawing a relatively short line, then picking a point *on* the line and making a LERW away from that.
-			
-			
-			
-			//This is a little subtle. If we've never drawn a single line, then we start somewhere pretty close to the center. Otherwise, we don't set currentRow and currentColumn to anything, thereby leaving them as the endpoints of the previous random walk.
-			
-			if (verticesInTree.length === 0)
-			{
-				currentRow = Math.floor(Math.random() * gridSize / 5 + 2 * gridSize / 5);
-				currentColumn = Math.floor(Math.random() * gridSize / 5 + 2 * gridSize / 5);
-			}
-			
-			
-			
-			jsRandomWalk(100);
-			
-			
-			
-			//We don't include the last vertex, since it could connect back to the tree.
-			newVertices.splice(newVertices.length - 1, 1);
-			
-			if (newVertices.length < 99)
-			{
-				//If we failed to get a long enough random walk from here, there's a chance that we're inside a cage of some sort. We might need to pick a new starting location for the next run, but we want to make sure that we're giving this place a proper chance. Therefore, we'll give it 100 attempts.
-				if (randomWalkFromEndpointAttmepts < 100)
-				{
-					randomWalkFromEndpointAttmepts++;
-					
-					currentRow = currentRowBaseCamp;
-					currentColumn = currentColumnBaseCamp;
-				}
-				
-				else if (verticesInTree.length !== 0 && randomWalkFromEndpointAttmepts === 100)
-				{
-					randomWalkFromEndpointAttmepts = 0;
-					
-					let newIndex = Math.floor(Math.random() * verticesInTree.length);
-					
-					currentRow = verticesInTree[newIndex][0];
-					currentColumn = verticesInTree[newIndex][1];	
-				}
-				
-				
-				
-				resolve();
-				return;
-			}
-			
-			
-			
-			randomWalkFromEndpointAttmepts = 0;
-			
-			currentRowBaseCamp = newVertices[newVertices.length - 2][0];
-			currentColumnBaseCamp = newVertices[newVertices.length - 2][1];
-			
-			currentRow = currentRowBaseCamp;
-			currentColumn = currentColumnBaseCamp;
-			
-			numSkeletonLines++;
-			
-			//We need to stop doing this at some point.
-			if (numSkeletonLines === Math.floor(gridSize / 5))
-			{
-				reverseGenerateSkeleton = false;
-				
-				postMessage(["log", "Going back to regular LERWs"]);
-			}
+			currentRow = Math.floor(Math.random() * gridSize / 5 + 2 * gridSize / 5);
+			currentColumn = Math.floor(Math.random() * gridSize / 5 + 2 * gridSize / 5);
 		}
 		
 		
+		
+		jsRandomWalk(100);
+		
+		
+		
+		//We don't include the last vertex, since it could connect back to the tree.
+		newVertices.splice(newVertices.length - 1, 1);
+		
+		if (newVertices.length < 99)
+		{
+			//If we failed to get a long enough random walk from here, there's a chance that we're inside a cage of some sort. We might need to pick a new starting location for the next run, but we want to make sure that we're giving this place a proper chance. Therefore, we'll give it 100 attempts.
+			if (randomWalkFromEndpointAttmepts < 100)
+			{
+				randomWalkFromEndpointAttmepts++;
+				
+				currentRow = currentRowBaseCamp;
+				currentColumn = currentColumnBaseCamp;
+			}
+			
+			else if (verticesInTree.length !== 0 && randomWalkFromEndpointAttmepts === 100)
+			{
+				randomWalkFromEndpointAttmepts = 0;
+				
+				let newIndex = Math.floor(Math.random() * verticesInTree.length);
+				
+				currentRow = verticesInTree[newIndex][0];
+				currentColumn = verticesInTree[newIndex][1];	
+			}
+			
+			return;
+		}
+		
+		
+		
+		randomWalkFromEndpointAttmepts = 0;
+		
+		currentRowBaseCamp = newVertices[newVertices.length - 2][0];
+		currentColumnBaseCamp = newVertices[newVertices.length - 2][1];
+		
+		currentRow = currentRowBaseCamp;
+		currentColumn = currentColumnBaseCamp;
+		
+		numSkeletonLines++;
+		
+		//We need to stop doing this at some point.
+		if (numSkeletonLines === Math.floor(gridSize / 5))
+		{
+			reverseGenerateSkeleton = false;
+			
+			postMessage(["log", "Going back to regular LERWs"]);
+		}
+	}
+	
+	
+	
+	else
+	{
+		//Pick a random vertex not in the tree.
+		let newIndex = Math.floor(Math.random() * verticesNotInTree.length);
+		
+		currentRow = verticesNotInTree[newIndex][0];
+		currentColumn = verticesNotInTree[newIndex][1];	
+		
+		if (edgesInTree.length === 0)
+		{
+			let walkLength = gridSize * 5;
+			
+			if (gridSize <= 100)
+			{
+				walkLength = gridSize;
+			}
+			
+			else if (gridSize <= 300)
+			{
+				walkLength = gridSize * 3;
+			}
+			
+			randomWalk(walkLength);
+			
+			postMessage(["log", "Got it in time!"]);
+		}
 		
 		else
 		{
-			//Pick a random vertex not in the tree.
-			let newIndex = Math.floor(Math.random() * verticesNotInTree.length);
-			
-			currentRow = verticesNotInTree[newIndex][0];
-			currentColumn = verticesNotInTree[newIndex][1];	
-			
-			if (edgesInTree.length === 0)
-			{
-				let walkLength = gridSize * 5;
-				
-				if (gridSize <= 100)
-				{
-					walkLength = gridSize;
-				}
-				
-				else if (gridSize <= 300)
-				{
-					walkLength = gridSize * 3;
-				}
-				
-				randomWalk(walkLength);
-				
-				postMessage(["log", "Got it in time!"]);
-			}
-			
-			else
-			{
-				randomWalk();
-			}
+			randomWalk();
 		}
-		
-		
-		
-		//Draw this walk.
-		for (let i = 0; i < newVertices.length - 1; i++)
+	}
+	
+	
+	
+	//Draw this walk.
+	for (let i = 0; i < newVertices.length - 1; i++)
+	{
+		if (maximumSpeed)
 		{
-			if (maximumSpeed)
-			{
-				drawLine(newVertices[i][0], newVertices[i][1], newVertices[i + 1][0], newVertices[i + 1][1], "rgb(255, 255, 255)", 0);
-			}
-			
-			else
-			{
-				await drawLine(newVertices[i][0], newVertices[i][1], newVertices[i + 1][0], newVertices[i + 1][1], "rgb(255, 255, 255)", 300 / gridSize);
-			}
+			drawLine(newVertices[i][0], newVertices[i][1], newVertices[i + 1][0], newVertices[i + 1][1], "rgb(255, 255, 255)", 0);
 		}
 		
-		
-		
-		//Now we can add all the vertices and edges.
-		for (let i = 0; i < newVertices.length; i++)
+		else
 		{
-			grid[gridSize * newVertices[i][0] + newVertices[i][1]] = 1;
-			
-			
-			
-			let popIndex = vertexInArray(newVertices[i], verticesNotInTree);
-			
-			if (popIndex !== -1)
-			{
-				verticesNotInTree.splice(popIndex, 1);
-				verticesInTree.push(newVertices[i]);
-			}
-			
-			if (i !== newVertices.length - 1)
-			{
-				edgesInTree.push([newVertices[i], newVertices[i + 1]]);
-			}
+			await drawLine(newVertices[i][0], newVertices[i][1], newVertices[i + 1][0], newVertices[i + 1][1], "rgb(255, 255, 255)", 300 / gridSize);
+		}
+	}
+	
+	
+	
+	//Now we can add all the vertices and edges.
+	for (let i = 0; i < newVertices.length; i++)
+	{
+		grid[gridSize * newVertices[i][0] + newVertices[i][1]] = 1;
+		
+		
+		
+		let popIndex = vertexInArray(newVertices[i], verticesNotInTree);
+		
+		if (popIndex !== -1)
+		{
+			verticesNotInTree.splice(popIndex, 1);
+			verticesInTree.push(newVertices[i]);
 		}
 		
-		
-		
-		resolve();
-	});
+		if (i !== newVertices.length - 1)
+		{
+			edgesInTree.push([newVertices[i], newVertices[i + 1]]);
+		}
+	}
 }
 
 
@@ -273,16 +256,20 @@ function wilsonStep()
 //Performs a loop-erased random walk. If fixedLength === true, then rather than waiting until the walk hits the tree, it will just go until the walk is a certain length. This keeps that first walk from taking a ridiculous amount of time while still making the output graph be relatively random.
 function wasmRandomWalk(fixedLength = 0)
 {
+	// eslint-disable-next-line no-undef
 	let newVerticesPtr = ccallArrays("random_walk", "number", ["number", "array", "number", "number", "number"], [gridSize, grid, fixedLength, currentRow, currentColumn], {heapIn: "HEAPU32"});
 	
 	//The length of the array is stored as its first element.
+	// eslint-disable-next-line no-undef
 	let numNewVertices = Module.HEAPU32[newVerticesPtr / Uint32Array.BYTES_PER_ELEMENT];
 	
 	for (let i = 2; i < 2 * numNewVertices; i += 2)
 	{
+		// eslint-disable-next-line no-undef
 		newVertices.push([Module.HEAPU32[newVerticesPtr / Uint32Array.BYTES_PER_ELEMENT + i], Module.HEAPU32[newVerticesPtr / Uint32Array.BYTES_PER_ELEMENT + i + 1]]);
 	}
 	
+	// eslint-disable-next-line no-undef
 	Module.ccall("free_from_js", null, ["number"], [newVerticesPtr]);
 	
 	
@@ -315,7 +302,7 @@ function jsRandomWalk(fixedLength = 0)
 	
 	
 	//Go until we hit the tree.
-	while (true)
+	for (;;)
 	{
 		//Move either up, left, down, or right. 0 = up, 1 = left, 2 = down, and 3 = right.
 		let possibleDirections = [];
@@ -435,257 +422,245 @@ function jsRandomWalk(fixedLength = 0)
 
 
 
-function colorGraph()
+async function colorGraph()
 {
-	return new Promise(async function(resolve, reject)
+	//First, create an array whose (i, j) entry is a list of all the connection directions from vertex (i, j).
+	let connectionDirections = [];
+	
+	for (let i = 0; i < gridSize; i++)
 	{
-		//First, create an array whose (i, j) entry is a list of all the connection directions from vertex (i, j).
-		let connectionDirections = [];
+		connectionDirections[i] = [];
 		
-		for (let i = 0; i < gridSize; i++)
+		for (let j = 0; j < gridSize; j++)
 		{
-			connectionDirections[i] = [];
-			
-			for (let j = 0; j < gridSize; j++)
+			connectionDirections[i][j] = [];
+		}
+	}
+	
+	
+	
+	for (let i = 0; i < edgesInTree.length; i++)
+	{
+		let row1 = edgesInTree[i][0][0];
+		let column1 = edgesInTree[i][0][1];
+		
+		let row2 = edgesInTree[i][1][0];
+		let column2 = edgesInTree[i][1][1];
+		
+		//The rows are the same, so the direction is either left or right.
+		if (row1 === row2)
+		{
+			if (!(connectionDirections[row1][Math.min(column1, column2)].includes(1)))
 			{
-				connectionDirections[i][j] = [];
+				connectionDirections[row1][Math.min(column1, column2)].push(1);
+			}
+			
+			if (!(connectionDirections[row2][Math.max(column1, column2)].includes(3)))
+			{
+				connectionDirections[row2][Math.max(column1, column2)].push(3);
 			}
 		}
 		
-		
-		
-		for (let i = 0; i < edgesInTree.length; i++)
-		{
-			let row1 = edgesInTree[i][0][0];
-			let column1 = edgesInTree[i][0][1];
-			
-			let row2 = edgesInTree[i][1][0];
-			let column2 = edgesInTree[i][1][1];
-			
-			//The rows are the same, so the direction is either left or right.
-			if (row1 === row2)
-			{
-				if (!(connectionDirections[row1][Math.min(column1, column2)].includes(1)))
-				{
-					connectionDirections[row1][Math.min(column1, column2)].push(1);
-				}
-				
-				if (!(connectionDirections[row2][Math.max(column1, column2)].includes(3)))
-				{
-					connectionDirections[row2][Math.max(column1, column2)].push(3);
-				}
-			}
-			
-			//The columns are the same, so the direction is either up or down.
-			else
-			{
-				if (!(connectionDirections[Math.min(row1, row2)][column1].includes(2)))
-				{
-					connectionDirections[Math.min(row1, row2)][column1].push(2);
-				}
-				
-				if (!(connectionDirections[Math.max(row1, row2)][column1].includes(0)))
-				{
-					connectionDirections[Math.max(row1, row2)][column2].push(0);
-				}
-			}
-		}
-		
-		
-		
-		let edgesByDistance = [];
-		
-		
-		
-		//Now start at the middle of the graph. The syntax for a path is (row, column, distance from center).
-		let activePaths = [];
-		
-		if (gridSize % 2 === 1)
-		{
-			activePaths = [[Math.floor(gridSize / 2), Math.floor(gridSize / 2), 0]];
-		}
-		
+		//The columns are the same, so the direction is either up or down.
 		else
 		{
-			activePaths =
-			[
-				[Math.floor(gridSize / 2) - 1, Math.floor(gridSize / 2) - 1, 0],
-				[Math.floor(gridSize / 2) - 1, Math.floor(gridSize / 2), 0],
-				[Math.floor(gridSize / 2), Math.floor(gridSize / 2) - 1, 0],
-				[Math.floor(gridSize / 2), Math.floor(gridSize / 2), 0]
-			];
+			if (!(connectionDirections[Math.min(row1, row2)][column1].includes(2)))
+			{
+				connectionDirections[Math.min(row1, row2)][column1].push(2);
+			}
+			
+			if (!(connectionDirections[Math.max(row1, row2)][column1].includes(0)))
+			{
+				connectionDirections[Math.max(row1, row2)][column2].push(0);
+			}
+		}
+	}
+	
+	
+	
+	let edgesByDistance = [];
+	
+	
+	
+	//Now start at the middle of the graph. The syntax for a path is (row, column, distance from center).
+	let activePaths = [];
+	
+	if (gridSize % 2 === 1)
+	{
+		activePaths = [[Math.floor(gridSize / 2), Math.floor(gridSize / 2), 0]];
+	}
+	
+	else
+	{
+		activePaths =
+		[
+			[Math.floor(gridSize / 2) - 1, Math.floor(gridSize / 2) - 1, 0],
+			[Math.floor(gridSize / 2) - 1, Math.floor(gridSize / 2), 0],
+			[Math.floor(gridSize / 2), Math.floor(gridSize / 2) - 1, 0],
+			[Math.floor(gridSize / 2), Math.floor(gridSize / 2), 0]
+		];
+	}
+	
+	
+	
+	let distanceFromCenter = [];
+	
+	for (let i = 0; i < gridSize; i++)
+	{
+		distanceFromCenter[i] = [];
+		
+		for (let j = 0; j < gridSize; j++)
+		{
+			distanceFromCenter[i][j] = -1;
+		}
+	}
+	
+	
+	
+	//While there are still paths active, extend each one.
+	while (activePaths.length > 0)
+	{
+		let numActivePaths = activePaths.length;
+		
+		
+		
+		//For every vertex connected to each active path end, make a new path, but only if we've never been there before.
+		for (let i = 0; i < numActivePaths; i++)
+		{
+			let row = activePaths[i][0];
+			let column = activePaths[i][1];
+			let distance = activePaths[i][2];
+			
+			//Record how far away from the center we are.
+			distanceFromCenter[row][column] = distance;
+			
+			
+			
+			if (connectionDirections[row][column].includes(0) && distanceFromCenter[row - 1][column] === -1)
+			{
+				activePaths.push([row - 1, column, distance + 1]);
+				edgesByDistance.push([[row, column], [row - 1, column], distance]);
+			}
+			
+			if (connectionDirections[row][column].includes(1) && distanceFromCenter[row][column + 1] === -1)
+			{
+				activePaths.push([row, column + 1, distance + 1]);
+				edgesByDistance.push([[row, column], [row, column + 1], distance]);
+			}
+			
+			if (connectionDirections[row][column].includes(2) && distanceFromCenter[row + 1][column] === -1)
+			{
+				activePaths.push([row + 1, column, distance + 1]);
+				edgesByDistance.push([[row, column], [row + 1, column], distance]);
+			}
+			
+			if (connectionDirections[row][column].includes(3) && distanceFromCenter[row][column - 1] === -1)
+			{
+				activePaths.push([row, column - 1, distance + 1]);
+				edgesByDistance.push([[row, column], [row, column - 1], distance]);
+			}
 		}
 		
 		
 		
-		let distanceFromCenter = [];
-		
-		for (let i = 0; i < gridSize; i++)
+		//Now remove all of the current paths.
+		activePaths.splice(0, numActivePaths);
+	}
+	
+	
+	
+	//Now that we finally have all the edges organized by distance, we can loop through all of them in order.
+	edgesByDistance.sort((a, b) => a[2] - b[2]);
+	
+	//The factor of 7/6 makes the farthest color from red be colored pink rather than red again.
+	let maxDistance = edgesByDistance[edgesByDistance.length - 1][2] * 7/6;
+	
+	
+	
+	//We want to draw each color at once, so we need to split up the edges into sections with constant distance.
+	
+	let distanceBreaks = [0];
+	let currentDistance = 0;
+	
+	for (let i = 0; i < edgesByDistance.length; i++)
+	{
+		if (edgesByDistance[i][2] > currentDistance)
 		{
-			distanceFromCenter[i] = [];
+			distanceBreaks.push(i);
+			currentDistance++;
+		}
+	}
+	
+	distanceBreaks.push(edgesByDistance.length);
+	
+	
+	
+	//Now, finally, we can draw the colors.
+	for (let i = 0; i < distanceBreaks.length; i++)
+	{
+		let j = 0;
+		
+		for (j = distanceBreaks[i]; j < distanceBreaks[i + 1] - 1; j++)
+		{
+			const rgb = HSVtoRGB(edgesByDistance[j][2] / maxDistance, 1, 1);
 			
-			for (let j = 0; j < gridSize; j++)
-			{
-				distanceFromCenter[i][j] = -1;
-			}
+			drawLine(edgesByDistance[j][0][0], edgesByDistance[j][0][1], edgesByDistance[j][1][0], edgesByDistance[j][1][1], `rgb(${rgb[0]}, ${rgb[1]}, ${rgb[2]})`, 0);
 		}
 		
 		
 		
-		//While there are still paths active, extend each one.
-		while (activePaths.length > 0)
+		//We only wait for this one.
+		try
 		{
-			let numActivePaths = activePaths.length;
+			const rgb = HSVtoRGB(edgesByDistance[j][2] / maxDistance, 1, 1);
 			
-			
-			
-			//For every vertex connected to each active path end, make a new path, but only if we've never been there before.
-			for (let i = 0; i < numActivePaths; i++)
-			{
-				let row = activePaths[i][0];
-				let column = activePaths[i][1];
-				let distance = activePaths[i][2];
-				
-				//Record how far away from the center we are.
-				distanceFromCenter[row][column] = distance;
-				
-				
-				
-				if (connectionDirections[row][column].includes(0) && distanceFromCenter[row - 1][column] === -1)
-				{
-					activePaths.push([row - 1, column, distance + 1]);
-					edgesByDistance.push([[row, column], [row - 1, column], distance]);
-				}
-				
-				if (connectionDirections[row][column].includes(1) && distanceFromCenter[row][column + 1] === -1)
-				{
-					activePaths.push([row, column + 1, distance + 1]);
-					edgesByDistance.push([[row, column], [row, column + 1], distance]);
-				}
-				
-				if (connectionDirections[row][column].includes(2) && distanceFromCenter[row + 1][column] === -1)
-				{
-					activePaths.push([row + 1, column, distance + 1]);
-					edgesByDistance.push([[row, column], [row + 1, column], distance]);
-				}
-				
-				if (connectionDirections[row][column].includes(3) && distanceFromCenter[row][column - 1] === -1)
-				{
-					activePaths.push([row, column - 1, distance + 1]);
-					edgesByDistance.push([[row, column], [row, column - 1], distance]);
-				}
-			}
-			
-			
-			
-			//Now remove all of the current paths.
-			activePaths.splice(0, numActivePaths);
+			await drawLine(edgesByDistance[j][0][0], edgesByDistance[j][0][1], edgesByDistance[j][1][0], edgesByDistance[j][1][1], `rgb(${rgb[0]}, ${rgb[1]}, ${rgb[2]})`, 24);
 		}
-		
-		
-		
-		//Now that we finally have all the edges organized by distance, we can loop through all of them in order.
-		edgesByDistance.sort((a, b) => a[2] - b[2]);
-		
-		//The factor of 7/6 makes the farthest color from red be colored pink rather than red again.
-		let maxDistance = edgesByDistance[edgesByDistance.length - 1][2] * 7/6;
-		
-		
-		
-		//We want to draw each color at once, so we need to split up the edges into sections with constant distance.
-		
-		let distanceBreaks = [0];
-		let currentDistance = 0;
-		
-		for (let i = 0; i < edgesByDistance.length; i++)
-		{
-			if (edgesByDistance[i][2] > currentDistance)
-			{
-				distanceBreaks.push(i);
-				currentDistance++;
-			}
-		}
-		
-		distanceBreaks.push(edgesByDistance.length);
-		
-		
-		
-		//Now, finally, we can draw the colors.
-		for (let i = 0; i < distanceBreaks.length; i++)
-		{
-			let j = 0;
-			
-			for (j = distanceBreaks[i]; j < distanceBreaks[i + 1] - 1; j++)
-			{
-				const rgb = HSVtoRGB(edgesByDistance[j][2] / maxDistance, 1, 1);
-				
-				drawLine(edgesByDistance[j][0][0], edgesByDistance[j][0][1], edgesByDistance[j][1][0], edgesByDistance[j][1][1], `rgb(${rgb[0]}, ${rgb[1]}, ${rgb[2]})`, 0);
-			}
-			
-			
-			
-			//We only wait for this one.
-			try
-			{
-				const rgb = HSVtoRGB(edgesByDistance[j][2] / maxDistance, 1, 1);
-				
-				await drawLine(edgesByDistance[j][0][0], edgesByDistance[j][0][1], edgesByDistance[j][1][0], edgesByDistance[j][1][1], `rgb(${rgb[0]}, ${rgb[1]}, ${rgb[2]})`, 24);
-			}
 
-			catch(ex)
-			{
-				break;
-			}
+		catch(ex)
+		{
+			break;
 		}
-		
-		
-		
-		resolve();
-	});
+	}
 }
 
 
 
-function drawLine(row1, column1, row2, column2, color, delay)
+async function drawLine(row1, column1, row2, column2, color, delay)
 {
-	return new Promise(function(resolve, reject)
+	if (column1 === column2)
 	{
-		if (column1 === column2)
+		let x = column1;
+		let y = Math.min(row1, row2);
+		
+		if (noBorders)
 		{
-			let x = column1;
-			let y = Math.min(row1, row2);
-			
-			if (noBorders)
-			{
-				postMessage([x, y, 1, 2, color]);
-			}
-			
-			else
-			{
-				postMessage([2 * x + 1, 2 * y + 1, 1, 3, color]);
-			}
+			postMessage([x, y, 1, 2, color]);
 		}
 		
 		else
 		{
-			let x = Math.min(column1, column2);
-			let y = row1;
-			
-			if (noBorders)
-			{
-				postMessage([x, y, 2, 1, color]);
-			}
-			
-			else
-			{
-				postMessage([2 * x + 1, 2 * y + 1, 3, 1, color]);
-			}
+			postMessage([2 * x + 1, 2 * y + 1, 1, 3, color]);
+		}
+	}
+	
+	else
+	{
+		let x = Math.min(column1, column2);
+		let y = row1;
+		
+		if (noBorders)
+		{
+			postMessage([x, y, 2, 1, color]);
 		}
 		
-		
-		
-		setTimeout(resolve, delay);
-	});
+		else
+		{
+			postMessage([2 * x + 1, 2 * y + 1, 3, 1, color]);
+		}
+	}
+	
+	await new Promise(resolve => setTimeout(resolve, delay));
 }
 
 

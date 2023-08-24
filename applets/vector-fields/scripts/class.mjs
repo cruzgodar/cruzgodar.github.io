@@ -303,12 +303,7 @@ export class VectorField extends Applet
 		
 		
 		
-		this.loadPromise = new Promise(async (resolve, reject) =>
-		{
-			await loadGlsl();
-			
-			resolve();
-		});
+		this.loadPromise = loadGlsl();
 	}
 	
 	
@@ -888,7 +883,7 @@ export class VectorField extends Applet
 	
 	
 	
-	onDragDraggable(activeDraggable, x, y, event)
+	onDragDraggable(activeDraggable, x, y)
 	{
 		this.wilsonUpdate.gl.useProgram(this.wilsonUpdate.render.shaderPrograms[0]);
 		this.wilsonUpdate.gl.uniform2f(this.wilsonUpdate.uniforms["draggableArg"][0], x, y);
@@ -908,7 +903,7 @@ export class VectorField extends Applet
 	
 	
 	
-	onGrabCanvas(x, y, event)
+	onGrabCanvas()
 	{
 		this.panVelocityX = 0;
 		this.panVelocityY = 0;
@@ -919,14 +914,14 @@ export class VectorField extends Applet
 		this.lastZoomVelocities = [0, 0, 0, 0];
 	}
 	
-	onDragCanvas(x, y, xDelta, yDelta, event)
+	onDragCanvas(x, y, xDelta, yDelta)
 	{
 		//The += here lets us only move the canvas when we have at least one pixel to move.
 		this.nextPanVelocityX += -xDelta;
 		this.nextPanVelocityY += -yDelta;
 	}
 	
-	onReleaseCanvas(x, y, event)
+	onReleaseCanvas()
 	{
 		let maxIndex = 0;
 		
@@ -994,7 +989,7 @@ export class VectorField extends Applet
 	
 	
 	
-	onWheelCanvas(x, y, scrollAmount, event)
+	onWheelCanvas(x, y, scrollAmount)
 	{
 		this.fixedPointX = x;
 		this.fixedPointY = y;
@@ -1014,7 +1009,7 @@ export class VectorField extends Applet
 	
 	
 	
-	onPinchCanvas(x, y, touchDistanceDelta, event)
+	onPinchCanvas(x, y, touchDistanceDelta)
 	{
 		let zoomDelta;
 		

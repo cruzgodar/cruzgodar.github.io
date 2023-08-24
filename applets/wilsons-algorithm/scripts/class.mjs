@@ -76,8 +76,10 @@ export class WilsonsAlgorithm extends Applet
 		{
 			timeoutId = setTimeout(() =>
 			{
-				try {this.webWorker.terminate();}
-				catch(ex) {}
+				if (this.webWorker?.terminate)
+				{
+					this.webWorker.terminate();
+				}
 
 				this.run(gridSize, maximumSpeed, noBorders, true);
 			}, 3000);
