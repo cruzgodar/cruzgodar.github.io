@@ -575,377 +575,432 @@ export class Lapsa
 	
 	
 	
-	nextSlide(skipBuilds = false)
+	async nextSlide(skipBuilds = false)
 	{
-		return new Promise(async (resolve, reject) =>
+		if (this._currentlyAnimating || this._inTableView)
 		{
-			if (this._currentlyAnimating || this._inTableView)
-			{
-				resolve();
-				return;
-			}
-			
-			this._currentlyAnimating = true;
-			
-			
-			
-			//If there's a build available, we do that instead of moving to the next slide.
-			if (this.currentSlide >= 0 && !skipBuilds && this._numBuilds[this.currentSlide] !== 0 && this.buildState !== this._numBuilds[this.currentSlide])
-			{
-				let promises = [];
-				
-				//Gross code because animation durations are weird as hell -- see the corresponding previousSlide block for a better example.
-				this.slides[this.currentSlide].querySelectorAll(`[data-build="${this.buildState}"]`).forEach(element =>
-				{
-					this.buildIn(element, this.transitionAnimationTime * 2);
-					
-					promises.push(new Promise((resolve, reject) => setTimeout(resolve, this.transitionAnimationTime)));
-				});
-				
-				try {promises.push(this.callbacks[this.slides[this.currentSlide].id][this.buildState](this.slides[this.currentSlide], true));}
-				catch(ex) {}
-				
-				await Promise.all(promises);
-				
-				this.buildState++;
-				
-				this._currentlyAnimating = false;
-				
-				return;
-			}
-			
-			
-			
-			if (this.currentSlide === this.slides.length - 1)
-			{
-				this._currentlyAnimating = false;
-				
-				return;
-			}
-			
-			
-			//Fade out the current slide, show all its builds (for the table view), then load in the next slide and hide all of its builds.
-			
-			await this.fadeUpOut(this.slideContainer, this.transitionAnimationTime);
-			
-			//Reset the slide if necessary.
-			if (this.currentSlide >= 0 && this.buildState !== this._numBuilds[this.currentSlide])
-			{
-				try
-				{
-					await this.callbacks[this.slides[this.currentSlide].id].reset(this.slides[this.currentSlide], true, 0);
-				}
-				
-				catch(ex) {}
-				
-				this.slides[this.currentSlide].querySelectorAll("[data-build]").forEach(element => element.style.opacity = 1);
-			}
-			
-			
-			
-			this.currentSlide++;
-			
-			this.buildState = 0;
-			
-			
-			
-			try
-			{
-				await this.callbacks[this.slides[this.currentSlide].id].reset(this.slides[this.currentSlide], true, 0);
-			}
-			
-			catch(ex) {}
-			
-			
-			
-			this.slides[this.currentSlide].querySelectorAll("[data-build]").forEach(element => element.style.opacity = 0);
-			
-			this.slideContainer.style.transform = `translateY(calc(${-100 * this.currentSlide} * var(--safe-vh))) scale(1)`;
-			
-			await this.fadeUpIn(this.slideContainer, this.transitionAnimationTime * 2);
-			
-			this._currentlyAnimating = false;
-			
-			resolve();
-		});
-	}
-	
-	
-	
-	previousSlide(skipBuilds = false)
-	{
-		return new Promise(async (resolve, reject) =>
+			return;
+		}
+		
+		this._currentlyAnimating = true;
+		
+		
+		
+		//If there's a build available, we do that instead of moving to the next slide.
+		if (this.currentSlide >= 0 && !skipBuilds && this._numBuilds[this.currentSlide] !== 0 && this.buildState !== this._numBuilds[this.currentSlide])
 		{
-			if (this._currentlyAnimating || this._inTableView)
+			let promises = [];
+			
+			//Gross code because animation durations are weird as hell -- see the corresponding previousSlide block for a better example.
+			this.slides[this.currentSlide].querySelectorAll(`[data-build="${this.buildState}"]`).forEach(element =>
 			{
-				resolve();
-				return;
-			}
-			
-			this._currentlyAnimating = true;
-			
-			
-			
-			//If there's a build available, we do that instead of moving to the previous slide.
-			if (!skipBuilds && this._numBuilds[this.currentSlide] !== 0 && this.buildState !== 0)
-			{
-				this.buildState--;
+				this.buildIn(element, this.transitionAnimationTime * 2);
 				
-				let promises = [];
-				
-				this.slides[this.currentSlide].querySelectorAll(`[data-build="${this.buildState}"]`).forEach(element => promises.push(this.buildOut(element, this.transitionAnimationTime)));
-				
-				try {promises.push(this.callbacks[this.slides[this.currentSlide].id][this.buildState](this.slides[this.currentSlide], false));}
-				catch(ex) {}
-				
-				await Promise.all(promises);
-				
-				this._currentlyAnimating = false;
-				
-				return;
-			}
-			
-			
-			
-			if (this.currentSlide === 0 || this.currentSlide === this.slides.length)
-			{
-				this._currentlyAnimating = false;
-				
-				return;
-			}
-			
-			
-			
-			//Fade out the current slide, show all its builds (for the table view), then load in the previous slide and show all of its builds.
-			
-			await this.fadeDownOut(this.slideContainer, this.transitionAnimationTime);
-			
-			//Reset the slide if necessary.
-			if (this.buildState !== this._numBuilds[this.currentSlide])
-			{
-				try
-				{
-					await this.callbacks[this.slides[this.currentSlide].id].reset(this.slides[this.currentSlide], false, 0);
-				}
-				
-				catch(ex) {}
-				
-				this.slides[this.currentSlide].querySelectorAll("[data-build]").forEach(element => element.style.opacity = 1);
-			}
-			
-			
-			
-			this.currentSlide--;
-			
-			this.buildState = this._numBuilds[this.currentSlide];
-			
-			
-			
-			try
-			{
-				await this.callbacks[this.slides[this.currentSlide].id].reset(this.slides[this.currentSlide], false, 0);
-			}
-			
-			catch(ex) {}
-			
-			
-			
-			this.slides[this.currentSlide].querySelectorAll("[data-build]").forEach(element => element.style.opacity = 1);
-			
-			this.slideContainer.style.transform = `translateY(calc(${-100 * this.currentSlide} * var(--safe-vh))) scale(1)`;
-			
-			await this.fadeDownIn(this.slideContainer, this.transitionAnimationTime * 2);
-			
-			this._currentlyAnimating = false;
-			
-			resolve();
-		});
-	}
-	
-	
-	
-	jumpToSlide(index)
-	{
-		return new Promise(async (resolve, reject) =>
-		{
-			if (this._currentlyAnimating || this._inTableView)
-			{
-				resolve();
-				return;
-			}
-			
-			this._currentlyAnimating = true;
-			
-			
-			
-			if (index < 0 || index >= this.slides.length || index === this.currentSlide)
-			{
-				this._currentlyAnimating = false;
-				
-				resolve();
-				return;
-			}
-			
-			
-			
-			const forwardAnimation = index > this.currentSlide;
-			
-			if (forwardAnimation)
-			{
-				await this.fadeUpOut(this.slideContainer, this.transitionAnimationTime);
-			}
-			
-			else
-			{
-				await this.fadeDownOut(this.slideContainer, this.transitionAnimationTime);
-			}
-			
-			
-			
-			//Reset the slide if necessary.
-			if (this.currentSlide !== -1 && this.buildState !== this._numBuilds[this.currentSlide])
-			{
-				try
-				{
-					await this.callbacks[this.slides[this.currentSlide].id].reset(this.slides[this.currentSlide], false, 0);
-				}
-				
-				catch(ex) {}
-				
-				this.slides[this.currentSlide].querySelectorAll("[data-build]").forEach(element => element.style.opacity = 1);
-			}
-			
-			
-			
-			this.currentSlide = index;
-			this.buildState = 0;
-			
-			
-			
-			try
-			{
-				await this.callbacks[this.slides[this.currentSlide].id].reset(this.slides[this.currentSlide], true, 0);
-			}
-			
-			catch(ex) {}
-			
-			
-			
-			this.slides[this.currentSlide].querySelectorAll("[data-build]").forEach(element => element.style.opacity = 0);
-			
-			this.slideContainer.style.transform = `translateY(calc(${-100 * this.currentSlide} * var(--safe-vh))) scale(1)`;
-			
-			if (forwardAnimation)
-			{
-				await this.fadeUpIn(this.slideContainer, this.transitionAnimationTime * 2);
-			}
-			
-			else
-			{
-				await this.fadeDownIn(this.slideContainer, this.transitionAnimationTime * 2);
-			}
-			
-			
-			
-			this._currentlyAnimating = false;
-			
-			resolve();
-		});
-	}
-	
-	
-	
-	openTableView(duration = this.tableViewAnimationTime)
-	{
-		return new Promise((resolve, reject) =>
-		{
-			if (this._inTableView || this._currentlyAnimating)
-			{
-				resolve();
-				return;
-			}
-			
-			this._currentlyAnimating = true;
-			
-			
-			
-			if (this._currentlyTouchDevice)
-			{
-				this.hideShelf();
-			}
-			
-			document.body.style.overflowY = "visible";
-			document.body.style.position = "relative";
-			this.slideContainer.style.overflowY = "visible";
-			
-			const bodyRect = document.body.getBoundingClientRect();
-			
-			//The goal is to have room to display just under 4 slides vertically, then center on one so that the others are clipped, indicating it's scrollable. In a horizontal orientation, exactly one slide fits per screen. In a vertical one, we take a ratio.
-			const slidesPerScreen = bodyRect.width / bodyRect.height >= 152/89 ? 1 : bodyRect.height / (bodyRect.width * 89/152);
-			
-			const scale = Math.min(slidesPerScreen / this.tableViewSlidesPerScreen, 1);
-			
-			const scaledSlidesPerScreen = slidesPerScreen / scale;
-			
-			
-			
-			//The first and last two slides have different animations since they can't be in the middle of the screen in the table view.
-			const centerSlide = Math.min(Math.max((scaledSlidesPerScreen - 1) / 2, this.currentSlide), this.slides.length - 1 - (scaledSlidesPerScreen - 1) / 2);
-			
-			this.slideContainer.style.transformOrigin = `center calc(${this.currentSlide * 100 + 50} * var(--safe-vh))`;
-			
-			const translation = bodyRect.width / bodyRect.height >= 152/89 ? `calc(${(58.125 * 152/89 * centerSlide - 100 * centerSlide) * scale} * var(--safe-vh))` : `calc(${(58.125 * centerSlide) * scale}vw - ${100 * centerSlide * scale} * var(--safe-vh))`;
-			
-			this.slideContainer.style.transition = `transform ${duration}ms ${this.tableViewEasing}`;
-			
-			this.slideContainer.style.transform = bodyRect.width / bodyRect.height >= 152/89 ? `translateY(calc(${(this.currentSlide - centerSlide) * 58.125 * 152/89 * scale - 100 * this.currentSlide} * var(--safe-vh))) scale(${scale})` : `translateY(calc(${(this.currentSlide - centerSlide) * 58.125 * scale}vw - ${100 * this.currentSlide} * var(--safe-vh))) scale(${scale})`;
-			
-			this.slides.forEach((element, index) =>
-			{
-				element.parentNode.style.transition = `top ${duration}ms ${this.tableViewEasing}`;
-				
-				//On these, we include the top margin term to match with how things were before -- otherwise, the transformation center will be misaligned.
-				if (bodyRect.width / bodyRect.height >= 152/89)
-				{
-					element.parentNode.style.top = `calc(${58.125 * 152/89 * (index - this.currentSlide) + 100 * this.currentSlide + 2.5} * var(--safe-vh))`;
-				}
-				
-				else
-				{
-					element.parentNode.style.top = `calc(${58.125 * (index - this.currentSlide)}vw + ${100 * this.currentSlide} * var(--safe-vh) + (100 * var(--safe-vh) - 55.625vw) / 2)`;
-				}
+				promises.push(new Promise(resolve => setTimeout(resolve, this.transitionAnimationTime)));
 			});
 			
-			
-			
-			//While all the slides are moving, we also show all builds that are currently hidden and request that the slide be reset to its final state.
-			if (this.buildState !== this._numBuilds[this.currentSlide])
+			try
 			{
-				const builds = this.slides[this.currentSlide].querySelectorAll("[data-build]");
-				const oldTransitionStyles = new Array(builds.length);
-				
-				builds.forEach((element, index) =>
-				{
-					oldTransitionStyles[index] = element.style.transition;
-					
-					element.style.transition = `opacity ${duration / 2}ms ${this.slideAnimateOutEasing}`;
-					
-					element.style.opacity = 1;
-				});
-				
-				//We don't await this one because we want it to run concurrently with the table view animation.
-				try {this.callbacks[this.slides[this.currentSlide].id].reset(this.slides[this.currentSlide], false, duration / 2);}
-				catch(ex) {}
-				
-				setTimeout(() =>
-				{
-					builds.forEach((element, index) => element.style.transition = oldTransitionStyles[index]);
-				}, duration / 2);
+				const callbacks = this.callbacks[this.slides[this.currentSlide].id];
+
+				const callback = callbacks[this.buildState];
+
+				promises.push(callback(this.slides[this.currentSlide], true));
+			}
+
+			catch(ex)
+			{
+				//No callback defined
 			}
 			
+			await Promise.all(promises);
 			
+			this.buildState++;
 			
-			//Only once this is done can we snap to the end. They'll never know the difference!
+			this._currentlyAnimating = false;
+			
+			return;
+		}
+		
+		
+		
+		if (this.currentSlide === this.slides.length - 1)
+		{
+			this._currentlyAnimating = false;
+			
+			return;
+		}
+		
+		
+		//Fade out the current slide, show all its builds (for the table view), then load in the next slide and hide all of its builds.
+		
+		await this.fadeUpOut(this.slideContainer, this.transitionAnimationTime);
+		
+		//Reset the slide if necessary.
+		if (this.currentSlide >= 0 && this.buildState !== this._numBuilds[this.currentSlide])
+		{
+			try
+			{
+				const callbacks = this.callbacks[this.slides[this.currentSlide].id];
+
+				const callback = callbacks.reset;
+
+				await callback(this.slides[this.currentSlide], true, 0);
+			}
+
+			catch(ex)
+			{
+				//No reset defined
+			}
+			
+			this.slides[this.currentSlide].querySelectorAll("[data-build]").forEach(element => element.style.opacity = 1);
+		}
+		
+		
+		
+		this.currentSlide++;
+		
+		this.buildState = 0;
+		
+		
+
+		try
+		{
+			const callbacks = this.callbacks[this.slides[this.currentSlide].id];
+
+			const callback = callbacks.reset;
+
+			await callback(this.slides[this.currentSlide], true, 0);
+		}
+
+		catch(ex)
+		{
+			//No reset defined
+		}
+		
+		
+		
+		this.slides[this.currentSlide].querySelectorAll("[data-build]").forEach(element => element.style.opacity = 0);
+		
+		this.slideContainer.style.transform = `translateY(calc(${-100 * this.currentSlide} * var(--safe-vh))) scale(1)`;
+		
+		await this.fadeUpIn(this.slideContainer, this.transitionAnimationTime * 2);
+		
+		this._currentlyAnimating = false;
+	}
+	
+	
+	
+	async previousSlide(skipBuilds = false)
+	{
+		if (this._currentlyAnimating || this._inTableView)
+		{
+			return;
+		}
+		
+		this._currentlyAnimating = true;
+		
+		
+		
+		//If there's a build available, we do that instead of moving to the previous slide.
+		if (!skipBuilds && this._numBuilds[this.currentSlide] !== 0 && this.buildState !== 0)
+		{
+			this.buildState--;
+			
+			let promises = [];
+			
+			this.slides[this.currentSlide].querySelectorAll(`[data-build="${this.buildState}"]`).forEach(element => promises.push(this.buildOut(element, this.transitionAnimationTime)));
+			
+			try
+			{
+				const callbacks = this.callbacks[this.slides[this.currentSlide].id];
+
+				const callback = callbacks[this.buildState];
+
+				await callback(this.slides[this.currentSlide], false);
+			}
+
+			catch(ex)
+			{
+				//No callback defined
+			}
+			
+			await Promise.all(promises);
+			
+			this._currentlyAnimating = false;
+			
+			return;
+		}
+		
+		
+		
+		if (this.currentSlide === 0 || this.currentSlide === this.slides.length)
+		{
+			this._currentlyAnimating = false;
+			
+			return;
+		}
+		
+		
+		
+		//Fade out the current slide, show all its builds (for the table view), then load in the previous slide and show all of its builds.
+		
+		await this.fadeDownOut(this.slideContainer, this.transitionAnimationTime);
+		
+		//Reset the slide if necessary.
+		if (this.buildState !== this._numBuilds[this.currentSlide])
+		{
+			try
+			{
+				const callbacks = this.callbacks[this.slides[this.currentSlide].id];
+
+				const callback = callbacks.reset;
+
+				await callback(this.slides[this.currentSlide], false, 0);
+			}
+
+			catch(ex)
+			{
+				//No reset defined
+			}
+			
+			this.slides[this.currentSlide].querySelectorAll("[data-build]").forEach(element => element.style.opacity = 1);
+		}
+		
+		
+		
+		this.currentSlide--;
+		
+		this.buildState = this._numBuilds[this.currentSlide];
+		
+		
+		try
+		{
+			const callbacks = this.callbacks[this.slides[this.currentSlide].id];
+
+			const callback = callbacks.reset;
+
+			await callback(this.slides[this.currentSlide], false, 0);
+		}
+
+		catch(ex)
+		{
+			//No reset defined
+		}
+		
+		
+		
+		this.slides[this.currentSlide].querySelectorAll("[data-build]").forEach(element => element.style.opacity = 1);
+		
+		this.slideContainer.style.transform = `translateY(calc(${-100 * this.currentSlide} * var(--safe-vh))) scale(1)`;
+		
+		await this.fadeDownIn(this.slideContainer, this.transitionAnimationTime * 2);
+		
+		this._currentlyAnimating = false;
+	}
+	
+	
+	
+	async jumpToSlide(index)
+	{
+		if (this._currentlyAnimating || this._inTableView)
+		{
+			return;
+		}
+		
+		this._currentlyAnimating = true;
+		
+		
+		
+		if (index < 0 || index >= this.slides.length || index === this.currentSlide)
+		{
+			this._currentlyAnimating = false;
+			
+			return;
+		}
+		
+		
+		
+		const forwardAnimation = index > this.currentSlide;
+		
+		if (forwardAnimation)
+		{
+			await this.fadeUpOut(this.slideContainer, this.transitionAnimationTime);
+		}
+		
+		else
+		{
+			await this.fadeDownOut(this.slideContainer, this.transitionAnimationTime);
+		}
+		
+		
+		
+		//Reset the slide if necessary.
+		if (this.currentSlide !== -1 && this.buildState !== this._numBuilds[this.currentSlide])
+		{
+			try
+			{
+				const callbacks = this.callbacks[this.slides[this.currentSlide].id];
+
+				const callback = callbacks.reset;
+
+				await callback(this.slides[this.currentSlide], false, 0);
+			}
+
+			catch(ex)
+			{
+				//No reset defined
+			}
+			
+			this.slides[this.currentSlide].querySelectorAll("[data-build]").forEach(element => element.style.opacity = 1);
+		}
+		
+		
+		
+		this.currentSlide = index;
+		this.buildState = 0;
+		
+		
+		
+
+		try
+		{
+			const callbacks = this.callbacks[this.slides[this.currentSlide].id];
+
+			const callback = callbacks.reset;
+
+			await callback(this.slides[this.currentSlide], true, 0);
+		}
+
+		catch(ex)
+		{
+			//No reset defined
+		}
+		
+		
+		
+		this.slides[this.currentSlide].querySelectorAll("[data-build]").forEach(element => element.style.opacity = 0);
+		
+		this.slideContainer.style.transform = `translateY(calc(${-100 * this.currentSlide} * var(--safe-vh))) scale(1)`;
+		
+		if (forwardAnimation)
+		{
+			await this.fadeUpIn(this.slideContainer, this.transitionAnimationTime * 2);
+		}
+		
+		else
+		{
+			await this.fadeDownIn(this.slideContainer, this.transitionAnimationTime * 2);
+		}
+		
+		
+		
+		this._currentlyAnimating = false;
+	}
+	
+	
+	
+	async openTableView(duration = this.tableViewAnimationTime)
+	{
+		if (this._inTableView || this._currentlyAnimating)
+		{
+			return;
+		}
+		
+		this._currentlyAnimating = true;
+		
+		
+		
+		if (this._currentlyTouchDevice)
+		{
+			this.hideShelf();
+		}
+		
+		document.body.style.overflowY = "visible";
+		document.body.style.position = "relative";
+		this.slideContainer.style.overflowY = "visible";
+		
+		const bodyRect = document.body.getBoundingClientRect();
+		
+		//The goal is to have room to display just under 4 slides vertically, then center on one so that the others are clipped, indicating it's scrollable. In a horizontal orientation, exactly one slide fits per screen. In a vertical one, we take a ratio.
+		const slidesPerScreen = bodyRect.width / bodyRect.height >= 152/89 ? 1 : bodyRect.height / (bodyRect.width * 89/152);
+		
+		const scale = Math.min(slidesPerScreen / this.tableViewSlidesPerScreen, 1);
+		
+		const scaledSlidesPerScreen = slidesPerScreen / scale;
+		
+		
+		
+		//The first and last two slides have different animations since they can't be in the middle of the screen in the table view.
+		const centerSlide = Math.min(Math.max((scaledSlidesPerScreen - 1) / 2, this.currentSlide), this.slides.length - 1 - (scaledSlidesPerScreen - 1) / 2);
+		
+		this.slideContainer.style.transformOrigin = `center calc(${this.currentSlide * 100 + 50} * var(--safe-vh))`;
+		
+		const translation = bodyRect.width / bodyRect.height >= 152/89 ? `calc(${(58.125 * 152/89 * centerSlide - 100 * centerSlide) * scale} * var(--safe-vh))` : `calc(${(58.125 * centerSlide) * scale}vw - ${100 * centerSlide * scale} * var(--safe-vh))`;
+		
+		this.slideContainer.style.transition = `transform ${duration}ms ${this.tableViewEasing}`;
+		
+		this.slideContainer.style.transform = bodyRect.width / bodyRect.height >= 152/89 ? `translateY(calc(${(this.currentSlide - centerSlide) * 58.125 * 152/89 * scale - 100 * this.currentSlide} * var(--safe-vh))) scale(${scale})` : `translateY(calc(${(this.currentSlide - centerSlide) * 58.125 * scale}vw - ${100 * this.currentSlide} * var(--safe-vh))) scale(${scale})`;
+		
+		this.slides.forEach((element, index) =>
+		{
+			element.parentNode.style.transition = `top ${duration}ms ${this.tableViewEasing}`;
+			
+			//On these, we include the top margin term to match with how things were before -- otherwise, the transformation center will be misaligned.
+			if (bodyRect.width / bodyRect.height >= 152/89)
+			{
+				element.parentNode.style.top = `calc(${58.125 * 152/89 * (index - this.currentSlide) + 100 * this.currentSlide + 2.5} * var(--safe-vh))`;
+			}
+			
+			else
+			{
+				element.parentNode.style.top = `calc(${58.125 * (index - this.currentSlide)}vw + ${100 * this.currentSlide} * var(--safe-vh) + (100 * var(--safe-vh) - 55.625vw) / 2)`;
+			}
+		});
+		
+		
+		
+		//While all the slides are moving, we also show all builds that are currently hidden and request that the slide be reset to its final state.
+		if (this.buildState !== this._numBuilds[this.currentSlide])
+		{
+			const builds = this.slides[this.currentSlide].querySelectorAll("[data-build]");
+			const oldTransitionStyles = new Array(builds.length);
+			
+			builds.forEach((element, index) =>
+			{
+				oldTransitionStyles[index] = element.style.transition;
+				
+				element.style.transition = `opacity ${duration / 2}ms ${this.slideAnimateOutEasing}`;
+				
+				element.style.opacity = 1;
+			});
+			
+			//We don't await this one because we want it to run concurrently with the table view animation.
+			try
+			{
+				const callbacks = this.callbacks[this.slides[this.currentSlide].id];
+
+				const callback = callbacks.reset;
+
+				callback(this.slides[this.currentSlide], false, duration / 2);
+			}
+
+			catch(ex)
+			{
+				//No reset defined
+			}
+			
+			setTimeout(() =>
+			{
+				builds.forEach((element, index) => element.style.transition = oldTransitionStyles[index]);
+			}, duration / 2);
+		}
+		
+		
+		
+		//Only once this is done can we snap to the end. They'll never know the difference!
+		await new Promise(resolve =>
+		{
 			setTimeout(() =>
 			{
 				const correctTop = this.slides[this.currentSlide].getBoundingClientRect().top;
@@ -1004,108 +1059,118 @@ export class Lapsa
 	
 	
 	
-	closeTableView(selection, duration = this.tableViewAnimationTime)
+	async closeTableView(selection, duration = this.tableViewAnimationTime)
 	{
-		return new Promise((resolve, reject) =>
+		if (!this._inTableView || this._currentlyAnimating)
 		{
-			if (!this._inTableView || this._currentlyAnimating)
+			return;
+		}
+		
+		this._currentlyAnimating = true;
+		
+		this.currentSlide = selection;
+		
+		this.slideContainer.classList.remove("lapsa-table-view");
+		
+		
+		
+		//As with opening, this is a two-step process. First we snap back to a translated version, and then we return everything to its rightful place.
+		
+		const bodyRect = document.body.getBoundingClientRect();
+		
+		//The goal is to have room to display just under 4 slides vertically, then center on one so that the others are clipped, indicating it's scrollable. In a horizontal orientation, exactly one slide fits per screen. In a vertical one, we take a ratio.
+		const slidesPerScreen = bodyRect.width / bodyRect.height >= 152/89 ? 1 : bodyRect.height / (bodyRect.width * 89/152);
+		
+		const scale = Math.min(slidesPerScreen / this.tableViewSlidesPerScreen, 1);
+		
+		
+		//The first and last two slides have different animations since they can't be in the middle of the screen in the table view.
+		const centerSlide = Math.min(Math.max(1.25, this.currentSlide), this.slides.length - 2.25);
+		
+		const correctTop = this.slides[0].getBoundingClientRect().top;
+		
+		
+		
+		document.documentElement.style.overflowY = "hidden";
+		document.body.style.overflowY = "hidden";
+		
+		this.slideContainer.style.transformOrigin = `center calc(${centerSlide * 100 + 50} * var(--safe-vh))`;
+		
+		
+		
+		this.slides.forEach((element, index) =>
+		{
+			//On these, we include the top margin term to match with how things were before -- otherwise, the transformation center will be misaligned.
+			if (bodyRect.width / bodyRect.height >= 152/89)
 			{
-				resolve();
-				return;
+				element.parentNode.style.top = `calc(${58.125 * 152/89 * (index - this.currentSlide) + 100 * this.currentSlide + 2.5} * var(--safe-vh))`;
 			}
 			
-			this._currentlyAnimating = true;
-			
-			this.currentSlide = selection;
-			
-			this.slideContainer.classList.remove("lapsa-table-view");
-			
-			
-			
-			//As with opening, this is a two-step process. First we snap back to a translated version, and then we return everything to its rightful place.
-			
-			const bodyRect = document.body.getBoundingClientRect();
-			
-			//The goal is to have room to display just under 4 slides vertically, then center on one so that the others are clipped, indicating it's scrollable. In a horizontal orientation, exactly one slide fits per screen. In a vertical one, we take a ratio.
-			const slidesPerScreen = bodyRect.width / bodyRect.height >= 152/89 ? 1 : bodyRect.height / (bodyRect.width * 89/152);
-			
-			const scale = Math.min(slidesPerScreen / this.tableViewSlidesPerScreen, 1);
-			
-			
-			//The first and last two slides have different animations since they can't be in the middle of the screen in the table view.
-			const centerSlide = Math.min(Math.max(1.25, this.currentSlide), this.slides.length - 2.25);
-			
-			const correctTop = this.slides[0].getBoundingClientRect().top;
-			
-			
-			
-			document.documentElement.style.overflowY = "hidden";
-			document.body.style.overflowY = "hidden";
-			
-			this.slideContainer.style.transformOrigin = `center calc(${centerSlide * 100 + 50} * var(--safe-vh))`;
-			
-			
-			
-			this.slides.forEach((element, index) =>
+			else
 			{
-				//On these, we include the top margin term to match with how things were before -- otherwise, the transformation center will be misaligned.
-				if (bodyRect.width / bodyRect.height >= 152/89)
-				{
-					element.parentNode.style.top = `calc(${58.125 * 152/89 * (index - this.currentSlide) + 100 * this.currentSlide + 2.5} * var(--safe-vh))`;
-				}
-				
-				else
-				{
-					element.parentNode.style.top = `calc(${58.125 * (index - this.currentSlide)}vw + ${100 * this.currentSlide} * var(--safe-vh) + (100 * var(--safe-vh) - 55.625vw) / 2)`;
-				}
-			});
+				element.parentNode.style.top = `calc(${58.125 * (index - this.currentSlide)}vw + ${100 * this.currentSlide} * var(--safe-vh) + (100 * var(--safe-vh) - 55.625vw) / 2)`;
+			}
+		});
+		
+		this._bottomMarginElement.style.top = 0;
+		
+		
+		
+		this.slideContainer.style.transform = `translateY(0) scale(${scale})`;
+		
+		window.scrollTo(0, 0);
+		
+		const newTop = this.slides[0].getBoundingClientRect().top;
+		
+		const scroll = correctTop - newTop;
+		
+		this.slideContainer.style.transform = `translateY(${scroll}px) scale(${scale})`;
+		
+		
+		
+		//While all the slides are moving, we also hide all builds that are currently shown and request that the slide be reset to its initial state.
+		const builds = this.slides[this.currentSlide].querySelectorAll("[data-build]");
+		const oldTransitionStyles = new Array(builds.length);
+		
+		builds.forEach((element, index) =>
+		{
+			oldTransitionStyles[index] = element.style.transition;
 			
-			this._bottomMarginElement.style.top = 0;
+			element.style.transition = `opacity ${duration / 3}ms ${this.slideAnimateInEasing}`;
 			
-			
-			
-			this.slideContainer.style.transform = `translateY(0) scale(${scale})`;
-			
-			window.scrollTo(0, 0);
-			
-			const newTop = this.slides[0].getBoundingClientRect().top;
-			
-			const scroll = correctTop - newTop;
-			
-			this.slideContainer.style.transform = `translateY(${scroll}px) scale(${scale})`;
-			
-			
-			
-			//While all the slides are moving, we also hide all builds that are currently shown and request that the slide be reset to its initial state.
-			const builds = this.slides[this.currentSlide].querySelectorAll("[data-build]");
-			const oldTransitionStyles = new Array(builds.length);
-			
-			builds.forEach((element, index) =>
-			{
-				oldTransitionStyles[index] = element.style.transition;
-				
-				element.style.transition = `opacity ${duration / 3}ms ${this.slideAnimateInEasing}`;
-				
-				element.style.opacity = 0;
-			});
-			
-			//We don't await this one because we want it to run concurrently with the table view animation.
-			try {this.callbacks[this.slides[this.currentSlide].id].reset(this.slides[this.currentSlide], true, duration / 3);}
-			catch(ex) {}
-			
-			setTimeout(() =>
-			{
-				builds.forEach((element, index) => element.style.transition = oldTransitionStyles[index]);
-			}, duration / 3);
-			
-			
-			
-			//Now we can return all the slides to their proper places.
-			
-			//Someday, I will understand why these four lines need to be the way they are. And then I will finally rest.
-			this.slideContainer.style.transition = "";
-			this.slideContainer.style.transform = `translateY(${scroll}px) scale(${scale})`;
-			
+			element.style.opacity = 0;
+		});
+		
+		//We don't await this one because we want it to run concurrently with the table view animation.
+		try
+		{
+			const callbacks = this.callbacks[this.slides[this.currentSlide].id];
+
+			const callback = callbacks.reset;
+
+			callback(this.slides[this.currentSlide], true, duration / 3);
+		}
+
+		catch(ex)
+		{
+			//No reset defined
+		}
+		
+		setTimeout(() =>
+		{
+			builds.forEach((element, index) => element.style.transition = oldTransitionStyles[index]);
+		}, duration / 3);
+		
+		
+		
+		//Now we can return all the slides to their proper places.
+		
+		//Someday, I will understand why these four lines need to be the way they are. And then I will finally rest.
+		this.slideContainer.style.transition = "";
+		this.slideContainer.style.transform = `translateY(${scroll}px) scale(${scale})`;
+		
+		await new Promise(resolve =>
+		{
 			setTimeout(() =>
 			{
 				this.slideContainer.style.transition = `transform ${duration}ms ${this.tableViewEasing}`;
@@ -1142,7 +1207,7 @@ export class Lapsa
 					
 					resolve();
 				}, duration);
-			}, 0);
+			}, 16);
 		});
 	}
 	
@@ -1195,16 +1260,16 @@ export class Lapsa
 		this._shelfIsAnimating = false;
 	}
 	
-	_showSlideShelf(element, duration = this.shelfAnimationTime)
+	async _showSlideShelf(element, duration = this.shelfAnimationTime)
 	{
-		return new Promise((resolve, reject) =>
+		const oldTransitionStyle = element.style.transition;
+		element.style.transition = `margin-left ${duration}ms ${this.shelfAnimateInEasing}, opacity ${duration}ms ${this.shelfAnimateInEasing}`;
+		
+		element.style.marginLeft = `${this._shelfMargin}px`;
+		element.style.opacity = 1;
+		
+		await new Promise(resolve =>
 		{
-			const oldTransitionStyle = element.style.transition;
-			element.style.transition = `margin-left ${duration}ms ${this.shelfAnimateInEasing}, opacity ${duration}ms ${this.shelfAnimateInEasing}`;
-			
-			element.style.marginLeft = `${this._shelfMargin}px`;
-			element.style.opacity = 1;
-			
 			setTimeout(() =>
 			{
 				element.style.transition = oldTransitionStyle;
@@ -1213,39 +1278,16 @@ export class Lapsa
 		});
 	}
 	
-	_hideSlideShelf(element, duration = this.shelfAnimationTime)
+	async _hideSlideShelf(element, duration = this.shelfAnimationTime)
 	{
-		return new Promise((resolve, reject) =>
+		const oldTransitionStyle = element.style.transition;
+		element.style.transition = `margin-left ${duration}ms ${this.shelfAnimateOutEasing}, opacity ${duration}ms ${this.shelfAnimateOutEasing}`;
+		
+		element.style.marginLeft = `${-this._shelfMargin}px`;
+		element.style.opacity = 0;
+		
+		await new Promise(resolve =>
 		{
-			const oldTransitionStyle = element.style.transition;
-			element.style.transition = `margin-left ${duration}ms ${this.shelfAnimateOutEasing}, opacity ${duration}ms ${this.shelfAnimateOutEasing}`;
-			
-			element.style.marginLeft = `${-this._shelfMargin}px`;
-			element.style.opacity = 0;
-			
-			setTimeout(() =>
-			{
-				element.style.transition = oldTransitionStyle;
-				resolve();
-			}, duration);
-		});	
-	}
-	
-	_showSlideShelfIndicator(element, duration = this.shelfAnimationTime)
-	{
-		return new Promise((resolve, reject) =>
-		{
-			if (!this.useShelfIndicator)
-			{
-				resolve();
-				return;
-			}
-			
-			const oldTransitionStyle = element.style.transition;
-			element.style.transition = `opacity ${duration}ms ${this.shelfAnimateOutEasing}`;
-			
-			element.style.opacity = 1;
-			
 			setTimeout(() =>
 			{
 				element.style.transition = oldTransitionStyle;
@@ -1254,27 +1296,48 @@ export class Lapsa
 		});
 	}
 	
-	_hideSlideShelfIndicator(element, duration = this.shelfAnimationTime)
+	async _showSlideShelfIndicator(element, duration = this.shelfAnimationTime)
 	{
-		return new Promise((resolve, reject) =>
+		if (!this.useShelfIndicator)
 		{
-			if (!this.useShelfIndicator)
-			{
-				resolve();
-				return;
-			}
-			
-			const oldTransitionStyle = element.style.transition;
-			element.style.transition = `opacity ${duration}ms ${this.shelfAnimateInEasing}`;
-			
-			element.style.opacity = 0;
-			
+			return;
+		}
+		
+		const oldTransitionStyle = element.style.transition;
+		element.style.transition = `opacity ${duration}ms ${this.shelfAnimateOutEasing}`;
+		
+		element.style.opacity = 1;
+		
+		await new Promise(resolve =>
+		{
 			setTimeout(() =>
 			{
 				element.style.transition = oldTransitionStyle;
 				resolve();
 			}, duration);
-		});	
+		});
+	}
+	
+	async _hideSlideShelfIndicator(element, duration = this.shelfAnimationTime)
+	{
+		if (!this.useShelfIndicator)
+		{
+			return;
+		}
+		
+		const oldTransitionStyle = element.style.transition;
+		element.style.transition = `opacity ${duration}ms ${this.shelfAnimateInEasing}`;
+		
+		element.style.opacity = 0;
+		
+		await new Promise(resolve =>
+		{
+			setTimeout(() =>
+			{
+				element.style.transition = oldTransitionStyle;
+				resolve();
+			}, duration);
+		});
 	}
 	
 	
@@ -1388,13 +1451,13 @@ export class Lapsa
 		}
 	}
 	
-	_handleTouchendEvent(e)
+	_handleTouchendEvent()
 	{
 		setTimeout(() => this._slideShelf.classList.remove("lapsa-hover"), 50);
 		setTimeout(() => this.slideContainer.classList.remove("lapsa-hover"), 50);
 	}
 	
-	_handleMousemoveEvent(e)
+	_handleMousemoveEvent()
 	{
 		if (this._currentlyTouchDevice)
 		{
@@ -1414,12 +1477,53 @@ export class Lapsa
 	
 	
 	
-	fadeUpIn(element, duration)
+	async fadeUpIn(element, duration)
 	{
-		return new Promise((resolve, reject) =>
+		element.style.marginTop = `${this._transitionAnimationDistance}px`;
+		
+		await new Promise(resolve =>
 		{
-			element.style.marginTop = `${this._transitionAnimationDistance}px`;
+			setTimeout(() =>
+			{
+				const oldTransitionStyle = element.style.transition;
+				element.style.transition = `margin-top ${duration}ms ${this.slideAnimateInEasing}, opacity ${duration}ms ${this.slideAnimateInEasing}`;
+				
+				element.style.marginTop = 0;
+				element.style.opacity = 1;
 			
+				setTimeout(() =>
+				{
+					element.style.transition = oldTransitionStyle;
+					resolve();
+				}, duration);
+			}, 16);
+		});
+	}
+	
+	async fadeUpOut(element, duration)
+	{
+		const oldTransitionStyle = element.style.transition;
+		element.style.transition = `margin-top ${duration}ms ${this.slideAnimateOutEasing}, opacity ${duration}ms ${this.slideAnimateOutEasing}`;
+		
+		element.style.marginTop = `${-this._transitionAnimationDistance}px`;
+		element.style.opacity = 0;
+		
+		await new Promise(resolve =>
+		{
+			setTimeout(() =>
+			{
+				element.style.transition = oldTransitionStyle;
+				resolve();
+			}, duration);
+		});
+	}
+	
+	async fadeDownIn(element, duration)
+	{
+		element.style.marginTop = `${-this._transitionAnimationDistance}px`;
+		
+		await new Promise(resolve =>
+		{
 			setTimeout(() =>
 			{
 				const oldTransitionStyle = element.style.transition;
@@ -1437,57 +1541,16 @@ export class Lapsa
 		});
 	}
 	
-	fadeUpOut(element, duration)
+	async fadeDownOut(element, duration)
 	{
-		return new Promise((resolve, reject) =>
+		const oldTransitionStyle = element.style.transition;
+		element.style.transition = `margin-top ${duration}ms ${this.slideAnimateOutEasing}, opacity ${duration}ms ${this.slideAnimateOutEasing}`;
+		
+		element.style.marginTop = `${this._transitionAnimationDistance}px`;
+		element.style.opacity = 0;
+		
+		await new Promise(resolve =>
 		{
-			const oldTransitionStyle = element.style.transition;
-			element.style.transition = `margin-top ${duration}ms ${this.slideAnimateOutEasing}, opacity ${duration}ms ${this.slideAnimateOutEasing}`;
-			
-			element.style.marginTop = `${-this._transitionAnimationDistance}px`;
-			element.style.opacity = 0;
-			
-			setTimeout(() =>
-			{
-				element.style.transition = oldTransitionStyle;
-				resolve();
-			}, duration);
-		});
-	}
-	
-	fadeDownIn(element, duration)
-	{
-		return new Promise((resolve, reject) =>
-		{
-			element.style.marginTop = `${-this._transitionAnimationDistance}px`;
-			
-			setTimeout(() =>
-			{
-				const oldTransitionStyle = element.style.transition;
-				element.style.transition = `margin-top ${duration}ms ${this.slideAnimateInEasing}, opacity ${duration}ms ${this.slideAnimateInEasing}`;
-				
-				element.style.marginTop = 0;
-				element.style.opacity = 1;
-				
-				setTimeout(() =>
-				{
-					element.style.transition = oldTransitionStyle;
-					resolve();
-				}, duration);
-			}, 16);
-		});
-	}
-	
-	fadeDownOut(element, duration)
-	{
-		return new Promise((resolve, reject) =>
-		{
-			const oldTransitionStyle = element.style.transition;
-			element.style.transition = `margin-top ${duration}ms ${this.slideAnimateOutEasing}, opacity ${duration}ms ${this.slideAnimateOutEasing}`;
-			
-			element.style.marginTop = `${this._transitionAnimationDistance}px`;
-			element.style.opacity = 0;
-			
 			setTimeout(() =>
 			{
 				element.style.transition = oldTransitionStyle;
@@ -1498,13 +1561,13 @@ export class Lapsa
 	
 	
 	
-	buildIn(element, duration)
+	async buildIn(element, duration)
 	{
-		return new Promise((resolve, reject) =>
+		element.style.marginTop = `${this._transitionAnimationDistance}px`;
+		element.style.marginBottom = `${-this._transitionAnimationDistance}px`;
+		
+		await new Promise(resolve =>
 		{
-			element.style.marginTop = `${this._transitionAnimationDistance}px`;
-			element.style.marginBottom = `${-this._transitionAnimationDistance}px`;
-			
 			setTimeout(() =>
 			{
 				const oldTransitionStyle = element.style.transition;
@@ -1523,9 +1586,9 @@ export class Lapsa
 		});
 	}
 	
-	buildOut(element, duration)
+	async buildOut(element, duration)
 	{
-		return new Promise((resolve, reject) =>
+		await new Promise(resolve =>
 		{
 			setTimeout(() =>
 			{
