@@ -2,19 +2,6 @@
 
 
 
-onmessage = async function(e)
-{
-	gridSize = e.data[0];
-	numNodes = e.data[1];
-	maximumSpeed = e.data[2];
-	
-	coolingFactor = 1 / (numNodes * numNodes * numNodes);
-	
-	await drawAnnealingGraph();
-};
-
-
-
 let gridSize = null;
 let numNodes = null;
 let maximumSpeed = null;
@@ -212,3 +199,16 @@ async function drawLines()
 	
 	await new Promise(resolve => setTimeout(resolve, 50));
 }
+
+
+
+onmessage = async function(e)
+{
+	gridSize = e.data[0];
+	numNodes = e.data[1];
+	maximumSpeed = e.data[2];
+	
+	coolingFactor = 1 / (numNodes * numNodes * numNodes);
+	
+	await drawAnnealingGraph();
+};

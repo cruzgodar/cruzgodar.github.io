@@ -8,15 +8,6 @@ export function load()
 	
 	
 	
-	function run()
-	{
-		const numIterations = 1000 * parseInt(numIterationsInputElement.value || 10000);
-		
-		applet.run(numIterations);
-	}
-	
-	
-	
 	const generateButtonElement = $("#generate-button");
 
 	generateButtonElement.addEventListener("click", run);
@@ -38,4 +29,13 @@ export function load()
 	
 	
 	showPage();
+
+
+
+	function run()
+	{
+		const numIterations = 1000 * parseInt(numIterationsInputElement.value || 10000);
+		
+		applet.run(numIterations);
+	}
 }

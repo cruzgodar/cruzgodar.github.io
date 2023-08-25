@@ -2,16 +2,6 @@
 
 
 
-onmessage = (e) =>
-{
-	numVertices = e.data[0];
-	gridSize = e.data[1];
-	
-	drawChaosGame();
-};
-
-
-
 let numVertices = null;
 let gridSize = null;
 
@@ -156,3 +146,13 @@ function HSVtoRGB(h, s, v)
     
 	return [Math.round(r * 255), Math.round(g * 255), Math.round(b * 255)];
 }
+
+
+
+onmessage = (e) =>
+{
+	numVertices = e.data[0];
+	gridSize = e.data[1];
+	
+	drawChaosGame();
+};

@@ -8,15 +8,6 @@ export function load()
 	
 	
 	
-	function run()
-	{
-		const generatingCode = codeInputElement.value || "cexp(cinv(z))";
-		
-		applet.run(generatingCode);
-	}
-	
-	
-	
 	const codeInputElement = $("#code-textarea");
 	
 	applet.listenToInputElements([codeInputElement], run);
@@ -105,4 +96,13 @@ export function load()
 	
 	
 	showPage();
+
+
+
+	function run()
+	{
+		const generatingCode = codeInputElement.value || "cexp(cinv(z))";
+		
+		applet.run(generatingCode);
+	}
 }

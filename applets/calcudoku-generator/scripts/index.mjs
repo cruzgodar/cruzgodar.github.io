@@ -8,17 +8,6 @@ export function load()
 	
 	
 	
-	function run()
-	{
-		const gridSize = parseInt(gridSizeInputElement.value || 6);
-		
-		const maxCageSize = parseInt(maxCageSizeInputElement.value || 1000);
-		
-		applet.run(gridSize, maxCageSize);
-	}
-	
-	
-	
 	const generateButtonElement = $("#generate-button");
 
 	generateButtonElement.addEventListener("click", run);
@@ -49,4 +38,15 @@ export function load()
 	
 	
 	showPage();
+
+
+
+	function run()
+	{
+		const gridSize = parseInt(gridSizeInputElement.value || 6);
+		
+		const maxCageSize = parseInt(maxCageSizeInputElement.value || 1000);
+		
+		applet.run(gridSize, maxCageSize);
+	}
 }

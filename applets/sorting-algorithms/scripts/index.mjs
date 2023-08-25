@@ -9,18 +9,6 @@ export function load()
 	const numWritesElement = $("#num-writes");
 	
 	const applet = new SortingAlgorithm($("#output-canvas"), numReadsElement, numWritesElement);
-
-
-
-	function run()
-	{
-		const resolution = parseInt(resolutionInputElement.value || 2000);
-		const algorithm = algorithmSelectorDropdownElement.value;
-		const dataLength = parseInt(arraySizeInputElement.value || 256);
-		const doPlaySound = playSoundCheckboxElement.checked;
-
-		applet.run(resolution, algorithm, dataLength, doPlaySound);
-	}
 	
 	
 	
@@ -79,4 +67,16 @@ export function load()
 	
 	
 	showPage();
+
+
+
+	function run()
+	{
+		const resolution = parseInt(resolutionInputElement.value || 2000);
+		const algorithm = algorithmSelectorDropdownElement.value;
+		const dataLength = parseInt(arraySizeInputElement.value || 256);
+		const doPlaySound = playSoundCheckboxElement.checked;
+
+		applet.run(resolution, algorithm, dataLength, doPlaySound);
+	}
 }

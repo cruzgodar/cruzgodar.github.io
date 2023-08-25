@@ -8,15 +8,6 @@ export function load()
 	
 	
 	
-	function run()
-	{
-		const generatingString = (generatingStringInputElement.value || "AB").toUpperCase();
-		
-		applet.run(generatingString);
-	}
-	
-	
-	
 	const generatingStringInputElement = $("#generating-string-input");
 	
 	applet.listenToInputElements([generatingStringInputElement], run);
@@ -57,4 +48,13 @@ export function load()
 	run();
 	
 	showPage();
+
+
+
+	function run()
+	{
+		const generatingString = (generatingStringInputElement.value || "AB").toUpperCase();
+		
+		applet.run(generatingString);
+	}
 }

@@ -10,19 +10,6 @@ export function load()
 	
 	
 	
-	function run()
-	{
-		const glslCode = examples[fractalSelectorDropdownElement.value][0];
-		const jsCode = examples[fractalSelectorDropdownElement.value][1];
-		const resolution = parseInt(resolutionInputElement.value || 500);
-		const exposure = parseFloat(exposureInputElement.value || 1);
-		const numIterations = parseInt(numIterationsInputElement.value || 200);
-		
-		applet.run(glslCode, jsCode, resolution, exposure, numIterations);
-	}
-	
-	
-	
 	const examples = 
 	{
 		"mandelbrot": ["cmul(z, z) + c", (x, y, a, b) => [x*x - y*y + a, 2*x*y + b]],
@@ -78,4 +65,17 @@ export function load()
 	
 	
 	showPage();
+
+
+
+	function run()
+	{
+		const glslCode = examples[fractalSelectorDropdownElement.value][0];
+		const jsCode = examples[fractalSelectorDropdownElement.value][1];
+		const resolution = parseInt(resolutionInputElement.value || 500);
+		const exposure = parseFloat(exposureInputElement.value || 1);
+		const numIterations = parseInt(numIterationsInputElement.value || 200);
+		
+		applet.run(glslCode, jsCode, resolution, exposure, numIterations);
+	}
 }

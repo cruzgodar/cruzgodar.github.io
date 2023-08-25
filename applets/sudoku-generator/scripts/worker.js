@@ -2,23 +2,6 @@
 
 
 
-onmessage = () =>
-{
-	// eslint-disable-next-line no-undef
-	importScripts("/applets/sudoku-generator/scripts/solver.js");
-
-	// eslint-disable-next-line no-undef
-	Module["onRuntimeInitialized"] = () =>
-	{
-		// eslint-disable-next-line no-undef
-		importScripts("/scripts/wasm-arrays.min.js");
-		
-		generateSudokuGrid();
-	};
-};
-
-
-
 //Realistically this is never going to change, but since this code is adapted from the calcudoku applet's, it's easier to just leave this variable as-is.
 const gridSize = 9;
 
@@ -246,3 +229,20 @@ function wasmSolvePuzzle()
 	// eslint-disable-next-line no-undef
 	return ccallArrays("solve_puzzle", "number", ["array"], [gridFlat], {heapIn: "HEAPU8"});
 }
+
+
+
+onmessage = () =>
+{
+	// eslint-disable-next-line no-undef
+	importScripts("/applets/sudoku-generator/scripts/solver.js");
+
+	// eslint-disable-next-line no-undef
+	Module["onRuntimeInitialized"] = () =>
+	{
+		// eslint-disable-next-line no-undef
+		importScripts("/scripts/wasm-arrays.min.js");
+		
+		generateSudokuGrid();
+	};
+};

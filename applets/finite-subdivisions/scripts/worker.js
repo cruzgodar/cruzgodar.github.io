@@ -2,18 +2,6 @@
 
 
 
-onmessage = (e) =>
-{
-	numVertices = e.data[0];
-	numIterations = e.data[1];
-	gridSize = e.data[2];
-	maximumSpeed = e.data[3];
-	
-	drawFiniteSubdivisions();
-};
-
-
-
 let numVertices = null;
 let numIterations = null;
 let gridSize = null;
@@ -194,3 +182,15 @@ function HSVtoRGB(h, s, v)
     
 	return [Math.round(r * 255), Math.round(g * 255), Math.round(b * 255)];
 }
+
+
+
+onmessage = (e) =>
+{
+	numVertices = e.data[0];
+	numIterations = e.data[1];
+	gridSize = e.data[2];
+	maximumSpeed = e.data[3];
+	
+	drawFiniteSubdivisions();
+};

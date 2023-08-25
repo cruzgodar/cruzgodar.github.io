@@ -5,10 +5,10 @@ import { setUpOnResize } from "./layout.mjs";
 import { redirect } from "./navigation.mjs";
 import { setUpDarkTheme } from "./settings.mjs";
 
+export let pageElement = document.createElement("div");
+
 export let $ = (queryString) => pageElement.querySelector(queryString);
 export let $$ = (queryString) => pageElement.querySelectorAll(queryString);
-
-export let pageElement = document.createElement("div");
 
 export function updatePageElement()
 {

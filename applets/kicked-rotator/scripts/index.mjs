@@ -5,17 +5,6 @@ import { $ } from "/scripts/src/main.mjs";
 export function load()
 {
 	const applet = new KickedRotator($("#output-canvas"));
-	
-	
-	
-	function run()
-	{
-		const resolution = parseInt(resolutionInputElement.value || 1000);
-		const K = parseFloat(kInputElement.value || .75);
-		const orbitSeparation = parseInt(orbitSeparationInputElement.value || 0);
-		
-		applet.run(resolution, K, orbitSeparation);
-	}
 
 
 
@@ -47,4 +36,15 @@ export function load()
 	
 	
 	showPage();
+
+
+
+	function run()
+	{
+		const resolution = parseInt(resolutionInputElement.value || 1000);
+		const K = parseFloat(kInputElement.value || .75);
+		const orbitSeparation = parseInt(orbitSeparationInputElement.value || 0);
+		
+		applet.run(resolution, K, orbitSeparation);
+	}
 }

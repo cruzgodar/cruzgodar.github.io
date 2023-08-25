@@ -9,15 +9,6 @@ export function load()
 	
 	
 	
-	function run()
-	{
-		const resolution = parseInt(resolutionInputElement.value || 1000);
-		
-		applet.run(resolution);
-	}
-	
-	
-	
 	const resolutionInputElement = $("#resolution-input");
 	
 	applet.listenToInputElements([resolutionInputElement], run);
@@ -77,4 +68,13 @@ export function load()
 	
 	
 	showPage();
+
+
+
+	function run()
+	{
+		const resolution = parseInt(resolutionInputElement.value || 1000);
+		
+		applet.run(resolution);
+	}
 }

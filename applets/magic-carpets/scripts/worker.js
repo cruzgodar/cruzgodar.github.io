@@ -2,17 +2,6 @@
 
 
 
-onmessage = function(e)
-{
-	gridSize = e.data[0];
-	maxCageSize = e.data[1];
-	uniqueSolution = e.data[2];
-	
-	generateMagicCarpet();
-};
-
-
-
 let gridSize = null;
 let maxCageSize = null;
 let uniqueSolution = null;
@@ -392,3 +381,14 @@ function solvePuzzleStep(cageIndex, occupiedCageLocations)
 	
 	return numSolutions;
 }
+
+
+
+onmessage = function(e)
+{
+	gridSize = e.data[0];
+	maxCageSize = e.data[1];
+	uniqueSolution = e.data[2];
+	
+	generateMagicCarpet();
+};

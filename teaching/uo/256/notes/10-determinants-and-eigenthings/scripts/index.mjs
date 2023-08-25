@@ -5,6 +5,7 @@ export function load()
 {
 	setGetDesmosData(() =>
 	{
+		// eslint-disable-next-line no-use-before-define
 		const Desmos = Desmos;
 		
 		const data =

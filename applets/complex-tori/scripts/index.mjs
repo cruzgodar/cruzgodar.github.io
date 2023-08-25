@@ -42,25 +42,6 @@ export function load()
 	
 	
 	
-	function run()
-	{
-		ecApplet.run(g2, g3);
-		
-		wpApplet.wilson.gl.uniform1f(wpApplet.wilson.uniforms["g2Arg"], g2);
-		wpApplet.wilson.gl.uniform1f(wpApplet.wilson.uniforms["g3Arg"], g3);
-		wpApplet.drawFrame();
-		
-		wpprimeApplet.wilson.gl.uniform1f(wpprimeApplet.wilson.uniforms["g2Arg"], g2);
-		wpprimeApplet.wilson.gl.uniform1f(wpprimeApplet.wilson.uniforms["g3Arg"], g3);
-		wpprimeApplet.drawFrame();
-		
-		g2Applet.wilson.gl.uniform1f(g2Applet.wilson.uniforms["g2Arg"], g2);
-		g2Applet.wilson.gl.uniform1f(g2Applet.wilson.uniforms["g3Arg"], g3);
-		g2Applet.drawFrame();
-	}
-	
-	
-	
 	const resolutionInputElement = $("#resolution-input");
 	
 	ecApplet.setInputCaps([resolutionInputElement], [1000]);
@@ -82,6 +63,9 @@ export function load()
 	
 	
 	const g2SliderElement = $("#g2-slider");
+	const g2SliderValueElement = $("#g2-slider-value");
+	g2SliderValueElement.textContent = "-2";
+
 	g2SliderElement.addEventListener("input", () =>
 	{
 		g2 = parseInt(g2SliderElement.value || 5000) / 1000 - 5;
@@ -94,12 +78,12 @@ export function load()
 		run();
 	});
 	
-	const g2SliderValueElement = $("#g2-slider-value");
-	g2SliderValueElement.textContent = "-2";
-	
 	
 	
 	const g3SliderElement = $("#g3-slider");
+	const g3SliderValueElement = $("#g3-slider-value");
+	g3SliderValueElement.textContent = "0";
+
 	g3SliderElement.addEventListener("input", () =>
 	{
 		g3 = parseInt(g3SliderElement.value || 5000) / 1000 - 5;
@@ -111,9 +95,6 @@ export function load()
 		
 		run();
 	});
-	
-	const g3SliderValueElement = $("#g3-slider-value");
-	g3SliderValueElement.textContent = "0";
 	
 	
 	
@@ -137,4 +118,23 @@ export function load()
 	
 	
 	showPage();
+
+
+
+	function run()
+	{
+		ecApplet.run(g2, g3);
+		
+		wpApplet.wilson.gl.uniform1f(wpApplet.wilson.uniforms["g2Arg"], g2);
+		wpApplet.wilson.gl.uniform1f(wpApplet.wilson.uniforms["g3Arg"], g3);
+		wpApplet.drawFrame();
+		
+		wpprimeApplet.wilson.gl.uniform1f(wpprimeApplet.wilson.uniforms["g2Arg"], g2);
+		wpprimeApplet.wilson.gl.uniform1f(wpprimeApplet.wilson.uniforms["g3Arg"], g3);
+		wpprimeApplet.drawFrame();
+		
+		g2Applet.wilson.gl.uniform1f(g2Applet.wilson.uniforms["g2Arg"], g2);
+		g2Applet.wilson.gl.uniform1f(g2Applet.wilson.uniforms["g3Arg"], g3);
+		g2Applet.drawFrame();
+	}
 }

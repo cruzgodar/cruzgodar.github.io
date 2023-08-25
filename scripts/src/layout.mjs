@@ -8,6 +8,8 @@ export let aspectRatio = window.innerWidth / window.innerHeight;
 export let navigationAnimationDistanceVertical = Math.min(window.innerHeight / 20, 25);
 export let navigationAnimationDistanceHorizontal = Math.min(window.innerWidth / 20, 25);
 
+let appletColumnsAreEqualized = false;
+
 export function onResize()
 {
 	setBannerMaxScroll(document.body.offsetHeight > window.innerHeight * 1.5 ? window.innerHeight / 2 : document.body.offsetHeight - window.innerHeight);
@@ -67,8 +69,6 @@ export function setUpOnResize()
 }
 
 
-
-let appletColumnsAreEqualized = false;
 	
 export function equalizeAppletColumns()
 {

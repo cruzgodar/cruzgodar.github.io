@@ -6,17 +6,6 @@ export function load()
 {
 	const applet = new FiniteSubdivision($("#output-canvas"));
 	
-	
-	
-	function run()
-	{
-		const numVertices = parseInt(numVerticesInputElement.value || 6);
-		const numIterations = parseInt(numIterationsInputElement.value || 5);
-		const maximumSpeed = maximumSpeedCheckboxElement.checked;
-		
-		applet.run(numVertices, numIterations, maximumSpeed);
-	}
-	
 
 	
 	const generateButtonElement = $("#generate-button");
@@ -46,4 +35,15 @@ export function load()
 	
 	
 	showPage();
+
+
+
+	function run()
+	{
+		const numVertices = parseInt(numVerticesInputElement.value || 6);
+		const numIterations = parseInt(numIterationsInputElement.value || 5);
+		const maximumSpeed = maximumSpeedCheckboxElement.checked;
+		
+		applet.run(numVertices, numIterations, maximumSpeed);
+	}
 }

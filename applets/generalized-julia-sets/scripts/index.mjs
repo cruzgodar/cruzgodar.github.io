@@ -14,19 +14,6 @@ export function load()
 	
 	
 	
-	function run()
-	{
-		const generatingCode = codeInputElement.value || "cadd(cpow(z, 2.0), c)";
-		
-		const resolution = parseInt(resolutionInputElement.value || 500);
-		const exposure = parseFloat(exposureInputElement.value || 1);
-		const numIterations = parseInt(numIterationsInputElement.value || 200);
-		
-		applet.run(generatingCode, resolution, exposure, numIterations);
-	}
-	
-	
-	
 	const codeInputElement = $("#code-textarea");
 	
 	codeInputElement.value = "cadd(cpow(z, 2.0), c)";
@@ -110,4 +97,17 @@ export function load()
 	
 	
 	showPage();
+
+
+
+	function run()
+	{
+		const generatingCode = codeInputElement.value || "cadd(cpow(z, 2.0), c)";
+		
+		const resolution = parseInt(resolutionInputElement.value || 500);
+		const exposure = parseFloat(exposureInputElement.value || 1);
+		const numIterations = parseInt(numIterationsInputElement.value || 200);
+		
+		applet.run(generatingCode, resolution, exposure, numIterations);
+	}
 }

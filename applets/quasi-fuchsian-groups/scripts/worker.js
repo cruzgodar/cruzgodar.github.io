@@ -2,21 +2,6 @@
 
 
 
-onmessage = (e) =>
-{
-	canvasWidth = e.data[0];
-	canvasHeight = e.data[1];
-	maxDepth = e.data[2];
-	maxPixelBrightness = e.data[3];
-	boxSize = e.data[4];
-	
-	coefficients = e.data[5];
-	
-	drawQuasiFuchsianGroup();
-};
-
-
-
 let canvasWidth = null;
 let canvasHeight = null;
 let maxDepth = null;
@@ -151,3 +136,18 @@ function applyTransformation(index)
 	x = newX / magnitude;
 	y = newY / magnitude;
 }
+
+
+
+onmessage = (e) =>
+{
+	canvasWidth = e.data[0];
+	canvasHeight = e.data[1];
+	maxDepth = e.data[2];
+	maxPixelBrightness = e.data[3];
+	boxSize = e.data[4];
+	
+	coefficients = e.data[5];
+	
+	drawQuasiFuchsianGroup();
+};

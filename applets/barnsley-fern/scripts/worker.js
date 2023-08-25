@@ -2,16 +2,6 @@
 
 
 
-onmessage = (e) =>
-{
-	gridSize = e.data[0];
-	numIterations = e.data[1];
-	
-	drawFern();
-};
-
-
-
 let gridSize = null;
 let numIterations = null;
 
@@ -117,3 +107,13 @@ function affineTransformation(index)
 	
 	currentX = temp;
 }
+
+
+
+onmessage = (e) =>
+{
+	gridSize = e.data[0];
+	numIterations = e.data[1];
+	
+	drawFern();
+};

@@ -7,17 +7,6 @@ export function load()
 	const applet = new SimulatedAnnealing($("#output-canvas"));
 	
 	
-	
-	function run()
-	{
-		const resolution = parseInt(resolutionInputElement.value || 1000);
-		const numNodes = parseInt(numNodesInputElement.value || 20);
-		const maximumSpeed = maximumSpeedCheckboxElement.checked;
-		
-		applet.run(resolution, numNodes, maximumSpeed);
-	}
-	
-	
 
 	const generateButtonElement = $("#generate-button");
 
@@ -47,4 +36,15 @@ export function load()
 	
 	
 	showPage();
+
+
+
+	function run()
+	{
+		const resolution = parseInt(resolutionInputElement.value || 1000);
+		const numNodes = parseInt(numNodesInputElement.value || 20);
+		const maximumSpeed = maximumSpeedCheckboxElement.checked;
+		
+		applet.run(resolution, numNodes, maximumSpeed);
+	}
 }

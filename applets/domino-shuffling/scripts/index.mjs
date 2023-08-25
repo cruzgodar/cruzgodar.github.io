@@ -15,16 +15,6 @@ export function load()
 	applet.setInputCaps([resolutionInputElement, diamondSizeInputElement], [3000, 200]);
 	
 	
-	function run()
-	{
-		const resolution = parseInt(resolutionInputElement.value || 2000);
-		const diamondSize = parseInt(diamondSizeInputElement.value || 20) + 1;
-		const useSmoothColors = useSmoothColorsCheckboxElement.checked;
-		
-		applet.run(resolution, diamondSize, useSmoothColors);
-	}
-	
-	
 	
 	const generateButtonElement = $("#generate-button");
 	
@@ -44,4 +34,15 @@ export function load()
 	
 	
 	showPage();
+
+
+
+	function run()
+	{
+		const resolution = parseInt(resolutionInputElement.value || 2000);
+		const diamondSize = parseInt(diamondSizeInputElement.value || 20) + 1;
+		const useSmoothColors = useSmoothColorsCheckboxElement.checked;
+		
+		applet.run(resolution, diamondSize, useSmoothColors);
+	}
 }

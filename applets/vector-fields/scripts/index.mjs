@@ -10,31 +10,19 @@ export function load()
 	applet.loadPromise.then(() => run());
 	
 	
+
+	const codeTextareaElement = $("#code-textarea");
 	
-	function run()
+	codeTextareaElement.addEventListener("keydown", (e) =>
 	{
-		const generatingCode = rawGLSLCheckboxElement.checked ? codeTextareaElement.value : Applet.parseNaturalGLSL(codeTextareaElement.value);
-		
-		const resolution = parseInt(resolutionInputElement.value || 500);
-		const maxParticles = Math.max(parseInt(maxParticlesInputElement.value || 10000), 100);
-		const dt = parseFloat(speedInputElement.value || 1) / 150;
-		const lifetime = Math.min(parseInt(lifetimeInputElement.value || 100), 255);
-		
-		applet.run(generatingCode, resolution, maxParticles, dt, lifetime, 0, 0, .5);
-	}
-	
-	
-	
-	function generateNewField()
-	{
-		const resolution = parseInt(resolutionInputElement.value || 500);
-		const maxParticles = Math.max(parseInt(maxParticlesInputElement.value || 10000), 100);
-		const dt = parseFloat(speedInputElement.value || 1) / 150;
-		const lifetime = Math.min(parseInt(lifetimeInputElement.value || 100), 255);
-		
-		applet.generateNewField(resolution, maxParticles, dt, lifetime);
-	}
-	
+		if (e.key === "Enter")
+		{
+			e.preventDefault();
+			
+			run();
+		}
+	});
+
 	
 	
 	const examples =
@@ -55,20 +43,6 @@ export function load()
 		if (exampleSelectorDropdownElement.value !== "none")
 		{
 			codeTextareaElement.value = examples[exampleSelectorDropdownElement.value];
-			
-			run();
-		}
-	});
-	
-	
-	
-	const codeTextareaElement = $("#code-textarea");
-	
-	codeTextareaElement.addEventListener("keydown", (e) =>
-	{
-		if (e.key === "Enter")
-		{
-			e.preventDefault();
 			
 			run();
 		}
@@ -128,4 +102,30 @@ export function load()
 	downloadButtonElement.addEventListener("click", () => applet.wilson.downloadFrame("a-vector-field.png"));
 	
 	showPage();
+
+
+
+	function run()
+	{
+		const generatingCode = rawGLSLCheckboxElement.checked ? codeTextareaElement.value : Applet.parseNaturalGLSL(codeTextareaElement.value);
+		
+		const resolution = parseInt(resolutionInputElement.value || 500);
+		const maxParticles = Math.max(parseInt(maxParticlesInputElement.value || 10000), 100);
+		const dt = parseFloat(speedInputElement.value || 1) / 150;
+		const lifetime = Math.min(parseInt(lifetimeInputElement.value || 100), 255);
+		
+		applet.run(generatingCode, resolution, maxParticles, dt, lifetime, 0, 0, .5);
+	}
+	
+	
+	
+	function generateNewField()
+	{
+		const resolution = parseInt(resolutionInputElement.value || 500);
+		const maxParticles = Math.max(parseInt(maxParticlesInputElement.value || 10000), 100);
+		const dt = parseFloat(speedInputElement.value || 1) / 150;
+		const lifetime = Math.min(parseInt(lifetimeInputElement.value || 100), 255);
+		
+		applet.generateNewField(resolution, maxParticles, dt, lifetime);
+	}
 }

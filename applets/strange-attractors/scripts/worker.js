@@ -2,21 +2,6 @@
 
 
 
-onmessage = (e) =>
-{
-	gridSize = e.data[0];
-	
-	sigma = e.data[1];
-	rho = e.data[2];
-	beta = e.data[3];
-	
-	maximumSpeed = e.data[4];
-	
-	drawLorenzAttractor();
-};
-
-
-
 let gridSize = null;
 
 let sigma = null;
@@ -123,3 +108,18 @@ function HSVtoRGB(h, s, v)
     
 	return [Math.round(r * 255), Math.round(g * 255), Math.round(b * 255)];
 }
+
+
+
+onmessage = (e) =>
+{
+	gridSize = e.data[0];
+	
+	sigma = e.data[1];
+	rho = e.data[2];
+	beta = e.data[3];
+	
+	maximumSpeed = e.data[4];
+	
+	drawLorenzAttractor();
+};

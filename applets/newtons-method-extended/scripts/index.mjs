@@ -10,15 +10,6 @@ export function load()
 	
 	
 	
-	function run()
-	{
-		const generatingCode = codeInputElement.value;
-		
-		applet.run(generatingCode);
-	}
-	
-	
-	
 	const codeInputElement = $("#code-textarea");
 	
 	codeInputElement.value = "cmul(csin(z), sin(cmul(z, i)))";
@@ -102,4 +93,13 @@ export function load()
 	
 	
 	showPage();
+
+
+
+	function run()
+	{
+		const generatingCode = codeInputElement.value;
+		
+		applet.run(generatingCode);
+	}
 }

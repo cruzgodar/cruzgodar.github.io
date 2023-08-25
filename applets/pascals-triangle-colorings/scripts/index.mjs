@@ -6,17 +6,6 @@ export function load()
 {
 	const applet = new PascalsTriangleColoring($("#output-canvas"));
 	
-	
-	
-	function run()
-	{
-		const resolution = parseInt(resolutionInputElement.value || 2000);
-		const gridSize = parseInt(gridSizeInputElement.value || 27);
-		const numColors = parseInt(numColorsInputElement.value || 3);
-		
-		applet.run(resolution, gridSize, numColors);
-	}
-	
 
 	
 	const generateButtonElement = $("#generate-button");
@@ -47,4 +36,15 @@ export function load()
 	
 	
 	showPage();
+
+
+
+	function run()
+	{
+		const resolution = parseInt(resolutionInputElement.value || 2000);
+		const gridSize = parseInt(gridSizeInputElement.value || 27);
+		const numColors = parseInt(numColorsInputElement.value || 3);
+		
+		applet.run(resolution, gridSize, numColors);
+	}
 }

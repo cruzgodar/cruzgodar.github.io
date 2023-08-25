@@ -5,19 +5,6 @@ import { $ } from "/scripts/src/main.mjs";
 export function load()
 {
 	const applet = new StrangeAttractor($("#output-canvas"));
-	
-	
-	
-	function run()
-	{
-		const resolution = parseInt(resolutionInputElement.value || 1000);
-		const sigma = parseFloat(sigmaInputElement.value || 10);
-		const rho = parseFloat(rhoInputElement.value || 28);
-		const beta = parseFloat(betaInputElement.value || 2.67);
-		const maximumSpeed = maximumSpeedCheckboxElement.checked;
-		
-		applet.run(resolution, sigma, rho, beta, maximumSpeed);
-	}
 
 
 
@@ -52,4 +39,17 @@ export function load()
 	
 	
 	showPage();
+
+
+
+	function run()
+	{
+		const resolution = parseInt(resolutionInputElement.value || 1000);
+		const sigma = parseFloat(sigmaInputElement.value || 10);
+		const rho = parseFloat(rhoInputElement.value || 28);
+		const beta = parseFloat(betaInputElement.value || 2.67);
+		const maximumSpeed = maximumSpeedCheckboxElement.checked;
+		
+		applet.run(resolution, sigma, rho, beta, maximumSpeed);
+	}
 }

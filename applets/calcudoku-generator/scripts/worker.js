@@ -1,23 +1,5 @@
 "use strict";
 
-onmessage = (e) =>
-{
-	gridSize = e.data[0];
-	maxCageSize = e.data[1];
-	
-	// eslint-disable-next-line no-undef
-	importScripts("/applets/calcudoku-generator/scripts/solver.js");
-
-	// eslint-disable-next-line no-undef
-	Module["onRuntimeInitialized"] = function()
-	{
-		// eslint-disable-next-line no-undef
-		importScripts("/scripts/wasm-arrays.min.js");
-		
-		generateCalcudokuGrid();
-	};
-};
-
 
 
 let gridSize = null;
@@ -623,3 +605,23 @@ function wasmSolvePuzzle()
 	// eslint-disable-next-line no-undef
 	return ccallArrays("solve_puzzle", "number", ["number", "array", "array", "array", "array", "array", "array", "array"], [gridSize, cageOperations, cageValues, cageLengths, cageMaxDigits, cageSums, cageProducts, cagesByLocationFlat], {heapIn: "HEAPU32"});
 }
+
+
+
+onmessage = (e) =>
+{
+	gridSize = e.data[0];
+	maxCageSize = e.data[1];
+	
+	// eslint-disable-next-line no-undef
+	importScripts("/applets/calcudoku-generator/scripts/solver.js");
+
+	// eslint-disable-next-line no-undef
+	Module["onRuntimeInitialized"] = function()
+	{
+		// eslint-disable-next-line no-undef
+		importScripts("/scripts/wasm-arrays.min.js");
+		
+		generateCalcudokuGrid();
+	};
+};

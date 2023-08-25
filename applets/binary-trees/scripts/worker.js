@@ -2,18 +2,6 @@
 
 
 
-onmessage = async (e) =>
-{
-	root = e.data[0];
-	branchPoints = e.data[1];
-	
-	await drawAnimatedBinaryTree();
-	
-	postMessage(["done"]);
-};
-
-
-
 let root = [];
 let branchPoints = [];
 
@@ -112,3 +100,15 @@ async function drawAnimatedBinaryTree()
 		scale *= .675;
 	}
 }
+
+
+
+onmessage = async (e) =>
+{
+	root = e.data[0];
+	branchPoints = e.data[1];
+	
+	await drawAnimatedBinaryTree();
+	
+	postMessage(["done"]);
+};

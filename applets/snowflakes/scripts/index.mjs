@@ -8,23 +8,6 @@ export function load()
 	
 	
 	
-	function run()
-	{
-		const resolution = parseInt(resolutionInputElement.value || 500);
-		const computationsPerFrame = parseInt(computationsPerFrameInputElement.value || 25);
-		const rho = parseFloat(rhoInputElement.value || .45);
-		const beta = parseFloat(betaInputElement.value || 1.3);
-		const alpha = parseFloat(alphaInputElement.value || .4);
-		const theta = parseFloat(thetaInputElement.value || .03);
-		const kappa = parseFloat(kappaInputElement.value || .005);
-		const mu = parseFloat(muInputElement.value || .0325);
-		const gamma = parseFloat(gammaInputElement.value || .025);
-		
-		applet.run(resolution, computationsPerFrame, rho, beta, alpha, theta, kappa, mu, gamma);
-	}
-	
-	
-	
 	const resolutionInputElement = $("#resolution-input");
 	const computationsPerFrameInputElement = $("#computations-per-frame-input");
 	const rhoInputElement = $("#rho-input");
@@ -67,4 +50,21 @@ export function load()
 	
 	
 	showPage();
+
+
+
+	function run()
+	{
+		const resolution = parseInt(resolutionInputElement.value || 500);
+		const computationsPerFrame = parseInt(computationsPerFrameInputElement.value || 25);
+		const rho = parseFloat(rhoInputElement.value || .45);
+		const beta = parseFloat(betaInputElement.value || 1.3);
+		const alpha = parseFloat(alphaInputElement.value || .4);
+		const theta = parseFloat(thetaInputElement.value || .03);
+		const kappa = parseFloat(kappaInputElement.value || .005);
+		const mu = parseFloat(muInputElement.value || .0325);
+		const gamma = parseFloat(gammaInputElement.value || .025);
+		
+		applet.run(resolution, computationsPerFrame, rho, beta, alpha, theta, kappa, mu, gamma);
+	}
 }

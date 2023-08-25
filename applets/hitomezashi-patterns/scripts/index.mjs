@@ -8,21 +8,6 @@ export function load()
 	
 	
 	
-	function run()
-	{
-		const resolution = parseInt(resolutionInputElement.value || 2000);
-		const gridSize = parseInt(gridSizeInputElement.value || 50);
-		const rowProb = parseFloat(rowProbInputElement.value || .5);
-		const colProb = parseFloat(colProbInputElement.value || .5);
-		const doDrawBoundaries = drawBoundariesCheckboxElement.checked;
-		const doDrawRegions = drawRegionsCheckboxElement.checked;
-		const maximumSpeed = maximumSpeedCheckboxElement.checked;
-		
-		applet.run(resolution, gridSize, rowProb, colProb, doDrawBoundaries, doDrawRegions, maximumSpeed);
-	}
-	
-	
-	
 	const generateButtonElement = $("#generate-button");
 
 	generateButtonElement.addEventListener("click", run);
@@ -82,4 +67,19 @@ export function load()
 	
 	
 	showPage();
+
+
+
+	function run()
+	{
+		const resolution = parseInt(resolutionInputElement.value || 2000);
+		const gridSize = parseInt(gridSizeInputElement.value || 50);
+		const rowProb = parseFloat(rowProbInputElement.value || .5);
+		const colProb = parseFloat(colProbInputElement.value || .5);
+		const doDrawBoundaries = drawBoundariesCheckboxElement.checked;
+		const doDrawRegions = drawRegionsCheckboxElement.checked;
+		const maximumSpeed = maximumSpeedCheckboxElement.checked;
+		
+		applet.run(resolution, gridSize, rowProb, colProb, doDrawBoundaries, doDrawRegions, maximumSpeed);
+	}
 }

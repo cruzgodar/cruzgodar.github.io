@@ -2,32 +2,6 @@
 
 
 
-onmessage = async function(e)
-{
-	gridSize = e.data[0];
-	maximumSpeed = e.data[1];
-	noBorders = e.data[2];
-	reverseGenerateSkeleton = e.data[3];
-	
-	// eslint-disable-next-line no-undef
-	importScripts("/applets/wilsons-algorithm/scripts/random-walk.js");
-
-	// eslint-disable-next-line no-undef
-	Module["onRuntimeInitialized"] = async function()
-	{
-		// eslint-disable-next-line no-undef
-		importScripts("/scripts/wasm-arrays.min.js");
-		
-		await drawWilsonGraph();
-		
-		await colorGraph();
-		
-		postMessage(["done"]);
-	};
-};
-
-
-
 let gridSize = null;
 let maximumSpeed = null;
 let noBorders = null;
@@ -707,3 +681,29 @@ function HSVtoRGB(h, s, v)
     
 	return [Math.round(r * 255), Math.round(g * 255), Math.round(b * 255)];
 }
+
+
+
+onmessage = async function(e)
+{
+	gridSize = e.data[0];
+	maximumSpeed = e.data[1];
+	noBorders = e.data[2];
+	reverseGenerateSkeleton = e.data[3];
+	
+	// eslint-disable-next-line no-undef
+	importScripts("/applets/wilsons-algorithm/scripts/random-walk.js");
+
+	// eslint-disable-next-line no-undef
+	Module["onRuntimeInitialized"] = async function()
+	{
+		// eslint-disable-next-line no-undef
+		importScripts("/scripts/wasm-arrays.min.js");
+		
+		await drawWilsonGraph();
+		
+		await colorGraph();
+		
+		postMessage(["done"]);
+	};
+};

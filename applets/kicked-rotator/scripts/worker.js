@@ -2,17 +2,6 @@
 
 
 
-onmessage = (e) =>
-{
-	gridSize = e.data[0];
-	K = e.data[1];
-	orbitSeparation = e.data[2];
-	
-	drawKickedRotator();
-};
-
-
-
 let gridSize = null;
 
 let K = null;
@@ -159,3 +148,14 @@ function calculateOrbit(startRow, startCol)
 	
 	return numUpperHalfPoints / numPoints;
 }
+
+
+
+onmessage = (e) =>
+{
+	gridSize = e.data[0];
+	K = e.data[1];
+	orbitSeparation = e.data[2];
+	
+	drawKickedRotator();
+};

@@ -6,17 +6,6 @@ export function load()
 {
 	const applet = new WilsonsAlgorithm($("#output-canvas"));
 
-	
-
-	function run()
-	{
-		const gridSize = parseInt(gridSizeInputElement.value || 50);
-		const maximumSpeed = maximumSpeedCheckboxElement.checked;
-		const noBorders = noBordersCheckboxElement.checked;
-
-		applet.run(gridSize, maximumSpeed, noBorders);
-	}
-
 
 	
 	const generateButtonElement = $("#generate-button");
@@ -49,4 +38,15 @@ export function load()
 
 
 	showPage();
+
+
+
+	function run()
+	{
+		const gridSize = parseInt(gridSizeInputElement.value || 50);
+		const maximumSpeed = maximumSpeedCheckboxElement.checked;
+		const noBorders = noBordersCheckboxElement.checked;
+
+		applet.run(gridSize, maximumSpeed, noBorders);
+	}
 }

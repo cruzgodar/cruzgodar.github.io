@@ -8,15 +8,6 @@ export function load()
 	
 	
 	
-	function run()
-	{
-		const resolution = parseInt(resolutionInputElement.value || 1000);
-		
-		applet.run(resolution);
-	}
-	
-	
-	
 	const generateButtonElement = $("#generate-button");
 
 	generateButtonElement.addEventListener("click", run);
@@ -38,4 +29,13 @@ export function load()
 	
 	
 	showPage();
+
+
+
+	function run()
+	{
+		const resolution = parseInt(resolutionInputElement.value || 1000);
+		
+		applet.run(resolution);
+	}
 }

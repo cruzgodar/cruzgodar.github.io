@@ -3,6 +3,8 @@ import { $$, pageElement } from "./main.mjs";
 import { metaThemeColorElement, siteSettings } from "./settings.mjs";
 import anime from "/scripts/anime.js";
 
+export let cardIsOpen = false;
+
 const container = document.querySelector("#card-container");
 
 let currentCard;
@@ -24,9 +26,7 @@ if (closeButton)
 	});
 }
 
-	
 
-export let cardIsOpen = false;
 
 const animationTime = 500;
 

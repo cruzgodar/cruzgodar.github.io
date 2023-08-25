@@ -2,15 +2,6 @@
 
 
 
-onmessage = (e) =>
-{
-	gridSize = e.data[0];
-	
-	drawBrownianTree();
-};
-
-
-
 let gridSize = null;
 
 let margin = null;
@@ -177,3 +168,12 @@ function HSVtoRGB(h, s, v)
     
 	return [Math.round(r * 255), Math.round(g * 255), Math.round(b * 255)];
 }
+
+
+
+onmessage = (e) =>
+{
+	gridSize = e.data[0];
+	
+	drawBrownianTree();
+};

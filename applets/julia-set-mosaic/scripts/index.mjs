@@ -8,18 +8,6 @@ export function load()
 	
 	
 	
-	function run()
-	{
-		const resolution = parseInt(resolutionInputElement.value || 1000);
-		const setDensity = parseInt(setDensityInputElement.value || 10);
-		const exposure = parseFloat(exposureInputElement.value || 1);
-		const numIterations = parseInt(numIterationsInputElement.value || 100);
-		
-		applet.run(resolution, setDensity, exposure, numIterations);
-	}
-	
-	
-	
 	const resolutionInputElement = $("#resolution-input");
 	
 	const setDensityInputElement = $("#set-density-input");
@@ -70,4 +58,16 @@ export function load()
 	
 	
 	showPage();
+
+
+
+	function run()
+	{
+		const resolution = parseInt(resolutionInputElement.value || 1000);
+		const setDensity = parseInt(setDensityInputElement.value || 10);
+		const exposure = parseFloat(exposureInputElement.value || 1);
+		const numIterations = parseInt(numIterationsInputElement.value || 100);
+		
+		applet.run(resolution, setDensity, exposure, numIterations);
+	}
 }
