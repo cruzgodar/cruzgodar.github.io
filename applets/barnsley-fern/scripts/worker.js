@@ -17,7 +17,7 @@ let numIterations = null;
 
 let fernGraph = null;
 
-let transformationCoefficients =
+const transformationCoefficients =
 [
 	[0, 0, 0, .16, 0, 0],
 	[.85, .04, -.04, .85, 0, 1.6],
@@ -59,7 +59,7 @@ function drawFern()
 		
 		
 		
-		let rand = Math.random();
+		const rand = Math.random();
 		
 		let index = 3;
 		
@@ -111,7 +111,7 @@ function drawFern()
 
 function affineTransformation(index)
 {
-	let temp = transformationCoefficients[index][0] * currentX + transformationCoefficients[index][1] * currentY + transformationCoefficients[index][4];
+	const temp = transformationCoefficients[index][0] * currentX + transformationCoefficients[index][1] * currentY + transformationCoefficients[index][4];
 	
 	currentY = transformationCoefficients[index][2] * currentX + transformationCoefficients[index][3] * currentY + transformationCoefficients[index][5];
 	

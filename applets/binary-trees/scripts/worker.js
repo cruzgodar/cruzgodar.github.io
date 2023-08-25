@@ -27,11 +27,11 @@ async function drawAnimatedBinaryTree()
 {
 	let angles = [Math.atan2(branchPoints[0][0] - root[0], branchPoints[0][1] - root[1]), Math.atan2(branchPoints[1][0] - root[0], branchPoints[1][1] - root[1])];
 	
-	let angleStep = (angles[0] - angles[1]) / 2;
+	const angleStep = (angles[0] - angles[1]) / 2;
 	
 	
 	
-	let distances = [Math.sqrt((branchPoints[0][0] - root[0])*(branchPoints[0][0] - root[0]) + (branchPoints[0][1] - root[1])*(branchPoints[0][1] - root[1])), Math.sqrt((branchPoints[1][0] - root[0])*(branchPoints[1][0] - root[0]) + (branchPoints[1][1] - root[1])*(branchPoints[1][1] - root[1]))];
+	const distances = [Math.sqrt((branchPoints[0][0] - root[0])*(branchPoints[0][0] - root[0]) + (branchPoints[0][1] - root[1])*(branchPoints[0][1] - root[1])), Math.sqrt((branchPoints[1][0] - root[0])*(branchPoints[1][0] - root[0]) + (branchPoints[1][1] - root[1])*(branchPoints[1][1] - root[1]))];
 	
 	let startingPoints = [root];
 	
@@ -41,9 +41,9 @@ async function drawAnimatedBinaryTree()
 	
 	for (let iteration = 0; iteration < numAnimatedIterations; iteration++)
 	{
-		let newStartingPoints = [];
+		const newStartingPoints = [];
 		
-		let newAngles = [];
+		const newAngles = [];
 		
 		
 		

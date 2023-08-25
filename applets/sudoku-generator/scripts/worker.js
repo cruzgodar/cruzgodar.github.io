@@ -20,7 +20,7 @@ onmessage = () =>
 
 
 //Realistically this is never going to change, but since this code is adapted from the calcudoku applet's, it's easier to just leave this variable as-is.
-let gridSize = 9;
+const gridSize = 9;
 
 let grid = [];
 
@@ -55,8 +55,8 @@ function generateSudokuGrid()
 	
 	for (let i = 0; i < nonzeroCells.length; i++)
 	{
-		let cellToRemove = nonzeroCells[i];
-		let numberToRemove = grid[cellToRemove[0]][cellToRemove[1]];
+		const cellToRemove = nonzeroCells[i];
+		const numberToRemove = grid[cellToRemove[0]][cellToRemove[1]];
 		
 		grid[cellToRemove[0]][cellToRemove[1]] = 0;
 		
@@ -89,11 +89,11 @@ function shuffleArray(array)
 	while (currentIndex !== 0)
 	{
 		//Pick a remaining element.
-		let randomIndex = Math.floor(Math.random() * currentIndex);
+		const randomIndex = Math.floor(Math.random() * currentIndex);
 		currentIndex -= 1;
 		
 		//Swap it with the current element.
-		let temp = array[currentIndex];
+		const temp = array[currentIndex];
 		array[currentIndex] = array[randomIndex];
 		array[randomIndex] = temp;
 	}
@@ -123,7 +123,7 @@ function generateNumberGrid()
 	
 	//Now we're going to do three things: shuffle some rows (within the same minigrid), shuffle some columns (also within the same minigrid), and shuffle the digits themselves. To top it all off, we'll do these three things in random order, twice each.
 	
-	let shuffles = shuffleArray([shuffleGridRows, shuffleGridRows, shuffleGridColumns, shuffleGridColumns, shuffleGridDigits, shuffleGridDigits]);
+	const shuffles = shuffleArray([shuffleGridRows, shuffleGridRows, shuffleGridColumns, shuffleGridColumns, shuffleGridDigits, shuffleGridDigits]);
 	
 	for (let i = 0; i < 6; i++)
 	{
@@ -135,14 +135,14 @@ function generateNumberGrid()
 
 function shuffleGridRows()
 {
-	let row1 = Math.floor(Math.random() * 3);
-	let row2 = Math.floor(Math.random() * 3);
+	const row1 = Math.floor(Math.random() * 3);
+	const row2 = Math.floor(Math.random() * 3);
 	
-	let row3 = Math.floor(Math.random() * 3) + 3;
-	let row4 = Math.floor(Math.random() * 3) + 3;
+	const row3 = Math.floor(Math.random() * 3) + 3;
+	const row4 = Math.floor(Math.random() * 3) + 3;
 	
-	let row5 = Math.floor(Math.random() * 3) + 6;
-	let row6 = Math.floor(Math.random() * 3) + 6;
+	const row5 = Math.floor(Math.random() * 3) + 6;
+	const row6 = Math.floor(Math.random() * 3) + 6;
 	
 	
 	
@@ -166,14 +166,14 @@ function shuffleGridRows()
 
 function shuffleGridColumns()
 {
-	let col1 = Math.floor(Math.random() * 3);
-	let col2 = Math.floor(Math.random() * 3);
+	const col1 = Math.floor(Math.random() * 3);
+	const col2 = Math.floor(Math.random() * 3);
 	
-	let col3 = Math.floor(Math.random() * 3) + 3;
-	let col4 = Math.floor(Math.random() * 3) + 3;
+	const col3 = Math.floor(Math.random() * 3) + 3;
+	const col4 = Math.floor(Math.random() * 3) + 3;
 	
-	let col5 = Math.floor(Math.random() * 3) + 6;
-	let col6 = Math.floor(Math.random() * 3) + 6;
+	const col5 = Math.floor(Math.random() * 3) + 6;
+	const col6 = Math.floor(Math.random() * 3) + 6;
 	
 	
 	
@@ -197,11 +197,11 @@ function shuffleGridColumns()
 
 function shuffleGridDigits()
 {
-	let permutation = shuffleArray([...Array(gridSize).keys()]);
+	const permutation = shuffleArray([...Array(gridSize).keys()]);
 	
 	
 	
-	let tempGrid = [];
+	const tempGrid = [];
 	
 	for (let i = 0; i < gridSize; i++)
 	{

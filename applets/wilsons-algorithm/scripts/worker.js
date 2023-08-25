@@ -37,10 +37,10 @@ let numSkeletonLines = 0;
 
 let edgesInTree = [];
 let verticesNotInTree = [];
-let verticesInTree = [];
+const verticesInTree = [];
 
 //This has 0s for the vertices not already in the tree and 1s for the ones that are. It's 1D so that it can be passed through to the C.
-let grid = [];
+const grid = [];
 
 let newVertices = [];
 
@@ -146,7 +146,7 @@ async function wilsonStep()
 			{
 				randomWalkFromEndpointAttmepts = 0;
 				
-				let newIndex = Math.floor(Math.random() * verticesInTree.length);
+				const newIndex = Math.floor(Math.random() * verticesInTree.length);
 				
 				currentRow = verticesInTree[newIndex][0];
 				currentColumn = verticesInTree[newIndex][1];	
@@ -181,7 +181,7 @@ async function wilsonStep()
 	else
 	{
 		//Pick a random vertex not in the tree.
-		let newIndex = Math.floor(Math.random() * verticesNotInTree.length);
+		const newIndex = Math.floor(Math.random() * verticesNotInTree.length);
 		
 		currentRow = verticesNotInTree[newIndex][0];
 		currentColumn = verticesNotInTree[newIndex][1];	
@@ -236,7 +236,7 @@ async function wilsonStep()
 		
 		
 		
-		let popIndex = vertexInArray(newVertices[i], verticesNotInTree);
+		const popIndex = vertexInArray(newVertices[i], verticesNotInTree);
 		
 		if (popIndex !== -1)
 		{
@@ -257,11 +257,11 @@ async function wilsonStep()
 function wasmRandomWalk(fixedLength = 0)
 {
 	// eslint-disable-next-line no-undef
-	let newVerticesPtr = ccallArrays("random_walk", "number", ["number", "array", "number", "number", "number"], [gridSize, grid, fixedLength, currentRow, currentColumn], {heapIn: "HEAPU32"});
+	const newVerticesPtr = ccallArrays("random_walk", "number", ["number", "array", "number", "number", "number"], [gridSize, grid, fixedLength, currentRow, currentColumn], {heapIn: "HEAPU32"});
 	
 	//The length of the array is stored as its first element.
 	// eslint-disable-next-line no-undef
-	let numNewVertices = Module.HEAPU32[newVerticesPtr / Uint32Array.BYTES_PER_ELEMENT];
+	const numNewVertices = Module.HEAPU32[newVerticesPtr / Uint32Array.BYTES_PER_ELEMENT];
 	
 	for (let i = 2; i < 2 * numNewVertices; i += 2)
 	{
@@ -362,7 +362,7 @@ function jsRandomWalk(fixedLength = 0)
 		
 		
 		
-		let direction = possibleDirections[Math.floor(Math.random() * possibleDirections.length)];
+		const direction = possibleDirections[Math.floor(Math.random() * possibleDirections.length)];
 		
 		
 		
@@ -390,7 +390,7 @@ function jsRandomWalk(fixedLength = 0)
 		
 		
 		//If not, then we need to know when we hit our own random walk -- before we can put our new vertex into the walk, we need to see if we've already been there.
-		let revertIndex = vertexInArray([currentRow, currentColumn], newVertices);
+		const revertIndex = vertexInArray([currentRow, currentColumn], newVertices);
 		
 		if (revertIndex !== -1)
 		{
@@ -425,7 +425,7 @@ function jsRandomWalk(fixedLength = 0)
 async function colorGraph(linearColoring = false)
 {
 	//First, create an array whose (i, j) entry is a list of all the connection directions from vertex (i, j).
-	let connectionDirections = [];
+	const connectionDirections = [];
 	
 	for (let i = 0; i < gridSize; i++)
 	{
@@ -441,11 +441,11 @@ async function colorGraph(linearColoring = false)
 	
 	for (let i = 0; i < edgesInTree.length; i++)
 	{
-		let row1 = edgesInTree[i][0][0];
-		let column1 = edgesInTree[i][0][1];
+		const row1 = edgesInTree[i][0][0];
+		const column1 = edgesInTree[i][0][1];
 		
-		let row2 = edgesInTree[i][1][0];
-		let column2 = edgesInTree[i][1][1];
+		const row2 = edgesInTree[i][1][0];
+		const column2 = edgesInTree[i][1][1];
 		
 		//The rows are the same, so the direction is either left or right.
 		if (row1 === row2)
@@ -478,7 +478,7 @@ async function colorGraph(linearColoring = false)
 	
 	
 	
-	let edgesByDistance = [];
+	const edgesByDistance = [];
 	
 	
 	
@@ -503,7 +503,7 @@ async function colorGraph(linearColoring = false)
 	
 	
 	
-	let distanceFromCenter = [];
+	const distanceFromCenter = [];
 	
 	for (let i = 0; i < gridSize; i++)
 	{
@@ -520,16 +520,16 @@ async function colorGraph(linearColoring = false)
 	//While there are still paths active, extend each one.
 	while (activePaths.length > 0)
 	{
-		let numActivePaths = activePaths.length;
+		const numActivePaths = activePaths.length;
 		
 		
 		
 		//For every vertex connected to each active path end, make a new path, but only if we've never been there before.
 		for (let i = 0; i < numActivePaths; i++)
 		{
-			let row = activePaths[i][0];
-			let column = activePaths[i][1];
-			let distance = activePaths[i][2];
+			const row = activePaths[i][0];
+			const column = activePaths[i][1];
+			const distance = activePaths[i][2];
 			
 			//Record how far away from the center we are.
 			distanceFromCenter[row][column] = distance;
@@ -579,7 +579,7 @@ async function colorGraph(linearColoring = false)
 	
 	//We want to draw each color at once, so we need to split up the edges into sections with constant distance.
 	
-	let distanceBreaks = [0];
+	const distanceBreaks = [0];
 	let currentDistance = 0;
 	
 	for (let i = 0; i < edgesByDistance.length; i++)
@@ -635,8 +635,8 @@ async function drawLine(row1, column1, row2, column2, color, delay)
 {
 	if (column1 === column2)
 	{
-		let x = column1;
-		let y = Math.min(row1, row2);
+		const x = column1;
+		const y = Math.min(row1, row2);
 		
 		if (noBorders)
 		{
@@ -651,8 +651,8 @@ async function drawLine(row1, column1, row2, column2, color, delay)
 	
 	else
 	{
-		let x = Math.min(column1, column2);
-		let y = row1;
+		const x = Math.min(column1, column2);
+		const y = row1;
 		
 		if (noBorders)
 		{

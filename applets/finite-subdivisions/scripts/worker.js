@@ -32,22 +32,22 @@ async function drawFiniteSubdivisions()
 	
 	
 	//This makes the size of the black bars on the top and bottom equal.
-	let middleAngle = Math.floor(numVertices / 2) * 2 * Math.PI / numVertices;
+	const middleAngle = Math.floor(numVertices / 2) * 2 * Math.PI / numVertices;
 	
-	let topRow = gridSize / 2 - gridSize / 2.5;
-	let bottomRow = gridSize / 2 - gridSize / 2.5 * Math.cos(middleAngle);
+	const topRow = gridSize / 2 - gridSize / 2.5;
+	const bottomRow = gridSize / 2 - gridSize / 2.5 * Math.cos(middleAngle);
 	
-	let totalMargin = topRow + (gridSize - bottomRow);
+	const totalMargin = topRow + (gridSize - bottomRow);
 	
-	let centerRow = Math.floor(totalMargin / 2 + gridSize / 2.5);
-	let centerCol = Math.floor(gridSize / 2);
+	const centerRow = Math.floor(totalMargin / 2 + gridSize / 2.5);
+	const centerCol = Math.floor(gridSize / 2);
 	
 	for (let i = 0; i < numVertices; i++)
 	{
-		let angle = i / numVertices * 2 * Math.PI;
+		const angle = i / numVertices * 2 * Math.PI;
 		
-		let row = Math.floor(-Math.cos(angle) * gridSize / 2.5 + centerRow);
-		let col = Math.floor(Math.sin(angle) * gridSize / 2.5 + centerCol);
+		const row = Math.floor(-Math.cos(angle) * gridSize / 2.5 + centerRow);
+		const col = Math.floor(Math.sin(angle) * gridSize / 2.5 + centerCol);
 		
 		polygons[0].push([row, col]);
 	}
@@ -75,9 +75,9 @@ async function drawOuterPolygon()
 			//Draw 1/120 of each line.
 			for (let j = 0; j < numVertices; j++)
 			{
-				let rgb = HSVtoRGB((2 * j + 1) / (2 * numVertices), 1, 1);
+				const rgb = HSVtoRGB((2 * j + 1) / (2 * numVertices), 1, 1);
 				
-				let color = `rgb(${rgb[0]}, ${rgb[1]}, ${rgb[2]})`;
+				const color = `rgb(${rgb[0]}, ${rgb[1]}, ${rgb[2]})`;
 				
 				postMessage([polygons[0][j][0], polygons[0][j][1], polygons[0][j][0] + ((i + 1) / 120) * (polygons[0][(j + 1) % numVertices][0] - polygons[0][j][0]), polygons[0][j][1] + ((i + 1) / 120) * (polygons[0][(j + 1) % numVertices][1] - polygons[0][j][1]), color]);
 			}
@@ -90,9 +90,9 @@ async function drawOuterPolygon()
 	{
 		for (let j = 0; j < numVertices; j++)
 		{
-			let rgb = HSVtoRGB((2 * j + 1) / (2 * numVertices), 1, 1);
+			const rgb = HSVtoRGB((2 * j + 1) / (2 * numVertices), 1, 1);
 			
-			let color = `rgb(${rgb[0]}, ${rgb[1]}, ${rgb[2]})`;
+			const color = `rgb(${rgb[0]}, ${rgb[1]}, ${rgb[2]})`;
 			
 			postMessage([polygons[0][j][0], polygons[0][j][1], polygons[0][(j + 1) % numVertices][0], polygons[0][(j + 1) % numVertices][1], color]);
 		}
@@ -103,9 +103,9 @@ async function drawOuterPolygon()
 
 function calculateLines()
 {
-	let newLines = [];
+	const newLines = [];
 	
-	let newPolygons = [];
+	const newPolygons = [];
 	
 	for (let i = 0; i < polygons.length; i++)
 	{
@@ -145,9 +145,9 @@ async function drawLines(newLines)
 			//Draw 1/120 of each line.
 			for (let j = 0; j < newLines.length; j++)
 			{
-				let rgb = HSVtoRGB(j / (newLines.length - 1), 1, 1);
+				const rgb = HSVtoRGB(j / (newLines.length - 1), 1, 1);
 				
-				let color = `rgb(${rgb[0]}, ${rgb[1]}, ${rgb[2]})`;
+				const color = `rgb(${rgb[0]}, ${rgb[1]}, ${rgb[2]})`;
 				
 				postMessage([newLines[j][0][0], newLines[j][0][1], newLines[j][0][0] + ((i + 1) / 120) * (newLines[j][1][0] - newLines[j][0][0]) + 1, newLines[j][0][1] + ((i + 1) / 120) * (newLines[j][1][1] - newLines[j][0][1]), color]);
 			}
@@ -161,9 +161,9 @@ async function drawLines(newLines)
 	{
 		for (let j = 0; j < newLines.length; j++)
 		{
-			let rgb = HSVtoRGB(j / (newLines.length - 1), 1, 1);
+			const rgb = HSVtoRGB(j / (newLines.length - 1), 1, 1);
 			
-			let color = `rgb(${rgb[0]}, ${rgb[1]}, ${rgb[2]})`;
+			const color = `rgb(${rgb[0]}, ${rgb[1]}, ${rgb[2]})`;
 			
 			postMessage([newLines[j][0][0], newLines[j][0][1], newLines[j][1][0], newLines[j][1][1], color]);
 		}

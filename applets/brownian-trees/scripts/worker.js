@@ -73,7 +73,7 @@ function drawBrownianTree()
 		
 		for (;;)
 		{
-			let possibleDirections = [];
+			const possibleDirections = [];
 			
 			if (currentRow > gridSize / 2 - spawnRadius)
 			{

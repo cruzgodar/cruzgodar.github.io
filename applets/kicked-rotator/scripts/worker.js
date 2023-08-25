@@ -47,14 +47,14 @@ function drawKickedRotator()
 		
 		
 		
-		let color = 6/7 * i / (gridSize / 2);
+		const color = 6/7 * i / (gridSize / 2);
 		
 		
 		
 		//This randomness helps keep straight-line artefacts from appearing.
-		let rand = Math.floor(Math.random() * (2 * orbitSeparation + 1)) - orbitSeparation;
+		const rand = Math.floor(Math.random() * (2 * orbitSeparation + 1)) - orbitSeparation;
 		
-		let upperHalfPointsRatio = calculateOrbit(Math.floor(gridSize / 2 + i), middleCol + rand, color);
+		const upperHalfPointsRatio = calculateOrbit(Math.floor(gridSize / 2 + i), middleCol + rand, color);
 		
 		
 		

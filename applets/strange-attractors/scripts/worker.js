@@ -77,7 +77,7 @@ async function drawLorenzAttractor()
 		
 		
 		
-		let shiftedZ = currentZ - minZ - boxSize / 2;
+		const shiftedZ = currentZ - minZ - boxSize / 2;
 		
 		currentCol = Math.floor(((currentX + boxSize / 2) / boxSize) * gridSize);
 		currentRow = Math.floor((1 - (shiftedZ + boxSize / 2) / boxSize) * gridSize);

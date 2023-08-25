@@ -64,7 +64,7 @@ function generateCalcudokuGrid()
 		let expandedACage = false;
 		
 		//Go through the cages from smallest to largest, but in a random order for each size.
-		let cageOrder = shuffleArray([...Array(cages.length).keys()]);
+		const cageOrder = shuffleArray([...Array(cages.length).keys()]);
 		
 		cageOrder.sort((a, b) => cages[a][2].length - cages[b][2].length);
 		
@@ -133,7 +133,7 @@ function shuffleArray(array)
 		currentIndex -= 1;
 		
 		//Swap it with the current element.
-		let temp = array[currentIndex];
+		const temp = array[currentIndex];
 		array[currentIndex] = array[randomIndex];
 		array[randomIndex] = temp;
 	}
@@ -189,7 +189,7 @@ function shuffleGridRows()
 	
 	
 	
-	let tempGrid = [];
+	const tempGrid = [];
 	
 	for (let i = 0; i < gridSize; i++)
 	{
@@ -221,7 +221,7 @@ function shuffleGridColumns()
 	
 	
 	
-	let tempGrid = [];
+	const tempGrid = [];
 	
 	for (let i = 0; i < gridSize; i++)
 	{
@@ -256,7 +256,7 @@ function shuffleGridDigits()
 	
 	
 	
-	let tempGrid = [];
+	const tempGrid = [];
 	
 	for (let i = 0; i < gridSize; i++)
 	{
@@ -471,8 +471,8 @@ function addCageToCage(cageToDestroy, cageToGrow)
 	//The other operations aren't too bad, but if a cage tries to merge with a 1x1, we need to create a new operation.
 	if (cages[cageToGrow][0] === "")
 	{
-		let possibleOperations = ["+", "x"];
-		let possibleValues = [
+		const possibleOperations = ["+", "x"];
+		const possibleValues = [
 			cages[cageToGrow][1] + cages[cageToDestroy][4],
 			cages[cageToGrow][1] * cages[cageToDestroy][5]
 		];
@@ -506,7 +506,7 @@ function addCageToCage(cageToDestroy, cageToGrow)
 		
 		if (possibleOperations.includes(":") && Math.random() < .5)
 		{
-			let operationIndex = possibleOperations.indexOf(":");
+			const operationIndex = possibleOperations.indexOf(":");
 			
 			cages[cageToGrow][0] = possibleOperations[operationIndex];
 			cages[cageToGrow][1] = possibleValues[operationIndex];
@@ -514,7 +514,7 @@ function addCageToCage(cageToDestroy, cageToGrow)
 		
 		else
 		{
-			let operationIndex = Math.floor(Math.random() * possibleOperations.length);
+			const operationIndex = Math.floor(Math.random() * possibleOperations.length);
 			
 			cages[cageToGrow][0] = possibleOperations[operationIndex];
 			cages[cageToGrow][1] = possibleValues[operationIndex];
@@ -578,18 +578,18 @@ function addCageToCage(cageToDestroy, cageToGrow)
 function wasmSolvePuzzle()
 {
 	//This contains the operations that each cage uses, where 0 corresponds to "", 1 to "+", 2 to "-", and so on.
-	let cageOperations = [];
+	const cageOperations = [];
 	
 	const cageOperationsTable = {"": 0, "+": 1, "x": 2, "-": 3, ":": 4};
 	
 	//This just contains the values of each cage.
-	let cageValues = [];
+	const cageValues = [];
 	
-	let cageLengths = [];
+	const cageLengths = [];
 	
-	let cageMaxDigits = [];
-	let cageSums = [];
-	let cageProducts = [];
+	const cageMaxDigits = [];
+	const cageSums = [];
+	const cageProducts = [];
 
 
 

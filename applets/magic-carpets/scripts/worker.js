@@ -51,7 +51,7 @@ function generateMagicCarpet()
 		let expandedACage = false;
 		
 		//Go through the cages from smallest to largest, but in a random order for each size.
-		let cageOrder = shuffleArray([...Array(cages.length).keys()]);
+		const cageOrder = shuffleArray([...Array(cages.length).keys()]);
 		
 		cageOrder.sort((a, b) => cages[a][2]*cages[a][3] - cages[b][2]*cages[b][3]);
 		
@@ -171,7 +171,7 @@ function expandCage(cageIndex)
 	const colOffset = cage[5];
 	
 	//Cages only merge up and left.
-	let directions = [];
+	const directions = [];
 	
 	//First, let's see if we can merge up. We can't leave the boundary.
 	if (row !== 0)
@@ -255,7 +255,7 @@ function expandCage(cageIndex)
 //Returns the number of solutions to the current cage layout.
 function solvePuzzle()
 {
-	let occupiedCageLocations = new Array(gridSize);
+	const occupiedCageLocations = new Array(gridSize);
 	
 	for (let i = 0; i < gridSize; i++)
 	{
@@ -305,7 +305,7 @@ function solvePuzzleStep(cageIndex, occupiedCageLocations)
 	
 	//First loop over sizes.
 	
-	let validSides = [];
+	const validSides = [];
 	
 	for (let side = 1; side <= Math.sqrt(size); side++)
 	{
@@ -364,7 +364,7 @@ function solvePuzzleStep(cageIndex, occupiedCageLocations)
 				
 				if (!broken)
 				{
-					let newOccupiedCageLocations = new Array(gridSize);
+					const newOccupiedCageLocations = new Array(gridSize);
 					
 					for (let k = 0; k < gridSize; k++)
 					{

@@ -48,12 +48,12 @@ function drawChaosGame()
 	
 	
 	//This makes the size of the black bars on the top and bottom equal.
-	let middleAngle = Math.floor(numVertices / 2) * 2 * Math.PI / numVertices;
+	const middleAngle = Math.floor(numVertices / 2) * 2 * Math.PI / numVertices;
 	
-	let topRow = gridSize / 2 - gridSize / 2.5;
-	let bottomRow = gridSize / 2 - gridSize / 2.5 * Math.cos(middleAngle);
+	const topRow = gridSize / 2 - gridSize / 2.5;
+	const bottomRow = gridSize / 2 - gridSize / 2.5 * Math.cos(middleAngle);
 	
-	let totalMargin = topRow + (gridSize - bottomRow);
+	const totalMargin = topRow + (gridSize - bottomRow);
 	
 	centerRow = Math.floor(totalMargin / 2 + gridSize / 2.5);
 	centerCol = Math.floor(gridSize / 2);
@@ -67,10 +67,10 @@ function drawChaosGame()
 	
 	for (let i = 0; i < numVertices; i++)
 	{
-		let angle = i / numVertices * 2 * Math.PI;
+		const angle = i / numVertices * 2 * Math.PI;
 		
-		let row = Math.floor(-Math.cos(angle) * gridSize / 2.5 + centerRow);
-		let col = Math.floor(Math.sin(angle) * gridSize / 2.5 + centerCol);
+		const row = Math.floor(-Math.cos(angle) * gridSize / 2.5 + centerRow);
+		const col = Math.floor(Math.sin(angle) * gridSize / 2.5 + centerCol);
 		
 		vertices.push([row, col]);
 	}
@@ -88,18 +88,18 @@ function drawChaosGame()
 		
 		
 		
-		let attractorVertex = Math.floor(Math.random() * numVertices);
+		const attractorVertex = Math.floor(Math.random() * numVertices);
 		
 		currentRow = Math.floor((currentRow + vertices[attractorVertex][0]) / 2);
 		currentCol = Math.floor((currentCol + vertices[attractorVertex][1]) / 2);
 		
 		
 		
-		let newHue = (Math.atan2(currentCol - gridSize / 2, currentRow - gridSize / 2) + Math.PI) / (2 * Math.PI);
+		const newHue = (Math.atan2(currentCol - gridSize / 2, currentRow - gridSize / 2) + Math.PI) / (2 * Math.PI);
 		
-		let newSaturation = ((currentRow - gridSize / 2) * (currentRow - gridSize / 2) + (currentCol - gridSize / 2) * (currentCol - gridSize / 2)) / (gridSize * gridSize / 13);
+		const newSaturation = ((currentRow - gridSize / 2) * (currentRow - gridSize / 2) + (currentCol - gridSize / 2) * (currentCol - gridSize / 2)) / (gridSize * gridSize / 13);
 		
-		let currentColor = HSVtoRGB(newHue, newSaturation, 1);
+		const currentColor = HSVtoRGB(newHue, newSaturation, 1);
 		
 		currentColor[0] /= 255;
 		currentColor[1] /= 255;

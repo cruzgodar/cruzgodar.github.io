@@ -85,7 +85,7 @@ function searchStep(startX, startY, lastTransformationIndex, lastRow, lastCol, d
 		x = startX;
 		y = startY;
 		
-		let transformationIndex = (lastTransformationIndex + i) % 4;
+		const transformationIndex = (lastTransformationIndex + i) % 4;
 		
 		applyTransformation(transformationIndex);
 		
@@ -128,25 +128,25 @@ function searchStep(startX, startY, lastTransformationIndex, lastRow, lastCol, d
 
 function applyTransformation(index)
 {
-	let ax = coefficients[index][0][0];
-	let ay = coefficients[index][0][1];
-	let bx = coefficients[index][1][0];
-	let by = coefficients[index][1][1];
-	let cx = coefficients[index][2][0];
-	let cy = coefficients[index][2][1];
-	let dx = coefficients[index][3][0];
-	let dy = coefficients[index][3][1];
+	const ax = coefficients[index][0][0];
+	const ay = coefficients[index][0][1];
+	const bx = coefficients[index][1][0];
+	const by = coefficients[index][1][1];
+	const cx = coefficients[index][2][0];
+	const cy = coefficients[index][2][1];
+	const dx = coefficients[index][3][0];
+	const dy = coefficients[index][3][1];
 	
-	let numX = ax*x - ay*y + bx;
-	let numY = ax*y + ay*x + by;
+	const numX = ax*x - ay*y + bx;
+	const numY = ax*y + ay*x + by;
 	
-	let denX = cx*x - cy*y + dx;
-	let denY = cx*y + cy*x + dy;
+	const denX = cx*x - cy*y + dx;
+	const denY = cx*y + cy*x + dy;
 	
-	let newX = numX*denX + numY*denY;
-	let newY = numY*denX - numX*denY;
+	const newX = numX*denX + numY*denY;
+	const newY = numY*denX - numX*denY;
 	
-	let magnitude = denX*denX + denY*denY;
+	const magnitude = denX*denX + denY*denY;
 	
 	x = newX / magnitude;
 	y = newY / magnitude;

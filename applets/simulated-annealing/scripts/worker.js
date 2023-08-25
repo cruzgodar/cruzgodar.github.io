@@ -19,7 +19,7 @@ let gridSize = null;
 let numNodes = null;
 let maximumSpeed = null;
 
-let initialTemperature = 500;
+const initialTemperature = 500;
 let temperature = null;
 
 let coolingFactor = null;
@@ -70,7 +70,7 @@ async function drawAnnealingGraph()
 	while (temperature > .001)
 	{
 		//Pick two random different nodes and suggest flipping them in the path.
-		let transposition = [];
+		const transposition = [];
 		
 		transposition[0] = Math.floor(Math.random() * numNodes);
 		
@@ -157,11 +157,11 @@ async function drawAnnealingGraph()
 		
 		
 		
-		let moveProb = Math.min(1, Math.exp(exponent));
+		const moveProb = Math.min(1, Math.exp(exponent));
 		
 		if (Math.random() < moveProb)
 		{
-			let temp = currentPath[transposition[0]];
+			const temp = currentPath[transposition[0]];
 			currentPath[transposition[0]] = currentPath[transposition[1]];
 			currentPath[transposition[1]] = temp;
 			
