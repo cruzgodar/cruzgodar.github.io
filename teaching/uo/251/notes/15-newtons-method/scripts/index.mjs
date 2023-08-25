@@ -1,5 +1,5 @@
 import { NewtonsMethod } from "/applets/newtons-method/scripts/class.mjs";
-import { createDesmosGraphs, setGetDesmosData } from "/scripts/src/desmos.mjs";
+import { createDesmosGraphs, desmosBlue, desmosGreen, desmosPurple, desmosRed, setGetDesmosData } from "/scripts/src/desmos.mjs";
 import { showPage } from "/scripts/src/load-page.mjs";
 import { $ } from "/scripts/src/main.mjs";
 

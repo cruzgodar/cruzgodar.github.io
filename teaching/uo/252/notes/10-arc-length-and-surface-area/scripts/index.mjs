@@ -1,4 +1,4 @@
-import { createDesmosGraphs, setGetDesmosData } from "/scripts/src/desmos.mjs";
+import { createDesmosGraphs, desmosBlack, desmosBlue, desmosPurple, desmosRed, setGetDesmosData } from "/scripts/src/desmos.mjs";
 import { showPage } from "/scripts/src/load-page.mjs";
 
 export function load()

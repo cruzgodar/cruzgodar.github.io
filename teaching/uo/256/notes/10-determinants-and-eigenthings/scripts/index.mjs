@@ -1,10 +1,12 @@
-import { createDesmosGraphs, setGetDesmosData } from "/scripts/src/desmos.mjs";
+import { createDesmosGraphs, desmosBlue, desmosPurple, setGetDesmosData } from "/scripts/src/desmos.mjs";
 import { showPage } from "/scripts/src/load-page.mjs";
 
 export function load()
 {
 	setGetDesmosData(() =>
 	{
+		const Desmos = Desmos;
+		
 		const data =
 		{
 			"eigenvectors":
