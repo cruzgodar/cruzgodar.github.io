@@ -8,40 +8,92 @@ const options =
 	{
 		"theme-demonstration":
 		{
-			reset: (slide, forward, duration) =>
+			reset: async (slide, forward, duration) =>
 			{
-				return new Promise((resolve, reject) =>
+				if (lapsa.buildState >= 3 && lapsa.buildState <= 5)
 				{
-					if (lapsa.buildState >= 3 && lapsa.buildState <= 5)
+					document.querySelector(":root").style.setProperty("--theme-transition-time", `${duration}ms`);
+					
+					document.documentElement.classList.add("theme-transition");
+					lapsa.slideContainer.classList.add("theme-transition");
+					
+					setTimeout(() =>
 					{
-						document.querySelector(":root").style.setProperty("--theme-transition-time", `${duration}ms`);
+						document.documentElement.classList.remove("dark-industrial-theme-1");
+						lapsa.slideContainer.classList.remove("dark-industrial-theme-1");
 						
-						document.documentElement.classList.add("theme-transition");
-						lapsa.slideContainer.classList.add("theme-transition");
+						document.documentElement.classList.remove("blue-whimsical-theme-1");
+						lapsa.slideContainer.classList.remove("blue-whimsical-theme-1");
+						
+						document.documentElement.classList.remove("dark-futuristic-theme-1");
+						lapsa.slideContainer.classList.remove("dark-futuristic-theme-1");
+						
+						lapsa.slideContainer.classList.add("theme-opacity-change");
 						
 						setTimeout(() =>
 						{
-							document.documentElement.classList.remove("dark-industrial-theme-1");
-							lapsa.slideContainer.classList.remove("dark-industrial-theme-1");
-							
-							document.documentElement.classList.remove("blue-whimsical-theme-1");
-							lapsa.slideContainer.classList.remove("blue-whimsical-theme-1");
-							
-							document.documentElement.classList.remove("dark-futuristic-theme-1");
-							lapsa.slideContainer.classList.remove("dark-futuristic-theme-1");
-							
-							lapsa.slideContainer.classList.add("theme-opacity-change");
-							
-							setTimeout(() =>
-							{
-								lapsa.slideContainer.classList.remove("theme-opacity-change");
-								lapsa.slideContainer.classList.remove("dark-industrial-theme-2");
-								lapsa.slideContainer.classList.remove("blue-whimsical-theme-2");
-								lapsa.slideContainer.classList.remove("dark-futuristic-theme-2");
-							}, duration / 2);
-						}, 0);
+							lapsa.slideContainer.classList.remove("theme-opacity-change");
+							lapsa.slideContainer.classList.remove("dark-industrial-theme-2");
+							lapsa.slideContainer.classList.remove("blue-whimsical-theme-2");
+							lapsa.slideContainer.classList.remove("dark-futuristic-theme-2");
+						}, duration / 2);
+					}, 0);
+				}
+				
+				await new Promise(resolve =>
+				{
+					setTimeout(() =>
+					{
+						document.documentElement.classList.remove("theme-transition");
+						lapsa.slideContainer.classList.remove("theme-transition");
+						
+						resolve();
+					}, duration);
+				});
+			},
+			
+			
+			
+			2: async (slide, forward, duration = 300) =>
+			{
+				document.querySelector(":root").style.setProperty("--theme-transition-time", `${duration}ms`);
+				
+				document.documentElement.classList.add("theme-transition");
+				lapsa.slideContainer.classList.add("theme-transition");
+				
+				setTimeout(() =>
+				{
+					if (forward)
+					{
+						document.documentElement.classList.add("dark-industrial-theme-1");
+						lapsa.slideContainer.classList.add("dark-industrial-theme-1");
+						
+						lapsa.slideContainer.classList.add("theme-opacity-change");
+						
+						setTimeout(() =>
+						{
+							lapsa.slideContainer.classList.add("dark-industrial-theme-2");
+							lapsa.slideContainer.classList.remove("theme-opacity-change");
+						}, duration / 2);
 					}
 					
+					else
+					{
+						document.documentElement.classList.remove("dark-industrial-theme-1");
+						lapsa.slideContainer.classList.remove("dark-industrial-theme-1");
+						
+						lapsa.slideContainer.classList.add("theme-opacity-change");
+						
+						setTimeout(() =>
+						{
+							lapsa.slideContainer.classList.remove("dark-industrial-theme-2");
+							lapsa.slideContainer.classList.remove("theme-opacity-change");
+						}, duration / 2);
+					}
+				}, 0);
+				
+				await new Promise(resolve =>
+				{
 					setTimeout(() =>
 					{
 						document.documentElement.classList.remove("theme-transition");
@@ -54,46 +106,55 @@ const options =
 			
 			
 			
-			2: (slide, forward, duration = 300) =>
+			3: async (slide, forward, duration = 300) =>
 			{
-				return new Promise((resolve, reject) =>
+				document.querySelector(":root").style.setProperty("--theme-transition-time", `${duration}ms`);
+				
+				document.documentElement.classList.add("theme-transition");
+				lapsa.slideContainer.classList.add("theme-transition");
+				
+				setTimeout(() =>
 				{
-					document.querySelector(":root").style.setProperty("--theme-transition-time", `${duration}ms`);
-					
-					document.documentElement.classList.add("theme-transition");
-					lapsa.slideContainer.classList.add("theme-transition");
-					
-					setTimeout(() =>
+					if (forward)
 					{
-						if (forward)
-						{
-							document.documentElement.classList.add("dark-industrial-theme-1");
-							lapsa.slideContainer.classList.add("dark-industrial-theme-1");
-							
-							lapsa.slideContainer.classList.add("theme-opacity-change");
-							
-							setTimeout(() =>
-							{
-								lapsa.slideContainer.classList.add("dark-industrial-theme-2");
-								lapsa.slideContainer.classList.remove("theme-opacity-change");
-							}, duration / 2);
-						}
+						document.documentElement.classList.remove("dark-industrial-theme-1");
+						lapsa.slideContainer.classList.remove("dark-industrial-theme-1");
 						
-						else
+						document.documentElement.classList.add("blue-whimsical-theme-1");
+						lapsa.slideContainer.classList.add("blue-whimsical-theme-1");
+						
+						lapsa.slideContainer.classList.add("theme-opacity-change");
+						
+						setTimeout(() =>
 						{
-							document.documentElement.classList.remove("dark-industrial-theme-1");
-							lapsa.slideContainer.classList.remove("dark-industrial-theme-1");
-							
-							lapsa.slideContainer.classList.add("theme-opacity-change");
-							
-							setTimeout(() =>
-							{
-								lapsa.slideContainer.classList.remove("dark-industrial-theme-2");
-								lapsa.slideContainer.classList.remove("theme-opacity-change");
-							}, duration / 2);
-						}
-					}, 0);
+							lapsa.slideContainer.classList.remove("dark-industrial-theme-2");
+							lapsa.slideContainer.classList.add("blue-whimsical-theme-2");
+							lapsa.slideContainer.classList.remove("theme-opacity-change");
+						}, duration / 2);
+					}
 					
+					else
+					{
+						document.documentElement.classList.remove("blue-whimsical-theme-1");
+						lapsa.slideContainer.classList.remove("blue-whimsical-theme-1");
+						
+						document.documentElement.classList.add("dark-industrial-theme-1");
+						lapsa.slideContainer.classList.add("dark-industrial-theme-1");
+						
+						lapsa.slideContainer.classList.add("theme-opacity-change");
+						
+						setTimeout(() =>
+						{
+							lapsa.slideContainer.classList.remove("blue-whimsical-theme-2");
+							lapsa.slideContainer.classList.add("dark-industrial-theme-2");
+							
+							lapsa.slideContainer.classList.remove("theme-opacity-change");
+						}, duration / 2);
+					}
+				}, 0);
+				
+				await new Promise(resolve =>
+				{
 					setTimeout(() =>
 					{
 						document.documentElement.classList.remove("theme-transition");
@@ -106,55 +167,55 @@ const options =
 			
 			
 			
-			3: (slide, forward, duration = 300) =>
+			4: async (slide, forward, duration = 300) =>
 			{
-				return new Promise((resolve, reject) =>
+				document.querySelector(":root").style.setProperty("--theme-transition-time", `${duration}ms`);
+				
+				document.documentElement.classList.add("theme-transition");
+				lapsa.slideContainer.classList.add("theme-transition");
+				
+				setTimeout(() =>
 				{
-					document.querySelector(":root").style.setProperty("--theme-transition-time", `${duration}ms`);
-					
-					document.documentElement.classList.add("theme-transition");
-					lapsa.slideContainer.classList.add("theme-transition");
-					
-					setTimeout(() =>
+					if (forward)
 					{
-						if (forward)
-						{
-							document.documentElement.classList.remove("dark-industrial-theme-1");
-							lapsa.slideContainer.classList.remove("dark-industrial-theme-1");
-							
-							document.documentElement.classList.add("blue-whimsical-theme-1");
-							lapsa.slideContainer.classList.add("blue-whimsical-theme-1");
-							
-							lapsa.slideContainer.classList.add("theme-opacity-change");
-							
-							setTimeout(() =>
-							{
-								lapsa.slideContainer.classList.remove("dark-industrial-theme-2");
-								lapsa.slideContainer.classList.add("blue-whimsical-theme-2");
-								lapsa.slideContainer.classList.remove("theme-opacity-change");
-							}, duration / 2);
-						}
+						document.documentElement.classList.remove("blue-whimsical-theme-1");
+						lapsa.slideContainer.classList.remove("blue-whimsical-theme-1");
 						
-						else
+						document.documentElement.classList.add("dark-futuristic-theme-1");
+						lapsa.slideContainer.classList.add("dark-futuristic-theme-1");
+						
+						lapsa.slideContainer.classList.add("theme-opacity-change");
+						
+						setTimeout(() =>
 						{
-							document.documentElement.classList.remove("blue-whimsical-theme-1");
-							lapsa.slideContainer.classList.remove("blue-whimsical-theme-1");
-							
-							document.documentElement.classList.add("dark-industrial-theme-1");
-							lapsa.slideContainer.classList.add("dark-industrial-theme-1");
-							
-							lapsa.slideContainer.classList.add("theme-opacity-change");
-							
-							setTimeout(() =>
-							{
-								lapsa.slideContainer.classList.remove("blue-whimsical-theme-2");
-								lapsa.slideContainer.classList.add("dark-industrial-theme-2");
-								
-								lapsa.slideContainer.classList.remove("theme-opacity-change");
-							}, duration / 2);
-						}
-					}, 0);
+							lapsa.slideContainer.classList.remove("blue-whimsical-theme-2");
+							lapsa.slideContainer.classList.add("dark-futuristic-theme-2");
+							lapsa.slideContainer.classList.remove("theme-opacity-change");
+						}, duration / 2);
+					}
 					
+					else
+					{
+						document.documentElement.classList.remove("dark-futuristic-theme-1");
+						lapsa.slideContainer.classList.remove("dark-futuristic-theme-1");
+						
+						document.documentElement.classList.add("blue-whimsical-theme-1");
+						lapsa.slideContainer.classList.add("blue-whimsical-theme-1");
+						
+						lapsa.slideContainer.classList.add("theme-opacity-change");
+						
+						setTimeout(() =>
+						{
+							lapsa.slideContainer.classList.remove("dark-futuristic-theme-2");
+							lapsa.slideContainer.classList.add("blue-whimsical-theme-2");
+							
+							lapsa.slideContainer.classList.remove("theme-opacity-change");
+						}, duration / 2);
+					}
+				}, 0);
+				
+				await new Promise(resolve =>
+				{
 					setTimeout(() =>
 					{
 						document.documentElement.classList.remove("theme-transition");
@@ -167,108 +228,47 @@ const options =
 			
 			
 			
-			4: (slide, forward, duration = 300) =>
+			5: async (slide, forward, duration = 300) =>
 			{
-				return new Promise((resolve, reject) =>
+				document.querySelector(":root").style.setProperty("--theme-transition-time", `${duration}ms`);
+				
+				document.documentElement.classList.add("theme-transition");
+				lapsa.slideContainer.classList.add("theme-transition");
+				
+				setTimeout(() =>
 				{
-					document.querySelector(":root").style.setProperty("--theme-transition-time", `${duration}ms`);
-					
-					document.documentElement.classList.add("theme-transition");
-					lapsa.slideContainer.classList.add("theme-transition");
-					
-					setTimeout(() =>
+					if (forward)
 					{
-						if (forward)
-						{
-							document.documentElement.classList.remove("blue-whimsical-theme-1");
-							lapsa.slideContainer.classList.remove("blue-whimsical-theme-1");
-							
-							document.documentElement.classList.add("dark-futuristic-theme-1");
-							lapsa.slideContainer.classList.add("dark-futuristic-theme-1");
-							
-							lapsa.slideContainer.classList.add("theme-opacity-change");
-							
-							setTimeout(() =>
-							{
-								lapsa.slideContainer.classList.remove("blue-whimsical-theme-2");
-								lapsa.slideContainer.classList.add("dark-futuristic-theme-2");
-								lapsa.slideContainer.classList.remove("theme-opacity-change");
-							}, duration / 2);
-						}
+						document.documentElement.classList.remove("dark-futuristic-theme-1");
+						lapsa.slideContainer.classList.remove("dark-futuristic-theme-1");
 						
-						else
+						lapsa.slideContainer.classList.add("theme-opacity-change");
+						
+						setTimeout(() =>
 						{
-							document.documentElement.classList.remove("dark-futuristic-theme-1");
-							lapsa.slideContainer.classList.remove("dark-futuristic-theme-1");
-							
-							document.documentElement.classList.add("blue-whimsical-theme-1");
-							lapsa.slideContainer.classList.add("blue-whimsical-theme-1");
-							
-							lapsa.slideContainer.classList.add("theme-opacity-change");
-							
-							setTimeout(() =>
-							{
-								lapsa.slideContainer.classList.remove("dark-futuristic-theme-2");
-								lapsa.slideContainer.classList.add("blue-whimsical-theme-2");
-								
-								lapsa.slideContainer.classList.remove("theme-opacity-change");
-							}, duration / 2);
-						}
-					}, 0);
+							lapsa.slideContainer.classList.remove("dark-futuristic-theme-2");
+							lapsa.slideContainer.classList.remove("theme-opacity-change");
+						}, duration / 2);
+					}
 					
-					setTimeout(() =>
+					else
 					{
-						document.documentElement.classList.remove("theme-transition");
-						lapsa.slideContainer.classList.remove("theme-transition");
+						document.documentElement.classList.add("dark-futuristic-theme-1");
+						lapsa.slideContainer.classList.add("dark-futuristic-theme-1");
 						
-						resolve();
-					}, duration);
-				});
-			},
-			
-			
-			
-			5: (slide, forward, duration = 300) =>
-			{
-				return new Promise((resolve, reject) =>
+						lapsa.slideContainer.classList.add("theme-opacity-change");
+						
+						setTimeout(() =>
+						{
+							lapsa.slideContainer.classList.add("dark-futuristic-theme-2");
+							
+							lapsa.slideContainer.classList.remove("theme-opacity-change");
+						}, duration / 2);
+					}
+				}, 0);
+				
+				await new Promise(resolve =>
 				{
-					document.querySelector(":root").style.setProperty("--theme-transition-time", `${duration}ms`);
-					
-					document.documentElement.classList.add("theme-transition");
-					lapsa.slideContainer.classList.add("theme-transition");
-					
-					setTimeout(() =>
-					{
-						if (forward)
-						{
-							document.documentElement.classList.remove("dark-futuristic-theme-1");
-							lapsa.slideContainer.classList.remove("dark-futuristic-theme-1");
-							
-							lapsa.slideContainer.classList.add("theme-opacity-change");
-							
-							setTimeout(() =>
-							{
-								lapsa.slideContainer.classList.remove("dark-futuristic-theme-2");
-								lapsa.slideContainer.classList.remove("theme-opacity-change");
-							}, duration / 2);
-						}
-						
-						else
-						{
-							document.documentElement.classList.add("dark-futuristic-theme-1");
-							lapsa.slideContainer.classList.add("dark-futuristic-theme-1");
-							
-							lapsa.slideContainer.classList.add("theme-opacity-change");
-							
-							setTimeout(() =>
-							{
-								lapsa.slideContainer.classList.add("dark-futuristic-theme-2");
-								
-								lapsa.slideContainer.classList.remove("theme-opacity-change");
-							}, duration / 2);
-						}
-					}, 0);
-					
 					setTimeout(() =>
 					{
 						document.documentElement.classList.remove("theme-transition");
