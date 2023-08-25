@@ -1,9 +1,9 @@
-import { createDesmosGraphs, setGetDesmosData } from "/scripts/src/desmos.mjs";
+import { createDesmosGraphs, desmosBlue, desmosPurple, desmosRed, setGetDesmosData } from "/scripts/src/desmos.mjs";
 import { showPage } from "/scripts/src/load-page.mjs";
 
 export function load()
 {
-	setGetDesmosData(({ purple, blue, red }) =>
+	setGetDesmosData(() =>
 	{
 		const data =
 		{
@@ -13,8 +13,8 @@ export function load()
 				
 				expressions:
 				[
-					{latex: String.raw`\frac{x^2 - 1}{x - 1}`, color: purple},
-					{latex: String.raw`(1, 2)`, color: purple, pointStyle: "OPEN"},
+					{latex: String.raw`\frac{x^2 - 1}{x - 1}`, color: desmosPurple},
+					{latex: String.raw`(1, 2)`, color: desmosPurple, pointStyle: "OPEN"},
 				]
 			},
 			
@@ -26,7 +26,7 @@ export function load()
 				
 				expressions:
 				[
-					{latex: String.raw`f(t) = \sqrt{t - 2}`, color: purple},
+					{latex: String.raw`f(t) = \sqrt{t - 2}`, color: desmosPurple},
 				]
 			},
 			
@@ -38,9 +38,9 @@ export function load()
 				
 				expressions:
 				[
-					{latex: String.raw`f(x) = -\left|x\right|`, color: blue},
-					{latex: String.raw`g(x) = x\sin(x)`, color: purple},
-					{latex: String.raw`h(x) = \left|x\right|`, color: red},
+					{latex: String.raw`f(x) = -\left|x\right|`, color: desmosBlue},
+					{latex: String.raw`g(x) = x\sin(x)`, color: desmosPurple},
+					{latex: String.raw`h(x) = \left|x\right|`, color: desmosRed},
 				]
 			},
 		};

@@ -3,7 +3,7 @@ import { showPage } from "/scripts/src/load-page.mjs";
 
 export function load()
 {
-	setGetDesmosData(({ purple, blue, red }) =>
+	setGetDesmosData(() =>
 	{
 		const data =
 		{
@@ -13,12 +13,12 @@ export function load()
 				
 				expressions:
 				[
-					{latex: String.raw`f(x) = \left|x\right|`, color: purple},
+					{latex: String.raw`f(x) = \left|x\right|`, color: desmosPurple},
 					{latex: String.raw`a = -1`},
 					{latex: String.raw`b = 3`},
 					
-					{latex: String.raw`x = [a, b] \{0 \leq y \leq f(x)\} `, color: purple, secret: true},
-					{latex: String.raw`0 \leq y \leq f(x) \{a \leq x \leq b\}`, color: purple, secret: true}
+					{latex: String.raw`x = [a, b] \{0 \leq y \leq f(x)\} `, color: desmosPurple, secret: true},
+					{latex: String.raw`0 \leq y \leq f(x) \{a \leq x \leq b\}`, color: desmosPurple, secret: true}
 				]
 			},
 			
@@ -30,13 +30,13 @@ export function load()
 				
 				expressions:
 				[
-					{latex: String.raw`f(x) = 2x`, color: purple},
+					{latex: String.raw`f(x) = 2x`, color: desmosPurple},
 					{latex: String.raw`a = 1`},
 					{latex: String.raw`b = 3`},
 					
-					{latex: String.raw`x = [a, b] \{0 \leq y \leq f(x)\} `, color: purple, secret: true},
-					{latex: String.raw`0 \leq y \leq f(x) \{a \leq x \leq b\}`, color: purple, secret: true},
-					{latex: String.raw`y = 2 \{1 \leq x \leq 3\}`, color: purple, secret: true}
+					{latex: String.raw`x = [a, b] \{0 \leq y \leq f(x)\} `, color: desmosPurple, secret: true},
+					{latex: String.raw`0 \leq y \leq f(x) \{a \leq x \leq b\}`, color: desmosPurple, secret: true},
+					{latex: String.raw`y = 2 \{1 \leq x \leq 3\}`, color: desmosPurple, secret: true}
 				]
 			},
 			
@@ -48,7 +48,7 @@ export function load()
 				
 				expressions:
 				[
-					{latex: String.raw`f(x) = x^2`, color: purple},
+					{latex: String.raw`f(x) = x^2`, color: desmosPurple},
 					{latex: String.raw`a = 0`, hidden: true},
 					{latex: String.raw`b = 2`, hidden: true},
 					{latex: String.raw`n = 6`, sliderBounds: {min: 1, max: 200, step: 1}},
@@ -57,9 +57,9 @@ export function load()
 					{latex: String.raw`X = [a, a + s, ..., b]`, secret: true},
 					{latex: String.raw`L = [a, a + s, ..., b - s]`, secret: true},
 					{latex: String.raw`R = [a + s, a + 2s, ..., b]`, secret: true},
-					{latex: String.raw`0 \leq y \leq f(R) \{ L \leq x \leq R \}`, color: red, secret: true},
-					{latex: String.raw`x = L \{ 0 \leq y \leq f(R) \}`, color: red, secret: true},
-					{latex: String.raw`x = R \{ 0 \leq y \leq f(R) \}`, color: red, secret: true}
+					{latex: String.raw`0 \leq y \leq f(R) \{ L \leq x \leq R \}`, color: desmosRed, secret: true},
+					{latex: String.raw`x = L \{ 0 \leq y \leq f(R) \}`, color: desmosRed, secret: true},
+					{latex: String.raw`x = R \{ 0 \leq y \leq f(R) \}`, color: desmosRed, secret: true}
 				]
 			},
 			
@@ -71,12 +71,12 @@ export function load()
 				
 				expressions:
 				[
-					{latex: String.raw`f(x) = \sqrt{9 - (x - 3)^2}`, color: purple},
+					{latex: String.raw`f(x) = \sqrt{9 - (x - 3)^2}`, color: desmosPurple},
 					{latex: String.raw`a = 3`},
 					{latex: String.raw`b = 6`},
 					
-					{latex: String.raw`x = [a, b] \{0 \leq y \leq f(x)\} `, color: purple, secret: true},
-					{latex: String.raw`0 \leq y \leq f(x) \{a \leq x \leq b\}`, color: purple, secret: true},
+					{latex: String.raw`x = [a, b] \{0 \leq y \leq f(x)\} `, color: desmosPurple, secret: true},
+					{latex: String.raw`0 \leq y \leq f(x) \{a \leq x \leq b\}`, color: desmosPurple, secret: true},
 				]
 			},
 			
@@ -88,14 +88,14 @@ export function load()
 				
 				expressions:
 				[
-					{latex: String.raw`f(x) = x^3`, color: purple},
+					{latex: String.raw`f(x) = x^3`, color: desmosPurple},
 					{latex: String.raw`a = -2`},
 					{latex: String.raw`b = 2`},
 					
-					{latex: String.raw`x = [a, b] \{0 \leq y \leq f(x)\} `, color: red, secret: true},
-					{latex: String.raw`x = [a, b] \{f(x) \leq y \leq 0\} `, color: blue, secret: true},
-					{latex: String.raw`0 \leq y \leq f(x) \{a \leq x \leq b\}`, color: red, secret: true},
-					{latex: String.raw`f(x) \leq y \leq 0 \{a \leq x \leq b\}`, color: blue, secret: true}
+					{latex: String.raw`x = [a, b] \{0 \leq y \leq f(x)\} `, color: desmosRed, secret: true},
+					{latex: String.raw`x = [a, b] \{f(x) \leq y \leq 0\} `, color: desmosBlue, secret: true},
+					{latex: String.raw`0 \leq y \leq f(x) \{a \leq x \leq b\}`, color: desmosRed, secret: true},
+					{latex: String.raw`f(x) \leq y \leq 0 \{a \leq x \leq b\}`, color: desmosBlue, secret: true}
 				]
 			}
 		};

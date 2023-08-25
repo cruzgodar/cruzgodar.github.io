@@ -3,7 +3,7 @@ import { showPage } from "/scripts/src/load-page.mjs";
 
 export function load()
 {
-	setGetDesmosData(({ purple, blue, red }) =>
+	setGetDesmosData(() =>
 	{
 		const data =
 		{
@@ -13,12 +13,12 @@ export function load()
 				
 				expressions:
 				[
-					{latex: String.raw`f(x) = \sin(x)`, color: purple},
-					{latex: String.raw`f'(x)`, color: blue, secret: true},
+					{latex: String.raw`f(x) = \sin(x)`, color: desmosPurple},
+					{latex: String.raw`f'(x)`, color: desmosBlue, secret: true},
 					{latex: String.raw`a = 0`},
-					{latex: String.raw`(a, f(a))`, secret: true, color: purple},
-					{latex: String.raw`(a, f'(a))`, color: blue, secret: true, showLabel: true},
-					{latex: String.raw`y = f(a) + f'(a)(x - a)`, color: red, secret: true}
+					{latex: String.raw`(a, f(a))`, secret: true, color: desmosPurple},
+					{latex: String.raw`(a, f'(a))`, color: desmosBlue, secret: true, showLabel: true},
+					{latex: String.raw`y = f(a) + f'(a)(x - a)`, color: desmosRed, secret: true}
 				]
 			},
 			
@@ -30,10 +30,10 @@ export function load()
 				
 				expressions:
 				[
-					{latex: String.raw`f(x) = e^x`, color: purple},
+					{latex: String.raw`f(x) = e^x`, color: desmosPurple},
 					{latex: String.raw`a = 0`},
-					{latex: String.raw`(a, f(a))`, secret: true, color: purple, showLabel: true},
-					{latex: String.raw`y = f(a) + f'(a)(x - a)`, color: blue, secret: true}
+					{latex: String.raw`(a, f(a))`, secret: true, color: desmosPurple, showLabel: true},
+					{latex: String.raw`y = f(a) + f'(a)(x - a)`, color: desmosBlue, secret: true}
 				]
 			},
 		};

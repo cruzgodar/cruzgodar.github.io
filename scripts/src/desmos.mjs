@@ -2,6 +2,20 @@ import { changeOpacity } from "./animation.mjs";
 import { $$, loadScript } from "./main.mjs";
 import { siteSettings } from "./settings.mjs";
 
+export let desmosPurple = "#772fbf";
+export let desmosBlue = "#2f77bf";
+export let desmosRed = "#bf2f2f";
+export let desmosGreen = "#2fbf2f";
+export let desmosBlack = "#000000";
+
+function updateDesmosColors()
+{
+	desmosPurple = siteSettings.darkTheme ? "#60c000" : "#772fbf";
+	desmosBlue = siteSettings.darkTheme ? "#c06000" : "#2f77bf";
+	desmosRed = siteSettings.darkTheme ? "#00c0c0" : "#bf2f2f";
+	desmosGreen = siteSettings.darkTheme ? "#c000c0" : "#2fbf2f";
+}
+
 export let desmosGraphs = {};
 
 export function clearDesmosGraphs()
@@ -31,14 +45,10 @@ export async function createDesmosGraphs()
 	}
 	
 	desmosGraphs = {};
-
-	const purple = siteSettings.darkTheme ? "#60c000" : "#772fbf";
-	const blue = siteSettings.darkTheme ? "#c06000" : "#2f77bf";
-	const red = siteSettings.darkTheme ? "#00c0c0" : "#bf2f2f";
-	const green = siteSettings.darkTheme ? "#c000c0" : "#2fbf2f";
-	const black = "#000000";
 	
-	const data = getDesmosData({ purple, blue, red, green, black });
+	updateDesmosColors();
+
+	const data = getDesmosData();
 	
 	for (let key in data)
 	{

@@ -3,7 +3,7 @@ import { showPage } from "/scripts/src/load-page.mjs";
 
 export function load()
 {
-	setGetDesmosData(({ purple, blue, red, green }) =>
+	setGetDesmosData(() =>
 	{
 		const data =
 		{
@@ -13,12 +13,12 @@ export function load()
 				
 				expressions:
 				[
-					{latex: String.raw`f(x) = x`, color: red},
-					{latex: String.raw`g(x) = x^2`, color: blue},
+					{latex: String.raw`f(x) = x`, color: desmosRed},
+					{latex: String.raw`g(x) = x^2`, color: desmosBlue},
 					{latex: String.raw`a = 0`},
 					{latex: String.raw`b = 1`},
-					{latex: String.raw`g(x) \leq y \leq f(x)\{a \leq x \leq b\}`, secret: true, color: purple},
-					{latex: String.raw`f(x) \leq y \leq g(x)\{a \leq x \leq b\}`, secret: true, color: purple}
+					{latex: String.raw`g(x) \leq y \leq f(x)\{a \leq x \leq b\}`, secret: true, color: desmosPurple},
+					{latex: String.raw`f(x) \leq y \leq g(x)\{a \leq x \leq b\}`, secret: true, color: desmosPurple}
 				]
 			},
 			
@@ -30,12 +30,12 @@ export function load()
 				
 				expressions:
 				[
-					{latex: String.raw`f(x) = \sin(x)`, color: red},
-					{latex: String.raw`g(x) = \cos(x)`, color: blue},
+					{latex: String.raw`f(x) = \sin(x)`, color: desmosRed},
+					{latex: String.raw`g(x) = \cos(x)`, color: desmosBlue},
 					{latex: String.raw`a = 0`},
 					{latex: String.raw`b = \pi`},
-					{latex: String.raw`g(x) \leq y \leq f(x)\{a \leq x \leq b\}`, secret: true, color: purple},
-					{latex: String.raw`f(x) \leq y \leq g(x)\{a \leq x \leq b\}`, secret: true, color: purple}
+					{latex: String.raw`g(x) \leq y \leq f(x)\{a \leq x \leq b\}`, secret: true, color: desmosPurple},
+					{latex: String.raw`f(x) \leq y \leq g(x)\{a \leq x \leq b\}`, secret: true, color: desmosPurple}
 				]
 			},
 			
@@ -47,12 +47,12 @@ export function load()
 				
 				expressions:
 				[
-					{latex: String.raw`f(x) = 1`, color: red},
-					{latex: String.raw`g(x) = 3 - x`, color: green},
-					{latex: String.raw`h(x) = x^2 + 1`, color: blue},
+					{latex: String.raw`f(x) = 1`, color: desmosRed},
+					{latex: String.raw`g(x) = 3 - x`, color: desmosGreen},
+					{latex: String.raw`h(x) = x^2 + 1`, color: desmosBlue},
 					
-					{latex: String.raw`f(x) \leq y \leq h(x)\{0 \leq x \leq 1\}`, secret: true, color: purple},
-					{latex: String.raw`f(x) \leq y \leq g(x)\{1 \leq x \leq 2\}`, secret: true, color: purple}
+					{latex: String.raw`f(x) \leq y \leq h(x)\{0 \leq x \leq 1\}`, secret: true, color: desmosPurple},
+					{latex: String.raw`f(x) \leq y \leq g(x)\{1 \leq x \leq 2\}`, secret: true, color: desmosPurple}
 				]
 			},
 			
@@ -64,12 +64,12 @@ export function load()
 				
 				expressions:
 				[
-					{latex: String.raw`f(x) = 1 - x`, color: red},
-					{latex: String.raw`g(x) = x^2`, color: blue},
-					{latex: String.raw`h(x) = \sqrt{x}`, color: green},
+					{latex: String.raw`f(x) = 1 - x`, color: desmosRed},
+					{latex: String.raw`g(x) = x^2`, color: desmosBlue},
+					{latex: String.raw`h(x) = \sqrt{x}`, color: desmosGreen},
 					
-					{latex: String.raw`f(x) \leq y \leq h(x)\{\frac{3}{2} - \frac{\sqrt{5}}{2} \leq x \leq -\frac{1}{2} + \frac{\sqrt{5}}{2}\}`, secret: true, color: purple},
-					{latex: String.raw`g(x) \leq y \leq h(x)\{-\frac{1}{2} + \frac{\sqrt{5}}{2} \leq x \leq 1\}`, secret: true, color: purple}
+					{latex: String.raw`f(x) \leq y \leq h(x)\{\frac{3}{2} - \frac{\sqrt{5}}{2} \leq x \leq -\frac{1}{2} + \frac{\sqrt{5}}{2}\}`, secret: true, color: desmosPurple},
+					{latex: String.raw`g(x) \leq y \leq h(x)\{-\frac{1}{2} + \frac{\sqrt{5}}{2} \leq x \leq 1\}`, secret: true, color: desmosPurple}
 				]
 			},
 			
@@ -81,12 +81,12 @@ export function load()
 				
 				expressions:
 				[
-					{latex: String.raw`f(x) = 1`, color: red},
-					{latex: String.raw`g(x) = 3 - x`, color: green},
-					{latex: String.raw`h(x) = x^2 + 1`, color: blue},
+					{latex: String.raw`f(x) = 1`, color: desmosRed},
+					{latex: String.raw`g(x) = 3 - x`, color: desmosGreen},
+					{latex: String.raw`h(x) = x^2 + 1`, color: desmosBlue},
 					
-					{latex: String.raw`f(x) \leq y \leq h(x)\{0 \leq x \leq 1\}`, secret: true, color: purple},
-					{latex: String.raw`f(x) \leq y \leq g(x)\{1 \leq x \leq 2\}`, secret: true, color: purple}
+					{latex: String.raw`f(x) \leq y \leq h(x)\{0 \leq x \leq 1\}`, secret: true, color: desmosPurple},
+					{latex: String.raw`f(x) \leq y \leq g(x)\{1 \leq x \leq 2\}`, secret: true, color: desmosPurple}
 				]
 			},
 			
@@ -98,12 +98,12 @@ export function load()
 				
 				expressions:
 				[
-					{latex: String.raw`f(x) = 1 - x`, color: red},
-					{latex: String.raw`g(x) = x^2`, color: blue},
-					{latex: String.raw`h(x) = \sqrt{x}`, color: green},
+					{latex: String.raw`f(x) = 1 - x`, color: desmosRed},
+					{latex: String.raw`g(x) = x^2`, color: desmosBlue},
+					{latex: String.raw`h(x) = \sqrt{x}`, color: desmosGreen},
 					
-					{latex: String.raw`f(x) \leq y \leq h(x)\{\frac{3}{2} - \frac{\sqrt{5}}{2} \leq x \leq -\frac{1}{2} + \frac{\sqrt{5}}{2}\}`, secret: true, color: purple},
-					{latex: String.raw`g(x) \leq y \leq h(x)\{-\frac{1}{2} + \frac{\sqrt{5}}{2} \leq x \leq 1\}`, secret: true, color: purple}
+					{latex: String.raw`f(x) \leq y \leq h(x)\{\frac{3}{2} - \frac{\sqrt{5}}{2} \leq x \leq -\frac{1}{2} + \frac{\sqrt{5}}{2}\}`, secret: true, color: desmosPurple},
+					{latex: String.raw`g(x) \leq y \leq h(x)\{-\frac{1}{2} + \frac{\sqrt{5}}{2} \leq x \leq 1\}`, secret: true, color: desmosPurple}
 				]
 			},
 		};

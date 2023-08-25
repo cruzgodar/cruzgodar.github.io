@@ -3,7 +3,7 @@ import { showPage } from "/scripts/src/load-page.mjs";
 
 export function load()
 {
-	setGetDesmosData(({ purple }) =>
+	setGetDesmosData(() =>
 	{
 		const data =
 		{
@@ -13,7 +13,7 @@ export function load()
 				
 				expressions:
 				[
-					{latex: String.raw`(0, 0), (10t, 100), (10t, 0), (0, 0)`, color: purple, lines: true},
+					{latex: String.raw`(0, 0), (10t, 100), (10t, 0), (0, 0)`, color: desmosPurple, lines: true},
 					{latex: String.raw`t = 10`},
 				]
 			},

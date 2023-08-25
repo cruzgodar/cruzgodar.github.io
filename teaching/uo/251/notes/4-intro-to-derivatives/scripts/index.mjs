@@ -3,7 +3,7 @@ import { showPage } from "/scripts/src/load-page.mjs";
 
 export function load()
 {
-	setGetDesmosData(({ purple, blue }) =>
+	setGetDesmosData(() =>
 	{
 		const data =
 		{
@@ -13,13 +13,13 @@ export function load()
 				
 				expressions:
 				[
-					{latex: String.raw`f(x) = x^2`, color: purple},
+					{latex: String.raw`f(x) = x^2`, color: desmosPurple},
 					{latex: String.raw`a = 1`},
 					{latex: String.raw`h = .1`, sliderBounds: {min: 0, max: 1}},
 					{latex: String.raw`m = \frac{f(a + h) - f(a)}{h}`, secret: true},
-					{latex: String.raw`(a, f(a))`, color: blue, secret: true},
-					{latex: String.raw`(a + h, f(a + h))`, color: blue, secret: true},
-					{latex: String.raw`y - f(a) = m(x - a)`, color: blue, secret: true},
+					{latex: String.raw`(a, f(a))`, color: desmosBlue, secret: true},
+					{latex: String.raw`(a + h, f(a + h))`, color: desmosBlue, secret: true},
+					{latex: String.raw`y - f(a) = m(x - a)`, color: desmosBlue, secret: true},
 				]
 			},
 			
@@ -31,10 +31,10 @@ export function load()
 				
 				expressions:
 				[
-					{latex: String.raw`f(x) = x^2`, color: purple},
+					{latex: String.raw`f(x) = x^2`, color: desmosPurple},
 					{latex: String.raw`a = 1`},
-					{latex: String.raw`(a, f(a))`, color: blue, secret: true},
-					{latex: String.raw`y - f(a) = f'(a)(x - a)`, color: blue, secret: true},
+					{latex: String.raw`(a, f(a))`, color: desmosBlue, secret: true},
+					{latex: String.raw`y - f(a) = f'(a)(x - a)`, color: desmosBlue, secret: true},
 				]
 			},
 			
@@ -46,8 +46,8 @@ export function load()
 				
 				expressions:
 				[
-					{latex: String.raw`f(x) = x^2`, color: purple},
-					{latex: String.raw`f'(x)`, color: blue},
+					{latex: String.raw`f(x) = x^2`, color: desmosPurple},
+					{latex: String.raw`f'(x)`, color: desmosBlue},
 				]
 			},
 			
@@ -59,8 +59,8 @@ export function load()
 				
 				expressions:
 				[
-					{latex: String.raw`f(x) = \sin(x) + 1 - .1x^2`, color: purple},
-					{latex: String.raw`f'(x)`, color: blue, hidden: true},
+					{latex: String.raw`f(x) = \sin(x) + 1 - .1x^2`, color: desmosPurple},
+					{latex: String.raw`f'(x)`, color: desmosBlue, hidden: true},
 				]
 			},
 			
@@ -72,7 +72,7 @@ export function load()
 				
 				expressions:
 				[
-					{latex: String.raw`f(x) = x^3 + 1 - 2x^2`, color: purple},
+					{latex: String.raw`f(x) = x^3 + 1 - 2x^2`, color: desmosPurple},
 				]
 			},
 			
@@ -84,7 +84,7 @@ export function load()
 				
 				expressions:
 				[
-					{latex: String.raw`f(x) = \left|x\right|`, color: purple},
+					{latex: String.raw`f(x) = \left|x\right|`, color: desmosPurple},
 				]
 			},
 		};

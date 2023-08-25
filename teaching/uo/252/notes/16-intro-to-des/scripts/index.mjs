@@ -5,7 +5,7 @@ import { $ } from "/scripts/src/main.mjs";
 
 export function load()
 {
-	setGetDesmosData(({ purple, blue }) =>
+	setGetDesmosData(() =>
 	{
 		const data =
 		{
@@ -21,7 +21,7 @@ export function load()
 					{latex: String.raw`A = [-n, -n + 1, ..., n]`, secret: true},
 					{latex: String.raw`X = A[\mod(I, 2n + 1) + 1]`, secret: true},
 					{latex: String.raw`Y = X[\floor(I / (2n + 1)) + 1]`, secret: true},
-					{latex: String.raw`f(X, Y)(x - X) + Y \{\left|x - X\right| \leq \frac{.3}{\sqrt{1 + f(X, Y)^2}}\}`, color: purple, secret: true},
+					{latex: String.raw`f(X, Y)(x - X) + Y \{\left|x - X\right| \leq \frac{.3}{\sqrt{1 + f(X, Y)^2}}\}`, color: desmosPurple, secret: true},
 				]
 			},
 			
@@ -39,7 +39,7 @@ export function load()
 					{latex: String.raw`A = [-n, -n + 1, ..., n]`, secret: true},
 					{latex: String.raw`X = A[\mod(I, 2n + 1) + 1]`, secret: true},
 					{latex: String.raw`Y = X[\floor(I / (2n + 1)) + 1]`, secret: true},
-					{latex: String.raw`f(X, Y)(x - X) + Y \{\left|x - X\right| \leq \frac{.3}{\sqrt{1 + f(X, Y)^2}}\}`, color: purple, secret: true},
+					{latex: String.raw`f(X, Y)(x - X) + Y \{\left|x - X\right| \leq \frac{.3}{\sqrt{1 + f(X, Y)^2}}\}`, color: desmosPurple, secret: true},
 				]
 			},
 			
@@ -53,13 +53,13 @@ export function load()
 				[
 					{latex: String.raw`f(x, y) = xy`},
 					{latex: String.raw`c = .1`, sliderBounds: {min: -1, max: 1}},
-					{latex: String.raw`y = ce^{x^2}`, color: blue},
+					{latex: String.raw`y = ce^{x^2}`, color: desmosBlue},
 					{latex: String.raw`n = 10`, sliderBounds: {min: 1, max: 20, step: 1}},
 					{latex: String.raw`I = [0, 1, ..., (2n + 1)^2 - 1]`, secret: true},
 					{latex: String.raw`A = [-n, -n + 1, ..., n]`, secret: true},
 					{latex: String.raw`X = A[\mod(I, 2n + 1) + 1]`, secret: true},
 					{latex: String.raw`Y = X[\floor(I / (2n + 1)) + 1]`, secret: true},
-					{latex: String.raw`f(X, Y)(x - X) + Y \{\left|x - X\right| \leq \frac{.3}{\sqrt{1 + f(X, Y)^2}}\}`, color: purple, secret: true},
+					{latex: String.raw`f(X, Y)(x - X) + Y \{\left|x - X\right| \leq \frac{.3}{\sqrt{1 + f(X, Y)^2}}\}`, color: desmosPurple, secret: true},
 				]
 			},
 			
@@ -77,7 +77,7 @@ export function load()
 					{latex: String.raw`A = [-n, -n + 1, ..., n]`, secret: true},
 					{latex: String.raw`X = A[\mod(I, 2n + 1) + 1]`, secret: true},
 					{latex: String.raw`Y = X[\floor(I / (2n + 1)) + 1]`, secret: true},
-					{latex: String.raw`f(X, Y)(x - X) + Y \{\left|x - X\right| \leq \frac{.3}{\sqrt{1 + f(X, Y)^2}}\}`, color: purple, secret: true},
+					{latex: String.raw`f(X, Y)(x - X) + Y \{\left|x - X\right| \leq \frac{.3}{\sqrt{1 + f(X, Y)^2}}\}`, color: desmosPurple, secret: true},
 				]
 			},
 			
@@ -95,7 +95,7 @@ export function load()
 					{latex: String.raw`A = [-n, -n + 1, ..., n]`, secret: true},
 					{latex: String.raw`X = A[\mod(I, 2n + 1) + 1]`, secret: true},
 					{latex: String.raw`Y = X[\floor(I / (2n + 1)) + 1]`, secret: true},
-					{latex: String.raw`f(X, Y)(x - X) + Y \{\left|x - X\right| \leq \frac{.3}{\sqrt{1 + f(X, Y)^2}}\}`, color: purple, secret: true},
+					{latex: String.raw`f(X, Y)(x - X) + Y \{\left|x - X\right| \leq \frac{.3}{\sqrt{1 + f(X, Y)^2}}\}`, color: desmosPurple, secret: true},
 				]
 			},
 		};

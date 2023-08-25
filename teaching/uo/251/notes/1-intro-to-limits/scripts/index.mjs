@@ -1,9 +1,9 @@
-import { createDesmosGraphs, setGetDesmosData } from "/scripts/src/desmos.mjs";
+import { createDesmosGraphs, desmosBlue, desmosPurple, setGetDesmosData } from "/scripts/src/desmos.mjs";
 import { showPage } from "/scripts/src/load-page.mjs";
 
 export function load()
 {
-	setGetDesmosData(({ purple, blue }) =>
+	setGetDesmosData(() =>
 	{
 		const data =
 		{
@@ -13,8 +13,8 @@ export function load()
 				
 				expressions:
 				[
-					{latex: String.raw`s(t) = 2t`, color: purple},
-					{latex: String.raw`v(t) = 2`, color: blue},
+					{latex: String.raw`s(t) = 2t`, color: desmosPurple},
+					{latex: String.raw`v(t) = 2`, color: desmosBlue},
 				]
 			},
 			
@@ -26,12 +26,12 @@ export function load()
 				
 				expressions:
 				[
-					{latex: String.raw`f(t) = t^2`, color: purple},
+					{latex: String.raw`f(t) = t^2`, color: desmosPurple},
 					{latex: String.raw`a = 0`, sliderBounds: {min: -2, max: 2}},
 					{latex: String.raw`b = 1`, sliderBounds: {min: -2, max: 2}},
-					{latex: String.raw`(a, f(a))`, color: blue, secret: true},
-					{latex: String.raw`(b, f(b))`, color: blue, secret: true},
-					{latex: String.raw`y - f(a) = \frac{f(b) - f(a)}{b - a}(x - a)`, color: blue, secret: true},
+					{latex: String.raw`(a, f(a))`, color: desmosBlue, secret: true},
+					{latex: String.raw`(b, f(b))`, color: desmosBlue, secret: true},
+					{latex: String.raw`y - f(a) = \frac{f(b) - f(a)}{b - a}(x - a)`, color: desmosBlue, secret: true},
 				]
 			},
 			
@@ -43,10 +43,10 @@ export function load()
 				
 				expressions:
 				[
-					{latex: String.raw`f(t) = t^2`, color: purple},
+					{latex: String.raw`f(t) = t^2`, color: desmosPurple},
 					{latex: String.raw`a = 0`, sliderBounds: {min: -2, max: 2}},
-					{latex: String.raw`(a, f(a))`, color: blue, secret: true},
-					{latex: String.raw`y - f(a) = f'(a)(x - a)`, color: blue, secret: true},
+					{latex: String.raw`(a, f(a))`, color: desmosBlue, secret: true},
+					{latex: String.raw`y - f(a) = f'(a)(x - a)`, color: desmosBlue, secret: true},
 				]
 			},
 			
@@ -58,10 +58,10 @@ export function load()
 				
 				expressions:
 				[
-					{latex: String.raw`f(t) = t^2`, color: purple, hidden: true},
-					{latex: String.raw`g(h) = \frac{f(h) - f(0)}{h - 0}`, color: blue},
+					{latex: String.raw`f(t) = t^2`, color: desmosPurple, hidden: true},
+					{latex: String.raw`g(h) = \frac{f(h) - f(0)}{h - 0}`, color: desmosBlue},
 					
-					{latex: String.raw`(0, f'(0))`, color: blue, pointStyle: "OPEN", secret: true},
+					{latex: String.raw`(0, f'(0))`, color: desmosBlue, pointStyle: "OPEN", secret: true},
 				]
 			},
 			
@@ -73,8 +73,8 @@ export function load()
 				
 				expressions:
 				[
-					{latex: String.raw`f(x) = \frac{\sin(x)}{x}`, color: purple},
-					{latex: String.raw`(0, 1)`, color: purple, pointStyle: "OPEN"},
+					{latex: String.raw`f(x) = \frac{\sin(x)}{x}`, color: desmosPurple},
+					{latex: String.raw`(0, 1)`, color: desmosPurple, pointStyle: "OPEN"},
 				]
 			},
 			
@@ -86,10 +86,10 @@ export function load()
 				
 				expressions:
 				[
-					{latex: String.raw`g(x) = x^3 - x`, color: purple, secret: true, hidden: true},
-					{latex: String.raw`g(x)`, color: purple},
-					{latex: String.raw`(1, 0)`, color: purple, pointStyle: "OPEN", secret: true},
-					{latex: String.raw`(1, 2)`, color: purple, secret: true},
+					{latex: String.raw`g(x) = x^3 - x`, color: desmosPurple, secret: true, hidden: true},
+					{latex: String.raw`g(x)`, color: desmosPurple},
+					{latex: String.raw`(1, 0)`, color: desmosPurple, pointStyle: "OPEN", secret: true},
+					{latex: String.raw`(1, 2)`, color: desmosPurple, secret: true},
 				]
 			},
 			
@@ -101,7 +101,7 @@ export function load()
 				
 				expressions:
 				[
-					{latex: String.raw`f(x) = \sin(\frac{1}{x})`, color: purple}
+					{latex: String.raw`f(x) = \sin(\frac{1}{x})`, color: desmosPurple}
 				]
 			},
 			
@@ -113,10 +113,10 @@ export function load()
 				
 				expressions:
 				[
-					{latex: String.raw`f(x) = \frac{\left|x - 2\right|}{x - 2}`, color: purple, secret: true, hidden: true},
-					{latex: String.raw`f(x)`, color: purple},
-					{latex: String.raw`(2, -1)`, color: purple, pointStyle: "OPEN", secret: true},
-					{latex: String.raw`(2, 1)`, color: purple, pointStyle: "OPEN", secret: true},
+					{latex: String.raw`f(x) = \frac{\left|x - 2\right|}{x - 2}`, color: desmosPurple, secret: true, hidden: true},
+					{latex: String.raw`f(x)`, color: desmosPurple},
+					{latex: String.raw`(2, -1)`, color: desmosPurple, pointStyle: "OPEN", secret: true},
+					{latex: String.raw`(2, 1)`, color: desmosPurple, pointStyle: "OPEN", secret: true},
 				]
 			},
 			
@@ -128,7 +128,7 @@ export function load()
 				
 				expressions:
 				[
-					{latex: String.raw`f(x) = \frac{1}{x^2}`, color: purple}
+					{latex: String.raw`f(x) = \frac{1}{x^2}`, color: desmosPurple}
 				]
 			},
 			
@@ -140,10 +140,10 @@ export function load()
 				
 				expressions:
 				[
-					{latex: String.raw`f(x) = \{x \leq -3: x, -3 \leq x \leq 0: \frac{1}{27}x^3, 0 \leq x \leq 2: \frac{1}{x - 1} + 1, 2 \leq x: x - 2\}`, color: purple, secret: true, hidden: true},
-					{latex: String.raw`f(x)`, color: purple},
-					{latex: String.raw`(-3, -1)`, color: purple, secret: true},
-					{latex: String.raw`(-3, -3), (0, 0), (2, 0), (2, 2)`, color: purple, pointStyle: "OPEN", secret: true},
+					{latex: String.raw`f(x) = \{x \leq -3: x, -3 \leq x \leq 0: \frac{1}{27}x^3, 0 \leq x \leq 2: \frac{1}{x - 1} + 1, 2 \leq x: x - 2\}`, color: desmosPurple, secret: true, hidden: true},
+					{latex: String.raw`f(x)`, color: desmosPurple},
+					{latex: String.raw`(-3, -1)`, color: desmosPurple, secret: true},
+					{latex: String.raw`(-3, -3), (0, 0), (2, 0), (2, 2)`, color: desmosPurple, pointStyle: "OPEN", secret: true},
 				]
 			},
 		};
