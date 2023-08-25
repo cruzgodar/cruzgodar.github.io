@@ -157,13 +157,13 @@ function drawBrownianTree()
 
 function HSVtoRGB(h, s, v)
 {
-	let r, g, b, i, f, p, q, t;
+	let r, g, b;
 	
-	i = Math.floor(h * 6);
-	f = h * 6 - i;
-	p = v * (1 - s);
-	q = v * (1 - f * s);
-	t = v * (1 - (1 - f) * s);
+	const i = Math.floor(h * 6);
+	const f = h * 6 - i;
+	const p = v * (1 - s);
+	const q = v * (1 - f * s);
+	const t = v * (1 - (1 - f) * s);
 	
 	switch (i % 6)
 	{

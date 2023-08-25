@@ -1,10 +1,8 @@
 import { QuasiFuchsianGroups } from "/applets/quasi-fuchsian-groups/scripts/class.mjs";
-import { Lapsa } from "/scripts/lapsa.mjs";
+import Lapsa from "/scripts/lapsa.mjs";
 import { changeOpacity } from "/scripts/src/animation.mjs";
 
 const applet = new QuasiFuchsianGroups(document.body.querySelector("#output-canvas"));
-
-let lapsa;
 
 const canvasBundle = document.body.querySelector("#canvas-bundle");
 
@@ -17,8 +15,7 @@ const resolution = 1500;
 const maxDepth = 250;
 const maxPixelBrightness = 50;
 
-const options =
-{
+const lapsa = new Lapsa({
 	shelfIconPaths: "/graphics/lapsa-icons/",
 	
 	builds:
@@ -248,6 +245,4 @@ const options =
 			}
 		}
 	}
-};
-
-lapsa = new Lapsa(options);
+});

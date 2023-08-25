@@ -1,7 +1,6 @@
-import { Lapsa } from "../../scripts/lapsa.mjs";
+import Lapsa from "/scripts/lapsa.mjs";
 
-const options =
-{
+const lapsa = new Lapsa({
 	shelfIconPaths: "/graphics/lapsa-icons/",
 	
 	builds:
@@ -280,6 +279,4 @@ const options =
 			}
 		}
 	}
-};
-
-const lapsa = new Lapsa(options);
+});

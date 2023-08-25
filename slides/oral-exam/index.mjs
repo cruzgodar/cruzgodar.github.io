@@ -1,5 +1,5 @@
 import { PlanePartitions } from "/applets/plane-partitions/scripts/class.mjs";
-import { Lapsa } from "/scripts/lapsa.mjs";
+import Lapsa from "/scripts/lapsa.mjs";
 import { changeOpacity } from "/scripts/src/animation.mjs";
 
 const applet = new PlanePartitions(document.body.querySelector("#output-canvas"), document.body.querySelector("#numbers-canvas"), false);
