@@ -40,6 +40,10 @@
 		"no-unused-vars": [
 			"error",
 			{ "args": "after-used" }
+		],
+		"prefer-const": [
+			"error",
+			{ "destructuring": "any"}
 		]
 	}
 }

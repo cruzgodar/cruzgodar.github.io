@@ -7,16 +7,6 @@ export function load()
 	const applet = new AbelianSandpile($("#output-canvas"));
 
 
-	
-	function run()
-	{
-		const numGrains = parseInt(numGrainsInputElement.value || 10000);
-		const computationsPerFrame = parseInt(computationsPerFrameInputElement.value || 25);
-		
-		applet.run(numGrains, computationsPerFrame);
-	}
-
-
 
 	const numGrainsInputElement = $("#num-grains-input");
 
@@ -41,4 +31,14 @@ export function load()
 
 
 	showPage();
+
+
+
+	function run()
+	{
+		const numGrains = parseInt(numGrainsInputElement.value || 10000);
+		const computationsPerFrame = parseInt(computationsPerFrameInputElement.value || 25);
+		
+		applet.run(numGrains, computationsPerFrame);
+	}
 }

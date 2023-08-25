@@ -1,3 +1,4 @@
+import anime from "./anime.js";
 import { changeOpacity, opacityAnimationTime } from "/scripts/src/animation.mjs";
 import { addHoverEventWithScale } from "/scripts/src/hover-events.mjs";
 import { addTemporaryListener } from "/scripts/src/main.mjs";
@@ -197,36 +198,39 @@ export class Wilson
 			
 			this.render.drawFrame = this.render.drawFrameHybrid;
 			
-			
-			
 			try
 			{
-				let ext = this.gl.getExtension("OES_texture_float");
+				this.gl.getExtension("OES_texture_float");
 			}
 			
 			catch(ex)
 			{
-				console.log("[Wilson] Could not load float textures");
+				console.log(`[Wilson] Could not load float textures: ${ex}`);
 			}
 		}
 		
 		else
 		{
-			try {this.render.loadNewShader(options.shader);}
-			catch(ex) {console.error("[Wilson] Error loading shader")}
+			try
+			{
+				this.render.loadNewShader(options.shader);
+			}
+
+			catch(ex)
+			{
+				console.error(`[Wilson] Error loading shader: ${ex}`);
+			}
 			
 			this.render.drawFrame = this.render.drawFrameGpu;
 			
-			
-			
 			try
 			{
-				let ext = this.gl.getExtension("OES_texture_float");
+				this.gl.getExtension("OES_texture_float");
 			}
 			
 			catch(ex)
 			{
-				console.log("[Wilson] Could not load float textures");
+				console.log(`[Wilson] Could not load float textures: ${ex}`);
 			}
 		}
 		
@@ -444,8 +448,7 @@ export class Wilson
 	
 	
 	//Contains utility functions for switching between canvas and world coordinates.
-	utils =
-	{
+	utils = {
 		interpolate:
 		{
 			canvasToWorld(row, col)
@@ -477,8 +480,7 @@ export class Wilson
 	
 	
 	//Draws an entire frame to a cpu canvas by directly modifying the canvas data. Tends to be significantly faster than looping fillRect, **when the whole canvas needs to be updated**. If that's not the case, sticking to fillRect is generally a better idea. Here, image is a width * height * 4 Uint8ClampedArray, with each sequence of 4 elements corresponding to rgba values.
-	render =
-	{
+	render = {
 		drawFrame: null,
 		
 		renderType: null, //0: cpu, 1: hybrid, 2: gpu
@@ -570,7 +572,7 @@ export class Wilson
 			
 			if (!this.parent.gl.getProgramParameter(this.shaderProgram, this.parent.gl.LINK_STATUS))
 			{
-				console.error(`[Wilson] Couldn't link shader program: ${this.parent.gl.getShaderInfoLog(shader)}`);
+				console.error(`[Wilson] Couldn't link shader program: ${this.parent.gl.getShaderInfoLog(fragShader)}`);
 				this.parent.gl.deleteProgram(this.shaderProgram);
 			}
 			
@@ -620,7 +622,7 @@ export class Wilson
 				
 				if (!gl.getShaderParameter(shader, gl.COMPILE_STATUS))
 				{
-					console.error(`[Wilson] Couldn't load shader: ${gl.getProgramInfoLog(shaderProgram)}`);
+					console.error(`[Wilson] Couldn't load shader: ${gl.getShaderInfoLog(shader)}`);
 					gl.deleteShader(shader);
 				}
 				
@@ -664,7 +666,7 @@ export class Wilson
 			
 			if (!this.parent.gl.getProgramParameter(this.shaderProgram, this.parent.gl.LINK_STATUS))
 			{
-				console.log(`[Wilson] Couldn't link shader program: ${this.gl.getShaderInfoLog(shader)}`);
+				console.log(`[Wilson] Couldn't link shader program: ${this.gl.getShaderInfoLog(fragShader)}`);
 				this.parent.gl.deleteProgram(this.shaderProgram);
 			}
 			
@@ -700,7 +702,7 @@ export class Wilson
 				
 				if (!gl.getShaderParameter(shader, gl.COMPILE_STATUS))
 				{
-					console.log(`[Wilson] Couldn't load shader: ${gl.getProgramInfoLog(shaderProgram)}`);
+					console.log(`[Wilson] Couldn't load shader: ${gl.getProgramInfoLog(shader)}`);
 					gl.deleteShader(shader);
 				}
 				
@@ -731,7 +733,7 @@ export class Wilson
 			
 			
 			
-			this.framebuffers.push({framebuffer: framebuffer, texture: texture})
+			this.framebuffers.push({framebuffer: framebuffer, texture: texture});
 		},
 		
 		
@@ -775,8 +777,7 @@ export class Wilson
 	
 	
 	
-	draggables =
-	{
+	draggables = {
 		parent: null,
 		
 		container: null,
@@ -945,11 +946,6 @@ export class Wilson
 					callback: onResizeBound
 				});
 			}
-			
-			else
-			{
-				console.log(`[Wilson] Using non-draggable draggables -- is this really what you want to do?`);
-			}
 		},
 		
 		
@@ -1023,8 +1019,15 @@ export class Wilson
 					this.mouseX = e.clientX;
 					this.mouseY = e.clientY;
 					
-					try {this.mousedownCallback(this.activeDraggable, ...(this.worldCoordinates[this.activeDraggable]), e)}
-					catch(ex) {}
+					try
+					{
+						this.mousedownCallback(this.activeDraggable, ...(this.worldCoordinates[this.activeDraggable]), e);
+					}
+
+					catch(ex)
+					{
+						//No mousedown callback
+					}
 					
 					break;
 				}
@@ -1041,8 +1044,15 @@ export class Wilson
 				
 				this.lastActiveDraggable = this.activeDraggable;
 				
-				try {this.mouseupCallback(this.activeDraggable, ...(this.worldCoordinates[this.activeDraggable]), e)}
-				catch(ex) {}
+				try
+				{
+					this.mouseupCallback(this.activeDraggable, ...(this.worldCoordinates[this.activeDraggable]), e);
+				}
+
+				catch(ex)
+				{
+					//No mouseup callback
+				}
 			}
 			
 			this.activeDraggable = -1;
@@ -1062,9 +1072,6 @@ export class Wilson
 				
 				let newMouseX = e.clientX;
 				let newMouseY = e.clientY;
-				
-				let mouseXDelta = newMouseX - this.mouseX;
-				let mouseYDelta = newMouseY - this.mouseY;
 				
 				this.mouseX = newMouseX;
 				this.mouseY = newMouseY;
@@ -1110,8 +1117,15 @@ export class Wilson
 				
 				
 				
-				try {this.mousemoveCallback(this.activeDraggable, x, y, e)}
-				catch(ex) {}
+				try
+				{
+					this.mousemoveCallback(this.activeDraggable, x, y, e);
+				}
+
+				catch(ex)
+				{
+					//No mousemove callback
+				}
 			}
 		},
 		
@@ -1135,8 +1149,15 @@ export class Wilson
 					this.mouseX = e.touches[0].clientX;
 					this.mouseY = e.touches[0].clientY;
 					
-					try {this.touchstartCallback(this.activeDraggable, ...(this.worldCoordinates[this.activeDraggable]), e)}
-					catch(ex) {}
+					try
+					{
+						this.touchstartCallback(this.activeDraggable, ...(this.worldCoordinates[this.activeDraggable]), e);
+					}
+
+					catch(ex)
+					{
+						//No touchstart callback
+					}
 					
 					break;
 				}
@@ -1153,8 +1174,15 @@ export class Wilson
 				
 				this.lastActiveDraggable = this.activeDraggable;
 				
-				try {this.touchendCallback(this.activeDraggable, ...(this.worldCoordinates[this.activeDraggable]), e)}
-				catch(ex) {}
+				try
+				{
+					this.touchendCallback(this.activeDraggable, ...(this.worldCoordinates[this.activeDraggable]), e);
+				}
+
+				catch(ex)
+				{
+					//No touchend callback
+				}
 			}
 			
 			this.activeDraggable = -1;
@@ -1212,8 +1240,15 @@ export class Wilson
 				
 				
 				
-				try {this.touchmoveCallback(this.activeDraggable, x, y, e)}
-				catch(ex) {}
+				try
+				{
+					this.touchmoveCallback(this.activeDraggable, x, y, e);
+				}
+
+				catch(ex)
+				{
+					//No touchmove callback
+				}
 			}
 		},
 		
@@ -1284,8 +1319,7 @@ export class Wilson
 	
 	
 	
-	fullscreen =
-	{
+	fullscreen = {
 		currentlyFullscreen: false,
 
 		currentlyAnimating: false,
@@ -1514,13 +1548,14 @@ export class Wilson
 				{
 					document.body.appendChild(this.fullscreenComponentsContainer);
 					
-					try
-					{
-						document.body.querySelector("#header").style.zIndex = 90;
-						document.body.querySelector("#header-container").style.zIndex = 90;
-					}
+					const header = document.body.querySelector("#header");
+					const headerContainer = document.body.querySelector("#header-container");
 					
-					catch(ex) {}
+					if (header && headerContainer)
+					{
+						header.style.zIndex = 90;
+						headerContainer.style.zIndex = 90;
+					}
 					
 					
 					
@@ -1530,8 +1565,10 @@ export class Wilson
 					
 					
 					
-					try {this.enterFullscreenButton.remove();}
-					catch(ex) {}
+					if (this.enterFullscreenButton)
+					{
+						this.enterFullscreenButton.remove();
+					}
 					
 					
 					
@@ -1596,8 +1633,15 @@ export class Wilson
 							//We do this to accomodate weirdly-set-up applets like the ones with draggable inputs, since they rely on their canvas container to keep the content below flowing properly.
 							this.parent.canvas.parentNode.parentNode.classList.add("wilson-black-background");
 							
-							try {this.switchFullscreenCallback();}
-							catch(ex) {}
+							try
+							{
+								this.switchFullscreenCallback();
+							}
+
+							catch(ex)
+							{
+								//No switch fullscreen callback
+							}
 							
 							this.parent.draggables.onResize();
 						}
@@ -1613,8 +1657,15 @@ export class Wilson
 						{
 							this.canvasesToResize[i].classList.add("wilson-letterboxed-fullscreen-canvas");
 							
-							try {this.switchFullscreenCallback();}
-							catch(ex) {}
+							try
+							{
+								this.switchFullscreenCallback();
+							}
+
+							catch(ex)
+							{
+								//No switch fullscreen callback
+							}
 							
 							this.parent.draggables.onResize();
 						}
@@ -1623,8 +1674,8 @@ export class Wilson
 						
 						//One of these is for vertical aspect ratios and the other is for horizontal ones, but we add both in case the user resizes the window while in applet is fullscreen.
 						
-						this.parent.canvas.parentNode.parentNode.insertAdjacentHTML("beforebegin", `<div class="wilson-letterboxed-canvas-background"></div>`);
-						this.parent.canvas.parentNode.parentNode.insertAdjacentHTML("afterend", `<div class="wilson-letterboxed-canvas-background"></div>`);
+						this.parent.canvas.parentNode.parentNode.insertAdjacentHTML("beforebegin", "<div class='wilson-letterboxed-canvas-background'></div>");
+						this.parent.canvas.parentNode.parentNode.insertAdjacentHTML("afterend", "<div class='wilson-letterboxed-canvas-background'></div>");
 						
 						this.parent.canvas.parentNode.parentNode.classList.add("wilson-black-background");
 						
@@ -1683,13 +1734,14 @@ export class Wilson
 				{
 					this.fullscreenComponentsContainerLocation.appendChild(this.fullscreenComponentsContainer);
 					
-					try
+					const header = document.body.querySelector("#header");
+					const headerContainer = document.body.querySelector("#header-container");
+
+					if (header && headerContainer)
 					{
-						document.body.querySelector("#header").style.zIndex = 110;
-						document.body.querySelector("#header-container").style.zIndex = 105;
+						header.style.zIndex = 110;
+						headerContainer.style.zIndex = 105;
 					}
-					
-					catch(ex) {}
 					
 					
 					
@@ -1714,8 +1766,10 @@ export class Wilson
 					
 					
 					
-					try {this.exitFullscreenButton.remove();}
-					catch(ex) {}
+					if (this.exitFullscreenButton)
+					{
+						this.exitFullscreenButton.remove();
+					}
 					
 					
 					
@@ -1750,22 +1804,29 @@ export class Wilson
 						
 						this.parent.canvas.parentNode.parentNode.classList.remove("wilson-black-background");
 						
-						try
+
+
+						const elements = document.querySelectorAll(".wilson-letterboxed-canvas-background");
+						
+						for (let i = 0; i < elements.length; i++)
 						{
-							let elements = document.querySelectorAll(".wilson-letterboxed-canvas-background");
-							
-							for (let i = 0; i < elements.length; i++)
+							if (elements[i])
 							{
 								elements[i].remove();
 							}
 						}
 						
-						catch(ex) {}
 						
 						
-						
-						try {this.switchFullscreenCallback();}
-						catch(ex) {}
+						try
+						{
+							this.switchFullscreenCallback();
+						}
+
+						catch(ex)
+						{
+							//No switch fullscreen callback
+						}
 						
 						this.parent.draggables.onResize();
 					}
@@ -1847,8 +1908,7 @@ export class Wilson
 	
 	
 	//Contains methods for handling input.
-	input = 
-	{
+	input = {
 		mouseX: null,
 		mouseY: null,
 		
@@ -1930,8 +1990,15 @@ export class Wilson
 					{
 						this.currentlyDragging = false;
 						
-						try {this.mouseupCallback(...lastWorldCoordinates, e);}
-						catch(ex) {}
+						try
+						{
+							this.mouseupCallback(...lastWorldCoordinates, e);
+						}
+
+						catch(ex)
+						{
+							//No mouseup callback
+						}
 					}
 				});
 			}
@@ -2253,7 +2320,7 @@ export class Wilson
 				let mouseY2 = e.touches[1].clientY;
 				
 				let row2 = (mouseY2 - rect.top - this.parent.topBorder - this.parent.topPadding) * this.parent.canvasHeight / this.parent.draggables.restrictedHeight;
-			let col2 = (mouseX2 - rect.left - this.parent.leftBorder - this.parent.leftPadding) * this.parent.canvasWidth / this.parent.draggables.restrictedWidth;
+				let col2 = (mouseX2 - rect.left - this.parent.leftBorder - this.parent.leftPadding) * this.parent.canvasWidth / this.parent.draggables.restrictedWidth;
 				
 				let worldCoordinates2 = this.parent.utils.interpolate.canvasToWorld(row2, col2);
 				
@@ -2316,7 +2383,7 @@ export class Wilson
 			
 			return [zoomedCenterX, zoomedCenterY];
 		}
-	}
+	};
 	
 	
 	
@@ -2373,4 +2440,4 @@ export class Wilson
 			link.remove();
 		});
 	}
-};
+}
