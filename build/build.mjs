@@ -53,6 +53,8 @@ async function buildSite()
 
 			await eslint();
 
+			await stylelint();
+
 			resolve();
 		});
 	});
@@ -187,6 +189,19 @@ async function eslint()
 	await new Promise(resolve =>
 	{
 		exec(`eslint --ext .js,.mjs ${root}`, (error, stdout) =>
+		{
+			console.log(stdout);
+
+			resolve();
+		});
+	});
+}
+
+async function stylelint()
+{
+	await new Promise(resolve =>
+	{
+		exec("stylelint '**/index.css'", (error, stdout) =>
 		{
 			console.log(stdout);
 
