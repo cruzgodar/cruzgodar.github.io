@@ -104,7 +104,7 @@ export class LyapunovFractal extends Applet
 	
 	run(generatingString)
 	{
-		let generatingCode = [];
+		const generatingCode = [];
 		
 		for (let i = 0; i < generatingString.length; i++)
 		{
@@ -227,7 +227,7 @@ export class LyapunovFractal extends Applet
 
 	drawFrame(timestamp)
 	{
-		let timeElapsed = timestamp - this.lastTimestamp;
+		const timeElapsed = timestamp - this.lastTimestamp;
 		
 		this.lastTimestamp = timestamp;
 		
@@ -257,7 +257,7 @@ export class LyapunovFractal extends Applet
 		
 		const pixelData = this.wilsonHidden.render.getPixelData();
 		
-		let brightnesses = new Array(this.resolutionHidden * this.resolutionHidden);
+		const brightnesses = new Array(this.resolutionHidden * this.resolutionHidden);
 		
 		for (let i = 0; i < this.resolutionHidden * this.resolutionHidden; i++)
 		{
@@ -270,7 +270,7 @@ export class LyapunovFractal extends Applet
 		
 		this.pastBrightnessScales.push(brightnessScale);
 		
-		let denom = this.pastBrightnessScales.length;
+		const denom = this.pastBrightnessScales.length;
 		
 		if (denom > 10)
 		{

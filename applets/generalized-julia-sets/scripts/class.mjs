@@ -558,7 +558,7 @@ export class GeneralizedJuliaSet extends Applet
 		
 		const pixelData = this.wilsonHidden.render.getPixelData();
 		
-		let brightnesses = new Array(this.resolutionHidden * this.resolutionHidden);
+		const brightnesses = new Array(this.resolutionHidden * this.resolutionHidden);
 		
 		for (let i = 0; i < this.resolutionHidden * this.resolutionHidden; i++)
 		{
@@ -571,7 +571,7 @@ export class GeneralizedJuliaSet extends Applet
 		
 		this.pastBrightnessScales.push(brightnessScale);
 		
-		let denom = this.pastBrightnessScales.length;
+		const denom = this.pastBrightnessScales.length;
 		
 		if (denom > 10)
 		{

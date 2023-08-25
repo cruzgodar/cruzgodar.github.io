@@ -642,7 +642,7 @@ const components =
 		
 		let pageTitle = "";
 		
-		let lines = html.split("\n");
+		const lines = html.split("\n");
 		
 		
 		
@@ -788,7 +788,7 @@ const components =
 				
 				else
 				{
-					let content = [];
+					const content = [];
 					
 					const startI = i;
 					

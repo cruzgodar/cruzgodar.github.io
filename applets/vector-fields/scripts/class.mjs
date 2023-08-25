@@ -1036,7 +1036,7 @@ export class VectorField extends Applet
 	{
 		if (this.aspectRatio >= 1)
 		{
-			let newWorldCenter = this.wilson.input.getZoomedWorldCenter(this.fixedPointX, this.fixedPointY, 4 * Math.pow(2, this.zoomLevel) * this.aspectRatio, 4 * Math.pow(2, this.zoomLevel));
+			const newWorldCenter = this.wilson.input.getZoomedWorldCenter(this.fixedPointX, this.fixedPointY, 4 * Math.pow(2, this.zoomLevel) * this.aspectRatio, 4 * Math.pow(2, this.zoomLevel));
 			
 			this.wilson.worldWidth = 4 * Math.pow(2, this.zoomLevel) * this.aspectRatio;
 			this.wilson.worldHeight = 4 * Math.pow(2, this.zoomLevel);
@@ -1047,7 +1047,7 @@ export class VectorField extends Applet
 		
 		else
 		{
-			let newWorldCenter = this.wilson.input.getZoomedWorldCenter(this.fixedPointX, this.fixedPointY, 4 * Math.pow(2, this.zoomLevel), 4 * Math.pow(2, this.zoomLevel) / this.aspectRatio);
+			const newWorldCenter = this.wilson.input.getZoomedWorldCenter(this.fixedPointX, this.fixedPointY, 4 * Math.pow(2, this.zoomLevel), 4 * Math.pow(2, this.zoomLevel) / this.aspectRatio);
 			
 			this.wilson.worldWidth = 4 * Math.pow(2, this.zoomLevel);
 			this.wilson.worldHeight = 4 * Math.pow(2, this.zoomLevel) / this.aspectRatio;

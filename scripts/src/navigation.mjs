@@ -273,7 +273,7 @@ function unloadPage()
 
 
 
-	for (let key in temporaryWorkers)
+	for (const key in temporaryWorkers)
 	{
 		if (temporaryWorkers[key]?.terminate)
 		{
@@ -285,7 +285,7 @@ function unloadPage()
 	
 	
 	
-	for (let key in desmosGraphs)
+	for (const key in desmosGraphs)
 	{
 		desmosGraphs[key].destroy();
 	}

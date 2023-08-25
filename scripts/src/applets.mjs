@@ -783,12 +783,12 @@ export class Applet
 	
 	static doubleToDf(d)
 	{
-		let df = new Float32Array(2);
+		const df = new Float32Array(2);
 		const split = (1 << 29) + 1;
 		
-		let a = d * split;
-		let hi = a - (a - d);
-		let lo = d - hi;
+		const a = d * split;
+		const hi = a - (a - d);
+		const lo = d - hi;
 		
 		df[0] = hi;
 		df[1] = lo;

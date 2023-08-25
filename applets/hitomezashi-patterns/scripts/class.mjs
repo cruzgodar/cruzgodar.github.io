@@ -309,7 +309,7 @@ export class HitomezashiPattern extends Applet
 		
 		for (;;)
 		{
-			let activeSquares = [[startRow, startCol]];
+			const activeSquares = [[startRow, startCol]];
 			
 			this.regions[startRow][startCol] = this.numRegions;
 			
@@ -319,7 +319,7 @@ export class HitomezashiPattern extends Applet
 			
 			while (activeSquares.length !== 0)
 			{
-				let numActiveSquares = activeSquares.length;
+				const numActiveSquares = activeSquares.length;
 				
 				for (let i = 0; i < numActiveSquares; i++)
 				{

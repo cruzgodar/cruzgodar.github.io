@@ -245,7 +245,7 @@ export class PascalsTriangleColoring extends Applet
 			centerX -= .5 * this.resolution / (this.gridSize + 2);
 		}
 		
-		let centerY = (row + 1) * Math.sqrt(3) / 2 * this.resolution / (this.gridSize + 2) + this.yOffset;
+		const centerY = (row + 1) * Math.sqrt(3) / 2 * this.resolution / (this.gridSize + 2) + this.yOffset;
 		
 		return [.8 * centerX + .1 * this.resolution, .8 * centerY + .1 * this.resolution];
 	}
@@ -254,15 +254,15 @@ export class PascalsTriangleColoring extends Applet
 	
 	drawLineSegments(activeNodeIndex)
 	{
-		let oldT = this.activeNodes[activeNodeIndex][2] / this.pixelsPerRow;
-		let newT = (this.activeNodes[activeNodeIndex][2] + 2) / this.pixelsPerRow;
+		const oldT = this.activeNodes[activeNodeIndex][2] / this.pixelsPerRow;
+		const newT = (this.activeNodes[activeNodeIndex][2] + 2) / this.pixelsPerRow;
 		
 		
 		
-		let row1 = this.activeNodes[activeNodeIndex][0];
+		const row1 = this.activeNodes[activeNodeIndex][0];
 		let col1 = this.activeNodes[activeNodeIndex][1];
 		
-		let row2 = row1 + 1;
+		const row2 = row1 + 1;
 		let col2 = col1;
 		
 		this.wilson.ctx.strokeStyle = `rgb(${this.colors[row1][col1][0] * (1 - oldT) + this.colors[row2][col2][0] * oldT}, ${this.colors[row1][col1][1] * (1 - oldT) + this.colors[row2][col2][1] * oldT}, ${this.colors[row1][col1][2] * (1 - oldT) + this.colors[row2][col2][2] * oldT})`;

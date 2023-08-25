@@ -345,7 +345,7 @@ export class NewtonsMethod extends Applet
 	spreadRoots(noAnimation = false, randomize = false)
 	{
 		const oldRoots = [...this.currentRoots];
-		let newRoots = new Array(2 * this.numRoots);
+		const newRoots = new Array(2 * this.numRoots);
 		
 		for (let i = 0; i < this.numRoots; i++)
 		{
@@ -355,7 +355,7 @@ export class NewtonsMethod extends Applet
 			newRoots[2 * i + 1] = mag * Math.sin(2 * Math.PI * i / this.numRoots);
 		}
 		
-		let dummy = {t: 0};
+		const dummy = {t: 0};
 		
 		anime({
 			targets: dummy,
@@ -565,7 +565,7 @@ export class NewtonsMethod extends Applet
 		
 		const pixelData = this.wilsonHidden.render.getPixelData();
 		
-		let brightnesses = new Array(this.resolutionHidden * this.resolutionHidden);
+		const brightnesses = new Array(this.resolutionHidden * this.resolutionHidden);
 		
 		for (let i = 0; i < this.resolutionHidden * this.resolutionHidden; i++)
 		{
@@ -578,7 +578,7 @@ export class NewtonsMethod extends Applet
 		
 		this.pastBrightnessScales.push(brightnessScale);
 		
-		let denom = this.pastBrightnessScales.length;
+		const denom = this.pastBrightnessScales.length;
 		
 		if (denom > 10)
 		{

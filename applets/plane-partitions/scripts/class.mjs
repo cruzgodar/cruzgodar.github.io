@@ -487,7 +487,7 @@ export class PlanePartitions extends Applet
 		
 		const maxEntry = Math.floor(Math.random() * 5) + 10;
 		
-		let planePartition = new Array(sideLength);
+		const planePartition = new Array(sideLength);
 		
 		
 		
@@ -530,7 +530,7 @@ export class PlanePartitions extends Applet
 	{
 		const sideLength = Math.floor(Math.random() * 3) + 5;
 		
-		let tableau = new Array(sideLength);
+		const tableau = new Array(sideLength);
 		
 		
 		
@@ -568,7 +568,7 @@ export class PlanePartitions extends Applet
 	{
 		const sideLength = Math.floor(Math.random() * 3) + 2;
 		
-		let ssyt = new Array(sideLength);
+		const ssyt = new Array(sideLength);
 		
 		
 		
@@ -608,7 +608,7 @@ export class PlanePartitions extends Applet
 		
 		let numRows = splitData.length;
 		
-		let splitRows = new Array(splitData.length);
+		const splitRows = new Array(splitData.length);
 		
 		for (let i = 0; i < splitRows.length; i++)
 		{
@@ -645,9 +645,9 @@ export class PlanePartitions extends Applet
 			numRows++;
 		}
 		
-		let size = Math.max(numRows, numCols);
+		const size = Math.max(numRows, numCols);
 		
-		let array = new Array(size);
+		const array = new Array(size);
 		
 		
 		
@@ -742,7 +742,7 @@ export class PlanePartitions extends Applet
 				
 				else
 				{
-					let len = `${numbers[i][j]}`.length;
+					const len = `${numbers[i][j]}`.length;
 					
 					for (let k = 0; k < numCharacters - len - (j === 0); k++)
 					{
@@ -845,7 +845,7 @@ export class PlanePartitions extends Applet
 		
 		
 		
-		let array = {
+		const array = {
 			numbers: numbers,
 			cubes: [],
 			floor: [],
@@ -1071,7 +1071,7 @@ export class PlanePartitions extends Applet
 		
 		
 		
-		let thingsToAnimate = [];
+		const thingsToAnimate = [];
 		
 		array.cubeGroup.traverse(node =>
 		{
@@ -1142,9 +1142,9 @@ export class PlanePartitions extends Applet
 			return;
 		}
 		
-		let array = this.arrays[index];
+		const array = this.arrays[index];
 		
-		let numbers = array.numbers;
+		const numbers = array.numbers;
 		
 		
 		
@@ -1163,7 +1163,7 @@ export class PlanePartitions extends Applet
 		
 		
 		
-		let newNumbers = new Array(minSize);
+		const newNumbers = new Array(minSize);
 		
 		for (let i = 0; i < minSize; i++)
 		{
@@ -1214,7 +1214,7 @@ export class PlanePartitions extends Applet
 		
 		
 		
-		let thingsToAnimate = [];
+		const thingsToAnimate = [];
 		
 		this.arrays[index].cubeGroup.traverse(node =>
 		{
@@ -1608,7 +1608,7 @@ export class PlanePartitions extends Applet
 		
 		
 		
-		let hexViewCameraOffset = (-this.arrays[0].footprint / 2 + this.arrays[this.arrays.length - 1].centerOffset + this.arrays[this.arrays.length - 1].footprint / 2) / 2;
+		const hexViewCameraOffset = (-this.arrays[0].footprint / 2 + this.arrays[this.arrays.length - 1].centerOffset + this.arrays[this.arrays.length - 1].footprint / 2) / 2;
 		
 		this.hexViewCameraPos = [this.totalArraySize + hexViewCameraOffset, this.totalArraySize + this.totalArrayHeight / 3, this.totalArraySize - hexViewCameraOffset];
 		
@@ -1704,7 +1704,7 @@ export class PlanePartitions extends Applet
 		
 		
 		
-		let targets = [];
+		const targets = [];
 		
 		//Hide everything not visible by the camera.
 		this.arrays.forEach(array =>
@@ -1852,7 +1852,7 @@ export class PlanePartitions extends Applet
 		
 		
 		
-		let targets = [];
+		const targets = [];
 		
 		//Show everything not visible by the camera.
 		this.arrays.forEach(array =>
@@ -1991,7 +1991,7 @@ export class PlanePartitions extends Applet
 	
 	async showFloor(opacity = 1)
 	{
-		let targets = [];
+		const targets = [];
 		
 		this.arrays.forEach(array =>
 		{
@@ -2022,8 +2022,8 @@ export class PlanePartitions extends Applet
 	//Removes the floor from right to left in each row until a box with positive size is reached --- used to make RPPs display a little better.
 	removeOutsideFloor(array)
 	{
-		let targets = [];
-		let removals = [];
+		const targets = [];
+		const removals = [];
 		
 		for (let i = 0; i < array.footprint; i++)
 		{
@@ -2146,7 +2146,7 @@ export class PlanePartitions extends Applet
 			return;
 		}
 		
-		let targets = [];
+		const targets = [];
 		
 		coordinates.forEach(xyz =>
 		{
@@ -2156,8 +2156,8 @@ export class PlanePartitions extends Applet
 		targets.forEach(color => color.getRGB(color));
 		
 		//Convert HSV to HSL.
-		let v = this.cubeLightness + 1 * Math.min(this.cubeLightness, 1 - this.cubeLightness);
-		let s = v === 0 ? 0 : 2 * (1 - this.cubeLightness / v);
+		const v = this.cubeLightness + 1 * Math.min(this.cubeLightness, 1 - this.cubeLightness);
+		const s = v === 0 ? 0 : 2 * (1 - this.cubeLightness / v);
 		
 		const targetColor = this.wilson.utils.hsvToRgb(hue, s, v);
 		
@@ -2179,7 +2179,7 @@ export class PlanePartitions extends Applet
 	
 	async uncolorCubes(array, coordinates)
 	{
-		let targets = [];
+		const targets = [];
 		
 		coordinates.forEach(xyz =>
 		{
@@ -2202,9 +2202,9 @@ export class PlanePartitions extends Applet
 	//Lifts the specified cubes to the specified height. The animation is skipped in 2d mode.
 	async raiseCubes(array, coordinates, height)
 	{
-		let duration = this.in2dView ? 0 : this.animationTime;
+		const duration = this.in2dView ? 0 : this.animationTime;
 		
-		let targets = [];
+		const targets = [];
 		
 		coordinates.forEach(xyz =>
 		{
@@ -2229,9 +2229,9 @@ export class PlanePartitions extends Applet
 	//Lowers the specified cubes onto the array. The animation is skipped in 2d mode.
 	async lowerCubes(array, coordinates)
 	{
-		let duration = this.in2dView ? 0 : this.animationTime;
+		const duration = this.in2dView ? 0 : this.animationTime;
 		
-		let targets = [];
+		const targets = [];
 		
 		coordinates.forEach(xyz =>
 		{
@@ -2263,7 +2263,7 @@ export class PlanePartitions extends Applet
 	//Moves cubes from one array to another and changes their group.
 	async moveCubes(sourceArray, sourceCoordinates, targetArray, targetCoordinates, updateCubeArray = true)
 	{
-		let targets = [];
+		const targets = [];
 		
 		sourceCoordinates.forEach(xyz =>
 		{
@@ -2288,7 +2288,7 @@ export class PlanePartitions extends Applet
 		if (updateCubeArray)
 		{
 			//This is necessary in case the source and target arrays are the same.
-			let sourceCubes = sourceCoordinates.map(xyz => sourceArray.cubes[xyz[0]][xyz[1]][xyz[2]]);
+			const sourceCubes = sourceCoordinates.map(xyz => sourceArray.cubes[xyz[0]][xyz[1]][xyz[2]]);
 			
 			sourceCoordinates.forEach(xyz => sourceArray.cubes[xyz[0]][xyz[1]][xyz[2]] = null);
 			
@@ -2319,7 +2319,7 @@ export class PlanePartitions extends Applet
 			return;
 		}
 		
-		let targets = [];
+		const targets = [];
 		
 		coordinates.forEach(xyz =>
 		{
@@ -2345,7 +2345,7 @@ export class PlanePartitions extends Applet
 	//Fades the specified cubes' opacity to zero, and then deletes them.
 	async deleteCubes(array, coordinates, instant = false, noAnimation = false)
 	{
-		let targets = [];
+		const targets = [];
 		
 		coordinates.forEach(xyz =>
 		{
@@ -2375,7 +2375,7 @@ export class PlanePartitions extends Applet
 	//For use with tableaux of skew shape.
 	async deleteFloor(array, coordinates)
 	{
-		let targets = [];
+		const targets = [];
 		
 		coordinates.forEach(xyz =>
 		{
@@ -2516,7 +2516,7 @@ export class PlanePartitions extends Applet
 		
 		for (let i = 0; i < numArrays; i++)
 		{
-			let type = data.inputType[i];
+			const type = data.inputType[i];
 			
 			if (type === "pp" && !this.verifyPp(this.arrays[index + i].numbers))
 			{
@@ -2541,7 +2541,7 @@ export class PlanePartitions extends Applet
 		
 		if (numArrays > 1 && data.sameShape !== undefined && data.sameShape)
 		{
-			let rowLengths = new Array(numArrays);
+			const rowLengths = new Array(numArrays);
 			
 			let maxNumRows = 0;
 			
@@ -2595,7 +2595,7 @@ export class PlanePartitions extends Applet
 		//Uncolor everything.
 		for (let i = 0; i < numArrays; i++)
 		{
-			let coordinates = [];
+			const coordinates = [];
 			
 			const numbers = this.arrays[index + i].numbers;
 			
@@ -2633,13 +2633,13 @@ export class PlanePartitions extends Applet
 	
 	async hillmanGrassl(index)
 	{
-		let array = this.arrays[index];
+		const array = this.arrays[index];
 		
-		let planePartition = structuredClone(array.numbers);
+		const planePartition = structuredClone(array.numbers);
 		
 		
 		
-		let columnStarts = new Array(planePartition.length);
+		const columnStarts = new Array(planePartition.length);
 		
 		for (let i = 0; i < planePartition.length; i++)
 		{
@@ -2655,7 +2655,7 @@ export class PlanePartitions extends Applet
 		
 		
 		
-		let rowStarts = new Array(planePartition.length);
+		const rowStarts = new Array(planePartition.length);
 		
 		for (let i = 0; i < planePartition.length; i++)
 		{
@@ -2671,7 +2671,7 @@ export class PlanePartitions extends Applet
 		
 		
 		
-		let zigzagPaths = [];
+		const zigzagPaths = [];
 		
 		for (;;)
 		{
@@ -2693,7 +2693,7 @@ export class PlanePartitions extends Applet
 			let currentRow = columnStarts[startingCol];
 			let currentCol = startingCol;
 			
-			let path = [[currentRow, currentCol, planePartition[currentRow][currentCol] - 1]];
+			const path = [[currentRow, currentCol, planePartition[currentRow][currentCol] - 1]];
 			
 			for (;;)
 			{
@@ -2727,7 +2727,7 @@ export class PlanePartitions extends Applet
 		
 		
 		
-		let emptyArray = new Array(planePartition.length);
+		const emptyArray = new Array(planePartition.length);
 		
 		for (let i = 0; i < planePartition.length; i++)
 		{
@@ -2739,7 +2739,7 @@ export class PlanePartitions extends Applet
 			}
 		}
 		
-		let outputArray = await this.addNewArray(index + 1, emptyArray);
+		const outputArray = await this.addNewArray(index + 1, emptyArray);
 		
 		await new Promise(resolve => setTimeout(resolve, this.animationTime));
 		
@@ -2748,7 +2748,7 @@ export class PlanePartitions extends Applet
 		//Now we'll animate those paths actually decrementing, one-by-one.
 		for (let i = 0; i < zigzagPaths.length; i++)
 		{
-			let hue = i / zigzagPaths.length * 6/7;
+			const hue = i / zigzagPaths.length * 6/7;
 			
 			await this.colorCubes(array, zigzagPaths[i], hue);
 			
@@ -2777,11 +2777,11 @@ export class PlanePartitions extends Applet
 			await new Promise(resolve => setTimeout(resolve, this.animationTime / 5));
 			
 			//Find the pivot and rearrange the shape into a hook.
-			let pivot = [zigzagPaths[i][zigzagPaths[i].length - 1][0], zigzagPaths[i][0][1]];
+			const pivot = [zigzagPaths[i][zigzagPaths[i].length - 1][0], zigzagPaths[i][0][1]];
 			
 			let targetCoordinates = [];
 			
-			let targetHeight = outputArray.height + 1;
+			const targetHeight = outputArray.height + 1;
 			
 			//This is the vertical part of the hook.
 			for (let j = columnStarts[pivot[1]]; j <= pivot[0]; j++)
@@ -2789,7 +2789,7 @@ export class PlanePartitions extends Applet
 				targetCoordinates.push([j, pivot[1], targetHeight]);
 			}
 			
-			let pivotCoordinates = targetCoordinates[targetCoordinates.length - 1];
+			const pivotCoordinates = targetCoordinates[targetCoordinates.length - 1];
 			
 			//And this is the horizontal part.
 			for (let j = pivot[1] - 1; j >= rowStarts[pivot[0]]; j--)
@@ -2853,15 +2853,15 @@ export class PlanePartitions extends Applet
 	
 	async hillmanGrasslInverse(index)
 	{
-		let array = this.arrays[index];
+		const array = this.arrays[index];
 		
-		let tableau = structuredClone(array.numbers);
+		const tableau = structuredClone(array.numbers);
 		
-		let zigzagPaths = [];
+		const zigzagPaths = [];
 		
 		
 		
-		let columnStarts = new Array(tableau.length);
+		const columnStarts = new Array(tableau.length);
 		
 		for (let i = 0; i < tableau.length; i++)
 		{
@@ -2877,7 +2877,7 @@ export class PlanePartitions extends Applet
 		
 		
 		
-		let rowStarts = new Array(tableau.length);
+		const rowStarts = new Array(tableau.length);
 		
 		for (let i = 0; i < tableau.length; i++)
 		{
@@ -2893,7 +2893,7 @@ export class PlanePartitions extends Applet
 			
 		
 		
-		let emptyArray = new Array(tableau.length);
+		const emptyArray = new Array(tableau.length);
 		
 		for (let i = 0; i < tableau.length; i++)
 		{
@@ -2905,9 +2905,9 @@ export class PlanePartitions extends Applet
 			}
 		}
 		
-		let planePartition = structuredClone(emptyArray);
+		const planePartition = structuredClone(emptyArray);
 		
-		let outputArray = await this.addNewArray(index + 1, emptyArray);
+		const outputArray = await this.addNewArray(index + 1, emptyArray);
 		
 		
 		
@@ -2918,7 +2918,7 @@ export class PlanePartitions extends Applet
 			{
 				while (tableau[i][j] !== 0)
 				{
-					let path = [];
+					const path = [];
 					
 					let currentRow = i;
 					let currentCol = rowStarts[i];
@@ -2982,15 +2982,15 @@ export class PlanePartitions extends Applet
 		//Now we'll animate those paths actually incrementing, one-by-one.
 		for (let i = 0; i < zigzagPaths.length; i++)
 		{
-			let hue = i / zigzagPaths.length * 6/7;
+			const hue = i / zigzagPaths.length * 6/7;
 			
 			await this.colorCubes(array, [zigzagPaths[i][1]], hue);
 			
 			
 			
-			let row = zigzagPaths[i][1][0];
-			let col = zigzagPaths[i][1][1];
-			let height = array.size;
+			const row = zigzagPaths[i][1][0];
+			const col = zigzagPaths[i][1][1];
+			const height = array.size;
 			
 			//Add a bunch of cubes corresponding to the hook that this thing is a part of.
 			for (let j = columnStarts[col]; j < row; j++)
@@ -3018,7 +3018,7 @@ export class PlanePartitions extends Applet
 				coordinates.push([j, col, height]);
 			}
 			
-			let promise1 = this.revealCubes(array, coordinates);
+			const promise1 = this.revealCubes(array, coordinates);
 			
 			coordinates = [];
 			
@@ -3027,7 +3027,7 @@ export class PlanePartitions extends Applet
 				coordinates.push([row, j, height]);
 			}
 			
-			let promise2 = this.revealCubes(array, coordinates);
+			const promise2 = this.revealCubes(array, coordinates);
 			
 			await Promise.all([promise1, promise2]);
 			
@@ -3048,9 +3048,9 @@ export class PlanePartitions extends Applet
 				coordinates.push([j, col, height]);
 			}
 			
-			let targetCoordinates = zigzagPaths[i][0];
+			const targetCoordinates = zigzagPaths[i][0];
 			
-			let targetHeight = outputArray.height + 1;
+			const targetHeight = outputArray.height + 1;
 			
 			targetCoordinates.forEach(entry => entry[2] = targetHeight);
 			
@@ -3095,9 +3095,9 @@ export class PlanePartitions extends Applet
 	
 	async pak(index)
 	{
-		let array = this.arrays[index];
+		const array = this.arrays[index];
 		
-		let planePartition = array.numbers;
+		const planePartition = array.numbers;
 		
 		if (!this.in2dView)
 		{
@@ -3151,7 +3151,7 @@ export class PlanePartitions extends Applet
 				}
 				
 				//Highlight this diagonal.
-				let diagonalCoordinates = [];
+				const diagonalCoordinates = [];
 				
 				let i = 0;
 				
@@ -3193,12 +3193,12 @@ export class PlanePartitions extends Applet
 				
 				
 				//For each coordinate in the diagonal, we need to find the toggled value. The first and last will always be a little different, since they don't have as many neighbors.
-				let newDiagonalHeight = new Array(diagonalCoordinates.length);
+				const newDiagonalHeight = new Array(diagonalCoordinates.length);
 				
 				diagonalCoordinates.forEach((coordinate, index) =>
 				{
-					let i = coordinate[0];
-					let j = coordinate[1];
+					const i = coordinate[0];
+					const j = coordinate[1];
 					
 					let neighbor1 = 0;
 					let neighbor2 = 0;
@@ -3241,7 +3241,7 @@ export class PlanePartitions extends Applet
 					
 					if (newDiagonalHeight[index] > planePartition[i][j])
 					{
-						let coordinatesToReveal = [];
+						const coordinatesToReveal = [];
 						
 						for (let k = planePartition[i][j]; k < newDiagonalHeight[index]; k++)
 						{
@@ -3265,7 +3265,7 @@ export class PlanePartitions extends Applet
 					
 					else if (newDiagonalHeight[index] < planePartition[i][j])
 					{
-						let coordinatesToDelete = [];
+						const coordinatesToDelete = [];
 						
 						for (let k = planePartition[i][j] - 1; k >= newDiagonalHeight[index]; k--)
 						{
@@ -3295,7 +3295,7 @@ export class PlanePartitions extends Applet
 				
 				
 				
-				let coordinatesToUncolor = [];
+				const coordinatesToUncolor = [];
 				
 				coordinatesToColor.forEach((coordinate, index) =>
 				{
@@ -3337,9 +3337,9 @@ export class PlanePartitions extends Applet
 	
 	async pakInverse(index, rightLegSize = 0, bottomLegSize = 0)
 	{
-		let array = this.arrays[index];
+		const array = this.arrays[index];
 		
-		let tableau = array.numbers;
+		const tableau = array.numbers;
 		
 		
 		
@@ -3380,7 +3380,7 @@ export class PlanePartitions extends Applet
 				
 				
 				//Highlight this diagonal.
-				let diagonalCoordinates = [];
+				const diagonalCoordinates = [];
 				
 				let i = 0;
 				
@@ -3399,14 +3399,14 @@ export class PlanePartitions extends Applet
 				
 				
 				//For each coordinate in the diagonal, we need to find the toggled value. The first and last will always be a little different, since they don't have as many neighbors.
-				let newDiagonalHeight = new Array(diagonalCoordinates.length);
+				const newDiagonalHeight = new Array(diagonalCoordinates.length);
 				
 				let anyChange = false;
 				
 				diagonalCoordinates.forEach((coordinate, index) =>
 				{
-					let i = coordinate[0];
-					let j = coordinate[1];
+					const i = coordinate[0];
+					const j = coordinate[1];
 					
 					let neighbor1 = 0;
 					let neighbor2 = 0;
@@ -3450,7 +3450,7 @@ export class PlanePartitions extends Applet
 				
 				if (tableau[i][j] !== 0)
 				{
-					let coordinatesToColor = [];
+					const coordinatesToColor = [];
 					
 					for (let k = tableau[i][j] - 1; k >= 0; k--)
 					{
@@ -3487,7 +3487,7 @@ export class PlanePartitions extends Applet
 					
 					if (newDiagonalHeight[index] > tableau[i][j])
 					{
-						let coordinatesToReveal = [];
+						const coordinatesToReveal = [];
 						
 						for (let k = tableau[i][j]; k < newDiagonalHeight[index]; k++)
 						{
@@ -3511,7 +3511,7 @@ export class PlanePartitions extends Applet
 					
 					else if (newDiagonalHeight[index] < tableau[i][j])
 					{
-						let coordinatesToDelete = [];
+						const coordinatesToDelete = [];
 						
 						for (let k = tableau[i][j] - 1; k >= newDiagonalHeight[index]; k--)
 						{
@@ -3558,13 +3558,13 @@ export class PlanePartitions extends Applet
 	
 	async sulzgruber(index)
 	{
-		let array = this.arrays[index];
+		const array = this.arrays[index];
 		
-		let planePartition = structuredClone(array.numbers);
+		const planePartition = structuredClone(array.numbers);
 		
 		
 		
-		let columnStarts = new Array(planePartition.length);
+		const columnStarts = new Array(planePartition.length);
 		
 		for (let i = 0; i < planePartition.length; i++)
 		{
@@ -3580,7 +3580,7 @@ export class PlanePartitions extends Applet
 		
 		
 		
-		let rowStarts = new Array(planePartition.length);
+		const rowStarts = new Array(planePartition.length);
 		
 		for (let i = 0; i < planePartition.length; i++)
 		{
@@ -3597,9 +3597,9 @@ export class PlanePartitions extends Applet
 		
 		
 		//First, find the candidates. This first requires categorizing the diagonals.
-		let diagonals = {};
+		const diagonals = {};
 		
-		let diagonalStarts = {};
+		const diagonalStarts = {};
 		
 		
 		
@@ -3639,8 +3639,8 @@ export class PlanePartitions extends Applet
 			
 			
 			
-			let boundaryLeft = col === 0 || planePartition[row][col - 1] === Infinity;
-			let boundaryUp = row === 0 || planePartition[row - 1][col] === Infinity;
+			const boundaryLeft = col === 0 || planePartition[row][col - 1] === Infinity;
+			const boundaryUp = row === 0 || planePartition[row - 1][col] === Infinity;
 			
 			if (boundaryLeft && boundaryUp)
 			{
@@ -3666,7 +3666,7 @@ export class PlanePartitions extends Applet
 		
 		
 		//Now we need to move through the candidates. They only occur in A and O regions, so we only scan those diagonals, top-left to bottom-right, and then bottom-left to top-right in terms of diagonals.
-		let qPaths = [];
+		const qPaths = [];
 		
 		for (let i = -planePartition.length + 1; i < planePartition.length; i++)
 		{
@@ -3714,11 +3714,11 @@ export class PlanePartitions extends Applet
 				let row = startRow;
 				let col = startCol;
 				
-				let path = [[row, col, planePartition[row][col] - 1]];
+				const path = [[row, col, planePartition[row][col] - 1]];
 				
 				for (;;)
 				{
-					let currentContent = col - row;
+					const currentContent = col - row;
 					
 					if (row < planePartition.length - 1 && planePartition[row][col] === planePartition[row + 1][col] && (diagonals[currentContent] === 0 || diagonals[currentContent] === 3))
 					{
@@ -3746,7 +3746,7 @@ export class PlanePartitions extends Applet
 		
 		
 		
-		let emptyArray = new Array(planePartition.length);
+		const emptyArray = new Array(planePartition.length);
 		
 		for (let i = 0; i < planePartition.length; i++)
 		{
@@ -3758,7 +3758,7 @@ export class PlanePartitions extends Applet
 			}
 		}
 		
-		let outputArray = await this.addNewArray(index + 1, emptyArray);
+		const outputArray = await this.addNewArray(index + 1, emptyArray);
 		
 		await new Promise(resolve => setTimeout(resolve, this.animationTime));
 		
@@ -3767,7 +3767,7 @@ export class PlanePartitions extends Applet
 		//Now we'll animate those paths actually decrementing, one-by-one. We're using a for loop because we need to await.
 		for (let i = 0; i < qPaths.length; i++)
 		{
-			let hue = i / qPaths.length * 6/7;
+			const hue = i / qPaths.length * 6/7;
 			
 			await this.colorCubes(array, qPaths[i], hue);
 			
@@ -3796,20 +3796,20 @@ export class PlanePartitions extends Applet
 			await new Promise(resolve => setTimeout(resolve, this.animationTime / 5));
 			
 			//Find the pivot and rearrange the shape into a hook. The end of the Q-path is the same as the end of the rim-hook, so it defines the row. To find the column, we need to go row boxes down, and then use the rest of the length to go right.
-			let row = qPaths[i][qPaths[i].length - 1][0];
+			const row = qPaths[i][qPaths[i].length - 1][0];
 			
-			let startContent = qPaths[i][qPaths[i].length - 1][1] - row;
+			const startContent = qPaths[i][qPaths[i].length - 1][1] - row;
 			
 			//Every step along the rim-hook increases the content by one.
-			let endContent = startContent + qPaths[i].length - 1;
+			const endContent = startContent + qPaths[i].length - 1;
 			
-			let col = diagonalStarts[endContent][1];
+			const col = diagonalStarts[endContent][1];
 			
 			
 			
 			let targetCoordinates = [];
 			
-			let targetHeight = Math.max(array.height + 1, outputArray.height + 1);
+			const targetHeight = Math.max(array.height + 1, outputArray.height + 1);
 			
 			for (let j = columnStarts[col]; j <= row; j++)
 			{
@@ -3873,13 +3873,13 @@ export class PlanePartitions extends Applet
 	
 	async sulzgruberInverse(index)
 	{
-		let array = this.arrays[index];
+		const array = this.arrays[index];
 		
-		let tableau = array.numbers;
+		const tableau = array.numbers;
 		
 		
 		
-		let columnStarts = new Array(tableau.length);
+		const columnStarts = new Array(tableau.length);
 		
 		for (let i = 0; i < tableau.length; i++)
 		{
@@ -3895,7 +3895,7 @@ export class PlanePartitions extends Applet
 		
 		
 		
-		let rowStarts = new Array(tableau.length);
+		const rowStarts = new Array(tableau.length);
 		
 		for (let i = 0; i < tableau.length; i++)
 		{
@@ -3912,7 +3912,7 @@ export class PlanePartitions extends Applet
 		
 		
 		//First, find the candidates. This first requires categorizing the diagonals.
-		let diagonalStarts = {};
+		const diagonalStarts = {};
 		
 		//First the ones along the left edge.
 		for (let i = 0; i < tableau.length; i++)
@@ -3944,7 +3944,7 @@ export class PlanePartitions extends Applet
 		
 		let numHues = 0;
 		
-		let emptyArray = new Array(tableau.length);
+		const emptyArray = new Array(tableau.length);
 		
 		for (let i = 0; i < tableau.length; i++)
 		{
@@ -3966,7 +3966,7 @@ export class PlanePartitions extends Applet
 			}
 		}
 		
-		let outputArray = await this.addNewArray(index + 1, emptyArray);
+		const outputArray = await this.addNewArray(index + 1, emptyArray);
 		
 		
 		
@@ -3986,9 +3986,9 @@ export class PlanePartitions extends Applet
 				
 				while (tableau[i][j] !== 0)
 				{
-					let hue = currentHueIndex / numHues * 6/7;
+					const hue = currentHueIndex / numHues * 6/7;
 					
-					let height = Math.max(array.size + 1, outputArray.size + 1);
+					const height = Math.max(array.size + 1, outputArray.size + 1);
 					
 					await this.colorCubes(array, [[i, j, tableau[i][j] - 1]], hue);
 					
@@ -3996,8 +3996,8 @@ export class PlanePartitions extends Applet
 					
 					
 					
-					let row = i;
-					let col = j;
+					const row = i;
+					const col = j;
 					
 					//Add a bunch of cubes corresponding to the hook that this thing is a part of.
 					for (let k = columnStarts[col]; k < row; k++)
@@ -4021,7 +4021,7 @@ export class PlanePartitions extends Applet
 						coordinates.push([k, col, height]);
 					}
 					
-					let promise1 = this.revealCubes(array, coordinates);
+					const promise1 = this.revealCubes(array, coordinates);
 					
 					coordinates = [];
 					
@@ -4030,7 +4030,7 @@ export class PlanePartitions extends Applet
 						coordinates.push([row, k, height]);
 					}
 					
-					let promise2 = this.revealCubes(array, coordinates);
+					const promise2 = this.revealCubes(array, coordinates);
 					
 					await Promise.all([promise1, promise2]);
 					
@@ -4053,10 +4053,10 @@ export class PlanePartitions extends Applet
 					
 					
 					
-					let startContent = rowStarts[row] - row;
-					let endContent = startContent + coordinates.length - 1;
+					const startContent = rowStarts[row] - row;
+					const endContent = startContent + coordinates.length - 1;
 					
-					let targetCoordinates = [];
+					const targetCoordinates = [];
 					
 					for (let k = startContent; k <= endContent; k++)
 					{
@@ -4131,7 +4131,7 @@ export class PlanePartitions extends Applet
 						
 						else
 						{
-							let oldTargetCoordinates = structuredClone(targetCoordinates.slice(currentIndex));
+							const oldTargetCoordinates = structuredClone(targetCoordinates.slice(currentIndex));
 							
 							//Shift the rest of the coordinates down and right by 1.
 							for (let k = currentIndex; k < targetCoordinates.length; k++)
@@ -4146,7 +4146,7 @@ export class PlanePartitions extends Applet
 								}
 							}
 							
-							let newTargetCoordinates = targetCoordinates.slice(currentIndex);
+							const newTargetCoordinates = targetCoordinates.slice(currentIndex);
 							
 							await this.moveCubes(outputArray, oldTargetCoordinates, outputArray, newTargetCoordinates);
 							
@@ -4179,11 +4179,11 @@ export class PlanePartitions extends Applet
 	
 	async rsk(index)
 	{
-		let pArray = this.arrays[index];
-		let qArray = this.arrays[index + 1];
+		const pArray = this.arrays[index];
+		const qArray = this.arrays[index + 1];
 		
-		let pSsyt = pArray.numbers;
-		let qSsyt = qArray.numbers;
+		const pSsyt = pArray.numbers;
+		const qSsyt = qArray.numbers;
 		
 		let arraySize = 0;
 		
@@ -4223,7 +4223,7 @@ export class PlanePartitions extends Applet
 		
 		
 		
-		let emptyArray = new Array(arraySize);
+		const emptyArray = new Array(arraySize);
 		
 		for (let i = 0; i < arraySize; i++)
 		{
@@ -4235,7 +4235,7 @@ export class PlanePartitions extends Applet
 			}
 		}
 		
-		let outputArray = await this.addNewArray(index + 2, emptyArray);
+		const outputArray = await this.addNewArray(index + 2, emptyArray);
 		
 		
 		
@@ -4243,7 +4243,7 @@ export class PlanePartitions extends Applet
 		
 		while (qSsyt[0][0] !== 0)
 		{
-			let hue = hueIndex / numHues * 6/7;
+			const hue = hueIndex / numHues * 6/7;
 			
 			let maxEntry = 0;
 			let row = 0;
@@ -4284,20 +4284,20 @@ export class PlanePartitions extends Applet
 			
 			
 			//Now row and col are the coordinates of the most recently added element. We just need to un-insert the corresponding element from P.
-			let pSourceCoordinatesLocal = [];
-			let pTargetCoordinatesLocal = [];
-			let pSourceCoordinatesExternal = [];
-			let pTargetCoordinatesExternal = [];
+			const pSourceCoordinatesLocal = [];
+			const pTargetCoordinatesLocal = [];
+			const pSourceCoordinatesExternal = [];
+			const pTargetCoordinatesExternal = [];
 			
-			let qSourceCoordinatesExternal = [];
-			let qTargetCoordinatesExternal = [];
+			const qSourceCoordinatesExternal = [];
+			const qTargetCoordinatesExternal = [];
 			
 			let i = row;
 			let j = col;
 			let pEntry = pSsyt[i][j];
-			let qEntry = qSsyt[i][j];
+			const qEntry = qSsyt[i][j];
 			
-			let pCoordinatePath = [[i, j]];
+			const pCoordinatePath = [[i, j]];
 			
 			
 			
@@ -4328,7 +4328,7 @@ export class PlanePartitions extends Applet
 			
 			//Alright, time for a stupid hack. The visual result we want is to take the stacks getting popped from both P and Q, move them to the first row and column of the output array to form a hook, delete all but one box (the top box of P), and then lower the other. The issue is that this will risk overwriting one of the two overlapping boxes, causing a memory leak and a glitchy state. The solution is to do a couple things. Only the P corner box will actually move to the output array -- the one from Q will appear to, but it will stay in its own array.
 			
-			let height = outputArray.height + 1;
+			const height = outputArray.height + 1;
 			
 			for (let k = 0; k < pEntry; k++)
 			{
@@ -4429,9 +4429,9 @@ export class PlanePartitions extends Applet
 	
 	async rskInverse(index)
 	{
-		let array = this.arrays[index];
+		const array = this.arrays[index];
 		
-		let tableau = structuredClone(array.numbers);
+		const tableau = structuredClone(array.numbers);
 		
 		let numEntries = 0;
 		
@@ -4455,7 +4455,7 @@ export class PlanePartitions extends Applet
 		
 		
 		
-		let pRowLengths = new Array(tableau.length);
+		const pRowLengths = new Array(tableau.length);
 		
 		for (let i = 0; i < tableau.length; i++)
 		{
@@ -4467,9 +4467,9 @@ export class PlanePartitions extends Applet
 		
 		
 		//Unfortunately, there's no way to know the shape of P and Q without actually doing RSK, so we need to do all the calculations ahead of time, and only then animate things around.
-		let pInsertionPaths = [];
-		let qInsertionLocations = [];
-		let tableauRemovalLocations = [];
+		const pInsertionPaths = [];
+		const qInsertionLocations = [];
+		const tableauRemovalLocations = [];
 		
 		for (let row = 0; row < tableau.length; row++)
 		{
@@ -4484,7 +4484,7 @@ export class PlanePartitions extends Applet
 					let i = 0;
 					let j = 0;
 					
-					let path = [];
+					const path = [];
 					
 					for (;;)
 					{
@@ -4511,7 +4511,7 @@ export class PlanePartitions extends Applet
 							break;
 						}
 						
-						let temp = pSsyt[i][j];
+						const temp = pSsyt[i][j];
 						pSsyt[i][j] = newNum;
 						newNum = temp;
 						path.push([i, j]);
@@ -4530,7 +4530,7 @@ export class PlanePartitions extends Applet
 		
 		
 
-		let ssytSize = Math.max(pRowLengths[0], pNumRows);
+		const ssytSize = Math.max(pRowLengths[0], pNumRows);
 		
 		pSsyt = new Array(ssytSize);
 		qSsyt = new Array(ssytSize);
@@ -4547,11 +4547,11 @@ export class PlanePartitions extends Applet
 			}
 		}
 		
-		let pArray = await this.addNewArray(index + 1, pSsyt);
+		const pArray = await this.addNewArray(index + 1, pSsyt);
 		
 		await new Promise(resolve => setTimeout(resolve, this.animationTime / 2));
 		
-		let qArray = await this.addNewArray(index + 2, qSsyt);
+		const qArray = await this.addNewArray(index + 2, qSsyt);
 		
 		await new Promise(resolve => setTimeout(resolve, this.animationTime / 2));
 		
@@ -4562,12 +4562,12 @@ export class PlanePartitions extends Applet
 		//Loop through the tableau in weirdo lex order and reassemble the paths.
 		for (let i = 0; i < tableauRemovalLocations.length; i++)
 		{
-			let row = tableauRemovalLocations[i][0];
-			let col = tableauRemovalLocations[i][1];
+			const row = tableauRemovalLocations[i][0];
+			const col = tableauRemovalLocations[i][1];
 			
-			let height = array.height + 1;
+			const height = array.height + 1;
 			
-			let hue = hueIndex / numEntries * 6/7;
+			const hue = hueIndex / numEntries * 6/7;
 			
 			
 			
@@ -4597,7 +4597,7 @@ export class PlanePartitions extends Applet
 			
 			
 			
-			let promise1 = this.revealCubes(array, [[row, col, height + 1]]);
+			const promise1 = this.revealCubes(array, [[row, col, height + 1]]);
 			
 			let coordinates = [];
 			
@@ -4606,7 +4606,7 @@ export class PlanePartitions extends Applet
 				coordinates.push([row, j, height]);
 			}
 			
-			let promise2 = this.revealCubes(array, coordinates);
+			const promise2 = this.revealCubes(array, coordinates);
 			
 			coordinates = [];
 			
@@ -4615,23 +4615,23 @@ export class PlanePartitions extends Applet
 				coordinates.push([j, col, height]);
 			}
 			
-			let promise3 = this.revealCubes(array, coordinates);
+			const promise3 = this.revealCubes(array, coordinates);
 			
 			await Promise.all([promise1, promise2, promise3]);
 			
 			
 			
 			//First of all, we'll handle the insertion into P. As always, this takes some care. The strictly proper way to animate this would be to move the stacks one at a time, but just like with the forward direction, it is *much* easier (and time-efficient) to just move everything at once.
-			let path = pInsertionPaths[hueIndex];
+			const path = pInsertionPaths[hueIndex];
 			
-			let pSourceCoordinatesLocal = [];
-			let pTargetCoordinatesLocal = [];
+			const pSourceCoordinatesLocal = [];
+			const pTargetCoordinatesLocal = [];
 			
-			let pSourceCoordinatesExternal = [[row, col, array.numbers[row][col] - 1]];
-			let pTargetCoordinatesExternal = [[path[0][0], path[0][1], col]];
+			const pSourceCoordinatesExternal = [[row, col, array.numbers[row][col] - 1]];
+			const pTargetCoordinatesExternal = [[path[0][0], path[0][1], col]];
 			
-			let qSourceCoordinatesExternal = [[row, col, height + 1]];
-			let qTargetCoordinatesExternal = [[qInsertionLocations[hueIndex][0], qInsertionLocations[hueIndex][1], row]];
+			const qSourceCoordinatesExternal = [[row, col, height + 1]];
+			const qTargetCoordinatesExternal = [[qInsertionLocations[hueIndex][0], qInsertionLocations[hueIndex][1], row]];
 			
 			
 			
@@ -4730,8 +4730,8 @@ export class PlanePartitions extends Applet
 		let array = this.arrays[index];
 		let planePartition = array.numbers;
 		
-		let nuRowLengths = new Array(2 * planePartition.length);
-		let nuColLengths = new Array(2 * planePartition.length);
+		const nuRowLengths = new Array(2 * planePartition.length);
+		const nuColLengths = new Array(2 * planePartition.length);
 		
 		for (let i = 0; i < planePartition.length; i++)
 		{
@@ -4763,11 +4763,11 @@ export class PlanePartitions extends Applet
 			nuColLengths[i] = 0;
 		}
 		
-		let rppSize = Math.max(nuRowLengths[0], nuColLengths[0]);
+		const rppSize = Math.max(nuRowLengths[0], nuColLengths[0]);
 		
 		
 		
-		let newArray = new Array(planePartition.length);
+		const newArray = new Array(planePartition.length);
 		
 		for (let i = 0; i < planePartition.length; i++)
 		{
@@ -4829,9 +4829,9 @@ export class PlanePartitions extends Applet
 		//The -1 is there to ensure the new array has the padding that indicates it's finite on the edges.
 		const legSize = Math.max(rightLegSize, bottomLegSize);
 		
-		let finiteArray = new Array(planePartition.length - legSize + 1);
+		const finiteArray = new Array(planePartition.length - legSize + 1);
 		
-		let cubesToDelete = [];
+		const cubesToDelete = [];
 		
 		for (let i = 0; i < finiteArray.length - 1; i++)
 		{
@@ -4886,12 +4886,12 @@ export class PlanePartitions extends Applet
 		
 		
 		//Organize everything by hook length.
-		let maxAppHookLength = 2 * planePartition.length - nuRowLengths[planePartition.length - 1] - nuColLengths[planePartition.length - 1];
-		let maxRppHookLength = nuRowLengths[0] + nuColLengths[0];
+		const maxAppHookLength = 2 * planePartition.length - nuRowLengths[planePartition.length - 1] - nuColLengths[planePartition.length - 1];
+		const maxRppHookLength = nuRowLengths[0] + nuColLengths[0];
 		
-		let appPivotsByHookLength = new Array(4 * planePartition.length);
-		let rppPivotsByHookLength = new Array(maxRppHookLength);
-		let ppPivotsByHookLength = new Array(4 * planePartition.length);
+		const appPivotsByHookLength = new Array(4 * planePartition.length);
+		const rppPivotsByHookLength = new Array(maxRppHookLength);
+		const ppPivotsByHookLength = new Array(4 * planePartition.length);
 		
 		for (let i = 0; i < 4 * planePartition.length; i++)
 		{
@@ -4933,7 +4933,7 @@ export class PlanePartitions extends Applet
 		
 		
 		
-		let hookMap = new Array(2 * planePartition.length);
+		const hookMap = new Array(2 * planePartition.length);
 		
 		for (let i = 0; i < 2 * planePartition.length; i++)
 		{
@@ -4942,12 +4942,12 @@ export class PlanePartitions extends Applet
 		
 		for (let i = 1; i < maxAppHookLength; i++)
 		{
-			let coordinates = [];
+			const coordinates = [];
 			
 			for (let j = 0; j < appPivotsByHookLength[i].length; j++)
 			{
-				let row = appPivotsByHookLength[i][j][0];
-				let col = appPivotsByHookLength[i][j][1];
+				const row = appPivotsByHookLength[i][j][0];
+				const col = appPivotsByHookLength[i][j][1];
 				
 				if (row < planePartition.length - bottomLegSize && col < planePartition.length - rightLegSize)
 				{
@@ -4983,7 +4983,7 @@ export class PlanePartitions extends Applet
 		
 		
 		
-		let rpp = new Array(rppSize);
+		const rpp = new Array(rppSize);
 		
 		for (let i = 0; i < rppSize; i++)
 		{
@@ -5014,7 +5014,7 @@ export class PlanePartitions extends Applet
 		
 		
 		
-		let pp = new Array(ppSize);
+		const pp = new Array(ppSize);
 		
 		for (let i = 0; i < ppSize; i++)
 		{
@@ -5026,7 +5026,7 @@ export class PlanePartitions extends Applet
 			}
 		}
 		
-		let ppArray = await this.addNewArray(index + 2, pp);
+		const ppArray = await this.addNewArray(index + 2, pp);
 		
 		
 		
@@ -5036,11 +5036,11 @@ export class PlanePartitions extends Applet
 			{
 				if (this.arrays[index].numbers[i][j] > 0)
 				{
-					let sourceCoordinates = [];
-					let targetCoordinates = [];
+					const sourceCoordinates = [];
+					const targetCoordinates = [];
 					
-					let targetRow = hookMap[i][j][1][0];
-					let targetCol = hookMap[i][j][1][1];
+					const targetRow = hookMap[i][j][1][0];
+					const targetCol = hookMap[i][j][1][1];
 					
 					for (let k = 0; k < this.arrays[index].numbers[i][j]; k++)
 					{
@@ -5090,14 +5090,14 @@ export class PlanePartitions extends Applet
 	
 	async godar1Inverse(index)
 	{
-		let ppArray = this.arrays[index + 1];
-		let pp = ppArray.numbers;
+		const ppArray = this.arrays[index + 1];
+		const pp = ppArray.numbers;
 		
-		let rppArray = this.arrays[index];
-		let rpp = rppArray.numbers;
+		const rppArray = this.arrays[index];
+		const rpp = rppArray.numbers;
 		
-		let nuRowLengths = new Array(pp.length + 2 * rpp.length);
-		let nuColLengths = new Array(pp.length + 2 * rpp.length);
+		const nuRowLengths = new Array(pp.length + 2 * rpp.length);
+		const nuColLengths = new Array(pp.length + 2 * rpp.length);
 		
 		for (let i = 0; i < pp.length + 2 * rpp.length; i++)
 		{
@@ -5190,13 +5190,13 @@ export class PlanePartitions extends Applet
 		
 		//Organize everything by hook length. The largest the APP can be is determined by the maximum hook in the plane partition -- we'll narrow this down later but it suffices for now.
 		let appSize = Math.max(nuRowLengths[0], nuColLengths[0]) + 2 * pp.length - 1;
-		let maxAppHookLength = 2 * appSize;
-		let maxRppHookLength = nuRowLengths[0] + nuColLengths[0];
-		let maxPpHookLength = 2 * pp.length;
+		const maxAppHookLength = 2 * appSize;
+		const maxRppHookLength = nuRowLengths[0] + nuColLengths[0];
+		const maxPpHookLength = 2 * pp.length;
 		
-		let appPivotsByHookLength = new Array(maxAppHookLength);
-		let rppPivotsByHookLength = new Array(maxRppHookLength);
-		let ppPivotsByHookLength = new Array(maxPpHookLength);
+		const appPivotsByHookLength = new Array(maxAppHookLength);
+		const rppPivotsByHookLength = new Array(maxRppHookLength);
+		const ppPivotsByHookLength = new Array(maxPpHookLength);
 		
 		for (let i = 0; i < maxAppHookLength; i++)
 		{
@@ -5257,14 +5257,14 @@ export class PlanePartitions extends Applet
 			}
 		}
 		
-		let ppHookMap = new Array(pp.length);
+		const ppHookMap = new Array(pp.length);
 		
 		for (let i = 0; i < pp.length; i++)
 		{
 			ppHookMap[i] = new Array(pp.length);
 		}
 		
-		let rppHookMap = new Array(rpp.length);
+		const rppHookMap = new Array(rpp.length);
 		
 		for (let i = 0; i < rpp.length; i++)
 		{
@@ -5277,12 +5277,12 @@ export class PlanePartitions extends Applet
 		
 		for (let i = 1; i < maxRppHookLength; i++)
 		{
-			let coordinates = [];
+			const coordinates = [];
 			
 			for (let j = 0; j < rppPivotsByHookLength[i].length; j++)
 			{
-				let row = rppPivotsByHookLength[i][j][0];
-				let col = rppPivotsByHookLength[i][j][1];
+				const row = rppPivotsByHookLength[i][j][0];
+				const col = rppPivotsByHookLength[i][j][1];
 				
 				for (let k = 0; k < this.arrays[index].numbers[row][col]; k++)
 				{
@@ -5307,7 +5307,7 @@ export class PlanePartitions extends Applet
 		
 		for (let i = 1; i < maxPpHookLength; i++)
 		{
-			let coordinates = [];
+			const coordinates = [];
 			
 			for (let j = 0; j < ppPivotsByHookLength[i].length; j++)
 			{
@@ -5316,8 +5316,8 @@ export class PlanePartitions extends Applet
 					continue;
 				}
 				
-				let row = ppPivotsByHookLength[i][j][0];
-				let col = ppPivotsByHookLength[i][j][1];
+				const row = ppPivotsByHookLength[i][j][0];
+				const col = ppPivotsByHookLength[i][j][1];
 				
 				for (let k = 0; k < this.arrays[index + 1].numbers[row][col]; k++)
 				{
@@ -5344,7 +5344,7 @@ export class PlanePartitions extends Applet
 		
 		
 		
-		let app = new Array(appSize);
+		const app = new Array(appSize);
 		
 		for (let i = 0; i < appSize; i++)
 		{
@@ -5364,7 +5364,7 @@ export class PlanePartitions extends Applet
 			}
 		}
 		
-		let appArray = await this.addNewArray(index + 2, app);
+		const appArray = await this.addNewArray(index + 2, app);
 		
 		await new Promise(resolve => setTimeout(resolve, this.animationTime / 2));
 		
@@ -5376,11 +5376,11 @@ export class PlanePartitions extends Applet
 			{
 				if (this.arrays[index].numbers[i][j] > 0 && this.arrays[index].numbers[i][j] !== Infinity)
 				{
-					let sourceCoordinates = [];
-					let targetCoordinates = [];
+					const sourceCoordinates = [];
+					const targetCoordinates = [];
 					
-					let targetRow = rppHookMap[i][j][0];
-					let targetCol = rppHookMap[i][j][1];
+					const targetRow = rppHookMap[i][j][0];
+					const targetCol = rppHookMap[i][j][1];
 					
 					for (let k = 0; k < this.arrays[index].numbers[i][j]; k++)
 					{
@@ -5412,11 +5412,11 @@ export class PlanePartitions extends Applet
 			{
 				if (this.arrays[index + 1].numbers[i][j] > 0 && this.arrays[index + 1].numbers[i][j] !== Infinity)
 				{
-					let sourceCoordinates = [];
-					let targetCoordinates = [];
+					const sourceCoordinates = [];
+					const targetCoordinates = [];
 					
-					let targetRow = ppHookMap[i][j][0];
-					let targetCol = ppHookMap[i][j][1];
+					const targetRow = ppHookMap[i][j][0];
+					const targetCol = ppHookMap[i][j][1];
 					
 					for (let k = 0; k < this.arrays[index + 1].numbers[i][j]; k++)
 					{
@@ -5479,10 +5479,10 @@ export class PlanePartitions extends Applet
 		
 		
 		
-		let array = this.arrays[index];
-		let planePartition = array.numbers;
+		const array = this.arrays[index];
+		const planePartition = array.numbers;
 		
-		let rects = [];
+		const rects = [];
 		
 		let hueIndex = 0;
 		
@@ -5495,9 +5495,9 @@ export class PlanePartitions extends Applet
 				//Add horizontal edges.
 				if (i === array.footprint - 1 || planePartition[i + 1][j] !== Infinity)
 				{
-					let h = (hueIndex % n) / n;
+					const h = (hueIndex % n) / n;
 					
-					let rgb = this.wilson.utils.hsvToRgb(h, 1, 1);
+					const rgb = this.wilson.utils.hsvToRgb(h, 1, 1);
 					
 					rects.push([i, j, true, `rgba(${rgb[0]}, ${rgb[1]}, ${rgb[2]}, `]);
 					
@@ -5508,9 +5508,9 @@ export class PlanePartitions extends Applet
 			}
 			
 			//Add a vertical edge.
-			let h = (hueIndex % n) / n;
+			const h = (hueIndex % n) / n;
 			
-			let rgb = this.wilson.utils.hsvToRgb(h, 1, 1);
+			const rgb = this.wilson.utils.hsvToRgb(h, 1, 1);
 			
 			rects.push([i, j, false, `rgba(${rgb[0]}, ${rgb[1]}, ${rgb[2]}, `]);
 			
@@ -5518,15 +5518,15 @@ export class PlanePartitions extends Applet
 		}
 		
 		//Add all the horizontal edges we missed.
-		let i = -1;
+		const i = -1;
 		
 		while (j < array.footprint)
 		{
 			if (i === array.footprint - 1 || planePartition[i + 1][j] !== Infinity)
 			{
-				let h = (hueIndex % n) / n;
+				const h = (hueIndex % n) / n;
 				
-				let rgb = this.wilson.utils.hsvToRgb(h, 1, 1);
+				const rgb = this.wilson.utils.hsvToRgb(h, 1, 1);
 				
 				rects.push([i, j, true, `rgba(${rgb[0]}, ${rgb[1]}, ${rgb[2]}, `]);
 				
@@ -5554,11 +5554,11 @@ export class PlanePartitions extends Applet
 	
 	async drawNQuotient(index, n, m, rects)
 	{
-		let array = this.arrays[index];
+		const array = this.arrays[index];
 		
 		//Fade out the ones we don't care about.
 		
-		let dummy = {t: 1};
+		const dummy = {t: 1};
 		
 		await anime({
 			targets: dummy,
@@ -5572,7 +5572,7 @@ export class PlanePartitions extends Applet
 				
 				rects.forEach((rect, index) =>
 				{
-					let opacity = index % n === m ? 1 : dummy.t;
+					const opacity = index % n === m ? 1 : dummy.t;
 					
 					this.drawBoundaryRect(array, rect[0], rect[1], rect[2], `${rect[3]} ${opacity})`);
 				});
@@ -5583,7 +5583,7 @@ export class PlanePartitions extends Applet
 		
 		rects.forEach((rect, index) =>
 		{
-			let opacity = index % n === m ? 1 : 0;
+			const opacity = index % n === m ? 1 : 0;
 			
 			this.drawBoundaryRect(array, rect[0], rect[1], rect[2], `${rect[3]} ${opacity})`);
 		});
@@ -5595,9 +5595,9 @@ export class PlanePartitions extends Applet
 		
 		//If we start from the bottom-left, the only difficult thing to do is figure out the correct starting column. Thankfully, that's easy: it's just the number of vertical edges total.
 		
-		let numVerticalEdges = rects.filter(rect => !rect[2]).length;
+		const numVerticalEdges = rects.filter(rect => !rect[2]).length;
 		
-		let targetRects = new Array(rects.length);
+		const targetRects = new Array(rects.length);
 		
 		let row = numVerticalEdges - 1;
 		let col = 0;
@@ -5649,7 +5649,7 @@ export class PlanePartitions extends Applet
 		
 		//We'll start the next animation without waiting for it so that it plays concurrently: any asymptotes where there should no longer be any need to be removed.
 		
-		let cubesToDelete = [];
+		const cubesToDelete = [];
 		
 		targetRects.forEach((rect, index) =>
 		{
@@ -5673,7 +5673,7 @@ export class PlanePartitions extends Applet
 		
 		
 		//Now we'll go through and add more edges to make the whole thing look nicer.
-		let bonusRects = [];
+		const bonusRects = [];
 		
 		for (let i = array.footprint - 1; i > targetRects[0][0]; i--)
 		{
@@ -5728,8 +5728,8 @@ export class PlanePartitions extends Applet
 	
 	drawBoundaryRect(array, i, j, horizontal, rgba)
 	{
-		let top = (this.totalArrayFootprint - array.footprint - 1) / 2;
-		let left = array.partialFootprintSum - array.footprint;
+		const top = (this.totalArrayFootprint - array.footprint - 1) / 2;
+		const left = array.partialFootprintSum - array.footprint;
 		
 		this.wilsonNumbers.ctx.fillStyle = rgba;
 		

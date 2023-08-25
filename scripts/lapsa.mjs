@@ -230,7 +230,7 @@ export class Lapsa
 			
 			builds.forEach(buildElement =>
 			{
-				let attr = buildElement.getAttribute("data-build");
+				const attr = buildElement.getAttribute("data-build");
 				
 				if (attr === null)
 				{
@@ -589,7 +589,7 @@ export class Lapsa
 		//If there's a build available, we do that instead of moving to the next slide.
 		if (this.currentSlide >= 0 && !skipBuilds && this._numBuilds[this.currentSlide] !== 0 && this.buildState !== this._numBuilds[this.currentSlide])
 		{
-			let promises = [];
+			const promises = [];
 			
 			//Gross code because animation durations are weird as hell -- see the corresponding previousSlide block for a better example.
 			this.slides[this.currentSlide].querySelectorAll(`[data-build="${this.buildState}"]`).forEach(element =>
@@ -707,7 +707,7 @@ export class Lapsa
 		{
 			this.buildState--;
 			
-			let promises = [];
+			const promises = [];
 			
 			this.slides[this.currentSlide].querySelectorAll(`[data-build="${this.buildState}"]`).forEach(element => promises.push(this.buildOut(element, this.transitionAnimationTime)));
 			

@@ -3,7 +3,7 @@ import { showPage } from "/scripts/src/load-page.mjs";
 
 function getDerivativeString(n)
 {
-	let array = ["f"];
+	const array = ["f"];
 	
 	for (let i = 0; i < n; i++)
 	{
@@ -19,7 +19,7 @@ function getDerivativeString(n)
 
 export function load()
 {
-	let derivatives = [];
+	const derivatives = [];
 	
 	for (let i = 0; i <= 10; i++)
 	{

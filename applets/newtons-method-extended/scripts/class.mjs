@@ -298,11 +298,11 @@ export class NewtonsMethodExtended extends Applet
 	//Pick 4 colors, each with a bright, medium, and dim component. Each of these colors will be interpolated between based on the target x and y coordinates of the attractive root, forming a quadrilateral in the color plane. Since these 4 corner points are brightish but not overly so and decently saturated, this process almost always produces a pleasing palette.
 	generateNewPalette()
 	{
-		let newColors = new Array(12);
+		const newColors = new Array(12);
 		
 		let hue = 0;
 		
-		let restrictions = [];
+		const restrictions = [];
 		
 		const restrictionWidth = .1;
 		
@@ -326,7 +326,7 @@ export class NewtonsMethodExtended extends Applet
 			
 			
 			
-			let rgb = this.wilson.utils.hsvToRgb(hue, Math.random() * .25 + .75, Math.random() * .25 + .75);
+			const rgb = this.wilson.utils.hsvToRgb(hue, Math.random() * .25 + .75, Math.random() * .25 + .75);
 			
 			newColors[3*i] = rgb[0] / 255;
 			newColors[3*i + 1] = rgb[1] / 255;
@@ -340,7 +340,7 @@ export class NewtonsMethodExtended extends Applet
 	
 	animatePaletteChange()
 	{
-		let dummy = {t: 0};
+		const dummy = {t: 0};
 		
 		const oldColors = [...this.colors];
 		const newColors = this.generateNewPalette();
@@ -415,7 +415,7 @@ export class NewtonsMethodExtended extends Applet
 		
 		const pixelData = this.wilsonHidden.render.getPixelData();
 		
-		let brightnesses = new Array(this.resolutionHidden * this.resolutionHidden);
+		const brightnesses = new Array(this.resolutionHidden * this.resolutionHidden);
 		
 		for (let i = 0; i < this.resolutionHidden * this.resolutionHidden; i++)
 		{

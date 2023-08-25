@@ -121,7 +121,7 @@ export function load()
 		
 		if (visibleSection === "edit-array")
 		{
-			let index = parseInt(editArrayIndexInputElement.value || 0);
+			const index = parseInt(editArrayIndexInputElement.value || 0);
 		
 			if (index < applet.arrays.length && index >= 0)
 			{

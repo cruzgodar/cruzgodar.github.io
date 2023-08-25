@@ -6,7 +6,7 @@ export let desmosPurple = "#772fbf";
 export let desmosBlue = "#2f77bf";
 export let desmosRed = "#bf2f2f";
 export let desmosGreen = "#2fbf2f";
-export let desmosBlack = "#000000";
+export const desmosBlack = "#000000";
 
 function updateDesmosColors()
 {
@@ -36,7 +36,7 @@ export async function createDesmosGraphs()
 {
 	await loadScript("https://www.desmos.com/api/v1.7/calculator.js?apiKey=dcb31709b452b1cf9dc26972add0fda6");
 	
-	for (let key in desmosGraphs)
+	for (const key in desmosGraphs)
 	{
 		if (desmosGraphs[key]?.destroy)
 		{
@@ -50,7 +50,7 @@ export async function createDesmosGraphs()
 
 	const data = getDesmosData();
 	
-	for (let key in data)
+	for (const key in data)
 	{
 		data[key].expressions.forEach(expression =>
 		{
@@ -79,7 +79,7 @@ export async function createDesmosGraphs()
 		
 		if (data[element.id].options)
 		{
-			for (let key in data[element.id].options)
+			for (const key in data[element.id].options)
 			{
 				options[key] = data[element.id].options[key];
 			}

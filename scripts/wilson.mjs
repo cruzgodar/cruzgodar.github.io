@@ -106,7 +106,7 @@ export class Wilson
 		
 		
 		
-		let computedStyle = window.getComputedStyle(this.canvas);
+		const computedStyle = window.getComputedStyle(this.canvas);
 		
 		this.topPadding = parseFloat(computedStyle.paddingTop);
 		this.leftPadding = parseFloat(computedStyle.paddingLeft);
@@ -326,7 +326,7 @@ export class Wilson
 	{
 		if (document.querySelectorAll("#wilson-style").length === 0)
 		{
-			let element = document.createElement("style");
+			const element = document.createElement("style");
 			
 			element.textContent = `
 				.wilson-output-canvas-container
@@ -357,7 +357,7 @@ export class Wilson
 		
 		
 		
-		let appletCanvasContainer = document.createElement("div");
+		const appletCanvasContainer = document.createElement("div");
 		
 		appletCanvasContainer.classList.add("wilson-applet-canvas-container");
 		
@@ -397,10 +397,10 @@ export class Wilson
 		
 		
 		
-		let computedStyle = window.getComputedStyle(this.canvas);
+		const computedStyle = window.getComputedStyle(this.canvas);
 		
-		let width = this.canvas.clientWidth - parseFloat(computedStyle.paddingLeft) - parseFloat(computedStyle.paddingRight);
-		let height = this.canvas.clientHeight - parseFloat(computedStyle.paddingTop) - parseFloat(computedStyle.paddingBottom);
+		const width = this.canvas.clientWidth - parseFloat(computedStyle.paddingLeft) - parseFloat(computedStyle.paddingRight);
+		const height = this.canvas.clientHeight - parseFloat(computedStyle.paddingTop) - parseFloat(computedStyle.paddingBottom);
 		
 		this.draggables.container.style.width = (width + 2 * this.draggables.draggableRadius) + "px";
 		this.draggables.container.style.height = (height + 2 * this.draggables.draggableRadius) + "px";
@@ -469,7 +469,7 @@ export class Wilson
 		{
 			function f(n)
 			{
-				let k = (n + 6*h) % 6;
+				const k = (n + 6*h) % 6;
 				return v - v * s * Math.max(0, Math.min(k, Math.min(4 - k, 1)));
 			}
 			
@@ -560,9 +560,9 @@ export class Wilson
 			
 			
 			
-			let vertexShader = loadShader(this.parent.gl, this.parent.gl.VERTEX_SHADER, vertexShaderSource);
+			const vertexShader = loadShader(this.parent.gl, this.parent.gl.VERTEX_SHADER, vertexShaderSource);
 			
-			let fragShader = loadShader(this.parent.gl, this.parent.gl.FRAGMENT_SHADER, fragShaderSource);
+			const fragShader = loadShader(this.parent.gl, this.parent.gl.FRAGMENT_SHADER, fragShaderSource);
 			
 			this.shaderProgram = this.parent.gl.createProgram();
 			
@@ -578,7 +578,7 @@ export class Wilson
 			
 			this.parent.gl.useProgram(this.shaderProgram);
 			
-			let positionBuffer = this.parent.gl.createBuffer();
+			const positionBuffer = this.parent.gl.createBuffer();
 			
 			this.parent.gl.bindBuffer(this.parent.gl.ARRAY_BUFFER, positionBuffer);
 			
@@ -614,7 +614,7 @@ export class Wilson
 			
 			function loadShader(gl, type, source)
 			{
-				let shader = gl.createShader(type);
+				const shader = gl.createShader(type);
 				
 				gl.shaderSource(shader, source);
 				
@@ -654,9 +654,9 @@ export class Wilson
 			
 			
 			
-			let vertexShader = loadShader(this.parent.gl, this.parent.gl.VERTEX_SHADER, vertexShaderSource);
+			const vertexShader = loadShader(this.parent.gl, this.parent.gl.VERTEX_SHADER, vertexShaderSource);
 			
-			let fragShader = loadShader(this.parent.gl, this.parent.gl.FRAGMENT_SHADER, fragShaderSource);
+			const fragShader = loadShader(this.parent.gl, this.parent.gl.FRAGMENT_SHADER, fragShaderSource);
 			
 			this.shaderProgram = this.parent.gl.createProgram();
 			
@@ -672,7 +672,7 @@ export class Wilson
 			
 			this.parent.gl.useProgram(this.shaderProgram);
 			
-			let positionBuffer = this.parent.gl.createBuffer();
+			const positionBuffer = this.parent.gl.createBuffer();
 			
 			this.parent.gl.bindBuffer(this.parent.gl.ARRAY_BUFFER, positionBuffer);
 			
@@ -694,7 +694,7 @@ export class Wilson
 			
 			function loadShader(gl, type, source)
 			{
-				let shader = gl.createShader(type);
+				const shader = gl.createShader(type);
 				
 				gl.shaderSource(shader, source);
 				
@@ -714,9 +714,9 @@ export class Wilson
 		
 		createFramebufferTexturePair(type = this.parent.gl.FLOAT)
 		{
-			let framebuffer = this.parent.gl.createFramebuffer();
+			const framebuffer = this.parent.gl.createFramebuffer();
 	
-			let texture = this.parent.gl.createTexture();
+			const texture = this.parent.gl.createTexture();
 			
 			this.parent.gl.bindTexture(this.parent.gl.TEXTURE_2D, texture);
 			this.parent.gl.texImage2D(this.parent.gl.TEXTURE_2D, 0, this.parent.gl.RGBA, this.parent.canvasWidth, this.parent.canvasHeight, 0, this.parent.gl.RGBA, type, null);
@@ -767,7 +767,7 @@ export class Wilson
 		
 		getPixelData()
 		{
-			let pixels = new Uint8Array(this.parent.canvasWidth * this.parent.canvasHeight * 4);
+			const pixels = new Uint8Array(this.parent.canvasWidth * this.parent.canvasHeight * 4);
 			
 			this.parent.gl.readPixels(0, 0, this.parent.canvasWidth, this.parent.canvasHeight, this.parent.gl.RGBA, this.parent.gl.UNSIGNED_BYTE, pixels);
 			
@@ -822,7 +822,7 @@ export class Wilson
 		{
 			if (document.querySelectorAll("#wilson-draggables-style").length === 0)
 			{
-				let element = document.createElement("style");
+				const element = document.createElement("style");
 				
 				element.textContent = `
 					.wilson-output-canvas-container
@@ -890,15 +890,15 @@ export class Wilson
 			
 			
 			
-			let handleTouchstartEventBound = this.handleTouchstartEvent.bind(this);
-			let handleTouchendEventBound = this.handleTouchendEvent.bind(this);
-			let handleTouchmoveEventBound = this.handleTouchmoveEvent.bind(this);
+			const handleTouchstartEventBound = this.handleTouchstartEvent.bind(this);
+			const handleTouchendEventBound = this.handleTouchendEvent.bind(this);
+			const handleTouchmoveEventBound = this.handleTouchmoveEvent.bind(this);
 			
-			let handleMousedownEventBound = this.handleMousedownEvent.bind(this);
-			let handleMouseupEventBound = this.handleMouseupEvent.bind(this);
-			let handleMousemoveEventBound = this.handleMousemoveEvent.bind(this);
+			const handleMousedownEventBound = this.handleMousedownEvent.bind(this);
+			const handleMouseupEventBound = this.handleMouseupEvent.bind(this);
+			const handleMousemoveEventBound = this.handleMousemoveEvent.bind(this);
 			
-			let onResizeBound = this.onResize.bind(this);
+			const onResizeBound = this.onResize.bind(this);
 			
 			
 			
@@ -981,7 +981,7 @@ export class Wilson
 			
 			
 			
-			let element = document.createElement("div");
+			const element = document.createElement("div");
 			element.classList.add("wilson-draggable");
 			element.classList.add(`wilson-draggable-${this.numDraggables}`);
 			element.style.transform = `translate3d(${col - this.draggableRadius}px, ${row - this.draggableRadius}px, 0)`;
@@ -1070,15 +1070,15 @@ export class Wilson
 				
 				
 				
-				let newMouseX = e.clientX;
-				let newMouseY = e.clientY;
+				const newMouseX = e.clientX;
+				const newMouseY = e.clientY;
 				
 				this.mouseX = newMouseX;
 				this.mouseY = newMouseY;
 				
 				
 				
-				let rect = this.container.getBoundingClientRect();
+				const rect = this.container.getBoundingClientRect();
 				
 				let row = e.clientY - rect.top;
 				let col = e.clientX - rect.left;
@@ -1109,8 +1109,8 @@ export class Wilson
 				
 				
 				
-				let x = ((col - this.draggableRadius - this.restrictedWidth/2) / this.restrictedWidth) * this.parent.worldWidth + this.parent.worldCenterX;
-				let y = (-(row - this.draggableRadius - this.restrictedHeight/2) / this.restrictedHeight) * this.parent.worldHeight + this.parent.worldCenterY;
+				const x = ((col - this.draggableRadius - this.restrictedWidth/2) / this.restrictedWidth) * this.parent.worldWidth + this.parent.worldCenterX;
+				const y = (-(row - this.draggableRadius - this.restrictedHeight/2) / this.restrictedHeight) * this.parent.worldHeight + this.parent.worldCenterY;
 				
 				this.worldCoordinates[this.activeDraggable][0] = x;
 				this.worldCoordinates[this.activeDraggable][1] = y;
@@ -1201,7 +1201,7 @@ export class Wilson
 				this.mouseX = e.touches[0].clientX;
 				this.mouseY = e.touches[0].clientY;
 				
-				let rect = this.container.getBoundingClientRect();
+				const rect = this.container.getBoundingClientRect();
 				
 				let row = this.mouseY - rect.top;
 				let col = this.mouseX - rect.left;
@@ -1232,8 +1232,8 @@ export class Wilson
 				
 				
 				
-				let x = ((col - this.draggableRadius - this.restrictedWidth/2) / this.restrictedWidth) * this.parent.worldWidth + this.parent.worldCenterX;
-				let y = (-(row - this.draggableRadius - this.restrictedHeight/2) / this.restrictedHeight) * this.parent.worldHeight + this.parent.worldCenterY;
+				const x = ((col - this.draggableRadius - this.restrictedWidth/2) / this.restrictedWidth) * this.parent.worldWidth + this.parent.worldCenterX;
+				const y = (-(row - this.draggableRadius - this.restrictedHeight/2) / this.restrictedHeight) * this.parent.worldHeight + this.parent.worldCenterY;
 				
 				this.worldCoordinates[this.activeDraggable][0] = x;
 				this.worldCoordinates[this.activeDraggable][1] = y;
@@ -1293,10 +1293,10 @@ export class Wilson
 		
 		onResize()
 		{
-			let computedStyle = window.getComputedStyle(this.parent.canvas);
+			const computedStyle = window.getComputedStyle(this.parent.canvas);
 			
-			let width = this.parent.canvas.clientWidth - parseFloat(computedStyle.paddingLeft) - parseFloat(computedStyle.paddingRight);
-			let height = this.parent.canvas.clientHeight - parseFloat(computedStyle.paddingTop) - parseFloat(computedStyle.paddingBottom);
+			const width = this.parent.canvas.clientWidth - parseFloat(computedStyle.paddingLeft) - parseFloat(computedStyle.paddingRight);
+			const height = this.parent.canvas.clientHeight - parseFloat(computedStyle.paddingTop) - parseFloat(computedStyle.paddingBottom);
 			
 			this.container.style.width = (width + 2 * this.draggableRadius) + "px";
 			this.container.style.height = (height + 2 * this.draggableRadius) + "px";
@@ -1355,7 +1355,7 @@ export class Wilson
 			{
 				if (document.querySelectorAll("#wilson-fullscreen-button-style").length === 0)
 				{
-					let element = document.createElement("style");
+					const element = document.createElement("style");
 					
 					element.textContent = `
 						.wilson-enter-fullscreen-button, .wilson-exit-fullscreen-button
@@ -1403,7 +1403,7 @@ export class Wilson
 			
 			if (document.querySelectorAll("#wilson-fullscreen-style").length === 0)
 			{
-				let element = document.createElement("style");
+				const element = document.createElement("style");
 				
 				element.textContent = `
 					.wilson-fullscreen-components-container.wilson-fullscreen
@@ -1499,21 +1499,21 @@ export class Wilson
 			
 			
 			
-			let onResizeBound = this.onResize.bind(this);
+			const onResizeBound = this.onResize.bind(this);
 			addTemporaryListener({
 				object: window,
 				event: "resize",
 				callback: onResizeBound
 			});
 			
-			let onScrollBound = this.onScroll.bind(this);
+			const onScrollBound = this.onScroll.bind(this);
 			addTemporaryListener({
 				object: window,
 				event: "scroll",
 				callback: onScrollBound
 			});
 			
-			let onKeypressBound = this.onKeypress.bind(this);
+			const onKeypressBound = this.onKeypress.bind(this);
 			addTemporaryListener({
 				object: document.documentElement,
 				event: "keydown",
@@ -1984,7 +1984,7 @@ export class Wilson
 				
 				this.parent.fullscreen.canvasesToResize[i].addEventListener("mouseleave", (e) =>
 				{
-					let lastWorldCoordinates = this.parent.utils.interpolate.canvasToWorld(this.lastRow1, this.lastCol1);
+					const lastWorldCoordinates = this.parent.utils.interpolate.canvasToWorld(this.lastRow1, this.lastCol1);
 					
 					if (this.currentlyDragging)
 					{
@@ -2022,12 +2022,12 @@ export class Wilson
 			
 			
 			
-			let rect = this.parent.canvas.getBoundingClientRect();
+			const rect = this.parent.canvas.getBoundingClientRect();
 			
-			let row = (this.mouseY - rect.top - this.parent.topBorder - this.parent.topPadding) * this.parent.canvasHeight / this.parent.draggables.restrictedHeight;
-			let col = (this.mouseX - rect.left - this.parent.leftBorder - this.parent.leftPadding) * this.parent.canvasWidth / this.parent.draggables.restrictedWidth;
+			const row = (this.mouseY - rect.top - this.parent.topBorder - this.parent.topPadding) * this.parent.canvasHeight / this.parent.draggables.restrictedHeight;
+			const col = (this.mouseX - rect.left - this.parent.leftBorder - this.parent.leftPadding) * this.parent.canvasWidth / this.parent.draggables.restrictedWidth;
 			
-			let worldCoordinates = this.parent.utils.interpolate.canvasToWorld(row, col);
+			const worldCoordinates = this.parent.utils.interpolate.canvasToWorld(row, col);
 			
 			this.lastRow1 = row;
 			this.lastCol1 = col;
@@ -2071,12 +2071,12 @@ export class Wilson
 			
 			
 			
-			let rect = this.parent.canvas.getBoundingClientRect();
+			const rect = this.parent.canvas.getBoundingClientRect();
 			
-			let row = (this.mouseY - rect.top - this.parent.topBorder - this.parent.topPadding) * this.parent.canvasHeight / this.parent.draggables.restrictedHeight;
-			let col = (this.mouseX - rect.left - this.parent.leftBorder - this.parent.leftPadding) * this.parent.canvasWidth / this.parent.draggables.restrictedWidth;
+			const row = (this.mouseY - rect.top - this.parent.topBorder - this.parent.topPadding) * this.parent.canvasHeight / this.parent.draggables.restrictedHeight;
+			const col = (this.mouseX - rect.left - this.parent.leftBorder - this.parent.leftPadding) * this.parent.canvasWidth / this.parent.draggables.restrictedWidth;
 			
-			let worldCoordinates = this.parent.utils.interpolate.canvasToWorld(row, col);
+			const worldCoordinates = this.parent.utils.interpolate.canvasToWorld(row, col);
 			
 			this.mouseupCallback(...worldCoordinates, e);
 			
@@ -2103,16 +2103,16 @@ export class Wilson
 			
 			
 			
-			let rect = this.parent.canvas.getBoundingClientRect();
+			const rect = this.parent.canvas.getBoundingClientRect();
 			
-			let row = (this.mouseY - rect.top - this.parent.topBorder - this.parent.topPadding) * this.parent.canvasHeight / this.parent.draggables.restrictedHeight;
-			let col = (this.mouseX - rect.left - this.parent.leftBorder - this.parent.leftPadding) * this.parent.canvasWidth / this.parent.draggables.restrictedWidth;
+			const row = (this.mouseY - rect.top - this.parent.topBorder - this.parent.topPadding) * this.parent.canvasHeight / this.parent.draggables.restrictedHeight;
+			const col = (this.mouseX - rect.left - this.parent.leftBorder - this.parent.leftPadding) * this.parent.canvasWidth / this.parent.draggables.restrictedWidth;
 			
-			let worldCoordinates = this.parent.utils.interpolate.canvasToWorld(row, col);
+			const worldCoordinates = this.parent.utils.interpolate.canvasToWorld(row, col);
 			
 			
 			
-			let lastWorldCoordinates = this.parent.utils.interpolate.canvasToWorld(this.lastRow1, this.lastCol1);
+			const lastWorldCoordinates = this.parent.utils.interpolate.canvasToWorld(this.lastRow1, this.lastCol1);
 			
 			
 			
@@ -2148,12 +2148,12 @@ export class Wilson
 			
 			
 			
-			let rect = this.parent.canvas.getBoundingClientRect();
+			const rect = this.parent.canvas.getBoundingClientRect();
 			
-			let row = (this.mouseY - rect.top - this.parent.topBorder - this.parent.topPadding) * this.parent.canvasHeight / this.parent.draggables.restrictedHeight;
-			let col = (this.mouseX - rect.left - this.parent.leftBorder - this.parent.leftPadding) * this.parent.canvasWidth / this.parent.draggables.restrictedWidth;
+			const row = (this.mouseY - rect.top - this.parent.topBorder - this.parent.topPadding) * this.parent.canvasHeight / this.parent.draggables.restrictedHeight;
+			const col = (this.mouseX - rect.left - this.parent.leftBorder - this.parent.leftPadding) * this.parent.canvasWidth / this.parent.draggables.restrictedWidth;
 			
-			let worldCoordinates = this.parent.utils.interpolate.canvasToWorld(row, col);
+			const worldCoordinates = this.parent.utils.interpolate.canvasToWorld(row, col);
 			
 			this.lastRow1 = row;
 			this.lastCol1 = col;
@@ -2206,7 +2206,7 @@ export class Wilson
 			
 			if (this.lastRow1 !== -1)
 			{
-				let lastWorldCoordinates = this.parent.utils.interpolate.canvasToWorld(this.lastRow1, this.lastCol1);
+				const lastWorldCoordinates = this.parent.utils.interpolate.canvasToWorld(this.lastRow1, this.lastCol1);
 				
 				this.touchendCallback(...lastWorldCoordinates, e);
 			}
@@ -2227,7 +2227,7 @@ export class Wilson
 			
 			
 			
-			let rect = this.parent.canvas.getBoundingClientRect();
+			const rect = this.parent.canvas.getBoundingClientRect();
 			
 			
 			
@@ -2237,34 +2237,34 @@ export class Wilson
 				
 				
 				
-				let row1 = (e.touches[0].clientY - rect.top - this.parent.topBorder - this.parent.topPadding) * this.parent.canvasHeight / this.parent.draggables.restrictedHeight;
-				let col1 = (e.touches[0].clientX - rect.left - this.parent.leftBorder - this.parent.leftPadding) * this.parent.canvasWidth / this.parent.draggables.restrictedWidth;
+				const row1 = (e.touches[0].clientY - rect.top - this.parent.topBorder - this.parent.topPadding) * this.parent.canvasHeight / this.parent.draggables.restrictedHeight;
+				const col1 = (e.touches[0].clientX - rect.left - this.parent.leftBorder - this.parent.leftPadding) * this.parent.canvasWidth / this.parent.draggables.restrictedWidth;
 				
-				let row2 = (e.touches[1].clientY - rect.top - this.parent.topBorder - this.parent.topPadding) * this.parent.canvasHeight / this.parent.draggables.restrictedHeight;
-				let col2 = (e.touches[1].clientX - rect.left - this.parent.leftBorder - this.parent.leftPadding) * this.parent.canvasWidth / this.parent.draggables.restrictedWidth;
+				const row2 = (e.touches[1].clientY - rect.top - this.parent.topBorder - this.parent.topPadding) * this.parent.canvasHeight / this.parent.draggables.restrictedHeight;
+				const col2 = (e.touches[1].clientX - rect.left - this.parent.leftBorder - this.parent.leftPadding) * this.parent.canvasWidth / this.parent.draggables.restrictedWidth;
 				
-				let worldCoordinates1 = this.parent.utils.interpolate.canvasToWorld(row1, col1);
-				let worldCoordinates2 = this.parent.utils.interpolate.canvasToWorld(row2, col2);
+				const worldCoordinates1 = this.parent.utils.interpolate.canvasToWorld(row1, col1);
+				const worldCoordinates2 = this.parent.utils.interpolate.canvasToWorld(row2, col2);
 				
-				let xDistance = worldCoordinates1[0] - worldCoordinates2[0];
-				let yDistance = worldCoordinates1[1] - worldCoordinates2[1];
+				const xDistance = worldCoordinates1[0] - worldCoordinates2[0];
+				const yDistance = worldCoordinates1[1] - worldCoordinates2[1];
 				
-				let touchDistance = Math.sqrt(xDistance * xDistance + yDistance * yDistance);
-				
-				
-				
-				let centerX = (worldCoordinates1[0] + worldCoordinates2[0]) / 2;
-				let centerY = (worldCoordinates1[1] + worldCoordinates2[1]) / 2;
+				const touchDistance = Math.sqrt(xDistance * xDistance + yDistance * yDistance);
 				
 				
 				
-				let lastWorldCoordinates1 = this.parent.utils.interpolate.canvasToWorld(this.lastRow1, this.lastCol1);
-				let lastWorldCoordinates2 = this.parent.utils.interpolate.canvasToWorld(this.lastRow2, this.lastCol2);
+				const centerX = (worldCoordinates1[0] + worldCoordinates2[0]) / 2;
+				const centerY = (worldCoordinates1[1] + worldCoordinates2[1]) / 2;
 				
-				let lastXDistance = lastWorldCoordinates1[0] - lastWorldCoordinates2[0];
-				let lastYDistance = lastWorldCoordinates1[1] - lastWorldCoordinates2[1];
 				
-				let lastTouchDistance = Math.sqrt(lastXDistance * lastXDistance + lastYDistance * lastYDistance);
+				
+				const lastWorldCoordinates1 = this.parent.utils.interpolate.canvasToWorld(this.lastRow1, this.lastCol1);
+				const lastWorldCoordinates2 = this.parent.utils.interpolate.canvasToWorld(this.lastRow2, this.lastCol2);
+				
+				const lastXDistance = lastWorldCoordinates1[0] - lastWorldCoordinates2[0];
+				const lastYDistance = lastWorldCoordinates1[1] - lastWorldCoordinates2[1];
+				
+				const lastTouchDistance = Math.sqrt(lastXDistance * lastXDistance + lastYDistance * lastYDistance);
 				
 				
 				if (this.lastRow2 !== -1)
@@ -2294,12 +2294,12 @@ export class Wilson
 			
 			
 			
-			let row = (this.mouseY - rect.top - this.parent.topBorder - this.parent.topPadding) * this.parent.canvasHeight / this.parent.draggables.restrictedHeight;
-			let col = (this.mouseX - rect.left - this.parent.leftBorder - this.parent.leftPadding) * this.parent.canvasWidth / this.parent.draggables.restrictedWidth;
+			const row = (this.mouseY - rect.top - this.parent.topBorder - this.parent.topPadding) * this.parent.canvasHeight / this.parent.draggables.restrictedHeight;
+			const col = (this.mouseX - rect.left - this.parent.leftBorder - this.parent.leftPadding) * this.parent.canvasWidth / this.parent.draggables.restrictedWidth;
 			
-			let worldCoordinates = this.parent.utils.interpolate.canvasToWorld(row, col);
+			const worldCoordinates = this.parent.utils.interpolate.canvasToWorld(row, col);
 			
-			let lastWorldCoordinates = this.parent.utils.interpolate.canvasToWorld(this.lastRow1, this.lastCol1);
+			const lastWorldCoordinates = this.parent.utils.interpolate.canvasToWorld(this.lastRow1, this.lastCol1);
 			
 			
 			
@@ -2311,23 +2311,23 @@ export class Wilson
 			else
 			{
 				//Only fire a touchmove event if both touches are moving in a similar direction.
-				let xDelta1 = worldCoordinates[0] - lastWorldCoordinates[0];
-				let yDelta1 = worldCoordinates[1] - lastWorldCoordinates[1];
+				const xDelta1 = worldCoordinates[0] - lastWorldCoordinates[0];
+				const yDelta1 = worldCoordinates[1] - lastWorldCoordinates[1];
 				
 				
 				
-				let mouseX2 = e.touches[1].clientX;
-				let mouseY2 = e.touches[1].clientY;
+				const mouseX2 = e.touches[1].clientX;
+				const mouseY2 = e.touches[1].clientY;
 				
-				let row2 = (mouseY2 - rect.top - this.parent.topBorder - this.parent.topPadding) * this.parent.canvasHeight / this.parent.draggables.restrictedHeight;
-				let col2 = (mouseX2 - rect.left - this.parent.leftBorder - this.parent.leftPadding) * this.parent.canvasWidth / this.parent.draggables.restrictedWidth;
+				const row2 = (mouseY2 - rect.top - this.parent.topBorder - this.parent.topPadding) * this.parent.canvasHeight / this.parent.draggables.restrictedHeight;
+				const col2 = (mouseX2 - rect.left - this.parent.leftBorder - this.parent.leftPadding) * this.parent.canvasWidth / this.parent.draggables.restrictedWidth;
 				
-				let worldCoordinates2 = this.parent.utils.interpolate.canvasToWorld(row2, col2);
+				const worldCoordinates2 = this.parent.utils.interpolate.canvasToWorld(row2, col2);
 				
-				let lastWorldCoordinates2 = this.parent.utils.interpolate.canvasToWorld(this.lastRow2, this.lastCol2);
+				const lastWorldCoordinates2 = this.parent.utils.interpolate.canvasToWorld(this.lastRow2, this.lastCol2);
 				
-				let xDelta2 = worldCoordinates2[0] - lastWorldCoordinates2[0];
-				let yDelta2 = worldCoordinates2[1] - lastWorldCoordinates2[1];
+				const xDelta2 = worldCoordinates2[0] - lastWorldCoordinates2[0];
+				const yDelta2 = worldCoordinates2[1] - lastWorldCoordinates2[1];
 				
 				
 				
@@ -2361,7 +2361,7 @@ export class Wilson
 			
 			if (this.lastRow1 !== -1)
 			{
-				let lastWorldCoordinates = this.parent.utils.interpolate.canvasToWorld(this.lastRow1, this.lastCol1);
+				const lastWorldCoordinates = this.parent.utils.interpolate.canvasToWorld(this.lastRow1, this.lastCol1);
 				
 				this.wheelCallback(...lastWorldCoordinates, e.deltaY, e);
 			}
@@ -2372,14 +2372,14 @@ export class Wilson
 		//Returns what the world center should be to make zooms look correct.
 		getZoomedWorldCenter(fixedPointX, fixedPointY, newWorldWidth, newWorldHeight)
 		{
-			let mouseXProportion = (fixedPointX - this.parent.worldCenterX) / this.parent.worldWidth;
-			let mouseYProportion = (fixedPointY - this.parent.worldCenterY) / this.parent.worldHeight;
+			const mouseXProportion = (fixedPointX - this.parent.worldCenterX) / this.parent.worldWidth;
+			const mouseYProportion = (fixedPointY - this.parent.worldCenterY) / this.parent.worldHeight;
 			
-			let newFixedPointX = mouseXProportion * newWorldWidth;
-			let newFixedPointY = mouseYProportion * newWorldHeight;
+			const newFixedPointX = mouseXProportion * newWorldWidth;
+			const newFixedPointY = mouseYProportion * newWorldHeight;
 			
-			let zoomedCenterX = fixedPointX - newFixedPointX;
-			let zoomedCenterY = fixedPointY - newFixedPointY;
+			const zoomedCenterX = fixedPointX - newFixedPointX;
+			const zoomedCenterY = fixedPointY - newFixedPointY;
 			
 			return [zoomedCenterX, zoomedCenterY];
 		}
@@ -2403,7 +2403,7 @@ export class Wilson
 		
 		
 		
-		let computedStyle = window.getComputedStyle(this.canvas);
+		const computedStyle = window.getComputedStyle(this.canvas);
 		
 		this.topPadding = parseFloat(computedStyle.paddingTop);
 		this.leftPadding = parseFloat(computedStyle.paddingLeft);
@@ -2429,7 +2429,7 @@ export class Wilson
 		
 		this.canvas.toBlob((blob) => 
 		{
-			let link = document.createElement("a");
+			const link = document.createElement("a");
 			
 			link.download = filename;
 			

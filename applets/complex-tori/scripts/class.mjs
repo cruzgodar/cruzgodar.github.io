@@ -180,13 +180,13 @@ export class EllipticCurve extends Applet
 		
 		
 		
-		let pixels = this.wilson.render.getPixelData();
+		const pixels = this.wilson.render.getPixelData();
 		
-		let endpoints = [];
+		const endpoints = [];
 		
 		const width = this.resolution;
 		
-		let maxInterpolationDistance = this.wilson.canvasWidth;
+		const maxInterpolationDistance = this.wilson.canvasWidth;
 		
 		//This means a 5x5 square will be searched around each endpoint...
 		const isolationSearchRadius = 2;
@@ -195,7 +195,7 @@ export class EllipticCurve extends Applet
 		{
 			for (let j = isolationSearchRadius; j < width - isolationSearchRadius; j++)
 			{
-				let index = width * i + j;
+				const index = width * i + j;
 				
 				if (pixels[4 * index] !== 0)
 				{

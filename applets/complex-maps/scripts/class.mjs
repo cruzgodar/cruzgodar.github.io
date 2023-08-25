@@ -272,7 +272,7 @@ export class ComplexMap extends Applet
 				
 				const coordinates = this.wilson.utils.interpolate.worldToCanvas(x, y);
 				
-				let pixel = new Uint8Array(4);
+				const pixel = new Uint8Array(4);
 				
 				this.wilson.gl.readPixels(coordinates[1], this.wilson.canvasHeight - coordinates[0], 1, 1, this.wilson.gl.RGBA, this.wilson.gl.UNSIGNEDBYTE, pixel);
 				
@@ -365,7 +365,7 @@ export class ComplexMap extends Applet
 		
 		const startTime = Date.now();
 		
-		let pixel = new Uint8Array(4);
+		const pixel = new Uint8Array(4);
 		
 		for (let i = 0; i < this.benchmarkCycles; i++)
 		{

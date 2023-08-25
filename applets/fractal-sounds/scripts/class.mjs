@@ -453,8 +453,8 @@ export class FractalSounds extends Applet
 		
 		let x = x0;
 		let y = y0;
-		let a = x0;
-		let b = y0;
+		const a = x0;
+		const b = y0;
 		
 		let next = this.currentFractalFunction(x, y, a, b);
 		
@@ -493,8 +493,8 @@ export class FractalSounds extends Applet
 		
 		let x = x0;
 		let y = y0;
-		let a = x0;
-		let b = y0;
+		const a = x0;
+		const b = y0;
 		
 		let next = this.currentFractalFunction(x, y, a, b);
 		
@@ -503,15 +503,15 @@ export class FractalSounds extends Applet
 		
 		let maxValue = 0;
 		
-		let unscaledLeftData = new Array(numSamples);
-		let unscaledRightData = new Array(numSamples);
+		const unscaledLeftData = new Array(numSamples);
+		const unscaledRightData = new Array(numSamples);
 		
 		
 		
-		let buffer = audioContext.createBuffer(2, numFrames, sampleRate);
+		const buffer = audioContext.createBuffer(2, numFrames, sampleRate);
 		
-		let leftData = buffer.getChannelData(0);
-		let rightData = buffer.getChannelData(1);
+		const leftData = buffer.getChannelData(0);
+		const rightData = buffer.getChannelData(1);
 		
 		for (let i = 0; i < numSamples; i++)
 		{
@@ -553,7 +553,7 @@ export class FractalSounds extends Applet
 		{
 			for (let j = 0; j < samplesPerFrame; j++)
 			{
-				let t = .5 + .5 * Math.sin(Math.PI * j / samplesPerFrame - Math.PI / 2);
+				const t = .5 + .5 * Math.sin(Math.PI * j / samplesPerFrame - Math.PI / 2);
 				
 				leftData[samplesPerFrame * i + j] = (1 - t) * (unscaledLeftData[i] / 2) + t * (unscaledLeftData[i + 1] / 2);
 				rightData[samplesPerFrame * i + j] = (1 - t) * (unscaledRightData[i] / 2) + t * (unscaledRightData[i + 1] / 2);
@@ -562,10 +562,10 @@ export class FractalSounds extends Applet
 		
 		
 		
-		let source = audioContext.createBufferSource();
+		const source = audioContext.createBufferSource();
 		source.buffer = buffer;
 		
-		let audioGainNode = audioContext.createGain();
+		const audioGainNode = audioContext.createGain();
 		source.connect(audioGainNode);
 		audioGainNode.connect(audioContext.destination);
 
@@ -608,7 +608,7 @@ export class FractalSounds extends Applet
 		
 		const pixelData = this.wilsonHidden.render.getPixelData();
 		
-		let brightnesses = new Array(this.resolutionHidden * this.resolutionHidden);
+		const brightnesses = new Array(this.resolutionHidden * this.resolutionHidden);
 		
 		for (let i = 0; i < this.resolutionHidden * this.resolutionHidden; i++)
 		{

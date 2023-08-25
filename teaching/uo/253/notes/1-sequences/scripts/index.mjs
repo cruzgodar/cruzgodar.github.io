@@ -19,7 +19,7 @@ function getDerivativeString(n)
 
 export function load()
 {
-	let derivatives = [];
+	const derivatives = [];
 	
 	for (let i = 0; i <= 10; i++)
 	{

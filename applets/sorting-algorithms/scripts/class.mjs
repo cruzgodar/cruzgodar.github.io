@@ -405,9 +405,9 @@ export class SortingAlgorithm extends Applet
 		
 		for (let i = 0; i < this.dataLength - 1; i++)
 		{
-			let j = Math.floor(Math.random() * (this.dataLength - i - 1)) + i;
+			const j = Math.floor(Math.random() * (this.dataLength - i - 1)) + i;
 			
-			let temp = this.data[i];
+			const temp = this.data[i];
 			this.data[i] = this.data[j];
 			this.data[j] = temp;
 			
@@ -467,7 +467,7 @@ export class SortingAlgorithm extends Applet
 				{
 					done = false;
 					
-					let temp = this.data[i];
+					const temp = this.data[i];
 					this.data[i] = this.data[i + 1];
 					this.data[i + 1] = temp;
 					
@@ -505,7 +505,7 @@ export class SortingAlgorithm extends Applet
 					
 					if (this.data[j] > this.data[i])
 					{
-						let temp = this.data[i];
+						const temp = this.data[i];
 						
 						for (let k = i; k > j; k--)
 						{
@@ -548,7 +548,7 @@ export class SortingAlgorithm extends Applet
 				}
 			}
 			
-			let temp = this.data[i];
+			const temp = this.data[i];
 			this.data[i] = minElement;
 			this.data[minIndex] = temp;
 			
@@ -580,7 +580,7 @@ export class SortingAlgorithm extends Applet
 				
 				if (this.data[index] > this.data[index2])
 				{
-					let temp = this.data[index];
+					const temp = this.data[index];
 					this.data[index] = this.data[index2];
 					this.data[index2] = temp;
 					
@@ -600,7 +600,7 @@ export class SortingAlgorithm extends Applet
 		//Disassemble the heap.
 		for (let i = this.dataLength - 1; i >= 0; i--)
 		{
-			let temp = this.data[0];
+			const temp = this.data[0];
 			this.data[0] = this.data[i];
 			this.data[i] = temp;
 			
@@ -645,7 +645,7 @@ export class SortingAlgorithm extends Applet
 				
 				if (this.data[index] < this.data[maxChild])
 				{
-					let temp = this.data[index];
+					const temp = this.data[index];
 					this.data[index] = this.data[maxChild];
 					this.data[maxChild] = temp;
 					
@@ -844,11 +844,11 @@ export class SortingAlgorithm extends Applet
 	{
 		this.operationsPerFrame = Math.ceil(this.dataLength * Math.log(this.dataLength) / 2250);
 		
-		let currentEndpoints = new Array(this.dataLength);
+		const currentEndpoints = new Array(this.dataLength);
 		currentEndpoints[0] = 0;
 		currentEndpoints[1] = this.dataLength - 1;
 		
-		let nextEndpoints = new Array(this.dataLength);
+		const nextEndpoints = new Array(this.dataLength);
 		
 		let numBlocks = 1;
 		let nextNumBlocks = 0;
@@ -860,7 +860,7 @@ export class SortingAlgorithm extends Applet
 			for (let i = 0; i < numBlocks; i++)
 			{
 				//For each block, pick the middle element as the pivot.
-				let pivot = this.data[Math.floor((currentEndpoints[2 * i] + currentEndpoints[2 * i + 1]) / 2)];
+				const pivot = this.data[Math.floor((currentEndpoints[2 * i] + currentEndpoints[2 * i + 1]) / 2)];
 				this.readFromPosition(Math.floor((currentEndpoints[2 * i] + currentEndpoints[2 * i + 1]) / 2));
 				
 				//Now we need to split the block so that everything before the pivot is less than it and everything after is greater.
@@ -890,7 +890,7 @@ export class SortingAlgorithm extends Applet
 						break;
 					}
 					
-					let temp = this.data[leftIndex];
+					const temp = this.data[leftIndex];
 					this.data[leftIndex] = this.data[rightIndex];
 					this.data[rightIndex] = temp;
 					
@@ -935,7 +935,7 @@ export class SortingAlgorithm extends Applet
 	{
 		this.operationsPerFrame = Math.ceil(this.dataLength / 100);
 		
-		let gaps = [];
+		const gaps = [];
 		
 		const gamma = 2.2436091;
 		
@@ -989,7 +989,7 @@ export class SortingAlgorithm extends Applet
 	{
 		this.operationsPerFrame = Math.ceil(this.dataLength / 2000);
 		
-		let done = new Array(this.dataLength);
+		const done = new Array(this.dataLength);
 		
 		for (let i = 0; i < this.dataLength; i++)
 		{
@@ -1006,7 +1006,7 @@ export class SortingAlgorithm extends Applet
 			this.readFromPosition(i);
 			
 			let poppedEntry = this.data[i];
-			let firstPoppedEntry = poppedEntry;
+			const firstPoppedEntry = poppedEntry;
 			let index = 0;
 			
 			do
@@ -1029,7 +1029,7 @@ export class SortingAlgorithm extends Applet
 					index--;
 				}
 				
-				let temp = this.data[index];
+				const temp = this.data[index];
 				this.data[index] = poppedEntry;
 				poppedEntry = temp;
 				
@@ -1048,13 +1048,13 @@ export class SortingAlgorithm extends Applet
 	{
 		let maxKeyLength = 0;
 		
-		let denom = 1 / Math.log(2);
+		const denom = 1 / Math.log(2);
 		
 		for (let i = 0; i < this.dataLength; i++)
 		{
 			this.readFromPosition(i);
 			
-			let keyLength = Math.log(this.data[i]) * denom;
+			const keyLength = Math.log(this.data[i]) * denom;
 			
 			maxKeyLength = Math.max(maxKeyLength, keyLength);
 		}
@@ -1067,16 +1067,16 @@ export class SortingAlgorithm extends Applet
 		
 		
 		
-		let currentEndpoints = new Array(this.dataLength);
+		const currentEndpoints = new Array(this.dataLength);
 		currentEndpoints[0] = 0;
 		currentEndpoints[1] = this.dataLength - 1;
 		
-		let nextEndpoints = new Array(this.dataLength);
+		const nextEndpoints = new Array(this.dataLength);
 		
 		let numBlocks = 1;
 		let nextNumBlocks = 0;
 		
-		let auxArray = new Array(this.dataLength);
+		const auxArray = new Array(this.dataLength);
 		
 		
 		
@@ -1093,7 +1093,7 @@ export class SortingAlgorithm extends Applet
 				{
 					this.readFromPosition(j);
 					
-					let digit = Math.floor(this.data[j] / div) % 2;
+					const digit = Math.floor(this.data[j] / div) % 2;
 					
 					if (digit === 0)
 					{
@@ -1163,13 +1163,13 @@ export class SortingAlgorithm extends Applet
 	{
 		let maxKeyLength = 0;
 		
-		let denom = 1 / Math.log(2);
+		const denom = 1 / Math.log(2);
 		
 		for (let i = 0; i < this.dataLength; i++)
 		{
 			this.readFromPosition(i);
 			
-			let keyLength = Math.log(this.data[i]) * denom;
+			const keyLength = Math.log(this.data[i]) * denom;
 			
 			maxKeyLength = Math.max(maxKeyLength, keyLength);
 		}
@@ -1182,7 +1182,7 @@ export class SortingAlgorithm extends Applet
 		
 		
 		
-		let auxArray = new Array(this.dataLength);
+		const auxArray = new Array(this.dataLength);
 		
 		
 		
@@ -1197,7 +1197,7 @@ export class SortingAlgorithm extends Applet
 			{
 				this.readFromPosition(j);
 				
-				let digit = Math.floor(this.data[j] / div) % 2;
+				const digit = Math.floor(this.data[j] / div) % 2;
 				
 				if (digit === 0)
 				{
@@ -1250,7 +1250,7 @@ export class SortingAlgorithm extends Applet
 	{
 		this.operationsPerFrame = Math.ceil(this.dataLength * this.dataLength / 1000000);
 		
-		let beads = new Array(this.dataLength);
+		const beads = new Array(this.dataLength);
 		
 		for (let i = 0; i < this.dataLength; i++)
 		{
@@ -1269,7 +1269,7 @@ export class SortingAlgorithm extends Applet
 		{
 			this.readFromPosition(i);
 			
-			let size = this.data[i];
+			const size = this.data[i];
 			
 			for (let j = 0; j < size; j++)
 			{

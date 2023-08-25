@@ -39,7 +39,7 @@ export class KickedRotator extends Applet
 	
 	run(resolution, K, orbitSeparation)
 	{
-		let values = new Array(resolution * resolution);
+		const values = new Array(resolution * resolution);
 		
 		for (let i = 0; i < resolution; i++)
 		{
@@ -64,8 +64,8 @@ export class KickedRotator extends Applet
 		
 		this.webWorker.onmessage = (e) =>
 		{
-			let valueDelta = e.data[0];
-			let hue = e.data[1];
+			const valueDelta = e.data[0];
+			const hue = e.data[1];
 			
 			for (let i = 0; i < resolution; i++)
 			{
