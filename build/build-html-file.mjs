@@ -83,7 +83,7 @@ const components =
 			
 			return `
 				<div class="image-link">
-					<a href="${filePath}" data-in-new-tab="${inNewTab ? 1 : 0}" tabindex="-1">
+					<a href="${filePath}"${inNewTab ? " data-in-new-tab='1'" : ""} tabindex="-1">
 						<img src="${src}" alt="${subtext}" tabindex="1"></img>
 					</a>
 					

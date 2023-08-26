@@ -489,6 +489,7 @@ export const sitemap =
 		
 		"children":
 		[
+			"/teaching/uo/341/",
 			"/teaching/uo/256/",
 			"/teaching/uo/253/",
 			"/teaching/uo/252/",
@@ -500,6 +501,27 @@ export const sitemap =
 		]
 	},
 		
+	"/teaching/uo/341/":
+	{
+		"title": "Math 341",
+		
+		"parent": "/teaching/",
+		
+		"children":
+		[
+			"/teaching/uo/341/notes/1-systems-and-vectors/"
+		]
+	},
+		
+	"/teaching/uo/341/notes/1-systems-and-vectors/":
+	{
+		"title": "Section 1: Systems and Vectors",
+		
+		"parent": "/teaching/uo/341/",
+		
+		"children": []
+	},
+	
 	"/teaching/uo/256/":
 	{
 		"title": "Math 256",

@@ -50,6 +50,9 @@ home Cruz Godar
 			docs Wilson Documentation
 	
 	teaching Teaching
+		uo/341 Math 341
+			notes/1-systems-and-vectors Section 1: Systems and Vectors
+
 		uo/256 Math 256
 			notes/0-calc-review Section 0: Calculus Review
 			notes/1-intro-to-des Section 1: Intro to DEs
