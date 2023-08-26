@@ -55,6 +55,6 @@ export function load()
 	{
 		const generatingString = (generatingStringInputElement.value || "AB").toUpperCase();
 		
-		applet.run(generatingString);
+		applet.run({ generatingString });
 	}
 }

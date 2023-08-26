@@ -38,7 +38,13 @@ export class StrangeAttractor extends Applet
 	
 
 
-	run(resolution, sigma, rho, beta, maximumSpeed)
+	run({
+		resolution,
+		sigma,
+		rho,
+		beta,
+		maximumSpeed
+	})
 	{
 		this.wilson.changeCanvasSize(resolution, resolution);
 		

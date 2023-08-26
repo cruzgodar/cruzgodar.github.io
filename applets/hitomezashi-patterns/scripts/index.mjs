@@ -80,6 +80,14 @@ export function load()
 		const doDrawRegions = drawRegionsCheckboxElement.checked;
 		const maximumSpeed = maximumSpeedCheckboxElement.checked;
 		
-		applet.run(resolution, gridSize, rowProb, colProb, doDrawBoundaries, doDrawRegions, maximumSpeed);
+		applet.run({
+			resolution,
+			gridSize,
+			rowProb,
+			colProb,
+			doDrawBoundaries,
+			doDrawRegions,
+			maximumSpeed
+		});
 	}
 }

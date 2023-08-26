@@ -17,6 +17,14 @@
 
 	--neutral-hover-component: calc(208 + (var(--theme) * (64 - 208)));
 	--neutral-hover: rgb(var(--neutral-hover-component), var(--neutral-hover-component), var(--neutral-hover-component));
+
+	--link-rb-component: calc(80 + (var(--theme) * (160 - 80)));
+	--link-g-component: calc(192 + (var(--theme) * (224 - 192)));
+	--link: rgb(var(--link-rb-component), var(--link-g-component), var(--link-rb-component));
+
+	--link-hover-rb-component: calc(160 + (var(--theme) * (192 - 160)));
+	--link-hover-g-component: calc(224 + (var(--theme) * (255 - 224)));
+	--link-hover: rgb(var(--link-hover-rb-component), var(--link-hover-g-component), var(--link-hover-rb-component));
 }
 
 html
@@ -66,7 +74,7 @@ section
 
 a
 {
-	color: rgb(127, 192, 127);
+	color: var(--link);
 	text-decoration: none;
 	transition: color .125s ease-in-out;
 	
@@ -75,12 +83,12 @@ a
 
 a.hover
 {
-	color: rgb(192, 255, 192);
+	color: var(--link-hover);
 }
 
 a:not(:hover):focus
 {
-	color: rgb(192, 255, 192);
+	color: var(--link-hover);
 	outline: none;
 }
 

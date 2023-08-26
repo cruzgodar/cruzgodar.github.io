@@ -47,6 +47,6 @@ export function load()
 		
 		const maxCageSize = parseInt(maxCageSizeInputElement.value || 1000);
 		
-		applet.run(gridSize, maxCageSize);
+		applet.run({ gridSize, maxCageSize });
 	}
 }

@@ -76,6 +76,12 @@ export function load()
 		const exposure = parseFloat(exposureInputElement.value || 1);
 		const numIterations = parseInt(numIterationsInputElement.value || 200);
 		
-		applet.run(glslCode, jsCode, resolution, exposure, numIterations);
+		applet.run({
+			glslCode,
+			jsCode,
+			resolution,
+			exposure,
+			numIterations
+		});
 	}
 }

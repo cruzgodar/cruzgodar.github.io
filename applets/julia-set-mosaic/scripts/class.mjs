@@ -113,7 +113,12 @@ export class JuliaSetMosaic extends Applet
 	
 	
 	
-	run(resolution = 1000, setDensity = 10, exposure = 1, numIterations = 100)
+	run({
+		resolution = 1000,
+		setDensity = 10,
+		exposure = 1,
+		numIterations = 100
+	})
 	{
 		this.resolution = resolution;
 		

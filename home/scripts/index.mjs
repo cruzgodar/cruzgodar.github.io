@@ -53,7 +53,11 @@ export function load()
 	
 	setTimeout(() => onScroll(1), 100);
 
-	addTemporaryListener({ object: window, event: "scroll", callback: onScroll });
+	addTemporaryListener({
+		object: window,
+		event: "scroll",
+		callback: onScroll
+	});
 	
 	disableLinks();
 	

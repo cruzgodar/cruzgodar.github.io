@@ -167,7 +167,11 @@ export async function loadSite(url = pageUrl)
 			return;
 		}
 		
-		redirect({ url: e.state.url, noStatePush: true, restoreScroll: true });
+		redirect({
+			url: e.state.url,
+			noStatePush: true,
+			restoreScroll: true
+		});
 	});
 
 
@@ -183,7 +187,11 @@ export async function loadSite(url = pageUrl)
 	
 	else
 	{
-		redirect({ url, noStatePush: true, noFadeOut: true });
+		redirect({
+			url,
+			noStatePush: true,
+			noFadeOut: true
+		});
 	}
 }
 

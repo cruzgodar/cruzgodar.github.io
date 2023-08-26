@@ -158,7 +158,13 @@ export class FractalSounds extends Applet
 	
 	
 	
-	run(glslCode, jsCode, resolution, exposure, numIterations)
+	run({
+		glslCode,
+		jsCode,
+		resolution,
+		exposure,
+		numIterations
+	})
 	{
 		this.currentFractalFunction = jsCode;
 		

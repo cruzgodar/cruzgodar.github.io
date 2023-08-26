@@ -43,6 +43,10 @@ export function load()
 		const diamondSize = parseInt(diamondSizeInputElement.value || 20) + 1;
 		const useSmoothColors = useSmoothColorsCheckboxElement.checked;
 		
-		applet.run(resolution, diamondSize, useSmoothColors);
+		applet.run({
+			resolution,
+			diamondSize,
+			useSmoothColors
+		});
 	}
 }

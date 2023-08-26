@@ -58,7 +58,16 @@ export function load()
 	
 	applet.loadPromise.then(() =>
 	{
-		applet.run("((x + 3.0 * y) / 8.0, (4.0 * x + 2.0 * y) / 8.0)", 500, 10000, .0075, 100, 0, 0, 1);
+		applet.run({
+			generatingCode: "((x + 3.0 * y) / 8.0, (4.0 * x + 2.0 * y) / 8.0)",
+			resolution: 500,
+			maxParticles: 10000,
+			dt: .0075,
+			lifetime: 100,
+			worldCenterX: 0,
+			worldCenterY: 0,
+			zoomLevel: 1
+		});
 		applet.pauseWhenOffscreen();
 	});
 	

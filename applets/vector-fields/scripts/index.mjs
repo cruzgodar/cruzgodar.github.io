@@ -114,7 +114,16 @@ export function load()
 		const dt = parseFloat(speedInputElement.value || 1) / 150;
 		const lifetime = Math.min(parseInt(lifetimeInputElement.value || 100), 255);
 		
-		applet.run(generatingCode, resolution, maxParticles, dt, lifetime, 0, 0, .5);
+		applet.run({
+			generatingCode,
+			resolution,
+			maxParticles,
+			dt,
+			lifetime,
+			worldCenterX: 0,
+			worldCenterY: 0,
+			zoomLevel: .5
+		});
 	}
 	
 	

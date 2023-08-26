@@ -65,6 +65,16 @@ export function load()
 		const mu = parseFloat(muInputElement.value || .0325);
 		const gamma = parseFloat(gammaInputElement.value || .025);
 		
-		applet.run(resolution, computationsPerFrame, rho, beta, alpha, theta, kappa, mu, gamma);
+		applet.run({
+			resolution,
+			computationsPerFrame,
+			rho,
+			beta,
+			alpha,
+			theta,
+			kappa,
+			mu,
+			gamma
+		});
 	}
 }

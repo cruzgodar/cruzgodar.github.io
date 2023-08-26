@@ -45,6 +45,10 @@ export function load()
 		const numNodes = parseInt(numNodesInputElement.value || 20);
 		const maximumSpeed = maximumSpeedCheckboxElement.checked;
 		
-		applet.run(resolution, numNodes, maximumSpeed);
+		applet.run({
+			resolution,
+			numNodes,
+			maximumSpeed
+		});
 	}
 }

@@ -35,7 +35,7 @@ export class CalcudokuGenerator extends Applet
 	
 	
 	
-	async run(gridSize, maxCageSize)
+	async run({ gridSize, maxCageSize })
 	{
 		if (this.canvas.style.opacity == 1)
 		{

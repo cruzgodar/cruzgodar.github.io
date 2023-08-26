@@ -97,7 +97,16 @@ export class ComplexMap extends Applet
 			loadGlsl()
 				.then(() =>
 				{
-					this.run(generatingCode, uniformCode, worldCenterX, worldCenterY, zoomLevel, addIndicatorDraggable, draggableCallback, selectorMode);
+					this.run({
+						generatingCode,
+						uniformCode,
+						worldCenterX,
+						worldCenterY,
+						zoomLevel,
+						addIndicatorDraggable,
+						draggableCallback,
+						selectorMode
+					});
 					
 					resolve();
 				});
@@ -106,7 +115,16 @@ export class ComplexMap extends Applet
 		
 		
 		
-	run(generatingCode, uniformCode = "", worldCenterX = 0, worldCenterY = 0, zoomLevel = -.585, addIndicatorDraggable = false, draggableCallback = null, selectorMode = false)
+	run({
+		generatingCode,
+		uniformCode = "",
+		worldCenterX = 0,
+		worldCenterY = 0,
+		zoomLevel = -.585,
+		addIndicatorDraggable = false,
+		draggableCallback = null,
+		selectorMode = false
+	})
 	{
 		this.generatingCode = generatingCode;
 		this.uniformCode = uniformCode;
@@ -260,11 +278,17 @@ export class ComplexMap extends Applet
 		this.pan.onGrabCanvas();
 		this.zoom.onGrabCanvas();
 		
-		
-		
 		if (this.useSelectorMode)
 		{
-			this.run(this.generatingCode, this.uniformCode, this.wilson.worldCenterX, this.wilson.worldCenterY, this.zoom.level, this.forceAddDraggable, true);
+			this.run({
+				generatingCode: this.generatingCode,
+				uniformCode: this.uniformCode,
+				worldCenterX: this.wilson.worldCenterX,
+				worldCenterY: this.wilson.worldCenterY,
+				zoomLevel: this.zoom.level,
+				addIndicatorDraggable: this.forceAddDraggable,
+				selectorMode: true
+			});
 			
 			const timeoutId = setTimeout(() =>
 			{
@@ -296,8 +320,16 @@ export class ComplexMap extends Applet
 				}
 				
 				console.log(`${x} ${plus1} ${Math.abs(y)}i |---> ${zX} ${plus2} ${Math.abs(zY)}i`);
-				
-				this.run(this.generatingCode, this.uniformCode, this.wilson.worldCenterX, this.wilson.worldCenterY, this.zoom.level, this.forceAddDraggable, false);
+		
+				this.run({
+					generatingCode: this.generatingCode,
+					uniformCode: this.uniformCode,
+					worldCenterX: this.wilson.worldCenterX,
+					worldCenterY: this.wilson.worldCenterY,
+					zoomLevel: this.zoom.level,
+					addIndicatorDraggable: this.forceAddDraggable,
+					selectorMode: false
+				});
 				
 				this.useSelectorMode = false;
 			}, 20);

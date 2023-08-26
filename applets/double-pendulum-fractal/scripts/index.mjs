@@ -75,6 +75,6 @@ export function load()
 	{
 		const resolution = parseInt(resolutionInputElement.value || 1000);
 		
-		applet.run(resolution);
+		applet.run({ resolution });
 	}
 }

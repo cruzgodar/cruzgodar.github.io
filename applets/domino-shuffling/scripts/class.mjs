@@ -55,7 +55,11 @@ export class DominoShuffling extends Applet
 	
 	
 	
-	run(resolution, diamondSize, useSmoothColors)
+	run({
+		resolution,
+		diamondSize,
+		useSmoothColors
+	})
 	{
 		this.resolution = resolution;
 		

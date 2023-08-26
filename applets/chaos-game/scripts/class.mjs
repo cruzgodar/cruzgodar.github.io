@@ -36,7 +36,7 @@ export class ChaosGame extends Applet
 	
 	
 	
-	run(resolution, numVertices)
+	run({ resolution, numVertices })
 	{
 		this.resolution = resolution;
 		this.numVertices = numVertices;

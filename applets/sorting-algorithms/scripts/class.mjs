@@ -163,7 +163,12 @@ export class SortingAlgorithm extends Applet
 	
 	
 	
-	run(resolution, algorithm, dataLength, doPlaySound)
+	run({
+		resolution,
+		algorithm,
+		dataLength,
+		doPlaySound
+	})
 	{
 		this.resolution = resolution;
 

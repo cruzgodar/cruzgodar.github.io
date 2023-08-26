@@ -100,6 +100,6 @@ export function load()
 	{
 		const generatingCode = codeInputElement.value;
 		
-		applet.run(generatingCode);
+		applet.run({ generatingCode });
 	}
 }

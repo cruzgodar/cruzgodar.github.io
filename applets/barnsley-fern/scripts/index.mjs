@@ -36,6 +36,6 @@ export function load()
 	{
 		const numIterations = 1000 * parseInt(numIterationsInputElement.value || 10000);
 		
-		applet.run(numIterations);
+		applet.run({ numIterations });
 	}
 }

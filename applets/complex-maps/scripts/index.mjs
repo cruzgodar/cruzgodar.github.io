@@ -103,6 +103,6 @@ export function load()
 	{
 		const generatingCode = codeInputElement.value || "cexp(cinv(z))";
 		
-		applet.run(generatingCode);
+		applet.run({ generatingCode });
 	}
 }

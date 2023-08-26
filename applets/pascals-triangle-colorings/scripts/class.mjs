@@ -52,7 +52,11 @@ export class PascalsTriangleColoring extends Applet
 	
 	
 	
-	run(resolution, gridSize, numColors)
+	run({
+		resolution,
+		gridSize,
+		numColors
+	})
 	{
 		this.resolution = resolution;
 		this.gridSize = gridSize;

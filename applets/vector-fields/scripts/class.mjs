@@ -308,7 +308,16 @@ export class VectorField extends Applet
 	
 	
 	
-	run(generatingCode, resolution = 500, maxParticles = 10000, dt = .0075, lifetime = 100, worldCenterX = 0, worldCenterY = 0, zoomLevel = .6515)
+	run({
+		generatingCode,
+		resolution = 500,
+		maxParticles = 10000,
+		dt = .0075,
+		lifetime = 100,
+		worldCenterX = 0,
+		worldCenterY = 0,
+		zoomLevel = .6515
+	})
 	{
 		this.dt = dt;
 		

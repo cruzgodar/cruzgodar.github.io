@@ -55,7 +55,15 @@ export class HitomezashiPattern extends Applet
 	
 	
 	
-	run(resolution = 2000, gridSize = 50, rowProb = .5, colProb = .5, doDrawBoundaries = true, doDrawRegions = true, maximumSpeed = false)
+	run({
+		resolution = 2000,
+		gridSize = 50,
+		rowProb = .5,
+		colProb = .5,
+		doDrawBoundaries = true,
+		doDrawRegions = true,
+		maximumSpeed = false
+	})
 	{
 		this.resolution = resolution;
 		this.gridSize = gridSize;

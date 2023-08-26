@@ -36,7 +36,7 @@ export class BrownianTree extends Applet
 	
 	
 	
-	run(resolution)
+	run({ resolution })
 	{
 		this.resolution = resolution;
 		

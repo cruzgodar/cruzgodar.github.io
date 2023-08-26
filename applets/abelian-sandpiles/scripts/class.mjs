@@ -270,7 +270,7 @@ export class AbelianSandpile extends Applet
 	
 	
 	
-	run(numGrains = 10000, computationsPerFrame = 25)
+	run({ numGrains = 10000, computationsPerFrame = 25 })
 	{
 		this.resume();
 		

@@ -35,7 +35,12 @@ export class WilsonsAlgorithm extends Applet
 	
 	
 	
-	run(gridSize, maximumSpeed, noBorders, reverseGenerateSkeleton = false)
+	run({
+		gridSize,
+		maximumSpeed,
+		noBorders,
+		reverseGenerateSkeleton = false
+	})
 	{
 		let timeoutId = null;
 		
@@ -81,7 +86,12 @@ export class WilsonsAlgorithm extends Applet
 					this.webWorker.terminate();
 				}
 
-				this.run(gridSize, maximumSpeed, noBorders, true);
+				this.run({
+					gridSize,
+					maximumSpeed,
+					noBorders,
+					reverseGenerateSkeleton: true
+				});
 			}, 3000);
 		}
 

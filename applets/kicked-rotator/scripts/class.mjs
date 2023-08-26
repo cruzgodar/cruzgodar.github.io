@@ -37,7 +37,11 @@ export class KickedRotator extends Applet
 	
 	
 	
-	run(resolution, K, orbitSeparation)
+	run({
+		resolution,
+		K,
+		orbitSeparation
+	})
 	{
 		const values = new Array(resolution * resolution);
 		

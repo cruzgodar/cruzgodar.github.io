@@ -68,6 +68,11 @@ export function load()
 		const exposure = parseFloat(exposureInputElement.value || 1);
 		const numIterations = parseInt(numIterationsInputElement.value || 100);
 		
-		applet.run(resolution, setDensity, exposure, numIterations);
+		applet.run({
+			resolution,
+			setDensity,
+			exposure,
+			numIterations
+		});
 	}
 }

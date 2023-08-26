@@ -39,7 +39,11 @@ export class FiniteSubdivision extends Applet
 	
 	
 	
-	run(numVertices, numIterations, maximumSpeed)
+	run({
+		numVertices,
+		numIterations,
+		maximumSpeed
+	})
 	{
 		this.numVertices = numVertices;
 		this.numIterations = Math.min(numIterations, 9);

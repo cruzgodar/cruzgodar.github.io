@@ -201,7 +201,7 @@ export class DoublePendulumFractal extends Applet
 	
 	
 	
-	run(resolution)
+	run({ resolution })
 	{
 		this.drawnFractal = false;
 		this.drawingFractal = true;

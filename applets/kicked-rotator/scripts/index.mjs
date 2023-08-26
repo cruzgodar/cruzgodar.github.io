@@ -45,6 +45,10 @@ export function load()
 		const K = parseFloat(kInputElement.value || .75);
 		const orbitSeparation = parseInt(orbitSeparationInputElement.value || 0);
 		
-		applet.run(resolution, K, orbitSeparation);
+		applet.run({
+			resolution,
+			K,
+			orbitSeparation 
+		});
 	}
 }

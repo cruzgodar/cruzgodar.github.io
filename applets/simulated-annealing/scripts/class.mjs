@@ -38,7 +38,11 @@ export class SimulatedAnnealing extends Applet
 	
 	
 	
-	run(resolution, numNodes, maximumSpeed)
+	run({
+		resolution,
+		numNodes,
+		maximumSpeed
+	})
 	{
 		this.resolution = resolution;
 		this.numNodes = numNodes;

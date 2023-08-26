@@ -123,7 +123,7 @@ export function load()
 
 	function run()
 	{
-		ecApplet.run(g2, g3);
+		ecApplet.run({ g2, g3 });
 		
 		wpApplet.wilson.gl.uniform1f(wpApplet.wilson.uniforms["g2Arg"], g2);
 		wpApplet.wilson.gl.uniform1f(wpApplet.wilson.uniforms["g3Arg"], g3);

@@ -42,7 +42,11 @@ export function load()
 		const maxCageSize = parseInt(maxCageSizeInputElement.value || 16);
 		const uniqueSolution = uniqueSolutionCheckboxElement.checked;
 		
-		applet.run(gridSize, maxCageSize, uniqueSolution);
+		applet.run({
+			gridSize,
+			maxCageSize,
+			uniqueSolution
+		});
 	}
 	
 	

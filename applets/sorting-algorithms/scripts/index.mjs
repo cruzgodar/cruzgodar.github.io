@@ -77,6 +77,11 @@ export function load()
 		const dataLength = parseInt(arraySizeInputElement.value || 256);
 		const doPlaySound = playSoundCheckboxElement.checked;
 
-		applet.run(resolution, algorithm, dataLength, doPlaySound);
+		applet.run({
+			resolution,
+			algorithm,
+			dataLength,
+			doPlaySound
+		});
 	}
 }

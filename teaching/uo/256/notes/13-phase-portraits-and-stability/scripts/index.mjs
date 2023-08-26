@@ -240,7 +240,16 @@ export function load()
 	
 	applet.loadPromise.then(() =>
 	{
-		applet.run("((x - 1.0) * (x + 1.0), (y + 1.0) * (y - 1.0))", 500, 10000, .0035, 100, 0, 0, -.15);
+		applet.run({
+			generatingCode: "((x - 1.0) * (x + 1.0), (y + 1.0) * (y - 1.0))",
+			resolution: 500,
+			maxParticles: 10000,
+			dt: .0035,
+			lifetime: 100,
+			worldCenterX: 0,
+			worldCenterY: 0,
+			zoomLevel: -.15
+		});
 		applet.pauseWhenOffscreen();
 	});
 	
@@ -252,7 +261,16 @@ export function load()
 	
 	applet2.loadPromise.then(() =>
 	{
-		applet2.run("(y*y, 1.0 - x*x)", 500, 10000, .0035, 100, 0, 0, 0);
+		applet2.run({
+			generatingCode: "(y*y, 1.0 - x*x)",
+			resolution: 500,
+			maxParticles: 10000,
+			dt: .0035,
+			lifetime: 100,
+			worldCenterX: 0,
+			worldCenterY: 0,
+			zoomLevel: 0
+		});
 		applet2.pauseWhenOffscreen();
 	});
 	
@@ -264,7 +282,16 @@ export function load()
 	
 	applet3.loadPromise.then(() =>
 	{
-		applet3.run("(y, -.5*y - sin(x))", 500, 10000, .0035, 100, 0, 0, 2);
+		applet3.run({
+			generatingCode: "(y, -.5*y - sin(x))",
+			resolution: 500,
+			maxParticles: 10000,
+			dt: .0035,
+			lifetime: 100,
+			worldCenterX: 0,
+			worldCenterY: 0,
+			zoomLevel: 2
+		});
 		applet3.pauseWhenOffscreen();
 	});
 	

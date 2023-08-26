@@ -37,7 +37,11 @@ export class MagicCarpet extends Applet
 	
 	
 	
-	async run(gridSize = 8, maxCageSize = 16, uniqueSolution = true)
+	async run({
+		gridSize = 8,
+		maxCageSize = 16,
+		uniqueSolution = true
+	})
 	{
 		if (this.currentlyDrawing)
 		{

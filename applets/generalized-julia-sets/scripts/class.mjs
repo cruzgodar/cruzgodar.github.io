@@ -119,7 +119,12 @@ export class GeneralizedJuliaSet extends Applet
 	
 	
 	
-	run(generatingCode = "cpow(z, 2.0) + c", resolution = 500, exposure = 1, numIterations = 200)
+	run({
+		generatingCode = "cpow(z, 2.0) + c",
+		resolution = 500,
+		exposure = 1,
+		numIterations = 200
+	})
 	{
 		this.generatingCode = generatingCode;
 		

@@ -45,6 +45,10 @@ export function load()
 		const gridSize = parseInt(gridSizeInputElement.value || 27);
 		const numColors = parseInt(numColorsInputElement.value || 3);
 		
-		applet.run(resolution, gridSize, numColors);
+		applet.run({
+			resolution,
+			gridSize,
+			numColors
+		});
 	}
 }

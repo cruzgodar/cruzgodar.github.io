@@ -50,6 +50,12 @@ export function load()
 		const beta = parseFloat(betaInputElement.value || 2.67);
 		const maximumSpeed = maximumSpeedCheckboxElement.checked;
 		
-		applet.run(resolution, sigma, rho, beta, maximumSpeed);
+		applet.run({
+			resolution,
+			sigma,
+			rho,
+			beta,
+			maximumSpeed
+		});
 	}
 }

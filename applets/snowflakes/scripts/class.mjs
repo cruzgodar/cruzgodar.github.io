@@ -537,7 +537,17 @@ export class Snowflake extends Applet
 	
 	
 	
-	run(resolution = 500, computationsPerFrame = 25, rho = .635, beta = 1.6, alpha = .4, theta = .025, kappa = .0025, mu = .015, gamma = .0005)
+	run({
+		resolution = 500,
+		computationsPerFrame = 25,
+		rho = .635,
+		beta = 1.6,
+		alpha = .4,
+		theta = .025,
+		kappa = .0025,
+		mu = .015,
+		gamma = .0005
+	})
 	{
 		this.resume();
 		

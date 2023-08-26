@@ -140,7 +140,7 @@ export class NewtonsMethodExtended extends Applet
 	
 	
 	
-	run(generatingCode)
+	run({ generatingCode })
 	{
 		const fragShaderSource = `
 			precision highp float;

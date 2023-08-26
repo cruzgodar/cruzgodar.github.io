@@ -102,7 +102,7 @@ export class LyapunovFractal extends Applet
 	
 	
 	
-	run(generatingString)
+	run({ generatingString })
 	{
 		const generatingCode = [];
 		

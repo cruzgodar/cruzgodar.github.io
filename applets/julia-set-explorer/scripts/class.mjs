@@ -51,12 +51,12 @@ export class JuliaSet extends Applet
 		
 		
 
-		loadGlsl().then(() => this.run(canvas));
+		loadGlsl().then(() => this.run({ canvas }));
 	}
 
 
 
-	run(canvas)
+	run({ canvas })
 	{
 		const fragShaderSourceSingle0 = `
 			precision highp float;

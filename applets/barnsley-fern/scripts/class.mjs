@@ -37,7 +37,7 @@ export class BarnsleyFern extends Applet
 	
 	
 	
-	run(numIterations)
+	run({ numIterations })
 	{
 		this.numIterations = numIterations;
 		

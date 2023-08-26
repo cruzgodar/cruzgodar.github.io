@@ -145,7 +145,7 @@ export class EllipticCurve extends Applet
 	
 	
 	
-	run(g2, g3)
+	run({ g2, g3 })
 	{
 		this.g2 = g2;
 		this.g3 = g3;

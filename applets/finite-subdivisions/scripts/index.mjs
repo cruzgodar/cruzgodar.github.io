@@ -44,6 +44,10 @@ export function load()
 		const numIterations = parseInt(numIterationsInputElement.value || 5);
 		const maximumSpeed = maximumSpeedCheckboxElement.checked;
 		
-		applet.run(numVertices, numIterations, maximumSpeed);
+		applet.run({
+			numVertices,
+			numIterations,
+			maximumSpeed
+		});
 	}
 }

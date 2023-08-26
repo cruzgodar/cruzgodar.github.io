@@ -47,6 +47,10 @@ export function load()
 		const maximumSpeed = maximumSpeedCheckboxElement.checked;
 		const noBorders = noBordersCheckboxElement.checked;
 
-		applet.run(gridSize, maximumSpeed, noBorders);
+		applet.run({
+			gridSize,
+			maximumSpeed,
+			noBorders
+		});
 	}
 }
