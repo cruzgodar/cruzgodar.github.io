@@ -1,4 +1,4 @@
-import { fadeDownOut, fadeLeftOut, fadeOut, fadeRightOut, fadeUpOut } from "./animation.mjs";
+import { fadeDownOut, fadeLeftOut, fadeOut, fadeRightOut, fadeUpOut, opacityAnimationTime } from "./animation.mjs";
 import { Applet } from "./applets.mjs";
 import { bannerElement, bannerOnScroll, loadBanner, setScrollButtonExists } from "./banners.mjs";
 import { cardIsOpen, hideCard } from "./cards.mjs";
@@ -216,27 +216,27 @@ async function fadeOutPage({ url, noFadeOut })
 	{
 		if (navigationTransitionType === 1)
 		{
-			return bannerElement ? Promise.all([fadeUpOut(pageElement), fadeUpOut(bannerElement)]) : fadeUpOut(pageElement);
+			return bannerElement ? Promise.all([fadeUpOut(pageElement), fadeUpOut(bannerElement, opacityAnimationTime, true)]) : fadeUpOut(pageElement);
 		}
 		
 		else if (navigationTransitionType === -1)
 		{
-			return bannerElement ? Promise.all([fadeDownOut(bannerElement), fadeDownOut(pageElement)]) : fadeDownOut(pageElement);
+			return bannerElement ? Promise.all([fadeDownOut(bannerElement, opacityAnimationTime, true), fadeDownOut(pageElement)]) : fadeDownOut(pageElement);
 		}
 		
 		else if (navigationTransitionType === 2)
 		{
-			return bannerElement ? Promise.all([fadeLeftOut(bannerElement), fadeLeftOut(pageElement)]) : fadeLeftOut(pageElement);
+			return bannerElement ? Promise.all([fadeLeftOut(bannerElement, opacityAnimationTime, true), fadeLeftOut(pageElement)]) : fadeLeftOut(pageElement);
 		}
 		
 		else if (navigationTransitionType === -2)
 		{
-			return bannerElement ? Promise.all([fadeRightOut(bannerElement), fadeRightOut(pageElement)]) : fadeRightOut(pageElement);
+			return bannerElement ? Promise.all([fadeRightOut(bannerElement, opacityAnimationTime, true), fadeRightOut(pageElement)]) : fadeRightOut(pageElement);
 		}
 		
 		else
 		{
-			return bannerElement ? Promise.all([fadeOut(bannerElement), fadeOut(pageElement)]) : fadeOut(pageElement);
+			return bannerElement ? Promise.all([fadeOut(bannerElement, opacityAnimationTime, true), fadeOut(pageElement)]) : fadeOut(pageElement);
 		}
 	})();
 }

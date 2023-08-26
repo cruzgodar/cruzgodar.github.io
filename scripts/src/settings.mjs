@@ -175,7 +175,7 @@ export async function toggleDarkTheme({ noAnimation = false, force = false })
 	else
 	{
 		const element = addStyle(`
-			*:not(.page, .desmos-container)
+			*:not(.page, #banner, .desmos-container)
 			{
 				transition: none !important;
 			}
