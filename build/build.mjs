@@ -11,17 +11,6 @@ const excludeFromBuild =
 	/slides\/.+\/index\.htmdl/
 ];
 
-const siteCSSFiles =
-[
-	"main",
-	"applets",
-	"banners",
-	"buttons-and-boxes",
-	"header",
-	"image-links",
-	"notes",
-];
-
 const clean = process.argv.slice(2).includes("-c");
 
 
@@ -45,11 +34,6 @@ async function buildSite()
 		exec(`git -C ${root} ls-files${clean ? "" : " -m -o"}`, async (error, stdout) =>
 		{
 			await parseModifiedFiles(stdout.split("\n"), sitemap);
-
-			if (stdout.search(/style\/src/) !== -1)
-			{
-				await buildSiteCSS();
-			}
 
 			await eslint();
 
@@ -167,30 +151,16 @@ function buildCSSFile(file)
 	exec(`uglifycss ${root + file} --output ${root + outputFile}`);
 }
 
-async function buildSiteCSS()
-{
-	let bundle = "";
-
-	for (let i = 0; i < siteCSSFiles.length; i++)
-	{
-		const text = await read(`/style/src/${siteCSSFiles[i]}.min.css`);
-
-		bundle += text;
-	}
-
-	void(bundle);
-
-	await write("/style/css-bundle.min.css", bundle);
-	console.log("style/css-bundle.min.css");
-}
-
 async function eslint()
 {
 	await new Promise(resolve =>
 	{
 		exec(`eslint --ext .js,.mjs ${root}`, (error, stdout) =>
 		{
-			console.log(stdout);
+			if (stdout)
+			{
+				console.log(stdout);
+			}
 
 			resolve();
 		});
@@ -203,7 +173,10 @@ async function stylelint()
 	{
 		exec("stylelint '**/index.css'", (error, stdout) =>
 		{
-			console.log(stdout);
+			if (stdout)
+			{
+				console.log(stdout);
+			}
 
 			resolve();
 		});

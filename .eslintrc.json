@@ -17,7 +17,8 @@
 		"/projects/wilson/*",
 		"/applets/calcudoku-generator/scripts/solver.*",
 		"/applets/sudoku-generator/scripts/solver.*",
-		"/applets/wilsons-algorithm/scripts/random-walk.*"
+		"/applets/wilsons-algorithm/scripts/random-walk.*",
+		"/jsconfig.json"
 	],
     "rules": {
         "indent": [
