@@ -25,6 +25,24 @@
 	--link-hover-rb-component: calc(160 + (var(--theme) * (192 - 160)));
 	--link-hover-g-component: calc(224 + (var(--theme) * (255 - 224)));
 	--link-hover: rgb(var(--link-hover-rb-component), var(--link-hover-g-component), var(--link-hover-rb-component));
+
+	--gallery-color: rgb(176, 238, 173);
+	--gallery-color: lch(90% 35 140);
+
+	--applets-color: rgb(255, 180, 203);
+	--applets-color: lch(90% 50 12);
+
+	--teaching-color: rgb(255, 216, 150);
+	--teaching-color: lch(90% 35 80);
+
+	--slides-color: rgb(244, 199, 255);
+	--slides-color: lch(90% 70 300);
+
+	--writing-color: rgb(175, 229, 255);
+	--writing-color: lch(90% 30 255);
+
+	--about-color: rgb(222, 222, 222);
+	--about-color: lch(90% 0 0);
 }
 
 html
@@ -1187,38 +1205,32 @@ option
 
 #header-gallery-link.hover
 {
-	background-color: rgb(74.84% 93.59% 73.79%);
-	background-color: lch(90% 30 140);
+	background-color: var(--gallery-color);
 }
 
 #header-applets-link.hover
 {
-	background-color: rgb(100% 81.25% 82.79%);
-	background-color: lch(87.5% 32.5 15);
+	background-color: var(--applets-color);
 }
 
 #header-teaching-link.hover
 {
-	background-color: rgb(96.61% 88.19% 58.38%);
-	background-color: lch(95% 35 90);
+	background-color: var(--teaching-color);
 }
 
 #header-slides-link.hover
 {
-	background-color: rgb(91.32% 86.89% 100%);
-	background-color: lch(90% 32.5 300);
+	background-color: var(--slides-color);
 }
 
 #header-writing-link.hover
 {
-	background-color: rgb(80.89% 90.01% 100%);
-	background-color: lch(90% 20 255);
+	background-color: var(--writing-color);
 }
 
 #header-about-link.hover
 {
-	background-color: rgb(88.76% 88.76% 88.76%);
-	background-color: lch(90% 0 0);
+	background-color: var(--about-color);
 }
 
 #header-theme-button
@@ -1379,38 +1391,32 @@ option
 
 img[src="/gallery/cover.webp"]
 {
-	background-color: rgb(74.84% 93.59% 73.79%);
-	background-color: lch(90% 30 140);
+	background-color: var(--gallery-color);
 }
 
 img[src="/applets/cover.webp"]
 {
-	background-color: rgb(100% 81.25% 82.79%);
-	background-color: lch(87.5% 32.5 15);
+	background-color: var(--applets-color);
 }
 
 img[src="/teaching/cover.webp"]
 {
-	background-color: rgb(96.61% 88.19% 58.38%);
-	background-color: lch(95% 35 90);
+	background-color: var(--teaching-color);
 }
 
 img[src="/slides/cover.webp"]
 {
-	background-color: rgb(91.32% 86.89% 100%);
-	background-color: lch(90% 32.5 300);
+	background-color: var(--slides-color);
 }
 
 img[src="/writing/cover.webp"]
 {
-	background-color: rgb(80.89% 90.01% 100%);
-	background-color: lch(90% 20 255);
+	background-color: var(--writing-color);
 }
 
 img[src="/about/cover.webp"]
 {
-	background-color: rgb(88.76% 88.76% 88.76%);
-	background-color: lch(90% 0 0);
+	background-color: var(--about-color);
 }
 
 
