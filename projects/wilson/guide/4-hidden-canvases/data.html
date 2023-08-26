@@ -1,0 +1,85 @@
+<header><div id="logo"><a href="/home/" tabindex="-1"><img src="/graphics/general-icons/logo.png" alt="Logo" tabindex="1"></img></a></div><div style="height: 20px"></div><h1 class="heading-text">Part 4: Hidden Canvases</h1></header><main><section><div class="text-buttons nav-buttons"><div class="focus-on-child tabindex="1"><button class="text-button linked-text-button previous-nav-button" type="button" tabindex="-1">Previous</button></div><div class="focus-on-child" tabindex="1"><button class="text-button linked-text-button home-nav-button" type="button" tabindex="-1">Home</button></div><div class="focus-on-child" tabindex="1"><button class="text-button linked-text-button next-nav-button" type="button" tabindex="-1">Next</button></div></div><p class="body-text">One problem you probably noticed with the CPU canvas was a rapid fluctuation in brightness due to a high variation in the value of the brightest pixel. Now we have a different problem &mdash; there&#x2019;s not a clear way to automatically control the brightness at all. One option is to try a value, then see how many pixels are at max brightness and slightly adjust the brightness scale on the next frame. This is expensive, though, and if the brightness changes suddenly, it will take a while to catch up. A better solution is to render a second canvas with the same shader at a very low resolution &mdash; say 100x100 &mdash; and no brightness scale at all. Then we can read off the max brightness from that canvas and use it for the output one.</p><p class="body-text">This process is simple &mdash; all we have to do is register a second canvas with Wilson and give it a similar set of options.</p><pre><code class="language-html">&lt;input id="resolution-input" type="text" value="1000"&gt;
+&lt;label for="resolution-input"&gt;
+&#9;&lt;p&gt;Resolution&lt;/p&gt;
+&lt;/label&gt;
+
+&lt;canvas id="hidden-canvas"&gt&lt;/canvas&gt;
+
+&lt;canvas id="output-canvas"&gt&lt;/canvas&gt;
+</code></pre><pre><code class="language-css">#hidden-canvas
+{
+&#9;position: fixed;
+&#9;left: -100px;
+&#9;width: 10px;
+&#9;height: 10px;
+}
+</code></pre><pre><code class="language-js">let optionsHidden =
+{
+&#9;renderer: "gpu",
+&#9;
+&#9;shader: fragShaderSource,
+&#9;
+&#9;canvasWidth: 100,
+&#9;canvasHeight: 100
+};
+
+
+
+let wilsonHidden = new Wilson(document.querySelector("#hidden-canvas"), optionsHidden);
+
+wilsonHidden.render.initUniforms(["a", "b", "brightnessScale"]);
+</code></pre><pre><code class="language-js">function drawJuliaSet(timestamp)
+{
+&#9;let timeElapsed = timestamp - lastTimestamp;
+&#9;
+&#9;lastTimestamp = timestamp;
+&#9;
+&#9;
+&#9;
+&#9;if (timeElapsed === 0)
+&#9;{
+&#9;&#9;return;
+&#9;}
+&#9;
+&#9;
+&#9;
+&#9;wilsonHidden.gl.uniform1f(wilsonHidden.uniforms["a"], a);
+&#9;wilsonHidden.gl.uniform1f(wilsonHidden.uniforms["b"], b);
+&#9;
+&#9;/*
+&#9;Like range in a photo, the brightness will get clipped if we let it go above 1.
+&#9;Therefore, we divide by a large number to make sure that doesn't happen.
+&#9;Too large and everything will get compressed into too few dark values instead,
+&#9;so we need to pick a brightness scale in the middle.
+&#9;*/
+&#9;wilsonHidden.gl.uniform1f(wilsonHidden.uniforms["brightnessScale"], 20);
+&#9;
+&#9;wilsonHidden.render.drawFrame();
+&#9;
+&#9;
+&#9;
+&#9;let pixelData = wilsonHidden.render.getPixelData();
+&#9;
+&#9;let brightnesses = new Array(resolutionHidden * resolutionHidden);
+&#9;
+&#9;for (let i = 0; i &lt; resolutionHidden * resolutionHidden; i++)
+&#9;{
+&#9;brightnesses[i] = pixelData[4 * i] + pixelData[4 * i + 1] + pixelData[4 * i + 2];
+&#9;}
+&#9;
+&#9;brightnesses.sort((a, b) => a - b);
+&#9;
+&#9;//Both the .98 and 18 here were found experimentally.
+&#9;let brightnessScale = brightnesses[Math.floor(resolutionHidden * resolutionHidden * .98)] / 255 * 18;
+&#9;
+brightnessScale = Math.max(brightnessScale, .1);
+&#9;
+&#9;
+&#9;
+&#9;wilson.gl.uniform1f(wilson.uniforms["a"], a);
+&#9;wilson.gl.uniform1f(wilson.uniforms["b"], b);
+&#9;wilson.gl.uniform1f(wilson.uniforms["brightnessScale"], brightnessScale);
+&#9;
+&#9;wilson.render.drawFrame();
+}
+</code></pre><p class="body-text">Notice that we&#x2019;re sorting the brightnesses and throwing out the top 2% &mdash; this effectively removes outlier pixels and keeps the brightness stable frame-to-frame. Since the hidden canvas is so small, this sorting isn&#x2019;t expensive.</p><div class='text-boxes'><div class="text-box-container"><input id="resolution-input" class="text-box" type="text" value="1000" tabindex="1"><p class="body-text text-box-subtext">Resolution</p></div></div><div class="center-content"><div id="canvas-landscape-middle"><canvas id="output-canvas" class="output-canvas"></canvas><canvas id="hidden-canvas" class="hidden-canvas"></canvas></div></div><div class='text-buttons'><div class="focus-on-child" tabindex="1"><button class="text-button" type="button" id="download-button" tabindex="-1">Download</button></div></div><div style="height: 32px"></div><p class="body-text">In the next section, we&#x2019;ll add the ability to run the applet in fullscreen, leveraging as much screen space as possible.</p><p class="body-text">You can view the code for this page <a href="/projects/wilson/guide/4-hidden-canvases/scripts/index.js">here</a>.</p><div class="text-buttons nav-buttons"><div class="focus-on-child tabindex="1"><button class="text-button linked-text-button previous-nav-button" type="button" tabindex="-1">Previous</button></div><div class="focus-on-child" tabindex="1"><button class="text-button linked-text-button home-nav-button" type="button" tabindex="-1">Home</button></div><div class="focus-on-child" tabindex="1"><button class="text-button linked-text-button next-nav-button" type="button" tabindex="-1">Next</button></div></div></section></main>

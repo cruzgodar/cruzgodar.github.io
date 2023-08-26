@@ -916,9 +916,9 @@ const components =
 		
 		const headHtml = `<title>${pageTitle}</title><meta property="og:title" content="${pageTitle}"/><meta property="og:type" content="website"/><meta property="og:url" content="https://cruzgodar.com${parentFolder}"/><meta property="og:image" content="https://cruzgodar.com${parentFolder}cover.webp"/><meta property="og:locale" content="en_US"/><meta property="og:site_name" content="Cruz Godar"/>`;
 			
-		html = `<!DOCTYPE html><html lang="en"><head>${headHtml}<style>body {opacity: 0;}</style></head><body><noscript><p class="body-text" style="text-align: center">JavaScript is required to use this site and many others. Consider enabling it.</p></noscript>${html}<script src="/scripts/init.min.js"></script></body></html>`;
+		const wrappedHtml = `<!DOCTYPE html><html lang="en"><head>${headHtml}<style>body {opacity: 0;}</style></head><body><noscript><p class="body-text" style="text-align: center">JavaScript is required to use this site and many others. Consider enabling it.</p></noscript>${html}<script src="/scripts/init.min.js"></script></body></html>`;
 		
-		return html;
+		return [html, wrappedHtml];
 	}
 };
 
@@ -930,9 +930,11 @@ export default async function buildHTMLFile(file, fileParentFolder, sitemapArgum
 
 	sitemap = sitemapArgument;
 
-	const html = components.decode("\n" + file);
+	const [html, wrappedHtml] = components.decode("\n" + file);
 
-	await write(`${fileParentFolder}index.html`, html);
+	await write(`${fileParentFolder}data.html`, html);
+
+	await write(`${fileParentFolder}index.html`, wrappedHtml);
 
 	await write(`${fileParentFolder}index.htmdl`, file.replace(/[\s\n\t]*<script src="\/scripts\/init\.js"><\/script>/g, ""));
 }
