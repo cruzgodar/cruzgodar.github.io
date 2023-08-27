@@ -1,7 +1,11 @@
 {
 	"prettier.enable": false,
 	"files.exclude": {
-		"**/*.min.*": true
+		"**/*.min.*": true,
+		"**/android-icon*": true,
+		"**/apple-icon*": true,
+		"**/favicon*": true,
+		"**/ms-icon*": true
 	},
 	"editor.wordWrap": "bounded",
 	"editor.wordWrapColumn": 128,

@@ -22,7 +22,7 @@
 	],
     "rules": {
         "indent": [
-            "error",
+            "warn",
             "tab",
 			{ "SwitchCase": 1 }
         ],
@@ -31,7 +31,7 @@
             "unix"
         ],
         "quotes": [
-            "error",
+            "warn",
             "double"
         ],
         "semi": [
@@ -39,11 +39,11 @@
             "always"
         ],
 		"no-unused-vars": [
-			"error",
+			"warn",
 			{ "args": "after-used" }
 		],
 		"prefer-const": [
-			"error",
+			"warn",
 			{ "destructuring": "any"}
 		],
 		"no-use-before-define": [
@@ -56,8 +56,16 @@
 			}
 		],
 		"max-len": [
-			"error",
+			"warn",
 			{ "code": 128 }
+		],
+		"object-curly-spacing": [
+			"warn",
+			"always",
+			{
+				"arraysInObjects": false,
+				"objectsInObjects": true
+			}
 		]
 	}
 }

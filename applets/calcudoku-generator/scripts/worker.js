@@ -159,9 +159,17 @@ function generateNumberGrid()
 	
 	
 	
-	//Now we're going to do three things: shuffle the rows, shuffle the columns, and shuffle the digits themselves. To top it all off, we'll do these three things in random order, twice each.
+	//Now we're going to do three things: shuffle the rows, shuffle the columns, and shuffle the digits themselves.
+	//To top it all off, we'll do these three things in random order, twice each.
 	
-	const shuffles = shuffleArray([shuffleGridRows, shuffleGridRows, shuffleGridColumns, shuffleGridColumns, shuffleGridDigits, shuffleGridDigits]);
+	const shuffles = shuffleArray([
+		shuffleGridRows,
+		shuffleGridRows,
+		shuffleGridColumns,
+		shuffleGridColumns,
+		shuffleGridDigits,
+		shuffleGridDigits
+	]);
 	
 	for (let i = 0; i < 6; i++)
 	{
@@ -312,22 +320,34 @@ function expandCages(cageToDestroy)
 	//Try left/right first.
 	if (Math.random() < .5)
 	{
-		if (row !== 0 && cagesByLocation[row - 1][col] !== cageToDestroy && tryToAddCageToCage(cagesByLocation[row][col], cagesByLocation[row - 1][col]))
+		if (
+			row !== 0 && cagesByLocation[row - 1][col] !== cageToDestroy
+			&& tryToAddCageToCage(cagesByLocation[row][col], cagesByLocation[row - 1][col])
+		)
 		{
 			cageThatGrew = cagesByLocation[row - 1][col];
 		}
 		
-		else if (row !== gridSize - 1 && cagesByLocation[row + 1][col] !== cageToDestroy && tryToAddCageToCage(cagesByLocation[row][col], cagesByLocation[row + 1][col]))
+		else if (
+			row !== gridSize - 1 && cagesByLocation[row + 1][col] !== cageToDestroy
+			&& tryToAddCageToCage(cagesByLocation[row][col], cagesByLocation[row + 1][col])
+		)
 		{
 			cageThatGrew = cagesByLocation[row + 1][col];
 		}
 		
-		else if (col !== 0 && cagesByLocation[row][col - 1] !== cageToDestroy && tryToAddCageToCage(cagesByLocation[row][col], cagesByLocation[row][col - 1]))
+		else if (
+			col !== 0 && cagesByLocation[row][col - 1] !== cageToDestroy
+			&& tryToAddCageToCage(cagesByLocation[row][col], cagesByLocation[row][col - 1])
+		)
 		{
 			cageThatGrew = cagesByLocation[row][col - 1];
 		}
 		
-		else if (col !== gridSize - 1 && cagesByLocation[row][col + 1] !== cageToDestroy && tryToAddCageToCage(cagesByLocation[row][col], cagesByLocation[row][col + 1]))
+		else if (
+			col !== gridSize - 1 && cagesByLocation[row][col + 1] !== cageToDestroy
+			&& tryToAddCageToCage(cagesByLocation[row][col], cagesByLocation[row][col + 1])
+		)
 		{
 			cageThatGrew = cagesByLocation[row][col + 1];
 		}
@@ -344,22 +364,34 @@ function expandCages(cageToDestroy)
 	//Try up/down first.
 	else
 	{
-		if (col !== 0 && cagesByLocation[row][col - 1] !== cageToDestroy && tryToAddCageToCage(cagesByLocation[row][col], cagesByLocation[row][col - 1]))
+		if (
+			col !== 0 && cagesByLocation[row][col - 1] !== cageToDestroy
+			&& tryToAddCageToCage(cagesByLocation[row][col], cagesByLocation[row][col - 1])
+		)
 		{
 			cageThatGrew = cagesByLocation[row][col - 1];
 		}
 		
-		else if (col !== gridSize - 1 && cagesByLocation[row][col + 1] !== cageToDestroy && tryToAddCageToCage(cagesByLocation[row][col], cagesByLocation[row][col + 1]))
+		else if (
+			col !== gridSize - 1 && cagesByLocation[row][col + 1] !== cageToDestroy
+			&& tryToAddCageToCage(cagesByLocation[row][col], cagesByLocation[row][col + 1])
+		)
 		{
 			cageThatGrew = cagesByLocation[row][col + 1];
 		}
 		
-		else if (row !== 0 && cagesByLocation[row - 1][col] !== cageToDestroy && tryToAddCageToCage(cagesByLocation[row][col], cagesByLocation[row - 1][col]))
+		else if (
+			row !== 0 && cagesByLocation[row - 1][col] !== cageToDestroy
+			&& tryToAddCageToCage(cagesByLocation[row][col], cagesByLocation[row - 1][col])
+		)
 		{
 			cageThatGrew = cagesByLocation[row - 1][col];
 		}
 		
-		else if (row !== gridSize - 1 && cagesByLocation[row + 1][col] !== cageToDestroy && tryToAddCageToCage(cagesByLocation[row][col], cagesByLocation[row + 1][col]))
+		else if (
+			row !== gridSize - 1 && cagesByLocation[row + 1][col] !== cageToDestroy
+			&& tryToAddCageToCage(cagesByLocation[row][col], cagesByLocation[row + 1][col])
+		)
 		{
 			cageThatGrew = cagesByLocation[row + 1][col];
 		}
@@ -402,7 +434,8 @@ function tryToAddCageToCage(cageToDestroy, cageToGrow)
 	
 	
 	
-	//There are no problems if the new cage is an addition or multiplication cell, but there could be if it's subtraction or division.
+	//There are no problems if the new cage is an addition or multiplication cell,
+	//but there could be if it's subtraction or division.
 	
 	//This will be treated either as addition or multiplication.
 	if (cages[cageToGrow][0] === "")
@@ -427,7 +460,10 @@ function tryToAddCageToCage(cageToDestroy, cageToGrow)
 	
 	
 	//The new cage sum must be less than or equal to twice the max digit.
-	else if (cages[cageToGrow][0] === "-" && cages[cageToGrow][4] + cages[cageToDestroy][4] <= 2 * Math.max(cages[cageToGrow][3], cages[cageToDestroy][3]))
+	else if (
+		cages[cageToGrow][0] === "-"
+		&& cages[cageToGrow][4] + cages[cageToDestroy][4] <= 2 * Math.max(cages[cageToGrow][3], cages[cageToDestroy][3])
+	)
 	{
 		return true;
 	}
@@ -435,9 +471,13 @@ function tryToAddCageToCage(cageToDestroy, cageToGrow)
 	
 	
 	//This one is finnicky. Either:
-	//1. cageToDestroy contains the new max digit, in which case the product of cageToGrow must divide the quotient of cageToDestroy.
-	//2. or cageToGrow contains the new max digit, in which case the product of cageToDestroy must divide the quotient of cageToGrow.
-	//Now we don't have easy access to the quotient of cageToDestroy, so what we'll do in both cases is take the max digit squared over the products of both cages multiplied together. If this division is remainderless, we're golden.
+	//1. cageToDestroy contains the new max digit, in which case the product of cageToGrow
+	//must divide the quotient of cageToDestroy.
+	//2. or cageToGrow contains the new max digit, in which case the product of cageToDestroy
+	//must divide the quotient of cageToGrow.
+	//Now we don't have easy access to the quotient of cageToDestroy, so what we'll do in both cases
+	//is take the max digit squared over the products of both cages multiplied together. If this division
+	//is remainderless, we're golden.
 	else if (cages[cageToGrow][0] === ":")
 	{
 		const maxDigit = Math.max(cages[cageToGrow][3], cages[cageToDestroy][3]);
@@ -490,7 +530,8 @@ function addCageToCage(cageToDestroy, cageToGrow)
 		}
 		
 		
-		//Great. Now pick a random operation and apply it -- random, unless division is possible, in which case it gets a flat 50% chance since it's so rare.
+		//Great. Now pick a random operation and apply it -- random, unless division is possible,
+		//in which case it gets a flat 50% chance since it's so rare.
 		
 		if (possibleOperations.includes(":") && Math.random() < .5)
 		{
@@ -527,7 +568,10 @@ function addCageToCage(cageToDestroy, cageToGrow)
 	
 	else if (cages[cageToGrow][0] === "-")
 	{
-		cages[cageToGrow][1] = 2 * Math.max(cages[cageToGrow][3], cages[cageToDestroy][3]) - (cages[cageToGrow][4] + cages[cageToDestroy][4]);
+		cages[cageToGrow][1] = 2 * Math.max(
+			cages[cageToGrow][3],
+			cages[cageToDestroy][3]) - (cages[cageToGrow][4] + cages[cageToDestroy][4]
+		);
 	}
 	
 	
@@ -562,7 +606,9 @@ function addCageToCage(cageToDestroy, cageToGrow)
 
 
 
-//By default, we can't pass arrays to C functions. However, with the help of a library, we can pass 1D arrays, but not higher-dimensional ones. Therefore, we need to find a way to pass all of the cage data as a sequence of 1D arrays. Good news is, this isn't so bad.
+//By default, we can't pass arrays to C functions. However, with the help of a library, we can pass 1D arrays, but not
+//higher-dimensional ones. Therefore, we need to find a way to pass all of the cage data as a sequence of 1D arrays. Good news
+//is, this isn't so bad.
 function wasmSolvePuzzle()
 {
 	//This contains the operations that each cage uses, where 0 corresponds to "", 1 to "+", 2 to "-", and so on.
@@ -596,7 +642,10 @@ function wasmSolvePuzzle()
 	
 	
 	
-	//Now you may be thinking that this was the easy part. After all, the most important part of the cages -- what cells actually make them up -- is buried way down deep, and every cage has a different length list of cells. However, we're good. We can just flatten cagesByLocation and pass that -- it contains all the information we need to reconstruct cages on the other side.
+	//Now you may be thinking that this was the easy part. After all, the most important part of the cages -- what cells
+	//actually make them up -- is buried way down deep, and every cage has a different length list of cells. However, we're
+	//good. We can just flatten cagesByLocation and pass that -- it contains all the information we need to reconstruct cages
+	//on the other side.
 	
 	let cagesByLocationFlat = [];
 	
@@ -607,9 +656,31 @@ function wasmSolvePuzzle()
 	
 	
 	
-	//With everything in place, we can now call the C function and let it do the heavy lifting. We'd be fine with using HEAPU8 for everything, except for the fact that cageValues can have entries that are quite large.
+	//With everything in place, we can now call the C function and let it do the heavy lifting.
+	//We'd be fine with using HEAPU8 for everything, except for the fact that cageValues can have
+	//entries that are quite large.
 	// eslint-disable-next-line no-undef
-	return ccallArrays("solve_puzzle", "number", ["number", "array", "array", "array", "array", "array", "array", "array"], [gridSize, cageOperations, cageValues, cageLengths, cageMaxDigits, cageSums, cageProducts, cagesByLocationFlat], {heapIn: "HEAPU32"});
+	return ccallArrays("solve_puzzle", "number", [
+		"number",
+		"array",
+		"array",
+		"array",
+		"array",
+		"array",
+		"array",
+		"array"
+	],
+	[
+		gridSize,
+		cageOperations,
+		cageValues,
+		cageLengths,
+		cageMaxDigits,
+		cageSums,
+		cageProducts,
+		cagesByLocationFlat
+	],
+	{ heapIn: "HEAPU32" });
 }
 
 
