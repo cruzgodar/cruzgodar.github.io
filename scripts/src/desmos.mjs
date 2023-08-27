@@ -116,7 +116,7 @@ export async function recreateDesmosGraphs()
 
 export function getDesmosScreenshot(id, forPdf = false)
 {
-	desmosGraphs[id].updateSettings({showGrid: forPdf, xAxisNumbers: forPdf, yAxisNumbers: forPdf});
+	desmosGraphs[id].updateSettings({ showGrid: forPdf, xAxisNumbers: forPdf, yAxisNumbers: forPdf });
 	
 	const expressions = desmosGraphs[id].getExpressions();
 	

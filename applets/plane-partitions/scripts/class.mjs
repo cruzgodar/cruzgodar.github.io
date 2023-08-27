@@ -282,7 +282,7 @@ export class PlanePartitions extends Applet
 		
 		
 		
-		this.renderer = new THREE.WebGLRenderer({canvas: this.wilson.canvas, antialias: true});
+		this.renderer = new THREE.WebGLRenderer({ canvas: this.wilson.canvas, antialias: true });
 		
 		this.renderer.setSize(this.resolution, this.resolution, false);
 		
@@ -1313,12 +1313,12 @@ export class PlanePartitions extends Applet
 	addCube(array, x, y, z, h = 0, s = 0, v = this.cubeLightness)
 	{
 		const materials = [
-			new THREE.MeshStandardMaterial({map: this.cubeTexture, transparent: true, opacity: 0}),
-			new THREE.MeshStandardMaterial({map: this.cubeTexture, transparent: true, opacity: 0}),
-			new THREE.MeshStandardMaterial({map: this.cubeTexture, transparent: true, opacity: 0}),
-			new THREE.MeshStandardMaterial({map: this.cubeTexture, transparent: true, opacity: 0}),
-			new THREE.MeshStandardMaterial({map: this.cubeTexture2, transparent: true, opacity: 0}),
-			new THREE.MeshStandardMaterial({map: this.cubeTexture2, transparent: true, opacity: 0})
+			new THREE.MeshStandardMaterial({ map: this.cubeTexture, transparent: true, opacity: 0 }),
+			new THREE.MeshStandardMaterial({ map: this.cubeTexture, transparent: true, opacity: 0 }),
+			new THREE.MeshStandardMaterial({ map: this.cubeTexture, transparent: true, opacity: 0 }),
+			new THREE.MeshStandardMaterial({ map: this.cubeTexture, transparent: true, opacity: 0 }),
+			new THREE.MeshStandardMaterial({ map: this.cubeTexture2, transparent: true, opacity: 0 }),
+			new THREE.MeshStandardMaterial({ map: this.cubeTexture2, transparent: true, opacity: 0 })
 		];
 	
 		materials.forEach(material => material.color.setHSL(h, s, v));
@@ -1345,12 +1345,12 @@ export class PlanePartitions extends Applet
 	addFloor(array, x, z, h = 0, s = 0, v = this.floorLightness)
 	{
 		const materials = [
-			new THREE.MeshStandardMaterial({map: this.floorTexture, transparent: true, opacity: 0}),
-			new THREE.MeshStandardMaterial({map: this.floorTexture, transparent: true, opacity: 0}),
-			new THREE.MeshStandardMaterial({map: this.floorTexture, transparent: true, opacity: 0}),
-			new THREE.MeshStandardMaterial({map: this.floorTexture, transparent: true, opacity: 0}),
-			new THREE.MeshStandardMaterial({map: this.floorTexture2, transparent: true, opacity: 0}),
-			new THREE.MeshStandardMaterial({map: this.floorTexture2, transparent: true, opacity: 0})
+			new THREE.MeshStandardMaterial({ map: this.floorTexture, transparent: true, opacity: 0 }),
+			new THREE.MeshStandardMaterial({ map: this.floorTexture, transparent: true, opacity: 0 }),
+			new THREE.MeshStandardMaterial({ map: this.floorTexture, transparent: true, opacity: 0 }),
+			new THREE.MeshStandardMaterial({ map: this.floorTexture, transparent: true, opacity: 0 }),
+			new THREE.MeshStandardMaterial({ map: this.floorTexture2, transparent: true, opacity: 0 }),
+			new THREE.MeshStandardMaterial({ map: this.floorTexture2, transparent: true, opacity: 0 })
 		];
 	
 		materials.forEach(material => material.color.setHSL(h, s, v));
@@ -1378,12 +1378,12 @@ export class PlanePartitions extends Applet
 	addLeftWall(array, y, z, h = 0, s = 0, v = this.floorLightness)
 	{
 		const materials = [
-			new THREE.MeshStandardMaterial({map: this.floorTexture, transparent: true, opacity: 0}),
-			new THREE.MeshStandardMaterial({map: this.floorTexture, transparent: true, opacity: 0}),
-			new THREE.MeshStandardMaterial({map: this.floorTexture, transparent: true, opacity: 0}),
-			new THREE.MeshStandardMaterial({map: this.floorTexture, transparent: true, opacity: 0}),
-			new THREE.MeshStandardMaterial({map: this.floorTexture2, transparent: true, opacity: 0}),
-			new THREE.MeshStandardMaterial({map: this.floorTexture2, transparent: true, opacity: 0})
+			new THREE.MeshStandardMaterial({ map: this.floorTexture, transparent: true, opacity: 0 }),
+			new THREE.MeshStandardMaterial({ map: this.floorTexture, transparent: true, opacity: 0 }),
+			new THREE.MeshStandardMaterial({ map: this.floorTexture, transparent: true, opacity: 0 }),
+			new THREE.MeshStandardMaterial({ map: this.floorTexture, transparent: true, opacity: 0 }),
+			new THREE.MeshStandardMaterial({ map: this.floorTexture2, transparent: true, opacity: 0 }),
+			new THREE.MeshStandardMaterial({ map: this.floorTexture2, transparent: true, opacity: 0 })
 		];
 	
 		materials.forEach(material => material.color.setHSL(h, s, v));
@@ -1411,12 +1411,12 @@ export class PlanePartitions extends Applet
 	addRightWall(array, x, y, h = 0, s = 0, v = this.floorLightness)
 	{
 		const materials = [
-			new THREE.MeshStandardMaterial({map: this.floorTexture, transparent: true, opacity: 0}),
-			new THREE.MeshStandardMaterial({map: this.floorTexture, transparent: true, opacity: 0}),
-			new THREE.MeshStandardMaterial({map: this.floorTexture, transparent: true, opacity: 0}),
-			new THREE.MeshStandardMaterial({map: this.floorTexture, transparent: true, opacity: 0}),
-			new THREE.MeshStandardMaterial({map: this.floorTexture2, transparent: true, opacity: 0}),
-			new THREE.MeshStandardMaterial({map: this.floorTexture2, transparent: true, opacity: 0})
+			new THREE.MeshStandardMaterial({ map: this.floorTexture, transparent: true, opacity: 0 }),
+			new THREE.MeshStandardMaterial({ map: this.floorTexture, transparent: true, opacity: 0 }),
+			new THREE.MeshStandardMaterial({ map: this.floorTexture, transparent: true, opacity: 0 }),
+			new THREE.MeshStandardMaterial({ map: this.floorTexture, transparent: true, opacity: 0 }),
+			new THREE.MeshStandardMaterial({ map: this.floorTexture2, transparent: true, opacity: 0 }),
+			new THREE.MeshStandardMaterial({ map: this.floorTexture2, transparent: true, opacity: 0 })
 		];
 	
 		materials.forEach(material => material.color.setHSL(h, s, v));
@@ -5558,7 +5558,7 @@ export class PlanePartitions extends Applet
 		
 		//Fade out the ones we don't care about.
 		
-		const dummy = {t: 1};
+		const dummy = { t: 1 };
 		
 		await anime({
 			targets: dummy,

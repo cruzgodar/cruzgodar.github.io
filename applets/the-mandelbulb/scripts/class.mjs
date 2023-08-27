@@ -1190,7 +1190,7 @@ export class Mandelbulb extends Applet
 	
 	randomizeRotation(animateChange = true)
 	{
-		const dummy = {t: 0};
+		const dummy = { t: 0 };
 
 		const xOld = this.rotationAngleX;
 		const yOld = this.rotationAngleY;
@@ -1226,7 +1226,7 @@ export class Mandelbulb extends Applet
 	
 	randomizeC(animateChange = true)
 	{
-		const dummy = {t: 0};
+		const dummy = { t: 0 };
 
 		const xOld = this.c[0];
 		const yOld = this.c[1];
@@ -1279,7 +1279,7 @@ export class Mandelbulb extends Applet
 			this.wilson.gl.uniform1i(this.wilson.uniforms["drawSphere"], 0);
 		}
 
-		const dummy = {t: 0};
+		const dummy = { t: 0 };
 
 		const oldJuliaProportion = this.juliaProportion;
 		const newJuliaProportion = this.juliaProportion === 0 ? 1 : 0;

@@ -227,7 +227,7 @@ function wasmSolvePuzzle()
 	
 	//With everything in place, we can now call the C function and let it do the heavy lifting.
 	// eslint-disable-next-line no-undef
-	return ccallArrays("solve_puzzle", "number", ["array"], [gridFlat], {heapIn: "HEAPU8"});
+	return ccallArrays("solve_puzzle", "number", ["array"], [gridFlat], { heapIn: "HEAPU8" });
 }
 
 

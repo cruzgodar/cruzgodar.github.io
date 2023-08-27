@@ -208,7 +208,7 @@ function fadeUpOutJs(element, duration = pageAnimationTime, noOpacityChange = fa
 		marginTop: `${-navigationAnimationDistanceVertical}px`,
 		duration: duration,
 		easing: "cubicBezier(.1, 0.0, .2, 0.0)",
-		...(!noOpacityChange && {opacity: 0})
+		...(!noOpacityChange && { opacity: 0 })
 	}).finished;
 }
 
@@ -324,7 +324,7 @@ function fadeDownOutJs(element, duration = pageAnimationTime, noOpacityChange = 
 		marginTop: `${navigationAnimationDistanceVertical}px`,
 		duration: duration,
 		easing: "cubicBezier(.1, 0.0, .2, 0.0)",
-		...(!noOpacityChange && {opacity: 0})
+		...(!noOpacityChange && { opacity: 0 })
 	}).finished;
 }
 
@@ -436,7 +436,7 @@ function fadeLeftOutJs(element, duration = pageAnimationTime, noOpacityChange = 
 		marginLeft: `${-navigationAnimationDistanceHorizontal}px`,
 		duration: duration,
 		easing: "cubicBezier(.1, 0.0, .2, 0.0)",
-		...(!noOpacityChange && {opacity: 0})
+		...(!noOpacityChange && { opacity: 0 })
 	}).finished;
 }
 
@@ -546,7 +546,7 @@ function fadeRightOutJs(element, duration = pageAnimationTime, noOpacityChange =
 		marginLeft: `${navigationAnimationDistanceHorizontal}px`,
 		duration: duration,
 		easing: "cubicBezier(.1, 0.0, .2, 0.0)",
-		...(!noOpacityChange && {opacity: 0})
+		...(!noOpacityChange && { opacity: 0 })
 	}).finished;
 }
 
@@ -649,7 +649,7 @@ function fadeOutJs(element, duration = pageAnimationTime, noOpacityChange = fals
 		targets: element,
 		duration: duration,
 		easing: "cubicBezier(.1, 0.0, .2, 0.0)",
-		...(!noOpacityChange && {opacity: 0})
+		...(!noOpacityChange && { opacity: 0 })
 	}).finished;
 }
 

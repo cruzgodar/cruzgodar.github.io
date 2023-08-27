@@ -1172,7 +1172,7 @@ export class QuaternionicJuliaSet extends Applet
 		
 		
 		
-		const dummy = {t: 0};
+		const dummy = { t: 0 };
 		
 		const oldC = [...this.c];
 		
@@ -1253,7 +1253,7 @@ export class QuaternionicJuliaSet extends Applet
 		
 		
 		
-		const dummy = {t: 0};
+		const dummy = { t: 0 };
 		
 		anime({
 			targets: dummy,

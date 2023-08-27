@@ -9,12 +9,12 @@ export function load()
 		{
 			"limit-example":
 			{
-				bounds: {left: -5, right: 5, bottom: -5, top: 5},
+				bounds: { left: -5, right: 5, bottom: -5, top: 5 },
 				
 				expressions:
 				[
-					{latex: String.raw`\frac{x^2 - 1}{x - 1}`, color: desmosPurple},
-					{latex: String.raw`(1, 2)`, color: desmosPurple, pointStyle: "OPEN"},
+					{ latex: String.raw`\frac{x^2 - 1}{x - 1}`, color: desmosPurple },
+					{ latex: String.raw`(1, 2)`, color: desmosPurple, pointStyle: "OPEN" },
 				]
 			},
 			
@@ -22,11 +22,11 @@ export function load()
 			
 			"limit-example-2":
 			{
-				bounds: {left: 0, right: 8, bottom: -3, top: 5},
+				bounds: { left: 0, right: 8, bottom: -3, top: 5 },
 				
 				expressions:
 				[
-					{latex: String.raw`f(t) = \sqrt{t - 2}`, color: desmosPurple},
+					{ latex: String.raw`f(t) = \sqrt{t - 2}`, color: desmosPurple },
 				]
 			},
 			
@@ -34,13 +34,13 @@ export function load()
 			
 			"squeeze-theorem":
 			{
-				bounds: {left: -25*Math.PI / 2, right: 25*Math.PI / 2, bottom: -25*Math.PI / 2, top: 25*Math.PI / 2},
+				bounds: { left: -25*Math.PI / 2, right: 25*Math.PI / 2, bottom: -25*Math.PI / 2, top: 25*Math.PI / 2 },
 				
 				expressions:
 				[
-					{latex: String.raw`f(x) = -\left|x\right|`, color: desmosBlue},
-					{latex: String.raw`g(x) = x\sin(x)`, color: desmosPurple},
-					{latex: String.raw`h(x) = \left|x\right|`, color: desmosRed},
+					{ latex: String.raw`f(x) = -\left|x\right|`, color: desmosBlue },
+					{ latex: String.raw`g(x) = x\sin(x)`, color: desmosPurple },
+					{ latex: String.raw`h(x) = \left|x\right|`, color: desmosRed },
 				]
 			},
 		};

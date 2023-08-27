@@ -185,7 +185,7 @@ export class Wilson
 		
 		if (this.render.renderType === 0)
 		{
-			this.ctx = this.canvas.getContext("2d", {colorSpace: "display-p3"});
+			this.ctx = this.canvas.getContext("2d", { colorSpace: "display-p3" });
 			
 			this.render.imgData = this.ctx.getImageData(0, 0, this.canvasWidth, this.canvasHeight);
 			
@@ -733,7 +733,7 @@ export class Wilson
 			
 			
 			
-			this.framebuffers.push({framebuffer: framebuffer, texture: texture});
+			this.framebuffers.push({ framebuffer: framebuffer, texture: texture });
 		},
 		
 		

@@ -81,7 +81,7 @@ function splitGlslFile(filename, text)
 		
 		
 		
-		glslFiles[keywords[0]] = {keywords};
+		glslFiles[keywords[0]] = { keywords };
 		
 		
 		

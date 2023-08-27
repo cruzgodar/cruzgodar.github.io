@@ -9,13 +9,13 @@ export function load()
 		{
 			"antiderivative":
 			{
-				bounds: {left: -3, right: 3, bottom: -1, top: 5},
+				bounds: { left: -3, right: 3, bottom: -1, top: 5 },
 				
 				expressions:
 				[
-					{latex: String.raw`f(x) = \frac{x^3}{3} + C`, color: desmosPurple},
-					{latex: String.raw`f'(x)`, color: desmosBlue},
-					{latex: String.raw`C = 2`}
+					{ latex: String.raw`f(x) = \frac{x^3}{3} + C`, color: desmosPurple },
+					{ latex: String.raw`f'(x)`, color: desmosBlue },
+					{ latex: String.raw`C = 2` }
 				]
 			}
 		};

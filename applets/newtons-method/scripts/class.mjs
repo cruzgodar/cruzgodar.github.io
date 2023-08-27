@@ -355,7 +355,7 @@ export class NewtonsMethod extends Applet
 			newRoots[2 * i + 1] = mag * Math.sin(2 * Math.PI * i / this.numRoots);
 		}
 		
-		const dummy = {t: 0};
+		const dummy = { t: 0 };
 		
 		anime({
 			targets: dummy,

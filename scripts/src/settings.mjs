@@ -163,7 +163,7 @@ export async function toggleDarkTheme({ noAnimation = false, force = false })
 
 	recreateDesmosGraphs();
 
-	history.replaceState({url: pageUrl}, document.title, getDisplayUrl());
+	history.replaceState({ url: pageUrl }, document.title, getDisplayUrl());
 
 	if (noAnimation)
 	{
@@ -181,7 +181,7 @@ export async function toggleDarkTheme({ noAnimation = false, force = false })
 			}
 		`);
 
-		const dummy = {t: siteSettings.darkTheme ? 0 : 1};
+		const dummy = { t: siteSettings.darkTheme ? 0 : 1 };
 
 		await Promise.all([
 			anime({

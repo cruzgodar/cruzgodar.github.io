@@ -56,7 +56,7 @@ export async function redirect({
 	
 
 	
-	await fadeOutPage({url, noFadeOut});
+	await fadeOutPage({ url, noFadeOut });
 	
 	//Get the new data, fade out the page, and preload the next page's banner if it exists. When all of those things are successfully done, replace the current html with the new stuff.
 	Promise.all([fetch(`${url}data.html`), loadBanner()])
@@ -87,12 +87,12 @@ export async function redirect({
 			//Record the page change in the url bar and in the browser history.
 			if (noStatePush)
 			{
-				history.replaceState({url}, document.title, getDisplayUrl());
+				history.replaceState({ url }, document.title, getDisplayUrl());
 			}
 			
 			else
 			{
-				history.pushState({url}, document.title, getDisplayUrl());
+				history.pushState({ url }, document.title, getDisplayUrl());
 			}
 			
 			

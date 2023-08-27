@@ -340,7 +340,7 @@ export class NewtonsMethodExtended extends Applet
 	
 	animatePaletteChange()
 	{
-		const dummy = {t: 0};
+		const dummy = { t: 0 };
 		
 		const oldColors = [...this.colors];
 		const newColors = this.generateNewPalette();

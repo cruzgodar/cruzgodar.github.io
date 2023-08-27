@@ -614,7 +614,7 @@ function wasmSolvePuzzle()
 	//This contains the operations that each cage uses, where 0 corresponds to "", 1 to "+", 2 to "-", and so on.
 	const cageOperations = [];
 	
-	const cageOperationsTable = {"": 0, "+": 1, "x": 2, "-": 3, ":": 4};
+	const cageOperationsTable = { "": 0, "+": 1, "x": 2, "-": 3, ":": 4 };
 	
 	//This just contains the values of each cage.
 	const cageValues = [];
