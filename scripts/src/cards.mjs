@@ -1,5 +1,5 @@
 import { addHoverEvent } from "./hover-events.mjs";
-import { $$, pageElement } from "./main.mjs";
+import { $$, addTemporaryListener, pageElement } from "./main.mjs";
 import { metaThemeColorElement, siteSettings } from "./settings.mjs";
 import anime from "/scripts/anime.js";
 
@@ -28,6 +28,10 @@ if (closeButton)
 
 
 
+export let scrollBeforeCard = 0;
+
+
+
 const animationTime = 500;
 
 export function setUpCards()
@@ -40,8 +44,22 @@ export function setUpCards()
 
 export async function showCard(id)
 {
-	cardIsOpen = true;
+	scrollBeforeCard = window.scrollY;
 
+	addTemporaryListener({
+		object: window,
+		event: "scroll",
+		callback: () =>
+		{
+			if (cardIsOpen)
+			{
+				window.scrollTo(0, scrollBeforeCard);
+			}
+		}
+	});
+
+	cardIsOpen = true;
+	
 	container.style.display = "flex";
 	container.style.opacity = 0;
 	container.style.transform = "scale(1)";
@@ -124,6 +142,8 @@ export async function showCard(id)
 export async function hideCard()
 {
 	cardIsOpen = false;
+
+	window.scrollTo(0, scrollBeforeCard);
 
 	const color = siteSettings.darkTheme ? "rgb(24, 24, 24)" : "rgb(255, 255, 255)";
 	const themeColor = siteSettings.darkTheme ? "#181818" : "#ffffff";

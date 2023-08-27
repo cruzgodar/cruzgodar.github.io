@@ -23,7 +23,7 @@
 	<div id="scroll-to"></div>
 	
 	<main>
-		<section>
+		<section style="margin-bottom: 0">
 			<div class="quote-row">
 				<div class="quote-container">
 					<p class="quote-text">
@@ -58,15 +58,12 @@
 		</section>
 		
 		
-		
-		<div style="height: -5vh"></div>
-			
 		<div id="return-scroll-to"></div>
 		
+		<div style="height: 80px"></div>
 		
 		
 		
-			
 		<section>
 			<div id="logo-no-link">
 				<img src="/graphics/general-icons/logo.png" alt="Logo" tabindex="1"></img>

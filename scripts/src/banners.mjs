@@ -20,15 +20,6 @@ export function setContentElement(newContentElement)
 
 
 
-export let bannerDoneLoading = false;
-
-export function setBannerDoneLoading(newBannerDoneLoading)
-{
-	bannerDoneLoading = newBannerDoneLoading;
-}
-
-
-
 export let bannerOpacity = 1;
 
 export function setBannerOpacity(newBannerOpacity)
@@ -43,16 +34,6 @@ export function setBannerOpacity(newBannerOpacity)
 	if (contentElement)
 	{
 		contentElement.style.opacity = 1 - bannerOpacity;
-	}
-
-	if (bannerOpacity)
-	{
-		bannerDoneLoading = false;
-	}
-
-	else
-	{
-		bannerDoneLoading = true;
 	}
 }
 
@@ -208,7 +189,6 @@ export function bannerOnScroll(scrollPositionOverride)
 	else
 	{
 		setPageScroll(scrollPositionOverride);
-		bannerDoneLoading = false;
 	}
 
 	window.requestAnimationFrame(scrollAnimationFrame);
@@ -235,33 +215,10 @@ function scrollHandler()
 		return;
 	}
 
-	if (pageScroll <= bannerMaxScroll)
-	{
-		bannerOpacity = Math.min(Math.max(1 - pageScroll / bannerMaxScroll, 0), 1);
+	bannerOpacity = Math.min(Math.max(1 - pageScroll / bannerMaxScroll, 0), 1);
 
-		bannerElement.style.opacity = bannerOpacity;
-		contentElement.style.opacity = 1 - bannerOpacity;
-
-		if (bannerOpacity === 0)
-		{
-			bannerDoneLoading = true;
-		}
-
-		else
-		{
-			bannerDoneLoading = false;
-		}
-	}
-
-	else if (!bannerDoneLoading)
-	{
-		bannerOpacity = 0;
-
-		bannerElement.style.opacity = 0;
-		contentElement.style.opacity = 1;
-
-		bannerDoneLoading = true;
-	}
+	bannerElement.style.opacity = bannerOpacity;
+	contentElement.style.opacity = 1 - bannerOpacity;
 
 
 

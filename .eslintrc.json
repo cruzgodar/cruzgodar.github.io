@@ -69,7 +69,10 @@
 		"curly": ["error", "all"],
 		"no-implicit-globals": ["error"],
 		"no-var": ["error"],
-		"no-trailing-spaces": ["warn"],
+		"no-trailing-spaces": [
+			"warn",
+			{ "skipBlankLines": true }
+		],
 		"space-infix-ops": ["warn"]
 	}
 }
