@@ -71,7 +71,8 @@ function generateCalcudokuGrid()
 			
 			numSolutionsFound = wasmSolvePuzzle(cages);
 			
-			//If this is no longer a unique solution, no problem! We'll just try a different cage next time. We'll just revert to our last uniquely-solvable grid and try again.
+			//If this is no longer a unique solution, no problem! We'll just try a different cage next time. We'll just revert\
+			//to our last uniquely-solvable grid and try again.
 			if (numSolutionsFound !== 1)
 			{
 				cages = JSON.parse(JSON.stringify(cagesBackup));
@@ -80,7 +81,8 @@ function generateCalcudokuGrid()
 				numSolutionsFound = 1;
 			}
 			
-			//Great! We just merged a cage, so we have a harder puzzle, but the solution is still unique. Now we can set a checkpoint here and keep going.
+			//Great! We just merged a cage, so we have a harder puzzle, but the solution is still unique. Now we can set a
+			//checkpoint here and keep going.
 			else
 			{
 				cagesBackup = JSON.parse(JSON.stringify(cages));
@@ -92,7 +94,8 @@ function generateCalcudokuGrid()
 		
 		
 		
-		//The program almost never ends this way, but if no cell can be expanded in the first place (this is before we've even thought about unique solutions), then there's no point in continuing.
+		//The program almost never ends this way, but if no cell can be expanded in the first place (this is before we've even
+		//thought about unique solutions), then there's no point in continuing.
 		if (expandedACage === false)
 		{
 			return;
@@ -125,7 +128,9 @@ function shuffleArray(array)
 
 
 
-//Creates a grid of numbers with side length gridSize such that no column or row contains a repeated number. This is normally a very hard thing to do, becoming pretty much impossible most of the time after a side length of 10. Good news is, we can do things much more simply -- becuase we don't need a uniformly random grid.
+//Creates a grid of numbers with side length gridSize such that no column or row contains a repeated number. This is normally a
+//very hard thing to do, becoming pretty much impossible most of the time after a side length of 10. Good news is, we can do
+//things much more simply -- becuase we don't need a uniformly random grid.
 function generateNumberGrid()
 {
 	grid = [];
@@ -142,7 +147,8 @@ function generateNumberGrid()
 	
 	
 	
-	//First of all, it's very easy to get A grid with no repeating digits: we'll just start with 1, ..., n in the first row, then n, 1, 2, ..., n-1 in the second, and so on.
+	//First of all, it's very easy to get A grid with no repeating digits: we'll just start with 1, ..., n in the first row,
+	//then n, 1, 2, ..., n-1 in the second, and so on.
 	for (let i = 0; i < gridSize; i++)
 	{
 		for (let j = 0; j < gridSize; j++)

@@ -75,13 +75,25 @@ export class BinaryTree extends Applet
 		
 		
 		
-		let angles = [Math.atan2(this.branchPoints[0][0] - this.root[0], this.branchPoints[0][1] - this.root[1]), Math.atan2(this.branchPoints[1][0] - this.root[0], this.branchPoints[1][1] - this.root[1])];
+		let angles = [
+			Math.atan2(this.branchPoints[0][0] - this.root[0], this.branchPoints[0][1] - this.root[1]),
+			Math.atan2(this.branchPoints[1][0] - this.root[0], this.branchPoints[1][1] - this.root[1])
+		];
 		
 		const angleStep = (angles[0] - angles[1]) / 2;
 		
 		
 		
-		const distances = [Math.sqrt((this.branchPoints[0][0] - this.root[0])*(this.branchPoints[0][0] - this.root[0]) + (this.branchPoints[0][1] - this.root[1])*(this.branchPoints[0][1] - this.root[1])), Math.sqrt((this.branchPoints[1][0] - this.root[0])*(this.branchPoints[1][0] - this.root[0]) + (this.branchPoints[1][1] - this.root[1])*(this.branchPoints[1][1] - this.root[1]))];
+		const distances = [
+			Math.sqrt(
+				(this.branchPoints[0][0] - this.root[0])*(this.branchPoints[0][0] - this.root[0])
+				+ (this.branchPoints[0][1] - this.root[1])*(this.branchPoints[0][1] - this.root[1])
+			),
+			Math.sqrt(
+				(this.branchPoints[1][0] - this.root[0])*(this.branchPoints[1][0] - this.root[0])
+				+ (this.branchPoints[1][1] - this.root[1])*(this.branchPoints[1][1] - this.root[1])
+			)
+		];
 		
 		let startingPoints = [this.root];
 		

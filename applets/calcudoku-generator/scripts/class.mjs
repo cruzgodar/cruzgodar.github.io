@@ -145,7 +145,8 @@ export class CalcudokuGenerator extends Applet
 		
 		
 		
-		//Now draw the cages. For each cell of the grid, we draw a line with width 10 if an adjacent cell is part of a different cage.
+		//Now draw the cages. For each cell of the grid, we draw a line with width 10 if an adjacent cell is part of a
+		//different cage.
 		for (let i = 0; i < this.gridSize; i++)
 		{
 			for (let j = 0; j < this.gridSize; j++)

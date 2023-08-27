@@ -54,6 +54,10 @@
 				"variables": true,
 				"allowNamedExports": false
 			}
+		],
+		"max-len": [
+			"error",
+			{ "code": 128 }
 		]
 	}
 }

@@ -13,13 +13,25 @@ const numAnimatedIterations = 10;
 
 async function drawAnimatedBinaryTree()
 {
-	let angles = [Math.atan2(branchPoints[0][0] - root[0], branchPoints[0][1] - root[1]), Math.atan2(branchPoints[1][0] - root[0], branchPoints[1][1] - root[1])];
+	let angles = [
+		Math.atan2(branchPoints[0][0] - root[0], branchPoints[0][1] - root[1]),
+		Math.atan2(branchPoints[1][0] - root[0], branchPoints[1][1] - root[1])
+	];
 	
 	const angleStep = (angles[0] - angles[1]) / 2;
 	
 	
 	
-	const distances = [Math.sqrt((branchPoints[0][0] - root[0])*(branchPoints[0][0] - root[0]) + (branchPoints[0][1] - root[1])*(branchPoints[0][1] - root[1])), Math.sqrt((branchPoints[1][0] - root[0])*(branchPoints[1][0] - root[0]) + (branchPoints[1][1] - root[1])*(branchPoints[1][1] - root[1]))];
+	const distances = [
+		Math.sqrt(
+			(branchPoints[0][0] - root[0])*(branchPoints[0][0] - root[0])
+			+ (branchPoints[0][1] - root[1])*(branchPoints[0][1] - root[1])
+		),
+		Math.sqrt(
+			(branchPoints[1][0] - root[0])*(branchPoints[1][0] - root[0])
+			+ (branchPoints[1][1] - root[1])*(branchPoints[1][1] - root[1])
+		)
+	];
 	
 	let startingPoints = [root];
 	
@@ -50,8 +62,12 @@ async function drawAnimatedBinaryTree()
 			{
 				let startX = startingPoints[i][1];
 				let startY = startingPoints[i][0];
-				let endX = (1 - step / 100) * startX + (step / 100) * (startingPoints[i][1] + distances[0] * scale * Math.cos(angles[2*i]));
-				let endY = (1 - step / 100) * startY + (step / 100) * (startingPoints[i][0] + distances[0] * scale * Math.sin(angles[2*i]));
+				
+				let endX = (1 - step / 100) * startX + (step / 100)
+					* (startingPoints[i][1] + distances[0] * scale * Math.cos(angles[2*i]));
+
+				let endY = (1 - step / 100) * startY + (step / 100)
+					* (startingPoints[i][0] + distances[0] * scale * Math.sin(angles[2*i]));
 				
 				postMessage([startX, startY, endX, endY, color, lineWidth]);
 				
@@ -59,8 +75,12 @@ async function drawAnimatedBinaryTree()
 				
 				startX = startingPoints[i][1];
 				startY = startingPoints[i][0];
-				endX = (1 - step / 100) * startX + (step / 100) * (startingPoints[i][1] + distances[1] * scale * Math.cos(angles[2*i + 1]));
-				endY = (1 - step / 100) * startY + (step / 100) * (startingPoints[i][0] + distances[1] * scale * Math.sin(angles[2*i + 1]));
+				
+				endX = (1 - step / 100) * startX + (step / 100)
+					* (startingPoints[i][1] + distances[1] * scale * Math.cos(angles[2*i + 1]));
+				
+				endY = (1 - step / 100) * startY + (step / 100)
+					* (startingPoints[i][0] + distances[1] * scale * Math.sin(angles[2*i + 1]));
 				
 				postMessage([startX, startY, endX, endY, color, lineWidth]);
 			}

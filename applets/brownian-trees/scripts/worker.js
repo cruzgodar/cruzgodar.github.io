@@ -97,17 +97,42 @@ function drawBrownianTree()
 			{
 				brownianTreeGraph[currentRow][currentCol] = 1;
 				
-				const newHue = (Math.atan2(currentCol - Math.floor(gridSize / 2), Math.floor(gridSize / 2) - currentRow) + Math.PI) / (2 * Math.PI);
+				const newHue = (
+					Math.atan2(
+						currentCol - Math.floor(gridSize / 2),
+						Math.floor(gridSize / 2) - currentRow
+					)
+					+ Math.PI
+				) / (2 * Math.PI);
 				
 				const newColor = HSVtoRGB(newHue, 1, 1);
 				
-				color[currentRow][currentCol] = [.9925 * color[newRow][newCol][0] + .0075 * newColor[0], .9925 * color[newRow][newCol][1] + .0075 * newColor[1], .9925 * color[newRow][newCol][2] + .0075 * newColor[2]];
+				color[currentRow][currentCol] = [
+					.9925 * color[newRow][newCol][0] + .0075 * newColor[0],
+					.9925 * color[newRow][newCol][1] + .0075 * newColor[1],
+					.9925 * color[newRow][newCol][2] + .0075 * newColor[2]
+				];
 				
-				postMessage([2, currentCol, currentRow, `rgb(${currentBrightness / 255 * color[currentRow][currentCol][0]}, ${currentBrightness / 255 * color[currentRow][currentCol][1]}, ${currentBrightness / 255 * color[currentRow][currentCol][2]})`]);
+				postMessage([
+					2,
+					currentCol,
+					currentRow,
+					`rgb(${
+						currentBrightness / 255 * color[currentRow][currentCol][0]
+					}, ${
+						currentBrightness / 255 * color[currentRow][currentCol][1]
+					}, ${
+						currentBrightness / 255 * color[currentRow][currentCol][2]
+					})`
+				]);
 				
 				
 				
-				if (spawnRadius * spawnRadius - (currentRow - gridSize / 2) * (currentRow - gridSize / 2) - (currentCol - gridSize / 2) * (currentCol - gridSize / 2) <= 5)
+				if ((
+					spawnRadius * spawnRadius
+					- (currentRow - gridSize / 2) * (currentRow - gridSize / 2)
+					- (currentCol - gridSize / 2) * (currentCol - gridSize / 2)
+				) <= 5)
 				{
 					spawnRadius++;
 					

@@ -84,7 +84,12 @@ export class AbelianSandpile extends Applet
 				
 				
 				
-				//The general idea: this is carrying in reverse. The largest place is supposed to be divided by four, so we start by extracting the portion that is too small for it to see and adding it to the next place down (not dividing by 256 effectively multiplies it by 256). Then what's left is divided by 4 and effectively floored.
+				/*
+					The general idea: this is carrying in reverse. The largest place is supposed to be divided by four, so we
+					start by extracting the portion that is too small for it to see and adding it to the next place down (not
+					dividing by 256 effectively multiplies it by 256). Then what's left is divided by 4 and effectively floored.
+				*/
+
 				state1.y += mod(floor(state1.x * 256.0), 4.0);
 				state1.x = floor(state1.x * 64.0) / 256.0;
 				
@@ -298,10 +303,32 @@ export class AbelianSandpile extends Applet
 		this.wilson.changeCanvasSize(this.resolution, this.resolution);
 		
 		this.wilson.gl.bindTexture(this.wilson.gl.TEXTURE_2D, this.wilson.render.framebuffers[0].texture);
-		this.wilson.gl.texImage2D(this.wilson.gl.TEXTURE_2D, 0, this.wilson.gl.RGBA, this.wilson.canvasWidth, this.wilson.canvasHeight, 0, this.wilson.gl.RGBA, this.wilson.gl.FLOAT, null);
+		
+		this.wilson.gl.texImage2D(
+			this.wilson.gl.TEXTURE_2D,
+			0,
+			this.wilson.gl.RGBA,
+			this.wilson.canvasWidth,
+			this.wilson.canvasHeight,
+			0,
+			this.wilson.gl.RGBA,
+			this.wilson.gl.FLOAT,
+			null
+		);
 		
 		this.wilson.gl.bindTexture(this.wilson.gl.TEXTURE_2D, this.wilson.render.framebuffers[1].texture);
-		this.wilson.gl.texImage2D(this.wilson.gl.TEXTURE_2D, 0, this.wilson.gl.RGBA, this.wilson.canvasWidth, this.wilson.canvasHeight, 0, this.wilson.gl.RGBA, this.wilson.gl.FLOAT, null);
+
+		this.wilson.gl.texImage2D(
+			this.wilson.gl.TEXTURE_2D,
+			0,
+			this.wilson.gl.RGBA,
+			this.wilson.canvasWidth,
+			this.wilson.canvasHeight,
+			0,
+			this.wilson.gl.RGBA,
+			this.wilson.gl.FLOAT,
+			null
+		);
 		
 		
 		
@@ -395,7 +422,17 @@ export class AbelianSandpile extends Applet
 		
 		
 		
-		this.wilsonUpscale.gl.texImage2D(this.wilsonUpscale.gl.TEXTURE_2D, 0, this.wilsonUpscale.gl.RGBA, this.wilson.canvasWidth, this.wilson.canvasHeight, 0, this.wilsonUpscale.gl.RGBA, this.wilsonUpscale.gl.UNSIGNED_BYTE, pixelData);
+		this.wilsonUpscale.gl.texImage2D(
+			this.wilsonUpscale.gl.TEXTURE_2D,
+			0,
+			this.wilsonUpscale.gl.RGBA,
+			this.wilson.canvasWidth,
+			this.wilson.canvasHeight,
+			0,
+			this.wilsonUpscale.gl.RGBA,
+			this.wilsonUpscale.gl.UNSIGNED_BYTE,
+			pixelData
+		);
 		
 		this.wilsonUpscale.gl.bindFramebuffer(this.wilsonUpscale.gl.FRAMEBUFFER, null);
 		

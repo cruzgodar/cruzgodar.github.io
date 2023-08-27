@@ -101,9 +101,13 @@ function drawFern()
 
 function affineTransformation(index)
 {
-	const temp = transformationCoefficients[index][0] * currentX + transformationCoefficients[index][1] * currentY + transformationCoefficients[index][4];
+	const temp = transformationCoefficients[index][0] * currentX
+		+ transformationCoefficients[index][1] * currentY
+		+ transformationCoefficients[index][4];
 	
-	currentY = transformationCoefficients[index][2] * currentX + transformationCoefficients[index][3] * currentY + transformationCoefficients[index][5];
+	currentY = transformationCoefficients[index][2] * currentX
+		+ transformationCoefficients[index][3] * currentY 
+		+ transformationCoefficients[index][5];
 	
 	currentX = temp;
 }

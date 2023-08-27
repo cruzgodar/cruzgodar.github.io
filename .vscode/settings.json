@@ -2,5 +2,9 @@
 	"prettier.enable": false,
 	"files.exclude": {
 		"**/*.min.*": true
-	}
+	},
+	"editor.wordWrap": "bounded",
+	"editor.wordWrapColumn": 128,
+	"prettier.requireConfig": true,
+	"editor.formatOnSave": false,
 }
