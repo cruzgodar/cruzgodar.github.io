@@ -12,6 +12,7 @@ const excludeFromBuild =
 ];
 
 const clean = process.argv.slice(2).includes("-c");
+const fix = process.argv.slice(2).includes("-f");
 
 
 
@@ -34,11 +35,6 @@ async function buildSite()
 		exec(`git -C ${root} ls-files${clean ? "" : " -m -o"}`, async (error, stdout) =>
 		{
 			await parseModifiedFiles(stdout.split("\n"), sitemap);
-
-			await new Promise(resolve =>
-			{
-				exec(`uglifyjs ${root}/scripts/src/sitemap.mjs --output ${root}/scripts/src/sitemap.mjs`, () => resolve());
-			});
 
 			await eslint();
 
@@ -158,7 +154,7 @@ async function eslint()
 {
 	await new Promise(resolve =>
 	{
-		exec(`eslint --ext .js,.mjs ${root}`, (error, stdout) =>
+		exec(`eslint --ext .js,.mjs${fix ? " --fix" : ""} ${root}`, (error, stdout) =>
 		{
 			if (stdout)
 			{

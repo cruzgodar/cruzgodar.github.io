@@ -56,10 +56,6 @@
 				"allowNamedExports": false
 			}
 		],
-		"max-len": [
-			"warn",
-			{ "code": 128 }
-		],
 		"object-curly-spacing": [
 			"warn",
 			"always",
@@ -68,7 +64,6 @@
 				"objectsInObjects": true
 			}
 		],
-		"no-promise-executor-return": ["error"],
 		"no-template-curly-in-string": ["warn"],
 		"no-unused-private-class-members": ["warn"],
 		"curly": ["error", "all"],
