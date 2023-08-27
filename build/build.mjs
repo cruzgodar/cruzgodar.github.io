@@ -5,7 +5,7 @@ import { read, write } from "./file-io.mjs";
 
 const root = process.argv[1].replace(/(\/cruzgodar.github.io\/).+$/, (match, $1) => $1);
 
-const excludeFromBuild = 
+const excludeFromBuild =
 [
 	/build.+/,
 	/slides\/.+\/index\.htmdl/
@@ -18,7 +18,7 @@ const clean = process.argv.slice(2).includes("-c");
 async function buildSite()
 {
 	await buildSitemap();
-	
+
 	const text = await read(sitemapPath);
 
 	if (!text)
@@ -35,6 +35,11 @@ async function buildSite()
 		{
 			await parseModifiedFiles(stdout.split("\n"), sitemap);
 
+			await new Promise(resolve =>
+			{
+				exec(`uglifyjs ${root}/scripts/src/sitemap.mjs --output ${root}/scripts/src/sitemap.mjs`, () => resolve());
+			});
+
 			await eslint();
 
 			resolve();
@@ -50,7 +55,7 @@ async function parseModifiedFiles(files, sitemap)
 		{
 			continue;
 		}
-		
+
 		const file = files[k];
 
 		if (file.indexOf(".") === -1)
@@ -77,7 +82,7 @@ async function parseModifiedFiles(files, sitemap)
 		const lastSlashIndex = file.lastIndexOf("/") + 1;
 		const end = file.slice(lastSlashIndex);
 		const index = end.indexOf(".");
-		
+
 		if (index <= 0)
 		{
 			continue;
@@ -93,7 +98,7 @@ async function parseModifiedFiles(files, sitemap)
 			if (text)
 			{
 				console.log(file);
-				
+
 				buildHTMLFile(text, "/" + file.slice(0, lastSlashIndex), sitemap);
 			}
 		}
@@ -105,7 +110,7 @@ async function parseModifiedFiles(files, sitemap)
 			if (text)
 			{
 				console.log(file);
-				
+
 				await buildJSFile(file);
 			}
 		}
@@ -117,7 +122,7 @@ async function parseModifiedFiles(files, sitemap)
 			if (text)
 			{
 				console.log(file);
-				
+
 				buildCSSFile(file);
 			}
 		}
@@ -129,11 +134,11 @@ function buildJSFile(file)
 	return new Promise(resolve =>
 	{
 		const outputFile = file.replace(/(\.m*js)/, (match, $1) => `.min${$1}`);
-		
+
 		exec(`uglifyjs ${root + file} --output ${root + outputFile} --compress --mangle`, async () =>
 		{
 			const js = await read(outputFile);
-			
+
 			//The space after the import is very import -- that prevents dynamic imports from getting screwed up.
 			write(outputFile, js.replace(/(import[^(].*?)\.mjs/g, (match, $1) => `${$1}.min.mjs`));
 

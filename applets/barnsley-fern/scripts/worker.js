@@ -29,7 +29,7 @@ const maxY = 11;
 function drawFern()
 {
 	fernGraph = new Uint8ClampedArray(gridSize * gridSize * 4);
-	
+
 	for (let i = 0; i < gridSize; i++)
 	{
 		for (let j = 0; j < gridSize; j++)
@@ -37,63 +37,63 @@ function drawFern()
 			fernGraph[4 * (gridSize * i + j) + 3] = 255;
 		}
 	}
-	
-	
-	
+
+
+
 	for (let iteration = 0; iteration < numIterations; iteration++)
 	{
 		if (iteration % Math.floor(numIterations / 10) === 0)
 		{
 			postMessage([fernGraph]);
 		}
-		
-		
-		
+
+
+
 		const rand = Math.random();
-		
+
 		let index = 3;
-		
+
 		if (rand < .01)
 		{
 			index = 0;
 		}
-		
+
 		else if (rand < .86)
 		{
 			index = 1;
 		}
-		
+
 		else if (rand < .93)
 		{
 			index = 2;
 		}
-		
+
 		affineTransformation(index);
-		
-		
-		
+
+
+
 		if (currentX >= maxX || currentX <= minX || currentY >= maxY || currentY <= minY)
 		{
 			continue;
 		}
-		
-		
-		
+
+
+
 		//This scales col to [0, 1].
 		let col = (currentX - minX) / (maxX - minX);
-		
+
 		col = Math.floor(gridSize * col);
-		
+
 		//This scales row to [0, 1].
 		let row = (currentY - minY) / (maxY - minY);
-		
+
 		row = Math.floor(gridSize * (1 - row));
-		
+
 		fernGraph[4 * (gridSize * row + col) + 1]++;
 	}
-	
-	
-	
+
+
+
 	postMessage([fernGraph]);
 }
 
@@ -104,11 +104,11 @@ function affineTransformation(index)
 	const temp = transformationCoefficients[index][0] * currentX
 		+ transformationCoefficients[index][1] * currentY
 		+ transformationCoefficients[index][4];
-	
+
 	currentY = transformationCoefficients[index][2] * currentX
-		+ transformationCoefficients[index][3] * currentY 
+		+ transformationCoefficients[index][3] * currentY
 		+ transformationCoefficients[index][5];
-	
+
 	currentX = temp;
 }
 
@@ -118,6 +118,6 @@ onmessage = (e) =>
 {
 	gridSize = e.data[0];
 	numIterations = e.data[1];
-	
+
 	drawFern();
 };

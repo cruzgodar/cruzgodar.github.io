@@ -8,7 +8,7 @@ let lastMousemoveEvent = 0;
 export function setUpInteractionListeners()
 {
 	const boundFunction = handleTouchEvent.bind(this);
-	
+
 	document.documentElement.addEventListener("touchstart", boundFunction, false);
 	document.documentElement.addEventListener("touchmove", boundFunction, false);
 
@@ -17,9 +17,9 @@ export function setUpInteractionListeners()
 		if (currentlyTouchDevice)
 		{
 			const timeBetweenMousemoves = Date.now() - lastMousemoveEvent;
-			
+
 			lastMousemoveEvent = Date.now();
-			
+
 			//Checking if it's >= 3 kinda sucks, but it seems like touch devices like to fire two mousemoves in quick succession sometimes. They also like to make that delay exactly 33. Look, I hate this too, but it needs to be here.
 			if (timeBetweenMousemoves >= 3 && timeBetweenMousemoves <= 50 && timeBetweenMousemoves !== 33)
 			{
@@ -39,7 +39,7 @@ export function setUpInteractionListeners()
 			{
 				document.activeElement.children[0].click();
 			}
-			
+
 			else if (!(document.activeElement.tagName === "BUTTON" || (document.activeElement.tagName === "INPUT" && document.activeElement.getAttribute("type") !== "button")))
 			{
 				document.activeElement.click();
@@ -67,11 +67,11 @@ function handleTouchEvent()
 	{
 		document.activeElement.blur();
 	}
-	
+
 	if (!currentlyTouchDevice)
 	{
 		removeHoverEvents();
-		
+
 		currentlyTouchDevice = true;
 	}
 }

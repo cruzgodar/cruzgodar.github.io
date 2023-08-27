@@ -5,40 +5,40 @@ import { $ } from "/scripts/src/main.mjs";
 export function load()
 {
 	const applet = new HitomezashiPattern($("#output-canvas"));
-	
-	
-	
+
+
+
 	const generateButtonElement = $("#generate-button");
 
 	generateButtonElement.addEventListener("click", run);
-	
-	
-	
+
+
+
 	const resolutionInputElement = $("#resolution-input");
-	
+
 	const gridSizeInputElement = $("#grid-size-input");
-	
+
 	const rowProbInputElement = $("#row-prob-input");
-	
+
 	const colProbInputElement = $("#col-prob-input");
-	
+
 	const drawBoundariesCheckboxElement = $("#toggle-draw-boundaries-checkbox");
-	
+
 	const drawRegionsCheckboxElement = $("#toggle-draw-regions-checkbox");
-	
+
 	const maximumSpeedCheckboxElement = $("#toggle-maximum-speed-checkbox");
-	
+
 	drawBoundariesCheckboxElement.checked = true;
-	
+
 	drawRegionsCheckboxElement.checked = true;
-	
-	
+
+
 	applet.listenToInputElements([resolutionInputElement, gridSizeInputElement, rowProbInputElement, colProbInputElement], run);
-	
+
 	applet.setInputCaps([resolutionInputElement, gridSizeInputElement], [4000, 200]);
-	
-	
-	
+
+
+
 	drawBoundariesCheckboxElement.addEventListener("input", () =>
 	{
 		if (!drawBoundariesCheckboxElement.checked && !drawRegionsCheckboxElement.checked)
@@ -46,7 +46,7 @@ export function load()
 			drawRegionsCheckboxElement.checked = true;
 		}
 	});
-	
+
 	drawRegionsCheckboxElement.addEventListener("input", () =>
 	{
 		if (!drawBoundariesCheckboxElement.checked && !drawRegionsCheckboxElement.checked)
@@ -54,18 +54,18 @@ export function load()
 			drawBoundariesCheckboxElement.checked = true;
 		}
 	});
-	
-	
-	
+
+
+
 	const downloadButtonElement = $("#download-button");
-	
+
 	downloadButtonElement.addEventListener("click", () =>
 	{
 		applet.wilson.downloadFrame("a-hitomezashi-pattern.png");
 	});
-	
-	
-	
+
+
+
 	showPage();
 
 
@@ -79,7 +79,7 @@ export function load()
 		const doDrawBoundaries = drawBoundariesCheckboxElement.checked;
 		const doDrawRegions = drawRegionsCheckboxElement.checked;
 		const maximumSpeed = maximumSpeedCheckboxElement.checked;
-		
+
 		applet.run({
 			resolution,
 			gridSize,

@@ -18,7 +18,8 @@
 		"/applets/calcudoku-generator/scripts/solver.*",
 		"/applets/sudoku-generator/scripts/solver.*",
 		"/applets/wilsons-algorithm/scripts/random-walk.*",
-		"/jsconfig.json"
+		"/jsconfig.json",
+		"/scripts/src/sitemap.mjs"
 	],
     "rules": {
         "indent": [
@@ -66,6 +67,14 @@
 				"arraysInObjects": false,
 				"objectsInObjects": true
 			}
-		]
+		],
+		"no-promise-executor-return": ["error"],
+		"no-template-curly-in-string": ["warn"],
+		"no-unused-private-class-members": ["warn"],
+		"curly": ["error", "all"],
+		"no-implicit-globals": ["error"],
+		"no-var": ["error"],
+		"no-trailing-spaces": ["warn"],
+		"space-infix-ops": ["warn"]
 	}
 }

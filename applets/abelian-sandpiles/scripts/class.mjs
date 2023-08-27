@@ -4,24 +4,24 @@ import { Wilson } from "/scripts/wilson.mjs";
 export class AbelianSandpile extends Applet
 {
 	wilsonUpscale = null;
-	
+
 	numGrains = 10000;
 	resolution = 500;
-	
+
 	lastTimestamp = -1;
-	
+
 	computationsPerFrame = 20;
-	
+
 	lastPixelData = null;
-	
-	
-	
+
+
+
 	constructor(canvas)
 	{
 		super(canvas);
-		
+
 		const hiddenCanvas = this.createHiddenCanvas();
-		
+
 		const fragShaderSourceInit = `
 			precision highp float;
 			precision highp sampler2D;
@@ -50,9 +50,9 @@ export class AbelianSandpile extends Applet
 				gl_FragColor = vec4(0.0, 0.0, 0.0, 0.0);
 			}
 		`;
-		
-		
-		
+
+
+
 		const fragShaderSourceUpdate = `
 			precision highp float;
 			precision highp sampler2D;
@@ -158,9 +158,9 @@ export class AbelianSandpile extends Applet
 				gl_FragColor = newState;
 			}
 		`;
-		
-		
-		
+
+
+
 		const fragShaderSourceDraw = `
 			precision highp float;
 			precision highp sampler2D;
@@ -207,33 +207,33 @@ export class AbelianSandpile extends Applet
 				gl_FragColor = vec4(0.0, 0.0, 0.0, 1.0);
 			}
 		`;
-		
+
 		const options =
 		{
 			renderer: "gpu",
-			
+
 			shader: fragShaderSourceInit,
-			
+
 			canvasWidth: this.resolution,
 			canvasHeight: this.resolution
 		};
-		
+
 		this.wilson = new Wilson(hiddenCanvas, options);
-		
+
 		this.wilson.render.loadNewShader(fragShaderSourceUpdate);
 		this.wilson.render.loadNewShader(fragShaderSourceDraw);
-		
+
 		this.wilson.render.initUniforms(["step", "startGrains"], 0);
 		this.wilson.render.initUniforms(["step"], 1);
-		
+
 		this.wilson.render.createFramebufferTexturePair();
 		this.wilson.render.createFramebufferTexturePair();
-		
+
 		this.wilson.gl.bindTexture(this.wilson.gl.TEXTURE_2D, this.wilson.render.framebuffers[0].texture);
 		this.wilson.gl.bindFramebuffer(this.wilson.gl.FRAMEBUFFER, null);
-		
-		
-		
+
+
+
 		const fragShaderSourceUpscale = `
 			precision highp float;
 			precision highp sampler2D;
@@ -247,63 +247,63 @@ export class AbelianSandpile extends Applet
 				gl_FragColor = texture2D(uTexture, (uv + vec2(1.0, 1.0)) / 2.0);
 			}
 		`;
-		
+
 		const optionsUpscale =
 		{
 			renderer: "gpu",
-			
+
 			shader: fragShaderSourceUpscale,
-			
+
 			canvasWidth: this.resolution,
 			canvasHeight: this.resolution,
-			
-			
-			
-			
+
+
+
+
 			useFullscreen: true,
-			
+
 			useFullscreenButton: true,
-			
+
 			enterFullscreenButtonIconPath: "/graphics/general-icons/enter-fullscreen.png",
 			exitFullscreenButtonIconPath: "/graphics/general-icons/exit-fullscreen.png"
 		};
-		
+
 		this.wilsonUpscale = new Wilson(canvas, optionsUpscale);
-		
+
 		this.wilsonUpscale.render.createFramebufferTexturePair(this.wilsonUpscale.gl.UNSIGNED_BYTE);
 	}
-	
-	
-	
+
+
+
 	run({ numGrains = 10000, computationsPerFrame = 25 })
 	{
 		this.resume();
-		
+
 		this.numGrains = numGrains;
-		
+
 		this.resolution = Math.floor(Math.sqrt(this.numGrains)) + 2;
 		this.resolution = this.resolution + 1 - (this.resolution % 2);
-		
+
 		this.computationsPerFrame = computationsPerFrame;
-		
+
 		const grains4 = (this.numGrains % 256) / 256;
 		const grains3 = (Math.floor(this.numGrains / 256) % 256) / 256;
 		const grains2 = (Math.floor(this.numGrains / (256 * 256)) % 256) / 256;
 		const grains1 = (Math.floor(this.numGrains / (256 * 256 * 256)) % 256) / 256;
-		
+
 		this.wilson.gl.useProgram(this.wilson.render.shaderPrograms[0]);
 		this.wilson.gl.uniform1f(this.wilson.uniforms["step"][0], 1 / this.resolution);
 		this.wilson.gl.uniform4f(this.wilson.uniforms["startGrains"][0], grains1, grains2, grains3, grains4);
-		
+
 		this.wilson.gl.useProgram(this.wilson.render.shaderPrograms[1]);
 		this.wilson.gl.uniform1f(this.wilson.uniforms["step"][1], 1 / this.resolution);
-		
-		
-		
+
+
+
 		this.wilson.changeCanvasSize(this.resolution, this.resolution);
-		
+
 		this.wilson.gl.bindTexture(this.wilson.gl.TEXTURE_2D, this.wilson.render.framebuffers[0].texture);
-		
+
 		this.wilson.gl.texImage2D(
 			this.wilson.gl.TEXTURE_2D,
 			0,
@@ -315,7 +315,7 @@ export class AbelianSandpile extends Applet
 			this.wilson.gl.FLOAT,
 			null
 		);
-		
+
 		this.wilson.gl.bindTexture(this.wilson.gl.TEXTURE_2D, this.wilson.render.framebuffers[1].texture);
 
 		this.wilson.gl.texImage2D(
@@ -329,80 +329,80 @@ export class AbelianSandpile extends Applet
 			this.wilson.gl.FLOAT,
 			null
 		);
-		
-		
-		
+
+
+
 		const outputResolution = Math.max(this.resolution, this.canvas.getBoundingClientRect().width);
-		
+
 		this.wilsonUpscale.gl.bindTexture(this.wilsonUpscale.gl.TEXTURE_2D, this.wilsonUpscale.render.framebuffers[0].texture);
-		
+
 		this.wilsonUpscale.changeCanvasSize(outputResolution, outputResolution);
-		
-		
-		
+
+
+
 		this.wilson.gl.useProgram(this.wilson.render.shaderPrograms[0]);
-		
+
 		this.wilson.gl.bindTexture(this.wilson.gl.TEXTURE_2D, this.wilson.render.framebuffers[0].texture);
 		this.wilson.gl.bindFramebuffer(this.wilson.gl.FRAMEBUFFER, this.wilson.render.framebuffers[0].framebuffer);
-		
+
 		this.wilson.render.drawFrame();
-		
-		
-		
+
+
+
 		window.requestAnimationFrame(this.drawFrame.bind(this));
 	}
-	
-	
-	
+
+
+
 	drawFrame(timestamp)
 	{
 		const timeElapsed = timestamp - this.lastTimestamp;
-		
+
 		this.lastTimestamp = timestamp;
-		
+
 		if (timeElapsed === 0)
 		{
 			return;
 		}
-		
+
 		this.wilson.gl.viewport(0, 0, this.resolution, this.resolution);
-		
+
 		for (let i = 0; i < this.computationsPerFrame; i++)
 		{
 			this.wilson.gl.useProgram(this.wilson.render.shaderPrograms[1]);
-			
+
 			this.wilson.gl.bindFramebuffer(this.wilson.gl.FRAMEBUFFER, this.wilson.render.framebuffers[1].framebuffer);
-			
+
 			this.wilson.render.drawFrame();
-			
-			
-			
+
+
+
 			this.wilson.gl.bindTexture(this.wilson.gl.TEXTURE_2D, this.wilson.render.framebuffers[1].texture);
 			this.wilson.gl.bindFramebuffer(this.wilson.gl.FRAMEBUFFER, this.wilson.render.framebuffers[0].framebuffer);
-			
+
 			this.wilson.render.drawFrame();
-			
-			
-			
+
+
+
 			this.wilson.gl.bindTexture(this.wilson.gl.TEXTURE_2D, this.wilson.render.framebuffers[0].texture);
 		}
-		
-		
-		
+
+
+
 		this.wilson.gl.useProgram(this.wilson.render.shaderPrograms[2]);
-		
+
 		this.wilson.gl.bindFramebuffer(this.wilson.gl.FRAMEBUFFER, null);
-		
+
 		this.wilson.render.drawFrame();
-		
-		
-		
+
+
+
 		const pixelData = this.wilson.render.getPixelData();
-		
+
 		if (this.lastPixelData !== null)
 		{
 			let foundDiff = false;
-			
+
 			for (let i = 0; i < pixelData.length; i++)
 			{
 				if (pixelData[i] !== this.lastPixelData[i])
@@ -411,17 +411,17 @@ export class AbelianSandpile extends Applet
 					break;
 				}
 			}
-			
+
 			if (!foundDiff)
 			{
 				return;
 			}
 		}
-		
+
 		this.lastPixelData = pixelData;
-		
-		
-		
+
+
+
 		this.wilsonUpscale.gl.texImage2D(
 			this.wilsonUpscale.gl.TEXTURE_2D,
 			0,
@@ -433,13 +433,13 @@ export class AbelianSandpile extends Applet
 			this.wilsonUpscale.gl.UNSIGNED_BYTE,
 			pixelData
 		);
-		
+
 		this.wilsonUpscale.gl.bindFramebuffer(this.wilsonUpscale.gl.FRAMEBUFFER, null);
-		
+
 		this.wilsonUpscale.render.drawFrame();
-		
-		
-		
+
+
+
 		if (!this.animationPaused)
 		{
 			window.requestAnimationFrame(this.drawFrame.bind(this));

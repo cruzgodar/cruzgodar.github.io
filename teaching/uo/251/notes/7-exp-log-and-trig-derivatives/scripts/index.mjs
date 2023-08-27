@@ -10,7 +10,7 @@ export function load()
 			"sin-and-cos":
 			{
 				bounds: { left: -10, right: 10, bottom: -10, top: 10 },
-				
+
 				expressions:
 				[
 					{ latex: String.raw`f(x) = \sin(x)`, color: desmosPurple },
@@ -21,13 +21,13 @@ export function load()
 					{ latex: String.raw`y = f(a) + f'(a)(x - a)`, color: desmosRed, secret: true }
 				]
 			},
-			
-			
-			
+
+
+
 			"exp-derivative":
 			{
 				bounds: { left: -2.5, right: 2.5, bottom: -.5, top: 4.5 },
-				
+
 				expressions:
 				[
 					{ latex: String.raw`f(x) = e^x`, color: desmosPurple },
@@ -37,11 +37,11 @@ export function load()
 				]
 			},
 		};
-		
+
 		return data;
 	});
-	
+
 	createDesmosGraphs();
-	
+
 	showPage();
 }

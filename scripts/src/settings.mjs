@@ -68,7 +68,7 @@ export function getQueryParams()
 	{
 		return "?" + params.join("&");
 	}
-	
+
 	return "";
 }
 
@@ -101,7 +101,7 @@ export function setUpDarkTheme()
 		{
 			return;
 		}
-		
+
 		if ((e.matches && !siteSettings.darkTheme) || (!e.matches && siteSettings.darkTheme))
 		{
 			toggleDarkTheme();
@@ -113,7 +113,7 @@ export function setUpDarkTheme()
 		siteSettings.darkTheme = forceThemePages[pageUrl];
 
 		siteSettings.darkTheme = false;
-		
+
 		toggleDarkTheme({ noAnimation: true, force: true });
 
 		return;
@@ -122,7 +122,7 @@ export function setUpDarkTheme()
 	if (siteSettings.darkTheme)
 	{
 		siteSettings.darkTheme = false;
-		
+
 		toggleDarkTheme({ noAnimation: true });
 	}
 }
@@ -141,9 +141,9 @@ export function revertTheme()
 	{
 		return;
 	}
-	
+
 	revertThemeTo = null;
-	
+
 	if (siteSettings.darkTheme !== revertThemeTo)
 	{
 		toggleDarkTheme({});
@@ -168,10 +168,10 @@ export async function toggleDarkTheme({ noAnimation = false, force = false })
 	if (noAnimation)
 	{
 		metaThemeColorElement.setAttribute("content", siteSettings.darkTheme ? "#181818" : "#ffffff");
-		
+
 		rootElement.style.setProperty("--theme", siteSettings.darkTheme ? 1 : 0);
 	}
-	
+
 	else
 	{
 		const element = addStyle(`

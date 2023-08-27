@@ -30,16 +30,16 @@ const elementSelectorsWithScale =
 export function setUpHoverEvents()
 {
 	$$(elementSelectors).forEach(element => addHoverEvent(element));
-	
+
 	elementSelectorsWithScale.forEach(selector =>
 	{
 		$$(selector[0]).forEach(element => addHoverEventWithScale(element, selector[1]));
 	});
-	
+
 	$$(".card .tex-holder").forEach(element =>
 	{
 		addHoverEventForTexHolder(element);
-		
+
 		element.addEventListener("click", () => showTex(element));
 	});
 }
@@ -51,35 +51,35 @@ export function addHoverEvent(element)
 		if (!currentlyTouchDevice)
 		{
 			element.classList.add("hover");
-			
+
 			if (element.tagName === "SELECT")
 			{
 				element.previousElementSibling.classList.add("hover");
 			}
-			
+
 			else if (element.classList.contains("dropdown-container"))
 			{
 				element.firstElementChild.classList.add("hover");
 			}
 		}
 	});
-	
+
 	element.addEventListener("mouseleave", () =>
 	{
 		if (!currentlyTouchDevice)
 		{
 			element.classList.remove("hover");
-			
+
 			if (element.tagName === "SELECT")
 			{
 				element.previousElementSibling.classList.remove("hover");
 			}
-			
+
 			else if (element.classList.contains("dropdown-container"))
 			{
 				element.firstElementChild.classList.remove("hover");
 			}
-			
+
 			else
 			{
 				element.blur();
@@ -98,13 +98,13 @@ export function addHoverEventWithScale(element, scale)
 			{
 				element = element.previousElementSibling;
 			}
-			
+
 			element.classList.add("hover");
-			
+
 			changeScale(element, scale);
 		}
 	});
-	
+
 	element.addEventListener("mouseleave", () =>
 	{
 		if (!currentlyTouchDevice)
@@ -113,9 +113,9 @@ export function addHoverEventWithScale(element, scale)
 			{
 				element = element.previousElementSibling;
 			}
-			
+
 			element.classList.remove("hover");
-			
+
 			changeScale(element, 1);
 		}
 	});
@@ -124,13 +124,13 @@ export function addHoverEventWithScale(element, scale)
 function addHoverEventForTexHolder(element)
 {
 	element.classList.add("active");
-	
+
 	element.addEventListener("mouseenter", () =>
 	{
 		if (!currentlyTouchDevice && element.getAttribute("data-showing-tex") !== "1")
 		{
 			element.classList.add("hover");
-			
+
 			anime({
 				targets: element,
 				scale: 1.05,
@@ -140,13 +140,13 @@ function addHoverEventForTexHolder(element)
 			});
 		}
 	});
-	
+
 	element.addEventListener("mouseleave", () =>
 	{
 		if (!currentlyTouchDevice)
 		{
 			element.classList.remove("hover");
-			
+
 			anime({
 				targets: element,
 				scale: 1,

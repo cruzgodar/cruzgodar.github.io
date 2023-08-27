@@ -7,7 +7,7 @@ export async function read(filepath)
 	return new Promise(resolve =>
 	{
 		const fullPath = filepath[0] === "/" ? root + filepath.slice(1) : root + filepath;
-		
+
 		fs.readFile(fullPath, "utf8", (err, data) =>
 		{
 			if (!err && data)

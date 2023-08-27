@@ -10,7 +10,7 @@ export function load()
 			"antiderivative":
 			{
 				bounds: { left: -3, right: 3, bottom: -1, top: 5 },
-				
+
 				expressions:
 				[
 					{ latex: String.raw`f(x) = \frac{x^3}{3} + C`, color: desmosPurple },
@@ -19,11 +19,11 @@ export function load()
 				]
 			}
 		};
-		
+
 		return data;
 	});
-	
+
 	createDesmosGraphs();
-	
+
 	showPage();
 }

@@ -38,7 +38,7 @@ export function load()
 	{
 		const numGrains = parseInt(numGrainsInputElement.value || 10000);
 		const computationsPerFrame = parseInt(computationsPerFrameInputElement.value || 25);
-		
+
 		applet.run({ numGrains, computationsPerFrame });
 	}
 }

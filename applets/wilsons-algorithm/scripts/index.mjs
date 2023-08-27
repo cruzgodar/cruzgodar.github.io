@@ -7,32 +7,32 @@ export function load()
 	const applet = new WilsonsAlgorithm($("#output-canvas"));
 
 
-	
+
 	const generateButtonElement = $("#generate-button");
 
 	generateButtonElement.addEventListener("click", run);
-	
-	
-	
+
+
+
 	const gridSizeInputElement = $("#grid-size-input");
-	
+
 	applet.setInputCaps([gridSizeInputElement], [200]);
 
 	applet.listenToInputElements([gridSizeInputElement], run);
-	
-	
-	
+
+
+
 	const downloadButtonElement = $("#download-button");
-	
+
 	downloadButtonElement.addEventListener("click", () =>
 	{
 		applet.wilson.downloadFrame("wilsons-algorithm.png");
 	});
-	
-	
-	
+
+
+
 	const maximumSpeedCheckboxElement = $("#toggle-maximum-speed-checkbox");
-	
+
 	const noBordersCheckboxElement = $("#no-borders-checkbox");
 
 

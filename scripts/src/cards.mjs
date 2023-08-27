@@ -14,7 +14,7 @@ const closeButton = document.querySelector("#card-close-button");
 if (closeButton)
 {
 	addHoverEvent(closeButton);
-	
+
 	closeButton.addEventListener("click", hideCard);
 
 	document.documentElement.addEventListener("keydown", (e) =>
@@ -41,53 +41,53 @@ export function setUpCards()
 export async function showCard(id)
 {
 	cardIsOpen = true;
-	
+
 	container.style.display = "flex";
 	container.style.opacity = 0;
 	container.style.transform = "scale(1)";
-	
+
 	//Makes the animation look a little nicer (since it doesn't cut off the bottom of long cards).
 	container.style.display = "flex";
-	
+
 	currentCard = document.querySelector(`#${id}-card`);
-	
+
 	container.appendChild(currentCard);
 	currentCard.insertBefore(closeButton, currentCard.firstElementChild);
-	
+
 	container.scroll(0, 0);
-	
-	
-	
+
+
+
 	const rect = currentCard.getBoundingClientRect();
-	
+
 	if (rect.height > window.innerHeight - 32)
 	{
 		container.style.justifyContent = "flex-start";
 	}
-	
+
 	else
 	{
 		container.style.justifyContent = "center";
 	}
-	
-	
-	
+
+
+
 	container.style.transform = "scale(.95)";
-	
+
 	pageElement.style.filter = "brightness(1)";
 	document.querySelector("#header").style.filter = "brightness(1)";
 	document.querySelector("#header-container").style.filter = "brightness(1)";
-	
+
 	pageElement.style.transformOrigin = `50% calc(50vh + ${window.scrollY}px)`;
-	
+
 	document.documentElement.addEventListener("click", handleClickEvent);
-	
+
 	const color = siteSettings.darkTheme ? "rgb(12, 12, 12)" : "rgb(127, 127, 127)";
 	const themeColor = siteSettings.darkTheme ? "#0c0c0c" : "#7f7f7f";
 
 	//Unfortunately necessary to make the animation work. We reset it later!
 	document.documentElement.style.backgroundColor = siteSettings.darkTheme ? "rgb(24, 24, 24)" : "rgb(255, 255, 255)";
-	
+
 	await Promise.all([
 		anime({
 			targets: container,
@@ -96,7 +96,7 @@ export async function showCard(id)
 			duration: animationTime,
 			easing: "easeOutQuint",
 		}).finished,
-		
+
 		anime({
 			targets: [pageElement, document.querySelector("#header"), document.querySelector("#header-container")],
 			filter: "brightness(.5)",
@@ -104,7 +104,7 @@ export async function showCard(id)
 			duration: animationTime,
 			easing: "easeOutQuint",
 		}).finished,
-		
+
 		anime({
 			targets: metaThemeColorElement,
 			content: themeColor,
@@ -127,7 +127,7 @@ export async function hideCard()
 
 	const color = siteSettings.darkTheme ? "rgb(24, 24, 24)" : "rgb(255, 255, 255)";
 	const themeColor = siteSettings.darkTheme ? "#181818" : "#ffffff";
-	
+
 	await Promise.all([
 		anime({
 			targets: [pageElement, document.querySelector("#header"), document.querySelector("#header-container")],
@@ -143,7 +143,7 @@ export async function hideCard()
 			duration: animationTime,
 			easing: "easeOutQuint",
 		}).finished,
-		
+
 		anime({
 			targets: document.documentElement,
 			backgroundColor: color,
@@ -161,13 +161,13 @@ export async function hideCard()
 	]);
 
 	document.documentElement.style.backgroundColor = "var(--background)";
-	
+
 	container.style.display = "none";
-	
+
 	pageElement.appendChild(currentCard);
-	
+
 	container.appendChild(closeButton);
-	
+
 	document.documentElement.removeEventListener("click", handleClickEvent);
 }
 
@@ -184,12 +184,12 @@ export function resizeCard()
 	if (cardIsOpen)
 	{
 		const rect = currentCard.getBoundingClientRect();
-		
+
 		if (rect.height > window.innerHeight - 32)
 		{
 			container.style.justifyContent = "flex-start";
 		}
-		
+
 		else
 		{
 			container.style.justifyContent = "center";

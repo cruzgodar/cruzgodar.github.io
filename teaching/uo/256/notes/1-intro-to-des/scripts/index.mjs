@@ -12,7 +12,7 @@ export function load()
 			"direction-field":
 			{
 				bounds: { left: -5, right: 5, bottom: -5, top: 5 },
-				
+
 				expressions:
 				[
 					{ latex: String.raw`f(t, y) = \frac{\sin(y)}{t^2 + 1}` },
@@ -26,11 +26,11 @@ export function load()
 					{ latex: String.raw`f(X, Y)(x - X) + Y \{\left|x - X\right| \leq \frac{.3}{\sqrt{1 + f(X, Y)^2}}\}`, color: desmosPurple, secret: true },
 				]
 			},
-			
+
 			"direction-field-2":
 			{
 				bounds: { left: -10, right: 10, bottom: -10, top: 10 },
-				
+
 				expressions:
 				[
 					{ latex: String.raw`f(t, y) = \frac{1}{50}(y^2 - 4)\left|y - 4\right|(t - 3)` },
@@ -43,18 +43,18 @@ export function load()
 				]
 			},
 		};
-		
+
 		return data;
 	});
-	
+
 	createDesmosGraphs();
-	
-	
-	
+
+
+
 	const outputCanvas = $("#vector-field-canvas");
-	
+
 	const applet = new VectorField(outputCanvas);
-	
+
 	applet.loadPromise.then(() =>
 	{
 		applet.run({
@@ -69,8 +69,8 @@ export function load()
 		});
 		applet.pauseWhenOffscreen();
 	});
-	
-	
-	
+
+
+
 	showPage();
 }

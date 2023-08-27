@@ -34,22 +34,22 @@ export let bannerOpacity = 1;
 export function setBannerOpacity(newBannerOpacity)
 {
 	bannerOpacity = newBannerOpacity;
-	
+
 	if (bannerElement)
 	{
 		bannerElement.style.opacity = bannerOpacity;
 	}
-	
+
 	if (contentElement)
 	{
 		contentElement.style.opacity = 1 - bannerOpacity;
 	}
-	
+
 	if (bannerOpacity)
 	{
 		bannerDoneLoading = false;
 	}
-	
+
 	else
 	{
 		bannerDoneLoading = true;
@@ -75,9 +75,9 @@ let lastScrollTimestamp = -1;
 export const bannerPages =
 [
 	"/home/",
-	
+
 	"/about/",
-	
+
 	"/writing/mist/",
 	"/writing/desolation-point/"
 ];
@@ -111,19 +111,19 @@ export async function loadBanner(large = false)
 	{
 		return;
 	}
-	
+
 	bannerElement = $("#banner");
 	contentElement = $("#content");
-	
+
 	bannerFilename = `${large ? "large" : "small"}.webp`;
-	
+
 	bannerFilepath = pageUrl + "banners/";
-	
+
 	if (pageUrl in multibannerPages)
 	{
 		bannerFilepath += multibannerPages[pageUrl].currentBanner + "/";
 	}
-	
+
 	addStyle(`
 		#banner-small
 		{
@@ -137,12 +137,12 @@ export async function loadBanner(large = false)
 			background-size: cover;
 		}
 	`);
-	
-	
-	
+
+
+
 	//Fetch the banner file. If that works, great! Set the background and fade in the page. If not, that means the html was cached but the banner was not (this is common on the homepage). In that case, we need to abort, so we remove the banner entirely.
 	await fetch(bannerFilepath + bannerFilename);
-	
+
 	const img = new Image();
 
 	const promise = new Promise(resolve =>
@@ -150,7 +150,7 @@ export async function loadBanner(large = false)
 		img.onload = () =>
 		{
 			img.remove();
-			
+
 			if (!large)
 			{
 				setTimeout(() => insertScrollButton(), 2000);
@@ -159,14 +159,14 @@ export async function loadBanner(large = false)
 			resolve();
 		};
 	});
-	
+
 	img.style.opacity = 0;
 	img.style.position = "fixed";
 	img.style.top = "-100vh";
 	img.style.left = "-100vw";
-	
+
 	pageElement.appendChild(img);
-	
+
 	setTimeout(() =>
 	{
 		img.src = bannerFilepath + bannerFilename;
@@ -189,7 +189,7 @@ export function setUpBanner()
 					.then(() => $("#banner-small").remove());
 			});
 	}
-	
+
 	else
 	{
 		bannerElement = null;
@@ -204,27 +204,27 @@ export function bannerOnScroll(scrollPositionOverride)
 	{
 		setPageScroll(window.scrollY);
 	}
-	
+
 	else
 	{
 		setPageScroll(scrollPositionOverride);
 		bannerDoneLoading = false;
 	}
-	
+
 	window.requestAnimationFrame(scrollAnimationFrame);
 }
-		
+
 function scrollAnimationFrame(timestamp)
 {
 	const timeElapsed = timestamp - lastScrollTimestamp;
-	
+
 	lastScrollTimestamp = timestamp;
-	
+
 	if (timeElapsed === 0)
 	{
 		return;
 	}
-	
+
 	scrollHandler();
 }
 
@@ -238,35 +238,35 @@ function scrollHandler()
 	if (pageScroll <= bannerMaxScroll)
 	{
 		bannerOpacity = Math.min(Math.max(1 - pageScroll / bannerMaxScroll, 0), 1);
-		
+
 		bannerElement.style.opacity = bannerOpacity;
 		contentElement.style.opacity = 1 - bannerOpacity;
-		
+
 		if (bannerOpacity === 0)
 		{
 			bannerDoneLoading = true;
 		}
-		
+
 		else
 		{
 			bannerDoneLoading = false;
 		}
 	}
-	
+
 	else if (!bannerDoneLoading)
 	{
 		bannerOpacity = 0;
-		
+
 		bannerElement.style.opacity = 0;
 		contentElement.style.opacity = 1;
-		
+
 		bannerDoneLoading = true;
 	}
-	
 
-	
+
+
 	scrollButtonOpacity = Math.min(Math.max(1 - pageScroll / (bannerMaxScroll / 2.5), 0), 1);
-	
+
 	if (scrollButtonExists)
 	{
 		scrollButtonElement.style.opacity = scrollButtonOpacity;
@@ -290,7 +290,7 @@ export function insertScrollButton()
 	}
 
 	const bannerCoverElement = document.querySelector("#banner-cover");
-	
+
 	if (!bannerCoverElement)
 	{
 		return;
@@ -301,7 +301,7 @@ export function insertScrollButton()
 			<input type="image" id="scroll-button" src="/graphics/general-icons/chevron-down.png" style="opacity: 0" alt="Scroll down">
 		</div>
 	`);
-	
+
 	setTimeout(() =>
 	{
 		const newBannerCoverElement = $("#new-banner-cover");
@@ -310,12 +310,12 @@ export function insertScrollButton()
 		{
 			return;
 		}
-		
+
 		scrollButtonElement = $("#scroll-button");
 
 		newBannerCoverElement.style.opacity = 0;
 		newBannerCoverElement.style.transform = "translateY(-100px)";
-		
+
 		anime({
 			targets: newBannerCoverElement,
 			opacity: 1,
@@ -323,16 +323,16 @@ export function insertScrollButton()
 			duration: opacityAnimationTime * 4,
 			easing: "easeOutCubic"
 		});
-		
+
 		anime({
 			targets: scrollButtonElement,
 			opacity: scrollButtonOpacity,
 			duration: opacityAnimationTime * 4,
 			easing: "easeOutCubic"
 		});
-		
+
 		setTimeout(() => scrollButtonExists = true, opacityAnimationTime * 4);
 	}, 100);
-	
+
 	document.querySelector("#banner-cover").remove();
 }

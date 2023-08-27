@@ -10,13 +10,13 @@ export function load()
 			"geometric-series":
 			{
 				options: { showGrid: false, showXAxis: false, showYAxis: false },
-				
+
 				bounds: { left: -.25, right: 1.25, bottom: -.25, top: 1.25 },
-				
+
 				expressions:
 				[
 					{ latex: String.raw`n=2`, sliderBounds: { min: 1, max: 20, step: 1 } },
-					
+
 					{ latex: String.raw`x = [0, 1] \{0 \leq y \leq 1\}`, color: desmosBlack, secret: true },
 					{ latex: String.raw`y = [0, 1] \{0 \leq x \leq 1\}`, color: desmosBlack, secret: true },
 					{ latex: String.raw`x_1(k) = 1 - 2^{-\floor(\frac{k}{2})}`, hidden: true, secret: true },
@@ -30,11 +30,11 @@ export function load()
 				]
 			}
 		};
-		
+
 		return data;
 	});
-	
+
 	createDesmosGraphs();
-	
+
 	showPage();
 }

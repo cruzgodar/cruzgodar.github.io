@@ -5,36 +5,36 @@ import { $ } from "/scripts/src/main.mjs";
 export function load()
 {
 	const applet = new SimulatedAnnealing($("#output-canvas"));
-	
-	
+
+
 
 	const generateButtonElement = $("#generate-button");
 
 	generateButtonElement.addEventListener("click", run);
-	
-	
-	
+
+
+
 	const resolutionInputElement = $("#resolution-input");
-	
+
 	const numNodesInputElement = $("#num-nodes-input");
-	
+
 	const maximumSpeedCheckboxElement = $("#toggle-maximum-speed-checkbox");
-	
+
 	applet.listenToInputElements([resolutionInputElement, numNodesInputElement], run);
-	
+
 	applet.setInputCaps([resolutionInputElement, numNodesInputElement], [3000, 100]);
-	
-	
-	
+
+
+
 	const downloadButtonElement = $("#download-button");
-	
+
 	downloadButtonElement.addEventListener("click", () =>
 	{
 		applet.wilson.downloadFrame("simulated-annealing.png");
 	});
-	
-	
-	
+
+
+
 	showPage();
 
 
@@ -44,7 +44,7 @@ export function load()
 		const resolution = parseInt(resolutionInputElement.value || 1000);
 		const numNodes = parseInt(numNodesInputElement.value || 20);
 		const maximumSpeed = maximumSpeedCheckboxElement.checked;
-		
+
 		applet.run({
 			resolution,
 			numNodes,

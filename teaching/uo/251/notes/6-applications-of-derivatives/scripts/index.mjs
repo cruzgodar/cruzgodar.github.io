@@ -10,7 +10,7 @@ export function load()
 			"derivative-interpretation":
 			{
 				bounds: { left: -5, right: 5, bottom: -5, top: 5 },
-				
+
 				expressions:
 				[
 					{ latex: String.raw`g(t) = \frac{1}{8} t^3 - \frac{1}{2} t`, color: desmosPurple },
@@ -21,11 +21,11 @@ export function load()
 				]
 			},
 		};
-		
+
 		return data;
 	});
-	
+
 	createDesmosGraphs();
-	
+
 	showPage();
 }

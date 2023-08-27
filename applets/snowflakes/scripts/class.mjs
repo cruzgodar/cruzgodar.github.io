@@ -4,21 +4,21 @@ import { Wilson } from "/scripts/wilson.mjs";
 export class Snowflake extends Applet
 {
 	loadPromise = null;
-	
+
 	resolution = 500;
-	
+
 	lastTimestamp = -1;
-	
+
 	computationsPerFrame = 20;
-	
-	
-	
+
+
+
 	constructor(canvas)
 	{
 		super(canvas);
-		
-		
-		
+
+
+
 		const fragShaderSourceInit = `
 			precision highp float;
 			precision highp sampler2D;
@@ -54,9 +54,9 @@ export class Snowflake extends Applet
 				gl_FragColor = vec4(0.0, 0.0, 0.0, rho);
 			}
 		`;
-		
-		
-		
+
+
+
 		const fragShaderSourceDiffuse = `
 			precision highp float;
 			precision highp sampler2D;
@@ -196,9 +196,9 @@ export class Snowflake extends Applet
 				gl_FragColor = newState;
 			}
 		`;
-		
-		
-		
+
+
+
 		const fragShaderSourceFreeze = `
 			precision highp float;
 			precision highp sampler2D;
@@ -265,9 +265,9 @@ export class Snowflake extends Applet
 				gl_FragColor = newState;
 			}
 		`;
-		
-		
-		
+
+
+
 		const fragShaderSourceAttach = `
 			precision highp float;
 			precision highp sampler2D;
@@ -405,9 +405,9 @@ export class Snowflake extends Applet
 				gl_FragColor = newState;
 			}
 		`;
-		
-		
-		
+
+
+
 		const fragShaderSourceMelt = `
 			precision highp float;
 			precision highp sampler2D;
@@ -474,9 +474,9 @@ export class Snowflake extends Applet
 				gl_FragColor = newState;
 			}
 		`;
-		
-		
-		
+
+
+
 		const fragShaderSourceDraw = `
 			precision highp float;
 			precision highp sampler2D;
@@ -493,50 +493,50 @@ export class Snowflake extends Applet
 				gl_FragColor = vec4(v * .8, 1.0);
 			}
 		`;
-		
+
 		const options =
 		{
 			renderer: "gpu",
-			
+
 			shader: fragShaderSourceInit,
-			
+
 			canvasWidth: this.resolution,
 			canvasHeight: this.resolution,
-			
-			
-			
-			
+
+
+
+
 			useFullscreen: true,
-			
+
 			useFullscreenButton: true,
-			
+
 			enterFullscreenButtonIconPath: "/graphics/general-icons/enter-fullscreen.png",
 			exitFullscreenButtonIconPath: "/graphics/general-icons/exit-fullscreen.png"
 		};
-		
+
 		this.wilson = new Wilson(canvas, options);
-		
+
 		this.wilson.render.loadNewShader(fragShaderSourceDiffuse);
 		this.wilson.render.loadNewShader(fragShaderSourceFreeze);
 		this.wilson.render.loadNewShader(fragShaderSourceAttach);
 		this.wilson.render.loadNewShader(fragShaderSourceMelt);
 		this.wilson.render.loadNewShader(fragShaderSourceDraw);
-		
+
 		this.wilson.render.initUniforms(["rho", "beta", "alpha", "theta", "kappa", "mu", "gamma", "resolution", "step"], 0);
 		this.wilson.render.initUniforms(["rho", "beta", "alpha", "theta", "kappa", "mu", "gamma", "resolution", "step"], 1);
 		this.wilson.render.initUniforms(["rho", "beta", "alpha", "theta", "kappa", "mu", "gamma", "resolution", "step"], 2);
 		this.wilson.render.initUniforms(["rho", "beta", "alpha", "theta", "kappa", "mu", "gamma", "resolution", "step"], 3);
 		this.wilson.render.initUniforms(["rho", "beta", "alpha", "theta", "kappa", "mu", "gamma", "resolution", "step"], 4);
-		
+
 		this.wilson.render.createFramebufferTexturePair();
 		this.wilson.render.createFramebufferTexturePair();
-		
+
 		this.wilson.gl.bindTexture(this.wilson.gl.TEXTURE_2D, this.wilson.render.framebuffers[0].texture);
 		this.wilson.gl.bindFramebuffer(this.wilson.gl.FRAMEBUFFER, null);
 	}
-	
-	
-	
+
+
+
 	run({
 		resolution = 500,
 		computationsPerFrame = 25,
@@ -550,14 +550,14 @@ export class Snowflake extends Applet
 	})
 	{
 		this.resume();
-		
+
 		this.resolution = resolution;
 		this.computationsPerFrame = computationsPerFrame;
-		
+
 		for (let i = 0; i <= 4; i++)
 		{
 			this.wilson.gl.useProgram(this.wilson.render.shaderPrograms[i]);
-			
+
 			this.wilson.gl.uniform1f(this.wilson.uniforms["resolution"][i], this.resolution);
 			this.wilson.gl.uniform1f(this.wilson.uniforms["step"][i], 1 / this.resolution);
 			this.wilson.gl.uniform1f(this.wilson.uniforms["rho"][i], rho);
@@ -568,113 +568,113 @@ export class Snowflake extends Applet
 			this.wilson.gl.uniform1f(this.wilson.uniforms["mu"][i], mu);
 			this.wilson.gl.uniform1f(this.wilson.uniforms["gamma"][i], gamma);
 		}
-		
-		
-		
+
+
+
 		this.wilson.changeCanvasSize(this.resolution, this.resolution);
-		
+
 		this.wilson.gl.bindTexture(this.wilson.gl.TEXTURE_2D, this.wilson.render.framebuffers[0].texture);
 		this.wilson.gl.texImage2D(this.wilson.gl.TEXTURE_2D, 0, this.wilson.gl.RGBA, this.wilson.canvasWidth, this.wilson.canvasHeight, 0, this.wilson.gl.RGBA, this.wilson.gl.FLOAT, null);
-		
+
 		this.wilson.gl.bindTexture(this.wilson.gl.TEXTURE_2D, this.wilson.render.framebuffers[1].texture);
 		this.wilson.gl.texImage2D(this.wilson.gl.TEXTURE_2D, 0, this.wilson.gl.RGBA, this.wilson.canvasWidth, this.wilson.canvasHeight, 0, this.wilson.gl.RGBA, this.wilson.gl.FLOAT, null);
-		
-		
-		
+
+
+
 		this.wilson.gl.useProgram(this.wilson.render.shaderPrograms[0]);
-		
+
 		this.wilson.gl.bindTexture(this.wilson.gl.TEXTURE_2D, this.wilson.render.framebuffers[0].texture);
 		this.wilson.gl.bindFramebuffer(this.wilson.gl.FRAMEBUFFER, this.wilson.render.framebuffers[0].framebuffer);
-		
+
 		this.wilson.render.drawFrame();
-		
-		
-		
+
+
+
 		window.requestAnimationFrame(this.drawFrame.bind(this));
 	}
-	
-	
-	
+
+
+
 	drawFrame(timestamp)
 	{
 		const timeElapsed = timestamp - this.lastTimestamp;
-		
+
 		this.lastTimestamp = timestamp;
-		
+
 		if (timeElapsed === 0)
 		{
 			return;
 		}
-		
-		
-		
+
+
+
 		for (let i = 0; i < this.computationsPerFrame; i++)
 		{
 			this.wilson.gl.useProgram(this.wilson.render.shaderPrograms[1]);
-			
+
 			this.wilson.gl.bindFramebuffer(this.wilson.gl.FRAMEBUFFER, this.wilson.render.framebuffers[1].framebuffer);
-			
+
 			this.wilson.render.drawFrame();
-			
-			
-			
+
+
+
 			this.wilson.gl.useProgram(this.wilson.render.shaderPrograms[2]);
-			
+
 			this.wilson.gl.bindTexture(this.wilson.gl.TEXTURE_2D, this.wilson.render.framebuffers[1].texture);
 			this.wilson.gl.bindFramebuffer(this.wilson.gl.FRAMEBUFFER, this.wilson.render.framebuffers[0].framebuffer);
-			
+
 			this.wilson.render.drawFrame();
-			
-			
-			
+
+
+
 			this.wilson.gl.useProgram(this.wilson.render.shaderPrograms[3]);
-			
+
 			this.wilson.gl.bindTexture(this.wilson.gl.TEXTURE_2D, this.wilson.render.framebuffers[0].texture);
 			this.wilson.gl.bindFramebuffer(this.wilson.gl.FRAMEBUFFER, this.wilson.render.framebuffers[1].framebuffer);
-			
+
 			this.wilson.render.drawFrame();
-			
-			
-			
+
+
+
 			this.wilson.gl.useProgram(this.wilson.render.shaderPrograms[4]);
-			
+
 			this.wilson.gl.bindTexture(this.wilson.gl.TEXTURE_2D, this.wilson.render.framebuffers[1].texture);
 			this.wilson.gl.bindFramebuffer(this.wilson.gl.FRAMEBUFFER, this.wilson.render.framebuffers[0].framebuffer);
-			
+
 			this.wilson.render.drawFrame();
-			
-			
-			
+
+
+
 			this.wilson.gl.bindTexture(this.wilson.gl.TEXTURE_2D, this.wilson.render.framebuffers[0].texture);
 		}
-		
+
 		this.wilson.gl.useProgram(this.wilson.render.shaderPrograms[5]);
-		
+
 		this.wilson.gl.bindFramebuffer(this.wilson.gl.FRAMEBUFFER, null);
-		
+
 		this.wilson.render.drawFrame();
-		
-		
-		
+
+
+
 		const pixels = this.wilson.render.getPixelData();
-		
+
 		const threshhold = Math.floor(this.resolution / 10);
-		
+
 		for (let i = threshhold; i < this.resolution - threshhold; i++)
 		{
 			const index1 = this.resolution * i + threshhold;
 			const index2 = this.resolution * i + (this.resolution - threshhold);
 			const index3 = this.resolution * threshhold + i;
 			const index4 = this.resolution * (this.resolution - threshhold) + i;
-			
+
 			if (pixels[4 * index1] || pixels[4 * index2] || pixels[4 * index3] || pixels[4 * index4])
 			{
 				this.pause();
 			}
 		}
-		
-		
-		
+
+
+
 		if (!this.animationPaused)
 		{
 			window.requestAnimationFrame(this.drawFrame.bind(this));

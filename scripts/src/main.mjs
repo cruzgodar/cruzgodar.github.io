@@ -49,7 +49,7 @@ export let temporaryListeners = [];
 export function addTemporaryListener({ object, event, callback })
 {
 	object.addEventListener(event, callback);
-	
+
 	temporaryListeners.push([object, event, callback]);
 }
 
@@ -116,39 +116,39 @@ const scriptsLoaded =
 {
 	"glsl": 0
 };
-	
-	
+
+
 
 export async function loadSite(url = pageUrl)
 {
 	setUpDarkTheme();
-	
+
 	pageElement.classList.add("page");
-	
+
 	document.body.insertBefore(pageElement, document.body.firstChild);
-	
+
 	window.addEventListener("scroll", () => bannerOnScroll(0));
-	
+
 	setUpInteractionListeners();
 
 	setUpOnResize();
-	
+
 
 
 	if ("scrollRestoration" in history)
 	{
 		history.scrollRestoration = "manual";
 	}
-	
+
 	//When in PWA form, disable text selection and drag-and-drop.
 	if (window.matchMedia("(display-mode: standalone)").matches)
 	{
 		document.documentElement.style.WebkitUserSelect = "none";
 		document.documentElement.style.userSelect = "none";
 		document.documentElement.style.WebkitTouchCallout = "none";
-		
+
 		$$("body *").forEach(element => element.setAttribute("draggable", "false"));
-		
+
 		//Also add a little extra spacing at the top of each page to keep content from feeling too close to the top of the screen.
 		addStyle(`
 			#logo, .name-text-container, .empty-top
@@ -157,7 +157,7 @@ export async function loadSite(url = pageUrl)
 			}
 		`, false);
 	}
-	
+
 	//Fade in the opacity when the user presses the back button.
 	window.addEventListener("popstate", (e) =>
 	{
@@ -166,7 +166,7 @@ export async function loadSite(url = pageUrl)
 		{
 			return;
 		}
-		
+
 		redirect({
 			url: e.state.url,
 			noStatePush: true,
@@ -175,16 +175,16 @@ export async function loadSite(url = pageUrl)
 	});
 
 
-	
+
 	addHeader();
-	
+
 	//If it's not an html file, it shouldn't be anywhere near redirect().
 	if (url.indexOf(".") !== -1)
 	{
 		//This should really be using history.replaceState(), but that doesn't update the page to make the file show for some reason.
 		window.location.href = url;
 	}
-	
+
 	else
 	{
 		redirect({
@@ -209,14 +209,14 @@ export function loadScript(src, isModule = false)
 		}
 
 		const script = document.createElement("script");
-		
+
 		if (isModule)
 		{
 			script.setAttribute("type", "module");
 		}
-		
+
 		document.body.appendChild(script);
-		
+
 		script.onload = () =>
 		{
 			scriptsLoaded[src] = true;
@@ -236,14 +236,14 @@ export function loadScript(src, isModule = false)
 export function loadStyle(href)
 {
 	const style = document.createElement("link");
-	
+
 	style.setAttribute("rel", "stylesheet");
 	style.setAttribute("type", "text/css");
-	
+
 	document.head.appendChild(style);
-	
+
 	style.setAttribute("href", href);
-	
+
 	return style;
 }
 
@@ -253,23 +253,23 @@ export function loadStyle(href)
 export function addStyle(content, temporary = true, atBeginningOfHead = false)
 {
 	const element = document.createElement("style");
-	
+
 	element.textContent = content;
-	
+
 	if (temporary)
 	{
 		element.classList.add("temporary-style");
 	}
-	
+
 	if (atBeginningOfHead)
 	{
 		document.head.insertBefore(element, document.head.firstChild);
 	}
-	
+
 	else
 	{
 		document.head.appendChild(element);
 	}
-	
+
 	return element;
 }

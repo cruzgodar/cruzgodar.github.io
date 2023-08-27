@@ -5,9 +5,9 @@ import { $ } from "/scripts/src/main.mjs";
 export function load()
 {
 	const applet = new Snowflake($("#output-canvas"));
-	
-	
-	
+
+
+
 	const resolutionInputElement = $("#resolution-input");
 	const computationsPerFrameInputElement = $("#computations-per-frame-input");
 	const rhoInputElement = $("#rho-input");
@@ -17,11 +17,11 @@ export function load()
 	const kappaInputElement = $("#kappa-input");
 	const muInputElement = $("#mu-input");
 	const gammaInputElement = $("#gamma-input");
-	
+
 	applet.setInputCaps([resolutionInputElement, computationsPerFrameInputElement], [1000, 20]);
-	
-	
-	
+
+
+
 	const randomizeParametersButtonElement = $("#randomize-parameters-button");
 
 	randomizeParametersButtonElement.addEventListener("click", () =>
@@ -34,21 +34,21 @@ export function load()
 		muInputElement.value = Math.round((0 + (.065 - 0) * Math.random()) * 100000) / 100000;
 		muInputElement.value = Math.round((0 + (.05 - 0) * Math.random()) * 100000) / 100000;
 	});
-	
-	
-	
+
+
+
 	const generateButtonElement = $("#generate-button");
-	
+
 	generateButtonElement.addEventListener("click", run);
-	
-	
-	
+
+
+
 	const downloadButtonElement = $("#download-button");
-	
+
 	downloadButtonElement.addEventListener("click", () => applet.wilson.downloadFrame("a-gravner-griffeath-snowflake.png"));
-	
-	
-	
+
+
+
 	showPage();
 
 
@@ -64,7 +64,7 @@ export function load()
 		const kappa = parseFloat(kappaInputElement.value || .005);
 		const mu = parseFloat(muInputElement.value || .0325);
 		const gamma = parseFloat(gammaInputElement.value || .025);
-		
+
 		applet.run({
 			resolution,
 			computationsPerFrame,

@@ -7,65 +7,65 @@ export function load()
 {
 	const numReadsElement = $("#num-reads");
 	const numWritesElement = $("#num-writes");
-	
+
 	const applet = new SortingAlgorithm($("#output-canvas"), numReadsElement, numWritesElement);
-	
-	
-	
+
+
+
 	const algorithmSelectorDropdownElement = $("#algorithm-selector-dropdown");
-	
+
 	algorithmSelectorDropdownElement.addEventListener("input", () =>
 	{
 		$$(".info-text").forEach(element => element.style.opacity = 0);
-		
+
 		setTimeout(() =>
 		{
 			$$(".info-text").forEach(element => element.style.display = "none");
-			
+
 			const element = $(`#${algorithmSelectorDropdownElement.value}-info`);
-			
+
 			element.style.display = "block";
-			
+
 			setTimeout(() =>
 			{
 				element.style.opacity = 1;
 			}, 10);
-		}, opacityAnimationTime);	
+		}, opacityAnimationTime);
 	});
-	
-	
-	
+
+
+
 	const generateButtonElement = $("#generate-button");
 
 	generateButtonElement.addEventListener("click", run);
-	
-	
-	
+
+
+
 	const resolutionInputElement = $("#resolution-input");
-	
+
 	const arraySizeInputElement = $("#array-size-input");
 
 	applet.listenToInputElements([resolutionInputElement, arraySizeInputElement], run);
-	
+
 	applet.setInputCaps([resolutionInputElement, arraySizeInputElement], [4000, 2048]);
-	
+
 	const playSoundCheckboxElement = $("#play-sound-checkbox");
-	
+
 	playSoundCheckboxElement.checked = true;
-	
-	
-	
-	
-	
+
+
+
+
+
 	const downloadButtonElement = $("#download-button");
-	
+
 	downloadButtonElement.addEventListener("click", () =>
 	{
 		applet.wilson.downloadFrame("a-sorting-algorithm.png");
 	});
-	
-	
-	
+
+
+
 	showPage();
 
 

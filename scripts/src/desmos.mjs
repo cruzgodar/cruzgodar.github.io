@@ -35,7 +35,7 @@ export function setGetDesmosData(newGetDesmosData)
 export async function createDesmosGraphs()
 {
 	await loadScript("https://www.desmos.com/api/v1.7/calculator.js?apiKey=dcb31709b452b1cf9dc26972add0fda6");
-	
+
 	for (const key in desmosGraphs)
 	{
 		if (desmosGraphs[key]?.destroy)
@@ -43,25 +43,25 @@ export async function createDesmosGraphs()
 			desmosGraphs[key].destroy();
 		}
 	}
-	
+
 	desmosGraphs = {};
-	
+
 	updateDesmosColors();
 
 	const data = getDesmosData();
-	
+
 	for (const key in data)
 	{
 		data[key].expressions.forEach(expression =>
 		{
 			expression.latex = expression.latex.replace(/\(/g, String.raw`\left(`);
 			expression.latex = expression.latex.replace(/\)/g, String.raw`\right)`);
-			
+
 			expression.latex = expression.latex.replace(/\[/g, String.raw`\left[`);
 			expression.latex = expression.latex.replace(/\]/g, String.raw`\right]`);
 		});
 	}
-	
+
 	$$(".desmos-container").forEach(element =>
 	{
 		const options = {
@@ -72,11 +72,11 @@ export async function createDesmosGraphs()
 			border: false,
 			expressionsCollapsed: true,
 			invertedColors: siteSettings.darkTheme,
-			
+
 			xAxisMinorSubdivisions: 1,
 			yAxisMinorSubdivisions: 1
 		};
-		
+
 		if (data[element.id].options)
 		{
 			for (const key in data[element.id].options)
@@ -84,16 +84,16 @@ export async function createDesmosGraphs()
 				options[key] = data[element.id].options[key];
 			}
 		}
-		
-		
-		
+
+
+
 		// eslint-disable-next-line no-undef
 		desmosGraphs[element.id] = Desmos.GraphingCalculator(element, options);
-		
+
 		desmosGraphs[element.id].setMathBounds(data[element.id].bounds);
-		
+
 		desmosGraphs[element.id].setExpressions(data[element.id].expressions);
-		
+
 		desmosGraphs[element.id].setDefaultState(desmosGraphs[element.id].getState());
 	});
 }
@@ -117,18 +117,18 @@ export async function recreateDesmosGraphs()
 export function getDesmosScreenshot(id, forPdf = false)
 {
 	desmosGraphs[id].updateSettings({ showGrid: forPdf, xAxisNumbers: forPdf, yAxisNumbers: forPdf });
-	
+
 	const expressions = desmosGraphs[id].getExpressions();
-	
+
 	for (let i = 0; i < expressions.length; i++)
 	{
 		expressions[i].lineWidth = forPdf ? 5 : 7.5;
 		expressions[i].pointSize = forPdf ? 15 : 27;
 		expressions[i].dragMode = "NONE";
 	}
-	
+
 	desmosGraphs[id].setExpressions(expressions);
-	
+
 	desmosGraphs[id].asyncScreenshot({
 		width: 500,
 		height: 500,

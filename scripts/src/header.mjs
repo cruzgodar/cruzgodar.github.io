@@ -52,41 +52,41 @@ export function addHeader()
 			</div>
 		</div>
 	`);
-	
+
 	setTimeout(() =>
 	{
 		const imageElement = document.body.querySelector("#header-logo img");
-		
+
 		imageElement.style.width = `${imageElement.getBoundingClientRect().height}px`;
-		
-		
-		
+
+
+
 		document.body.querySelectorAll("#header-logo, #header-links a").forEach(link =>
 		{
 			addHoverEvent(link);
-			
+
 			const href = link.getAttribute("href");
-	
+
 			link.setAttribute("href", "/index.html?page=" + encodeURIComponent(href));
-			
+
 			link.addEventListener("click", e =>
 			{
 				e.preventDefault();
-				
+
 				redirect({ url: href });
 			});
 		});
-		
-		
-		
+
+
+
 		const element = document.body.querySelector("#header-theme-button");
-		
+
 		addHoverEvent(element);
-		
+
 		element.addEventListener("click", () => toggleDarkTheme({}));
-		
-		
-		
+
+
+
 		headerElement = document.body.querySelector("#header");
 	});
 }

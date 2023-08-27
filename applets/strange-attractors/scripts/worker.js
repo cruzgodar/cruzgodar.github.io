@@ -33,53 +33,53 @@ let currentCol = null;
 async function drawLorenzAttractor()
 {
 	let step = 0;
-	
+
 	let color = 0;
-	
+
 	numColors = gridSize;
-	
-	
-	
+
+
+
 	while (stepsPerColor > 0)
 	{
 		if (step === stepsPerColor)
 		{
 			postMessage([pixels, HSVtoRGB(color / numColors / 6.5, 1, 1)]);
-			
+
 			pixels = [];
-			
+
 			color++;
-			
+
 			step = 0;
-			
-			stepsPerColor -= 2*Math.floor(5000 / numColors);
-			
+
+			stepsPerColor -= 2 * Math.floor(5000 / numColors);
+
 			if (!maximumSpeed)
 			{
 				await new Promise(resolve => setTimeout(resolve, 8));
 			}
 		}
-		
-		
-		
+
+
+
 		const shiftedZ = currentZ - minZ - boxSize / 2;
-		
+
 		currentCol = Math.floor(((currentX + boxSize / 2) / boxSize) * gridSize);
 		currentRow = Math.floor((1 - (shiftedZ + boxSize / 2) / boxSize) * gridSize);
-		
+
 		if (currentRow >= 0 && currentCol >= 0 && currentRow < gridSize && currentCol < gridSize)
 		{
 			pixels.push([currentRow, currentCol]);
 		}
-		
-		
-		
+
+
+
 		currentX += sigma * (currentY - currentX) * dt;
 		currentY += (currentX * (rho - currentZ) - currentY) * dt;
 		currentZ += (currentX * currentY - beta * currentZ) * dt;
-		
-		
-		
+
+
+
 		step++;
 	}
 }
@@ -89,13 +89,13 @@ async function drawLorenzAttractor()
 function HSVtoRGB(h, s, v)
 {
 	let r, g, b;
-	
+
 	const i = Math.floor(h * 6);
 	const f = h * 6 - i;
 	const p = v * (1 - s);
 	const q = v * (1 - f * s);
 	const t = v * (1 - (1 - f) * s);
-	
+
 	switch (i % 6)
 	{
 		case 0:r = v, g = t, b = p; break;
@@ -105,7 +105,7 @@ function HSVtoRGB(h, s, v)
 		case 4: r = t, g = p, b = v; break;
 		case 5: r = v, g = p, b = q; break;
 	}
-    
+
 	return [Math.round(r * 255), Math.round(g * 255), Math.round(b * 255)];
 }
 
@@ -114,12 +114,12 @@ function HSVtoRGB(h, s, v)
 onmessage = (e) =>
 {
 	gridSize = e.data[0];
-	
+
 	sigma = e.data[1];
 	rho = e.data[2];
 	beta = e.data[3];
-	
+
 	maximumSpeed = e.data[4];
-	
+
 	drawLorenzAttractor();
 };

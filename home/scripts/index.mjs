@@ -19,7 +19,7 @@ export function load()
 
 		setBannerOpacity(0);
 	}
-	
+
 	setVisitedHomepage(true);
 
 	addTemporaryListener({
@@ -47,10 +47,10 @@ export function load()
 	setTimeout(() =>
 	{
 		fadeLeft(cruzTextElement);
-		
-		setTimeout(() => fadeLeft(godarTextElement), opacityAnimationTime);	
+
+		setTimeout(() => fadeLeft(godarTextElement), opacityAnimationTime);
 	}, opacityAnimationTime);
-	
+
 	setTimeout(() => onScroll(1), 100);
 
 	addTemporaryListener({
@@ -58,8 +58,8 @@ export function load()
 		event: "scroll",
 		callback: onScroll
 	});
-	
+
 	disableLinks();
-	
+
 	showPage();
 }

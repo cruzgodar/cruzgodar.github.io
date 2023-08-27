@@ -10,9 +10,9 @@ export function load()
 			"walled-garden":
 			{
 				options: { showXAxis: false, showYAxis: false, showGrid: false },
-				
+
 				bounds: { left: -6, right: 6, bottom: -1, top: 11 },
-				
+
 				expressions:
 				[
 					{ latex: String.raw`y = 0`, color: desmosBlack, secret: true },
@@ -23,13 +23,13 @@ export function load()
 					{ latex: String.raw`(-\frac{a}{2}, 0), (-\frac{a}{2}, b), (\frac{a}{2}, b), (\frac{a}{2}, 0)`, points: false, lines: true, color: desmosPurple, secret: true },
 				]
 			},
-			
-			
-			
+
+
+
 			"ellipse":
 			{
 				bounds: { left: -4, right: 4, bottom: -4, top: 4 },
-				
+
 				expressions:
 				[
 					{ latex: String.raw`\frac{x^2}{4} + \frac{y^2}{9} = 1`, color: desmosPurple, secret: true },
@@ -40,15 +40,15 @@ export function load()
 					{ latex: String.raw`(a, b), (-a, b), (-a, -b), (a, -b), (a, b)`, points: false, lines: true, color: desmosBlue, secret: true },
 				]
 			},
-			
-			
-			
+
+
+
 			"river":
 			{
 				options: { showGrid: false },
-				
+
 				bounds: { left: -50, right: 550, bottom: -250, top: 350 },
-				
+
 				expressions:
 				[
 					{ latex: String.raw`0 \leq y \leq 100`, color: desmosBlue, secret: true },
@@ -58,11 +58,11 @@ export function load()
 				]
 			},
 		};
-		
+
 		return data;
 	});
-	
+
 	createDesmosGraphs();
-	
+
 	showPage();
 }

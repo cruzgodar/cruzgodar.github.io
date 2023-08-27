@@ -5,69 +5,69 @@ import { $ } from "/scripts/src/main.mjs";
 export function load()
 {
 	const applet = new NewtonsMethodExtended($("#output-canvas"));
-	
+
 	applet.loadPromise.then(() => run());
-	
-	
-	
+
+
+
 	const codeInputElement = $("#code-textarea");
-	
+
 	codeInputElement.value = "cmul(csin(z), sin(cmul(z, i)))";
-	
-	
-	
+
+
+
 	applet.listenToInputElements([codeInputElement], run);
-	
-	
-	
+
+
+
 	const randomizePaletteButton = $("#randomize-palette-button");
-	
+
 	randomizePaletteButton.addEventListener("click", applet.animatePaletteChange.bind(applet));
-	
-	
-	
+
+
+
 	const generateButtonElement = $("#generate-button");
-	
+
 	generateButtonElement.addEventListener("click", run);
-	
-	
-	
+
+
+
 
 	const resolutionInputElement = $("#resolution-input");
-	
+
 	const derivativePrecisionInputElement = $("#derivative-precision-input");
-	
+
 	applet.setInputCaps([resolutionInputElement, derivativePrecisionInputElement], [2000, 100]);
-	
-	
-	
+
+
+
 	resolutionInputElement.addEventListener("input", () =>
 	{
 		applet.resolution = parseInt(resolutionInputElement.value || 500);
-		
+
 		applet.changeAspectRatio(true);
 	});
-	
+
 	derivativePrecisionInputElement.addEventListener("input", () =>
 	{
 		applet.derivativePrecision = parseFloat(derivativePrecisionInputElement.value || 20);
-		
+
 		applet.wilson.gl.uniform1f(applet.wilson.uniforms["derivativePrecision"], applet.derivativePrecision);
 		applet.wilsonHidden.gl.uniform1f(applet.wilsonHidden.uniforms["derivativePrecision"], applet.derivativePrecision);
 	});
-	
-	
-	
-	
+
+
+
+
 	const downloadButtonElement = $("#download-button");
-	
+
 	downloadButtonElement.addEventListener("click", () =>
 	{
 		applet.wilson.downloadFrame("newtons-method-extended.png");
 	});
-	
-	
-	
+
+
+
 	const examples =
 	{
 		"none": "",
@@ -77,21 +77,21 @@ export function load()
 		"butterflies": "cmul(sin(z), tan(z))",
 		"swatches": "cmul(csin(vec2(z.x, sign(z.y) * min(abs(z.y), mod(abs(z.y), 2.0*PI) + 2.0*PI))), sin(cmul(vec2(z.x, sign(z.y) * min(abs(z.y), mod(abs(z.y), 2.0*PI) + 2.0*PI)), i)))"
 	};
-	
+
 	const exampleSelectorDropdownElement = $("#example-selector-dropdown");
-	
+
 	exampleSelectorDropdownElement.addEventListener("input", () =>
 	{
 		if (exampleSelectorDropdownElement.value !== "none")
 		{
 			codeInputElement.value = examples[exampleSelectorDropdownElement.value];
-			
+
 			run();
 		}
 	});
-	
-	
-	
+
+
+
 	showPage();
 
 
@@ -99,7 +99,7 @@ export function load()
 	function run()
 	{
 		const generatingCode = codeInputElement.value;
-		
+
 		applet.run({ generatingCode });
 	}
 }

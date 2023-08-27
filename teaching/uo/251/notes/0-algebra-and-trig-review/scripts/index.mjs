@@ -10,24 +10,24 @@ export function load()
 			"test-graph":
 			{
 				bounds: { left: -1, right: 3, bottom: -1, top: 3 },
-				
+
 				expressions:
 				[
 					{ latex: String.raw`f(x) = x^3 - 2x^2 + 2`, color: desmosPurple },
 					{ latex: String.raw`a = 0` },
 					{ latex: String.raw`b = 2` },
-					
+
 					{ latex: String.raw`x = [a, b] \{0 \leq y \leq f(x)\} `, color: desmosPurple, secret: true },
 					{ latex: String.raw`0 \leq y \leq f(x) \{a \leq x \leq b\}`, color: desmosPurple, secret: true }
 				]
 			},
-			
-			
-			
+
+
+
 			"functions":
 			{
 				bounds: { left: -10, right: 10, bottom: -10, top: 10 },
-				
+
 				expressions:
 				[
 					{ latex: String.raw`f(x) = x^2`, color: desmosPurple },
@@ -41,35 +41,35 @@ export function load()
 					{ latex: String.raw`y = \ln(x)`, color: desmosPurple, hidden: true }
 				]
 			},
-			
-			
-			
+
+
+
 			"trig-review":
 			{
 				bounds: { left: -1.25, right: 1.25, bottom: -1.25, top: 1.25 },
-				
+
 				expressions:
 				[
 					{ latex: String.raw`r = 1`, color: desmosBlack, secret: true },
 					{ latex: String.raw`(0, 0), (\cos(t), \sin(t))`, color: desmosPurple, points: false, lines: true, secret: true },
-					
+
 					{ latex: String.raw`y = 0\{0 \leq x \leq \cos(t)\}`, color: desmosBlue, secret: true },
 					{ latex: String.raw`y = 0\{\cos(t) \leq x \leq 0\}`, color: desmosBlue, secret: true },
 					{ latex: String.raw`x = \cos(t)\{0 \leq y \leq \sin(t)\}`, color: desmosRed, secret: true },
 					{ latex: String.raw`x = \cos(t)\{\sin(t) \leq y \leq 0\}`, color: desmosRed, secret: true },
-					
+
 					{ latex: String.raw`t = .52359878`, sliderBounds: { min: 0, max: String.raw`2\pi` } },
-					
+
 					{ latex: String.raw`(\cos(t), \sin(t))`, color: desmosPurple, showLabel: true },
 				]
 			},
-			
-			
-			
+
+
+
 			"trig-graphs":
 			{
 				bounds: { left: -10, right: 10, bottom: -10, top: 10 },
-				
+
 				expressions:
 				[
 					{ latex: String.raw`\sin(x)`, color: desmosRed },
@@ -81,11 +81,11 @@ export function load()
 				]
 			}
 		};
-		
+
 		return data;
 	});
-	
+
 	createDesmosGraphs();
-	
+
 	showPage();
 }

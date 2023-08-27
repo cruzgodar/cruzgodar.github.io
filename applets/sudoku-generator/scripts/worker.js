@@ -18,12 +18,12 @@ let numSolutionsFound = 0;
 function generateSudokuGrid()
 {
 	grid = [];
-	
-	
-	
+
+
+
 	//First, we just need a random starting grid.
 	generateNumberGrid();
-	
+
 	for (let i = 0; i < gridSize; i++)
 	{
 		for (let j = 0; j < gridSize; j++)
@@ -31,33 +31,33 @@ function generateSudokuGrid()
 			nonzeroCells.push([i, j]);
 		}
 	}
-	
+
 	nonzeroCells = shuffleArray(nonzeroCells);
-	
-	
-	
+
+
+
 	for (let i = 0; i < nonzeroCells.length; i++)
 	{
 		const cellToRemove = nonzeroCells[i];
 		const numberToRemove = grid[cellToRemove[0]][cellToRemove[1]];
-		
+
 		grid[cellToRemove[0]][cellToRemove[1]] = 0;
-		
+
 		numSolutionsFound = wasmSolvePuzzle(grid);
-		
-		
-		
+
+
+
 		//If this is no longer a unique solution, no problem! We'll just revert to our last uniquely-solvable grid and try a different cell next time.
 		if (numSolutionsFound !== 1)
 		{
 			grid[cellToRemove[0]][cellToRemove[1]] = numberToRemove;
-			
+
 			numSolutionsFound = 1;
 		}
 	}
-	
-	
-	
+
+
+
 	postMessage([grid]);
 }
 
@@ -74,13 +74,13 @@ function shuffleArray(array)
 		//Pick a remaining element.
 		const randomIndex = Math.floor(Math.random() * currentIndex);
 		currentIndex -= 1;
-		
+
 		//Swap it with the current element.
 		const temp = array[currentIndex];
 		array[currentIndex] = array[randomIndex];
 		array[randomIndex] = temp;
 	}
-	
+
 	return array;
 }
 
@@ -101,13 +101,13 @@ function generateNumberGrid()
 		[9, 2, 8, 6, 7, 1, 3, 5, 4],
 		[1, 5, 4, 9, 3, 8, 6, 7, 2]
 	];
-	
-	
-	
+
+
+
 	//Now we're going to do three things: shuffle some rows (within the same minigrid), shuffle some columns (also within the same minigrid), and shuffle the digits themselves. To top it all off, we'll do these three things in random order, twice each.
-	
+
 	const shuffles = shuffleArray([shuffleGridRows, shuffleGridRows, shuffleGridColumns, shuffleGridColumns, shuffleGridDigits, shuffleGridDigits]);
-	
+
 	for (let i = 0; i < 6; i++)
 	{
 		shuffles[i]();
@@ -120,25 +120,25 @@ function shuffleGridRows()
 {
 	const row1 = Math.floor(Math.random() * 3);
 	const row2 = Math.floor(Math.random() * 3);
-	
+
 	const row3 = Math.floor(Math.random() * 3) + 3;
 	const row4 = Math.floor(Math.random() * 3) + 3;
-	
+
 	const row5 = Math.floor(Math.random() * 3) + 6;
 	const row6 = Math.floor(Math.random() * 3) + 6;
-	
-	
-	
+
+
+
 	for (let j = 0; j < gridSize; j++)
 	{
 		let temp = grid[row1][j];
 		grid[row1][j] = grid[row2][j];
 		grid[row2][j] = temp;
-		
+
 		temp = grid[row3][j];
 		grid[row3][j] = grid[row4][j];
 		grid[row4][j] = temp;
-		
+
 		temp = grid[row5][j];
 		grid[row5][j] = grid[row6][j];
 		grid[row6][j] = temp;
@@ -151,25 +151,25 @@ function shuffleGridColumns()
 {
 	const col1 = Math.floor(Math.random() * 3);
 	const col2 = Math.floor(Math.random() * 3);
-	
+
 	const col3 = Math.floor(Math.random() * 3) + 3;
 	const col4 = Math.floor(Math.random() * 3) + 3;
-	
+
 	const col5 = Math.floor(Math.random() * 3) + 6;
 	const col6 = Math.floor(Math.random() * 3) + 6;
-	
-	
-	
+
+
+
 	for (let i = 0; i < gridSize; i++)
 	{
 		let temp = grid[i][col1];
 		grid[i][col1] = grid[i][col2];
 		grid[i][col2] = temp;
-		
+
 		temp = grid[i][col3];
 		grid[i][col3] = grid[i][col4];
 		grid[i][col4] = temp;
-		
+
 		temp = grid[i][col5];
 		grid[i][col5] = grid[i][col6];
 		grid[i][col6] = temp;
@@ -181,23 +181,23 @@ function shuffleGridColumns()
 function shuffleGridDigits()
 {
 	const permutation = shuffleArray([...Array(gridSize).keys()]);
-	
-	
-	
+
+
+
 	const tempGrid = [];
-	
+
 	for (let i = 0; i < gridSize; i++)
 	{
 		tempGrid[i] = [];
-		
+
 		for (let j = 0; j < gridSize; j++)
 		{
 			tempGrid[i][j] = 0;
 		}
 	}
-	
-	
-	
+
+
+
 	for (let i = 0; i < gridSize; i++)
 	{
 		for (let j = 0; j < gridSize; j++)
@@ -205,9 +205,9 @@ function shuffleGridDigits()
 			tempGrid[i][j] = permutation[grid[i][j] - 1] + 1;
 		}
 	}
-	
-	
-	
+
+
+
 	grid = JSON.parse(JSON.stringify(tempGrid));
 }
 
@@ -217,14 +217,14 @@ function shuffleGridDigits()
 function wasmSolvePuzzle()
 {
 	let gridFlat = [];
-	
+
 	for (let i = 0; i < gridSize; i++)
 	{
 		gridFlat = gridFlat.concat(grid[i]);
 	}
-	
-	
-	
+
+
+
 	//With everything in place, we can now call the C function and let it do the heavy lifting.
 	// eslint-disable-next-line no-undef
 	return ccallArrays("solve_puzzle", "number", ["array"], [gridFlat], { heapIn: "HEAPU8" });
@@ -242,7 +242,7 @@ onmessage = () =>
 	{
 		// eslint-disable-next-line no-undef
 		importScripts("/scripts/wasm-arrays.min.js");
-		
+
 		generateSudokuGrid();
 	};
 };

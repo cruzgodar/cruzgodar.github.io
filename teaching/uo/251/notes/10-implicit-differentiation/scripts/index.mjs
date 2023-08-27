@@ -10,7 +10,7 @@ export function load()
 			"circle":
 			{
 				bounds: { left: -2, right: 2, bottom: -2, top: 2 },
-				
+
 				expressions:
 				[
 					{ latex: String.raw`x^2+y^2 = 1`, color: desmosPurple },
@@ -22,36 +22,36 @@ export function load()
 					{ latex: String.raw`y = -f(a) + -f'(a)(x - a)`, color: desmosRed, secret: true }
 				]
 			},
-			
-			
-			
+
+
+
 			"braids":
 			{
-				bounds: { left: -3.5*Math.PI, right: 3.5*Math.PI, bottom: -3.5*Math.PI, top: 3.5*Math.PI },
-				
+				bounds: { left: -3.5 * Math.PI, right: 3.5 * Math.PI, bottom: -3.5 * Math.PI, top: 3.5 * Math.PI },
+
 				expressions:
 				[
 					{ latex: String.raw`\cos(\sin(y)) = \cos(x)`, color: desmosPurple }
 				]
 			},
-			
-			
-			
+
+
+
 			"sin-thing":
 			{
 				bounds: { left: -10, right: 10, bottom: -10, top: 10 },
-				
+
 				expressions:
 				[
 					{ latex: String.raw`x\sin(xy) = y`, color: desmosPurple }
 				]
 			},
 		};
-		
+
 		return data;
 	});
-	
+
 	createDesmosGraphs();
-	
+
 	showPage();
 }
