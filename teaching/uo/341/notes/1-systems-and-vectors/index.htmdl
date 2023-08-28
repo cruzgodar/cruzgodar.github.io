@@ -2,7 +2,17 @@
 
 
 
+Welcome to Math 341! You're viewing the interactive lecture notes --- reading these is required for the class, since we'll have a short reading quiz on Canvas due before most lectures. To get started, let's make sure your browser handles equations and graphs correctly. You should see an equation on its own line below and a graph below that.
 
+$$
+	x = \dfrac{-b \pm \sqrt{b^2 - 4ac}}{2a}
+$$
+
+### desmos test-graph
+
+If anything doesn't appear correctly, update your browser and then reach out if that doesn't work.
+
+Linear algebra is one of math's most-used fields. It underpins nearly every math course that comes after it in one way or another, and it's so important in other STEM fields that when they talk about math, they often just mean linear algebra.
 
 
 
