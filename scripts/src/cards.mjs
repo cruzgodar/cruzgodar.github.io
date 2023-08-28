@@ -38,11 +38,7 @@ export function setUpCards()
 {
 	$$("[data-card-id]").forEach(element =>
 	{
-		element.addEventListener("click", (e) =>
-		{
-			console.log(e, element.getAttribute("data-card-id"));
-			showCard(element.getAttribute("data-card-id"));
-		});
+		element.addEventListener("click", () => showCard(element.getAttribute("data-card-id")));
 	});
 }
 
