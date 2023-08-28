@@ -135,7 +135,7 @@ export async function showCard(id)
 	]);
 
 	window.scrollTo(0, 0);
-	pageElement.style.transform = `translateY(-${scrollBeforeCard}px) scale(.975)`;
+	pageElement.style.transform = `matrix(.975, 0, 0, .975, 0, -${scrollBeforeCard})`;
 	pageElement.style.position = "fixed";
 
 	cardIsAnimating = false;
