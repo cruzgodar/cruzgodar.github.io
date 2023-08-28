@@ -133,6 +133,8 @@ export async function hideCard()
 
 	window.scrollTo(0, scrollBeforeCard);
 
+	await new Promise(resolve => setTimeout(resolve, 0));
+
 	const color = siteSettings.darkTheme ? "rgb(24, 24, 24)" : "rgb(255, 255, 255)";
 	const themeColor = siteSettings.darkTheme ? "#181818" : "#ffffff";
 
