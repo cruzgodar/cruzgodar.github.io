@@ -1,5 +1,5 @@
 import { addHoverEvent } from "./hover-events.mjs";
-import { $$, addTemporaryListener, pageElement } from "./main.mjs";
+import { $$, pageElement } from "./main.mjs";
 import { metaThemeColorElement, siteSettings } from "./settings.mjs";
 import anime from "/scripts/anime.js";
 
@@ -45,18 +45,6 @@ export function setUpCards()
 export async function showCard(id)
 {
 	scrollBeforeCard = window.scrollY;
-
-	addTemporaryListener({
-		object: window,
-		event: "scroll",
-		callback: () =>
-		{
-			if (cardIsOpen)
-			{
-				window.scrollTo(0, scrollBeforeCard);
-			}
-		}
-	});
 
 	cardIsOpen = true;
 	
