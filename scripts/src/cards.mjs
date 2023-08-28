@@ -4,6 +4,7 @@ import { metaThemeColorElement, siteSettings } from "./settings.mjs";
 import anime from "/scripts/anime.js";
 
 export let cardIsOpen = false;
+let cardIsAnimating = false;
 
 const container = document.querySelector("#card-container");
 
@@ -44,6 +45,13 @@ export function setUpCards()
 
 export async function showCard(id)
 {
+	if (cardIsAnimating)
+	{
+		return;
+	}
+
+	cardIsAnimating = true;
+
 	scrollBeforeCard = window.scrollY;
 
 	cardIsOpen = true;
@@ -125,12 +133,27 @@ export async function showCard(id)
 			easing: "easeOutQuint",
 		}).finished,
 	]);
+
+	window.scrollTo(0, 0);
+	pageElement.style.transform = `translateY(-${scrollBeforeCard}px) scale(.975)`;
+	pageElement.style.position = "fixed";
+
+	cardIsAnimating = false;
 }
 
 export async function hideCard()
 {
+	if (cardIsAnimating)
+	{
+		return;
+	}
+
+	cardIsAnimating = true;
+
 	cardIsOpen = false;
 
+	pageElement.style.position = "relative";
+	pageElement.style.transform = "scale(.975)";
 	window.scrollTo(0, scrollBeforeCard);
 
 	await new Promise(resolve => setTimeout(resolve, 0));
@@ -179,6 +202,8 @@ export async function hideCard()
 	container.appendChild(closeButton);
 
 	document.documentElement.removeEventListener("click", handleClickEvent);
+
+	cardIsAnimating = false;
 }
 
 function handleClickEvent(e)

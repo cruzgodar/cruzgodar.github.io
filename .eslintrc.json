@@ -73,6 +73,13 @@
 			"warn",
 			{ "skipBlankLines": true }
 		],
-		"space-infix-ops": ["warn"]
+		"space-infix-ops": ["warn"],
+		"max-len": [
+			"warn",
+			{
+				"code": 100,
+				"ignoreTemplateLiterals": true
+			}
+		]
 	}
 }
