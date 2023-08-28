@@ -95,7 +95,7 @@ export async function showCard(id)
 	pageElement.style.filter = "brightness(1)";
 	document.querySelector("#header").style.filter = "brightness(1)";
 	document.querySelector("#header-container").style.filter = "brightness(1)";
-
+ 
 	pageElement.style.transformOrigin = `50% calc(50vh + ${window.scrollY}px)`;
 
 	document.documentElement.addEventListener("click", handleClickEvent);

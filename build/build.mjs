@@ -131,7 +131,7 @@ function buildJSFile(file)
 	{
 		const outputFile = file.replace(/(\.m*js)/, (match, $1) => `.min${$1}`);
 
-		exec(`uglifyjs ${root + file} --output ${root + outputFile} --compress`, async () =>
+		exec(`uglifyjs ${root + file} --output ${root + outputFile} --compress --mangle --keep-fargs --webkit`, async () =>
 		{
 			const js = await read(outputFile);
 
