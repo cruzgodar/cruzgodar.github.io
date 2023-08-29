@@ -48,13 +48,20 @@ export function onResize()
 	}
 
 
-	const oneImageLinkWidth = $(".image-links:not(.one-image-link) .image-link").getBoundingClientRect().width;
 
 	//Handle single image link rows.
-	$$(".one-image-link .image-link").forEach(element =>
+	const oneImageLinkElements = $$(".one-image-link .image-link");
+	
+	if (oneImageLinkElements)
 	{
-		element.style.width = `${oneImageLinkWidth}px`;
-	});
+		const oneImageLinkWidth = $(".image-links:not(.one-image-link) .image-link")
+			.getBoundingClientRect().width;
+
+		oneImageLinkElements.forEach(element =>
+		{
+			element.style.width = `${oneImageLinkWidth}px`;
+		});
+	}
 
 
 

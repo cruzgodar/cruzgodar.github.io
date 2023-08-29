@@ -8,7 +8,9 @@ const root = process.argv[1].replace(/(\/cruzgodar.github.io\/).+$/, (match, $1)
 const excludeFromBuild =
 [
 	/build.+/,
-	/slides\/.+\/index\.htmdl/
+	/slides\/.+\/index\.htmdl/,
+	/scripts\/three\.js/,
+	/scripts\/anime\.js/,
 ];
 
 const clean = process.argv.slice(2).includes("-c");
@@ -135,8 +137,12 @@ function buildJSFile(file)
 		{
 			const js = await read(outputFile);
 
-			//The space after the import is very import -- that prevents dynamic imports from getting screwed up.
-			write(outputFile, js.replace(/(import[^(].*?)\.(m*)js/g, (match, $1, $2) => `${$1}.min.${$2}js`));
+			//The space after the import is very important --
+			//that prevents dynamic imports from getting screwed up.
+			write(
+				outputFile,
+				js.replace(/(import[ {].*?)\.(m*)js/g, (match, $1, $2) => `${$1}.min.${$2}js`)
+			);
 
 			resolve();
 		});
