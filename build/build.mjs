@@ -18,6 +18,8 @@ const fix = process.argv.slice(2).includes("-f");
 
 async function buildSite()
 {
+	await eslint();
+
 	await buildSitemap();
 
 	const text = await read(sitemapPath);
@@ -35,8 +37,6 @@ async function buildSite()
 		exec(`git -C ${root} ls-files${clean ? "" : " -m -o"}`, async (error, stdout) =>
 		{
 			await parseModifiedFiles(stdout.split("\n"), sitemap);
-
-			await eslint();
 
 			resolve();
 		});

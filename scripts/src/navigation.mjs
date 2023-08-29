@@ -98,7 +98,7 @@ export async function redirect({
 
 
 			//Restore the ability to scroll in case it was removed.
-			document.documentElement.style.overflowY = "visible";
+			document.documentElement.style.overflowY = "scroll";
 			document.body.style.overflowY = "visible";
 
 			document.body.style.userSelect = "auto";

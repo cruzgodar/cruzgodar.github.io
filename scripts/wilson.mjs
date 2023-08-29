@@ -1751,7 +1751,7 @@ export class Wilson
 
 
 
-					document.documentElement.style.overflowY = "visible";
+					document.documentElement.style.overflowY = "scroll";
 					document.body.style.overflowY = "visible";
 
 					document.body.style.width = "";
