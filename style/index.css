@@ -1352,6 +1352,56 @@ option
 	margin-top: 48px;
 }
 
+@media (max-width: 967px)
+{
+	.image-links
+	{
+		grid-template-columns: repeat(4, 1fr);
+	}
+}
+
+@media (max-width: 776px)
+{
+	.image-links
+	{
+		grid-template-columns: repeat(3, 1fr);
+	}
+}
+
+@media (max-width: 574px)
+{
+	.image-links
+	{
+		grid-template-columns: repeat(2, 1fr);
+	}
+}
+
+@media (max-width: 330px)
+{
+	.image-links
+	{
+		grid-template-columns: repeat(1, 200px);
+	}
+}
+
+@media (max-width: 222px)
+{
+	.image-links
+	{
+		grid-template-columns: repeat(1, 1fr);
+	}
+	
+	.image-link-subtext
+	{
+		font-size: 75%;
+	}
+}
+
+.one-image-link
+{
+	grid-template-columns: repeat(1, 1fr);
+}
+
 .image-link
 {
 	width: 100%;
@@ -1373,6 +1423,11 @@ option
 {
 	transform: scale(1.05);
 	outline: none;
+}
+
+.one-image-link .image-link
+{
+	margin: 0 auto;
 }
 
 .image-link-subtext
@@ -1420,51 +1475,6 @@ img[src="/about/cover.webp"]
 }
 
 
-
-@media (max-width: 967px)
-{
-	.image-links
-	{
-		grid-template-columns: repeat(4, 1fr);
-	}
-}
-
-@media (max-width: 776px)
-{
-	.image-links
-	{
-		grid-template-columns: repeat(3, 1fr);
-	}
-}
-
-@media (max-width: 574px)
-{
-	.image-links
-	{
-		grid-template-columns: repeat(2, 1fr);
-	}
-}
-
-@media (max-width: 330px)
-{
-	.image-links
-	{
-		grid-template-columns: repeat(1, 200px);
-	}
-}
-
-@media (max-width: 222px)
-{
-	.image-links
-	{
-		grid-template-columns: repeat(1, 1fr);
-	}
-	
-	.image-link-subtext
-	{
-		font-size: 75%;
-	}
-}
 
 .desmos-border
 {

@@ -44,18 +44,12 @@ export function onResize()
 	}
 
 
+	const oneImageLinkWidth = $(".image-links:not(.one-image-link) .image-link").getBoundingClientRect().width;
 
 	//Handle single image link rows.
-	$$(".one-image-link").forEach(element =>
+	$$(".one-image-link .image-link").forEach(element =>
 	{
-		const childRect = element.children[0].getBoundingClientRect();
-
-		element.style.margin = 0;
-
-		if (window.innerWidth > 330)
-		{
-			element.style.marginLeft = `${(window.innerWidth - childRect.width) / 2}px`;
-		}
+		element.style.width = `${oneImageLinkWidth}px`;
 	});
 
 
