@@ -12,7 +12,11 @@ let appletColumnsAreEqualized = false;
 
 export function onResize()
 {
-	setBannerMaxScroll(document.body.offsetHeight > window.innerHeight * 1.5 ? window.innerHeight / 2 : document.body.offsetHeight - window.innerHeight);
+	setBannerMaxScroll(
+		document.body.offsetHeight > window.innerHeight * 1.5
+			? window.innerHeight / 3
+			: document.body.offsetHeight - window.innerHeight
+	);
 
 	navigationAnimationDistanceVertical = Math.min(window.innerHeight / 20, 25);
 	navigationAnimationDistanceHorizontal = Math.min(window.innerWidth / 20, 25);

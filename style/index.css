@@ -567,13 +567,13 @@ mjx-container
 
 #banner-cover
 {
-	height: 60vh;
+	height: 40vh;
 	position: absolute;
 }
 
 #new-banner-cover
 {
-	height: 60vh;
+	height: 40vh;
 	display: flex;
 	align-items: center;
 	justify-content: center;
@@ -612,7 +612,7 @@ mjx-container
 	background: rgba(0, 0, 0, 0);
 	position: relative;
 	margin: 0 auto;
-	margin-top: 60vh;
+	margin-top: 40vh;
 	
 	opacity: 0;
 	
