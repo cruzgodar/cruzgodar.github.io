@@ -14,13 +14,11 @@
     
     "icons": 
     [
-    		{
+    	{
             "src": "logo-uncompressed.png",
             "sizes": "1042x1042",
             "type": "image/png"
         },
-        
-        
         
         {
             "src": "android-icon-36x36.png",
@@ -57,8 +55,6 @@
             "sizes": "192x192",
             "type": "image/png"
         },
-        
-        
         
         {
             "src": "apple-icon-57x57.png",
@@ -119,8 +115,6 @@
             "sizes": "192x192",
             "type": "image/png"
         },
-        
-        
         
         {
             "src": "ms-icon-70x70.png",

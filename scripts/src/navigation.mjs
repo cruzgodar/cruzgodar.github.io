@@ -1,11 +1,41 @@
-import { fadeDownOut, fadeLeftOut, fadeOut, fadeRightOut, fadeUpOut, opacityAnimationTime } from "./animation.mjs";
+import {
+	fadeDownOut,
+	fadeLeftOut,
+	fadeOut,
+	fadeRightOut,
+	fadeUpOut,
+	opacityAnimationTime
+} from "./animation.mjs";
 import { Applet } from "./applets.mjs";
-import { bannerElement, bannerOnScroll, loadBanner, setScrollButtonExists } from "./banners.mjs";
+import {
+	bannerElement,
+	bannerOnScroll,
+	loadBanner,
+	setScrollButtonExists
+} from "./banners.mjs";
 import { cardIsOpen, hideCard } from "./cards.mjs";
 import { clearDesmosGraphs, desmosGraphs } from "./desmos.mjs";
 import { loadPage } from "./load-page.mjs";
-import { clearTemporaryIntervals, clearTemporaryListeners, clearTemporaryWorkers, pageElement, pageUrl, setPageScroll, setPageUrl, temporaryIntervals, temporaryListeners, temporaryWorkers } from "./main.mjs";
-import { forceThemePages, getQueryParams, preventThemeChangePages, setForcedTheme, setRevertThemeTo, siteSettings, toggleDarkTheme } from "./settings.mjs";
+import {
+	clearTemporaryIntervals,
+	clearTemporaryListeners,
+	clearTemporaryWorkers,
+	pageElement,
+	pageUrl,
+	setPageScroll,
+	setPageUrl,
+	temporaryIntervals,
+	temporaryListeners,
+	temporaryWorkers
+} from "./main.mjs";
+import {
+	forceThemePages,
+	getQueryParams,
+	setForcedTheme,
+	setRevertThemeTo,
+	siteSettings,
+	toggleDarkTheme
+} from "./settings.mjs";
 import { sitemap } from "./sitemap.mjs";
 
 let currentlyRedirecting = false;
@@ -30,12 +60,13 @@ export async function redirect({
 	noFadeOut = false
 })
 {
-	if (currentlyRedirecting)
+	if (currentlyRedirecting || url === pageUrl)
 	{
 		return;
 	}
 
-	//If we're going somewhere outside of the site, open it in a new tab and don't screw with the opacity.
+	//If we're going somewhere outside of the site,
+	//open it in a new tab and don't screw with the opacity.
 	if (inNewTab || url.indexOf(".") !== -1)
 	{
 		window.open(url, "_blank");
@@ -58,7 +89,8 @@ export async function redirect({
 
 	await fadeOutPage({ url, noFadeOut });
 
-	//Get the new data, fade out the page, and preload the next page's banner if it exists. When all of those things are successfully done, replace the current html with the new stuff.
+	//Get the new data, fade out the page, and preload the next page's banner if it exists.
+	//When all of those things are successfully done, replace the current html with the new stuff.
 	Promise.all([fetch(`${url}data.html`), loadBanner()])
 		.then((response) =>
 		{
@@ -124,7 +156,9 @@ export async function redirect({
 
 
 
-//Figures out what type of transition to use to get to this url. Returns 1 for deeper, -1 for shallower, 2 for a sibling to the right, -2 for one to the left, and 0 for anything else.
+//Figures out what type of transition to use to get to this url.
+//Returns 1 for deeper, -1 for shallower, 2 for a sibling to the right,
+//-2 for one to the left, and 0 for anything else.
 function getTransitionType(url)
 {
 	if (!(url in sitemap) || url === pageUrl)
@@ -191,7 +225,10 @@ export function getDisplayUrl()
 
 async function fadeOutPage({ url, noFadeOut })
 {
-	if (forceThemePages[url] !== undefined && siteSettings.darkTheme !== forceThemePages[url] && !(preventThemeChangePages.includes(pageUrl)))
+	if (
+		forceThemePages[url]
+		&& siteSettings.darkTheme !== forceThemePages[url]
+	)
 	{
 		setRevertThemeTo(siteSettings.darkTheme);
 
@@ -216,27 +253,52 @@ async function fadeOutPage({ url, noFadeOut })
 	{
 		if (navigationTransitionType === 1)
 		{
-			return bannerElement ? Promise.all([fadeUpOut(pageElement), fadeUpOut(bannerElement, opacityAnimationTime, true)]) : fadeUpOut(pageElement);
+			return bannerElement
+				? Promise.all([
+					fadeUpOut(bannerElement, opacityAnimationTime, true),
+					fadeUpOut(pageElement)
+				])
+				: fadeUpOut(pageElement);
 		}
 
 		else if (navigationTransitionType === -1)
 		{
-			return bannerElement ? Promise.all([fadeDownOut(bannerElement, opacityAnimationTime, true), fadeDownOut(pageElement)]) : fadeDownOut(pageElement);
+			return bannerElement
+				? Promise.all([
+					fadeDownOut(bannerElement, opacityAnimationTime, true),
+					fadeDownOut(pageElement)
+				])
+				: fadeDownOut(pageElement);
 		}
 
 		else if (navigationTransitionType === 2)
 		{
-			return bannerElement ? Promise.all([fadeLeftOut(bannerElement, opacityAnimationTime, true), fadeLeftOut(pageElement)]) : fadeLeftOut(pageElement);
+			return bannerElement
+				? Promise.all([
+					fadeLeftOut(bannerElement, opacityAnimationTime, true),
+					fadeLeftOut(pageElement)
+				])
+				: fadeLeftOut(pageElement);
 		}
 
 		else if (navigationTransitionType === -2)
 		{
-			return bannerElement ? Promise.all([fadeRightOut(bannerElement, opacityAnimationTime, true), fadeRightOut(pageElement)]) : fadeRightOut(pageElement);
+			return bannerElement
+				? Promise.all([
+					fadeRightOut(bannerElement, opacityAnimationTime, true),
+					fadeRightOut(pageElement)
+				])
+				: fadeRightOut(pageElement);
 		}
 
 		else
 		{
-			return bannerElement ? Promise.all([fadeOut(bannerElement, opacityAnimationTime, true), fadeOut(pageElement)]) : fadeOut(pageElement);
+			return bannerElement
+				? Promise.all([
+					fadeOut(bannerElement, opacityAnimationTime, true),
+					fadeOut(pageElement)
+				])
+				: fadeOut(pageElement);
 		}
 	})();
 }

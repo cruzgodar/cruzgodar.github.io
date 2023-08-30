@@ -167,7 +167,10 @@ export async function toggleDarkTheme({ noAnimation = false, force = false })
 
 	if (noAnimation)
 	{
-		metaThemeColorElement.setAttribute("content", siteSettings.darkTheme ? "#181818" : "#ffffff");
+		metaThemeColorElement.setAttribute(
+			"content",
+			siteSettings.darkTheme ? "#181818" : "#ffffff"
+		);
 
 		rootElement.style.setProperty("--theme", siteSettings.darkTheme ? 1 : 0);
 	}
@@ -239,10 +242,10 @@ export function condenseApplet()
 		}
 	`);
 
-	const dounloadButtonElement = $("#download-button");
+	const downloadButtonElement = $("#download-button");
 
-	if (dounloadButtonElement?.parentNode?.parentNode)
+	if (downloadButtonElement?.parentNode?.parentNode)
 	{
-		dounloadButtonElement.parentNode.parentNode.style.display = "none";
+		downloadButtonElement.parentNode.parentNode.style.display = "none";
 	}
 }

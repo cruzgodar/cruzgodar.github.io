@@ -52,7 +52,7 @@ export function onResize()
 	//Handle single image link rows.
 	const oneImageLinkElements = $$(".one-image-link .image-link");
 	
-	if (oneImageLinkElements)
+	if (oneImageLinkElements.length)
 	{
 		const oneImageLinkWidth = $(".image-links:not(.one-image-link) .image-link")
 			.getBoundingClientRect().width;

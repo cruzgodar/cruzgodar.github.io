@@ -178,6 +178,8 @@ export async function loadSite(url = pageUrl)
 
 	addHeader();
 
+	pageUrl = "";
+
 	//If it's not an html file, it shouldn't be anywhere near redirect().
 	if (url.indexOf(".") !== -1)
 	{
