@@ -67,6 +67,7 @@ body
 	overflow-x: hidden;
 	
 	-webkit-text-size-adjust: 100%;
+	-webkit-font-smoothing: antialiased;
 }
 
 .page
@@ -1608,7 +1609,6 @@ img[src="/about/cover.webp"]
 	padding: 0px 6px 0px 6px;
 	
 	font-weight: bold;
-	font-style: normal;
 	
 	text-align: left !important;
 }
