@@ -12,7 +12,79 @@ $$
 
 If anything doesn't appear correctly, update your browser and then reach out if that doesn't work.
 
-Linear algebra is one of math's most-used fields. It underpins nearly every math course that comes after it in one way or another, and it's so important in other STEM fields that when they talk about math, they often just mean linear algebra.
+It's hard to overstate just how pervasive linear algebra is in science. It underpins nearly every math course that comes after it in one way or another, and it's so important in other STEM fields that when they talk about math, they often just mean linear algebra. With such an impressive resume, it might be surprising to hear that linear algebra is no more than an formalized, organized way to solve systems of linear equations --- at least, that's how it gets started. As we'll quickly see, formalizing that process will result in an unreasonably useful set of tools and definitions with applications far beyond what it was designed for.
+
+Unlike most math classes that have come before, this one is a clean break from its prerequisites: there isn't much to review that will be useful. Instead, we'll be building our theory of linear algebra more or less from scratch --- to that end, let's take a look at our central object of study: systems of linear equations. *Linear* means that variables aren't multiplied or raised to powers, just added together, so when there are only two variables, the graph is a line.
+
+### ex linear system
+	
+	Solve the system
+	
+	$$
+		x_1 + 3x_2 &= -5
+		
+		2x_1 - 3x_2 &= 8.
+	$$
+	
+	We could use substitution by solving the first equation for $x_1$ and substituting it into the second, but let's think critically about that. Substitution doesn't scale well --- if we had $n$ equations and $n$ unknowns, solving by substitution means isolating and plugging in $n - 1$ equations until we finally reach the end, and then we have to do a large amount of back-substitution. That's not to mention the complexity that arises when not every equation contains every variable, and we have to carefully pick and choose our order. We're trying to build a general solving method here, and so we owe it to ourselves to make a better foundation.
+	
+	It may have been a while since you learned about solving systems of linear equations, but you probably learned another solving method, different from substitution. It's usually called the method of **addition**, and critically for us, it's much more scalable. We begin by looking at the top-left term in the system (i.e. $x_1$) and adding copies of the entire first equation down to the others to clear their $x_1$ terms. Here, that means adding $-2$ times the first equation down to the second, resulting in
+	
+	$$
+		x_1 + 3x_2 &= -5
+		
+		- 7x_2 &= 14.
+	$$
+	
+	At this point, we can divide the second equation through by $-7$ to find that $x_2 = -2$:
+	
+	$$
+		x_1 + 3x_2 &= -5
+		
+		x_2 &= -2.
+	$$
+
+	Instead of substituting that into the first equation, we'll add $-3$ times the entire second equation up to the first.
+	
+	$$
+		x_1 &= 1
+		
+		x_2 &= -2.
+	$$
+	
+	So --- why does this supposedly scale better? The key is in the organization. The variables stayed on the left and the constants on the right, and we only had to look at two coefficients at a time to figure out how many of one equation to add to another. As the number of variables and equations increases, the number of operations required to do both substitution and addition increases, but the *complexity* of those operations doesn't increase with addition.
+	
+###
+
+### exc linear system
+	
+	Solve the system
+	
+	$$
+		2x_1 - x_2 &= -6
+		
+		-4x_1 - 3x_2 &= 12.
+	$$
+	
+###
+
+Now that we've worked through an example, we're prepared to define linear systems in general.
+
+### def linear system
+	
+	A **system of linear equations**, or just a **linear system**, is a collection of linear equations. We'll usually denote the variables $x_1, x_2, ..., x_n$, so that the system has the form
+	
+	$$
+		a_{11}x_1 + a_{12}x_2 + \cdots + a_{1n}x_n &= b_1
+		
+		a_{21}x_1 + a_{22}x_2 + \cdots + a_{2n}x_n &= b_2
+		
+		& \quad \vdots
+		
+		a_{m1}x_1 + a_{m2}x_2 + \cdots + a_{mn}x_n &= b_m.
+	$$
+	
+###
 
 
 
