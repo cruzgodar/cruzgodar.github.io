@@ -29,13 +29,14 @@ export async function showTex(element)
 
 
 
-	const tex = element.getAttribute("data-source-tex").replaceAll(/\[NEWLINE\]/g, "\n").replaceAll(/\[TAB\]/g, "\t");
+	const tex = element.getAttribute("data-source-tex")
+		.replaceAll(/\[NEWLINE\]/g, "\n")
+		.replaceAll(/\[TAB\]/g, "\t");
 
 
 
 	const oldHeight = element.getBoundingClientRect().height;
 	const oldWidth = element.getBoundingClientRect().width;
-	element.style.minHeight = `${oldHeight}px`;
 
 	const oldPadding = element.style.padding;
 
@@ -48,15 +49,21 @@ export async function showTex(element)
 
 
 	let texElement = null;
+	let flexElement = null;
 
 	if (tex.indexOf("\n") !== -1)
 	{
+		flexElement = document.createElement("div");
+		flexElement.style.display = "flex";
+		flexElement.style.justifyContent = "center";
+		flexElement.style.width = "100%";
+		flexElement.style.height = `${oldHeight - 1}px`;
+
 		texElement = document.createElement("textarea");
 		texElement.textContent = tex;
-		texElement.style.minHeight = `${oldHeight - 17}px`;
-		texElement.style.width = "100%";
-		texElement.style.marginLeft = "-6px";
-		element.style.width = "75%";
+		texElement.style.height = "100%";
+		texElement.style.width = `${oldWidth - 30}px`;
+		texElement.style.margin = "0 auto";
 	}
 
 	else
@@ -64,13 +71,23 @@ export async function showTex(element)
 		texElement = document.createElement("input");
 		texElement.setAttribute("type", "text");
 		texElement.setAttribute("value", tex);
-		texElement.style.height = `${oldHeight - 13}px`;
-		texElement.style.width = `${oldWidth - 13}px`;
+		texElement.style.height = `${oldHeight - 6}px`;
+		texElement.style.width = `${oldWidth - 8}px`;
 	}
 
 	texElement.style.fontFamily = "'Source Code Pro', monospace";
-	element.appendChild(texElement);
 
+	if (flexElement)
+	{
+		element.appendChild(flexElement);
+		flexElement.appendChild(texElement);
+	}
+
+	else
+	{
+		element.appendChild(texElement);
+	}
+	
 	element.style.padding = 0;
 
 	texElement.select();
@@ -80,6 +97,11 @@ export async function showTex(element)
 	texElement.onblur = () =>
 	{
 		texElement.remove();
+
+		if (flexElement)
+		{
+			flexElement.remove();
+		}
 
 		element.style.removeProperty("width");
 		element.style.padding = oldPadding;
