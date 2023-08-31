@@ -52,7 +52,7 @@ home Cruz Godar
 	
 	teaching Teaching
 		uo/341 Math 341
-			notes/1-systems-and-vectors Section 1: Systems and Vectors
+			notes/1-vectors-and-matrices Section 1: Vectors and Matrices
 
 		uo/256 Math 256
 			notes/0-calc-review Section 0: Calculus Review

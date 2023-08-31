@@ -71,20 +71,32 @@ Unlike most math classes that have come before, this one is a clean break from i
 Now that we've worked through an example, we're prepared to define linear systems in general.
 
 ### def linear system
+
+	A general linear equation in the variables $x_1, x_2, ..., x_n$ has the form
 	
-	A **system of linear equations**, or just a **linear system**, is a collection of linear equations. We'll usually denote the variables $x_1, x_2, ..., x_n$, so that the system has the form
+	$$
+		a_1x_1 + a_2x_2 + \cdots + a_nx_n = b
+	$$
+	
+	for some constants $a_i$ and $b$. A **system of linear equations**, or just a **linear system**, is a collection of linear equations. The coefficients usually pick up an extra subscript:
 	
 	$$
 		a_{11}x_1 + a_{12}x_2 + \cdots + a_{1n}x_n &= b_1
 		
 		a_{21}x_1 + a_{22}x_2 + \cdots + a_{2n}x_n &= b_2
 		
-		& \quad \vdots
+		& \ \ \vdots
 		
 		a_{m1}x_1 + a_{m2}x_2 + \cdots + a_{mn}x_n &= b_m.
 	$$
 	
 ###
+
+Much of the intuition we have for systems of equations helps us understand the behavior of large linear systems. Depending on the particular equations, a system can have a single solution, no solutions, or infinitely many. Geometrically, linear equations form straight lines (or in higher dimensions, planes), and the points where they intersect are the solutions. In the example below, setting $a = 1$ results in the two lines being parallel, so there are no intersection points and therefore no solutions. When $a = 0$, the lines are the same (we sometimes say they **coincide**), and so there are infinitely many solutions. For all other values of $a$, the lines intersect at exactly one point, meaning there is a unique solution.
+
+### desmos linear-system
+
+We'll develop vocabulary to describe all of these situations shortly, but the most pressing issue is that it's unwieldy to deal with $m$ different equations at once. If we could consolidate all $m$ of them into a single equation that still contained all the data, it would make the discussion of linear systems quite a bit simpler.
 
 
 
