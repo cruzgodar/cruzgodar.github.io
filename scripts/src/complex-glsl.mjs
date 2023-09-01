@@ -340,7 +340,6 @@ export function getGlslBundle(codeString)
 		{
 			if (filesToInclude[filename])
 			{
-				console.log(filename);
 				bundle += glslFiles[filename].content;
 			}
 		});

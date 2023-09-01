@@ -256,7 +256,6 @@ export class ComplexMap extends Applet
 		
 		this.wilson.render.shaderPrograms = [];
 		this.wilson.render.loadNewShader(fragShaderSource);
-		console.log("loaded shader!", generatingCode);
 		this.wilson.gl.useProgram(this.wilson.render.shaderPrograms[0]);
 		
 		this.wilson.render.initUniforms([
