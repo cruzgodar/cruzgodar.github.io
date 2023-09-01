@@ -735,7 +735,17 @@ export class VectorField extends Applet
 
 
 
-		this.wilsonUpdate.gl.texImage2D(this.wilsonUpdate.gl.TEXTURE_2D, 0, this.wilsonUpdate.gl.RGBA, this.wilsonUpdate.canvasWidth, this.wilsonUpdate.canvasHeight, 0, this.wilsonUpdate.gl.RGBA, this.wilsonUpdate.gl.FLOAT, this.updateTexture);
+		this.wilsonUpdate.gl.texImage2D(
+			this.wilsonUpdate.gl.TEXTURE_2D,
+			0,
+			this.wilsonUpdate.gl.RGBA,
+			this.wilsonUpdate.canvasWidth,
+			this.wilsonUpdate.canvasHeight,
+			0,
+			this.wilsonUpdate.gl.RGBA,
+			this.wilsonUpdate.gl.FLOAT,
+			this.updateTexture
+		);
 
 		this.wilsonUpdate.gl.useProgram(this.wilsonUpdate.render.shaderPrograms[0]);
 		this.wilsonUpdate.render.drawFrame();
@@ -818,13 +828,33 @@ export class VectorField extends Applet
 
 	drawField()
 	{
-		this.wilsonDim.gl.texImage2D(this.wilsonDim.gl.TEXTURE_2D, 0, this.wilsonDim.gl.RGBA, this.wilsonDim.canvasWidth, this.wilsonDim.canvasHeight, 0, this.wilsonDim.gl.RGBA, this.wilsonDim.gl.UNSIGNED_BYTE, this.dimTexture);
+		this.wilsonDim.gl.texImage2D(
+			this.wilsonDim.gl.TEXTURE_2D,
+			0,
+			this.wilsonDim.gl.RGBA,
+			this.wilsonDim.canvasWidth,
+			this.wilsonDim.canvasHeight,
+			0,
+			this.wilsonDim.gl.RGBA,
+			this.wilsonDim.gl.UNSIGNED_BYTE,
+			this.dimTexture
+		);
 
 		this.wilsonDim.render.drawFrame();
 
 		this.dimTexture = this.wilsonDim.render.getPixelData();
 
-		this.wilson.gl.texImage2D(this.wilson.gl.TEXTURE_2D, 0, this.wilson.gl.RGBA, this.wilson.canvasWidth, this.wilson.canvasHeight, 0, this.wilson.gl.RGBA, this.wilson.gl.UNSIGNED_BYTE, this.dimTexture);
+		this.wilson.gl.texImage2D(
+			this.wilson.gl.TEXTURE_2D,
+			0,
+			this.wilson.gl.RGBA,
+			this.wilson.canvasWidth,
+			this.wilson.canvasHeight,
+			0,
+			this.wilson.gl.RGBA,
+			this.wilson.gl.UNSIGNED_BYTE,
+			this.dimTexture
+		);
 
 		this.wilson.render.drawFrame();
 	}

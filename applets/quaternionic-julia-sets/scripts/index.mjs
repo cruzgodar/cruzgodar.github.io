@@ -15,7 +15,16 @@ export function load()
 
 	const switchMovementButtonElement = $("#switch-movement-button");
 
-	const applet = new QuaternionicJuliaSet($("#output-canvas"), switchBulbButtonElement, switchMovementButtonElement, randomizeCButtonElement, cXInputElement, cYInputElement, cZInputElement, cWInputElement);
+	const applet = new QuaternionicJuliaSet(
+		$("#output-canvas"),
+		switchBulbButtonElement,
+		switchMovementButtonElement,
+		randomizeCButtonElement,
+		cXInputElement,
+		cYInputElement,
+		cZInputElement,
+		cWInputElement
+	);
 
 
 

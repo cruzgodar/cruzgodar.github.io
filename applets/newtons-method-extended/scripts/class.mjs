@@ -103,7 +103,17 @@ export class NewtonsMethodExtended extends Applet
 
 		this.wilson = new Wilson(canvas, options);
 
-		this.wilson.render.initUniforms(["aspectRatio", "derivativePrecision", "worldCenterX", "worldCenterY", "worldSize", "colors", "a", "c", "brightnessScale"]);
+		this.wilson.render.initUniforms([
+			"aspectRatio",
+			"derivativePrecision",
+			"worldCenterX",
+			"worldCenterY",
+			"worldSize",
+			"colors",
+			"a",
+			"c",
+			"brightnessScale"
+		]);
 
 
 
@@ -112,7 +122,17 @@ export class NewtonsMethodExtended extends Applet
 		hiddenCanvas.classList.add("output-canvas");
 		this.wilsonHidden = new Wilson(hiddenCanvas, optionsHidden);
 
-		this.wilsonHidden.render.initUniforms(["aspectRatio", "derivativePrecision", "worldCenterX", "worldCenterY", "worldSize", "colors", "a", "c", "brightnessScale"]);
+		this.wilsonHidden.render.initUniforms([
+			"aspectRatio",
+			"derivativePrecision",
+			"worldCenterX",
+			"worldCenterY",
+			"worldSize",
+			"colors",
+			"a",
+			"c",
+			"brightnessScale"
+		]);
 
 
 
@@ -254,14 +274,34 @@ export class NewtonsMethodExtended extends Applet
 		this.wilson.render.shaderPrograms = [];
 		this.wilson.render.loadNewShader(fragShaderSource);
 		this.wilson.gl.useProgram(this.wilson.render.shaderPrograms[0]);
-		this.wilson.render.initUniforms(["aspectRatio", "derivativePrecision", "worldCenterX", "worldCenterY", "worldSize", "colors", "a", "c", "brightnessScale"]);
+		this.wilson.render.initUniforms([
+			"aspectRatio",
+			"derivativePrecision",
+			"worldCenterX",
+			"worldCenterY",
+			"worldSize",
+			"colors",
+			"a",
+			"c",
+			"brightnessScale"
+		]);
 		this.wilson.gl.uniform1f(this.wilson.uniforms["aspectRatio"], 1);
 		this.wilson.gl.uniform1f(this.wilson.uniforms["derivativePrecision"], this.derivativePrecision);
 
 		this.wilsonHidden.render.shaderPrograms = [];
 		this.wilsonHidden.render.loadNewShader(fragShaderSource);
 		this.wilsonHidden.gl.useProgram(this.wilsonHidden.render.shaderPrograms[0]);
-		this.wilsonHidden.render.initUniforms(["aspectRatio", "derivativePrecision", "worldCenterX", "worldCenterY", "worldSize", "colors", "a", "c", "brightnessScale"]);
+		this.wilsonHidden.render.initUniforms([
+			"aspectRatio",
+			"derivativePrecision",
+			"worldCenterX",
+			"worldCenterY",
+			"worldSize",
+			"colors",
+			"a",
+			"c",
+			"brightnessScale"
+		]);
 		this.wilsonHidden.gl.uniform1f(this.wilsonHidden.uniforms["aspectRatio"], 1);
 		this.wilsonHidden.gl.uniform1f(this.wilsonHidden.uniforms["derivativePrecision"], this.derivativePrecision);
 

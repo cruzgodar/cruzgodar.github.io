@@ -325,7 +325,18 @@ export class FractalSounds extends Applet
 		this.wilsonJulia.render.loadNewShader(fragShaderSource);
 		this.wilsonJulia.gl.useProgram(this.wilsonJulia.render.shaderPrograms[0]);
 
-		this.wilsonJulia.render.initUniforms(["juliaMode", "aspectRatio", "worldCenterX", "worldCenterY", "worldSize", "a", "b", "numIterations", "exposure", "brightnessScale"], 0);
+		this.wilsonJulia.render.initUniforms([
+			"juliaMode",
+			"aspectRatio",
+			"worldCenterX",
+			"worldCenterY",
+			"worldSize",
+			"a",
+			"b",
+			"numIterations",
+			"exposure",
+			"brightnessScale"
+		], 0);
 
 
 
@@ -333,7 +344,18 @@ export class FractalSounds extends Applet
 		this.wilsonHidden.render.loadNewShader(fragShaderSource);
 		this.wilsonHidden.gl.useProgram(this.wilsonHidden.render.shaderPrograms[0]);
 
-		this.wilsonHidden.render.initUniforms(["juliaMode", "aspectRatio", "worldCenterX", "worldCenterY", "worldSize", "a", "b", "numIterations", "exposure", "brightnessScale"], 0);
+		this.wilsonHidden.render.initUniforms([
+			"juliaMode",
+			"aspectRatio",
+			"worldCenterX",
+			"worldCenterY",
+			"worldSize",
+			"a",
+			"b",
+			"numIterations",
+			"exposure",
+			"brightnessScale"
+		], 0);
 
 
 		this.juliaMode = 0;

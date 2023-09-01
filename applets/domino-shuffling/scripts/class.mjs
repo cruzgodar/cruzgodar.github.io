@@ -123,8 +123,11 @@ export class DominoShuffling extends Applet
 
 			if (this.useSmoothColors)
 			{
-				this.hue[this.diamondSize - 1][this.diamondSize - 1] = .75 - Math.atan2(-.5, -.5) / (2 * Math.PI);
-				this.hue[this.diamondSize][this.diamondSize - 1] = .75 - Math.atan2(.5, -.5) / (2 * Math.PI);
+				this.hue[this.diamondSize - 1][this.diamondSize - 1] =
+					.75 - Math.atan2(-.5, -.5) / (2 * Math.PI);
+
+				this.hue[this.diamondSize][this.diamondSize - 1] =
+					.75 - Math.atan2(.5, -.5) / (2 * Math.PI);
 			}
 
 			else
@@ -145,8 +148,11 @@ export class DominoShuffling extends Applet
 
 			if (this.useSmoothColors)
 			{
-				this.hue[this.diamondSize - 1][this.diamondSize - 1] = .75 - Math.atan2(-.5, -.5) / (2 * Math.PI);
-				this.hue[this.diamondSize - 1][this.diamondSize] = .75 - Math.atan2(-.5, .5) / (2 * Math.PI);
+				this.hue[this.diamondSize - 1][this.diamondSize - 1] =
+					.75 - Math.atan2(-.5, -.5) / (2 * Math.PI);
+
+				this.hue[this.diamondSize - 1][this.diamondSize] =
+					.75 - Math.atan2(-.5, .5) / (2 * Math.PI);
 			}
 
 			else
@@ -270,12 +276,22 @@ export class DominoShuffling extends Applet
 
 		if (isHorizontal)
 		{
-			this.wilson.ctx.fillRect(x, y, this.resolution * (2 - 2 * this.marginSize) / (this.diamondSize * 2) * .8, this.resolution * (1 - 2 * this.marginSize) / (this.diamondSize * 2) * .8);
+			this.wilson.ctx.fillRect(
+				x,
+				y,
+				this.resolution * (2 - 2 * this.marginSize) / (this.diamondSize * 2) * .8,
+				this.resolution * (1 - 2 * this.marginSize) / (this.diamondSize * 2) * .8
+			);
 		}
 
 		else
 		{
-			this.wilson.ctx.fillRect(x, y, this.resolution * (1 - 2 * this.marginSize) / (this.diamondSize * 2) * .8, this.resolution * (2 - 2 * this.marginSize) / (this.diamondSize * 2) * .8);
+			this.wilson.ctx.fillRect(
+				x,
+				y,
+				this.resolution * (1 - 2 * this.marginSize) / (this.diamondSize * 2) * .8,
+				this.resolution * (2 - 2 * this.marginSize) / (this.diamondSize * 2) * .8
+			);
 		}
 	}
 
@@ -305,7 +321,10 @@ export class DominoShuffling extends Applet
 					if (Math.abs(this.aztecDiamond[i][j]) === 1)
 					{
 						//If there's something there already, delete it.
-						if (this.aztecDiamond[i + this.aztecDiamond[i][j]][j] === -this.aztecDiamond[i][j])
+						if (
+							this.aztecDiamond[i + this.aztecDiamond[i][j]][j]
+								=== -this.aztecDiamond[i][j]
+						)
 						{
 							this.aztecDiamond[i + this.aztecDiamond[i][j]][j] = 0;
 							this.aztecDiamond[i][j] = 0;
@@ -315,7 +334,10 @@ export class DominoShuffling extends Applet
 					else
 					{
 						//If there's something there already, delete it.
-						if (this.aztecDiamond[i][j + Math.sign(this.aztecDiamond[i][j])] === -this.aztecDiamond[i][j])
+						if (
+							this.aztecDiamond[i][j + Math.sign(this.aztecDiamond[i][j])]
+								=== -this.aztecDiamond[i][j]
+						)
 						{
 							this.aztecDiamond[i][j + Math.sign(this.aztecDiamond[i][j])] = 0;
 							this.aztecDiamond[i][j] = 0;
@@ -343,7 +365,9 @@ export class DominoShuffling extends Applet
 
 					else
 					{
-						this.newDiamond[i][j + Math.sign(this.aztecDiamond[i][j])] = this.aztecDiamond[i][j];
+						this.newDiamond[i][j + Math.sign(this.aztecDiamond[i][j])]
+							= this.aztecDiamond[i][j];
+
 						this.newAge[i][j + Math.sign(this.aztecDiamond[i][j])] = this.age[i][j];
 						this.newHue[i][j + Math.sign(this.aztecDiamond[i][j])] = this.hue[i][j];
 					}
@@ -371,18 +395,34 @@ export class DominoShuffling extends Applet
 
 	fillSpaces()
 	{
-		//Now the diamond has a bunch of 2x2 holes in it, and we need to fill them with two parallel dominos each.
+		//Now the diamond has a bunch of 2x2 holes in it,
+		//and we need to fill them with two parallel dominos each.
 		for (let i = -this.currentDiamondSize; i < this.currentDiamondSize; i++)
 		{
 			for (let j = -this.currentDiamondSize; j < this.currentDiamondSize; j++)
 			{
-				if (Math.abs(i + .5) + Math.abs(j + .5) <= this.currentDiamondSize && Math.abs(i + 1.5) + Math.abs(j + .5) <= this.currentDiamondSize && Math.abs(i + .5) + Math.abs(j + 1.5) <= this.currentDiamondSize && Math.abs(i + 1.5) + Math.abs(j + 1.5) <= this.currentDiamondSize)
+				if (
+					Math.abs(i + .5) + Math.abs(j + .5) <= this.currentDiamondSize
+					&& Math.abs(i + 1.5) + Math.abs(j + .5) <= this.currentDiamondSize
+					&& Math.abs(i + .5) + Math.abs(j + 1.5) <= this.currentDiamondSize
+					&& Math.abs(i + 1.5) + Math.abs(j + 1.5) <= this.currentDiamondSize
+				)
 				{
 					const row = i + this.diamondSize;
 					const col = j + this.diamondSize;
 
-					//The extra checks are needed because we only record the top/bottom square of a domino.
-					if (this.aztecDiamond[row][col] === 0 && this.aztecDiamond[row + 1][col] === 0 && this.aztecDiamond[row][col + 1] === 0 && this.aztecDiamond[row + 1][col + 1] === 0 && Math.abs(this.aztecDiamond[row - 1][col]) !== 2 && Math.abs(this.aztecDiamond[row - 1][col + 1]) !== 2 && Math.abs(this.aztecDiamond[row][col - 1]) !== 1 && Math.abs(this.aztecDiamond[row + 1][col - 1]) !== 1)
+					//The extra checks are needed because
+					//we only record the top/bottom square of a domino.
+					if (
+						this.aztecDiamond[row][col] === 0
+						&& this.aztecDiamond[row + 1][col] === 0
+						&& this.aztecDiamond[row][col + 1] === 0
+						&& this.aztecDiamond[row + 1][col + 1] === 0
+						&& Math.abs(this.aztecDiamond[row - 1][col]) !== 2
+						&& Math.abs(this.aztecDiamond[row - 1][col + 1]) !== 2
+						&& Math.abs(this.aztecDiamond[row][col - 1]) !== 1
+						&& Math.abs(this.aztecDiamond[row + 1][col - 1]) !== 1
+					)
 					{
 						this.fillSpace(row, col);
 					}
@@ -406,8 +446,13 @@ export class DominoShuffling extends Applet
 
 			if (this.useSmoothColors)
 			{
-				this.hue[row][col] = .75 - Math.atan2(row + .5 - this.diamondSize, col + .5 - this.diamondSize) / (2 * Math.PI);
-				this.hue[row + 1][col] = .75 - Math.atan2(row + 1.5 - this.diamondSize, col + .5 - this.diamondSize) / (2 * Math.PI);
+				this.hue[row][col] = .75 - Math.atan2(
+					row + .5 - this.diamondSize, col + .5 - this.diamondSize
+				) / (2 * Math.PI);
+
+				this.hue[row + 1][col] = .75 - Math.atan2(
+					row + 1.5 - this.diamondSize, col + .5 - this.diamondSize
+				) / (2 * Math.PI);
 			}
 
 			else
@@ -428,8 +473,13 @@ export class DominoShuffling extends Applet
 
 			if (this.useSmoothColors)
 			{
-				this.hue[row][col] = .75 - Math.atan2(row + .5 - this.diamondSize, col + .5 - this.diamondSize) / (2 * Math.PI);
-				this.hue[row][col + 1] = .75 - Math.atan2(row + .5 - this.diamondSize, col + 1.5 - this.diamondSize) / (2 * Math.PI);
+				this.hue[row][col] = .75 - Math.atan2(
+					row + .5 - this.diamondSize, col + .5 - this.diamondSize
+				) / (2 * Math.PI);
+				
+				this.hue[row][col + 1] = .75 - Math.atan2(
+					row + .5 - this.diamondSize, col + 1.5 - this.diamondSize
+				) / (2 * Math.PI);
 			}
 
 			else

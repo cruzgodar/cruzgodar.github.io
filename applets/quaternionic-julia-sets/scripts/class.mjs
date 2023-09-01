@@ -93,7 +93,16 @@ export class QuaternionicJuliaSet extends Applet
 
 
 
-	constructor(canvas, switchBulbButtonElement, switchMovementButtonElement, randomizeCButtonElement, cXInputElement, cYInputElement, cZInputElement, cWInputElement)
+	constructor(
+		canvas,
+		switchBulbButtonElement,
+		switchMovementButtonElement,
+		randomizeCButtonElement,
+		cXInputElement,
+		cYInputElement,
+		cZInputElement,
+		cWInputElement
+	)
 	{
 		super(canvas);
 
@@ -403,7 +412,25 @@ export class QuaternionicJuliaSet extends Applet
 
 		this.wilson = new Wilson(canvas, options);
 
-		this.wilson.render.initUniforms(["aspectRatioX", "aspectRatioY", "imageSize", "cameraPos", "imagePlaneCenterPos", "forwardVec", "rightVec", "upVec", "focalLength", "lightPos", "drawSphere", "c", "juliaProportion", "maxMarches", "stepFactor", "maxIterations", "kSlice"]);
+		this.wilson.render.initUniforms([
+			"aspectRatioX",
+			"aspectRatioY",
+			"imageSize",
+			"cameraPos",
+			"imagePlaneCenterPos",
+			"forwardVec",
+			"rightVec",
+			"upVec",
+			"focalLength",
+			"lightPos",
+			"drawSphere",
+			"c",
+			"juliaProportion",
+			"maxMarches",
+			"stepFactor",
+			"maxIterations",
+			"kSlice"
+		]);
 
 		this.calculateVectors();
 

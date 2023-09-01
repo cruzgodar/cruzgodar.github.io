@@ -616,7 +616,16 @@ export class JuliaSet extends Applet
 
 		for (let i = 0; i < 6; i++)
 		{
-			this.wilson.render.initUniforms(["aspectRatio", "worldCenterX", "worldCenterY", "worldSize", "a", "b", "numIterations", "brightnessScale"], i);
+			this.wilson.render.initUniforms([
+				"aspectRatio",
+				"worldCenterX",
+				"worldCenterY",
+				"worldSize",
+				"a",
+				"b",
+				"numIterations",
+				"brightnessScale"
+			], i);
 		}
 
 
@@ -633,7 +642,16 @@ export class JuliaSet extends Applet
 
 		for (let i = 0; i < 6; i++)
 		{
-			this.wilsonHidden.render.initUniforms(["aspectRatio", "worldCenterX", "worldCenterY", "worldSize", "a", "b", "numIterations", "brightnessScale"], i);
+			this.wilsonHidden.render.initUniforms([
+				"aspectRatio",
+				"worldCenterX",
+				"worldCenterY",
+				"worldSize",
+				"a",
+				"b",
+				"numIterations",
+				"brightnessScale"
+			], i);
 		}
 
 		this.zoom.init();

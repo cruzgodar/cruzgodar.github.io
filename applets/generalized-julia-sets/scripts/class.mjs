@@ -314,13 +314,37 @@ export class GeneralizedJuliaSet extends Applet
 		this.wilson.render.shaderPrograms = [];
 		this.wilson.render.loadNewShader(fragShaderSource);
 		this.wilson.gl.useProgram(this.wilson.render.shaderPrograms[0]);
-		this.wilson.render.initUniforms(["juliaMode", "aspectRatio", "worldCenterX", "worldCenterY", "worldSize", "a", "b", "exposure", "numIterations", "brightnessScale", "draggableArg"]);
+		this.wilson.render.initUniforms([
+			"juliaMode",
+			"aspectRatio",
+			"worldCenterX",
+			"worldCenterY",
+			"worldSize",
+			"a",
+			"b",
+			"exposure",
+			"numIterations",
+			"brightnessScale",
+			"draggableArg"
+		]);
 		this.wilson.gl.uniform1f(this.wilson.uniforms["aspectRatio"], 1);
 
 		this.wilsonHidden.render.shaderPrograms = [];
 		this.wilsonHidden.render.loadNewShader(fragShaderSource);
 		this.wilsonHidden.gl.useProgram(this.wilsonHidden.render.shaderPrograms[0]);
-		this.wilsonHidden.render.initUniforms(["juliaMode", "aspectRatio", "worldCenterX", "worldCenterY", "worldSize", "a", "b", "exposure", "numIterations", "brightnessScale", "draggableArg"]);
+		this.wilsonHidden.render.initUniforms([
+			"juliaMode",
+			"aspectRatio",
+			"worldCenterX",
+			"worldCenterY",
+			"worldSize",
+			"a",
+			"b",
+			"exposure",
+			"numIterations",
+			"brightnessScale",
+			"draggableArg"
+		]);
 		this.wilsonHidden.gl.uniform1f(this.wilsonHidden.uniforms["aspectRatio"], 1);
 
 		this.wilson.worldWidth = 4;

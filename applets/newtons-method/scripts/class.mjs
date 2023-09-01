@@ -245,13 +245,35 @@ export class NewtonsMethod extends Applet
 
 		this.wilson = new Wilson(canvas, options);
 
-		this.wilson.render.initUniforms(["aspectRatio", "worldCenterX", "worldCenterY", "worldSize", "numRoots", "roots", "colors", "a", "c", "brightnessScale"]);
+		this.wilson.render.initUniforms([
+			"aspectRatio",
+			"worldCenterX",
+			"worldCenterY",
+			"worldSize",
+			"numRoots",
+			"roots",
+			"colors",
+			"a",
+			"c",
+			"brightnessScale"
+		]);
 
 
 
 		this.wilsonHidden = new Wilson(hiddenCanvas, optionsHidden);
 
-		this.wilsonHidden.render.initUniforms(["aspectRatio", "worldCenterX", "worldCenterY", "worldSize", "numRoots", "roots", "colors", "a", "c", "brightnessScale"]);
+		this.wilsonHidden.render.initUniforms([
+			"aspectRatio",
+			"worldCenterX",
+			"worldCenterY",
+			"worldSize",
+			"numRoots",
+			"roots",
+			"colors",
+			"a",
+			"c",
+			"brightnessScale"
+		]);
 
 
 

@@ -502,7 +502,17 @@ export class QuasiFuchsianGroups extends Applet
 		this.wilson.gl.bindTexture(this.wilson.gl.TEXTURE_2D, this.wilson.render.framebuffers[0].texture);
 		this.wilson.gl.bindFramebuffer(this.wilson.gl.FRAMEBUFFER, null);
 
-		this.wilson.gl.texImage2D(this.wilson.gl.TEXTURE_2D, 0, this.wilson.gl.RGBA, this.imageWidth, this.imageHeight, 0, this.wilson.gl.RGBA, this.wilson.gl.FLOAT, this.image);
+		this.wilson.gl.texImage2D(
+			this.wilson.gl.TEXTURE_2D,
+			0,
+			this.wilson.gl.RGBA,
+			this.imageWidth,
+			this.imageHeight,
+			0,
+			this.wilson.gl.RGBA,
+			this.wilson.gl.FLOAT,
+			this.image
+		);
 
 		this.wilson.render.drawFrame();
 
@@ -522,7 +532,17 @@ export class QuasiFuchsianGroups extends Applet
 		{
 			const pixelData = this.wilson.render.getPixelData();
 
-			this.wilson.gl.texImage2D(this.wilson.gl.TEXTURE_2D, 0, this.wilson.gl.RGBA, this.imageWidth, this.imageHeight, 0, this.wilson.gl.RGBA, this.wilson.gl.UNSIGNED_BYTE, pixelData);
+			this.wilson.gl.texImage2D(
+				this.wilson.gl.TEXTURE_2D,
+				0,
+				this.wilson.gl.RGBA,
+				this.imageWidth,
+				this.imageHeight,
+				0,
+				this.wilson.gl.RGBA,
+				this.wilson.gl.UNSIGNED_BYTE,
+				pixelData
+			);
 
 			this.wilson.render.drawFrame();
 		}
@@ -535,7 +555,17 @@ export class QuasiFuchsianGroups extends Applet
 
 		const pixelData = this.wilson.render.getPixelData();
 
-		this.wilson.gl.texImage2D(this.wilson.gl.TEXTURE_2D, 0, this.wilson.gl.RGBA, this.imageWidth, this.imageHeight, 0, this.wilson.gl.RGBA, this.wilson.gl.UNSIGNED_BYTE, pixelData);
+		this.wilson.gl.texImage2D(
+			this.wilson.gl.TEXTURE_2D,
+			0,
+			this.wilson.gl.RGBA,
+			this.imageWidth,
+			this.imageHeight,
+			0,
+			this.wilson.gl.RGBA,
+			this.wilson.gl.UNSIGNED_BYTE,
+			pixelData
+		);
 
 		this.wilson.render.drawFrame();
 	}

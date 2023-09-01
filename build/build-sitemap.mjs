@@ -26,7 +26,21 @@ export default async function buildSitemap()
 
 
 
-	let sitemap = `export const sitemap =\n{${getPageString("/home/", "", ["/gallery/", "/applets/", "/teaching/", "/slides/", "/writing/", "/about/", "/404/", "/debug/"], "Cruz Godar")}`;
+	let sitemap = `export const sitemap =\n{${getPageString(
+		"/home/",
+		"",
+		[
+			"/gallery/",
+			"/applets/",
+			"/teaching/",
+			"/slides/",
+			"/writing/",
+			"/about/",
+			"/404/",
+			"/debug/"
+		],
+		"Cruz Godar"
+	)}`;
 
 	lines[0] = "/home/";
 

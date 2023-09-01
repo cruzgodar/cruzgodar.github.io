@@ -369,7 +369,26 @@ export class Mandelbulb extends Applet
 
 		this.wilson = new Wilson(canvas, options);
 
-		this.wilson.render.initUniforms(["aspectRatioX", "aspectRatioY", "imageSize", "cameraPos", "imagePlaneCenterPos", "forwardVec", "rightVec", "upVec", "focalLength", "lightPos", "drawSphere", "power", "c", "juliaProportion", "rotationMatrix", "maxMarches", "stepFactor", "maxIterations"]);
+		this.wilson.render.initUniforms([
+			"aspectRatioX",
+			"aspectRatioY",
+			"imageSize",
+			"cameraPos",
+			"imagePlaneCenterPos",
+			"forwardVec",
+			"rightVec",
+			"upVec",
+			"focalLength",
+			"lightPos",
+			"drawSphere",
+			"power",
+			"c",
+			"juliaProportion",
+			"rotationMatrix",
+			"maxMarches",
+			"stepFactor",
+			"maxIterations"
+		]);
 
 
 		this.calculateVectors();
@@ -406,7 +425,11 @@ export class Mandelbulb extends Applet
 		this.wilson.gl.uniform3fv(this.wilson.uniforms["c"], this.c);
 		this.wilson.gl.uniform1f(this.wilson.uniforms["juliaProportion"], 0);
 
-		this.wilson.gl.uniformMatrix3fv(this.wilson.uniforms["rotationMatrix"], false, [1, 0, 0, 0, 1, 0, 0, 0, 1]);
+		this.wilson.gl.uniformMatrix3fv(
+			this.wilson.uniforms["rotationMatrix"],
+			false,
+			[1, 0, 0, 0, 1, 0, 0, 0, 1]
+		);
 
 		this.wilson.gl.uniform1i(this.wilson.uniforms["maxMarches"], this.maxMarches);
 		this.wilson.gl.uniform1f(this.wilson.uniforms["stepFactor"], 1);
@@ -674,7 +697,21 @@ export class Mandelbulb extends Applet
 
 		const matTotal = this.matMul(this.matMul(matZ, matY), matX);
 
-		this.wilson.gl.uniformMatrix3fv(this.wilson.uniforms["rotationMatrix"], false, [matTotal[0][0], matTotal[1][0], matTotal[2][0], matTotal[0][1], matTotal[1][1], matTotal[2][1], matTotal[0][2], matTotal[1][2], matTotal[2][2]]);
+		this.wilson.gl.uniformMatrix3fv(
+			this.wilson.uniforms["rotationMatrix"],
+			false,
+			[
+				matTotal[0][0],
+				matTotal[1][0],
+				matTotal[2][0],
+				matTotal[0][1],
+				matTotal[1][1],
+				matTotal[2][1],
+				matTotal[0][2],
+				matTotal[1][2],
+				matTotal[2][2]
+			]
+		);
 	}
 
 

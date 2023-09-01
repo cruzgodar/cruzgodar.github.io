@@ -263,7 +263,17 @@ export class SortingAlgorithm extends Applet
 			textureData[4 * i + 2] = Math.floor(this.brightness[i] / this.maxBrightness * 256);
 		}
 
-		this.wilson.gl.texImage2D(this.wilson.gl.TEXTURE_2D, 0, this.wilson.gl.RGBA, this.dataLength, 1, 0, this.wilson.gl.RGBA, this.wilson.gl.UNSIGNED_BYTE, textureData);
+		this.wilson.gl.texImage2D(
+			this.wilson.gl.TEXTURE_2D,
+			0,
+			this.wilson.gl.RGBA,
+			this.dataLength,
+			1,
+			0,
+			this.wilson.gl.RGBA,
+			this.wilson.gl.UNSIGNED_BYTE,
+			textureData
+		);
 
 		this.wilson.render.drawFrame();
 

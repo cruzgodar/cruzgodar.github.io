@@ -231,7 +231,13 @@ async function wilsonStep()
 function wasmRandomWalk(fixedLength = 0)
 {
 	// eslint-disable-next-line no-undef
-	const newVerticesPtr = ccallArrays("random_walk", "number", ["number", "array", "number", "number", "number"], [gridSize, grid, fixedLength, currentRow, currentColumn], { heapIn: "HEAPU32" });
+	const newVerticesPtr = ccallArrays(
+		"random_walk",
+		"number",
+		["number", "array", "number", "number", "number"],
+		[gridSize, grid, fixedLength, currentRow, currentColumn],
+		{ heapIn: "HEAPU32" }
+	);
 
 	//The length of the array is stored as its first element.
 	// eslint-disable-next-line no-undef

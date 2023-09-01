@@ -522,11 +522,66 @@ export class Snowflake extends Applet
 		this.wilson.render.loadNewShader(fragShaderSourceMelt);
 		this.wilson.render.loadNewShader(fragShaderSourceDraw);
 
-		this.wilson.render.initUniforms(["rho", "beta", "alpha", "theta", "kappa", "mu", "gamma", "resolution", "step"], 0);
-		this.wilson.render.initUniforms(["rho", "beta", "alpha", "theta", "kappa", "mu", "gamma", "resolution", "step"], 1);
-		this.wilson.render.initUniforms(["rho", "beta", "alpha", "theta", "kappa", "mu", "gamma", "resolution", "step"], 2);
-		this.wilson.render.initUniforms(["rho", "beta", "alpha", "theta", "kappa", "mu", "gamma", "resolution", "step"], 3);
-		this.wilson.render.initUniforms(["rho", "beta", "alpha", "theta", "kappa", "mu", "gamma", "resolution", "step"], 4);
+		this.wilson.render.initUniforms([
+			"rho",
+			"beta",
+			"alpha",
+			"theta",
+			"kappa",
+			"mu",
+			"gamma",
+			"resolution",
+			"step"
+		], 0);
+		
+		this.wilson.render.initUniforms([
+			"rho",
+			"beta",
+			"alpha",
+			"theta",
+			"kappa",
+			"mu",
+			"gamma",
+			"resolution",
+			"step"
+		], 1);
+		
+		this.wilson.render.initUniforms([
+			"rho",
+			"beta",
+			"alpha",
+			"theta",
+			"kappa",
+			"mu",
+			"gamma",
+			"resolution",
+			"step"
+		], 2);
+		
+		this.wilson.render.initUniforms([
+			"rho",
+			"beta",
+			"alpha",
+			"theta",
+			"kappa",
+			"mu",
+			"gamma",
+			"resolution",
+			"step"
+		], 3);
+		
+		this.wilson.render.initUniforms([
+			"rho",
+			"beta",
+			"alpha",
+			"theta",
+			"kappa",
+			"mu",
+			"gamma",
+			"resolution",
+			"step"
+		], 4);
+		
 
 		this.wilson.render.createFramebufferTexturePair();
 		this.wilson.render.createFramebufferTexturePair();
@@ -574,10 +629,30 @@ export class Snowflake extends Applet
 		this.wilson.changeCanvasSize(this.resolution, this.resolution);
 
 		this.wilson.gl.bindTexture(this.wilson.gl.TEXTURE_2D, this.wilson.render.framebuffers[0].texture);
-		this.wilson.gl.texImage2D(this.wilson.gl.TEXTURE_2D, 0, this.wilson.gl.RGBA, this.wilson.canvasWidth, this.wilson.canvasHeight, 0, this.wilson.gl.RGBA, this.wilson.gl.FLOAT, null);
+		this.wilson.gl.texImage2D(
+			this.wilson.gl.TEXTURE_2D,
+			0,
+			this.wilson.gl.RGBA,
+			this.wilson.canvasWidth,
+			this.wilson.canvasHeight,
+			0,
+			this.wilson.gl.RGBA,
+			this.wilson.gl.FLOAT,
+			null
+		);
 
 		this.wilson.gl.bindTexture(this.wilson.gl.TEXTURE_2D, this.wilson.render.framebuffers[1].texture);
-		this.wilson.gl.texImage2D(this.wilson.gl.TEXTURE_2D, 0, this.wilson.gl.RGBA, this.wilson.canvasWidth, this.wilson.canvasHeight, 0, this.wilson.gl.RGBA, this.wilson.gl.FLOAT, null);
+		this.wilson.gl.texImage2D(
+			this.wilson.gl.TEXTURE_2D,
+			0,
+			this.wilson.gl.RGBA,
+			this.wilson.canvasWidth,
+			this.wilson.canvasHeight,
+			0,
+			this.wilson.gl.RGBA,
+			this.wilson.gl.FLOAT,
+			null
+		);
 
 
 

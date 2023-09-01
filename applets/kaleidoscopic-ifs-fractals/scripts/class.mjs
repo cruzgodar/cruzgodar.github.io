@@ -436,7 +436,26 @@ export class KaleidoscopicIFSFractal extends Applet
 
 		this.wilson = new Wilson(canvas, options);
 
-		this.wilson.render.initUniforms(["aspectRatioX", "aspectRatioY", "imageSize", "cameraPos", "imagePlaneCenterPos", "forwardVec", "rightVec", "upVec", "focalLength", "lightPos", "scaleCenter", "n1", "n2", "n3", "n4", "numNs", "rotationMatrix1", "rotationMatrix2"]);
+		this.wilson.render.initUniforms([
+			"aspectRatioX",
+			"aspectRatioY",
+			"imageSize",
+			"cameraPos",
+			"imagePlaneCenterPos",
+			"forwardVec",
+			"rightVec",
+			"upVec",
+			"focalLength",
+			"lightPos",
+			"scaleCenter",
+			"n1",
+			"n2",
+			"n3",
+			"n4",
+			"numNs",
+			"rotationMatrix1",
+			"rotationMatrix2"
+		]);
 
 
 
@@ -474,8 +493,17 @@ export class KaleidoscopicIFSFractal extends Applet
 
 		this.wilson.gl.uniform1i(this.wilson.uniforms["numNs"], this.numNs[this.polyhedronIndex]);
 
-		this.wilson.gl.uniformMatrix3fv(this.wilson.uniforms["rotationMatrix1"], false, [1, 0, 0, 0, 1, 0, 0, 0, 1]);
-		this.wilson.gl.uniformMatrix3fv(this.wilson.uniforms["rotationMatrix2"], false, [1, 0, 0, 0, 1, 0, 0, 0, 1]);
+		this.wilson.gl.uniformMatrix3fv(
+			this.wilson.uniforms["rotationMatrix1"],
+			false,
+			[1, 0, 0, 0, 1, 0, 0, 0, 1]
+		);
+
+		this.wilson.gl.uniformMatrix3fv(
+			this.wilson.uniforms["rotationMatrix2"],
+			false,
+			[1, 0, 0, 0, 1, 0, 0, 0, 1]
+		);
 
 
 
@@ -1192,7 +1220,21 @@ export class KaleidoscopicIFSFractal extends Applet
 
 		let matTotal = this.matMul(this.matMul(matZ, matY), matX);
 
-		this.wilson.gl.uniformMatrix3fv(this.wilson.uniforms["rotationMatrix1"], false, [matTotal[0][0], matTotal[1][0], matTotal[2][0], matTotal[0][1], matTotal[1][1], matTotal[2][1], matTotal[0][2], matTotal[1][2], matTotal[2][2]]);
+		this.wilson.gl.uniformMatrix3fv(
+			this.wilson.uniforms["rotationMatrix1"],
+			false,
+			[
+				matTotal[0][0],
+				matTotal[1][0],
+				matTotal[2][0],
+				matTotal[0][1],
+				matTotal[1][1],
+				matTotal[2][1],
+				matTotal[0][2],
+				matTotal[1][2],
+				matTotal[2][2]
+			]
+		);
 
 
 
@@ -1202,7 +1244,21 @@ export class KaleidoscopicIFSFractal extends Applet
 
 		matTotal = this.matMul(this.matMul(matZ, matY), matX);
 
-		this.wilson.gl.uniformMatrix3fv(this.wilson.uniforms["rotationMatrix2"], false, [matTotal[0][0], matTotal[1][0], matTotal[2][0], matTotal[0][1], matTotal[1][1], matTotal[2][1], matTotal[0][2], matTotal[1][2], matTotal[2][2]]);
+		this.wilson.gl.uniformMatrix3fv(
+			this.wilson.uniforms["rotationMatrix2"],
+			false,
+			[
+				matTotal[0][0],
+				matTotal[1][0],
+				matTotal[2][0],
+				matTotal[0][1],
+				matTotal[1][1],
+				matTotal[2][1],
+				matTotal[0][2],
+				matTotal[1][2],
+				matTotal[2][2]
+			]
+		);
 
 		window.requestAnimationFrame(this.drawFrame.bind(this));
 	}

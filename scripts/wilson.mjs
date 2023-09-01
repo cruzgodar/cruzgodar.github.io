@@ -509,7 +509,17 @@ export class Wilson
 		{
 			this.lastImage = image;
 
-			this.parent.gl.texImage2D(this.parent.gl.TEXTURE_2D, 0, this.parent.gl.RGBA, this.parent.canvasWidth, this.parent.canvasHeight, 0, this.parent.gl.RGBA, this.parent.gl.UNSIGNED_BYTE, image);
+			this.parent.gl.texImage2D(
+				this.parent.gl.TEXTURE_2D,
+				0,
+				this.parent.gl.RGBA,
+				this.parent.canvasWidth,
+				this.parent.canvasHeight,
+				0,
+				this.parent.gl.RGBA,
+				this.parent.gl.UNSIGNED_BYTE,
+				image
+			);
 
 			this.parent.gl.drawArrays(this.parent.gl.TRIANGLE_STRIP, 0, 4);
 		},
@@ -719,7 +729,17 @@ export class Wilson
 			const texture = this.parent.gl.createTexture();
 
 			this.parent.gl.bindTexture(this.parent.gl.TEXTURE_2D, texture);
-			this.parent.gl.texImage2D(this.parent.gl.TEXTURE_2D, 0, this.parent.gl.RGBA, this.parent.canvasWidth, this.parent.canvasHeight, 0, this.parent.gl.RGBA, type, null);
+			this.parent.gl.texImage2D(
+				this.parent.gl.TEXTURE_2D,
+				0,
+				this.parent.gl.RGBA,
+				this.parent.canvasWidth,
+				this.parent.canvasHeight,
+				0,
+				this.parent.gl.RGBA,
+				type,
+				null
+			);
 
 			this.parent.gl.texParameteri(this.parent.gl.TEXTURE_2D, this.parent.gl.TEXTURE_MAG_FILTER, this.parent.gl.NEAREST);
 			this.parent.gl.texParameteri(this.parent.gl.TEXTURE_2D, this.parent.gl.TEXTURE_MIN_FILTER, this.parent.gl.NEAREST);
