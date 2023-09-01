@@ -128,6 +128,8 @@ const glslFilesByDepth = [];
 
 let loadedGlsl = false;
 
+let loadGlslPromise;
+
 export async function loadGlsl()
 {
 	if (loadedGlsl)
@@ -135,6 +137,19 @@ export async function loadGlsl()
 		return;
 	}
 
+	//If it's in the process of loading, return a promise that will resolve when it's done.
+	if (!loadedGlsl && loadGlslPromise)
+	{
+		return loadGlslPromise;
+	}
+
+	loadGlslPromise = loadGlslLogic();
+
+	return loadGlslPromise;
+}
+
+async function loadGlslLogic()
+{
 	//constants and main are always fetched.
 	const response = await fetch("/scripts/glsl/constants");
 
@@ -294,8 +309,6 @@ export function getGlslBundle(codeString)
 		glslFiles[filename].dependencies.forEach(dependency => addToBundle(dependency, depth + 1));
 	}
 
-
-
 	filenames.forEach(filename =>
 	{
 		if (filesToInclude[filename])
@@ -327,6 +340,7 @@ export function getGlslBundle(codeString)
 		{
 			if (filesToInclude[filename])
 			{
+				console.log(filename);
 				bundle += glslFiles[filename].content;
 			}
 		});

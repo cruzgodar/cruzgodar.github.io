@@ -8,9 +8,7 @@ export function load()
 	let g2 = -2;
 	let g3 = 0;
 
-
-
-	const ecApplet = new EllipticCurve($("#ec-plot-canvas"));
+	const ecApplet = new EllipticCurve({ canvas: $("#ec-plot-canvas") });
 
 
 
@@ -34,7 +32,12 @@ export function load()
 		() => wpprimeApplet.wilson.render.initUniforms(["g2Arg", "g3Arg"])
 	);
 
-	const kleinjApplet = new ComplexMap($("#kleinj-canvas"), "kleinJ(z)", "", 0, 1);
+	const kleinjApplet = new ComplexMap({
+		canvas: $("#kleinj-canvas"),
+		generatingCode: "kleinJ(z)",
+		worldCenterX: 0,
+		worldCenterY: 1
+	});
 
 	const g2Applet = new ComplexMap({
 		canvas: $("#g2-canvas"),

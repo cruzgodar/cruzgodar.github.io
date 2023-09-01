@@ -253,9 +253,10 @@ export class ComplexMap extends Applet
 				gl_FragColor = vec4(hsv2rgb(vec3(h, s, v)), 1.0);
 			}
 		`;
-
+		
 		this.wilson.render.shaderPrograms = [];
 		this.wilson.render.loadNewShader(fragShaderSource);
+		console.log("loaded shader!", generatingCode);
 		this.wilson.gl.useProgram(this.wilson.render.shaderPrograms[0]);
 		
 		this.wilson.render.initUniforms([
@@ -269,8 +270,6 @@ export class ComplexMap extends Applet
 		]);
 
 		this.wilson.gl.uniform1f(this.wilson.uniforms["aspectRatio"], 1);
-
-
 
 		const needDraggable = addIndicatorDraggable
 			|| generatingCode.indexOf("draggableArg") !== -1;
@@ -290,8 +289,6 @@ export class ComplexMap extends Applet
 
 			this.wilson.draggables.draggables = [];
 		}
-
-
 
 		if (!this.animationPaused)
 		{
