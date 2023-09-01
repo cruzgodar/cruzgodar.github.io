@@ -1,4 +1,4 @@
-import{Applet}from"/scripts/src/applets.min.mjs";import{Wilson}from"/scripts/wilson.min.mjs";class EllipticCurve extends Applet{resolution=500;g2=-2;g3=0;lastTimestamp=-1;constructor(canvas){super(canvas);var t={renderer:"gpu",shader:`
+import{Applet}from"/scripts/src/applets.min.mjs";import{Wilson}from"/scripts/wilson.min.mjs";class EllipticCurve extends Applet{resolution=500;g2=-2;g3=0;lastTimestamp=-1;constructor({canvas}){super(canvas);var t={renderer:"gpu",shader:`
 			precision highp float;
 			
 			varying vec2 uv;

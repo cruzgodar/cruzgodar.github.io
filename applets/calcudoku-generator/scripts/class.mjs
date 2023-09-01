@@ -18,7 +18,7 @@ export class CalcudokuGenerator extends Applet
 
 
 
-	constructor(canvas)
+	constructor({ canvas })
 	{
 		super(canvas);
 
@@ -145,28 +145,40 @@ export class CalcudokuGenerator extends Applet
 
 
 
-		//Now draw the cages. For each cell of the grid, we draw a line with width 10 if an adjacent cell is part of a
-		//different cage.
+		//Now draw the cages. For each cell of the grid, we draw a line
+		//with width 10 if an adjacent cell is part of a different cage.
 		for (let i = 0; i < this.gridSize; i++)
 		{
 			for (let j = 0; j < this.gridSize; j++)
 			{
-				if (i === 0 || this.cagesByLocation[i - 1][j] !== this.cagesByLocation[i][j])
+				if (
+					i === 0
+					|| this.cagesByLocation[i - 1][j] !== this.cagesByLocation[i][j]
+				)
 				{
 					this.wilson.ctx.fillRect(200 * j, 200 * i, 210, 10);
 				}
 
-				if (i === this.gridSize - 1 || this.cagesByLocation[i + 1][j] !== this.cagesByLocation[i][j])
+				if (
+					i === this.gridSize - 1
+					|| this.cagesByLocation[i + 1][j] !== this.cagesByLocation[i][j]
+				)
 				{
 					this.wilson.ctx.fillRect(200 * j, 200 * (i + 1), 210, 10);
 				}
 
-				if (j === 0 || this.cagesByLocation[i][j - 1] !== this.cagesByLocation[i][j])
+				if (
+					j === 0
+					|| this.cagesByLocation[i][j - 1] !== this.cagesByLocation[i][j]
+				)
 				{
 					this.wilson.ctx.fillRect(200 * j, 200 * i, 10, 210);
 				}
 
-				if (j === this.gridSize - 1 || this.cagesByLocation[i][j + 1] !== this.cagesByLocation[i][j])
+				if (
+					j === this.gridSize - 1
+					|| this.cagesByLocation[i][j + 1] !== this.cagesByLocation[i][j]
+				)
 				{
 					this.wilson.ctx.fillRect(200 * (j + 1), 200 * i, 10, 210);
 				}
@@ -244,7 +256,11 @@ export class CalcudokuGenerator extends Applet
 				fontSize = 300 / label.length;
 			}
 
-			this.wilson.ctx.fillText(label, 200 * topLeftCell[1] + 15, 200 * topLeftCell[0] + fontSize + 5);
+			this.wilson.ctx.fillText(
+				label,
+				200 * topLeftCell[1] + 15,
+				200 * topLeftCell[0] + fontSize + 5
+			);
 		}
 	}
 }

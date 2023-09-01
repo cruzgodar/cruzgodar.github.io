@@ -4,7 +4,7 @@ import { $ } from "/scripts/src/main.mjs";
 
 export function load()
 {
-	const applet = new CalcudokuGenerator($("#output-canvas"));
+	const applet = new CalcudokuGenerator({ canvas: $("#output-canvas") });
 
 
 

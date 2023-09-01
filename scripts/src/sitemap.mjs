@@ -519,13 +519,13 @@ export const sitemap =
 		
 		"children":
 		[
-			"/teaching/uo/341/notes/1-systems-and-vectors/"
+			"/teaching/uo/341/notes/1-vectors-and-matrices/"
 		]
 	},
 		
-	"/teaching/uo/341/notes/1-systems-and-vectors/":
+	"/teaching/uo/341/notes/1-vectors-and-matrices/":
 	{
-		"title": "Section 1: Systems and Vectors",
+		"title": "Section 1: Vectors and Matrices",
 		
 		"parent": "/teaching/uo/341/",
 		

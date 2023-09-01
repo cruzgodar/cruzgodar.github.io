@@ -29,7 +29,8 @@ function generateCalcudokuGrid()
 
 
 
-	//First, generate cages until we get a unique solution. We start with all 1x1 cages -- we'll make it much harder later.
+	//First, generate cages until we get a unique solution.
+	//We start with all 1x1 cages -- we'll make it much harder later.
 	generateNumberGrid();
 
 	assignInitialCages();
@@ -71,7 +72,8 @@ function generateCalcudokuGrid()
 
 			numSolutionsFound = wasmSolvePuzzle(cages);
 
-			//If this is no longer a unique solution, no problem! We'll just try a different cage next time. We'll just revert\
+			//If this is no longer a unique solution, no problem!
+			//We'll just try a different cage next time. We'll just revert
 			//to our last uniquely-solvable grid and try again.
 			if (numSolutionsFound !== 1)
 			{
@@ -81,7 +83,8 @@ function generateCalcudokuGrid()
 				numSolutionsFound = 1;
 			}
 
-			//Great! We just merged a cage, so we have a harder puzzle, but the solution is still unique. Now we can set a
+			//Great! We just merged a cage, so we have a harder puzzle,
+			//but the solution is still unique. Now we can set a
 			//checkpoint here and keep going.
 			else
 			{
@@ -94,7 +97,8 @@ function generateCalcudokuGrid()
 
 
 
-		//The program almost never ends this way, but if no cell can be expanded in the first place (this is before we've even
+		//The program almost never ends this way, but if no cell
+		//can be expanded in the first place (this is before we've even
 		//thought about unique solutions), then there's no point in continuing.
 		if (expandedACage === false)
 		{
@@ -128,9 +132,10 @@ function shuffleArray(array)
 
 
 
-//Creates a grid of numbers with side length gridSize such that no column or row contains a repeated number. This is normally a
-//very hard thing to do, becoming pretty much impossible most of the time after a side length of 10. Good news is, we can do
-//things much more simply -- becuase we don't need a uniformly random grid.
+//Creates a grid of numbers with side length gridSize such that no column or row
+//contains a repeated number. This is normally a very hard thing to do,
+//becoming pretty much impossible most of the time after a side length of 10.
+//Good news is, we can do things much more simply -- becuase we don't need a uniformly random grid.
 function generateNumberGrid()
 {
 	grid = [];
@@ -147,7 +152,8 @@ function generateNumberGrid()
 
 
 
-	//First of all, it's very easy to get A grid with no repeating digits: we'll just start with 1, ..., n in the first row,
+	//First of all, it's very easy to get A grid with no repeating digits:
+	//we'll just start with 1, ..., n in the first row,
 	//then n, 1, 2, ..., n-1 in the second, and so on.
 	for (let i = 0; i < gridSize; i++)
 	{
@@ -159,8 +165,9 @@ function generateNumberGrid()
 
 
 
-	//Now we're going to do three things: shuffle the rows, shuffle the columns, and shuffle the digits themselves.
-	//To top it all off, we'll do these three things in random order, twice each.
+	//Now we're going to do three things: shuffle the rows, shuffle the columns,
+	//and shuffle the digits themselves. To top it all off, we'll do these three things
+	//in random order, twice each.
 
 	const shuffles = shuffleArray([
 		shuffleGridRows,
@@ -462,7 +469,9 @@ function tryToAddCageToCage(cageToDestroy, cageToGrow)
 	//The new cage sum must be less than or equal to twice the max digit.
 	else if (
 		cages[cageToGrow][0] === "-"
-		&& cages[cageToGrow][4] + cages[cageToDestroy][4] <= 2 * Math.max(cages[cageToGrow][3], cages[cageToDestroy][3])
+		&& cages[cageToGrow][4] + cages[cageToDestroy][4] <= (
+			2 * Math.max(cages[cageToGrow][3], cages[cageToDestroy][3])
+		)
 	)
 	{
 		return true;
@@ -476,8 +485,8 @@ function tryToAddCageToCage(cageToDestroy, cageToGrow)
 	//2. or cageToGrow contains the new max digit, in which case the product of cageToDestroy
 	//must divide the quotient of cageToGrow.
 	//Now we don't have easy access to the quotient of cageToDestroy, so what we'll do in both cases
-	//is take the max digit squared over the products of both cages multiplied together. If this division
-	//is remainderless, we're golden.
+	//is take the max digit squared over the products of both cages multiplied together.
+	//If this division is remainderless, we're golden.
 	else if (cages[cageToGrow][0] === ":")
 	{
 		const maxDigit = Math.max(cages[cageToGrow][3], cages[cageToDestroy][3]);
@@ -496,7 +505,8 @@ function tryToAddCageToCage(cageToDestroy, cageToGrow)
 
 function addCageToCage(cageToDestroy, cageToGrow)
 {
-	//The other operations aren't too bad, but if a cage tries to merge with a 1x1, we need to create a new operation.
+	//The other operations aren't too bad, but if a cage tries to merge
+	//with a 1x1, we need to create a new operation.
 	if (cages[cageToGrow][0] === "")
 	{
 		const possibleOperations = ["+", "x"];
@@ -511,7 +521,8 @@ function addCageToCage(cageToDestroy, cageToGrow)
 
 
 
-		//Subtraction is only valid if the largest number is bigger than or equal to the sum of all the other numbers.
+		//Subtraction is only valid if the largest number
+		//is bigger than or equal to the sum of all the other numbers.
 		if (2 * newMaxDigit >= cages[cageToGrow][1] + cages[cageToDestroy][4])
 		{
 			possibleOperations.push("-");
@@ -526,7 +537,9 @@ function addCageToCage(cageToDestroy, cageToGrow)
 		{
 			possibleOperations.push(":");
 
-			possibleValues.push((newMaxDigit * newMaxDigit) / (cages[cageToGrow][1] * cages[cageToDestroy][5]));
+			possibleValues.push(
+				(newMaxDigit * newMaxDigit) / (cages[cageToGrow][1] * cages[cageToDestroy][5])
+			);
 		}
 
 
@@ -606,12 +619,14 @@ function addCageToCage(cageToDestroy, cageToGrow)
 
 
 
-//By default, we can't pass arrays to C functions. However, with the help of a library, we can pass 1D arrays, but not
-//higher-dimensional ones. Therefore, we need to find a way to pass all of the cage data as a sequence of 1D arrays. Good news
-//is, this isn't so bad.
+//By default, we can't pass arrays to C functions. However, with the help of a library,
+//we can pass 1D arrays, but not higher-dimensional ones. Therefore, we need to
+//find a way to pass all of the cage data as a sequence of 1D arrays.
+//Good news is, this isn't so bad.
 function wasmSolvePuzzle()
 {
-	//This contains the operations that each cage uses, where 0 corresponds to "", 1 to "+", 2 to "-", and so on.
+	//This contains the operations that each cage uses,
+	//where 0 corresponds to "", 1 to "+", 2 to "-", and so on.
 	const cageOperations = [];
 
 	const cageOperationsTable = { "": 0, "+": 1, "x": 2, "-": 3, ":": 4 };
@@ -642,9 +657,10 @@ function wasmSolvePuzzle()
 
 
 
-	//Now you may be thinking that this was the easy part. After all, the most important part of the cages -- what cells
-	//actually make them up -- is buried way down deep, and every cage has a different length list of cells. However, we're
-	//good. We can just flatten cagesByLocation and pass that -- it contains all the information we need to reconstruct cages
+	//Now you may be thinking that this was the easy part. After all, the most important part of
+	//the cages -- what cells actually make them up -- is buried way down deep, and every cage has
+	//a different length list of cells. However, we're good. We can just flatten cagesByLocation
+	//and pass that -- it contains all the information we need to reconstruct cages
 	//on the other side.
 
 	let cagesByLocationFlat = [];

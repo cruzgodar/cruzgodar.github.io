@@ -16,15 +16,36 @@ export function load()
 
 	const uniformCode = "uniform float g2Arg; uniform float g3Arg;";
 
-	const wpApplet = new ComplexMap($("#wp-canvas"), "wp(z, inverse_g2_g3(g2Arg, g3Arg))", uniformCode);
-	wpApplet.loadPromise.then(() => wpApplet.wilson.render.initUniforms(["g2Arg", "g3Arg"]));
+	const wpApplet = new ComplexMap({
+		canvas: $("#wp-canvas"),
+		generatingCode: "wp(z, inverse_g2_g3(g2Arg, g3Arg))",
+		uniformCode
+	});
+	wpApplet.loadPromise.then(
+		() => wpApplet.wilson.render.initUniforms(["g2Arg", "g3Arg"])
+	);
 
-	const wpprimeApplet = new ComplexMap($("#wpprime-canvas"), "wpprime(z, inverse_g2_g3(g2Arg, g3Arg))", uniformCode);
-	wpprimeApplet.loadPromise.then(() => wpprimeApplet.wilson.render.initUniforms(["g2Arg", "g3Arg"]));
+	const wpprimeApplet = new ComplexMap({
+		canvas: $("#wpprime-canvas"),
+		generatingCode: "wpprime(z, inverse_g2_g3(g2Arg, g3Arg))",
+		uniformCode
+	});
+	wpprimeApplet.loadPromise.then(
+		() => wpprimeApplet.wilson.render.initUniforms(["g2Arg", "g3Arg"])
+	);
 
 	const kleinjApplet = new ComplexMap($("#kleinj-canvas"), "kleinJ(z)", "", 0, 1);
 
-	const g2Applet = new ComplexMap($("#g2-canvas"), "kleinj_from_g2_g3(z.x, z.y) * ONE", uniformCode, 0, 0, -.585, true, onDragDraggable);
+	const g2Applet = new ComplexMap({
+		canvas: $("#g2-canvas"),
+		generatingCode: "kleinj_from_g2_g3(z.x, z.y) * ONE",
+		uniformCode,
+		worldCenterX: 0,
+		worldCenterY: 0,
+		zoomLevel: -.585,
+		addIndicatorDraggable: true,
+		draggableCallback: onDragDraggable
+	});
 	g2Applet.loadPromise.then(() =>
 	{
 		g2Applet.wilson.render.initUniforms(["g2Arg", "g3Arg"]);

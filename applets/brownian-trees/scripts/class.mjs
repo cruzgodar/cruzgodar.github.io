@@ -10,7 +10,7 @@ export class BrownianTree extends Applet
 
 
 
-	constructor(canvas)
+	constructor({ canvas })
 	{
 		super(canvas);
 

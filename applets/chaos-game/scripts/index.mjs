@@ -4,7 +4,7 @@ import { $ } from "/scripts/src/main.mjs";
 
 export function load()
 {
-	const applet = new ChaosGame($("#output-canvas"));
+	const applet = new ChaosGame({ canvas: $("#output-canvas") });
 
 
 
@@ -26,7 +26,10 @@ export function load()
 
 	const downloadButtonElement = $("#download-button");
 
-	downloadButtonElement.addEventListener("click", () => applet.wilson.downloadFrame("a-chaos-game.png"));
+	downloadButtonElement.addEventListener(
+		"click",
+		() => applet.wilson.downloadFrame("a-chaos-game.png")
+	);
 
 
 

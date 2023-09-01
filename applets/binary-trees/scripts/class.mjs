@@ -15,7 +15,7 @@ export class BinaryTree extends Applet
 
 
 
-	constructor(canvas)
+	constructor({ canvas })
 	{
 		super(canvas);
 
@@ -76,8 +76,14 @@ export class BinaryTree extends Applet
 
 
 		let angles = [
-			Math.atan2(this.branchPoints[0][0] - this.root[0], this.branchPoints[0][1] - this.root[1]),
-			Math.atan2(this.branchPoints[1][0] - this.root[0], this.branchPoints[1][1] - this.root[1])
+			Math.atan2(
+				this.branchPoints[0][0] - this.root[0],
+				this.branchPoints[0][1] - this.root[1]
+			),
+			Math.atan2(
+				this.branchPoints[1][0] - this.root[0],
+				this.branchPoints[1][1] - this.root[1]
+			)
 		];
 
 		const angleStep = (angles[0] - angles[1]) / 2;
@@ -86,12 +92,16 @@ export class BinaryTree extends Applet
 
 		const distances = [
 			Math.sqrt(
-				(this.branchPoints[0][0] - this.root[0]) * (this.branchPoints[0][0] - this.root[0])
-				+ (this.branchPoints[0][1] - this.root[1]) * (this.branchPoints[0][1] - this.root[1])
+				(this.branchPoints[0][0] - this.root[0])
+					* (this.branchPoints[0][0] - this.root[0])
+				+ (this.branchPoints[0][1] - this.root[1])
+					* (this.branchPoints[0][1] - this.root[1])
 			),
 			Math.sqrt(
-				(this.branchPoints[1][0] - this.root[0]) * (this.branchPoints[1][0] - this.root[0])
-				+ (this.branchPoints[1][1] - this.root[1]) * (this.branchPoints[1][1] - this.root[1])
+				(this.branchPoints[1][0] - this.root[0])
+					* (this.branchPoints[1][0] - this.root[0])
+				+ (this.branchPoints[1][1] - this.root[1])
+					* (this.branchPoints[1][1] - this.root[1])
 			)
 		];
 
@@ -326,8 +336,13 @@ export class BinaryTree extends Applet
 
 		this.root = this.wilson.utils.interpolate.worldToCanvas(0, -4 / 5);
 
-		this.branchPoints[0] = this.wilson.utils.interpolate.worldToCanvas(...this.wilson.draggables.worldCoordinates[0]);
-		this.branchPoints[1] = this.wilson.utils.interpolate.worldToCanvas(...this.wilson.draggables.worldCoordinates[1]);
+		this.branchPoints[0] = this.wilson.utils.interpolate.worldToCanvas(
+			...this.wilson.draggables.worldCoordinates[0]
+		);
+		
+		this.branchPoints[1] = this.wilson.utils.interpolate.worldToCanvas(
+			...this.wilson.draggables.worldCoordinates[1]
+		);
 
 		this.preview(this.root, this.branchPoints);
 	}

@@ -12,7 +12,7 @@ export class EllipticCurve extends Applet
 
 
 
-	constructor(canvas)
+	constructor({ canvas })
 	{
 		super(canvas);
 
@@ -126,7 +126,10 @@ export class EllipticCurve extends Applet
 
 		this.wilson.render.initUniforms(["step", "g2Arg", "g3Arg"]);
 
-		this.wilson.gl.uniform1f(this.wilson.uniforms["step"], this.wilson.worldWidth / this.resolution);
+		this.wilson.gl.uniform1f(
+			this.wilson.uniforms["step"],
+			this.wilson.worldWidth / this.resolution
+		);
 
 		this.wilson.render.loadNewShader(fragShaderSource2);
 
@@ -191,7 +194,11 @@ export class EllipticCurve extends Applet
 		//This means a 5x5 square will be searched around each endpoint...
 		const isolationSearchRadius = 2;
 
-		for (let i = isolationSearchRadius; i < this.wilson.canvasHeight - isolationSearchRadius; i++)
+		for (
+			let i = isolationSearchRadius;
+			i < this.wilson.canvasHeight - isolationSearchRadius;
+			i++
+		)
 		{
 			for (let j = isolationSearchRadius; j < width - isolationSearchRadius; j++)
 			{
@@ -199,14 +206,39 @@ export class EllipticCurve extends Applet
 
 				if (pixels[4 * index] !== 0)
 				{
-					//This is the sum of a radius 3 square centered at this pixel. It's an endpoint if there are
-					const closeTotal = pixels[4 * (index - 1)] + pixels[4 * (index + 1)] + pixels[4 * (index - width)] + pixels[4 * (index + width)] + pixels[4 * (index - 1 - width)] + pixels[4 * (index + 1 - width)] + pixels[4 * (index - 1 + width)] + pixels[4 * (index + 1 + width)];
+					//This is the sum of a radius 3 square centered at this pixel.
+					const closeTotal =
+						pixels[4 * (index - 1)]
+						+ pixels[4 * (index + 1)]
+						+ pixels[4 * (index - width)]
+						+ pixels[4 * (index + width)]
+						+ pixels[4 * (index - 1 - width)]
+						+ pixels[4 * (index + 1 - width)]
+						+ pixels[4 * (index - 1 + width)]
+						+ pixels[4 * (index + 1 + width)];
 
 					if (closeTotal <= 255)
 					{
-						const farTotal = pixels[4 * (index - 2 * width - 2)] + pixels[4 * (index - 2 * width - 1)] + pixels[4 * (index - 2 * width)] + pixels[4 * (index - 2 * width + 1)] + pixels[4 * (index - 2 * width + 2)]   +   pixels[4 * (index + 2 * width - 2)] + pixels[4 * (index + 2 * width - 1)] + pixels[4 * (index + 2 * width)] + pixels[4 * (index + 2 * width + 1)] + pixels[4 * (index + 2 * width + 2)]   +   pixels[4 * (index - width - 2)] + pixels[4 * (index - 2)] + pixels[4 * (index + width - 2)]   +   pixels[4 * (index - width + 2)] + pixels[4 * (index + 2)] + pixels[4 * (index + width + 2)];
+						const farTotal =
+							pixels[4 * (index - 2 * width - 2)]
+							+ pixels[4 * (index - 2 * width - 1)]
+							+ pixels[4 * (index - 2 * width)]
+							+ pixels[4 * (index - 2 * width + 1)]
+							+ pixels[4 * (index - 2 * width + 2)]
+							+ pixels[4 * (index + 2 * width - 2)]
+							+ pixels[4 * (index + 2 * width - 1)]
+							+ pixels[4 * (index + 2 * width)]
+							+ pixels[4 * (index + 2 * width + 1)]
+							+ pixels[4 * (index + 2 * width + 2)]
+							+ pixels[4 * (index - width - 2)]
+							+ pixels[4 * (index - 2)]
+							+ pixels[4 * (index + width - 2)]
+							+ pixels[4 * (index - width + 2)]
+							+ pixels[4 * (index + 2)]
+							+ pixels[4 * (index + width + 2)];
 
-						//This is an endpoint. Now we'll check to see if it's isolated, which means it's connected to only at most two other pixels.
+						//This is an endpoint. Now we'll check to see if it's isolated,
+						//which means it's connected to only at most two other pixels.
 						if (farTotal === 0)
 						{
 							endpoints.push([i, j, true]);
@@ -226,7 +258,12 @@ export class EllipticCurve extends Applet
 		//Connect every endpoint to the nearest other endpoint within a given radius.
 		for (let i = 0; i < endpoints.length; i++)
 		{
-			if (endpoints[i][0] < this.wilson.canvasWidth / 20 || endpoints[i][1] < this.wilson.canvasHeight / 20 || endpoints[i][0] > 19 * this.wilson.canvasWidth / 20 || endpoints[i][1] > 19 * this.wilson.canvasHeight / 20)
+			if (
+				endpoints[i][0] < this.wilson.canvasWidth / 20
+				|| endpoints[i][1] < this.wilson.canvasHeight / 20
+				|| endpoints[i][0] > 19 * this.wilson.canvasWidth / 20
+				|| endpoints[i][1] > 19 * this.wilson.canvasHeight / 20
+			)
 			{
 				continue;
 			}
@@ -234,7 +271,7 @@ export class EllipticCurve extends Applet
 			let minOpenJ = -1;
 			let minOpenDistance = maxInterpolationDistance;
 
-			if (!(endpoints[i][2]))
+			if ( !(endpoints[i][2]) )
 			{
 				minOpenDistance = maxInterpolationDistance / 20;
 			}
@@ -250,11 +287,18 @@ export class EllipticCurve extends Applet
 
 
 
-				const distance = Math.sqrt((endpoints[i][0] - endpoints[j][0]) * (endpoints[i][0] - endpoints[j][0]) + (endpoints[i][1] - endpoints[j][1]) * (endpoints[i][1] - endpoints[j][1]));
+				const distance = Math.sqrt(
+					(endpoints[i][0] - endpoints[j][0])
+						* (endpoints[i][0] - endpoints[j][0])
+					+ (endpoints[i][1] - endpoints[j][1])
+						* (endpoints[i][1] - endpoints[j][1])
+				);
 
 				if (distance < minOpenDistance && distance >= 2)
 				{
-					//Only connect here if there are no white points in that general direction. General direction here means a 3x3 square centered at the shifted coordinate that doesn't intersect the endpoint itself.
+					//Only connect here if there are no white points in that general direction.
+					//General direction here means a 3x3 square centered at the shifted coordinate
+					//that doesn't intersect the endpoint itself.
 					let rowMovement = (endpoints[j][0] - endpoints[i][0]) / distance * 1.414214;
 					let colMovement = (endpoints[j][1] - endpoints[i][1]) / distance * 1.414214;
 
@@ -267,31 +311,38 @@ export class EllipticCurve extends Applet
 
 					if (rowMovement === 0)
 					{
-						let index = width * (endpoints[i][0] + rowMovement) + (endpoints[i][1] + colMovement);
+						let index = width * (endpoints[i][0] + rowMovement)
+							+ (endpoints[i][1] + colMovement);
 						test += pixels[4 * index];
 
-						index = width * (endpoints[i][0] + rowMovement + 1) + (endpoints[i][1] + colMovement);
+						index = width * (endpoints[i][0] + rowMovement + 1)
+							+ (endpoints[i][1] + colMovement);
 						test += pixels[4 * index];
 
-						index = width * (endpoints[i][0] + rowMovement - 1) + (endpoints[i][1] + colMovement);
+						index = width * (endpoints[i][0] + rowMovement - 1)
+							+ (endpoints[i][1] + colMovement);
 						test += pixels[4 * index];
 					}
 
 					else if (colMovement === 0)
 					{
-						let index = width * (endpoints[i][0] + rowMovement) + (endpoints[i][1] + colMovement);
+						let index = width * (endpoints[i][0] + rowMovement)
+							+ (endpoints[i][1] + colMovement);
 						test += pixels[4 * index];
 
-						index = width * (endpoints[i][0] + rowMovement) + (endpoints[i][1] + colMovement + 1);
+						index = width * (endpoints[i][0] + rowMovement)
+							+ (endpoints[i][1] + colMovement + 1);
 						test += pixels[4 * index];
 
-						index = width * (endpoints[i][0] + rowMovement) + (endpoints[i][1] + colMovement - 1);
+						index = width * (endpoints[i][0] + rowMovement)
+							+ (endpoints[i][1] + colMovement - 1);
 						test += pixels[4 * index];
 					}
 
 					else
 					{
-						let index = width * (endpoints[i][0] + rowMovement) + (endpoints[i][1] + colMovement);
+						let index = width * (endpoints[i][0] + rowMovement)
+							+ (endpoints[i][1] + colMovement);
 						test += pixels[4 * index];
 
 						index = width * (endpoints[i][0]) + (endpoints[i][1] + colMovement);
@@ -332,7 +383,17 @@ export class EllipticCurve extends Applet
 
 
 
-		this.wilson.gl.texImage2D(this.wilson.gl.TEXTURE_2D, 0, this.wilson.gl.RGBA, this.wilson.canvasWidth, this.wilson.canvasHeight, 0, this.wilson.gl.RGBA, this.wilson.gl.UNSIGNED_BYTE, pixels);
+		this.wilson.gl.texImage2D(
+			this.wilson.gl.TEXTURE_2D,
+			0,
+			this.wilson.gl.RGBA,
+			this.wilson.canvasWidth,
+			this.wilson.canvasHeight,
+			0,
+			this.wilson.gl.RGBA,
+			this.wilson.gl.UNSIGNED_BYTE,
+			pixels
+		);
 
 		this.wilson.gl.useProgram(this.wilson.render.shaderPrograms[1]);
 
@@ -349,7 +410,10 @@ export class EllipticCurve extends Applet
 
 		this.wilson.gl.useProgram(this.wilson.render.shaderPrograms[0]);
 
-		this.wilson.gl.uniform1f(this.wilson.uniforms["step"], this.wilson.worldWidth / this.resolution);
+		this.wilson.gl.uniform1f(
+			this.wilson.uniforms["step"],
+			this.wilson.worldWidth / this.resolution
+		);
 
 		this.wilson.gl.useProgram(this.wilson.render.shaderPrograms[1]);
 

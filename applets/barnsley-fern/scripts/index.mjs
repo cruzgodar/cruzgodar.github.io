@@ -4,7 +4,7 @@ import { $ } from "/scripts/src/main.mjs";
 
 export function load()
 {
-	const applet = new BarnsleyFern($("#output-canvas"));
+	const applet = new BarnsleyFern({ canvas: $("#output-canvas") });
 
 
 
@@ -24,7 +24,10 @@ export function load()
 
 	const downloadButtonElement = $("#download-button");
 
-	downloadButtonElement.addEventListener("click", () => applet.wilson.downloadFrame("the-barnsley-fern.png"));
+	downloadButtonElement.addEventListener(
+		"click",
+		() => applet.wilson.downloadFrame("the-barnsley-fern.png")
+	);
 
 
 

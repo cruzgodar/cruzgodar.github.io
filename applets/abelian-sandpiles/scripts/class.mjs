@@ -16,7 +16,7 @@ export class AbelianSandpile extends Applet
 
 
 
-	constructor(canvas)
+	constructor({ canvas })
 	{
 		super(canvas);
 
@@ -229,7 +229,11 @@ export class AbelianSandpile extends Applet
 		this.wilson.render.createFramebufferTexturePair();
 		this.wilson.render.createFramebufferTexturePair();
 
-		this.wilson.gl.bindTexture(this.wilson.gl.TEXTURE_2D, this.wilson.render.framebuffers[0].texture);
+		this.wilson.gl.bindTexture(
+			this.wilson.gl.TEXTURE_2D,
+			this.wilson.render.framebuffers[0].texture
+		);
+
 		this.wilson.gl.bindFramebuffer(this.wilson.gl.FRAMEBUFFER, null);
 
 
@@ -293,7 +297,14 @@ export class AbelianSandpile extends Applet
 
 		this.wilson.gl.useProgram(this.wilson.render.shaderPrograms[0]);
 		this.wilson.gl.uniform1f(this.wilson.uniforms["step"][0], 1 / this.resolution);
-		this.wilson.gl.uniform4f(this.wilson.uniforms["startGrains"][0], grains1, grains2, grains3, grains4);
+		
+		this.wilson.gl.uniform4f(
+			this.wilson.uniforms["startGrains"][0],
+			grains1,
+			grains2,
+			grains3,
+			grains4
+		);
 
 		this.wilson.gl.useProgram(this.wilson.render.shaderPrograms[1]);
 		this.wilson.gl.uniform1f(this.wilson.uniforms["step"][1], 1 / this.resolution);
@@ -302,7 +313,10 @@ export class AbelianSandpile extends Applet
 
 		this.wilson.changeCanvasSize(this.resolution, this.resolution);
 
-		this.wilson.gl.bindTexture(this.wilson.gl.TEXTURE_2D, this.wilson.render.framebuffers[0].texture);
+		this.wilson.gl.bindTexture(
+			this.wilson.gl.TEXTURE_2D,
+			this.wilson.render.framebuffers[0].texture
+		);
 
 		this.wilson.gl.texImage2D(
 			this.wilson.gl.TEXTURE_2D,
@@ -316,7 +330,10 @@ export class AbelianSandpile extends Applet
 			null
 		);
 
-		this.wilson.gl.bindTexture(this.wilson.gl.TEXTURE_2D, this.wilson.render.framebuffers[1].texture);
+		this.wilson.gl.bindTexture(
+			this.wilson.gl.TEXTURE_2D,
+			this.wilson.render.framebuffers[1].texture
+		);
 
 		this.wilson.gl.texImage2D(
 			this.wilson.gl.TEXTURE_2D,
@@ -332,9 +349,15 @@ export class AbelianSandpile extends Applet
 
 
 
-		const outputResolution = Math.max(this.resolution, this.canvas.getBoundingClientRect().width);
+		const outputResolution = Math.max(
+			this.resolution,
+			this.canvas.getBoundingClientRect().width
+		);
 
-		this.wilsonUpscale.gl.bindTexture(this.wilsonUpscale.gl.TEXTURE_2D, this.wilsonUpscale.render.framebuffers[0].texture);
+		this.wilsonUpscale.gl.bindTexture(
+			this.wilsonUpscale.gl.TEXTURE_2D,
+			this.wilsonUpscale.render.framebuffers[0].texture
+		);
 
 		this.wilsonUpscale.changeCanvasSize(outputResolution, outputResolution);
 
@@ -342,8 +365,15 @@ export class AbelianSandpile extends Applet
 
 		this.wilson.gl.useProgram(this.wilson.render.shaderPrograms[0]);
 
-		this.wilson.gl.bindTexture(this.wilson.gl.TEXTURE_2D, this.wilson.render.framebuffers[0].texture);
-		this.wilson.gl.bindFramebuffer(this.wilson.gl.FRAMEBUFFER, this.wilson.render.framebuffers[0].framebuffer);
+		this.wilson.gl.bindTexture(
+			this.wilson.gl.TEXTURE_2D,
+			this.wilson.render.framebuffers[0].texture
+		);
+
+		this.wilson.gl.bindFramebuffer(
+			this.wilson.gl.FRAMEBUFFER,
+			this.wilson.render.framebuffers[0].framebuffer
+		);
 
 		this.wilson.render.drawFrame();
 
@@ -371,20 +401,33 @@ export class AbelianSandpile extends Applet
 		{
 			this.wilson.gl.useProgram(this.wilson.render.shaderPrograms[1]);
 
-			this.wilson.gl.bindFramebuffer(this.wilson.gl.FRAMEBUFFER, this.wilson.render.framebuffers[1].framebuffer);
+			this.wilson.gl.bindFramebuffer(
+				this.wilson.gl.FRAMEBUFFER,
+				this.wilson.render.framebuffers[1].framebuffer
+			);
 
 			this.wilson.render.drawFrame();
 
 
 
-			this.wilson.gl.bindTexture(this.wilson.gl.TEXTURE_2D, this.wilson.render.framebuffers[1].texture);
-			this.wilson.gl.bindFramebuffer(this.wilson.gl.FRAMEBUFFER, this.wilson.render.framebuffers[0].framebuffer);
+			this.wilson.gl.bindTexture(
+				this.wilson.gl.TEXTURE_2D,
+				this.wilson.render.framebuffers[1].texture
+			);
+
+			this.wilson.gl.bindFramebuffer(
+				this.wilson.gl.FRAMEBUFFER,
+				this.wilson.render.framebuffers[0].framebuffer
+			);
 
 			this.wilson.render.drawFrame();
 
 
 
-			this.wilson.gl.bindTexture(this.wilson.gl.TEXTURE_2D, this.wilson.render.framebuffers[0].texture);
+			this.wilson.gl.bindTexture(
+				this.wilson.gl.TEXTURE_2D,
+				this.wilson.render.framebuffers[0].texture
+			);
 		}
 
 

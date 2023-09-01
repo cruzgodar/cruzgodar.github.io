@@ -4,7 +4,10 @@ import { $ } from "/scripts/src/main.mjs";
 
 export function load()
 {
-	const applet = new ComplexMap($("#output-canvas"), "cexp(cinv(z))");
+	const applet = new ComplexMap({
+		canvas: $("#output-canvas"),
+		generatingCode: "cexp(cinv(z))"
+	});
 
 
 
@@ -67,7 +70,10 @@ export function load()
 
 	const downloadButtonElement = $("#download-button");
 
-	downloadButtonElement.addEventListener("click", () => applet.wilson.downloadFrame("a-complex-map.png"));
+	downloadButtonElement.addEventListener(
+		"click",
+		() => applet.wilson.downloadFrame("a-complex-map.png")
+	);
 
 
 

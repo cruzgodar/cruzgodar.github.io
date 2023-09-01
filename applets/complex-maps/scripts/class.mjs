@@ -33,11 +33,28 @@ export class ComplexMap extends Applet
 
 
 
-	constructor(canvas, generatingCode, uniformCode = "", worldCenterX = 0, worldCenterY = 0, zoomLevel = -.585, addIndicatorDraggable = false, draggableCallback = null, selectorMode = false)
-	{
+	constructor({
+		canvas,
+		generatingCode,
+		uniformCode = "",
+		worldCenterX = 0,
+		worldCenterY = 0,
+		zoomLevel = -.585,
+		addIndicatorDraggable = false,
+		draggableCallback = null,
+		selectorMode = false
+	}) {
 		super(canvas);
 
-		const tempShader = "precision highp float; varying vec2 uv; void main(void) { gl_FragColor = vec4(0.0, 0.0, 0.0, 1.0); }";
+		const tempShader = `
+			precision highp float;
+			varying vec2 uv;
+			
+			void main(void)
+			{
+				gl_FragColor = vec4(0.0, 0.0, 0.0, 1.0);
+			}
+		`;
 
 		const options =
 		{
@@ -240,12 +257,23 @@ export class ComplexMap extends Applet
 		this.wilson.render.shaderPrograms = [];
 		this.wilson.render.loadNewShader(fragShaderSource);
 		this.wilson.gl.useProgram(this.wilson.render.shaderPrograms[0]);
-		this.wilson.render.initUniforms(["aspectRatio", "worldCenterX", "worldCenterY", "worldSize", "blackPoint", "whitePoint", "draggableArg"]);
+		
+		this.wilson.render.initUniforms([
+			"aspectRatio",
+			"worldCenterX",
+			"worldCenterY",
+			"worldSize",
+			"blackPoint",
+			"whitePoint",
+			"draggableArg"
+		]);
+
 		this.wilson.gl.uniform1f(this.wilson.uniforms["aspectRatio"], 1);
 
 
 
-		const needDraggable = addIndicatorDraggable || (generatingCode.indexOf("draggableArg") !== -1);
+		const needDraggable = addIndicatorDraggable
+			|| generatingCode.indexOf("draggableArg") !== -1;
 
 		if (needDraggable && this.wilson.draggables.numDraggables === 0)
 		{
@@ -298,7 +326,15 @@ export class ComplexMap extends Applet
 
 				const pixel = new Uint8Array(4);
 
-				this.wilson.gl.readPixels(coordinates[1], this.wilson.canvasHeight - coordinates[0], 1, 1, this.wilson.gl.RGBA, this.wilson.gl.UNSIGNEDBYTE, pixel);
+				this.wilson.gl.readPixels(
+					coordinates[1],
+					this.wilson.canvasHeight - coordinates[0],
+					1,
+					1,
+					this.wilson.gl.RGBA,
+					this.wilson.gl.UNSIGNEDBYTE,
+					pixel
+				);
 
 				const zX = (pixel[0] - 127) + pixel[1] / 256;
 				const zY = (pixel[2] - 127) + pixel[3] / 256;
@@ -374,7 +410,10 @@ export class ComplexMap extends Applet
 		this.wilson.gl.uniform1f(this.wilson.uniforms["worldCenterX"], this.wilson.worldCenterX);
 		this.wilson.gl.uniform1f(this.wilson.uniforms["worldCenterY"], this.wilson.worldCenterY);
 
-		this.wilson.gl.uniform1f(this.wilson.uniforms["worldSize"], Math.min(this.wilson.worldHeight, this.wilson.worldWidth) / 2);
+		this.wilson.gl.uniform1f(
+			this.wilson.uniforms["worldSize"],
+			Math.min(this.wilson.worldHeight, this.wilson.worldWidth) / 2
+		);
 
 		this.wilson.gl.uniform1f(this.wilson.uniforms["blackPoint"], this.blackPoint);
 		this.wilson.gl.uniform1f(this.wilson.uniforms["whitePoint"], this.whitePoint);
@@ -403,7 +442,15 @@ export class ComplexMap extends Applet
 		{
 			this.wilson.render.drawFrame();
 
-			this.wilson.gl.readPixels(0, 0, 1, 1, this.wilson.gl.RGBA, this.wilson.gl.UNSIGNEDBYTE, pixel);
+			this.wilson.gl.readPixels(
+				0,
+				0,
+				1,
+				1,
+				this.wilson.gl.RGBA,
+				this.wilson.gl.UNSIGNEDBYTE,
+				pixel
+			);
 		}
 
 		const averageTime = (Date.now() - startTime) / this.benchmarkCycles;

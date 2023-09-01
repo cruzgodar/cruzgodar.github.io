@@ -88,7 +88,9 @@ function drawBrownianTree()
 
 
 
-			const direction = possibleDirections[Math.floor(Math.random() * possibleDirections.length)];
+			const direction = possibleDirections[
+				Math.floor(Math.random() * possibleDirections.length)
+			];
 
 			const newRow = currentRow + directions[direction][0];
 			const newCol = currentCol + directions[direction][1];
@@ -136,7 +138,9 @@ function drawBrownianTree()
 				{
 					spawnRadius++;
 
-					currentBrightness = Math.floor(255 * (gridSize / 2 - 10 - spawnRadius) / (gridSize / 2 - 10));
+					currentBrightness = Math.floor(
+						255 * (gridSize / 2 - 10 - spawnRadius) / (gridSize / 2 - 10)
+					);
 
 					//We raise the progress to 2.71 to keep the speed effectively constant.
 					const progress = Math.pow((255 - currentBrightness) / 255, 2.71) * 100;

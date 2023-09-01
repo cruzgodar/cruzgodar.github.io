@@ -85,9 +85,16 @@ function drawChaosGame()
 
 
 
-		const newHue = (Math.atan2(currentCol - gridSize / 2, currentRow - gridSize / 2) + Math.PI) / (2 * Math.PI);
+		const newHue = (
+			Math.atan2(currentCol - gridSize / 2, currentRow - gridSize / 2) + Math.PI
+		) / (2 * Math.PI);
 
-		const newSaturation = ((currentRow - gridSize / 2) * (currentRow - gridSize / 2) + (currentCol - gridSize / 2) * (currentCol - gridSize / 2)) / (gridSize * gridSize / 13);
+		const newSaturation = (
+			(currentRow - gridSize / 2)
+				* (currentRow - gridSize / 2)
+			+ (currentCol - gridSize / 2)
+				* (currentCol - gridSize / 2)
+		) / (gridSize * gridSize / 13);
 
 		const currentColor = HSVtoRGB(newHue, newSaturation, 1);
 

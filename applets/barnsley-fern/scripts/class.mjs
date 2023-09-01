@@ -11,7 +11,7 @@ export class BarnsleyFern extends Applet
 
 
 
-	constructor(canvas)
+	constructor({ canvas })
 	{
 		super(canvas);
 

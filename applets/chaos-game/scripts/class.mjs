@@ -10,7 +10,7 @@ export class ChaosGame extends Applet
 
 
 
-	constructor(canvas)
+	constructor({ canvas })
 	{
 		super(canvas);
 

@@ -4,7 +4,7 @@ import { $ } from "/scripts/src/main.mjs";
 
 export function load()
 {
-	const applet = new BrownianTree($("#output-canvas"));
+	const applet = new BrownianTree({ canvas: $("#output-canvas") });
 
 
 
@@ -24,7 +24,10 @@ export function load()
 
 	const downloadButtonElement = $("#download-button");
 
-	downloadButtonElement.addEventListener("click", () => applet.wilson.downloadFrame("a-brownian-tree.png"));
+	downloadButtonElement.addEventListener(
+		"click",
+		() => applet.wilson.downloadFrame("a-brownian-tree.png")
+	);
 
 
 
