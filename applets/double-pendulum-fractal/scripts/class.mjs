@@ -38,7 +38,7 @@ export class DoublePendulumFractal extends Applet
 
 
 
-	constructor(canvas, pendulumCanvas)
+	constructor({ canvas, pendulumCanvas })
 	{
 		super(canvas);
 
@@ -211,7 +211,11 @@ export class DoublePendulumFractal extends Applet
 
 
 
-		this.wilson.gl.bindTexture(this.wilson.gl.TEXTURE_2D, this.wilson.render.framebuffers[0].texture);
+		this.wilson.gl.bindTexture(
+			this.wilson.gl.TEXTURE_2D,
+			this.wilson.render.framebuffers[0].texture
+		);
+
 		this.wilson.gl.texImage2D(
 			this.wilson.gl.TEXTURE_2D,
 			0,
@@ -224,7 +228,11 @@ export class DoublePendulumFractal extends Applet
 			null
 		);
 
-		this.wilson.gl.bindTexture(this.wilson.gl.TEXTURE_2D, this.wilson.render.framebuffers[1].texture);
+		this.wilson.gl.bindTexture(
+			this.wilson.gl.TEXTURE_2D,
+			this.wilson.render.framebuffers[1].texture
+		);
+
 		this.wilson.gl.texImage2D(
 			this.wilson.gl.TEXTURE_2D,
 			0,
@@ -241,8 +249,15 @@ export class DoublePendulumFractal extends Applet
 
 		this.wilson.gl.useProgram(this.wilson.render.shaderPrograms[0]);
 
-		this.wilson.gl.bindTexture(this.wilson.gl.TEXTURE_2D, this.wilson.render.framebuffers[0].texture);
-		this.wilson.gl.bindFramebuffer(this.wilson.gl.FRAMEBUFFER, this.wilson.render.framebuffers[0].framebuffer);
+		this.wilson.gl.bindTexture(
+			this.wilson.gl.TEXTURE_2D,
+			this.wilson.render.framebuffers[0].texture
+		);
+
+		this.wilson.gl.bindFramebuffer(
+			this.wilson.gl.FRAMEBUFFER,
+			this.wilson.render.framebuffers[0].framebuffer
+		);
 
 		this.wilson.render.drawFrame();
 
@@ -272,7 +287,10 @@ export class DoublePendulumFractal extends Applet
 
 		this.wilson.gl.useProgram(this.wilson.render.shaderPrograms[1]);
 
-		this.wilson.gl.bindFramebuffer(this.wilson.gl.FRAMEBUFFER, this.wilson.render.framebuffers[1].framebuffer);
+		this.wilson.gl.bindFramebuffer(
+			this.wilson.gl.FRAMEBUFFER,
+			this.wilson.render.framebuffers[1].framebuffer
+		);
 
 		this.wilson.render.drawFrame();
 
@@ -280,18 +298,26 @@ export class DoublePendulumFractal extends Applet
 
 		this.wilson.gl.useProgram(this.wilson.render.shaderPrograms[2]);
 
-		this.wilson.gl.bindTexture(this.wilson.gl.TEXTURE_2D, this.wilson.render.framebuffers[1].texture);
+		this.wilson.gl.bindTexture(
+			this.wilson.gl.TEXTURE_2D,
+			this.wilson.render.framebuffers[1].texture
+		);
+
 		this.wilson.gl.bindFramebuffer(this.wilson.gl.FRAMEBUFFER, null);
 
 		this.wilson.render.drawFrame();
 
 
 
-		//At this point, we've gone Init --> F1 --> T1 --> Update --> F2 --> T2 --> Draw. T2 is still bound, which is correct, but we cannot be bound to F2, so we bind to F1.
+		//At this point, we've gone Init --> F1 --> T1 --> Update --> F2 --> T2 --> Draw.
+		//T2 is still bound, which is correct, but we cannot be bound to F2, so we bind to F1.
 
 		this.wilson.gl.useProgram(this.wilson.render.shaderPrograms[1]);
 
-		this.wilson.gl.bindFramebuffer(this.wilson.gl.FRAMEBUFFER, this.wilson.render.framebuffers[0].framebuffer);
+		this.wilson.gl.bindFramebuffer(
+			this.wilson.gl.FRAMEBUFFER,
+			this.wilson.render.framebuffers[0].framebuffer
+		);
 
 		this.wilson.render.drawFrame();
 
@@ -299,7 +325,11 @@ export class DoublePendulumFractal extends Applet
 
 		this.wilson.gl.useProgram(this.wilson.render.shaderPrograms[2]);
 
-		this.wilson.gl.bindTexture(this.wilson.gl.TEXTURE_2D, this.wilson.render.framebuffers[0].texture);
+		this.wilson.gl.bindTexture(
+			this.wilson.gl.TEXTURE_2D,
+			this.wilson.render.framebuffers[0].texture
+		);
+
 		this.wilson.gl.bindFramebuffer(this.wilson.gl.FRAMEBUFFER, null);
 
 		this.wilson.render.drawFrame();
@@ -432,9 +462,20 @@ export class DoublePendulumFractal extends Applet
 		const w = this.p2 / Math.PI;
 
 		const hue = Math.atan2(y, x) / Math.PI + 1;
-		const saturation = Math.min(Math.min((x * x + y * y) * 50, (1 - Math.max(Math.abs(x), Math.abs(y))) * 5), 1);
+		const saturation = Math.min(
+			Math.min(
+				(x * x + y * y) * 50,
+				(1 - Math.max(Math.abs(x), Math.abs(y))) * 5
+			),
+			1
+		);
 
-		const valueAdd = .9 * ((1 - this.initialTheta1 / (2 * Math.PI)) * (1 - this.initialTheta1 / (2 * Math.PI)) + (1 - this.initialTheta2 / (2 * Math.PI)) * (1 - this.initialTheta2 / (2 * Math.PI))) * 4;
+		const valueAdd = .9 * (
+			(1 - this.initialTheta1 / (2 * Math.PI))
+				* (1 - this.initialTheta1 / (2 * Math.PI))
+			+ (1 - this.initialTheta2 / (2 * Math.PI))
+				* (1 - this.initialTheta2 / (2 * Math.PI))
+		) * 4;
 
 		const value = Math.min(Math.pow(z * z + w * w, .5) + valueAdd, 1);
 
@@ -446,12 +487,34 @@ export class DoublePendulumFractal extends Applet
 
 		this.wilsonPendulum.ctx.beginPath();
 		this.wilsonPendulum.ctx.moveTo(this.resolutionPendulum / 2, this.resolutionPendulum / 2);
-		this.wilsonPendulum.ctx.lineTo(this.resolutionPendulum / 2 + this.resolutionPendulum / 6 * Math.sin(this.theta1), this.resolutionPendulum / 2 + this.resolutionPendulum / 6 * Math.cos(this.theta1));
+
+		this.wilsonPendulum.ctx.lineTo(
+			this.resolutionPendulum / 2 + this.resolutionPendulum / 6 * Math.sin(this.theta1),
+			this.resolutionPendulum / 2 + this.resolutionPendulum / 6 * Math.cos(this.theta1)
+		);
+
 		this.wilsonPendulum.ctx.stroke();
 
 		this.wilsonPendulum.ctx.beginPath();
-		this.wilsonPendulum.ctx.moveTo(this.resolutionPendulum / 2 + (this.resolutionPendulum / 6 - this.resolutionPendulum / 200) * Math.sin(this.theta1), this.resolutionPendulum / 2 + (this.resolutionPendulum / 6 - this.resolutionPendulum / 200) * Math.cos(this.theta1));
-		this.wilsonPendulum.ctx.lineTo(this.resolutionPendulum / 2 + this.resolutionPendulum / 6 * Math.sin(this.theta1) + this.resolutionPendulum / 6 * Math.sin(this.theta2), this.resolutionPendulum / 2 + this.resolutionPendulum / 6 * Math.cos(this.theta1) + this.resolutionPendulum / 6 * Math.cos(this.theta2));
+		
+		this.wilsonPendulum.ctx.moveTo(
+			this.resolutionPendulum / 2
+				+ (this.resolutionPendulum / 6 - this.resolutionPendulum / 200)
+					* Math.sin(this.theta1),
+			this.resolutionPendulum / 2
+				+ (this.resolutionPendulum / 6 - this.resolutionPendulum / 200)
+					* Math.cos(this.theta1)
+		);
+
+		this.wilsonPendulum.ctx.lineTo(
+			this.resolutionPendulum / 2
+				+ this.resolutionPendulum / 6 * Math.sin(this.theta1)
+				+ this.resolutionPendulum / 6 * Math.sin(this.theta2),
+			this.resolutionPendulum / 2
+				+ this.resolutionPendulum / 6 * Math.cos(this.theta1)
+				+ this.resolutionPendulum / 6 * Math.cos(this.theta2)
+		);
+
 		this.wilsonPendulum.ctx.stroke();
 
 
@@ -468,13 +531,27 @@ export class DoublePendulumFractal extends Applet
 
 	updateAngles()
 	{
-		const dTheta1 = 6 * (2 * this.p1 - 3 * Math.cos(this.theta1 - this.theta2) * this.p2) / (16 - 9 * Math.pow(Math.cos(this.theta1 - this.theta2), 2));
+		const dTheta1 = 6 * (
+			2 * this.p1 - 3 * Math.cos(this.theta1 - this.theta2) * this.p2
+		) / (
+			16 - 9 * Math.pow(Math.cos(this.theta1 - this.theta2), 2)
+		);
 
-		const dTheta2 = 6 * (8 * this.p2 - 3 * Math.cos(this.theta1 - this.theta2) * this.p1) / (16 - 9 * Math.pow(Math.cos(this.theta1 - this.theta2), 2));
+		const dTheta2 = 6 * (
+			8 * this.p2 - 3 * Math.cos(this.theta1 - this.theta2) * this.p1
+		) / (
+			16 - 9 * Math.pow(Math.cos(this.theta1 - this.theta2), 2)
+		);
 
-		const dP1 = -(dTheta1 * dTheta2 * Math.sin(this.theta1 - this.theta2) + 3 * Math.sin(this.theta1)) / 2;
+		const dP1 = -(
+			dTheta1 * dTheta2 * Math.sin(this.theta1 - this.theta2)
+			+ 3 * Math.sin(this.theta1)
+		) / 2;
 
-		const dP2 = (dTheta1 * dTheta2 * Math.sin(this.theta1 - this.theta2) - Math.sin(this.theta2)) / 2;
+		const dP2 = (
+			dTheta1 * dTheta2 * Math.sin(this.theta1 - this.theta2)
+			- Math.sin(this.theta2)
+		) / 2;
 
 
 

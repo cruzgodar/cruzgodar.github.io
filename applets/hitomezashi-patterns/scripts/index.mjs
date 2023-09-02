@@ -4,7 +4,7 @@ import { $ } from "/scripts/src/main.mjs";
 
 export function load()
 {
-	const applet = new HitomezashiPattern($("#output-canvas"));
+	const applet = new HitomezashiPattern({ canvas: $("#output-canvas") });
 
 
 
@@ -33,7 +33,12 @@ export function load()
 	drawRegionsCheckboxElement.checked = true;
 
 
-	applet.listenToInputElements([resolutionInputElement, gridSizeInputElement, rowProbInputElement, colProbInputElement], run);
+	applet.listenToInputElements([
+		resolutionInputElement,
+		gridSizeInputElement,
+		rowProbInputElement,
+		colProbInputElement
+	], run);
 
 	applet.setInputCaps([resolutionInputElement, gridSizeInputElement], [4000, 200]);
 

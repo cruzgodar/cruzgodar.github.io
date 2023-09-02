@@ -4,7 +4,7 @@ import { $ } from "/scripts/src/main.mjs";
 
 export function load()
 {
-	const applet = new DominoShuffling($("#output-canvas"));
+	const applet = new DominoShuffling({ canvas: $("#output-canvas") });
 
 	const resolutionInputElement = $("#resolution-input");
 

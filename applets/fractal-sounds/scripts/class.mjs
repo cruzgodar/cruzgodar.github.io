@@ -43,7 +43,7 @@ export class FractalSounds extends Applet
 
 
 
-	constructor(canvas, lineDrawerCanvas)
+	constructor({ canvas, lineDrawerCanvas })
 	{
 		super(canvas);
 
@@ -56,7 +56,15 @@ export class FractalSounds extends Applet
 
 
 
-		const tempShader = "precision highp float; varying vec2 uv; void main(void) { gl_FragColor = vec4(0.0, 0.0, 0.0, 1.0); }";
+		const tempShader = `
+			precision highp float;
+			varying vec2 uv;
+			
+			void main(void)
+			{
+				gl_FragColor = vec4(0.0, 0.0, 0.0, 1.0);
+			}
+		`;
 
 		const optionsJulia =
 		{
@@ -583,8 +591,11 @@ export class FractalSounds extends Applet
 			{
 				const t = .5 + .5 * Math.sin(Math.PI * j / samplesPerFrame - Math.PI / 2);
 
-				leftData[samplesPerFrame * i + j] = (1 - t) * (unscaledLeftData[i] / 2) + t * (unscaledLeftData[i + 1] / 2);
-				rightData[samplesPerFrame * i + j] = (1 - t) * (unscaledRightData[i] / 2) + t * (unscaledRightData[i + 1] / 2);
+				leftData[samplesPerFrame * i + j] =
+					(1 - t) * (unscaledLeftData[i] / 2) + t * (unscaledLeftData[i + 1] / 2);
+
+				rightData[samplesPerFrame * i + j] =
+					(1 - t) * (unscaledRightData[i] / 2) + t * (unscaledRightData[i + 1] / 2);
 			}
 		}
 
@@ -621,14 +632,36 @@ export class FractalSounds extends Applet
 
 
 
-		this.wilsonHidden.gl.uniform1f(this.wilsonHidden.uniforms["worldCenterX"][0], this.wilson.worldCenterX);
-		this.wilsonHidden.gl.uniform1f(this.wilsonHidden.uniforms["worldCenterY"][0], this.wilson.worldCenterY);
+		this.wilsonHidden.gl.uniform1f(
+			this.wilsonHidden.uniforms["worldCenterX"][0],
+			this.wilson.worldCenterX
+		);
 
-		this.wilsonHidden.gl.uniform1f(this.wilsonHidden.uniforms["worldSize"][0], Math.min(this.wilson.worldHeight, this.wilson.worldWidth) / 2);
+		this.wilsonHidden.gl.uniform1f(
+			this.wilsonHidden.uniforms["worldCenterY"][0],
+			this.wilson.worldCenterY
+		);
+		
+		this.wilsonHidden.gl.uniform1f(
+			this.wilsonHidden.uniforms["worldSize"][0],
+			Math.min(this.wilson.worldHeight, this.wilson.worldWidth) / 2
+		);
 
-		this.wilsonHidden.gl.uniform1i(this.wilsonHidden.uniforms["numIterations"][0], this.numIterations);
-		this.wilsonHidden.gl.uniform1f(this.wilsonHidden.uniforms["exposure"][0], 1);
-		this.wilsonHidden.gl.uniform1f(this.wilsonHidden.uniforms["brightnessScale"][0], 20 * (Math.abs(this.zoom.level) + 1));
+		this.wilsonHidden.gl.uniform1i(
+			this.wilsonHidden.uniforms["numIterations"][0],
+			this.numIterations
+		);
+
+		this.wilsonHidden.gl.uniform1f(
+			this.wilsonHidden.uniforms["exposure"][0],
+			1
+		);
+
+		this.wilsonHidden.gl.uniform1f(
+			this.wilsonHidden.uniforms["brightnessScale"][0],
+			20 * (Math.abs(this.zoom.level) + 1)
+		);
+
 
 		this.wilsonHidden.render.drawFrame();
 
@@ -645,7 +678,10 @@ export class FractalSounds extends Applet
 
 		brightnesses.sort((a, b) => a - b);
 
-		let brightnessScale = (brightnesses[Math.floor(this.resolutionHidden * this.resolutionHidden * .96)] + brightnesses[Math.floor(this.resolutionHidden * this.resolutionHidden * .98)]) / 255 * 15 * (Math.abs(this.zoom.level / 2) + 1);
+		let brightnessScale = (
+			brightnesses[Math.floor(this.resolutionHidden * this.resolutionHidden * .96)]
+			+ brightnesses[Math.floor(this.resolutionHidden * this.resolutionHidden * .98)]
+		) / 255 * 15 * (Math.abs(this.zoom.level / 2) + 1);
 
 		this.pastBrightnessScales.push(brightnessScale);
 
@@ -660,17 +696,40 @@ export class FractalSounds extends Applet
 
 
 
-		this.wilsonJulia.gl.uniform1f(this.wilsonJulia.uniforms["aspectRatio"][0], this.aspectRatio);
+		this.wilsonJulia.gl.uniform1f(
+			this.wilsonJulia.uniforms["aspectRatio"][0],
+			this.aspectRatio
+		);
 
-		this.wilsonJulia.gl.uniform1f(this.wilsonJulia.uniforms["worldCenterX"][0], this.wilson.worldCenterX);
-		this.wilsonJulia.gl.uniform1f(this.wilsonJulia.uniforms["worldCenterY"][0], this.wilson.worldCenterY);
+		this.wilsonJulia.gl.uniform1f(
+			this.wilsonJulia.uniforms["worldCenterX"][0],
+			this.wilson.worldCenterX
+		);
 
-		this.wilsonJulia.gl.uniform1f(this.wilsonJulia.uniforms["worldSize"][0], Math.min(this.wilson.worldHeight, this.wilson.worldWidth) / 2);
+		this.wilsonJulia.gl.uniform1f(
+			this.wilsonJulia.uniforms["worldCenterY"][0],
+			this.wilson.worldCenterY
+		);
 
-		this.wilsonJulia.gl.uniform1i(this.wilsonJulia.uniforms["numIterations"][0], this.numIterations);
+		this.wilsonJulia.gl.uniform1f(
+			this.wilsonJulia.uniforms["worldSize"][0],
+			Math.min(this.wilson.worldHeight, this.wilson.worldWidth) / 2
+		);
 
-		this.wilsonJulia.gl.uniform1f(this.wilsonJulia.uniforms["exposure"][0], this.exposure);
-		this.wilsonJulia.gl.uniform1f(this.wilsonJulia.uniforms["brightnessScale"][0], brightnessScale);
+		this.wilsonJulia.gl.uniform1i(
+			this.wilsonJulia.uniforms["numIterations"][0],
+			this.numIterations
+		);
+
+		this.wilsonJulia.gl.uniform1f(
+			this.wilsonJulia.uniforms["exposure"][0],
+			this.exposure
+		);
+
+		this.wilsonJulia.gl.uniform1f(
+			this.wilsonJulia.uniforms["brightnessScale"][0],
+			brightnessScale
+		);
 
 		this.wilsonJulia.render.drawFrame();
 
@@ -686,9 +745,15 @@ export class FractalSounds extends Applet
 
 	switchFullscreen()
 	{
-		document.body.querySelectorAll(".wilson-applet-canvas-container").forEach(element => element.style.setProperty("background-color", "rgba(0, 0, 0, 0)", "important"));
+		document.body.querySelectorAll(".wilson-applet-canvas-container")
+			.forEach(element => element.style.setProperty(
+				"background-color",
+				"rgba(0, 0, 0, 0)",
+				"important"
+			));
 
-		const exitFullScreenButtonElement = document.body.querySelector(".wilson-exit-fullscreen-button");
+		const exitFullScreenButtonElement =
+			document.body.querySelector(".wilson-exit-fullscreen-button");
 
 		if (exitFullScreenButtonElement)
 		{

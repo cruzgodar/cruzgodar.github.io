@@ -13,7 +13,7 @@ export class FiniteSubdivision extends Applet
 
 
 
-	constructor(canvas)
+	constructor({ canvas })
 	{
 		super(canvas);
 
@@ -81,6 +81,11 @@ export class FiniteSubdivision extends Applet
 
 
 
-		this.webWorker.postMessage([this.numVertices, this.numIterations, this.resolution, this.maximumSpeed]);
+		this.webWorker.postMessage([
+			this.numVertices,
+			this.numIterations,
+			this.resolution,
+			this.maximumSpeed
+		]);
 	}
 }

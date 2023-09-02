@@ -29,7 +29,7 @@ export class HitomezashiPattern extends Applet
 
 
 
-	constructor(canvas)
+	constructor({ canvas })
 	{
 		super(canvas);
 
@@ -206,7 +206,8 @@ export class HitomezashiPattern extends Applet
 
 	drawBoundaries()
 	{
-		//We don't include things on the boundary, since they don't play nice with the lines already drawn there.
+		//We don't include things on the boundary, since they don't
+		//play nice with the lines already drawn there.
 		for (let i = 1; i < this.gridSize; i++)
 		{
 			for (let j = 0; j < this.gridSize; j++)
@@ -214,8 +215,17 @@ export class HitomezashiPattern extends Applet
 				if (this.patternRows[i][j])
 				{
 					this.wilson.ctx.beginPath();
-					this.wilson.ctx.moveTo((this.resolution / this.gridSize) * j, (this.resolution / this.gridSize) * i);
-					this.wilson.ctx.lineTo((this.resolution / this.gridSize) * (j + 1), (this.resolution / this.gridSize) * i);
+					
+					this.wilson.ctx.moveTo(
+						(this.resolution / this.gridSize) * j,
+						(this.resolution / this.gridSize) * i
+					);
+
+					this.wilson.ctx.lineTo(
+						(this.resolution / this.gridSize) * (j + 1),
+						(this.resolution / this.gridSize) * i
+					);
+
 					this.wilson.ctx.stroke();
 				}
 			}
@@ -230,8 +240,17 @@ export class HitomezashiPattern extends Applet
 				if (this.patternCols[i][j])
 				{
 					this.wilson.ctx.beginPath();
-					this.wilson.ctx.moveTo((this.resolution / this.gridSize) * j, (this.resolution / this.gridSize) * i);
-					this.wilson.ctx.lineTo((this.resolution / this.gridSize) * j, (this.resolution / this.gridSize) * (i + 1));
+
+					this.wilson.ctx.moveTo(
+						(this.resolution / this.gridSize) * j,
+						(this.resolution / this.gridSize) * i
+					);
+
+					this.wilson.ctx.lineTo(
+						(this.resolution / this.gridSize) * j,
+						(this.resolution / this.gridSize) * (i + 1)
+					);
+
 					this.wilson.ctx.stroke();
 				}
 			}
@@ -247,8 +266,17 @@ export class HitomezashiPattern extends Applet
 			if (this.patternRows[this.currentRow][j])
 			{
 				this.wilson.ctx.beginPath();
-				this.wilson.ctx.moveTo((this.resolution / this.gridSize) * j, (this.resolution / this.gridSize) * this.currentRow);
-				this.wilson.ctx.lineTo((this.resolution / this.gridSize) * (j + 1), (this.resolution / this.gridSize) * this.currentRow);
+
+				this.wilson.ctx.moveTo(
+					(this.resolution / this.gridSize) * j,
+					(this.resolution / this.gridSize) * this.currentRow
+				);
+
+				this.wilson.ctx.lineTo(
+					(this.resolution / this.gridSize) * (j + 1),
+					(this.resolution / this.gridSize) * this.currentRow
+				);
+
 				this.wilson.ctx.stroke();
 			}
 		}
@@ -280,8 +308,17 @@ export class HitomezashiPattern extends Applet
 			if (this.patternCols[i][this.currentCol])
 			{
 				this.wilson.ctx.beginPath();
-				this.wilson.ctx.moveTo((this.resolution / this.gridSize) * this.currentCol, (this.resolution / this.gridSize) * i);
-				this.wilson.ctx.lineTo((this.resolution / this.gridSize) * this.currentCol, (this.resolution / this.gridSize) * (i + 1));
+
+				this.wilson.ctx.moveTo(
+					(this.resolution / this.gridSize) * this.currentCol,
+					(this.resolution / this.gridSize) * i
+				);
+
+				this.wilson.ctx.lineTo(
+					(this.resolution / this.gridSize) * this.currentCol,
+					(this.resolution / this.gridSize) * (i + 1)
+				);
+
 				this.wilson.ctx.stroke();
 			}
 		}
@@ -310,7 +347,9 @@ export class HitomezashiPattern extends Applet
 
 	identifyRegions()
 	{
-		//This is kind of a mess, but we're just going to floodfill one region at a time and just use constant colors that range from red in the top left to magenta in the bottom right. That's the goal at least.
+		//This is kind of a mess, but we're just going to floodfill one region at a time
+		//and just use constant colors that range from red in the top left to magenta
+		//in the bottom right. That's the goal at least.
 
 		let startRow = 0;
 		let startCol = 0;
@@ -334,7 +373,11 @@ export class HitomezashiPattern extends Applet
 					const row = activeSquares[i][0];
 					const col = activeSquares[i][1];
 
-					if (row > 0 && this.regions[row - 1][col] === -1 && !(this.patternRows[row][col]))
+					if (
+						row > 0
+						&& this.regions[row - 1][col] === -1
+						&& !(this.patternRows[row][col])
+					)
 					{
 						activeSquares.push([row - 1, col]);
 
@@ -343,7 +386,11 @@ export class HitomezashiPattern extends Applet
 						this.regionsOrdered[this.numRegions].push([row - 1, col]);
 					}
 
-					if (row < this.gridSize - 1 && this.regions[row + 1][col] === -1 && !(this.patternRows[row + 1][col]))
+					if (
+						row < this.gridSize - 1
+						&& this.regions[row + 1][col] === -1
+						&& !(this.patternRows[row + 1][col])
+					)
 					{
 						activeSquares.push([row + 1, col]);
 
@@ -352,7 +399,11 @@ export class HitomezashiPattern extends Applet
 						this.regionsOrdered[this.numRegions].push([row + 1, col]);
 					}
 
-					if (col > 0 && this.regions[row][col - 1] === -1 && !(this.patternCols[row][col]))
+					if (
+						col > 0
+						&& this.regions[row][col - 1] === -1
+						&& !(this.patternCols[row][col])
+					)
 					{
 						activeSquares.push([row, col - 1]);
 
@@ -361,7 +412,11 @@ export class HitomezashiPattern extends Applet
 						this.regionsOrdered[this.numRegions].push([row, col - 1]);
 					}
 
-					if (col < this.gridSize - 1 && this.regions[row][col + 1] === -1 && !(this.patternCols[row][col + 1]))
+					if (
+						col < this.gridSize - 1
+						&& this.regions[row][col + 1] === -1
+						&& !(this.patternCols[row][col + 1])
+					)
 					{
 						activeSquares.push([row, col + 1]);
 
@@ -443,8 +498,14 @@ export class HitomezashiPattern extends Applet
 			//Cycle colors every 2 * gridSize regions (this is just an experimentally good value).
 			const h = (i % (2 * this.gridSize)) / (2 * this.gridSize);
 
-			//Color the largest regions darkest, but linearly according to the list of lengths, so that all the medium regions aren't extremely bright when there's a very large region.
-			const v = regionLength === 1 ? .5 : Math.sqrt(this.regionSizes.indexOf(regionLength) / (this.numUniqueRegionSizes - 2));
+			//Color the largest regions darkest, but linearly according to the list of lengths,
+			//so that all the medium regions aren't extremely bright
+			//when there's a very large region.
+			const v = regionLength === 1
+				? .5
+				: Math.sqrt(
+					this.regionSizes.indexOf(regionLength) / (this.numUniqueRegionSizes - 2)
+				);
 
 			const rgb = this.wilson.utils.hsvToRgb(h, 1, v);
 
@@ -457,7 +518,12 @@ export class HitomezashiPattern extends Applet
 				const row = this.regionsOrdered[i][j][0];
 				const col = this.regionsOrdered[i][j][1];
 
-				this.wilson.ctx.fillRect((this.resolution / this.gridSize) * col + this.lineWidth / 2, (this.resolution / this.gridSize) * row + this.lineWidth / 2, this.resolution / this.gridSize - this.lineWidth, this.resolution / this.gridSize - this.lineWidth);
+				this.wilson.ctx.fillRect(
+					(this.resolution / this.gridSize) * col + this.lineWidth / 2,
+					(this.resolution / this.gridSize) * row + this.lineWidth / 2,
+					this.resolution / this.gridSize - this.lineWidth,
+					this.resolution / this.gridSize - this.lineWidth
+				);
 			}
 		}
 	}
@@ -473,8 +539,14 @@ export class HitomezashiPattern extends Applet
 			//Cycle colors every gridSize regions (this is just an experimentally good value).
 			const h = (this.currentRegion % (2 * this.gridSize)) / (2 * this.gridSize);
 
-			//Color the largest regions darkest, but linearly according to the list of lengths, so that all the medium regions aren't extremely bright when there's a very large region.
-			const v = regionLength === 1 ? .5 : Math.sqrt(this.regionSizes.indexOf(regionLength) / (this.numUniqueRegionSizes - 2));
+			//Color the largest regions darkest, but linearly according to the list of lengths,
+			//so that all the medium regions aren't extremely bright when there's
+			//a very large region.
+			const v = regionLength === 1
+				? .5
+				: Math.sqrt(
+					this.regionSizes.indexOf(regionLength) / (this.numUniqueRegionSizes - 2)
+				);
 
 			const rgb = this.wilson.utils.hsvToRgb(h, 1, v);
 
@@ -486,7 +558,12 @@ export class HitomezashiPattern extends Applet
 				const row = this.regionsOrdered[this.currentRegion][j][0];
 				const col = this.regionsOrdered[this.currentRegion][j][1];
 
-				this.wilson.ctx.fillRect((this.resolution / this.gridSize) * col, (this.resolution / this.gridSize) * row, this.resolution / this.gridSize, this.resolution / this.gridSize);
+				this.wilson.ctx.fillRect(
+					(this.resolution / this.gridSize) * col,
+					(this.resolution / this.gridSize) * row,
+					this.resolution / this.gridSize,
+					this.resolution / this.gridSize
+				);
 			}
 
 
@@ -497,7 +574,12 @@ export class HitomezashiPattern extends Applet
 				const row = this.regionsOrdered[this.currentRegion][j][0];
 				const col = this.regionsOrdered[this.currentRegion][j][1];
 
-				this.wilson.ctx.fillRect((this.resolution / this.gridSize) * col + this.lineWidth / 2, (this.resolution / this.gridSize) * row + this.lineWidth / 2, this.resolution / this.gridSize - this.lineWidth, this.resolution / this.gridSize - this.lineWidth);
+				this.wilson.ctx.fillRect(
+					(this.resolution / this.gridSize) * col + this.lineWidth / 2,
+					(this.resolution / this.gridSize) * row + this.lineWidth / 2,
+					this.resolution / this.gridSize - this.lineWidth,
+					this.resolution / this.gridSize - this.lineWidth
+				);
 			}
 
 

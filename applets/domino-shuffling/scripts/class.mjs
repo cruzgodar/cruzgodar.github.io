@@ -29,7 +29,7 @@ export class DominoShuffling extends Applet
 
 
 
-	constructor(canvas)
+	constructor({ canvas })
 	{
 		super(canvas);
 

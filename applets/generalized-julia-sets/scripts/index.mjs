@@ -8,7 +8,10 @@ export function load()
 
 	switchJuliaModeButtonElement.style.opacity = 1;
 
-	const applet = new GeneralizedJuliaSet($("#output-canvas"), "cadd(cpow(z, 2.0), c)", switchJuliaModeButtonElement);
+	const applet = new GeneralizedJuliaSet({
+		canvas: $("#output-canvas"),
+		switchJuliaModeButtonElement
+	});
 
 	applet.loadPromise.then(() => run());
 

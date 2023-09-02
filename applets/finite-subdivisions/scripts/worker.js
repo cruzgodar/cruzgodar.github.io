@@ -67,7 +67,17 @@ async function drawOuterPolygon()
 
 				const color = `rgb(${rgb[0]}, ${rgb[1]}, ${rgb[2]})`;
 
-				postMessage([polygons[0][j][0], polygons[0][j][1], polygons[0][j][0] + ((i + 1) / 120) * (polygons[0][(j + 1) % numVertices][0] - polygons[0][j][0]), polygons[0][j][1] + ((i + 1) / 120) * (polygons[0][(j + 1) % numVertices][1] - polygons[0][j][1]), color]);
+				postMessage([
+					polygons[0][j][0],
+					polygons[0][j][1],
+					polygons[0][j][0]
+						+ ((i + 1) / 120)
+							* (polygons[0][(j + 1) % numVertices][0] - polygons[0][j][0]),
+					polygons[0][j][1]
+						+ ((i + 1) / 120)
+							* (polygons[0][(j + 1) % numVertices][1] - polygons[0][j][1]),
+					color
+				]);
 			}
 
 			await new Promise(resolve => setTimeout(resolve, 8));
@@ -82,7 +92,13 @@ async function drawOuterPolygon()
 
 			const color = `rgb(${rgb[0]}, ${rgb[1]}, ${rgb[2]})`;
 
-			postMessage([polygons[0][j][0], polygons[0][j][1], polygons[0][(j + 1) % numVertices][0], polygons[0][(j + 1) % numVertices][1], color]);
+			postMessage([
+				polygons[0][j][0],
+				polygons[0][j][1],
+				polygons[0][(j + 1) % numVertices][0],
+				polygons[0][(j + 1) % numVertices][1],
+				color
+			]);
 		}
 	}
 }
@@ -113,7 +129,11 @@ function calculateLines()
 		{
 			newLines.push([polygons[i][j], [barycenterRow, barycenterCol]]);
 
-			newPolygons.push([[barycenterRow, barycenterCol], polygons[i][j], polygons[i][(j + 1) % polygons[i].length]]);
+			newPolygons.push([
+				[barycenterRow, barycenterCol],
+				polygons[i][j],
+				polygons[i][(j + 1) % polygons[i].length]
+			]);
 		}
 	}
 
@@ -137,7 +157,15 @@ async function drawLines(newLines)
 
 				const color = `rgb(${rgb[0]}, ${rgb[1]}, ${rgb[2]})`;
 
-				postMessage([newLines[j][0][0], newLines[j][0][1], newLines[j][0][0] + ((i + 1) / 120) * (newLines[j][1][0] - newLines[j][0][0]) + 1, newLines[j][0][1] + ((i + 1) / 120) * (newLines[j][1][1] - newLines[j][0][1]), color]);
+				postMessage([
+					newLines[j][0][0],
+					newLines[j][0][1],
+					newLines[j][0][0]
+						+ ((i + 1) / 120) * (newLines[j][1][0] - newLines[j][0][0]) + 1,
+					newLines[j][0][1]
+						+ ((i + 1) / 120) * (newLines[j][1][1] - newLines[j][0][1]),
+					color
+				]);
 			}
 
 			await new Promise(resolve => setTimeout(resolve, 8));
@@ -153,7 +181,13 @@ async function drawLines(newLines)
 
 			const color = `rgb(${rgb[0]}, ${rgb[1]}, ${rgb[2]})`;
 
-			postMessage([newLines[j][0][0], newLines[j][0][1], newLines[j][1][0], newLines[j][1][1], color]);
+			postMessage([
+				newLines[j][0][0],
+				newLines[j][0][1],
+				newLines[j][1][0],
+				newLines[j][1][1],
+				color
+			]);
 		}
 	}
 }

@@ -5,7 +5,10 @@ import { $ } from "/scripts/src/main.mjs";
 
 export function load()
 {
-	const applet = new DoublePendulumFractal($("#output-canvas"), $("#pendulum-canvas"));
+	const applet = new DoublePendulumFractal({
+		canvas: $("#output-canvas"),
+		pendulumCanvas: $("#pendulum-canvas")
+	});
 
 
 
@@ -63,7 +66,10 @@ export function load()
 
 	const downloadButtonElement = $("#download-button");
 
-	downloadButtonElement.addEventListener("click", () => applet.wilson.downloadFrame("the-double-pendulum-fractal.png"));
+	downloadButtonElement.addEventListener(
+		"click",
+		() => applet.wilson.downloadFrame("the-double-pendulum-fractal.png")
+	);
 
 
 
