@@ -6,7 +6,10 @@ export function load()
 {
 	const switchJuliaModeButtonElement = $("#switch-julia-mode-button");
 
-	const applet = new JuliaSet($("#output-canvas"), switchJuliaModeButtonElement);
+	const applet = new JuliaSet({
+		canvas: $("#output-canvas"),
+		switchJuliaModeButtonElement
+	});
 
 
 

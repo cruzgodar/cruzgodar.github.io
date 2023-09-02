@@ -19,7 +19,8 @@ export class JuliaSet extends Applet
 
 	switchJuliaModeButtonElement = null;
 
-	//Experimentally, the level at which a 2k x 2k canvas can see the grain of single precision rendering.
+	//Experimentally, the level at which a 2k x 2k
+	//canvas can see the grain of single precision rendering.
 	doublePrecisionZoomThreshhold = -16;
 
 	pastBrightnessScales = [];
@@ -34,7 +35,7 @@ export class JuliaSet extends Applet
 
 
 
-	constructor(canvas, switchJuliaModeButtonElement = null)
+	constructor({ canvas, switchJuliaModeButtonElement })
 	{
 		super(canvas);
 
@@ -884,7 +885,19 @@ export class JuliaSet extends Applet
 
 
 
-		if ((!this.doublePrecision && this.zoom.level < this.doublePrecisionZoomThreshhold && this.useDoublePrecision) || (this.doublePrecision && (this.zoom.level > this.doublePrecisionZoomThreshhold || !this.useDoublePrecision)))
+		if (
+			(
+				!this.doublePrecision
+				&& this.zoom.level < this.doublePrecisionZoomThreshhold
+				&& this.useDoublePrecision
+			) || (
+				this.doublePrecision
+				&& (
+					this.zoom.level > this.doublePrecisionZoomThreshhold
+					|| !this.useDoublePrecision
+				)
+			)
+		)
 		{
 			this.toggleDoublePrecision();
 		}
@@ -903,19 +916,47 @@ export class JuliaSet extends Applet
 
 
 
-		this.wilsonHidden.gl.useProgram(this.wilsonHidden.render.shaderPrograms[shaderProgramIndex]);
+		this.wilsonHidden.gl.useProgram(
+			this.wilsonHidden.render.shaderPrograms[shaderProgramIndex]);
 
-		this.wilsonHidden.gl.uniform1f(this.wilsonHidden.uniforms["aspectRatio"][shaderProgramIndex], 1);
+		this.wilsonHidden.gl.uniform1f(
+			this.wilsonHidden.uniforms["aspectRatio"][shaderProgramIndex],
+			1)
+		;
 
-		this.wilsonHidden.gl.uniform2fv(this.wilsonHidden.uniforms["worldCenterX"][shaderProgramIndex], cx);
-		this.wilsonHidden.gl.uniform2fv(this.wilsonHidden.uniforms["worldCenterY"][shaderProgramIndex], cy);
+		this.wilsonHidden.gl.uniform2fv(
+			this.wilsonHidden.uniforms["worldCenterX"][shaderProgramIndex],
+			cx
+		);
+		this.wilsonHidden.gl.uniform2fv(
+			this.wilsonHidden.uniforms["worldCenterY"][shaderProgramIndex],
+			cy
+		);
 
-		this.wilsonHidden.gl.uniform1f(this.wilsonHidden.uniforms["worldSize"][shaderProgramIndex], Math.min(this.wilson.worldHeight, this.wilson.worldWidth) / 2);
+		this.wilsonHidden.gl.uniform1f(
+			this.wilsonHidden.uniforms["worldSize"][shaderProgramIndex],
+			Math.min(this.wilson.worldHeight, this.wilson.worldWidth) / 2
+		);
 
-		this.wilsonHidden.gl.uniform1i(this.wilsonHidden.uniforms["numIterations"][shaderProgramIndex], this.numIterations);
-		this.wilsonHidden.gl.uniform1f(this.wilsonHidden.uniforms["a"][shaderProgramIndex], this.a);
-		this.wilsonHidden.gl.uniform1f(this.wilsonHidden.uniforms["b"][shaderProgramIndex], this.b);
-		this.wilsonHidden.gl.uniform1f(this.wilsonHidden.uniforms["brightnessScale"][shaderProgramIndex], 20 * (Math.abs(this.zoom.level) + 1));
+		this.wilsonHidden.gl.uniform1i(
+			this.wilsonHidden.uniforms["numIterations"][shaderProgramIndex],
+			this.numIterations
+		);
+
+		this.wilsonHidden.gl.uniform1f(
+			this.wilsonHidden.uniforms["a"][shaderProgramIndex],
+			this.a
+		);
+
+		this.wilsonHidden.gl.uniform1f(
+			this.wilsonHidden.uniforms["b"][shaderProgramIndex],
+			this.b
+		);
+
+		this.wilsonHidden.gl.uniform1f(
+			this.wilsonHidden.uniforms["brightnessScale"][shaderProgramIndex],
+			20 * (Math.abs(this.zoom.level) + 1)
+		);
 
 		this.wilsonHidden.render.drawFrame();
 
@@ -932,7 +973,10 @@ export class JuliaSet extends Applet
 
 		brightnesses.sort((a, b) => a - b);
 
-		let brightnessScale = (brightnesses[Math.floor(this.resolutionHidden * this.resolutionHidden * .96)] + brightnesses[Math.floor(this.resolutionHidden * this.resolutionHidden * .98)]) / 255 * 15 * (Math.abs(this.zoom.level / 2) + 1);
+		let brightnessScale = (
+			brightnesses[Math.floor(this.resolutionHidden * this.resolutionHidden * .96)]
+			+ brightnesses[Math.floor(this.resolutionHidden * this.resolutionHidden * .98)]
+		) / 255 * 15 * (Math.abs(this.zoom.level / 2) + 1);
 
 		this.pastBrightnessScales.push(brightnessScale);
 
@@ -949,17 +993,45 @@ export class JuliaSet extends Applet
 
 		this.wilson.gl.useProgram(this.wilson.render.shaderPrograms[shaderProgramIndex]);
 
-		this.wilson.gl.uniform1f(this.wilson.uniforms["aspectRatio"][shaderProgramIndex], this.aspectRatio);
+		this.wilson.gl.uniform1f(
+			this.wilson.uniforms["aspectRatio"][shaderProgramIndex],
+			this.aspectRatio
+		);
 
-		this.wilson.gl.uniform2fv(this.wilson.uniforms["worldCenterX"][shaderProgramIndex], cx);
-		this.wilson.gl.uniform2fv(this.wilson.uniforms["worldCenterY"][shaderProgramIndex], cy);
+		this.wilson.gl.uniform2fv(
+			this.wilson.uniforms["worldCenterX"][shaderProgramIndex],
+			cx
+		);
 
-		this.wilson.gl.uniform1f(this.wilson.uniforms["worldSize"][shaderProgramIndex], Math.min(this.wilson.worldHeight, this.wilson.worldWidth) / 2);
+		this.wilson.gl.uniform2fv(
+			this.wilson.uniforms["worldCenterY"][shaderProgramIndex],
+			cy
+		);
 
-		this.wilson.gl.uniform1i(this.wilson.uniforms["numIterations"][shaderProgramIndex], this.numIterations);
-		this.wilson.gl.uniform1f(this.wilson.uniforms["a"][shaderProgramIndex], this.a);
-		this.wilson.gl.uniform1f(this.wilson.uniforms["b"][shaderProgramIndex], this.b);
-		this.wilson.gl.uniform1f(this.wilson.uniforms["brightnessScale"][shaderProgramIndex], brightnessScale);
+		this.wilson.gl.uniform1f(
+			this.wilson.uniforms["worldSize"][shaderProgramIndex],
+			Math.min(this.wilson.worldHeight, this.wilson.worldWidth) / 2
+		);
+
+		this.wilson.gl.uniform1i(
+			this.wilson.uniforms["numIterations"][shaderProgramIndex],
+			this.numIterations
+		);
+
+		this.wilson.gl.uniform1f(
+			this.wilson.uniforms["a"][shaderProgramIndex],
+			this.a
+		);
+
+		this.wilson.gl.uniform1f(
+			this.wilson.uniforms["b"][shaderProgramIndex],
+			this.b
+		);
+		
+		this.wilson.gl.uniform1f(
+			this.wilson.uniforms["brightnessScale"][shaderProgramIndex],
+			brightnessScale
+		);
 
 		this.wilson.render.drawFrame();
 
