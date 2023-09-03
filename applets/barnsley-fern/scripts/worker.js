@@ -25,7 +25,6 @@ const maxY = 11;
 
 
 
-
 function drawFern()
 {
 	fernGraph = new Uint8ClampedArray(gridSize * gridSize * 4);

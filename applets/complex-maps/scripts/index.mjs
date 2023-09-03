@@ -79,12 +79,12 @@ export function load()
 
 	const examples =
 	{
-		"none": "",
-		"trig": "csin(z)",
-		"poles": "cinv(cmul(csub(cpow(z, 6.0), 1.0), csub(cpow(z, 3.0), 1.0)))",
-		"es": "cexp(cinv(z))",
-		"tet": "ctet(z, 100.0)",
-		"lattices": "wp(z, draggableArg)"
+		none: "",
+		trig: "csin(z)",
+		poles: "cinv(cmul(csub(cpow(z, 6.0), 1.0), csub(cpow(z, 3.0), 1.0)))",
+		es: "cexp(cinv(z))",
+		tet: "ctet(z, 100.0)",
+		lattices: "wp(z, draggableArg)"
 	};
 
 	const exampleSelectorDropdownElement = $("#example-selector-dropdown");

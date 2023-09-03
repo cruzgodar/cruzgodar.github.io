@@ -7,7 +7,7 @@ export function load()
 	{
 		const data =
 		{
-			"antiderivative":
+			antiderivative:
 			{
 				bounds: { left: -3, right: 3, bottom: -1, top: 5 },
 

@@ -17,8 +17,6 @@ let numSolutionsFound = 0;
 
 
 
-
-
 function generateCalcudokuGrid()
 {
 	grid = [];
@@ -285,7 +283,6 @@ function shuffleGridDigits()
 
 	grid = JSON.parse(JSON.stringify(tempGrid));
 }
-
 
 
 

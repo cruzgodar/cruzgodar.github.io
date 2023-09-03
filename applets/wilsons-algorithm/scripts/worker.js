@@ -368,7 +368,6 @@ function jsRandomWalk(fixedLength = 0)
 
 
 
-
 		//If not, then we need to know when we hit our own random walk -- before we can put our new vertex into the walk, we need to see if we've already been there.
 		const revertIndex = vertexInArray([currentRow, currentColumn], newVertices);
 

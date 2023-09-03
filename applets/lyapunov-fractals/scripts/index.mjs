@@ -20,7 +20,6 @@ export function load()
 
 
 
-
 	const resolutionInputElement = $("#resolution-input");
 
 	applet.setInputCaps([resolutionInputElement], [2000]);

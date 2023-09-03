@@ -75,7 +75,6 @@ export default class Lapsa
 	
 	
 	
-	
 	/*
 		options =
 		{
@@ -868,7 +867,6 @@ export default class Lapsa
 		
 		this.currentSlide = index;
 		this.buildState = 0;
-		
 		
 		
 

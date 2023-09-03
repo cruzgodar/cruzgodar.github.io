@@ -114,7 +114,7 @@ export function setVisitedHomepage(newVisitedHomepage)
 
 const scriptsLoaded =
 {
-	"glsl": 0
+	glsl: 0
 };
 
 

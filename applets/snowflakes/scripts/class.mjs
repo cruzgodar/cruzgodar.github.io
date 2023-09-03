@@ -505,7 +505,6 @@ export class Snowflake extends Applet
 
 
 
-
 			useFullscreen: true,
 
 			useFullscreenButton: true,

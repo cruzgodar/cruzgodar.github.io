@@ -55,8 +55,6 @@ export function load()
 
 
 
-
-
 	const downloadButtonElement = $("#download-button");
 
 	downloadButtonElement.addEventListener("click", () =>

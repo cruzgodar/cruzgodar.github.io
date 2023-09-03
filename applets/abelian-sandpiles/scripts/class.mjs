@@ -263,7 +263,6 @@ export class AbelianSandpile extends Applet
 
 
 
-
 			useFullscreen: true,
 
 			useFullscreenButton: true,

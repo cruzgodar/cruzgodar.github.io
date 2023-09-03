@@ -32,7 +32,6 @@ export function load()
 
 
 
-
 	const resolutionInputElement = $("#resolution-input");
 
 	const derivativePrecisionInputElement = $("#derivative-precision-input");
@@ -58,7 +57,6 @@ export function load()
 
 
 
-
 	const downloadButtonElement = $("#download-button");
 
 	downloadButtonElement.addEventListener("click", () =>
@@ -70,12 +68,12 @@ export function load()
 
 	const examples =
 	{
-		"none": "",
-		"trig": "csin(z)",
-		"crosshatch": "cmul(csin(z), csinh(z))",
-		"palette": "cmul(sin(z), csinh(z))",
-		"butterflies": "cmul(sin(z), tan(z))",
-		"swatches": "cmul(csin(vec2(z.x, sign(z.y) * min(abs(z.y), mod(abs(z.y), 2.0*PI) + 2.0*PI))), sin(cmul(vec2(z.x, sign(z.y) * min(abs(z.y), mod(abs(z.y), 2.0*PI) + 2.0*PI)), i)))"
+		none: "",
+		trig: "csin(z)",
+		crosshatch: "cmul(csin(z), csinh(z))",
+		palette: "cmul(sin(z), csinh(z))",
+		butterflies: "cmul(sin(z), tan(z))",
+		swatches: "cmul(csin(vec2(z.x, sign(z.y) * min(abs(z.y), mod(abs(z.y), 2.0*PI) + 2.0*PI))), sin(cmul(vec2(z.x, sign(z.y) * min(abs(z.y), mod(abs(z.y), 2.0*PI) + 2.0*PI)), i)))"
 	};
 
 	const exampleSelectorDropdownElement = $("#example-selector-dropdown");

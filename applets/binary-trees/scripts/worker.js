@@ -9,8 +9,6 @@ const numAnimatedIterations = 10;
 
 
 
-
-
 async function drawAnimatedBinaryTree()
 {
 	let angles = [

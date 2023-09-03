@@ -61,8 +61,6 @@ export function load()
 
 
 
-
-
 	function setRoot()
 	{
 		const x = parseFloat(rootAInputElement.value || 0);

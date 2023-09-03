@@ -598,16 +598,16 @@ const components =
 
 	notesEnvironments:
 	{
-		"ex": "Example",
-		"exc": "Exercise",
-		"def": "Definition",
-		"prop": "Proposition",
-		"thm": "Theorem",
-		"lem": "Lemma",
-		"cor": "Corollary",
-		"pf": "Proof",
-		"ax": "Axiom",
-		"as": "Aside"
+		ex: "Example",
+		exc: "Exercise",
+		def: "Definition",
+		prop: "Proposition",
+		thm: "Theorem",
+		lem: "Lemma",
+		cor: "Corollary",
+		pf: "Proof",
+		ax: "Axiom",
+		as: "Aside"
 	},
 
 

@@ -15,14 +15,14 @@ const glslFilenames =
 
 const glslFiles =
 {
-	"main":
+	main:
 	{
 		dependencies: [],
 
 		keywords: []
 	},
 
-	"constants":
+	constants:
 	{
 		dependencies: [],
 

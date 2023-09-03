@@ -377,7 +377,6 @@ export class DominoShuffling extends Applet
 
 
 
-
 		for (let i = 0; i < this.diamondSize * 2; i++)
 		{
 			for (let j = 0; j < this.diamondSize * 2; j++)

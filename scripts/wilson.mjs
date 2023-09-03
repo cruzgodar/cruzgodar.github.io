@@ -304,9 +304,6 @@ export class Wilson
 
 
 
-
-
-
 			if (typeof options.canvasesToResize === "undefined")
 			{
 				console.error("Missing canvases to resize");
@@ -383,7 +380,6 @@ export class Wilson
 
 
 		this.outputCanvasContainer.appendChild(this.canvas);
-
 
 
 
@@ -2119,7 +2115,6 @@ export class Wilson
 
 			this.mouseX = e.clientX;
 			this.mouseY = e.clientY;
-
 
 
 

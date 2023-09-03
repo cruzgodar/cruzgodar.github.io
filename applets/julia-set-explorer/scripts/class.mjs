@@ -904,7 +904,6 @@ export class JuliaSet extends Applet
 
 
 
-
 		const cx = Applet.doubleToDf(this.wilson.worldCenterX);
 		const cy = Applet.doubleToDf(this.wilson.worldCenterY);
 

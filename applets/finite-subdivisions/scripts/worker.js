@@ -11,8 +11,6 @@ let polygons = [];
 
 
 
-
-
 async function drawFiniteSubdivisions()
 {
 	polygons = [[]];

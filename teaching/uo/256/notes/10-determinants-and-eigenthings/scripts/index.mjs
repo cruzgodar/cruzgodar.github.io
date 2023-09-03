@@ -10,7 +10,7 @@ export function load()
 
 		const data =
 		{
-			"eigenvectors":
+			eigenvectors:
 			{
 				bounds: { left: -5, right: 15, bottom: -5, top: 15 },
 

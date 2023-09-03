@@ -16,8 +16,6 @@ let numSolutionsFound = 0;
 
 
 
-
-
 function generateMagicCarpet()
 {
 	cages = [];
@@ -144,7 +142,6 @@ function shuffleArray(array)
 
 	return array;
 }
-
 
 
 

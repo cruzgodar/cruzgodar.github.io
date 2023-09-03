@@ -651,8 +651,6 @@ export class PlanePartitions extends Applet
 
 
 
-
-
 		for (let i = 0; i < numRows; i++)
 		{
 			array[i] = new Array(size);
@@ -4414,7 +4412,6 @@ export class PlanePartitions extends Applet
 
 			await new Promise(resolve => setTimeout(resolve, this.animationTime / 2));
 		}
-
 
 
 

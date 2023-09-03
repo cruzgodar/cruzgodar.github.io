@@ -241,7 +241,6 @@ export class VectorField extends Applet
 
 
 
-
 			useFullscreen: true,
 
 			trueFullscreen: true,
@@ -445,7 +444,6 @@ export class VectorField extends Applet
 
 		this.generateNewField(resolution, maxParticles, dt, lifetime, worldCenterX, worldCenterY, zoomLevel);
 	}
-
 
 
 

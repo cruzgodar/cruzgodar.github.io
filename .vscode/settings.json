@@ -5,7 +5,9 @@
 		"**/android-icon*": true,
 		"**/apple-icon*": true,
 		"**/favicon*": true,
-		"**/ms-icon*": true
+		"**/ms-icon*": true,
+		"/scripts/anime.js": true,
+		"/scripts/three.js": true
 	},
 	"editor.wordWrap": "bounded",
 	"editor.wordWrapColumn": 128,

@@ -17,7 +17,6 @@ let currentPath = [];
 
 
 
-
 async function drawAnnealingGraph()
 {
 	nodes = [];
@@ -86,7 +85,6 @@ async function drawAnnealingGraph()
 		{
 			nextIndex = 0;
 		}
-
 
 
 

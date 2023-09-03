@@ -13,8 +13,6 @@ let numSolutionsFound = 0;
 
 
 
-
-
 function generateSudokuGrid()
 {
 	grid = [];

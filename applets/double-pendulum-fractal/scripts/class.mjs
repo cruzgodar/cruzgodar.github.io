@@ -147,7 +147,6 @@ export class DoublePendulumFractal extends Applet
 
 
 
-
 			useFullscreen: true,
 
 			useFullscreenButton: true,
