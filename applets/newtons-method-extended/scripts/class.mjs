@@ -32,7 +32,7 @@ export class NewtonsMethodExtended extends Applet
 
 
 
-	constructor(canvas)
+	constructor({ canvas })
 	{
 		super(canvas);
 
@@ -282,6 +282,7 @@ export class NewtonsMethodExtended extends Applet
 		this.wilson.render.shaderPrograms = [];
 		this.wilson.render.loadNewShader(fragShaderSource);
 		this.wilson.gl.useProgram(this.wilson.render.shaderPrograms[0]);
+
 		this.wilson.render.initUniforms([
 			"aspectRatio",
 			"derivativePrecision",
@@ -293,12 +294,18 @@ export class NewtonsMethodExtended extends Applet
 			"c",
 			"brightnessScale"
 		]);
+
 		this.wilson.gl.uniform1f(this.wilson.uniforms["aspectRatio"], 1);
-		this.wilson.gl.uniform1f(this.wilson.uniforms["derivativePrecision"], this.derivativePrecision);
+
+		this.wilson.gl.uniform1f(
+			this.wilson.uniforms["derivativePrecision"],
+			this.derivativePrecision
+		);
 
 		this.wilsonHidden.render.shaderPrograms = [];
 		this.wilsonHidden.render.loadNewShader(fragShaderSource);
 		this.wilsonHidden.gl.useProgram(this.wilsonHidden.render.shaderPrograms[0]);
+
 		this.wilsonHidden.render.initUniforms([
 			"aspectRatio",
 			"derivativePrecision",
@@ -310,8 +317,13 @@ export class NewtonsMethodExtended extends Applet
 			"c",
 			"brightnessScale"
 		]);
+
 		this.wilsonHidden.gl.uniform1f(this.wilsonHidden.uniforms["aspectRatio"], 1);
-		this.wilsonHidden.gl.uniform1f(this.wilsonHidden.uniforms["derivativePrecision"], this.derivativePrecision);
+
+		this.wilsonHidden.gl.uniform1f(
+			this.wilsonHidden.uniforms["derivativePrecision"],
+			this.derivativePrecision
+		);
 
 		this.wilson.worldCenterX = 0;
 		this.wilson.worldCenterY = 0;
@@ -343,7 +355,12 @@ export class NewtonsMethodExtended extends Applet
 
 
 
-	//Pick 4 colors, each with a bright, medium, and dim component. Each of these colors will be interpolated between based on the target x and y coordinates of the attractive root, forming a quadrilateral in the color plane. Since these 4 corner points are brightish but not overly so and decently saturated, this process almost always produces a pleasing palette.
+	//Pick 4 colors, each with a bright, medium, and dim component.
+	//Each of these colors will be interpolated between based on
+	//the target x and y coordinates of the attractive root,
+	//forming a quadrilateral in the color plane. Since these 4 corner points
+	//are brightish but not overly so and decently saturated,
+	//this process almost always produces a pleasing palette.
 	generateNewPalette()
 	{
 		const newColors = new Array(12);
@@ -374,7 +391,11 @@ export class NewtonsMethodExtended extends Applet
 
 
 
-			const rgb = this.wilson.utils.hsvToRgb(hue, Math.random() * .25 + .75, Math.random() * .25 + .75);
+			const rgb = this.wilson.utils.hsvToRgb(
+				hue,
+				Math.random() * .25 + .75,
+				Math.random() * .25 + .75
+			);
 
 			newColors[3 * i] = rgb[0] / 255;
 			newColors[3 * i + 1] = rgb[1] / 255;
@@ -405,7 +426,11 @@ export class NewtonsMethodExtended extends Applet
 					this.colors[i] = (1 - dummy.t) * oldColors[i] + dummy.t * newColors[i];
 
 					this.wilson.gl.uniform3fv(this.wilson.uniforms["colors"], this.colors);
-					this.wilsonHidden.gl.uniform3fv(this.wilsonHidden.uniforms["colors"], this.colors);
+
+					this.wilsonHidden.gl.uniform3fv(
+						this.wilsonHidden.uniforms["colors"],
+						this.colors
+					);
 				}
 			}
 		});
@@ -446,16 +471,40 @@ export class NewtonsMethodExtended extends Applet
 
 
 
-		this.wilsonHidden.gl.uniform1f(this.wilsonHidden.uniforms["aspectRatio"], this.aspectRatio);
-		this.wilsonHidden.gl.uniform1f(this.wilsonHidden.uniforms["worldCenterX"], this.wilson.worldCenterX);
-		this.wilsonHidden.gl.uniform1f(this.wilsonHidden.uniforms["worldCenterY"], this.wilson.worldCenterY);
+		this.wilsonHidden.gl.uniform1f(
+			this.wilsonHidden.uniforms["aspectRatio"],
+			this.aspectRatio
+		);
 
-		this.wilsonHidden.gl.uniform1f(this.wilsonHidden.uniforms["worldSize"], Math.min(this.wilson.worldHeight, this.wilson.worldWidth) / 2);
+		this.wilsonHidden.gl.uniform1f(
+			this.wilsonHidden.uniforms["worldCenterX"],
+			this.wilson.worldCenterX
+		);
 
+		this.wilsonHidden.gl.uniform1f(
+			this.wilsonHidden.uniforms["worldCenterY"],
+			this.wilson.worldCenterY
+		);
 
-		this.wilsonHidden.gl.uniform2fv(this.wilsonHidden.uniforms["a"], this.a);
-		this.wilsonHidden.gl.uniform2f(this.wilsonHidden.uniforms["c"], this.c[0] / 10, this.c[1] / 10);
-		this.wilsonHidden.gl.uniform1f(this.wilsonHidden.uniforms["brightnessScale"], 30);
+		this.wilsonHidden.gl.uniform1f(
+			this.wilsonHidden.uniforms["worldSize"],
+			Math.min(this.wilson.worldHeight, this.wilson.worldWidth) / 2
+		);
+
+		this.wilsonHidden.gl.uniform2fv(
+			this.wilsonHidden.uniforms["a"],
+			this.a
+		);
+
+		this.wilsonHidden.gl.uniform2f(
+			this.wilsonHidden.uniforms["c"],
+			this.c[0] / 10, this.c[1] / 10
+		);
+		
+		this.wilsonHidden.gl.uniform1f(
+			this.wilsonHidden.uniforms["brightnessScale"],
+			30
+		);
 
 		this.wilsonHidden.render.drawFrame();
 
@@ -467,12 +516,24 @@ export class NewtonsMethodExtended extends Applet
 
 		for (let i = 0; i < this.resolutionHidden * this.resolutionHidden; i++)
 		{
-			brightnesses[i] = Math.max(Math.max(pixelData[4 * i], pixelData[4 * i + 1]), pixelData[4 * i + 2]);
+			brightnesses[i] = Math.max(
+				Math.max(
+					pixelData[4 * i],
+					pixelData[4 * i + 1]
+				),
+				pixelData[4 * i + 2]
+			);
 		}
 
 		brightnesses.sort((a, b) => a - b);
 
-		let brightnessScale = Math.min(10000 / (brightnesses[Math.floor(this.resolutionHidden * this.resolutionHidden * .96)] + brightnesses[Math.floor(this.resolutionHidden * this.resolutionHidden * .98)]), 200);
+		let brightnessScale = Math.min(
+			10000 / (
+				brightnesses[Math.floor(this.resolutionHidden * this.resolutionHidden * .96)]
+				+ brightnesses[Math.floor(this.resolutionHidden * this.resolutionHidden * .98)]
+			),
+			200
+		);
 
 		this.pastBrightnessScales.push(brightnessScale);
 
@@ -487,15 +548,40 @@ export class NewtonsMethodExtended extends Applet
 
 
 
-		this.wilson.gl.uniform1f(this.wilson.uniforms["aspectRatio"], this.aspectRatio);
-		this.wilson.gl.uniform1f(this.wilson.uniforms["worldCenterX"], this.wilson.worldCenterX);
-		this.wilson.gl.uniform1f(this.wilson.uniforms["worldCenterY"], this.wilson.worldCenterY);
+		this.wilson.gl.uniform1f(
+			this.wilson.uniforms["aspectRatio"],
+			this.aspectRatio
+		);
 
-		this.wilson.gl.uniform1f(this.wilson.uniforms["worldSize"], Math.min(this.wilson.worldHeight, this.wilson.worldWidth) / 2);
+		this.wilson.gl.uniform1f(
+			this.wilson.uniforms["worldCenterX"],
+			this.wilson.worldCenterX
+		);
 
-		this.wilson.gl.uniform2fv(this.wilson.uniforms["a"], this.a);
-		this.wilson.gl.uniform2f(this.wilson.uniforms["c"], this.c[0] / 10, this.c[1] / 10);
-		this.wilson.gl.uniform1f(this.wilson.uniforms["brightnessScale"], brightnessScale);
+		this.wilson.gl.uniform1f(
+			this.wilson.uniforms["worldCenterY"],
+			this.wilson.worldCenterY
+		);
+
+		this.wilson.gl.uniform1f(
+			this.wilson.uniforms["worldSize"],
+			Math.min(this.wilson.worldHeight, this.wilson.worldWidth) / 2
+		);
+
+		this.wilson.gl.uniform2fv(
+			this.wilson.uniforms["a"],
+			this.a
+		);
+
+		this.wilson.gl.uniform2f(
+			this.wilson.uniforms["c"],
+			this.c[0] / 10, this.c[1] / 10
+		);
+		
+		this.wilson.gl.uniform1f(
+			this.wilson.uniforms["brightnessScale"],
+			brightnessScale
+		);
 
 		this.wilson.render.drawFrame();
 

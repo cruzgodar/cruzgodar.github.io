@@ -1,4 +1,4 @@
-import anime from"/scripts/anime.min.js";import{Applet}from"/scripts/src/applets.min.mjs";import{getGlslBundle,loadGlsl}from"/scripts/src/complex-glsl.min.mjs";import{addTemporaryListener}from"/scripts/src/main.min.mjs";import{Wilson}from"/scripts/wilson.min.mjs";class NewtonsMethodExtended extends Applet{loadPromise=null;wilsonHidden=null;a=[1,0];c=[0,0];aspectRatio=1;numIterations=100;pastBrightnessScales=[];resolution=500;resolutionHidden=100;derivativePrecision=6;lastTimestamp=-1;colors=null;constructor(canvas){super(canvas);var i=`
+import anime from"/scripts/anime.min.js";import{Applet}from"/scripts/src/applets.min.mjs";import{getGlslBundle,loadGlsl}from"/scripts/src/complex-glsl.min.mjs";import{addTemporaryListener}from"/scripts/src/main.min.mjs";import{Wilson}from"/scripts/wilson.min.mjs";class NewtonsMethodExtended extends Applet{loadPromise=null;wilsonHidden=null;a=[1,0];c=[0,0];aspectRatio=1;numIterations=100;pastBrightnessScales=[];resolution=500;resolutionHidden=100;derivativePrecision=6;lastTimestamp=-1;colors=null;constructor({canvas}){super(canvas);var i=`
 			precision highp float;
 			varying vec2 uv;
 			
