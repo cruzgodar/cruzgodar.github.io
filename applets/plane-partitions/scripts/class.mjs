@@ -189,9 +189,13 @@ export class PlanePartitions extends Applet
 
 		this.wilsonNumbers.ctx.fillStyle = "rgb(255, 255, 255)";
 
-		document.body.querySelector(".wilson-fullscreen-components-container").style.setProperty("z-index", 200, "important");
+		document.body.querySelector(".wilson-fullscreen-components-container").style
+			.setProperty("z-index", 200, "important");
 
-		$$(".wilson-applet-canvas-container").forEach(element => element.style.setProperty("background-color", "rgba(0, 0, 0, 0)", "important"));
+		$$(".wilson-applet-canvas-container")
+			.forEach(element => element.style
+				.setProperty("background-color", "rgba(0, 0, 0, 0)", "important")
+			);
 
 
 
@@ -463,7 +467,8 @@ export class PlanePartitions extends Applet
 	{
 		if (this.useFullscreenButton)
 		{
-			const exitFullscreenButtonElement = document.body.querySelector(".wilson-exit-fullscreen-button");
+			const exitFullscreenButtonElement =
+				document.body.querySelector(".wilson-exit-fullscreen-button");
 
 			if (exitFullscreenButtonElement)
 			{
@@ -473,7 +478,12 @@ export class PlanePartitions extends Applet
 
 		if (!this.in2dView)
 		{
-			this.wilsonNumbers.ctx.clearRect(0, 0, this.wilsonNumbers.canvasWidth, this.wilsonNumbers.canvasHeight);
+			this.wilsonNumbers.ctx.clearRect(
+				0,
+				0,
+				this.wilsonNumbers.canvasWidth,
+				this.wilsonNumbers.canvasHeight
+			);
 		}
 
 		this.wilsonNumbers.fullscreen.switchFullscreen();
@@ -500,16 +510,28 @@ export class PlanePartitions extends Applet
 
 		for (let j = 1; j < sideLength; j++)
 		{
-			planePartition[0][j] = Math.max(planePartition[0][j - 1] - Math.floor(Math.random() * 4), 0);
+			planePartition[0][j] = Math.max(
+				planePartition[0][j - 1] - Math.floor(Math.random() * 4),
+				0
+			);
 		}
 
 		for (let i = 1; i < sideLength; i++)
 		{
-			planePartition[i][0] = Math.max(planePartition[i - 1][0] - Math.floor(Math.random() * 4), 0);
+			planePartition[i][0] = Math.max(
+				planePartition[i - 1][0] - Math.floor(Math.random() * 4),
+				0
+			);
 
 			for (let j = 1; j < sideLength; j++)
 			{
-				planePartition[i][j] = Math.max(Math.min(planePartition[i][j - 1], planePartition[i - 1][j]) - Math.floor(Math.random() * 4), 0);
+				planePartition[i][j] = Math.max(
+					Math.min(
+						planePartition[i][j - 1],
+						planePartition[i - 1][j]
+					) - Math.floor(Math.random() * 4),
+					0
+				);
 			}
 		}
 
@@ -590,7 +612,10 @@ export class PlanePartitions extends Applet
 
 			for (let j = 1; j < sideLength; j++)
 			{
-				ssyt[i][j] = Math.max(ssyt[i][j - 1], ssyt[i - 1][j] + 1) + Math.floor(Math.random() * 2);
+				ssyt[i][j] = Math.max(
+					ssyt[i][j - 1],
+					ssyt[i - 1][j] + 1
+				) + Math.floor(Math.random() * 2);
 			}
 		}
 
@@ -804,7 +829,10 @@ export class PlanePartitions extends Applet
 		{
 			for (let j = 0; j < planePartition[i].length - 1; j++)
 			{
-				if (planePartition[i][j] < planePartition[i + 1][j] || planePartition[i][j] < planePartition[i][j + 1])
+				if (
+					planePartition[i][j] < planePartition[i + 1][j]
+					|| planePartition[i][j] < planePartition[i][j + 1]
+				)
 				{
 					return false;
 				}
@@ -822,7 +850,10 @@ export class PlanePartitions extends Applet
 		{
 			for (let j = 0; j < ssyt[i].length - 1; j++)
 			{
-				if ((ssyt[i + 1][j] !== 0 && ssyt[i][j] >= ssyt[i + 1][j]) || (ssyt[i][j + 1] !== 0 && ssyt[i][j] > ssyt[i][j + 1]))
+				if (
+					(ssyt[i + 1][j] !== 0 && ssyt[i][j] >= ssyt[i + 1][j])
+					|| (ssyt[i][j + 1] !== 0 && ssyt[i][j] > ssyt[i][j + 1])
+				)
 				{
 					return false;
 				}
@@ -878,7 +909,9 @@ export class PlanePartitions extends Applet
 
 			if (i !== 0)
 			{
-				this.arrays[i].centerOffset = this.arrays[i - 1].centerOffset + this.arrays[i - 1].footprint / 2 + this.arrays[i].footprint / 2 + 1;
+				this.arrays[i].centerOffset = this.arrays[i - 1].centerOffset
+					+ this.arrays[i - 1].footprint / 2
+					+ this.arrays[i].footprint / 2 + 1;
 
 				this.arrays[i].partialFootprintSum += this.arrays[i - 1].partialFootprintSum + 1;
 			}
@@ -963,11 +996,22 @@ export class PlanePartitions extends Applet
 
 					if (horizontalLegs)
 					{
-						const legHeight = Math.max(array.numbers[i][array.footprint - 1], array.numbers[array.footprint - 1][j]);
+						const legHeight = Math.max(
+							array.numbers[i][array.footprint - 1],
+							array.numbers[array.footprint - 1][j]
+						);
 
 						for (let k = 0; k < legHeight; k++)
 						{
-							array.cubes[i][j][k] = this.addCube(array, j, k, i, 0, 0, this.asymptoteLightness);
+							array.cubes[i][j][k] = this.addCube(
+								array,
+								j,
+								k,
+								i,
+								0,
+								0,
+								this.asymptoteLightness
+							);
 						}
 
 						for (let k = legHeight; k < array.numbers[i][j]; k++)
@@ -994,7 +1038,15 @@ export class PlanePartitions extends Applet
 
 					for (let k = 0; k < this.infiniteHeight; k++)
 					{
-						array.cubes[i][j][k] = this.addCube(array, j, k, i, 0, 0, this.asymptoteLightness);
+						array.cubes[i][j][k] = this.addCube(
+							array,
+							j,
+							k,
+							i,
+							0,
+							0,
+							this.asymptoteLightness
+						);
 					}
 				}
 			}
@@ -1035,7 +1087,12 @@ export class PlanePartitions extends Applet
 
 		if (this.arrays.length === 1 && !keepNumbersCanvasVisible)
 		{
-			this.hexViewCameraPos = [this.totalArraySize, this.totalArraySize + this.totalArrayHeight / 3, this.totalArraySize];
+			this.hexViewCameraPos = [
+				this.totalArraySize,
+				this.totalArraySize + this.totalArrayHeight / 3,
+				this.totalArraySize
+			];
+
 			this._2dViewCameraPos = [0, this.totalArraySize + 10, 0];
 
 			if (this.in2dView && !keepNumbersCanvasVisible)
@@ -1049,7 +1106,13 @@ export class PlanePartitions extends Applet
 				this.orthographicCamera.right = this.totalArraySize;
 				this.orthographicCamera.top = this.totalArraySize;
 				this.orthographicCamera.bottom = -this.totalArraySize;
-				this.orthographicCamera.position.set(this.hexViewCameraPos[0], this.hexViewCameraPos[1], this.hexViewCameraPos[2]);
+
+				this.orthographicCamera.position.set(
+					this.hexViewCameraPos[0],
+					this.hexViewCameraPos[1],
+					this.hexViewCameraPos[2]
+				);
+
 				this.orthographicCamera.rotation.set(-0.785398163, 0.615479709, 0.523598775);
 				this.orthographicCamera.updateProjectionMatrix();
 			}
@@ -1242,7 +1305,8 @@ export class PlanePartitions extends Applet
 					{
 						if (this.arrays[index].cubes[i][j][k])
 						{
-							this.arrays[index].cubes[i][j][k].material.forEach(material => material.dispose());
+							this.arrays[index].cubes[i][j][k].material
+								.forEach(material => material.dispose());
 						}
 					}
 				}
@@ -1264,7 +1328,9 @@ export class PlanePartitions extends Applet
 
 			if (i !== 0)
 			{
-				this.arrays[i].centerOffset = this.arrays[i - 1].centerOffset + this.arrays[i - 1].footprint / 2 + this.arrays[i].footprint / 2 + 1;
+				this.arrays[i].centerOffset = this.arrays[i - 1].centerOffset
+					+ this.arrays[i - 1].footprint / 2
+						+ this.arrays[i].footprint / 2 + 1;
 
 				this.arrays[i].partialFootprintSum += this.arrays[i - 1].partialFootprintSum + 1;
 			}
@@ -1311,12 +1377,41 @@ export class PlanePartitions extends Applet
 	addCube(array, x, y, z, h = 0, s = 0, v = this.cubeLightness)
 	{
 		const materials = [
-			new THREE.MeshStandardMaterial({ map: this.cubeTexture, transparent: true, opacity: 0 }),
-			new THREE.MeshStandardMaterial({ map: this.cubeTexture, transparent: true, opacity: 0 }),
-			new THREE.MeshStandardMaterial({ map: this.cubeTexture, transparent: true, opacity: 0 }),
-			new THREE.MeshStandardMaterial({ map: this.cubeTexture, transparent: true, opacity: 0 }),
-			new THREE.MeshStandardMaterial({ map: this.cubeTexture2, transparent: true, opacity: 0 }),
-			new THREE.MeshStandardMaterial({ map: this.cubeTexture2, transparent: true, opacity: 0 })
+			new THREE.MeshStandardMaterial({
+				map: this.cubeTexture,
+				transparent: true,
+				opacity: 0
+			}),
+
+			new THREE.MeshStandardMaterial({
+				map: this.cubeTexture,
+				transparent: true,
+				opacity: 0
+			}),
+
+			new THREE.MeshStandardMaterial({
+				map: this.cubeTexture,
+				transparent: true,
+				opacity: 0
+			}),
+
+			new THREE.MeshStandardMaterial({
+				map: this.cubeTexture,
+				transparent: true,
+				opacity: 0
+			}),
+
+			new THREE.MeshStandardMaterial({
+				map: this.cubeTexture2,
+				transparent: true,
+				opacity: 0
+			}),
+
+			new THREE.MeshStandardMaterial({
+				map: this.cubeTexture2,
+				transparent: true,
+				opacity: 0
+			})
 		];
 
 		materials.forEach(material => material.color.setHSL(h, s, v));
@@ -1343,12 +1438,41 @@ export class PlanePartitions extends Applet
 	addFloor(array, x, z, h = 0, s = 0, v = this.floorLightness)
 	{
 		const materials = [
-			new THREE.MeshStandardMaterial({ map: this.floorTexture, transparent: true, opacity: 0 }),
-			new THREE.MeshStandardMaterial({ map: this.floorTexture, transparent: true, opacity: 0 }),
-			new THREE.MeshStandardMaterial({ map: this.floorTexture, transparent: true, opacity: 0 }),
-			new THREE.MeshStandardMaterial({ map: this.floorTexture, transparent: true, opacity: 0 }),
-			new THREE.MeshStandardMaterial({ map: this.floorTexture2, transparent: true, opacity: 0 }),
-			new THREE.MeshStandardMaterial({ map: this.floorTexture2, transparent: true, opacity: 0 })
+			new THREE.MeshStandardMaterial({
+				map: this.floorTexture,
+				transparent: true,
+				opacity: 0
+			}),
+
+			new THREE.MeshStandardMaterial({
+				map: this.floorTexture,
+				transparent: true,
+				opacity: 0
+			}),
+
+			new THREE.MeshStandardMaterial({
+				map: this.floorTexture,
+				transparent: true,
+				opacity: 0
+			}),
+
+			new THREE.MeshStandardMaterial({
+				map: this.floorTexture,
+				transparent: true,
+				opacity: 0
+			}),
+
+			new THREE.MeshStandardMaterial({
+				map: this.floorTexture2,
+				transparent: true,
+				opacity: 0
+			}),
+
+			new THREE.MeshStandardMaterial({
+				map: this.floorTexture2,
+				transparent: true,
+				opacity: 0
+			})
 		];
 
 		materials.forEach(material => material.color.setHSL(h, s, v));
@@ -1365,7 +1489,11 @@ export class PlanePartitions extends Applet
 
 		else
 		{
-			floor.position.set(x - (array.footprint - 1) / 2, -.5 - .0005, z - (array.footprint - 1) / 2);
+			floor.position.set(
+				x - (array.footprint - 1) / 2,
+				-.5 - .0005,
+				z - (array.footprint - 1) / 2
+			);
 		}
 
 		return floor;
@@ -1376,12 +1504,41 @@ export class PlanePartitions extends Applet
 	addLeftWall(array, y, z, h = 0, s = 0, v = this.floorLightness)
 	{
 		const materials = [
-			new THREE.MeshStandardMaterial({ map: this.floorTexture, transparent: true, opacity: 0 }),
-			new THREE.MeshStandardMaterial({ map: this.floorTexture, transparent: true, opacity: 0 }),
-			new THREE.MeshStandardMaterial({ map: this.floorTexture, transparent: true, opacity: 0 }),
-			new THREE.MeshStandardMaterial({ map: this.floorTexture, transparent: true, opacity: 0 }),
-			new THREE.MeshStandardMaterial({ map: this.floorTexture2, transparent: true, opacity: 0 }),
-			new THREE.MeshStandardMaterial({ map: this.floorTexture2, transparent: true, opacity: 0 })
+			new THREE.MeshStandardMaterial({
+				map: this.floorTexture,
+				transparent: true,
+				opacity: 0
+			}),
+
+			new THREE.MeshStandardMaterial({
+				map: this.floorTexture,
+				transparent: true,
+				opacity: 0
+			}),
+
+			new THREE.MeshStandardMaterial({
+				map: this.floorTexture,
+				transparent: true,
+				opacity: 0
+			}),
+
+			new THREE.MeshStandardMaterial({
+				map: this.floorTexture,
+				transparent: true,
+				opacity: 0
+			}),
+
+			new THREE.MeshStandardMaterial({
+				map: this.floorTexture2,
+				transparent: true,
+				opacity: 0
+			}),
+
+			new THREE.MeshStandardMaterial({
+				map: this.floorTexture2,
+				transparent: true,
+				opacity: 0
+			})
 		];
 
 		materials.forEach(material => material.color.setHSL(h, s, v));
@@ -1398,7 +1555,11 @@ export class PlanePartitions extends Applet
 
 		else
 		{
-			wall.position.set(-.5 - .0005 - (array.footprint - 1) / 2, y, z - (array.footprint - 1) / 2);
+			wall.position.set(
+				-.5 - .0005 - (array.footprint - 1) / 2,
+				y,
+				z - (array.footprint - 1) / 2
+			);
 		}
 
 		return wall;
@@ -1409,12 +1570,41 @@ export class PlanePartitions extends Applet
 	addRightWall(array, x, y, h = 0, s = 0, v = this.floorLightness)
 	{
 		const materials = [
-			new THREE.MeshStandardMaterial({ map: this.floorTexture, transparent: true, opacity: 0 }),
-			new THREE.MeshStandardMaterial({ map: this.floorTexture, transparent: true, opacity: 0 }),
-			new THREE.MeshStandardMaterial({ map: this.floorTexture, transparent: true, opacity: 0 }),
-			new THREE.MeshStandardMaterial({ map: this.floorTexture, transparent: true, opacity: 0 }),
-			new THREE.MeshStandardMaterial({ map: this.floorTexture2, transparent: true, opacity: 0 }),
-			new THREE.MeshStandardMaterial({ map: this.floorTexture2, transparent: true, opacity: 0 })
+			new THREE.MeshStandardMaterial({
+				map: this.floorTexture,
+				transparent: true,
+				opacity: 0
+			}),
+
+			new THREE.MeshStandardMaterial({
+				map: this.floorTexture,
+				transparent: true,
+				opacity: 0
+			}),
+
+			new THREE.MeshStandardMaterial({
+				map: this.floorTexture,
+				transparent: true,
+				opacity: 0
+			}),
+
+			new THREE.MeshStandardMaterial({
+				map: this.floorTexture,
+				transparent: true,
+				opacity: 0
+			}),
+
+			new THREE.MeshStandardMaterial({
+				map: this.floorTexture2,
+				transparent: true,
+				opacity: 0
+			}),
+
+			new THREE.MeshStandardMaterial({
+				map: this.floorTexture2,
+				transparent: true,
+				opacity: 0
+			})
 		];
 
 		materials.forEach(material => material.color.setHSL(h, s, v));
@@ -1431,7 +1621,11 @@ export class PlanePartitions extends Applet
 
 		else
 		{
-			wall.position.set(x - (array.footprint - 1) / 2, y, -.5 - .0005 - (array.footprint - 1) / 2);
+			wall.position.set(
+				x - (array.footprint - 1) / 2,
+				y,
+				-.5 - .0005 - (array.footprint - 1) / 2
+			);
 		}
 
 		return wall;
@@ -1606,9 +1800,17 @@ export class PlanePartitions extends Applet
 
 
 
-		const hexViewCameraOffset = (-this.arrays[0].footprint / 2 + this.arrays[this.arrays.length - 1].centerOffset + this.arrays[this.arrays.length - 1].footprint / 2) / 2;
+		const hexViewCameraOffset = (
+			-this.arrays[0].footprint / 2
+			+ this.arrays[this.arrays.length - 1].centerOffset
+			+ this.arrays[this.arrays.length - 1].footprint / 2
+		) / 2;
 
-		this.hexViewCameraPos = [this.totalArraySize + hexViewCameraOffset, this.totalArraySize + this.totalArrayHeight / 3, this.totalArraySize - hexViewCameraOffset];
+		this.hexViewCameraPos = [
+			this.totalArraySize + hexViewCameraOffset,
+			this.totalArraySize + this.totalArrayHeight / 3,
+			this.totalArraySize - hexViewCameraOffset
+		];
 
 		if (this.addWalls)
 		{
@@ -1763,7 +1965,12 @@ export class PlanePartitions extends Applet
 
 
 		await anime({
-			targets: [this.wilsonHidden.ctx, this.wilsonHidden2.ctx, this.wilsonHidden3.ctx, this.wilsonHidden4.ctx],
+			targets: [
+				this.wilsonHidden.ctx,
+				this.wilsonHidden2.ctx,
+				this.wilsonHidden3.ctx,
+				this.wilsonHidden4.ctx
+			],
 			strokeStyle: "rgba(255, 255, 255, 1)",
 			_alpha: 0,
 			duration: this.animationTime / 2,
@@ -1909,7 +2116,12 @@ export class PlanePartitions extends Applet
 
 
 		await anime({
-			targets: [this.wilsonHidden.ctx, this.wilsonHidden2.ctx, this.wilsonHidden3.ctx, this.wilsonHidden4.ctx],
+			targets: [
+				this.wilsonHidden.ctx,
+				this.wilsonHidden2.ctx,
+				this.wilsonHidden3.ctx,
+				this.wilsonHidden4.ctx
+			],
 			strokeStyle: "rgba(255, 255, 255, 0)",
 			_alpha: 1,
 			duration: this.animationTime / 2,
@@ -2017,7 +2229,8 @@ export class PlanePartitions extends Applet
 
 
 
-	//Removes the floor from right to left in each row until a box with positive size is reached --- used to make RPPs display a little better.
+	//Removes the floor from right to left in each row until
+	//a box with positive size is reached --- used to make RPPs display a little better.
 	removeOutsideFloor(array)
 	{
 		const targets = [];
@@ -2039,7 +2252,8 @@ export class PlanePartitions extends Applet
 
 		removals.forEach(coordinates =>
 		{
-			array.floor[coordinates[0]][coordinates[1]].material.forEach(material => material.dispose());
+			array.floor[coordinates[0]][coordinates[1]].material
+				.forEach(material => material.dispose());
 
 			array.cubeGroup.remove(array.floor[coordinates[0]][coordinates[1]]);
 
@@ -2076,7 +2290,10 @@ export class PlanePartitions extends Applet
 
 		this.totalArrayHeight = 0;
 
-		this.arrays.forEach(array => this.totalArrayHeight = Math.max(array.height, this.totalArrayHeight));
+		this.arrays.forEach(array => this.totalArrayHeight = Math.max(
+			array.height,
+			this.totalArrayHeight
+		));
 
 
 
@@ -2098,7 +2315,12 @@ export class PlanePartitions extends Applet
 
 		this.wilsonNumbers.ctx.font = `${this.fontSize / numCharacters}px monospace`;
 
-		this.wilsonNumbers.ctx.clearRect(0, 0, this.wilsonNumbers.canvasWidth, this.wilsonNumbers.canvasHeight);
+		this.wilsonNumbers.ctx.clearRect(
+			0,
+			0,
+			this.wilsonNumbers.canvasWidth,
+			this.wilsonNumbers.canvasHeight
+		);
 
 		this.arrays.forEach(array =>
 		{
@@ -2123,20 +2345,37 @@ export class PlanePartitions extends Applet
 		const top = (this.totalArrayFootprint - array.footprint - 1) / 2;
 		const left = array.partialFootprintSum - array.footprint;
 
-		this.wilsonNumbers.ctx.clearRect(this.fontSize * (col + left + 1), this.fontSize * (row + top + 1), this.fontSize, this.fontSize);
+		this.wilsonNumbers.ctx.clearRect(
+			this.fontSize * (col + left + 1),
+			this.fontSize * (row + top + 1),
+			this.fontSize,
+			this.fontSize
+		);
 
-		if (array.numbers[row][col] !== Infinity && (array.numbers[row][col] !== 0 || this.floorLightness !== 0))
+		if (
+			array.numbers[row][col] !== Infinity
+			&& (array.numbers[row][col] !== 0 || this.floorLightness !== 0)
+		)
 		{
 			const textMetrics = this.wilsonNumbers.ctx.measureText(array.numbers[row][col]);
 
 			//The height adjustment is an annoying spacing computation.
-			this.wilsonNumbers.ctx.fillText(array.numbers[row][col], this.fontSize * (col + left + 1) + (this.fontSize - textMetrics.width) / 2, this.fontSize * (row + top + 1) + (this.fontSize + textMetrics.actualBoundingBoxAscent - textMetrics.actualBoundingBoxDescent) / 2);
+			this.wilsonNumbers.ctx.fillText(
+				array.numbers[row][col],
+				this.fontSize * (col + left + 1) + (this.fontSize - textMetrics.width) / 2,
+				this.fontSize * (row + top + 1) + (
+					this.fontSize
+					+ textMetrics.actualBoundingBoxAscent
+					- textMetrics.actualBoundingBoxDescent
+				) / 2
+			);
 		}
 	}
 
 
 
-	//coordinates is a list of length-3 arrays [i, j, k] containing the coordinates of the cubes to highlight.
+	//coordinates is a list of length-3 arrays [i, j, k]
+	//containing the coordinates of the cubes to highlight.
 	async colorCubes(array, coordinates, hue)
 	{
 		if (coordinates.length === 0)
@@ -2148,7 +2387,8 @@ export class PlanePartitions extends Applet
 
 		coordinates.forEach(xyz =>
 		{
-			array.cubes[xyz[0]][xyz[1]][xyz[2]].material.forEach(material => targets.push(material.color));
+			array.cubes[xyz[0]][xyz[1]][xyz[2]].material
+				.forEach(material => targets.push(material.color));
 		});
 
 		targets.forEach(color => color.getRGB(color));
@@ -2181,7 +2421,8 @@ export class PlanePartitions extends Applet
 
 		coordinates.forEach(xyz =>
 		{
-			array.cubes[xyz[0]][xyz[1]][xyz[2]].material.forEach(material => targets.push(material.color));
+			array.cubes[xyz[0]][xyz[1]][xyz[2]].material
+				.forEach(material => targets.push(material.color));
 		});
 
 		targets.forEach(color => color.getHSL(color));
@@ -2191,7 +2432,11 @@ export class PlanePartitions extends Applet
 			s: 0,
 			duration: this.animationTime,
 			easing: "easeOutQuad",
-			update: () => targets.forEach(color => color.setHSL(color.h, color.s, this.cubeLightness)),
+			update: () => targets.forEach(color => color.setHSL(
+				color.h,
+				color.s,
+				this.cubeLightness
+			)),
 		}).finished;
 	}
 
@@ -2250,7 +2495,8 @@ export class PlanePartitions extends Applet
 
 		coordinates.forEach(xyz =>
 		{
-			array.cubes[xyz[0]][xyz[1]][array.numbers[xyz[0]][xyz[1]]] = array.cubes[xyz[0]][xyz[1]][xyz[2]];
+			array.cubes[xyz[0]][xyz[1]][array.numbers[xyz[0]][xyz[1]]]
+				= array.cubes[xyz[0]][xyz[1]][xyz[2]];
 
 			array.cubes[xyz[0]][xyz[1]][xyz[2]] = null;
 		});
@@ -2259,7 +2505,13 @@ export class PlanePartitions extends Applet
 
 
 	//Moves cubes from one array to another and changes their group.
-	async moveCubes(sourceArray, sourceCoordinates, targetArray, targetCoordinates, updateCubeArray = true)
+	async moveCubes(
+		sourceArray,
+		sourceCoordinates,
+		targetArray,
+		targetCoordinates,
+		updateCubeArray = true
+	)
 	{
 		const targets = [];
 
@@ -2286,7 +2538,8 @@ export class PlanePartitions extends Applet
 		if (updateCubeArray)
 		{
 			//This is necessary in case the source and target arrays are the same.
-			const sourceCubes = sourceCoordinates.map(xyz => sourceArray.cubes[xyz[0]][xyz[1]][xyz[2]]);
+			const sourceCubes = sourceCoordinates
+				.map(xyz => sourceArray.cubes[xyz[0]][xyz[1]][xyz[2]]);
 
 			sourceCoordinates.forEach(xyz => sourceArray.cubes[xyz[0]][xyz[1]][xyz[2]] = null);
 
@@ -2297,7 +2550,11 @@ export class PlanePartitions extends Applet
 					console.error("Cannot move cubes to an infinite height");
 				}
 
-				if (targetArray.cubes[xyz[0]][xyz[1]][xyz[2]] && !sourceCoordinates.some(e => e[0] === xyz[0] && e[1] === xyz[1] && e[2] === xyz[2]))
+				if (
+					targetArray.cubes[xyz[0]][xyz[1]][xyz[2]]
+					&& !sourceCoordinates
+						.some(e => e[0] === xyz[0] && e[1] === xyz[1] && e[2] === xyz[2])
+				)
 				{
 					console.warn(`Moving a cube to a location that's already occupied: ${xyz}. This is probably not what you want to do.`);
 				}
@@ -2321,7 +2578,8 @@ export class PlanePartitions extends Applet
 
 		coordinates.forEach(xyz =>
 		{
-			array.cubes[xyz[0]][xyz[1]][xyz[2]].material.forEach(material => targets.push(material));
+			array.cubes[xyz[0]][xyz[1]][xyz[2]].material
+				.forEach(material => targets.push(material));
 
 			if (array.numbers[xyz[0]][xyz[1]] === Infinity)
 			{
@@ -2347,7 +2605,8 @@ export class PlanePartitions extends Applet
 
 		coordinates.forEach(xyz =>
 		{
-			array.cubes[xyz[0]][xyz[1]][xyz[2]].material.forEach(material => targets.push(material));
+			array.cubes[xyz[0]][xyz[1]][xyz[2]].material
+				.forEach(material => targets.push(material));
 		});
 
 		await anime({
@@ -2561,7 +2820,10 @@ export class PlanePartitions extends Applet
 				{
 					let k = 0;
 
-					while (k < this.arrays[index + i].numbers[j].length && this.arrays[index + i].numbers[j][k] !== 0)
+					while (
+						k < this.arrays[index + i].numbers[j].length
+						&& this.arrays[index + i].numbers[j][k] !== 0
+					)
 					{
 						k++;
 					}
@@ -2676,7 +2938,11 @@ export class PlanePartitions extends Applet
 			//Find the right-most nonzero entry at the top of its column.
 			let startingCol = planePartition[0].length - 1;
 
-			while (startingCol >= 0 && columnStarts[startingCol] < planePartition.length && planePartition[columnStarts[startingCol]][startingCol] === 0)
+			while (
+				startingCol >= 0
+				&& columnStarts[startingCol] < planePartition.length
+				&& planePartition[columnStarts[startingCol]][startingCol] === 0
+			)
 			{
 				startingCol--;
 			}
@@ -2695,7 +2961,11 @@ export class PlanePartitions extends Applet
 
 			for (;;)
 			{
-				if (currentRow < planePartition.length - 1 && planePartition[currentRow + 1][currentCol] === planePartition[currentRow][currentCol])
+				if (
+					currentRow < planePartition.length - 1
+					&& planePartition[currentRow + 1][currentCol]
+						=== planePartition[currentRow][currentCol]
+				)
 				{
 					currentRow++;
 				}
@@ -2764,7 +3034,11 @@ export class PlanePartitions extends Applet
 
 				if (this.in2dView)
 				{
-					this.drawSingleCell2dViewText(array, zigzagPaths[i][j][0], zigzagPaths[i][j][1]);
+					this.drawSingleCell2dViewText(
+						array,
+						zigzagPaths[i][j][0],
+						zigzagPaths[i][j][1]
+					);
 				}
 			}
 
@@ -2799,7 +3073,9 @@ export class PlanePartitions extends Applet
 
 
 
-			//Now delete everything but the pivot and move that down. To make the deletion look nice, we'll put these coordinates in a different order and send two lists total.
+			//Now delete everything but the pivot and move that down.
+			//To make the deletion look nice, we'll put these coordinates
+			//in a different order and send two lists total.
 			targetCoordinates = [];
 
 			for (let j = pivot[0] - 1; j >= columnStarts[pivot[1]]; j--)
@@ -2830,10 +3106,17 @@ export class PlanePartitions extends Applet
 
 			if (this.in2dView)
 			{
-				this.drawSingleCell2dViewText(outputArray, pivotCoordinates[0], pivotCoordinates[1]);
+				this.drawSingleCell2dViewText(
+					outputArray,
+					pivotCoordinates[0],
+					pivotCoordinates[1]
+				);
 			}
 
-			outputArray.height = Math.max(outputArray.height, outputArray.numbers[pivotCoordinates[0]][pivotCoordinates[1]]);
+			outputArray.height = Math.max(
+				outputArray.height,
+				outputArray.numbers[pivotCoordinates[0]][pivotCoordinates[1]]
+			);
 
 			outputArray.size = Math.max(outputArray.size, outputArray.height);
 
@@ -2928,7 +3211,10 @@ export class PlanePartitions extends Applet
 
 						if (currentRow !== 0)
 						{
-							while (planePartition[currentRow][k] !== planePartition[currentRow - 1][k] && k < j)
+							while (
+								planePartition[currentRow][k] !== planePartition[currentRow - 1][k]
+								&& k < j
+							)
 							{
 								k++;
 							}
@@ -2994,13 +3280,17 @@ export class PlanePartitions extends Applet
 			for (let j = columnStarts[col]; j < row; j++)
 			{
 				array.cubes[j][col][height] = this.addCube(array, col, height, j);
-				array.cubes[j][col][height].material.forEach(material => material.color.setHSL(hue, 1, this.cubeLightness));
+
+				array.cubes[j][col][height].material
+					.forEach(material => material.color.setHSL(hue, 1, this.cubeLightness));
 			}
 
 			for (let j = rowStarts[row]; j < col; j++)
 			{
 				array.cubes[row][j][height] = this.addCube(array, j, height, row);
-				array.cubes[row][j][height].material.forEach(material => material.color.setHSL(hue, 1, this.cubeLightness));
+
+				array.cubes[row][j][height].material
+					.forEach(material => material.color.setHSL(hue, 1, this.cubeLightness));
 			}
 
 
@@ -3076,7 +3366,11 @@ export class PlanePartitions extends Applet
 
 			if (this.in2dView)
 			{
-				targetCoordinates.forEach(entry => this.drawSingleCell2dViewText(outputArray, entry[0], entry[1]));
+				targetCoordinates.forEach(entry => this.drawSingleCell2dViewText(
+					outputArray,
+					entry[0],
+					entry[1]
+				));
 			}
 
 
@@ -3107,12 +3401,18 @@ export class PlanePartitions extends Applet
 		let rightLegSize = 0;
 		let bottomLegSize = 0;
 
-		while (rightLegSize < array.footprint && array.numbers[rightLegSize][array.footprint - 1] !== 0)
+		while (
+			rightLegSize < array.footprint
+			&& array.numbers[rightLegSize][array.footprint - 1] !== 0
+		)
 		{
 			rightLegSize++;
 		}
 
-		while (bottomLegSize < array.footprint && array.numbers[array.footprint - 1][bottomLegSize] !== 0)
+		while (
+			bottomLegSize < array.footprint
+			&& array.numbers[array.footprint - 1][bottomLegSize] !== 0
+		)
 		{
 			bottomLegSize++;
 		}
@@ -3155,7 +3455,11 @@ export class PlanePartitions extends Applet
 
 				while (row + i < array.footprint && col + i < array.footprint)
 				{
-					diagonalCoordinates.push([row + i, col + i, planePartition[row + i][col + i] - 1]);
+					diagonalCoordinates.push([
+						row + i,
+						col + i,
+						planePartition[row + i][col + i] - 1
+					]);
 
 					i++;
 				}
@@ -3190,7 +3494,9 @@ export class PlanePartitions extends Applet
 
 
 
-				//For each coordinate in the diagonal, we need to find the toggled value. The first and last will always be a little different, since they don't have as many neighbors.
+				//For each coordinate in the diagonal, we need to find the toggled value.
+				//The first and last will always be a little different,
+				//since they don't have as many neighbors.
 				const newDiagonalHeight = new Array(diagonalCoordinates.length);
 
 				diagonalCoordinates.forEach((coordinate, index) =>
@@ -3220,7 +3526,8 @@ export class PlanePartitions extends Applet
 						neighbor1 = planePartition[i - 1][j];
 						neighbor2 = planePartition[i][j - 1];
 
-						newDiagonalHeight[index] += Math.min(neighbor1, neighbor2) - planePartition[i][j];
+						newDiagonalHeight[index] +=
+							Math.min(neighbor1, neighbor2) - planePartition[i][j];
 					}
 
 					else
@@ -3396,7 +3703,9 @@ export class PlanePartitions extends Applet
 
 
 
-				//For each coordinate in the diagonal, we need to find the toggled value. The first and last will always be a little different, since they don't have as many neighbors.
+				//For each coordinate in the diagonal, we need to find the toggled value.
+				//The first and last will always be a little different,
+				//since they don't have as many neighbors.
 				const newDiagonalHeight = new Array(diagonalCoordinates.length);
 
 				let anyChange = false;
@@ -3460,7 +3769,15 @@ export class PlanePartitions extends Applet
 
 				else if (newDiagonalHeight[0] !== 0)
 				{
-					array.cubes[i][j][0] = this.addCube(array, j, 0, i, hueIndex / numCorners * 6 / 7, 1, this.cubeLightness);
+					array.cubes[i][j][0] = this.addCube(
+						array,
+						j,
+						0,
+						i,
+						hueIndex / numCorners * 6 / 7,
+						1,
+						this.cubeLightness
+					);
 
 					tableau[i][j] = 1;
 
@@ -3489,7 +3806,15 @@ export class PlanePartitions extends Applet
 
 						for (let k = tableau[i][j]; k < newDiagonalHeight[index]; k++)
 						{
-							array.cubes[i][j][k] = this.addCube(array, j, k, i, hueIndex / numCorners * 6 / 7, 1, this.cubeLightness);
+							array.cubes[i][j][k] = this.addCube(
+								array,
+								j,
+								k,
+								i,
+								hueIndex / numCorners * 6 / 7,
+								1,
+								this.cubeLightness
+							);
 
 							coordinatesToReveal.push([i, j, k]);
 						}
@@ -3621,7 +3946,11 @@ export class PlanePartitions extends Applet
 			let row = diagonalStarts[i][0];
 			let col = diagonalStarts[i][1];
 
-			while (row < planePartition.length && col < planePartition.length && planePartition[row][col] === Infinity)
+			while (
+				row < planePartition.length
+				&& col < planePartition.length
+				&& planePartition[row][col] === Infinity
+			)
 			{
 				row++;
 				col++;
@@ -3663,7 +3992,9 @@ export class PlanePartitions extends Applet
 
 
 
-		//Now we need to move through the candidates. They only occur in A and O regions, so we only scan those diagonals, top-left to bottom-right, and then bottom-left to top-right in terms of diagonals.
+		//Now we need to move through the candidates.
+		//They only occur in A and O regions, so we only scan those diagonals,
+		//top-left to bottom-right, and then bottom-left to top-right in terms of diagonals.
 		const qPaths = [];
 
 		for (let i = -planePartition.length + 1; i < planePartition.length; i++)
@@ -3687,11 +4018,39 @@ export class PlanePartitions extends Applet
 			{
 				let foundCandidate = false;
 
-				while (startRow < planePartition.length && startCol < planePartition.length && planePartition[startRow][startCol] !== 0)
+				while (
+					startRow < planePartition.length
+					&& startCol < planePartition.length
+					&& planePartition[startRow][startCol] !== 0
+				)
 				{
-					if ((startCol < planePartition.length - 1 && planePartition[startRow][startCol] > planePartition[startRow][startCol + 1]) || (startCol === planePartition.length - 1 && planePartition[startRow][startCol] > 0))
+					if (
+						(
+							startCol < planePartition.length - 1
+							&& planePartition[startRow][startCol] >
+								planePartition[startRow][startCol + 1]
+						) || (
+							startCol === planePartition.length - 1
+							&& planePartition[startRow][startCol] > 0
+						)
+					)
 					{
-						if (diagonals[i] === 0 || (diagonals[i] === 2 && ((startRow < planePartition.length - 1 && planePartition[startRow][startCol] > planePartition[startRow + 1][startCol]) || (startRow === planePartition.length - 1 && planePartition[startRow][startCol] > 0))))
+						if (
+							diagonals[i] === 0
+							|| (
+								diagonals[i] === 2
+								&& (
+									(
+										startRow < planePartition.length - 1
+										&& planePartition[startRow][startCol] >
+											planePartition[startRow + 1][startCol]
+									) || (
+										startRow === planePartition.length - 1
+										&& planePartition[startRow][startCol] > 0
+									)
+								)
+							)
+						)
 						{
 							foundCandidate = true;
 							break;
@@ -3718,12 +4077,25 @@ export class PlanePartitions extends Applet
 				{
 					const currentContent = col - row;
 
-					if (row < planePartition.length - 1 && planePartition[row][col] === planePartition[row + 1][col] && (diagonals[currentContent] === 0 || diagonals[currentContent] === 3))
+					if (
+						row < planePartition.length - 1
+						&& planePartition[row][col] === planePartition[row + 1][col]
+						&& (diagonals[currentContent] === 0 || diagonals[currentContent] === 3)
+					)
 					{
 						row++;
 					}
 
-					else if (col > rowStarts[row] && (row === planePartition.length - 1 || (row < planePartition.length - 1 && planePartition[row][col] > planePartition[row + 1][col])))
+					else if (
+						col > rowStarts[row]
+						&& (
+							row === planePartition.length - 1
+							|| (
+								row < planePartition.length - 1
+								&& planePartition[row][col] > planePartition[row + 1][col]
+							)
+						)
+					)
 					{
 						col--;
 					}
@@ -3762,7 +4134,8 @@ export class PlanePartitions extends Applet
 
 
 
-		//Now we'll animate those paths actually decrementing, one-by-one. We're using a for loop because we need to await.
+		//Now we'll animate those paths actually decrementing,
+		//one-by-one. We're using a for loop because we need to await.
 		for (let i = 0; i < qPaths.length; i++)
 		{
 			const hue = i / qPaths.length * 6 / 7;
@@ -3793,7 +4166,10 @@ export class PlanePartitions extends Applet
 
 			await new Promise(resolve => setTimeout(resolve, this.animationTime / 5));
 
-			//Find the pivot and rearrange the shape into a hook. The end of the Q-path is the same as the end of the rim-hook, so it defines the row. To find the column, we need to go row boxes down, and then use the rest of the length to go right.
+			//Find the pivot and rearrange the shape into a hook.
+			//The end of the Q-path is the same as the end of the rim-hook,
+			//so it defines the row. To find the column, we need to go row boxes down,
+			//and then use the rest of the length to go right.
 			const row = qPaths[i][qPaths[i].length - 1][0];
 
 			const startContent = qPaths[i][qPaths[i].length - 1][1] - row;
@@ -3823,7 +4199,9 @@ export class PlanePartitions extends Applet
 
 
 
-			//Now delete everything but the pivot and move that down. To make the deletion look nice, we'll put these coordinates in a different order and send two lists total.
+			//Now delete everything but the pivot and move that down.
+			//To make the deletion look nice, we'll put these coordinates
+			//in a different order and send two lists total.
 			targetCoordinates = [];
 
 			for (let j = row - 1; j >= columnStarts[col]; j--)
@@ -4001,13 +4379,17 @@ export class PlanePartitions extends Applet
 					for (let k = columnStarts[col]; k < row; k++)
 					{
 						array.cubes[k][col][height] = this.addCube(array, col, height, k);
-						array.cubes[k][col][height].material.forEach(material => material.color.setHSL(hue, 1, this.cubeLightness));
+
+						array.cubes[k][col][height].material
+							.forEach(material => material.color.setHSL(hue, 1, this.cubeLightness));
 					}
 
 					for (let k = rowStarts[row]; k < col; k++)
 					{
 						array.cubes[row][k][height] = this.addCube(array, k, height, row);
-						array.cubes[row][k][height].material.forEach(material => material.color.setHSL(hue, 1, this.cubeLightness));
+
+						array.cubes[row][k][height].material
+							.forEach(material => material.color.setHSL(hue, 1, this.cubeLightness));
 					}
 
 
@@ -4034,7 +4416,8 @@ export class PlanePartitions extends Applet
 
 
 
-					//In order to animate this nicely, we won't just jump straight to the Q-path -- we'll turn it into a rim-hook first.
+					//In order to animate this nicely, we won't just jump straight to the Q-path --
+					//we'll turn it into a rim-hook first.
 					coordinates = [];
 
 					for (let k = rowStarts[row]; k < col; k++)
@@ -4079,13 +4462,18 @@ export class PlanePartitions extends Applet
 					//Now we'll lower one part at a time.
 					let currentIndex = 0;
 
-					let currentHeight = outputArray.numbers[targetCoordinates[0][0]][targetCoordinates[0][1]];
+					let currentHeight =
+						outputArray.numbers[targetCoordinates[0][0]][targetCoordinates[0][1]];
 
 					for (;;)
 					{
 						let nextIndex = currentIndex;
 
-						while (nextIndex < targetCoordinates.length && targetCoordinates[nextIndex][0] === targetCoordinates[currentIndex][0])
+						while (
+							nextIndex < targetCoordinates.length
+							&& targetCoordinates[nextIndex][0]
+								=== targetCoordinates[currentIndex][0]
+						)
 						{
 							nextIndex++;
 						}
@@ -4099,7 +4487,10 @@ export class PlanePartitions extends Applet
 
 						for (let k = 0; k < coordinates.length; k++)
 						{
-							if (outputArray.numbers[coordinates[k][0]][coordinates[k][1]] !== currentHeight)
+							if (
+								outputArray.numbers[coordinates[k][0]][coordinates[k][1]]
+									!== currentHeight
+							)
 							{
 								insertionWorks = false;
 								break;
@@ -4112,7 +4503,10 @@ export class PlanePartitions extends Applet
 						{
 							await this.lowerCubes(outputArray, coordinates);
 
-							coordinates.forEach(coordinate => outputArray.numbers[coordinate[0]][coordinate[1]]++);
+							coordinates.forEach(coordinate =>
+							{
+								outputArray.numbers[coordinate[0]][coordinate[1]]++;
+							});
 
 							this.recalculateHeights(outputArray);
 
@@ -4129,7 +4523,8 @@ export class PlanePartitions extends Applet
 
 						else
 						{
-							const oldTargetCoordinates = structuredClone(targetCoordinates.slice(currentIndex));
+							const oldTargetCoordinates =
+								structuredClone(targetCoordinates.slice(currentIndex));
 
 							//Shift the rest of the coordinates down and right by 1.
 							for (let k = currentIndex; k < targetCoordinates.length; k++)
@@ -4137,7 +4532,10 @@ export class PlanePartitions extends Applet
 								targetCoordinates[k][0]++;
 								targetCoordinates[k][1]++;
 
-								if (targetCoordinates[k][0] > outputArray.footprint || targetCoordinates[k][1] > outputArray.footprint)
+								if (
+									targetCoordinates[k][0] > outputArray.footprint
+									|| targetCoordinates[k][1] > outputArray.footprint
+								)
 								{
 									console.error("Insertion failed!");
 									return;
@@ -4146,9 +4544,19 @@ export class PlanePartitions extends Applet
 
 							const newTargetCoordinates = targetCoordinates.slice(currentIndex);
 
-							await this.moveCubes(outputArray, oldTargetCoordinates, outputArray, newTargetCoordinates);
+							await this.moveCubes(
+								outputArray,
+								oldTargetCoordinates,
+								outputArray,
+								newTargetCoordinates
+							);
 
-							currentHeight = outputArray.numbers[targetCoordinates[currentIndex][0]][targetCoordinates[currentIndex][1]];
+							currentHeight =
+								outputArray.numbers[
+									targetCoordinates[currentIndex][0]
+								][
+									targetCoordinates[currentIndex][1]
+								];
 						}
 
 
@@ -4194,7 +4602,9 @@ export class PlanePartitions extends Applet
 			{
 				if (pSsyt[i][j] === Infinity || qSsyt[i][j] === Infinity)
 				{
-					this.displayError("The SSYT contain infinite values, which is not allowed in RSK!");
+					this.displayError(
+						"The SSYT contain infinite values, which is not allowed in RSK!"
+					);
 
 					this.currentlyRunningAlgorithm = false;
 
@@ -4281,7 +4691,8 @@ export class PlanePartitions extends Applet
 
 
 
-			//Now row and col are the coordinates of the most recently added element. We just need to un-insert the corresponding element from P.
+			//Now row and col are the coordinates of the most recently added element.
+			//We just need to un-insert the corresponding element from P.
 			const pSourceCoordinatesLocal = [];
 			const pTargetCoordinatesLocal = [];
 			const pSourceCoordinatesExternal = [];
@@ -4324,7 +4735,15 @@ export class PlanePartitions extends Applet
 
 
 
-			//Alright, time for a stupid hack. The visual result we want is to take the stacks getting popped from both P and Q, move them to the first row and column of the output array to form a hook, delete all but one box (the top box of P), and then lower the other. The issue is that this will risk overwriting one of the two overlapping boxes, causing a memory leak and a glitchy state. The solution is to do a couple things. Only the P corner box will actually move to the output array -- the one from Q will appear to, but it will stay in its own array.
+			//Alright, time for a stupid hack. The visual result we want
+			//is to take the stacks getting popped from both P and Q,
+			//move them to the first row and column of the output array
+			//to form a hook, delete all but one box (the top box of P),
+			//and then lower the other. The issue is that this will risk
+			//overwriting one of the two overlapping boxes, causing a memory leak
+			//and a glitchy state. The solution is to do a couple things.
+			//Only the P corner box will actually move to the output array --
+			//the one from Q will appear to, but it will stay in its own array.
 
 			const height = outputArray.height + 1;
 
@@ -4342,7 +4761,12 @@ export class PlanePartitions extends Applet
 
 
 
-			this.colorCubes(qArray, qSourceCoordinatesExternal.concat([[row, col, qEntry - 1]]), hue);
+			this.colorCubes(
+				qArray,
+				qSourceCoordinatesExternal.concat([[row, col, qEntry - 1]]),
+				hue
+			);
+
 			this.colorCubes(pArray, pSourceCoordinatesLocal, hue);
 			await this.colorCubes(pArray, pSourceCoordinatesExternal, hue);
 
@@ -4353,7 +4777,8 @@ export class PlanePartitions extends Applet
 
 			for (let k = pCoordinatePath.length - 1; k > 0; k--)
 			{
-				pSsyt[pCoordinatePath[k][0]][pCoordinatePath[k][1]] = pSsyt[pCoordinatePath[k - 1][0]][pCoordinatePath[k - 1][1]];
+				pSsyt[pCoordinatePath[k][0]][pCoordinatePath[k][1]]
+					= pSsyt[pCoordinatePath[k - 1][0]][pCoordinatePath[k - 1][1]];
 			}
 
 			pSsyt[row][col] = 0;
@@ -4364,18 +4789,47 @@ export class PlanePartitions extends Applet
 
 				for (let k = pCoordinatePath.length - 1; k > 0; k--)
 				{
-					this.drawSingleCell2dViewText(pArray, pCoordinatePath[k][0], pCoordinatePath[k][1]);
+					this.drawSingleCell2dViewText(
+						pArray,
+						pCoordinatePath[k][0],
+						pCoordinatePath[k][1]
+					);
 				}
 
 				this.drawSingleCell2dViewText(qArray, row, col);
 			}
 
 
+			await Promise.all([
+				this.moveCubes(
+					qArray,
+					qSourceCoordinatesExternal,
+					outputArray,
+					qTargetCoordinatesExternal
+				),
 
-			this.moveCubes(qArray, qSourceCoordinatesExternal, outputArray, qTargetCoordinatesExternal);
-			this.moveCubes(pArray, pSourceCoordinatesExternal, outputArray, pTargetCoordinatesExternal);
-			this.moveCubes(pArray, pSourceCoordinatesLocal, pArray, pTargetCoordinatesLocal);
-			await this.moveCubes(qArray, [[row, col, qEntry - 1]], outputArray, [[qEntry - 1, pEntry - 1, height]], false);
+				this.moveCubes(
+					pArray,
+					pSourceCoordinatesExternal,
+					outputArray,
+					pTargetCoordinatesExternal
+				),
+
+				this.moveCubes(
+					pArray,
+					pSourceCoordinatesLocal,
+					pArray,
+					pTargetCoordinatesLocal
+				),
+
+				this.moveCubes(
+					qArray,
+					[[row, col, qEntry - 1]],
+					outputArray,
+					[[qEntry - 1, pEntry - 1, height]],
+					false
+				)
+			]);
 
 
 
@@ -4383,9 +4837,12 @@ export class PlanePartitions extends Applet
 
 
 
-			//Delete the non-corner parts of the hook (animated), delete one of the overlapping corner cubes (instantly), and drop the other.
+			//Delete the non-corner parts of the hook (animated),
+			//delete one of the overlapping corner cubes (instantly), and drop the other.
 
-			//Gross but necessary. deleteCubes() needs to detach the object from its parent cube group, but what we pass isn't actually its parent, so we have to do it manually.
+			//Gross but necessary. deleteCubes() needs to detach the object
+			//from its parent cube group, but what we pass isn't actually its parent,
+			//so we have to do it manually.
 			outputArray.cubeGroup.remove(qArray.cubes[row][col][qEntry - 1]);
 			this.deleteCubes(qArray, [[row, col, qEntry - 1]], true, true);
 
@@ -4434,7 +4891,8 @@ export class PlanePartitions extends Applet
 
 		tableau.forEach(row => row.forEach(entry => numEntries += entry));
 
-		//The largest possible shape for these two is a straight line, requiring all the inserted elements to be increasing or decreasing.
+		//The largest possible shape for these two is a straight line,
+		//requiring all the inserted elements to be increasing or decreasing.
 		let pSsyt = new Array(numEntries);
 		let qSsyt = new Array(numEntries);
 
@@ -4463,7 +4921,9 @@ export class PlanePartitions extends Applet
 
 
 
-		//Unfortunately, there's no way to know the shape of P and Q without actually doing RSK, so we need to do all the calculations ahead of time, and only then animate things around.
+		//Unfortunately, there's no way to know the shape of P and Q
+		//without actually doing RSK, so we need to do all the calculations
+		//ahead of time, and only then animate things around.
 		const pInsertionPaths = [];
 		const qInsertionLocations = [];
 		const tableauRemovalLocations = [];
@@ -4572,19 +5032,27 @@ export class PlanePartitions extends Applet
 			for (let j = col; j >= 0; j--)
 			{
 				array.cubes[row][j][height] = this.addCube(array, j, height, row);
-				array.cubes[row][j][height].material.forEach(material => material.color.setHSL(hue, 1, this.cubeLightness));
+
+				array.cubes[row][j][height].material
+					.forEach(material => material.color.setHSL(hue, 1, this.cubeLightness));
 			}
 
 			for (let j = row - 1; j >= 0; j--)
 			{
 				array.cubes[j][col][height] = this.addCube(array, col, height, j);
-				array.cubes[j][col][height].material.forEach(material => material.color.setHSL(hue, 1, this.cubeLightness));
+				
+				array.cubes[j][col][height].material
+					.forEach(material => material.color.setHSL(hue, 1, this.cubeLightness));
 			}
 
-			//This is the duplicate cube. As usual, we need to store it somewhere else in the array -- here, we're going to place it one space vertically above its actual location.
+			//This is the duplicate cube. As usual, we need to store it
+			//somewhere else in the array -- here, we're going to place it
+			//one space vertically above its actual location.
 
 			array.cubes[row][col][height + 1] = this.addCube(array, col, height, row);
-			array.cubes[row][col][height + 1].material.forEach(material => material.color.setHSL(hue, 1, this.cubeLightness));
+
+			array.cubes[row][col][height + 1].material
+				.forEach(material => material.color.setHSL(hue, 1, this.cubeLightness));
 
 
 
@@ -4618,7 +5086,11 @@ export class PlanePartitions extends Applet
 
 
 
-			//First of all, we'll handle the insertion into P. As always, this takes some care. The strictly proper way to animate this would be to move the stacks one at a time, but just like with the forward direction, it is *much* easier (and time-efficient) to just move everything at once.
+			//First of all, we'll handle the insertion into P.
+			//As always, this takes some care. The strictly proper way
+			//to animate this would be to move the stacks one at a time,
+			//but just like with the forward direction, it is *much* easier
+			//(and time-efficient) to just move everything at once.
 			const path = pInsertionPaths[hueIndex];
 
 			const pSourceCoordinatesLocal = [];
@@ -4628,7 +5100,11 @@ export class PlanePartitions extends Applet
 			const pTargetCoordinatesExternal = [[path[0][0], path[0][1], col]];
 
 			const qSourceCoordinatesExternal = [[row, col, height + 1]];
-			const qTargetCoordinatesExternal = [[qInsertionLocations[hueIndex][0], qInsertionLocations[hueIndex][1], row]];
+			const qTargetCoordinatesExternal = [[
+				qInsertionLocations[hueIndex][0],
+				qInsertionLocations[hueIndex][1],
+				row
+			]];
 
 
 
@@ -4650,7 +5126,12 @@ export class PlanePartitions extends Applet
 			for (let j = row - 1; j >= 0; j--)
 			{
 				qSourceCoordinatesExternal.push([j, col, height]);
-				qTargetCoordinatesExternal.push([qInsertionLocations[hueIndex][0], qInsertionLocations[hueIndex][1], j]);
+
+				qTargetCoordinatesExternal.push([
+					qInsertionLocations[hueIndex][0],
+					qInsertionLocations[hueIndex][1],
+					j
+				]);
 			}
 
 			await this.colorCubes(pArray, pSourceCoordinatesLocal, hue);
@@ -4674,7 +5155,12 @@ export class PlanePartitions extends Applet
 
 			if (pSourceCoordinatesLocal.length !== 0)
 			{
-				await this.moveCubes(pArray, pSourceCoordinatesLocal, pArray, pTargetCoordinatesLocal);
+				await this.moveCubes(
+					pArray,
+					pSourceCoordinatesLocal,
+					pArray,
+					pTargetCoordinatesLocal
+				);
 			}
 
 
@@ -4686,9 +5172,21 @@ export class PlanePartitions extends Applet
 				this.drawAll2dViewText();
 			}
 
-			this.moveCubes(array, pSourceCoordinatesExternal, pArray, pTargetCoordinatesExternal);
+			await Promise.all([
+				this.moveCubes(
+					array,
+					pSourceCoordinatesExternal,
+					pArray,
+					pTargetCoordinatesExternal)
+				,
 
-			await this.moveCubes(array, qSourceCoordinatesExternal, qArray, qTargetCoordinatesExternal);
+				this.moveCubes(
+					array,
+					qSourceCoordinatesExternal,
+					qArray,
+					qTargetCoordinatesExternal
+				)
+			]);
 
 
 
@@ -4800,12 +5298,18 @@ export class PlanePartitions extends Applet
 		let rightLegSize = 0;
 		let bottomLegSize = 0;
 
-		while (rightLegSize < planePartition.length && planePartition[rightLegSize][planePartition.length - 1] !== 0)
+		while (
+			rightLegSize < planePartition.length
+			&& planePartition[rightLegSize][planePartition.length - 1] !== 0
+		)
 		{
 			rightLegSize++;
 		}
 
-		while (bottomLegSize < planePartition.length && planePartition[planePartition.length - 1][bottomLegSize] !== 0)
+		while (
+			bottomLegSize < planePartition.length
+			&& planePartition[planePartition.length - 1][bottomLegSize] !== 0
+		)
 		{
 			bottomLegSize++;
 		}
@@ -4821,9 +5325,6 @@ export class PlanePartitions extends Applet
 
 
 
-		//Clip out the finite part of the array.
-
-		//The -1 is there to ensure the new array has the padding that indicates it's finite on the edges.
 		const legSize = Math.max(rightLegSize, bottomLegSize);
 
 		const finiteArray = new Array(planePartition.length - legSize + 1);
@@ -4878,12 +5379,18 @@ export class PlanePartitions extends Applet
 
 
 
-		//In order for the bijection to actually be correct, we need to make sure the rearrangement works the same way each time. The easiest way to do this is to ensure that every hook length actually in the APP has a *full* array of possible locations, so that its index in that is correct.
+		//In order for the bijection to actually be correct,
+		//we need to make sure the rearrangement works the same way each time.
+		//The easiest way to do this is to ensure that every hook length actually
+		//in the APP has a *full* array of possible locations, so that its index in that is correct.
 
 
 
 		//Organize everything by hook length.
-		const maxAppHookLength = 2 * planePartition.length - nuRowLengths[planePartition.length - 1] - nuColLengths[planePartition.length - 1];
+		const maxAppHookLength = 2 * planePartition.length
+			- nuRowLengths[planePartition.length - 1]
+			- nuColLengths[planePartition.length - 1];
+
 		const maxRppHookLength = nuRowLengths[0] + nuColLengths[0];
 
 		const appPivotsByHookLength = new Array(4 * planePartition.length);
@@ -4907,7 +5414,8 @@ export class PlanePartitions extends Applet
 
 		let ppSize = 1;
 
-		//If nu = (3, 1) and the APP given is 3x3, then its maximum hook length is 5, and we need to check an 8x8 square.
+		//If nu = (3, 1) and the APP given is 3x3, then its maximum
+		//hook length is 5, and we need to check an 8x8 square.
 
 		for (let i = 0; i < 2 * planePartition.length; i++)
 		{
@@ -4915,13 +5423,15 @@ export class PlanePartitions extends Applet
 			{
 				if (j >= nuRowLengths[i])
 				{
-					appPivotsByHookLength[i + j + 1 - nuRowLengths[i] - nuColLengths[j]].push([i, j]);
+					appPivotsByHookLength[i + j + 1 - nuRowLengths[i] - nuColLengths[j]]
+						.push([i, j]);
 				}
 
 				else
 				{
 					//.unshift rather than .push makes the hooks move in the correct order.
-					rppPivotsByHookLength[nuRowLengths[i] + nuColLengths[j] - i - j - 1].unshift([rppSize - i - 1, rppSize - j - 1]);
+					rppPivotsByHookLength[nuRowLengths[i] + nuColLengths[j] - i - j - 1]
+						.unshift([rppSize - i - 1, rppSize - j - 1]);
 				}
 
 				ppPivotsByHookLength[i + j + 1].push([i, j]);
@@ -4946,7 +5456,10 @@ export class PlanePartitions extends Applet
 				const row = appPivotsByHookLength[i][j][0];
 				const col = appPivotsByHookLength[i][j][1];
 
-				if (row < planePartition.length - bottomLegSize && col < planePartition.length - rightLegSize)
+				if (
+					row < planePartition.length - bottomLegSize
+					&& col < planePartition.length - rightLegSize
+				)
 				{
 					for (let k = 0; k < this.arrays[index].numbers[row][col]; k++)
 					{
@@ -4958,21 +5471,38 @@ export class PlanePartitions extends Applet
 				{
 					hookMap[row][col] = [1, ppPivotsByHookLength[i][j]];
 
-					if (row < planePartition.length && col < planePartition.length && this.arrays[index].numbers[row][col] > 0)
+					if (
+						row < planePartition.length
+						&& col < planePartition.length
+						&& this.arrays[index].numbers[row][col] > 0
+					)
 					{
-						ppSize = Math.max(Math.max(ppSize, ppPivotsByHookLength[i][j][0] + 1), ppPivotsByHookLength[i][j][1] + 1);
+						ppSize = Math.max(
+							Math.max(
+								ppSize,
+								ppPivotsByHookLength[i][j][0] + 1
+							),
+							ppPivotsByHookLength[i][j][1] + 1
+						);
 					}
 				}
 
 				else
 				{
-					hookMap[row][col] = [0, rppPivotsByHookLength[i][j - ppPivotsByHookLength[i].length]];
+					hookMap[row][col] = [
+						0,
+						rppPivotsByHookLength[i][j - ppPivotsByHookLength[i].length]
+					];
 				}
 			}
 
 			if (coordinates.length !== 0)
 			{
-				this.colorCubes(this.arrays[index], coordinates, (i - 1) / (maxAppHookLength - 1) * 6 / 7);
+				this.colorCubes(
+					this.arrays[index],
+					coordinates,
+					(i - 1) / (maxAppHookLength - 1) * 6 / 7
+				);
 			}
 		}
 
@@ -5047,7 +5577,12 @@ export class PlanePartitions extends Applet
 
 					if (hookMap[i][j][0] === 0)
 					{
-						await this.moveCubes(this.arrays[index], sourceCoordinates, rppArray, targetCoordinates);
+						await this.moveCubes(
+							this.arrays[index],
+							sourceCoordinates,
+							rppArray,
+							targetCoordinates
+						);
 
 						rpp[targetRow][targetCol] = this.arrays[index].numbers[i][j];
 						this.arrays[index].numbers[i][j] = 0;
@@ -5055,7 +5590,12 @@ export class PlanePartitions extends Applet
 
 					else
 					{
-						await this.moveCubes(this.arrays[index], sourceCoordinates, ppArray, targetCoordinates);
+						await this.moveCubes(
+							this.arrays[index],
+							sourceCoordinates,
+							ppArray,
+							targetCoordinates
+						);
 
 						pp[targetRow][targetCol] = this.arrays[index].numbers[i][j];
 						this.arrays[index].numbers[i][j] = 0;
@@ -5185,7 +5725,9 @@ export class PlanePartitions extends Applet
 
 
 
-		//Organize everything by hook length. The largest the APP can be is determined by the maximum hook in the plane partition -- we'll narrow this down later but it suffices for now.
+		//Organize everything by hook length. The largest the APP can be
+		//is determined by the maximum hook in the plane partition --
+		//we'll narrow this down later but it suffices for now.
 		let appSize = Math.max(nuRowLengths[0], nuColLengths[0]) + 2 * pp.length - 1;
 		const maxAppHookLength = 2 * appSize;
 		const maxRppHookLength = nuRowLengths[0] + nuColLengths[0];
@@ -5235,20 +5777,23 @@ export class PlanePartitions extends Applet
 			{
 				if (j >= nuRowLengths[i])
 				{
-					appPivotsByHookLength[i + j + 1 - nuRowLengths[i] - nuColLengths[j]].push([i, j]);
+					appPivotsByHookLength[i + j + 1 - nuRowLengths[i] - nuColLengths[j]]
+						.push([i, j]);
 				}
 
 				else
 				{
 					//.unshift rather than .push makes the hooks move in the correct order.
-					rppPivotsByHookLength[nuRowLengths[i] + nuColLengths[j] - i - j - 1].unshift([rpp.length - i - 1, rpp.length - j - 1]);
+					rppPivotsByHookLength[nuRowLengths[i] + nuColLengths[j] - i - j - 1]
+						.unshift([rpp.length - i - 1, rpp.length - j - 1]);
 				}
 
 
 
 				if (i < pp.length && j < pp.length)
 				{
-					//We can't just use .push here -- there will be more hooks of any given length that aren't included in the square.
+					//We can't just use .push here -- there will be more hooks of any given length
+					//that aren't included in the square.
 					ppPivotsByHookLength[i + j + 1][i] = [i, j];
 				}
 			}
@@ -5290,13 +5835,23 @@ export class PlanePartitions extends Applet
 
 				if (this.arrays[index].numbers[row][col] !== 0)
 				{
-					appSize = Math.max(Math.max(appSize, rppHookMap[row][col][0] + 1), rppHookMap[row][col][1] + 1);
+					appSize = Math.max(
+						Math.max(
+							appSize,
+							rppHookMap[row][col][0] + 1
+						),
+						rppHookMap[row][col][1] + 1
+					);
 				}
 			}
 
 			if (coordinates.length !== 0)
 			{
-				this.colorCubes(this.arrays[index], coordinates, (i - 1) / (maxRppHookLength - 1) * 6 / 7);
+				this.colorCubes(
+					this.arrays[index],
+					coordinates,
+					(i - 1) / (maxRppHookLength - 1) * 6 / 7
+				);
 			}
 		}
 
@@ -5325,13 +5880,23 @@ export class PlanePartitions extends Applet
 
 				if (this.arrays[index + 1].numbers[row][col] !== 0)
 				{
-					appSize = Math.max(Math.max(appSize, ppHookMap[row][col][0] + 1), ppHookMap[row][col][1] + 1);
+					appSize = Math.max(
+						Math.max(
+							appSize,
+							ppHookMap[row][col][0] + 1
+						),
+						ppHookMap[row][col][1] + 1
+					);
 				}
 			}
 
 			if (coordinates.length !== 0)
 			{
-				this.colorCubes(this.arrays[index + 1], coordinates, (i - 1) / (maxPpHookLength - 1) * 6 / 7);
+				this.colorCubes(
+					this.arrays[index + 1],
+					coordinates,
+					(i - 1) / (maxPpHookLength - 1) * 6 / 7
+				);
 			}
 		}
 
@@ -5371,7 +5936,10 @@ export class PlanePartitions extends Applet
 		{
 			for (let j = 0; j < rpp.length; j++)
 			{
-				if (this.arrays[index].numbers[i][j] > 0 && this.arrays[index].numbers[i][j] !== Infinity)
+				if (
+					this.arrays[index].numbers[i][j] > 0
+					&& this.arrays[index].numbers[i][j] !== Infinity
+				)
 				{
 					const sourceCoordinates = [];
 					const targetCoordinates = [];
@@ -5385,7 +5953,12 @@ export class PlanePartitions extends Applet
 						targetCoordinates.push([targetRow, targetCol, k]);
 					}
 
-					await this.moveCubes(this.arrays[index], sourceCoordinates, appArray, targetCoordinates);
+					await this.moveCubes(
+						this.arrays[index],
+						sourceCoordinates,
+						appArray,
+						targetCoordinates
+					);
 
 					app[targetRow][targetCol] = this.arrays[index].numbers[i][j];
 
@@ -5407,7 +5980,10 @@ export class PlanePartitions extends Applet
 		{
 			for (let j = 0; j < pp.length; j++)
 			{
-				if (this.arrays[index + 1].numbers[i][j] > 0 && this.arrays[index + 1].numbers[i][j] !== Infinity)
+				if (
+					this.arrays[index + 1].numbers[i][j] > 0
+					&& this.arrays[index + 1].numbers[i][j] !== Infinity
+				)
 				{
 					const sourceCoordinates = [];
 					const targetCoordinates = [];
@@ -5423,7 +5999,12 @@ export class PlanePartitions extends Applet
 
 
 
-					await this.moveCubes(this.arrays[index + 1], sourceCoordinates, appArray, targetCoordinates);
+					await this.moveCubes(
+						this.arrays[index + 1],
+						sourceCoordinates,
+						appArray,
+						targetCoordinates
+					);
 
 					app[targetRow][targetCol] = this.arrays[index + 1].numbers[i][j];
 					this.arrays[index + 1].numbers[i][j] = 0;
@@ -5459,7 +6040,9 @@ export class PlanePartitions extends Applet
 
 
 
-	//A demonstration of the n-quotient, not currently public-facing in the applet. It uses the numbers canvas to draw the appropriate edges and move them around. To call this function, the canvas should be in 2d mode but the numbers should be gone.
+	//A demonstration of the n-quotient, not currently public-facing in the applet.
+	//It uses the numbers canvas to draw the appropriate edges and move them around.
+	//To call this function, the canvas should be in 2d mode but the numbers should be gone.
 	async drawBoundary(index, n)
 	{
 		if (!this.in2dView)
@@ -5472,7 +6055,12 @@ export class PlanePartitions extends Applet
 			await changeOpacity(this.wilsonNumbers.canvas, 0, this.animationTime / 3);
 		}
 
-		this.wilsonNumbers.ctx.clearRect(0, 0, this.wilsonNumbers.canvasWidth, this.wilsonNumbers.canvasHeight);
+		this.wilsonNumbers.ctx.clearRect(
+			0,
+			0,
+			this.wilsonNumbers.canvasWidth,
+			this.wilsonNumbers.canvasHeight
+		);
 
 
 
@@ -5565,7 +6153,12 @@ export class PlanePartitions extends Applet
 
 			update: () =>
 			{
-				this.wilsonNumbers.ctx.clearRect(0, 0, this.wilsonNumbers.canvasWidth, this.wilsonNumbers.canvasHeight);
+				this.wilsonNumbers.ctx.clearRect(
+					0,
+					0,
+					this.wilsonNumbers.canvasWidth,
+					this.wilsonNumbers.canvasHeight
+				);
 
 				rects.forEach((rect, index) =>
 				{
@@ -5576,7 +6169,12 @@ export class PlanePartitions extends Applet
 			}
 		}).finished;
 
-		this.wilsonNumbers.ctx.clearRect(0, 0, this.wilsonNumbers.canvasWidth, this.wilsonNumbers.canvasHeight);
+		this.wilsonNumbers.ctx.clearRect(
+			0,
+			0,
+			this.wilsonNumbers.canvasWidth,
+			this.wilsonNumbers.canvasHeight
+		);
 
 		rects.forEach((rect, index) =>
 		{
@@ -5587,10 +6185,13 @@ export class PlanePartitions extends Applet
 
 
 
-		//Collapse the remaining ones. This assumes that the first and last rectangles are part of the endless border.
+		//Collapse the remaining ones. This assumes that the
+		//first and last rectangles are part of the endless border.
 		rects = rects.filter((rect, index) => index % n === m);
 
-		//If we start from the bottom-left, the only difficult thing to do is figure out the correct starting column. Thankfully, that's easy: it's just the number of vertical edges total.
+		//If we start from the bottom-left, the only difficult thing to do
+		//is figure out the correct starting column. Thankfully, that's easy:
+		//it's just the number of vertical edges total.
 
 		const numVerticalEdges = rects.filter(rect => !rect[2]).length;
 
@@ -5626,7 +6227,12 @@ export class PlanePartitions extends Applet
 
 			update: () =>
 			{
-				this.wilsonNumbers.ctx.clearRect(0, 0, this.wilsonNumbers.canvasWidth, this.wilsonNumbers.canvasHeight);
+				this.wilsonNumbers.ctx.clearRect(
+					0,
+					0,
+					this.wilsonNumbers.canvasWidth,
+					this.wilsonNumbers.canvasHeight
+				);
 
 				rects.forEach((rect, index) =>
 				{
@@ -5635,7 +6241,12 @@ export class PlanePartitions extends Applet
 			}
 		}).finished;
 
-		this.wilsonNumbers.ctx.clearRect(0, 0, this.wilsonNumbers.canvasWidth, this.wilsonNumbers.canvasHeight);
+		this.wilsonNumbers.ctx.clearRect(
+			0,
+			0,
+			this.wilsonNumbers.canvasWidth,
+			this.wilsonNumbers.canvasHeight
+		);
 
 		rects.forEach((rect, index) =>
 		{
@@ -5644,7 +6255,9 @@ export class PlanePartitions extends Applet
 
 
 
-		//We'll start the next animation without waiting for it so that it plays concurrently: any asymptotes where there should no longer be any need to be removed.
+		//We'll start the next animation without waiting for it
+		//so that it plays concurrently: any asymptotes where there
+		//should no longer be any need to be removed.
 
 		const cubesToDelete = [];
 
@@ -5692,7 +6305,12 @@ export class PlanePartitions extends Applet
 
 			update: () =>
 			{
-				this.wilsonNumbers.ctx.clearRect(0, 0, this.wilsonNumbers.canvasWidth, this.wilsonNumbers.canvasHeight);
+				this.wilsonNumbers.ctx.clearRect(
+					0,
+					0,
+					this.wilsonNumbers.canvasWidth,
+					this.wilsonNumbers.canvasHeight
+				);
 
 				rects.forEach((rect, index) =>
 				{
@@ -5706,7 +6324,12 @@ export class PlanePartitions extends Applet
 			}
 		}).finished;
 
-		this.wilsonNumbers.ctx.clearRect(0, 0, this.wilsonNumbers.canvasWidth, this.wilsonNumbers.canvasHeight);
+		this.wilsonNumbers.ctx.clearRect(
+			0,
+			0,
+			this.wilsonNumbers.canvasWidth,
+			this.wilsonNumbers.canvasHeight
+		);
 
 		rects.forEach((rect, index) =>
 		{
@@ -5732,12 +6355,31 @@ export class PlanePartitions extends Applet
 
 		if (horizontal)
 		{
-			this.wilsonNumbers.ctx.fillRect(this.wilsonNumbers.canvasWidth * (j + left + 1) / (this.totalArrayFootprint + 1), this.wilsonNumbers.canvasHeight * (i + top + 1 + 15 / 16) / (this.totalArrayFootprint + 1) + 1, this.wilsonNumbers.canvasWidth / (this.totalArrayFootprint + 1), this.wilsonNumbers.canvasHeight * (1 / 16) / (this.totalArrayFootprint + 1));
+			this.wilsonNumbers.ctx.fillRect(
+				this.wilsonNumbers.canvasWidth * (j + left + 1) / (this.totalArrayFootprint + 1),
+
+				this.wilsonNumbers.canvasHeight
+					* (i + top + 1 + 15 / 16) / (this.totalArrayFootprint + 1) + 1,
+
+				this.wilsonNumbers.canvasWidth / (this.totalArrayFootprint + 1),
+				
+				this.wilsonNumbers.canvasHeight * (1 / 16) / (this.totalArrayFootprint + 1)
+			);
 		}
 
 		else
 		{
-			this.wilsonNumbers.ctx.fillRect(this.wilsonNumbers.canvasWidth * (j + left + 15 / 16) / (this.totalArrayFootprint + 1), this.wilsonNumbers.canvasHeight * (i + top + 1) / (this.totalArrayFootprint + 1) + 1, this.wilsonNumbers.canvasWidth * (1 / 16) / (this.totalArrayFootprint + 1), this.wilsonNumbers.canvasHeight / (this.totalArrayFootprint + 1));
+			this.wilsonNumbers.ctx.fillRect(
+				this.wilsonNumbers.canvasWidth
+					* (j + left + 15 / 16) / (this.totalArrayFootprint + 1),
+
+				this.wilsonNumbers.canvasHeight
+					* (i + top + 1) / (this.totalArrayFootprint + 1) + 1,
+
+				this.wilsonNumbers.canvasWidth * (1 / 16) / (this.totalArrayFootprint + 1),
+
+				this.wilsonNumbers.canvasHeight / (this.totalArrayFootprint + 1)
+			);
 		}
 	}
 }
