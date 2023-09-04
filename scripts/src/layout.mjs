@@ -1,7 +1,7 @@
 import { bannerOnScroll, setBannerMaxScroll } from "./banners.mjs";
 import { resizeCard } from "./cards.mjs";
 import { headerElement } from "./header.mjs";
-import { $, $$ } from "./main.mjs";
+import { $, $$, pageElement } from "./main.mjs";
 import { siteSettings } from "./settings.mjs";
 
 export let aspectRatio = window.innerWidth / window.innerHeight;
@@ -51,6 +51,27 @@ export function onResize()
 
 	//Handle single image link rows.
 	const oneImageLinkElements = $$(".one-image-link .image-link");
+
+	let imageLinkElement = $(".image-links:not(.one-image-link) .image-link");
+
+	if (!imageLinkElement)
+	{
+		const element = document.createElement("div");
+
+		element.classList.add("image-links");
+		element.style.opacity = 0;
+		element.style.position = "fixed";
+		element.style.top = "-1000px";
+		element.style.left = "0";
+
+		pageElement.appendChild(element);
+
+		imageLinkElement = document.createElement("div");
+
+		imageLinkElement.classList.add("image-link");
+
+		element.appendChild(imageLinkElement);
+	}
 	
 	if (oneImageLinkElements.length)
 	{
