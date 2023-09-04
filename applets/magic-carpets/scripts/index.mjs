@@ -4,7 +4,7 @@ import { $ } from "/scripts/src/main.mjs";
 
 export function load()
 {
-	const applet = new MagicCarpet($("#output-canvas"));
+	const applet = new MagicCarpet({ canvas: $("#output-canvas") });
 
 	const gridSizeInputElement = $("#grid-size-input");
 

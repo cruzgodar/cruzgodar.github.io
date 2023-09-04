@@ -4,7 +4,7 @@ import { $ } from "/scripts/src/main.mjs";
 
 export function load()
 {
-	const applet = new JuliaSetMosaic($("#output-canvas"));
+	const applet = new JuliaSetMosaic({ canvas: $("#output-canvas") });
 
 
 

@@ -1,4 +1,4 @@
-import{Applet}from"/scripts/src/applets.min.mjs";import{addTemporaryListener}from"/scripts/src/main.min.mjs";import{Wilson}from"/scripts/wilson.min.mjs";class JuliaSetMosaic extends Applet{wilsonHidden=null;aspectRatio=1;numIterations=100;exposure=1;zoomLevel=0;pastBrightnessScales=[];a=0;b=0;resolution=500;resolutionHidden=50;lastTimestamp=-1;constructor(canvas){super(canvas);var i=this.createHiddenCanvas(),s=(this.pan.minX=-2.75,this.pan.maxX=1.25,this.pan.minY=-2,this.pan.maxY=2,`
+import{Applet}from"/scripts/src/applets.min.mjs";import{addTemporaryListener}from"/scripts/src/main.min.mjs";import{Wilson}from"/scripts/wilson.min.mjs";class JuliaSetMosaic extends Applet{wilsonHidden=null;aspectRatio=1;numIterations=100;exposure=1;zoomLevel=0;pastBrightnessScales=[];a=0;b=0;resolution=500;resolutionHidden=50;lastTimestamp=-1;constructor({canvas}){super(canvas);var i=this.createHiddenCanvas(),s=(this.pan.minX=-2.75,this.pan.maxX=1.25,this.pan.minY=-2,this.pan.maxY=2,`
 			precision highp float;
 			varying vec2 uv;
 			

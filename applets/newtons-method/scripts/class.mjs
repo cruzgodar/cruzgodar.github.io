@@ -37,7 +37,13 @@ export class NewtonsMethod extends Applet
 
 
 
-	constructor(canvas, rootSetterElement, rootAInputElement, rootBInputElement, colorSetterElement)
+	constructor({
+		canvas,
+		rootSetterElement,
+		rootAInputElement,
+		rootBInputElement,
+		colorSetterElement
+	})
 	{
 		super(canvas);
 
@@ -309,7 +315,50 @@ export class NewtonsMethod extends Applet
 		this.wilson.gl.uniform1f(this.wilson.uniforms["aspectRatio"], 1);
 		this.wilsonHidden.gl.uniform1f(this.wilsonHidden.uniforms["aspectRatio"], 1);
 
-		this.colors = [216 / 255, 1 / 255, 42 / 255,   255 / 255, 139 / 255, 56 / 255,   249 / 255, 239 / 255, 20 / 255,   27 / 255, 181 / 255, 61 / 255,   0 / 255, 86 / 255, 195 / 255,   154 / 255, 82 / 255, 164 / 255,   32 / 255, 32 / 255, 32 / 255,   155 / 255, 92 / 255, 15 / 255,   182 / 255, 228 / 255, 254 / 255,   250 / 255, 195 / 255, 218 / 255,   255 / 255, 255 / 255, 255 / 255];
+		this.colors = [
+			216 / 255,
+			1 / 255,
+			42 / 255,
+			
+			255 / 255,
+			139 / 255,
+			56 / 255,
+			
+			249 / 255,
+			239 / 255,
+			20 / 255,
+			
+			27 / 255,
+			181 / 255,
+			61 / 255,
+			
+			0 / 255,
+			86 / 255,
+			195 / 255,
+			
+			154 / 255,
+			82 / 255,
+			164 / 255,
+			
+			32 / 255,
+			32 / 255,
+			32 / 255,
+			
+			155 / 255,
+			92 / 255,
+			15 / 255,
+			
+			182 / 255,
+			228 / 255,
+			254 / 255,
+			
+			250 / 255,
+			195 / 255,
+			218 / 255,
+			
+			255 / 255,
+			255 / 255,
+			255 / 255];
 
 		this.wilson.gl.uniform3fv(this.wilson.uniforms["colors"], this.colors);
 		this.wilsonHidden.gl.uniform3fv(this.wilsonHidden.uniforms["colors"], this.colors);
@@ -388,10 +437,18 @@ export class NewtonsMethod extends Applet
 			{
 				for (let i = 0; i < this.numRoots; i++)
 				{
-					this.currentRoots[2 * i] = (1 - dummy.t) * oldRoots[2 * i] + dummy.t * newRoots[2 * i];
-					this.currentRoots[2 * i + 1] = (1 - dummy.t) * oldRoots[2 * i + 1] + dummy.t * newRoots[2 * i + 1];
+					this.currentRoots[2 * i] =
+						(1 - dummy.t) * oldRoots[2 * i]
+						+ dummy.t * newRoots[2 * i];
 
-					this.wilson.draggables.worldCoordinates[i + 2] = [this.currentRoots[2 * i], this.currentRoots[2 * i + 1]];
+					this.currentRoots[2 * i + 1] =
+						(1 - dummy.t) * oldRoots[2 * i + 1]
+						+ dummy.t * newRoots[2 * i + 1];
+
+					this.wilson.draggables.worldCoordinates[i + 2] = [
+						this.currentRoots[2 * i],
+						this.currentRoots[2 * i + 1]
+					];
 				}
 			},
 			complete: () =>
@@ -401,7 +458,10 @@ export class NewtonsMethod extends Applet
 					this.currentRoots[2 * i] = newRoots[2 * i];
 					this.currentRoots[2 * i + 1] = newRoots[2 * i + 1];
 
-					this.wilson.draggables.worldCoordinates[i + 2] = [this.currentRoots[2 * i], this.currentRoots[2 * i + 1]];
+					this.wilson.draggables.worldCoordinates[i + 2] = [
+						this.currentRoots[2 * i],
+						this.currentRoots[2 * i + 1]
+					];
 				}
 			}
 		});
@@ -436,7 +496,10 @@ export class NewtonsMethod extends Applet
 			this.currentRoots[2 * (this.lastActiveRoot - 2)] = x;
 			this.currentRoots[2 * (this.lastActiveRoot - 2) + 1] = y;
 
-			this.wilson.draggables.worldCoordinates[this.lastActiveRoot - 2] = [this.currentRoots[2 * (this.lastActiveRoot - 2)], this.currentRoots[2 * (this.lastActiveRoot - 2) + 1]];
+			this.wilson.draggables.worldCoordinates[this.lastActiveRoot - 2] = [
+				this.currentRoots[2 * (this.lastActiveRoot - 2)],
+				this.currentRoots[2 * (this.lastActiveRoot - 2) + 1]
+			];
 		}
 
 
@@ -534,10 +597,17 @@ export class NewtonsMethod extends Applet
 			{
 				const index = this.lastActiveRoot - 2;
 
-				this.rootAInputElement.value = Math.round(this.currentRoots[2 * index] * 1000) / 1000;
-				this.rootBInputElement.value = Math.round(this.currentRoots[2 * index + 1] * 1000) / 1000;
+				this.rootAInputElement.value =
+					Math.round(this.currentRoots[2 * index] * 1000) / 1000;
 
-				this.colorSetterElement.value = this.rgbToHex(this.colors[3 * index] * 255, this.colors[3 * index + 1] * 255, this.colors[3 * index + 2] * 255);
+				this.rootBInputElement.value =
+					Math.round(this.currentRoots[2 * index + 1] * 1000) / 1000;
+
+				this.colorSetterElement.value = this.rgbToHex(
+					this.colors[3 * index] * 255,
+					this.colors[3 * index + 1] * 255,
+					this.colors[3 * index + 2] * 255
+				);
 			}
 
 			changeOpacity(this.rootSetterElement, 1);
@@ -567,19 +637,50 @@ export class NewtonsMethod extends Applet
 
 
 
-		this.wilsonHidden.gl.uniform1f(this.wilsonHidden.uniforms["aspectRatio"], this.aspectRatio);
-		this.wilsonHidden.gl.uniform1f(this.wilsonHidden.uniforms["worldCenterX"], this.wilson.worldCenterX);
-		this.wilsonHidden.gl.uniform1f(this.wilsonHidden.uniforms["worldCenterY"], this.wilson.worldCenterY);
+		this.wilsonHidden.gl.uniform1f(
+			this.wilsonHidden.uniforms["aspectRatio"],
+			this.aspectRatio
+		);
 
-		this.wilsonHidden.gl.uniform1f(this.wilsonHidden.uniforms["worldSize"], Math.min(this.wilson.worldHeight, this.wilson.worldWidth) / 2);
+		this.wilsonHidden.gl.uniform1f(
+			this.wilsonHidden.uniforms["worldCenterX"],
+			this.wilson.worldCenterX
+		);
 
-		this.wilsonHidden.gl.uniform1i(this.wilsonHidden.uniforms["numRoots"], this.numRoots);
+		this.wilsonHidden.gl.uniform1f(
+			this.wilsonHidden.uniforms["worldCenterY"],
+			this.wilson.worldCenterY
+		);
 
-		this.wilsonHidden.gl.uniform2fv(this.wilsonHidden.uniforms["roots"], this.currentRoots);
+		this.wilsonHidden.gl.uniform1f(
+			this.wilsonHidden.uniforms["worldSize"],
+			Math.min(this.wilson.worldHeight, this.wilson.worldWidth) / 2
+		);
 
-		this.wilsonHidden.gl.uniform2fv(this.wilsonHidden.uniforms["a"], this.a);
-		this.wilsonHidden.gl.uniform2f(this.wilsonHidden.uniforms["c"], this.c[0] / 10, this.c[1] / 10);
-		this.wilsonHidden.gl.uniform1f(this.wilsonHidden.uniforms["brightnessScale"], 30);
+		this.wilsonHidden.gl.uniform1i(
+			this.wilsonHidden.uniforms["numRoots"],
+			this.numRoots
+		);
+
+		this.wilsonHidden.gl.uniform2fv(
+			this.wilsonHidden.uniforms["roots"],
+			this.currentRoots
+		);
+
+		this.wilsonHidden.gl.uniform2fv(
+			this.wilsonHidden.uniforms["a"],
+			this.a
+		);
+
+		this.wilsonHidden.gl.uniform2f(
+			this.wilsonHidden.uniforms["c"],
+			this.c[0] / 10, this.c[1] / 10
+		);
+
+		this.wilsonHidden.gl.uniform1f(
+			this.wilsonHidden.uniforms["brightnessScale"],
+			30
+		);
 
 		this.wilsonHidden.render.drawFrame();
 
@@ -591,12 +692,24 @@ export class NewtonsMethod extends Applet
 
 		for (let i = 0; i < this.resolutionHidden * this.resolutionHidden; i++)
 		{
-			brightnesses[i] = Math.max(Math.max(pixelData[4 * i], pixelData[4 * i + 1]), pixelData[4 * i + 2]);
+			brightnesses[i] = Math.max(
+				Math.max(
+					pixelData[4 * i],
+					pixelData[4 * i + 1]
+				),
+				pixelData[4 * i + 2]
+			);
 		}
 
 		brightnesses.sort((a, b) => a - b);
 
-		let brightnessScale = Math.min(10000 / (brightnesses[Math.floor(this.resolutionHidden * this.resolutionHidden * .96)] + brightnesses[Math.floor(this.resolutionHidden * this.resolutionHidden * .98)]), 200);
+		let brightnessScale = Math.min(
+			10000 / (
+				brightnesses[Math.floor(this.resolutionHidden * this.resolutionHidden * .96)]
+				+ brightnesses[Math.floor(this.resolutionHidden * this.resolutionHidden * .98)]
+			),
+			200
+		);
 
 		this.pastBrightnessScales.push(brightnessScale);
 
@@ -611,19 +724,50 @@ export class NewtonsMethod extends Applet
 
 
 
-		this.wilson.gl.uniform1f(this.wilson.uniforms["aspectRatio"], this.aspectRatio);
-		this.wilson.gl.uniform1f(this.wilson.uniforms["worldCenterX"], this.wilson.worldCenterX);
-		this.wilson.gl.uniform1f(this.wilson.uniforms["worldCenterY"], this.wilson.worldCenterY);
+		this.wilson.gl.uniform1f(
+			this.wilson.uniforms["aspectRatio"],
+			this.aspectRatio
+		);
 
-		this.wilson.gl.uniform1f(this.wilson.uniforms["worldSize"], Math.min(this.wilson.worldHeight, this.wilson.worldWidth) / 2);
+		this.wilson.gl.uniform1f(
+			this.wilson.uniforms["worldCenterX"],
+			this.wilson.worldCenterX
+		);
 
-		this.wilson.gl.uniform1i(this.wilson.uniforms["numRoots"], this.numRoots);
+		this.wilson.gl.uniform1f(
+			this.wilson.uniforms["worldCenterY"],
+			this.wilson.worldCenterY
+		);
 
-		this.wilson.gl.uniform2fv(this.wilson.uniforms["roots"], this.currentRoots);
+		this.wilson.gl.uniform1f(
+			this.wilson.uniforms["worldSize"],
+			Math.min(this.wilson.worldHeight, this.wilson.worldWidth) / 2
+		);
 
-		this.wilson.gl.uniform2fv(this.wilson.uniforms["a"], this.a);
-		this.wilson.gl.uniform2f(this.wilson.uniforms["c"], this.c[0] / 10, this.c[1] / 10);
-		this.wilson.gl.uniform1f(this.wilson.uniforms["brightnessScale"], brightnessScale);
+		this.wilson.gl.uniform1i(
+			this.wilson.uniforms["numRoots"],
+			this.numRoots
+		);
+
+		this.wilson.gl.uniform2fv(
+			this.wilson.uniforms["roots"],
+			this.currentRoots
+		);
+
+		this.wilson.gl.uniform2fv(
+			this.wilson.uniforms["a"],
+			this.a
+		);
+
+		this.wilson.gl.uniform2f(
+			this.wilson.uniforms["c"],
+			this.c[0] / 10, this.c[1] / 10
+		);
+
+		this.wilson.gl.uniform1f(
+			this.wilson.uniforms["brightnessScale"],
+			brightnessScale
+		);
 
 		this.wilson.render.drawFrame();
 

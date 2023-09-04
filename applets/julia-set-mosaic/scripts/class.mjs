@@ -26,7 +26,7 @@ export class JuliaSetMosaic extends Applet
 
 
 
-	constructor(canvas)
+	constructor({ canvas })
 	{
 		super(canvas);
 

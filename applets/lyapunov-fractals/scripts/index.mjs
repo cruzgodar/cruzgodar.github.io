@@ -4,7 +4,7 @@ import { $ } from "/scripts/src/main.mjs";
 
 export function load()
 {
-	const applet = new LyapunovFractal($("#output-canvas"));
+	const applet = new LyapunovFractal({ canvas: $("#output-canvas") });
 
 
 

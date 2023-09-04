@@ -11,7 +11,13 @@ export function load()
 
 	const colorSetterElement = $("#color-setter");
 
-	const applet = new NewtonsMethod($("#output-canvas"), rootSetterElement, rootAInputElement, rootBInputElement, colorSetterElement);
+	const applet = new NewtonsMethod({
+		canvas: $("#output-canvas"),
+		rootSetterElement,
+		rootAInputElement,
+		rootBInputElement,
+		colorSetterElement
+	});
 
 
 

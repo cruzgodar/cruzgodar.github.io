@@ -18,7 +18,7 @@ export class MagicCarpet extends Applet
 
 
 
-	constructor(canvas)
+	constructor({ canvas })
 	{
 		super(canvas);
 

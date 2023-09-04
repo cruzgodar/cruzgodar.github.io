@@ -21,7 +21,7 @@ export class LyapunovFractal extends Applet
 
 
 
-	constructor(canvas)
+	constructor({ canvas })
 	{
 		super(canvas);
 

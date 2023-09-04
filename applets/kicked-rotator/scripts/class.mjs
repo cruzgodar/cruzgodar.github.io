@@ -12,7 +12,7 @@ export class KickedRotator extends Applet
 
 
 
-	constructor(canvas)
+	constructor({ canvas })
 	{
 		super(canvas);
 		const options =

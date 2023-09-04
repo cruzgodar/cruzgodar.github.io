@@ -4,7 +4,7 @@ import { $ } from "/scripts/src/main.mjs";
 
 export function load()
 {
-	const applet = new KickedRotator($("#output-canvas"));
+	const applet = new KickedRotator({ canvas: $("#output-canvas") });
 
 
 
