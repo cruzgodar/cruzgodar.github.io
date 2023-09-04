@@ -27,7 +27,7 @@ export let bannerOpacity = 1;
 
 let bannerOpacityChange = 0;
 
-const maxSingleFrameChange = .025;
+const maxSingleFrameChange = .05;
 
 export function setBannerOpacity(newBannerOpacity)
 {
