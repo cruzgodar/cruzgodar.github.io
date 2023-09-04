@@ -16,7 +16,10 @@ export function load()
 
 	const numIterationsInputElement = $("#num-iterations-input");
 
-	applet.setInputCaps([resolutionInputElement, setDensityInputElement, numIterationsInputElement], [2000, 200, 500]);
+	applet.setInputCaps(
+		[resolutionInputElement, setDensityInputElement, numIterationsInputElement],
+		[2000, 200, 500]
+	);
 
 
 

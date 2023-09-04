@@ -463,35 +463,99 @@ export class KaleidoscopicIFSFractal extends Applet
 
 		if (this.imageWidth >= this.imageHeight)
 		{
-			this.wilson.gl.uniform1f(this.wilson.uniforms["aspectRatioX"], this.imageWidth / this.imageHeight);
-			this.wilson.gl.uniform1f(this.wilson.uniforms["aspectRatioY"], 1);
+			this.wilson.gl.uniform1f(
+				this.wilson.uniforms["aspectRatioX"],
+				this.imageWidth / this.imageHeight
+			);
+
+			this.wilson.gl.uniform1f(
+				this.wilson.uniforms["aspectRatioY"],
+				1
+			);
 		}
 
 		else
 		{
-			this.wilson.gl.uniform1f(this.wilson.uniforms["aspectRatioX"], 1);
-			this.wilson.gl.uniform1f(this.wilson.uniforms["aspectRatioY"], this.imageWidth / this.imageHeight);
+			this.wilson.gl.uniform1f(
+				this.wilson.uniforms["aspectRatioX"],
+				1
+			);
+
+			this.wilson.gl.uniform1f(
+				this.wilson.uniforms["aspectRatioY"],
+				this.imageWidth / this.imageHeight
+			);
 		}
 
-		this.wilson.gl.uniform1i(this.wilson.uniforms["imageSize"], this.imageSize);
+		this.wilson.gl.uniform1i(
+			this.wilson.uniforms["imageSize"],
+			this.imageSize
+		);
 
-		this.wilson.gl.uniform3fv(this.wilson.uniforms["cameraPos"], this.cameraPos);
-		this.wilson.gl.uniform3fv(this.wilson.uniforms["imagePlaneCenterPos"], this.imagePlaneCenterPos);
-		this.wilson.gl.uniform3fv(this.wilson.uniforms["lightPos"], this.lightPos[this.polyhedronIndex]);
-		this.wilson.gl.uniform3fv(this.wilson.uniforms["scaleCenter"], this.scaleCenter[this.polyhedronIndex]);
+		this.wilson.gl.uniform3fv(
+			this.wilson.uniforms["cameraPos"],
+			this.cameraPos
+		);
 
-		this.wilson.gl.uniform3fv(this.wilson.uniforms["forwardVec"], this.forwardVec);
-		this.wilson.gl.uniform3fv(this.wilson.uniforms["rightVec"], this.rightVec);
-		this.wilson.gl.uniform3fv(this.wilson.uniforms["upVec"], this.upVec);
+		this.wilson.gl.uniform3fv(
+			this.wilson.uniforms["imagePlaneCenterPos"],
+			this.imagePlaneCenterPos
+		);
 
-		this.wilson.gl.uniform1f(this.wilson.uniforms["focalLength"], this.focalLength);
+		this.wilson.gl.uniform3fv(
+			this.wilson.uniforms["lightPos"],
+			this.lightPos[this.polyhedronIndex]
+		);
 
-		this.wilson.gl.uniform3fv(this.wilson.uniforms["n1"], this.n1[this.polyhedronIndex]);
-		this.wilson.gl.uniform3fv(this.wilson.uniforms["n2"], this.n2[this.polyhedronIndex]);
-		this.wilson.gl.uniform3fv(this.wilson.uniforms["n3"], this.n3[this.polyhedronIndex]);
-		this.wilson.gl.uniform3fv(this.wilson.uniforms["n4"], this.n4[this.polyhedronIndex]);
+		this.wilson.gl.uniform3fv(
+			this.wilson.uniforms["scaleCenter"],
+			this.scaleCenter[this.polyhedronIndex]
+		);
 
-		this.wilson.gl.uniform1i(this.wilson.uniforms["numNs"], this.numNs[this.polyhedronIndex]);
+		this.wilson.gl.uniform3fv(
+			this.wilson.uniforms["forwardVec"],
+			this.forwardVec
+		);
+
+		this.wilson.gl.uniform3fv(
+			this.wilson.uniforms["rightVec"],
+			this.rightVec
+		);
+
+		this.wilson.gl.uniform3fv(
+			this.wilson.uniforms["upVec"],
+			this.upVec
+		);
+
+		this.wilson.gl.uniform1f(
+			this.wilson.uniforms["focalLength"],
+			this.focalLength
+		);
+
+		this.wilson.gl.uniform3fv(
+			this.wilson.uniforms["n1"],
+			this.n1[this.polyhedronIndex]
+		);
+
+		this.wilson.gl.uniform3fv(
+			this.wilson.uniforms["n2"],
+			this.n2[this.polyhedronIndex]
+		);
+
+		this.wilson.gl.uniform3fv(
+			this.wilson.uniforms["n3"],
+			this.n3[this.polyhedronIndex]
+		);
+
+		this.wilson.gl.uniform3fv(
+			this.wilson.uniforms["n4"],
+			this.n4[this.polyhedronIndex]
+		);
+
+		this.wilson.gl.uniform1i(
+			this.wilson.uniforms["numNs"],
+			this.numNs[this.polyhedronIndex]
+		);
 
 		this.wilson.gl.uniformMatrix3fv(
 			this.wilson.uniforms["rotationMatrix1"],
@@ -558,7 +622,13 @@ export class KaleidoscopicIFSFractal extends Applet
 
 
 
-		if (this.movingForwardKeyboard || this.movingBackwardKeyboard || this.movingRightKeyboard || this.movingLeftKeyboard || this.movingForwardTouch || this.movingBackwardTouch)
+		if (
+			this.movingForwardKeyboard
+			|| this.movingBackwardKeyboard
+			|| this.movingRightKeyboard
+			|| this.movingLeftKeyboard
+			|| this.movingForwardTouch
+			|| this.movingBackwardTouch)
 		{
 			this.updateCameraParameters();
 
@@ -621,7 +691,10 @@ export class KaleidoscopicIFSFractal extends Applet
 			this.thetaVelocity *= this.panFriction;
 			this.phiVelocity *= this.panFriction;
 
-			if (this.thetaVelocity * this.thetaVelocity + this.phiVelocity * this.phiVelocity < this.panVelocityStopThreshhold * this.panVelocityStopThreshhold)
+			if (
+				this.thetaVelocity * this.thetaVelocity + this.phiVelocity * this.phiVelocity <
+					this.panVelocityStopThreshhold * this.panVelocityStopThreshhold
+			)
 			{
 				this.thetaVelocity = 0;
 				this.phiVelocity = 0;
@@ -644,7 +717,13 @@ export class KaleidoscopicIFSFractal extends Applet
 			this.moveVelocity[1] *= this.moveFriction;
 			this.moveVelocity[2] *= this.moveFriction;
 
-			if (this.moveVelocity[0] * this.moveVelocity[0] + this.moveVelocity[1] * this.moveVelocity[1] + this.moveVelocity[2] * this.moveVelocity[2] < this.moveVelocityStopThreshhold * this.movingSpeed * this.moveVelocityStopThreshhold * this.movingSpeed)
+			if (
+				this.moveVelocity[0] * this.moveVelocity[0]
+				+ this.moveVelocity[1] * this.moveVelocity[1]
+				+ this.moveVelocity[2] * this.moveVelocity[2] <
+					this.moveVelocityStopThreshhold * this.movingSpeed
+					* this.moveVelocityStopThreshhold * this.movingSpeed
+			)
 			{
 				this.moveVelocity[0] = 0;
 				this.moveVelocity[1] = 0;
@@ -670,10 +749,19 @@ export class KaleidoscopicIFSFractal extends Applet
 
 	calculateVectors()
 	{
-		//Here comes the serious math. Theta is the angle in the xy-plane and phi the angle down from the z-axis. We can use them get a normalized forward vector:
-		this.forwardVec = [Math.cos(this.theta) * Math.sin(this.phi), Math.sin(this.theta) * Math.sin(this.phi), Math.cos(this.phi)];
+		//Here comes the serious math. Theta is the angle in the xy-plane
+		//and phi the angle down from the z-axis. We can use them get a normalized forward vector:
+		this.forwardVec = [
+			Math.cos(this.theta) * Math.sin(this.phi),
+			Math.sin(this.theta) * Math.sin(this.phi),
+			Math.cos(this.phi)
+		];
 
-		//Now the right vector needs to be constrained to the xy-plane, since otherwise the image will appear tilted. For a vector (a, b, c), the orthogonal plane that passes through the origin is ax + by + cz = 0, so we want ax + by = 0. One solution is (b, -a), and that's the one that goes to the "right" of the forward vector (when looking down).
+		//Now the right vector needs to be constrained to the xy-plane,
+		//since otherwise the image will appear tilted. For a vector (a, b, c),
+		//the orthogonal plane that passes through the origin is ax + by + cz = 0,
+		//so we want ax + by = 0. One solution is (b, -a), and that's the one
+		//that goes to the "right" of the forward vector (when looking down).
 		this.rightVec = this.normalize([this.forwardVec[1], -this.forwardVec[0], 0]);
 
 		//Finally, the upward vector is the cross product of the previous two.
@@ -681,7 +769,11 @@ export class KaleidoscopicIFSFractal extends Applet
 
 
 
-		this.distanceToScene = this.distanceEstimator(this.cameraPos[0], this.cameraPos[1], this.cameraPos[2]);
+		this.distanceToScene = this.distanceEstimator(
+			this.cameraPos[0],
+			this.cameraPos[1],
+			this.cameraPos[2]
+		);
 
 
 
@@ -697,12 +789,20 @@ export class KaleidoscopicIFSFractal extends Applet
 
 
 
-		this.imagePlaneCenterPos = [this.cameraPos[0] + this.focalLength * this.forwardVec[0], this.cameraPos[1] + this.focalLength * this.forwardVec[1], this.cameraPos[2] + this.focalLength * this.forwardVec[2]];
+		this.imagePlaneCenterPos = [
+			this.cameraPos[0] + this.focalLength * this.forwardVec[0],
+			this.cameraPos[1] + this.focalLength * this.forwardVec[1],
+			this.cameraPos[2] + this.focalLength * this.forwardVec[2]
+		];
 
 
 
 		this.wilson.gl.uniform3fv(this.wilson.uniforms["cameraPos"], this.cameraPos);
-		this.wilson.gl.uniform3fv(this.wilson.uniforms["imagePlaneCenterPos"], this.imagePlaneCenterPos);
+		
+		this.wilson.gl.uniform3fv(
+			this.wilson.uniforms["imagePlaneCenterPos"],
+			this.imagePlaneCenterPos
+		);
 
 		this.wilson.gl.uniform3fv(this.wilson.uniforms["forwardVec"], this.forwardVec);
 		this.wilson.gl.uniform3fv(this.wilson.uniforms["rightVec"], this.rightVec);
@@ -722,7 +822,11 @@ export class KaleidoscopicIFSFractal extends Applet
 
 	crossProduct(vec1, vec2)
 	{
-		return [vec1[1] * vec2[2] - vec1[2] * vec2[1], vec1[2] * vec2[0] - vec1[0] * vec2[2], vec1[0] * vec2[1] - vec1[1] * vec2[0]];
+		return [
+			vec1[1] * vec2[2] - vec1[2] * vec2[1],
+			vec1[2] * vec2[0] - vec1[0] * vec2[2],
+			vec1[0] * vec2[1] - vec1[1] * vec2[0]
+	];
 	}
 
 
@@ -761,7 +865,8 @@ export class KaleidoscopicIFSFractal extends Applet
 
 	distanceEstimator(x, y, z)
 	{
-		//We'll find the closest vertex, scale everything by a factor of 2 centered on that vertex (so that we don't need to recalculate the vertices), and repeat.
+		//We'll find the closest vertex, scale everything by a factor of 2
+		//centered on that vertex (so that we don't need to recalculate the vertices), and repeat.
 		for (let iteration = 0; iteration < this.numSierpinskiIterations; iteration++)
 		{
 			//Fold space over on itself so that we can reference only the top vertex.
@@ -812,9 +917,23 @@ export class KaleidoscopicIFSFractal extends Applet
 			let tempY = y;
 			let tempZ = z;
 
-			let matZ = [[Math.cos(this.rotationAngleZ1), -Math.sin(this.rotationAngleZ1), 0], [Math.sin(this.rotationAngleZ1), Math.cos(this.rotationAngleZ1), 0], [0, 0, 1]];
-			let matY = [[Math.cos(this.rotationAngleY1), 0, -Math.sin(this.rotationAngleY1)], [0, 1, 0],[Math.sin(this.rotationAngleY1), 0, Math.cos(this.rotationAngleY1)]];
-			let matX = [[1, 0, 0], [0, Math.cos(this.rotationAngleX1), -Math.sin(this.rotationAngleX1)], [0, Math.sin(this.rotationAngleX1), Math.cos(this.rotationAngleX1)]];
+			let matZ = [
+				[Math.cos(this.rotationAngleZ1), -Math.sin(this.rotationAngleZ1), 0],
+				[Math.sin(this.rotationAngleZ1), Math.cos(this.rotationAngleZ1), 0],
+				[0, 0, 1]
+			];
+
+			let matY = [
+				[Math.cos(this.rotationAngleY1), 0, -Math.sin(this.rotationAngleY1)],
+				[0, 1, 0],
+				[Math.sin(this.rotationAngleY1), 0, Math.cos(this.rotationAngleY1)]
+			];
+			
+			let matX = [
+				[1, 0, 0],
+				[0, Math.cos(this.rotationAngleX1), -Math.sin(this.rotationAngleX1)],
+				[0, Math.sin(this.rotationAngleX1), Math.cos(this.rotationAngleX1)]
+			];
 
 			let matTotal = this.matMul(this.matMul(matZ, matY), matX);
 
@@ -824,7 +943,11 @@ export class KaleidoscopicIFSFractal extends Applet
 
 
 
-			//This one takes a fair bit of thinking to get. What's happening here is that we're stretching from a vertex, but since we never scale the vertices, the four new ones are the four closest to the vertex we scaled from. Now (x, y, z) will get farther and farther away from the origin, but that makes sense -- we're really just zooming in on the tetrahedron.
+			//This one takes a fair bit of thinking to get. What's happening here is that
+			//we're stretching from a vertex, but since we never scale the vertices,
+			//the four new ones are the four closest to the vertex we scaled from.
+			//Now (x, y, z) will get farther and farther away from the origin,
+			//but that makes sense -- we're really just zooming in on the tetrahedron.
 			x = this.scale * x - (this.scale - 1) * this.scaleCenter[this.polyhedronIndex][0];
 			y = this.scale * y - (this.scale - 1) * this.scaleCenter[this.polyhedronIndex][1];
 			z = this.scale * z - (this.scale - 1) * this.scaleCenter[this.polyhedronIndex][2];
@@ -837,9 +960,23 @@ export class KaleidoscopicIFSFractal extends Applet
 			tempY = y;
 			tempZ = z;
 
-			matZ = [[Math.cos(this.rotationAngleZ2), -Math.sin(this.rotationAngleZ2), 0], [Math.sin(this.rotationAngleZ2), Math.cos(this.rotationAngleZ2), 0], [0, 0, 1]];
-			matY = [[Math.cos(this.rotationAngleY2), 0, -Math.sin(this.rotationAngleY2)], [0, 1, 0],[Math.sin(this.rotationAngleY2), 0, Math.cos(this.rotationAngleY2)]];
-			matX = [[1, 0, 0], [0, Math.cos(this.rotationAngleX2), -Math.sin(this.rotationAngleX2)], [0, Math.sin(this.rotationAngleX2), Math.cos(this.rotationAngleX2)]];
+			matZ = [
+				[Math.cos(this.rotationAngleZ2), -Math.sin(this.rotationAngleZ2), 0],
+				[Math.sin(this.rotationAngleZ2), Math.cos(this.rotationAngleZ2), 0],
+				[0, 0, 1]
+			];
+
+			matY = [
+				[Math.cos(this.rotationAngleY2), 0, -Math.sin(this.rotationAngleY2)],
+				[0, 1, 0],
+				[Math.sin(this.rotationAngleY2), 0, Math.cos(this.rotationAngleY2)]
+			];
+
+			matX = [
+				[1, 0, 0],
+				[0, Math.cos(this.rotationAngleX2), -Math.sin(this.rotationAngleX2)],
+				[0, Math.sin(this.rotationAngleX2), Math.cos(this.rotationAngleX2)]
+			];
 
 			matTotal = this.matMul(this.matMul(matZ, matY), matX);
 
@@ -850,8 +987,10 @@ export class KaleidoscopicIFSFractal extends Applet
 
 
 
-		//So at this point we've scaled up by 2x a total of numIterations times. The final distance is therefore:
-		return Math.sqrt(x * x + y * y + z * z) * Math.pow(this.scale, -this.numSierpinskiIterations);
+		//So at this point we've scaled up by 2x a total of numIterations times.
+		//The final distance is therefore:
+		return Math.sqrt(x * x + y * y + z * z)
+			* Math.pow(this.scale, -this.numSierpinskiIterations);
 	}
 
 
@@ -970,7 +1109,11 @@ export class KaleidoscopicIFSFractal extends Applet
 
 			this.wasMovingTouch = true;
 
-			if (this.moveVelocity[0] === 0 && this.moveVelocity[1] === 0 && this.moveVelocity[2] === 0)
+			if (
+				this.moveVelocity[0] === 0
+				&& this.moveVelocity[1] === 0
+				&& this.moveVelocity[2] === 0
+			)
 			{
 				this.moveVelocity[0] = this.nextMoveVelocity[0];
 				this.moveVelocity[1] = this.nextMoveVelocity[1];
@@ -982,7 +1125,16 @@ export class KaleidoscopicIFSFractal extends Applet
 			}
 		}
 
-		if (((event.type === "touchend" && event.touches,length === 0) || event.type === "mouseup") && (this.nextThetaVelocity * this.nextThetaVelocity + this.nextPhiVelocity * this.nextPhiVelocity >= this.panVelocityStartThreshhold * this.panVelocityStartThreshhold))
+		if (
+			(
+				(event.type === "touchend" && event.touches,length === 0)
+				|| event.type === "mouseup"
+			) && (
+				this.nextThetaVelocity * this.nextThetaVelocity
+				+ this.nextPhiVelocity * this.nextPhiVelocity >=
+					this.panVelocityStartThreshhold * this.panVelocityStartThreshhold
+			)
+		)
 		{
 			this.thetaVelocity = this.nextThetaVelocity;
 			this.phiVelocity = this.nextPhiVelocity;
@@ -993,7 +1145,10 @@ export class KaleidoscopicIFSFractal extends Applet
 
 	handleKeydownEvent(e)
 	{
-		if (document.activeElement.tagName === "INPUT" || !(e.key === "w" || e.key === "s" || e.key === "d" || e.key === "a"))
+		if (
+			document.activeElement.tagName === "INPUT"
+			|| !(e.key === "w" || e.key === "s" || e.key === "d" || e.key === "a")
+		)
 		{
 			return;
 		}
@@ -1038,7 +1193,10 @@ export class KaleidoscopicIFSFractal extends Applet
 
 	handleKeyupEvent(e)
 	{
-		if (document.activeElement.tagName === "INPUT" || !(e.key === "w" || e.key === "s" || e.key === "d" || e.key === "a"))
+		if (
+			document.activeElement.tagName === "INPUT"
+			|| !(e.key === "w" || e.key === "s" || e.key === "d" || e.key === "a")
+		)
 		{
 			return;
 		}
@@ -1173,14 +1331,28 @@ export class KaleidoscopicIFSFractal extends Applet
 
 		if (this.imageWidth >= this.imageHeight)
 		{
-			this.wilson.gl.uniform1f(this.wilson.uniforms["aspectRatioX"], this.imageWidth / this.imageHeight);
-			this.wilson.gl.uniform1f(this.wilson.uniforms["aspectRatioY"], 1);
+			this.wilson.gl.uniform1f(
+				this.wilson.uniforms["aspectRatioX"],
+				this.imageWidth / this.imageHeight
+			);
+
+			this.wilson.gl.uniform1f(
+				this.wilson.uniforms["aspectRatioY"],
+				1
+			);
 		}
 
 		else
 		{
-			this.wilson.gl.uniform1f(this.wilson.uniforms["aspectRatioX"], 1);
-			this.wilson.gl.uniform1f(this.wilson.uniforms["aspectRatioY"], this.imageWidth / this.imageHeight);
+			this.wilson.gl.uniform1f(
+				this.wilson.uniforms["aspectRatioX"],
+				1
+			);
+
+			this.wilson.gl.uniform1f(
+				this.wilson.uniforms["aspectRatioY"],
+				this.imageWidth / this.imageHeight
+			);
 		}
 
 		this.wilson.gl.uniform1i(this.wilson.uniforms["imageSize"], this.imageSize);
@@ -1192,7 +1364,14 @@ export class KaleidoscopicIFSFractal extends Applet
 
 
 
-	updateParameters(newRotationAngleX1, newRotationAngleY1, newRotationAngleZ1, newRotationAngleX2, newRotationAngleY2, newRotationAngleZ2)
+	updateParameters(
+		newRotationAngleX1,
+		newRotationAngleY1,
+		newRotationAngleZ1,
+		newRotationAngleX2,
+		newRotationAngleY2,
+		newRotationAngleZ2
+	)
 	{
 		const target = this;
 
@@ -1214,9 +1393,23 @@ export class KaleidoscopicIFSFractal extends Applet
 
 	updateMatrices()
 	{
-		let matZ = [[Math.cos(this.rotationAngleZ1), -Math.sin(this.rotationAngleZ1), 0], [Math.sin(this.rotationAngleZ1), Math.cos(this.rotationAngleZ1), 0], [0, 0, 1]];
-		let matY = [[Math.cos(this.rotationAngleY1), 0, -Math.sin(this.rotationAngleY1)], [0, 1, 0],[Math.sin(this.rotationAngleY1), 0, Math.cos(this.rotationAngleY1)]];
-		let matX = [[1, 0, 0], [0, Math.cos(this.rotationAngleX1), -Math.sin(this.rotationAngleX1)], [0, Math.sin(this.rotationAngleX1), Math.cos(this.rotationAngleX1)]];
+		let matZ = [
+			[Math.cos(this.rotationAngleZ1), -Math.sin(this.rotationAngleZ1), 0],
+			[Math.sin(this.rotationAngleZ1), Math.cos(this.rotationAngleZ1), 0],
+			[0, 0, 1]
+		];
+
+		let matY = [
+			[Math.cos(this.rotationAngleY1), 0, -Math.sin(this.rotationAngleY1)],
+			[0, 1, 0],
+			[Math.sin(this.rotationAngleY1), 0, Math.cos(this.rotationAngleY1)]
+		];
+
+		let matX = [
+			[1, 0, 0],
+			[0, Math.cos(this.rotationAngleX1), -Math.sin(this.rotationAngleX1)],
+			[0, Math.sin(this.rotationAngleX1), Math.cos(this.rotationAngleX1)]
+		];
 
 		let matTotal = this.matMul(this.matMul(matZ, matY), matX);
 
@@ -1238,9 +1431,23 @@ export class KaleidoscopicIFSFractal extends Applet
 
 
 
-		matZ = [[Math.cos(this.rotationAngleZ2), -Math.sin(this.rotationAngleZ2), 0], [Math.sin(this.rotationAngleZ2), Math.cos(this.rotationAngleZ2), 0], [0, 0, 1]];
-		matY = [[Math.cos(this.rotationAngleY2), 0, -Math.sin(this.rotationAngleY2)], [0, 1, 0],[Math.sin(this.rotationAngleY2), 0, Math.cos(this.rotationAngleY2)]];
-		matX = [[1, 0, 0], [0, Math.cos(this.rotationAngleX2), -Math.sin(this.rotationAngleX2)], [0, Math.sin(this.rotationAngleX2), Math.cos(this.rotationAngleX2)]];
+		matZ = [
+			[Math.cos(this.rotationAngleZ2), -Math.sin(this.rotationAngleZ2), 0],
+			[Math.sin(this.rotationAngleZ2), Math.cos(this.rotationAngleZ2), 0],
+			[0, 0, 1]
+		];
+
+		matY = [
+			[Math.cos(this.rotationAngleY2), 0, -Math.sin(this.rotationAngleY2)],
+			[0, 1, 0],
+			[Math.sin(this.rotationAngleY2), 0, Math.cos(this.rotationAngleY2)]
+		];
+
+		matX = [
+			[1, 0, 0],
+			[0, Math.cos(this.rotationAngleX2), -Math.sin(this.rotationAngleX2)],
+			[0, Math.sin(this.rotationAngleX2), Math.cos(this.rotationAngleX2)]
+		];
 
 		matTotal = this.matMul(this.matMul(matZ, matY), matX);
 
@@ -1271,16 +1478,40 @@ export class KaleidoscopicIFSFractal extends Applet
 
 		this.polyhedronIndex = newPolyhedronIndex;
 
-		this.wilson.gl.uniform3fv(this.wilson.uniforms["lightPos"], this.lightPos[this.polyhedronIndex]);
+		this.wilson.gl.uniform3fv(
+			this.wilson.uniforms["lightPos"],
+			this.lightPos[this.polyhedronIndex]
+		);
 
-		this.wilson.gl.uniform3fv(this.wilson.uniforms["scaleCenter"], this.scaleCenter[this.polyhedronIndex]);
+		this.wilson.gl.uniform3fv(
+			this.wilson.uniforms["scaleCenter"],
+			this.scaleCenter[this.polyhedronIndex]
+		);
 
-		this.wilson.gl.uniform3fv(this.wilson.uniforms["n1"], this.n1[this.polyhedronIndex]);
-		this.wilson.gl.uniform3fv(this.wilson.uniforms["n2"], this.n2[this.polyhedronIndex]);
-		this.wilson.gl.uniform3fv(this.wilson.uniforms["n3"], this.n3[this.polyhedronIndex]);
-		this.wilson.gl.uniform3fv(this.wilson.uniforms["n4"], this.n4[this.polyhedronIndex]);
+		this.wilson.gl.uniform3fv(
+			this.wilson.uniforms["n1"],
+			this.n1[this.polyhedronIndex]
+		);
 
-		this.wilson.gl.uniform1i(this.wilson.uniforms["numNs"], this.numNs[this.polyhedronIndex]);
+		this.wilson.gl.uniform3fv(
+			this.wilson.uniforms["n2"],
+			this.n2[this.polyhedronIndex]
+		);
+
+		this.wilson.gl.uniform3fv(
+			this.wilson.uniforms["n3"],
+			this.n3[this.polyhedronIndex]
+		);
+		
+		this.wilson.gl.uniform3fv(
+			this.wilson.uniforms["n4"],
+			this.n4[this.polyhedronIndex]
+		);
+
+		this.wilson.gl.uniform1i(
+			this.wilson.uniforms["numNs"],
+			this.numNs[this.polyhedronIndex]
+		);
 
 		window.requestAnimationFrame(this.drawFrame.bind(this));
 

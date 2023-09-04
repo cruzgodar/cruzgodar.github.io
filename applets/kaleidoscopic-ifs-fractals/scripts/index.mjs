@@ -60,7 +60,14 @@ export function load()
 	const rotationAngleY2InputElement = $("#rotation-angle-y-2-input");
 	const rotationAngleZ2InputElement = $("#rotation-angle-z-2-input");
 
-	const elements = [rotationAngleX1InputElement, rotationAngleY1InputElement, rotationAngleZ1InputElement, rotationAngleX2InputElement, rotationAngleY2InputElement, rotationAngleZ2InputElement];
+	const elements = [
+		rotationAngleX1InputElement,
+		rotationAngleY1InputElement,
+		rotationAngleZ1InputElement,
+		rotationAngleX2InputElement,
+		rotationAngleY2InputElement,
+		rotationAngleZ2InputElement
+	];
 
 	for (let i = 0; i < 6; i++)
 	{
@@ -72,7 +79,15 @@ export function load()
 			const rotationAngleX2 = parseFloat(rotationAngleX2InputElement.value || 0);
 			const rotationAngleY2 = parseFloat(rotationAngleY2InputElement.value || 0);
 			const rotationAngleZ2 = parseFloat(rotationAngleZ2InputElement.value || 0);
-			applet.updateParameters(rotationAngleX1, rotationAngleY1, rotationAngleZ1, rotationAngleX2, rotationAngleY2, rotationAngleZ2);
+
+			applet.updateParameters(
+				rotationAngleX1,
+				rotationAngleY1,
+				rotationAngleZ1,
+				rotationAngleX2,
+				rotationAngleY2,
+				rotationAngleZ2
+			);
 		});
 	}
 
@@ -96,7 +111,14 @@ export function load()
 		rotationAngleY2InputElement.value = Math.round(rotationAngleY2 * 1000000) / 1000000;
 		rotationAngleZ2InputElement.value = Math.round(rotationAngleZ2 * 1000000) / 1000000;
 
-		applet.updateParameters(rotationAngleX1, rotationAngleY1, rotationAngleZ1, rotationAngleX2, rotationAngleY2, rotationAngleZ2);
+		applet.updateParameters(
+			rotationAngleX1,
+			rotationAngleY1,
+			rotationAngleZ1,
+			rotationAngleX2,
+			rotationAngleY2,
+			rotationAngleZ2
+		);
 	});
 
 

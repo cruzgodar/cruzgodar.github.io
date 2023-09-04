@@ -17,12 +17,13 @@
 
 	},
 	"emeraldwalk.runonsave": {
-
+		"autoClearConsole": true,
+		"shell": "/bin/zsh",
 		"commands": [
 			{
 				"match": ".*",
 				"cmd": "node ${workspaceFolder}/build/build.mjs"
 			}
 		]
-	}
+	},
 }

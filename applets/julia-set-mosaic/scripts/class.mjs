@@ -41,7 +41,15 @@ export class JuliaSetMosaic extends Applet
 
 
 
-		const tempShader = "precision highp float; varying vec2 uv; void main(void) { gl_FragColor = vec4(0.0, 0.0, 0.0, 1.0); }";
+		const tempShader = `
+			precision highp float;
+			varying vec2 uv;
+			
+			void main(void)
+			{
+				gl_FragColor = vec4(0.0, 0.0, 0.0, 1.0);
+			}
+		`;
 
 		const options =
 		{
@@ -272,17 +280,50 @@ export class JuliaSetMosaic extends Applet
 
 		this.numIterations = (-this.zoomLevel * 30) + 200;
 
-		this.wilsonHidden.gl.uniform1f(this.wilsonHidden.uniforms["setDensity"], this.setDensity);
-		this.wilsonHidden.gl.uniform1f(this.wilsonHidden.uniforms["worldCenterX"], this.wilson.worldCenterX);
-		this.wilsonHidden.gl.uniform1f(this.wilsonHidden.uniforms["worldCenterY"], this.wilson.worldCenterY);
+		this.wilsonHidden.gl.uniform1f(
+			this.wilsonHidden.uniforms["setDensity"],
+			this.setDensity
+		);
 
-		this.wilsonHidden.gl.uniform1f(this.wilsonHidden.uniforms["worldSize"], Math.min(this.wilson.worldHeight, this.wilson.worldWidth) / 2);
+		this.wilsonHidden.gl.uniform1f(
+			this.wilsonHidden.uniforms["worldCenterX"],
+			this.wilson.worldCenterX
+		);
 
-		this.wilsonHidden.gl.uniform1i(this.wilsonHidden.uniforms["numIterations"], this.numIterations);
-		this.wilsonHidden.gl.uniform1f(this.wilsonHidden.uniforms["exposure"], 1);
-		this.wilsonHidden.gl.uniform1f(this.wilsonHidden.uniforms["a"], this.a);
-		this.wilsonHidden.gl.uniform1f(this.wilsonHidden.uniforms["b"], this.b);
-		this.wilsonHidden.gl.uniform1f(this.wilsonHidden.uniforms["brightnessScale"], 20 * (Math.abs(this.zoomLevel) + 1));
+		this.wilsonHidden.gl.uniform1f(
+			this.wilsonHidden.uniforms["worldCenterY"],
+			this.wilson.worldCenterY
+		);
+
+		this.wilsonHidden.gl.uniform1f(
+			this.wilsonHidden.uniforms["worldSize"],
+			Math.min(this.wilson.worldHeight, this.wilson.worldWidth) / 2
+		);
+
+		this.wilsonHidden.gl.uniform1i(
+			this.wilsonHidden.uniforms["numIterations"],
+			this.numIterations
+		);
+
+		this.wilsonHidden.gl.uniform1f(
+			this.wilsonHidden.uniforms["exposure"],
+			1
+		);
+
+		this.wilsonHidden.gl.uniform1f(
+			this.wilsonHidden.uniforms["a"],
+			this.a
+		);
+
+		this.wilsonHidden.gl.uniform1f(
+			this.wilsonHidden.uniforms["b"],
+			this.b
+		);
+
+		this.wilsonHidden.gl.uniform1f(
+			this.wilsonHidden.uniforms["brightnessScale"],
+			20 * (Math.abs(this.zoomLevel) + 1)
+		);
 
 		this.wilsonHidden.render.drawFrame();
 
@@ -299,7 +340,10 @@ export class JuliaSetMosaic extends Applet
 
 		brightnesses.sort((a, b) => a - b);
 
-		let brightnessScale = (brightnesses[Math.floor(this.resolutionHidden * this.resolutionHidden * .96)] + brightnesses[Math.floor(this.resolutionHidden * this.resolutionHidden * .98)]) / 255 * 15 * (Math.abs(this.zoomLevel / 2) + 1);
+		let brightnessScale = (
+			brightnesses[Math.floor(this.resolutionHidden * this.resolutionHidden * .96)]
+			+ brightnesses[Math.floor(this.resolutionHidden * this.resolutionHidden * .98)]
+		) / 255 * 15 * (Math.abs(this.zoomLevel / 2) + 1);
 
 		this.pastBrightnessScales.push(brightnessScale);
 
@@ -321,7 +365,10 @@ export class JuliaSetMosaic extends Applet
 		this.wilson.gl.uniform1f(this.wilson.uniforms["worldCenterX"], this.wilson.worldCenterX);
 		this.wilson.gl.uniform1f(this.wilson.uniforms["worldCenterY"], this.wilson.worldCenterY);
 
-		this.wilson.gl.uniform1f(this.wilson.uniforms["worldSize"], Math.min(this.wilson.worldHeight, this.wilson.worldWidth) / 2);
+		this.wilson.gl.uniform1f(
+			this.wilson.uniforms["worldSize"],
+			Math.min(this.wilson.worldHeight, this.wilson.worldWidth) / 2
+		);
 
 		this.wilson.gl.uniform1i(this.wilson.uniforms["numIterations"], this.numIterations);
 		this.wilson.gl.uniform1f(this.wilson.uniforms["exposure"], this.exposure);
