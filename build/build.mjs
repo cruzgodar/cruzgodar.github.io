@@ -17,14 +17,13 @@ const options =
 {
 	clean: process.argv.slice(2).includes("-c"),
 	fix: process.argv.slice(2).includes("-f"),
-	terse: process.argv.slice(2).includes("-t"),
 };
 
 
 
 async function buildSite()
 {
-	if (!options.terse)
+	if (options.fix)
 	{
 		await eslint();
 	}
@@ -167,7 +166,7 @@ async function eslint()
 {
 	await new Promise(resolve =>
 	{
-		exec(`eslint --ext .js,.mjs${options.fix ? " --fix" : ""} ${root}`, (error, stdout) =>
+		exec(`eslint --ext .js,.mjs$ --fix ${root}`, (error, stdout) =>
 		{
 			if (stdout)
 			{

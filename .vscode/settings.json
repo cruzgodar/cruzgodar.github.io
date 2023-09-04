@@ -21,7 +21,7 @@
 		"commands": [
 			{
 				"match": ".*",
-				"cmd": "node ${workspaceFolder}/build/build.mjs -t"
+				"cmd": "node ${workspaceFolder}/build/build.mjs"
 			}
 		]
 	}
