@@ -20,11 +20,24 @@ export function setContentElement(newContentElement)
 
 
 
+//The banner opacity cannot be changed more than a certain amount each frame
+//to account for sudden changes in viewport height. This function handles that animation.
+
 export let bannerOpacity = 1;
+
+let bannerOpacityChange = 0;
+
+const maxSingleFrameChange = .025;
 
 export function setBannerOpacity(newBannerOpacity)
 {
-	bannerOpacity = newBannerOpacity;
+	bannerOpacityChange += newBannerOpacity - bannerOpacity;
+
+	const singleFrameChange = Math.min(Math.max(
+		bannerOpacityChange, -maxSingleFrameChange), maxSingleFrameChange
+	);
+
+	bannerOpacity = Math.min(Math.max(bannerOpacity + singleFrameChange, 0), 1);
 
 	if (bannerElement)
 	{
@@ -34,6 +47,13 @@ export function setBannerOpacity(newBannerOpacity)
 	if (contentElement)
 	{
 		contentElement.style.opacity = 1 - bannerOpacity;
+	}
+
+	bannerOpacityChange -= singleFrameChange;
+
+	if (Math.abs(bannerOpacityChange) > .001)
+	{
+		window.requestAnimationFrame(() => setBannerOpacity(bannerOpacity));
 	}
 }
 
@@ -120,8 +140,7 @@ export async function loadBanner(large = false)
 	`);
 
 
-
-	//Fetch the banner file. If that works, great! Set the background and fade in the page. If not, that means the html was cached but the banner was not (this is common on the homepage). In that case, we need to abort, so we remove the banner entirely.
+	
 	await fetch(bannerFilepath + bannerFilename);
 
 	const img = new Image();
@@ -215,7 +234,7 @@ function scrollHandler()
 		return;
 	}
 
-	bannerOpacity = Math.min(Math.max(1 - pageScroll / bannerMaxScroll, 0), 1);
+	setBannerOpacity(1 - pageScroll / bannerMaxScroll);
 
 	bannerElement.style.opacity = bannerOpacity;
 	contentElement.style.opacity = 1 - bannerOpacity;

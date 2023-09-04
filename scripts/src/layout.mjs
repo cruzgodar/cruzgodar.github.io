@@ -149,7 +149,9 @@ export function equalizeAppletColumns()
 	{
 		for (let i = 0; i < elements.length; i++)
 		{
-			const heightDifference = Math.abs(heightSums[i] - (heightSums[heightSums.length - 1] - heightSums[i]));
+			const heightDifference = Math.abs(
+				heightSums[i] - (heightSums[heightSums.length - 1] - heightSums[i])
+			);
 
 			if (heightDifference < minHeightDifference)
 			{
