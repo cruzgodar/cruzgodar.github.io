@@ -208,13 +208,31 @@ export class LyapunovFractal extends Applet
 		this.wilson.render.shaderPrograms = [];
 		this.wilson.render.loadNewShader(fragShaderSource);
 		this.wilson.gl.useProgram(this.wilson.render.shaderPrograms[0]);
-		this.wilson.render.initUniforms(["aspectRatio", "worldCenterX", "worldCenterY", "worldSize", "brightnessScale", "seq"]);
+
+		this.wilson.render.initUniforms([
+			"aspectRatio",
+			"worldCenterX",
+			"worldCenterY",
+			"worldSize",
+			"brightnessScale",
+			"seq"
+		]);
+
 		this.wilson.gl.uniform1f(this.wilson.uniforms["aspectRatio"], 1);
 
 		this.wilsonHidden.render.shaderPrograms = [];
 		this.wilsonHidden.render.loadNewShader(fragShaderSource);
 		this.wilsonHidden.gl.useProgram(this.wilsonHidden.render.shaderPrograms[0]);
-		this.wilsonHidden.render.initUniforms(["aspectRatio", "worldCenterX", "worldCenterY", "worldSize", "brightnessScale", "seq"]);
+
+		this.wilsonHidden.render.initUniforms([
+			"aspectRatio",
+			"worldCenterX",
+			"worldCenterY",
+			"worldSize",
+			"brightnessScale",
+			"seq"
+		]);
+
 		this.wilsonHidden.gl.uniform1f(this.wilsonHidden.uniforms["aspectRatio"], 1);
 
 
@@ -251,13 +269,30 @@ export class LyapunovFractal extends Applet
 
 
 
-		this.wilsonHidden.gl.uniform1f(this.wilsonHidden.uniforms["aspectRatio"], this.aspectRatio);
-		this.wilsonHidden.gl.uniform1f(this.wilsonHidden.uniforms["worldCenterX"], this.wilson.worldCenterX);
-		this.wilsonHidden.gl.uniform1f(this.wilsonHidden.uniforms["worldCenterY"], this.wilson.worldCenterY);
+		this.wilsonHidden.gl.uniform1f(
+			this.wilsonHidden.uniforms["aspectRatio"],
+			this.aspectRatio
+		);
 
-		this.wilsonHidden.gl.uniform1f(this.wilsonHidden.uniforms["worldSize"], Math.min(this.wilson.worldHeight, this.wilson.worldWidth) / 2);
+		this.wilsonHidden.gl.uniform1f(
+			this.wilsonHidden.uniforms["worldCenterX"],
+			this.wilson.worldCenterX
+		);
 
-		this.wilsonHidden.gl.uniform1f(this.wilsonHidden.uniforms["brightnessScale"], 20);
+		this.wilsonHidden.gl.uniform1f(
+			this.wilsonHidden.uniforms["worldCenterY"],
+			this.wilson.worldCenterY
+		);
+
+		this.wilsonHidden.gl.uniform1f(
+			this.wilsonHidden.uniforms["worldSize"],
+			Math.min(this.wilson.worldHeight, this.wilson.worldWidth) / 2
+		);
+
+		this.wilsonHidden.gl.uniform1f(
+			this.wilsonHidden.uniforms["brightnessScale"],
+			20
+		);
 
 		this.wilsonHidden.render.drawFrame();
 
@@ -274,7 +309,10 @@ export class LyapunovFractal extends Applet
 
 		brightnesses.sort((a, b) => a - b);
 
-		let brightnessScale = (brightnesses[Math.floor(this.resolutionHidden * this.resolutionHidden * .96)] + brightnesses[Math.floor(this.resolutionHidden * this.resolutionHidden * .98)]) / 255 * 6;
+		let brightnessScale = (
+			brightnesses[Math.floor(this.resolutionHidden * this.resolutionHidden * .96)]
+			+ brightnesses[Math.floor(this.resolutionHidden * this.resolutionHidden * .98)]
+		) / 255 * 6;
 
 		this.pastBrightnessScales.push(brightnessScale);
 
@@ -289,13 +327,30 @@ export class LyapunovFractal extends Applet
 
 
 
-		this.wilson.gl.uniform1f(this.wilson.uniforms["aspectRatio"], this.aspectRatio);
-		this.wilson.gl.uniform1f(this.wilson.uniforms["worldCenterX"], this.wilson.worldCenterX);
-		this.wilson.gl.uniform1f(this.wilson.uniforms["worldCenterY"], this.wilson.worldCenterY);
+		this.wilson.gl.uniform1f(
+			this.wilson.uniforms["aspectRatio"],
+			this.aspectRatio
+		);
 
-		this.wilson.gl.uniform1f(this.wilson.uniforms["worldSize"], Math.min(this.wilson.worldHeight, this.wilson.worldWidth) / 2);
+		this.wilson.gl.uniform1f(
+			this.wilson.uniforms["worldCenterX"],
+			this.wilson.worldCenterX
+		);
 
-		this.wilson.gl.uniform1f(this.wilson.uniforms["brightnessScale"], brightnessScale);
+		this.wilson.gl.uniform1f(
+			this.wilson.uniforms["worldCenterY"],
+			this.wilson.worldCenterY
+		);
+
+		this.wilson.gl.uniform1f(
+			this.wilson.uniforms["worldSize"],
+			Math.min(this.wilson.worldHeight, this.wilson.worldWidth) / 2
+		);
+
+		this.wilson.gl.uniform1f(
+			this.wilson.uniforms["brightnessScale"],
+			brightnessScale
+		);
 
 		this.wilson.render.drawFrame();
 

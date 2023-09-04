@@ -43,7 +43,11 @@ function drawKickedRotator()
 		//This randomness helps keep straight-line artefacts from appearing.
 		const rand = Math.floor(Math.random() * (2 * orbitSeparation + 1)) - orbitSeparation;
 
-		const upperHalfPointsRatio = calculateOrbit(Math.floor(gridSize / 2 + i), middleCol + rand, color);
+		const upperHalfPointsRatio = calculateOrbit(
+			Math.floor(gridSize / 2 + i),
+			middleCol + rand,
+			color
+		);
 
 
 
@@ -54,7 +58,10 @@ function drawKickedRotator()
 
 
 
-		//Now that we've got our orbit, we can reflect it vertically and horizontally to get the other side -- but this is only necessary, and in fact only a good thing, if the orbit wasn't symmetric in the first place. We test for this by seeing if less than 45% of the points were above the half-way mark.
+		//Now that we've got our orbit, we can reflect it vertically and horizontally
+		//to get the other side -- but this is only necessary, and in fact only a good thing,
+		//if the orbit wasn't symmetric in the first place. We test for this by seeing
+		//if less than 45% of the points were above the half-way mark.
 		if (upperHalfPointsRatio < .45)
 		{
 			for (let j = 0; j < gridSize; j++)
@@ -63,7 +70,8 @@ function drawKickedRotator()
 				{
 					if (image[gridSize * j + k] !== 0)
 					{
-						image[gridSize * (gridSize - j - 1) + gridSize - k - 1] = image[gridSize * j + k];
+						image[gridSize * (gridSize - j - 1) + gridSize - k - 1]
+							= image[gridSize * j + k];
 					}
 				}
 			}
@@ -95,7 +103,11 @@ function calculateOrbit(startRow, startCol)
 
 
 
-	//Here's the idea. We can't just terminate an orbit if the point coincides one of the places we've already been, since the rasterizing makes that happen way too often. We also don't want every orbit to go one forever though, so instead, we'll terminate an orbit if it hits enough points we've already seen in a row.
+	//Here's the idea. We can't just terminate an orbit if the point
+	//coincides with one of the places we've already been,
+	//since the rasterizing makes that happen way too often.
+	//We also don't want every orbit to go one forever though, so instead,
+	//we'll terminate an orbit if it hits enough points we've already seen in a row.
 	let numPoints = 0;
 
 	for (;;)

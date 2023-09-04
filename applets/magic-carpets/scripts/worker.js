@@ -6,7 +6,8 @@ let gridSize = null;
 let maxCageSize = null;
 let uniqueSolution = null;
 
-//Each element is of the form [top-left row, top-left col, width, height, label row offset, label col offset].
+//Each element is of the form
+//[top-left row, top-left col, width, height, label row offset, label col offset].
 let cages = [];
 
 //This is a gridSize * gridSize array that holds the index of the cage that each cell is in.
@@ -24,7 +25,8 @@ function generateMagicCarpet()
 
 
 
-	//First, generate rectangles until we get a unique solution. We start with all 1x1 cages -- we'll make it much harder later.
+	//First, generate rectangles until we get a unique solution.
+	//We start with all 1x1 cages -- we'll make it much harder later.
 	initializeGrid();
 
 
@@ -63,7 +65,9 @@ function generateMagicCarpet()
 				{
 					numSolutionsFound = solvePuzzle();
 
-					//If this is no longer a unique solution, no problem! We'll just try a different cage next time. We'll just revert to our last uniquely-solvable grid and try again.
+					//If this is no longer a unique solution, no problem!
+					//We'll just try a different cage next time.
+					//We'll just revert to our last uniquely-solvable grid and try again.
 					if (numSolutionsFound !== 1)
 					{
 						cages = JSON.parse(JSON.stringify(cagesBackup));
@@ -72,7 +76,9 @@ function generateMagicCarpet()
 						numSolutionsFound = 1;
 					}
 
-					//Great! We just merged a cage, so we have a harder puzzle, but the solution is still unique. Now we can set a checkpoint here and keep going.
+					//Great! We just merged a cage, so we have a harder puzzle,
+					//but the solution is still unique. Now we can set a
+					//checkpoint here and keep going.
 					else
 					{
 						expandedACage = true;
@@ -90,7 +96,9 @@ function generateMagicCarpet()
 
 		if (!expandedACage || cages.length <= gridSize)
 		{
-			postMessage([cages.sort((a, b) => (b[3] * gridSize + b[2]) - (a[3] * gridSize + a[2]))]);
+			postMessage([
+				cages.sort((a, b) => (b[3] * gridSize + b[2]) - (a[3] * gridSize + a[2]))
+			]);
 			return;
 		}
 	}
@@ -164,9 +172,14 @@ function expandCage(cageIndex)
 	{
 		const neighbor = cages[cagesByLocation[row - 1][col]];
 
-		//We don't care how tall this one is, but we need it to have the same starting column and width.
+		//We don't care how tall this one is, but we need it
+		//to have the same starting column and width.
 
-		if (neighbor[1] === col && neighbor[3] === width && neighbor[2] * neighbor[3] + width * height <= maxCageSize)
+		if (
+			neighbor[1] === col
+			&& neighbor[3] === width
+			&& neighbor[2] * neighbor[3] + width * height <= maxCageSize
+		)
 		{
 			directions.push([1, 0]);
 		}
@@ -177,9 +190,14 @@ function expandCage(cageIndex)
 	{
 		const neighbor = cages[cagesByLocation[row][col - 1]];
 
-		//We don't care how wide this one is, but we need it to have the same starting row and height.
+		//We don't care how wide this one is, but we need it
+		//to have the same starting row and height.
 
-		if (neighbor[0] === row && neighbor[2] === height && neighbor[2] * neighbor[3] + width * height <= maxCageSize)
+		if (
+			neighbor[0] === row
+			&& neighbor[2] === height
+			&& neighbor[2] * neighbor[3] + width * height <= maxCageSize
+		)
 		{
 			directions.push([0, 1]);
 		}
@@ -198,7 +216,9 @@ function expandCage(cageIndex)
 
 
 
-	//There are two easy places to put the label: either we leave it where it was in the neighbor, or we leave it where it was in the merged cage.
+	//There are two easy places to put the label:
+	//either we leave it where it was in the neighbor,
+	//or we leave it where it was in the merged cage.
 	if (Math.random() < .5)
 	{
 		cages[neighborIndex][4] = cages[neighborIndex][2] * direction[0] + rowOffset;
@@ -207,7 +227,9 @@ function expandCage(cageIndex)
 
 
 
-	//This is a cute way of avoiding an if statement. If the column is the same but the row moved, then we want only the height to increase, and vice versa.
+	//This is a cute way of avoiding an if statement.
+	//If the column is the same but the row moved,
+	//then we want only the height to increase, and vice versa.
 	cages[neighborIndex][2] += height * direction[0];
 	cages[neighborIndex][3] += width * direction[1];
 
@@ -326,14 +348,18 @@ function solvePuzzleStep(cageIndex, occupiedCageLocations)
 		{
 			for (let j = minCol; j <= maxCol; j++)
 			{
-				//Now we need to see which rectangles fit. This is a hard problem, and we're just searching the entire rectangle here.
+				//Now we need to see which rectangles fit. This is a hard problem,
+				//and we're just searching the entire rectangle here.
 				let broken = false;
 
 				for (let k = 0; k < side1; k++)
 				{
 					for (let l = 0; l < side2; l++)
 					{
-						if (occupiedCageLocations[i + k][j + l] && !(i + k === row && j + l === col))
+						if (
+							occupiedCageLocations[i + k][j + l]
+							&& !(i + k === row && j + l === col)
+						)
 						{
 							broken = true;
 							break;

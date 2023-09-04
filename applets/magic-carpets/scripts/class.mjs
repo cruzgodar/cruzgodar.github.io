@@ -108,10 +108,33 @@ export class MagicCarpet extends Applet
 
 
 
-		this.wilson.ctx.fillRect(0, 0, this.cellSize * this.gridSize + 10, 10);
-		this.wilson.ctx.fillRect(0, this.cellSize * this.gridSize, this.cellSize * this.gridSize + 10, 10);
-		this.wilson.ctx.fillRect(0, 0, 10, this.cellSize * this.gridSize + 10);
-		this.wilson.ctx.fillRect(this.cellSize * this.gridSize, 0, 10, this.cellSize * this.gridSize + 10);
+		this.wilson.ctx.fillRect(
+			0,
+			0,
+			this.cellSize * this.gridSize + 10,
+			10
+		);
+
+		this.wilson.ctx.fillRect(
+			0,
+			this.cellSize * this.gridSize,
+			this.cellSize * this.gridSize + 10,
+			10
+		);
+
+		this.wilson.ctx.fillRect(
+			0,
+			0,
+			10,
+			this.cellSize * this.gridSize + 10
+		);
+
+		this.wilson.ctx.fillRect(
+			this.cellSize * this.gridSize,
+			0,
+			10,
+			this.cellSize * this.gridSize + 10
+		);
 
 
 
@@ -139,7 +162,13 @@ export class MagicCarpet extends Applet
 
 		const measurement = this.wilson.ctx.measureText(entry);
 
-		this.wilson.ctx.fillText(entry, this.cellSize * col + (this.cellSize - measurement.width) / 2 + 5, this.cellSize * (row + 1) - (this.cellSize - measurement.actualBoundingBoxAscent - measurement.actualBoundingBoxDescent) / 2 + 4);
+		this.wilson.ctx.fillText(entry,
+			this.cellSize * col + (this.cellSize - measurement.width) / 2 + 5,
+			this.cellSize * (row + 1) - (
+				this.cellSize - measurement.actualBoundingBoxAscent
+				- measurement.actualBoundingBoxDescent
+			) / 2 + 4
+		);
 	}
 
 
@@ -205,15 +234,54 @@ export class MagicCarpet extends Applet
 
 		const rowAdjust = this.cages[index][0] === 0 ? 0 : 5;
 		const colAdjust = this.cages[index][1] === 0 ? 0 : 5;
-		const heightAdjust = (this.cages[index][0] + this.cages[index][2] === this.gridSize) || this.cages[index][0] === 0 ? 0 : 5;
-		const widthAdjust = (this.cages[index][1] + this.cages[index][3] === this.gridSize) || this.cages[index][1] === 0 ? 0 : 5;
-		const heightAdjust2 = (this.cages[index][0] + this.cages[index][2] === this.gridSize) && this.cages[index][0] === 0 ? 5 : 0;
-		const widthAdjust2 = (this.cages[index][1] + this.cages[index][3] === this.gridSize) && this.cages[index][1] === 0 ? 5 : 0;
 
-		this.wilson.ctx.fillRect(col + 10 - colAdjust, row + 10 - rowAdjust, width - 5 + widthAdjust - widthAdjust2, 10);
-		this.wilson.ctx.fillRect(col + 10 - colAdjust, row + 10 - rowAdjust, 10, height - 5 + heightAdjust - heightAdjust2);
-		this.wilson.ctx.fillRect(col + width - 5 - colAdjust + widthAdjust - widthAdjust2, row + 10 - rowAdjust, 10, height - 5 + heightAdjust - heightAdjust2);
-		this.wilson.ctx.fillRect(col + 10 - colAdjust + widthAdjust, row + height - 5 - rowAdjust + heightAdjust - heightAdjust2, width - 5 - widthAdjust2, 10);
+		const heightAdjust = (this.cages[index][0] + this.cages[index][2] === this.gridSize)
+			|| this.cages[index][0] === 0
+			? 0
+			: 5;
+		
+		const widthAdjust = (this.cages[index][1] + this.cages[index][3] === this.gridSize)
+			|| this.cages[index][1] === 0
+			? 0
+			: 5;
+
+		const heightAdjust2 = (this.cages[index][0] + this.cages[index][2] === this.gridSize)
+			&& this.cages[index][0] === 0
+			? 5
+			: 0;
+		
+		const widthAdjust2 = (this.cages[index][1] + this.cages[index][3] === this.gridSize)
+			&& this.cages[index][1] === 0
+			? 5
+			: 0;
+
+		this.wilson.ctx.fillRect(
+			col + 10 - colAdjust,
+			row + 10 - rowAdjust,
+			width - 5 + widthAdjust - widthAdjust2,
+			10
+		);
+
+		this.wilson.ctx.fillRect(
+			col + 10 - colAdjust,
+			row + 10 - rowAdjust,
+			10,
+			height - 5 + heightAdjust - heightAdjust2
+		);
+		
+		this.wilson.ctx.fillRect(
+			col + width - 5 - colAdjust + widthAdjust - widthAdjust2,
+			row + 10 - rowAdjust,
+			10,
+			height - 5 + heightAdjust - heightAdjust2
+		);
+
+		this.wilson.ctx.fillRect(
+			col + 10 - colAdjust + widthAdjust,
+			row + height - 5 - rowAdjust + heightAdjust - heightAdjust2,
+			width - 5 - widthAdjust2,
+			10
+		);
 
 
 

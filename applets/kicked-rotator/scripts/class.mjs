@@ -77,7 +77,11 @@ export class KickedRotator extends Applet
 				{
 					if (valueDelta[resolution * i + j] > values[resolution * i + j])
 					{
-						const rgb = this.wilson.utils.hsvToRgb(hue, 1, valueDelta[resolution * i + j] / 255);
+						const rgb = this.wilson.utils.hsvToRgb(
+							hue,
+							1,
+							valueDelta[resolution * i + j] / 255
+						);
 
 						this.wilson.ctx.fillStyle = `rgb(${rgb[0]}, ${rgb[1]}, ${rgb[2]})`;
 
