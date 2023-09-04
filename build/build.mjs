@@ -13,14 +13,21 @@ const excludeFromBuild =
 	/scripts\/anime\.js/,
 ];
 
-const clean = process.argv.slice(2).includes("-c");
-const fix = process.argv.slice(2).includes("-f");
+const options =
+{
+	clean: process.argv.slice(2).includes("-c"),
+	fix: process.argv.slice(2).includes("-f"),
+	terse: process.argv.slice(2).includes("-t"),
+};
 
 
 
 async function buildSite()
 {
-	await eslint();
+	if (!options.terse)
+	{
+		await eslint();
+	}
 
 	await buildSitemap();
 
@@ -36,7 +43,7 @@ async function buildSite()
 
 	await new Promise(resolve =>
 	{
-		exec(`git -C ${root} ls-files${clean ? "" : " -m -o"}`, async (error, stdout) =>
+		exec(`git -C ${root} ls-files${options.clean ? "" : " -m -o"}`, async (error, stdout) =>
 		{
 			await parseModifiedFiles(stdout.split("\n"), sitemap);
 
@@ -160,7 +167,7 @@ async function eslint()
 {
 	await new Promise(resolve =>
 	{
-		exec(`eslint --ext .js,.mjs${fix ? " --fix" : ""} ${root}`, (error, stdout) =>
+		exec(`eslint --ext .js,.mjs${options.fix ? " --fix" : ""} ${root}`, (error, stdout) =>
 		{
 			if (stdout)
 			{

@@ -13,4 +13,16 @@
 	"editor.wordWrapColumn": 128,
 	"prettier.requireConfig": true,
 	"editor.formatOnSave": false,
+	"editor.codeActionsOnSave": {
+
+	},
+	"emeraldwalk.runonsave": {
+
+		"commands": [
+			{
+				"match": ".*",
+				"cmd": "node ${workspaceFolder}/build/build.mjs -t"
+			}
+		]
+	}
 }
