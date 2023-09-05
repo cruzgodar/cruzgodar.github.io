@@ -5,7 +5,7 @@ import { $ } from "/scripts/src/main.mjs";
 
 export function load()
 {
-	const applet = new VectorField($("#output-canvas"));
+	const applet = new VectorField({ canvas: $("#output-canvas") });
 
 	applet.loadPromise.then(() => run());
 
@@ -99,7 +99,10 @@ export function load()
 
 	const downloadButtonElement = $("#download-button");
 
-	downloadButtonElement.addEventListener("click", () => applet.wilson.downloadFrame("a-vector-field.png"));
+	downloadButtonElement.addEventListener(
+		"click",
+		() => applet.wilson.downloadFrame("a-vector-field.png")
+	);
 
 	showPage();
 
@@ -107,7 +110,9 @@ export function load()
 
 	function run()
 	{
-		const generatingCode = rawGLSLCheckboxElement.checked ? codeTextareaElement.value : Applet.parseNaturalGLSL(codeTextareaElement.value);
+		const generatingCode = rawGLSLCheckboxElement.checked
+			? codeTextareaElement.value
+			: Applet.parseNaturalGLSL(codeTextareaElement.value);
 
 		const resolution = parseInt(resolutionInputElement.value || 500);
 		const maxParticles = Math.max(parseInt(maxParticlesInputElement.value || 10000), 100);

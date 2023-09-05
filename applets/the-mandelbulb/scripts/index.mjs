@@ -14,7 +14,15 @@ export function load()
 	const cYInputElement = $("#c-y-input");
 	const cZInputElement = $("#c-z-input");
 
-	const applet = new Mandelbulb($("#output-canvas"), cXInputElement, cYInputElement, cZInputElement, rotationAngleXInputElement, rotationAngleYInputElement, rotationAngleZInputElement);
+	const applet = new Mandelbulb({
+		canvas: $("#output-canvas"),
+		cXInputElement,
+		cYInputElement,
+		cZInputElement,
+		rotationAngleXInputElement,
+		rotationAngleYInputElement,
+		rotationAngleZInputElement
+	});
 
 
 
@@ -80,7 +88,15 @@ export function load()
 
 	const powerInputElement = $("#power-input");
 
-	const elements = [rotationAngleXInputElement, rotationAngleYInputElement, rotationAngleZInputElement, cXInputElement, cYInputElement, cZInputElement, powerInputElement];
+	const elements = [
+		rotationAngleXInputElement,
+		rotationAngleYInputElement,
+		rotationAngleZInputElement,
+		cXInputElement,
+		cYInputElement,
+		cZInputElement,
+		powerInputElement
+	];
 
 	for (let i = 0; i < 7; i++)
 	{

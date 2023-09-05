@@ -58,7 +58,7 @@ export class VectorField extends Applet
 
 
 
-	constructor(canvas)
+	constructor({ canvas })
 	{
 		super(canvas);
 
@@ -93,7 +93,11 @@ export class VectorField extends Applet
 
 		this.wilsonUpdate.render.createFramebufferTexturePair();
 
-		this.wilsonUpdate.gl.bindTexture(this.wilsonUpdate.gl.TEXTURE_2D, this.wilsonUpdate.render.framebuffers[0].texture);
+		this.wilsonUpdate.gl.bindTexture(
+			this.wilsonUpdate.gl.TEXTURE_2D,
+			this.wilsonUpdate.render.framebuffers[0].texture
+		);
+
 		this.wilsonUpdate.gl.bindFramebuffer(this.wilsonUpdate.gl.FRAMEBUFFER, null);
 
 
@@ -201,7 +205,11 @@ export class VectorField extends Applet
 
 		this.wilsonDim.render.createFramebufferTexturePair(this.wilsonDim.gl.UNSIGNED_BYTE);
 
-		this.wilsonDim.gl.bindTexture(this.wilsonDim.gl.TEXTURE_2D, this.wilsonDim.render.framebuffers[0].texture);
+		this.wilsonDim.gl.bindTexture(
+			this.wilsonDim.gl.TEXTURE_2D,
+			this.wilsonDim.render.framebuffers[0].texture
+		);
+
 		this.wilsonDim.gl.bindFramebuffer(this.wilsonDim.gl.FRAMEBUFFER, null);
 
 		this.dimTexture = new Uint8Array(this.resolution * this.resolution * 4);
@@ -290,7 +298,11 @@ export class VectorField extends Applet
 
 		this.wilson.render.createFramebufferTexturePair(this.wilson.gl.UNSIGNED_BYTE);
 
-		this.wilson.gl.bindTexture(this.wilson.gl.TEXTURE_2D, this.wilson.render.framebuffers[0].texture);
+		this.wilson.gl.bindTexture(
+			this.wilson.gl.TEXTURE_2D,
+			this.wilson.render.framebuffers[0].texture
+		);
+
 		this.wilson.gl.bindFramebuffer(this.wilson.gl.FRAMEBUFFER, null);
 
 
@@ -418,23 +430,43 @@ export class VectorField extends Applet
 
 		this.wilsonUpdate.gl.useProgram(this.wilsonUpdate.render.shaderPrograms[0]);
 		this.wilsonUpdate.gl.uniform1f(this.wilsonUpdate.uniforms["dt"][0], this.dt);
-		this.wilsonUpdate.gl.uniform2fv(this.wilsonUpdate.uniforms["draggableArg"][0], this.wilson.draggables.worldCoordinates[0]);
+		
+		this.wilsonUpdate.gl.uniform2fv(
+			this.wilsonUpdate.uniforms["draggableArg"][0],
+			this.wilson.draggables.worldCoordinates[0]
+		);
 
 		this.wilsonUpdate.gl.useProgram(this.wilsonUpdate.render.shaderPrograms[1]);
 		this.wilsonUpdate.gl.uniform1f(this.wilsonUpdate.uniforms["dt"][1], this.dt);
-		this.wilsonUpdate.gl.uniform2fv(this.wilsonUpdate.uniforms["draggableArg"][1], this.wilson.draggables.worldCoordinates[0]);
+		
+		this.wilsonUpdate.gl.uniform2fv(
+			this.wilsonUpdate.uniforms["draggableArg"][1],
+			this.wilson.draggables.worldCoordinates[0]
+		);
 
 		this.wilsonUpdate.gl.useProgram(this.wilsonUpdate.render.shaderPrograms[2]);
 		this.wilsonUpdate.gl.uniform1f(this.wilsonUpdate.uniforms["dt"][2], this.dt);
-		this.wilsonUpdate.gl.uniform2fv(this.wilsonUpdate.uniforms["draggableArg"][2], this.wilson.draggables.worldCoordinates[0]);
+		
+		this.wilsonUpdate.gl.uniform2fv(
+			this.wilsonUpdate.uniforms["draggableArg"][2],
+			this.wilson.draggables.worldCoordinates[0]
+		);
 
 		this.wilsonUpdate.gl.useProgram(this.wilsonUpdate.render.shaderPrograms[3]);
 		this.wilsonUpdate.gl.uniform1f(this.wilsonUpdate.uniforms["dt"][3], this.dt);
-		this.wilsonUpdate.gl.uniform2fv(this.wilsonUpdate.uniforms["draggableArg"][3], this.wilson.draggables.worldCoordinates[0]);
+		
+		this.wilsonUpdate.gl.uniform2fv(
+			this.wilsonUpdate.uniforms["draggableArg"][3],
+			this.wilson.draggables.worldCoordinates[0]
+		);
 
 		this.wilsonUpdate.gl.useProgram(this.wilsonUpdate.render.shaderPrograms[4]);
 		this.wilsonUpdate.gl.uniform1f(this.wilsonUpdate.uniforms["dt"][4], this.dt);
-		this.wilsonUpdate.gl.uniform2fv(this.wilsonUpdate.uniforms["draggableArg"][4], this.wilson.draggables.worldCoordinates[0]);
+		
+		this.wilsonUpdate.gl.uniform2fv(
+			this.wilsonUpdate.uniforms["draggableArg"][4],
+			this.wilson.draggables.worldCoordinates[0]
+		);
 
 
 
@@ -450,12 +482,28 @@ export class VectorField extends Applet
 
 
 
-		this.generateNewField(resolution, maxParticles, dt, lifetime, worldCenterX, worldCenterY, zoomLevel);
+		this.generateNewField({
+			resolution,
+			maxParticles,
+			dt,
+			lifetime,
+			worldCenterX,
+			worldCenterY,
+			zoomLevel
+		});
 	}
 
 
 
-	generateNewField(resolution = this.resolution, maxParticles = this.maxParticles, dt = this.dt, lifetime = this.lifetime, worldCenterX = this.wilson.worldCenterX, worldCenterY = this.wilson.worldCenterY, zoomLevel = this.zoomLevel)
+	generateNewField({
+		resolution = this.resolution,
+		maxParticles = this.maxParticles,
+		dt = this.dt,
+		lifetime = this.lifetime,
+		worldCenterX = this.wilson.worldCenterX,
+		worldCenterY = this.wilson.worldCenterY,
+		zoomLevel = this.zoomLevel
+	})
 	{
 		this.resolution = resolution;
 		this.maxParticles = maxParticles;
@@ -489,7 +537,9 @@ export class VectorField extends Applet
 
 
 
-		this.updateTexture = new Float32Array(this.wilsonUpdate.canvasWidth * this.wilsonUpdate.canvasHeight * 4);
+		this.updateTexture = new Float32Array(
+			this.wilsonUpdate.canvasWidth * this.wilsonUpdate.canvasHeight * 4
+		);
 
 		for (let i = 0; i < this.wilsonUpdate.canvasHeight; i++)
 		{
@@ -538,7 +588,10 @@ export class VectorField extends Applet
 
 	drawFrame(timestamp)
 	{
-		//Wrapping everything in a try block and eating the occasional error is pretty gross, but it's actually a decent solution: everything is fine unless the user resizes the window faster than the screen refresh rate, meaning we access out of bounds in the middle of this function. We can fix that by just restarting whenever it happens.
+		//Wrapping everything in a try block and eating the occasional error is pretty gross,
+		//but it's actually a decent solution: everything is fine unless the user resizes the window
+		//faster than the screen refresh rate, meaning we access out of bounds in the middle of this
+		//function. We can fix that by just restarting whenever it happens.
 		try
 		{
 			const timeElapsed = timestamp - this.lastTimestamp;
@@ -552,13 +605,22 @@ export class VectorField extends Applet
 
 
 
-			//If there's not enough particles, we add what's missing, capped at 1% of the total particle count.
+			//If there's not enough particles, we add what's missing,
+			//capped at 1% of the total particle count.
 			if (this.numParticles < this.maxParticles)
 			{
-				//We find the first open slot we can and search from the end of the list so that we can slice more efficiently.
-				const numToAdd = Math.min(Math.ceil(this.maxParticles / 80), this.maxParticles - this.numParticles);
+				//We find the first open slot we can and search from the end
+				//of the list so that we can slice more efficiently.
+				const numToAdd = Math.min(
+					Math.ceil(this.maxParticles / 80),
+					this.maxParticles - this.numParticles
+				);
 
-				for (let i = this.freeParticleSlots.length - numToAdd; i < this.freeParticleSlots.length; i++)
+				for (
+					let i = this.freeParticleSlots.length - numToAdd;
+					i < this.freeParticleSlots.length;
+					i++
+				)
 				{
 					this.createParticle(this.freeParticleSlots[i]);
 				}
@@ -637,7 +699,8 @@ export class VectorField extends Applet
 				this.wilson.worldCenterX -= xDelta;
 				this.panVelocityX *= this.panFriction;
 
-				if (this.panVelocityX * this.panVelocityX + this.panVelocityY * this.panVelocityY < this.panVelocityStopThreshhold * this.panVelocityStopThreshhold)
+				if (this.panVelocityX ** 2 + this.panVelocityY ** 2 <
+					this.panVelocityStopThreshhold ** 2)
 				{
 					this.panVelocityX = 0;
 					this.panVelocityY = 0;
@@ -698,9 +761,11 @@ export class VectorField extends Applet
 
 	createParticle(index)
 	{
-		this.particles[index][0] = this.wilson.worldCenterX + this.wilson.worldWidth * (Math.random() - .5);
+		this.particles[index][0] = this.wilson.worldCenterX
+			+ this.wilson.worldWidth * (Math.random() - .5);
 
-		this.particles[index][1] = this.wilson.worldCenterY + this.wilson.worldHeight * (Math.random() - .5);
+		this.particles[index][1] = this.wilson.worldCenterY
+			+ this.wilson.worldHeight * (Math.random() - .5);
 
 		this.particles[index][2] = Math.round(this.lifetime * (Math.random() * .5 + .75));
 
@@ -801,17 +866,35 @@ export class VectorField extends Applet
 					this.particles[index][0] = floatsX[index];
 					this.particles[index][1] = floatsY[index];
 
-					const row = Math.round((.5 - (this.particles[index][1] - this.wilson.worldCenterY) / this.wilson.worldHeight) * this.wilson.canvasHeight);
+					const row = Math.round(
+						(
+							.5 - (
+								this.particles[index][1] - this.wilson.worldCenterY
+							) / this.wilson.worldHeight
+						) * this.wilson.canvasHeight);
 
-					const col = Math.round(((this.particles[index][0] - this.wilson.worldCenterX) / this.wilson.worldWidth + .5) * this.wilson.canvasWidth);
+					const col = Math.round(
+						(
+							(this.particles[index][0] - this.wilson.worldCenterX)
+								/ this.wilson.worldWidth
+								+ .5
+						) * this.wilson.canvasWidth
+					);
 
-					if (row >= 0 && row < this.wilson.canvasHeight && col >= 0 && col < this.wilson.canvasWidth)
+					if (
+						row >= 0
+						&& row < this.wilson.canvasHeight
+						&& col >= 0
+						&& col < this.wilson.canvasWidth
+					)
 					{
 						const newIndex = row * this.wilson.canvasWidth + col;
 
 						this.dimTexture[4 * newIndex] = this.lifetime;
 						this.dimTexture[4 * newIndex + 1] = floatsH[index] * 255;
-						this.dimTexture[4 * newIndex + 2] = Math.max(floatsS[index], floatsS2[index]) * 255;
+
+						this.dimTexture[4 * newIndex + 2] =
+							Math.max(floatsS[index], floatsS2[index]) * 255;
 
 						this.particles[index][2]--;
 
@@ -872,7 +955,10 @@ export class VectorField extends Applet
 	{
 		this.wilsonDim.gl.useProgram(this.wilsonDim.render.shaderPrograms[1]);
 
-		this.wilsonDim.gl.uniform2f(this.wilsonDim.uniforms["pan"][1], xDelta / this.wilson.worldWidth, -yDelta / this.wilson.worldHeight);
+		this.wilsonDim.gl.uniform2f(
+			this.wilsonDim.uniforms["pan"][1],
+			xDelta / this.wilson.worldWidth, -yDelta / this.wilson.worldHeight
+		);
 
 		this.drawField();
 
@@ -891,7 +977,8 @@ export class VectorField extends Applet
 			return;
 		}
 
-		//Ex: if the scale is 2 and goes to 3, the delta is +1, so we actually want to multiply things by 2^(-1) to get the source places.
+		//Ex: if the scale is 2 and goes to 3, the delta is +1,
+		//so we actually want to multiply things by 2^(-1) to get the source places.
 		const scale = Math.pow(2, zoomDelta);
 
 		const fixedX = (fixedPointX - this.wilson.worldCenterX) / this.wilson.worldWidth + .5;
@@ -1081,7 +1168,12 @@ export class VectorField extends Applet
 	{
 		if (this.aspectRatio >= 1)
 		{
-			const newWorldCenter = this.wilson.input.getZoomedWorldCenter(this.fixedPointX, this.fixedPointY, 4 * Math.pow(2, this.zoomLevel) * this.aspectRatio, 4 * Math.pow(2, this.zoomLevel));
+			const newWorldCenter = this.wilson.input.getZoomedWorldCenter(
+				this.fixedPointX,
+				this.fixedPointY,
+				4 * Math.pow(2, this.zoomLevel) * this.aspectRatio,
+				4 * Math.pow(2, this.zoomLevel)
+			);
 
 			this.wilson.worldWidth = 4 * Math.pow(2, this.zoomLevel) * this.aspectRatio;
 			this.wilson.worldHeight = 4 * Math.pow(2, this.zoomLevel);
@@ -1092,7 +1184,12 @@ export class VectorField extends Applet
 
 		else
 		{
-			const newWorldCenter = this.wilson.input.getZoomedWorldCenter(this.fixedPointX, this.fixedPointY, 4 * Math.pow(2, this.zoomLevel), 4 * Math.pow(2, this.zoomLevel) / this.aspectRatio);
+			const newWorldCenter = this.wilson.input.getZoomedWorldCenter(
+				this.fixedPointX,
+				this.fixedPointY,
+				4 * Math.pow(2, this.zoomLevel),
+				4 * Math.pow(2, this.zoomLevel) / this.aspectRatio
+			);
 
 			this.wilson.worldWidth = 4 * Math.pow(2, this.zoomLevel);
 			this.wilson.worldHeight = 4 * Math.pow(2, this.zoomLevel) / this.aspectRatio;
@@ -1112,8 +1209,15 @@ export class VectorField extends Applet
 
 			if (this.aspectRatio >= 1)
 			{
-				this.wilson.changeCanvasSize(Math.ceil(this.resolution * this.aspectRatio), this.resolution);
-				this.wilsonDim.changeCanvasSize(Math.ceil(this.resolution * this.aspectRatio), this.resolution);
+				this.wilson.changeCanvasSize(
+					Math.ceil(this.resolution * this.aspectRatio),
+					this.resolution
+				);
+
+				this.wilsonDim.changeCanvasSize(
+					Math.ceil(this.resolution * this.aspectRatio),
+					this.resolution
+				);
 
 				this.wilson.worldWidth = 4 * Math.pow(2, this.zoomLevel) * this.aspectRatio;
 				this.wilson.worldHeight = 4 * Math.pow(2, this.zoomLevel);
@@ -1121,8 +1225,15 @@ export class VectorField extends Applet
 
 			else
 			{
-				this.wilson.changeCanvasSize(this.resolution, Math.ceil(this.resolution / this.aspectRatio));
-				this.wilsonDim.changeCanvasSize(this.resolution, Math.ceil(this.resolution / this.aspectRatio));
+				this.wilson.changeCanvasSize(
+					this.resolution,
+					Math.ceil(this.resolution / this.aspectRatio)
+				);
+
+				this.wilsonDim.changeCanvasSize(
+					this.resolution,
+					Math.ceil(this.resolution / this.aspectRatio)
+				);
 
 				this.wilson.worldWidth = 4 * Math.pow(2, this.zoomLevel);
 				this.wilson.worldHeight = 4 * Math.pow(2, this.zoomLevel) / this.aspectRatio;

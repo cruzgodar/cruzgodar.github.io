@@ -9,7 +9,7 @@ export class WilsonsAlgorithm extends Applet
 
 
 
-	constructor(canvas)
+	constructor({ canvas })
 	{
 		super(canvas);
 
@@ -58,7 +58,12 @@ export class WilsonsAlgorithm extends Applet
 		this.wilson.changeCanvasSize(canvasDim * canvasScaleFactor, canvasDim * canvasScaleFactor);
 
 		this.wilson.ctx.fillStyle = "rgb(0, 0, 0)";
-		this.wilson.ctx.fillRect(0, 0, canvasDim * canvasScaleFactor, canvasDim * canvasScaleFactor);
+		this.wilson.ctx.fillRect(
+			0,
+			0,
+			canvasDim * canvasScaleFactor,
+			canvasDim * canvasScaleFactor
+		);
 
 
 
@@ -71,12 +76,19 @@ export class WilsonsAlgorithm extends Applet
 			clearTimeout(timeoutId);
 			this.wilson.ctx.fillStyle = e.data[4];
 
-			this.wilson.ctx.fillRect(e.data[0] * canvasScaleFactor, e.data[1] * canvasScaleFactor, e.data[2] * canvasScaleFactor, e.data[3] * canvasScaleFactor);
+			this.wilson.ctx.fillRect(
+				e.data[0] * canvasScaleFactor,
+				e.data[1] * canvasScaleFactor,
+				e.data[2] * canvasScaleFactor,
+				e.data[3] * canvasScaleFactor
+			);
 		};
 
 
 
-		//The worker has three seconds to draw its initial line. If it can't do that, we cancel it and spawn a new worker that reverse-generates a skeleton.
+		//The worker has three seconds to draw its initial line.
+		//If it can't do that, we cancel it and spawn a new worker
+		//that reverse-generates a skeleton.
 		if (!reverseGenerateSkeleton)
 		{
 			timeoutId = setTimeout(() =>

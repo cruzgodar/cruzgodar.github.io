@@ -4,7 +4,7 @@ import { $ } from "/scripts/src/main.mjs";
 
 export function load()
 {
-	const applet = new WilsonsAlgorithm($("#output-canvas"));
+	const applet = new WilsonsAlgorithm({ canvas: $("#output-canvas") });
 
 
 

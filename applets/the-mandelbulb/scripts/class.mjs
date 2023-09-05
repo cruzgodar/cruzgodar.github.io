@@ -102,7 +102,15 @@ export class Mandelbulb extends Applet
 
 
 
-	constructor(canvas, cXInputElement, cYInputElement, cZInputElement, rotationAngleXInputElement, rotationAngleYInputElement, rotationAngleZInputElement)
+	constructor({
+		canvas,
+		cXInputElement,
+		cYInputElement,
+		cZInputElement,
+		rotationAngleXInputElement,
+		rotationAngleYInputElement,
+		rotationAngleZInputElement
+	})
 	{
 		super(canvas);
 
@@ -458,33 +466,89 @@ export class Mandelbulb extends Applet
 
 		if (this.imageWidth >= this.imageHeight)
 		{
-			this.wilson.gl.uniform1f(this.wilson.uniforms["aspectRatioX"], this.imageWidth / this.imageHeight);
-			this.wilson.gl.uniform1f(this.wilson.uniforms["aspectRatioY"], 1);
+			this.wilson.gl.uniform1f(
+				this.wilson.uniforms["aspectRatioX"],
+				this.imageWidth / this.imageHeight
+			);
+
+			this.wilson.gl.uniform1f(
+				this.wilson.uniforms["aspectRatioY"],
+				1
+			);
 		}
 
 		else
 		{
-			this.wilson.gl.uniform1f(this.wilson.uniforms["aspectRatioX"], 1);
-			this.wilson.gl.uniform1f(this.wilson.uniforms["aspectRatioY"], this.imageWidth / this.imageHeight);
+			this.wilson.gl.uniform1f(
+				this.wilson.uniforms["aspectRatioX"],
+				1
+			);
+
+			this.wilson.gl.uniform1f(
+				this.wilson.uniforms["aspectRatioY"],
+				this.imageWidth / this.imageHeight
+			);
 		}
 
-		this.wilson.gl.uniform1i(this.wilson.uniforms["imageSize"], this.imageSize);
+		this.wilson.gl.uniform1i(
+			this.wilson.uniforms["imageSize"],
+			this.imageSize
+		);
 
-		this.wilson.gl.uniform3fv(this.wilson.uniforms["cameraPos"], this.cameraPos);
-		this.wilson.gl.uniform3fv(this.wilson.uniforms["imagePlaneCenterPos"], this.imagePlaneCenterPos);
-		this.wilson.gl.uniform3fv(this.wilson.uniforms["lightPos"], this.lightPos);
+		this.wilson.gl.uniform3fv(
+			this.wilson.uniforms["cameraPos"],
+			this.cameraPos
+		);
 
-		this.wilson.gl.uniform3fv(this.wilson.uniforms["forwardVec"], this.forwardVec);
-		this.wilson.gl.uniform3fv(this.wilson.uniforms["rightVec"], this.rightVec);
-		this.wilson.gl.uniform3fv(this.wilson.uniforms["upVec"], this.upVec);
+		this.wilson.gl.uniform3fv(
+			this.wilson.uniforms["imagePlaneCenterPos"],
+			this.imagePlaneCenterPos
+		);
 
-		this.wilson.gl.uniform1f(this.wilson.uniforms["focalLength"], this.focalLength);
+		this.wilson.gl.uniform3fv(
+			this.wilson.uniforms["lightPos"],
+			this.lightPos
+		);
 
-		this.wilson.gl.uniform1i(this.wilson.uniforms["drawSphere"], 0);
+		this.wilson.gl.uniform3fv(
+			this.wilson.uniforms["forwardVec"],
+			this.forwardVec
+		);
 
-		this.wilson.gl.uniform1f(this.wilson.uniforms["power"], 8);
-		this.wilson.gl.uniform3fv(this.wilson.uniforms["c"], this.c);
-		this.wilson.gl.uniform1f(this.wilson.uniforms["juliaProportion"], 0);
+		this.wilson.gl.uniform3fv(
+			this.wilson.uniforms["rightVec"],
+			this.rightVec
+		);
+
+		this.wilson.gl.uniform3fv(
+			this.wilson.uniforms["upVec"],
+			this.upVec
+		);
+
+		this.wilson.gl.uniform1f(
+			this.wilson.uniforms["focalLength"],
+			this.focalLength
+		);
+
+		this.wilson.gl.uniform1i(
+			this.wilson.uniforms["drawSphere"],
+			0
+		);
+
+		this.wilson.gl.uniform1f(
+			this.wilson.uniforms["power"],
+			8
+		);
+
+		this.wilson.gl.uniform3fv(
+			this.wilson.uniforms["c"],
+			this.c
+		);
+
+		this.wilson.gl.uniform1f(
+			this.wilson.uniforms["juliaProportion"],
+			0
+		);
 
 		this.wilson.gl.uniformMatrix3fv(
 			this.wilson.uniforms["rotationMatrix"],
@@ -492,9 +556,20 @@ export class Mandelbulb extends Applet
 			[1, 0, 0, 0, 1, 0, 0, 0, 1]
 		);
 
-		this.wilson.gl.uniform1i(this.wilson.uniforms["maxMarches"], this.maxMarches);
-		this.wilson.gl.uniform1f(this.wilson.uniforms["stepFactor"], 1);
-		this.wilson.gl.uniform1i(this.wilson.uniforms["maxIterations"], this.maxIterations);
+		this.wilson.gl.uniform1i(
+			this.wilson.uniforms["maxMarches"],
+			this.maxMarches
+		);
+
+		this.wilson.gl.uniform1f(
+			this.wilson.uniforms["stepFactor"],
+			1
+		);
+
+		this.wilson.gl.uniform1i(
+			this.wilson.uniforms["maxIterations"],
+			this.maxIterations
+		);
 
 
 
@@ -541,7 +616,14 @@ export class Mandelbulb extends Applet
 
 
 
-		if (this.movingForwardKeyboard || this.movingBackwardKeyboard || this.movingRightKeyboard || this.movingLeftKeyboard || this.movingForwardTouch || this.movingBackwardTouch)
+		if (
+			this.movingForwardKeyboard
+			|| this.movingBackwardKeyboard
+			|| this.movingRightKeyboard
+			|| this.movingLeftKeyboard
+			|| this.movingForwardTouch
+			|| this.movingBackwardTouch
+		)
 		{
 			this.updateCameraParameters();
 		}
@@ -602,7 +684,10 @@ export class Mandelbulb extends Applet
 			this.thetaVelocity *= this.panFriction;
 			this.phiVelocity *= this.panFriction;
 
-			if (this.thetaVelocity * this.thetaVelocity + this.phiVelocity * this.phiVelocity < this.panVelocityStopThreshhold * this.panVelocityStopThreshhold)
+			if (
+				this.thetaVelocity ** 2 + this.phiVelocity ** 2 <
+					this.panVelocityStopThreshhold ** 2
+			)
 			{
 				this.thetaVelocity = 0;
 				this.phiVelocity = 0;
@@ -613,7 +698,11 @@ export class Mandelbulb extends Applet
 			this.calculateVectors();
 		}
 
-		if (this.moveVelocity[0] !== 0 || this.moveVelocity[1] !== 0 || this.moveVelocity[2] !== 0)
+		if (
+			this.moveVelocity[0] !== 0
+			|| this.moveVelocity[1] !== 0
+			|| this.moveVelocity[2] !== 0
+		)
 		{
 			if (this.movingPos)
 			{
@@ -644,7 +733,9 @@ export class Mandelbulb extends Applet
 			this.moveVelocity[1] *= this.moveFriction;
 			this.moveVelocity[2] *= this.moveFriction;
 
-			if (this.moveVelocity[0] * this.moveVelocity[0] + this.moveVelocity[1] * this.moveVelocity[1] + this.moveVelocity[2] * this.moveVelocity[2] < this.moveVelocityStopThreshhold * this.movingSpeed * this.moveVelocityStopThreshhold * this.movingSpeed)
+			if (
+				this.moveVelocity[0] ** 2 + this.moveVelocity[1] ** 2 + this.moveVelocity[2] ** 2 <
+					(this.moveVelocityStopThreshhold * this.movingSpeed) ** 2)
 			{
 				this.moveVelocity[0] = 0;
 				this.moveVelocity[1] = 0;
@@ -668,10 +759,19 @@ export class Mandelbulb extends Applet
 
 	calculateVectors()
 	{
-		//Here comes the serious math. Theta is the angle in the xy-plane and phi the angle down from the z-axis. We can use them get a normalized forward vector:
-		this.forwardVec = [Math.cos(this.theta) * Math.sin(this.phi), Math.sin(this.theta) * Math.sin(this.phi), Math.cos(this.phi)];
+		//Here comes the serious math. Theta is the angle in the xy-plane and
+		//phi the angle down from the z-axis. We can use them get a normalized forward vector:
+		this.forwardVec = [
+			Math.cos(this.theta) * Math.sin(this.phi),
+			Math.sin(this.theta) * Math.sin(this.phi),
+			Math.cos(this.phi)
+		];
 
-		//Now the right vector needs to be constrained to the xy-plane, since otherwise the image will appear tilted. For a vector (a, b, c), the orthogonal plane that passes through the origin is ax + by + cz = 0, so we want ax + by = 0. One solution is (b, -a), and that's the one that goes to the "right" of the forward vector (when looking down).
+		//Now the right vector needs to be constrained to the xy-plane,
+		//since otherwise the image will appear tilted. For a vector (a, b, c),
+		//the orthogonal plane that passes through the origin is ax + by + cz = 0,
+		//so we want ax + by = 0. One solution is (b, -a), and that's the one that
+		//goes to the "right" of the forward vector (when looking down).
 		this.rightVec = this.normalize([this.forwardVec[1], -this.forwardVec[0], 0]);
 
 		//Finally, the upward vector is the cross product of the previous two.
@@ -679,7 +779,11 @@ export class Mandelbulb extends Applet
 
 
 
-		this.distanceToScene = this.distanceEstimator(this.cameraPos[0], this.cameraPos[1], this.cameraPos[2]);
+		this.distanceToScene = this.distanceEstimator(
+			this.cameraPos[0],
+			this.cameraPos[1],
+			this.cameraPos[2]
+		);
 
 
 
@@ -695,12 +799,20 @@ export class Mandelbulb extends Applet
 
 
 
-		this.imagePlaneCenterPos = [this.cameraPos[0] + this.focalLength * this.forwardVec[0], this.cameraPos[1] + this.focalLength * this.forwardVec[1], this.cameraPos[2] + this.focalLength * this.forwardVec[2]];
+		this.imagePlaneCenterPos = [
+			this.cameraPos[0] + this.focalLength * this.forwardVec[0],
+			this.cameraPos[1] + this.focalLength * this.forwardVec[1],
+			this.cameraPos[2] + this.focalLength * this.forwardVec[2]
+		];
 
 
 
 		this.wilson.gl.uniform3fv(this.wilson.uniforms["cameraPos"], this.cameraPos);
-		this.wilson.gl.uniform3fv(this.wilson.uniforms["imagePlaneCenterPos"], this.imagePlaneCenterPos);
+
+		this.wilson.gl.uniform3fv(
+			this.wilson.uniforms["imagePlaneCenterPos"],
+			this.imagePlaneCenterPos
+		);
 
 		this.wilson.gl.uniform3fv(this.wilson.uniforms["forwardVec"], this.forwardVec);
 		this.wilson.gl.uniform3fv(this.wilson.uniforms["rightVec"], this.rightVec);
@@ -720,7 +832,11 @@ export class Mandelbulb extends Applet
 
 	crossProduct(vec1, vec2)
 	{
-		return [vec1[1] * vec2[2] - vec1[2] * vec2[1], vec1[2] * vec2[0] - vec1[0] * vec2[2], vec1[0] * vec2[1] - vec1[1] * vec2[0]];
+		return [
+			vec1[1] * vec2[2] - vec1[2] * vec2[1],
+			vec1[2] * vec2[0] - vec1[0] * vec2[2],
+			vec1[0] * vec2[1] - vec1[1] * vec2[0]
+		];
 	}
 
 
@@ -752,9 +868,23 @@ export class Mandelbulb extends Applet
 
 	updateRotationMatrix()
 	{
-		const matZ = [[Math.cos(this.rotationAngleZ), -Math.sin(this.rotationAngleZ), 0], [Math.sin(this.rotationAngleZ), Math.cos(this.rotationAngleZ), 0], [0, 0, 1]];
-		const matY = [[Math.cos(this.rotationAngleY), 0, -Math.sin(this.rotationAngleY)], [0, 1, 0],[Math.sin(this.rotationAngleY), 0, Math.cos(this.rotationAngleY)]];
-		const matX = [[1, 0, 0], [0, Math.cos(this.rotationAngleX), -Math.sin(this.rotationAngleX)], [0, Math.sin(this.rotationAngleX), Math.cos(this.rotationAngleX)]];
+		const matZ = [
+			[Math.cos(this.rotationAngleZ), -Math.sin(this.rotationAngleZ), 0],
+			[Math.sin(this.rotationAngleZ), Math.cos(this.rotationAngleZ), 0],
+			[0, 0, 1]
+		];
+
+		const matY = [
+			[Math.cos(this.rotationAngleY), 0, -Math.sin(this.rotationAngleY)],
+			[0, 1, 0],
+			[Math.sin(this.rotationAngleY), 0, Math.cos(this.rotationAngleY)]
+		];
+
+		const matX = [
+			[1, 0, 0],
+			[0, Math.cos(this.rotationAngleX), -Math.sin(this.rotationAngleX)],
+			[0, Math.sin(this.rotationAngleX), Math.cos(this.rotationAngleX)]
+		];
 
 		const matTotal = this.matMul(this.matMul(matZ, matY), matX);
 
@@ -814,9 +944,14 @@ export class Mandelbulb extends Applet
 
 			const scaledR = Math.pow(r, this.power);
 
-			mutableZ[0] = scaledR * Math.sin(this.theta) * Math.cos(this.phi) + ((1 - this.juliaProportion) * x + this.juliaProportion * this.c[0]);
-			mutableZ[1] = scaledR * Math.sin(this.theta) * Math.sin(this.phi) + ((1 - this.juliaProportion) * y + this.juliaProportion * this.c[1]);
-			mutableZ[2] = scaledR * Math.cos(this.theta) + ((1 - this.juliaProportion) * z + this.juliaProportion * this.c[2]);
+			mutableZ[0] = scaledR * Math.sin(this.theta) * Math.cos(this.phi)
+				+ ((1 - this.juliaProportion) * x + this.juliaProportion * this.c[0]);
+
+			mutableZ[1] = scaledR * Math.sin(this.theta) * Math.sin(this.phi)
+				+ ((1 - this.juliaProportion) * y + this.juliaProportion * this.c[1]);
+
+			mutableZ[2] = scaledR * Math.cos(this.theta)
+				+ ((1 - this.juliaProportion) * z + this.juliaProportion * this.c[2]);
 
 
 
@@ -826,9 +961,23 @@ export class Mandelbulb extends Applet
 			const tempY = mutableZ[1];
 			const tempZ = mutableZ[2];
 
-			const matZ = [[Math.cos(this.rotationAngleZ), -Math.sin(this.rotationAngleZ), 0], [Math.sin(this.rotationAngleZ), Math.cos(this.rotationAngleZ), 0], [0, 0, 1]];
-			const matY = [[Math.cos(this.rotationAngleY), 0, -Math.sin(this.rotationAngleY)], [0, 1, 0],[Math.sin(this.rotationAngleY), 0, Math.cos(this.rotationAngleY)]];
-			const matX = [[1, 0, 0], [0, Math.cos(this.rotationAngleX), -Math.sin(this.rotationAngleX)], [0, Math.sin(this.rotationAngleX), Math.cos(this.rotationAngleX)]];
+			const matZ = [
+				[Math.cos(this.rotationAngleZ), -Math.sin(this.rotationAngleZ), 0],
+				[Math.sin(this.rotationAngleZ), Math.cos(this.rotationAngleZ), 0],
+				[0, 0, 1]
+			];
+
+			const matY = [
+				[Math.cos(this.rotationAngleY), 0, -Math.sin(this.rotationAngleY)],
+				[0, 1, 0],
+				[Math.sin(this.rotationAngleY), 0, Math.cos(this.rotationAngleY)]
+			];
+
+			const matX = [
+				[1, 0, 0],
+				[0, Math.cos(this.rotationAngleX), -Math.sin(this.rotationAngleX)],
+				[0, Math.sin(this.rotationAngleX), Math.cos(this.rotationAngleX)]
+			];
 
 			const matTotal = this.matMul(this.matMul(matZ, matY), matX);
 
@@ -952,7 +1101,11 @@ export class Mandelbulb extends Applet
 
 			this.wasMovingTouch = true;
 
-			if (this.moveVelocity[0] === 0 && this.moveVelocity[1] === 0 && this.moveVelocity[2] === 0)
+			if (
+				this.moveVelocity[0] === 0
+				&& this.moveVelocity[1] === 0
+				&& this.moveVelocity[2] === 0
+			)
 			{
 				this.moveVelocity[0] = this.nextMoveVelocity[0];
 				this.moveVelocity[1] = this.nextMoveVelocity[1];
@@ -964,7 +1117,13 @@ export class Mandelbulb extends Applet
 			}
 		}
 
-		if (((event.type === "touchend" && event.touches,length === 0) || event.type === "mouseup") && (this.nextThetaVelocity * this.nextThetaVelocity + this.nextPhiVelocity * this.nextPhiVelocity >= this.panVelocityStartThreshhold * this.panVelocityStartThreshhold))
+		if (
+			((event.type === "touchend" && event.touches,length === 0) || event.type === "mouseup")
+			&& (
+				this.nextThetaVelocity ** 2 + this.nextPhiVelocity ** 2 >=
+				this.panVelocityStartThreshhold ** 2
+			)
+		)
 		{
 			this.thetaVelocity = this.nextThetaVelocity;
 			this.phiVelocity = this.nextPhiVelocity;
@@ -975,7 +1134,10 @@ export class Mandelbulb extends Applet
 
 	handleKeydownEvent(e)
 	{
-		if (document.activeElement.tagName === "INPUT" || !(e.key === "w" || e.key === "s" || e.key === "d" || e.key === "a"))
+		if (
+			document.activeElement.tagName === "INPUT"
+			|| !(e.key === "w" || e.key === "s" || e.key === "d" || e.key === "a")
+		)
 		{
 			return;
 		}
@@ -987,25 +1149,21 @@ export class Mandelbulb extends Applet
 
 
 
-		//W
 		if (e.key === "w")
 		{
 			this.movingForwardKeyboard = true;
 		}
 
-		//S
 		else if (e.key === "s")
 		{
 			this.movingBackwardKeyboard = true;
 		}
 
-		//D
 		if (e.key === "d")
 		{
 			this.movingRightKeyboard = true;
 		}
 
-		//A
 		else if (e.key === "a")
 		{
 			this.movingLeftKeyboard = true;
@@ -1016,7 +1174,10 @@ export class Mandelbulb extends Applet
 
 	handleKeyupEvent(e)
 	{
-		if (document.activeElement.tagName === "INPUT" || !(e.key === "w" || e.key === "s" || e.key === "d" || e.key === "a"))
+		if (
+			document.activeElement.tagName === "INPUT"
+			|| !(e.key === "w" || e.key === "s" || e.key === "d" || e.key === "a")
+		)
 		{
 			return;
 		}
@@ -1210,14 +1371,22 @@ export class Mandelbulb extends Applet
 
 		if (this.imageWidth >= this.imageHeight)
 		{
-			this.wilson.gl.uniform1f(this.wilson.uniforms["aspectRatioX"], this.imageWidth / this.imageHeight);
+			this.wilson.gl.uniform1f(
+				this.wilson.uniforms["aspectRatioX"],
+				this.imageWidth / this.imageHeight
+			);
+
 			this.wilson.gl.uniform1f(this.wilson.uniforms["aspectRatioY"], 1);
 		}
 
 		else
 		{
 			this.wilson.gl.uniform1f(this.wilson.uniforms["aspectRatioX"], 1);
-			this.wilson.gl.uniform1f(this.wilson.uniforms["aspectRatioY"], this.imageWidth / this.imageHeight);
+
+			this.wilson.gl.uniform1f(
+				this.wilson.uniforms["aspectRatioY"],
+				this.imageWidth / this.imageHeight
+			);
 		}
 
 		this.wilson.gl.uniform1i(this.wilson.uniforms["imageSize"], this.imageSize);
@@ -1236,7 +1405,11 @@ export class Mandelbulb extends Applet
 		const yNew = Math.random() * 2 - 1;
 		const zNew = Math.random() * 2 - 1;
 
-		if (this.rotationAngleXInputElement && this.rotationAngleYInputElement && this.rotationAngleZInputElement)
+		if (
+			this.rotationAngleXInputElement
+			&& this.rotationAngleYInputElement
+			&& this.rotationAngleZInputElement
+		)
 		{
 			this.rotationAngleXInputElement.value = Math.round(xNew * 1000000) / 1000000;
 			this.rotationAngleYInputElement.value = Math.round(yNew * 1000000) / 1000000;
@@ -1328,9 +1501,13 @@ export class Mandelbulb extends Applet
 			easing: "easeOutSine",
 			update: () =>
 			{
-				this.juliaProportion = (1 - dummy.t) * oldJuliaProportion + dummy.t * newJuliaProportion;
+				this.juliaProportion = (1 - dummy.t) * oldJuliaProportion
+					+ dummy.t * newJuliaProportion;
 
-				this.wilson.gl.uniform1f(this.wilson.uniforms["juliaProportion"], this.juliaProportion);
+				this.wilson.gl.uniform1f(
+					this.wilson.uniforms["juliaProportion"],
+					this.juliaProportion
+				);
 			}
 		});
 	}
