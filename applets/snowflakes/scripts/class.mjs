@@ -13,7 +13,7 @@ export class Snowflake extends Applet
 
 
 
-	constructor(canvas)
+	constructor({ canvas })
 	{
 		super(canvas);
 
@@ -585,7 +585,11 @@ export class Snowflake extends Applet
 		this.wilson.render.createFramebufferTexturePair();
 		this.wilson.render.createFramebufferTexturePair();
 
-		this.wilson.gl.bindTexture(this.wilson.gl.TEXTURE_2D, this.wilson.render.framebuffers[0].texture);
+		this.wilson.gl.bindTexture(
+			this.wilson.gl.TEXTURE_2D,
+			this.wilson.render.framebuffers[0].texture
+		);
+
 		this.wilson.gl.bindFramebuffer(this.wilson.gl.FRAMEBUFFER, null);
 	}
 
@@ -627,7 +631,11 @@ export class Snowflake extends Applet
 
 		this.wilson.changeCanvasSize(this.resolution, this.resolution);
 
-		this.wilson.gl.bindTexture(this.wilson.gl.TEXTURE_2D, this.wilson.render.framebuffers[0].texture);
+		this.wilson.gl.bindTexture(
+			this.wilson.gl.TEXTURE_2D,
+			this.wilson.render.framebuffers[0].texture
+		);
+
 		this.wilson.gl.texImage2D(
 			this.wilson.gl.TEXTURE_2D,
 			0,
@@ -640,7 +648,11 @@ export class Snowflake extends Applet
 			null
 		);
 
-		this.wilson.gl.bindTexture(this.wilson.gl.TEXTURE_2D, this.wilson.render.framebuffers[1].texture);
+		this.wilson.gl.bindTexture(
+			this.wilson.gl.TEXTURE_2D,
+			this.wilson.render.framebuffers[1].texture
+		);
+
 		this.wilson.gl.texImage2D(
 			this.wilson.gl.TEXTURE_2D,
 			0,
@@ -657,8 +669,15 @@ export class Snowflake extends Applet
 
 		this.wilson.gl.useProgram(this.wilson.render.shaderPrograms[0]);
 
-		this.wilson.gl.bindTexture(this.wilson.gl.TEXTURE_2D, this.wilson.render.framebuffers[0].texture);
-		this.wilson.gl.bindFramebuffer(this.wilson.gl.FRAMEBUFFER, this.wilson.render.framebuffers[0].framebuffer);
+		this.wilson.gl.bindTexture(
+			this.wilson.gl.TEXTURE_2D,
+			this.wilson.render.framebuffers[0].texture
+		);
+
+		this.wilson.gl.bindFramebuffer(
+			this.wilson.gl.FRAMEBUFFER,
+			this.wilson.render.framebuffers[0].framebuffer
+		);
 
 		this.wilson.render.drawFrame();
 
@@ -686,7 +705,10 @@ export class Snowflake extends Applet
 		{
 			this.wilson.gl.useProgram(this.wilson.render.shaderPrograms[1]);
 
-			this.wilson.gl.bindFramebuffer(this.wilson.gl.FRAMEBUFFER, this.wilson.render.framebuffers[1].framebuffer);
+			this.wilson.gl.bindFramebuffer(
+				this.wilson.gl.FRAMEBUFFER,
+				this.wilson.render.framebuffers[1].framebuffer
+			);
 
 			this.wilson.render.drawFrame();
 
@@ -694,8 +716,15 @@ export class Snowflake extends Applet
 
 			this.wilson.gl.useProgram(this.wilson.render.shaderPrograms[2]);
 
-			this.wilson.gl.bindTexture(this.wilson.gl.TEXTURE_2D, this.wilson.render.framebuffers[1].texture);
-			this.wilson.gl.bindFramebuffer(this.wilson.gl.FRAMEBUFFER, this.wilson.render.framebuffers[0].framebuffer);
+			this.wilson.gl.bindTexture(
+				this.wilson.gl.TEXTURE_2D,
+				this.wilson.render.framebuffers[1].texture
+			);
+
+			this.wilson.gl.bindFramebuffer(
+				this.wilson.gl.FRAMEBUFFER,
+				this.wilson.render.framebuffers[0].framebuffer
+			);
 
 			this.wilson.render.drawFrame();
 
@@ -703,8 +732,15 @@ export class Snowflake extends Applet
 
 			this.wilson.gl.useProgram(this.wilson.render.shaderPrograms[3]);
 
-			this.wilson.gl.bindTexture(this.wilson.gl.TEXTURE_2D, this.wilson.render.framebuffers[0].texture);
-			this.wilson.gl.bindFramebuffer(this.wilson.gl.FRAMEBUFFER, this.wilson.render.framebuffers[1].framebuffer);
+			this.wilson.gl.bindTexture(
+				this.wilson.gl.TEXTURE_2D,
+				this.wilson.render.framebuffers[0].texture
+			);
+
+			this.wilson.gl.bindFramebuffer(
+				this.wilson.gl.FRAMEBUFFER,
+				this.wilson.render.framebuffers[1].framebuffer
+			);
 
 			this.wilson.render.drawFrame();
 
@@ -712,14 +748,24 @@ export class Snowflake extends Applet
 
 			this.wilson.gl.useProgram(this.wilson.render.shaderPrograms[4]);
 
-			this.wilson.gl.bindTexture(this.wilson.gl.TEXTURE_2D, this.wilson.render.framebuffers[1].texture);
-			this.wilson.gl.bindFramebuffer(this.wilson.gl.FRAMEBUFFER, this.wilson.render.framebuffers[0].framebuffer);
+			this.wilson.gl.bindTexture(
+				this.wilson.gl.TEXTURE_2D,
+				this.wilson.render.framebuffers[1].texture
+			);
+
+			this.wilson.gl.bindFramebuffer(
+				this.wilson.gl.FRAMEBUFFER,
+				this.wilson.render.framebuffers[0].framebuffer
+			);
 
 			this.wilson.render.drawFrame();
 
 
 
-			this.wilson.gl.bindTexture(this.wilson.gl.TEXTURE_2D, this.wilson.render.framebuffers[0].texture);
+			this.wilson.gl.bindTexture(
+				this.wilson.gl.TEXTURE_2D,
+				this.wilson.render.framebuffers[0].texture
+			);
 		}
 
 		this.wilson.gl.useProgram(this.wilson.render.shaderPrograms[5]);
@@ -741,7 +787,12 @@ export class Snowflake extends Applet
 			const index3 = this.resolution * threshhold + i;
 			const index4 = this.resolution * (this.resolution - threshhold) + i;
 
-			if (pixels[4 * index1] || pixels[4 * index2] || pixels[4 * index3] || pixels[4 * index4])
+			if (
+				pixels[4 * index1]
+				|| pixels[4 * index2]
+				|| pixels[4 * index3]
+				|| pixels[4 * index4]
+			)
 			{
 				this.pause();
 			}

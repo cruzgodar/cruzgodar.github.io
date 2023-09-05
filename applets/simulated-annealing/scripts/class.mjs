@@ -12,7 +12,7 @@ export class SimulatedAnnealing extends Applet
 
 
 
-	constructor(canvas)
+	constructor({ canvas })
 	{
 		super(canvas);
 
@@ -72,7 +72,16 @@ export class SimulatedAnnealing extends Applet
 
 				this.wilson.ctx.beginPath();
 				this.wilson.ctx.moveTo(e.data[1], e.data[2]);
-				this.wilson.ctx.arc(e.data[1], e.data[2], e.data[3] * scalingFactor, 0, 2 * Math.PI, false);
+
+				this.wilson.ctx.arc(
+					e.data[1],
+					e.data[2],
+					e.data[3] * scalingFactor,
+					0,
+					2 * Math.PI,
+					false
+				);
+
 				this.wilson.ctx.fill();
 			}
 

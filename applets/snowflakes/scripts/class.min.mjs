@@ -1,4 +1,4 @@
-import{Applet}from"/scripts/src/applets.min.mjs";import{Wilson}from"/scripts/wilson.min.mjs";class Snowflake extends Applet{loadPromise=null;resolution=500;lastTimestamp=-1;computationsPerFrame=20;constructor(canvas){super(canvas);var e={renderer:"gpu",shader:`
+import{Applet}from"/scripts/src/applets.min.mjs";import{Wilson}from"/scripts/wilson.min.mjs";class Snowflake extends Applet{loadPromise=null;resolution=500;lastTimestamp=-1;computationsPerFrame=20;constructor({canvas}){super(canvas);var e={renderer:"gpu",shader:`
 			precision highp float;
 			precision highp sampler2D;
 			

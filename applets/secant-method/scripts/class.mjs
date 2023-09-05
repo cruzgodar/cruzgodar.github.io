@@ -37,7 +37,13 @@ export class SecantMethod extends Applet
 
 
 
-	constructor(canvas, rootSetterElement, rootAInputElement, rootBInputElement, colorSetterElement)
+	constructor({
+		canvas,
+		rootSetterElement,
+		rootAInputElement,
+		rootBInputElement,
+		colorSetterElement
+	})
 	{
 		super(canvas);
 

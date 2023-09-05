@@ -45,10 +45,24 @@ async function drawAnnealingGraph()
 
 	for (let i = 0; i < numNodes - 1; i++)
 	{
-		postMessage([1, nodes[i][1], nodes[i][0], nodes[i + 1][1], nodes[i + 1][0], "rgb(255, 0, 0)"]);
+		postMessage([
+			1,
+			nodes[i][1],
+			nodes[i][0],
+			nodes[i + 1][1],
+			nodes[i + 1][0],
+			"rgb(255, 0, 0)"
+		]);
 	}
 
-	postMessage([1, nodes[numNodes - 1][1], nodes[numNodes - 1][0], nodes[0][1], nodes[0][0], "rgb(255, 0, 0)"]);
+	postMessage([
+		1,
+		nodes[numNodes - 1][1],
+		nodes[numNodes - 1][0],
+		nodes[0][1],
+		nodes[0][0],
+		"rgb(255, 0, 0)"
+	]);
 
 
 
@@ -69,7 +83,10 @@ async function drawAnnealingGraph()
 
 
 
-		//We don't need to recalculate the entire distance. If the transposition is (36), for example, then conjugating by it makes 2 connect to 6 and 6 connect to 4, and then it also makes 5 connect to 3 and 3 to 7. These four are the only difference, though.
+		//We don't need to recalculate the entire distance.
+		//If the transposition is (36), for example, then conjugating by it makes
+		//2 connect to 6 and 6 connect to 4, and then it also makes 5 connect to 3 and 3 to 7.
+		//These four are the only difference, though.
 		let distanceDifference = 0;
 
 		//First, we're going to splice transposition[1] into where transposition[0] is.
@@ -88,11 +105,25 @@ async function drawAnnealingGraph()
 
 
 
-		distanceDifference -= euclideanDistance(currentPath[previousIndex], currentPath[transposition[0]]);
-		distanceDifference += euclideanDistance(currentPath[previousIndex], currentPath[transposition[1]]);
+		distanceDifference -= euclideanDistance(
+			currentPath[previousIndex],
+			currentPath[transposition[0]]
+		);
 
-		distanceDifference -= euclideanDistance(currentPath[transposition[0]], currentPath[nextIndex]);
-		distanceDifference += euclideanDistance(currentPath[transposition[1]], currentPath[nextIndex]);
+		distanceDifference += euclideanDistance(
+			currentPath[previousIndex],
+			currentPath[transposition[1]]
+		);
+
+		distanceDifference -= euclideanDistance(
+			currentPath[transposition[0]],
+			currentPath[nextIndex]
+		);
+
+		distanceDifference += euclideanDistance(
+			currentPath[transposition[1]],
+			currentPath[nextIndex]
+		);
 
 
 
@@ -111,23 +142,47 @@ async function drawAnnealingGraph()
 		}
 
 
-		distanceDifference -= euclideanDistance(currentPath[previousIndex], currentPath[transposition[1]]);
-		distanceDifference += euclideanDistance(currentPath[previousIndex], currentPath[transposition[0]]);
+		distanceDifference -= euclideanDistance(
+			currentPath[previousIndex],
+			currentPath[transposition[1]]
+		);
 
-		distanceDifference -= euclideanDistance(currentPath[transposition[1]], currentPath[nextIndex]);
-		distanceDifference += euclideanDistance(currentPath[transposition[0]], currentPath[nextIndex]);
+		distanceDifference += euclideanDistance(
+			currentPath[previousIndex],
+			currentPath[transposition[0]]
+		);
+
+		distanceDifference -= euclideanDistance(
+			currentPath[transposition[1]],
+			currentPath[nextIndex]
+		);
+
+		distanceDifference += euclideanDistance(
+			currentPath[transposition[0]],
+			currentPath[nextIndex]
+		);
 
 
 
-		//If we picked two adjacent nodes to swap, though, we'll be accidentally adding 0 twice. We'll make up for that here.
-		if (Math.abs(transposition[0] - transposition[1]) === 1 || Math.abs(transposition[0] - transposition[1]) === numNodes - 1)
+		//If we picked two adjacent nodes to swap, though,
+		//we'll be accidentally adding 0 twice. We'll make up for that here.
+		if (
+			Math.abs(transposition[0] - transposition[1]) === 1
+			|| Math.abs(transposition[0] - transposition[1]) === numNodes - 1
+		)
 		{
-			distanceDifference += 2 * euclideanDistance(currentPath[transposition[0]], currentPath[transposition[1]]);
+			distanceDifference += 2 * euclideanDistance(
+				currentPath[transposition[0]],
+				currentPath[transposition[1]]
+			);
 		}
 
 
 
-		//Now we need to find the probability of actually using this new path. This function makes it so that we always take a new path if it's shorter, but if it's longer, we have less and less of a chance as the temperature goes down to take it.
+		//Now we need to find the probability of actually using this new path.
+		//This function makes it so that we always take a new path if it's shorter,
+		//but if it's longer, we have less and less of a chance
+		//as the temperature goes down to take it.
 		let exponent = (-1 / temperature) * distanceDifference;
 
 		if (exponent > 1000)
@@ -174,7 +229,10 @@ async function drawAnnealingGraph()
 
 function euclideanDistance(node1Index, node2Index)
 {
-	return Math.sqrt((nodes[node1Index][1] - nodes[node2Index][1]) * (nodes[node1Index][1] - nodes[node2Index][1]) + (nodes[node1Index][0] - nodes[node2Index][0]) * (nodes[node1Index][0] - nodes[node2Index][0]));
+	return Math.sqrt(
+		(nodes[node1Index][1] - nodes[node2Index][1]) ** 2
+		+ (nodes[node1Index][0] - nodes[node2Index][0]) ** 2
+	);
 }
 
 

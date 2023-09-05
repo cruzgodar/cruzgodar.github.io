@@ -4,7 +4,7 @@ import { $ } from "/scripts/src/main.mjs";
 
 export function load()
 {
-	const applet = new Snowflake($("#output-canvas"));
+	const applet = new Snowflake({ canvas: $("#output-canvas") });
 
 
 

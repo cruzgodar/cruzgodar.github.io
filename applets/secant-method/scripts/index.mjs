@@ -11,7 +11,13 @@ export function load()
 
 	const colorSetterElement = $("#color-setter");
 
-	const applet = new SecantMethod($("#output-canvas"), rootSetterElement, rootAInputElement, rootBInputElement, colorSetterElement);
+	const applet = new SecantMethod({
+		canvas: $("#output-canvas"),
+		rootSetterElement,
+		rootAInputElement,
+		rootBInputElement,
+		colorSetterElement
+	});
 
 
 
