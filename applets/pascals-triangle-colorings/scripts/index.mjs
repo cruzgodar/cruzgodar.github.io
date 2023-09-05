@@ -20,9 +20,15 @@ export function load()
 
 	const numColorsInputElement = $("#num-colors-input");
 
-	applet.listenToInputElements([resolutionInputElement, gridSizeInputElement, numColorsInputElement], run);
+	applet.listenToInputElements(
+		[resolutionInputElement, gridSizeInputElement, numColorsInputElement],
+		run
+	);
 
-	applet.setInputCaps([resolutionInputElement, gridSizeInputElement, numColorsInputElement], [4000, 243, Infinity]);
+	applet.setInputCaps(
+		[resolutionInputElement, gridSizeInputElement, numColorsInputElement],
+		[4000, 243, Infinity]
+	);
 
 
 

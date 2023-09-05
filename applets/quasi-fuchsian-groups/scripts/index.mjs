@@ -16,7 +16,20 @@ export function load()
 
 	const maxPixelBrightnessInputElement = $("#max-pixel-brightness-input");
 
-	applet.setInputCaps([resolutionInputElement, highResolutionInputElement, maxDepthInputElement, maxPixelBrightnessInputElement], [500, 3000, 1000, 500]);
+	applet.setInputCaps(
+		[
+			resolutionInputElement,
+			highResolutionInputElement,
+			maxDepthInputElement,
+			maxPixelBrightnessInputElement
+		],
+		[
+			500,
+			3000,
+			1000,
+			500
+		]
+	);
 
 
 

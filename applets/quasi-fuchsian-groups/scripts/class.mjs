@@ -198,7 +198,8 @@ export class QuasiFuchsianGroups extends Applet
 		this.wilson.render.initUniforms(["textureStep"], 1);
 
 
-		this.wilson.render.createFramebufferTexturePair();	this.wilson.render.createFramebufferTexturePair(this.wilson.gl.UNSIGNED_BYTE);
+		this.wilson.render.createFramebufferTexturePair();
+		this.wilson.render.createFramebufferTexturePair(this.wilson.gl.UNSIGNED_BYTE);
 
 		this.image = new Float32Array(this.imageWidth * this.imageHeight * 4);
 
@@ -222,7 +223,12 @@ export class QuasiFuchsianGroups extends Applet
 
 
 
-	grandmaCoefficients(x1 = this.wilson.draggables.worldCoordinates[0][0], y1 = this.wilson.draggables.worldCoordinates[0][1], x2 = this.wilson.draggables.worldCoordinates[1][0], y2 = this.wilson.draggables.worldCoordinates[1][1])
+	grandmaCoefficients(
+		x1 = this.wilson.draggables.worldCoordinates[0][0],
+		y1 = this.wilson.draggables.worldCoordinates[0][1],
+		x2 = this.wilson.draggables.worldCoordinates[1][0],
+		y2 = this.wilson.draggables.worldCoordinates[1][1]
+	)
 	{
 		//Use Grandma's recipe, canidate for the worst-named algorithm of the last two decades.
 		const ta = new this.Complex(x1, y1);
@@ -234,15 +240,36 @@ export class QuasiFuchsianGroups extends Applet
 
 		const discriminant = b.mul(b).sub(c.mul(4));
 
-		const tab = discriminant.arg() > 0 ? b.sub(discriminant.sqrt()).div(2) : b.add(discriminant.sqrt()).div(2);
+		const tab = discriminant.arg() > 0
+			? b.sub(discriminant.sqrt()).div(2)
+			: b.add(discriminant.sqrt()).div(2);
 
-		const z0 = tab.sub(2).mul(tb).div(tb.mul(tab).sub(ta.mul(2)).add(tab.mul(new this.Complex([0, 2]))));
+		const z0 = tab
+			.sub(2)
+			.mul(tb)
+			.div(tb
+				.mul(tab)
+				.sub(ta.mul(2))
+				.add(tab.mul(new this.Complex([0, 2])))
+			);
 
 
 
 		const c1 = ta.div(2);
-		const c2 = ta.mul(tab).sub(tb.mul(2)).add(new this.Complex([0, 4])).div(tab.mul(2).add(4).mul(z0));
-		const c3 = ta.mul(tab).sub(tb.mul(2)).sub(new this.Complex([0, 4])).mul(z0).div(tab.mul(2).sub(4));
+
+		const c2 = ta
+			.mul(tab)
+			.sub(tb.mul(2))
+			.add(new this.Complex([0, 4]))
+			.div(tab.mul(2).add(4).mul(z0));
+
+		const c3 = ta
+			.mul(tab)
+			.sub(tb.mul(2))
+			.sub(new this.Complex([0, 4]))
+			.mul(z0)
+			.div(tab.mul(2).sub(4));
+
 		const c4 = tb.sub(new this.Complex([0, 2])).div(2);
 		const c5 = tb.div(2);
 		const c6 = tb.add(new this.Complex([0, 2])).div(2);
@@ -291,7 +318,10 @@ export class QuasiFuchsianGroups extends Applet
 
 
 
-	rileyCoefficients(x1 = this.wilson.draggables.worldCoordinates[0][0], y1 = this.wilson.draggables.worldCoordinates[0][1])
+	rileyCoefficients(
+		x1 = this.wilson.draggables.worldCoordinates[0][0],
+		y1 = this.wilson.draggables.worldCoordinates[0][1]
+	)
 	{
 		this.coefficients[0][0][0] = 1;
 		this.coefficients[0][0][1] = 0;
@@ -335,7 +365,14 @@ export class QuasiFuchsianGroups extends Applet
 
 
 
-	grandmaSpecialCoefficients(x1 = this.wilson.draggables.worldCoordinates[0][0], y1 = this.wilson.draggables.worldCoordinates[0][1], x2 = this.wilson.draggables.worldCoordinates[1][0], y2 = this.wilson.draggables.worldCoordinates[1][1], x3 = this.wilson.draggables.worldCoordinates[2][0], y3 = this.wilson.draggables.worldCoordinates[2][1])
+	grandmaSpecialCoefficients(
+		x1 = this.wilson.draggables.worldCoordinates[0][0],
+		y1 = this.wilson.draggables.worldCoordinates[0][1],
+		x2 = this.wilson.draggables.worldCoordinates[1][0],
+		y2 = this.wilson.draggables.worldCoordinates[1][1],
+		x3 = this.wilson.draggables.worldCoordinates[2][0],
+		y3 = this.wilson.draggables.worldCoordinates[2][1]
+	)
 	{
 		//Use Grandma's recipe, canidate for the worst-named algorithm of the last two decades.
 		const ta = new this.Complex(x1, y1);
@@ -499,7 +536,11 @@ export class QuasiFuchsianGroups extends Applet
 	{
 		this.wilson.gl.useProgram(this.wilson.render.shaderPrograms[0]);
 
-		this.wilson.gl.bindTexture(this.wilson.gl.TEXTURE_2D, this.wilson.render.framebuffers[0].texture);
+		this.wilson.gl.bindTexture(
+			this.wilson.gl.TEXTURE_2D,
+			this.wilson.render.framebuffers[0].texture
+		);
+
 		this.wilson.gl.bindFramebuffer(this.wilson.gl.FRAMEBUFFER, null);
 
 		this.wilson.gl.texImage2D(
@@ -520,7 +561,10 @@ export class QuasiFuchsianGroups extends Applet
 
 		this.wilson.gl.useProgram(this.wilson.render.shaderPrograms[1]);
 
-		this.wilson.gl.bindTexture(this.wilson.gl.TEXTURE_2D, this.wilson.render.framebuffers[1].texture);
+		this.wilson.gl.bindTexture(
+			this.wilson.gl.TEXTURE_2D,
+			this.wilson.render.framebuffers[1].texture
+		);
 
 
 
@@ -551,7 +595,10 @@ export class QuasiFuchsianGroups extends Applet
 
 		this.wilson.gl.useProgram(this.wilson.render.shaderPrograms[2]);
 
-		this.wilson.gl.bindTexture(this.wilson.gl.TEXTURE_2D, this.wilson.render.framebuffers[1].texture);
+		this.wilson.gl.bindTexture(
+			this.wilson.gl.TEXTURE_2D,
+			this.wilson.render.framebuffers[1].texture
+		);
 
 		const pixelData = this.wilson.render.getPixelData();
 
@@ -590,9 +637,18 @@ export class QuasiFuchsianGroups extends Applet
 
 
 
-			const row = (this.imageWidth >= this.imageHeight) ? Math.floor((-this.y + this.boxSize / 2) / this.boxSize * this.imageHeight) : Math.floor((-this.y * (this.imageWidth / this.imageHeight) + this.boxSize / 2) / this.boxSize * this.imageHeight);
+			const row = this.imageWidth >= this.imageHeight
+				? Math.floor((-this.y + this.boxSize / 2) / this.boxSize * this.imageHeight)
+				: Math.floor(
+					(-this.y * (this.imageWidth / this.imageHeight) + this.boxSize / 2)
+						/ this.boxSize * this.imageHeight
+				);
 
-			const col = (this.imageWidth >= this.imageHeight) ? Math.floor((this.x / (this.imageWidth / this.imageHeight) + this.boxSize / 2) / this.boxSize * this.imageWidth) : Math.floor((this.x + this.boxSize / 2) / this.boxSize * this.imageWidth);
+			const col = this.imageWidth >= this.imageHeight
+				? Math.floor(
+					(this.x / (this.imageWidth / this.imageHeight) + this.boxSize / 2)
+						/ this.boxSize * this.imageWidth)
+				: Math.floor((this.x + this.boxSize / 2) / this.boxSize * this.imageWidth);
 
 
 
@@ -822,7 +878,14 @@ export class QuasiFuchsianGroups extends Applet
 			};
 		});
 
-		this.webWorker.postMessage([this.imageWidth, this.imageHeight, this.maxDepth, this.maxPixelBrightness, this.boxSize, this.coefficients]);
+		this.webWorker.postMessage([
+			this.imageWidth,
+			this.imageHeight,
+			this.maxDepth,
+			this.maxPixelBrightness,
+			this.boxSize,
+			this.coefficients
+		]);
 
 		await workerPromise;
 	}

@@ -82,12 +82,20 @@ function searchStep(startX, startY, lastTransformationIndex, lastRow, lastCol, d
 		if (canvasWidth >= canvasHeight)
 		{
 			row = Math.floor((-y + boxSize / 2) / boxSize * canvasHeight);
-			col = Math.floor((x / (canvasWidth / canvasHeight) + boxSize / 2) / boxSize * canvasWidth);
+
+			col = Math.floor(
+				(x / (canvasWidth / canvasHeight) + boxSize / 2)
+					/ boxSize * canvasWidth
+			);
 		}
 
 		else
 		{
-			row = Math.floor((-y * (canvasWidth / canvasHeight) + boxSize / 2) / boxSize * canvasHeight);
+			row = Math.floor(
+				(-y * (canvasWidth / canvasHeight) + boxSize / 2)
+					/ boxSize * canvasHeight
+			);
+
 			col = Math.floor((x + boxSize / 2) / boxSize * canvasWidth);
 		}
 

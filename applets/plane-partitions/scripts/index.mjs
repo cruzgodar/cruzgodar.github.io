@@ -91,7 +91,8 @@ export function load()
 		}
 	});
 
-	sectionElements[visibleSection].forEach(element => canvasLandscapeLeftElement.appendChild(element));
+	sectionElements[visibleSection]
+		.forEach(element => canvasLandscapeLeftElement.appendChild(element));
 
 
 
@@ -102,16 +103,24 @@ export function load()
 
 	categorySelectorDropdownElement.addEventListener("input", async () =>
 	{
-		await Promise.all(Array.from(sectionElements[visibleSection]).map(element => changeOpacity(element, 0)));
+		await Promise.all(
+			Array.from(sectionElements[visibleSection])
+				.map(element => changeOpacity(element, 0))
+		);
 
-		sectionElements[visibleSection].forEach(element => categoryHolderElement.appendChild(element));
+		sectionElements[visibleSection]
+			.forEach(element => categoryHolderElement.appendChild(element));
 
-		sectionElements[visibleSection].forEach(element => element.classList.remove("move-to-left"));
-		sectionElements[visibleSection].forEach(element => element.classList.remove("move-to-right"));
+		sectionElements[visibleSection]
+			.forEach(element => element.classList.remove("move-to-left"));
+
+		sectionElements[visibleSection]
+			.forEach(element => element.classList.remove("move-to-right"));
 
 		visibleSection = categorySelectorDropdownElement.value;
 
-		sectionElements[visibleSection].forEach(element => canvasLandscapeLeftElement.appendChild(element));
+		sectionElements[visibleSection]
+			.forEach(element => canvasLandscapeLeftElement.appendChild(element));
 
 		equalizeTextButtons();
 		setTimeout(equalizeTextButtons, 10);
@@ -253,21 +262,69 @@ export function load()
 
 
 
-	hillmanGrasslButtonElement.addEventListener("click", () => applet.runAlgorithm("hillmanGrassl", parseInt(algorithmIndexInputElement.value)));
+	hillmanGrasslButtonElement.addEventListener(
+		"click",
+		() => applet.runAlgorithm(
+			"hillmanGrassl",
+			parseInt(algorithmIndexInputElement.value)
+		)
+	);
 
-	hillmanGrasslInverseButtonElement.addEventListener("click", () => applet.runAlgorithm("hillmanGrasslInverse", parseInt(algorithmIndexInputElement.value)));
+	hillmanGrasslInverseButtonElement.addEventListener(
+		"click",
+		() => applet.runAlgorithm(
+			"hillmanGrasslInverse",
+			parseInt(algorithmIndexInputElement.value)
+		)
+	);
 
-	pakButtonElement.addEventListener("click", () => applet.runAlgorithm("pak", parseInt(algorithmIndexInputElement.value)));
+	pakButtonElement.addEventListener(
+		"click",
+		() => applet.runAlgorithm(
+			"pak",
+			parseInt(algorithmIndexInputElement.value)
+		)
+	);
 
-	pakInverseButtonElement.addEventListener("click", () => applet.runAlgorithm("pakInverse", parseInt(algorithmIndexInputElement.value)));
+	pakInverseButtonElement.addEventListener(
+		"click",
+		() => applet.runAlgorithm(
+			"pakInverse",
+			parseInt(algorithmIndexInputElement.value)
+		)
+	);
 
-	sulzgruberButtonElement.addEventListener("click", () => applet.runAlgorithm("sulzgruber", parseInt(algorithmIndexInputElement.value)));
+	sulzgruberButtonElement.addEventListener(
+		"click",
+		() => applet.runAlgorithm(
+			"sulzgruber",
+			parseInt(algorithmIndexInputElement.value)
+		)
+	);
 
-	sulzgruberInverseButtonElement.addEventListener("click", () => applet.runAlgorithm("sulzgruberInverse", parseInt(algorithmIndexInputElement.value)));
+	sulzgruberInverseButtonElement.addEventListener(
+		"click",
+		() => applet.runAlgorithm(
+			"sulzgruberInverse",
+			parseInt(algorithmIndexInputElement.value)
+		)
+	);
 
-	rskButtonElement.addEventListener("click", () => applet.runAlgorithm("rsk", parseInt(algorithmIndexInputElement.value)));
+	rskButtonElement.addEventListener(
+		"click",
+		() => applet.runAlgorithm(
+			"rsk",
+			parseInt(algorithmIndexInputElement.value)
+		)
+	);
 
-	rskInverseButtonElement.addEventListener("click", () => applet.runAlgorithm("rskInverse", parseInt(algorithmIndexInputElement.value)));
+	rskInverseButtonElement.addEventListener(
+		"click",
+		() => applet.runAlgorithm(
+			"rskInverse",
+			parseInt(algorithmIndexInputElement.value)
+		)
+	);
 
 	example1ButtonElement.addEventListener("click", () => applet.runExample(1));
 
