@@ -4,7 +4,7 @@ import { $ } from "/scripts/src/main.mjs";
 
 export function load()
 {
-	const applet = new StrangeAttractor($("#output-canvas"));
+	const applet = new StrangeAttractor({ canvas: $("#output-canvas") });
 
 
 
@@ -22,9 +22,24 @@ export function load()
 
 	const betaInputElement = $("#beta-input");
 
-	applet.listenToInputElements([resolutionInputElement, sigmaInputElement, rhoInputElement, betaInputElement], run);
+	applet.listenToInputElements([
+		resolutionInputElement,
+		sigmaInputElement,
+		rhoInputElement,
+		betaInputElement
+	], run);
 
-	applet.setInputCaps([resolutionInputElement, sigmaInputElement, rhoInputElement, betaInputElement], [1500, 20, 50, 3.6]);
+	applet.setInputCaps([
+		resolutionInputElement,
+		sigmaInputElement,
+		rhoInputElement,
+		betaInputElement
+	], [
+		1500,
+		20,
+		50,
+		3.6
+	]);
 
 
 
@@ -34,7 +49,10 @@ export function load()
 
 	const downloadButtonElement = $("#download-button");
 
-	downloadButtonElement.addEventListener("click", () => applet.wilson.downloadFrame("a-strange-attractor.png"));
+	downloadButtonElement.addEventListener(
+		"click",
+		() => applet.wilson.downloadFrame("a-strange-attractor.png")
+	);
 
 
 

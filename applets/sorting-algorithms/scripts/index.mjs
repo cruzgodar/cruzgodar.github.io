@@ -8,7 +8,11 @@ export function load()
 	const numReadsElement = $("#num-reads");
 	const numWritesElement = $("#num-writes");
 
-	const applet = new SortingAlgorithm($("#output-canvas"), numReadsElement, numWritesElement);
+	const applet = new SortingAlgorithm({
+		canvas: $("#output-canvas"),
+		numReadsElement,
+		numWritesElement
+	});
 
 
 

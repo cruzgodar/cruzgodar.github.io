@@ -2,7 +2,8 @@
 
 
 
-//Realistically this is never going to change, but since this code is adapted from the calcudoku applet's, it's easier to just leave this variable as-is.
+//Realistically this is never going to change, but since this code
+//is adapted from the calcudoku applet's, it's easier to just leave this variable as-is.
 const gridSize = 9;
 
 let grid = [];
@@ -45,7 +46,8 @@ function generateSudokuGrid()
 
 
 
-		//If this is no longer a unique solution, no problem! We'll just revert to our last uniquely-solvable grid and try a different cell next time.
+		//If this is no longer a unique solution, no problem! We'll just
+		//revert to our last uniquely-solvable grid and try a different cell next time.
 		if (numSolutionsFound !== 1)
 		{
 			grid[cellToRemove[0]][cellToRemove[1]] = numberToRemove;
@@ -84,10 +86,14 @@ function shuffleArray(array)
 
 
 
-//Creates a grid of numbers with side length gridSize such that no column or row contains a repeated number. This is normally a very hard thing to do, becoming pretty much impossible most of the time after a side length of 10. Good news is, we can do things much more simply -- becuase we don't need a uniformly random grid.
+//Creates a grid of numbers with side length gridSize such that no column or row
+//contains a repeated number. This is normally a very hard thing to do,
+//becoming pretty much impossible most of the time after a side length of 10.
+//Good news is, we can do things much more simply -- becuase we don't need a uniformly random grid.
 function generateNumberGrid()
 {
-	//I have no clue what the pattern is supposed to be, so I give up. Here's a random one from the internet.
+	//I have no clue what the pattern is supposed to be,
+	//so I give up. Here's a random one from the internet.
 	grid = [
 		[2, 9, 5, 7, 4, 3, 8, 6, 1],
 		[4, 3, 1, 8, 6, 5, 9, 2, 7],
@@ -102,9 +108,19 @@ function generateNumberGrid()
 
 
 
-	//Now we're going to do three things: shuffle some rows (within the same minigrid), shuffle some columns (also within the same minigrid), and shuffle the digits themselves. To top it all off, we'll do these three things in random order, twice each.
+	//Now we're going to do three things: shuffle some rows (within the same minigrid),
+	//shuffle some columns (also within the same minigrid),
+	//and shuffle the digits themselves. To top it all off, we'll do
+	//these three things in random order, twice each.
 
-	const shuffles = shuffleArray([shuffleGridRows, shuffleGridRows, shuffleGridColumns, shuffleGridColumns, shuffleGridDigits, shuffleGridDigits]);
+	const shuffles = shuffleArray([
+		shuffleGridRows,
+		shuffleGridRows,
+		shuffleGridColumns,
+		shuffleGridColumns,
+		shuffleGridDigits,
+		shuffleGridDigits
+	]);
 
 	for (let i = 0; i < 6; i++)
 	{
@@ -211,7 +227,10 @@ function shuffleGridDigits()
 
 
 
-//By default, we can't pass arrays to C functions. However, with the help of a library, we can pass 1D arrays, but not higher-dimensional ones. Therefore, we need to find a way to pass all of the cage data as a sequence of 1D arrays. Good news is, this isn't so bad.
+//By default, we can't pass arrays to C functions. However, with the help of a library,
+//we can pass 1D arrays, but not higher-dimensional ones.
+//Therefore, we need to find a way to pass all of the cage data as a sequence of 1D arrays.
+//Good news is, this isn't so bad.
 function wasmSolvePuzzle()
 {
 	let gridFlat = [];

@@ -4,7 +4,7 @@ import { $ } from "/scripts/src/main.mjs";
 
 export function load()
 {
-	const applet = new SudokuGenerator($("#sudoku-grid"));
+	const applet = new SudokuGenerator({ canvas: $("#sudoku-grid") });
 
 
 

@@ -14,7 +14,7 @@ export class SudokuGenerator extends Applet
 
 
 
-	constructor(canvas)
+	constructor({ canvas })
 	{
 		super(canvas);
 

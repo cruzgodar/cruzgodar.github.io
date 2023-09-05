@@ -52,7 +52,11 @@ export class SortingAlgorithm extends Applet
 
 
 
-	constructor(canvas, numReadsElement, numWritesElement)
+	constructor({
+		canvas,
+		numReadsElement,
+		numWritesElement
+	})
 	{
 		super(canvas);
 
@@ -152,11 +156,29 @@ export class SortingAlgorithm extends Applet
 
 		this.wilson.gl.bindTexture(this.wilson.gl.TEXTURE_2D, texture);
 
-		this.wilson.gl.texParameteri(this.wilson.gl.TEXTURE_2D, this.wilson.gl.TEXTURE_MAG_FILTER, this.wilson.gl.NEAREST);
-		this.wilson.gl.texParameteri(this.wilson.gl.TEXTURE_2D, this.wilson.gl.TEXTURE_MIN_FILTER, this.wilson.gl.NEAREST);
+		this.wilson.gl.texParameteri(
+			this.wilson.gl.TEXTURE_2D,
+			this.wilson.gl.TEXTURE_MAG_FILTER,
+			this.wilson.gl.NEAREST
+		);
 
-		this.wilson.gl.texParameteri(this.wilson.gl.TEXTURE_2D, this.wilson.gl.TEXTURE_WRAP_S, this.wilson.gl.CLAMP_TO_EDGE);
-		this.wilson.gl.texParameteri(this.wilson.gl.TEXTURE_2D, this.wilson.gl.TEXTURE_WRAP_T, this.wilson.gl.CLAMP_TO_EDGE);
+		this.wilson.gl.texParameteri(
+			this.wilson.gl.TEXTURE_2D,
+			this.wilson.gl.TEXTURE_MIN_FILTER,
+			this.wilson.gl.NEAREST
+		);
+
+		this.wilson.gl.texParameteri(
+			this.wilson.gl.TEXTURE_2D,
+			this.wilson.gl.TEXTURE_WRAP_S,
+			this.wilson.gl.CLAMP_TO_EDGE
+		);
+
+		this.wilson.gl.texParameteri(
+			this.wilson.gl.TEXTURE_2D,
+			this.wilson.gl.TEXTURE_WRAP_T,
+			this.wilson.gl.CLAMP_TO_EDGE
+		);
 
 		this.wilson.gl.disable(this.wilson.gl.DEPTH_TEST);
 	}
@@ -172,7 +194,12 @@ export class SortingAlgorithm extends Applet
 	{
 		this.resolution = resolution;
 
-		this.generators = [this.shuffleArray.bind(this), this.algorithms[algorithm].bind(this), this.verifyArray.bind(this)];
+		this.generators = [
+			this.shuffleArray.bind(this),
+			this.algorithms[algorithm].bind(this),
+			this.verifyArray.bind(this)
+		];
+
 		this.currentGeneratorIndex = 0;
 
 		const oldDataLength = this.dataLength;
@@ -184,7 +211,12 @@ export class SortingAlgorithm extends Applet
 
 		if (this.audioNodes[this.currentGeneratorIndex])
 		{
-			this.audioNodes[this.currentGeneratorIndex][2].gain.linearRampToValueAtTime(.0001, this.audioNodes[this.currentGeneratorIndex][0].currentTime + this.timeElapsed / 1000);
+			this.audioNodes[this.currentGeneratorIndex][2].gain
+				.linearRampToValueAtTime(
+					.0001,
+					this.audioNodes[this.currentGeneratorIndex][0].currentTime
+						+ this.timeElapsed / 1000
+				);
 		}
 
 		this.wilson.changeCanvasSize(this.resolution, this.resolution);
@@ -299,7 +331,12 @@ export class SortingAlgorithm extends Applet
 		{
 			if (this.audioNodes[this.currentGeneratorIndex])
 			{
-				this.audioNodes[this.currentGeneratorIndex][2].gain.linearRampToValueAtTime(.0001, this.audioNodes[this.currentGeneratorIndex][0].currentTime + this.timeElapsed / 1000);
+				this.audioNodes[this.currentGeneratorIndex][2].gain
+					.linearRampToValueAtTime(
+						.0001,
+						this.audioNodes[this.currentGeneratorIndex][0].currentTime
+							+ this.timeElapsed / 1000
+					);
 			}
 		}
 
@@ -373,7 +410,13 @@ export class SortingAlgorithm extends Applet
 	{
 		if (this.doPlaySound)
 		{
-			this.audioNodes[this.currentGeneratorIndex][1].frequency.linearRampToValueAtTime((this.maxFrequency - this.minFrequency) * this.data[index] / this.dataLength + this.minFrequency, this.audioNodes[this.currentGeneratorIndex][0].currentTime + this.timeElapsed / 1000);
+			this.audioNodes[this.currentGeneratorIndex][1].frequency
+				.linearRampToValueAtTime(
+					(this.maxFrequency - this.minFrequency) * this.data[index] / this.dataLength
+						+ this.minFrequency,
+					this.audioNodes[this.currentGeneratorIndex][0].currentTime
+						+ this.timeElapsed / 1000
+				);
 		}
 	}
 
@@ -391,7 +434,12 @@ export class SortingAlgorithm extends Applet
 
 		if (this.doPlaySound)
 		{
-			this.audioNodes[this.currentGeneratorIndex][2].gain.linearRampToValueAtTime(.0001, this.audioNodes[this.currentGeneratorIndex][0].currentTime + this.timeElapsed / 1000);
+			this.audioNodes[this.currentGeneratorIndex][2].gain
+				.linearRampToValueAtTime(
+					.0001,
+					this.audioNodes[this.currentGeneratorIndex][0].currentTime
+						+ this.timeElapsed / 1000
+				);
 		}
 
 		this.currentGeneratorIndex++;
@@ -459,7 +507,12 @@ export class SortingAlgorithm extends Applet
 
 		if (this.doPlaySound)
 		{
-			this.audioNodes[this.currentGeneratorIndex][2].gain.linearRampToValueAtTime(.0001, this.audioNodes[this.currentGeneratorIndex][0].currentTime + this.timeElapsed / 1000);
+			this.audioNodes[this.currentGeneratorIndex][2].gain
+				.linearRampToValueAtTime(
+					.0001,
+					this.audioNodes[this.currentGeneratorIndex][0].currentTime
+						+ this.timeElapsed / 1000
+				);
 		}
 	}
 
@@ -875,10 +928,16 @@ export class SortingAlgorithm extends Applet
 			for (let i = 0; i < numBlocks; i++)
 			{
 				//For each block, pick the middle element as the pivot.
-				const pivot = this.data[Math.floor((currentEndpoints[2 * i] + currentEndpoints[2 * i + 1]) / 2)];
-				this.readFromPosition(Math.floor((currentEndpoints[2 * i] + currentEndpoints[2 * i + 1]) / 2));
+				const pivot = this.data[
+					Math.floor((currentEndpoints[2 * i] + currentEndpoints[2 * i + 1]) / 2)
+				];
 
-				//Now we need to split the block so that everything before the pivot is less than it and everything after is greater.
+				this.readFromPosition(
+					Math.floor((currentEndpoints[2 * i] + currentEndpoints[2 * i + 1]) / 2)
+				);
+
+				//Now we need to split the block so that everything before the pivot
+				//is less than it and everything after is greater.
 				let leftIndex = currentEndpoints[2 * i] - 1;
 				let rightIndex = currentEndpoints[2 * i + 1] + 1;
 

@@ -12,7 +12,7 @@ export class StrangeAttractor extends Applet
 
 
 
-	constructor(canvas)
+	constructor({ canvas })
 	{
 		super(canvas);
 
@@ -81,7 +81,8 @@ export class StrangeAttractor extends Applet
 			{
 				this.image[resolution * pixels[i][0] + pixels[i][1]]++;
 
-				const brightnessAdjust = this.image[resolution * pixels[i][0] + pixels[i][1]] / this.brightnessScale;
+				const brightnessAdjust = this.image[resolution * pixels[i][0] + pixels[i][1]]
+					/ this.brightnessScale;
 
 				this.wilson.ctx.fillStyle = `rgb(${rgb[0] * brightnessAdjust}, ${rgb[1] * brightnessAdjust}, ${rgb[2] * brightnessAdjust})`;
 
