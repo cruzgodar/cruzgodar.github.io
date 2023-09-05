@@ -1,4 +1,4 @@
-import { bannerOnScroll, setBannerMaxScroll } from "./banners.mjs";
+import { setBannerMaxScroll } from "./banners.mjs";
 import { resizeCard } from "./cards.mjs";
 import { headerElement } from "./header.mjs";
 import { $, $$, pageElement } from "./main.mjs";
@@ -83,10 +83,6 @@ export function onResize()
 			element.style.width = `${oneImageLinkWidth}px`;
 		});
 	}
-
-
-
-	bannerOnScroll(0);
 }
 
 export function setUpOnResize()

@@ -1,5 +1,5 @@
 import { fadeLeft, opacityAnimationTime } from "/scripts/src/animation.mjs";
-import { scrollButtonOpacity, setBannerOpacity } from "/scripts/src/banners.mjs";
+import { scrollButtonOpacity } from "/scripts/src/banners.mjs";
 import { disableLinks, showPage } from "/scripts/src/load-page.mjs";
 import { $, addTemporaryListener, setVisitedHomepage, visitedHomepage } from "/scripts/src/main.mjs";
 
@@ -16,8 +16,6 @@ export function load()
 	if (visitedHomepage)
 	{
 		$("#return-scroll-to").scrollIntoView();
-
-		setBannerOpacity(0);
 	}
 
 	setVisitedHomepage(true);

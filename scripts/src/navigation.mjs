@@ -9,7 +9,6 @@ import {
 import { Applet } from "./applets.mjs";
 import {
 	bannerElement,
-	bannerOnScroll,
 	loadBanner,
 	setScrollButtonExists
 } from "./banners.mjs";
@@ -22,7 +21,6 @@ import {
 	clearTemporaryWorkers,
 	pageElement,
 	pageUrl,
-	setPageScroll,
 	setPageUrl,
 	temporaryIntervals,
 	temporaryListeners,
@@ -141,13 +139,11 @@ export async function redirect({
 			if (restoreScroll)
 			{
 				window.scrollTo(0, lastPageScroll);
-				bannerOnScroll(lastPageScroll);
 			}
 
 			else
 			{
 				window.scrollTo(0, 0);
-				setPageScroll(0);
 			}
 
 			lastPageScroll = temp;

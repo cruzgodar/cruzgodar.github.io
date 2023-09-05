@@ -1,5 +1,5 @@
 import { changeOpacity, opacityAnimationTime } from "./animation.mjs";
-import { $, addStyle, pageElement, pageScroll, pageUrl, setPageScroll } from "./main.mjs";
+import { $, addStyle, pageElement, pageUrl } from "./main.mjs";
 import anime from "/scripts/anime.js";
 
 export let bannerElement = null;
@@ -20,24 +20,67 @@ export function setContentElement(newContentElement)
 
 
 
+export let bannerMaxScroll = null;
+
+export function setBannerMaxScroll(newBannerMaxScroll)
+{
+	bannerMaxScroll = newBannerMaxScroll;
+}
+
+
+
+let scrollButtonElement;
+
+export let scrollButtonOpacity = 0;
+
+export let scrollButtonExists = false;
+
+export function setScrollButtonExists(newScrollButtonExists)
+{
+	scrollButtonExists = newScrollButtonExists;
+}
+
+
+
+
 //The banner opacity cannot be changed more than a certain amount each frame
 //to account for sudden changes in viewport height. This function handles that animation.
 
 export let bannerOpacity = 1;
 
-let bannerOpacityChange = 0;
+let lastBannerOpacityTimestamp = -1;
 
-const maxSingleFrameChange = .05;
-
-export function setBannerOpacity(newBannerOpacity)
+export function updateBannerOpacity(timestamp)
 {
-	bannerOpacityChange += newBannerOpacity - bannerOpacity;
+	const timeElapsed = timestamp - lastBannerOpacityTimestamp;
 
-	const singleFrameChange = Math.min(Math.max(
-		bannerOpacityChange, -maxSingleFrameChange), maxSingleFrameChange
+	if (
+		!bannerElement
+		|| !contentElement
+		|| timestamp === lastBannerOpacityTimestamp
+		|| lastBannerOpacityTimestamp === -1
+	)
+	{
+		lastBannerOpacityTimestamp = timestamp;
+
+		window.requestAnimationFrame(updateBannerOpacity);
+
+		return;
+	}
+
+	lastBannerOpacityTimestamp = timestamp;
+
+	const newBannerOpacity = 1 - window.scrollY / bannerMaxScroll;
+	
+	const maxSingleFrameChange = .085 * timeElapsed / 6.944;
+
+	bannerOpacity = Math.min(
+		Math.max(
+			Math.max(bannerOpacity - maxSingleFrameChange, 0),
+			newBannerOpacity
+		),
+		Math.min(bannerOpacity + maxSingleFrameChange, 1)
 	);
-
-	bannerOpacity = Math.min(Math.max(bannerOpacity + singleFrameChange, 0), 1);
 
 	if (bannerElement)
 	{
@@ -49,29 +92,29 @@ export function setBannerOpacity(newBannerOpacity)
 		contentElement.style.opacity = 1 - bannerOpacity;
 	}
 
-	bannerOpacityChange -= singleFrameChange;
+	scrollButtonOpacity = Math.min(Math.max(1 - window.scrollY / (bannerMaxScroll / 2.5), 0), 1);
 
-	if (Math.abs(bannerOpacityChange) > .001)
+	if (scrollButtonExists)
 	{
-		window.requestAnimationFrame(() => setBannerOpacity(bannerOpacity));
+		scrollButtonElement.style.opacity = scrollButtonOpacity;
+
+		if (scrollButtonOpacity === 0)
+		{
+			scrollButtonExists = false;
+
+			scrollButtonElement.remove();
+		}
 	}
+
+	window.requestAnimationFrame(updateBannerOpacity);
 }
 
-
-
-export let bannerMaxScroll = null;
-
-export function setBannerMaxScroll(newBannerMaxScroll)
-{
-	bannerMaxScroll = newBannerMaxScroll;
-}
+window.requestAnimationFrame(updateBannerOpacity);
 
 
 
 let bannerFilename = "";
 let bannerFilepath = "";
-
-let lastScrollTimestamp = -1;
 
 export const bannerPages =
 [
@@ -91,17 +134,6 @@ export const multibannerPages =
 		numBanners: 11
 	}
 };
-
-let scrollButtonElement;
-
-export let scrollButtonOpacity = 0;
-
-export let scrollButtonExists = false;
-
-export function setScrollButtonExists(newScrollButtonExists)
-{
-	scrollButtonExists = newScrollButtonExists;
-}
 
 
 
@@ -198,69 +230,9 @@ export function setUpBanner()
 
 
 
-export function bannerOnScroll(scrollPositionOverride)
-{
-	if (scrollPositionOverride === 0)
-	{
-		setPageScroll(window.scrollY);
-	}
-
-	else
-	{
-		setPageScroll(scrollPositionOverride);
-	}
-
-	window.requestAnimationFrame(scrollAnimationFrame);
-}
-
-function scrollAnimationFrame(timestamp)
-{
-	const timeElapsed = timestamp - lastScrollTimestamp;
-
-	lastScrollTimestamp = timestamp;
-
-	if (timeElapsed === 0)
-	{
-		return;
-	}
-
-	scrollHandler();
-}
-
-function scrollHandler()
-{
-	if (!bannerElement || !contentElement)
-	{
-		return;
-	}
-
-	setBannerOpacity(1 - pageScroll / bannerMaxScroll);
-
-	bannerElement.style.opacity = bannerOpacity;
-	contentElement.style.opacity = 1 - bannerOpacity;
-
-
-
-	scrollButtonOpacity = Math.min(Math.max(1 - pageScroll / (bannerMaxScroll / 2.5), 0), 1);
-
-	if (scrollButtonExists)
-	{
-		scrollButtonElement.style.opacity = scrollButtonOpacity;
-
-		if (scrollButtonOpacity === 0)
-		{
-			scrollButtonExists = false;
-
-			scrollButtonElement.remove();
-		}
-	}
-}
-
-
-
 export function insertScrollButton()
 {
-	if (pageScroll > bannerMaxScroll / 2.5)
+	if (window.scrollY > bannerMaxScroll / 2.5)
 	{
 		return;
 	}

@@ -1,4 +1,3 @@
-import { bannerOnScroll } from "./banners.mjs";
 import { addHeader } from "./header.mjs";
 import { setUpInteractionListeners } from "./interaction.mjs";
 import { setUpOnResize } from "./layout.mjs";
@@ -33,15 +32,6 @@ if (pageUrl === "null")
 {
 	pageUrl = "/home/";
 }
-
-
-export let pageScroll = 0;
-
-export function setPageScroll(newPageScroll)
-{
-	pageScroll = newPageScroll;
-}
-
 
 
 export let temporaryListeners = [];
@@ -126,8 +116,6 @@ export async function loadSite(url = pageUrl)
 	pageElement.classList.add("page");
 
 	document.body.insertBefore(pageElement, document.body.firstChild);
-
-	window.addEventListener("scroll", () => bannerOnScroll(0));
 
 	setUpInteractionListeners();
 
