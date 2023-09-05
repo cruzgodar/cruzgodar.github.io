@@ -7,7 +7,10 @@ import { $, $$ } from "/scripts/src/main.mjs";
 
 export function load()
 {
-	const applet = new PlanePartitions($("#output-canvas"), $("#numbers-canvas"));
+	const applet = new PlanePartitions({
+		canvas: $("#output-canvas"),
+		numbersCanvas: $("#numbers-canvas")
+	});
 
 	const categorySelectorDropdownElement = $("#category-selector-dropdown");
 

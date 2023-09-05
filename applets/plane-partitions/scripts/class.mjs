@@ -149,7 +149,11 @@ export class PlanePartitions extends Applet
 
 
 
-	constructor(canvas, numbersCanvas, useFullscreenButton = true)
+	constructor({
+		canvas,
+		numbersCanvas,
+		useFullscreenButton = true
+	})
 	{
 		super(canvas);
 

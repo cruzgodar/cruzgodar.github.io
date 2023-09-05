@@ -4,7 +4,7 @@ import { $ } from "/scripts/src/main.mjs";
 
 export function load()
 {
-	const applet = new QuasiFuchsianGroups($("#output-canvas"));
+	const applet = new QuasiFuchsianGroups({ canvas: $("#output-canvas") });
 
 
 

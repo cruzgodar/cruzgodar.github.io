@@ -26,7 +26,7 @@ export class PascalsTriangleColoring extends Applet
 	activeNodes = [];
 
 
-	constructor(canvas)
+	constructor({ canvas })
 	{
 		super(canvas);
 

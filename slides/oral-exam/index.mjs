@@ -2,7 +2,11 @@ import { PlanePartitions } from "/applets/plane-partitions/scripts/class.mjs";
 import Lapsa from "/scripts/lapsa.mjs";
 import { changeOpacity } from "/scripts/src/animation.mjs";
 
-const applet = new PlanePartitions(document.body.querySelector("#output-canvas"), document.body.querySelector("#numbers-canvas"), false);
+const applet = new PlanePartitions({
+	canvas: document.body.querySelector("#output-canvas"),
+	numbersCanvas: document.body.querySelector("#numbers-canvas"),
+	useFullscreenButton: false
+});
 
 const canvasBundle = document.body.querySelector("#canvas-bundle");
 

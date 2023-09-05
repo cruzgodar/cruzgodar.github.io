@@ -4,7 +4,7 @@ import { $ } from "/scripts/src/main.mjs";
 
 export function load()
 {
-	const applet = new PascalsTriangleColoring($("#output-canvas"));
+	const applet = new PascalsTriangleColoring({ canvas: $("#output-canvas") });
 
 
 

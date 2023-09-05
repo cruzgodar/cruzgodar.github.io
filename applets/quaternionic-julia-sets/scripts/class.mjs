@@ -438,37 +438,105 @@ export class QuaternionicJuliaSet extends Applet
 
 		if (this.imageWidth >= this.imageHeight)
 		{
-			this.wilson.gl.uniform1f(this.wilson.uniforms["aspectRatioX"], this.imageWidth / this.imageHeight);
-			this.wilson.gl.uniform1f(this.wilson.uniforms["aspectRatioY"], 1);
+			this.wilson.gl.uniform1f(
+				this.wilson.uniforms["aspectRatioX"],
+				this.imageWidth / this.imageHeight
+			);
+
+			this.wilson.gl.uniform1f(
+				this.wilson.uniforms["aspectRatioY"],
+				1
+			);
+	
 		}
 
 		else
 		{
-			this.wilson.gl.uniform1f(this.wilson.uniforms["aspectRatioX"], 1);
-			this.wilson.gl.uniform1f(this.wilson.uniforms["aspectRatioY"], this.imageWidth / this.imageHeight);
+			this.wilson.gl.uniform1f(
+				this.wilson.uniforms["aspectRatioX"],
+				1
+			);
+
+			this.wilson.gl.uniform1f(
+				this.wilson.uniforms["aspectRatioY"],
+				this.imageWidth / this.imageHeight
+			);
 		}
 
-		this.wilson.gl.uniform1i(this.wilson.uniforms["imageSize"], this.imageSize);
+		this.wilson.gl.uniform1i(
+			this.wilson.uniforms["imageSize"],
+			this.imageSize
+		);
 
-		this.wilson.gl.uniform3fv(this.wilson.uniforms["cameraPos"], this.cameraPos);
-		this.wilson.gl.uniform3fv(this.wilson.uniforms["imagePlaneCenterPos"], this.imagePlaneCenterPos);
-		this.wilson.gl.uniform3fv(this.wilson.uniforms["lightPos"], this.lightPos);
+		this.wilson.gl.uniform3fv(
+			this.wilson.uniforms["cameraPos"],
+			this.cameraPos
+		);
 
-		this.wilson.gl.uniform3fv(this.wilson.uniforms["forwardVec"], this.forwardVec);
-		this.wilson.gl.uniform3fv(this.wilson.uniforms["rightVec"], this.rightVec);
-		this.wilson.gl.uniform3fv(this.wilson.uniforms["upVec"], this.upVec);
+		this.wilson.gl.uniform3fv(
+			this.wilson.uniforms["imagePlaneCenterPos"],
+			this.imagePlaneCenterPos
+		);
 
-		this.wilson.gl.uniform1f(this.wilson.uniforms["focalLength"], this.focalLength);
+		this.wilson.gl.uniform3fv(
+			this.wilson.uniforms["lightPos"],
+			this.lightPos
+		);
 
-		this.wilson.gl.uniform1i(this.wilson.uniforms["drawSphere"], 0);
+		this.wilson.gl.uniform3fv(
+			this.wilson.uniforms["forwardVec"],
+			this.forwardVec
+		);
 
-		this.wilson.gl.uniform3fv(this.wilson.uniforms["c"], this.c);
-		this.wilson.gl.uniform1f(this.wilson.uniforms["juliaProportion"], 1);
-		this.wilson.gl.uniform1f(this.wilson.uniforms["kSlice"], 0);
+		this.wilson.gl.uniform3fv(
+			this.wilson.uniforms["rightVec"],
+			this.rightVec
+		);
 
-		this.wilson.gl.uniform1i(this.wilson.uniforms["maxMarches"], this.maxMarches);
-		this.wilson.gl.uniform1f(this.wilson.uniforms["stepFactor"], 1);
-		this.wilson.gl.uniform1i(this.wilson.uniforms["maxIterations"], this.maxIterations);
+		this.wilson.gl.uniform3fv(
+			this.wilson.uniforms["upVec"],
+			this.upVec
+		);
+
+		this.wilson.gl.uniform1f(
+			this.wilson.uniforms["focalLength"],
+			this.focalLength
+		);
+
+		this.wilson.gl.uniform1i(
+			this.wilson.uniforms["drawSphere"],
+			0)
+		;
+
+		this.wilson.gl.uniform3fv(
+			this.wilson.uniforms["c"],
+			this.c
+		);
+
+		this.wilson.gl.uniform1f(
+			this.wilson.uniforms["juliaProportion"],
+			1
+		);
+
+		this.wilson.gl.uniform1f(
+			this.wilson.uniforms["kSlice"],
+			0
+		);
+
+		this.wilson.gl.uniform1i(
+			this.wilson.uniforms["maxMarches"],
+			this.maxMarches
+		);
+
+		this.wilson.gl.uniform1f(
+			this.wilson.uniforms["stepFactor"],
+			1
+		);
+		
+		this.wilson.gl.uniform1i(
+			this.wilson.uniforms["maxIterations"],
+			this.maxIterations
+		);
 
 
 
@@ -510,7 +578,16 @@ export class QuaternionicJuliaSet extends Applet
 
 
 
-		if (this.movingForwardKeyboard || this.movingBackwardKeyboard || this.movingRightKeyboard || this.movingLeftKeyboard || this.movingForwardTouch || this.movingBackwardTouch || this.movingSliceUpKeyboard || this.movingSliceDownKeyboard)
+		if (
+			this.movingForwardKeyboard
+			|| this.movingBackwardKeyboard
+			|| this.movingRightKeyboard
+			|| this.movingLeftKeyboard
+			|| this.movingForwardTouch
+			|| this.movingBackwardTouch
+			|| this.movingSliceUpKeyboard
+			|| this.movingSliceDownKeyboard
+		)
 		{
 			this.updateCameraParameters();
 		}
@@ -549,7 +626,10 @@ export class QuaternionicJuliaSet extends Applet
 			this.thetaVelocity *= this.panFriction;
 			this.phiVelocity *= this.panFriction;
 
-			if (this.thetaVelocity * this.thetaVelocity + this.phiVelocity * this.phiVelocity < this.panVelocityStopThreshhold * this.panVelocityStopThreshhold)
+			if (
+				this.thetaVelocity * this.thetaVelocity + this.phiVelocity * this.phiVelocity <
+					this.panVelocityStopThreshhold * this.panVelocityStopThreshhold
+			)
 			{
 				this.thetaVelocity = 0;
 				this.phiVelocity = 0;
@@ -560,7 +640,12 @@ export class QuaternionicJuliaSet extends Applet
 			this.calculateVectors();
 		}
 
-		if (this.moveVelocity[0] !== 0 || this.moveVelocity[1] !== 0 || this.moveVelocity[2] !== 0 || this.moveVelocity[3] !== 0)
+		if (
+			this.moveVelocity[0] !== 0
+			|| this.moveVelocity[1] !== 0
+			|| this.moveVelocity[2] !== 0
+			|| this.moveVelocity[3] !== 0
+		)
 		{
 			if (this.movingPos)
 			{
@@ -577,7 +662,12 @@ export class QuaternionicJuliaSet extends Applet
 
 				this.kSlice += this.moveVelocity[3];
 
-				if (this.cXInputElement && this.cYInputElement && this.cZInputElement && this.cWInputElement)
+				if (
+					this.cXInputElement
+					&& this.cYInputElement
+					&& this.cZInputElement
+					&& this.cWInputElement
+				)
 				{
 					this.cXInputElement.value = Math.round((this.c[0]) * 1000000) / 1000000;
 					this.cYInputElement.value = Math.round((this.c[1]) * 1000000) / 1000000;
@@ -599,7 +689,14 @@ export class QuaternionicJuliaSet extends Applet
 
 			this.moveVelocity[3] *= this.moveFriction;
 
-			if (this.moveVelocity[0] * this.moveVelocity[0] + this.moveVelocity[1] * this.moveVelocity[1] + this.moveVelocity[2] * this.moveVelocity[2] + this.moveVelocity[3] * this.moveVelocity[3] < this.moveVelocityStopThreshhold * this.movingSpeed * this.moveVelocityStopThreshhold * this.movingSpeed)
+			if (
+				this.moveVelocity[0] * this.moveVelocity[0]
+				+ this.moveVelocity[1] * this.moveVelocity[1]
+				+ this.moveVelocity[2] * this.moveVelocity[2]
+				+ this.moveVelocity[3] * this.moveVelocity[3] <
+					this.moveVelocityStopThreshhold * this.movingSpeed
+					* this.moveVelocityStopThreshhold * this.movingSpeed
+			)
 			{
 				this.moveVelocity[0] = 0;
 				this.moveVelocity[1] = 0;
@@ -625,10 +722,19 @@ export class QuaternionicJuliaSet extends Applet
 
 	calculateVectors()
 	{
-		//Here comes the serious math. Theta is the angle in the xy-plane and phi the angle down from the z-axis. We can use them get a normalized forward vector:
-		this.forwardVec = [Math.cos(this.theta) * Math.sin(this.phi), Math.sin(this.theta) * Math.sin(this.phi), Math.cos(this.phi)];
+		//Here comes the serious math. Theta is the angle in the xy-plane
+		//and phi the angle down from the z-axis. We can use them get a normalized forward vector:
+		this.forwardVec = [
+			Math.cos(this.theta) * Math.sin(this.phi),
+			Math.sin(this.theta) * Math.sin(this.phi),
+			Math.cos(this.phi)
+		];
 
-		//Now the right vector needs to be constrained to the xy-plane, since otherwise the image will appear tilted. For a vector (a, b, c), the orthogonal plane that passes through the origin is ax + by + cz = 0, so we want ax + by = 0. One solution is (b, -a), and that's the one that goes to the "right" of the forward vector (when looking down).
+		//Now the right vector needs to be constrained to the xy-plane,
+		//since otherwise the image will appear tilted. For a vector (a, b, c),
+		//the orthogonal plane that passes through the origin is ax + by + cz = 0,
+		//so we want ax + by = 0. One solution is (b, -a), and that's the one that
+		//goes to the "right" of the forward vector (when looking down).
 		this.rightVec = this.normalize([this.forwardVec[1], -this.forwardVec[0], 0]);
 
 		//Finally, the upward vector is the cross product of the previous two.
@@ -636,7 +742,11 @@ export class QuaternionicJuliaSet extends Applet
 
 
 
-		this.distanceToScene = this.distanceEstimator(this.cameraPos[0], this.cameraPos[1], this.cameraPos[2]);
+		this.distanceToScene = this.distanceEstimator(
+			this.cameraPos[0],
+			this.cameraPos[1],
+			this.cameraPos[2]
+		);
 
 
 
@@ -652,12 +762,20 @@ export class QuaternionicJuliaSet extends Applet
 
 
 
-		this.imagePlaneCenterPos = [this.cameraPos[0] + this.focalLength * this.forwardVec[0], this.cameraPos[1] + this.focalLength * this.forwardVec[1], this.cameraPos[2] + this.focalLength * this.forwardVec[2]];
+		this.imagePlaneCenterPos = [
+			this.cameraPos[0] + this.focalLength * this.forwardVec[0],
+			this.cameraPos[1] + this.focalLength * this.forwardVec[1],
+			this.cameraPos[2] + this.focalLength * this.forwardVec[2]
+		];
 
 
 
 		this.wilson.gl.uniform3fv(this.wilson.uniforms["cameraPos"], this.cameraPos);
-		this.wilson.gl.uniform3fv(this.wilson.uniforms["imagePlaneCenterPos"], this.imagePlaneCenterPos);
+
+		this.wilson.gl.uniform3fv(
+			this.wilson.uniforms["imagePlaneCenterPos"],
+			this.imagePlaneCenterPos
+		);
 
 		this.wilson.gl.uniform3fv(this.wilson.uniforms["forwardVec"], this.forwardVec);
 		this.wilson.gl.uniform3fv(this.wilson.uniforms["rightVec"], this.rightVec);
@@ -682,7 +800,11 @@ export class QuaternionicJuliaSet extends Applet
 
 	crossProduct(vec1, vec2)
 	{
-		return [vec1[1] * vec2[2] - vec1[2] * vec2[1], vec1[2] * vec2[0] - vec1[0] * vec2[2], vec1[0] * vec2[1] - vec1[1] * vec2[0]];
+		return [
+			vec1[1] * vec2[2] - vec1[2] * vec2[1],
+			vec1[2] * vec2[0] - vec1[0] * vec2[2],
+			vec1[0] * vec2[1] - vec1[1] * vec2[0]
+		];
 	}
 
 
@@ -698,7 +820,12 @@ export class QuaternionicJuliaSet extends Applet
 
 	qmul(x1, y1, z1, w1, x2, y2, z2, w2)
 	{
-		return [x1 * x2 - y1 * y2 - z1 * z1 - w1 * w2, x1 * y2 + y1 * x2 + z1 * w2 - w1 * z2, x1 * z2 - y1 * w2 + z1 * x2 + w1 * y2, x1 * w2 + y1 * z2 - z1 * y2 + w1 * x2];
+		return [
+			x1 * x2 - y1 * y2 - z1 * z1 - w1 * w2,
+			x1 * y2 + y1 * x2 + z1 * w2 - w1 * z2,
+			x1 * z2 - y1 * w2 + z1 * x2 + w1 * y2,
+			x1 * w2 + y1 * z2 - z1 * y2 + w1 * x2
+		];
 	}
 
 
@@ -856,7 +983,11 @@ export class QuaternionicJuliaSet extends Applet
 
 			this.wasMovingTouch = true;
 
-			if (this.moveVelocity[0] === 0 && this.moveVelocity[1] === 0 && this.moveVelocity[2] === 0)
+			if (
+				this.moveVelocity[0] === 0
+				&& this.moveVelocity[1] === 0
+				&& this.moveVelocity[2] === 0
+			)
 			{
 				this.moveVelocity[0] = this.nextMoveVelocity[0];
 				this.moveVelocity[1] = this.nextMoveVelocity[1];
@@ -872,7 +1003,16 @@ export class QuaternionicJuliaSet extends Applet
 			}
 		}
 
-		if (((event.type === "touchend" && event.touches.length === 0) || event.type === "mouseup") && (this.nextThetaVelocity * this.nextThetaVelocity + this.nextPhiVelocity * this.nextPhiVelocity >= this.panVelocityStartThreshhold * this.panVelocityStartThreshhold))
+		if (
+			(
+				(event.type === "touchend" && event.touches.length === 0)
+				|| event.type === "mouseup"
+			) && (
+				this.nextThetaVelocity * this.nextThetaVelocity
+				+ this.nextPhiVelocity * this.nextPhiVelocity >=
+					this.panVelocityStartThreshhold * this.panVelocityStartThreshhold
+			)
+		)
 		{
 			this.thetaVelocity = this.nextThetaVelocity;
 			this.phiVelocity = this.nextPhiVelocity;
@@ -883,7 +1023,17 @@ export class QuaternionicJuliaSet extends Applet
 
 	handleKeydownEvent(e)
 	{
-		if (document.activeElement.tagName === "INPUT" || !(e.key === "w" || e.key === "s" || e.key === "d" || e.key === "a" || e.key === "e" || e.key === "q"))
+		if (
+			document.activeElement.tagName === "INPUT"
+			|| !(
+				e.key === "w"
+				|| e.key === "s"
+				|| e.key === "d"
+				|| e.key === "a"
+				|| e.key === "e"
+				|| e.key === "q"
+			)
+		)
 		{
 			return;
 		}
@@ -895,39 +1045,31 @@ export class QuaternionicJuliaSet extends Applet
 
 
 
-		//W
 		if (e.key === "w")
 		{
 			this.movingForwardKeyboard = true;
 		}
 
-		//S
 		else if (e.key === "s")
 		{
 			this.movingBackwardKeyboard = true;
 		}
 
-		//D
 		if (e.key === "d")
 		{
 			this.movingRightKeyboard = true;
 		}
 
-		//A
 		else if (e.key === "a")
 		{
 			this.movingLeftKeyboard = true;
 		}
 
-
-
-		//E
 		if (e.key === "e")
 		{
 			this.movingSliceUpKeyboard = true;
 		}
 
-		//Q
 		else if (e.key === "q")
 		{
 			this.movingSliceDownKeyboard = true;
@@ -938,14 +1080,29 @@ export class QuaternionicJuliaSet extends Applet
 
 	handleKeyupEvent(e)
 	{
-		if (document.activeElement.tagName === "INPUT" || !(e.key === "w" || e.key === "s" || e.key === "d" || e.key === "a" || e.key === "e" || e.key === "q"))
+		if (
+			document.activeElement.tagName === "INPUT"
+			|| !(
+				e.key === "w"
+				|| e.key === "s"
+				|| e.key === "d"
+				|| e.key === "a"
+				|| e.key === "e"
+				|| e.key === "q"
+			)
+		)
 		{
 			return;
 		}
 
 
 
-		if (this.moveVelocity[0] === 0 && this.moveVelocity[1] === 0 && this.moveVelocity[2] === 0 && this.moveVelocity[3] === 0)
+		if (
+			this.moveVelocity[0] === 0
+			&& this.moveVelocity[1] === 0
+			&& this.moveVelocity[2] === 0
+			&& this.moveVelocity[3] === 0
+		)
 		{
 			this.moveVelocity[0] = this.nextMoveVelocity[0];
 			this.moveVelocity[1] = this.nextMoveVelocity[1];
@@ -962,39 +1119,31 @@ export class QuaternionicJuliaSet extends Applet
 
 
 
-		//W
 		if (e.key === "w")
 		{
 			this.movingForwardKeyboard = false;
 		}
 
-		//S
 		else if (e.key === "s")
 		{
 			this.movingBackwardKeyboard = false;
 		}
 
-		//D
 		if (e.key === "d")
 		{
 			this.movingRightKeyboard = false;
 		}
 
-		//A
 		else if (e.key === "a")
 		{
 			this.movingLeftKeyboard = false;
 		}
 
-
-
-		//E
 		if (e.key === "e")
 		{
 			this.movingSliceUpKeyboard = false;
 		}
 
-		//Q
 		else if (e.key === "q")
 		{
 			this.movingSliceDownKeyboard = false;
@@ -1103,7 +1252,12 @@ export class QuaternionicJuliaSet extends Applet
 
 
 
-			if (this.cXInputElement && this.cYInputElement && this.cZInputElement && this.cWInputElement)
+			if (
+				this.cXInputElement
+				&& this.cYInputElement
+				&& this.cZInputElement
+				&& this.cWInputElement
+			)
 			{
 				this.cXInputElement.value = Math.round((this.c[0]) * 1000000) / 1000000;
 				this.cYInputElement.value = Math.round((this.c[1]) * 1000000) / 1000000;
@@ -1166,14 +1320,22 @@ export class QuaternionicJuliaSet extends Applet
 
 		if (this.imageWidth >= this.imageHeight)
 		{
-			this.wilson.gl.uniform1f(this.wilson.uniforms["aspectRatioX"], this.imageWidth / this.imageHeight);
+			this.wilson.gl.uniform1f(
+				this.wilson.uniforms["aspectRatioX"],
+				this.imageWidth / this.imageHeight
+			);
+
 			this.wilson.gl.uniform1f(this.wilson.uniforms["aspectRatioY"], 1);
 		}
 
 		else
 		{
 			this.wilson.gl.uniform1f(this.wilson.uniforms["aspectRatioX"], 1);
-			this.wilson.gl.uniform1f(this.wilson.uniforms["aspectRatioY"], this.imageWidth / this.imageHeight);
+
+			this.wilson.gl.uniform1f(
+				this.wilson.uniforms["aspectRatioY"],
+				this.imageWidth / this.imageHeight
+			);
 		}
 
 		this.wilson.gl.uniform1i(this.wilson.uniforms["imageSize"], this.imageSize);
@@ -1183,7 +1345,12 @@ export class QuaternionicJuliaSet extends Applet
 
 	randomizeC(animateChange = true)
 	{
-		this.updateC([Math.random() * 2 - 1, Math.random() * 2 - 1, Math.random() * 2 - 1, this.c[3]], animateChange);
+		this.updateC([
+			Math.random() * 2 - 1,
+			Math.random() * 2 - 1,
+			Math.random() * 2 - 1,
+			this.c[3]
+		], animateChange);
 	}
 
 
@@ -1238,7 +1405,9 @@ export class QuaternionicJuliaSet extends Applet
 			changeOpacity(this.switchBulbButtonElement, 0)
 				.then(() =>
 				{
-					this.switchBulbButtonElement.textContent = oldJuliaProportion === 0 ? "Switch to Mandelbrot Set" : "Switch to Julia Set";
+					this.switchBulbButtonElement.textContent = oldJuliaProportion === 0
+						? "Switch to Mandelbrot Set"
+						: "Switch to Julia Set";
 
 					changeOpacity(this.switchBulbButtonElement, 1);
 				});
@@ -1289,9 +1458,13 @@ export class QuaternionicJuliaSet extends Applet
 			easing: "easeOutQuad",
 			update: () =>
 			{
-				this.juliaProportion = (1 - dummy.t) * oldJuliaProportion + dummy.t * newJuliaProportion;
+				this.juliaProportion = (1 - dummy.t) * oldJuliaProportion
+					+ dummy.t * newJuliaProportion;
 
-				this.wilson.gl.uniform1f(this.wilson.uniforms["juliaProportion"], this.juliaProportion);
+				this.wilson.gl.uniform1f(
+					this.wilson.uniforms["juliaProportion"],
+					this.juliaProportion
+				);
 			}
 		});
 	}
@@ -1307,7 +1480,9 @@ export class QuaternionicJuliaSet extends Applet
 			changeOpacity(this.switchMovementButtonElement, 0)
 				.then(() =>
 				{
-					this.switchMovementButtonElement.textContent = this.movingPos ? "Change Julia Set" : "Move Camera";
+					this.switchMovementButtonElement.textContent = this.movingPos
+						? "Change Julia Set"
+						: "Move Camera";
 
 					changeOpacity(this.switchMovementButtonElement, 1);
 				});

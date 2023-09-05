@@ -2,7 +2,7 @@ import { QuasiFuchsianGroups } from "/applets/quasi-fuchsian-groups/scripts/clas
 import Lapsa from "/scripts/lapsa.mjs";
 import { changeOpacity } from "/scripts/src/animation.mjs";
 
-const applet = new QuasiFuchsianGroups(document.body.querySelector("#output-canvas"));
+const applet = new QuasiFuchsianGroups({ canvas: document.body.querySelector("#output-canvas") });
 
 const canvasBundle = document.body.querySelector("#canvas-bundle");
 

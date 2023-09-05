@@ -40,7 +40,7 @@ export class QuasiFuchsianGroups extends Applet
 
 
 
-	constructor(canvas)
+	constructor({ canvas })
 	{
 		super(canvas);
 

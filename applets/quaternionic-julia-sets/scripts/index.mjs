@@ -84,7 +84,12 @@ export function load()
 	{
 		elements[i].addEventListener("input", () =>
 		{
-			const c = [parseFloat(cXInputElement.value || 0), parseFloat(cYInputElement.value || 0), parseFloat(cZInputElement.value || 0), parseFloat(cWInputElement.value || 0)];
+			const c = [
+				parseFloat(cXInputElement.value || 0),
+				parseFloat(cYInputElement.value || 0),
+				parseFloat(cZInputElement.value || 0),
+				parseFloat(cWInputElement.value || 0)
+			];
 
 			applet.updateC(c);
 		});
