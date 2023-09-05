@@ -267,6 +267,8 @@ mjx-container
 
 .tex-holder
 {
+	position: relative;
+	
 	background-color: var(--background);
 	
 	box-shadow: 0px 0px 0px 0px rgba(0, 0, 0, .2);
@@ -277,6 +279,8 @@ mjx-container
 .tex-holder.hover
 {
 	box-shadow: 0px 0px 16px calc(var(--theme) * 4px) rgba(0, 0, 0, calc(.2 + (var(--theme) * (1 - .2))));
+
+	z-index: 1100;
 }
 
 .tex-holder.active
