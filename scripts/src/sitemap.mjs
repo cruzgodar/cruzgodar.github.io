@@ -519,13 +519,23 @@ export const sitemap =
 		
 		"children":
 		[
-			"/teaching/uo/341/notes/1-vectors-and-matrices/"
+			"/teaching/uo/341/notes/1-vectors-and-matrices/",
+			"/teaching/uo/341/notes/2-row-reduction/"
 		]
 	},
 		
 	"/teaching/uo/341/notes/1-vectors-and-matrices/":
 	{
 		"title": "Section 1: Vectors and Matrices",
+		
+		"parent": "/teaching/uo/341/",
+		
+		"children": []
+	},
+	
+	"/teaching/uo/341/notes/2-row-reduction/":
+	{
+		"title": "Section 2: Row Reduction",
 		
 		"parent": "/teaching/uo/341/",
 		

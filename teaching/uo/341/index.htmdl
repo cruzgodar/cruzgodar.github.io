@@ -41,6 +41,36 @@ Welcome to Math 341! We'll use this page for the interactive notes, the homework
 
 
 	## Section 1
+
+	In problems 3#, write the system in the form $A\vec{x} = \vec{b}$ for a matrix $A$ and vector $\vec{b}$ of constants and a vector $\vec{x}$ of variables.
+
+	#.
+
+	$$
+		x_1 &= 2
+
+		2x_1 - x_2 &= 3.
+	$$
+
+	#.
+
+	$$
+		2x_3 - x_2 &= 0
+
+		x_1 &= x_3 - x_2 + 1
+	$$
+
+	#.
+
+	$$
+		x + y - z &= x
+
+		x + 2y - 1 &= 2z
+
+		x - z + 1 &= y
+	$$
+
+
 	
 	In problems 5#, evaluate the product.
 	
@@ -54,7 +84,7 @@ Welcome to Math 341! We'll use this page for the interactive notes, the homework
 	
 	#. $$\left[ \begin{array}{cc} 1 & 0 \\ 0 & 1 \\ 1 & 1 \end{array} \right]\left[ \begin{array}{cccc} 1 & -1 & 1 & -1 \\ -1 & 1 & -1 & 1 \end{array} \right].$$
 	
-	## 
+
 	
 	#. Let $A$ be an $n \times n$ matrix with entries $a_{ij}$.
 	
@@ -62,7 +92,25 @@ Welcome to Math 341! We'll use this page for the interactive notes, the homework
 	
 	> b) The $i$th row of $A$ is $\left[ \begin{array}{cccc} a_{i1} & a_{i2} & \cdots & a_{in} \end{array} \right]$. If the $j$th column of $I$ is denoted $\vec{e_j}$, what is the entry in row $i$ and column $j$ of $AI$?
 	
-	> c) What does part b) imply $\AI$ is equal to?
+	> c) What does part b) imply $AI$ is equal to? Why does this make sense in the context of function composition?
+
+
+
+	#. Let $A$ be an $m \times n$ matrix with entries $a_{ij}$.
+
+	> a) There are vectors $\vec{x}$ and $\vec{y}$ such that $\vec{x}A\vec{y} = a_{11}$. What are they?
+
+	> b) What about vectors $\vec{x}$ and $\vec{y}$ such that $\vec{x}A\vec{y} = a_{ij}$? Your answer should be in terms of $i$ and $j$.
+
+
+
+	#. State whether each part is true or false. If true, briefly justify why, and if false, provide a small counterexample.
+
+	> a) A system with $3$ equations and $2$ unknowns always has at least one solution.
+
+	> b) If the product $AB$ is defined, then $A$ and $B$ have the same number of rows.
+
+	> c) If $A$ is a $2 \times 2$ matrix so that $A\vec{x} = \vec{x}$ for *every* vector $\vec{x}$, then $A = I_2$.
 	
 ###
 
