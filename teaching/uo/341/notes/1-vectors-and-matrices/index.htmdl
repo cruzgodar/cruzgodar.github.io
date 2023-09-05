@@ -16,7 +16,7 @@ It's hard to overstate just how pervasive linear algebra is in science. It under
 
 Unlike most math classes that have come before, this one is a clean break from its prerequisites: there isn't much to review that will be useful. Instead, we'll be building our theory of linear algebra more or less from scratch --- to that end, let's take a look at our central object of study: systems of linear equations. *Linear* means that variables aren't multiplied or raised to powers, just added together, so when there are only two variables, the graph is a line.
 
-### ex linear system
+### ex a system of linear equations
 	
 	Solve the system
 	
@@ -56,7 +56,7 @@ Unlike most math classes that have come before, this one is a clean break from i
 	
 ###
 
-### exc linear system
+### exc a system of linear equations
 	
 	Solve the system
 	
@@ -78,7 +78,7 @@ Now that we've worked through an example, we're prepared to define linear system
 		a_1x_1 + a_2x_2 + \cdots + a_nx_n = b
 	$$
 	
-	for some constants $a_i$ and $b$. A **system of linear equations**, or just a **linear system**, is a collection of linear equations. The coefficients usually pick up an extra subscript:
+	for some constants $a_i$ and $b$. A **linear system** is a collection of linear equations. The coefficients usually pick up an extra subscript:
 	
 	$$
 		a_{11}x_1 + a_{12}x_2 + \cdots + a_{1n}x_n &= b_1
@@ -92,11 +92,53 @@ Now that we've worked through an example, we're prepared to define linear system
 	
 ###
 
-Much of the intuition we have for systems of equations helps us understand the behavior of large linear systems. Depending on the particular equations, a system can have a single solution, no solutions, or infinitely many. Geometrically, linear equations form straight lines (or in higher dimensions, planes), and the points where they intersect are the solutions. In the example below, setting $a = 1$ results in the two lines being parallel, so there are no intersection points and therefore no solutions. When $a = 0$, the lines are the same (we sometimes say they **coincide**), and so there are infinitely many solutions. For all other values of $a$, the lines intersect at exactly one point, meaning there is a unique solution.
+Much of the intuition we have for small linear systems helps us understand the behavior of large ones. Depending on the particular equations, a system can have a single solution, no solutions, or infinitely many. Geometrically, linear equations form straight lines (or planes in higher dimensions), and the points where they all intersect are the solutions. In the example below, setting $a = 1$ results in the two lines being parallel, so there are no intersection points and therefore no solutions. When $a = 0$, the lines are the same (we sometimes say they **coincide**), and so there are infinitely many solutions. For all other values of $a$, the lines intersect at exactly one point, meaning there is a unique solution.
 
 ### desmos linear-system
 
 We'll develop vocabulary to describe all of these situations shortly, but the most pressing issue is that it's unwieldy to deal with $m$ different equations at once. If we could consolidate all $m$ of them into a single equation that still contained all the data, it would make the discussion of linear systems quite a bit simpler.
+
+Let's start with the right sides --- the $b_i$. There are quite a few ways we could try to combine them all into one single object, but let's just follow our nose and try the simplest thing we can. When we write the equations in a row like we did above, the $b_i$ form a column. To that end, let's create an object that contains all of the $b_i$ at once.
+
+### def column vector
+
+	A **column vector** is a vertical rectangle of numbers of the form
+
+	$$
+		\left[ \begin{array}{c} b_1 \\ b_2 \\ \cdots \\ b_m \end{array} \right].
+	$$
+
+	We say that a column vector has length $m$, or that its dimensions are $m \times 1$ (since there's only one column).
+
+###
+
+Just like ordered pairs, two column vectors are equal only if they're the same length and all of their entries are equal. We can leverage this by assembling all of the equations into vectors. Going back to our original system,
+
+$$
+	x_1 + 3x_2 &= -5
+	
+	2x_1 - 3x_2 &= 8.
+$$
+
+becomes
+
+$$
+	\left[ \begin{array}{c} x_1 + 3x_2 \\ 2x_1 - 3x_2 \end{array} \right] = \left[ \begin{array}{c} -5 \\ 8 \end{array} \right].
+$$
+
+This is a good step, but it's not particularly useful yet: all we've done is drawn a few more symbols. To really cut through the noise and get to a good generalization, we need to go one step further. In a linear system with two unknowns, there will always be a single copy of $x_1$ and $x_2$ in each equation. What changes is the coefficients --- the only part of the left side that matters are the four numbers $1$, $3$, $2$, and $-3$. As before, let's try the simplest possible organization. When we write out the equations, they form a square, so let's use vector notation and put them into a $2 \times 2$ rectangle:
+
+$$
+	\left[ \begin{array}{cc} 1 & 3 \\ 2 & -3 \end{array} \right].
+$$
+
+We call this a $2 \times 2$ **matrix**. All we need is a way to use this matrix as a coefficient on both $x_1$ and $x_2$ at the same time --- that sounds like a column vector, which means we want
+
+$$
+	\left[ \begin{array}{cc} 1 & 3 \\ 2 & -3 \end{array} \right] \left[ \begin{array}{c} x_1 \\ x_2 \end{array} \right] = \left[ \begin{array}{c} x_1 + 3x_2 \\ 2x_1 - 3x_2 \end{array} \right].
+$$
+
+There are two valuable lessons to learn here that are much wider-reaching than linear systems: first, consolidating and abstracting a concept often leads to a much more powerful theory in the end, even if it's often more difficult to work with at first. Second, it's almost always worth trying the simplest idea first in math --- quite often, everything will fall in place as if it was meant to be, and it will feel as though you're discovering the theory instead of inventing it.
 
 
 
