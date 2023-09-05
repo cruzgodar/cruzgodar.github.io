@@ -539,6 +539,27 @@
 				</dict>
 			</dict>
 		</dict>
+
+
+
+		<!-- Numbered range -->
+		<dict>
+			<key>match</key>
+			<string>([0-9]+)(#)</string>
+			<key>captures</key>
+			<dict>
+				<key>1</key>
+				<dict>
+					<key>name</key>
+					<string>string</string>
+				</dict>
+				<key>2</key>
+				<dict>
+					<key>name</key>
+					<string>keyword</string>
+				</dict>
+			</dict>
+		</dict>
 		
 		
 		
@@ -610,7 +631,7 @@
 		<!-- Invalid headings -->
 		<dict>
 			<key>match</key>
-			<string>(#).*?$</string>
+			<string>(#)[^.].*?$</string>
 			<key>captures</key>
 			<dict>
 				<key>1</key>

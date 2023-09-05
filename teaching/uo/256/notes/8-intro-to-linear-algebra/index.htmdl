@@ -249,9 +249,9 @@ That was a whole lot of work! Let's turn to some examples to see this in action.
 
 ### ex matrix multiplication
 	
-	Let $$A = \left[ \begin{array}{cc} 5 & 0 \\ -2 & 1 \end{array} \right]$$ and $$\mathbf{B} = \left[ \begin{array}{ccc} 3 & 1 & -1 \\ -1 & 0 & 2 \end{array} \right]$$. Evaluate $\mathbf{AB}$.
+	Let $$\mathbf{A} = \left[ \begin{array}{cc} 5 & 0 \\ -2 & 1 \end{array} \right]$$ and $$\mathbf{B} = \left[ \begin{array}{ccc} 3 & 1 & -1 \\ -1 & 0 & 2 \end{array} \right]$$. Evaluate $\mathbf{AB}$.
 	
-	This is a valid product to take, since the number of columns $\mathbf{A}$ and the number of rows of $\mathbf{B}$ are the same ($2$). And the dimensions of $\mathbf{AB}$ will be $2 \times 3$, since $\mathbf{A}$ has $2$ rows and $\mathbf{B}$ has $3$ columns. To get the element $\mathbf{AB}_{11}$ --- the top-left entry --- we take the first row of $\mathbf{A}$, which is $(5, 0)$, and the first column of $B$, which is $(3, -1)$, and multiply them together to get $5(3) + 0(-1) = 15$. Repeating this for the other five entries, we get
+	This is a valid product to take, since the number of columns $\mathbf{A}$ and the number of rows of $\mathbf{B}$ are the same ($2$). And the dimensions of $\mathbf{AB}$ will be $2 \times 3$, since $\mathbf{A}$ has $2$ rows and $\mathbf{B}$ has $3$ columns. To get the element $\mathbf{AB}_{11}$ --- the top-left entry --- we take the first row of $\mathbf{A}$, which is $(5, 0)$, and the first column of $\mathbf{B}$, which is $(3, -1)$, and multiply them together to get $5(3) + 0(-1) = 15$. Repeating this for the other five entries, we get
 	
 	$$
 		\mathbf{AB} = \left[ \begin{array}{ccc} 15 & 5 & -5 \\ -7 & -2 & 4 \end{array} \right].

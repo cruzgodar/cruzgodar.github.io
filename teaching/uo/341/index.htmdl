@@ -37,6 +37,32 @@ Welcome to Math 341! We'll use this page for the interactive notes, the homework
 	*Due Wednesday of Week 2 at the start of class*
 	
 	Complete the following problems and submit them as a pdf to Canvas. 8 points are awarded for thoroughly attempting every problem, and I'll select three problems to grade on correctness for 4 points each. Enough work should be shown that there is no question about the mathematical process used to obtain your answers.
+
+
+
+	## Section 1
+	
+	In problems 5#, evaluate the product.
+	
+	#. $$\left[ \begin{array}{cc} 3 & 0 \\ 6 & -2 \end{array} \right] \left[ \begin{array}{c} 1 \\ -1 \end{array} \right].$$
+	
+	#. $$\left[ \begin{array}{ccc} 1 & 2 & 3 \end{array} \right] \left[ \begin{array}{c} 4 \\ 5 \\ 6 \end{array} \right].$$
+	
+	#. $$\left[ \begin{array}{c} 4 \\ 5 \\ 6 \end{array} \right]\left[ \begin{array}{ccc} 1 & 2 & 3 \end{array} \right].$$
+	
+	#. $$\left[ \begin{array}{c} 1 \\ 2 \\ 3 \end{array} \right]\left[ \begin{array}{c} 4 \\ 5 \\ 6 \end{array} \right].$$
+	
+	#. $$\left[ \begin{array}{cc} 1 & 0 \\ 0 & 1 \\ 1 & 1 \end{array} \right]\left[ \begin{array}{cccc} 1 & -1 & 1 & -1 \\ -1 & 1 & -1 & 1 \end{array} \right].$$
+	
+	## 
+	
+	#. Let $A$ be an $n \times n$ matrix with entries $a_{ij}$.
+	
+	> a) For the products $AI$ and $IA$ to make sense, what dimension must $I$ have?
+	
+	> b) The $i$th row of $A$ is $\left[ \begin{array}{cccc} a_{i1} & a_{i2} & \cdots & a_{in} \end{array} \right]$. If the $j$th column of $I$ is denoted $\vec{e_j}$, what is the entry in row $i$ and column $j$ of $AI$?
+	
+	> c) What does part b) imply $\AI$ is equal to?
 	
 ###
 
