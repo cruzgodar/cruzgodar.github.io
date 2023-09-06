@@ -570,8 +570,8 @@ export class GeneralizedJuliaSet extends Applet
 
 
 
-		this.pan.update();
-		this.zoom.update();
+		this.pan.update(timeElapsed);
+		this.zoom.update(timeElapsed);
 
 
 

@@ -439,7 +439,7 @@ export class Applet
 		lastVelocitiesX: new Array(this.velocityListLength),
 		lastVelocitiesY: new Array(this.velocityListLength),
 
-		friction: .91,
+		friction: .93,
 		velocityStartThreshhold: .005,
 		velocityStopThreshhold: .0005,
 
@@ -508,7 +508,7 @@ export class Applet
 		},
 
 		//Call this in the drawFrame loop.
-		update: function()
+		update: function(timeElapsed)
 		{
 			this.lastVelocitiesX[this.frame] = this.nextVelocityX;
 			this.lastVelocitiesY[this.frame] = this.nextVelocityY;
@@ -529,13 +529,13 @@ export class Applet
 
 			else
 			{
-				this.parent.wilson.worldCenterX += this.velocityX * this.parent.wilson.worldWidth;
-				this.parent.wilson.worldCenterY += this.velocityY * this.parent.wilson.worldHeight;
+				this.parent.wilson.worldCenterX += this.velocityX * this.parent.wilson.worldWidth * timeElapsed / 6.944;
+				this.parent.wilson.worldCenterY += this.velocityY * this.parent.wilson.worldHeight * timeElapsed / 6.944;
 
 				this.clamp();
 
-				this.velocityX *= this.friction;
-				this.velocityY *= this.friction;
+				this.velocityX *= this.friction ** (timeElapsed / 6.944);
+				this.velocityY *= this.friction ** (timeElapsed / 6.944);
 			}
 
 			if (this.parent?.wilson?.draggables?.recalculateLocations)
@@ -564,7 +564,7 @@ export class Applet
 		velocityListLength: 4,
 		lastVelocities: new Array(this.velocityListLength),
 
-		friction: .88,
+		friction: .9,
 		velocityStartThreshhold: .001,
 		velocityStopThreshhold: .001,
 
@@ -717,7 +717,7 @@ export class Applet
 		},
 
 		//Call this in the drawFrame loop.
-		update: function()
+		update: function(timeElapsed)
 		{
 			this.lastVelocities[this.frame] = this.nextVelocity;
 
@@ -733,11 +733,11 @@ export class Applet
 
 			else
 			{
-				this.level += this.velocity;
+				this.level += this.velocity * timeElapsed / 6.944;
 
 				this.zoomCanvas();
 
-				this.velocity *= this.friction;
+				this.velocity *= this.friction ** (timeElapsed / 6.944);
 			}
 
 			if (this.parent?.wilson?.draggables?.recalculateLocations)

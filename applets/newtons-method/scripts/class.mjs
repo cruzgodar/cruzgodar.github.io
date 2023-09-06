@@ -632,8 +632,8 @@ export class NewtonsMethod extends Applet
 
 		this.wilson.draggables.recalculateLocations();
 
-		this.pan.update();
-		this.zoom.update();
+		this.pan.update(timeElapsed);
+		this.zoom.update(timeElapsed);
 
 
 

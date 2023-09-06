@@ -17,9 +17,9 @@ export class VectorField extends Applet
 	fixedPointX = 0;
 	fixedPointY = 0;
 
-	dt = .0075;
+	dt = .00375;
 
-	lifetime = 100;
+	lifetime = 150;
 
 	lastTimestamp = -1;
 
@@ -331,8 +331,8 @@ export class VectorField extends Applet
 		generatingCode,
 		resolution = 500,
 		maxParticles = 10000,
-		dt = .0075,
-		lifetime = 100,
+		dt = .00375,
+		lifetime = 150,
 		worldCenterX = 0,
 		worldCenterY = 0,
 		zoomLevel = .6515
@@ -605,6 +605,18 @@ export class VectorField extends Applet
 
 
 
+			for (let i = 0; i < 5; i++)
+			{
+				this.wilsonUpdate.gl.useProgram(this.wilsonUpdate.render.shaderPrograms[i]);
+				
+				this.wilsonUpdate.gl.uniform1f(
+					this.wilsonUpdate.uniforms["dt"][i],
+					this.dt * timeElapsed / 6.944
+				);
+			}
+
+
+
 			//If there's not enough particles, we add what's missing,
 			//capped at 1% of the total particle count.
 			if (this.numParticles < this.maxParticles)
@@ -678,8 +690,8 @@ export class VectorField extends Applet
 
 			else if (this.panVelocityX !== 0 || this.panVelocityY !== 0)
 			{
-				let xDelta = -this.panVelocityX;
-				let yDelta = -this.panVelocityY;
+				let xDelta = -this.panVelocityX * timeElapsed / 6.944;
+				let yDelta = -this.panVelocityY * timeElapsed / 6.944;
 
 				if (Math.abs(xDelta / this.wilson.worldWidth * this.wilson.canvasWidth) < 1)
 				{
@@ -694,10 +706,10 @@ export class VectorField extends Applet
 				this.panGrid(xDelta, yDelta);
 
 				this.wilson.worldCenterY -= yDelta;
-				this.panVelocityY *= this.panFriction;
+				this.panVelocityY *= this.panFriction ** (timeElapsed / 6.944);
 
 				this.wilson.worldCenterX -= xDelta;
-				this.panVelocityX *= this.panFriction;
+				this.panVelocityX *= this.panFriction ** (timeElapsed / 6.944);
 
 				if (this.panVelocityX ** 2 + this.panVelocityY ** 2 <
 					this.panVelocityStopThreshhold ** 2)
@@ -727,9 +739,15 @@ export class VectorField extends Applet
 
 				this.zoomGrid(this.fixedPointX, this.fixedPointY, this.zoomVelocity);
 
-				this.zoomLevel = Math.min(Math.max(this.zoomLevel + this.zoomVelocity, -3), 3);
+				this.zoomLevel = Math.min(
+					Math.max(
+						this.zoomLevel + this.zoomVelocity * timeElapsed / 6.944,
+						-3
+					),
+					3
+				);
 
-				this.zoomVelocity *= this.zoomFriction;
+				this.zoomVelocity *= this.zoomFriction ** (timeElapsed / 6.944);
 
 				if (Math.abs(this.zoomVelocity) < this.zoomVelocityStopThreshhold)
 				{
@@ -739,7 +757,7 @@ export class VectorField extends Applet
 
 
 
-			this.updateParticles();
+			this.updateParticles(timeElapsed);
 
 			this.drawField();
 

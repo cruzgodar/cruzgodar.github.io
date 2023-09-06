@@ -70,7 +70,7 @@ export function load()
 
 	applet.setInputCaps([resolutionInputElement, maxParticlesInputElement], [1000, 50000]);
 
-
+	
 
 	resolutionInputElement.addEventListener("input", generateNewField);
 
@@ -78,7 +78,7 @@ export function load()
 
 	speedInputElement.addEventListener("input", () =>
 	{
-		const dt = parseFloat(speedInputElement.value || 1) / 150;
+		const dt = parseFloat(speedInputElement.value || 1) / 300;
 
 		applet.wilsonUpdate.gl.useProgram(applet.wilsonUpdate.render.shaderPrograms[0]);
 		applet.wilsonUpdate.gl.uniform1f(applet.wilsonUpdate.uniforms["dt"][0], dt);
@@ -116,9 +116,9 @@ export function load()
 
 		const resolution = parseInt(resolutionInputElement.value || 500);
 		const maxParticles = Math.max(parseInt(maxParticlesInputElement.value || 10000), 100);
-		const dt = parseFloat(speedInputElement.value || 1) / 150;
-		const lifetime = Math.min(parseInt(lifetimeInputElement.value || 100), 255);
-
+		const dt = parseFloat(speedInputElement.value || 1) / 300;
+		const lifetime = Math.min(parseInt(lifetimeInputElement.value || 150), 255);
+		
 		applet.run({
 			generatingCode,
 			resolution,
@@ -137,9 +137,14 @@ export function load()
 	{
 		const resolution = parseInt(resolutionInputElement.value || 500);
 		const maxParticles = Math.max(parseInt(maxParticlesInputElement.value || 10000), 100);
-		const dt = parseFloat(speedInputElement.value || 1) / 150;
-		const lifetime = Math.min(parseInt(lifetimeInputElement.value || 100), 255);
+		const dt = parseFloat(speedInputElement.value || 1) / 300;
+		const lifetime = Math.min(parseInt(lifetimeInputElement.value || 150), 255);
 
-		applet.generateNewField(resolution, maxParticles, dt, lifetime);
+		applet.generateNewField({
+			resolution,
+			maxParticles,
+			dt,
+			lifetime
+		});
 	}
 }
