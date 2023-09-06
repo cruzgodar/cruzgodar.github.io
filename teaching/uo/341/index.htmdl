@@ -71,6 +71,8 @@ Welcome to Math 341! We'll use this page for the interactive notes, the homework
 	$$
 
 
+
+	- - -
 	
 	In problems 5#, evaluate the product.
 	
@@ -85,6 +87,8 @@ Welcome to Math 341! We'll use this page for the interactive notes, the homework
 	#. $$\left[ \begin{array}{cc} 1 & 0 \\ 0 & 1 \\ 1 & 1 \end{array} \right]\left[ \begin{array}{cccc} 1 & -1 & 1 & -1 \\ -1 & 1 & -1 & 1 \end{array} \right].$$
 	
 
+
+	- - -
 	
 	#. Let $A$ be an $n \times n$ matrix with entries $a_{ij}$.
 	
@@ -96,6 +100,8 @@ Welcome to Math 341! We'll use this page for the interactive notes, the homework
 
 
 
+	- - -
+
 	#. Let $A$ be an $m \times n$ matrix with entries $a_{ij}$.
 
 	> a) There are vectors $\vec{x}$ and $\vec{y}$ such that $\vec{x}A\vec{y} = a_{11}$. What are they?
@@ -103,6 +109,8 @@ Welcome to Math 341! We'll use this page for the interactive notes, the homework
 	> b) What about vectors $\vec{x}$ and $\vec{y}$ such that $\vec{x}A\vec{y} = a_{ij}$? Your answer should be in terms of $i$ and $j$.
 
 
+
+	- - -
 
 	#. State whether each part is true or false. If true, briefly justify why, and if false, provide a small counterexample.
 

@@ -17,31 +17,18 @@ Welcome to Math 256! We'll use this page for the interactive notes, the homework
 ### image-links
 	
 	notes/0-calc-review/
-	
 	notes/1-intro-to-des/
-	
 	notes/2-if-and-sep/
-	
 	notes/3-existence-and-exactness/
-	
 	notes/4-intro-to-second-order-linear/
-	
 	notes/5-complex-and-repeated-roots/
-	
 	notes/6-nonhomogeneous-second-order-des/
-	
 	notes/7-higher-order-des/
-	
 	notes/8-intro-to-linear-algebra/
-	
 	notes/9-systems-and-inverses/
-	
 	notes/10-determinants-and-eigenthings/
-	
 	notes/11-intro-to-systems/
-	
 	notes/12-complex-and-repeated-eigenvectors/
-	
 	notes/13-phase-portraits-and-stability/
 	
 ###
@@ -53,23 +40,15 @@ Welcome to Math 256! We'll use this page for the interactive notes, the homework
 ### image-links
 	
 	homework-1 c Homework 1
-	
 	homework-2 c Homework 2
-	
 	homework-3 c Homework 3
-	
 	homework-4 c Homework 4
-	
 	homework-5 c Homework 5
-	
 	homework-6 c Homework 6
-	
 	homework-7 c Homework 7
-	
 	homework-8 c Homework 8
-	
 	homework-9 c Homework 9
-	
+
 ###
 
 
@@ -84,9 +63,9 @@ Welcome to Math 256! We'll use this page for the interactive notes, the homework
 	
 	## Section 12
 	
-	In problems 1--3, solve the system of DEs.
+	In problems 3#, solve the system of DEs.
 	
-	1.
+	#.
 	
 	$$
 		x_1' &= 2x_1 - 8x_2
@@ -96,7 +75,7 @@ Welcome to Math 256! We'll use this page for the interactive notes, the homework
 	
 	For this problem, also sketch a vector field.
 	
-	2.
+	#.
 	
 	$$
 		x_1' &= 2x_1 - 4x_2
@@ -106,7 +85,7 @@ Welcome to Math 256! We'll use this page for the interactive notes, the homework
 		x_3' &= x_1 - x_2 - x_3
 	$$
 	
-	3.
+	#.
 	
 	$$
 		x' &= 5x - 3y
@@ -118,9 +97,9 @@ Welcome to Math 256! We'll use this page for the interactive notes, the homework
 
 	## Section 13
 	
-	In problems 4--7, solve the system of DEs for an implicit function of $x$ and $y$. Determine the critical points and classify them using linear approximations as stable, unstable, or indeterminate, and verify your answers with the <a href="/applets/vector-fields/">vector fields applet</a>.
+	In problems 4#, solve the system of DEs for an implicit function of $x$ and $y$. Determine the critical points and classify them using linear approximations as stable, unstable, or indeterminate, and verify your answers with the <a href="/applets/vector-fields/">vector fields applet</a>.
 
-	4.
+	#.
 
 	$$
 		x' &= xy
@@ -128,7 +107,7 @@ Welcome to Math 256! We'll use this page for the interactive notes, the homework
 		y' &= 2x - 1
 	$$
 
-	5.
+	#.
 
 	$$
 		x' &= x - xy
@@ -136,7 +115,7 @@ Welcome to Math 256! We'll use this page for the interactive notes, the homework
 		y' &= xy - y
 	$$
 	
-	6.
+	#.
 
 	$$
 		x' &= (y - 1)(y + 1)
@@ -144,7 +123,7 @@ Welcome to Math 256! We'll use this page for the interactive notes, the homework
 		y' &= (x - 1)(x + 1)
 	$$
 	
-	7.
+	#.
 
 	$$
 		x' &= x
@@ -166,9 +145,9 @@ Welcome to Math 256! We'll use this page for the interactive notes, the homework
 	
 	## Section 11
 	
-	In problems 1--4, solve the system of DEs. Note: each of these matrices appeared in homework 7.
+	In problems 4#, solve the system of DEs. Note: each of these matrices appeared in homework 7.
 	
-	1.
+	#.
 	
 	$$
 		x_1' &= 2x_1 - x_2
@@ -178,7 +157,7 @@ Welcome to Math 256! We'll use this page for the interactive notes, the homework
 	
 	For this problem, also sketch a vector field.
 	
-	2.
+	#.
 	
 	$$
 		x_1' &= 19x_1 - 4x_2 + 8x_3
@@ -188,7 +167,7 @@ Welcome to Math 256! We'll use this page for the interactive notes, the homework
 		x_3' &= -x_1 - 2x_2 + 4x_3.
 	$$
 	
-	3.
+	#.
 	
 	$$
 		x' &= 2x + 2y - 2z
@@ -198,7 +177,7 @@ Welcome to Math 256! We'll use this page for the interactive notes, the homework
 		z' &= -5x + 5y + 5z.
 	$$
 	
-	4.
+	#.
 	
 	$$
 		a' &= 5a + 6b + 4c - 4d
@@ -210,19 +189,25 @@ Welcome to Math 256! We'll use this page for the interactive notes, the homework
 		d' &= 11d.
 	$$
 	
-	## 
-	5. Two tanks are set up in a cyclical cascade. Tank 1 initially contains $100$ gallons of water and $10$ pounds of sugar, and tank 2 initially contains $50$ gallons of water and no sugar. At time $t = 0$, two valves are opened --- the well-mixed solution in tank 1 flows into tank 2 at a rate of $5$ gallons per second, and the well-mixed solution in tank 2 flows *back* into tank 1 at $5$ gallons per second. After one minute, what is the concentration of sugar in each tank?
+
+
+	- - -
+
+	#. Two tanks are set up in a cyclical cascade. Tank 1 initially contains $100$ gallons of water and $10$ pounds of sugar, and tank 2 initially contains $50$ gallons of water and no sugar. At time $t = 0$, two valves are opened --- the well-mixed solution in tank 1 flows into tank 2 at a rate of $5$ gallons per second, and the well-mixed solution in tank 2 flows *back* into tank 1 at $5$ gallons per second. After one minute, what is the concentration of sugar in each tank?
 	
-	## 
-	6. Let $f(\lambda) = \lambda^2 + a\lambda + b$ be a polynomial. The **companion matrix** to $f$ is the $2 \times 2$ matrix
+
+
+	- - -
+
+	#. Let $f(\lambda) = \lambda^2 + a\lambda + b$ be a polynomial. The **companion matrix** to $f$ is the $2 \times 2$ matrix
 	
 	$$
 		\mathbf{C}(f) = \left[ \begin{array}{cc} 0 & -b \\ 1 & -a \end{array} \right].
 	$$
 	
 	Show that the characteristic polynomial of $\mathbf{C}(f)$ is $f$.
-	
-	7. Using companion matrices, create $2 \times 2$ matrices with real entries and the following eigenvalues:
+
+	#. Using companion matrices, create $2 \times 2$ matrices with real entries and the following eigenvalues:
 	
 	> a) $\lambda_1 = 1, \quad \lambda_2 = 1$.
 	
@@ -236,7 +221,7 @@ Welcome to Math 256! We'll use this page for the interactive notes, the homework
 	
 	> f) $\lambda_1 = i, \quad \lambda_2 = -i$.
 	
-	8. For each of the six matrices in problem 7, sketch a vector field for $-2 \leq x \leq 2$ and $-2 \leq y \leq 2$. Check your answer with the <a href="/applets/vector-fields/">vector fields applet</a> --- for example, to plot
+	#. For each of the six matrices in the previous problem, sketch a vector field for $-2 \leq x \leq 2$ and $-2 \leq y \leq 2$. Check your answer with the <a href="/applets/vector-fields/">vector fields applet</a> --- for example, to plot
 	
 	$$
 		x' &= 2x - y
@@ -260,33 +245,39 @@ Welcome to Math 256! We'll use this page for the interactive notes, the homework
 	
 	## Section 10
 	
-	In problems 1--5, find the determinant of the given matrix.
+	In problems 5#, find the determinant of the given matrix.
 	
-	1. $$\mathbf{A} = \left[ \begin{array}{cc} 2 & -1 \\ 3 & -2 \end{array} \right].$$
+	#. $$\mathbf{A} = \left[ \begin{array}{cc} 2 & -1 \\ 3 & -2 \end{array} \right].$$
 	
-	2. $$\mathbf{B} = \left[ \begin{array}{cc} 1 & -1 \\ 1 & 3 \end{array} \right].$$
+	#. $$\mathbf{B} = \left[ \begin{array}{cc} 1 & -1 \\ 1 & 3 \end{array} \right].$$
 	
-	3. $$\mathbf{C} = \left[ \begin{array}{ccc} 19 & -4 & 8 \\ -8 & 5 & -10 \\ -1 & -2 & 4 \end{array} \right].$$
+	#. $$\mathbf{C} = \left[ \begin{array}{ccc} 19 & -4 & 8 \\ -8 & 5 & -10 \\ -1 & -2 & 4 \end{array} \right].$$
 	
-	4. $$\mathbf{D} = \left[ \begin{array}{ccc} 2 & 2 & -2 \\ -3 & 7 & 3 \\ -5 & 5 & 5 \end{array} \right].$$
+	#. $$\mathbf{D} = \left[ \begin{array}{ccc} 2 & 2 & -2 \\ -3 & 7 & 3 \\ -5 & 5 & 5 \end{array} \right].$$
 	
-	5. $$\mathbf{E} = \left[ \begin{array}{cccc} 5 & 6 & 4 & -4 \\ 3 & 8 & -2 & 2 \\ 3 & -3 & 9 & 2 \\ 0 & 0 & 0 & 11 \end{array} \right].$$
+	#. $$\mathbf{E} = \left[ \begin{array}{cccc} 5 & 6 & 4 & -4 \\ 3 & 8 & -2 & 2 \\ 3 & -3 & 9 & 2 \\ 0 & 0 & 0 & 11 \end{array} \right].$$
 	
-	## 
-	In problems 6--10, find the eigenvalues and eigenvectors of the given matrix, and verify that the product of the eigenvalues is the determinant you found before.
+
+
+	- - -
+
+	In problems 5#, find the eigenvalues and eigenvectors of the given matrix, and verify that the product of the eigenvalues is the determinant you found before.
 	
-	6. $\mathbf{A}$ from problem 1.
+	#. $\mathbf{A}$ from problem 1.
 	
-	7. $\mathbf{B}$ from problem 2.
+	#. $\mathbf{B}$ from problem 2.
 	
-	8. $\mathbf{C}$ from problem 3.
+	#. $\mathbf{C}$ from problem 3.
 	
-	9. $\mathbf{D}$ from problem 4.
+	#. $\mathbf{D}$ from problem 4.
 	
-	10. $\mathbf{E}$ from problem 5. Hint: you may it useful to know that $(x - 11)^3 = x^3 - 33x^2 + 363x - 1331$.
+	#. $\mathbf{E}$ from problem 5. Hint: you may it useful to know that $(x - 11)^3 = x^3 - 33x^2 + 363x - 1331$.
 	
-	## 
-	11. With $\mathbf{A}$ from problem 1, find the following:
+
+
+	- - -
+
+	#. With $\mathbf{A}$ from problem 1, find the following:
 	
 	> a) $$\mathbf{A}^{100} \left[ \begin{array}{c} 1 \\ 3 \end{array} \right].$$
 	
@@ -294,14 +285,21 @@ Welcome to Math 256! We'll use this page for the interactive notes, the homework
 	
 	> c) $$\mathbf{A}^{100} \left[ \begin{array}{c} 0 \\ -4 \end{array} \right].$$
 	
-	## 
-	12. A remarkable property of the determinant is that it's **multiplicative**: for any two $n \times n$ matrices $\mathbf{A}$ and $\mathbf{B}$, $\det (\mathbf{AB}) = \left( \det \mathbf{A} \right)\left( \det \mathbf{B} \right)$. Use this property to answer the following questions.
+
+
+	- - -
+
+	#. A remarkable property of the determinant is that it's **multiplicative**: for any two $n \times n$ matrices $\mathbf{A}$ and $\mathbf{B}$, $\det (\mathbf{AB}) = \left( \det \mathbf{A} \right)\left( \det \mathbf{B} \right)$. Use this property to answer the following questions.
 	
 	> a) What is $\det \mathbf{I}$? Hint: $\mathbf{IA} = \mathbf{A}$ for any matrix $\mathbf{A}$ for which the product makes sense.
 	
 	> b) Let $\mathbf{A}$ be an invertible matrix. What is $\det \left(\mathbf{A}^{-1}\right)$ in terms of $\det \mathbf{A}$?
 	
-	13. Suppose $\mathbf{A}$ is an invertible matrix with eigenvectors $\mathbf{v_1}, ..., \mathbf{v_n}$ with corresponding eigenvalues $\lambda_1, ..., \lambda_n$.
+
+
+	- - -
+
+	#. Suppose $\mathbf{A}$ is an invertible matrix with eigenvectors $\mathbf{v_1}, ..., \mathbf{v_n}$ with corresponding eigenvalues $\lambda_1, ..., \lambda_n$.
 	
 	> a) For $\mathbf{A}$ to be invertible, none of the $\lambda_i$ can be zero. Why is this?
 	
@@ -321,9 +319,9 @@ Welcome to Math 256! We'll use this page for the interactive notes, the homework
 	
 	## Section 9
 	
-	In problems 1--5, write the system as an augmented matrix and row reduce it, indicating every elementary row operation you perform. Then use the reduced matrix to write the solution to the system.
+	In problems 5#, write the system as an augmented matrix and row reduce it, indicating every elementary row operation you perform. Then use the reduced matrix to write the solution to the system.
 	
-	1.
+	#.
 	
 	$$
 		3x - y &= 14
@@ -331,7 +329,7 @@ Welcome to Math 256! We'll use this page for the interactive notes, the homework
 		4x + 2y &= 2.
 	$$
 	
-	2.
+	#.
 	
 	$$
 		x + 2z &= 8
@@ -341,7 +339,7 @@ Welcome to Math 256! We'll use this page for the interactive notes, the homework
 		4x + y + 3z &= 21.
 	$$
 	
-	3.
+	#.
 	
 	$$
 		3x_1 + x_2 + x_3 &= 1
@@ -351,7 +349,7 @@ Welcome to Math 256! We'll use this page for the interactive notes, the homework
 		6x_1 + 5x_2 + 8x_3 &= -10.
 	$$
 	
-	4.
+	#.
 	
 	$$
 		x_1 + x_2 - 4x_3 &= -11
@@ -363,7 +361,7 @@ Welcome to Math 256! We'll use this page for the interactive notes, the homework
 		-x_1 + 2x_2 &= 1.
 	$$
 	
-	5.
+	#.
 	
 	$$
 		a + c &= 2
@@ -375,21 +373,27 @@ Welcome to Math 256! We'll use this page for the interactive notes, the homework
 		4a + 3b + 2c + d &= 5.
 	$$
 	
-	## 
-	In problems 6--10, invert the matrix.
+
+
+	- - -
+
+	In problems 5#, invert the matrix.
 	
-	6. $$\left[ \begin{array}{cc} 4 & 1 \\ -1 & 2 \end{array} \right].$$
+	#. $$\left[ \begin{array}{cc} 4 & 1 \\ -1 & 2 \end{array} \right].$$
 	
-	7. $$\left[ \begin{array}{ccc} 1 & 0 & -1 \\ 4 & 5 & 6 \\ 0 & -1 & 2 \end{array} \right].$$
+	#. $$\left[ \begin{array}{ccc} 1 & 0 & -1 \\ 4 & 5 & 6 \\ 0 & -1 & 2 \end{array} \right].$$
 	
-	8. $$\left[ \begin{array}{ccc} 2 & 1 & 3 \\ 3 & -1 & 2 \\ 1 & 0 & 1 \end{array} \right].$$
+	#. $$\left[ \begin{array}{ccc} 2 & 1 & 3 \\ 3 & -1 & 2 \\ 1 & 0 & 1 \end{array} \right].$$
 	
-	9. $$\left[ \begin{array}{c} 4 \end{array} \right].$$
+	#. $$\left[ \begin{array}{c} 4 \end{array} \right].$$
 	
-	10. $$\left[ \begin{array}{cccc} 1 & 0 & 0 & 0 \\ 0 & 1 & 0 & 1 \\ 0 & 0 & 1 & 0 \\ 1 & 0 & 1 & 1 \end{array} \right].$$
+	#. $$\left[ \begin{array}{cccc} 1 & 0 & 0 & 0 \\ 0 & 1 & 0 & 1 \\ 0 & 0 & 1 & 0 \\ 1 & 0 & 1 & 1 \end{array} \right].$$
 	
-	## 
-	11. Let's investigate the elementary row operations a bit more. For a $3 \times 3$ matrix $\mathbf{A}$, find the following:
+
+
+	- - -
+
+	#. Let's investigate the elementary row operations a bit more. For a $3 \times 3$ matrix $\mathbf{A}$, find the following:
 	
 	> a) A matrix $\mathbf{S_{1, 2}}$ so that $\mathbf{S_{1, 2}A}$ is the same as $\mathbf{A}$, but with rows $1$ and $2$ swapped. Similarly, find $\mathbf{S_{1, 3}}$ and $\mathbf{S_{2, 3}}$.
 	
@@ -397,7 +401,11 @@ Welcome to Math 256! We'll use this page for the interactive notes, the homework
 	
 	> c) A matrix $\mathbf{P_{1, 2, c}}$ so that $\mathbf{P_{1, 2, c}A}$ is same as $\mathbf{A}$, but with $c$ times row $2$ added to row $1$. Similarly, find $\mathbf{P_{1, 3, c}}$, $\mathbf{P_{2, 3, c}}$, as well as $\mathbf{P_{2, 1, c}}$, $\mathbf{P_{3, 1, c}}$, and $\mathbf{P_{3, 2, c}}$.
 	
-	12. Let $$\mathbf{A} = \left[ \begin{array}{cc} a & b \\ c & d \end{array} \right]$$ be a generic $2 \times 2$ matrix. Find $\mathbf{A}^{-1}$ in terms of $a$, $b$, $c$, and $d$.
+
+
+	- - -
+
+	#. Let $$\mathbf{A} = \left[ \begin{array}{cc} a & b \\ c & d \end{array} \right]$$ be a generic $2 \times 2$ matrix. Find $\mathbf{A}^{-1}$ in terms of $a$, $b$, $c$, and $d$.
 
 ###
 
@@ -413,61 +421,71 @@ Welcome to Math 256! We'll use this page for the interactive notes, the homework
 	
 	## Section 7
 	
-	In problems 1--5, find the general solution of the given DE.
+	In problems 5#, find the general solution of the given DE.
 	
-	1. $$y''' + 4y' = 0.$$
+	#. $$y''' + 4y' = 0.$$
 	
-	2. $$y^{(5)} + 4y^{(4)} + 4y^{(3)} = 0.$$
+	#. $$y^{(5)} + 4y^{(4)} + 4y^{(3)} = 0.$$
 	
-	3. $$y^{(4)} = -16y.$$
+	#. $$y^{(4)} = -16y.$$
 	
-	4. $$y^{(8)} - 2y^{(4)} + y = 0.$$
+	#. $$y^{(8)} - 2y^{(4)} + y = 0.$$
 	
-	5. $$y'''' + 4y''' + 6y'' + 4y' + y = 0.$$ Hint: if factoring is proving difficult, try setting $u = r^2 + 2r$.
+	#. $$y'''' + 4y''' + 6y'' + 4y' + y = 0.$$ Hint: if factoring is proving difficult, try setting $u = r^2 + 2r$.
 	
-	## 
-	6. Consider the DE $$y''' + y' = 0$$.
+
+
+	- - -
+
+	#. Consider the DE $$y''' + y' = 0$$.
 	
-		> a) Find the general solution $$y = c_1 y_1 + c_2 y_2 + c_3 y_3.$$
-		
-		> b) The Wronskian for a third-order DE is defined as
-		
-		$$
-			W[y_1, y_2, y_3] = \det \left[ \begin{array}{ccc} y_1 & y_2 & y_3 \\ y_1' & y_2' & y_3' \\ y_1'' & y_2'' & y_3'' \end{array} \right].
-		$$
-		
-		> Write out this matrix (but don't take any determinants yet).
-		
-		> c) For a $3 \times 3$ matrix $\mathbf{A}$, we can find $\det \mathbf{A}$ by taking column $j$ with entries $a_{1j}$, $a_{2j}$, and $a_{3j}$, and writing
-		
-		$$
-			\det \mathbf{A} = (-1)^{j + 1} (a_{1j} \det \mathbf{A_{1j}} - a_{2j} \det \mathbf{A_{2j}} + a_{3j} \det \mathbf{A_{3j}}),
-		$$
-		
-		> where $\mathbf{A_{ij}}$ is the $2 \times 2$ matrix formed by crossing off row $i$ and column $j$ from $\mathbf{A}$. With this method, evaluate $W[y_1, y_2, y_3]$. Hint: there's one choice of column that should be much better than the others!
-		
-		> d) Interpret the Wronskian: did you successfully find the general solution in part a)?
+	> a) Find the general solution $$y = c_1 y_1 + c_2 y_2 + c_3 y_3.$$
+	
+	> b) The Wronskian for a third-order DE is defined as
+	
+	$$
+		W[y_1, y_2, y_3] = \det \left[ \begin{array}{ccc} y_1 & y_2 & y_3 \\ y_1' & y_2' & y_3' \\ y_1'' & y_2'' & y_3'' \end{array} \right].
+	$$
+	
+	> Write out this matrix (but don't take any determinants yet).
+	
+	> c) For a $3 \times 3$ matrix $\mathbf{A}$, we can find $\det \mathbf{A}$ by taking column $j$ with entries $a_{1j}$, $a_{2j}$, and $a_{3j}$, and writing
+	
+	$$
+		\det \mathbf{A} = (-1)^{j + 1} (a_{1j} \det \mathbf{A_{1j}} - a_{2j} \det \mathbf{A_{2j}} + a_{3j} \det \mathbf{A_{3j}}),
+	$$
+	
+	> where $\mathbf{A_{ij}}$ is the $2 \times 2$ matrix formed by crossing off row $i$ and column $j$ from $\mathbf{A}$. With this method, evaluate $W[y_1, y_2, y_3]$. Hint: there's one choice of column that should be much better than the others!
+	
+	> d) Interpret the Wronskian: did you successfully find the general solution in part a)?
 	
 	
 	
 	## Section 8
 	
-	In problems 7--11, evaluate the product.
+	In problems 5#, evaluate the product.
 	
-	7. $$\left[ \begin{array}{cc} 3 & 0 \\ 6 & -2 \end{array} \right] \left[ \begin{array}{c} 1 \\ -1 \end{array} \right].$$
+	#. $$\left[ \begin{array}{cc} 3 & 0 \\ 6 & -2 \end{array} \right] \left[ \begin{array}{c} 1 \\ -1 \end{array} \right].$$
 	
-	8. $$\left[ \begin{array}{ccc} 1 & 2 & 3 \end{array} \right] \left[ \begin{array}{c} 4 \\ 5 \\ 6 \end{array} \right].$$
+	#. $$\left[ \begin{array}{ccc} 1 & 2 & 3 \end{array} \right] \left[ \begin{array}{c} 4 \\ 5 \\ 6 \end{array} \right].$$
 	
-	9. $$\left[ \begin{array}{c} 4 \\ 5 \\ 6 \end{array} \right]\left[ \begin{array}{ccc} 1 & 2 & 3 \end{array} \right].$$
+	#. $$\left[ \begin{array}{c} 4 \\ 5 \\ 6 \end{array} \right]\left[ \begin{array}{ccc} 1 & 2 & 3 \end{array} \right].$$
 	
-	10. $$\left[ \begin{array}{c} 1 \\ 2 \\ 3 \end{array} \right]\left[ \begin{array}{c} 4 \\ 5 \\ 6 \end{array} \right].$$
+	#. $$\left[ \begin{array}{c} 1 \\ 2 \\ 3 \end{array} \right]\left[ \begin{array}{c} 4 \\ 5 \\ 6 \end{array} \right].$$
 	
-	11. $$\left[ \begin{array}{cc} 1 & 0 \\ 0 & 1 \\ 1 & 1 \end{array} \right]\left[ \begin{array}{cccc} 1 & -1 & 1 & -1 \\ -1 & 1 & -1 & 1 \end{array} \right].$$
+	#. $$\left[ \begin{array}{cc} 1 & 0 \\ 0 & 1 \\ 1 & 1 \end{array} \right]\left[ \begin{array}{cccc} 1 & -1 & 1 & -1 \\ -1 & 1 & -1 & 1 \end{array} \right].$$
 	
-	## 
-	12. Suppose that for a square matrix $\mathbf{A}$, there are matrices $\mathbf{B}$ and $\mathbf{C}$ so that $\mathbf{AB} = \mathbf{I}$ and $\mathbf{CA} = \mathbf{I}$. Show that it must be the case that $\mathbf{B} = \mathbf{C}$. Hint: multiply both sides of the second equation by something.
+
+
+	- - -
+
+	#. Suppose that for a square matrix $\mathbf{A}$, there are matrices $\mathbf{B}$ and $\mathbf{C}$ so that $\mathbf{AB} = \mathbf{I}$ and $\mathbf{CA} = \mathbf{I}$. Show that it must be the case that $\mathbf{B} = \mathbf{C}$. Hint: multiply both sides of the second equation by something.
 	
-	13. Let $\mathbf{A}$ be an $n \times n$ matrix with entries $a_{ij}$.
+
+
+	- - -
+
+	#. Let $\mathbf{A}$ be an $n \times n$ matrix with entries $a_{ij}$.
 	
 	> a) For the products $\mathbf{AI}$ and $\mathbf{IA}$ to make sense, what dimension must $\mathbf{I}$ have?
 	
@@ -489,23 +507,23 @@ Welcome to Math 256! We'll use this page for the interactive notes, the homework
 	
 	## Section 6
 	
-	In problems 1--8, find the general solution to the DE.
+	In problems 8#, find the general solution to the DE.
 	
-	1. $$y'' - 2y' - 3y = 8e^t.$$
+	#. $$y'' - 2y' - 3y = 8e^t.$$
 	
-	2. $$y'' - 2y' - 3y = 8e^{3t}.$$
+	#. $$y'' - 2y' - 3y = 8e^{3t}.$$
 	
-	3. $$y'' + y = 3\sin(t) + e^t.$$
+	#. $$y'' + y = 3\sin(t) + e^t.$$
 	
-	4. $$y'' + 6y' + 9y = 120t^2e^{-3t}.$$
+	#. $$y'' + 6y' + 9y = 120t^2e^{-3t}.$$
 	
-	5. $$4y'' + y = \sec\left(\frac{t}{2}\right).$$
+	#. $$4y'' + y = \sec\left(\frac{t}{2}\right).$$
 	
-	6. $$y'' + 2y' + y = 2t\sin(t).$$
+	#. $$y'' + 2y' + y = 2t\sin(t).$$
 	
-	7. $$y'' + 4y' + 4y = t^{-2} e^{-2t}.$$
+	#. $$y'' + 4y' + 4y = t^{-2} e^{-2t}.$$
 	
-	8. $$y'' + 3y' + 2y = \frac{1}{1 + e^t}.$$
+	#. $$y'' + 3y' + 2y = \frac{1}{1 + e^t}.$$
 	
 ###
 
@@ -521,37 +539,47 @@ Welcome to Math 256! We'll use this page for the interactive notes, the homework
 	
 	## Section 4
 	
-	In problems 1--5, solve the DE and verify that you've found the general solution with the Wronskian.
+	In problems 5#, solve the DE and verify that you've found the general solution with the Wronskian.
 	
-	1. $$y'' + 2y' - 3y = 0.$$
+	#. $$y'' + 2y' - 3y = 0.$$
 	
-	2. $$y'' + 3y' = 0.$$
+	#. $$y'' + 3y' = 0.$$
 	
-	3. $$4y'' - 9y = 0.$$
+	#. $$4y'' - 9y = 0.$$
 	
-	4. $$y'' - y' - y = 0.$$
+	#. $$y'' - y' - y = 0.$$
 	
-	5. $$y'' = y'.$$
+	#. $$y'' = y'.$$
 	
-	## 
-	In problems 6--8, solve the initial value problem.
+
+
+	- - -
+
+	In problems 3#, solve the initial value problem.
 	
-	6. $$y'' + y' - 20y = 0,$$ $$y(0) = 9,$$ $$y'(0) = 18.$$
+	#. $$y'' + y' - 20y = 0,$$ $$y(0) = 9,$$ $$y'(0) = 18.$$
 	
-	7. $$2y'' + 6y' = 20y,$$ $$y(0) = 14,$$ $$y'(0) = 0.$$
+	#. $$2y'' + 6y' = 20y,$$ $$y(0) = 14,$$ $$y'(0) = 0.$$
 	
-	8. $$y'' - y = 0,$$ $$y(0) = 4,$$ $$y'(0) = 2.$$
+	#. $$y'' - y = 0,$$ $$y(0) = 4,$$ $$y'(0) = 2.$$
 	
-	## 
-	9. Consider the DE $$2t^2y'' - ty' + y = 0.$$
+
+
+	- - -
+
+	#. Consider the DE $$2t^2y'' - ty' + y = 0.$$
+
+	> a) Show that a solution is $$y = c_1t + c_2\sqrt{t}.$$
 	
-		> a) Show that a solution is $$y = c_1t + c_2\sqrt{t}.$$
-		
-		> b) Compute $$W\left[t, \sqrt{t}\right].$$ For which value $t = t_0$ is it zero?
-		
-		> c) Why is $t = t_0$ a problem?
+	> b) Compute $$W\left[t, \sqrt{t}\right].$$ For which value $t = t_0$ is it zero?
 	
-	10. Define a linear operator $L$ by
+	> c) Why is $t = t_0$ a problem?
+	
+
+
+	- - -
+
+	#. Define a linear operator $L$ by
 	
 	$$
 		L[y] = y'' + p(t)y' + q(t)y
@@ -559,43 +587,53 @@ Welcome to Math 256! We'll use this page for the interactive notes, the homework
 	
 	for continuous functions $p$ and $q$ and consider the DE $L[y] = 0$. Suppose a solution $y$ is a function with complex-valued outputs, and that it splits as $y(t) = a(t) + ib(t)$, where $a$ and $b$ are real-valued functions. Show that both $a$ and $b$ must be solutions to $L[y] = 0$ themselves.
 	
-	11. Consider the DE $$y'' - yy' = 0.$$
+
+
+	- - -
+
+	#. Consider the DE $$y'' - yy' = 0.$$
+
+	> a) Show that both $$y = \tan\left(\frac{x}{2}\right)$$ and $$y = 2\tan\left(x + 1\right)$$ are solutions.
 	
-		> a) Show that both $$y = \tan\left(\frac{x}{2}\right)$$ and $$y = 2\tan\left(x + 1\right)$$ are solutions.
-		
-		> b) Show that
-		
-		$$
-			y = c_1\tan\left(\frac{x}{2}\right) + 2c_2\tan\left(x + 1\right)
-		$$
-		
-		is *not* a solution in general. Why does this not contradict the results of section 4?
+	> b) Show that
+	
+	$$
+		y = c_1\tan\left(\frac{x}{2}\right) + 2c_2\tan\left(x + 1\right)
+	$$
+	
+	is *not* a solution in general. Why does this not contradict the results of section 4?
 	
 	
 	
 	## Section 5
 	
-	In problems 12--15, solve the DE and verify that you've found the general solution with the Wronskian.
+	In problems 4#, solve the DE and verify that you've found the general solution with the Wronskian.
 	
-	12. $$y'' + 6y' + 9y = 0.$$
+	#. $$y'' + 6y' + 9y = 0.$$
 	
-	13. $$y'' + 10y' + 26y = 0.$$
+	#. $$y'' + 10y' + 26y = 0.$$
 	
-	14. $$y'' - 100y = 0.$$
+	#. $$y'' - 100y = 0.$$
 	
-	15. $$y'' + 100y = 0.$$
+	#. $$y'' + 100y = 0.$$
 	
-	## 
-	In problems 16--17, solve the initial value problem and determine the behavior of the solution as $t \to \infty$.
+
+
+	- - -
+
+	In problems 2#, solve the initial value problem and determine the behavior of the solution as $t \to \infty$.
 	
-	16. $$y'' - 2y' + 17y = 0,$$ $$y(0) = 4,$$ $$y'(0) = -4.$$
+	#. $$y'' - 2y' + 17y = 0,$$ $$y(0) = 4,$$ $$y'(0) = -4.$$
 	
-	17. $$y'' + 8y' + 16y = 0,$$ $$y(0) = 1,$$ $$y'(0) = 0.$$
+	#. $$y'' + 8y' + 16y = 0,$$ $$y(0) = 1,$$ $$y'(0) = 0.$$
 	
-	## 
-	18. One fundamental solution to $$ty'' - y' + t^3y = 0$$ is $y = \sin\left(\frac{t^2}{2}\right)$. Find the other.
-	
-	19. One fundamental solution to $$t^2y'' + ty' + y = 0$$ is $y = \sin(\log(t))$. Find the other.
+
+
+	- - -
+
+	#. One fundamental solution to $$ty'' - y' + t^3y = 0$$ is $y = \sin\left(\frac{t^2}{2}\right)$. Find the other.
+
+	#. One fundamental solution to $$t^2y'' + ty' + y = 0$$ is $y = \sin(\log(t))$. Find the other.
 	
 ###
 
@@ -611,47 +649,57 @@ Welcome to Math 256! We'll use this page for the interactive notes, the homework
 	
 	## Section 2
 	
-	In problems 1--2, solve the tank problem.
+	In problems 2#, solve the tank problem.
 	
-	1. A tank is filled with $1\,\text{L}$ of water. We begin pouring in a salt solution with a concentration of $2\,\frac{\text{g}}{\text{mL}}$ at a rate of $10\,\frac{\text{mL}}{\text{s}}$, and also begin draining the tank at a rate of $10\,\frac{\text{mL}}{\text{s}}$. What will the concentration of salt be after an hour?
+	#. A tank is filled with $1\,\text{L}$ of water. We begin pouring in a salt solution with a concentration of $2\,\frac{\text{g}}{\text{mL}}$ at a rate of $10\,\frac{\text{mL}}{\text{s}}$, and also begin draining the tank at a rate of $10\,\frac{\text{mL}}{\text{s}}$. What will the concentration of salt be after an hour?
 	
-	2. A tank is filled with $100\,\text{L}$ of uncolored paint. We begin pouring in a solution of red paint, which contains $0.5\,\frac{\text{kg}}{\text{L}}$ of dye, at a rate of $1\,\frac{\text{L}}{\text{s}}$. We also begin draining the well-mixed paint from the bottom of the tank at a rate of $1\,\frac{\text{L}}{\text{s}}$. How long will it take for the paint in the tank to have half the concentration of dye that the incoming red paint does?
+	#. A tank is filled with $100\,\text{L}$ of uncolored paint. We begin pouring in a solution of red paint, which contains $0.5\,\frac{\text{kg}}{\text{L}}$ of dye, at a rate of $1\,\frac{\text{L}}{\text{s}}$. We also begin draining the well-mixed paint from the bottom of the tank at a rate of $1\,\frac{\text{L}}{\text{s}}$. How long will it take for the paint in the tank to have half the concentration of dye that the incoming red paint does?
 	
 	
 	
 	## Section 3
 	
-	In problems 3--6, find the indicated derivative.
+	In problems 3#, find the indicated derivative.
 	
-	3. $$\frac{\partial}{\partial t} \left[ 2ty + \sin(t) \right].$$
+	#. $$\frac{\partial}{\partial t} \left[ 2ty + \sin(t) \right].$$
 	
-	4. $$\frac{\partial}{\partial y} \left[ \sin(xy^x) \right].$$
+	#. $$\frac{\partial}{\partial y} \left[ \sin(xy^x) \right].$$
 	
-	5. $$\frac{\partial}{\partial x} \left[ \sin(xy^x) \right].$$
+	#. $$\frac{\partial}{\partial x} \left[ \sin(xy^x) \right].$$
 	
-	6. Using the multivariable chain rule, find $$\frac{d f(x, y)}{dt}$$, where $$f(x, y) = 2x^2 + \sec(xy^2)$$, $x(t) = t$, and $y(t) = 5t^2$.
+
+
+	- - -
+
+	#. Using the multivariable chain rule, find $$\frac{d f(x, y)}{dt}$$, where $$f(x, y) = 2x^2 + \sec(xy^2)$$, $x(t) = t$, and $y(t) = 5t^2$.
 	
-	## 
-	In problems 7--9, find the indicated integral. Make sure to express the constant as a function of the correct variable.
+
+
+	- - -
+
+	In problems 3#, find the indicated integral. Make sure to express the constant as a function of the correct variable.
 	
-	7. $$\int f(x, y)\,dx$$ for $$f(x, y) = 2x\cos(y - x).$$
+	#. $$\int f(x, y)\,dx$$ for $$f(x, y) = 2x\cos(y - x).$$
 	
-	8. $$\int f(x, y)\,dy$$ for $f$ as in the previous problem.
+	#. $$\int f(x, y)\,dy$$ for $f$ as in the previous problem.
 	
-	9. $$\int g(x, y)\,dy$$ for $$g(x, y) = e^{x^2}.$$
+	#. $$\int g(x, y)\,dy$$ for $$g(x, y) = e^{x^2}.$$
 	
-	## 
-	In problems 10--14, solve the the given DE.
+
+
+	- - -
+
+	In problems 5#, solve the the given DE.
 	
-	10. $$2y + 1 + (2x + 1)y' = 0,$$ $$y(1) = 1.$$
+	#. $$2y + 1 + (2x + 1)y' = 0,$$ $$y(1) = 1.$$
 	
-	11. $$1 - \sin(t + y) + y'(-\sin(t + y)) = 0,$$ $$y(0) = 0.$$
+	#. $$1 - \sin(t + y) + y'(-\sin(t + y)) = 0,$$ $$y(0) = 0.$$
 	
-	12. $$y' = -\frac{yx^{y - 1}}{x^y\log(x)},$$ $$y(2) = 1.$$
+	#. $$y' = -\frac{yx^{y - 1}}{x^y\log(x)},$$ $$y(2) = 1.$$
 	
-	13. $$(10t + t^2) - 2\sin(y)y' = 0,$$ $$y(0) = 1.$$
+	#. $$(10t + t^2) - 2\sin(y)y' = 0,$$ $$y(0) = 1.$$
 	
-	14.
+	#.
 	
 	$$
 		\sec^2(x)\sec(y) + \left( \tan(x) \tan(y) \sec(y) + \frac{1}{y} \right)y' = 0.
@@ -671,75 +719,99 @@ Welcome to Math 256! We'll use this page for the interactive notes, the homework
 	
 	## Section 1
 	
-	In problems 1--3, find the order of the DE, state whether it's linear, and verify that the given function solves it.
+	In problems 3#, find the order of the DE, state whether it's linear, and verify that the given function solves it.
 	
-	1. $$y'' + y' + y = 0,$$ $$y(t) = e^{-t / 2}\sin\left( \frac{\sqrt{3}}{2} t \right).$$
+	#. $$y'' + y' + y = 0,$$ $$y(t) = e^{-t / 2}\sin\left( \frac{\sqrt{3}}{2} t \right).$$
 	
-	2. $$y''' = t,$$ $$y(t) = \frac{t^4}{24}.$$
+	#. $$y''' = t,$$ $$y(t) = \frac{t^4}{24}.$$
 	
-	3. $$(y'')^2 = e^t,$$ $$y(t) = t - 4e^{t / 2}.$$
+	#. $$(y'')^2 = e^t,$$ $$y(t) = t - 4e^{t / 2}.$$
 	
-	## 
-	In problems 4--6, solve the initial value problem.
+
+
+	- - -
+
+	In problems 3#, solve the initial value problem.
 	
-	4. $$\frac{y'}{\tan(t)} = \sec(t),$$ $$y(0) = 1.$$
+	#. $$\frac{y'}{\tan(t)} = \sec(t),$$ $$y(0) = 1.$$
 	
-	5. $$y' = y,$$ $$y(1) = 1.$$
+	#. $$y' = y,$$ $$y(1) = 1.$$
 	
-	6. $$r' = t^2\sin(t),$$ $$r(0) = 0.$$
+	#. $$r' = t^2\sin(t),$$ $$r(0) = 0.$$
 	
-	## 
-	In problems 7--10, draw the direction field for the given DE and sketch a solution curve. Find all the equilibria and classify them as stable, unstable, or neither.
+
+
+	- - -
+
+	In problems 4#, draw the direction field for the given DE and sketch a solution curve. Find all the equilibria and classify them as stable, unstable, or neither.
 	
-	7. $$y' = \sin(t).$$
+	#. $$y' = \sin(t).$$
 	
-	8. $$y' = (y^2 - 1)(t^2 - 1).$$
+	#. $$y' = (y^2 - 1)(t^2 - 1).$$
 	
-	9. $$y' = y.$$
+	#. $$y' = y.$$
 	
-	10. $$(y')^2 = |yt|.$$
+	#. $$(y')^2 = |yt|.$$
 	
 	
 	
 	## Section 2
 	
-	In problems 11--20, solve the DE. Whenever possible, fully evaluate all integrals.
+	In problems 10#, solve the DE. Whenever possible, fully evaluate all integrals.
 	
-	11. $$y' + 2y = e^{-2t},$$ $$y(0) = -1.$$
+	#. $$y' + 2y = e^{-2t},$$ $$y(0) = -1.$$
 	
-	12. $$y' + \frac{y}{t} = \sin(t),$$ $$y(\pi) = 0.$$
+	#. $$y' + \frac{y}{t} = \sin(t),$$ $$y(\pi) = 0.$$
 	
-	13. $$xy' = \sqrt{y^2x^2 - y^2}.$$
+	#. $$xy' = \sqrt{y^2x^2 - y^2}.$$
 	
-	14. $$y' = y + t^2e^t.$$
+	#. $$y' = y + t^2e^t.$$
 	
-	15. $$y' = \frac{t}{1 + y},$$ $$y(0) = -2.$$
+	#. $$y' = \frac{t}{1 + y},$$ $$y(0) = -2.$$
 	
-	16. $$y' + ty^2 + ty + 2y^2 + 2y = 0.$$
+	#. $$y' + ty^2 + ty + 2y^2 + 2y = 0.$$
 	
-	17. $$ty' + (t + 1)y = t + 2,$$ $$y(1) = 2.$$
+	#. $$ty' + (t + 1)y = t + 2,$$ $$y(1) = 2.$$
 	
-	18. $$\cos^2(t)y' = 1 + y.$$
+	#. $$\cos^2(t)y' = 1 + y.$$
 	
-	19. $$y' = t + \frac{t}{y}.$$
+	#. $$y' = t + \frac{t}{y}.$$
 	
-	20. $$y' = e^{x + y},$$ $$y(0) = 0.$$
+	#. $$y' = e^{x + y},$$ $$y(0) = 0.$$
 	
-	## 
+
+
+	- - -
+
+	#. You invest $\$1000$ into an account which compounds interest **continuously** --- in other words, your balance is constantly increasing at a rate proportional to its current value. If the continuous interest rate is $0.2\%$ per year, how much money will be in the account after 10 years?
 	
-	21. You invest $\$1000$ into an account which compounds interest **continuously** --- in other words, your balance is constantly increasing at a rate proportional to its current value. If the continuous interest rate is $0.2\%$ per year, how much money will be in the account after 10 years?
+
+
+	- - -
+
+	#. The population $P(t)$ of a colony of bacteria after $t$ hours (in thousands) follows the equation $$P' + P = 2^{-t} + 1.$$ After enough time, what will the population settle down to?
 	
-	22. The population $P(t)$ of a colony of bacteria after $t$ hours (in thousands) follows the equation $$P' + P = 2^{-t} + 1.$$ After enough time, what will the population settle down to?
-	
-	23. The function $y$ satisfies $y' = y\log(x)$ with $$y(1) = \frac{1}{e}.$$
+
+
+	- - -
+
+	#. The function $y$ satisfies $y' = y\log(x)$ with $$y(1) = \frac{1}{e}.$$
 	
 	> a) Express $y''$ in terms of $x, y$, and $y'$.
 	
 	> b) Solve the original DE, find $y''$ in terms of $x$ only, and verify that your answer to part a) was correct.
 	
-	24. Solve the DE $$y' + xy = x$$ in two ways: first with integrating factors and then with separation of variables. Make sure your answers are the same!
+
+
+	- - -
+
+	#. Solve the DE $$y' + xy = x$$ in two ways: first with integrating factors and then with separation of variables. Make sure your answers are the same!
 	
-	25. True or false: if a DE is separable, then its direction field is symmetric about the origin  --- i.e. the slope at $(x, y)$ is the same as the slope at $(-x, -y)$. If it's true, briefly explain why, and if it's false, give a counterexample.
+
+
+	- - -
+	
+	#. True or false: if a DE is separable, then its direction field is symmetric about the origin  --- i.e. the slope at $(x, y)$ is the same as the slope at $(-x, -y)$. If it's true, briefly explain why, and if it's false, give a counterexample.
 	
 ###
 

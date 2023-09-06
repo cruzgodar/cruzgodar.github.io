@@ -331,6 +331,7 @@ const components =
 				.replaceAll(/(\s)'(\S)/g, (match, $1, $2) => `${$1}&#x2018;${$2}`)
 				.replaceAll(/^'(\S)/g, (match, $1) => `&#x2018;${$1}`)
 				.replaceAll(/'/g, "&#x2019;")
+				.replaceAll(/- - -/g, "<span style='height: 32px'></span>")
 				.replaceAll(/---/g, "&mdash;")
 				.replaceAll(/--/g, "&ndash;")
 				.replaceAll(/\[DOUBLEQUOTE\]/g, "\"")
@@ -850,7 +851,7 @@ const components =
 
 				if (inEnvironment)
 				{
-					lines[i] = `<h2 class="section-text" style="margin-top: 48px">${title}</h2>`;
+					lines[i] = `<h2 class="section-text" style="margin-top: 80px">${title}</h2>`;
 				}
 
 				else
