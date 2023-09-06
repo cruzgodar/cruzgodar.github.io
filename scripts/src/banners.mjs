@@ -31,7 +31,7 @@ export function setBannerMaxScroll(newBannerMaxScroll)
 
 let scrollButtonElement;
 
-export let scrollButtonOpacity = 0;
+export let scrollButtonOpacity = 1;
 
 export let scrollButtonExists = false;
 
