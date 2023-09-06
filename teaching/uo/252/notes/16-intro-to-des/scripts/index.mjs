@@ -109,7 +109,7 @@ export function load()
 
 	const outputCanvas = $("#vector-field-canvas");
 
-	const applet = new VectorField(outputCanvas);
+	const applet = new VectorField({ canvas: outputCanvas });
 
 	applet.loadPromise.then(() =>
 	{

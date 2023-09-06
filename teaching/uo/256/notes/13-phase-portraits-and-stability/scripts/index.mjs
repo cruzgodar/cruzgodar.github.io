@@ -236,7 +236,7 @@ export function load()
 
 	const outputCanvas = $("#vector-field-canvas");
 
-	const applet = new VectorField(outputCanvas);
+	const applet = new VectorField({ canvas: outputCanvas });
 
 	applet.loadPromise.then(() =>
 	{
@@ -257,7 +257,7 @@ export function load()
 
 	const outputCanvas2 = $("#autonomous-system-canvas");
 
-	const applet2 = new VectorField(outputCanvas2);
+	const applet2 = new VectorField({ canvas: outputCanvas2 });
 
 	applet2.loadPromise.then(() =>
 	{
@@ -278,7 +278,7 @@ export function load()
 
 	const outputCanvas3 = $("#pendulum-canvas");
 
-	const applet3 = new VectorField(outputCanvas3);
+	const applet3 = new VectorField({ canvas: outputCanvas3 });
 
 	applet3.loadPromise.then(() =>
 	{

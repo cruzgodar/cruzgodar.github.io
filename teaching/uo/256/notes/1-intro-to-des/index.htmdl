@@ -98,7 +98,7 @@ These are concise definitions, but not ones that are easy to internalize right a
 
 ### ex linearity and order
 	
-	The DE $y'' - ty' = t^2$ is linear: even though $t$ is squared on the right and multiplied by $y'$ in the middle, this is a linear function of the derivatives of $y$. Since $t$ is never mentioned in the definition, we can treat as a constant for this definition --- if we do that, the DE becomes
+	The DE $y'' - ty' = t^2$ is linear: even though $t$ is squared on the right and multiplied by $y'$ in the middle, this is a linear function of the derivatives of $y$. Since $t$ is never mentioned in the definition, we can think of it as a constant:
 	
 	$$
 		y'' - c_1y' = c_2,

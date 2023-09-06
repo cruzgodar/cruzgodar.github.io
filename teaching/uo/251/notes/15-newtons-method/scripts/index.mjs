@@ -49,7 +49,7 @@ export function load()
 
 	const outputCanvas = $("#newtons-method-canvas");
 
-	const applet = new NewtonsMethod(outputCanvas);
+	const applet = new NewtonsMethod({ canvas: outputCanvas });
 
 	applet.loadPromise.then(() =>
 	{

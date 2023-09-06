@@ -1,5 +1,10 @@
 import { VectorField } from "/applets/vector-fields/scripts/class.mjs";
-import { createDesmosGraphs, desmosBlue, desmosPurple, setGetDesmosData } from "/scripts/src/desmos.mjs";
+import {
+	createDesmosGraphs,
+	desmosBlue,
+	desmosPurple,
+	setGetDesmosData
+} from "/scripts/src/desmos.mjs";
 import { showPage } from "/scripts/src/load-page.mjs";
 import { $ } from "/scripts/src/main.mjs";
 
@@ -53,7 +58,7 @@ export function load()
 
 	const outputCanvas = $("#vector-field-canvas");
 
-	const applet = new VectorField(outputCanvas);
+	const applet = new VectorField({ canvas: outputCanvas });
 
 	applet.loadPromise.then(() =>
 	{
