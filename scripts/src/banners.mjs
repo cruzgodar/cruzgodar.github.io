@@ -42,7 +42,6 @@ export function setScrollButtonExists(newScrollButtonExists)
 
 
 
-
 //The banner opacity cannot be changed more than a certain amount each frame
 //to account for sudden changes in viewport height. This function handles that animation.
 
