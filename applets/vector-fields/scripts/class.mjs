@@ -266,7 +266,7 @@ export class VectorField extends Applet
 			enterFullscreenButtonIconPath: "/graphics/general-icons/enter-fullscreen.png",
 			exitFullscreenButtonIconPath: "/graphics/general-icons/exit-fullscreen.png",
 
-			switchFullscreenCallback: this.generateNewField.bind(this),
+			switchFullscreenCallback: this.generateNewField.bind(this, {}),
 
 
 
@@ -771,7 +771,7 @@ export class VectorField extends Applet
 
 		catch(ex)
 		{
-			this.generateNewField();
+			this.generateNewField({});
 		}
 	}
 
@@ -1276,7 +1276,7 @@ export class VectorField extends Applet
 	{
 		if (this.wilson.fullscreen.currentlyFullscreen)
 		{
-			this.generateNewField();
+			this.generateNewField({});
 		}
 	}
 }

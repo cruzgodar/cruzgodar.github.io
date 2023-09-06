@@ -242,12 +242,7 @@ export function load()
 	{
 		applet.run({
 			generatingCode: "((x - 1.0) * (x + 1.0), (y + 1.0) * (y - 1.0))",
-			resolution: 500,
-			maxParticles: 10000,
-			dt: .0035,
-			lifetime: 100,
-			worldCenterX: 0,
-			worldCenterY: 0,
+			dt: .002,
 			zoomLevel: -.15
 		});
 		applet.pauseWhenOffscreen();
@@ -263,12 +258,7 @@ export function load()
 	{
 		applet2.run({
 			generatingCode: "(y*y, 1.0 - x*x)",
-			resolution: 500,
-			maxParticles: 10000,
-			dt: .0035,
-			lifetime: 100,
-			worldCenterX: 0,
-			worldCenterY: 0,
+			dt: .002,
 			zoomLevel: 0
 		});
 		applet2.pauseWhenOffscreen();
@@ -284,12 +274,7 @@ export function load()
 	{
 		applet3.run({
 			generatingCode: "(y, -.5*y - sin(x))",
-			resolution: 500,
-			maxParticles: 10000,
-			dt: .0035,
-			lifetime: 100,
-			worldCenterX: 0,
-			worldCenterY: 0,
+			dt: .002,
 			zoomLevel: 2
 		});
 		applet3.pauseWhenOffscreen();

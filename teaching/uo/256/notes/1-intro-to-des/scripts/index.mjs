@@ -64,12 +64,6 @@ export function load()
 	{
 		applet.run({
 			generatingCode: "(1.0, sin(y) / (x*x + 1.0))",
-			resolution: 500,
-			maxParticles: 10000,
-			dt: .0075,
-			lifetime: 100,
-			worldCenterX: 0,
-			worldCenterY: 0,
 			zoomLevel: 1.3219
 		});
 		applet.pauseWhenOffscreen();
