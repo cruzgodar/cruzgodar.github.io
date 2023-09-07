@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 import { showCard } from "/scripts/src/cards.mjs";
 import { showPage } from "/scripts/src/load-page.mjs";
 import { $, $$ } from "/scripts/src/main.mjs";
@@ -599,7 +600,10 @@ export function load()
 
 	$$(".gallery-image-1-1 img, .gallery-image-2-2 img, .gallery-image-3-3 img").forEach(element =>
 	{
-		element.addEventListener("click", e => showGalleryCard(e.target.getAttribute("data-image-id")));
+		element.addEventListener(
+			"click",
+			e => showGalleryCard(e.target.getAttribute("data-image-id"))
+		);
 	});
 
 	appletLinkElement.addEventListener("click", () =>

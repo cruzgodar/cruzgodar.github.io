@@ -91,7 +91,9 @@ export class Applet
 
 	uncapEverything = false;
 
-	//Adds a friendly cap on these inputs: if a higher number is entered, the whole thing turns red and a the label turns into a modal with an option to remove the limit.
+	//Adds a friendly cap on these inputs: if a higher number is entered,
+	//the whole thing turns red and a the label turns into a modal
+	//with an option to remove the limit.
 	setInputCaps(elements, caps)
 	{
 		elements.forEach((element, index) =>
@@ -233,7 +235,10 @@ export class Applet
 
 				if (this.uncapEverything)
 				{
-					$$(".capped-input").forEach(cappedInputElement => cappedInputElement.classList.remove("capped-input"));
+					$$(".capped-input").forEach(cappedInputElement =>
+					{
+						cappedInputElement.classList.remove("capped-input");
+					});
 				}
 			});
 
@@ -378,7 +383,10 @@ export class Applet
 
 				if (this.aspectRatio >= 1)
 				{
-					wilson.changeCanvasSize(this.resolution, Math.floor(this.resolution / this.aspectRatio));
+					wilson.changeCanvasSize(
+						this.resolution,
+						Math.floor(this.resolution / this.aspectRatio)
+					);
 
 					if (useZoomLevel)
 					{
@@ -389,7 +397,10 @@ export class Applet
 
 				else
 				{
-					wilson.changeCanvasSize(Math.floor(this.resolution * this.aspectRatio), this.resolution);
+					wilson.changeCanvasSize(
+						Math.floor(this.resolution * this.aspectRatio),
+						this.resolution
+					);
 
 					if (useZoomLevel)
 					{
@@ -445,8 +456,21 @@ export class Applet
 
 		clamp: function()
 		{
-			this.parent.wilson.worldCenterX = Math.min(Math.max(this.parent.wilson.worldCenterX, this.minX + this.parent.wilson.worldWidth / 2), this.maxX - this.parent.wilson.worldWidth / 2);
-			this.parent.wilson.worldCenterY = Math.min(Math.max(this.parent.wilson.worldCenterY, this.minY + this.parent.wilson.worldHeight / 2), this.maxY - this.parent.wilson.worldHeight / 2);
+			this.parent.wilson.worldCenterX = Math.min(
+				Math.max(
+					this.parent.wilson.worldCenterX,
+					this.minX + this.parent.wilson.worldWidth / 2
+				),
+				this.maxX - this.parent.wilson.worldWidth / 2
+			);
+
+			this.parent.wilson.worldCenterY = Math.min(
+				Math.max(
+					this.parent.wilson.worldCenterY,
+					this.minY + this.parent.wilson.worldHeight / 2
+				),
+				this.maxY - this.parent.wilson.worldHeight / 2
+			);
 		},
 
 		onGrabCanvas: function()
@@ -529,8 +553,11 @@ export class Applet
 
 			else
 			{
-				this.parent.wilson.worldCenterX += this.velocityX * this.parent.wilson.worldWidth * timeElapsed / 6.944;
-				this.parent.wilson.worldCenterY += this.velocityY * this.parent.wilson.worldHeight * timeElapsed / 6.944;
+				this.parent.wilson.worldCenterX += this.velocityX
+					* this.parent.wilson.worldWidth * timeElapsed / 6.944;
+
+				this.parent.wilson.worldCenterY += this.velocityY
+					* this.parent.wilson.worldHeight * timeElapsed / 6.944;
 
 				this.clamp();
 
@@ -570,7 +597,9 @@ export class Applet
 
 		init: function()
 		{
-			this.level = Math.log2(Math.min(this.parent.wilson.worldWidth, this.parent.wilson.worldHeight) / 3);
+			this.level = Math.log2(
+				Math.min(this.parent.wilson.worldWidth, this.parent.wilson.worldHeight) / 3
+			);
 		},
 
 		clamp: function()
@@ -583,7 +612,9 @@ export class Applet
 
 				this.parent.wilson.worldHeight = this.parent.wilson.worldWidth / aspectRatio;
 
-				this.level = Math.log2(Math.min(this.parent.wilson.worldWidth, this.parent.wilson.worldHeight) / 3);
+				this.level = Math.log2(
+					Math.min(this.parent.wilson.worldWidth, this.parent.wilson.worldHeight) / 3
+				);
 			}
 
 			if (this.parent.wilson.worldHeight > this.parent.pan.maxY - this.parent.pan.minY)
@@ -592,7 +623,9 @@ export class Applet
 
 				this.parent.wilson.worldWidth = this.parent.wilson.worldHeight * aspectRatio;
 
-				this.level = Math.log2(Math.min(this.parent.wilson.worldWidth, this.parent.wilson.worldHeight) / 3);
+				this.level = Math.log2(
+					Math.min(this.parent.wilson.worldWidth, this.parent.wilson.worldHeight) / 3
+				);
 			}
 
 			this.level = Math.max(this.level, this.minLevel);
@@ -644,18 +677,24 @@ export class Applet
 		{
 			if (this.parent.wilson.worldWidth >= this.parent.wilson.worldHeight)
 			{
-				this.level -= touchDistanceDelta / this.parent.wilson.worldWidth * this.pinchMultiplier;
+				this.level -= touchDistanceDelta / this.parent.wilson.worldWidth
+					* this.pinchMultiplier;
+
 				this.clamp();
 
-				this.nextVelocity = -touchDistanceDelta / this.parent.wilson.worldWidth * this.pinchMultiplier;
+				this.nextVelocity = -touchDistanceDelta / this.parent.wilson.worldWidth
+					* this.pinchMultiplier;
 			}
 
 			else
 			{
-				this.level -= touchDistanceDelta / this.parent.wilson.worldHeight * this.pinchMultiplier;
+				this.level -= touchDistanceDelta / this.parent.wilson.worldHeight
+					* this.pinchMultiplier;
+
 				this.clamp();
 
-				this.nextVelocity = -touchDistanceDelta / this.parent.wilson.worldHeight * this.pinchMultiplier;
+				this.nextVelocity = -touchDistanceDelta / this.parent.wilson.worldHeight
+					* this.pinchMultiplier;
 			}
 
 			this.fixedPointX = x;
@@ -693,7 +732,12 @@ export class Applet
 
 			if (aspectRatio >= 1)
 			{
-				const newWorldCenter = this.parent.wilson.input.getZoomedWorldCenter(this.fixedPointX, this.fixedPointY, 3 * Math.pow(2, this.level) * aspectRatio, 3 * Math.pow(2, this.level));
+				const newWorldCenter = this.parent.wilson.input.getZoomedWorldCenter(
+					this.fixedPointX,
+					this.fixedPointY,
+					3 * Math.pow(2, this.level) * aspectRatio,
+					3 * Math.pow(2, this.level)
+				);
 
 				this.parent.wilson.worldWidth = 3 * Math.pow(2, this.level) * aspectRatio;
 				this.parent.wilson.worldHeight = 3 * Math.pow(2, this.level);
@@ -704,7 +748,12 @@ export class Applet
 
 			else
 			{
-				const newWorldCenter = this.parent.wilson.input.getZoomedWorldCenter(this.fixedPointX, this.fixedPointY, 3 * Math.pow(2, this.level), 3 * Math.pow(2, this.level) / aspectRatio);
+				const newWorldCenter = this.parent.wilson.input.getZoomedWorldCenter(
+					this.fixedPointX,
+					this.fixedPointY,
+					3 * Math.pow(2, this.level),
+					3 * Math.pow(2, this.level) / aspectRatio
+				);
 
 				this.parent.wilson.worldWidth = 3 * Math.pow(2, this.level);
 				this.parent.wilson.worldHeight = 3 * Math.pow(2, this.level) / aspectRatio;

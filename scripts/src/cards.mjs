@@ -100,7 +100,9 @@ export async function showCard(id)
 	const themeColor = siteSettings.darkTheme ? "#0c0c0c" : "#7f7f7f";
 
 	//Unfortunately necessary to make the animation work. We reset it later!
-	document.documentElement.style.backgroundColor = siteSettings.darkTheme ? "rgb(24, 24, 24)" : "rgb(255, 255, 255)";
+	document.documentElement.style.backgroundColor = siteSettings.darkTheme
+		? "rgb(24, 24, 24)"
+		: "rgb(255, 255, 255)";
 
 	await Promise.all([
 		anime({
@@ -112,7 +114,11 @@ export async function showCard(id)
 		}).finished,
 
 		anime({
-			targets: [pageElement, document.querySelector("#header"), document.querySelector("#header-container")],
+			targets: [
+				pageElement,
+				document.querySelector("#header"),
+				document.querySelector("#header-container")
+			],
 			filter: "brightness(.5)",
 			scale: .975,
 			duration: animationTime,
@@ -163,7 +169,11 @@ export async function hideCard()
 
 	await Promise.all([
 		anime({
-			targets: [pageElement, document.querySelector("#header"), document.querySelector("#header-container")],
+			targets: [
+				pageElement,
+				document.querySelector("#header"),
+				document.querySelector("#header-container")
+			],
 			filter: "brightness(1)",
 			scale: 1,
 			duration: animationTime,

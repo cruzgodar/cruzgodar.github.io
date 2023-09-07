@@ -5,7 +5,11 @@ export const sitemapPath = "/scripts/src/sitemap.mjs";
 
 export default async function buildSitemap()
 {
-	const lines = (await read(textSitemapPath)).replaceAll(/\r/g, "").replaceAll(/ {4}/g, "\t").replaceAll(/\n\t*?\n/g, "\n").split("\n");
+	const lines = (await read(textSitemapPath))
+		.replaceAll(/\r/g, "")
+		.replaceAll(/ {4}/g, "\t")
+		.replaceAll(/\n\t*?\n/g, "\n")
+		.split("\n");
 
 	const depths = new Array(lines.length);
 
@@ -59,7 +63,9 @@ export default async function buildSitemap()
 		//We can assume this one is properly formatted since it came before us.
 		const parent = lines[j].replace("/home", "");
 
-		//This is part of the magic: we replace the current line with its correct form (i.e. the full path and trailing slash) now, which also makes sure future pages have correctly-formed parents.
+		//This is part of the magic: we replace the current line with its correct
+		//form (i.e. the full path and trailing slash) now, which also makes sure
+		//future pages have correctly-formed parents.
 
 		const index = lines[i].indexOf(" ");
 		const title = lines[i].slice(index + 1);
@@ -75,7 +81,8 @@ export default async function buildSitemap()
 			lines[i] = `${lines[i]}/`;
 		}
 
-		//To find all the children, we search ahead and find everything at depth one more than us, until we find something at depth <= us.
+		//To find all the children, we search ahead and find everything at
+		//depth one more than us, until we find something at depth <= us.
 
 		const children = [];
 
@@ -88,7 +95,8 @@ export default async function buildSitemap()
 				const index = lines[j].indexOf(" ");
 				const child = lines[j].slice(0, index);
 
-				//On the other hand, these are guaranteed *not* to be formatted correctly, so we modify them (but not in place, since we'll get to them later).
+				//On the other hand, these are guaranteed *not* to be formatted
+				//correctly, so we modify them (but not in place, since we'll get to them later).
 				if (lines[j][0] !== "/")
 				{
 					children.push(`${lines[i]}${child}/`);

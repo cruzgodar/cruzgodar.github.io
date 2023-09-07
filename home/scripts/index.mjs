@@ -1,7 +1,12 @@
 import { fadeLeft, opacityAnimationTime } from "/scripts/src/animation.mjs";
 import { scrollButtonOpacity } from "/scripts/src/banners.mjs";
 import { disableLinks, showPage } from "/scripts/src/load-page.mjs";
-import { $, addTemporaryListener, setVisitedHomepage, visitedHomepage } from "/scripts/src/main.mjs";
+import {
+	$,
+	addTemporaryListener,
+	setVisitedHomepage,
+	visitedHomepage
+} from "/scripts/src/main.mjs";
 
 //On large screens, make the content be centered at the bottom of the page.
 function centerContent()

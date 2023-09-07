@@ -34,7 +34,9 @@ export function setGetDesmosData(newGetDesmosData)
 
 export async function createDesmosGraphs()
 {
-	await loadScript("https://www.desmos.com/api/v1.7/calculator.js?apiKey=dcb31709b452b1cf9dc26972add0fda6");
+	await loadScript(
+		"https://www.desmos.com/api/v1.7/calculator.js?apiKey=dcb31709b452b1cf9dc26972add0fda6"
+	);
 
 	for (const key in desmosGraphs)
 	{
@@ -116,7 +118,11 @@ export async function recreateDesmosGraphs()
 
 export function getDesmosScreenshot(id, forPdf = false)
 {
-	desmosGraphs[id].updateSettings({ showGrid: forPdf, xAxisNumbers: forPdf, yAxisNumbers: forPdf });
+	desmosGraphs[id].updateSettings({
+		showGrid: forPdf,
+		xAxisNumbers: forPdf,
+		yAxisNumbers: forPdf
+	});
 
 	const expressions = desmosGraphs[id].getExpressions();
 

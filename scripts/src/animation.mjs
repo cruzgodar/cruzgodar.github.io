@@ -1,13 +1,22 @@
 import { browserIsIos } from "./browser.mjs";
-import { navigationAnimationDistanceHorizontal, navigationAnimationDistanceVertical } from "./layout.mjs";
+import {
+	navigationAnimationDistanceHorizontal,
+	navigationAnimationDistanceVertical
+} from "./layout.mjs";
 import anime from "/scripts/anime.js";
 
 const useJsAnimation = browserIsIos;
 
 const baseAnimationTime = 250;
 
-export const opacityAnimationTime = useJsAnimation ? baseAnimationTime * .8 : baseAnimationTime * .75;
-export const buttonAnimationTime = useJsAnimation ? baseAnimationTime * .5 : baseAnimationTime * .45;
+export const opacityAnimationTime = useJsAnimation
+	? baseAnimationTime * .8
+	: baseAnimationTime * .75;
+
+export const buttonAnimationTime = useJsAnimation
+	? baseAnimationTime * .5
+	: baseAnimationTime * .45;
+	
 export const pageAnimationTime = baseAnimationTime * .55;
 export const backgroundColorAnimationTime = baseAnimationTime * 2;
 

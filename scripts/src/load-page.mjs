@@ -1,4 +1,11 @@
-import { fadeDownIn, fadeIn, fadeLeftIn, fadeRightIn, fadeUpIn, pageAnimationTime } from "./animation.mjs";
+import {
+	fadeDownIn,
+	fadeIn,
+	fadeLeftIn,
+	fadeRightIn,
+	fadeUpIn,
+	pageAnimationTime
+} from "./animation.mjs";
 import { bannerElement, bannerOpacity, setUpBanner } from "./banners.mjs";
 import { setUpDropdowns, setUpNavButtons, setUpTextButtons } from "./buttons.mjs";
 import { setUpCards } from "./cards.mjs";
@@ -116,27 +123,52 @@ async function fadeInPage()
 	{
 		if (navigationTransitionType === 1)
 		{
-			return bannerElement ? Promise.all([fadeUpIn(bannerElement, pageAnimationTime * 2, bannerOpacity), fadeUpIn(pageElement)]) : fadeUpIn(pageElement);
+			return bannerElement
+				? Promise.all([
+					fadeUpIn(bannerElement, pageAnimationTime * 2, bannerOpacity),
+					fadeUpIn(pageElement)
+				])
+				: fadeUpIn(pageElement);
 		}
 
 		else if (navigationTransitionType === -1)
 		{
-			return bannerElement ? Promise.all([fadeDownIn(bannerElement, pageAnimationTime * 2, bannerOpacity), fadeDownIn(pageElement)]) : fadeDownIn(pageElement);
+			return bannerElement
+				? Promise.all([
+					fadeDownIn(bannerElement, pageAnimationTime * 2, bannerOpacity),
+					fadeDownIn(pageElement)
+				])
+				: fadeDownIn(pageElement);
 		}
 
 		else if (navigationTransitionType === 2)
 		{
-			return bannerElement ? Promise.all([fadeLeftIn(bannerElement, pageAnimationTime * 2, bannerOpacity), fadeLeftIn(pageElement)]) : fadeLeftIn(pageElement);
+			return bannerElement
+				? Promise.all([
+					fadeLeftIn(bannerElement, pageAnimationTime * 2, bannerOpacity),
+					fadeLeftIn(pageElement)
+				])
+				: fadeLeftIn(pageElement);
 		}
 
 		else if (navigationTransitionType === -2)
 		{
-			return bannerElement ? Promise.all([fadeRightIn(bannerElement, pageAnimationTime * 2, bannerOpacity), fadeRightIn(pageElement)]) : fadeRightIn(pageElement);
+			return bannerElement
+				? Promise.all([
+					fadeRightIn(bannerElement, pageAnimationTime * 2, bannerOpacity),
+					fadeRightIn(pageElement)
+				])
+				: fadeRightIn(pageElement);
 		}
 
 		else
 		{
-			return bannerElement ? Promise.all([fadeIn(bannerElement, pageAnimationTime * 2, bannerOpacity), fadeIn(pageElement)]) : fadeIn(pageElement);
+			return bannerElement
+				? Promise.all([
+					fadeIn(bannerElement, pageAnimationTime * 2, bannerOpacity),
+					fadeIn(pageElement)
+				])
+				: fadeIn(pageElement);
 		}
 	})();
 }
@@ -154,7 +186,11 @@ function setLinks()
 			return;
 		}
 
-		const inNewTab = !(href.slice(0, 5) !== "https" && href.slice(0, 4) !== "data" && !(link.getAttribute("data-in-new-tab") == 1));
+		const inNewTab = !(
+			href.slice(0, 5) !== "https"
+			&& href.slice(0, 4) !== "data"
+			&& link.getAttribute("data-in-new-tab") != 1
+		);
 
 		link.addEventListener("click", () => redirect({ url: href, inNewTab }));
 	});
@@ -162,5 +198,8 @@ function setLinks()
 
 export function disableLinks()
 {
-	$$("a:not(.real-link)").forEach(link => link.addEventListener("click", e => e.preventDefault()));
+	$$("a:not(.real-link)").forEach(link =>
+	{
+		link.addEventListener("click", e => e.preventDefault());
+	});
 }

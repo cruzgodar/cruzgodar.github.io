@@ -1,7 +1,12 @@
 import { removeHoverEvents } from "./hover-events.mjs";
 
-//Whether this is a touchscreen device on the current page. It's assumed to be false on every page until a touchstart or touchmove event is detected, at which point it's set to true.
-export let currentlyTouchDevice = (("ontouchstart" in window) || (navigator.maxTouchPoints > 0) || (navigator.msMaxTouchPoints > 0));
+//Whether this is a touchscreen device on the current page.
+//It's assumed to be false on every page until a touchstart or touchmove
+//event is detected, at which point it's set to true.
+export let currentlyTouchDevice =
+	"ontouchstart" in window
+	|| navigator.maxTouchPoints > 0
+	|| navigator.msMaxTouchPoints > 0;
 
 let lastMousemoveEvent = 0;
 
@@ -20,8 +25,15 @@ export function setUpInteractionListeners()
 
 			lastMousemoveEvent = Date.now();
 
-			//Checking if it's >= 3 kinda sucks, but it seems like touch devices like to fire two mousemoves in quick succession sometimes. They also like to make that delay exactly 33. Look, I hate this too, but it needs to be here.
-			if (timeBetweenMousemoves >= 3 && timeBetweenMousemoves <= 50 && timeBetweenMousemoves !== 33)
+			//Checking if it's >= 3 kinda sucks, but it seems like touch devices
+			//like to fire two mousemoves in quick succession sometimes.
+			//They also like to make that delay exactly 33.
+			//Look, I hate this too, but it needs to be here.
+			if (
+				timeBetweenMousemoves >= 3
+				&& timeBetweenMousemoves <= 50
+				&& timeBetweenMousemoves !== 33
+			)
 			{
 				currentlyTouchDevice = false;
 			}
@@ -40,7 +52,15 @@ export function setUpInteractionListeners()
 				document.activeElement.children[0].click();
 			}
 
-			else if (!(document.activeElement.tagName === "BUTTON" || (document.activeElement.tagName === "INPUT" && document.activeElement.getAttribute("type") !== "button")))
+			else if (
+				!(
+					document.activeElement.tagName === "BUTTON"
+					|| (
+						document.activeElement.tagName === "INPUT"
+						&& document.activeElement.getAttribute("type") !== "button"
+					)
+				)
+			)
 			{
 				document.activeElement.click();
 			}
@@ -52,7 +72,11 @@ export function setUpInteractionListeners()
 	//Remove focus when moving the mouse or touching anything.
 	document.documentElement.addEventListener("mousedown", () =>
 	{
-		if (document.activeElement.tagName !== "INPUT" && document.activeElement.tagName !== "TEXTAREA" && document.activeElement.tagName !== "SELECT")
+		if (
+			document.activeElement.tagName !== "INPUT"
+			&& document.activeElement.tagName !== "TEXTAREA"
+			&& document.activeElement.tagName !== "SELECT"
+		)
 		{
 			document.activeElement.blur();
 		}
@@ -63,7 +87,11 @@ export function setUpInteractionListeners()
 
 function handleTouchEvent()
 {
-	if (document.activeElement.tagName !== "INPUT" && document.activeElement.tagName !== "TEXTAREA" && document.activeElement.tagName !== "SELECT")
+	if (
+		document.activeElement.tagName !== "INPUT"
+		&& document.activeElement.tagName !== "TEXTAREA"
+		&& document.activeElement.tagName !== "SELECT"
+	)
 	{
 		document.activeElement.blur();
 	}
