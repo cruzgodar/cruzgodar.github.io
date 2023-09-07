@@ -346,8 +346,10 @@ const components =
 
 		"latex": (content) =>
 		{
-			return content.replaceAll(/[^\\]\\te([^a-zA-Z])/g, (match, $1) => `\\ \\times\\!\\!=${$1}`)
-				.replaceAll(/[^\\]\\pe([^a-zA-Z])/g, (match, $1) => `\\ +\\!\\!=${$1}`);
+			return content
+				.replaceAll(/([^\\])\\pe([^a-zA-Z])/g, (match, $1, $2) => `${$1}\\ +\\!\\!=${$2}`)
+				.replaceAll(/([^\\])\\me([^a-zA-Z])/g, (match, $1, $2) => `${$1}\\ -\\!\\!=${$2}`)
+				.replaceAll(/([^\\])\\te([^a-zA-Z])/g, (match, $1, $2) => `${$1}\\ \\times\\!\\!=${$2}`);
 		},
 
 
