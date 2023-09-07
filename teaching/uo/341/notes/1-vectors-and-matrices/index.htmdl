@@ -26,7 +26,7 @@ Unlike most math classes leading up to it, this course is a clean break from its
 		2x_1 - 3x_2 &= 8.
 	$$
 	
-	We could use substitution by solving the first equation for $x_1$ and substituting it into the second, but let's think critically about that. Substitution doesn't scale well --- if we had $n$ equations and $n$ unknowns, solving by substitution means isolating and plugging in $n - 1$ equations until we finally reach the end, and then we have to do a large amount of back-substitution. That's not to mention the complexity that arises when not every equation contains every variable, and we have to carefully pick and choose our order. We'd like more a general solving method here, and so we owe it to ourselves to build a better foundation.
+	We could use substitution by solving the first equation for $x_1$ and substituting it into the second, but let's think critically about that. Substitution doesn't scale well --- if we had $n$ equations and $n$ unknowns, solving by substitution means isolating and plugging in $n - 1$ equations until we finally reach the end, and then we have to do a large amount of back-substitution. That's not to mention the complexity that arises when not every equation contains every variable, and we have to carefully pick and choose our order. We'd like more of a general solving method here, and so we owe it to ourselves to build a better foundation.
 	
 	It may have been a while since you learned about solving systems of linear equations, but you probably learned another solving method, different from substitution. It's usually called the method of **addition**, and critically for us, it's much more scalable. We begin by looking at the top-left term in the system (i.e. $x_1$) and adding copies of the entire first equation down to the others to clear their $x_1$ terms. Here, that means adding $-2$ times the first equation down to the second, resulting in
 	
@@ -126,7 +126,7 @@ $$
 	\left[ \begin{array}{c} x_1 + 3x_2 \\ 2x_1 - 3x_2 \end{array} \right] = \left[ \begin{array}{c} -5 \\ 8 \end{array} \right].
 $$
 
-This is a good step, but it's not particularly useful yet: all we've done is drawn a few extra brackets. To really cut through the noise and find a good generalization, we need to go one step further. In a linear system with two unknowns, there will always be a single copy of $x_1$ and $x_2$ in each equation. What changes is the coefficients --- the only part of the left side that matters are the four numbers $1$, $3$, $2$, and $-3$. As before, let's try the simplest possible organization. When we write out the equations, they form a square, so let's use vector notation and put them into a $2 \times 2$ rectangle:
+This is a good step, but it's not particularly useful yet: all we've done is draw a few extra brackets. To really cut through the noise and find a good generalization, we need to go one step further. In a linear system with two unknowns, there will always be a single copy of $x_1$ and $x_2$ in each equation. What changes is the coefficients --- the only part of the left side that matters are the four numbers $1$, $3$, $2$, and $-3$. As before, let's try the simplest possible organization. When we write out the equations, they form a square, so let's use vector notation and put them into a $2 \times 2$ rectangle:
 
 $$
 	\left[ \begin{array}{cc} 1 & 3 \\ 2 & -3 \end{array} \right].
@@ -206,7 +206,7 @@ Although this is an intense definition, it's thankfully among the most complicat
 
 From these examples, we can see some general properties of matrix-vector multiplication. If $A$ is an $m \times n$ matrix, meaning it has $m$ rows and $n$ columns, then $A\vec{x}$ is defined only if $\vec{x}$ has length $n$, and the length of $A\vec{x}$ is $m$.
 
-A square matrix with all $0$s except for a strip of $1$s down the diagonal from top-left to bottom-right, like those in part 3 of the example or part 1 of the exercise, seem to multiply vectors by not changing them, and it's not too hard to see that the same will happen with every vector: the $i$th row pulls out exactly the $i$th component. This matrix is useful enough that it deserves its own name.
+A square matrix with all $0$s except for a strip of $1$s down the diagonal from top-left to bottom-right, like those in part 3 of the example or part 1 of the exercise, seems to multiply vectors by not changing them, and it's not too hard to see that the same will happen with every vector: the $i$th row pulls out exactly the $i$th component. This matrix is useful enough that it deserves its own name.
 
 ### def identity matrix
 	
@@ -246,7 +246,7 @@ $$
 	(AB)\vec{x} = A(B\vec{x}).
 $$
 
-On the left is a matrix called $AB$ that we don't know how to calculate yet, but on the right, there's just matrix-vector multiplication happening twice. Since we're thinking of matrices as being functions that act by multiplication, the right side is function composition, so, crucially, the left side should be too. In other words, **matrix multiplication should be defined to be composition of functions**. This point is glossed over or ignored in many introductory classes, and that's really a shame! Understanding why matrices work they way they do is half the battle in using them properly.
+On the left is a matrix called $AB$ that we don't know how to calculate yet, but on the right, there's just matrix-vector multiplication happening twice. Since we're thinking of matrices as being functions that act by multiplication, the right side is function composition, so, crucially, the left side should be too. In other words, **matrix multiplication should be defined to be composition of functions**. This point is glossed over or ignored in many introductory classes, and that's really a shame! Understanding why matrices work the way they do is half the battle in using them properly.
 
 So --- how do we do that? First of all, not just any two matrices can be multiplied together. Since an $n \times k$ matrix $B$ takes in a $k$-dimensional vector $\vec{x}$ and gives back an $n$-dimensional one $B\vec{x}$, a matrix $A$ that makes the product $AB$ make sense needs to take in $n$-dimensional vectors, so $A$ needs to be an $m \times n$ matrix for some $m$. Finally, since $ABx = A(B\vec{x})$, the matrix $AB$ should be $m \times k$.
 

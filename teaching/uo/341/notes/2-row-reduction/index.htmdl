@@ -38,15 +38,11 @@ $$
 
 So: what operations can we do that preserve the equation structure? Since each row represents its own equation, we can definitely swap any two rows. We can't add or subtract a single number or variable on both sides, because there can't be any constants on the left or variables on the right --- but we can multiply an entire row by a nonzero constant (multiplying both sides by zero is the fastest way to destroy information when solving an equation, so we definitely want to avoid that). Finally, we can add any multiple of one row to another, analogous to the method of addition for solving systems. Together, these form the three **elementary row operations** on matrices, and they let us reduce matrices to simpler forms through a step-by-step process. Let's define that simpler form and then describe how to get there.
 
-
-
 ### def reduced row echelon form
 	
 	A matrix $A$ is in **reduced row echelon form** if every row is either all zero or contains a $1$ as its first nonzero entry, and every column with one of those leading $1$s has $0$s for all its other entries.
 	
 ###
-
-
 
 In practice, matrices in reduced row echelon form look like the identity matrix, but some rows may be zero and there may be some extra columns inserted. For example,
 
@@ -56,7 +52,19 @@ $$
 
 is in reduced row echelon form. The idea here is that matrices in this form correspond to a solved system of equations: all of the rows with a leading $1$ have a variable isolated, and the extra columns are free parameters.
 
+### exc reduced row echelon form
 
+	Define a matrix $A$ by
+
+	$$
+		A = \left[ \begin{array}{cccc} 0 & 1 & 0 & 1 & 0 \\ 0 & 0 & 1 & 2 & 2 \\ 0 & 0 & 0 & 0 & 1 \end{array} \right].
+	$$
+
+	Is $A$ in reduced row echelon form? Why or why not?
+
+###
+
+A matrix in reduced row echelon form is effectively as good as we can get --- once it's in that form, none of the elementary row operations can clear the columns that don't contain a leading $1$. Instead, we can cash out by converting from a matrix back to equations, and they're very simple to solve. Every one of those leading $1$s is an isolated variable, and the columns we couldn't clear are free parameters. With the goal in mind, let's look at how we get there.
 
 ### thm !Method: Row Reduction
 	
@@ -66,11 +74,7 @@ is in reduced row echelon form. The idea here is that matrices in this form corr
 	
 ###
 
-
-
 This is a method best explained with examples, so let's dive right in.
-
-
 
 ### ex row reduction
 	
@@ -150,8 +154,6 @@ This is a method best explained with examples, so let's dive right in.
 	
 ###
 
-
-
 To streamline the process while still explaining what we're doing at each step, it's helpful to have a notation for elementary row operations. These vary quite a bit, but I'm personally fond of the following:
 
 $$
@@ -163,8 +165,6 @@ $$
 $$
 
 These are shorthand for swapping rows $i$ and $j$, multiplying row $i$ by a constant $c$, and adding $c$ times row $j$ to row $i$, respectively. Let's work through another example with this notation.
-
-
 
 ### ex row reduction
 	
@@ -240,9 +240,7 @@ These are shorthand for swapping rows $i$ and $j$, multiplying row $i$ by a cons
 
 ## Inverse Matrices
 
-With the tool of row reduction, we're ready to talk about inverse matrices. First of all, if there's going to be a matrix $A^{-1}$ so that the products $AA^{-1} = I$ and $A^{-1}A = I$ both make sense, then we need $A$ to have the same number of rows and columns. So let's start with a square matrix $A$ and try to invert it. The magic here comes from augmenting $A$ not with a single column vector, but with the entire identity matrix.
-
-
+With the tool of row reduction, we're ready to talk about inverse matrices. First of all, if there's going to be a matrix $A^{-1}$ so that the products $AA^{-1} = I$ and $A^{-1}A = I$ both make sense, then we need $A$ to have the same number of rows and columns. So let's start with a square matrix $A$ and try to invert it. The magic here comes from augmenting $A$ not with a single column vector, but with an entire identity matrix.
 
 ### thm matrix inversion
 	
@@ -255,8 +253,6 @@ With the tool of row reduction, we're ready to talk about inverse matrices. Firs
 	It's worth saying a bit about why this process works. All three types of elementary row operations can actually be expressed as matrix multiplication. If we define $S_{i, j}$ as the $n \times n$ matrix that is $I$ but with rows $i$ and $j$ swapped, then it's not too hard to verify that for any $n \times n$ matrix $A$, $S_{i, j}A$ is equal to $A$, but with rows $i$ and $j$ swapped. Similarly, there are matrices for multiplying a row by a constant and adding a multiple of one row to another. So if $A$ is row-reducible to $I$, then there's a long sequence of matrices we can multiply $A$ by in order to get to $I$ --- collecting them all up, that's exactly what it means to be $A^{-1}$. On the other side of the augmented matrix, we're multiplying by all the same matrices, but now we *start* with $I$, so what results is just $A^{-1}$.
 	
 ###
-
-
 
 ### ex matrix inversion
 	

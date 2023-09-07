@@ -17,6 +17,7 @@ Welcome to Math 341! We'll use this page for the interactive notes, the homework
 ### image-links
 	
 	notes/1-vectors-and-matrices/
+	notes/2-row-reduction/
 	
 ###
 
@@ -119,6 +120,98 @@ Welcome to Math 341! We'll use this page for the interactive notes, the homework
 	> b) If the product $AB$ is defined, then $A$ and $B$ have the same number of rows.
 
 	> c) If $A$ is a $2 \times 2$ matrix so that $A\vec{x} = \vec{x}$ for *every* vector $\vec{x}$, then $A = I_2$.
+
+
+
+	## Section 2
+	
+	In problems 5#, write the system as an augmented matrix and row reduce it, indicating every elementary row operation you perform. Then use the reduced matrix to write the solution to the system.
+	
+	#.
+	
+	$$
+		3x - y &= 14
+		
+		4x + 2y &= 2.
+	$$
+	
+	#.
+	
+	$$
+		x + 2z &= 8
+		
+		-x + 2y + 6z &= 6
+		
+		4x + y + 3z &= 21.
+	$$
+	
+	#.
+	
+	$$
+		3x_1 + x_2 + x_3 &= 1
+		
+		x_2 + x_3 &= -4
+		
+		6x_1 + 5x_2 + 8x_3 &= -10.
+	$$
+	
+	#.
+	
+	$$
+		x_1 + x_2 - 4x_3 &= -11
+		
+		-3x_1 + 2x_3 &= 3
+		
+		2x_1 + 2x_2 + 2x_3 &= 8
+		
+		-x_1 + 2x_2 &= 1.
+	$$
+	
+	#.
+	
+	$$
+		a + c &= 2
+		
+		b + d &= 1
+		
+		a + 2b + 3c + 4d &= 10
+		
+		4a + 3b + 2c + d &= 5.
+	$$
+	
+
+
+	- - -
+
+	In problems 5#, invert the matrix.
+	
+	#. $$\left[ \begin{array}{cc} 4 & 1 \\ -1 & 2 \end{array} \right].$$
+	
+	#. $$\left[ \begin{array}{ccc} 1 & 0 & -1 \\ 4 & 5 & 6 \\ 0 & -1 & 2 \end{array} \right].$$
+	
+	#. $$\left[ \begin{array}{ccc} 2 & 1 & 3 \\ 3 & -1 & 2 \\ 1 & 0 & 1 \end{array} \right].$$
+	
+	#. $$\left[ \begin{array}{c} 4 \end{array} \right].$$
+	
+	#. $$\left[ \begin{array}{cccc} 1 & 0 & 0 & 0 \\ 0 & 1 & 0 & 1 \\ 0 & 0 & 1 & 0 \\ 1 & 0 & 1 & 1 \end{array} \right].$$
+	
+
+
+	- - -
+
+	#. Let's investigate the elementary row operations a bit more. For a $3 \times 3$ matrix $\mathbf{A}$, find the following:
+	
+	> a) A matrix $\mathbf{S_{1, 2}}$ so that $\mathbf{S_{1, 2}A}$ is the same as $\mathbf{A}$, but with rows $1$ and $2$ swapped. Similarly, find $\mathbf{S_{1, 3}}$ and $\mathbf{S_{2, 3}}$.
+	
+	> b) A matrix $\mathbf{M_{1, c}}$ so that $\mathbf{M_{1, c}A}$ is same as $\mathbf{A}$, but with row $1$ multiplied by $c$. Similarly, find $\mathbf{M_{2, c}}$ and $\mathbf{M_{3, c}}$.
+	
+	> c) A matrix $\mathbf{P_{1, 2, c}}$ so that $\mathbf{P_{1, 2, c}A}$ is same as $\mathbf{A}$, but with $c$ times row $2$ added to row $1$. Similarly, find $\mathbf{P_{1, 3, c}}$, $\mathbf{P_{2, 3, c}}$, as well as $\mathbf{P_{2, 1, c}}$, $\mathbf{P_{3, 1, c}}$, and $\mathbf{P_{3, 2, c}}$.
+	
+
+
+	- - -
+
+	#. Let $$\mathbf{A} = \left[ \begin{array}{cc} a & b \\ c & d \end{array} \right]$$ be a generic $2 \times 2$ matrix. Find $\mathbf{A}^{-1}$ in terms of $a$, $b$, $c$, and $d$.
 	
 ###
 
