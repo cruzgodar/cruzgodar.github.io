@@ -1,4 +1,8 @@
-import { $$, addTemporaryListener, pageUrl } from "./main.mjs";
+import {
+	$$,
+	addTemporaryListener,
+	pageUrl
+} from "./main.mjs";
 import { redirect } from "./navigation.mjs";
 import { sitemap } from "./sitemap.mjs";
 

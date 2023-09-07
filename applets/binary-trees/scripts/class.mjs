@@ -1,7 +1,11 @@
 import { opacityAnimationTime } from "/scripts/src/animation.mjs";
 import { Applet } from "/scripts/src/applets.mjs";
 import { aspectRatio } from "/scripts/src/layout.mjs";
-import { $$, addTemporaryInterval, addTemporaryWorker } from "/scripts/src/main.mjs";
+import {
+	$$,
+	addTemporaryInterval,
+	addTemporaryWorker
+} from "/scripts/src/main.mjs";
 import { Wilson } from "/scripts/wilson.mjs";
 
 export class BinaryTree extends Applet

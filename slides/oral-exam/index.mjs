@@ -10,7 +10,8 @@ const applet = new PlanePartitions({
 
 const canvasBundle = document.body.querySelector("#canvas-bundle");
 
-document.body.querySelectorAll(".wilson-draggables-container").forEach(element => element.classList.add("lapsa-interactable"));
+document.body.querySelectorAll(".wilson-draggables-container")
+	.forEach(element => element.classList.add("lapsa-interactable"));
 
 
 
@@ -68,7 +69,11 @@ const options =
 					{
 						for (let k = 0; k < 6 - i; k++)
 						{
-							applet.colorCubes(applet.arrays[0], [[i - j, j, k]], ((hue + 2.5 * (5 - i - k)) % 21) / 21 * 6 / 7);
+							applet.colorCubes(
+								applet.arrays[0],
+								[[i - j, j, k]],
+								((hue + 2.5 * (5 - i - k)) % 21) / 21 * 6 / 7
+							);
 						}
 
 						hue++;
@@ -323,13 +328,25 @@ const options =
 			{
 				applet.animationTime = duration;
 
-				const cubes = [[4, 0, 4], [4, 1, 5], [3, 1, 5], [3, 2, 6], [3, 3, 7], [2, 3, 7], [2, 4, 8], [1, 4, 8]];
+				const cubes = [
+					[4, 0, 4],
+					[4, 1, 5],
+					[3, 1, 5],
+					[3, 2, 6],
+					[3, 3, 7],
+					[2, 3, 7],
+					[2, 4, 8],
+					[1, 4, 8]
+				];
 
 				if (forward)
 				{
 					for (let i = 0; i < cubes.length; i++)
 					{
-						setTimeout(() => applet.colorCubes(applet.arrays[0], [cubes[i]], 0), i * applet.animationTime / 2);
+						setTimeout(
+							() => applet.colorCubes(applet.arrays[0], [cubes[i]], 0),
+							i * applet.animationTime / 2
+						);
 					}
 				}
 
@@ -362,9 +379,28 @@ const options =
 			{
 				applet.animationTime = duration;
 
-				const cubes = [[4, 0, 4], [4, 1, 5], [3, 1, 5], [3, 2, 6], [3, 3, 7], [2, 3, 7], [2, 4, 8], [1, 4, 8]];
+				const cubes = [
+					[4, 0, 4],
+					[4, 1, 5],
+					[3, 1, 5],
+					[3, 2, 6],
+					[3, 3, 7],
+					[2, 3, 7],
+					[2, 4, 8],
+					[1, 4, 8]
+				];
 
-				const targets = [[4, 0, 4], [3, 0, 5], [2, 0, 5], [1, 0, 6], [1, 1, 7], [1, 2, 7], [1, 3, 8], [1, 4, 8]];
+				const targets = [
+					[4, 0, 4],
+					[3, 0, 5],
+					[2, 0, 5],
+					[1, 0, 6],
+					[1, 1, 7],
+					[1, 2, 7],
+					[1, 3, 8],
+					[1, 4, 8]
+				];
+
 
 				if (forward)
 				{
@@ -643,7 +679,26 @@ const options =
 			{
 				applet.animationTime = duration;
 
-				const cubes = [[0, 5, 0], [1, 6, 0], [2, 7, 0], [0, 2, 0], [1, 3, 0], [2, 4, 0], [3, 5, 0], [1, 0, 0], [2, 1, 0], [3, 2, 0], [4, 3, 0], [5, 4, 0], [3, 0, 0], [4, 1, 0], [5, 2, 0], [6, 3, 0], [6, 0, 0], [7, 1, 0]];
+				const cubes = [
+					[0, 5, 0],
+					[1, 6, 0],
+					[2, 7, 0],
+					[0, 2, 0],
+					[1, 3, 0],
+					[2, 4, 0],
+					[3, 5, 0],
+					[1, 0, 0],
+					[2, 1, 0],
+					[3, 2, 0],
+					[4, 3, 0],
+					[5, 4, 0],
+					[3, 0, 0],
+					[4, 1, 0],
+					[5, 2, 0],
+					[6, 3, 0],
+					[6, 0, 0],
+					[7, 1, 0]
+				];
 
 				if (forward)
 				{
@@ -661,7 +716,21 @@ const options =
 			{
 				applet.animationTime = duration;
 
-				const cubes = [[0, 3, 0], [1, 4, 0], [2, 5, 0], [0, 1, 0], [1, 2, 0], [2, 3, 0], [3, 4, 0], [2, 0, 0], [3, 1, 0], [4, 2, 0], [5, 3, 0], [5, 0, 0], [6, 1, 0]];
+				const cubes = [
+					[0, 3, 0],
+					[1, 4, 0],
+					[2, 5, 0],
+					[0, 1, 0],
+					[1, 2, 0],
+					[2, 3, 0],
+					[3, 4, 0],
+					[2, 0, 0],
+					[3, 1, 0],
+					[4, 2, 0],
+					[5, 3, 0],
+					[5, 0, 0],
+					[6, 1, 0]
+				];
 
 				if (forward)
 				{
@@ -679,7 +748,16 @@ const options =
 			{
 				applet.animationTime = duration;
 
-				const cubes = [[0, 4, 0], [1, 5, 0], [2, 6, 0], [4, 0, 0], [5, 1, 0], [6, 2, 0], [7, 0, 0]];
+				const cubes = [
+					[0, 4, 0],
+					[1, 5, 0],
+					[2, 6, 0],
+					[4, 0, 0],
+					[5, 1, 0],
+					[6, 2, 0],
+					[7, 0, 0]
+				];
+
 
 				if (forward)
 				{
@@ -697,7 +775,16 @@ const options =
 			{
 				applet.animationTime = duration;
 
-				const cubes = [[0, 7, 0], [0, 6, 0], [1, 7, 0], [0, 0, 0], [1, 1, 0], [2, 2, 0], [3, 3, 0], [4, 4, 0]];
+				const cubes = [
+					[0, 7, 0],
+					[0, 6, 0],
+					[1, 7, 0],
+					[0, 0, 0],
+					[1, 1, 0],
+					[2, 2, 0],
+					[3, 3, 0],
+					[4, 4, 0]
+				];
 
 				if (forward)
 				{
@@ -935,8 +1022,27 @@ const options =
 				{
 					await applet.runAlgorithm("rskInverse", 1);
 
-					const cubes1 = [[0, 0, 0], [0, 1, 0], [0, 2, 0], [0, 3, 0], [1, 0, 1], [1, 1, 1], [1, 2, 2], [2, 0, 2]];
-					const cubes2 = [[0, 0, 0], [0, 1, 0], [0, 2, 0], [0, 3, 0], [1, 0, 1], [1, 1, 2], [1, 2, 2], [2, 0, 2]];
+					const cubes1 = [
+						[0, 0, 0],
+						[0, 1, 0],
+						[0, 2, 0],
+						[0, 3, 0],
+						[1, 0, 1],
+						[1, 1, 1],
+						[1, 2, 2],
+						[2, 0, 2]
+					];
+					
+					const cubes2 = [
+						[0, 0, 0],
+						[0, 1, 0],
+						[0, 2, 0],
+						[0, 3, 0],
+						[1, 0, 1],
+						[1, 1, 2],
+						[1, 2, 2],
+						[2, 0, 2]
+					];
 
 					await applet.uncolorCubes(applet.arrays[1], cubes1);
 					await applet.uncolorCubes(applet.arrays[2], cubes2);

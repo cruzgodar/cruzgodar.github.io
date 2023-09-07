@@ -6,15 +6,36 @@ import {
 	fadeUpIn,
 	pageAnimationTime
 } from "./animation.mjs";
-import { bannerElement, bannerOpacity, setUpBanner } from "./banners.mjs";
-import { setUpDropdowns, setUpNavButtons, setUpTextButtons } from "./buttons.mjs";
+import {
+	bannerElement,
+	bannerOpacity,
+	setUpBanner
+} from "./banners.mjs";
+import {
+	setUpDropdowns,
+	setUpNavButtons,
+	setUpTextButtons
+} from "./buttons.mjs";
 import { setUpCards } from "./cards.mjs";
 import { setUpFocusEvents, setUpHoverEvents } from "./hover-events.mjs";
 import { equalizeAppletColumns, onResize } from "./layout.mjs";
-import { $$, pageElement, pageUrl, updatePageElement } from "./main.mjs";
+import {
+	$$,
+	pageElement,
+	pageUrl,
+	updatePageElement
+} from "./main.mjs";
 import { typesetMath } from "./math.mjs";
-import { navigationTransitionType, redirect, setCurrentlyRedirecting } from "./navigation.mjs";
-import { condenseApplet, revertTheme, siteSettings } from "./settings.mjs";
+import {
+	navigationTransitionType,
+	redirect,
+	setCurrentlyRedirecting
+} from "./navigation.mjs";
+import {
+	condenseApplet,
+	revertTheme,
+	siteSettings
+} from "./settings.mjs";
 import { sitemap } from "./sitemap.mjs";
 
 //The big one. Gets a page ready to be shown but doesn't do anything that requires it to be visible.

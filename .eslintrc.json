@@ -13,6 +13,7 @@
 		"**/*.min.*",
 		"/scripts/three.*",
 		"/scripts/anime.*",
+		"/scripts/wilson.*",
 		"/debug/*",
 		"/projects/wilson/*",
 		"/applets/calcudoku-generator/scripts/solver.*",

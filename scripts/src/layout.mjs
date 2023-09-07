@@ -1,7 +1,11 @@
 import { setBannerMaxScroll } from "./banners.mjs";
 import { resizeCard } from "./cards.mjs";
 import { headerElement } from "./header.mjs";
-import { $, $$, pageElement } from "./main.mjs";
+import {
+	$,
+	$$,
+	pageElement
+} from "./main.mjs";
 import { siteSettings } from "./settings.mjs";
 
 export let aspectRatio = window.innerWidth / window.innerHeight;

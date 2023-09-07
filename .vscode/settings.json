@@ -7,7 +7,8 @@
 		"**/favicon*": true,
 		"**/ms-icon*": true,
 		"/scripts/anime.js": true,
-		"/scripts/three.js": true
+		"/scripts/three.js": true,
+		"/scripts/wilson.mjs": true
 	},
 	"editor.wordWrap": "bounded",
 	"editor.wordWrapColumn": 128,

@@ -1,7 +1,11 @@
 import { opacityAnimationTime } from "./animation.mjs";
 import { cardIsOpen } from "./cards.mjs";
 import { recreateDesmosGraphs } from "./desmos.mjs";
-import { $, addStyle, pageUrl } from "./main.mjs";
+import {
+	$,
+	addStyle,
+	pageUrl
+} from "./main.mjs";
 import { getDisplayUrl } from "./navigation.mjs";
 import anime from "/scripts/anime.js";
 

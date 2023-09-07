@@ -1,5 +1,10 @@
 import { changeOpacity, opacityAnimationTime } from "./animation.mjs";
-import { $, addStyle, pageElement, pageUrl } from "./main.mjs";
+import {
+	$,
+	addStyle,
+	pageElement,
+	pageUrl
+} from "./main.mjs";
 import anime from "/scripts/anime.js";
 
 export let bannerElement = null;

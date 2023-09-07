@@ -8,7 +8,8 @@ const canvasBundle = document.body.querySelector("#canvas-bundle");
 
 setTimeout(() =>
 {
-	document.body.querySelectorAll(".wilson-draggable").forEach(element => element.classList.add("lapsa-interactable"));
+	document.body.querySelectorAll(".wilson-draggable")
+		.forEach(element => element.classList.add("lapsa-interactable"));
 }, 500);
 
 const resolution = 1500;
@@ -136,7 +137,11 @@ const lapsa = new Lapsa({
 
 				slide.appendChild(canvasBundle);
 
-				applet.wilson.draggables.worldCoordinates = [[1.737, -0.224], [2.337, 0.987], [2.329, -1.673]];
+				applet.wilson.draggables.worldCoordinates = [
+					[1.737, -0.224],
+					[2.337, 0.987],
+					[2.329, -1.673]
+				];
 				applet.wilson.draggables.onResize();
 
 				applet.changeRecipe(2);
@@ -228,7 +233,8 @@ const lapsa = new Lapsa({
 
 					frame++;
 
-					//Extremely gross and hard-coded --- I'll add a solution for this sort of thing eventually.
+					//Extremely gross and hard-coded --- I'll add a solution
+					//for this sort of thing eventually.
 					if (lapsa.currentSlide === 17)
 					{
 						applet.onDragDraggable();
