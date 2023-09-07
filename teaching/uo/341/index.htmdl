@@ -199,19 +199,19 @@ Welcome to Math 341! We'll use this page for the interactive notes, the homework
 
 	- - -
 
-	#. Let's investigate the elementary row operations a bit more. For a $3 \times 3$ matrix $\mathbf{A}$, find the following:
+	#. Let's investigate the elementary row operations a bit more. For a $3 \times 3$ matrix $A$, find the following:
 	
-	> a) A matrix $\mathbf{S_{1, 2}}$ so that $\mathbf{S_{1, 2}A}$ is the same as $\mathbf{A}$, but with rows $1$ and $2$ swapped. Similarly, find $\mathbf{S_{1, 3}}$ and $\mathbf{S_{2, 3}}$.
+	> a) A matrix $S_{1, 2}$ so that $S_{1, 2}A$ is the equal to $A$, but with rows $1$ and $2$ swapped. Similarly, find $S_{1, 3}$ and $S_{2, 3}$.
 	
-	> b) A matrix $\mathbf{M_{1, c}}$ so that $\mathbf{M_{1, c}A}$ is same as $\mathbf{A}$, but with row $1$ multiplied by $c$. Similarly, find $\mathbf{M_{2, c}}$ and $\mathbf{M_{3, c}}$.
+	> b) A matrix $M_{1, c}$ so that $M_{1, c}A$ is same as $A$, but with row $1$ multiplied by $c$. Similarly, find $M_{2, c}$ and $M_{3, c}$.
 	
-	> c) A matrix $\mathbf{P_{1, 2, c}}$ so that $\mathbf{P_{1, 2, c}A}$ is same as $\mathbf{A}$, but with $c$ times row $2$ added to row $1$. Similarly, find $\mathbf{P_{1, 3, c}}$, $\mathbf{P_{2, 3, c}}$, as well as $\mathbf{P_{2, 1, c}}$, $\mathbf{P_{3, 1, c}}$, and $\mathbf{P_{3, 2, c}}$.
+	> c) A matrix $P_{1, 2, c}$ so that $P_{1, 2, c}A$ is same as $A$, but with $c$ times row $2$ added to row $1$. Similarly, find $P_{1, 3, c}$, $P_{2, 3, c}$, as well as $P_{2, 1, c}$, $P_{3, 1, c}$, and $P_{3, 2, c}$.
 	
 
 
 	- - -
 
-	#. Let $$\mathbf{A} = \left[ \begin{array}{cc} a & b \\ c & d \end{array} \right]$$ be a generic $2 \times 2$ matrix. Find $\mathbf{A}^{-1}$ in terms of $a$, $b$, $c$, and $d$.
+	#. Let $$A = \left[ \begin{array}{cc} a & b \\ c & d \end{array} \right]$$ be a generic $2 \times 2$ matrix. Find $A^{-1}$ in terms of $a$, $b$, $c$, and $d$.
 	
 ###
 
