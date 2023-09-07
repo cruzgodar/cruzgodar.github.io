@@ -10,9 +10,6 @@ export function load()
 {
 	setGetDesmosData(() =>
 	{
-		// eslint-disable-next-line no-use-before-define
-		const Desmos = Desmos;
-
 		const data =
 		{
 			eigenvectors:
@@ -35,11 +32,11 @@ export function load()
 					{ latex: String.raw`(0, 0), \lambda_1 v_1, \lambda_1 v_1 + \lambda_2 v_2`, points: false, lines: true, color: desmosBlue, secret: true },
 					{ latex: String.raw`(0, 0), \lambda_2 v_2, \lambda_1 v_1 + \lambda_2 v_2`, points: false, lines: true, color: desmosBlue, secret: true },
 
-					{ latex: String.raw`\frac{v_1}{2}`, label: String.raw`v₁`, showLabel: true, labelOrientation: Desmos.LabelOrientations.RIGHT, color: desmosPurple, hidden: true, secret: true },
-					{ latex: String.raw`\frac{v_2}{2}`, label: String.raw`v₂`, showLabel: true, labelOrientation: Desmos.LabelOrientations.BELOW, color: desmosPurple, hidden: true, secret: true },
+					{ latex: String.raw`\frac{v_1}{2}`, label: String.raw`v₁`, showLabel: true, labelOrientation: "right", color: desmosPurple, hidden: true, secret: true },
+					{ latex: String.raw`\frac{v_2}{2}`, label: String.raw`v₂`, showLabel: true, labelOrientation: "below", color: desmosPurple, hidden: true, secret: true },
 
-					{ latex: String.raw`\frac{\lambda_1 v_1}{1.5}`, label: String.raw` λ₁v₁`, showLabel: true, labelOrientation: Desmos.LabelOrientations.RIGHT, color: desmosBlue, hidden: true, secret: true },
-					{ latex: String.raw`\frac{\lambda_2 v_2}{1.5}`, label: String.raw`λ₂v₂`, showLabel: true, labelOrientation: Desmos.LabelOrientations.BELOW, color: desmosBlue, hidden: true, secret: true },
+					{ latex: String.raw`\frac{\lambda_1 v_1}{1.5}`, label: String.raw` λ₁v₁`, showLabel: true, labelOrientation: "right", color: desmosBlue, hidden: true, secret: true },
+					{ latex: String.raw`\frac{\lambda_2 v_2}{1.5}`, label: String.raw`λ₂v₂`, showLabel: true, labelOrientation: "below", color: desmosBlue, hidden: true, secret: true },
 				]
 			},
 		};
