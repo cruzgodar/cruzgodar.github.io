@@ -33,7 +33,12 @@ export function load()
 
 			"braids":
 			{
-				bounds: { left: -3.5 * Math.PI, right: 3.5 * Math.PI, bottom: -3.5 * Math.PI, top: 3.5 * Math.PI },
+				bounds: {
+					left: -3.5 * Math.PI,
+					right: 3.5 * Math.PI,
+					bottom: -3.5 * Math.PI,
+					top: 3.5 * Math.PI
+				},
 
 				expressions:
 				[

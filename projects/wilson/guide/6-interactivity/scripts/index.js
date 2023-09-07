@@ -1,8 +1,8 @@
 import { showPage } from "/scripts/src/load-page.mjs";
 import {
-    $,
-    $$,
-    addTemporaryListener
+	$,
+	$$,
+	addTemporaryListener
 } from "/scripts/src/main.mjs";
 import { Wilson } from "/scripts/wilson.mjs";
 

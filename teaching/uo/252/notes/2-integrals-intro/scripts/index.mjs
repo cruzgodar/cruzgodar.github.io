@@ -1,9 +1,9 @@
 import {
-    createDesmosGraphs,
-    desmosBlue,
-    desmosPurple,
-    desmosRed,
-    setGetDesmosData
+	createDesmosGraphs,
+	desmosBlue,
+	desmosPurple,
+	desmosRed,
+	setGetDesmosData
 } from "/scripts/src/desmos.mjs";
 import { showPage } from "/scripts/src/load-page.mjs";
 

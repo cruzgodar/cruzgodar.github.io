@@ -1,9 +1,9 @@
 import {
-    createDesmosGraphs,
-    desmosBlue,
-    desmosPurple,
-    desmosRed,
-    setGetDesmosData
+	createDesmosGraphs,
+	desmosBlue,
+	desmosPurple,
+	desmosRed,
+	setGetDesmosData
 } from "/scripts/src/desmos.mjs";
 import { showPage } from "/scripts/src/load-page.mjs";
 
@@ -40,7 +40,12 @@ export function load()
 
 			"squeeze-theorem":
 			{
-				bounds: { left: -25 * Math.PI / 2, right: 25 * Math.PI / 2, bottom: -25 * Math.PI / 2, top: 25 * Math.PI / 2 },
+				bounds: {
+					left: -25 * Math.PI / 2,
+					right: 25 * Math.PI / 2,
+					bottom: -25 * Math.PI / 2,
+					top: 25 * Math.PI / 2
+				},
 
 				expressions:
 				[

@@ -1,9 +1,9 @@
 import {
-    createDesmosGraphs,
-    desmosBlue,
-    desmosPurple,
-    desmosRed,
-    setGetDesmosData
+	createDesmosGraphs,
+	desmosBlue,
+	desmosPurple,
+	desmosRed,
+	setGetDesmosData
 } from "/scripts/src/desmos.mjs";
 import { showPage } from "/scripts/src/load-page.mjs";
 
@@ -58,22 +58,6 @@ export function load()
 				expressions:
 				[
 					{ latex: String.raw`f(x) = 1+\frac{1}{4}(\sin(x) + \cos(2x))`, color: desmosPurple },
-					/*
-					{latex: String.raw`a = 1`, sliderBounds: {min: 0, max: 8}},
-					{latex: String.raw`b = 7`, sliderBounds: {min: 0, max: 8}},
-					{latex: String.raw`n = 6`, sliderBounds: {min: 2, max: 100, step: 1}},
-
-					{latex: String.raw`\sum_{i = 1}^n s f(L[i])`},
-					{latex: String.raw`\sum_{i = 1}^n s f(R[i])`},
-
-					{latex: String.raw`s = \frac{b - a}{n}`, secret: true},
-					{latex: String.raw`X = [a, a + s, ..., b]`, secret: true},
-					{latex: String.raw`L = [a, a + s, ..., b - s]`, secret: true},
-					{latex: String.raw`R = [a + s, a + 2s, ..., b]`, secret: true},
-					{latex: String.raw`0 \leq y \leq f(L) \{ L \leq x \leq R \}`, color: desmosRed, secret: true},
-					{latex: String.raw`x = L \{ 0 \leq y \leq f(L) \}`, color: desmosRed, secret: true},
-					{latex: String.raw`x = R \{ 0 \leq y \leq f(L) \}`, color: desmosRed, secret: true}
-					*/
 				]
 			},
 

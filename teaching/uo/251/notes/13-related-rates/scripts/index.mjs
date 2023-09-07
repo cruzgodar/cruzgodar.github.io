@@ -1,7 +1,7 @@
 import {
-    createDesmosGraphs,
-    desmosPurple,
-    setGetDesmosData
+	createDesmosGraphs,
+	desmosPurple,
+	setGetDesmosData
 } from "/scripts/src/desmos.mjs";
 import { showPage } from "/scripts/src/load-page.mjs";
 

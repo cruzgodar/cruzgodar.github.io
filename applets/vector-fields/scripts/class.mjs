@@ -1,8 +1,8 @@
 import { Applet } from "/scripts/src/applets.mjs";
 import {
-    doubleEncodingGlsl,
-    getGlslBundle,
-    loadGlsl
+	doubleEncodingGlsl,
+	getGlslBundle,
+	loadGlsl
 } from "/scripts/src/complex-glsl.mjs";
 import { addTemporaryListener } from "/scripts/src/main.mjs";
 import { Wilson } from "/scripts/wilson.mjs";
