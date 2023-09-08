@@ -1,0 +1,15 @@
+### nav-buttons
+
+
+
+Although we've already talked quite a bit about vectors, we're only just getting started --- vectors have a incredible amount of algebraic and geometric properties that we'll be able to leverage before long. First, though, we're in desperate need of notation and terminology. At its worst, math can feel like pointless symbol-pushing, and so it's important to only add new notation when we truly need it to manage complexity. The best notation bottles up a moderately tricky idea and makes it usable without having to interface with it all the time.
+
+Let's begin with something we see everywhere: the set of all real numbers. A **real** number is any one on the number line, whether rational or irrational --- for example, $0$, $1$, $\pi$, $e$, and $\sqrt{2}$ are all real. We write the whole set of them as $\mathbb{R}$, a rather fancy-looking R, and to actually use that symbol most of the time, we need one more: $\in$. This one means "element of", and it lets us write the rather verbose "let $x$ be a real number" as simply "let $x \in \mathbb{R}$", read "let $x$ be in $\mathbb{R}$".
+
+A length-$2$ vector just consists of two independent real numbers --- it's effectively an ordered pair. If each element of an ordered pair has three possibilities (say $x$ and $y$ can each be $1$, $2$, or $3$ in the pair $(x, y)$), then there are $3^2 = 9$ possibilities for the whole pair. Inspired by the power of two, we write $\mathbb{R}^2$ (read "R two") for the set of all ordered pairs --- or equivalently, the set of all length-2 vectors. Similarly, $\mathbb{R}^n$ is the set of all length-$n$ vectors.
+
+That's a fair amount of symbols, but it's thankfully all we'll have for a while.
+
+
+
+### nav-buttons
