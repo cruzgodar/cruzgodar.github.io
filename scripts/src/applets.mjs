@@ -849,3 +849,338 @@ export class Applet
 		return [df[0], df[1]];
 	}
 }
+
+
+
+export class RaymarchApplet extends Applet
+{
+	movingForwardKeyboard = false;
+	movingBackwardKeyboard = false;
+	movingRightKeyboard = false;
+	movingLeftKeyboard = false;
+
+	movingForwardTouch = false;
+	movingBackwardTouch = false;
+
+	wasMovingTouch = false;
+
+	movingSpeed = 0;
+
+	nextMoveVelocity = [0, 0, 0];
+
+	moveVelocity = [0, 0, 0];
+
+	moveFriction = .91;
+	moveVelocityStopThreshhold = .0005;
+
+
+
+	distanceToScene = 1;
+
+	lastTimestamp = -1;
+
+
+
+	theta = 4.6601;
+	phi = 2.272;
+
+	nextThetaVelocity = 0;
+	nextPhiVelocity = 0;
+
+	thetaVelocity = 0;
+	phiVelocity = 0;
+
+	panFriction = .88;
+	panVelocityStartThreshhold = .005;
+	panVelocityStopThreshhold = .0005;
+
+
+
+	imageSize = 500;
+	imageWidth = 500;
+	imageHeight = 500;
+
+	maxIterations = 16;
+
+	maxMarches = 100;
+
+	imagePlaneCenterPos = [];
+
+	forwardVec = [];
+	rightVec = [];
+	upVec = [];
+
+	cameraPos = [.0828, 2.17, 1.8925];
+
+	focalLength = 2;
+
+	lightPos = [0, 0, 5];
+
+
+
+	constructor(canvas)
+	{
+		super(canvas);
+	}
+
+
+
+	calculateVectors()
+	{
+		//Here comes the serious math. Theta is the angle in the xy-plane and
+		//phi the angle down from the z-axis. We can use them get a normalized forward vector:
+		this.forwardVec = [
+			Math.cos(this.theta) * Math.sin(this.phi),
+			Math.sin(this.theta) * Math.sin(this.phi),
+			Math.cos(this.phi)
+		];
+
+		//Now the right vector needs to be constrained to the xy-plane,
+		//since otherwise the image will appear tilted. For a vector (a, b, c),
+		//the orthogonal plane that passes through the origin is ax + by + cz = 0,
+		//so we want ax + by = 0. One solution is (b, -a), and that's the one that
+		//goes to the "right" of the forward vector (when looking down).
+		this.rightVec = RaymarchApplet.normalize([this.forwardVec[1], -this.forwardVec[0], 0]);
+
+		//Finally, the upward vector is the cross product of the previous two.
+		this.upVec = RaymarchApplet.crossProduct(this.rightVec, this.forwardVec);
+
+
+
+		this.distanceToScene = this.distanceEstimator(
+			this.cameraPos[0],
+			this.cameraPos[1],
+			this.cameraPos[2]
+		);
+
+
+
+		this.focalLength = this.distanceToScene / 2;
+
+		//The factor we divide by here sets the fov.
+		this.rightVec[0] *= this.focalLength / 2;
+		this.rightVec[1] *= this.focalLength / 2;
+
+		this.upVec[0] *= this.focalLength / 2;
+		this.upVec[1] *= this.focalLength / 2;
+		this.upVec[2] *= this.focalLength / 2;
+
+
+
+		this.imagePlaneCenterPos = [
+			this.cameraPos[0] + this.focalLength * this.forwardVec[0],
+			this.cameraPos[1] + this.focalLength * this.forwardVec[1],
+			this.cameraPos[2] + this.focalLength * this.forwardVec[2]
+		];
+
+
+
+		this.wilson.gl.uniform3fv(this.wilson.uniforms["cameraPos"], this.cameraPos);
+
+		this.wilson.gl.uniform3fv(
+			this.wilson.uniforms["imagePlaneCenterPos"],
+			this.imagePlaneCenterPos
+		);
+
+		this.wilson.gl.uniform3fv(this.wilson.uniforms["forwardVec"], this.forwardVec);
+		this.wilson.gl.uniform3fv(this.wilson.uniforms["rightVec"], this.rightVec);
+		this.wilson.gl.uniform3fv(this.wilson.uniforms["upVec"], this.upVec);
+
+		this.wilson.gl.uniform1f(this.wilson.uniforms["focalLength"], this.focalLength);
+	}
+
+
+
+	handleKeydownEvent(e)
+	{
+		if (
+			document.activeElement.tagName === "INPUT"
+			|| !(e.key === "w" || e.key === "s" || e.key === "d" || e.key === "a")
+		)
+		{
+			return;
+		}
+
+
+
+		this.nextMoveVelocity = [0, 0, 0];
+		this.moveVelocity = [0, 0, 0];
+
+
+
+		if (e.key === "w")
+		{
+			this.movingForwardKeyboard = true;
+		}
+
+		else if (e.key === "s")
+		{
+			this.movingBackwardKeyboard = true;
+		}
+
+		if (e.key === "d")
+		{
+			this.movingRightKeyboard = true;
+		}
+
+		else if (e.key === "a")
+		{
+			this.movingLeftKeyboard = true;
+		}
+	}
+
+
+
+	handleKeyupEvent(e)
+	{
+		if (
+			document.activeElement.tagName === "INPUT"
+			|| !(e.key === "w" || e.key === "s" || e.key === "d" || e.key === "a")
+		)
+		{
+			return;
+		}
+
+
+
+		if (this.moveVelocity[0] === 0 && this.moveVelocity[1] === 0 && this.moveVelocity[2] === 0)
+		{
+			this.moveVelocity[0] = this.nextMoveVelocity[0];
+			this.moveVelocity[1] = this.nextMoveVelocity[1];
+			this.moveVelocity[2] = this.nextMoveVelocity[2];
+
+			this.nextMoveVelocity[0] = 0;
+			this.nextMoveVelocity[1] = 0;
+			this.nextMoveVelocity[2] = 0;
+		}
+
+
+
+		//W
+		if (e.key === "w")
+		{
+			this.movingForwardKeyboard = false;
+		}
+
+		//S
+		else if (e.key === "s")
+		{
+			this.movingBackwardKeyboard = false;
+		}
+
+		//D
+		if (e.key === "d")
+		{
+			this.movingRightKeyboard = false;
+		}
+
+		//A
+		else if (e.key === "a")
+		{
+			this.movingLeftKeyboard = false;
+		}
+	}
+
+
+
+	updateCameraParameters()
+	{
+		this.movingSpeed = Math.min(Math.max(.000001, this.distanceToScene / 20), .02);
+
+		const oldCameraPos = [...this.cameraPos];
+
+
+
+		if (this.movingForwardKeyboard || this.movingForwardTouch)
+		{
+			this.cameraPos[0] += this.movingSpeed * this.forwardVec[0];
+			this.cameraPos[1] += this.movingSpeed * this.forwardVec[1];
+			this.cameraPos[2] += this.movingSpeed * this.forwardVec[2];
+		}
+
+		else if (this.movingBackwardKeyboard || this.movingBackwardTouch)
+		{
+			this.cameraPos[0] -= this.movingSpeed * this.forwardVec[0];
+			this.cameraPos[1] -= this.movingSpeed * this.forwardVec[1];
+			this.cameraPos[2] -= this.movingSpeed * this.forwardVec[2];
+		}
+
+
+
+		if (this.movingRightKeyboard)
+		{
+			this.cameraPos[0] += this.movingSpeed * this.rightVec[0] / this.focalLength;
+			this.cameraPos[1] += this.movingSpeed * this.rightVec[1] / this.focalLength;
+			this.cameraPos[2] += this.movingSpeed * this.rightVec[2] / this.focalLength;
+		}
+
+		else if (this.movingLeftKeyboard)
+		{
+			this.cameraPos[0] -= this.movingSpeed * this.rightVec[0] / this.focalLength;
+			this.cameraPos[1] -= this.movingSpeed * this.rightVec[1] / this.focalLength;
+			this.cameraPos[2] -= this.movingSpeed * this.rightVec[2] / this.focalLength;
+		}
+
+
+
+		this.nextMoveVelocity[0] = this.cameraPos[0] - oldCameraPos[0];
+		this.nextMoveVelocity[1] = this.cameraPos[1] - oldCameraPos[1];
+		this.nextMoveVelocity[2] = this.cameraPos[2] - oldCameraPos[2];
+
+
+
+		this.calculateVectors();
+	}
+
+
+
+	static dotProduct(vec1, vec2)
+	{
+		return vec1[0] * vec2[0] + vec1[1] * vec2[1] + vec1[2] * vec2[2];
+	}
+
+
+
+	static crossProduct(vec1, vec2)
+	{
+		return [
+			vec1[1] * vec2[2] - vec1[2] * vec2[1],
+			vec1[2] * vec2[0] - vec1[0] * vec2[2],
+			vec1[0] * vec2[1] - vec1[1] * vec2[0]
+		];
+	}
+
+
+
+	static matMul(mat1, mat2)
+	{
+		return [
+			[
+				mat1[0][0] * mat2[0][0] + mat1[0][1] * mat2[1][0] + mat1[0][2] * mat2[2][0],
+				mat1[0][0] * mat2[0][1] + mat1[0][1] * mat2[1][1] + mat1[0][2] * mat2[2][1],
+				mat1[0][0] * mat2[0][2] + mat1[0][1] * mat2[1][2] + mat1[0][2] * mat2[2][2]
+			],
+
+			[
+				mat1[1][0] * mat2[0][0] + mat1[1][1] * mat2[1][0] + mat1[1][2] * mat2[2][0],
+				mat1[1][0] * mat2[0][1] + mat1[1][1] * mat2[1][1] + mat1[1][2] * mat2[2][1],
+				mat1[1][0] * mat2[0][2] + mat1[1][1] * mat2[1][2] + mat1[1][2] * mat2[2][2]
+			],
+
+			[
+				mat1[2][0] * mat2[0][0] + mat1[2][1] * mat2[1][0] + mat1[2][2] * mat2[2][0],
+				mat1[2][0] * mat2[0][1] + mat1[2][1] * mat2[1][1] + mat1[2][2] * mat2[2][1],
+				mat1[2][0] * mat2[0][2] + mat1[2][1] * mat2[1][2] + mat1[2][2] * mat2[2][2]
+			]
+		];
+	}
+
+
+
+	static normalize(vec)
+	{
+		const magnitude = Math.sqrt(vec[0] * vec[0] + vec[1] * vec[1] + vec[2] * vec[2]);
+
+		return [vec[0] / magnitude, vec[1] / magnitude, vec[2] / magnitude];
+	}
+}

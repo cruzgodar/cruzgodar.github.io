@@ -129,14 +129,6 @@ export function load()
 
 
 
-	const switchMovementButtonElement = $("#switch-movement-button");
-
-	switchMovementButtonElement.style.opacity = 0;
-
-	switchMovementButtonElement.addEventListener("click", switchMovement);
-
-
-
 	equalizeTextButtons();
 
 
@@ -184,14 +176,12 @@ export function load()
 	function switchBulb()
 	{
 		changeOpacity(switchBulbButtonElement, 0);
-		changeOpacity(switchMovementButtonElement, 0);
 
 		setTimeout(() =>
 		{
 			if (applet.juliaProportion < .5)
 			{
 				switchBulbButtonElement.textContent = "Switch to Mandelbulb";
-				changeOpacity(switchMovementButtonElement, 1);
 			}
 
 			else
@@ -205,31 +195,5 @@ export function load()
 		}, opacityAnimationTime);
 
 		applet.switchBulb();
-	}
-
-
-
-	function switchMovement()
-	{
-		changeOpacity(switchMovementButtonElement, 0);
-
-		setTimeout(() =>
-		{
-			if (applet.movingPos)
-			{
-				switchMovementButtonElement.textContent = "Change Juliabulb";
-			}
-
-			else
-			{
-				switchMovementButtonElement.textContent = "Move Camera";
-			}
-
-			equalizeTextButtons();
-
-			changeOpacity(switchMovementButtonElement, 1);
-		}, opacityAnimationTime);
-
-		applet.switchMovement();
 	}
 }
