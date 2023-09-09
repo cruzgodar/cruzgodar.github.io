@@ -1,4 +1,5 @@
 import { HitomezashiPattern } from "./class.mjs";
+import { Applet } from "/scripts/src/applets.mjs";
 import { showPage } from "/scripts/src/load-page.mjs";
 import { $ } from "/scripts/src/main.mjs";
 

@@ -1,5 +1,6 @@
 import { SortingAlgorithm } from "./class.mjs";
 import { opacityAnimationTime } from "/scripts/src/animation.mjs";
+import { Applet } from "/scripts/src/applets.mjs";
 import { showPage } from "/scripts/src/load-page.mjs";
 import { $, $$ } from "/scripts/src/main.mjs";
 
