@@ -1134,6 +1134,38 @@ export class RaymarchApplet extends Applet
 
 
 
+	moveUpdate(timeElapsed)
+	{
+		if (
+			this.moveVelocity[0] !== 0
+			|| this.moveVelocity[1] !== 0
+			|| this.moveVelocity[2] !== 0
+		)
+		{
+			this.cameraPos[0] += this.moveVelocity[0] * timeElapsed / 6.944;
+			this.cameraPos[1] += this.moveVelocity[1] * timeElapsed / 6.944;
+			this.cameraPos[2] += this.moveVelocity[2] * timeElapsed / 6.944;
+
+			this.moveVelocity[0] *= this.moveFriction ** (timeElapsed / 6.944);
+			this.moveVelocity[1] *= this.moveFriction ** (timeElapsed / 6.944);
+			this.moveVelocity[2] *= this.moveFriction ** (timeElapsed / 6.944);
+
+			if (
+				this.moveVelocity[0] ** 2
+				+ this.moveVelocity[1] ** 2
+				+ this.moveVelocity[2] ** 2 <
+					(this.moveVelocityStopThreshhold * this.movingSpeed) ** 2
+			)
+			{
+				this.moveVelocity[0] = 0;
+				this.moveVelocity[1] = 0;
+				this.moveVelocity[2] = 0;
+			}
+		}
+	}
+
+
+
 	static dotProduct(vec1, vec2)
 	{
 		return vec1[0] * vec2[0] + vec1[1] * vec2[1] + vec1[2] * vec2[2];

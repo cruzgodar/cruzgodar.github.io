@@ -334,6 +334,9 @@ export class Mandelbulb extends RaymarchApplet
 			canvasWidth: 500,
 			canvasHeight: 500,
 
+			worldCenterX: -4.6601,
+			worldCenterY: -2.272,
+
 
 
 			useFullscreen: true,
@@ -535,59 +538,31 @@ export class Mandelbulb extends RaymarchApplet
 			return;
 		}
 
-		this.wilson.render.drawFrame();
+		
 
 		this.pan.update(timeElapsed);
 		this.zoom.update(timeElapsed);
-
-
-
-		if (
-			this.movingForwardKeyboard
-			|| this.movingBackwardKeyboard
-			|| this.movingRightKeyboard
-			|| this.movingLeftKeyboard
-			|| this.movingForwardTouch
-			|| this.movingBackwardTouch
-		)
-		{
-			this.updateCameraParameters();
-		}
-
-
-
-		if (
-			this.moveVelocity[0] !== 0
-			|| this.moveVelocity[1] !== 0
-			|| this.moveVelocity[2] !== 0
-		)
-		{
-			if (this.movingPos)
-			{
-				this.cameraPos[0] += this.moveVelocity[0];
-				this.cameraPos[1] += this.moveVelocity[1];
-				this.cameraPos[2] += this.moveVelocity[2];
-			}
-
-
-
-			this.moveVelocity[0] *= this.moveFriction;
-			this.moveVelocity[1] *= this.moveFriction;
-			this.moveVelocity[2] *= this.moveFriction;
-
-			if (
-				this.moveVelocity[0] ** 2 + this.moveVelocity[1] ** 2 + this.moveVelocity[2] ** 2 <
-					(this.moveVelocityStopThreshhold * this.movingSpeed) ** 2)
-			{
-				this.moveVelocity[0] = 0;
-				this.moveVelocity[1] = 0;
-				this.moveVelocity[2] = 0;
-			}
-		}
-
-
+		this.moveUpdate(timeElapsed);
 
 		this.calculateVectors();
+		this.updateCameraParameters();
+
+		
+		
+		this.wilson.worldCenterY = Math.min(
+			Math.max(
+				this.wilson.worldCenterY,
+				-Math.PI + .01
+			),
+			-.01
+		);
+		
+		this.theta = -this.wilson.worldCenterX;
+		this.phi = -this.wilson.worldCenterY;
+
+
+
+		this.wilson.render.drawFrame();
 
 
 
