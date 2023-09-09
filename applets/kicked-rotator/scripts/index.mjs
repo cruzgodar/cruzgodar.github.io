@@ -20,7 +20,7 @@ export function load()
 
 	const orbitSeparationInputElement = $("#orbit-separation-input");
 
-	applet.listenToInputElements(
+	Applet.listenToInputElements(
 		[resolutionInputElement, kInputElement, orbitSeparationInputElement],
 		run
 	);

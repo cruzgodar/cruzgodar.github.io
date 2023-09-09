@@ -10,7 +10,7 @@ export function load()
 
 	const diamondSizeInputElement = $("#diamond-size-input");
 
-	applet.listenToInputElements([resolutionInputElement, diamondSizeInputElement], run);
+	Applet.listenToInputElements([resolutionInputElement, diamondSizeInputElement], run);
 
 	applet.setInputCaps([resolutionInputElement, diamondSizeInputElement], [3000, 200]);
 

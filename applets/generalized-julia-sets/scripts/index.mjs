@@ -21,7 +21,7 @@ export function load()
 
 	codeInputElement.value = "cadd(cpow(z, 2.0), c)";
 
-	applet.listenToInputElements([codeInputElement], run);
+	Applet.listenToInputElements([codeInputElement], run);
 
 
 

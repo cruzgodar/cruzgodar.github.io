@@ -10,7 +10,7 @@ export function load()
 
 	const generatingStringInputElement = $("#generating-string-input");
 
-	applet.listenToInputElements([generatingStringInputElement], run);
+	Applet.listenToInputElements([generatingStringInputElement], run);
 
 
 

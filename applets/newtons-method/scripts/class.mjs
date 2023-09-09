@@ -518,7 +518,7 @@ export class NewtonsMethod extends Applet
 
 		const index = this.lastActiveRoot - 2;
 
-		const result = this.hexToRgb(hex);
+		const result = Applet.hexToRgb(hex);
 
 		const r = result.r / 255;
 		const g = result.g / 255;
@@ -603,7 +603,7 @@ export class NewtonsMethod extends Applet
 				this.rootBInputElement.value =
 					Math.round(this.currentRoots[2 * index + 1] * 1000) / 1000;
 
-				this.colorSetterElement.value = this.rgbToHex(
+				this.colorSetterElement.value = Applet.rgbToHex(
 					this.colors[3 * index] * 255,
 					this.colors[3 * index + 1] * 255,
 					this.colors[3 * index + 2] * 255
@@ -777,29 +777,5 @@ export class NewtonsMethod extends Applet
 		{
 			window.requestAnimationFrame(this.drawFrame.bind(this));
 		}
-	}
-
-
-
-	hexToRgb(hex)
-	{
-		const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
-
-		return result ? {
-			r: parseInt(result[1], 16),
-			g: parseInt(result[2], 16),
-			b: parseInt(result[3], 16)
-		} : null;
-	}
-
-	componentToHex(c)
-	{
-		const hex = Math.floor(c).toString(16);
-		return hex.length == 1 ? "0" + hex : hex;
-	}
-
-	rgbToHex(r, g, b)
-	{
-		return "#" + this.componentToHex(r) + this.componentToHex(g) + this.componentToHex(b);
 	}
 }

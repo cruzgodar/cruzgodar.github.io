@@ -495,7 +495,7 @@ export class PlanePartitions extends Applet
 
 
 
-	generateRandomPlanePartition()
+	static generateRandomPlanePartition()
 	{
 		const sideLength = Math.floor(Math.random() * 3) + 5;
 
@@ -552,7 +552,7 @@ export class PlanePartitions extends Applet
 
 
 	//Does not return a string, unlike the previous function.
-	generateRandomTableau()
+	static generateRandomTableau()
 	{
 		const sideLength = Math.floor(Math.random() * 3) + 5;
 
@@ -590,7 +590,7 @@ export class PlanePartitions extends Applet
 
 
 	//Also doesn't return a string.
-	generateRandomSsyt()
+	static generateRandomSsyt()
 	{
 		const sideLength = Math.floor(Math.random() * 3) + 2;
 
@@ -631,7 +631,7 @@ export class PlanePartitions extends Applet
 
 
 	//Turns a block of numbers into an array.
-	parseArray(data)
+	static parseArray(data)
 	{
 		const splitData = data.split("\n");
 
@@ -732,7 +732,7 @@ export class PlanePartitions extends Applet
 
 
 
-	arrayToAscii(numbers)
+	static arrayToAscii(numbers)
 	{
 		let numCharacters = 1;
 
@@ -827,7 +827,7 @@ export class PlanePartitions extends Applet
 
 
 
-	verifyPp(planePartition)
+	static verifyPp(planePartition)
 	{
 		for (let i = 0; i < planePartition.length - 1; i++)
 		{
@@ -848,7 +848,7 @@ export class PlanePartitions extends Applet
 
 
 
-	verifySsyt(ssyt)
+	static verifySsyt(ssyt)
 	{
 		for (let i = 0; i < ssyt.length - 1; i++)
 		{
@@ -2674,16 +2674,22 @@ export class PlanePartitions extends Applet
 
 			if (this.arrays.length === 0)
 			{
-				const planePartition = this.parseArray(this.generateRandomPlanePartition());
+				const planePartition = PlanePartitions.parseArray(
+					PlanePartitions.generateRandomPlanePartition()
+				);
+
 				await this.addNewArray(this.arrays.length, planePartition);
 			}
 
-			else if (!this.verifyPp(this.arrays[0].numbers))
+			else if (!PlanePartitions.verifyPp(this.arrays[0].numbers))
 			{
 				await this.removeArray(0);
 				await new Promise(resolve => setTimeout(resolve, this.animationTime / 2));
 
-				const planePartition = this.parseArray(this.generateRandomPlanePartition());
+				const planePartition = PlanePartitions.parseArray(
+					PlanePartitions.generateRandomPlanePartition()
+				);
+
 				await this.addNewArray(this.arrays.length, planePartition);
 			}
 
@@ -2722,7 +2728,7 @@ export class PlanePartitions extends Applet
 				await new Promise(resolve => setTimeout(resolve, this.animationTime / 2));
 			}
 
-			await this.addNewArray(this.arrays.length, this.generateRandomTableau());
+			await this.addNewArray(this.arrays.length, PlanePartitions.generateRandomTableau());
 
 
 
@@ -2779,7 +2785,7 @@ export class PlanePartitions extends Applet
 		{
 			const type = data.inputType[i];
 
-			if (type === "pp" && !this.verifyPp(this.arrays[index + i].numbers))
+			if (type === "pp" && !PlanePartitions.verifyPp(this.arrays[index + i].numbers))
 			{
 				console.log(`Array at index ${index + i} is not a plane partition!`);
 
@@ -2788,7 +2794,7 @@ export class PlanePartitions extends Applet
 				return;
 			}
 
-			if (type === "ssyt" && !this.verifySsyt(this.arrays[index + i].numbers))
+			if (type === "ssyt" && !PlanePartitions.verifySsyt(this.arrays[index + i].numbers))
 			{
 				console.log(`Array at index ${index + i} is not an SSYT!`);
 

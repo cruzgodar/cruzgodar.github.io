@@ -76,23 +76,6 @@ export class Applet
 
 
 
-	listenToInputElements(elements, run)
-	{
-		elements.forEach(element =>
-		{
-			element.addEventListener("keydown", (e) =>
-			{
-				if (e.key === "Enter")
-				{
-					e.preventDefault();
-					run();
-				}
-			});
-		});
-	}
-
-
-
 	uncapEverything = false;
 
 	//Adds a friendly cap on these inputs: if a higher number is entered,
@@ -162,7 +145,7 @@ export class Applet
 			{
 				if (element.parentNode.classList.contains("capped-input"))
 				{
-					this.hideCapDialogs();
+					Applet.hideCapDialogs();
 
 					this.showCapDialog(element);
 				}
@@ -175,7 +158,7 @@ export class Applet
 		{
 			if (!(e.target.classList.contains("keep-dialog-open")))
 			{
-				this.hideCapDialogs();
+				Applet.hideCapDialogs();
 			}
 		};
 
@@ -214,7 +197,7 @@ export class Applet
 
 
 
-		const boundFunction = () => this.updateCapDialogLocation(element, dialog);
+		const boundFunction = () => Applet.updateCapDialogLocation(element, dialog);
 		addTemporaryListener({
 			object: window,
 			event: "resize",
@@ -258,7 +241,7 @@ export class Applet
 		}, 16);
 	}
 
-	hideCapDialogs()
+	static hideCapDialogs()
 	{
 		const dialogs = $$(".input-cap-dialog");
 
@@ -278,7 +261,7 @@ export class Applet
 		}
 	}
 
-	updateCapDialogLocation(element, dialog)
+	static updateCapDialogLocation(element, dialog)
 	{
 		const rect = element.nextElementSibling.getBoundingClientRect();
 		const dialogRect = dialog.getBoundingClientRect();
@@ -806,6 +789,23 @@ export class Applet
 
 
 
+	static listenToInputElements(elements, run)
+	{
+		elements.forEach(element =>
+		{
+			element.addEventListener("keydown", (e) =>
+			{
+				if (e.key === "Enter")
+				{
+					e.preventDefault();
+					run();
+				}
+			});
+		});
+	}
+
+
+
 	//Turns expressions like 2(3x^2+1) into something equivalent to 2.0 * (3.0 * pow(x, 2.0) + 1.0).
 	static parseNaturalGLSL(GLSL)
 	{
@@ -847,6 +847,30 @@ export class Applet
 		df[1] = lo;
 
 		return [df[0], df[1]];
+	}
+
+
+
+	static hexToRgb(hex)
+	{
+		const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+
+		return result ? {
+			r: parseInt(result[1], 16),
+			g: parseInt(result[2], 16),
+			b: parseInt(result[3], 16)
+		} : null;
+	}
+
+	static componentToHex(c)
+	{
+		const hex = Math.floor(c).toString(16);
+		return hex.length == 1 ? "0" + hex : hex;
+	}
+
+	static rgbToHex(r, g, b)
+	{
+		return "#" + Applet.componentToHex(r) + Applet.componentToHex(g) + Applet.componentToHex(b);
 	}
 }
 

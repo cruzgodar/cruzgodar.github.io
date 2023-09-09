@@ -49,7 +49,7 @@ export function load()
 
 	const arraySizeInputElement = $("#array-size-input");
 
-	applet.listenToInputElements([resolutionInputElement, arraySizeInputElement], run);
+	Applet.listenToInputElements([resolutionInputElement, arraySizeInputElement], run);
 
 	applet.setInputCaps([resolutionInputElement, arraySizeInputElement], [4000, 2048]);
 

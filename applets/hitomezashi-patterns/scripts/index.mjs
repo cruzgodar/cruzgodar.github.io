@@ -33,7 +33,7 @@ export function load()
 	drawRegionsCheckboxElement.checked = true;
 
 
-	applet.listenToInputElements([
+	Applet.listenToInputElements([
 		resolutionInputElement,
 		gridSizeInputElement,
 		rowProbInputElement,

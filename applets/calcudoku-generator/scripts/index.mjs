@@ -18,7 +18,7 @@ export function load()
 
 	const maxCageSizeInputElement = $("#max-cage-size-input");
 
-	applet.listenToInputElements([gridSizeInputElement, maxCageSizeInputElement], run);
+	Applet.listenToInputElements([gridSizeInputElement, maxCageSizeInputElement], run);
 
 	applet.setInputCaps([gridSizeInputElement, maxCageSizeInputElement], [10, 5]);
 

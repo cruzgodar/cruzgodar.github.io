@@ -16,7 +16,7 @@ export function load()
 
 
 
-	applet.listenToInputElements([codeInputElement], run);
+	Applet.listenToInputElements([codeInputElement], run);
 
 
 

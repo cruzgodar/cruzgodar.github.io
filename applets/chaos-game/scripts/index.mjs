@@ -18,7 +18,7 @@ export function load()
 
 	const numVerticesInputElement = $("#num-vertices-input");
 
-	applet.listenToInputElements([resolutionInputElement, numVerticesInputElement], run);
+	Applet.listenToInputElements([resolutionInputElement, numVerticesInputElement], run);
 
 	applet.setInputCaps([resolutionInputElement], [2000]);
 

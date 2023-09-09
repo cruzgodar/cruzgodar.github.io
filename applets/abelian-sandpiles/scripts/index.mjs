@@ -12,7 +12,7 @@ export function load()
 
 	const computationsPerFrameInputElement = $("#computations-per-frame-input");
 
-	applet.listenToInputElements([numGrainsInputElement, computationsPerFrameInputElement], run);
+	Applet.listenToInputElements([numGrainsInputElement, computationsPerFrameInputElement], run);
 
 	applet.setInputCaps([numGrainsInputElement, computationsPerFrameInputElement], [1000000, 20]);
 

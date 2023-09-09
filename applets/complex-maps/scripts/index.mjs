@@ -13,7 +13,7 @@ export function load()
 
 	const codeInputElement = $("#code-textarea");
 
-	applet.listenToInputElements([codeInputElement], run);
+	Applet.listenToInputElements([codeInputElement], run);
 
 
 

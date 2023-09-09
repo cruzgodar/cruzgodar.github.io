@@ -18,7 +18,7 @@ export function load()
 
 	applet.setInputCaps([gridSizeInputElement], [200]);
 
-	applet.listenToInputElements([gridSizeInputElement], run);
+	Applet.listenToInputElements([gridSizeInputElement], run);
 
 
 

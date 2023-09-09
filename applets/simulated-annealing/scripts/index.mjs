@@ -20,7 +20,7 @@ export function load()
 
 	const maximumSpeedCheckboxElement = $("#toggle-maximum-speed-checkbox");
 
-	applet.listenToInputElements([resolutionInputElement, numNodesInputElement], run);
+	Applet.listenToInputElements([resolutionInputElement, numNodesInputElement], run);
 
 	applet.setInputCaps([resolutionInputElement, numNodesInputElement], [3000, 100]);
 

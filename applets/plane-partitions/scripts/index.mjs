@@ -137,7 +137,9 @@ export function load()
 
 			if (index < applet.arrays.length && index >= 0)
 			{
-				editArrayTextareaElement.value = applet.arrayToAscii(applet.arrays[index].numbers);
+				editArrayTextareaElement.value = PlanePartitions.arrayToAscii(
+					applet.arrays[index].numbers
+				);
 			}
 		}
 
@@ -228,7 +230,10 @@ export function load()
 
 	addArrayButtonElement.addEventListener("click", () =>
 	{
-		applet.addNewArray(applet.arrays.length, applet.parseArray(arrayDataTextareaElement.value));
+		applet.addNewArray(
+			applet.arrays.length,
+			PlanePartitions.parseArray(arrayDataTextareaElement.value)
+		);
 	});
 
 
@@ -242,7 +247,9 @@ export function load()
 			return;
 		}
 
-		applet.editArrayTextareaElement.value = applet.arrayToAscii(applet.arrays[index].numbers);
+		applet.editArrayTextareaElement.value = PlanePartitions.arrayToAscii(
+			applet.arrays[index].numbers
+		);
 	});
 
 
@@ -251,9 +258,9 @@ export function load()
 	{
 		const index = parseInt(editArrayIndexInputElement.value || 0);
 
-		await applet.editArray(index, applet.parseArray(editArrayTextareaElement.value));
+		await applet.editArray(index, PlanePartitions.parseArray(editArrayTextareaElement.value));
 
-		editArrayTextareaElement.value = applet.arrayToAscii(applet.arrays[index].numbers);
+		editArrayTextareaElement.value = PlanePartitions.arrayToAscii(applet.arrays[index].numbers);
 	});
 
 
@@ -339,8 +346,8 @@ export function load()
 
 
 
-	const planePartition = applet.generateRandomPlanePartition();
-	arrayDataTextareaElement.value = applet.arrayToAscii(planePartition);
+	const planePartition = PlanePartitions.generateRandomPlanePartition();
+	arrayDataTextareaElement.value = PlanePartitions.arrayToAscii(planePartition);
 	applet.addNewArray(0, planePartition);
 
 

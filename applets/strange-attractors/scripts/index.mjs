@@ -22,7 +22,7 @@ export function load()
 
 	const betaInputElement = $("#beta-input");
 
-	applet.listenToInputElements([
+	Applet.listenToInputElements([
 		resolutionInputElement,
 		sigmaInputElement,
 		rhoInputElement,

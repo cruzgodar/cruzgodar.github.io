@@ -78,19 +78,7 @@ export function load()
 
 	speedInputElement.addEventListener("input", () =>
 	{
-		const dt = parseFloat(speedInputElement.value || 1) / 300;
-
-		applet.wilsonUpdate.gl.useProgram(applet.wilsonUpdate.render.shaderPrograms[0]);
-		applet.wilsonUpdate.gl.uniform1f(applet.wilsonUpdate.uniforms["dt"][0], dt);
-
-		applet.wilsonUpdate.gl.useProgram(applet.wilsonUpdate.render.shaderPrograms[1]);
-		applet.wilsonUpdate.gl.uniform1f(applet.wilsonUpdate.uniforms["dt"][1], dt);
-
-		applet.wilsonUpdate.gl.useProgram(applet.wilsonUpdate.render.shaderPrograms[2]);
-		applet.wilsonUpdate.gl.uniform1f(applet.wilsonUpdate.uniforms["dt"][2], dt);
-
-		applet.wilsonUpdate.gl.useProgram(applet.wilsonUpdate.render.shaderPrograms[3]);
-		applet.wilsonUpdate.gl.uniform1f(applet.wilsonUpdate.uniforms["dt"][3], dt);
+		applet.dt = parseFloat(speedInputElement.value || 1) / 300;
 	});
 
 	lifetimeInputElement.addEventListener("input", generateNewField);
