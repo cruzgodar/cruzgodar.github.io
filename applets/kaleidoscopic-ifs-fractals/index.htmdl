@@ -16,11 +16,11 @@ Drag on the scene to look around. On a keyboard, use WASD to move, and on a touc
 	
 	polyhedron-selector
 	
+	octahedron Octahedron
+
 	tetrahedron Tetrahedron
 	
 	cube Cube
-	
-	octahedron Octahedron
 
 ###
 
@@ -28,7 +28,7 @@ Drag on the scene to look around. On a keyboard, use WASD to move, and on a touc
 
 ### text-boxes
 	
-	resolution 500 Resolution
+	resolution 400 Resolution
 	
 	rotation-angle-x-1 0 \(\theta_x\)
 	

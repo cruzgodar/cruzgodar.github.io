@@ -1,107 +1,32 @@
 import anime from "/scripts/anime.js";
 import { changeOpacity, opacityAnimationTime } from "/scripts/src/animation.mjs";
-import { Applet } from "/scripts/src/applets.mjs";
+import { RaymarchApplet } from "/scripts/src/applets.mjs";
 import { aspectRatio } from "/scripts/src/layout.mjs";
-import { addTemporaryListener } from "/scripts/src/main.mjs";
 import { Wilson } from "/scripts/wilson.mjs";
 
-export class QuaternionicJuliaSet extends Applet
+export class QuaternionicJuliaSet extends RaymarchApplet
 {
-	currentlyDragging = false;
-
-	movingForwardKeyboard = false;
-	movingBackwardKeyboard = false;
-	movingRightKeyboard = false;
-	movingLeftKeyboard = false;
-
-	movingSliceUpKeyboard = false;
-	movingSliceDownKeyboard = false;
-
-	movingForwardTouch = false;
-	movingBackwardTouch = false;
-
-	wasMovingTouch = false;
-
-	movingSpeed = 0;
-
 	switchBulbButtonElement = null;
-	switchMovementButtonElement = null;
 	randomizeCButtonElement = null;
 	cXInputElement = null;
 	cYInputElement = null;
 	cZInputElement = null;
-	cWInputElement = null;
-
-
-
-	nextMoveVelocity = [0, 0, 0, 0];
-
-	moveVelocity = [0, 0, 0, 0];
-
-	moveFriction = .91;
-	moveVelocityStopThreshhold = .0005;
-
-
-
-	distanceToScene = 1;
-
-	lastTimestamp = -1;
-
-
-
-	theta = 1.21557;
-	phi =  2.10801;
-
-	nextThetaVelocity = 0;
-	nextPhiVelocity = 0;
-
-	thetaVelocity = 0;
-	phiVelocity = 0;
-
-	panFriction = .88;
-	panVelocityStartThreshhold = .005;
-	panVelocityStopThreshhold = .0005;
-
-
-
-	imageSize = 500;
-	imageWidth = 500;
-	imageHeight = 500;
-
-	maxIterations = 16;
-
-	maxMarches = 100;
-
-	imagePlaneCenterPos = [];
-
-	forwardVec = [];
-	rightVec = [];
-	upVec = [];
 
 	cameraPos = [-1.11619, -2.63802, 1.67049];
-
-	focalLength = 2;
-
+	c = [-.54, -.25, -.668];
 	lightPos = [-5, -5, 5];
 
-	c = [-.54, -.25, -.668];
-
-	kSlice = 0;
-
 	juliaProportion = 1;
-	movingPos = 0;
 
 
 
 	constructor(
 		canvas,
 		switchBulbButtonElement,
-		switchMovementButtonElement,
 		randomizeCButtonElement,
 		cXInputElement,
 		cYInputElement,
 		cZInputElement,
-		cWInputElement
 	)
 	{
 		super(canvas);
@@ -109,12 +34,10 @@ export class QuaternionicJuliaSet extends Applet
 
 
 		this.switchBulbButtonElement = switchBulbButtonElement;
-		this.switchMovementButtonElement = switchMovementButtonElement;
 		this.randomizeCButtonElement = randomizeCButtonElement;
 		this.cXInputElement = cXInputElement;
 		this.cYInputElement = cYInputElement;
 		this.cZInputElement = cZInputElement;
-		this.cWInputElement = cWInputElement;
 
 
 
@@ -139,8 +62,6 @@ export class QuaternionicJuliaSet extends Applet
 			
 			uniform int imageSize;
 			
-			uniform int drawSphere;
-			
 			uniform int maxIterations;
 			
 			
@@ -150,8 +71,6 @@ export class QuaternionicJuliaSet extends Applet
 			uniform float stepFactor;
 			const vec3 fogColor = vec3(0.0, 0.0, 0.0);
 			const float fogScaling = .1;
-			
-			uniform float kSlice;
 			
 			
 			uniform vec3 c;
@@ -167,7 +86,7 @@ export class QuaternionicJuliaSet extends Applet
 			
 			float distanceEstimator(vec3 pos)
 			{
-				vec4 z = vec4(pos, kSlice);
+				vec4 z = vec4(pos, 0.0);
 				vec4 zPrime = vec4(1.0, 0.0, 0.0, 0.0);
 				float r;
 				
@@ -184,29 +103,19 @@ export class QuaternionicJuliaSet extends Applet
 					
 					z = qmul(z, z);
 					
-					z += mix(vec4(pos, kSlice), vec4(c, kSlice), juliaProportion);
+					z += mix(vec4(pos, 0.0), vec4(c, 0.0), juliaProportion);
 				}
 				
 				
 				r = length(z);
-				float distance1 = .5 * r * log(r) / length(zPrime);
-				float distance2 = length(pos - c) - .05;
-				
-				
-				
-				if (distance2 < distance1 && drawSphere == 1)
-				{
-					return distance2;
-				}
-				
-				return distance1;
+				return .5 * r * log(r) / length(zPrime);
 			}
 			
 			
 			
 			vec3 getColor(vec3 pos)
 			{
-				vec4 z = vec4(pos, kSlice);
+				vec4 z = vec4(pos, 0.0);
 				vec4 zPrime = vec4(1.0, 0.0, 0.0, 0.0);
 				float r;
 				
@@ -226,7 +135,7 @@ export class QuaternionicJuliaSet extends Applet
 					
 					z = qmul(z, z);
 					
-					z += mix(vec4(pos, kSlice), vec4(c, kSlice), juliaProportion);
+					z += mix(vec4(pos, 0.0), vec4(c, 0.0), juliaProportion);
 					
 					color = mix(color, abs(normalize(z.xyz)), colorScale);
 					
@@ -234,18 +143,6 @@ export class QuaternionicJuliaSet extends Applet
 				}
 				
 				color /= max(max(color.x, color.y), color.z);
-				
-				
-				r = length(z);
-				float distance1 = .5 * r * log(r) / length(zPrime);
-				float distance2 = length(pos - c) - .05;
-				
-				
-				
-				if (distance2 < distance1 && drawSphere == 1)
-				{
-					color = vec3(1.0, 1.0, 1.0);
-				}
 				
 				return color;
 			}
@@ -367,9 +264,6 @@ export class QuaternionicJuliaSet extends Applet
 			
 			void main(void)
 			{
-				//Uncomment to use 2x antialiasing.
-				//vec3 finalColor = (raymarch(imagePlaneCenterPos + rightVec * (uv.x * aspectRatio + .5 / float(imageSize)) + upVec * (uv.y + .5 / float(imageSize))) + raymarch(imagePlaneCenterPos + rightVec * (uv.x * aspectRatio + .5 / float(imageSize)) + upVec * (uv.y - .5 / float(imageSize))) + raymarch(imagePlaneCenterPos + rightVec * (uv.x * aspectRatio - .5 / float(imageSize)) + upVec * (uv.y + .5 / float(imageSize))) + raymarch(imagePlaneCenterPos + rightVec * (uv.x * aspectRatio - .5 / float(imageSize)) + upVec * (uv.y - .5 / float(imageSize)))) / 4.0;
-				
 				gl_FragColor = vec4(raymarch(imagePlaneCenterPos + rightVec * (uv.x) * aspectRatioX + upVec * (uv.y) / aspectRatioY), 1.0);
 			}
 		`;
@@ -382,8 +276,11 @@ export class QuaternionicJuliaSet extends Applet
 
 			shader: fragShaderSource,
 
-			canvasWidth: 500,
-			canvasHeight: 500,
+			canvasWidth: 400,
+			canvasHeight: 400,
+
+			worldCenterX: -1.21557,
+			worldCenterY:  -2.10801,
 
 
 
@@ -423,13 +320,11 @@ export class QuaternionicJuliaSet extends Applet
 			"upVec",
 			"focalLength",
 			"lightPos",
-			"drawSphere",
 			"c",
 			"juliaProportion",
 			"maxMarches",
 			"stepFactor",
 			"maxIterations",
-			"kSlice"
 		]);
 
 		this.calculateVectors();
@@ -503,11 +398,6 @@ export class QuaternionicJuliaSet extends Applet
 			this.focalLength
 		);
 
-		this.wilson.gl.uniform1i(
-			this.wilson.uniforms["drawSphere"],
-			0)
-		;
-
 		this.wilson.gl.uniform3fv(
 			this.wilson.uniforms["c"],
 			this.c
@@ -516,11 +406,6 @@ export class QuaternionicJuliaSet extends Applet
 		this.wilson.gl.uniform1f(
 			this.wilson.uniforms["juliaProportion"],
 			1
-		);
-
-		this.wilson.gl.uniform1f(
-			this.wilson.uniforms["kSlice"],
-			0
 		);
 
 		this.wilson.gl.uniform1i(
@@ -537,22 +422,6 @@ export class QuaternionicJuliaSet extends Applet
 			this.wilson.uniforms["maxIterations"],
 			this.maxIterations
 		);
-
-
-
-		const boundFunction = this.handleKeydownEvent.bind(this);
-		addTemporaryListener({
-			object: document.documentElement,
-			event: "keydown",
-			callback: boundFunction
-		});
-
-		const boundFunction2 = this.handleKeyupEvent.bind(this);
-		addTemporaryListener({
-			object: document.documentElement,
-			event: "keyup",
-			callback: boundFunction2
-		});
 
 
 
@@ -574,141 +443,29 @@ export class QuaternionicJuliaSet extends Applet
 
 
 
+		this.pan.update(timeElapsed);
+		this.zoom.update(timeElapsed);
+		this.moveUpdate(timeElapsed);
+
+		this.calculateVectors();
+		this.updateCameraParameters();
+
+		
+		
+		this.wilson.worldCenterY = Math.min(
+			Math.max(
+				this.wilson.worldCenterY,
+				-Math.PI + .01
+			),
+			-.01
+		);
+		
+		this.theta = -this.wilson.worldCenterX;
+		this.phi = -this.wilson.worldCenterY;
+
+
+
 		this.wilson.render.drawFrame();
-
-
-
-		if (
-			this.movingForwardKeyboard
-			|| this.movingBackwardKeyboard
-			|| this.movingRightKeyboard
-			|| this.movingLeftKeyboard
-			|| this.movingForwardTouch
-			|| this.movingBackwardTouch
-			|| this.movingSliceUpKeyboard
-			|| this.movingSliceDownKeyboard
-		)
-		{
-			this.updateCameraParameters();
-		}
-
-		if (this.thetaVelocity !== 0 || this.phiVelocity !== 0)
-		{
-			this.theta += this.thetaVelocity;
-			this.phi += this.phiVelocity;
-
-
-
-			if (this.theta >= 2 * Math.PI)
-			{
-				this.theta -= 2 * Math.PI;
-			}
-
-			else if (this.theta < 0)
-			{
-				this.theta += 2 * Math.PI;
-			}
-
-
-
-			if (this.phi > Math.PI - .01)
-			{
-				this.phi = Math.PI - .01;
-			}
-
-			else if (this.phi < .01)
-			{
-				this.phi = .01;
-			}
-
-
-
-			this.thetaVelocity *= this.panFriction;
-			this.phiVelocity *= this.panFriction;
-
-			if (
-				this.thetaVelocity * this.thetaVelocity + this.phiVelocity * this.phiVelocity <
-					this.panVelocityStopThreshhold * this.panVelocityStopThreshhold
-			)
-			{
-				this.thetaVelocity = 0;
-				this.phiVelocity = 0;
-			}
-
-
-
-			this.calculateVectors();
-		}
-
-		if (
-			this.moveVelocity[0] !== 0
-			|| this.moveVelocity[1] !== 0
-			|| this.moveVelocity[2] !== 0
-			|| this.moveVelocity[3] !== 0
-		)
-		{
-			if (this.movingPos)
-			{
-				this.cameraPos[0] += this.moveVelocity[0];
-				this.cameraPos[1] += this.moveVelocity[1];
-				this.cameraPos[2] += this.moveVelocity[2];
-			}
-
-			else
-			{
-				this.c[0] += this.moveVelocity[0];
-				this.c[1] += this.moveVelocity[1];
-				this.c[2] += this.moveVelocity[2];
-
-				this.kSlice += this.moveVelocity[3];
-
-				if (
-					this.cXInputElement
-					&& this.cYInputElement
-					&& this.cZInputElement
-					&& this.cWInputElement
-				)
-				{
-					this.cXInputElement.value = Math.round((this.c[0]) * 1000000) / 1000000;
-					this.cYInputElement.value = Math.round((this.c[1]) * 1000000) / 1000000;
-					this.cZInputElement.value = Math.round((this.c[2]) * 1000000) / 1000000;
-
-					this.cWInputElement.value = Math.round((this.kSlice) * 1000000) / 1000000;
-				}
-
-				this.wilson.gl.uniform3fv(this.wilson.uniforms["c"], this.c);
-
-				this.wilson.gl.uniform1f(this.wilson.uniforms["kSlice"], this.kSlice);
-			}
-
-
-
-			this.moveVelocity[0] *= this.moveFriction;
-			this.moveVelocity[1] *= this.moveFriction;
-			this.moveVelocity[2] *= this.moveFriction;
-
-			this.moveVelocity[3] *= this.moveFriction;
-
-			if (
-				this.moveVelocity[0] * this.moveVelocity[0]
-				+ this.moveVelocity[1] * this.moveVelocity[1]
-				+ this.moveVelocity[2] * this.moveVelocity[2]
-				+ this.moveVelocity[3] * this.moveVelocity[3] <
-					this.moveVelocityStopThreshhold * this.movingSpeed
-					* this.moveVelocityStopThreshhold * this.movingSpeed
-			)
-			{
-				this.moveVelocity[0] = 0;
-				this.moveVelocity[1] = 0;
-				this.moveVelocity[2] = 0;
-
-				this.moveVelocity[3] = 0;
-			}
-
-
-
-			this.calculateVectors();
-		}
 
 
 
@@ -720,133 +477,23 @@ export class QuaternionicJuliaSet extends Applet
 
 
 
-	calculateVectors()
-	{
-		//Here comes the serious math. Theta is the angle in the xy-plane
-		//and phi the angle down from the z-axis. We can use them get a normalized forward vector:
-		this.forwardVec = [
-			Math.cos(this.theta) * Math.sin(this.phi),
-			Math.sin(this.theta) * Math.sin(this.phi),
-			Math.cos(this.phi)
-		];
-
-		//Now the right vector needs to be constrained to the xy-plane,
-		//since otherwise the image will appear tilted. For a vector (a, b, c),
-		//the orthogonal plane that passes through the origin is ax + by + cz = 0,
-		//so we want ax + by = 0. One solution is (b, -a), and that's the one that
-		//goes to the "right" of the forward vector (when looking down).
-		this.rightVec = this.normalize([this.forwardVec[1], -this.forwardVec[0], 0]);
-
-		//Finally, the upward vector is the cross product of the previous two.
-		this.upVec = this.crossProduct(this.rightVec, this.forwardVec);
-
-
-
-		this.distanceToScene = this.distanceEstimator(
-			this.cameraPos[0],
-			this.cameraPos[1],
-			this.cameraPos[2]
-		);
-
-
-
-		this.focalLength = this.distanceToScene / 2;
-
-		//The factor we divide by here sets the fov.
-		this.rightVec[0] *= this.focalLength / 2;
-		this.rightVec[1] *= this.focalLength / 2;
-
-		this.upVec[0] *= this.focalLength / 2;
-		this.upVec[1] *= this.focalLength / 2;
-		this.upVec[2] *= this.focalLength / 2;
-
-
-
-		this.imagePlaneCenterPos = [
-			this.cameraPos[0] + this.focalLength * this.forwardVec[0],
-			this.cameraPos[1] + this.focalLength * this.forwardVec[1],
-			this.cameraPos[2] + this.focalLength * this.forwardVec[2]
-		];
-
-
-
-		this.wilson.gl.uniform3fv(this.wilson.uniforms["cameraPos"], this.cameraPos);
-
-		this.wilson.gl.uniform3fv(
-			this.wilson.uniforms["imagePlaneCenterPos"],
-			this.imagePlaneCenterPos
-		);
-
-		this.wilson.gl.uniform3fv(this.wilson.uniforms["forwardVec"], this.forwardVec);
-		this.wilson.gl.uniform3fv(this.wilson.uniforms["rightVec"], this.rightVec);
-		this.wilson.gl.uniform3fv(this.wilson.uniforms["upVec"], this.upVec);
-
-		this.wilson.gl.uniform1f(this.wilson.uniforms["focalLength"], this.focalLength);
-	}
-
-
-
-	dotProduct(vec1, vec2)
-	{
-		return vec1[0] * vec2[0] + vec1[1] * vec2[1] + vec1[2] * vec2[2];
-	}
-
-	dotProduct4(vec1, vec2)
-	{
-		return vec1[0] * vec2[0] + vec1[1] * vec2[1] + vec1[2] * vec2[2] + vec1[3] * vec2[3];
-	}
-
-
-
-	crossProduct(vec1, vec2)
-	{
-		return [
-			vec1[1] * vec2[2] - vec1[2] * vec2[1],
-			vec1[2] * vec2[0] - vec1[0] * vec2[2],
-			vec1[0] * vec2[1] - vec1[1] * vec2[0]
-		];
-	}
-
-
-
-	normalize(vec)
-	{
-		const magnitude = Math.sqrt(vec[0] * vec[0] + vec[1] * vec[1] + vec[2] * vec[2]);
-
-		return [vec[0] / magnitude, vec[1] / magnitude, vec[2] / magnitude];
-	}
-
-
-
-	qmul(x1, y1, z1, w1, x2, y2, z2, w2)
-	{
-		return [
-			x1 * x2 - y1 * y2 - z1 * z1 - w1 * w2,
-			x1 * y2 + y1 * x2 + z1 * w2 - w1 * z2,
-			x1 * z2 - y1 * w2 + z1 * x2 + w1 * y2,
-			x1 * w2 + y1 * z2 - z1 * y2 + w1 * x2
-		];
-	}
-
-
-
 	distanceEstimator(x, y, z)
 	{
-		let mutableZ = [x, y, z, this.kSlice];
+		let mutableZ = [x, y, z, 0];
 		let zPrime = [1.0, 0.0, 0.0, 0.0];
 
 		let r = 0.0;
 
-		for (let iteration = 0; iteration < this.maxIterations * 4; iteration++)
+		for (let iteration = 0; iteration < this.maxIterations; iteration++)
 		{
-			r = Math.sqrt(this.dotProduct4(mutableZ, mutableZ));
+			r = Math.sqrt(RaymarchApplet.dotProduct4(mutableZ, mutableZ));
 
 			if (r > 16.0)
 			{
 				break;
 			}
 
-			zPrime = this.qmul(...mutableZ, ...zPrime);
+			zPrime = RaymarchApplet.qmul(...mutableZ, ...zPrime);
 			zPrime[0] *= 2;
 			zPrime[1] *= 2;
 			zPrime[2] *= 2;
@@ -854,435 +501,14 @@ export class QuaternionicJuliaSet extends Applet
 
 
 
-			mutableZ = this.qmul(...mutableZ, ...mutableZ);
+			mutableZ = RaymarchApplet.qmul(...mutableZ, ...mutableZ);
 
 			mutableZ[0] += ((1 - this.juliaProportion) * x + this.juliaProportion * this.c[0]);
 			mutableZ[1] += ((1 - this.juliaProportion) * y + this.juliaProportion * this.c[1]);
 			mutableZ[2] += ((1 - this.juliaProportion) * z + this.juliaProportion * this.c[2]);
-			mutableZ[3] += this.kSlice;
 		}
 
-		return 0.5 * Math.log(r) * r / Math.sqrt(this.dotProduct4(zPrime, zPrime));
-	}
-
-
-
-	onGrabCanvas(x, y, event)
-	{
-		this.nextThetaVelocity = 0;
-		this.nextPhiVelocity = 0;
-
-		this.thetaVelocity = 0;
-		this.phiVelocity = 0;
-
-
-
-		if (event.type === "touchstart")
-		{
-			if (event.touches.length === 2)
-			{
-				this.movingForwardTouch = true;
-				this.movingBackwardTouch = false;
-
-				this.moveVelocity[0] = 0;
-				this.moveVelocity[1] = 0;
-				this.moveVelocity[2] = 0;
-
-				this.moveVelocity[3] = 0;
-
-				this.nextMoveVelocity[0] = 0;
-				this.nextMoveVelocity[1] = 0;
-				this.nextMoveVelocity[2] = 0;
-
-				this.nextMoveVelocity[3] = 0;
-			}
-
-			else if (event.touches.length === 3)
-			{
-				this.movingForwardTouch = false;
-				this.movingBackwardTouch = true;
-
-				this.moveVelocity[0] = 0;
-				this.moveVelocity[1] = 0;
-				this.moveVelocity[2] = 0;
-
-				this.moveVelocity[3] = 0;
-
-				this.nextMoveVelocity[0] = 0;
-				this.nextMoveVelocity[1] = 0;
-				this.nextMoveVelocity[2] = 0;
-
-				this.nextMoveVelocity[3] = 0;
-			}
-
-			else
-			{
-				this.movingForwardTouch = false;
-				this.movingBackwardTouch = false;
-			}
-
-			this.wasMovingTouch = false;
-		}
-	}
-
-
-
-	onDragCanvas(x, y, xDelta, yDelta, event)
-	{
-		if (event.type === "touchmove" && this.wasMovingTouch)
-		{
-			this.wasMovingTouch = false;
-			return;
-		}
-
-
-
-		this.theta += xDelta * Math.PI / 2;
-
-		this.nextThetaVelocity = xDelta * Math.PI / 2;
-
-		if (this.theta >= 2 * Math.PI)
-		{
-			this.theta -= 2 * Math.PI;
-		}
-
-		else if (this.theta < 0)
-		{
-			this.theta += 2 * Math.PI;
-		}
-
-
-
-		this.phi += yDelta * Math.PI / 2;
-
-		this.nextPhiVelocity = yDelta * Math.PI / 2;
-
-		if (this.phi > Math.PI - .01)
-		{
-			this.phi = Math.PI - .01;
-		}
-
-		else if (this.phi < .01)
-		{
-			this.phi = .01;
-		}
-
-
-
-		this.calculateVectors();
-	}
-
-
-
-	onReleaseCanvas(x, y, event)
-	{
-		if (event.type === "touchend")
-		{
-			this.movingForwardTouch = false;
-			this.movingBackwardTouch = false;
-
-			this.wasMovingTouch = true;
-
-			if (
-				this.moveVelocity[0] === 0
-				&& this.moveVelocity[1] === 0
-				&& this.moveVelocity[2] === 0
-			)
-			{
-				this.moveVelocity[0] = this.nextMoveVelocity[0];
-				this.moveVelocity[1] = this.nextMoveVelocity[1];
-				this.moveVelocity[2] = this.nextMoveVelocity[2];
-
-				this.moveVelocity[3] = this.nextMoveVelocity[3];
-
-				this.nextMoveVelocity[0] = 0;
-				this.nextMoveVelocity[1] = 0;
-				this.nextMoveVelocity[2] = 0;
-
-				this.nextMoveVelocity[3] = 0;
-			}
-		}
-
-		if (
-			(
-				(event.type === "touchend" && event.touches.length === 0)
-				|| event.type === "mouseup"
-			) && (
-				this.nextThetaVelocity * this.nextThetaVelocity
-				+ this.nextPhiVelocity * this.nextPhiVelocity >=
-					this.panVelocityStartThreshhold * this.panVelocityStartThreshhold
-			)
-		)
-		{
-			this.thetaVelocity = this.nextThetaVelocity;
-			this.phiVelocity = this.nextPhiVelocity;
-		}
-	}
-
-
-
-	handleKeydownEvent(e)
-	{
-		if (
-			document.activeElement.tagName === "INPUT"
-			|| !(
-				e.key === "w"
-				|| e.key === "s"
-				|| e.key === "d"
-				|| e.key === "a"
-				|| e.key === "e"
-				|| e.key === "q"
-			)
-		)
-		{
-			return;
-		}
-
-
-
-		this.nextMoveVelocity = [0, 0, 0, 0];
-		this.moveVelocity = [0, 0, 0, 0];
-
-
-
-		if (e.key === "w")
-		{
-			this.movingForwardKeyboard = true;
-		}
-
-		else if (e.key === "s")
-		{
-			this.movingBackwardKeyboard = true;
-		}
-
-		if (e.key === "d")
-		{
-			this.movingRightKeyboard = true;
-		}
-
-		else if (e.key === "a")
-		{
-			this.movingLeftKeyboard = true;
-		}
-
-		if (e.key === "e")
-		{
-			this.movingSliceUpKeyboard = true;
-		}
-
-		else if (e.key === "q")
-		{
-			this.movingSliceDownKeyboard = true;
-		}
-	}
-
-
-
-	handleKeyupEvent(e)
-	{
-		if (
-			document.activeElement.tagName === "INPUT"
-			|| !(
-				e.key === "w"
-				|| e.key === "s"
-				|| e.key === "d"
-				|| e.key === "a"
-				|| e.key === "e"
-				|| e.key === "q"
-			)
-		)
-		{
-			return;
-		}
-
-
-
-		if (
-			this.moveVelocity[0] === 0
-			&& this.moveVelocity[1] === 0
-			&& this.moveVelocity[2] === 0
-			&& this.moveVelocity[3] === 0
-		)
-		{
-			this.moveVelocity[0] = this.nextMoveVelocity[0];
-			this.moveVelocity[1] = this.nextMoveVelocity[1];
-			this.moveVelocity[2] = this.nextMoveVelocity[2];
-
-			this.moveVelocity[3] = this.nextMoveVelocity[3];
-
-			this.nextMoveVelocity[0] = 0;
-			this.nextMoveVelocity[1] = 0;
-			this.nextMoveVelocity[2] = 0;
-
-			this.nextMoveVelocity[3] = 0;
-		}
-
-
-
-		if (e.key === "w")
-		{
-			this.movingForwardKeyboard = false;
-		}
-
-		else if (e.key === "s")
-		{
-			this.movingBackwardKeyboard = false;
-		}
-
-		if (e.key === "d")
-		{
-			this.movingRightKeyboard = false;
-		}
-
-		else if (e.key === "a")
-		{
-			this.movingLeftKeyboard = false;
-		}
-
-		if (e.key === "e")
-		{
-			this.movingSliceUpKeyboard = false;
-		}
-
-		else if (e.key === "q")
-		{
-			this.movingSliceDownKeyboard = false;
-		}
-	}
-
-
-
-	updateCameraParameters()
-	{
-		this.movingSpeed = Math.min(Math.max(.000001, this.distanceToScene / 20), .02);
-
-
-
-		if (this.movingPos)
-		{
-			const oldCameraPos = [...this.cameraPos];
-
-
-
-			if (this.movingForwardKeyboard || this.movingForwardTouch)
-			{
-				this.cameraPos[0] += this.movingSpeed * this.forwardVec[0];
-				this.cameraPos[1] += this.movingSpeed * this.forwardVec[1];
-				this.cameraPos[2] += this.movingSpeed * this.forwardVec[2];
-			}
-
-			else if (this.movingBackwardKeyboard || this.movingBackwardTouch)
-			{
-				this.cameraPos[0] -= this.movingSpeed * this.forwardVec[0];
-				this.cameraPos[1] -= this.movingSpeed * this.forwardVec[1];
-				this.cameraPos[2] -= this.movingSpeed * this.forwardVec[2];
-			}
-
-
-
-			if (this.movingRightKeyboard)
-			{
-				this.cameraPos[0] += this.movingSpeed * this.rightVec[0] / this.focalLength;
-				this.cameraPos[1] += this.movingSpeed * this.rightVec[1] / this.focalLength;
-				this.cameraPos[2] += this.movingSpeed * this.rightVec[2] / this.focalLength;
-			}
-
-			else if (this.movingLeftKeyboard)
-			{
-				this.cameraPos[0] -= this.movingSpeed * this.rightVec[0] / this.focalLength;
-				this.cameraPos[1] -= this.movingSpeed * this.rightVec[1] / this.focalLength;
-				this.cameraPos[2] -= this.movingSpeed * this.rightVec[2] / this.focalLength;
-			}
-
-
-
-			this.nextMoveVelocity[0] = this.cameraPos[0] - oldCameraPos[0];
-			this.nextMoveVelocity[1] = this.cameraPos[1] - oldCameraPos[1];
-			this.nextMoveVelocity[2] = this.cameraPos[2] - oldCameraPos[2];
-		}
-
-
-
-		else
-		{
-			const oldC = [...this.c];
-			const oldKSlice = this.kSlice;
-
-			if (this.movingForwardKeyboard || this.movingForwardTouch)
-			{
-				this.c[0] += .5 * this.movingSpeed * this.forwardVec[0];
-				this.c[1] += .5 * this.movingSpeed * this.forwardVec[1];
-				this.c[2] += .5 * this.movingSpeed * this.forwardVec[2];
-			}
-
-			else if (this.movingBackwardKeyboard || this.movingBackwardTouch)
-			{
-				this.c[0] -= .5 * this.movingSpeed * this.forwardVec[0];
-				this.c[1] -= .5 * this.movingSpeed * this.forwardVec[1];
-				this.c[2] -= .5 * this.movingSpeed * this.forwardVec[2];
-			}
-
-
-
-			if (this.movingRightKeyboard)
-			{
-				this.c[0] += .5 * this.movingSpeed * this.rightVec[0] / this.focalLength;
-				this.c[1] += .5 * this.movingSpeed * this.rightVec[1] / this.focalLength;
-				this.c[2] += .5 * this.movingSpeed * this.rightVec[2] / this.focalLength;
-			}
-
-			else if (this.movingLeftKeyboard)
-			{
-				this.c[0] -= .5 * this.movingSpeed * this.rightVec[0] / this.focalLength;
-				this.c[1] -= .5 * this.movingSpeed * this.rightVec[1] / this.focalLength;
-				this.c[2] -= .5 * this.movingSpeed * this.rightVec[2] / this.focalLength;
-			}
-
-
-
-			if (this.movingSliceUpKeyboard)
-			{
-				this.kSlice += .5 * this.movingSpeed;
-			}
-
-			else if (this.movingSliceDownKeyboard)
-			{
-				this.kSlice -= .5 * this.movingSpeed;
-			}
-
-
-
-			if (
-				this.cXInputElement
-				&& this.cYInputElement
-				&& this.cZInputElement
-				&& this.cWInputElement
-			)
-			{
-				this.cXInputElement.value = Math.round((this.c[0]) * 1000000) / 1000000;
-				this.cYInputElement.value = Math.round((this.c[1]) * 1000000) / 1000000;
-				this.cZInputElement.value = Math.round((this.c[2]) * 1000000) / 1000000;
-
-				this.cWInputElement.value = Math.round((this.kSlice) * 1000000) / 1000000;
-			}
-
-
-			this.wilson.gl.uniform3fv(this.wilson.uniforms["c"], this.c);
-
-			this.wilson.gl.uniform1f(this.wilson.uniforms["kSlice"], this.kSlice);
-
-
-
-			this.nextMoveVelocity[0] = this.c[0] - oldC[0];
-			this.nextMoveVelocity[1] = this.c[1] - oldC[1];
-			this.nextMoveVelocity[2] = this.c[2] - oldC[2];
-
-			this.nextMoveVelocity[3] = this.kSlice - oldKSlice;
-		}
-
-
-
-		this.calculateVectors();
+		return 0.5 * Math.log(r) * r / Math.sqrt(RaymarchApplet.dotProduct4(zPrime, zPrime));
 	}
 
 
@@ -1373,7 +599,7 @@ export class QuaternionicJuliaSet extends Applet
 		anime({
 			targets: dummy,
 			t: 1,
-			duration: 1500 * animateChange + 10,
+			duration: 1000 * animateChange + 10,
 			easing: "easeOutQuad",
 			update: () =>
 			{
@@ -1419,16 +645,10 @@ export class QuaternionicJuliaSet extends Applet
 		{
 			this.wilson.gl.uniform3fv(this.wilson.uniforms["c"], this.c);
 
-			if (!this.movingPos)
-			{
-				this.wilson.gl.uniform1i(this.wilson.uniforms["drawSphere"], 1);
-			}
-
 			setTimeout(() =>
 			{
 				if (this.switchBulbButtonElement && this.randomizeCButtonElement)
 				{
-					changeOpacity(this.switchMovementButtonElement, 1);
 					changeOpacity(this.randomizeCButtonElement, 1);
 				}
 			}, opacityAnimationTime);
@@ -1436,13 +656,8 @@ export class QuaternionicJuliaSet extends Applet
 
 		else
 		{
-			this.movingPos = true;
-
-			this.wilson.gl.uniform1i(this.wilson.uniforms["drawSphere"], 0);
-
 			if (this.switchBulbButtonElement && this.randomizeCButtonElement)
 			{
-				changeOpacity(this.switchMovementButtonElement, 0);
 				changeOpacity(this.randomizeCButtonElement, 0);
 			}
 		}
@@ -1454,7 +669,7 @@ export class QuaternionicJuliaSet extends Applet
 		anime({
 			targets: dummy,
 			t: 1,
-			duration: 1500,
+			duration: 1000,
 			easing: "easeOutQuad",
 			update: () =>
 			{
@@ -1467,29 +682,5 @@ export class QuaternionicJuliaSet extends Applet
 				);
 			}
 		});
-	}
-
-
-
-	switchMovement()
-	{
-		this.movingPos = !this.movingPos;
-
-		if (this.switchMovementButtonElement)
-		{
-			changeOpacity(this.switchMovementButtonElement, 0)
-				.then(() =>
-				{
-					this.switchMovementButtonElement.textContent = this.movingPos
-						? "Change Julia Set"
-						: "Move Camera";
-
-					changeOpacity(this.switchMovementButtonElement, 1);
-				});
-		}
-
-
-
-		this.wilson.gl.uniform1i(this.wilson.uniforms["drawSphere"], this.movingPos ? 0 : 1);
 	}
 }

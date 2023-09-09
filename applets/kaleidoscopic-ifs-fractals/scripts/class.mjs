@@ -1,85 +1,22 @@
 import anime from "/scripts/anime.js";
 import { changeOpacity } from "/scripts/src/animation.mjs";
-import { Applet } from "/scripts/src/applets.mjs";
+import { RaymarchApplet } from "/scripts/src/applets.mjs";
 import { aspectRatio } from "/scripts/src/layout.mjs";
 import { addTemporaryListener } from "/scripts/src/main.mjs";
 import { Wilson } from "/scripts/wilson.mjs";
 
-export class KaleidoscopicIFSFractal extends Applet
+export class KaleidoscopicIFSFractal extends RaymarchApplet
 {
-	currentlyDrawing = false;
-	currentlyAnimatingParameters = false;
-
-	currentlyDragging = false;
-
-	drawStartTime = 0;
-
-	mouseX = 0;
-	mouseY = 0;
-
-	movingForwardKeyboard = false;
-	movingBackwardKeyboard = false;
-	movingRightKeyboard = false;
-	movingLeftKeyboard = false;
-
-	movingForwardTouch = false;
-	movingBackwardTouch = false;
-
-	wasMovingTouch = false;
-
-	movingSpeed = 0;
-
-
-
-	nextMoveVelocity = [0, 0, 0];
-
-	moveVelocity = [0, 0, 0];
-
-	moveFriction = .94;
-	moveVelocityStopThreshhold = .0005;
-
-
-
-	distanceToScene = 1;
-
-	lastTimestamp = -1;
-
-
-
-	theta = 3.2954;
-	phi = 1.9657;
-
-	nextThetaVelocity = 0;
-	nextPhiVelocity = 0;
-
-	thetaVelocity = 0;
-	phiVelocity = 0;
-
-	panFriction = .94;
-	panVelocityStartThreshhold = .005;
-	panVelocityStopThreshhold = .0005;
-
-
-
-	imageSize = 500;
-	imageWidth = 500;
-	imageHeight = 500;
+	theta = .2391;
+	phi = 1.6925;
 
 	numSierpinskiIterations = 24;
 
 	scale = 2.0;
+	
+	cameraPos = [-2.4426, -0.6339, 0.3633];
 
-	imagePlaneCenterPos = [];
-
-	forwardVec = [];
-	rightVec = [];
-	upVec = [];
-
-	cameraPos = [2.1089, .41345, .95325];
-
-	polyhedronIndex = 0;
-
-	focalLength = 2;
+	polyhedronIndex = 2;
 
 	lightPos = [[0, 0, 5], [5, 5, 5], [0, 0, 5]];
 
@@ -98,22 +35,6 @@ export class KaleidoscopicIFSFractal extends Applet
 	rotationAngleX2 = 0;
 	rotationAngleY2 = 0;
 	rotationAngleZ2 = 0;
-
-	rotationAngleX1Old = 0;
-	rotationAngleY1Old = 0;
-	rotationAngleZ1Old = 0;
-	rotationAngleX2Old = 0;
-	rotationAngleY2Old = 0;
-	rotationAngleZ2Old = 0;
-
-	rotationAngleX1Delta = 0;
-	rotationAngleY1Delta = 0;
-	rotationAngleZ1Delta = 0;
-	rotationAngleX2Delta = 0;
-	rotationAngleY2Delta = 0;
-	rotationAngleZ2Delta = 0;
-
-	parameterAnimationFrame = 0;
 
 
 
@@ -389,9 +310,6 @@ export class KaleidoscopicIFSFractal extends Applet
 			
 			void main(void)
 			{
-				//Uncomment to use 2x antialiasing.
-				//vec3 finalColor = (raymarch(imagePlaneCenterPos + rightVec * (uv.x * aspectRatio + .5 / float(imageSize)) + upVec * (uv.y + .5 / float(imageSize))) + raymarch(imagePlaneCenterPos + rightVec * (uv.x * aspectRatio + .5 / float(imageSize)) + upVec * (uv.y - .5 / float(imageSize))) + raymarch(imagePlaneCenterPos + rightVec * (uv.x * aspectRatio - .5 / float(imageSize)) + upVec * (uv.y + .5 / float(imageSize))) + raymarch(imagePlaneCenterPos + rightVec * (uv.x * aspectRatio - .5 / float(imageSize)) + upVec * (uv.y - .5 / float(imageSize)))) / 4.0;
-					
 				vec3 finalColor = raymarch(imagePlaneCenterPos + rightVec * uv.x * aspectRatioX + upVec * uv.y / aspectRatioY);
 				
 				gl_FragColor = vec4(finalColor.xyz, 1.0);
@@ -406,9 +324,12 @@ export class KaleidoscopicIFSFractal extends Applet
 
 			shader: fragShaderSource,
 
-			canvasWidth: 500,
-			canvasHeight: 500,
+			canvasWidth: 400,
+			canvasHeight: 400,
 
+			worldCenterX: -.2391,
+			worldCenterY: -1.6925,
+		
 
 
 			useFullscreen: true,
@@ -457,10 +378,10 @@ export class KaleidoscopicIFSFractal extends Applet
 			"rotationMatrix2"
 		]);
 
-
+		
 
 		this.calculateVectors();
-
+		
 		if (this.imageWidth >= this.imageHeight)
 		{
 			this.wilson.gl.uniform1f(
@@ -486,7 +407,7 @@ export class KaleidoscopicIFSFractal extends Applet
 				this.imageWidth / this.imageHeight
 			);
 		}
-
+		
 		this.wilson.gl.uniform1i(
 			this.wilson.uniforms["imageSize"],
 			this.imageSize
@@ -571,25 +492,11 @@ export class KaleidoscopicIFSFractal extends Applet
 
 
 
-		const boundFunction = this.handleKeydownEvent.bind(this);
-		addTemporaryListener({
-			object: document.documentElement,
-			event: "keydown",
-			callback: boundFunction
-		});
-
-		const boundFunction2 = this.handleKeyupEvent.bind(this);
-		addTemporaryListener({
-			object: document.documentElement,
-			event: "keyup",
-			callback: boundFunction2
-		});
-
-		const boundFunction3 = () => this.changeResolution();
+		const boundFunction = () => this.changeResolution();
 		addTemporaryListener({
 			object: window,
 			event: "resize",
-			callback: boundFunction3
+			callback: boundFunction
 		});
 
 
@@ -614,251 +521,36 @@ export class KaleidoscopicIFSFractal extends Applet
 
 
 
+		this.pan.update(timeElapsed);
+		this.zoom.update(timeElapsed);
+		this.moveUpdate(timeElapsed);
+
+		this.calculateVectors();
+		this.updateCameraParameters();
+
+
+		
+		this.wilson.worldCenterY = Math.min(
+			Math.max(
+				this.wilson.worldCenterY,
+				-Math.PI + .01
+			),
+			-.01
+		);
+		
+		this.theta = -this.wilson.worldCenterX;
+		this.phi = -this.wilson.worldCenterY;
+
+
+
 		this.wilson.render.drawFrame();
 
 
 
-		let needNewFrame = false;
-
-
-
-		if (
-			this.movingForwardKeyboard
-			|| this.movingBackwardKeyboard
-			|| this.movingRightKeyboard
-			|| this.movingLeftKeyboard
-			|| this.movingForwardTouch
-			|| this.movingBackwardTouch)
-		{
-			this.updateCameraParameters();
-
-			needNewFrame = true;
-		}
-
-		else if (timeElapsed >= 50)
-		{
-			this.nextThetaVelocity = 0;
-			this.nextPhiVelocity = 0;
-
-			this.thetaVelocity = 0;
-			this.phiVelocity = 0;
-
-			this.movingForwardTouch = false;
-			this.movingBackwardTouch = false;
-
-			this.moveVelocity[0] = 0;
-			this.moveVelocity[1] = 0;
-			this.moveVelocity[2] = 0;
-
-			this.nextMoveVelocity[0] = 0;
-			this.nextMoveVelocity[1] = 0;
-			this.nextMoveVelocity[2] = 0;
-		}
-
-
-
-		if (this.thetaVelocity !== 0 || this.phiVelocity !== 0)
-		{
-			this.theta += this.thetaVelocity;
-			this.phi += this.phiVelocity;
-
-
-
-			if (this.theta >= 2 * Math.PI)
-			{
-				this.theta -= 2 * Math.PI;
-			}
-
-			else if (this.theta < 0)
-			{
-				this.theta += 2 * Math.PI;
-			}
-
-
-
-			if (this.phi > Math.PI - .01)
-			{
-				this.phi = Math.PI - .01;
-			}
-
-			else if (this.phi < .01)
-			{
-				this.phi = .01;
-			}
-
-
-
-			this.thetaVelocity *= this.panFriction;
-			this.phiVelocity *= this.panFriction;
-
-			if (
-				this.thetaVelocity * this.thetaVelocity + this.phiVelocity * this.phiVelocity <
-					this.panVelocityStopThreshhold * this.panVelocityStopThreshhold
-			)
-			{
-				this.thetaVelocity = 0;
-				this.phiVelocity = 0;
-			}
-
-
-
-			this.calculateVectors();
-
-			needNewFrame = true;
-		}
-
-		if (this.moveVelocity[0] !== 0 || this.moveVelocity[1] !== 0 || this.moveVelocity[2] !== 0)
-		{
-			this.cameraPos[0] += this.moveVelocity[0];
-			this.cameraPos[1] += this.moveVelocity[1];
-			this.cameraPos[2] += this.moveVelocity[2];
-
-			this.moveVelocity[0] *= this.moveFriction;
-			this.moveVelocity[1] *= this.moveFriction;
-			this.moveVelocity[2] *= this.moveFriction;
-
-			if (
-				this.moveVelocity[0] * this.moveVelocity[0]
-				+ this.moveVelocity[1] * this.moveVelocity[1]
-				+ this.moveVelocity[2] * this.moveVelocity[2] <
-					this.moveVelocityStopThreshhold * this.movingSpeed
-					* this.moveVelocityStopThreshhold * this.movingSpeed
-			)
-			{
-				this.moveVelocity[0] = 0;
-				this.moveVelocity[1] = 0;
-				this.moveVelocity[2] = 0;
-			}
-
-
-
-			this.calculateVectors();
-
-			needNewFrame = true;
-		}
-
-
-
-		if (needNewFrame)
+		if (!this.animationPaused)
 		{
 			window.requestAnimationFrame(this.drawFrame.bind(this));
 		}
-	}
-
-
-
-	calculateVectors()
-	{
-		//Here comes the serious math. Theta is the angle in the xy-plane
-		//and phi the angle down from the z-axis. We can use them get a normalized forward vector:
-		this.forwardVec = [
-			Math.cos(this.theta) * Math.sin(this.phi),
-			Math.sin(this.theta) * Math.sin(this.phi),
-			Math.cos(this.phi)
-		];
-
-		//Now the right vector needs to be constrained to the xy-plane,
-		//since otherwise the image will appear tilted. For a vector (a, b, c),
-		//the orthogonal plane that passes through the origin is ax + by + cz = 0,
-		//so we want ax + by = 0. One solution is (b, -a), and that's the one
-		//that goes to the "right" of the forward vector (when looking down).
-		this.rightVec = this.normalize([this.forwardVec[1], -this.forwardVec[0], 0]);
-
-		//Finally, the upward vector is the cross product of the previous two.
-		this.upVec = this.crossProduct(this.rightVec, this.forwardVec);
-
-
-
-		this.distanceToScene = this.distanceEstimator(
-			this.cameraPos[0],
-			this.cameraPos[1],
-			this.cameraPos[2]
-		);
-
-
-
-		this.focalLength = this.distanceToScene / 2;
-
-		//The factor we divide by here sets the fov.
-		this.rightVec[0] *= this.focalLength / 2;
-		this.rightVec[1] *= this.focalLength / 2;
-
-		this.upVec[0] *= this.focalLength / 2;
-		this.upVec[1] *= this.focalLength / 2;
-		this.upVec[2] *= this.focalLength / 2;
-
-
-
-		this.imagePlaneCenterPos = [
-			this.cameraPos[0] + this.focalLength * this.forwardVec[0],
-			this.cameraPos[1] + this.focalLength * this.forwardVec[1],
-			this.cameraPos[2] + this.focalLength * this.forwardVec[2]
-		];
-
-
-
-		this.wilson.gl.uniform3fv(this.wilson.uniforms["cameraPos"], this.cameraPos);
-		
-		this.wilson.gl.uniform3fv(
-			this.wilson.uniforms["imagePlaneCenterPos"],
-			this.imagePlaneCenterPos
-		);
-
-		this.wilson.gl.uniform3fv(this.wilson.uniforms["forwardVec"], this.forwardVec);
-		this.wilson.gl.uniform3fv(this.wilson.uniforms["rightVec"], this.rightVec);
-		this.wilson.gl.uniform3fv(this.wilson.uniforms["upVec"], this.upVec);
-
-		this.wilson.gl.uniform1f(this.wilson.uniforms["focalLength"], this.focalLength);
-	}
-
-
-
-	dotProduct(vec1, vec2)
-	{
-		return vec1[0] * vec2[0] + vec1[1] * vec2[1] + vec1[2] * vec2[2];
-	}
-
-
-
-	crossProduct(vec1, vec2)
-	{
-		return [
-			vec1[1] * vec2[2] - vec1[2] * vec2[1],
-			vec1[2] * vec2[0] - vec1[0] * vec2[2],
-			vec1[0] * vec2[1] - vec1[1] * vec2[0]
-		];
-	}
-
-
-
-	matMul(mat1, mat2)
-	{
-		return [
-			[
-				mat1[0][0] * mat2[0][0] + mat1[0][1] * mat2[1][0] + mat1[0][2] * mat2[2][0],
-				mat1[0][0] * mat2[0][1] + mat1[0][1] * mat2[1][1] + mat1[0][2] * mat2[2][1],
-				mat1[0][0] * mat2[0][2] + mat1[0][1] * mat2[1][2] + mat1[0][2] * mat2[2][2]
-			],
-			[
-				mat1[1][0] * mat2[0][0] + mat1[1][1] * mat2[1][0] + mat1[1][2] * mat2[2][0],
-				mat1[1][0] * mat2[0][1] + mat1[1][1] * mat2[1][1] + mat1[1][2] * mat2[2][1],
-				mat1[1][0] * mat2[0][2] + mat1[1][1] * mat2[1][2] + mat1[1][2] * mat2[2][2]
-			],
-			[
-				mat1[2][0] * mat2[0][0] + mat1[2][1] * mat2[1][0] + mat1[2][2] * mat2[2][0],
-				mat1[2][0] * mat2[0][1] + mat1[2][1] * mat2[1][1] + mat1[2][2] * mat2[2][1],
-				mat1[2][0] * mat2[0][2] + mat1[2][1] * mat2[1][2] + mat1[2][2] * mat2[2][2]
-			]
-		];
-	}
-
-
-
-	normalize(vec)
-	{
-		const magnitude = Math.sqrt(vec[0] * vec[0] + vec[1] * vec[1] + vec[2] * vec[2]);
-
-		return [vec[0] / magnitude, vec[1] / magnitude, vec[2] / magnitude];
 	}
 
 
@@ -870,7 +562,7 @@ export class KaleidoscopicIFSFractal extends Applet
 		for (let iteration = 0; iteration < this.numSierpinskiIterations; iteration++)
 		{
 			//Fold space over on itself so that we can reference only the top vertex.
-			const t1 = this.dotProduct([x, y, z], this.n1[this.polyhedronIndex]);
+			const t1 = RaymarchApplet.dotProduct([x, y, z], this.n1[this.polyhedronIndex]);
 
 			if (t1 < 0)
 			{
@@ -879,7 +571,7 @@ export class KaleidoscopicIFSFractal extends Applet
 				z -= 2 * t1 * this.n1[this.polyhedronIndex][2];
 			}
 
-			const t2 = this.dotProduct([x, y, z], this.n2[this.polyhedronIndex]);
+			const t2 = RaymarchApplet.dotProduct([x, y, z], this.n2[this.polyhedronIndex]);
 
 			if (t2 < 0)
 			{
@@ -888,7 +580,7 @@ export class KaleidoscopicIFSFractal extends Applet
 				z -= 2 * t2 * this.n2[this.polyhedronIndex][2];
 			}
 
-			const t3 = this.dotProduct([x, y, z], this.n3[this.polyhedronIndex]);
+			const t3 = RaymarchApplet.dotProduct([x, y, z], this.n3[this.polyhedronIndex]);
 
 			if (t3 < 0)
 			{
@@ -899,7 +591,7 @@ export class KaleidoscopicIFSFractal extends Applet
 
 			if (this.numNs[this.polyhedronIndex] >= 4)
 			{
-				const t4 = this.dotProduct([x, y, z], this.n4[this.polyhedronIndex]);
+				const t4 = RaymarchApplet.dotProduct([x, y, z], this.n4[this.polyhedronIndex]);
 
 				if (t4 < 0)
 				{
@@ -935,7 +627,7 @@ export class KaleidoscopicIFSFractal extends Applet
 				[0, Math.sin(this.rotationAngleX1), Math.cos(this.rotationAngleX1)]
 			];
 
-			let matTotal = this.matMul(this.matMul(matZ, matY), matX);
+			let matTotal = RaymarchApplet.matMul(RaymarchApplet.matMul(matZ, matY), matX);
 
 			x = matTotal[0][0] * tempX + matTotal[0][1] * tempY + matTotal[0][2] * tempZ;
 			y = matTotal[1][0] * tempX + matTotal[1][1] * tempY + matTotal[1][2] * tempZ;
@@ -978,7 +670,7 @@ export class KaleidoscopicIFSFractal extends Applet
 				[0, Math.sin(this.rotationAngleX2), Math.cos(this.rotationAngleX2)]
 			];
 
-			matTotal = this.matMul(this.matMul(matZ, matY), matX);
+			matTotal = RaymarchApplet.matMul(RaymarchApplet.matMul(matZ, matY), matX);
 
 			x = matTotal[0][0] * tempX + matTotal[0][1] * tempY + matTotal[0][2] * tempZ;
 			y = matTotal[1][0] * tempX + matTotal[1][1] * tempY + matTotal[1][2] * tempZ;
@@ -991,307 +683,6 @@ export class KaleidoscopicIFSFractal extends Applet
 		//The final distance is therefore:
 		return Math.sqrt(x * x + y * y + z * z)
 			* Math.pow(this.scale, -this.numSierpinskiIterations);
-	}
-
-
-
-	onGrabCanvas(x, y, event)
-	{
-		this.nextThetaVelocity = 0;
-		this.nextPhiVelocity = 0;
-
-		this.thetaVelocity = 0;
-		this.phiVelocity = 0;
-
-
-
-		if (event.type === "touchstart")
-		{
-			if (event.touches.length === 2)
-			{
-				this.movingForwardTouch = true;
-				this.movingBackwardTouch = false;
-
-				this.moveVelocity[0] = 0;
-				this.moveVelocity[1] = 0;
-				this.moveVelocity[2] = 0;
-
-				this.nextMoveVelocity[0] = 0;
-				this.nextMoveVelocity[1] = 0;
-				this.nextMoveVelocity[2] = 0;
-
-				window.requestAnimationFrame(this.drawFrame.bind(this));
-			}
-
-			else if (event.touches.length === 3)
-			{
-				this.movingForwardTouch = false;
-				this.movingBackwardTouch = true;
-
-				this.moveVelocity[0] = 0;
-				this.moveVelocity[1] = 0;
-				this.moveVelocity[2] = 0;
-
-				this.nextMoveVelocity[0] = 0;
-				this.nextMoveVelocity[1] = 0;
-				this.nextMoveVelocity[2] = 0;
-
-				window.requestAnimationFrame(this.drawFrame.bind(this));
-			}
-
-			else
-			{
-				this.movingForwardTouch = false;
-				this.movingBackwardTouch = false;
-			}
-
-			this.wasMovingTouch = false;
-		}
-	}
-
-
-
-	onDragCanvas(x, y, xDelta, yDelta, event)
-	{
-		if (event.type === "touchmove" && this.wasMovingTouch)
-		{
-			this.wasMovingTouch = false;
-			return;
-		}
-
-
-
-		this.theta += xDelta * Math.PI / 2;
-
-		this.nextThetaVelocity = xDelta * Math.PI / 2;
-
-		if (this.theta >= 2 * Math.PI)
-		{
-			this.theta -= 2 * Math.PI;
-		}
-
-		else if (this.theta < 0)
-		{
-			this.theta += 2 * Math.PI;
-		}
-
-
-
-		this.phi += yDelta * Math.PI / 2;
-
-		this.nextPhiVelocity = yDelta * Math.PI / 2;
-
-		if (this.phi > Math.PI - .01)
-		{
-			this.phi = Math.PI - .01;
-		}
-
-		else if (this.phi < .01)
-		{
-			this.phi = .01;
-		}
-
-
-
-		this.calculateVectors();
-
-		window.requestAnimationFrame(this.drawFrame.bind(this));
-	}
-
-
-
-	onReleaseCanvas(x, y, event)
-	{
-		if (event.type === "touchend")
-		{
-			this.movingForwardTouch = false;
-			this.movingBackwardTouch = false;
-
-			this.wasMovingTouch = true;
-
-			if (
-				this.moveVelocity[0] === 0
-				&& this.moveVelocity[1] === 0
-				&& this.moveVelocity[2] === 0
-			)
-			{
-				this.moveVelocity[0] = this.nextMoveVelocity[0];
-				this.moveVelocity[1] = this.nextMoveVelocity[1];
-				this.moveVelocity[2] = this.nextMoveVelocity[2];
-
-				this.nextMoveVelocity[0] = 0;
-				this.nextMoveVelocity[1] = 0;
-				this.nextMoveVelocity[2] = 0;
-			}
-		}
-
-		if (
-			(
-				(event.type === "touchend" && event.touches,length === 0)
-				|| event.type === "mouseup"
-			) && (
-				this.nextThetaVelocity * this.nextThetaVelocity
-				+ this.nextPhiVelocity * this.nextPhiVelocity >=
-					this.panVelocityStartThreshhold * this.panVelocityStartThreshhold
-			)
-		)
-		{
-			this.thetaVelocity = this.nextThetaVelocity;
-			this.phiVelocity = this.nextPhiVelocity;
-		}
-	}
-
-
-
-	handleKeydownEvent(e)
-	{
-		if (
-			document.activeElement.tagName === "INPUT"
-			|| !(e.key === "w" || e.key === "s" || e.key === "d" || e.key === "a")
-		)
-		{
-			return;
-		}
-
-
-
-		this.nextMoveVelocity = [0, 0, 0];
-		this.moveVelocity = [0, 0, 0];
-
-
-
-		//W
-		if (e.key === "w")
-		{
-			this.movingForwardKeyboard = true;
-		}
-
-		//S
-		else if (e.key === "s")
-		{
-			this.movingBackwardKeyboard = true;
-		}
-
-		//D
-		if (e.key === "d")
-		{
-			this.movingRightKeyboard = true;
-		}
-
-		//A
-		else if (e.key === "a")
-		{
-			this.movingLeftKeyboard = true;
-		}
-
-
-
-		window.requestAnimationFrame(this.drawFrame.bind(this));
-	}
-
-
-
-	handleKeyupEvent(e)
-	{
-		if (
-			document.activeElement.tagName === "INPUT"
-			|| !(e.key === "w" || e.key === "s" || e.key === "d" || e.key === "a")
-		)
-		{
-			return;
-		}
-
-
-
-		if (this.moveVelocity[0] === 0 && this.moveVelocity[1] === 0 && this.moveVelocity[2] === 0)
-		{
-			this.moveVelocity[0] = this.nextMoveVelocity[0];
-			this.moveVelocity[1] = this.nextMoveVelocity[1];
-			this.moveVelocity[2] = this.nextMoveVelocity[2];
-
-			this.nextMoveVelocity[0] = 0;
-			this.nextMoveVelocity[1] = 0;
-			this.nextMoveVelocity[2] = 0;
-		}
-
-
-
-		//W
-		if (e.key === "w")
-		{
-			this.movingForwardKeyboard = false;
-		}
-
-		//S
-		else if (e.key === "s")
-		{
-			this.movingBackwardKeyboard = false;
-		}
-
-		//D
-		if (e.key === "d")
-		{
-			this.movingRightKeyboard = false;
-		}
-
-		//A
-		else if (e.key === "a")
-		{
-			this.movingLeftKeyboard = false;
-		}
-	}
-
-
-
-	updateCameraParameters()
-	{
-		this.movingSpeed = Math.min(Math.max(.000001, this.distanceToScene / 20), .02);
-
-
-
-		const oldCameraPos = [...this.cameraPos];
-
-
-
-		if (this.movingForwardKeyboard || this.movingForwardTouch)
-		{
-			this.cameraPos[0] += this.movingSpeed * this.forwardVec[0];
-			this.cameraPos[1] += this.movingSpeed * this.forwardVec[1];
-			this.cameraPos[2] += this.movingSpeed * this.forwardVec[2];
-		}
-
-		else if (this.movingBackwardKeyboard || this.movingBackwardTouch)
-		{
-			this.cameraPos[0] -= this.movingSpeed * this.forwardVec[0];
-			this.cameraPos[1] -= this.movingSpeed * this.forwardVec[1];
-			this.cameraPos[2] -= this.movingSpeed * this.forwardVec[2];
-		}
-
-
-
-		if (this.movingRightKeyboard)
-		{
-			this.cameraPos[0] += this.movingSpeed * this.rightVec[0] / this.focalLength;
-			this.cameraPos[1] += this.movingSpeed * this.rightVec[1] / this.focalLength;
-			this.cameraPos[2] += this.movingSpeed * this.rightVec[2] / this.focalLength;
-		}
-
-		else if (this.movingLeftKeyboard)
-		{
-			this.cameraPos[0] -= this.movingSpeed * this.rightVec[0] / this.focalLength;
-			this.cameraPos[1] -= this.movingSpeed * this.rightVec[1] / this.focalLength;
-			this.cameraPos[2] -= this.movingSpeed * this.rightVec[2] / this.focalLength;
-		}
-
-
-
-		this.nextMoveVelocity[0] = this.cameraPos[0] - oldCameraPos[0];
-		this.nextMoveVelocity[1] = this.cameraPos[1] - oldCameraPos[1];
-		this.nextMoveVelocity[2] = this.cameraPos[2] - oldCameraPos[2];
-
-
-
-		this.calculateVectors();
 	}
 
 
@@ -1411,7 +802,7 @@ export class KaleidoscopicIFSFractal extends Applet
 			[0, Math.sin(this.rotationAngleX1), Math.cos(this.rotationAngleX1)]
 		];
 
-		let matTotal = this.matMul(this.matMul(matZ, matY), matX);
+		let matTotal = RaymarchApplet.matMul(RaymarchApplet.matMul(matZ, matY), matX);
 
 		this.wilson.gl.uniformMatrix3fv(
 			this.wilson.uniforms["rotationMatrix1"],
@@ -1449,7 +840,7 @@ export class KaleidoscopicIFSFractal extends Applet
 			[0, Math.sin(this.rotationAngleX2), Math.cos(this.rotationAngleX2)]
 		];
 
-		matTotal = this.matMul(this.matMul(matZ, matY), matX);
+		matTotal = RaymarchApplet.matMul(RaymarchApplet.matMul(matZ, matY), matX);
 
 		this.wilson.gl.uniformMatrix3fv(
 			this.wilson.uniforms["rotationMatrix2"],

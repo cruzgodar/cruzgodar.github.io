@@ -870,7 +870,7 @@ export class RaymarchApplet extends Applet
 
 	moveVelocity = [0, 0, 0];
 
-	moveFriction = .91;
+	moveFriction = .95;
 	moveVelocityStopThreshhold = .0005;
 
 
@@ -881,24 +881,14 @@ export class RaymarchApplet extends Applet
 
 
 
-	theta = 4.6601;
-	phi = 2.272;
-
-	nextThetaVelocity = 0;
-	nextPhiVelocity = 0;
-
-	thetaVelocity = 0;
-	phiVelocity = 0;
-
-	panFriction = .88;
-	panVelocityStartThreshhold = .005;
-	panVelocityStopThreshhold = .0005;
+	theta = 0;
+	phi = 0;
 
 
 
-	imageSize = 500;
-	imageWidth = 500;
-	imageHeight = 500;
+	imageSize = 400;
+	imageWidth = 400;
+	imageHeight = 400;
 
 	maxIterations = 16;
 
@@ -910,7 +900,7 @@ export class RaymarchApplet extends Applet
 	rightVec = [];
 	upVec = [];
 
-	cameraPos = [.0828, 2.17, 1.8925];
+	cameraPos = [0, 0, 0];
 
 	focalLength = 2;
 
@@ -921,6 +911,20 @@ export class RaymarchApplet extends Applet
 	constructor(canvas)
 	{
 		super(canvas);
+
+		const boundFunction = this.handleKeydownEvent.bind(this);
+		addTemporaryListener({
+			object: document.documentElement,
+			event: "keydown",
+			callback: boundFunction
+		});
+
+		const boundFunction2 = this.handleKeyupEvent.bind(this);
+		addTemporaryListener({
+			object: document.documentElement,
+			event: "keyup",
+			callback: boundFunction2
+		});
 	}
 
 
@@ -945,7 +949,7 @@ export class RaymarchApplet extends Applet
 		//Finally, the upward vector is the cross product of the previous two.
 		this.upVec = RaymarchApplet.crossProduct(this.rightVec, this.forwardVec);
 
-
+		
 
 		this.distanceToScene = this.distanceEstimator(
 			this.cameraPos[0],
@@ -965,7 +969,7 @@ export class RaymarchApplet extends Applet
 		this.upVec[1] *= this.focalLength / 2;
 		this.upVec[2] *= this.focalLength / 2;
 
-
+		
 
 		this.imagePlaneCenterPos = [
 			this.cameraPos[0] + this.focalLength * this.forwardVec[0],
@@ -973,7 +977,7 @@ export class RaymarchApplet extends Applet
 			this.cameraPos[2] + this.focalLength * this.forwardVec[2]
 		];
 
-
+		
 
 		this.wilson.gl.uniform3fv(this.wilson.uniforms["cameraPos"], this.cameraPos);
 
@@ -1109,23 +1113,45 @@ export class RaymarchApplet extends Applet
 
 		if (this.movingRightKeyboard)
 		{
-			this.cameraPos[0] += this.movingSpeed * this.rightVec[0] / this.focalLength;
-			this.cameraPos[1] += this.movingSpeed * this.rightVec[1] / this.focalLength;
-			this.cameraPos[2] += this.movingSpeed * this.rightVec[2] / this.focalLength;
+			this.cameraPos[0] += this.movingSpeed * this.rightVec[0] / this.focalLength * .7;
+			this.cameraPos[1] += this.movingSpeed * this.rightVec[1] / this.focalLength * .7;
+			this.cameraPos[2] += this.movingSpeed * this.rightVec[2] / this.focalLength * .7;
 		}
 
 		else if (this.movingLeftKeyboard)
 		{
-			this.cameraPos[0] -= this.movingSpeed * this.rightVec[0] / this.focalLength;
-			this.cameraPos[1] -= this.movingSpeed * this.rightVec[1] / this.focalLength;
-			this.cameraPos[2] -= this.movingSpeed * this.rightVec[2] / this.focalLength;
+			this.cameraPos[0] -= this.movingSpeed * this.rightVec[0] / this.focalLength * .7;
+			this.cameraPos[1] -= this.movingSpeed * this.rightVec[1] / this.focalLength * .7;
+			this.cameraPos[2] -= this.movingSpeed * this.rightVec[2] / this.focalLength * .7;
 		}
 
 
 
-		this.nextMoveVelocity[0] = this.cameraPos[0] - oldCameraPos[0];
-		this.nextMoveVelocity[1] = this.cameraPos[1] - oldCameraPos[1];
-		this.nextMoveVelocity[2] = this.cameraPos[2] - oldCameraPos[2];
+		if (
+			(
+				this.movingForwardKeyboard
+				|| this.movingForwardTouch
+				|| this.movingBackwardKeyboard
+				|| this.movingBackwardTouch
+			) && (
+				this.movingRightKeyboard
+				|| this.movingLeftKeyboard
+			)
+		)
+		{
+			this.cameraPos[0] = oldCameraPos[0]
+				+ (this.cameraPos[0] - oldCameraPos[0]) * .7071;
+			this.cameraPos[1] = oldCameraPos[1]
+				+ (this.cameraPos[1] - oldCameraPos[1]) * .7071;
+			this.cameraPos[2] = oldCameraPos[2]
+				+ (this.cameraPos[2] - oldCameraPos[2]) * .7071;
+		}
+
+
+
+		this.nextMoveVelocity[0] = (this.cameraPos[0] - oldCameraPos[0]) * .8;
+		this.nextMoveVelocity[1] = (this.cameraPos[1] - oldCameraPos[1]) * .8;
+		this.nextMoveVelocity[2] = (this.cameraPos[2] - oldCameraPos[2]) * .8;
 
 
 
@@ -1171,6 +1197,11 @@ export class RaymarchApplet extends Applet
 		return vec1[0] * vec2[0] + vec1[1] * vec2[1] + vec1[2] * vec2[2];
 	}
 
+	static dotProduct4(vec1, vec2)
+	{
+		return vec1[0] * vec2[0] + vec1[1] * vec2[1] + vec1[2] * vec2[2] + vec1[3] * vec2[3];
+	}
+
 
 
 	static crossProduct(vec1, vec2)
@@ -1204,6 +1235,18 @@ export class RaymarchApplet extends Applet
 				mat1[2][0] * mat2[0][1] + mat1[2][1] * mat2[1][1] + mat1[2][2] * mat2[2][1],
 				mat1[2][0] * mat2[0][2] + mat1[2][1] * mat2[1][2] + mat1[2][2] * mat2[2][2]
 			]
+		];
+	}
+
+
+
+	static qmul(x1, y1, z1, w1, x2, y2, z2, w2)
+	{
+		return [
+			x1 * x2 - y1 * y2 - z1 * z1 - w1 * w2,
+			x1 * y2 + y1 * x2 + z1 * w2 - w1 * z2,
+			x1 * z2 - y1 * w2 + z1 * x2 + w1 * y2,
+			x1 * w2 + y1 * z2 - z1 * y2 + w1 * x2
 		];
 	}
 

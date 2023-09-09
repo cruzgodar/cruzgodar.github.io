@@ -14,7 +14,7 @@ Drag on the scene to look around. On a keyboard, use WASD to move, and on a touc
 
 ### text-boxes
 	
-	resolution 500 Resolution
+	resolution 400 Resolution
 	
 	iterations 16 Iterations
 	

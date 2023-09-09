@@ -12,7 +12,7 @@ The controls are the same as in the Mandelbulb applet. While changing $c$, use t
 
 ### text-boxes
 	
-	resolution 500 Resolution
+	resolution 400 Resolution
 	
 	iterations 16 Iterations
 	
@@ -24,8 +24,6 @@ The controls are the same as in the Mandelbulb applet. While changing $c$, use t
 	
 	c-z -0.668 $c_z$
 	
-	c-w 0 $c_w$
-	
 ###
 
 ### buttons
@@ -33,8 +31,6 @@ The controls are the same as in the Mandelbulb applet. While changing $c$, use t
 	randomize-c l Randomize $c$
 	
 	switch-bulb l Switch to Mandelbrot Set
-	
-	switch-movement l Move Camera
 	
 ###
 

@@ -14,6 +14,10 @@ export class Mandelbulb extends RaymarchApplet
 	rotationAngleYInputElement = null;
 	rotationAngleZInputElement = null;
 
+	theta = 4.6601;
+	phi = 2.272;
+	cameraPos = [.0828, 2.17, 1.8925];
+
 	power = 8;
 	c = [0, 0, 0];
 	cOld = [0, 0, 0];
@@ -24,7 +28,6 @@ export class Mandelbulb extends RaymarchApplet
 	rotationAngleZ = 0;
 
 	juliaProportion = 0;
-	movingPos = 1;
 
 
 
@@ -68,8 +71,6 @@ export class Mandelbulb extends RaymarchApplet
 			const float lightBrightness = 1.5;
 			
 			uniform int imageSize;
-			
-			uniform int drawSphere;
 			
 			uniform int maxIterations;
 			
@@ -126,19 +127,7 @@ export class Mandelbulb extends RaymarchApplet
 				
 				
 				
-				float distance1 = .5 * log(r) * r / dr;
-				float distance2 = length(pos - c) - .05;
-				
-				
-				
-				if (distance2 < distance1 && drawSphere == 1)
-				{
-					return distance2;
-				}
-				
-				
-				
-				return distance1;
+				return .5 * log(r) * r / dr;
 			}
 			
 			
@@ -184,18 +173,6 @@ export class Mandelbulb extends RaymarchApplet
 				}
 				
 				color /= max(max(color.x, color.y), color.z);
-				
-				
-				
-				float distance1 = .5 * log(r) * r / dr;
-				float distance2 = length(pos - c) - .05;
-				
-				
-				
-				if (distance2 < distance1 && drawSphere == 1)
-				{
-					color = vec3(1.0, 1.0, 1.0);
-				}
 				
 				
 				
@@ -331,8 +308,8 @@ export class Mandelbulb extends RaymarchApplet
 
 			shader: fragShaderSource,
 
-			canvasWidth: 500,
-			canvasHeight: 500,
+			canvasWidth: 400,
+			canvasHeight: 400,
 
 			worldCenterX: -4.6601,
 			worldCenterY: -2.272,
@@ -375,7 +352,6 @@ export class Mandelbulb extends RaymarchApplet
 			"upVec",
 			"focalLength",
 			"lightPos",
-			"drawSphere",
 			"power",
 			"c",
 			"juliaProportion",
@@ -456,11 +432,6 @@ export class Mandelbulb extends RaymarchApplet
 			this.focalLength
 		);
 
-		this.wilson.gl.uniform1i(
-			this.wilson.uniforms["drawSphere"],
-			0
-		);
-
 		this.wilson.gl.uniform1f(
 			this.wilson.uniforms["power"],
 			8
@@ -499,25 +470,11 @@ export class Mandelbulb extends RaymarchApplet
 
 
 
-		const boundFunction = this.handleKeydownEvent.bind(this);
-		addTemporaryListener({
-			object: document.documentElement,
-			event: "keydown",
-			callback: boundFunction
-		});
-
-		const boundFunction2 = this.handleKeyupEvent.bind(this);
-		addTemporaryListener({
-			object: document.documentElement,
-			event: "keyup",
-			callback: boundFunction2
-		});
-
-		const boundFunction3 = () => this.changeResolution();
+		const boundFunction = () => this.changeResolution();
 		addTemporaryListener({
 			object: window,
 			event: "resize",
-			callback: boundFunction3
+			callback: boundFunction
 		});
 
 
@@ -622,7 +579,7 @@ export class Mandelbulb extends RaymarchApplet
 		let r = 0.0;
 		let dr = 1.0;
 
-		for (let iteration = 0; iteration < this.maxIterations * 4; iteration++)
+		for (let iteration = 0; iteration < this.maxIterations; iteration++)
 		{
 			r = Math.sqrt(RaymarchApplet.dotProduct(mutableZ, mutableZ));
 
@@ -637,19 +594,19 @@ export class Mandelbulb extends RaymarchApplet
 
 			dr = Math.pow(r, this.power - 1.0) * this.power * dr + 1.0;
 
-			theta = theta * this.power;
+			theta *= this.power;
 
-			phi = phi * this.power;
+			phi *= this.power;
 
 			const scaledR = Math.pow(r, this.power);
 
-			mutableZ[0] = scaledR * Math.sin(this.theta) * Math.cos(this.phi)
+			mutableZ[0] = scaledR * Math.sin(theta) * Math.cos(phi)
 				+ ((1 - this.juliaProportion) * x + this.juliaProportion * this.c[0]);
 
-			mutableZ[1] = scaledR * Math.sin(this.theta) * Math.sin(this.phi)
+			mutableZ[1] = scaledR * Math.sin(theta) * Math.sin(phi)
 				+ ((1 - this.juliaProportion) * y + this.juliaProportion * this.c[1]);
 
-			mutableZ[2] = scaledR * Math.cos(this.theta)
+			mutableZ[2] = scaledR * Math.cos(theta)
 				+ ((1 - this.juliaProportion) * z + this.juliaProportion * this.c[2]);
 
 
@@ -831,18 +788,6 @@ export class Mandelbulb extends RaymarchApplet
 		if (this.juliaProportion === 0)
 		{
 			this.wilson.gl.uniform3fv(this.wilson.uniforms["c"], this.c);
-
-			if (!this.movingPos)
-			{
-				this.wilson.gl.uniform1i(this.wilson.uniforms["drawSphere"], 1);
-			}
-		}
-
-		else
-		{
-			this.movingPos = true;
-
-			this.wilson.gl.uniform1i(this.wilson.uniforms["drawSphere"], 0);
 		}
 
 		const dummy = { t: 0 };

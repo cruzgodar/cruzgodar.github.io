@@ -7,23 +7,18 @@ export function load()
 	const cXInputElement = $("#c-x-input");
 	const cYInputElement = $("#c-y-input");
 	const cZInputElement = $("#c-z-input");
-	const cWInputElement = $("#c-w-input");
 
 	const randomizeCButtonElement = $("#randomize-c-button");
 
 	const switchBulbButtonElement = $("#switch-bulb-button");
 
-	const switchMovementButtonElement = $("#switch-movement-button");
-
 	const applet = new QuaternionicJuliaSet(
 		$("#output-canvas"),
 		switchBulbButtonElement,
-		switchMovementButtonElement,
 		randomizeCButtonElement,
 		cXInputElement,
 		cYInputElement,
 		cZInputElement,
-		cWInputElement
 	);
 
 
@@ -78,7 +73,7 @@ export function load()
 
 
 
-	const elements = [cXInputElement, cYInputElement, cZInputElement, cWInputElement];
+	const elements = [cXInputElement, cYInputElement, cZInputElement];
 
 	for (let i = 0; i < elements.length; i++)
 	{
@@ -88,7 +83,6 @@ export function load()
 				parseFloat(cXInputElement.value || 0),
 				parseFloat(cYInputElement.value || 0),
 				parseFloat(cZInputElement.value || 0),
-				parseFloat(cWInputElement.value || 0)
 			];
 
 			applet.updateC(c);
@@ -106,12 +100,6 @@ export function load()
 	switchBulbButtonElement.style.opacity = 1;
 
 	switchBulbButtonElement.addEventListener("click", () => applet.switchBulb());
-
-
-
-	switchMovementButtonElement.style.opacity = 1;
-
-	switchMovementButtonElement.addEventListener("click", () => applet.switchMovement());
 
 
 
