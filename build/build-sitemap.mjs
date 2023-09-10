@@ -30,7 +30,7 @@ export default async function buildSitemap()
 
 
 
-	let sitemap = `export const sitemap =\n{${getPageString(
+	let sitemap = `export const sitemap =\n{${await getPageString(
 		"/home/",
 		"",
 		[
@@ -115,7 +115,7 @@ export default async function buildSitemap()
 
 		const realParent = parent === "/" ? "/home/" : parent;
 
-		sitemap = `${sitemap}${getPageString(lines[i], realParent, children, title)}`;
+		sitemap = `${sitemap}${await getPageString(lines[i], realParent, children, title)}`;
 	}
 
 	sitemap = `${sitemap.slice(0, sitemap.length - 3)}\n};`;
@@ -125,8 +125,16 @@ export default async function buildSitemap()
 
 
 
-function getPageString(url, parent, children, title)
+async function getPageString(url, parent, children, title)
 {
+	const [scriptData, styleData] = await Promise.all([
+		read(`${url}/scripts/index.mjs`),
+		read(`${url}/style/index.css`)
+	]);
+
+	const customScriptString = scriptData !== null ? ",\n\n\t\t\"customScript\": true" : "";
+	const customStyleString = styleData !== null ? ",\n\n\t\t\"customStyle\": true" : "";
+
 	if (children.length !== 0)
 	{
 		let childrenString = "";
@@ -152,7 +160,7 @@ function getPageString(url, parent, children, title)
 		
 		"children":
 		[
-${childrenString}\t\t]
+${childrenString}\t\t]${customScriptString}${customStyleString}
 	},
 		`;
 	}
@@ -164,7 +172,7 @@ ${childrenString}\t\t]
 		
 		"parent": "${parent}",
 		
-		"children": []
+		"children": []${customScriptString}${customStyleString}
 	},
 	`;
 }

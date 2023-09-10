@@ -57,6 +57,7 @@ export async function loadPage()
 
 	setUpBanner();
 
+	
 	loadCustomStyle();
 
 	loadCustomScripts();
@@ -107,6 +108,11 @@ export async function showPage()
 
 function loadCustomStyle()
 {
+	if (!sitemap[pageUrl].customStyle)
+	{
+		return;
+	}
+
 	fetch(`${pageUrl}style/index.${window.DEBUG ? "css" : "min.css"}`)
 		.then(response => response.text())
 		.then(text =>
@@ -130,9 +136,15 @@ function loadCustomStyle()
 
 function loadCustomScripts()
 {
+	if (!sitemap[pageUrl].customScript)
+	{
+		window.requestAnimationFrame(showPage);
+
+		return;
+	}
+	
 	import(`${pageUrl}scripts/index.${window.DEBUG ? "mjs" : "min.mjs"}`)
-		.then(Module => Module.load())
-		.catch(() => window.requestAnimationFrame(showPage));
+		.then(Module => Module.load());
 }
 
 async function fadeInPage()

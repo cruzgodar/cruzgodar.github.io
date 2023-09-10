@@ -16,7 +16,11 @@ export const sitemap =
 			"/about/",
 			"/404/",
 			"/debug/"
-		]
+		],
+
+		"customScript": true,
+
+		"customStyle": true
 	},
 		
 	"/gallery/":
@@ -25,7 +29,11 @@ export const sitemap =
 		
 		"parent": "/home/",
 		
-		"children": []
+		"children": [],
+
+		"customScript": true,
+
+		"customStyle": true
 	},
 	
 	"/applets/":
@@ -92,7 +100,11 @@ export const sitemap =
 		
 		"parent": "/applets/",
 		
-		"children": []
+		"children": [],
+
+		"customScript": true,
+
+		"customStyle": true
 	},
 	
 	"/applets/vector-fields/":
@@ -101,7 +113,11 @@ export const sitemap =
 		
 		"parent": "/applets/",
 		
-		"children": []
+		"children": [],
+
+		"customScript": true,
+
+		"customStyle": true
 	},
 	
 	"/applets/plane-partitions/":
@@ -110,7 +126,11 @@ export const sitemap =
 		
 		"parent": "/applets/",
 		
-		"children": []
+		"children": [],
+
+		"customScript": true,
+
+		"customStyle": true
 	},
 	
 	"/applets/quaternionic-julia-sets/":
@@ -119,7 +139,9 @@ export const sitemap =
 		
 		"parent": "/applets/",
 		
-		"children": []
+		"children": [],
+
+		"customScript": true
 	},
 	
 	"/applets/fractal-sounds/":
@@ -128,7 +150,9 @@ export const sitemap =
 		
 		"parent": "/applets/",
 		
-		"children": []
+		"children": [],
+
+		"customScript": true
 	},
 	
 	"/applets/sorting-algorithms/":
@@ -137,7 +161,11 @@ export const sitemap =
 		
 		"parent": "/applets/",
 		
-		"children": []
+		"children": [],
+
+		"customScript": true,
+
+		"customStyle": true
 	},
 	
 	"/applets/complex-tori/":
@@ -146,7 +174,11 @@ export const sitemap =
 		
 		"parent": "/applets/",
 		
-		"children": []
+		"children": [],
+
+		"customScript": true,
+
+		"customStyle": true
 	},
 	
 	"/applets/domino-shuffling/":
@@ -155,7 +187,9 @@ export const sitemap =
 		
 		"parent": "/applets/",
 		
-		"children": []
+		"children": [],
+
+		"customScript": true
 	},
 	
 	"/applets/pascals-triangle-colorings/":
@@ -164,7 +198,9 @@ export const sitemap =
 		
 		"parent": "/applets/",
 		
-		"children": []
+		"children": [],
+
+		"customScript": true
 	},
 	
 	"/applets/three-body-systems/":
@@ -182,7 +218,9 @@ export const sitemap =
 		
 		"parent": "/applets/",
 		
-		"children": []
+		"children": [],
+
+		"customScript": true
 	},
 	
 	"/applets/double-pendulum-fractal/":
@@ -191,7 +229,9 @@ export const sitemap =
 		
 		"parent": "/applets/",
 		
-		"children": []
+		"children": [],
+
+		"customScript": true
 	},
 	
 	"/applets/complex-maps/":
@@ -200,7 +240,11 @@ export const sitemap =
 		
 		"parent": "/applets/",
 		
-		"children": []
+		"children": [],
+
+		"customScript": true,
+
+		"customStyle": true
 	},
 	
 	"/applets/lyapunov-fractals/":
@@ -209,7 +253,9 @@ export const sitemap =
 		
 		"parent": "/applets/",
 		
-		"children": []
+		"children": [],
+
+		"customScript": true
 	},
 	
 	"/applets/newtons-method-extended/":
@@ -218,7 +264,11 @@ export const sitemap =
 		
 		"parent": "/applets/",
 		
-		"children": []
+		"children": [],
+
+		"customScript": true,
+
+		"customStyle": true
 	},
 	
 	"/applets/secant-method/":
@@ -227,7 +277,11 @@ export const sitemap =
 		
 		"parent": "/applets/",
 		
-		"children": []
+		"children": [],
+
+		"customScript": true,
+
+		"customStyle": true
 	},
 	
 	"/applets/quasi-fuchsian-groups/":
@@ -236,7 +290,11 @@ export const sitemap =
 		
 		"parent": "/applets/",
 		
-		"children": []
+		"children": [],
+
+		"customScript": true,
+
+		"customStyle": true
 	},
 	
 	"/applets/the-mandelbulb/":
@@ -245,7 +303,9 @@ export const sitemap =
 		
 		"parent": "/applets/",
 		
-		"children": []
+		"children": [],
+
+		"customScript": true
 	},
 	
 	"/applets/kaleidoscopic-ifs-fractals/":
@@ -254,7 +314,9 @@ export const sitemap =
 		
 		"parent": "/applets/",
 		
-		"children": []
+		"children": [],
+
+		"customScript": true
 	},
 	
 	"/applets/binary-trees/":
@@ -263,7 +325,11 @@ export const sitemap =
 		
 		"parent": "/applets/",
 		
-		"children": []
+		"children": [],
+
+		"customScript": true,
+
+		"customStyle": true
 	},
 	
 	"/applets/snowflakes/":
@@ -272,7 +338,9 @@ export const sitemap =
 		
 		"parent": "/applets/",
 		
-		"children": []
+		"children": [],
+
+		"customScript": true
 	},
 	
 	"/applets/finite-subdivisions/":
@@ -281,7 +349,9 @@ export const sitemap =
 		
 		"parent": "/applets/",
 		
-		"children": []
+		"children": [],
+
+		"customScript": true
 	},
 	
 	"/applets/generalized-julia-sets/":
@@ -290,7 +360,11 @@ export const sitemap =
 		
 		"parent": "/applets/",
 		
-		"children": []
+		"children": [],
+
+		"customScript": true,
+
+		"customStyle": true
 	},
 	
 	"/applets/strange-attractors/":
@@ -299,7 +373,9 @@ export const sitemap =
 		
 		"parent": "/applets/",
 		
-		"children": []
+		"children": [],
+
+		"customScript": true
 	},
 	
 	"/applets/sudoku-generator/":
@@ -308,7 +384,11 @@ export const sitemap =
 		
 		"parent": "/applets/",
 		
-		"children": []
+		"children": [],
+
+		"customScript": true,
+
+		"customStyle": true
 	},
 	
 	"/applets/julia-set-mosaic/":
@@ -317,7 +397,9 @@ export const sitemap =
 		
 		"parent": "/applets/",
 		
-		"children": []
+		"children": [],
+
+		"customScript": true
 	},
 	
 	"/applets/chaos-game/":
@@ -326,7 +408,9 @@ export const sitemap =
 		
 		"parent": "/applets/",
 		
-		"children": []
+		"children": [],
+
+		"customScript": true
 	},
 	
 	"/applets/kicked-rotator/":
@@ -335,7 +419,9 @@ export const sitemap =
 		
 		"parent": "/applets/",
 		
-		"children": []
+		"children": [],
+
+		"customScript": true
 	},
 	
 	"/applets/brownian-trees/":
@@ -344,7 +430,9 @@ export const sitemap =
 		
 		"parent": "/applets/",
 		
-		"children": []
+		"children": [],
+
+		"customScript": true
 	},
 	
 	"/applets/barnsley-fern/":
@@ -353,7 +441,9 @@ export const sitemap =
 		
 		"parent": "/applets/",
 		
-		"children": []
+		"children": [],
+
+		"customScript": true
 	},
 	
 	"/applets/newtons-method/":
@@ -362,7 +452,11 @@ export const sitemap =
 		
 		"parent": "/applets/",
 		
-		"children": []
+		"children": [],
+
+		"customScript": true,
+
+		"customStyle": true
 	},
 	
 	"/applets/calcudoku-generator/":
@@ -371,7 +465,11 @@ export const sitemap =
 		
 		"parent": "/applets/",
 		
-		"children": []
+		"children": [],
+
+		"customScript": true,
+
+		"customStyle": true
 	},
 	
 	"/applets/simulated-annealing/":
@@ -380,7 +478,9 @@ export const sitemap =
 		
 		"parent": "/applets/",
 		
-		"children": []
+		"children": [],
+
+		"customScript": true
 	},
 	
 	"/applets/abelian-sandpiles/":
@@ -389,7 +489,9 @@ export const sitemap =
 		
 		"parent": "/applets/",
 		
-		"children": []
+		"children": [],
+
+		"customScript": true
 	},
 	
 	"/applets/wilsons-algorithm/":
@@ -398,7 +500,9 @@ export const sitemap =
 		
 		"parent": "/applets/",
 		
-		"children": []
+		"children": [],
+
+		"customScript": true
 	},
 	
 	"/applets/julia-set-explorer/":
@@ -407,7 +511,9 @@ export const sitemap =
 		
 		"parent": "/applets/",
 		
-		"children": []
+		"children": [],
+
+		"customScript": true
 	},
 	
 	"/projects/wilson/":
@@ -425,7 +531,11 @@ export const sitemap =
 			"/projects/wilson/guide/5-fullscreen/",
 			"/projects/wilson/guide/6-interactivity/",
 			"/projects/wilson/docs/"
-		]
+		],
+
+		"customScript": true,
+
+		"customStyle": true
 	},
 		
 	"/projects/wilson/guide/1-getting-started/":
@@ -470,7 +580,9 @@ export const sitemap =
 		
 		"parent": "/projects/wilson/",
 		
-		"children": []
+		"children": [],
+
+		"customStyle": true
 	},
 	
 	"/projects/wilson/guide/6-interactivity/":
@@ -479,7 +591,9 @@ export const sitemap =
 		
 		"parent": "/projects/wilson/",
 		
-		"children": []
+		"children": [],
+
+		"customStyle": true
 	},
 	
 	"/projects/wilson/docs/":
@@ -531,7 +645,9 @@ export const sitemap =
 		
 		"parent": "/teaching/uo/341/",
 		
-		"children": []
+		"children": [],
+
+		"customScript": true
 	},
 	
 	"/teaching/uo/341/notes/2-row-reduction/":
@@ -583,7 +699,9 @@ export const sitemap =
 		
 		"parent": "/teaching/uo/256/",
 		
-		"children": []
+		"children": [],
+
+		"customScript": true
 	},
 	
 	"/teaching/uo/256/notes/1-intro-to-des/":
@@ -592,7 +710,9 @@ export const sitemap =
 		
 		"parent": "/teaching/uo/256/",
 		
-		"children": []
+		"children": [],
+
+		"customScript": true
 	},
 	
 	"/teaching/uo/256/notes/2-if-and-sep/":
@@ -673,7 +793,9 @@ export const sitemap =
 		
 		"parent": "/teaching/uo/256/",
 		
-		"children": []
+		"children": [],
+
+		"customScript": true
 	},
 	
 	"/teaching/uo/256/notes/11-intro-to-systems/":
@@ -682,7 +804,9 @@ export const sitemap =
 		
 		"parent": "/teaching/uo/256/",
 		
-		"children": []
+		"children": [],
+
+		"customScript": true
 	},
 	
 	"/teaching/uo/256/notes/12-complex-and-repeated-eigenvectors/":
@@ -691,7 +815,9 @@ export const sitemap =
 		
 		"parent": "/teaching/uo/256/",
 		
-		"children": []
+		"children": [],
+
+		"customScript": true
 	},
 	
 	"/teaching/uo/256/notes/13-phase-portraits-and-stability/":
@@ -700,7 +826,9 @@ export const sitemap =
 		
 		"parent": "/teaching/uo/256/",
 		
-		"children": []
+		"children": [],
+
+		"customScript": true
 	},
 	
 	"/teaching/uo/253/":
@@ -731,7 +859,9 @@ export const sitemap =
 		
 		"parent": "/teaching/uo/253/",
 		
-		"children": []
+		"children": [],
+
+		"customScript": true
 	},
 	
 	"/teaching/uo/253/notes/1-sequences/":
@@ -740,7 +870,9 @@ export const sitemap =
 		
 		"parent": "/teaching/uo/253/",
 		
-		"children": []
+		"children": [],
+
+		"customScript": true
 	},
 	
 	"/teaching/uo/253/notes/2-series/":
@@ -749,7 +881,9 @@ export const sitemap =
 		
 		"parent": "/teaching/uo/253/",
 		
-		"children": []
+		"children": [],
+
+		"customScript": true
 	},
 	
 	"/teaching/uo/253/notes/3-divergence-and-integral-tests/":
@@ -758,7 +892,9 @@ export const sitemap =
 		
 		"parent": "/teaching/uo/253/",
 		
-		"children": []
+		"children": [],
+
+		"customScript": true
 	},
 	
 	"/teaching/uo/253/notes/4-comparison-tests/":
@@ -776,7 +912,9 @@ export const sitemap =
 		
 		"parent": "/teaching/uo/253/",
 		
-		"children": []
+		"children": [],
+
+		"customScript": true
 	},
 	
 	"/teaching/uo/253/notes/6-ratio-and-root-tests/":
@@ -812,7 +950,9 @@ export const sitemap =
 		
 		"parent": "/teaching/uo/253/",
 		
-		"children": []
+		"children": [],
+
+		"customScript": true
 	},
 	
 	"/teaching/uo/253/notes/10-applications-of-taylor-series/":
@@ -858,7 +998,9 @@ export const sitemap =
 		
 		"parent": "/teaching/uo/252/",
 		
-		"children": []
+		"children": [],
+
+		"customScript": true
 	},
 	
 	"/teaching/uo/252/notes/1-riemann-sums/":
@@ -867,7 +1009,9 @@ export const sitemap =
 		
 		"parent": "/teaching/uo/252/",
 		
-		"children": []
+		"children": [],
+
+		"customScript": true
 	},
 	
 	"/teaching/uo/252/notes/2-integrals-intro/":
@@ -876,7 +1020,9 @@ export const sitemap =
 		
 		"parent": "/teaching/uo/252/",
 		
-		"children": []
+		"children": [],
+
+		"customScript": true
 	},
 	
 	"/teaching/uo/252/notes/3-antiderivatives/":
@@ -885,7 +1031,9 @@ export const sitemap =
 		
 		"parent": "/teaching/uo/252/",
 		
-		"children": []
+		"children": [],
+
+		"customScript": true
 	},
 	
 	"/teaching/uo/252/notes/4-ftoc/":
@@ -894,7 +1042,9 @@ export const sitemap =
 		
 		"parent": "/teaching/uo/252/",
 		
-		"children": []
+		"children": [],
+
+		"customScript": true
 	},
 	
 	"/teaching/uo/252/notes/5-simple-applications/":
@@ -903,7 +1053,9 @@ export const sitemap =
 		
 		"parent": "/teaching/uo/252/",
 		
-		"children": []
+		"children": [],
+
+		"customScript": true
 	},
 	
 	"/teaching/uo/252/notes/6-u-sub/":
@@ -930,7 +1082,9 @@ export const sitemap =
 		
 		"parent": "/teaching/uo/252/",
 		
-		"children": []
+		"children": [],
+
+		"customScript": true
 	},
 	
 	"/teaching/uo/252/notes/9-solids-of-revolution/":
@@ -939,7 +1093,9 @@ export const sitemap =
 		
 		"parent": "/teaching/uo/252/",
 		
-		"children": []
+		"children": [],
+
+		"customScript": true
 	},
 	
 	"/teaching/uo/252/notes/10-arc-length-and-surface-area/":
@@ -948,7 +1104,9 @@ export const sitemap =
 		
 		"parent": "/teaching/uo/252/",
 		
-		"children": []
+		"children": [],
+
+		"customScript": true
 	},
 	
 	"/teaching/uo/252/notes/11-physical-applications/":
@@ -993,7 +1151,9 @@ export const sitemap =
 		
 		"parent": "/teaching/uo/252/",
 		
-		"children": []
+		"children": [],
+
+		"customScript": true
 	},
 	
 	"/teaching/uo/252/notes/16-intro-to-des/":
@@ -1002,7 +1162,9 @@ export const sitemap =
 		
 		"parent": "/teaching/uo/252/",
 		
-		"children": []
+		"children": [],
+
+		"customScript": true
 	},
 	
 	"/teaching/uo/251/":
@@ -1038,7 +1200,9 @@ export const sitemap =
 		
 		"parent": "/teaching/uo/251/",
 		
-		"children": []
+		"children": [],
+
+		"customScript": true
 	},
 	
 	"/teaching/uo/251/notes/1-intro-to-limits/":
@@ -1047,7 +1211,9 @@ export const sitemap =
 		
 		"parent": "/teaching/uo/251/",
 		
-		"children": []
+		"children": [],
+
+		"customScript": true
 	},
 	
 	"/teaching/uo/251/notes/2-limit-rules/":
@@ -1056,7 +1222,9 @@ export const sitemap =
 		
 		"parent": "/teaching/uo/251/",
 		
-		"children": []
+		"children": [],
+
+		"customScript": true
 	},
 	
 	"/teaching/uo/251/notes/3-continuity/":
@@ -1065,7 +1233,9 @@ export const sitemap =
 		
 		"parent": "/teaching/uo/251/",
 		
-		"children": []
+		"children": [],
+
+		"customScript": true
 	},
 	
 	"/teaching/uo/251/notes/4-intro-to-derivatives/":
@@ -1074,7 +1244,9 @@ export const sitemap =
 		
 		"parent": "/teaching/uo/251/",
 		
-		"children": []
+		"children": [],
+
+		"customScript": true
 	},
 	
 	"/teaching/uo/251/notes/5-derivative-rules/":
@@ -1092,7 +1264,9 @@ export const sitemap =
 		
 		"parent": "/teaching/uo/251/",
 		
-		"children": []
+		"children": [],
+
+		"customScript": true
 	},
 	
 	"/teaching/uo/251/notes/7-exp-log-and-trig-derivatives/":
@@ -1101,7 +1275,9 @@ export const sitemap =
 		
 		"parent": "/teaching/uo/251/",
 		
-		"children": []
+		"children": [],
+
+		"customScript": true
 	},
 	
 	"/teaching/uo/251/notes/8-the-chain-rule/":
@@ -1128,7 +1304,9 @@ export const sitemap =
 		
 		"parent": "/teaching/uo/251/",
 		
-		"children": []
+		"children": [],
+
+		"customScript": true
 	},
 	
 	"/teaching/uo/251/notes/11-optimization/":
@@ -1137,7 +1315,9 @@ export const sitemap =
 		
 		"parent": "/teaching/uo/251/",
 		
-		"children": []
+		"children": [],
+
+		"customScript": true
 	},
 	
 	"/teaching/uo/251/notes/12-l-hopitals-rule/":
@@ -1155,7 +1335,9 @@ export const sitemap =
 		
 		"parent": "/teaching/uo/251/",
 		
-		"children": []
+		"children": [],
+
+		"customScript": true
 	},
 	
 	"/teaching/uo/251/notes/14-applied-optimization/":
@@ -1164,7 +1346,9 @@ export const sitemap =
 		
 		"parent": "/teaching/uo/251/",
 		
-		"children": []
+		"children": [],
+
+		"customScript": true
 	},
 	
 	"/teaching/uo/251/notes/15-newtons-method/":
@@ -1173,7 +1357,11 @@ export const sitemap =
 		
 		"parent": "/teaching/uo/251/",
 		
-		"children": []
+		"children": [],
+
+		"customScript": true,
+
+		"customStyle": true
 	},
 	
 	"/teaching/uo/243/":
@@ -1259,7 +1447,9 @@ export const sitemap =
 		
 		"parent": "/home/",
 		
-		"children": []
+		"children": [],
+
+		"customStyle": true
 	},
 	
 	"/writing/":
