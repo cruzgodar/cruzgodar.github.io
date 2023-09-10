@@ -44,7 +44,6 @@ export const sitemap =
 		
 		"children":
 		[
-			"/applets/thurston-geometries/",
 			"/applets/magic-carpets/",
 			"/applets/vector-fields/",
 			"/applets/plane-partitions/",
@@ -54,7 +53,6 @@ export const sitemap =
 			"/applets/complex-tori/",
 			"/applets/domino-shuffling/",
 			"/applets/pascals-triangle-colorings/",
-			"/applets/three-body-systems/",
 			"/applets/hitomezashi-patterns/",
 			"/applets/double-pendulum-fractal/",
 			"/applets/complex-maps/",
@@ -85,15 +83,6 @@ export const sitemap =
 		]
 	},
 		
-	"/applets/thurston-geometries/":
-	{
-		"title": "Thurston Geometries",
-		
-		"parent": "/applets/",
-		
-		"children": []
-	},
-	
 	"/applets/magic-carpets/":
 	{
 		"title": "Magic Carpets",
@@ -201,15 +190,6 @@ export const sitemap =
 		"children": [],
 
 		"customScript": true
-	},
-	
-	"/applets/three-body-systems/":
-	{
-		"title": "Three-Body Systems",
-		
-		"parent": "/applets/",
-		
-		"children": []
 	},
 	
 	"/applets/hitomezashi-patterns/":

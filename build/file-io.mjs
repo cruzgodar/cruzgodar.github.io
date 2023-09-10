@@ -20,6 +20,24 @@ export async function read(filepath)
 	});
 }
 
+export async function getModifiedDate(filepath)
+{
+	return new Promise(resolve =>
+	{
+		const fullPath = filepath[0] === "/" ? root + filepath.slice(1) : root + filepath;
+
+		fs.stat(fullPath, "utf8", (err, data) =>
+		{
+			if (!err && data)
+			{
+				resolve(data.mtime ?? data.ctime);
+			}
+
+			resolve(null);
+		});
+	});
+}
+
 export function write(filepath, content)
 {
 	const fullPath = filepath[0] === "/" ? root + filepath.slice(1) : root + filepath;

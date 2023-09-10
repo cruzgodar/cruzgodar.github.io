@@ -2,7 +2,6 @@ home Cruz Godar
 	gallery Gallery
 	
 	applets Applets
-		thurston-geometries Thurston Geometries
 		magic-carpets Magic Carpets
 		vector-fields Vector Fields
 		plane-partitions Plane Partitions
@@ -12,7 +11,6 @@ home Cruz Godar
 		complex-tori Complex Tori
 		domino-shuffling Domino Shuffling
 		pascals-triangle-colorings Pascal's Triangle Colorings
-		three-body-systems Three-Body Systems
 		hitomezashi-patterns Hitomezashi Patterns
 		double-pendulum-fractal The Double Pendulum Fractal
 		complex-maps Complex Maps

@@ -3,7 +3,7 @@ import { read, write } from "./file-io.mjs";
 const textSitemapPath = "/build/sitemap.txt";
 export const sitemapPath = "/scripts/src/sitemap.mjs";
 
-export default async function buildSitemap()
+export async function buildSitemap()
 {
 	const lines = (await read(textSitemapPath))
 		.replaceAll(/\r/g, "")
