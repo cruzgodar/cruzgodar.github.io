@@ -121,6 +121,8 @@ export async function buildSitemap()
 	sitemap = `${sitemap.slice(0, sitemap.length - 3)}\n};`;
 
 	await write(sitemapPath, sitemap);
+
+	await new Promise(resolve => setTimeout(resolve, 50));
 }
 
 

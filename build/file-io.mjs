@@ -22,10 +22,10 @@ export async function read(filepath)
 
 export async function getModifiedDate(filepath)
 {
+	const fullPath = filepath[0] === "/" ? root + filepath.slice(1) : root + filepath;
+	
 	return new Promise(resolve =>
 	{
-		const fullPath = filepath[0] === "/" ? root + filepath.slice(1) : root + filepath;
-
 		fs.stat(fullPath, "utf8", (err, data) =>
 		{
 			if (!err && data)
