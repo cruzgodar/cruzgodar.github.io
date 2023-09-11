@@ -304,7 +304,7 @@ function unloadPage()
 {
 	//Remove temporary things outside the page element.
 	document.querySelectorAll("script, .temporary-style").forEach(element => element.remove());
-
+	
 	temporaryListeners.forEach(temporaryListener =>
 	{
 		temporaryListener[0].removeEventListener(temporaryListener[1], temporaryListener[2]);

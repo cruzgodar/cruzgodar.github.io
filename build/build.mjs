@@ -1,4 +1,4 @@
-import { exec } from "child_process";
+import { spawnSync } from "child_process";
 import buildHTMLFile from "./build-html-file.mjs";
 import { buildSitemap, sitemapPath } from "./build-sitemap.mjs";
 import { buildXmlSitemap } from "./build-xml-sitemap.mjs";
@@ -20,6 +20,8 @@ const options =
 	fix: process.argv.slice(2).includes("-f"),
 };
 
+let sitemap;
+
 
 
 async function buildSite()
@@ -39,146 +41,139 @@ async function buildSite()
 		return;
 	}
 
-	const sitemap = JSON.parse(text.slice(text.indexOf("{"), text.length - 1));
+	sitemap = JSON.parse(text.slice(text.indexOf("{"), text.length - 1));
 
-	await new Promise(resolve =>
-	{
-		exec(`git -C ${root} ls-files${options.clean ? "" : " -m -o"}`, async (error, stdout) =>
-		{
-			await parseModifiedFiles(stdout.split("\n"), sitemap);
+	const proc = spawnSync("git", [
+		"-C",
+		root,
+		"ls-files",
+		...(options.clean ? [] : ["-m", "-o"])
+	]);
 
-			resolve();
-		});
-	});
+	await parseModifiedFiles(proc.stdout.toString().split("\n"));
 
 	buildXmlSitemap();
 }
 
-async function parseModifiedFiles(files, sitemap)
+async function parseModifiedFiles(files)
 {
-	for (let k = 0; k < files.length; k++)
+	await Promise.all(files.map(file => buildFile(file)));
+}
+
+async function buildFile(file)
+{
+	if (!file || file.indexOf(".") === -1)
 	{
-		if (!files[k])
+		return;
+	}
+	
+	for (let i = 0; i < excludeFromBuild.length; i++)
+	{
+		if (excludeFromBuild[i].test(file))
 		{
-			continue;
+			return;
 		}
+	}
 
-		const file = files[k];
+	const lastSlashIndex = file.lastIndexOf("/") + 1;
+	const end = file.slice(lastSlashIndex);
+	const index = end.indexOf(".");
 
-		if (file.indexOf(".") === -1)
+	if (index <= 0)
+	{
+		return;
+	}
+
+	const filename = end.slice(0, index);
+	const extension = end.slice(index + 1);
+
+	if (extension === "htmdl" && filename === "index")
+	{
+		const text = await read(file);
+		
+		if (text)
 		{
-			continue;
+			console.log(file);
+
+			await buildHTMLFile(text, "/" + file.slice(0, lastSlashIndex), sitemap);
 		}
+	}
 
-		let broken = false;
-
-		for (let i = 0; i < excludeFromBuild.length; i++)
+	else if (extension === "mjs" || extension === "js")
+	{
+		const text = await read(file);
+		
+		if (text)
 		{
-			if (excludeFromBuild[i].test(file))
-			{
-				broken = true;
-				break;
-			}
+			console.log(file);
+
+			await buildJSFile(file);
 		}
+	}
 
-		if (broken)
+	else if (extension === "css")
+	{
+		const text = await read(file);
+		
+		if (text)
 		{
-			continue;
-		}
+			console.log(file);
 
-		const lastSlashIndex = file.lastIndexOf("/") + 1;
-		const end = file.slice(lastSlashIndex);
-		const index = end.indexOf(".");
-
-		if (index <= 0)
-		{
-			continue;
-		}
-
-		const filename = end.slice(0, index);
-		const extension = end.slice(index + 1);
-
-		if (extension === "htmdl" && filename === "index")
-		{
-			const text = await read(file);
-
-			if (text)
-			{
-				console.log(file);
-
-				buildHTMLFile(text, "/" + file.slice(0, lastSlashIndex), sitemap);
-			}
-		}
-
-		else if (extension === "mjs" || extension === "js")
-		{
-			const text = await read(file);
-
-			if (text)
-			{
-				console.log(file);
-
-				await buildJSFile(file);
-			}
-		}
-
-		else if (extension === "css")
-		{
-			const text = await read(file);
-
-			if (text)
-			{
-				console.log(file);
-
-				buildCSSFile(file);
-			}
+			await buildCSSFile(file);
 		}
 	}
 }
 
-function buildJSFile(file)
+async function buildJSFile(file)
 {
-	return new Promise(resolve =>
-	{
-		const outputFile = file.replace(/(\.m*js)/, (match, $1) => `.min${$1}`);
+	const outputFile = file.replace(/(\.m*js)/, (match, $1) => `.min${$1}`);
 
-		exec(`uglifyjs ${root + file} --output ${root + outputFile} --compress --mangle --keep-fargs --webkit`, async () =>
-		{
-			const js = await read(outputFile);
+	spawnSync("uglifyjs", [
+		root + file,
+		"--output",
+		root + outputFile,
+		"--compress",
+		"--mangle",
+		"--keep-fargs",
+		"--webkit"
+	]);
+	
+	const js = await read(outputFile);
 
-			//The space after the import is very important --
-			//that prevents dynamic imports from getting screwed up.
-			write(
-				outputFile,
-				js.replace(/(import[ {].*?)\.(m*)js/g, (match, $1, $2) => `${$1}.min.${$2}js`)
-			);
-
-			resolve();
-		});
-	});
+	//The space after the import is very important --
+	//that prevents dynamic imports from getting screwed up.
+	await write(
+		outputFile,
+		js.replace(/(import[ {].*?)\.(m*)js/g, (match, $1, $2) => `${$1}.min.${$2}js`)
+	);
 }
 
 function buildCSSFile(file)
 {
 	const outputFile = file.replace(/(\.css)/, (match, $1) => `.min${$1}`);
 
-	exec(`uglifycss ${root + file} --output ${root + outputFile}`);
+	spawnSync("uglifycss", [
+		root + file,
+		"--output",
+		root + outputFile
+	]);
 }
 
 async function eslint()
 {
-	await new Promise(resolve =>
-	{
-		exec(`eslint --ext .js,.mjs$ --fix ${root}`, (error, stdout) =>
-		{
-			if (stdout)
-			{
-				console.log(stdout);
-			}
+	const proc = spawnSync("eslint", [
+		"--ext",
+		".js,.mjs",
+		"--fix",
+		root
+	]);
+	
+	const text = proc.stdout.toString();
 
-			resolve();
-		});
-	});
+	if (text)
+	{
+		console.log(text);
+	}
 }
 
 

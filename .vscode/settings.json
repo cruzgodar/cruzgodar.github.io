@@ -25,8 +25,9 @@
 		"commands": [
 			{
 				"match": ".*",
-				"cmd": "node ${workspaceFolder}/build/build.mjs"
+				"cmd": "bun ${workspaceFolder}/build/build.mjs"
 			}
 		]
 	},
+	"editor.maxTokenizationLineLength": 200000,
 }
