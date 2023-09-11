@@ -199,10 +199,6 @@ export async function hideCard()
 		}).finished,
 	]);
 
-	pageElement.style.position = "relative";
-	pageElement.style.transform = "";
-	window.scrollTo(0, scrollBeforeCard);
-
 	document.documentElement.style.backgroundColor = "var(--background)";
 
 	container.style.display = "none";
@@ -214,6 +210,28 @@ export async function hideCard()
 	document.documentElement.removeEventListener("click", handleClickEvent);
 
 	cardIsAnimating = false;
+
+	pageElement.style.position = "relative";
+
+
+	
+
+	let scroll = 0;
+
+	function scrollUpdate()
+	{
+		scroll = Math.min(scroll + window.innerHeight / 2, scrollBeforeCard);
+
+		window.scrollTo(0, scroll);
+		pageElement.style.transform = `matrix(1, 0, 0, 1, 0, ${-scrollBeforeCard + scroll})`;
+
+		if (scroll !== scrollBeforeCard)
+		{
+			window.requestAnimationFrame(scrollUpdate);
+		}
+	}
+
+	window.requestAnimationFrame(scrollUpdate);
 }
 
 function handleClickEvent(e)
