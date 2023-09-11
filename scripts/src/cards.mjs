@@ -1,3 +1,4 @@
+import { browserIsIos } from "./browser.mjs";
 import { addHoverEvent } from "./hover-events.mjs";
 import { $$, pageElement } from "./main.mjs";
 import { metaThemeColorElement, siteSettings } from "./settings.mjs";
@@ -199,6 +200,46 @@ export async function hideCard()
 		}).finished,
 	]);
 
+
+	
+	pageElement.style.position = "relative";
+	
+	//A ratherclunky soltion to an iOS WebKit bug that causes the screen to flicker
+	//when moving the scroll and position and a transform by a lot in a single frame.
+	if (browserIsIos)
+	{
+		await new Promise(resolve =>
+		{
+			let scroll = 0;
+
+			function scrollUpdate()
+			{
+				scroll = Math.min(scroll + 125, scrollBeforeCard);
+
+				window.scrollTo(0, scroll);
+				pageElement.style.transform = `matrix(1, 0, 0, 1, 0, ${-scrollBeforeCard + scroll})`;
+
+				if (scroll !== scrollBeforeCard)
+				{
+					window.requestAnimationFrame(scrollUpdate);
+				}
+
+				else
+				{
+					resolve();
+				}
+			}
+
+			window.requestAnimationFrame(scrollUpdate);
+		});
+	}
+
+	else
+	{
+		window.scrollTo(0, scrollBeforeCard);
+		pageElement.style.transform = "";
+	}
+
 	document.documentElement.style.backgroundColor = "var(--background)";
 
 	container.style.display = "none";
@@ -210,28 +251,6 @@ export async function hideCard()
 	document.documentElement.removeEventListener("click", handleClickEvent);
 
 	cardIsAnimating = false;
-
-	pageElement.style.position = "relative";
-
-
-	
-
-	let scroll = 0;
-
-	function scrollUpdate()
-	{
-		scroll = Math.min(scroll + window.innerHeight / 2, scrollBeforeCard);
-
-		window.scrollTo(0, scroll);
-		pageElement.style.transform = `matrix(1, 0, 0, 1, 0, ${-scrollBeforeCard + scroll})`;
-
-		if (scroll !== scrollBeforeCard)
-		{
-			window.requestAnimationFrame(scrollUpdate);
-		}
-	}
-
-	window.requestAnimationFrame(scrollUpdate);
 }
 
 function handleClickEvent(e)
