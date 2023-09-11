@@ -103,6 +103,10 @@ export async function showCard(id)
 	document.documentElement.style.backgroundColor = siteSettings.darkTheme
 		? "rgb(24, 24, 24)"
 		: "rgb(255, 255, 255)";
+	
+	window.scrollTo(0, 0);
+	pageElement.style.transform = `matrix(1, 0, 0, 1, 0, -${scrollBeforeCard})`;
+	pageElement.style.position = "fixed";
 
 	await Promise.all([
 		anime({
@@ -140,10 +144,6 @@ export async function showCard(id)
 		}).finished,
 	]);
 
-	window.scrollTo(0, 0);
-	pageElement.style.transform = `matrix(.975, 0, 0, .975, 0, -${scrollBeforeCard})`;
-	pageElement.style.position = "fixed";
-
 	cardIsAnimating = false;
 }
 
@@ -157,10 +157,6 @@ export async function hideCard()
 	cardIsAnimating = true;
 
 	cardIsOpen = false;
-
-	pageElement.style.position = "relative";
-	pageElement.style.transform = "scale(.975)";
-	window.scrollTo(0, scrollBeforeCard);
 
 	await new Promise(resolve => setTimeout(resolve, 0));
 
@@ -202,6 +198,10 @@ export async function hideCard()
 			easing: "easeOutQuint",
 		}).finished,
 	]);
+
+	pageElement.style.position = "relative";
+	pageElement.style.transform = "";
+	window.scrollTo(0, scrollBeforeCard);
 
 	document.documentElement.style.backgroundColor = "var(--background)";
 
