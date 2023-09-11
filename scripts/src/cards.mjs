@@ -214,7 +214,7 @@ export async function hideCard()
 
 			function scrollUpdate()
 			{
-				scroll = Math.min(scroll + 125, scrollBeforeCard);
+				scroll = Math.min(scroll + 100, scrollBeforeCard);
 
 				window.scrollTo(0, scroll);
 				pageElement.style.transform = `matrix(1, 0, 0, 1, 0, ${-scrollBeforeCard + scroll})`;
