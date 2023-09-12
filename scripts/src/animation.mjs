@@ -7,7 +7,7 @@ import anime from "/scripts/anime.js";
 
 const useJsAnimation = browserIsIos;
 
-const baseAnimationTime = 250;
+const baseAnimationTime = 200;
 
 export const opacityAnimationTime = useJsAnimation
 	? baseAnimationTime * .8
@@ -19,6 +19,8 @@ export const buttonAnimationTime = useJsAnimation
 	
 export const pageAnimationTime = baseAnimationTime * .55;
 export const backgroundColorAnimationTime = baseAnimationTime * 2;
+
+export const cardAnimationTime = baseAnimationTime * 2;
 
 
 
@@ -106,7 +108,7 @@ export const changeScale = useJsAnimation ? changeScaleJs : changeScaleCss;
 
 
 
-function fadeLeftJs(element, duration = opacityAnimationTime * 3.5, easeInOut = false)
+function fadeLeftJs(element, duration = baseAnimationTime * 3, easeInOut = false)
 {
 	return anime({
 		targets: element,
@@ -117,7 +119,7 @@ function fadeLeftJs(element, duration = opacityAnimationTime * 3.5, easeInOut = 
 	}).finished;
 }
 
-function fadeLeftCss(element, duration = opacityAnimationTime * 3.5, easeInOut = false)
+function fadeLeftCss(element, duration = baseAnimationTime * 3, easeInOut = false)
 {
 	return new Promise(resolve =>
 	{

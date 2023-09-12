@@ -207,6 +207,10 @@ export async function toggleDarkTheme({ noAnimation = false, force = false })
 				{
 					rootElement.style.setProperty("--theme", dummy.t);
 				},
+				complete: () =>
+				{
+					rootElement.style.setProperty("--theme", siteSettings.darkTheme ? 1 : 0);
+				},
 			}).finished
 		]);
 

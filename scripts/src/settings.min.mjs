@@ -3,7 +3,7 @@ import{opacityAnimationTime}from"./animation.min.mjs";import{cardIsOpen}from"./c
 			{
 				transition: none !important;
 			}
-		`);const t={t:siteSettings.darkTheme?0:1};await Promise.all([anime({targets:metaThemeColorElement,content:siteSettings.darkTheme?"#181818":"#ffffff",duration:2*opacityAnimationTime,easing:"cubicBezier(.25, .1, .25, 1)"}).finished,anime({targets:t,t:siteSettings.darkTheme?1:0,duration:2*opacityAnimationTime,easing:"cubicBezier(.25, .1, .25, 1)",update:()=>{rootElement.style.setProperty("--theme",t.t)}}).finished]),e.remove()}}function condenseApplet(){addStyle(`
+		`);const t={t:siteSettings.darkTheme?0:1};await Promise.all([anime({targets:metaThemeColorElement,content:siteSettings.darkTheme?"#181818":"#ffffff",duration:2*opacityAnimationTime,easing:"cubicBezier(.25, .1, .25, 1)"}).finished,anime({targets:t,t:siteSettings.darkTheme?1:0,duration:2*opacityAnimationTime,easing:"cubicBezier(.25, .1, .25, 1)",update:()=>{rootElement.style.setProperty("--theme",t.t)},complete:()=>{rootElement.style.setProperty("--theme",siteSettings.darkTheme?1:0)}}).finished]),e.remove()}}function condenseApplet(){addStyle(`
 		p:not(.text-box-subtext, .checkbox-subtext, .radio-button-subtext, .slider-subtext), h1, h2, header, footer, br
 		{
 			display: none;

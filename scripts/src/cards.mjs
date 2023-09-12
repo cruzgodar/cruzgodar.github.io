@@ -1,3 +1,4 @@
+import { cardAnimationTime } from "./animation.mjs";
 import { browserIsIos } from "./browser.mjs";
 import { addHoverEvent } from "./hover-events.mjs";
 import { $$, pageElement } from "./main.mjs";
@@ -33,8 +34,6 @@ if (closeButton)
 export let scrollBeforeCard = 0;
 
 
-
-const animationTime = 500;
 
 export function setUpCards()
 {
@@ -93,7 +92,7 @@ export async function showCard(id)
 	document.querySelector("#header").style.filter = "brightness(1)";
 	document.querySelector("#header-container").style.filter = "brightness(1)";
  
-	pageElement.style.transformOrigin = `50% calc(50vh + ${window.scrollY}px)`;
+	pageElement.style.transformOrigin = "50% calc(50vh)";
 
 	document.documentElement.addEventListener("click", handleClickEvent);
 
@@ -106,7 +105,7 @@ export async function showCard(id)
 		: "rgb(255, 255, 255)";
 	
 	window.scrollTo(0, 0);
-	pageElement.style.transform = `matrix(1, 0, 0, 1, 0, -${scrollBeforeCard})`;
+	pageElement.style.transform = `scale(1) translateY(-${scrollBeforeCard}px)`;
 	pageElement.style.position = "fixed";
 
 	await Promise.all([
@@ -114,7 +113,7 @@ export async function showCard(id)
 			targets: container,
 			opacity: 1,
 			scale: 1,
-			duration: animationTime,
+			duration: cardAnimationTime,
 			easing: "easeOutQuint",
 		}).finished,
 
@@ -126,21 +125,21 @@ export async function showCard(id)
 			],
 			filter: "brightness(.5)",
 			scale: .975,
-			duration: animationTime,
+			duration: cardAnimationTime,
 			easing: "easeOutQuint",
 		}).finished,
 
 		anime({
 			targets: metaThemeColorElement,
 			content: themeColor,
-			duration: animationTime,
+			duration: cardAnimationTime,
 			easing: "easeOutQuint",
 		}).finished,
 
 		anime({
 			targets: document.documentElement,
 			backgroundColor: color,
-			duration: animationTime,
+			duration: cardAnimationTime,
 			easing: "easeOutQuint",
 		}).finished,
 	]);
@@ -173,21 +172,21 @@ export async function hideCard()
 			],
 			filter: "brightness(1)",
 			scale: 1,
-			duration: animationTime,
+			duration: cardAnimationTime,
 			easing: "easeOutQuint",
 		}).finished,
 
 		anime({
 			targets: metaThemeColorElement,
 			content: themeColor,
-			duration: animationTime,
+			duration: cardAnimationTime,
 			easing: "easeOutQuint",
 		}).finished,
 
 		anime({
 			targets: document.documentElement,
 			backgroundColor: color,
-			duration: animationTime,
+			duration: cardAnimationTime,
 			easing: "easeOutQuint",
 		}).finished,
 
@@ -195,13 +194,13 @@ export async function hideCard()
 			targets: container,
 			opacity: 0,
 			scale: .95,
-			duration: animationTime,
+			duration: cardAnimationTime,
 			easing: "easeOutQuint",
-		}).finished,
+		}).finished
 	]);
 
 
-	
+
 	pageElement.style.position = "relative";
 	
 	//A ratherclunky soltion to an iOS WebKit bug that causes the screen to flicker
