@@ -106,7 +106,10 @@ export async function redirect({
 		{
 			unloadPage();
 
-			document.body.firstElementChild.insertAdjacentHTML("beforebegin", `<div class="page" style="opacity: 0">${data}</div>`);
+			document.body.firstElementChild.insertAdjacentHTML(
+				"beforebegin",
+				`<div class="page"${opacityAnimationTime ? "style=\"opacity: 0\"" : ""}>${data}</div>`
+			);
 
 			setPageUrl(url);
 
@@ -232,7 +235,10 @@ async function fadeOutPage({ url, noFadeOut })
 		toggleDarkTheme({ force: true });
 	}
 
-
+	if (!opacityAnimationTime)
+	{
+		return;
+	}
 
 	if (noFadeOut)
 	{

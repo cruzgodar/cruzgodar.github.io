@@ -4,6 +4,7 @@ import {
 	fadeLeftIn,
 	fadeRightIn,
 	fadeUpIn,
+	opacityAnimationTime,
 	pageAnimationTime
 } from "./animation.mjs";
 import {
@@ -151,6 +152,18 @@ async function fadeInPage()
 {
 	fadeIn(document.querySelector("#header"));
 	document.querySelector("#header-container").style.opacity = 1;
+
+	if (!opacityAnimationTime)
+	{
+		pageElement.style.opacity = 1;
+
+		if (bannerElement)
+		{
+			bannerElement.style.opacity = 1;
+		}
+
+		return;
+	}
 
 	await (() =>
 	{
