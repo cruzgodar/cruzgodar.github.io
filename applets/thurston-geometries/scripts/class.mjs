@@ -436,7 +436,7 @@ export class ThurstonGeometry extends RaymarchApplet
 
 	distanceEstimator(x, y, z)
 	{
-		return Math.sqrt(x*x + y*y + z*z) - 1;
+		return Math.sqrt(x * x + y * y + z * z) - 1;
 	}
 
 

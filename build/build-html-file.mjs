@@ -21,7 +21,7 @@ const GLSLDocs = "<div id=\"glsl-docs-card\" class=\"card\"><h1 class=\"heading-
 
 const components =
 {
-	getImageLink: function(args)
+	getImageLink(args)
 	{
 		let id = args[0].split(".")[0].split("/");
 
@@ -98,7 +98,7 @@ const components =
 
 
 
-	getGalleryImage: function(id, size, ...name)
+	getGalleryImage(id, size, ...name)
 	{
 		return `
 			<div class="gallery-image-${size}-${size}">
@@ -109,7 +109,7 @@ const components =
 
 
 
-	getBanner: function()
+	getBanner()
 	{
 		return `
 			<div id="banner">
@@ -130,7 +130,7 @@ const components =
 
 
 
-	getTextBox: function(args)
+	getTextBox(args)
 	{
 		const id = args[0];
 
@@ -148,7 +148,7 @@ const components =
 
 
 
-	getTextButton: function(args)
+	getTextButton(args)
 	{
 		const id = args[0];
 
@@ -176,7 +176,7 @@ const components =
 
 
 
-	getSlider: function(args)
+	getSlider(args)
 	{
 		const id = args[0];
 
@@ -641,7 +641,7 @@ const components =
 
 
 
-	decode: function(html)
+	decode(html)
 	{
 		const banner = html.indexOf("### banner") !== -1;
 

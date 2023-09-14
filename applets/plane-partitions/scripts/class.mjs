@@ -879,7 +879,7 @@ export class PlanePartitions extends Applet
 
 
 		const array = {
-			numbers: numbers,
+			numbers,
 			cubes: [],
 			floor: [],
 			leftWall: [],
@@ -2219,8 +2219,8 @@ export class PlanePartitions extends Applet
 		});
 
 		return anime({
-			targets: targets,
-			opacity: opacity,
+			targets,
+			opacity,
 			duration: this.animationTime / 2,
 			easing: "easeOutQuad",
 		}).finished;
@@ -2406,7 +2406,7 @@ export class PlanePartitions extends Applet
 
 
 		await anime({
-			targets: targets,
+			targets,
 			r: targetColor[0] / 255,
 			g: targetColor[1] / 255,
 			b: targetColor[2] / 255,
@@ -2432,7 +2432,7 @@ export class PlanePartitions extends Applet
 		targets.forEach(color => color.getHSL(color));
 
 		await anime({
-			targets: targets,
+			targets,
 			s: 0,
 			duration: this.animationTime,
 			easing: "easeOutQuad",
@@ -2464,9 +2464,9 @@ export class PlanePartitions extends Applet
 		});
 
 		await anime({
-			targets: targets,
+			targets,
 			y: height,
-			duration: duration,
+			duration,
 			easing: "easeInOutQuad",
 		}).finished;
 	}
@@ -2491,9 +2491,9 @@ export class PlanePartitions extends Applet
 		});
 
 		await anime({
-			targets: targets,
+			targets,
 			y: (element, index) => array.numbers[coordinates[index][0]][coordinates[index][1]],
-			duration: duration,
+			duration,
 			easing: "easeInOutQuad"
 		}).finished;
 
@@ -2531,7 +2531,7 @@ export class PlanePartitions extends Applet
 		});
 
 		await anime({
-			targets: targets,
+			targets,
 			x: (element, index) => targetCoordinates[index][1] - (targetArray.footprint - 1) / 2,
 			y: (element, index) => targetCoordinates[index][2],
 			z: (element, index) => targetCoordinates[index][0] - (targetArray.footprint - 1) / 2,
@@ -2592,7 +2592,7 @@ export class PlanePartitions extends Applet
 		});
 
 		await anime({
-			targets: targets,
+			targets,
 			opacity: 1,
 			duration: this.animationTime / 2,
 			delay: (element, index) => Math.floor(index / 6) * this.animationTime / 10,
@@ -2614,7 +2614,7 @@ export class PlanePartitions extends Applet
 		});
 
 		await anime({
-			targets: targets,
+			targets,
 			opacity: 0,
 			duration: this.animationTime / 2 * !noAnimation,
 			delay: (element, index) => (!instant) * Math.floor(index / 6) * this.animationTime / 10,
@@ -2644,7 +2644,7 @@ export class PlanePartitions extends Applet
 		});
 
 		await anime({
-			targets: targets,
+			targets,
 			opacity: 0,
 			duration: this.animationTime / 2,
 			easing: "easeOutQuad",

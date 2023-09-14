@@ -530,9 +530,9 @@ export class NewtonsMethod extends Applet
 
 		anime({
 			targets: result,
-			r: r,
-			g: g,
-			b: b,
+			r,
+			g,
+			b,
 			easing: "easeInOutQuad",
 			duration: 250,
 			update: () =>

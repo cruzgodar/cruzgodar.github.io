@@ -441,7 +441,7 @@ export class Applet
 		velocityStartThreshhold: .005,
 		velocityStopThreshhold: .0005,
 
-		clamp: function()
+		clamp()
 		{
 			this.parent.wilson.worldCenterX = Math.min(
 				Math.max(
@@ -460,7 +460,7 @@ export class Applet
 			);
 		},
 
-		onGrabCanvas: function()
+		onGrabCanvas()
 		{
 			this.velocityX = 0;
 			this.velocityY = 0;
@@ -474,7 +474,7 @@ export class Applet
 			this.frame = 0;
 		},
 
-		onDragCanvas: function(x, y, xDelta, yDelta)
+		onDragCanvas(x, y, xDelta, yDelta)
 		{
 			this.parent.wilson.worldCenterX -= xDelta;
 			this.parent.wilson.worldCenterY -= yDelta;
@@ -485,7 +485,7 @@ export class Applet
 			this.nextVelocityY = -yDelta / this.parent.wilson.worldHeight;
 		},
 
-		onReleaseCanvas: function()
+		onReleaseCanvas()
 		{
 			//Find the max absolute value.
 			for (let i = 0; i < this.velocityListLength; i++)
@@ -519,7 +519,7 @@ export class Applet
 		},
 
 		//Call this in the drawFrame loop.
-		update: function(timeElapsed)
+		update(timeElapsed)
 		{
 			this.lastVelocitiesX[this.frame] = this.nextVelocityX;
 			this.lastVelocitiesY[this.frame] = this.nextVelocityY;
@@ -582,14 +582,14 @@ export class Applet
 		velocityStartThreshhold: .001,
 		velocityStopThreshhold: .001,
 
-		init: function()
+		init()
 		{
 			this.level = Math.log2(
 				Math.min(this.parent.wilson.worldWidth, this.parent.wilson.worldHeight) / 3
 			);
 		},
 
-		clamp: function()
+		clamp()
 		{
 			const aspectRatio = this.parent.wilson.worldWidth / this.parent.wilson.worldHeight;
 
@@ -620,7 +620,7 @@ export class Applet
 			this.parent.pan.clamp();
 		},
 
-		onGrabCanvas: function()
+		onGrabCanvas()
 		{
 			this.velocity = 0;
 
@@ -632,7 +632,7 @@ export class Applet
 			this.frame = 0;
 		},
 
-		onWheelCanvas: function(x, y, scrollAmount)
+		onWheelCanvas(x, y, scrollAmount)
 		{
 			this.fixedPointX = x;
 			this.fixedPointY = y;
@@ -651,7 +651,7 @@ export class Applet
 			this.zoomCanvas();
 		},
 
-		onDragCanvas: function(x, y, xDelta, yDelta)
+		onDragCanvas(x, y, xDelta, yDelta)
 		{
 			this.parent.wilson.worldCenterX -= xDelta;
 			this.parent.wilson.worldCenterY -= yDelta;
@@ -660,7 +660,7 @@ export class Applet
 			this.nextVelocityY = -yDelta / this.parent.wilson.worldHeight;
 		},
 
-		onPinchCanvas: function(x, y, touchDistanceDelta)
+		onPinchCanvas(x, y, touchDistanceDelta)
 		{
 			if (this.parent.wilson.worldWidth >= this.parent.wilson.worldHeight)
 			{
@@ -690,7 +690,7 @@ export class Applet
 			this.zoomCanvas();
 		},
 
-		onReleaseCanvas: function()
+		onReleaseCanvas()
 		{
 			//Find the max absolute value.
 			for (let i = 0; i < this.velocityListLength; i++)
@@ -713,7 +713,7 @@ export class Applet
 			}
 		},
 
-		zoomCanvas: function()
+		zoomCanvas()
 		{
 			const aspectRatio = this.parent.wilson.worldWidth / this.parent.wilson.worldHeight;
 
@@ -753,7 +753,7 @@ export class Applet
 		},
 
 		//Call this in the drawFrame loop.
-		update: function(timeElapsed)
+		update(timeElapsed)
 		{
 			this.lastVelocities[this.frame] = this.nextVelocity;
 

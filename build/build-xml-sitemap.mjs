@@ -6,7 +6,7 @@ export async function buildXmlSitemap()
 	let xmlSitemap = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>"
 		+ "\n\n<urlset xmlns=\"http://www.sitemaps.org/schemas/sitemap/0.9\">";
 
-	for (let key in sitemap)
+	for (const key in sitemap)
 	{
 		const lastModifiedDate = await getModifiedDate(key);
 
