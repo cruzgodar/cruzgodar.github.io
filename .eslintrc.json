@@ -90,6 +90,11 @@
 			"warn",
 			{ "max": 3, "maxEOF": 0 }
 		],
-		"class-methods-use-this": ["error"]
+		"class-methods-use-this": ["error"],
+		"object-shorthand": [
+			"error",
+			"always",
+			{ "avoidQuotes": true }
+		]
 	}
 }

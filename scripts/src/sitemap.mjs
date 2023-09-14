@@ -44,6 +44,7 @@ export const sitemap =
 		
 		"children":
 		[
+			"/applets/thurston-geometries/",
 			"/applets/magic-carpets/",
 			"/applets/vector-fields/",
 			"/applets/plane-partitions/",
@@ -83,6 +84,17 @@ export const sitemap =
 		]
 	},
 		
+	"/applets/thurston-geometries/":
+	{
+		"title": "Thurston Geometries",
+		
+		"parent": "/applets/",
+		
+		"children": [],
+
+		"customScript": true
+	},
+	
 	"/applets/magic-carpets/":
 	{
 		"title": "Magic Carpets",
