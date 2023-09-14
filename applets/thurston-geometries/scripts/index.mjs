@@ -14,7 +14,7 @@ export function load()
 
 	const viewDistanceInputElement = $("#view-distance-input");
 
-	applet.setInputCaps([resolutionInputElement, viewDistanceInputElement], [750, 200]);
+	applet.setInputCaps([resolutionInputElement, viewDistanceInputElement], [2000, 200]);
 
 
 

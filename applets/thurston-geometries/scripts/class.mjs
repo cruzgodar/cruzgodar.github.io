@@ -10,8 +10,17 @@ export class ThurstonGeometry extends RaymarchApplet
 	cameraPos = [.0828, 2.17, 1.8925];
 
 	onSpherePos = [0, 0, 1];
+	onSpherePosVelocity = [0, 0, 0];
+
+	globalNormalVec = [0, 0, 1];
+
 	localForwardVec = [1, 0];
 	globalForwardVec = [1, 0, 0];
+
+	localRightVec = [0, 1];
+	globalRightVec = [0, 1, 0];
+
+	globalNorthStarVec = [1, 0, 0];
 
 
 
@@ -52,6 +61,8 @@ export class ThurstonGeometry extends RaymarchApplet
 
 			uniform vec3 onSpherePos;
 			uniform vec3 globalForwardVec;
+			uniform vec3 globalRightVec;
+			uniform vec3 globalNormalVec;
 			
 			
 			
@@ -60,8 +71,12 @@ export class ThurstonGeometry extends RaymarchApplet
 				float distance1 = length(pos) - 1.0;
 				float distance2 = length(pos - onSpherePos) - .05;
 				float distance3 = length(pos - onSpherePos - globalForwardVec / 4.0) - .05;
+				float distance4 = length(pos - onSpherePos - globalRightVec / 4.0) - .05;
+				float distance5 = length(pos - onSpherePos - globalNormalVec / 4.0) - .05;
 
-				return min(min(distance1, distance2), distance3);
+				float minDistance = min(min(min(min(distance1, distance2), distance3), distance4), distance5);
+
+				return minDistance;
 			}
 			
 			
@@ -71,8 +86,10 @@ export class ThurstonGeometry extends RaymarchApplet
 				float distance1 = length(pos) - 1.0;
 				float distance2 = length(pos - onSpherePos) - .05;
 				float distance3 = length(pos - onSpherePos - globalForwardVec / 4.0) - .05;
+				float distance4 = length(pos - onSpherePos - globalRightVec / 4.0) - .05;
+				float distance5 = length(pos - onSpherePos - globalNormalVec / 4.0) - .05;
 				
-				float minDistance = min(min(distance1, distance2), distance3);
+				float minDistance = min(min(min(min(distance1, distance2), distance3), distance4), distance5);
 
 				if (minDistance == distance1)
 				{
@@ -81,12 +98,22 @@ export class ThurstonGeometry extends RaymarchApplet
 
 				if (minDistance == distance2)
 				{
-					return vec3(1.0, 1.0, 0.0);
+					return vec3(.75, .75, .75);
 				}
 
 				if (minDistance == distance3)
 				{
+					return vec3(1.0, 0.0, 0.0);
+				}
+
+				if (minDistance == distance4)
+				{
 					return vec3(0.0, 1.0, 0.0);
+				}
+
+				if (minDistance == distance5)
+				{
+					return vec3(0.0, 0.0, 1.0);
 				}
 			}
 			
@@ -140,8 +167,6 @@ export class ThurstonGeometry extends RaymarchApplet
 				float t = 0.0;
 				
 				float lastDistance = 1000.0;
-				
-				//int slowedDown = 0;
 				
 				
 				
@@ -202,8 +227,8 @@ export class ThurstonGeometry extends RaymarchApplet
 
 			shader: fragShaderSource,
 
-			canvasWidth: 400,
-			canvasHeight: 400,
+			canvasWidth: 1000,
+			canvasHeight: 1000,
 
 			worldCenterX: -4.6601,
 			worldCenterY: -2.272,
@@ -251,7 +276,9 @@ export class ThurstonGeometry extends RaymarchApplet
 			"maxIterations",
 
 			"onSpherePos",
-			"globalForwardVec"
+			"globalForwardVec",
+			"globalRightVec",
+			"globalNormalVec"
 		]);
 
 
@@ -350,6 +377,16 @@ export class ThurstonGeometry extends RaymarchApplet
 			this.globalForwardVec
 		);
 
+		this.wilson.gl.uniform3fv(
+			this.wilson.uniforms["globalRightVec"],
+			this.globalRightVec
+		);
+
+		this.wilson.gl.uniform3fv(
+			this.wilson.uniforms["globalNormalVec"],
+			this.globalNormalVec
+		);
+
 
 
 		const boundFunction = () => this.changeResolution();
@@ -357,6 +394,20 @@ export class ThurstonGeometry extends RaymarchApplet
 			object: window,
 			event: "resize",
 			callback: boundFunction
+		});
+
+		const boundFunction2 = this.handleKeydownEvent.bind(this);
+		addTemporaryListener({
+			object: document.documentElement,
+			event: "keydown",
+			callback: boundFunction2
+		});
+
+		const boundFunction3 = this.handleKeyupEvent.bind(this);
+		addTemporaryListener({
+			object: document.documentElement,
+			event: "keyup",
+			callback: boundFunction3
 		});
 
 
@@ -382,6 +433,7 @@ export class ThurstonGeometry extends RaymarchApplet
 		this.pan.update(timeElapsed);
 		this.zoom.update(timeElapsed);
 		this.moveUpdate(timeElapsed);
+		this.updateSpherePos(timeElapsed);
 
 		this.calculateVectors();
 		this.updateCameraParameters();
@@ -395,29 +447,27 @@ export class ThurstonGeometry extends RaymarchApplet
 			),
 			-.01
 		);
-		
-		//this.theta = -this.wilson.worldCenterX;
-		//this.phi = -this.wilson.worldCenterY;
 
-		this.localForwardVec = [
-			Math.cos(this.wilson.worldCenterX),
-			Math.sin(this.wilson.worldCenterX)
-		];
+		this.calculateGlobalVectors();
 
-		this.globalForwardVec = [
-			Math.cos(this.wilson.worldCenterX),
-			Math.sin(this.wilson.worldCenterX),
-			0
-		];
-
-		// this.wilson.gl.uniform3fv(
-		// 	this.wilson.uniforms["onSpherePos"],
-		// 	this.onSpherePos
-		// );
+		this.wilson.gl.uniform3fv(
+			this.wilson.uniforms["onSpherePos"],
+			this.onSpherePos
+		);
 
 		this.wilson.gl.uniform3fv(
 			this.wilson.uniforms["globalForwardVec"],
 			this.globalForwardVec
+		);
+
+		this.wilson.gl.uniform3fv(
+			this.wilson.uniforms["globalRightVec"],
+			this.globalRightVec
+		);
+
+		this.wilson.gl.uniform3fv(
+			this.wilson.uniforms["globalNormalVec"],
+			this.globalNormalVec
 		);
 
 
@@ -437,6 +487,145 @@ export class ThurstonGeometry extends RaymarchApplet
 	distanceEstimator(x, y, z)
 	{
 		return Math.sqrt(x * x + y * y + z * z) - 1;
+	}
+
+
+
+	calculateGlobalVectors()
+	{
+		//First, get the tangent plane to the manifold. Here, the function is x^2+y^2+z^2=1,
+		//so its gradient is (2x, 2y, 2z).
+
+		this.globalNormalVec = RaymarchApplet.normalize([
+			this.onSpherePos[0],
+			this.onSpherePos[1],
+			this.onSpherePos[2],
+		]);
+
+		//Now we use the north star in order to get forward and right vecs. We can assume
+		//that the north star lies in the tangent plane since that work has already been done.
+		//Therefore, we just need to use the rotation angle to rotate in the plane
+		//relative to north.
+
+		const cross = RaymarchApplet.crossProduct(this.globalNormalVec, this.globalNorthStarVec);
+		const dotScaled = RaymarchApplet.scaleVector(
+			RaymarchApplet.dotProduct(this.globalNormalVec, this.globalNorthStarVec),
+			this.globalNorthStarVec
+		);
+
+		this.globalForwardVec = RaymarchApplet.addVectors(
+			RaymarchApplet.scaleVector(
+				Math.cos(-this.wilson.worldCenterX),
+				this.globalNorthStarVec
+			),
+			RaymarchApplet.addVectors(
+				RaymarchApplet.scaleVector(Math.sin(-this.wilson.worldCenterX), cross),
+				RaymarchApplet.scaleVector(1 - Math.cos(-this.wilson.worldCenterX), dotScaled),
+			)
+		);
+
+		this.globalRightVec = RaymarchApplet.addVectors(
+			RaymarchApplet.scaleVector(
+				Math.cos(-this.wilson.worldCenterX - Math.PI / 2),
+				this.globalNorthStarVec
+			),
+			RaymarchApplet.addVectors(
+				RaymarchApplet.scaleVector(
+					Math.sin(-this.wilson.worldCenterX - Math.PI / 2),
+					cross
+				),
+				RaymarchApplet.scaleVector(
+					1 - Math.cos(-this.wilson.worldCenterX - Math.PI / 2),
+					dotScaled
+				),
+			)
+		);
+	}
+
+
+
+	updateSpherePos(timeElapsed)
+	{
+		if (
+			!this.onSpherePosVelocity[0]
+			&& !this.onSpherePosVelocity[1]
+			&& !this.onSpherePosVelocity[2]
+		)
+		{
+			return;
+		}
+
+		const oldOnSpherePos = [...this.onSpherePos];
+		
+		
+		const t = timeElapsed / 300;
+
+		for (let i = 0; i < 3; i++)
+		{
+			this.onSpherePos[i] =
+				Math.cos(t) * this.onSpherePos[i]
+				+ Math.sin(t) * this.onSpherePosVelocity[i];
+		}
+
+		//Oh boy here we go. Time to apply Schild's ladder to adjust the north star.
+
+	}
+
+
+
+	handleKeydownEvent(e)
+	{
+		if (
+			document.activeElement.tagName === "INPUT"
+		)
+		{
+			return;
+		}
+
+		e.preventDefault();
+
+		if (e.key === "ArrowUp")
+		{
+			this.onSpherePosVelocity = [
+				this.globalForwardVec[0],
+				this.globalForwardVec[1],
+				this.globalForwardVec[2]
+			];
+		}
+
+		else if (e.key === "ArrowDown")
+		{
+			this.onSpherePosVelocity = [
+				-this.globalForwardVec[0],
+				-this.globalForwardVec[1],
+				-this.globalForwardVec[2]
+			];
+		}
+
+		if (e.key === "ArrowRight")
+		{
+			this.onSpherePosVelocity = [
+				this.globalRightVec[0],
+				this.globalRightVec[1],
+				this.globalRightVec[2]
+			];
+		}
+
+		else if (e.key === "ArrowLeft")
+		{
+			this.onSpherePosVelocity = [
+				-this.globalRightVec[0],
+				-this.globalRightVec[1],
+				-this.globalRightVec[2]
+			];
+		}
+	}
+
+
+
+	handleKeyupEvent()
+	{
+		this.onSpherePosVelocity = [0, 0, 0];
 	}
 
 

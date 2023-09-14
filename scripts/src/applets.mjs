@@ -1216,6 +1216,18 @@ export class RaymarchApplet extends Applet
 
 
 
+	static addVectors(vec1, vec2)
+	{
+		return [vec1[0] + vec2[0], vec1[1] + vec2[1], vec1[2] + vec2[2]];
+	}
+
+	static scaleVector(c, vec)
+	{
+		return [c * vec[0], c * vec[1], c * vec[2]];
+	}
+
+
+
 	static dotProduct(vec1, vec2)
 	{
 		return vec1[0] * vec2[0] + vec1[1] * vec2[1] + vec1[2] * vec2[2];
