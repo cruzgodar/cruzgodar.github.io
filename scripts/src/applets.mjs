@@ -1216,6 +1216,13 @@ export class RaymarchApplet extends Applet
 
 
 
+	static magnitude(vec)
+	{
+		return Math.sqrt(vec[0] * vec[0] + vec[1] * vec[1] + vec[2] * vec[2]);
+	}
+
+
+
 	static addVectors(vec1, vec2)
 	{
 		return [vec1[0] + vec2[0], vec1[1] + vec2[1], vec1[2] + vec2[2]];
@@ -1290,7 +1297,7 @@ export class RaymarchApplet extends Applet
 
 	static normalize(vec)
 	{
-		const magnitude = Math.sqrt(vec[0] * vec[0] + vec[1] * vec[1] + vec[2] * vec[2]);
+		const magnitude = RaymarchApplet.magnitude(vec);
 
 		return [vec[0] / magnitude, vec[1] / magnitude, vec[2] / magnitude];
 	}

@@ -10,17 +10,15 @@ export class ThurstonGeometry extends RaymarchApplet
 	cameraPos = [.0828, 2.17, 1.8925];
 
 	onSpherePos = [0, 0, 1];
-	onSpherePosVelocity = [0, 0, 0];
 
 	globalNormalVec = [0, 0, 1];
-
-	localForwardVec = [1, 0];
 	globalForwardVec = [1, 0, 0];
-
-	localRightVec = [0, 1];
 	globalRightVec = [0, 1, 0];
 
-	globalNorthStarVec = [1, 0, 0];
+	//The first is +/- 1 for moving forward, and the second is for moving right.
+	movingAmount = [0, 0];
+
+	lastWorldCenterX;
 
 
 
@@ -281,6 +279,8 @@ export class ThurstonGeometry extends RaymarchApplet
 			"globalNormalVec"
 		]);
 
+		this.lastWorldCenterX = this.wilson.worldCenterX;
+
 
 		this.calculateVectors();
 
@@ -433,7 +433,7 @@ export class ThurstonGeometry extends RaymarchApplet
 		this.pan.update(timeElapsed);
 		this.zoom.update(timeElapsed);
 		this.moveUpdate(timeElapsed);
-		this.updateSpherePos(timeElapsed);
+		this.calculateGlobalVectors(timeElapsed);
 
 		this.calculateVectors();
 		this.updateCameraParameters();
@@ -447,8 +447,6 @@ export class ThurstonGeometry extends RaymarchApplet
 			),
 			-.01
 		);
-
-		this.calculateGlobalVectors();
 
 		this.wilson.gl.uniform3fv(
 			this.wilson.uniforms["onSpherePos"],
@@ -491,9 +489,60 @@ export class ThurstonGeometry extends RaymarchApplet
 
 
 
-	calculateGlobalVectors()
+	calculateGlobalVectors(timeElapsed)
 	{
-		//First, get the tangent plane to the manifold. Here, the function is x^2+y^2+z^2=1,
+		//If there's been any rotation, it's simplest to handle that now.
+		const rotationChange = this.lastWorldCenterX - this.wilson.worldCenterX;
+
+		this.lastWorldCenterX = this.wilson.worldCenterX;
+
+		if (rotationChange)
+		{
+			this.globalForwardVec = this.rotateAboutNormal(this.globalForwardVec, rotationChange);
+			this.globalRightVec = this.rotateAboutNormal(this.globalForwardVec, Math.PI / 2);
+		}
+
+
+
+		if (!this.movingAmount[0] && !this.movingAmount[1])
+		{
+			return;
+		}
+
+		const dt = timeElapsed / 500;
+
+		let tangentVec = this.movingAmount[0] !== 0
+			? this.movingAmount[0] === 1
+				? [...this.globalForwardVec]
+				: [-this.globalForwardVec[0], -this.globalForwardVec[1], -this.globalForwardVec[2]]
+			: this.movingAmount[1] === 1
+				? [...this.globalRightVec]
+				: [-this.globalRightVec[0], -this.globalRightVec[1], -this.globalRightVec[2]];
+
+
+
+		//The first order of business is to update the position.
+		this.onSpherePos[0] =
+			Math.cos(dt) * this.onSpherePos[0]
+			+ Math.sin(dt) * tangentVec[0];
+		
+		this.onSpherePos[1] =
+			Math.cos(dt) * this.onSpherePos[1]
+			+ Math.sin(dt) * tangentVec[1];
+		
+		this.onSpherePos[2] =
+			Math.cos(dt) * this.onSpherePos[2]
+			+ Math.sin(dt) * tangentVec[2];
+		
+		
+		
+		//Since we're only doing a linear approximation, this position won't be exactly
+		//on the manifold. Therefore, we'll do a quick correction to get it back.
+		this.correctSpherePos();
+
+
+
+		//Now we get the tangent plane to the manifold. Here, the function is x^2+y^2+z^2=1,
 		//so its gradient is (2x, 2y, 2z).
 
 		this.globalNormalVec = RaymarchApplet.normalize([
@@ -501,74 +550,92 @@ export class ThurstonGeometry extends RaymarchApplet
 			this.onSpherePos[1],
 			this.onSpherePos[2],
 		]);
+		
+		//Now for the other two, using the magic of curvature.
+		const curvature = this.getCurvature(this.onSpherePos, tangentVec);
 
-		//Now we use the north star in order to get forward and right vecs. We can assume
-		//that the north star lies in the tangent plane since that work has already been done.
-		//Therefore, we just need to use the rotation angle to rotate in the plane
-		//relative to north.
+		//The magic formula is T' = curvature * N (although this N is opposite ours).
+		tangentVec = [
+			tangentVec[0] - curvature * this.globalNormalVec[0] * dt,
+			tangentVec[1] - curvature * this.globalNormalVec[1] * dt,
+			tangentVec[2] - curvature * this.globalNormalVec[2] * dt
+		];
 
-		const cross = RaymarchApplet.crossProduct(this.globalNormalVec, this.globalNorthStarVec);
-		const dotScaled = RaymarchApplet.scaleVector(
-			RaymarchApplet.dotProduct(this.globalNormalVec, this.globalNorthStarVec),
-			this.globalNorthStarVec
-		);
+		//Finally, we can add this back to our actual vector.
+		if (this.movingAmount[0] !== 0)
+		{
+			this.globalForwardVec = [
+				this.movingAmount[0] * tangentVec[0],
+				this.movingAmount[0] * tangentVec[1],
+				this.movingAmount[0] * tangentVec[2]
+			];
 
-		this.globalForwardVec = RaymarchApplet.addVectors(
-			RaymarchApplet.scaleVector(
-				Math.cos(-this.wilson.worldCenterX),
-				this.globalNorthStarVec
-			),
-			RaymarchApplet.addVectors(
-				RaymarchApplet.scaleVector(Math.sin(-this.wilson.worldCenterX), cross),
-				RaymarchApplet.scaleVector(1 - Math.cos(-this.wilson.worldCenterX), dotScaled),
-			)
-		);
+			this.globalRightVec = this.rotateAboutNormal(this.globalForwardVec, Math.PI / 2);
+		}
 
-		this.globalRightVec = RaymarchApplet.addVectors(
-			RaymarchApplet.scaleVector(
-				Math.cos(-this.wilson.worldCenterX - Math.PI / 2),
-				this.globalNorthStarVec
-			),
-			RaymarchApplet.addVectors(
-				RaymarchApplet.scaleVector(
-					Math.sin(-this.wilson.worldCenterX - Math.PI / 2),
-					cross
-				),
-				RaymarchApplet.scaleVector(
-					1 - Math.cos(-this.wilson.worldCenterX - Math.PI / 2),
-					dotScaled
-				),
-			)
-		);
+		else
+		{
+			this.globalRightVec = [
+				this.movingAmount[1] * tangentVec[0],
+				this.movingAmount[1] * tangentVec[1],
+				this.movingAmount[1] * tangentVec[2]
+			];
+
+			this.globalForwardVec = this.rotateAboutNormal(this.globalRightVec, -Math.PI / 2);
+		}
 	}
 
 
 
-	updateSpherePos(timeElapsed)
+	correctSpherePos()
 	{
-		if (
-			!this.onSpherePosVelocity[0]
-			&& !this.onSpherePosVelocity[1]
-			&& !this.onSpherePosVelocity[2]
-		)
-		{
-			return;
-		}
+		//Here, we just want the magnitude to be equal to 1 (this will be more complicated
+		//for other manifolds).
+		const magnitude = RaymarchApplet.magnitude(this.onSpherePos);
 
-		const oldOnSpherePos = [...this.onSpherePos];
-		
-		
-		const t = timeElapsed / 300;
+		this.onSpherePos[0] /= magnitude;
+		this.onSpherePos[1] /= magnitude;
+		this.onSpherePos[2] /= magnitude;
+	}
 
-		for (let i = 0; i < 3; i++)
-		{
-			this.onSpherePos[i] =
-				Math.cos(t) * this.onSpherePos[i]
-				+ Math.sin(t) * this.onSpherePosVelocity[i];
-		}
 
-		//Oh boy here we go. Time to apply Schild's ladder to adjust the north star.
 
+	getCurvature(pos, dir)
+	{
+		//gamma = cos(t)*pos + sin(t)*dir
+		//gamma' = -sin(t)*pos + cos(t)*dir
+		//gamma'' = -cos(t)*pos - sin(t)*dir
+		//All of these are evaluated at t=0.
+
+		const gammaPrime = [...dir];
+		const gammaDoublePrime = [-pos[0], -pos[1], -pos[2]];
+
+		const dotProduct = RaymarchApplet.dotProduct(gammaPrime, gammaDoublePrime);
+		const gammaPrimeMag = RaymarchApplet.magnitude(gammaPrime);
+		const gammaDoublePrimeMag = RaymarchApplet.magnitude(gammaDoublePrime);
+
+		return Math.sqrt((gammaPrimeMag * gammaDoublePrimeMag) ** 2 - dotProduct ** 2)
+			/ (gammaPrimeMag ** 3);
+	}
+
+
+
+	//Returns vec rotated theta radians ccw in the plane orthogonal to the global normal vector.
+	rotateAboutNormal(vec, theta)
+	{
+		const cross = RaymarchApplet.crossProduct(this.globalNormalVec, vec);
+		const dotScaled = RaymarchApplet.scaleVector(
+			RaymarchApplet.dotProduct(this.globalNormalVec, vec),
+			vec
+		);
+
+		return RaymarchApplet.addVectors(
+			RaymarchApplet.scaleVector(Math.cos(theta), vec),
+			RaymarchApplet.addVectors(
+				RaymarchApplet.scaleVector(Math.sin(theta), cross),
+				RaymarchApplet.scaleVector(1 - Math.cos(theta), dotScaled),
+			)
+		);
 	}
 
 
@@ -582,42 +649,32 @@ export class ThurstonGeometry extends RaymarchApplet
 			return;
 		}
 
-		e.preventDefault();
-
 		if (e.key === "ArrowUp")
 		{
-			this.onSpherePosVelocity = [
-				this.globalForwardVec[0],
-				this.globalForwardVec[1],
-				this.globalForwardVec[2]
-			];
+			e.preventDefault();
+
+			this.movingAmount = [1, 0];
 		}
 
 		else if (e.key === "ArrowDown")
 		{
-			this.onSpherePosVelocity = [
-				-this.globalForwardVec[0],
-				-this.globalForwardVec[1],
-				-this.globalForwardVec[2]
-			];
+			e.preventDefault();
+
+			this.movingAmount = [-1, 0];
 		}
 
 		if (e.key === "ArrowRight")
 		{
-			this.onSpherePosVelocity = [
-				this.globalRightVec[0],
-				this.globalRightVec[1],
-				this.globalRightVec[2]
-			];
+			e.preventDefault();
+			
+			this.movingAmount = [0, 1];
 		}
 
 		else if (e.key === "ArrowLeft")
 		{
-			this.onSpherePosVelocity = [
-				-this.globalRightVec[0],
-				-this.globalRightVec[1],
-				-this.globalRightVec[2]
-			];
+			e.preventDefault();
+			
+			this.movingAmount = [0, -1];
 		}
 	}
 
@@ -625,7 +682,7 @@ export class ThurstonGeometry extends RaymarchApplet
 
 	handleKeyupEvent()
 	{
-		this.onSpherePosVelocity = [0, 0, 0];
+		this.movingAmount = [0, 0];
 	}
 
 
