@@ -12,6 +12,7 @@ const excludeFromBuild =
 	/slides\/.+\/index\.htmdl/,
 	/scripts\/three\.js/,
 	/scripts\/anime\.js/,
+	/scripts\/math\.js/,
 ];
 
 const options =
