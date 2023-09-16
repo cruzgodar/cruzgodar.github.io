@@ -1,27 +1,24 @@
-import { inv, multiply } from "mathjs";
 import { RaymarchApplet } from "/scripts/src/applets.mjs";
 import { aspectRatio } from "/scripts/src/layout.mjs";
 import { addTemporaryListener } from "/scripts/src/main.mjs";
 import { Wilson } from "/scripts/wilson.mjs";
 
-export class ThurstonGeometry extends RaymarchApplet
+export class ThurstonGeometry2D extends RaymarchApplet
 {
 	theta = 4.6601;
 	phi = 2.272;
 	cameraPos = [.0828, 2.17, 1.8925];
 
-	onManifoldPos = [0, 0, 0, 1];
+	onSpherePos = [0, 0, 1];
 
-	globalNormalVec = [0, 0, 0, 1];
-	globalForwardVec = [1, 0, 0, 0];
-	globalRightVec = [0, 1, 0, 0];
-	globalUpVec = [0, 0, 1, 0];
+	globalNormalVec = [0, 0, 1];
+	globalForwardVec = [1, 0, 0];
+	globalRightVec = [0, 1, 0];
 
 	//The first is +/- 1 for moving forward, and the second is for moving right.
 	movingAmount = [0, 0];
 
 	lastWorldCenterX;
-	lastWorldCenterY;
 
 
 
@@ -372,22 +369,22 @@ export class ThurstonGeometry extends RaymarchApplet
 
 		this.wilson.gl.uniform3fv(
 			this.wilson.uniforms["onSpherePos"],
-			[0, 0, 0]
+			this.onSpherePos
 		);
 
 		this.wilson.gl.uniform3fv(
 			this.wilson.uniforms["globalForwardVec"],
-			[0, 0, 0]
+			this.globalForwardVec
 		);
 
 		this.wilson.gl.uniform3fv(
 			this.wilson.uniforms["globalRightVec"],
-			[0, 0, 0]
+			this.globalRightVec
 		);
 
 		this.wilson.gl.uniform3fv(
 			this.wilson.uniforms["globalNormalVec"],
-			[0, 0, 0]
+			this.globalNormalVec
 		);
 
 
@@ -431,39 +428,47 @@ export class ThurstonGeometry extends RaymarchApplet
 			return;
 		}
 
-		console.log(...this.globalNormalVec);
+		
 
 		this.pan.update(timeElapsed);
 		this.zoom.update(timeElapsed);
-
+		this.moveUpdate(timeElapsed);
 		this.calculateGlobalVectors(timeElapsed);
 
 		this.calculateVectors();
 		this.updateCameraParameters();
 
 		
-
-		// this.wilson.gl.uniform3fv(
-		// 	this.wilson.uniforms["onSpherePos"],
-		// 	this.onSpherePos
-		// );
-
-		// this.wilson.gl.uniform3fv(
-		// 	this.wilson.uniforms["globalForwardVec"],
-		// 	this.globalForwardVec
-		// );
-
-		// this.wilson.gl.uniform3fv(
-		// 	this.wilson.uniforms["globalRightVec"],
-		// 	this.globalRightVec
-		// );
-
-		// this.wilson.gl.uniform3fv(
-		// 	this.wilson.uniforms["globalNormalVec"],
-		// 	this.globalNormalVec
-		// );
-
 		
+		this.wilson.worldCenterY = Math.min(
+			Math.max(
+				this.wilson.worldCenterY,
+				-Math.PI + .01
+			),
+			-.01
+		);
+
+		this.wilson.gl.uniform3fv(
+			this.wilson.uniforms["onSpherePos"],
+			this.onSpherePos
+		);
+
+		this.wilson.gl.uniform3fv(
+			this.wilson.uniforms["globalForwardVec"],
+			this.globalForwardVec
+		);
+
+		this.wilson.gl.uniform3fv(
+			this.wilson.uniforms["globalRightVec"],
+			this.globalRightVec
+		);
+
+		this.wilson.gl.uniform3fv(
+			this.wilson.uniforms["globalNormalVec"],
+			this.globalNormalVec
+		);
+
+
 
 		this.wilson.render.drawFrame();
 
@@ -477,9 +482,9 @@ export class ThurstonGeometry extends RaymarchApplet
 
 
 
-	distanceEstimator(x, y, z, w)
+	distanceEstimator(x, y, z)
 	{
-		return Math.sqrt(x * x + y * y + z * z + w * w) - .5;
+		return Math.sqrt(x * x + y * y + z * z) - 1;
 	}
 
 
@@ -487,24 +492,15 @@ export class ThurstonGeometry extends RaymarchApplet
 	calculateGlobalVectors(timeElapsed, ignoreMovingForward = false)
 	{
 		//If there's been any rotation, it's simplest to handle that now.
-		const rotationChangeX = this.lastWorldCenterX - this.wilson.worldCenterX;
-		const rotationChangeY = this.lastWorldCenterY - this.wilson.worldCenterY;
+		const rotationChange = this.lastWorldCenterX - this.wilson.worldCenterX;
 
 		this.lastWorldCenterX = this.wilson.worldCenterX;
-		this.lastWorldCenterY = this.wilson.worldCenterY;
 
-		// idk
-		// if (rotationChangeX)
-		// {
-		// 	this.globalForwardVec = this.rotateAboutNormal(this.globalForwardVec, rotationChangeX);
-		// 	this.globalRightVec = this.rotateAboutNormal(this.globalForwardVec, Math.PI / 2);
-		// }
-
-		// if (rotationChangeY)
-		// {
-		// 	this.globalForwardVec = this.rotateAboutNormal(this.globalForwardVec, rotationChangeY);
-		// 	this.globalRightVec = this.rotateAboutNormal(this.globalForwardVec, Math.PI / 2);
-		// }
+		if (rotationChange)
+		{
+			this.globalForwardVec = this.rotateAboutNormal(this.globalForwardVec, rotationChange);
+			this.globalRightVec = this.rotateAboutNormal(this.globalForwardVec, Math.PI / 2);
+		}
 
 
 
@@ -518,58 +514,51 @@ export class ThurstonGeometry extends RaymarchApplet
 		let tangentVec = (this.movingAmount[0] !== 0 && !ignoreMovingForward)
 			? this.movingAmount[0] === 1
 				? [...this.globalForwardVec]
-				: [
-					-this.globalForwardVec[0],
-					-this.globalForwardVec[1],
-					-this.globalForwardVec[2],
-					-this.globalForwardVec[3]
-				]
+				: [-this.globalForwardVec[0], -this.globalForwardVec[1], -this.globalForwardVec[2]]
 			: this.movingAmount[1] === 1
 				? [...this.globalRightVec]
-				: [
-					-this.globalRightVec[0],
-					-this.globalRightVec[1],
-					-this.globalRightVec[2],
-					-this.globalRightVec[3]
-				];
+				: [-this.globalRightVec[0], -this.globalRightVec[1], -this.globalRightVec[2]];
 
 
 
 		//The first order of business is to update the position.
-		for (let i = 0; i < 4; i++)
-		{
-			//This will change with the geometry.
-			this.onManifoldPos[i] =
-				Math.cos(dt) * this.onManifoldPos[i]
-				+ Math.sin(dt) * tangentVec[i];
-		}
+		this.onSpherePos[0] =
+			Math.cos(dt) * this.onSpherePos[0]
+			+ Math.sin(dt) * tangentVec[0];
+		
+		this.onSpherePos[1] =
+			Math.cos(dt) * this.onSpherePos[1]
+			+ Math.sin(dt) * tangentVec[1];
+		
+		this.onSpherePos[2] =
+			Math.cos(dt) * this.onSpherePos[2]
+			+ Math.sin(dt) * tangentVec[2];
+		
 		
 		
 		//Since we're only doing a linear approximation, this position won't be exactly
 		//on the manifold. Therefore, we'll do a quick correction to get it back.
-		this.correctManifoldPos();
+		this.correctSpherePos();
 
-		
 
-		//Now we get the tangent space to the manifold. Here, the function is x^2+y^2+z^2+w^2=1,
-		//so its gradient is (2x, 2y, 2z, 2w).
 
-		this.globalNormalVec = ThurstonGeometry.normalize([
-			this.onManifoldPos[0],
-			this.onManifoldPos[1],
-			this.onManifoldPos[2],
-			this.onManifoldPos[3]
+		//Now we get the tangent plane to the manifold. Here, the function is x^2+y^2+z^2=1,
+		//so its gradient is (2x, 2y, 2z).
+
+		this.globalNormalVec = RaymarchApplet.normalize([
+			this.onSpherePos[0],
+			this.onSpherePos[1],
+			this.onSpherePos[2],
 		]);
 		
-		//Now for the other vectors, using the magic of curvature.
-		const curvature = this.getCurvature(this.onManifoldPos, tangentVec);
+		//Now for the other two, using the magic of curvature.
+		const curvature = this.getCurvature(this.onSpherePos, tangentVec);
 
 		//The magic formula is T' = curvature * N (although this N is opposite ours).
 		tangentVec = [
 			tangentVec[0] - curvature * this.globalNormalVec[0] * dt,
 			tangentVec[1] - curvature * this.globalNormalVec[1] * dt,
-			tangentVec[2] - curvature * this.globalNormalVec[2] * dt,
-			tangentVec[3] - curvature * this.globalNormalVec[3] * dt
+			tangentVec[2] - curvature * this.globalNormalVec[2] * dt
 		];
 
 		//Finally, we can add this back to our actual vector.
@@ -578,11 +567,10 @@ export class ThurstonGeometry extends RaymarchApplet
 			this.globalForwardVec = [
 				this.movingAmount[0] * tangentVec[0],
 				this.movingAmount[0] * tangentVec[1],
-				this.movingAmount[0] * tangentVec[2],
-				this.movingAmount[0] * tangentVec[3]
+				this.movingAmount[0] * tangentVec[2]
 			];
 
-			//this.globalRightVec = this.rotateAboutNormal(this.globalForwardVec, Math.PI / 2);
+			this.globalRightVec = this.rotateAboutNormal(this.globalForwardVec, Math.PI / 2);
 		}
 
 		else
@@ -590,11 +578,10 @@ export class ThurstonGeometry extends RaymarchApplet
 			this.globalRightVec = [
 				this.movingAmount[1] * tangentVec[0],
 				this.movingAmount[1] * tangentVec[1],
-				this.movingAmount[1] * tangentVec[2],
-				this.movingAmount[1] * tangentVec[3]
+				this.movingAmount[1] * tangentVec[2]
 			];
 
-			//this.globalForwardVec = this.rotateAboutNormal(this.globalRightVec, -Math.PI / 2);
+			this.globalForwardVec = this.rotateAboutNormal(this.globalRightVec, -Math.PI / 2);
 		}
 
 		if (this.movingAmount[0] !== 0 && this.movingAmount[1] !== 0 && !ignoreMovingForward)
@@ -605,16 +592,15 @@ export class ThurstonGeometry extends RaymarchApplet
 
 
 
-	correctManifoldPos()
+	correctSpherePos()
 	{
 		//Here, we just want the magnitude to be equal to 1 (this will be more complicated
 		//for other manifolds).
-		const magnitude = ThurstonGeometry.magnitude(this.onManifoldPos);
+		const magnitude = RaymarchApplet.magnitude(this.onSpherePos);
 
-		this.onManifoldPos[0] /= magnitude;
-		this.onManifoldPos[1] /= magnitude;
-		this.onManifoldPos[2] /= magnitude;
-		this.onManifoldPos[3] /= magnitude;
+		this.onSpherePos[0] /= magnitude;
+		this.onSpherePos[1] /= magnitude;
+		this.onSpherePos[2] /= magnitude;
 	}
 
 
@@ -627,11 +613,11 @@ export class ThurstonGeometry extends RaymarchApplet
 		//All of these are evaluated at t=0.
 
 		const gammaPrime = [...dir];
-		const gammaDoublePrime = [-pos[0], -pos[1], -pos[2], -pos[3]];
+		const gammaDoublePrime = [-pos[0], -pos[1], -pos[2]];
 
-		const dotProduct = ThurstonGeometry.dotProduct(gammaPrime, gammaDoublePrime);
-		const gammaPrimeMag = ThurstonGeometry.magnitude(gammaPrime);
-		const gammaDoublePrimeMag = ThurstonGeometry.magnitude(gammaDoublePrime);
+		const dotProduct = RaymarchApplet.dotProduct(gammaPrime, gammaDoublePrime);
+		const gammaPrimeMag = RaymarchApplet.magnitude(gammaPrime);
+		const gammaDoublePrimeMag = RaymarchApplet.magnitude(gammaDoublePrime);
 
 		return Math.sqrt((gammaPrimeMag * gammaDoublePrimeMag) ** 2 - dotProduct ** 2)
 			/ (gammaPrimeMag ** 3);
@@ -639,36 +625,22 @@ export class ThurstonGeometry extends RaymarchApplet
 
 
 
-	//This is a complicated one. What we want is to take a vector in R^4 and rotate it in the
-	//plane orthogonal to *two* vectors. The first is the global normal vector, and the
-	//second varies. What we'll do is convert our four vectors to the standard basis, rotate that,
-	//and then convert back.
-	rotateAboutNormal(fixedVec1, fixedVec2, rotateVec1, rotateVec2, theta)
+	//Returns vec rotated theta radians ccw in the plane orthogonal to the global normal vector.
+	rotateAboutNormal(vec, theta)
 	{
-		//Construct the matrix to convert to the standard basis.
-		const toStandardBasisMatrix = [
-			[fixedVec1[0], fixedVec2[0], rotateVec1[0], rotateVec2[0]],
-			[fixedVec1[1], fixedVec2[1], rotateVec1[1], rotateVec2[1]],
-			[fixedVec1[2], fixedVec2[2], rotateVec1[2], rotateVec2[2]],
-			[fixedVec1[3], fixedVec2[3], rotateVec1[3], rotateVec2[3]]
-		];
-
-		const rotateMatrix = [
-			[1, 0, 0, 0],
-			[0, 1, 0, 0],
-			[0, 0, Math.cos(theta), -Math.sin(theta)],
-			[0, 0, Math.sin(theta), Math.cos(theta)]
-		];
-
-		const finalMatrix = multiply(
-			multiply(inv(toStandardBasisMatrix), rotateMatrix),
-			toStandardBasisMatrix
+		const cross = RaymarchApplet.crossProduct(this.globalNormalVec, vec);
+		const dotScaled = RaymarchApplet.scaleVector(
+			RaymarchApplet.dotProduct(this.globalNormalVec, vec),
+			vec
 		);
 
-		return [
-			[finalMatrix[0][2], finalMatrix[1][2], finalMatrix[2][2], finalMatrix[3][2]],
-			[finalMatrix[0][3], finalMatrix[1][3], finalMatrix[2][3], finalMatrix[3][3]]
-		]
+		return RaymarchApplet.addVectors(
+			RaymarchApplet.scaleVector(Math.cos(theta), vec),
+			RaymarchApplet.addVectors(
+				RaymarchApplet.scaleVector(Math.sin(theta), cross),
+				RaymarchApplet.scaleVector(1 - Math.cos(theta), dotScaled),
+			)
+		);
 	}
 
 
@@ -793,24 +765,5 @@ export class ThurstonGeometry extends RaymarchApplet
 		}
 
 		this.wilson.gl.uniform1i(this.wilson.uniforms["imageSize"], this.imageSize);
-	}
-
-
-
-	static magnitude(vec)
-	{
-		return Math.sqrt(vec[0] * vec[0] + vec[1] * vec[1] + vec[2] * vec[2] + vec[3] * vec[3]);
-	}
-
-	static normalize(vec)
-	{
-		const mag = ThurstonGeometry.magnitude(vec);
-
-		return [vec[0] / mag, vec[1] / mag, vec[2] / mag, vec[3] / mag];
-	}
-
-	static dotProduct(vec1, vec2)
-	{
-		return vec1[0] * vec2[0] + vec1[1] * vec2[1] + vec1[2] * vec2[2] + vec1[3] * vec2[3];
 	}
 }
