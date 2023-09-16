@@ -448,11 +448,35 @@ export class ThurstonGeometry extends RaymarchApplet
 		this.updateCameraParameters();
 
 		
-		console.log(...this.onManifoldPos.map(x => Math.round(x * 1000) / 1000));
+		// console.log(...this.onManifoldPos.map(x => Math.round(x * 1000) / 1000));
 		// console.log(...this.globalNormalVec.map(x => Math.round(x * 100) / 100));
 		// console.log(...this.globalUpVec.map(x => Math.round(x * 100) / 100));
 		// console.log(...this.globalRightVec.map(x => Math.round(x * 100) / 100));
 		// console.log(...this.globalForwardVec.map(x => Math.round(x * 100) / 100));
+		// console.log(
+		// 	Math.round(ThurstonGeometry.magnitude(this.globalNormalVec) * 100) / 100,
+		// 	Math.round(ThurstonGeometry.magnitude(this.globalUpVec) * 100) / 100,
+		// 	Math.round(ThurstonGeometry.magnitude(this.globalRightVec) * 100) / 100,
+		// 	Math.round(ThurstonGeometry.magnitude(this.globalForwardVec) * 100) / 100,
+		// 	Math.round(
+		// 		ThurstonGeometry.dotProduct(this.globalNormalVec, this.globalUpVec) * 100)
+		// 			/ 100,
+		// 	Math.round(
+		// 		ThurstonGeometry.dotProduct(this.globalNormalVec, this.globalRightVec) * 100)
+		// 			/ 100,
+		// 	Math.round(
+		// 		ThurstonGeometry.dotProduct(this.globalNormalVec, this.globalForwardVec) * 100)
+		// 			/ 100,
+		// 	Math.round(
+		// 		ThurstonGeometry.dotProduct(this.globalUpVec, this.globalRightVec) * 100)
+		// 			/ 100,
+		// 	Math.round(
+		// 		ThurstonGeometry.dotProduct(this.globalUpVec, this.globalForwardVec) * 100)
+		// 			/ 100,
+		// 	Math.round(
+		// 		ThurstonGeometry.dotProduct(this.globalRightVec, this.globalForwardVec) * 100)
+		// 			/ 100,
+		// );
 
 		// this.wilson.gl.uniform3fv(
 		// 	this.wilson.uniforms["onSpherePos"],
@@ -504,18 +528,29 @@ export class ThurstonGeometry extends RaymarchApplet
 		this.lastWorldCenterX = this.wilson.worldCenterX;
 		this.lastWorldCenterY = this.wilson.worldCenterY;
 
-		// idk
-		// if (rotationChangeX)
-		// {
-		// 	this.globalForwardVec = this.rotateAboutNormal(this.globalForwardVec, rotationChangeX);
-		// 	this.globalRightVec = this.rotateAboutNormal(this.globalForwardVec, Math.PI / 2);
-		// }
+		if (rotationChangeX)
+		{
+			const result = this.rotateVectors({
+				vec1: this.globalForwardVec,
+				vec2: this.globalRightVec,
+				theta: rotationChangeX
+			});
 
-		// if (rotationChangeY)
-		// {
-		// 	this.globalForwardVec = this.rotateAboutNormal(this.globalForwardVec, rotationChangeY);
-		// 	this.globalRightVec = this.rotateAboutNormal(this.globalForwardVec, Math.PI / 2);
-		// }
+			this.globalForwardVec = result[0];
+			this.globalRightVec = result[1];
+		}
+
+		if (rotationChangeY)
+		{
+			const result = this.rotateVectors({
+				vec1: this.globalForwardVec,
+				vec2: this.globalUpVec,
+				theta: rotationChangeY
+			});
+
+			this.globalForwardVec = result[0];
+			this.globalUpVec = result[1];
+		}
 
 
 
@@ -524,7 +559,7 @@ export class ThurstonGeometry extends RaymarchApplet
 			return;
 		}
 
-		const dt = timeElapsed / 10000;
+		const dt = timeElapsed / 1000;
 
 		let tangentVec = (this.movingAmount[0] !== 0 && !ignoreMovingForward)
 			? this.movingAmount[0] === 1
@@ -593,11 +628,9 @@ export class ThurstonGeometry extends RaymarchApplet
 				this.movingAmount[0] * tangentVec[3]
 			];
 
-			const result = this.rotateAboutVectors({
-				fixedVec1: this.globalNormalVec,
-				fixedVec2: this.globalUpVec,
-				rotateVec1: this.globalForwardVec,
-				rotateVec2: this.globalRightVec,
+			const result = this.rotateVectors({
+				vec1: this.globalForwardVec,
+				vec2: this.globalRightVec,
 				theta: Math.PI / 2
 			});
 
@@ -616,11 +649,9 @@ export class ThurstonGeometry extends RaymarchApplet
 				this.movingAmount[1] * tangentVec[3]
 			];
 
-			const result = this.rotateAboutVectors({
-				fixedVec1: this.globalNormalVec,
-				fixedVec2: this.globalUpVec,
-				rotateVec1: this.globalForwardVec,
-				rotateVec2: this.globalRightVec,
+			const result = this.rotateVectors({
+				vec1: this.globalForwardVec,
+				vec2: this.globalRightVec,
 				theta: -Math.PI / 2
 			});
 
@@ -673,37 +704,46 @@ export class ThurstonGeometry extends RaymarchApplet
 	//plane orthogonal to *two* vectors. The first is the global normal vector, and the
 	//second varies. What we'll do is convert our four vectors to the standard basis, rotate that,
 	//and then convert back.
-	rotateAboutVectors({
-		fixedVec1,
-		fixedVec2,
-		rotateVec1,
-		rotateVec2,
+	rotateVectors({
+		vec1,
+		vec2,
 		theta
 	})
 	{
 		//Construct the matrix to convert to the standard basis.
-		const toStandardBasisMatrix = [
-			[fixedVec1[0], fixedVec2[0], rotateVec1[0], rotateVec2[0]],
-			[fixedVec1[1], fixedVec2[1], rotateVec1[1], rotateVec2[1]],
-			[fixedVec1[2], fixedVec2[2], rotateVec1[2], rotateVec2[2]],
-			[fixedVec1[3], fixedVec2[3], rotateVec1[3], rotateVec2[3]]
-		];
+		// const toStandardBasisMatrix = [
+		// 	[fixedVec1[0], fixedVec2[0], rotateVec1[0], rotateVec2[0]],
+		// 	[fixedVec1[1], fixedVec2[1], rotateVec1[1], rotateVec2[1]],
+		// 	[fixedVec1[2], fixedVec2[2], rotateVec1[2], rotateVec2[2]],
+		// 	[fixedVec1[3], fixedVec2[3], rotateVec1[3], rotateVec2[3]]
+		// ];
 
-		const rotateMatrix = [
-			[1, 0, 0, 0],
-			[0, 1, 0, 0],
-			[0, 0, Math.cos(theta), -Math.sin(theta)],
-			[0, 0, Math.sin(theta), Math.cos(theta)]
-		];
+		// const rotateMatrix = [
+		// 	[1, 0, 0, 0],
+		// 	[0, 1, 0, 0],
+		// 	[0, 0, Math.cos(theta), -Math.sin(theta)],
+		// 	[0, 0, Math.sin(theta), Math.cos(theta)]
+		// ];
 
-		const finalMatrix = this.math.multiply(
-			this.math.multiply(this.math.inv(toStandardBasisMatrix), rotateMatrix),
-			toStandardBasisMatrix
-		);
+		// const finalMatrix = this.math.multiply(toStandardBasisMatrix, rotateMatrix);
+
+		//Now we return the final two columns of the product.
+		const cosine = Math.cos(theta);
+		const sine = Math.sin(theta);
 
 		return [
-			[finalMatrix[0][2], finalMatrix[1][2], finalMatrix[2][2], finalMatrix[3][2]],
-			[finalMatrix[0][3], finalMatrix[1][3], finalMatrix[2][3], finalMatrix[3][3]]
+			[
+				vec1[0] * cosine + vec2[0] * sine,
+				vec1[1] * cosine + vec2[1] * sine,
+				vec1[2] * cosine + vec2[2] * sine,
+				vec1[3] * cosine + vec2[3] * sine
+			],
+			[
+				-vec1[0] * sine + vec2[0] * cosine,
+				-vec1[1] * sine + vec2[1] * cosine,
+				-vec1[2] * sine + vec2[2] * cosine,
+				-vec1[3] * sine + vec2[3] * cosine
+			],
 		];
 	}
 
