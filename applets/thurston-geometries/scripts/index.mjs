@@ -45,6 +45,15 @@ export function load()
 		applet.wilson.gl.uniform1i(applet.wilson.uniforms["maxMarches"], applet.maxMarches);
 	});
 
+
+
+	const downloadButtonElement = $("#download-button");
+
+	downloadButtonElement.addEventListener("click", () =>
+	{
+		applet.wilson.downloadFrame("a-thurston-geometry.png");
+	});
+
 	
 
 	showPage();

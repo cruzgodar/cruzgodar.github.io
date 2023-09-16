@@ -1,20 +1,22 @@
-import { RaymarchApplet } from "/scripts/src/applets.mjs";
+import { Applet } from "/scripts/src/applets.mjs";
 import { aspectRatio } from "/scripts/src/layout.mjs";
-import { addTemporaryListener, loadScript } from "/scripts/src/main.mjs";
+import { addTemporaryListener } from "/scripts/src/main.mjs";
 import { Wilson } from "/scripts/wilson.mjs";
 
-export class ThurstonGeometry extends RaymarchApplet
+export class ThurstonGeometry extends Applet
 {
-	theta = 4.6601;
-	phi = 2.272;
-	cameraPos = [.0828, 2.17, 1.8925];
+	resolution = 400;
 
-	onManifoldPos = [0, 0, 0, 1];
+	focalLength = .1;
+	maxMarches = 100;
+	lightPos = [1 / Math.sqrt(2), 1 / Math.sqrt(2), 1 / Math.sqrt(2), 1 / Math.sqrt(2)];
 
-	globalNormalVec = [0, 0, 0, 1];
-	globalForwardVec = [1, 0, 0, 0];
-	globalRightVec = [0, 1, 0, 0];
-	globalUpVec = [0, 0, 1, 0];
+	cameraPos = [0, 0, 0, -1];
+
+	normalVec = [0, 0, 0, -1];
+	upVec = [0, 0, 1, 0];
+	rightVec = [0, 1, 0, 0];
+	forwardVec = [1, 0, 0, 0];
 
 	//The first is +/- 1 for moving forward, and the second is for moving right.
 	movingAmount = [0, 0];
@@ -29,7 +31,7 @@ export class ThurstonGeometry extends RaymarchApplet
 	})
 	{
 		super(canvas);
-
+		
 		const fragShaderSource = `
 			precision highp float;
 			
@@ -38,107 +40,89 @@ export class ThurstonGeometry extends RaymarchApplet
 			uniform float aspectRatioX;
 			uniform float aspectRatioY;
 			
-			uniform vec3 cameraPos;
-			uniform vec3 imagePlaneCenterPos;
-			uniform vec3 forwardVec;
-			uniform vec3 rightVec;
-			uniform vec3 upVec;
+			uniform vec4 cameraPos;
+			uniform vec4 normalVec;
+			uniform vec4 upVec;
+			uniform vec4 rightVec;
+			uniform vec4 forwardVec;
 			
 			uniform float focalLength;
 			
-			uniform vec3 lightPos;
-			const float lightBrightness = 1.5;
+			uniform vec4 lightPos;
+			const float lightBrightness = 3.0;
 			
-			uniform int imageSize;
-			
-			uniform int maxIterations;
+			uniform int resolution;
 			
 			const float clipDistance = 1000.0;
 			uniform int maxMarches;
 			uniform float stepFactor;
 			const vec3 fogColor = vec3(0.0, 0.0, 0.0);
 			const float fogScaling = .1;
-
-			uniform vec3 onSpherePos;
-			uniform vec3 globalForwardVec;
-			uniform vec3 globalRightVec;
-			uniform vec3 globalNormalVec;
 			
 			
 			
-			float distanceEstimator(vec3 pos)
+			float distanceEstimator(vec4 pos)
 			{
-				float distance1 = length(pos) - 1.0;
-				float distance2 = length(pos - onSpherePos) - .05;
-				float distance3 = length(pos - onSpherePos - globalForwardVec / 4.0) - .05;
-				float distance4 = length(pos - onSpherePos - globalRightVec / 4.0) - .05;
-				float distance5 = length(pos - onSpherePos - globalNormalVec / 4.0) - .05;
+				float distance1 = acos(pos.w) - .1;
+				// float distance2 = acos(-pos.x) - .1;
+				// float distance3 = acos(pos.y) - .1;
+				// float distance4 = acos(-pos.y) - .1;
 
-				float minDistance = min(min(min(min(distance1, distance2), distance3), distance4), distance5);
+				// float minDistance = min(distance1, distance2);
 
-				return minDistance;
+				return distance1;
 			}
 			
 			
 			
-			vec3 getColor(vec3 pos)
+			vec3 getColor(vec4 pos)
 			{
-				float distance1 = length(pos) - 1.0;
-				float distance2 = length(pos - onSpherePos) - .05;
-				float distance3 = length(pos - onSpherePos - globalForwardVec / 4.0) - .05;
-				float distance4 = length(pos - onSpherePos - globalRightVec / 4.0) - .05;
-				float distance5 = length(pos - onSpherePos - globalNormalVec / 4.0) - .05;
-				
-				float minDistance = min(min(min(min(distance1, distance2), distance3), distance4), distance5);
+				float distance1 = acos(pos.w) - .1;
+				//float distance2 = acos(-pos.x) - .1;
+				// float distance3 = acos(pos.y) - .1;
+				// float distance4 = acos(-pos.y) - .1;
 
-				if (minDistance == distance1)
-				{
-					return vec3(1.0, 1.0, 1.0);
-				}
+				// float minDistance = min(distance1, distance2);
 
-				if (minDistance == distance2)
-				{
-					return vec3(.75, .75, .75);
-				}
+				// if (minDistance == distance1)
+				// {
+				// 	return vec3(1.0, 0.0, 0.0);
+				// }
 
-				if (minDistance == distance3)
-				{
-					return vec3(1.0, 0.0, 0.0);
-				}
+				// if (minDistance == distance2)
+				// {
+				// 	return vec3(0.0, 1.0, 0.0);
+				// }
 
-				if (minDistance == distance4)
-				{
-					return vec3(0.0, 1.0, 0.0);
-				}
-
-				if (minDistance == distance5)
-				{
-					return vec3(0.0, 0.0, 1.0);
-				}
+				return vec3(1.0, 0.0, 0.0);
 			}
 			
 			
 			
-			vec3 getSurfaceNormal(vec3 pos)
+			vec4 getSurfaceNormal(vec4 pos)
 			{
-				float xStep1 = distanceEstimator(pos + vec3(.000001, 0.0, 0.0));
-				float yStep1 = distanceEstimator(pos + vec3(0.0, .000001, 0.0));
-				float zStep1 = distanceEstimator(pos + vec3(0.0, 0.0, .000001));
+				float xStep1 = distanceEstimator(pos + vec4(.000001, 0.0, 0.0, 0.0));
+				float yStep1 = distanceEstimator(pos + vec4(0.0, .000001, 0.0, 0.0));
+				float zStep1 = distanceEstimator(pos + vec4(0.0, 0.0, .000001, 0.0));
+				float wStep1 = distanceEstimator(pos + vec4(0.0, 0.0, 0.0, .000001));
 				
-				float xStep2 = distanceEstimator(pos - vec3(.000001, 0.0, 0.0));
-				float yStep2 = distanceEstimator(pos - vec3(0.0, .000001, 0.0));
-				float zStep2 = distanceEstimator(pos - vec3(0.0, 0.0, .000001));
+				float xStep2 = distanceEstimator(pos - vec4(.000001, 0.0, 0.0, 0.0));
+				float yStep2 = distanceEstimator(pos - vec4(0.0, .000001, 0.0, 0.0));
+				float zStep2 = distanceEstimator(pos - vec4(0.0, 0.0, .000001, 0.0));
+				float wStep2 = distanceEstimator(pos - vec4(0.0, 0.0, 0.0, .000001));
 				
-				return normalize(vec3(xStep1 - xStep2, yStep1 - yStep2, zStep1 - zStep2));
+				return normalize(vec4(xStep1 - xStep2, yStep1 - yStep2, zStep1 - zStep2, wStep1 - wStep2));
 			}
 			
 			
 			
-			vec3 computeShading(vec3 pos, int iteration)
+			vec3 computeShading(vec4 pos, int iteration)
 			{
-				vec3 surfaceNormal = getSurfaceNormal(pos);
+				vec4 surfaceNormal = getSurfaceNormal(pos);
 				
-				vec3 lightDirection = normalize(lightPos - pos);
+				vec4 lightDirection = normalize(lightPos - pos);
+
+				lightDirection -= lightDirection * dot(lightDirection, normalVec);
 				
 				float dotProduct = dot(surfaceNormal, lightDirection);
 				
@@ -147,19 +131,14 @@ export class ThurstonGeometry extends RaymarchApplet
 				//The last factor adds ambient occlusion.
 				vec3 color = getColor(pos) * lightIntensity * max((1.0 - float(iteration) / float(maxMarches)), 0.0);
 				
-				
-				
 				//Apply fog.
 				return mix(color, fogColor, 1.0 - exp(-distance(pos, cameraPos) * fogScaling));
 			}
 			
 			
 			
-			vec3 raymarch(vec3 startPos)
+			vec3 raymarch(vec4 rayDirectionVec)
 			{
-				//That factor of .9 is important -- without it, we're always stepping as far as possible, which results in artefacts and weirdness.
-				vec3 rayDirectionVec = normalize(startPos - cameraPos) * .9 / stepFactor;
-				
 				vec3 finalColor = fogColor;
 				
 				float epsilon = 0.0;
@@ -179,14 +158,15 @@ export class ThurstonGeometry extends RaymarchApplet
 					
 					
 					
-					vec3 pos = startPos + t * rayDirectionVec;
+					vec4 pos = cos(t) * cameraPos + sin(t) * rayDirectionVec;
 					
-					//This prevents overstepping, and is honestly a pretty clever fix.
+					//This prevents overstepping.
 					float distance = min(distanceEstimator(pos), lastDistance);
 					lastDistance = distance;
+					// float distance = distanceEstimator(pos);
 					
 					//This lowers the detail far away, which makes everything run nice and fast.
-					epsilon = max(.0000006, .5 * t / float(imageSize));
+					epsilon = max(.0001, .5 * t / float(resolution));
 					
 					
 					
@@ -201,12 +181,8 @@ export class ThurstonGeometry extends RaymarchApplet
 						break;
 					}
 					
-					
-					
 					t += distance;
 				}
-				
-				
 				
 				return finalColor;
 			}
@@ -215,7 +191,7 @@ export class ThurstonGeometry extends RaymarchApplet
 			
 			void main(void)
 			{
-				gl_FragColor = vec4(raymarch(imagePlaneCenterPos + rightVec * uv.x * aspectRatioX + upVec * uv.y / aspectRatioY), 1.0);
+				gl_FragColor = vec4(raymarch(normalize(forwardVec * focalLength + rightVec * uv.x * aspectRatioX * focalLength / 2.0 + upVec * uv.y / aspectRatioY * focalLength / 2.0)), 1.0);
 			}
 		`;
 
@@ -227,11 +203,11 @@ export class ThurstonGeometry extends RaymarchApplet
 
 			shader: fragShaderSource,
 
-			canvasWidth: 1000,
-			canvasHeight: 1000,
+			canvasWidth: this.resolution,
+			canvasHeight: this.resolution,
 
-			worldCenterX: -4.6601,
-			worldCenterY: -2.272,
+			worldCenterX: 0,
+			worldCenterY: 0,
 
 
 
@@ -263,90 +239,66 @@ export class ThurstonGeometry extends RaymarchApplet
 		this.wilson.render.initUniforms([
 			"aspectRatioX",
 			"aspectRatioY",
-			"imageSize",
+			"resolution",
+
 			"cameraPos",
-			"imagePlaneCenterPos",
-			"forwardVec",
-			"rightVec",
+			"normalVec",
 			"upVec",
+			"rightVec",
+			"forwardVec",
+
 			"focalLength",
 			"lightPos",
 			"maxMarches",
 			"stepFactor",
-			"maxIterations",
-
-			"onSpherePos",
-			"globalForwardVec",
-			"globalRightVec",
-			"globalNormalVec"
 		]);
 
 		this.lastWorldCenterX = this.wilson.worldCenterX;
+		this.lastWorldCenterY = this.wilson.worldCenterY;
 
-
-		this.calculateVectors();
-
-
-
-		if (this.imageWidth >= this.imageHeight)
-		{
-			this.wilson.gl.uniform1f(
-				this.wilson.uniforms["aspectRatioX"],
-				this.imageWidth / this.imageHeight
-			);
-
-			this.wilson.gl.uniform1f(
-				this.wilson.uniforms["aspectRatioY"],
-				1
-			);
-		}
-
-		else
-		{
-			this.wilson.gl.uniform1f(
-				this.wilson.uniforms["aspectRatioX"],
-				1
-			);
-
-			this.wilson.gl.uniform1f(
-				this.wilson.uniforms["aspectRatioY"],
-				this.imageWidth / this.imageHeight
-			);
-		}
-
-		this.wilson.gl.uniform1i(
-			this.wilson.uniforms["imageSize"],
-			this.imageSize
+		this.wilson.gl.uniform1f(
+			this.wilson.uniforms["aspectRatioX"],
+			1
 		);
 
-		this.wilson.gl.uniform3fv(
+		this.wilson.gl.uniform1f(
+			this.wilson.uniforms["aspectRatioY"],
+			1
+		);
+
+		this.wilson.gl.uniform1i(
+			this.wilson.uniforms["resolution"],
+			this.resolution
+		);
+
+		this.wilson.gl.uniform4fv(
 			this.wilson.uniforms["cameraPos"],
 			this.cameraPos
 		);
 
-		this.wilson.gl.uniform3fv(
-			this.wilson.uniforms["imagePlaneCenterPos"],
-			this.imagePlaneCenterPos
+		this.wilson.gl.uniform4fv(
+			this.wilson.uniforms["normalVec"],
+			this.normalVec
 		);
 
-		this.wilson.gl.uniform3fv(
-			this.wilson.uniforms["lightPos"],
-			this.lightPos
+		this.wilson.gl.uniform4fv(
+			this.wilson.uniforms["upVec"],
+			this.upVec
 		);
-
-		this.wilson.gl.uniform3fv(
+		
+		this.wilson.gl.uniform4fv(
+			this.wilson.uniforms["rightVec"],
+			this.rightVec
+		);
+			
+		this.wilson.gl.uniform4fv(
 			this.wilson.uniforms["forwardVec"],
 			this.forwardVec
 		);
 
-		this.wilson.gl.uniform3fv(
-			this.wilson.uniforms["rightVec"],
-			this.rightVec
-		);
-
-		this.wilson.gl.uniform3fv(
-			this.wilson.uniforms["upVec"],
-			this.upVec
+		this.wilson.gl.uniform4fv(
+			this.wilson.uniforms["lightPos"],
+			this.lightPos
 		);
 
 		this.wilson.gl.uniform1f(
@@ -362,31 +314,6 @@ export class ThurstonGeometry extends RaymarchApplet
 		this.wilson.gl.uniform1f(
 			this.wilson.uniforms["stepFactor"],
 			1
-		);
-
-		this.wilson.gl.uniform1i(
-			this.wilson.uniforms["maxIterations"],
-			this.maxIterations
-		);
-
-		this.wilson.gl.uniform3fv(
-			this.wilson.uniforms["onSpherePos"],
-			[0, 0, 0]
-		);
-
-		this.wilson.gl.uniform3fv(
-			this.wilson.uniforms["globalForwardVec"],
-			[0, 0, 0]
-		);
-
-		this.wilson.gl.uniform3fv(
-			this.wilson.uniforms["globalRightVec"],
-			[0, 0, 0]
-		);
-
-		this.wilson.gl.uniform3fv(
-			this.wilson.uniforms["globalNormalVec"],
-			[0, 0, 0]
 		);
 
 
@@ -414,15 +341,6 @@ export class ThurstonGeometry extends RaymarchApplet
 
 
 
-		loadScript("/scripts/math.min.js")
-			.then(() =>
-			{
-				// eslint-disable-next-line no-undef
-				this.math = math;
-			});
-
-
-
 		window.requestAnimationFrame(this.drawFrame.bind(this));
 	}
 
@@ -439,66 +357,49 @@ export class ThurstonGeometry extends RaymarchApplet
 			return;
 		}
 
+
+
 		this.pan.update(timeElapsed);
 		this.zoom.update(timeElapsed);
 
-		this.calculateGlobalVectors(timeElapsed);
-
-		this.calculateVectors();
-		this.updateCameraParameters();
+		this.calculateVectors(timeElapsed);
+		this.correctVectors();
+		
 
 		
-		// console.log(...this.onManifoldPos.map(x => Math.round(x * 1000) / 1000));
-		// console.log(...this.globalNormalVec.map(x => Math.round(x * 100) / 100));
-		// console.log(...this.globalUpVec.map(x => Math.round(x * 100) / 100));
-		// console.log(...this.globalRightVec.map(x => Math.round(x * 100) / 100));
-		// console.log(...this.globalForwardVec.map(x => Math.round(x * 100) / 100));
-		// console.log(
-		// 	Math.round(ThurstonGeometry.magnitude(this.globalNormalVec) * 100) / 100,
-		// 	Math.round(ThurstonGeometry.magnitude(this.globalUpVec) * 100) / 100,
-		// 	Math.round(ThurstonGeometry.magnitude(this.globalRightVec) * 100) / 100,
-		// 	Math.round(ThurstonGeometry.magnitude(this.globalForwardVec) * 100) / 100,
-		// 	Math.round(
-		// 		ThurstonGeometry.dotProduct(this.globalNormalVec, this.globalUpVec) * 100)
-		// 			/ 100,
-		// 	Math.round(
-		// 		ThurstonGeometry.dotProduct(this.globalNormalVec, this.globalRightVec) * 100)
-		// 			/ 100,
-		// 	Math.round(
-		// 		ThurstonGeometry.dotProduct(this.globalNormalVec, this.globalForwardVec) * 100)
-		// 			/ 100,
-		// 	Math.round(
-		// 		ThurstonGeometry.dotProduct(this.globalUpVec, this.globalRightVec) * 100)
-		// 			/ 100,
-		// 	Math.round(
-		// 		ThurstonGeometry.dotProduct(this.globalUpVec, this.globalForwardVec) * 100)
-		// 			/ 100,
-		// 	Math.round(
-		// 		ThurstonGeometry.dotProduct(this.globalRightVec, this.globalForwardVec) * 100)
-		// 			/ 100,
-		// );
+		this.focalLength = this.distanceEstimator(...this.cameraPos) / 2;
 
-		// this.wilson.gl.uniform3fv(
-		// 	this.wilson.uniforms["onSpherePos"],
-		// 	this.onSpherePos
-		// );
 
-		// this.wilson.gl.uniform3fv(
-		// 	this.wilson.uniforms["globalForwardVec"],
-		// 	this.globalForwardVec
-		// );
 
-		// this.wilson.gl.uniform3fv(
-		// 	this.wilson.uniforms["globalRightVec"],
-		// 	this.globalRightVec
-		// );
+		this.wilson.gl.uniform1f(
+			this.wilson.uniforms["focalLength"],
+			this.focalLength
+		);
 
-		// this.wilson.gl.uniform3fv(
-		// 	this.wilson.uniforms["globalNormalVec"],
-		// 	this.globalNormalVec
-		// );
+		this.wilson.gl.uniform4fv(
+			this.wilson.uniforms["cameraPos"],
+			this.cameraPos
+		);
 
+		this.wilson.gl.uniform4fv(
+			this.wilson.uniforms["normalVec"],
+			this.normalVec
+		);
+
+		this.wilson.gl.uniform4fv(
+			this.wilson.uniforms["upVec"],
+			this.upVec
+		);
 		
+		this.wilson.gl.uniform4fv(
+			this.wilson.uniforms["rightVec"],
+			this.rightVec
+		);
+			
+		this.wilson.gl.uniform4fv(
+			this.wilson.uniforms["forwardVec"],
+			this.forwardVec
+		);
 
 		this.wilson.render.drawFrame();
 
@@ -514,12 +415,12 @@ export class ThurstonGeometry extends RaymarchApplet
 
 	distanceEstimator(x, y, z, w)
 	{
-		return Math.sqrt(x * x + y * y + z * z + w * w) - .5;
+		return Math.acos(w) - .1;
 	}
 
 
 
-	calculateGlobalVectors(timeElapsed, ignoreMovingForward = false)
+	calculateVectors(timeElapsed, ignoreMovingForward = false)
 	{
 		//If there's been any rotation, it's simplest to handle that now.
 		const rotationChangeX = this.lastWorldCenterX - this.wilson.worldCenterX;
@@ -531,25 +432,25 @@ export class ThurstonGeometry extends RaymarchApplet
 		if (rotationChangeX)
 		{
 			const result = this.rotateVectors({
-				vec1: this.globalForwardVec,
-				vec2: this.globalRightVec,
-				theta: rotationChangeX
+				vec1: this.forwardVec,
+				vec2: this.rightVec,
+				theta: -rotationChangeX
 			});
 
-			this.globalForwardVec = result[0];
-			this.globalRightVec = result[1];
+			this.forwardVec = result[0];
+			this.rightVec = result[1];
 		}
 
 		if (rotationChangeY)
 		{
 			const result = this.rotateVectors({
-				vec1: this.globalForwardVec,
-				vec2: this.globalUpVec,
-				theta: rotationChangeY
+				vec1: this.forwardVec,
+				vec2: this.upVec,
+				theta: -rotationChangeY
 			});
 
-			this.globalForwardVec = result[0];
-			this.globalUpVec = result[1];
+			this.forwardVec = result[0];
+			this.upVec = result[1];
 		}
 
 
@@ -563,20 +464,20 @@ export class ThurstonGeometry extends RaymarchApplet
 
 		let tangentVec = (this.movingAmount[0] !== 0 && !ignoreMovingForward)
 			? this.movingAmount[0] === 1
-				? [...this.globalForwardVec]
+				? [...this.forwardVec]
 				: [
-					-this.globalForwardVec[0],
-					-this.globalForwardVec[1],
-					-this.globalForwardVec[2],
-					-this.globalForwardVec[3]
+					-this.forwardVec[0],
+					-this.forwardVec[1],
+					-this.forwardVec[2],
+					-this.forwardVec[3]
 				]
 			: this.movingAmount[1] === 1
-				? [...this.globalRightVec]
+				? [...this.forwardVec]
 				: [
-					-this.globalRightVec[0],
-					-this.globalRightVec[1],
-					-this.globalRightVec[2],
-					-this.globalRightVec[3]
+					-this.forwardVec[0],
+					-this.forwardVec[1],
+					-this.forwardVec[2],
+					-this.forwardVec[3]
 				];
 
 
@@ -585,43 +486,43 @@ export class ThurstonGeometry extends RaymarchApplet
 		for (let i = 0; i < 4; i++)
 		{
 			//This will change with the geometry.
-			this.onManifoldPos[i] =
-				Math.cos(dt) * this.onManifoldPos[i]
+			this.cameraPos[i] =
+				Math.cos(dt) * this.cameraPos[i]
 				+ Math.sin(dt) * tangentVec[i];
 		}
 		
 		
 		//Since we're only doing a linear approximation, this position won't be exactly
 		//on the manifold. Therefore, we'll do a quick correction to get it back.
-		this.correctManifoldPos();
+		this.correctCameraPos();
 
 		
 
 		//Now we get the tangent space to the manifold. Here, the function is x^2+y^2+z^2+w^2=1,
 		//so its gradient is (2x, 2y, 2z, 2w).
 		
-		this.globalNormalVec = ThurstonGeometry.normalize([
-			this.onManifoldPos[0],
-			this.onManifoldPos[1],
-			this.onManifoldPos[2],
-			this.onManifoldPos[3]
+		this.normalVec = ThurstonGeometry.normalize([
+			this.cameraPos[0],
+			this.cameraPos[1],
+			this.cameraPos[2],
+			this.cameraPos[3]
 		]);
 		
 		//Now for the other vectors, using the magic of curvature.
-		const curvature = this.getCurvature(this.onManifoldPos, tangentVec);
+		const curvature = this.getCurvature(this.cameraPos, tangentVec);
 
 		//The magic formula is T' = curvature * N (although this N is opposite ours).
 		tangentVec = ThurstonGeometry.normalize([
-			tangentVec[0] - curvature * this.globalNormalVec[0] * dt,
-			tangentVec[1] - curvature * this.globalNormalVec[1] * dt,
-			tangentVec[2] - curvature * this.globalNormalVec[2] * dt,
-			tangentVec[3] - curvature * this.globalNormalVec[3] * dt
+			tangentVec[0] - curvature * this.normalVec[0] * dt,
+			tangentVec[1] - curvature * this.normalVec[1] * dt,
+			tangentVec[2] - curvature * this.normalVec[2] * dt,
+			tangentVec[3] - curvature * this.normalVec[3] * dt
 		]);
 
 		//Finally, we can add this back to our actual vector.
 		if (this.movingAmount[0] !== 0 && !ignoreMovingForward)
 		{
-			this.globalForwardVec = [
+			this.forwardVec = [
 				this.movingAmount[0] * tangentVec[0],
 				this.movingAmount[0] * tangentVec[1],
 				this.movingAmount[0] * tangentVec[2],
@@ -629,20 +530,20 @@ export class ThurstonGeometry extends RaymarchApplet
 			];
 
 			const result = this.rotateVectors({
-				vec1: this.globalForwardVec,
-				vec2: this.globalRightVec,
+				vec1: this.forwardVec,
+				vec2: this.forwardVec,
 				theta: Math.PI / 2
 			});
 
 			//Hey listen! This one's important. It's not result[1], even though that's
 			//where the right vec lives in the matrix --- that's because we're rotating
 			//the forward vec to find the right one.
-			this.globalRightVec = result[0];
+			this.forwardVec = result[0];
 		}
 
 		else
 		{
-			this.globalRightVec = [
+			this.forwardVec = [
 				this.movingAmount[1] * tangentVec[0],
 				this.movingAmount[1] * tangentVec[1],
 				this.movingAmount[1] * tangentVec[2],
@@ -650,32 +551,48 @@ export class ThurstonGeometry extends RaymarchApplet
 			];
 
 			const result = this.rotateVectors({
-				vec1: this.globalForwardVec,
-				vec2: this.globalRightVec,
+				vec1: this.forwardVec,
+				vec2: this.forwardVec,
 				theta: -Math.PI / 2
 			});
 
-			this.globalForwardVec = result[1];
+			this.forwardVec = result[1];
 		}
 
 		if (this.movingAmount[0] !== 0 && this.movingAmount[1] !== 0 && !ignoreMovingForward)
 		{
-			this.calculateGlobalVectors(timeElapsed, true);
+			this.calculateVectors(timeElapsed, true);
 		}
 	}
 
 
 
-	correctManifoldPos()
+	correctCameraPos()
 	{
 		//Here, we just want the magnitude to be equal to 1 (this will be more complicated
 		//for other manifolds).
-		const magnitude = ThurstonGeometry.magnitude(this.onManifoldPos);
+		const magnitude = ThurstonGeometry.magnitude(this.cameraPos);
 
-		this.onManifoldPos[0] /= magnitude;
-		this.onManifoldPos[1] /= magnitude;
-		this.onManifoldPos[2] /= magnitude;
-		this.onManifoldPos[3] /= magnitude;
+		this.cameraPos[0] /= magnitude;
+		this.cameraPos[1] /= magnitude;
+		this.cameraPos[2] /= magnitude;
+		this.cameraPos[3] /= magnitude;
+	}
+
+
+
+	correctVectors()
+	{
+		const dotUp = ThurstonGeometry.dotProduct(this.normalVec, this.upVec);
+		const dotRight = ThurstonGeometry.dotProduct(this.normalVec, this.rightVec);
+		const dotForward = ThurstonGeometry.dotProduct(this.normalVec, this.forwardVec);
+
+		for (let i = 0; i < 4; i++)
+		{
+			this.upVec[i] -= dotUp * this.normalVec[i];
+			this.rightVec[i] -= dotRight * this.normalVec[i];
+			this.forwardVec[i] -= dotForward * this.normalVec[i];
+		}
 	}
 
 
@@ -758,28 +675,28 @@ export class ThurstonGeometry extends RaymarchApplet
 			return;
 		}
 
-		if (e.key === "ArrowUp")
+		if (e.key === "w")
 		{
 			e.preventDefault();
 
 			this.movingAmount[0] = 1;
 		}
 
-		else if (e.key === "ArrowDown")
+		else if (e.key === "s")
 		{
 			e.preventDefault();
 
 			this.movingAmount[0] = -1;
 		}
 
-		if (e.key === "ArrowRight")
+		if (e.key === "d")
 		{
 			e.preventDefault();
 			
 			this.movingAmount[1] = 1;
 		}
 
-		else if (e.key === "ArrowLeft")
+		else if (e.key === "a")
 		{
 			e.preventDefault();
 			
@@ -798,14 +715,14 @@ export class ThurstonGeometry extends RaymarchApplet
 			return;
 		}
 
-		if (e.key === "ArrowUp" || e.key === "ArrowDown")
+		if (e.key === "w" || e.key === "s")
 		{
 			e.preventDefault();
 
 			this.movingAmount[0] = 0;
 		}
 
-		if (e.key === "ArrowRight" || e.key === "ArrowLeft")
+		if (e.key === "d" || e.key === "a")
 		{
 			e.preventDefault();
 			
@@ -815,44 +732,44 @@ export class ThurstonGeometry extends RaymarchApplet
 
 
 
-	changeResolution(resolution = this.imageSize)
+	changeResolution(resolution = this.resolution)
 	{
-		this.imageSize = resolution;
+		this.resolution = resolution;
 
-
+		let imageWidth, imageHeight;
 
 		if (this.wilson.fullscreen.currentlyFullscreen)
 		{
 			if (aspectRatio >= 1)
 			{
-				this.imageWidth = this.imageSize;
-				this.imageHeight = Math.floor(this.imageSize / aspectRatio);
+				imageWidth = this.resolution;
+				imageHeight = Math.floor(this.resolution / aspectRatio);
 			}
 
 			else
 			{
-				this.imageWidth = Math.floor(this.imageSize * aspectRatio);
-				this.imageHeight = this.imageSize;
+				imageWidth = Math.floor(this.resolution * aspectRatio);
+				imageHeight = this.resolution;
 			}
 		}
 
 		else
 		{
-			this.imageWidth = this.imageSize;
-			this.imageHeight = this.imageSize;
+			imageWidth = this.resolution;
+			imageHeight = this.resolution;
 		}
 
 
 
-		this.wilson.changeCanvasSize(this.imageWidth, this.imageHeight);
+		this.wilson.changeCanvasSize(imageWidth, imageHeight);
 
 
 
-		if (this.imageWidth >= this.imageHeight)
+		if (imageWidth >= imageHeight)
 		{
 			this.wilson.gl.uniform1f(
 				this.wilson.uniforms["aspectRatioX"],
-				this.imageWidth / this.imageHeight
+				imageWidth / imageHeight
 			);
 
 			this.wilson.gl.uniform1f(this.wilson.uniforms["aspectRatioY"], 1);
@@ -864,11 +781,11 @@ export class ThurstonGeometry extends RaymarchApplet
 
 			this.wilson.gl.uniform1f(
 				this.wilson.uniforms["aspectRatioY"],
-				this.imageWidth / this.imageHeight
+				imageWidth / imageHeight
 			);
 		}
 
-		this.wilson.gl.uniform1i(this.wilson.uniforms["imageSize"], this.imageSize);
+		this.wilson.gl.uniform1i(this.wilson.uniforms["resolution"], this.resolution);
 	}
 
 
