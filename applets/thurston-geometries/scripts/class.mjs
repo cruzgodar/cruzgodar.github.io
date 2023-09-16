@@ -9,7 +9,6 @@ export class ThurstonGeometry extends Applet
 
 	focalLength = .1;
 	maxMarches = 100;
-	lightPos = [1 / Math.sqrt(2), 1 / Math.sqrt(2), 1 / Math.sqrt(2), 1 / Math.sqrt(2)];
 
 	cameraPos = [0, 0, 0, -1];
 
@@ -20,6 +19,7 @@ export class ThurstonGeometry extends Applet
 
 	//The first is +/- 1 for moving forward, and the second is for moving right.
 	movingAmount = [0, 0];
+	movingSpeed = 0;
 
 	lastWorldCenterX;
 	lastWorldCenterY;
@@ -48,8 +48,7 @@ export class ThurstonGeometry extends Applet
 			
 			uniform float focalLength;
 			
-			uniform vec4 lightPos;
-			const float lightBrightness = 3.0;
+			const float lightBrightness = 1.0;
 			
 			uniform int resolution;
 			
@@ -57,59 +56,95 @@ export class ThurstonGeometry extends Applet
 			uniform int maxMarches;
 			uniform float stepFactor;
 			const vec3 fogColor = vec3(0.0, 0.0, 0.0);
-			const float fogScaling = .1;
+			const float fogScaling = .07;
+			const float fov = 1.0;
+			const float radius = .3;
 			
 			
 			
 			float distanceEstimator(vec4 pos)
 			{
-				float distance1 = acos(pos.w) - .1;
-				// float distance2 = acos(-pos.x) - .1;
-				// float distance3 = acos(pos.y) - .1;
-				// float distance4 = acos(-pos.y) - .1;
+				float distance1 = acos(pos.x) - radius;
+				float distance2 = acos(-pos.x) - radius;
+				float distance3 = acos(pos.y) - radius;
+				float distance4 = acos(-pos.y) - radius;
+				float distance5 = acos(pos.z) - radius;
+				float distance6 = acos(-pos.z) - radius;
 
-				// float minDistance = min(distance1, distance2);
+				float minDistance = min(
+					min(
+						min(distance1, distance2),
+						min(distance3, distance4)
+					),
+					min(distance5, distance6)
+				);
 
-				return distance1;
+				return minDistance;
 			}
 			
 			
 			
 			vec3 getColor(vec4 pos)
 			{
-				float distance1 = acos(pos.w) - .1;
-				//float distance2 = acos(-pos.x) - .1;
-				// float distance3 = acos(pos.y) - .1;
-				// float distance4 = acos(-pos.y) - .1;
+				float distance1 = acos(pos.x) - radius;
+				float distance2 = acos(-pos.x) - radius;
+				float distance3 = acos(pos.y) - radius;
+				float distance4 = acos(-pos.y) - radius;
+				float distance5 = acos(pos.z) - radius;
+				float distance6 = acos(-pos.z) - radius;
 
-				// float minDistance = min(distance1, distance2);
+				float minDistance = min(
+					min(
+						min(distance1, distance2),
+						min(distance3, distance4)
+					),
+					min(distance5, distance6)
+				);
 
-				// if (minDistance == distance1)
-				// {
-				// 	return vec3(1.0, 0.0, 0.0);
-				// }
+				if (minDistance == distance1)
+				{
+					return vec3(1.0, 0.0, 0.0);
+				}
 
-				// if (minDistance == distance2)
-				// {
-				// 	return vec3(0.0, 1.0, 0.0);
-				// }
+				if (minDistance == distance2)
+				{
+					return vec3(0.0, 1.0, 0.0);
+				}
 
-				return vec3(1.0, 0.0, 0.0);
+				if (minDistance == distance3)
+				{
+					return vec3(0.0, 0.0, 1.0);
+				}
+
+				if (minDistance == distance4)
+				{
+					return vec3(1.0, 1.0, 0.0);
+				}
+
+				if (minDistance == distance5)
+				{
+					return vec3(0.0, 1.0, 1.0);
+				}
+
+				if (minDistance == distance6)
+				{
+					return vec3(1.0, 0.0, 1.0);
+				}
 			}
 			
 			
 			
 			vec4 getSurfaceNormal(vec4 pos)
 			{
-				float xStep1 = distanceEstimator(pos + vec4(.000001, 0.0, 0.0, 0.0));
-				float yStep1 = distanceEstimator(pos + vec4(0.0, .000001, 0.0, 0.0));
-				float zStep1 = distanceEstimator(pos + vec4(0.0, 0.0, .000001, 0.0));
-				float wStep1 = distanceEstimator(pos + vec4(0.0, 0.0, 0.0, .000001));
+				float xStep1 = distanceEstimator(pos + vec4(.00001, 0.0, 0.0, 0.0));
+				float yStep1 = distanceEstimator(pos + vec4(0.0, .00001, 0.0, 0.0));
+				float zStep1 = distanceEstimator(pos + vec4(0.0, 0.0, .00001, 0.0));
+				float wStep1 = distanceEstimator(pos + vec4(0.0, 0.0, 0.0, .00001));
 				
-				float xStep2 = distanceEstimator(pos - vec4(.000001, 0.0, 0.0, 0.0));
-				float yStep2 = distanceEstimator(pos - vec4(0.0, .000001, 0.0, 0.0));
-				float zStep2 = distanceEstimator(pos - vec4(0.0, 0.0, .000001, 0.0));
-				float wStep2 = distanceEstimator(pos - vec4(0.0, 0.0, 0.0, .000001));
+				float xStep2 = distanceEstimator(pos - vec4(.00001, 0.0, 0.0, 0.0));
+				float yStep2 = distanceEstimator(pos - vec4(0.0, .00001, 0.0, 0.0));
+				float zStep2 = distanceEstimator(pos - vec4(0.0, 0.0, .00001, 0.0));
+				float wStep2 = distanceEstimator(pos - vec4(0.0, 0.0, 0.0, .00001));
 				
 				return normalize(vec4(xStep1 - xStep2, yStep1 - yStep2, zStep1 - zStep2, wStep1 - wStep2));
 			}
@@ -120,19 +155,19 @@ export class ThurstonGeometry extends Applet
 			{
 				vec4 surfaceNormal = getSurfaceNormal(pos);
 				
-				vec4 lightDirection = normalize(lightPos - pos);
+				vec4 lightDirection1 = normalize(vec4(1.0, 1.0, 1.0, 1.0) - pos);
+				float dotProduct1 = dot(surfaceNormal, lightDirection1);
 
-				lightDirection -= lightDirection * dot(lightDirection, normalVec);
-				
-				float dotProduct = dot(surfaceNormal, lightDirection);
-				
-				float lightIntensity = lightBrightness * max(dotProduct, -.25 * dotProduct);
+				vec4 lightDirection2 = normalize(vec4(-1.0, -1.0, -1.0, 1.0) - pos);
+				float dotProduct2 = dot(surfaceNormal, lightDirection2);
+
+				float lightIntensity = lightBrightness * max(abs(dotProduct1), abs(dotProduct2));
 				
 				//The last factor adds ambient occlusion.
 				vec3 color = getColor(pos) * lightIntensity * max((1.0 - float(iteration) / float(maxMarches)), 0.0);
 				
 				//Apply fog.
-				return mix(color, fogColor, 1.0 - exp(-distance(pos, cameraPos) * fogScaling));
+				return mix(color, fogColor, 1.0 - exp(-acos(dot(pos, cameraPos)) * fogScaling));
 			}
 			
 			
@@ -191,7 +226,7 @@ export class ThurstonGeometry extends Applet
 			
 			void main(void)
 			{
-				gl_FragColor = vec4(raymarch(normalize(forwardVec * focalLength + rightVec * uv.x * aspectRatioX * focalLength / 2.0 + upVec * uv.y / aspectRatioY * focalLength / 2.0)), 1.0);
+				gl_FragColor = vec4(raymarch(normalize(forwardVec * focalLength + rightVec * uv.x * aspectRatioX * focalLength * fov + upVec * uv.y / aspectRatioY * focalLength * fov)), 1.0);
 			}
 		`;
 
@@ -248,7 +283,6 @@ export class ThurstonGeometry extends Applet
 			"forwardVec",
 
 			"focalLength",
-			"lightPos",
 			"maxMarches",
 			"stepFactor",
 		]);
@@ -294,11 +328,6 @@ export class ThurstonGeometry extends Applet
 		this.wilson.gl.uniform4fv(
 			this.wilson.uniforms["forwardVec"],
 			this.forwardVec
-		);
-
-		this.wilson.gl.uniform4fv(
-			this.wilson.uniforms["lightPos"],
-			this.lightPos
 		);
 
 		this.wilson.gl.uniform1f(
@@ -359,6 +388,10 @@ export class ThurstonGeometry extends Applet
 
 
 
+		const distanceToScene = this.distanceEstimator(...this.cameraPos);
+
+		this.movingSpeed = distanceToScene;
+
 		this.pan.update(timeElapsed);
 		this.zoom.update(timeElapsed);
 
@@ -367,7 +400,7 @@ export class ThurstonGeometry extends Applet
 		
 
 		
-		this.focalLength = this.distanceEstimator(...this.cameraPos) / 2;
+		this.focalLength = distanceToScene / 2;
 
 
 
@@ -415,7 +448,13 @@ export class ThurstonGeometry extends Applet
 
 	distanceEstimator(x, y, z, w)
 	{
-		return Math.acos(w) - .1;
+		return Math.min(
+			Math.min(
+				Math.min(Math.acos(x) - .1, Math.acos(-x) - .1),
+				Math.min(Math.acos(y) - .1, Math.acos(-y) - .1)
+			),
+			Math.min(Math.acos(z) - .1, Math.acos(-z) - .1)
+		);
 	}
 
 
@@ -472,12 +511,12 @@ export class ThurstonGeometry extends Applet
 					-this.forwardVec[3]
 				]
 			: this.movingAmount[1] === 1
-				? [...this.forwardVec]
+				? [...this.rightVec]
 				: [
-					-this.forwardVec[0],
-					-this.forwardVec[1],
-					-this.forwardVec[2],
-					-this.forwardVec[3]
+					-this.rightVec[0],
+					-this.rightVec[1],
+					-this.rightVec[2],
+					-this.rightVec[3]
 				];
 
 
@@ -531,19 +570,19 @@ export class ThurstonGeometry extends Applet
 
 			const result = this.rotateVectors({
 				vec1: this.forwardVec,
-				vec2: this.forwardVec,
+				vec2: this.rightVec,
 				theta: Math.PI / 2
 			});
 
 			//Hey listen! This one's important. It's not result[1], even though that's
 			//where the right vec lives in the matrix --- that's because we're rotating
 			//the forward vec to find the right one.
-			this.forwardVec = result[0];
+			this.rightVec = result[0];
 		}
 
 		else
 		{
-			this.forwardVec = [
+			this.rightVec = [
 				this.movingAmount[1] * tangentVec[0],
 				this.movingAmount[1] * tangentVec[1],
 				this.movingAmount[1] * tangentVec[2],
@@ -552,7 +591,7 @@ export class ThurstonGeometry extends Applet
 
 			const result = this.rotateVectors({
 				vec1: this.forwardVec,
-				vec2: this.forwardVec,
+				vec2: this.rightVec,
 				theta: -Math.PI / 2
 			});
 
