@@ -448,7 +448,11 @@ export class ThurstonGeometry extends RaymarchApplet
 		this.updateCameraParameters();
 
 		
-		console.log(...this.onManifoldPos.map(x => Math.round(x * 100) / 100));
+		console.log(...this.onManifoldPos.map(x => Math.round(x * 1000) / 1000));
+		// console.log(...this.globalNormalVec.map(x => Math.round(x * 100) / 100));
+		// console.log(...this.globalUpVec.map(x => Math.round(x * 100) / 100));
+		// console.log(...this.globalRightVec.map(x => Math.round(x * 100) / 100));
+		// console.log(...this.globalForwardVec.map(x => Math.round(x * 100) / 100));
 
 		// this.wilson.gl.uniform3fv(
 		// 	this.wilson.uniforms["onSpherePos"],
@@ -520,7 +524,7 @@ export class ThurstonGeometry extends RaymarchApplet
 			return;
 		}
 
-		const dt = timeElapsed / 500;
+		const dt = timeElapsed / 10000;
 
 		let tangentVec = (this.movingAmount[0] !== 0 && !ignoreMovingForward)
 			? this.movingAmount[0] === 1
@@ -560,7 +564,7 @@ export class ThurstonGeometry extends RaymarchApplet
 
 		//Now we get the tangent space to the manifold. Here, the function is x^2+y^2+z^2+w^2=1,
 		//so its gradient is (2x, 2y, 2z, 2w).
-
+		
 		this.globalNormalVec = ThurstonGeometry.normalize([
 			this.onManifoldPos[0],
 			this.onManifoldPos[1],
@@ -572,12 +576,12 @@ export class ThurstonGeometry extends RaymarchApplet
 		const curvature = this.getCurvature(this.onManifoldPos, tangentVec);
 
 		//The magic formula is T' = curvature * N (although this N is opposite ours).
-		tangentVec = [
+		tangentVec = ThurstonGeometry.normalize([
 			tangentVec[0] - curvature * this.globalNormalVec[0] * dt,
 			tangentVec[1] - curvature * this.globalNormalVec[1] * dt,
 			tangentVec[2] - curvature * this.globalNormalVec[2] * dt,
 			tangentVec[3] - curvature * this.globalNormalVec[3] * dt
-		];
+		]);
 
 		//Finally, we can add this back to our actual vector.
 		if (this.movingAmount[0] !== 0 && !ignoreMovingForward)
