@@ -48,7 +48,7 @@ export class ThurstonGeometry extends Applet
 			
 			uniform float focalLength;
 			
-			const float lightBrightness = 1.0;
+			const float lightBrightness = .8;
 			
 			uniform int resolution;
 			
@@ -70,13 +70,17 @@ export class ThurstonGeometry extends Applet
 				float distance4 = acos(-pos.y) - radius;
 				float distance5 = acos(pos.z) - radius;
 				float distance6 = acos(-pos.z) - radius;
+				float distance7 = acos(pos.w) - radius;
 
 				float minDistance = min(
 					min(
 						min(distance1, distance2),
 						min(distance3, distance4)
 					),
-					min(distance5, distance6)
+					min(
+						min(distance5, distance6),
+						distance7
+					)
 				);
 
 				return minDistance;
@@ -92,13 +96,17 @@ export class ThurstonGeometry extends Applet
 				float distance4 = acos(-pos.y) - radius;
 				float distance5 = acos(pos.z) - radius;
 				float distance6 = acos(-pos.z) - radius;
+				float distance7 = acos(pos.w) - radius;
 
 				float minDistance = min(
 					min(
 						min(distance1, distance2),
 						min(distance3, distance4)
 					),
-					min(distance5, distance6)
+					min(
+						min(distance5, distance6),
+						distance7
+					)
 				);
 
 				if (minDistance == distance1)
@@ -129,6 +137,11 @@ export class ThurstonGeometry extends Applet
 				if (minDistance == distance6)
 				{
 					return vec3(1.0, 0.0, 1.0);
+				}
+
+				if (minDistance == distance7)
+				{
+					return vec3(1.0, 1.0, 1.0);
 				}
 			}
 			
@@ -161,7 +174,16 @@ export class ThurstonGeometry extends Applet
 				vec4 lightDirection2 = normalize(vec4(-1.0, -1.0, -1.0, 1.0) - pos);
 				float dotProduct2 = dot(surfaceNormal, lightDirection2);
 
-				float lightIntensity = lightBrightness * max(abs(dotProduct1), abs(dotProduct2));
+				vec4 lightDirection3 = normalize(vec4(1.0, 1.0, 1.0, 0.0) - pos);
+				float dotProduct3 = dot(surfaceNormal, lightDirection3);
+
+				vec4 lightDirection4 = normalize(vec4(-1.0, -1.0, -1.0, 0.0) - pos);
+				float dotProduct4 = dot(surfaceNormal, lightDirection4);
+
+				float lightIntensity = lightBrightness * max(
+					max(abs(dotProduct1), abs(dotProduct2)),
+					max(abs(dotProduct3), abs(dotProduct4))
+				);
 				
 				//The last factor adds ambient occlusion.
 				vec3 color = getColor(pos) * lightIntensity * max((1.0 - float(iteration) / float(maxMarches)), 0.0);
