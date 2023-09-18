@@ -48,7 +48,7 @@ export class ThurstonGeometry extends Applet
 			
 			uniform float focalLength;
 			
-			const float lightBrightness = .8;
+			const float lightBrightness = 1.0;
 			
 			uniform int resolution;
 			
@@ -190,7 +190,7 @@ export class ThurstonGeometry extends Applet
 					max(abs(dotProduct1), abs(dotProduct2)),
 					max(abs(dotProduct3), abs(dotProduct4))
 				);
-				
+
 				//The last factor adds ambient occlusion.
 				vec3 color = getColor(pos) * lightIntensity * max((1.0 - float(iteration) / float(maxMarches)), 0.0);
 				
@@ -221,13 +221,7 @@ export class ThurstonGeometry extends Applet
 					
 					vec4 pos = cos(t) * cameraPos + sin(t) * rayDirectionVec;
 					
-					//This prevents overstepping.
-					float distance = min(distanceEstimator(pos), lastDistance);
-					lastDistance = distance;
-					// float distance = distanceEstimator(pos);
-					
-					//This lowers the detail far away, which makes everything run nice and fast.
-					//epsilon = max(.0001, .5 * t / float(resolution));
+					float distance = distanceEstimator(pos);
 					
 					
 					
