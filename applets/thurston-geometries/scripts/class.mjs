@@ -7,7 +7,6 @@ export class ThurstonGeometry extends Applet
 {
 	resolution = 1000;
 
-	focalLength = .1;
 	maxMarches = 100;
 
 	cameraPos = [0, 0, 0, -1];
@@ -19,7 +18,6 @@ export class ThurstonGeometry extends Applet
 
 	//The first is +/- 1 for moving forward, and the second is for moving right.
 	movingAmount = [0, 0];
-	movingSpeed = 0;
 
 	lastWorldCenterX;
 	lastWorldCenterY;
@@ -45,8 +43,6 @@ export class ThurstonGeometry extends Applet
 			uniform vec4 upVec;
 			uniform vec4 rightVec;
 			uniform vec4 forwardVec;
-			
-			uniform float focalLength;
 			
 			const float lightBrightness = 1.0;
 			
@@ -246,7 +242,7 @@ export class ThurstonGeometry extends Applet
 			
 			void main(void)
 			{
-				gl_FragColor = vec4(raymarch(normalize(forwardVec * focalLength + rightVec * uv.x * aspectRatioX * focalLength * fov + upVec * uv.y / aspectRatioY * focalLength * fov)), 1.0);
+				gl_FragColor = vec4(raymarch(normalize(forwardVec + rightVec * uv.x * aspectRatioX * fov + upVec * uv.y / aspectRatioY * fov)), 1.0);
 			}
 		`;
 
@@ -302,7 +298,6 @@ export class ThurstonGeometry extends Applet
 			"rightVec",
 			"forwardVec",
 
-			"focalLength",
 			"maxMarches",
 			"stepFactor",
 		]);
@@ -348,11 +343,6 @@ export class ThurstonGeometry extends Applet
 		this.wilson.gl.uniform4fv(
 			this.wilson.uniforms["forwardVec"],
 			this.forwardVec
-		);
-
-		this.wilson.gl.uniform1f(
-			this.wilson.uniforms["focalLength"],
-			this.focalLength
 		);
 
 		this.wilson.gl.uniform1i(
@@ -408,26 +398,13 @@ export class ThurstonGeometry extends Applet
 
 
 
-		const distanceToScene = this.distanceEstimator(...this.cameraPos);
-
-		this.movingSpeed = distanceToScene;
-
 		this.pan.update(timeElapsed);
 		this.zoom.update(timeElapsed);
 
 		this.calculateVectors(timeElapsed);
 		this.correctVectors();
-		
-
-		
-		this.focalLength = distanceToScene / 2;
 
 
-
-		this.wilson.gl.uniform1f(
-			this.wilson.uniforms["focalLength"],
-			this.focalLength
-		);
 
 		this.wilson.gl.uniform4fv(
 			this.wilson.uniforms["cameraPos"],
