@@ -16,10 +16,6 @@ Drag on the scene to look around. On a keyboard, use WASD to move, and on a touc
 	
 	resolution 1000 Resolution
 	
-	iterations 16 Iterations
-	
-	view-distance 100 View Distance
-	
 ###
 
 </div>

@@ -7,20 +7,26 @@ export class ThurstonGeometry extends Applet
 {
 	resolution = 1000;
 
-	maxMarches = 100;
+	aspectRatioX = 1;
+	aspectRatioY = 1;
 
-	cameraPos = [0, 0, 0, -1];
+	cameraPos;
 
-	normalVec = [0, 0, 0, -1];
-	upVec = [0, 0, 1, 0];
-	rightVec = [0, 1, 0, 0];
-	forwardVec = [1, 0, 0, 0];
+	normalVec;
+	upVec;
+	rightVec;
+	forwardVec;
 
 	//The first is +/- 1 for moving forward, and the second is for moving right.
 	movingAmount = [0, 0];
 
 	lastWorldCenterX;
 	lastWorldCenterY;
+
+	updateCameraPos;
+	getNormalVec;
+	getGammaPrime;
+	getGammaDoublePrime;
 
 
 
@@ -29,7 +35,107 @@ export class ThurstonGeometry extends Applet
 	})
 	{
 		super(canvas);
-		
+
+		const tempShader = `
+			precision highp float;
+			varying vec2 uv;
+			
+			void main(void)
+			{
+				gl_FragColor = vec4(0.0, 0.0, 0.0, 1.0);
+			}
+		`;
+
+		const options =
+		{
+			renderer: "gpu",
+
+			shader: tempShader,
+
+			canvasWidth: this.resolution,
+			canvasHeight: this.resolution,
+
+			worldCenterX: 0,
+			worldCenterY: 0,
+
+
+
+			useFullscreen: true,
+
+			trueFullscreen: true,
+
+			useFullscreenButton: true,
+
+			enterFullscreenButtonIconPath: "/graphics/general-icons/enter-fullscreen.png",
+			exitFullscreenButtonIconPath: "/graphics/general-icons/exit-fullscreen.png",
+
+			switchFullscreenCallback: () => this.changeResolution(),
+
+
+
+			mousedownCallback: this.onGrabCanvas.bind(this),
+			touchstartCallback: this.onGrabCanvas.bind(this),
+
+			mousedragCallback: this.onDragCanvas.bind(this),
+			touchmoveCallback: this.onDragCanvas.bind(this),
+
+			mouseupCallback: this.onReleaseCanvas.bind(this),
+			touchendCallback: this.onReleaseCanvas.bind(this)
+		};
+
+		this.wilson = new Wilson(canvas, options);
+
+
+
+		const boundFunction = () => this.changeResolution();
+		addTemporaryListener({
+			object: window,
+			event: "resize",
+			callback: boundFunction
+		});
+
+		const boundFunction2 = this.handleKeydownEvent.bind(this);
+		addTemporaryListener({
+			object: document.documentElement,
+			event: "keydown",
+			callback: boundFunction2
+		});
+
+		const boundFunction3 = this.handleKeyupEvent.bind(this);
+		addTemporaryListener({
+			object: document.documentElement,
+			event: "keyup",
+			callback: boundFunction3
+		});
+	}
+
+
+
+	run({
+		updateCameraPos, // (cameraPos: vec4) => newCameraPos
+		getNormalVec,
+		getGammaPrime,
+		getGammaDoublePrime,
+		distanceEstimatorGlsl,
+		getColorGlsl,
+		cameraPos,
+		normalVec,
+		upVec,
+		rightVec,
+		forwardVec
+	})
+	{
+		this.updateCameraPos = updateCameraPos;
+		this.getNormalVec = getNormalVec;
+		this.getGammaPrime = getGammaPrime;
+		this.getGammaDoublePrime = getGammaDoublePrime;
+
+		this.cameraPos = cameraPos;
+		this.normalVec = normalVec;
+		this.upVec = upVec;
+		this.rightVec = rightVec;
+		this.forwardVec = forwardVec;
+
 		const fragShaderSource = `
 			precision highp float;
 			
@@ -44,107 +150,36 @@ export class ThurstonGeometry extends Applet
 			uniform vec4 rightVec;
 			uniform vec4 forwardVec;
 			
-			const float lightBrightness = 1.0;
-			
 			uniform int resolution;
+
+			const float lightBrightness = 1.0;
 			
 			const float clipDistance = 1000.0;
 			const float epsilon = 0.00001;
-			uniform int maxMarches;
-			uniform float stepFactor;
+			const int maxMarches = 100;
+			const float stepFactor = .99;
 			const vec3 fogColor = vec3(0.0, 0.0, 0.0);
 			const float fogScaling = .07;
-			const float fov = .75;
-			const float radius = .3;
+			const float fov = 1.0;
+			const float radius = .9;
 
 
 
 			float getBanding(float amount, float numBands)
 			{
-				return 1.0 - floor(mod(amount * numBands, 2.0)) / 2.0;
+				return 1.0;// - floor(mod(amount * numBands, 2.0)) / 2.0;
 			}
 			
 			
 			
 			float distanceEstimator(vec4 pos)
 			{
-				float distance1 = acos(pos.x) - radius;
-				float distance2 = acos(-pos.x) - radius;
-				float distance3 = acos(pos.y) - radius;
-				float distance4 = acos(-pos.y) - radius;
-				float distance5 = acos(pos.z) - radius;
-				float distance6 = acos(-pos.z) - radius;
-				float distance7 = acos(pos.w) - radius;
-
-				float minDistance = min(
-					min(
-						min(distance1, distance2),
-						min(distance3, distance4)
-					),
-					min(
-						min(distance5, distance6),
-						distance7
-					)
-				);
-
-				return minDistance;
+				${distanceEstimatorGlsl}
 			}
 			
 			vec3 getColor(vec4 pos)
 			{
-				float distance1 = acos(pos.x) - radius;
-				float distance2 = acos(-pos.x) - radius;
-				float distance3 = acos(pos.y) - radius;
-				float distance4 = acos(-pos.y) - radius;
-				float distance5 = acos(pos.z) - radius;
-				float distance6 = acos(-pos.z) - radius;
-				float distance7 = acos(pos.w) - radius;
-
-				float minDistance = min(
-					min(
-						min(distance1, distance2),
-						min(distance3, distance4)
-					),
-					min(
-						min(distance5, distance6),
-						distance7
-					)
-				);
-
-				if (minDistance == distance1)
-				{
-					return vec3(1.0, 0.0, 0.0) * getBanding(pos.y + pos.z + pos.w, 10.0);
-				}
-
-				if (minDistance == distance2)
-				{
-					return vec3(0.0, 1.0, 1.0) * getBanding(pos.y + pos.z + pos.w, 10.0);
-				}
-
-				if (minDistance == distance3)
-				{
-					return vec3(0.0, 1.0, 0.0) * getBanding(pos.x + pos.z + pos.w, 10.0);
-				}
-
-				if (minDistance == distance4)
-				{
-					return vec3(1.0, 0.0, 1.0) * getBanding(pos.x + pos.z + pos.w, 10.0);
-				}
-
-				if (minDistance == distance5)
-				{
-					return vec3(0.0, 0.0, 1.0) * getBanding(pos.x + pos.y + pos.w, 10.0);
-				}
-
-				if (minDistance == distance6)
-				{
-					return vec3(1.0, 1.0, 0.0) * getBanding(pos.x + pos.y + pos.w, 10.0);
-				}
-
-				if (minDistance == distance7)
-				{
-					return vec3(1.0, 1.0, 1.0) * getBanding(pos.x + pos.y + pos.z, 10.0);
-				}
+				${getColorGlsl}
 			}
 			
 			
@@ -206,20 +241,11 @@ export class ThurstonGeometry extends Applet
 				
 				
 				
-				for (int iteration = 0; iteration < 1024; iteration++)
+				for (int iteration = 0; iteration < maxMarches; iteration++)
 				{
-					if (iteration == maxMarches)
-					{
-						break;
-					}
-					
-					
-					
 					vec4 pos = cos(t) * cameraPos + sin(t) * rayDirectionVec;
 					
 					float distance = distanceEstimator(pos);
-					
-					
 					
 					if (distance < epsilon)
 					{
@@ -232,7 +258,7 @@ export class ThurstonGeometry extends Applet
 						break;
 					}
 					
-					t += distance;
+					t += distance * stepFactor;
 				}
 				
 				return finalColor;
@@ -246,46 +272,9 @@ export class ThurstonGeometry extends Applet
 			}
 		`;
 
-
-
-		const options =
-		{
-			renderer: "gpu",
-
-			shader: fragShaderSource,
-
-			canvasWidth: this.resolution,
-			canvasHeight: this.resolution,
-
-			worldCenterX: 0,
-			worldCenterY: 0,
-
-
-
-			useFullscreen: true,
-
-			trueFullscreen: true,
-
-			useFullscreenButton: true,
-
-			enterFullscreenButtonIconPath: "/graphics/general-icons/enter-fullscreen.png",
-			exitFullscreenButtonIconPath: "/graphics/general-icons/exit-fullscreen.png",
-
-			switchFullscreenCallback: () => this.changeResolution(),
-
-
-
-			mousedownCallback: this.onGrabCanvas.bind(this),
-			touchstartCallback: this.onGrabCanvas.bind(this),
-
-			mousedragCallback: this.onDragCanvas.bind(this),
-			touchmoveCallback: this.onDragCanvas.bind(this),
-
-			mouseupCallback: this.onReleaseCanvas.bind(this),
-			touchendCallback: this.onReleaseCanvas.bind(this)
-		};
-
-		this.wilson = new Wilson(canvas, options);
+		this.wilson.render.shaderPrograms = [];
+		this.wilson.render.loadNewShader(fragShaderSource);
+		this.wilson.gl.useProgram(this.wilson.render.shaderPrograms[0]);
 
 		this.wilson.render.initUniforms([
 			"aspectRatioX",
@@ -297,9 +286,6 @@ export class ThurstonGeometry extends Applet
 			"upVec",
 			"rightVec",
 			"forwardVec",
-
-			"maxMarches",
-			"stepFactor",
 		]);
 
 		this.lastWorldCenterX = this.wilson.worldCenterX;
@@ -345,39 +331,6 @@ export class ThurstonGeometry extends Applet
 			this.forwardVec
 		);
 
-		this.wilson.gl.uniform1i(
-			this.wilson.uniforms["maxMarches"],
-			this.maxMarches
-		);
-
-		this.wilson.gl.uniform1f(
-			this.wilson.uniforms["stepFactor"],
-			1
-		);
-
-
-
-		const boundFunction = () => this.changeResolution();
-		addTemporaryListener({
-			object: window,
-			event: "resize",
-			callback: boundFunction
-		});
-
-		const boundFunction2 = this.handleKeydownEvent.bind(this);
-		addTemporaryListener({
-			object: document.documentElement,
-			event: "keydown",
-			callback: boundFunction2
-		});
-
-		const boundFunction3 = this.handleKeyupEvent.bind(this);
-		addTemporaryListener({
-			object: document.documentElement,
-			event: "keyup",
-			callback: boundFunction3
-		});
-
 
 
 		window.requestAnimationFrame(this.drawFrame.bind(this));
@@ -396,15 +349,13 @@ export class ThurstonGeometry extends Applet
 			return;
 		}
 
-
+		
 
 		this.pan.update(timeElapsed);
 		this.zoom.update(timeElapsed);
 
 		this.calculateVectors(timeElapsed);
 		this.correctVectors();
-
-
 
 		this.wilson.gl.uniform4fv(
 			this.wilson.uniforms["cameraPos"],
@@ -446,8 +397,10 @@ export class ThurstonGeometry extends Applet
 	calculateVectors(timeElapsed, ignoreMovingForward = false)
 	{
 		//If there's been any rotation, it's simplest to handle that now.
-		const rotationChangeX = this.lastWorldCenterX - this.wilson.worldCenterX;
-		const rotationChangeY = this.lastWorldCenterY - this.wilson.worldCenterY;
+		const rotationChangeX = (this.lastWorldCenterX - this.wilson.worldCenterX)
+			* this.aspectRatioX;
+		const rotationChangeY = (this.lastWorldCenterY - this.wilson.worldCenterY)
+			* this.aspectRatioY;
 
 		this.lastWorldCenterX = this.wilson.worldCenterX;
 		this.lastWorldCenterY = this.wilson.worldCenterY;
@@ -504,32 +457,11 @@ export class ThurstonGeometry extends Applet
 				];
 
 
+		
+		this.updateCameraPos(this.cameraPos, tangentVec, dt);
 
-		//The first order of business is to update the position.
-		for (let i = 0; i < 4; i++)
-		{
-			//This will change with the geometry.
-			this.cameraPos[i] =
-				Math.cos(dt) * this.cameraPos[i]
-				+ Math.sin(dt) * tangentVec[i];
-		}
-		
-		
-		//Since we're only doing a linear approximation, this position won't be exactly
-		//on the manifold. Therefore, we'll do a quick correction to get it back.
-		this.correctCameraPos();
-
-		
-
-		//Now we get the tangent space to the manifold. Here, the function is x^2+y^2+z^2+w^2=1,
-		//so its gradient is (2x, 2y, 2z, 2w).
-		
-		this.normalVec = ThurstonGeometry.normalize([
-			this.cameraPos[0],
-			this.cameraPos[1],
-			this.cameraPos[2],
-			this.cameraPos[3]
-		]);
+		//Get the tangent space to the manifold.
+		this.normalVec = this.getNormalVec(this.cameraPos);
 		
 		//Now for the other vectors, using the magic of curvature.
 		const curvature = this.getCurvature(this.cameraPos, tangentVec);
@@ -590,20 +522,6 @@ export class ThurstonGeometry extends Applet
 
 
 
-	correctCameraPos()
-	{
-		//Here, we just want the magnitude to be equal to 1 (this will be more complicated
-		//for other manifolds).
-		const magnitude = ThurstonGeometry.magnitude(this.cameraPos);
-
-		this.cameraPos[0] /= magnitude;
-		this.cameraPos[1] /= magnitude;
-		this.cameraPos[2] /= magnitude;
-		this.cameraPos[3] /= magnitude;
-	}
-
-
-
 	correctVectors()
 	{
 		const dotUp = ThurstonGeometry.dotProduct(this.normalVec, this.upVec);
@@ -622,13 +540,8 @@ export class ThurstonGeometry extends Applet
 
 	getCurvature(pos, dir)
 	{
-		//gamma = cos(t)*pos + sin(t)*dir
-		//gamma' = -sin(t)*pos + cos(t)*dir
-		//gamma'' = -cos(t)*pos - sin(t)*dir
-		//All of these are evaluated at t=0.
-
-		const gammaPrime = [...dir];
-		const gammaDoublePrime = [-pos[0], -pos[1], -pos[2], -pos[3]];
+		const gammaPrime = this.getGammaPrime(pos, dir);
+		const gammaDoublePrime = this.getGammaDoublePrime(pos, dir);
 
 		const dotProduct = ThurstonGeometry.dotProduct(gammaPrime, gammaDoublePrime);
 		const gammaPrimeMag = ThurstonGeometry.magnitude(gammaPrime);
@@ -777,23 +690,18 @@ export class ThurstonGeometry extends Applet
 
 		if (imageWidth >= imageHeight)
 		{
-			this.wilson.gl.uniform1f(
-				this.wilson.uniforms["aspectRatioX"],
-				imageWidth / imageHeight
-			);
-
-			this.wilson.gl.uniform1f(this.wilson.uniforms["aspectRatioY"], 1);
+			this.aspectRatioX = imageWidth / imageHeight;
+			this.aspectRatioY = 1;
 		}
 
 		else
 		{
-			this.wilson.gl.uniform1f(this.wilson.uniforms["aspectRatioX"], 1);
-
-			this.wilson.gl.uniform1f(
-				this.wilson.uniforms["aspectRatioY"],
-				imageWidth / imageHeight
-			);
+			this.aspectRatioX = 1;
+			this.aspectRatioY = imageWidth / imageHeight;
 		}
+
+		this.wilson.gl.uniform1f(this.wilson.uniforms["aspectRatioX"], this.aspectRatioX);
+		this.wilson.gl.uniform1f(this.wilson.uniforms["aspectRatioY"], this.aspectRatioY);
 
 		this.wilson.gl.uniform1i(this.wilson.uniforms["resolution"], this.resolution);
 	}
