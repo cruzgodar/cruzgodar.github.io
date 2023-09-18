@@ -5,7 +5,7 @@ import { Wilson } from "/scripts/wilson.mjs";
 
 export class ThurstonGeometry extends Applet
 {
-	resolution = 400;
+	resolution = 1000;
 
 	focalLength = .1;
 	maxMarches = 100;
@@ -53,12 +53,20 @@ export class ThurstonGeometry extends Applet
 			uniform int resolution;
 			
 			const float clipDistance = 1000.0;
+			const float epsilon = 0.00001;
 			uniform int maxMarches;
 			uniform float stepFactor;
 			const vec3 fogColor = vec3(0.0, 0.0, 0.0);
 			const float fogScaling = .07;
-			const float fov = 1.0;
+			const float fov = .75;
 			const float radius = .3;
+
+
+
+			float getBanding(float amount, float numBands)
+			{
+				return 1.0 - floor(mod(amount * numBands, 2.0)) / 2.0;
+			}
 			
 			
 			
@@ -86,8 +94,6 @@ export class ThurstonGeometry extends Applet
 				return minDistance;
 			}
 			
-			
-			
 			vec3 getColor(vec4 pos)
 			{
 				float distance1 = acos(pos.x) - radius;
@@ -111,37 +117,37 @@ export class ThurstonGeometry extends Applet
 
 				if (minDistance == distance1)
 				{
-					return vec3(1.0, 0.0, 0.0);
+					return vec3(1.0, 0.0, 0.0) * getBanding(pos.y + pos.z + pos.w, 10.0);
 				}
 
 				if (minDistance == distance2)
 				{
-					return vec3(0.0, 1.0, 0.0);
+					return vec3(0.0, 1.0, 1.0) * getBanding(pos.y + pos.z + pos.w, 10.0);
 				}
 
 				if (minDistance == distance3)
 				{
-					return vec3(0.0, 0.0, 1.0);
+					return vec3(0.0, 1.0, 0.0) * getBanding(pos.x + pos.z + pos.w, 10.0);
 				}
 
 				if (minDistance == distance4)
 				{
-					return vec3(1.0, 1.0, 0.0);
+					return vec3(1.0, 0.0, 1.0) * getBanding(pos.x + pos.z + pos.w, 10.0);
 				}
 
 				if (minDistance == distance5)
 				{
-					return vec3(0.0, 1.0, 1.0);
+					return vec3(0.0, 0.0, 1.0) * getBanding(pos.x + pos.y + pos.w, 10.0);
 				}
 
 				if (minDistance == distance6)
 				{
-					return vec3(1.0, 0.0, 1.0);
+					return vec3(1.0, 1.0, 0.0) * getBanding(pos.x + pos.y + pos.w, 10.0);
 				}
 
 				if (minDistance == distance7)
 				{
-					return vec3(1.0, 1.0, 1.0);
+					return vec3(1.0, 1.0, 1.0) * getBanding(pos.x + pos.y + pos.z, 10.0);
 				}
 			}
 			
@@ -149,15 +155,15 @@ export class ThurstonGeometry extends Applet
 			
 			vec4 getSurfaceNormal(vec4 pos)
 			{
-				float xStep1 = distanceEstimator(pos + vec4(.00001, 0.0, 0.0, 0.0));
-				float yStep1 = distanceEstimator(pos + vec4(0.0, .00001, 0.0, 0.0));
-				float zStep1 = distanceEstimator(pos + vec4(0.0, 0.0, .00001, 0.0));
-				float wStep1 = distanceEstimator(pos + vec4(0.0, 0.0, 0.0, .00001));
+				float xStep1 = distanceEstimator(pos + vec4(epsilon, 0.0, 0.0, 0.0));
+				float yStep1 = distanceEstimator(pos + vec4(0.0, epsilon, 0.0, 0.0));
+				float zStep1 = distanceEstimator(pos + vec4(0.0, 0.0, epsilon, 0.0));
+				float wStep1 = distanceEstimator(pos + vec4(0.0, 0.0, 0.0, epsilon));
 				
-				float xStep2 = distanceEstimator(pos - vec4(.00001, 0.0, 0.0, 0.0));
-				float yStep2 = distanceEstimator(pos - vec4(0.0, .00001, 0.0, 0.0));
-				float zStep2 = distanceEstimator(pos - vec4(0.0, 0.0, .00001, 0.0));
-				float wStep2 = distanceEstimator(pos - vec4(0.0, 0.0, 0.0, .00001));
+				float xStep2 = distanceEstimator(pos - vec4(epsilon, 0.0, 0.0, 0.0));
+				float yStep2 = distanceEstimator(pos - vec4(0.0, epsilon, 0.0, 0.0));
+				float zStep2 = distanceEstimator(pos - vec4(0.0, 0.0, epsilon, 0.0));
+				float wStep2 = distanceEstimator(pos - vec4(0.0, 0.0, 0.0, epsilon));
 				
 				return normalize(vec4(xStep1 - xStep2, yStep1 - yStep2, zStep1 - zStep2, wStep1 - wStep2));
 			}
@@ -198,8 +204,6 @@ export class ThurstonGeometry extends Applet
 			{
 				vec3 finalColor = fogColor;
 				
-				float epsilon = 0.0;
-				
 				float t = 0.0;
 				
 				float lastDistance = 1000.0;
@@ -223,7 +227,7 @@ export class ThurstonGeometry extends Applet
 					// float distance = distanceEstimator(pos);
 					
 					//This lowers the detail far away, which makes everything run nice and fast.
-					epsilon = max(.0001, .5 * t / float(resolution));
+					//epsilon = max(.0001, .5 * t / float(resolution));
 					
 					
 					
