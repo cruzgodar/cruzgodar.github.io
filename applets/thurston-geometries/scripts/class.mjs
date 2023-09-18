@@ -407,7 +407,7 @@ export class ThurstonGeometry extends Applet
 
 		if (rotationChangeX)
 		{
-			const result = this.rotateVectors({
+			const result = ThurstonGeometry.rotateVectors({
 				vec1: this.forwardVec,
 				vec2: this.rightVec,
 				theta: -rotationChangeX
@@ -419,7 +419,7 @@ export class ThurstonGeometry extends Applet
 
 		if (rotationChangeY)
 		{
-			const result = this.rotateVectors({
+			const result = ThurstonGeometry.rotateVectors({
 				vec1: this.forwardVec,
 				vec2: this.upVec,
 				theta: -rotationChangeY
@@ -484,7 +484,7 @@ export class ThurstonGeometry extends Applet
 				this.movingAmount[0] * tangentVec[3]
 			];
 
-			const result = this.rotateVectors({
+			const result = ThurstonGeometry.rotateVectors({
 				vec1: this.forwardVec,
 				vec2: this.rightVec,
 				theta: Math.PI / 2
@@ -505,7 +505,7 @@ export class ThurstonGeometry extends Applet
 				this.movingAmount[1] * tangentVec[3]
 			];
 
-			const result = this.rotateVectors({
+			const result = ThurstonGeometry.rotateVectors({
 				vec1: this.forwardVec,
 				vec2: this.rightVec,
 				theta: -Math.PI / 2
@@ -549,51 +549,6 @@ export class ThurstonGeometry extends Applet
 
 		return Math.sqrt((gammaPrimeMag * gammaDoublePrimeMag) ** 2 - dotProduct ** 2)
 			/ (gammaPrimeMag ** 3);
-	}
-
-
-
-	//This is a complicated one. What we want is to take a vector in R^4 and rotate it in the
-	//plane orthogonal to *two* vectors. The first is the global normal vector, and the
-	//second varies. What we'll do is convert our four vectors to the standard basis, rotate that,
-	//and then convert back.
-	rotateVectors({
-		vec1,
-		vec2,
-		theta
-	})
-	{
-		// const toStandardBasisMatrix = [
-		// 	[fixedVec1[0], fixedVec2[0], rotateVec1[0], rotateVec2[0]],
-		// 	[fixedVec1[1], fixedVec2[1], rotateVec1[1], rotateVec2[1]],
-		// 	[fixedVec1[2], fixedVec2[2], rotateVec1[2], rotateVec2[2]],
-		// 	[fixedVec1[3], fixedVec2[3], rotateVec1[3], rotateVec2[3]]
-		// ];
-
-		// const rotateMatrix = [
-		// 	[1, 0, 0, 0],
-		// 	[0, 1, 0, 0],
-		// 	[0, 0, Math.cos(theta), -Math.sin(theta)],
-		// 	[0, 0, Math.sin(theta), Math.cos(theta)]
-		// ];
-		//Now we return the final two columns of the product.
-		const cosine = Math.cos(theta);
-		const sine = Math.sin(theta);
-
-		return [
-			[
-				vec1[0] * cosine + vec2[0] * sine,
-				vec1[1] * cosine + vec2[1] * sine,
-				vec1[2] * cosine + vec2[2] * sine,
-				vec1[3] * cosine + vec2[3] * sine
-			],
-			[
-				-vec1[0] * sine + vec2[0] * cosine,
-				-vec1[1] * sine + vec2[1] * cosine,
-				-vec1[2] * sine + vec2[2] * cosine,
-				-vec1[3] * sine + vec2[3] * cosine
-			],
-		];
 	}
 
 
@@ -707,6 +662,49 @@ export class ThurstonGeometry extends Applet
 	}
 
 
+
+	//This is a complicated one. What we want is to take a vector in R^4 and rotate it in the
+	//plane orthogonal to *two* vectors. The first is the global normal vector, and the
+	//second varies. What we'll do is convert our four vectors to the standard basis, rotate that,
+	//and then convert back.
+	static rotateVectors({
+		vec1,
+		vec2,
+		theta
+	})
+	{
+		// const toStandardBasisMatrix = [
+		// 	[fixedVec1[0], fixedVec2[0], rotateVec1[0], rotateVec2[0]],
+		// 	[fixedVec1[1], fixedVec2[1], rotateVec1[1], rotateVec2[1]],
+		// 	[fixedVec1[2], fixedVec2[2], rotateVec1[2], rotateVec2[2]],
+		// 	[fixedVec1[3], fixedVec2[3], rotateVec1[3], rotateVec2[3]]
+		// ];
+
+		// const rotateMatrix = [
+		// 	[1, 0, 0, 0],
+		// 	[0, 1, 0, 0],
+		// 	[0, 0, Math.cos(theta), -Math.sin(theta)],
+		// 	[0, 0, Math.sin(theta), Math.cos(theta)]
+		// ];
+		//Now we return the final two columns of the product.
+		const cosine = Math.cos(theta);
+		const sine = Math.sin(theta);
+
+		return [
+			[
+				vec1[0] * cosine + vec2[0] * sine,
+				vec1[1] * cosine + vec2[1] * sine,
+				vec1[2] * cosine + vec2[2] * sine,
+				vec1[3] * cosine + vec2[3] * sine
+			],
+			[
+				-vec1[0] * sine + vec2[0] * cosine,
+				-vec1[1] * sine + vec2[1] * cosine,
+				-vec1[2] * sine + vec2[2] * cosine,
+				-vec1[3] * sine + vec2[3] * cosine
+			],
+		];
+	}
 
 	static magnitude(vec)
 	{
