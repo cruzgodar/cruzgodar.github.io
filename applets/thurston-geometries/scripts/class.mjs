@@ -443,19 +443,6 @@ export class ThurstonGeometry extends Applet
 
 
 
-	distanceEstimator(x, y, z, w)
-	{
-		return Math.min(
-			Math.min(
-				Math.min(Math.acos(x) - .1, Math.acos(-x) - .1),
-				Math.min(Math.acos(y) - .1, Math.acos(-y) - .1)
-			),
-			Math.min(Math.acos(z) - .1, Math.acos(-z) - .1)
-		);
-	}
-
-
-
 	calculateVectors(timeElapsed, ignoreMovingForward = false)
 	{
 		//If there's been any rotation, it's simplest to handle that now.
@@ -663,7 +650,6 @@ export class ThurstonGeometry extends Applet
 		theta
 	})
 	{
-		//Construct the matrix to convert to the standard basis.
 		// const toStandardBasisMatrix = [
 		// 	[fixedVec1[0], fixedVec2[0], rotateVec1[0], rotateVec2[0]],
 		// 	[fixedVec1[1], fixedVec2[1], rotateVec1[1], rotateVec2[1]],
@@ -677,9 +663,6 @@ export class ThurstonGeometry extends Applet
 		// 	[0, 0, Math.cos(theta), -Math.sin(theta)],
 		// 	[0, 0, Math.sin(theta), Math.cos(theta)]
 		// ];
-
-		// const finalMatrix = this.math.multiply(toStandardBasisMatrix, rotateMatrix);
-
 		//Now we return the final two columns of the product.
 		const cosine = Math.cos(theta);
 		const sine = Math.sin(theta);
@@ -776,17 +759,8 @@ export class ThurstonGeometry extends Applet
 
 		if (this.wilson.fullscreen.currentlyFullscreen)
 		{
-			if (aspectRatio >= 1)
-			{
-				imageWidth = this.resolution;
-				imageHeight = Math.floor(this.resolution / aspectRatio);
-			}
-
-			else
-			{
-				imageWidth = Math.floor(this.resolution * aspectRatio);
-				imageHeight = this.resolution;
-			}
+			imageWidth = Math.min(this.resolution, Math.floor(this.resolution * aspectRatio));
+			imageHeight = Math.min(this.resolution, Math.floor(this.resolution / aspectRatio));
 		}
 
 		else
