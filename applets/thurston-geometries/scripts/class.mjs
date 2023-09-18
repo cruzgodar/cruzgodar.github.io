@@ -5,7 +5,7 @@ import { Wilson } from "/scripts/wilson.mjs";
 
 export class ThurstonGeometry extends Applet
 {
-	resolution = 1000;
+	resolution = 500;
 
 	aspectRatioX = 1;
 	aspectRatioY = 1;
@@ -161,13 +161,12 @@ export class ThurstonGeometry extends Applet
 			const vec3 fogColor = vec3(0.0, 0.0, 0.0);
 			const float fogScaling = .07;
 			const float fov = 1.0;
-			const float radius = .9;
 
 
 
 			float getBanding(float amount, float numBands)
 			{
-				return 1.0;// - floor(mod(amount * numBands, 2.0)) / 2.0;
+				return 1.0 - floor(mod(amount * numBands, 2.0)) / 2.0;
 			}
 			
 			
@@ -288,6 +287,9 @@ export class ThurstonGeometry extends Applet
 			"forwardVec",
 		]);
 
+		this.wilson.worldCenterX = 0;
+		this.wilson.worldCenterY = 0;
+		
 		this.lastWorldCenterX = this.wilson.worldCenterX;
 		this.lastWorldCenterY = this.wilson.worldCenterY;
 

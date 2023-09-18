@@ -428,6 +428,8 @@ const components =
 				<div class="text-buttons">
 					<div class="dropdown-container focus-on-child" tabindex="1">
 						<button class="text-button dropdown" type="button" id="${id}-dropdown-button" tabindex="-1">`;
+			
+			let inOptgroup = false;
 
 			for (let i = 1; i < content.length; i++)
 			{
@@ -441,10 +443,20 @@ const components =
 					html += `${text}</button><select id="${id}-dropdown">`;
 				}
 
-				html += `<option value="${value}">${text}</option>`;
+				//Option groups
+				const index = value.indexOf(":");
+
+				html += index !== -1
+					? `${inOptgroup ? "</optgroup>" : ""}<optgroup label="${value.slice(0, index)}">`
+					: `<option value="${value}">${text}</option>`;
+				
+				if (index !== -1)
+				{
+					inOptgroup = true;
+				}
 			}
 
-			html += "</select></div></div>";
+			html += `${inOptgroup ? "</optgroup>" : ""}</select></div></div>`;
 
 			return html;
 		},

@@ -1,5 +1,5 @@
 import { ThurstonGeometry } from "./class.mjs";
-import { s3RoomsData } from "./geometry-data.mjs";
+import { getS3RoomsData, getS3SpheresData } from "./geometry-data.mjs";
 import { showPage } from "/scripts/src/load-page.mjs";
 import { $ } from "/scripts/src/main.mjs";
 
@@ -9,7 +9,7 @@ export function load()
 		canvas: $("#output-canvas"),
 	});
 
-	applet.run(s3RoomsData);
+	applet.run(getS3RoomsData());
 
 
 
@@ -24,6 +24,25 @@ export function load()
 		const resolution = parseInt(resolutionInputElement.value || 500);
 
 		applet.changeResolution(resolution);
+	});
+
+
+
+	const scenes =
+	{
+		"s3-rooms": getS3RoomsData,
+		"s3-spheres": getS3SpheresData
+	};
+
+	const sceneSelectorDropdownElement = $("#scene-selector-dropdown");
+
+	sceneSelectorDropdownElement.addEventListener("input", () =>
+	{
+		if (sceneSelectorDropdownElement.value !== "none")
+		{
+			const getData = scenes[sceneSelectorDropdownElement.value];
+			applet.run(getData());
+		}
 	});
 
 

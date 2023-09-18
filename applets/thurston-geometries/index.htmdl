@@ -1,8 +1,4 @@
-The holy grail of 3D fractals, the Mandelbulb is a landmark accomplishment. Translating the <a href="/applets/julia-set-explorer/">Mandelbrot set</a> to three dimensions is impossible to do canonically, since there is no appropriate 3-dimensional number system analogous to the complex numbers. Nevertheless, Daniel White and Paul Nylander managed to use spherical coordinates to produce something spectacular in its own right, showing just what 3D fractals could be and igniting the search for more.
-
-The typical Mandelbulb uses a power-8 formula, but any power larger than 1 works too. Like the <a href="/applets/kaleidoscopic-ifs-fractals/">Kaleidoscopic IFS fractals</a>, we can introduce a rotation into the system for fun, and of course, just like the Mandelbrot set has its <a href="/applets/julia-set-explorer/">Julias</a>, every point in space gives rise to a Juliabulb. The third button lets you change the $c$ parameter used to generate the Juliabulb, indicated by the white dot.
-
-Drag on the scene to look around. On a keyboard, use WASD to move, and on a touchscreen, hold with two fingers to move forward and three to move back.
+Something will go here eventually!
 
 ### wilson
 
@@ -12,9 +8,18 @@ Drag on the scene to look around. On a keyboard, use WASD to move, and on a touc
 
 <div id="canvas-landscape-left">
 
+### dropdown
+	
+	scene-selector
+	
+	s3-rooms S&#xB3: Rooms
+	s3-spheres S&#xB3: Spheres
+
+###
+
 ### text-boxes
 	
-	resolution 1000 Resolution
+	resolution 500 Resolution
 	
 ###
 
