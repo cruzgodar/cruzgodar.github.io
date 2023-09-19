@@ -1,4 +1,8 @@
-import{ThurstonGeometry}from"./class.min.mjs";function getE3BaseData(){return{geodesicGlsl:"vec4 pos = cameraPos + t * rayDirectionVec;",fogGlsl:"return mix(color, fogColor, 1.0 - exp(-length(pos - cameraPos) * fogScaling));",updateCameraPos:(cameraPos,tangentVec,dt)=>{for(let t=0;t<4;t++)cameraPos[t]=cameraPos[t]+dt*tangentVec[t]},getNormalVec:()=>[0,0,0,1],getGammaPrime:(_pos,dir)=>[...dir],getGammaDoublePrime:()=>[0,0,0,0]}}function getS3BaseData(){return{geodesicGlsl:"vec4 pos = cos(t) * cameraPos + sin(t) * rayDirectionVec;",fogGlsl:"return mix(color, fogColor, 1.0 - exp(-acos(dot(pos, cameraPos)) * fogScaling));",updateCameraPos:(cameraPos,tangentVec,dt)=>{for(let o=0;o<4;o++)cameraPos[o]=Math.cos(dt)*cameraPos[o]+Math.sin(dt)*tangentVec[o];var t=ThurstonGeometry.magnitude(cameraPos);cameraPos[0]/=t,cameraPos[1]/=t,cameraPos[2]/=t,cameraPos[3]/=t},getNormalVec:cameraPos=>ThurstonGeometry.normalize(cameraPos),getGammaPrime:(_pos,dir)=>[...dir],getGammaDoublePrime:pos=>[-pos[0],-pos[1],-pos[2],-pos[3]]}}function getE3RoomsData(){return{...getE3BaseData(),distanceEstimatorGlsl:`
+import{ThurstonGeometry}from"./class.min.mjs";function getE3BaseData(){return{geodesicGlsl:"vec4 pos = cameraPos + t * rayDirectionVec;",fogGlsl:"return mix(color, fogColor, 1.0 - exp(-length(pos - cameraPos) * fogScaling));",updateCameraPos:(cameraPos,tangentVec,dt)=>{for(let t=0;t<4;t++)cameraPos[t]=cameraPos[t]+dt*tangentVec[t]},getNormalVec:()=>[0,0,0,1],getGammaPrime:(_pos,dir)=>[...dir],getGammaDoublePrime:()=>[0,0,0,0]}}function getS3BaseData(){return{geodesicGlsl:"vec4 pos = cos(t) * cameraPos + sin(t) * rayDirectionVec;",fogGlsl:"return mix(color, fogColor, 1.0 - exp(-acos(dot(pos, cameraPos)) * fogScaling));",updateCameraPos:(cameraPos,tangentVec,dt)=>{for(let o=0;o<4;o++)cameraPos[o]=Math.cos(dt)*cameraPos[o]+Math.sin(dt)*tangentVec[o];var t=ThurstonGeometry.magnitude(cameraPos);cameraPos[0]/=t,cameraPos[1]/=t,cameraPos[2]/=t,cameraPos[3]/=t},getNormalVec:cameraPos=>ThurstonGeometry.normalize(cameraPos),getGammaPrime:(_pos,dir)=>[...dir],getGammaDoublePrime:pos=>[-pos[0],-pos[1],-pos[2],-pos[3]]}}function getH3BaseData(){return{geodesicGlsl:"vec4 pos = cosh(t) * cameraPos + sinh(t) * rayDirectionVec;",fogGlsl:`return mix(
+			color,
+			fogColor,
+			0.0/*1.0 - exp(-acosh(-dot(pos, cameraPos)) * fogScaling)*/
+		);`,updateCameraPos:(cameraPos,tangentVec,dt)=>{for(let o=0;o<4;o++)cameraPos[o]=Math.cosh(dt)*cameraPos[o]+Math.sinh(dt)*tangentVec[o];var t=cameraPos[0]*cameraPos[0]+cameraPos[1]*cameraPos[1]+cameraPos[2]*cameraPos[2]-cameraPos[3]*cameraPos[3];cameraPos[0]/=-t,cameraPos[1]/=-t,cameraPos[2]/=-t,cameraPos[3]/=-t},getNormalVec:cameraPos=>ThurstonGeometry.normalize([cameraPos[0],cameraPos[1],cameraPos[2],-cameraPos[3]]),getGammaPrime:(_pos,dir)=>[...dir],getGammaDoublePrime:pos=>[...pos]}}function getE3RoomsData(){return{...getE3BaseData(),distanceEstimatorGlsl:`
 			float distance1 = -length(mod(pos.xyz, 2.0) - vec3(1.0, 1.0, 1.0)) + 1.3;
 
 			return distance1;
@@ -222,4 +226,27 @@ import{ThurstonGeometry}from"./class.min.mjs";function getE3BaseData(){return{ge
 				max(abs(dotProduct1), abs(dotProduct2)),
 				max(abs(dotProduct3), abs(dotProduct4))
 			);
-		`,cameraPos:[0,0,0,-1],normalVec:[0,0,0,-1],upVec:[0,0,1,0],rightVec:[0,1,0,0],forwardVec:[1,0,0,0],movingSpeed:1}}export{getE3RoomsData,getE3SpheresData,getS3RoomsData,getS3SpheresData};
+		`,cameraPos:[0,0,0,-1],normalVec:[0,0,0,-1],upVec:[0,0,1,0],rightVec:[0,1,0,0],forwardVec:[1,0,0,0],movingSpeed:1}}function getH3SpheresData(){return{...getH3BaseData(),distanceEstimatorGlsl:`
+		float distance1 = length(mod(pos.xyz, 2.0) - vec3(1.0, 1.0, 1.0)) - 0.5;
+
+		return distance1;
+		`,getColorGlsl:`
+			return vec3(1.0, 0.0, 0.0);
+		`,lightGlsl:`
+			vec4 lightDirection1 = normalize(vec4(1.0, 1.0, 1.0, 1.0) - pos);
+			float dotProduct1 = dot(surfaceNormal, lightDirection1);
+
+			vec4 lightDirection2 = normalize(vec4(-1.0, -1.0, -1.0, 1.0) - pos);
+			float dotProduct2 = dot(surfaceNormal, lightDirection2);
+
+			vec4 lightDirection3 = normalize(vec4(1.0, 1.0, 1.0, 0.0) - pos);
+			float dotProduct3 = dot(surfaceNormal, lightDirection3);
+
+			vec4 lightDirection4 = normalize(vec4(-1.0, -1.0, -1.0, 0.0) - pos);
+			float dotProduct4 = dot(surfaceNormal, lightDirection4);
+
+			float lightIntensity = lightBrightness * max(
+				max(abs(dotProduct1), abs(dotProduct2)),
+				max(abs(dotProduct3), abs(dotProduct4))
+			);
+		`,cameraPos:[0,0,0,1],normalVec:[0,0,0,-1],upVec:[0,0,1,0],rightVec:[0,1,0,0],forwardVec:[1,0,0,0],movingSpeed:1}}export{getE3RoomsData,getE3SpheresData,getS3RoomsData,getS3SpheresData,getH3SpheresData};

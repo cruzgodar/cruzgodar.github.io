@@ -1,5 +1,11 @@
 import { ThurstonGeometry } from "./class.mjs";
-import { getE3RoomsData, getE3SpheresData, getS3RoomsData, getS3SpheresData } from "./geometry-data.mjs";
+import {
+	getE3RoomsData,
+	getE3SpheresData,
+	getH3SpheresData,
+	getS3RoomsData,
+	getS3SpheresData
+} from "./geometry-data.mjs";
 import { showPage } from "/scripts/src/load-page.mjs";
 import { $ } from "/scripts/src/main.mjs";
 
@@ -9,7 +15,7 @@ export function load()
 		canvas: $("#output-canvas"),
 	});
 
-	applet.run(getE3RoomsData());
+	applet.run(getH3SpheresData());
 
 
 
@@ -33,7 +39,8 @@ export function load()
 		"e3-rooms": getE3RoomsData,
 		"e3-spheres": getE3SpheresData,
 		"s3-rooms": getS3RoomsData,
-		"s3-spheres": getS3SpheresData
+		"s3-spheres": getS3SpheresData,
+		"h3-spheres": getH3SpheresData
 	};
 
 	const sceneSelectorDropdownElement = $("#scene-selector-dropdown");

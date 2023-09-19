@@ -34,6 +34,23 @@ import{Applet}from"/scripts/src/applets.min.mjs";import{aspectRatio}from"/script
 
 
 
+			float sinh(float x)
+			{
+				return .5 * (exp(x) - exp(-x));
+			}
+
+			float cosh(float x)
+			{
+				return .5 * (exp(x) + exp(-x));
+			}
+
+			float acosh(float x)
+			{
+				return log(x + sqrt(x*x + 1.0));
+			}
+
+
+
 			float getBanding(float amount, float numBands)
 			{
 				return 1.0 - floor(mod(amount * numBands, 2.0)) / 2.0;

@@ -171,6 +171,23 @@ export class ThurstonGeometry extends Applet
 
 
 
+			float sinh(float x)
+			{
+				return .5 * (exp(x) - exp(-x));
+			}
+
+			float cosh(float x)
+			{
+				return .5 * (exp(x) + exp(-x));
+			}
+
+			float acosh(float x)
+			{
+				return log(x + sqrt(x*x + 1.0));
+			}
+
+
+
 			float getBanding(float amount, float numBands)
 			{
 				return 1.0 - floor(mod(amount * numBands, 2.0)) / 2.0;
@@ -262,6 +279,8 @@ export class ThurstonGeometry extends Applet
 				gl_FragColor = vec4(raymarch(normalize(forwardVec + rightVec * uv.x * aspectRatioX * fov + upVec * uv.y / aspectRatioY * fov)), 1.0);
 			}
 		`;
+
+		
 
 		this.wilson.render.shaderPrograms = [];
 		this.wilson.render.loadNewShader(fragShaderSource);
