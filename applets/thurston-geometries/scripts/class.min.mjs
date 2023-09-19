@@ -24,7 +24,7 @@ import{Applet}from"/scripts/src/applets.min.mjs";import{aspectRatio}from"/script
 
 			const float lightBrightness = 1.0;
 			
-			const float clipDistance = 1000.0;
+			const float clipDistance = 10000.0;
 			const float epsilon = 0.00001;
 			const int maxMarches = 100;
 			const float stepFactor = .99;

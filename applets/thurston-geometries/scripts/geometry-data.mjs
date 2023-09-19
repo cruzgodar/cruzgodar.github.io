@@ -24,27 +24,19 @@ function getE3BaseData()
 			return [0, 0, 0, 1];
 		},
 
-		getGammaPrime: (pos, dir) =>
+		getGammaPrime: (_pos, dir) =>
 		{
-			//gamma = (1 -t)*pos + t*dir
-			//gamma' = -pos + dir
+			//gamma = pos + t*dir
+			//gamma' = dir
 			//gamma'' = 0
 			//All of these are evaluated at t=0.
-			return [-pos[0] + dir[0], -pos[1] + dir[1], -pos[2] + dir[2], -pos[3] + dir[3]];
+			return [...dir];
 		},
 
 		getGammaDoublePrime: () =>
 		{
 			return [0, 0, 0, 0];
 		},
-
-		cameraPos: [0, 0, 0, 1],
-		normalVec: [0, 0, 0, 1],
-		upVec: [0, 0, 1, 0],
-		rightVec: [0, 1, 0, 0],
-		forwardVec: [1, 0, 0, 0],
-
-		movingSpeed: 2,
 	};
 }
 
@@ -93,18 +85,49 @@ function getS3BaseData()
 		{
 			return [-pos[0], -pos[1], -pos[2], -pos[3]];
 		},
-
-		cameraPos: [0, 0, 0, -1],
-		normalVec: [0, 0, 0, -1],
-		upVec: [0, 0, 1, 0],
-		rightVec: [0, 1, 0, 0],
-		forwardVec: [1, 0, 0, 0],
-
-		movingSpeed: 1,
 	};
 }
 
 
+
+export function getE3RoomsData()
+{
+	return {
+		...getE3BaseData(),
+
+		distanceEstimatorGlsl: `
+			float distance1 = -length(mod(pos.xyz, 2.0) - vec3(1.0, 1.0, 1.0)) + 1.3;
+
+			return distance1;
+		`,
+
+		getColorGlsl: `
+			return vec3(
+				.25 + .75 * (.5 * (sin(pos.x) + 1.0)),
+				.25 + .75 * (.5 * (sin(pos.y) + 1.0)),
+				.25 + .75 * (.5 * (sin(pos.z) + 1.0))
+			);
+		`,
+
+		lightGlsl: `
+			vec4 lightDirection1 = normalize(vec4(1.0, 1.0, 1.0, 1.0) - pos);
+			float dotProduct1 = dot(surfaceNormal, lightDirection1);
+
+			vec4 lightDirection2 = normalize(vec4(1.0, 1.0, 1.0, 0.0) - pos);
+			float dotProduct2 = dot(surfaceNormal, lightDirection2);
+
+			float lightIntensity = lightBrightness * max(abs(dotProduct1), abs(dotProduct2)) * 1.5;
+		`,
+
+		cameraPos: [1, 1, 1, 1],
+		normalVec: [0, 0, 0, 1],
+		upVec: [0, 0, 1, 0],
+		rightVec: [0, 1, 0, 0],
+		forwardVec: [1, 0, 0, 0],
+
+		movingSpeed: 3,
+	};
+}
 
 export function getE3SpheresData()
 {
@@ -129,8 +152,16 @@ export function getE3SpheresData()
 			vec4 lightDirection1 = normalize(vec4(1.0, 1.0, 1.0, 1.0) - pos);
 			float dotProduct1 = dot(surfaceNormal, lightDirection1);
 
-			float lightIntensity = lightBrightness * max(dotProduct1, -.5 * dotProduct1);
-		`
+			float lightIntensity = lightBrightness * max(dotProduct1, -.5 * dotProduct1) * 1.25;
+		`,
+
+		cameraPos: [0, 0, 0, 1],
+		normalVec: [0, 0, 0, 1],
+		upVec: [0, 0, 1, 0],
+		rightVec: [0, 1, 0, 0],
+		forwardVec: [1, 0, 0, 0],
+
+		movingSpeed: 3,
 	};
 }
 
@@ -242,7 +273,15 @@ export function getS3RoomsData()
 				max(abs(dotProduct1), abs(dotProduct2)),
 				max(abs(dotProduct3), abs(dotProduct4))
 			);
-		`
+		`,
+
+		cameraPos: [0, 0, 0, -1],
+		normalVec: [0, 0, 0, -1],
+		upVec: [0, 0, 1, 0],
+		rightVec: [0, 1, 0, 0],
+		forwardVec: [1, 0, 0, 0],
+
+		movingSpeed: 1,
 	};
 }
 
@@ -347,6 +386,14 @@ export function getS3SpheresData()
 				max(abs(dotProduct1), abs(dotProduct2)),
 				max(abs(dotProduct3), abs(dotProduct4))
 			);
-		`
+		`,
+
+		cameraPos: [0, 0, 0, -1],
+		normalVec: [0, 0, 0, -1],
+		upVec: [0, 0, 1, 0],
+		rightVec: [0, 1, 0, 0],
+		forwardVec: [1, 0, 0, 0],
+
+		movingSpeed: 1,
 	};
 }
