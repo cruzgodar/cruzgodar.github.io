@@ -19,6 +19,7 @@ export class ThurstonGeometry extends Applet
 
 	//The first is +/- 1 for moving forward, and the second is for moving right.
 	movingAmount = [0, 0];
+	movingSpeed = 1;
 
 	lastWorldCenterX;
 	lastWorldCenterY;
@@ -117,12 +118,16 @@ export class ThurstonGeometry extends Applet
 		getGammaPrime,
 		getGammaDoublePrime,
 		distanceEstimatorGlsl,
+		geodesicGlsl,
 		getColorGlsl,
+		fogGlsl,
+		lightGlsl,
 		cameraPos,
 		normalVec,
 		upVec,
 		rightVec,
-		forwardVec
+		forwardVec,
+		movingSpeed
 	})
 	{
 		this.updateCameraPos = updateCameraPos;
@@ -135,6 +140,8 @@ export class ThurstonGeometry extends Applet
 		this.upVec = upVec;
 		this.rightVec = rightVec;
 		this.forwardVec = forwardVec;
+
+		this.movingSpeed = movingSpeed;
 
 		const fragShaderSource = `
 			precision highp float;
@@ -204,28 +211,13 @@ export class ThurstonGeometry extends Applet
 			{
 				vec4 surfaceNormal = getSurfaceNormal(pos);
 				
-				vec4 lightDirection1 = normalize(vec4(1.0, 1.0, 1.0, 1.0) - pos);
-				float dotProduct1 = dot(surfaceNormal, lightDirection1);
-
-				vec4 lightDirection2 = normalize(vec4(-1.0, -1.0, -1.0, 1.0) - pos);
-				float dotProduct2 = dot(surfaceNormal, lightDirection2);
-
-				vec4 lightDirection3 = normalize(vec4(1.0, 1.0, 1.0, 0.0) - pos);
-				float dotProduct3 = dot(surfaceNormal, lightDirection3);
-
-				vec4 lightDirection4 = normalize(vec4(-1.0, -1.0, -1.0, 0.0) - pos);
-				float dotProduct4 = dot(surfaceNormal, lightDirection4);
-
-				float lightIntensity = lightBrightness * max(
-					max(abs(dotProduct1), abs(dotProduct2)),
-					max(abs(dotProduct3), abs(dotProduct4))
-				);
+				${lightGlsl}
 
 				//The last factor adds ambient occlusion.
 				vec3 color = getColor(pos) * lightIntensity * max((1.0 - float(iteration) / float(maxMarches)), 0.0);
 				
 				//Apply fog.
-				return mix(color, fogColor, 1.0 - exp(-acos(dot(pos, cameraPos)) * fogScaling));
+				${fogGlsl}
 			}
 			
 			
@@ -242,7 +234,7 @@ export class ThurstonGeometry extends Applet
 				
 				for (int iteration = 0; iteration < maxMarches; iteration++)
 				{
-					vec4 pos = cos(t) * cameraPos + sin(t) * rayDirectionVec;
+					${geodesicGlsl}
 					
 					float distance = distanceEstimator(pos);
 					
@@ -438,7 +430,7 @@ export class ThurstonGeometry extends Applet
 			return;
 		}
 
-		const dt = timeElapsed / 1000;
+		const dt = timeElapsed / 1000 * this.movingSpeed;
 
 		let tangentVec = (this.movingAmount[0] !== 0 && !ignoreMovingForward)
 			? this.movingAmount[0] === 1
