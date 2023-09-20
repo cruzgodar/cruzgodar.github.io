@@ -73,8 +73,13 @@ function getS3BaseData()
 
 		getNormalVec: (cameraPos) =>
 		{
-			//f = x^2 + y^2 + z^2 + w^2 - 1.
-			return ThurstonGeometry.normalize(cameraPos);
+			//f = 1 - x^2 - y^2 - z^2 - w^2.
+			return ThurstonGeometry.normalize([
+				-cameraPos[0],
+				-cameraPos[1],
+				-cameraPos[2],
+				-cameraPos[3]
+			]);
 		},
 
 		getGammaPrime: (_pos, dir) =>
@@ -354,7 +359,7 @@ export function getS3RoomsData()
 		`,
 
 		cameraPos: [0, 0, 0, -1],
-		normalVec: [0, 0, 0, -1],
+		normalVec: [0, 0, 0, 1],
 		upVec: [0, 0, 1, 0],
 		rightVec: [0, 1, 0, 0],
 		forwardVec: [1, 0, 0, 0],

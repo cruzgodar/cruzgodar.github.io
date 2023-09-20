@@ -368,16 +368,10 @@ export class ThurstonGeometry extends Applet
 			return;
 		}
 
-		
-
 		this.pan.update(timeElapsed);
-		this.zoom.update(timeElapsed);
-
-		this.handleRotating();
+		
 		this.handleMoving(timeElapsed);
-		this.correctVectors();
-
-
+		this.handleRotating();
 
 		this.wilson.gl.uniform4fv(
 			this.wilson.uniforms["cameraPos"],
@@ -439,12 +433,12 @@ export class ThurstonGeometry extends Applet
 
 		const curvature = this.getCurvature(this.cameraPos, tangentVec);
 
-		//The magic formula is T' = curvature * N (although this N is opposite ours).
+		//The magic formula is T' = curvature * N.
 		tangentVec = ThurstonGeometry.normalize([
-			tangentVec[0] - curvature * this.normalVec[0] * dt,
-			tangentVec[1] - curvature * this.normalVec[1] * dt,
-			tangentVec[2] - curvature * this.normalVec[2] * dt,
-			tangentVec[3] - curvature * this.normalVec[3] * dt
+			tangentVec[0] + curvature * this.normalVec[0] * dt,
+			tangentVec[1] + curvature * this.normalVec[1] * dt,
+			tangentVec[2] + curvature * this.normalVec[2] * dt,
+			tangentVec[3] + curvature * this.normalVec[3] * dt
 		]);
 
 		this.updateCameraPos(this.cameraPos, tangentVec, dt);
@@ -452,7 +446,7 @@ export class ThurstonGeometry extends Applet
 		const gammaDoublePrime = this.getGammaDoublePrime(this.cameraPos, tangentVec);
 		const gammaTriplePrime = this.getGammaTriplePrime(this.cameraPos, tangentVec);
 
-		this.forwardVec = tangentVec;
+		this.forwardVec = [...tangentVec];
 
 		if (
 			gammaDoublePrime[0]
@@ -472,33 +466,32 @@ export class ThurstonGeometry extends Applet
 			);
 		}
 
-		if (
-			gammaTriplePrime[0]
-			|| gammaTriplePrime[1]
-			|| gammaTriplePrime[2]
-			|| gammaTriplePrime[3]
-		)
-		{
-			this.rightVec = ThurstonGeometry.normalize(
-				ThurstonGeometry.addVectors(
-					ThurstonGeometry.addVectors(
-						gammaTriplePrime,
-						ThurstonGeometry.scaleVector(
-							-ThurstonGeometry.dotProduct(gammaTriplePrime, this.forwardVec),
-							this.forwardVec
-						)
-					),
-					ThurstonGeometry.scaleVector(
-						-ThurstonGeometry.dotProduct(gammaTriplePrime, this.normalVec),
-						this.normalVec
-					)
-				)
-			);
-		}
+		// if (
+		// 	gammaTriplePrime[0]
+		// 	|| gammaTriplePrime[1]
+		// 	|| gammaTriplePrime[2]
+		// 	|| gammaTriplePrime[3]
+		// )
+		// {
+		// 	this.rightVec = ThurstonGeometry.normalize(
+		// 		ThurstonGeometry.addVectors(
+		// 			ThurstonGeometry.addVectors(
+		// 				gammaTriplePrime,
+		// 				ThurstonGeometry.scaleVector(
+		// 					-ThurstonGeometry.dotProduct(gammaTriplePrime, this.forwardVec),
+		// 					this.forwardVec
+		// 				)
+		// 			),
+		// 			ThurstonGeometry.scaleVector(
+		// 				-ThurstonGeometry.dotProduct(gammaTriplePrime, this.normalVec),
+		// 				this.normalVec
+		// 			)
+		// 		)
+		// 	);
+		// }
 
-		this.upVec = ThurstonGeometry.crossProduct(this.forwardVec, this.normalVec, this.rightVec);
+		// this.upVec = ThurstonGeometry.crossProduct(this.forwardVec, this.normalVec, this.rightVec);
 		console.log(gammaDoublePrime, gammaTriplePrime);
-		console.log(this.forwardVec, this.normalVec, this.rightVec, this.upVec);
 	}
 
 
