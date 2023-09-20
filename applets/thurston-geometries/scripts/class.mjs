@@ -462,8 +462,6 @@ export class ThurstonGeometry extends Applet
 
 		this.normalVec = this.getNormalVec(this.cameraPos);
 
-		console.log(this.cameraPos, this.normalVec);
-
 		// if (
 		// 	gammaTriplePrime[0]
 		// 	|| gammaTriplePrime[1]
@@ -488,7 +486,8 @@ export class ThurstonGeometry extends Applet
 		// 	);
 		// }
 
-		// this.upVec = ThurstonGeometry.crossProduct(this.forwardVec, this.normalVec, this.rightVec);
+		//Strictly speaking, this should have a minus sign or be in a different order, but this tends to look nicer.
+		this.upVec = ThurstonGeometry.crossProduct(this.forwardVec, this.rightVec, this.normalVec);
 	}
 
 
@@ -749,9 +748,9 @@ export class ThurstonGeometry extends Applet
 			+ u[2] * (v[0] * w[3] - v[3] * w[0])
 			- u[3] * (v[0] * w[2] - v[2] * w[0]),
 
-			u[0] * (v[2] * w[3] - v[3] * w[2])
-			- u[2] * (v[0] * w[3] - v[3] * w[0])
-			+ u[3] * (v[0] * w[2] - v[2] * w[0]),
+			u[0] * (v[1] * w[3] - v[3] * w[1])
+			- u[1] * (v[0] * w[3] - v[3] * w[0])
+			+ u[3] * (v[0] * w[1] - v[1] * w[0]),
 
 			-u[0] * (v[1] * w[2] - v[2] * w[1])
 			+ u[1] * (v[0] * w[2] - v[2] * w[0])
