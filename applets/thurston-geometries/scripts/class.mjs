@@ -12,26 +12,37 @@ export class ThurstonGeometry extends Applet
 
 	cameraPos;
 
+	//A story in three parts. This is the *frame*, a set of four orthonormal vectors that is
+	//determined from the geodesic along which we travel. The first is the unit tangent vector,
+	//the second the unit normal, and then the unit binormal and trinormals.
+	orthonormalFrame = [[], [], [], []];
+
+	//This is the second part: the camera's facing vectors. We can't just use the frame for
+	//a few reasons: for one, when we switch from traveling forward to right, the binding from
+	//frame to camera bearing changes. Instead, when we move position, we express the camera's
+	//facing in the frame basis, move the frame, and then use the same basis coordinates
+	//to express the new camera facing.
 	normalVec;
 	upVec;
 	rightVec;
 	forwardVec;
 
-	unrotatedForwardVec;
-	unrotatedUpVec;
-	unrotatedRightVec;
+	//Finally, we handle the rotation of the camera --- we can't bake this in, since otherwise
+	//the holonomy of the sphere bites us. We'll allow rotating left and right to affect the
+	//base vectors, but rotating up and down affects these only,
+	//which finally get passed to the shader.
+	rotatedForwardVec;
+	rotatedUpVec;
 
-	//The first is +/- 1 for moving forward, and the second is for moving right.
-	movingAmount = [0, 0];
+	//Moving forward/back, right/left, and up/down
+	movingAmount = [0, 0, 0];
 	getMovingSpeed;
-
-	lastWorldCenterX;
-	lastWorldCenterY;
 
 	updateCameraPos;
 	getNormalVec;
 	getGammaPrime;
 	getGammaDoublePrime;
+	getGammaTriplePrime;
 
 
 
@@ -371,6 +382,7 @@ export class ThurstonGeometry extends Applet
 		this.pan.update(timeElapsed);
 		
 		this.handleMoving(timeElapsed);
+		this.correctVectors();
 		this.handleRotating();
 
 		this.wilson.gl.uniform4fv(
@@ -448,23 +460,9 @@ export class ThurstonGeometry extends Applet
 
 		this.forwardVec = [...tangentVec];
 
-		if (
-			gammaDoublePrime[0]
-			|| gammaDoublePrime[1]
-			|| gammaDoublePrime[2]
-			|| gammaDoublePrime[3]
-		)
-		{
-			this.normalVec = ThurstonGeometry.normalize(
-				ThurstonGeometry.addVectors(
-					gammaDoublePrime,
-					ThurstonGeometry.scaleVector(
-						-ThurstonGeometry.dotProduct(gammaDoublePrime, this.forwardVec),
-						this.forwardVec
-					)
-				)
-			);
-		}
+		this.normalVec = this.getNormalVec(this.cameraPos);
+
+		console.log(this.cameraPos, this.normalVec);
 
 		// if (
 		// 	gammaTriplePrime[0]
@@ -491,7 +489,6 @@ export class ThurstonGeometry extends Applet
 		// }
 
 		// this.upVec = ThurstonGeometry.crossProduct(this.forwardVec, this.normalVec, this.rightVec);
-		console.log(gammaDoublePrime, gammaTriplePrime);
 	}
 
 
@@ -528,6 +525,8 @@ export class ThurstonGeometry extends Applet
 
 
 
+	//Surprisingly necessary -- this corrects the frame so that no vector looks in the normal
+	//direction at all.
 	correctVectors()
 	{
 		const dotUp = ThurstonGeometry.dotProduct(this.normalVec, this.upVec);
