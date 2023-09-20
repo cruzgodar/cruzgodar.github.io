@@ -104,6 +104,5 @@
 		"no-promise-executor-return": ["error"],
 		"no-self-compare": ["warn"],
 		"no-unmodified-loop-condition": ["warn"],
-		"require-atomic-updates": ["warn"]
 	}
 }
