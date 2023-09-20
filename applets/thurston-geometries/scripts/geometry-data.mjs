@@ -37,6 +37,11 @@ function getE3BaseData()
 		{
 			return [0, 0, 0, 0];
 		},
+
+		getGammaTriplePrime: () =>
+		{
+			return [0, 0, 0, 0];
+		},
 	};
 }
 
@@ -77,6 +82,7 @@ function getS3BaseData()
 			//gamma = cos(t)*pos + sin(t)*dir
 			//gamma' = -sin(t)*pos + cos(t)*dir
 			//gamma'' = -cos(t)*pos - sin(t)*dir
+			//gamma''' = sin(t)*pos - cos(t)*dir
 			//All of these are evaluated at t=0.
 			return [...dir];
 		},
@@ -84,6 +90,11 @@ function getS3BaseData()
 		getGammaDoublePrime: (pos) =>
 		{
 			return [-pos[0], -pos[1], -pos[2], -pos[3]];
+		},
+
+		getGammaTriplePrime: (_pos, dir) =>
+		{
+			return [-dir[0], -dir[1], -dir[2], -dir[3]];
 		},
 	};
 }
@@ -138,6 +149,7 @@ function getH3BaseData()
 			//gamma = cosh(t)*pos + sinh(t)*dir
 			//gamma' = sinh(t)*pos + cosh(t)*dir
 			//gamma'' = cosh(t)*pos + sinh(t)*dir
+			//gamma'' = sinh(t)*pos + cosh(t)*dir
 			//All of these are evaluated at t=0.
 			return [...dir];
 		},
@@ -145,6 +157,11 @@ function getH3BaseData()
 		getGammaDoublePrime: (pos) =>
 		{
 			return [...pos];
+		},
+
+		getGammaTriplePrime: (_pos, dir) =>
+		{
+			return [...dir];
 		},
 	};
 }
@@ -186,7 +203,7 @@ export function getE3RoomsData()
 		rightVec: [0, 1, 0, 0],
 		forwardVec: [1, 0, 0, 0],
 
-		movingSpeed: 3,
+		getMovingSpeed: () => 3
 	};
 }
 
@@ -222,7 +239,7 @@ export function getE3SpheresData()
 		rightVec: [0, 1, 0, 0],
 		forwardVec: [1, 0, 0, 0],
 
-		movingSpeed: 3,
+		getMovingSpeed: () => 3
 	};
 }
 
@@ -342,7 +359,7 @@ export function getS3RoomsData()
 		rightVec: [0, 1, 0, 0],
 		forwardVec: [1, 0, 0, 0],
 
-		movingSpeed: 1,
+		getMovingSpeed: () => 1
 	};
 }
 
@@ -455,7 +472,7 @@ export function getS3SpheresData()
 		rightVec: [0, 1, 0, 0],
 		forwardVec: [1, 0, 0, 0],
 
-		movingSpeed: 1,
+		getMovingSpeed: () => 1
 	};
 }
 
@@ -501,6 +518,7 @@ export function getH3SpheresData()
 		rightVec: [0, 1, 0, 0],
 		forwardVec: [1, 0, 0, 0],
 
-		movingSpeed: 1,
+		//The distance to the origin is acosh(pos.w), so we want to move at 1 over that.
+		getMovingSpeed: (cameraPos) => Math.min(1 / Math.acosh(cameraPos[3]), 1),
 	};
 }
