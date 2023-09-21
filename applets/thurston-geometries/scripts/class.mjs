@@ -133,6 +133,7 @@ export class ThurstonGeometry extends Applet
 		getGammaPrime,
 		getGammaDoublePrime,
 		getGammaTriplePrime,
+		gammaTriplePrimeIsLinearlyIndependent,
 		distanceEstimatorGlsl,
 		geodesicGlsl,
 		getColorGlsl,
@@ -151,6 +152,7 @@ export class ThurstonGeometry extends Applet
 		this.getGammaPrime = getGammaPrime;
 		this.getGammaDoublePrime = getGammaDoublePrime;
 		this.getGammaTriplePrime = getGammaTriplePrime;
+		this.gammaTriplePrimeIsLinearlyIndependent = gammaTriplePrimeIsLinearlyIndependent;
 
 		this.cameraPos = cameraPos;
 		this.normalVec = normalVec;
@@ -402,7 +404,7 @@ export class ThurstonGeometry extends Applet
 		
 		this.wilson.gl.uniform4fv(
 			this.wilson.uniforms["rightVec"],
-			this.rotatedRightVec
+			this.rightVec
 		);
 			
 		this.wilson.gl.uniform4fv(
@@ -455,36 +457,30 @@ export class ThurstonGeometry extends Applet
 
 		this.updateCameraPos(this.cameraPos, tangentVec, dt);
 
-		const gammaDoublePrime = this.getGammaDoublePrime(this.cameraPos, tangentVec);
 		const gammaTriplePrime = this.getGammaTriplePrime(this.cameraPos, tangentVec);
 
 		this.forwardVec = [...tangentVec];
 
 		this.normalVec = this.getNormalVec(this.cameraPos);
 
-		// if (
-		// 	gammaTriplePrime[0]
-		// 	|| gammaTriplePrime[1]
-		// 	|| gammaTriplePrime[2]
-		// 	|| gammaTriplePrime[3]
-		// )
-		// {
-		// 	this.rightVec = ThurstonGeometry.normalize(
-		// 		ThurstonGeometry.addVectors(
-		// 			ThurstonGeometry.addVectors(
-		// 				gammaTriplePrime,
-		// 				ThurstonGeometry.scaleVector(
-		// 					-ThurstonGeometry.dotProduct(gammaTriplePrime, this.forwardVec),
-		// 					this.forwardVec
-		// 				)
-		// 			),
-		// 			ThurstonGeometry.scaleVector(
-		// 				-ThurstonGeometry.dotProduct(gammaTriplePrime, this.normalVec),
-		// 				this.normalVec
-		// 			)
-		// 		)
-		// 	);
-		// }
+		if (this.gammaTriplePrimeIsLinearlyIndependent)
+		{
+			this.rightVec = ThurstonGeometry.normalize(
+				ThurstonGeometry.addVectors(
+					ThurstonGeometry.addVectors(
+						gammaTriplePrime,
+						ThurstonGeometry.scaleVector(
+							-ThurstonGeometry.dotProduct(gammaTriplePrime, this.forwardVec),
+							this.forwardVec
+						)
+					),
+					ThurstonGeometry.scaleVector(
+						-ThurstonGeometry.dotProduct(gammaTriplePrime, this.normalVec),
+						this.normalVec
+					)
+				)
+			);
+		}
 
 		//Strictly speaking, this should have a minus sign or be in a different order, but this tends to look nicer.
 		this.upVec = ThurstonGeometry.crossProduct(this.forwardVec, this.rightVec, this.normalVec);
@@ -494,27 +490,27 @@ export class ThurstonGeometry extends Applet
 
 	handleRotating()
 	{
-		this.rotatedForwardVec = [...this.forwardVec];
-		this.rotatedRightVec = [...this.rightVec];
-		this.rotatedUpVec = [...this.upVec];
-
 		this.wilson.worldCenterY = Math.min(
 			Math.max(this.wilson.worldCenterY, -Math.PI / 2 + .01),
 			Math.PI / 2 - .01
 		);
 
 		const result = ThurstonGeometry.rotateVectors({
-			vec1: this.rotatedForwardVec,
-			vec2: this.rotatedRightVec,
+			vec1: this.forwardVec,
+			vec2: this.rightVec,
 			theta: this.wilson.worldCenterX
 		});
 
-		this.rotatedForwardVec = result[0];
-		this.rotatedRightVec = result[1];
+		//Left/right rotation is allowed to be baked in to the underlying vectors.
+
+		this.forwardVec = result[0];
+		this.rightVec = result[1];
+
+		this.wilson.worldCenterX = 0;
 
 		const result2 = ThurstonGeometry.rotateVectors({
-			vec1: this.rotatedForwardVec,
-			vec2: this.rotatedUpVec,
+			vec1: this.forwardVec,
+			vec2: this.upVec,
 			theta: this.wilson.worldCenterY
 		});
 

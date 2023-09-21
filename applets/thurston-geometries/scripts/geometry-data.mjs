@@ -42,6 +42,8 @@ function getE3BaseData()
 		{
 			return [0, 0, 0, 0];
 		},
+
+		gammaTriplePrimeIsLinearlyIndependent: false
 	};
 }
 
@@ -101,6 +103,8 @@ function getS3BaseData()
 		{
 			return [-dir[0], -dir[1], -dir[2], -dir[3]];
 		},
+
+		gammaTriplePrimeIsLinearlyIndependent: false
 	};
 }
 
@@ -168,6 +172,8 @@ function getH3BaseData()
 		{
 			return [...dir];
 		},
+
+		gammaTriplePrimeIsLinearlyIndependent: false
 	};
 }
 
