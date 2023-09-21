@@ -82,7 +82,7 @@ function getS3BaseData()
 			//on the manifold. Therefore, we'll do a quick correction to get it back.
 
 			//Here, we just want the magnitude to be equal to 1
-			const magnitude = ThurstonGeometry.magnitude(cameraPos);
+			const magnitude = ThurstonGeometry.magnitude(newCameraPos);
 
 			newCameraPos[0] /= magnitude;
 			newCameraPos[1] /= magnitude;
