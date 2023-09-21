@@ -9,13 +9,28 @@ function getE3BaseData()
 		
 		updateCameraPos: (cameraPos, tangentVec, dt) =>
 		{
+			const newCameraPos = [...cameraPos];
+
 			for (let i = 0; i < 4; i++)
 			{
-				cameraPos[i] = cameraPos[i] + dt * tangentVec[i];
+				newCameraPos[i] = newCameraPos[i] + dt * tangentVec[i];
 			}
 			
-			//Since we're only doing a linear approximation, this position won't be exactly
-			//on the manifold. Therefore, we'll do a quick correction to get it back.
+			return newCameraPos;
+		},
+
+		getGeodesicDirection(pos1, pos2)
+		{
+			const dir = new Array(4);
+
+			for (let i = 0; i < 4; i++)
+			{
+				dir[i] = pos2[i] - pos1[i];
+			}
+
+			const magnitude = ThurstonGeometry.magnitude(dir);
+
+			return [ThurstonGeometry.normalize(dir), magnitude];
 		},
 
 		getNormalVec: () =>
@@ -56,9 +71,11 @@ function getS3BaseData()
 		
 		updateCameraPos: (cameraPos, tangentVec, dt) =>
 		{
+			const newCameraPos = [...cameraPos];
+
 			for (let i = 0; i < 4; i++)
 			{
-				cameraPos[i] = Math.cos(dt) * cameraPos[i] + Math.sin(dt) * tangentVec[i];
+				newCameraPos[i] = Math.cos(dt) * newCameraPos[i] + Math.sin(dt) * tangentVec[i];
 			}
 			
 			//Since we're only doing a linear approximation, this position won't be exactly
@@ -67,10 +84,28 @@ function getS3BaseData()
 			//Here, we just want the magnitude to be equal to 1
 			const magnitude = ThurstonGeometry.magnitude(cameraPos);
 
-			cameraPos[0] /= magnitude;
-			cameraPos[1] /= magnitude;
-			cameraPos[2] /= magnitude;
-			cameraPos[3] /= magnitude;
+			newCameraPos[0] /= magnitude;
+			newCameraPos[1] /= magnitude;
+			newCameraPos[2] /= magnitude;
+			newCameraPos[3] /= magnitude;
+
+			return newCameraPos;
+		},
+
+		//Given two points on the manifold, find the vector in the tangent space to pos1
+		//that points to pos2. For simplicity, we assume dt = 1 and then normalize later.
+		getGeodesicDirection(pos1, pos2)
+		{
+			const dir = new Array(4);
+
+			for (let i = 0; i < 4; i++)
+			{
+				dir[i] = (pos2[i] - Math.cos(1) * pos1[i]) / Math.sin(1);
+			}
+
+			const magnitude = ThurstonGeometry.magnitude(dir);
+
+			return [ThurstonGeometry.normalize(dir), magnitude];
 		},
 
 		getNormalVec: (cameraPos) =>
@@ -121,9 +156,11 @@ function getH3BaseData()
 		
 		updateCameraPos: (cameraPos, tangentVec, dt) =>
 		{
+			const newCameraPos = [...cameraPos];
+
 			for (let i = 0; i < 4; i++)
 			{
-				cameraPos[i] = Math.cosh(dt) * cameraPos[i] + Math.sinh(dt) * tangentVec[i];
+				newCameraPos[i] = Math.cosh(dt) * newCameraPos[i] + Math.sinh(dt) * tangentVec[i];
 			}
 			
 			//Since we're only doing a linear approximation, this position won't be exactly
@@ -131,15 +168,17 @@ function getH3BaseData()
 
 			//Here, we just want the hyperbolic dot product to be -1.
 			const magnitude =
-				cameraPos[0] * cameraPos[0]
-				+ cameraPos[1] * cameraPos[1]
-				+ cameraPos[2] * cameraPos[2]
-				- cameraPos[3] * cameraPos[3];
+				newCameraPos[0] * newCameraPos[0]
+				+ newCameraPos[1] * newCameraPos[1]
+				+ newCameraPos[2] * newCameraPos[2]
+				- newCameraPos[3] * newCameraPos[3];
 
-			cameraPos[0] /= -magnitude;
-			cameraPos[1] /= -magnitude;
-			cameraPos[2] /= -magnitude;
-			cameraPos[3] /= -magnitude;
+			newCameraPos[0] /= -magnitude;
+			newCameraPos[1] /= -magnitude;
+			newCameraPos[2] /= -magnitude;
+			newCameraPos[3] /= -magnitude;
+
+			return newCameraPos;
 		},
 
 		getNormalVec: (cameraPos) =>

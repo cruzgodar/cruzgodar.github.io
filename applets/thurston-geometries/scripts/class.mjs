@@ -15,7 +15,6 @@ export class ThurstonGeometry extends Applet
 	//A story in three parts. This is the *frame*, a set of four orthonormal vectors that is
 	//determined from the geodesic along which we travel. The first is the unit tangent vector,
 	//the second the unit normal, and then the unit binormal and trinormals.
-	orthonormalFrame = [[], [], [], []];
 
 	//This is the second part: the camera's facing vectors. We can't just use the frame for
 	//a few reasons: for one, when we switch from traveling forward to right, the binding from
@@ -36,9 +35,12 @@ export class ThurstonGeometry extends Applet
 
 	//Moving forward/back, right/left, and up/down
 	movingAmount = [0, 0, 0];
+
 	getMovingSpeed;
 
 	updateCameraPos;
+	getGeodesicDirection;
+	
 	getNormalVec;
 	getGammaPrime;
 	getGammaDoublePrime;
@@ -129,6 +131,7 @@ export class ThurstonGeometry extends Applet
 
 	run({
 		updateCameraPos,
+		getGeodesicDirection,
 		getNormalVec,
 		getGammaPrime,
 		getGammaDoublePrime,
@@ -148,6 +151,8 @@ export class ThurstonGeometry extends Applet
 	})
 	{
 		this.updateCameraPos = updateCameraPos;
+		this.getGeodesicDirection = getGeodesicDirection;
+
 		this.getNormalVec = getNormalVec;
 		this.getGammaPrime = getGammaPrime;
 		this.getGammaDoublePrime = getGammaDoublePrime;
@@ -436,16 +441,30 @@ export class ThurstonGeometry extends Applet
 	 */
 	handleMoving(timeElapsed)
 	{
-		if (!this.movingAmount[0] && !this.movingAmount[1])
+		const isMoving = this.movingAmount[0] || this.movingAmount[1] || this.movingAmount[2];
+		
+		if (!isMoving)
 		{
 			return;
 		}
 
+		//First, get the current frame so that we can extract the coefficients.
+
+		let tangentVec = ThurstonGeometry.normalize([
+			this.movingAmount[0] * this.forwardVec[0] + this.movingAmount[1] * this.rightVec[0],
+			this.movingAmount[0] * this.forwardVec[1] + this.movingAmount[1] * this.rightVec[1],
+			this.movingAmount[0] * this.forwardVec[2] + this.movingAmount[1] * this.rightVec[2],
+			this.movingAmount[0] * this.forwardVec[3] + this.movingAmount[1] * this.rightVec[3],
+		]);
+
 		const dt = timeElapsed / 1000 * this.getMovingSpeed(this.cameraPos);
 
-		let tangentVec = [...this.forwardVec];
 
+
+		//The magic formula is T' = curvature * N.
 		const curvature = this.getCurvature(this.cameraPos, tangentVec);
+
+		const newCameraPos = this.updateCameraPos(this.cameraPos, tangentVec, dt);
 
 		//The magic formula is T' = curvature * N.
 		tangentVec = ThurstonGeometry.normalize([
@@ -455,35 +474,43 @@ export class ThurstonGeometry extends Applet
 			tangentVec[3] + curvature * this.normalVec[3] * dt
 		]);
 
-		this.updateCameraPos(this.cameraPos, tangentVec, dt);
+		
 
-		const gammaTriplePrime = this.getGammaTriplePrime(this.cameraPos, tangentVec);
+		//Now for the fun part. We need to parallel transport the up and right vecs
+		//along with us. We'll accomplish this with Schild's ladder.
+
+		this.rightVec = this.parallelTransport(newCameraPos, this.rightVec);
+		this.upVec = this.parallelTransport(newCameraPos, this.upVec);
+
+		this.cameraPos = newCameraPos;
 
 		this.forwardVec = [...tangentVec];
-
 		this.normalVec = this.getNormalVec(this.cameraPos);
+	}
 
-		if (this.gammaTriplePrimeIsLinearlyIndependent)
-		{
-			this.rightVec = ThurstonGeometry.normalize(
-				ThurstonGeometry.addVectors(
-					ThurstonGeometry.addVectors(
-						gammaTriplePrime,
-						ThurstonGeometry.scaleVector(
-							-ThurstonGeometry.dotProduct(gammaTriplePrime, this.forwardVec),
-							this.forwardVec
-						)
-					),
-					ThurstonGeometry.scaleVector(
-						-ThurstonGeometry.dotProduct(gammaTriplePrime, this.normalVec),
-						this.normalVec
-					)
-				)
-			);
-		}
+	
 
-		//Strictly speaking, this should have a minus sign or be in a different order, but this tends to look nicer.
-		this.upVec = ThurstonGeometry.crossProduct(this.forwardVec, this.rightVec, this.normalVec);
+	parallelTransport(newCameraPos, vecToTransport)
+	{
+		//In the terminology of Schild's ladder, A = this.cameraPos, and we need to find X_0.
+		const x0 = this.updateCameraPos(this.cameraPos, vecToTransport, 1);
+
+		//Now we need to construct a geodesic between x0 and the updated cameraPosition.
+		const [dir, magnitude] = this.getGeodesicDirection(x0, newCameraPos);
+
+		//Now find the point halfway there.
+		const p = this.updateCameraPos(x0, dir, magnitude / 2);
+
+		//Construct a geodesic between the original camera position and this point
+		const [dir2, magnitude2] = this.getGeodesicDirection(this.cameraPos, p);
+
+		//Follow that twice as far.
+		const x1 = this.updateCameraPos(this.cameraPos, dir2, magnitude2 * 2);
+
+		//Now at long last, construct the geodesic from te new camera position to this point.
+		const [dir3] = this.getGeodesicDirection(newCameraPos, x1);
+
+		return dir3;
 	}
 
 
@@ -733,24 +760,24 @@ export class ThurstonGeometry extends Applet
 		return vec1[0] * vec2[0] + vec1[1] * vec2[1] + vec1[2] * vec2[2] + vec1[3] * vec2[3];
 	}
 
-	static crossProduct(u, v, w)
-	{
-		return [
-			u[1] * (v[2] * w[3] - v[3] * w[2])
-			- u[2] * (v[1] * w[3] - v[3] * w[1])
-			+ u[3] * (v[1] * w[2] - v[2] * w[1]),
+	// static crossProduct(u, v, w)
+	// {
+	// 	return [
+	// 		u[1] * (v[2] * w[3] - v[3] * w[2])
+	// 		- u[2] * (v[1] * w[3] - v[3] * w[1])
+	// 		+ u[3] * (v[1] * w[2] - v[2] * w[1]),
 
-			-u[0] * (v[2] * w[3] - v[3] * w[2])
-			+ u[2] * (v[0] * w[3] - v[3] * w[0])
-			- u[3] * (v[0] * w[2] - v[2] * w[0]),
+	// 		-u[0] * (v[2] * w[3] - v[3] * w[2])
+	// 		+ u[2] * (v[0] * w[3] - v[3] * w[0])
+	// 		- u[3] * (v[0] * w[2] - v[2] * w[0]),
 
-			u[0] * (v[1] * w[3] - v[3] * w[1])
-			- u[1] * (v[0] * w[3] - v[3] * w[0])
-			+ u[3] * (v[0] * w[1] - v[1] * w[0]),
+	// 		u[0] * (v[1] * w[3] - v[3] * w[1])
+	// 		- u[1] * (v[0] * w[3] - v[3] * w[0])
+	// 		+ u[3] * (v[0] * w[1] - v[1] * w[0]),
 
-			-u[0] * (v[1] * w[2] - v[2] * w[1])
-			+ u[1] * (v[0] * w[2] - v[2] * w[0])
-			- u[2] * (v[0] * w[1] - v[1] * w[0])
-		];
-	}
+	// 		-u[0] * (v[1] * w[2] - v[2] * w[1])
+	// 		+ u[1] * (v[0] * w[2] - v[2] * w[0])
+	// 		- u[2] * (v[0] * w[1] - v[1] * w[0])
+	// 	];
+	// }
 }

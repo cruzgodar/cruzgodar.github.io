@@ -15,7 +15,7 @@ export function load()
 		canvas: $("#output-canvas"),
 	});
 
-	applet.run(getH3SpheresData());
+	applet.run(getE3SpheresData());
 
 
 
