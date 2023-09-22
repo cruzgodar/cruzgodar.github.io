@@ -46,6 +46,15 @@ export class ThurstonGeometry extends Applet
 	getGammaDoublePrime;
 	getGammaTriplePrime;
 
+	keysPressed = {
+		"w": false,
+		"a": false,
+		"s": false,
+		"d": false,
+		" ": false,
+		"Shift": false
+	};
+
 
 
 	constructor({
@@ -390,6 +399,12 @@ export class ThurstonGeometry extends Applet
 
 
 
+		this.movingAmount[0] = this.keysPressed.w ? 1 : this.keysPressed.s ? -1 : 0;
+		this.movingAmount[1] = this.keysPressed.d ? 1 : this.keysPressed.a ? -1 : 0;
+		this.movingAmount[2] = this.keysPressed[" "] ? 1 : this.keysPressed.Shift ? -1 : 0;
+
+
+
 		const totalMovingAmount = Math.abs(this.movingAmount[0])
 			+ Math.abs(this.movingAmount[1])
 			+ Math.abs(this.movingAmount[2]);
@@ -653,53 +668,16 @@ export class ThurstonGeometry extends Applet
 
 	handleKeydownEvent(e)
 	{
-		if (
-			document.activeElement.tagName === "INPUT"
-		)
+		if (document.activeElement.tagName === "INPUT")
 		{
 			return;
 		}
 
-		if (e.key === "w")
+		if (Object.prototype.hasOwnProperty.call(this.keysPressed, e.key))
 		{
 			e.preventDefault();
 
-			this.movingAmount[0] = 1;
-		}
-
-		else if (e.key === "s")
-		{
-			e.preventDefault();
-
-			this.movingAmount[0] = -1;
-		}
-
-		if (e.key === "d")
-		{
-			e.preventDefault();
-			
-			this.movingAmount[1] = 1;
-		}
-
-		else if (e.key === "a")
-		{
-			e.preventDefault();
-			
-			this.movingAmount[1] = -1;
-		}
-
-		if (e.key === " ")
-		{
-			e.preventDefault();
-			
-			this.movingAmount[2] = 1;
-		}
-
-		else if (e.key === "Shift")
-		{
-			e.preventDefault();
-			
-			this.movingAmount[2] = -1;
+			this.keysPressed[e.key] = true;
 		}
 	}
 
@@ -707,32 +685,16 @@ export class ThurstonGeometry extends Applet
 
 	handleKeyupEvent(e)
 	{
-		if (
-			document.activeElement.tagName === "INPUT"
-		)
+		if (document.activeElement.tagName === "INPUT")
 		{
 			return;
 		}
 
-		if (e.key === "w" || e.key === "s")
+		if (Object.prototype.hasOwnProperty.call(this.keysPressed, e.key))
 		{
 			e.preventDefault();
 
-			this.movingAmount[0] = 0;
-		}
-
-		if (e.key === "d" || e.key === "a")
-		{
-			e.preventDefault();
-			
-			this.movingAmount[1] = 0;
-		}
-
-		if (e.key === " " | e.key === "Shift")
-		{
-			e.preventDefault();
-			
-			this.movingAmount[2] = 0;
+			this.keysPressed[e.key] = false;
 		}
 	}
 
