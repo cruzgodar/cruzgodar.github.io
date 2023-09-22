@@ -133,12 +133,12 @@ export class ThurstonGeometry extends Applet
 
 		const boundFunction4 = this.handleTouchEvent.bind(this);
 		addTemporaryListener({
-			object: canvas,
+			object: canvas.parentNode.nextElementSibling,
 			event: "touchstart",
 			callback: boundFunction4
 		});
 		addTemporaryListener({
-			object: canvas,
+			object: canvas.parentNode.nextElementSibling,
 			event: "touchend",
 			callback: boundFunction4
 		});
@@ -488,7 +488,7 @@ export class ThurstonGeometry extends Applet
 			
 			for (let i = 0; i < 3; i++)
 			{
-				this.movingAmount[i] *= ThurstonGeometry.moveFriction;
+				this.movingAmount[i] *= ThurstonGeometry.moveFriction ** (timeElapsed / 6.944);
 
 				if (Math.abs(this.movingAmount[i]) < ThurstonGeometry.moveStopThreshhold)
 				{
@@ -518,7 +518,7 @@ export class ThurstonGeometry extends Applet
 				angle
 			);
 
-			this.rollingAmount *= ThurstonGeometry.rollingFriction;
+			this.rollingAmount *= ThurstonGeometry.rollingFriction ** (timeElapsed / 6.944);
 
 			if (Math.abs(this.rollingAmount) < ThurstonGeometry.rollingStopThreshhold)
 			{
