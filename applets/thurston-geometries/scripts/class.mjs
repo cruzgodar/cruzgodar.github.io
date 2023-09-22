@@ -12,15 +12,6 @@ export class ThurstonGeometry extends Applet
 
 	cameraPos;
 
-	//A story in three parts. This is the *frame*, a set of four orthonormal vectors that is
-	//determined from the geodesic along which we travel. The first is the unit tangent vector,
-	//the second the unit normal, and then the unit binormal and trinormals.
-
-	//This is the second part: the camera's facing vectors. We can't just use the frame for
-	//a few reasons: for one, when we switch from traveling forward to right, the binding from
-	//frame to camera bearing changes. Instead, when we move position, we express the camera's
-	//facing in the frame basis, move the frame, and then use the same basis coordinates
-	//to express the new camera facing.
 	normalVec;
 	upVec;
 	rightVec;
@@ -397,38 +388,85 @@ export class ThurstonGeometry extends Applet
 
 		this.pan.update(timeElapsed);
 
+		
+
+		if (this.keysPressed.w)
+		{
+			this.movingAmount[0] = 1;
+		}
+
+		else if (this.keysPressed.s)
+		{
+			this.movingAmount[0] = -1;
+		}
+		
+		if (this.keysPressed.d)
+		{
+			this.movingAmount[1] = 1;
+		}
+
+		else if (this.keysPressed.a)
+		{
+			this.movingAmount[1] = -1;
+		}
+
+		if (this.keysPressed[" "])
+		{
+			this.movingAmount[2] = 1;
+		}
+
+		else if (this.keysPressed.Shift)
+		{
+			this.movingAmount[2] = -1;
+		}
 
 
-		this.movingAmount[0] = this.keysPressed.w ? 1 : this.keysPressed.s ? -1 : 0;
-		this.movingAmount[1] = this.keysPressed.d ? 1 : this.keysPressed.a ? -1 : 0;
-		this.movingAmount[2] = this.keysPressed[" "] ? 1 : this.keysPressed.Shift ? -1 : 0;
 
-
-
-		const totalMovingAmount = Math.abs(this.movingAmount[0])
-			+ Math.abs(this.movingAmount[1])
-			+ Math.abs(this.movingAmount[2]);
+		const totalMovingAmount = this.movingAmount[0] !== 0
+			+ this.movingAmount[1] !== 0
+			+ this.movingAmount[2] !== 0;
 
 		if (totalMovingAmount)
 		{
-			const speedAdjust = 1 / Math.sqrt(totalMovingAmount);
+			const speedAdjust = 1 / totalMovingAmount;
 
 			if (this.movingAmount[0])
 			{
-				this.handleMoving([this.movingAmount[0], 0, 0], timeElapsed * speedAdjust);
+				this.handleMoving(
+					[Math.sign(this.movingAmount[0]), 0, 0],
+					timeElapsed * speedAdjust * Math.abs(this.movingAmount[0])
+				);
+
 				this.correctVectors();
 			}
 
 			if (this.movingAmount[1])
 			{
-				this.handleMoving([0, this.movingAmount[1], 0], timeElapsed * speedAdjust);
+				this.handleMoving(
+					[0, Math.sign(this.movingAmount[1]), 0],
+					timeElapsed * speedAdjust * Math.abs(this.movingAmount[1])
+				);
+
 				this.correctVectors();
 			}
 
 			if (this.movingAmount[2])
 			{
-				this.handleMoving([0, 0, this.movingAmount[2]], timeElapsed * speedAdjust);
+				this.handleMoving(
+					[0, 0, Math.sign(this.movingAmount[2])],
+					timeElapsed * speedAdjust * Math.abs(this.movingAmount[2])
+				);
 				this.correctVectors();
+			}
+			
+			for (let i = 0; i < 3; i++)
+			{
+				this.movingAmount[i] *= ThurstonGeometry.moveFriction;
+
+				if (Math.abs(this.movingAmount[i]) < ThurstonGeometry.moveStopThreshhold)
+				{
+					this.movingAmount[i] = 0;
+				}
 			}
 		}
 
@@ -747,10 +785,9 @@ export class ThurstonGeometry extends Applet
 
 
 
-	//This is a complicated one. What we want is to take a vector in R^4 and rotate it in the
-	//plane orthogonal to *two* vectors. The first is the global normal vector, and the
-	//second varies. What we'll do is convert our four vectors to the standard basis, rotate that,
-	//and then convert back.
+	static moveFriction = .96;
+	static moveStopThreshhold = .01;
+
 	static rotateVectors(vec1, vec2, theta)
 	{
 		const cosine = Math.cos(theta);
@@ -798,25 +835,4 @@ export class ThurstonGeometry extends Applet
 	{
 		return vec1[0] * vec2[0] + vec1[1] * vec2[1] + vec1[2] * vec2[2] + vec1[3] * vec2[3];
 	}
-
-	// static crossProduct(u, v, w)
-	// {
-	// 	return [
-	// 		u[1] * (v[2] * w[3] - v[3] * w[2])
-	// 		- u[2] * (v[1] * w[3] - v[3] * w[1])
-	// 		+ u[3] * (v[1] * w[2] - v[2] * w[1]),
-
-	// 		-u[0] * (v[2] * w[3] - v[3] * w[2])
-	// 		+ u[2] * (v[0] * w[3] - v[3] * w[0])
-	// 		- u[3] * (v[0] * w[2] - v[2] * w[0]),
-
-	// 		u[0] * (v[1] * w[3] - v[3] * w[1])
-	// 		- u[1] * (v[0] * w[3] - v[3] * w[0])
-	// 		+ u[3] * (v[0] * w[1] - v[1] * w[0]),
-
-	// 		-u[0] * (v[1] * w[2] - v[2] * w[1])
-	// 		+ u[1] * (v[0] * w[2] - v[2] * w[0])
-	// 		- u[2] * (v[0] * w[1] - v[1] * w[0])
-	// 	];
-	// }
 }

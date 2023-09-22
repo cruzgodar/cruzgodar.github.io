@@ -36,14 +36,14 @@ import{ThurstonGeometry}from"./class.min.mjs";function getE3BaseData(){return{ge
 
 			float lightIntensity = lightBrightness * max(dotProduct1, -.5 * dotProduct1) * 1.25;
 		`,cameraPos:[0,0,0,1],normalVec:[0,0,0,1],upVec:[0,0,1,0],rightVec:[0,1,0,0],forwardVec:[1,0,0,0],getMovingSpeed:()=>3}}function getS3RoomsData(){return{...getS3BaseData(),distanceEstimatorGlsl:`
-			float distance1 = acos(pos.x) - .9;
-			float distance2 = acos(-pos.x) - .9;
-			float distance3 = acos(pos.y) - .9;
-			float distance4 = acos(-pos.y) - .9;
-			float distance5 = acos(pos.z) - .9;
-			float distance6 = acos(-pos.z) - .9;
-			float distance7 = acos(pos.w) - .9;
-			float distance8 = acos(-pos.w) - .9;
+			float distance1 = acos(pos.x) - .92;
+			float distance2 = acos(-pos.x) - .92;
+			float distance3 = acos(pos.y) - .92;
+			float distance4 = acos(-pos.y) - .92;
+			float distance5 = acos(pos.z) - .92;
+			float distance6 = acos(-pos.z) - .92;
+			float distance7 = acos(pos.w) - .92;
+			float distance8 = acos(-pos.w) - .92;
 
 			float minDistance = min(
 				min(
@@ -58,14 +58,14 @@ import{ThurstonGeometry}from"./class.min.mjs";function getE3BaseData(){return{ge
 
 			return -minDistance;
 		`,getColorGlsl:`
-			float distance1 = acos(pos.x) - .9;
-			float distance2 = acos(-pos.x) - .9;
-			float distance3 = acos(pos.y) - .9;
-			float distance4 = acos(-pos.y) - .9;
-			float distance5 = acos(pos.z) - .9;
-			float distance6 = acos(-pos.z) - .9;
-			float distance7 = acos(pos.w) - .9;
-			float distance8 = acos(-pos.w) - .9;
+			float distance1 = acos(pos.x) - .92;
+			float distance2 = acos(-pos.x) - .92;
+			float distance3 = acos(pos.y) - .92;
+			float distance4 = acos(-pos.y) - .92;
+			float distance5 = acos(pos.z) - .92;
+			float distance6 = acos(-pos.z) - .92;
+			float distance7 = acos(pos.w) - .92;
+			float distance8 = acos(-pos.w) - .92;
 
 			float minDistance = min(
 				min(

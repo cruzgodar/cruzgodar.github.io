@@ -299,14 +299,14 @@ export function getS3RoomsData()
 		...getS3BaseData(),
 
 		distanceEstimatorGlsl: `
-			float distance1 = acos(pos.x) - .9;
-			float distance2 = acos(-pos.x) - .9;
-			float distance3 = acos(pos.y) - .9;
-			float distance4 = acos(-pos.y) - .9;
-			float distance5 = acos(pos.z) - .9;
-			float distance6 = acos(-pos.z) - .9;
-			float distance7 = acos(pos.w) - .9;
-			float distance8 = acos(-pos.w) - .9;
+			float distance1 = acos(pos.x) - .92;
+			float distance2 = acos(-pos.x) - .92;
+			float distance3 = acos(pos.y) - .92;
+			float distance4 = acos(-pos.y) - .92;
+			float distance5 = acos(pos.z) - .92;
+			float distance6 = acos(-pos.z) - .92;
+			float distance7 = acos(pos.w) - .92;
+			float distance8 = acos(-pos.w) - .92;
 
 			float minDistance = min(
 				min(
@@ -323,14 +323,14 @@ export function getS3RoomsData()
 		`,
 
 		getColorGlsl: `
-			float distance1 = acos(pos.x) - .9;
-			float distance2 = acos(-pos.x) - .9;
-			float distance3 = acos(pos.y) - .9;
-			float distance4 = acos(-pos.y) - .9;
-			float distance5 = acos(pos.z) - .9;
-			float distance6 = acos(-pos.z) - .9;
-			float distance7 = acos(pos.w) - .9;
-			float distance8 = acos(-pos.w) - .9;
+			float distance1 = acos(pos.x) - .92;
+			float distance2 = acos(-pos.x) - .92;
+			float distance3 = acos(pos.y) - .92;
+			float distance4 = acos(-pos.y) - .92;
+			float distance5 = acos(pos.z) - .92;
+			float distance6 = acos(-pos.z) - .92;
+			float distance7 = acos(pos.w) - .92;
+			float distance8 = acos(-pos.w) - .92;
 
 			float minDistance = min(
 				min(
