@@ -387,9 +387,38 @@ export class ThurstonGeometry extends Applet
 		}
 
 		this.pan.update(timeElapsed);
+
+
+
+		const totalMovingAmount = Math.abs(this.movingAmount[0])
+			+ Math.abs(this.movingAmount[1])
+			+ Math.abs(this.movingAmount[2]);
+
+		if (totalMovingAmount)
+		{
+			const speedAdjust = 1 / Math.sqrt(totalMovingAmount);
+
+			if (this.movingAmount[0])
+			{
+				this.handleMoving([this.movingAmount[0], 0, 0], timeElapsed * speedAdjust);
+				this.correctVectors();
+			}
+
+			if (this.movingAmount[1])
+			{
+				this.handleMoving([0, this.movingAmount[1], 0], timeElapsed * speedAdjust);
+				this.correctVectors();
+			}
+
+			if (this.movingAmount[2])
+			{
+				this.handleMoving([0, 0, this.movingAmount[2]], timeElapsed * speedAdjust);
+				this.correctVectors();
+			}
+		}
+
 		
-		this.handleMoving(timeElapsed);
-		this.correctVectors();
+
 		this.handleRotating();
 
 		this.wilson.gl.uniform4fv(
@@ -439,22 +468,24 @@ export class ThurstonGeometry extends Applet
 	 * at the camera position in the direction of motion, express all four *unrotated* vectors
 	 * in that basis, then compute their derivatives with the other part of the formula.
 	 */
-	handleMoving(timeElapsed)
+	handleMoving(movingAmount, timeElapsed)
 	{
-		const isMoving = this.movingAmount[0] || this.movingAmount[1] || this.movingAmount[2];
-		
-		if (!isMoving)
-		{
-			return;
-		}
-
-		//First, get the current frame so that we can extract the coefficients.
-
 		let tangentVec = ThurstonGeometry.normalize([
-			this.movingAmount[0] * this.forwardVec[0] + this.movingAmount[1] * this.rightVec[0],
-			this.movingAmount[0] * this.forwardVec[1] + this.movingAmount[1] * this.rightVec[1],
-			this.movingAmount[0] * this.forwardVec[2] + this.movingAmount[1] * this.rightVec[2],
-			this.movingAmount[0] * this.forwardVec[3] + this.movingAmount[1] * this.rightVec[3],
+			movingAmount[0] * this.forwardVec[0]
+				+ movingAmount[1] * this.rightVec[0]
+				+ movingAmount[2] * this.upVec[0],
+			
+			movingAmount[0] * this.forwardVec[1]
+				+ movingAmount[1] * this.rightVec[1]
+				+ movingAmount[2] * this.upVec[1],
+			
+			movingAmount[0] * this.forwardVec[2]
+				+ movingAmount[1] * this.rightVec[2]
+				+ movingAmount[2] * this.upVec[2],
+			
+			movingAmount[0] * this.forwardVec[3]
+				+ movingAmount[1] * this.rightVec[3]
+				+ movingAmount[2] * this.upVec[3],
 		]);
 
 		const dt = timeElapsed / 1000 * this.getMovingSpeed(this.cameraPos);
@@ -476,19 +507,53 @@ export class ThurstonGeometry extends Applet
 
 		
 
-		//Now for the fun part. We need to parallel transport the up and right vecs
-		//along with us. We'll accomplish this with Schild's ladder.
-
-		this.rightVec = this.parallelTransport(newCameraPos, this.rightVec);
-		this.upVec = this.parallelTransport(newCameraPos, this.upVec);
+		if (this.gammaTriplePrimeIsLinearlyIndependent)
+		{
+			//idfk
+		}
 
 		this.cameraPos = newCameraPos;
 
-		this.forwardVec = [...tangentVec];
 		this.normalVec = this.getNormalVec(this.cameraPos);
+
+
+
+		//Need to do rotation here rather than scale by -1.
+		if (movingAmount[0] === 1)
+		{
+			this.forwardVec = [...tangentVec];
+		}
+
+		else if (movingAmount[0] === -1)
+		{
+			const result = ThurstonGeometry.rotateVectors(tangentVec, this.rightVec, Math.PI);
+			this.forwardVec = result[0];
+		}
+
+		else if (movingAmount[1] === 1)
+		{
+			this.rightVec = [...tangentVec];
+		}
+
+		else if (movingAmount[1] === -1)
+		{
+			const result = ThurstonGeometry.rotateVectors(tangentVec, this.forwardVec, Math.PI);
+			this.rightVec = result[0];
+		}
+
+		else if (movingAmount[2] === 1)
+		{
+			this.upVec = [...tangentVec];
+		}
+
+		else if (movingAmount[2] === -1)
+		{
+			const result = ThurstonGeometry.rotateVectors(tangentVec, this.forwardVec, Math.PI);
+			this.upVec = result[0];
+		}
 	}
 
-	
+
 
 	parallelTransport(newCameraPos, vecToTransport)
 	{
@@ -501,7 +566,7 @@ export class ThurstonGeometry extends Applet
 		//Now find the point halfway there.
 		const p = this.updateCameraPos(x0, dir, magnitude / 2);
 
-		//Construct a geodesic between the original camera position and this point
+		//Construct a geodesic between the original camera position and this point.
 		const [dir2, magnitude2] = this.getGeodesicDirection(this.cameraPos, p);
 
 		//Follow that twice as far.
@@ -522,11 +587,11 @@ export class ThurstonGeometry extends Applet
 			Math.PI / 2 - .01
 		);
 
-		const result = ThurstonGeometry.rotateVectors({
-			vec1: this.forwardVec,
-			vec2: this.rightVec,
-			theta: this.wilson.worldCenterX
-		});
+		const result = ThurstonGeometry.rotateVectors(
+			this.forwardVec,
+			this.rightVec,
+			this.wilson.worldCenterX
+		);
 
 		//Left/right rotation is allowed to be baked in to the underlying vectors.
 
@@ -535,11 +600,11 @@ export class ThurstonGeometry extends Applet
 
 		this.wilson.worldCenterX = 0;
 
-		const result2 = ThurstonGeometry.rotateVectors({
-			vec1: this.forwardVec,
-			vec2: this.upVec,
-			theta: this.wilson.worldCenterY
-		});
+		const result2 = ThurstonGeometry.rotateVectors(
+			this.forwardVec,
+			this.upVec,
+			this.wilson.worldCenterY
+		);
 
 		this.rotatedForwardVec = result2[0];
 		this.rotatedUpVec = result2[1];
@@ -558,9 +623,15 @@ export class ThurstonGeometry extends Applet
 		for (let i = 0; i < 4; i++)
 		{
 			this.upVec[i] -= dotUp * this.normalVec[i];
+
 			this.rightVec[i] -= dotRight * this.normalVec[i];
+
 			this.forwardVec[i] -= dotForward * this.normalVec[i];
 		}
+
+		this.upVec = ThurstonGeometry.normalize(this.upVec);
+		this.rightVec = ThurstonGeometry.normalize(this.rightVec);
+		this.forwardVec = ThurstonGeometry.normalize(this.forwardVec);
 	}
 
 
@@ -616,6 +687,20 @@ export class ThurstonGeometry extends Applet
 			
 			this.movingAmount[1] = -1;
 		}
+
+		if (e.key === " ")
+		{
+			e.preventDefault();
+			
+			this.movingAmount[2] = 1;
+		}
+
+		else if (e.key === "Shift")
+		{
+			e.preventDefault();
+			
+			this.movingAmount[2] = -1;
+		}
 	}
 
 
@@ -642,6 +727,13 @@ export class ThurstonGeometry extends Applet
 			
 			this.movingAmount[1] = 0;
 		}
+
+		if (e.key === " " | e.key === "Shift")
+		{
+			e.preventDefault();
+			
+			this.movingAmount[2] = 0;
+		}
 	}
 
 
@@ -656,6 +748,9 @@ export class ThurstonGeometry extends Applet
 		{
 			imageWidth = Math.min(this.resolution, Math.floor(this.resolution * aspectRatio));
 			imageHeight = Math.min(this.resolution, Math.floor(this.resolution / aspectRatio));
+
+			this.wilson.worldWidth = Math.max(2, 2 * aspectRatio);
+			this.wilson.worldHeight = Math.max(2, 2 / aspectRatio);
 		}
 
 		else
@@ -694,26 +789,8 @@ export class ThurstonGeometry extends Applet
 	//plane orthogonal to *two* vectors. The first is the global normal vector, and the
 	//second varies. What we'll do is convert our four vectors to the standard basis, rotate that,
 	//and then convert back.
-	static rotateVectors({
-		vec1,
-		vec2,
-		theta
-	})
+	static rotateVectors(vec1, vec2, theta)
 	{
-		// const toStandardBasisMatrix = [
-		// 	[fixedVec1[0], fixedVec2[0], rotateVec1[0], rotateVec2[0]],
-		// 	[fixedVec1[1], fixedVec2[1], rotateVec1[1], rotateVec2[1]],
-		// 	[fixedVec1[2], fixedVec2[2], rotateVec1[2], rotateVec2[2]],
-		// 	[fixedVec1[3], fixedVec2[3], rotateVec1[3], rotateVec2[3]]
-		// ];
-
-		// const rotateMatrix = [
-		// 	[1, 0, 0, 0],
-		// 	[0, 1, 0, 0],
-		// 	[0, 0, Math.cos(theta), -Math.sin(theta)],
-		// 	[0, 0, Math.sin(theta), Math.cos(theta)]
-		// ];
-		//Now we return the final two columns of the product.
 		const cosine = Math.cos(theta);
 		const sine = Math.sin(theta);
 
