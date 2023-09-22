@@ -26,6 +26,7 @@ export class ThurstonGeometry extends Applet
 
 	//Moving forward/back, right/left, and up/down
 	movingAmount = [0, 0, 0];
+	rollingAmount = 0;
 
 	getMovingSpeed;
 
@@ -43,7 +44,9 @@ export class ThurstonGeometry extends Applet
 		"s": false,
 		"d": false,
 		" ": false,
-		"Shift": false
+		"Shift": false,
+		"e": false,
+		"q": false,
 	};
 
 
@@ -420,6 +423,16 @@ export class ThurstonGeometry extends Applet
 			this.movingAmount[2] = -1;
 		}
 
+		if (this.keysPressed.e)
+		{
+			this.rollingAmount = 1;
+		}
+
+		else if (this.keysPressed.q)
+		{
+			this.rollingAmount = -1;
+		}
+
 
 
 		const totalMovingAmount = this.movingAmount[0] !== 0
@@ -473,6 +486,33 @@ export class ThurstonGeometry extends Applet
 		
 
 		this.handleRotating();
+
+		if (this.rollingAmount)
+		{
+			if (this.wilson.worldCenterY)
+			{
+				this.wilson.worldCenterY = 0;
+				this.upVec = [...this.rotatedUpVec];
+				this.forwardVec = [...this.rotatedForwardVec];
+			}
+			
+			const angle = timeElapsed * this.rollingAmount * .0015;
+
+			[this.rightVec, this.upVec] = ThurstonGeometry.rotateVectors(
+				this.rightVec,
+				this.upVec,
+				angle
+			);
+
+			this.rollingAmount *= ThurstonGeometry.rollingFriction;
+
+			if (Math.abs(this.rollingAmount) < ThurstonGeometry.rollingStopThreshhold)
+			{
+				this.rollingAmount = 0;
+			}
+		}
+
+
 
 		this.wilson.gl.uniform4fv(
 			this.wilson.uniforms["cameraPos"],
@@ -711,11 +751,13 @@ export class ThurstonGeometry extends Applet
 			return;
 		}
 
-		if (Object.prototype.hasOwnProperty.call(this.keysPressed, e.key))
+		const key = e.key.length === 1 ? e.key.toLowerCase() : e.key;
+
+		if (Object.prototype.hasOwnProperty.call(this.keysPressed, key))
 		{
 			e.preventDefault();
 
-			this.keysPressed[e.key] = true;
+			this.keysPressed[key] = true;
 		}
 	}
 
@@ -728,11 +770,13 @@ export class ThurstonGeometry extends Applet
 			return;
 		}
 
-		if (Object.prototype.hasOwnProperty.call(this.keysPressed, e.key))
+		const key = e.key.length === 1 ? e.key.toLowerCase() : e.key;
+
+		if (Object.prototype.hasOwnProperty.call(this.keysPressed, key))
 		{
 			e.preventDefault();
 
-			this.keysPressed[e.key] = false;
+			this.keysPressed[key] = false;
 		}
 	}
 
@@ -787,6 +831,9 @@ export class ThurstonGeometry extends Applet
 
 	static moveFriction = .96;
 	static moveStopThreshhold = .01;
+
+	static rollingFriction = .92;
+	static rollingStopThreshhold = .01;
 
 	static rotateVectors(vec1, vec2, theta)
 	{
