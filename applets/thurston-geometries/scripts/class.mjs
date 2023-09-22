@@ -49,6 +49,8 @@ export class ThurstonGeometry extends Applet
 		"q": false,
 	};
 
+	numTouches = 0;
+
 
 
 	constructor({
@@ -127,6 +129,18 @@ export class ThurstonGeometry extends Applet
 			object: document.documentElement,
 			event: "keyup",
 			callback: boundFunction3
+		});
+
+		const boundFunction4 = this.handleTouchEvent.bind(this);
+		addTemporaryListener({
+			object: canvas,
+			event: "touchstart",
+			callback: boundFunction4
+		});
+		addTemporaryListener({
+			object: canvas,
+			event: "touchend",
+			callback: boundFunction4
 		});
 	}
 
@@ -393,12 +407,12 @@ export class ThurstonGeometry extends Applet
 
 		
 
-		if (this.keysPressed.w)
+		if (this.keysPressed.w || this.numTouches === 2)
 		{
 			this.movingAmount[0] = 1;
 		}
 
-		else if (this.keysPressed.s)
+		else if (this.keysPressed.s || this.numTouches >= 3)
 		{
 			this.movingAmount[0] = -1;
 		}
@@ -778,6 +792,13 @@ export class ThurstonGeometry extends Applet
 
 			this.keysPressed[key] = false;
 		}
+	}
+
+
+
+	handleTouchEvent(e)
+	{
+		this.numTouches = e.touches.length;
 	}
 
 
