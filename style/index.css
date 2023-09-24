@@ -1014,11 +1014,14 @@ mjx-container
 {
 	text-align: center;
 	margin-bottom: 0 !important;
+	width: 100% !important;
 }
 
 .slider-container > label
 {
 	z-index: 5;
+	width: 100% !important;
+	margin-top: 4px;
 }
 
 

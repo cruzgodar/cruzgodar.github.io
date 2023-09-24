@@ -1,11 +1,7 @@
 import { ThurstonGeometry } from "./class.mjs";
-import {
-	getE3RoomsData,
-	getE3SpheresData,
-	getH3SpheresData,
-	getS3RoomsData,
-	getS3SpheresData
-} from "./geometry-data.mjs";
+import { getE3RoomsData, getE3SpheresData } from "./geometries/e3.mjs";
+import { getH3SpheresData } from "./geometries/h3.mjs";
+import { getS3HopfFibrationData, getS3RoomsData, getS3SpheresData } from "./geometries/s3.mjs";
 import { showPage } from "/scripts/src/load-page.mjs";
 import { $ } from "/scripts/src/main.mjs";
 
@@ -15,11 +11,15 @@ export function load()
 		canvas: $("#output-canvas"),
 	});
 
-	applet.run(getE3SpheresData());
+	applet.run(getS3HopfFibrationData());
 
 
 
 	const resolutionInputElement = $("#resolution-input");
+
+	const fovSlider = $("#fov-slider");
+	const fovSliderValue = $("#fov-slider-value");
+	fovSliderValue.textContent = 1;
 
 	applet.setInputCaps([resolutionInputElement], [2000]);
 
@@ -30,6 +30,17 @@ export function load()
 		const resolution = parseInt(resolutionInputElement.value || 500);
 
 		applet.changeResolution(resolution);
+	});
+
+	fovSlider.addEventListener("input", () =>
+	{
+		//The acual FOV can range from 0.5 to 2.
+		const fov = parseInt(fovSlider.value) / 10000 * 1.5 + .5;
+
+		fovSliderValue.textContent = Math.round(fov * 100) / 100;
+
+		applet.fov = fov;
+		applet.wilson.gl.uniform1f(applet.wilson.uniforms.fov, fov);
 	});
 
 

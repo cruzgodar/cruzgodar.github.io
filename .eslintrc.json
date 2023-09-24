@@ -101,7 +101,6 @@
 		"no-constructor-return": ["error"],
 		"no-duplicate-imports": ["warn"],
 		"no-new-native-nonconstructor": ["error"],
-		"no-promise-executor-return": ["error"],
 		"no-self-compare": ["warn"],
 		"no-unmodified-loop-condition": ["warn"]
 	}

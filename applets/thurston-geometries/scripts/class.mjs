@@ -10,6 +10,8 @@ export class ThurstonGeometry extends Applet
 	aspectRatioX = 1;
 	aspectRatioY = 1;
 
+	fov = 1;
+
 	cameraPos;
 
 	normalVec;
@@ -159,6 +161,7 @@ export class ThurstonGeometry extends Applet
 		getColorGlsl,
 		fogGlsl,
 		lightGlsl,
+		functionGlsl,
 		cameraPos,
 		normalVec,
 		upVec,
@@ -208,9 +211,9 @@ export class ThurstonGeometry extends Applet
 			const float stepFactor = .99;
 			const vec3 fogColor = vec3(0.0, 0.0, 0.0);
 			const float fogScaling = .07;
-			const float fov = 1.0;
+			uniform float fov;
 
-
+			${functionGlsl ?? ""}
 
 			float sinh(float x)
 			{
@@ -331,6 +334,7 @@ export class ThurstonGeometry extends Applet
 			"aspectRatioX",
 			"aspectRatioY",
 			"resolution",
+			"fov",
 
 			"cameraPos",
 			"normalVec",
@@ -358,6 +362,11 @@ export class ThurstonGeometry extends Applet
 		this.wilson.gl.uniform1i(
 			this.wilson.uniforms["resolution"],
 			this.resolution
+		);
+
+		this.wilson.gl.uniform1f(
+			this.wilson.uniforms["fov"],
+			this.fov
 		);
 
 		this.wilson.gl.uniform4fv(

@@ -1,66 +1,4 @@
-import { ThurstonGeometry } from "./class.mjs";
-
-function getE3BaseData()
-{
-	return {
-		geodesicGlsl: "vec4 pos = cameraPos + t * rayDirectionVec;",
-
-		fogGlsl: "return mix(color, fogColor, 1.0 - exp(-length(pos - cameraPos) * fogScaling));",
-		
-		updateCameraPos: (cameraPos, tangentVec, dt) =>
-		{
-			const newCameraPos = [...cameraPos];
-
-			for (let i = 0; i < 4; i++)
-			{
-				newCameraPos[i] = newCameraPos[i] + dt * tangentVec[i];
-			}
-			
-			return newCameraPos;
-		},
-
-		getGeodesicDirection(pos1, pos2)
-		{
-			const dir = new Array(4);
-
-			for (let i = 0; i < 4; i++)
-			{
-				dir[i] = pos2[i] - pos1[i];
-			}
-
-			const magnitude = ThurstonGeometry.magnitude(dir);
-
-			return [ThurstonGeometry.normalize(dir), magnitude];
-		},
-
-		getNormalVec: () =>
-		{
-			//f = w - 1.
-			return [0, 0, 0, 1];
-		},
-
-		getGammaPrime: (_pos, dir) =>
-		{
-			//gamma = pos + t*dir
-			//gamma' = dir
-			//gamma'' = 0
-			//All of these are evaluated at t=0.
-			return [...dir];
-		},
-
-		getGammaDoublePrime: () =>
-		{
-			return [0, 0, 0, 0];
-		},
-
-		getGammaTriplePrime: () =>
-		{
-			return [0, 0, 0, 0];
-		},
-
-		gammaTriplePrimeIsLinearlyIndependent: false
-	};
-}
+import { ThurstonGeometry } from "../class.mjs";
 
 function getS3BaseData()
 {
@@ -143,155 +81,7 @@ function getS3BaseData()
 	};
 }
 
-function getH3BaseData()
-{
-	return {
-		geodesicGlsl: "vec4 pos = cosh(t) * cameraPos + sinh(t) * rayDirectionVec;",
 
-		fogGlsl: `return mix(
-			color,
-			fogColor,
-			0.0/*1.0 - exp(-acosh(-dot(pos, cameraPos)) * fogScaling)*/
-		);`,
-		
-		updateCameraPos: (cameraPos, tangentVec, dt) =>
-		{
-			const newCameraPos = [...cameraPos];
-
-			for (let i = 0; i < 4; i++)
-			{
-				newCameraPos[i] = Math.cosh(dt) * newCameraPos[i] + Math.sinh(dt) * tangentVec[i];
-			}
-			
-			//Since we're only doing a linear approximation, this position won't be exactly
-			//on the manifold. Therefore, we'll do a quick correction to get it back.
-
-			//Here, we just want the hyperbolic dot product to be -1.
-			const magnitude =
-				newCameraPos[0] * newCameraPos[0]
-				+ newCameraPos[1] * newCameraPos[1]
-				+ newCameraPos[2] * newCameraPos[2]
-				- newCameraPos[3] * newCameraPos[3];
-
-			newCameraPos[0] /= -magnitude;
-			newCameraPos[1] /= -magnitude;
-			newCameraPos[2] /= -magnitude;
-			newCameraPos[3] /= -magnitude;
-
-			return newCameraPos;
-		},
-
-		getNormalVec: (cameraPos) =>
-		{
-			//f = x^2 + y^2 + z^2 - w^2 + 1.
-			return ThurstonGeometry.normalize([
-				cameraPos[0],
-				cameraPos[1],
-				cameraPos[2],
-				-cameraPos[3]
-			]);
-		},
-
-		getGammaPrime: (_pos, dir) =>
-		{
-			//gamma = cosh(t)*pos + sinh(t)*dir
-			//gamma' = sinh(t)*pos + cosh(t)*dir
-			//gamma'' = cosh(t)*pos + sinh(t)*dir
-			//gamma'' = sinh(t)*pos + cosh(t)*dir
-			//All of these are evaluated at t=0.
-			return [...dir];
-		},
-
-		getGammaDoublePrime: (pos) =>
-		{
-			return [...pos];
-		},
-
-		getGammaTriplePrime: (_pos, dir) =>
-		{
-			return [...dir];
-		},
-
-		gammaTriplePrimeIsLinearlyIndependent: false
-	};
-}
-
-
-
-export function getE3RoomsData()
-{
-	return {
-		...getE3BaseData(),
-
-		distanceEstimatorGlsl: `
-			float distance1 = -length(mod(pos.xyz, 2.0) - vec3(1.0, 1.0, 1.0)) + 1.3;
-
-			return distance1;
-		`,
-
-		getColorGlsl: `
-			return vec3(
-				.25 + .75 * (.5 * (sin(pos.x) + 1.0)),
-				.25 + .75 * (.5 * (sin(pos.y) + 1.0)),
-				.25 + .75 * (.5 * (sin(pos.z) + 1.0))
-			);
-		`,
-
-		lightGlsl: `
-			vec4 lightDirection1 = normalize(vec4(1.0, 1.0, 1.0, 1.0) - pos);
-			float dotProduct1 = dot(surfaceNormal, lightDirection1);
-
-			vec4 lightDirection2 = normalize(vec4(1.0, 1.0, 1.0, 0.0) - pos);
-			float dotProduct2 = dot(surfaceNormal, lightDirection2);
-
-			float lightIntensity = lightBrightness * max(abs(dotProduct1), abs(dotProduct2)) * 1.5;
-		`,
-
-		cameraPos: [1, 1, 1, 1],
-		normalVec: [0, 0, 0, 1],
-		upVec: [0, 0, 1, 0],
-		rightVec: [0, 1, 0, 0],
-		forwardVec: [1, 0, 0, 0],
-
-		getMovingSpeed: () => 3
-	};
-}
-
-export function getE3SpheresData()
-{
-	return {
-		...getE3BaseData(),
-
-		distanceEstimatorGlsl: `
-			float distance1 = length(mod(pos.xyz, 2.0) - vec3(1.0, 1.0, 1.0)) - 0.5;
-
-			return distance1;
-		`,
-
-		getColorGlsl: `
-			return vec3(
-				.25 + .75 * (.5 * (sin(floor(pos.x + .5) * 40.0) + 1.0)),
-				.25 + .75 * (.5 * (sin(floor(pos.y + .5) * 57.0) + 1.0)),
-				.25 + .75 * (.5 * (sin(floor(pos.z + .5) * 89.0) + 1.0))
-			);
-		`,
-
-		lightGlsl: `
-			vec4 lightDirection1 = normalize(vec4(1.0, 1.0, 1.0, 1.0) - pos);
-			float dotProduct1 = dot(surfaceNormal, lightDirection1);
-
-			float lightIntensity = lightBrightness * max(dotProduct1, -.5 * dotProduct1) * 1.25;
-		`,
-
-		cameraPos: [0, 0, 0, 1],
-		normalVec: [0, 0, 0, 1],
-		upVec: [0, 0, 1, 0],
-		rightVec: [0, 1, 0, 0],
-		forwardVec: [1, 0, 0, 0],
-
-		getMovingSpeed: () => 3
-	};
-}
 
 export function getS3RoomsData()
 {
@@ -413,6 +203,8 @@ export function getS3RoomsData()
 	};
 }
 
+
+
 export function getS3SpheresData()
 {
 	return {
@@ -528,16 +320,74 @@ export function getS3SpheresData()
 
 
 
-export function getH3SpheresData()
+function getHopfFiber(index)
 {
+	const phi = Math.random() * Math.PI;
+	const theta = Math.random() * 2 * Math.PI;
+
+	return `float distance${index} = hopfFibrationCircleDistance(
+		pos,
+		vec3(${Math.cos(phi) * Math.sin(theta)}, ${Math.sin(phi) * Math.sin(theta)}, ${Math.cos(theta)}),
+		.02);
+	`;
+}
+
+function getMinDistanceCode(numFibers)
+{
+	let minDistanceCode = "float minDistance = ";
+
+	for (let i = 0; i < numFibers - 1; i++)
+	{
+		minDistanceCode += `min(distance${i}, `;
+	}
+
+	minDistanceCode += `distance${numFibers - 1}` + ")".repeat(numFibers - 1) + ";";
+
+	return minDistanceCode;
+}
+
+export function getS3HopfFibrationData()
+{
+	const numFibers = 20;
+
+	let distanceEstimatorGlsl = "";
+
+	for (let i = 0; i < numFibers; i++)
+	{
+		distanceEstimatorGlsl += getHopfFiber(i);
+	}
+
+	distanceEstimatorGlsl += getMinDistanceCode(numFibers);
+
+	distanceEstimatorGlsl += "return minDistance;";
+
+
+
 	return {
-		...getH3BaseData(),
+		...getS3BaseData(),
 
-		distanceEstimatorGlsl: `
-		float distance1 = length(mod(pos.xyz, 2.0) - vec3(1.0, 1.0, 1.0)) - 0.5;
+		functionGlsl: `
+			//p and v must be orthonormal.
+			float greatCircleDistance(vec4 pos, vec4 p, vec4 v, float r)
+			{
+				float dot1 = dot(pos, p);
+				float dot2 = dot(pos, v);
 
-		return distance1;
+				return acos(sqrt(dot1 * dot1 + dot2 * dot2)) - r;
+			}
+
+			float hopfFibrationCircleDistance(vec4 pos, vec3 p, float r)
+			{
+				return greatCircleDistance(
+					pos,
+					normalize(vec4(1.0 + p.z, -p.y, p.x, 0.0)),
+					normalize(vec4(0.0, p.x, p.y, 1.0 + p.z)),
+					r
+				);
+			}
 		`,
+
+		distanceEstimatorGlsl,
 
 		getColorGlsl: `
 			return vec3(1.0, 0.0, 0.0);
@@ -562,13 +412,12 @@ export function getH3SpheresData()
 			);
 		`,
 
-		cameraPos: [0, 0, 0, 1],
-		normalVec: [0, 0, 0, -1],
+		cameraPos: [0, 0, 0, -1],
+		normalVec: [0, 0, 0, 1],
 		upVec: [0, 0, 1, 0],
 		rightVec: [0, 1, 0, 0],
 		forwardVec: [1, 0, 0, 0],
 
-		//The distance to the origin is acosh(pos.w), so we want to move at 1 over that.
-		getMovingSpeed: (cameraPos) => Math.min(1 / Math.acosh(cameraPos[3]), 1),
+		getMovingSpeed: () => 1
 	};
 }
