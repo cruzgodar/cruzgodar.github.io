@@ -11,7 +11,7 @@ export function load()
 		canvas: $("#output-canvas"),
 	});
 
-	applet.run(getS3HopfFibrationData());
+	applet.run(getE3RoomsData());
 
 
 
@@ -21,7 +21,7 @@ export function load()
 	const fovSliderValue = $("#fov-slider-value");
 	fovSliderValue.textContent = 1;
 
-	applet.setInputCaps([resolutionInputElement], [2000]);
+	applet.setInputCaps([resolutionInputElement], [1000]);
 
 
 
@@ -51,6 +51,7 @@ export function load()
 		"e3-spheres": getE3SpheresData,
 		"s3-rooms": getS3RoomsData,
 		"s3-spheres": getS3SpheresData,
+		"s3-hopf-fibration": getS3HopfFibrationData,
 		"h3-spheres": getH3SpheresData
 	};
 

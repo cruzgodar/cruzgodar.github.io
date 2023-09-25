@@ -769,11 +769,6 @@ export class ThurstonGeometry extends Applet
 
 	handleKeydownEvent(e)
 	{
-		if (document.activeElement.tagName === "INPUT")
-		{
-			return;
-		}
-
 		const key = e.key.length === 1 ? e.key.toLowerCase() : e.key;
 
 		if (Object.prototype.hasOwnProperty.call(this.keysPressed, key))
@@ -788,11 +783,6 @@ export class ThurstonGeometry extends Applet
 
 	handleKeyupEvent(e)
 	{
-		if (document.activeElement.tagName === "INPUT")
-		{
-			return;
-		}
-
 		const key = e.key.length === 1 ? e.key.toLowerCase() : e.key;
 
 		if (Object.prototype.hasOwnProperty.call(this.keysPressed, key))

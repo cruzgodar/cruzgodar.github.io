@@ -189,11 +189,12 @@ import{ThurstonGeometry}from"../class.min.mjs";function getS3BaseData(){return{g
 				max(abs(dotProduct1), abs(dotProduct2)),
 				max(abs(dotProduct3), abs(dotProduct4))
 			);
-		`,cameraPos:[0,0,0,-1],normalVec:[0,0,0,-1],upVec:[0,0,1,0],rightVec:[0,1,0,0],forwardVec:[1,0,0,0],getMovingSpeed:()=>1}}function getHopfFiber(index){var t=Math.random()*Math.PI,o=2*Math.random()*Math.PI;return`float distance${index} = hopfFibrationCircleDistance(
+		`,cameraPos:[0,0,0,-1],normalVec:[0,0,0,-1],upVec:[0,0,1,0],rightVec:[0,1,0,0],forwardVec:[1,0,0,0],getMovingSpeed:()=>1}}function getHopfFiber(index){var t=2*Math.random()*Math.PI,o=2*Math.random()*Math.PI,e=hsvToRgb(o/(2*Math.PI),Math.abs(t%Math.PI-Math.PI/2)/(Math.PI/2),1);return[`float distance${index} = hopfFibrationCircleDistance(
 		pos,
 		vec3(${Math.cos(t)*Math.sin(o)}, ${Math.sin(t)*Math.sin(o)}, ${Math.cos(o)}),
-		.02);
-	`}function getMinDistanceCode(numFibers){let t="float minDistance = ";for(let o=0;o<numFibers-1;o++)t+=`min(distance${o}, `;return t+="distance"+(numFibers-1)+")".repeat(numFibers-1)+";"}function getS3HopfFibrationData(){let t="";for(let o=0;o<20;o++)t+=getHopfFiber(o);return t=t+getMinDistanceCode(20)+"return minDistance;",{...getS3BaseData(),functionGlsl:`
+		.025);
+	`,e]}function getMinDistanceCode(numFibers){let t="float minDistance = ";for(let o=0;o<numFibers-1;o++)t+=`min(distance${o}, `;return t+="distance"+(numFibers-1)+")".repeat(numFibers-1)+";"}function getColorCode(numFibers,colors){let t="";for(let o=0;o<numFibers;o++)t+=`if (minDistance == distance${o}) { return vec3(${colors[o][0]/255}, ${colors[o][1]/255}, ${colors[o][2]/255}); }
+		`;return t}function getS3HopfFibrationData(){let t="";var o=new Array(20);for(let i=0;i<20;i++){var e=getHopfFiber(i);t+=e[0],o[i]=e[1]}var a=(t+=getMinDistanceCode(20))+getColorCode(20,o);return t+="return minDistance;",{...getS3BaseData(),functionGlsl:`
 			//p and v must be orthonormal.
 			float greatCircleDistance(vec4 pos, vec4 p, vec4 v, float r)
 			{
@@ -212,9 +213,7 @@ import{ThurstonGeometry}from"../class.min.mjs";function getS3BaseData(){return{g
 					r
 				);
 			}
-		`,distanceEstimatorGlsl:t,getColorGlsl:`
-			return vec3(1.0, 0.0, 0.0);
-		`,lightGlsl:`
+		`,distanceEstimatorGlsl:t,getColorGlsl:a,lightGlsl:`
 			vec4 lightDirection1 = normalize(vec4(1.0, 1.0, 1.0, 1.0) - pos);
 			float dotProduct1 = dot(surfaceNormal, lightDirection1);
 
@@ -231,4 +230,4 @@ import{ThurstonGeometry}from"../class.min.mjs";function getS3BaseData(){return{g
 				max(abs(dotProduct1), abs(dotProduct2)),
 				max(abs(dotProduct3), abs(dotProduct4))
 			);
-		`,cameraPos:[0,0,0,-1],normalVec:[0,0,0,1],upVec:[0,0,1,0],rightVec:[0,1,0,0],forwardVec:[1,0,0,0],getMovingSpeed:()=>1}}export{getS3RoomsData,getS3SpheresData,getS3HopfFibrationData};
+		`,cameraPos:[0,0,0,-1],normalVec:[0,0,0,1],upVec:[0,0,1,0],rightVec:[0,1,0,0],forwardVec:[1,0,0,0],getMovingSpeed:()=>1}}function hsvToRgb(h,s,v){function t(n){var t=(n+6*h)%6;return v-v*s*Math.max(0,Math.min(t,Math.min(4-t,1)))}return[255*t(5),255*t(3),255*t(1)]}export{getS3RoomsData,getS3SpheresData,getS3HopfFibrationData};

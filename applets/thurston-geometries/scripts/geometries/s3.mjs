@@ -322,14 +322,20 @@ export function getS3SpheresData()
 
 function getHopfFiber(index)
 {
-	const phi = Math.random() * Math.PI;
+	const phi = Math.random() * 2 * Math.PI;
 	const theta = Math.random() * 2 * Math.PI;
 
-	return `float distance${index} = hopfFibrationCircleDistance(
+	const rgb = hsvToRgb(
+		theta / (2 * Math.PI),
+		Math.abs((phi % Math.PI) - Math.PI / 2) / (Math.PI / 2),
+		1
+	);
+
+	return [`float distance${index} = hopfFibrationCircleDistance(
 		pos,
 		vec3(${Math.cos(phi) * Math.sin(theta)}, ${Math.sin(phi) * Math.sin(theta)}, ${Math.cos(theta)}),
-		.02);
-	`;
+		.025);
+	`, rgb];
 }
 
 function getMinDistanceCode(numFibers)
@@ -346,18 +352,37 @@ function getMinDistanceCode(numFibers)
 	return minDistanceCode;
 }
 
+function getColorCode(numFibers, colors)
+{
+	let colorCode = "";
+
+	for (let i = 0; i < numFibers; i++)
+	{
+		colorCode += `if (minDistance == distance${i}) { return vec3(${colors[i][0] / 255}, ${colors[i][1] / 255}, ${colors[i][2] / 255}); }
+		`;
+	}
+
+	return colorCode;
+}
+
 export function getS3HopfFibrationData()
 {
 	const numFibers = 20;
 
 	let distanceEstimatorGlsl = "";
 
+	const colors = new Array(numFibers);
+
 	for (let i = 0; i < numFibers; i++)
 	{
-		distanceEstimatorGlsl += getHopfFiber(i);
+		const result = getHopfFiber(i);
+		distanceEstimatorGlsl += result[0];
+		colors[i] = result[1];
 	}
 
 	distanceEstimatorGlsl += getMinDistanceCode(numFibers);
+
+	const getColorGlsl = distanceEstimatorGlsl + getColorCode(numFibers, colors);
 
 	distanceEstimatorGlsl += "return minDistance;";
 
@@ -389,9 +414,7 @@ export function getS3HopfFibrationData()
 
 		distanceEstimatorGlsl,
 
-		getColorGlsl: `
-			return vec3(1.0, 0.0, 0.0);
-		`,
+		getColorGlsl,
 
 		lightGlsl: `
 			vec4 lightDirection1 = normalize(vec4(1.0, 1.0, 1.0, 1.0) - pos);
@@ -420,4 +443,17 @@ export function getS3HopfFibrationData()
 
 		getMovingSpeed: () => 1
 	};
+}
+
+
+
+function hsvToRgb(h, s, v)
+{
+	function f(n)
+	{
+		const k = (n + 6 * h) % 6;
+		return v - v * s * Math.max(0, Math.min(k, Math.min(4 - k, 1)));
+	}
+
+	return [255 * f(5), 255 * f(3), 255 * f(1)];
 }
