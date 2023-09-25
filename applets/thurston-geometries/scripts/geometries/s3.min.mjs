@@ -189,9 +189,10 @@ import{ThurstonGeometry}from"../class.min.mjs";function getS3BaseData(){return{g
 				max(abs(dotProduct1), abs(dotProduct2)),
 				max(abs(dotProduct3), abs(dotProduct4))
 			);
-		`,cameraPos:[0,0,0,-1],normalVec:[0,0,0,-1],upVec:[0,0,1,0],rightVec:[0,1,0,0],forwardVec:[1,0,0,0],getMovingSpeed:()=>1}}function getHopfFiber(index){var t=2*Math.random()*Math.PI,o=2*Math.random()*Math.PI,e=hsvToRgb(o/(2*Math.PI),Math.abs(t%Math.PI-Math.PI/2)/(Math.PI/2),1);return[`float distance${index} = hopfFibrationCircleDistance(
+		`,cameraPos:[0,0,0,-1],normalVec:[0,0,0,-1],upVec:[0,0,1,0],rightVec:[0,1,0,0],forwardVec:[1,0,0,0],getMovingSpeed:()=>1}}function getHopfFiber(index){var t=2*Math.random()*Math.PI,o=2*Math.random()*Math.PI,e=hsvToRgb(o/(2*Math.PI),Math.abs(t%Math.PI-Math.PI/2)/(Math.PI/2),1),t=[Math.cos(t)*Math.sin(o),Math.sin(t)*Math.sin(o),Math.cos(o)],o=ThurstonGeometry.normalize([1+t[2],-t[1],t[0],0]),t=ThurstonGeometry.normalize([0,t[0],t[1],1+t[2]]);return[`float distance${index} = greatCircleDistance(
 		pos,
-		vec3(${Math.cos(t)*Math.sin(o)}, ${Math.sin(t)*Math.sin(o)}, ${Math.cos(o)}),
+		vec4(${o[0]}, ${o[1]}, ${o[2]}, ${o[3]}),
+		vec4(${t[0]}, ${t[1]}, ${t[2]}, ${t[3]}),
 		.025);
 	`,e]}function getMinDistanceCode(numFibers){let t="float minDistance = ";for(let o=0;o<numFibers-1;o++)t+=`min(distance${o}, `;return t+="distance"+(numFibers-1)+")".repeat(numFibers-1)+";"}function getColorCode(numFibers,colors){let t="";for(let o=0;o<numFibers;o++)t+=`if (minDistance == distance${o}) { return vec3(${colors[o][0]/255}, ${colors[o][1]/255}, ${colors[o][2]/255}); }
 		`;return t}function getS3HopfFibrationData(){let t="";var o=new Array(20);for(let i=0;i<20;i++){var e=getHopfFiber(i);t+=e[0],o[i]=e[1]}var a=(t+=getMinDistanceCode(20))+getColorCode(20,o);return t+="return minDistance;",{...getS3BaseData(),functionGlsl:`
@@ -202,16 +203,6 @@ import{ThurstonGeometry}from"../class.min.mjs";function getS3BaseData(){return{g
 				float dot2 = dot(pos, v);
 
 				return acos(sqrt(dot1 * dot1 + dot2 * dot2)) - r;
-			}
-
-			float hopfFibrationCircleDistance(vec4 pos, vec3 p, float r)
-			{
-				return greatCircleDistance(
-					pos,
-					normalize(vec4(1.0 + p.z, -p.y, p.x, 0.0)),
-					normalize(vec4(0.0, p.x, p.y, 1.0 + p.z)),
-					r
-				);
 			}
 		`,distanceEstimatorGlsl:t,getColorGlsl:a,lightGlsl:`
 			vec4 lightDirection1 = normalize(vec4(1.0, 1.0, 1.0, 1.0) - pos);

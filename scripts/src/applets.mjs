@@ -11,6 +11,8 @@ export class Applet
 	canvas;
 	wilson;
 
+	fpsDisplayCtx;
+
 	//Temporary things that should be destroyed when calling Applet.destroy.
 
 	workers = [];
@@ -26,6 +28,11 @@ export class Applet
 
 		this.pan.parent = this;
 		this.zoom.parent = this;
+
+		if (window.DEBUG)
+		{
+			setTimeout(() => this.addFpsDisplay(), 500);
+		}
 
 		Applet.current.push(this);
 	}
@@ -299,6 +306,72 @@ export class Applet
 		});
 
 		onScroll();
+	}
+
+
+
+	addFpsDisplay()
+	{
+		const fpsDisplayElement = document.createElement("canvas");
+
+		fpsDisplayElement.style.width = "100px";
+		fpsDisplayElement.style.height = "100px";
+		fpsDisplayElement.style.position = "absolute";
+		fpsDisplayElement.style.bottom = "4px";
+		fpsDisplayElement.style.right = "4px";
+		fpsDisplayElement.style.borderBottomRightRadius = "12px";
+
+		fpsDisplayElement.setAttribute("width", "100");
+		fpsDisplayElement.setAttribute("height", "100");
+
+		this.canvas.parentNode.insertBefore(fpsDisplayElement, this.canvas.nextElementSibling);
+
+		this.fpsDisplayCtx = fpsDisplayElement.getContext("2d");
+
+		window.requestAnimationFrame(this.updateFpsDisplay.bind(this));
+	}
+
+	lastFpsDisplayTimestamp;
+	fpsTimestampHistory = new Array(100);
+
+	updateFpsDisplay(timestamp)
+	{
+		const timeElapsed = timestamp - this.lastFpsDisplayTimestamp;
+
+		if (!timeElapsed || !this.lastFpsDisplayTimestamp)
+		{
+			this.lastFpsDisplayTimestamp = timestamp;
+
+			window.requestAnimationFrame(this.updateFpsDisplay.bind(this));
+
+			return;
+		}
+
+		this.lastFpsDisplayTimestamp = timestamp;
+
+		this.fpsTimestampHistory.push(timeElapsed);
+		this.fpsTimestampHistory.shift();
+
+		this.fpsDisplayCtx.clearRect(0, 0, 100, 100);
+
+		for (let i = 0; i < 100; i++)
+		{
+			const height = this.fpsTimestampHistory[i];
+
+			const rgb = hsvToRgb(Math.max(.3333 - (this.fpsTimestampHistory[i] - 6) / 50, 0), 1, 1);
+
+			this.fpsDisplayCtx.fillStyle = `rgb(${rgb[0]}, ${rgb[1]}, ${rgb[2]})`;
+
+			this.fpsDisplayCtx.fillRect(i, 100 - height, 1, height);
+		}
+
+		this.fpsDisplayCtx.fillStyle = "rgb(127, 127, 127)";
+
+		this.fpsDisplayCtx.fillRect(0, 100 - 6.944, 100, 2);
+		this.fpsDisplayCtx.fillRect(0, 100 - 16.667, 100, 2);
+		this.fpsDisplayCtx.fillRect(0, 100 - 33.333, 100, 2);
+
+		window.requestAnimationFrame(this.updateFpsDisplay.bind(this));
 	}
 
 
@@ -1301,4 +1374,15 @@ export class RaymarchApplet extends Applet
 
 		return [vec[0] / magnitude, vec[1] / magnitude, vec[2] / magnitude];
 	}
+}
+
+function hsvToRgb(h, s, v)
+{
+	function f(n)
+	{
+		const k = (n + 6 * h) % 6;
+		return v - v * s * Math.max(0, Math.min(k, Math.min(4 - k, 1)));
+	}
+
+	return [255 * f(5), 255 * f(3), 255 * f(1)];
 }

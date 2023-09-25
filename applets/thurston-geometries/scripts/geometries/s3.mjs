@@ -331,9 +331,17 @@ function getHopfFiber(index)
 		1
 	);
 
-	return [`float distance${index} = hopfFibrationCircleDistance(
+	const p = [Math.cos(phi) * Math.sin(theta), Math.sin(phi) * Math.sin(theta), Math.cos(theta)];
+
+	/*	normalize(vec4(1.0 + p.z, -p.y, p.x, 0.0)),
+					normalize(vec4(0.0, p.x, p.y, 1.0 + p.z)), */
+	const vec1 = ThurstonGeometry.normalize([1 + p[2], -p[1], p[0], 0]);
+	const vec2 = ThurstonGeometry.normalize([0, p[0], p[1], 1 + p[2]]);
+
+	return [`float distance${index} = greatCircleDistance(
 		pos,
-		vec3(${Math.cos(phi) * Math.sin(theta)}, ${Math.sin(phi) * Math.sin(theta)}, ${Math.cos(theta)}),
+		vec4(${vec1[0]}, ${vec1[1]}, ${vec1[2]}, ${vec1[3]}),
+		vec4(${vec2[0]}, ${vec2[1]}, ${vec2[2]}, ${vec2[3]}),
 		.025);
 	`, rgb];
 }
@@ -399,16 +407,6 @@ export function getS3HopfFibrationData()
 				float dot2 = dot(pos, v);
 
 				return acos(sqrt(dot1 * dot1 + dot2 * dot2)) - r;
-			}
-
-			float hopfFibrationCircleDistance(vec4 pos, vec3 p, float r)
-			{
-				return greatCircleDistance(
-					pos,
-					normalize(vec4(1.0 + p.z, -p.y, p.x, 0.0)),
-					normalize(vec4(0.0, p.x, p.y, 1.0 + p.z)),
-					r
-				);
 			}
 		`,
 
