@@ -12,7 +12,7 @@
 		"/scripts/three.js": true,
 		"/scripts/wilson.mjs": true
 	},
-	"editor.wordWrap": "off",
+	"editor.wordWrap": "on",
 	"editor.wordWrapColumn": 128,
 	"prettier.requireConfig": true,
 	"editor.formatOnSave": false,

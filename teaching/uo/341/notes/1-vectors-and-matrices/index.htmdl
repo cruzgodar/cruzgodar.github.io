@@ -33,10 +33,10 @@ Unlike most math classes leading up to it, this course is a clean break from its
 	$$
 		x_1 + 3x_2 &= -5
 		
-		- 7x_2 &= 14.
+		- 9x_2 &= 18.
 	$$
 	
-	At this point, we can divide the second equation through by $-7$ to find that $x_2 = -2$:
+	At this point, we can divide the second equation through by $-9$ to find that $x_2 = -2$:
 	
 	$$
 		x_1 + 3x_2 &= -5
