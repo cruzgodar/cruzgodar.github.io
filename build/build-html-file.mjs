@@ -350,7 +350,9 @@ const components =
 			return content
 				.replaceAll(/([^\\])\\pe([^a-zA-Z])/g, (match, $1, $2) => `${$1}\\ +\\!\\!=${$2}`)
 				.replaceAll(/([^\\])\\me([^a-zA-Z])/g, (match, $1, $2) => `${$1}\\ -\\!\\!=${$2}`)
-				.replaceAll(/([^\\])\\te([^a-zA-Z])/g, (match, $1, $2) => `${$1}\\ \\times\\!\\!=${$2}`);
+				.replaceAll(/([^\\])\\te([^a-zA-Z])/g, (match, $1, $2) => `${$1}\\ \\times\\!\\!=${$2}`)
+				.replaceAll(/([^\\])\\span([^a-zA-Z])/g, (match, $1, $2) => `${$1}\\operatorname{span}${$2}`)
+				.replaceAll(/^\\span([^a-zA-Z])/g, (match, $1) => `\\operatorname{span}${$1}`);
 		},
 
 
