@@ -24,7 +24,7 @@ $$
 	x_1 + 5x_2 &= -1.
 $$
 
-Has the matrix form
+has the matrix form
 
 $$
 	\left[ \begin{array}{cc} 2 & -1 \\ 1 & 5 \end{array} \right] \left[ \begin{array}{c} x_1 \\ x_2 \end{array} \right] = \left[ \begin{array}{c} 3 \\ -1 \end{array} \right].

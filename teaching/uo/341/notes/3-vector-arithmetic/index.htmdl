@@ -6,9 +6,17 @@ Although we've already talked quite a bit about vectors, we're only just getting
 
 Let's begin with something we see everywhere: the set of all real numbers. A **real** number is any one on the number line, whether rational or irrational --- for example, $0$, $1$, $\pi$, $e$, and $\sqrt{2}$ are all real. We write the whole set of them as $\mathbb{R}$, a rather fancy-looking R, and to actually use that symbol most of the time, we need one more: $\in$. This one means "element of", and it lets us write the rather verbose "let $x$ be a real number" as simply "let $x \in \mathbb{R}$", read "let $x$ be in $\mathbb{R}$".
 
-A length-$2$ vector just consists of two independent real numbers --- it's effectively an ordered pair. If each element of an ordered pair has three possibilities (say $x$ and $y$ can each be $1$, $2$, or $3$ in the pair $(x, y)$), then there are $3^2 = 9$ possibilities for the whole pair. Inspired by the power of two, we write $\mathbb{R}^2$ (read "R two") for the set of all ordered pairs --- or equivalently, the set of all length-2 vectors. Similarly, $\mathbb{R}^n$ is the set of all length-$n$ vectors.
+A length-$2$ vector just consists of two independent real numbers --- it's effectively an ordered pair. If each element of an ordered pair has three possibilities (say $x$ and $y$ can each independently be $1$, $2$, or $3$ in the pair $(x, y)$), then there are $3^2 = 9$ possibilities for the whole pair. Inspired by the power of two, we write $\mathbb{R}^2$ (read "R two") for the set of all ordered pairs --- or equivalently, the set of all length-2 vectors. Similarly, $\mathbb{R}^n$ is the set of all length-$n$ vectors.
 
-That's a fair amount of symbols, but it's thankfully all we'll have for a while.
+That's a fair amount of symbols, but it's thankfully all we'll have for a while. With the notation in place, we can start talking about the math.
+
+First of all, vectors are just matrices with a single column, so all of the nice properties of matrix arithmetic carry over to them. Two vectors of the same length add together by just adding each corresponding entry, and two vectors of different lengths cannot be added together at all. We can multiply a vector by a scalar $c$ (i.e. just a number) by multiplying each entry by $c$. None of this is different from matrices, but what's new to vectors is the ability to visualize them in $\mathbb{R}^n$. When $n = 2$, we have $\mathbb{R}^2$, which is just the $xy$-plane --- every length-$2$ vector corresponds to a point in the plane. We typically think of these as *directions* rather than locations, and we draw them as arrows from the origin.
+
+### desmos plane-vectors
+
+When we add vectors, we add corresponding components together, so the result is a vector from the origin with the total amount of movement of both vectors in both the $x$ and $y$ directions. Geometrically, we can place the vectors one after the other so that the second begins where the first ends --- then the sum is the vector that travels from the beginning of the first to the end of the second, since it has the total $x$ and $y$ movement of both vectors.
+
+### desmos vector-addition
 
 
 
