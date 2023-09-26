@@ -11,7 +11,7 @@ export function load()
 		canvas: $("#output-canvas"),
 	});
 
-	applet.run(getE3RoomsData());
+	applet.run(getH3SpheresData());
 
 
 

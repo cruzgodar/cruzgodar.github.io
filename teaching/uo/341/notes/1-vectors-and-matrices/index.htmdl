@@ -105,7 +105,7 @@ Let's start with the right sides --- the $b_i$. There are quite a few ways we co
 	A **column vector** $\vec{b}$ is a vertical rectangle of numbers of the form
 
 	$$
-		\left[ \begin{array}{c} b_1 \\ b_2 \\ \cdots \\ b_m \end{array} \right].
+		\left[ \begin{array}{c} b_1 \\ b_2 \\ \vdots \\ b_m \end{array} \right].
 	$$
 
 	We use an arrow over the variable name to indicate that $\vec{b}$ is a vector, and we also say that $\vec{b}$ has length $m$, or that its dimensions are $m \times 1$ (since it has $m$ rows and just one column).

@@ -122,7 +122,7 @@ In practice, we can calculate $\lim_{x \to a} f(x)$ by making a table that conta
 	
 	$$f(.01) = \frac{\sin(.01)}{.01} \approx .999983$$
 	
-	$$f(.001) = \frac{\sin(.1)}{.1} \approx .999999$$
+	$$f(.001) = \frac{\sin(.001)}{.001} \approx .999999$$
 	
 	It's pretty clear that these values are approaching $1$. Now let's try approaching from below, which means negative numbers getting closer and closer to zero.
 	
@@ -130,7 +130,7 @@ In practice, we can calculate $\lim_{x \to a} f(x)$ by making a table that conta
 	
 	$$f(-.01) = \frac{\sin(-.01)}{-.01} \approx .999983$$
 	
-	$$f(-.001) = \frac{\sin(-.1)}{-.1} \approx .999999$$
+	$$f(-.001) = \frac{\sin(-.001)}{-.001} \approx .999999$$
 	
 	It turns out these numbers are exactly the same, but all we need to know is that they are also approaching $1$. Since the two numbers agree, we can declare that
 	

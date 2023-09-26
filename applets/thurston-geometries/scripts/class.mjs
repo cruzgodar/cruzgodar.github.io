@@ -149,6 +149,7 @@ export class ThurstonGeometry extends Applet
 
 
 	run({
+		customDotProduct,
 		updateCameraPos,
 		getGeodesicDirection,
 		getNormalVec,
@@ -170,6 +171,7 @@ export class ThurstonGeometry extends Applet
 		getMovingSpeed
 	})
 	{
+		this.customDotProduct = customDotProduct;
 		this.updateCameraPos = updateCameraPos;
 		this.getGeodesicDirection = getGeodesicDirection;
 
@@ -205,7 +207,6 @@ export class ThurstonGeometry extends Applet
 
 			const float lightBrightness = 1.0;
 			
-			const float clipDistance = 10000.0;
 			const float epsilon = 0.00001;
 			const int maxMarches = 100;
 			const float stepFactor = .99;
@@ -214,21 +215,6 @@ export class ThurstonGeometry extends Applet
 			uniform float fov;
 
 			${functionGlsl ?? ""}
-
-			float sinh(float x)
-			{
-				return .5 * (exp(x) - exp(-x));
-			}
-
-			float cosh(float x)
-			{
-				return .5 * (exp(x) + exp(-x));
-			}
-
-			float acosh(float x)
-			{
-				return log(x + sqrt(x*x + 1.0));
-			}
 
 
 
@@ -289,10 +275,6 @@ export class ThurstonGeometry extends Applet
 				
 				float t = 0.0;
 				
-				float lastDistance = 1000.0;
-				
-				
-				
 				for (int iteration = 0; iteration < maxMarches; iteration++)
 				{
 					${geodesicGlsl}
@@ -302,11 +284,6 @@ export class ThurstonGeometry extends Applet
 					if (distance < epsilon)
 					{
 						finalColor = computeShading(pos, iteration);
-						break;
-					}
-					
-					else if (t > clipDistance)
-					{
 						break;
 					}
 					
@@ -506,7 +483,7 @@ export class ThurstonGeometry extends Applet
 			}
 		}
 
-		
+		this.correctVectors();
 
 		this.handleRotating();
 
@@ -732,16 +709,16 @@ export class ThurstonGeometry extends Applet
 	//direction at all.
 	correctVectors()
 	{
-		const dotUp = ThurstonGeometry.dotProduct(this.normalVec, this.upVec);
-		const dotRight = ThurstonGeometry.dotProduct(this.normalVec, this.rightVec);
-		const dotForward = ThurstonGeometry.dotProduct(this.normalVec, this.forwardVec);
+		const dotUp = this.customDotProduct(this.normalVec, this.upVec);
+		const dotRight = this.customDotProduct(this.normalVec, this.rightVec);
+		const dotForward = this.customDotProduct(this.normalVec, this.forwardVec);
+
+		console.log(dotUp, dotRight, dotForward);
 
 		for (let i = 0; i < 4; i++)
 		{
 			this.upVec[i] -= dotUp * this.normalVec[i];
-
 			this.rightVec[i] -= dotRight * this.normalVec[i];
-
 			this.forwardVec[i] -= dotForward * this.normalVec[i];
 		}
 
