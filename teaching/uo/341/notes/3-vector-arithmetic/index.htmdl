@@ -106,7 +106,29 @@ The cases in which a linear combination results in the zero vector are of the mo
 
 	Take a moment to really dig into that and convince yourself of why this is the case. If it doesn't become clear, it's absolutely worth starting with the vectors, multiplying them each by their respective constant, and then adding them together.
 
+	Now that we have the system as a matrix, we can row reduce it to solve for the $c_i$:
+
+	$$
+		\left[ \begin{array}{ccc|c} 1 & 2 & 0 & 0 \\ 2 & 0 & 2 & 0 \\ -1 & 4 & -3 & 0 \end{array} \right] & 
+
+		\left[ \begin{array}{ccc|c} 1 & 2 & 0 & 0 \\ 0 & -4 & 2 & 0 \\ 0 & 6 & -3 & 0 \end{array} \right] & \qquad \begin{array}{l} \vec{r_2} \pe -2\vec{r_1} \\ \vec{r_3} \pe \vec{r_1} \end{array}
+
+		\left[ \begin{array}{ccc|c} 1 & 2 & 0 & 0 \\ 0 & 2 & -1 & 0 \\ 0 & 2 & -1 & 0 \end{array} \right] & \qquad \begin{array}{l} \vec{r_2} \te -\frac{1}{2} \\ \vec{r_3} \te \frac{1}{3} \end{array}
+
+		\left[ \begin{array}{ccc|c} 1 & 0 & 1 & 0 \\ 0 & 2 & -1 & 0 \\ 0 & 0 & 0 & 0 \end{array} \right] & \qquad \begin{array}{l} \vec{r_3} \me \vec{r_2} \\ \vec{r_1} \me \vec{r_2} \end{array}
+	$$
+
+	Letting $c_3 = t$, we have $c_1 = -t$, $c_2 = \frac{1}{2}t$, and $c_3 = t$. Taking $t = 1$ for example, we have a linear combination that produces $\vec{0}$, so these vectors are linearly dependent. As a gut check, we expect there to be at least one free parameter whenever vectors are linearly dependent, since if we take any linear combination of $\vec{v_1}$, $\vec{v_2}$, $\vec{v_3}$, we can multiply every coefficient by any number $t$ to produce another linear combination equaling $\vec{0}$.
+
 ###
+
+### exc linear independence
+
+	Are the vectors $$\vec{w_1} = \left[ \begin{array}{c} 2 \\ 0 \\ 1 \end{array} \right]$$, $$\vec{w_2} = \left[ \begin{array}{c} -1 \\ -1 \\ 1 \end{array} \right]$$, and $$\vec{w_3} = \left[ \begin{array}{c} 0 \\ 1 \\ 0 \end{array} \right]$$ linearly independent? Why or why not?
+
+###
+
+When a collection of length-$k$ vectors $\vec{v_1}, ..., \vec{v_n}$ has at least $k$ different linearly independent ones, then $\span\{\vec{v_1}, ..., \vec{v_n}\} = \mathbb{R}^k$. That's because we can take the $k$ linearly independent vectors and row reduce them as rows in a matrix to get to the identity matrix. That means that all the vectors $\vec{e_i}$ that are all zero except for a one in the $i$th position, are expressible as linear combinations of the $\vec{v_j}$, and every vector of $\mathbb{R}^k$ is expressible as a linear combination of the $\vec{e_i}$.
 
 
 
