@@ -18,6 +18,7 @@ Welcome to Math 341! We'll use this page for the interactive notes, the homework
 	
 	notes/1-vectors-and-matrices/
 	notes/2-row-reduction/
+	notes/3-vector-arithmetic/
 	
 ###
 
@@ -28,6 +29,106 @@ Welcome to Math 341! We'll use this page for the interactive notes, the homework
 ### image-links
 	
 	homework-1 c Homework 1
+	
+###
+
+
+
+### card homework-2 Homework 2
+
+	*Due Wednesday of Week 3 at the start of class*
+	
+	Complete the following problems and submit them as a pdf to Canvas. 8 points are awarded for thoroughly attempting every problem, and I'll select three problems to grade on correctness for 4 points each. Enough work should be shown that there is no question about the mathematical process used to obtain your answers.
+
+	## Section 2
+	
+	In problems 5#, write the system as an augmented matrix and row reduce it, indicating every elementary row operation you perform. Then use the reduced matrix to write the solution to the system.
+	
+	#.
+	
+	$$
+		3x - y &= 14
+		
+		4x + 2y &= 2.
+	$$
+	
+	#.
+	
+	$$
+		x + 2z &= 8
+		
+		-x + 2y + 6z &= 6
+		
+		4x + y + 3z &= 21.
+	$$
+	
+	#.
+	
+	$$
+		3x_1 + x_2 + x_3 &= 1
+		
+		x_2 + x_3 &= -4
+		
+		6x_1 + 5x_2 + 8x_3 &= -10.
+	$$
+	
+	#.
+	
+	$$
+		x_1 + x_2 - 4x_3 &= -11
+		
+		-3x_1 + 2x_3 &= 3
+		
+		2x_1 + 2x_2 + 2x_3 &= 8
+		
+		-x_1 + 2x_2 &= 1.
+	$$
+	
+	#.
+	
+	$$
+		a + c &= 2
+		
+		b + d &= 1
+		
+		a + 2b + 3c + 4d &= 10
+		
+		4a + 3b + 2c + d &= 5.
+	$$
+	
+
+
+	- - -
+
+	In problems 5#, invert the matrix.
+	
+	#. $$\left[ \begin{array}{cc} 4 & 1 \\ -1 & 2 \end{array} \right].$$
+	
+	#. $$\left[ \begin{array}{ccc} 1 & 0 & -1 \\ 4 & 5 & 6 \\ 0 & -1 & 2 \end{array} \right].$$
+	
+	#. $$\left[ \begin{array}{ccc} 2 & 1 & 3 \\ 3 & -1 & 2 \\ 1 & 0 & 1 \end{array} \right].$$
+	
+	#. $$\left[ \begin{array}{c} 4 \end{array} \right].$$
+	
+	#. $$\left[ \begin{array}{cccc} 1 & 0 & 0 & 0 \\ 0 & 1 & 0 & 1 \\ 0 & 0 & 1 & 0 \\ 1 & 0 & 1 & 1 \end{array} \right].$$
+	
+
+
+	- - -
+
+	#. Let's investigate the elementary row operations a bit more. For a $3 \times 3$ matrix $A$, find the following:
+	
+	> a) A matrix $S_{1, 2}$ so that $S_{1, 2}A$ is the equal to $A$, but with rows $1$ and $2$ swapped. Similarly, find $S_{1, 3}$ and $S_{2, 3}$.
+	
+	> b) A matrix $M_{1, c}$ so that $M_{1, c}A$ is same as $A$, but with row $1$ multiplied by $c$. Similarly, find $M_{2, c}$ and $M_{3, c}$.
+	
+	> c) A matrix $P_{1, 2, c}$ so that $P_{1, 2, c}A$ is same as $A$, but with $c$ times row $2$ added to row $1$. Similarly, find $P_{1, 3, c}$, $P_{2, 3, c}$, as well as $P_{2, 1, c}$, $P_{3, 1, c}$, and $P_{3, 2, c}$.
+	
+
+
+	- - -
+
+	#. Let $$A = \left[ \begin{array}{cc} a & b \\ c & d \end{array} \right]$$ be a generic $2 \times 2$ matrix. Find $A^{-1}$ in terms of $a$, $b$, $c$, and $d$.
 	
 ###
 
@@ -123,96 +224,34 @@ Welcome to Math 341! We'll use this page for the interactive notes, the homework
 
 
 
-	## Section 2
-	
-	In problems 5#, write the system as an augmented matrix and row reduce it, indicating every elementary row operation you perform. Then use the reduced matrix to write the solution to the system.
-	
-	#.
-	
-	$$
-		3x - y &= 14
-		
-		4x + 2y &= 2.
-	$$
-	
-	#.
-	
-	$$
-		x + 2z &= 8
-		
-		-x + 2y + 6z &= 6
-		
-		4x + y + 3z &= 21.
-	$$
-	
-	#.
-	
-	$$
-		3x_1 + x_2 + x_3 &= 1
-		
-		x_2 + x_3 &= -4
-		
-		6x_1 + 5x_2 + 8x_3 &= -10.
-	$$
-	
-	#.
-	
-	$$
-		x_1 + x_2 - 4x_3 &= -11
-		
-		-3x_1 + 2x_3 &= 3
-		
-		2x_1 + 2x_2 + 2x_3 &= 8
-		
-		-x_1 + 2x_2 &= 1.
-	$$
-	
-	#.
-	
-	$$
-		a + c &= 2
-		
-		b + d &= 1
-		
-		a + 2b + 3c + 4d &= 10
-		
-		4a + 3b + 2c + d &= 5.
-	$$
-	
-
-
 	- - -
 
-	In problems 5#, invert the matrix.
-	
-	#. $$\left[ \begin{array}{cc} 4 & 1 \\ -1 & 2 \end{array} \right].$$
-	
-	#. $$\left[ \begin{array}{ccc} 1 & 0 & -1 \\ 4 & 5 & 6 \\ 0 & -1 & 2 \end{array} \right].$$
-	
-	#. $$\left[ \begin{array}{ccc} 2 & 1 & 3 \\ 3 & -1 & 2 \\ 1 & 0 & 1 \end{array} \right].$$
-	
-	#. $$\left[ \begin{array}{c} 4 \end{array} \right].$$
-	
-	#. $$\left[ \begin{array}{cccc} 1 & 0 & 0 & 0 \\ 0 & 1 & 0 & 1 \\ 0 & 0 & 1 & 0 \\ 1 & 0 & 1 & 1 \end{array} \right].$$
-	
+	In problems 3#, we'll show that many of the nice properties of multiplication of numbers don't hold for matrices.
 
+	#. With real numbers $x$ and $y$, $xy = yx$, but this isn't true with matrices. Define matrices $A$ and $B$ by
 
-	- - -
+	$$
+		A = \left[ \begin{array}{ccc} 1 & 2 & 3 \\ 4 & 5 & 6 \\ 7 & 8 & 9 \end{array} \right], \quad B = \left[ \begin{array}{ccc} 1 & 0 & 2 \\ -2 & 3 & 0 \\ 0 & -4 & 1 \end{array} \right].
+	$$
 
-	#. Let's investigate the elementary row operations a bit more. For a $3 \times 3$ matrix $A$, find the following:
-	
-	> a) A matrix $S_{1, 2}$ so that $S_{1, 2}A$ is the equal to $A$, but with rows $1$ and $2$ swapped. Similarly, find $S_{1, 3}$ and $S_{2, 3}$.
-	
-	> b) A matrix $M_{1, c}$ so that $M_{1, c}A$ is same as $A$, but with row $1$ multiplied by $c$. Similarly, find $M_{2, c}$ and $M_{3, c}$.
-	
-	> c) A matrix $P_{1, 2, c}$ so that $P_{1, 2, c}A$ is same as $A$, but with $c$ times row $2$ added to row $1$. Similarly, find $P_{1, 3, c}$, $P_{2, 3, c}$, as well as $P_{2, 1, c}$, $P_{3, 1, c}$, and $P_{3, 2, c}$.
-	
+	Compute $AB$ and $BA$ and show that they're different.
 
+	#. With real numbers $x$, $y$, and $z$ where $x \neq 0$ and $xy = xz$, $y = z$, but this also isn't true for matrices. Define matrices $A$, $B$, and $C$ by
 
-	- - -
+	$$
+		A = \left[ \begin{array}{cc} 1 & 2 \\ 0 & 0 \end{array} \right], \quad B = \left[ \begin{array}{cc} 1 & 2 \\ 3 & 4 \end{array} \right], \quad C = \left[ \begin{array}{cc} 5 & 4 \\ 1 & 3 \end{array} \right].
+	$$
 
-	#. Let $$A = \left[ \begin{array}{cc} a & b \\ c & d \end{array} \right]$$ be a generic $2 \times 2$ matrix. Find $A^{-1}$ in terms of $a$, $b$, $c$, and $d$.
-	
+	Show that $AB = AC$, despite $B \neq C$.
+
+	#. With real numbers $x$ and $y$ where $xy = 0$ either $x = 0$ or $y = 0$. Unfortunately, this also isn't the case for matrices. Define $A$ and $B$ by
+
+	$$
+		A = \left[ \begin{array}{ccc} 1 & 0 & 0 \\ 0 & 0 & 0 \\ 0 & 0 & 0 \end{array} \right], \quad B = \left[ \begin{array}{ccc} 0 & 0 & 0 \\ 0 & 2 & 3 \\ 0 & 4 & 5 \end{array} \right].
+	$$
+
+	Show that $AB = 0$ (the matrix of all zeros), even though both $A$ and $B$ are nonzero.
+
 ###
 
 

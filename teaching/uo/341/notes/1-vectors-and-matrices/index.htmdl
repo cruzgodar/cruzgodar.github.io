@@ -308,7 +308,7 @@ That was a *lot* of work! Let's turn to some examples to see this in action.
 
 	3. Find the product $$\left[ \begin{array}{ccc} -1 & 0 & 4 \\ 2 & 5 & -1 \\ 0 & 0 & 1 \end{array} \right]\left[ \begin{array}{ccc} 1 & 2 & 3 \end{array} \right]$$.
 
-	4. Let $$A = \left[ \begin{array}{ccc} 1 & 2 \\ 3 & 4 \end{array} \right]$$ and let $$A = \left[ \begin{array}{cc} 0 & 2 \\ -1 & 0 \end{array} \right]$$. Are they the same? Explain why or why not in the context of function composition.
+	4. Let $$A = \left[ \begin{array}{cc} 1 & 2 \\ 3 & 4 \end{array} \right]$$ and let $$B = \left[ \begin{array}{cc} 0 & 2 \\ -1 & 0 \end{array} \right]$$. Are $AB$ and $BA$ the same? Explain why or why not in the context of function composition.
 	
 ###
 
