@@ -196,7 +196,7 @@ Welcome to Math 341! We'll use this page for the interactive notes, the homework
 	
 	> a) For the products $AI$ and $IA$ to make sense, what dimension must $I$ have?
 	
-	> b) The $i$th row of $A$ is $\left[ \begin{array}{cccc} a_{i1} & a_{i2} & \cdots & a_{in} \end{array} \right]$. If the $j$th column of $I$ is denoted $\vec{e_j}$, what is the entry in row $i$ and column $j$ of $AI$?
+	> b) The $i$th row of $A$ is $\left[ \begin{array}{cccc} a_{i1} & a_{i2} & \cdots & a_{in} \end{array} \right]$. If the $j$th column of $I$ is denoted $\vec{e_j}$, what is the entry in row $i$ and column $j$ of $AI$? Your answer should be in terms of $i$ and $j$.
 	
 	> c) What does part b) imply $AI$ is equal to? Why does this make sense in the context of function composition?
 
@@ -206,7 +206,7 @@ Welcome to Math 341! We'll use this page for the interactive notes, the homework
 
 	#. Let $A$ be an $m \times n$ matrix with entries $a_{ij}$.
 
-	> a) There are vectors $\vec{x}$ and $\vec{y}$ such that $\vec{x}A\vec{y} = a_{11}$. What are they?
+	> a) There is a row vector $\vec{x}$ and a column vector $\vec{y}$ such that $\vec{x}A\vec{y} = a_{11}$. What are they?
 
 	> b) What about vectors $\vec{x}$ and $\vec{y}$ such that $\vec{x}A\vec{y} = a_{ij}$? Your answer should be in terms of $i$ and $j$.
 
