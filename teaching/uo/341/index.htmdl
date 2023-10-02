@@ -220,7 +220,7 @@ Welcome to Math 341! We'll use this page for the interactive notes, the homework
 
 	> b) If the product $AB$ is defined, then $A$ and $B$ have the same number of rows.
 
-	> c) If $A$ is a $2 \times 2$ matrix so that $A\vec{x} = \vec{x}$ for *every* vector $\vec{x}$, then $A = I_2$.
+	> c) If $A$ is a $2 \times 2$ matrix so that $A\vec{x} = \vec{x}$ for *every* vector $\vec{x}$, then $A = I_2$. Hint: try plugging in specific values of $x_1$ and $x_2$, like $0$ and $1$.
 
 
 
