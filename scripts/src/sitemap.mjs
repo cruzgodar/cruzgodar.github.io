@@ -627,7 +627,8 @@ export const sitemap =
 		[
 			"/teaching/uo/341/notes/1-vectors-and-matrices/",
 			"/teaching/uo/341/notes/2-row-reduction/",
-			"/teaching/uo/341/notes/3-vector-arithmetic/"
+			"/teaching/uo/341/notes/3-vector-arithmetic/",
+			"/teaching/uo/341/notes/4-linear-transformations/"
 		]
 	},
 		
@@ -654,6 +655,17 @@ export const sitemap =
 	"/teaching/uo/341/notes/3-vector-arithmetic/":
 	{
 		"title": "Section 3: Vector Arithmetic",
+		
+		"parent": "/teaching/uo/341/",
+		
+		"children": [],
+
+		"customScript": true
+	},
+	
+	"/teaching/uo/341/notes/4-linear-transformations/":
+	{
+		"title": "Section 4: Linear Transformations",
 		
 		"parent": "/teaching/uo/341/",
 		
@@ -1433,17 +1445,6 @@ export const sitemap =
 		"parent": "/slides/",
 		
 		"children": []
-	},
-	
-	"//":
-	{
-		"title": "",
-		
-		"parent": "/home/",
-		
-		"children": [],
-
-		"customStyle": true
 	},
 	
 	"/writing/":

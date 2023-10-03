@@ -1,6 +1,6 @@
 home Cruz Godar
 	gallery Gallery
-	
+
 	applets Applets
 		thurston-geometries Thurston Geometries
 		magic-carpets Magic Carpets
@@ -54,6 +54,7 @@ home Cruz Godar
 			notes/1-vectors-and-matrices Section 1: Vectors and Matrices
 			notes/2-row-reduction Section 2: Row Reduction
 			notes/3-vector-arithmetic Section 3: Vector Arithmetic
+			notes/4-linear-transformations Section 4: Linear Transformations
 
 		uo/256 Math 256
 			notes/0-calc-review Section 0: Calculus Review
@@ -130,7 +131,6 @@ home Cruz Godar
 		grandmas-recipe Grandma's Recipe for Quasi-Fuchsian Groups
 		oral-exam Prelude to an Oral Exam
 		lapsa Lapsa
-	
 	
 	writing Writing
 		desolation-point Desolation Point
