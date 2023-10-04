@@ -29,6 +29,7 @@ Welcome to Math 341! We'll use this page for the interactive notes, the homework
 ### image-links
 	
 	homework-1 c Homework 1
+	homework-2 c Homework 2
 	
 ###
 
@@ -42,7 +43,7 @@ Welcome to Math 341! We'll use this page for the interactive notes, the homework
 
 	## Section 2
 	
-	In problems 5#, write the system as an augmented matrix and row reduce it, indicating every elementary row operation you perform. Then use the reduced matrix to write the solution to the system.
+	In problems 6#, write the system as an augmented matrix and row reduce it, indicating every elementary row operation you perform. Then use the reduced matrix to write the solution to the system.
 	
 	#.
 	
@@ -94,6 +95,18 @@ Welcome to Math 341! We'll use this page for the interactive notes, the homework
 		a + 2b + 3c + 4d &= 10
 		
 		4a + 3b + 2c + d &= 5.
+	$$
+	
+	#.
+	
+	$$
+		x + y + 4z &= 4
+		
+		x - y + 2w &= 6
+		
+		-x + 5y + 8z - 6w &= -10
+		
+		x + 2z + w &= 5
 	$$
 	
 
