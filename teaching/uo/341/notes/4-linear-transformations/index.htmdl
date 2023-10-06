@@ -2,7 +2,29 @@
 
 
 
-A common trend in math is to define a new type of object (e.g. a vector), develop some properties about it, and then begin to study functions (often called **maps**) that operate on those objects.
+A common trend in math is to define a new type of object (e.g. a vector), develop some properties about it, and then begin to study functions (often called **maps**) that operate on those objects. Depending on the structure of the objects in question, the characteristics of the maps we want to study are slightly different.
+
+Let's start with some light notation. When we have a function $f$, its **domain** is the set of inputs it takes, and its **codomain** is a set containing the type of outputs it can give. Compared to the **image** or **range** of a function, which is the set consisting exclusvely outputs that actually occur, the codomain is simply the general type of output. For example, $f(x) = x^2$ can have a domain and codomain of $\mathbb{R}$, since it takes in and outputs real numbers, but its image is $[0, \infty)$ (the set of nonnegative real numbers), since no real number squares to be negative. To make this less verbose, we write $f : \mathbb{R} \to \mathbb{R}$ to indicate the domain and codomain, and if we specifically want to specify the image, we can write $f : \mathbb{R} \twoheadrightarrow [0, \infty)$.
+
+As we've discussed, an $m \times n$ matrix $A$ is a function that takes in length-$n$ vectors and gives back length-$m$ ones, so we can write $A : \mathbb{R}^n \to \mathbb{R}^m$. We've also seen that for any vectors $\vec{v}, \vec{w} \in \mathbb{R}^n$,
+
+$$
+	$A(\vec{v} + \vec{w}) = A\vec{v} + A\vec{w},
+$$
+
+and $A(c\vec{v}) = cA\vec{v}$ for any constant $c$. Inspired by these properties, let's look at functions that are *defined* this way: ones that factor through addition and scalar multiplication of vectors.
+
+### def linear transformation
+	
+	A **linear transformation**, or **linear map**, from $\mathbb{R}^n$ to $\mathbb{R}^m$ is a function $T: \mathbb{R}^n \to \mathbb{R}^m$, such that
+	
+	1. For any two vectors $\vec{v}, \vec{w} \in \mathbb{R}^n$, $T(\vec{v} + \vec{w}) = T(\vec{v}) + T(\vec{w})$.
+	
+	2. For any vector $\vec{w} \in \mathbb{R}^n$ and any constant $c$, $T(c\vec{v}) = cT(\vec{v})$.
+	
+###
+
+Linear transformations from $\mathbb{R}$ to $\mathbb{R}$ aren't very exciting: the only functions $T$ for which $T(cx) = cT(x)$ are lines passing through the origin --- $T(x) = ax$ for a fixed constant $a$.
 
 
 
