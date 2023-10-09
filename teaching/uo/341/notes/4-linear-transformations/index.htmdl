@@ -24,6 +24,12 @@ and $A(c\vec{v}) = cA\vec{v}$ for any constant $c$. Inspired by these properties
 	
 ###
 
+First of all, one immediate property of any linear transformation $T$ is that it must send the zero vector to itself:
+
+$$
+	T(\vec{0}) = T(0 \cdot \vec{0}) = 0 \cdot T(\vec{0}) = \vec{0}.
+$$
+
 Linear transformations from $\mathbb{R}$ to $\mathbb{R}$ aren't very exciting: if $T$ is such a linear transformation, then
 
 $$
