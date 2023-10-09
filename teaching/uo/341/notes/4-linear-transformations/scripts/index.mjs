@@ -39,16 +39,16 @@ export function load()
 					...getDesmosSlider({ expression: "a_{12} = 1", secret: false }),
 					...getDesmosSlider({ expression: "a_{21} = -2", secret: false }),
 					...getDesmosSlider({ expression: "a_{22} = 1", secret: false }),
-					...getDesmosSlider({ expression: "b = 2", secret: false }),
-					...getDesmosSlider({ expression: "c = 1", secret: false }),
+					...getDesmosSlider({ expression: "x_1 = 2", secret: false }),
+					...getDesmosSlider({ expression: "x_2 = 1", secret: false }),
 					
 					...getDesmosPoint({ point: ["a_{11}", "a_{21}"], color: desmosRed }),
 					...getDesmosPoint({ point: ["a_{12}", "a_{22}"], color: desmosBlue }),
-					...getDesmosPoint({ point: ["b", "c"], color: desmosPurple }),
+					...getDesmosPoint({ point: ["x_1", "x_2"], color: desmosPurple }),
 
 					...getDesmosVector({ from: [0, 0], to: [1, 0], color: desmosRed }),
 					...getDesmosVector({ from: [0, 0], to: [0, 1], color: desmosBlue }),
-					...getDesmosVector({ from: [0, 0], to: ["b", "c"], color: desmosPurple }),
+					...getDesmosVector({ from: [0, 0], to: ["x_1", "x_2"], color: desmosPurple }),
 
 					...getDesmosVector({
 						from: [0, 0],
@@ -64,7 +64,7 @@ export function load()
 
 					...getDesmosVector({
 						from: [0, 0],
-						to: ["a_{11}b + a_{12}c", "a_{21}b + a_{22}c"],
+						to: ["a_{11}x_1 + a_{12}x_2", "a_{21}x_1 + a_{22}x_2"],
 						color: desmosPurple
 					}),
 				]
