@@ -150,3 +150,58 @@ export function getDesmosScreenshot(id, forPdf = false)
 		document.body.appendChild(img);
 	});
 }
+
+let uid = 0;
+
+export function getDesmosPoint({
+	point, // ["a", "b"]
+	color,
+	dragMode = "XY",
+	secret = true
+})
+{
+	return [
+		{ latex: String.raw`(${point[0]}, ${point[1]})`, dragMode, color, secret },
+	];
+}
+
+export function getDesmosSlider({
+	expression, // "a = 1"
+	min,
+	max,
+	step,
+	secret = true
+})
+{
+	return [
+		{ latex: String.raw`${expression}`, sliderBounds: { min, max, step }, secret },
+	];
+}
+
+export function getDesmosVector({
+	from, // ["a", "b"]
+	to,   // ["c", "d"]
+	color
+})
+{
+	uid++;
+
+	return [
+		{ latex: String.raw`(${from[0]}, ${from[1]}), (${to[0]}, ${to[1]})`, color, lines: true, points: false, secret: true },
+		{ latex: String.raw`s_{${uid}} = \arctan(${to[1]} - ${from[1]}, ${to[0]} - ${from[0]})`, secret: true },
+		{
+			latex: String.raw`(${to[0]}, ${to[1]}), (${to[0]} - .35\cos(s_{${uid}} + .5), ${to[1]} - .35\sin(s_{${uid}} + .5))`,
+			color,
+			lines: true,
+			points: false,
+			secret: true
+		},
+		{
+			latex: String.raw`(${to[0]}, ${to[1]}), (${to[0]} - .35\cos(s_{${uid}} - .5), ${to[1]} - .35\sin(s_{${uid}} - .5))`,
+			color,
+			lines: true,
+			points: false,
+			secret: true
+		}
+	];
+}

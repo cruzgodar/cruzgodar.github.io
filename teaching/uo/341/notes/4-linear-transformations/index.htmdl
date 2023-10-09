@@ -24,7 +24,9 @@ and $A(c\vec{v}) = cA\vec{v}$ for any constant $c$. Inspired by these properties
 	
 ###
 
-Linear transformations from $\mathbb{R}$ to $\mathbb{R}$ aren't very exciting: the only functions $T$ for which $T(cx) = cT(x)$ are lines passing through the origin --- $T(x) = ax$ for a fixed constant $a$.
+Linear transformations from $\mathbb{R}$ to $\mathbb{R}$ aren't very exciting: the only functions $T$ for which $T(cx) = cT(x)$ are lines passing through the origin --- $T(x) = ax$ for a fixed constant $a$. It might seem like needless attention to detail, but let's graph these.
+
+### desmos 1d-linear-transformation
 
 
 
