@@ -213,6 +213,7 @@ const components =
 				.replaceAll(/\\\*/g, "[ASTERISK]")
 				.replaceAll(/\\"/g, "[DOUBLEQUOTE]")
 				.replaceAll(/\\'/g, "[SINGLEQUOTE]")
+				.replaceAll(/\\,/g, "[COMMA]")
 				.replaceAll(/\$\$(.*?)\$\$/g, (match, $1) => `$\\displaystyle ${$1}$`)
 				.replaceAll(/\$(.*?)\$/g, (match, $1) => `$${components.Parse.latex($1)}[END$]`)
 				.replaceAll(/([0-9]+)#/g, (match, $1) => `${currentNumberedItem}--${currentNumberedItem + parseInt($1) - 1}`);
@@ -337,6 +338,7 @@ const components =
 				.replaceAll(/--/g, "&ndash;")
 				.replaceAll(/\[DOUBLEQUOTE\]/g, "\"")
 				.replaceAll(/\[SINGLEQUOTE\]/g, "'")
+				.replaceAll(/\[COMMA\]/g, ",")
 				.replaceAll(/\[ASTERISK\]/g, "*")
 				.replaceAll(/\[BACKTICK\]/g, "`")
 				.replaceAll(/\[DOLLARSIGN\]/g, "\\$")
@@ -348,11 +350,29 @@ const components =
 		"latex": (content) =>
 		{
 			return content
+				// \pe, \me, \te
 				.replaceAll(/([^\\])\\pe([^a-zA-Z])/g, (match, $1, $2) => `${$1}\\ +\\!\\!=${$2}`)
 				.replaceAll(/([^\\])\\me([^a-zA-Z])/g, (match, $1, $2) => `${$1}\\ -\\!\\!=${$2}`)
 				.replaceAll(/([^\\])\\te([^a-zA-Z])/g, (match, $1, $2) => `${$1}\\ \\times\\!\\!=${$2}`)
+
+				// \span
 				.replaceAll(/([^\\])\\span([^a-zA-Z])/g, (match, $1, $2) => `${$1}\\operatorname{span}${$2}`)
-				.replaceAll(/^\\span([^a-zA-Z])/g, (match, $1) => `\\operatorname{span}${$1}`);
+				.replaceAll(/^\\span([^a-zA-Z])/g, (match, $1) => `\\operatorname{span}${$1}`)
+
+				// [[1, 2, 3 ; 4, 5, 6 ; 7, 8, 9]]
+				.replaceAll(/\[\[(.+?)\]\]/g, (match, $1) =>
+				{
+					const colString = ("," + $1)
+						.split(";")[0]
+						.match(/[,|]/g)
+						.join("")
+						.replaceAll(/,/g, "c")
+						.replaceAll(/\|/g, "|c");
+					
+					const content = $1.replaceAll(/[,|]/g, "&").replaceAll(/;/g, "\\\\");
+
+					return `\\left[\\begin{array}{${colString}}${content}\\end{array}\\right]`;
+				});
 		},
 
 

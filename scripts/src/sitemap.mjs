@@ -628,7 +628,8 @@ export const sitemap =
 			"/teaching/uo/341/notes/1-vectors-and-matrices/",
 			"/teaching/uo/341/notes/2-row-reduction/",
 			"/teaching/uo/341/notes/3-vector-arithmetic/",
-			"/teaching/uo/341/notes/4-linear-transformations/"
+			"/teaching/uo/341/notes/4-linear-transformations/",
+			"/teaching/uo/341/notes/5-determinants-and-invertibility/"
 		]
 	},
 		
@@ -666,6 +667,17 @@ export const sitemap =
 	"/teaching/uo/341/notes/4-linear-transformations/":
 	{
 		"title": "Section 4: Linear Transformations",
+		
+		"parent": "/teaching/uo/341/",
+		
+		"children": [],
+
+		"customScript": true
+	},
+	
+	"/teaching/uo/341/notes/5-determinants-and-invertibility/":
+	{
+		"title": "Section 5: Determinants and Invertibility",
 		
 		"parent": "/teaching/uo/341/",
 		

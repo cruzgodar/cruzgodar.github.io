@@ -37,7 +37,7 @@ $$
 The big leap is to treat these four numbers as one large object. To indicate the distinction, we'll wrap it in brackets (parentheses are also commonly used), and to remind ourselves that it's a somewhat more complex variable than a single number, we'll represent it with a capital --- and in printed text, bold --- letter.
 
 $$
-	\mathbf{A} = \left[ \begin{array}{cc} 2 & -1 \\ 1 & 5 \end{array} \right].
+	\mathbf{A} = [[ 2, -1 ; 1, 5 ]].
 $$
 
 We call $\mathbf{A}$ a $2 \times 2$ **matrix** --- other sizes, including non-square ones, are also possible, and we'll look at examples momentarily.
@@ -57,7 +57,7 @@ $$
 You might find the idea of matrices fascinating in its own right, or you might be waiting for the applications --- either way, we need to actually use these things for something to justify the extra notation and definitions. Getting back to our systems of equations, we want to be able to represent both left sides of the equations at once with some sort of expression involving $\mathbf{A}$. A clue toward the answer lies in the right side of the equation. This time, there aren't any $x_i$ to drop, and we can just assemble the numbers into a matrix directly.
 
 $$
-	\mathbf{b} = \left[ \begin{array}{c} 3 \\ -1 \end{array} \right].
+	\mathbf{b} = [[ 3 ; -1 ]].
 $$
 
 When a matrix only has a single column, we call it a **column vector** and denote it with a bold but lowercase letter. In handwriting, we'll typically denote vectors with a little arrow above them, as in $\vec{b}$.
@@ -65,19 +65,19 @@ When a matrix only has a single column, we call it a **column vector** and denot
 In order for two vectors to be equal, all of their entries must be the same, and this indicates the direction we should go: we can represent the two equations in the system as a single equation involving vectors:
 
 $$
-	\left[ \begin{array}{c} 2x_1 - x_2 \\ x_1 + 5x_2 \end{array} \right] = \mathbf{b}.
+	[[ 2x_1 - x_2 ; x_1 + 5x_2 ]] = \mathbf{b}.
 $$
 
 On the surface, we haven't changed much of anything, but we're actually getting close to something profound. Since $\mathbf{A}$ is providing the coefficients for all the $x_i$, we should be able to just have $\mathbf{A}$ *be a coefficient itself*. To that end, let's define a vector $\mathbf{x}$ that stores both of our variables:
 
 $$
-	\mathbf{x} = \left[ \begin{array}{c} x_1 \\ x_2 \end{array} \right].
+	\mathbf{x} = [[ x_1 ; x_2 ]].
 $$
 
 Now the final part: if $\mathbf{A}$ is going be a single coefficient, we want to be able to write $\mathbf{Ax}$, multiplying a matrix and a column vector, to mean
 
 $$
-	\mathbf{Ax} = \left[ \begin{array}{cc} 2 & -1 \\ 1 & 5 \end{array} \right] \left[ \begin{array}{c} x_1 \\ x_2 \end{array} \right] = \left[ \begin{array}{c} 2x_1 - x_2 \\ x_1 + 5x_2 \end{array} \right].
+	\mathbf{Ax} = [[ 2, -1 ; 1, 5 ]] [[ x_1 ; x_2 ]] = [[ 2x_1 - x_2 ; x_1 + 5x_2 ]].
 $$
 
 So, to bring it all together: for matrices to actually represent coefficients in the way we want them to, this is how matrix-vector multiplication should be defined. Let's write this out in a little more generality.
@@ -89,17 +89,17 @@ So, to bring it all together: for matrices to actually represent coefficients in
 	Let $\mathbf{A}$ and $\mathbf{x}$ be a matrix and vector, respectively, defined as
 	
 	$$
-		\mathbf{A} &= \left[ \begin{array}{cc} a & b \\ c & d \end{array} \right]
-		\mathbf{x} &= \left[ \begin{array}{c} x_1 \\ x_2 \end{array} \right].
+		\mathbf{A} &= [[ a, b ; c, d ]]
+		\mathbf{x} &= [[ x_1 ; x_2 ]].
 	$$
 	
 	Then the product $\mathbf{Ax}$ is a column vector, defined to be
 	
 	$$
-		\mathbf{Ax} = \left[ \begin{array}{cc} a & b \\ c & d \end{array} \right] \left[ \begin{array}{c} x_1 \\ x_2 \end{array} \right] = \left[ \begin{array}{c} ax_1 + bx_2 \\ cx_1 + dx_2 \end{array} \right].
+		\mathbf{Ax} = [[ a, b ; c, d ]] [[ x_1 ; x_2 ]] = [[ ax_1 + bx_2 ; cx_1 + dx_2 ]].
 	$$
 	
-	One way to visualize this is by taking the vector $\mathbf{x}$, rotating it sideways so that it reads $\left[ \begin{array}{cc} x_1 & x_2 \end{array} \right]$, and then for each row of $\mathbf{A}$, multiplying the two together and adding the results.
+	One way to visualize this is by taking the vector $\mathbf{x}$, rotating it sideways so that it reads $[[ x_1, x_2 ]]$, and then for each row of $\mathbf{A}$, multiplying the two together and adding the results.
 	
 ###
 
@@ -113,28 +113,28 @@ As we'll see in the next few examples, matrix-vector multiplication is defined f
 	
 	Evaluate the following products:
 	
-	1. $$\left[ \begin{array}{cc} 1 & -1 \\ 2 & 3 \end{array} \right] \left[ \begin{array}{c} 3 \\ -2 \end{array} \right].$$
+	1. $$[[ 1, -1 ; 2, 3 ]] [[ 3 ; -2 ]].$$
 	
 	Turning the vector sideways and multiplying through, we have
 	
 	$$
-		\left[ \begin{array}{c} 1(3) + -1(-2) \\ 2(3) + 3(-2) \end{array} \right] = \left[ \begin{array}{c} 5 \\ 0 \end{array} \right].
+		[[ 1(3) + -1(-2) ; 2(3) + 3(-2) ]] = [[ 5 ; 0 ]].
 	$$
 	
-	2. $$\left[ \begin{array}{ccc} 5 & 0 & 2 \\ 2 & 3 & 0 \end{array} \right] \left[ \begin{array}{c} 1 \\ 0 \\ -2 \end{array} \right].$$
+	2. $$[[ 5, 0, 2 ; 2, 3, 0 ]] [[ 1 ; 0 ; -2 ]].$$
 	
 	Although the matrix isn't square and larger than $2 \times 2$, the definition still works fine: we just turn the vector sideways and multiply it with every row.
 	
 	$$
-		\left[ \begin{array}{c} 5(1) + 0(0) + 2(-2) \\ 2(1) + 3(0) + 0(-2) \end{array} \right] = \left[ \begin{array}{c} 1 \\ 2 \end{array} \right].
+		[[ 5(1) + 0(0) + 2(-2) ; 2(1) + 3(0) + 0(-2) ]] = [[ 1 ; 2 ]].
 	$$
 	
-	3. $$\left[ \begin{array}{ccc} 1 & 0 & 0 \\ 0 & 1 & 0 \\ 0 & 0 & 1 \end{array} \right] \left[ \begin{array}{c} 5 \\ -4 \\ 1 \end{array} \right].$$
+	3. $$[[ 1, 0, 0 ; 0, 1, 0 ; 0, 0, 1 ]] [[ 5 ; -4 ; 1 ]].$$
 	
 	This one works exactly the same way! The resulting vector is
 	
 	$$
-		\left[ \begin{array}{c} 1(5) + 0(-4) + 0(1) \\ 0(5) + 1(-4) + 0(1) \\ 0(5) + 0(-4) + 1(1) \end{array} \right] = \left[ \begin{array}{c} 5 \\ -4 \\ 1 \end{array} \right].
+		[[ 1(5) + 0(-4) + 0(1) ; 0(5) + 1(-4) + 0(1) ; 0(5) + 0(-4) + 1(1) ]] = [[ 5 ; -4 ; 1 ]].
 	$$
 	
 ###
@@ -143,11 +143,11 @@ As we'll see in the next few examples, matrix-vector multiplication is defined f
 	
 	Evaluate the following products:
 	
-	1. $$\left[ \begin{array}{cc} 1 & 0 \\ 0 & 1 \end{array} \right] \left[ \begin{array}{c} 5 \\ 7 \end{array} \right].$$
+	1. $$[[ 1, 0 ; 0, 1 ]] [[ 5 ; 7 ]].$$
 	
-	2. $$\left[ \begin{array}{cc} 1 & 1 \\ 2 & 1 \\ -1 & 1 \end{array} \right] \left[ \begin{array}{c} -2 \\ 5 \end{array} \right].$$
+	2. $$[[ 1, 1 ; 2, 1 ; -1, 1 ]] [[ -2 ; 5 ]].$$
 	
-	3. $$\left[ \begin{array}{cc} 1 & 1 \\ 2 & 1 \\ -1 & 1 \end{array} \right] \left[ \begin{array}{c} -3 \\ 6 \\ 1 \end{array} \right].$$
+	3. $$[[ 1, 1 ; 2, 1 ; -1, 1 ]] [[ -3 ; 6 ; 1 ]].$$
 	
 ###
 
@@ -176,15 +176,15 @@ $$
 just like functions. Therefore, we need $\mathbf{A}$ and $\mathbf{B}$ to have the same number of columns so they can both multiply $\mathbf{x}$, and the same number of rows so that they can add together after multiplying. For vector multiplication to distribute like this, we just need the $i$th row of $\mathbf{A} + \mathbf{B}$ to be the $i$th row of $\mathbf{A}$ plus the $i$th row of $\mathbf{B}$. All of this is to say that matrix addition works exactly like we'd hope: as long as they're exactly the same shape, we can just add each component together. For example,
 
 $$
-	\left[ \begin{array}{ccc} 5 & 0 & 2 \\ 2 & 3 & 0 \end{array} \right] + \left[ \begin{array}{ccc} -1 & 2 & 0 \\ -5 & 0 & 2 \end{array} \right] &= \left[ \begin{array}{ccc} 5 - 1 & 0 + 2 & 2 + 0 \\ 2 - 5 & 3 + 0 & 0 + 2 \end{array} \right]
+	[[ 5, 0, 2 ; 2, 3, 0 ]] + [[ -1, 2, 0 ; -5, 0, 2 ]] &= [[ 5 - 1, 0 + 2, 2 + 0 ; 2 - 5, 3 + 0, 0 + 2 ]]
 	
-	&= \left[ \begin{array}{ccc} 5 & 2 & 2 \\ -3 & 3 & 2 \end{array} \right].
+	&= [[ 5, 2, 2 ; -3, 3, 2 ]].
 $$
 
 For exactly the same reason, scalar multiplication works the same way: for a number $c$, the matrix $c\mathbf{A}$ is created by multiplying every entry by $c$. For example,
 
 $$
-	-4\left[ \begin{array}{ccc} 5 & 0 & 2 \\ 2 & 3 & 0 \end{array} \right] = \left[ \begin{array}{ccc} -20 & 0 & -8 \\ -8 & -12 & 0 \end{array} \right].
+	-4[[ 5, 0, 2 ; 2, 3, 0 ]] = [[ -20, 0, -8 ; -8, -12, 0 ]].
 $$
 
 
@@ -206,19 +206,19 @@ So --- how do we do that? First of all, not any two matrices can be multiplied t
 To figure out the exact formula for matrix multiplication, let's look at a few vectors in particular. Let $\mathbf{e_j}$ be a $k$-dimensional column vector defined by
 
 $$
-	\mathbf{e_j} = \left[ \begin{array}{c} 0 \\ \vdots \\ 0 \\ 1 \\ 0 \\ \vdots \\ 0 \end{array} \right],
+	\mathbf{e_j} = [[ 0 ; \vdots ; 0 ; 1 ; 0 ; \vdots ; 0 ]],
 $$
 
 where the $1$ is in position $j$. When we evaluate $\mathbf{Be_j}$ by turning $\mathbf{e_j}$ sideways, only column $j$ of $\mathbf{B}$ is picked out --- in other words, if we write
 
 $$
-	\mathbf{B} = \left[ \begin{array}{ccccc} \mathbf{|} & \mathbf{|} & & \mathbf{|} & \mathbf{|} \\ \mathbf{b_1} & \mathbf{b_2} & \cdots & \mathbf{b_{k - 1}} & \mathbf{b_k} \\ \mathbf{|} & \mathbf{|} & & \mathbf{|} & \mathbf{|} \end{array} \right],
+	\mathbf{B} = [[ \mathbf{|}, \mathbf{|},, \mathbf{|}, \mathbf{|} ; \mathbf{b_1}, \mathbf{b_2}, \cdots, \mathbf{b_{k - 1}}, \mathbf{b_k} ; \mathbf{|}, \mathbf{|},, \mathbf{|}, \mathbf{|} ]],
 $$
 
 so that $\mathbf{b_j}$ is the $j$th column of $\mathbf{B}$, then $\mathbf{Be_j} = \mathbf{b_j}$. By the same token, $(\mathbf{AB})\mathbf{e_j} = \mathbf{Ab_j}$ is the $j$th column of $\mathbf{AB}$. So the matrix product $\mathbf{AB}$ is defined by
 
 $$
-	\mathbf{AB} = \left[ \begin{array}{ccccc} \mathbf{|} & \mathbf{|} & & \mathbf{|} & \mathbf{|} \\ \mathbf{Ab_1} & \mathbf{Ab_2} & \cdots & \mathbf{Ab_{k - 1}} & \mathbf{Ab_k} \\ \mathbf{|} & \mathbf{|} & & \mathbf{|} & \mathbf{|} \end{array} \right].
+	\mathbf{AB} = [[ \mathbf{|}, \mathbf{|},, \mathbf{|}, \mathbf{|} ; \mathbf{Ab_1}, \mathbf{Ab_2}, \cdots, \mathbf{Ab_{k - 1}}, \mathbf{Ab_k} ; \mathbf{|}, \mathbf{|},, \mathbf{|}, \mathbf{|} ]].
 $$
 
 Thankfully, we can streamline this formula a little to make it easier to remember. To get the $i$th entry of $\mathbf{Ab_j}$, we turn $\mathbf{b_j}$ sideways and look at its product with the $i$th row of $\mathbf{A}$. So we can get a formula for $\mathbf{AB}$ one entry at a time.
@@ -249,19 +249,19 @@ That was a whole lot of work! Let's turn to some examples to see this in action.
 
 ### ex matrix multiplication
 	
-	Let $$\mathbf{A} = \left[ \begin{array}{cc} 5 & 0 \\ -2 & 1 \end{array} \right]$$ and $$\mathbf{B} = \left[ \begin{array}{ccc} 3 & 1 & -1 \\ -1 & 0 & 2 \end{array} \right]$$. Evaluate $\mathbf{AB}$.
+	Let $$\mathbf{A} = [[ 5, 0 ; -2, 1 ]]$$ and $$\mathbf{B} = [[ 3, 1, -1 ; -1, 0, 2 ]]$$. Evaluate $\mathbf{AB}$.
 	
 	This is a valid product to take, since the number of columns $\mathbf{A}$ and the number of rows of $\mathbf{B}$ are the same ($2$). And the dimensions of $\mathbf{AB}$ will be $2 \times 3$, since $\mathbf{A}$ has $2$ rows and $\mathbf{B}$ has $3$ columns. To get the element $\mathbf{AB}_{11}$ --- the top-left entry --- we take the first row of $\mathbf{A}$, which is $(5, 0)$, and the first column of $\mathbf{B}$, which is $(3, -1)$, and multiply them together to get $5(3) + 0(-1) = 15$. Repeating this for the other five entries, we get
 	
 	$$
-		\mathbf{AB} = \left[ \begin{array}{ccc} 15 & 5 & -5 \\ -7 & -2 & 4 \end{array} \right].
+		\mathbf{AB} = [[ 15, 5, -5 ; -7, -2, 4 ]].
 	$$
 	
 ###
 
 ### exc matrix multiplication
 	
-	Let $\mathbf{x} = \left[ \begin{array}{c} 1 \\ 2 \\ -1 \end{array} \right]$. With the same matrices from the previous example, evaluate $(\mathbf{AB})\mathbf{x}$ and $\mathbf{A}(\mathbf{Bx})$ and show they're the same.
+	Let $\mathbf{x} = [[ 1 ; 2 ; -1 ]]$. With the same matrices from the previous example, evaluate $(\mathbf{AB})\mathbf{x}$ and $\mathbf{A}(\mathbf{Bx})$ and show they're the same.
 	
 ###
 

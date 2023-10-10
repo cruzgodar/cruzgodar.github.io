@@ -55,6 +55,7 @@ home Cruz Godar
 			notes/2-row-reduction Section 2: Row Reduction
 			notes/3-vector-arithmetic Section 3: Vector Arithmetic
 			notes/4-linear-transformations Section 4: Linear Transformations
+			notes/5-determinants-and-invertibility Section 5: Determinants and Invertibility
 
 		uo/256 Math 256
 			notes/0-calc-review Section 0: Calculus Review

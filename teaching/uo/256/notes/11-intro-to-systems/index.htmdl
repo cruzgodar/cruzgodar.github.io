@@ -19,21 +19,21 @@ $$
 This couldn't look much more like a matrix! If we define a vector $\mathbf{x}$ as
 
 $$
-	\mathbf{x}(t) = \left[ \begin{array}{c} x_1(t) \\ \vdots \\ x_n(t) \end{array} \right],
+	\mathbf{x}(t) = [[ x_1(t) ; \vdots ; x_n(t) ]],
 $$
 
 and define differentiation to be componentwise --- i.e.
 
 $$
-	\mathbf{x}' = \left[ \begin{array}{c} x_1' \\ \vdots \\ x_n' \end{array} \right],
+	\mathbf{x}' = [[ x_1' ; \vdots ; x_n' ]],
 $$
 
 then we're most of the way there. Let's define an $n \times n$ matrix $\mathbf{P}$ and a vector $\mathbf{g}$ of length $n$ as
 
 $$
-	\mathbf{P}(t) &= \left[ \begin{array}{ccc} p_{11}(t) & \cdots & p_{1n}(t) \\ \vdots & \ddots & \vdots \\ p_{n1}(t) & \cdots & p_{nn}(t) \end{array} \right]
+	\mathbf{P}(t) &= [[ p_{11}(t), \cdots, p_{1n}(t) ; \vdots, \ddots, \vdots ; p_{n1}(t), \cdots, p_{nn}(t) ]]
 	
-	\mathbf{g}(t) &= \left[ \begin{array}{c} g_1(t) \\ \vdots \\ g_n(t) \end{array} \right].
+	\mathbf{g}(t) &= [[ g_1(t) ; \vdots ; g_n(t) ]]
 $$
 
 Now we can restate the $n$ interdependent DEs as simply
@@ -53,7 +53,7 @@ Let's take a moment to notice the notation conflict here: in this equation, $\ma
 We didn't talk about the Wronskian for first-order linear DEs because it's not very interesting: an order-$1$ DE has a Wronskian that's just the determinant of a $1 \times 1$ matrix --- i.e. its single entry. On the other hand, the Wronskian of a system of $n$ DEs is quite a bit more substantial. Picking through the details is a little bit tedious, but the end result is similar to an $n$th order DE: for fundamental solutions $\mathbf{x_1}, ..., \mathbf{x_n}$, the Wronskian is
 
 $$
-	W[\mathbf{x_1}, ..., \mathbf{x_n}] = \det \left[ \begin{array}{ccc} \mid &  & \mid \\ \mathbf{x_1} & \cdots & \mathbf{x_n} \\ \mid &  & \mid \end{array} \right].
+	W[\mathbf{x_1}, ..., \mathbf{x_n}] = \det [[ \mid, , \mid ; \mathbf{x_1}, \cdots, \mathbf{x_n} ; \mid, , \mid ]]
 $$
 
 In other words, we just put the $\mathbf{x_i}$ in as column vectors and take the determinant. The result is a familiar one: if the Wronskian is ever nonzero, then we've successfully found the general solution, and if it's nonzero when we plug in $t = t_0$, then the initial condition $\mathbf{x}(t_0) = \mathbf{x_0}$ is solvable. (As an aside, both of those statements should make a lot more sense now that we've seen what determinants tell us!)
@@ -79,7 +79,7 @@ Enough abstract work --- let's get to solving some systems! As usual, we'll star
 	The matrix form of the DE is
 	
 	$$
-		\mathbf{x}' = \left[ \begin{array}{cc} 5 & 0 \\ 0 & -7 \end{array} \right]\mathbf{x},
+		\mathbf{x}' = [[ 5, 0 ; 0, -7 ]] \mathbf{x},
 	$$
 	
 	but since the two DEs are completely independent, this barely qualifies as a system. We can just solve them separately (with integrating factors, separation, or even a characteristic equation) and then tack the solutions together:
@@ -93,7 +93,7 @@ Enough abstract work --- let's get to solving some systems! As usual, we'll star
 	Our fundamental solutions need to be vectors, so there's a slight modification needed here: the first one doesn't depend on $x_2$ and the second doesn't depend on $x_1$, so our final answer is
 	
 	$$
-		\mathbf{x} = c_1 \left[ \begin{array}{c} e^{5t} \\ 0 \end{array} \right] + c_2 \left[ \begin{array}{c} 0 \\ e^{-7t} \end{array} \right].
+		\mathbf{x} = c_1 [[ e^{5t} ; 0 ]] + c_2 [[ 0 ; e^{-7t} ]].
 	$$
 	
 ###
@@ -103,7 +103,7 @@ Enough abstract work --- let's get to solving some systems! As usual, we'll star
 That might seem like a poor choice for a first example --- there wasn't anything substantively different than solving two first-order equations separately. But it actually will motivate quite a bit of the more complicated systems to come by telling us that exponential functions are a decent guess. We probably won't have the luxury of having half of the vector be zero, but let's see what information we can extract with a more general guess. For a general system $\mathbf{x}' = \mathbf{Ax}$, let's guess that a solution is $\mathbf{x} = e^{\lambda t}\mathbf{v}$ for some value $\lambda$ and vector $\mathbf{v}$. In our previous example, the first solution had $\lambda = 5$ and
 
 $$
-	\mathbf{v} = \left[ \begin{array}{c} 1 \\ 0 \end{array} \right].
+	\mathbf{v} = [[ 1 ; 0 ]]
 $$
 
 If we assume $\mathbf{x}$ is a solution, then
@@ -147,13 +147,13 @@ If all $n$ eigenvalues of $\mathbf{A}$ are real and different, then it's guarant
 	First of all, the matrix form is
 	
 	$$
-		\mathbf{x}' = \left[ \begin{array}{cc} 1 & 3 \\ 4 & 2 \end{array} \right] \mathbf{x},
+		\mathbf{x}' = [[ 1, 3 ; 4, 2 ]] \mathbf{x},
 	$$
 	
 	so we need to find the eigenvalues and eigenvectors of that matrix. Subtracting $\lambda$ from the diagonal and taking the determinant gives us
 	
 	$$
-		\det \left[ \begin{array}{cc} 1 - \lambda & 3 \\ 4 & 2 - \lambda \end{array} \right] &= 0
+		\det [[ 1 - \lambda, 3 ; 4, 2 - \lambda ]] &= 0
 		
 		(1 - \lambda)(2 - \lambda) - (3)(4) &= 0
 		
@@ -169,11 +169,11 @@ If all $n$ eigenvalues of $\mathbf{A}$ are real and different, then it's guarant
 	Now we can find the eigenvectors by plugging these values of $\lambda$ back in:
 	
 	$$
-		\left[ \begin{array}{cc} 1 - 5 & 3 \\ 4 & 2 - 5 \end{array} \right] \mathbf{v} &= \mathbf{0}
+		[[ 1 - 5, 3 ; 4, 2 - 5 ]] \mathbf{v} &= \mathbf{0}
 		
-		\left[ \begin{array}{cc|c} -4 & 3 & 0 \\ 4 & -3 & 0 \end{array} \right] &
+		[[ -4, 3 | 0 ; 4, -3 | 0 ]] &
 		
-		\left[ \begin{array}{cc|c} -4 & 3 & 0 \\ 0 & 0 & 0 \end{array} \right] & \qquad \mathbf{r_2} \pe -1\mathbf{r_1}
+		[[ -4, 3 | 0 ; 0, 0 | 0 ]] & \qquad \mathbf{r_2} \pe -1\mathbf{r_1}
 		
 		-4v_1 + 3v_2 &= 0.
 	$$
@@ -181,19 +181,19 @@ If all $n$ eigenvalues of $\mathbf{A}$ are real and different, then it's guarant
 	Therefore, $v_1 = \frac{3}{4}v_2$, so to keep the numbers nice, let's take $v_2 = 4$ and $v_1 = 3$ to get out first fundamental solution of
 	
 	$$
-		\mathbf{x_1} = e^{5t} \left[ \begin{array}{c} 3 \\ 4 \end{array} \right].
+		\mathbf{x_1} = e^{5t} [[ 3 ; 4 ]]
 	$$
 	
 	Now we'll repeat the process with the other eigenvalue:
 	
 	$$
-		\left[ \begin{array}{cc} 1 + 2 & 3 \\ 4 & 2 + 2 \end{array} \right] \mathbf{v} &= \mathbf{0}
+		[[ 1 + 2, 3 ; 4, 2 + 2 ]] \mathbf{v} &= \mathbf{0}
 		
-		\left[ \begin{array}{cc|c} 3 & 3 & 0 \\ 4 & 4 & 0 \end{array} \right] &
+		[[ 3, 3 | 0 ; 4, 4 | 0 ]] &
 		
-		\left[ \begin{array}{cc|c} 1 & 1 & 0 \\ 4 & 4 & 0 \end{array} \right] & \qquad \mathbf{r_1} \te \frac{1}{3}
+		[[ 1, 1 | 0 ; 4, 4 | 0 ]] & \qquad \mathbf{r_1} \te \frac{1}{3}
 		
-		\left[ \begin{array}{cc|c} 1 & 1 & 0 \\ 0 & 0 & 0 \end{array} \right] & \qquad \mathbf{r_2} \pe -4\mathbf{r_1}
+		[[ 1, 1 | 0 ; 0, 0 | 0 ]] & \qquad \mathbf{r_2} \pe -4\mathbf{r_1}
 		
 		v_1 + v_2 &= 0.
 	$$
@@ -201,7 +201,7 @@ If all $n$ eigenvalues of $\mathbf{A}$ are real and different, then it's guarant
 	This time around, $v_1 = -v_2$, so a good choice is $v_2 = 1$ and $v_1 = -1$, making our second fundamental solution
 	
 	$$
-		\mathbf{x_2} = e^{-2t} \left[ \begin{array}{c} -1 \\ 1 \end{array} \right].
+		\mathbf{x_2} = e^{-2t} [[ -1 ; 1 ]].
 	$$
 	
 	Our general solution is therefore
@@ -209,13 +209,13 @@ If all $n$ eigenvalues of $\mathbf{A}$ are real and different, then it's guarant
 	$$
 		\mathbf{x} &= c_1\mathbf{x_1} + c_2\mathbf{x_2}
 		
-		&= c_1 e^{5t} \left[ \begin{array}{c} 3 \\ 4 \end{array} \right] + c_2 e^{-2t} \left[ \begin{array}{c} -1 \\ 1 \end{array} \right].
+		&= c_1 e^{5t} [[ 3 ; 4 ]] + c_2 e^{-2t} [[ -1 ; 1 ]].
 	$$
 	
 	To verify this with the Wronskian, we just put $\mathbf{x_1}$ and $\mathbf{x_2}$ as column vectors in a matrix and take the determinant:
 	
 	$$
-		W[\mathbf{x_1}, \mathbf{x_2}] &= \det \left[ \begin{array}{cc} 3e^{5t} & -e^{-2t} \\ 4e^{5t} & e^{-2t} \end{array} \right]
+		W[\mathbf{x_1}, \mathbf{x_2}] &= \det [[ 3e^{5t}, -e^{-2t} ; 4e^{5t}, e^{-2t} ]]
 		
 		&= 3e^{3t} + 4e^{3t}
 		
@@ -273,13 +273,13 @@ Systems of first-order DEs crop up all the time in physical applications --- for
 	In total, our matrix equation is
 	
 	$$
-		\mathbf{x}' = \left[ \begin{array}{ccc} -\frac{1}{50} & 0 & 0 \\ \frac{1}{50} & -2 & 0 \\ 0 & 2 & -\frac{1}{25} \end{array} \right]\mathbf{x}.
+		\mathbf{x}' = [[ -\frac{1}{50}, 0, 0 ; \frac{1}{50}, -2, 0 ; 0, 2, -\frac{1}{25} ]]\mathbf{x}.
 	$$
 	
 	Solving for the eigenvalues, we have
 	
 	$$
-		\det \left[ \begin{array}{ccc} -\frac{1}{50} - \lambda & 0 & 0 \\ \frac{1}{50} & -2 - \lambda & 0 \\ 0 & 2 & -\frac{1}{25} - \lambda \end{array} \right] = 0.
+		\det [[ -\frac{1}{50} - \lambda, 0, 0 ; \frac{1}{50}, -2 - \lambda, 0 ; 0, 2, -\frac{1}{25} - \lambda ]] = 0.
 	$$
 	
 	To take this determinant, let's expand along the first row.
@@ -293,11 +293,11 @@ Systems of first-order DEs crop up all the time in physical applications --- for
 	Now each of these gets plugged back in to solve for the corresponding eigenvector.
 	
 	$$
-		\left[ \begin{array}{ccc|c} -\frac{1}{50} + \frac{1}{50} & 0 & 0 & 0 \\ \frac{1}{50} & -2 + \frac{1}{50} & 0 & 0 \\ 0 & 2 & -\frac{1}{25} + \frac{1}{50} & 0 \end{array} \right] & 
+		[[ -\frac{1}{50} + \frac{1}{50}, 0, 0 | 0 ; \frac{1}{50}, -2 + \frac{1}{50}, 0 | 0 ; 0, 2, -\frac{1}{25} + \frac{1}{50} | 0 ]] & 
 		
-		\left[ \begin{array}{ccc|c} 0 & 0 & 0 & 0 \\ \frac{1}{50} & \frac{-99}{50} & 0 & 0 \\ 0 & 2 & -\frac{1}{50} & 0 \end{array} \right] & 
+		[[ 0, 0, 0 | 0 ; \frac{1}{50}, \frac{-99}{50}, 0 | 0 ; 0, 2, -\frac{1}{50} | 0 ]] & 
 		
-		\left[ \begin{array}{ccc|c} 0 & 0 & 0 & 0 \\ 1 & -99 & 0 & 0 \\ 0 & -100 & 1 & 0 \end{array} \right] & \qquad \begin{array}{l} \mathbf{r_2} \te 50 \\ \mathbf{r_3} \te -50 \end{array}
+		[[ 0, 0, 0 | 0 ; 1, -99, 0 | 0 ; 0, -100, 1 | 0 ]] & \qquad \begin{array}{l} \mathbf{r_2} \te 50 \\ \mathbf{r_3} \te -50 \end{array}
 		
 		v_1 = 99v_2, & \quad v_3 = 100v_2.
 	$$
@@ -305,19 +305,19 @@ Systems of first-order DEs crop up all the time in physical applications --- for
 	Taking $v_2 = 1$, our first eigenvector is
 	
 	$$
-		\mathbf{v} = \left[ \begin{array}{c} 99 \\ 1 \\ 100 \end{array} \right].
+		\mathbf{v} = [[ 99 ; 1 ; 100 ]].
 	$$
 	
 	Now we just need to repeat this for the other eigenvalues. When $\lambda = 2$, we have
 	
 	$$
-		\left[ \begin{array}{ccc|c} -\frac{1}{50} + 2 & 0 & 0 & 0 \\ \frac{1}{50} & -2 + 2 & 0 & 0 \\ 0 & 2 & -\frac{1}{25} + 2 & 0 \end{array} \right] & 
+		[[ -\frac{1}{50} + 2, 0, 0 | 0 ; \frac{1}{50}, -2 + 2, 0 | 0 ; 0, 2, -\frac{1}{25} + 2 | 0 ]] & 
 		
-		\left[ \begin{array}{ccc|c} \frac{99}{50} & 0 & 0 & 0 \\ \frac{1}{50} & 0 & 0 & 0 \\ 0 & 2 & \frac{49}{25} & 0 \end{array} \right] & 
+		[[ \frac{99}{50}, 0, 0 | 0 ; \frac{1}{50}, 0, 0 | 0 ; 0, 2, \frac{49}{25} | 0 ]] & 
 		
-		\left[ \begin{array}{ccc|c} 1 & 0 & 0 & 0 \\ 1 & 0 & 0 & 0 \\ 0 & 50 & 49 & 0 \end{array} \right] & \qquad \begin{array}{l} \mathbf{r_1} \te \frac{50}{99} \\ \mathbf{r_2} \te 50 \\ \mathbf{r_3} \te 25 \end{array}
+		[[ 1, 0, 0 | 0 ; 1, 0, 0 | 0 ; 0, 50, 49 | 0 ]] & \qquad \begin{array}{l} \mathbf{r_1} \te \frac{50}{99} \\ \mathbf{r_2} \te 50 \\ \mathbf{r_3} \te 25 \end{array}
 		
-		\left[ \begin{array}{ccc|c} 1 & 0 & 0 & 0 \\ 0 & 0 & 0 & 0 \\ 0 & 50 & 49 & 0 \end{array} \right] & \qquad \mathbf{r_2} \pe -\mathbf{r_1}
+		[[ 1, 0, 0 | 0 ; 0, 0, 0 | 0 ; 0, 50, 49 | 0 ]] & \qquad \mathbf{r_2} \pe -\mathbf{r_1}
 		
 		v_1 = 0, & \quad v_2 = -\frac{49}{50} v_3.
 	$$
@@ -325,19 +325,19 @@ Systems of first-order DEs crop up all the time in physical applications --- for
 	With $v_3 = 50$, we have an eigenvector of
 	
 	$$
-		\mathbf{v} = \left[ \begin{array}{c} 0 \\ -49 \\ 50 \end{array} \right].
+		\mathbf{v} = [[ 0 ; -49 ; 50 ]].
 	$$
 	
 	Finally, we have $\lambda = \frac{1}{25}$:
 	
 	$$
-		\left[ \begin{array}{ccc|c} -\frac{1}{50} + \frac{1}{25} & 0 & 0 & 0 \\ \frac{1}{50} & -2 + \frac{1}{25} & 0 & 0 \\ 0 & 2 & -\frac{1}{25} + \frac{1}{25} & 0 \end{array} \right] & 
+		[[ -\frac{1}{50} + \frac{1}{25}, 0, 0 | 0 ; \frac{1}{50}, -2 + \frac{1}{25}, 0 | 0 ; 0, 2, -\frac{1}{25} + \frac{1}{25} | 0 ]] & 
 		
-		\left[ \begin{array}{ccc|c} \frac{1}{50} & 0 & 0 & 0 \\ \frac{1}{50} & -\frac{49}{25} & 0 & 0 \\ 0 & 2 & 0 & 0 \end{array} \right] & 
+		[[ \frac{1}{50}, 0, 0 | 0 ; \frac{1}{50}, -\frac{49}{25}, 0 | 0 ; 0, 2, 0 | 0 ]] & 
 		
-		\left[ \begin{array}{ccc|c} 1 & 0 & 0 & 0 \\ 1 & -98 & 0 & 0 \\ 0 & 1 & 0 & 0 \end{array} \right] & \qquad \begin{array}{l} \mathbf{r_1} \te 50 \\ \mathbf{r_2} \te 50 \\ \mathbf{r_3} \te \frac{1}{2} \end{array}
+		[[ 1, 0, 0 | 0 ; 1, -98, 0 | 0 ; 0, 1, 0 | 0 ]] & \qquad \begin{array}{l} \mathbf{r_1} \te 50 \\ \mathbf{r_2} \te 50 \\ \mathbf{r_3} \te \frac{1}{2} \end{array}
 		
-		\left[ \begin{array}{ccc|c} 1 & 0 & 0 & 0 \\ 0 & 0 & 0 & 0 \\ 0 & 1 & 0 & 0 \end{array} \right] & \qquad \begin{array}{l} \mathbf{r_2} \pe -\mathbf{r_1} \\ \mathbf{r_2} \pe 98\mathbf{r_3} \end{array}
+		[[ 1, 0, 0 | 0 ; 0, 0, 0 | 0 ; 0, 1, 0 | 0 ]] & \qquad \begin{array}{l} \mathbf{r_2} \pe -\mathbf{r_1} \\ \mathbf{r_2} \pe 98\mathbf{r_3} \end{array}
 		
 		v_1 = 0, & \quad v_2 = 0.
 	$$
@@ -345,29 +345,29 @@ Systems of first-order DEs crop up all the time in physical applications --- for
 	That leaves $v_3$ undetermined, so let's just set $v_3 = 1$. Then our eigenvector is
 	
 	$$
-		\mathbf{v} = \left[ \begin{array}{c} 0 \\ 0 \\ 1 \end{array} \right].
+		\mathbf{v} = [[ 0 ; 0 ; 1 ]].
 	$$
 	
-	At long last, we're done! Our solution is
+	At long last, we're done! Our general solution is
 	
 	$$
-		\mathbf{x} = c_1 e^{-t / 50} \left[ \begin{array}{c} 99 \\ 1 \\ 100 \end{array} \right] + c_2 e^{-2t} \left[ \begin{array}{c} 0 \\ -49 \\ 50 \end{array} \right] + c_3 e^{-t / 25} \left[ \begin{array}{c} 0 \\ 0 \\ 1 \end{array} \right].
+		\mathbf{x} = c_1 e^{-t / 50} [[ 99 ; 1 ; 100 ]] + c_2 e^{-2t} [[ 0 ; -49 ; 50 ]] + c_3 e^{-t / 25} [[ 0 ; 0 ; 1 ]].
 	$$
 	
 	Now we just need to find our particular solution:
 	
 	$$
-		c_1 e^{0} \left[ \begin{array}{c} 99 \\ 1 \\ 100 \end{array} \right] + c_2 e^{0} \left[ \begin{array}{c} 0 \\ -49 \\ 50 \end{array} \right] + c_3 e^{0} \left[ \begin{array}{c} 0 \\ 0 \\ 1 \end{array} \right] &= \left[ \begin{array}{c} 990 \\ 500 \\ 0 \end{array} \right]
+		c_1 e^{0} [[ 99 ; 1 ; 100 ]] + c_2 e^{0} [[ 0 ; -49 ; 50 ]] + c_3 e^{0} [[ 0 ; 0 ; 1 ]] &= [[ 990 ; 500 ; 0 ]]
 		
-		\left[ \begin{array}{ccc|c} 99 & 0 & 0 & 990 \\ 1 & -49 & 0 & 500 \\ 100 & 50 & 1 & 0 \end{array} \right] & 
+		[[ 99, 0, 0 | 990 ; 1, -49, 0 | 500 ; 100, 50, 1 | 0 ]] & 
 		
-		\left[ \begin{array}{ccc|c} 1 & 0 & 0 & 10 \\ 1 & -49 & 0 & 500 \\ 100 & 50 & 1 & 0 \end{array} \right] & \qquad \mathbf{r_1} \te \frac{1}{99}
+		[[ 1, 0, 0 | 10 ; 1, -49, 0 | 500 ; 100, 50, 1 | 0 ]] & \qquad \mathbf{r_1} \te \frac{1}{99}
 		
-		\left[ \begin{array}{ccc|c} 1 & 0 & 0 & 10 \\ 0 & -49 & 0 & 490 \\ 100 & 50 & 1 & 0 \end{array} \right] & \qquad \mathbf{r_2} \pe -\mathbf{r_1}
+		[[ 1, 0, 0 | 10 ; 0, -49, 0 | 490 ; 100, 50, 1 | 0 ]] & \qquad \mathbf{r_2} \pe -\mathbf{r_1}
 		
-		\left[ \begin{array}{ccc|c} 1 & 0 & 0 & 10 \\ 0 & 1 & 0 & -10 \\ 100 & 50 & 1 & 0 \end{array} \right] & \qquad \mathbf{r_2} \te -\frac{1}{49}
+		[[ 1, 0, 0 | 10 ; 0, 1, 0 | -10 ; 100, 50, 1 | 0 ]] & \qquad \mathbf{r_2} \te -\frac{1}{49}
 		
-		\left[ \begin{array}{ccc|c} 1 & 0 & 0 & 10 \\ 0 & 1 & 0 & -10 \\ 0 & 0 & 1 & -500 \end{array} \right] & \qquad \begin{array}{l} \mathbf{r_3} \pe -100\mathbf{r_1} \\ \mathbf{r_3} \pe -50\mathbf{r_2} \end{array}
+		[[ 1, 0, 0 | 10 ; 0, 1, 0 | -10 ; 0, 0, 1 | -500 ]] & \qquad \begin{array}{l} \mathbf{r_3} \pe -100\mathbf{r_1} \\ \mathbf{r_3} \pe -50\mathbf{r_2} \end{array}
 		
 		c_1 = 10, \quad c_2 = -10, & \quad c_3 = -500.
 	$$
@@ -375,11 +375,11 @@ Systems of first-order DEs crop up all the time in physical applications --- for
 	The original problem asked for the masses of salt after 5 minutes, which is when $t = 300$:
 	
 	$$
-		\mathbf{x} &= 10 e^{-300 / 50} \left[ \begin{array}{c} 99 \\ 1 \\ 100 \end{array} \right] -10 e^{-2(300)} \left[ \begin{array}{c} 0 \\ -49 \\ 50 \end{array} \right] - 500 e^{-300 / 25} \left[ \begin{array}{c} 0 \\ 0 \\ 1 \end{array} \right]
+		\mathbf{x} &= 10 e^{-300 / 50} [[ 99 ; 1 ; 100 ]] -10 e^{-2(300)} [[ 0 ; -49 ; 50 ]] - 500 e^{-300 / 25} [[ 0 ; 0 ; 1 ]]
 		
-		&\approx \left[ \begin{array}{c} 2.454 \\ 0.025 \\ 2.479 \end{array} \right] + \left[ \begin{array}{c} 0 \\ 0 \\ 0 \end{array} \right] + \left[ \begin{array}{c} 0 \\ 0 \\ -0.003 \end{array} \right]
+		&\approx [[ 2.454 ; 0.025 ; 2.479 ]] + [[ 0 ; 0 ; 0 ]] + [[ 0 ; 0 ; -0.003 ]]
 		
-		&= \left[ \begin{array}{c} 2.454 \\ 0.025 \\ 2.482 \end{array} \right].
+		&= [[ 2.454 ; 0.025 ; 2.482 ]].
 	$$
 	
 	As we might expect, not much salt is left after so much time has passed.

@@ -138,7 +138,7 @@ The imaginary numbers have disappeared --- we could take $c_1$ and $c_2$ to be c
 	It still seems a little wild that this works, but it definitely does! Let's now look at the Wronskian to make sure that *all* solutions are picked up by this general form.
 	
 	$$
-		W\left[ e^{-t} \cos(2t), e^{-t} \sin(2t) \right] &= \det \left[ \begin{array}{cc} e^{-t} \cos(2t) & e^{-t} \sin(2t) \\ -e^{-t}\cos(2t) - 2e^{-t}\sin(2t) & -e^{-t}\sin(2t) + 2e^{-t}\cos(2t) \end{array} \right]
+		W\left[ e^{-t} \cos(2t), e^{-t} \sin(2t) \right] &= \det [[ e^{-t} \cos(2t), e^{-t} \sin(2t) ; -e^{-t}\cos(2t) - 2e^{-t}\sin(2t), -e^{-t}\sin(2t) + 2e^{-t}\cos(2t) ]]
 		
 		&= 2e^{-2t}\sin^2(2t) + 2e^{-2t}\cos^2(2t)
 		
@@ -244,7 +244,7 @@ $$
 We're almost done! The only thing left is to check the Wronskian to make sure that we've actually captured all possible solutions this way. We have
 
 $$
-	W\left[ e^{r_1 t}, te^{r_1 t} \right] &= \det \left[ \begin{array}{cc} e^{r_1 t} & te^{r_1 t} \\ r_1 e^{r_1 t} & e^{r_1 t} + r_1 te^{r_1 t} \end{array} \right]
+	W\left[ e^{r_1 t}, te^{r_1 t} \right] &= \det [[ e^{r_1 t}, te^{r_1 t} ; r_1 e^{r_1 t}, e^{r_1 t} + r_1 te^{r_1 t} ]]
 	
 	&= e^{2r_1 t} + r_1 t e^{2r_1 t} - r_1 t e^{2r_1 t}
 	

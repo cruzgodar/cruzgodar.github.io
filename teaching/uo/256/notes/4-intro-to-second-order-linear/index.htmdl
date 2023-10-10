@@ -188,13 +188,13 @@ $$
 When does this have a unique solution for $c_1$ and $c_2$? As with linear operators, we'll have a lot more to say about this in the future, but here's the result we'll need for now: we can represent this system as a **matrix**, which is a rectangular grid of numbers. It turns out that if all we care about is whether a unique solution exists, and not what it is exactly, then we don't need to worry about the right sides of the equations at all --- the only things that matter are the coefficients on $c_1$ and $c_2$. Arranging these into a $2 \times 2$ matrix gives us
 
 $$
-	\left[ \begin{array}{cc} y_1(t_0) & y_2(t_0) \\ y_1'(t_0) & y_2'(t_0) \end{array} \right].
+	[[ y_1(t_0), y_2(t_0) ; y_1'(t_0), y_2'(t_0) ]].
 $$
 
 Again, more on this in a few weeks, but the important result here is that the system of equations has a unique solution if and only if the **determinant** of this matrix is nonzero. The determinant of a matrix is a complicated operation in general, but it's not bad at all for a $2 \times 2$:
 
 $$
-	\det \left[ \begin{array}{cc} a & b \\ c & d \end{array} \right] = ad - bc.
+	\det [[ a, b ; c, d ]] = ad - bc.
 $$
 
 In our case, we want to take the determinant of the particular $2 \times 2$ matrix made from our initial conditions, and it has a special name:
@@ -214,13 +214,13 @@ In our case, we want to take the determinant of the particular $2 \times 2$ matr
 	Given two fundamental solutions $y = y_1(t)$ and $y = y_2(t)$, the **Wronskian** is the determinant
 	
 	$$
-		W[y_1, y_2](t_0) = \det \left[ \begin{array}{cc} y_1(t_0) & y_2(t_0) \\ y_1'(t_0) & y_2'(t_0) \end{array} \right].
+		W[y_1, y_2](t_0) = \det [[ y_1(t_0), y_2(t_0) ; y_1'(t_0), y_2'(t_0) ]].
 	$$
 	
 	We often write this more concisely as just
 	
 	$$
-		W[y_1, y_2] = \det \left[ \begin{array}{cc} y_1 & y_2 \\ y_1' & y_2' \end{array} \right].
+		W[y_1, y_2] = \det [[ y_1, y_2 ; y_1', y_2' ]].
 	$$
 	
 	The DE has a unique solution if and only if $W \neq 0$.
@@ -266,7 +266,7 @@ Let's (finally) return to an example and put all of this into practice.
 	so $r = -2$ or $r = -4$. Our two solutions are then $y_1 = e^{-2t}$ and $y_2 = e^{-4t}$, so the Wronskian is
 	
 	$$
-		W\left[ e^{-2t}, e^{-4t} \right] &= \det \left[ \begin{array}{cc} e^{-2t} & e^{-4t} \\ -2e^{-2t} & -4e^{-4t} \end{array} \right]
+		W\left[ e^{-2t}, e^{-4t} \right] &= \det [[ e^{-2t}, e^{-4t} ; -2e^{-2t}, -4e^{-4t} ]]
 		
 		&= -4e^{-2t}e^{-4t} + 2e^{-4t}e^{-2t}
 		

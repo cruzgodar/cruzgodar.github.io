@@ -53,7 +53,7 @@ Drag the red point to change the eigenvalues and eigenvectors. The blue curves a
 	Since all of the solutions approach straight lines as $t \to \infty$ or $t \to -\infty$, there is no curl in this system --- the eigenvalues and eigenvectors must be real. The eigenvectors are parallel to the straight-line solutions (being on a straight-line solution is what it means to be an eigenvector of $\mathbf{A}$), so the eigenvectors appear to be
 	
 	$$
-		\mathbf{v_1} = \left[ \begin{array}{c} 1 \\ 1 \end{array} \right], \quad \mathbf{v_2} = \left[ \begin{array}{c} -3 \\ 1 \end{array} \right].
+		\mathbf{v_1} = [[ 1 ; 1 ]], \quad \mathbf{v_2} = [[ -3 ; 1 ]].
 	$$
 	
 	What about the eigenvalues? The fundamental solution corresponding to $\mathbf{v_1}$ flows toward the origin, so its eigenvalue $\lambda_1$ must be negative. On the other hand, the fundamental solution corresponding to $\mathbf{v_2}$ flows away from the origin, so its eigenvalue $\lambda_2$ must be positive.
@@ -199,7 +199,7 @@ This definition is fine, but we'll barely use it --- for us, the most important 
 	where $f$ and $g$ have continuous first- and second-order partial derivatives in both $x$ and $y$. If $(x_0, y_0)$ is a critical point, then the system is locally linear near $(x_0, y_0)$, with the approximating matrix $\mathbf{A}$ given by
 	
 	$$
-		\mathbf{A} = \mathbf{J}(x_0, y_0) = \left[ \begin{array}{cc} \frac{\partial f}{\partial x}(x_0, y_0) & \frac{\partial f}{\partial y}(x_0, y_0) \\ \frac{\partial g}{\partial x}(x_0, y_0) & \frac{\partial g}{\partial y}(x_0, y_0) \end{array} \right],
+		\mathbf{A} = \mathbf{J}(x_0, y_0) = [[ \frac{\partial f}{\partial x}(x_0, y_0), \frac{\partial f}{\partial y}(x_0, y_0) ; \frac{\partial g}{\partial x}(x_0, y_0), \frac{\partial g}{\partial y}(x_0, y_0) ]],
 	$$
 	
 	called the **Jacobian** of $f$ and $g$. Moreover, as long as the eigenvalues of $\mathbf{J}(x_0, y_0)$ are not pure imaginary, the stability of $(x_0, y_0)$ in the original system is the same as the stability of the origin as a critical point in the system
@@ -231,21 +231,21 @@ With the Jacobian in hand, we can approximate complex systems and determine the 
 	To get started, let's find the Jacobian in general:
 	
 	$$
-		\mathbf{J} &= \left[ \begin{array}{cc} \frac{\partial f}{\partial x} & \frac{\partial f}{\partial y} \\ \frac{\partial g}{\partial x} & \frac{\partial g}{\partial y} \end{array} \right]
+		\mathbf{J} &= [[ \frac{\partial f}{\partial x}, \frac{\partial f}{\partial y} ; \frac{\partial g}{\partial x}, \frac{\partial g}{\partial y} ]]
 		
-		&= \left[ \begin{array}{cc} 0 & 1 \\ -\cos(x) & -\frac{1}{2} \end{array} \right].
+		&= [[ 0, 1 ; -\cos(x), -\frac{1}{2} ]].
 	$$
 	
 	Plugging in $x = \pi$ and $y = 0$ gives us
 	
 	$$
-		\mathbf{J}\left(0, \pi\right) &= \left[ \begin{array}{cc} 0 & 1 \\ 1 & -\frac{1}{2} \end{array} \right].
+		\mathbf{J}\left(0, \pi\right) &= [[ 0, 1 ; 1, -\frac{1}{2} ]].
 	$$
 	
 	Now near this critical point, our nonlinear system has the same behavior as the linear system
 	
 	$$
-		\mathbf{x}' = \left[ \begin{array}{cc} 0 & 1 \\ 1 & -\frac{1}{2} \end{array} \right]\mathbf{x}.
+		\mathbf{x}' = [[ 0, 1 ; 1, -\frac{1}{2} ]]\mathbf{x}.
 	$$
 	
 	Solving for the eigenvalues gives us

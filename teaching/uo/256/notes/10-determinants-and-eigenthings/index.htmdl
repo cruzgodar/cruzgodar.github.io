@@ -32,15 +32,9 @@ for some constants $c_i$, where $\mathbf{0}$ is the row vector of all zeros. Som
 
 
 
-For example, $\mathbf{v_1} = \left[ \begin{array}{ccc} 2 & -5 & 1 \end{array} \right]$ and $\mathbf{v_2} = \left[ \begin{array}{ccc} -4 & 10 & -2 \end{array} \right]$ are linearly dependent, since $-2\mathbf{v_1} + \mathbf{v_2} = \mathbf{0}$. To determine if a more complicated set of vectors is linearly dependent, just throw them into a matrix as row vectors and try to row reduce the matrix. If a row becomes the zero vector, they're linearly dependent, and if not, they're linearly independent.
+For example, $\mathbf{v_1} = [[2, -5, 1]]$ and $\mathbf{v_2} = [[-4, 10, -2]]$ are linearly dependent, since $-2\mathbf{v_1} + \mathbf{v_2} = \mathbf{0}$. To determine if a more complicated set of vectors is linearly dependent, just throw them into a matrix as row vectors and try to row reduce the matrix. If a row becomes the zero vector, they're linearly dependent, and if not, they're linearly independent.
 
-If we're looking at $n$-dimensional vectors, any collection of more than $n$ of them is *guaranteed* to be linearly dependent. That's because putting the into a matrix results in one that is taller than it is wide, and so even if the first $n$ rows are linearly independent, meaning they reduce to the identity matrix, the rows after it will reduce to zero: once we have the identity matrix, we can destroy any other row, meaning the matrix has the form
-
-$$
-	\left[ \begin{array}{c} \mathbf{I} \\ \hline \mathbf{0} \end{array} \right].
-$$
-
-Since linear dependence of the rows is the only problem that can arise when row reducing, we have a clean result relating it to matrix inversion.
+If we're looking at $n$-dimensional vectors, any collection of more than $n$ of them is *guaranteed* to be linearly dependent. That's because putting the into a matrix results in one that is taller than it is wide, and so even if the first $n$ rows are linearly independent, meaning they reduce to the identity matrix, the rows after it will reduce to zero: once we have the identity matrix, we can destroy any other row, meaning the matrix has the form $[[ \mathbf{I} \\ \hline \mathbf{0}]]$. Since linear dependence of the rows is the only problem that can arise when row reducing, we have a clean result relating it to matrix inversion.
 
 
 
@@ -56,8 +50,8 @@ This definition lets us go back and clarify something from earlier sections: fun
 
 $$
 	p_n(t)y^{(n)} + p_{n-1}(t)y^{(n - 1)} + \cdots + p_1(t)y' + p_0(t)y &= 0
-	
-	\left[ \begin{array}{ccccc} p_n(t) & p_{n-1}(t) & \cdots & p_1(t) & p_0(t) \end{array} \right] \left[ \begin{array}{c} y^{(n)} \\ y^{(n - 1)} \\ \vdots \\ y' \\ y \end{array} \right] &= 0.
+
+	[[p_n(t), p_{n-1}(t), \cdots, p_1(t), p_0(t)]] [[y^{(n)} ; y^{(n - 1)} ; \vdots ; y' ; y]] &= 0.
 $$
 
 This gives us our first hint of how matrices will relate to systems of DEs, and we'll begin exploring that connection properly in the next section. For now, let's get back to matrices.
@@ -75,7 +69,7 @@ It's time to properly talk about determinants. We've seen plenty of them for $2 
 	Let $\mathbf{A}$ be an $n \times n$ matrix. The **determinant** of $\mathbf{A}$, written $\det \mathbf{A}$, is a single number (that measures the factor by which $\mathbf{A}$ scales volume). The determinant of a $1 \times 1$ matrix --- i.e. a number --- is its single entry, and the determinant of a larger matrix can be found expanding along any row or column: pick a row or column, and for every entry in it, cross off its row and column and find the determinant of the remaining $(n - 1) \times (n - 1)$ matrix. Multiply that by the entry in consideration and then add these up for all $n$ entries, alternating sign according to the following checkerboard pattern:
 	
 	$$
-		\left[ \begin{array}{ccccc} + & - & + & - & \cdots \\ - & + & - & + & \cdots \\ + & - & + & - & \cdots \\ - & + & - & + & \cdots \\ \vdots & \vdots & \vdots & \vdots & \ddots \end{array} \right]
+		[[ +, -, +, -, \cdots ; -, +, -, +, \cdots ; +, -, +, -, \cdots ; -, +, -, +, \cdots ; \vdots, \vdots, \vdots, \vdots, \ddots ]]
 	$$
 	
 ###
@@ -84,22 +78,22 @@ It's time to properly talk about determinants. We've seen plenty of them for $2 
 
 ### ex determinant
 	
-	Evaluate $$\det \left[ \begin{array}{ccc} 1 & 4 & 7 \\ 3 & 6 & 9 \\ 2 & 5 & 8 \end{array} \right].$$
+	Evaluate $$\det [[ 1, 4, 7 ; 3, 6, 9 ; 2, 5, 8 ]].$$
 	
 	Let's expand along row $2$. For the entry $3$, crossing off its row and column leaves the following matrix:
 	
 	$$
-		\left[ \begin{array}{ccc}   & 4 & 7 \\   &   &   \\   & 5 & 8 \end{array} \right].
+		[[ , 4, 7 ; , , ;  , 5, 8 ]].
 	$$
 	
 	The determinant of this is just $4(8) - 7(5) = -3$, and so our first term in the determinant is this times the $3$, making $-9$. Repeating this for the other two terms in the row, we have
 	
 	$$
-		6 \det \left[ \begin{array}{ccc} 1 &   & 7 \\   &   &   \\ 2 &   & 8 \end{array} \right] &= 6(1(8) - 7(2))
+		6 \det [[ 1, , 7 ; , , ; 2, , 8 ]] &= 6(1(8) - 7(2))
 		
 		&= -36.
 		
-		9 \det \left[ \begin{array}{ccc} 1 & 4 &   \\   &   &   \\ 2 & 5 &   \end{array} \right] &= 9(1(5) - 4(2))
+		9 \det [[ 1, 4, ; , , ; 2, 5, ]] &= 9(1(5) - 4(2))
 		
 		&= -27.
 	$$
@@ -107,7 +101,7 @@ It's time to properly talk about determinants. We've seen plenty of them for $2 
 	Finally, we'll add these three up and modify their signs according to the checkerboard pattern. The second row begins with $-$, so in total, we have
 	
 	$$
-		\det \left[ \begin{array}{ccc} 1 & 4 & 7 \\ 3 & 6 & 9 \\ 2 & 5 & 8 \end{array} \right] &= -(-9) + (-36) - (-27)
+		\det [[ 1, 4, 7 ; 3, 6, 9 ; 2, 5, 8 ]] &= -(-9) + (-36) - (-27)
 		
 		&= 0.
 	$$
@@ -116,7 +110,7 @@ It's time to properly talk about determinants. We've seen plenty of them for $2 
 
 ### exc determinant
 	
-Evaluate $$\det \left[ \begin{array}{ccc} 2 & 1 & 0 \\ 2 & 7 & 1 \\ -1 & 2 & -5 \end{array} \right].$$
+Evaluate $$\det [[ 2, 1, 0 ; 2, 7, 1 ; -1, 2, -5 ]].$$
 	
 ###
 
@@ -143,23 +137,23 @@ The short explanation here is that writing down a general formula for the invers
 When matrices and vectors are small, multiplying them together isn't a particularly long operation, but as the dimension increases, it gets progressively more intensive. For some very special vectors, though, multiplication isn't difficult at all. For example, let's look at the matrix
 
 $$
-	\mathbf{A} = \left[ \begin{array}{cc} 2 & 2 \\ 3 & 1 \end{array} \right].
+	\mathbf{A} = [[ 2, 2 ; 3, 1 ]].
 $$
 
 If we evaluate the following two products, they're equal to multiples of the vector we plug in:
 
 $$
-	\mathbf{A} \left[ \begin{array}{c} 1 \\ 1 \end{array} \right] &= \left[ \begin{array}{cc} 2 & 2 \\ 3 & 1 \end{array} \right] \left[ \begin{array}{c} 1 \\ 1 \end{array} \right]
+	\mathbf{A} [[ 1 ; 1 ]] &= [[ 2, 2 ; 3, 1 ]] [[ 1 ; 1 ]]
 	
-	&= \left[ \begin{array}{c} 4 \\ 4 \end{array} \right]
+	&= [[4 ; 4]]
 	
-	&= 4\left[ \begin{array}{c} 1 \\ 1 \end{array} \right].
+	&= 4[[ 1 ; 1 ]]
 	
-	\mathbf{A} \left[ \begin{array}{c} -2 \\ 3 \end{array} \right] &= \left[ \begin{array}{cc} 2 & 2 \\ 3 & 1 \end{array} \right] \left[ \begin{array}{c} -2 \\ 3 \end{array} \right]
+	\mathbf{A} [[ -2 ; 3 ]] &= [ 2, 2 ; 3, 1 ]] [[ -2 ; 3 ]]
 	
-	&= \left[ \begin{array}{c} 2 \\ -3 \end{array} \right]
+	&= [[ 2 ; -3 ]]
 	
-	&= -\left[ \begin{array}{c} -2 \\ 3 \end{array} \right].
+	&= -[[ -2 ; 3 ]]
 $$
 
 Although it might not seem like a pivotal topic at first, vectors like these play an incredibly important role in the study of matrices, and it'll be helpful to give them a name.
@@ -195,13 +189,13 @@ In a deeply unfortunate naming collision, this equation is called the **characte
 	Find the eigenvalues and eigenvectors of
 	
 	$$
-		\mathbf{A} = \left[ \begin{array}{cc} 5 & -3 \\ 2 & -2 \end{array} \right].
+		\mathbf{A} = [[ 5, -3 ; 2, -2 ]].
 	$$
 	
 	To get the characteristic polynomial, we subtract $\lambda \mathbf{I}$, which just means subtracting $\lambda$ from every entry in the diagonal, and then take the determinant.
 	
 	$$
-		\det (\mathbf{A} - \lambda \mathbf{I}) &= \det \left[ \begin{array}{cc} 5 - \lambda & -3 \\ 2 & -2 - \lambda \end{array} \right]
+		\det (\mathbf{A} - \lambda \mathbf{I}) &= \det [[ 5 - \lambda, -3 ; 2, -2 - \lambda ]]
 		
 		&= (5 - \lambda)(-2 - \lambda) - (-3)(2)
 		
@@ -217,29 +211,29 @@ In a deeply unfortunate naming collision, this equation is called the **characte
 	First, let's take $\lambda = 4$. That gives us the system $(\mathbf{A} - 4 \mathbf{I})\mathbf{v} = \mathbf{0}$, which corresponds to the augmented matrix
 	
 	$$
-		\left[ \begin{array}{cc|c} 1 & -3 & 0 \\ 2 & -6 & 0 \end{array} \right]
+		[[ 1, -3 | 0 ; 2, -6 | 0 ]] & 
 		
-		\left[ \begin{array}{cc|c} 1 & -3 & 0 \\ 0 & 0 & 0 \end{array} \right] & \qquad \mathbf{r_2} \pe -2\mathbf{r_1}.
+		[[ 1, -3 | 0 ; 0, 0 | 0 ]] & \qquad \mathbf{r_2} \pe -2\mathbf{r_1}.
 	$$
 	
 	In the form of an equation, $v_1 - 3v_2 = 0$, so $v_1 = 3v_2$. We just need one eigenvector, so let's take $v_2 = 1$ and $v_1 = 3$ to get our first eigenvector of
 	
 	$$
-		\mathbf{v} = \left[ \begin{array}{c} 3 \\ 1 \end{array} \right]
+		\mathbf{v} = [[ 3 ; 1 ]]
 	$$
 	
 	with $\lambda_1 = 4$. For the other eigenvalue, we have
 	
 	$$
-		\left[ \begin{array}{cc|c} 6 & -3 & 0 \\ 2 & -1 & 0 \end{array} \right]
+		[[ 6, -3 | 0 ; 2, -1 | 0 ]] & 
 			
-		\left[ \begin{array}{cc|c} 6 & -3 & 0 \\ 0 & 0 & 0 \end{array} \right] & \qquad \mathbf{r_2} \pe -\frac{1}{3}\mathbf{r_1}.
+		[[ 6, -3 | 0 ; 0, 0 | 0 ]] & \qquad \mathbf{r_2} \pe -\frac{1}{3}\mathbf{r_1}.
 	$$
 	
 	Now $6v_1 - 3v_2 = 0$, so $2v_1 = v_2$. We'll just take $v_1 = 1$ and $v_2 = 2$ to get our second eigenvector of
 	
 	$$
-		\mathbf{v} = \left[ \begin{array}{c} 1 \\ 2 \end{array} \right].
+		\mathbf{v} = [[ 1 ; 2 ]]
 	$$
 	
 ###
@@ -249,7 +243,7 @@ In a deeply unfortunate naming collision, this equation is called the **characte
 	Find the eigenvalues and eigenvectors of
 	
 	$$
-		\mathbf{A} = \left[ \begin{array}{ccc} 1 & 1 & 0 \\ 0 & 0 & 0 \\ 0 & 1 & 1 \end{array} \right].
+		\mathbf{A} = [[ 1, 1, 0 ; 0, 0, 0 ; 0, 1, 1 ]].
 	$$
 	
 ###

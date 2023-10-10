@@ -61,7 +61,7 @@ Just as we were able to relate the solvability of the system to the determinant 
 	The **Wronskian** of the $n$ different fundamental solutions $y_1, ..., y_n$ is the determinant
 	
 	$$
-		W[y_1, ..., y_n] = \det \left[ \begin{array}{cccc} y_1 & y_2 & \cdots & y_n \\ y_1' & y_2' & \cdots & y_n' \\ \vdots & \vdots & \ddots & \vdots \\ y_1^{(n - 1)} & y_2^{(n - 1)} & \cdots & y_n^{(n - 1)} \end{array} \right].
+		W[y_1, ..., y_n] = \det [[ y_1, y_2, \cdots, y_n ; y_1', y_2', \cdots, y_n' ; \vdots, \vdots, \ddots, \vdots ; y_1^{(n - 1)}, y_2^{(n - 1)}, \cdots, y_n^{(n - 1)} ]].
 	$$
 	
 ###

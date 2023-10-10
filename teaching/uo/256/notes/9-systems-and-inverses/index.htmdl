@@ -7,7 +7,7 @@ Part of the confusion surrounding matrices comes from the heavily-blurred line b
 First of all, let's talk about the identity matrix. We mentioned it briefly in the last section, but it's worth revisiting now that we understand more about matrix multiplication. The $n \times n$ identity matrix $\mathbf{I}$ is given by
 
 $$
-	\mathbf{I} = \left[ \begin{array}{ccccc} 1 & 0 & \cdots & 0 & 0 \\ 0 & 1 & \cdots & 0 & 0 \\ \vdots & \vdots & \ddots & \vdots & \vdots \\ 0 & 0 & \cdots & 1 & 0 \\ 0 & 0 & \cdots & 0 & 1 \end{array} \right],
+	\mathbf{I} = [[ 1, 0, \cdots, 0, 0 ; 0, 1, \cdots, 0, 0 ; \vdots, \vdots, \ddots, \vdots, \vdots ; 0, 0, \cdots, 1, 0 ; 0, 0, \cdots, 0, 1 ]],
 $$
 
 and its purpose is to serve as the identity function, meaning it leaves matrices and vectors unchanged when multiplied by them. (You'll verify in a homework problem that $\mathbf{AI} = \mathbf{IA} = \mathbf{A}$ for any matrix $\mathbf{A}$). In the language of multiplication, $\mathbf{I}$ is the equivalent of the number $1$, and in the language of functions, it's the equivalent of the identity function $f(x) = x$.
@@ -27,13 +27,13 @@ $$
 Has the matrix form
 
 $$
-	\left[ \begin{array}{cc} 2 & -1 \\ 1 & 5 \end{array} \right] \left[ \begin{array}{c} x_1 \\ x_2 \end{array} \right] = \left[ \begin{array}{c} 3 \\ -1 \end{array} \right].
+	[[ 2, -1 ; 1, 5 ]] [[ x_1 ; x_2 ]] = [[ 3 ; -1 ]].
 $$
 
 To represent this system in a single augmented matrix, we write it as
 
 $$
-	[\mathbf{A} \mid \mathbf{b}] = \left[ \begin{array}{cc|c} 2 & -1 & 3 \\ 1 & 5 & -1 \end{array} \right].
+	[\mathbf{A} \mid \mathbf{b}] = [[ 2, -1 | 3 ; 1, 5 | -1 ]].
 $$
 
 So: what operations can we do that preserve the equation structure? Since each row represents its own equation, we can definitely swap any two rows. We can't add or subtract a single number or variable on both sides, because there can't be any constants on the left or variables on the right --- but we can multiply an entire row by a nonzero constant (multiplying both sides by zero is the fastest way to destroy information when solving an equation). Finally, we can add any multiple of one row to another, analogous to the method of addition for solving systems. Together, these form the three **elementary row operations** on matrices, and they let us reduce matrices to simpler forms through a step-by-step process. Let's define that simpler form and then describe how to get there.
@@ -51,7 +51,7 @@ So: what operations can we do that preserve the equation structure? Since each r
 In practice, matrices in reduced row echelon form look like the identity matrix, but some rows may be zero and there may be some extra columns inserted. For example,
 
 $$
-	\left[ \begin{array}{ccccc} 1 & 0 & 5 & 0 & 0 \\ 0 & 1 & -2 & 0 & 0 \\ 0 & 0 & 0 & 0 & 1 \\ 0 & 0 & 0 & 0 & 0 \end{array} \right]
+	[[ 1, 0, 5, 0, 0 ; 0, 1, -2, 0, 0 ; 0, 0, 0, 0, 1 ; 0, 0, 0, 0, 0 ]]
 $$
 
 is in reduced row echelon form. The idea here is that matrices in this form correspond to a solved system of equations: all of the rows with a leading $1$ have a variable isolated, and the extra columns are free parameters.
@@ -85,63 +85,63 @@ This is a method best explained with examples, so let's dive right in.
 	To begin, we'll place this into an augmented matrix:
 	
 	$$
-		\left[ \begin{array}{ccc|c} 4 & -1 & 3 & -1 \\ 1 & 2 & 0 & 20 \\ -6 & 0 & 1 & -12 \end{array} \right].
+		[[ 4, -1, 3 | -1 ; 1, 2, 0 | 20 ; -6, 0, 1 | -12 ]].
 	$$
 	
 	And now we'll get reducing! For ease of language, let's call the rows $\mathbf{r_1}$, $\mathbf{r_2}$, and $\mathbf{r_3}$ --- as we move the rows around, what they refer to will change. Let's start with $\mathbf{r_2}$, since it already has a $1$ in the first position, and move it to the top by swapping it with $\mathbf{r_1}$:
 	
 	$$
-		\left[ \begin{array}{ccc|c} 1 & 2 & 0 & 20 \\ 4 & -1 & 3 & -1 \\ -6 & 0 & 1 & -12 \end{array} \right].
+		[[ 1, 2, 0 | 20 ; 4, -1, 3 | -1 ; -6, 0, 1 | -12 ]].
 	$$
 	
 	Notice that the part of the row to the right of the bar comes along for the ride. Now we can add $-4\mathbf{r_1}$ to $\mathbf{r_2}$ and $6\mathbf{r_1}$ to $\mathbf{r_3}$ to remove their first entries.
 	
 	$$
-		\left[ \begin{array}{ccc|c} 1 & 2 & 0 & 20 \\ 0 & -9 & 3 & -81 \\ 0 & 12 & 1 & 108 \end{array} \right].
+		[[ 1, 2, 0 | 20 ; 0, -9, 3 | -81 ; 0, 12, 1 | 108 ]].
 	$$
 	
 	We can clean up $\mathbf{r_2}$ by dividing it through by $-3$ to get
 	
 	$$
-		\left[ \begin{array}{ccc|c} 1 & 2 & 0 & 20 \\ 0 & 3 & -1 & 27 \\ 0 & 12 & 1 & 108 \end{array} \right].
+		[[ 1, 2, 0 | 20 ; 0, 3, -1 | 27 ; 0, 12, 1 | 108 ]].
 	$$
 	
 	Now if we add $-4\mathbf{r_2}$ to $\mathbf{r_3}$, we can clear its second entry.
 	
 	$$
-		\left[ \begin{array}{ccc|c} 1 & 2 & 0 & 20 \\ 0 & 3 & -1 & 27 \\ 0 & 0 & 5 & 0 \end{array} \right].
+		[[ 1, 2, 0 | 20 ; 0, 3, -1 | 27 ; 0, 0, 5 | 0 ]].
 	$$
 	
 	That's the first half of row reduction done! For the second half, we start with $\mathbf{r_3}$. Let's first divide by $5$:
 	
 	$$
-		\left[ \begin{array}{ccc|c} 1 & 2 & 0 & 20 \\ 0 & 3 & -1 & 27 \\ 0 & 0 & 1 & 0 \end{array} \right].
+		[[ 1, 2, 0 | 20 ; 0, 3, -1 | 27 ; 0, 0, 1 | 0 ]].
 	$$
 	
 	Now we can add $\mathbf{r_3}$ to $\mathbf{r_2}$ to clear its last entry. There's no need to do anything to $\mathbf{r_1}$, since its last entry is already zero.
 	
 	$$
-		\left[ \begin{array}{ccc|c} 1 & 2 & 0 & 20 \\ 0 & 3 & 0 & 27 \\ 0 & 0 & 1 & 0 \end{array} \right].
+		[[ 1, 2, 0 | 20 ; 0, 3, 0 | 27 ; 0, 0, 1 | 0 ]].
 	$$
 	
 	Dividing $\mathbf{r_2}$ by $3$ gives
 	
 	$$
-		\left[ \begin{array}{ccc|c} 1 & 2 & 0 & 20 \\ 0 & 1 & 0 & 9 \\ 0 & 0 & 1 & 0 \end{array} \right],
+		[[ 1, 2, 0 | 20 ; 0, 1, 0 | 9 ; 0, 0, 1 | 0 ]],
 	$$
 	
 	and then finally, we can add $-2\mathbf{r_2}$ to $\mathbf{r_1}$ to get
 	
 	$$
-		\left[ \begin{array}{ccc|c} 1 & 0 & 0 & 2 \\ 0 & 1 & 0 & 9 \\ 0 & 0 & 1 & 0 \end{array} \right],
+		[[ 1, 0, 0 | 2 ; 0, 1, 0 | 9 ; 0, 0, 1 | 0 ]],
 	$$
 	
 	If we rewrite this as a matrix equation, we have
 	
 	$$
-		\left[ \begin{array}{ccc} 1 & 0 & 0 \\ 0 & 1 & 0 \\ 0 & 0 & 1 \end{array} \right]\left[ \begin{array}{c} x \\ y \\ z \end{array} \right] &= \left[ \begin{array}{c} 2 \\ 9 \\ 0 \end{array} \right]
+		[[ 1, 0, 0 ; 0, 1, 0 ; 0, 0, 1 ]][[ x ; y ; z ]] &= [[ 2 ; 9 ; 0 ]]
 		
-		\left[ \begin{array}{c} x \\ y \\ z \end{array} \right] &= \left[ \begin{array}{c} 2 \\ 9 \\ 0 \end{array} \right],
+		[[ x ; y ; z ]] &= [[ 2 ; 9 ; 0 ]],
 	$$
 	
 	so $x = 2$, $y = 9$, and $z = 0$.
@@ -179,19 +179,19 @@ These are shorthand for swapping rows $i$ and $j$, multiplying row $i$ by a cons
 	Once this is in a matrix, we're off to the races:
 	
 	$$
-		\left[ \begin{array}{cccc|c} 1 & 4 & 0 & -14 & -11 \\ 2 & 5 & 1 & 14 & -15 \\ 0 & 1 & -5 & 28 & 7 \end{array} \right] & 
+		[[ 1, 4, 0, -14 | -11 ; 2, 5, 1, 14 | -15 ; 0, 1, -5, 28 | 7 ]] & 
 		
-		\left[ \begin{array}{cccc|c} 1 & 4 & 0 & -14 & -11 \\ 0 & -3 & 1 & 42 & 7 \\ 0 & 1 & -5 & 28 & 7 \end{array} \right] & \qquad \mathbf{r_2} \pe -2\mathbf{r_1}
+		[[ 1, 4, 0, -14 | -11 ; 0, -3, 1, 42 | 7 ; 0, 1, -5, 28 | 7 ]] & \qquad \mathbf{r_2} \pe -2\mathbf{r_1}
 		
-		\left[ \begin{array}{cccc|c} 1 & 4 & 0 & -14 & -11 \\ 0 & 1 & -5 & 28 & 7 \\ 0 & -3 & 1 & 42 & 7 \end{array} \right] & \qquad \text{swap } \mathbf{r_2}, \mathbf{r_3}
+		[[ 1, 4, 0, -14 | -11 ; 0, 1, -5, 28 | 7 ; 0, -3, 1, 42 | 7 ]] & \qquad \text{swap } \mathbf{r_2}, \mathbf{r_3}
 		
-		\left[ \begin{array}{cccc|c} 1 & 4 & 0 & -14 & -11 \\ 0 & 1 & -5 & 28 & 7 \\ 0 & 0 & -14 & 126 & 28 \end{array} \right] & \qquad \mathbf{r_3} \pe 3\mathbf{r_2}
+		[[ 1, 4, 0, -14 | -11 ; 0, 1, -5, 28 | 7 ; 0, 0, -14, 126 | 28 ]] & \qquad \mathbf{r_3} \pe 3\mathbf{r_2}
 		
-		\left[ \begin{array}{cccc|c} 1 & 4 & 0 & -14 & -11 \\ 0 & 1 & -5 & 28 & 7 \\ 0 & 0 & 1 & -9 & -2 \end{array} \right] & \qquad \mathbf{r_3} \te -\frac{1}{14}
+		[[ 1, 4, 0, -14 | -11 ; 0, 1, -5, 28 | 7 ; 0, 0, 1, -9 | -2 ]] & \qquad \mathbf{r_3} \te -\frac{1}{14}
 		
-		\left[ \begin{array}{cccc|c} 1 & 4 & 0 & -14 & -11 \\ 0 & 1 & 0 & -17 & -3 \\ 0 & 0 & 1 & -9 & -2 \end{array} \right] & \qquad \mathbf{r_2} \pe 5\mathbf{r_3}
+		[[ 1, 4, 0, -14 | -11 ; 0, 1, 0, -17 | -3 ; 0, 0, 1, -9 | -2 ]] & \qquad \mathbf{r_2} \pe 5\mathbf{r_3}
 		
-		\left[ \begin{array}{cccc|c} 1 & 0 & 0 & 54 & 1 \\ 0 & 1 & 0 & -17 & -3 \\ 0 & 0 & 1 & -9 & -2 \end{array} \right] & \qquad \mathbf{r_1} \pe -4\mathbf{r_2}
+		[[ 1, 0, 0, 54 | 1 ; 0, 1, 0, -17 | -3 ; 0, 0, 1, -9 | -2 ]] & \qquad \mathbf{r_1} \pe -4\mathbf{r_2}
 	$$
 	
 	The matrix is now fully reduced, even though there are still a bunch of ugly-looking numbers in it. What's going on with that? Every row of a matrix represents an equation and every column represents a different variable, so if a matrix is square, the number of equations and the number of unknowns are equal, meaning that we'd expect to be able to solve for all of them. If the matrix has more rows than columns --- it's a tall rectangle --- then the balance is tipped to having more equations than unknowns, meaning we'd expect there to be *no* solution unless things align just right. We'll see examples of this later, but it typically looks like one of the rows having all zeros on the left and a nonzero value on the right, which is impossible.
@@ -244,7 +244,7 @@ With the tool of row reduction, we're ready to talk about inverse matrices. Firs
 
 ### thm matrix inversion
 	
-	Let $\mathbf{A}$ be an $n \times n$ matrix and augment it with the identity matrix: $\left[ \begin{array}{c|c} \mathbf{A} & \mathbf{I} \end{array} \right]$. Then row-reduce $\mathbf{A}$. If it can be reduced to the identity matrix, then the result will be $\left[ \begin{array}{c|c} \mathbf{I} & \mathbf{A}^{-1} \end{array} \right]$ --- in other words, applying the same elementary row operations to $\mathbf{I}$ will transform it into $\mathbf{A}^{-1}$. If $\mathbf{A}$ cannot be row reduced to $\mathbf{I}$ (because at least one row becomes entirely zero), then $\mathbf{A}$ cannot be inverted.
+	Let $\mathbf{A}$ be an $n \times n$ matrix and augment it with the identity matrix: $[[ \mathbf{A} | \mathbf{I} ]]$. Then row-reduce $\mathbf{A}$. If it can be reduced to the identity matrix, then the result will be $[[ \mathbf{I} | \mathbf{A}^{-1} ]]$ --- in other words, applying the same elementary row operations to $\mathbf{I}$ will transform it into $\mathbf{A}^{-1}$. If $\mathbf{A}$ cannot be row reduced to $\mathbf{I}$ (because at least one row becomes entirely zero), then $\mathbf{A}$ cannot be inverted.
 	
 ###
 
@@ -273,41 +273,41 @@ With the tool of row reduction, we're ready to talk about inverse matrices. Firs
 	The matrix equation here is
 	
 	$$
-		\left[ \begin{array}{ccc} 1 & 2 & -3 \\ -2 & 0 & 2 \\ 1 & 1 & 4 \end{array} \right] \mathbf{x} = \left[ \begin{array}{c} -6 \\ -4 \\ 4 \end{array} \right].
+		[[ 1, 2, -3 ; -2, 0, 2 ; 1, 1, 4 ]] \mathbf{x} = [[ -6 ; -4 ; 4 ]].
 	$$
 	
-	Calling the matrix $\mathbf{A}$ and the right-hand vector $\mathbf{b}$, we have $\mathbf{Ax} = \mathbf{b}$. While we could solve this by row-reducing $\left[ \begin{array}{c|c} \mathbf{A} & \mathbf{b} \end{array} \right]$, we'll instead invert $\mathbf{A}$ and then multiply both sides by it.
+	Calling the matrix $\mathbf{A}$ and the right-hand vector $\mathbf{b}$, we have $\mathbf{Ax} = \mathbf{b}$. While we could solve this by row-reducing $[[ \mathbf{A} | \mathbf{b} ]]$, we'll instead invert $\mathbf{A}$ and then multiply both sides by it.
 	
 	$$
-		\left[ \begin{array}{ccc|ccc} 1 & 2 & -3 & 1 & 0 & 0 \\ -2 & 0 & 2 & 0 & 1 & 0 \\ 1 & 1 & 4 & 0 & 0 & 1 \end{array} \right] &
+		[[ 1, 2, -3 | 1, 0, 0 ; -2, 0, 2 | 0, 1, 0 ; 1, 1, 4 | 0, 0, 1 ]] &
 		
-		\left[ \begin{array}{ccc|ccc} 1 & 2 & -3 & 1 & 0 & 0 \\ 0 & 4 & -4 & 2 & 1 & 0 \\ 1 & 1 & 4 & 0 & 0 & 1 \end{array} \right] & \qquad \mathbf{r_2} \pe 2\mathbf{r_1}
+		[[ 1, 2, -3 | 1, 0, 0 ; 0, 4, -4 | 2, 1, 0 ; 1, 1, 4 | 0, 0, 1 ]] & \qquad \mathbf{r_2} \pe 2\mathbf{r_1}
 		
-		\left[ \begin{array}{ccc|ccc} 1 & 2 & -3 & 1 & 0 & 0 \\ 0 & 4 & -4 & 2 & 1 & 0 \\ 0 & -1 & 7 & -1 & 0 & 1 \end{array} \right] & \qquad \mathbf{r_3} \pe -\mathbf{r_1}
+		[[ 1, 2, -3 | 1, 0, 0 ; 0, 4, -4 | 2, 1, 0 ; 0, -1, 7 | -1, 0, 1 ]] & \qquad \mathbf{r_3} \pe -\mathbf{r_1}
 		
-		\left[ \begin{array}{ccc|ccc} 1 & 2 & -3 & 1 & 0 & 0 \\ 0 & -1 & 7 & -1 & 0 & 1 \\ 0 & 4 & -4 & 2 & 1 & 0 \end{array} \right] & \qquad \text{swap } \mathbf{r_2}, \mathbf{r_3}
+		[[ 1, 2, -3 | 1, 0, 0 ; 0, -1, 7 | -1, 0, 1 ; 0, 4, -4 | 2, 1, 0 ]] & \qquad \text{swap } \mathbf{r_2}, \mathbf{r_3}
 		
-		\left[ \begin{array}{ccc|ccc} 1 & 2 & -3 & 1 & 0 & 0 \\ 0 & 1 & -7 & 1 & 0 & -1 \\ 0 & 4 & -4 & 2 & 1 & 0 \end{array} \right] & \qquad \mathbf{r_2} \te -1
+		[[ 1, 2, -3 | 1, 0, 0 ; 0, 1, -7 | 1, 0, -1 ; 0, 4, -4 | 2, 1, 0 ]] & \qquad \mathbf{r_2} \te -1
 		
-		\left[ \begin{array}{ccc|ccc} 1 & 2 & -3 & 1 & 0 & 0 \\ 0 & 1 & -7 & 1 & 0 & -1 \\ 0 & 0 & 24 & -2 & 1 & 4 \end{array} \right] & \qquad \mathbf{r_3} \pe -4\mathbf{r_2}
+		[[ 1, 2, -3 | 1, 0, 0 ; 0, 1, -7 | 1, 0, -1 ; 0, 0, 24 | -2, 1, 4 ]] & \qquad \mathbf{r_3} \pe -4\mathbf{r_2}
 	$$
 	
 	At this point, we could divide $\mathbf{r_3}$ through by $24$, but then we're going to be swamped in fractions. We have to get a $1$ where that $24$ is --- but only eventually. For now, we can make the process a whole lot easier by multiplying every *other* row by $24$:
 	
 	$$
-		\left[ \begin{array}{ccc|ccc} 24 & 48 & -72 & 24 & 0 & 0 \\ 0 & 24 & -168 & 24 & 0 & -24 \\ 0 & 0 & 24 & -2 & 1 & 4 \end{array} \right] & \qquad \mathbf{r_1} \te 24,\ \mathbf{r_2} \te 24
+		[[ 24, 48, -72 | 24, 0, 0 ; 0, 24, -168 | 24, 0, -24 ; 0, 0, 24 | -2, 1, 4 ]] & \qquad \mathbf{r_1} \te 24,\ \mathbf{r_2} \te 24
 		
-		\left[ \begin{array}{ccc|ccc} 24 & 48 & -72 & 24 & 0 & 0 \\ 0 & 24 & 0 & 10 & 7 & 4 \\ 0 & 0 & 24 & -2 & 1 & 4 \end{array} \right] & \qquad \mathbf{r_2} \pe 7\mathbf{r_3}
+		[[ 24, 48, -72 | 24, 0, 0 ; 0, 24, 0 | 10, 7, 4 ; 0, 0, 24 | -2, 1, 4 ]] & \qquad \mathbf{r_2} \pe 7\mathbf{r_3}
 		
-		\left[ \begin{array}{ccc|ccc} 24 & 48 & 0 & 18 & 3 & 12 \\ 0 & 24 & 0 & 10 & 7 & 4 \\ 0 & 0 & 24 & -2 & 1 & 4 \end{array} \right] & \qquad \mathbf{r_1} \pe 3\mathbf{r_3}
+		[[ 24, 48, 0 | 18, 3, 12 ; 0, 24, 0 | 10, 7, 4 ; 0, 0, 24 | -2, 1, 4 ]] & \qquad \mathbf{r_1} \pe 3\mathbf{r_3}
 		
-		\left[ \begin{array}{ccc|ccc} 24 & 0 & 0 & -2 & -11 & 4 \\ 0 & 24 & 0 & 10 & 7 & 4 \\ 0 & 0 & 24 & -2 & 1 & 4 \end{array} \right] & \qquad \mathbf{r_1} \pe -2\mathbf{r_2}
+		[[ 24, 0, 0 | -2, -11, 4 ; 0, 24, 0 | 10, 7, 4 ; 0, 0, 24 | -2, 1, 4 ]] & \qquad \mathbf{r_1} \pe -2\mathbf{r_2}
 	$$
 	
 	We're almost done! If we divide through every row by $24$, then the right side will contain $\mathbf{A}^{-1}$ so we can write it as the right matrix times $\frac{1}{24}$.
 	
 	$$
-		\mathbf{A}^{-1} = \frac{1}{24} \left[ \begin{array}{ccc} -2 & -11 & 4 \\ 10 & 7 & 4 \\ -2 & 1 & 4 \end{array} \right]
+		\mathbf{A}^{-1} = \frac{1}{24} [[ -2, -11, 4 ; 10, 7, 4 ; -2, 1, 4 ]]
 	$$
 	
 	so we can use it to solve the original equation --- and notably, it can solve *any* variant of the equation where we change $\mathbf{b}$. Specifically, we have
@@ -317,11 +317,11 @@ With the tool of row reduction, we're ready to talk about inverse matrices. Firs
 		
 		\mathbf{A}^{-1} \mathbf{Ax} &= \mathbf{A}^{-1} \mathbf{b}
 		
-		\mathbf{Ix} &= \frac{1}{24} \left[ \begin{array}{ccc} -2 & -11 & 4 \\ 10 & 7 & 4 \\ -2 & 1 & 4 \end{array} \right] \left[ \begin{array}{c} -6 \\ -4 \\ 4 \end{array} \right]
+		\mathbf{Ix} &= \frac{1}{24} [[ -2, -11, 4 ; 10, 7, 4 ; -2, 1, 4 ]] [[ -6 ; -4 ; 4 ]]
 		
-		\mathbf{x} &= \frac{1}{24} \left[ \begin{array}{c} 72 \\ -72 \\ 24 \end{array} \right]
+		\mathbf{x} &= \frac{1}{24} [[ 72 ; -72 ; 24 ]]
 		
-		\mathbf{x} &= \left[ \begin{array}{c} 3 \\ -3 \\ 1 \end{array} \right].
+		\mathbf{x} &= [[ 3 ; -3 ; 1 ]].
 	$$
 	
 	Therefore, $x_1 = 3$, $x_2 = -3$, and $x_3 = 1$.
