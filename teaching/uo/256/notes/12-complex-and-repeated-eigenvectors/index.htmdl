@@ -53,13 +53,13 @@ With individual DEs, we were able to extract two fundamental solutions immediate
 	This problem proceeds familiarly, but we'll have the added wrinkle of complex eigenvalues. To get started, let's write it as a matrix.
 	
 	$$
-		\mathbf{p}' = [[ 1 & 1 \\ -2 & 3 ]] \mathbf{p}.
+		\mathbf{p}' = [[ 1, 1 ; -2, 3 ]] \mathbf{p}.
 	$$
 	
 	Calling that matrix $\mathbf{A}$, we first need to solve $\det (\mathbf{A} - \lambda \mathbf{I}) = 0$. That gives us
 	
 	$$
-		\det [[ 1 - \lambda & 1 \\ -2 & 3 - \lambda ]] &= 0
+		\det [[ 1 - \lambda, 1 ; -2, 3 - \lambda ]] &= 0
 		
 		(1 - \lambda)(3 - \lambda) - (1)(-2) &= 0
 		
@@ -75,17 +75,17 @@ With individual DEs, we were able to extract two fundamental solutions immediate
 	That's the eigenvalues done --- now we need to find the corresponding eigenvectors. Let's start with $\lambda = 2 + i$ --- we haven't had to deal with row reducing a complex-values matrix before, but it takes a little bit of care: in general, we want to avoid dividing by imaginary numbers even more than we want to avoid dividing by real ones.
 	
 	$$
-		[[ 1 - (2 + i) & 1 & 0 \\ -2 & 3 - (2 + i) & 0 ]] &
+		[[ 1 - (2 + i), 1 | 0 ; -2, 3 - (2 + i) | 0 ]] &
 		
-		[[ -1 - i & 1 & 0 \\ -2 & 1 - i & 0 ]] &
+		[[ -1 - i, 1 | 0 ; -2, 1 - i | 0 ]] &
 		
-		[[ -2 & 1 - i & 0 \\ -1 - i & 1 & 0 ]] & \qquad \text{swap } \mathbf{r_1}, \mathbf{r_2}
+		[[ -2, 1 - i | 0 ; -1 - i, 1 | 0 ]] & \qquad \text{swap } \mathbf{r_1}, \mathbf{r_2}
 		
-		[[ -2 & 1 - i & 0 \\ -2 - 2i & 2 & 0 ]] & \qquad \mathbf{r_2} \te 2
+		[[ -2, 1 - i | 0 ; -2 - 2i, 2 | 0 ]] & \qquad \mathbf{r_2} \te 2
 		
-		[[ -2 & 1 - i & 0 \\ -2i & 1 + i & 0 ]] & \qquad \mathbf{r_2} \pe -\mathbf{r_1}
+		[[ -2, 1 - i | 0 ; -2i, 1 + i | 0 ]] & \qquad \mathbf{r_2} \pe -\mathbf{r_1}
 		
-		[[ -2 & 1 - i & 0 \\ 0 & 0 & 0 ]] & \qquad \mathbf{r_2} \pe -i\mathbf{r_1}
+		[[ -2, 1 - i | 0 ; 0, 0 | 0 ]] & \qquad \mathbf{r_2} \pe -i\mathbf{r_1}
 		
 		-2v_1 + (1 - i)v_2 &= 0
 		
@@ -95,55 +95,55 @@ With individual DEs, we were able to extract two fundamental solutions immediate
 	With $v_2 = 2$, we have
 	
 	$$
-		\mathbf{v} = [[ 1 - i \\ 2 ]].
+		\mathbf{v} = [[ 1 - i ; 2 ]].
 	$$
 	
 	Although row reducing a complex matrix is a little more work, the bright side is that we also know the eigenvector corresponding to $\lambda = 2 - i$: it's the conjugate of the vector $\mathbf{v}$ we found. So the eigenvalues and eigenvectors are
 	
 	$$
-		\lambda = 2 + i: & \quad [[ 1 - i \\ 2 ]]
+		\lambda = 2 + i: & \quad [[ 1 - i ; 2 ]]
 		
-		\lambda = 2 - i: & \quad [[ 1 + i \\ 2 ]].
+		\lambda = 2 - i: & \quad [[ 1 + i ; 2 ]].
 	$$
 	
 	However, we won't actually need the other eigenvector --- just like with complex roots of the characteristic equation, all the data we need is contained in the real and imaginary parts of a single eigenvalue and eigenvector. Let's write out the part of the solution that comes from $\lambda = 2 + i$:
 	
 	$$
-		\mathbf{p} &= e^{(2 + i)t} [[ 1 - i \\ 2 ]]
+		\mathbf{p} &= e^{(2 + i)t} [[ 1 - i ; 2 ]]
 		
-		&= e^{2t}(\cos(t) + i\sin(t)) \left( [[ 1 \\ 2 ]] + i[[ - 1 \\ 0 ]] \right).
+		&= e^{2t}(\cos(t) + i\sin(t)) \left( [[ 1 ; 2 ]] + i[[ - 1 ; 0 ]] \right).
 	$$
 	
 	The number of terms can seem a little off-putting, but we actually want to foil this out --- that way, we can completely separate the real and imaginary parts.
 	
 	$$
-		\mathbf{p} &= e^{2t}\cos(t)[[ 1 \\ 2 ]] + ie^{2t}\cos(t)[[ - 1 \\ 0 ]] + ie^{2t}\sin(t)[[ 1 \\ 2 ]] + i^2e^{2t}\sin(t)[[ - 1 \\ 0 ]]
+		\mathbf{p} &= e^{2t}\cos(t)[[ 1 ; 2 ]] + ie^{2t}\cos(t)[[ - 1 ; 0 ]] + ie^{2t}\sin(t)[[ 1 ; 2 ]] + i^2e^{2t}\sin(t)[[ - 1 ; 0 ]]
 		
-		&= e^{2t} [[ \cos(t) + \sin(t) \\ 2\cos(t) ]] + ie^{2t}[[ \sin(t) - \cos(t) \\ 2\sin(t) ]].
+		&= e^{2t} [[ \cos(t) + \sin(t) ; 2\cos(t) ]] + ie^{2t}[[ \sin(t) - \cos(t) ; 2\sin(t) ]].
 	$$
 	
 	The real and imaginary parts here are fundamental solutions: they're both solutions and linearly independent. Therefore, our general solution is
 	
 	$$
-		\mathbf{p} = c_1 e^{2t} [[ \cos(t) + \sin(t) \\ 2\cos(t) ]] + c_2 e^{2t}[[ \sin(t) - \cos(t) \\ 2\sin(t) ]].
+		\mathbf{p} = c_1 e^{2t} [[ \cos(t) + \sin(t) ; 2\cos(t) ]] + c_2 e^{2t}[[ \sin(t) - \cos(t) ; 2\sin(t) ]].
 	$$
 	
 	Now for the rest of the bookkeeping. The initial condition is
 	
 	$$
-		\mathbf{p}(0) &= [[ 100 \\ 100 ]]
+		\mathbf{p}(0) &= [[ 100 ; 100 ]]
 		
-		c_1 e^{0} [[ \cos(0) + \sin(0) \\ 2\cos(0) ]] + c_2 e^{0}[[ \sin(0) - \cos(0) \\ 2\sin(0) ]] &= [[ 100 \\ 100 ]]
+		c_1 e^{0} [[ \cos(0) + \sin(0) ; 2\cos(0) ]] + c_2 e^{0}[[ \sin(0) - \cos(0) ; 2\sin(0) ]] &= [[ 100 ; 100 ]]
 		
-		c_1 [[ 1 \\ 2 ]] + c_2 [[ -1 \\ 0 ]] &= [[ 100 \\ 100 ]].
+		c_1 [[ 1 ; 2 ]] + c_2 [[ -1 ; 0 ]] &= [[ 100 ; 100 ]].
 	$$
 	
 	We can form a matrix and row reduce to solve for $c_1$ and $c_2$, but here it's easier to just solve it manually: the bottom equation reads $2c_1 = 100$, so $c_1 = 50$, and then $c_1 - c_2 = 100$, so $c_2 = -50$. Our particular solution is therefore
 	
 	$$
-		\mathbf{p} &= 50 e^{2t} [[ \cos(t) + \sin(t) \\ 2\cos(t) ]] - 50 e^{2t}[[ \sin(t) - \cos(t) \\ 2\sin(t) ]]
+		\mathbf{p} &= 50 e^{2t} [[ \cos(t) + \sin(t) ; 2\cos(t) ]] - 50 e^{2t}[[ \sin(t) - \cos(t) ; 2\sin(t) ]]
 		
-		&= 100 e^{2t} [[ \cos(t) \\ \cos(t) - \sin(t) ]].
+		&= 100 e^{2t} [[ \cos(t) ; \cos(t) - \sin(t) ]].
 	$$
 	
 	This system is exhibiting unbounded exponential growth, so it's probably not the complete story: maybe an ecosystem consisting only of these two species would be mutually beneficial to an extreme degree, but factors like other predators and the carrying capacity of the ecosystem play roles unaccounted-for here.
@@ -177,31 +177,31 @@ With individual DEs, we were able to extract two fundamental solutions immediate
 In individual $n$th-order DEs, repeated roots of the characteristic equation were always a problem: we read off fundamental solutions directly from those roots. When eigenvalues of a matrix are repeated, though, the corresponding eigenvalues don't necessarily repeat. For example, let
 
 $$
-	\mathbf{A} = [[ 0 & -1 \\ 1 & -2 ]].
+	\mathbf{A} = [[ 0, -1 ; 1, -2 ]].
 $$
 
 Solving for the eigenvalues gives us $\lambda^2 + 2\lambda + 1 = 0$, so $\lambda = -1$. When we subtract it from the diagonal, we find
 
 $$
-	[[ 1 & -1 & 0 \\ 1 & -1 & 0 ]],
+	[[ 1, -1 | 0 ; 1, -1 | 0 ]],
 $$
 
 so $v_1 = v_2$. Taking $v_2 = 1$, our single eigenvector is
 
 $$
-	\mathbf{v} = [[ 1 \\ 1 ]].
+	\mathbf{v} = [[ 1 ; 1 ]].
 $$
 
 On the other hand,
 
 $$
-	B = [[ -1 & 0 \\ 0 & -1 ]]
+	B = [[ -1, 0 ; 0, -1 ]]
 $$
 
 has a repeated eigenvalue of $\lambda = -1$, but when we solve for the eigenvectors, we get a matrix of all zeros, so there are two free parameters. When we can choose more than one entry of $\mathbf{v}$, a good strategy is to choose one of them to be one and the rest to be zero, and repeat for all of the entries. Taking $v_1 = 1$ and $v_2 = 0$, then $v_1 = 0$ and $v_2 = 1$, we get
 
 $$
-	\mathbf{v}_1 = [[ 1 \\ 0 ]], \qquad \mathbf{v}_2 = [[ 0 \\ 1 ]]. 
+	\mathbf{v}_1 = [[ 1 ; 0 ]], \qquad \mathbf{v}_2 = [[ 0 ; 1 ]]. 
 $$
 
 So our metaphor of eigenvalues working like roots of the characteristic equation isn't quite one-to-one: repeated eigenvalues aren't always a problem. When there are still $n$ different eigen*vectors*, we don't need to do anything, but when there actually are fewer, we'll need to work to get more solutions. The technical details are similar to reduction of order, but they result in a rather different solution. To get started, we'll need a slight generalization of the notion of an eigenvector. Fittingly enough, these are called
@@ -225,13 +225,13 @@ So our metaphor of eigenvalues working like roots of the characteristic equation
 As an opening example, let's return to our previous matrix with a repeated eigenvector:
 
 $$
-	\mathbf{A} = [[ 0 & -1 \\ 1 & -2 ]].
+	\mathbf{A} = [[ 0, -1 ; 1, -2 ]].
 $$
 
 We found that the single eigenvector was
 
 $$
-	\mathbf{v} = [[ 11 \\ 1 ]],
+	\mathbf{v} = [[ 11 ; 1 ]],
 $$
 
 and its eigenvalue was $\lambda = -1$. To find its generalized eigenvectors, we solve
@@ -243,13 +243,13 @@ $$
 which means row reducing the matrix
 
 $$
-	[[ 1 & -1 & 1 \\ 1 & -1 & 1 ]].
+	[[ 1, -1 | 1 ; 1, -1 | 1 ]].
 $$
 
 The bottom row reduces to all zeros, so we just have $w_1 - w_2 = 1$. Therefore, $w_1 = w_2 + 1$, so if we take $w_2 = 0$, then our generalized eigenvector is
 
 $$
-	\mathbf{w} = [[ 1 \\ 0 ]].
+	\mathbf{w} = [[ 1 ; 0 ]].
 $$
 
 So even though $(\mathbf{A} - (-1)\mathbf{I})\mathbf{w} \neq \mathbf{0}$, it is the case that $(\mathbf{A} - (-1)\mathbf{I})^2\mathbf{w} = \mathbf{0}$. Continuing to try to generalize $\mathbf{w}$ results in no solutions at all, and so we've exhausted the list.
@@ -295,13 +295,13 @@ When an eigenvalue $\lambda$ appears twice in the characteristic polynomial, but
 	We'll get started by turning the system into a matrix as usual:
 	
 	$$
-		\mathbf{x}' = [[ 6 & -2 & 3 \\ -7 & 7 & -7 \\ -10 & 6 & -7 ]]\mathbf{x}.
+		\mathbf{x}' = [[ 6, -2, 3 ; -7, 7, -7 ; -10, 6, -7 ]]\mathbf{x}.
 	$$
 	
 	Calling that matrix $\mathbf{A}$, let's find its eigenvalues.
 	
 	$$
-		\det [[ 6 - \lambda & -2 & 3 \\ -7 & 7 - \lambda & -7 \\ -10 & 6 & -7 - \lambda ]] &= 0
+		\det [[ 6 - \lambda, -2, 3 ; -7, 7 - \lambda, -7 ; -10, 6, -7 - \lambda ]] &= 0
 		
 		(6 - \lambda)((7 - \lambda)(-7 - \lambda) + 42) + 2((-7)(-7 - \lambda) - 70) + 3(-42 + 10(7 - \lambda)) &= 0
 		
@@ -319,83 +319,83 @@ When an eigenvalue $\lambda$ appears twice in the characteristic polynomial, but
 	In total, we expect one eigenvector with eigenvalue $0$ and two with eigenvalue $3$. Let's see how that pans out! With $\lambda = 0$, we have
 	
 	$$
-		[[ 6 & -2 & 3 & 0 \\ -7 & 7 & -7 & 0 \\ -10 & 6 & -7 & 0 ]] &
+		[[ 6, -2, 3 | 0 ; -7, 7, -7 | 0 ; -10, 6, -7 | 0 ]] &
 		
-		[[ 6 & -2 & 3 & 0 \\ -1 & 5 & -4 & 0 \\ -10 & 6 & -7 & 0 ]] & \qquad \mathbf{r_2} \pe \mathbf{r_1}
+		[[ 6, -2, 3 | 0 ; -1, 5, -4 | 0 ; -10, 6, -7 | 0 ]] & \qquad \mathbf{r_2} \pe \mathbf{r_1}
 		
-		[[ -1 & 5 & -4 & 0 \\ 6 & -2 & 3 & 0 \\ -10 & 6 & -7 & 0 ]] & \qquad \text{swap } \mathbf{r_1}, \mathbf{r_2}
+		[[ -1, 5, -4 | 0 ; 6, -2, 3 | 0 ; -10, 6, -7 | 0 ]] & \qquad \text{swap } \mathbf{r_1}, \mathbf{r_2}
 		
-		[[ -1 & 5 & -4 & 0 \\ 0 & 28 & -21 & 0 \\ 0 & -44 & 33 & 0 ]] & \qquad \begin{array}{l} \mathbf{r_2} \pe 6 \mathbf{r_1} \\ \mathbf{r_3} \pe -10 \mathbf{r_1} \end{array}
+		[[ -1, 5, -4 | 0 ; 0, 28, -21 | 0 ; 0, -44, 33 | 0 ]] & \qquad \begin{array}{l} \mathbf{r_2} \pe 6 \mathbf{r_1} \\ \mathbf{r_3} \pe -10 \mathbf{r_1} \end{array}
 		
-		[[ 1 & -5 & 4 & 0 \\ 0 & 4 & -3 & 0 \\ 0 & 4 & -3 & 0 ]] & \qquad \begin{array}{l} \mathbf{r_1} \te -1 \\ \mathbf{r_2} \te \frac{1}{7} \\ \mathbf{r_3} \te -\frac{1}{11} \end{array}
+		[[ 1, -5, 4 | 0 ; 0, 4, -3 | 0 ; 0, 4, -3 | 0 ]] & \qquad \begin{array}{l} \mathbf{r_1} \te -1 \\ \mathbf{r_2} \te \frac{1}{7} \\ \mathbf{r_3} \te -\frac{1}{11} \end{array}
 		
-		[[ 1 & -5 & 4 & 0 \\ 0 & 4 & -3 & 0 \\ 0 & 0 & 0 & 0 ]] & \qquad \mathbf{r_3} \pe -\mathbf{r_2}
+		[[ 1, -5, 4 | 0 ; 0, 4, -3 | 0 ; 0, 0, 0 | 0 ]] & \qquad \mathbf{r_3} \pe -\mathbf{r_2}
 	$$
 	
 	In the interest of avoiding fractions, let's multiply the rows to get a common multiple rather than dividing them.
 	
 	$$
-		[[ 4 & -20 & 16 & 0 \\ 0 & 4 & -3 & 0 \\ 0 & 0 & 0 & 0 ]] & \qquad \mathbf{r_1} \te 4
+		[[ 4, -20, 16 | 0 ; 0, 4, -3 | 0 ; 0, 0, 0 | 0 ]] & \qquad \mathbf{r_1} \te 4
 		
-		[[ 4 & 0 & 1 & 0 \\ 0 & 4 & -3 & 0 \\ 0 & 0 & 0 & 0 ]] & \qquad \mathbf{r_1} \pe 5\mathbf{r_2}
+		[[ 4, 0, 1 | 0 ; 0, 4, -3 | 0 ; 0, 0, 0 | 0 ]] & \qquad \mathbf{r_1} \pe 5\mathbf{r_2}
 	$$
 	
 	In total, $4v_1 = -v_3$ and $4v_2 = 3v_3$. Choosing $v_3 = 4$ (again in the interest of minimizing fractions) results in $v_1 = -1$ and $v_2 = 3$, so our first eigenvector is
 	
 	$$
-		\mathbf{v} = [[ -1 \\ 3 \\ 4 ]].
+		\mathbf{v} = [[ -1 ; 3 ; 4 ]].
 	$$
 	
 	Only one eigenvector there, but that's what we were expecting: since $\lambda = 0$ only appears once in the characteristic polynomial, it can have at most one eigenvector. Now let's take a look at $\lambda = 3$:
 	
 	$$
-		[[ 3 & -2 & 3 & 0 \\ -7 & 4 & -7 & 0 \\ -10 & 6 & -10 & 0 ]] &
+		[[ 3, -2, 3 | 0 ; -7, 4, -7 | 0 ; -10, 6, -10 | 0 ]] &
 		
-		[[ 3 & -2 & 3 & 0 \\ -1 & 0 & -1 & 0 \\ -10 & 6 & -10 & 0 ]] & \qquad \mathbf{r_2} \pe 2\mathbf{r_1}
+		[[ 3, -2, 3 | 0 ; -1, 0, -1 | 0 ; -10, 6, -10 | 0 ]] & \qquad \mathbf{r_2} \pe 2\mathbf{r_1}
 		
-		[[ -1 & 0 & -1 & 0 \\ 3 & -2 & 3 & 0 \\ -10 & 6 & -10 & 0 ]] & \qquad \text{swap } \mathbf{r_1}, \mathbf{r_2}
+		[[ -1, 0, -1 | 0 ; 3, -2, 3 | 0 ; -10, 6, -10 | 0 ]] & \qquad \text{swap } \mathbf{r_1}, \mathbf{r_2}
 		
-		[[ -1 & 0 & -1 & 0 \\ 0 & -2 & 0 & 0 \\ 0 & 6 & 0 & 0 ]] & \qquad \begin{array}{l} \mathbf{r_2} \pe 3\mathbf{r_1} \\ \mathbf{r_3} \pe -10\mathbf{r_1} \end{array}
+		[[ -1, 0, -1 | 0 ; 0, -2, 0 | 0 ; 0, 6, 0 | 0 ]] & \qquad \begin{array}{l} \mathbf{r_2} \pe 3\mathbf{r_1} \\ \mathbf{r_3} \pe -10\mathbf{r_1} \end{array}
 		
-		[[ 1 & 0 & 1 & 0 \\ 0 & 1 & 0 & 0 \\ 0 & 1 & 0 & 0 ]] & \qquad \begin{array}{l} \mathbf{r_1} \te -1 \\ \mathbf{r_2} \te -\frac{1}{2} \\ \mathbf{r_3} \te \frac{1}{6} \end{array}
+		[[ 1, 0, 1 | 0 ; 0, 1, 0 | 0 ; 0, 1, 0 | 0 ]] & \qquad \begin{array}{l} \mathbf{r_1} \te -1 \\ \mathbf{r_2} \te -\frac{1}{2} \\ \mathbf{r_3} \te \frac{1}{6} \end{array}
 		
-		[[ 1 & 0 & 1 & 0 \\ 0 & 1 & 0 & 0 \\ 0 & 0 & 0 & 0 ]] & \qquad \mathbf{r_3} \pe -\mathbf{r_2}
+		[[ 1, 0, 1 | 0 ; 0, 1, 0 | 0 ; 0, 0, 0 | 0 ]] & \qquad \mathbf{r_3} \pe -\mathbf{r_2}
 	$$
 	
 	As equations, $v_1 = -v_3$ and $v_2 = 0$. There's only one free parameter here, so if we choose $v_3 = 1$, we get an eigenvector of
 	
 	$$
-		\mathbf{v} = [[ -1 \\ 0 \\ 1 ]].
+		\mathbf{v} = [[ -1 ; 0 ; 1 ]].
 	$$
 	
 	But we're supposed to have two eigenvectors corresponding to $\lambda = 3$! That means there should be a generalized eigenvector hiding here: to find it, we take the same matrix we just row reduced, but this time, we augment it with this vector. Thankfully, all the steps are the same, so we just need to keep track of the right side.
 	
 	$$
-		[[ 3 & -2 & 3 & -1 \\ -7 & 4 & -7 & 0 \\ -10 & 6 & -10 & 1 ]] &
+		[[ 3, -2, 3 | -1 ; -7, 4, -7 | 0 ; -10, 6, -10 | 1 ]] &
 		
-		[[ 3 & -2 & 3 & -1 \\ -1 & 0 & -1 & -2 \\ -10 & 6 & -10 & 1 ]] & \qquad \mathbf{r_2} \pe 2\mathbf{r_1}
+		[[ 3, -2, 3 | -1 ; -1, 0, -1 | -2 ; -10, 6, -10 | 1 ]] & \qquad \mathbf{r_2} \pe 2\mathbf{r_1}
 		
-		[[ -1 & 0 & -1 & -2 \\ 3 & -2 & 3 & -1 \\ -10 & 6 & -10 & 1 ]] & \qquad \text{swap } \mathbf{r_1}, \mathbf{r_2}
+		[[ -1, 0, -1 | -2 ; 3, -2, 3 | -1 ; -10, 6, -10 | 1 ]] & \qquad \text{swap } \mathbf{r_1}, \mathbf{r_2}
 		
-		[[ -1 & 0 & -1 & -2 \\ 0 & -2 & 0 & -7 \\ 0 & 6 & 0 & 21 ]] & \qquad \begin{array}{l} \mathbf{r_2} \pe 3\mathbf{r_1} \\ \mathbf{r_3} \pe -10\mathbf{r_1} \end{array}
+		[[ -1, 0, -1 | -2 ; 0, -2, 0 | -7 ; 0, 6, 0 | 21 ]] & \qquad \begin{array}{l} \mathbf{r_2} \pe 3\mathbf{r_1} \\ \mathbf{r_3} \pe -10\mathbf{r_1} \end{array}
 		
-		[[ 1 & 0 & 1 & 2 \\ 0 & 1 & 0 & \frac{7}{2} \\ 0 & 1 & 0 & \frac{7}{2} ]] & \qquad \begin{array}{l} \mathbf{r_1} \te -1 \\ \mathbf{r_2} \te -\frac{1}{2} \\ \mathbf{r_3} \te \frac{1}{6} \end{array}
+		[[ 1, 0, 1 | 2 ; 0, 1, 0 | \frac{7}{2} ; 0, 1, 0 | \frac{7}{2} ]] & \qquad \begin{array}{l} \mathbf{r_1} \te -1 \\ \mathbf{r_2} \te -\frac{1}{2} \\ \mathbf{r_3} \te \frac{1}{6} \end{array}
 		
-		[[ 1 & 0 & 1 & 2 \\ 0 & 1 & 0 & \frac{7}{2} \\ 0 & 0 & 0 & 0 ]] & \qquad \mathbf{r_3} \pe -\mathbf{r_2}
+		[[ 1, 0, 1 | 2 ; 0, 1, 0 | \frac{7}{2} ; 0, 0, 0 | 0 ]] & \qquad \mathbf{r_3} \pe -\mathbf{r_2}
 	$$
 	
 	This time, $v_1 = 2 - v_3$ and $v_2 = \frac{7}{2}$. With $v_3 = 1$, we get
 	
 	$$
-		\mathbf{v} = [[ 1 \\ \frac{7}{2} \\ 1 ]].
+		\mathbf{v} = [[ 1 ; \frac{7}{2} ; 1 ]].
 	$$
 	
 	Now we're ready to go. The first two fundamental solutions work as normal, but the third is constructed using the previous theorem.
 	
 	$$
-		\mathbf{x} &= c_1e^{0t} [[ -1 \\ 3 \\ 4 ]] + c_2e^{3t} [[ -1 \\ 0 \\ 1 ]] + c_3e^{3t} \left( t[[ -1 \\ 0 \\ 1 ]] + [[ 1 \\ \frac{7}{2} \\ 1 ]] \right)
+		\mathbf{x} &= c_1e^{0t} [[ -1 ; 3 ; 4 ]] + c_2e^{3t} [[ -1 ; 0 ; 1 ]] + c_3e^{3t} \left( t[[ -1 ; 0 ; 1 ]] + [[ 1 ; \frac{7}{2} ; 1 ]] \right)
 		
-		&= c_1 [[ -1 \\ 3 \\ 4 ]] + c_2e^{3t} [[ -1 \\ 0 \\ 1 ]] + c_3e^{3t} [[ -t + 1 \\ \frac{7}{2} \\ t + 1 ]].
+		&= c_1 [[ -1 ; 3 ; 4 ]] + c_2e^{3t} [[ -1 ; 0 ; 1 ]] + c_3e^{3t} [[ -t + 1 ; \frac{7}{2} ; t + 1 ]].
 	$$
 	
 ###
