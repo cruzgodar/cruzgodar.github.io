@@ -85,7 +85,7 @@ As we just figured out, the entire behavior of $T$ is determined once those four
 	$$
 		T \left( \left[ \begin{array}{c} 3 \\ 4 \end{array} \right] \right) &= 3 T \left( \left[ \begin{array}{c} 1 \\ 0 \end{array} \right] \right) + 4 T \left( \left[ \begin{array}{c} 0 \\ 1 \end{array} \right] \right)
 
-		&= 3 \left[ \begin{array}{c} 1 \\ 3 \end{array} \right] + 4 T \left[ \begin{array}{c} 0 \\ -2 \end{array} \right]
+		&= 3 \left[ \begin{array}{c} 1 \\ 3 \end{array} \right] + 4 \left[ \begin{array}{c} 0 \\ -2 \end{array} \right]
 
 		&= \left[ \begin{array}{c} 3 \\ 1 \end{array} \right].
 	$$
