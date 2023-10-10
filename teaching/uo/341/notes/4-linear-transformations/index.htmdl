@@ -33,7 +33,7 @@ $$
 Linear transformations from $\mathbb{R}$ to $\mathbb{R}$ aren't very exciting: if $T$ is such a linear transformation, then
 
 $$
-	T(x) = T(x \cdot 1) = x T(1),
+	T(x) = T(x \cdot 1) = x T(1), 5#
 $$
 
 so as soon as we know what $T(1)$ is, every other output of $T$ is fixed. If $a = T(1)$, then $T(x) = ax$, so linear transformations $\mathbb{R} \to \mathbb{R}$ are just lines through the origin. It might seem like needless attention to detail, but let's take a moment to graph these.

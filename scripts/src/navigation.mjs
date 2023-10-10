@@ -138,8 +138,12 @@ export async function redirect({
 			document.body.style.WebkitUserSelect = "auto";
 
 
+			if (window.DEBUG)
+			{
+				window.scrollTo(0, 100000);
+			}
 
-			if (restoreScroll)
+			else if (restoreScroll)
 			{
 				window.scrollTo(0, lastPageScroll);
 			}
