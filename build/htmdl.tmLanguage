@@ -9,7 +9,7 @@
 	<key>name</key>
 	<string>HTMDL</string>
 	<key>scopeName</key>
-	<string>source.htmdl</string>
+	<string>htmdl</string>
 	<key>firstLineMatch</key>
 	<string>^#+\s+</string>
 	<key>patterns</key>
@@ -490,6 +490,23 @@
 					<string>markup.bold</string>
 				</dict>
 			</dict>
+		</dict>
+
+
+
+		<!-- HTML -->
+		<dict>
+			<key>begin</key>
+			<string>^\s*(?=&lt;)</string>
+			<key>end</key>
+			<string>(?&lt;=>)$</string>
+			<key>patterns</key>
+			<array>
+				<dict>
+					<key>include</key>
+					<string>text.html.basic</string>
+				</dict>
+			</array>
 		</dict>
 		
 		
