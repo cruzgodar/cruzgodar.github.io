@@ -372,7 +372,10 @@ const components =
 					const content = $1.replaceAll(/[,|]/g, "&").replaceAll(/;/g, "\\\\");
 
 					return `\\left[\\begin{array}{${colString}}${content}\\end{array}\\right]`;
-				});
+				})
+
+				// **A**
+				.replaceAll(/\*\*(.+?)\*\*/g, (match, $1) => `\\mathbf{${$1}}`);
 		},
 
 

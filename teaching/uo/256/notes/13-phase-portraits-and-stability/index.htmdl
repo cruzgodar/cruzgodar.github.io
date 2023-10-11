@@ -18,9 +18,9 @@ In the field below, the top-right critical point is a source, the bottom-left is
 
 ### canvas vector-field
 
-Let's look at the system $\mathbf{x}' = \mathbf{Ax}$. As we touched on in homework 8, the eigenvalues of $\mathbf{A}$ determine the general behavior of the system --- let's summarize the possibilities here.
+Let's look at the system $**x**' = **Ax**$. As we touched on in homework 8, the eigenvalues of $**A**$ determine the general behavior of the system --- let's summarize the possibilities here.
 
-If $\mathbf{A}$ is a $2 \times 2$ matrix with real entries and nonzero eigenvalues $\lambda_1$ and $\lambda_2$, then there is a single critical point at the origin, and the system has the following characteristics:
+If $**A**$ is a $2 \times 2$ matrix with real entries and nonzero eigenvalues $\lambda_1$ and $\lambda_2$, then there is a single critical point at the origin, and the system has the following characteristics:
 
 	> 1. If $\lambda_1$ and $\lambda_2$ are real and positive, then the critical point is a source.
 
@@ -46,23 +46,23 @@ Drag the red point to change the eigenvalues and eigenvectors. The blue curves a
 
 ### ex phase portraits
 	
-	Given the following phase portrait for $\mathbf{x}' = \mathbf{Ax}$, what can we determine about the eigenvalues and eigenvectors of $\mathbf{A}$?
+	Given the following phase portrait for $**x**' = **Ax**$, what can we determine about the eigenvalues and eigenvectors of $**A**$?
 	
 	### desmos vector-field-2
 	
-	Since all of the solutions approach straight lines as $t \to \infty$ or $t \to -\infty$, there is no curl in this system --- the eigenvalues and eigenvectors must be real. The eigenvectors are parallel to the straight-line solutions (being on a straight-line solution is what it means to be an eigenvector of $\mathbf{A}$), so the eigenvectors appear to be
+	Since all of the solutions approach straight lines as $t \to \infty$ or $t \to -\infty$, there is no curl in this system --- the eigenvalues and eigenvectors must be real. The eigenvectors are parallel to the straight-line solutions (being on a straight-line solution is what it means to be an eigenvector of $**A**$), so the eigenvectors appear to be
 	
 	$$
-		\mathbf{v_1} = [[ 1 ; 1 ]], \quad \mathbf{v_2} = [[ -3 ; 1 ]].
+		**v_1** = [[ 1 ; 1 ]], \quad **v_2** = [[ -3 ; 1 ]].
 	$$
 	
-	What about the eigenvalues? The fundamental solution corresponding to $\mathbf{v_1}$ flows toward the origin, so its eigenvalue $\lambda_1$ must be negative. On the other hand, the fundamental solution corresponding to $\mathbf{v_2}$ flows away from the origin, so its eigenvalue $\lambda_2$ must be positive.
+	What about the eigenvalues? The fundamental solution corresponding to $**v_1**$ flows toward the origin, so its eigenvalue $\lambda_1$ must be negative. On the other hand, the fundamental solution corresponding to $**v_2**$ flows away from the origin, so its eigenvalue $\lambda_2$ must be positive.
 	
 ###
 
 ### exc phase portraits
 	
-	Given the following phase portrait for $\mathbf{x}' = \mathbf{Ax}$, what can we determine about the eigenvalues and eigenvectors of $\mathbf{A}$?
+	Given the following phase portrait for $**x**' = **Ax**$, what can we determine about the eigenvalues and eigenvectors of $**A**$?
 	
 	### desmos vector-field-3
 	
@@ -164,25 +164,25 @@ Compared to linear systems, where there's a single critical point at the origin 
 
 ### def locally linear system
 	
-	A system of DEs $\mathbf{x}' = \mathbf{F}(\mathbf{x})$ is **locally linear** if there is a matrix $\mathbf{A}$ so that
+	A system of DEs $**x**' = **F**(**x**)$ is **locally linear** if there is a matrix $**A**$ so that
 	
 	$$
-		\mathbf{x}' = \mathbf{Ax} + \mathbf{G}(\mathbf{x})
+		**x**' = **Ax** + **G**(**x**)
 	$$
 	
 	and
 	
 	$$
-		\lim_{||\mathbf{x}|| \to 0} \frac{||\mathbf{G}(\mathbf{x})||}{||x||} = 0,
+		\lim_{||**x**|| \to 0} \frac{||**G**(**x**)||}{||x||} = 0,
 	$$
 	
-	where $||\mathbf{x}||$ is the length of $\mathbf{x}$.
+	where $||**x**||$ is the length of $**x**$.
 	
 ###
 
 
 
-This definition is fine, but we'll barely use it --- for us, the most important facts about locally linear systems will be one result classifying their critical points and another giving an easy way to compute $\mathbf{A}$ and determine if it exists.
+This definition is fine, but we'll barely use it --- for us, the most important facts about locally linear systems will be one result classifying their critical points and another giving an easy way to compute $**A**$ and determine if it exists.
 
 
 
@@ -196,16 +196,16 @@ This definition is fine, but we'll barely use it --- for us, the most important 
 		y' &= g(x, y),
 	$$
 	
-	where $f$ and $g$ have continuous first- and second-order partial derivatives in both $x$ and $y$. If $(x_0, y_0)$ is a critical point, then the system is locally linear near $(x_0, y_0)$, with the approximating matrix $\mathbf{A}$ given by
+	where $f$ and $g$ have continuous first- and second-order partial derivatives in both $x$ and $y$. If $(x_0, y_0)$ is a critical point, then the system is locally linear near $(x_0, y_0)$, with the approximating matrix $**A**$ given by
 	
 	$$
-		\mathbf{A} = \mathbf{J}(x_0, y_0) = [[ \frac{\partial f}{\partial x}(x_0, y_0), \frac{\partial f}{\partial y}(x_0, y_0) ; \frac{\partial g}{\partial x}(x_0, y_0), \frac{\partial g}{\partial y}(x_0, y_0) ]],
+		**A** = **J**(x_0, y_0) = [[ \frac{\partial f}{\partial x}(x_0, y_0), \frac{\partial f}{\partial y}(x_0, y_0) ; \frac{\partial g}{\partial x}(x_0, y_0), \frac{\partial g}{\partial y}(x_0, y_0) ]],
 	$$
 	
-	called the **Jacobian** of $f$ and $g$. Moreover, as long as the eigenvalues of $\mathbf{J}(x_0, y_0)$ are not pure imaginary, the stability of $(x_0, y_0)$ in the original system is the same as the stability of the origin as a critical point in the system
+	called the **Jacobian** of $f$ and $g$. Moreover, as long as the eigenvalues of $**J**(x_0, y_0)$ are not pure imaginary, the stability of $(x_0, y_0)$ in the original system is the same as the stability of the origin as a critical point in the system
 	
 	$$
-		\mathbf{x}' = \mathbf{J}(x_0, y_0)\mathbf{x}.
+		**x**' = **J**(x_0, y_0)**x**.
 	$$
 	
 ###
@@ -231,7 +231,7 @@ With the Jacobian in hand, we can approximate complex systems and determine the 
 	To get started, let's find the Jacobian in general:
 	
 	$$
-		\mathbf{J} &= [[ \frac{\partial f}{\partial x}, \frac{\partial f}{\partial y} ; \frac{\partial g}{\partial x}, \frac{\partial g}{\partial y} ]]
+		**J** &= [[ \frac{\partial f}{\partial x}, \frac{\partial f}{\partial y} ; \frac{\partial g}{\partial x}, \frac{\partial g}{\partial y} ]]
 		
 		&= [[ 0, 1 ; -\cos(x), -\frac{1}{2} ]].
 	$$
@@ -239,13 +239,13 @@ With the Jacobian in hand, we can approximate complex systems and determine the 
 	Plugging in $x = \pi$ and $y = 0$ gives us
 	
 	$$
-		\mathbf{J}\left(0, \pi\right) &= [[ 0, 1 ; 1, -\frac{1}{2} ]].
+		**J**\left(0, \pi\right) &= [[ 0, 1 ; 1, -\frac{1}{2} ]].
 	$$
 	
 	Now near this critical point, our nonlinear system has the same behavior as the linear system
 	
 	$$
-		\mathbf{x}' = [[ 0, 1 ; 1, -\frac{1}{2} ]]\mathbf{x}.
+		**x**' = [[ 0, 1 ; 1, -\frac{1}{2} ]]**x**.
 	$$
 	
 	Solving for the eigenvalues gives us

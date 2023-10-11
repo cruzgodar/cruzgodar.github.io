@@ -5,42 +5,42 @@
 When a matrix fails to be invertible, it's because at some point in the row reduction process, a row became completely zero. The only thing row reduction can do is turn rows into sums of multiples of all the rows, so if some row becomes all zero, then
 
 $$
-	c_1\mathbf{r_1} + c_2\mathbf{r_2} + \cdots + c_n\mathbf{r_n} = \mathbf{0}
+	c_1**r_1** + c_2**r_2** + \cdots + c_n**r_n** = **0**
 $$
 
-for some constants $c_i$, where $\mathbf{0}$ is the row vector of all zeros. Some of the $c_i$ may be zero and some negative, but the point is that this is a much more concise description of when a matrix is invertible. In fact, this is such an important concept in linear algebra that it deserves its own name.
+for some constants $c_i$, where $**0**$ is the row vector of all zeros. Some of the $c_i$ may be zero and some negative, but the point is that this is a much more concise description of when a matrix is invertible. In fact, this is such an important concept in linear algebra that it deserves its own name.
 
 
 
 ### def linear independence
 	
-	Let $\mathbf{v_1}, \mathbf{v_2}, ..., \mathbf{v_k}$ be $n$-dimensional vectors. The $\mathbf{v_i}$ are **linearly dependent** if
+	Let $**v_1**, **v_2**, ..., **v_k**$ be $n$-dimensional vectors. The $**v_i**$ are **linearly dependent** if
 	
 	$$
-		c_1\mathbf{v_1} + c_2\mathbf{v_2} + \cdots + c_k\mathbf{v_k} = \mathbf{0}
+		c_1**v_1** + c_2**v_2** + \cdots + c_k**v_k** = **0**
 	$$
 	
 	for some choice of $c_1, c_2, ..., c_k$, and **linearly independent** if no such $c_i$ exist. We say that
 	
 	$$
-		c_1\mathbf{v_1} + c_2\mathbf{v_2} + \cdots + c_k\mathbf{v_k}
+		c_1**v_1** + c_2**v_2** + \cdots + c_k**v_k**
 	$$
 	
-	is a **linear combination** of the $\mathbf{v_i}$.
+	is a **linear combination** of the $**v_i**$.
 	
 ###
 
 
 
-For example, $\mathbf{v_1} = [[2, -5, 1]]$ and $\mathbf{v_2} = [[-4, 10, -2]]$ are linearly dependent, since $-2\mathbf{v_1} + \mathbf{v_2} = \mathbf{0}$. To determine if a more complicated set of vectors is linearly dependent, just throw them into a matrix as row vectors and try to row reduce the matrix. If a row becomes the zero vector, they're linearly dependent, and if not, they're linearly independent.
+For example, $**v_1** = [[2, -5, 1]]$ and $**v_2** = [[-4, 10, -2]]$ are linearly dependent, since $-2**v_1** + **v_2** = **0**$. To determine if a more complicated set of vectors is linearly dependent, just throw them into a matrix as row vectors and try to row reduce the matrix. If a row becomes the zero vector, they're linearly dependent, and if not, they're linearly independent.
 
-If we're looking at $n$-dimensional vectors, any collection of more than $n$ of them is *guaranteed* to be linearly dependent. That's because putting the into a matrix results in one that is taller than it is wide, and so even if the first $n$ rows are linearly independent, meaning they reduce to the identity matrix, the rows after it will reduce to zero: once we have the identity matrix, we can destroy any other row, meaning the matrix has the form $[[ \mathbf{I} \\ \hline \mathbf{0}]]$. Since linear dependence of the rows is the only problem that can arise when row reducing, we have a clean result relating it to matrix inversion.
+If we're looking at $n$-dimensional vectors, any collection of more than $n$ of them is *guaranteed* to be linearly dependent. That's because putting the into a matrix results in one that is taller than it is wide, and so even if the first $n$ rows are linearly independent, meaning they reduce to the identity matrix, the rows after it will reduce to zero: once we have the identity matrix, we can destroy any other row, meaning the matrix has the form $[[ **I** \\ \hline **0**]]$. Since linear dependence of the rows is the only problem that can arise when row reducing, we have a clean result relating it to matrix inversion.
 
 
 
 ### prop linear independence and matrix inversion
 	
-	Let $\mathbf{A}$ be an $n \times n$ matrix. Then $\mathbf{A}$ is invertible if and only if the rows of $\mathbf{A}$ are linearly independent.
+	Let $**A**$ be an $n \times n$ matrix. Then $**A**$ is invertible if and only if the rows of $**A**$ are linearly independent.
 	
 ###
 
@@ -66,7 +66,7 @@ It's time to properly talk about determinants. We've seen plenty of them for $2 
 
 ### def determinant
 	
-	Let $\mathbf{A}$ be an $n \times n$ matrix. The **determinant** of $\mathbf{A}$, written $\det \mathbf{A}$, is a single number (that measures the factor by which $\mathbf{A}$ scales volume). The determinant of a $1 \times 1$ matrix --- i.e. a number --- is its single entry, and the determinant of a larger matrix can be found expanding along any row or column: pick a row or column, and for every entry in it, cross off its row and column and find the determinant of the remaining $(n - 1) \times (n - 1)$ matrix. Multiply that by the entry in consideration and then add these up for all $n$ entries, alternating sign according to the following checkerboard pattern:
+	Let $**A**$ be an $n \times n$ matrix. The **determinant** of $**A**$, written $\det **A**$, is a single number (that measures the factor by which $**A**$ scales volume). The determinant of a $1 \times 1$ matrix --- i.e. a number --- is its single entry, and the determinant of a larger matrix can be found expanding along any row or column: pick a row or column, and for every entry in it, cross off its row and column and find the determinant of the remaining $(n - 1) \times (n - 1)$ matrix. Multiply that by the entry in consideration and then add these up for all $n$ entries, alternating sign according to the following checkerboard pattern:
 	
 	$$
 		[[ +, -, +, -, \cdots ; -, +, -, +, \cdots ; +, -, +, -, \cdots ; -, +, -, +, \cdots ; \vdots, \vdots, \vdots, \vdots, \ddots ]]
@@ -122,7 +122,7 @@ One of the most important results regarding determinants is their straightforwar
 
 ### thm determinants and inverses
 	
-	A square matrix $\mathbf{A}$ is invertible if and only if $\det \mathbf{A} \neq 0$.
+	A square matrix $**A**$ is invertible if and only if $\det **A** \neq 0$.
 	
 ###
 
@@ -137,19 +137,19 @@ The short explanation here is that writing down a general formula for the invers
 When matrices and vectors are small, multiplying them together isn't a particularly long operation, but as the dimension increases, it gets progressively more intensive. For some very special vectors, though, multiplication isn't difficult at all. For example, let's look at the matrix
 
 $$
-	\mathbf{A} = [[ 2, 2 ; 3, 1 ]].
+	**A** = [[ 2, 2 ; 3, 1 ]].
 $$
 
 If we evaluate the following two products, they're equal to multiples of the vector we plug in:
 
 $$
-	\mathbf{A} [[ 1 ; 1 ]] &= [[ 2, 2 ; 3, 1 ]] [[ 1 ; 1 ]]
+	**A** [[ 1 ; 1 ]] &= [[ 2, 2 ; 3, 1 ]] [[ 1 ; 1 ]]
 	
 	&= [[4 ; 4]]
 	
 	&= 4[[ 1 ; 1 ]]
 	
-	\mathbf{A} [[ -2 ; 3 ]] &= [ 2, 2 ; 3, 1 ]] [[ -2 ; 3 ]]
+	**A** [[ -2 ; 3 ]] &= [ 2, 2 ; 3, 1 ]] [[ -2 ; 3 ]]
 	
 	&= [[ 2 ; -3 ]]
 	
@@ -162,25 +162,25 @@ Although it might not seem like a pivotal topic at first, vectors like these pla
 
 ### def eigenvalues and eigenvectors
 	
-	Let $\mathbf{A}$ be a square matrix. An **eigenvector of $\mathbf{A}$** is a vector $\mathbf{v}$ with $\mathbf{Av} = \lambda\mathbf{v}$ for some nonzero value $\lambda$, called the **eigenvalue** corresponding to $\mathbf{v}$.
+	Let $**A**$ be a square matrix. An **eigenvector of $**A**$** is a vector $**v**$ with $**Av** = \lambda**v**$ for some nonzero value $\lambda$, called the **eigenvalue** corresponding to $**v**$.
 	
 ###
 
 
 
-Any eigenvector $\mathbf{v}$ of a matrix $\mathbf{A}$ satisfies $\mathbf{Av} = \lambda\mathbf{Iv}$, or in other words,
+Any eigenvector $**v**$ of a matrix $**A**$ satisfies $**Av** = \lambda**Iv**$, or in other words,
 
 $$
-	(\mathbf{A} - \lambda\mathbf{I})\mathbf{v} = \mathbf{0}.
+	(**A** - \lambda**I**)**v** = **0**.
 $$
 
-We're used to solving that for $\mathbf{v}$, but since we don't know $\lambda$, that isn't possible directly. Instead, let's solve for $\lambda$ first. When we multiply by $\mathbf{v}$, we're taking a linear combination of the columns of $\mathbf{A} - \lambda\mathbf{I}$ and asking for it to be zero. That means the columns need to be linearly dependent, so the matrix $\mathbf{A} - \lambda\mathbf{I}$ needs to be *not* invertible. That isn't particularly useful on its own, but now that we know the connection between invertibility and determinants, we can solve the equation
+We're used to solving that for $**v**$, but since we don't know $\lambda$, that isn't possible directly. Instead, let's solve for $\lambda$ first. When we multiply by $**v**$, we're taking a linear combination of the columns of $**A** - \lambda**I**$ and asking for it to be zero. That means the columns need to be linearly dependent, so the matrix $**A** - \lambda**I**$ needs to be *not* invertible. That isn't particularly useful on its own, but now that we know the connection between invertibility and determinants, we can solve the equation
 
 $$
-	\det (\mathbf{A} - \lambda\mathbf{I}) = 0.
+	\det (**A** - \lambda**I**) = 0.
 $$
 
-In a deeply unfortunate naming collision, this equation is called the **characteristic polynomial** of the matrix $\mathbf{A}$. Once we've solved it for the eigenvalues, we can then return to the setup of $\mathbf{Av} = \lambda \mathbf{v}$ to find the corresponding eigenvectors. In a surprising turn, though, many of the applications we'll use eigenvalues for don't require the eigenvectors at all, meaning we can stop early.
+In a deeply unfortunate naming collision, this equation is called the **characteristic polynomial** of the matrix $**A**$. Once we've solved it for the eigenvalues, we can then return to the setup of $**Av** = \lambda **v**$ to find the corresponding eigenvectors. In a surprising turn, though, many of the applications we'll use eigenvalues for don't require the eigenvectors at all, meaning we can stop early.
 
 
 
@@ -189,13 +189,13 @@ In a deeply unfortunate naming collision, this equation is called the **characte
 	Find the eigenvalues and eigenvectors of
 	
 	$$
-		\mathbf{A} = [[ 5, -3 ; 2, -2 ]].
+		**A** = [[ 5, -3 ; 2, -2 ]].
 	$$
 	
-	To get the characteristic polynomial, we subtract $\lambda \mathbf{I}$, which just means subtracting $\lambda$ from every entry in the diagonal, and then take the determinant.
+	To get the characteristic polynomial, we subtract $\lambda **I**$, which just means subtracting $\lambda$ from every entry in the diagonal, and then take the determinant.
 	
 	$$
-		\det (\mathbf{A} - \lambda \mathbf{I}) &= \det [[ 5 - \lambda, -3 ; 2, -2 - \lambda ]]
+		\det (**A** - \lambda **I**) &= \det [[ 5 - \lambda, -3 ; 2, -2 - \lambda ]]
 		
 		&= (5 - \lambda)(-2 - \lambda) - (-3)(2)
 		
@@ -208,18 +208,18 @@ In a deeply unfortunate naming collision, this equation is called the **characte
 	
 	Since the characteristic polynomial is supposed to equal zero, the eigenvalues are $4$ and $-1$. We'll handle them one at a time to find the eigenvectors.
 	
-	First, let's take $\lambda = 4$. That gives us the system $(\mathbf{A} - 4 \mathbf{I})\mathbf{v} = \mathbf{0}$, which corresponds to the augmented matrix
+	First, let's take $\lambda = 4$. That gives us the system $(**A** - 4 **I**)**v** = **0**$, which corresponds to the augmented matrix
 	
 	$$
 		[[ 1, -3 | 0 ; 2, -6 | 0 ]] & 
 		
-		[[ 1, -3 | 0 ; 0, 0 | 0 ]] & \qquad \mathbf{r_2} \pe -2\mathbf{r_1}.
+		[[ 1, -3 | 0 ; 0, 0 | 0 ]] & \qquad **r_2** \pe -2**r_1**.
 	$$
 	
 	In the form of an equation, $v_1 - 3v_2 = 0$, so $v_1 = 3v_2$. We just need one eigenvector, so let's take $v_2 = 1$ and $v_1 = 3$ to get our first eigenvector of
 	
 	$$
-		\mathbf{v} = [[ 3 ; 1 ]]
+		**v** = [[ 3 ; 1 ]]
 	$$
 	
 	with $\lambda_1 = 4$. For the other eigenvalue, we have
@@ -227,13 +227,13 @@ In a deeply unfortunate naming collision, this equation is called the **characte
 	$$
 		[[ 6, -3 | 0 ; 2, -1 | 0 ]] & 
 			
-		[[ 6, -3 | 0 ; 0, 0 | 0 ]] & \qquad \mathbf{r_2} \pe -\frac{1}{3}\mathbf{r_1}.
+		[[ 6, -3 | 0 ; 0, 0 | 0 ]] & \qquad **r_2** \pe -\frac{1}{3}**r_1**.
 	$$
 	
 	Now $6v_1 - 3v_2 = 0$, so $2v_1 = v_2$. We'll just take $v_1 = 1$ and $v_2 = 2$ to get our second eigenvector of
 	
 	$$
-		\mathbf{v} = [[ 1 ; 2 ]]
+		**v** = [[ 1 ; 2 ]]
 	$$
 	
 ###
@@ -243,7 +243,7 @@ In a deeply unfortunate naming collision, this equation is called the **characte
 	Find the eigenvalues and eigenvectors of
 	
 	$$
-		\mathbf{A} = [[ 1, 1, 0 ; 0, 0, 0 ; 0, 1, 1 ]].
+		**A** = [[ 1, 1, 0 ; 0, 0, 0 ; 0, 1, 1 ]].
 	$$
 	
 ###
@@ -256,10 +256,10 @@ As one last result, though, let's properly connect the two titles of this sectio
 
 ### thm determinants and eigenvalues
 	
-	Let $\mathbf{A}$ be an $n \times n$ with eigenvalues $\lambda_1, ..., \lambda_n$. Then
+	Let $**A**$ be an $n \times n$ with eigenvalues $\lambda_1, ..., \lambda_n$. Then
 	
 	$$
-		\det \mathbf{A} = \lambda_1 \cdots \lambda_n.
+		\det **A** = \lambda_1 \cdots \lambda_n.
 	$$
 	
 	In other words, the determinant of a matrix is the product of its eigenvalues.
@@ -274,17 +274,17 @@ In higher-level math classes, this *is* the definition of the determinant, and w
 
 ### prop properties of square matrices
 	
-	Let $\mathbf{A}$ be an $n \times n$ matrix. The following are equivalent:
+	Let $**A**$ be an $n \times n$ matrix. The following are equivalent:
 	
-	1. $\mathbf{A}$ is invertible.
+	1. $**A**$ is invertible.
 	
-	2. $\det \mathbf{A} \neq 0$.
+	2. $\det **A** \neq 0$.
 	
-	3. All the eigenvalues of $\mathbf{A}$ are nonzero.
+	3. All the eigenvalues of $**A**$ are nonzero.
 	
-	4. The rows of $\mathbf{A}$ are linearly independent.
+	4. The rows of $**A**$ are linearly independent.
 	
-	5. The columns of $\mathbf{A}$ are linearly independent.
+	5. The columns of $**A**$ are linearly independent.
 	
 ###
 
@@ -292,11 +292,11 @@ In higher-level math classes, this *is* the definition of the determinant, and w
 
 In a field as mature as linear algebra, it's not too surprising that there are many, *many* more items we could list here, but these are by far the most important.
 
-Let's say a quick word about the meaning of eigenvalues. When the eigenvectors of a matrix $\mathbf{A}$ are linearly independent, we can think of them as the sides of a parallelogram (or an analogous shape in higher dimensions). Then each eigenvalue is the scale factor by which $\mathbf{A}$ scales the length of the corresponding eigenvector, so the product of them all is the factor by which $\mathbf{A}$ scales the total area --- or volume, more generally.
+Let's say a quick word about the meaning of eigenvalues. When the eigenvectors of a matrix $**A**$ are linearly independent, we can think of them as the sides of a parallelogram (or an analogous shape in higher dimensions). Then each eigenvalue is the scale factor by which $**A**$ scales the length of the corresponding eigenvector, so the product of them all is the factor by which $**A**$ scales the total area --- or volume, more generally.
 
 ### desmos eigenvectors
 
-That's the geometric interpretation of the determinant: it's a volume scaling factor. Now it's a little easier to see why it being zero is a problem for invertibility: if the volume goes to zero, $\mathbf{A}$ must have squished one or more of the eigenvectors to zero, which means a whole lot of inputs are being mapped to the same output. That's exactly what *can't* happen for the process to be invertible.
+That's the geometric interpretation of the determinant: it's a volume scaling factor. Now it's a little easier to see why it being zero is a problem for invertibility: if the volume goes to zero, $**A**$ must have squished one or more of the eigenvectors to zero, which means a whole lot of inputs are being mapped to the same output. That's exactly what *can't* happen for the process to be invertible.
 
 We'll begin to reap the benefits of eigenvalues, eigenvectors, and determinants in the next section, when we return at long last to the world of differential equations.
 

@@ -37,12 +37,12 @@ $$
 The big leap is to treat these four numbers as one large object. To indicate the distinction, we'll wrap it in brackets (parentheses are also commonly used), and to remind ourselves that it's a somewhat more complex variable than a single number, we'll represent it with a capital --- and in printed text, bold --- letter.
 
 $$
-	\mathbf{A} = [[ 2, -1 ; 1, 5 ]].
+	**A** = [[ 2, -1 ; 1, 5 ]].
 $$
 
-We call $\mathbf{A}$ a $2 \times 2$ **matrix** --- other sizes, including non-square ones, are also possible, and we'll look at examples momentarily.
+We call $**A**$ a $2 \times 2$ **matrix** --- other sizes, including non-square ones, are also possible, and we'll look at examples momentarily.
 
-In the same way that an ordered pair $(x, y)$ has two degrees of freedom --- both $x$ and $y$ can be changed independently --- $\mathbf{A}$ has four. To reference the individual elements of $\mathbf{A}$, we typically use the corresponding lowercase letter with indices. For example, the elements of $\mathbf{A}$ are $a_{11}$, $a_{12}$, $a_{21}$, and $a_{22}$. The first number indexes the row and the second the column, so
+In the same way that an ordered pair $(x, y)$ has two degrees of freedom --- both $x$ and $y$ can be changed independently --- $**A**$ has four. To reference the individual elements of $**A**$, we typically use the corresponding lowercase letter with indices. For example, the elements of $**A**$ are $a_{11}$, $a_{12}$, $a_{21}$, and $a_{22}$. The first number indexes the row and the second the column, so
 
 $$
 	a_{11} &= 2
@@ -54,10 +54,10 @@ $$
 	a_{22} &= 5.
 $$
 
-You might find the idea of matrices fascinating in its own right, or you might be waiting for the applications --- either way, we need to actually use these things for something to justify the extra notation and definitions. Getting back to our systems of equations, we want to be able to represent both left sides of the equations at once with some sort of expression involving $\mathbf{A}$. A clue toward the answer lies in the right side of the equation. This time, there aren't any $x_i$ to drop, and we can just assemble the numbers into a matrix directly.
+You might find the idea of matrices fascinating in its own right, or you might be waiting for the applications --- either way, we need to actually use these things for something to justify the extra notation and definitions. Getting back to our systems of equations, we want to be able to represent both left sides of the equations at once with some sort of expression involving $**A**$. A clue toward the answer lies in the right side of the equation. This time, there aren't any $x_i$ to drop, and we can just assemble the numbers into a matrix directly.
 
 $$
-	\mathbf{b} = [[ 3 ; -1 ]].
+	**b** = [[ 3 ; -1 ]].
 $$
 
 When a matrix only has a single column, we call it a **column vector** and denote it with a bold but lowercase letter. In handwriting, we'll typically denote vectors with a little arrow above them, as in $\vec{b}$.
@@ -65,19 +65,19 @@ When a matrix only has a single column, we call it a **column vector** and denot
 In order for two vectors to be equal, all of their entries must be the same, and this indicates the direction we should go: we can represent the two equations in the system as a single equation involving vectors:
 
 $$
-	[[ 2x_1 - x_2 ; x_1 + 5x_2 ]] = \mathbf{b}.
+	[[ 2x_1 - x_2 ; x_1 + 5x_2 ]] = **b**.
 $$
 
-On the surface, we haven't changed much of anything, but we're actually getting close to something profound. Since $\mathbf{A}$ is providing the coefficients for all the $x_i$, we should be able to just have $\mathbf{A}$ *be a coefficient itself*. To that end, let's define a vector $\mathbf{x}$ that stores both of our variables:
+On the surface, we haven't changed much of anything, but we're actually getting close to something profound. Since $**A**$ is providing the coefficients for all the $x_i$, we should be able to just have $**A**$ *be a coefficient itself*. To that end, let's define a vector $**x**$ that stores both of our variables:
 
 $$
-	\mathbf{x} = [[ x_1 ; x_2 ]].
+	**x** = [[ x_1 ; x_2 ]].
 $$
 
-Now the final part: if $\mathbf{A}$ is going be a single coefficient, we want to be able to write $\mathbf{Ax}$, multiplying a matrix and a column vector, to mean
+Now the final part: if $**A**$ is going be a single coefficient, we want to be able to write $**Ax**$, multiplying a matrix and a column vector, to mean
 
 $$
-	\mathbf{Ax} = [[ 2, -1 ; 1, 5 ]] [[ x_1 ; x_2 ]] = [[ 2x_1 - x_2 ; x_1 + 5x_2 ]].
+	**Ax** = [[ 2, -1 ; 1, 5 ]] [[ x_1 ; x_2 ]] = [[ 2x_1 - x_2 ; x_1 + 5x_2 ]].
 $$
 
 So, to bring it all together: for matrices to actually represent coefficients in the way we want them to, this is how matrix-vector multiplication should be defined. Let's write this out in a little more generality.
@@ -86,26 +86,26 @@ So, to bring it all together: for matrices to actually represent coefficients in
 
 ### def $2 \times 2$ matrix-vector multiplication
 	
-	Let $\mathbf{A}$ and $\mathbf{x}$ be a matrix and vector, respectively, defined as
+	Let $**A**$ and $**x**$ be a matrix and vector, respectively, defined as
 	
 	$$
-		\mathbf{A} &= [[ a, b ; c, d ]]
-		\mathbf{x} &= [[ x_1 ; x_2 ]].
+		**A** &= [[ a, b ; c, d ]]
+		**x** &= [[ x_1 ; x_2 ]].
 	$$
 	
-	Then the product $\mathbf{Ax}$ is a column vector, defined to be
+	Then the product $**Ax**$ is a column vector, defined to be
 	
 	$$
-		\mathbf{Ax} = [[ a, b ; c, d ]] [[ x_1 ; x_2 ]] = [[ ax_1 + bx_2 ; cx_1 + dx_2 ]].
+		**Ax** = [[ a, b ; c, d ]] [[ x_1 ; x_2 ]] = [[ ax_1 + bx_2 ; cx_1 + dx_2 ]].
 	$$
 	
-	One way to visualize this is by taking the vector $\mathbf{x}$, rotating it sideways so that it reads $[[ x_1, x_2 ]]$, and then for each row of $\mathbf{A}$, multiplying the two together and adding the results.
+	One way to visualize this is by taking the vector $**x**$, rotating it sideways so that it reads $[[ x_1, x_2 ]]$, and then for each row of $**A**$, multiplying the two together and adding the results.
 	
 ###
 
 
 
-As we'll see in the next few examples, matrix-vector multiplication is defined for larger than $2 \times 2$ matrices: for the definition to work, the only restriction is that the length of $\mathbf{x}$ is equal to the row length of $\mathbf{A}$ --- otherwise there'd be a mismatch we turn $\mathbf{x}$ sideways.
+As we'll see in the next few examples, matrix-vector multiplication is defined for larger than $2 \times 2$ matrices: for the definition to work, the only restriction is that the length of $**x**$ is equal to the row length of $**A**$ --- otherwise there'd be a mismatch we turn $**x**$ sideways.
 
 
 
@@ -153,7 +153,7 @@ As we'll see in the next few examples, matrix-vector multiplication is defined f
 
 
 
-From these examples, we can see some general properties of matrix-vector multiplication. If $\mathbf{A}$ is an $n \times k$ matrix, meaning it has $n$ rows and $k$ columns, then $\mathbf{Ax}$ is defined only if $\mathbf{x}$ has length $k$, and the length of $\mathbf{Ax}$ is $n$.
+From these examples, we can see some general properties of matrix-vector multiplication. If $**A**$ is an $n \times k$ matrix, meaning it has $n$ rows and $k$ columns, then $**Ax**$ is defined only if $**x**$ has length $k$, and the length of $**Ax**$ is $n$.
 
 A square matrix with all $0$s with a strip of $1$s down the diagonal from top-left to bottom-right, like those in part 3 of the example or part 1 of the exercise, seem to multiply vectors by not changing them, and it's not too hard to see that the same will happen with every vector: the $i$th row pulls out exactly the $i$th component. This matrix is useful enough that it deserves its own name.
 
@@ -161,19 +161,19 @@ A square matrix with all $0$s with a strip of $1$s down the diagonal from top-le
 
 ### def identity matrix
 	
-	The $n \times n$ **identity matrix** consists of all $0$s, except for $1$s down the top-left to bottom-right diagonal (called the **main diagonal**). We write it as $\mathbf{I}_n$, or just $\mathbf{I}$ if the dimension is clear from context.
+	The $n \times n$ **identity matrix** consists of all $0$s, except for $1$s down the top-left to bottom-right diagonal (called the **main diagonal**). We write it as $**I**_n$, or just $**I**$ if the dimension is clear from context.
 	
 ###
 
 
 
-Now that we're used to the basic idea of matrices, let's look at some of their basic properties. The guiding principle to keep in mind is that **matrices are functions** that operate by multiplying: in other words, every matrix $\mathbf{A}$ corresponds to a linear function $T$ so that $\mathbf{Ax} = T(\mathbf{x})$. To that end, we want to define matrix addition so that it acts just like function addition. In other words, matrices $\mathbf{A}$ and $\mathbf{B}$ should have a sum so that
+Now that we're used to the basic idea of matrices, let's look at some of their basic properties. The guiding principle to keep in mind is that **matrices are functions** that operate by multiplying: in other words, every matrix $**A**$ corresponds to a linear function $T$ so that $**Ax** = T(**x**)$. To that end, we want to define matrix addition so that it acts just like function addition. In other words, matrices $**A**$ and $**B**$ should have a sum so that
 
 $$
-	(\mathbf{A} + \mathbf{B})\mathbf{x} = \mathbf{Ax} + \mathbf{Bx},
+	(**A** + **B**)**x** = **Ax** + **Bx**,
 $$
 
-just like functions. Therefore, we need $\mathbf{A}$ and $\mathbf{B}$ to have the same number of columns so they can both multiply $\mathbf{x}$, and the same number of rows so that they can add together after multiplying. For vector multiplication to distribute like this, we just need the $i$th row of $\mathbf{A} + \mathbf{B}$ to be the $i$th row of $\mathbf{A}$ plus the $i$th row of $\mathbf{B}$. All of this is to say that matrix addition works exactly like we'd hope: as long as they're exactly the same shape, we can just add each component together. For example,
+just like functions. Therefore, we need $**A**$ and $**B**$ to have the same number of columns so they can both multiply $**x**$, and the same number of rows so that they can add together after multiplying. For vector multiplication to distribute like this, we just need the $i$th row of $**A** + **B**$ to be the $i$th row of $**A**$ plus the $i$th row of $**B**$. All of this is to say that matrix addition works exactly like we'd hope: as long as they're exactly the same shape, we can just add each component together. For example,
 
 $$
 	[[ 5, 0, 2 ; 2, 3, 0 ]] + [[ -1, 2, 0 ; -5, 0, 2 ]] &= [[ 5 - 1, 0 + 2, 2 + 0 ; 2 - 5, 3 + 0, 0 + 2 ]]
@@ -181,7 +181,7 @@ $$
 	&= [[ 5, 2, 2 ; -3, 3, 2 ]].
 $$
 
-For exactly the same reason, scalar multiplication works the same way: for a number $c$, the matrix $c\mathbf{A}$ is created by multiplying every entry by $c$. For example,
+For exactly the same reason, scalar multiplication works the same way: for a number $c$, the matrix $c**A**$ is created by multiplying every entry by $c$. For example,
 
 $$
 	-4[[ 5, 0, 2 ; 2, 3, 0 ]] = [[ -20, 0, -8 ; -8, -12, 0 ]].
@@ -193,50 +193,50 @@ $$
 
 This one topic has a hefty amount of explanation behind it. Far, far too often, matrix multiplication is introduced as a quirky, complicated operation and then never justified or dug into. It'll take us a minute to go through the details, but we're going to make sure we understand why matrices multiply the way they do.
 
-To really hammer home the point, matrices are functions. An $n \times k$ matrix $\mathbf{B}$ takes in a $k$-dimensional vector $\mathbf{x}$ and gives back an $n$-dimensional one by doing matrix-vector multiplication, which we write $\mathbf{Bx}$. If we have another matrix $\mathbf{A}$ and we want the product $\mathbf{AB}$ to make any sense at all, then when we multiply by $\mathbf{x}$, the following equality should hold:
+To really hammer home the point, matrices are functions. An $n \times k$ matrix $**B**$ takes in a $k$-dimensional vector $**x**$ and gives back an $n$-dimensional one by doing matrix-vector multiplication, which we write $**Bx**$. If we have another matrix $**A**$ and we want the product $**AB**$ to make any sense at all, then when we multiply by $**x**$, the following equality should hold:
 
 $$
-	(\mathbf{AB})\mathbf{x} = \mathbf{A}(\mathbf{Bx}).
+	(**AB**)**x** = **A**(**Bx**).
 $$
 
-On the left is a matrix called $\mathbf{AB}$ that we don't know how to calculate yet, but on the right, there's just matrix-vector multiplication happening twice. Since we're thinking of matrices as being functions that act by multiplication, the right side is function composition, so, crucially, the left side should be too. In other words, **matrix multiplication should be defined to be composition of functions**. This point is glossed over or ignored in many introductory classes, and that's really a shame! Understanding why matrices work they way they do is half the battle in using them properly.
+On the left is a matrix called $**AB**$ that we don't know how to calculate yet, but on the right, there's just matrix-vector multiplication happening twice. Since we're thinking of matrices as being functions that act by multiplication, the right side is function composition, so, crucially, the left side should be too. In other words, **matrix multiplication should be defined to be composition of functions**. This point is glossed over or ignored in many introductory classes, and that's really a shame! Understanding why matrices work they way they do is half the battle in using them properly.
 
-So --- how do we do that? First of all, not any two matrices can be multiplied together. Since an $n \times k$ matrix $\mathbf{B}$ takes in a $k$-dimensional vector $\mathbf{x}$ and gives back an $n$-dimensional one $\mathbf{Bx}$, a matrix $\mathbf{A}$ that makes $\mathbf{AB}$ make sense needs to take in $n$-dimensional vectors. In other words, $\mathbf{A}$ needs to be an $m \times n$ matrix for some $n$. Since $\mathbf{ABx} = (\mathbf{A})\mathbf{Bx}$, the matrix $\mathbf{AB}$ should be $m \times k$.
+So --- how do we do that? First of all, not any two matrices can be multiplied together. Since an $n \times k$ matrix $**B**$ takes in a $k$-dimensional vector $**x**$ and gives back an $n$-dimensional one $**Bx**$, a matrix $**A**$ that makes $**AB**$ make sense needs to take in $n$-dimensional vectors. In other words, $**A**$ needs to be an $m \times n$ matrix for some $n$. Since $**ABx** = (**A**)**Bx**$, the matrix $**AB**$ should be $m \times k$.
 
-To figure out the exact formula for matrix multiplication, let's look at a few vectors in particular. Let $\mathbf{e_j}$ be a $k$-dimensional column vector defined by
-
-$$
-	\mathbf{e_j} = [[ 0 ; \vdots ; 0 ; 1 ; 0 ; \vdots ; 0 ]],
-$$
-
-where the $1$ is in position $j$. When we evaluate $\mathbf{Be_j}$ by turning $\mathbf{e_j}$ sideways, only column $j$ of $\mathbf{B}$ is picked out --- in other words, if we write
+To figure out the exact formula for matrix multiplication, let's look at a few vectors in particular. Let $**e_j**$ be a $k$-dimensional column vector defined by
 
 $$
-	\mathbf{B} = [[ \mathbf{|}, \mathbf{|},, \mathbf{|}, \mathbf{|} ; \mathbf{b_1}, \mathbf{b_2}, \cdots, \mathbf{b_{k - 1}}, \mathbf{b_k} ; \mathbf{|}, \mathbf{|},, \mathbf{|}, \mathbf{|} ]],
+	**e_j** = [[ 0 ; \vdots ; 0 ; 1 ; 0 ; \vdots ; 0 ]],
 $$
 
-so that $\mathbf{b_j}$ is the $j$th column of $\mathbf{B}$, then $\mathbf{Be_j} = \mathbf{b_j}$. By the same token, $(\mathbf{AB})\mathbf{e_j} = \mathbf{Ab_j}$ is the $j$th column of $\mathbf{AB}$. So the matrix product $\mathbf{AB}$ is defined by
+where the $1$ is in position $j$. When we evaluate $**Be_j**$ by turning $**e_j**$ sideways, only column $j$ of $**B**$ is picked out --- in other words, if we write
 
 $$
-	\mathbf{AB} = [[ \mathbf{|}, \mathbf{|},, \mathbf{|}, \mathbf{|} ; \mathbf{Ab_1}, \mathbf{Ab_2}, \cdots, \mathbf{Ab_{k - 1}}, \mathbf{Ab_k} ; \mathbf{|}, \mathbf{|},, \mathbf{|}, \mathbf{|} ]].
+	**B** = [[ **|**, **|**,, **|**, **|** ; **b_1**, **b_2**, \cdots, **b_{k - 1}**, **b_k** ; **|**, **|**,, **|**, **|** ]],
 $$
 
-Thankfully, we can streamline this formula a little to make it easier to remember. To get the $i$th entry of $\mathbf{Ab_j}$, we turn $\mathbf{b_j}$ sideways and look at its product with the $i$th row of $\mathbf{A}$. So we can get a formula for $\mathbf{AB}$ one entry at a time.
+so that $**b_j**$ is the $j$th column of $**B**$, then $**Be_j** = **b_j**$. By the same token, $(**AB**)**e_j** = **Ab_j**$ is the $j$th column of $**AB**$. So the matrix product $**AB**$ is defined by
+
+$$
+	**AB** = [[ **|**, **|**,, **|**, **|** ; **Ab_1**, **Ab_2**, \cdots, **Ab_{k - 1}**, **Ab_k** ; **|**, **|**,, **|**, **|** ]].
+$$
+
+Thankfully, we can streamline this formula a little to make it easier to remember. To get the $i$th entry of $**Ab_j**$, we turn $**b_j**$ sideways and look at its product with the $i$th row of $**A**$. So we can get a formula for $**AB**$ one entry at a time.
 
 
 
 ### thm matrix multiplication
 	
-	Let $\mathbf{A}$ be an $m \times n$ matrix and let $\mathbf{B}$ be an $n \times k$ one. Then $\mathbf{AB}$ is an $m \times k$ matrix, and the entry in row $i$ and column $j$ is defined by
+	Let $**A**$ be an $m \times n$ matrix and let $**B**$ be an $n \times k$ one. Then $**AB**$ is an $m \times k$ matrix, and the entry in row $i$ and column $j$ is defined by
 	
 	$$
-		\mathbf{AB}_{ij} = \sum_{l = 1}^n a_{il}b_{lj}.
+		**AB**_{ij} = \sum_{l = 1}^n a_{il}b_{lj}.
 	$$
 	
-	In other words, we take row $i$ from $\mathbf{A}$ and column $j$ from $\mathbf{B}$, multiply the corresponding entries, and add all $n$ together. When thinking of a matrix as a function operating on vectors, matrix multiplication *is* function composition. In other words,
+	In other words, we take row $i$ from $**A**$ and column $j$ from $**B**$, multiply the corresponding entries, and add all $n$ together. When thinking of a matrix as a function operating on vectors, matrix multiplication *is* function composition. In other words,
 	
 	$$
-		(\mathbf{AB})\mathbf{x} = \mathbf{ABx} = \mathbf{A}(\mathbf{Bx}).
+		(**AB**)**x** = **ABx** = **A**(**Bx**).
 	$$
 	
 ###
@@ -249,25 +249,25 @@ That was a whole lot of work! Let's turn to some examples to see this in action.
 
 ### ex matrix multiplication
 	
-	Let $$\mathbf{A} = [[ 5, 0 ; -2, 1 ]]$$ and $$\mathbf{B} = [[ 3, 1, -1 ; -1, 0, 2 ]]$$. Evaluate $\mathbf{AB}$.
+	Let $$**A** = [[ 5, 0 ; -2, 1 ]]$$ and $$**B** = [[ 3, 1, -1 ; -1, 0, 2 ]]$$. Evaluate $**AB**$.
 	
-	This is a valid product to take, since the number of columns $\mathbf{A}$ and the number of rows of $\mathbf{B}$ are the same ($2$). And the dimensions of $\mathbf{AB}$ will be $2 \times 3$, since $\mathbf{A}$ has $2$ rows and $\mathbf{B}$ has $3$ columns. To get the element $\mathbf{AB}_{11}$ --- the top-left entry --- we take the first row of $\mathbf{A}$, which is $(5, 0)$, and the first column of $\mathbf{B}$, which is $(3, -1)$, and multiply them together to get $5(3) + 0(-1) = 15$. Repeating this for the other five entries, we get
+	This is a valid product to take, since the number of columns $**A**$ and the number of rows of $**B**$ are the same ($2$). And the dimensions of $**AB**$ will be $2 \times 3$, since $**A**$ has $2$ rows and $**B**$ has $3$ columns. To get the element $**AB**_{11}$ --- the top-left entry --- we take the first row of $**A**$, which is $(5, 0)$, and the first column of $**B**$, which is $(3, -1)$, and multiply them together to get $5(3) + 0(-1) = 15$. Repeating this for the other five entries, we get
 	
 	$$
-		\mathbf{AB} = [[ 15, 5, -5 ; -7, -2, 4 ]].
+		**AB** = [[ 15, 5, -5 ; -7, -2, 4 ]].
 	$$
 	
 ###
 
 ### exc matrix multiplication
 	
-	Let $\mathbf{x} = [[ 1 ; 2 ; -1 ]]$. With the same matrices from the previous example, evaluate $(\mathbf{AB})\mathbf{x}$ and $\mathbf{A}(\mathbf{Bx})$ and show they're the same.
+	Let $**x** = [[ 1 ; 2 ; -1 ]]$. With the same matrices from the previous example, evaluate $(**AB**)**x**$ and $**A**(**Bx**)$ and show they're the same.
 	
 ###
 
 
 
-Let's mention another critical aspect of matrices: multiplication isn't commutative, meaning $\mathbf{AB} \neq \mathbf{BA}$. In fact, even if we know $\mathbf{AB}$, it's not guaranteed that $\mathbf{BA}$ is even defined. The matrices $\mathbf{A}$ and $\mathbf{B}$ from the previous example can't be multiplied in the other order. Just like two functions $f$ and $g$ almost never satisfy $f(g(x)) = g(f(x))$, matrices almost never commute.
+Let's mention another critical aspect of matrices: multiplication isn't commutative, meaning $**AB** \neq **BA**$. In fact, even if we know $**AB**$, it's not guaranteed that $**BA**$ is even defined. The matrices $**A**$ and $**B**$ from the previous example can't be multiplied in the other order. Just like two functions $f$ and $g$ almost never satisfy $f(g(x)) = g(f(x))$, matrices almost never commute.
 
 In the next section, we'll begin putting matrices to use --- our first application will be solving large systems of equations incredibly efficiently.
 

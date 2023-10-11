@@ -60,7 +60,7 @@ The zig-zag shape is the Greek letter Sigma --- S for sum. The expressions above
 
 ### def partial sums
 	
-	Let $\sum_{n = 1}^\infty a_n$ be an infinite series. The **$\mathbf{k}$th partial sum**, written $S_k$, is defined as
+	Let $\sum_{n = 1}^\infty a_n$ be an infinite series. The **$**k**$th partial sum**, written $S_k$, is defined as
 	
 	$$
 		S_k = \sum_{n = 1}^k a_n.

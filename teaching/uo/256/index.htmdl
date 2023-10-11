@@ -202,10 +202,10 @@ Welcome to Math 256! We'll use this page for the interactive notes, the homework
 	#. Let $f(\lambda) = \lambda^2 + a\lambda + b$ be a polynomial. The **companion matrix** to $f$ is the $2 \times 2$ matrix
 	
 	$$
-		\mathbf{C}(f) = [[0, -b ; 1, -a]].
+		**C**(f) = [[0, -b ; 1, -a]].
 	$$
 	
-	Show that the characteristic polynomial of $\mathbf{C}(f)$ is $f$.
+	Show that the characteristic polynomial of $**C**(f)$ is $f$.
 
 	#. Using companion matrices, create $2 \times 2$ matrices with real entries and the following eigenvalues:
 	
@@ -247,15 +247,15 @@ Welcome to Math 256! We'll use this page for the interactive notes, the homework
 	
 	In problems 5#, find the determinant of the given matrix.
 	
-	#. $$\mathbf{A} = [[2, -1 ; 3, -2]].$$
+	#. $$**A** = [[2, -1 ; 3, -2]].$$
 	
-	#. $$\mathbf{B} = [[1, -1 ; 1, 3]].$$
+	#. $$**B** = [[1, -1 ; 1, 3]].$$
 	
-	#. $$\mathbf{C} = [[19, -4, 8 ; -8, 5, -10 ; -1, -2, 4]].$$
+	#. $$**C** = [[19, -4, 8 ; -8, 5, -10 ; -1, -2, 4]].$$
 	
-	#. $$\mathbf{D} = [[2, 2, -2 ; -3, 7, 3 ; -5, 5, 5]].$$
+	#. $$**D** = [[2, 2, -2 ; -3, 7, 3 ; -5, 5, 5]].$$
 	
-	#. $$\mathbf{E} = [[5, 6, 4, -4 ; 3, 8, -2, 2 ; 3, -3, 9, 2 ; 0, 0, 0, 11]].$$
+	#. $$**E** = [[5, 6, 4, -4 ; 3, 8, -2, 2 ; 3, -3, 9, 2 ; 0, 0, 0, 11]].$$
 	
 
 
@@ -263,47 +263,47 @@ Welcome to Math 256! We'll use this page for the interactive notes, the homework
 
 	In problems 5#, find the eigenvalues and eigenvectors of the given matrix, and verify that the product of the eigenvalues is the determinant you found before.
 	
-	#. $\mathbf{A}$ from problem 1.
+	#. $**A**$ from problem 1.
 	
-	#. $\mathbf{B}$ from problem 2.
+	#. $**B**$ from problem 2.
 	
-	#. $\mathbf{C}$ from problem 3.
+	#. $**C**$ from problem 3.
 	
-	#. $\mathbf{D}$ from problem 4.
+	#. $**D**$ from problem 4.
 	
-	#. $\mathbf{E}$ from problem 5. Hint: you may it useful to know that $(x - 11)^3 = x^3 - 33x^2 + 363x - 1331$.
-	
-
-
-	- - -
-
-	#. With $\mathbf{A}$ from problem 1, find the following:
-	
-	> a) $$\mathbf{A}^{100} [[1 ; 3]].$$
-	
-	> b) $$\mathbf{A}^{100} [[-2 ; -6]].$$
-	
-	> c) $$\mathbf{A}^{100} [[0 ; -4]].$$
+	#. $**E**$ from problem 5. Hint: you may it useful to know that $(x - 11)^3 = x^3 - 33x^2 + 363x - 1331$.
 	
 
 
 	- - -
 
-	#. A remarkable property of the determinant is that it's **multiplicative**: for any two $n \times n$ matrices $\mathbf{A}$ and $\mathbf{B}$, $\det (\mathbf{AB}) = \left( \det \mathbf{A} \right)\left( \det \mathbf{B} \right)$. Use this property to answer the following questions.
+	#. With $**A**$ from problem 1, find the following:
 	
-	> a) What is $\det \mathbf{I}$? Hint: $\mathbf{IA} = \mathbf{A}$ for any matrix $\mathbf{A}$ for which the product makes sense.
+	> a) $$**A**^{100} [[1 ; 3]].$$
 	
-	> b) Let $\mathbf{A}$ be an invertible matrix. What is $\det \left(\mathbf{A}^{-1}\right)$ in terms of $\det \mathbf{A}$?
+	> b) $$**A**^{100} [[-2 ; -6]].$$
+	
+	> c) $$**A**^{100} [[0 ; -4]].$$
 	
 
 
 	- - -
 
-	#. Suppose $\mathbf{A}$ is an invertible matrix with eigenvectors $\mathbf{v_1}, ..., \mathbf{v_n}$ with corresponding eigenvalues $\lambda_1, ..., \lambda_n$.
+	#. A remarkable property of the determinant is that it's **multiplicative**: for any two $n \times n$ matrices $**A**$ and $**B**$, $\det (**AB**) = \left( \det **A** \right)\left( \det **B** \right)$. Use this property to answer the following questions.
 	
-	> a) For $\mathbf{A}$ to be invertible, none of the $\lambda_i$ can be zero. Why is this?
+	> a) What is $\det **I**$? Hint: $**IA** = **A**$ for any matrix $**A**$ for which the product makes sense.
 	
-	> b) What are the eigenvectors and eigenvalues of $\mathbf{A}^{-1}$? Hint: start with $\mathbf{Av_i} = \lambda_i \mathbf{v_i}$ and find a way to introduce $\mathbf{A}^{-1}$ into the equation.
+	> b) Let $**A**$ be an invertible matrix. What is $\det \left(**A**^{-1}\right)$ in terms of $\det **A**$?
+	
+
+
+	- - -
+
+	#. Suppose $**A**$ is an invertible matrix with eigenvectors $**v_1**, ..., **v_n**$ with corresponding eigenvalues $\lambda_1, ..., \lambda_n$.
+	
+	> a) For $**A**$ to be invertible, none of the $\lambda_i$ can be zero. Why is this?
+	
+	> b) What are the eigenvectors and eigenvalues of $**A**^{-1}$? Hint: start with $**Av_i** = \lambda_i **v_i**$ and find a way to introduce $**A**^{-1}$ into the equation.
 
 ###
 
@@ -393,19 +393,19 @@ Welcome to Math 256! We'll use this page for the interactive notes, the homework
 
 	- - -
 
-	#. Let's investigate the elementary row operations a bit more. For a $3 \times 3$ matrix $\mathbf{A}$, find the following:
+	#. Let's investigate the elementary row operations a bit more. For a $3 \times 3$ matrix $**A**$, find the following:
 	
-	> a) A matrix $\mathbf{S_{1, 2}}$ so that $\mathbf{S_{1, 2}A}$ is the same as $\mathbf{A}$, but with rows $1$ and $2$ swapped. Similarly, find $\mathbf{S_{1, 3}}$ and $\mathbf{S_{2, 3}}$.
+	> a) A matrix $**S_{1, 2}**$ so that $**S_{1, 2}A**$ is the same as $**A**$, but with rows $1$ and $2$ swapped. Similarly, find $**S_{1, 3}**$ and $**S_{2, 3}**$.
 	
-	> b) A matrix $\mathbf{M_{1, c}}$ so that $\mathbf{M_{1, c}A}$ is same as $\mathbf{A}$, but with row $1$ multiplied by $c$. Similarly, find $\mathbf{M_{2, c}}$ and $\mathbf{M_{3, c}}$.
+	> b) A matrix $**M_{1, c}**$ so that $**M_{1, c}A**$ is same as $**A**$, but with row $1$ multiplied by $c$. Similarly, find $**M_{2, c}**$ and $**M_{3, c}**$.
 	
-	> c) A matrix $\mathbf{P_{1, 2, c}}$ so that $\mathbf{P_{1, 2, c}A}$ is same as $\mathbf{A}$, but with $c$ times row $2$ added to row $1$. Similarly, find $\mathbf{P_{1, 3, c}}$, $\mathbf{P_{2, 3, c}}$, as well as $\mathbf{P_{2, 1, c}}$, $\mathbf{P_{3, 1, c}}$, and $\mathbf{P_{3, 2, c}}$.
+	> c) A matrix $**P_{1, 2, c}**$ so that $**P_{1, 2, c}A**$ is same as $**A**$, but with $c$ times row $2$ added to row $1$. Similarly, find $**P_{1, 3, c}**$, $**P_{2, 3, c}**$, as well as $**P_{2, 1, c}**$, $**P_{3, 1, c}**$, and $**P_{3, 2, c}**$.
 	
 
 
 	- - -
 
-	#. Let $$\mathbf{A} = [[a, b ; c, d]]$$ be a generic $2 \times 2$ matrix. Find $\mathbf{A}^{-1}$ in terms of $a$, $b$, $c$, and $d$.
+	#. Let $$**A** = [[a, b ; c, d]]$$ be a generic $2 \times 2$ matrix. Find $**A**^{-1}$ in terms of $a$, $b$, $c$, and $d$.
 
 ###
 
@@ -449,13 +449,13 @@ Welcome to Math 256! We'll use this page for the interactive notes, the homework
 	
 	> Write out this matrix (but don't take any determinants yet).
 	
-	> c) For a $3 \times 3$ matrix $\mathbf{A}$, we can find $\det \mathbf{A}$ by taking column $j$ with entries $a_{1j}$, $a_{2j}$, and $a_{3j}$, and writing
+	> c) For a $3 \times 3$ matrix $**A**$, we can find $\det **A**$ by taking column $j$ with entries $a_{1j}$, $a_{2j}$, and $a_{3j}$, and writing
 	
 	$$
-		\det \mathbf{A} = (-1)^{j + 1} (a_{1j} \det \mathbf{A_{1j}} - a_{2j} \det \mathbf{A_{2j}} + a_{3j} \det \mathbf{A_{3j}}),
+		\det **A** = (-1)^{j + 1} (a_{1j} \det **A_{1j}** - a_{2j} \det **A_{2j}** + a_{3j} \det **A_{3j}**),
 	$$
 	
-	> where $\mathbf{A_{ij}}$ is the $2 \times 2$ matrix formed by crossing off row $i$ and column $j$ from $\mathbf{A}$. With this method, evaluate $W[y_1, y_2, y_3]$. Hint: there's one choice of column that should be much better than the others!
+	> where $**A_{ij}**$ is the $2 \times 2$ matrix formed by crossing off row $i$ and column $j$ from $**A**$. With this method, evaluate $W[y_1, y_2, y_3]$. Hint: there's one choice of column that should be much better than the others!
 	
 	> d) Interpret the Wronskian: did you successfully find the general solution in part a)?
 	
@@ -479,7 +479,7 @@ Welcome to Math 256! We'll use this page for the interactive notes, the homework
 
 	- - -
 
-	#. Suppose that for a square matrix $\mathbf{A}$, there are matrices $\mathbf{B}$ and $\mathbf{C}$ so that $\mathbf{AB} = \mathbf{I}$ and $\mathbf{CA} = \mathbf{I}$. Show that it must be the case that $\mathbf{B} = \mathbf{C}$. Hint: multiply both sides of the second equation by something.
+	#. Suppose that for a square matrix $**A**$, there are matrices $**B**$ and $**C**$ so that $**AB** = **I**$ and $**CA** = **I**$. Show that it must be the case that $**B** = **C**$. Hint: multiply both sides of the second equation by something.
 	
 
 

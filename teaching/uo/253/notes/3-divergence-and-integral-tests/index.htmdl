@@ -212,7 +212,7 @@ The integral tests let us classify the behavior of a particular type of series t
 
 ### def $p$-series
 	
-	A **$\mathbf{p}$-series** is one of the form
+	A **$**p**$-series** is one of the form
 	
 	$$
 		\sum_{n = 1}^\infty \frac{1}{n^p},
@@ -284,7 +284,7 @@ So far, we haven't talked much about the actual *value* of convergent series. If
 
 ### def remainder of a series
 	
-	Let $\sum_{n = 1}^\infty a_n$ be a convergent series and $N$ a positive integer. The **$\mathbf{N}$th remainder** of the series is
+	Let $\sum_{n = 1}^\infty a_n$ be a convergent series and $N$ a positive integer. The **$**N**$th remainder** of the series is
 	
 	$$
 		R_N = \sum_{n = 1}^\infty a_n - S_N = \sum_{n = N + 1}^\infty a_n.
