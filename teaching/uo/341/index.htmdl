@@ -45,9 +45,9 @@ Welcome to Math 341! We'll use this page for the interactive notes, the homework
 
 	## Section 3
 
-	1. Let $$\vec{v} = [[1 ; 3]]$$ and $$\vec{w} = [[-1 ; 1]]$$.
+	#. Let $$\vec{v} = [[ 1 ; 3 ]]$$ and $$\vec{w} = [[ -1 ; 1 ]]$$.
 
-	> a) Draw $\vec{v}$, $\vec{w}$ in the plane.
+	> a) Draw $\vec{v}$ and $\vec{w}$ in the plane.
 
 	> b) Draw $2\vec{v} + \vec{w}$ geometrically and verify that it matches the algebraic definition (i.e. adding the entries of $\vec{v}$ and $\vec{w}$).
 
@@ -56,6 +56,84 @@ Welcome to Math 341! We'll use this page for the interactive notes, the homework
 	> d) Draw a vector linearly dependent with both $\vec{v}$ and $\vec{w}$, but not with either of them alone.
 	
 	
+
+	- - -
+
+	In problems 4#, determine if the vectors are linearly dependent or independent. If they are dependent, find a linear combination equal to $\vec{0}$.
+
+	#. $\vec{v_1} = [[ 2 ; 3 ]]$, $\vec{v_2} = [[ 4 ; 5 ]]$.
+
+	#. $\vec{v_1} = [[ 1 ; 2 ; 3 ]]$, $\vec{v_2} = [[ 1 ; 0 ; 2 ]]$, $\vec{v_3} = [[ 1 ; 4 ; 4 ]]$.
+
+	#. $\vec{v_1} = [[ 1 ; 1 ; 2 ]]$, $\vec{v_2} = [[ 2 ; 0 ; 3 ]]$, $\vec{v_3} = [[ 4 ; - 1 ; 2 ]]$
+
+	#. $\vec{v_1} = [[ 1 ; 5 ; 6 ; -10 ; \frac{17}{2} ]]$, $\vec{v_2} = [[ 3 ; 1 ; 7 ; -100 ; 0]]$, $\vec{v_3} = [[ 0 ; 0 ; 0 ; 0 ; 0 ]]$, $\vec{v_4} = [[ 4 ; 1 ; 2 ; 0 ; 89 ]]$.
+
+
+
+	- - -
+
+	In problems 2#, express $\vec{v}$ as a linear combination of the $\vec{u}_i$ or show it's impossible.
+
+	#. $\vec{v} = [[ 1 ; 2 ; 3 ]]$, $\vec{u_1} = [[ 1 ; 2 ; 2 ]]$, $\vec{u_2} = [[ 2 ; -1 ; 0 ]]$, $\vec{u_3} = [[ 3 ; 1 ; 1 ]]$.
+
+	#. $\vec{v} = [[ 1 ; 2 ; 3 ]]$, $\vec{u_1} = [[ -1 ; 3 ; 0 ]]$, $\vec{u_2} = [[ 1 ; 1 ; 1 ]]$, $\vec{u_3} = [[ 2 ; 6 ; 3 ]]$.
+
+
+
+	- - -
+
+	#. Let $\vec{w_1} = [[ 1 ; 1 ; 0 ]]$, $\vec{w_2} = [[ 2 ; 0 ; -1 ]]$, $\vec{w_3} = [[ 0 ; 2 ; 1 ]]$.
+
+	> a) Show that $\vec{w_1}$, $\vec{w_2}$, and $\vec{w_3}$ are linearly dependent.
+
+	> b) Show that just $\vec{w_1}$ and $\vec{w_2}$ on their own are linearly independent. (Hint: You should be able to modify the last step in the previous part to get this result without starting over).
+
+	> c) Using the previous two parts, write a sentence explaining why
+
+	$$
+		\span\{\vec{w_1}, \vec{w_2}\} = \span\{\vec{w_1}, \vec{w_2}, \vec{w_3}\}.
+	$$
+
+	> d) The span of $\vec{w_1}$ and $\vec{w_2}$ is the set consisting of all $\vec{w} = c_1\vec{w_1} + c_2\vec{w_2}$. Renaming $c_1 = u$ and $c_2 = v$, write the generic vector $\vec{w}$ in the span. Your answer should depend on $u$ and $v$.
+
+	> e) <a href="https://www.math3d.org/8Adpukc7b">Math3D</a> is a capable 3D grapher that can handle parametric surfaces. Open the linked example and replace the span expression with the one you found in the previous part --- if all went well, you should see the three vectors lying *in* that plane. This plane is the span, and the fact that the three vectors are contained in a two-dimensional surface is their linear dependence.
+
+
+
+	## Section 4
+
+	#. Linear transformations are related to typical linear functions like $y = mx + b$, but they're not quite the same. For example, the function $f : \mathbb{R} \to \mathbb{R}$ defined by $f(x) = 2x + 3$ is a linear function, but not a linear transformation. Pick two inputs $a$ and $b$ and show that $f(a + b) \neq f(a) + f(b)$.
+
+
+
+	- - -
+
+	In problems 3#, find the matrix for the linear transformation $T$ and use it to evaluate $T(\vec{v})$.
+
+	#. $T\left( [[ 1 ; 1 ; 0 ]] \right) = [[ 1 ; 1 ]]$, $T\left( [[ 0 ; 1 ; 0 ]] \right) = [[ 3 ; 4 ]]$, $T\left( [[ 0 ; 0 ; 3 ]] \right) = [[ 3 ; 1 ]]$, and $\vec{v} = [[ 2 ; 3 ; 2 ]]$.
+
+	#. $T\left( [[ 1 ; 1 ]] \right) = [[ 1 ; 1 ]]$, $T\left( [[ 1 ; -1 ]] \right) = [[ -1 ; 1 ]]$, and $\vec{v} = [[ 2 ; 3 ]]$.
+
+	#. $T\left( [[ 0 ; 1 ]] \right) = 2$, $T\left( [[ 1 ; 3 ]] \right) = 7$, and $\vec{v} = [[ 2 ; 1 ]]$.
+
+
+
+	- - -
+
+	#. Let $T : \mathbb{R}^3 \to \mathbb{R}^3$ be the linear transformation given by
+
+	$$
+		T \left( [[ x ; y ; z ]] \right) = [[ 2x + 3y ; x + 2y ; 3x + z ]].
+	$$
+
+	> a) Express $T$ as a $3 \times 3$ matrix $A$.
+
+	> b) Find $A^{-1}$.
+
+	> c) Write a linear transformation $S$ whose matrix is $A^{-1}$.
+
+	> d) Since $A^{-1}A = I$ and matrix multiplication is equivalent to function composition, we should expect $S \circ T = id$, the identity function. Evaluate $S \circ T$ as functions by using the output of $T$ as the input to $S$, and show this is in fact the case.
 	
 ###
 
