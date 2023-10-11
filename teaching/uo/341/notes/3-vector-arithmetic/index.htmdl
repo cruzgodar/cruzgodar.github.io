@@ -4,13 +4,13 @@
 
 Although we've already talked quite a bit about vectors, we're only just getting started --- vectors have an incredible amount of algebraic and geometric properties that we'll be able to leverage before long. First, though, we're in desperate need of notation and terminology. At its worst, math can feel like pointless symbol-pushing, and so it's important to only add new notation when we truly need it to manage complexity. The best notation bottles up a moderately tricky idea and makes it usable without having to interface with it all the time.
 
-Let's begin with something we see everywhere: the set of all real numbers. A **real** number is one on the number line, whether rational or irrational --- for example, $0$, $1$, $\pi$, $e$, and $\sqrt{2}$ are all real. We write the whole set of them as $\mathbb{R}$, a rather fancy-looking R, and to actually use that symbol most of the time, we need one more: $\in$. This one means "element of", and it lets us write the rather verbose "let $x$ be a real number" as simply "let $x \in \mathbb{R}$", read "let $x$ be in $\mathbb{R}$".
+Let's begin with something we see everywhere: the set of all real numbers. A **real** number is one on the number line, whether rational or irrational --- for example, $0$, $1$, $\pi$, $e$, and $\sqrt{2}$ are all real. We write the whole set of them as $#R#$, a rather fancy-looking R, and to actually use that symbol most of the time, we need one more: $\in$. This one means "element of", and it lets us write the rather verbose "let $x$ be a real number" as simply "let $x \in #R#$", read "let $x$ be in $#R#$".
 
-A length-$2$ vector just consists of two independent real numbers --- it's effectively an ordered pair. If each element of an ordered pair has three possibilities (say $x$ and $y$ can each independently be $1$, $2$, or $3$ in the pair $(x, y)$), then there are $3^2 = 9$ possibilities for the whole pair. Inspired by the power of two, we write $\mathbb{R}^2$ (read "R two") for the set of all ordered pairs --- or equivalently, the set of all length-2 vectors. Similarly, $\mathbb{R}^n$ is the set of all length-$n$ vectors.
+A length-$2$ vector just consists of two independent real numbers --- it's effectively an ordered pair. If each element of an ordered pair has three possibilities (say $x$ and $y$ can each independently be $1$, $2$, or $3$ in the pair $(x, y)$), then there are $3^2 = 9$ possibilities for the whole pair. Inspired by the power of two, we write $#R#^2$ (read "R two") for the set of all ordered pairs --- or equivalently, the set of all length-2 vectors. Similarly, $#R#^n$ is the set of all length-$n$ vectors.
 
 That's a fair amount of symbols, but it's thankfully all we'll have for a while. With the notation in place, we can start talking about the math.
 
-First of all, vectors are just matrices with a single column, so all of the nice properties of matrix arithmetic carry over to them. Two vectors of the same length are added together by just adding each corresponding entry, and two vectors of different lengths cannot be added together at all. We can multiply a vector by a scalar $c$ (i.e. just a number) by multiplying each entry by $c$. None of this is different from matrices, but what's new to vectors is the ability to visualize them in $\mathbb{R}^n$. When $n = 2$, we have $\mathbb{R}^2$, which is just the $xy$-plane --- every length-$2$ vector corresponds to a point in the plane. We typically think of these as *directions* rather than locations, and we draw them as arrows from the origin.
+First of all, vectors are just matrices with a single column, so all of the nice properties of matrix arithmetic carry over to them. Two vectors of the same length are added together by just adding each corresponding entry, and two vectors of different lengths cannot be added together at all. We can multiply a vector by a scalar $c$ (i.e. just a number) by multiplying each entry by $c$. None of this is different from matrices, but what's new to vectors is the ability to visualize them in $#R#^n$. When $n = 2$, we have $#R#^2$, which is just the $xy$-plane --- every length-$2$ vector corresponds to a point in the plane. We typically think of these as *directions* rather than locations, and we draw them as arrows from the origin.
 
 ### desmos plane-vectors
 
@@ -52,7 +52,7 @@ Generally speaking, encountering rows of all zeros while row-reducing means that
 
 ### def linear combination and span
 
-	Let $\vec{v_1}, ..., \vec{v_k} \in \mathbb{R}^n$. A **linear combination** of the $\vec{v_i}$ is a vector of the form
+	Let $\vec{v_1}, ..., \vec{v_k} \in #R#^n$. A **linear combination** of the $\vec{v_i}$ is a vector of the form
 
 	$$
 		c_1\vec{v_1} + \cdots + c_k\vec{v_k}
@@ -84,7 +84,7 @@ The cases in which a linear combination results in the zero vector are of the mo
 
 ### def linear independence
 
-	A collection of vectors $v_1, ..., v_k \in \mathbb{R}^n$ is **linearly dependent** if there is a linear combination of the $v_i$ that is equal to the zero vector (other than the linear combination with every coefficient being $0$). If a collection of vectors is not linearly dependent, we say it's **linearly independent**.
+	A collection of vectors $v_1, ..., v_k \in #R#^n$ is **linearly dependent** if there is a linear combination of the $v_i$ that is equal to the zero vector (other than the linear combination with every coefficient being $0$). If a collection of vectors is not linearly dependent, we say it's **linearly independent**.
 
 ###
 
@@ -128,9 +128,9 @@ The cases in which a linear combination results in the zero vector are of the mo
 
 ###
 
-When a collection of vectors $\vec{v_1}, ..., \vec{v_n} \in \mathbb{R}^k$ has at least $k$ different linearly independent ones, then $\span\{\vec{v_1}, ..., \vec{v_n}\} = \mathbb{R}^k$: that's because we can take the $k$ linearly independent vectors and row-reduce them as rows in a matrix to get to the identity matrix, so all the vectors $\vec{e_i}$ that are all zero except for a one in the $i$th position are expressible as linear combinations of the $\vec{v_j}$, and every vector in $\mathbb{R}^k$ is expressible as a linear combination of the $\vec{e_i}$.
+When a collection of vectors $\vec{v_1}, ..., \vec{v_n} \in #R#^k$ has at least $k$ different linearly independent ones, then $\span\{\vec{v_1}, ..., \vec{v_n}\} = #R#^k$: that's because we can take the $k$ linearly independent vectors and row-reduce them as rows in a matrix to get to the identity matrix, so all the vectors $\vec{e_i}$ that are all zero except for a one in the $i$th position are expressible as linear combinations of the $\vec{v_j}$, and every vector in $#R#^k$ is expressible as a linear combination of the $\vec{e_i}$.
 
-Similarly, when a collection of vectors $\vec{v_1}, ..., \vec{v_n} \in \mathbb{R}^k$ has $n > k$, so there are more vectors than entries per vector, then the vectors have to be linearly dependent. To see this, place them all as rows in a matrix to produce one that's wider than it is tall, and then row-reduce it. At least one of the rows has to be all zero in the end, so the vectors must be linearly dependent. We'll see more on this result and the previous one in the homework for this section.
+Similarly, when a collection of vectors $\vec{v_1}, ..., \vec{v_n} \in #R#^k$ has $n > k$, so there are more vectors than entries per vector, then the vectors have to be linearly dependent. To see this, place them all as rows in a matrix to produce one that's wider than it is tall, and then row-reduce it. At least one of the rows has to be all zero in the end, so the vectors must be linearly dependent. We'll see more on this result and the previous one in the homework for this section.
 
 That's all for linear combinations and independence! These concepts will lay the groundwork for much of the rest of the course, though, and we'll return to them often.
 

@@ -103,7 +103,7 @@ Welcome to Math 341! We'll use this page for the interactive notes, the homework
 
 	## Section 4
 
-	#. Linear transformations are related to typical linear functions like $y = mx + b$, but they're not quite the same. For example, the function $f : \mathbb{R} \to \mathbb{R}$ defined by $f(x) = 2x + 3$ is a linear function, but not a linear transformation. Pick two inputs $a$ and $b$ and show that $f(a + b) \neq f(a) + f(b)$.
+	#. Linear transformations are related to typical linear functions like $y = mx + b$, but they're not quite the same. For example, the function $f : #R# \to #R#$ defined by $f(x) = 2x + 3$ is a linear function, but not a linear transformation. Pick two inputs $a$ and $b$ and show that $f(a + b) \neq f(a) + f(b)$.
 
 
 
@@ -121,7 +121,7 @@ Welcome to Math 341! We'll use this page for the interactive notes, the homework
 
 	- - -
 
-	#. Let $T : \mathbb{R}^3 \to \mathbb{R}^3$ be the linear transformation given by
+	#. Let $T : #R#^3 \to #R#^3$ be the linear transformation given by
 
 	$$
 		T \left( [[ x ; y ; z ]] \right) = [[ 2x + 3y ; x + 2y ; 3x + z ]].

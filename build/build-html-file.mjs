@@ -375,7 +375,10 @@ const components =
 				})
 
 				// **A**
-				.replaceAll(/\*\*(.+?)\*\*/g, (match, $1) => `\\mathbf{${$1}}`);
+				.replaceAll(/\*\*(.+?)\*\*/g, (match, $1) => `\\mathbf{${$1}}`)
+
+				// #A#
+				.replaceAll(/#([^ ]+?)#/g, (match, $1) => `\\mathbb{${$1}}`);
 		},
 
 

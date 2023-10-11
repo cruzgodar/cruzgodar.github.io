@@ -4,9 +4,9 @@
 
 A common trend in math is to define a new type of object (e.g. a vector), develop some properties about it, and then begin to study functions (often called **maps**) that operate on those objects. Depending on the structure of the objects in question, the characteristics of the maps we want to study are slightly different.
 
-Let's start with some light notation. When we have a function $f$, its **domain** is the set of inputs it takes, and its **codomain** is a set containing the type of outputs it can give. Compared to the **image** or **range** of a function, which is the set consisting exclusively of outputs that actually occur, the codomain is simply the general type of output. For example, $f(x) = x^2$ can have a domain and codomain of $\mathbb{R}$, since it takes in and outputs real numbers, but its image is $[0, \infty)$ (the set of nonnegative real numbers), since no real number squares to be negative. To make this less verbose, we write $f : \mathbb{R} \to \mathbb{R}$ to indicate the domain and codomain, and if we specifically want to specify the image, we can write $f : \mathbb{R} \twoheadrightarrow [0, \infty)$.
+Let's start with some light notation. When we have a function $f$, its **domain** is the set of inputs it takes, and its **codomain** is a set containing the type of outputs it can give. Compared to the **image** or **range** of a function, which is the set consisting exclusively of outputs that actually occur, the codomain is simply the general type of output. For example, $f(x) = x^2$ can have a domain and codomain of $#R#$, since it takes in and outputs real numbers, but its image is $[0, \infty)$ (the set of nonnegative real numbers), since no real number squares to be negative. To make this less verbose, we write $f : #R# \to #R#$ to indicate the domain and codomain, and if we specifically want to specify the image, we can write $f : #R# \twoheadrightarrow [0, \infty)$.
 
-As we've discussed, an $m \times n$ matrix $A$ is a function that takes in length-$n$ vectors and gives back length-$m$ ones, so we can write $A : \mathbb{R}^n \to \mathbb{R}^m$. We've also seen that for any vectors $\vec{v}, \vec{w} \in \mathbb{R}^n$,
+As we've discussed, an $m \times n$ matrix $A$ is a function that takes in length-$n$ vectors and gives back length-$m$ ones, so we can write $A : #R#^n \to #R#^m$. We've also seen that for any vectors $\vec{v}, \vec{w} \in #R#^n$,
 
 $$
 	A(\vec{v} + \vec{w}) = A\vec{v} + A\vec{w},
@@ -16,11 +16,11 @@ and $A(c\vec{v}) = cA\vec{v}$ for any constant $c$. Inspired by these properties
 
 ### def linear transformation
 	
-	A **linear transformation**, or **linear map**, from $\mathbb{R}^n$ to $\mathbb{R}^m$ is a function $T: \mathbb{R}^n \to \mathbb{R}^m$, such that
+	A **linear transformation**, or **linear map**, from $#R#^n$ to $#R#^m$ is a function $T: #R#^n \to #R#^m$, such that
 	
-	1. For any two vectors $\vec{v}, \vec{w} \in \mathbb{R}^n$, $T(\vec{v} + \vec{w}) = T(\vec{v}) + T(\vec{w})$.
+	1. For any two vectors $\vec{v}, \vec{w} \in #R#^n$, $T(\vec{v} + \vec{w}) = T(\vec{v}) + T(\vec{w})$.
 	
-	2. For any vector $\vec{w} \in \mathbb{R}^n$ and any constant $c$, $T(c\vec{v}) = cT(\vec{v})$.
+	2. For any vector $\vec{w} \in #R#^n$ and any constant $c$, $T(c\vec{v}) = cT(\vec{v})$.
 	
 ###
 
@@ -30,19 +30,19 @@ $$
 	T(\vec{0}) = T(0 \cdot \vec{0}) = 0 \cdot T(\vec{0}) = \vec{0}.
 $$
 
-Linear transformations from $\mathbb{R}$ to $\mathbb{R}$ aren't very exciting: if $T$ is such a linear transformation, then
+Linear transformations from $#R#$ to $#R#$ aren't very exciting: if $T$ is such a linear transformation, then
 
 $$
 	T(x) = T(x \cdot 1) = x T(1),
 $$
 
-so as soon as we know what $T(1)$ is, every other output of $T$ is fixed. If $a = T(1)$, then $T(x) = ax$, so linear transformations $\mathbb{R} \to \mathbb{R}$ are just lines through the origin. It might seem like needless attention to detail, but let's take a moment to graph these.
+so as soon as we know what $T(1)$ is, every other output of $T$ is fixed. If $a = T(1)$, then $T(x) = ax$, so linear transformations $#R# \to #R#$ are just lines through the origin. It might seem like needless attention to detail, but let's take a moment to graph these.
 
 ### desmos 1d-linear-transformation
 
 Here, the input vector (i.e. the number $1$) is colored purple, and the output vector colored blue. The value of $a$ is given by the red point. While we normally plot functions with inputs on one axis and outputs on another, we're using the $x$-axis here for both input and output. That's for two reasons: first, it's foreshadowing for the two-dimensional case we're about to consider, and more importantly, it reflects the fact that we don't need to see other input-output pairs to completely understand the effects of a linear map. Any other input, like $-2$, is sent to $-2$ times whatever $1$ is sent to --- that's what it means to be a linear map.
 
-When we're not confined to a single input and output variable, linear transformations become much more interesting. Let's take a linear map $T : \mathbb{R}^2 \to \mathbb{R}^2$. By using the properties of linear maps, we can reduce the problem of evaluating it on a generic vector to just two very specific ones:
+When we're not confined to a single input and output variable, linear transformations become much more interesting. Let's take a linear map $T : #R#^2 \to #R#^2$. By using the properties of linear maps, we can reduce the problem of evaluating it on a generic vector to just two very specific ones:
 
 $$
 	T\left( [[ a  ; b ]] \right) &= T\left( [[ a ; 0 ]] + [[ 0 ; b ]] \right)
@@ -70,7 +70,7 @@ As we just figured out, the entire behavior of $T$ is determined once those four
 
 ### ex linear transformation
 
-	Suppose $T : \mathbb{R}^2 \to \mathbb{R}^2$ is a linear transformation satisfying
+	Suppose $T : #R#^2 \to #R#^2$ is a linear transformation satisfying
 
 	$$
 		T \left( [[ 1 ; 0 ]] \right) &= [[ 1 ; 3 ]]
@@ -96,7 +96,7 @@ As we just figured out, the entire behavior of $T$ is determined once those four
 
 ### exc linear transformation
 
-	Suppose $S : \mathbb{R}^3 \to \mathbb{R}^2$ is a linear transformation satisfying
+	Suppose $S : #R#^3 \to #R#^2$ is a linear transformation satisfying
 
 	$$
 		S \left( [[ 1 ; 0 ; 1 ]] \right) = [[ 1 ; 1 ]]
@@ -126,11 +126,11 @@ $$
 	T \left( [[ x_1 ; x_2 ]] \right) = [[ a_{11}, a_{12} ; a_{21}, a_{22} ]] [[ x_1 ; x_2 ]].
 $$
 
-And so we get to the fundamental result of the section: **linear transformations from $\mathbb{R}^n$ to $\mathbb{R}^m$ are just $m \times n$ matrices**. We knew the reverse --- that matrices were linear maps --- but this says that the other direction is also true, and so we can interchangeably refer to linear transformations and matrices. To represent a linear transformation as a matrix, evaluate it on all of the $\vec{e_i}$ (the vectors with a $1$ in position $i$ and zeros everywhere else), and place the results as the columns of a matrix.
+And so we get to the fundamental result of the section: **linear transformations from $#R#^n$ to $#R#^m$ are just $m \times n$ matrices**. We knew the reverse --- that matrices were linear maps --- but this says that the other direction is also true, and so we can interchangeably refer to linear transformations and matrices. To represent a linear transformation as a matrix, evaluate it on all of the $\vec{e_i}$ (the vectors with a $1$ in position $i$ and zeros everywhere else), and place the results as the columns of a matrix.
 
 ### ex linear transformations as matrices
 
-	Let $T : \mathbb{R}^3 \to \mathbb{R}^3$ be the linear transformation defined by
+	Let $T : #R#^3 \to #R#^3$ be the linear transformation defined by
 
 	$$
 		T\left( [[ a ; b ; c ]] \right) &= [[ 2a + 3b ; b + 2a ; 2c - a ]],
@@ -154,13 +154,13 @@ And so we get to the fundamental result of the section: **linear transformations
 		A = [[ 2, 3, 0 ; 2, 1, 0 ; -1, 0, 2 ]].
 	$$
 
-	In other words, $T(\vec{v}) = A\vec{v}$ for any vector $\vec{v} \in \mathbb{R}^3$. This is the core of the idea that matrices are functions that act by multiplication: on the left is the function, and on the right is the matrix multiplication.
+	In other words, $T(\vec{v}) = A\vec{v}$ for any vector $\vec{v} \in #R#^3$. This is the core of the idea that matrices are functions that act by multiplication: on the left is the function, and on the right is the matrix multiplication.
 
 ###
 
 ### exc linear transformations as matrices
 
-	Let $S : \mathbb{R}^3 \to \mathbb{R}^2$ be a linear transformation defined by
+	Let $S : #R#^3 \to #R#^2$ be a linear transformation defined by
 
 	$$
 		S\left( [[ x ; y ; z ]] \right) &= [[ x + z ; 3x - 2y ]].
