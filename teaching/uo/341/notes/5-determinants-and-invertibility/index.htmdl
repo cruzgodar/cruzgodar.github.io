@@ -2,7 +2,15 @@
 
 
 
+With the foundation of matrices, inverses, linear transformations, and linear independence, we're ready to tie everything we've learned together. We'll begin by defining two properties that a linear transformation can have, and we'll soon see how they relate to the ones we've already seen.
 
+### def one-to-one and onto
+
+	A function $f : #R#^m \to #R#n$ is **one-to-one** if $f(\vec{v}) \neq f(\vec{w})$ whenever $\vec{v} \neq \vec{w}$, and **onto** if for every vector $\vec{u} \in #R#^n$ satisfies $\vec{u} = f(\vec{v}$ for some vector $\vec{v} \in #R#^n$.
+
+###
+
+In the simple case of $f : #R# \to #R#$, one-to-one functions are those that pass the horizontal line test, and onto ones are those whose image (i.e. range) is all of $#R#$. With a higher-dimensional domain and codomain, things are a little harder to picture, but the concept is identical.
 
 
 
