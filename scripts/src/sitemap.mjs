@@ -629,7 +629,7 @@ export const sitemap =
 			"/teaching/uo/341/notes/2-row-reduction/",
 			"/teaching/uo/341/notes/3-vector-arithmetic/",
 			"/teaching/uo/341/notes/4-linear-transformations/",
-			"/teaching/uo/341/notes/5-determinants-and-invertibility/"
+			"/teaching/uo/341/notes/5-properties-of-transformations/"
 		]
 	},
 		
@@ -675,9 +675,9 @@ export const sitemap =
 		"customScript": true
 	},
 	
-	"/teaching/uo/341/notes/5-determinants-and-invertibility/":
+	"/teaching/uo/341/notes/5-properties-of-transformations/":
 	{
-		"title": "Section 5: Determinants and Invertibility",
+		"title": "Section 5: Properties of Transformations",
 		
 		"parent": "/teaching/uo/341/",
 		

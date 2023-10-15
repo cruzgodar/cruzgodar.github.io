@@ -157,7 +157,7 @@ This is a method best explained with examples, so let's dive right in.
 To streamline the process while still explaining what we're doing at each step, it's helpful to have a notation for elementary row operations. These vary quite a bit, but I'm personally fond of the following:
 
 $$
-	\text{swap } \vec{r_i}, \vec{r_j}
+	\swap \vec{r_i}, \vec{r_j}
 	
 	\vec{r_i} \te c
 	
@@ -185,7 +185,7 @@ These are shorthand for swapping rows $i$ and $j$, multiplying row $i$ by a cons
 		
 		[[ 1, 4, 0, -14 | -11 ; 0, -3, 1, 42 | 7 ; 0, 1, -5, 28 | 7 ]] & \qquad \vec{r_2} \me 2\vec{r_1}
 		
-		[[ 1, 4, 0, -14 | -11 ; 0, 1, -5, 28 | 7 ; 0, -3, 1, 42 | 7 ]] & \qquad \text{swap } \vec{r_2}, \vec{r_3}
+		[[ 1, 4, 0, -14 | -11 ; 0, 1, -5, 28 | 7 ; 0, -3, 1, 42 | 7 ]] & \qquad \swap \vec{r_2}, \vec{r_3}
 		
 		[[ 1, 4, 0, -14 | -11 ; 0, 1, -5, 28 | 7 ; 0, 0, -14, 126 | 28 ]] & \qquad \vec{r_3} \pe 3\vec{r_2}
 		
@@ -283,7 +283,7 @@ With the tool of row-reduction, we're ready to talk about inverse matrices. Firs
 		
 		[[ 1, 2, -3 | 1, 0, 0 ; 0, 4, -4 | 2, 1, 0 ; 0, -1, 7 | -1, 0, 1 ]] & \qquad \vec{r_3} \me \vec{r_1}
 		
-		[[ 1, 2, -3 | 1, 0, 0 ; 0, -1, 7 | -1, 0, 1 ; 0, 4, -4 | 2, 1, 0 ]] & \qquad \text{swap } \vec{r_2}, \vec{r_3}
+		[[ 1, 2, -3 | 1, 0, 0 ; 0, -1, 7 | -1, 0, 1 ; 0, 4, -4 | 2, 1, 0 ]] & \qquad \swap \vec{r_2}, \vec{r_3}
 		
 		[[ 1, 2, -3 | 1, 0, 0 ; 0, 1, -7 | 1, 0, -1 ; 0, 4, -4 | 2, 1, 0 ]] & \qquad \vec{r_2} \te -1
 		

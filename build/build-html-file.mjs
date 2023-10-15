@@ -351,13 +351,12 @@ const components =
 		{
 			return content
 				// \pe, \me, \te
-				.replaceAll(/([^\\])\\pe([^a-zA-Z])/g, (match, $1, $2) => `${$1}\\ +\\!\\!=${$2}`)
-				.replaceAll(/([^\\])\\me([^a-zA-Z])/g, (match, $1, $2) => `${$1}\\ -\\!\\!=${$2}`)
-				.replaceAll(/([^\\])\\te([^a-zA-Z])/g, (match, $1, $2) => `${$1}\\ \\times\\!\\!=${$2}`)
+				.replaceAll(/(?<!\\)\\pe(?![a-zA-Z])/g, "\\ +\\!\\!=")
+				.replaceAll(/(?<!\\)\\me(?![a-zA-Z])/g, "\\ -\\!\\!=")
+				.replaceAll(/(?<!\\)\\te(?![a-zA-Z])/g, "\\ \\times\\!\\!=")
 
 				// \span
-				.replaceAll(/([^\\])\\span([^a-zA-Z])/g, (match, $1, $2) => `${$1}\\operatorname{span}${$2}`)
-				.replaceAll(/^\\span([^a-zA-Z])/g, (match, $1) => `\\operatorname{span}${$1}`)
+				.replaceAll(/(?<!\\)\\(span|image|swap)(?![a-zA-Z])/g, (match, $1) => `\\operatorname{${$1}}`)
 
 				// [[1, 2, 3 ; 4, 5, 6 ; 7, 8, 9]]
 				.replaceAll(/\[\[(.+?)\]\]/g, (match, $1) =>

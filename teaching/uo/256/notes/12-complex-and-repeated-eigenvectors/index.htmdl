@@ -79,7 +79,7 @@ With individual DEs, we were able to extract two fundamental solutions immediate
 		
 		[[ -1 - i, 1 | 0 ; -2, 1 - i | 0 ]] &
 		
-		[[ -2, 1 - i | 0 ; -1 - i, 1 | 0 ]] & \qquad \text{swap } **r_1**, **r_2**
+		[[ -2, 1 - i | 0 ; -1 - i, 1 | 0 ]] & \qquad \swap **r_1**, **r_2**
 		
 		[[ -2, 1 - i | 0 ; -2 - 2i, 2 | 0 ]] & \qquad **r_2** \te 2
 		
@@ -323,7 +323,7 @@ When an eigenvalue $\lambda$ appears twice in the characteristic polynomial, but
 		
 		[[ 6, -2, 3 | 0 ; -1, 5, -4 | 0 ; -10, 6, -7 | 0 ]] & \qquad **r_2** \pe **r_1**
 		
-		[[ -1, 5, -4 | 0 ; 6, -2, 3 | 0 ; -10, 6, -7 | 0 ]] & \qquad \text{swap } **r_1**, **r_2**
+		[[ -1, 5, -4 | 0 ; 6, -2, 3 | 0 ; -10, 6, -7 | 0 ]] & \qquad \swap **r_1**, **r_2**
 		
 		[[ -1, 5, -4 | 0 ; 0, 28, -21 | 0 ; 0, -44, 33 | 0 ]] & \qquad \begin{array}{l} **r_2** \pe 6 **r_1** \\ **r_3** \pe -10 **r_1** \end{array}
 		
@@ -353,7 +353,7 @@ When an eigenvalue $\lambda$ appears twice in the characteristic polynomial, but
 		
 		[[ 3, -2, 3 | 0 ; -1, 0, -1 | 0 ; -10, 6, -10 | 0 ]] & \qquad **r_2** \pe 2**r_1**
 		
-		[[ -1, 0, -1 | 0 ; 3, -2, 3 | 0 ; -10, 6, -10 | 0 ]] & \qquad \text{swap } **r_1**, **r_2**
+		[[ -1, 0, -1 | 0 ; 3, -2, 3 | 0 ; -10, 6, -10 | 0 ]] & \qquad \swap **r_1**, **r_2**
 		
 		[[ -1, 0, -1 | 0 ; 0, -2, 0 | 0 ; 0, 6, 0 | 0 ]] & \qquad \begin{array}{l} **r_2** \pe 3**r_1** \\ **r_3** \pe -10**r_1** \end{array}
 		
@@ -375,7 +375,7 @@ When an eigenvalue $\lambda$ appears twice in the characteristic polynomial, but
 		
 		[[ 3, -2, 3 | -1 ; -1, 0, -1 | -2 ; -10, 6, -10 | 1 ]] & \qquad **r_2** \pe 2**r_1**
 		
-		[[ -1, 0, -1 | -2 ; 3, -2, 3 | -1 ; -10, 6, -10 | 1 ]] & \qquad \text{swap } **r_1**, **r_2**
+		[[ -1, 0, -1 | -2 ; 3, -2, 3 | -1 ; -10, 6, -10 | 1 ]] & \qquad \swap **r_1**, **r_2**
 		
 		[[ -1, 0, -1 | -2 ; 0, -2, 0 | -7 ; 0, 6, 0 | 21 ]] & \qquad \begin{array}{l} **r_2** \pe 3**r_1** \\ **r_3** \pe -10**r_1** \end{array}
 		
