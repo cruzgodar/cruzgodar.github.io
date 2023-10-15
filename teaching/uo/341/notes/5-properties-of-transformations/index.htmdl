@@ -34,10 +34,10 @@ This first definition of one-to-one is unfortunately a little too clunky to work
 
 It's important to note that this alternate definition works *only* with linear transformations, not functions in general. For example, $f(x) = x^2$ isn't one-to-one, since $f(1) = f(-1)$, but the only $x$ with $f(x) = 0$ is $x = 0$.
 
-Similarly, we'll want to use a different definition of onto when we're actually working with transformations. Remember from last section that applying a linear transformation to a vector results in taking a linear combination of the columns of the linear transformation's matrix, where the coefficients are given by the vector (this is just restating matrix-vector multiplication). For example, the transformation $T : #R#^2 \to #R#^3$ defined by
+Similarly, we'll want to use a different definition of onto when we're actually working with transformations. Remember from the last section that applying a linear transformation to a vector results in taking a linear combination of the columns of the linear transformation's matrix, where the coefficients are given by the vector (this is just restating matrix-vector multiplication). For example, the transformation $T : #R#^2 \to #R#^3$ defined by
 
 $$
-	T\left( [[ x ; y ]] \right) = [[[ 2x + y ; -y ; 3x + 4y ]]
+	T\left( [[ x ; y ]] \right) = [[ 2x + y ; -y ; 3x + 4y ]]
 $$
 
 corresponds to the matrix
@@ -87,7 +87,7 @@ To check how many vectors in a set (e.g. the columns of a matrix) are linearly i
 		A = [[ 2, 3, 5 ; 3, 4, 7 ; 1, -2, -1 ]],
 	$$
 
-	so we want to row reduce the matrix whose rows are the columns of $A$.
+	so we want to row-reduce the matrix whose rows are the columns of $A$.
 
 	$$
 		[[ 2, 3, 1 ; 3, 4, -2 ; 5, 7, -1 ]] &
@@ -123,18 +123,18 @@ To check how many vectors in a set (e.g. the columns of a matrix) are linearly i
 
 ## Invertibility
 
-Let's consider, for yet another time, a linear transformation $T : #R#^n \to #R#^m$. If $n > m$, then there are more columns than rows in the matrix corresponding to $T$, and so the columns can't all possibly be linearly independent. That's because when we place them as rows in an $n \times m$ matrix and row reduce it, the best things could go is for none of the first $m$ to reduce to rows of all zeros, but then we could use those reduced rows to clear all the others. For example, consider the matrix
+Let's consider, for yet another time, a linear transformation $T : #R#^n \to #R#^m$. If $n > m$, then there are more columns than rows in the matrix corresponding to $T$, and so the columns can't all possibly be linearly independent. That's because when we place them as rows in an $n \times m$ matrix and row-reduce it, the best that the process could go is if none of the first $m$ reduce to rows of all zeros --- but then we could use those reduced rows to clear all of the others. For example, consider the matrix
 
 $$
 	A = [[ 1, 3, 5 ; -1, 4, 2 ]].
 $$
 
-Placing the rows of $A$ as columns in a new matrix and partially row reducing, we get
+Placing the rows of $A$ as columns in a new matrix and partially row-reducing, we get
 
 $$
 	[[ 1, 1 ; 3, 4 ; 5, 2 ]] & 
 
-	[[ 1, 1 ; 0, 1 ; 5, 2 ]] & \vec{r_2} \me 3\vec{r_1}.
+	[[ 1, 1 ; 0, 1 ; 5, 2 ]] & \qquad \vec{r_2} \me 3\vec{r_1}.
 $$
 
 Since neither of the first two rows is all zero, we're going to be able to reduce the third row to zero no matter what its entries are. Geometrically, if we already have two linearly independent vectors in $#R#^2$, there's no third vector in $#R#^2$ that's linearly independent with them both.
@@ -149,8 +149,37 @@ On the other hand, if $n < m$, then there are more rows than columns. This case 
 
 Geometrically, it's helpful to think of two cases here: first, when $n = 2$ and $m = 1$, we're squishing all of $#R#^2$ down onto $#R#^1$, which is effectively mapping the $xy$-plane onto the $x$-axis. There's just no way to do that in a nice (i.e. linear) fashion without sending many inputs to one output. On the other hand, when $n = 1$ and $m = 2$, we're doing the reverse: mapping the $x$-axis into the $xy$-plane. There's no nice way for that map to fill up all of the plane, which is exactly what would need to happen for it to be onto.
 
-When we have 
+When we have a one-to-one and onto linear transformation $T : #R#^n \to #R#^m$, then we now know that $m = n$ --- otherwise, one of the two would be impossible. That means the matrix for $T$ is square, and the two conditions now say exactly the same thing: $T$ being one-to-one means it has all $n$ of its columns linearly independent, and onto means it has at least $n$ of its columns linearly independent. And in fact, both being one-to-one and being onto are equivalent to a property we're already familiar with:
 
+### thm invertibility
+
+	Let $T : #R#^n \to #R#^n$ be a linear transformation whose domain and codomain are the same. Then all of the following statements are equivalent:
+
+	1. $T$ is one-to-one.
+
+	2. $T$ is onto.
+
+	3. $T$ is invertible.
+	
+###
+
+Our transformation in the previous example isn't invertible by this theorem, which means both that there is no inverse linear transformation and that the corresponding matrix isn't invertible. In fact, we didn't even need to ask whether it was onto after concluding it was one-to-one: since the matrix was square, the two properties are one and the same.
+
+At this point, we're finished with the material in the section, but I think it's worth taking a minute to summarize where we are in regard to linear transformations, matrices, and the interplay between them. There are a lot of terms and ideas to digest, and a quick list organizing many of them should help. For all the items in the list, we let $T : #R#^n \to #R#^m$ be a linear transformation and $A$ its corresponding matrix.
+
+> . Evaluation: we evaluate $T(\vec{v})$ by plugging the entries of $\vec{v}$ into a formula for $T$, just like a one-variable function $f(x)$. We evaluate a matrix on a vector by the matrix-vector multiplication $A\vec{v}$.
+
+> . Composition: we compose $T$ with another linear map $S: #R#^m \to #R#^k$ to form the map $T \circ S : #R#^n \to #R#^k$ by plugging the formula for the output of $S$ as the input to the formula for $T$. We compose $A$ with an $m \times k$ matrix $B$ to form $AB$ by matrix multiplication.
+
+> . One-to-one: $T$ is one-to-one if $T(\vec{v}) \neq T(\vec{w}$ for $\vec{v} \neq \vec{w}$, if $T(\vec{v}) \neq T(\vec{0}$ for $\vec{v} \neq \vec{0}$, or if all of the columns of $A$ are linearly independent.
+
+> . Onto: $T$ is onto if for any vector $\vec{w} \in #R#^m$, there is a vector $\vec{v} \in #R#^n$ with $T(\vec{v} = \vec{w})$, or if there are at least $m$ linearly independent columns of $A$.
+
+> . Invertibility: $T$ is invertible if its domain and codomain are equal (so $m = n$), and it is one-to-one and onto (checking either one of those suffices to determine both). Alternatively, $T$ is invertible if $A$ is invertible, meaning it row-reduces to the identity matrix.
+
+> . Inversion: we don't invert transformations directly with their formulas, only with their matrices. With a matrix $A$, we invert it by augmenting with $I$ and row-reducing.
+
+We're getting some hints that the bulk of the subject lies with square matrices: they're the only ones that can be invertible, and being one-to-one and onto are identical conditions. And as we'll see in the next section, the next big object we'll want to develop depends on the matrices it takes in being square.
 
 
 
