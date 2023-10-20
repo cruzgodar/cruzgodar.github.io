@@ -490,6 +490,23 @@ const components =
 
 
 
+		"carousel": (content) =>
+		{
+			return `
+				<div class="carousel">
+					<div class="carousel-content">
+						${content.map(line => `<p class="body-text">${components.Parse.text(line)}</p>`).join("")}
+					</div>
+
+					<div class="carousel-dots">
+						${"<div class=\"carousel-dot\"><div class=\"fill\"></div></div>".repeat(content.length)}
+					</div>
+				</div>
+			`;
+		},
+
+
+
 		"gallery-block": (content) =>
 		{
 			let html = "<div class='gallery-block'>";

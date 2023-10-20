@@ -18,6 +18,7 @@ import {
 	setUpTextButtons
 } from "./buttons.mjs";
 import { setUpCards } from "./cards.mjs";
+import { setUpCarousels } from "./carousels.mjs";
 import { setUpFocusEvents, setUpHoverEvents } from "./hover-events.mjs";
 import { equalizeAppletColumns, onResize } from "./layout.mjs";
 import {
@@ -58,7 +59,6 @@ export async function loadPage()
 
 	setUpBanner();
 
-	
 	loadCustomStyle();
 
 	loadCustomScripts();
@@ -76,6 +76,8 @@ export async function loadPage()
 	setUpNavButtons();
 
 	setUpDropdowns();
+
+	setUpCarousels();
 
 	typesetMath();
 

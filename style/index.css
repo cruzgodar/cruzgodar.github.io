@@ -7,13 +7,16 @@
 	--background-component: calc(255 + (var(--theme) * (24 - 255)));
 	--background: rgb(var(--background-component), var(--background-component), var(--background-component));
 
-	/* E.g. section text */
+	/* E.g. heading text */
 	--high-contrast-component: calc(0 + (var(--theme) * 255));
 	--high-contrast: rgb(var(--high-contrast-component), var(--high-contrast-component), var(--high-contrast-component));
 
-	/* E.g. heading text */
+	/* E.g. body text */
 	--normal-contrast-component: calc(64 + (var(--theme) * (208 - 64)));
 	--normal-contrast: rgb(var(--normal-contrast-component), var(--normal-contrast-component), var(--normal-contrast-component));
+
+	--low-contrast-component: calc(96 + (var(--theme) * (184 - 96)));
+	--low-contrast: rgb(var(--low-contrast-component), var(--low-contrast-component), var(--low-contrast-component));
 
 	--neutral-hover-component: calc(208 + (var(--theme) * (64 - 208)));
 	--neutral-hover: rgb(var(--neutral-hover-component), var(--neutral-hover-component), var(--neutral-hover-component));
@@ -1071,6 +1074,66 @@ option
 		width: 90%;
 	}
 }
+
+
+
+.carousel
+{
+	width: min(500px, 90vw);
+	margin: 0 auto;
+	margin-top: 32px;
+
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+}
+
+.carousel-content
+{
+	width: 100%;
+}
+
+.carousel-content p
+{
+	display: none;
+	opacity: 0;
+}
+
+.carousel-dots
+{
+	display: flex;
+	align-items: center;
+	margin-top: 16px;
+}
+
+.carousel-dot
+{
+	width: 8px;
+	height: 8px;
+	border-radius: 8px;
+	border: 2px solid var(--low-contrast);
+
+	display: flex;
+	align-items: center;
+	justify-content: flex-start;
+}
+
+.carousel-dot:not(:first-child)
+{
+	margin-left: 4px;
+}
+
+.carousel-dot .fill
+{
+	opacity: 0;
+	width: 9px;
+	height: 9px;
+	margin-left: -0.5px;
+	margin-right: -0.5px;
+	border-radius: 4.5px;
+	background-color: var(--low-contrast);
+}
+
 
 
 #header-container

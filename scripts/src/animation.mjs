@@ -22,6 +22,9 @@ export const backgroundColorAnimationTime = baseAnimationTime * 2;
 
 export const cardAnimationTime = baseAnimationTime * 2;
 
+export const carouselSwitchAnimationTime = 250;
+export const carouselFillAnimationTime = 3000;
+
 
 
 function changeOpacityJs(element, endValue, duration = opacityAnimationTime, easeInOut = false)
