@@ -14,28 +14,41 @@ class Carousel
 	currentFillAnimation;
 
 
+
 	constructor(element)
 	{
 		this.element = element;
 		this.children = element.firstElementChild.children;
-		this.dots = element.lastElementChild.children;
+		this.dots = Array.from(element.lastElementChild.children);
 
-		this.advance();
+		this.dots.forEach((dot, index) =>
+		{
+			dot.addEventListener("click", () =>
+			{
+				if (index !== this.activeChild)
+				{
+					this.advance(index);
+				}
+			});
+		});
+
+		this.advance(0);
 	}
 
-	async advance(
-		newActiveNode = (this.activeChild + 1) % this.children.length,
-		lastActiveNode = newActiveNode - 1
-	)
+	async advance(newActiveChild = (this.activeChild + 1) % this.children.length)
 	{
 		if (this.currentFillAnimation)
 		{
 			this.currentFillAnimation.pause();
 		}
-		
-		this.children[(this.activeChild + 1) % this.children.length].style.display = "block";
+
+		const lastActiveChild = this.activeChild;
+
+		this.dots[newActiveChild].classList.add("active");
 
 		await new Promise(resolve => setTimeout(resolve, 10));
+
+
 
 		const oldDot = this.activeChild !== -1 ? this.dots[this.activeChild] : undefined;
 
@@ -54,12 +67,21 @@ class Carousel
 					duration: carouselSwitchAnimationTime,
 					easing: "easeInOutQuad",
 				}).finished,
+
+				anime({
+					targets: this.children[this.activeChild],
+					opacity: 0,
+					duration: carouselSwitchAnimationTime,
+					easing: "easeInQuad",
+				}).finished
 			]
 			: [];
 		
-		this.activeChild = (this.activeChild + 1) % this.children.length;
 
-		const newDot = this.dots[this.activeChild];
+
+		this.activeChild = newActiveChild;
+
+		const newDot = this.dots[newActiveChild];
 
 		const newDotPromises = [
 			anime({
@@ -75,21 +97,23 @@ class Carousel
 				duration: carouselSwitchAnimationTime,
 				easing: "easeInOutQuad",
 			}).finished,
-
-			anime({
-				targets: this.children[this.activeChild],
-				opacity: 1,
-				duration: carouselSwitchAnimationTime,
-				easing: "easeInOutQuad",
-			}).finished
 		];
+
+
 
 		await Promise.all(oldDotPromises.concat(newDotPromises));
 
 		if (oldDot)
 		{
 			oldDot.firstElementChild.style.width = `${dotSize + 1}px`;
+
+			this.children[lastActiveChild].style.display = "none";
+			this.dots[lastActiveChild].classList.remove("active");
 		}
+
+		this.children[newActiveChild].style.display = "block";
+
+
 
 		this.currentFillAnimation = anime({
 			targets: newDot.firstElementChild,
@@ -99,19 +123,36 @@ class Carousel
 			endDelay: carouselSwitchAnimationTime
 		});
 
-		await this.currentFillAnimation.finished;
+		await Promise.all([
+			this.currentFillAnimation.finished,
 
-		await anime({
-			targets: this.children[this.activeChild],
-			opacity: 0,
-			duration: carouselSwitchAnimationTime,
-			easing: "easeInQuad",
-		}).finished;
-
-		this.children[this.activeChild].style.display = "none";
+			anime({
+				targets: this.children[this.activeChild],
+				opacity: 1,
+				duration: carouselSwitchAnimationTime,
+				easing: "easeInOutQuad",
+			}).finished
+		]);
 
 		this.advance();
 	}
+
+
+
+	// async cleanUpThenAdvance()
+	// {
+	// 	await anime({
+	// 		targets: this.children[this.activeChild],
+	// 		opacity: 0,
+	// 		duration: carouselSwitchAnimationTime,
+	// 		easing: "easeInQuad",
+	// 	}).finished;
+
+	// 	this.children[this.activeChild].style.display = "none";
+	// 	this.dots[this.activeChild].classList.remove("active");
+
+	// 	this.advance(newActiveChild);
+	// }
 }
 
 export function setUpCarousels()

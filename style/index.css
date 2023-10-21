@@ -1123,6 +1123,16 @@ option
 	margin-left: 4px;
 }
 
+.carousel-dot:not(.active)
+{
+	cursor: pointer;
+}
+
+.carousel-dot:not(.active).hover
+{
+	background-color: var(--low-contrast);
+}
+
 .carousel-dot .fill
 {
 	opacity: 0;

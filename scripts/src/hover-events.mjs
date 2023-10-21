@@ -5,7 +5,8 @@ import { showTex } from "./math.mjs";
 import anime from "/scripts/anime.js";
 
 const elementSelectors = `
-	a
+	a,
+	.carousel-dot
 `;
 
 //These elements need to have their scale increased when hovered.
