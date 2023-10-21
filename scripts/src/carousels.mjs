@@ -1,6 +1,6 @@
 import anime from "../anime.js";
 import { carouselFillAnimationTime, carouselSwitchAnimationTime } from "./animation.mjs";
-import { $$ } from "./main.mjs";
+import { $$, addTemporaryListener } from "./main.mjs";
 
 const dotSize = 8;
 const expandedDotWidth = 128;
@@ -12,6 +12,7 @@ class Carousel
 	dots;
 	activeChild = -1;
 	currentFillAnimation;
+	permanentlyPaused = false;
 
 
 
@@ -27,10 +28,63 @@ class Carousel
 			{
 				if (index !== this.activeChild)
 				{
+					this.permanentlyPaused = true;
 					this.advance(index);
 				}
 			});
 		});
+
+
+
+		this.element.addEventListener("mouseenter", () =>
+		{
+			if (this.currentFillAnimation && !this.permanentlyPaused)
+			{
+				this.currentFillAnimation.pause();
+			}
+		});
+
+		this.element.addEventListener("mouseleave", () =>
+		{
+			if (this.currentFillAnimation && !this.permanentlyPaused)
+			{
+				this.currentFillAnimation.play();
+			}
+		});
+
+
+
+		const onScroll = () =>
+		{
+			if (!this.currentFillAnimation || this.permanentlyPaused)
+			{
+				return;
+			}
+
+			const rect = this.element.getBoundingClientRect();
+			const top = rect.top;
+			const height = rect.height;
+
+			if (top >= -height && top < window.innerHeight)
+			{
+				this.currentFillAnimation.play();
+			}
+
+			else
+			{
+				this.currentFillAnimation.pause();
+			}
+		};
+
+		addTemporaryListener({
+			object: window,
+			event: "scroll",
+			callback: onScroll
+		});
+
+		onScroll();
+
+
 
 		this.advance(0);
 	}
@@ -56,7 +110,7 @@ class Carousel
 			? [
 				anime({
 					targets: oldDot,
-					width: 8,
+					width: dotSize,
 					duration: carouselSwitchAnimationTime,
 					easing: "easeInOutQuad",
 				}).finished,
@@ -83,10 +137,15 @@ class Carousel
 
 		const newDot = this.dots[newActiveChild];
 
+		if (this.permanentlyPaused)
+		{
+			newDot.firstElementChild.style.width = `${expandedDotWidth / 5 + 4}px`;
+		}
+
 		const newDotPromises = [
 			anime({
 				targets: newDot,
-				width: expandedDotWidth,
+				width: this.permanentlyPaused ? expandedDotWidth / 5 : expandedDotWidth,
 				duration: carouselSwitchAnimationTime,
 				easing: "easeInOutQuad",
 			}).finished,
@@ -94,7 +153,7 @@ class Carousel
 			anime({
 				targets: newDot.firstElementChild,
 				opacity: 1,
-				duration: carouselSwitchAnimationTime,
+				duration: this.permanentlyPaused ? 0 : carouselSwitchAnimationTime,
 				easing: "easeInOutQuad",
 			}).finished,
 		];
@@ -105,7 +164,7 @@ class Carousel
 
 		if (oldDot)
 		{
-			oldDot.firstElementChild.style.width = `${dotSize + 1}px`;
+			oldDot.firstElementChild.style.width = `${dotSize + 4}px`;
 
 			this.children[lastActiveChild].style.display = "none";
 			this.dots[lastActiveChild].classList.remove("active");
@@ -115,44 +174,42 @@ class Carousel
 
 
 
-		this.currentFillAnimation = anime({
-			targets: newDot.firstElementChild,
-			width: expandedDotWidth + 1,
-			duration: carouselFillAnimationTime,
-			easing: "linear",
-			endDelay: carouselSwitchAnimationTime
-		});
+		if (!this.permanentlyPaused)
+		{
+			this.currentFillAnimation = anime({
+				targets: newDot.firstElementChild,
+				width: expandedDotWidth + 4,
+				duration: carouselFillAnimationTime,
+				easing: "linear",
+				endDelay: carouselSwitchAnimationTime
+			});
 
-		await Promise.all([
-			this.currentFillAnimation.finished,
+			window.dispatchEvent(new Event("scroll"));
 
-			anime({
+			await Promise.all([
+				this.currentFillAnimation.finished,
+
+				anime({
+					targets: this.children[this.activeChild],
+					opacity: 1,
+					duration: carouselSwitchAnimationTime,
+					easing: "easeInOutQuad",
+				}).finished
+			]);
+
+			this.advance();
+		}
+
+		else
+		{
+			await anime({
 				targets: this.children[this.activeChild],
 				opacity: 1,
 				duration: carouselSwitchAnimationTime,
 				easing: "easeInOutQuad",
-			}).finished
-		]);
-
-		this.advance();
+			}).finished;
+		}
 	}
-
-
-
-	// async cleanUpThenAdvance()
-	// {
-	// 	await anime({
-	// 		targets: this.children[this.activeChild],
-	// 		opacity: 0,
-	// 		duration: carouselSwitchAnimationTime,
-	// 		easing: "easeInQuad",
-	// 	}).finished;
-
-	// 	this.children[this.activeChild].style.display = "none";
-	// 	this.dots[this.activeChild].classList.remove("active");
-
-	// 	this.advance(newActiveChild);
-	// }
 }
 
 export function setUpCarousels()

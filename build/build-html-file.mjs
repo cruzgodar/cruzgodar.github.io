@@ -492,10 +492,23 @@ const components =
 
 		"carousel": (content) =>
 		{
+			const htmlLines = content.map(line =>
+			{
+				const paragraphs = line.split("\\n");
+
+				const parsedParagraphs = paragraphs.map(
+					paragraph => components.Parse.text(paragraph)
+				);
+
+				return "<p class=\"body-text\">"
+					+ parsedParagraphs.join("</p><p class=\"body-text\">")
+					+ "</p>";
+			});
+
 			return `
 				<div class="carousel">
 					<div class="carousel-content">
-						${content.map(line => `<p class="body-text">${components.Parse.text(line)}</p>`).join("")}
+						${htmlLines.map(line => `<div class="carousel-entry">${line}</div>`).join("")}
 					</div>
 
 					<div class="carousel-dots">
