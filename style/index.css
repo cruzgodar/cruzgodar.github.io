@@ -1079,7 +1079,7 @@ option
 
 .carousel
 {
-	width: min(500px, 90vw);
+	width: min(500px, 100%);
 	margin: 0 auto;
 	margin-top: 32px;
 
