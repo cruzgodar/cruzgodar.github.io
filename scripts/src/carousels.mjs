@@ -214,10 +214,5 @@ class Carousel
 
 export function setUpCarousels()
 {
-	$$(".carousel").forEach(element =>
-	{
-		const carousel = new Carousel(element);
-
-		//setInterval(() => carousel.advance(), 1000);
-	});
+	$$(".carousel").forEach(element => new Carousel(element));
 }

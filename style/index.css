@@ -1093,7 +1093,7 @@ option
 	width: 100%;
 }
 
-.carousel-entry
+.carousel-entry:not(:first-child)
 {
 	display: none;
 	opacity: 0;

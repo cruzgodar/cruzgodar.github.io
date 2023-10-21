@@ -508,7 +508,7 @@ const components =
 			return `
 				<div class="carousel">
 					<div class="carousel-content">
-						${htmlLines.map(line => `<div class="carousel-entry">${line}</div>`).join("")}
+						${htmlLines.map((line, index) => `<div class="carousel-entry">${line}</div>`).join("")}
 					</div>
 
 					<div class="carousel-dots">
