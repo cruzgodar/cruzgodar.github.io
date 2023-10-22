@@ -1,0 +1,113 @@
+### nav-buttons
+
+
+
+Our final foundational topic in linear algebra will provide the last large missing piece in the story of matrices and linear transformations. For a generic transformation $T : #R#^n \to #R#^m$, most that story is already told: the matrix of a transformation completely describes the manner in which it operates on vectors, and the number of linearly independent columns in that matrix tell us if it's one-to-one and/or onto. In the particular case when $n = m$ and the domain and codomain are equal, we have the possibility of the matrix (and therefore transformation) being invertible, but there's a loose thread there that we haven't quite pulled yet, and it will turn out to be quite a long thread indeed. To put a finger on exactly where it starts, we need to notice that when $T : #R#^n \to #R#^n$, $T(\vec{v})$ is as long as $\vec{v}$, and so the two can be directly compared to one another. We'll have a *lot* to say about this, including in the homework, but for now, we'll begin by just naming the type of linear transformations we're talking about and defining the one number that underlies nearly everything else.
+
+### def linear operator
+
+	A **linear operator** is a linear transformation whose domain and codomain are equal.
+
+###
+
+Part of the difficulty in introducing the upcoming concept is that it's very well-motivated and completely unmotivated at the same time. Although it connects to a wide array of other topics in linear algebra and beyond, we're encountering it relatively early on in our progression through the subject, and so there's no great way to derive it from anything we've seen so far. As we'll quickly come to realize, though, it's closely connected with understanding linear operators. First, we'll get one technical definition out of the way.
+
+### def matrix minor
+
+	Let $A$ be an $m \times n$ matrix. The **minor** of $A$ corresponding to row $i$ and column $j$ is the $(m - 1) \times (n - 1)$ matrix obtained by crossing out row $i$ and column $j$ from $A$.
+
+###
+
+### ex matrix minor
+
+	Find the minors of $$[[ 1, 4, 9 ; 2, 1, 6 ; -3, -1, 0 ]]$$ corresponding to each entry in the first row.
+
+	By crossing out the appropriate rows and columns, we get
+
+	$$
+		[[ , ,  ; , 1, 6 ; , -1, 0 ]] \qquad [[ , ,  ; 2, , 6 ; -3, , 0 ]] \qquad [[ , ,  ; 2, 1,  ; -3, -1,  ]],
+	$$
+
+	for the entries in row $1$ and columns $1$, $2$, and $3$, respectively, which are just the $2 \times 2$ matrices
+
+	$$
+		[[ 1, 6 ; -1, 0 ]] \qquad [[ 2, 6 ; -3, 0 ]] \qquad [[ 2, 1 ; -3, -1 ]].
+	$$
+
+###
+
+With minors defined, we can finally get to the definition we've (possibly) been waiting for.
+
+### def determinant
+
+	Let $A$ be an $n \times n$ matrix. The **determinant** of $A$, written $\det A$, is a single number that we compute recursively. If $n = 1$, then $\det A$ is just its single entry --- e.g. $\det [5] = 5$. For $n > 1$, choose any row or column of $A$ and call it $\vec{v}$, and find the minors of $A$ for every entry in $\vec{v}$, denoting them $A_1, A_2, ..., A_n$. Then find the determinant of each $A_i$ and add up the quantities $\vec{v}_i \det A_i$ with alternating signs given by the checkerboard-like matrix
+
+	$$
+		[[ +, -, +, -, \cdots ; -, +, -, +, \cdots ; +, -, +, -, \cdots ; -, +, -, +, \cdots ; \vdots, \vdots, \vdots, \vdots, \ddots ]].
+	$$
+
+###
+
+Let's be clear: this is a ridiculous definition, and by all measures it shouldn't have any use at all. Even the language used to describe it is clunky, and we immediately need to work through some examples to see how to even compute it. It's one of the most surprising facts in the course that not only is the determinant useful, it'll continue to show up in seemingly unrelated topics whether we want it to or not.
+
+### ex the determinant
+
+	Compute $$\det [[ 1, 4 ; 2, 5 ]]$$.
+
+	Let's expand about the first row. We take each entry in the row and multiply it by the determinant of its minor, then add a sign according to that checkerboard sign matrix. Here, that's
+
+	$$
+		1 \cdot \det [[ 5 ]] - 4 \cdot \det [[ 2 ]] = 5 - 8 = -3.
+	$$
+
+	In fact, this process is nearly identical for a generic $2 \times 2$ matrix:
+
+	$$
+		\det [[ a, b ; c, d ]] &= a \cdot \det [[ d ]] - b \cdot \det [[ c ]]
+
+		&= ad - bc.
+	$$
+
+	Not only is this a useful formula that lets us nearly instantly calculate $2 \times 2$ determinants, but we've seen this expression before --- it's the denominator in the generic $2 \times 2$ matrix inverse formula. This is our first clue that the determinant is more than just some random number, and it will be far from the last.
+
+###
+
+### exc the determinant
+
+	1. Compute $$\det [[ 1, 2, 3 ; 4, 0, 6 ; 7, 9, 0 ]]$$.
+
+	2. An implicit assertion in the definition of the determinant is that its value is the same no matter which row or column we expand about. For the generic $2 \times 2$ matrix $[[ a, b ; c, d ]]$, expand about both rows and both columns and show that the result is always $ad - bc$.
+
+###
+
+In general, it's easiest to choose the row or columns containing the most zeros, since then we have the fewest smaller determinants to compute.
+
+### ex the determinant
+
+	Compute $$\det [[ 1, 4, 7, 2 ; 0, 4, 5, 0 ; 3, 1, 2, 0 ; 1, 2, 3, 4 ]]$$.
+
+	The second row has the most zeros, so let's expand about that, ignoring zero entries. Since we're in the second row, the signs will start negative in the sum --- so the $4$'s term is positive and the $5$'s term negative. We have
+
+	$$
+		4\det [[ 1, 7, 2 ; 3, 2, 0 ; 1, 3, 4 ]] -5\det [[ 1, 4, 2 ; 3, 1, 0 ; 1, 2, 4 ]],
+	$$
+
+	and we can expand both of those about row 2 to get
+
+	$$
+		4\left( -3\det [[ 7, 2 ; 3, 4 ]] + 2\det [[ 1, 2 ; 1, 4 ]] \right) - 5 \left( -3 \det [[ 4, 2 ; 2, 4 ]] + \det [[ 1, 2 ; 1, 4 ]] \right).
+	$$
+
+	Now we can use the $2 \times 2$ determinant formula we just found to turn this into
+
+	$$
+		4( -3(28 - 6) + 2(4 - 2) ) - 5 ( -3(16 - 4) + (4 - 2) ) = -78.
+	$$
+
+###
+
+With the definition done, we'll begin connecting determinants to the other topics we've learned, one-by-one. First up is row reduction: applying a row operation to a 
+
+
+
+### nav-buttons
