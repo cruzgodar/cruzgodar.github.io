@@ -100,6 +100,8 @@ class Carousel
 
 		this.dots[newActiveChild].classList.add("active");
 
+		const oldDotTop = this.dots[0].getBoundingClientRect().top;
+
 		await new Promise(resolve => setTimeout(resolve, 10));
 
 
@@ -202,6 +204,10 @@ class Carousel
 
 		else
 		{
+			const newDotTop = this.dots[0].getBoundingClientRect().top;
+			
+			window.scrollBy(0, newDotTop - oldDotTop);
+
 			await anime({
 				targets: this.children[this.activeChild],
 				opacity: 1,
