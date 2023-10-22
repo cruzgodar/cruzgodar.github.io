@@ -149,8 +149,90 @@ Computing a determinant using the recursive definition is a task that balloons i
 	and now we can use the same technique here. Let's use row 1 to clear the rest of column 1:
 
 	$$
+		[[ 3, 5, 3 ; -12, 18, -57 ; 3, -5, -12 ]] & \qquad \vec{r_2} \te 3
+
+		[[ 3, 5, 3 ; 0, 38, -45 ; 0, -10, -15 ]] & \qquad :: \vec{r_2} \pe 4\vec{r_1} ; \vec{r_3} \me \vec{r_1} ::
+	$$
+
+	We need to be a little careful here: since we multiplied a row by $4$, the determinant of this new matrix will be $4$ times larger than that of the original matrix. On the bright side, this new determinant is as easy as possible to calculate:
 
 	$$
+		\det [[ 3, 5, 3 ; 0, 38, -45 ; 0, -10, -15 ]] &= 3\det [[ 38, -45 ; -10, -15 ]]
+
+		&= 3(38(-15) - (-45)(-10))
+
+		&= -3060.
+	$$
+
+	So the determinant of the original $3 \times 3$ is $\frac{1}{4}(-3060) = -765$, and finally, the determinant of the $4 \times 4$ is $-2(-765) = 1530$.
+
+###
+
+Next on the list of connections is invertibility, and here, the result is what we might predict from the generic $2 \times 2$ inverse formula: there, the matrix was invertible exactly when $ad - bc \neq 0$, and the general result is a direct extension.
+
+### thm determinants and invertibility
+
+	Let $A$ be an $n \times n$ matrix. Then $A$ is invertible exactly when $\det A \neq 0$.
+
+###
+
+Since invertibility is equivalent to being one-to-one or onto for square matrices, we now have a fourth equivalent condition. With the next definition and result, we'll have even more.
+
+### def transpose
+
+	Let $A$ be a matrix. The **transpose** of $A$ is the matrix $A^T$ formed by writing the rows of $A$ as columns, and vice versa, in a new matrix --- i.e. flipping $A$ across its diagonal.
+
+###
+
+We've seen the transpose indirectly in the last section --- it's the matrix we row reduce to find how many columns are linearly independent. For example,
+
+$$
+	[[ 1, 4, 5 ; -4, 2, 0 ]]^T = [[ 1, -4 ; 4, 2 ; 5, 0 ]].
+$$
+
+Transposing a matrix is an operation substantially more complicated than any row operation, and we'll have to wait quite a while before we have the language and tools to understand its effect from a linear transformation perspective. For now, though, we can relate it to the determinant: when we expand a square matrix $A$ about a row to find its determinant, we can expand $A^T$ about that column, and vice versa, to get exactly the same result. Therefore,
+
+### prop determinants and transposes
+
+	Let $A$ be an $n \times n$ matrix. Then $\det A^T = \det A$.
+
+###
+
+The primary usefulness of this to us currently is that $A^T$ is invertible exactly when $A$ is, and the columns of $A^T$ are the rows of $A$, so we can add a few more items to our ever-growing list of equivalent conditions for a square matrix.
+
+### prop invertibility conditions
+
+	Let $A$ be an $n \times n$ matrix with corresponding linear transformation $T$. Then the following are equivalent:
+
+	1. $T$ is an invertible function.
+
+	2. $A$ is an invertible matrix.
+
+	3. $A$ row-reduces to the identity matrix.
+
+	4. $T$ is one-to-one.
+
+	5. The columns of $A$ are linearly independent.
+
+	6. The rows of $A$ are linearly independent.
+
+	7. $T$ is onto.
+
+	8. The columns of $A$ span $#R#^n$.
+
+	9. The rows of $A$ span $#R#^n$.
+
+	10. $\det A \neq 0$.
+
+	11. $\det A^T \neq 0$.
+
+###
+
+The determinant also interacts nicely with matrix multiplication: it's a multiplicative function.
+
+### thm the determinant is multiplicative
+
+	Let $A$ and $B$ be $n \times n$ matrices. Then $\det (AB) = (\det A) (\det B).$
 
 ###
 
