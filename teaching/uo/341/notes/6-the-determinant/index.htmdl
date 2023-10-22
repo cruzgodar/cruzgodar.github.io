@@ -2,7 +2,7 @@
 
 
 
-Our final foundational topic in linear algebra will provide the last large missing piece in the story of matrices and linear transformations. For a generic transformation $T : #R#^n \to #R#^m$, most that story is already told: the matrix of a transformation completely describes the manner in which it operates on vectors, and the number of linearly independent columns in that matrix tell us if it's one-to-one and/or onto. In the particular case when $n = m$ and the domain and codomain are equal, we have the possibility of the matrix (and therefore transformation) being invertible, but there's a loose thread there that we haven't quite pulled yet, and it will turn out to be quite a long thread indeed. To put a finger on exactly where it starts, we need to notice that when $T : #R#^n \to #R#^n$, $T(\vec{v})$ is as long as $\vec{v}$, and so the two can be directly compared to one another. We'll have a *lot* to say about this, including in the homework, but for now, we'll begin by just naming the type of linear transformations we're talking about and defining the one number that underlies nearly everything else.
+Our final foundational topic in linear algebra will provide the last large missing piece in the story of matrices and linear transformations. For a generic transformation $T : #R#^n \to #R#^m$, most of that story is already told: the matrix of a transformation completely describes the manner in which it operates on vectors, and the number of linearly independent columns in that matrix tell us if it's one-to-one and/or onto. In the particular case when $n = m$ and the domain and codomain are equal, we have the possibility of the matrix (and therefore transformation) being invertible, but there's a loose thread there that we haven't quite pulled yet, and it will turn out to be quite a long thread indeed. To put a finger on exactly where it starts, we need to notice that when $T : #R#^n \to #R#^n$, $T(\vec{v})$ is as long as $\vec{v}$, and so the two can be directly compared to one another. We'll have a *lot* to say about this, including in the homework, but for now, we'll begin by just naming the type of linear transformations we're talking about and defining the one number that underlies nearly everything else.
 
 ### def linear operator
 
@@ -106,7 +106,53 @@ In general, it's easiest to choose the row or columns containing the most zeros,
 
 ###
 
-With the definition done, we'll begin connecting determinants to the other topics we've learned, one-by-one. First up is row reduction: applying a row operation to a 
+### exc the determinant
+
+	Compute $$\det [[ 1, -6, 5, 3 ; 0, 4, 2, -1 ; 0, 0, 9, 9 ; 0, 0, 0, -3 ]]$$.
+
+###
+
+With the definition done, we'll begin connecting determinants to the other topics we've learned, one-by-one. First up is row reduction: applying a row operation to a square matrix changes its determinant either slightly or not at all.
+
+### thm determinants and row operations
+
+	Let $A$ be an $n \times n$ matrix.
+
+	1. If $B$ is obtained from $A$ by swapping two rows, then $\det B = -\det A$.
+
+	2. If $B$ is obtained from $A$ by multiplying a row by a constant $c$, then $\det B = c\det A$.
+
+	3. If $B$ is obtained from $A$ by adding a multiple of one row to another, then $\det B = \det A$.
+
+###
+
+There are a few neat connections we can make immediately. First of all, we've seen from the recursive determinant formula that if a matrix $A$ has a single row of all zeros, then we can expand about it to find that $\det A = 0$. On the other hand, a row of all zeros can be scaled by any number $c$ and stay identical, so $\det A = c\det A$ for any number $c$. That's only true when $\det A = 0$, so at the very least, the theorem is consistent with something we already know.
+
+Computing a determinant using the recursive definition is a task that balloons in scope as the size of the matrix grows, and this theorem lets us bypass that quite a bit. Part 3 in particular is the most useful: to begin computing a large determinant, we can use one entry to clear all the others in its column, and then just expand about that column. If we haven't multiplied by any constants or swapped rows, then the determinant of the resulting matrix will be identical, and we've just saved a massive amount of work.
+
+### ex determinants and row operations
+
+	Compute $$\det [[ 1, 2, -1, 5 ; 3, 0, 5, 3 ; -1, 6, 3, -4 ; 4, 2, -6, -7 ]]$$.
+
+	This would be a pretty awful determinant to compute recursively --- even picking the second column, we'd still have to compute three different $3 \times 3$ determinants. Instead, let's do a little work up front to clear the rest of column 2 and compute the determinant after that. We have
+
+	$$
+		[[ 1, 2, -1, 5 ; 3, 0, 5, 3 ; -4, 0, 6, -19 ; 3, 0, -5, -12 ]] & \qquad :: \vec{r_3} \me 3\vec{r_2} ; \vec{r_4} \me \vec{r_2} ::,
+	$$
+
+	and the determinant of this matrix is the same as the original, since all we've done is add multiples of rows to others. Expanding about column 2, we have that the determinant is
+
+	$$
+		-2\det [[ 3, 5, 3 ; -4, 6, -19 ; 3, -5, -12 ]],
+	$$
+
+	and now we can use the same technique here. Let's use row 1 to clear the rest of column 1:
+
+	$$
+
+	$$
+
+###
 
 
 

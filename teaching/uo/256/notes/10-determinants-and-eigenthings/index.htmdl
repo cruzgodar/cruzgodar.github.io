@@ -110,7 +110,7 @@ It's time to properly talk about determinants. We've seen plenty of them for $2 
 
 ### exc determinant
 	
-Evaluate $$\det [[ 2, 1, 0 ; 2, 7, 1 ; -1, 2, -5 ]].$$
+	Evaluate $$\det [[ 2, 1, 0 ; 2, 7, 1 ; -1, 2, -5 ]].$$
 	
 ###
 

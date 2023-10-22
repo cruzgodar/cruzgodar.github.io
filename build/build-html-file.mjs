@@ -214,6 +214,7 @@ const components =
 				.replaceAll(/\\"/g, "[DOUBLEQUOTE]")
 				.replaceAll(/\\'/g, "[SINGLEQUOTE]")
 				.replaceAll(/\\,/g, "[COMMA]")
+				.replaceAll(/\\:/g, "[COLON]")
 				.replaceAll(/\$\$(.*?)\$\$/g, (match, $1) => `$\\displaystyle ${$1}$`)
 				.replaceAll(/\$(.*?)\$/g, (match, $1) => `$${components.Parse.latex($1)}[END$]`)
 				.replaceAll(/([0-9]+)#/g, (match, $1) => `${currentNumberedItem}--${currentNumberedItem + parseInt($1) - 1}`);
@@ -339,6 +340,7 @@ const components =
 				.replaceAll(/\[DOUBLEQUOTE\]/g, "\"")
 				.replaceAll(/\[SINGLEQUOTE\]/g, "'")
 				.replaceAll(/\[COMMA\]/g, ",")
+				.replaceAll(/\[COLON\]/g, ":")
 				.replaceAll(/\[ASTERISK\]/g, "*")
 				.replaceAll(/\[BACKTICK\]/g, "`")
 				.replaceAll(/\[DOLLARSIGN\]/g, "\\$")
@@ -358,7 +360,7 @@ const components =
 				// \span
 				.replaceAll(/(?<!\\)\\(span|image|swap)(?![a-zA-Z])/g, (match, $1) => `\\operatorname{${$1}}`)
 
-				// [[1, 2, 3 ; 4, 5, 6 ; 7, 8, 9]]
+				// Matrices: [[1, 2, 3 ; 4, 5, 6 ; 7, 8, 9]]
 				.replaceAll(/\[\[(.+?)\]\]/g, (match, $1) =>
 				{
 					const colString = ("," + $1)
@@ -372,6 +374,9 @@ const components =
 
 					return `\\left[\\begin{array}{${colString}}${content}\\end{array}\\right]`;
 				})
+
+				// A left-aligned block: :: a = 1 ; b = 1 ::
+				.replaceAll(/::(.+?)::/g, (match, $1) => `\\begin{array}{l}${$1.replaceAll(/;/g, "\\\\")}\\end{array}`)
 
 				// **A**
 				.replaceAll(/\*\*(.+?)\*\*/g, (match, $1) => `\\mathbf{${$1}}`)
