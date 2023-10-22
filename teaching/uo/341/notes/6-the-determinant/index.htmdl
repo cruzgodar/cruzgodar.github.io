@@ -2,7 +2,7 @@
 
 
 
-Our final foundational topic in linear algebra will provide the last large missing piece in the story of matrices and linear transformations. For a generic transformation $T : #R#^n \to #R#^m$, most of that story is already told: the matrix of a transformation completely describes the manner in which it operates on vectors, and the number of linearly independent columns in that matrix tell us if it's one-to-one and/or onto. In the particular case when $n = m$ and the domain and codomain are equal, we have the possibility of the matrix (and therefore transformation) being invertible, but there's a loose thread there that we haven't quite pulled yet, and it will turn out to be quite a long thread indeed. To put a finger on exactly where it starts, we need to notice that when $T : #R#^n \to #R#^n$, $T(\vec{v})$ is as long as $\vec{v}$, and so the two can be directly compared to one another. We'll have a *lot* to say about this, including in the homework, but for now, we'll begin by just naming the type of linear transformations we're talking about and defining the one number that underlies nearly everything else.
+Our final foundational topic in linear algebra will provide the last large missing piece in the story of matrices and linear transformations. For a generic transformation $T : #R#^n \to #R#^m$, most of that story is already told: the matrix of a transformation completely describes how it operates on vectors, and the number of linearly independent columns in that matrix tell us if it's one-to-one and/or onto. In the particular case when $n = m$ and the domain and codomain are equal, we have the possibility of the matrix (and therefore transformation) being invertible, but there's a loose thread there that we haven't quite pulled yet, and it will turn out to be quite a long thread indeed. To put a finger on exactly where it starts, we need to notice that when $T : #R#^n \to #R#^n$, $T(\vec{v})$ is as long as $\vec{v}$, and so the two can be directly compared to one another. We'll have a *lot* to say about this, including in the homework, but for now, we'll begin by just naming the type of linear transformations we're talking about and defining the one number that underlies nearly everything else.
 
 ### def linear operator
 
@@ -48,7 +48,7 @@ With minors defined, we can finally get to the definition we've (possibly) been 
 
 ###
 
-Let's be clear: this is a ridiculous definition, and by all measures it shouldn't have any use at all. Even the language used to describe it is clunky, and we immediately need to work through some examples to see how to even compute it. It's one of the most surprising facts in the course that not only is the determinant useful, it'll continue to show up in seemingly unrelated topics whether we want it to or not.
+Let's be clear: this is a ridiculous definition, and by all measures it shouldn't have any use at all. Even the language used to describe it is clunky, and we immediately need to work through some examples to see how to even compute it at all. It's one of the most surprising facts in the course that not only is the determinant useful, it'll continue to show up in seemingly unrelated topics whether we want it to or not.
 
 ### ex the determinant
 
@@ -112,7 +112,7 @@ In general, it's easiest to choose the row or columns containing the most zeros,
 
 ###
 
-With the definition done, we'll begin connecting determinants to the other topics we've learned, one-by-one. First up is row reduction: applying a row operation to a square matrix changes its determinant either slightly or not at all.
+With the definition done, we'll begin connecting determinants to the other topics we've learned, one by one. First up is row reduction: applying a row operation to a square matrix changes its determinant either slightly or not at all.
 
 ### thm determinants and row operations
 
@@ -208,7 +208,7 @@ The primary usefulness of this to us currently is that $A^T$ is invertible exact
 
 	2. $A$ is an invertible matrix.
 
-	3. $A$ row-reduces to the identity matrix.
+	3. $A$ row reduces to the identity matrix.
 
 	4. $T$ is one-to-one.
 
@@ -236,7 +236,7 @@ The determinant also interacts nicely with matrix multiplication: it's a multipl
 
 ###
 
-The proof of this theorem is a little out of scope for our class, but the gist is that for invertible matrices $A$ and $B$, we can write both as a product of elementary matrices --- the ones from homework 2 that apply the row operations by multiplication. The way each one changes the determinant of the matrix they act on is by multiplying by their own determinant, and we can build the result up from there. We'll have more to say about the transpose and and multiplicativity of the determinant on the homework, but for now, let's look at one final connection it has: an interpretation in the language of linear transformations.
+The proof of this theorem is a little out of scope for our class, but the gist is that for invertible matrices $A$ and $B$, we can write both as a product of elementary matrices --- the ones from homework 2 that apply the row operations by multiplication. The way each one changes the determinant of the matrix they act on is by multiplying by their own determinant, and we can build the result up from there. We'll have more to say about the transpose and multiplicativity of the determinant on the homework, but for now, let's look at one final connection with prior material: an interpretation in the language of linear transformations.
 
 ### thm the determinant as a scaling factor
 
@@ -289,12 +289,14 @@ This result definitely needs some examples to explain it, so let's start there.
 	The unit cube in $#R#^3$ is the set of points $(x, y, z)$ with $0 \leq x \leq 1$, $0 \leq y \leq 1$, and $0 \leq z \leq 1$, and is defined by its three bounding vectors
 
 	$$
-		[[ 1 ; 0 ; 0 ]], [[ 0 ; 1 ; 0 ]], [[ 0 ; 0 ; 1]].
+		[[ 1 ; 0 ; 0 ]], [[ 0 ; 1 ; 0 ]], [[ 0 ; 0 ; 1 ]].
 	$$
 
 	Find the image of the unit cube under $S$ by finding the images of those three vectors and sketch a picture of it, and then find its volume.
 
 ###
+
+With the determinant understood, we've covered every fundamental of matrix algebra, with only a few exceptions that are the next term's core subjects. But we're far from done --- while we began our discussion of matrices as arising from linear systems, there are many, *many* more situations in which they appear, and we'll begin exploring those in the next section.
 
 
 
