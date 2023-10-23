@@ -26,9 +26,35 @@ But if all it were good for was solving systems of linear equations, linear alge
 
 The takeaway from this massive definition is that a vector space looks a lot like $#R#^n$. It has vectors that can be added together and scaled without leaving the space, which is just a symbol-heavy way of saying $V$ contains all the linear combinations of its entries. There needs to be a zero vector, and beyond that, addition and scalar multiplication need to behave mostly as they usually do. But while $#R#^n$ is the simplest example of a vector space, it's just the start.
 
-### ex 
+### ex a vector space
 
-	as
+	Show that the set
+
+	$$
+		V = \span \left\{ [[ 1 ; 0 ; 2 ]], [[ -1 ; 1 ; 0 ]] \right\}
+	$$
+
+	is closed under addition and scalar multiplication.
+
+	In practice, these are the only two properties of a set we'll need to check to show it's a vector space.. First, to show that $V$ is closed under addition, we take two generic elements of $V$ and add them together, then show that the result is still in $V$.
+
+	$$
+		\left( c_1 [[ 1 ; 0 ; 2 ]] + c_2 [[ -1 ; 1 ; 0 ]] \right) + \left( c_3 [[ 1 ; 0 ; 2 ]] + c_4 [[ -1 ; 1 ; 0 ]] \right) = (c_1 + c_3) [[ 1 ; 0 ; 2 ]] + (c_2 + c_4) [[ -1 ; 1 ; 0 ]] \in V.
+	$$
+
+	Scalar multiplication is just as simple:
+
+	$$
+		c\left( c_1 [[ 1 ; 0 ; 2 ]] + c_2 [[ -1 ; 1 ; 0 ]] \right) = (cc_1) [[ 1 ; 0 ; 2 ]] + (cc_2) [[ -1 ; 1 ; 0 ]].
+	$$
+
+	This space --- the span of two vectors --- looks and feels a lot like $#R#^2$, and the most meaningful variables are the coefficients $c_1$ and $c_2$ on the vectors. We'll return to this idea a little bit later on.
+
+###
+
+### exc a vector space
+
+	Show that the set $P$ consisting of polynomials in $x$ with degree (i.e. highest exponent) at most $3$ is closed under addition and scalar multiplication.
 
 ###
 
