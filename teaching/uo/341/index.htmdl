@@ -35,6 +35,107 @@ Welcome to Math 341! We'll use this page for the interactive notes, the homework
 	homework-2 c Homework 2
 	homework-3 c Homework 3
 	homework-4 c Homework 4
+	homework-5 c Homework 5
+	
+###
+
+
+
+### card homework-5 Homework 5
+
+	*Due Wednesday of Week 6 at the start of class*
+	
+	Complete the following problems and submit them as a pdf to Canvas. 8 points are awarded for thoroughly attempting every problem, and I'll select three problems to grade on correctness for 4 points each. Enough work should be shown that there is no question about the mathematical process used to obtain your answers.
+
+	## Section 6
+	
+	In problems 5#, compute the determinant.
+
+	#. $$A = [[ 2, 3 ; -3, 1 ]]$$.
+
+	#. $$B = [[ 2, 3, 0 ; -3, 1, -1 ; 1, 1, 1 ]]$$.
+
+	#. $$C = [[ 1, 1, -3 ; 0, 1, 3 ; 2, -1, -15 ]]$$.
+
+	#. $$D = [[ 1, 2, 3 ; 4, 5, 6 ]]$$.
+
+	#. $$E = [[ 1, 2, 3, 4 ; 3, -1, 0, 3 ; 2, 0, 1, 2; -1, -3, -7, 2 ]]$$.
+
+
+
+	- - -
+
+	#. For each of the matrices $A$--$E$ in problems 1--5, classify it as invertible or noninvertible based on its determinant.
+
+	#. For each of the matrices $A$--$C$ in problems 1--3, sketch a picture of the unit square or cube and its image under the linear operator corresponding to the matrix. Verify that the determinant scales volume correctly.
+
+	#. We can use the multiplicativity of the determinant to show some nice facts about the determinants of inverse matrices.
+
+	> a) What is $\det I$?
+
+	> b) Let $A$ be an invertible matrix. Using part a), find $\det A^{-1}$ in terms of $\det A$.
+
+
+
+	## Eigenvectors and Eigenvalues
+
+	Let $A$ be an $n \times n$ matrix. When $A$ only scales a nonzero vector and doesn't multiply it --- i.e $A\vec{v} = \lambda\vec{v}$ for a vector $\vec{v}$ and a constant $\lambda$ --- we say that $\vec{v}$ is an **eigenvector** of $A$ with **eigenvalue** $\lambda$. You'll see more on these in the next course if you take it, but for now, we'll work through a few basic examples.
+
+	#. Let $$A = [[ 2, -1 ; 3, -2 ]]$$. Show that $\vec{v_1} = [[ 1 ; 3 ]]$ and $\vec{v_2} = [[ 1 ; 1 ]]$ are eigenvectors of $A$ and find their eigenvalues.
+
+	#. Let $B = [[ -1, 2 ; 0, -3 ]]$.
+
+	> a) If $B\vec{v} = \lambda\vec{v}$ for a nonzero vector $\vec{v}$, then $B\vec{v} = \lambda I \vec{v}$, so $(B - \lambda I)\vec{v} = \vec{0}$. That means $B - \lambda I$ is not one-to-one, so $\det (B - \lambda I) = 0$ (the left side is called the **characteristic polynomial** of $B$). Find that determinant and solve it for $\lambda$.
+
+	> b) The values of $\lambda$ in part a) are the eigenvalues of $B$. For each value of $\lambda$, we want to solve $(B - \lambda I)\vec{v} = 0$, so augment $B - \lambda I$ with $\vec{0}$ and row reduce. In total, what are the eigenvectors and eigenvalues of $B$?
+
+	#. Let $C = [[ 2, 2, -2 ; -3, 7, 3 ; -5, 5, 5 ]]$. Find the eigenvectors and eigenvalues of $C$ in the same manner as the previous problem.
+
+
+
+	- - -
+
+	#. Let $A$ be an $n \times n$ matrix with eigenvalues $\lambda_1, \lambda_2, ..., \lambda_n$.
+
+	> a) What is the characteristic polynomial $\det(A - \lambda I)$ of $A$?
+
+	> b) By setting $\lambda = 0$ in part a), express $\det A$ in terms of the $\lambda_i$.
+
+
+
+	- - -
+
+	#. One application of eigenvalues is to systems of differential equations. If $\vec{v_1}$ and $\vec{v_2}$ are eigenvectors of a $2 \times 2$ matrix $A$ with eigenvalues $\lambda_1$ and $\lambda_2$, then the solution to the system
+
+	$$
+		[[ x'(t) ; y'(t) ]] = A[[ x(t) ; y(t) ]]
+	$$
+
+	is
+
+	$$
+		[[ x ; y ]] = c_1 e^{\lambda_1 t} \vec{v_1} + c_2 e^{\lambda_2 t} \vec{v_2}
+	$$
+
+	for any value of $c_1$ and $c_2$.
+
+	> a) Write the general solutions to the systems
+
+	$$
+		x'(t) &= 2x(t) - y(t)
+
+		y'(t) &= 3x(t) - 2y(t)
+	$$
+
+	> and
+
+	$$
+		x'(t) &= -x(t) + 2y(t)
+
+		y'(t) &= -3y(t).
+	$$
+
+	> b) We can plot solutions to systems of differential equations as **vector fields**: every point $(x, y)$ has a velocity $(x', y')$, so if we fill an area with particles and move them according to that velocity, we can see the entire effect of the system. Using <a href="/applets/vector-fields/">a vector field applet</a> with the generating functions `(2x - y, 2x - 2y)` and `(-x + 2y, -3y)`, plot the systems from part a).
 	
 ###
 

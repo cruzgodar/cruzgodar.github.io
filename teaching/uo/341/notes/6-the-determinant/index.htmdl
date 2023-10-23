@@ -240,7 +240,7 @@ The proof of this theorem is a little out of scope for our class, but the gist i
 
 ### thm the determinant as a scaling factor
 
-	Let $T : #R#^n \to #R#^n$ be a linear transformation with matrix $A$, and let $X$ be a volume in $#R#^n$ of dimension $n$ (e.g. a $2$-dimensional subset of $#R#^2$ or a $3$-dimensional subset of $#R#^3$). Then the volume of $T(X)$ (the image of $X$) is $|\det A|$ times the volume of $X$.
+	Let $T : #R#^n \to #R#^n$ be a linear operator with matrix $A$, and let $X$ be a volume in $#R#^n$ of dimension $n$ (e.g. a $2$-dimensional subset of $#R#^2$ or a $3$-dimensional subset of $#R#^3$). Then the volume of $T(X)$ (the image of $X$) is $|\det A|$ times the volume of $X$.
 
 ###
 
