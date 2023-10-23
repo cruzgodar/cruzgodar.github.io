@@ -57,6 +57,7 @@ home Cruz Godar
 			notes/4-linear-transformations Section 4: Linear Transformations
 			notes/5-properties-of-transformations Section 5: Properties of Transformations
 			notes/6-the-determinant Section 6: The Determinant
+			notes/7-vector-spaces Section 7: Vector Spaces
 
 		uo/256 Math 256
 			notes/0-calc-review Section 0: Calculus Review

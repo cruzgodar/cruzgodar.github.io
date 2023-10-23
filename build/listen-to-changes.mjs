@@ -4,28 +4,25 @@ const root = process.argv[1].replace(/(\/cruzgodar.github.io\/).+$/, (match, $1)
 
 
 
-async function listenToChanges()
+function listenToChanges()
 {
-	const proc = spawnSync("git", [
-		"-C",
+	const proc = spawnSync("find", [
 		root,
-		"ls-files",
+		"-type",
+		"f",
 	]);
 
 	const files = proc.stdout
 		.toString()
 		.split("\n")
 		.filter(file => isValidFile(file))
-		.map(file => root + file)
 		.join("\n");
 
-	const proc2 = spawnSync(
+	spawnSync(
 		"entr",
-		["node", root + "build/build.mjs"],
-		{ input: files }
+		["-c", "bun", root + "build/build.mjs"],
+		{ input: files, stdio: "inherit" }
 	);
-
-	console.log(proc2.stdout.toString());
 }
 
 function isValidFile(file)

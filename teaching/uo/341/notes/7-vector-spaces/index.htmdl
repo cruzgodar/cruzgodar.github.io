@@ -1,0 +1,37 @@
+### nav-buttons
+
+
+
+The first six sections of the course are almost completely self-contained. We understand vectors as collections of numbers or points in $#R#^n$, and matrices as functions between them, with one particular use being to take a vector of variables to the left sides of a system of linear equations. Nearly every property of square matrices is related to the determinant in one way or another --- in fact, almost any two subjects we've discussed this far are related. Linear algebra is a tight-knit subject.
+
+But if all it were good for was solving systems of linear equations, linear algebra would be little more than a massive time sink into an topic we already understood decently well. Thankfully, that couldn't be much further from the truth. In this section, we'll begin pulling back and exploring the many, many other uses the subject has, and to do that, we need to talk about more than just $#R#^n$.
+
+### def vector space
+
+	A **vector space** is a set $V$, a method $+$ that can add any two elements $\vec{v}, \vec{w} \in V$, and a method $\cdot$ that can multiply any vector $\vec{v} \in V$ by any real number $c$, such that
+
+	1. $V$ is **closed** under addition and scalar multiplication: $\vec{w} + \vec{w} \in V$ for any $\vec{v}, \vec{w} \in V$, and $c\vec{v} \in V$ for any $\vec{v} \in V$ and $c \in #R#$.
+
+	2. Addition is associative and commutative: $(\vec{u} + \vec{v}) + \vec{w} = \vec{u} + (\vec{v} + \vec{w})$, and $\vec{v} + \vec{w} = \vec{w} + \vec{v}$.
+
+	3. Multiplication is associative and distributive: $(cd)\vec{v} = c(d\vec{v})$, $(c + d)\vec{v} = c\vec{v} + d\vec{v}$, and $c(\vec{v} + \vec{w}) = c\vec{v} + c\vec{w}$.
+
+	4. There is a **zero vector** $\vec{0}$ so that $\vec{v} + \vec{0} = \vec{v}$ for all $\vec{v} \in V$.
+
+	5. Given any $\vec{v} \in V$, there is a vector $-\vec{v}$ with $\vec{v} + (-\vec{v}) = \vec{0}$.
+
+	6. For any $\vec{v} \in V$, $1\vec{v} = \vec{v}$.
+
+###
+
+The takeaway from this massive definition is that a vector space looks a lot like $#R#^n$. It has vectors that can be added together and scaled without leaving the space, which is just a symbol-heavy way of saying $V$ contains all the linear combinations of its entries. There needs to be a zero vector, and beyond that, addition and scalar multiplication need to behave mostly as they usually do. But while $#R#^n$ is the simplest example of a vector space, it's just the start.
+
+### ex 
+
+	as
+
+###
+
+
+
+### nav-buttons

@@ -630,7 +630,8 @@ export const sitemap =
 			"/teaching/uo/341/notes/3-vector-arithmetic/",
 			"/teaching/uo/341/notes/4-linear-transformations/",
 			"/teaching/uo/341/notes/5-properties-of-transformations/",
-			"/teaching/uo/341/notes/6-the-determinant/"
+			"/teaching/uo/341/notes/6-the-determinant/",
+			"/teaching/uo/341/notes/7-vector-spaces/"
 		]
 	},
 		
@@ -694,6 +695,15 @@ export const sitemap =
 		"children": [],
 
 		"customScript": true
+	},
+	
+	"/teaching/uo/341/notes/7-vector-spaces/":
+	{
+		"title": "Section 7: Vector Spaces",
+		
+		"parent": "/teaching/uo/341/",
+		
+		"children": []
 	},
 	
 	"/teaching/uo/256/":
