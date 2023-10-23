@@ -219,7 +219,7 @@ Welcome to Math 341! We'll use this page for the interactive notes, the homework
 
 	- - -
 
-	#. Let $R : #R#^2 \to #R#^2$ be a function (not necessarily a linear transformation) defined by rotating its inputs $90^\circ$ counterclockwise. For example, $R\left( [[ 0 ; 1 ]] \right) = [[ 1 ; 0 ]]$ and $R\left( [[ \frac{1}{2} ; \frac{\sqrt{3}}{2} ]] \right) = [[ -\frac{\sqrt{3}}{2} ; \frac{1}{2} ]]$.
+	#. Let $R : #R#^2 \to #R#^2$ be a function (not necessarily a linear transformation) defined by rotating its inputs $90^\circ$ counterclockwise. For example, $R\left( [[ 1 ; 0 ]] \right) = [[ 0 ; 1 ]]$ and $R\left( [[ \frac{1}{2} ; \frac{\sqrt{3}}{2} ]] \right) = [[ -\frac{\sqrt{3}}{2} ; \frac{1}{2} ]]$.
 
 	> a) Explain with a picture why $R$ is in fact a linear transformation, i.e. $R(\vec{v_1} + \vec{v_2}) = R(\vec{v_1}) + R(\vec{v_2})$ and $R(c\vec{v}) = cR(\vec{v})$.
 
