@@ -77,6 +77,22 @@ Welcome to Math 341! We'll use this page for the interactive notes, the homework
 
 
 
+	- - -
+
+	#. **Cramer's Rule** is a method for computing the inverse of a matrix without row reduction. In this problem, we'll work through an example application of it.
+
+	> a) Let $$A = [[1, 0, -1 ; 4, 5, 6 ; 0, -1, 2]]$$ and let $c_{ij}$ be the determinant of the minor given by removing row $i$ and column $j$ from $A$. Find all nine $c_{ij}$ and form a matrix $C$ whose entry in row $i$ and column $j$ is $c_{ij}$.
+
+	> b) Form a new matrix $D$ by applying the checkerboard signs to $C$:
+
+	$$
+		[[ +, -, + ; -, +, - ; +, -, + ]].
+	$$
+
+	> c) If all went well, the matrix $E = \frac{1}{\det A} D$ should be equal to $A^{-1}$. Compute $E$ and check that it is in fact $A^{-1}$ (Note: the matrix $A$ appeared in homework 2).
+
+
+
 	## Eigenvectors and Eigenvalues
 
 	Let $A$ be an $n \times n$ matrix. When $A$ only scales a nonzero vector and doesn't multiply it --- i.e $A\vec{v} = \lambda\vec{v}$ for a vector $\vec{v}$ and a constant $\lambda$ --- we say that $\vec{v}$ is an **eigenvector** of $A$ with **eigenvalue** $\lambda$. You'll see more on these in the next course if you take it, but for now, we'll work through a few basic examples.
