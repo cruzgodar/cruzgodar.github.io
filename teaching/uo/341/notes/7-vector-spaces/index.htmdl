@@ -4,7 +4,7 @@
 
 The first six sections of the course are almost completely self-contained. We understand vectors as collections of numbers or points in $#R#^n$, and matrices as functions between them, with one particular use being to take a vector of variables to the left sides of a system of linear equations. Nearly every property of square matrices is related to the determinant in one way or another --- in fact, almost any two subjects we've discussed this far are related. Linear algebra is a tight-knit subject.
 
-But if all it were good for was solving systems of linear equations, linear algebra would be little more than a massive time sink into an topic we already understood decently well. Thankfully, that couldn't be much further from the truth. In this section, we'll begin pulling back and exploring the many, many other uses the subject has, and to do that, we need to talk about more than just $#R#^n$.
+But if all it were good for was solving systems of linear equations, linear algebra would be little more than a massive time sink into a topic we already understood decently well. Thankfully, that couldn't be much further from the truth. In this section, we'll begin pulling back and exploring the many, many other uses the subject has, and to do that, we need to talk about more than just $#R#^n$.
 
 ### def vector space
 
@@ -36,7 +36,7 @@ The takeaway from this massive definition is that a vector space looks a lot lik
 
 	is closed under addition and scalar multiplication.
 
-	In practice, these are the only two properties of a set we'll need to check to show it's a vector space.. First, to show that $V$ is closed under addition, we take two generic elements of $V$ and add them together, then show that the result is still in $V$.
+	In practice, these are the only two properties of a set we'll need to check to show it's a vector space. First, to show that $V$ is closed under addition, we take two generic elements of $V$ and add them together, then show that the result is still in $V$.
 
 	$$
 		\left( c_1 [[ 1 ; 0 ; 2 ]] + c_2 [[ -1 ; 1 ; 0 ]] \right) + \left( c_3 [[ 1 ; 0 ; 2 ]] + c_4 [[ -1 ; 1 ; 0 ]] \right) = (c_1 + c_3) [[ 1 ; 0 ; 2 ]] + (c_2 + c_4) [[ -1 ; 1 ; 0 ]] \in V.
@@ -55,6 +55,201 @@ The takeaway from this massive definition is that a vector space looks a lot lik
 ### exc a vector space
 
 	Show that the set $P$ consisting of polynomials in $x$ with degree (i.e. highest exponent) at most $3$ is closed under addition and scalar multiplication.
+
+###
+
+We've said a lot about the span of vectors, and it's time to finally nail down what that object is. It's a vector space in its own right, but in particular, it's a vector space *contained inside of* $#R#^3$. Many examples of vector spaces are expressed in this manner, and so it'd be helpful to give them a name.
+
+### def subspace
+
+	Let $V$ be a vector space. A **subspace** of $V$ is a nonempty subset $X$ of $V$ that is itself a vector space.
+
+###
+
+The classic example of a subspace is a span of vectors --- it's difficult to conceptualize of the vector space from the previous example as existing on its own rather than inside of $#R#^3$.
+
+Subspaces are the reason we typically only need to check that a set $X$ is closed under addition and scalar multiplication --- and that it is nonempty --- in order to qualify as a vector space. As long as $X$ is contained in some larger vector space $V$, it inherits all of the other technical properties necessary.
+
+### exc
+	
+	The set of functions from $#R#$ to $#R#$ is written $#R#^#R#$, and it is a vector space with addition and scalar multiplication defined as usual.
+	
+	1. What is the zero vector in $#R#^#R#$?
+	
+	2. The set of continuous functions from $#R#$ to $#R#$ is written $C(#R#)$. Is $C(#R#)$ a subspace of $#R#^#R#$?
+	
+	3. Let $X$ be the set of polynomials with nonnegative coefficients --- for example, $x^2 + 3x + 1 \in X$, but $x^5 - 1 \notin X$. Is $X$ a subspace of $#R#^#R#$?
+	
+	4. Let $W = \span\left\{ [[ 1 ; 2 ]], [[ 0, 1 ]] \right\}$. Is $W$ a subspace of $#R#^#R#$?
+	
+	5. Is the empty set $\{\}$ a subspace of $#R#^#R#$?
+	
+	6. Is the set containing the zero function, $\{0\}$, a subspace of $#R#^#R#$?
+	
+	7. Let $Z$ be the set of functions $f : #R# \to #R#$ such that $f(0) = 0$. Is $Z$ a subspace of $#R#^#R#$?
+	
+###
+
+We're now well beyond the scale of our previous work in the class --- in fact, that was all in $#R#^n$. We now have so many more spaces to consider, and we just need to adapt our tools from the past six sections to work more generally. Let's begin with linear transformations, which thankfully work exactly the same way.
+
+### def linear transformation
+	
+	Let $V$ and $W$ be vector spaces. A linear transformation $T : V \to W$ is a function such that 
+	
+	$$
+		T(\vec{u} + \vec{v}) = T(\vec{u}) + T(\vec{v})
+	$$
+	
+	and
+	
+	$$
+		T(c\vec{v}) = cT(\vec{v})
+	$$
+	
+	for any $\vec{u}, \vec{v} \in V$ and $c \in #R#$.
+	
+###
+
+When $V = #R#^n$ and $W = #R#^m$, we have the linear transformations we're used to --- the ones that correspond to matrices operating by matrix multiplication. But it's not hard to come up with new ones, operating on different vector spaces entirely.
+
+### ex linear transformations
+
+	The set of polynomials using a variable $x$ and with coefficients in $#R#$ is written $#R#[x]$ (read "$#R#$ adjoin $x$"). Define $D : #R#[x] \to #R#[x]$ by
+	
+	$$
+		D(p(x)) = \frac{d}{dx}[p(x)].
+	$$
+	
+	Is $D$ a linear transformation? Justify your answer.
+	
+	All this boils down to is checking if the derivative is linear. Since
+	
+	$$
+		D(p(x) + q(x)) &= \frac{d}{dx} [p(x) + q(x)]
+		
+		&= p'(x) + q'(x)
+		
+		&= D(p(x)) + D(q(x))
+	$$
+	
+	and
+	
+	$$
+		D(cp(x)) &= \frac{d}{dx} [cp(x)]
+		
+		&= cp'(x)
+		
+		&= cD(p(x)),
+	$$
+	
+	that's the case, meaning $D$ is a linear transformation.
+	
+###
+
+### exc linear transformations
+	
+	The set of $m \times n$ matrices with real entries is written $M_{m \times n}(#R#)$.
+
+	1. Is the map $T : M_{m \times n}(#R#) \to M_{n \times m}(#R#)$ given by $T(A) = A^T$ a linear transformation? Justify your answer.
+
+	2. Let $F : M_{m \times n}(#R#) \to #R#^m$ be defined by sending a matrix to its first column. Is $F$ a linear transformation? Justify your answer.
+
+###
+
+We've talked quite a bit about the domain, codomain, and image of a linear transformation already. To complete the picture, we need one more definition: the kernel.
+
+### def kernel
+
+	Let $T : V \to W$ be a linear transformation. The **kernel** of $T$, written $\ker T$, is the set of vectors $\vec{v} \in V$ for which $T(\vec{v}) = \vec{0}$.
+
+###
+
+The kernel is more than just a set: it's a subspace of $V$. That's because if $\vec{v_1}$ and $\vec{v_2}$ are in $\ker T$, then
+
+$$
+	T(\vec{v_1} + \vec{v_2}) &= T(\vec{v_1}) + T(\vec{v_2})
+
+	&= \vec{0} + \vec{0}
+
+	&= \vec{0},
+$$
+
+so $\vec{v_1} + \vec{v_2} \in \ker T$, and similarly for scalar multiplication. Although we didn't have the language to talk about it at the time, $\image T$ is also a subspace of $W$, the codomain.
+
+### ex kernel
+	
+	Let $P$ be the subspace of $#R#[x]$ of polynomials with degree at most $3$ and let $D : P \to P$ be the linear transformation given by differentiation. What are the kernel and image of $P$?
+
+	The kernel of $P$ is the subspace of $P$ of polynomials that differentiate to zero. That's just polynomials consisting of a constant term only, so $\ker P = #R#$ (or alternatively, we could say $\ker P = \span \{ 1 \})$.
+	
+	The image is (as usual) all of the outputs. Back when the only vector spaces we studied were $#R#^n$, we could do this by plugging in the vectors $\vec{e_i}$ to the transformation and recording the outputs in the columns of a matrix --- then the span of those columns is the image of the transformation. We'll eventually be able to do something similar for general vector spaces, but for now, we'll need to just do it by hand. If we plug in a generic polynomial to $D$, we get
+
+	$$
+		D(a_0 + a_1 x + a_2 x^2 + a_3 x^3) = a_1 + 2a_2 x + 3a_3 x^2.
+	$$
+
+	Since $a_1$, $a_2$, and $a_3$ are all free to be chosen, $\image D = \span\{1, x, x^2\}$.
+
+###
+
+### exc kernel
+
+	Let $F : M_{m \times n}(#R#) \to #R#^m$ be the first column map from the previous exercise. Find the kernel and image of $F$.
+
+###
+
+There's one more piece of notation describing a vector space that we'll need: the space of linear transformations from one vector space to another. This one will take us a moment to get used to, so we'll take it slowly.
+
+### def the space of linear transformations
+
+	Let $V$ and $W$ be vector spaces. The **space of linear transformations** from $V$ to $W$ is denoted $\mathcal{L}(V, W)$ and is itself a vector space.
+
+###
+
+That last line is the most critical: $\mathcal{L}(V, W)$ is a vector space in its own right. Two linear transformations $T : V \to W$ and $S : V \to W$ add to a linear transformation $(T + S) : V \to W$, where $(T + S)(\vec{v}) = T(\vec{v}) + S(\vec{v})$, and similarly for scalar multiplication. We'll explore more about this space in the homework, but let's do a few examples for now.
+
+### ex the space of linear transformations
+
+	Let $L$ be the subset of $\mathcal{L}(#R#[x], #R#)$ containing only linear transformations $T$ satisfying $T(x^2) = 0$. Show that $L$ is a subspace.
+
+	To check this, we need to show that $L$ is nonempty, that it's closed under addition, and that it's closed under scalar multiplication. To show that it's nonempty, the easiest vector to check is the zero vector (i.e. the zero transformation). The transformation $T : #R#[x] \to #R#$ given by $T(p(x)) = 0$ for all $p(x)$ definitely satisfies $T(x^2) = 0$, so $T \in L$, meaning $L$ isn't empty.
+
+
+	To check if $L$ is closed under addition, let $T, S \in L$. All we need to check about the transformation $T + S$ is whether it sends $x^2$ to $0$:
+
+	$$
+		(T + S)(x^2) &= T(x^2) + S(x^2)
+
+		&= 0 + 0
+
+		&= 0.
+	$$
+
+	Similarly, any constant times a transformation $T$ produces a new transformation that sends $x^2$ to $0$.
+
+	$$
+		(c \cdot T)(x^2) &= c \cdot T(x^2)
+
+		&= c \cdot 0
+
+		&= 0.
+	$$
+
+	Therefore, $L$ is a subspace of $\mathcal{L}(#R#[x], #R#)$.
+
+###
+
+### exc the space of linear transformations
+
+	Define a function $E : \mathcal{L}(#R#[x], #R#) \to #R#$ given by
+
+	$$
+		E(T) = T(x^2).
+	$$
+
+	1. Show that $E$ is a linear transformation.
+
+	2. Find the kernel and image of $E$.
 
 ###
 
