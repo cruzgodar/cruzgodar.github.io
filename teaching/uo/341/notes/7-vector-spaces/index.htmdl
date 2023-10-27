@@ -70,13 +70,13 @@ The classic example of a subspace is a span of vectors --- it's difficult to con
 
 Subspaces are the reason we typically only need to check that a set $X$ is closed under addition and scalar multiplication --- and that it is nonempty --- in order to qualify as a vector space. As long as $X$ is contained in some larger vector space $V$, it inherits all of the other technical properties necessary.
 
-### exc
+### exc subspaces
 	
 	The set of functions from $#R#$ to $#R#$ is written $#R#^#R#$, and it is a vector space with addition and scalar multiplication defined as usual.
 	
 	1. What is the zero vector in $#R#^#R#$?
 	
-	2. The set of continuous functions from $#R#$ to $#R#$ is written $C(#R#)$. Is $C(#R#)$ a subspace of $#R#^#R#$?
+	2. The set of continuous functions from $#R#$ to $#R#$ is written $C^0(#R#)$. Is $C^0(#R#)$ a subspace of $#R#^#R#$?
 	
 	3. Let $X$ be the set of polynomials with nonnegative coefficients --- for example, $x^2 + 3x + 1 \in X$, but $x^5 - 1 \notin X$. Is $X$ a subspace of $#R#^#R#$?
 	
@@ -90,7 +90,11 @@ Subspaces are the reason we typically only need to check that a set $X$ is close
 	
 ###
 
-We're now well beyond the scale of our previous work in the class --- in fact, that was all in $#R#^n$. We now have so many more spaces to consider, and we just need to adapt our tools from the past six sections to work more generally. Let's begin with linear transformations, which thankfully work exactly the same way.
+
+
+## Linear Transformations
+
+We're now well beyond the scale of our previous work in the class --- in fact, that was all in $#R#^n$. There are so many more spaces to consider, and we need to adapt our tools from the past six sections to work more generally. Let's begin with linear transformations, which thankfully work exactly the same way.
 
 ### def linear transformation
 	
@@ -180,7 +184,7 @@ so $\vec{v_1} + \vec{v_2} \in \ker T$, and similarly for scalar multiplication. 
 	
 	Let $P$ be the subspace of $#R#[x]$ of polynomials with degree at most $3$ and let $D : P \to P$ be the linear transformation given by differentiation. What are the kernel and image of $P$?
 
-	The kernel of $P$ is the subspace of $P$ of polynomials that differentiate to zero. That's just polynomials consisting of a constant term only, so $\ker P = #R#$ (or alternatively, we could say $\ker P = \span \{ 1 \})$.
+	The kernel of $P$ is the subspace of $P$ of polynomials that differentiate to zero. That's just polynomials consisting of a constant term only, so $\ker P = #R#$ (or alternatively, we could say $\ker P = \span \{ 1 \}$).
 	
 	The image is (as usual) all of the outputs. Back when the only vector spaces we studied were $#R#^n$, we could do this by plugging in the vectors $\vec{e_i}$ to the transformation and recording the outputs in the columns of a matrix --- then the span of those columns is the image of the transformation. We'll eventually be able to do something similar for general vector spaces, but for now, we'll need to just do it by hand. If we plug in a generic polynomial to $D$, we get
 
@@ -213,7 +217,6 @@ That last line is the most critical: $\mathcal{L}(V, W)$ is a vector space in it
 	Let $L$ be the subset of $\mathcal{L}(#R#[x], #R#)$ containing only linear transformations $T$ satisfying $T(x^2) = 0$. Show that $L$ is a subspace.
 
 	To check this, we need to show that $L$ is nonempty, that it's closed under addition, and that it's closed under scalar multiplication. To show that it's nonempty, the easiest vector to check is the zero vector (i.e. the zero transformation). The transformation $T : #R#[x] \to #R#$ given by $T(p(x)) = 0$ for all $p(x)$ definitely satisfies $T(x^2) = 0$, so $T \in L$, meaning $L$ isn't empty.
-
 
 	To check if $L$ is closed under addition, let $T, S \in L$. All we need to check about the transformation $T + S$ is whether it sends $x^2$ to $0$:
 
@@ -252,6 +255,20 @@ That last line is the most critical: $\mathcal{L}(V, W)$ is a vector space in it
 	2. Find the kernel and image of $E$.
 
 ###
+
+As a section wrap-up, let's collect together the new notation we've defined. There aren't too many new symbols, but they're all probably unfamiliar.
+
+> . $#R#^#R#$: the vector space of all functions (not necessarily linear transformations) $f : #R# \to #R#$.
+
+> . $C^0(#R#)$: the vector space of continuous functions $f : #R# \to #R#$.
+
+> . $#R#[x]$: the vector space of polynomials in $x$ with coefficients in $#R#$.
+
+> . $M_{m \times n}(#R#)$: the vector space of $m \times n$ matrices with entries in $#R#$.
+
+> . $\mathcal{L}(V, W)$: the vector space of linear transformations $T : V \to W$.
+
+These vector spaces will be the main ones we study over the next few sections --- while there are plenty more, these are among the most important.
 
 
 
