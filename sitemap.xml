@@ -334,7 +334,13 @@
 		
 	<url>
 		<loc>https://www.cruzgodar.com/teaching/uo/341/notes/7-vector-spaces/</loc>
-		<lastmod>2023-10-27</lastmod>
+		<lastmod>2023-10-29</lastmod>
+		<priority>0.5</priority>
+	</url>
+		
+	<url>
+		<loc>https://www.cruzgodar.com/teaching/uo/341/notes/8-bases-and-dimension/</loc>
+		<lastmod>2023-10-29</lastmod>
 		<priority>0.5</priority>
 	</url>
 		

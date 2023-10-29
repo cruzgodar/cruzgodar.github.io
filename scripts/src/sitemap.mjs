@@ -631,7 +631,8 @@ export const sitemap =
 			"/teaching/uo/341/notes/4-linear-transformations/",
 			"/teaching/uo/341/notes/5-properties-of-transformations/",
 			"/teaching/uo/341/notes/6-the-determinant/",
-			"/teaching/uo/341/notes/7-vector-spaces/"
+			"/teaching/uo/341/notes/7-vector-spaces/",
+			"/teaching/uo/341/notes/8-bases-and-dimension/"
 		]
 	},
 		
@@ -700,6 +701,15 @@ export const sitemap =
 	"/teaching/uo/341/notes/7-vector-spaces/":
 	{
 		"title": "Section 7: Vector Spaces",
+		
+		"parent": "/teaching/uo/341/",
+		
+		"children": []
+	},
+	
+	"/teaching/uo/341/notes/8-bases-and-dimension/":
+	{
+		"title": "Section 8: Bases and Dimension",
 		
 		"parent": "/teaching/uo/341/",
 		

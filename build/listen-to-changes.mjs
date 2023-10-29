@@ -6,14 +6,36 @@ const root = process.argv[1].replace(/(\/cruzgodar.github.io\/).+$/, (match, $1)
 
 function listenToChanges()
 {
-	const proc = spawnSync("find", [
+	const proc1 = spawnSync("find", [
 		root,
-		"-type",
-		"f",
+		"-name",
+		"index.htmdl",
 	]);
 
-	const files = proc.stdout
-		.toString()
+	const proc2 = spawnSync("find", [
+		root,
+		"-name",
+		"*.js",
+	]);
+
+	const proc3 = spawnSync("find", [
+		root,
+		"-name",
+		"*.mjs",
+	]);
+
+	const proc4 = spawnSync("find", [
+		root,
+		"-name",
+		"*.css",
+	]);
+
+	const files = (
+		proc1.stdout.toString()
+		+ "\n" + proc2.stdout.toString()
+		+ "\n" + proc3.stdout.toString()
+		+ "\n" + proc4.stdout.toString()
+	)
 		.split("\n")
 		.filter(file => isValidFile(file))
 		.join("\n");

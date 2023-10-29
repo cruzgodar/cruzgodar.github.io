@@ -1,0 +1,55 @@
+### nav-buttons
+
+
+
+So far, generalizing all of our results to different vector spaces hasn't been too terrible. The objects in our new spaces differ quite a bit from those in $#R#^n$ --- the only vector space we studied in the first six sections --- but the tools we've used to study them are nearly identical. Vectors can be added and multiplied by scalars, and linear transformations are defined in exactly the same way. However, so much of what we've learned relies on *matrices*, and at the moment, we just don't have those. To recap, the reason we can express a linear transformation $T : #R#^n \to #R#^m$ as multiplication by an $m \times n$ matrix $A$ is because any vector $\vec{v} \in #R#^n$ can be expressed as a linear combination of the $\vec{e_i}$:
+
+$$
+	\vec{v} = [[ c_1 ; c_2 ; \vdots ; c_n ]] = c_1\vec{e_1} + c_2\vec{e_2} + \cdots + c_n\vec{e_n}.
+$$
+
+Then applying $T$ to both sides results in
+
+$$
+	T(\vec{v}) = T\left( [[ c_1 ; c_2 ; \vdots ; c_n ]]\right) = c_1T(\vec{e_1}) + c_2T(\vec{e_2}) + \cdots + c_nT(\vec{e_n}),
+$$
+
+and that linear combination can be expressed as the matrix-vector product
+
+$$
+	T(\vec{v}) = [[ \mid, \mid, , \mid ; T(\vec{e_1}), T(\vec{e_2}), \cdots, T(\vec{e_n}) ; \mid, \mid, , \mid ]][[ c_1 ; c_2 ; \vdots ; c_n ]].
+$$
+
+So how can we bring this idea to a general vector space $V$? If we could find a collection of fundamental vectors like $\vec{e_1}, ..., \vec{e_n}$ so that we could express any $\vec{v} \in V$ as a linear combination of them --- ideally in a unique way --- then we'd be able to reap the same benefits of matrices: by computing a linear transformation's effect on just those fundamental vectors, we'd then be able to find its effect on any vector at all.
+
+What conditions will we need to make that a reality? If we want a collection of vectors $\vec{v_1}, \vec{v_2}, ..., \vec{v_n} \in V$ so that any $\vec{v} \in V$ is expressible as a unique linear combination of the $\vec{v_i}$, then an immediate first requirement is that the $\vec{v_i}$ need to span $V$ --- otherwise, some vectors wouldn't be expressible as a linear combination of them at all, let alone a unique one. To guarantee the uniqueness condition, a rather technical argument can show that we need the $\vec{v_i}$ to be linearly independent (it's very similar to the one that shows a linear transformation from $#R#^n$ to $#R#^m$ is one-to-one if it sends only $\vec{0}$ to $\vec{0}$). When we say linearly independent and spanning, we mean exactly the same thing as we did in $#R#^n$, but let's take the time to write down the formal definitions in a general vector space $V$, and then name the collection of vectors whose linear combinations express all others uniquely.
+
+### def linear independence and span
+
+	Let $V$ be a vector space. A collection of vectors $\vec{v_1}, \vec{v_2}, ..., \vec{v_n} \in V$ is ** linearly independent** if the only linear combination
+
+	$$
+		c_1\vec{v_1} + c_2\vec{v_2} + \cdots + c_n\vec{v_n} = \vec{0}
+	$$
+
+	is when $c_1 = c_2 = \cdots = c_n = 0$. The **span** of the $\vec{v_i}$ is the set of all their possible linear combinations, and we say the collection **spans** $V$ if
+
+	$$
+		\span \{ \vec{v_1}, \vec{v_2}, ..., \vec{v_n} \} = V.
+	$$
+
+###
+
+### def basis
+
+	Let $V$ be a vector space. A **basis** for $V$ is a collection of vectors $\vec{v_1}, \vec{v_2}, ..., \vec{v_n} \in V$ that is linearly independent and spans $V$. Given a basis and any vector $\vec{v} \in V$, there is a **unique** linear combination
+
+	$$
+		c_1\vec{v_1} + c_2\vec{v_2} + \cdots + c_n\vec{v_n} = \vec{v}.
+	$$
+
+###
+
+
+
+### nav-buttons
