@@ -80,7 +80,7 @@ Subspaces are the reason we typically only need to check that a set $X$ is close
 	
 	3. Let $X$ be the set of polynomials with nonnegative coefficients --- for example, $x^2 + 3x + 1 \in X$, but $x^5 - 1 \notin X$. Is $X$ a subspace of $#R#^#R#$?
 	
-	4. Let $W = \span\left\{ [[ 1 ; 2 ]], [[ 0, 1 ]] \right\}$. Is $W$ a subspace of $#R#^#R#$?
+	4. Let $W = \span\left\{ [[ 1 ; 2 ]], [[ 0 ; 1 ]] \right\}$. Is $W$ a subspace of $#R#^#R#$?
 	
 	5. Is the empty set $\{\}$ a subspace of $#R#^#R#$?
 	

@@ -68,7 +68,7 @@ Welcome to Math 341! We'll use this page for the interactive notes, the homework
 
 	#. For each of the matrices $A$--$E$ in problems 1--5, classify it as invertible or noninvertible based on its determinant.
 
-	#. For each of the matrices $A$--$C$ in problems 1--3, sketch a picture of the unit square or cube and its image under the linear operator corresponding to the matrix. Verify that the determinant scales volume correctly.
+	#. Let $A$ be the matrix from problem 1. Sketch a picture of the unit square in $#R#^2$ and its image under the linear operator corresponding to $A$. Verify that the area of that image is $|\det A|$ times the area of the unit square (i.e. $1$).
 
 	#. We can use the multiplicativity of the determinant to show some nice facts about the determinants of inverse matrices.
 
