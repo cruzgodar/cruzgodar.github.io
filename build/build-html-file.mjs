@@ -561,6 +561,15 @@ const components =
 			{
 				name = name.join(" ");
 
+				const overrideEnvironmentNane = name[0] === "!";
+
+				if (overrideEnvironmentNane)
+				{
+					name = name.slice(1);
+				}
+
+				name = components.Parse.text(name);
+
 				//These two avoid awkward things like Theorem: The Fundamental Theorem.
 				if (name[0] === "!")
 				{

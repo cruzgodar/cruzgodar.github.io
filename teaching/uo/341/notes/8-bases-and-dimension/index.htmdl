@@ -50,6 +50,42 @@ What conditions will we need to make that a reality? If we want a collection of 
 
 ###
 
+Just like in $#R#^n$, if a collection of vectors $\vec{v_i}$ spans a vector space $V$ but one of the $\vec{v_i}$ is a linear combination of the others, then we can remove that one without affecting the fact that the collection spans $V$. In this sense, a basis is just the right size: add any new vector to it and it'll stop being linearly independent, and remove any and it won't span $V$.
+
+### ex a basis for $#R#^n$
+
+	The primordial example of a basis is the vectors
+
+	$$
+		\vec{e_1} = [[ 1 ; 0 ; 0 ; \vdots ; 0 ]], \vec{e_2} = [[ 0 ; 1 ; 0 ; \vdots ; 0 ]], ..., \vec{e_n} = [[ 0 ; 0 ; \vdots ; 0 ; 1 ]] \in #R#^n.
+	$$
+
+	The $\vec{e_i}$ are linearly independent since they're already the rows of the identity matrix, and they certainly span $#R#^n$: given a vector $\vec{v} \in #R#^n$, we can immediately express $\vec{v}$ as a linear combination of the $\vec{e_i}$ (like we did at the start of the section).
+
+###
+
+This basis is so common that we'll want a name for it --- it's called the **standard basis for $#R#^n$**. The name implies it's not the only one, though, and that's definitely the case. Let's take a look at some more unusual ones.
+
+### ex more bases for $#R#^n$
+
+	Show that the vectors
+
+	$$
+		\vec{v_1} = [[ 3 ; 1 ; 2 ]], \qquad \vec{v_2} = [[ 1 ; 0 ; 1 ]], \qquad \vec{v_3} = [[ 0 ; 2 ; 1 ]]
+	$$
+
+	form a basis for $#R#^3$ and express the vector
+
+	$$
+		\vec{v} = [[ 4 ; 1 ; 0 ]]
+	$$
+
+	in this basis.
+
+###
+
+Much like the key idea that matrix multiplication is function composition, let's state another critical notion that we'll return to throughout this section and future ones. 
+
 
 
 ### nav-buttons
