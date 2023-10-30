@@ -81,6 +81,12 @@ This basis is so common that we'll want a name for it --- it's called the **stan
 	$$
 
 	in this basis.
+	
+	While this is nominally a new kind of task, we've been showing that vectors are linearly independent and spanning for a few sections now: showing that a linear transformation is one-to-one and onto amounts to showing that its columns are linearly independent and span the transformation's codomain. We do that by transposing the matrix and row reducing, so now we might as well jump straight to that step by placing our vectors as rows in a matrix. We have
+	
+	$$
+		
+	$$
 
 ###
 
