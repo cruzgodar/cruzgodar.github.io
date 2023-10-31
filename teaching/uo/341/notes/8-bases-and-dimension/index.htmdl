@@ -66,7 +66,7 @@ Just like in $#R#^n$, if a collection of vectors $\vec{v_i}$ spans a vector spac
 
 This basis is so common that we'll want a name for it --- it's called the **standard basis for $#R#^n$**. The name implies it's not the only one, though, and that's definitely the case. Let's take a look at some more unusual ones.
 
-### ex more bases for $#R#^n$
+### ex another basis for $#R#^n$
 
 	Show that the vectors
 
@@ -82,13 +82,47 @@ This basis is so common that we'll want a name for it --- it's called the **stan
 
 	in this basis.
 	
-	While this is nominally a new kind of task, we've been showing that vectors are linearly independent and spanning for a few sections now: showing that a linear transformation is one-to-one and onto amounts to showing that its columns are linearly independent and span the transformation's codomain. We do that by transposing the matrix and row reducing, so now we might as well jump straight to that step by placing our vectors as rows in a matrix. We have
+	While this is nominally a new kind of task, we've been showing that vectors are linearly independent and spanning for a few sections now: showing that a linear transformation is one-to-one and onto amounts to showing that its columns are linearly independent and span the transformation's codomain. We do that by transposing the matrix and row reducing without swapping rows, so now we might as well jump straight to that step now by placing our vectors as rows in a matrix. We have
 	
 	$$
-		
+		[[ 3, 1, 2 ; 1, 0, 1 ; 0, 2, 1 ]] &
+
+		[[ 0, 1, -1 ; 1, 0, 1 ; 0, 2, 1 ]] & \qquad \vec{r_1} \me 3\vec{r_2}
+
+		[[ 0, 1, -1 ; 1, 0, 1 ; 0, 0, 3 ]] & \qquad \vec{r_3} \me 2\vec{r_1}
+
+		[[ 0, 1, -1 ; 1, 0, 1 ; 0, 0, 1 ]] & \qquad \vec{r_3} \te \frac{1}{3}
+
+		[[ 0, 1, 0 ; 1, 0, 1 ; 0, 0, 1 ]] & \qquad :: \vec{r_2} \me \vec{r_3} ; \vec{r_1} \pe \vec{r_3} ::,
 	$$
 
+	and so all of the vectors are linearly independent and therefore span $#R#^3$.
+
+	To express $\vec{v}$ in the basis, we're just trying to find a linear combination of the basis vectors that equals $\vec{v}$. We've already solved that type of problem: it's just row reduction once again, this time with the $\vec{v_i}$ as columns.
+
+	$$
+		[[ 3, 1, 0 | 4 ; 1, 0, 2 | 1 ; 2, 1, 1 | 0 ]] & 
+
+		[[ 1, 0, 2 | 1 ; 3, 1, 0 | 4 ; 2, 1, 1 | 0 ]] & \qquad \swap \vec{r_1}, \vec{r_2}
+
+		[[ 1, 0, 2 | 1 ; 0, 1, -4 | 1 ; 0, 1, -3 | -2 ]] & \qquad :: \vec{r_2} \me 3\vec{r_1} ; \vec{r_3} \me 2\vec{r_1} ::
+
+		[[ 1, 0, 2 | 1 ; 0, 1, -4 | 1 ; 0, 0, 1 | -3 ]] & \qquad \vec{r_3} \me \vec{r_2}
+
+		[[ 1, 0, 2 | 1 ; 0, 1, 0 | -11 ; 0, 0, 1 | -3 ]] & \qquad \vec{r_2} \pe 4\vec{r_3}
+
+		[[ 1, 0, 0 | 7 ; 0, 1, 0 | -11 ; 0, 0, 1 | -3 ]] & \qquad \vec{r_1} \me 2\vec{r_3}.
+	$$
+
+	In total, our linear combination is $\vec{v} = 7\vec{v_1} - 11\vec{v_2} - 3\vec{v_3}$. Geometrically, we can think of this expansion as meaning that the coordinates of $\vec{v}$ are $(7, -11, -3)$ in a strange coordinate system where the axes are parallel to $\vec{v_1}$, $\vec{v_2}$, and $\vec{v_3}$.
+
 ###
+
+Let's dig into that coordinate system idea a little more. In $#R#^2$, the standard basis produces the typical coordinate system we're used to, while other bases produce coordinate systems that are stretched and scaled, but still perfectly functional at assigning a unique coordinate pair to every point. 
+
+### desmos coordinate-systems
+
+Here, the purple grid shows the coordinates assigned by the standard basis for $#R#^2$, while the blue one shows the coordinates assigned by the basis $\left\{ [[ -1 ; 1 ]], [[ 1 ; -2 ]] \right\}$. The red point is called $(-2, 1)$ in the standard basis, but $(3, 1)$ in this alternate one.
 
 Much like the key idea that matrix multiplication is function composition, let's state another critical notion that we'll return to throughout this section and future ones. 
 

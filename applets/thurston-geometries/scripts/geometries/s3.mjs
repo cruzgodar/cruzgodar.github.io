@@ -325,10 +325,10 @@ export function getS3SpheresData()
 
 
 
-function getHopfFiber(index)
+function getHopfFiber(index, numFibers)
 {
-	const phi = Math.random() * 2 * Math.PI;
-	const theta = Math.random() * 2 * Math.PI;
+	const phi = index / numFibers * (2 * Math.PI);
+	const theta = Math.PI / 2;
 
 	const rgb = hsvToRgb(
 		theta / (2 * Math.PI),
@@ -388,7 +388,7 @@ export function getS3HopfFibrationData()
 
 	for (let i = 0; i < numFibers; i++)
 	{
-		const result = getHopfFiber(i);
+		const result = getHopfFiber(i, numFibers);
 		distanceEstimatorGlsl += result[0];
 		colors[i] = result[1];
 	}

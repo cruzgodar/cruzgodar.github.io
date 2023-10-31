@@ -552,14 +552,10 @@ export class ThurstonGeometry extends Applet
 
 	/*
 	 * Probably the most complicated function here. Looking around can't be done relatively
-	 * due to the holonomy of S^2, so we store its rotation from unrotated versions of the three
+	 * due to the holonomy of S^2, so we store the rotation from unrotated versions of the three
 	 * facing vectors. But when moving, we need to *move* in the direction of the rotated vectors,
 	 * while at the same time updating the *unrotated* vectors updated due to the curvature of the
 	 * space.
-     *
-	 * So: here's the idea. Use the Frenet-Serret formula to compute the orthonormal frame
-	 * at the camera position in the direction of motion, express all four *unrotated* vectors
-	 * in that basis, then compute their derivatives with the other part of the formula.
 	 */
 	handleMoving(movingAmount, timeElapsed)
 	{
