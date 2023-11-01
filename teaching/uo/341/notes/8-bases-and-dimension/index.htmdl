@@ -124,7 +124,19 @@ Let's dig into that coordinate system idea a little more. In $#R#^2$, the standa
 
 Here, the purple grid shows the coordinates assigned by the standard basis for $#R#^2$, while the blue one shows the coordinates assigned by the basis $\left\{ [[ -1 ; 1 ]], [[ 1 ; -2 ]] \right\}$. The red point is called $(-2, 1)$ in the standard basis, but $(3, 1)$ in this alternate one.
 
-Much like the key idea that matrix multiplication is function composition, let's state another critical notion that we'll return to throughout this section and future ones. 
+### exc another basis for $#R#^n$
+	
+	Show that the vectors
+	
+	$$
+		\vec{v_1} = [[ 1 ; 2 ]], \qquad \vec{v_2} = [[ 0 ; -1 ]]
+	$$
+	
+	form a basis for $#R#^2$, and express the vector
+	
+###
+
+Much like the key idea that matrix multiplication is function composition, let's state another critical notion that we'll return to throughout this section and future ones. The only reason $#R#^n$ seems easier to work with than all of these new vector spaces is **because it came equipped with a convenient basis** --- the standard one.
 
 
 

@@ -216,13 +216,13 @@ export function getS3SpheresData()
 		...getS3BaseData(),
 
 		distanceEstimatorGlsl: `
-			float distance1 = acos(pos.x) - .3;
-			float distance2 = acos(-pos.x) - .3;
-			float distance3 = acos(pos.y) - .3;
-			float distance4 = acos(-pos.y) - .3;
-			float distance5 = acos(pos.z) - .3;
-			float distance6 = acos(-pos.z) - .3;
-			float distance7 = acos(pos.w) - .3;
+			float distance1 = abs(acos(pos.x) - .3);
+			float distance2 = abs(acos(-pos.x) - .3);
+			float distance3 = abs(acos(pos.y) - .3);
+			float distance4 = abs(acos(-pos.y) - .3);
+			float distance5 = abs(acos(pos.z) - .3);
+			float distance6 = abs(acos(-pos.z) - .3);
+			float distance7 = abs(acos(pos.w) - .3);
 
 			float minDistance = min(
 				min(
@@ -239,13 +239,13 @@ export function getS3SpheresData()
 		`,
 
 		getColorGlsl: `
-			float distance1 = acos(pos.x) - .3;
-			float distance2 = acos(-pos.x) - .3;
-			float distance3 = acos(pos.y) - .3;
-			float distance4 = acos(-pos.y) - .3;
-			float distance5 = acos(pos.z) - .3;
-			float distance6 = acos(-pos.z) - .3;
-			float distance7 = acos(pos.w) - .3;
+			float distance1 = abs(acos(pos.x) - .3);
+			float distance2 = abs(acos(-pos.x) - .3);
+			float distance3 = abs(acos(pos.y) - .3);
+			float distance4 = abs(acos(-pos.y) - .3);
+			float distance5 = abs(acos(pos.z) - .3);
+			float distance6 = abs(acos(-pos.z) - .3);
+			float distance7 = abs(acos(pos.w) - .3);
 
 			float minDistance = min(
 				min(
