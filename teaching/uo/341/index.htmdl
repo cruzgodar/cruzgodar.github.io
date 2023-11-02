@@ -81,7 +81,7 @@ Welcome to Math 341! We'll use this page for the interactive notes, the homework
 
 	#. $T : #R#[x] \to #R#$ given by $T(p(x)) = p''(x)$.
 	
-	#. $T #R#^#R# \to #R#$ given by $T(f) = f(0)$.
+	#. $T : #R#^#R# \to #R#$ given by $T(f) = f(0)$.
 	
 	#. $T : M_{2 \times 2}(#R#) \to #R#$ given by $T(A) = \det A$.
 
