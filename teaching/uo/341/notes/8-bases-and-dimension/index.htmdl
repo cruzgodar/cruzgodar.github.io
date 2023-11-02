@@ -134,9 +134,15 @@ Here, the purple grid shows the coordinates assigned by the standard basis for $
 	
 	form a basis for $#R#^2$, and express the vector
 	
+	$$
+		\vec{v} = [[ 3 ; 8 ]]
+	$$
+
+	in this basis.
+	
 ###
 
-Much like the key idea that matrix multiplication is function composition, let's state another critical notion that we'll return to throughout this section and future ones. The only reason $#R#^n$ seems easier to work with than all of these new vector spaces is **because it came equipped with a convenient basis** --- the standard one.
+Much like the key idea that matrix multiplication is function composition, let's state another critical notion that we'll return to throughout this section and future ones. The only reason $#R#^n$ seems easier to work with than all of these new vector spaces is **because it came equipped with a convenient basis** --- the standard one. If we want to bring the convenience of matrices and vectors to spaces that don't support them natrually --- like $#R#[x]$ --- then we need to choose our own basis.
 
 
 

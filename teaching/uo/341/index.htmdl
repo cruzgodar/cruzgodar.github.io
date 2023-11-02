@@ -71,7 +71,7 @@ Welcome to Math 341! We'll use this page for the interactive notes, the homework
 
 	- - -
 
-	In problems 3#, determine the kernel of the linear transformation $T$ and write it as a span of vectors.
+	In problems 5#, determine if the given function $T$ is a linear transformation. If it is, show that $T$ splits across addition and scalar multiplication, and if it is not, give an example showing one of those two things fails. If $T$ is a linear transformation, also find $\ker T$ and write it as a span of vectors.
 
 	#. $T : #R#^3 \to #R#^2$, defined by
 
@@ -80,6 +80,10 @@ Welcome to Math 341! We'll use this page for the interactive notes, the homework
 	$$
 
 	#. $T : #R#[x] \to #R#$ given by $T(p(x)) = p''(x)$.
+	
+	#. $T #R#^#R# \to #R#$ given by $T(f) = f(0)$.
+	
+	#. $T : M_{2 \times 2}(#R#) \to #R#$ given by $T(A) = \det A$.
 
 	#. $T : \mathcal{L}(#R#^2, #R#^2) \to #R#^2$ given by $T(S) = S\left( [[ 1 ; 1 ]] \right)$.
 	
