@@ -1,6 +1,6 @@
 import { BaseGeometry } from "./base.mjs";
 
-export class E3Geometry extends BaseGeometry {}
+class E3Geometry extends BaseGeometry {}
 
 export class E3Rooms extends E3Geometry
 {

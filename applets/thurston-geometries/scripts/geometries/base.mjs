@@ -80,3 +80,61 @@ export class BaseGeometry
 	rightVec;
 	forwardVec;
 }
+
+
+/*
+	Produces strings like
+ 	min(
+		min(
+			min(distance1, distance2),
+			min(distance3, distance4)
+		),
+		min(
+			min(distance5, distance6),
+			distance7
+		)
+	);
+ */
+export function getMinGlslString(varName, numVars)
+{
+	const numLayers = Math.ceil(Math.log2(numVars));
+
+	let strings = new Array(numVars);
+
+	for (let i = 0; i < numVars; i++)
+	{
+		strings[i] = `${varName}${i + 1}`;
+	}
+
+	for (let i = 0; i < numLayers; i++)
+	{
+		const newStrings = new Array(Math.ceil(strings.length / 2));
+
+		for (let j = 0; j < strings.length; j += 2)
+		{
+			newStrings[j / 2] = `min(${strings[j]}, ${strings[j + 1]})`;
+		}
+
+		if (strings.length % 2 === 1)
+		{
+			newStrings[newStrings.length - 1] = strings[strings.length - 1];
+		}
+
+		strings = newStrings;
+	}
+
+	return strings[0];
+}
+
+export function getColorGlslString(varName, minVarName, colors)
+{
+	let colorGlsl = "";
+
+	for (let i = 0; i < colors.length; i++)
+	{
+		colorGlsl += `if (${minVarName} == ${varName}${i + 1}) { return vec3(${colors[i][0] / 255}, ${colors[i][1] / 255}, ${colors[i][2] / 255}); }
+		`;
+	}
+
+	return colorGlsl;
+}

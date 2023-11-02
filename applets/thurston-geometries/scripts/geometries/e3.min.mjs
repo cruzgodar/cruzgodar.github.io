@@ -31,4 +31,4 @@ import{BaseGeometry}from"./base.min.mjs";class E3Geometry extends BaseGeometry{}
 		float dotProduct1 = dot(surfaceNormal, lightDirection1);
 
 		float lightIntensity = lightBrightness * max(dotProduct1, -.5 * dotProduct1) * 1.25;
-	`;cameraPos=[0,0,0,1];normalVec=[0,0,0,1];upVec=[0,0,1,0];rightVec=[0,1,0,0];forwardVec=[1,0,0,0]}export{E3Geometry,E3Rooms,E3Spheres};
+	`;cameraPos=[0,0,0,1];normalVec=[0,0,0,1];upVec=[0,0,1,0];rightVec=[0,1,0,0];forwardVec=[1,0,0,0]}export{E3Rooms,E3Spheres};

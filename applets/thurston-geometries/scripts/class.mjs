@@ -10,7 +10,7 @@ export class ThurstonGeometry extends Applet
 	aspectRatioX = 1;
 	aspectRatioY = 1;
 
-	fov = 1;
+	fov = 1.15;
 
 	geometryData;
 

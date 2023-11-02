@@ -1,329 +1,273 @@
 import { ThurstonGeometry } from "../class.mjs";
+import { BaseGeometry, getColorGlslString, getMinGlslString } from "./base.mjs";
 
-function getS3BaseData()
+class S3Geometry extends BaseGeometry
 {
-	return {
-		geodesicGlsl: "vec4 pos = cos(t) * cameraPos + sin(t) * rayDirectionVec;",
+	geodesicGlsl = "vec4 pos = cos(t) * cameraPos + sin(t) * rayDirectionVec;";
 
-		fogGlsl: "return mix(color, fogColor, 1.0 - exp(-acos(dot(pos, cameraPos)) * fogScaling));",
+	fogGlsl = "return mix(color, fogColor, 1.0 - exp(-acos(dot(pos, cameraPos)) * fogScaling));";
 
-		customDotProduct: (vec1, vec2) =>
+	customDotProduct(vec1, vec2)
+	{
+		return vec1[0] * vec2[0] + vec1[1] * vec2[1] + vec1[2] * vec2[2] + vec1[3] * vec2[3];
+	}
+	
+	updateCameraPos(cameraPos, tangentVec, dt)
+	{
+		const newCameraPos = [...cameraPos];
+
+		for (let i = 0; i < 4; i++)
 		{
-			return vec1[0] * vec2[0] + vec1[1] * vec2[1] + vec1[2] * vec2[2] + vec1[3] * vec2[3];
-		},
+			newCameraPos[i] = Math.cos(dt) * newCameraPos[i] + Math.sin(dt) * tangentVec[i];
+		}
 		
-		updateCameraPos: (cameraPos, tangentVec, dt) =>
+		//Since we're only doing a linear approximation, this position won't be exactly
+		//on the manifold. Therefore, we'll do a quick correction to get it back.
+
+		//Here, we just want the magnitude to be equal to 1
+		const magnitude = ThurstonGeometry.magnitude(newCameraPos);
+
+		newCameraPos[0] /= magnitude;
+		newCameraPos[1] /= magnitude;
+		newCameraPos[2] /= magnitude;
+		newCameraPos[3] /= magnitude;
+
+		return newCameraPos;
+	}
+
+	//Given two points on the manifold, find the vector in the tangent space to pos1
+	//that points to pos2. For simplicity, we assume dt = 1 and then normalize later.
+	getGeodesicDirection(pos1, pos2)
+	{
+		const dir = new Array(4);
+
+		for (let i = 0; i < 4; i++)
 		{
-			const newCameraPos = [...cameraPos];
+			dir[i] = (pos2[i] - Math.cos(1) * pos1[i]) / Math.sin(1);
+		}
 
-			for (let i = 0; i < 4; i++)
-			{
-				newCameraPos[i] = Math.cos(dt) * newCameraPos[i] + Math.sin(dt) * tangentVec[i];
-			}
-			
-			//Since we're only doing a linear approximation, this position won't be exactly
-			//on the manifold. Therefore, we'll do a quick correction to get it back.
+		const magnitude = ThurstonGeometry.magnitude(dir);
 
-			//Here, we just want the magnitude to be equal to 1
-			const magnitude = ThurstonGeometry.magnitude(newCameraPos);
+		return [ThurstonGeometry.normalize(dir), magnitude];
+	}
 
-			newCameraPos[0] /= magnitude;
-			newCameraPos[1] /= magnitude;
-			newCameraPos[2] /= magnitude;
-			newCameraPos[3] /= magnitude;
+	getNormalVec(cameraPos)
+	{
+		//f = 1 - x^2 - y^2 - z^2 - w^2.
+		return ThurstonGeometry.normalize([
+			-cameraPos[0],
+			-cameraPos[1],
+			-cameraPos[2],
+			-cameraPos[3]
+		]);
+	}
 
-			return newCameraPos;
-		},
+	getGammaPrime(_pos, dir)
+	{
+		//gamma = cos(t)*pos + sin(t)*dir
+		//gamma' = -sin(t)*pos + cos(t)*dir
+		//gamma'' = -cos(t)*pos - sin(t)*dir
+		//gamma''' = sin(t)*pos - cos(t)*dir
+		//All of these are evaluated at t=0.
+		return [...dir];
+	}
 
-		//Given two points on the manifold, find the vector in the tangent space to pos1
-		//that points to pos2. For simplicity, we assume dt = 1 and then normalize later.
-		getGeodesicDirection(pos1, pos2)
-		{
-			const dir = new Array(4);
+	getGammaDoublePrime(pos)
+	{
+		return [-pos[0], -pos[1], -pos[2], -pos[3]];
+	}
 
-			for (let i = 0; i < 4; i++)
-			{
-				dir[i] = (pos2[i] - Math.cos(1) * pos1[i]) / Math.sin(1);
-			}
+	getGammaTriplePrime(_pos, dir)
+	{
+		return [-dir[0], -dir[1], -dir[2], -dir[3]];
+	}
 
-			const magnitude = ThurstonGeometry.magnitude(dir);
-
-			return [ThurstonGeometry.normalize(dir), magnitude];
-		},
-
-		getNormalVec: (cameraPos) =>
-		{
-			//f = 1 - x^2 - y^2 - z^2 - w^2.
-			return ThurstonGeometry.normalize([
-				-cameraPos[0],
-				-cameraPos[1],
-				-cameraPos[2],
-				-cameraPos[3]
-			]);
-		},
-
-		getGammaPrime: (_pos, dir) =>
-		{
-			//gamma = cos(t)*pos + sin(t)*dir
-			//gamma' = -sin(t)*pos + cos(t)*dir
-			//gamma'' = -cos(t)*pos - sin(t)*dir
-			//gamma''' = sin(t)*pos - cos(t)*dir
-			//All of these are evaluated at t=0.
-			return [...dir];
-		},
-
-		getGammaDoublePrime: (pos) =>
-		{
-			return [-pos[0], -pos[1], -pos[2], -pos[3]];
-		},
-
-		getGammaTriplePrime: (_pos, dir) =>
-		{
-			return [-dir[0], -dir[1], -dir[2], -dir[3]];
-		},
-
-		gammaTriplePrimeIsLinearlyIndependent: false
-	};
+	gammaTriplePrimeIsLinearlyIndependent = false;
 }
 
 
 
-export function getS3RoomsData()
+export class S3Rooms extends S3Geometry
 {
-	return {
-		...getS3BaseData(),
+	static distances = `
+		float distance1 = acos(pos.x) - .92;
+		float distance2 = acos(-pos.x) - .92;
+		float distance3 = acos(pos.y) - .92;
+		float distance4 = acos(-pos.y) - .92;
+		float distance5 = acos(pos.z) - .92;
+		float distance6 = acos(-pos.z) - .92;
+		float distance7 = acos(pos.w) - .92;
+		float distance8 = acos(-pos.w) - .92;
+	`;
 
-		distanceEstimatorGlsl: `
-			float distance1 = acos(pos.x) - .92;
-			float distance2 = acos(-pos.x) - .92;
-			float distance3 = acos(pos.y) - .92;
-			float distance4 = acos(-pos.y) - .92;
-			float distance5 = acos(pos.z) - .92;
-			float distance6 = acos(-pos.z) - .92;
-			float distance7 = acos(pos.w) - .92;
-			float distance8 = acos(-pos.w) - .92;
+	distanceEstimatorGlsl = `
+		${S3Rooms.distances}
 
-			float minDistance = min(
-				min(
-					min(distance1, distance2),
-					min(distance3, distance4)
-				),
-				min(
-					min(distance5, distance6),
-					min(distance7, distance8)
-				)
-			);
+		float minDistance = ${getMinGlslString("distance", 8)};
 
-			return -minDistance;
-		`,
+		return -minDistance;
+	`;
 
-		getColorGlsl: `
-			float distance1 = acos(pos.x) - .92;
-			float distance2 = acos(-pos.x) - .92;
-			float distance3 = acos(pos.y) - .92;
-			float distance4 = acos(-pos.y) - .92;
-			float distance5 = acos(pos.z) - .92;
-			float distance6 = acos(-pos.z) - .92;
-			float distance7 = acos(pos.w) - .92;
-			float distance8 = acos(-pos.w) - .92;
+	getColorGlsl = `
+		${S3Rooms.distances}
 
-			float minDistance = min(
-				min(
-					min(distance1, distance2),
-					min(distance3, distance4)
-				),
-				min(
-					min(distance5, distance6),
-					min(distance7, distance8)
-				)
-			);
+		float minDistance = ${getMinGlslString("distance", 8)};
 
-			if (minDistance == distance1)
-			{
-				return vec3(1.0, 0.0, 0.0);
-			}
+	${getColorGlslString(
+		"distance",
+		"minDistance",
+		[
+			[255, 0, 0],
+			[0, 255, 255],
+			[0, 255, 0],
+			[255, 0, 255],
+			[0, 0, 255],
+			[255, 255, 0],
+			[255, 127, 0],
+			[127, 0, 255],
+		]
+	)};
+	`;
 
-			if (minDistance == distance2)
-			{
-				return vec3(0.0, 1.0, 1.0);
-			}
+	lightGlsl = `
+		vec4 lightDirection1 = normalize(vec4(1.0, 1.0, 1.0, 1.0) - pos);
+		float dotProduct1 = dot(surfaceNormal, lightDirection1);
 
-			if (minDistance == distance3)
-			{
-				return vec3(0.0, 1.0, 0.0);
-			}
+		vec4 lightDirection2 = normalize(vec4(-1.0, -1.0, -1.0, 1.0) - pos);
+		float dotProduct2 = dot(surfaceNormal, lightDirection2);
 
-			if (minDistance == distance4)
-			{
-				return vec3(1.0, 0.0, 1.0);
-			}
+		vec4 lightDirection3 = normalize(vec4(1.0, 1.0, 1.0, 0.0) - pos);
+		float dotProduct3 = dot(surfaceNormal, lightDirection3);
 
-			if (minDistance == distance5)
-			{
-				return vec3(0.0, 0.0, 1.0);
-			}
+		vec4 lightDirection4 = normalize(vec4(-1.0, -1.0, -1.0, 0.0) - pos);
+		float dotProduct4 = dot(surfaceNormal, lightDirection4);
 
-			if (minDistance == distance6)
-			{
-				return vec3(1.0, 1.0, 0.0);
-			}
+		float lightIntensity = lightBrightness * max(
+			max(abs(dotProduct1), abs(dotProduct2)),
+			max(abs(dotProduct3), abs(dotProduct4))
+		);
+	`;
 
-			if (minDistance == distance7)
-			{
-				return vec3(1.0, 0.5, 0.0);
-			}
+	cameraPos = [0, 0, 0, -1];
+	normalVec = [0, 0, 0, 1];
+	upVec = [0, 0, 1, 0];
+	rightVec = [0, 1, 0, 0];
+	forwardVec = [1, 0, 0, 0];
 
-			if (minDistance == distance8)
-			{
-				return vec3(.5, 0.0, 1.0);
-			}
-		`,
-
-		lightGlsl: `
-			vec4 lightDirection1 = normalize(vec4(1.0, 1.0, 1.0, 1.0) - pos);
-			float dotProduct1 = dot(surfaceNormal, lightDirection1);
-
-			vec4 lightDirection2 = normalize(vec4(-1.0, -1.0, -1.0, 1.0) - pos);
-			float dotProduct2 = dot(surfaceNormal, lightDirection2);
-
-			vec4 lightDirection3 = normalize(vec4(1.0, 1.0, 1.0, 0.0) - pos);
-			float dotProduct3 = dot(surfaceNormal, lightDirection3);
-
-			vec4 lightDirection4 = normalize(vec4(-1.0, -1.0, -1.0, 0.0) - pos);
-			float dotProduct4 = dot(surfaceNormal, lightDirection4);
-
-			float lightIntensity = lightBrightness * max(
-				max(abs(dotProduct1), abs(dotProduct2)),
-				max(abs(dotProduct3), abs(dotProduct4))
-			);
-		`,
-
-		cameraPos: [0, 0, 0, -1],
-		normalVec: [0, 0, 0, 1],
-		upVec: [0, 0, 1, 0],
-		rightVec: [0, 1, 0, 0],
-		forwardVec: [1, 0, 0, 0],
-
-		getMovingSpeed: () => 1
-	};
+	getMovingSpeed()
+	{
+		return 1;
+	}
 }
 
 
 
-export function getS3SpheresData()
+export class S3Spheres extends S3Geometry
 {
-	return {
-		...getS3BaseData(),
+	distanceEstimatorGlsl = `
+		float distance1 = abs(acos(pos.x) - .3);
+		float distance2 = abs(acos(-pos.x) - .3);
+		float distance3 = abs(acos(pos.y) - .3);
+		float distance4 = abs(acos(-pos.y) - .3);
+		float distance5 = abs(acos(pos.z) - .3);
+		float distance6 = abs(acos(-pos.z) - .3);
+		float distance7 = abs(acos(pos.w) - .3);
 
-		distanceEstimatorGlsl: `
-			float distance1 = abs(acos(pos.x) - .3);
-			float distance2 = abs(acos(-pos.x) - .3);
-			float distance3 = abs(acos(pos.y) - .3);
-			float distance4 = abs(acos(-pos.y) - .3);
-			float distance5 = abs(acos(pos.z) - .3);
-			float distance6 = abs(acos(-pos.z) - .3);
-			float distance7 = abs(acos(pos.w) - .3);
+		float minDistance = ${getMinGlslString("distance", 7)};
 
-			float minDistance = min(
-				min(
-					min(distance1, distance2),
-					min(distance3, distance4)
-				),
-				min(
-					min(distance5, distance6),
-					distance7
-				)
-			);
+		return minDistance;
+	`;
 
-			return minDistance;
-		`,
+	getColorGlsl = `
+		float distance1 = abs(acos(pos.x) - .3);
+		float distance2 = abs(acos(-pos.x) - .3);
+		float distance3 = abs(acos(pos.y) - .3);
+		float distance4 = abs(acos(-pos.y) - .3);
+		float distance5 = abs(acos(pos.z) - .3);
+		float distance6 = abs(acos(-pos.z) - .3);
+		float distance7 = abs(acos(pos.w) - .3);
 
-		getColorGlsl: `
-			float distance1 = abs(acos(pos.x) - .3);
-			float distance2 = abs(acos(-pos.x) - .3);
-			float distance3 = abs(acos(pos.y) - .3);
-			float distance4 = abs(acos(-pos.y) - .3);
-			float distance5 = abs(acos(pos.z) - .3);
-			float distance6 = abs(acos(-pos.z) - .3);
-			float distance7 = abs(acos(pos.w) - .3);
+		float minDistance = ${getMinGlslString("distance", 7)};
 
-			float minDistance = min(
-				min(
-					min(distance1, distance2),
-					min(distance3, distance4)
-				),
-				min(
-					min(distance5, distance6),
-					distance7
-				)
-			);
+		if (minDistance == distance1)
+		{
+			return vec3(1.0, 0.0, 0.0) * getBanding(pos.y + pos.z + pos.w, 10.0);
+		}
 
-			if (minDistance == distance1)
-			{
-				return vec3(1.0, 0.0, 0.0) * getBanding(pos.y + pos.z + pos.w, 10.0);
-			}
+		if (minDistance == distance2)
+		{
+			return vec3(0.0, 1.0, 1.0) * getBanding(pos.y + pos.z + pos.w, 10.0);
+		}
 
-			if (minDistance == distance2)
-			{
-				return vec3(0.0, 1.0, 1.0) * getBanding(pos.y + pos.z + pos.w, 10.0);
-			}
+		if (minDistance == distance3)
+		{
+			return vec3(0.0, 1.0, 0.0) * getBanding(pos.x + pos.z + pos.w, 10.0);
+		}
 
-			if (minDistance == distance3)
-			{
-				return vec3(0.0, 1.0, 0.0) * getBanding(pos.x + pos.z + pos.w, 10.0);
-			}
+		if (minDistance == distance4)
+		{
+			return vec3(1.0, 0.0, 1.0) * getBanding(pos.x + pos.z + pos.w, 10.0);
+		}
 
-			if (minDistance == distance4)
-			{
-				return vec3(1.0, 0.0, 1.0) * getBanding(pos.x + pos.z + pos.w, 10.0);
-			}
+		if (minDistance == distance5)
+		{
+			return vec3(0.0, 0.0, 1.0) * getBanding(pos.x + pos.y + pos.w, 10.0);
+		}
 
-			if (minDistance == distance5)
-			{
-				return vec3(0.0, 0.0, 1.0) * getBanding(pos.x + pos.y + pos.w, 10.0);
-			}
+		if (minDistance == distance6)
+		{
+			return vec3(1.0, 1.0, 0.0) * getBanding(pos.x + pos.y + pos.w, 10.0);
+		}
 
-			if (minDistance == distance6)
-			{
-				return vec3(1.0, 1.0, 0.0) * getBanding(pos.x + pos.y + pos.w, 10.0);
-			}
+		if (minDistance == distance7)
+		{
+			return vec3(1.0, 1.0, 1.0) * getBanding(pos.x + pos.y + pos.z, 10.0);
+		}
+	`;
 
-			if (minDistance == distance7)
-			{
-				return vec3(1.0, 1.0, 1.0) * getBanding(pos.x + pos.y + pos.z, 10.0);
-			}
-		`,
+	lightGlsl = `
+		vec4 lightDirection1 = normalize(vec4(1.0, 1.0, 1.0, 1.0) - pos);
+		float dotProduct1 = dot(surfaceNormal, lightDirection1);
 
-		lightGlsl: `
-			vec4 lightDirection1 = normalize(vec4(1.0, 1.0, 1.0, 1.0) - pos);
-			float dotProduct1 = dot(surfaceNormal, lightDirection1);
+		vec4 lightDirection2 = normalize(vec4(-1.0, -1.0, -1.0, 1.0) - pos);
+		float dotProduct2 = dot(surfaceNormal, lightDirection2);
 
-			vec4 lightDirection2 = normalize(vec4(-1.0, -1.0, -1.0, 1.0) - pos);
-			float dotProduct2 = dot(surfaceNormal, lightDirection2);
+		vec4 lightDirection3 = normalize(vec4(1.0, 1.0, 1.0, 0.0) - pos);
+		float dotProduct3 = dot(surfaceNormal, lightDirection3);
 
-			vec4 lightDirection3 = normalize(vec4(1.0, 1.0, 1.0, 0.0) - pos);
-			float dotProduct3 = dot(surfaceNormal, lightDirection3);
+		vec4 lightDirection4 = normalize(vec4(-1.0, -1.0, -1.0, 0.0) - pos);
+		float dotProduct4 = dot(surfaceNormal, lightDirection4);
 
-			vec4 lightDirection4 = normalize(vec4(-1.0, -1.0, -1.0, 0.0) - pos);
-			float dotProduct4 = dot(surfaceNormal, lightDirection4);
+		float lightIntensity = lightBrightness * max(
+			max(abs(dotProduct1), abs(dotProduct2)),
+			max(abs(dotProduct3), abs(dotProduct4))
+		);
+	`;
 
-			float lightIntensity = lightBrightness * max(
-				max(abs(dotProduct1), abs(dotProduct2)),
-				max(abs(dotProduct3), abs(dotProduct4))
-			);
-		`,
+	cameraPos = [0, 0, 0, -1];
+	normalVec = [0, 0, 0, -1];
+	upVec = [0, 0, 1, 0];
+	rightVec = [0, 1, 0, 0];
+	forwardVec = [1, 0, 0, 0];
 
-		cameraPos: [0, 0, 0, -1],
-		normalVec: [0, 0, 0, -1],
-		upVec: [0, 0, 1, 0],
-		rightVec: [0, 1, 0, 0],
-		forwardVec: [1, 0, 0, 0],
-
-		getMovingSpeed: () => 1
-	};
+	getMovingSpeed()
+	{
+		return 1;
+	}
 }
 
 
+
+function hsvToRgb(h, s, v)
+{
+	function f(n)
+	{
+		const k = (n + 6 * h) % 6;
+		return v - v * s * Math.max(0, Math.min(k, Math.min(4 - k, 1)));
+	}
+
+	return [255 * f(5), 255 * f(3), 255 * f(1)];
+}
 
 function getHopfFiber(index, numFibers)
 {
@@ -343,7 +287,7 @@ function getHopfFiber(index, numFibers)
 	const vec1 = ThurstonGeometry.normalize([1 + p[2], -p[1], p[0], 0]);
 	const vec2 = ThurstonGeometry.normalize([0, p[0], p[1], 1 + p[2]]);
 
-	return [`float distance${index} = greatCircleDistance(
+	return [`float distance${index + 1} = greatCircleDistance(
 		pos,
 		vec4(${vec1[0]}, ${vec1[1]}, ${vec1[2]}, ${vec1[3]}),
 		vec4(${vec2[0]}, ${vec2[1]}, ${vec2[2]}, ${vec2[3]}),
@@ -351,112 +295,74 @@ function getHopfFiber(index, numFibers)
 	`, rgb];
 }
 
-function getMinDistanceCode(numFibers)
+export class S3HopfFibration extends S3Geometry
 {
-	let minDistanceCode = "float minDistance = ";
-
-	for (let i = 0; i < numFibers - 1; i++)
+	constructor()
 	{
-		minDistanceCode += `min(distance${i}, `;
+		super();
+
+		const numFibers = 20;
+
+		this.distanceEstimatorGlsl = "";
+
+		const colors = new Array(numFibers);
+
+		for (let i = 0; i < numFibers; i++)
+		{
+			const result = getHopfFiber(i, numFibers);
+			this.distanceEstimatorGlsl += result[0];
+			colors[i] = result[1];
+		}
+
+		this.distanceEstimatorGlsl += `float minDistance = ${getMinGlslString("distance", numFibers)};`;
+
+		this.getColorGlsl = this.distanceEstimatorGlsl + getColorGlslString(
+			"distance",
+			"minDistance",
+			colors
+		);
+
+		this.distanceEstimatorGlsl += "return minDistance;";
 	}
+	
+	functionGlsl = `
+		//p and v must be orthonormal.
+		float greatCircleDistance(vec4 pos, vec4 p, vec4 v, float r)
+		{
+			float dot1 = dot(pos, p);
+			float dot2 = dot(pos, v);
 
-	minDistanceCode += `distance${numFibers - 1}` + ")".repeat(numFibers - 1) + ";";
+			return acos(sqrt(dot1 * dot1 + dot2 * dot2)) - r;
+		}
+	`;
 
-	return minDistanceCode;
-}
+	lightGlsl = `
+		vec4 lightDirection1 = normalize(vec4(1.0, 1.0, 1.0, 1.0) - pos);
+		float dotProduct1 = dot(surfaceNormal, lightDirection1);
 
-function getColorCode(numFibers, colors)
-{
-	let colorCode = "";
+		vec4 lightDirection2 = normalize(vec4(-1.0, -1.0, -1.0, 1.0) - pos);
+		float dotProduct2 = dot(surfaceNormal, lightDirection2);
 
-	for (let i = 0; i < numFibers; i++)
+		vec4 lightDirection3 = normalize(vec4(1.0, 1.0, 1.0, 0.0) - pos);
+		float dotProduct3 = dot(surfaceNormal, lightDirection3);
+
+		vec4 lightDirection4 = normalize(vec4(-1.0, -1.0, -1.0, 0.0) - pos);
+		float dotProduct4 = dot(surfaceNormal, lightDirection4);
+
+		float lightIntensity = lightBrightness * max(
+			max(abs(dotProduct1), abs(dotProduct2)),
+			max(abs(dotProduct3), abs(dotProduct4))
+		);
+	`;
+
+	cameraPos = [0, 0, 0, -1];
+	normalVec = [0, 0, 0, 1];
+	upVec = [0, 0, 1, 0];
+	rightVec = [0, 1, 0, 0];
+	forwardVec = [1, 0, 0, 0];
+
+	getMovingSpeed()
 	{
-		colorCode += `if (minDistance == distance${i}) { return vec3(${colors[i][0] / 255}, ${colors[i][1] / 255}, ${colors[i][2] / 255}); }
-		`;
+		return 1;
 	}
-
-	return colorCode;
-}
-
-export function getS3HopfFibrationData()
-{
-	const numFibers = 20;
-
-	let distanceEstimatorGlsl = "";
-
-	const colors = new Array(numFibers);
-
-	for (let i = 0; i < numFibers; i++)
-	{
-		const result = getHopfFiber(i, numFibers);
-		distanceEstimatorGlsl += result[0];
-		colors[i] = result[1];
-	}
-
-	distanceEstimatorGlsl += getMinDistanceCode(numFibers);
-
-	const getColorGlsl = distanceEstimatorGlsl + getColorCode(numFibers, colors);
-
-	distanceEstimatorGlsl += "return minDistance;";
-
-
-
-	return {
-		...getS3BaseData(),
-
-		functionGlsl: `
-			//p and v must be orthonormal.
-			float greatCircleDistance(vec4 pos, vec4 p, vec4 v, float r)
-			{
-				float dot1 = dot(pos, p);
-				float dot2 = dot(pos, v);
-
-				return acos(sqrt(dot1 * dot1 + dot2 * dot2)) - r;
-			}
-		`,
-
-		distanceEstimatorGlsl,
-
-		getColorGlsl,
-
-		lightGlsl: `
-			vec4 lightDirection1 = normalize(vec4(1.0, 1.0, 1.0, 1.0) - pos);
-			float dotProduct1 = dot(surfaceNormal, lightDirection1);
-
-			vec4 lightDirection2 = normalize(vec4(-1.0, -1.0, -1.0, 1.0) - pos);
-			float dotProduct2 = dot(surfaceNormal, lightDirection2);
-
-			vec4 lightDirection3 = normalize(vec4(1.0, 1.0, 1.0, 0.0) - pos);
-			float dotProduct3 = dot(surfaceNormal, lightDirection3);
-
-			vec4 lightDirection4 = normalize(vec4(-1.0, -1.0, -1.0, 0.0) - pos);
-			float dotProduct4 = dot(surfaceNormal, lightDirection4);
-
-			float lightIntensity = lightBrightness * max(
-				max(abs(dotProduct1), abs(dotProduct2)),
-				max(abs(dotProduct3), abs(dotProduct4))
-			);
-		`,
-
-		cameraPos: [0, 0, 0, -1],
-		normalVec: [0, 0, 0, 1],
-		upVec: [0, 0, 1, 0],
-		rightVec: [0, 1, 0, 0],
-		forwardVec: [1, 0, 0, 0],
-
-		getMovingSpeed: () => 1
-	};
-}
-
-
-
-function hsvToRgb(h, s, v)
-{
-	function f(n)
-	{
-		const k = (n + 6 * h) % 6;
-		return v - v * s * Math.max(0, Math.min(k, Math.min(4 - k, 1)));
-	}
-
-	return [255 * f(5), 255 * f(3), 255 * f(1)];
 }

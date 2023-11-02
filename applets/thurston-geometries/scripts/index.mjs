@@ -1,7 +1,6 @@
 import { ThurstonGeometry } from "./class.mjs";
 import { E3Rooms, E3Spheres } from "./geometries/e3.mjs";
-import { getH3SpheresData } from "./geometries/h3.mjs";
-import { getS3HopfFibrationData, getS3RoomsData, getS3SpheresData } from "./geometries/s3.mjs";
+import { S3HopfFibration, S3Rooms, S3Spheres } from "./geometries/s3.mjs";
 import { showPage } from "/scripts/src/load-page.mjs";
 import { $ } from "/scripts/src/main.mjs";
 
@@ -15,10 +14,10 @@ export function load()
 	{
 		"e3-rooms": E3Rooms,
 		"e3-spheres": E3Spheres,
-		"s3-rooms": getS3RoomsData,
-		"s3-spheres": getS3SpheresData,
-		"s3-hopf-fibration": getS3HopfFibrationData,
-		"h3-spheres": getH3SpheresData
+		"s3-rooms": S3Rooms,
+		"s3-spheres": S3Spheres,
+		"s3-hopf-fibration": S3HopfFibration,
+		// "h3-spheres": getH3SpheresData
 	};
 
 	const sceneSelectorDropdownElement = $("#scene-selector-dropdown");
@@ -28,7 +27,6 @@ export function load()
 		if (sceneSelectorDropdownElement.value !== "none")
 		{
 			const GeometryDataClass = scenes[sceneSelectorDropdownElement.value];
-			console.log(GeometryDataClass);
 			applet.run(new GeometryDataClass());
 		}
 	}
@@ -39,7 +37,7 @@ export function load()
 
 	const fovSlider = $("#fov-slider");
 	const fovSliderValue = $("#fov-slider-value");
-	fovSliderValue.textContent = 1;
+	fovSliderValue.textContent = 1.15;
 
 	applet.setInputCaps([resolutionInputElement], [1000]);
 

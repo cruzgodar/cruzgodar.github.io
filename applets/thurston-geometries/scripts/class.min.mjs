@@ -1,4 +1,4 @@
-import{Applet}from"/scripts/src/applets.min.mjs";import{aspectRatio}from"/scripts/src/layout.min.mjs";import{addTemporaryListener}from"/scripts/src/main.min.mjs";import{Wilson}from"/scripts/wilson.min.mjs";class ThurstonGeometry extends Applet{resolution=500;aspectRatioX=1;aspectRatioY=1;fov=1;geometryData;rotatedForwardVec;rotatedUpVec;movingAmount=[0,0,0];rollingAmount=0;keysPressed={w:!1,a:!1,s:!1,d:!1," ":!1,Shift:!1,e:!1,q:!1};numTouches=0;constructor({canvas}){super(canvas);var t={renderer:"gpu",shader:`
+import{Applet}from"/scripts/src/applets.min.mjs";import{aspectRatio}from"/scripts/src/layout.min.mjs";import{addTemporaryListener}from"/scripts/src/main.min.mjs";import{Wilson}from"/scripts/wilson.min.mjs";class ThurstonGeometry extends Applet{resolution=500;aspectRatioX=1;aspectRatioY=1;fov=1.15;geometryData;rotatedForwardVec;rotatedUpVec;movingAmount=[0,0,0];rollingAmount=0;keysPressed={w:!1,a:!1,s:!1,d:!1," ":!1,Shift:!1,e:!1,q:!1};numTouches=0;constructor({canvas}){super(canvas);var t={renderer:"gpu",shader:`
 			precision highp float;
 			varying vec2 uv;
 			
