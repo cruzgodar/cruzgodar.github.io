@@ -64,7 +64,7 @@ Welcome to Math 341! We'll use this page for the interactive notes, the homework
 	#. $X$ is the set of linear transformations $T : #R#^3 \to #R#^2$ with
 
 	$$
-		\ker T = \span\left{ [[ 1 ; 1 ; 0 ]], [[ 0 ; 0 ; 1 ]] \right},
+		\ker T = \span\left\{ [[ 1 ; 1 ; 0 ]], [[ 0 ; 0 ; 1 ]] \right\},
 	$$
 
 	and $V = \mathcal{L}(#R#^3, #R#^2)$.
