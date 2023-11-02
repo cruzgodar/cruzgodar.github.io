@@ -1,5 +1,5 @@
 import { ThurstonGeometry } from "./class.mjs";
-import { getE3RoomsData, getE3SpheresData } from "./geometries/e3.mjs";
+import { E3Rooms, E3Spheres } from "./geometries/e3.mjs";
 import { getH3SpheresData } from "./geometries/h3.mjs";
 import { getS3HopfFibrationData, getS3RoomsData, getS3SpheresData } from "./geometries/s3.mjs";
 import { showPage } from "/scripts/src/load-page.mjs";
@@ -11,7 +11,27 @@ export function load()
 		canvas: $("#output-canvas"),
 	});
 
-	applet.run(getH3SpheresData());
+	const scenes =
+	{
+		"e3-rooms": E3Rooms,
+		"e3-spheres": E3Spheres,
+		"s3-rooms": getS3RoomsData,
+		"s3-spheres": getS3SpheresData,
+		"s3-hopf-fibration": getS3HopfFibrationData,
+		"h3-spheres": getH3SpheresData
+	};
+
+	const sceneSelectorDropdownElement = $("#scene-selector-dropdown");
+
+	function run()
+	{
+		if (sceneSelectorDropdownElement.value !== "none")
+		{
+			const GeometryDataClass = scenes[sceneSelectorDropdownElement.value];
+			console.log(GeometryDataClass);
+			applet.run(new GeometryDataClass());
+		}
+	}
 
 
 
@@ -45,26 +65,9 @@ export function load()
 
 
 
-	const scenes =
-	{
-		"e3-rooms": getE3RoomsData,
-		"e3-spheres": getE3SpheresData,
-		"s3-rooms": getS3RoomsData,
-		"s3-spheres": getS3SpheresData,
-		"s3-hopf-fibration": getS3HopfFibrationData,
-		"h3-spheres": getH3SpheresData
-	};
+	sceneSelectorDropdownElement.addEventListener("input", run);
 
-	const sceneSelectorDropdownElement = $("#scene-selector-dropdown");
-
-	sceneSelectorDropdownElement.addEventListener("input", () =>
-	{
-		if (sceneSelectorDropdownElement.value !== "none")
-		{
-			const getData = scenes[sceneSelectorDropdownElement.value];
-			applet.run(getData());
-		}
-	});
+	run();
 
 
 

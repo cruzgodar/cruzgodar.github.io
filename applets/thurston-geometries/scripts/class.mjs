@@ -12,12 +12,7 @@ export class ThurstonGeometry extends Applet
 
 	fov = 1;
 
-	cameraPos;
-
-	normalVec;
-	upVec;
-	rightVec;
-	forwardVec;
+	geometryData;
 
 	//Finally, we handle the rotation of the camera --- we can't bake this in, since otherwise
 	//the holonomy of the sphere bites us. We'll allow rotating left and right to affect the
@@ -29,16 +24,6 @@ export class ThurstonGeometry extends Applet
 	//Moving forward/back, right/left, and up/down
 	movingAmount = [0, 0, 0];
 	rollingAmount = 0;
-
-	getMovingSpeed;
-
-	updateCameraPos;
-	getGeodesicDirection;
-	
-	getNormalVec;
-	getGammaPrime;
-	getGammaDoublePrime;
-	getGammaTriplePrime;
 
 	keysPressed = {
 		"w": false,
@@ -148,46 +133,9 @@ export class ThurstonGeometry extends Applet
 
 
 
-	run({
-		customDotProduct,
-		updateCameraPos,
-		getGeodesicDirection,
-		getNormalVec,
-		getGammaPrime,
-		getGammaDoublePrime,
-		getGammaTriplePrime,
-		gammaTriplePrimeIsLinearlyIndependent,
-		distanceEstimatorGlsl,
-		geodesicGlsl,
-		getColorGlsl,
-		fogGlsl,
-		lightGlsl,
-		functionGlsl,
-		cameraPos,
-		normalVec,
-		upVec,
-		rightVec,
-		forwardVec,
-		getMovingSpeed
-	})
+	run(geometryData)
 	{
-		this.customDotProduct = customDotProduct;
-		this.updateCameraPos = updateCameraPos;
-		this.getGeodesicDirection = getGeodesicDirection;
-
-		this.getNormalVec = getNormalVec;
-		this.getGammaPrime = getGammaPrime;
-		this.getGammaDoublePrime = getGammaDoublePrime;
-		this.getGammaTriplePrime = getGammaTriplePrime;
-		this.gammaTriplePrimeIsLinearlyIndependent = gammaTriplePrimeIsLinearlyIndependent;
-
-		this.cameraPos = cameraPos;
-		this.normalVec = normalVec;
-		this.upVec = upVec;
-		this.rightVec = rightVec;
-		this.forwardVec = forwardVec;
-
-		this.getMovingSpeed = getMovingSpeed;
+		this.geometryData = geometryData;
 
 		const fragShaderSource = `
 			precision highp float;
@@ -214,7 +162,7 @@ export class ThurstonGeometry extends Applet
 			const float fogScaling = .07;
 			uniform float fov;
 
-			${functionGlsl ?? ""}
+			${this.geometryData.functionGlsl ?? ""}
 
 
 
@@ -227,12 +175,12 @@ export class ThurstonGeometry extends Applet
 			
 			float distanceEstimator(vec4 pos)
 			{
-				${distanceEstimatorGlsl}
+				${this.geometryData.distanceEstimatorGlsl}
 			}
 			
 			vec3 getColor(vec4 pos)
 			{
-				${getColorGlsl}
+				${this.geometryData.getColorGlsl}
 			}
 			
 			
@@ -258,13 +206,13 @@ export class ThurstonGeometry extends Applet
 			{
 				vec4 surfaceNormal = getSurfaceNormal(pos);
 				
-				${lightGlsl}
+				${this.geometryData.lightGlsl}
 
 				//The last factor adds ambient occlusion.
 				vec3 color = getColor(pos) * lightIntensity * max((1.0 - float(iteration) / float(maxMarches)), 0.0);
 				
 				//Apply fog.
-				${fogGlsl}
+				${this.geometryData.fogGlsl}
 			}
 			
 			
@@ -277,7 +225,7 @@ export class ThurstonGeometry extends Applet
 				
 				for (int iteration = 0; iteration < maxMarches; iteration++)
 				{
-					${geodesicGlsl}
+					${this.geometryData.geodesicGlsl}
 					
 					float distance = distanceEstimator(pos);
 					
@@ -348,27 +296,27 @@ export class ThurstonGeometry extends Applet
 
 		this.wilson.gl.uniform4fv(
 			this.wilson.uniforms["cameraPos"],
-			this.cameraPos
+			this.geometryData.cameraPos
 		);
 
 		this.wilson.gl.uniform4fv(
 			this.wilson.uniforms["normalVec"],
-			this.normalVec
+			this.geometryData.normalVec
 		);
 
 		this.wilson.gl.uniform4fv(
 			this.wilson.uniforms["upVec"],
-			this.upVec
+			this.geometryData.upVec
 		);
 		
 		this.wilson.gl.uniform4fv(
 			this.wilson.uniforms["rightVec"],
-			this.rightVec
+			this.geometryData.rightVec
 		);
 			
 		this.wilson.gl.uniform4fv(
 			this.wilson.uniforms["forwardVec"],
-			this.forwardVec
+			this.geometryData.forwardVec
 		);
 
 
@@ -492,15 +440,15 @@ export class ThurstonGeometry extends Applet
 			if (this.wilson.worldCenterY)
 			{
 				this.wilson.worldCenterY = 0;
-				this.upVec = [...this.rotatedUpVec];
-				this.forwardVec = [...this.rotatedForwardVec];
+				this.geometryData.upVec = [...this.rotatedUpVec];
+				this.geometryData.forwardVec = [...this.rotatedForwardVec];
 			}
 			
 			const angle = timeElapsed * this.rollingAmount * .0015;
 
-			[this.rightVec, this.upVec] = ThurstonGeometry.rotateVectors(
-				this.rightVec,
-				this.upVec,
+			[this.geometryData.rightVec, this.geometryData.upVec] = ThurstonGeometry.rotateVectors(
+				this.geometryData.rightVec,
+				this.geometryData.upVec,
 				angle
 			);
 
@@ -516,12 +464,12 @@ export class ThurstonGeometry extends Applet
 
 		this.wilson.gl.uniform4fv(
 			this.wilson.uniforms["cameraPos"],
-			this.cameraPos
+			this.geometryData.cameraPos
 		);
 
 		this.wilson.gl.uniform4fv(
 			this.wilson.uniforms["normalVec"],
-			this.normalVec
+			this.geometryData.normalVec
 		);
 
 		this.wilson.gl.uniform4fv(
@@ -531,7 +479,7 @@ export class ThurstonGeometry extends Applet
 		
 		this.wilson.gl.uniform4fv(
 			this.wilson.uniforms["rightVec"],
-			this.rightVec
+			this.geometryData.rightVec
 		);
 			
 		this.wilson.gl.uniform4fv(
@@ -560,85 +508,105 @@ export class ThurstonGeometry extends Applet
 	handleMoving(movingAmount, timeElapsed)
 	{
 		let tangentVec = ThurstonGeometry.normalize([
-			movingAmount[0] * this.forwardVec[0]
-				+ movingAmount[1] * this.rightVec[0]
-				+ movingAmount[2] * this.upVec[0],
+			movingAmount[0] * this.geometryData.forwardVec[0]
+				+ movingAmount[1] * this.geometryData.rightVec[0]
+				+ movingAmount[2] * this.geometryData.upVec[0],
 			
-			movingAmount[0] * this.forwardVec[1]
-				+ movingAmount[1] * this.rightVec[1]
-				+ movingAmount[2] * this.upVec[1],
+			movingAmount[0] * this.geometryData.forwardVec[1]
+				+ movingAmount[1] * this.geometryData.rightVec[1]
+				+ movingAmount[2] * this.geometryData.upVec[1],
 			
-			movingAmount[0] * this.forwardVec[2]
-				+ movingAmount[1] * this.rightVec[2]
-				+ movingAmount[2] * this.upVec[2],
+			movingAmount[0] * this.geometryData.forwardVec[2]
+				+ movingAmount[1] * this.geometryData.rightVec[2]
+				+ movingAmount[2] * this.geometryData.upVec[2],
 			
-			movingAmount[0] * this.forwardVec[3]
-				+ movingAmount[1] * this.rightVec[3]
-				+ movingAmount[2] * this.upVec[3],
+			movingAmount[0] * this.geometryData.forwardVec[3]
+				+ movingAmount[1] * this.geometryData.rightVec[3]
+				+ movingAmount[2] * this.geometryData.upVec[3],
 		]);
 
-		const dt = timeElapsed / 1000 * this.getMovingSpeed(this.cameraPos);
+		const dt = timeElapsed / 1000
+			* this.geometryData.getMovingSpeed(this.geometryData.cameraPos);
 
 
 
 		//The magic formula is T' = curvature * N.
-		const curvature = this.getCurvature(this.cameraPos, tangentVec);
+		const curvature = this.getCurvature(this.geometryData.cameraPos, tangentVec);
 
-		const newCameraPos = this.updateCameraPos(this.cameraPos, tangentVec, dt);
+		const newCameraPos = this.geometryData.updateCameraPos(
+			this.geometryData.cameraPos,
+			tangentVec,
+			dt
+		);
 
 		//The magic formula is T' = curvature * N.
 		tangentVec = ThurstonGeometry.normalize([
-			tangentVec[0] + curvature * this.normalVec[0] * dt,
-			tangentVec[1] + curvature * this.normalVec[1] * dt,
-			tangentVec[2] + curvature * this.normalVec[2] * dt,
-			tangentVec[3] + curvature * this.normalVec[3] * dt
+			tangentVec[0] + curvature * this.geometryData.normalVec[0] * dt,
+			tangentVec[1] + curvature * this.geometryData.normalVec[1] * dt,
+			tangentVec[2] + curvature * this.geometryData.normalVec[2] * dt,
+			tangentVec[3] + curvature * this.geometryData.normalVec[3] * dt
 		]);
 
 		
 
-		if (this.gammaTriplePrimeIsLinearlyIndependent)
+		if (this.geometryData.gammaTriplePrimeIsLinearlyIndependent)
 		{
 			//idfk
 		}
 
-		this.cameraPos = newCameraPos;
+		this.geometryData.cameraPos = newCameraPos;
 
-		this.normalVec = this.getNormalVec(this.cameraPos);
+		this.geometryData.normalVec = this.geometryData.getNormalVec(this.geometryData.cameraPos);
 
 
 
 		//Need to do rotation here rather than scale by -1.
 		if (movingAmount[0] === 1)
 		{
-			this.forwardVec = [...tangentVec];
+			this.geometryData.forwardVec = [...tangentVec];
 		}
 
 		else if (movingAmount[0] === -1)
 		{
-			const result = ThurstonGeometry.rotateVectors(tangentVec, this.rightVec, Math.PI);
-			this.forwardVec = result[0];
+			const result = ThurstonGeometry.rotateVectors(
+				tangentVec,
+				this.geometryData.rightVec,
+				Math.PI
+			);
+
+			this.geometryData.forwardVec = result[0];
 		}
 
 		else if (movingAmount[1] === 1)
 		{
-			this.rightVec = [...tangentVec];
+			this.geometryData.rightVec = [...tangentVec];
 		}
 
 		else if (movingAmount[1] === -1)
 		{
-			const result = ThurstonGeometry.rotateVectors(tangentVec, this.forwardVec, Math.PI);
-			this.rightVec = result[0];
+			const result = ThurstonGeometry.rotateVectors(
+				tangentVec,
+				this.geometryData.forwardVec,
+				Math.PI
+			);
+
+			this.geometryData.rightVec = result[0];
 		}
 
 		else if (movingAmount[2] === 1)
 		{
-			this.upVec = [...tangentVec];
+			this.geometryData.upVec = [...tangentVec];
 		}
 
 		else if (movingAmount[2] === -1)
 		{
-			const result = ThurstonGeometry.rotateVectors(tangentVec, this.forwardVec, Math.PI);
-			this.upVec = result[0];
+			const result = ThurstonGeometry.rotateVectors(
+				tangentVec,
+				this.geometryData.forwardVec,
+				Math.PI
+			);
+
+			this.geometryData.upVec = result[0];
 		}
 	}
 
@@ -646,23 +614,35 @@ export class ThurstonGeometry extends Applet
 
 	parallelTransport(newCameraPos, vecToTransport)
 	{
-		//In the terminology of Schild's ladder, A = this.cameraPos, and we need to find X_0.
-		const x0 = this.updateCameraPos(this.cameraPos, vecToTransport, 1);
+		//In the terminology of Schild's ladder,
+		//A = this.geometryData.cameraPos, and we need to find X_0.
+		const x0 = this.geometryData.updateCameraPos(
+			this.geometryData.cameraPos,
+			vecToTransport,
+			1
+		);
 
 		//Now we need to construct a geodesic between x0 and the updated cameraPosition.
-		const [dir, magnitude] = this.getGeodesicDirection(x0, newCameraPos);
+		const [dir, magnitude] = this.geometryData.getGeodesicDirection(x0, newCameraPos);
 
 		//Now find the point halfway there.
-		const p = this.updateCameraPos(x0, dir, magnitude / 2);
+		const p = this.geometryData.updateCameraPos(x0, dir, magnitude / 2);
 
 		//Construct a geodesic between the original camera position and this point.
-		const [dir2, magnitude2] = this.getGeodesicDirection(this.cameraPos, p);
+		const [dir2, magnitude2] = this.geometryData.getGeodesicDirection(
+			this.geometryData.cameraPos,
+			p
+		);
 
 		//Follow that twice as far.
-		const x1 = this.updateCameraPos(this.cameraPos, dir2, magnitude2 * 2);
+		const x1 = this.geometryData.updateCameraPos(
+			this.geometryData.cameraPos,
+			dir2,
+			magnitude2 * 2
+		);
 
 		//Now at long last, construct the geodesic from te new camera position to this point.
-		const [dir3] = this.getGeodesicDirection(newCameraPos, x1);
+		const [dir3] = this.geometryData.getGeodesicDirection(newCameraPos, x1);
 
 		return dir3;
 	}
@@ -677,21 +657,21 @@ export class ThurstonGeometry extends Applet
 		);
 
 		const result = ThurstonGeometry.rotateVectors(
-			this.forwardVec,
-			this.rightVec,
+			this.geometryData.forwardVec,
+			this.geometryData.rightVec,
 			this.wilson.worldCenterX
 		);
 
 		//Left/right rotation is allowed to be baked in to the underlying vectors.
 
-		this.forwardVec = result[0];
-		this.rightVec = result[1];
+		this.geometryData.forwardVec = result[0];
+		this.geometryData.rightVec = result[1];
 
 		this.wilson.worldCenterX = 0;
 
 		const result2 = ThurstonGeometry.rotateVectors(
-			this.forwardVec,
-			this.upVec,
+			this.geometryData.forwardVec,
+			this.geometryData.upVec,
 			this.wilson.worldCenterY
 		);
 
@@ -705,30 +685,39 @@ export class ThurstonGeometry extends Applet
 	//direction at all.
 	correctVectors()
 	{
-		const dotUp = this.customDotProduct(this.normalVec, this.upVec);
-		const dotRight = this.customDotProduct(this.normalVec, this.rightVec);
-		const dotForward = this.customDotProduct(this.normalVec, this.forwardVec);
+		const dotUp = this.geometryData.dotProduct(
+			this.geometryData.normalVec,
+			this.geometryData.upVec
+		);
 
-		console.log(dotUp, dotRight, dotForward);
+		const dotRight = this.geometryData.dotProduct(
+			this.geometryData.normalVec,
+			this.geometryData.rightVec
+		);
+
+		const dotForward = this.geometryData.dotProduct(
+			this.geometryData.normalVec,
+			this.geometryData.forwardVec
+		);
 
 		for (let i = 0; i < 4; i++)
 		{
-			this.upVec[i] -= dotUp * this.normalVec[i];
-			this.rightVec[i] -= dotRight * this.normalVec[i];
-			this.forwardVec[i] -= dotForward * this.normalVec[i];
+			this.geometryData.upVec[i] -= dotUp * this.geometryData.normalVec[i];
+			this.geometryData.rightVec[i] -= dotRight * this.geometryData.normalVec[i];
+			this.geometryData.forwardVec[i] -= dotForward * this.geometryData.normalVec[i];
 		}
 
-		this.upVec = ThurstonGeometry.normalize(this.upVec);
-		this.rightVec = ThurstonGeometry.normalize(this.rightVec);
-		this.forwardVec = ThurstonGeometry.normalize(this.forwardVec);
+		this.geometryData.upVec = ThurstonGeometry.normalize(this.geometryData.upVec);
+		this.geometryData.rightVec = ThurstonGeometry.normalize(this.geometryData.rightVec);
+		this.geometryData.forwardVec = ThurstonGeometry.normalize(this.geometryData.forwardVec);
 	}
 
 
 
 	getCurvature(pos, dir)
 	{
-		const gammaPrime = this.getGammaPrime(pos, dir);
-		const gammaDoublePrime = this.getGammaDoublePrime(pos, dir);
+		const gammaPrime = this.geometryData.getGammaPrime(pos, dir);
+		const gammaDoublePrime = this.geometryData.getGammaDoublePrime(pos, dir);
 
 		const dotProduct = ThurstonGeometry.dotProduct(gammaPrime, gammaDoublePrime);
 		const gammaPrimeMag = ThurstonGeometry.magnitude(gammaPrime);
