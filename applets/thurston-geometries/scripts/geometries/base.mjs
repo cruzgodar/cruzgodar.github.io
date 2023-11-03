@@ -37,6 +37,14 @@ export class BaseGeometry
 		return [ThurstonGeometry.normalize(dir), magnitude];
 	}
 
+	normalizeToMagnitude(vec, targetMag)
+	{
+		const mag = this.dotProduct(vec, vec);
+		const scaleFactor = Math.sqrt(targetMag / mag);
+
+		return [vec[0] * mag, vec[1] * mag, vec[2] * mag, vec[3] * mag];
+	}
+
 	getNormalVec()
 	{
 		//f = w - 1.
