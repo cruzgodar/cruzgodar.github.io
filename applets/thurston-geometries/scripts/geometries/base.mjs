@@ -5,6 +5,8 @@ export class BaseGeometry
 	geodesicGlsl = "vec4 pos = startPos + t * rayDirectionVec;";
 
 	fogGlsl = "return mix(color, fogColor, 1.0 - exp(-length(pos - cameraPos) * fogScaling));";
+
+	updateTGlsl = "t += distance * stepFactor;";
 		
 	dotProduct(vec1, vec2)
 	{

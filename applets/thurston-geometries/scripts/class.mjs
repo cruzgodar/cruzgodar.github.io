@@ -238,8 +238,8 @@ export class ThurstonGeometry extends Applet
 						finalColor = computeShading(pos, iteration);
 						break;
 					}
-					
-					t += distance * stepFactor;
+
+					${this.geometryData.updateTGlsl}
 				}
 				
 				return finalColor;

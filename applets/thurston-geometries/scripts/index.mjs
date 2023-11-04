@@ -1,6 +1,5 @@
 import { ThurstonGeometry } from "./class.mjs";
-import { E3Rooms, E3Spheres } from "./geometries/e3.mjs";
-import { H3Spheres } from "./geometries/h3.mjs";
+import { E3Rooms, E3Spheres, H3Spheres } from "./geometries/e3.mjs";
 import { S3HopfFibration, S3Rooms, S3Spheres } from "./geometries/s3.mjs";
 import { showPage } from "/scripts/src/load-page.mjs";
 import { $ } from "/scripts/src/main.mjs";
@@ -18,7 +17,6 @@ export function load()
 		"s3-rooms": S3Rooms,
 		"s3-spheres": S3Spheres,
 		"s3-hopf-fibration": S3HopfFibration,
-		"h3-spheres": H3Spheres
 	};
 
 	const sceneSelectorDropdownElement = $("#scene-selector-dropdown");
@@ -28,7 +26,7 @@ export function load()
 		if (sceneSelectorDropdownElement.value !== "none")
 		{
 			const GeometryDataClass = scenes[sceneSelectorDropdownElement.value];
-			applet.run(new GeometryDataClass());
+			applet.run(new H3Spheres());
 		}
 	}
 
