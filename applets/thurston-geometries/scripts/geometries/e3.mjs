@@ -68,14 +68,18 @@ export class E3Spheres extends E3Geometry
 export class H3Spheres extends E3Geometry
 {
 	distanceEstimatorGlsl = `
-		float distance1 = length(pos.xyz) - 1.0;
+		float distance1 = length(pos.xyz) - planeDistance;
+		float distance2 = length(pos.xyz - vec3(1.618 * 1.78, 0.0, 0.0)) - 1.0;
 
 		return distance1;
+		return ${getMinGlslString("distance", 2)};
 	`;
 
 	functionGlsl = `
 		// The right side of the plane equations after normalizing.
 		const float planeDistance = 1.3763819;
+		const float phi = 1.61803398;
+		const float phi2 = 2.61803398;
 		const vec3 plane1 = vec3(0.52573112, 0.85065077, 0.0);
 		const vec3 plane2 = vec3(0.52573112, -0.85065077, 0.0);
 
@@ -88,14 +92,14 @@ export class H3Spheres extends E3Geometry
 			// sphere when we teleport. So instead, we'll reset to the plane itself when we teleport.
 			if (dotProduct < -planeDistance)
 			{
-				pos.xyz += plane1 * 2.0 * planeDistance;
+				pos.xyz += vec3(phi2, phi, 0.0);
 				startPos = pos;
 				t = 0.0;
 			}
 
 			else if (dotProduct > planeDistance)
 			{
-				pos.xyz -= plane1 * 2.0 * planeDistance;
+				pos.xyz -= vec3(phi2, phi, 0.0);
 				startPos = pos;
 				t = 0.0;
 			}
@@ -106,14 +110,14 @@ export class H3Spheres extends E3Geometry
 
 			if (dotProduct < -planeDistance)
 			{
-				pos.xyz += plane2 * 2.0 * planeDistance;
+				pos.xyz += vec3(phi2, -phi, 0.0);
 				startPos = pos;
 				t = 0.0;
 			}
 
 			else if (dotProduct > planeDistance)
 			{
-				pos.xyz -= plane2 * 2.0 * planeDistance;
+				pos.xyz -= vec3(phi2, -phi, 0.0);
 				startPos = pos;
 				t = 0.0;
 			}
