@@ -136,10 +136,16 @@ import{Applet}from"/scripts/src/applets.min.mjs";import{aspectRatio}from"/script
 
 			void teleportPos(inout vec4 pos, inout vec4 rayDirectionVec, ivec4 p1, ivec4 p2)
 			{
-				// if (p1.x != 0)
-				// {
-				// 	pos.x = -pos.x;
-				// }
+				if (p1.x != 0)
+				{
+					float temp = pos.w;
+					pos.x = -pos.w;
+					pos.w = -abs(temp);
+					
+					temp = rayDirectionVec.x;
+					rayDirectionVec.x = -rayDirectionVec.w;
+					rayDirectionVec.w = temp;
+				}
 
 				// else if (p1.y != 0)
 				// {

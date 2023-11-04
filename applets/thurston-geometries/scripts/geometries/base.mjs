@@ -2,7 +2,7 @@ import { ThurstonGeometry } from "../class.mjs";
 
 export class BaseGeometry
 {
-	geodesicGlsl = "vec4 pos = cameraPos + t * rayDirectionVec;";
+	geodesicGlsl = "vec4 pos = startPos + t * rayDirectionVec;";
 
 	fogGlsl = "return mix(color, fogColor, 1.0 - exp(-length(pos - cameraPos) * fogScaling));";
 		
@@ -81,6 +81,7 @@ export class BaseGeometry
 	getColorGlsl;
 	lightGlsl;
 	functionGlsl;
+	raymarchSetupGlsl;
 
 	cameraPos;
 	normalVec;

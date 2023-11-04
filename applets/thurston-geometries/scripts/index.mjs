@@ -28,7 +28,7 @@ export function load()
 		if (sceneSelectorDropdownElement.value !== "none")
 		{
 			const GeometryDataClass = scenes[sceneSelectorDropdownElement.value];
-			applet.run(new S3Rooms());
+			applet.run(new GeometryDataClass());
 		}
 	}
 
