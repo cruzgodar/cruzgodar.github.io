@@ -214,18 +214,159 @@ export class ThurstonGeometry extends Applet
 				//Apply fog.
 				${this.geometryData.fogGlsl}
 			}
+
+
+
+			ivec4 closestQ8Point(vec4 pos)
+			{
+				float maxEntry = max(
+					max(abs(pos.x), abs(pos.y)),
+					max(abs(pos.z), abs(pos.w))
+				);
+
+				if (maxEntry == pos.x)
+				{
+					return ivec4(1, 0, 0, 0);
+				}
+
+				if (maxEntry == -pos.x)
+				{
+					return ivec4(-1, 0, 0, 0);
+				}
+
+				if (maxEntry == pos.y)
+				{
+					return ivec4(0, 1, 0, 0);
+				}
+
+				if (maxEntry == -pos.y)
+				{
+					return ivec4(0, -1, 0, 0);
+				}
+
+				if (maxEntry == pos.z)
+				{
+					return ivec4(0, 0, 1, 0);
+				}
+
+				if (maxEntry == -pos.z)
+				{
+					return ivec4(0, 0, -1, 0);
+				}
+
+				if (maxEntry == pos.w)
+				{
+					return ivec4(0, 0, 0, 1);
+				}
+
+				if (maxEntry == -pos.w)
+				{
+					return ivec4(0, 0, 0, -1);
+				}
+			}
+
+			void teleportPos(inout vec4 pos, ivec4 p1, ivec4 p2)
+			{
+				// if (p1.x != 0)
+				// {
+				// 	pos.x = -pos.x;
+				// }
+
+				// else if (p1.y != 0)
+				// {
+				// 	pos.y = -pos.y;
+				// }
+
+				// else if (p1.z != 0)
+				// {
+				// 	pos.z = -pos.z;
+				// }
+
+				// else
+				// {
+				// 	pos.w = -pos.w;
+				// }
+
+				if (p1.x == 0 && p2.x == 0)
+				{
+					float temp = pos.x;
+
+					if (p1.y == 0 && p2.y == 0)
+					{
+						pos.x = -pos.y;
+						pos.y = temp;
+
+						return;
+					}
+
+					if (p1.z == 0 && p2.z == 0)
+					{
+						pos.x = -pos.z;
+						pos.z = temp;
+
+						return;
+					}
+
+					pos.x = -pos.w;
+					pos.w = temp;
+
+					return;
+				}
+
+				if (p1.y == 0 && p2.y == 0)
+				{
+					float temp = pos.y;
+
+					if (p1.z == 0 && p2.z == 0)
+					{
+						pos.y = -pos.z;
+						pos.z = temp;
+
+						return;
+					}
+
+					pos.y = -pos.w;
+					pos.w = temp;
+
+					return;
+				}
+
+				float temp = pos.z;
+
+				pos.z = -pos.w;
+				pos.w = temp;
+
+				return;
+			}
 			
 			
 			
-			vec3 raymarch(vec4 rayDirectionVec)
+			vec3 raymarch(vec4 startPos, vec4 rayDirectionVec)
 			{
 				vec3 finalColor = fogColor;
 				
 				float t = 0.0;
+
+				ivec4 oldClosestPoint = closestQ8Point(startPos);
 				
 				for (int iteration = 0; iteration < maxMarches; iteration++)
 				{
 					${this.geometryData.geodesicGlsl}
+
+					ivec4 newClosestPoint = closestQ8Point(pos);
+
+					if (newClosestPoint != oldClosestPoint)
+					{
+						//teleportPos(pos, newClosestPoint, oldClosestPoint);
+
+						//We need the geodesic from the teleported point in the same direction we were going.
+						
+						rayDirectionVec = normalize(-sin(t) * startPos + cos(t) * rayDirectionVec);
+
+						startPos = pos;
+						t = 0.0;
+						oldClosestPoint = closestQ8Point(pos);
+					}
 					
 					float distance = distanceEstimator(pos);
 					
@@ -236,6 +377,8 @@ export class ThurstonGeometry extends Applet
 					}
 					
 					t += distance * stepFactor;
+
+					oldClosestPoint = newClosestPoint;
 				}
 				
 				return finalColor;
@@ -245,7 +388,7 @@ export class ThurstonGeometry extends Applet
 			
 			void main(void)
 			{
-				gl_FragColor = vec4(raymarch(normalize(forwardVec + rightVec * uv.x * aspectRatioX * fov + upVec * uv.y / aspectRatioY * fov)), 1.0);
+				gl_FragColor = vec4(raymarch(cameraPos, normalize(forwardVec + rightVec * uv.x * aspectRatioX * fov + upVec * uv.y / aspectRatioY * fov)), 1.0);
 			}
 		`;
 
@@ -373,6 +516,7 @@ export class ThurstonGeometry extends Applet
 
 		if (this.keysPressed.e)
 		{
+			console.log(this.geometryData.cameraPos);
 			this.rollingAmount = 1;
 		}
 
