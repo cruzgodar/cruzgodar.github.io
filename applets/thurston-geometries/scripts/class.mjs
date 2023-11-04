@@ -265,7 +265,7 @@ export class ThurstonGeometry extends Applet
 				}
 			}
 
-			void teleportPos(inout vec4 pos, ivec4 p1, ivec4 p2)
+			void teleportPos(inout vec4 pos, inout vec4 rayDirectionVec, ivec4 p1, ivec4 p2)
 			{
 				// if (p1.x != 0)
 				// {
@@ -289,52 +289,76 @@ export class ThurstonGeometry extends Applet
 
 				if (p1.x == 0 && p2.x == 0)
 				{
-					float temp = pos.x;
-
 					if (p1.y == 0 && p2.y == 0)
 					{
+						float temp = pos.x;
 						pos.x = -pos.y;
 						pos.y = temp;
+						
+						temp = rayDirectionVec.x;
+						rayDirectionVec.x = -rayDirectionVec.y;
+						rayDirectionVec.y = temp;
 
 						return;
 					}
 
 					if (p1.z == 0 && p2.z == 0)
 					{
+						float temp = pos.x;
 						pos.x = -pos.z;
 						pos.z = temp;
+
+						temp = rayDirectionVec.x;
+						rayDirectionVec.x = -rayDirectionVec.z;
+						rayDirectionVec.z = temp;
 
 						return;
 					}
 
+					float temp = pos.x;
 					pos.x = -pos.w;
 					pos.w = temp;
+
+					temp = rayDirectionVec.x;
+					rayDirectionVec.x = -rayDirectionVec.w;
+					rayDirectionVec.w = temp;
 
 					return;
 				}
 
 				if (p1.y == 0 && p2.y == 0)
 				{
-					float temp = pos.y;
-
 					if (p1.z == 0 && p2.z == 0)
 					{
+						float temp = pos.y;
 						pos.y = -pos.z;
 						pos.z = temp;
 
+						temp = rayDirectionVec.y;
+						rayDirectionVec.y = -rayDirectionVec.z;
+						rayDirectionVec.z = temp;
+
 						return;
 					}
-
+					
+					float temp = pos.y;
 					pos.y = -pos.w;
 					pos.w = temp;
+
+					temp = rayDirectionVec.y;
+					rayDirectionVec.y = -rayDirectionVec.w;
+					rayDirectionVec.w = temp;
 
 					return;
 				}
 
 				float temp = pos.z;
-
 				pos.z = -pos.w;
 				pos.w = temp;
+
+				temp = rayDirectionVec.z;
+				rayDirectionVec.z = -rayDirectionVec.w;
+				rayDirectionVec.w = temp;
 
 				return;
 			}
@@ -357,11 +381,10 @@ export class ThurstonGeometry extends Applet
 
 					if (newClosestPoint != oldClosestPoint)
 					{
-						//teleportPos(pos, newClosestPoint, oldClosestPoint);
-
 						//We need the geodesic from the teleported point in the same direction we were going.
-						
 						rayDirectionVec = normalize(-sin(t) * startPos + cos(t) * rayDirectionVec);
+
+						teleportPos(pos, rayDirectionVec, newClosestPoint, oldClosestPoint);
 
 						startPos = pos;
 						t = 0.0;
