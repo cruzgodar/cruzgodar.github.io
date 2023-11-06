@@ -85,7 +85,7 @@ import{BaseGeometry,getMinGlslString}from"./base.min.mjs";class E3Geometry exten
 			if (dotProduct < -planeDistance)
 			{
 				rotateAboutVector(pos.xyz, rayDirectionVec.xyz, plane1, rotationAngle);
-				pos.xyz += vec3(phi2, phi, 0.0);
+				pos.xyz += vec3(1.0514622, 1.7013016, 0.0);
 				startPos = pos;
 				t = 0.0;
 
@@ -95,7 +95,7 @@ import{BaseGeometry,getMinGlslString}from"./base.min.mjs";class E3Geometry exten
 			if (dotProduct > planeDistance)
 			{
 				rotateAboutVector(pos.xyz, rayDirectionVec.xyz, plane1, -rotationAngle);
-				pos.xyz -= vec3(phi2, phi, 0.0);
+				pos.xyz -= vec3(1.0514622, 1.7013016, 0.0);
 				startPos = pos;
 				t = 0.0;
 
@@ -109,7 +109,7 @@ import{BaseGeometry,getMinGlslString}from"./base.min.mjs";class E3Geometry exten
 			if (dotProduct < -planeDistance)
 			{
 				rotateAboutVector(pos.xyz, rayDirectionVec.xyz, plane2, rotationAngle);
-				pos.xyz += vec3(phi2, -phi, 0.0);
+				pos.xyz += vec3(1.0514622, -1.7013016, 0.0);
 				startPos = pos;
 				t = 0.0;
 
@@ -119,21 +119,21 @@ import{BaseGeometry,getMinGlslString}from"./base.min.mjs";class E3Geometry exten
 			if (dotProduct > planeDistance)
 			{
 				rotateAboutVector(pos.xyz, rayDirectionVec.xyz, plane2, -rotationAngle);
-				pos.xyz -= vec3(phi2, -phi, 0.0);
+				pos.xyz -= vec3(1.0514622, -1.7013016, 0.0);
 				startPos = pos;
 				t = 0.0;
 
 				return;
 			}
 
-			/*
+			
 			
 			dotProduct = dot(pos.xyz, plane3);
 
 			if (dotProduct < -planeDistance)
 			{
 				rotateAboutVector(pos.xyz, rayDirectionVec.xyz, plane3, rotationAngle);
-				pos.xyz += vec3(0.0, phi2, phi);
+				pos.xyz += vec3(0.0, 1.0514622, 1.7013016);
 				startPos = pos;
 				t = 0.0;
 
@@ -143,7 +143,7 @@ import{BaseGeometry,getMinGlslString}from"./base.min.mjs";class E3Geometry exten
 			if (dotProduct > planeDistance)
 			{
 				rotateAboutVector(pos.xyz, rayDirectionVec.xyz, plane3, -rotationAngle);
-				pos.xyz -= vec3(0.0, phi2, phi);
+				pos.xyz -= vec3(0.0, 1.0514622, 1.7013016);
 				startPos = pos;
 				t = 0.0;
 
@@ -157,7 +157,7 @@ import{BaseGeometry,getMinGlslString}from"./base.min.mjs";class E3Geometry exten
 			if (dotProduct < -planeDistance)
 			{
 				rotateAboutVector(pos.xyz, rayDirectionVec.xyz, plane4, rotationAngle);
-				pos.xyz += vec3(0.0, phi2, -phi);
+				pos.xyz += vec3(0.0, 1.0514622, -1.7013016);
 				startPos = pos;
 				t = 0.0;
 			}
@@ -165,7 +165,7 @@ import{BaseGeometry,getMinGlslString}from"./base.min.mjs";class E3Geometry exten
 			else if (dotProduct > planeDistance)
 			{
 				rotateAboutVector(pos.xyz, rayDirectionVec.xyz, plane4, -rotationAngle);
-				pos.xyz -= vec3(0.0, phi2, -phi);
+				pos.xyz -= vec3(0.0, 1.0514622, -1.7013016);
 				startPos = pos;
 				t = 0.0;
 			}
@@ -177,7 +177,7 @@ import{BaseGeometry,getMinGlslString}from"./base.min.mjs";class E3Geometry exten
 			if (dotProduct < -planeDistance)
 			{
 				rotateAboutVector(pos.xyz, rayDirectionVec.xyz, plane5, rotationAngle);
-				pos.xyz += vec3(phi, 0.0, phi2);
+				pos.xyz += vec3(1.7013016, 0.0, 1.0514622);
 				startPos = pos;
 				t = 0.0;
 			}
@@ -185,7 +185,7 @@ import{BaseGeometry,getMinGlslString}from"./base.min.mjs";class E3Geometry exten
 			else if (dotProduct > planeDistance)
 			{
 				rotateAboutVector(pos.xyz, rayDirectionVec.xyz, plane5, -rotationAngle);
-				pos.xyz -= vec3(phi, 0.0, phi2);
+				pos.xyz -= vec3(1.7013016, 0.0, 1.0514622);
 				startPos = pos;
 				t = 0.0;
 			}
@@ -197,7 +197,7 @@ import{BaseGeometry,getMinGlslString}from"./base.min.mjs";class E3Geometry exten
 			if (dotProduct < -planeDistance)
 			{
 				rotateAboutVector(pos.xyz, rayDirectionVec.xyz, plane6, rotationAngle);
-				pos.xyz += vec3(-phi, 0.0, phi2);
+				pos.xyz += vec3(-1.7013016, 0.0, 1.0514622);
 				startPos = pos;
 				t = 0.0;
 			}
@@ -205,11 +205,10 @@ import{BaseGeometry,getMinGlslString}from"./base.min.mjs";class E3Geometry exten
 			else if (dotProduct > planeDistance)
 			{
 				rotateAboutVector(pos.xyz, rayDirectionVec.xyz, plane6, -rotationAngle);
-				pos.xyz -= vec3(-phi, 0.0, phi2);
+				pos.xyz -= vec3(-1.7013016, 0.0, 1.0514622);
 				startPos = pos;
 				t = 0.0;
 			}
-			*/
 		}
 
 		float getTToPlane(vec3 pos, vec3 rayDirectionVec, vec3 planeNormalVec, float planeOffset)
@@ -234,16 +233,16 @@ import{BaseGeometry,getMinGlslString}from"./base.min.mjs";class E3Geometry exten
 		float t2 = abs(getTToPlane(pos.xyz, rayDirectionVec.xyz, plane1, -planeDistance));
 		float t3 = abs(getTToPlane(pos.xyz, rayDirectionVec.xyz, plane2, planeDistance));
 		float t4 = abs(getTToPlane(pos.xyz, rayDirectionVec.xyz, plane2, -planeDistance));
-		/*float t5 = abs(getTToPlane(pos.xyz, rayDirectionVec.xyz, plane3, planeDistance));
+		float t5 = abs(getTToPlane(pos.xyz, rayDirectionVec.xyz, plane3, planeDistance));
 		float t6 = abs(getTToPlane(pos.xyz, rayDirectionVec.xyz, plane3, -planeDistance));
 		float t7 = abs(getTToPlane(pos.xyz, rayDirectionVec.xyz, plane4, planeDistance));
 		float t8 = abs(getTToPlane(pos.xyz, rayDirectionVec.xyz, plane4, -planeDistance));
 		float t9 = abs(getTToPlane(pos.xyz, rayDirectionVec.xyz, plane5, planeDistance));
 		float t10 = abs(getTToPlane(pos.xyz, rayDirectionVec.xyz, plane5, -planeDistance));
 		float t11 = abs(getTToPlane(pos.xyz, rayDirectionVec.xyz, plane6, planeDistance));
-		float t12 = abs(getTToPlane(pos.xyz, rayDirectionVec.xyz, plane6, -planeDistance));*/
+		float t12 = abs(getTToPlane(pos.xyz, rayDirectionVec.xyz, plane6, -planeDistance));
 
-		float minTToPlane = ${getMinGlslString("t",4)};
+		float minTToPlane = ${getMinGlslString("t",12)};
 		t += min(minTToPlane + .01, distance) * stepFactor;
 	`;lightGlsl=`
 		vec4 lightDirection1 = normalize(vec4(1.0, 1.0, 1.0, 1.0) - pos);
