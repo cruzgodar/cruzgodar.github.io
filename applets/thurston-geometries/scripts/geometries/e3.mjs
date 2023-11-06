@@ -68,15 +68,13 @@ export class E3Spheres extends E3Geometry
 export class H3Spheres extends E3Geometry
 {
 	distanceEstimatorGlsl = `
-		float distance1 = length(pos.xyz) - 0.5;
+		float distance1 = length(pos.xyz) - 1.59;
 
-		return distance1;
+		return -distance1;
 	`;
 
 	functionGlsl = `
 		// The right side of the plane equations after normalizing.
-		const float phi = 1.61803398;
-		const float phi2 = 2.61803398;
 		const float planeDistance = 1.3763819;
 		
 		const vec3 plane1 = vec3(0.52573112, 0.85065077, 0.0);
@@ -112,7 +110,8 @@ export class H3Spheres extends E3Geometry
 			rayDirectionVec = rotationMatrix * rayDirectionVec;
 		}
 
-		void teleportPos(inout vec4 pos, inout vec4 startPos, inout vec4 rayDirectionVec, inout float t)
+		//Teleports the position back inside the dodecahedron and returns a vector to update the color.
+		vec3 teleportPos(inout vec4 pos, inout vec4 startPos, inout vec4 rayDirectionVec, inout float t)
 		{
 			float dotProduct = dot(pos.xyz, plane1);
 
@@ -127,7 +126,7 @@ export class H3Spheres extends E3Geometry
 				startPos = pos;
 				t = 0.0;
 
-				return;
+				return vec3(1.0, 0.0, 0.0);
 			}
 
 			if (dotProduct > planeDistance)
@@ -137,7 +136,7 @@ export class H3Spheres extends E3Geometry
 				startPos = pos;
 				t = 0.0;
 
-				return;
+				return vec3(0.0, 1.0, 1.0);
 			}
 
 			
@@ -151,7 +150,7 @@ export class H3Spheres extends E3Geometry
 				startPos = pos;
 				t = 0.0;
 
-				return;
+				return vec3(1.0, 0.5, 0.0);
 			}
 
 			if (dotProduct > planeDistance)
@@ -161,7 +160,7 @@ export class H3Spheres extends E3Geometry
 				startPos = pos;
 				t = 0.0;
 
-				return;
+				return vec3(0.0, 0.5, 1.0);
 			}
 
 			
@@ -175,7 +174,7 @@ export class H3Spheres extends E3Geometry
 				startPos = pos;
 				t = 0.0;
 
-				return;
+				return vec3(1.0, 1.0, 0.0);
 			}
 
 			if (dotProduct > planeDistance)
@@ -185,7 +184,7 @@ export class H3Spheres extends E3Geometry
 				startPos = pos;
 				t = 0.0;
 
-				return;
+				return vec3(0.0, 0.0, 1.0);
 			}
 
 
@@ -198,6 +197,8 @@ export class H3Spheres extends E3Geometry
 				pos.xyz += vec3(0.0, 1.0514622, -1.7013016);
 				startPos = pos;
 				t = 0.0;
+
+				return vec3(0.5, 1.0, 0.0);
 			}
 
 			else if (dotProduct > planeDistance)
@@ -206,6 +207,8 @@ export class H3Spheres extends E3Geometry
 				pos.xyz -= vec3(0.0, 1.0514622, -1.7013016);
 				startPos = pos;
 				t = 0.0;
+
+				return vec3(0.5, 0.0, 1.0);
 			}
 
 
@@ -218,6 +221,8 @@ export class H3Spheres extends E3Geometry
 				pos.xyz += vec3(1.7013016, 0.0, 1.0514622);
 				startPos = pos;
 				t = 0.0;
+
+				return vec3(0.0, 1.0, 0.0);
 			}
 
 			else if (dotProduct > planeDistance)
@@ -226,6 +231,8 @@ export class H3Spheres extends E3Geometry
 				pos.xyz -= vec3(1.7013016, 0.0, 1.0514622);
 				startPos = pos;
 				t = 0.0;
+
+				return vec3(1.0, 0.0, 1.0);
 			}
 
 
@@ -238,6 +245,8 @@ export class H3Spheres extends E3Geometry
 				pos.xyz += vec3(-1.7013016, 0.0, 1.0514622);
 				startPos = pos;
 				t = 0.0;
+
+				return vec3(0.0, 1.0, 0.5);
 			}
 
 			else if (dotProduct > planeDistance)
@@ -246,7 +255,13 @@ export class H3Spheres extends E3Geometry
 				pos.xyz -= vec3(-1.7013016, 0.0, 1.0514622);
 				startPos = pos;
 				t = 0.0;
+
+				return vec3(1.0, 0.0, 0.5);
 			}
+
+
+
+			return vec3(0.0, 0.0, 0.0);
 		}
 
 		float getTToPlane(vec3 pos, vec3 rayDirectionVec, vec3 planeNormalVec, float planeOffset)
@@ -265,11 +280,16 @@ export class H3Spheres extends E3Geometry
 	geodesicGlsl = `
 		vec4 pos = startPos + t * rayDirectionVec;
 		
-		teleportPos(pos, startPos, rayDirectionVec, t);
+		globalColor += teleportPos(pos, startPos, rayDirectionVec, t);
 	`;
 
 	getColorGlsl = `
-		return vec3(1.0, 1.0, 1.0);
+		// The  color predominantly comes from the room we're in, and then there's a little extra from the position in that room.
+		return vec3(
+			.25 + .75 * (.5 * (sin(globalColor.x + pos.x / 5.0) + 1.0)),
+			.25 + .75 * (.5 * (sin(globalColor.y + pos.y / 5.0) + 1.0)),
+			.25 + .75 * (.5 * (sin(globalColor.z + pos.z / 5.0) + 1.0))
+		);
 	`;
 
 	updateTGlsl = `

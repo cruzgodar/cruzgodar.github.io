@@ -178,7 +178,7 @@ export class ThurstonGeometry extends Applet
 				${this.geometryData.distanceEstimatorGlsl}
 			}
 			
-			vec3 getColor(vec4 pos)
+			vec3 getColor(vec4 pos, vec3 globalColor)
 			{
 				${this.geometryData.getColorGlsl}
 			}
@@ -202,14 +202,14 @@ export class ThurstonGeometry extends Applet
 			
 			
 			
-			vec3 computeShading(vec4 pos, int iteration)
+			vec3 computeShading(vec4 pos, int iteration, vec3 globalColor)
 			{
 				vec4 surfaceNormal = getSurfaceNormal(pos);
 				
 				${this.geometryData.lightGlsl}
 
 				//The last factor adds ambient occlusion.
-				vec3 color = getColor(pos) * lightIntensity * max((1.0 - float(iteration) / float(maxMarches)), 0.0);
+				vec3 color = getColor(pos, globalColor) * lightIntensity * max((1.0 - float(iteration) / float(maxMarches)), 0.0);
 				
 				//Apply fog.
 				${this.geometryData.fogGlsl}
@@ -225,6 +225,8 @@ export class ThurstonGeometry extends Applet
 
 				vec4 startPos = cameraPos;
 
+				vec3 globalColor = vec3(0.0, 0.0, 0.0);
+
 				${this.geometryData.raymarchSetupGlsl ?? ""}
 				
 				for (int iteration = 0; iteration < maxMarches; iteration++)
@@ -235,7 +237,7 @@ export class ThurstonGeometry extends Applet
 					
 					if (distance < epsilon)
 					{
-						finalColor = computeShading(pos, iteration);
+						finalColor = computeShading(pos, iteration, globalColor);
 						break;
 					}
 
