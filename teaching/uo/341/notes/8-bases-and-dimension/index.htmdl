@@ -186,15 +186,35 @@ That requires a whole lot of work to understand, so let's dig in.
 
 ### ex the matrix of a transformation
 
-	Let $V$ be the subspace of $#R#[x]$ of polynomials with degree at most $3$, and let $\mathcal{B}$ be the basis
+	Let $V$ be the subspace of $#R#[x]$ of polynomials with degree at most $3$, and let $\mathcal{B}$ be the basis $1, x, x^2, x^3$ for $V$. Let $W$ be the subspace of $#R#[x]$ of polynomials with degree at most $2$, and let $\mathcal{C}$ be the basis $1, x, x^2$ for $W$. Let $D : V \to W$ be the linear transformation given by differentiation. Find the matrix $A$ for $D$ with respect to these two bases and use it to evaluate $D(1 - 2x + x^3)$.
+
+	To begin, we just plug every one of the four basis vectors in $\mathcal{B}$ into $D$, resulting in $0$, $1$, $2x$, and $3x^2$. Then we write each as a coordinate vector in $\mathcal{C}$, which gives us
 
 	$$
-		1, 1 + x, 1 + x + x^2, 1 + x + x^2 + x^3.
+		[0]_\mathcal{C} &= [[ 0 ; 0 ; 0 ]] \qquad [1]_\mathcal{C} &= [[ 1 ; 0 ; 0 ]] \qquad [2x]_\mathcal{C} &= [[ 0 ; 2 ; 0 ]] \qquad [3x^2]_\mathcal{C} &= [[ 0 ; 0 ; 3 ]].
 	$$
 
-	Let $W$ be the subspace of $#R#[x]$ of polynomials with degree at most $2$, and let $\mathcal{C}$ be the basis $1, x, x^2$. Let $D : V \to W$ be the linear transformation given by differentiation. Find the matrix $A$ for $D$ with respect to these two bases and use it to evaluate $D(1 + 2x + x^3)$.
+	Assembling those into a matrix gives us
 
-	
+	$$
+		A = [[ 0, 1, 0, 0 ; 0, 0, 2, 0 ; 0, 0, 0, 3 ]].
+	$$
+
+	To actually use $A$ to compute the effect of $D$ on the vector (i.e. polynomial) $1 - 2x + x^3$, we first write it as a coordinate vector using the basis $\mathcal{B}$:
+
+	$$
+		[1 - 2x + x^3]_\mathcal{B} = [[ 1 ; -2 ; 0 ; 1 ]].
+	$$
+
+	Then we do matrix multiplication as usual.
+
+	$$
+		A[1 - 2x + x^3]_\mathcal{B} &= [[ 0, 1, 0, 0 ; 0, 0, 2, 0 ; 0, 0, 0, 3 ]][[ 1 ; -2 ; 0 ; 3 ]]
+
+		&= [[ -2 ; 0 ; 3 ]].
+	$$
+
+	Finally, we interpret this as a coordinate vector in $\mathcal{C}$, which corresponds to the polynomial $-2 + 3x^2$, which is successfully $D(1 - 2x + x^3)$. Although the notation is a little bit clunkier and the process is a little bit longer, this is just a return to our old saying that matrix multiplication is function evaluation. Since linear transformations are defined by their actions on just basis vectors, we can make a perfect analogy to $#R#^n$ and recover all of our matrix techniques in the process.
 
 ###
 
