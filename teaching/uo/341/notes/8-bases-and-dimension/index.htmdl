@@ -82,7 +82,7 @@ This basis is so common that we'll want a name for it --- it's called the **stan
 
 	in this basis.
 	
-	While this is nominally a new kind of task, we've been showing that vectors are linearly independent and spanning for a few sections now: showing that a linear transformation is one-to-one and onto amounts to showing that its columns are linearly independent and span the transformation's codomain. We do that by transposing the matrix and row reducing without swapping rows, so now we might as well jump straight to that step now by placing our vectors as rows in a matrix. We have
+	While this is nominally a new kind of task, we've been showing that vectors are linearly independent and spanning for a few sections now: showing that a linear transformation is one-to-one and onto amounts to showing that its columns are linearly independent and span the transformation's codomain. We do that by transposing the matrix and row reducing without swapping rows, so we might as well jump straight to that step now by placing our vectors as rows in a matrix. We have
 	
 	$$
 		[[ 3, 1, 2 ; 1, 0, 1 ; 0, 2, 1 ]] &
@@ -176,7 +176,7 @@ $$
 	[3 - x + 4x^3]_\mathcal{B} = [[ 3 ; -1 ; 0 ; 4 ]].
 $$
 
-The magic of coordinate vectors is that they let us define matrices, with the one caveat that those coordinate vectors only work when we choose a particular basis. In order to form the matrix for a linear transformation $T : V \to W$, we choose a basis $\mathcal{B}$ for $V$ and $\mathcal{C}$ for $W$, evaluate $T$ on each of the vectors in $\mathcal{B}$, and then express each of those as coordinate vectors in $\mathcal{C}$. Then we place those as columns in a matrix $A$, at which point
+The magic of coordinate vectors is that they let us define matrices, with the one caveat that those coordinate vectors only work when we choose a particular basis. To form the matrix for a linear transformation $T : V \to W$, we choose a basis $\mathcal{B}$ for $V$ and $\mathcal{C}$ for $W$, evaluate $T$ on each of the vectors in $\mathcal{B}$, and then express each of those as coordinate vectors in $\mathcal{C}$. Then we place those as columns in a matrix $A$, at which point
 
 $$
 	A[\vec{v}]_\mathcal{B} = [T(\vec{v})]_\mathcal{C}.
@@ -217,6 +217,54 @@ That requires a whole lot of work to understand, so let's dig in.
 	Finally, we interpret this as a coordinate vector in $\mathcal{C}$, which corresponds to the polynomial $-2 + 3x^2$, which is successfully $D(1 - 2x + x^3)$. Although the notation is a little bit clunkier and the process is a little bit longer, this is just a return to our old saying that matrix multiplication is function evaluation. Since linear transformations are defined by their actions on just basis vectors, we can make a perfect analogy to $#R#^n$ and recover all of our matrix techniques in the process.
 
 ###
+
+### exc the matrix of a transformation
+
+	Let $\mathcal{B}$ be the basis
+
+	$$
+		[[ 1, 0 ; 0, 0 ]], [[ 0, 1 ; 0, 0 ]], [[ 0, 0 ; 1, 0 ]], [[ 0, 0 ; 0, 1 ]]
+	$$
+
+	for $M_{2 \times 2}(#R#)$ and let $\mathcal{C}$ be the basis $[[ 1 ; 0 ]], [[ 0 ; 1 ]]$ for $#R#^2$. Let $T : M_{2 \times 2}(#R#) \to #R#^2$ be the linear transformation defined by
+
+	$$
+		T(E) = E [[ -2 ; 1 ]].
+	$$
+
+	Find the matrix $A$ for $T$ with respect to these two bases and use it to evaluate
+
+	$$
+		T\left( [[ 1, 3 ; -1, 0 ]] \right).
+	$$
+
+###
+
+One immediate upshot of coordinate vectors is that they let us pin down how many vectors make up a basis. Suppose a vector space $V$ has one basis $\mathcal{B}$ with $n$ vectors and another basis $\mathcal{C}$ with $m$ vectors. Then we can write the vectors of $\mathcal{C}$ as coordinate vectors in $\mathcal{B}$, which live in $#R#^n$ since $\mathcal{B}$ has $n$ vectors. But any more than $n$ vectors in $#R#^n$ can't be linearly independent, and any fewer can't span, so $\mathcal{C}$ must have exactly $n$ vectors too. In short, any two bases for a vector space have the same size, and it's worth giving that invariant a name.
+
+### def dimension
+
+	Let $V$ be a vector space. The **dimension of $V$**, written $\dim V$, is the number of vectors in any basis of $V$. If $\dim V$ is finite, we say $V$ is **finite-dimensional**, and if not, we say $V$ is infinite-dimensional. Finally, we define $\dim \{\vec{0}\} = 0$.
+
+###
+
+### exc dimension
+
+	Find $\dim V$ for the following vector spaces $V$.
+
+	1. $V = #R#^4$.
+
+	2. $V$ is the subspace of $#R#[x]$ of polynomials with degree at most $4$.
+
+	3. $V = #R#[x]$.
+
+	4. $V = M_{2 \times 3}(#R#)$.
+
+###
+
+In the next section, we'll tie up the last remaining loose ends: how to easily change from one basis to another, and why exactly the kernel and image are so important and closely related.
+
+
 
 
 
