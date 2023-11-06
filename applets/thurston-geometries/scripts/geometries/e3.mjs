@@ -86,7 +86,7 @@ export class H3Spheres extends E3Geometry
 		const vec3 plane5 = vec3(0.85065077, 0.0, 0.52573112);
 		const vec3 plane6 = vec3(-0.85065077, 0.0, 0.52573112);
 
-		const float rotationAngle = 0.0;
+		const float rotationAngle = 1.88495559215;
 
 
 
@@ -119,23 +119,28 @@ export class H3Spheres extends E3Geometry
 			// To reflect through one of these planes, we just subtract a multiple of the normal vector.
 			// However, when we're far from the actual sphere, we can jump too far and land inside of the actual
 			// sphere when we teleport. So instead, we'll reset to the plane itself when we teleport.
+			
 			if (dotProduct < -planeDistance)
 			{
 				rotateAboutVector(pos.xyz, rayDirectionVec.xyz, plane1, rotationAngle);
 				pos.xyz += vec3(phi2, phi, 0.0);
 				startPos = pos;
 				t = 0.0;
+
+				return;
 			}
 
-			else if (dotProduct > planeDistance)
+			if (dotProduct > planeDistance)
 			{
 				rotateAboutVector(pos.xyz, rayDirectionVec.xyz, plane1, -rotationAngle);
 				pos.xyz -= vec3(phi2, phi, 0.0);
 				startPos = pos;
 				t = 0.0;
+
+				return;
 			}
 
-
+			
 
 			dotProduct = dot(pos.xyz, plane2);
 
@@ -145,18 +150,22 @@ export class H3Spheres extends E3Geometry
 				pos.xyz += vec3(phi2, -phi, 0.0);
 				startPos = pos;
 				t = 0.0;
+
+				return;
 			}
 
-			else if (dotProduct > planeDistance)
+			if (dotProduct > planeDistance)
 			{
 				rotateAboutVector(pos.xyz, rayDirectionVec.xyz, plane2, -rotationAngle);
 				pos.xyz -= vec3(phi2, -phi, 0.0);
 				startPos = pos;
 				t = 0.0;
+
+				return;
 			}
 
-
 			/*
+			
 			dotProduct = dot(pos.xyz, plane3);
 
 			if (dotProduct < -planeDistance)
@@ -165,14 +174,18 @@ export class H3Spheres extends E3Geometry
 				pos.xyz += vec3(0.0, phi2, phi);
 				startPos = pos;
 				t = 0.0;
+
+				return;
 			}
 
-			else if (dotProduct > planeDistance)
+			if (dotProduct > planeDistance)
 			{
 				rotateAboutVector(pos.xyz, rayDirectionVec.xyz, plane3, -rotationAngle);
 				pos.xyz -= vec3(0.0, phi2, phi);
 				startPos = pos;
 				t = 0.0;
+
+				return;
 			}
 
 

@@ -152,7 +152,51 @@ $$
 	&= c_1T(\vec{v_1}) + \cdots + c_nT(\vec{v_n}).
 $$
 
-To begin, 
+In $#R#^n$, we did this in the particular case with $\vec{v_i} = \vec{e_i}$ and $\vec{v} = [[ c_1 ; \vdots ; c_n ]]$, but now the objects aren't necessarily vectors in $#R#^n$. They still often *function* like vectors in $#R#^n$, though, as the previous block of math shows. To emphasize the relationship and make vectors in more abstract vector spaces easier to work with, let's create some notation to help.
+
+### def coordinate vector
+
+	Let $V$ be a vector space, let $\vec{v} \in V$, and let $\vec{v_1}, ..., \vec{v_n}$ be a basis, denoted $\mathcal{B}$. Then there is a unique expression
+
+	$$
+		\vec{v} = c_1\vec{v_1} + \cdots + c_n\vec{v_n},
+	$$
+
+	and we define the **coordinate vector** of $\vec{v}$ as
+
+	$$
+		[\vec{v}]_\mathcal{B} = [[ c_1 ; \vdots ; c_n ]].
+	$$
+
+###
+
+So for example, if $V$ is the space of polynomials with degree at most $3$ and $\mathcal{B}$ is the basis $1, x, x^2, x^3$ , then
+
+$$
+	[3 - x + 4x^3]_\mathcal{B} = [[ 3 ; -1 ; 0 ; 4 ]].
+$$
+
+The magic of coordinate vectors is that they let us define matrices, with the one caveat that those coordinate vectors only work when we choose a particular basis. In order to form the matrix for a linear transformation $T : V \to W$, we choose a basis $\mathcal{B}$ for $V$ and $\mathcal{C}$ for $W$, evaluate $T$ on each of the vectors in $\mathcal{B}$, and then express each of those as coordinate vectors in $\mathcal{C}$. Then we place those as columns in a matrix $A$, at which point
+
+$$
+	A[\vec{v}]_\mathcal{B} = [T(\vec{v})]_\mathcal{C}.
+$$
+
+That requires a whole lot of work to understand, so let's dig in.
+
+### ex the matrix of a transformation
+
+	Let $V$ be the subspace of $#R#[x]$ of polynomials with degree at most $3$, and let $\mathcal{B}$ be the basis
+
+	$$
+		1, 1 + x, 1 + x + x^2, 1 + x + x^2 + x^3.
+	$$
+
+	Let $W$ be the subspace of $#R#[x]$ of polynomials with degree at most $2$, and let $\mathcal{C}$ be the basis $1, x, x^2$. Let $D : V \to W$ be the linear transformation given by differentiation. Find the matrix $A$ for $D$ with respect to these two bases and use it to evaluate $D(1 + 2x + x^3)$.
+
+	
+
+###
 
 
 
