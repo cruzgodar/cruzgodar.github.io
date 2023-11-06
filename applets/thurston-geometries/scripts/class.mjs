@@ -162,6 +162,8 @@ export class ThurstonGeometry extends Applet
 			const float fogScaling = .07;
 			uniform float fov;
 
+			${this.geometryData.uniformGlsl ?? ""}
+
 			${this.geometryData.functionGlsl ?? ""}
 
 
@@ -274,7 +276,7 @@ export class ThurstonGeometry extends Applet
 			"upVec",
 			"rightVec",
 			"forwardVec",
-		]);
+		].concat(this.geometryData.uniformNames ?? []));
 
 		this.wilson.worldCenterX = 0;
 		this.wilson.worldCenterY = 0;
@@ -326,6 +328,8 @@ export class ThurstonGeometry extends Applet
 			this.wilson.uniforms["forwardVec"],
 			this.geometryData.forwardVec
 		);
+
+		this.geometryData.initUniforms(this.wilson.gl, this.wilson.uniforms);
 
 
 

@@ -1,186 +1,287 @@
-import { ThurstonGeometry } from "../class.mjs";
-import { BaseGeometry, getMinGlslString } from "./base.mjs";
+import { getMinGlslString } from "./base.mjs";
+import { E3Geometry } from "./e3.mjs";
+import { $ } from "/scripts/src/main.mjs";
 
-class H3Geometry extends BaseGeometry
+//We use Seifert-Weber space as a model of H^3.
+export class H3Rooms extends E3Geometry
 {
-	geodesicGlsl = "vec4 pos = cosh(t) * cameraPos + sinh(t) * rayDirectionVec;";
+	distanceEstimatorGlsl = `
+		float distance1 = length(pos.xyz) - wallThickness;
 
-	fogGlsl = `return mix(
-		color,
-		fogColor,
-		0.0//1.0 - exp(-acosh(-dot(pos, cameraPos)) * fogScaling)
-	);`;
-
-	functionGlsl = `float sinh(float x)
-	{
-		return .5 * (exp(x) - exp(-x));
-	}
-
-	float cosh(float x)
-	{
-		return .5 * (exp(x) + exp(-x));
-	}
-
-	float acosh(float x)
-	{
-		return log(x + sqrt(x*x - 1.0));
-	}`;
-
-	customDotProduct(vec1, vec2)
-	{
-		return vec1[0] * vec2[0] + vec1[1] * vec2[1] + vec1[2] * vec2[2] - vec1[3] * vec2[3];
-	}
-	
-	updateCameraPos(cameraPos, tangentVec, dt)
-	{
-		const newCameraPos = new Array(4);
-
-		for (let i = 0; i < 4; i++)
-		{
-			newCameraPos[i] = Math.cosh(dt) * cameraPos[i] + Math.sinh(dt) * tangentVec[i];
-		}
-		
-		//Since we're only doing a linear approximation, this position won't be exactly
-		//on the manifold. Therefore, we'll do a quick correction to get it back.
-
-		//Here, we just want the hyperbolic dot product to be -1.
-		const magnitude = Math.sqrt(
-			-newCameraPos[0] * newCameraPos[0]
-			- newCameraPos[1] * newCameraPos[1]
-			- newCameraPos[2] * newCameraPos[2]
-			+ newCameraPos[3] * newCameraPos[3]
-		);
-
-		newCameraPos[0] /= magnitude;
-		newCameraPos[1] /= magnitude;
-		newCameraPos[2] /= magnitude;
-		newCameraPos[3] /= magnitude;
-
-		return newCameraPos;
-	}
-
-	getNormalVec(cameraPos)
-	{
-		//f = -1 + x^2 + y^2 + z^2 - w^2.
-		return ThurstonGeometry.normalize([
-			cameraPos[0],
-			cameraPos[1],
-			cameraPos[2],
-			-cameraPos[3]
-		]);
-	}
-
-	getGammaPrime(_pos, dir)
-	{
-		//gamma = cosh(t)*pos + sinh(t)*dir
-		//gamma' = sinh(t)*pos + cosh(t)*dir
-		//gamma'' = cosh(t)*pos + sinh(t)*dir
-		//gamma''' = sinh(t)*pos + cosh(t)*dir
-		//All of these are evaluated at t=0.
-		return [...dir];
-	}
-
-	getGammaDoublePrime(pos)
-	{
-		return [...pos];
-	}
-
-	getGammaTriplePrime(_pos, dir)
-	{
-		return [...dir];
-	}
-
-	gammaTriplePrimeIsLinearlyIndependent = false;
-}
-
-export class H3Spheres extends H3Geometry
-{
-	static distances = `
-		float distance1 = acosh(dot(pos, vec4(1.0, 1.0, -1.0, 2.0))) - 0.75;
-		float distance2 = acosh(dot(pos, vec4(1.0, -1.0, 1.0, 2.0))) - 0.75;
-		float distance3 = acosh(dot(pos, vec4(1.0, -1.0, -1.0, 2.0))) - 0.75;
-		float distance4 = acosh(dot(pos, vec4(-1.0, 1.0, 1.0, 2.0))) - 0.75;
-		float distance5 = acosh(dot(pos, vec4(-1.0, 1.0, -1.0, 2.0))) - 0.75;
-		float distance6 = acosh(dot(pos, vec4(-1.0, -1.0, 1.0, 2.0))) - 0.75;
-		float distance7 = acosh(dot(pos, vec4(-1.0, -1.0, -1.0, 2.0))) - 0.75;
+		return -distance1;
 	`;
 
-	distanceEstimatorGlsl = `
-		${H3Spheres.distances}
+	functionGlsl = `
+		// The right side of the plane equations after normalizing.
+		const float planeDistance = 1.3763819;
+		
+		const vec3 plane1 = vec3(0.52573112, 0.85065077, 0.0);
+		const vec3 plane2 = vec3(0.52573112, -0.85065077, 0.0);
+		const vec3 plane3 = vec3(0.0, 0.52573112, 0.85065077);
+		const vec3 plane4 = vec3(0.0, 0.52573112, -0.85065077);
+		const vec3 plane5 = vec3(0.85065077, 0.0, 0.52573112);
+		const vec3 plane6 = vec3(-0.85065077, 0.0, 0.52573112);
 
-		float minDistance = ${getMinGlslString("distance", 7)};
+		const float rotationAngle = 1.88495559215;
 
-		return minDistance;
+
+
+		// Rotates pos an angle about axis (which must be a unit vector).
+		void rotateAboutVector(inout vec3 pos, inout vec3 rayDirectionVec, vec3 axis, float angle)
+		{
+			// float sineOfAngle = sin(angle / 2.0);
+			// vec4 q = vec4(sineOfAngle * pos, cos(angle / 2.0));
+			// vec3 temp = cross(q.xyz, pos) + q.w * pos;
+			// pos = pos + 2.0 * cross(q.xyz, temp);
+
+			float s = sin(angle);
+			float c = cos(angle);
+			float oc = 1.0 - c;
+
+			mat3 rotationMatrix = mat3(
+				oc * axis.x * axis.x + c,           oc * axis.x * axis.y - axis.z * s,  oc * axis.z * axis.x + axis.y * s,
+				oc * axis.x * axis.y + axis.z * s,  oc * axis.y * axis.y + c,           oc * axis.y * axis.z - axis.x * s,
+				oc * axis.z * axis.x - axis.y * s,  oc * axis.y * axis.z + axis.x * s,  oc * axis.z * axis.z + c
+			);
+
+			pos.xyz = rotationMatrix * pos.xyz;
+			rayDirectionVec = rotationMatrix * rayDirectionVec;
+		}
+
+		//Teleports the position back inside the dodecahedron and returns a vector to update the color.
+		vec3 teleportPos(inout vec4 pos, inout vec4 startPos, inout vec4 rayDirectionVec, inout float t)
+		{
+			float dotProduct = dot(pos.xyz, plane1);
+
+			// To reflect through one of these planes, we just subtract a multiple of the normal vector.
+			// However, when we're far from the actual sphere, we can jump too far and land inside of the actual
+			// sphere when we teleport. So instead, we'll reset to the plane itself when we teleport.
+			
+			if (dotProduct < -planeDistance)
+			{
+				rotateAboutVector(pos.xyz, rayDirectionVec.xyz, plane1, rotationAngle);
+				pos.xyz += vec3(1.0514622, 1.7013016, 0.0);
+				startPos = pos;
+				t = 0.0;
+
+				return vec3(1.0, 0.0, 0.0);
+			}
+
+			if (dotProduct > planeDistance)
+			{
+				rotateAboutVector(pos.xyz, rayDirectionVec.xyz, plane1, -rotationAngle);
+				pos.xyz -= vec3(1.0514622, 1.7013016, 0.0);
+				startPos = pos;
+				t = 0.0;
+
+				return vec3(0.0, 1.0, 1.0);
+			}
+
+			
+
+			dotProduct = dot(pos.xyz, plane2);
+
+			if (dotProduct < -planeDistance)
+			{
+				rotateAboutVector(pos.xyz, rayDirectionVec.xyz, plane2, rotationAngle);
+				pos.xyz += vec3(1.0514622, -1.7013016, 0.0);
+				startPos = pos;
+				t = 0.0;
+
+				return vec3(1.0, 0.5, 0.0);
+			}
+
+			if (dotProduct > planeDistance)
+			{
+				rotateAboutVector(pos.xyz, rayDirectionVec.xyz, plane2, -rotationAngle);
+				pos.xyz -= vec3(1.0514622, -1.7013016, 0.0);
+				startPos = pos;
+				t = 0.0;
+
+				return vec3(0.0, 0.5, 1.0);
+			}
+
+			
+			
+			dotProduct = dot(pos.xyz, plane3);
+
+			if (dotProduct < -planeDistance)
+			{
+				rotateAboutVector(pos.xyz, rayDirectionVec.xyz, plane3, rotationAngle);
+				pos.xyz += vec3(0.0, 1.0514622, 1.7013016);
+				startPos = pos;
+				t = 0.0;
+
+				return vec3(1.0, 1.0, 0.0);
+			}
+
+			if (dotProduct > planeDistance)
+			{
+				rotateAboutVector(pos.xyz, rayDirectionVec.xyz, plane3, -rotationAngle);
+				pos.xyz -= vec3(0.0, 1.0514622, 1.7013016);
+				startPos = pos;
+				t = 0.0;
+
+				return vec3(0.0, 0.0, 1.0);
+			}
+
+
+
+			dotProduct = dot(pos.xyz, plane4);
+
+			if (dotProduct < -planeDistance)
+			{
+				rotateAboutVector(pos.xyz, rayDirectionVec.xyz, plane4, rotationAngle);
+				pos.xyz += vec3(0.0, 1.0514622, -1.7013016);
+				startPos = pos;
+				t = 0.0;
+
+				return vec3(0.5, 1.0, 0.0);
+			}
+
+			else if (dotProduct > planeDistance)
+			{
+				rotateAboutVector(pos.xyz, rayDirectionVec.xyz, plane4, -rotationAngle);
+				pos.xyz -= vec3(0.0, 1.0514622, -1.7013016);
+				startPos = pos;
+				t = 0.0;
+
+				return vec3(0.5, 0.0, 1.0);
+			}
+
+
+
+			dotProduct = dot(pos.xyz, plane5);
+
+			if (dotProduct < -planeDistance)
+			{
+				rotateAboutVector(pos.xyz, rayDirectionVec.xyz, plane5, rotationAngle);
+				pos.xyz += vec3(1.7013016, 0.0, 1.0514622);
+				startPos = pos;
+				t = 0.0;
+
+				return vec3(0.0, 1.0, 0.0);
+			}
+
+			else if (dotProduct > planeDistance)
+			{
+				rotateAboutVector(pos.xyz, rayDirectionVec.xyz, plane5, -rotationAngle);
+				pos.xyz -= vec3(1.7013016, 0.0, 1.0514622);
+				startPos = pos;
+				t = 0.0;
+
+				return vec3(1.0, 0.0, 1.0);
+			}
+
+
+
+			dotProduct = dot(pos.xyz, plane6);
+
+			if (dotProduct < -planeDistance)
+			{
+				rotateAboutVector(pos.xyz, rayDirectionVec.xyz, plane6, rotationAngle);
+				pos.xyz += vec3(-1.7013016, 0.0, 1.0514622);
+				startPos = pos;
+				t = 0.0;
+
+				return vec3(0.0, 1.0, 0.5);
+			}
+
+			else if (dotProduct > planeDistance)
+			{
+				rotateAboutVector(pos.xyz, rayDirectionVec.xyz, plane6, -rotationAngle);
+				pos.xyz -= vec3(-1.7013016, 0.0, 1.0514622);
+				startPos = pos;
+				t = 0.0;
+
+				return vec3(1.0, 0.0, 0.5);
+			}
+
+
+
+			return vec3(0.0, 0.0, 0.0);
+		}
+
+		float getTToPlane(vec3 pos, vec3 rayDirectionVec, vec3 planeNormalVec, float planeOffset)
+		{
+			float denominator = dot(planeNormalVec, rayDirectionVec);
+
+			if (denominator == 0.0)
+			{
+				return 100.0;
+			}
+
+			return (planeOffset - dot(planeNormalVec, pos)) / denominator;
+		}
+	`;
+
+	geodesicGlsl = `
+		vec4 pos = startPos + t * rayDirectionVec;
+		
+		globalColor += teleportPos(pos, startPos, rayDirectionVec, t);
 	`;
 
 	getColorGlsl = `
-		${H3Spheres.distances}
-		
-		float minDistance = ${getMinGlslString("distance", 7)};
+		// The  color predominantly comes from the room we're in, and then there's a little extra from the position in that room.
+		return vec3(
+			.25 + .75 * (.5 * (sin(globalColor.x + pos.x / 5.0) + 1.0)),
+			.25 + .75 * (.5 * (sin(globalColor.y + pos.y / 5.0) + 1.0)),
+			.25 + .75 * (.5 * (sin(globalColor.z + pos.z / 5.0) + 1.0))
+		);
+	`;
 
-		if (minDistance == distance1)
-		{
-			return vec3(1.0, 0.0, 0.0) * getBanding(pos.y + pos.z + pos.w, 10.0);
-		}
+	updateTGlsl = `
+		float t1 = abs(getTToPlane(pos.xyz, rayDirectionVec.xyz, plane1, planeDistance));
+		float t2 = abs(getTToPlane(pos.xyz, rayDirectionVec.xyz, plane1, -planeDistance));
+		float t3 = abs(getTToPlane(pos.xyz, rayDirectionVec.xyz, plane2, planeDistance));
+		float t4 = abs(getTToPlane(pos.xyz, rayDirectionVec.xyz, plane2, -planeDistance));
+		float t5 = abs(getTToPlane(pos.xyz, rayDirectionVec.xyz, plane3, planeDistance));
+		float t6 = abs(getTToPlane(pos.xyz, rayDirectionVec.xyz, plane3, -planeDistance));
+		float t7 = abs(getTToPlane(pos.xyz, rayDirectionVec.xyz, plane4, planeDistance));
+		float t8 = abs(getTToPlane(pos.xyz, rayDirectionVec.xyz, plane4, -planeDistance));
+		float t9 = abs(getTToPlane(pos.xyz, rayDirectionVec.xyz, plane5, planeDistance));
+		float t10 = abs(getTToPlane(pos.xyz, rayDirectionVec.xyz, plane5, -planeDistance));
+		float t11 = abs(getTToPlane(pos.xyz, rayDirectionVec.xyz, plane6, planeDistance));
+		float t12 = abs(getTToPlane(pos.xyz, rayDirectionVec.xyz, plane6, -planeDistance));
 
-		if (minDistance == distance2)
-		{
-			return vec3(0.0, 1.0, 1.0) * getBanding(pos.y + pos.z + pos.w, 10.0);
-		}
-
-		if (minDistance == distance3)
-		{
-			return vec3(0.0, 1.0, 0.0) * getBanding(pos.x + pos.z + pos.w, 10.0);
-		}
-
-		if (minDistance == distance4)
-		{
-			return vec3(1.0, 0.0, 1.0) * getBanding(pos.x + pos.z + pos.w, 10.0);
-		}
-
-		if (minDistance == distance5)
-		{
-			return vec3(0.0, 0.0, 1.0) * getBanding(pos.x + pos.y + pos.w, 10.0);
-		}
-
-		if (minDistance == distance6)
-		{
-			return vec3(1.0, 1.0, 0.0) * getBanding(pos.x + pos.y + pos.w, 10.0);
-		}
-
-		if (minDistance == distance7)
-		{
-			return vec3(1.0, 1.0, 1.0) * getBanding(pos.x + pos.y + pos.z, 10.0);
-		}
+		float minTToPlane = ${getMinGlslString("t", 12)};
+		t += min(minTToPlane + .01, distance) * stepFactor;
 	`;
 
 	lightGlsl = `
 		vec4 lightDirection1 = normalize(vec4(1.0, 1.0, 1.0, 1.0) - pos);
 		float dotProduct1 = dot(surfaceNormal, lightDirection1);
 
-		vec4 lightDirection2 = normalize(vec4(-1.0, -1.0, -1.0, 1.0) - pos);
-		float dotProduct2 = dot(surfaceNormal, lightDirection2);
-
-		vec4 lightDirection3 = normalize(vec4(1.0, 1.0, 1.0, 0.0) - pos);
-		float dotProduct3 = dot(surfaceNormal, lightDirection3);
-
-		vec4 lightDirection4 = normalize(vec4(-1.0, -1.0, -1.0, 0.0) - pos);
-		float dotProduct4 = dot(surfaceNormal, lightDirection4);
-
-		float lightIntensity = lightBrightness * max(
-			max(abs(dotProduct1), abs(dotProduct2)),
-			max(abs(dotProduct3), abs(dotProduct4))
-		);
+		float lightIntensity = lightBrightness * max(dotProduct1, -.5 * dotProduct1) * 1.25;
 	`;
 
-	cameraPos = [0, 0, 0, 1];
+	cameraPos = [-1, 0, 0, 1];
 	normalVec = [0, 0, 0, 1];
 	upVec = [0, 0, 1, 0];
 	rightVec = [0, 1, 0, 0];
 	forwardVec = [1, 0, 0, 0];
 
-	getMovingSpeed()
+	uniformGlsl = "uniform float wallThickness;";
+	uniformNames = ["wallThickness"];
+	initUniforms(gl, uniformList)
 	{
-		return .25;
+		gl.uniform1f(uniformList["wallThickness"], 1.55);
+	}
+
+	initUI(applet)
+	{
+		const wallThicknessSlider = $("#wall-thickness-slider");
+		const wallThicknessSliderValue = $("#wall-thickness-slider-value");
+		wallThicknessSliderValue.textContent = 1.55;
+
+		wallThicknessSlider.addEventListener("input", () =>
+		{
+			//The acual FOV can range from 1.5 to 1.6.
+			const wallThickness = parseInt(wallThicknessSlider.value) / 10000 * .1 + 1.5;
+
+			wallThicknessSliderValue.textContent = Math.round(wallThickness * 100) / 100;
+
+			applet.wilson.gl.uniform1f(applet.wilson.uniforms.wallThickness, wallThickness);
+		});
 	}
 }

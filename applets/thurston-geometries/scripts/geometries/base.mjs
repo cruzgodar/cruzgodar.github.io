@@ -90,6 +90,12 @@ export class BaseGeometry
 	upVec;
 	rightVec;
 	forwardVec;
+
+	uniformGlsl;
+	uniformNames;
+	initUniforms() {}
+	
+	initUI() {}
 }
 
 
