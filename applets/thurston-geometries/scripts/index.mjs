@@ -31,7 +31,7 @@ export function load()
 			const geometryData = new GeometryDataClass();
 
 			applet.run(geometryData);
-			geometryData.initUI(applet);
+			geometryData.initUI();
 		}
 	}
 

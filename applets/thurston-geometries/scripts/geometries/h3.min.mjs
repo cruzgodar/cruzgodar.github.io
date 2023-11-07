@@ -1,10 +1,9 @@
-import{getMinGlslString}from"./base.min.mjs";import{E3Geometry}from"./e3.min.mjs";import{$}from"/scripts/src/main.min.mjs";class H3Rooms extends E3Geometry{distanceEstimatorGlsl=`
+import{ThurstonGeometry}from"../class.min.mjs";import{getMinGlslString}from"./base.min.mjs";import{E3Geometry}from"./e3.min.mjs";import{$}from"/scripts/src/main.min.mjs";const dodecahedronPlanes=[[.52573112,.85065077,0],[.52573112,-.85065077,0],[0,.52573112,.85065077],[0,.52573112,-.85065077],[.85065077,0,.52573112],[-.85065077,0,.52573112]],baseColorIncreases=[[1,0,0],[1,1,0],[0,1,0],[0,1,1],[0,0,1],[1,0,1]],maxDotProduct=1.3763819,rotationAngle=1.88495559215;class H3Rooms extends E3Geometry{distanceEstimatorGlsl=`
 		float distance1 = length(pos.xyz) - wallThickness;
 
 		return -distance1;
 	`;functionGlsl=`
-		// The right side of the plane equations after normalizing.
-		const float planeDistance = 1.3763819;
+		const float maxDotProduct = 1.3763819;
 		
 		const vec3 plane1 = vec3(0.52573112, 0.85065077, 0.0);
 		const vec3 plane2 = vec3(0.52573112, -0.85065077, 0.0);
@@ -48,144 +47,144 @@ import{getMinGlslString}from"./base.min.mjs";import{E3Geometry}from"./e3.min.mjs
 			// However, when we're far from the actual sphere, we can jump too far and land inside of the actual
 			// sphere when we teleport. So instead, we'll reset to the plane itself when we teleport.
 			
-			if (dotProduct < -planeDistance)
+			if (dotProduct < -maxDotProduct)
 			{
 				rotateAboutVector(pos.xyz, rayDirectionVec.xyz, plane1, rotationAngle);
-				pos.xyz += vec3(1.0514622, 1.7013016, 0.0);
+				pos.xyz += 2.0 * maxDotProduct * plane1;
 				startPos = pos;
 				t = 0.0;
 
 				return vec3(1.0, 0.0, 0.0);
 			}
 
-			if (dotProduct > planeDistance)
+			if (dotProduct > maxDotProduct)
 			{
 				rotateAboutVector(pos.xyz, rayDirectionVec.xyz, plane1, -rotationAngle);
-				pos.xyz -= vec3(1.0514622, 1.7013016, 0.0);
+				pos.xyz -= 2.0 * maxDotProduct * plane1;
 				startPos = pos;
 				t = 0.0;
 
-				return vec3(0.0, 1.0, 1.0);
+				return vec3(-1.0, 0.0, 0.0);
 			}
 
 			
 
 			dotProduct = dot(pos.xyz, plane2);
 
-			if (dotProduct < -planeDistance)
+			if (dotProduct < -maxDotProduct)
 			{
 				rotateAboutVector(pos.xyz, rayDirectionVec.xyz, plane2, rotationAngle);
-				pos.xyz += vec3(1.0514622, -1.7013016, 0.0);
-				startPos = pos;
-				t = 0.0;
-
-				return vec3(1.0, 0.5, 0.0);
-			}
-
-			if (dotProduct > planeDistance)
-			{
-				rotateAboutVector(pos.xyz, rayDirectionVec.xyz, plane2, -rotationAngle);
-				pos.xyz -= vec3(1.0514622, -1.7013016, 0.0);
-				startPos = pos;
-				t = 0.0;
-
-				return vec3(0.0, 0.5, 1.0);
-			}
-
-			
-			
-			dotProduct = dot(pos.xyz, plane3);
-
-			if (dotProduct < -planeDistance)
-			{
-				rotateAboutVector(pos.xyz, rayDirectionVec.xyz, plane3, rotationAngle);
-				pos.xyz += vec3(0.0, 1.0514622, 1.7013016);
+				pos.xyz += 2.0 * maxDotProduct * plane2;
 				startPos = pos;
 				t = 0.0;
 
 				return vec3(1.0, 1.0, 0.0);
 			}
 
-			if (dotProduct > planeDistance)
+			if (dotProduct > maxDotProduct)
 			{
-				rotateAboutVector(pos.xyz, rayDirectionVec.xyz, plane3, -rotationAngle);
-				pos.xyz -= vec3(0.0, 1.0514622, 1.7013016);
+				rotateAboutVector(pos.xyz, rayDirectionVec.xyz, plane2, -rotationAngle);
+				pos.xyz -= 2.0 * maxDotProduct * plane2;
 				startPos = pos;
 				t = 0.0;
 
-				return vec3(0.0, 0.0, 1.0);
+				return vec3(-1.0, -1.0, 0.0);
 			}
 
+			
+			
+			dotProduct = dot(pos.xyz, plane3);
 
-
-			dotProduct = dot(pos.xyz, plane4);
-
-			if (dotProduct < -planeDistance)
+			if (dotProduct < -maxDotProduct)
 			{
-				rotateAboutVector(pos.xyz, rayDirectionVec.xyz, plane4, rotationAngle);
-				pos.xyz += vec3(0.0, 1.0514622, -1.7013016);
-				startPos = pos;
-				t = 0.0;
-
-				return vec3(0.5, 1.0, 0.0);
-			}
-
-			else if (dotProduct > planeDistance)
-			{
-				rotateAboutVector(pos.xyz, rayDirectionVec.xyz, plane4, -rotationAngle);
-				pos.xyz -= vec3(0.0, 1.0514622, -1.7013016);
-				startPos = pos;
-				t = 0.0;
-
-				return vec3(0.5, 0.0, 1.0);
-			}
-
-
-
-			dotProduct = dot(pos.xyz, plane5);
-
-			if (dotProduct < -planeDistance)
-			{
-				rotateAboutVector(pos.xyz, rayDirectionVec.xyz, plane5, rotationAngle);
-				pos.xyz += vec3(1.7013016, 0.0, 1.0514622);
+				rotateAboutVector(pos.xyz, rayDirectionVec.xyz, plane3, rotationAngle);
+				pos.xyz += 2.0 * maxDotProduct * plane3;
 				startPos = pos;
 				t = 0.0;
 
 				return vec3(0.0, 1.0, 0.0);
 			}
 
-			else if (dotProduct > planeDistance)
+			if (dotProduct > maxDotProduct)
 			{
-				rotateAboutVector(pos.xyz, rayDirectionVec.xyz, plane5, -rotationAngle);
-				pos.xyz -= vec3(1.7013016, 0.0, 1.0514622);
+				rotateAboutVector(pos.xyz, rayDirectionVec.xyz, plane3, -rotationAngle);
+				pos.xyz -= 2.0 * maxDotProduct * plane3;
 				startPos = pos;
 				t = 0.0;
 
-				return vec3(1.0, 0.0, 1.0);
+				return vec3(0.0, -1.0, 0.0);
+			}
+
+
+
+			dotProduct = dot(pos.xyz, plane4);
+
+			if (dotProduct < -maxDotProduct)
+			{
+				rotateAboutVector(pos.xyz, rayDirectionVec.xyz, plane4, rotationAngle);
+				pos.xyz += 2.0 * maxDotProduct * plane4;
+				startPos = pos;
+				t = 0.0;
+
+				return vec3(0.0, 1.0, 1.0);
+			}
+
+			else if (dotProduct > maxDotProduct)
+			{
+				rotateAboutVector(pos.xyz, rayDirectionVec.xyz, plane4, -rotationAngle);
+				pos.xyz -= 2.0 * maxDotProduct * plane4;
+				startPos = pos;
+				t = 0.0;
+
+				return vec3(0.0, -1.0, -1.0);
+			}
+
+
+
+			dotProduct = dot(pos.xyz, plane5);
+
+			if (dotProduct < -maxDotProduct)
+			{
+				rotateAboutVector(pos.xyz, rayDirectionVec.xyz, plane5, rotationAngle);
+				pos.xyz += 2.0 * maxDotProduct * plane5;
+				startPos = pos;
+				t = 0.0;
+
+				return vec3(0.0, 0.0, 1.0);
+			}
+
+			else if (dotProduct > maxDotProduct)
+			{
+				rotateAboutVector(pos.xyz, rayDirectionVec.xyz, plane5, -rotationAngle);
+				pos.xyz -= 2.0 * maxDotProduct * plane5;
+				startPos = pos;
+				t = 0.0;
+
+				return vec3(0.0, 0.0, -1.0);
 			}
 
 
 
 			dotProduct = dot(pos.xyz, plane6);
 
-			if (dotProduct < -planeDistance)
+			if (dotProduct < -maxDotProduct)
 			{
 				rotateAboutVector(pos.xyz, rayDirectionVec.xyz, plane6, rotationAngle);
-				pos.xyz += vec3(-1.7013016, 0.0, 1.0514622);
+				pos.xyz += 2.0 * maxDotProduct * plane6;
 				startPos = pos;
 				t = 0.0;
 
-				return vec3(0.0, 1.0, 0.5);
+				return vec3(1.0, 0.0, 1.0);
 			}
 
-			else if (dotProduct > planeDistance)
+			else if (dotProduct > maxDotProduct)
 			{
 				rotateAboutVector(pos.xyz, rayDirectionVec.xyz, plane6, -rotationAngle);
-				pos.xyz -= vec3(-1.7013016, 0.0, 1.0514622);
+				pos.xyz -= 2.0 * maxDotProduct * plane6;
 				startPos = pos;
 				t = 0.0;
 
-				return vec3(1.0, 0.0, 0.5);
+				return vec3(-1.0, 0.0, -1.0);
 			}
 
 
@@ -211,23 +210,23 @@ import{getMinGlslString}from"./base.min.mjs";import{E3Geometry}from"./e3.min.mjs
 	`;getColorGlsl=`
 		// The  color predominantly comes from the room we're in, and then there's a little extra from the position in that room.
 		return vec3(
-			.25 + .75 * (.5 * (sin(globalColor.x + pos.x / 5.0) + 1.0)),
-			.25 + .75 * (.5 * (sin(globalColor.y + pos.y / 5.0) + 1.0)),
-			.25 + .75 * (.5 * (sin(globalColor.z + pos.z / 5.0) + 1.0))
+			.25 + .75 * (.5 * (sin(baseColor.x + globalColor.x + pos.x / 5.0) + 1.0)),
+			.25 + .75 * (.5 * (sin(baseColor.y + globalColor.y + pos.y / 5.0) + 1.0)),
+			.25 + .75 * (.5 * (sin(baseColor.z + globalColor.z + pos.z / 5.0) + 1.0))
 		);
 	`;updateTGlsl=`
-		float t1 = abs(getTToPlane(pos.xyz, rayDirectionVec.xyz, plane1, planeDistance));
-		float t2 = abs(getTToPlane(pos.xyz, rayDirectionVec.xyz, plane1, -planeDistance));
-		float t3 = abs(getTToPlane(pos.xyz, rayDirectionVec.xyz, plane2, planeDistance));
-		float t4 = abs(getTToPlane(pos.xyz, rayDirectionVec.xyz, plane2, -planeDistance));
-		float t5 = abs(getTToPlane(pos.xyz, rayDirectionVec.xyz, plane3, planeDistance));
-		float t6 = abs(getTToPlane(pos.xyz, rayDirectionVec.xyz, plane3, -planeDistance));
-		float t7 = abs(getTToPlane(pos.xyz, rayDirectionVec.xyz, plane4, planeDistance));
-		float t8 = abs(getTToPlane(pos.xyz, rayDirectionVec.xyz, plane4, -planeDistance));
-		float t9 = abs(getTToPlane(pos.xyz, rayDirectionVec.xyz, plane5, planeDistance));
-		float t10 = abs(getTToPlane(pos.xyz, rayDirectionVec.xyz, plane5, -planeDistance));
-		float t11 = abs(getTToPlane(pos.xyz, rayDirectionVec.xyz, plane6, planeDistance));
-		float t12 = abs(getTToPlane(pos.xyz, rayDirectionVec.xyz, plane6, -planeDistance));
+		float t1 = abs(getTToPlane(pos.xyz, rayDirectionVec.xyz, plane1, maxDotProduct));
+		float t2 = abs(getTToPlane(pos.xyz, rayDirectionVec.xyz, plane1, -maxDotProduct));
+		float t3 = abs(getTToPlane(pos.xyz, rayDirectionVec.xyz, plane2, maxDotProduct));
+		float t4 = abs(getTToPlane(pos.xyz, rayDirectionVec.xyz, plane2, -maxDotProduct));
+		float t5 = abs(getTToPlane(pos.xyz, rayDirectionVec.xyz, plane3, maxDotProduct));
+		float t6 = abs(getTToPlane(pos.xyz, rayDirectionVec.xyz, plane3, -maxDotProduct));
+		float t7 = abs(getTToPlane(pos.xyz, rayDirectionVec.xyz, plane4, maxDotProduct));
+		float t8 = abs(getTToPlane(pos.xyz, rayDirectionVec.xyz, plane4, -maxDotProduct));
+		float t9 = abs(getTToPlane(pos.xyz, rayDirectionVec.xyz, plane5, maxDotProduct));
+		float t10 = abs(getTToPlane(pos.xyz, rayDirectionVec.xyz, plane5, -maxDotProduct));
+		float t11 = abs(getTToPlane(pos.xyz, rayDirectionVec.xyz, plane6, maxDotProduct));
+		float t12 = abs(getTToPlane(pos.xyz, rayDirectionVec.xyz, plane6, -maxDotProduct));
 
 		float minTToPlane = ${getMinGlslString("t",12)};
 		t += min(minTToPlane + .01, distance) * stepFactor;
@@ -236,4 +235,4 @@ import{getMinGlslString}from"./base.min.mjs";import{E3Geometry}from"./e3.min.mjs
 		float dotProduct1 = dot(surfaceNormal, lightDirection1);
 
 		float lightIntensity = lightBrightness * max(dotProduct1, -.5 * dotProduct1) * 1.25;
-	`;cameraPos=[-1,0,0,1];normalVec=[0,0,0,1];upVec=[0,0,1,0];rightVec=[0,1,0,0];forwardVec=[1,0,0,0];uniformGlsl="uniform float wallThickness;";uniformNames=["wallThickness"];initUniforms(gl,uniformList){gl.uniform1f(uniformList.wallThickness,1.55)}initUI(applet){const e=$("#wall-thickness-slider"),o=$("#wall-thickness-slider-value");o.textContent=1.55,e.addEventListener("input",()=>{var t=parseInt(e.value)/1e4*.1+1.5;o.textContent=Math.round(100*t)/100,applet.wilson.gl.uniform1f(applet.wilson.uniforms.wallThickness,t)})}}export{H3Rooms};
+	`;cameraPos=[-1,0,0,1];normalVec=[0,0,0,1];upVec=[0,0,1,0];rightVec=[0,1,0,0];forwardVec=[1,0,0,0];rotateVectors(axis,angle){var o=Math.sin(angle),t=Math.cos(angle),e=1-t,o=[[e*axis[0]*axis[0]+t,e*axis[0]*axis[1]-axis[2]*o,e*axis[2]*axis[0]+axis[1]*o],[e*axis[0]*axis[1]+axis[2]*o,e*axis[1]*axis[1]+t,e*axis[1]*axis[2]-axis[0]*o],[e*axis[2]*axis[0]-axis[1]*o,e*axis[1]*axis[2]+axis[0]*o,e*axis[2]*axis[2]+t]];this.cameraPos=ThurstonGeometry.mat3TimesVector(o,this.cameraPos).concat(1),this.forwardVec=ThurstonGeometry.mat3TimesVector(o,this.forwardVec).concat(0),this.rightVec=ThurstonGeometry.mat3TimesVector(o,this.rightVec).concat(0),this.upVec=ThurstonGeometry.mat3TimesVector(o,this.upVec).concat(0)}teleportCamera(){for(let e=0;e<dodecahedronPlanes.length;e++){var o=dodecahedronPlanes[e],t=this.cameraPos[0]*o[0]+this.cameraPos[1]*o[1]+this.cameraPos[2]*o[2];if(t<-maxDotProduct)return this.rotateVectors(o,-rotationAngle),this.cameraPos[0]+=2*maxDotProduct*o[0],this.cameraPos[1]+=2*maxDotProduct*o[1],this.cameraPos[2]+=2*maxDotProduct*o[2],this.uniformData.baseColor[0]+=baseColorIncreases[e][0],this.uniformData.baseColor[1]+=baseColorIncreases[e][1],void(this.uniformData.baseColor[2]+=baseColorIncreases[e][2]);if(t>maxDotProduct)return this.rotateVectors(o,rotationAngle),this.cameraPos[0]-=2*maxDotProduct*o[0],this.cameraPos[1]-=2*maxDotProduct*o[1],this.cameraPos[2]-=2*maxDotProduct*o[2],this.uniformData.baseColor[0]-=baseColorIncreases[e][0],this.uniformData.baseColor[1]-=baseColorIncreases[e][1],void(this.uniformData.baseColor[2]-=baseColorIncreases[e][2])}}uniformGlsl="uniform float wallThickness; uniform vec3 baseColor;";uniformNames=["wallThickness","baseColor"];uniformData={wallThickness:1.56,baseColor:[0,0,0]};updateUniforms(gl,uniformList){gl.uniform1f(uniformList.wallThickness,this.uniformData.wallThickness),gl.uniform3fv(uniformList.baseColor,this.uniformData.baseColor)}initUI(){const t=$("#wall-thickness-slider"),e=$("#wall-thickness-slider-value");e.textContent=1.55,t.addEventListener("input",()=>{var o=parseInt(t.value)/1e4*.1+1.51;e.textContent=Math.round(100*(.5-.49*parseInt(t.value)/1e4))/100,this.uniformData.wallThickness=o})}}export{H3Rooms};

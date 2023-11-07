@@ -212,7 +212,7 @@ export class ThurstonGeometry extends Applet
 
 				//The last factor adds ambient occlusion.
 				vec3 color = getColor(pos, globalColor) * lightIntensity * max((1.0 - float(iteration) / float(maxMarches)), 0.0);
-				
+
 				//Apply fog.
 				${this.geometryData.fogGlsl}
 			}
@@ -256,8 +256,6 @@ export class ThurstonGeometry extends Applet
 				gl_FragColor = vec4(raymarch(normalize(forwardVec + rightVec * uv.x * aspectRatioX * fov + upVec * uv.y / aspectRatioY * fov)), 1.0);
 			}
 		`;
-
-		console.log(fragShaderSource);
 
 		
 
@@ -329,8 +327,6 @@ export class ThurstonGeometry extends Applet
 			this.geometryData.forwardVec
 		);
 
-		this.geometryData.initUniforms(this.wilson.gl, this.wilson.uniforms);
-
 
 
 		window.requestAnimationFrame(this.drawFrame.bind(this));
@@ -348,6 +344,10 @@ export class ThurstonGeometry extends Applet
 		{
 			return;
 		}
+
+		this.geometryData.teleportCamera();
+
+		this.geometryData.updateUniforms(this.wilson.gl, this.wilson.uniforms);
 
 		this.pan.update(timeElapsed);
 
@@ -385,7 +385,6 @@ export class ThurstonGeometry extends Applet
 
 		if (this.keysPressed.e)
 		{
-			console.log(this.geometryData.cameraPos);
 			this.rollingAmount = 1;
 		}
 
@@ -876,5 +875,22 @@ export class ThurstonGeometry extends Applet
 	static dotProduct(vec1, vec2)
 	{
 		return vec1[0] * vec2[0] + vec1[1] * vec2[1] + vec1[2] * vec2[2] + vec1[3] * vec2[3];
+	}
+
+	static mat3TimesVector(mat, vec)
+	{
+		return [
+			mat[0][0] * vec[0]
+				+ mat[0][1] * vec[1]
+				+ mat[0][2] * vec[2],
+			
+			mat[1][0] * vec[0]
+				+ mat[1][1] * vec[1]
+				+ mat[1][2] * vec[2],
+			
+			mat[2][0] * vec[0]
+				+ mat[2][1] * vec[1]
+				+ mat[2][2] * vec[2]
+		];
 	}
 }

@@ -25,6 +25,8 @@ export class BaseGeometry
 		return newCameraPos;
 	}
 
+	teleportCamera() {}
+
 	getGeodesicDirection(pos1, pos2)
 	{
 		const dir = new Array(4);
@@ -93,8 +95,9 @@ export class BaseGeometry
 
 	uniformGlsl;
 	uniformNames;
-	initUniforms() {}
-	
+	uniformData = {};
+	updateUniforms() {}
+
 	initUI() {}
 }
 
