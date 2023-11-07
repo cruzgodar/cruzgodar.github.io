@@ -31,6 +31,8 @@ Something will go here eventually!
 	
 	wall-thickness 10000 Wall Thickness
 
+	fiber-thickness 5000 Fiber Thickness
+
 	gluing-angle 3000 Gluing Angle
 
 	fov 4333 FOV

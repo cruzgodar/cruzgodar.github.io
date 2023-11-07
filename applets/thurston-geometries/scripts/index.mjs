@@ -2,7 +2,6 @@ import { ThurstonGeometry } from "./class.mjs";
 import { E3Rooms, E3Spheres } from "./geometries/e3.mjs";
 import { H3Rooms } from "./geometries/h3.mjs";
 import { S3HopfFibration, S3Rooms, S3Spheres } from "./geometries/s3.mjs";
-import { changeOpacity } from "/scripts/src/animation.mjs";
 import { showPage } from "/scripts/src/load-page.mjs";
 import { $, $$ } from "/scripts/src/main.mjs";
 
@@ -44,15 +43,7 @@ export function load()
 			).map(element => element.parentNode);
 
 			elementsToShow.forEach(element => element.style.display = "flex");
-
-			Promise.all(
-				elementsToShow.map(element => changeOpacity(element, 1))
-					.concat(elementsToHide.map(element => changeOpacity(element, 0)))
-			)
-				.then(() =>
-				{
-					elementsToHide.forEach(element => element.style.display = "none");
-				});
+			elementsToHide.forEach(element => element.style.display = "none");
 
 			applet.run(geometryData);
 			geometryData.initUI();
