@@ -99,6 +99,8 @@ export class BaseGeometry
 	updateUniforms() {}
 
 	initUI() {}
+
+	uiElementsUsed = "";
 }
 
 

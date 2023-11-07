@@ -29,7 +29,9 @@ Something will go here eventually!
 
 ### sliders
 	
-	wall-thickness 5000 Wall Thickness
+	wall-thickness 10000 Wall Thickness
+
+	gluing-angle 3000 Gluing Angle
 
 	fov 4333 FOV
 	

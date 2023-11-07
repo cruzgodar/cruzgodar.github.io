@@ -23,7 +23,7 @@ const baseColorIncreases = [
 
 const maxDotProduct = 1.3763819;
 
-const rotationAngle = 1.88495559215;
+let rotationAngle = 1.88495559215;
 
 //We use Seifert-Weber space as a model of H^3.
 export class H3Rooms extends E3Geometry
@@ -43,8 +43,6 @@ export class H3Rooms extends E3Geometry
 		const vec3 plane4 = vec3(0.0, 0.52573112, -0.85065077);
 		const vec3 plane5 = vec3(0.85065077, 0.0, 0.52573112);
 		const vec3 plane6 = vec3(-0.85065077, 0.0, 0.52573112);
-
-		const float rotationAngle = 1.88495559215;
 
 
 
@@ -373,35 +371,63 @@ export class H3Rooms extends E3Geometry
 		}
 	}
 
-	uniformGlsl = "uniform float wallThickness; uniform vec3 baseColor;";
-	uniformNames = ["wallThickness", "baseColor"];
+	uniformGlsl = `
+		uniform float wallThickness;
+		uniform float rotationAngle;
+		uniform vec3 baseColor;
+	`;
+	uniformNames = ["wallThickness", "rotationAngle", "baseColor"];
 	uniformData = {
 		wallThickness: 1.56,
+		rotationAngle: Math.PI * .6,
 		baseColor: [0, 0, 0]
 	};
 
 	updateUniforms(gl, uniformList)
 	{
 		gl.uniform1f(uniformList["wallThickness"], this.uniformData.wallThickness);
+		gl.uniform1f(uniformList["rotationAngle"], this.uniformData.rotationAngle);
 		gl.uniform3fv(uniformList["baseColor"], this.uniformData.baseColor);
 	}
+
+	uiElementsUsed = "#wall-thickness-slider, #gluing-angle-slider";
 
 	initUI()
 	{
 		const wallThicknessSlider = $("#wall-thickness-slider");
 		const wallThicknessSliderValue = $("#wall-thickness-slider-value");
-		wallThicknessSliderValue.textContent = 1.55;
+
+		wallThicknessSlider.value = 10000;
+		wallThicknessSliderValue.textContent = 0.57;
 
 		wallThicknessSlider.addEventListener("input", () =>
 		{
-			//The acual FOV can range from 1.51 to 1.61.
-			const wallThickness = parseInt(wallThicknessSlider.value) / 10000 * .1 + 1.51;
+			const wallThickness = 1.56 + (1 - parseInt(wallThicknessSlider.value) / 10000) * .075;
 
-			wallThicknessSliderValue.textContent = Math.round(
-				(.5 - .49 * parseInt(wallThicknessSlider.value) / 10000) * 100
-			) / 100;
+			wallThicknessSliderValue.textContent = (Math.round(
+				(-wallThickness + 1.617) * 1000
+			) / 100).toFixed(2);
 
 			this.uniformData.wallThickness = wallThickness;
+		});
+
+
+
+		const rotationAngleSlider = $("#gluing-angle-slider");
+		const rotationAngleSliderValue = $("#gluing-angle-slider-value");
+
+		rotationAngleSlider.value = 6000;
+		rotationAngleSliderValue.textContent = Math.round(Math.PI * .6 * 100) / 100;
+
+		rotationAngleSlider.addEventListener("input", () =>
+		{
+			rotationAngle = parseInt(rotationAngleSlider.value) / 10000 * Math.PI;
+
+			rotationAngleSliderValue.textContent = (Math.round(
+				parseInt(rotationAngleSlider.value) / 10000 * Math.PI * 100
+			) / 100).toFixed(2);
+
+			this.uniformData.rotationAngle = rotationAngle;
 		});
 	}
 }

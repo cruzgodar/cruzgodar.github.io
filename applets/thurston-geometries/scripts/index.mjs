@@ -2,8 +2,9 @@ import { ThurstonGeometry } from "./class.mjs";
 import { E3Rooms, E3Spheres } from "./geometries/e3.mjs";
 import { H3Rooms } from "./geometries/h3.mjs";
 import { S3HopfFibration, S3Rooms, S3Spheres } from "./geometries/s3.mjs";
+import { changeOpacity } from "/scripts/src/animation.mjs";
 import { showPage } from "/scripts/src/load-page.mjs";
-import { $ } from "/scripts/src/main.mjs";
+import { $, $$ } from "/scripts/src/main.mjs";
 
 export function load()
 {
@@ -29,6 +30,29 @@ export function load()
 		{
 			const GeometryDataClass = scenes[sceneSelectorDropdownElement.value];
 			const geometryData = new GeometryDataClass();
+
+			const elementsToShow = Array.from(
+				geometryData.uiElementsUsed
+					? $$(geometryData.uiElementsUsed)
+					: []
+			).map(element => element.parentNode);
+			
+			const elementsToHide = Array.from(
+				geometryData.uiElementsUsed
+					? $$(`.slider-container > input:not(#fov-slider, ${geometryData.uiElementsUsed})`)
+					: $$(".slider-container > input:not(#fov-slider)")
+			).map(element => element.parentNode);
+
+			elementsToShow.forEach(element => element.style.display = "flex");
+
+			Promise.all(
+				elementsToShow.map(element => changeOpacity(element, 1))
+					.concat(elementsToHide.map(element => changeOpacity(element, 0)))
+			)
+				.then(() =>
+				{
+					elementsToHide.forEach(element => element.style.display = "none");
+				});
 
 			applet.run(geometryData);
 			geometryData.initUI();
@@ -59,7 +83,7 @@ export function load()
 		//The acual FOV can range from 0.5 to 2.
 		const fov = parseInt(fovSlider.value) / 10000 * 1.5 + .5;
 
-		fovSliderValue.textContent = Math.round(fov * 100) / 100;
+		fovSliderValue.textContent = (Math.round(fov * 100) / 100).toFixed(2);
 
 		applet.fov = fov;
 		applet.wilson.gl.uniform1f(applet.wilson.uniforms.fov, fov);

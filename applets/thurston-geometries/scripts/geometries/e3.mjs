@@ -46,6 +46,8 @@ export class E3Rooms extends E3Geometry
 		gl.uniform1f(uniformList["wallThickness"], this.uniformData.wallThickness);
 	}
 
+	uiElementsUsed = "#wall-thickness-slider";
+
 	initUI()
 	{
 		const wallThicknessSlider = $("#wall-thickness-slider");
@@ -58,9 +60,9 @@ export class E3Rooms extends E3Geometry
 		{
 			const wallThickness = 1.3 + (1 - parseInt(wallThicknessSlider.value) / 10000) * .2;
 
-			wallThicknessSliderValue.textContent = Math.round(
+			wallThicknessSliderValue.textContent = (Math.round(
 				(-wallThickness + 1.415) * 1000
-			) / 100;
+			) / 100).toFixed(2);
 
 			this.uniformData.wallThickness = wallThickness;
 		});

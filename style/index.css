@@ -651,6 +651,11 @@ mjx-container
 	margin-top: 32px;
 }
 
+.sliders
+{
+	grid-template-columns: repeat(auto-fit, 125px);
+}
+
 .text-boxes
 {
 	align-items: start;
@@ -1022,6 +1027,11 @@ mjx-container
 	z-index: 5;
 	width: 100% !important;
 	margin-top: 4px;
+}
+
+.slider-subtext span
+{
+	font-family: Menlo, Monaco, Consolas, monospace;
 }
 
 
