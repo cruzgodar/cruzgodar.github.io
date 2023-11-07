@@ -1,5 +1,5 @@
 import { ThurstonGeometry } from "../class.mjs";
-import { getMinGlslString } from "./base.mjs";
+import { getMaxGlslString, getMinGlslString } from "./base.mjs";
 import { E3Geometry } from "./e3.mjs";
 import { $ } from "/scripts/src/main.mjs";
 
@@ -237,6 +237,8 @@ export class H3Rooms extends E3Geometry
 		}
 	`;
 
+	fogGlsl = "return mix(color, fogColor, 1.0 - exp(-length(pos) * fogScaling));";
+
 	geodesicGlsl = `
 		vec4 pos = startPos + t * rayDirectionVec;
 		
@@ -271,10 +273,24 @@ export class H3Rooms extends E3Geometry
 	`;
 
 	lightGlsl = `
-		vec4 lightDirection1 = normalize(vec4(1.0, 1.0, 1.0, 1.0) - pos);
+		vec4 lightDirection1 = normalize(vec4(1.0, 2.0, 3.0, 1.0) - pos);
+		vec4 lightDirection2 = normalize(vec4(1.0, -2.0, 3.0, 1.0) - pos);
+		vec4 lightDirection3 = normalize(vec4(-1.0, 2.0, 3.0, 1.0) - pos);
+		vec4 lightDirection4 = normalize(vec4(1.0, 2.0, -3.0, 1.0) - pos);
+		
 		float dotProduct1 = dot(surfaceNormal, lightDirection1);
+		float dotProduct2 = dot(surfaceNormal, lightDirection2);
+		float dotProduct3 = dot(surfaceNormal, lightDirection3);
+		float dotProduct4 = dot(surfaceNormal, lightDirection4);
 
-		float lightIntensity = lightBrightness * max(dotProduct1, -.5 * dotProduct1) * 1.25;
+		float twoWayDotProduct1 = max(dotProduct1, -.5 * dotProduct1);
+		float twoWayDotProduct2 = max(dotProduct2, -.5 * dotProduct2);
+		float twoWayDotProduct3 = max(dotProduct3, -.5 * dotProduct3);
+		float twoWayDotProduct4 = max(dotProduct4, -.5 * dotProduct4);
+
+		float maxTwoWayDotProduct = ${getMaxGlslString("twoWayDotProduct", 2)};
+
+		float lightIntensity = lightBrightness * maxTwoWayDotProduct * 1.25;
 	`;
 
 	cameraPos = [-1, 0, 0, 1];

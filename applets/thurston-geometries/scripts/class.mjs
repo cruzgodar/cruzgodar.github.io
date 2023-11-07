@@ -257,6 +257,11 @@ export class ThurstonGeometry extends Applet
 			}
 		`;
 
+		if (window.DEBUG)
+		{
+			console.log(fragShaderSource);
+		}
+
 		
 
 		this.wilson.render.shaderPrograms = [];

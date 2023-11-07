@@ -115,7 +115,7 @@ export class BaseGeometry
 		)
 	);
  */
-export function getMinGlslString(varName, numVars)
+export function getMinGlslString(varName, numVars, functionName = "min")
 {
 	const numLayers = Math.ceil(Math.log2(numVars));
 
@@ -132,7 +132,7 @@ export function getMinGlslString(varName, numVars)
 
 		for (let j = 0; j < strings.length; j += 2)
 		{
-			newStrings[j / 2] = `min(${strings[j]}, ${strings[j + 1]})`;
+			newStrings[j / 2] = `${functionName}(${strings[j]}, ${strings[j + 1]})`;
 		}
 
 		if (strings.length % 2 === 1)
@@ -144,6 +144,11 @@ export function getMinGlslString(varName, numVars)
 	}
 
 	return strings[0];
+}
+
+export function getMaxGlslString(varName, numVars)
+{
+	return getMinGlslString(varName, numVars, "max");
 }
 
 export function getColorGlslString(varName, minVarName, colors)
