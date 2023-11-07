@@ -1,11 +1,12 @@
 import { BaseGeometry } from "./base.mjs";
+import { $ } from "/scripts/src/main.mjs";
 
 export class E3Geometry extends BaseGeometry {}
 
 export class E3Rooms extends E3Geometry
 {
 	distanceEstimatorGlsl = `
-		float distance1 = -length(mod(pos.xyz, 2.0) - vec3(1.0, 1.0, 1.0)) + 1.3;
+		float distance1 = -length(mod(pos.xyz, 2.0) - vec3(1.0, 1.0, 1.0)) + wallThickness;
 
 		return distance1;
 	`;
@@ -33,6 +34,37 @@ export class E3Rooms extends E3Geometry
 	upVec = [0, 0, 1, 0];
 	rightVec = [0, 1, 0, 0];
 	forwardVec = [1, 0, 0, 0];
+
+	uniformGlsl = "uniform float wallThickness;";
+	uniformNames = ["wallThickness"];
+	uniformData = {
+		wallThickness: 1.3,
+	};
+
+	updateUniforms(gl, uniformList)
+	{
+		gl.uniform1f(uniformList["wallThickness"], this.uniformData.wallThickness);
+	}
+
+	initUI()
+	{
+		const wallThicknessSlider = $("#wall-thickness-slider");
+		const wallThicknessSliderValue = $("#wall-thickness-slider-value");
+
+		wallThicknessSlider.value = 10000;
+		wallThicknessSliderValue.textContent = 1.15;
+
+		wallThicknessSlider.addEventListener("input", () =>
+		{
+			const wallThickness = 1.3 + (1 - parseInt(wallThicknessSlider.value) / 10000) * .2;
+
+			wallThicknessSliderValue.textContent = Math.round(
+				(-wallThickness + 1.415) * 1000
+			) / 100;
+
+			this.uniformData.wallThickness = wallThickness;
+		});
+	}
 }
 
 export class E3Spheres extends E3Geometry
