@@ -39,6 +39,33 @@ Welcome to Math 341! We'll use this page for the interactive notes, the homework
 	homework-4 c Homework 4
 	homework-5 c Homework 5
 	homework-6 c Homework 6
+	homework-7 c Homework 7
+	
+###
+
+
+
+### card homework-7 Homework 7
+
+	*Due Wednesday of Week 8 at the start of class*
+	
+	Complete the following problems and submit them as a pdf to Canvas. 8 points are awarded for thoroughly attempting every problem, and I'll select three problems to grade on correctness for 4 points each. Enough work should be shown that there is no question about the mathematical process used to obtain your answers.
+
+	## Section 8
+	
+	In problems 6#, find **two different** bases $\mathcal{B}$ and $\mathcal{C}$ for the vector space $V$ and use them to find $\dim V$. Then with the given vector $\vec{v}$, find $[\vec{v}]_\mathcal{C}$.
+
+	#. $V = #R#^3$, and $\vec{v} = [[ 1 ; 2 ; 3 ]]$.
+	
+	#. $V = M_{2 \times 2}(#R#)$, and $\vec{v} = [[ 2, -1 ; 0, 1 ]]$.
+	
+	#. $V = \mathcal{L}(#R#^2, #R#^2)$, and $\vec{v}:#R#^2 \to #R#^2$ is defined by $\vec{v}\left( [[ x ; y ]] \right) = [[ 2x ; x + y ]]$. (Hint: your answers to the previous problem may help.)
+	
+	#. $V$ is the subspace of $#R#^4$ of vectors $[[ x ; y ; z ; w ]]$ satisfying $x + y - w = 0$, and $\vec{v} = [[ 1 ; 1 ; 3 ; 2 ]]$.
+	
+	#. $V = #R#[x]$, and $\vec{v} = (x^2 - 2)^2$.
+
+	#. $V = \span\{\cos(x), \sin(x)\}$, and $\vec{v} = \sin\left(x + \frac{\pi}{4} \right)$. (Hint: the sum and difference formulas for $\sin$ and $\cos$ may be helpful.)
 	
 ###
 
@@ -82,7 +109,7 @@ Welcome to Math 341! We'll use this page for the interactive notes, the homework
 
 	#. $T : #R#[x] \to #R#$ given by $T(p(x)) = p''(x)$.
 	
-	#. $T : #R#^#R# \to #R#$ given by $T(f) = f(0)$.
+	#. $T : #R#^#R# \to #R#$ given by $T(f) = f(0)$. In this problem, just describe the kernel in words rather than as a span.
 	
 	#. $T : M_{2 \times 2}(#R#) \to #R#$ given by $T(A) = \det A$.
 
