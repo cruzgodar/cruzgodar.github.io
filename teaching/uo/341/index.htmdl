@@ -66,6 +66,34 @@ Welcome to Math 341! We'll use this page for the interactive notes, the homework
 	#. $V = #R#[x]$, and $\vec{v} = (x^2 - 2)^2$.
 
 	#. $V = \span\{\cos(x), \sin(x)\}$, and $\vec{v} = \sin\left(x + \frac{\pi}{4} \right)$. (Hint: the sum and difference formulas for $\sin$ and $\cos$ may be helpful.)
+
+	- - -
+
+	In problems 3#, find a matrix for the linear transformation $T : V \to W$ by choosing bases $\mathcal{B}$ for $V$ and $\mathcal{C}$ for $W$. Then use the matrix to evaluate $T(\vec{v})$ for the given vector $v$.
+
+	#. $V = #R#^3$ and $W = #R#$, $T: V \to W$ is a transformation for which
+
+	$$
+		T\left( [[ 1 ; 0 ; 1 ]] \right) = 1 \qquad T\left( [[ 2 ; 0 ; 1 ]] \right) = 2 \qquad T\left( [[ 0 ; -1 ; 0 ]] \right) = -1,
+	$$
+
+	and $\vec{v} = [[ 1 ; 1 ; 1 ]]$.
+
+	#. $V$ and $W$ are both the subspace of $#R#[x]$ of polynomials with degree at most $2$, $T: V \to W$ is a transformation for which
+
+	$$
+		T(1) = x \qquad T(x^2 + x) = 2x \qquad T(x^2) = x^2,
+	$$
+
+	and $\vec{v} = x^2 - x - 1$.
+
+	#. $V = M_{2 \times 2}(#R#)$, $W = #R#^2$, $T: V \to W$ is a transformation for which
+
+	$$
+		T\left([[ 1, 0 ; 0, 1 ]]\right) = [[ 2 ; 0 ]] \qquad T\left([[ 0, 1 ; 1, 0 ]]\right) = [[ 0 ; 2 ]] \qquad T\left([[ 1, 1 ; 0, 0 ]]\right) = [[ 1 ; 1 ]] \qquad T\left([[ 0, 0 ; 0, 1 ]]\right) = [[ 1 ; 0 ]],
+	$$
+
+	and $\vec{v} = [[ 1, 2 ; 3, 4 ]]$.
 	
 ###
 

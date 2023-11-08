@@ -191,7 +191,7 @@ That requires a whole lot of work to understand, so let's dig in.
 	To begin, we just plug every one of the four basis vectors in $\mathcal{B}$ into $D$, resulting in $0$, $1$, $2x$, and $3x^2$. Then we write each as a coordinate vector in $\mathcal{C}$, which gives us
 
 	$$
-		[0]_\mathcal{C} &= [[ 0 ; 0 ; 0 ]] \qquad [1]_\mathcal{C} &= [[ 1 ; 0 ; 0 ]] \qquad [2x]_\mathcal{C} &= [[ 0 ; 2 ; 0 ]] \qquad [3x^2]_\mathcal{C} &= [[ 0 ; 0 ; 3 ]].
+		[0]_\mathcal{C} = [[ 0 ; 0 ; 0 ]] \qquad [1]_\mathcal{C} = [[ 1 ; 0 ; 0 ]] \qquad [2x]_\mathcal{C} = [[ 0 ; 2 ; 0 ]] \qquad [3x^2]_\mathcal{C} = [[ 0 ; 0 ; 3 ]].
 	$$
 
 	Assembling those into a matrix gives us
