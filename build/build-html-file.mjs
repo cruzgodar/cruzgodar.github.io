@@ -178,17 +178,48 @@ const components =
 
 	getSlider(args)
 	{
+		const logarithmic = args[1] === "log";
+		
+		if (logarithmic)
+		{
+			args.splice(1, 1);
+		}
+
+		const int = args[1] === "int";
+		
+		if (int)
+		{
+			args.splice(1, 1);
+		}
+
 		const id = args[0];
 
-		const value = args[1];
+		const value = parseFloat(args[1]);
 
-		const text = args.slice(2).join(" ");
+		const min = parseFloat(args[2]);
+
+		const max = parseFloat(args[3]);
+
+		const text = args.slice(4).join(" ");
+
+		// The number of decimal places to round to to get 4 significant figures.
+		const precision = Math.max(
+			0,
+			3 - Math.floor(
+				Math.log10(
+					(logarithmic ? 10 ** max : max) - (logarithmic ? 10 ** min : min)
+				)
+			)
+		);
+
+		let displayValue = (logarithmic ? 10 ** value : value);
+		displayValue = int ? Math.round(displayValue) : displayValue.toFixed(precision);
 
 		return `
 			<div class="slider-container">
-				<input id="${id}-slider" type="range" min="0" max="10000" value="${value}" tabindex="1">
+				<input id="${id}-slider" type="range" min="${min}" max="${max}" value="${value}" step="0.000001" data-precision="${precision}" data-logarithmic="${logarithmic ? "1" : "0"}" data-int="${int ? "1" : "0"}" tabindex="1">
 				<label for="${id}-slider">
-					<p class="body-text slider-subtext">${text}: <span id="${id}-slider-value">0</span></p>
+					<p class="body-text slider-subtext">${text}: <span id="${id}-slider-value">${displayValue}</span></p>
 				</label>
 			</div>
 		`;

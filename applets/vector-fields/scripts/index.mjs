@@ -64,11 +64,12 @@ export function load()
 
 	const maxParticlesInputElement = $("#max-particles-input");
 
-	const speedInputElement = $("#speed-input");
+	const speedSliderElement = $("#speed-slider");
+	const speedSliderValueElement = $("#speed-slider-value");
 
 	const lifetimeInputElement = $("#lifetime-input");
 
-	applet.setInputCaps([resolutionInputElement, maxParticlesInputElement], [1000, 50000]);
+	applet.setInputCaps([resolutionInputElement, maxParticlesInputElement], [1000, 100000]);
 
 	
 
@@ -76,10 +77,7 @@ export function load()
 
 	maxParticlesInputElement.addEventListener("input", generateNewField);
 
-	speedInputElement.addEventListener("input", () =>
-	{
-		applet.dt = parseFloat(speedInputElement.value || 1) / 300;
-	});
+	speedSliderElement.addEventListener("input", updateParameters);
 
 	lifetimeInputElement.addEventListener("input", generateNewField);
 
@@ -103,8 +101,14 @@ export function load()
 			: Applet.parseNaturalGLSL(codeTextareaElement.value);
 
 		const resolution = parseInt(resolutionInputElement.value || 500);
-		const maxParticles = Math.max(parseInt(maxParticlesInputElement.value || 10000), 100);
-		const dt = parseFloat(speedInputElement.value || 1) / 300;
+		
+		const maxParticles = Math.max(
+			parseInt(maxParticlesInputElement.value || 10000),
+			100
+		);
+
+		const dt = parseFloat(speedSliderValueElement.textContent || 1) / 300;
+
 		const lifetime = Math.min(parseInt(lifetimeInputElement.value || 150), 255);
 		
 		applet.run({
@@ -121,13 +125,26 @@ export function load()
 
 
 
+	function updateParameters()
+	{
+		const dt = parseFloat(speedSliderValueElement.textContent || 1) / 300;
+		
+		applet.dt = dt;
+	}
+
 	function generateNewField()
 	{
 		const resolution = parseInt(resolutionInputElement.value || 500);
-		const maxParticles = Math.max(parseInt(maxParticlesInputElement.value || 10000), 100);
-		const dt = parseFloat(speedInputElement.value || 1) / 300;
-		const lifetime = Math.min(parseInt(lifetimeInputElement.value || 150), 255);
+		
+		const maxParticles = Math.max(
+			parseInt(maxParticlesInputElement.value || 10000),
+			100
+		);
 
+		const dt = parseFloat(speedSliderValueElement.textContent || 1) / 300;
+
+		const lifetime = Math.min(parseInt(lifetimeInputElement.value || 150), 255);
+		
 		applet.generateNewField({
 			resolution,
 			maxParticles,

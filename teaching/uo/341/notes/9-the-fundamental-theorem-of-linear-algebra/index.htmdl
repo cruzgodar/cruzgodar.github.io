@@ -1,0 +1,29 @@
+### nav-buttons
+
+
+
+We'll begin our final section of core material by tackling a very important question: how do we efficiently translate from one basis to another? While the answer will be simple, it will unfortunately be a little unintuituve.
+
+Let's take a finite-dimensional vector space $V$ and bases $\mathcal{B} = \{\vec{v_1}, ..., \vec{v_n}\}$ and $\mathcal{C} = \{\vec{w_1}, ..., \vec{w_n}\}$ (both bases have to have the same number of elements, so using $n$ as the final subscript for both is justified). If $\vec{v} \in V$ has a coordinate vector
+
+$$
+	[\vec{v}]_\mathcal{B} = [[ c_1 ; \vdots ; c_n ]],
+$$
+
+then $\vec{v} = c_1\vec{v_1} + \cdots + c_n\vec{v_n}$ by definition. But we can look at it a slightly different way: the coordinate vector of $\vec{v_i}$ in the basis $\mathcal{B}$ is just $\vec{e_i}$, since the expression of a basis vector in the basis that it's a part of is just one of itself and no other vectors. In other words,
+
+$$
+	[\vec{v}]_{\mathcal{B}} &= [[ c_1 ; \vdots ; c_n ]]
+	
+	&= c_1\vec{e_1} + \cdots + c_n\vec{e_n}
+	
+	&= c_1 [\vec{v_1}]_\mathcal{B} + \cdots + c_n [\vec{v_n}]_\mathcal{B}.
+$$
+
+That kind of statement should look familiar --- it's saying that the function $B : V \to \mathbb{R}^n$ given by $B(\vec{v}) = [\vec{v}]_\mathcal{B}$ is actually a linear transformation! Since linear transformations are defined by their actions on just a basis, we can find $[\vec{v}]_\mathcal{C}$ by finding $[\vec{v_i}]_\mathcal{C}$ for each basis vector $\vec{v_i}$, and in fact, the conversion from $\mathcal{B}$ to $\mathcal{C}$ will be a linear transformation, so we'll be able to express it as a matrix.
+
+So --- how do we convert the basis vectors? By far the simplest way is to only handle converting to and from a standard basis whenever possible, since that's almost always very easy to express vectors in. 
+
+
+
+### nav-buttons

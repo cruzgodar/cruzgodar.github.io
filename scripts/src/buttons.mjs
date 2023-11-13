@@ -18,8 +18,6 @@ export function setUpTextButtons()
 	setTimeout(equalizeTextButtons, 500);
 }
 
-
-
 //Makes linked text buttons have the same width and height.
 export function equalizeTextButtons()
 {

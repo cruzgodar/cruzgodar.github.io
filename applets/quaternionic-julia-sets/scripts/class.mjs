@@ -1,5 +1,5 @@
 import anime from "/scripts/anime.js";
-import { changeOpacity, opacityAnimationTime } from "/scripts/src/animation.mjs";
+import { changeOpacity } from "/scripts/src/animation.mjs";
 import { RaymarchApplet } from "/scripts/src/applets.mjs";
 import { aspectRatio } from "/scripts/src/layout.mjs";
 import { Wilson } from "/scripts/wilson.mjs";
@@ -7,10 +7,9 @@ import { Wilson } from "/scripts/wilson.mjs";
 export class QuaternionicJuliaSet extends RaymarchApplet
 {
 	switchBulbButtonElement = null;
-	randomizeCButtonElement = null;
-	cXInputElement = null;
-	cYInputElement = null;
-	cZInputElement = null;
+	cXSliderElement = null;
+	cYSliderElement = null;
+	cZSliderElement = null;
 
 	cameraPos = [-1.11619, -2.63802, 1.67049];
 	c = [-.54, -.25, -.668];
@@ -23,10 +22,12 @@ export class QuaternionicJuliaSet extends RaymarchApplet
 	constructor(
 		canvas,
 		switchBulbButtonElement,
-		randomizeCButtonElement,
-		cXInputElement,
-		cYInputElement,
-		cZInputElement,
+		cXSliderElement,
+		cYSliderElement,
+		cZSliderElement,
+		cXSliderValueElement,
+		cYSliderValueElement,
+		cZSliderValueElement,
 	)
 	{
 		super(canvas);
@@ -34,10 +35,12 @@ export class QuaternionicJuliaSet extends RaymarchApplet
 
 
 		this.switchBulbButtonElement = switchBulbButtonElement;
-		this.randomizeCButtonElement = randomizeCButtonElement;
-		this.cXInputElement = cXInputElement;
-		this.cYInputElement = cYInputElement;
-		this.cZInputElement = cZInputElement;
+		this.cXSliderElement = cXSliderElement;
+		this.cYSliderElement = cYSliderElement;
+		this.cZSliderElement = cZSliderElement;
+		this.cXSliderValueElement = cXSliderValueElement;
+		this.cYSliderValueElement = cYSliderValueElement;
+		this.cZSliderValueElement = cZSliderValueElement;
 
 
 
@@ -569,47 +572,11 @@ export class QuaternionicJuliaSet extends RaymarchApplet
 
 
 
-	randomizeC(animateChange = true)
+	updateC(newC)
 	{
-		this.updateC([
-			Math.random() * 2 - 1,
-			Math.random() * 2 - 1,
-			Math.random() * 2 - 1,
-			this.c[3]
-		], animateChange);
-	}
+		this.c = newC;
 
-
-
-	updateC(newC, animateChange = true)
-	{
-		if (this.cXInputElement && this.cYInputElement && this.cZInputElement)
-		{
-			this.cXInputElement.value = Math.round(newC[0] * 1000000) / 1000000;
-			this.cYInputElement.value = Math.round(newC[1] * 1000000) / 1000000;
-			this.cZInputElement.value = Math.round(newC[2] * 1000000) / 1000000;
-		}
-
-
-
-		const dummy = { t: 0 };
-
-		const oldC = [...this.c];
-
-		anime({
-			targets: dummy,
-			t: 1,
-			duration: 1000 * animateChange + 10,
-			easing: "easeOutQuad",
-			update: () =>
-			{
-				this.c[0] = (1 - dummy.t) * oldC[0] + dummy.t * newC[0];
-				this.c[1] = (1 - dummy.t) * oldC[1] + dummy.t * newC[1];
-				this.c[2] = (1 - dummy.t) * oldC[2] + dummy.t * newC[2];
-
-				this.wilson.gl.uniform3fv(this.wilson.uniforms["c"], this.c);
-			}
-		});
+		this.wilson.gl.uniform3fv(this.wilson.uniforms["c"], this.c);
 	}
 
 
@@ -644,22 +611,6 @@ export class QuaternionicJuliaSet extends RaymarchApplet
 		if (this.juliaProportion === 0)
 		{
 			this.wilson.gl.uniform3fv(this.wilson.uniforms["c"], this.c);
-
-			setTimeout(() =>
-			{
-				if (this.switchBulbButtonElement && this.randomizeCButtonElement)
-				{
-					changeOpacity(this.randomizeCButtonElement, 1);
-				}
-			}, opacityAnimationTime);
-		}
-
-		else
-		{
-			if (this.switchBulbButtonElement && this.randomizeCButtonElement)
-			{
-				changeOpacity(this.randomizeCButtonElement, 0);
-			}
 		}
 
 

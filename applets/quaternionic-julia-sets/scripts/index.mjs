@@ -4,32 +4,35 @@ import { $ } from "/scripts/src/main.mjs";
 
 export function load()
 {
-	const cXInputElement = $("#c-x-input");
-	const cYInputElement = $("#c-y-input");
-	const cZInputElement = $("#c-z-input");
+	const cXSliderElement = $("#c-x-slider");
+	const cYSliderElement = $("#c-y-slider");
+	const cZSliderElement = $("#c-z-slider");
 
-	const randomizeCButtonElement = $("#randomize-c-button");
+	const cXSliderValueElement = $("#c-x-slider-value");
+	const cYSliderValueElement = $("#c-y-slider-value");
+	const cZSliderValueElement = $("#c-z-slider-value");
 
 	const switchBulbButtonElement = $("#switch-bulb-button");
 
 	const applet = new QuaternionicJuliaSet(
 		$("#output-canvas"),
 		switchBulbButtonElement,
-		randomizeCButtonElement,
-		cXInputElement,
-		cYInputElement,
-		cZInputElement,
+		cXSliderElement,
+		cYSliderElement,
+		cZSliderElement,
+		cXSliderValueElement,
+		cYSliderValueElement,
+		cZSliderValueElement
 	);
 
 
 
 	const resolutionInputElement = $("#resolution-input");
 
-	const iterationsInputElement = $("#iterations-input");
+	const iterationsSliderElement = $("#iterations-slider");
+	const iterationsSliderValueElement = $("#iterations-slider-value");
 
-	const viewDistanceInputElement = $("#view-distance-input");
-
-	applet.setInputCaps([resolutionInputElement, viewDistanceInputElement], [750, 200]);
+	applet.setInputCaps([resolutionInputElement], [750]);
 
 
 
@@ -40,18 +43,11 @@ export function load()
 		applet.changeResolution(resolution);
 	});
 
-	iterationsInputElement.addEventListener("input", () =>
+	iterationsSliderElement.addEventListener("input", () =>
 	{
-		applet.maxIterations = parseInt(iterationsInputElement.value || 16);
+		applet.maxIterations = parseInt(iterationsSliderValueElement.textContent || 16);
 
 		applet.wilson.gl.uniform1i(applet.wilson.uniforms["maxIterations"], applet.maxIterations);
-	});
-
-	viewDistanceInputElement.addEventListener("input", () =>
-	{
-		applet.maxMarches = Math.max(parseInt(viewDistanceInputElement.value || 100), 32);
-
-		applet.wilson.gl.uniform1i(applet.wilson.uniforms["maxMarches"], applet.maxMarches);
 	});
 
 
@@ -73,27 +69,21 @@ export function load()
 
 
 
-	const elements = [cXInputElement, cYInputElement, cZInputElement];
+	const elements = [cXSliderElement, cYSliderElement, cZSliderElement];
 
 	for (let i = 0; i < elements.length; i++)
 	{
 		elements[i].addEventListener("input", () =>
 		{
 			const c = [
-				parseFloat(cXInputElement.value || 0),
-				parseFloat(cYInputElement.value || 0),
-				parseFloat(cZInputElement.value || 0),
+				parseFloat(cXSliderValueElement.textContent),
+				parseFloat(cYSliderValueElement.textContent),
+				parseFloat(cZSliderValueElement.textContent),
 			];
 
 			applet.updateC(c);
 		});
 	}
-
-
-
-	randomizeCButtonElement.style.opacity = 1;
-
-	randomizeCButtonElement.addEventListener("click", () => applet.randomizeC(true));
 
 
 

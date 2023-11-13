@@ -14,22 +14,22 @@ The controls are the same as in the Mandelbulb applet. While changing $c$, use t
 	
 	resolution 400 Resolution
 	
-	iterations 16 Iterations
+###
+
+### sliders
+
+	iterations log int 1.204119 0 1.501029 Iterations
 	
-	view-distance 100 View Distance
+	c-x -0.54 -1 1 $c_x$
 	
-	c-x -0.54 $c_x$
+	c-y -0.25 -1 1 $c_y$
 	
-	c-y -0.25 $c_y$
-	
-	c-z -0.668 $c_z$
-	
+	c-z -0.668 -1 1 $c_z$
+
 ###
 
 ### buttons
-	
-	randomize-c l Randomize $c$
-	
+
 	switch-bulb l Switch to Mandelbrot Set
 	
 ###
