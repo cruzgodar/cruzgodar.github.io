@@ -7,9 +7,6 @@ import { Wilson } from "/scripts/wilson.mjs";
 export class QuaternionicJuliaSet extends RaymarchApplet
 {
 	switchBulbButtonElement = null;
-	cXSliderElement = null;
-	cYSliderElement = null;
-	cZSliderElement = null;
 
 	cameraPos = [-1.11619, -2.63802, 1.67049];
 	c = [-.54, -.25, -.668];
@@ -22,12 +19,6 @@ export class QuaternionicJuliaSet extends RaymarchApplet
 	constructor(
 		canvas,
 		switchBulbButtonElement,
-		cXSliderElement,
-		cYSliderElement,
-		cZSliderElement,
-		cXSliderValueElement,
-		cYSliderValueElement,
-		cZSliderValueElement,
 	)
 	{
 		super(canvas);
@@ -35,12 +26,6 @@ export class QuaternionicJuliaSet extends RaymarchApplet
 
 
 		this.switchBulbButtonElement = switchBulbButtonElement;
-		this.cXSliderElement = cXSliderElement;
-		this.cYSliderElement = cYSliderElement;
-		this.cZSliderElement = cZSliderElement;
-		this.cXSliderValueElement = cXSliderValueElement;
-		this.cYSliderValueElement = cYSliderValueElement;
-		this.cZSliderValueElement = cZSliderValueElement;
 
 
 

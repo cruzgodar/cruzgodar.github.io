@@ -6,14 +6,6 @@ import { Wilson } from "/scripts/wilson.mjs";
 
 export class Mandelbulb extends RaymarchApplet
 {
-	cXInputElement = null;
-	cYInputElement = null;
-	cZInputElement = null;
-
-	rotationAngleXInputElement = null;
-	rotationAngleYInputElement = null;
-	rotationAngleZInputElement = null;
-
 	theta = 4.6601;
 	phi = 2.272;
 	cameraPos = [.0828, 2.17, 1.8925];
@@ -33,23 +25,9 @@ export class Mandelbulb extends RaymarchApplet
 
 	constructor({
 		canvas,
-		cXInputElement,
-		cYInputElement,
-		cZInputElement,
-		rotationAngleXInputElement,
-		rotationAngleYInputElement,
-		rotationAngleZInputElement
 	})
 	{
 		super(canvas);
-
-		this.cXInputElement = cXInputElement;
-		this.cYInputElement = cYInputElement;
-		this.cZInputElement = cZInputElement;
-
-		this.rotationAngleXInputElement = rotationAngleXInputElement;
-		this.rotationAngleYInputElement = rotationAngleYInputElement;
-		this.rotationAngleZInputElement = rotationAngleZInputElement;
 
 		const fragShaderSource = `
 			precision highp float;
@@ -703,82 +681,6 @@ export class Mandelbulb extends RaymarchApplet
 		}
 
 		this.wilson.gl.uniform1i(this.wilson.uniforms["imageSize"], this.imageSize);
-	}
-
-
-
-	randomizeRotation(animateChange = true)
-	{
-		const dummy = { t: 0 };
-
-		const xOld = this.rotationAngleX;
-		const yOld = this.rotationAngleY;
-		const zOld = this.rotationAngleZ;
-		const xNew = Math.random() * 2 - 1;
-		const yNew = Math.random() * 2 - 1;
-		const zNew = Math.random() * 2 - 1;
-
-		if (
-			this.rotationAngleXInputElement
-			&& this.rotationAngleYInputElement
-			&& this.rotationAngleZInputElement
-		)
-		{
-			this.rotationAngleXInputElement.value = Math.round(xNew * 1000000) / 1000000;
-			this.rotationAngleYInputElement.value = Math.round(yNew * 1000000) / 1000000;
-			this.rotationAngleZInputElement.value = Math.round(zNew * 1000000) / 1000000;
-		}
-
-		anime({
-			targets: dummy,
-			t: 1,
-			duration: 1000 * animateChange + 10,
-			easing: "easeOutSine",
-			update: () =>
-			{
-				this.rotationAngleX = (1 - dummy.t) * xOld + dummy.t * xNew;
-				this.rotationAngleY = (1 - dummy.t) * yOld + dummy.t * yNew;
-				this.rotationAngleZ = (1 - dummy.t) * zOld + dummy.t * zNew;
-
-				this.updateRotationMatrix();
-			}
-		});
-	}
-
-
-
-	randomizeC(animateChange = true)
-	{
-		const dummy = { t: 0 };
-
-		const xOld = this.c[0];
-		const yOld = this.c[1];
-		const zOld = this.c[2];
-		const xNew = Math.random() * 1.5 - .75;
-		const yNew = Math.random() * 1.5 - .75;
-		const zNew = Math.random() * 1.5 - .75;
-
-		if (this.cXInputElement && this.cYInputElement && this.cZInputElement)
-		{
-			this.cXInputElement.value = Math.round(xNew * 1000000) / 1000000;
-			this.cYInputElement.value = Math.round(yNew * 1000000) / 1000000;
-			this.cZInputElement.value = Math.round(zNew * 1000000) / 1000000;
-		}
-
-		anime({
-			targets: dummy,
-			t: 1,
-			duration: 1000 * animateChange + 10,
-			easing: "easeOutSine",
-			update: () =>
-			{
-				this.c[0] = (1 - dummy.t) * xOld + dummy.t * xNew;
-				this.c[1] = (1 - dummy.t) * yOld + dummy.t * yNew;
-				this.c[2] = (1 - dummy.t) * zOld + dummy.t * zNew;
-
-				this.wilson.gl.uniform3fv(this.wilson.uniforms["c"], this.c);
-			}
-		});
 	}
 
 
