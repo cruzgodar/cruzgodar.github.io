@@ -8,9 +8,9 @@ The idea for this applet, along with the code implementing all of the complex ma
 
 ### sliders
 	
-	g2 3000 $g_2$
+	g2 -2 -5 5 $g_2$
 	
-	g3 5000 $g_3$
+	g3 0 -5 5 $g_3$
 	
 ###
 

@@ -39,8 +39,10 @@ The derivative precision determines the accuracy with which the applet computes 
 	
 	resolution 500 Resolution
 	
-	derivative-precision 6 Derivative Precision
-	
+###
+
+### sliders
+	derivative-precision 6 3 20 Derivative Precision
 ###
 
 ### buttons

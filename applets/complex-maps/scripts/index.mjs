@@ -42,10 +42,6 @@ export function load()
 
 	const resolutionInputElement = $("#resolution-input");
 
-	const blackPointInputElement = $("#black-point-input");
-
-	const whitePointInputElement = $("#white-point-input");
-
 	applet.setInputCaps([resolutionInputElement], [2000]);
 
 
@@ -55,16 +51,6 @@ export function load()
 		applet.resolution = parseInt(resolutionInputElement.value || 500);
 
 		applet.changeAspectRatio(true);
-	});
-
-	blackPointInputElement.addEventListener("input", () =>
-	{
-		applet.blackPoint = parseFloat(blackPointInputElement.value || 1);
-	});
-
-	whitePointInputElement.addEventListener("input", () =>
-	{
-		applet.whitePoint = parseFloat(whitePointInputElement.value || 1);
 	});
 
 

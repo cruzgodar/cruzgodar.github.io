@@ -35,9 +35,10 @@ export function load()
 
 	const resolutionInputElement = $("#resolution-input");
 
-	const derivativePrecisionInputElement = $("#derivative-precision-input");
+	const derivativePrecisionSliderElement = $("#derivative-precision-slider");
+	const derivativePrecisionSliderValueElement = $("#derivative-precision-slider-value");
 
-	applet.setInputCaps([resolutionInputElement, derivativePrecisionInputElement], [2000, 100]);
+	applet.setInputCaps([resolutionInputElement], [2000]);
 
 
 
@@ -48,9 +49,9 @@ export function load()
 		applet.changeAspectRatio(true);
 	});
 
-	derivativePrecisionInputElement.addEventListener("input", () =>
+	derivativePrecisionSliderElement.addEventListener("input", () =>
 	{
-		applet.derivativePrecision = parseFloat(derivativePrecisionInputElement.value || 20);
+		applet.derivativePrecision = parseFloat(derivativePrecisionSliderValueElement.textContent);
 
 		applet.wilson.gl.uniform1f(
 			applet.wilson.uniforms["derivativePrecision"],

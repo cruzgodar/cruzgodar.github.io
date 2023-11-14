@@ -1023,19 +1023,27 @@ export class RaymarchApplet extends Applet
 			callback: boundFunction2
 		});
 
-		const boundFunction3 = this.handleTouchstartEvent.bind(this);
-		addTemporaryListener({
-			object: canvas,
-			event: "touchstart",
-			callback: boundFunction3
-		});
+		const refreshId = setInterval(() =>
+		{
+			if (this?.wilson?.draggables?.container)
+			{
+				const boundFunction3 = this.handleTouchstartEvent.bind(this);
+				addTemporaryListener({
+					object: this.wilson.draggables.container,
+					event: "touchstart",
+					callback: boundFunction3
+				});
 
-		const boundFunction4 = this.handleTouchendEvent.bind(this);
-		addTemporaryListener({
-			object: canvas,
-			event: "touchend",
-			callback: boundFunction4
-		});
+				const boundFunction4 = this.handleTouchendEvent.bind(this);
+				addTemporaryListener({
+					object: this.wilson.draggables.container,
+					event: "touchend",
+					callback: boundFunction4
+				});
+
+				clearInterval(refreshId);
+			}
+		}, 500);
 	}
 
 

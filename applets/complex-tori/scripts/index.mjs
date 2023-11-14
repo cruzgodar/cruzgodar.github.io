@@ -88,14 +88,12 @@ export function load()
 
 	const g2SliderElement = $("#g2-slider");
 	const g2SliderValueElement = $("#g2-slider-value");
-	g2SliderValueElement.textContent = "-2";
 
 	g2SliderElement.addEventListener("input", () =>
 	{
-		g2 = parseInt(g2SliderElement.value || 5000) / 1000 - 5;
-		g2SliderValueElement.textContent = Math.round(g2 * 1000) / 1000;
+		g2 = parseFloat(g2SliderValueElement.textContent);
 
-		g2Applet.wilson.draggables.worldCoordinates[0][0] = g2;
+		g2Applet.wilson.draggables.worldCoordinates[0][0] = g2 / 5;
 
 		g2Applet.wilson.draggables.recalculateLocations();
 
@@ -106,14 +104,12 @@ export function load()
 
 	const g3SliderElement = $("#g3-slider");
 	const g3SliderValueElement = $("#g3-slider-value");
-	g3SliderValueElement.textContent = "0";
 
 	g3SliderElement.addEventListener("input", () =>
 	{
-		g3 = parseInt(g3SliderElement.value || 5000) / 1000 - 5;
-		g3SliderValueElement.textContent = Math.round(g3 * 1000) / 1000;
+		g3 = parseFloat(g3SliderValueElement.textContent);
 
-		g2Applet.wilson.draggables.worldCoordinates[0][1] = g3;
+		g2Applet.wilson.draggables.worldCoordinates[0][1] = g3 / 5;
 
 		g2Applet.wilson.draggables.recalculateLocations();
 
@@ -124,11 +120,14 @@ export function load()
 
 	function onDragDraggable(activeDraggable, x, y)
 	{
-		g2 = x;
-		g3 = y;
+		g2 = x * 5;
+		g3 = y * 5;
 
-		g2SliderValueElement.textContent = Math.round(g2 * 1000) / 1000;
-		g3SliderValueElement.textContent = Math.round(g3 * 1000) / 1000;
+		g2SliderElement.value = g2;
+		g3SliderElement.value = g3;
+
+		g2SliderValueElement.textContent = g2.toFixed(3);
+		g3SliderValueElement.textContent = g3.toFixed(3);
 
 		run();
 	}
