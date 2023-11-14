@@ -4,8 +4,6 @@ export function setUpSliders()
 {
 	const sliderContainers = $$(".slider-container");
 
-	console.log("hi");
-
 	sliderContainers.forEach(sliderContainer =>
 	{
 		const slider = sliderContainer.children[0];

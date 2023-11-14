@@ -1022,6 +1022,20 @@ export class RaymarchApplet extends Applet
 			event: "keyup",
 			callback: boundFunction2
 		});
+
+		const boundFunction3 = this.handleTouchstartEvent.bind(this);
+		addTemporaryListener({
+			object: canvas,
+			event: "touchstart",
+			callback: boundFunction3
+		});
+
+		const boundFunction4 = this.handleTouchendEvent.bind(this);
+		addTemporaryListener({
+			object: canvas,
+			event: "touchend",
+			callback: boundFunction4
+		});
 	}
 
 
@@ -1179,6 +1193,38 @@ export class RaymarchApplet extends Applet
 		else if (e.key === "a")
 		{
 			this.movingLeftKeyboard = false;
+		}
+	}
+
+
+
+	handleTouchstartEvent(e)
+	{
+		if (e.touches.length === 2)
+		{
+			this.movingForwardTouch = true;
+			this.movingBackwardTouch = false;
+		}
+
+		else if (e.touches.length === 3)
+		{
+			this.movingBackwardTouch = true;
+			this.movingForwardTouch = false;
+		}
+	}
+
+	handleTouchendEvent(e)
+	{
+		if (e.touches.length === 2)
+		{
+			this.movingForwardTouch = true;
+			this.movingBackwardTouch = false;
+		}
+
+		else if (e.touches.length === 3)
+		{
+			this.movingBackwardTouch = true;
+			this.movingForwardTouch = false;
 		}
 	}
 
