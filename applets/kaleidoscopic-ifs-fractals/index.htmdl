@@ -30,24 +30,16 @@ Drag on the scene to look around. On a keyboard, use WASD to move, and on a touc
 	
 	resolution 400 Resolution
 	
-	rotation-angle-x-1 0 \(\theta_x\)
-	
-	rotation-angle-y-1 0 \(\theta_y\)
-	
-	rotation-angle-z-1 0 \(\theta_z\)
-	
-	rotation-angle-x-2 0 \(\phi_x\)
-	
-	rotation-angle-y-2 0 \(\phi_y\)
-	
-	rotation-angle-z-2 0 \(\phi_z\)
-	
 ###
 
+### sliders
 
-
-### buttons
-	randomize-parameters l Randomize Parameters
+	rotation-angle-x-2 0 0 1.5708 $\theta_x$
+	
+	rotation-angle-y-2 0 0 1.5708 $\theta_y$
+	
+	rotation-angle-z-2 0 0 1.5708 $\theta_z$
+	
 ###
 
 </div>

@@ -1,4 +1,5 @@
 import { KaleidoscopicIFSFractal } from "./class.mjs";
+import { opacityAnimationTime } from "/scripts/src/animation.mjs";
 import { showPage } from "/scripts/src/load-page.mjs";
 import { $ } from "/scripts/src/main.mjs";
 
@@ -29,6 +30,28 @@ export function load()
 	});
 
 
+	
+	const rotationAngleX2SliderElement = $("#rotation-angle-x-2-slider");
+	const rotationAngleX2SliderValueElement = $("#rotation-angle-x-2-slider-value");
+
+	const rotationAngleY2SliderElement = $("#rotation-angle-y-2-slider");
+	const rotationAngleY2SliderValueElement = $("#rotation-angle-y-2-slider-value");
+
+	const rotationAngleZ2SliderElement = $("#rotation-angle-z-2-slider");
+	const rotationAngleZ2SliderValueElement = $("#rotation-angle-z-2-slider-value");
+
+	const sliderElements = [
+		rotationAngleX2SliderElement,
+		rotationAngleY2SliderElement,
+		rotationAngleZ2SliderElement
+	];
+
+	for (let i = 0; i < sliderElements.length; i++)
+	{
+		sliderElements[i].addEventListener("input", updateRotation);
+	}
+
+
 
 	const polyhedronSelectorDropdownElement = $("#polyhedron-selector-dropdown");
 
@@ -37,91 +60,72 @@ export function load()
 		if (polyhedronSelectorDropdownElement.value === "tetrahedron")
 		{
 			applet.changePolyhedron(0);
+
+			setTimeout(() =>
+			{
+				resetSliders();
+
+				rotationAngleX2SliderElement.setAttribute("max", 2 * Math.PI);
+				rotationAngleY2SliderElement.setAttribute("max", 2 * Math.PI);
+				rotationAngleZ2SliderElement.setAttribute("max", 2 * Math.PI / 3);
+			}, opacityAnimationTime);
 		}
 
 		else if (polyhedronSelectorDropdownElement.value === "cube")
 		{
 			applet.changePolyhedron(1);
+
+			setTimeout(() =>
+			{
+				resetSliders();
+
+				rotationAngleX2SliderElement.setAttribute("max", Math.PI / 2);
+				rotationAngleY2SliderElement.setAttribute("max", Math.PI / 2);
+				rotationAngleZ2SliderElement.setAttribute("max", Math.PI / 2);
+			}, opacityAnimationTime);
 		}
 
 		else
 		{
 			applet.changePolyhedron(2);
+			
+			setTimeout(() =>
+			{
+				resetSliders();
+
+				rotationAngleX2SliderElement.setAttribute("max", Math.PI / 2);
+				rotationAngleY2SliderElement.setAttribute("max", Math.PI / 2);
+				rotationAngleZ2SliderElement.setAttribute("max", Math.PI / 2);
+			}, opacityAnimationTime);
 		}
 	});
 
 
 
-	const rotationAngleX1InputElement = $("#rotation-angle-x-1-input");
-	const rotationAngleY1InputElement = $("#rotation-angle-y-1-input");
-	const rotationAngleZ1InputElement = $("#rotation-angle-z-1-input");
+	showPage();
 
-	const rotationAngleX2InputElement = $("#rotation-angle-x-2-input");
-	const rotationAngleY2InputElement = $("#rotation-angle-y-2-input");
-	const rotationAngleZ2InputElement = $("#rotation-angle-z-2-input");
 
-	const elements = [
-		rotationAngleX1InputElement,
-		rotationAngleY1InputElement,
-		rotationAngleZ1InputElement,
-		rotationAngleX2InputElement,
-		rotationAngleY2InputElement,
-		rotationAngleZ2InputElement
-	];
 
-	for (let i = 0; i < 6; i++)
+	function updateRotation()
 	{
-		elements[i].addEventListener("input", () =>
-		{
-			const rotationAngleX1 = parseFloat(rotationAngleX1InputElement.value || 0);
-			const rotationAngleY1 = parseFloat(rotationAngleY1InputElement.value || 0);
-			const rotationAngleZ1 = parseFloat(rotationAngleZ1InputElement.value || 0);
-			const rotationAngleX2 = parseFloat(rotationAngleX2InputElement.value || 0);
-			const rotationAngleY2 = parseFloat(rotationAngleY2InputElement.value || 0);
-			const rotationAngleZ2 = parseFloat(rotationAngleZ2InputElement.value || 0);
+		applet.rotationAngleX2 = parseFloat(rotationAngleX2SliderValueElement.textContent);
+		applet.rotationAngleY2 = parseFloat(rotationAngleY2SliderValueElement.textContent);
+		applet.rotationAngleZ2 = parseFloat(rotationAngleZ2SliderValueElement.textContent);
 
-			applet.updateParameters(
-				rotationAngleX1,
-				rotationAngleY1,
-				rotationAngleZ1,
-				rotationAngleX2,
-				rotationAngleY2,
-				rotationAngleZ2
-			);
-		});
+		applet.updateMatrices();
 	}
 
-
-
-	const randomizeParametersButtonElement = $("#randomize-parameters-button");
-
-	randomizeParametersButtonElement.addEventListener("click", () =>
+	function resetSliders()
 	{
-		const rotationAngleX1 = Math.random() * .375 - .1875;
-		const rotationAngleY1 = Math.random() * .375 - .1875;
-		const rotationAngleZ1 = Math.random() * .75 - .375;
-		const rotationAngleX2 = Math.random() * .375 - .1875;
-		const rotationAngleY2 = Math.random() * .375 - .1875;
-		const rotationAngleZ2 = Math.random() * .75 - .375;
+		rotationAngleX2SliderElement.value = 0;
+		rotationAngleX2SliderValueElement.textContent = "0.000";
 
-		rotationAngleX1InputElement.value = Math.round(rotationAngleX1 * 1000000) / 1000000;
-		rotationAngleY1InputElement.value = Math.round(rotationAngleY1 * 1000000) / 1000000;
-		rotationAngleZ1InputElement.value = Math.round(rotationAngleZ1 * 1000000) / 1000000;
-		rotationAngleX2InputElement.value = Math.round(rotationAngleX2 * 1000000) / 1000000;
-		rotationAngleY2InputElement.value = Math.round(rotationAngleY2 * 1000000) / 1000000;
-		rotationAngleZ2InputElement.value = Math.round(rotationAngleZ2 * 1000000) / 1000000;
+		rotationAngleY2SliderElement.value = 0;
+		rotationAngleY2SliderValueElement.textContent = "0.000";
 
-		applet.updateParameters(
-			rotationAngleX1,
-			rotationAngleY1,
-			rotationAngleZ1,
-			rotationAngleX2,
-			rotationAngleY2,
-			rotationAngleZ2
-		);
-	});
+		rotationAngleZ2SliderElement.value = 0;
+		rotationAngleZ2SliderValueElement.textContent = "0.000";
 
-
-
-	showPage();
+		updateRotation();
+	}
 }
