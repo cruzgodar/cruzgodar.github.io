@@ -2,7 +2,7 @@
 
 
 
-We'll begin our final section of core material by tackling a very important question: how do we efficiently translate from one basis to another? While the answer will be simple, it will unfortunately be a little unintuituve.
+We'll begin our final section of core material by tackling a very important question: how do we efficiently translate from one basis to another? While the answer will be simple, it will unfortunately be a little counterintuitive.
 
 Let's take a finite-dimensional vector space $V$ and bases $\mathcal{B} = \{\vec{v_1}, ..., \vec{v_n}\}$ and $\mathcal{C} = \{\vec{w_1}, ..., \vec{w_n}\}$ (both bases have to have the same number of elements, so using $n$ as the final subscript for both is justified). If $\vec{v} \in V$ has a coordinate vector
 
@@ -22,7 +22,43 @@ $$
 
 That kind of statement should look familiar --- it's saying that the function $B : V \to \mathbb{R}^n$ given by $B(\vec{v}) = [\vec{v}]_\mathcal{B}$ is actually a linear transformation! Since linear transformations are defined by their actions on just a basis, we can find $[\vec{v}]_\mathcal{C}$ by finding $[\vec{v_i}]_\mathcal{C}$ for each basis vector $\vec{v_i}$, and in fact, the conversion from $\mathcal{B}$ to $\mathcal{C}$ will be a linear transformation, so we'll be able to express it as a matrix.
 
-So --- how do we convert the basis vectors? By far the simplest way is to only handle converting to and from a standard basis whenever possible, since that's almost always very easy to express vectors in. 
+So --- how do we convert the basis vectors? By far the simplest way is to only handle converting to and from a standard basis whenever possible, since that's almost always very easy to express vectors in. To convert the **coordinate vector** $\vec{e_1}$ in a basis $\mathcal{B}$ to a coordinate vector in the standard basis $\mathcal{E}$, we send $\vec{e_1}$ to $[\vec{v_1}]_\mathcal{E}$, since the first describes a vector comprised of one copy of $\vec{v_1}$ and no others, and the second describes $\vec{v_1}$ as its entries. Applying this logic to the others and putting them into a matrix, we have
+
+$$
+	B = [[ \mid, , \mid ; [\vec{v_1}]_\mathcal{E}, \cdots, [\vec{v_n}]_\mathcal{E} ; \mid, , \mid ]]
+$$
+
+is a matrix that sends coordinate vectors in the basis $\mathcal{B} = \{\vec{v_1}, ..., \vec{v_n}\}$ to coordinate vectors in the standard basis. And now we need to stop and say that again, because this is unfortunately *very* unintuitive. Since $B\vec{e_i} = [\vec{v_i}]_\mathcal{E}$, it looks for all the world like $B$ translates *from* the standard basis *to* $\mathcal{B}$, but we need to remember what we're dealing with. In that equation, $\vec{e_i}$ is not an *element* of the standard basis (e.g. a polynomial, matrix, or linear transformation), but a *coordinate vector* in the basis $\mathcal{B}$, representing a single copy of $\vec{v_i}$. On the other side of the equation, $[\vec{v_i}]_\mathcal{E}$ is the expression of $\vec{v_i}$ in the standard basis, written as a coordinate vector. We're in desperate need of examples, so let's get right to them.
+
+### ex a change-of-basis matrix
+
+	Let $V$ be the subspace of $#R#[x]$ consisting of polynomials with degree less than $4$ and let and $\mathcal{B} = \{ 1 + x, x + x^2, x - 2x^3, x^3 \}$ be a basis for it. Express $1 + x + x^2 + x^3$ in $\mathcal{B}$.
+
+	To get started, let $\mathcal{E} = \{1, x, x^2, x^3\}$ be the standard basis for $V$. We can assemble the change-of-basis matrix $B$ by taking each of the vectors in $\mathcal{B}$ and expressing them as a coordinate vector in $\mathcal{E}$. Specifically, we have
+
+	$$
+		[1 + x]_\mathcal{E} = [[ 1 ; 1 ; 0 ; 0 ]] \qquad [x + x^2]_\mathcal{E} = [[ 0 ; 1 ; 1 ; 0 ]] \qquad [x - 2x^3]_\mathcal{E} = [[ 0 ; 1 ; 0 ; -2 ]] \qquad [x^3]_\mathcal{E} = [[ 0 ; 0 ; 0 ; 1 ]].
+	$$
+
+	Assembling these as columns in a matrix results in
+
+	$$
+		B = [[ 1, 0, 0, 0 ; 1, 1, 1, 0 ; 0, 1, 0, 0 ; 0, 0, -2, 1 ]].
+	$$
+
+	As we've seen, this matrix converts coordinate vectors in $\mathcal{B}$ to coordinate vectors in $\mathcal{E}$ --- for example, if $\vec{v}$ is a vector with $[\vec{v}]_\mathcal{B} = [[ 1 ; 2 ; 3 ; 4 ]]$, then
+
+	$$
+		[\vec{v}]_\mathcal{E} &= B[\vec{v}]_\mathcal{B}
+
+		&= [[ 1, 0, 0, 0 ; 1, 1, 1, 0 ; 0, 1, 0, 0 ; 0, 0, -2, 1 ]][[ 1 ; 2 ; 3 ; 4 ]]
+
+		&= [[ 1 ; 6 ; 2 ; -2 ]],
+	$$
+
+	so $\vec{v} = 1 + 6x + 2x^2 - 2x^3$.
+
+###
 
 
 

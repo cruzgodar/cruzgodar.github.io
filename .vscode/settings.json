@@ -16,18 +16,5 @@
 	"editor.wordWrapColumn": 128,
 	"prettier.requireConfig": true,
 	"editor.formatOnSave": false,
-	"editor.codeActionsOnSave": {
-
-	},
-	"emeraldwalk.runonsave": {
-		"autoClearConsole": true,
-		"shell": "/bin/zsh",
-		"commands": [
-			{
-				"match": ".*",
-				"cmd": "bun ${workspaceFolder}/build/build.mjs"
-			}
-		]
-	},
 	"editor.maxTokenizationLineLength": 200000,
 }
