@@ -54,11 +54,7 @@ export function load()
 
 	const resolutionInputElement = $("#resolution-input");
 
-	const exposureInputElement = $("#exposure-input");
-
-	const numIterationsInputElement = $("#num-iterations-input");
-
-	applet.setInputCaps([resolutionInputElement, numIterationsInputElement], [2000, 500]);
+	applet.setInputCaps([resolutionInputElement], [2000]);
 
 
 
@@ -67,16 +63,6 @@ export function load()
 		applet.resolution = parseInt(resolutionInputElement.value || 500);
 
 		applet.changeAspectRatio(true);
-	});
-
-	exposureInputElement.addEventListener("input", () =>
-	{
-		applet.exposure = parseFloat(exposureInputElement.value || 1);
-	});
-
-	numIterationsInputElement.addEventListener("input", () =>
-	{
-		applet.numIterations = parseInt(numIterationsInputElement.value || 200);
 	});
 
 
@@ -109,14 +95,12 @@ export function load()
 		const generatingCode = codeInputElement.value || "cadd(cpow(z, 2.0), c)";
 
 		const resolution = parseInt(resolutionInputElement.value || 500);
-		const exposure = parseFloat(exposureInputElement.value || 1);
-		const numIterations = parseInt(numIterationsInputElement.value || 200);
 
 		applet.run({
 			generatingCode,
 			resolution,
-			exposure,
-			numIterations
+			exposure: 1,
+			numIterations: 200
 		});
 	}
 }

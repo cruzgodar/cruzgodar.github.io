@@ -9,15 +9,11 @@ The <a href="/applets/julia-set-explorer/">Mandelbrot set and Julia sets</a> sha
 <div id="canvas-landscape-left">
 
 ### text-boxes
-	
 	resolution 1000 Resolution
-	
-	set-density 10 Set Density
-	
-	exposure 1 Exposure
-	
-	num-iterations 100 Iterations
-	
+###
+
+### sliders
+	set-density 10 2 20 Set Density
 ###
 
 </div>

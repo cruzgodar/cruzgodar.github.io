@@ -10,16 +10,10 @@ export function load()
 
 	const resolutionInputElement = $("#resolution-input");
 
-	const setDensityInputElement = $("#set-density-input");
+	const setDensitySliderElement = $("#set-density-slider");
+	const setDensitySliderValueElement = $("#set-density-slider-value");
 
-	const exposureInputElement = $("#exposure-input");
-
-	const numIterationsInputElement = $("#num-iterations-input");
-
-	applet.setInputCaps(
-		[resolutionInputElement, setDensityInputElement, numIterationsInputElement],
-		[2000, 200, 500]
-	);
+	applet.setInputCaps([resolutionInputElement], [2000]);
 
 
 
@@ -30,19 +24,9 @@ export function load()
 		applet.changeAspectRatio();
 	});
 
-	setDensityInputElement.addEventListener("input", () =>
+	setDensitySliderElement.addEventListener("input", () =>
 	{
-		applet.setDensity = parseFloat(setDensityInputElement.value || 10);
-	});
-
-	exposureInputElement.addEventListener("input", () =>
-	{
-		applet.exposure = parseFloat(exposureInputElement.value || 1);
-	});
-
-	numIterationsInputElement.addEventListener("input", () =>
-	{
-		applet.numIterations = parseInt(numIterationsInputElement.value || 200);
+		applet.setDensity = parseFloat(setDensitySliderValueElement.textContent);
 	});
 
 
@@ -67,15 +51,12 @@ export function load()
 	function run()
 	{
 		const resolution = parseInt(resolutionInputElement.value || 1000);
-		const setDensity = parseInt(setDensityInputElement.value || 10);
-		const exposure = parseFloat(exposureInputElement.value || 1);
-		const numIterations = parseInt(numIterationsInputElement.value || 100);
 
 		applet.run({
 			resolution,
-			setDensity,
-			exposure,
-			numIterations
+			setDensity: 10,
+			exposure: 1,
+			numIterations: 100
 		});
 	}
 }
