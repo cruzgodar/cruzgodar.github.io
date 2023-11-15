@@ -1,4 +1,5 @@
 import { ThurstonGeometry } from "../class.mjs";
+import { sliderValues } from "../index.mjs";
 import { BaseGeometry, getColorGlslString, getMinGlslString } from "./base.mjs";
 import { $ } from "/scripts/src/main.mjs";
 
@@ -177,13 +178,13 @@ export class S3Rooms extends S3Geometry
 
 	uniformGlsl = "uniform float wallThickness;";
 	uniformNames = ["wallThickness"];
-	uniformData = {
-		wallThickness: .92,
-	};
 
 	updateUniforms(gl, uniformList)
 	{
-		gl.uniform1f(uniformList["wallThickness"], this.uniformData.wallThickness);
+		const wallThickness = .97 -
+			(sliderValues.wallThickness - (-.15)) / (.35 - (-.15)) * (.97 - .92);
+
+		gl.uniform1f(uniformList["wallThickness"], wallThickness);
 	}
 
 	uiElementsUsed = "#wall-thickness-slider";
@@ -193,19 +194,11 @@ export class S3Rooms extends S3Geometry
 		const wallThicknessSlider = $("#wall-thickness-slider");
 		const wallThicknessSliderValue = $("#wall-thickness-slider-value");
 
-		wallThicknessSlider.value = 10000;
-		wallThicknessSliderValue.textContent = "0.30";
-
-		wallThicknessSlider.addEventListener("input", () =>
-		{
-			const wallThickness = 0.92 + (1 - parseInt(wallThicknessSlider.value) / 10000) * .05;
-
-			wallThicknessSliderValue.textContent = (Math.round(
-				(-wallThickness + .955) * 1000
-			) / 100).toFixed(2);
-
-			this.uniformData.wallThickness = wallThickness;
-		});
+		wallThicknessSlider.min = -.15;
+		wallThicknessSlider.max = .35;
+		wallThicknessSlider.value = .35;
+		wallThicknessSliderValue.textContent = (.35).toFixed(3);
+		sliderValues.wallThickness = .35;
 	}
 }
 
@@ -423,7 +416,7 @@ export class S3HopfFibration extends S3Geometry
 
 	updateUniforms(gl, uniformList)
 	{
-		gl.uniform1f(uniformList["fiberThickness"], this.uniformData.fiberThickness);
+		gl.uniform1f(uniformList["fiberThickness"], sliderValues.fiberThickness);
 	}
 
 	uiElementsUsed = "#fiber-thickness-slider";
@@ -433,18 +426,10 @@ export class S3HopfFibration extends S3Geometry
 		const fiberThicknessSlider = $("#fiber-thickness-slider");
 		const fiberThicknessSliderValue = $("#fiber-thickness-slider-value");
 
-		fiberThicknessSlider.value = 2105;
-		fiberThicknessSliderValue.textContent = "0.25";
-
-		fiberThicknessSlider.addEventListener("input", () =>
-		{
-			const fiberThickness = .005 + parseInt(fiberThicknessSlider.value) / 10000 * .095;
-
-			fiberThicknessSliderValue.textContent = (Math.round(
-				(fiberThickness) * 1000
-			) / 100).toFixed(2);
-
-			this.uniformData.fiberThickness = fiberThickness;
-		});
+		fiberThicknessSlider.min = .005;
+		fiberThicknessSlider.max = .1;
+		fiberThicknessSlider.value = .025;
+		fiberThicknessSliderValue.textContent = (.025).toFixed(3);
+		sliderValues.fiberThickness = .025;
 	}
 }

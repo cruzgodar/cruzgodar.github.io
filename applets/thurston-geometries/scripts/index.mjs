@@ -1,9 +1,14 @@
 import { ThurstonGeometry } from "./class.mjs";
-import { E3Rooms, E3Spheres } from "./geometries/e3.mjs";
-import { H3Rooms } from "./geometries/h3.mjs";
+import { E3Rooms, E3SeifertWeberSpace, E3Spheres } from "./geometries/e3.mjs";
 import { S3HopfFibration, S3Rooms, S3Spheres } from "./geometries/s3.mjs";
 import { showPage } from "/scripts/src/load-page.mjs";
 import { $, $$ } from "/scripts/src/main.mjs";
+
+export const sliderValues = {
+	wallThickness: 0,
+	fiberThickness: 0,
+	gluingAngle: 0
+};
 
 export function load()
 {
@@ -15,10 +20,10 @@ export function load()
 	{
 		"e3-rooms": E3Rooms,
 		"e3-spheres": E3Spheres,
+		"e3-seifert-weber-space": E3SeifertWeberSpace,
 		"s3-rooms": S3Rooms,
 		"s3-spheres": S3Spheres,
 		"s3-hopf-fibration": S3HopfFibration,
-		"h3-rooms": H3Rooms
 	};
 
 	const sceneSelectorDropdownElement = $("#scene-selector-dropdown");
@@ -52,11 +57,13 @@ export function load()
 
 
 
-	const resolutionInputElement = $("#resolution-input");
+	const sliders = {
+		wallThickness: [$("#wall-thickness-slider"), $("#wall-thickness-slider-value")],
+		fiberThickness: [$("#fiber-thickness-slider"), $("#fiber-thickness-slider-value")],
+		gluingAngle: [$("#gluing-angle-slider"), $("#gluing-angle-slider-value")],
+	};
 
-	const fovSlider = $("#fov-slider");
-	const fovSliderValue = $("#fov-slider-value");
-	fovSliderValue.textContent = 1.15;
+	const resolutionInputElement = $("#resolution-input");
 
 	applet.setInputCaps([resolutionInputElement], [1000]);
 
@@ -69,15 +76,23 @@ export function load()
 		applet.changeResolution(resolution);
 	});
 
-	fovSlider.addEventListener("input", () =>
+	for (const key in sliders)
 	{
-		//The acual FOV can range from 0.5 to 2.
-		const fov = parseInt(fovSlider.value) / 10000 * 1.5 + .5;
+		sliderValues[key] = parseFloat(sliders[key][1].textContent);
 
-		fovSliderValue.textContent = (Math.round(fov * 100) / 100).toFixed(2);
+		sliders[key][0].addEventListener("input", () =>
+		{
+			sliderValues[key] = parseFloat(sliders[key][1].textContent);
+		});
+	}
 
-		applet.fov = fov;
-		applet.wilson.gl.uniform1f(applet.wilson.uniforms.fov, fov);
+	const fovSliderElement = $("#fov-slider");
+	const fovSliderValueElement = $("#fov-slider-value");
+
+	fovSliderElement.addEventListener("input", () =>
+	{
+		applet.fov = parseFloat(fovSliderValueElement.textContent);
+		applet.wilson.gl.uniform1f(applet.wilson.uniforms.fov, applet.fov);
 	});
 
 

@@ -47,7 +47,7 @@ import{Applet}from"/scripts/src/applets.min.mjs";import{addTemporaryListener}fro
 				
 				
 				vec2 c = floor(z * setDensity) / setDensity;
-				z = (mod(z, 1.0 / setDensity) * setDensity - vec2(.5, .5)) * 3.0 - vec2(.5, .5);
+				z = (mod(z, 1.0 / setDensity) * setDensity - vec2(.5, .5)) * 3.0;
 				
 				for (int iteration = 0; iteration < 3001; iteration++)
 				{

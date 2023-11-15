@@ -14,6 +14,7 @@ Something will go here eventually!
 	
 	e3-rooms &#x1D53C;&#xB3: Rooms
 	e3-spheres &#x1D53C;&#xB3: Spheres
+	e3-seifert-weber-space &#x1D53C;&#xB3: Seifert-Weber Space
 	s3-rooms S&#xB3: Rooms
 	s3-spheres S&#xB3: Spheres
 	s3-hopf-fibration S&#xB3: Hopf Fibration
@@ -29,13 +30,13 @@ Something will go here eventually!
 
 ### sliders
 	
-	wall-thickness 10000 Wall Thickness
+	wall-thickness 0 0 1 Wall Thickness
 
-	fiber-thickness 5000 Fiber Thickness
+	fiber-thickness 0 0 1 Fiber Thickness
 
-	gluing-angle 3000 Gluing Angle
+	gluing-angle 0 0 1 Gluing Angle
 
-	fov 4333 FOV
+	fov 1.15 .5 2 FOV
 	
 ###
 
