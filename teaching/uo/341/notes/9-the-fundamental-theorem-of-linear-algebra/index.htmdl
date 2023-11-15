@@ -32,7 +32,7 @@ is a matrix that sends coordinate vectors in the basis $\mathcal{B} = \{\vec{v_1
 
 ### ex a change-of-basis matrix
 
-	Let $V$ be the subspace of $#R#[x]$ consisting of polynomials with degree less than $4$ and let and $\mathcal{B} = \{ 1 + x, x + x^2, x - 2x^3, x^3 \}$ be a basis for it. Express $1 + x + x^2 + x^3$ in $\mathcal{B}$.
+	Let $V$ be the subspace of $#R#[x]$ consisting of polynomials with degree less than $4$ and let $\mathcal{B} = \{ 1 + x, x + x^2, x - 2x^3, x^3 \}$ be a basis for it. Express $1 + x + x^2 + x^3$ in $\mathcal{B}$.
 
 	To get started, let $\mathcal{E} = \{1, x, x^2, x^3\}$ be the standard basis for $V$. We can assemble the change-of-basis matrix $B$ by taking each of the vectors in $\mathcal{B}$ and expressing them as a coordinate vector in $\mathcal{E}$. Specifically, we have
 
@@ -56,7 +56,49 @@ is a matrix that sends coordinate vectors in the basis $\mathcal{B} = \{\vec{v_1
 		&= [[ 1 ; 6 ; 2 ; -2 ]],
 	$$
 
-	so $\vec{v} = 1 + 6x + 2x^2 - 2x^3$.
+	so $\vec{v} = 1 + 6x + 2x^2 - 2x^3$. But this isn't really that helpful --- it's just another another way of saying to take a linear combination of the basis vectors in $\mathcal{B}$. What we really want, and what we're being asked for, is to go the other way: to take the polynomial $1 + x + x^2 + x^3$, which is easily expressible in the standard basis, and express it in $\mathcal{B}$. Since
+
+	$$
+		[\vec{v}]_\mathcal{E} &= B[\vec{v}]_\mathcal{B}
+	$$
+
+	for any vector $\vec{v}$, we can multiply both sides by $B^{-1}$ on the left to find the result we want:
+
+	$$
+		B^{-1}[\vec{v}]_\mathcal{E} &= [\vec{v}]_\mathcal{B}.
+	$$
+
+	The matrix $B$ has to be invertible, since it's square and consists of linearly independent columns (since they come from vectors comprising a basis). So let's go ahead and invert the matrix $B$:
+
+	$$
+		[[ 1, 0, 0, 0 | 1, 0, 0, 0 ; 1, 1, 1, 0 | 0, 1, 0, 0 ; 0, 1, 0, 0 | 0, 0, 1, 0 ; 0, 0, -2, 1 | 0, 0, 0, 1 ]] &
+
+		[[ 1, 0, 0, 0 | 1, 0, 0, 0 ; 0, 1, 1, 0 | -1, 1, 0, 0 ; 0, 1, 0, 0 | 0, 0, 1, 0 ; 0, 0, -2, 1 | 0, 0, 0, 1 ]] & \qquad \vec{r_2} \me \vec{r_1}
+
+		[[ 1, 0, 0, 0 | 1, 0, 0, 0 ; 0, 1, 1, 0 | -1, 1, 0, 0 ; 0, 0, -1, 0 | 1, -1, 1, 0 ; 0, 0, -2, 1 | 0, 0, 0, 1 ]] & \qquad \vec{r_3} \me \vec{r_2}
+
+		[[ 1, 0, 0, 0 | 1, 0, 0, 0 ; 0, 1, 1, 0 | -1, 1, 0, 0 ; 0, 0, -1, 0 | 1, -1, 1, 0 ; 0, 0, 0, 1 | -2, 2, -2, 1 ]] & \qquad \vec{r_4} \me 2\vec{r_3}
+
+		[[ 1, 0, 0, 0 | 1, 0, 0, 0 ; 0, 1, 0, 0 | 0, 0, 1, 0 ; 0, 0, -1, 0 | 1, -1, 1, 0 ; 0, 0, 0, 1 | -2, 2, -2, 1 ]] & \qquad \vec{r_2} \pe \vec{r_3}
+
+		[[ 1, 0, 0, 0 | 1, 0, 0, 0 ; 0, 1, 0, 0 | 0, 0, 1, 0 ; 0, 0, 1, 0 | -1, 1, -1, 0 ; 0, 0, 0, 1 | -2, 2, -2, 1 ]] & \qquad \vec{r_3} \te -1
+	$$
+
+	With $B^{-1}$ in hand, we can express our vector in the basis $\mathcal{B}$: we just multiply $B^{-1}$ with the coordinate vector for $1 + x + x^2 + x^3$ in the standard basis $\mathcal{E}$:
+
+	$$
+		B^{-1} [1 + x + x^2 + x^3]_\mathcal{E} &= [[ 1, 0, 0, 0 ; 0, 0, 1, 0 ; -1, 1, -1, 0 ; -2, 2, -2, 1 ]] [[ 1 ; 1 ; 1 ; 1 ]]
+
+		&= [[ 1 ; 1 ; -1 ; -1 ]].
+	$$
+
+	In total, this expression tells us that
+
+	$$
+		1 + x + x^2 + x^3 = 1(1 + x) + 1(x + x^2) - 1(x - 2x^3) - 1(x^3),
+	$$
+
+	and so we've successfully expressed the polynomial in $\mathcal{B}$.
 
 ###
 
