@@ -120,7 +120,7 @@ is a matrix that sends coordinate vectors in the basis $\mathcal{B} = \{\vec{v_1
 
 This last theorem earns its name: it provides a fundamental relation between linear maps and their domain, kernel, and image. Let's get right to the statement and proof.
 
-### thm the Fundamental Theorem of Linear Algebra
+### thm The Fundamental Theorem of Linear Algebra
 	
 	Let $V$ and $W$ be vector spaces, where $V$ is finite-dimensional, and let $T : V \to W$. Then
 	
