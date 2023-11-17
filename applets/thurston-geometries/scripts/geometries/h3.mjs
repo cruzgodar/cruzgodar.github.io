@@ -1,7 +1,4 @@
-import { ThurstonGeometry } from "../class.mjs";
-import { getMinGlslString } from "./base.mjs";
-
-import { BaseGeometry } from "./base.mjs";
+import { BaseGeometry, getMinGlslString } from "./base.mjs";
 
 class H3Geometry extends BaseGeometry
 {
@@ -28,9 +25,16 @@ class H3Geometry extends BaseGeometry
 		return log(x + sqrt(x*x - 1.0));
 	}`;
 
-	customDotProduct(vec1, vec2)
+	dotProduct(vec1, vec2)
 	{
 		return vec1[0] * vec2[0] + vec1[1] * vec2[1] + vec1[2] * vec2[2] - vec1[3] * vec2[3];
+	}
+
+	normalize(vec)
+	{
+		const magnitude = Math.sqrt(Math.abs(this.dotProduct(vec, vec)));
+
+		return [vec[0] / magnitude, vec[1] / magnitude, vec[2] / magnitude, vec[3] / magnitude];
 	}
 	
 	updateCameraPos(cameraPos, tangentVec, dt)
@@ -64,7 +68,7 @@ class H3Geometry extends BaseGeometry
 	getNormalVec(cameraPos)
 	{
 		//f = -1 + x^2 + y^2 + z^2 - w^2.
-		return ThurstonGeometry.normalize([
+		return this.normalize([
 			cameraPos[0],
 			cameraPos[1],
 			cameraPos[2],

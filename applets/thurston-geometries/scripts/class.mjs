@@ -257,11 +257,6 @@ export class ThurstonGeometry extends Applet
 			}
 		`;
 
-		if (window.DEBUG)
-		{
-			console.log(fragShaderSource);
-		}
-
 		
 
 		this.wilson.render.shaderPrograms = [];
@@ -524,7 +519,7 @@ export class ThurstonGeometry extends Applet
 	 */
 	handleMoving(movingAmount, timeElapsed)
 	{
-		let tangentVec = ThurstonGeometry.normalize([
+		let tangentVec = this.geometryData.normalize([
 			movingAmount[0] * this.geometryData.forwardVec[0]
 				+ movingAmount[1] * this.geometryData.rightVec[0]
 				+ movingAmount[2] * this.geometryData.upVec[0],
@@ -557,12 +552,16 @@ export class ThurstonGeometry extends Applet
 		);
 
 		//The magic formula is T' = curvature * N.
-		tangentVec = ThurstonGeometry.normalize([
+		tangentVec = this.geometryData.normalize([
 			tangentVec[0] + curvature * this.geometryData.normalVec[0] * dt,
 			tangentVec[1] + curvature * this.geometryData.normalVec[1] * dt,
 			tangentVec[2] + curvature * this.geometryData.normalVec[2] * dt,
 			tangentVec[3] + curvature * this.geometryData.normalVec[3] * dt
 		]);
+
+
+		console.log(this.geometryData.cameraPos, newCameraPos);
+		console.log(this.geometryData.upVec, this.parallelTransport(newCameraPos, this.geometryData.upVec));
 
 		
 
@@ -575,7 +574,7 @@ export class ThurstonGeometry extends Applet
 
 		this.geometryData.normalVec = this.geometryData.getNormalVec(this.geometryData.cameraPos);
 
-
+		
 
 		//Need to do rotation here rather than scale by -1.
 		if (movingAmount[0] === 1)
@@ -702,17 +701,17 @@ export class ThurstonGeometry extends Applet
 	//direction at all.
 	correctVectors()
 	{
-		const dotUp = this.geometryData.dotProduct(
+		const dotUp = ThurstonGeometry.dotProduct(
 			this.geometryData.normalVec,
 			this.geometryData.upVec
 		);
 
-		const dotRight = this.geometryData.dotProduct(
+		const dotRight = ThurstonGeometry.dotProduct(
 			this.geometryData.normalVec,
 			this.geometryData.rightVec
 		);
 
-		const dotForward = this.geometryData.dotProduct(
+		const dotForward = ThurstonGeometry.dotProduct(
 			this.geometryData.normalVec,
 			this.geometryData.forwardVec
 		);
@@ -724,17 +723,19 @@ export class ThurstonGeometry extends Applet
 			this.geometryData.forwardVec[i] -= dotForward * this.geometryData.normalVec[i];
 		}
 
-		this.geometryData.upVec = ThurstonGeometry.normalize(this.geometryData.upVec);
-		this.geometryData.rightVec = ThurstonGeometry.normalize(this.geometryData.rightVec);
-		this.geometryData.forwardVec = ThurstonGeometry.normalize(this.geometryData.forwardVec);
+		this.geometryData.upVec = this.geometryData.normalize(this.geometryData.upVec);
+		this.geometryData.rightVec = this.geometryData.normalize(this.geometryData.rightVec);
+		this.geometryData.forwardVec = this.geometryData.normalize(this.geometryData.forwardVec);
 	}
 
 
 
 	getCurvature(pos, dir)
 	{
-		const gammaPrime = this.geometryData.getGammaPrime(pos, dir);
-		const gammaDoublePrime = this.geometryData.getGammaDoublePrime(pos, dir);
+		const normalizedDir = ThurstonGeometry.normalize(dir);
+
+		const gammaPrime = this.geometryData.getGammaPrime(pos, normalizedDir);
+		const gammaDoublePrime = this.geometryData.getGammaDoublePrime(pos, normalizedDir);
 
 		const dotProduct = ThurstonGeometry.dotProduct(gammaPrime, gammaDoublePrime);
 		const gammaPrimeMag = ThurstonGeometry.magnitude(gammaPrime);

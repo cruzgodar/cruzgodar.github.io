@@ -26,7 +26,7 @@ class S3Geometry extends BaseGeometry
 		//Since we're only doing a linear approximation, this position won't be exactly
 		//on the manifold. Therefore, we'll do a quick correction to get it back.
 
-		//Here, we just want the magnitude to be equal to 1
+		//Here, we just want the magnitude to be equal to 1.
 		const magnitude = ThurstonGeometry.magnitude(newCameraPos);
 
 		newCameraPos[0] /= magnitude;
@@ -37,26 +37,22 @@ class S3Geometry extends BaseGeometry
 		return newCameraPos;
 	}
 
-	//Given two points on the manifold, find the vector in the tangent space to pos1
-	//that points to pos2. For simplicity, we assume dt = 1 and then normalize later.
-	getGeodesicDirection(pos1, pos2)
+	getGeodesicDistance(pos1, pos2, dir)
 	{
-		const dir = new Array(4);
+		const difference = [
+			pos2[0] - pos1[0],
+			pos2[1] - pos1[1],
+			pos2[2] - pos1[2],
+			pos2[3] - pos1[3]
+		];
 
-		for (let i = 0; i < 4; i++)
-		{
-			dir[i] = (pos2[i] - Math.cos(1) * pos1[i]) / Math.sin(1);
-		}
-
-		const magnitude = ThurstonGeometry.magnitude(dir);
-
-		return [ThurstonGeometry.normalize(dir), magnitude];
+		return Math.sqrt(this.dotProduct(difference, difference));
 	}
 
 	getNormalVec(cameraPos)
 	{
 		//f = 1 - x^2 - y^2 - z^2 - w^2.
-		return ThurstonGeometry.normalize([
+		return this.normalize([
 			-cameraPos[0],
 			-cameraPos[1],
 			-cameraPos[2],
@@ -326,8 +322,8 @@ function getHopfFiber(index, numFibers)
 
 	/*	normalize(vec4(1.0 + p.z, -p.y, p.x, 0.0)),
 					normalize(vec4(0.0, p.x, p.y, 1.0 + p.z)), */
-	const vec1 = ThurstonGeometry.normalize([1 + p[2], -p[1], p[0], 0]);
-	const vec2 = ThurstonGeometry.normalize([0, p[0], p[1], 1 + p[2]]);
+	const vec1 = this.normalize([1 + p[2], -p[1], p[0], 0]);
+	const vec2 = this.normalize([0, p[0], p[1], 1 + p[2]]);
 
 	return [`float distance${index + 1} = greatCircleDistance(
 		pos,

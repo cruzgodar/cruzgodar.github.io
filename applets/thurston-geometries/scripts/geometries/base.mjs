@@ -13,6 +13,13 @@ export class BaseGeometry
 		return vec1[0] * vec2[0] + vec1[1] * vec2[1] + vec1[2] * vec2[2] + vec1[3] * vec2[3];
 	}
 
+	normalize(vec)
+	{
+		const magnitude = Math.sqrt(this.dotProduct(vec, vec));
+
+		return [vec[0] / magnitude, vec[1] / magnitude, vec[2] / magnitude, vec[3] / magnitude];
+	}
+
 	updateCameraPos(cameraPos, tangentVec, dt)
 	{
 		const newCameraPos = [...cameraPos];
@@ -27,26 +34,37 @@ export class BaseGeometry
 
 	teleportCamera() {}
 
+	//Given two points on the manifold, find the vector in the tangent space to pos1
+	//that points to pos2. For simplicity, we assume dt = 1 and then normalize later.
 	getGeodesicDirection(pos1, pos2)
 	{
-		const dir = new Array(4);
+		// For now, just take the vector joining the two in R^4,
+		// project it into the tangent space, and normalize it.
+		const dir = [pos2[0] - pos1[0], pos2[1] - pos1[1], pos2[2] - pos1[2], pos2[3] - pos1[3]];
 
-		for (let i = 0; i < 4; i++)
-		{
-			dir[i] = pos2[i] - pos1[i];
-		}
+		const normalVec = this.getNormalVec(pos1);
 
-		const magnitude = ThurstonGeometry.magnitude(dir);
+		const dotProduct = ThurstonGeometry.dotProduct(dir, normalVec);
 
-		return [ThurstonGeometry.normalize(dir), magnitude];
+		dir[0] -= dotProduct * normalVec[0];
+		dir[1] -= dotProduct * normalVec[1];
+		dir[2] -= dotProduct * normalVec[2];
+		dir[3] -= dotProduct * normalVec[3];
+
+		return this.normalize(dir);
 	}
 
-	normalizeToMagnitude(vec, targetMag)
+	//Gets the distance from pos1 to pos2 along the geodesic in the direction of dir.
+	getGeodesicDistance(pos1, pos2)
 	{
-		const mag = this.dotProduct(vec, vec);
-		const scaleFactor = Math.sqrt(targetMag / mag);
+		const difference = [
+			pos2[0] - pos1[0],
+			pos2[1] - pos1[1],
+			pos2[2] - pos1[2],
+			pos2[3] - pos1[3]
+		];
 
-		return [vec[0] * mag, vec[1] * mag, vec[2] * mag, vec[3] * mag];
+		return Math.sqrt(this.dotProduct(difference, difference));
 	}
 
 	getNormalVec()
