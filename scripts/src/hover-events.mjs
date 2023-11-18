@@ -13,7 +13,7 @@ const elementSelectors = `
 const elementSelectorsWithScale =
 [
 	["#logo img", 1.05],
-	[".text-button:not(.dropdown)", 1.075],
+	[".text-button", 1.075],
 	["select", 1.075],
 	[".checkbox-container", 1.1],
 	[".radio-button-container", 1.1],

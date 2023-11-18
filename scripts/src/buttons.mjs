@@ -1,3 +1,6 @@
+import anime from "../anime.js";
+import { opacityAnimationTime } from "./animation.mjs";
+import { addHoverEvent } from "./hover-events.mjs";
 import {
 	$$,
 	addTemporaryListener,
@@ -132,19 +135,141 @@ export function setUpNavButtons()
 	}
 }
 
+function setUpDropdown(selectElement)
+{
+	let dropdownOpen = false;
+
+	let selectedItem = 0;
+
+	const buttonElement = selectElement.previousElementSibling;
+
+	buttonElement.innerHTML = "";
+
+	buttonElement.parentNode.parentNode.style.gridTemplateColumns = "repeat(auto-fit, 100%)";
+
+	const flexElement = document.createElement("div");
+
+	flexElement.classList.add("option-container");
+
+	buttonElement.appendChild(flexElement);
+
+	const optionElements = [];
+
+	const selectOptionElements = [];
+	
+	selectElement.querySelectorAll("option").forEach((option, index) =>
+	{
+		const optionElement = document.createElement("div");
+
+		optionElement.textContent = option.textContent;
+		optionElement.setAttribute("data-option-index", index);
+		optionElements.push(optionElement);
+		flexElement.appendChild(optionElement);
+
+		selectOptionElements.push(option);
+	});
+
+	setTimeout(() =>
+	{
+		optionElements.forEach(element =>
+		{
+			addHoverEvent(element);
+		});
+		
+		// The 24 accounts for the padding and border.
+		buttonElement.style.height = (
+			optionElements[selectedItem].getBoundingClientRect().height * 1.075
+		) + "px";
+
+		buttonElement.style.width = (
+			optionElements[selectedItem].getBoundingClientRect().width + 16
+		) + "px";
+
+		buttonElement.parentNode.parentNode.style.height = (
+			optionElements[selectedItem].getBoundingClientRect().height * 1.075
+		) + "px";
+
+		buttonElement.parentNode.parentNode.style.width = (
+			optionElements[selectedItem].getBoundingClientRect().width + 16
+		) + "px";
+
+		flexElement.style.transform = "translateY(-10px)";
+	}, 16);
+
+	buttonElement.addEventListener("click", async (e) =>
+	{
+		if (dropdownOpen)
+		{
+			selectedItem = parseInt(
+				document.elementFromPoint(e.clientX, e.clientY)
+					.getAttribute("data-option-index") ?? selectedItem
+			);
+
+			selectElement.value = selectOptionElements[selectedItem].value;
+
+			selectElement.dispatchEvent(new Event("input"));
+
+			buttonElement.classList.remove("expanded");
+
+			const otherElementHeights = optionElements
+				.slice(0, selectedItem)
+				.map(element => element.getBoundingClientRect().height);
+			
+			let translateY = 0;
+			otherElementHeights.forEach(height => translateY -= height);
+
+			await Promise.all([
+				anime({
+					targets: [buttonElement, buttonElement.parentNode.parentNode],
+					height: optionElements[selectedItem].getBoundingClientRect().height,
+					width: optionElements[selectedItem].getBoundingClientRect().width + 16,
+					easing: "easeOutQuad",
+					duration: opacityAnimationTime
+				}).finished,
+
+				anime({
+					targets: flexElement,
+					translateY: translateY / 1.075 - 10,
+					easing: "easeOutQuad",
+					duration: opacityAnimationTime
+				}).finished,
+			]);
+		}
+
+		else
+		{
+			buttonElement.classList.add("expanded");
+
+			let maxWidth = 0;
+			optionElements.forEach(element =>
+			{
+				maxWidth = Math.max(maxWidth, element.getBoundingClientRect().width);
+			});
+
+			await Promise.all([
+				anime({
+					targets: buttonElement,
+					//The +4 is for the border.
+					height: flexElement.getBoundingClientRect().height - 17,
+					width: maxWidth + 12,
+					easing: "easeOutQuad",
+					duration: opacityAnimationTime
+				}).finished,
+
+				anime({
+					targets: flexElement,
+					translateY: 0,
+					easing: "easeOutQuad",
+					duration: opacityAnimationTime
+				}).finished,
+			]);
+		}
+
+		dropdownOpen = !dropdownOpen;
+	});
+}
+
 export function setUpDropdowns()
 {
-	$$("select").forEach(element =>
-	{
-		const buttonElement = element.previousElementSibling;
-
-		buttonElement.innerHTML = `${element.querySelector(`[value=${element.value}]`).textContent}  <span style="font-size: 12px">&#x25BC;</span>`;
-
-		buttonElement.parentNode.parentNode.style.gridTemplateColumns = "repeat(auto-fit, 100%)";
-
-		element.addEventListener("input", () =>
-		{
-			buttonElement.innerHTML = `${element.querySelector(`[value=${element.value}]`).textContent}  <span style="font-size: 12px">&#x25BC;</span>`;
-		});
-	});
+	$$("select").forEach(element => setUpDropdown(element));
 }
