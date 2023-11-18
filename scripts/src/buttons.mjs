@@ -171,7 +171,7 @@ function setUpDropdown(selectElement)
 
 	setTimeout(() =>
 	{
-		optionElements.forEach(element =>
+		optionElements.slice(1).forEach(element =>
 		{
 			addHoverEvent(element);
 		});
@@ -203,10 +203,12 @@ function setUpDropdown(selectElement)
 	{
 		if (dropdownOpen)
 		{
+			// Using || rather than ?? handles both the case where we click the background
+			// and clicking the title option.
 			selectedItem = parseInt(
 				document.elementFromPoint(e.clientX, e.clientY)
 					.getAttribute("data-option-index") ?? selectedItem
-			);
+			) || selectedItem;
 
 			selectElement.value = selectOptionElements[selectedItem].value;
 
