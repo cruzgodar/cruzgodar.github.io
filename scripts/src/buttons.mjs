@@ -199,78 +199,97 @@ function setUpDropdown(selectElement)
 		flexElement.style.transform = "translateY(-10px)";
 	}, 16);
 
+
+
+	async function openDropdown()
+	{
+		dropdownOpen = true;
+
+		buttonElement.classList.add("expanded");
+
+		let maxWidth = 0;
+		optionElements.forEach(element =>
+		{
+			maxWidth = Math.max(maxWidth, element.getBoundingClientRect().width);
+		});
+
+		await Promise.all([
+			anime({
+				targets: buttonElement,
+				//The +4 is for the border.
+				height: flexElement.getBoundingClientRect().height - 17,
+				width: maxWidth + 12,
+				easing: "easeOutQuad",
+				duration: opacityAnimationTime
+			}).finished,
+
+			anime({
+				targets: flexElement,
+				translateY: 0,
+				easing: "easeOutQuad",
+				duration: opacityAnimationTime
+			}).finished,
+		]);
+
+		document.documentElement.addEventListener("click", closeDropdown);
+	}
+
+
+
+	async function closeDropdown(e)
+	{
+		document.documentElement.removeEventListener("click", closeDropdown);
+
+		dropdownOpen = false;
+
+		// Using || rather than ?? handles both the case where we click the background
+		// and clicking the title option.
+		selectedItem = parseInt(
+			document.elementFromPoint(e.clientX, e.clientY)
+				.getAttribute("data-option-index") ?? selectedItem
+		) || selectedItem;
+
+		selectElement.value = selectOptionElements[selectedItem].value;
+
+		selectElement.dispatchEvent(new Event("input"));
+
+		const otherElementHeights = optionElements
+			.slice(0, selectedItem)
+			.map(element => element.getBoundingClientRect().height);
+		
+		let translateY = 0;
+		otherElementHeights.forEach(height => translateY -= height);
+
+		await Promise.all([
+			anime({
+				targets: [buttonElement, buttonElement.parentNode.parentNode],
+				height: optionElements[selectedItem].getBoundingClientRect().height,
+				width: optionElements[selectedItem].getBoundingClientRect().width + 16,
+				easing: "easeOutQuad",
+				duration: opacityAnimationTime
+			}).finished,
+
+			anime({
+				targets: flexElement,
+				translateY: translateY / 1.075 - 10,
+				easing: "easeOutQuad",
+				duration: opacityAnimationTime
+			}).finished,
+
+			new Promise(resolve =>
+			{
+				buttonElement.classList.remove("expanded");
+				resolve();
+			})
+		]);
+	}
+
 	buttonElement.addEventListener("click", async (e) =>
 	{
-		if (dropdownOpen)
+		if (!dropdownOpen)
 		{
-			// Using || rather than ?? handles both the case where we click the background
-			// and clicking the title option.
-			selectedItem = parseInt(
-				document.elementFromPoint(e.clientX, e.clientY)
-					.getAttribute("data-option-index") ?? selectedItem
-			) || selectedItem;
-
-			selectElement.value = selectOptionElements[selectedItem].value;
-
-			selectElement.dispatchEvent(new Event("input"));
-
-			buttonElement.classList.remove("expanded");
-
-			const otherElementHeights = optionElements
-				.slice(0, selectedItem)
-				.map(element => element.getBoundingClientRect().height);
-			
-			let translateY = 0;
-			otherElementHeights.forEach(height => translateY -= height);
-
-			await Promise.all([
-				anime({
-					targets: [buttonElement, buttonElement.parentNode.parentNode],
-					height: optionElements[selectedItem].getBoundingClientRect().height,
-					width: optionElements[selectedItem].getBoundingClientRect().width + 16,
-					easing: "easeOutQuad",
-					duration: opacityAnimationTime
-				}).finished,
-
-				anime({
-					targets: flexElement,
-					translateY: translateY / 1.075 - 10,
-					easing: "easeOutQuad",
-					duration: opacityAnimationTime
-				}).finished,
-			]);
+			openDropdown();
 		}
-
-		else
-		{
-			buttonElement.classList.add("expanded");
-
-			let maxWidth = 0;
-			optionElements.forEach(element =>
-			{
-				maxWidth = Math.max(maxWidth, element.getBoundingClientRect().width);
-			});
-
-			await Promise.all([
-				anime({
-					targets: buttonElement,
-					//The +4 is for the border.
-					height: flexElement.getBoundingClientRect().height - 17,
-					width: maxWidth + 12,
-					easing: "easeOutQuad",
-					duration: opacityAnimationTime
-				}).finished,
-
-				anime({
-					targets: flexElement,
-					translateY: 0,
-					easing: "easeOutQuad",
-					duration: opacityAnimationTime
-				}).finished,
-			]);
-		}
-
-		dropdownOpen = !dropdownOpen;
 	});
 }
 
