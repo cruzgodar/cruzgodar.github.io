@@ -175,6 +175,9 @@ function setUpDropdown(selectElement)
 		{
 			addHoverEvent(element);
 		});
+
+		optionElements[0].innerHTML +=
+			" <span style=\"font-size: 12px; margin-right: -2px\">&#x25BC;</span>";
 		
 		// The 24 accounts for the padding and border.
 		buttonElement.style.height = (
