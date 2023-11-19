@@ -719,6 +719,8 @@ mjx-container
 	overflow-y: hidden;
 
 	transition: box-shadow .2s ease-out;
+
+	z-index: 50;
 }
 
 .text-button.dropdown.expanded

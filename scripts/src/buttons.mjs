@@ -1,6 +1,7 @@
 import anime from "../anime.js";
 import { opacityAnimationTime } from "./animation.mjs";
 import { addHoverEvent } from "./hover-events.mjs";
+import { currentlyTouchDevice } from "./interaction.mjs";
 import {
 	$$,
 	addTemporaryListener,
@@ -260,6 +261,13 @@ function setUpDropdown(selectElement)
 		let translateY = 0;
 		otherElementHeights.forEach(height => translateY -= height);
 
+		if (!currentlyTouchDevice)
+		{
+			translateY /= 1.075;
+		}
+
+		translateY -= 10;
+
 		await Promise.all([
 			anime({
 				targets: [buttonElement, buttonElement.parentNode.parentNode],
@@ -271,7 +279,7 @@ function setUpDropdown(selectElement)
 
 			anime({
 				targets: flexElement,
-				translateY: translateY / 1.075 - 10,
+				translateY,
 				easing: "easeOutQuad",
 				duration: opacityAnimationTime
 			}).finished,
@@ -284,7 +292,7 @@ function setUpDropdown(selectElement)
 		]);
 	}
 
-	buttonElement.addEventListener("click", async (e) =>
+	buttonElement.addEventListener("click", () =>
 	{
 		if (!dropdownOpen)
 		{

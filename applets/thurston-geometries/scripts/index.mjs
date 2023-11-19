@@ -32,29 +32,29 @@ export function load()
 
 	function run()
 	{
-		if (sceneSelectorDropdownElement.value !== "none")
-		{
-			const GeometryDataClass = scenes[sceneSelectorDropdownElement.value];
-			const geometryData = new GeometryDataClass();
+		const GeometryDataClass = sceneSelectorDropdownElement.value === "none"
+			? E3Rooms
+			: scenes[sceneSelectorDropdownElement.value];
+		
+		const geometryData = new GeometryDataClass();
 
-			const elementsToShow = Array.from(
-				geometryData.uiElementsUsed
-					? $$(geometryData.uiElementsUsed)
-					: []
-			).map(element => element.parentNode);
-			
-			const elementsToHide = Array.from(
-				geometryData.uiElementsUsed
-					? $$(`.slider-container > input:not(#fov-slider, ${geometryData.uiElementsUsed})`)
-					: $$(".slider-container > input:not(#fov-slider)")
-			).map(element => element.parentNode);
+		const elementsToShow = Array.from(
+			geometryData.uiElementsUsed
+				? $$(geometryData.uiElementsUsed)
+				: []
+		).map(element => element.parentNode);
+		
+		const elementsToHide = Array.from(
+			geometryData.uiElementsUsed
+				? $$(`.slider-container > input:not(#fov-slider, ${geometryData.uiElementsUsed})`)
+				: $$(".slider-container > input:not(#fov-slider)")
+		).map(element => element.parentNode);
 
-			elementsToShow.forEach(element => element.style.display = "flex");
-			elementsToHide.forEach(element => element.style.display = "none");
+		elementsToShow.forEach(element => element.style.display = "flex");
+		elementsToHide.forEach(element => element.style.display = "none");
 
-			applet.run(geometryData);
-			geometryData.initUI();
-		}
+		applet.run(geometryData);
+		geometryData.initUI();
 	}
 
 
