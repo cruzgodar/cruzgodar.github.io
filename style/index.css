@@ -727,6 +727,10 @@ mjx-container
 {
 	box-shadow: 0px 0px 32px 0px rgba(0, 0, 0, .4);
 	cursor: default;
+}
+
+.text-button.dropdown.expanded-non-touch
+{
 	transform: scale(1.075) !important;
 }
 

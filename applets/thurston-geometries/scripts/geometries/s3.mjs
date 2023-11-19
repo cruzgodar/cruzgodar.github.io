@@ -8,45 +8,52 @@ class S3Geometry extends BaseGeometry
 	geodesicGlsl = "vec4 pos = cos(t) * startPos + sin(t) * rayDirectionVec;";
 
 	fogGlsl = "return mix(color, fogColor, 1.0 - exp(-acos(dot(pos, cameraPos)) * fogScaling));";
-
-	customDotProduct(vec1, vec2)
-	{
-		return vec1[0] * vec2[0] + vec1[1] * vec2[1] + vec1[2] * vec2[2] + vec1[3] * vec2[3];
-	}
 	
-	updateCameraPos(cameraPos, tangentVec, dt)
+	followGeodesic(pos, dir, t)
 	{
-		const newCameraPos = [...cameraPos];
+		const newPos = [...pos];
 
 		for (let i = 0; i < 4; i++)
 		{
-			newCameraPos[i] = Math.cos(dt) * newCameraPos[i] + Math.sin(dt) * tangentVec[i];
+			newPos[i] = Math.cos(t) * newPos[i] + Math.sin(t) * dir[i];
 		}
 		
 		//Since we're only doing a linear approximation, this position won't be exactly
 		//on the manifold. Therefore, we'll do a quick correction to get it back.
 
 		//Here, we just want the magnitude to be equal to 1.
-		const magnitude = ThurstonGeometry.magnitude(newCameraPos);
+		const magnitude = ThurstonGeometry.magnitude(newPos);
 
-		newCameraPos[0] /= magnitude;
-		newCameraPos[1] /= magnitude;
-		newCameraPos[2] /= magnitude;
-		newCameraPos[3] /= magnitude;
+		newPos[0] /= magnitude;
+		newPos[1] /= magnitude;
+		newPos[2] /= magnitude;
+		newPos[3] /= magnitude;
 
-		return newCameraPos;
+		return newPos;
 	}
 
-	getGeodesicDistance(pos1, pos2, dir)
+	// The result of solving cos(t)pos1 + sin(t)v = pos2 for v
+	getGeodesicDirection(pos1, pos2, t)
 	{
-		const difference = [
-			pos2[0] - pos1[0],
-			pos2[1] - pos1[1],
-			pos2[2] - pos1[2],
-			pos2[3] - pos1[3]
+		const cosFactor = Math.cos(t);
+		const sinFactor = Math.sin(t);
+		
+		const dir = [
+			(pos2[0] - cosFactor * pos1[0]) / sinFactor,
+			(pos2[1] - cosFactor * pos1[1]) / sinFactor,
+			(pos2[2] - cosFactor * pos1[2]) / sinFactor,
+			(pos2[3] - cosFactor * pos1[3]) / sinFactor,
 		];
 
-		return Math.sqrt(this.dotProduct(difference, difference));
+		return this.normalize(dir);
+	}
+
+	//Gets the distance from pos1 to pos2 along the geodesic in the direction of dir.
+	getGeodesicDistance(pos1, pos2)
+	{
+		const dot = this.dotProduct(pos1, pos2);
+
+		return Math.acos(dot);
 	}
 
 	getNormalVec(cameraPos)

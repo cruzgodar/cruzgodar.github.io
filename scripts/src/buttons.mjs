@@ -208,6 +208,11 @@ function setUpDropdown(selectElement)
 
 		buttonElement.classList.add("expanded");
 
+		if (!currentlyTouchDevice)
+		{
+			buttonElement.classList.add("expanded-non-touch");
+		}
+
 		let maxWidth = 0;
 		optionElements.forEach(element =>
 		{
@@ -261,11 +266,7 @@ function setUpDropdown(selectElement)
 		let translateY = 0;
 		otherElementHeights.forEach(height => translateY -= height);
 
-		if (!currentlyTouchDevice)
-		{
-			translateY /= 1.075;
-		}
-
+		translateY /= 1.075;
 		translateY -= 10;
 
 		await Promise.all([
@@ -287,6 +288,7 @@ function setUpDropdown(selectElement)
 			new Promise(resolve =>
 			{
 				buttonElement.classList.remove("expanded");
+				buttonElement.classList.remove("expanded-non-touch");
 				resolve();
 			})
 		]);

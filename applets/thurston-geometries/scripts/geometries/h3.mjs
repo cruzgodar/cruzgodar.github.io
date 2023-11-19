@@ -36,33 +36,53 @@ class H3Geometry extends BaseGeometry
 
 		return [vec[0] / magnitude, vec[1] / magnitude, vec[2] / magnitude, vec[3] / magnitude];
 	}
-	
-	updateCameraPos(cameraPos, tangentVec, dt)
+
+	// The result of solving cosh(t)pos1 + sinh(t)v = pos2 for v.
+	getGeodesicDirection(pos1, pos2, t)
 	{
-		const newCameraPos = new Array(4);
+		const cosFactor = Math.cosh(t);
+		const sinFactor = Math.sinh(t);
+		
+		const dir = [
+			(pos2[0] - cosFactor * pos1[0]) / sinFactor,
+			(pos2[1] - cosFactor * pos1[1]) / sinFactor,
+			(pos2[2] - cosFactor * pos1[2]) / sinFactor,
+			(pos2[3] - cosFactor * pos1[3]) / sinFactor,
+		];
+
+		return this.normalize(dir);
+	}
+
+	//Gets the distance from pos1 to pos2 along the geodesic in the direction of dir.
+	getGeodesicDistance(pos1, pos2)
+	{
+		const dot = this.dotProduct(pos1, pos2);
+
+		return Math.acosh(-dot);
+	}
+	
+	followGeodesic(pos, dir, t)
+	{
+		const newPos = new Array(4);
 
 		for (let i = 0; i < 4; i++)
 		{
-			newCameraPos[i] = Math.cosh(dt) * cameraPos[i] + Math.sinh(dt) * tangentVec[i];
+			newPos[i] = Math.cosh(t) * pos[i] + Math.sinh(t) * dir[i];
 		}
 		
 		//Since we're only doing a linear approximation, this position won't be exactly
 		//on the manifold. Therefore, we'll do a quick correction to get it back.
 
 		//Here, we just want the hyperbolic dot product to be -1.
-		const magnitude = Math.sqrt(
-			-newCameraPos[0] * newCameraPos[0]
-			- newCameraPos[1] * newCameraPos[1]
-			- newCameraPos[2] * newCameraPos[2]
-			+ newCameraPos[3] * newCameraPos[3]
-		);
+		const dot = this.dotProduct(newPos, newPos);
+		const magnitude = Math.sqrt(-dot);
 
-		newCameraPos[0] /= magnitude;
-		newCameraPos[1] /= magnitude;
-		newCameraPos[2] /= magnitude;
-		newCameraPos[3] /= magnitude;
+		newPos[0] /= magnitude;
+		newPos[1] /= magnitude;
+		newPos[2] /= magnitude;
+		newPos[3] /= magnitude;
 
-		return newCameraPos;
+		return newPos;
 	}
 
 	getNormalVec(cameraPos)

@@ -1,4 +1,3 @@
-import { ThurstonGeometry } from "../class.mjs";
 
 export class BaseGeometry
 {
@@ -20,36 +19,28 @@ export class BaseGeometry
 		return [vec[0] / magnitude, vec[1] / magnitude, vec[2] / magnitude, vec[3] / magnitude];
 	}
 
-	updateCameraPos(cameraPos, tangentVec, dt)
+	followGeodesic(pos, dir, t)
 	{
-		const newCameraPos = [...cameraPos];
+		const newPos = [...pos];
 
 		for (let i = 0; i < 4; i++)
 		{
-			newCameraPos[i] = newCameraPos[i] + dt * tangentVec[i];
+			newPos[i] = newPos[i] + t * dir[i];
 		}
 		
-		return newCameraPos;
+		return newPos;
 	}
 
 	teleportCamera() {}
 
-	//Given two points on the manifold, find the vector in the tangent space to pos1
-	//that points to pos2. For simplicity, we assume dt = 1 and then normalize later.
+	// Given two points on the manifold, find the vector in the tangent space to pos1
+	// that points to pos2. In general, this takes a third argument that is the distance
+	// between pos1 and pos2
 	getGeodesicDirection(pos1, pos2)
 	{
 		// For now, just take the vector joining the two in R^4,
 		// project it into the tangent space, and normalize it.
 		const dir = [pos2[0] - pos1[0], pos2[1] - pos1[1], pos2[2] - pos1[2], pos2[3] - pos1[3]];
-
-		const normalVec = this.getNormalVec(pos1);
-
-		const dotProduct = ThurstonGeometry.dotProduct(dir, normalVec);
-
-		dir[0] -= dotProduct * normalVec[0];
-		dir[1] -= dotProduct * normalVec[1];
-		dir[2] -= dotProduct * normalVec[2];
-		dir[3] -= dotProduct * normalVec[3];
 
 		return this.normalize(dir);
 	}

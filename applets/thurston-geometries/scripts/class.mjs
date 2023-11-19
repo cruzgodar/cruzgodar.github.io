@@ -545,7 +545,7 @@ export class ThurstonGeometry extends Applet
 		//The magic formula is T' = curvature * N.
 		const curvature = this.getCurvature(this.geometryData.cameraPos, tangentVec);
 
-		const newCameraPos = this.geometryData.updateCameraPos(
+		const newCameraPos = this.geometryData.followGeodesic(
 			this.geometryData.cameraPos,
 			tangentVec,
 			dt
@@ -560,8 +560,16 @@ export class ThurstonGeometry extends Applet
 		]);
 
 
-		console.log(this.geometryData.cameraPos, newCameraPos);
-		console.log(this.geometryData.upVec, this.parallelTransport(newCameraPos, this.geometryData.upVec));
+		// this.geometryData.rightVec = this.parallelTransport(
+		// 	newCameraPos,
+		// 	this.geometryData.rightVec
+		// );
+
+		// this.geometryData.upVec = this.parallelTransport(
+		// 	newCameraPos,
+		// 	this.geometryData.upVec
+		// );
+		// console.log(this.geometryData.upVec);
 
 		
 
@@ -630,35 +638,43 @@ export class ThurstonGeometry extends Applet
 
 	parallelTransport(newCameraPos, vecToTransport)
 	{
+		const dt = .01;
+
 		//In the terminology of Schild's ladder,
 		//A = this.geometryData.cameraPos, and we need to find X_0.
-		const x0 = this.geometryData.updateCameraPos(
+		const x0 = this.geometryData.followGeodesic(
 			this.geometryData.cameraPos,
 			vecToTransport,
-			1
+			dt
 		);
 
 		//Now we need to construct a geodesic between x0 and the updated cameraPosition.
-		const [dir, magnitude] = this.geometryData.getGeodesicDirection(x0, newCameraPos);
+		const magnitude = this.geometryData.getGeodesicDistance(x0, newCameraPos);
+		const dir = this.geometryData.getGeodesicDirection(x0, newCameraPos, magnitude);
 
 		//Now find the point halfway there.
-		const p = this.geometryData.updateCameraPos(x0, dir, magnitude / 2);
+		const p = this.geometryData.followGeodesic(x0, dir, magnitude / 2);
 
 		//Construct a geodesic between the original camera position and this point.
-		const [dir2, magnitude2] = this.geometryData.getGeodesicDirection(
+		const magnitude2 = this.geometryData.getGeodesicDistance(this.geometryData.cameraPos, p);
+
+		const dir2 = this.geometryData.getGeodesicDirection(
 			this.geometryData.cameraPos,
-			p
+			p,
+			magnitude2
 		);
 
 		//Follow that twice as far.
-		const x1 = this.geometryData.updateCameraPos(
+		const x1 = this.geometryData.followGeodesic(
 			this.geometryData.cameraPos,
 			dir2,
 			magnitude2 * 2
 		);
 
 		//Now at long last, construct the geodesic from te new camera position to this point.
-		const [dir3] = this.geometryData.getGeodesicDirection(newCameraPos, x1);
+		const magnitude3 = this.geometryData.getGeodesicDistance(newCameraPos, x1);
+
+		const dir3 = this.geometryData.getGeodesicDirection(newCameraPos, x1, magnitude3);
 
 		return dir3;
 	}
@@ -701,31 +717,33 @@ export class ThurstonGeometry extends Applet
 	//direction at all.
 	correctVectors()
 	{
-		const dotUp = ThurstonGeometry.dotProduct(
-			this.geometryData.normalVec,
-			this.geometryData.upVec
-		);
+		// const dotUp = ThurstonGeometry.dotProduct(
+		// 	this.geometryData.normalVec,
+		// 	this.geometryData.upVec
+		// );
 
-		const dotRight = ThurstonGeometry.dotProduct(
-			this.geometryData.normalVec,
-			this.geometryData.rightVec
-		);
+		// const dotRight = ThurstonGeometry.dotProduct(
+		// 	this.geometryData.normalVec,
+		// 	this.geometryData.rightVec
+		// );
 
-		const dotForward = ThurstonGeometry.dotProduct(
-			this.geometryData.normalVec,
-			this.geometryData.forwardVec
-		);
+		// const dotForward = ThurstonGeometry.dotProduct(
+		// 	this.geometryData.normalVec,
+		// 	this.geometryData.forwardVec
+		// );
 
-		for (let i = 0; i < 4; i++)
-		{
-			this.geometryData.upVec[i] -= dotUp * this.geometryData.normalVec[i];
-			this.geometryData.rightVec[i] -= dotRight * this.geometryData.normalVec[i];
-			this.geometryData.forwardVec[i] -= dotForward * this.geometryData.normalVec[i];
-		}
+		// for (let i = 0; i < 4; i++)
+		// {
+		// 	this.geometryData.upVec[i] -= dotUp * this.geometryData.normalVec[i];
+		// 	this.geometryData.rightVec[i] -= dotRight * this.geometryData.normalVec[i];
+		// 	this.geometryData.forwardVec[i] -= dotForward * this.geometryData.normalVec[i];
+		// }
 
 		this.geometryData.upVec = this.geometryData.normalize(this.geometryData.upVec);
 		this.geometryData.rightVec = this.geometryData.normalize(this.geometryData.rightVec);
 		this.geometryData.forwardVec = this.geometryData.normalize(this.geometryData.forwardVec);
+
+		console.log(this.geometryData.forwardVec, this.geometryData.dotProduct(this.geometryData.forwardVec, this.geometryData.forwardVec));
 	}
 
 
