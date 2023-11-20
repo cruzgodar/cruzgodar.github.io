@@ -1,0 +1,31 @@
+### nav-buttons
+
+
+
+With so much theory developed, let's take these last two sections to explore some of the most important applications of linear algebra. One of the most ubiquitous in modern technology is in graphics, where the function that maps any triangle in 3D space to its image on a fixed 2D screen is a linear map (called a *projection map*). With very few exceptions, this is the foundation of how every 3D game is implemented.
+
+Our first application will be to a different area, though, closer to statistics. Let's say that we have a collection of **states** $x_1, ..., x_n$. These are states of matter or being --- for example, in <a href="https://www.youtube.com/watch?v=LL3kVtc-4vY">Belousov-Zhabotinsky reaction</a>, $x_1$ might represent a molecule of malonic acid and $x_2$ a molecule of potassium bromate (in reality, we'd need many more variables for the intermediate states in the reaction).This system, and many like it, fall into a particular class that lend themselves extremely well to linear algebra:
+
+### def Markov chain
+
+	Let $x_1, ..., x_n$ be a collection of states and let $\vec{x} \in \span\{x_1, ..., x_n\}$ be a vector whose coefficients sum to $1$ --- we think of $x$ as representing the *proportion* of the system in each state, or equivalently the probabilities of a randomly-chosen element being in a given state. If the system evolves over time as a function $\vec{x}(t)$, but the value of $\vec{x}(t)$ is a linear function of $\vec{x}(t - 1)$ and no other factors, then we call $\vec{x}(t)$ a **Markov chain**.
+
+###
+
+A Markov chain is defined by a linear map $P : #R#^n \to #R#^n$ such that
+
+$$
+	P[\vec{x}(t)]_\mathcal{E} = [\vec{x}(t + 1)]_\mathcal{E},
+$$
+
+where $\mathcal{E} = \{x_1, ..., x_n\}$ is the basis consisting of the different states. There is a shocking amount of information we can extract from just this description --- let's see it in action.
+
+### ex Markov chain
+
+	You make the questionable decision to open a casino based solely on coin flipping. For a 4 dollar fee, a participant can flip a coin 3 times. If they get $k$ heads, then they receive a payout of $2^k$ dollars. Write the process as a Markov chain and find the probabilities of every different payout. Do you gain or lose money on average from people playing this game?
+
+###
+
+
+
+### nav-buttons

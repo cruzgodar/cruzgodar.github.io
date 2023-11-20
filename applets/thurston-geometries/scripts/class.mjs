@@ -581,32 +581,29 @@ export class ThurstonGeometry extends Applet
 			dt
 		);
 
-		//The magic formula is T' = curvature * N.
-		tangentVec = this.geometryData.normalize([
-			tangentVec[0] + curvature * this.geometryData.normalVec[0] * dt,
-			tangentVec[1] + curvature * this.geometryData.normalVec[1] * dt,
-			tangentVec[2] + curvature * this.geometryData.normalVec[2] * dt,
-			tangentVec[3] + curvature * this.geometryData.normalVec[3] * dt
-		]);
+		// //The magic formula is T' = curvature * N.
+		// tangentVec = this.geometryData.normalize([
+		// 	tangentVec[0] + curvature * this.geometryData.normalVec[0] * dt,
+		// 	tangentVec[1] + curvature * this.geometryData.normalVec[1] * dt,
+		// 	tangentVec[2] + curvature * this.geometryData.normalVec[2] * dt,
+		// 	tangentVec[3] + curvature * this.geometryData.normalVec[3] * dt
+		// ]);
 
+		this.geometryData.forwardVec = this.parallelTransport(
+			newCameraPos,
+			this.geometryData.forwardVec
+		);
 
-		// this.geometryData.rightVec = this.parallelTransport(
-		// 	newCameraPos,
-		// 	this.geometryData.rightVec
-		// );
+		this.geometryData.rightVec = this.parallelTransport(
+			newCameraPos,
+			this.geometryData.rightVec
+		);
 
-		// this.geometryData.upVec = this.parallelTransport(
-		// 	newCameraPos,
-		// 	this.geometryData.upVec
-		// );
-		// console.log(this.geometryData.upVec);
-
-		
-
-		if (this.geometryData.gammaTriplePrimeIsLinearlyIndependent)
-		{
-			//idfk
-		}
+		this.geometryData.upVec = this.parallelTransport(
+			newCameraPos,
+			this.geometryData.upVec
+		);
+		console.log(this.geometryData.upVec);
 
 		this.geometryData.cameraPos = newCameraPos;
 
@@ -668,7 +665,7 @@ export class ThurstonGeometry extends Applet
 
 	parallelTransport(newCameraPos, vecToTransport)
 	{
-		const dt = .01;
+		const dt = 1;
 
 		//In the terminology of Schild's ladder,
 		//A = this.geometryData.cameraPos, and we need to find X_0.
