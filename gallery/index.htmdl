@@ -86,7 +86,7 @@
 	###
 	
 	### gallery-block
-		lyapunov-fractal 1 A Lyapunov Fractal
+		quaternionic-julia-set-3 1 A Quaternionic Julia Set
 		
 		hitomezashi-pattern-1 2 A Hitomezashi Pattern
 		
@@ -94,7 +94,7 @@
 		
 		wilsons-algorithm-1 1 Wilson's Algorithm
 		
-		newtons-method-3 1 Newton's Method
+		lyapunov-fractal 1 A Lyapunov Fractal
 		
 		complex-map-2 1 A Complex Map
 	###
@@ -111,7 +111,7 @@
 	
 	<p class="body-text center-if-needed"><span id="featured-text">Featured</span></p>
 	
-	<p class="body-text" style="text-align: center"><a id="applet-link">View applet</a></p>
+	<p class="body-text" style="text-align: center"><a id="applet-link">Open applet</a></p>
 	
-	<p class="body-text" style="text-align: center"><a id="full-res-link">View full resolution</a></p>
+	<p class="body-text" style="text-align: center"><a id="full-res-link">Download full resolution</a></p>
 ###

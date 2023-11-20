@@ -653,7 +653,7 @@ mjx-container
 
 .sliders
 {
-	grid-template-columns: repeat(auto-fit, 125px);
+	grid-template-columns: repeat(auto-fit, 200px);
 }
 
 .text-boxes

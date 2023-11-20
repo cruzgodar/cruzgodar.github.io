@@ -488,17 +488,15 @@ const galleryImageData =
 		imageLink: "https://drive.google.com/uc?id=1kgWTqci85uCCkGQksCrqYqjhYH2416pq&export=download"
 	},
 
-	"newtons-method-3":
+	"quaternionic-julia-set-3":
 	{
-		title: "Newton&#x2019;s Method",
+		title: "A Quaternionic Julia Set",
 
-		resolution: "5000x5000",
+		resolution: "4500x4500",
 
-		parameters: "Roots at (&#x00B1;1, &#x00B1;1), (.707, .707), (-.707, -.707), (-1.5, 1.5), (1.5, -1.5)",
+		appletLink: "quaternionic-julia-sets",
 
-		appletLink: "newtons-method",
-
-		imageLink: "https://drive.google.com/uc?id=1NLQJ8ftFYtlLgLuB6ZyG3U4BZtseD8VP&export=download"
+		imageLink: "https://drive.google.com/uc?id=1RI64txpZ_EW9ppP5X7WVO9P4bZuP2Jk3&export=download"
 	},
 
 	"complex-map-2":
