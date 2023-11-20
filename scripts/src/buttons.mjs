@@ -289,6 +289,19 @@ function setUpDropdown(selectElement)
 			{
 				buttonElement.classList.remove("expanded");
 				buttonElement.classList.remove("expanded-non-touch");
+
+				if (buttonElement.style.transform !== "scale(1.075)")
+				{
+					buttonElement.style.transform = "scale(1.075)";
+
+					return anime({
+						targets: buttonElement,
+						scale: 1,
+						easing: "easeOutQuad",
+						duration: opacityAnimationTime
+					}).finished;
+				}
+
 				resolve();
 			})
 		]);

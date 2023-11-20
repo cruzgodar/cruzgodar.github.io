@@ -83,17 +83,6 @@ export function load()
 
 	let visibleSection = "view-controls";
 
-	sectionNames.forEach(sectionName =>
-	{
-		if (sectionName !== visibleSection)
-		{
-			sectionElements[sectionName].forEach(element =>
-			{
-				element.style.opacity = 0;
-			});
-		}
-	});
-
 	sectionElements[visibleSection]
 		.forEach(element => canvasLandscapeLeftElement.appendChild(element));
 
@@ -104,13 +93,8 @@ export function load()
 
 
 
-	categorySelectorDropdownElement.addEventListener("input", async () =>
+	categorySelectorDropdownElement.addEventListener("input", () =>
 	{
-		await Promise.all(
-			Array.from(sectionElements[visibleSection])
-				.map(element => changeOpacity(element, 0))
-		);
-
 		sectionElements[visibleSection]
 			.forEach(element => categoryHolderElement.appendChild(element));
 
@@ -120,7 +104,9 @@ export function load()
 		sectionElements[visibleSection]
 			.forEach(element => element.classList.remove("move-to-right"));
 
-		visibleSection = categorySelectorDropdownElement.value;
+		visibleSection = categorySelectorDropdownElement.value === "none"
+			? "view-controls"
+			: categorySelectorDropdownElement.value;
 
 		sectionElements[visibleSection]
 			.forEach(element => canvasLandscapeLeftElement.appendChild(element));
@@ -142,8 +128,6 @@ export function load()
 				);
 			}
 		}
-
-		sectionElements[visibleSection].forEach(element => changeOpacity(element, 1));
 	});
 
 

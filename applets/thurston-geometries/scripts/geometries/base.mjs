@@ -3,6 +3,10 @@ export class BaseGeometry
 {
 	geodesicGlsl = "vec4 pos = startPos + t * rayDirectionVec;";
 
+	dotProductGlsl = "return dot(v, w);";
+
+	normalizeGlsl = "return normalize(dir);";
+
 	fogGlsl = "return mix(color, fogColor, 1.0 - exp(-length(pos - cameraPos) * fogScaling));";
 
 	updateTGlsl = "t += distance * stepFactor;";
@@ -84,6 +88,37 @@ export class BaseGeometry
 	}
 
 	gammaTriplePrimeIsLinearlyIndependent = false;
+
+	//Surprisingly necessary -- this corrects the frame so that no vector looks in the normal
+	//direction at all.
+	correctVectors()
+	{
+		const dotUp = this.dotProduct(
+			this.normalVec,
+			this.upVec
+		);
+
+		const dotRight = this.dotProduct(
+			this.normalVec,
+			this.rightVec
+		);
+
+		const dotForward = this.dotProduct(
+			this.normalVec,
+			this.forwardVec
+		);
+
+		for (let i = 0; i < 4; i++)
+		{
+			this.upVec[i] -= dotUp * this.normalVec[i];
+			this.rightVec[i] -= dotRight * this.normalVec[i];
+			this.forwardVec[i] -= dotForward * this.normalVec[i];
+		}
+
+		this.upVec = this.normalize(this.upVec);
+		this.rightVec = this.normalize(this.rightVec);
+		this.forwardVec = this.normalize(this.forwardVec);
+	}
 
 	getMovingSpeed()
 	{

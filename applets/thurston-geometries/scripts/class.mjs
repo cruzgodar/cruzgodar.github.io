@@ -168,6 +168,18 @@ export class ThurstonGeometry extends Applet
 
 
 
+			float geometryDot(vec4 v, vec4 w)
+			{
+				${this.geometryData.dotProductGlsl}
+			}
+
+			vec4 geometryNormalize(vec4 dir)
+			{
+				${this.geometryData.normalizeGlsl}
+			}
+
+
+
 			float getBanding(float amount, float numBands)
 			{
 				return 1.0 - floor(mod(amount * numBands, 2.0)) / 2.0;
@@ -199,7 +211,12 @@ export class ThurstonGeometry extends Applet
 				float zStep2 = distanceEstimator(pos - vec4(0.0, 0.0, epsilon, 0.0));
 				float wStep2 = distanceEstimator(pos - vec4(0.0, 0.0, 0.0, epsilon));
 				
-				return normalize(vec4(xStep1 - xStep2, yStep1 - yStep2, zStep1 - zStep2, wStep1 - wStep2));
+				return normalize(vec4(
+					xStep1 - xStep2,
+					yStep1 - yStep2,
+					zStep1 - zStep2,
+					wStep1 - wStep2
+				));
 			}
 			
 			
@@ -211,7 +228,9 @@ export class ThurstonGeometry extends Applet
 				${this.geometryData.lightGlsl}
 
 				//The last factor adds ambient occlusion.
-				vec3 color = getColor(pos, globalColor) * lightIntensity * max((1.0 - float(iteration) / float(maxMarches)), 0.0);
+				vec3 color = getColor(pos, globalColor)
+					* lightIntensity
+					* max((1.0 - float(iteration) / float(maxMarches)), 0.0);
 
 				//Apply fog.
 				${this.geometryData.fogGlsl}
@@ -253,9 +272,20 @@ export class ThurstonGeometry extends Applet
 			
 			void main(void)
 			{
-				gl_FragColor = vec4(raymarch(normalize(forwardVec + rightVec * uv.x * aspectRatioX * fov + upVec * uv.y / aspectRatioY * fov)), 1.0);
+				gl_FragColor = vec4(
+					raymarch(
+						geometryNormalize(
+							forwardVec
+							+ rightVec * uv.x * aspectRatioX * fov
+							+ upVec * uv.y / aspectRatioY * fov
+						)
+					),
+					1.0
+				);
 			}
 		`;
+
+		console.log(fragShaderSource);
 
 		
 
@@ -410,7 +440,7 @@ export class ThurstonGeometry extends Applet
 					timeElapsed * speedAdjust * Math.abs(this.movingAmount[0])
 				);
 
-				this.correctVectors();
+				this.geometryData.correctVectors();
 			}
 
 			if (this.movingAmount[1])
@@ -420,7 +450,7 @@ export class ThurstonGeometry extends Applet
 					timeElapsed * speedAdjust * Math.abs(this.movingAmount[1])
 				);
 
-				this.correctVectors();
+				this.geometryData.correctVectors();
 			}
 
 			if (this.movingAmount[2])
@@ -429,7 +459,7 @@ export class ThurstonGeometry extends Applet
 					[0, 0, Math.sign(this.movingAmount[2])],
 					timeElapsed * speedAdjust * Math.abs(this.movingAmount[2])
 				);
-				this.correctVectors();
+				this.geometryData.correctVectors();
 			}
 			
 			for (let i = 0; i < 3; i++)
@@ -443,7 +473,7 @@ export class ThurstonGeometry extends Applet
 			}
 		}
 
-		this.correctVectors();
+		this.geometryData.correctVectors();
 
 		this.handleRotating();
 
@@ -709,41 +739,6 @@ export class ThurstonGeometry extends Applet
 
 		this.rotatedForwardVec = result2[0];
 		this.rotatedUpVec = result2[1];
-	}
-
-
-
-	//Surprisingly necessary -- this corrects the frame so that no vector looks in the normal
-	//direction at all.
-	correctVectors()
-	{
-		// const dotUp = ThurstonGeometry.dotProduct(
-		// 	this.geometryData.normalVec,
-		// 	this.geometryData.upVec
-		// );
-
-		// const dotRight = ThurstonGeometry.dotProduct(
-		// 	this.geometryData.normalVec,
-		// 	this.geometryData.rightVec
-		// );
-
-		// const dotForward = ThurstonGeometry.dotProduct(
-		// 	this.geometryData.normalVec,
-		// 	this.geometryData.forwardVec
-		// );
-
-		// for (let i = 0; i < 4; i++)
-		// {
-		// 	this.geometryData.upVec[i] -= dotUp * this.geometryData.normalVec[i];
-		// 	this.geometryData.rightVec[i] -= dotRight * this.geometryData.normalVec[i];
-		// 	this.geometryData.forwardVec[i] -= dotForward * this.geometryData.normalVec[i];
-		// }
-
-		this.geometryData.upVec = this.geometryData.normalize(this.geometryData.upVec);
-		this.geometryData.rightVec = this.geometryData.normalize(this.geometryData.rightVec);
-		this.geometryData.forwardVec = this.geometryData.normalize(this.geometryData.forwardVec);
-
-		console.log(this.geometryData.forwardVec, this.geometryData.dotProduct(this.geometryData.forwardVec, this.geometryData.forwardVec));
 	}
 
 

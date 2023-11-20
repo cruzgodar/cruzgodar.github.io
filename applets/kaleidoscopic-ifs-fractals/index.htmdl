@@ -15,6 +15,8 @@ Drag on the scene to look around. On a keyboard, use WASD to move, and on a touc
 ### dropdown
 	
 	polyhedron-selector
+
+	none Polyhedra
 	
 	octahedron Octahedron
 

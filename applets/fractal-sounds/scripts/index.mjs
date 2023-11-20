@@ -117,8 +117,12 @@ export function load()
 
 	function run()
 	{
-		const glslCode = examples[fractalSelectorDropdownElement.value][0];
-		const jsCode = examples[fractalSelectorDropdownElement.value][1];
+		const value = fractalSelectorDropdownElement.value === "none"
+			? "mandelbrot"
+			: fractalSelectorDropdownElement.value;
+
+		const glslCode = examples[value][0];
+		const jsCode = examples[value][1];
 		const resolution = parseInt(resolutionInputElement.value || 500);
 		const exposure = 1;
 		const numIterations = 200;

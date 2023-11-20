@@ -27,7 +27,11 @@ export function load()
 		{
 			$$(".info-text").forEach(element => element.style.display = "none");
 
-			const element = $(`#${algorithmSelectorDropdownElement.value}-info`);
+			const value = algorithmSelectorDropdownElement.value === "none"
+				? "bubble"
+				: algorithmSelectorDropdownElement.value;
+
+			const element = $(`#${value}-info`);
 
 			element.style.display = "block";
 

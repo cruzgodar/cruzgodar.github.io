@@ -13,6 +13,8 @@ The colors roughly indicate the fundamental frequencies of each point. Hover or 
 ### dropdown
 	
 	fractal-selector
+
+	none Fractals
 	
 	mandelbrot Mandelbrot Set
 	

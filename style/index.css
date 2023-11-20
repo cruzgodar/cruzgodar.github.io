@@ -749,7 +749,6 @@ mjx-container
 	text-align: center;
 	padding: 10px;
 	border-radius: 10px;
-	transition: box-shadow .05s ease-out;
 }
 
 .text-button.dropdown.expanded .option-container > *:not(:first-child).hover

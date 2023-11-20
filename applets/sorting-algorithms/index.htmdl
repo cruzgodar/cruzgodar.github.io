@@ -9,6 +9,8 @@ Whenever a sorting algorithm modifies the list, that location in the color wheel
 ### dropdown
 	
 	algorithm-selector
+
+	none Algorithms
 	
 	bubble Bubble Sort
 	

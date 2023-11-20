@@ -2,7 +2,13 @@ import { BaseGeometry, getMinGlslString } from "./base.mjs";
 
 class H3Geometry extends BaseGeometry
 {
-	geodesicGlsl = "vec4 pos = cosh(t) * cameraPos + sinh(t) * rayDirectionVec;";
+	geodesicGlsl = "vec4 pos = cosh(t) * startPos + sinh(t) * rayDirectionVec;";
+
+	dotProductGlsl = "return v.x * w.x + v.y * w.y + v.z * w.z - v.w * w.w;";
+
+	normalizeGlsl = `float magnitude = sqrt(abs(geometryDot(dir, dir)));
+		
+	return dir / magnitude;`;
 
 	fogGlsl = `return mix(
 		color,
@@ -89,10 +95,10 @@ class H3Geometry extends BaseGeometry
 	{
 		//f = -1 + x^2 + y^2 + z^2 - w^2.
 		return this.normalize([
-			cameraPos[0],
-			cameraPos[1],
-			cameraPos[2],
-			-cameraPos[3]
+			-cameraPos[0],
+			-cameraPos[1],
+			-cameraPos[2],
+			cameraPos[3]
 		]);
 	}
 
@@ -122,13 +128,13 @@ class H3Geometry extends BaseGeometry
 export class H3Spheres extends H3Geometry
 {
 	static distances = `
-		float distance1 = acosh(dot(pos, vec4(1.0, 1.0, -1.0, 2.0))) - 0.75;
-		float distance2 = acosh(dot(pos, vec4(1.0, -1.0, 1.0, 2.0))) - 0.75;
-		float distance3 = acosh(dot(pos, vec4(1.0, -1.0, -1.0, 2.0))) - 0.75;
-		float distance4 = acosh(dot(pos, vec4(-1.0, 1.0, 1.0, 2.0))) - 0.75;
-		float distance5 = acosh(dot(pos, vec4(-1.0, 1.0, -1.0, 2.0))) - 0.75;
-		float distance6 = acosh(dot(pos, vec4(-1.0, -1.0, 1.0, 2.0))) - 0.75;
-		float distance7 = acosh(dot(pos, vec4(-1.0, -1.0, -1.0, 2.0))) - 0.75;
+		float distance1 = acosh(-geometryDot(pos, vec4(1.0, 1.0, -1.0, 2.0))) - .7;
+		float distance2 = acosh(-geometryDot(pos, vec4(1.0, -1.0, 1.0, 2.0))) - .7;
+		float distance3 = acosh(-geometryDot(pos, vec4(1.0, -1.0, -1.0, 2.0))) - .7;
+		float distance4 = acosh(-geometryDot(pos, vec4(-1.0, 1.0, 1.0, 2.0))) - .7;
+		float distance5 = acosh(-geometryDot(pos, vec4(-1.0, 1.0, -1.0, 2.0))) - .7;
+		float distance6 = acosh(-geometryDot(pos, vec4(-1.0, -1.0, 1.0, 2.0))) - .7;
+		float distance7 = acosh(-geometryDot(pos, vec4(-1.0, -1.0, -1.0, 2.0))) - .7;
 	`;
 
 	distanceEstimatorGlsl = `
@@ -199,15 +205,54 @@ export class H3Spheres extends H3Geometry
 		);
 	`;
 
-	cameraPos = [0, 0, 0, 1];
-	normalVec = [0, 0, 0, 1];
-	upVec = [0, 0, 1, 0];
-	rightVec = [0, 1, 0, 0];
-	forwardVec = [1, 0, 0, 0];
+	correctVectors()
+	{
+		const dotUp = this.dotProduct(
+			this.normalVec,
+			this.upVec
+		);
+
+		const dotRight = this.dotProduct(
+			this.normalVec,
+			this.rightVec
+		);
+
+		const dotForward = this.dotProduct(
+			this.normalVec,
+			this.forwardVec
+		);
+
+		for (let i = 0; i < 4; i++)
+		{
+			// The signature of the Lorentzian inner product means
+			// we need to add these instead of subtracting them.
+			this.upVec[i] += dotUp * this.normalVec[i];
+			this.rightVec[i] += dotRight * this.normalVec[i];
+			this.forwardVec[i] += dotForward * this.normalVec[i];
+		}
+
+		this.upVec = this.normalize(this.upVec);
+		this.rightVec = this.normalize(this.rightVec);
+		this.forwardVec = this.normalize(this.forwardVec);
+
+		// console.log(
+		// 	this.dotProduct(this.forwardVec, this.rightVec),
+		// 	this.dotProduct(this.forwardVec, this.upVec),
+		// 	this.dotProduct(this.forwardVec, this.normalVec),
+		// 	this.dotProduct(this.rightVec, this.upVec),
+		// 	this.dotProduct(this.rightVec, this.normalVec),
+		// 	this.dotProduct(this.upVec, this.normalVec),
+		// );
+	}
 
 	getMovingSpeed()
 	{
 		return .25;
 	}
-}
 
+	cameraPos = [0, 0, 0, 1];
+	normalVec = [0, 0, 0, -1];
+	upVec = [0, 0, 1, 0];
+	rightVec = [0, 1, 0, 0];
+	forwardVec = [1, 0, 0, 0];
+}
