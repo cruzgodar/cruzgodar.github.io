@@ -219,12 +219,14 @@ function setUpDropdown(selectElement)
 			maxWidth = Math.max(maxWidth, element.getBoundingClientRect().width);
 		});
 
+		const scaleFactor = buttonElement.style.transform === "scale(1.075)" ? 1 : 1.075;
+
 		await Promise.all([
 			anime({
 				targets: buttonElement,
 				//The +4 is for the border.
-				height: flexElement.getBoundingClientRect().height - 17,
-				width: maxWidth + 12,
+				height: (flexElement.getBoundingClientRect().height - 17) * scaleFactor,
+				width: maxWidth + 12 * scaleFactor,
 				easing: "easeOutQuad",
 				duration: opacityAnimationTime
 			}).finished,
@@ -248,6 +250,11 @@ function setUpDropdown(selectElement)
 
 		dropdownOpen = false;
 
+		const scaleFactor = buttonElement.style.transform === "scale(1.075)" ? 1 : 1.075;
+
+		buttonElement.classList.remove("expanded");
+		buttonElement.classList.remove("expanded-non-touch");
+
 		// Using || rather than ?? handles both the case where we click the background
 		// and clicking the title option.
 		selectedItem = parseInt(
@@ -266,14 +273,15 @@ function setUpDropdown(selectElement)
 		let translateY = 0;
 		otherElementHeights.forEach(height => translateY -= height);
 
-		translateY /= 1.075;
+		translateY /= 1.075 / scaleFactor;
 		translateY -= 10;
 
 		await Promise.all([
 			anime({
 				targets: [buttonElement, buttonElement.parentNode.parentNode],
-				height: optionElements[selectedItem].getBoundingClientRect().height,
-				width: optionElements[selectedItem].getBoundingClientRect().width + 16,
+				height: optionElements[selectedItem].getBoundingClientRect().height * scaleFactor,
+				width: (optionElements[selectedItem].getBoundingClientRect().width + 16)
+					* scaleFactor,
 				easing: "easeOutQuad",
 				duration: opacityAnimationTime
 			}).finished,
@@ -284,26 +292,6 @@ function setUpDropdown(selectElement)
 				easing: "easeOutQuad",
 				duration: opacityAnimationTime
 			}).finished,
-
-			new Promise(resolve =>
-			{
-				buttonElement.classList.remove("expanded");
-				buttonElement.classList.remove("expanded-non-touch");
-
-				if (buttonElement.style.transform !== "scale(1.075)")
-				{
-					buttonElement.style.transform = "scale(1.075)";
-
-					return anime({
-						targets: buttonElement,
-						scale: 1,
-						easing: "easeOutQuad",
-						duration: opacityAnimationTime
-					}).finished;
-				}
-
-				resolve();
-			})
 		]);
 	}
 

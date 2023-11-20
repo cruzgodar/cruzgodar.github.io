@@ -716,7 +716,7 @@ mjx-container
 
 	background-color: var(--background);
 
-	overflow-y: hidden;
+	overflow: hidden;
 
 	transition: box-shadow .2s ease-out;
 
