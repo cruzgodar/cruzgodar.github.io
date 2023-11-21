@@ -8,23 +8,75 @@ Our first application will be to a different area, though, closer to statistics.
 
 ### def Markov chain
 
-	Let $x_1, ..., x_n$ be a collection of states and let $\vec{x} \in \span\{x_1, ..., x_n\}$ be a vector whose coefficients sum to $1$ --- we think of $x$ as representing the *proportion* of the system in each state, or equivalently the probabilities of a randomly-chosen element being in a given state. If the system evolves over time as a function $\vec{x}(t)$, but the value of $\vec{x}(t)$ is a linear function of $\vec{x}(t - 1)$ and no other factors, then we call $\vec{x}(t)$ a **Markov chain**.
+	Let $x_1, ..., x_n$ be a collection of states and let $\vec{x} \in #R#^n$ be a vector representing the amount of the system in each state. If the system evolves over time as a function $\vec{x}(t)$, but the value of $\vec{x}(t)$ is a linear function of $\vec{x}(t - 1)$ and no other factors, then we call $\vec{x}(t)$ a **Markov chain**.
 
 ###
 
-A Markov chain is defined by a linear map $P : #R#^n \to #R#^n$ such that
+A Markov chain is defined by an $n \times n$ matrix $P$, called a **transition matrix**, such that
 
 $$
-	P[\vec{x}(t)]_\mathcal{E} = [\vec{x}(t + 1)]_\mathcal{E},
+	P\vec{x}(t) = \vec{x}(t + 1).
 $$
 
-where $\mathcal{E} = \{x_1, ..., x_n\}$ is the basis consisting of the different states. There is a shocking amount of information we can extract from just this description --- let's see it in action.
+There's a surprising amount of information we can extract from just this description --- let's see it in action.
 
 ### ex Markov chain
 
-	You make the questionable decision to open a casino based solely on coin flipping. For a 4 dollar fee, a participant can flip a coin 3 times. If they get $k$ heads, then they receive a payout of $2^k$ dollars. Write the process as a Markov chain and find the probabilities of every different payout. Do you gain or lose money on average from people playing this game?
+	A particular university has exclusively math, physics, and computer science majors, and doesn't allow double majors. Every year, 5% of the math majors at a university switch to a physics major, and 10% switch to computer science. On the other hand, 10% of the physics majors switch to math and 15% to computer science. 5% of the computer science majors switch to math, and 15% to physics. If there are initially 100 students in each of the three majors and no one ever graduates, how many will be in each major after 2 years?
+	
+	The three states here are being a math, physics, and computer science major. The state vector is initially
+	
+	$$
+		\vec{x}(0) = [[ 100 ; 100 ; 100 ]],
+	$$
+	
+	representing the equal quantity of students in each major. The state matrix updates $\vec{x}(0)$ to $\vec{x}(1)$ --- i.e. the proportion in each major after a year --- by matrix multiplication, so we should have
+	
+	$$
+		P = [[ 0.85, 0.1, 0.05 ; 0.05, 0.75, 0.15 ; 0.1, 0.15, 0.8 ]].
+	$$
+	
+	The entry in row $i$ and column $j$ is the proportion of students in major $j$ who switch to major $i$ --- when we do the matrix multiplication, multiplying the second row by $\vec{x}(0)$ gives us
+	
+	$$
+		(0.05)(100) + 0.75(100) + 0.15(100) = 5 + 75 + 15 = 95,
+	$$
+	
+	indicating that 5 math majors and 15 computer science majors switched to physics, and 75 physics majors "switched" to physics (i.e. stayed there). Since any given column of $P$ consists of the proportions of all the students coming from a given major, every column should have entries that sum to 1. In total, our matrix product we want is
+	
+	$$
+		\vec{x}(1) &= P\vec{x}(0)
+		
+		&= [[ 0.85, 0.1, 0.05 ; 0.05, 0.75, 0.15 ; 0.1, 0.15, 0.8 ]][[ 100 ; 100 ; 100 ]]
+		
+		&= [[ 100 ; 95 ; 105 ]]
+		
+		\vec{x}(2) &= P\vec{x}(1)
+		
+		&= [[ 0.85, 0.1, 0.05 ; 0.05, 0.75, 0.15 ; 0.1, 0.15, 0.8 ]][[ 100 ; 95 ; 105 ]]
+		
+		&= [[ 99.75 ; 92 ; 108.25 ]].
+	$$
+	
+	The numbers are a little wonky, but the idea is clear: iterating $P$ moves us forward in time, and if we had 1000 states rather than 3 and a computer capable of processing a matrix that large, we could begin to draw some truly novel insights.
 
 ###
+
+### exc a Markov chain
+	
+	People occasionally change the type of computer they use, albeit very rarely. Suppose each year, 3% of users running macOS switch to Windows, and 1% to Linux, 3% of Windows users switch to macOS and 1% to Linux, and 3% of Linux users switch to macOS, as well as 3% to Windows. The current proportion of desktop operating systems among those three is 78% Windows, 19% Mac, and 3% Linux. What does our (unrealistic) model predict will be the proportion of each in 2 years?
+	
+###
+
+One of the most important proprtties of Markov chains is their ability to make predictions about the limiting behavior of a system (that is, $\lim_{t \to \infty} \vec{x}(t)$). A **steady-state vector** is a vector $\vec{q}$ for which $P\vec{q} = \vec{q}$, meaning the system no longer changes. The amount of students in each major stays exactly the same, or the number of people using each OS stays constant. Importantly, we're not saying that no one every changes majors or computers --- the matrix $P$ in both the past examples is constant, so there will always be some people moving between states. Instead, we're after a vector $\vec{x}$ of a distribution across the states for which the inflow and outflow for each state are equal. Remarkably, as long as we're somewhat sensible in constructing our transition matrix, steady-state vectors will be present, unique, and useful.
+
+### thm steady-state vectors in Markov chains
+	
+	Let $P$ be a transition matrix for a Markov chain so that for some integer $k$, $P^k$ contains only positive entries (for our examples, $k$ will be $1$, meaning $P$ contains only positive entries). Then $P$ has a unique steady-state vector $\vec{q}$. Moreover, $\lim_{t \to \infty} P^t \vec{x} = \vec{q}$ for *any* vector $\vec{x}$, so the system converges to its steady-state vector regardless of the starting configuration of the state.
+	
+###
+
+This theorem guarantees that searching for a steady-state vector is worth our time since a unique one will always exist, and it also tells us why it's useful to find one --- it's the limiting behavior of the system (in the language of differential equations, we might say it's a convergent equilibrium)
 
 
 
