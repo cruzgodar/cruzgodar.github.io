@@ -60,7 +60,7 @@ home Cruz Godar
 			notes/7-vector-spaces Section 7: Vector Spaces
 			notes/8-bases-and-dimension Section 8: Bases and Dimension
 			notes/9-the-fundamental-theorem-of-linear-algebra Section 9: The Fundamental Theorem of Linear Algebra
-			notes/10-intro-to-markov-chains Section 10: Intro to Markov Chains
+			notes/10-simple-applications Section 10: Simple Applications
 
 		uo/256 Math 256
 			notes/0-calc-review Section 0: Calculus Review

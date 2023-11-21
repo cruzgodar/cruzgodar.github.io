@@ -634,7 +634,7 @@ export const sitemap =
 			"/teaching/uo/341/notes/7-vector-spaces/",
 			"/teaching/uo/341/notes/8-bases-and-dimension/",
 			"/teaching/uo/341/notes/9-the-fundamental-theorem-of-linear-algebra/",
-			"/teaching/uo/341/notes/10-intro-to-markov-chains/"
+			"/teaching/uo/341/notes/10-simple-applications/"
 		]
 	},
 		
@@ -731,9 +731,9 @@ export const sitemap =
 		"customScript": true
 	},
 	
-	"/teaching/uo/341/notes/10-intro-to-markov-chains/":
+	"/teaching/uo/341/notes/10-simple-applications/":
 	{
-		"title": "Section 10: Intro to Markov Chains",
+		"title": "Section 10: Simple Applications",
 		
 		"parent": "/teaching/uo/341/",
 		

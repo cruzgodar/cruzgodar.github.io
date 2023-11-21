@@ -76,7 +76,59 @@ One of the most important proprtties of Markov chains is their ability to make p
 	
 ###
 
-This theorem guarantees that searching for a steady-state vector is worth our time since a unique one will always exist, and it also tells us why it's useful to find one --- it's the limiting behavior of the system (in the language of differential equations, we might say it's a convergent equilibrium)
+This theorem guarantees that searching for a steady-state vector is worth our time since a unique one will always exist, and it also tells us why it's useful to find one --- it's the limiting behavior of the system (in the language of differential equations, we might say it's a convergent equilibrium).
+
+To find a steady-state vector, we want to solve $P\vec{q} = \vec{q}$, so $(P - I)\vec{q} = \vec{0}$. That should hopefully look familiar from a past homework --- we're finding an eigenvector with eigenvalue $\lambda = 1$. When we found all possible eigenvectors, we had to solve the characteristic polynomial for all the possible eigenvectors and then handle them one-by-one, but this time around we already know the eigenvalue we're interested in, and that there should be exactly one eigenvector corresponding to it. Once again, we're just doing row-reduction.
+
+### ex a steady-state solution
+
+	For the university example from before, how many students will be in each major in the long run?
+
+	We're solving $P - I = \vec{0}$, so we have
+
+	$$
+		[[ 0.85 - 1, 0.1, 0.05 | 0 ; 0.05, 0.75 - 1, 0.15 | 0 ; 0.1, 0.15, 0.8 - 1 | 0 ]] &
+
+		[[ -0.15, 0.1, 0.05 | 0 ; 0.05, -0.25, 0.15 | 0 ; 0.1, 0.15, -0.2 | 0 ]] &
+
+		[[ -3, 2, 1 | 0 ; 1, -5, 3 | 0 ; 2, 3, -4 | 0 ]] & \qquad :: \vec{r_1} \te 20 ; \vec{r_2} \te 20 ; \vec{r_3} \te 20 ::
+
+		[[ 1, -5, 3 | 0 ; -3, 2, 1 | 0 ; 2, 3, -4 | 0 ]] & \qquad \swap \vec{r_1}, \vec{r_2}
+
+		[[ 1, -5, 3 | 0 ; 0, -13, 10 | 0 ; 0, 13, -10 | 0 ]] & \qquad :: \vec{r_2} \pe 3\vec{r_1} ; \vec{r_3} \me 2\vec{r_1} ::
+
+		[[ 13, -65, 39 | 0 ; 0, -13, 10 | 0 ; 0, 0, 0 | 0 ]] & \qquad :: \vec{r_3} \pe \vec{r_2} ; \vec{r_1} \te 13 ::
+
+		[[ 13, 0, -11 | 0 ; 0, -13, 10 | 0 ; 0, 0, 0 | 0 ]] & \qquad \vec{r_1} \me 5\vec{r_2}
+
+		[[ 1, 0, -\frac{11}{13} | 0 ; 0, 1, -\frac{10}{13} | 0 ; 0, 0, 0 | 0 ]] & \qquad :: \vec{r_1} \te \frac{1}{13} ; \vec{r_2} \te -\frac{1}{13} ::
+	$$
+
+	Now we have a vector of $\vec{q} = [[ \frac{11}{13}t ; \frac{10}{13}t ; t ]]$ for any value of $t$, and choosing $t = 13$, we get $[[ 11 ; 10 ; 13 ]]$. That gives the relative amounts of students in each major, but we specifically need the sum of the entries to be $300$. The easiest way to make this happen is to first scale down the vector to have a sum of $1$, then multiply that by $300$. We can get the first one by dividing every entry by the total sum, which is $11 + 10 + 13 = 34$, to get
+
+	$$
+		[[ \frac{11}{34} ; \frac{10}{34} ; \frac{13}{34} ]],
+	$$
+
+	then multiply by $300$, which results in
+
+	$$
+		[[ \frac{3300}{34} ; \frac{3000}{34} ; \frac{3900}{34} ]] \approx [[ 97.1 ; 88.2 ; 114.7 ]].
+	$$
+
+	So over time, the number of students in each major tends toward roughly 97, 88, and 115 in math, physics, and computer science, respectively.
+
+###
+
+### exc a steady-state solution
+
+	With the previous computer OS exercise, what will the percentage of users with each OS be in the long run?
+
+###
+
+
+
+## Error-Correcting Codes
 
 
 
