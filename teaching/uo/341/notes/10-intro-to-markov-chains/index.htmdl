@@ -2,7 +2,7 @@
 
 
 
-With so much theory developed, let's take these last two sections to explore some of the most important applications of linear algebra. One of the most ubiquitous in modern technology is in graphics, where the function that maps any triangle in 3D space to its image on a fixed 2D screen is a linear map (called a *projection map*). With very few exceptions, this is the foundation of how every 3D game is implemented.
+With so much theory developed, let's take this last section to explore one of the most important applications of linear algebra. While one of the most ubiquitous applications in modern technology is in graphics, where the function that maps any triangle in 3D space to its image on a fixed 2D screen is a linear map (called a *projection map*). With very few exceptions, this is the foundation of how every 3D game is implemented.
 
 Our first application will be to a different area, though, closer to statistics. Let's say that we have a collection of **states** $x_1, ..., x_n$. These are states of matter or being --- for example, in <a href="https://www.youtube.com/watch?v=LL3kVtc-4vY">Belousov-Zhabotinsky reaction</a>, $x_1$ might represent a molecule of malonic acid and $x_2$ a molecule of potassium bromate (in reality, we'd need many more variables for the intermediate states in the reaction).This system, and many like it, fall into a particular class that lend themselves extremely well to linear algebra:
 
@@ -125,32 +125,6 @@ To find a steady-state vector, we want to solve $P\vec{q} = \vec{q}$, so $(P - I
 	With the previous computer OS exercise, what will the percentage of users with each OS be in the long run?
 
 ###
-
-
-
-## Error-Correcting Codes
-
-It's thrown around so much that it can sound like pop science, but it really is true that computers deal exclusively with zeros and ones (i.e. bits). Messages sent across wires or through the air --- or even through space --- are pulses of energy, with an energetic state representing one and a nonenergetic one representing zero. We're constrained by the physical world, though, and we can't guarantee that the message we send is the message that will be received. If we're writing firmware for sensors on an airplane, where there's no room for error --- and the risk of errant cosmic rays hitting circuitry and flipping bits is *substantially* higher than at sea level --- we should do what we can ahead of time to ensure messages arrive intact.
-
-The brute-force solution to this problem is just to send every message twice. If we're trying to send $0100$, we can duplicate every bit to produce $00\\,11\\,00\\,00$. Then if we receive $$00\\,11\\,10\\,00$$, we know that the third bit isn't correct, and we can request the message be sent again. If we send every bit three times instead of two, we even can correct a one-bit error by majority rule. For example, if we receive $000\\,110\\,000\\,000$, we can correct it to $0100$ since two out of three bits in the second chunk are $1$. We say that the doubled code can **detect** any one-bit error, and the tripled one can **detect and correct** any one-bit error. There are *some* two-bit errors it can detect and correct (specifically, the ones where the bits flipped are in different chunks), but if two flips occur in the same chunk of three, we'll correct that chunk to the wrong bit.
-
-This code does technically work, but we're sending three times the amount of information, and we have to account for the fact that the more total bits we send, the higher the chance that an error will occur somewhere in the message, so we get diminishing returns with increasing message length. We'll see how we can build a substantially smaller and more robust code for sending a 4-bit message, but first, let's introduce a small amount of notation.
-
-### def integers mod 2
-
-	The set of **integers modulo 2** is the set $#Z#/2 = \{0, 1\}$ with addition defined as
-
-	$$
-		0 + 0 = 1 \qquad 0 + 1 = 1 + 0 = 1 \qquad 1 + 1 = 0
-	$$
-
-	and multiplication defined as usual. This set is also sometimes written $#Z# / 2#Z#$ or $#Z#_2$.
-
-###
-
-Our messages are length-4 vectors containing elements of $#Z# / 2$, which we'll denote $(#Z# / 2)^4$, akin to $#R#^4$. If $\vec{d} = (1, 0, 1, 1)$, how could we efficiently transmit a little extra data to detect if there's a one-bit error? There's a great solution, and that's just to add up all the entries in $\vec{d}$. The result is $3$, which is equal to $1$ in $#Z# / 2$, and so we can transmit the message $\vec{d}$, along with a single element $p$, to produce a 5-bit message. If a single bit in $\vec{d}$ is flipped, then the sum of all the data bits will no longer equal the parity bit, and crucially, if the data all arrives but the parity bit itself flips, then it still won't match.
-
-How can we do better? It'd be excellent if we could not only detect a single error, but also correct it. 
 
 
 
