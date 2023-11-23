@@ -43,6 +43,98 @@ Welcome to Math 341! We'll use this page for the interactive notes, the homework
 	homework-6 c Homework 6
 	homework-7 c Homework 7
 	homework-8 c Homework 8
+	homework-9 c Homework 9
+	
+###
+
+
+
+### card homework-9 Homework 9
+
+	*Due Friday of Week 10 at the start of class*
+	
+	Complete the following problems and submit them as a pdf to Canvas. 8 points are awarded for thoroughly attempting every problem, and I'll select three problems to grade on correctness for 4 points each. Enough work should be shown that there is no question about the mathematical process used to obtain your answers.
+
+	## Section 10
+
+	#. Suppose every 5 years, an average of 5% of people from California move to Oregon, and 10% move to Washington; 15% from Oregon move to California and 10% to Washington; and 5% from Washington move to Oregon and 10% to California. California currently has a population of 40 million people, Oregon has a population of 4 million, and Washington has a population of 8 million. With this model, assuming no one arrives from or leaves to anywhere else, what will the population settle down to over time.
+
+	#. Rudimentary predictive text models use Markov Chains! To explore a *very* simple example of this, let's look at a Markov chain on the words "me", "run", and "out". We'll never repeat a word twice. After "me", there is twice the chance of seeing "out" as there is "run". After "run", there is an equal chance of "me" and "out". After "out", there is twice the chance of "run" as "me".
+
+	> a) Write down the transition matrix $P$ for this Markov Chain. After running this predictive text model for a very large number of words, what will the proportion of each word be?
+
+	> b) A **Markov Chain Monte Carlo**, or MCMC, is a simple process that uses a Markov Chain to create sample data. Using a 6-sided die or simply a random number generator, use a uniformly random starting word from the three, and then use the appropriate column of $P$ to randomly choose the next word in the sequence. Do this twice to create a three-word sentence, and then repeat the process to create three total three-word sentences.
+
+
+
+	## Course Review Exercises (also required)
+
+	In problems 5#, do the following:
+
+	> a) Write the system of equations in the form $A\vec{x} = \vec{b}$ for a matrix $A$ and a vector $\vec{b}$ of constants, and a vector $\vec{x}$ of variables.
+
+	> b) Augment $A$ with $\vec{b}$ and row reduce the system to solve for $\vec{x}$.
+
+	> c) If $A$ is square, find $\det A$.
+
+	> d) Let $T$ be the linear transformation corresponding to the matrix $A$. Write down the domain and codomain for $T$.
+
+	> e) Find a basis for $\ker T$ and use it to find a basis for $\image T$ using the fundamental theorem of linear algebra.
+
+	> f) Determine if $T$ is one-to-one, onto, both, or neither. If it's both one-to-one and onto, find a formula for $T^{-1}$.
+
+	#.
+
+	$$
+		x + y &= 1
+		
+		x - y &= 3	
+	$$
+
+	#.
+
+	$$
+		x + 2y + z &= 0
+		
+		-x + y + z &= -2
+		
+		x + y &= 3
+		
+	$$
+
+	#.
+
+	$$
+		x + 2y - z &= -1
+		
+		2x + 3y - w &= -2
+	$$
+
+	#.
+
+	$$
+		x + y + 2z &= 4
+		
+		2x + y - z &= 2
+		
+		-3x - y + 4z &= 0
+	$$
+
+	#.
+
+	$$
+		x + y + z + w &= 5
+		
+		x + 2y - 2z + 3w &= 0
+		
+		3x + 5y - 3z + 7w &= 5
+
+		x - y + 7z - 3w &= 15
+	$$
+
+	- - -
+
+	#. 
 	
 ###
 
