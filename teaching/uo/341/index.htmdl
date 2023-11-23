@@ -134,7 +134,49 @@ Welcome to Math 341! We'll use this page for the interactive notes, the homework
 
 	- - -
 
-	#. 
+	In problems 5#, do the following:
+	
+	> a) The given sets $V$ and $W$ are vector spaces. Determine whether the subset $X$ of $V$ is a subspace. If it is, show it satisfies all three subspace properties, and if not, give a specific example showing one of the properties fails.
+	
+	> b) Determine whether the function $T : V \to W$ is a linear transformation. If it is, show it satisfies the two properties, and if not, give a specific example showing one of them fails.
+	
+	> c) If $T$ is a linear transformation, find the matrix for $T$ with respect to the standard bases for $V$ and $W$.
+	
+	> d) If $T$ is a linear transformation, find a basis for $\ker T$ and use it to find bases for $V$ and $\image T$ using the fundamental theorem of linear algebra. Then extend the basis for $\image T$ to a basis for $W$, and find the matrix for $T$ with respect to the bases for $V$ and $W$ you found.
+	
+	#. $V = #R#^4$, $W = M_{2 \times 2}(#R#)$, $X$ is the set of vectors $[[ x ; y ; z ; w ]] \in #R#^4$ such that $x + 2y = w$, and $T : V \to W$ is defined by
+	
+	$$
+		T\left( [[ x ; y ; z ; w ]] \right) = [[ 0, x ; y + z, 2w ]].
+	$$
+	
+	#. $V = M_{2 \times 2}(#R#)$, $W = M_{2 \times 2}(#R#)$, $X$ is the set of matrices $A$ such that $\det A = 0$, and $T : V \to W$ is defined by
+	
+	$$
+		T(A) = A^T.
+	$$
+	
+	#. $V$ is the space of polynomials with degree at most 3, $W = #R#^2$, $X$ is the set of polynomials $p(x)$ such that $p'(x) = 1$, and $T : V \to W$ is defined by
+	
+	$$
+		T(a + bx + cx^2 + dx^3) = [[ a + b ; c + d ]].
+	$$
+	
+	#. $V = \mathcal{L}(#R#, #R#^2)$, $W = M_{2 \times 2}(#R#)$, $X$ is the set of linear transformations $S : #R# \to #R#^2$ such that $S(1) = [[ 0 ; 0 ]]$, and $T : V \to W$ is defined by
+	
+	$$
+		T(S) = [[ \mid, \mid ; S(1), S(-1) ; \mid, \mid ]],
+	$$
+	
+	i.e. the outputs of $S$ are placed as columns in a $2 \times 2$ matrix.
+	
+	#. $V = M_{2 \times 2}(#R#)$, $W$ is the space of polynomials with degree at most 2, $X$ is the set of matrices $[[ a, b ; c, d ]]$ with $a + d = 1$, and $T : V \to W$ is defined by
+	
+	$$
+		T(A) = \chi(A),
+	$$
+	
+	where $\chi(A)$ is the characteristic polynomial of $A$, as described in homework 5.
 	
 ###
 
