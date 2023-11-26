@@ -589,21 +589,21 @@ export class ThurstonGeometry extends Applet
 		// 	tangentVec[3] + curvature * this.geometryData.normalVec[3] * dt
 		// ]);
 
-		this.geometryData.forwardVec = this.parallelTransport(
-			newCameraPos,
-			this.geometryData.forwardVec
-		);
+		// this.geometryData.forwardVec = this.parallelTransport(
+		// 	newCameraPos,
+		// 	this.geometryData.forwardVec
+		// );
 
-		this.geometryData.rightVec = this.parallelTransport(
-			newCameraPos,
-			this.geometryData.rightVec
-		);
+		// this.geometryData.rightVec = this.parallelTransport(
+		// 	newCameraPos,
+		// 	this.geometryData.rightVec
+		// );
 
-		this.geometryData.upVec = this.parallelTransport(
-			newCameraPos,
-			this.geometryData.upVec
-		);
-		console.log(this.geometryData.upVec);
+		// this.geometryData.upVec = this.parallelTransport(
+		// 	newCameraPos,
+		// 	this.geometryData.upVec
+		// );
+		// console.log(this.geometryData.upVec);
 
 		this.geometryData.cameraPos = newCameraPos;
 
