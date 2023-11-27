@@ -208,17 +208,17 @@ export class H3Spheres extends H3Geometry
 	correctVectors()
 	{
 		const dotUp = this.dotProduct(
-			this.normalVec,
+			this.cameraPos,
 			this.upVec
 		);
 
 		const dotRight = this.dotProduct(
-			this.normalVec,
+			this.cameraPos,
 			this.rightVec
 		);
 
 		const dotForward = this.dotProduct(
-			this.normalVec,
+			this.cameraPos,
 			this.forwardVec
 		);
 
@@ -226,9 +226,9 @@ export class H3Spheres extends H3Geometry
 		{
 			// The signature of the Lorentzian inner product means
 			// we need to add these instead of subtracting them.
-			this.upVec[i] += dotUp * this.normalVec[i];
-			this.rightVec[i] += dotRight * this.normalVec[i];
-			this.forwardVec[i] += dotForward * this.normalVec[i];
+			this.upVec[i] += dotUp * this.cameraPos[i];
+			this.rightVec[i] += dotRight * this.cameraPos[i];
+			this.forwardVec[i] += dotForward * this.cameraPos[i];
 		}
 
 		this.upVec = this.normalize(this.upVec);
@@ -236,12 +236,16 @@ export class H3Spheres extends H3Geometry
 		this.forwardVec = this.normalize(this.forwardVec);
 
 		// console.log(
+		// 	this.dotProduct(this.forwardVec, this.forwardVec),
 		// 	this.dotProduct(this.forwardVec, this.rightVec),
 		// 	this.dotProduct(this.forwardVec, this.upVec),
-		// 	this.dotProduct(this.forwardVec, this.normalVec),
+		// 	ThurstonGeometry.dotProduct(this.forwardVec, this.normalVec),
+		// 	this.dotProduct(this.rightVec, this.rightVec),
 		// 	this.dotProduct(this.rightVec, this.upVec),
-		// 	this.dotProduct(this.rightVec, this.normalVec),
-		// 	this.dotProduct(this.upVec, this.normalVec),
+		// 	ThurstonGeometry.dotProduct(this.rightVec, this.normalVec),
+		// 	this.dotProduct(this.upVec, this.upVec),
+		// 	ThurstonGeometry.dotProduct(this.upVec, this.normalVec),
+		// 	this.dotProduct(this.normalVec, this.normalVec),
 		// );
 	}
 
