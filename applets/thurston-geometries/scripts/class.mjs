@@ -549,20 +549,20 @@ export class ThurstonGeometry extends Applet
 	 */
 	handleMoving(movingAmount, timeElapsed)
 	{
-		let tangentVec = this.geometryData.normalize([
-			movingAmount[0] * this.geometryData.forwardVec[0]
+		const tangentVec = this.geometryData.normalize([
+			movingAmount[0] * this.rotatedForwardVec[0]
 				+ movingAmount[1] * this.geometryData.rightVec[0]
 				+ movingAmount[2] * this.geometryData.upVec[0],
 			
-			movingAmount[0] * this.geometryData.forwardVec[1]
+			movingAmount[0] * this.rotatedForwardVec[1]
 				+ movingAmount[1] * this.geometryData.rightVec[1]
 				+ movingAmount[2] * this.geometryData.upVec[1],
 			
-			movingAmount[0] * this.geometryData.forwardVec[2]
+			movingAmount[0] * this.rotatedForwardVec[2]
 				+ movingAmount[1] * this.geometryData.rightVec[2]
 				+ movingAmount[2] * this.geometryData.upVec[2],
 			
-			movingAmount[0] * this.geometryData.forwardVec[3]
+			movingAmount[0] * this.rotatedForwardVec[3]
 				+ movingAmount[1] * this.geometryData.rightVec[3]
 				+ movingAmount[2] * this.geometryData.upVec[3],
 		]);
@@ -573,7 +573,7 @@ export class ThurstonGeometry extends Applet
 
 
 		//The magic formula is T' = curvature * N.
-		const curvature = this.getCurvature(this.geometryData.cameraPos, tangentVec);
+		// const curvature = this.getCurvature(this.geometryData.cameraPos, tangentVec);
 
 		const newCameraPos = this.geometryData.followGeodesic(
 			this.geometryData.cameraPos,
@@ -611,54 +611,54 @@ export class ThurstonGeometry extends Applet
 
 		
 
-		//Need to do rotation here rather than scale by -1.
-		if (movingAmount[0] === 1)
-		{
-			this.geometryData.forwardVec = [...tangentVec];
-		}
+		// //Need to do rotation here rather than scale by -1.
+		// if (movingAmount[0] === 1)
+		// {
+		// 	this.geometryData.forwardVec = [...tangentVec];
+		// }
 
-		else if (movingAmount[0] === -1)
-		{
-			const result = ThurstonGeometry.rotateVectors(
-				tangentVec,
-				this.geometryData.rightVec,
-				Math.PI
-			);
+		// else if (movingAmount[0] === -1)
+		// {
+		// 	const result = ThurstonGeometry.rotateVectors(
+		// 		tangentVec,
+		// 		this.geometryData.rightVec,
+		// 		Math.PI
+		// 	);
 
-			this.geometryData.forwardVec = result[0];
-		}
+		// 	this.geometryData.forwardVec = result[0];
+		// }
 
-		else if (movingAmount[1] === 1)
-		{
-			this.geometryData.rightVec = [...tangentVec];
-		}
+		// else if (movingAmount[1] === 1)
+		// {
+		// 	this.geometryData.rightVec = [...tangentVec];
+		// }
 
-		else if (movingAmount[1] === -1)
-		{
-			const result = ThurstonGeometry.rotateVectors(
-				tangentVec,
-				this.geometryData.forwardVec,
-				Math.PI
-			);
+		// else if (movingAmount[1] === -1)
+		// {
+		// 	const result = ThurstonGeometry.rotateVectors(
+		// 		tangentVec,
+		// 		this.geometryData.forwardVec,
+		// 		Math.PI
+		// 	);
 
-			this.geometryData.rightVec = result[0];
-		}
+		// 	this.geometryData.rightVec = result[0];
+		// }
 
-		else if (movingAmount[2] === 1)
-		{
-			this.geometryData.upVec = [...tangentVec];
-		}
+		// else if (movingAmount[2] === 1)
+		// {
+		// 	this.geometryData.upVec = [...tangentVec];
+		// }
 
-		else if (movingAmount[2] === -1)
-		{
-			const result = ThurstonGeometry.rotateVectors(
-				tangentVec,
-				this.geometryData.forwardVec,
-				Math.PI
-			);
+		// else if (movingAmount[2] === -1)
+		// {
+		// 	const result = ThurstonGeometry.rotateVectors(
+		// 		tangentVec,
+		// 		this.geometryData.forwardVec,
+		// 		Math.PI
+		// 	);
 
-			this.geometryData.upVec = result[0];
-		}
+		// 	this.geometryData.upVec = result[0];
+		// }
 	}
 
 
