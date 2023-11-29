@@ -285,8 +285,6 @@ export class ThurstonGeometry extends Applet
 			}
 		`;
 
-		console.log(fragShaderSource);
-
 		
 
 		this.wilson.render.shaderPrograms = [];

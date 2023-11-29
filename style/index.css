@@ -696,7 +696,6 @@ mjx-container
 
 .text-button:not(:hover):focus
 {
-	transform: scale(1.075);
 	outline: none;
 }
 
@@ -731,7 +730,7 @@ mjx-container
 
 .text-button.dropdown.expanded-non-touch
 {
-	transform: scale(1.075) !important;
+	/* transform: scale(1.075) !important; */
 }
 
 .text-button.dropdown .option-container
@@ -755,7 +754,7 @@ mjx-container
 {
 	cursor: pointer;
 	
-	box-shadow: 0px 0px 8px 0px var(--normal-contrast);
+	background: var(--neutral-hover);
 }
 
 

@@ -329,8 +329,8 @@ function getHopfFiber(index, numFibers)
 
 	/*	normalize(vec4(1.0 + p.z, -p.y, p.x, 0.0)),
 					normalize(vec4(0.0, p.x, p.y, 1.0 + p.z)), */
-	const vec1 = this.normalize([1 + p[2], -p[1], p[0], 0]);
-	const vec2 = this.normalize([0, p[0], p[1], 1 + p[2]]);
+	const vec1 = ThurstonGeometry.normalize([1 + p[2], -p[1], p[0], 0]);
+	const vec2 = ThurstonGeometry.normalize([0, p[0], p[1], 1 + p[2]]);
 
 	return [`float distance${index + 1} = greatCircleDistance(
 		pos,

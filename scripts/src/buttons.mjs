@@ -1,7 +1,6 @@
 import anime from "../anime.js";
 import { opacityAnimationTime } from "./animation.mjs";
 import { addHoverEvent } from "./hover-events.mjs";
-import { currentlyTouchDevice } from "./interaction.mjs";
 import {
 	$$,
 	addTemporaryListener,
@@ -208,11 +207,6 @@ function setUpDropdown(selectElement)
 
 		buttonElement.classList.add("expanded");
 
-		if (!currentlyTouchDevice)
-		{
-			buttonElement.classList.add("expanded-non-touch");
-		}
-
 		let maxWidth = 0;
 		optionElements.forEach(element =>
 		{
@@ -225,8 +219,8 @@ function setUpDropdown(selectElement)
 			anime({
 				targets: buttonElement,
 				//The +4 is for the border.
-				height: (flexElement.getBoundingClientRect().height - 17) * scaleFactor,
-				width: maxWidth + 12 * scaleFactor,
+				height: (flexElement.getBoundingClientRect().height - 20) * scaleFactor,
+				width: maxWidth + 29.75 * scaleFactor,
 				easing: "easeOutQuad",
 				duration: opacityAnimationTime
 			}).finished,
@@ -253,10 +247,11 @@ function setUpDropdown(selectElement)
 		const scaleFactor = buttonElement.style.transform === "scale(1.075)" ? 1 : 1.075;
 
 		buttonElement.classList.remove("expanded");
-		buttonElement.classList.remove("expanded-non-touch");
 
 		// Using || rather than ?? handles both the case where we click the background
 		// and clicking the title option.
+		const oldSelectedItem = selectedItem;
+
 		selectedItem = parseInt(
 			document.elementFromPoint(e.clientX, e.clientY)
 				.getAttribute("data-option-index") ?? selectedItem
@@ -264,7 +259,10 @@ function setUpDropdown(selectElement)
 
 		selectElement.value = selectOptionElements[selectedItem].value;
 
-		selectElement.dispatchEvent(new Event("input"));
+		if (oldSelectedItem !== selectedItem)
+		{
+			selectElement.dispatchEvent(new Event("input"));
+		}
 
 		const otherElementHeights = optionElements
 			.slice(0, selectedItem)

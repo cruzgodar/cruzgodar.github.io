@@ -138,7 +138,7 @@ import{ThurstonGeometry}from"../class.min.mjs";import{sliderValues}from"../index
 			max(abs(dotProduct1), abs(dotProduct2)),
 			max(abs(dotProduct3), abs(dotProduct4))
 		);
-	`;cameraPos=[0,0,0,-1];normalVec=[0,0,0,-1];upVec=[0,0,1,0];rightVec=[0,1,0,0];forwardVec=[1,0,0,0];getMovingSpeed(){return 1}}function hsvToRgb(h,s,v){function t(n){var t=(n+6*h)%6;return v-v*s*Math.max(0,Math.min(t,Math.min(4-t,1)))}return[255*t(5),255*t(3),255*t(1)]}function getHopfFiber(index,numFibers){var s=index/numFibers*(2*Math.PI),t=Math.PI/2,e=hsvToRgb(t/(2*Math.PI),Math.abs(s%Math.PI-Math.PI/2)/(Math.PI/2),1),s=[Math.cos(s)*Math.sin(t),Math.sin(s)*Math.sin(t),Math.cos(t)],t=this.normalize([1+s[2],-s[1],s[0],0]),s=this.normalize([0,s[0],s[1],1+s[2]]);return[`float distance${index+1} = greatCircleDistance(
+	`;cameraPos=[0,0,0,-1];normalVec=[0,0,0,-1];upVec=[0,0,1,0];rightVec=[0,1,0,0];forwardVec=[1,0,0,0];getMovingSpeed(){return 1}}function hsvToRgb(h,s,v){function t(n){var t=(n+6*h)%6;return v-v*s*Math.max(0,Math.min(t,Math.min(4-t,1)))}return[255*t(5),255*t(3),255*t(1)]}function getHopfFiber(index,numFibers){var s=index/numFibers*(2*Math.PI),t=Math.PI/2,e=hsvToRgb(t/(2*Math.PI),Math.abs(s%Math.PI-Math.PI/2)/(Math.PI/2),1),s=[Math.cos(s)*Math.sin(t),Math.sin(s)*Math.sin(t),Math.cos(t)],t=ThurstonGeometry.normalize([1+s[2],-s[1],s[0],0]),s=ThurstonGeometry.normalize([0,s[0],s[1],1+s[2]]);return[`float distance${index+1} = greatCircleDistance(
 		pos,
 		vec4(${t[0]}, ${t[1]}, ${t[2]}, ${t[3]}),
 		vec4(${s[0]}, ${s[1]}, ${s[2]}, ${s[3]}),
