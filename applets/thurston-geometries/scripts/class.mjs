@@ -549,20 +549,22 @@ export class ThurstonGeometry extends Applet
 	 */
 	handleMoving(movingAmount, timeElapsed)
 	{
+		const forwardVecToUse = this.geometryData.forwardVec;
+		
 		const tangentVec = this.geometryData.normalize([
-			movingAmount[0] * this.rotatedForwardVec[0]
+			movingAmount[0] * forwardVecToUse[0]
 				+ movingAmount[1] * this.geometryData.rightVec[0]
 				+ movingAmount[2] * this.geometryData.upVec[0],
 			
-			movingAmount[0] * this.rotatedForwardVec[1]
+			movingAmount[0] * forwardVecToUse[1]
 				+ movingAmount[1] * this.geometryData.rightVec[1]
 				+ movingAmount[2] * this.geometryData.upVec[1],
 			
-			movingAmount[0] * this.rotatedForwardVec[2]
+			movingAmount[0] * forwardVecToUse[2]
 				+ movingAmount[1] * this.geometryData.rightVec[2]
 				+ movingAmount[2] * this.geometryData.upVec[2],
 			
-			movingAmount[0] * this.rotatedForwardVec[3]
+			movingAmount[0] * forwardVecToUse[3]
 				+ movingAmount[1] * this.geometryData.rightVec[3]
 				+ movingAmount[2] * this.geometryData.upVec[3],
 		]);

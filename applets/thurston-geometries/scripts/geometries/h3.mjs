@@ -1,4 +1,6 @@
+import { sliderValues } from "../index.mjs";
 import { BaseGeometry, getMinGlslString } from "./base.mjs";
+import { $ } from "/scripts/src/main.mjs";
 
 class H3Geometry extends BaseGeometry
 {
@@ -24,6 +26,11 @@ class H3Geometry extends BaseGeometry
 	float cosh(float x)
 	{
 		return .5 * (exp(x) + exp(-x));
+	}
+
+	float asinh(float x)
+	{
+		return log(x + sqrt(x*x + 1.0));
 	}
 
 	float acosh(float x)
@@ -131,16 +138,18 @@ export class H3Spheres extends H3Geometry
 		float distance1 = acosh(-geometryDot(pos, vec4(1.0, 1.0, -1.0, 2.0))) - .7;
 		float distance2 = acosh(-geometryDot(pos, vec4(1.0, -1.0, 1.0, 2.0))) - .7;
 		float distance3 = acosh(-geometryDot(pos, vec4(1.0, -1.0, -1.0, 2.0))) - .7;
-		float distance4 = acosh(-geometryDot(pos, vec4(-1.0, 1.0, 1.0, 2.0))) - .7;
-		float distance5 = acosh(-geometryDot(pos, vec4(-1.0, 1.0, -1.0, 2.0))) - .7;
-		float distance6 = acosh(-geometryDot(pos, vec4(-1.0, -1.0, 1.0, 2.0))) - .7;
-		float distance7 = acosh(-geometryDot(pos, vec4(-1.0, -1.0, -1.0, 2.0))) - .7;
+		float distance4 = acosh(-geometryDot(pos, vec4(1.0, 1.0, 1.0, 2.0))) - .7;
+		
+		float distance5 = abs(asinh(geometryDot(pos, vec4(1.0, 0.0, 0.0, 0.0))) + 1.0);
+		float distance6 = abs(asinh(geometryDot(pos, vec4(1.0, 0.0, 0.0, 0.0))) - 1.0);
+		float distance7 = abs(asinh(geometryDot(pos, vec4(0.0, 1.0, 0.0, 0.0))) + 1.0);
+		float distance8 = abs(asinh(geometryDot(pos, vec4(0.0, 1.0, 0.0, 0.0))) - 1.0);
 	`;
 
 	distanceEstimatorGlsl = `
 		${H3Spheres.distances}
 
-		float minDistance = ${getMinGlslString("distance", 7)};
+		float minDistance = ${getMinGlslString("distance", 8)};
 
 		return minDistance;
 	`;
@@ -148,42 +157,44 @@ export class H3Spheres extends H3Geometry
 	getColorGlsl = `
 		${H3Spheres.distances}
 		
-		float minDistance = ${getMinGlslString("distance", 7)};
+		float minDistance = ${getMinGlslString("distance", 8)};
 
 		if (minDistance == distance1)
 		{
-			return vec3(1.0, 0.0, 0.0) * getBanding(pos.y + pos.z + pos.w, 10.0);
+			return vec3(1.0, 0.0, 0.0);
 		}
 
 		if (minDistance == distance2)
 		{
-			return vec3(0.0, 1.0, 1.0) * getBanding(pos.y + pos.z + pos.w, 10.0);
+			return vec3(0.0, 1.0, 1.0);
 		}
 
 		if (minDistance == distance3)
 		{
-			return vec3(0.0, 1.0, 0.0) * getBanding(pos.x + pos.z + pos.w, 10.0);
+			return vec3(0.0, 1.0, 0.0);
 		}
 
 		if (minDistance == distance4)
 		{
-			return vec3(1.0, 0.0, 1.0) * getBanding(pos.x + pos.z + pos.w, 10.0);
+			return vec3(1.0, 0.0, 1.0);
 		}
 
 		if (minDistance == distance5)
 		{
-			return vec3(0.0, 0.0, 1.0) * getBanding(pos.x + pos.y + pos.w, 10.0);
+			return vec3(0.0, 0.0, 1.0);
 		}
 
 		if (minDistance == distance6)
 		{
-			return vec3(1.0, 1.0, 0.0) * getBanding(pos.x + pos.y + pos.w, 10.0);
+			return vec3(1.0, 1.0, 0.0);
 		}
 
 		if (minDistance == distance7)
 		{
-			return vec3(1.0, 1.0, 1.0) * getBanding(pos.x + pos.y + pos.z, 10.0);
+			return vec3(1.0, 1.0, 1.0);
 		}
+
+		return vec3(1.0, 0.5, 1.0);
 	`;
 
 	lightGlsl = `
@@ -251,7 +262,7 @@ export class H3Spheres extends H3Geometry
 
 	getMovingSpeed()
 	{
-		return .25;
+		return .5;
 	}
 
 	cameraPos = [0, 0, 0, 1];
@@ -259,4 +270,108 @@ export class H3Spheres extends H3Geometry
 	upVec = [0, 0, 1, 0];
 	rightVec = [0, 1, 0, 0];
 	forwardVec = [1, 0, 0, 0];
+
+	// Nonstandard method for teleportation.
+	reflectThroughOrigin()
+	{
+		this.cameraPos[0] = -this.cameraPos[0];
+		// this.cameraPos[1] = -this.cameraPos[1];
+		// this.cameraPos[2] = -this.cameraPos[2];
+
+		// this.forwardVec[1] = -this.forwardVec[1];
+		// this.forwardVec[2] = -this.forwardVec[2];
+		// this.forwardVec[3] = -this.forwardVec[3];
+		
+		// this.rightVec[0] = -this.rightVec[0];
+		// // this.rightVec[2] = -this.rightVec[2];
+		// this.rightVec[3] = -this.rightVec[3];
+		// this.upVec[0] = -this.upVec[0];
+		// this.upVec[3] = -this.upVec[3];
+
+		// this.normalVec[0] = -this.normalVec[0];
+		// this.normalVec[1] = -this.normalVec[1];
+		// this.normalVec[2] = -this.normalVec[2];
+	}
+	
+
+	teleportCamera()
+	{
+		const distance1 = Math.asinh(this.cameraPos[0]) + 1.0;
+		const distance2 = Math.asinh(this.cameraPos[0]) - 1.0;
+		if (distance1 < 0 || distance2 > 0)
+		{
+			this.reflectThroughOrigin();
+			// console.log(
+			// 	this.cameraPos,
+			// 	this.forwardVec,
+			// 	this.rightVec,
+			// 	this.upVec,
+			// 	this.normalVec
+			// );
+		}
+		// for (let i = 0; i < dodecahedronPlanes.length; i++)
+		// {
+		// 	const plane = dodecahedronPlanes[i];
+
+		// 	const dotProduct = this.cameraPos[0] * plane[0]
+		// 		+ this.cameraPos[1] * plane[1]
+		// 		+ this.cameraPos[2] * plane[2];
+
+		// 	if (dotProduct < -maxDotProduct)
+		// 	{
+		// 		this.rotateVectors(plane, -sliderValues.gluingAngle);
+
+		// 		this.cameraPos[0] += 2 * maxDotProduct * plane[0];
+		// 		this.cameraPos[1] += 2 * maxDotProduct * plane[1];
+		// 		this.cameraPos[2] += 2 * maxDotProduct * plane[2];
+
+		// 		baseColor[0] += baseColorIncreases[i][0];
+		// 		baseColor[1] += baseColorIncreases[i][1];
+		// 		baseColor[2] += baseColorIncreases[i][2];
+
+		// 		return;
+		// 	}
+
+		// 	else if (dotProduct > maxDotProduct)
+		// 	{
+		// 		this.rotateVectors(plane, sliderValues.gluingAngle);
+
+		// 		this.cameraPos[0] -= 2 * maxDotProduct * plane[0];
+		// 		this.cameraPos[1] -= 2 * maxDotProduct * plane[1];
+		// 		this.cameraPos[2] -= 2 * maxDotProduct * plane[2];
+
+		// 		baseColor[0] -= baseColorIncreases[i][0];
+		// 		baseColor[1] -= baseColorIncreases[i][1];
+		// 		baseColor[2] -= baseColorIncreases[i][2];
+
+		// 		return;
+		// 	}
+		// }
+	}
+
+	uniformGlsl = `
+		uniform float wallThickness;
+	`;
+	uniformNames = ["wallThickness"];
+
+	updateUniforms(gl, uniformList)
+	{
+		const wallThickness = sliderValues.wallThickness;
+
+		gl.uniform1f(uniformList["wallThickness"], wallThickness);
+	}
+
+	uiElementsUsed = "#wall-thickness-slider";
+
+	initUI()
+	{
+		const wallThicknessSlider = $("#wall-thickness-slider");
+		const wallThicknessSliderValue = $("#wall-thickness-slider-value");
+
+		wallThicknessSlider.min = 1.0;
+		wallThicknessSlider.max = 2.0;
+		wallThicknessSlider.value = 1.0;
+		wallThicknessSliderValue.textContent = 1.0;
+		sliderValues.wallThickness = 1.0;
+	}
 }
