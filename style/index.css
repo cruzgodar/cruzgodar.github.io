@@ -728,11 +728,6 @@ mjx-container
 	cursor: default;
 }
 
-.text-button.dropdown.expanded-non-touch
-{
-	/* transform: scale(1.075) !important; */
-}
-
 .text-button.dropdown .option-container
 {
 	display: flex;
