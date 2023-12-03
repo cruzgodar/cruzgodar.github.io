@@ -28,20 +28,18 @@ import{sliderValues}from"../index.min.mjs";import{BaseGeometry,getMinGlslString}
 		float distance3 = acosh(-geometryDot(pos, vec4(1.0, -1.0, -1.0, 2.0))) - .7;
 		float distance4 = acosh(-geometryDot(pos, vec4(1.0, 1.0, 1.0, 2.0))) - .7;
 		
-		float distance5 = abs(asinh(geometryDot(pos, vec4(1.0, 0.0, 0.0, 0.0))) + 1.0);
-		float distance6 = abs(asinh(geometryDot(pos, vec4(1.0, 0.0, 0.0, 0.0))) - 1.0);
-		float distance7 = abs(asinh(geometryDot(pos, vec4(0.0, 1.0, 0.0, 0.0))) + 1.0);
-		float distance8 = abs(asinh(geometryDot(pos, vec4(0.0, 1.0, 0.0, 0.0))) - 1.0);
+		float distance5 = abs(asinh(geometryDot(pos, vec4(1.0, 0.0, 0.0, 0.0))) + asinh(1.0));
+		float distance6 = abs(asinh(geometryDot(pos, vec4(1.0, 0.0, 0.0, 0.0))) - asinh(1.0));
 	`;distanceEstimatorGlsl=`
 		${H3Spheres.distances}
 
-		float minDistance = ${getMinGlslString("distance",8)};
+		float minDistance = ${getMinGlslString("distance",6)};
 
 		return minDistance;
 	`;getColorGlsl=`
 		${H3Spheres.distances}
 		
-		float minDistance = ${getMinGlslString("distance",8)};
+		float minDistance = ${getMinGlslString("distance",6)};
 
 		if (minDistance == distance1)
 		{
@@ -73,11 +71,6 @@ import{sliderValues}from"../index.min.mjs";import{BaseGeometry,getMinGlslString}
 			return vec3(1.0, 1.0, 0.0);
 		}
 
-		if (minDistance == distance7)
-		{
-			return vec3(1.0, 1.0, 1.0);
-		}
-
 		return vec3(1.0, 0.5, 1.0);
 	`;lightGlsl=`
 		vec4 lightDirection1 = normalize(vec4(1.0, 1.0, 1.0, 1.0) - pos);
@@ -96,6 +89,6 @@ import{sliderValues}from"../index.min.mjs";import{BaseGeometry,getMinGlslString}
 			max(abs(dotProduct1), abs(dotProduct2)),
 			max(abs(dotProduct3), abs(dotProduct4))
 		);
-	`;correctVectors(){var e=this.dotProduct(this.cameraPos,this.upVec),t=this.dotProduct(this.cameraPos,this.rightVec),s=this.dotProduct(this.cameraPos,this.forwardVec);for(let r=0;r<4;r++)this.upVec[r]+=e*this.cameraPos[r],this.rightVec[r]+=t*this.cameraPos[r],this.forwardVec[r]+=s*this.cameraPos[r];this.upVec=this.normalize(this.upVec),this.rightVec=this.normalize(this.rightVec),this.forwardVec=this.normalize(this.forwardVec)}getMovingSpeed(){return.5}cameraPos=[0,0,0,1];normalVec=[0,0,0,-1];upVec=[0,0,1,0];rightVec=[0,1,0,0];forwardVec=[1,0,0,0];reflectThroughOrigin(){this.cameraPos[0]=-this.cameraPos[0]}teleportCamera(){var e=Math.asinh(this.cameraPos[0])+1,t=Math.asinh(this.cameraPos[0])-1;(e<0||0<t)&&this.reflectThroughOrigin()}uniformGlsl=`
+	`;correctVectors(){var e=this.dotProduct(this.cameraPos,this.upVec),t=this.dotProduct(this.cameraPos,this.rightVec),s=this.dotProduct(this.cameraPos,this.forwardVec);for(let r=0;r<4;r++)this.upVec[r]+=e*this.cameraPos[r],this.rightVec[r]+=t*this.cameraPos[r],this.forwardVec[r]+=s*this.cameraPos[r];this.upVec=this.normalize(this.upVec),this.rightVec=this.normalize(this.rightVec),this.forwardVec=this.normalize(this.forwardVec)}getMovingSpeed(){return.5}cameraPos=[0,0,0,1];normalVec=[0,0,0,-1];upVec=[0,0,1,0];rightVec=[0,1,0,0];forwardVec=[1,0,0,0];reflectThroughOrigin(){this.cameraPos[0]=-this.cameraPos[0]}teleportCamera(){for(let e=0;e<3;e++)1<=Math.abs(this.cameraPos[e])&&(this.cameraPos[e]=-this.cameraPos[e],this.forwardVec[e]=-this.forwardVec[e],this.rightVec[e]=-this.rightVec[e],this.upVec[e]=-this.upVec[e],this.normalVec[e]=-this.normalVec[e])}uniformGlsl=`
 		uniform float wallThickness;
 	`;uniformNames=["wallThickness"];updateUniforms(gl,uniformList){var e=sliderValues.wallThickness;gl.uniform1f(uniformList.wallThickness,e)}uiElementsUsed="#wall-thickness-slider";initUI(){var e=$("#wall-thickness-slider"),t=$("#wall-thickness-slider-value");e.min=1,e.max=2,e.value=1,t.textContent=1,sliderValues.wallThickness=1}}export{H3Spheres};

@@ -140,16 +140,14 @@ export class H3Spheres extends H3Geometry
 		float distance3 = acosh(-geometryDot(pos, vec4(1.0, -1.0, -1.0, 2.0))) - .7;
 		float distance4 = acosh(-geometryDot(pos, vec4(1.0, 1.0, 1.0, 2.0))) - .7;
 		
-		float distance5 = abs(asinh(geometryDot(pos, vec4(1.0, 0.0, 0.0, 0.0))) + 1.0);
-		float distance6 = abs(asinh(geometryDot(pos, vec4(1.0, 0.0, 0.0, 0.0))) - 1.0);
-		float distance7 = abs(asinh(geometryDot(pos, vec4(0.0, 1.0, 0.0, 0.0))) + 1.0);
-		float distance8 = abs(asinh(geometryDot(pos, vec4(0.0, 1.0, 0.0, 0.0))) - 1.0);
+		float distance5 = abs(asinh(geometryDot(pos, vec4(1.0, 0.0, 0.0, 0.0))) + asinh(1.0));
+		float distance6 = abs(asinh(geometryDot(pos, vec4(1.0, 0.0, 0.0, 0.0))) - asinh(1.0));
 	`;
 
 	distanceEstimatorGlsl = `
 		${H3Spheres.distances}
 
-		float minDistance = ${getMinGlslString("distance", 8)};
+		float minDistance = ${getMinGlslString("distance", 6)};
 
 		return minDistance;
 	`;
@@ -157,7 +155,7 @@ export class H3Spheres extends H3Geometry
 	getColorGlsl = `
 		${H3Spheres.distances}
 		
-		float minDistance = ${getMinGlslString("distance", 8)};
+		float minDistance = ${getMinGlslString("distance", 6)};
 
 		if (minDistance == distance1)
 		{
@@ -187,11 +185,6 @@ export class H3Spheres extends H3Geometry
 		if (minDistance == distance6)
 		{
 			return vec3(1.0, 1.0, 0.0);
-		}
-
-		if (minDistance == distance7)
-		{
-			return vec3(1.0, 1.0, 1.0);
 		}
 
 		return vec3(1.0, 0.5, 1.0);
@@ -296,57 +289,20 @@ export class H3Spheres extends H3Geometry
 
 	teleportCamera()
 	{
-		const distance1 = Math.asinh(this.cameraPos[0]) + 1.0;
-		const distance2 = Math.asinh(this.cameraPos[0]) - 1.0;
-		if (distance1 < 0 || distance2 > 0)
+		for (let i = 0; i < 3; i++)
 		{
-			this.reflectThroughOrigin();
-			// console.log(
-			// 	this.cameraPos,
-			// 	this.forwardVec,
-			// 	this.rightVec,
-			// 	this.upVec,
-			// 	this.normalVec
-			// );
+			if (Math.abs(this.cameraPos[i]) >= 1)
+			{
+				// Reflect everything through the x/y/z = 0 plane, and then reflect through
+				// the tangent plane to the wall at this point. Lucky for us, we know exactly
+				// what that normal vector is --- we know the distenace estimator.
+				this.cameraPos[i] = -this.cameraPos[i];
+				this.forwardVec[i] = -this.forwardVec[i];
+				this.rightVec[i] = -this.rightVec[i];
+				this.upVec[i] = -this.upVec[i];
+				this.normalVec[i] = -this.normalVec[i];
+			}
 		}
-		// for (let i = 0; i < dodecahedronPlanes.length; i++)
-		// {
-		// 	const plane = dodecahedronPlanes[i];
-
-		// 	const dotProduct = this.cameraPos[0] * plane[0]
-		// 		+ this.cameraPos[1] * plane[1]
-		// 		+ this.cameraPos[2] * plane[2];
-
-		// 	if (dotProduct < -maxDotProduct)
-		// 	{
-		// 		this.rotateVectors(plane, -sliderValues.gluingAngle);
-
-		// 		this.cameraPos[0] += 2 * maxDotProduct * plane[0];
-		// 		this.cameraPos[1] += 2 * maxDotProduct * plane[1];
-		// 		this.cameraPos[2] += 2 * maxDotProduct * plane[2];
-
-		// 		baseColor[0] += baseColorIncreases[i][0];
-		// 		baseColor[1] += baseColorIncreases[i][1];
-		// 		baseColor[2] += baseColorIncreases[i][2];
-
-		// 		return;
-		// 	}
-
-		// 	else if (dotProduct > maxDotProduct)
-		// 	{
-		// 		this.rotateVectors(plane, sliderValues.gluingAngle);
-
-		// 		this.cameraPos[0] -= 2 * maxDotProduct * plane[0];
-		// 		this.cameraPos[1] -= 2 * maxDotProduct * plane[1];
-		// 		this.cameraPos[2] -= 2 * maxDotProduct * plane[2];
-
-		// 		baseColor[0] -= baseColorIncreases[i][0];
-		// 		baseColor[1] -= baseColorIncreases[i][1];
-		// 		baseColor[2] -= baseColorIncreases[i][2];
-
-		// 		return;
-		// 	}
-		// }
 	}
 
 	uniformGlsl = `

@@ -15,7 +15,7 @@ export class ThurstonGeometry extends Applet
 	geometryData;
 
 	//Finally, we handle the rotation of the camera --- we can't bake this in, since otherwise
-	//the holonomy of the sphere bites us. We'll allow rotating left and right to affect the
+	//the holonomy of the 2-sphere bites us. We'll allow rotating left and right to affect the
 	//base vectors, but rotating up and down affects these only,
 	//which finally get passed to the shader.
 	rotatedForwardVec;
@@ -539,7 +539,7 @@ export class ThurstonGeometry extends Applet
 
 
 	/*
-	 * Probably the most complicated function here. Looking around can't be done relatively
+	 * Looking around can't be done relatively
 	 * due to the holonomy of S^2, so we store the rotation from unrotated versions of the three
 	 * facing vectors. But when moving, we need to *move* in the direction of the rotated vectors,
 	 * while at the same time updating the *unrotated* vectors updated due to the curvature of the
@@ -547,7 +547,7 @@ export class ThurstonGeometry extends Applet
 	 */
 	handleMoving(movingAmount, timeElapsed)
 	{
-		const forwardVecToUse = this.geometryData.forwardVec;
+		const forwardVecToUse = this.rotatedForwardVec;
 		
 		const tangentVec = this.geometryData.normalize([
 			movingAmount[0] * forwardVecToUse[0]
@@ -581,84 +581,11 @@ export class ThurstonGeometry extends Applet
 			dt
 		);
 
-		// //The magic formula is T' = curvature * N.
-		// tangentVec = this.geometryData.normalize([
-		// 	tangentVec[0] + curvature * this.geometryData.normalVec[0] * dt,
-		// 	tangentVec[1] + curvature * this.geometryData.normalVec[1] * dt,
-		// 	tangentVec[2] + curvature * this.geometryData.normalVec[2] * dt,
-		// 	tangentVec[3] + curvature * this.geometryData.normalVec[3] * dt
-		// ]);
-
-		// this.geometryData.forwardVec = this.parallelTransport(
-		// 	newCameraPos,
-		// 	this.geometryData.forwardVec
-		// );
-
-		// this.geometryData.rightVec = this.parallelTransport(
-		// 	newCameraPos,
-		// 	this.geometryData.rightVec
-		// );
-
-		// this.geometryData.upVec = this.parallelTransport(
-		// 	newCameraPos,
-		// 	this.geometryData.upVec
-		// );
-		// console.log(this.geometryData.upVec);
-
 		this.geometryData.cameraPos = newCameraPos;
 
 		this.geometryData.normalVec = this.geometryData.getNormalVec(this.geometryData.cameraPos);
 
-		
-
-		// //Need to do rotation here rather than scale by -1.
-		// if (movingAmount[0] === 1)
-		// {
-		// 	this.geometryData.forwardVec = [...tangentVec];
-		// }
-
-		// else if (movingAmount[0] === -1)
-		// {
-		// 	const result = ThurstonGeometry.rotateVectors(
-		// 		tangentVec,
-		// 		this.geometryData.rightVec,
-		// 		Math.PI
-		// 	);
-
-		// 	this.geometryData.forwardVec = result[0];
-		// }
-
-		// else if (movingAmount[1] === 1)
-		// {
-		// 	this.geometryData.rightVec = [...tangentVec];
-		// }
-
-		// else if (movingAmount[1] === -1)
-		// {
-		// 	const result = ThurstonGeometry.rotateVectors(
-		// 		tangentVec,
-		// 		this.geometryData.forwardVec,
-		// 		Math.PI
-		// 	);
-
-		// 	this.geometryData.rightVec = result[0];
-		// }
-
-		// else if (movingAmount[2] === 1)
-		// {
-		// 	this.geometryData.upVec = [...tangentVec];
-		// }
-
-		// else if (movingAmount[2] === -1)
-		// {
-		// 	const result = ThurstonGeometry.rotateVectors(
-		// 		tangentVec,
-		// 		this.geometryData.forwardVec,
-		// 		Math.PI
-		// 	);
-
-		// 	this.geometryData.upVec = result[0];
-		// }
+		this.geometryData.currentMovementVec = tangentVec;
 	}
 
 
@@ -873,7 +800,7 @@ export class ThurstonGeometry extends Applet
 
 	static scaleVector(c, vec)
 	{
-		return [c * vec[0], c * vec[1], c * vec[2], c * vec[2]];
+		return [c * vec[0], c * vec[1], c * vec[2], c * vec[3]];
 	}
 
 	static magnitude(vec)

@@ -136,6 +136,7 @@ export class BaseGeometry
 	upVec;
 	rightVec;
 	forwardVec;
+	currentMovementVec;
 
 	uniformGlsl;
 	uniformNames;
