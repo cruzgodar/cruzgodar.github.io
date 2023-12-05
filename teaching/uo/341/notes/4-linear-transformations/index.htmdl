@@ -20,7 +20,7 @@ and $A(c\vec{v}) = cA\vec{v}$ for any constant $c$. Inspired by these properties
 	
 	1. For any two vectors $\vec{v}, \vec{w} \in #R#^n$, $T(\vec{v} + \vec{w}) = T(\vec{v}) + T(\vec{w})$.
 	
-	2. For any vector $\vec{w} \in #R#^n$ and any constant $c$, $T(c\vec{v}) = cT(\vec{v})$.
+	2. For any vector $\vec{n} \in #R#^n$ and any constant $c$, $T(c\vec{v}) = cT(\vec{v})$.
 	
 ###
 

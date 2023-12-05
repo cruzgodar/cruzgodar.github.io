@@ -293,9 +293,6 @@ export class H3Spheres extends H3Geometry
 		{
 			if (Math.abs(this.cameraPos[i]) >= 1)
 			{
-				// Reflect everything through the x/y/z = 0 plane, and then reflect through
-				// the tangent plane to the wall at this point. Lucky for us, we know exactly
-				// what that normal vector is --- we know the distenace estimator.
 				this.cameraPos[i] = -this.cameraPos[i];
 				this.forwardVec[i] = -this.forwardVec[i];
 				this.rightVec[i] = -this.rightVec[i];
