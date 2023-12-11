@@ -10,7 +10,7 @@ But if all it were good for was solving systems of linear equations, linear alge
 
 	A **vector space** is a set $V$, a method $+$ that can add any two elements $\vec{v}, \vec{w} \in V$, and a method $\cdot$ that can multiply any vector $\vec{v} \in V$ by any real number $c$, such that
 
-	1. $V$ is **closed** under addition and scalar multiplication: $\vec{w} + \vec{w} \in V$ for any $\vec{v}, \vec{w} \in V$, and $c\vec{v} \in V$ for any $\vec{v} \in V$ and $c \in #R#$.
+	1. $V$ is **closed** under addition and scalar multiplication: $\vec{v} + \vec{w} \in V$ for any $\vec{v}, \vec{w} \in V$, and $c\vec{v} \in V$ for any $\vec{v} \in V$ and $c \in #R#$.
 
 	2. Addition is associative and commutative: $(\vec{u} + \vec{v}) + \vec{w} = \vec{u} + (\vec{v} + \vec{w})$, and $\vec{v} + \vec{w} = \vec{w} + \vec{v}$.
 
