@@ -122,7 +122,7 @@ This last theorem earns its name: it provides a fundamental relation between lin
 
 ### thm The Fundamental Theorem of Linear Algebra
 	
-	Let $V$ and $W$ be vector spaces, where $V$ is finite-dimensional, and let $T : V \to W$. Then
+	Let $V$ and $W$ be vector spaces, where $V$ is finite-dimensional, and let $T : V \to W$ be a linear transformation. Then
 	
 	$$
 		\dim V = \dim \ker T + \dim \image T.
