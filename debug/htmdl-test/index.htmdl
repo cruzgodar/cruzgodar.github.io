@@ -8,3 +8,43 @@ I'm regular text, with curly 'single' and "double" quotes, -- en and --- em dash
 > . a list!
 
 <div class="body-text" style="color: orange">I'm an HTML element that the parser ignored.</div>
+
+This is a block that contains some $\int f(t)\\,dt$ math, including in $$\int f(t)\\,dt$$ display style.
+
+$$
+	& a \pe b \qquad a \me b \qquad a \te b
+
+	& \span \{v, w\} \qquad \image T \qquad \swap a, b
+
+	& [[ 1, 2 | 3 ; 4, 5 | 6 ]] \qquad :: **R** \pe 1 ; #R# \me 2 ::
+$$
+
+### buttons
+
+	button-1 "I'm linked!" -l
+
+	button-2 "I'm also linked!" -l
+
+	button-1 "I'm not!"
+
+###
+
+### desmos vector-field
+
+### canvas vector-field
+
+### image-links
+
+	subpage/
+
+	/applets/vector-fields/
+
+	test-card -c "This is a card"
+
+###
+
+### card test-card "I'm a card"
+
+	Hello!
+
+###

@@ -4,9 +4,9 @@
 
 ### image-links
 	
-	grandmas-recipe/ t
+	grandmas-recipe/ -t
 	
-	oral-exam/ t
+	oral-exam/ -t
 	
 ###
 
@@ -15,5 +15,5 @@
 ## The Library
 
 ### image-links
-	lapsa/ t
+	lapsa/ -t
 ###

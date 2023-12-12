@@ -148,6 +148,8 @@ home Cruz Godar
 	
 	debug Debug
 		htmdl-test HTMDL Testing
+			subpage HTMDL Testing Subpage
+		
 		tests/glsl-test GLSL Tests
 		js-lines JS Line Counter
 		glsl-docs GLSL Docs

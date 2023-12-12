@@ -19,7 +19,7 @@ function imageLink(options, url, name)
 
 	if (options.includes("c"))
 	{
-		const src = `${url}cards/${id}.webp`;
+		const src = `${url.slice(0, url.lastIndexOf("/"))}/cards/${id}.webp`;
 
 		return `
 			<div class="image-link">

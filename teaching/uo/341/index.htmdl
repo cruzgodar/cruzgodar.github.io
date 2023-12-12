@@ -6,7 +6,7 @@ Welcome to Math 341! We'll use this page for the interactive notes, the homework
 
 ### image-links
 	
-	syllabus c Syllabus
+	syllabus -c "Syllabus"
 	
 ###
 
@@ -35,15 +35,15 @@ Welcome to Math 341! We'll use this page for the interactive notes, the homework
 
 ### image-links
 	
-	homework-1 c Homework 1
-	homework-2 c Homework 2
-	homework-3 c Homework 3
-	homework-4 c Homework 4
-	homework-5 c Homework 5
-	homework-6 c Homework 6
-	homework-7 c Homework 7
-	homework-8 c Homework 8
-	homework-9 c Homework 9
+	homework-1 -c "Homework 1"
+	homework-2 -c "Homework 2"
+	homework-3 -c "Homework 3"
+	homework-4 -c "Homework 4"
+	homework-5 -c "Homework 5"
+	homework-6 -c "Homework 6"
+	homework-7 -c "Homework 7"
+	homework-8 -c "Homework 8"
+	homework-9 -c "Homework 9"
 	
 ###
 

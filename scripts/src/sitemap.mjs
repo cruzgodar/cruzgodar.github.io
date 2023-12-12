@@ -1585,6 +1585,20 @@ export const sitemap =
 		
 		"parent": "/debug/",
 		
+		"children":
+		[
+			"/debug/htmdl-test/subpage/"
+		],
+
+		"customScript": true
+	},
+		
+	"/debug/htmdl-test/subpage/":
+	{
+		"title": "HTMDL Testing Subpage",
+		
+		"parent": "/debug/htmdl-test/",
+		
 		"children": []
 	},
 	

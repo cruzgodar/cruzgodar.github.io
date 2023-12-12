@@ -819,6 +819,12 @@
 	</url>
 		
 	<url>
+		<loc>https://www.cruzgodar.com/debug/htmdl-test/subpage/</loc>
+		<lastmod>2023-12-12</lastmod>
+		<priority>0.0</priority>
+	</url>
+		
+	<url>
 		<loc>https://www.cruzgodar.com/debug/tests/glsl-test/</loc>
 		<lastmod>2023-11-30</lastmod>
 		<priority>0.0</priority>

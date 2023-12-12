@@ -5,7 +5,7 @@ import { metaThemeColorElement, siteSettings } from "./settings.mjs";
 import anime from "/scripts/anime.js";
 
 export let cardIsOpen = false;
-let cardIsAnimating = false;
+export let cardIsAnimating = false;
 
 const container = document.querySelector("#card-container");
 

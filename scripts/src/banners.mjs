@@ -1,4 +1,5 @@
 import { changeOpacity, opacityAnimationTime } from "./animation.mjs";
+import { cardIsAnimating, cardIsOpen } from "./cards.mjs";
 import {
 	$,
 	addStyle,
@@ -54,6 +55,8 @@ export let bannerOpacity = 1;
 
 let lastBannerOpacityTimestamp = -1;
 
+let cardWasAnimating = 0;
+
 export function updateBannerOpacity(timestamp)
 {
 	const timeElapsed = timestamp - lastBannerOpacityTimestamp;
@@ -91,9 +94,22 @@ export function updateBannerOpacity(timestamp)
 		bannerElement.style.opacity = bannerOpacity;
 	}
 
-	if (contentElement)
+	if (contentElement && !cardIsOpen && !cardIsAnimating)
 	{
-		contentElement.style.opacity = 1 - bannerOpacity;
+		if (cardWasAnimating)
+		{
+			cardWasAnimating--;
+		}
+
+		else
+		{
+			contentElement.style.opacity = 1 - bannerOpacity;
+		}
+	}
+
+	else
+	{
+		cardWasAnimating = 50;
 	}
 
 	scrollButtonOpacity = Math.min(Math.max(1 - window.scrollY / (bannerMaxScroll / 2.5), 0), 1);
