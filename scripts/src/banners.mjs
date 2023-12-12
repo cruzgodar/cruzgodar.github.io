@@ -127,7 +127,9 @@ export const bannerPages =
 	"/about/",
 
 	"/writing/mist/",
-	"/writing/desolation-point/"
+	"/writing/desolation-point/",
+
+	"/debug/htmdl-test/"
 ];
 
 export const multibannerPages =

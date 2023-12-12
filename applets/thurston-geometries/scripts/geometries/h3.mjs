@@ -1,3 +1,4 @@
+import { ThurstonGeometry } from "../class.mjs";
 import { sliderValues } from "../index.mjs";
 import { BaseGeometry, getMinGlslString } from "./base.mjs";
 import { $ } from "/scripts/src/main.mjs";
@@ -139,15 +140,36 @@ export class H3Spheres extends H3Geometry
 		float distance2 = acosh(-geometryDot(pos, vec4(1.0, -1.0, 1.0, 2.0))) - .7;
 		float distance3 = acosh(-geometryDot(pos, vec4(1.0, -1.0, -1.0, 2.0))) - .7;
 		float distance4 = acosh(-geometryDot(pos, vec4(1.0, 1.0, 1.0, 2.0))) - .7;
-		
-		float distance5 = abs(asinh(geometryDot(pos, vec4(1.0, 0.0, 0.0, 0.0))) + asinh(1.0));
-		float distance6 = abs(asinh(geometryDot(pos, vec4(1.0, 0.0, 0.0, 0.0))) - asinh(1.0));
+		float distance5 = acosh(-geometryDot(pos, vec4(0.0, 0.0, 0.0, 1.0))) - .7;
 	`;
+
+	static teleportations = [
+		[
+			[1, 0, 0, -1 / Math.sqrt(3)],
+			[
+				[2, 0, 0, Math.sqrt(3)],
+				[0, 0, -1, 0],
+				[0, 1, 0, 0],
+				[Math.sqrt(3), 0, 0, 2]
+			]
+		],
+		[
+			[-1, 0, 0, -1 / Math.sqrt(3)],
+			[
+				[2, 0, 0, -Math.sqrt(3)],
+				[0, 0, 1, 0],
+				[0, -1, 0, 0],
+				[-Math.sqrt(3), 0, 0, 2]
+			]
+		],
+	];
+
+	// {{2, 0, 0, -sqrt(3)},{0, 0, 1, 0},{0, -1, 0, 0},{-sqrt(3), 0, 0, 2}}
 
 	distanceEstimatorGlsl = `
 		${H3Spheres.distances}
 
-		float minDistance = ${getMinGlslString("distance", 6)};
+		float minDistance = ${getMinGlslString("distance", 5)};
 
 		return minDistance;
 	`;
@@ -155,7 +177,7 @@ export class H3Spheres extends H3Geometry
 	getColorGlsl = `
 		${H3Spheres.distances}
 		
-		float minDistance = ${getMinGlslString("distance", 6)};
+		float minDistance = ${getMinGlslString("distance", 5)};
 
 		if (minDistance == distance1)
 		{
@@ -182,11 +204,6 @@ export class H3Spheres extends H3Geometry
 			return vec3(0.0, 0.0, 1.0);
 		}
 
-		if (minDistance == distance6)
-		{
-			return vec3(1.0, 1.0, 0.0);
-		}
-
 		return vec3(1.0, 0.5, 1.0);
 	`;
 
@@ -207,6 +224,55 @@ export class H3Spheres extends H3Geometry
 			max(abs(dotProduct1), abs(dotProduct2)),
 			max(abs(dotProduct3), abs(dotProduct4))
 		);
+	`;
+
+	functionGlsl = `float sinh(float x)
+		{
+			return .5 * (exp(x) - exp(-x));
+		}
+
+		float cosh(float x)
+		{
+			return .5 * (exp(x) + exp(-x));
+		}
+
+		float asinh(float x)
+		{
+			return log(x + sqrt(x*x + 1.0));
+		}
+
+		float acosh(float x)
+		{
+			return log(x + sqrt(x*x - 1.0));
+		}
+
+		//Teleports the position back inside the dodecahedron and returns a vector to update the color.
+		vec3 teleportPos(inout vec4 pos, inout vec4 startPos, inout vec4 rayDirectionVec, inout float t)
+		{
+			float dotProduct = dot(pos, vec4(1.0, 0.0, 0.0, 1.0/sqrt(3.0)));
+			if (dotProduct < 0.0)
+			{
+				pos = mat4(
+					2.0, 0.0, 0.0, sqrt(3.0),
+					0.0, 0.0, 1.0, 0.0,
+					0.0, -1.0, 0.0, 0.0,
+					sqrt(3.0), 0.0, 0.0, 2.0
+				) * pos;
+				startPos = pos;
+				t = 0.0;
+
+				return vec3(1.0, 0.0, 0.0);
+			}
+
+			
+			return vec3(0.0, 0.0, 0.0);
+		}
+	`;
+
+	geodesicGlsl = `
+		vec4 pos = cosh(t) * startPos + sinh(t) * rayDirectionVec;
+		
+		globalColor += teleportPos(pos, startPos, rayDirectionVec, t);
 	`;
 
 	correctVectors()
@@ -263,41 +329,36 @@ export class H3Spheres extends H3Geometry
 	upVec = [0, 0, 1, 0];
 	rightVec = [0, 1, 0, 0];
 	forwardVec = [1, 0, 0, 0];
-
-	// Nonstandard method for teleportation.
-	reflectThroughOrigin()
-	{
-		this.cameraPos[0] = -this.cameraPos[0];
-		// this.cameraPos[1] = -this.cameraPos[1];
-		// this.cameraPos[2] = -this.cameraPos[2];
-
-		// this.forwardVec[1] = -this.forwardVec[1];
-		// this.forwardVec[2] = -this.forwardVec[2];
-		// this.forwardVec[3] = -this.forwardVec[3];
-		
-		// this.rightVec[0] = -this.rightVec[0];
-		// // this.rightVec[2] = -this.rightVec[2];
-		// this.rightVec[3] = -this.rightVec[3];
-		// this.upVec[0] = -this.upVec[0];
-		// this.upVec[3] = -this.upVec[3];
-
-		// this.normalVec[0] = -this.normalVec[0];
-		// this.normalVec[1] = -this.normalVec[1];
-		// this.normalVec[2] = -this.normalVec[2];
-	}
 	
 
 	teleportCamera()
 	{
-		for (let i = 0; i < 3; i++)
+		return;
+
+		for (let i = 0; i < H3Spheres.teleportations.length; i++)
 		{
-			if (Math.abs(this.cameraPos[i]) >= 1)
+			console.log(this.dotProduct(this.cameraPos, H3Spheres.teleportations[i][0]));
+			if (this.dotProduct(this.cameraPos, H3Spheres.teleportations[i][0]) < 0)
 			{
-				this.cameraPos[i] = -this.cameraPos[i];
-				this.forwardVec[i] = -this.forwardVec[i];
-				this.rightVec[i] = -this.rightVec[i];
-				this.upVec[i] = -this.upVec[i];
-				this.normalVec[i] = -this.normalVec[i];
+				this.cameraPos = ThurstonGeometry.mat4TimesVector(
+					H3Spheres.teleportations[i][1],
+					this.cameraPos
+				);
+
+				this.forwardVec = ThurstonGeometry.mat4TimesVector(
+					H3Spheres.teleportations[i][1],
+					this.forwardVec
+				);
+
+				this.rightVec = ThurstonGeometry.mat4TimesVector(
+					H3Spheres.teleportations[i][1],
+					this.rightVec
+				);
+
+				this.upVec = ThurstonGeometry.mat4TimesVector(
+					H3Spheres.teleportations[i][1],
+					this.upVec
+				);
 			}
 		}
 	}

@@ -1572,12 +1572,22 @@ export const sitemap =
 		
 		"children":
 		[
+			"/debug/htmdl-test/",
 			"/debug/tests/glsl-test/",
 			"/debug/js-lines/",
 			"/debug/glsl-docs/"
 		]
 	},
 		
+	"/debug/htmdl-test/":
+	{
+		"title": "HTMDL Testing",
+		
+		"parent": "/debug/",
+		
+		"children": []
+	},
+	
 	"/debug/tests/glsl-test/":
 	{
 		"title": "GLSL Tests",

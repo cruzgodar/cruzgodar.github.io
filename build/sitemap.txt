@@ -147,6 +147,7 @@ home Cruz Godar
 	404 Oh No!
 	
 	debug Debug
+		htmdl-test HTMDL Testing
 		tests/glsl-test GLSL Tests
 		js-lines JS Line Counter
 		glsl-docs GLSL Docs

@@ -1,0 +1,10 @@
+### banner
+
+I'm regular text, with curly 'single' and "double" quotes, -- en and --- em dashes, `code`, *italic* and **bold**.
+
+> I'm indented text,
+
+> . and I'm
+> . a list!
+
+<div class="body-text" style="color: orange">I'm an HTML element that the parser ignored.</div>
