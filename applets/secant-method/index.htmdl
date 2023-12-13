@@ -14,13 +14,13 @@
 
 ### buttons
 	
-	add-root l Add Root
+	add-root -l "Add Root"
 	
-	remove-root l Remove Root
+	remove-root -l "Remove Root"
 	
-	spread-roots l Spread Roots
+	spread-roots -l "Spread Roots"
 	
-	randomize-roots l Randomize Roots
+	randomize-roots -l "Randomize Roots"
 	
 ###
 
@@ -59,7 +59,7 @@
 <div id="canvas-landscape-right">
 
 ### buttons
-	download l Download
+	download -l "Download"
 ###
 
 </div>

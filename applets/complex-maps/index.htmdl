@@ -40,16 +40,16 @@ It's not a coincidence that many of the applets I've made revolve around the com
 
 
 ### buttons
-	generate l Generate
+	generate -l "Generate"
 ###
 
 <div id="debug-buttons">
 
 ### buttons
 	
-	selector-mode l Selector Mode
+	selector-mode -l "Selector Mode"
 	
-	benchmark l Benchmark
+	benchmark -l "Benchmark"
 	
 ###
 
@@ -74,7 +74,7 @@ It's not a coincidence that many of the applets I've made revolve around the com
 <div id="canvas-landscape-right">
 
 ### buttons
-	download l Download
+	download -l "Download"
 ###
 
 </div>

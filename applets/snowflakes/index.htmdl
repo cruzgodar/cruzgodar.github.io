@@ -40,9 +40,9 @@ $\alpha$, $\theta$, and $\gamma$ affect the process in more complicated ways tha
 
 ### buttons
 	
-	randomize-parameters l Randomize Parameters
+	randomize-parameters -l "Randomize Parameters"
 	
-	generate l Generate
+	generate -l "Generate"
 	
 ###
 
@@ -61,7 +61,7 @@ $\alpha$, $\theta$, and $\gamma$ affect the process in more complicated ways tha
 <div id="canvas-landscape-right">
 
 ### buttons
-	download l Download
+	download -l "Download"
 ###
 
 </div>

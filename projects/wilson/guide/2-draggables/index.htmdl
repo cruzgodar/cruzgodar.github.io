@@ -182,7 +182,7 @@ Now that we're drawing frames so often, we need to be careful not to draw multip
 </div>
 
 ### buttons
-	download Download
+	download "Download"
 ###
 
 

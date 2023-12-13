@@ -57,7 +57,7 @@ Something will go here eventually!
 <div id="canvas-landscape-right">
 
 ### buttons
-	download l Download
+	download -l "Download"
 ###
 
 </div>

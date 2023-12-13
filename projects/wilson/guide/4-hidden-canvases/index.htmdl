@@ -120,7 +120,7 @@ Notice that we're sorting the brightnesses and throwing out the top 2% --- this 
 </div>
 
 ### buttons
-	download Download
+	download "Download"
 ###
 
 

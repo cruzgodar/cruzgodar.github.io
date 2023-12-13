@@ -19,11 +19,11 @@ Given a square carpet and a handful of numbers, can the carpet be completely cov
 ### checkbox unique-solution Require unique solution
 
 ### buttons
-	generate l Generate
+	generate -l "Generate"
 	
-	draw-solution l Show Solution
+	draw-solution -l "Show Solution"
 	
-	draw-rectangles l Show Rectangles Only
+	draw-rectangles -l "Show Rectangles Only"
 ###
 
 </div>
@@ -43,7 +43,7 @@ Given a square carpet and a handful of numbers, can the carpet be completely cov
 <div id="canvas-landscape-right">
 
 ### buttons
-	download l Download
+	download -l "Download"
 ###
 
 </div>

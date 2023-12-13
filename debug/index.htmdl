@@ -1,7 +1,7 @@
 ### buttons
 
-	glsl-tests l GLSL Tests
+	glsl-tests -l "GLSL Tests"
 	
-	js-lines l JS Line Count
+	js-lines -l "JS Line Count"
 
 ###

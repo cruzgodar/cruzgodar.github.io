@@ -204,7 +204,7 @@ With all that explanation out of the way, let's see how the applet turned out!
 ###
 
 ### buttons
-	generate-1 Generate
+	generate-1 "Generate"
 ###
 
 <div class="center-content">
@@ -260,7 +260,7 @@ As another improvement, let's add a button to download the current state of the 
 ###
 
 ### buttons
-	generate-2 Generate
+	generate-2 "Generate"
 ###
 
 <div class="center-content">
@@ -270,7 +270,7 @@ As another improvement, let's add a button to download the current state of the 
 </div>
 
 ### buttons
-	download-2 Download
+	download-2 "Download"
 ###
 
 

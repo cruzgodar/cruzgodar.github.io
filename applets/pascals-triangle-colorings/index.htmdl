@@ -19,7 +19,7 @@ Pascal's Triangle is a commonly-seen construction that proves useful from time t
 ###
 
 ### buttons
-	generate l Generate
+	generate -l "Generate"
 ###
 
 </div>
@@ -37,7 +37,7 @@ Pascal's Triangle is a commonly-seen construction that proves useful from time t
 <div id="canvas-landscape-right">
 
 ### buttons
-	download l Download
+	download -l "Download"
 ###
 
 </div>

@@ -14,9 +14,9 @@ The Butterfly Effect is behind many of the phenomena we think of as "random" ---
 
 ### buttons
 	
-	generate l Generate
+	generate -l "Generate"
 	
-	switch-pendulum-canvas l Pick Pendulum
+	switch-pendulum-canvas -l "Pick Pendulum"
 	
 ###
 
@@ -43,7 +43,7 @@ The Butterfly Effect is behind many of the phenomena we think of as "random" ---
 <div id="canvas-landscape-right">
 
 ### buttons
-	download l Download
+	download -l "Download"
 ###
 
 </div>

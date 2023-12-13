@@ -51,7 +51,7 @@ As usual, we need to update the options. The bare minimum is adding `useFullscre
 </div>
 
 ### buttons
-	download-1 Download
+	download-1 "Download"
 ###
 
 
@@ -222,7 +222,7 @@ Note that it would be a bad idea to resize the hidden canvas along with the visi
 </div>
 
 ### buttons
-	download-2 Download
+	download-2 "Download"
 ###
 
 

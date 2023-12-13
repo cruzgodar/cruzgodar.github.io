@@ -13,5 +13,5 @@ The <a href="/applets/the-barnsley-fern/">Barnsley fern</a> is an example of mat
 
 
 ### buttons
-	download l Download
+	download -l "Download"
 ###

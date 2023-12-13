@@ -23,7 +23,7 @@ The other thing to watch out for is hitting the single white dot you selected at
 ### checkbox no-borders Don't draw black borders
 
 ### buttons
-	generate l Generate
+	generate -l "Generate"
 ###
 
 </div>
@@ -49,7 +49,7 @@ The other thing to watch out for is hitting the single white dot you selected at
 <div id="canvas-landscape-right">
 
 ### buttons
-	download l Download
+	download -l "Download"
 ###
 
 </div>

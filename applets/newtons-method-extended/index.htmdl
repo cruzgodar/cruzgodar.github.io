@@ -47,9 +47,9 @@ The derivative precision determines the accuracy with which the applet computes 
 
 ### buttons
 	
-	generate l Generate
+	generate -l "Generate"
 	
-	randomize-palette l Regenerate Palette
+	randomize-palette -l "Regenerate Palette"
 	
 ###
 
@@ -73,7 +73,7 @@ The derivative precision determines the accuracy with which the applet computes 
 <div id="canvas-landscape-right">
 
 ### buttons
-	download l Download
+	download -l "Download"
 ###
 
 </div>

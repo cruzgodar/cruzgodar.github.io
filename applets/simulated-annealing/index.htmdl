@@ -19,7 +19,7 @@ There are plenty of ways to quickly approximate it, though. One of them, called 
 ### checkbox toggle-maximum-speed Maximum speed
 
 ### buttons
-	generate l Generate
+	generate -l "Generate"
 ###
 
 </div>
@@ -37,7 +37,7 @@ There are plenty of ways to quickly approximate it, though. One of them, called 
 <div id="canvas-landscape-right">
 
 ### buttons
-	download l Download
+	download -l "Download"
 ###
 
 </div>

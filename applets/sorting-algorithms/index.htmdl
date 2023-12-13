@@ -77,7 +77,7 @@ Whenever a sorting algorithm modifies the list, that location in the color wheel
 ### checkbox play-sound Play sound
 
 ### buttons
-	generate l Sort
+	generate -l "Sort"
 ###
 
 </div>  
@@ -103,7 +103,7 @@ Whenever a sorting algorithm modifies the list, that location in the color wheel
 </div>
 
 ### buttons
-	download l Download
+	download -l "Download"
 ###
 
 </div>

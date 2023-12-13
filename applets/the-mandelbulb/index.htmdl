@@ -42,7 +42,7 @@ Drag on the scene to look around. On a keyboard, use WASD to move, and on a touc
 
 ### buttons
 	
-	switch-bulb l Switch to Juliabulb
+	switch-bulb -l "Switch to Juliabulb"
 	
 ###
 
@@ -61,7 +61,7 @@ Drag on the scene to look around. On a keyboard, use WASD to move, and on a touc
 <div id="canvas-landscape-right">
 
 ### buttons
-	download l Download
+	download -l "Download"
 ###
 
 </div>

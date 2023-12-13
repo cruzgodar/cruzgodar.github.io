@@ -55,7 +55,7 @@ Due to the complexity of the algorithms and the difficulty in getting them to wo
 <div id="canvas-landscape-right">
 
 ### buttons
-	download l Download
+	download -l "Download"
 ###
 
 </div>
@@ -74,9 +74,9 @@ Due to the complexity of the algorithms and the difficulty in getting them to wo
 	<div class="view-controls-section category-section">
 		### buttons
 			
-			switch-view l Show 2D View
+			switch-view -l "Show 2D View"
 			
-			show-dimers l Show Dimers
+			show-dimers -l "Show Dimers"
 			
 		###
 	</div>
@@ -98,7 +98,7 @@ Due to the complexity of the algorithms and the difficulty in getting them to wo
 	
 	<div class="add-array-section category-section">
 		### buttons
-			add-array l Add
+			add-array -l "Add"
 		###
 	</div>
 	
@@ -121,7 +121,7 @@ Due to the complexity of the algorithms and the difficulty in getting them to wo
 	
 	<div class="edit-array-section category-section">
 		### buttons
-			edit-array l Edit
+			edit-array -l "Edit"
 		###
 	</div>
 	
@@ -135,7 +135,7 @@ Due to the complexity of the algorithms and the difficulty in getting them to wo
 	
 	<div class="remove-array-section category-section">
 		### buttons
-			remove-array l Remove Array
+			remove-array -l "Remove Array"
 		###
 	</div>
 	
@@ -150,21 +150,21 @@ Due to the complexity of the algorithms and the difficulty in getting them to wo
 	<div class="algorithms-section category-section">
 		### buttons
 			
-			hillman-grassl l Hillman-Grassl
+			hillman-grassl -l "Hillman-Grassl"
 			
-			hillman-grassl-inverse l Hillman-Grassl Inverse
+			hillman-grassl-inverse -l "Hillman-Grassl Inverse"
 			
-			pak l Pak
+			pak -l "Pak"
 			
-			pak-inverse l Pak Inverse
+			pak-inverse -l "Pak Inverse"
 			
-			sulzgruber l Sulzgruber
+			sulzgruber -l "Sulzgruber"
 			
-			sulzgruber-inverse l Sulzgruber Inverse
+			sulzgruber-inverse -l "Sulzgruber Inverse"
 			
-			rsk l RSK
+			rsk -l "RSK"
 			
-			rsk-inverse l RSK Inverse
+			rsk-inverse -l "RSK Inverse"
 			
 		###
 	</div>
@@ -174,11 +174,11 @@ Due to the complexity of the algorithms and the difficulty in getting them to wo
 	<div class="examples-section category-section">
 		### buttons
 			
-			example-1 l Hillman-Grassl and Back
+			example-1 -l "Hillman-Grassl and Back"
 			
-			example-2 l Pak and Sulzgruber
+			example-2 -l "Pak and Sulzgruber"
 			
-			example-3 l RSK and Back
+			example-3 -l "RSK and Back"
 			
 		###
 	</div>

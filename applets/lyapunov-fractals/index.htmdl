@@ -17,7 +17,7 @@ The <a href="https://en.wikipedia.org/wiki/Logistic_map">logistic map</a> is one
 ###
 
 ### buttons
-	generate l Generate
+	generate -l "Generate"
 ###
 
 </div>
@@ -40,7 +40,7 @@ The <a href="https://en.wikipedia.org/wiki/Logistic_map">logistic map</a> is one
 <div id="canvas-landscape-right">
 
 ### buttons
-	download l Download
+	download -l "Download"
 ###
 
 </div>

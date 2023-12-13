@@ -17,7 +17,7 @@ Draw a pentagon and a single dot in the center. Now roll a five-sided die to ran
 ###
 
 ### buttons
-	generate l Generate
+	generate -l "Generate"
 ###
 
 </div>
@@ -35,7 +35,7 @@ Draw a pentagon and a single dot in the center. Now roll a five-sided die to ran
 <div id="canvas-landscape-right">
 
 ### buttons
-	download l Download
+	download -l "Download"
 ###
 
 </div>

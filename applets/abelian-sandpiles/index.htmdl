@@ -20,7 +20,7 @@ Piles with no grains are colored black, piles with one colored blue, those with 
 
 ### buttons
 	
-	generate l Generate
+	generate -l "Generate"
 	
 ###
 
@@ -39,7 +39,7 @@ Piles with no grains are colored black, piles with one colored blue, those with 
 <div id="canvas-landscape-right">
 
 ### buttons
-	download l Download
+	download -l "Download"
 ###
 
 </div>
