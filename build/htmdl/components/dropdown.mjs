@@ -18,7 +18,7 @@ export function dropdown(options, lines)
 
 		if (i === 1)
 		{
-			html += `${words[1]}</button><select id="${words[0]}-dropdown">`;
+			html += `${words[1]}</button><select id="${id}-dropdown">`;
 		}
 
 		//Option groups
