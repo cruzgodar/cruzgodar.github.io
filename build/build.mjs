@@ -1,8 +1,8 @@
 import { spawnSync } from "child_process";
-import buildHTMLFile from "./build-html-file.mjs";
 import { buildSitemap, sitemapPath } from "./build-sitemap.mjs";
 import { buildXmlSitemap } from "./build-xml-sitemap.mjs";
 import { read, write } from "./file-io.mjs";
+import buildHTMLFile from "./htmdl/build.mjs";
 
 const root = process.argv[1].replace(/(\/cruzgodar.github.io\/).+$/, (match, $1) => $1);
 

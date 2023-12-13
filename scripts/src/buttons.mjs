@@ -213,14 +213,12 @@ function setUpDropdown(selectElement)
 			maxWidth = Math.max(maxWidth, element.getBoundingClientRect().width);
 		});
 
-		const scaleFactor = buttonElement.style.transform === "scale(1.075)" ? 1 : 1.075;
-
 		await Promise.all([
 			anime({
 				targets: buttonElement,
 				//The +4 is for the border.
-				height: (flexElement.getBoundingClientRect().height - 20) * scaleFactor,
-				width: maxWidth + 29.75 * scaleFactor,
+				height: flexElement.getBoundingClientRect().height + 4,
+				width: maxWidth + 29.75,
 				easing: "easeOutQuad",
 				duration: opacityAnimationTime
 			}).finished,
@@ -243,8 +241,6 @@ function setUpDropdown(selectElement)
 		document.documentElement.removeEventListener("click", closeDropdown);
 
 		dropdownOpen = false;
-
-		const scaleFactor = buttonElement.style.transform === "scale(1.075)" ? 1 : 1.075;
 
 		buttonElement.classList.remove("expanded");
 
@@ -271,15 +267,13 @@ function setUpDropdown(selectElement)
 		let translateY = 0;
 		otherElementHeights.forEach(height => translateY -= height);
 
-		translateY /= 1.075 / scaleFactor;
 		translateY -= 10;
 
 		await Promise.all([
 			anime({
 				targets: [buttonElement, buttonElement.parentNode.parentNode],
-				height: optionElements[selectedItem].getBoundingClientRect().height * scaleFactor,
-				width: (optionElements[selectedItem].getBoundingClientRect().width + 16)
-					* scaleFactor,
+				height: optionElements[selectedItem].getBoundingClientRect().height + 4,
+				width: (optionElements[selectedItem].getBoundingClientRect().width + 16),
 				easing: "easeOutQuad",
 				duration: opacityAnimationTime
 			}).finished,

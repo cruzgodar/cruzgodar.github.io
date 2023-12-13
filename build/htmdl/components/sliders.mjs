@@ -1,4 +1,4 @@
-import { splitCommandLine } from "/build/build-html-file.mjs";
+import { splitCommandLine } from "../build.mjs";
 
 // Options:
 // -l: Logarithmic.

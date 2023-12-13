@@ -1,3 +1,5 @@
+import { splitCommandLine } from "../build.mjs";
+
 export function dropdown(options, lines)
 {
 	const id = lines[0];
@@ -12,22 +14,19 @@ export function dropdown(options, lines)
 
 	for (let i = 1; i < lines.length; i++)
 	{
-		const words = lines[i].split(" ");
-
-		const value = words[0];
-		const text = words.slice(1).join(" ");
+		const [words] = splitCommandLine(lines[i]);
 
 		if (i === 1)
 		{
-			html += `${text}</button><select id="${id}-dropdown">`;
+			html += `${words[1]}</button><select id="${words[0]}-dropdown">`;
 		}
 
 		//Option groups
-		const index = value.indexOf(":");
+		const index = words[0].indexOf(":");
 
 		html += index !== -1
-			? `${inOptgroup ? "</optgroup>" : ""}<optgroup label="${value.slice(0, index)}">`
-			: `<option value="${value}">${text}</option>`;
+			? `${inOptgroup ? "</optgroup>" : ""}<optgroup label="${words[0].slice(0, index)}">`
+			: `<option value="${words[0]}">${words[1]}</option>`;
 		
 		if (index !== -1)
 		{

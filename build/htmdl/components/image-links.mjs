@@ -1,4 +1,4 @@
-import { parseUrl, splitCommandLine } from "/build/build-html-file.mjs";
+import { parseUrl, splitCommandLine } from "../build.mjs";
 import { sitemap } from "/scripts/src/sitemap.mjs";
 
 // Options:

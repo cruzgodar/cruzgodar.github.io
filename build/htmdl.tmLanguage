@@ -17,7 +17,7 @@
 		<!-- Multi-line page elements -->
 		<dict>
 			<key>begin</key>
-			<string>^\t*?(###) (image\-links|buttons|text\-boxes|sliders|dropdown|gallery\-block|exc|ex|def|prop|thm|lem|cor|pf|ax|as|card)(.*$)</string>
+			<string>^\t*?(###) (image\-links|buttons|carousel|text\-boxes|sliders|dropdown|gallery\-block|exc|ex|def|prop|thm|lem|cor|pf|ax|as|card)(.*$)</string>
 			<key>end</key>
 			<string>^\t*?(###)\s*$</string>
 			<key>beginCaptures</key>
@@ -154,12 +154,43 @@
 		
 		
 		
+		
 		<!-- Multi-line math -->
 		<dict>
 			<key>begin</key>
-			<string>(\$\$*)</string>
+			<string>(\$\$)</string>
 			<key>end</key>
-			<string>(\$\$*)</string>
+			<string>(\$\$)</string>
+			<key>beginCaptures</key>
+			<dict>
+				<key>1</key>
+				<dict>
+					<key>name</key>
+					<string>comment</string>
+				</dict>
+			</dict>
+			<key>endCaptures</key>
+			<dict>
+				<key>1</key>
+				<dict>
+					<key>name</key>
+					<string>comment</string>
+				</dict>
+			</dict>
+			<key>patterns</key>
+			<array>
+				<dict>
+					<key>include</key>
+					<string>text.tex.latex</string>
+				</dict>
+			</array>
+		</dict>
+
+		<dict>
+			<key>begin</key>
+			<string>(\$)</string>
+			<key>end</key>
+			<string>(\$)</string>
 			<key>beginCaptures</key>
 			<dict>
 				<key>1</key>

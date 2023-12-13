@@ -1,5 +1,5 @@
+import { currentNumberedItem } from "../build.mjs";
 import { parseLatex } from "./latex.mjs";
-import { currentNumberedItem } from "/build/build-html-file.mjs";
 
 export function parseText(text)
 {

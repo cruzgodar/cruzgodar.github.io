@@ -1,6 +1,6 @@
 // Options:
 
-import { splitCommandLine } from "/build/build-html-file.mjs";
+import { splitCommandLine } from "../build.mjs";
 
 // -l: Linked. Will ensure its size is equal to all other linked text buttons on the page.
 function button(options, id, name)

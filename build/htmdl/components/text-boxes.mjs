@@ -1,4 +1,4 @@
-import { splitCommandLine } from "/build/build-html-file.mjs";
+import { splitCommandLine } from "../build.mjs";
 
 function textBox(options, id, defaultValue, name)
 {

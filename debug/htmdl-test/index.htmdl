@@ -5,7 +5,11 @@ I'm regular text, with curly 'single' and "double" quotes, -- en and --- em dash
 > I'm indented text,
 
 > . and I'm
-> . a list!
+> . a list
+>> - that's very
+>> - indented!
+
+### center "I'm some centered text."
 
 <div class="body-text" style="color: orange">I'm an HTML element that the parser ignored.</div>
 
@@ -33,6 +37,10 @@ $$
 
 ### canvas vector-field
 
+### wilson
+
+### wilson -g
+
 ### image-links
 
 	subpage/
@@ -46,5 +54,135 @@ $$
 ### card test-card "I'm a card"
 
 	Hello!
+
+	## I'm a new section
+
+	#. Problem 1
+
+	#. Problem 2
+
+	#. Problem 3
+
+	- - -
+
+	I'm an unlabeled section, followed by numbers 3# (that don't exist).
+
+###
+
+## I'm a carousel
+
+### carousel
+
+	I'm the first item,\nwith a second line.
+
+	I'm the second,
+
+	and I'm the third!
+
+###
+
+### checkbox test "I'm a checkbox!"
+
+### dropdown
+	
+	test
+	
+	none "I'm a dropdown"
+	
+	item-1 "I'm the first item"
+	
+	item-2 "I'm the second item"
+
+	item-3 "I'm the third item"
+
+###
+
+### sliders
+	
+	slider-1 0 -1 1 "I'm a slider"
+
+	slider-2 1 0 2 -l "I'm logarithmic"
+
+	slider-3 1 0 10 -i "I'm integer-valued"
+
+###
+
+### text-boxes
+	
+	box-1 abc "I'm a box"
+
+	box-2 123 "I am too"
+
+###
+
+### ex "a name!"
+	
+	With some text
+
+###
+
+### exc "a name!"
+	
+	With some text
+
+###
+
+### def "a name!"
+	
+	With some text
+
+###
+
+### prop "a name!"
+	
+	With some text
+
+###
+
+### thm "a name!"
+	
+	With some text
+
+###
+
+### thm "I'm a theorem!"
+	
+	With some text
+
+###
+
+### thm -m "A name!"
+	
+	With some text
+
+###
+
+### lem "a name!"
+	
+	With some text
+
+###
+
+### cor "a name!"
+	
+	With some text
+
+###
+
+### pf "a name!"
+	
+	With some text
+
+###
+
+### ax "a name!"
+	
+	With some text
+
+###
+
+### as "a name!"
+	
+	With some text
 
 ###
