@@ -22,7 +22,7 @@ There's a sense in which that function is poorly behaved at $x = 0$. "Nice" func
 
 
 
-### def continuity
+### def "continuity"
 	
 	A function $f$ is **continuous** if for all $a$ in its domain, $\lim_{x \to a} f(x) = f(a)$.
 	
@@ -36,7 +36,7 @@ Continuous functions are the ones whose graphs can be drawn without lifting up y
 
 
 
-### ex limits
+### ex "limits"
 	
 	Using the previous graph, find $g(0)$, $g(1)$, $g(3)$, $\lim_{x \to 1^-} g(x)$, $\lim_{x \to 1^+} g(x)$, and $\lim_{x \to 1} g(x)$.
 	
@@ -52,7 +52,7 @@ Continuous functions are the ones whose graphs can be drawn without lifting up y
 	
 ###
 
-### exc limits
+### exc "limits"
 	
 	Find $\lim_{x \to \infty} g(x)$, $\lim_{x \to -\infty} g(x)$, and $\lim_{x \to 0} g(x)$. Since there isn't any portion of the graph to the left of zero, there's only one way to approach $x = 0$, so
 	
@@ -78,7 +78,7 @@ While the formal definition of a limit is quite intricate and often considered o
 
 
 
-### def the derivative
+### def "the derivative"
 	
 	Let $f(x)$ be a continuous function. The **derivative** of $f$ at $x = a$, if it exists, is
 	
@@ -90,7 +90,7 @@ While the formal definition of a limit is quite intricate and often considered o
 
 
 
-### prop basic derivative rules
+### prop "basic derivative rules"
 	
 	1. The constant multiple rule:
 	
@@ -130,7 +130,7 @@ The chain rule is a common stumbling point, so let's take a moment to work throu
 
 
 
-### ex the chain rule
+### ex "the chain rule"
 	
 	Find $$\frac{d}{dx} [\sin(x^3)]$$.
 	
@@ -144,7 +144,7 @@ The chain rule is a common stumbling point, so let's take a moment to work throu
 	
 ###
 
-### exc the chain rule
+### exc "the chain rule"
 	
 	Find $$\frac{d}{dx} \left[ \tan(x) \ln(\cos(x^2)) \right]$$.
 	
@@ -156,7 +156,7 @@ Some notational quirks to remember: $\frac{d}{dx}$ means derivative with respect
 
 
 
-### prop common derivatives
+### prop "common derivatives"
 	
 	$$\frac{d}{dx} [0] = 0$$
 	
@@ -192,7 +192,7 @@ This is just about everything we'll need from calculus I! The last bit is **L'H&
 
 
 
-### prop L'H&#x00F4;pital's rule
+### prop "L'H&#x00F4;pital's rule"
 	
 	If
 	
@@ -212,7 +212,7 @@ This is just about everything we'll need from calculus I! The last bit is **L'H&
 
 
 
-### ex L'H&#x00F4;pital's rule
+### ex "L'H&#x00F4;pital's rule"
 	
 	Find $$\lim_{x \to \infty} \frac{x}{x^2 + 1}$$.
 	
@@ -230,7 +230,7 @@ This is just about everything we'll need from calculus I! The last bit is **L'H&
 	
 ###
 
-### exc L'H&#x00F4;pital's rule
+### exc "L'H&#x00F4;pital's rule"
 	
 	Find $$\lim_{x \to 0} \frac{\sin(x)}{x}$$.
 	

@@ -25,10 +25,10 @@ This applet runs on the GPU, which traditionally sacrifices precision in exchang
 <div id="canvas-landscape-left">
 
 ### text-boxes
-	resolution 500 Resolution
+	resolution 500 "Resolution"
 ###
 
-### checkbox double-precision Allow double precision
+### checkbox double-precision "Allow double precision"
 
 ### buttons
 	switch-julia-mode -l "Pick Julia Set"

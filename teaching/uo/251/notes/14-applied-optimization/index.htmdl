@@ -6,7 +6,7 @@ In a real-world senario, you won't usually be given the function to optimize out
 
 
 
-### ex a walled garden
+### ex "a walled garden"
 	
 	You have 20 feet of fencing material to build a rectangular garden up against a wall. The wall will serve as one of the four sides, and you'll construct the other three. How many square feet is the largest possible garden you can build?
 	
@@ -28,7 +28,7 @@ In a real-world senario, you won't usually be given the function to optimize out
 	
 ###
 
-### exc folding ideas
+### exc "folding ideas"
 	
 	Take a standard $8.5 \times 11$ inch sheet of paper and cut out four identical squares (not rectangles) from each corner. Then fold up each of the four resulting flaps to form a paper box with no top. What is the largest possible volume (in cubic inches) you can get?
 	
@@ -40,7 +40,7 @@ This pattern of optimizing with respect to a constaint applies to all sorts of p
 
 
 
-### ex an inscribed rectangle
+### ex "an inscribed rectangle"
 	
 	An ellipse is given by the equation
 	
@@ -120,7 +120,7 @@ This pattern of optimizing with respect to a constaint applies to all sorts of p
 	
 ###
 
-### exc travel times
+### exc "travel times"
 	
 	You're running a race that starts on the bank of a very slow-moving river. The river is 100 feet across, and the finish line is on the other bank of the river, but also 500 feet downstream. You can run at 10 feet per second (a little under a 9 minute mile) while on land, but in the river, you swim at only 4 feet per second. To finish this race as fast as possible, you first run along the bank of the river, and then at some point, you jump in and swim in a straight line to the finish. The river is flowing slowly enough that you can ignore the effects of the current on your swimming speed. What is the fastest you can get to the finish line?
 	

@@ -12,7 +12,7 @@ for some function $g(t)$. We'd like to reuse as much as possible from the previo
 
 
 
-### thm general solutions to nonhomogeneous DEs
+### thm "general solutions to nonhomogeneous DEs"
 	
 	Let
 	
@@ -46,7 +46,7 @@ As always, we'll begin with a few examples and dig into the general method after
 
 
 
-### ex undetermined coefficients
+### ex "undetermined coefficients"
 	
 	Solve the DE $$y'' + 3y' + 2y = e^t$$.
 	
@@ -84,7 +84,7 @@ The key part of that method required us to guess that the solution was of the fo
 
 
 
-### ex undetermined coefficients, again
+### ex "undetermined coefficients, again"
 	
 	Find the general solution to $$y'' + 2y' + y = \cos(t)$$.
 	
@@ -136,7 +136,7 @@ This method, called **undetermined coefficients**, can work when the right side 
 
 
 
-### thm !Method: Undetermined Coefficients
+### thm -m "Method: Undetermined Coefficients"
 	
 	To find a particular solution $Y$ to a DE of the form
 	
@@ -166,7 +166,7 @@ This method, called **undetermined coefficients**, can work when the right side 
 
 
 
-### ex undetermined coefficients
+### ex "undetermined coefficients"
 	
 	Find the general solution to $$y'' - 6y' + 9y = 6(t + 1)e^{3t}$$.
 	
@@ -224,7 +224,7 @@ This method, called **undetermined coefficients**, can work when the right side 
 	
 ###
 
-### exc undetermined coefficients
+### exc "undetermined coefficients"
 	
 	Find the general solution to
 	
@@ -242,7 +242,7 @@ Our second method will be more general than undetermined coefficients, but somew
 
 
 
-### thm !Method: Variation of Parameters
+### thm -m "Method: Variation of Parameters"
 	
 	Suppose the general solution to $y'' + p(t)y' + q(t)y = g(t)$ is $y_c = c_1y_1 + c_2y_2$. Then a particular solution is
 	
@@ -258,7 +258,7 @@ The advantage here is clear: we aren't restricted to the right side of the DE be
 
 
 
-### ex variation of parameters
+### ex "variation of parameters"
 	
 	Find the general solution to $$y'' + y = \sec(t)$$.
 	
@@ -296,7 +296,7 @@ The advantage here is clear: we aren't restricted to the right side of the DE be
 	
 ###
 
-### exc variation of parameters
+### exc "variation of parameters"
 	
 	Find the general solution to $$y'' - 2y' + y = \frac{e^t}{t^2 + 1}$$.
 	

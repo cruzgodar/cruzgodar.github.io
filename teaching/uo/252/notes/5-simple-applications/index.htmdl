@@ -4,7 +4,7 @@ With the hardest conceptual work behind us, let's turn to some simple applicatio
 
 
 
-### ex displacement
+### ex "displacement"
 	
 	A particle is traveling in a straight line with a velocity of $v(t) = 3t - 5 \frac{m}{s}$ after $t$ seconds. Find the net displacement of the particle over $3$ seconds and its total distance traveled.
 	
@@ -46,7 +46,7 @@ With the hardest conceptual work behind us, let's turn to some simple applicatio
 	
 ###
 
-### exc displacement
+### exc "displacement"
 	
 	A particle moves at velocity $v(t) = 4t^2 - 16t + 12$. Find its net displacement and total distance traveled between time $t = 0$ and $t = 4$.
 	
@@ -104,7 +104,7 @@ Let's finish the section with something a little easier. You might have seen eve
 
 
 
-### def even and odd functions
+### def "even and odd functions"
 	
 	A function $f$ is **even** if $f(-x) = f(x)$ for all $x$ in its domain, and **odd** if $f(-x) = -f(x)$ for all $x$ in its domain.
 	
@@ -118,7 +118,7 @@ Geometrically, even functions are ones whose graphs are symmetric about the $y$-
 
 
 
-### prop integrals of even and odd functions
+### prop "integrals of even and odd functions"
 	
 	Let $f$ be an even function. Then
 	
@@ -140,7 +140,7 @@ This shouldn't be terribly surprising. If a function is even and we're integrati
 
 
 
-### ex integrals of even and odd functions
+### ex "integrals of even and odd functions"
 	
 	We have
 	
@@ -162,7 +162,7 @@ This shouldn't be terribly surprising. If a function is even and we're integrati
 	
 ###
 
-### exc integrals of even and odd functions
+### exc "integrals of even and odd functions"
 	
 	Find $$\int_{-\pi}^\pi \sin(\theta)\,d\theta$$ and $$\int_{-\pi}^\pi \cos(\theta)\,d\theta$$ by using properties of even and odd functions.
 	

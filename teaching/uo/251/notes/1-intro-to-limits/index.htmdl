@@ -26,7 +26,7 @@ Better! Since our approximations improve as we have a smaller and smaller run, t
 
 
 
-### def secant and tangent lines
+### def "secant and tangent lines"
 	
 	A **secant line** through a curve is a line that passes through two particular points on the curve. A **tangent line** is formed from a secant line by sliding one point until it is in the same location as the other.
 	
@@ -44,7 +44,7 @@ It might not seem like it, but we actually just did something profound: we defin
 
 
 
-### def slope of a curve
+### def "slope of a curve"
 	
 	Let $f(x)$ be a function. The **slope** of the graph of $f$ at $x = a$ is the slope of the tangent line to the graph of $f$ at $x = a$.
 	
@@ -88,7 +88,7 @@ Our goal is to formalize the sense in which the function $g(h)$ from before shou
 
 
 
-### def limit
+### def "limit"
 	
 	Let $a$ be a real number and let $f(x)$ be a function defined everywhere on some interval containing $a$, except possibly at $a$ itself. If there is a real number $L$ so that all values of $f(x)$ get closer to $L$ as $x$ gets closer to $a$, then we say that **the limit as $x$ approaches $a$ of $f(x)$ is equal to $L$**, which we write more neatly as
 	
@@ -110,7 +110,7 @@ In practice, we can calculate $\lim_{x \to a} f(x)$ by making a table that conta
 
 
 
-### ex calculating a limit with a table
+### ex "calculating a limit with a table"
 	
 	Find $$\lim_{x \to 0} \frac{\sin(x)}{x}$$ with a table.
 	
@@ -146,7 +146,7 @@ In practice, we can calculate $\lim_{x \to a} f(x)$ by making a table that conta
 	
 ###
 
-### exc calculating a limit with a table
+### exc "calculating a limit with a table"
 	
 	Find $$\lim_{x \to 4} \frac{\sqrt{x} - 2}{x - 4}$$ with a table.
 	
@@ -160,7 +160,7 @@ In this next example, let's start with the graph.
 
 
 
-### ex calculating a limit from a graph
+### ex "calculating a limit from a graph"
 	
 	Find $$\lim_{x \to 1} g(x)$$ and $$\lim_{x \to -1} g(x)$$.
 	
@@ -174,7 +174,7 @@ In this next example, let's start with the graph.
 
 
 
-### prop some simple limits
+### prop "some simple limits"
 	
 	For real numbers $a$ and $c$, $$\lim_{x \to a} x = a$$ and $$\lim_{x \to a} c = c$$.
 	
@@ -190,7 +190,7 @@ How could a limit not exist? There are two possibilities for this, generally spe
 
 
 
-### ex a limit that doesn't exist
+### ex "a limit that doesn't exist"
 	
 	Find $$\lim_{x \to 0} \sin\left( \frac{1}{x} \right)$$.
 	
@@ -222,7 +222,7 @@ How could a limit not exist? There are two possibilities for this, generally spe
 	
 ###
 
-### exc another limit that doesn't exist
+### exc "another limit that doesn't exist"
 	
 	Find $$\lim_{x \to 2} \frac{|x - 2|}{x - 2}$$.
 	
@@ -254,7 +254,7 @@ The previous example leads us to define a watered-down form of limit to describe
 
 
 
-### def one-sided limits
+### def "one-sided limits"
 	
 	Let $f(x)$ be a function. The limit of $f(x)$ as $x$ approaches $a$ **from above** is the same as the usual limit, but we only consider numbers larger than $a$ when computing it. We write this new limit as
 	
@@ -289,7 +289,7 @@ both still do not exist --- the problem there wasn't that the two sides didn't a
 
 
 
-### exc some one-sided limits
+### exc "some one-sided limits"
 	
 	Find $$\lim_{x \to 2^+} g(x)$$ and $$\lim_{x \to 2^-} g(x)$$, where
 	
@@ -307,7 +307,7 @@ There's one possibility we haven't mentioned yet: what if the function values ju
 	
 
 
-### ex an infinite limit
+### ex "an infinite limit"
 	
 	Find $$\lim_{x \to 0} f(x)$$, where $$f(x) = \frac{1}{x^2}$$.
 	
@@ -333,7 +333,7 @@ There's one possibility we haven't mentioned yet: what if the function values ju
 	
 ###
 
-### exc a lot of limits
+### exc "a lot of limits"
 	
 	Let $f(x)$ be defined by the following graph.
 	

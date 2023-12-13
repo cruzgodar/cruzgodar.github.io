@@ -2,7 +2,7 @@
 
 It's the final section! We'll depart from the previous topics to examine a common application of integration: differential equations. This is a deep enough topic that whole courses are dedicated to it, but we'll just be taking a brief overview, split into three parts: what are differential equations, how do we visualize them, and how can we solve them?
 
-### def differential equation
+### def "differential equation"
 	
 	A **differential equation**, or a **DE**, is an equation involving a function $y = f(x)$ and its derivatives. They're like polynomials, but instead of increasing the power on $x$, we increase the order of derivatives.
 	
@@ -10,7 +10,7 @@ It's the final section! We'll depart from the previous topics to examine a commo
 
 
 
-### ex some differential equations
+### ex "some differential equations"
 	
 	$y' = y + 2x$.
 	
@@ -20,7 +20,7 @@ It's the final section! We'll depart from the previous topics to examine a commo
 
 
 
-### def solution to a DE
+### def "solution to a DE"
 	
 	A solution to a DE is a function $y = f(x)$ satisfying the equation.
 	
@@ -28,7 +28,7 @@ It's the final section! We'll depart from the previous topics to examine a commo
 
 
 
-### ex solution to a DE
+### ex "solution to a DE"
 	
 	One solution to
 	
@@ -60,7 +60,7 @@ A direction field lets us visualize how a DE acts over time. To draw one, we sol
 
 
 
-### ex direction field
+### ex "direction field"
 	
 	Draw a direction field for the differential equation $y' - \frac{1}{30}xy = 0$.
 	
@@ -70,7 +70,7 @@ A direction field lets us visualize how a DE acts over time. To draw one, we sol
 	
 ###
 
-### exc direction field
+### exc "direction field"
 	
 	Draw a direction field for $$y' = \frac{1}{20}(x^2 - 1)\sin(y)$$.
 	
@@ -84,7 +84,7 @@ By definition, a solution to the DE is a function whose slope matches the direct
 
 
 
-### ex direction field
+### ex "direction field"
 	
 	For any value of $c$, $$y = c e^{x^2}$$ is a solution to $$y' - xy = 0$$.
 	
@@ -96,7 +96,7 @@ By definition, a solution to the DE is a function whose slope matches the direct
 
 
 
-### def equilibrium solution
+### def "equilibrium solution"
 	
 	An **equilibrium solution** to a DE is a solution $y = c$ for some number $c$. In a direction field, this appears as a horizontal line.
 	
@@ -104,7 +104,7 @@ By definition, a solution to the DE is a function whose slope matches the direct
 
 
 
-### ex equilibrium solution
+### ex "equilibrium solution"
 	
 	Find all equilibrium solutions to $$y' = \frac{1}{20}(x-3)(y^2 - 4)$$.
 	
@@ -120,7 +120,7 @@ Two special types of equilibrium solutions are those that either attract or repe
 
 
 
-### def stable and unstable equilibrium solutions
+### def "stable and unstable equilibrium solutions"
 	
 	An equilibrium solution $y = c$ is **stable** if for large $x$, the direction field around $y = c$ points toward it. It is **unstable** if for large $x$, the direction field around $y = c$ points away. If some points toward it and some points away, then the solution is neither stable nor unstable.
 	
@@ -128,7 +128,7 @@ Two special types of equilibrium solutions are those that either attract or repe
 
 
 
-### ex stable and unstable equilibrium solutions
+### ex "stable and unstable equilibrium solutions"
 	
 	In the previous example, $y = 2$ is an unstable solution, since the direction field eventually points away from it for large $x$. Similarly, $y = -2$ is a stable solution. In general, to know how large to draw the direction field to determine if a solution is stable or unstable, make it large enough to capture all the places where $y' = 0$, including $x$-values. In the previous example, that's $x = 3$.
 	
@@ -146,7 +146,7 @@ So how do we solve DEs? This is the subject that all those future classes are de
 
 
 
-### def separable DE
+### def "separable DE"
 	
 	A differentiable equation is **separable** if it can be written in the form
 	
@@ -164,7 +164,7 @@ In other words, a separable equation is one where we can get $y'$ by itself and 
 
 
 
-### thm separation of variables
+### thm "separation of variables"
 	
 	To solve a DE of the form $y' = f(x)g(y)$:
 	
@@ -192,7 +192,7 @@ In other words, a separable equation is one where we can get $y'$ by itself and 
 
 
 
-### ex separation of variables
+### ex "separation of variables"
 	
 	Solve $$y' = (x-2)(y-3)$$, given that $y(0) = 5$.
 	
@@ -246,7 +246,7 @@ In other words, a separable equation is one where we can get $y'$ by itself and 
 	
 ###
 
-### exc separation of variables
+### exc "separation of variables"
 	
 	Solve $y' = y\ln(x)$, given that $y(1) = 1$.
 	
@@ -290,7 +290,7 @@ As one final application, let's talk about temperature.
 
 
 
-### thm Newton's Law of Cooling
+### thm "Newton's Law of Cooling"
 	
 	Let $T(t)$ be the temperature of an object at time $t$ and let $S$ be the temperature of the material, like air or water, the material is surrounded by. Then for some number $k$,
 	
@@ -304,7 +304,7 @@ As one final application, let's talk about temperature.
 
 
 
-### ex Newton's Law of Cooling
+### ex "Newton's Law of Cooling"
 	
 	A pizza is baked at $350^\circ F$ and removed from the oven. The air temperature of the kitchen is $75^\circ F$, and after $5$ minutes, the pizza is $300^\circ F$. How much longer until it is $200^\circ F$?
 	
@@ -370,7 +370,7 @@ As one final application, let's talk about temperature.
 	
 ###
 
-### exc Newton's Law of Cooling
+### exc "Newton's Law of Cooling"
 	
 	In the same $75^\circ F$ kitchen, we bake a cake at $400^\circ F$. It's removed from the oven and after $10$ minutes, it has cooled to $300^\circ F$. How long until it cools down to $100^\circ F$?
 	

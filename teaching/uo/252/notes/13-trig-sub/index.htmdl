@@ -12,7 +12,7 @@ These might look familiar: some integrals that evaluate to inverse trig function
 
 
 
-### ex trig sub
+### ex "trig sub"
 	
 	Find $$\int \sqrt{9 - x^2}\,dx$$.
 	
@@ -70,7 +70,7 @@ If you're thinking this is a pretty intense process to go through... you're righ
 
 
 
-### thm trig sub
+### thm "trig sub"
 	
 	1. Determine what to substitute for $x$. If the integral contains $\sqrt{a^2 - x^2}$, use $x = a\sin(\theta)$. If it contains $\sqrt{a^2 + x^2}$, use $x = a\tan(\theta)$. If it contains $\sqrt{x^2 - a^2}$, use $x = a\sec(\theta)$.
 	
@@ -102,7 +102,7 @@ While we're on the subject, let's talk about a few of the identities and formula
 
 
 
-### prop trig identities
+### prop "trig identities"
 	
 	**Definitions:**
 	
@@ -160,7 +160,7 @@ Since this class is on calculus and not trig, that complete list will be provide
 
 
 
-### ex trig sub
+### ex "trig sub"
 	
 	Find $$\int \frac{1}{\sqrt{4 + t^2}}\, dt$$.
 	
@@ -198,7 +198,7 @@ Since this class is on calculus and not trig, that complete list will be provide
 	
 ###
 
-### exc trig sub
+### exc "trig sub"
 	
 	Find $$\int \frac{1}{x^2 \sqrt{x^2 - 1}}\,dx$$.
 	

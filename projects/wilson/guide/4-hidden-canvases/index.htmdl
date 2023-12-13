@@ -109,7 +109,7 @@ Notice that we're sorting the brightnesses and throwing out the top 2% --- this 
 
 
 ### text-boxes
-	resolution 1000 Resolution
+	resolution 1000 "Resolution"
 ###
 
 <div class="center-content">

@@ -4,7 +4,7 @@ With a strong foundation of sequences built up, let's turn to their main applica
 
 
 
-### def series
+### def "series"
 	
 	A **series** is a sum of the terms in a sequence $(a_n)$, written
 	
@@ -20,7 +20,7 @@ The zig-zag shape is the Greek letter Sigma --- S for sum. The expressions above
 
 
 
-### ex series
+### ex "series"
 	
 	Evaluate the following sums.
 	
@@ -58,7 +58,7 @@ The zig-zag shape is the Greek letter Sigma --- S for sum. The expressions above
 
 
 
-### def partial sums
+### def "partial sums"
 	
 	Let $\sum_{n = 1}^\infty a_n$ be an infinite series. The **$**k**$th partial sum**, written $S_k$, is defined as
 	
@@ -72,7 +72,7 @@ The zig-zag shape is the Greek letter Sigma --- S for sum. The expressions above
 
 
 
-### ex partial sums
+### ex "partial sums"
 	
 	For each of the following series, write out the first five terms. Then find the first, third, and fifth partial sums.
 	
@@ -124,7 +124,7 @@ The purpose of partial sums is to let us talk about the convergence of series. T
 
 
 
-### def convergence of series
+### def "convergence of series"
 	
 	Let $\sum_{n = 1}^\infty a_n$ be an infinite series. If the sequence $(S_k)$ of partial sums converges to a limit $S$, then we say that the series converges to $S$, and write
 	
@@ -142,7 +142,7 @@ Notice the difference in notation between sequences and series: if a sequence $(
 
 
 
-### ex convergence of a series
+### ex "convergence of a series"
 	
 	Evaluate $$\sum_{n = 1}^\infty \frac{1}{2^n}$$ or show it diverges.
 	
@@ -170,7 +170,7 @@ Notice the difference in notation between sequences and series: if a sequence $(
 	
 ###
 
-### exc convergence of series
+### exc "convergence of series"
 	
 	Evaluate the following series or show they don't converge.
 	
@@ -202,7 +202,7 @@ Since series are determined by their sequences of partial sums, many convenient 
 
 
 
-### prop properties of series
+### prop "properties of series"
 	
 	Suppose $$\sum_{n = 1}^\infty a_n = a$$ and $$\sum_{n = 1}^\infty b_n = b$$. Then:
 	
@@ -230,7 +230,7 @@ for some values of $a$ and $r$. This pattern is particularly useful for series, 
 
 
 
-### def geometric series
+### def "geometric series"
 	
 	A **geometric series** is the sum of a geometric sequence --- that is, a series of the form
 	
@@ -274,7 +274,7 @@ It almost seems like we pulled a trick somewhere, but this is correct: no matter
 
 
 
-### thm the values of geometric series
+### thm "the values of geometric series"
 	
 	Let $r$ be a constant with $-1 < r < 1$. Then
 	
@@ -286,7 +286,7 @@ It almost seems like we pulled a trick somewhere, but this is correct: no matter
 
 
 
-### ex the value of a geometric series
+### ex "the value of a geometric series"
 	
 	We can test this theorem on the series from before: $\sum_{n = 1}^\infty \frac{1}{2^n}$. This doesn't quite fit the definition of a geometric series, since the first power is $1$ and not $0$. However, we can just start the series at $n = 0$ and remove the first term afterward.
 	
@@ -308,7 +308,7 @@ It almost seems like we pulled a trick somewhere, but this is correct: no matter
 	
 ###
 
-### exc the value of a geometric series
+### exc "the value of a geometric series"
 	
 	Evaluate the following series.
 	
@@ -348,7 +348,7 @@ There's one more kind of series to touch on before we wrap up this introductory 
 
 
 
-### def telescoping series
+### def "telescoping series"
 	
 	A **telescoping** series is one for which almost all of the terms cancel with each other.
 	
@@ -376,7 +376,7 @@ $$
 
 
 
-### ex a telescoping series
+### ex "a telescoping series"
 	
 	Evaluate the sum
 	
@@ -394,7 +394,7 @@ $$
 	
 ###
 
-### exc a telescoping series
+### exc "a telescoping series"
 	
 	The series
 	

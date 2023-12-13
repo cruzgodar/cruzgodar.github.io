@@ -18,23 +18,23 @@ $\alpha$, $\theta$, and $\gamma$ affect the process in more complicated ways tha
 
 ### text-boxes
 	
-	resolution 500 Resolution
+	resolution 500 "Resolution"
 	
-	computations-per-frame 25 Computation Speed
+	computations-per-frame 25 "Computation Speed"
 	
-	rho .3673 $\rho$
+	rho .3673 "$\rho$"
 	
-	beta 1.1016 $\beta$
+	beta 1.1016 "$\beta$"
 	
-	alpha .4022 $\alpha$
+	alpha .4022 "$\alpha$"
 	
-	theta .0311 $\theta$
+	theta .0311 "$\theta$"
 	
-	kappa .0013 $\kappa$
+	kappa .0013 "$\kappa$"
 	
-	mu .019 $\mu$
+	mu .019 "$\mu$"
 	
-	gamma .0005 $\gamma$
+	gamma .0005 "$\gamma$"
 	
 ###
 

@@ -24,7 +24,7 @@ This process is called **Newton's method**, named after the same Newton that dis
 
 
 
-### ex Newton's method
+### ex "Newton's method"
 	
 	Approximate $\sqrt{2}$ using three iterations of Newton's method.
 	
@@ -74,7 +74,7 @@ This process is called **Newton's method**, named after the same Newton that dis
 	
 ###
 
-### exc Newton's method
+### exc "Newton's method"
 	
 	Approximate a solution to $\cos(x) = x$ using four iterations of Newton's method.
 	

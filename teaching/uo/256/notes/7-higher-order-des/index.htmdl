@@ -12,7 +12,7 @@ Following the pattern of needing one initial condition for a first-order DE and 
 
 
 
-### thm existence and uniqueness of solutions for $n$th-order DEs
+### thm "existence and uniqueness of solutions for $n$th-order DEs"
 	
 	If the functions $g$ and $p_0, p_1, ..., p_{n - 1}$ are all continuous, then the DE
 	
@@ -56,7 +56,7 @@ Just as we were able to relate the solvability of the system to the determinant 
 
 
 
-### def Wronskian
+### def "Wronskian"
 	
 	The **Wronskian** of the $n$ different fundamental solutions $y_1, ..., y_n$ is the determinant
 	
@@ -92,7 +92,7 @@ The main challenge now is just to solve polynomials with high degree, which is a
 
 
 
-### ex a higher-order DE
+### ex "a higher-order DE"
 	
 	Solve $y^{(4)} + y'' = 0$.
 	
@@ -114,7 +114,7 @@ The main challenge now is just to solve polynomials with high degree, which is a
 	
 ###
 
-### exc a higher-order DE
+### exc "a higher-order DE"
 	
 	Solve $y^{(4)} + 4y'' + 4y = 0$.
 	
@@ -134,7 +134,7 @@ When the DE is nonhomogeneous --- i.e. $g(t) \neq 0$ --- both of our previous me
 
 
 
-### ex undetermined coefficients
+### ex "undetermined coefficients"
 	
 	Find the general solution to
 	
@@ -192,7 +192,7 @@ When the DE is nonhomogeneous --- i.e. $g(t) \neq 0$ --- both of our previous me
 	
 ###
 
-### exc undetermined coefficients
+### exc "undetermined coefficients"
 	
 	Find the general solution to $y''' - 3y'' + 4y = 1 + e^{2t}$. (Hint: $r^3 - 3r^2 + 4 = (r - 2)^2(r + 1)$.)
 	

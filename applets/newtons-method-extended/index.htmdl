@@ -10,17 +10,17 @@ The derivative precision determines the accuracy with which the applet computes 
 	
 	example-selector
 	
-	none Examples
+	none "Examples"
 	
-	trig Trig Function
+	trig "Trig Function"
 	
-	crosshatch Crosshatch
+	crosshatch "Crosshatch"
 	
-	palette Palette Demonstration
+	palette "Palette Demonstration"
 	
-	butterflies Butterflies
+	butterflies "Butterflies"
 	
-	swatches Color Swatches
+	swatches "Color Swatches"
 
 ###
 
@@ -37,12 +37,12 @@ The derivative precision determines the accuracy with which the applet computes 
 
 ### text-boxes
 	
-	resolution 500 Resolution
+	resolution 500 "Resolution"
 	
 ###
 
 ### sliders
-	derivative-precision 6 3 20 Derivative Precision
+	derivative-precision 6 3 20 "Derivative Precision"
 ###
 
 ### buttons

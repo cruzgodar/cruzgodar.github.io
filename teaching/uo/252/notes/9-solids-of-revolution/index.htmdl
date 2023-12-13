@@ -4,7 +4,7 @@ Fundamentally, definite integrals calculate area under curves. If you stick arou
 
 
 
-### def solid of revolution
+### def "solid of revolution"
 	
 	Let $f(x)$ be a function on $[a, b]$ with $f(x) \geq 0$. A **solid of revolution** is the solid $3$-dimensional shape created by rotating the graph of $f$ on $[a, b]$ about the $x$-axis or $y$-axis.
 	
@@ -12,7 +12,7 @@ Fundamentally, definite integrals calculate area under curves. If you stick arou
 
 
 
-### ex solid of revolution
+### ex "solid of revolution"
 	
 	With $f(x) = \sin(x) + 2$ on $[0, 10]$, the solid of revolution of $f$ about the $x$-axis is plotted below.
 	
@@ -34,7 +34,7 @@ Now a definite integral just adds up whatever is inside of it over an interval, 
 
 
 
-### thm the disk method
+### thm "the disk method"
 	
 	Let $f(x)$ be a positive function on $[a, b]$. The volume of the solid created by revolving $f(x)$ about the $x$-axis is
 	
@@ -46,7 +46,7 @@ Now a definite integral just adds up whatever is inside of it over an interval, 
 
 
 
-### ex the disk method
+### ex "the disk method"
 	
 	Find the volume of the solid created by revolving $$f(x) = \frac{3}{x}$$ on $[1, 5]$ about the $x$-axis.
 	
@@ -62,7 +62,7 @@ Now a definite integral just adds up whatever is inside of it over an interval, 
 	
 ###
 
-### exc the disk method
+### exc "the disk method"
 	
 	Find the volume of the solid created by revolving $f(x) = \sin(x) + 2$ on $[0, \pi]$ about the $x$-axis.
 	
@@ -86,7 +86,7 @@ That wasn't so bad! We can also use the same method for functions revolved about
 
 
 
-### ex the disk method, again
+### ex "the disk method, again"
 	
 	The area bounded by $y = x^3$ and $x = 0$ is revolved about the $y$-axis. Find the volume between $y = 0$ and $y = 2$.
 	
@@ -104,7 +104,7 @@ That wasn't so bad! We can also use the same method for functions revolved about
 	
 ###
 
-### exc the disk method, again
+### exc "the disk method, again"
 	
 	The area bounded by $$y = \frac{1}{x}$$ and $x = 0$ is revolved about the $y$-axis. Find the volume between $y = 1$ and $y = 2$.
 	
@@ -124,7 +124,7 @@ The disk method can be extended to work with problems where we're taking the dif
 
 
 
-### ex the disk method with a hole
+### ex "the disk method with a hole"
 	
 	The area bounded by $y = x$ and $y = \sqrt{x}$ is revolved about the $x$-axis. Find its volume.
 	
@@ -148,7 +148,7 @@ The disk method can be extended to work with problems where we're taking the dif
 	
 ###
 
-### exc the disk method with a hole
+### exc "the disk method with a hole"
 	
 	The area bounded by $$y = \frac{1}{x^2}$$, $y = 1$, and $x = 2$ is revolved about the $y$-axis. Find its volume.
 	
@@ -190,7 +190,7 @@ Before we do more examples, let's write down when to apply all of these methods.
 
 
 
-### thm finding the volume of solids of revolution
+### thm "finding the volume of solids of revolution"
 	
 	1. Identify the axis about which the area is being revolved. The disk method will integrate with respect to that variable, and the shell method will not. For example, if the area is revolved about the $x$-axis, then the disk method will integrate $dx$ and the shell method will integrate $dy$.
 	
@@ -202,7 +202,7 @@ Before we do more examples, let's write down when to apply all of these methods.
 
 
 
-### ex the shell method
+### ex "the shell method"
 	
 	Find the volume of the solid created by revolving the region bounded by $$y = \frac{1}{x}$$ and $y = 0$ on $[1, 3]$ about the $y$-axis.
 	
@@ -220,7 +220,7 @@ Before we do more examples, let's write down when to apply all of these methods.
 	
 ###
 
-### exc the shell method
+### exc "the shell method"
 	
 	Find the volume of the solid created by revolving the region bounded by $y = 2x - x^2 + 2$, $y = x$, and $x = 0$ about the $y$-axis.
 	
@@ -236,7 +236,7 @@ Before we do more examples, let's write down when to apply all of these methods.
 
 
 
-### ex the shell method, again
+### ex "the shell method, again"
 	
 	The region bounded by $y = \ln(x)$, $y = 1$, and $x = e^2$ is revolved about the $x$-axis. Set up, but don't solve, the integrals to find its volume using both the disk method and shell method.
 	
@@ -264,7 +264,7 @@ Before we do more examples, let's write down when to apply all of these methods.
 	
 ###
 
-### exc the shell method, again
+### exc "the shell method, again"
 	
 	The region bounded by $y = x^2$, $y = 1$, and $x = 2$ is revolved about the $y$-axis. Set up, but do not solve, the integrals to find its volume using both the disk method and shell method.
 	
@@ -288,7 +288,7 @@ As one final example, let's take a look at a solid of revolution about a line th
 
 
 
-### ex a different axis
+### ex "a different axis"
 	
 	The region bounded by $y = x^2$, $y = 0$, and $x = 4$ is revolved about the line $x = 6$. Set up, but don't solve, the integrals to find its volume using both the disk method and shell method.
 	

@@ -4,7 +4,7 @@ We're ready for our final integration technique. This one will let us handle com
 
 
 
-### def degree of a polynomial
+### def "degree of a polynomial"
 	
 	Let $P(x)$ be a polynomial. The **degree** of $P$, written $\deg(P)$, is the largest exponent on $x$ in $P(x)$.
 	
@@ -12,7 +12,7 @@ We're ready for our final integration technique. This one will let us handle com
 
 
 
-### ex degree of a polynomial
+### ex "degree of a polynomial"
 	
 	$$\deg(x^5 + 2x^4 - 2) = 5$$.
 	
@@ -32,7 +32,7 @@ Although the reason why is out of the scope of this class, every polynomial spli
 
 
 
-### thm partial fractions
+### thm "partial fractions"
 	
 	Let $$\frac{P(x)}{Q(x)}$$ be a ratio of polynomials. Factor $Q$ into linear and **irreducible** quadratic factors, and handle one factor at a time.
 	
@@ -58,7 +58,7 @@ There's a lot to deal with here, but it's not so bad in practice. Let's start wi
 
 
 
-### ex partial fractions
+### ex "partial fractions"
 	
 	Find $$\int \frac{3x + 2}{x^3 - x^2 - 2x}\,dx$$.
 	
@@ -118,7 +118,7 @@ There's a lot to deal with here, but it's not so bad in practice. Let's start wi
 	
 ###
 
-### exc partial fractions
+### exc "partial fractions"
 	
 	Find $$\int \frac{x - 2}{(x - 1)(2x - 1)}\,dx$$.
 	
@@ -148,7 +148,7 @@ The next most complicated type of example involves linear factors raised to a po
 
 
 
-### ex partial fractions with a linear factor to a power
+### ex "partial fractions with a linear factor to a power"
 	
 	Find $$\int \frac{8x}{(x-1)(x+1)^3}\,dx$$.
 	
@@ -212,7 +212,7 @@ The next most complicated type of example involves linear factors raised to a po
 	
 ###
 
-### exc partial fractions with a linear factor to a power
+### exc "partial fractions with a linear factor to a power"
 	
 	Find $$\int \frac{27x^2}{(x+1)(x-2)^2}\,dx$$.
 	
@@ -242,7 +242,7 @@ The next most complicated type of example involves linear factors raised to a po
 
 The final thing to deal with is when there is an irreducible quadratic factor, like $x^2 + 1$. For these, we just change the numerator from $A$ to $Ax + B$, but we leave everything else the same.
 
-### ex partial fractions with an irreducible quadratic factor
+### ex "partial fractions with an irreducible quadratic factor"
 	
 	Find $$\int \frac{9}{(x^2 + 2)(x+1)^2}\,dx$$.
 	
@@ -318,7 +318,7 @@ The final thing to deal with is when there is an irreducible quadratic factor, l
 	
 ###
 
-### exc partial fractions with an irreducible quadratic factor
+### exc "partial fractions with an irreducible quadratic factor"
 	
 	Find $$\int \frac{16}{x(x^2 + 4)^2}\,dx$$.
 	

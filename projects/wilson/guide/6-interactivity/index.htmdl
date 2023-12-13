@@ -77,7 +77,7 @@ A few other things to note: it's a good idea to clamp the center values here to 
 
 
 ### text-boxes
-	resolution-1 1000 Resolution
+	resolution-1 1000 "Resolution"
 ###
 
 <div class="center-content">
@@ -292,7 +292,7 @@ We're almost done --- all that's left is a small tweak to the aspect ratio chang
 
 
 ### text-boxes
-	resolution-2 1000 Resolution
+	resolution-2 1000 "Resolution"
 ###
 
 <div class="center-content">
@@ -538,7 +538,7 @@ We do the same thing for zooming. We don't have divide by a factor related to wo
 
 
 ### text-boxes
-	resolution-3 1000 Resolution
+	resolution-3 1000 "Resolution"
 ###
 
 <div class="center-content">

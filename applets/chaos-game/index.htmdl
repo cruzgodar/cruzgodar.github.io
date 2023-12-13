@@ -10,9 +10,9 @@ Draw a pentagon and a single dot in the center. Now roll a five-sided die to ran
 
 ### text-boxes
 	
-	resolution 1000 Resolution
+	resolution 1000 "Resolution"
 	
-	num-vertices 5 Vertices
+	num-vertices 5 "Vertices"
 	
 ###
 

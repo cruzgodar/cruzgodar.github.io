@@ -4,7 +4,7 @@
 
 Our final foundational topic in linear algebra will provide the last large missing piece in the story of matrices and linear transformations. For a generic transformation $T : #R#^n \to #R#^m$, most of that story is already told: the matrix of a transformation completely describes how it operates on vectors, and the number of linearly independent columns in that matrix tell us if it's one-to-one and/or onto. In the particular case when $n = m$ and the domain and codomain are equal, we have the possibility of the matrix (and therefore transformation) being invertible, but there's a loose thread there that we haven't quite pulled yet, and it will turn out to be quite a long thread indeed. To put a finger on exactly where it starts, we need to notice that when $T : #R#^n \to #R#^n$, $T(\vec{v})$ is as long as $\vec{v}$, and so the two can be directly compared to one another. We'll have a *lot* to say about this, including in the homework, but for now, we'll begin by just naming the type of linear transformations we're talking about and defining the one number that underlies nearly everything else.
 
-### def linear operator
+### def "linear operator"
 
 	A **linear operator** is a linear transformation whose domain and codomain are equal.
 
@@ -12,13 +12,13 @@ Our final foundational topic in linear algebra will provide the last large missi
 
 Part of the difficulty in introducing the upcoming concept is that it's very well-motivated and completely unmotivated at the same time. Although it connects to a wide array of other topics in linear algebra and beyond, we're encountering it relatively early on in our progression through the subject, and so there's no great way to derive it from anything we've seen so far. As we'll quickly come to realize, though, it's closely connected with understanding linear operators. First, we'll get one technical definition out of the way.
 
-### def matrix minor
+### def "matrix minor"
 
 	Let $A$ be an $m \times n$ matrix. The **minor** of $A$ corresponding to row $i$ and column $j$ is the $(m - 1) \times (n - 1)$ matrix obtained by crossing out row $i$ and column $j$ from $A$.
 
 ###
 
-### ex matrix minor
+### ex "matrix minor"
 
 	Find the minors of $$[[ 1, 4, 9 ; 2, 1, 6 ; -3, -1, 0 ]]$$ corresponding to each entry in the first row.
 
@@ -38,7 +38,7 @@ Part of the difficulty in introducing the upcoming concept is that it's very wel
 
 With minors defined, we can finally get to the definition we've (possibly) been waiting for.
 
-### def determinant
+### def "determinant"
 
 	Let $A$ be an $n \times n$ matrix. The **determinant** of $A$, written $\det A$, is a single number that we compute recursively. If $n = 1$, then $\det A$ is just its single entry --- e.g. $\det [5] = 5$. For $n > 1$, choose any row or column of $A$ and call it $\vec{v}$, and find the minors of $A$ for every entry in $\vec{v}$, denoting them $A_1, A_2, ..., A_n$. Then find the determinant of each $A_i$ and add up the quantities $\vec{v}_i \det A_i$ with alternating signs given by the checkerboard-like matrix
 
@@ -50,7 +50,7 @@ With minors defined, we can finally get to the definition we've (possibly) been 
 
 Let's be clear: this is a ridiculous definition, and by all measures it shouldn't have any use at all. Even the language used to describe it is clunky, and we immediately need to work through some examples to see how to even compute it at all. It's one of the most surprising facts in the course that not only is the determinant useful, it'll continue to show up in seemingly unrelated topics whether we want it to or not.
 
-### ex the determinant
+### ex "the determinant"
 
 	Compute $$\det [[ 1, 4 ; 2, 5 ]]$$.
 
@@ -72,7 +72,7 @@ Let's be clear: this is a ridiculous definition, and by all measures it shouldn'
 
 ###
 
-### exc the determinant
+### exc "the determinant"
 
 	1. Compute $$\det [[ 1, 2, 3 ; 4, 0, 6 ; 7, 9, 0 ]]$$.
 
@@ -82,7 +82,7 @@ Let's be clear: this is a ridiculous definition, and by all measures it shouldn'
 
 In general, it's easiest to choose the row or columns containing the most zeros, since then we have the fewest smaller determinants to compute.
 
-### ex the determinant
+### ex "the determinant"
 
 	Compute $$\det [[ 1, 4, 7, 2 ; 0, 4, 5, 0 ; 3, 1, 2, 0 ; 1, 2, 3, 4 ]]$$.
 
@@ -106,7 +106,7 @@ In general, it's easiest to choose the row or columns containing the most zeros,
 
 ###
 
-### exc the determinant
+### exc "the determinant"
 
 	Compute $$\det [[ 1, -6, 5, 3 ; 0, 4, 2, -1 ; 0, 0, 9, 9 ; 0, 0, 0, -3 ]]$$.
 
@@ -114,7 +114,7 @@ In general, it's easiest to choose the row or columns containing the most zeros,
 
 With the definition done, we'll begin connecting determinants to the other topics we've learned, one by one. First up is row reduction: applying a row operation to a square matrix changes its determinant either slightly or not at all.
 
-### thm determinants and row operations
+### thm "determinants and row operations"
 
 	Let $A$ be an $n \times n$ matrix.
 
@@ -130,7 +130,7 @@ There are a few neat connections we can make immediately. First of all, we've se
 
 Computing a determinant using the recursive definition is a task that balloons in scope as the size of the matrix grows, and this theorem lets us bypass that quite a bit. Part 3 in particular is the most useful: to begin computing a large determinant, we can use one entry to clear all the others in its column, and then just expand about that column. If we haven't multiplied by any constants or swapped rows, then the determinant of the resulting matrix will be identical, and we've just saved a massive amount of work.
 
-### ex determinants and row operations
+### ex "determinants and row operations"
 
 	Compute $$\det [[ 1, 2, -1, 5 ; 3, 0, 5, 3 ; -1, 6, 3, -4 ; 4, 2, -6, -7 ]]$$.
 
@@ -170,7 +170,7 @@ Computing a determinant using the recursive definition is a task that balloons i
 
 Next on the list of connections is invertibility, and here, the result is what we might predict from the generic $2 \times 2$ inverse formula: there, the matrix was invertible exactly when $ad - bc \neq 0$, and the general result is a direct extension.
 
-### thm determinants and invertibility
+### thm "determinants and invertibility"
 
 	Let $A$ be an $n \times n$ matrix. Then $A$ is invertible exactly when $\det A \neq 0$.
 
@@ -178,7 +178,7 @@ Next on the list of connections is invertibility, and here, the result is what w
 
 Since invertibility is equivalent to being one-to-one or onto for square matrices, we now have a fourth equivalent condition. With the next definition and result, we'll have even more.
 
-### def transpose
+### def "transpose"
 
 	Let $A$ be a matrix. The **transpose** of $A$ is the matrix $A^T$ formed by writing the rows of $A$ as columns, and vice versa, in a new matrix --- i.e. flipping $A$ across its diagonal.
 
@@ -192,7 +192,7 @@ $$
 
 Transposing a matrix is an operation substantially more complicated than any row operation, and we'll have to wait quite a while before we have the language and tools to understand its effect from a linear transformation perspective. For now, though, we can relate it to the determinant: when we expand a square matrix $A$ about a row to find its determinant, we can expand $A^T$ about that column, and vice versa, to get exactly the same result. Therefore,
 
-### prop determinants and transposes
+### prop "determinants and transposes"
 
 	Let $A$ be an $n \times n$ matrix. Then $\det A^T = \det A$.
 
@@ -200,7 +200,7 @@ Transposing a matrix is an operation substantially more complicated than any row
 
 The primary usefulness of this to us currently is that $A^T$ is invertible exactly when $A$ is, and the columns of $A^T$ are the rows of $A$, so we can add a few more items to our ever-growing list of equivalent conditions for a square matrix.
 
-### prop invertibility conditions
+### prop "invertibility conditions"
 
 	Let $A$ be an $n \times n$ matrix with corresponding linear transformation $T$. Then the following are equivalent:
 
@@ -230,7 +230,7 @@ The primary usefulness of this to us currently is that $A^T$ is invertible exact
 
 The determinant also interacts nicely with matrix multiplication: it's a multiplicative function.
 
-### thm the determinant is multiplicative
+### thm "the determinant is multiplicative"
 
 	Let $A$ and $B$ be $n \times n$ matrices. Then $\det (AB) = (\det A) (\det B).$
 
@@ -238,7 +238,7 @@ The determinant also interacts nicely with matrix multiplication: it's a multipl
 
 The proof of this theorem is a little out of scope for our class, but the gist is that for invertible matrices $A$ and $B$, we can write both as a product of elementary matrices --- the ones from homework 2 that apply the row operations by multiplication. The way each one changes the determinant of the matrix they act on is by multiplying by their own determinant, and we can build the result up from there. We'll have more to say about the transpose and multiplicativity of the determinant on the homework, but for now, let's look at one final connection with prior material: an interpretation in the language of linear transformations.
 
-### thm the determinant as a scaling factor
+### thm "the determinant as a scaling factor"
 
 	Let $T : #R#^n \to #R#^n$ be a linear operator with matrix $A$, and let $X$ be a volume in $#R#^n$ of dimension $n$ (e.g. a $2$-dimensional subset of $#R#^2$ or a $3$-dimensional subset of $#R#^3$). Then the volume of $T(X)$ (the image of $X$) is $|\det A|$ times the volume of $X$.
 
@@ -246,7 +246,7 @@ The proof of this theorem is a little out of scope for our class, but the gist i
 
 This result definitely needs some examples to explain it, so let's start there.
 
-### ex the determinant as a scaling factor
+### ex "the determinant as a scaling factor"
 
 	Let $T : #R#^2 \to #R#^2$ be defined by
 
@@ -278,7 +278,7 @@ This result definitely needs some examples to explain it, so let's start there.
 
 ###
 
-### exc the determinant as a scaling factor
+### exc "the determinant as a scaling factor"
 
 	Let $S : #R#^3 \to #R#^3$ be defined by
 

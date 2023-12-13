@@ -10,7 +10,7 @@ It's totally not clear how we're going to do this! But just like with derivative
 
 ## Sums
 
-### def sigma notation
+### def "sigma notation"
 	
 	We write $\sum_{i = 1}^n a_i$ to mean $a_1 + a_2 + a_3 + \cdots + a_n$, and we read it as "the sum from $i = 1$ to $n$ of $a_i$". The variable $i$ is called the **index variable** --- like most variables, you can use other letters, too.
 	
@@ -18,7 +18,7 @@ It's totally not clear how we're going to do this! But just like with derivative
 
 
 
-### ex sigma notation
+### ex "sigma notation"
 	
 	$$
 		\sum_{i = 1}^4 i^2 = 1^2 + 2^2 + 3^2 + 4^2 = 1 + 4 + 9 + 16 = 30.
@@ -38,7 +38,7 @@ It's totally not clear how we're going to do this! But just like with derivative
 	
 ###
 
-### exc sigma notation
+### exc "sigma notation"
 	
 	1. Find $$\sum_{i = 1}^6 i$$.
 	
@@ -58,7 +58,7 @@ Let's write down a few basic properties of sums. Like with derivative rules, the
 
 
 
-### prop properties of sums
+### prop "properties of sums"
 	
 	1. $$\sum_{i = 1}^n c a_i = c \sum_{i = 1}^n a_i$$ (factoring).
 	
@@ -76,7 +76,7 @@ There are a few special sums whose values we know exactly. Showing why is a litt
 
 
 
-### prop some special sums
+### prop "some special sums"
 	
 	1. $$\sum_{i = 1}^n i = \frac{n(n+1)}{2}$$.
 	
@@ -88,7 +88,7 @@ There are a few special sums whose values we know exactly. Showing why is a litt
 
 
 
-### ex some special sums
+### ex "some special sums"
 	
 	1. Find $1 + 2 + 3 + \cdots + 100$.
 	
@@ -136,7 +136,7 @@ There are a few special sums whose values we know exactly. Showing why is a litt
 	
 ###
 
-### exc some special sums
+### exc "some special sums"
 	
 	Find $2 \cdot 10^3 + 2 \cdot 11^3 + \cdots + 2 \cdot 25^3$.
 	
@@ -168,7 +168,7 @@ Sums are useful in general, but in this class, we need them for one specific pur
 
 
 
-### def regular partition
+### def "regular partition"
 	
 	A **regular partition** of the interval $[a, b]$ is a set of numbers $\{x_0, x_1, ..., x_{n - 1}, x_n\}$ such that $x_0 &lt; x_1 &lt; \cdots &lt; x_{n - 1} &lt; x_n$, $x_0 = a$, $x_n = b$, and all of the $x_i$ are an equal distance from each other.
 	
@@ -184,7 +184,7 @@ Okay, so what are we going to do with these? Let's return to our original goal o
 
 
 
-### def Riemann sum
+### def "Riemann sum"
 	
 	Let $f$ be a **nonnegative** function defined on the interval $[a, b]$ and let $\{x_0, x_1, ..., x_n\}$ be a regular partition of $[a, b]$, where the distance between the $x_i$ is $\Delta x$. A **Riemann sum** of $f$ on $[a, b]$ is a sum of the form
 	
@@ -210,7 +210,7 @@ Take a moment to really dig into that Desmos frame. Change $a$ and $b$ and $n$, 
 
 
 
-### ex Riemann sum
+### ex "Riemann sum"
 	
 	Compute the upper Riemann sum with $5$ intervals for the function $g(t) = t^2$ on the interval $[-5, 5]$.
 	
@@ -228,7 +228,7 @@ Take a moment to really dig into that Desmos frame. Change $a$ and $b$ and $n$, 
 	
 ###
 
-### exc Riemann sum
+### exc "Riemann sum"
 	
 	Compute the left Riemann sum with $5$ intervals for the function $g(t) = t^4$ on the interval $[-5, 5]$. Draw a picture of the rectangles.
 	

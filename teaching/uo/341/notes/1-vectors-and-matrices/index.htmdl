@@ -16,7 +16,7 @@ It's hard to overstate just how pervasive linear algebra is in science. It under
 
 Unlike most math classes leading up to it, this course is a clean break from its prerequisites: there isn't much to review that will be useful. Instead, we'll be building our theory of linear algebra more or less from scratch --- to that end, let's take a look at our central object of study: systems of linear equations. *Linear* means that variables aren't multiplied or raised to powers, just added together, so when there are only two variables, the graph is a line.
 
-### ex a system of linear equations
+### ex "a system of linear equations"
 	
 	Solve the system
 	
@@ -56,7 +56,7 @@ Unlike most math classes leading up to it, this course is a clean break from its
 	
 ###
 
-### exc a system of linear equations
+### exc "a system of linear equations"
 	
 	Solve the system
 	
@@ -70,7 +70,7 @@ Unlike most math classes leading up to it, this course is a clean break from its
 
 Now that we've worked through an example, we're prepared to define linear systems in general.
 
-### def linear system
+### def "linear system"
 
 	A general linear equation in the variables $x_1, x_2, ..., x_n$ has the form
 	
@@ -100,7 +100,7 @@ We'll develop vocabulary to describe all of these situations shortly, but the mo
 
 Let's start with the right sides --- the $b_i$. There are quite a few ways we could try to combine them all into one single object, but let's just follow our nose and try the simplest thing we can. When we write the equations in a row like we did above, the $b_i$ form a column. To that end, let's create an object that contains all of the $b_i$ at once.
 
-### def column vector
+### def "column vector"
 
 	A **column vector** $\vec{b}$ is a vertical rectangle of numbers of the form
 
@@ -140,7 +140,7 @@ $$
 
 With this example guiding us, let's properly define matrices and how they multiply with vectors.
 
-### def matrix
+### def "matrix"
 
 	An $m \times n$ **matrix** $A$ is a rectangle of numbers with $m$ rows and $n$ columns:
 
@@ -162,7 +162,7 @@ With this example guiding us, let's properly define matrices and how they multip
 
 Although this is an intense definition, it's thankfully among the most complicated we'll have to wrestle with in this course. Let's work through some examples to get our bearing.
 
-### ex matrix-vector multiplication
+### ex "matrix-vector multiplication"
 	
 	Evaluate the following products:
 	
@@ -192,7 +192,7 @@ Although this is an intense definition, it's thankfully among the most complicat
 	
 ###
 
-### exc matrix-vector multiplication
+### exc "matrix-vector multiplication"
 	
 	Evaluate the following products:
 	
@@ -208,7 +208,7 @@ From these examples, we can see some general properties of matrix-vector multipl
 
 A square matrix with all $0$s except for a strip of $1$s down the diagonal from top-left to bottom-right, like those in part 3 of the example or part 1 of the exercise, seems to multiply vectors by not changing them, and it's not too hard to see that the same will happen with every vector: the $i$th row pulls out exactly the $i$th component. This matrix is useful enough that it deserves its own name.
 
-### def identity matrix
+### def "identity matrix"
 	
 	The $n \times n$ **identity matrix** is a square matrix consisting of all $0$s, except for $1$s down the top-left to bottom-right diagonal (called the **main diagonal**). We write it as $I_n$, or just $I$ if the dimension is clear from context.
 	
@@ -270,7 +270,7 @@ $$
 
 Thankfully, we can streamline this formula to make it easier to remember. To get the $i$th entry of $A\vec{b_j}$, we turn $\vec{b_j}$ sideways and look at its product with the $i$th row of $A$. So, thankfully, we can get a formula for $AB$ one entry at a time.
 
-### thm matrix multiplication
+### thm "matrix multiplication"
 	
 	Let $A$ be an $m \times n$ matrix and let $B$ be an $n \times k$ one. Then $AB$ is an $m \times k$ matrix, and the entry in row $i$ and column $j$ is defined by
 	
@@ -288,7 +288,7 @@ Thankfully, we can streamline this formula to make it easier to remember. To get
 
 That was a *lot* of work! Let's turn to some examples to see this in action.
 
-### ex matrix multiplication
+### ex "matrix multiplication"
 	
 	Let $$A = [[ 5, 0 ; -2, 1 ]]$$ and $$B = [[ 3, 1, -1 ; -1, 0, 2 ]]$$. Evaluate $AB$.
 	
@@ -300,7 +300,7 @@ That was a *lot* of work! Let's turn to some examples to see this in action.
 	
 ###
 
-### exc matrix multiplication
+### exc "matrix multiplication"
 	
 	1. Let $\vec{x} = [[ 1 ; 2 ; -1 ]]$. With the same matrices from the previous example, evaluate $(AB)\vec{x}$ and $A(B\vec{x})$ and show they're the same.
 

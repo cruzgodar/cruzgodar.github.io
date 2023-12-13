@@ -10,7 +10,7 @@ What we have yet to develop are the rules analogous to the ones for derivatives.
 
 
 
-### thm $u$-substitution
+### thm "$u$-substitution"
 	
 	Given an integral of the form $$\int f(g(x))g'(x)\,dx$$,
 	
@@ -32,7 +32,7 @@ This really is just the chain rule backward: since $F' = f$, we have $\frac{d}{d
 
 
 
-### ex $u$-sub
+### ex "$u$-sub"
 	
 	Find $$\int 6x(3x^2 + 4)^4\,dx$$.
 	
@@ -54,7 +54,7 @@ This really is just the chain rule backward: since $F' = f$, we have $\frac{d}{d
 	
 ###
 
-### exc $u$-sub
+### exc "$u$-sub"
 	
 	Find $$\int 2\sin^3(2x)\cos(2x)\,dx$$.
 	
@@ -74,7 +74,7 @@ While the chain rule works for all compositions, $u$-sub works only in the parti
 
 
 
-### ex $u$-sub doesn't always work
+### ex "$u$-sub doesn't always work"
 	
 	Find $$\int 6x^2(3x^2 + 4)^4\,dx$$.
 	
@@ -100,7 +100,7 @@ While the chain rule works for all compositions, $u$-sub works only in the parti
 	
 ###
 
-### ex $u$-sub
+### ex "$u$-sub"
 	
 	Find $$\int_3^4 z\sqrt{z^2 - 5}\,dz$$.
 	
@@ -136,7 +136,7 @@ While the chain rule works for all compositions, $u$-sub works only in the parti
 	
 ###
 
-### exc $u$-sub
+### exc "$u$-sub"
 	
 	Find $$\int 2t^2 e^{4t^3 + 3}\,dt$$.
 	
@@ -158,7 +158,7 @@ One common type of integral involves $\sin^2(x)$ or $\cos^2(x)$ (remember that t
 
 
 
-### prop the half-angle formulas
+### prop "the half-angle formulas"
 	
 	For any angle $\theta$,
 	
@@ -174,7 +174,7 @@ Together, these let us integrate expressions involving $\cos^2(x)$ and $\sin^2(x
 
 
 
-### ex the half-angle formulas
+### ex "the half-angle formulas"
 	
 	Find $$\int 3\cos^2(x)\,dx$$.
 	
@@ -204,7 +204,7 @@ Together, these let us integrate expressions involving $\cos^2(x)$ and $\sin^2(x
 	
 ###
 
-### exc the half-angle formulas
+### exc "the half-angle formulas"
 	
 	Find $$\int \sin^4(t)\,dt$$.
 	
@@ -242,7 +242,7 @@ One last type of $u$-sub problem to explore is where the substitution doesn't *q
 
 
 
-### ex another $u$-sub
+### ex "another $u$-sub"
 	
 	Find $$\int \frac{x}{\sqrt{x - 1}}\,dx$$.
 	

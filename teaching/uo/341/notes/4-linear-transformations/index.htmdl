@@ -14,7 +14,7 @@ $$
 
 and $A(c\vec{v}) = cA\vec{v}$ for any constant $c$. Inspired by these properties, let's look at functions that are *defined* this way: ones that factor through addition and scalar multiplication of vectors.
 
-### def linear transformation
+### def "linear transformation"
 	
 	A **linear transformation**, or **linear map**, from $#R#^n$ to $#R#^m$ is a function $T: #R#^n \to #R#^m$, such that
 	
@@ -68,7 +68,7 @@ $$
 
 As we just figured out, the entire behavior of $T$ is determined once those four values are chosen. The draggable purple vector $[[ x_1 ; x_2 ]]$ is fed into $T$, and the output is the non-draggable purple vector. To make this all a lot more concrete, let's work through an example.
 
-### ex linear transformation
+### ex "linear transformation"
 
 	Suppose $T : #R#^2 \to #R#^2$ is a linear transformation satisfying
 
@@ -94,7 +94,7 @@ As we just figured out, the entire behavior of $T$ is determined once those four
 
 ###
 
-### exc linear transformation
+### exc "linear transformation"
 
 	Suppose $S : #R#^3 \to #R#^2$ is a linear transformation satisfying
 
@@ -128,7 +128,7 @@ $$
 
 And so we get to the fundamental result of the section: **linear transformations from $#R#^n$ to $#R#^m$ are just $m \times n$ matrices**. We knew the reverse --- that matrices were linear maps --- but this says that the other direction is also true, and so we can interchangeably refer to linear transformations and matrices. To represent a linear transformation as a matrix, evaluate it on all of the $\vec{e_i}$ (the vectors with a $1$ in position $i$ and zeros everywhere else), and place the results as the columns of a matrix.
 
-### ex linear transformations as matrices
+### ex "linear transformations as matrices"
 
 	Let $T : #R#^3 \to #R#^3$ be the linear transformation defined by
 
@@ -158,7 +158,7 @@ And so we get to the fundamental result of the section: **linear transformations
 
 ###
 
-### exc linear transformations as matrices
+### exc "linear transformations as matrices"
 
 	Let $S : #R#^3 \to #R#^2$ be a linear transformation defined by
 

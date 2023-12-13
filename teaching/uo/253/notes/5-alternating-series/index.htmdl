@@ -4,7 +4,7 @@ We'll take a brief diversion from general convergence tests to talk about a part
 
 
 
-### def alternating series
+### def "alternating series"
 	
 	An **alternating series** is one of the form
 	
@@ -62,7 +62,7 @@ The result of this reasoning is that alternating series converge much more easil
 
 
 
-### thm the alternating series test
+### thm "the alternating series test"
 	
 	Let
 	
@@ -80,7 +80,7 @@ This is absolutely not true for non-alternating series! The Harmonic series itse
 
 
 
-### ex the alternating series test
+### ex "the alternating series test"
 	
 	Determine if $\sum_{n = 1}^\infty \frac{(-1)^n}{\sqrt{n}}$ converges.
 	
@@ -94,7 +94,7 @@ This is absolutely not true for non-alternating series! The Harmonic series itse
 
 ###
 
-### exc the alternating series test
+### exc "the alternating series test"
 	
 	Determine if the following series converge or diverge.
 	
@@ -140,7 +140,7 @@ since $a_{n + 1}$ is guaranteed to be positive. This is thankfully a very simple
 
 
 
-### ex estimating an alternating series
+### ex "estimating an alternating series"
 	
 	Estimate $$\sum_{n = 1}^\infty \frac{(-1)^{n + 1}}{n^3}$$ to within $.001$ of its actual value.
 	
@@ -172,7 +172,7 @@ since $a_{n + 1}$ is guaranteed to be positive. This is thankfully a very simple
 
 ###
 
-### exc estimating an alternating series
+### exc "estimating an alternating series"
 	
 	Estimate $$\sum_{n = 1}^\infty \frac{(-1)^n}{\sqrt{n}}$$ to within $.2$ of its actual value.
 	
@@ -252,7 +252,7 @@ We pick up every term this way, and since the Harmonic series diverges, we'll ne
 
 
 
-### def absolute and conditional convergence
+### def "absolute and conditional convergence"
 	
 	Let $\sum_{n = 1}^\infty a_n$ be a convergent series. If $\sum_{n = 1}^\infty |a_n|$ converges, then we say that $\sum_{n = 1}^\infty a_n$ **converges absolutely**. If not, we say that $\sum_{n = 1}^\infty a_n$ **converges conditionally**.
 
@@ -274,7 +274,7 @@ Series that converge conditionally have the unfortunate property that they can b
 
 
 
-### ex absolute and conditional convergence
+### ex "absolute and conditional convergence"
 	
 	Determine if the series $$\sum_{k = 2}^\infty \frac{(-1)^k}{\ln(k)}$$ converges absolutely, converges conditionally, or diverges.
 	
@@ -290,7 +290,7 @@ Series that converge conditionally have the unfortunate property that they can b
 
 ###
 
-### exc absolute and conditional convergence
+### exc "absolute and conditional convergence"
 	
 	Determine if the series $$\sum_{k = 1}^\infty \frac{\sin(k)}{k^2}$$ converges absolutely, converges conditionally, or diverges.
 	

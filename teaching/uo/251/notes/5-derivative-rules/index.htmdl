@@ -8,7 +8,7 @@ The functions whose graphs are horizontal lines are the constant functions $y = 
 
 
 
-### thm constant functions have derivative zero
+### thm "constant functions have derivative zero"
 	
 	Let $f(x) = c$ for some constant $c$. Then $f'(x) = 0$.
 	
@@ -20,7 +20,7 @@ This is a good start! Just like we did with limits, let's set our sights on poly
 
 
 
-### thm the power rule
+### thm "the power rule"
 	
 	Let $f(x) = x^n$, where $n$ is a positive integer. Then $f'(x) = nx^{n-1}$.
 	
@@ -32,7 +32,7 @@ In other words, to differentiate a function of the form $x^n$, bring down the po
 
 
 
-### ex the derivative of $x^n$
+### ex "the derivative of $x^n$"
 	
 	Find $$\frac{d}{dx}[x^6]$$.
 	
@@ -40,7 +40,7 @@ In other words, to differentiate a function of the form $x^n$, bring down the po
 	
 ###
 
-### exc the derivative of $x^n$
+### exc "the derivative of $x^n$"
 	
 	Find $$\frac{d}{dt}[t^3]$$.
 	
@@ -54,7 +54,7 @@ Next, let's get the rest of the glue we need to get to polynomials --- specifica
 
 
 
-### thm the sum, difference, and constant multiple rules
+### thm "the sum, difference, and constant multiple rules"
 	
 	Let $f$ and $g$ be differentiable functions and $c$ a constant number.
 	
@@ -72,7 +72,7 @@ These theorems tell us that derivatives split across addition and subtraction, a
 
 
 
-### ex the sum, difference, and constant multiple rules
+### ex "the sum, difference, and constant multiple rules"
 	
 	Find $$\frac{d^2}{dx^2}[2x^2 - x]$$.
 	
@@ -106,7 +106,7 @@ These theorems tell us that derivatives split across addition and subtraction, a
 	
 ###
 
-### exc the sum, difference, and constant multiple rules
+### exc "the sum, difference, and constant multiple rules"
 	
 	Find $$\frac{d^2}{dt^2}[t^2 - 5t + 2]$$.
 	
@@ -120,7 +120,7 @@ Next, let's talk about how to differentiate products and quotients --- unlike li
 
 
 
-### thm the product rule
+### thm "the product rule"
 	
 	Let $f$ and $g$ be differentiable functions. Then
 	
@@ -132,7 +132,7 @@ Next, let's talk about how to differentiate products and quotients --- unlike li
 
 
 
-### ex the product rule
+### ex "the product rule"
 	
 	Let $P(t)$ be a function that gives the population of a town, $t$ years after we start measuring. Given that
 	
@@ -162,7 +162,7 @@ Next, let's talk about how to differentiate products and quotients --- unlike li
 	
 ###
 
-### exc the product rule
+### exc "the product rule"
 	
 	Let $f(x) = 2x + 1$ and $g(x) = 1 - x^2$. Find $$\frac{d}{dx}[f(x)g(x)]$$.
 	
@@ -174,7 +174,7 @@ Our last topic for this section is a rule that lets us differentiate one functio
 
 
 
-### thm the quotient rule
+### thm "the quotient rule"
 	
 	Let $f$ and $g$ be differentiable functions. Then
 	
@@ -192,7 +192,7 @@ I'd be remiss if I didn't mention the commonly-quoted mnemonic rhyme that goes a
 
 
 
-### ex the quotient rule
+### ex "the quotient rule"
 	
 	Find $$\frac{d}{dx} \left[\frac{2x^2}{1 - x}\right]$$.
 	
@@ -208,7 +208,7 @@ I'd be remiss if I didn't mention the commonly-quoted mnemonic rhyme that goes a
 	
 ###
 
-### exc the quotient rule
+### exc "the quotient rule"
 	
 	Find $$\frac{d}{dx} \left[\frac{1 - x}{2x^2}\right]$$.
 	

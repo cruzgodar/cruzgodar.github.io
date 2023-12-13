@@ -6,7 +6,7 @@ Let's start with the first of those two --- we'll save compositions for the next
 
 
 
-### thm derivatives of trig functions
+### thm "derivatives of trig functions"
 	
 	1. $$\frac{d}{dx} [\sin(x)] = \cos(x)$$.
 	
@@ -28,7 +28,7 @@ The notation $\sec^2(x)$ just means $(\sec(x))^2$ --- we use it to distinguish f
 
 
 
-### ex derivatives of trig functions
+### ex "derivatives of trig functions"
 	
 	Find $$\frac{d}{dx}[x^2\cos(x)]$$.
 	
@@ -40,7 +40,7 @@ The notation $\sec^2(x)$ just means $(\sec(x))^2$ --- we use it to distinguish f
 	
 ###
 
-### exc derivatives of trig functions
+### exc "derivatives of trig functions"
 	
 	Find $$\frac{d}{dx}\left[9x + \frac{\sec(x)}{x}\right]$$.
 	
@@ -54,7 +54,7 @@ Let's take a closer look at what the relationship between $\sin$ and $\cos$ mean
 
 
 
-### ex a higher-order trig derivative
+### ex "a higher-order trig derivative"
 	
 	Find $$\frac{d^{74}}{dx^{74}}[\cos(x)]$$.
 	
@@ -78,7 +78,7 @@ Let's take a closer look at what the relationship between $\sin$ and $\cos$ mean
 	
 ###
 
-### exc a higher-order trig derivative
+### exc "a higher-order trig derivative"
 	
 	Find $$\frac{d^{81}}{dx^{81}}[\sin(x)]$$.
 	
@@ -92,7 +92,7 @@ The final functions to talk about are exponential functions ($y = b^x$) and loga
 
 
 
-### thm the derivatives of exponential and logarithmic functions
+### thm "the derivatives of exponential and logarithmic functions"
 	
 	Let $b > 0$. Then
 	
@@ -118,7 +118,7 @@ This is one reason why we care so much about the number $e$: derivatives involvi
 
 
 
-### ex the derivatives of exponential and logarithmic functions
+### ex "the derivatives of exponential and logarithmic functions"
 	
 	Find the equation of the tangent line to $f(x) = x^2e^x$ at $x = 2$.
 	
@@ -130,7 +130,7 @@ This is one reason why we care so much about the number $e$: derivatives involvi
 	
 ###
 
-### exc the derivatives of exponential and logarithmic functions
+### exc "the derivatives of exponential and logarithmic functions"
 	
 	The position of a ball rolling through tar is given by $s(t) = 4 + \log_5(t)$ after $t$ seconds. What is the velocity of the ball after $t$ seconds?
 	

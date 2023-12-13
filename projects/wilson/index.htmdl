@@ -6,7 +6,7 @@ Wilson is a lightweight JavaScript library for creating interactive applets. It 
 
 ### text-boxes
 	
-	resolution 1000 Resolution
+	resolution 1000 "Resolution"
 	
 ###
 

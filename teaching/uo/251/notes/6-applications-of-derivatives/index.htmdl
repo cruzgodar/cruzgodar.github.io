@@ -33,7 +33,7 @@ We've already seen how derivatives relate to position, velocity, and acceleratio
 
 
 
-### def average velocity
+### def "average velocity"
 	
 	Let $s(t)$ be the position of an object at time $t$. The **average velocity** between times $t = a$ and $t = b$ is
 	
@@ -55,7 +55,7 @@ Another small topic to cover: the derivative of a function gives the slope of a 
 
 
 
-### prop tangent line equation
+### prop "tangent line equation"
 	
 	Let $f$ be a function differentiable at $x = a$. Then the equation of the tangent line to $f$ at $x = a$ is
 	
@@ -81,7 +81,7 @@ which is the cost to us to acquire the fifth item.
 
 
 
-### ex business applications
+### ex "business applications"
 	
 	You're selling whiteboard markers. When you sell $x$ of them, you charge $p(x) = 1 - .01x$ dollars per marker. Each one costs you $5$ cents to produce. What is the profit you make from selling the 20th marker?
 	

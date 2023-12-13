@@ -12,7 +12,7 @@ for some constants $c_i$, where $**0**$ is the row vector of all zeros. Some of 
 
 
 
-### def linear independence
+### def "linear independence"
 	
 	Let $**v_1**, **v_2**, ..., **v_k**$ be $n$-dimensional vectors. The $**v_i**$ are **linearly dependent** if
 	
@@ -38,7 +38,7 @@ If we're looking at $n$-dimensional vectors, any collection of more than $n$ of 
 
 
 
-### prop linear independence and matrix inversion
+### prop "linear independence and matrix inversion"
 	
 	Let $**A**$ be an $n \times n$ matrix. Then $**A**$ is invertible if and only if the rows of $**A**$ are linearly independent.
 	
@@ -64,7 +64,7 @@ It's time to properly talk about determinants. We've seen plenty of them for $2 
 
 
 
-### def determinant
+### def "determinant"
 	
 	Let $**A**$ be an $n \times n$ matrix. The **determinant** of $**A**$, written $\det **A**$, is a single number (that measures the factor by which $**A**$ scales volume). The determinant of a $1 \times 1$ matrix --- i.e. a number --- is its single entry, and the determinant of a larger matrix can be found expanding along any row or column: pick a row or column, and for every entry in it, cross off its row and column and find the determinant of the remaining $(n - 1) \times (n - 1)$ matrix. Multiply that by the entry in consideration and then add these up for all $n$ entries, alternating sign according to the following checkerboard pattern:
 	
@@ -76,7 +76,7 @@ It's time to properly talk about determinants. We've seen plenty of them for $2 
 
 
 
-### ex determinant
+### ex "determinant"
 	
 	Evaluate $$\det [[ 1, 4, 7 ; 3, 6, 9 ; 2, 5, 8 ]].$$
 	
@@ -108,7 +108,7 @@ It's time to properly talk about determinants. We've seen plenty of them for $2 
 	
 ###
 
-### exc determinant
+### exc "determinant"
 	
 	Evaluate $$\det [[ 2, 1, 0 ; 2, 7, 1 ; -1, 2, -5 ]].$$
 	
@@ -120,7 +120,7 @@ One of the most important results regarding determinants is their straightforwar
 
 
 
-### thm determinants and inverses
+### thm "determinants and inverses"
 	
 	A square matrix $**A**$ is invertible if and only if $\det **A** \neq 0$.
 	
@@ -160,7 +160,7 @@ Although it might not seem like a pivotal topic at first, vectors like these pla
 
 
 
-### def eigenvalues and eigenvectors
+### def "eigenvalues and eigenvectors"
 	
 	Let $**A**$ be a square matrix. An **eigenvector of $**A**$** is a vector $**v**$ with $**Av** = \lambda**v**$ for some nonzero value $\lambda$, called the **eigenvalue** corresponding to $**v**$.
 	
@@ -184,7 +184,7 @@ In a deeply unfortunate naming collision, this equation is called the **characte
 
 
 
-### ex finding eigenvectors and eigenvalues
+### ex "finding eigenvectors and eigenvalues"
 	
 	Find the eigenvalues and eigenvectors of
 	
@@ -238,7 +238,7 @@ In a deeply unfortunate naming collision, this equation is called the **characte
 	
 ###
 
-### exc finding eigenvectors and eigenvalues
+### exc "finding eigenvectors and eigenvalues"
 	
 	Find the eigenvalues and eigenvectors of
 	
@@ -254,7 +254,7 @@ As one last result, though, let's properly connect the two titles of this sectio
 
 
 
-### thm determinants and eigenvalues
+### thm "determinants and eigenvalues"
 	
 	Let $**A**$ be an $n \times n$ with eigenvalues $\lambda_1, ..., \lambda_n$. Then
 	
@@ -272,7 +272,7 @@ In higher-level math classes, this *is* the definition of the determinant, and w
 
 
 
-### prop properties of square matrices
+### prop "properties of square matrices"
 	
 	Let $**A**$ be an $n \times n$ matrix. The following are equivalent:
 	

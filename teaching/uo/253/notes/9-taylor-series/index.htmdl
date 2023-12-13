@@ -44,7 +44,7 @@ What we've come to is the idea that underpins the entire section, and to a large
 
 
 
-### def Taylor series
+### def "Taylor series"
 	
 	Let $f(x)$ be a function that is infinitely differentiable. The **Taylor series** of $f$ centered at $a$ is the power series
 	
@@ -62,7 +62,7 @@ Critically, this definition says nothing about convergence: the Taylor series fo
 
 
 
-### ex finding a Maclaurin series
+### ex "finding a Maclaurin series"
 	
 	Find the Maclaurin series for $\sin(x)$ and determine its interval of convergence. Find the first six Maclaurin polynomials.
 	
@@ -136,7 +136,7 @@ Critically, this definition says nothing about convergence: the Taylor series fo
 
 ###
 
-### exc finding Taylor series
+### exc "finding Taylor series"
 	
 	Find the following Taylor series. For each, determine the interval of convergence and find the first three Taylor polynomials.
 	
@@ -258,7 +258,7 @@ In order for the Taylor series to approximate $f$, we need $\lim_{N \to \infty} 
 
 
 
-### thm The Mean Value Theorem
+### thm "The Mean Value Theorem"
 	
 	Let $f$ be a function differentiable on an open interval $(a, b)$. Then there is a point $c$ with $a < c < b$ with
 	
@@ -348,7 +348,7 @@ Specifically, if $f^{(N + 1)}$ is a bounded function, then that bound will carry
 
 
 
-### thm Taylor's Theorem
+### thm "Taylor's Theorem"
 	
 	Let $f$ be a function that is differentiable $N + 1$ times on some interval $I$, and let $a$ be a number in $I$. Let $R_N(x)$ be the $N$th remainder function of the Taylor series for $f$ centered at $a$. Suppose further that $f^{(N + 1)}$ is bounded on $I$: in other words, there is some number $M$ with
 	
@@ -370,7 +370,7 @@ That was a lot of very dense work leading up to a pretty dense result --- let's 
 
 
 
-### ex Taylor's Theorem
+### ex "Taylor's Theorem"
 	
 	Determine a bound for the $N$th remainder function of the Maclaurin series for $\sin(x)$. Using a Maclaurin polynomial of degree $5$, estimate $\sin(1)$ and determine the maximum error.
 	
@@ -436,7 +436,7 @@ That was a lot of very dense work leading up to a pretty dense result --- let's 
 
 ###
 
-### exc Taylor's Theorem
+### exc "Taylor's Theorem"
 	
 	1. With the Taylor series for $\ln(x)$ centered at $x = 1$, approximate $\ln(1.5)$ with a Taylor polynomial of degree $4$. Determine the maximum error.
 	
@@ -500,7 +500,7 @@ There's one final question before our basic theory of Taylor series is complete:
 
 
 
-### ex convergence of a Taylor series
+### ex "convergence of a Taylor series"
 	
 	Determine when the Maclaurin series for $\sin(x)$ actually converges to $\sin(x)$.
 	
@@ -558,7 +558,7 @@ Therefore, $f$ is equal to its Maclaurin series *only* at $x = 0$.
 
 
 
-### as analytic functions
+### as "analytic functions"
 
 	A function $f$ whose Taylor series centered at $x = a$ converges to $f$ in some interval around $a$ is called **analytic** at $a$. Functions that are differentiable infinitely many times at $x = a$ are called **smooth** at $a$, and since constructing a Taylor series requires being able to take infinitely many derivatives, all analytic functions are necessarily smooth. These conditions slot in at the top end of differentiability conditions, and they all have convenient notations: if a function is continuous, we say it's $C^0$, if it's differentiable with a continuous derivative, we say it's $C^1$, if it's twice-differentiable with a continuous second derivative, we say it's $C^2$, and so on. If a function is smooth, it's $C^\infty$, and if it's analytic, it's $C^\omega$ (here, $\omega$ denotes the idea of the first counting number *after* all of the positive integers).
 	

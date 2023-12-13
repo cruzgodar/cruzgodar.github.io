@@ -10,29 +10,29 @@ Whenever a sorting algorithm modifies the list, that location in the color wheel
 	
 	algorithm-selector
 
-	none Algorithms
+	none "Algorithms"
 	
-	bubble Bubble Sort
+	bubble "Bubble Sort"
 	
-	insertion Insertion Sort
+	insertion "Insertion Sort"
 	
-	selection Selection Sort
+	selection "Selection Sort"
 	
-	heap Heapsort
+	heap "Heapsort"
 	
-	merge Merge sort
+	merge "Merge Sort"
 	
-	quick Quicksort
+	quick "Quicksort"
 	
-	shell Shellsort
+	shell "Shellsort"
 	
-	cycle Cycle Sort
+	cycle "Cycle Sort"
 	
-	msd-radix MSD Radix Sort
+	msd-radix "MSD Radix Sort"
 	
-	lsd-radix LSD Radix Sort
+	lsd-radix "LSD Radix Sort"
 	
-	gravity Gravity Sort
+	gravity "Gravity Sort"
 
 ###
 
@@ -68,13 +68,13 @@ Whenever a sorting algorithm modifies the list, that location in the color wheel
 
 ### text-boxes
 	
-	resolution 2000 Resolution
+	resolution 2000 "Resolution"
 	
-	array-size 512 List size
+	array-size 512 "List Size"
 	
 ###
 
-### checkbox play-sound Play sound
+### checkbox play-sound "Play sound"
 
 ### buttons
 	generate -l "Sort"

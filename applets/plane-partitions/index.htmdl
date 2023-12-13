@@ -17,19 +17,19 @@ Due to the complexity of the algorithms and the difficulty in getting them to wo
 	
 	category-selector
 
-	none Control Menus
+	none "Control Menus"
 	
-	view-controls View Controls
+	view-controls "View Controls"
 	
-	add-array Add Array
+	add-array "Add Array"
 	
-	edit-array Edit Array
+	edit-array "Edit Array"
 	
-	remove-array Remove Array
+	remove-array "Remove Array"
 	
-	algorithms Algorithms
+	algorithms "Algorithms"
 	
-	examples Examples
+	examples "Examples"
 
 ###	
 </div>
@@ -67,7 +67,7 @@ Due to the complexity of the algorithms and the difficulty in getting them to wo
 <div id="category-holder" style="display: none">
 	<div class="view-controls-section category-section">
 		### text-boxes
-			resolution 2000 Resolution
+			resolution 2000 "Resolution"
 		###
 	</div>
 		
@@ -82,7 +82,7 @@ Due to the complexity of the algorithms and the difficulty in getting them to wo
 	</div>
 	
 	<div class="view-controls-section category-section">
-		### checkbox maximum-speed Maximum speed
+		### checkbox maximum-speed "Maximum speed"
 	</div>
 	
 	
@@ -106,7 +106,7 @@ Due to the complexity of the algorithms and the difficulty in getting them to wo
 	
 	<div class="edit-array-section category-section">
 		### text-boxes
-			edit-array-index 0 Index to Edit
+			edit-array-index 0 "Index to Edit"
 		###
 	</div>
 	
@@ -129,7 +129,7 @@ Due to the complexity of the algorithms and the difficulty in getting them to wo
 	
 	<div class="remove-array-section category-section">
 		### text-boxes
-			remove-array-index 0 Index to Remove
+			remove-array-index 0 "Index to Remove"
 		###
 	</div>
 	
@@ -143,7 +143,7 @@ Due to the complexity of the algorithms and the difficulty in getting them to wo
 	
 	<div class="algorithms-section category-section">
 		### text-boxes
-			algorithm-index 0 Index to Use
+			algorithm-index 0 "Index to Use"
 		###
 	</div>
 	

@@ -12,7 +12,7 @@ The technology behind related rates is just implicit differentiation, except tha
 
 
 
-### ex related rates
+### ex "related rates"
 	
 	A bird is flying 100 feet off the ground at 10 feet per second. At some point, the bird passes directly above you --- let $s$ be the distance from you to the bird, $t$ seconds after that happens. When $s = 200$, how fast is it increasing?
 	
@@ -58,7 +58,7 @@ The technology behind related rates is just implicit differentiation, except tha
 	
 ###
 
-### exc related rates
+### exc "related rates"
 	
 	You're trying to blow up a spherical balloon. As the balloon fills up, the pressure makes it harder to inflate, so the rate of increase of volume decreases over time. Specifically, after $t$ seconds, the balloon is inflating at a rate of $5 \cdot 2^{-t}$ cubic centimeters per second. After 4 seconds, the volume is 20 cubic centimeters. How fast is the radius increasing at that point in time?
 	

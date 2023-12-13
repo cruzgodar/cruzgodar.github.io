@@ -18,7 +18,7 @@ In other words, not only are the terms of that geometric series getting smaller 
 
 
 
-### thm the ratio test
+### thm "the ratio test"
 	
 	Let $\sum_{n = 1}^\infty a_n$ be a series and define a value $r$ by
 	
@@ -48,7 +48,7 @@ Like every other test we know, the ratio test is incapable of determining what v
 
 
 
-### ex the ratio test
+### ex "the ratio test"
 	
 	Determine if the series $$\sum_{n = 1}^\infty \frac{e^n}{n!}$$ converges or diverges.
 	
@@ -80,7 +80,7 @@ Like every other test we know, the ratio test is incapable of determining what v
 
 ###
 
-### exc the ratio test
+### exc "the ratio test"
 	
 	Determine if the following series converge or diverge.
 	
@@ -126,7 +126,7 @@ Like every other test we know, the ratio test is incapable of determining what v
 
 ###
 
-### exc the ratio test
+### exc "the ratio test"
 	
 	Let's show that when $r = 1$ in the ratio test, we really can't determine anything about the series. Of the three following series, one is divergent, one is absolutely convergent, and one is conditionally convergent. Determine which is which, and then show that $r = 1$ for all three.
 	
@@ -180,7 +180,7 @@ Like every other test we know, the ratio test is incapable of determining what v
 
 Much like the ratio test, the root test compares a given series to a geometric series. If the terms $a_n$ of a series satisfy $|a_n| \approx r^n$, then $\sqrt[n]{|a_n|} \approx r$. Just like the ratio test, we'll solidify that approximation by taking a limit.
 
-### thm the root test
+### thm "the root test"
 	
 	Let $\sum_{n = 1}^\infty a_n$ be a series and define a value $r$ by
 	
@@ -194,7 +194,7 @@ Much like the ratio test, the root test compares a given series to a geometric s
 
 
 
-### ex the root test
+### ex "the root test"
 
 	Determine if the series $$\sum_{n = 1}^\infty \frac{\sin^n(n)}{n^n}$$ converges or diverges.
 	
@@ -218,7 +218,7 @@ Much like the ratio test, the root test compares a given series to a geometric s
 
 ###
 
-### exc the root test
+### exc "the root test"
 
 	Determine if the following series converge or diverge by using the root test.
 	

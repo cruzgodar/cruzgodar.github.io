@@ -12,7 +12,7 @@ We want to get the tangent line by setting $h = 0$, but since the slope will be 
 
 
 
-### prop slope of a tangent line
+### prop "slope of a tangent line"
 	
 	Let $f$ be a function that is continuous at $x = a$. Then the slope of the tangent line to the graph of $f$ at $x = a$ is
 	
@@ -24,7 +24,7 @@ We want to get the tangent line by setting $h = 0$, but since the slope will be 
 
 
 
-### ex slope of a graph
+### ex "slope of a graph"
 	
 	Find the slope of the function $f(x) = x^2$ at $x = 1$.
 	
@@ -54,7 +54,7 @@ We want to get the tangent line by setting $h = 0$, but since the slope will be 
 	
 ###
 
-### exc slope of a graph
+### exc "slope of a graph"
 	
 	Find the slope of the function $g(x) = x^3$ at $x = -2$.
 	
@@ -66,7 +66,7 @@ We mentioned in section 1 that the slope of a tangent line measures rate of chan
 
 
 
-### def derivative
+### def "derivative"
 	
 	Let $f$ be a function defined in an interval containing $x = a$, including at $a$ itself. The **derivative** of $f$ at $a$, written $f'(a)$ and read $f$ prime of $a$, is the slope of the tangent line to the graph at $x = a$. In other words,
 	
@@ -84,7 +84,7 @@ One more notational quirk: sometimes, we don't want to give a function a name ju
 
 
 
-### ex computing a derivative
+### ex "computing a derivative"
 	
 	Find $$\frac{d}{dx}[x^2]$$.
 	
@@ -114,7 +114,7 @@ One more notational quirk: sometimes, we don't want to give a function a name ju
 	
 ###
 
-### exc computing a derivative
+### exc "computing a derivative"
 	
 	Find $$\frac{d}{dx}[x^3]$$ and sketch a graph of both functions.
 	
@@ -122,7 +122,7 @@ One more notational quirk: sometimes, we don't want to give a function a name ju
 
 
 
-### ex computing a derivative from a graph
+### ex "computing a derivative from a graph"
 	
 	Given this graph, sketch a graph of the derivative.
 	
@@ -132,7 +132,7 @@ One more notational quirk: sometimes, we don't want to give a function a name ju
 	
 ###
 
-### exc computing a derivative from a graph
+### exc "computing a derivative from a graph"
 	
 	Given this graph, sketch a graph of the derivative.
 	
@@ -148,7 +148,7 @@ This is a complicated question to answer. Being differentiable means the limit o
 
 
 
-### thm differentiable functions are continuous
+### thm "differentiable functions are continuous"
 	
 	Let $f$ be a function differentiable at $x = a$. Then $f$ is continuous at $x = a$.
 	
@@ -160,7 +160,7 @@ Because of this theorem, if a function is not continuous at $a$, it's not possib
 
 
 
-### ex a continuous function that isn't differentiable
+### ex "a continuous function that isn't differentiable"
 	
 	The graph of the function $f(x) = |x|$ is V-shaped, since the negative part gets reflected over the $x$-axis.
 	
@@ -186,7 +186,7 @@ Any function with a sharp corner like this will fail to be differentiable at tha
 
 
 
-### exc another continuous function that isn't differentiable
+### exc "another continuous function that isn't differentiable"
 	
 	Show that $f(x) = \sqrt[3]{x}$ is not differentiable at $x = 0$.
 
@@ -212,7 +212,7 @@ We'll talk about what visual feature of a graph the second derivative measures a
 
 
 
-### ex a second derivative
+### ex "a second derivative"
 	
 	Find $$\frac{d^2}{dx^2}[2x^2 - x]$$.
 	
@@ -250,7 +250,7 @@ We'll talk about what visual feature of a graph the second derivative measures a
 	
 ###
 
-### exc acceleration
+### exc "acceleration"
 	
 	Suppose the position of a particle moving along a straight line is $s(t) = 3t^2$ meters after $t$ seconds. Find a function $a(t)$ for the particle's acceleration at time $t$. Note that since velocity is the rate of change of position and acceleration is the rate of change of of velocity, $v(t) = s'(t)$ and $a(t) = v'(t)$, so $a(t) = s''(t)$.
 	

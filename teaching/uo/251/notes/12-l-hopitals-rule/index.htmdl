@@ -6,7 +6,7 @@ Let's recap a little. Since most common functions are continuous where they are 
 
 
 
-### def indeterminate form
+### def "indeterminate form"
 	
 	A limit is in **indeterminate form** if it results in any of the following:
 	
@@ -26,7 +26,7 @@ First, let's talk about type 1. This will be the simplest type for us to handle,
 
 
 
-### thm L'H&#244;pital's rule
+### thm "L'H&#244;pital's rule"
 	
 	Suppose $$\lim_{x \to a} \frac{f(x)}{g(x)}$$ is of the form $$\frac{0}{0}$$ or $$\frac{\infty}{\infty}$$. Then
 	
@@ -42,7 +42,7 @@ In other words, if you're getting $\frac{0}{0}$ or $\frac{\infty}{\infty}$ out o
 
 
 
-### ex L'H&#244;pital's rule
+### ex "L'H&#244;pital's rule"
 	
 	Evaluate $$\lim_{x \to 0} \frac{\sin(x)}{x}$$.
 	
@@ -70,7 +70,7 @@ In other words, if you're getting $\frac{0}{0}$ or $\frac{\infty}{\infty}$ out o
 	
 ###
 
-### exc L'H&#244;pital's rule
+### exc "L'H&#244;pital's rule"
 	
 	Evaluate $$\lim_{x \to \infty} \frac{x^3 + 3x^2 + x}{\ln(x)}$$. 
 	
@@ -96,7 +96,7 @@ which will then be in the form $\frac{\infty}{\infty}$. Either way, L'H&#244;pit
 
 
 
-### ex L'H&#244;pital's rule in the case $0 \cdot \infty$
+### ex "L'H&#244;pital's rule in the case $0 \cdot \infty$"
 	
 	Evaluate $$\lim_{x \to 2} (2x - 4)\ln(2x - 4)$$.
 	
@@ -152,7 +152,7 @@ We handle the $\infty - \infty$ case similarly: we first force both terms to be 
 
 
 
-### exc L'H&#244;pital's rule in the case $\infty - \infty$
+### exc "L'H&#244;pital's rule in the case $\infty - \infty$"
 	
 	Evaluate $$\lim_{x \to 0} \left( \frac{1}{\sin(x)} - \frac{1}{x} \right)$$.
 	
@@ -164,7 +164,7 @@ The final type of indeterminate form involves exponents. To handle these, we fol
 
 
 
-### ex L'H&#244;pital's rule in the case $1^\infty$
+### ex "L'H&#244;pital's rule in the case $1^\infty$"
 	
 	Evaluate $$\lim_{x \to \infty} (1 + e^{-x})^{x}$$.
 	
@@ -220,7 +220,7 @@ The final type of indeterminate form involves exponents. To handle these, we fol
 	
 ###
 
-### exc L'H&#244;pital's rule in the case $0^0$
+### exc "L'H&#244;pital's rule in the case $0^0$"
 	
 	Evaluate $$\lim_{x \to 0} x^x$$.
 	

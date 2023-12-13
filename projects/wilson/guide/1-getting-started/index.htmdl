@@ -195,11 +195,11 @@ With all that explanation out of the way, let's see how the applet turned out!
 
 ### text-boxes
 	
-	a-1 0 $a$
+	a-1 0 "$a$"
 	
-	b-1 1 $b$
+	b-1 1 "$b$"
 	
-	resolution-1 500 Resolution
+	resolution-1 500 "Resolution"
 	
 ###
 
@@ -251,11 +251,11 @@ As another improvement, let's add a button to download the current state of the 
 
 ### text-boxes
 	
-	a-2 0 $a$
+	a-2 0 "$a$"
 	
-	b-2 1 $b$
+	b-2 1 "$b$"
 	
-	resolution-2 500 Resolution
+	resolution-2 500 "Resolution"
 	
 ###
 

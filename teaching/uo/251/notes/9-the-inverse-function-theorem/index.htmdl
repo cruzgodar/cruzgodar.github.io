@@ -4,7 +4,7 @@ With the chain rule under our belt, we can differentiate any combination of two 
 
 
 
-### def one-to-one
+### def "one-to-one"
 	
 	A function $y = f(x)$ is **one-to-one** if it passes the horizontal line test --- that is, every $y$-value comes from only one $x$-value.
 	
@@ -12,7 +12,7 @@ With the chain rule under our belt, we can differentiate any combination of two 
 
 
 
-### ex one-to-one
+### ex "one-to-one"
 	
 	The function $f(x) = x^2$ is not one-to-one, since $4 = f(-2) = f(2)$. On the other hand, $g(x) = x^5$ is one-to-one, since it passes the horizontal line test: every horizontal line intersects the graph at one point at most.
 	
@@ -20,7 +20,7 @@ With the chain rule under our belt, we can differentiate any combination of two 
 
 
 
-### def inverse function
+### def "inverse function"
 	
 	Let $y = f(x)$ be a one-to-one function. The **inverse** to $f$ is the function $x = f^{-1}(y)$, defined so that if $(x, y)$ is a point on the graph of $f$, then $(y, x)$ is a point on the graph of $f^{-1}$.
 	
@@ -32,13 +32,13 @@ So $f^{-1}$ undoes $f$: it takes outputs of $f$ back to their corresponding inpu
 
 
 
-### ex inverse functions
+### ex "inverse functions"
 	
 	The inverse to $f(x) = x^5$ is $$f^{-1}(y) = \sqrt[5]{y}$$, and the inverse to $$f(x) = \frac{1}{x}$$ is $$f^{-1}(y) = \frac{1}{y}$$.
 	
 ###
 
-### exc inverse functions
+### exc "inverse functions"
 	
 	Find the inverse functions to $f(x) = e^x$ and $$f(x) = \frac{x - 1}{x + 1}$$. Hint: let $y = f(x)$ and solve for $x$.
 	
@@ -52,7 +52,7 @@ Now that we've reviewed inverse functions, let's talk about their derivatives.
 
 
 
-### thm the Inverse Function Theorem
+### thm "the Inverse Function Theorem"
 	
 	Let $f$ be a differentiable function. Then
 	
@@ -68,7 +68,7 @@ So in order to use the IFT, we need to know $f'$ and $f^{-1}$, and then we compo
 
 
 
-### ex the Inverse Function Theorem
+### ex "the Inverse Function Theorem"
 	
 	Find $$\frac{d}{dx} [\sqrt{x}]$$.
 	
@@ -84,7 +84,7 @@ So in order to use the IFT, we need to know $f'$ and $f^{-1}$, and then we compo
 	
 ###
 
-### exc the Inverse Function Theorem
+### exc "the Inverse Function Theorem"
 	
 	Find $$\frac{d}{dx} \left[\sqrt[3]{x}\right]$$ using the Inverse Function Theorem.
 	
@@ -92,7 +92,7 @@ So in order to use the IFT, we need to know $f'$ and $f^{-1}$, and then we compo
 
 
 
-### thm the derivative of $x^n$ for rational $n$
+### thm "the derivative of $x^n$ for rational $n$"
 	
 	Let $n$ be a rational number. Then $\frac{d}{dx}[x^n] = nx^{n-1}$.
 	
@@ -144,7 +144,7 @@ Somewhat strangely, the derivatives of the inverse trig functions are not other 
 
 
 
-### thm the derivatives of the inverse trig functions
+### thm "the derivatives of the inverse trig functions"
 	
 	1. $$\frac{d}{dx}[\sin^{-1}(x)] = \frac{1}{\sqrt{1 - x^2}}$$.
 	
@@ -162,7 +162,7 @@ Somewhat strangely, the derivatives of the inverse trig functions are not other 
 
 
 
-### ex an inverse trig derivative
+### ex "an inverse trig derivative"
 	
 	Find $$\frac{d}{dx}\left[\tan^{-1}(x^3)\right]$$.
 	
@@ -174,7 +174,7 @@ Somewhat strangely, the derivatives of the inverse trig functions are not other 
 	
 ###
 
-### exc an inverse trig derivative
+### exc "an inverse trig derivative"
 	
 	Find $$\frac{d}{dx} \left. \left[e^x\csc^{-1}(\ln(x)) \right] \right|_{x = e}$$.
 	

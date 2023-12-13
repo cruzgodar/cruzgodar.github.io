@@ -30,7 +30,7 @@ $$
 
 is a matrix that sends coordinate vectors in the basis $\mathcal{B} = \{\vec{v_1}, ..., \vec{v_n}\}$ to coordinate vectors in the standard basis. And now we need to stop and say that again, because this is unfortunately *very* unintuitive. Since $B\vec{e_i} = [\vec{v_i}]_\mathcal{E}$, it looks for all the world like $B$ translates *from* the standard basis *to* $\mathcal{B}$, but we need to remember what we're dealing with. In that equation, $\vec{e_i}$ is not an *element* of the standard basis (e.g. a polynomial, matrix, or linear transformation), but a *coordinate vector* in the basis $\mathcal{B}$, representing a single copy of $\vec{v_i}$. On the other side of the equation, $[\vec{v_i}]_\mathcal{E}$ is the expression of $\vec{v_i}$ in the standard basis, written as a coordinate vector. We're in desperate need of examples, so let's get right to them.
 
-### ex a change-of-basis matrix
+### ex "a change-of-basis matrix"
 
 	Let $V$ be the subspace of $#R#[x]$ consisting of polynomials with degree less than $4$ and let $\mathcal{B} = \{ 1 + x, x + x^2, x - 2x^3, x^3 \}$ be a basis for it. Express $1 + x + x^2 + x^3$ in $\mathcal{B}$.
 
@@ -102,7 +102,7 @@ is a matrix that sends coordinate vectors in the basis $\mathcal{B} = \{\vec{v_1
 
 ###
 
-### exc a change-of-basis matrix
+### exc "a change-of-basis matrix"
 
 	Let $\mathcal{B}$ be the basis
 
@@ -120,7 +120,7 @@ is a matrix that sends coordinate vectors in the basis $\mathcal{B} = \{\vec{v_1
 
 This last theorem earns its name: it provides a fundamental relation between linear maps and their domain, kernel, and image. Let's get right to the statement and proof.
 
-### thm The Fundamental Theorem of Linear Algebra
+### thm "The Fundamental Theorem of Linear Algebra"
 	
 	Let $V$ and $W$ be vector spaces, where $V$ is finite-dimensional, and let $T : V \to W$ be a linear transformation. Then
 	

@@ -4,7 +4,7 @@ We've informally defined $\lim_{x \to a} f(x)$ as being the value we would expec
 
 
 
-### def continuity
+### def "continuity"
 	
 	Let $f(x)$ be a function. If $f(a)$ is defined and $\lim_{x \to a} f(x) = f(a)$, then we say that $f$ is <dfn>continuous at $a$</dfn>. If $f$ is continuous at all $a$ in its domain, then we just say that $f$ is **continuous**.
 	
@@ -22,7 +22,7 @@ The simplest way to describe continuous functions is that they're the ones whose
 
 
 
-### ex continuity
+### ex "continuity"
 	
 	Let $f$ be defined by the following graph. Where is $f$ continuous?
 	
@@ -32,7 +32,7 @@ The simplest way to describe continuous functions is that they're the ones whose
 
 ###
 
-### exc continuity
+### exc "continuity"
 	
 	Define a function $f$ by
 	
@@ -56,7 +56,7 @@ The function in the previous example displays three common kinds of discontinuit
 
 
 
-### def discontinuities
+### def "discontinuities"
 	
 	Let $f(x)$ be a function such that $f(a)$ is defined but $f$ is discontinuous at $x = a$.
 	
@@ -78,7 +78,7 @@ The next two theorems will let calculate limits **much** more easily. The first 
 
 
 
-### thm continuity of elementary functions
+### thm "continuity of elementary functions"
 	
 	Polynomials, rational functions, trigonometric functions, exponential functions, and logarithmic functions are all continuous everywhere they're defined.
 	
@@ -90,7 +90,7 @@ This next theorem tells us that continuity is preserved through composition.
 
 
 
-### thm continuity of compositions
+### thm "continuity of compositions"
 	
 Let $f$ and $g$ be functions so that $g$ is continuous at $a$ and $f$ is continuous at $g(a)$. Then $f(g(x))$ is continuous at $a$. In particular, if $f$ and $g$ are simply continuous functions, then $f(g(x))$ is continuous too.
 	
@@ -98,7 +98,7 @@ Let $f$ and $g$ be functions so that $g$ is continuous at $a$ and $f$ is continu
 
 
 
-### ex an easier limit
+### ex "an easier limit"
 	
 	Find 
 	
@@ -130,7 +130,7 @@ We have one last theorem to talk about in this section. The result sounds a litt
 
 
 
-### thm The Intermediate Value Theorem
+### thm "The Intermediate Value Theorem"
 	
 	Let $f$ be a continuous function on a closed interval $[a, b]$ and let $y$ be a number between $f(a)$ and $f(b)$. Then there is a number $c$ between $a$ and $b$ so that $f(c) = y$.
 	
@@ -146,7 +146,7 @@ Here, $a = 1$ and $b = 3$. Plotted are three examples of continuous functions sa
 
 
 
-### ex the Intermediate Value theorem
+### ex "the Intermediate Value theorem"
 	
 	Show that $f(x) = x - \cos(x)$ has at least one zero.
 	
@@ -156,7 +156,7 @@ Here, $a = 1$ and $b = 3$. Plotted are three examples of continuous functions sa
 	
 ###
 
-### exc the Intermediate Value Theorem
+### exc "the Intermediate Value Theorem"
 	
 	Show that $x^3 - x + 1$ has a zero.
 	
@@ -180,7 +180,7 @@ $$
 
 
 
-### ex a limit to infinity
+### ex "a limit to infinity"
 	
 	Find $\lim_{x \to \infty} x^2$.
 	
@@ -188,7 +188,7 @@ $$
 	
 ###
 
-### exc a limit to infinity
+### exc "a limit to infinity"
 	
 	Find $\lim_{x \to -\infty} \sin(x)$.
 	
@@ -202,7 +202,7 @@ In the specific case of rational functions, we know the behavior of limits to in
 	
 
 
-### def degree and leading coefficient
+### def "degree and leading coefficient"
 
 	Let $p(x)$ be a polynomial. The **degree** of $p$, written $\deg(p)$, is the largest exponent on $x$. The **leading term** of $p$ is the term with the largest exponent.
 	
@@ -210,7 +210,7 @@ In the specific case of rational functions, we know the behavior of limits to in
 
 
 
-### ex degree and leading coefficient
+### ex "degree and leading coefficient"
 	
 	The degree of $-4x^3 + 2x + 1$ is $3$, and the leading term is $-4x^3$.
 	
@@ -218,7 +218,7 @@ In the specific case of rational functions, we know the behavior of limits to in
 
 
 
-### thm limits of rational functions to infinity
+### thm "limits of rational functions to infinity"
 	
 	Let $p(x)$ and $q(x)$ be polynomials. Then
 	
@@ -232,7 +232,7 @@ In the specific case of rational functions, we know the behavior of limits to in
 
 
 
-### ex limits of rational functions to infinity
+### ex "limits of rational functions to infinity"
 	
 	Find $$\lim_{x \to \infty}\frac{2x^3 + 2x - 1}{-3x}$$.
 	
@@ -244,7 +244,7 @@ In the specific case of rational functions, we know the behavior of limits to in
 	
 ###
 
-### exc limits of rational functions to infinity
+### exc "limits of rational functions to infinity"
 	
 	Find $$\lim_{x \to \infty}\frac{6x^2 + 2x - 1}{4x^2}$$.
 	

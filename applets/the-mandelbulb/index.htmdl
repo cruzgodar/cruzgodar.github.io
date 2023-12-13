@@ -14,27 +14,27 @@ Drag on the scene to look around. On a keyboard, use WASD to move, and on a touc
 
 ### text-boxes
 	
-	resolution 400 Resolution
+	resolution 400 "Resolution"
 	
 ###
 
 ### sliders
 	
-	iterations log int 1.204119 0 1.501029 Iterations
+	iterations 1.204119 0 1.501029 -l -i "Iterations"
 	
-	power 8 2 16 Power
+	power 8 2 16 "Power"
 	
-	rotation-angle-x 0 0 3.1415 $\theta_x$
+	rotation-angle-x 0 0 3.1415 "$\theta_x$"
 	
-	rotation-angle-y 0 0 3.1415 $\theta_y$
+	rotation-angle-y 0 0 3.1415 "$\theta_y$"
 	
-	rotation-angle-z 0 0 3.1415 $\theta_z$
+	rotation-angle-z 0 0 3.1415 "$\theta_z$"
 	
-	c-x -0.54 -1 1 $c_x$
+	c-x -0.54 -1 1 "$c_x$"
 	
-	c-y -0.25 -1 1 $c_y$
+	c-y -0.25 -1 1 "$c_y$"
 	
-	c-z -0.668 -1 1 $c_z$
+	c-z -0.668 -1 1 "$c_z$"
 	
 ###
 

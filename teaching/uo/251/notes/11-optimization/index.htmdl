@@ -6,7 +6,7 @@ The idea is to figure out when a function is as large or as small as possible. T
 
 
 
-### def extrema
+### def "extrema"
 	
 	Let $f$ be a function. A **local maximum** of $f$ is a point $x = a$ so that $f(a)$ is larger than any nearby value of $f(x)$. Similarly, a **local minimum** of $f$ is a point $x = a$ so that $f(a)$ is small than any nearby value of $f(x)$. Together, local maximina and minima are called **local extrema**.
 	
@@ -28,7 +28,7 @@ These are in fact the *only* ways local extrema occur. Let's give the idea a nam
 
 
 
-### def critical point
+### def "critical point"
 	
 	Let $f$ be a function. A **critical point** of $f$ is an $x$-value $x = a$ such that either:
 	
@@ -50,7 +50,7 @@ All local extrema occur at critical points, but not all critical points are extr
 
 
 
-### ex critical points
+### ex "critical points"
 	
 	Find the critical points of $$f(x) = x^5 - 3x^3 + x$$ on $$[-2, 1.5]$$.
 	
@@ -88,7 +88,7 @@ All local extrema occur at critical points, but not all critical points are extr
 	
 ###
 
-### exc critical points
+### exc "critical points"
 	
 	Let $g(t)$ be defined by
 	
@@ -112,7 +112,7 @@ That last exercise illustrates an important point: functions aren't guaranteed t
 
 
 
-### thm The Extreme Value Theorem
+### thm "The Extreme Value Theorem"
 	
 	Let $f$ be a function defined and continuous **everywhere** on an interval $[a, b]$. Then $f$ has a global maximum and minimum.
 	
@@ -132,7 +132,7 @@ Suppose $x = a$ is the type of critical point with $f'(a) = 0$. If $f''(a) < 0$,
 
 
 
-### ex critical points
+### ex "critical points"
 	
 	Classify the critical points of $$f(x) = x^5 - 3x^3 + x$$ on $$[-2, 1.5]$$ using the second derivative test.
 	
@@ -162,7 +162,7 @@ Similarly to critical points, which are points where the derivative is zero or u
 
 
 
-### def inflection point
+### def "inflection point"
 	
 	Let $f$ be a function. An **inflection point** of $f$ is an $x$-value $x = a$ where $f''(a) = 0$ and $f''(x)$ changes sign at $x = a$.
 	
@@ -176,7 +176,7 @@ Back to optimization. Thankfully, even if the second derivative test is inconclu
 
 
 
-### thm the First Derivative Test
+### thm "the First Derivative Test"
 	
 	Let $f(x)$ be a differentiable function and write down all of its critical points from left to right. Take a critical point $x = a$ and evaluate $f'(x)$ at two places: in between $a$ and the next critical point to the left and in between $x$ and the next critical point to the right. If the derivative switches sign from positive to negative, then $a$ is a local maximum. If it switches sign from negative to positive, then $a$ is a local minimum. If it doesn't switch sign, then $a$ is a saddle point.
 	
@@ -184,7 +184,7 @@ Back to optimization. Thankfully, even if the second derivative test is inconclu
 
 
 
-### ex critical points
+### ex "critical points"
 	
 	Find and classify the extrema of $$g(t) = t^6 - t^4$$.
 	
@@ -204,7 +204,7 @@ Back to optimization. Thankfully, even if the second derivative test is inconclu
 	
 ###
 
-### exc critical points
+### exc "critical points"
 	
 	Find and classify the extrema of $h(x) = x^5 - 2x^3$ on $$\left[-2, \sqrt{2}\right]$$.
 	

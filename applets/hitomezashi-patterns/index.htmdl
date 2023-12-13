@@ -10,23 +10,23 @@ Inspired by the recent (at the time of writing) <a href="https://www.youtube.com
 
 ### text-boxes
 	
-	resolution 2000 Resolution
+	resolution 2000 "Resolution"
 	
-	grid-size 50 Grid Size
+	grid-size 50 "Grid Size"
 	
-	row-prob .5 Row Offset Chance
+	row-prob .5 "Row Offset Chance"
 	
-	col-prob .5 Column Offset Chance
+	col-prob .5 "Column Offset Chance"
 	
 ###
 
 
 
-### checkbox toggle-draw-boundaries Draw boundaries
+### checkbox toggle-draw-boundaries "Draw boundaries"
 
-### checkbox toggle-draw-regions Color regions
+### checkbox toggle-draw-regions "Color regions"
 
-### checkbox toggle-maximum-speed Maximum speed
+### checkbox toggle-maximum-speed "Maximum speed"
 
 
 

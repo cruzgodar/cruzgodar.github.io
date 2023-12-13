@@ -10,7 +10,7 @@ With so much work required to solve DEs, it'd be nice to have simple heuristics 
 
 
 
-### prop existence and uniqueness of solutions for first-order linear equations
+### prop "existence and uniqueness of solutions for first-order linear equations"
 	
 	For continuous functions $p$ and $q$, the DE
 	
@@ -34,7 +34,7 @@ When a first-order DE $y' = f(t, y)$ is nonlinear, we don't have a general solvi
 
 
 
-### thm existence and uniqueness of solutions for first-order nonlinear equations
+### thm "existence and uniqueness of solutions for first-order nonlinear equations"
 	
 	For a continuous function $f(t, y)$ with a continuous partial derivative $$\frac{\partial f}{\partial y}$$, the DE
 	
@@ -66,7 +66,7 @@ read "partial $g$ partial $c$". When we differentiate with respect to $x$, $c$ i
 
 
 
-### exc partial derivatives
+### exc "partial derivatives"
 	
 	Define a function $h$ by
 	
@@ -84,7 +84,7 @@ The proof of the previous theorem is well beyond the scope of this class, but th
 
 
 
-### ex existence and uniqueness
+### ex "existence and uniqueness"
 	
 	Show that there's a unique solution to the DE
 	
@@ -114,7 +114,7 @@ Our final solving method for first-order DEs looks quite a lot like integrating 
 
 
 
-### thm the multivariable chain rule
+### thm "the multivariable chain rule"
 	
 	Let $f(x, y)$ be a function of two variables and suppose $x(t)$ and $y(t)$ are each differentiable functions of the same variable $t$. Then $f(x, y)$ is a function of the single variable $t$, and its derivative is
 	
@@ -142,7 +142,7 @@ which is just the chain rule from calculus I.
 
 
 
-### ex the multivariable chain rule
+### ex "the multivariable chain rule"
 	
 	Let $f(x, y) = \sin\left(x^2y\right)$. If $x(t) = 2t$ and $y(t) = t^3$, find $\frac{d f(x, y)}{dt}$.
 	
@@ -178,7 +178,7 @@ which is just the chain rule from calculus I.
 	
 ###
 
-### exc the multivariable chain rule
+### exc "the multivariable chain rule"
 	
 	Let $g(x, y) = x\tan(x + y)$, $x(t) = t$, and $y(t) = e^t$. Find $$\frac{d g(x, y)}{dt}$$ with the multivariable chain rule.
 	
@@ -190,7 +190,7 @@ Equipped with the multivariable chain rule, we're ready to dive into our first e
 
 
 
-### ex solving with exactness
+### ex "solving with exactness"
 	
 	Solve the DE $$2t + y^2 + 2tyy' = 0$$.
 	
@@ -242,7 +242,7 @@ The main questions we have here are similar to those from integrating factors: h
 
 
 
-### def exact differential equation
+### def "exact differential equation"
 	
 	A DE is **exact** if it can be written in the form
 	
@@ -272,7 +272,7 @@ In the interest of time (and because it's covered in much more depth in calculus
 
 
 
-### thm the existence of $\psi$
+### thm "the existence of $\psi$"
 	
 	Let $f(t, y)$ and $g(t, y)$ be continuous and differentiable. If $\frac{\partial f}{\partial y}$ and $\frac{\partial g}{\partial t}$ exist and are continuous, and if
 
@@ -296,7 +296,7 @@ So to determine exactness, we differentiate $f$ with respect to $y$ and $g$ with
 
 
 
-### thm !Method: solving with exactness
+### thm -m "Method: solving with exactness"
 	
 	To solve the DE $f(t, y) + g(t, y)y' = 0$ with exactness:
 	
@@ -318,7 +318,7 @@ So to determine exactness, we differentiate $f$ with respect to $y$ and $g$ with
 
 
 
-### ex solving an exact DE
+### ex "solving an exact DE"
 	
 	Solve the DE
 	
@@ -398,7 +398,7 @@ So to determine exactness, we differentiate $f$ with respect to $y$ and $g$ with
 	
 ###
 
-### exc solving an exact DE
+### exc "solving an exact DE"
 	
 	Solve the DE
 	

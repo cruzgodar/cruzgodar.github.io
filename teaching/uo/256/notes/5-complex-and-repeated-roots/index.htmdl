@@ -20,7 +20,7 @@ so our real question is how to deal with $e^{i\theta}$ for a real value of $\the
 
 
 
-### thm Euler's formula
+### thm "Euler's formula"
 	
 	For any real number $\theta$,
 	
@@ -99,7 +99,7 @@ The imaginary numbers have disappeared --- we could take $c_1$ and $c_2$ to be c
 
 
 
-### ex a characteristic equation with complex roots
+### ex "a characteristic equation with complex roots"
 	
 	Solve the DE $y'' + 2y' + 5y = 0$ and verify that you've found the general solution with the Wronskian. Then find the particular solution with $y(0) = 1$ and $y'(0) = 3$.
 	
@@ -165,7 +165,7 @@ The imaginary numbers have disappeared --- we could take $c_1$ and $c_2$ to be c
 	
 ###
 
-### exc a characteristic equation with complex roots
+### exc "a characteristic equation with complex roots"
 	
 Solve the DE $y'' + 4y' + 13y = 0$ and verify that you've found the general solution with the Wronskian. Then find the particular solution with $y(0) = -3$ and $y'(0) = 9$.
 	
@@ -273,7 +273,7 @@ We can now also describe a complete method for solving this type of DE. (Finally
 
 
 
-### thm !Method: solving second-order linear constant-coefficient homogeneous DEs
+### thm -m "Method: solving second-order linear constant-coefficient homogeneous DEs"
 	
 	To solve $ay'' + by' + cy = 0$, first find the roots $r_1$ and $r_2$ of the corresponding characteristic equation $ar^2 + br + c = 0$.
 	
@@ -309,7 +309,7 @@ after following the same process. That's a separable first-order DE in $v'$, and
 
 
 
-### ex repeated roots.
+### ex "repeated roots."
 	
 	Solve $$y'' + 2y' + y = 0$$, given $y(0) = 1$ and $y'(0) = 0$.
 	
@@ -347,7 +347,7 @@ after following the same process. That's a separable first-order DE in $v'$, and
 	
 ###
 
-### exc repeated roots
+### exc "repeated roots"
 	
 	Solve $$4y'' - 12y' + 9y = 0$$, given $y(0) = 4$ and $y'(0) = 1$.
 	
@@ -359,7 +359,7 @@ As a final example, we'll look at applying reduction of order to a more complica
 
 
 
-### ex reduction of order
+### ex "reduction of order"
 	
 	One fundamental solution to $$t^2y'' - ty' + y = 0$$ is $y = t$. Find the other.
 	
@@ -423,7 +423,7 @@ As a final example, we'll look at applying reduction of order to a more complica
 	
 ###
 
-### exc reduction of order
+### exc "reduction of order"
 	
 	One fundamental solution to $$3t^2y'' + 3ty' - y = 0$$ is $y = t^{1 / \sqrt{3}}$. Find the other.
 	

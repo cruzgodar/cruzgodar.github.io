@@ -151,7 +151,7 @@ $$
 
 ###
 
-### thm -m "A name!"
+### thm "-m "A name!"
 	
 	With some text
 

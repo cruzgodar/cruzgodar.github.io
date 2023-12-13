@@ -38,7 +38,7 @@ With individual DEs, we were able to extract two fundamental solutions immediate
 
 
 
-### ex complex eigenvalues
+### ex "complex eigenvalues"
 	
 	A species of fish in a pond feeds primarily on a certain strain of algae --- with $p_1(t)$ and $p_2(t)$ giving the total biomass of fish and algae in $\text{kg}$ after $t$ days, respectively, they satisfy the system
 	
@@ -156,7 +156,7 @@ With individual DEs, we were able to extract two fundamental solutions immediate
 	
 ###
 
-### exc complex eigenvalues
+### exc "complex eigenvalues"
 	
 	Chemical solutions $A$ and $B$ are mixed together and react. Large amounts of solution $A$ are rapidly converted to small amounts of solution $B$, and both $A$ and $B$ decay into an inert solution at a moderate rate. Specifically, if the masses of solutions $A$ and $B$ are given by $m_1$ and $m_2$ in grams after $t$ seconds, then
 	
@@ -208,7 +208,7 @@ So our metaphor of eigenvalues working like roots of the characteristic equation
 
 
 
-### def generalized eigenvector
+### def "generalized eigenvector"
 	
 	Let $**A**$ be an $n \times n$ matrix and let $**v**$ be an eigenvector with eigenvalue $\lambda$. A **generalized eigenvector** of $**v**$ is a vector $**w**$ with
 	
@@ -258,7 +258,7 @@ Without a use for them, it doesn't make much sense to find generalized eigenvect
 
 
 
-### thm solving a system with repeated eigenvectors
+### thm "solving a system with repeated eigenvectors"
 	
 	Suppose the matrix $**A**$ has an eigenvector $**v**$ that is repeated once --- i.e. the eigenvalue $\lambda$ appears as a root of the characteristic polynomial twice but there is only one eigenvector $**v**$ corresponding to it. Then the second fundamental solution to $**x**' = **Ax**$ with eigenvalue $\lambda$ is
 	
@@ -278,7 +278,7 @@ When an eigenvalue $\lambda$ appears twice in the characteristic polynomial, but
 
 
 
-### ex a repeated eigenvector
+### ex "a repeated eigenvector"
 	
 	The heating in University hall is horribly broken (still). The basement, first floor, and second floor are heated and cooled at varying degrees, and since the floors are adjacent, the temperature on one floor affects the temperature on others. Specifically, if the temperatures are $x_1$, $x_2$, and $x_3$, then their rates of change are given by
 	
@@ -400,7 +400,7 @@ When an eigenvalue $\lambda$ appears twice in the characteristic polynomial, but
 	
 ###
 
-### exc a repeated eigenvector
+### exc "a repeated eigenvector"
 	
 	Solve the system of DEs given by
 	

@@ -14,25 +14,25 @@ The colors roughly indicate the fundamental frequencies of each point. Hover or 
 	
 	fractal-selector
 
-	none Fractals
+	none "Fractals"
 	
-	mandelbrot Mandelbrot Set
+	mandelbrot "Mandelbrot Set"
 	
-	sfx SFX Fractal
+	sfx "SFX Fractal"
 	
-	burning-ship Burning Ship
+	burning-ship "Burning Ship"
 	
-	feather Feather Fractal
+	feather "Feather Fractal"
 	
-	duffing Duffing Map
+	duffing "Duffing Map"
 	
-	ikeda Ikeda Map
+	ikeda "Ikeda Map"
 
 ###
 
 ### text-boxes
 	
-	resolution 500 Resolution
+	resolution 500 "Resolution"
 	
 ###
 

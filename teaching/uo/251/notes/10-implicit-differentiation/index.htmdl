@@ -12,7 +12,7 @@ The process takes a second to get used to, because it typically involves heavy u
 
 
 
-### thm implicit differentiation
+### thm "implicit differentiation"
 	
 	To find the derivative of a function defined implicitly in terms of $x$ and $y$:
 	
@@ -26,7 +26,7 @@ The process takes a second to get used to, because it typically involves heavy u
 
 
 
-### ex implicit differentiation
+### ex "implicit differentiation"
 	
 	The curve $x^2 + y^2 = 1$ has two points with $x = \frac{1}{2}$. Find the slopes of the tangent lines for each point.
 	
@@ -56,7 +56,7 @@ The process takes a second to get used to, because it typically involves heavy u
 	
 ###
 
-### exc implicit differentiation
+### exc "implicit differentiation"
 	
 	The graph of $\cos(\sin(y)) = \cos(x)$ looks like a sequence of braids.
 	
@@ -68,7 +68,7 @@ The process takes a second to get used to, because it typically involves heavy u
 
 
 
-### ex implicit differentiation
+### ex "implicit differentiation"
 	
 	Find $$\frac{dy}{dx}$$ from the equation $x\sin(xy) = y$.
 	
@@ -112,7 +112,7 @@ and then differentiate implicitly.
 
 
 
-### ex logarithmic differentiation
+### ex "logarithmic differentiation"
 	
 	Find $$\frac{d}{dx}[x^x]$$.
 	
@@ -134,7 +134,7 @@ and then differentiate implicitly.
 	
 ###
 
-### exc logarithmic differentiation
+### exc "logarithmic differentiation"
 	
 	Find $$\frac{d}{dx}\left[\sin(x)^{(e^x)}\right]$$.
 	
@@ -146,7 +146,7 @@ At long last, we can handle the derivative of $x^n$, where $n$ is not just a rat
 
 
 
-### thm the derivative of $x^n$ for any real $n$	
+### thm "the derivative of $x^n$ for any real $n$	"
 	
 	Let $n$ be a real number. Then $$\frac{d}{dx}[x^n] = nx^{n-1}$$.
 	

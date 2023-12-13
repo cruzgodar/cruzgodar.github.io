@@ -4,7 +4,7 @@
 
 With the foundation of matrices, inverses, linear transformations, and linear independence, we're ready to tie everything we've learned together. We'll begin by defining two properties that a linear transformation can have, and we'll soon see how they relate to the ones we've already seen.
 
-### def one-to-one and onto
+### def "one-to-one and onto"
 
 	A function $f : #R#^n \to #R#^m$ is **one-to-one** (or **injective**) if $f(\vec{v}) \neq f(\vec{w})$ whenever $\vec{v} \neq \vec{w}$. It's **onto** (or **surjective**) if every vector $\vec{u} \in #R#^m$ satisfies $\vec{u} = f(\vec{v})$ for some vector $\vec{v} \in #R#^n$.
 
@@ -14,7 +14,7 @@ In simple terms, one-to-one functions are those that pass the horizontal line te
 
 This first definition of one-to-one is unfortunately a little too clunky to work with directly most of the time. Instead, we'll use an equivalent one that's quite a bit more streamlined.
 
-### prop an equivalent one-to-one definition
+### prop "an equivalent one-to-one definition"
 
 	A linear transformation $T : #R#^n \to #R#^m$ is one-to-one exactly when the only vector $\vec{v} \in #R#^n$ for which $T(\vec{v}) = \vec{0}$ is $\vec{v} = \vec{0}$.
 
@@ -55,7 +55,7 @@ $$
 
 Since we can plug in whatever we like for $x$ and $y$, the image of $T$ --- the set of outputs that actually occur --- is the *span of the columns of the matrix corresponding to $T$*. That's absolutely a mouthful, so let's give it a more concise name.
 
-### def column space
+### def "column space"
 
 	Let $T$ be a linear transformation. The **column space** of $T$ is the span of the columns of the matrix corresponding to $T$. The column space of $T$ is equal to $\image T$, so we don't need extra notation to distinguish it.
 
@@ -63,7 +63,7 @@ Since we can plug in whatever we like for $x$ and $y$, the image of $T$ --- the 
 
 Let's finally bring it all together. For a linear transformation $T : #R#^n \to #R#^m$ to be onto --- that is, for its column space to be equal to $#R#^m$ --- we need the columns of the matrix for $T$ to have at least $m$ linearly independent vectors among them. On the other hand, for $T$ to be one-to-one, we need *all* the columns to be linearly independent --- if there's any linear dependence, then two different inputs will get sent to the same output. It's tempting to say that being one-to-one is a stronger condition than being onto, but this actually isn't always the case, as we'll shortly see. For now, though, we can state the result that will let us properly evaluate individual transformations.
 
-### thm criteria for one-to-one and onto
+### thm "criteria for one-to-one and onto"
 
 	Let $T : #R#^n \to #R#^m$ be a linear transformation and let $A$ be the $m \times n$ matrix corresponding to it. Then $T$ is one-to-one exactly when all the columns of $A$ are linearly independent, and $T$ is onto exactly when there are at least $m$ linearly independent columns of $A$.
 
@@ -71,7 +71,7 @@ Let's finally bring it all together. For a linear transformation $T : #R#^n \to 
 
 To check how many vectors in a set (e.g. the columns of a matrix) are linearly independent, the simplest method is to place them all as *rows* in a matrix and reduce it. That's because row operations replace rows with linear combinations of other rows, with the goal of making them zero if possible. When we're done reducing, the number of nonzero rows left is the number of linearly independent vectors in the set we started with.
 
-### ex one-to-one and onto
+### ex "one-to-one and onto"
 	
 	Let $T : #R#^3 \to #R#^3$ be defined by
 
@@ -107,7 +107,7 @@ To check how many vectors in a set (e.g. the columns of a matrix) are linearly i
 
 ###
 
-### exc one-to-one and onto
+### exc "one-to-one and onto"
 
 	Let $S : #R#^3 \to #R#^2$ be defined by
 
@@ -151,7 +151,7 @@ Geometrically, it's helpful to think of two cases here: first, when $n = 2$ and 
 
 When we have a one-to-one and onto linear transformation $T : #R#^n \to #R#^m$, then we now know that $m = n$ --- otherwise, one of the two would be impossible. That means the matrix for $T$ is square, and the two conditions now say exactly the same thing: $T$ being one-to-one means it has all $n$ of its columns linearly independent, and onto means it has at least $n$ of its columns linearly independent. And in fact, both being one-to-one and being onto are equivalent to a property we're already familiar with:
 
-### thm invertibility
+### thm "invertibility"
 
 	Let $T : #R#^n \to #R#^n$ be a linear transformation whose domain and codomain are the same. Then all of the following statements are equivalent:
 

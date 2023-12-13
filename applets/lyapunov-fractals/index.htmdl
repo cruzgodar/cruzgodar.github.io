@@ -10,9 +10,9 @@ The <a href="https://en.wikipedia.org/wiki/Logistic_map">logistic map</a> is one
 
 ### text-boxes
 	
-	resolution 500 Resolution
+	resolution 500 "Resolution"
 	
-	generating-string AB Generating String
+	generating-string AB "Generating String"
 	
 ###
 

@@ -4,7 +4,7 @@ Let's get right to it! We have Riemann sums, which approximate the area under th
 
 
 
-### def definite integral
+### def "definite integral"
 	
 	Let $f$ be a nonnegative function defined on $[a, b]$. The **definite integral** of $f$ on $[a, b]$ is the area under the graph of $f$ on $[a, b]$, written as $\int_a^b f(x)\,dx$ and defined by
 	
@@ -24,7 +24,7 @@ Being integrable is a complicated condition --- it's not clear what properties a
 
 
 
-### thm continuous functions are integrable
+### thm "continuous functions are integrable"
 	
 	Let $f$ be a function that is nonnegative and continuous on $[a, b]$. Then $f$ is integrable on $[a, b]$.
 
@@ -36,7 +36,7 @@ At this point, we're in desperate need of examples. Let's start with something w
 
 
 
-### ex computing an integral geometrically
+### ex "computing an integral geometrically"
 	
 	Find $$\int_{-1}^3 |x|\,dx$$.
 	
@@ -54,7 +54,7 @@ At this point, we're in desperate need of examples. Let's start with something w
 
 ###
 
-### exc computing an integral geometrically
+### exc "computing an integral geometrically"
 	
 	Find $$\int_1^3 2x \,dx$$ geometrically.
 	
@@ -68,7 +68,7 @@ At this point, we're in desperate need of examples. Let's start with something w
 
 
 
-### ex computing an integral from the limit definition
+### ex "computing an integral from the limit definition"
 	
 	Find $$\int_0^2 t^2\,dt$$.
 	
@@ -114,7 +114,7 @@ At this point, we're in desperate need of examples. Let's start with something w
 
 ###
 
-### ex computing an integral from the limit definition
+### ex "computing an integral from the limit definition"
 	
 	Find $$\int_0^3 t^3\,dt$$ from the limit definition.
 	
@@ -142,7 +142,7 @@ Let's look at one more type of integral that we can handle geometrically, and th
 
 
 
-### ex another geometric integral
+### ex "another geometric integral"
 	
 	Compute $$\int_3^6 \sqrt{9 - (x - 3)^2}\,dx$$.
 	
@@ -160,7 +160,7 @@ So far, we've only defined integrals for functions that are nonnegative. We'll n
 
 
 
-### def signed area
+### def "signed area"
 	
 	Let $f$ be an integrable function on $[a, b]$. The integral $\int_a^b f(x)\,dx$ is the area under the graph of $f$, where area below the $x$-axis is counted as negative.
 	
@@ -168,7 +168,7 @@ So far, we've only defined integrals for functions that are nonnegative. We'll n
 
 
 
-### ex signed area
+### ex "signed area"
 	
 	$$\int_{-2}^2 x^3\,dx = 0$$, since the areas above (red) and below (blue) the $x$-axis are equal.
 	
@@ -182,7 +182,7 @@ Since they're defined as limits of sums, integrals have many of the same nice pr
 
 
 
-### prop basic integral properties
+### prop "basic integral properties"
 	
 	1. $$\int_a^a f(x)\,dx = 0$$ (lines have no area).
 	
@@ -204,7 +204,7 @@ One quantity integrals let us calculate conveniently is average value --- for a 
 
 
 
-### def average value
+### def "average value"
 	
 	Let $f$ be a function on $[a, b]$. The **average value** of $f$ on $[a, b]$ is
 	
@@ -220,13 +220,13 @@ This is a reasonable definition, since the integral is adding up the values of $
 
 
 
-### ex average value
+### ex "average value"
 	
 	The average value of $f(x) = x^2$ on $[0, 2]$ is $\frac{1}{2 - 0} \cdot \frac{8}{3} = \frac{8}{6}$.
 	
 ###
 
-### exc average value
+### exc "average value"
 	
 	Find the average value of $g(x) = x^3$ on $[0, 3]$.
 	

@@ -66,7 +66,7 @@ Enough abstract work --- let's get to solving some systems! As usual, we'll star
 
 
 
-### ex a first-order system
+### ex "a first-order system"
 	
 	Find the general solution to
 	
@@ -120,7 +120,7 @@ and in a single equation, we've justified the entire previous section: we need t
 
 
 
-### thm solving first-order linear homogeneous systems
+### thm "solving first-order linear homogeneous systems"
 	
 	Let $**x**' = **Ax**$ be a first-order linear homogeneous system of DEs, where $**A**$ is a real-valued matrix. If $**v**$ is an eigenvalue of $**A**$ with eigenvalue $\lambda$, $**x** = e^{\lambda t} **v**$ is a solution to the system.
 	
@@ -132,7 +132,7 @@ If all $n$ eigenvalues of $**A**$ are real and different, then it's guaranteed t
 
 
 
-### ex a first-order system
+### ex "a first-order system"
 	
 	Solve 
 	
@@ -234,7 +234,7 @@ If all $n$ eigenvalues of $**A**$ are real and different, then it's guaranteed t
 	
 ###
 
-### exc a first-order system
+### exc "a first-order system"
 	
 	Solve the system
 	
@@ -256,7 +256,7 @@ Systems of first-order DEs crop up all the time in physical applications --- for
 
 
 
-### ex multiple tanks
+### ex "multiple tanks"
 	
 	Three tanks are set up next to one another. Tank 1 initially contains $100\,L$ of water in which $990\,g$ of salt is dissolved, tank 2 initially contains $1\,L$ of water in which $500\,g$ of salt is dissolved, and tank 3 initially contains $50\,L$ of water. At time $t = 0$, we open a lot of valves: a pure water solution is poured into tank 1 at a rate of $2\,\frac{L}{s}$, and the well-mixed solution from tank 1 is drained into tank 2 at the same rate. Similarly, the mixed solution in tank 2 drains into tank 3, and the mixed solution in tank 3 drains and is discarded, all at $2\,\frac{L}{s}$. Find the mass of salt in each tank after 5 minutes.
 	
@@ -386,7 +386,7 @@ Systems of first-order DEs crop up all the time in physical applications --- for
 	
 ###
 
-### exc $\text{TREE}(3)$
+### exc "$\text{TREE}(3)$"
 	
 	The life cycle of trees in a forest can be divided into three sections: when they're alive, when they've died, and when they've then decomposed into soil. Suppose $m_1(t)$, $m_2(t)$, and $m_3(t)$ give the mass of living trees, fallen trees, and soil from fallen trees in century $t$, respectively, and that they satisfy the following system of DEs:
 	

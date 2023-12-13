@@ -66,7 +66,7 @@ The expression on the right is a **binomial coefficient**, read as "$r$ choose $
 
 
 
-### def generalized binomial coefficient
+### def "generalized binomial coefficient"
 	
 	Let $r$ be a real number and let $n$ be a positive integer. The **generalized binomial coefficient** $\binom{r}{n}$ is defined to be
 	
@@ -104,7 +104,7 @@ Therefore, the series converges when $|x| < 1$, and so the interval of convergen
 
 
 
-### ex the Maclaurin series for $(1 + x)^r$
+### ex "the Maclaurin series for $(1 + x)^r$"
 	
 	Approximate $$\frac{1}{\sqrt{2}}$$ with a degree-4 Taylor polynomial and bound the error.
 	
@@ -150,7 +150,7 @@ Therefore, the series converges when $|x| < 1$, and so the interval of convergen
 	
 ###
 
-### exc the Maclaurin series for $(1 + x)^{3/2}$
+### exc "the Maclaurin series for $(1 + x)^{3/2}$"
 	
 	Express $$(1 + x)^{3/2}$$ as a Maclaurin series and determine the interval of convergence. Then approximate $$1.5^{1.5}$$ with a degree-3 Maclaurin polynomial and bound the error.
 	
@@ -200,7 +200,7 @@ As we mentioned in section 8, power series have the excellent property of being 
 
 
 
-### ex solving a differential equation with power series
+### ex "solving a differential equation with power series"
 	
 	Find a power series solution to $$y'' = xy$$.
 	
@@ -272,7 +272,7 @@ As we mentioned in section 8, power series have the excellent property of being 
 	
 ###
 
-### exc solving a differential equation with power series
+### exc "solving a differential equation with power series"
 	
 	Find a power series solution to the differential equation $$y'' = \frac{y}{x}$$.
 
@@ -286,7 +286,7 @@ We've seen this application before too: power series integrate term-by-term, so 
 
 
 
-### ex evaluating an integral with power series
+### ex "evaluating an integral with power series"
 	
 	Approximate $$\int_0^1 e^{-x^2}\,dx$$ to within $.001$ of its true value.
 	
@@ -350,7 +350,7 @@ We've seen this application before too: power series integrate term-by-term, so 
 	
 ###
 
-### exc evaluating an integral with power series
+### exc "evaluating an integral with power series"
 	
 	Approximate $$\int_0^1 \frac{\sin(x)}{x}\,dx$$ to within $.001$ of its true value.
 	

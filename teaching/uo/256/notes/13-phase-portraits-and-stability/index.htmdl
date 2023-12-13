@@ -6,7 +6,7 @@ Our final topic will be **nonlinear systems**, like the Lotka-Volterra model for
 
 
 
-### def sources, sinks, and saddles
+### def "sources, sinks, and saddles"
 	
 	In a vector field, a **critical point** is a point $(x, y)$ for which there is no motion. If the field around a critical point exclusively flows away from it, the point is called a **source**. If the surrounding field exclusively flows toward the point, it's called a **sink**. If some flows toward the point and some flows away, it's called a **saddle point**. Finally, if the field simply spirals around the point and none flows toward or away, it's called a **center**.
 	
@@ -44,7 +44,7 @@ Drag the red point to change the eigenvalues and eigenvectors. The blue curves a
 
 
 
-### ex phase portraits
+### ex "phase portraits"
 	
 	Given the following phase portrait for $**x**' = **Ax**$, what can we determine about the eigenvalues and eigenvectors of $**A**$?
 	
@@ -60,7 +60,7 @@ Drag the red point to change the eigenvalues and eigenvectors. The blue curves a
 	
 ###
 
-### exc phase portraits
+### exc "phase portraits"
 	
 	Given the following phase portrait for $**x**' = **Ax**$, what can we determine about the eigenvalues and eigenvectors of $**A**$?
 	
@@ -76,7 +76,7 @@ Let's take our first step into nonlinear systems. Since we were barely able to s
 
 
 
-### def autonomous system
+### def "autonomous system"
 	
 	A system of two DEs is **autonomous** if it is of the form
 	
@@ -96,7 +96,7 @@ For a nonlinear system, we don't have nearly as nice of a classification of crit
 
 
 
-### ex an autonomous system
+### ex "an autonomous system"
 	
 	Solve the system
 	
@@ -140,7 +140,7 @@ For a nonlinear system, we don't have nearly as nice of a classification of crit
 	
 ###
 
-### exc an autonomous system
+### exc "an autonomous system"
 	
 	Solve the system
 	
@@ -162,7 +162,7 @@ Compared to linear systems, where there's a single critical point at the origin 
 
 
 
-### def locally linear system
+### def "locally linear system"
 	
 	A system of DEs $**x**' = **F**(**x**)$ is **locally linear** if there is a matrix $**A**$ so that
 	
@@ -186,7 +186,7 @@ This definition is fine, but we'll barely use it --- for us, the most important 
 
 
 
-### thm creating a linear approximation
+### thm "creating a linear approximation"
 	
 	Consider the system
 	
@@ -216,7 +216,7 @@ With the Jacobian in hand, we can approximate complex systems and determine the 
 
 
 
-### ex creating a linear approximation
+### ex "creating a linear approximation"
 	
 	A damped pendulum swings back and forth with angle $\theta$ from the vertical (so $\theta = 0$ corresponds to the pendulum pointing straight down). If $x = \theta$ and $y = \theta'$, then $x$ and $y$ satisfy a system of first-order DEs:
 	
@@ -268,7 +268,7 @@ With the Jacobian in hand, we can approximate complex systems and determine the 
 	
 ###
 
-### exc creating a linear approximation
+### exc "creating a linear approximation"
 	
 	Why does the vector field plot make sense? What is the physical state corresponding to each of the critical points, and why are some spiral sinks and others saddle points? Why is the graph periodic in the $x$-direction, but not the $y$-direction? Remember: $x = \theta$ and $y = \theta'$.
 	

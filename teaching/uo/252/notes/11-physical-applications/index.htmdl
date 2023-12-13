@@ -6,7 +6,7 @@ Let's start with the simplest part: work. If you've taken a physics course, you 
 
 
 
-### thm work done by moving an object
+### thm "work done by moving an object"
 	
 	Suppose an object is moved from $x = a$ to $x = b$, and the force done at position $x$ is $F(x)$. Then the total work done is
 	
@@ -18,7 +18,7 @@ Let's start with the simplest part: work. If you've taken a physics course, you 
 
 
 
-### ex work done by moving an object
+### ex "work done by moving an object"
 	
 	A cart is pushed $5$ meters by applying a force of $x^2$ Newtons when the cart has been pushed $x$ meters. Find the total work done.
 	
@@ -32,7 +32,7 @@ Let's start with the simplest part: work. If you've taken a physics course, you 
 	
 ###
 
-### exc work done by stopping an object
+### exc "work done by stopping an object"
 	
 	A cart is rolling down a hill, and you try to stop it. You apply a force of $x\ N$ **against** the cart when it has rolled $x\ m$, and it finally comes to a stop after $3$ meters. How much work do you do? Note that force applied against the direction of motion counts as negative.
 	
@@ -52,7 +52,7 @@ Moving on to other work problems, let's look at springs. We can do this using so
 
 
 
-### thm Hooke's law
+### thm "Hooke's law"
 	
 	Every spring has an associated constant $k$, called the **spring constant**. When the spring has been stretched $x$ meters, the force to stretch it more is $kx$. Similarly, when it has been compressed $x$ meters, the force to compress it more is $kx$.
 	
@@ -60,7 +60,7 @@ Moving on to other work problems, let's look at springs. We can do this using so
 
 
 
-### ex Hooke's law
+### ex "Hooke's law"
 	
 	It takes $10\ Nm$ of work to compress a spring $.2\ m$ from its resting position. How much work is done if you stretch it $.5\ m$ from its resting position?
 	
@@ -82,7 +82,7 @@ Moving on to other work problems, let's look at springs. We can do this using so
 	
 ###
 
-### exc Hooke's law
+### exc "Hooke's law"
 	
 	A spring is stretched $1\ m$, and it takes a force of $5\ N$ to stretch it more at that point. How much work is done by compressing the spring $.1\ m$ from its resting position?
 	
@@ -104,7 +104,7 @@ Just like work is force times distance, mass is density times amount. Here, amou
 
 
 
-### thm mass of a bar
+### thm "mass of a bar"
 	
 	Let $\rho(x)$ be the density of a bar at distance $x$, where $a \leq x \leq b$. Then the mass of the bar is
 	
@@ -116,7 +116,7 @@ Just like work is force times distance, mass is density times amount. Here, amou
 
 
 
-### ex mass of a bar
+### ex "mass of a bar"
 	
 	Suppose a bar has density $$\rho(x) = \sin(x)$$ on $$\left[ \frac{\pi}{2}, \pi \right]$$. Find its mass.
 	
@@ -130,7 +130,7 @@ Just like work is force times distance, mass is density times amount. Here, amou
 	
 ###
 
-### exc mass of a bar
+### exc "mass of a bar"
 	
 	Suppose a bar has density $\rho(x) = \ln(x)$ on $[1, e]$. Find its mass.
 	
@@ -148,7 +148,7 @@ Just like work is force times distance, mass is density times amount. Here, amou
 
 
 
-### thm mass of a disk or washer
+### thm "mass of a disk or washer"
 	
 	Let $\rho(r)$ be the radial density of a circular disk or washer at radius $r$ from its center, where $a \leq r \leq b$. Then the mass of the disk is
 	
@@ -160,7 +160,7 @@ Just like work is force times distance, mass is density times amount. Here, amou
 
 
 
-### ex mass of a disk
+### ex "mass of a disk"
 	
 	Suppose a disk has radial density $$\rho(r) = \sqrt{r}$$ for $0 \leq r \leq 4$. Find its mass.
 	
@@ -176,7 +176,7 @@ Just like work is force times distance, mass is density times amount. Here, amou
 	
 ###
 
-### exc mass of a washer
+### exc "mass of a washer"
 	
 	Suppose a washer has radial density $$\rho(r) = \frac{1}{r^2}$$ for $2 \leq r \leq 4$. Find its mass.
 	
@@ -198,7 +198,7 @@ The last type of problem we'll explore in this section has to do with the work d
 
 
 
-### ex a cylindrical tank
+### ex "a cylindrical tank"
 	
 	A tank in the shape of a cylinder has radius $4$ meters. It's $10$ meters tall and is filled with water up to $8$ meters, and the weight density of water is $9800\,\frac{N}{m^3}$. Find the work done by pumping out all the water out over the top of the tank.
 	
@@ -220,7 +220,7 @@ The last type of problem we'll explore in this section has to do with the work d
 
 
 
-### exc a pyramid
+### exc "a pyramid"
 	
 	A tank in the shape of a square pyramid has height $6$ and a base with side length $5$, and it's completely full of a liquid with weight density $1000\,\frac{N}{m^3}$. Find the work done by pumping it all out.
 	

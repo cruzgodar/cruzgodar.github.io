@@ -1,8 +1,8 @@
 ### image-links
-	glsl-docs c GLSL Card
+	glsl-docs -c "GLSL Card"
 ###
 
-### card glsl-docs Complex GLSL Documentation
+### card glsl-docs "Complex GLSL Documentation"
 			
 	These functions implement many common operations on complex numbers, as well as a handful of more complicated number-theoretic functions. Unless otherwise specified, `float`s refer to real numbers and `vec2`s to complex ones.
 	

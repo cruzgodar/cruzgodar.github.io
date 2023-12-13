@@ -30,7 +30,7 @@ This is the form we'll use, but just like with $u$-sub, we have a process to mak
 
 
 
-### thm integration by parts
+### thm "integration by parts"
 	
 	To evaluate $\int f(x) g(x)\,dx$ with integration by parts, we need to be able differentiate $f(x)$ and integrate $g(x)$. Let $u = f(x)$ and $dv = g(x)\,dx$. Then find $du = f'(x)\,dx$ and $v = \int g(x)\,dx$, and rewrite the integral as
 	
@@ -44,7 +44,7 @@ This is the form we'll use, but just like with $u$-sub, we have a process to mak
 
 
 
-### ex integration by parts
+### ex "integration by parts"
 	
 	Find $$\int x\sin(x)\,dx$$.
 	
@@ -66,7 +66,7 @@ This is the form we'll use, but just like with $u$-sub, we have a process to mak
 	
 ###
 
-### exc integration by parts
+### exc "integration by parts"
 	
 	Find $$\int ye^y\,dy$$.
 	
@@ -80,7 +80,7 @@ This is the form we'll use, but just like with $u$-sub, we have a process to mak
 
 
 
-### ex integration by parts
+### ex "integration by parts"
 	
 	Find $$\int \frac{\ln(t)}{t^2}\,dt$$.
 	
@@ -114,7 +114,7 @@ Sometimes, we'll need to apply integration by parts more than once.
 
 
 
-### ex integration by parts twice
+### ex "integration by parts twice"
 	
 	Find $$\int x^2 e^{3x}\,dx$$.
 	
@@ -136,7 +136,7 @@ Sometimes, we'll need to apply integration by parts more than once.
 	
 ###
 
-### exc integration by parts twice
+### exc "integration by parts twice"
 	
 	Find $$\int t^2 \cos(2t)\,dt$$.
 	
@@ -160,7 +160,7 @@ Things can get a little more complicated when multiple integration strategies ar
 
 
 
-### ex integration by parts and $u$-sub
+### ex "integration by parts and $u$-sub"
 	
 	Find $$\int y^3 e^{y^2}\,dy$$.
 	
@@ -186,7 +186,7 @@ Things can get a little more complicated when multiple integration strategies ar
 
 
 
-### ex integration by parts on definite integrals
+### ex "integration by parts on definite integrals"
 	
 	The region bounded by $y = \cos(x)$, $y = 0$, and $x = 0$ is revolved about the $y$-axis. Find its volume.
 	
@@ -208,7 +208,7 @@ Things can get a little more complicated when multiple integration strategies ar
 	
 ###
 
-### exc integration by parts on definite integrals
+### exc "integration by parts on definite integrals"
 	
 	Find $$\int_1^3 x^3 \sin(x^2)\,dx$$.
 	

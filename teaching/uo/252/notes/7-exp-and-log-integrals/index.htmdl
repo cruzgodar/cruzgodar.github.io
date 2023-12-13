@@ -4,7 +4,7 @@ So far, we know how to find antiderivatives of functions which are derivatives o
 
 
 
-### ex an integral involving an exponential function
+### ex "an integral involving an exponential function"
 	
 	A certain strain of bacteria grows at a rate of $3^t$ new bacteria per hour. If the population starts at $100$ bacteria at time $0$, how many will there be after $6$ hours?
 	
@@ -48,7 +48,7 @@ So far, we know how to find antiderivatives of functions which are derivatives o
 	
 ###
 
-### exc an integral involving an exponential function
+### exc "an integral involving an exponential function"
 	
 	A radioactive substance degrades at a rate of $-.0953 \cdot 1.1^{-t}$ grams per year after $t$ years. If there is initially $1$ gram of the substance, how much will be left after $20$ years?
 	
@@ -68,7 +68,7 @@ So far, we know how to find antiderivatives of functions which are derivatives o
 
 
 
-### ex another exponential integral
+### ex "another exponential integral"
 	
 	Find $$\int \frac{2^{1/x}}{x^2}\,dx$$.
 	
@@ -100,7 +100,7 @@ but we don't yet know the integral of $\ln(x)$, or more generally of $\log_a(x)$
 
 
 
-### prop the integral of $\ln$
+### prop "the integral of $\ln$"
 	
 	$$
 		\int \ln(x)\,dx = x\ln(x) - x + C.
@@ -108,7 +108,7 @@ but we don't yet know the integral of $\ln(x)$, or more generally of $\log_a(x)$
 	
 ###
 
-### exc the integral of $\ln$
+### exc "the integral of $\ln$"
 	
 	Differentiate $x\ln(x) - x + C$ and verify that you do in fact get $\ln(x)$.
 	
@@ -128,7 +128,7 @@ Remember that $\log_a(x)$ is the number you raise $a$ to in order to get $x$ ---
 
 
 
-### ex a logarithmic integral
+### ex "a logarithmic integral"
 	
 	Find $$\int_2^3 \log_2(5x)\,dx$$.
 	
@@ -156,7 +156,7 @@ Remember that $\log_a(x)$ is the number you raise $a$ to in order to get $x$ ---
 	
 ###
 
-### exc a logarithmic integral
+### exc "a logarithmic integral"
 	
 	Find $$\int_1^2 x\log_3(x^2)\,dx$$.
 	
@@ -186,7 +186,7 @@ You may or may not have talked about derivatives of the inverse trig functions i
 
 
 
-### prop inverse trig integrals
+### prop "inverse trig integrals"
 	
 	1. $$\int \frac{1}{\sqrt{a^2 - x^2}}\,dx = \sin^{-1}\left( \frac{x}{a} \right) + C$$.
 	
@@ -202,7 +202,7 @@ It might look like that last one is a $u$-sub problem, but it's actually not, si
 
 
 
-### ex an inverse trig integral
+### ex "an inverse trig integral"
 	
 	Find $$\int \frac{1}{\sqrt{4 - 9x^2}}\,dx$$.
 	
@@ -222,7 +222,7 @@ It might look like that last one is a $u$-sub problem, but it's actually not, si
 	
 ###
 
-### exc an inverse trig integral
+### exc "an inverse trig integral"
 	
 	Find $$\int \frac{1}{x\sqrt{4x^2 - 4}}\,dx$$.
 	
@@ -252,7 +252,7 @@ This isn't particularly relevant to this course's material, and your calculator 
 
 
 
-### ex a definite inverse trig integral
+### ex "a definite inverse trig integral"
 	
 	Find $$\int_0^2 \frac{1}{\sqrt{16 - x^2}}\,dx$$.
 	
@@ -270,7 +270,7 @@ This isn't particularly relevant to this course's material, and your calculator 
 	
 ###
 
-### exc a definite inverse trig integral
+### exc "a definite inverse trig integral"
 	
 	Find $$\int_{\sqrt{3}/3}^{\sqrt{3}} \frac{1}{1 + x^2}\,dx$$.
 	

@@ -16,13 +16,13 @@ Drag on the scene to look around. On a keyboard, use WASD to move, and on a touc
 	
 	polyhedron-selector
 
-	none Polyhedra
+	none "Polyhedra"
 	
-	octahedron Octahedron
+	octahedron "Octahedron"
 
-	tetrahedron Tetrahedron
+	tetrahedron "Tetrahedron"
 	
-	cube Cube
+	cube "Cube"
 
 ###
 
@@ -30,17 +30,17 @@ Drag on the scene to look around. On a keyboard, use WASD to move, and on a touc
 
 ### text-boxes
 	
-	resolution 400 Resolution
+	resolution 400 "Resolution"
 	
 ###
 
 ### sliders
 
-	rotation-angle-x-2 0 0 1.5708 $\theta_x$
+	rotation-angle-x-2 0 0 1.5708 "$\theta_x$"
 	
-	rotation-angle-y-2 0 0 1.5708 $\theta_y$
+	rotation-angle-y-2 0 0 1.5708 "$\theta_y$"
 	
-	rotation-angle-z-2 0 0 1.5708 $\theta_z$
+	rotation-angle-z-2 0 0 1.5708 "$\theta_z$"
 	
 ###
 

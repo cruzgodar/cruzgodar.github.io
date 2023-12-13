@@ -10,7 +10,7 @@ Popularized in the book <a href="https://en.m.wikipedia.org/wiki/Indra%27s_Pearl
 <div id="canvas-landscape-left">
 
 ### text-boxes
-	resolution 400 Resolution
+	resolution 400 "Resolution"
 ###
 
 </div>
@@ -37,11 +37,11 @@ Popularized in the book <a href="https://en.m.wikipedia.org/wiki/Indra%27s_Pearl
 
 ### text-boxes
 	
-	high-resolution 2000 Resolution
+	high-resolution 2000 "Resolution"
 	
-	max-depth 500 Iterations
+	max-depth 500 "Iterations"
 	
-	max-pixel-brightness 100 Quality
+	max-pixel-brightness 100 "Quality"
 	
 ###
 

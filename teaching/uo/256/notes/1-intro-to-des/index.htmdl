@@ -6,7 +6,7 @@ You may have already seen differential equations in calculus II, but even if you
 
 
 
-### def differential equation
+### def "differential equation"
 	
 	A **differential equation**, or DE, is an equation involving a function $y(t)$, its derivatives, and the input variable $t$. We typically use $t$ instead of $x$, since the vast majority of our applications will have time as the input variable. A **solution** to a DE is a function $y(t)$ that satisfies the equation.
 	
@@ -30,7 +30,7 @@ It shouldn't be too surprising that we have the free parameter $c$ in our soluti
 
 
 
-### ex a simple DE
+### ex "a simple DE"
 	
 	A rock falling off a cliff has vertical velocity $v(t) = -10t$ after falling for $t$ seconds. Set up and solve a DE for the function $h(t)$ that gives the vertical height of the rock after $t$ seconds.
 	
@@ -48,7 +48,7 @@ It shouldn't be too surprising that we have the free parameter $c$ in our soluti
 
 
 
-### exc a simple DE
+### exc "a simple DE"
 	
 	A buoy has a fixed horizontal position but bobs up and down with waves, and its acceleration after $t$ seconds is given by $a(t) = \cos\left( \frac{t}{5} \right)$. Set up and solve a DE for the function $v(t)$ that gives the vertical velocity of the buoy after $t$ seconds.
 	
@@ -64,7 +64,7 @@ A common theme in math when developing a new topic is to find that many facts on
 
 
 
-### def ODEs and PDEs
+### def "ODEs and PDEs"
 	
 	An **ordinary differential equation**, or ODE, is a differential equation involving a function $y(t)$ of a single variable $t$. In contrast, a **partial differential equation**, or PDE, is one involving a function $y$ of multiple variables, like $y(t, s)$, and its partial derivatives.
 	
@@ -76,7 +76,7 @@ PDEs are substantially more complicated than ODEs --- in fact, they have entire 
 
 
 
-### def linearity
+### def "linearity"
 	
 	A DE is **linear** if it is a linear function of $y, y', ..., y^{(n)}$.
 	
@@ -84,7 +84,7 @@ PDEs are substantially more complicated than ODEs --- in fact, they have entire 
 
 
 
-### def order
+### def "order"
 	
 	The **order** of a DE involving the derivatives $y, y', ..., y^{(n)}$ is $n$ --- in other words, it's the highest derivative on $y$.
 	
@@ -96,7 +96,7 @@ These are concise definitions, but not ones that are easy to internalize right a
 
 
 
-### ex linearity and order
+### ex "linearity and order"
 	
 	The DE $y'' - ty' = t^2$ is linear: even though $t$ is squared on the right and multiplied by $y'$ in the middle, this is a linear function of the derivatives of $y$. Since $t$ is never mentioned in the definition, we can think of it as a constant:
 	
@@ -160,7 +160,7 @@ While direction fields are restricted to always pushing particles to the right, 
 
 
 
-### exc direction field
+### exc "direction field"
 	
 	Draw a direction field for $(y^2 - 1)y' = t$ for $-5 \leq t \leq 5$ and $-5 \leq y \leq 5$.
 	
@@ -172,7 +172,7 @@ In our previous example, a particular kind of solution occurs when $y(t)$ is the
 
 
 
-### def equilibria
+### def "equilibria"
 	
 	A solution $y(t) = c$ to a DE for a constant $c$ is called an **equilibrium** solution. If the surrounding field all flows toward $y = c$ as $t \to \infty$, we call the solution **stable**, and if it all flows away, we call it **unstable**.
 	
@@ -184,7 +184,7 @@ In our running example, the equilibria occur at $y = k\pi$ for any integer $k$. 
 
 
 
-### ex equilibria
+### ex "equilibria"
 	
 	Find the equilibrium solutions to $$y' = \frac{1}{50}(y^2 - 4)\left| y - 4 \right|(t - 3)$$ and classify them as stable, unstable, or neither.
 	
@@ -196,7 +196,7 @@ In our running example, the equilibria occur at $y = k\pi$ for any integer $k$. 
 	
 ###
 
-### exc equilibria
+### exc "equilibria"
 	
 	A population of foxes is given by the function $P(t)$ (in thousands of foxes) after $t$ years. It satisfies the equation
 	

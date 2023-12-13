@@ -172,7 +172,7 @@ Now that we're drawing frames so often, we need to be careful not to draw multip
 
 
 ### text-boxes
-	resolution 1000 Resolution
+	resolution 1000 "Resolution"
 ###
 
 <div class="center-content">

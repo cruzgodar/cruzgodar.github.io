@@ -10,7 +10,7 @@ The first and simplest thing we can do to power series is to add two of them tog
 
 
 
-### prop adding power series
+### prop "adding power series"
 	
 	Let $\sum_{n = 0}^\infty a_n x^n$ and $\sum_{n = 0}^\infty b_n x^n$ be two power series that converge to the functions $f$ and $g$ on the intervals $I$ and $J$, respectively. Then the power series
 	
@@ -24,7 +24,7 @@ The first and simplest thing we can do to power series is to add two of them tog
 
 
 
-### ex adding power series
+### ex "adding power series"
 	
 	Express the function
 	
@@ -104,7 +104,7 @@ The first and simplest thing we can do to power series is to add two of them tog
 
 ###
 
-### exc adding power series
+### exc "adding power series"
 	
 	Express the function
 	
@@ -162,7 +162,7 @@ For many series, we now have the tools to go backward: determine the function it
 
 
 
-### ex finding a closed form of a series
+### ex "finding a closed form of a series"
 	
 	Define a function $f$ by
 	
@@ -278,7 +278,7 @@ This is the main result about multiplying power series --- all that's left is de
 
 
 
-### thm multiplying power series
+### thm "multiplying power series"
 	
 	Let $\sum_{n = 0}^\infty a_n x^n$ and $\sum_{n = 0}^\infty b_n x^n$ be two power series that converge to the functions $f$ and $g$ on the intervals $I$ and $J$, respectively. Then the power series
 	
@@ -292,7 +292,7 @@ This is the main result about multiplying power series --- all that's left is de
 
 
 
-### ex multiplying power series
+### ex "multiplying power series"
 	
 	Express $$\frac{1}{(1 - x)^2}$$
 	
@@ -310,7 +310,7 @@ This is the main result about multiplying power series --- all that's left is de
 
 ###
 
-### exc multiplying power series
+### exc "multiplying power series"
 	
 	Earlier in the section, we expressed the function
 	
@@ -374,7 +374,7 @@ Now that we understand how basic algebraic operations work with power series, th
 
 
 
-### thm calculus on power series
+### thm "calculus on power series"
 	
 	Let $f(x) = \sum_{n = 0}^\infty c_n (x - a)^n$ be a power series converging on $(a - R, a + R)$. Then $f$ is differentiable and integrable on $(a - R, a + R)$, and
 	
@@ -390,7 +390,7 @@ Now that we understand how basic algebraic operations work with power series, th
 
 
 
-### ex calculus on power series
+### ex "calculus on power series"
 	
 	Find a power series representation for $\ln(x + 1)$ and state the interval of convergence.
 	
@@ -450,7 +450,7 @@ Now that we understand how basic algebraic operations work with power series, th
 
 ###
 
-### exc calculus on power series
+### exc "calculus on power series"
 	
 	We expressed
 	
@@ -484,7 +484,7 @@ Let's look at one more nice property of power series: for the most part, they're
 
 
 
-### thm absolute convergence of power series
+### thm "absolute convergence of power series"
 	
 	Let $\sum_{n = 0}^\infty c_n (x - a)^n$ be a power series converging on $(a - R, a + R)$. Then the series converges absolutely on that interval.
 
@@ -506,7 +506,7 @@ So far, we've got a good handle on how power series work and interact, and we ev
 
 
 
-### exc expressing $e^x$ as a power series
+### exc "expressing $e^x$ as a power series"
 	
 	We know that $e^x$ has the special property of being the only function (other than constant multiples of $e^x$) which is its own derivative. We can represent $e^x$ as a power series by finding a power series which is *its* own derivative. Begin with a general power series
 	

@@ -10,13 +10,13 @@ A **perfect matching** on a graph is a pairing of adjacent vertices so that ever
 
 ### text-boxes
 	
-	resolution 2000 Resolution
+	resolution 2000 "Resolution"
 	
-	diamond-size 20 Diamond Size
+	diamond-size 20 "Diamond Size"
 	
 ###
 
-### checkbox use-smooth-colors Use smooth colors
+### checkbox use-smooth-colors "Use smooth colors"
 
 ### buttons
 	generate -l "Generate"

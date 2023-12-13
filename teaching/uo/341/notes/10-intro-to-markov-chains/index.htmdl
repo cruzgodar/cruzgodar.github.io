@@ -6,7 +6,7 @@ With so much theory developed, let's take this last section to explore one of th
 
 Our first application will be to a different area, though, closer to statistics. Let's say that we have a collection of **states** $x_1, ..., x_n$. These are states of matter or being --- for example, in <a href="https://www.youtube.com/watch?v=LL3kVtc-4vY">Belousov-Zhabotinsky reaction</a>, $x_1$ might represent a molecule of malonic acid and $x_2$ a molecule of potassium bromate (in reality, we'd need many more variables for the intermediate states in the reaction).This system, and many like it, fall into a particular class that lend themselves extremely well to linear algebra:
 
-### def Markov chain
+### def "Markov chain"
 
 	Let $x_1, ..., x_n$ be a collection of states and let $\vec{x} \in #R#^n$ be a vector representing the amount of the system in each state. If the system evolves over time as a function $\vec{x}(t)$, but the value of $\vec{x}(t)$ is a linear function of $\vec{x}(t - 1)$ and no other factors, then we call $\vec{x}(t)$ a **Markov chain**.
 
@@ -20,7 +20,7 @@ $$
 
 There's a surprising amount of information we can extract from just this description --- let's see it in action.
 
-### ex Markov chain
+### ex "Markov chain"
 
 	A particular university has exclusively math, physics, and computer science majors, and doesn't allow double majors. Every year, 5% of the math majors at a university switch to a physics major, and 10% switch to computer science. On the other hand, 10% of the physics majors switch to math and 15% to computer science. 5% of the computer science majors switch to math, and 15% to physics. If there are initially 100 students in each of the three majors and no one ever graduates, how many will be in each major after 2 years?
 	
@@ -62,7 +62,7 @@ There's a surprising amount of information we can extract from just this descrip
 
 ###
 
-### exc a Markov chain
+### exc "a Markov chain"
 	
 	People occasionally change the type of computer they use, albeit very rarely. Suppose each year, 3% of users running macOS switch to Windows, and 1% to Linux, 3% of Windows users switch to macOS and 1% to Linux, and 3% of Linux users switch to macOS, as well as 3% to Windows. The current proportion of desktop operating systems among those three is 78% Windows, 19% Mac, and 3% Linux. What does our (unrealistic) model predict will be the proportion of each in 2 years?
 	
@@ -70,7 +70,7 @@ There's a surprising amount of information we can extract from just this descrip
 
 One of the most important proprtties of Markov chains is their ability to make predictions about the limiting behavior of a system (that is, $\lim_{t \to \infty} \vec{x}(t)$). A **steady-state vector** is a vector $\vec{q}$ for which $P\vec{q} = \vec{q}$, meaning the system no longer changes. The amount of students in each major stays exactly the same, or the number of people using each OS stays constant. Importantly, we're not saying that no one every changes majors or computers --- the matrix $P$ in both the past examples is constant, so there will always be some people moving between states. Instead, we're after a vector $\vec{x}$ of a distribution across the states for which the inflow and outflow for each state are equal. Remarkably, as long as we're somewhat sensible in constructing our transition matrix, steady-state vectors will be present, unique, and useful.
 
-### thm steady-state vectors in Markov chains
+### thm "steady-state vectors in Markov chains"
 	
 	Let $P$ be a transition matrix for a Markov chain so that for some integer $k$, $P^k$ contains only positive entries (for our examples, $k$ will be $1$, meaning $P$ contains only positive entries). Then $P$ has a unique steady-state vector $\vec{q}$. Moreover, $\lim_{t \to \infty} P^t \vec{x} = \vec{q}$ for *any* vector $\vec{x}$, so the system converges to its steady-state vector regardless of the starting configuration of the state.
 	
@@ -80,7 +80,7 @@ This theorem guarantees that searching for a steady-state vector is worth our ti
 
 To find a steady-state vector, we want to solve $P\vec{q} = \vec{q}$, so $(P - I)\vec{q} = \vec{0}$. That should hopefully look familiar from a past homework --- we're finding an eigenvector with eigenvalue $\lambda = 1$. When we found all possible eigenvectors, we had to solve the characteristic polynomial for all the possible eigenvectors and then handle them one-by-one, but this time around we already know the eigenvalue we're interested in, and that there should be exactly one eigenvector corresponding to it. Once again, we're just doing row-reduction.
 
-### ex a steady-state solution
+### ex "a steady-state solution"
 
 	For the university example from before, how many students will be in each major in the long run?
 
@@ -120,7 +120,7 @@ To find a steady-state vector, we want to solve $P\vec{q} = \vec{q}$, so $(P - I
 
 ###
 
-### exc a steady-state solution
+### exc "a steady-state solution"
 
 	With the previous computer OS exercise, what will the percentage of users with each OS be in the long run?
 

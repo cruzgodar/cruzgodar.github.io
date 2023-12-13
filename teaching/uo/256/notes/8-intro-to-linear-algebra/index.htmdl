@@ -84,7 +84,7 @@ So, to bring it all together: for matrices to actually represent coefficients in
 
 
 
-### def $2 \times 2$ matrix-vector multiplication
+### def "$2 \times 2$ matrix-vector multiplication"
 	
 	Let $**A**$ and $**x**$ be a matrix and vector, respectively, defined as
 	
@@ -109,7 +109,7 @@ As we'll see in the next few examples, matrix-vector multiplication is defined f
 
 
 
-### ex matrix-vector multiplication
+### ex "matrix-vector multiplication"
 	
 	Evaluate the following products:
 	
@@ -139,7 +139,7 @@ As we'll see in the next few examples, matrix-vector multiplication is defined f
 	
 ###
 
-### exc matrix-vector multiplication
+### exc "matrix-vector multiplication"
 	
 	Evaluate the following products:
 	
@@ -159,7 +159,7 @@ A square matrix with all $0$s with a strip of $1$s down the diagonal from top-le
 
 
 
-### def identity matrix
+### def "identity matrix"
 	
 	The $n \times n$ **identity matrix** consists of all $0$s, except for $1$s down the top-left to bottom-right diagonal (called the **main diagonal**). We write it as $**I**_n$, or just $**I**$ if the dimension is clear from context.
 	
@@ -225,7 +225,7 @@ Thankfully, we can streamline this formula a little to make it easier to remembe
 
 
 
-### thm matrix multiplication
+### thm "matrix multiplication"
 	
 	Let $**A**$ be an $m \times n$ matrix and let $**B**$ be an $n \times k$ one. Then $**AB**$ is an $m \times k$ matrix, and the entry in row $i$ and column $j$ is defined by
 	
@@ -247,7 +247,7 @@ That was a whole lot of work! Let's turn to some examples to see this in action.
 
 
 
-### ex matrix multiplication
+### ex "matrix multiplication"
 	
 	Let $$**A** = [[ 5, 0 ; -2, 1 ]]$$ and $$**B** = [[ 3, 1, -1 ; -1, 0, 2 ]]$$. Evaluate $**AB**$.
 	
@@ -259,7 +259,7 @@ That was a whole lot of work! Let's turn to some examples to see this in action.
 	
 ###
 
-### exc matrix multiplication
+### exc "matrix multiplication"
 	
 	Let $**x** = [[ 1 ; 2 ; -1 ]]$. With the same matrices from the previous example, evaluate $(**AB**)**x**$ and $**A**(**Bx**)$ and show they're the same.
 	

@@ -50,7 +50,7 @@ $$
 
 Generally speaking, encountering rows of all zeros while row-reducing means that we'll have one or more free parameters in our solution. But it sure seems like we could identify the problem upstream: those first two equations weren't very different from one another. Since the second equation was $-2$ times the first, it didn't contribute any new information to the system. Put another way, $-2$ times the first row plus $1$ times the second row equals the zero vector, and it's this situation --- and generalizations of it when there are more than two vectors --- that's exactly what we'll want to understand.
 
-### def linear combination and span
+### def "linear combination and span"
 
 	Let $\vec{v_1}, ..., \vec{v_k} \in #R#^n$. A **linear combination** of the $\vec{v_i}$ is a vector of the form
 
@@ -82,13 +82,13 @@ We'll typically write the zero vector as $\vec{0}$ --- its shape should hopefull
 
 The cases in which a linear combination results in the zero vector are of the most interest to us: they're the ones that affect whether a system of equations has a solution involving free parameters. We'll be talking about that situation quite a bit, so let's give it a name.
 
-### def linear independence
+### def "linear independence"
 
 	A collection of vectors $v_1, ..., v_k \in #R#^n$ is **linearly dependent** if there is a linear combination of the $v_i$ that is equal to the zero vector (other than the linear combination with every coefficient being $0$). If a collection of vectors is not linearly dependent, we say it's **linearly independent**.
 
 ###
 
-### ex linear independence
+### ex "linear independence"
 
 	Are the vectors $$\vec{v_1} = [[ 1 ; 2 ; -1 ]]$$, $$\vec{v_2} = [[ 2 ; 0 ; 4 ]]$$, and $$\vec{v_3} = [[ 0 ; 2 ; -3 ]]$$ linearly independent? Why or why not?
 
@@ -122,7 +122,7 @@ The cases in which a linear combination results in the zero vector are of the mo
 
 ###
 
-### exc linear independence
+### exc "linear independence"
 
 	Are the vectors $$\vec{w_1} = [[ 2 ; 0 ; 1 ]]$$, $$\vec{w_2} = [[ -1 ; -1 ; 1 ]]$$, and $$\vec{w_3} = [[ 0 ; 1 ; 0 ]]$$ linearly independent? Why or why not?
 

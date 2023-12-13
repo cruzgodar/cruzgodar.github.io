@@ -68,7 +68,7 @@ In practice, we don't use the limit definition of the derivative all that often.
 
 
 
-### prop derivative rules
+### prop "derivative rules"
 	
 	1. The constant multiple rule:
 	
@@ -102,7 +102,7 @@ In practice, we don't use the limit definition of the derivative all that often.
 	
 ###
 
-### prop common derivatives
+### prop "common derivatives"
 	
 	$$\frac{d}{dx} [c] = 0$$ for any constant $c$.
 	
@@ -162,7 +162,7 @@ The two types of integrals are connected through the **Fundamental Theorem of Ca
 
 
 
-### thm The Fundamental Theorem of Calculus
+### thm "The Fundamental Theorem of Calculus"
 	
 	Let $f$ be an integrable function. Then
 	
@@ -180,7 +180,7 @@ Much of the study of integrals is devoted to their applications, but we won't ne
 
 
 
-### ex $u$-sub
+### ex "$u$-sub"
 	
 	Find the area under the graph of $f(x) = x \sin(x^2)$ between $x = 0$ and $x = \sqrt{\pi}$.
 	

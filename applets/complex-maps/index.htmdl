@@ -6,17 +6,17 @@ It's not a coincidence that many of the applets I've made revolve around the com
 	
 	example-selector
 	
-	none Examples
+	none "Examples"
 	
-	trig Trig Function
+	trig "Trig Function"
 	
-	poles Poles
+	poles "Poles"
 	
-	es Essential Singluarity
+	es "Essential Singluarity"
 	
-	tet Tetration
+	tet "Tetration"
 	
-	lattices Lattices
+	lattices "Lattices"
 
 ###
 
@@ -33,7 +33,7 @@ It's not a coincidence that many of the applets I've made revolve around the com
 
 ### text-boxes
 	
-	resolution 500 Resolution
+	resolution 500 "Resolution"
 	
 ###
 

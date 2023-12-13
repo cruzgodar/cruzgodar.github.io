@@ -6,19 +6,19 @@ This one's been a long time coming. The first applet I ever made for the site wa
 	
 	example-selector
 	
-	none Examples
+	none "Examples"
 	
-	mandelbrot Classical Mandelbrot
+	mandelbrot "Classical Mandelbrot"
 	
-	var-exp Varied Exponent
+	var-exp "Varied Exponent"
 	
-	trig Trig Example
+	trig Trig "Example"
 	
-	burning-ship The Burning Ship
+	burning-ship "The Burning Ship"
 	
-	rational-map Rational Map
+	rational-map "Rational Map"
 	
-	mandelbrot-dust Mandelbrot Dust
+	mandelbrot-dust "Mandelbrot Dust"
 
 ###
 
@@ -37,7 +37,7 @@ This one's been a long time coming. The first applet I ever made for the site wa
 
 ### text-boxes
 	
-	resolution 500 Resolution
+	resolution 500 "Resolution"
 	
 ###
 

@@ -24,7 +24,7 @@ So how can we bring this idea to a general vector space $V$? If we could find a 
 
 What conditions will we need to make that a reality? If we want a collection of vectors $\vec{v_1}, \vec{v_2}, ..., \vec{v_n} \in V$ so that any $\vec{v} \in V$ is expressible as a unique linear combination of the $\vec{v_i}$, then an immediate first requirement is that the $\vec{v_i}$ need to span $V$ --- otherwise, some vectors wouldn't be expressible as a linear combination of them at all, let alone a unique one. To guarantee the uniqueness condition, a rather technical argument can show that we need the $\vec{v_i}$ to be linearly independent (it's very similar to the one that shows a linear transformation from $#R#^n$ to $#R#^m$ is one-to-one if it sends only $\vec{0}$ to $\vec{0}$). When we say linearly independent and spanning, we mean exactly the same thing as we did in $#R#^n$, but let's take the time to write down the formal definitions in a general vector space $V$, and then name the collection of vectors whose linear combinations express all others uniquely.
 
-### def linear independence and span
+### def "linear independence and span"
 
 	Let $V$ be a vector space. A collection of vectors $\vec{v_1}, \vec{v_2}, ..., \vec{v_n} \in V$ is ** linearly independent** if the only linear combination
 
@@ -40,7 +40,7 @@ What conditions will we need to make that a reality? If we want a collection of 
 
 ###
 
-### def basis
+### def "basis"
 
 	Let $V$ be a vector space. A **basis** for $V$ is a collection of vectors $\vec{v_1}, \vec{v_2}, ..., \vec{v_n} \in V$ that is linearly independent and spans $V$. Given a basis and any vector $\vec{v} \in V$, there is a **unique** linear combination
 
@@ -52,7 +52,7 @@ What conditions will we need to make that a reality? If we want a collection of 
 
 Just like in $#R#^n$, if a collection of vectors $\vec{v_i}$ spans a vector space $V$ but one of the $\vec{v_i}$ is a linear combination of the others, then we can remove that one without affecting the fact that the collection spans $V$. In this sense, a basis is just the right size: add any new vector to it and it'll stop being linearly independent, and remove any and it won't span $V$.
 
-### ex a basis for $#R#^n$
+### ex "a basis for $#R#^n$"
 
 	The primordial example of a basis is the vectors
 
@@ -66,7 +66,7 @@ Just like in $#R#^n$, if a collection of vectors $\vec{v_i}$ spans a vector spac
 
 This basis is so common that we'll want a name for it --- it's called the **standard basis for $#R#^n$**. The name implies it's not the only one, though, and that's definitely the case. Let's take a look at some more unusual ones.
 
-### ex another basis for $#R#^n$
+### ex "another basis for $#R#^n$"
 
 	Show that the vectors
 
@@ -126,7 +126,7 @@ Let's dig into that coordinate system idea a little more. In $#R#^2$, the standa
 
 Here, the purple grid shows the coordinates assigned by the basis $\left\{ [[ -1 ; 1 ]], [[ 2 ; 1 ]] \right\}$. The blue point is called $(3, 3)$ in the standard basis, but $(1, 2)$ in this alternate one.
 
-### exc another basis for $#R#^n$
+### exc "another basis for $#R#^n$"
 	
 	Show that the vectors
 	
@@ -156,7 +156,7 @@ $$
 
 In $#R#^n$, we did this in the particular case with $\vec{v_i} = \vec{e_i}$ and $\vec{v} = [[ c_1 ; \vdots ; c_n ]]$, but now the objects aren't necessarily vectors in $#R#^n$. They still often *function* like vectors in $#R#^n$, though, as the previous block of math shows. To emphasize the relationship and make vectors in more abstract vector spaces easier to work with, let's create some notation to help.
 
-### def coordinate vector
+### def "coordinate vector"
 
 	Let $V$ be a vector space, let $\vec{v} \in V$, and let $\vec{v_1}, ..., \vec{v_n}$ be a basis, denoted $\mathcal{B}$. Then there is a unique expression
 
@@ -186,7 +186,7 @@ $$
 
 That requires a whole lot of work to understand, so let's dig in.
 
-### ex the matrix of a transformation
+### ex "the matrix of a transformation"
 
 	Let $V$ be the subspace of $#R#[x]$ of polynomials with degree at most $3$, and let $\mathcal{B}$ be the basis $1, x, x^2, x^3$ for $V$. Let $W$ be the subspace of $#R#[x]$ of polynomials with degree at most $2$, and let $\mathcal{C}$ be the basis $1, x, x^2$ for $W$. Let $D : V \to W$ be the linear transformation given by differentiation. Find the matrix $A$ for $D$ with respect to these two bases and use it to evaluate $D(1 - 2x + x^3)$.
 
@@ -220,7 +220,7 @@ That requires a whole lot of work to understand, so let's dig in.
 
 ###
 
-### exc the matrix of a transformation
+### exc "the matrix of a transformation"
 
 	Let $\mathcal{B}$ be the basis
 
@@ -244,13 +244,13 @@ That requires a whole lot of work to understand, so let's dig in.
 
 One immediate upshot of coordinate vectors is that they let us pin down how many vectors make up a basis. Suppose a vector space $V$ has one basis $\mathcal{B}$ with $n$ vectors and another basis $\mathcal{C}$ with $m$ vectors. Then we can write the vectors of $\mathcal{C}$ as coordinate vectors in $\mathcal{B}$, which live in $#R#^n$ since $\mathcal{B}$ has $n$ vectors. But any more than $n$ vectors in $#R#^n$ can't be linearly independent, and any fewer can't span, so $\mathcal{C}$ must have exactly $n$ vectors too. In short, any two bases for a vector space have the same size, and it's worth giving that invariant a name.
 
-### def dimension
+### def "dimension"
 
 	Let $V$ be a vector space. The **dimension of $V$**, written $\dim V$, is the number of vectors in any basis of $V$. If $\dim V$ is finite, we say $V$ is **finite-dimensional**, and if not, we say $V$ is infinite-dimensional. Finally, we define $\dim \{\vec{0}\} = 0$.
 
 ###
 
-### exc dimension
+### exc "dimension"
 
 	Find $\dim V$ for the following vector spaces $V$.
 

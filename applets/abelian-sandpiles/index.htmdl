@@ -12,9 +12,9 @@ Piles with no grains are colored black, piles with one colored blue, those with 
 
 ### text-boxes
 	
-	num-grains 100000 Grains
+	num-grains 100000 "Grains"
 	
-	computations-per-frame 10 Computation Speed
+	computations-per-frame 10 "Computation Speed"
 	
 ###
 

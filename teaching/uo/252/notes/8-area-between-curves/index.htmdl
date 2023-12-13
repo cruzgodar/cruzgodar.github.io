@@ -4,7 +4,7 @@ Up to this point, we've defined integrals via Riemann sums, related them to anti
 
 
 
-### prop area between curves
+### prop "area between curves"
 	
 	Let $f(x)$ and $g(x)$ be functions with $f(x) \geq g(x)$ on $[a, b]$. Then the area between the graphs of $f$ and $g$ on $[a, b]$ is
 	
@@ -16,7 +16,7 @@ Up to this point, we've defined integrals via Riemann sums, related them to anti
 
 
 
-### ex area between curves
+### ex "area between curves"
 	
 	Find the area of the region bounded by $f(x) = x$ and $g(x) = x^2$.
 	
@@ -36,7 +36,7 @@ Up to this point, we've defined integrals via Riemann sums, related them to anti
 	
 ###
 
-### exc area between curves
+### exc "area between curves"
 	
 	Find the area of the region bounded by $y = 6 - x$ and $$y = 9 - \left( \frac{x}{2} \right)^2$$.
 	
@@ -54,7 +54,7 @@ Up to this point, we've defined integrals via Riemann sums, related them to anti
 
 
 
-### ex more area between curves
+### ex "more area between curves"
 	
 	Find the area between $\sin(x)$ and $\cos(x)$ on $[0, \pi]$.
 	
@@ -76,7 +76,7 @@ Up to this point, we've defined integrals via Riemann sums, related them to anti
 
 
 
-### ex even more area between curves
+### ex "even more area between curves"
 	
 	Find the area of the shaded region bounded by $y = 1$, $y = 3 - x$, and $y = x^2 + 1$, as pictured.
 	
@@ -94,7 +94,7 @@ Up to this point, we've defined integrals via Riemann sums, related them to anti
 	
 ###
 
-### exc even more area between curves
+### exc "even more area between curves"
 	
 	Find the area of the shaded region bounded by $y = 1 - x$, $y = x^2$, and $y = \sqrt{x}$, as pictured.
 	
@@ -114,7 +114,7 @@ Sometimes --- particularly in cases like the previous example with multiple boun
 
 
 
-### ex integrating with respect to $y$.
+### ex "integrating with respect to $y$."
 	
 	Find the area of the shaded region bounded by $y = 1$, $y = 3 - x$, and $y = x^2 + 1$ by integrating with respect to $y$.
 	
@@ -148,7 +148,7 @@ Sometimes --- particularly in cases like the previous example with multiple boun
 	
 ###
 
-### exc even more area between curves
+### exc "even more area between curves"
 	
 	Find the area of the shaded region bounded by $y = 1 - x$, $y = x^2$, and $y = \sqrt{x}$ by integrating with respect to $y$.
 	

@@ -40,7 +40,7 @@ As usual, we need to update the options. The bare minimum is adding `useFullscre
 
 
 ### text-boxes
-	resolution-1 1000 Resolution
+	resolution-1 1000 "Resolution"
 ###
 
 <div class="center-content">
@@ -211,7 +211,7 @@ Note that it would be a bad idea to resize the hidden canvas along with the visi
 
 
 ### text-boxes
-	resolution-2 1000 Resolution
+	resolution-2 1000 "Resolution"
 ###
 
 <div class="center-content">

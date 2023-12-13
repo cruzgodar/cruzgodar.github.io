@@ -24,7 +24,7 @@ What we've shown here is that *every* convergent series $\sum_{n = 1}^\infty a_n
 
 
 
-### prop the divergence test
+### prop "the divergence test"
 	
 	Let $\sum_{n = 1}^\infty a_n$ be a series. If $\lim_{n \to \infty} a_n$ doesn't exist or is nonzero, then $\sum_{n = 1}^\infty a_n$ diverges.
 	
@@ -36,7 +36,7 @@ There are two important things to note here: first, the divergence test says not
 
 
 
-### exc the divergence test
+### exc "the divergence test"
 	
 	Apply the divergence test to the following series and clearly state what conclusion you can draw.
 	
@@ -134,7 +134,7 @@ Okay, so what properties did $\frac{1}{n + 4}$ have that we needed? Crucial to t
 
 
 
-### thm the integral test
+### thm "the integral test"
 	
 	Let $\sum_{n = N}^\infty a_n$ be a series with $a_n \geq 0$ for all $n \geq 0$, and let $f(x)$ be a function on $[N, \infty)$ such that
 	
@@ -154,7 +154,7 @@ The divergence test is almost always easier than the integral test, so start the
 
 
 
-### exc convergence tests
+### exc "convergence tests"
 	
 	Determine if the following series converge. Clearly state what conclusions you can draw, if any.
 	
@@ -210,7 +210,7 @@ The integral tests let us classify the behavior of a particular type of series t
 
 
 
-### def $p$-series
+### def "$p$-series"
 	
 	A **$**p**$-series** is one of the form
 	
@@ -258,7 +258,7 @@ meaning the $p$-series converges. In total, we have the following result:
 
 
 
-### prop convergence of $p$-series
+### prop "convergence of $p$-series"
 	
 	The series
 	
@@ -282,7 +282,7 @@ So far, we haven't talked much about the actual *value* of convergent series. If
 
 
 
-### def remainder of a series
+### def "remainder of a series"
 	
 	Let $\sum_{n = 1}^\infty a_n$ be a convergent series and $N$ a positive integer. The **$**N**$th remainder** of the series is
 	
@@ -312,7 +312,7 @@ This is a great result! It gives both an upper and lower bound for $R_N$, so if 
 
 
 
-### ex estimating the value of a series
+### ex "estimating the value of a series"
 	
 	Estimate $$\sum_{n = 1}^\infty \frac{1}{n^3}$$ to within $.01$ of its actual value.
 	
@@ -356,7 +356,7 @@ This is a great result! It gives both an upper and lower bound for $R_N$, so if 
 
 
 
-### exc estimating the value of a series
+### exc "estimating the value of a series"
 
 	Estimate $$\sum_{n = 1}^\infty \frac{1}{n^5}$$ to within $.01$ of its actual value.
 	

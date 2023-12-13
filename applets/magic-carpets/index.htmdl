@@ -10,13 +10,13 @@ Given a square carpet and a handful of numbers, can the carpet be completely cov
 
 ### text-boxes
 	
-	grid-size 8 Grid Size
+	grid-size 8 "Grid Size"
 	
-	max-cage-size 16 Max Area
+	max-cage-size 16 "Max Area"
 	
 ###
 
-### checkbox unique-solution Require unique solution
+### checkbox unique-solution "Require unique solution"
 
 ### buttons
 	generate -l "Generate"

@@ -76,7 +76,7 @@ In practice, we don't use the limit definition of the derivative all that often.
 
 
 
-### prop derivative rules
+### prop "derivative rules"
 	
 	1. The constant multiple rule:
 	
@@ -110,7 +110,7 @@ In practice, we don't use the limit definition of the derivative all that often.
 	
 ###
 
-### prop common derivatives
+### prop "common derivatives"
 	
 	$$\frac{d}{dx} [c] = 0$$ for any constant $c$.
 	
@@ -172,7 +172,7 @@ The two types of integrals are connected through the **Fundamental Theorem of Ca
 
 
 
-### thm The Fundamental Theorem of Calculus
+### thm "The Fundamental Theorem of Calculus"
 	
 	Let $f$ be an integrable function. Then
 	
@@ -190,7 +190,7 @@ Much of the study of integrals is devoted to their applications, but we won't ne
 
 
 
-### ex $u$-sub
+### ex "$u$-sub"
 	
 	Find the area under the graph of $f(x) = x \sin(x^2)$ between $x = 0$ and $x = \sqrt{\pi}$.
 	
@@ -244,7 +244,7 @@ While we won't use calculus III to quite the same extent in this course, it's st
 
 
 
-### thm !Series Tests
+### thm "!Series Tests"
 	
 	Let $$\sum_{n = 1}^\infty a_n$$ be a series.
 	
@@ -276,7 +276,7 @@ This series is guaranteed to converge to $f$ in some interval centered at $x = a
 
 
 
-### thm !Common Taylor Series
+### thm "!Common Taylor Series"
 	
 	$$
 		\frac{1}{1 - x} &= \sum_{n = 0}^\infty x^n = 1 + x + x^2 + x^3 + \cdots & (-1, 1)

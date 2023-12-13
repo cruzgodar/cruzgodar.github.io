@@ -6,7 +6,7 @@ At this point, we're ready to put it all together. This section forms the basis 
 
 
 
-### thm The Fundamental Theorem of Calculus, Part I
+### thm "The Fundamental Theorem of Calculus, Part I"
 	
 	Let $f(t)$ be a continuous function on $[a, b]$ and define a function $F(x)$ by
 	
@@ -36,7 +36,7 @@ To put it concisely, the red rectangle in the graph has base $1$ and height $f(x
 
 
 
-### ex FTC Part I
+### ex "FTC Part I"
 	
 	Find $$\frac{d}{dx} \int_1^x \frac{1}{t^3 + t}\,dt$$.
 	
@@ -52,7 +52,7 @@ To put it concisely, the red rectangle in the graph has base $1$ and height $f(x
 
 
 
-### ex FTC Part I
+### ex "FTC Part I"
 	
 	Find $$\frac{d}{dx} \int_2^{\sin(x)} \frac{1}{t^3 + t}\,dt$$.
 	
@@ -76,7 +76,7 @@ To put it concisely, the red rectangle in the graph has base $1$ and height $f(x
 
 
 
-### exc FTC Part I
+### exc "FTC Part I"
 	
 	Find $$\frac{d}{dt} \int_2^{\sqrt{t}} \sin(x)\,dx$$.
 	
@@ -96,7 +96,7 @@ Now for the more memorable part of the Fundamental Theorem. We need part I to te
 
 
 
-### def evaluation notation
+### def "evaluation notation"
 	
 	Let $F(x)$ be a function. We define $[F(x)]|_a^b$ to mean $F(b) - F(a)$.
 	
@@ -108,7 +108,7 @@ The vertical bar just means plug in the top and bottom numbers and subtract the 
 
 
 
-### thm The Fundamental Theorem of Calculus, Part II
+### thm "The Fundamental Theorem of Calculus, Part II"
 	
 	Let $f$ be an integrable function. Then
 	
@@ -130,7 +130,7 @@ In other words, we've found a way to leave behind all the limits of Riemann sums
 
 
 
-### ex FTC, Part II
+### ex "FTC, Part II"
 	
 	Find $$\int_0^2 t^2\,dt$$.
 	
@@ -150,7 +150,7 @@ In other words, we've found a way to leave behind all the limits of Riemann sums
 	
 ###
 
-### exc FTC, Part II
+### exc "FTC, Part II"
 	
 	Find $$\int_{-\pi}^\pi \sin(\theta)\,d\theta$$.
 	
@@ -184,7 +184,7 @@ Let's wrap this section up with one more example.
 
 
 
-### ex another definite integral
+### ex "another definite integral"
 	
 	Find $$\int_1^9 \frac{x - 1}{\sqrt{x}}\,dx$$.
 	

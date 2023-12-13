@@ -28,7 +28,7 @@ So far, all we've done is rename a variable to $x$ and introduce a small transfo
 
 
 
-### def power series
+### def "power series"
 	
 	A **power series** centered at $a$ is a series of the form
 	
@@ -82,7 +82,7 @@ It turns out that these are the *only* three possibilities for the convergence o
 
 
 
-### thm convergence of power series
+### thm "convergence of power series"
 	
 	Let
 	
@@ -108,7 +108,7 @@ These three cases can all be collected into one, and it even helpfully comes alo
 
 
 
-### def radius of convergence
+### def "radius of convergence"
 
 	Let $f(x) = \sum_{n = 0}^\infty c_n(x - a)^n$ be a power series centered at $a$. The **radius of convergence** $R$ of $f$ is half the width of the interval on which $f$ converges. If $f$ converges only at $a$, we say $R = 0$, and if it converges everywhere, we say $R = \infty$.
 
@@ -120,7 +120,7 @@ For example, $\sum_{n = 0}^\infty x^n$ has a radius of convergence of $R = 1$, a
 
 
 
-### exc radius of convergence
+### exc "radius of convergence"
 	
 	Find the radius and interval of convergence of the following series.
 	
@@ -190,7 +190,7 @@ By starting with the geometric series $\sum_{n = 0}^\infty x^n$ and modifying it
 
 
 
-### ex representing a function as a power series
+### ex "representing a function as a power series"
 	
 	Write $$f(x) = \frac{x}{1 + 3x^2}$$ as a power series, and state the interval and radius of convergence.
 	
@@ -222,7 +222,7 @@ By starting with the geometric series $\sum_{n = 0}^\infty x^n$ and modifying it
 
 ###
 
-### exc representing a function as a power series
+### exc "representing a function as a power series"
 	
 	Write the function $$g(x) = \frac{x^3}{2 + x^2}$$ as a power series, and find the interval and radius of convergence. Hint: $$2 + x^2 = 2\left(1 + \frac{x^2}{2}\right)$$.
 	

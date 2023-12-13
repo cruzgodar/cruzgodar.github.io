@@ -4,7 +4,7 @@ A common trend in calculus is the introduction of a new operator --- like limits
 
 
 
-### prop basic limit rules
+### prop "basic limit rules"
 	
 	Let $f(x)$ and $g(x)$ be functions. Then:
 	
@@ -28,7 +28,7 @@ All this says is that we can move limits inside powers and split them up across 
 
 
 
-### ex basic limit rules
+### ex "basic limit rules"
 	
 	Evaluate $$\lim_{x \to -3} (4x + 2)$$.
 	
@@ -52,7 +52,7 @@ Two common types of functions are polynomials and rational functions (which are 
 
 
 
-### prop limits of polynomials and rational functions
+### prop "limits of polynomials and rational functions"
 	
 	Let $p(x)$ and $q(x)$ be polynomials. Then
 	
@@ -72,7 +72,7 @@ Two common types of functions are polynomials and rational functions (which are 
 
 
 
-### ex limits of polynomials and rational functions
+### ex "limits of polynomials and rational functions"
 	
 	Find $$\lim_{x \to 3} \frac{2x^2 - 3x + 1}{5x + 4}$$.
 	
@@ -86,7 +86,7 @@ Two common types of functions are polynomials and rational functions (which are 
 	
 ###
 
-### exc limits of polynomials and rational functions
+### exc "limits of polynomials and rational functions"
 	
 	Find $$\lim_{x \to -2} \left( 3x^3 - 2x + 7 \right)$$.
 	
@@ -122,7 +122,7 @@ The example we talked about in the last section --- $g(h) = \frac{h^2}{h}$ --- i
 	
 ###
 
-### exc limits of rational functions with a common factor
+### exc "limits of rational functions with a common factor"
 	
 	Find $$\lim_{x \to 3} \frac{x^2 - 3x}{2x^2 - 5x - 3}$$.
 	
@@ -134,7 +134,7 @@ It's a little harder when there is a square root in the numerator or denominator
 
 
 
-### ex limits of rational functions with a square root
+### ex "limits of rational functions with a square root"
 	
 	Find $$\lim_{x \to -1} \frac{\sqrt{x + 2} - 1}{x + 1}$$.
 	
@@ -160,7 +160,7 @@ It's a little harder when there is a square root in the numerator or denominator
 	
 ###
 
-### exc limits of rational functions with a square root
+### exc "limits of rational functions with a square root"
 	
 	Find $$\lim_{x \to 5} \frac{\sqrt{x - 1} - 2}{x - 5}$$.
 	
@@ -172,7 +172,7 @@ Another example that arises involves getting a common denominator for rational f
 
 
 
-### ex a limit with a common denominator
+### ex "a limit with a common denominator"
 	
 	Evaluate $$\lim_{y \to 0} \left( \frac{1}{y} + \frac{5}{y(y - 5)} \right)$$.
 	
@@ -192,7 +192,7 @@ Another example that arises involves getting a common denominator for rational f
 
 
 
-### ex a one-sided limit
+### ex "a one-sided limit"
 	
 	Evaluate $$\lim_{t \to 2^-} \sqrt{t - 2}$$.
 	
@@ -210,7 +210,7 @@ What about infinite limits? They can be a little trickier to calculate.
 
 
 
-### ex a one-sided limit
+### ex "a one-sided limit"
 	
 	Evaluate $$\lim_{x \to 2^-} \frac{x - 3}{x^2 - 2x}$$.
 	
@@ -250,7 +250,7 @@ The squeeze theorem is a little complicated to state, but it's a straightforward
 
 
 
-### thm The Squeeze Theorem
+### thm "The Squeeze Theorem"
 	
 	Let $f(x)$, $g(x)$, and $h(x)$ be functions defined for all $x \neq a$ in some open interval containing $a$. If
 	
@@ -274,7 +274,7 @@ The squeeze theorem is a little complicated to state, but it's a straightforward
 
 
 
-### ex the Squeeze theorem
+### ex "the Squeeze theorem"
 	
 	Find $$\lim_{x \to 0} x \sin(x)$$.
 	

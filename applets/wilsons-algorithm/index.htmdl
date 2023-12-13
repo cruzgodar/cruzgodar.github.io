@@ -15,12 +15,12 @@ The other thing to watch out for is hitting the single white dot you selected at
 <div id="canvas-landscape-left">
 
 ### text-boxes
-	grid-size 50 Grid Size
+	grid-size 50 "Grid Size"
 ###
 
-### checkbox toggle-maximum-speed Maximum speed
+### checkbox toggle-maximum-speed "Maximum speed"
 
-### checkbox no-borders Don't draw black borders
+### checkbox no-borders "Don't draw black borders"
 
 ### buttons
 	generate -l "Generate"

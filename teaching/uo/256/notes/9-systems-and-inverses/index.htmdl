@@ -40,7 +40,7 @@ So: what operations can we do that preserve the equation structure? Since each r
 
 
 
-### def reduced row echelon form
+### def "reduced row echelon form"
 	
 	A matrix $**A**$ is in **reduced row echelon form** if every row is either all zero or contains a $1$ as its first nonzero entry, and every column with one of those leading $1$s has $0$s for all its other entries.
 	
@@ -58,7 +58,7 @@ is in reduced row echelon form. The idea here is that matrices in this form corr
 
 
 
-### thm !Method: Row Reduction
+### thm -m "Method: Row Reduction"
 	
 	To perform elementary row operations on a matrix $**A**$ to convert it to reduced row echelon form, find a row with a nonzero first entry, move it to the top of the matrix, and then add multiples of that row to all the ones below it to make their first terms zero. Now find a row with a nonzero second entry, move it to the second row down from the top, and add multiples of it to all the rows below it to make their second entries zero. Repeat this with every row --- at the end, you'll have a matrix with a triangular region of zeros in the bottom-left and a strip of $1$s diagonally from the top-left to bottom-right. Now take the bottom row and add multiples of it to every row above it to zero out their entries, and repeat with all of the rows. Finally, divide through by the nonzero entries in each row to make them $1$.
 	
@@ -70,7 +70,7 @@ This is a method best explained with examples, so let's dive right in.
 
 
 
-### ex row reduction
+### ex "row reduction"
 	
 	Solve the system of equations
 	
@@ -164,7 +164,7 @@ These are shorthand for swapping rows $i$ and $j$, multiplying row $i$ by a cons
 
 
 
-### ex row reduction
+### ex "row reduction"
 	
 	Solve the system of equations
 	
@@ -220,7 +220,7 @@ These are shorthand for swapping rows $i$ and $j$, multiplying row $i$ by a cons
 	
 ###
 
-### exc row reduction
+### exc "row reduction"
 	
 	Solve the system
 	
@@ -242,7 +242,7 @@ With the tool of row reduction, we're ready to talk about inverse matrices. Firs
 
 
 
-### thm matrix inversion
+### thm "matrix inversion"
 	
 	Let $**A**$ be an $n \times n$ matrix and augment it with the identity matrix: $[[ **A** | **I** ]]$. Then row-reduce $**A**$. If it can be reduced to the identity matrix, then the result will be $[[ **I** | **A**^{-1} ]]$ --- in other words, applying the same elementary row operations to $**I**$ will transform it into $**A**^{-1}$. If $**A**$ cannot be row reduced to $**I**$ (because at least one row becomes entirely zero), then $**A**$ cannot be inverted.
 	
@@ -256,7 +256,7 @@ With the tool of row reduction, we're ready to talk about inverse matrices. Firs
 
 
 
-### ex matrix inversion
+### ex "matrix inversion"
 	
 	Consider the system
 	
@@ -328,7 +328,7 @@ With the tool of row reduction, we're ready to talk about inverse matrices. Firs
 	
 ###
 
-### exc matrix inversion
+### exc "matrix inversion"
 	
 	Given the system
 	

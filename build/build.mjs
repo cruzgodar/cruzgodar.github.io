@@ -52,8 +52,10 @@ async function buildSite()
 	]);
 
 	await parseModifiedFiles(proc.stdout.toString().split("\n"));
-
+	
 	buildXmlSitemap();
+
+	console.log("\nDone!");
 }
 
 async function parseModifiedFiles(files)
