@@ -16,6 +16,8 @@ export class PlanePartitions extends Applet
 
 	useFullscreenButton = false;
 
+	backgroundColor = 0x000000;
+
 	resolution = 2000;
 
 	animationTime = 600;
@@ -27,7 +29,8 @@ export class PlanePartitions extends Applet
 	infiniteHeight = 100;
 
 	addWalls = false;
-	wallSize = 30;
+	wallWidth = 7;
+	wallHeight = 7;
 
 	scene = null;
 
@@ -284,7 +287,7 @@ export class PlanePartitions extends Applet
 		this.wilsonHidden4.ctx.lineWidth = 6;
 
 		this.scene = new THREE.Scene();
-		this.scene.background = new THREE.Color(0x000000);
+		this.scene.background = new THREE.Color(this.backgroundColor);
 
 		this.orthographicCamera = new THREE.OrthographicCamera(-5, 5, 5, -5, .1, 1000);
 
@@ -1061,18 +1064,18 @@ export class PlanePartitions extends Applet
 		//Add walls. Disabled by default.
 		if (this.addWalls)
 		{
-			array.leftWall = new Array(this.wallSize);
-			array.rightWall = new Array(this.wallSize);
+			array.leftWall = new Array(this.wallWidth);
+			array.rightWall = new Array(this.wallWidth);
 
-			for (let i = 0; i < this.wallSize; i++)
+			for (let i = 0; i < this.wallWidth; i++)
 			{
-				array.leftWall[i] = new Array(2 * this.wallSize);
-				array.rightWall[i] = new Array(2 * this.wallSize);
+				array.leftWall[i] = new Array(this.wallHeight);
+				array.rightWall[i] = new Array(this.wallHeight);
 			}
 
-			for (let i = 0; i < this.wallSize; i++)
+			for (let i = 0; i < this.wallWidth; i++)
 			{
-				for (let j = 0; j < 2 * this.wallSize; j++)
+				for (let j = 0; j < this.wallHeight; j++)
 				{
 					array.leftWall[i][j] = this.addLeftWall(array, j, i);
 					array.rightWall[i][j] = this.addRightWall(array, i, j);
@@ -1554,7 +1557,7 @@ export class PlanePartitions extends Applet
 		//This aligns the thing correctly.
 		if (this.addWalls)
 		{
-			wall.position.set(-.5 - .0005, y - this.wallSize, z);
+			wall.position.set(-.5 - .0005, y - this.wallWidth, z);
 		}
 
 		else
@@ -1620,7 +1623,7 @@ export class PlanePartitions extends Applet
 		//This aligns the thing correctly.
 		if (this.addWalls)
 		{
-			wall.position.set(x, y - this.wallSize, -.5 - .0005);
+			wall.position.set(x, y - this.wallWidth, -.5 - .0005);
 		}
 
 		else
@@ -1953,9 +1956,9 @@ export class PlanePartitions extends Applet
 
 			if (this.addWalls)
 			{
-				for (let i = 0; i < this.wallSize; i++)
+				for (let i = 0; i < this.wallWidth; i++)
 				{
-					for (let j = 0; j < 2 * this.wallSize; j++)
+					for (let j = 0; j < this.wallHeight; j++)
 					{
 						targets.push(array.rightWall[i][j].material[0]);
 						targets.push(array.leftWall[i][j].material[4]);
@@ -2106,9 +2109,9 @@ export class PlanePartitions extends Applet
 
 			if (this.addWalls)
 			{
-				for (let i = 0; i < this.wallSize; i++)
+				for (let i = 0; i < this.wallWidth; i++)
 				{
-					for (let j = 0; j < 2 * this.wallSize; j++)
+					for (let j = 0; j < this.wallHeight; j++)
 					{
 						targets.push(array.leftWall[i][j].material[0]);
 						targets.push(array.rightWall[i][j].material[4]);
