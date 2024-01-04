@@ -39,6 +39,16 @@ class H3Geometry extends BaseGeometry
 		return log(x + sqrt(x*x - 1.0));
 	}`;
 
+	// updateTGlsl = `t += min(
+	// 	distance,
+	// 	abs(
+	// 		dot(
+	// 			pos,
+	// 			vec4(1.0, 0.0, 0.0, 1.0/sqrt(3.0))
+	// 		)
+	// 	)
+	// ) * stepFactor;`;
+
 	dotProduct(vec1, vec2)
 	{
 		return vec1[0] * vec2[0] + vec1[1] * vec2[1] + vec1[2] * vec2[2] - vec1[3] * vec2[3];
@@ -136,40 +146,31 @@ class H3Geometry extends BaseGeometry
 export class H3Spheres extends H3Geometry
 {
 	static distances = `
-		float distance1 = acosh(-geometryDot(pos, vec4(1.0, 1.0, -1.0, 2.0))) - .7;
-		float distance2 = acosh(-geometryDot(pos, vec4(1.0, -1.0, 1.0, 2.0))) - .7;
-		float distance3 = acosh(-geometryDot(pos, vec4(1.0, -1.0, -1.0, 2.0))) - .7;
-		float distance4 = acosh(-geometryDot(pos, vec4(1.0, 1.0, 1.0, 2.0))) - .7;
-		float distance5 = acosh(-geometryDot(pos, vec4(0.0, 0.0, 0.0, 1.0))) - .7;
+		float distance1 = acosh(-geometryDot(pos, vec4(0.0, 0.0, 0.0, 1.0))) - .2;
+
+		// Translate the reflection plane to the x = 0 plane, then get the distance to it.
+		// The DE to x = 0 is abs(asinh(pos.x)).
+		float distance2 = abs(asinh(
+			dot(
+				vec4(1.41608, 0.0, 0.0, 1.00263),
+				pos
+			)
+		));
+		
+		float distance3 = acosh(-geometryDot(mat4(
+			2.5, 0.0, 0.0, sqrt(21.0)/2.0,
+			0.0, 1.0, 0.0, 0.0,
+			0.0, 0.0, 1.0, 0.0,
+			sqrt(21.0)/2.0, 0.0, 0.0, 2.5
+		) * pos, vec4(0.0, 0.0, 0.0, 1.0))) - .2;
+		// float distance4 = acosh(-geometryDot(pos, vec4(1.0, 1.0, 1.0, 2.0))) - .7;
+		// float distance5 = acosh(-geometryDot(pos, vec4(0.0, 0.0, 0.0, 1.0))) - .7;
 	`;
-
-	static teleportations = [
-		[
-			[1, 0, 0, -1 / Math.sqrt(3)],
-			[
-				[2, 0, 0, Math.sqrt(3)],
-				[0, 0, -1, 0],
-				[0, 1, 0, 0],
-				[Math.sqrt(3), 0, 0, 2]
-			]
-		],
-		[
-			[-1, 0, 0, -1 / Math.sqrt(3)],
-			[
-				[2, 0, 0, -Math.sqrt(3)],
-				[0, 0, 1, 0],
-				[0, -1, 0, 0],
-				[-Math.sqrt(3), 0, 0, 2]
-			]
-		],
-	];
-
-	// {{2, 0, 0, -sqrt(3)},{0, 0, 1, 0},{0, -1, 0, 0},{-sqrt(3), 0, 0, 2}}
 
 	distanceEstimatorGlsl = `
 		${H3Spheres.distances}
 
-		float minDistance = ${getMinGlslString("distance", 5)};
+		float minDistance = ${getMinGlslString("distance", 3)};
 
 		return minDistance;
 	`;
@@ -177,7 +178,7 @@ export class H3Spheres extends H3Geometry
 	getColorGlsl = `
 		${H3Spheres.distances}
 		
-		float minDistance = ${getMinGlslString("distance", 5)};
+		float minDistance = ${getMinGlslString("distance", 3)};
 
 		if (minDistance == distance1)
 		{
@@ -189,20 +190,20 @@ export class H3Spheres extends H3Geometry
 			return vec3(0.0, 1.0, 1.0);
 		}
 
-		if (minDistance == distance3)
-		{
-			return vec3(0.0, 1.0, 0.0);
-		}
+		// if (minDistance == distance3)
+		// {
+		// 	return vec3(0.0, 1.0, 0.0);
+		// }
 
-		if (minDistance == distance4)
-		{
-			return vec3(1.0, 0.0, 1.0);
-		}
+		// if (minDistance == distance4)
+		// {
+		// 	return vec3(1.0, 0.0, 1.0);
+		// }
 
-		if (minDistance == distance5)
-		{
-			return vec3(0.0, 0.0, 1.0);
-		}
+		// if (minDistance == distance5)
+		// {
+		// 	return vec3(0.0, 0.0, 1.0);
+		// }
 
 		return vec3(1.0, 0.5, 1.0);
 	`;
@@ -246,33 +247,41 @@ export class H3Spheres extends H3Geometry
 			return log(x + sqrt(x*x - 1.0));
 		}
 
-		//Teleports the position back inside the dodecahedron and returns a vector to update the color.
 		vec3 teleportPos(inout vec4 pos, inout vec4 startPos, inout vec4 rayDirectionVec, inout float t)
 		{
-			float dotProduct = dot(pos, vec4(1.0, 0.0, 0.0, 1.0/sqrt(3.0)));
-			if (dotProduct < 0.0)
+			if (dot(pos, vec4(1.0, 0.0, 0.0, 0.64764842)) < 0.0)
 			{
 				pos = mat4(
-					2.0, 0.0, 0.0, sqrt(3.0),
+					2.5, 0.0, 0.0, sqrt(21.0)/2.0,
+					0.0, 1.0, 0.0, 0.0,
 					0.0, 0.0, 1.0, 0.0,
-					0.0, -1.0, 0.0, 0.0,
-					sqrt(3.0), 0.0, 0.0, 2.0
+					sqrt(21.0)/2.0, 0.0, 0.0, 2.5
 				) * pos;
+				rayDirectionVec = mat4(
+					2.5, 0.0, 0.0, sqrt(21.0)/2.0,
+					0.0, 1.0, 0.0, 0.0,
+					0.0, 0.0, 1.0, 0.0,
+					sqrt(21.0)/2.0, 0.0, 0.0, 2.5
+				) * rayDirectionVec;
 				startPos = pos;
 				t = 0.0;
 
 				return vec3(1.0, 0.0, 0.0);
 			}
 
-			
 			return vec3(0.0, 0.0, 0.0);
 		}
 	`;
 
 	geodesicGlsl = `
 		vec4 pos = cosh(t) * startPos + sinh(t) * rayDirectionVec;
-		
-		globalColor += teleportPos(pos, startPos, rayDirectionVec, t);
+
+		// globalColor += teleportPos(pos, startPos, rayDirectionVec, t);
+
+		// if (dot(pos, vec4(1.0, 0.0, 0.0, 0.64764842)) < 0.0)
+		// {
+		// 	return vec3(1.0, 0.0, 1.0);
+		// }
 	`;
 
 	correctVectors()
@@ -330,15 +339,23 @@ export class H3Spheres extends H3Geometry
 	rightVec = [0, 1, 0, 0];
 	forwardVec = [1, 0, 0, 0];
 	
+	static teleportations = [
+		[
+			[1.0, 0.0, 0.0, 0.64764842],
+			[
+				[2.5, 0.0, 0.0, Math.sqrt(21.0) / 2.0],
+				[0.0, 1.0, 0.0, 0.0],
+				[0.0, 0.0, 1.0, 0.0],
+				[Math.sqrt(21.0) / 2.0, 0.0, 0.0, 2.5]
+			]
+		]
+	];
 
 	teleportCamera()
 	{
-		return;
-
 		for (let i = 0; i < H3Spheres.teleportations.length; i++)
 		{
-			console.log(this.dotProduct(this.cameraPos, H3Spheres.teleportations[i][0]));
-			if (this.dotProduct(this.cameraPos, H3Spheres.teleportations[i][0]) < 0)
+			if (ThurstonGeometry.dotProduct(this.cameraPos, H3Spheres.teleportations[i][0]) < 0)
 			{
 				this.cameraPos = ThurstonGeometry.mat4TimesVector(
 					H3Spheres.teleportations[i][1],
@@ -359,6 +376,8 @@ export class H3Spheres extends H3Geometry
 					H3Spheres.teleportations[i][1],
 					this.upVec
 				);
+
+				console.log(this.dotProduct(this.forwardVec, this.cameraPos));
 			}
 		}
 	}
