@@ -38,6 +38,8 @@ export class ThurstonGeometry extends Applet
 
 	numTouches = 0;
 
+	movingSubsteps = 4;
+
 
 
 	constructor({
@@ -221,7 +223,7 @@ export class ThurstonGeometry extends Applet
 			
 			
 			
-			vec3 computeShading(vec4 pos, int iteration, vec3 globalColor)
+			vec3 computeShading(vec4 pos, int iteration, vec3 globalColor, float totalT)
 			{
 				vec4 surfaceNormal = getSurfaceNormal(pos);
 				
@@ -243,6 +245,7 @@ export class ThurstonGeometry extends Applet
 				vec3 finalColor = fogColor;
 				
 				float t = 0.0;
+				float totalT = 0.0;
 
 				vec4 startPos = cameraPos;
 
@@ -258,7 +261,7 @@ export class ThurstonGeometry extends Applet
 					
 					if (distance < epsilon)
 					{
-						finalColor = computeShading(pos, iteration, globalColor);
+						finalColor = computeShading(pos, iteration, globalColor, totalT);
 						break;
 					}
 
@@ -547,45 +550,50 @@ export class ThurstonGeometry extends Applet
 	 */
 	handleMoving(movingAmount, timeElapsed)
 	{
-		const forwardVecToUse = this.rotatedForwardVec;
-		
-		const tangentVec = this.geometryData.normalize([
-			movingAmount[0] * forwardVecToUse[0]
-				+ movingAmount[1] * this.geometryData.rightVec[0]
-				+ movingAmount[2] * this.geometryData.upVec[0],
+		for (let i = 0; i < this.movingSubsteps; i++)
+		{
+			const forwardVecToUse = this.rotatedForwardVec;
 			
-			movingAmount[0] * forwardVecToUse[1]
-				+ movingAmount[1] * this.geometryData.rightVec[1]
-				+ movingAmount[2] * this.geometryData.upVec[1],
-			
-			movingAmount[0] * forwardVecToUse[2]
-				+ movingAmount[1] * this.geometryData.rightVec[2]
-				+ movingAmount[2] * this.geometryData.upVec[2],
-			
-			movingAmount[0] * forwardVecToUse[3]
-				+ movingAmount[1] * this.geometryData.rightVec[3]
-				+ movingAmount[2] * this.geometryData.upVec[3],
-		]);
+			const tangentVec = this.geometryData.normalize([
+				movingAmount[0] * forwardVecToUse[0]
+					+ movingAmount[1] * this.geometryData.rightVec[0]
+					+ movingAmount[2] * this.geometryData.upVec[0],
+				
+				movingAmount[0] * forwardVecToUse[1]
+					+ movingAmount[1] * this.geometryData.rightVec[1]
+					+ movingAmount[2] * this.geometryData.upVec[1],
+				
+				movingAmount[0] * forwardVecToUse[2]
+					+ movingAmount[1] * this.geometryData.rightVec[2]
+					+ movingAmount[2] * this.geometryData.upVec[2],
+				
+				movingAmount[0] * forwardVecToUse[3]
+					+ movingAmount[1] * this.geometryData.rightVec[3]
+					+ movingAmount[2] * this.geometryData.upVec[3],
+			]);
 
-		const dt = timeElapsed / 1000
-			* this.geometryData.getMovingSpeed(this.geometryData.cameraPos);
+			const dt = timeElapsed / (1000 * this.movingSubsteps)
+				* this.geometryData.getMovingSpeed(this.geometryData.cameraPos);
 
 
 
-		//The magic formula is T' = curvature * N.
-		// const curvature = this.getCurvature(this.geometryData.cameraPos, tangentVec);
+			//The magic formula is T' = curvature * N.
+			// const curvature = this.getCurvature(this.geometryData.cameraPos, tangentVec);
 
-		const newCameraPos = this.geometryData.followGeodesic(
-			this.geometryData.cameraPos,
-			tangentVec,
-			dt
-		);
+			const newCameraPos = this.geometryData.followGeodesic(
+				this.geometryData.cameraPos,
+				tangentVec,
+				dt
+			);
 
-		this.geometryData.cameraPos = newCameraPos;
+			this.geometryData.cameraPos = newCameraPos;
 
-		this.geometryData.normalVec = this.geometryData.getNormalVec(this.geometryData.cameraPos);
+			this.geometryData.normalVec = this.geometryData.getNormalVec(
+				this.geometryData.cameraPos
+			);
 
-		this.geometryData.currentMovementVec = tangentVec;
+			this.geometryData.currentMovementVec = tangentVec;
+		}
 	}
 
 
