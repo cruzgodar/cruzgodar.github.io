@@ -22,75 +22,64 @@ import{ThurstonGeometry}from"../class.min.mjs";import{sliderValues}from"../index
 	float acosh(float x)
 	{
 		return log(x + sqrt(x*x - 1.0));
-	}`;dotProduct(vec1,vec2){return vec1[0]*vec2[0]+vec1[1]*vec2[1]+vec1[2]*vec2[2]-vec1[3]*vec2[3]}normalize(vec){var t=Math.sqrt(Math.abs(this.dotProduct(vec,vec)));return[vec[0]/t,vec[1]/t,vec[2]/t,vec[3]/t]}getGeodesicDirection(pos1,pos2,t){var e=Math.cosh(t),o=Math.sinh(t),e=[(pos2[0]-e*pos1[0])/o,(pos2[1]-e*pos1[1])/o,(pos2[2]-e*pos1[2])/o,(pos2[3]-e*pos1[3])/o];return this.normalize(e)}getGeodesicDistance(pos1,pos2){var t=this.dotProduct(pos1,pos2);return Math.acosh(-t)}followGeodesic(pos,dir,t){var e=new Array(4);for(let r=0;r<4;r++)e[r]=Math.cosh(t)*pos[r]+Math.sinh(t)*dir[r];var o=this.dotProduct(e,e),o=Math.sqrt(-o);return e[0]/=o,e[1]/=o,e[2]/=o,e[3]/=o,e}getNormalVec(cameraPos){return this.normalize([-cameraPos[0],-cameraPos[1],-cameraPos[2],cameraPos[3]])}getGammaPrime(_pos,dir){return[...dir]}getGammaDoublePrime(pos){return[...pos]}getGammaTriplePrime(_pos,dir){return[...dir]}gammaTriplePrimeIsLinearlyIndependent=!1}class H3Spheres extends H3Geometry{static distances=`
-		float distance1 = acosh(-geometryDot(pos, vec4(0.0, 0.0, 0.0, 1.0))) - wallThickness;
+	}`;dotProduct(vec1,vec2){return vec1[0]*vec2[0]+vec1[1]*vec2[1]+vec1[2]*vec2[2]-vec1[3]*vec2[3]}normalize(vec){var t=Math.sqrt(Math.abs(this.dotProduct(vec,vec)));return[vec[0]/t,vec[1]/t,vec[2]/t,vec[3]/t]}getGeodesicDirection(pos1,pos2,t){var e=Math.cosh(t),o=Math.sinh(t),e=[(pos2[0]-e*pos1[0])/o,(pos2[1]-e*pos1[1])/o,(pos2[2]-e*pos1[2])/o,(pos2[3]-e*pos1[3])/o];return this.normalize(e)}getGeodesicDistance(pos1,pos2){var t=this.dotProduct(pos1,pos2);return Math.acosh(-t)}followGeodesic(pos,dir,t){var e=new Array(4);for(let s=0;s<4;s++)e[s]=Math.cosh(t)*pos[s]+Math.sinh(t)*dir[s];var o=this.dotProduct(e,e),o=Math.sqrt(-o);return e[0]/=o,e[1]/=o,e[2]/=o,e[3]/=o,e}getNormalVec(cameraPos){return this.normalize([-cameraPos[0],-cameraPos[1],-cameraPos[2],cameraPos[3]])}getGammaPrime(_pos,dir){return[...dir]}getGammaDoublePrime(pos){return[...pos]}getGammaTriplePrime(_pos,dir){return[...dir]}gammaTriplePrimeIsLinearlyIndependent=!1}const baseColorIncreases=[[1,0,0],[-1,0,0],[0,1,0],[0,-1,0],[0,0,1],[0,0,-1]],baseColor=[0,0,0];class H3Rooms extends H3Geometry{static distances=`
+		float distance1 = wallThickness - acosh(-geometryDot(pos, vec4(0.0, 0.0, 0.0, 1.0)));
 
 		// Translate the reflection plane to the x = 0 plane, then get the distance to it.
 		// The DE to x = 0 is abs(asinh(pos.x)).
 		float distance2 = abs(asinh(
 			dot(
-				vec4(1.41608, 0.0, 0.0, 1.00263),
+				vec4(1.30156, 0.0, 0.0, 0.833108),
 				pos
 			)
 		));
 		
 		float distance3 = abs(asinh(
 			dot(
-				vec4(1.41608, 0.0, 0.0, -1.00263),
+				vec4(1.30156, 0.0, 0.0, -0.833108),
 				pos
 			)
 		));
 
 		float distance4 = abs(asinh(
 			dot(
-				vec4(0.0, 1.41608, 0.0, 1.00263),
+				vec4(0.0, 1.30156, 0.0, 0.833108),
 				pos
 			)
 		));
 		
 		float distance5 = abs(asinh(
 			dot(
-				vec4(0.0, 1.41608, 0.0, -1.00263),
+				vec4(0.0, -1.30156, 0.0, 0.833108),
+				pos
+			)
+		));
+
+		float distance6 = abs(asinh(
+			dot(
+				vec4(0.0, 0.0, 1.30156, 0.833108),
+				pos
+			)
+		));
+		
+		float distance7 = abs(asinh(
+			dot(
+				vec4(0.0, 0.0, -1.30156, 0.833108),
 				pos
 			)
 		));
 	`;distanceEstimatorGlsl=`
-		${H3Spheres.distances}
+		${H3Rooms.distances}
 
-		float minDistance = ${getMinGlslString("distance",5)};
+		float minDistance = ${getMinGlslString("distance",7)};
 
 		return minDistance;
 	`;getColorGlsl=`
-		${H3Spheres.distances}
-		
-		float minDistance = ${getMinGlslString("distance",5)};
-
-		if (minDistance == distance1)
-		{
-			return vec3(1.0, 0.0, 0.0);
-		}
-
-		if (minDistance == distance2)
-		{
-			return vec3(0.0, 1.0, 1.0);
-		}
-
-		if (minDistance == distance3)
-		{
-			return vec3(0.0, 1.0, 0.0);
-		}
-
-		if (minDistance == distance4)
-		{
-			return vec3(1.0, 0.0, 1.0);
-		}
-
-		if (minDistance == distance5)
-		{
-			return vec3(0.0, 0.0, 1.0);
-		}
-
-		return vec3(1.0, 0.5, 1.0);
+		return vec3(
+			.25 + .75 * (.5 * (sin(floor(baseColor.x + globalColor.x + .5) * 40.0) + 1.0)),
+			.25 + .75 * (.5 * (sin(floor(baseColor.y + globalColor.y + .5) * 57.0) + 1.0)),
+			.25 + .75 * (.5 * (sin(floor(baseColor.z + globalColor.z + .5) * 89.0) + 1.0))
+		);
 	`;lightGlsl=`
 		vec4 lightDirection1 = normalize(vec4(1.0, 1.0, 1.0, 1.0) - pos);
 		float dotProduct1 = dot(surfaceNormal, lightDirection1);
@@ -128,36 +117,52 @@ import{ThurstonGeometry}from"../class.min.mjs";import{sliderValues}from"../index
 			return log(x + sqrt(x*x - 1.0));
 		}
 
-		const vec4 teleportVec1 = vec4(1.0, 0.0, 0.0, 0.64764842);
+		const vec4 teleportVec1 = vec4(1.0, 0.0, 0.0, 0.577350269);
 		const mat4 teleportMat1 = mat4(
-			2.5, 0.0, 0.0, sqrt(21.0)/2.0,
+			2.0, 0.0, 0.0, 1.73205081,
 			0.0, 1.0, 0.0, 0.0,
 			0.0, 0.0, 1.0, 0.0,
-			sqrt(21.0)/2.0, 0.0, 0.0, 2.5
+			1.73205081, 0.0, 0.0, 2.0
 		);
 
-		const vec4 teleportVec2 = vec4(-1.0, 0.0, 0.0, 0.64764842);
+		const vec4 teleportVec2 = vec4(-1.0, 0.0, 0.0, 0.577350269);
 		const mat4 teleportMat2 = mat4(
-			2.5, 0.0, 0.0, -sqrt(21.0)/2.0,
+			2.0, 0.0, 0.0, -1.73205081,
 			0.0, 1.0, 0.0, 0.0,
 			0.0, 0.0, 1.0, 0.0,
-			-sqrt(21.0)/2.0, 0.0, 0.0, 2.5
+			-1.73205081, 0.0, 0.0, 2.0
 		);
 
-		const vec4 teleportVec3 = vec4(0.0, 1.0, 0.0, 0.64764842);
+		const vec4 teleportVec3 = vec4(0.0, 1.0, 0.0, 0.577350269);
 		const mat4 teleportMat3 = mat4(
 			1.0, 0.0, 0.0, 0.0,
-			0.0, 2.5, 0.0, sqrt(21.0)/2.0,
+			0.0, 2.0, 0.0, 1.73205081,
 			0.0, 0.0, 1.0, 0.0,
-			0.0, sqrt(21.0)/2.0, 0.0, 2.5
+			0.0, 1.73205081, 0.0, 2.0
 		);
 
-		const vec4 teleportVec4 = vec4(0.0, -1.0, 0.0, 0.64764842);
+		const vec4 teleportVec4 = vec4(0.0, -1.0, 0.0, 0.577350269);
 		const mat4 teleportMat4 = mat4(
 			1.0, 0.0, 0.0, 0.0,
-			0.0, 2.5, 0.0, -sqrt(21.0)/2.0,
+			0.0, 2.0, 0.0, -1.73205081,
 			0.0, 0.0, 1.0, 0.0,
-			0.0, -sqrt(21.0)/2.0, 0.0, 2.5
+			0.0, -1.73205081, 0.0, 2.0
+		);
+
+		const vec4 teleportVec5 = vec4(0.0, 0.0, 1.0, 0.577350269);
+		const mat4 teleportMat5 = mat4(
+			1.0, 0.0, 0.0, 0.0,
+			0.0, 1.0, 0.0, 0.0,
+			0.0, 0.0, 2.0, 1.73205081,
+			0.0, 0.0, 1.73205081, 2.0
+		);
+
+		const vec4 teleportVec6 = vec4(0.0, 0.0, -1.0, 0.577350269);
+		const mat4 teleportMat6 = mat4(
+			1.0, 0.0, 0.0, 0.0,
+			0.0, 1.0, 0.0, 0.0,
+			0.0, 0.0, 2.0, -1.73205081,
+			0.0, 0.0, -1.73205081, 2.0
 		);
 
 		vec3 teleportPos(inout vec4 pos, inout vec4 startPos, inout vec4 rayDirectionVec, inout float t)
@@ -183,51 +188,60 @@ import{ThurstonGeometry}from"../class.min.mjs";import{sliderValues}from"../index
 			{
 				pos = teleportMat2 * pos;
 
-				// !!!IMPORTANT!!! rayDirectionVec is the tangent vector from the *starting*
-				// position, not the current one, so we need to calculate that current
-				// position to teleport the vector correctly. The correct tangent vector
-				// is just the derivative of the geodesic at the current value of t.
-
 				rayDirectionVec = teleportMat2 * (sinh(t) * startPos + cosh(t) * rayDirectionVec);
 
 				startPos = pos;
 				t = 0.0;
 
-				return vec3(0.0, 1.0, 1.0);
+				return vec3(-1.0, 0.0, 0.0);
 			}
 
 			if (dot(pos, teleportVec3) < 0.0)
 			{
 				pos = teleportMat3 * pos;
 
-				// !!!IMPORTANT!!! rayDirectionVec is the tangent vector from the *starting*
-				// position, not the current one, so we need to calculate that current
-				// position to teleport the vector correctly. The correct tangent vector
-				// is just the derivative of the geodesic at the current value of t.
-
 				rayDirectionVec = teleportMat3 * (sinh(t) * startPos + cosh(t) * rayDirectionVec);
 
 				startPos = pos;
 				t = 0.0;
 
-				return vec3(0.0, 1.0, 1.0);
+				return vec3(0.0, 1.0, 0.0);
 			}
 
 			if (dot(pos, teleportVec4) < 0.0)
 			{
 				pos = teleportMat4 * pos;
 
-				// !!!IMPORTANT!!! rayDirectionVec is the tangent vector from the *starting*
-				// position, not the current one, so we need to calculate that current
-				// position to teleport the vector correctly. The correct tangent vector
-				// is just the derivative of the geodesic at the current value of t.
-
 				rayDirectionVec = teleportMat4 * (sinh(t) * startPos + cosh(t) * rayDirectionVec);
 
 				startPos = pos;
 				t = 0.0;
 
-				return vec3(0.0, 1.0, 1.0);
+				return vec3(0.0, -1.0, 0.0);
+			}
+
+			if (dot(pos, teleportVec5) < 0.0)
+			{
+				pos = teleportMat5 * pos;
+
+				rayDirectionVec = teleportMat5 * (sinh(t) * startPos + cosh(t) * rayDirectionVec);
+
+				startPos = pos;
+				t = 0.0;
+
+				return vec3(0.0, 0.0, 1.0);
+			}
+
+			if (dot(pos, teleportVec6) < 0.0)
+			{
+				pos = teleportMat6 * pos;
+
+				rayDirectionVec = teleportMat6 * (sinh(t) * startPos + cosh(t) * rayDirectionVec);
+
+				startPos = pos;
+				t = 0.0;
+
+				return vec3(0.0, 0.0, -1.0);
 			}
 
 			return vec3(0.0, 0.0, 0.0);
@@ -236,11 +250,7 @@ import{ThurstonGeometry}from"../class.min.mjs";import{sliderValues}from"../index
 		vec4 pos = cosh(t) * startPos + sinh(t) * rayDirectionVec;
 
 		globalColor += teleportPos(pos, startPos, rayDirectionVec, t);
-
-		// if (dot(pos, vec4(1.0, 0.0, 0.0, 0.64764842)) < 0.0)
-		// {
-		// 	return vec3(1.0, geometryDot(pos, rayDirectionVec), 1.0);
-		// }
-	`;correctVectors(){var t=this.dotProduct(this.cameraPos,this.upVec),e=this.dotProduct(this.cameraPos,this.rightVec),o=this.dotProduct(this.cameraPos,this.forwardVec);for(let r=0;r<4;r++)this.upVec[r]+=t*this.cameraPos[r],this.rightVec[r]+=e*this.cameraPos[r],this.forwardVec[r]+=o*this.cameraPos[r];this.upVec=this.normalize(this.upVec),this.rightVec=this.normalize(this.rightVec),this.forwardVec=this.normalize(this.forwardVec)}getMovingSpeed(){return.5}cameraPos=[0,0,0,1];normalVec=[0,0,0,-1];upVec=[0,0,1,0];rightVec=[0,-1,0,0];forwardVec=[-1,0,0,0];static teleportations=[[[1,0,0,.64764842],[[2.5,0,0,Math.sqrt(21)/2],[0,1,0,0],[0,0,1,0],[Math.sqrt(21)/2,0,0,2.5]]]];teleportCamera(){for(let t=0;t<H3Spheres.teleportations.length;t++)ThurstonGeometry.dotProduct(this.cameraPos,H3Spheres.teleportations[t][0])<0&&(this.cameraPos=ThurstonGeometry.mat4TimesVector(H3Spheres.teleportations[t][1],this.cameraPos),this.forwardVec=ThurstonGeometry.mat4TimesVector(H3Spheres.teleportations[t][1],this.forwardVec),this.rightVec=ThurstonGeometry.mat4TimesVector(H3Spheres.teleportations[t][1],this.rightVec),this.upVec=ThurstonGeometry.mat4TimesVector(H3Spheres.teleportations[t][1],this.upVec),console.log(this.dotProduct(this.forwardVec,this.cameraPos)))}uniformGlsl=`
+	`;correctVectors(){var t=this.dotProduct(this.cameraPos,this.upVec),e=this.dotProduct(this.cameraPos,this.rightVec),o=this.dotProduct(this.cameraPos,this.forwardVec);for(let s=0;s<4;s++)this.upVec[s]+=t*this.cameraPos[s],this.rightVec[s]+=e*this.cameraPos[s],this.forwardVec[s]+=o*this.cameraPos[s];this.upVec=this.normalize(this.upVec),this.rightVec=this.normalize(this.rightVec),this.forwardVec=this.normalize(this.forwardVec)}getMovingSpeed(){return 1}cameraPos=[0,0,0,1];normalVec=[0,0,0,-1];upVec=[0,0,1,0];rightVec=[0,-1,0,0];forwardVec=[-1,0,0,0];static teleportations=[[[1,0,0,1/Math.sqrt(3)],[[2,0,0,Math.sqrt(3)],[0,1,0,0],[0,0,1,0],[Math.sqrt(3),0,0,2]]],[[-1,0,0,1/Math.sqrt(3)],[[2,0,0,-Math.sqrt(3)],[0,1,0,0],[0,0,1,0],[-Math.sqrt(3),0,0,2]]],[[0,1,0,1/Math.sqrt(3)],[[1,0,0,0],[0,2,0,Math.sqrt(3)],[0,0,1,0],[0,Math.sqrt(3),0,2]]],[[0,-1,0,1/Math.sqrt(3)],[[1,0,0,0],[0,2,0,-Math.sqrt(3)],[0,0,1,0],[0,-Math.sqrt(3),0,2]]],[[0,0,1,1/Math.sqrt(3)],[[1,0,0,0],[0,1,0,0],[0,0,2,Math.sqrt(3)],[0,0,Math.sqrt(3),2]]],[[0,0,-1,1/Math.sqrt(3)],[[1,0,0,0],[0,1,0,0],[0,0,2,-Math.sqrt(3)],[0,0,-Math.sqrt(3),2]]]];teleportCamera(){for(let t=0;t<H3Rooms.teleportations.length;t++)ThurstonGeometry.dotProduct(this.cameraPos,H3Rooms.teleportations[t][0])<0&&(this.cameraPos=ThurstonGeometry.mat4TimesVector(H3Rooms.teleportations[t][1],this.cameraPos),this.forwardVec=ThurstonGeometry.mat4TimesVector(H3Rooms.teleportations[t][1],this.forwardVec),this.rightVec=ThurstonGeometry.mat4TimesVector(H3Rooms.teleportations[t][1],this.rightVec),this.upVec=ThurstonGeometry.mat4TimesVector(H3Rooms.teleportations[t][1],this.upVec),baseColor[0]+=baseColorIncreases[t][0],baseColor[1]+=baseColorIncreases[t][1],baseColor[2]+=baseColorIncreases[t][2])}uniformGlsl=`
 		uniform float wallThickness;
-	`;uniformNames=["wallThickness"];updateUniforms(gl,uniformList){var t=sliderValues.wallThickness;gl.uniform1f(uniformList.wallThickness,t)}uiElementsUsed="#wall-thickness-slider";initUI(){var t=$("#wall-thickness-slider"),e=$("#wall-thickness-slider-value");t.min=.2,t.max=1,t.value=.2,e.textContent=.2,sliderValues.wallThickness=.2}}export{H3Spheres};
+		uniform vec3 baseColor;
+	`;uniformNames=["wallThickness","baseColor"];updateUniforms(gl,uniformList){var t=sliderValues.wallThickness;gl.uniform1f(uniformList.wallThickness,t),gl.uniform3fv(uniformList.baseColor,baseColor)}uiElementsUsed="#wall-thickness-slider";initUI(){var t=$("#wall-thickness-slider"),e=$("#wall-thickness-slider-value");t.min=.2,t.max=1,t.value=.2,e.textContent=.2,sliderValues.wallThickness=.2}}export{H3Rooms};

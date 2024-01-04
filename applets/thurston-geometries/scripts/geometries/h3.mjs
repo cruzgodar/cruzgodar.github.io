@@ -143,81 +143,81 @@ class H3Geometry extends BaseGeometry
 	gammaTriplePrimeIsLinearlyIndependent = false;
 }
 
-export class H3Spheres extends H3Geometry
+const baseColorIncreases = [
+	[1, 0, 0],
+	[-1, 0, 0],
+	[0, 1, 0],
+	[0, -1, 0],
+	[0, 0, 1],
+	[0, 0, -1]
+];
+
+const baseColor = [0, 0, 0];
+
+export class H3Rooms extends H3Geometry
 {
 	static distances = `
-		float distance1 = acosh(-geometryDot(pos, vec4(0.0, 0.0, 0.0, 1.0))) - wallThickness;
+		float distance1 = wallThickness - acosh(-geometryDot(pos, vec4(0.0, 0.0, 0.0, 1.0)));
 
 		// Translate the reflection plane to the x = 0 plane, then get the distance to it.
 		// The DE to x = 0 is abs(asinh(pos.x)).
 		float distance2 = abs(asinh(
 			dot(
-				vec4(1.41608, 0.0, 0.0, 1.00263),
+				vec4(1.30156, 0.0, 0.0, 0.833108),
 				pos
 			)
 		));
 		
 		float distance3 = abs(asinh(
 			dot(
-				vec4(1.41608, 0.0, 0.0, -1.00263),
+				vec4(1.30156, 0.0, 0.0, -0.833108),
 				pos
 			)
 		));
 
 		float distance4 = abs(asinh(
 			dot(
-				vec4(0.0, 1.41608, 0.0, 1.00263),
+				vec4(0.0, 1.30156, 0.0, 0.833108),
 				pos
 			)
 		));
 		
 		float distance5 = abs(asinh(
 			dot(
-				vec4(0.0, 1.41608, 0.0, -1.00263),
+				vec4(0.0, -1.30156, 0.0, 0.833108),
+				pos
+			)
+		));
+
+		float distance6 = abs(asinh(
+			dot(
+				vec4(0.0, 0.0, 1.30156, 0.833108),
+				pos
+			)
+		));
+		
+		float distance7 = abs(asinh(
+			dot(
+				vec4(0.0, 0.0, -1.30156, 0.833108),
 				pos
 			)
 		));
 	`;
 
 	distanceEstimatorGlsl = `
-		${H3Spheres.distances}
+		${H3Rooms.distances}
 
-		float minDistance = ${getMinGlslString("distance", 5)};
+		float minDistance = ${getMinGlslString("distance", 7)};
 
 		return minDistance;
 	`;
 
 	getColorGlsl = `
-		${H3Spheres.distances}
-		
-		float minDistance = ${getMinGlslString("distance", 5)};
-
-		if (minDistance == distance1)
-		{
-			return vec3(1.0, 0.0, 0.0);
-		}
-
-		if (minDistance == distance2)
-		{
-			return vec3(0.0, 1.0, 1.0);
-		}
-
-		if (minDistance == distance3)
-		{
-			return vec3(0.0, 1.0, 0.0);
-		}
-
-		if (minDistance == distance4)
-		{
-			return vec3(1.0, 0.0, 1.0);
-		}
-
-		if (minDistance == distance5)
-		{
-			return vec3(0.0, 0.0, 1.0);
-		}
-
-		return vec3(1.0, 0.5, 1.0);
+		return vec3(
+			.25 + .75 * (.5 * (sin(floor(baseColor.x + globalColor.x + .5) * 40.0) + 1.0)),
+			.25 + .75 * (.5 * (sin(floor(baseColor.y + globalColor.y + .5) * 57.0) + 1.0)),
+			.25 + .75 * (.5 * (sin(floor(baseColor.z + globalColor.z + .5) * 89.0) + 1.0))
+		);
 	`;
 
 	lightGlsl = `
@@ -259,36 +259,52 @@ export class H3Spheres extends H3Geometry
 			return log(x + sqrt(x*x - 1.0));
 		}
 
-		const vec4 teleportVec1 = vec4(1.0, 0.0, 0.0, 0.64764842);
+		const vec4 teleportVec1 = vec4(1.0, 0.0, 0.0, 0.577350269);
 		const mat4 teleportMat1 = mat4(
-			2.5, 0.0, 0.0, sqrt(21.0)/2.0,
+			2.0, 0.0, 0.0, 1.73205081,
 			0.0, 1.0, 0.0, 0.0,
 			0.0, 0.0, 1.0, 0.0,
-			sqrt(21.0)/2.0, 0.0, 0.0, 2.5
+			1.73205081, 0.0, 0.0, 2.0
 		);
 
-		const vec4 teleportVec2 = vec4(-1.0, 0.0, 0.0, 0.64764842);
+		const vec4 teleportVec2 = vec4(-1.0, 0.0, 0.0, 0.577350269);
 		const mat4 teleportMat2 = mat4(
-			2.5, 0.0, 0.0, -sqrt(21.0)/2.0,
+			2.0, 0.0, 0.0, -1.73205081,
 			0.0, 1.0, 0.0, 0.0,
 			0.0, 0.0, 1.0, 0.0,
-			-sqrt(21.0)/2.0, 0.0, 0.0, 2.5
+			-1.73205081, 0.0, 0.0, 2.0
 		);
 
-		const vec4 teleportVec3 = vec4(0.0, 1.0, 0.0, 0.64764842);
+		const vec4 teleportVec3 = vec4(0.0, 1.0, 0.0, 0.577350269);
 		const mat4 teleportMat3 = mat4(
 			1.0, 0.0, 0.0, 0.0,
-			0.0, 2.5, 0.0, sqrt(21.0)/2.0,
+			0.0, 2.0, 0.0, 1.73205081,
 			0.0, 0.0, 1.0, 0.0,
-			0.0, sqrt(21.0)/2.0, 0.0, 2.5
+			0.0, 1.73205081, 0.0, 2.0
 		);
 
-		const vec4 teleportVec4 = vec4(0.0, -1.0, 0.0, 0.64764842);
+		const vec4 teleportVec4 = vec4(0.0, -1.0, 0.0, 0.577350269);
 		const mat4 teleportMat4 = mat4(
 			1.0, 0.0, 0.0, 0.0,
-			0.0, 2.5, 0.0, -sqrt(21.0)/2.0,
+			0.0, 2.0, 0.0, -1.73205081,
 			0.0, 0.0, 1.0, 0.0,
-			0.0, -sqrt(21.0)/2.0, 0.0, 2.5
+			0.0, -1.73205081, 0.0, 2.0
+		);
+
+		const vec4 teleportVec5 = vec4(0.0, 0.0, 1.0, 0.577350269);
+		const mat4 teleportMat5 = mat4(
+			1.0, 0.0, 0.0, 0.0,
+			0.0, 1.0, 0.0, 0.0,
+			0.0, 0.0, 2.0, 1.73205081,
+			0.0, 0.0, 1.73205081, 2.0
+		);
+
+		const vec4 teleportVec6 = vec4(0.0, 0.0, -1.0, 0.577350269);
+		const mat4 teleportMat6 = mat4(
+			1.0, 0.0, 0.0, 0.0,
+			0.0, 1.0, 0.0, 0.0,
+			0.0, 0.0, 2.0, -1.73205081,
+			0.0, 0.0, -1.73205081, 2.0
 		);
 
 		vec3 teleportPos(inout vec4 pos, inout vec4 startPos, inout vec4 rayDirectionVec, inout float t)
@@ -314,51 +330,60 @@ export class H3Spheres extends H3Geometry
 			{
 				pos = teleportMat2 * pos;
 
-				// !!!IMPORTANT!!! rayDirectionVec is the tangent vector from the *starting*
-				// position, not the current one, so we need to calculate that current
-				// position to teleport the vector correctly. The correct tangent vector
-				// is just the derivative of the geodesic at the current value of t.
-
 				rayDirectionVec = teleportMat2 * (sinh(t) * startPos + cosh(t) * rayDirectionVec);
 
 				startPos = pos;
 				t = 0.0;
 
-				return vec3(0.0, 1.0, 1.0);
+				return vec3(-1.0, 0.0, 0.0);
 			}
 
 			if (dot(pos, teleportVec3) < 0.0)
 			{
 				pos = teleportMat3 * pos;
 
-				// !!!IMPORTANT!!! rayDirectionVec is the tangent vector from the *starting*
-				// position, not the current one, so we need to calculate that current
-				// position to teleport the vector correctly. The correct tangent vector
-				// is just the derivative of the geodesic at the current value of t.
-
 				rayDirectionVec = teleportMat3 * (sinh(t) * startPos + cosh(t) * rayDirectionVec);
 
 				startPos = pos;
 				t = 0.0;
 
-				return vec3(0.0, 1.0, 1.0);
+				return vec3(0.0, 1.0, 0.0);
 			}
 
 			if (dot(pos, teleportVec4) < 0.0)
 			{
 				pos = teleportMat4 * pos;
 
-				// !!!IMPORTANT!!! rayDirectionVec is the tangent vector from the *starting*
-				// position, not the current one, so we need to calculate that current
-				// position to teleport the vector correctly. The correct tangent vector
-				// is just the derivative of the geodesic at the current value of t.
-
 				rayDirectionVec = teleportMat4 * (sinh(t) * startPos + cosh(t) * rayDirectionVec);
 
 				startPos = pos;
 				t = 0.0;
 
-				return vec3(0.0, 1.0, 1.0);
+				return vec3(0.0, -1.0, 0.0);
+			}
+
+			if (dot(pos, teleportVec5) < 0.0)
+			{
+				pos = teleportMat5 * pos;
+
+				rayDirectionVec = teleportMat5 * (sinh(t) * startPos + cosh(t) * rayDirectionVec);
+
+				startPos = pos;
+				t = 0.0;
+
+				return vec3(0.0, 0.0, 1.0);
+			}
+
+			if (dot(pos, teleportVec6) < 0.0)
+			{
+				pos = teleportMat6 * pos;
+
+				rayDirectionVec = teleportMat6 * (sinh(t) * startPos + cosh(t) * rayDirectionVec);
+
+				startPos = pos;
+				t = 0.0;
+
+				return vec3(0.0, 0.0, -1.0);
 			}
 
 			return vec3(0.0, 0.0, 0.0);
@@ -369,11 +394,6 @@ export class H3Spheres extends H3Geometry
 		vec4 pos = cosh(t) * startPos + sinh(t) * rayDirectionVec;
 
 		globalColor += teleportPos(pos, startPos, rayDirectionVec, t);
-
-		// if (dot(pos, vec4(1.0, 0.0, 0.0, 0.64764842)) < 0.0)
-		// {
-		// 	return vec3(1.0, geometryDot(pos, rayDirectionVec), 1.0);
-		// }
 	`;
 
 	correctVectors()
@@ -422,7 +442,7 @@ export class H3Spheres extends H3Geometry
 
 	getMovingSpeed()
 	{
-		return .5;
+		return 1;
 	}
 
 	cameraPos = [0, 0, 0, 1];
@@ -433,57 +453,112 @@ export class H3Spheres extends H3Geometry
 	
 	static teleportations = [
 		[
-			[1.0, 0.0, 0.0, 0.64764842],
+			[1, 0, 0, 1 / Math.sqrt(3)],
 			[
-				[2.5, 0.0, 0.0, Math.sqrt(21.0) / 2.0],
-				[0.0, 1.0, 0.0, 0.0],
-				[0.0, 0.0, 1.0, 0.0],
-				[Math.sqrt(21.0) / 2.0, 0.0, 0.0, 2.5]
+				[2, 0, 0, Math.sqrt(3)],
+				[0, 1, 0, 0],
+				[0, 0, 1, 0],
+				[Math.sqrt(3), 0, 0, 2]
 			]
-		]
+		],
+
+		[
+			[-1, 0, 0, 1 / Math.sqrt(3)],
+			[
+				[2, 0, 0, -Math.sqrt(3)],
+				[0, 1, 0, 0],
+				[0, 0, 1, 0],
+				[-Math.sqrt(3), 0, 0, 2]
+			]
+		],
+
+		[
+			[0, 1, 0, 1 / Math.sqrt(3)],
+			[
+				[1, 0, 0, 0],
+				[0, 2, 0, Math.sqrt(3)],
+				[0, 0, 1, 0],
+				[0, Math.sqrt(3), 0, 2]
+			]
+		],
+
+		[
+			[0, -1, 0, 1 / Math.sqrt(3)],
+			[
+				[1, 0, 0, 0],
+				[0, 2, 0, -Math.sqrt(3)],
+				[0, 0, 1, 0],
+				[0, -Math.sqrt(3), 0, 2]
+			]
+		],
+
+		[
+			[0, 0, 1, 1 / Math.sqrt(3)],
+			[
+				[1, 0, 0, 0],
+				[0, 1, 0, 0],
+				[0, 0, 2, Math.sqrt(3)],
+				[0, 0, Math.sqrt(3), 2]
+			]
+		],
+
+		[
+			[0, 0, -1, 1 / Math.sqrt(3)],
+			[
+				[1, 0, 0, 0],
+				[0, 1, 0, 0],
+				[0, 0, 2, -Math.sqrt(3)],
+				[0, 0, -Math.sqrt(3), 2]
+			]
+		],
 	];
 
 	teleportCamera()
 	{
-		for (let i = 0; i < H3Spheres.teleportations.length; i++)
+		for (let i = 0; i < H3Rooms.teleportations.length; i++)
 		{
-			if (ThurstonGeometry.dotProduct(this.cameraPos, H3Spheres.teleportations[i][0]) < 0)
+			if (ThurstonGeometry.dotProduct(this.cameraPos, H3Rooms.teleportations[i][0]) < 0)
 			{
 				this.cameraPos = ThurstonGeometry.mat4TimesVector(
-					H3Spheres.teleportations[i][1],
+					H3Rooms.teleportations[i][1],
 					this.cameraPos
 				);
 
 				this.forwardVec = ThurstonGeometry.mat4TimesVector(
-					H3Spheres.teleportations[i][1],
+					H3Rooms.teleportations[i][1],
 					this.forwardVec
 				);
 
 				this.rightVec = ThurstonGeometry.mat4TimesVector(
-					H3Spheres.teleportations[i][1],
+					H3Rooms.teleportations[i][1],
 					this.rightVec
 				);
 
 				this.upVec = ThurstonGeometry.mat4TimesVector(
-					H3Spheres.teleportations[i][1],
+					H3Rooms.teleportations[i][1],
 					this.upVec
 				);
 
-				console.log(this.dotProduct(this.forwardVec, this.cameraPos));
+				baseColor[0] += baseColorIncreases[i][0];
+				baseColor[1] += baseColorIncreases[i][1];
+				baseColor[2] += baseColorIncreases[i][2];
 			}
 		}
 	}
 
 	uniformGlsl = `
 		uniform float wallThickness;
+		uniform vec3 baseColor;
 	`;
-	uniformNames = ["wallThickness"];
+
+	uniformNames = ["wallThickness", "baseColor"];
 
 	updateUniforms(gl, uniformList)
 	{
 		const wallThickness = sliderValues.wallThickness;
 
 		gl.uniform1f(uniformList["wallThickness"], wallThickness);
+		gl.uniform3fv(uniformList["baseColor"], baseColor);
 	}
 
 	uiElementsUsed = "#wall-thickness-slider";

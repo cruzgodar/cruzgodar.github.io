@@ -20,7 +20,7 @@ Something will go here eventually!
 	s3-rooms "$S^3$: Rooms"
 	s3-spheres "$S^3$: Spheres"
 	s3-hopf-fibration "$S^3$: Hopf Fibration"
-	h3-spheres "$\mathbb{H}^3$: Spheres"
+	h3-rooms "$\mathbb{H}^3$: Rooms"
 
 ###
 
