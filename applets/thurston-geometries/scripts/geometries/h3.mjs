@@ -146,7 +146,7 @@ class H3Geometry extends BaseGeometry
 export class H3Spheres extends H3Geometry
 {
 	static distances = `
-		float distance1 = acosh(-geometryDot(pos, vec4(0.0, 0.0, 0.0, 1.0))) - .2;
+		float distance1 = acosh(-geometryDot(pos, vec4(0.0, 0.0, 0.0, 1.0))) - wallThickness;
 
 		// Translate the reflection plane to the x = 0 plane, then get the distance to it.
 		// The DE to x = 0 is abs(asinh(pos.x)).
@@ -157,20 +157,32 @@ export class H3Spheres extends H3Geometry
 			)
 		));
 		
-		float distance3 = acosh(-geometryDot(mat4(
-			2.5, 0.0, 0.0, sqrt(21.0)/2.0,
-			0.0, 1.0, 0.0, 0.0,
-			0.0, 0.0, 1.0, 0.0,
-			sqrt(21.0)/2.0, 0.0, 0.0, 2.5
-		) * pos, vec4(0.0, 0.0, 0.0, 1.0))) - .2;
-		// float distance4 = acosh(-geometryDot(pos, vec4(1.0, 1.0, 1.0, 2.0))) - .7;
-		// float distance5 = acosh(-geometryDot(pos, vec4(0.0, 0.0, 0.0, 1.0))) - .7;
+		float distance3 = abs(asinh(
+			dot(
+				vec4(1.41608, 0.0, 0.0, -1.00263),
+				pos
+			)
+		));
+
+		float distance4 = abs(asinh(
+			dot(
+				vec4(0.0, 1.41608, 0.0, 1.00263),
+				pos
+			)
+		));
+		
+		float distance5 = abs(asinh(
+			dot(
+				vec4(0.0, 1.41608, 0.0, -1.00263),
+				pos
+			)
+		));
 	`;
 
 	distanceEstimatorGlsl = `
 		${H3Spheres.distances}
 
-		float minDistance = ${getMinGlslString("distance", 3)};
+		float minDistance = ${getMinGlslString("distance", 5)};
 
 		return minDistance;
 	`;
@@ -178,7 +190,7 @@ export class H3Spheres extends H3Geometry
 	getColorGlsl = `
 		${H3Spheres.distances}
 		
-		float minDistance = ${getMinGlslString("distance", 3)};
+		float minDistance = ${getMinGlslString("distance", 5)};
 
 		if (minDistance == distance1)
 		{
@@ -190,20 +202,20 @@ export class H3Spheres extends H3Geometry
 			return vec3(0.0, 1.0, 1.0);
 		}
 
-		// if (minDistance == distance3)
-		// {
-		// 	return vec3(0.0, 1.0, 0.0);
-		// }
+		if (minDistance == distance3)
+		{
+			return vec3(0.0, 1.0, 0.0);
+		}
 
-		// if (minDistance == distance4)
-		// {
-		// 	return vec3(1.0, 0.0, 1.0);
-		// }
+		if (minDistance == distance4)
+		{
+			return vec3(1.0, 0.0, 1.0);
+		}
 
-		// if (minDistance == distance5)
-		// {
-		// 	return vec3(0.0, 0.0, 1.0);
-		// }
+		if (minDistance == distance5)
+		{
+			return vec3(0.0, 0.0, 1.0);
+		}
 
 		return vec3(1.0, 0.5, 1.0);
 	`;
@@ -247,26 +259,106 @@ export class H3Spheres extends H3Geometry
 			return log(x + sqrt(x*x - 1.0));
 		}
 
+		const vec4 teleportVec1 = vec4(1.0, 0.0, 0.0, 0.64764842);
+		const mat4 teleportMat1 = mat4(
+			2.5, 0.0, 0.0, sqrt(21.0)/2.0,
+			0.0, 1.0, 0.0, 0.0,
+			0.0, 0.0, 1.0, 0.0,
+			sqrt(21.0)/2.0, 0.0, 0.0, 2.5
+		);
+
+		const vec4 teleportVec2 = vec4(-1.0, 0.0, 0.0, 0.64764842);
+		const mat4 teleportMat2 = mat4(
+			2.5, 0.0, 0.0, -sqrt(21.0)/2.0,
+			0.0, 1.0, 0.0, 0.0,
+			0.0, 0.0, 1.0, 0.0,
+			-sqrt(21.0)/2.0, 0.0, 0.0, 2.5
+		);
+
+		const vec4 teleportVec3 = vec4(0.0, 1.0, 0.0, 0.64764842);
+		const mat4 teleportMat3 = mat4(
+			1.0, 0.0, 0.0, 0.0,
+			0.0, 2.5, 0.0, sqrt(21.0)/2.0,
+			0.0, 0.0, 1.0, 0.0,
+			0.0, sqrt(21.0)/2.0, 0.0, 2.5
+		);
+
+		const vec4 teleportVec4 = vec4(0.0, -1.0, 0.0, 0.64764842);
+		const mat4 teleportMat4 = mat4(
+			1.0, 0.0, 0.0, 0.0,
+			0.0, 2.5, 0.0, -sqrt(21.0)/2.0,
+			0.0, 0.0, 1.0, 0.0,
+			0.0, -sqrt(21.0)/2.0, 0.0, 2.5
+		);
+
 		vec3 teleportPos(inout vec4 pos, inout vec4 startPos, inout vec4 rayDirectionVec, inout float t)
 		{
-			if (dot(pos, vec4(1.0, 0.0, 0.0, 0.64764842)) < 0.0)
+			if (dot(pos, teleportVec1) < 0.0)
 			{
-				pos = mat4(
-					2.5, 0.0, 0.0, sqrt(21.0)/2.0,
-					0.0, 1.0, 0.0, 0.0,
-					0.0, 0.0, 1.0, 0.0,
-					sqrt(21.0)/2.0, 0.0, 0.0, 2.5
-				) * pos;
-				rayDirectionVec = mat4(
-					2.5, 0.0, 0.0, sqrt(21.0)/2.0,
-					0.0, 1.0, 0.0, 0.0,
-					0.0, 0.0, 1.0, 0.0,
-					sqrt(21.0)/2.0, 0.0, 0.0, 2.5
-				) * rayDirectionVec;
+				pos = teleportMat1 * pos;
+
+				// !!!IMPORTANT!!! rayDirectionVec is the tangent vector from the *starting*
+				// position, not the current one, so we need to calculate that current
+				// position to teleport the vector correctly. The correct tangent vector
+				// is just the derivative of the geodesic at the current value of t.
+
+				rayDirectionVec = teleportMat1 * (sinh(t) * startPos + cosh(t) * rayDirectionVec);
+
 				startPos = pos;
 				t = 0.0;
 
 				return vec3(1.0, 0.0, 0.0);
+			}
+
+			if (dot(pos, teleportVec2) < 0.0)
+			{
+				pos = teleportMat2 * pos;
+
+				// !!!IMPORTANT!!! rayDirectionVec is the tangent vector from the *starting*
+				// position, not the current one, so we need to calculate that current
+				// position to teleport the vector correctly. The correct tangent vector
+				// is just the derivative of the geodesic at the current value of t.
+
+				rayDirectionVec = teleportMat2 * (sinh(t) * startPos + cosh(t) * rayDirectionVec);
+
+				startPos = pos;
+				t = 0.0;
+
+				return vec3(0.0, 1.0, 1.0);
+			}
+
+			if (dot(pos, teleportVec3) < 0.0)
+			{
+				pos = teleportMat3 * pos;
+
+				// !!!IMPORTANT!!! rayDirectionVec is the tangent vector from the *starting*
+				// position, not the current one, so we need to calculate that current
+				// position to teleport the vector correctly. The correct tangent vector
+				// is just the derivative of the geodesic at the current value of t.
+
+				rayDirectionVec = teleportMat3 * (sinh(t) * startPos + cosh(t) * rayDirectionVec);
+
+				startPos = pos;
+				t = 0.0;
+
+				return vec3(0.0, 1.0, 1.0);
+			}
+
+			if (dot(pos, teleportVec4) < 0.0)
+			{
+				pos = teleportMat4 * pos;
+
+				// !!!IMPORTANT!!! rayDirectionVec is the tangent vector from the *starting*
+				// position, not the current one, so we need to calculate that current
+				// position to teleport the vector correctly. The correct tangent vector
+				// is just the derivative of the geodesic at the current value of t.
+
+				rayDirectionVec = teleportMat4 * (sinh(t) * startPos + cosh(t) * rayDirectionVec);
+
+				startPos = pos;
+				t = 0.0;
+
+				return vec3(0.0, 1.0, 1.0);
 			}
 
 			return vec3(0.0, 0.0, 0.0);
@@ -276,11 +368,11 @@ export class H3Spheres extends H3Geometry
 	geodesicGlsl = `
 		vec4 pos = cosh(t) * startPos + sinh(t) * rayDirectionVec;
 
-		// globalColor += teleportPos(pos, startPos, rayDirectionVec, t);
+		globalColor += teleportPos(pos, startPos, rayDirectionVec, t);
 
 		// if (dot(pos, vec4(1.0, 0.0, 0.0, 0.64764842)) < 0.0)
 		// {
-		// 	return vec3(1.0, 0.0, 1.0);
+		// 	return vec3(1.0, geometryDot(pos, rayDirectionVec), 1.0);
 		// }
 	`;
 
@@ -336,8 +428,8 @@ export class H3Spheres extends H3Geometry
 	cameraPos = [0, 0, 0, 1];
 	normalVec = [0, 0, 0, -1];
 	upVec = [0, 0, 1, 0];
-	rightVec = [0, 1, 0, 0];
-	forwardVec = [1, 0, 0, 0];
+	rightVec = [0, -1, 0, 0];
+	forwardVec = [-1, 0, 0, 0];
 	
 	static teleportations = [
 		[
@@ -401,10 +493,10 @@ export class H3Spheres extends H3Geometry
 		const wallThicknessSlider = $("#wall-thickness-slider");
 		const wallThicknessSliderValue = $("#wall-thickness-slider-value");
 
-		wallThicknessSlider.min = 1.0;
-		wallThicknessSlider.max = 2.0;
-		wallThicknessSlider.value = 1.0;
-		wallThicknessSliderValue.textContent = 1.0;
-		sliderValues.wallThickness = 1.0;
+		wallThicknessSlider.min = 0.2;
+		wallThicknessSlider.max = 1.0;
+		wallThicknessSlider.value = 0.2;
+		wallThicknessSliderValue.textContent = 0.2;
+		sliderValues.wallThickness = 0.2;
 	}
 }
