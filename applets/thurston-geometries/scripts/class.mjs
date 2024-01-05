@@ -38,7 +38,7 @@ export class ThurstonGeometry extends Applet
 
 	numTouches = 0;
 
-	movingSubsteps = 4;
+	movingSubsteps = 1;
 
 
 
@@ -460,6 +460,7 @@ export class ThurstonGeometry extends Applet
 					[0, 0, Math.sign(this.movingAmount[2])],
 					timeElapsed * speedAdjust * Math.abs(this.movingAmount[2])
 				);
+				
 				this.geometryData.correctVectors();
 			}
 			
@@ -574,8 +575,6 @@ export class ThurstonGeometry extends Applet
 
 			const dt = timeElapsed / (1000 * this.movingSubsteps)
 				* this.geometryData.getMovingSpeed(this.geometryData.cameraPos);
-
-
 
 			//The magic formula is T' = curvature * N.
 			// const curvature = this.getCurvature(this.geometryData.cameraPos, tangentVec);
