@@ -48,56 +48,61 @@ class H3Geometry extends BaseGeometry
 			return log(x + sqrt(x*x - 1.0));
 		}
 
-		const vec4 teleportVec1 = vec4(1.0, 0.0, 0.0, 0.577350269);
-		const mat4 teleportMat1 = mat4(
-			2.0, 0.0, 0.0, 1.73205081,
-			0.0, 1.0, 0.0, 0.0,
-			0.0, 0.0, 1.0, 0.0,
-			1.73205081, 0.0, 0.0, 2.0
-		);
-
-		const vec4 teleportVec2 = vec4(-1.0, 0.0, 0.0, 0.577350269);
-		const mat4 teleportMat2 = mat4(
-			2.0, 0.0, 0.0, -1.73205081,
-			0.0, 1.0, 0.0, 0.0,
-			0.0, 0.0, 1.0, 0.0,
-			-1.73205081, 0.0, 0.0, 2.0
-		);
-
-		const vec4 teleportVec3 = vec4(0.0, 1.0, 0.0, 0.577350269);
-		const mat4 teleportMat3 = mat4(
-			1.0, 0.0, 0.0, 0.0,
-			0.0, 2.0, 0.0, 1.73205081,
-			0.0, 0.0, 1.0, 0.0,
-			0.0, 1.73205081, 0.0, 2.0
-		);
-
-		const vec4 teleportVec4 = vec4(0.0, -1.0, 0.0, 0.577350269);
-		const mat4 teleportMat4 = mat4(
-			1.0, 0.0, 0.0, 0.0,
-			0.0, 2.0, 0.0, -1.73205081,
-			0.0, 0.0, 1.0, 0.0,
-			0.0, -1.73205081, 0.0, 2.0
-		);
-
-		const vec4 teleportVec5 = vec4(0.0, 0.0, 1.0, 0.577350269);
-		const mat4 teleportMat5 = mat4(
-			1.0, 0.0, 0.0, 0.0,
-			0.0, 1.0, 0.0, 0.0,
-			0.0, 0.0, 2.0, 1.73205081,
-			0.0, 0.0, 1.73205081, 2.0
-		);
-
-		const vec4 teleportVec6 = vec4(0.0, 0.0, -1.0, 0.577350269);
-		const mat4 teleportMat6 = mat4(
-			1.0, 0.0, 0.0, 0.0,
-			0.0, 1.0, 0.0, 0.0,
-			0.0, 0.0, 2.0, -1.73205081,
-			0.0, 0.0, -1.73205081, 2.0
-		);
-
 		vec3 teleportPos(inout vec4 pos, inout vec4 startPos, inout vec4 rayDirectionVec, inout float t, inout float totalT)
 		{
+			float c = cos(gluingAngle);
+			float s = sin(gluingAngle);
+
+			vec4 teleportVec1 = vec4(1.0, 0.0, 0.0, 0.577350269);
+			mat4 teleportMat1 = mat4(
+				2.0, 0.0, 0.0, 1.73205081,
+				0.0, c, s, 0.0,
+				0.0, -s, c, 0.0,
+				1.73205081, 0.0, 0.0, 2.0
+			);
+
+			vec4 teleportVec2 = vec4(-1.0, 0.0, 0.0, 0.577350269);
+			mat4 teleportMat2 = mat4(
+				2.0, 0.0, 0.0, -1.73205081,
+				0.0, c, -s, 0.0,
+				0.0, s, c, 0.0,
+				-1.73205081, 0.0, 0.0, 2.0
+			);
+
+			vec4 teleportVec3 = vec4(0.0, 1.0, 0.0, 0.577350269);
+			mat4 teleportMat3 = mat4(
+				c, 0.0, s, 0.0,
+				0.0, 2.0, 0.0, 1.73205081,
+				-s, 0.0, c, 0.0,
+				0.0, 1.73205081, 0.0, 2.0
+			);
+
+			vec4 teleportVec4 = vec4(0.0, -1.0, 0.0, 0.577350269);
+			mat4 teleportMat4 = mat4(
+				c, 0.0, -s, 0.0,
+				0.0, 2.0, 0.0, -1.73205081,
+				s, 0.0, c, 0.0,
+				0.0, -1.73205081, 0.0, 2.0
+			);
+
+			vec4 teleportVec5 = vec4(0.0, 0.0, 1.0, 0.577350269);
+			mat4 teleportMat5 = mat4(
+				c, s, 0.0, 0.0,
+				-s, c, 0.0, 0.0,
+				0.0, 0.0, 2.0, 1.73205081,
+				0.0, 0.0, 1.73205081, 2.0
+			);
+
+			vec4 teleportVec6 = vec4(0.0, 0.0, -1.0, 0.577350269);
+			mat4 teleportMat6 = mat4(
+				c, -s, 0.0, 0.0,
+				s, c, 0.0, 0.0,
+				0.0, 0.0, 2.0, -1.73205081,
+				0.0, 0.0, -1.73205081, 2.0
+			);
+
+
+
 			if (dot(pos, teleportVec1) < 0.0)
 			{
 				pos = teleportMat1 * pos;
@@ -334,96 +339,99 @@ class H3Geometry extends BaseGeometry
 		this.forwardVec = this.normalize(this.forwardVec);
 	}
 
-	static teleportations = [
-		[
-			[1, 0, 0, 1 / Math.sqrt(3)],
-			[
-				[2, 0, 0, Math.sqrt(3)],
-				[0, 1, 0, 0],
-				[0, 0, 1, 0],
-				[Math.sqrt(3), 0, 0, 2]
-			]
-		],
-
-		[
-			[-1, 0, 0, 1 / Math.sqrt(3)],
-			[
-				[2, 0, 0, -Math.sqrt(3)],
-				[0, 1, 0, 0],
-				[0, 0, 1, 0],
-				[-Math.sqrt(3), 0, 0, 2]
-			]
-		],
-
-		[
-			[0, 1, 0, 1 / Math.sqrt(3)],
-			[
-				[1, 0, 0, 0],
-				[0, 2, 0, Math.sqrt(3)],
-				[0, 0, 1, 0],
-				[0, Math.sqrt(3), 0, 2]
-			]
-		],
-
-		[
-			[0, -1, 0, 1 / Math.sqrt(3)],
-			[
-				[1, 0, 0, 0],
-				[0, 2, 0, -Math.sqrt(3)],
-				[0, 0, 1, 0],
-				[0, -Math.sqrt(3), 0, 2]
-			]
-		],
-
-		[
-			[0, 0, 1, 1 / Math.sqrt(3)],
-			[
-				[1, 0, 0, 0],
-				[0, 1, 0, 0],
-				[0, 0, 2, Math.sqrt(3)],
-				[0, 0, Math.sqrt(3), 2]
-			]
-		],
-
-		[
-			[0, 0, -1, 1 / Math.sqrt(3)],
-			[
-				[1, 0, 0, 0],
-				[0, 1, 0, 0],
-				[0, 0, 2, -Math.sqrt(3)],
-				[0, 0, -Math.sqrt(3), 2]
-			]
-		],
-	];
-
 	teleportCamera(rotatedForwardVec, recomputeRotation)
 	{
-		for (let i = 0; i < H3Geometry.teleportations.length; i++)
+		const cosine = Math.cos(sliderValues.gluingAngle);
+		const sine = Math.sin(sliderValues.gluingAngle);
+
+		const teleportations = [
+			[
+				[1, 0, 0, 1 / Math.sqrt(3)],
+				[
+					[2, 0, 0, Math.sqrt(3)],
+					[0, cosine, -sine, 0],
+					[0, sine, cosine, 0],
+					[Math.sqrt(3), 0, 0, 2]
+				]
+			],
+	
+			[
+				[-1, 0, 0, 1 / Math.sqrt(3)],
+				[
+					[2, 0, 0, -Math.sqrt(3)],
+					[0, cosine, sine, 0],
+					[0, -sine, cosine, 0],
+					[-Math.sqrt(3), 0, 0, 2]
+				]
+			],
+	
+			[
+				[0, 1, 0, 1 / Math.sqrt(3)],
+				[
+					[cosine, 0, -sine, 0],
+					[0, 2, 0, Math.sqrt(3)],
+					[sine, 0, cosine, 0],
+					[0, Math.sqrt(3), 0, 2]
+				]
+			],
+	
+			[
+				[0, -1, 0, 1 / Math.sqrt(3)],
+				[
+					[cosine, 0, sine, 0],
+					[0, 2, 0, -Math.sqrt(3)],
+					[-sine, 0, cosine, 0],
+					[0, -Math.sqrt(3), 0, 2]
+				]
+			],
+	
+			[
+				[0, 0, 1, 1 / Math.sqrt(3)],
+				[
+					[cosine, -sine, 0, 0],
+					[sine, cosine, 0, 0],
+					[0, 0, 2, Math.sqrt(3)],
+					[0, 0, Math.sqrt(3), 2]
+				]
+			],
+	
+			[
+				[0, 0, -1, 1 / Math.sqrt(3)],
+				[
+					[cosine, sine, 0, 0],
+					[-sine, cosine, 0, 0],
+					[0, 0, 2, -Math.sqrt(3)],
+					[0, 0, -Math.sqrt(3), 2]
+				]
+			],
+		];
+
+		for (let i = 0; i < teleportations.length; i++)
 		{
-			if (ThurstonGeometry.dotProduct(this.cameraPos, H3Geometry.teleportations[i][0]) < 0)
+			if (ThurstonGeometry.dotProduct(this.cameraPos, teleportations[i][0]) < 0)
 			{
 				this.cameraPos = ThurstonGeometry.mat4TimesVector(
-					H3Geometry.teleportations[i][1],
+					teleportations[i][1],
 					this.cameraPos
 				);
 
 				this.forwardVec = ThurstonGeometry.mat4TimesVector(
-					H3Geometry.teleportations[i][1],
+					teleportations[i][1],
 					this.forwardVec
 				);
 
 				this.rightVec = ThurstonGeometry.mat4TimesVector(
-					H3Geometry.teleportations[i][1],
+					teleportations[i][1],
 					this.rightVec
 				);
 
 				this.upVec = ThurstonGeometry.mat4TimesVector(
-					H3Geometry.teleportations[i][1],
+					teleportations[i][1],
 					this.upVec
 				);
 
 				const newRotatedForwardVec = ThurstonGeometry.mat4TimesVector(
-					H3Geometry.teleportations[i][1],
+					teleportations[i][1],
 					rotatedForwardVec
 				);
 
@@ -516,10 +524,11 @@ export class H3Rooms extends H3Geometry
 
 	uniformGlsl = `
 		uniform float wallThickness;
+		uniform float gluingAngle;
 		uniform vec3 baseColor;
 	`;
 
-	uniformNames = ["wallThickness", "baseColor"];
+	uniformNames = ["wallThickness", "gluingAngle", "baseColor"];
 
 	updateUniforms(gl, uniformList)
 	{
@@ -527,10 +536,11 @@ export class H3Rooms extends H3Geometry
 			(sliderValues.wallThickness - (-.357)) / (.143 - (-.357)) * (1.5 - 1);
 
 		gl.uniform1f(uniformList["wallThickness"], wallThickness);
+		gl.uniform1f(uniformList["gluingAngle"], sliderValues.gluingAngle);
 		gl.uniform3fv(uniformList["baseColor"], baseColor);
 	}
 
-	uiElementsUsed = "#wall-thickness-slider";
+	uiElementsUsed = "#wall-thickness-slider, #gluing-angle-slider";
 
 	initUI()
 	{
@@ -542,5 +552,14 @@ export class H3Rooms extends H3Geometry
 		wallThicknessSlider.value = .143;
 		wallThicknessSliderValue.textContent = .143;
 		sliderValues.wallThickness = .143;
+
+		const gluingAngleSlider = $("#gluing-angle-slider");
+		const gluingAngleSliderValue = $("#gluing-angle-slider-value");
+
+		gluingAngleSlider.min = 0;
+		gluingAngleSlider.max = 2 * Math.PI;
+		gluingAngleSlider.value = 0;
+		gluingAngleSliderValue.textContent = 0;
+		sliderValues.gluingAngle = 0;
 	}
 }

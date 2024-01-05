@@ -22,56 +22,61 @@ import{ThurstonGeometry}from"../class.min.mjs";import{sliderValues}from"../index
 			return log(x + sqrt(x*x - 1.0));
 		}
 
-		const vec4 teleportVec1 = vec4(1.0, 0.0, 0.0, 0.577350269);
-		const mat4 teleportMat1 = mat4(
-			2.0, 0.0, 0.0, 1.73205081,
-			0.0, 1.0, 0.0, 0.0,
-			0.0, 0.0, 1.0, 0.0,
-			1.73205081, 0.0, 0.0, 2.0
-		);
-
-		const vec4 teleportVec2 = vec4(-1.0, 0.0, 0.0, 0.577350269);
-		const mat4 teleportMat2 = mat4(
-			2.0, 0.0, 0.0, -1.73205081,
-			0.0, 1.0, 0.0, 0.0,
-			0.0, 0.0, 1.0, 0.0,
-			-1.73205081, 0.0, 0.0, 2.0
-		);
-
-		const vec4 teleportVec3 = vec4(0.0, 1.0, 0.0, 0.577350269);
-		const mat4 teleportMat3 = mat4(
-			1.0, 0.0, 0.0, 0.0,
-			0.0, 2.0, 0.0, 1.73205081,
-			0.0, 0.0, 1.0, 0.0,
-			0.0, 1.73205081, 0.0, 2.0
-		);
-
-		const vec4 teleportVec4 = vec4(0.0, -1.0, 0.0, 0.577350269);
-		const mat4 teleportMat4 = mat4(
-			1.0, 0.0, 0.0, 0.0,
-			0.0, 2.0, 0.0, -1.73205081,
-			0.0, 0.0, 1.0, 0.0,
-			0.0, -1.73205081, 0.0, 2.0
-		);
-
-		const vec4 teleportVec5 = vec4(0.0, 0.0, 1.0, 0.577350269);
-		const mat4 teleportMat5 = mat4(
-			1.0, 0.0, 0.0, 0.0,
-			0.0, 1.0, 0.0, 0.0,
-			0.0, 0.0, 2.0, 1.73205081,
-			0.0, 0.0, 1.73205081, 2.0
-		);
-
-		const vec4 teleportVec6 = vec4(0.0, 0.0, -1.0, 0.577350269);
-		const mat4 teleportMat6 = mat4(
-			1.0, 0.0, 0.0, 0.0,
-			0.0, 1.0, 0.0, 0.0,
-			0.0, 0.0, 2.0, -1.73205081,
-			0.0, 0.0, -1.73205081, 2.0
-		);
-
 		vec3 teleportPos(inout vec4 pos, inout vec4 startPos, inout vec4 rayDirectionVec, inout float t, inout float totalT)
 		{
+			float c = cos(gluingAngle);
+			float s = sin(gluingAngle);
+
+			vec4 teleportVec1 = vec4(1.0, 0.0, 0.0, 0.577350269);
+			mat4 teleportMat1 = mat4(
+				2.0, 0.0, 0.0, 1.73205081,
+				0.0, c, s, 0.0,
+				0.0, -s, c, 0.0,
+				1.73205081, 0.0, 0.0, 2.0
+			);
+
+			vec4 teleportVec2 = vec4(-1.0, 0.0, 0.0, 0.577350269);
+			mat4 teleportMat2 = mat4(
+				2.0, 0.0, 0.0, -1.73205081,
+				0.0, c, -s, 0.0,
+				0.0, s, c, 0.0,
+				-1.73205081, 0.0, 0.0, 2.0
+			);
+
+			vec4 teleportVec3 = vec4(0.0, 1.0, 0.0, 0.577350269);
+			mat4 teleportMat3 = mat4(
+				c, 0.0, s, 0.0,
+				0.0, 2.0, 0.0, 1.73205081,
+				-s, 0.0, c, 0.0,
+				0.0, 1.73205081, 0.0, 2.0
+			);
+
+			vec4 teleportVec4 = vec4(0.0, -1.0, 0.0, 0.577350269);
+			mat4 teleportMat4 = mat4(
+				c, 0.0, -s, 0.0,
+				0.0, 2.0, 0.0, -1.73205081,
+				s, 0.0, c, 0.0,
+				0.0, -1.73205081, 0.0, 2.0
+			);
+
+			vec4 teleportVec5 = vec4(0.0, 0.0, 1.0, 0.577350269);
+			mat4 teleportMat5 = mat4(
+				c, s, 0.0, 0.0,
+				-s, c, 0.0, 0.0,
+				0.0, 0.0, 2.0, 1.73205081,
+				0.0, 0.0, 1.73205081, 2.0
+			);
+
+			vec4 teleportVec6 = vec4(0.0, 0.0, -1.0, 0.577350269);
+			mat4 teleportMat6 = mat4(
+				c, -s, 0.0, 0.0,
+				s, c, 0.0, 0.0,
+				0.0, 0.0, 2.0, -1.73205081,
+				0.0, 0.0, -1.73205081, 2.0
+			);
+
+
+
 			if (dot(pos, teleportVec1) < 0.0)
 			{
 				pos = teleportMat1 * pos;
@@ -180,7 +185,7 @@ import{ThurstonGeometry}from"../class.min.mjs";import{sliderValues}from"../index
 			max(abs(dotProduct1), abs(dotProduct2)),
 			max(abs(dotProduct3), abs(dotProduct4))
 		);
-	`;correctVectors(){var t=this.dotProduct(this.cameraPos,this.upVec),e=this.dotProduct(this.cameraPos,this.rightVec),o=this.dotProduct(this.cameraPos,this.forwardVec);for(let r=0;r<4;r++)this.upVec[r]+=t*this.cameraPos[r],this.rightVec[r]+=e*this.cameraPos[r],this.forwardVec[r]+=o*this.cameraPos[r];this.upVec=this.normalize(this.upVec),this.rightVec=this.normalize(this.rightVec),this.forwardVec=this.normalize(this.forwardVec)}static teleportations=[[[1,0,0,1/Math.sqrt(3)],[[2,0,0,Math.sqrt(3)],[0,1,0,0],[0,0,1,0],[Math.sqrt(3),0,0,2]]],[[-1,0,0,1/Math.sqrt(3)],[[2,0,0,-Math.sqrt(3)],[0,1,0,0],[0,0,1,0],[-Math.sqrt(3),0,0,2]]],[[0,1,0,1/Math.sqrt(3)],[[1,0,0,0],[0,2,0,Math.sqrt(3)],[0,0,1,0],[0,Math.sqrt(3),0,2]]],[[0,-1,0,1/Math.sqrt(3)],[[1,0,0,0],[0,2,0,-Math.sqrt(3)],[0,0,1,0],[0,-Math.sqrt(3),0,2]]],[[0,0,1,1/Math.sqrt(3)],[[1,0,0,0],[0,1,0,0],[0,0,2,Math.sqrt(3)],[0,0,Math.sqrt(3),2]]],[[0,0,-1,1/Math.sqrt(3)],[[1,0,0,0],[0,1,0,0],[0,0,2,-Math.sqrt(3)],[0,0,-Math.sqrt(3),2]]]];teleportCamera(rotatedForwardVec,recomputeRotation){for(let t=0;t<H3Geometry.teleportations.length;t++)ThurstonGeometry.dotProduct(this.cameraPos,H3Geometry.teleportations[t][0])<0&&(this.cameraPos=ThurstonGeometry.mat4TimesVector(H3Geometry.teleportations[t][1],this.cameraPos),this.forwardVec=ThurstonGeometry.mat4TimesVector(H3Geometry.teleportations[t][1],this.forwardVec),this.rightVec=ThurstonGeometry.mat4TimesVector(H3Geometry.teleportations[t][1],this.rightVec),this.upVec=ThurstonGeometry.mat4TimesVector(H3Geometry.teleportations[t][1],this.upVec),recomputeRotation(ThurstonGeometry.mat4TimesVector(H3Geometry.teleportations[t][1],rotatedForwardVec)),baseColor[0]+=baseColorIncreases[t][0],baseColor[1]+=baseColorIncreases[t][1],baseColor[2]+=baseColorIncreases[t][2])}}class H3Rooms extends H3Geometry{static distances=`
+	`;correctVectors(){var t=this.dotProduct(this.cameraPos,this.upVec),e=this.dotProduct(this.cameraPos,this.rightVec),o=this.dotProduct(this.cameraPos,this.forwardVec);for(let r=0;r<4;r++)this.upVec[r]+=t*this.cameraPos[r],this.rightVec[r]+=e*this.cameraPos[r],this.forwardVec[r]+=o*this.cameraPos[r];this.upVec=this.normalize(this.upVec),this.rightVec=this.normalize(this.rightVec),this.forwardVec=this.normalize(this.forwardVec)}teleportCamera(rotatedForwardVec,recomputeRotation){var t=Math.cos(sliderValues.gluingAngle),e=Math.sin(sliderValues.gluingAngle),o=[[[1,0,0,1/Math.sqrt(3)],[[2,0,0,Math.sqrt(3)],[0,t,-e,0],[0,e,t,0],[Math.sqrt(3),0,0,2]]],[[-1,0,0,1/Math.sqrt(3)],[[2,0,0,-Math.sqrt(3)],[0,t,e,0],[0,-e,t,0],[-Math.sqrt(3),0,0,2]]],[[0,1,0,1/Math.sqrt(3)],[[t,0,-e,0],[0,2,0,Math.sqrt(3)],[e,0,t,0],[0,Math.sqrt(3),0,2]]],[[0,-1,0,1/Math.sqrt(3)],[[t,0,e,0],[0,2,0,-Math.sqrt(3)],[-e,0,t,0],[0,-Math.sqrt(3),0,2]]],[[0,0,1,1/Math.sqrt(3)],[[t,-e,0,0],[e,t,0,0],[0,0,2,Math.sqrt(3)],[0,0,Math.sqrt(3),2]]],[[0,0,-1,1/Math.sqrt(3)],[[t,e,0,0],[-e,t,0,0],[0,0,2,-Math.sqrt(3)],[0,0,-Math.sqrt(3),2]]]];for(let r=0;r<o.length;r++)ThurstonGeometry.dotProduct(this.cameraPos,o[r][0])<0&&(this.cameraPos=ThurstonGeometry.mat4TimesVector(o[r][1],this.cameraPos),this.forwardVec=ThurstonGeometry.mat4TimesVector(o[r][1],this.forwardVec),this.rightVec=ThurstonGeometry.mat4TimesVector(o[r][1],this.rightVec),this.upVec=ThurstonGeometry.mat4TimesVector(o[r][1],this.upVec),recomputeRotation(ThurstonGeometry.mat4TimesVector(o[r][1],rotatedForwardVec)),baseColor[0]+=baseColorIncreases[r][0],baseColor[1]+=baseColorIncreases[r][1],baseColor[2]+=baseColorIncreases[r][2])}}class H3Rooms extends H3Geometry{static distances=`
 		float distance1 = wallThickness - acosh(-geometryDot(pos, vec4(0.0, 0.0, 0.0, 1.0)));
 
 		// Translate the reflection plane to the x = 0 plane, then get the distance to it.
@@ -240,5 +245,6 @@ import{ThurstonGeometry}from"../class.min.mjs";import{sliderValues}from"../index
 		);
 	`;getMovingSpeed(){return 1.5}cameraPos=[0,0,0,1];normalVec=[0,0,0,-1];upVec=[0,0,1,0];rightVec=[0,1,0,0];forwardVec=[1,0,0,0];uniformGlsl=`
 		uniform float wallThickness;
+		uniform float gluingAngle;
 		uniform vec3 baseColor;
-	`;uniformNames=["wallThickness","baseColor"];updateUniforms(gl,uniformList){var t=1.5-(sliderValues.wallThickness- -.357)/.5*.5;gl.uniform1f(uniformList.wallThickness,t),gl.uniform3fv(uniformList.baseColor,baseColor)}uiElementsUsed="#wall-thickness-slider";initUI(){var t=$("#wall-thickness-slider"),e=$("#wall-thickness-slider-value");t.min=-.357,t.max=.143,t.value=.143,e.textContent=.143,sliderValues.wallThickness=.143}}export{H3Rooms};
+	`;uniformNames=["wallThickness","gluingAngle","baseColor"];updateUniforms(gl,uniformList){var t=1.5-(sliderValues.wallThickness- -.357)/.5*.5;gl.uniform1f(uniformList.wallThickness,t),gl.uniform1f(uniformList.gluingAngle,sliderValues.gluingAngle),gl.uniform3fv(uniformList.baseColor,baseColor)}uiElementsUsed="#wall-thickness-slider, #gluing-angle-slider";initUI(){var t=$("#wall-thickness-slider"),e=$("#wall-thickness-slider-value"),t=(t.min=-.357,t.max=.143,t.value=.143,e.textContent=.143,sliderValues.wallThickness=.143,$("#gluing-angle-slider")),e=$("#gluing-angle-slider-value");t.min=0,t.max=2*Math.PI,t.value=0,e.textContent=0,sliderValues.gluingAngle=0}}export{H3Rooms};
