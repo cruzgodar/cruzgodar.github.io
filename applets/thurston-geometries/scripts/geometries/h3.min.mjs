@@ -192,42 +192,42 @@ import{ThurstonGeometry}from"../class.min.mjs";import{sliderValues}from"../index
 		// The DE to x = 0 is abs(asinh(pos.x)).
 		float distance2 = abs(asinh(
 			dot(
-				vec4(1.30156, 0.0, 0.0, 0.833108),
+				vec4(1.23188, 0.0, 0.0, 0.71939),
 				pos
 			)
 		));
 		
 		float distance3 = abs(asinh(
 			dot(
-				vec4(1.30156, 0.0, 0.0, -0.833108),
+				vec4(1.23188, 0.0, 0.0, -0.71939),
 				pos
 			)
 		));
 
 		float distance4 = abs(asinh(
 			dot(
-				vec4(0.0, 1.30156, 0.0, 0.833108),
+				vec4(0.0, 1.23188, 0.0, 0.71939),
 				pos
 			)
 		));
 		
 		float distance5 = abs(asinh(
 			dot(
-				vec4(0.0, -1.30156, 0.0, 0.833108),
+				vec4(0.0, -1.23188, 0.0, 0.71939),
 				pos
 			)
 		));
 
 		float distance6 = abs(asinh(
 			dot(
-				vec4(0.0, 0.0, 1.30156, 0.833108),
+				vec4(0.0, 0.0, 1.23188, 0.71939),
 				pos
 			)
 		));
 		
 		float distance7 = abs(asinh(
 			dot(
-				vec4(0.0, 0.0, -1.30156, 0.833108),
+				vec4(0.0, 0.0, -1.23188, 0.71939),
 				pos
 			)
 		));
