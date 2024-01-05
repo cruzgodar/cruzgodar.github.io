@@ -376,7 +376,7 @@ export class ThurstonGeometry extends Applet
 			return;
 		}
 
-		this.geometryData.teleportCamera();
+		this.geometryData.teleportCamera(this.rotatedForwardVec, this.recomputeRotation.bind(this));
 
 		this.geometryData.updateUniforms(this.wilson.gl, this.wilson.uniforms);
 
@@ -591,8 +591,6 @@ export class ThurstonGeometry extends Applet
 			this.geometryData.normalVec = this.geometryData.getNormalVec(
 				this.geometryData.cameraPos
 			);
-
-			this.geometryData.currentMovementVec = tangentVec;
 		}
 	}
 
@@ -643,6 +641,44 @@ export class ThurstonGeometry extends Applet
 
 
 
+	// When teleporting, we often have the issue that teleporting and rotating the forward vector
+	// don't commute, and unfortunately, we want to teleport *then* rotate. To get around this,
+	// we'll comute what the new rotation should be when teleporting.
+	recomputeRotation(newRotatedForwardVec)
+	{
+		const normalizedForwardVec = ThurstonGeometry.scaleVector(
+			1 / ThurstonGeometry.magnitude(this.geometryData.forwardVec),
+			this.geometryData.forwardVec
+		);
+
+		const normalizedUpVec = ThurstonGeometry.scaleVector(
+			1 / ThurstonGeometry.magnitude(this.geometryData.upVec),
+			this.geometryData.upVec
+		);
+
+		// First, get a vector orthogonal to the forward vector.
+		const orthogonalToForwardVec = ThurstonGeometry.addVectors(
+			normalizedUpVec,
+			ThurstonGeometry.scaleVector(
+				-ThurstonGeometry.dotProduct(normalizedForwardVec, normalizedUpVec),
+				normalizedForwardVec
+			)
+		);
+
+		// The rotated forward vector is cos(t) forward + sin(t) up.
+		// We'll dot this with the vector orthogonal to the forward one.
+		const angle = Math.asin(
+			ThurstonGeometry.dotProduct(newRotatedForwardVec, orthogonalToForwardVec)
+			/ (ThurstonGeometry.dotProduct(this.geometryData.upVec, orthogonalToForwardVec))
+		);
+		
+		this.wilson.worldCenterY = angle;
+
+		this.handleRotating();
+	}
+
+
+
 	handleRotating()
 	{
 		this.wilson.worldCenterY = Math.min(
@@ -669,8 +705,13 @@ export class ThurstonGeometry extends Applet
 			this.wilson.worldCenterY
 		);
 
+		// this.wilson.worldCenterY = 0;
+
 		this.rotatedForwardVec = result2[0];
 		this.rotatedUpVec = result2[1];
+
+		// this.geometryData.forwardVec = result2[0];
+		// this.geometryData.upVec = result2[1];
 	}
 
 

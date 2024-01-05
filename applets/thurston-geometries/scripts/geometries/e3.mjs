@@ -386,7 +386,7 @@ export class E3SeifertWeberSpace extends E3Geometry
 	forwardVec = [1, 0, 0, 0];
 
 	// Non-standard method for rotating the frame vectors in a plane.
-	rotateVectors(axis, angle)
+	rotateVectors(axis, angle, rotatedForwardVec)
 	{
 		const s = Math.sin(angle);
 		const c = Math.cos(angle);
@@ -415,9 +415,11 @@ export class E3SeifertWeberSpace extends E3Geometry
 			.concat(0);
 		this.rightVec = ThurstonGeometry.mat3TimesVector(rotationMatrix, this.rightVec).concat(0);
 		this.upVec = ThurstonGeometry.mat3TimesVector(rotationMatrix, this.upVec).concat(0);
+
+		return ThurstonGeometry.mat3TimesVector(rotationMatrix, rotatedForwardVec).concat(0);
 	}
 
-	teleportCamera()
+	teleportCamera(rotatedForwardVec, recomputeRotation)
 	{
 		for (let i = 0; i < dodecahedronPlanes.length; i++)
 		{
@@ -429,11 +431,17 @@ export class E3SeifertWeberSpace extends E3Geometry
 
 			if (dotProduct < -maxDotProduct)
 			{
-				this.rotateVectors(plane, -sliderValues.gluingAngle);
+				const newRotatedForwardVec = this.rotateVectors(
+					plane,
+					-sliderValues.gluingAngle,
+					rotatedForwardVec
+				);
 
 				this.cameraPos[0] += 2 * maxDotProduct * plane[0];
 				this.cameraPos[1] += 2 * maxDotProduct * plane[1];
 				this.cameraPos[2] += 2 * maxDotProduct * plane[2];
+
+				recomputeRotation(newRotatedForwardVec);
 
 				baseColor[0] += baseColorIncreases[i][0];
 				baseColor[1] += baseColorIncreases[i][1];
@@ -444,11 +452,17 @@ export class E3SeifertWeberSpace extends E3Geometry
 
 			else if (dotProduct > maxDotProduct)
 			{
-				this.rotateVectors(plane, sliderValues.gluingAngle);
+				const newRotatedForwardVec = this.rotateVectors(
+					plane,
+					sliderValues.gluingAngle,
+					rotatedForwardVec
+				);
 
 				this.cameraPos[0] -= 2 * maxDotProduct * plane[0];
 				this.cameraPos[1] -= 2 * maxDotProduct * plane[1];
 				this.cameraPos[2] -= 2 * maxDotProduct * plane[2];
+
+				recomputeRotation(newRotatedForwardVec);
 
 				baseColor[0] -= baseColorIncreases[i][0];
 				baseColor[1] -= baseColorIncreases[i][1];

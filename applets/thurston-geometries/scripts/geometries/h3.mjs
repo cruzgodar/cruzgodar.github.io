@@ -396,7 +396,7 @@ class H3Geometry extends BaseGeometry
 		],
 	];
 
-	teleportCamera()
+	teleportCamera(rotatedForwardVec, recomputeRotation)
 	{
 		for (let i = 0; i < H3Geometry.teleportations.length; i++)
 		{
@@ -421,6 +421,13 @@ class H3Geometry extends BaseGeometry
 					H3Geometry.teleportations[i][1],
 					this.upVec
 				);
+
+				const newRotatedForwardVec = ThurstonGeometry.mat4TimesVector(
+					H3Geometry.teleportations[i][1],
+					rotatedForwardVec
+				);
+
+				recomputeRotation(newRotatedForwardVec);
 
 				baseColor[0] += baseColorIncreases[i][0];
 				baseColor[1] += baseColorIncreases[i][1];
@@ -498,7 +505,7 @@ export class H3Rooms extends H3Geometry
 
 	getMovingSpeed()
 	{
-		return 1;
+		return 1.5;
 	}
 
 	cameraPos = [0, 0, 0, 1];
