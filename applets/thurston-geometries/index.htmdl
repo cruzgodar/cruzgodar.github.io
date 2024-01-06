@@ -27,6 +27,8 @@ Something will go here eventually!
 	s2xe-rooms "$S^2 \times \mathbb{E}$: Rooms"
 	s2xe-spheres "$S^2 \times \mathbb{E}$: Spheres"
 
+	h2xe-spheres "$\mathbb{H}^2 \times \mathbb{E}$: Spheres"
+
 ###
 
 ### text-boxes

@@ -37,57 +37,11 @@ export class BaseGeometry
 
 	teleportCamera() {}
 
-	// Given two points on the manifold, find the vector in the tangent space to pos1
-	// that points to pos2. In general, this takes a third argument that is the distance
-	// between pos1 and pos2
-	getGeodesicDirection(pos1, pos2)
-	{
-		// For now, just take the vector joining the two in R^4,
-		// project it into the tangent space, and normalize it.
-		const dir = [pos2[0] - pos1[0], pos2[1] - pos1[1], pos2[2] - pos1[2], pos2[3] - pos1[3]];
-
-		return this.normalize(dir);
-	}
-
-	//Gets the distance from pos1 to pos2 along the geodesic in the direction of dir.
-	getGeodesicDistance(pos1, pos2)
-	{
-		const difference = [
-			pos2[0] - pos1[0],
-			pos2[1] - pos1[1],
-			pos2[2] - pos1[2],
-			pos2[3] - pos1[3]
-		];
-
-		return Math.sqrt(this.dotProduct(difference, difference));
-	}
-
 	getNormalVec()
 	{
 		//f = w - 1.
 		return [0, 0, 0, 1];
 	}
-
-	getGammaPrime(_pos, dir)
-	{
-		//gamma = pos + t*dir
-		//gamma' = dir
-		//gamma'' = 0
-		//All of these are evaluated at t=0.
-		return [...dir];
-	}
-
-	getGammaDoublePrime()
-	{
-		return [0, 0, 0, 0];
-	}
-
-	getGammaTriplePrime()
-	{
-		return [0, 0, 0, 0];
-	}
-
-	gammaTriplePrimeIsLinearlyIndependent = false;
 
 	//Surprisingly necessary -- this corrects the frame so that no vector looks in the normal
 	//direction at all.

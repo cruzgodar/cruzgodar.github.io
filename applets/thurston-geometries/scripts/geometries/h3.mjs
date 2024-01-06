@@ -23,7 +23,7 @@ class H3Geometry extends BaseGeometry
 	dotProductGlsl = "return v.x * w.x + v.y * w.y + v.z * w.z - v.w * w.w;";
 
 	normalizeGlsl = `float magnitude = sqrt(abs(geometryDot(dir, dir)));
-		
+	
 	return dir / magnitude;`;
 
 	fogGlsl = "return mix(color, fogColor, 1.0 - exp(0.5 - totalT * 0.075));";
@@ -207,30 +207,6 @@ class H3Geometry extends BaseGeometry
 
 		return [vec[0] / magnitude, vec[1] / magnitude, vec[2] / magnitude, vec[3] / magnitude];
 	}
-
-	// The result of solving cosh(t)pos1 + sinh(t)v = pos2 for v.
-	getGeodesicDirection(pos1, pos2, t)
-	{
-		const cosFactor = Math.cosh(t);
-		const sinFactor = Math.sinh(t);
-		
-		const dir = [
-			(pos2[0] - cosFactor * pos1[0]) / sinFactor,
-			(pos2[1] - cosFactor * pos1[1]) / sinFactor,
-			(pos2[2] - cosFactor * pos1[2]) / sinFactor,
-			(pos2[3] - cosFactor * pos1[3]) / sinFactor,
-		];
-
-		return this.normalize(dir);
-	}
-
-	//Gets the distance from pos1 to pos2 along the geodesic in the direction of dir.
-	getGeodesicDistance(pos1, pos2)
-	{
-		const dot = this.dotProduct(pos1, pos2);
-
-		return Math.acosh(-dot);
-	}
 	
 	followGeodesic(pos, dir, t)
 	{
@@ -266,28 +242,6 @@ class H3Geometry extends BaseGeometry
 			cameraPos[3]
 		]);
 	}
-
-	getGammaPrime(_pos, dir)
-	{
-		//gamma = cosh(t)*pos + sinh(t)*dir
-		//gamma' = sinh(t)*pos + cosh(t)*dir
-		//gamma'' = cosh(t)*pos + sinh(t)*dir
-		//gamma''' = sinh(t)*pos + cosh(t)*dir
-		//All of these are evaluated at t=0.
-		return [...dir];
-	}
-
-	getGammaDoublePrime(pos)
-	{
-		return [...pos];
-	}
-
-	getGammaTriplePrime(_pos, dir)
-	{
-		return [...dir];
-	}
-
-	gammaTriplePrimeIsLinearlyIndependent = false;
 
 	lightGlsl = `
 		vec4 lightDirection1 = normalize(vec4(1.0, 1.0, 1.0, 1.0) - pos);
@@ -448,7 +402,7 @@ class H3Geometry extends BaseGeometry
 export class H3Rooms extends H3Geometry
 {
 	static distances = `
-		float distance1 = wallThickness - acosh(-geometryDot(pos, vec4(0.0, 0.0, 0.0, 1.0)));
+		float distance1 = wallThickness - acosh(pos.w);
 
 		// Translate the reflection plane to the x = 0 plane, then get the distance to it.
 		// The DE to x = 0 is abs(asinh(pos.x)).

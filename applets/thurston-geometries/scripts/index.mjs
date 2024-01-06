@@ -1,5 +1,6 @@
 import { ThurstonGeometry } from "./class.mjs";
 import { E3Rooms, E3SeifertWeberSpace, E3Spheres } from "./geometries/e3.mjs";
+import { H2xESpheres } from "./geometries/h2xe.mjs";
 import { H3Rooms } from "./geometries/h3.mjs";
 import { S2xERooms, S2xESpheres } from "./geometries/s2xe.mjs";
 import { S3HopfFibration, S3Rooms, S3Spheres } from "./geometries/s3.mjs";
@@ -23,12 +24,17 @@ export function load()
 		"e3-rooms": E3Rooms,
 		"e3-spheres": E3Spheres,
 		"e3-seifert-weber-space": E3SeifertWeberSpace,
+
 		"s3-rooms": S3Rooms,
 		"s3-spheres": S3Spheres,
 		"s3-hopf-fibration": S3HopfFibration,
+
 		"h3-rooms": H3Rooms,
+
 		"s2xe-rooms": S2xERooms,
-		"s2xe-spheres": S2xESpheres
+		"s2xe-spheres": S2xESpheres,
+
+		"h2xe-spheres": H2xESpheres
 	};
 
 	const sceneSelectorDropdownElement = $("#scene-selector-dropdown");

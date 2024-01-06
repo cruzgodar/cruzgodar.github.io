@@ -1,7 +1,7 @@
 import{ThurstonGeometry}from"../class.min.mjs";import{sliderValues}from"../index.min.mjs";import{BaseGeometry,getMinGlslString}from"./base.min.mjs";import{$}from"/scripts/src/main.min.mjs";const baseColorIncreases=[[1,0,0],[-1,0,0],[0,1,0],[0,-1,0],[0,0,1],[0,0,-1]],baseColor=[0,0,0];class H3Geometry extends BaseGeometry{geodesicGlsl=`vec4 pos = cosh(t) * startPos + sinh(t) * rayDirectionVec;
 
 	globalColor += teleportPos(pos, startPos, rayDirectionVec, t, totalT);`;dotProductGlsl="return v.x * w.x + v.y * w.y + v.z * w.z - v.w * w.w;";normalizeGlsl=`float magnitude = sqrt(abs(geometryDot(dir, dir)));
-		
+	
 	return dir / magnitude;`;fogGlsl="return mix(color, fogColor, 1.0 - exp(0.5 - totalT * 0.075));";functionGlsl=`float sinh(float x)
 		{
 			return .5 * (exp(x) - exp(-x));
@@ -168,7 +168,7 @@ import{ThurstonGeometry}from"../class.min.mjs";import{sliderValues}from"../index
 
 			return vec3(0.0, 0.0, 0.0);
 		}
-	`;dotProduct(vec1,vec2){return vec1[0]*vec2[0]+vec1[1]*vec2[1]+vec1[2]*vec2[2]-vec1[3]*vec2[3]}normalize(vec){var t=Math.sqrt(Math.abs(this.dotProduct(vec,vec)));return[vec[0]/t,vec[1]/t,vec[2]/t,vec[3]/t]}getGeodesicDirection(pos1,pos2,t){var e=Math.cosh(t),o=Math.sinh(t),e=[(pos2[0]-e*pos1[0])/o,(pos2[1]-e*pos1[1])/o,(pos2[2]-e*pos1[2])/o,(pos2[3]-e*pos1[3])/o];return this.normalize(e)}getGeodesicDistance(pos1,pos2){var t=this.dotProduct(pos1,pos2);return Math.acosh(-t)}followGeodesic(pos,dir,t){var e=new Array(4);for(let r=0;r<4;r++)e[r]=Math.cosh(t)*pos[r]+Math.sinh(t)*dir[r];var o=this.dotProduct(e,e),o=Math.sqrt(-o);return e[0]/=o,e[1]/=o,e[2]/=o,e[3]/=o,e}getNormalVec(cameraPos){return this.normalize([-cameraPos[0],-cameraPos[1],-cameraPos[2],cameraPos[3]])}getGammaPrime(_pos,dir){return[...dir]}getGammaDoublePrime(pos){return[...pos]}getGammaTriplePrime(_pos,dir){return[...dir]}gammaTriplePrimeIsLinearlyIndependent=!1;lightGlsl=`
+	`;dotProduct(vec1,vec2){return vec1[0]*vec2[0]+vec1[1]*vec2[1]+vec1[2]*vec2[2]-vec1[3]*vec2[3]}normalize(vec){var t=Math.sqrt(Math.abs(this.dotProduct(vec,vec)));return[vec[0]/t,vec[1]/t,vec[2]/t,vec[3]/t]}followGeodesic(pos,dir,t){var e=new Array(4);for(let r=0;r<4;r++)e[r]=Math.cosh(t)*pos[r]+Math.sinh(t)*dir[r];var o=this.dotProduct(e,e),o=Math.sqrt(-o);return e[0]/=o,e[1]/=o,e[2]/=o,e[3]/=o,e}getNormalVec(cameraPos){return this.normalize([-cameraPos[0],-cameraPos[1],-cameraPos[2],cameraPos[3]])}lightGlsl=`
 		vec4 lightDirection1 = normalize(vec4(1.0, 1.0, 1.0, 1.0) - pos);
 		float dotProduct1 = dot(surfaceNormal, lightDirection1);
 
@@ -186,7 +186,7 @@ import{ThurstonGeometry}from"../class.min.mjs";import{sliderValues}from"../index
 			max(abs(dotProduct3), abs(dotProduct4))
 		);
 	`;correctVectors(){var t=this.dotProduct(this.cameraPos,this.upVec),e=this.dotProduct(this.cameraPos,this.rightVec),o=this.dotProduct(this.cameraPos,this.forwardVec);for(let r=0;r<4;r++)this.upVec[r]+=t*this.cameraPos[r],this.rightVec[r]+=e*this.cameraPos[r],this.forwardVec[r]+=o*this.cameraPos[r];this.upVec=this.normalize(this.upVec),this.rightVec=this.normalize(this.rightVec),this.forwardVec=this.normalize(this.forwardVec)}teleportCamera(rotatedForwardVec,recomputeRotation){var t=Math.cos(sliderValues.gluingAngle),e=Math.sin(sliderValues.gluingAngle),o=[[[1,0,0,1/Math.sqrt(3)],[[2,0,0,Math.sqrt(3)],[0,t,-e,0],[0,e,t,0],[Math.sqrt(3),0,0,2]]],[[-1,0,0,1/Math.sqrt(3)],[[2,0,0,-Math.sqrt(3)],[0,t,e,0],[0,-e,t,0],[-Math.sqrt(3),0,0,2]]],[[0,1,0,1/Math.sqrt(3)],[[t,0,-e,0],[0,2,0,Math.sqrt(3)],[e,0,t,0],[0,Math.sqrt(3),0,2]]],[[0,-1,0,1/Math.sqrt(3)],[[t,0,e,0],[0,2,0,-Math.sqrt(3)],[-e,0,t,0],[0,-Math.sqrt(3),0,2]]],[[0,0,1,1/Math.sqrt(3)],[[t,-e,0,0],[e,t,0,0],[0,0,2,Math.sqrt(3)],[0,0,Math.sqrt(3),2]]],[[0,0,-1,1/Math.sqrt(3)],[[t,e,0,0],[-e,t,0,0],[0,0,2,-Math.sqrt(3)],[0,0,-Math.sqrt(3),2]]]];for(let r=0;r<o.length;r++)ThurstonGeometry.dotProduct(this.cameraPos,o[r][0])<0&&(this.cameraPos=ThurstonGeometry.mat4TimesVector(o[r][1],this.cameraPos),this.forwardVec=ThurstonGeometry.mat4TimesVector(o[r][1],this.forwardVec),this.rightVec=ThurstonGeometry.mat4TimesVector(o[r][1],this.rightVec),this.upVec=ThurstonGeometry.mat4TimesVector(o[r][1],this.upVec),recomputeRotation(ThurstonGeometry.mat4TimesVector(o[r][1],rotatedForwardVec)),baseColor[0]+=baseColorIncreases[r][0],baseColor[1]+=baseColorIncreases[r][1],baseColor[2]+=baseColorIncreases[r][2])}}class H3Rooms extends H3Geometry{static distances=`
-		float distance1 = wallThickness - acosh(-geometryDot(pos, vec4(0.0, 0.0, 0.0, 1.0)));
+		float distance1 = wallThickness - acosh(pos.w);
 
 		// Translate the reflection plane to the x = 0 plane, then get the distance to it.
 		// The DE to x = 0 is abs(asinh(pos.x)).
