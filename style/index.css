@@ -639,16 +639,18 @@ mjx-container
 	
 	width: 70%;
 	margin: 0 auto;
-}
 
-.text-boxes, .text-buttons, .sliders
-{
 	grid-template-columns: repeat(auto-fit, 100px);
 	
 	grid-row-gap: 10px;
 	grid-column-gap: 10px;
 	
 	margin-top: 32px;
+}
+
+.text-buttons.dropdown-holder
+{
+	z-index: 50;
 }
 
 .sliders

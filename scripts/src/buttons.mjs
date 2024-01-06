@@ -1,5 +1,6 @@
 import anime from "../anime.js";
 import { opacityAnimationTime } from "./animation.mjs";
+import { headerElement } from "./header.mjs";
 import { addHoverEvent } from "./hover-events.mjs";
 import {
 	$$,
@@ -213,12 +214,35 @@ function setUpDropdown(selectElement)
 			maxWidth = Math.max(maxWidth, element.getBoundingClientRect().width);
 		});
 
+		const openHeight = flexElement.getBoundingClientRect().height + 4;
+
+		const rect = buttonElement.getBoundingClientRect();
+		const topWhenOpen = (rect.top + rect.height / 2) - openHeight / 2;
+		const bottomWhenOpen = (rect.bottom - rect.height / 2) + openHeight / 2;
+
+		const headerHeight = headerElement.getBoundingClientRect().height;
+
+		let translateY = 0;
+
+		if (bottomWhenOpen > window.innerHeight - 10)
+		{
+			translateY = window.innerHeight - 10 - bottomWhenOpen;
+		}
+
+		// Putting this last means we error on the side of opening beyond the bottom of the page
+		// (although this si an extreme edge case).
+		if (topWhenOpen < 10 + headerHeight)
+		{
+			translateY = 10 + headerHeight - topWhenOpen;
+		}
+
 		await Promise.all([
 			anime({
 				targets: buttonElement,
 				//The +4 is for the border.
-				height: flexElement.getBoundingClientRect().height + 4,
+				height: openHeight,
 				width: maxWidth + 29.75,
+				translateY,
 				easing: "easeOutQuad",
 				duration: opacityAnimationTime
 			}).finished,
@@ -280,6 +304,7 @@ function setUpDropdown(selectElement)
 				targets: [buttonElement, buttonElement.parentNode.parentNode],
 				height: optionElements[selectedItem].getBoundingClientRect().height + 4,
 				width: (optionElements[selectedItem].getBoundingClientRect().width + 16),
+				translateY: 0,
 				easing: "easeOutQuad",
 				duration: opacityAnimationTime
 			}).finished,

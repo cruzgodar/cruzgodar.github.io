@@ -5,7 +5,7 @@ export function dropdown(options, lines)
 	const id = lines[0];
 
 	let html = `
-		<div class="text-buttons">
+		<div class="text-buttons dropdown-holder">
 			<div class="dropdown-container focus-on-child" tabindex="1">
 				<button class="text-button dropdown" type="button" id="${id}-dropdown-button" tabindex="-1">
 	`;
