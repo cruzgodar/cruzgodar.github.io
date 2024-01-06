@@ -257,12 +257,18 @@ export class S2xESpheres extends S2xEGeometry
 	`;
 
 	lightGlsl = `
-		// The cap fixes a very weird bug where the top and bottom of spheres had tiny dots of incorrect lighting.
+		// This is very weird, but it fixes an issue where the north and south poles
+		// of spheres had dots of incorrect lighting.
+		pos.xyz = normalize(pos.xyz) / 1.001;
+		surfaceNormal = getSurfaceNormal(pos);
+		
+		vec4 lightDirection1 = normalize(vec4(0.0, 1.0, 0.0, 2.0) - pos);
+		float dotProduct1 = dot(surfaceNormal, lightDirection1);
 
-		vec3 lightDirection1 = normalize(vec3(.6, .8, .2) - pos.xyz);
-		float dotProduct1 = min(abs(dot(surfaceNormal.xyz, lightDirection1)), 0.4);
+		vec4 lightDirection2 = normalize(vec4(1.0, 0.0, -1.0, 1.0) - pos);
+		float dotProduct2 = dot(surfaceNormal, lightDirection2);
 
-		float lightIntensity = 2.5 * lightBrightness * dotProduct1;
+		float lightIntensity = 1.3 * lightBrightness * max(dotProduct1, dotProduct2);
 	`;
 
 	cameraPos = [0, 0, -1, 0];
