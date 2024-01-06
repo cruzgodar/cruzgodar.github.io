@@ -81,10 +81,10 @@ import{Applet}from"/scripts/src/applets.min.mjs";import{aspectRatio}from"/script
 				float wStep2 = distanceEstimator(pos - vec4(0.0, 0.0, 0.0, epsilon));
 				
 				return normalize(vec4(
-					xStep1,// - xStep2,
-					yStep1,// - yStep2,
-					zStep1,// - zStep2,
-					wStep1// - wStep2
+					xStep1 - xStep2,
+					yStep1 - yStep2,
+					zStep1 - zStep2,
+					wStep1 - wStep2
 				));
 			}
 			
