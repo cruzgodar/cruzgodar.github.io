@@ -2,7 +2,7 @@ import{ThurstonGeometry}from"../class.min.mjs";import{sliderValues}from"../index
 
 	globalColor += teleportPos(pos, startPos, rayDirectionVec, t, totalT);`;dotProductGlsl="return v.x * w.x + v.y * w.y + v.z * w.z - v.w * w.w;";normalizeGlsl=`float magnitude = sqrt(abs(geometryDot(dir, dir)));
 		
-	return dir / magnitude;`;fogGlsl="return mix(color, fogColor, 1.0 - exp(-(totalT - 2.0) * fogScaling * 6.0));";functionGlsl=`float sinh(float x)
+	return dir / magnitude;`;fogGlsl="return mix(color, fogColor, 1.0 - exp(0.5 - totalT * 0.075));";functionGlsl=`float sinh(float x)
 		{
 			return .5 * (exp(x) - exp(-x));
 		}

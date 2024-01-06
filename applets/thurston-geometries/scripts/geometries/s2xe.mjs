@@ -1,6 +1,4 @@
-import { sliderValues } from "../index.mjs";
 import { BaseGeometry, getMinGlslString } from "./base.mjs";
-import { $ } from "/scripts/src/main.mjs";
 
 class S2xEGeometry extends BaseGeometry
 {
@@ -9,7 +7,7 @@ class S2xEGeometry extends BaseGeometry
 		startPos.w + t * rayDirectionVec.w
 	);`;
 
-	fogGlsl = "return mix(color, fogColor, 1.0 - exp(-acos(dot(pos, cameraPos)) * fogScaling));";
+	fogGlsl = "return mix(color, fogColor, 1.0 - exp(-totalT * fogScaling * 5.0));";
 	
 	followGeodesic(pos, dir, t)
 	{
@@ -41,33 +39,6 @@ class S2xEGeometry extends BaseGeometry
 		return newPos;
 	}
 
-	// The result of solving cos(t)pos1 + sin(t)v = pos2 for v
-	getGeodesicDirection(pos1, pos2, t)
-	{
-		return;
-		// const cosFactor = Math.cos(t);
-		// const sinFactor = Math.sin(t);
-		
-		// const dir = [
-		// 	(pos2[0] - cosFactor * pos1[0]) / sinFactor,
-		// 	(pos2[1] - cosFactor * pos1[1]) / sinFactor,
-		// 	(pos2[2] - cosFactor * pos1[2]) / sinFactor,
-		// 	(pos2[3] - cosFactor * pos1[3]) / sinFactor,
-		// ];
-
-		// return this.normalize(dir);
-	}
-
-	//Gets the distance from pos1 to pos2 along the geodesic in the direction of dir.
-	getGeodesicDistance(pos1, pos2)
-	{
-		return;
-
-		// const dot = this.dotProduct(pos1, pos2);
-
-		// return Math.acos(dot);
-	}
-
 	getNormalVec(cameraPos)
 	{
 		//f = 1 - x^2 - y^2 - z^2
@@ -78,28 +49,6 @@ class S2xEGeometry extends BaseGeometry
 			0
 		]);
 	}
-
-	getGammaPrime(_pos, dir)
-	{
-		//gamma = cos(t)*pos + sin(t)*dir
-		//gamma' = -sin(t)*pos + cos(t)*dir
-		//gamma'' = -cos(t)*pos - sin(t)*dir
-		//gamma''' = sin(t)*pos - cos(t)*dir
-		//All of these are evaluated at t=0.
-		return;
-	}
-
-	getGammaDoublePrime(pos)
-	{
-		return;
-	}
-
-	getGammaTriplePrime(_pos, dir)
-	{
-		return;
-	}
-
-	gammaTriplePrimeIsLinearlyIndependent = false;
 }
 
 
@@ -107,16 +56,17 @@ class S2xEGeometry extends BaseGeometry
 export class S2xERooms extends S2xEGeometry
 {
 	static distances = `
-		float distance1 = length(vec2(acos(pos.x), pos.w)) - wallThickness;
-		float distance2 = length(vec2(acos(-pos.x), pos.w)) - wallThickness;
-		float distance3 = length(vec2(acos(pos.y), pos.w)) - wallThickness;
-		float distance4 = length(vec2(acos(-pos.y), pos.w)) - wallThickness;
+		float distance1 = length(vec2(acos(pos.x), mod(pos.w + .5, 1.0) - .5)) - .35;
+		float distance2 = length(vec2(acos(-pos.x), mod(pos.w + .5, 1.0) - .5)) - .35;
+		float distance3 = length(vec2(acos(pos.y), mod(pos.w + .5, 1.0) - .5)) - .35;
+		float distance4 = length(vec2(acos(-pos.y), mod(pos.w + .5, 1.0) - .5)) - .35;
+		float distance5 = length(vec2(acos(pos.z), mod(pos.w + .5, 1.0) - .5)) - .35;
 	`;
 
 	distanceEstimatorGlsl = `
 		${S2xERooms.distances}
 
-		float minDistance = ${getMinGlslString("distance", 4)};
+		float minDistance = ${getMinGlslString("distance", 5)};
 
 		return minDistance;
 	`;
@@ -124,37 +74,64 @@ export class S2xERooms extends S2xEGeometry
 	getColorGlsl = `
 		${S2xERooms.distances}
 
-		float minDistance = ${getMinGlslString("distance", 4)};
+		float minDistance = ${getMinGlslString("distance", 5)};
 
 		if (minDistance == distance1)
 		{
-			return vec3(1.0, 0.0, 0.0) * getBanding(pos.y + pos.z + pos.w, 10.0);
+			return vec3(
+				.75 + .25 * (.5 * (sin(floor(pos.w + .5) * 7.0) + 1.0)),
+				.65 * (.5 * (sin(floor(pos.w + .5) * 11.0) + 1.0)),
+				.65 * (.5 * (sin(floor(pos.w + .5) * 89.0) + 1.0))
+			);
 		}
 
 		if (minDistance == distance2)
 		{
-			return vec3(0.0, 1.0, 1.0) * getBanding(pos.y + pos.z + pos.w, 10.0);
+			return vec3(
+				.65 * (.5 * (sin(floor(pos.w + .5) * 7.0) + 1.0)),
+				.75 + .25 * (.5 * (sin(floor(pos.w + .5) * 11.0) + 1.0)),
+				.65 * (.5 * (sin(floor(pos.w + .5) * 89.0) + 1.0))
+			);
 		}
 
 		if (minDistance == distance3)
 		{
-			return vec3(0.0, 1.0, 0.0) * getBanding(pos.x + pos.z + pos.w, 10.0);
+			return vec3(
+				.65 * (.5 * (sin(floor(pos.w + .5) * 7.0) + 1.0)),
+				.65 * (.5 * (sin(floor(pos.w + .5) * 11.0) + 1.0)),
+				.75 + .25 * (.5 * (sin(floor(pos.w + .5) * 17.0) + 1.0))
+			);
 		}
 
 		if (minDistance == distance4)
 		{
-			return vec3(1.0, 0.0, 1.0) * getBanding(pos.x + pos.z + pos.w, 10.0);
+			return vec3(
+				.75 + .25 * (.5 * (sin(floor(pos.w + .5) * 7.0) + 1.0)),
+				.75 + .25 * (.5 * (sin(floor(pos.w + .5) * 11.0) + 1.0)),
+				.65 * (.5 * (sin(floor(pos.w + .5) * 17.0) + 1.0))
+			);
+		}
+
+		if (minDistance == distance5)
+		{
+			return vec3(
+				.88 + .12 * (.5 * (sin(floor(pos.w + .5) * 7.0) + 1.0)),
+				.88 + .12 * (.5 * (sin(floor(pos.w + .5) * 11.0) + 1.0)),
+				.88 + .12 * (.5 * (sin(floor(pos.w + .5) * 17.0) + 1.0))
+			);
 		}
 	`;
 
 	lightGlsl = `
-		vec4 lightDirection1 = normalize(vec4(1.0, 1.0, 1.0, -1.0) - pos);
-		float dotProduct1 = dot(surfaceNormal, lightDirection1);
+		// The cap of .05 fixes a very weird bug where the top and bottom of spheres had tiny dots of incorrect lighting.
 
-		vec4 lightDirection2 = normalize(vec4(-1.0, -1.0, -1.0, 1.0) - pos);
-		float dotProduct2 = dot(surfaceNormal, lightDirection2);
+		vec3 lightDirection1 = normalize(vec3(0.0, 0.0, 1.0) - pos.xyz);
+		float dotProduct1 = min(abs(dot(surfaceNormal.xyz, lightDirection1)), 0.65);
 
-		float lightIntensity = lightBrightness * max(abs(dotProduct1), abs(dotProduct2));
+		vec3 lightDirection2 = normalize(vec3(1.0, 1.0, 0.0) - pos.xyz);
+		float dotProduct2 = min(abs(dot(surfaceNormal.xyz, lightDirection2)), 0.65);
+
+		float lightIntensity = lightBrightness * max(dotProduct1, dotProduct2);
 	`;
 
 	cameraPos = [0, 0, -1, 0];
@@ -166,29 +143,5 @@ export class S2xERooms extends S2xEGeometry
 	getMovingSpeed()
 	{
 		return 1;
-	}
-
-	uniformGlsl = "uniform float wallThickness;";
-	uniformNames = ["wallThickness"];
-
-	updateUniforms(gl, uniformList)
-	{
-		const wallThickness = sliderValues.wallThickness;
-
-		gl.uniform1f(uniformList["wallThickness"], wallThickness);
-	}
-
-	uiElementsUsed = "#wall-thickness-slider";
-
-	initUI()
-	{
-		const wallThicknessSlider = $("#wall-thickness-slider");
-		const wallThicknessSliderValue = $("#wall-thickness-slider-value");
-
-		wallThicknessSlider.min = .1;
-		wallThicknessSlider.max = 1;
-		wallThicknessSlider.value = .2;
-		wallThicknessSliderValue.textContent = .2;
-		sliderValues.wallThickness = .2;
 	}
 }

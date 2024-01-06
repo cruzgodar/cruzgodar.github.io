@@ -26,7 +26,7 @@ import{Applet}from"/scripts/src/applets.min.mjs";import{aspectRatio}from"/script
 			
 			const float epsilon = 0.00001;
 			const int maxMarches = 100;
-			const float stepFactor = .99;
+			const float stepFactor = .95;
 			const vec3 fogColor = vec3(0.0, 0.0, 0.0);
 			const float fogScaling = .07;
 			uniform float fov;

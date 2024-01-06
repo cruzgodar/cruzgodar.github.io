@@ -26,7 +26,7 @@ class H3Geometry extends BaseGeometry
 		
 	return dir / magnitude;`;
 
-	fogGlsl = "return mix(color, fogColor, 1.0 - exp(-(totalT - 2.0) * fogScaling * 6.0));";
+	fogGlsl = "return mix(color, fogColor, 1.0 - exp(0.5 - totalT * 0.075));";
 
 	functionGlsl = `float sinh(float x)
 		{
