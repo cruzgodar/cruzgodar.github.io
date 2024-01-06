@@ -1,4 +1,6 @@
-import { BaseGeometry, getMinGlslString } from "./base.mjs";
+import { sliderValues } from "../index.mjs";
+import { BaseGeometry, getMaxGlslString, getMinGlslString } from "./base.mjs";
+import { $ } from "/scripts/src/main.mjs";
 
 class S2xEGeometry extends BaseGeometry
 {
@@ -7,7 +9,7 @@ class S2xEGeometry extends BaseGeometry
 		startPos.w + t * rayDirectionVec.w
 	);`;
 
-	fogGlsl = "return mix(color, fogColor, 1.0 - exp(-totalT * fogScaling * 5.0));";
+	fogGlsl = "return mix(color, fogColor, 1.0 - exp(-totalT * fogScaling * 8.0));";
 	
 	followGeodesic(pos, dir, t)
 	{
@@ -56,17 +58,20 @@ class S2xEGeometry extends BaseGeometry
 export class S2xERooms extends S2xEGeometry
 {
 	static distances = `
-		float distance1 = length(vec2(acos(pos.x), mod(pos.w + .5, 1.0) - .5)) - .35;
-		float distance2 = length(vec2(acos(-pos.x), mod(pos.w + .5, 1.0) - .5)) - .35;
-		float distance3 = length(vec2(acos(pos.y), mod(pos.w + .5, 1.0) - .5)) - .35;
-		float distance4 = length(vec2(acos(-pos.y), mod(pos.w + .5, 1.0) - .5)) - .35;
-		float distance5 = length(vec2(acos(pos.z), mod(pos.w + .5, 1.0) - .5)) - .35;
+		float spacing = 1.09;
+
+		float distance1 = wallThickness - length(vec2(acos(pos.x), mod(pos.w + spacing / 2.0, spacing) - spacing / 2.0));
+		float distance2 = wallThickness - length(vec2(acos(-pos.x), mod(pos.w + spacing / 2.0, spacing) - spacing / 2.0));
+		float distance3 = wallThickness - length(vec2(acos(pos.y), mod(pos.w + spacing / 2.0, spacing) - spacing / 2.0));
+		float distance4 = wallThickness - length(vec2(acos(-pos.y), mod(pos.w + spacing / 2.0, spacing) - spacing / 2.0));
+		float distance5 = wallThickness - length(vec2(acos(pos.z), mod(pos.w + spacing / 2.0, spacing) - spacing / 2.0));
+		float distance6 = wallThickness - length(vec2(acos(-pos.z), mod(pos.w + spacing / 2.0, spacing) - spacing / 2.0));
 	`;
 
 	distanceEstimatorGlsl = `
 		${S2xERooms.distances}
 
-		float minDistance = ${getMinGlslString("distance", 5)};
+		float minDistance = ${getMaxGlslString("distance", 6)};
 
 		return minDistance;
 	`;
@@ -74,50 +79,61 @@ export class S2xERooms extends S2xEGeometry
 	getColorGlsl = `
 		${S2xERooms.distances}
 
-		float minDistance = ${getMinGlslString("distance", 5)};
+		float minDistance = ${getMaxGlslString("distance", 6)};
+
+		float wColor = floor((pos.w + spacing / 2.0) / spacing);
 
 		if (minDistance == distance1)
 		{
 			return vec3(
-				.75 + .25 * (.5 * (sin(floor(pos.w + .5) * 7.0) + 1.0)),
-				.65 * (.5 * (sin(floor(pos.w + .5) * 11.0) + 1.0)),
-				.65 * (.5 * (sin(floor(pos.w + .5) * 89.0) + 1.0))
+				.75 + .25 * (.5 * (sin(wColor * 7.0) + 1.0)),
+				.65 * (.5 * (sin(wColor * 11.0) + 1.0)),
+				.65 * (.5 * (sin(wColor * 89.0) + 1.0))
 			);
 		}
 
 		if (minDistance == distance2)
 		{
 			return vec3(
-				.65 * (.5 * (sin(floor(pos.w + .5) * 7.0) + 1.0)),
-				.75 + .25 * (.5 * (sin(floor(pos.w + .5) * 11.0) + 1.0)),
-				.65 * (.5 * (sin(floor(pos.w + .5) * 89.0) + 1.0))
+				.65 * (.5 * (sin(wColor * 7.0) + 1.0)),
+				.75 + .25 * (.5 * (sin(wColor * 11.0) + 1.0)),
+				.65 * (.5 * (sin(wColor * 89.0) + 1.0))
 			);
 		}
 
 		if (minDistance == distance3)
 		{
 			return vec3(
-				.65 * (.5 * (sin(floor(pos.w + .5) * 7.0) + 1.0)),
-				.65 * (.5 * (sin(floor(pos.w + .5) * 11.0) + 1.0)),
-				.75 + .25 * (.5 * (sin(floor(pos.w + .5) * 17.0) + 1.0))
+				.65 * (.5 * (sin(wColor * 7.0) + 1.0)),
+				.65 * (.5 * (sin(wColor * 11.0) + 1.0)),
+				.75 + .25 * (.5 * (sin(wColor * 17.0) + 1.0))
 			);
 		}
 
 		if (minDistance == distance4)
 		{
 			return vec3(
-				.75 + .25 * (.5 * (sin(floor(pos.w + .5) * 7.0) + 1.0)),
-				.75 + .25 * (.5 * (sin(floor(pos.w + .5) * 11.0) + 1.0)),
-				.65 * (.5 * (sin(floor(pos.w + .5) * 17.0) + 1.0))
+				.75 + .25 * (.5 * (sin(wColor * 7.0) + 1.0)),
+				.75 + .25 * (.5 * (sin(wColor * 11.0) + 1.0)),
+				.65 * (.5 * (sin(wColor * 17.0) + 1.0))
 			);
 		}
 
 		if (minDistance == distance5)
 		{
 			return vec3(
-				.88 + .12 * (.5 * (sin(floor(pos.w + .5) * 7.0) + 1.0)),
-				.88 + .12 * (.5 * (sin(floor(pos.w + .5) * 11.0) + 1.0)),
-				.88 + .12 * (.5 * (sin(floor(pos.w + .5) * 17.0) + 1.0))
+				.75 + .25 * (.5 * (sin(wColor * 7.0) + 1.0)),
+				.65 * (.5 * (sin(wColor * 11.0) + 1.0)),
+				.75 + .25 * (.5 * (sin(wColor * 17.0) + 1.0))
+			);
+		}
+
+		if (minDistance == distance6)
+		{
+			return vec3(
+				.65 * (.5 * (sin(wColor * 7.0) + 1.0)),
+				.75 + .25 * (.5 * (sin(wColor * 11.0) + 1.0)),
+				.75 + .25 * (.5 * (sin(wColor * 17.0) + 1.0))
 			);
 		}
 	`;
@@ -125,13 +141,128 @@ export class S2xERooms extends S2xEGeometry
 	lightGlsl = `
 		// The cap of .05 fixes a very weird bug where the top and bottom of spheres had tiny dots of incorrect lighting.
 
-		vec3 lightDirection1 = normalize(vec3(0.0, 0.0, 1.0) - pos.xyz);
-		float dotProduct1 = min(abs(dot(surfaceNormal.xyz, lightDirection1)), 0.65);
+		vec4 lightDirection1 = normalize(vec4(2.0, 2.0, 2.0, -3.0) - pos);
+		float dotProduct1 = abs(dot(surfaceNormal, lightDirection1));
 
-		vec3 lightDirection2 = normalize(vec3(1.0, 1.0, 0.0) - pos.xyz);
-		float dotProduct2 = min(abs(dot(surfaceNormal.xyz, lightDirection2)), 0.65);
+		float lightIntensity = 1.5 * lightBrightness * dotProduct1;
+	`;
 
-		float lightIntensity = lightBrightness * max(dotProduct1, dotProduct2);
+	cameraPos = [0, 0, -1, 0];
+	normalVec = [0, 0, -1, 0];
+	upVec = [0, 0, 0, 1];
+	rightVec = [0, 1, 0, 0];
+	forwardVec = [1, 0, 0, 0];
+
+	getMovingSpeed()
+	{
+		return 1;
+	}
+
+	uniformGlsl = "uniform float wallThickness;";
+	uniformNames = ["wallThickness"];
+
+	updateUniforms(gl, uniformList)
+	{
+		const wallThickness = .9557 - sliderValues.wallThickness / 10;
+
+		gl.uniform1f(uniformList["wallThickness"], wallThickness);
+	}
+
+	uiElementsUsed = "#wall-thickness-slider";
+
+	initUI()
+	{
+		const wallThicknessSlider = $("#wall-thickness-slider");
+		const wallThicknessSliderValue = $("#wall-thickness-slider-value");
+
+		wallThicknessSlider.min = -.45;
+		wallThicknessSlider.max = .6;
+		wallThicknessSlider.value = .6;
+		wallThicknessSliderValue.textContent = .6;
+		sliderValues.wallThickness = .6;
+	}
+}
+
+
+
+export class S2xESpheres extends S2xEGeometry
+{
+	static distances = `
+		float distance1 = length(vec2(acos(pos.x), mod(pos.w + .785398, 1.570796) - .785398)) - .5;
+		float distance2 = length(vec2(acos(-pos.x), mod(pos.w + .785398, 1.570796) - .785398)) - .5;
+		float distance3 = length(vec2(acos(pos.y), mod(pos.w + .785398, 1.570796) - .785398)) - .5;
+		float distance4 = length(vec2(acos(-pos.y), mod(pos.w + .785398, 1.570796) - .785398)) - .5;
+		float distance5 = length(vec2(acos(pos.z), mod(pos.w + .785398, 1.570796) - .785398)) - .5;
+	`;
+
+	distanceEstimatorGlsl = `
+		${S2xESpheres.distances}
+
+		float minDistance = ${getMinGlslString("distance", 5)};
+
+		return minDistance;
+	`;
+
+	getColorGlsl = `
+		${S2xESpheres.distances}
+
+		float minDistance = ${getMinGlslString("distance", 5)};
+
+		float wColor = floor((pos.w + .785398) / 1.570796);
+
+		if (minDistance == distance1)
+		{
+			return vec3(
+				.75 + .25 * (.5 * (sin(wColor * 7.0) + 1.0)),
+				.65 * (.5 * (sin(wColor * 11.0) + 1.0)),
+				.65 * (.5 * (sin(wColor * 89.0) + 1.0))
+			);
+		}
+
+		if (minDistance == distance2)
+		{
+			return vec3(
+				.65 * (.5 * (sin(wColor * 7.0) + 1.0)),
+				.75 + .25 * (.5 * (sin(wColor * 11.0) + 1.0)),
+				.65 * (.5 * (sin(wColor * 89.0) + 1.0))
+			);
+		}
+
+		if (minDistance == distance3)
+		{
+			return vec3(
+				.65 * (.5 * (sin(wColor * 7.0) + 1.0)),
+				.65 * (.5 * (sin(wColor * 11.0) + 1.0)),
+				.75 + .25 * (.5 * (sin(wColor * 17.0) + 1.0))
+			);
+		}
+
+		if (minDistance == distance4)
+		{
+			return vec3(
+				.75 + .25 * (.5 * (sin(wColor * 7.0) + 1.0)),
+				.75 + .25 * (.5 * (sin(wColor * 11.0) + 1.0)),
+				.65 * (.5 * (sin(wColor * 17.0) + 1.0))
+			);
+		}
+
+		if (minDistance == distance5)
+		{
+			return vec3(
+				.88 + .12 * (.5 * (sin(wColor * 7.0) + 1.0)),
+				.88 + .12 * (.5 * (sin(wColor * 11.0) + 1.0)),
+				.88 + .12 * (.5 * (sin(wColor * 17.0) + 1.0))
+			);
+		}
+	`;
+
+	lightGlsl = `
+		// The cap fixes a very weird bug where the top and bottom of spheres had tiny dots of incorrect lighting.
+
+		vec3 lightDirection1 = normalize(vec3(.6, .8, .2) - pos.xyz);
+		float dotProduct1 = min(abs(dot(surfaceNormal.xyz, lightDirection1)), 0.4);
+
+		float lightIntensity = 2.5 * lightBrightness * dotProduct1;
 	`;
 
 	cameraPos = [0, 0, -1, 0];

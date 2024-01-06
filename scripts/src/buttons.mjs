@@ -247,10 +247,16 @@ function setUpDropdown(selectElement)
 		// Using || rather than ?? handles both the case where we click the background
 		// and clicking the title option.
 		const oldSelectedItem = selectedItem;
+		
+		let element = document.elementFromPoint(e.clientX, e.clientY);
+
+		while (!element.hasAttribute("data-option-index") && element.tagName !== "HTML")
+		{
+			element = element.parentNode;
+		}
 
 		selectedItem = parseInt(
-			document.elementFromPoint(e.clientX, e.clientY)
-				.getAttribute("data-option-index") ?? selectedItem
+			element.getAttribute("data-option-index") ?? selectedItem
 		) || selectedItem;
 
 		selectElement.value = selectOptionElements[selectedItem].value;
