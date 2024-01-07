@@ -266,6 +266,7 @@ mjx-container
 	overflow-x: auto;
 	overflow-y: hidden;
 	margin: 0 !important;
+	pointer-events: none;
 }
 
 .tex-holder

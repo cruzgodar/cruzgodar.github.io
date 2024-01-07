@@ -149,7 +149,7 @@ import{sliderValues}from"../index.min.mjs";import{BaseGeometry,getMaxGlslString,
 	`;lightGlsl=`
 		// This is very weird, but it fixes an issue where the north and south poles
 		// of spheres had dots of incorrect lighting.
-		pos.xyz = normalize(pos.xyz) / 1.001;
+		pos.xyz /= 1.001;
 		surfaceNormal = getSurfaceNormal(pos);
 		
 		vec4 lightDirection1 = normalize(vec4(0.0, 1.0, 0.0, 2.0) - pos);

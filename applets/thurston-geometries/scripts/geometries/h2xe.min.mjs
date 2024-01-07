@@ -1,4 +1,4 @@
-import{sliderValues}from"../index.min.mjs";import{BaseGeometry,getMaxGlslString}from"./base.min.mjs";import{$}from"/scripts/src/main.min.mjs";class H2xEGeometry extends BaseGeometry{geodesicGlsl=`float h2Mag = sqrt(abs(
+import{ThurstonGeometry}from"../class.min.mjs";import{sliderValues}from"../index.min.mjs";import{BaseGeometry,getMinGlslString}from"./base.min.mjs";import{$}from"/scripts/src/main.min.mjs";const baseColorIncreases=[[0,1,0],[0,-1,0],[0,0,1],[0,0,-1]],baseColor=[0,0,0];class H2xEGeometry extends BaseGeometry{geodesicGlsl=`float h2Mag = sqrt(abs(
 		rayDirectionVec.x * rayDirectionVec.x
 		+ rayDirectionVec.y * rayDirectionVec.y
 		- rayDirectionVec.z * rayDirectionVec.z
@@ -7,7 +7,9 @@ import{sliderValues}from"../index.min.mjs";import{BaseGeometry,getMaxGlslString}
 	vec4 pos = vec4(
 		cosh(h2Mag * t) * startPos.xyz + sinh(h2Mag * t) * rayDirectionVec.xyz / h2Mag,
 		startPos.w + t * rayDirectionVec.w
-	);`;dotProductGlsl="return v.x * w.x + v.y * w.y - v.z * w.z + v.w * w.w;";normalizeGlsl=`float magnitude = sqrt(abs(geometryDot(dir, dir)));
+	);
+	
+	globalColor += teleportPos(pos, startPos, rayDirectionVec, t, totalT, effectiveIterations);`;dotProductGlsl="return v.x * w.x + v.y * w.y - v.z * w.z + v.w * w.w;";normalizeGlsl=`float magnitude = sqrt(abs(geometryDot(dir, dir)));
 	
 	return dir / magnitude;`;fogGlsl="return color;//mix(color, fogColor, 1.0 - exp(-totalT * fogScaling * 8.0));";functionGlsl=`float sinh(float x)
 		{
@@ -29,257 +31,214 @@ import{sliderValues}from"../index.min.mjs";import{BaseGeometry,getMaxGlslString}
 			return log(x + sqrt(x*x - 1.0));
 		}
 
-		// vec3 teleportPos(inout vec4 pos, inout vec4 startPos, inout vec4 rayDirectionVec, inout float t, inout float totalT)
-		// {
-		// 	float c = cos(gluingAngle);
-		// 	float s = sin(gluingAngle);
+		vec3 teleportPos(inout vec4 pos, inout vec4 startPos, inout vec4 rayDirectionVec, inout float t, inout float totalT, inout int effectiveIterations)
+		{
+			vec4 teleportVec1 = vec4(1.0, 0.0, 0.577350269, 0.0);
+			mat4 teleportMat1 = mat4(
+				2.0, 0.0, 1.73205081, 0.0,
+				0.0, 1.0, 0.0, 0.0,
+				1.73205081, 0.0, 2.0, 0.0,
+				0.0, 0.0, 0.0, 1.0
+			);
 
-		// 	vec4 teleportVec1 = vec4(1.0, 0.0, 0.0, 0.577350269);
-		// 	mat4 teleportMat1 = mat4(
-		// 		2.0, 0.0, 0.0, 1.73205081,
-		// 		0.0, c, s, 0.0,
-		// 		0.0, -s, c, 0.0,
-		// 		1.73205081, 0.0, 0.0, 2.0
-		// 	);
+			vec4 teleportVec2 = vec4(-1.0, 0.0, 0.577350269, 0.0);
+			mat4 teleportMat2 = mat4(
+				2.0, 0.0, -1.73205081, 0.0,
+				0.0, 1.0, 0.0, 0.0,
+				-1.73205081, 0.0, 2.0, 0.0,
+				0.0, 0.0, 0.0, 1.0
+			);
 
-		// 	vec4 teleportVec2 = vec4(-1.0, 0.0, 0.0, 0.577350269);
-		// 	mat4 teleportMat2 = mat4(
-		// 		2.0, 0.0, 0.0, -1.73205081,
-		// 		0.0, c, -s, 0.0,
-		// 		0.0, s, c, 0.0,
-		// 		-1.73205081, 0.0, 0.0, 2.0
-		// 	);
+			vec4 teleportVec3 = vec4(0.0, 1.0, 0.577350269, 0.0);
+			mat4 teleportMat3 = mat4(
+				1.0, 0.0, 0.0, 0.0,
+				0.0, 2.0, 1.73205081, 0.0,
+				0.0, 1.73205081, 2.0, 0.0,
+				0.0, 0.0, 0.0, 1.0
+			);
 
-		// 	vec4 teleportVec3 = vec4(0.0, 1.0, 0.0, 0.577350269);
-		// 	mat4 teleportMat3 = mat4(
-		// 		c, 0.0, s, 0.0,
-		// 		0.0, 2.0, 0.0, 1.73205081,
-		// 		-s, 0.0, c, 0.0,
-		// 		0.0, 1.73205081, 0.0, 2.0
-		// 	);
-
-		// 	vec4 teleportVec4 = vec4(0.0, -1.0, 0.0, 0.577350269);
-		// 	mat4 teleportMat4 = mat4(
-		// 		c, 0.0, -s, 0.0,
-		// 		0.0, 2.0, 0.0, -1.73205081,
-		// 		s, 0.0, c, 0.0,
-		// 		0.0, -1.73205081, 0.0, 2.0
-		// 	);
+			vec4 teleportVec4 = vec4(0.0, -1.0, 0.577350269, 0.0);
+			mat4 teleportMat4 = mat4(
+				1.0, 0.0, 0.0, 0.0,
+				0.0, 2.0, -1.73205081, 0.0,
+				0.0, -1.73205081, 2.0, 0.0,
+				0.0, 0.0, 0.0, 1.0
+			);
 
 
 
-		// 	if (dot(pos, teleportVec1) < 0.0)
-		// 	{
-		// 		pos = teleportMat1 * pos;
+			if (dot(pos, teleportVec1) < 0.0)
+			{
+				pos = teleportMat1 * pos;
 
-		// 		// !!!IMPORTANT!!! rayDirectionVec is the tangent vector from the *starting*
-		// 		// position, not the current one, so we need to calculate that current
-		// 		// position to teleport the vector correctly. The correct tangent vector
-		// 		// is just the derivative of the geodesic at the current value of t.
+				// !!!IMPORTANT!!! rayDirectionVec is the tangent vector from the *starting*
+				// position, not the current one, so we need to calculate that current
+				// position to teleport the vector correctly. The correct tangent vector
+				// is just the derivative of the geodesic at the current value of t.
 
-		// 		rayDirectionVec = teleportMat1 * (sinh(t) * startPos + cosh(t) * rayDirectionVec);
+				float h2Mag = sqrt(abs(
+					rayDirectionVec.x * rayDirectionVec.x
+					+ rayDirectionVec.y * rayDirectionVec.y
+					- rayDirectionVec.z * rayDirectionVec.z
+				));
 
-		// 		startPos = pos;
+				rayDirectionVec = teleportMat1 * vec4(
+					h2Mag * sinh(h2Mag * t) * startPos.xyz + cosh(h2Mag * t) * rayDirectionVec.xyz,
+					rayDirectionVec.w
+				);
+
+				startPos = pos;
 				
-		// 		totalT += t;
-		// 		t = 0.0;
+				totalT += t;
+				t = 0.0;
+				effectiveIterations -= 10;
 
-		// 		return vec3(1.0, 0.0, 0.0);
-		// 	}
+				return vec3(0.0, 1.0, 0.0);
+			}
 
-		// 	if (dot(pos, teleportVec2) < 0.0)
-		// 	{
-		// 		pos = teleportMat2 * pos;
+			if (dot(pos, teleportVec2) < 0.0)
+			{
+				pos = teleportMat2 * pos;
 
-		// 		rayDirectionVec = teleportMat2 * (sinh(t) * startPos + cosh(t) * rayDirectionVec);
-
-		// 		startPos = pos;
+				float h2Mag = sqrt(abs(
+					rayDirectionVec.x * rayDirectionVec.x
+					+ rayDirectionVec.y * rayDirectionVec.y
+					- rayDirectionVec.z * rayDirectionVec.z
+				));
 				
-		// 		totalT += t;
-		// 		t = 0.0;
+				rayDirectionVec = teleportMat2 * vec4(
+					h2Mag * sinh(h2Mag * t) * startPos.xyz + cosh(h2Mag * t) * rayDirectionVec.xyz,
+					rayDirectionVec.w
+				);
 
-		// 		return vec3(-1.0, 0.0, 0.0);
-		// 	}
-
-		// 	if (dot(pos, teleportVec3) < 0.0)
-		// 	{
-		// 		pos = teleportMat3 * pos;
-
-		// 		rayDirectionVec = teleportMat3 * (sinh(t) * startPos + cosh(t) * rayDirectionVec);
-
-		// 		startPos = pos;
+				startPos = pos;
 				
-		// 		totalT += t;
-		// 		t = 0.0;
+				totalT += t;
+				t = 0.0;
+				effectiveIterations -= 10;
 
-		// 		return vec3(0.0, 1.0, 0.0);
-		// 	}
+				return vec3(0.0, -1.0, 0.0);
+			}
 
-		// 	if (dot(pos, teleportVec4) < 0.0)
-		// 	{
-		// 		pos = teleportMat4 * pos;
+			if (dot(pos, teleportVec3) < 0.0)
+			{
+				pos = teleportMat3 * pos;
 
-		// 		rayDirectionVec = teleportMat4 * (sinh(t) * startPos + cosh(t) * rayDirectionVec);
-
-		// 		startPos = pos;
+				float h2Mag = sqrt(abs(
+					rayDirectionVec.x * rayDirectionVec.x
+					+ rayDirectionVec.y * rayDirectionVec.y
+					- rayDirectionVec.z * rayDirectionVec.z
+				));
 				
-		// 		totalT += t;
-		// 		t = 0.0;
+				rayDirectionVec = teleportMat3 * vec4(
+					h2Mag * sinh(h2Mag * t) * startPos.xyz + cosh(h2Mag * t) * rayDirectionVec.xyz,
+					rayDirectionVec.w
+				);
 
-		// 		return vec3(0.0, -1.0, 0.0);
-		// 	}
+				startPos = pos;
+				
+				totalT += t;
+				t = 0.0;
+				effectiveIterations -= 10;
 
-		// 	return vec3(0.0, 0.0, 0.0);
-		// }
-	`;followGeodesic(pos,dir,t){var e=Math.sqrt(dir[0]*dir[0]+dir[1]*dir[1]+dir[2]*dir[2]),e=0===e?[pos[0],pos[1],pos[2],pos[3]+t*dir[3]]:[Math.cosh(e*t)*pos[0]+Math.sinh(e*t)*dir[0]/e,Math.cosh(e*t)*pos[1]+Math.sinh(e*t)*dir[1]/e,Math.cosh(e*t)*pos[2]+Math.sinh(e*t)*dir[2]/e,pos[3]+t*dir[3]],o=Math.sqrt(-e[0]*e[0]-e[1]*e[1]+e[2]*e[2]);return e[0]/=o,e[1]/=o,e[2]/=o,e}getNormalVec(cameraPos){return this.normalize([-cameraPos[0],-cameraPos[1],cameraPos[2],0])}correctVectors(){var t=this.dotProduct(this.cameraPos,this.upVec),e=this.dotProduct(this.cameraPos,this.rightVec),o=this.dotProduct(this.cameraPos,this.forwardVec);for(let s=0;s<4;s++)this.upVec[s]+=t*this.cameraPos[s],this.rightVec[s]+=e*this.cameraPos[s],this.forwardVec[s]+=o*this.cameraPos[s];this.upVec=this.normalize(this.upVec),this.rightVec=this.normalize(this.rightVec),this.forwardVec=this.normalize(this.forwardVec)}dotProduct(vec1,vec2){return vec1[0]*vec2[0]+vec1[1]*vec2[1]-vec1[2]*vec2[2]+vec1[3]*vec2[3]}normalize(vec){var t=Math.sqrt(Math.abs(this.dotProduct(vec,vec)));return[vec[0]/t,vec[1]/t,vec[2]/t,vec[3]/t]}}class H2xERooms extends H2xEGeometry{static distances=`
-		float spacing = 1.09;
+				return vec3(0.0, 0.0, 1.0);
+			}
 
-		float distance1 = wallThickness - length(vec2(acosh(pos.x), mod(pos.w + spacing / 2.0, spacing) - spacing / 2.0));
+			if (dot(pos, teleportVec4) < 0.0)
+			{
+				pos = teleportMat4 * pos;
+
+				float h2Mag = sqrt(abs(
+					rayDirectionVec.x * rayDirectionVec.x
+					+ rayDirectionVec.y * rayDirectionVec.y
+					- rayDirectionVec.z * rayDirectionVec.z
+				));
+				
+				rayDirectionVec = teleportMat4 * vec4(
+					h2Mag * sinh(h2Mag * t) * startPos.xyz + cosh(h2Mag * t) * rayDirectionVec.xyz,
+					rayDirectionVec.w
+				);
+
+				startPos = pos;
+				
+				totalT += t;
+				t = 0.0;
+				effectiveIterations -= 10;
+
+				return vec3(0.0, 0.0, -1.0);
+			}
+
+			return vec3(0.0, 0.0, 0.0);
+		}
+	`;followGeodesic(pos,dir,t){var e=Math.sqrt(dir[0]*dir[0]+dir[1]*dir[1]+dir[2]*dir[2]),e=0===e?[pos[0],pos[1],pos[2],pos[3]+t*dir[3]]:[Math.cosh(e*t)*pos[0]+Math.sinh(e*t)*dir[0]/e,Math.cosh(e*t)*pos[1]+Math.sinh(e*t)*dir[1]/e,Math.cosh(e*t)*pos[2]+Math.sinh(e*t)*dir[2]/e,pos[3]+t*dir[3]],o=Math.sqrt(-e[0]*e[0]-e[1]*e[1]+e[2]*e[2]);return e[0]/=o,e[1]/=o,e[2]/=o,e}getNormalVec(cameraPos){return this.normalize([-cameraPos[0],-cameraPos[1],cameraPos[2],0])}dotProduct(vec1,vec2){return vec1[0]*vec2[0]+vec1[1]*vec2[1]-vec1[2]*vec2[2]+vec1[3]*vec2[3]}normalize(vec){var t=Math.sqrt(Math.abs(this.dotProduct(vec,vec)));return[vec[0]/t,vec[1]/t,vec[2]/t,vec[3]/t]}correctVectors(){function t(vec1,vec2){return vec1[0]*vec2[0]+vec1[1]*vec2[1]-vec1[2]*vec2[2]}var e=t(this.cameraPos,this.upVec),o=t(this.cameraPos,this.rightVec),r=t(this.cameraPos,this.forwardVec);for(let a=0;a<3;a++)this.upVec[a]+=e*this.cameraPos[a],this.rightVec[a]+=o*this.cameraPos[a],this.forwardVec[a]+=r*this.cameraPos[a];this.upVec=this.normalize(this.upVec),this.rightVec=this.normalize(this.rightVec),this.forwardVec=this.normalize(this.forwardVec)}teleportCamera(rotatedForwardVec,recomputeRotation){var t=[[[1,0,1/Math.sqrt(3),0],[[2,0,Math.sqrt(3),0],[0,1,0,0],[Math.sqrt(3),0,2,0],[0,0,0,1]]],[[-1,0,1/Math.sqrt(3),0],[[2,0,-Math.sqrt(3),0],[0,1,0,0],[-Math.sqrt(3),0,2,0],[0,0,0,1]]],[[0,1,1/Math.sqrt(3),0],[[1,0,0,0],[0,2,Math.sqrt(3),0],[0,Math.sqrt(3),2,0],[0,0,0,1]]],[[0,-1,1/Math.sqrt(3),0],[[1,0,0,0],[0,2,-Math.sqrt(3),0],[0,-Math.sqrt(3),2,0],[0,0,0,1]]]];for(let e=0;e<t.length;e++)ThurstonGeometry.dotProduct(this.cameraPos,t[e][0])<0&&(this.cameraPos=ThurstonGeometry.mat4TimesVector(t[e][1],this.cameraPos),this.forwardVec=ThurstonGeometry.mat4TimesVector(t[e][1],this.forwardVec),this.rightVec=ThurstonGeometry.mat4TimesVector(t[e][1],this.rightVec),this.upVec=ThurstonGeometry.mat4TimesVector(t[e][1],this.upVec),recomputeRotation(ThurstonGeometry.mat4TimesVector(t[e][1],rotatedForwardVec)),baseColor[0]+=baseColorIncreases[e][0],baseColor[1]+=baseColorIncreases[e][1],baseColor[2]+=baseColorIncreases[e][2])}}class H2xERooms extends H2xEGeometry{static distances=`
+		float spacing = 1.87;
+		float distance1 = wallThickness - length(vec2(acosh(pos.z), mod(pos.w + spacing / 2.0, spacing) - spacing / 2.0));
+
+		// Translate the reflection plane to the x = 0 plane, then get the distance to it.
+		// The DE to x = 0 is abs(asinh(pos.x)).
+		float distance2 = abs(asinh(
+			dot(
+				vec4(1.23188, 0.0, 0.71939, 0),
+				pos
+			)
+		));
+		
+		float distance3 = abs(asinh(
+			dot(
+				vec4(1.23188, 0.0, -0.71939, 0),
+				pos
+			)
+		));
+
+		float distance4 = abs(asinh(
+			dot(
+				vec4(0.0, 1.23188, 0.71939, 0),
+				pos
+			)
+		));
+		
+		float distance5 = abs(asinh(
+			dot(
+				vec4(0.0, -1.23188, 0.71939, 0),
+				pos
+			)
+		));
 	`;distanceEstimatorGlsl=`
 		${H2xERooms.distances}
 
-		float minDistance = ${getMaxGlslString("distance",6)};
+		float minDistance = ${getMinGlslString("distance",5)};
 
 		return minDistance;
 	`;getColorGlsl=`
 		${H2xERooms.distances}
 
-		float minDistance = ${getMaxGlslString("distance",6)};
+		float minDistance = ${getMinGlslString("distance",5)};
 
 		float wColor = floor((pos.w + spacing / 2.0) / spacing);
 
-		if (minDistance == distance1)
-		{
-			return vec3(
-				.75 + .25 * (.5 * (sin(wColor * 7.0) + 1.0)),
-				.65 * (.5 * (sin(wColor * 11.0) + 1.0)),
-				.65 * (.5 * (sin(wColor * 89.0) + 1.0))
-			);
-		}
-
-		if (minDistance == distance2)
-		{
-			return vec3(
-				.65 * (.5 * (sin(wColor * 7.0) + 1.0)),
-				.75 + .25 * (.5 * (sin(wColor * 11.0) + 1.0)),
-				.65 * (.5 * (sin(wColor * 89.0) + 1.0))
-			);
-		}
-
-		if (minDistance == distance3)
-		{
-			return vec3(
-				.65 * (.5 * (sin(wColor * 7.0) + 1.0)),
-				.65 * (.5 * (sin(wColor * 11.0) + 1.0)),
-				.75 + .25 * (.5 * (sin(wColor * 17.0) + 1.0))
-			);
-		}
-
-		if (minDistance == distance4)
-		{
-			return vec3(
-				.75 + .25 * (.5 * (sin(wColor * 7.0) + 1.0)),
-				.75 + .25 * (.5 * (sin(wColor * 11.0) + 1.0)),
-				.65 * (.5 * (sin(wColor * 17.0) + 1.0))
-			);
-		}
-
-		if (minDistance == distance5)
-		{
-			return vec3(
-				.75 + .25 * (.5 * (sin(wColor * 7.0) + 1.0)),
-				.65 * (.5 * (sin(wColor * 11.0) + 1.0)),
-				.75 + .25 * (.5 * (sin(wColor * 17.0) + 1.0))
-			);
-		}
-
-		if (minDistance == distance6)
-		{
-			return vec3(
-				.65 * (.5 * (sin(wColor * 7.0) + 1.0)),
-				.75 + .25 * (.5 * (sin(wColor * 11.0) + 1.0)),
-				.75 + .25 * (.5 * (sin(wColor * 17.0) + 1.0))
-			);
-		}
+		return vec3(
+			.5 * (sin(wColor * 7.0) + 1.0),
+			.5 * (sin(wColor * 11.0 + globalColor.y + baseColor.y) + 1.0),
+			.5 * (sin(wColor * 17.0 + globalColor.z + baseColor.z) + 1.0)
+		);
 	`;lightGlsl=`
-		// The cap of .05 fixes a very weird bug where the top and bottom of spheres had tiny dots of incorrect lighting.
+		// Equally weird to the S^2 x E fix, and equally necessary.
+		// pos.xyz *= 1.001;
+		// surfaceNormal = getSurfaceNormal(pos);
 
-		vec4 lightDirection1 = normalize(vec4(2.0, 2.0, 2.0, -3.0) - pos);
-		float dotProduct1 = abs(dot(surfaceNormal, lightDirection1));
+		float spacing = 1.87;
+		vec4 moddedPos = vec4(pos.xyz, mod(pos.w + spacing / 2.0, spacing) - spacing / 2.0);
 
-		float lightIntensity = 1.5 * lightBrightness * dotProduct1;
-	`;cameraPos=[0,0,-1,0];normalVec=[0,0,-1,0];upVec=[0,0,0,1];rightVec=[0,1,0,0];forwardVec=[1,0,0,0];getMovingSpeed(){return 1}uniformGlsl="uniform float wallThickness;";uniformNames=["wallThickness"];updateUniforms(gl,uniformList){var t=.9557-sliderValues.wallThickness/10;gl.uniform1f(uniformList.wallThickness,t)}uiElementsUsed="#wall-thickness-slider";initUI(){var t=$("#wall-thickness-slider"),e=$("#wall-thickness-slider-value");t.min=-.45,t.max=.6,t.value=.6,e.textContent=.6,sliderValues.wallThickness=.6}}class H2xESpheres extends H2xEGeometry{static distances=`
-		float distance1 = length(vec2(acosh(pos.z), mod(pos.w + .785398, 1.570796) - .785398)) - .5;
-	`;distanceEstimatorGlsl=`
-		${H2xESpheres.distances}
-
-		float minDistance = distance1;
-
-		return minDistance;
-	`;getColorGlsl=`
-		${H2xESpheres.distances}
-
-		float minDistance = distance1;
-
-		float wColor = floor((pos.w + .785398) / 1.570796);
-
-		if (minDistance == distance1)
-		{
-			return vec3(
-				.75 + .25 * (.5 * (sin(wColor * 7.0) + 1.0)),
-				.65 * (.5 * (sin(wColor * 11.0) + 1.0)),
-				.65 * (.5 * (sin(wColor * 89.0) + 1.0))
-			);
-		}
-
-		// if (minDistance == distance2)
-		// {
-		// 	return vec3(
-		// 		.65 * (.5 * (sin(wColor * 7.0) + 1.0)),
-		// 		.75 + .25 * (.5 * (sin(wColor * 11.0) + 1.0)),
-		// 		.65 * (.5 * (sin(wColor * 89.0) + 1.0))
-		// 	);
-		// }
-
-		// if (minDistance == distance3)
-		// {
-		// 	return vec3(
-		// 		.65 * (.5 * (sin(wColor * 7.0) + 1.0)),
-		// 		.65 * (.5 * (sin(wColor * 11.0) + 1.0)),
-		// 		.75 + .25 * (.5 * (sin(wColor * 17.0) + 1.0))
-		// 	);
-		// }
-
-		// if (minDistance == distance4)
-		// {
-		// 	return vec3(
-		// 		.75 + .25 * (.5 * (sin(wColor * 7.0) + 1.0)),
-		// 		.75 + .25 * (.5 * (sin(wColor * 11.0) + 1.0)),
-		// 		.65 * (.5 * (sin(wColor * 17.0) + 1.0))
-		// 	);
-		// }
-
-		// if (minDistance == distance5)
-		// {
-		// 	return vec3(
-		// 		.88 + .12 * (.5 * (sin(wColor * 7.0) + 1.0)),
-		// 		.88 + .12 * (.5 * (sin(wColor * 11.0) + 1.0)),
-		// 		.88 + .12 * (.5 * (sin(wColor * 17.0) + 1.0))
-		// 	);
-		// }
-	`;lightGlsl=`
-		// This is very weird, but it fixes an issue where the north and south poles
-		// of spheres had dots of incorrect lighting.
-		pos.xyz = normalize(pos.xyz) / 1.001;
-		surfaceNormal = getSurfaceNormal(pos);
-		
-		vec4 lightDirection1 = normalize(vec4(0.0, 1.0, 0.0, 2.0) - pos);
+		vec4 lightDirection1 = normalize(vec4(-3.0, -1.0, 2.0, 2.0) - moddedPos);
 		float dotProduct1 = dot(surfaceNormal, lightDirection1);
 
-		vec4 lightDirection2 = normalize(vec4(1.0, 0.0, -1.0, 1.0) - pos);
-		float dotProduct2 = dot(surfaceNormal, lightDirection2);
+		vec4 lightDirection3 = normalize(vec4(0.0, 0.0, 0.0, 1.0) - moddedPos);
+		float dotProduct3 = dot(surfaceNormal, lightDirection3);
+		
+		// vec4 lightDirection2 = normalize(vec4(1.0, 2.0, 3.0, -3.0) - moddedPos);
+		// float dotProduct2 = dot(surfaceNormal, lightDirection2);
 
-		float lightIntensity = 1.3 * lightBrightness * max(dotProduct1, dotProduct2);
+		
 
-		lightIntensity = 1.0;
-	`;cameraPos=[0,0,1,0];normalVec=[0,0,-1,0];upVec=[0,0,0,1];rightVec=[0,1,0,0];forwardVec=[1,0,0,0];getMovingSpeed(){return 1}}export{H2xERooms,H2xESpheres};
+		float lightIntensity = lightBrightness * max(dotProduct1, dotProduct3);
+	`;cameraPos=[0,0,1,0];normalVec=[0,0,-1,0];upVec=[0,0,0,1];rightVec=[0,1,0,0];forwardVec=[1,0,0,0];getMovingSpeed(){return 1}uniformGlsl="uniform float wallThickness; uniform vec3 baseColor;";uniformNames=["wallThickness","baseColor"];updateUniforms(gl,uniformList){var t=sliderValues.wallThickness;gl.uniform1f(uniformList.wallThickness,t),gl.uniform3fv(uniformList.baseColor,baseColor)}uiElementsUsed="#wall-thickness-slider";initUI(){var t=$("#wall-thickness-slider"),e=$("#wall-thickness-slider-value");t.min=1.04,t.max=1.2,t.value=1.04,e.textContent=1.04,sliderValues.wallThickness=1.04}}export{H2xERooms};

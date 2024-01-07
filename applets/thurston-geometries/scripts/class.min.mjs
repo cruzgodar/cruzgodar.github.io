@@ -118,17 +118,21 @@ import{Applet}from"/scripts/src/applets.min.mjs";import{aspectRatio}from"/script
 
 				vec3 globalColor = vec3(0.0, 0.0, 0.0);
 
+				int effectiveIterations = 0;
+
 				${this.geometryData.raymarchSetupGlsl??""}
 				
 				for (int iteration = 0; iteration < maxMarches; iteration++)
 				{
+					effectiveIterations++;
+
 					${this.geometryData.geodesicGlsl}
 					
 					float distance = distanceEstimator(pos);
 					
 					if (distance < epsilon)
 					{
-						finalColor = computeShading(pos, iteration, globalColor, totalT);
+						finalColor = computeShading(pos, effectiveIterations, globalColor, totalT);
 						break;
 					}
 
