@@ -16,7 +16,6 @@ Something will go here eventually!
 	
 	e3-rooms "$\mathbb{E}^3$: Rooms"
 	e3-spheres "$\mathbb{E}^3$: Spheres"
-	e3-seifert-weber-space "$\mathbb{E}^3$: Seifert-Weber Space"
 
 	s3-rooms "$S^3$: Rooms"
 	s3-spheres "$S^3$: Spheres"

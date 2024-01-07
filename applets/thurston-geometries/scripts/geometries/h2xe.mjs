@@ -3,15 +3,6 @@ import { sliderValues } from "../index.mjs";
 import { BaseGeometry, getMinGlslString } from "./base.mjs";
 import { $ } from "/scripts/src/main.mjs";
 
-const baseColorIncreases = [
-	[0, 1, 0],
-	[0, -1, 0],
-	[0, 0, 1],
-	[0, 0, -1]
-];
-
-const baseColor = [0, 0, 0];
-
 class H2xEGeometry extends BaseGeometry
 {
 	geodesicGlsl = `float h2Mag = sqrt(abs(
@@ -33,7 +24,7 @@ class H2xEGeometry extends BaseGeometry
 	
 	return dir / magnitude;`;
 
-	fogGlsl = "return color;//mix(color, fogColor, 1.0 - exp(-totalT * fogScaling * 8.0));";
+	fogGlsl = "return mix(color, fogColor, 1.0 - exp(-totalT * 0.2));";
 
 	functionGlsl = `float sinh(float x)
 		{
@@ -282,6 +273,15 @@ class H2xEGeometry extends BaseGeometry
 		this.forwardVec = this.normalize(this.forwardVec);
 	}
 
+	baseColorIncreases = [
+		[0, 1, 0],
+		[0, -1, 0],
+		[0, 0, 1],
+		[0, 0, -1]
+	];
+	
+	baseColor = [0, 0, 0];
+
 	teleportCamera(rotatedForwardVec, recomputeRotation)
 	{
 		const teleportations = [
@@ -357,9 +357,9 @@ class H2xEGeometry extends BaseGeometry
 
 				recomputeRotation(newRotatedForwardVec);
 
-				baseColor[0] += baseColorIncreases[i][0];
-				baseColor[1] += baseColorIncreases[i][1];
-				baseColor[2] += baseColorIncreases[i][2];
+				this.baseColor[0] += this.baseColorIncreases[i][0];
+				this.baseColor[1] += this.baseColorIncreases[i][1];
+				this.baseColor[2] += this.baseColorIncreases[i][2];
 			}
 		}
 	}
@@ -417,20 +417,16 @@ export class H2xERooms extends H2xEGeometry
 
 		float minDistance = ${getMinGlslString("distance", 5)};
 
-		float wColor = floor((pos.w + spacing / 2.0) / spacing);
+		float wColor = floor((pos.w + 3.0 * spacing / 2.0) / spacing) - spacing / 2.0;
 
 		return vec3(
-			.5 * (sin(wColor * 7.0) + 1.0),
-			.5 * (sin(wColor * 11.0 + globalColor.y + baseColor.y) + 1.0),
-			.5 * (sin(wColor * 17.0 + globalColor.z + baseColor.z) + 1.0)
+			.4 + .6 * .5 * (sin((wColor + globalColor.y + baseColor.y + globalColor.z + baseColor.z) * 5.0) + 1.0),
+			.4 + .6 * .5 * (sin((wColor + globalColor.y + baseColor.y) * 7.0) + 1.0),
+			.4 + .6 * .5 * (sin((wColor + globalColor.z + baseColor.z) * 11.0) + 1.0)
 		);
 	`;
 
 	lightGlsl = `
-		// Equally weird to the S^2 x E fix, and equally necessary.
-		// pos.xyz *= 1.001;
-		// surfaceNormal = getSurfaceNormal(pos);
-
 		float spacing = 1.875;
 		vec4 moddedPos = vec4(pos.xyz, mod(pos.w + spacing / 2.0, spacing) - spacing / 2.0);
 
@@ -465,7 +461,7 @@ export class H2xERooms extends H2xEGeometry
 
 		gl.uniform1f(uniformList["wallThickness"], wallThickness);
 
-		gl.uniform3fv(uniformList["baseColor"], baseColor);
+		gl.uniform3fv(uniformList["baseColor"], this.baseColor);
 	}
 
 	uiElementsUsed = "#wall-thickness-slider";
@@ -486,8 +482,8 @@ export class H2xERooms extends H2xEGeometry
 export class H2xESpheres extends H2xEGeometry
 {
 	static distances = `
-		float spacing = 1.875;
-		float distance1 = wallThickness - length(vec2(acosh(pos.z), mod(pos.w + spacing / 2.0, spacing) - spacing / 2.0));
+		float spacing = 1.5;
+		float distance1 = length(vec2(acosh(pos.z), mod(pos.w + spacing / 2.0, spacing) - spacing / 2.0)) - .5;
 
 		// Translate the reflection plane to the x = 0 plane, then get the distance to it.
 		// The DE to x = 0 is abs(asinh(pos.x)).
@@ -521,7 +517,7 @@ export class H2xESpheres extends H2xEGeometry
 	`;
 
 	distanceEstimatorGlsl = `
-		${H2xERooms.distances}
+		${H2xESpheres.distances}
 
 		float minDistance = ${getMinGlslString("distance", 5)};
 
@@ -529,25 +525,27 @@ export class H2xESpheres extends H2xEGeometry
 	`;
 
 	getColorGlsl = `
-		${H2xERooms.distances}
+		${H2xESpheres.distances}
 
 		float minDistance = ${getMinGlslString("distance", 5)};
 
 		float wColor = floor((pos.w + spacing / 2.0) / spacing);
 
+		float colorSum = globalColor.x + baseColor.x + globalColor.y + baseColor.y + globalColor.z + baseColor.z;
+
 		return vec3(
-			.5 * (sin(wColor * 7.0) + 1.0),
-			.5 * (sin(wColor * 11.0 + globalColor.y + baseColor.y) + 1.0),
-			.5 * (sin(wColor * 17.0 + globalColor.z + baseColor.z) + 1.0)
+			.1 + .8 * .5 * (sin((wColor + colorSum) * 7.0) + 1.0),
+			.1 + .8 * .5 * (sin((wColor + colorSum) * 11.0) + 1.0),
+			.1 + .8 * .5 * (sin((wColor + colorSum) * 17.0) + 1.0)
 		);
 	`;
 
 	lightGlsl = `
 		// Equally weird to the S^2 x E fix, and equally necessary.
-		// pos.xyz *= 1.001;
-		// surfaceNormal = getSurfaceNormal(pos);
+		pos.xyz *= 1.001;
+		surfaceNormal = getSurfaceNormal(pos);
 
-		float spacing = 1.875;
+		float spacing = 1.5;
 		vec4 moddedPos = vec4(pos.xyz, mod(pos.w + spacing / 2.0, spacing) - spacing / 2.0);
 
 		vec4 lightDirection1 = normalize(vec4(-1.0, 1.0, 0.0, .5) - moddedPos);
@@ -556,12 +554,10 @@ export class H2xESpheres extends H2xEGeometry
 		vec4 lightDirection2 = normalize(vec4(1.0, -1.0, 0.0, -.5) - moddedPos);
 		float dotProduct2 = dot(surfaceNormal, lightDirection2);
 
-		
-
-		float lightIntensity = 1.5 * lightBrightness * max(dotProduct1, dotProduct2);
+		float lightIntensity = 2.0 * lightBrightness * max(dotProduct1, dotProduct2);
 	`;
 
-	cameraPos = [0, 0, 1, 0];
+	cameraPos = [0, 0, 1, .75];
 	normalVec = [0, 0, -1, 0];
 	upVec = [0, 0, 0, 1];
 	rightVec = [0, 1, 0, 0];
@@ -572,29 +568,11 @@ export class H2xESpheres extends H2xEGeometry
 		return 1;
 	}
 
-	uniformGlsl = "uniform float wallThickness; uniform vec3 baseColor;";
-	uniformNames = ["wallThickness", "baseColor"];
+	uniformGlsl = "uniform vec3 baseColor;";
+	uniformNames = ["baseColor"];
 
 	updateUniforms(gl, uniformList)
 	{
-		const wallThickness = 1.2 - sliderValues.wallThickness / 10;
-
-		gl.uniform1f(uniformList["wallThickness"], wallThickness);
-
-		gl.uniform3fv(uniformList["baseColor"], baseColor);
-	}
-
-	uiElementsUsed = "#wall-thickness-slider";
-
-	initUI()
-	{
-		const wallThicknessSlider = $("#wall-thickness-slider");
-		const wallThicknessSliderValue = $("#wall-thickness-slider-value");
-
-		wallThicknessSlider.min = -.55;
-		wallThicknessSlider.max = 1.05;
-		wallThicknessSlider.value = 1.05;
-		wallThicknessSliderValue.textContent = 1.05;
-		sliderValues.wallThickness = 1.05;
+		gl.uniform3fv(uniformList["baseColor"], this.baseColor);
 	}
 }

@@ -1,4 +1,4 @@
-import{ThurstonGeometry}from"../class.min.mjs";import{sliderValues}from"../index.min.mjs";import{BaseGeometry,getMinGlslString}from"./base.min.mjs";import{$}from"/scripts/src/main.min.mjs";const baseColorIncreases=[[0,1,0],[0,-1,0],[0,0,1],[0,0,-1]],baseColor=[0,0,0];class H2xEGeometry extends BaseGeometry{geodesicGlsl=`float h2Mag = sqrt(abs(
+import{ThurstonGeometry}from"../class.min.mjs";import{sliderValues}from"../index.min.mjs";import{BaseGeometry,getMinGlslString}from"./base.min.mjs";import{$}from"/scripts/src/main.min.mjs";class H2xEGeometry extends BaseGeometry{geodesicGlsl=`float h2Mag = sqrt(abs(
 		rayDirectionVec.x * rayDirectionVec.x
 		+ rayDirectionVec.y * rayDirectionVec.y
 		- rayDirectionVec.z * rayDirectionVec.z
@@ -9,9 +9,9 @@ import{ThurstonGeometry}from"../class.min.mjs";import{sliderValues}from"../index
 		startPos.w + t * rayDirectionVec.w
 	);
 	
-	globalColor += teleportPos(pos, startPos, rayDirectionVec, t, totalT, effectiveIterations);`;dotProductGlsl="return v.x * w.x + v.y * w.y - v.z * w.z + v.w * w.w;";normalizeGlsl=`float magnitude = sqrt(abs(geometryDot(dir, dir)));
+	globalColor += teleportPos(pos, startPos, rayDirectionVec, t, totalT);`;dotProductGlsl="return v.x * w.x + v.y * w.y - v.z * w.z + v.w * w.w;";normalizeGlsl=`float magnitude = sqrt(abs(geometryDot(dir, dir)));
 	
-	return dir / magnitude;`;fogGlsl="return color;//mix(color, fogColor, 1.0 - exp(-totalT * fogScaling * 8.0));";functionGlsl=`float sinh(float x)
+	return dir / magnitude;`;fogGlsl="return mix(color, fogColor, 1.0 - exp(-totalT * 0.2));";functionGlsl=`float sinh(float x)
 		{
 			return .5 * (exp(x) - exp(-x));
 		}
@@ -31,7 +31,7 @@ import{ThurstonGeometry}from"../class.min.mjs";import{sliderValues}from"../index
 			return log(x + sqrt(x*x - 1.0));
 		}
 
-		vec3 teleportPos(inout vec4 pos, inout vec4 startPos, inout vec4 rayDirectionVec, inout float t, inout float totalT, inout int effectiveIterations)
+		vec3 teleportPos(inout vec4 pos, inout vec4 startPos, inout vec4 rayDirectionVec, inout float t, inout float totalT)
 		{
 			vec4 teleportVec1 = vec4(1.0, 0.0, 0.577350269, 0.0);
 			mat4 teleportMat1 = mat4(
@@ -91,7 +91,6 @@ import{ThurstonGeometry}from"../class.min.mjs";import{sliderValues}from"../index
 				
 				totalT += t;
 				t = 0.0;
-				effectiveIterations -= 10;
 
 				return vec3(0.0, 1.0, 0.0);
 			}
@@ -115,7 +114,6 @@ import{ThurstonGeometry}from"../class.min.mjs";import{sliderValues}from"../index
 				
 				totalT += t;
 				t = 0.0;
-				effectiveIterations -= 10;
 
 				return vec3(0.0, -1.0, 0.0);
 			}
@@ -139,7 +137,6 @@ import{ThurstonGeometry}from"../class.min.mjs";import{sliderValues}from"../index
 				
 				totalT += t;
 				t = 0.0;
-				effectiveIterations -= 10;
 
 				return vec3(0.0, 0.0, 1.0);
 			}
@@ -163,15 +160,14 @@ import{ThurstonGeometry}from"../class.min.mjs";import{sliderValues}from"../index
 				
 				totalT += t;
 				t = 0.0;
-				effectiveIterations -= 10;
 
 				return vec3(0.0, 0.0, -1.0);
 			}
 
 			return vec3(0.0, 0.0, 0.0);
 		}
-	`;followGeodesic(pos,dir,t){var e=Math.sqrt(dir[0]*dir[0]+dir[1]*dir[1]+dir[2]*dir[2]),e=0===e?[pos[0],pos[1],pos[2],pos[3]+t*dir[3]]:[Math.cosh(e*t)*pos[0]+Math.sinh(e*t)*dir[0]/e,Math.cosh(e*t)*pos[1]+Math.sinh(e*t)*dir[1]/e,Math.cosh(e*t)*pos[2]+Math.sinh(e*t)*dir[2]/e,pos[3]+t*dir[3]],o=Math.sqrt(-e[0]*e[0]-e[1]*e[1]+e[2]*e[2]);return e[0]/=o,e[1]/=o,e[2]/=o,e}getNormalVec(cameraPos){return this.normalize([-cameraPos[0],-cameraPos[1],cameraPos[2],0])}dotProduct(vec1,vec2){return vec1[0]*vec2[0]+vec1[1]*vec2[1]-vec1[2]*vec2[2]+vec1[3]*vec2[3]}normalize(vec){var t=Math.sqrt(Math.abs(this.dotProduct(vec,vec)));return[vec[0]/t,vec[1]/t,vec[2]/t,vec[3]/t]}correctVectors(){function t(vec1,vec2){return vec1[0]*vec2[0]+vec1[1]*vec2[1]-vec1[2]*vec2[2]}var e=t(this.cameraPos,this.upVec),o=t(this.cameraPos,this.rightVec),r=t(this.cameraPos,this.forwardVec);for(let a=0;a<3;a++)this.upVec[a]+=e*this.cameraPos[a],this.rightVec[a]+=o*this.cameraPos[a],this.forwardVec[a]+=r*this.cameraPos[a];this.upVec=this.normalize(this.upVec),this.rightVec=this.normalize(this.rightVec),this.forwardVec=this.normalize(this.forwardVec)}teleportCamera(rotatedForwardVec,recomputeRotation){var t=[[[1,0,1/Math.sqrt(3),0],[[2,0,Math.sqrt(3),0],[0,1,0,0],[Math.sqrt(3),0,2,0],[0,0,0,1]]],[[-1,0,1/Math.sqrt(3),0],[[2,0,-Math.sqrt(3),0],[0,1,0,0],[-Math.sqrt(3),0,2,0],[0,0,0,1]]],[[0,1,1/Math.sqrt(3),0],[[1,0,0,0],[0,2,Math.sqrt(3),0],[0,Math.sqrt(3),2,0],[0,0,0,1]]],[[0,-1,1/Math.sqrt(3),0],[[1,0,0,0],[0,2,-Math.sqrt(3),0],[0,-Math.sqrt(3),2,0],[0,0,0,1]]]];for(let e=0;e<t.length;e++)ThurstonGeometry.dotProduct(this.cameraPos,t[e][0])<0&&(this.cameraPos=ThurstonGeometry.mat4TimesVector(t[e][1],this.cameraPos),this.forwardVec=ThurstonGeometry.mat4TimesVector(t[e][1],this.forwardVec),this.rightVec=ThurstonGeometry.mat4TimesVector(t[e][1],this.rightVec),this.upVec=ThurstonGeometry.mat4TimesVector(t[e][1],this.upVec),recomputeRotation(ThurstonGeometry.mat4TimesVector(t[e][1],rotatedForwardVec)),baseColor[0]+=baseColorIncreases[e][0],baseColor[1]+=baseColorIncreases[e][1],baseColor[2]+=baseColorIncreases[e][2])}}class H2xERooms extends H2xEGeometry{static distances=`
-		float spacing = 1.87;
+	`;followGeodesic(pos,dir,t){var e=Math.sqrt(dir[0]*dir[0]+dir[1]*dir[1]+dir[2]*dir[2]),e=0===e?[pos[0],pos[1],pos[2],pos[3]+t*dir[3]]:[Math.cosh(e*t)*pos[0]+Math.sinh(e*t)*dir[0]/e,Math.cosh(e*t)*pos[1]+Math.sinh(e*t)*dir[1]/e,Math.cosh(e*t)*pos[2]+Math.sinh(e*t)*dir[2]/e,pos[3]+t*dir[3]],o=Math.sqrt(-e[0]*e[0]-e[1]*e[1]+e[2]*e[2]);return e[0]/=o,e[1]/=o,e[2]/=o,e}getNormalVec(cameraPos){return this.normalize([-cameraPos[0],-cameraPos[1],cameraPos[2],0])}dotProduct(vec1,vec2){return vec1[0]*vec2[0]+vec1[1]*vec2[1]-vec1[2]*vec2[2]+vec1[3]*vec2[3]}normalize(vec){var t=Math.sqrt(Math.abs(this.dotProduct(vec,vec)));return[vec[0]/t,vec[1]/t,vec[2]/t,vec[3]/t]}correctVectors(){function t(vec1,vec2){return vec1[0]*vec2[0]+vec1[1]*vec2[1]-vec1[2]*vec2[2]}var e=t(this.cameraPos,this.upVec),o=t(this.cameraPos,this.rightVec),r=t(this.cameraPos,this.forwardVec);for(let s=0;s<3;s++)this.upVec[s]+=e*this.cameraPos[s],this.rightVec[s]+=o*this.cameraPos[s],this.forwardVec[s]+=r*this.cameraPos[s];this.upVec=this.normalize(this.upVec),this.rightVec=this.normalize(this.rightVec),this.forwardVec=this.normalize(this.forwardVec)}baseColorIncreases=[[0,1,0],[0,-1,0],[0,0,1],[0,0,-1]];baseColor=[0,0,0];teleportCamera(rotatedForwardVec,recomputeRotation){var t=[[[1,0,1/Math.sqrt(3),0],[[2,0,Math.sqrt(3),0],[0,1,0,0],[Math.sqrt(3),0,2,0],[0,0,0,1]]],[[-1,0,1/Math.sqrt(3),0],[[2,0,-Math.sqrt(3),0],[0,1,0,0],[-Math.sqrt(3),0,2,0],[0,0,0,1]]],[[0,1,1/Math.sqrt(3),0],[[1,0,0,0],[0,2,Math.sqrt(3),0],[0,Math.sqrt(3),2,0],[0,0,0,1]]],[[0,-1,1/Math.sqrt(3),0],[[1,0,0,0],[0,2,-Math.sqrt(3),0],[0,-Math.sqrt(3),2,0],[0,0,0,1]]]];for(let e=0;e<t.length;e++)ThurstonGeometry.dotProduct(this.cameraPos,t[e][0])<0&&(this.cameraPos=ThurstonGeometry.mat4TimesVector(t[e][1],this.cameraPos),this.forwardVec=ThurstonGeometry.mat4TimesVector(t[e][1],this.forwardVec),this.rightVec=ThurstonGeometry.mat4TimesVector(t[e][1],this.rightVec),this.upVec=ThurstonGeometry.mat4TimesVector(t[e][1],this.upVec),recomputeRotation(ThurstonGeometry.mat4TimesVector(t[e][1],rotatedForwardVec)),this.baseColor[0]+=this.baseColorIncreases[e][0],this.baseColor[1]+=this.baseColorIncreases[e][1],this.baseColor[2]+=this.baseColorIncreases[e][2])}}class H2xERooms extends H2xEGeometry{static distances=`
+		float spacing = 1.875;
 		float distance1 = wallThickness - length(vec2(acosh(pos.z), mod(pos.w + spacing / 2.0, spacing) - spacing / 2.0));
 
 		// Translate the reflection plane to the x = 0 plane, then get the distance to it.
@@ -214,31 +210,92 @@ import{ThurstonGeometry}from"../class.min.mjs";import{sliderValues}from"../index
 
 		float minDistance = ${getMinGlslString("distance",5)};
 
-		float wColor = floor((pos.w + spacing / 2.0) / spacing);
+		float wColor = floor((pos.w + 3.0 * spacing / 2.0) / spacing) - spacing / 2.0;
 
 		return vec3(
-			.5 * (sin(wColor * 7.0) + 1.0),
-			.5 * (sin(wColor * 11.0 + globalColor.y + baseColor.y) + 1.0),
-			.5 * (sin(wColor * 17.0 + globalColor.z + baseColor.z) + 1.0)
+			.4 + .6 * .5 * (sin((wColor + globalColor.y + baseColor.y + globalColor.z + baseColor.z) * 5.0) + 1.0),
+			.4 + .6 * .5 * (sin((wColor + globalColor.y + baseColor.y) * 7.0) + 1.0),
+			.4 + .6 * .5 * (sin((wColor + globalColor.z + baseColor.z) * 11.0) + 1.0)
+		);
+	`;lightGlsl=`
+		float spacing = 1.875;
+		vec4 moddedPos = vec4(pos.xyz, mod(pos.w + spacing / 2.0, spacing) - spacing / 2.0);
+
+		vec4 lightDirection1 = normalize(vec4(-1.0, 1.0, 0.0, .5) - moddedPos);
+		float dotProduct1 = abs(dot(surfaceNormal, lightDirection1));
+
+		vec4 lightDirection2 = normalize(vec4(1.0, -1.0, 0.0, -.5) - moddedPos);
+		float dotProduct2 = dot(surfaceNormal, lightDirection2);
+
+		
+
+		float lightIntensity = 1.5 * lightBrightness * max(dotProduct1, dotProduct2);
+	`;cameraPos=[0,0,1,0];normalVec=[0,0,-1,0];upVec=[0,0,0,1];rightVec=[0,1,0,0];forwardVec=[1,0,0,0];getMovingSpeed(){return 1}uniformGlsl="uniform float wallThickness; uniform vec3 baseColor;";uniformNames=["wallThickness","baseColor"];updateUniforms(gl,uniformList){var t=1.145-sliderValues.wallThickness/10;gl.uniform1f(uniformList.wallThickness,t),gl.uniform3fv(uniformList.baseColor,this.baseColor)}uiElementsUsed="#wall-thickness-slider";initUI(){var t=$("#wall-thickness-slider"),e=$("#wall-thickness-slider-value");t.min=-.55,t.max=1.05,t.value=1.05,e.textContent=1.05,sliderValues.wallThickness=1.05}}class H2xESpheres extends H2xEGeometry{static distances=`
+		float spacing = 1.5;
+		float distance1 = length(vec2(acosh(pos.z), mod(pos.w + spacing / 2.0, spacing) - spacing / 2.0)) - .5;
+
+		// Translate the reflection plane to the x = 0 plane, then get the distance to it.
+		// The DE to x = 0 is abs(asinh(pos.x)).
+		float distance2 = abs(asinh(
+			dot(
+				vec4(1.23188, 0.0, 0.71939, 0),
+				pos
+			)
+		));
+		
+		float distance3 = abs(asinh(
+			dot(
+				vec4(1.23188, 0.0, -0.71939, 0),
+				pos
+			)
+		));
+
+		float distance4 = abs(asinh(
+			dot(
+				vec4(0.0, 1.23188, 0.71939, 0),
+				pos
+			)
+		));
+		
+		float distance5 = abs(asinh(
+			dot(
+				vec4(0.0, -1.23188, 0.71939, 0),
+				pos
+			)
+		));
+	`;distanceEstimatorGlsl=`
+		${H2xESpheres.distances}
+
+		float minDistance = ${getMinGlslString("distance",5)};
+
+		return minDistance;
+	`;getColorGlsl=`
+		${H2xESpheres.distances}
+
+		float minDistance = ${getMinGlslString("distance",5)};
+
+		float wColor = floor((pos.w + spacing / 2.0) / spacing);
+
+		float colorSum = globalColor.x + baseColor.x + globalColor.y + baseColor.y + globalColor.z + baseColor.z;
+
+		return vec3(
+			.1 + .8 * .5 * (sin((wColor + colorSum) * 7.0) + 1.0),
+			.1 + .8 * .5 * (sin((wColor + colorSum) * 11.0) + 1.0),
+			.1 + .8 * .5 * (sin((wColor + colorSum) * 17.0) + 1.0)
 		);
 	`;lightGlsl=`
 		// Equally weird to the S^2 x E fix, and equally necessary.
-		// pos.xyz *= 1.001;
-		// surfaceNormal = getSurfaceNormal(pos);
+		pos.xyz *= 1.001;
+		surfaceNormal = getSurfaceNormal(pos);
 
-		float spacing = 1.87;
+		float spacing = 1.5;
 		vec4 moddedPos = vec4(pos.xyz, mod(pos.w + spacing / 2.0, spacing) - spacing / 2.0);
 
-		vec4 lightDirection1 = normalize(vec4(-3.0, -1.0, 2.0, 2.0) - moddedPos);
-		float dotProduct1 = dot(surfaceNormal, lightDirection1);
+		vec4 lightDirection1 = normalize(vec4(-1.0, 1.0, 0.0, .5) - moddedPos);
+		float dotProduct1 = abs(dot(surfaceNormal, lightDirection1));
 
-		vec4 lightDirection3 = normalize(vec4(0.0, 0.0, 0.0, 1.0) - moddedPos);
-		float dotProduct3 = dot(surfaceNormal, lightDirection3);
-		
-		// vec4 lightDirection2 = normalize(vec4(1.0, 2.0, 3.0, -3.0) - moddedPos);
-		// float dotProduct2 = dot(surfaceNormal, lightDirection2);
+		vec4 lightDirection2 = normalize(vec4(1.0, -1.0, 0.0, -.5) - moddedPos);
+		float dotProduct2 = dot(surfaceNormal, lightDirection2);
 
-		
-
-		float lightIntensity = lightBrightness * max(dotProduct1, dotProduct3);
-	`;cameraPos=[0,0,1,0];normalVec=[0,0,-1,0];upVec=[0,0,0,1];rightVec=[0,1,0,0];forwardVec=[1,0,0,0];getMovingSpeed(){return 1}uniformGlsl="uniform float wallThickness; uniform vec3 baseColor;";uniformNames=["wallThickness","baseColor"];updateUniforms(gl,uniformList){var t=sliderValues.wallThickness;gl.uniform1f(uniformList.wallThickness,t),gl.uniform3fv(uniformList.baseColor,baseColor)}uiElementsUsed="#wall-thickness-slider";initUI(){var t=$("#wall-thickness-slider"),e=$("#wall-thickness-slider-value");t.min=1.04,t.max=1.2,t.value=1.04,e.textContent=1.04,sliderValues.wallThickness=1.04}}export{H2xERooms};
+		float lightIntensity = 2.0 * lightBrightness * max(dotProduct1, dotProduct2);
+	`;cameraPos=[0,0,1,.75];normalVec=[0,0,-1,0];upVec=[0,0,0,1];rightVec=[0,1,0,0];forwardVec=[1,0,0,0];getMovingSpeed(){return 1}uniformGlsl="uniform vec3 baseColor;";uniformNames=["baseColor"];updateUniforms(gl,uniformList){gl.uniform3fv(uniformList.baseColor,this.baseColor)}}export{H2xERooms,H2xESpheres};
