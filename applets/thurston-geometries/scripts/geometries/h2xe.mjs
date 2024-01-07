@@ -24,7 +24,7 @@ class H2xEGeometry extends BaseGeometry
 	
 	return dir / magnitude;`;
 
-	fogGlsl = "return mix(color, fogColor, 1.0 - exp(-totalT * 0.2));";
+	fogGlsl = "return mix(color, fogColor, 1.0 - exp(-totalT * 0.4));";
 
 	functionGlsl = `float sinh(float x)
 		{
@@ -449,7 +449,7 @@ export class H2xERooms extends H2xEGeometry
 
 	getMovingSpeed()
 	{
-		return 1;
+		return 1.25;
 	}
 
 	uniformGlsl = "uniform float wallThickness; uniform vec3 baseColor;";
@@ -565,7 +565,7 @@ export class H2xESpheres extends H2xEGeometry
 
 	getMovingSpeed()
 	{
-		return 1;
+		return 1.25;
 	}
 
 	uniformGlsl = "uniform vec3 baseColor;";

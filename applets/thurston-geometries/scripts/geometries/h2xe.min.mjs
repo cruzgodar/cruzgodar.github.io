@@ -11,7 +11,7 @@ import{ThurstonGeometry}from"../class.min.mjs";import{sliderValues}from"../index
 	
 	globalColor += teleportPos(pos, startPos, rayDirectionVec, t, totalT);`;dotProductGlsl="return v.x * w.x + v.y * w.y - v.z * w.z + v.w * w.w;";normalizeGlsl=`float magnitude = sqrt(abs(geometryDot(dir, dir)));
 	
-	return dir / magnitude;`;fogGlsl="return mix(color, fogColor, 1.0 - exp(-totalT * 0.2));";functionGlsl=`float sinh(float x)
+	return dir / magnitude;`;fogGlsl="return mix(color, fogColor, 1.0 - exp(-totalT * 0.4));";functionGlsl=`float sinh(float x)
 		{
 			return .5 * (exp(x) - exp(-x));
 		}
@@ -230,7 +230,7 @@ import{ThurstonGeometry}from"../class.min.mjs";import{sliderValues}from"../index
 		
 
 		float lightIntensity = 1.5 * lightBrightness * max(dotProduct1, dotProduct2);
-	`;cameraPos=[0,0,1,0];normalVec=[0,0,-1,0];upVec=[0,0,0,1];rightVec=[0,1,0,0];forwardVec=[1,0,0,0];getMovingSpeed(){return 1}uniformGlsl="uniform float wallThickness; uniform vec3 baseColor;";uniformNames=["wallThickness","baseColor"];updateUniforms(gl,uniformList){var t=1.145-sliderValues.wallThickness/10;gl.uniform1f(uniformList.wallThickness,t),gl.uniform3fv(uniformList.baseColor,this.baseColor)}uiElementsUsed="#wall-thickness-slider";initUI(){var t=$("#wall-thickness-slider"),e=$("#wall-thickness-slider-value");t.min=-.55,t.max=1.05,t.value=1.05,e.textContent=1.05,sliderValues.wallThickness=1.05}}class H2xESpheres extends H2xEGeometry{static distances=`
+	`;cameraPos=[0,0,1,0];normalVec=[0,0,-1,0];upVec=[0,0,0,1];rightVec=[0,1,0,0];forwardVec=[1,0,0,0];getMovingSpeed(){return 1.25}uniformGlsl="uniform float wallThickness; uniform vec3 baseColor;";uniformNames=["wallThickness","baseColor"];updateUniforms(gl,uniformList){var t=1.145-sliderValues.wallThickness/10;gl.uniform1f(uniformList.wallThickness,t),gl.uniform3fv(uniformList.baseColor,this.baseColor)}uiElementsUsed="#wall-thickness-slider";initUI(){var t=$("#wall-thickness-slider"),e=$("#wall-thickness-slider-value");t.min=-.55,t.max=1.05,t.value=1.05,e.textContent=1.05,sliderValues.wallThickness=1.05}}class H2xESpheres extends H2xEGeometry{static distances=`
 		float spacing = 1.5;
 		float distance1 = length(vec2(acosh(pos.z), mod(pos.w + spacing / 2.0, spacing) - spacing / 2.0)) - .5;
 
@@ -298,4 +298,4 @@ import{ThurstonGeometry}from"../class.min.mjs";import{sliderValues}from"../index
 		float dotProduct2 = dot(surfaceNormal, lightDirection2);
 
 		float lightIntensity = 2.0 * lightBrightness * max(dotProduct1, dotProduct2);
-	`;cameraPos=[0,0,1,.75];normalVec=[0,0,-1,0];upVec=[0,0,0,1];rightVec=[0,1,0,0];forwardVec=[1,0,0,0];getMovingSpeed(){return 1}uniformGlsl="uniform vec3 baseColor;";uniformNames=["baseColor"];updateUniforms(gl,uniformList){gl.uniform3fv(uniformList.baseColor,this.baseColor)}}export{H2xERooms,H2xESpheres};
+	`;cameraPos=[0,0,1,.75];normalVec=[0,0,-1,0];upVec=[0,0,0,1];rightVec=[0,1,0,0];forwardVec=[1,0,0,0];getMovingSpeed(){return 1.25}uniformGlsl="uniform vec3 baseColor;";uniformNames=["baseColor"];updateUniforms(gl,uniformList){gl.uniform3fv(uniformList.baseColor,this.baseColor)}}export{H2xERooms,H2xESpheres};
