@@ -90,11 +90,6 @@
 		};
 	</script>
 
-	<script type="module">
-		import anime from "/scripts/anime.min.js";
-		window.anime = anime;
-	</script>
-
 	<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
 
 	<script src="https://cdn.jsdelivr.net/npm/mathjax@3.2.0/es5/tex-mml-chtml.js"></script>
@@ -102,7 +97,7 @@
 	<script src="/scripts/highlight.min.js"></script>
 	
 	<script type="module">
-		import {loadSite} from "/scripts/src/main.min.mjs";
+		import {loadSite} from "/scripts/src/main.min.js";
 
 		const params = new URLSearchParams(window.location.search);
 

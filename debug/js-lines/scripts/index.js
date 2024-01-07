@@ -1,4 +1,4 @@
-import { sitemap } from "/scripts/src/sitemap.mjs";
+import { sitemap } from "/scripts/src/sitemap.js";
 
 !async function()
 {

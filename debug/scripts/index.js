@@ -1,5 +1,5 @@
-import { showPage } from "/scripts/src/load-page.mjs";
-import { $ } from "/scripts/src/main.mjs";
+import { showPage } from "/scripts/src/load-page.js";
+import { $ } from "/scripts/src/main.js";
 
 !function()
 {

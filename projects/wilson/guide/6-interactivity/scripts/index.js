@@ -1,10 +1,10 @@
-import { showPage } from "/scripts/src/load-page.mjs";
+import { showPage } from "/scripts/src/load-page.js";
 import {
 	$,
 	$$,
 	addTemporaryListener
-} from "/scripts/src/main.mjs";
-import { Wilson } from "/scripts/wilson.mjs";
+} from "/scripts/src/main.js";
+import { Wilson } from "/scripts/wilson.js";
 
 !function()
 {

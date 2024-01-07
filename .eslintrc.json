@@ -20,7 +20,7 @@
 		"/applets/sudoku-generator/scripts/solver.*",
 		"/applets/wilsons-algorithm/scripts/random-walk.*",
 		"/jsconfig.json",
-		"/scripts/src/sitemap.mjs"
+		"/scripts/src/sitemap.js"
 	],
     "rules": {
         "indent": [

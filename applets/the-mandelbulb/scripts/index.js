@@ -1,0 +1,157 @@
+import { Mandelbulb } from "./class.js";
+import { changeOpacity, opacityAnimationTime } from "/scripts/src/animation.js";
+import { equalizeTextButtons } from "/scripts/src/buttons.js";
+import { showPage } from "/scripts/src/load-page.js";
+import { $ } from "/scripts/src/main.js";
+
+export function load()
+{
+	const rotationAngleXSliderElement = $("#rotation-angle-x-slider");
+	const rotationAngleXSliderValueElement = $("#rotation-angle-x-slider-value");
+
+	const rotationAngleYSliderElement = $("#rotation-angle-y-slider");
+	const rotationAngleYSliderValueElement = $("#rotation-angle-y-slider-value");
+
+	const rotationAngleZSliderElement = $("#rotation-angle-z-slider");
+	const rotationAngleZSliderValueElement = $("#rotation-angle-z-slider-value");
+
+	const cXSliderElement = $("#c-x-slider");
+	const cXSliderValueElement = $("#c-x-slider-value");
+
+	const cYSliderElement = $("#c-y-slider");
+	const cYSliderValueElement = $("#c-y-slider-value");
+
+	const cZSliderElement = $("#c-z-slider");
+	const cZSliderValueElement = $("#c-z-slider-value");
+
+	const applet = new Mandelbulb({
+		canvas: $("#output-canvas"),
+	});
+
+
+
+	const resolutionInputElement = $("#resolution-input");
+
+	applet.setInputCaps([resolutionInputElement], [750]);
+
+
+
+	resolutionInputElement.addEventListener("input", () =>
+	{
+		const resolution = parseInt(resolutionInputElement.value || 500);
+
+		applet.changeResolution(resolution);
+	});
+
+
+
+	const iterationsSliderElement = $("#iterations-slider");
+	const iterationsSliderValueElement = $("#iterations-slider-value");
+
+
+
+	const downloadButtonElement = $("#download-button");
+
+	downloadButtonElement.addEventListener("click", () =>
+	{
+		applet.wilson.gl.uniform1i(applet.wilson.uniforms["maxMarches"], 1024);
+		applet.wilson.gl.uniform1f(applet.wilson.uniforms["stepFactor"], 12);
+
+		if (applet.juliaProportion < .5)
+		{
+			applet.wilson.downloadFrame("the-mandelbulb.png");
+		}
+
+		else
+		{
+			applet.wilson.downloadFrame("a-juliabulb.png");
+		}
+
+		applet.wilson.gl.uniform1i(applet.wilson.uniforms["maxMarches"], applet.maxMarches);
+		applet.wilson.gl.uniform1f(applet.wilson.uniforms["stepFactor"], 1);
+	});
+
+
+
+	const powerSliderElement = $("#power-slider");
+	const powerSliderValueElement = $("#power-slider-value");
+
+	const elements = [
+		rotationAngleXSliderElement,
+		rotationAngleYSliderElement,
+		rotationAngleZSliderElement,
+		cXSliderElement,
+		cYSliderElement,
+		cZSliderElement,
+		powerSliderElement,
+		iterationsSliderElement
+	];
+
+	elements.forEach(element => element.addEventListener("input", updateParameters));
+
+
+
+	const switchBulbButtonElement = $("#switch-bulb-button");
+
+	switchBulbButtonElement.style.opacity = 1;
+
+	switchBulbButtonElement.addEventListener("click", switchBulb);
+
+
+
+	equalizeTextButtons();
+
+
+
+	showPage();
+
+
+
+	function updateParameters()
+	{
+		const cx = parseFloat(cXSliderValueElement.textContent);
+		const cy = parseFloat(cYSliderValueElement.textContent);
+		const cz = parseFloat(cZSliderValueElement.textContent);
+
+		applet.c = [cx, cy, cz];
+		applet.wilson.gl.uniform3fv(applet.wilson.uniforms["c"], applet.c);
+
+		applet.rotationAngleX = parseFloat(rotationAngleXSliderValueElement.textContent);
+		applet.rotationAngleY = parseFloat(rotationAngleYSliderValueElement.textContent);
+		applet.rotationAngleZ = parseFloat(rotationAngleZSliderValueElement.textContent);
+
+		applet.power = parseFloat(powerSliderValueElement.textContent);
+		applet.wilson.gl.uniform1f(applet.wilson.uniforms["power"], applet.power);
+
+		applet.maxIterations = parseInt(iterationsSliderValueElement.textContent);
+		applet.wilson.gl.uniform1i(applet.wilson.uniforms["maxIterations"], applet.maxIterations);
+
+		applet.updateRotationMatrix();
+	}
+
+
+
+	function switchBulb()
+	{
+		changeOpacity(switchBulbButtonElement, 0);
+
+		setTimeout(() =>
+		{
+			if (applet.juliaProportion < .5)
+			{
+				switchBulbButtonElement.textContent = "Switch to Mandelbulb";
+			}
+
+			else
+			{
+				switchBulbButtonElement.textContent = "Switch to Juliabulb";
+			}
+
+			equalizeTextButtons();
+
+			changeOpacity(switchBulbButtonElement, 1);
+		}, opacityAnimationTime);
+
+		applet.switchBulb();
+	}
+}
