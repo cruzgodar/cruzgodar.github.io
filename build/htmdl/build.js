@@ -106,6 +106,8 @@ function decodeHTMDL(html)
 
 	let inEnvironment = false;
 
+	let inDebugEnvironment = false;
+
 	html = html
 		.replaceAll(/\r/g, "")
 		.replaceAll(/ {4}/g, "\t")
@@ -233,6 +235,24 @@ function decodeHTMDL(html)
 			lines.splice(i, 1);
 
 			i--;
+		}
+
+
+
+		//Handle debug blocks.
+		else if (lines[i].slice(0, 3) === "???")
+		{
+			if (!inDebugEnvironment)
+			{
+				lines[i] = "<div class=\"DEBUG\">";
+			}
+
+			else
+			{
+				lines[i] = "</div>";
+			}
+
+			inDebugEnvironment = !inDebugEnvironment;
 		}
 
 

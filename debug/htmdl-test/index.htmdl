@@ -115,6 +115,12 @@ $$
 
 ###
 
+???
+
+	I'm some text that appears only in debug mode.
+
+???
+
 ### ex "a name!"
 	
 	With some text

@@ -163,6 +163,11 @@ export async function loadSite(url = pageUrl)
 		});
 	});
 
+	if (!window.DEBUG)
+	{
+		addStyle(".DEBUG {display: none;}", false);
+	}
+
 
 
 	addHeader();

@@ -248,6 +248,39 @@
 			<key>contentName</key>
 			<string>markup.raw</string>
 		</dict>
+
+
+
+		<!-- Debug blocks -->
+		<dict>
+			<key>begin</key>
+			<string>^\t*?(\?\?\?)</string>
+			<key>end</key>
+			<string>^\t*?(\?\?\?)\s*$</string>
+			<key>beginCaptures</key>
+			<dict>
+				<key>1</key>
+				<dict>
+					<key>name</key>
+					<string>keyword</string>
+				</dict>
+			</dict>
+			<key>endCaptures</key>
+			<dict>
+				<key>1</key>
+				<dict>
+					<key>name</key>
+					<string>keyword</string>
+				</dict>
+			</dict>
+			<key>patterns</key>
+			<array>
+				<dict>
+					<key>include</key>
+					<string>$self</string>
+				</dict>
+			</array>
+		</dict>
 		
 		
 		
