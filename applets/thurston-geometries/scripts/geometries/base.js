@@ -76,7 +76,7 @@ export class BaseGeometry
 
 	getMovingSpeed()
 	{
-		return 3;
+		return 2;
 	}
 
 	distanceEstimatorGlsl;
