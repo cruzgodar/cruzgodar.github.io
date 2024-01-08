@@ -49,7 +49,46 @@ class NilGeometry extends BaseGeometry
 	
 	return dir / magnitude;`;
 
-	fogGlsl = "return mix(color, fogColor, 1.0 - exp(0.5 - totalT * 0.075));";
+	fogGlsl = "return color;//mix(color, fogColor, 1.0 - exp(0.5 - totalT * 0.075));";
+
+	functionGlsl = `float chi(float rho, float z, float phi)
+	{
+		float sineThing = sin(phi * 0.5);
+
+		return -z + phi + rho*rho / (8.0 * sineThing*sineThing) * (phi - sin(phi));
+	}
+
+	float chiPrime(float rho, float z, float phi)
+	{
+		float sineThing = sin(phi * 0.5);
+
+		return 1.0 - rho*rho / (8.0 * sineThing*sineThing) * (cos(phi) + (phi - sin(phi)) / tan(phi / 2.0) - 1.0);
+	}
+	
+	const int newtonIterations = 5;
+	// Returns the unique zero in (0, 2pi) of chi. z must be positive, so apply the flip transformation before doing this if it's not.
+	float chiZero(float rho, float z)
+	{
+		float x = 4.0;
+
+		if (rho <= 0.2)
+		{
+			x = 6.2;
+		}
+
+		else if (rho <= 1.0)
+		{
+			x = 6.0;
+		}
+
+		else if (rho <= 4.0)
+		{
+			x = 5.0;
+		}
+
+		return x;
+	}
+	`;
 
 	
 	normalize(vec)
