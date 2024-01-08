@@ -287,9 +287,9 @@ export class ThurstonGeometry extends Applet
 				);
 			}
 		`;
-
 		
 
+		
 		this.wilson.render.shaderPrograms = [];
 		this.wilson.render.loadNewShader(fragShaderSource);
 		this.wilson.gl.useProgram(this.wilson.render.shaderPrograms[0]);
