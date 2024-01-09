@@ -34,13 +34,26 @@ class NilGeometry extends BaseGeometry
 			1.0
 		);
 	}
+
+	else if (c * t < .01)
+	{
+		pos = A * vec4(
+			2.0 * a / c * sin(c * t / 2.0) * cos(c * t / 2.0 + alpha),
+			2.0 * a / c * sin(c * t / 2.0) * sin(c * t / 2.0 + alpha),
+			c * t + a*a * (c*t*t*t / 12.0 - c*c*c*t*t*t*t*t / 240.0 + c*c*c*c*c*t*t*t*t*t*t*t / 10080.0),
+			1.0
+		);
+	}
 	
-	pos = A * vec4(
-		2.0 * a / c * sin(c * t / 2.0) * cos(c * t / 2.0 + alpha),
-		2.0 * a / c * sin(c * t / 2.0) * sin(c * t / 2.0 + alpha),
-		c * t + a*a / (2.0 * c*c) * (c * t - sin(c * t)),
-		1.0
-	);
+	else
+	{
+		pos = A * vec4(
+			2.0 * a / c * sin(c * t / 2.0) * cos(c * t / 2.0 + alpha),
+			2.0 * a / c * sin(c * t / 2.0) * sin(c * t / 2.0 + alpha),
+			c * t + a*a / (2.0 * c*c) * (c * t - sin(c * t)),
+			1.0
+		);
+	}
 
 	// globalColor += teleportPos(pos, startPos, rayDirectionVec, t, totalT);
 	`;
