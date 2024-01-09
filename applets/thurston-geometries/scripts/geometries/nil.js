@@ -97,7 +97,7 @@ class NilGeometry extends BaseGeometry
 
 	// Uses Newton's method and some nasty equations to get the exact distance to the origin.
 	// Only recommended when actually close and an underestimate isn't good enough for detail.
-	float exactDistanceToOrigin(vec3 pos)
+	float exactDistanceToOrigin(vec4 pos)
 	{
 		if (length(pos.xy) < 0.00001)
 		{
@@ -115,7 +115,7 @@ class NilGeometry extends BaseGeometry
 		// If z is negative, we need to flip the whole z-axis.
 		if (pos.z < 0.0)
 		{
-			pos = vec3(pos.y, pos.x, -pos.z);
+			pos = vec4(pos.y, pos.x, -pos.z, 1.0);
 		}
 
 		float rho = length(pos.xy);
@@ -127,6 +127,39 @@ class NilGeometry extends BaseGeometry
 		float t = abs(phi * length(vec3(pos.xy, sineThing)) / sineThing);
 
 		return t;
+	}
+
+	// Returns an underestimate of the distance to the origin. The paper has variables
+	// m and psi that can be varied; I'm just using m = 1 and psi = 1/2.
+
+	const float sqrt2 = 1.414213562;
+	const float sqrt3 = 1.732050808;
+	const float sqrt6 = 2.449489743;
+	const float sqrt12 = 3.464101615;
+	const float sqrt48 = 6.928203230;
+	const float fourthRoot12 = 1.861209718;
+
+	float approximateDistanceToOrigin(vec4 pos)
+	{
+		float fInv;
+		float z = abs(pos.z);
+
+		if (z < sqrt6)
+		{
+			fInv = z;
+		}
+
+		else if (z < sqrt48)
+		{
+			fInv = sqrt3 * sqrt(pow(6.0 * z, .666667) - 4.0);
+		}
+
+		else
+		{
+			fInv = fourthRoot12 * sqrt(z);
+		}
+
+		return .5 * (length(pos.xy) + fInv);
 	}
 	`;
 
@@ -217,7 +250,20 @@ class NilGeometry extends BaseGeometry
 export class NilSpheres extends NilGeometry
 {
 	static distances = `
-		float distance1 = 0.0;
+		// A sphere at the origin (honestly, why would you want it to be anywhere else?)
+		float radius = .5;
+		float distance1 = approximateDistanceToOrigin(pos);
+
+		if (distance1 > radius + epsilon * 100.0)
+		{
+			distance1 -= radius;
+		}
+
+		else
+		{
+			distance1 = exactDistanceToOrigin(pos) - radius;
+		}
+		
 		/*
 		// Translate the reflection plane to the x = 0 plane, then get the distance to it.
 		// The DE to x = 0 is abs(asinh(pos.x)).
@@ -280,7 +326,7 @@ export class NilSpheres extends NilGeometry
 		// 	.25 + .75 * (.5 * (sin(floor(baseColor.z + globalColor.z + .5) * 89.0) + 1.0))
 		// );
 
-		return vec3(10.0 * abs(chi(1.0, 15.0, chiZero(1.0, 15.0))), 0.0, 0.0);
+		return vec3(1.0, 1.0, 1.0);
 	`;
 
 	getMovingSpeed()
