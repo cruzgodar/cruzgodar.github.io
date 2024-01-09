@@ -66,27 +66,67 @@ class NilGeometry extends BaseGeometry
 	}
 	
 	const int newtonIterations = 5;
+	
 	// Returns the unique zero in (0, 2pi) of chi. z must be positive, so apply the flip transformation before doing this if it's not.
 	float chiZero(float rho, float z)
 	{
-		float x = 4.0;
+		float phi = 4.0;
 
 		if (rho <= 0.2)
 		{
-			x = 6.2;
+			phi = 6.2;
 		}
 
 		else if (rho <= 1.0)
 		{
-			x = 6.0;
+			phi = 6.0;
 		}
 
 		else if (rho <= 4.0)
 		{
-			x = 5.0;
+			phi = 5.0;
 		}
 
-		return x;
+		for (int iteration = 0; iteration < newtonIterations; iteration++)
+		{
+			phi -= chi(rho, z, phi) / chiPrime(rho, z, phi);
+		}
+
+		return phi;
+	}
+
+	// Uses Newton's method and some nasty equations to get the exact distance to the origin.
+	// Only recommended when actually close and an underestimate isn't good enough for detail.
+	float exactDistanceToOrigin(vec3 pos)
+	{
+		if (length(pos.xy) < 0.00001)
+		{
+			// The shortest path is just the straight line along the z-axis.
+			return abs(pos.z);
+		}
+
+		if (abs(pos.z) < 0.00001)
+		{
+			// Here phi = 0, and  we want to avoid sin(x)/x stuff when possible.
+
+			return length(pos.xy);
+		}
+
+		// If z is negative, we need to flip the whole z-axis.
+		if (pos.z < 0.0)
+		{
+			pos = vec3(pos.y, pos.x, -pos.z);
+		}
+
+		float rho = length(pos.xy);
+
+		float phi = chiZero(rho, pos.z);
+
+		float sineThing = 2.0 * sin(phi * 0.5);
+
+		float t = abs(phi * length(vec3(pos.xy, sineThing)) / sineThing);
+
+		return t;
 	}
 	`;
 
@@ -177,7 +217,7 @@ class NilGeometry extends BaseGeometry
 export class NilSpheres extends NilGeometry
 {
 	static distances = `
-		float distance1 = 1.0;
+		float distance1 = 0.0;
 		/*
 		// Translate the reflection plane to the x = 0 plane, then get the distance to it.
 		// The DE to x = 0 is abs(asinh(pos.x)).
@@ -240,7 +280,7 @@ export class NilSpheres extends NilGeometry
 		// 	.25 + .75 * (.5 * (sin(floor(baseColor.z + globalColor.z + .5) * 89.0) + 1.0))
 		// );
 
-		return vec3(1.0, 1.0, 1.0);
+		return vec3(10.0 * abs(chi(1.0, 15.0, chiZero(1.0, 15.0))), 0.0, 0.0);
 	`;
 
 	getMovingSpeed()
