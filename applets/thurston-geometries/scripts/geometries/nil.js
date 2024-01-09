@@ -10,12 +10,14 @@ class NilGeometry extends BaseGeometry
 		startPos.x, startPos.y, startPos.z, 1.0
 	);
 
-	vec4 v = mat4(
-		1.0, 0.0, startPos.y * .5, 0.0,
-		0.0, 1.0, -startPos.x * .5, 0.0,
-		0.0, 0.0, 1.0, 0.0,
-		-startPos.x, -startPos.y, -startPos.z, 1.0
-	) * rayDirectionVec;
+	// vec4 v = mat4(
+	// 	1.0, 0.0, startPos.y * .5, 0.0,
+	// 	0.0, 1.0, -startPos.x * .5, 0.0,
+	// 	0.0, 0.0, 1.0, 0.0,
+	// 	-startPos.x, -startPos.y, -startPos.z, 1.0
+	// ) * rayDirectionVec;
+
+	vec4 v = rayDirectionVec;
 
 	float alpha = atan(v.y, v.x);
 	float a = length(v.xy);
@@ -29,7 +31,7 @@ class NilGeometry extends BaseGeometry
 			a * cos(alpha) * t,
 			a * sin(alpha) * t,
 			0.0,
-			0.0
+			1.0
 		);
 	}
 	
@@ -37,7 +39,7 @@ class NilGeometry extends BaseGeometry
 		2.0 * a / c * sin(c * t / 2.0) * cos(c * t / 2.0 + alpha),
 		2.0 * a / c * sin(c * t / 2.0) * sin(c * t / 2.0 + alpha),
 		c * t + a*a / (2.0 * c*c) * (c * t - sin(c * t)),
-		0.0
+		1.0
 	);
 
 	// globalColor += teleportPos(pos, startPos, rayDirectionVec, t, totalT);
@@ -175,6 +177,13 @@ class NilGeometry extends BaseGeometry
 	
 	followGeodesic(pos, dir, t)
 	{
+		// Some subtlety here: we need to construct the transformation matrix to
+		// translate the geodesic from the origin, but we do *not* want to translate the current
+		// vectors backward to the origin. In the other geometries, I've gotten away with simply
+		// projecting the tangent space vectors onto the new trnagent space after moving, but the
+		// twisting in Nil combined with the fact that all tangent spaces are literally equal
+		// means that such a correction would be extremely difficult. Instead, we'll leave
+		// the vectors at the origin (i.e. just not translate them back).
 		const A = [
 			[1, 0, 0, pos[0]],
 			[0, 1, 0, pos[1]],
@@ -182,18 +191,9 @@ class NilGeometry extends BaseGeometry
 			[0, 0, 0, 1]
 		];
 
-		const Ainv = [
-			[1, 0, 0, -pos[0]],
-			[0, 1, 0, -pos[1]],
-			[pos[1] / 2, -pos[0] / 2, 1, -pos[2]],
-			[0, 0, 0, 1]
-		];
-
-		const v = ThurstonGeometry.mat4TimesVector(Ainv, dir);
-
-		const alpha = Math.atan2(v[1], v[0]);
-		const a = Math.sqrt(v[0] * v[0] + v[1] * v[1]);
-		const c = v[2];
+		const alpha = Math.atan2(dir[1], dir[0]);
+		const a = Math.sqrt(dir[0] * dir[0] + dir[1] * dir[1]);
+		const c = dir[2];
 
 		const newPos = ThurstonGeometry.mat4TimesVector(A,
 			Math.abs(c) < 0.00001
@@ -201,13 +201,13 @@ class NilGeometry extends BaseGeometry
 					a * Math.cos(alpha) * t,
 					a * Math.sin(alpha) * t,
 					0,
-					0
+					1
 				]
 				: [
 					2 * a / c * Math.sin(c * t / 2) * Math.cos(c * t / 2 + alpha),
 					2 * a / c * Math.sin(c * t / 2) * Math.sin(c * t / 2 + alpha),
 					c * t + a * a / (2 * c * c) * (c * t - Math.sin(c * t)),
-					0
+					1
 				]
 		);
 		
@@ -263,7 +263,7 @@ export class NilSpheres extends NilGeometry
 		{
 			distance1 = exactDistanceToOrigin(pos) - radius;
 		}
-		
+
 		/*
 		// Translate the reflection plane to the x = 0 plane, then get the distance to it.
 		// The DE to x = 0 is abs(asinh(pos.x)).
