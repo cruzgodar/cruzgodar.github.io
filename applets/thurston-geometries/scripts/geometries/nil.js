@@ -3,57 +3,9 @@ import { BaseGeometry } from "./base.js";
 
 class NilGeometry extends BaseGeometry
 {
-	geodesicGlsl = `mat4 A = mat4(
-		1.0, 0.0, -startPos.y * .5, 0.0,
-		0.0, 1.0, startPos.x * .5, 0.0,
-		0.0, 0.0, 1.0, 0.0,
-		startPos.x, startPos.y, startPos.z, 1.0
-	);
+	geodesicGlsl = `vec4 pos = getUpdatedPos(startPos, rayDirectionVec, t);
 
-	// vec4 v = mat4(
-	// 	1.0, 0.0, startPos.y * .5, 0.0,
-	// 	0.0, 1.0, -startPos.x * .5, 0.0,
-	// 	0.0, 0.0, 1.0, 0.0,
-	// 	-startPos.x, -startPos.y, -startPos.z, 1.0
-	// ) * rayDirectionVec;
-
-	float alpha = atan(rayDirectionVec.y, rayDirectionVec.x);
-	float a = length(rayDirectionVec.xy);
-	float c = rayDirectionVec.z;
-
-	vec4 pos;
-
-	if (abs(c) < 0.00001)
-	{
-		pos = A * vec4(
-			a * cos(alpha) * t,
-			a * sin(alpha) * t,
-			0.0,
-			1.0
-		);
-	}
-
-	else if (c * t < .01)
-	{
-		pos = A * vec4(
-			2.0 * a / c * sin(c * t / 2.0) * cos(c * t / 2.0 + alpha),
-			2.0 * a / c * sin(c * t / 2.0) * sin(c * t / 2.0 + alpha),
-			c * t + a*a * (c*t*t*t / 12.0 - c*c*c*t*t*t*t*t / 240.0 + c*c*c*c*c*t*t*t*t*t*t*t / 10080.0),
-			1.0
-		);
-	}
-	
-	else
-	{
-		pos = A * vec4(
-			2.0 * a / c * sin(c * t / 2.0) * cos(c * t / 2.0 + alpha),
-			2.0 * a / c * sin(c * t / 2.0) * sin(c * t / 2.0 + alpha),
-			c * t + a*a / (2.0 * c*c) * (c * t - sin(c * t)),
-			1.0
-		);
-	}
-
-	// globalColor += teleportPos(pos, startPos, rayDirectionVec, t, totalT);
+	globalColor += teleportPos(pos, startPos, rayDirectionVec, t, totalT);
 	`;
 
 	normalizeGlsl = `float zFactor = dir.z - (cameraPos.x * dir.y - cameraPos.y * dir.x) / 2.0;
@@ -175,6 +127,93 @@ class NilGeometry extends BaseGeometry
 		return .5 * (length(pos.xy) + fInv);
 	}
 
+	vec4 getUpdatedPos(vec4 startPos, vec4 rayDirectionVec, float t)
+	{
+		mat4 A = mat4(
+			1.0, 0.0, -startPos.y * .5, 0.0,
+			0.0, 1.0, startPos.x * .5, 0.0,
+			0.0, 0.0, 1.0, 0.0,
+			startPos.x, startPos.y, startPos.z, 1.0
+		);
+	
+		float alpha = atan(rayDirectionVec.y, rayDirectionVec.x);
+		float a = length(rayDirectionVec.xy);
+		float c = rayDirectionVec.z;
+	
+		vec4 pos;
+	
+		if (abs(c) < 0.00001)
+		{
+			return A * vec4(
+				a * cos(alpha) * t,
+				a * sin(alpha) * t,
+				0.0,
+				1.0
+			);
+		}
+	
+		if (c * t < .01)
+		{
+			return A * vec4(
+				2.0 * a / c * sin(c * t / 2.0) * cos(c * t / 2.0 + alpha),
+				2.0 * a / c * sin(c * t / 2.0) * sin(c * t / 2.0 + alpha),
+				c * t + a*a * (c*t*t*t / 12.0 - c*c*c*t*t*t*t*t / 240.0 + c*c*c*c*c*t*t*t*t*t*t*t / 10080.0),
+				1.0
+			);
+		}
+		
+		return A * vec4(
+			2.0 * a / c * sin(c * t / 2.0) * cos(c * t / 2.0 + alpha),
+			2.0 * a / c * sin(c * t / 2.0) * sin(c * t / 2.0 + alpha),
+			c * t + a*a / (2.0 * c*c) * (c * t - sin(c * t)),
+			1.0
+		);
+	}
+
+	vec4 getUpdatedDirectionVec(vec4 startPos, vec4 rayDirectionVec, float t)
+	{
+		mat4 A = mat4(
+			1.0, 0.0, -startPos.y * .5, 0.0,
+			0.0, 1.0, startPos.x * .5, 0.0,
+			0.0, 0.0, 1.0, 0.0,
+			startPos.x, startPos.y, startPos.z, 1.0
+		);
+	
+		float alpha = atan(rayDirectionVec.y, rayDirectionVec.x);
+		float a = length(rayDirectionVec.xy);
+		float c = rayDirectionVec.z;
+	
+		vec4 pos;
+	
+		// All the following formulas get differentiated dt.
+		if (abs(c) < 0.00001)
+		{
+			return A * vec4(
+				a * cos(alpha),
+				a * sin(alpha),
+				0.0,
+				0.0
+			);
+		}
+	
+		if (c * t < .01)
+		{
+			return A * vec4(
+				a * cos(alpha + c * t),
+				a * sin(alpha + c * t),
+				c + a*a * (c*t*t / 4.0 - c*c*c*t*t*t*t / 48.0 + c*c*c*c*c*t*t*t*t*t*t / 1440.0),
+				0.0
+			);
+		}
+		
+		return A * vec4(
+			a * cos(alpha + c * t),
+			a * sin(alpha + c * t),
+			c - a*a / (2.0 * c) * (cos(c * t) - 1.0),
+			0.0
+		);
+	}
+
 	const mat4 teleportMatX1 = mat4(
 		1.0, 0.0, 0.0, 0.0,
 		0.0, 1.0, 0.5, 0.0,
@@ -219,96 +258,98 @@ class NilGeometry extends BaseGeometry
 
 	vec3 teleportPos(inout vec4 pos, inout vec4 startPos, inout vec4 rayDirectionVec, inout float t, inout float totalT)
 	{
+		vec3 color = vec3(0.0, 0.0, 0.0);
+
 		if (pos.x < -0.5)
 		{
-			pos = teleportMat1 * pos;
+			pos = teleportMatX1 * pos;
 
 			// !!!IMPORTANT!!! rayDirectionVec is the tangent vector from the *starting*
 			// position, not the current one, so we need to calculate that current
 			// position to teleport the vector correctly. The correct tangent vector
 			// is just the derivative of the geodesic at the current value of t.
 
-			rayDirectionVec = teleportMat1 * (sinh(t) * startPos + cosh(t) * rayDirectionVec);
+			rayDirectionVec = teleportMatX1 * getUpdatedDirectionVec(startPos, rayDirectionVec, t);
 
 			startPos = pos;
 			
 			totalT += t;
 			t = 0.0;
 
-			return vec3(1.0, 0.0, 0.0);
+			color += vec3(1.0, 0.0, 0.0);
 		}
 
-		if (dot(pos, teleportVec2) < 0.0)
+		else if (pos.x > 0.5)
 		{
-			pos = teleportMat2 * pos;
+			pos = teleportMatX2 * pos;
 
-			rayDirectionVec = teleportMat2 * (sinh(t) * startPos + cosh(t) * rayDirectionVec);
+			rayDirectionVec = teleportMatX2 * getUpdatedDirectionVec(startPos, rayDirectionVec, t);
 
 			startPos = pos;
 			
 			totalT += t;
 			t = 0.0;
 
-			return vec3(-1.0, 0.0, 0.0);
+			color += vec3(-1.0, 0.0, 0.0);
 		}
 
-		if (dot(pos, teleportVec3) < 0.0)
+		if (pos.y < -0.5)
 		{
-			pos = teleportMat3 * pos;
+			pos = teleportMatY1 * pos;
 
-			rayDirectionVec = teleportMat3 * (sinh(t) * startPos + cosh(t) * rayDirectionVec);
+			rayDirectionVec = teleportMatY1 * getUpdatedDirectionVec(startPos, rayDirectionVec, t);
 
 			startPos = pos;
 			
 			totalT += t;
 			t = 0.0;
 
-			return vec3(0.0, 1.0, 0.0);
+			color += vec3(1.0, 0.0, 0.0);
 		}
 
-		if (dot(pos, teleportVec4) < 0.0)
+		else if (pos.y > 0.5)
 		{
-			pos = teleportMat4 * pos;
+			pos = teleportMatY2 * pos;
 
-			rayDirectionVec = teleportMat4 * (sinh(t) * startPos + cosh(t) * rayDirectionVec);
+			rayDirectionVec = teleportMatY2 * getUpdatedDirectionVec(startPos, rayDirectionVec, t);
 
 			startPos = pos;
 			
 			totalT += t;
 			t = 0.0;
 
-			return vec3(0.0, -1.0, 0.0);
+			color += vec3(-1.0, 0.0, 0.0);
 		}
 
-		if (dot(pos, teleportVec5) < 0.0)
+		if (pos.z < -0.5)
 		{
-			pos = teleportMat5 * pos;
+			pos = teleportMatZ1 * pos;
 
-			rayDirectionVec = teleportMat5 * (sinh(t) * startPos + cosh(t) * rayDirectionVec);
+			rayDirectionVec = teleportMatZ1 * getUpdatedDirectionVec(startPos, rayDirectionVec, t);
 
 			startPos = pos;
 			
 			totalT += t;
 			t = 0.0;
 
-			return vec3(0.0, 0.0, 1.0);
+			color += vec3(1.0, 0.0, 0.0);
 		}
 
-		if (dot(pos, teleportVec6) < 0.0)
+		else if (pos.z > 0.5)
 		{
-			pos = teleportMat6 * pos;
+			pos = teleportMatZ2 * pos;
 
-			rayDirectionVec = teleportMat6 * (sinh(t) * startPos + cosh(t) * rayDirectionVec);
+			rayDirectionVec = teleportMatZ2 * getUpdatedDirectionVec(startPos, rayDirectionVec, t);
 
 			startPos = pos;
 			
 			totalT += t;
 			t = 0.0;
 
-			return vec3(0.0, 0.0, -1.0);
+			color += vec3(-1.0, 0.0, 0.0);
 		}
 
-		return vec3(0.0, 0.0, 0.0);
+		return color;
 	}
 	`;
 
@@ -514,6 +555,8 @@ export class NilSpheres extends NilGeometry
 		{
 			distance1 = exactDistanceToOrigin(pos) - radius;
 		}
+
+		// distance1 = -distance1;
 
 		/*
 		// Translate the reflection plane to the x = 0 plane, then get the distance to it.

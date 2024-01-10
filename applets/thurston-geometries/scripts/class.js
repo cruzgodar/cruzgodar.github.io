@@ -245,6 +245,7 @@ export class ThurstonGeometry extends Applet
 				vec3 finalColor = fogColor;
 				
 				float t = 0.0;
+				float lastT = 0.0;
 				float totalT = 0.0;
 
 				vec4 startPos = cameraPos;
@@ -264,6 +265,8 @@ export class ThurstonGeometry extends Applet
 						finalColor = computeShading(pos, iteration, globalColor, totalT);
 						break;
 					}
+
+					lastT = t;
 
 					${this.geometryData.updateTGlsl}
 				}
