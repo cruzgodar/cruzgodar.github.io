@@ -1,5 +1,5 @@
 import { ThurstonGeometry } from "../class.js";
-import { BaseGeometry } from "./base.js";
+import { BaseGeometry, getMinGlslString } from "./base.js";
 
 class NilGeometry extends BaseGeometry
 {
@@ -30,7 +30,7 @@ class NilGeometry extends BaseGeometry
 		return 1.0 - rho*rho / (8.0 * sineThing*sineThing) * (cos(phi) + (phi - sin(phi)) / tan(phi / 2.0) - 1.0);
 	}
 	
-	const int newtonIterations = 10;
+	const int newtonIterations = 8;
 	
 	// Returns the unique zero in (0, 2pi) of chi. z must be positive, so apply the flip transformation before doing this if it's not.
 	float chiZero(float rho, float z)
@@ -556,59 +556,22 @@ export class NilSpheres extends NilGeometry
 			distance1 = exactDistanceToOrigin(pos) - radius;
 		}
 
-		// distance1 = -distance1;
+		distance1 = 1.0;
 
-		/*
-		// Translate the reflection plane to the x = 0 plane, then get the distance to it.
-		// The DE to x = 0 is abs(asinh(pos.x)).
-		float distance2 = abs(asinh(
-			dot(
-				vec4(1.23188, 0.0, 0.0, 0.71939),
-				pos
-			)
-		));
 		
-		float distance3 = abs(asinh(
-			dot(
-				vec4(1.23188, 0.0, 0.0, -0.71939),
-				pos
-			)
-		));
+		// The distance to the x and y teleportation planes is the distance between the projections
+		// to E^2.
+		float distance2 = abs(pos.x - 0.45);
+		float distance3 = abs(pos.x + 0.45);
 
-		float distance4 = abs(asinh(
-			dot(
-				vec4(0.0, 1.23188, 0.0, 0.71939),
-				pos
-			)
-		));
-		
-		float distance5 = abs(asinh(
-			dot(
-				vec4(0.0, -1.23188, 0.0, 0.71939),
-				pos
-			)
-		));
-
-		float distance6 = abs(asinh(
-			dot(
-				vec4(0.0, 0.0, 1.23188, 0.71939),
-				pos
-			)
-		));
-		
-		float distance7 = abs(asinh(
-			dot(
-				vec4(0.0, 0.0, -1.23188, 0.71939),
-				pos
-			)
-		));
-		*/
+		float distance4 = abs(pos.y - 0.45);
+		float distance5 = abs(pos.y + 0.45);
 	`;
 
 	distanceEstimatorGlsl = `
 		${NilSpheres.distances}
 
-		float minDistance = distance1;
+		float minDistance = ${getMinGlslString("distance", 5)};
 
 		return minDistance;
 	`;
