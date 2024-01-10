@@ -112,7 +112,7 @@ class NilGeometry extends BaseGeometry
 	// Only recommended when actually close and an underestimate isn't good enough for detail.
 	float exactDistanceToOrigin(vec4 pos)
 	{
-		if (length(pos.xy) < 0.00001)
+		if (length(pos.xy) < 0.001)
 		{
 			// The shortest path is just the straight line along the z-axis.
 			return abs(pos.z);
@@ -173,6 +173,142 @@ class NilGeometry extends BaseGeometry
 		}
 
 		return .5 * (length(pos.xy) + fInv);
+	}
+
+	const mat4 teleportMatX1 = mat4(
+		1.0, 0.0, 0.0, 0.0,
+		0.0, 1.0, 0.5, 0.0,
+		0.0, 0.0, 1.0, 0.0,
+		1.0, 0.0, 0.0, 1.0
+	);
+
+	const mat4 teleportMatX2 = mat4(
+		1.0, 0.0, 0.0, 0.0,
+		0.0, 1.0, -0.5, 0.0,
+		0.0, 0.0, 1.0, 0.0,
+		-1.0, 0.0, 0.0, 1.0
+	);
+
+	const mat4 teleportMatY1 = mat4(
+		1.0, 0.0, -0.5, 0.0,
+		0.0, 1.0, 0.0, 0.0,
+		0.0, 0.0, 1.0, 0.0,
+		0.0, 1.0, 0.0, 1.0
+	);
+	
+	const mat4 teleportMatY2 = mat4(
+		1.0, 0.0, 0.5, 0.0,
+		0.0, 1.0, 0.0, 0.0,
+		0.0, 0.0, 1.0, 0.0,
+		0.0, -1.0, 0.0, 1.0
+	);
+	
+	const mat4 teleportMatZ1 = mat4(
+		1.0, 0.0, 0.0, 0.0,
+		0.0, 1.0, 0.0, 0.0,
+		0.0, 0.0, 1.0, 0.0,
+		0.0, 0.0, 1.0, 1.0
+	);
+	
+	const mat4 teleportMatZ2 = mat4(
+		1.0, 0.0, 0.0, 0.0,
+		0.0, 1.0, 0.0, 0.0,
+		0.0, 0.0, 1.0, 0.0,
+		0.0, 0.0, -1.0, 1.0
+	);
+
+	vec3 teleportPos(inout vec4 pos, inout vec4 startPos, inout vec4 rayDirectionVec, inout float t, inout float totalT)
+	{
+		if (pos.x < -0.5)
+		{
+			pos = teleportMat1 * pos;
+
+			// !!!IMPORTANT!!! rayDirectionVec is the tangent vector from the *starting*
+			// position, not the current one, so we need to calculate that current
+			// position to teleport the vector correctly. The correct tangent vector
+			// is just the derivative of the geodesic at the current value of t.
+
+			rayDirectionVec = teleportMat1 * (sinh(t) * startPos + cosh(t) * rayDirectionVec);
+
+			startPos = pos;
+			
+			totalT += t;
+			t = 0.0;
+
+			return vec3(1.0, 0.0, 0.0);
+		}
+
+		if (dot(pos, teleportVec2) < 0.0)
+		{
+			pos = teleportMat2 * pos;
+
+			rayDirectionVec = teleportMat2 * (sinh(t) * startPos + cosh(t) * rayDirectionVec);
+
+			startPos = pos;
+			
+			totalT += t;
+			t = 0.0;
+
+			return vec3(-1.0, 0.0, 0.0);
+		}
+
+		if (dot(pos, teleportVec3) < 0.0)
+		{
+			pos = teleportMat3 * pos;
+
+			rayDirectionVec = teleportMat3 * (sinh(t) * startPos + cosh(t) * rayDirectionVec);
+
+			startPos = pos;
+			
+			totalT += t;
+			t = 0.0;
+
+			return vec3(0.0, 1.0, 0.0);
+		}
+
+		if (dot(pos, teleportVec4) < 0.0)
+		{
+			pos = teleportMat4 * pos;
+
+			rayDirectionVec = teleportMat4 * (sinh(t) * startPos + cosh(t) * rayDirectionVec);
+
+			startPos = pos;
+			
+			totalT += t;
+			t = 0.0;
+
+			return vec3(0.0, -1.0, 0.0);
+		}
+
+		if (dot(pos, teleportVec5) < 0.0)
+		{
+			pos = teleportMat5 * pos;
+
+			rayDirectionVec = teleportMat5 * (sinh(t) * startPos + cosh(t) * rayDirectionVec);
+
+			startPos = pos;
+			
+			totalT += t;
+			t = 0.0;
+
+			return vec3(0.0, 0.0, 1.0);
+		}
+
+		if (dot(pos, teleportVec6) < 0.0)
+		{
+			pos = teleportMat6 * pos;
+
+			rayDirectionVec = teleportMat6 * (sinh(t) * startPos + cosh(t) * rayDirectionVec);
+
+			startPos = pos;
+			
+			totalT += t;
+			t = 0.0;
+
+			return vec3(0.0, 0.0, -1.0);
+		}
+
+		return vec3(0.0, 0.0, 0.0);
 	}
 	`;
 
@@ -247,13 +383,126 @@ class NilGeometry extends BaseGeometry
 	{
 		//No need!
 	}
+
+	teleportCamera(rotatedForwardVec, recomputeRotation)
+	{
+		const teleportations = [
+			[
+				[1, 0, 0, 1],
+				[0, 1, 0, 0],
+				[0, .5, 1, 0],
+				[0, 0, 0, 1]
+			],
+			[
+				[1, 0, 0, -1],
+				[0, 1, 0, 0],
+				[0, -.5, 1, 0],
+				[0, 0, 0, 1]
+			],
+			[
+				[1, 0, 0, 0],
+				[0, 1, 0, 1],
+				[-.5, 0, 1, 0],
+				[0, 0, 0, 1]
+			],
+			[
+				[1, 0, 0, 0],
+				[0, 1, 0, -1],
+				[.5, 0, 1, 0],
+				[0, 0, 0, 1]
+			],
+			[
+				[1, 0, 0, 0],
+				[0, 1, 0, 0],
+				[0, 0, 1, 1],
+				[0, 0, 0, 1]
+			],
+			[
+				[1, 0, 0, 0],
+				[0, 1, 0, 0],
+				[0, 0, 1, -1],
+				[0, 0, 0, 1]
+			]
+		];
+
+		for (let i = 0; i < 3; i++)
+		{
+			if (this.cameraPos[i] < -0.5)
+			{
+				this.cameraPos = ThurstonGeometry.mat4TimesVector(
+					teleportations[2 * i],
+					this.cameraPos
+				);
+
+				this.forwardVec = ThurstonGeometry.mat4TimesVector(
+					teleportations[2 * i],
+					this.forwardVec
+				);
+
+				this.rightVec = ThurstonGeometry.mat4TimesVector(
+					teleportations[2 * i],
+					this.rightVec
+				);
+
+				this.upVec = ThurstonGeometry.mat4TimesVector(
+					teleportations[2 * i],
+					this.upVec
+				);
+
+				const newRotatedForwardVec = ThurstonGeometry.mat4TimesVector(
+					teleportations[2 * i],
+					rotatedForwardVec
+				);
+
+				recomputeRotation(newRotatedForwardVec);
+
+				// baseColor[0] += baseColorIncreases[i][0];
+				// baseColor[1] += baseColorIncreases[i][1];
+				// baseColor[2] += baseColorIncreases[i][2];
+			}
+
+			else if (this.cameraPos[i] > 0.5)
+			{
+				this.cameraPos = ThurstonGeometry.mat4TimesVector(
+					teleportations[2 * i + 1],
+					this.cameraPos
+				);
+
+				this.forwardVec = ThurstonGeometry.mat4TimesVector(
+					teleportations[2 * i + 1],
+					this.forwardVec
+				);
+
+				this.rightVec = ThurstonGeometry.mat4TimesVector(
+					teleportations[2 * i + 1],
+					this.rightVec
+				);
+
+				this.upVec = ThurstonGeometry.mat4TimesVector(
+					teleportations[2 * i + 1],
+					this.upVec
+				);
+
+				const newRotatedForwardVec = ThurstonGeometry.mat4TimesVector(
+					teleportations[2 * i + 1],
+					rotatedForwardVec
+				);
+
+				recomputeRotation(newRotatedForwardVec);
+
+				// baseColor[0] += baseColorIncreases[i][0];
+				// baseColor[1] += baseColorIncreases[i][1];
+				// baseColor[2] += baseColorIncreases[i][2];
+			}
+		}
+	}
 }
 
 export class NilSpheres extends NilGeometry
 {
 	static distances = `
 		// A sphere at the origin (honestly, why would you want it to be anywhere else?)
-		float radius = .5;
+		float radius = .25;
 		float distance1 = approximateDistanceToOrigin(pos);
 
 		if (distance1 > radius + epsilon * 1000.0)
