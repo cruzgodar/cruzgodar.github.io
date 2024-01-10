@@ -17,11 +17,9 @@ class NilGeometry extends BaseGeometry
 	// 	-startPos.x, -startPos.y, -startPos.z, 1.0
 	// ) * rayDirectionVec;
 
-	vec4 v = rayDirectionVec;
-
-	float alpha = atan(v.y, v.x);
-	float a = length(v.xy);
-	float c = v.z;
+	float alpha = atan(rayDirectionVec.y, rayDirectionVec.x);
+	float a = length(rayDirectionVec.xy);
+	float c = rayDirectionVec.z;
 
 	vec4 pos;
 
@@ -80,7 +78,7 @@ class NilGeometry extends BaseGeometry
 		return 1.0 - rho*rho / (8.0 * sineThing*sineThing) * (cos(phi) + (phi - sin(phi)) / tan(phi / 2.0) - 1.0);
 	}
 	
-	const int newtonIterations = 5;
+	const int newtonIterations = 10;
 	
 	// Returns the unique zero in (0, 2pi) of chi. z must be positive, so apply the flip transformation before doing this if it's not.
 	float chiZero(float rho, float z)
@@ -120,7 +118,7 @@ class NilGeometry extends BaseGeometry
 			return abs(pos.z);
 		}
 
-		if (abs(pos.z) < 0.00001)
+		if (abs(pos.z) < 0.001)
 		{
 			// Here phi = 0, and  we want to avoid sin(x)/x stuff when possible.
 
@@ -234,24 +232,15 @@ class NilGeometry extends BaseGeometry
 	}
 
 	lightGlsl = `
-		vec4 lightDirection1 = normalize(vec4(1.0, 1.0, 1.0, 1.0) - pos);
+		surfaceNormal.w = 0.0;
+
+		vec4 lightDirection1 = normalize(vec4(3.0, -3.0, 3.0, 1.0) - pos);
 		float dotProduct1 = dot(surfaceNormal, lightDirection1);
 
-		vec4 lightDirection2 = normalize(vec4(-1.0, -1.0, -1.0, 1.0) - pos);
+		vec4 lightDirection2 = normalize(vec4(3.0, 3.0, 3.0, 1.0) - pos);
 		float dotProduct2 = dot(surfaceNormal, lightDirection2);
 
-		vec4 lightDirection3 = normalize(vec4(1.0, 1.0, 1.0, 0.0) - pos);
-		float dotProduct3 = dot(surfaceNormal, lightDirection3);
-
-		vec4 lightDirection4 = normalize(vec4(-1.0, -1.0, -1.0, 0.0) - pos);
-		float dotProduct4 = dot(surfaceNormal, lightDirection4);
-
-		float lightIntensity = lightBrightness * max(
-			max(abs(dotProduct1), abs(dotProduct2)),
-			max(abs(dotProduct3), abs(dotProduct4))
-		);
-
-		lightIntensity = 2.0;
+		float lightIntensity = lightBrightness * abs(dotProduct1);
 	`;
 
 	correctVectors()
@@ -267,7 +256,7 @@ export class NilSpheres extends NilGeometry
 		float radius = .5;
 		float distance1 = approximateDistanceToOrigin(pos);
 
-		if (distance1 > radius + epsilon * 100.0)
+		if (distance1 > radius + epsilon * 1000.0)
 		{
 			distance1 -= radius;
 		}
@@ -339,12 +328,12 @@ export class NilSpheres extends NilGeometry
 		// 	.25 + .75 * (.5 * (sin(floor(baseColor.z + globalColor.z + .5) * 89.0) + 1.0))
 		// );
 
-		return vec3(1.0, 1.0, 1.0);
+		return vec3(0.5, 0.5, 0.5);
 	`;
 
 	getMovingSpeed()
 	{
-		return 1.5;
+		return 1;
 	}
 
 	cameraPos = [0, 0, 0, 1];
