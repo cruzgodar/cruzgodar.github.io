@@ -26,7 +26,7 @@ class NilGeometry extends BaseGeometry
 
 		for (int i = 0; i < 5; i++)
 		{
-			pos = getUpdatedPos(startPos, rayDirectionVec, t + lastTIncrease * currentSearchPosition);
+			pos = getUpdatedPos(startPos, rayDirectionVec, oldT + lastTIncrease * currentSearchPosition);
 
 			if (abs(pos.z) > 0.51)
 			{
@@ -40,6 +40,10 @@ class NilGeometry extends BaseGeometry
 
 			currentSearchScale *= .5;
 		}
+
+		t = oldT + lastTIncrease * currentSearchPosition;
+		pos = getUpdatedPos(startPos, rayDirectionVec, t);
+		totalT += t - oldT;
 	}
 
 	globalColor += teleportPos(pos, startPos, rayDirectionVec, t, totalT);
@@ -311,7 +315,7 @@ class NilGeometry extends BaseGeometry
 			// Also important! In Nil, the direction vec is from the origin, so we
 			// then need to translate the teleported vector back to the origin.
 
-			rayDirectionVec = getTransformationMatrix(-pos) * teleportMatX1 * A * rayDirectionVec;
+			rayDirectionVec = getTransformationMatrix(-pos) * teleportMatX1 * getUpdatedDirectionVec(startPos, rayDirectionVec, t);
 
 			startPos = pos;
 			
@@ -326,7 +330,7 @@ class NilGeometry extends BaseGeometry
 			mat4 A = getTransformationMatrix(pos);
 			pos = teleportMatX2 * pos;
 
-			rayDirectionVec = getTransformationMatrix(-pos) * teleportMatX2 * A * rayDirectionVec;
+			rayDirectionVec = getTransformationMatrix(-pos) * teleportMatX2 * getUpdatedDirectionVec(startPos, rayDirectionVec, t);
 
 			startPos = pos;
 			
@@ -342,7 +346,7 @@ class NilGeometry extends BaseGeometry
 			mat4 A = getTransformationMatrix(pos);
 			pos = teleportMatY1 * pos;
 
-			rayDirectionVec = getTransformationMatrix(-pos) * teleportMatY1 * A * rayDirectionVec;
+			rayDirectionVec = getTransformationMatrix(-pos) * teleportMatY1 * getUpdatedDirectionVec(startPos, rayDirectionVec, t);
 
 			startPos = pos;
 			
@@ -357,7 +361,7 @@ class NilGeometry extends BaseGeometry
 			mat4 A = getTransformationMatrix(pos);
 			pos = teleportMatY2 * pos;
 
-			rayDirectionVec = getTransformationMatrix(-pos) * teleportMatY2 * A * rayDirectionVec;
+			rayDirectionVec = getTransformationMatrix(-pos) * teleportMatY2 * getUpdatedDirectionVec(startPos, rayDirectionVec, t);
 
 			startPos = pos;
 			
@@ -372,7 +376,7 @@ class NilGeometry extends BaseGeometry
 			mat4 A = getTransformationMatrix(pos);
 			pos = teleportMatZ1 * pos;
 
-			rayDirectionVec = getTransformationMatrix(-pos) * teleportMatZ1 * A * rayDirectionVec;
+			rayDirectionVec = getTransformationMatrix(-pos) * teleportMatZ1 * getUpdatedDirectionVec(startPos, rayDirectionVec, t);
 
 			startPos = pos;
 			
@@ -387,7 +391,7 @@ class NilGeometry extends BaseGeometry
 			mat4 A = getTransformationMatrix(pos);
 			pos = teleportMatZ2 * pos;
 
-			rayDirectionVec = getTransformationMatrix(-pos) * teleportMatZ2 * A * rayDirectionVec;
+			rayDirectionVec = getTransformationMatrix(-pos) * teleportMatZ2 * getUpdatedDirectionVec(startPos, rayDirectionVec, t);
 
 			startPos = pos;
 			
@@ -521,6 +525,7 @@ class NilGeometry extends BaseGeometry
 		{
 			if (this.cameraPos[i] < -0.5)
 			{
+				console.log(this.rightVec);
 				const oldA = getTransformationMatrix(this.cameraPos);
 
 				this.cameraPos = ThurstonGeometry.mat4TimesVector(
@@ -580,6 +585,7 @@ class NilGeometry extends BaseGeometry
 				);
 
 				recomputeRotation(newRotatedForwardVec);
+				console.log(this.rightVec);
 
 				// baseColor[0] += baseColorIncreases[i][0];
 				// baseColor[1] += baseColorIncreases[i][1];

@@ -166,10 +166,6 @@ export class ThurstonGeometry extends Applet
 
 			${this.geometryData.uniformGlsl ?? ""}
 
-			${this.geometryData.functionGlsl ?? ""}
-
-
-
 			float geometryDot(vec4 v, vec4 w)
 			{
 				${this.geometryData.dotProductGlsl}
@@ -179,6 +175,8 @@ export class ThurstonGeometry extends Applet
 			{
 				${this.geometryData.normalizeGlsl}
 			}
+
+			${this.geometryData.functionGlsl ?? ""}
 
 
 

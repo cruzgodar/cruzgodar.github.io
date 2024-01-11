@@ -32,30 +32,6 @@ class S3Geometry extends BaseGeometry
 		return newPos;
 	}
 
-	// The result of solving cos(t)pos1 + sin(t)v = pos2 for v
-	getGeodesicDirection(pos1, pos2, t)
-	{
-		const cosFactor = Math.cos(t);
-		const sinFactor = Math.sin(t);
-		
-		const dir = [
-			(pos2[0] - cosFactor * pos1[0]) / sinFactor,
-			(pos2[1] - cosFactor * pos1[1]) / sinFactor,
-			(pos2[2] - cosFactor * pos1[2]) / sinFactor,
-			(pos2[3] - cosFactor * pos1[3]) / sinFactor,
-		];
-
-		return this.normalize(dir);
-	}
-
-	//Gets the distance from pos1 to pos2 along the geodesic in the direction of dir.
-	getGeodesicDistance(pos1, pos2)
-	{
-		const dot = this.dotProduct(pos1, pos2);
-
-		return Math.acos(dot);
-	}
-
 	getNormalVec(cameraPos)
 	{
 		//f = 1 - x^2 - y^2 - z^2 - w^2.
@@ -66,28 +42,6 @@ class S3Geometry extends BaseGeometry
 			-cameraPos[3]
 		]);
 	}
-
-	getGammaPrime(_pos, dir)
-	{
-		//gamma = cos(t)*pos + sin(t)*dir
-		//gamma' = -sin(t)*pos + cos(t)*dir
-		//gamma'' = -cos(t)*pos - sin(t)*dir
-		//gamma''' = sin(t)*pos - cos(t)*dir
-		//All of these are evaluated at t=0.
-		return [...dir];
-	}
-
-	getGammaDoublePrime(pos)
-	{
-		return [-pos[0], -pos[1], -pos[2], -pos[3]];
-	}
-
-	getGammaTriplePrime(_pos, dir)
-	{
-		return [-dir[0], -dir[1], -dir[2], -dir[3]];
-	}
-
-	gammaTriplePrimeIsLinearlyIndependent = false;
 }
 
 
