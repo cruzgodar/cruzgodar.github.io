@@ -245,8 +245,9 @@ export class ThurstonGeometry extends Applet
 				vec3 finalColor = fogColor;
 				
 				float t = 0.0;
-				float lastT = 0.0;
 				float totalT = 0.0;
+				
+				float lastTIncrease = 0.0;
 
 				vec4 startPos = cameraPos;
 
@@ -265,8 +266,6 @@ export class ThurstonGeometry extends Applet
 						finalColor = computeShading(pos, iteration, globalColor, totalT);
 						break;
 					}
-
-					lastT = t;
 
 					${this.geometryData.updateTGlsl}
 				}
@@ -556,7 +555,7 @@ export class ThurstonGeometry extends Applet
 	{
 		for (let i = 0; i < this.movingSubsteps; i++)
 		{
-			const forwardVecToUse = this.rotatedForwardVec;
+			const forwardVecToUse = this.geometryData.forwardVec;
 			
 			const tangentVec = this.geometryData.normalize([
 				movingAmount[0] * forwardVecToUse[0]

@@ -9,7 +9,9 @@ export class BaseGeometry
 
 	fogGlsl = "return mix(color, fogColor, 1.0 - exp(-length(pos - cameraPos) * fogScaling));";
 
-	updateTGlsl = "t += distance * stepFactor;";
+	updateTGlsl = `lastTIncrease = distance * stepFactor;
+	
+	t += lastTIncrease;`;
 		
 	dotProduct(vec1, vec2)
 	{

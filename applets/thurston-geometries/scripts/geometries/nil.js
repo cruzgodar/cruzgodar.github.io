@@ -15,6 +15,33 @@ class NilGeometry extends BaseGeometry
 {
 	geodesicGlsl = `vec4 pos = getUpdatedPos(startPos, rayDirectionVec, t);
 
+	if (abs(pos.z) > 0.51)
+	{
+		// Binary search our way down until we're back in the fundamental domain.
+		float oldT = t - lastTIncrease;
+
+		// The factor by which we multiply lastTIncrease to get the usable increase.
+		float currentSearchPosition = 0.5;
+		float currentSearchScale = 0.25;
+
+		for (int i = 0; i < 5; i++)
+		{
+			pos = getUpdatedPos(startPos, rayDirectionVec, t + lastTIncrease * currentSearchPosition);
+
+			if (abs(pos.z) > 0.51)
+			{
+				currentSearchPosition -= currentSearchScale;
+			}
+
+			else 
+			{
+				currentSearchPosition += currentSearchScale;
+			}
+
+			currentSearchScale *= .5;
+		}
+	}
+
 	globalColor += teleportPos(pos, startPos, rayDirectionVec, t, totalT);
 	`;
 
