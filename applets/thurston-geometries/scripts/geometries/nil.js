@@ -662,7 +662,7 @@ class NilGeometry extends BaseGeometry
 	}
 }
 
-export class NilSpheres extends NilGeometry
+export class NilRooms extends NilGeometry
 {
 	static distances = `
 		// A sphere at the origin (honestly, why would you want it to be anywhere else?)
@@ -692,7 +692,7 @@ export class NilSpheres extends NilGeometry
 	`;
 
 	distanceEstimatorGlsl = `
-		${NilSpheres.distances}
+		${NilRooms.distances}
 
 		float minDistance = ${getMinGlslString("distance", 5)};
 
