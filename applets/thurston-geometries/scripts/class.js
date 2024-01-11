@@ -261,6 +261,8 @@ export class ThurstonGeometry extends Applet
 					
 					if (distance < epsilon)
 					{
+						${this.geometryData.finalTeleportationGlsl ?? ""}
+						
 						finalColor = computeShading(pos, iteration, globalColor, totalT);
 						break;
 					}

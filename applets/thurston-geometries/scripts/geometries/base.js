@@ -86,6 +86,7 @@ export class BaseGeometry
 	lightGlsl;
 	functionGlsl;
 	raymarchSetupGlsl;
+	finalTeleportationGlsl;
 
 	cameraPos;
 	normalVec;

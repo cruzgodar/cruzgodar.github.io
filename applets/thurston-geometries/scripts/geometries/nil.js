@@ -57,7 +57,7 @@ class NilGeometry extends BaseGeometry
 	
 	return dir / magnitude;`;
 
-	fogGlsl = "return color;//mix(color, fogColor, 1.0 - exp(0.5 - totalT * 0.075));";
+	fogGlsl = "return mix(color, fogColor, 1.0 - exp(- totalT * 0.2));";
 
 	functionGlsl = `mat4 getTransformationMatrix(vec4 pos)
 	{
@@ -344,7 +344,6 @@ class NilGeometry extends BaseGeometry
 
 		if (pos.y < -0.5)
 		{
-
 			mat4 A = getTransformationMatrix(pos);
 			pos = teleportMatY1 * pos;
 
@@ -404,6 +403,17 @@ class NilGeometry extends BaseGeometry
 		}
 
 		return color;
+	}
+	`;
+
+	finalTeleportationGlsl = `if (abs(pos.x) > 0.49 && sign(rayDirectionVec.x) != sign(pos.x))
+	{
+		pos.x = -pos.x;
+	}
+
+	if (abs(pos.y) > 0.49 && sign(rayDirectionVec.y) != sign(pos.y))
+	{
+		pos.y = -pos.y;
 	}
 	`;
 
@@ -468,7 +478,7 @@ class NilGeometry extends BaseGeometry
 		vec4 lightDirection1 = normalize(vec4(3.0, -3.0, 3.0, 1.0) - pos);
 		float dotProduct1 = dot(surfaceNormal, lightDirection1);
 
-		vec4 lightDirection2 = normalize(vec4(3.0, 3.0, 3.0, 1.0) - pos);
+		vec4 lightDirection2 = normalize(vec4(3.0, 3.0, 3.0, 1.0) - abs(pos));
 		float dotProduct2 = dot(surfaceNormal, lightDirection2);
 
 		float lightIntensity = lightBrightness * abs(dotProduct1);
@@ -476,7 +486,7 @@ class NilGeometry extends BaseGeometry
 
 	correctVectors() {}
 
-	teleportCamera(rotatedForwardVec, recomputeRotation)
+	teleportCamera()
 	{
 		const teleportations = [
 			[
@@ -527,65 +537,65 @@ class NilGeometry extends BaseGeometry
 		{
 			if (this.cameraPos[i] < -0.5)
 			{
-				const oldA = getTransformationMatrix(this.cameraPos);
+				// const oldA = getTransformationMatrix(this.cameraPos);
 
 				this.cameraPos = ThurstonGeometry.mat4TimesVector(
 					teleportations[2 * i],
 					this.cameraPos
 				);
 
-				const newAinv = getTransformationMatrix([
-					-this.cameraPos[0],
-					-this.cameraPos[1],
-					-this.cameraPos[2],
-					1
-				]);
+				// const newAinv = getTransformationMatrix([
+				// 	-this.cameraPos[0],
+				// 	-this.cameraPos[1],
+				// 	-this.cameraPos[2],
+				// 	1
+				// ]);
 
-				this.forwardVec = ThurstonGeometry.mat4TimesVector(
-					newAinv,
-					ThurstonGeometry.mat4TimesVector(
-						teleportations[2 * i],
-						ThurstonGeometry.mat4TimesVector(
-							oldA,
-							this.forwardVec
-						)
-					)
-				);
+				// this.forwardVec = ThurstonGeometry.mat4TimesVector(
+				// 	newAinv,
+				// 	ThurstonGeometry.mat4TimesVector(
+				// 		teleportations[2 * i],
+				// 		ThurstonGeometry.mat4TimesVector(
+				// 			oldA,
+				// 			this.forwardVec
+				// 		)
+				// 	)
+				// );
 
-				this.rightVec = ThurstonGeometry.mat4TimesVector(
-					newAinv,
-					ThurstonGeometry.mat4TimesVector(
-						teleportations[2 * i],
-						ThurstonGeometry.mat4TimesVector(
-							oldA,
-							this.rightVec
-						)
-					)
-				);
+				// this.rightVec = ThurstonGeometry.mat4TimesVector(
+				// 	newAinv,
+				// 	ThurstonGeometry.mat4TimesVector(
+				// 		teleportations[2 * i],
+				// 		ThurstonGeometry.mat4TimesVector(
+				// 			oldA,
+				// 			this.rightVec
+				// 		)
+				// 	)
+				// );
 
-				this.upVec = ThurstonGeometry.mat4TimesVector(
-					newAinv,
-					ThurstonGeometry.mat4TimesVector(
-						teleportations[2 * i],
-						ThurstonGeometry.mat4TimesVector(
-							oldA,
-							this.upVec
-						)
-					)
-				);
+				// this.upVec = ThurstonGeometry.mat4TimesVector(
+				// 	newAinv,
+				// 	ThurstonGeometry.mat4TimesVector(
+				// 		teleportations[2 * i],
+				// 		ThurstonGeometry.mat4TimesVector(
+				// 			oldA,
+				// 			this.upVec
+				// 		)
+				// 	)
+				// );
 
-				const newRotatedForwardVec = ThurstonGeometry.mat4TimesVector(
-					newAinv,
-					ThurstonGeometry.mat4TimesVector(
-						teleportations[2 * i],
-						ThurstonGeometry.mat4TimesVector(
-							oldA,
-							rotatedForwardVec
-						)
-					)
-				);
+				// const newRotatedForwardVec = ThurstonGeometry.mat4TimesVector(
+				// 	newAinv,
+				// 	ThurstonGeometry.mat4TimesVector(
+				// 		teleportations[2 * i],
+				// 		ThurstonGeometry.mat4TimesVector(
+				// 			oldA,
+				// 			rotatedForwardVec
+				// 		)
+				// 	)
+				// );
 
-				recomputeRotation(newRotatedForwardVec);
+				// recomputeRotation(newRotatedForwardVec);
 
 				// baseColor[0] += baseColorIncreases[i][0];
 				// baseColor[1] += baseColorIncreases[i][1];
@@ -594,65 +604,65 @@ class NilGeometry extends BaseGeometry
 
 			else if (this.cameraPos[i] > 0.5)
 			{
-				const oldA = getTransformationMatrix(this.cameraPos);
+				// const oldA = getTransformationMatrix(this.cameraPos);
 
 				this.cameraPos = ThurstonGeometry.mat4TimesVector(
 					teleportations[2 * i + 1],
 					this.cameraPos
 				);
 
-				const newAinv = getTransformationMatrix([
-					-this.cameraPos[0],
-					-this.cameraPos[1],
-					-this.cameraPos[2],
-					1
-				]);
+				// const newAinv = getTransformationMatrix([
+				// 	-this.cameraPos[0],
+				// 	-this.cameraPos[1],
+				// 	-this.cameraPos[2],
+				// 	1
+				// ]);
 
-				this.forwardVec = ThurstonGeometry.mat4TimesVector(
-					newAinv,
-					ThurstonGeometry.mat4TimesVector(
-						teleportations[2 * i + 1],
-						ThurstonGeometry.mat4TimesVector(
-							oldA,
-							this.forwardVec
-						)
-					)
-				);
+				// this.forwardVec = ThurstonGeometry.mat4TimesVector(
+				// 	newAinv,
+				// 	ThurstonGeometry.mat4TimesVector(
+				// 		teleportations[2 * i + 1],
+				// 		ThurstonGeometry.mat4TimesVector(
+				// 			oldA,
+				// 			this.forwardVec
+				// 		)
+				// 	)
+				// );
 
-				this.rightVec = ThurstonGeometry.mat4TimesVector(
-					newAinv,
-					ThurstonGeometry.mat4TimesVector(
-						teleportations[2 * i + 1],
-						ThurstonGeometry.mat4TimesVector(
-							oldA,
-							this.rightVec
-						)
-					)
-				);
+				// this.rightVec = ThurstonGeometry.mat4TimesVector(
+				// 	newAinv,
+				// 	ThurstonGeometry.mat4TimesVector(
+				// 		teleportations[2 * i + 1],
+				// 		ThurstonGeometry.mat4TimesVector(
+				// 			oldA,
+				// 			this.rightVec
+				// 		)
+				// 	)
+				// );
 
-				this.upVec = ThurstonGeometry.mat4TimesVector(
-					newAinv,
-					ThurstonGeometry.mat4TimesVector(
-						teleportations[2 * i + 1],
-						ThurstonGeometry.mat4TimesVector(
-							oldA,
-							this.upVec
-						)
-					)
-				);
+				// this.upVec = ThurstonGeometry.mat4TimesVector(
+				// 	newAinv,
+				// 	ThurstonGeometry.mat4TimesVector(
+				// 		teleportations[2 * i + 1],
+				// 		ThurstonGeometry.mat4TimesVector(
+				// 			oldA,
+				// 			this.upVec
+				// 		)
+				// 	)
+				// );
 
-				const newRotatedForwardVec = ThurstonGeometry.mat4TimesVector(
-					newAinv,
-					ThurstonGeometry.mat4TimesVector(
-						teleportations[2 * i + 1],
-						ThurstonGeometry.mat4TimesVector(
-							oldA,
-							rotatedForwardVec
-						)
-					)
-				);
+				// const newRotatedForwardVec = ThurstonGeometry.mat4TimesVector(
+				// 	newAinv,
+				// 	ThurstonGeometry.mat4TimesVector(
+				// 		teleportations[2 * i + 1],
+				// 		ThurstonGeometry.mat4TimesVector(
+				// 			oldA,
+				// 			rotatedForwardVec
+				// 		)
+				// 	)
+				// );
 
-				recomputeRotation(newRotatedForwardVec);
+				// recomputeRotation(newRotatedForwardVec);
 
 				// baseColor[0] += baseColorIncreases[i][0];
 				// baseColor[1] += baseColorIncreases[i][1];
@@ -683,12 +693,13 @@ export class NilRooms extends NilGeometry
 
 		
 		// The distance to the x and y teleportation planes is the distance between the projections
-		// to E^2.
-		float distance2 = abs(pos.x - 0.501);
-		float distance3 = abs(pos.x + 0.501);
+		// to E^2. Unfortunately for our performance, the tolerances really do need to be this tight
+		// to avoid artifacts.
+		float distance2 = abs(pos.x - 0.5002);
+		float distance3 = abs(pos.x + 0.5002);
 
-		float distance4 = abs(pos.y - 0.501);
-		float distance5 = abs(pos.y + 0.501);
+		float distance4 = abs(pos.y - 0.5002);
+		float distance5 = abs(pos.y + 0.5002);
 	`;
 
 	distanceEstimatorGlsl = `
@@ -706,12 +717,12 @@ export class NilRooms extends NilGeometry
 		// 	.25 + .75 * (.5 * (sin(floor(baseColor.z + globalColor.z + .5) * 89.0) + 1.0))
 		// );
 
-		return vec3(0.5, 0.5, 0.5);
+		return vec3(1.0, 1.0, 1.0);
 	`;
 
 	getMovingSpeed()
 	{
-		return 1;
+		return .25;
 	}
 
 	cameraPos = [0, 0, 0, 1];
@@ -728,7 +739,7 @@ export class NilRooms extends NilGeometry
 
 	updateUniforms(gl, uniformList)
 	{
-		gl.uniform1f(uniformList["wallThickness"], sliderValues.wallThickness);
+		gl.uniform1f(uniformList["wallThickness"], .703 - sliderValues.wallThickness / 10);
 	}
 
 	uiElementsUsed = "#wall-thickness-slider";
@@ -738,10 +749,10 @@ export class NilRooms extends NilGeometry
 		const wallThicknessSlider = $("#wall-thickness-slider");
 		const wallThicknessSliderValue = $("#wall-thickness-slider-value");
 
-		wallThicknessSlider.min = .4;
-		wallThicknessSlider.max = .8;
-		wallThicknessSlider.value = .6;
-		wallThicknessSliderValue.textContent = .6;
-		sliderValues.wallThickness = .6;
+		wallThicknessSlider.min = -.72;
+		wallThicknessSlider.max = .78;
+		wallThicknessSlider.value = .78;
+		wallThicknessSliderValue.textContent = .78;
+		sliderValues.wallThickness = .78;
 	}
 }
