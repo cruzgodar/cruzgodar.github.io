@@ -628,7 +628,6 @@ export class NilRooms extends NilGeometry
 
 	getMovingSpeed()
 	{
-		console.log(this.cameraPos);
 		return 1;
 	}
 
