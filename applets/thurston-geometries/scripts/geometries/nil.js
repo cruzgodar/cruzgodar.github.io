@@ -59,7 +59,7 @@ class NilGeometry extends BaseGeometry
 	
 	return dir / magnitude;`;
 
-	fogGlsl = "return mix(color, fogColor, 1.0 - exp(-totalT * 0.1));";
+	fogGlsl = "return mix(color, fogColor, 1.0 - exp(-totalT * 0.2));";
 
 	functionGlsl = `mat4 getTransformationMatrix(vec4 pos)
 	{
@@ -804,11 +804,11 @@ export class NilSpheres extends NilGeometry
 		// The distance to the x and y teleportation planes is the distance between the projections
 		// to E^2. Unfortunately for our performance, the tolerances really do need to be this tight
 		// to avoid artifacts.
-		float distance2 = abs(pos.x - 0.5002);
-		float distance3 = abs(pos.x + 0.5002);
+		float distance2 = abs(pos.x - 0.52);
+		float distance3 = abs(pos.x + 0.52);
 
-		float distance4 = abs(pos.y - 0.5002);
-		float distance5 = abs(pos.y + 0.5002);
+		float distance4 = abs(pos.y - 0.52);
+		float distance5 = abs(pos.y + 0.52);
 	`;
 
 	distanceEstimatorGlsl = `
@@ -838,6 +838,9 @@ export class NilSpheres extends NilGeometry
 
 		float lightIntensity = 1.3 * lightBrightness * max(abs(dotProduct1), abs(dotProduct2));
 	`;
+
+	maxMarches = "200";
+	ambientOcclusionDenominator = "250.0";
 
 	getMovingSpeed()
 	{
