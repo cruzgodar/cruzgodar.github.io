@@ -3,21 +3,11 @@ import { sliderValues } from "../index.js";
 import { BaseGeometry, getMinGlslString } from "./base.js";
 import { $ } from "/scripts/src/main.js";
 
-function getTransformationMatrix(pos)
-{
-	return [
-		[1, 0, 0, pos[0]],
-		[0, 1, 0, pos[1]],
-		[-pos[1] / 2, pos[0] / 2, 1, pos[2]],
-		[0, 0, 0, 1]
-	];
-}
-
 class NilGeometry extends BaseGeometry
 {
 	geodesicGlsl = `vec4 pos = getUpdatedPos(startPos, rayDirectionVec, t);
 
-	if (abs(pos.z) > 0.51)
+	if (abs(pos.z) > 0.5002)
 	{
 		// Binary search our way down until we're back in the fundamental domain.
 		float oldT = t - lastTIncrease;
@@ -30,7 +20,7 @@ class NilGeometry extends BaseGeometry
 		{
 			pos = getUpdatedPos(startPos, rayDirectionVec, oldT + lastTIncrease * currentSearchPosition);
 
-			if (abs(pos.z) > 0.51)
+			if (abs(pos.z) > 0.5002)
 			{
 				currentSearchPosition -= currentSearchScale;
 			}
@@ -406,12 +396,22 @@ class NilGeometry extends BaseGeometry
 	}
 	`;
 
-	finalTeleportationGlsl = `if (abs(pos.x) > 0.49 && sign(rayDirectionVec.x) != sign(pos.x))
+	finalTeleportationGlsl = `if (pos.x > 0.499 && rayDirectionVec.x < -0.05)
 	{
 		pos.x = -pos.x;
 	}
 
-	if (abs(pos.y) > 0.49 && sign(rayDirectionVec.y) != sign(pos.y))
+	else if (pos.x < -0.499 && rayDirectionVec.x > 0.05)
+	{
+		pos.x = -pos.x;
+	}
+
+	if (pos.y > 0.499 && rayDirectionVec.y < -0.05)
+	{
+		pos.y = -pos.y;
+	}
+
+	else if (pos.y < -0.499 && rayDirectionVec.y > 0.05)
 	{
 		pos.y = -pos.y;
 	}
@@ -722,7 +722,7 @@ export class NilRooms extends NilGeometry
 
 	getMovingSpeed()
 	{
-		return .25;
+		return .75;
 	}
 
 	cameraPos = [0, 0, 0, 1];
