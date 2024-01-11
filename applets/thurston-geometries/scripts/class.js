@@ -553,7 +553,7 @@ export class ThurstonGeometry extends Applet
 	{
 		for (let i = 0; i < this.movingSubsteps; i++)
 		{
-			const forwardVecToUse = this.geometryData.forwardVec;
+			const forwardVecToUse = this.rotatedForwardVec;
 			
 			const tangentVec = this.geometryData.normalize([
 				movingAmount[0] * forwardVecToUse[0]

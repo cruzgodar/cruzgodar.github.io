@@ -1,5 +1,7 @@
 import { ThurstonGeometry } from "../class.js";
+import { sliderValues } from "../index.js";
 import { BaseGeometry, getMinGlslString } from "./base.js";
+import { $ } from "/scripts/src/main.js";
 
 function getTransformationMatrix(pos)
 {
@@ -525,7 +527,6 @@ class NilGeometry extends BaseGeometry
 		{
 			if (this.cameraPos[i] < -0.5)
 			{
-				console.log(this.rightVec);
 				const oldA = getTransformationMatrix(this.cameraPos);
 
 				this.cameraPos = ThurstonGeometry.mat4TimesVector(
@@ -585,7 +586,6 @@ class NilGeometry extends BaseGeometry
 				);
 
 				recomputeRotation(newRotatedForwardVec);
-				console.log(this.rightVec);
 
 				// baseColor[0] += baseColorIncreases[i][0];
 				// baseColor[1] += baseColorIncreases[i][1];
@@ -666,7 +666,7 @@ export class NilSpheres extends NilGeometry
 {
 	static distances = `
 		// A sphere at the origin (honestly, why would you want it to be anywhere else?)
-		float radius = .6;
+		float radius = wallThickness;
 		float distance1 = approximateDistanceToOrigin(pos);
 
 		if (distance1 > radius + 1.0)
@@ -684,11 +684,11 @@ export class NilSpheres extends NilGeometry
 		
 		// The distance to the x and y teleportation planes is the distance between the projections
 		// to E^2.
-		float distance2 = abs(pos.x - 0.51);
-		float distance3 = abs(pos.x + 0.51);
+		float distance2 = abs(pos.x - 0.501);
+		float distance3 = abs(pos.x + 0.501);
 
-		float distance4 = abs(pos.y - 0.51);
-		float distance5 = abs(pos.y + 0.51);
+		float distance4 = abs(pos.y - 0.501);
+		float distance5 = abs(pos.y + 0.501);
 	`;
 
 	distanceEstimatorGlsl = `
@@ -719,4 +719,29 @@ export class NilSpheres extends NilGeometry
 	upVec = [0, 0, 1, 0];
 	rightVec = [0, 1, 0, 0];
 	forwardVec = [1, 0, 0, 0];
+
+	uniformGlsl = `
+		uniform float wallThickness;
+	`;
+
+	uniformNames = ["wallThickness"];
+
+	updateUniforms(gl, uniformList)
+	{
+		gl.uniform1f(uniformList["wallThickness"], sliderValues.wallThickness);
+	}
+
+	uiElementsUsed = "#wall-thickness-slider";
+
+	initUI()
+	{
+		const wallThicknessSlider = $("#wall-thickness-slider");
+		const wallThicknessSliderValue = $("#wall-thickness-slider-value");
+
+		wallThicknessSlider.min = .4;
+		wallThicknessSlider.max = .8;
+		wallThicknessSlider.value = .6;
+		wallThicknessSliderValue.textContent = .6;
+		sliderValues.wallThickness = .6;
+	}
 }
