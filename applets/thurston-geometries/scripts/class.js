@@ -158,7 +158,7 @@ export class ThurstonGeometry extends Applet
 			const float lightBrightness = 1.0;
 			
 			const float epsilon = 0.00001;
-			const int maxMarches = 100;
+			const int maxMarches = ${this.geometryData.maxMarches};
 			const float stepFactor = .95;
 			const vec3 fogColor = vec3(0.0, 0.0, 0.0);
 			const float fogScaling = .07;
@@ -230,7 +230,10 @@ export class ThurstonGeometry extends Applet
 				//The last factor adds ambient occlusion.
 				vec3 color = getColor(pos, globalColor)
 					* lightIntensity
-					* max((1.0 - float(iteration) / float(maxMarches)), 0.0);
+					* max(
+						1.0 - float(iteration) / ${this.geometryData.ambientOcclusionDenominator},
+						0.0)
+					;
 
 				//Apply fog.
 				${this.geometryData.fogGlsl}

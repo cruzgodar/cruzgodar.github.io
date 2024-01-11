@@ -2,7 +2,7 @@ import { ThurstonGeometry } from "./class.js";
 import { E3Rooms, E3Spheres } from "./geometries/e3.js";
 import { H2xERooms } from "./geometries/h2xe.js";
 import { H3Rooms } from "./geometries/h3.js";
-import { NilRooms } from "./geometries/nil.js";
+import { NilRooms, NilSpheres } from "./geometries/nil.js";
 import { S2xERooms, S2xESpheres } from "./geometries/s2xe.js";
 import { S3HopfFibration, S3Rooms, S3Spheres } from "./geometries/s3.js";
 import { showPage } from "/scripts/src/load-page.js";
@@ -36,7 +36,8 @@ export function load()
 
 		"h2xe-rooms": H2xERooms,
 
-		"nil-rooms": NilRooms
+		"nil-rooms": NilRooms,
+		"nil-spheres": NilSpheres
 	};
 
 	const sceneSelectorDropdownElement = $("#scene-selector-dropdown");

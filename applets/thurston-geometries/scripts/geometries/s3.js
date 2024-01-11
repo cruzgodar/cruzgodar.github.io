@@ -8,6 +8,8 @@ class S3Geometry extends BaseGeometry
 	geodesicGlsl = "vec4 pos = cos(t) * startPos + sin(t) * rayDirectionVec;";
 
 	fogGlsl = "return mix(color, fogColor, 1.0 - exp(-acos(dot(pos, cameraPos)) * fogScaling));";
+
+	maxMarches = "100";
 	
 	followGeodesic(pos, dir, t)
 	{

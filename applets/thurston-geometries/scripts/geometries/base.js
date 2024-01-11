@@ -12,6 +12,9 @@ export class BaseGeometry
 	updateTGlsl = `lastTIncrease = distance * stepFactor;
 	
 	t += lastTIncrease;`;
+
+	maxMarches = "200";
+	ambientOcclusionDenominator = "100.0";
 		
 	dotProduct(vec1, vec2)
 	{
