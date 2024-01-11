@@ -3,17 +3,6 @@ import { sliderValues } from "../index.js";
 import { BaseGeometry, getMinGlslString } from "./base.js";
 import { $ } from "/scripts/src/main.js";
 
-const baseColorIncreases = [
-	[1, 0, 0],
-	[-1, 0, 0],
-	[0, 1, 0],
-	[0, -1, 0],
-	[0, 0, 1],
-	[0, 0, -1]
-];
-
-const baseColor = [0, 0, 0];
-
 class NilGeometry extends BaseGeometry
 {
 	geodesicGlsl = `vec4 pos = getUpdatedPos(startPos, rayDirectionVec, t);
@@ -21,8 +10,9 @@ class NilGeometry extends BaseGeometry
 	if (abs(pos.z) > 0.5002)
 	{
 		// Binary search our way down until we're back in the fundamental domain.
+		// It feels like we should change totalT here to reflect the new value, but that seems
+		// to badly affect fog calculations.
 		float oldT = t - lastTIncrease;
-		totalT -= lastTIncrease;
 
 		// The factor by which we multiply lastTIncrease to get the usable increase.
 		float currentSearchPosition = 0.5;
@@ -47,7 +37,6 @@ class NilGeometry extends BaseGeometry
 
 		t = oldT + lastTIncrease * currentSearchPosition;
 		pos = getUpdatedPos(startPos, rayDirectionVec, t);
-		totalT += lastTIncrease * currentSearchPosition;
 	}
 
 	globalColor += teleportPos(pos, startPos, rayDirectionVec, t, totalT);
@@ -429,7 +418,7 @@ class NilGeometry extends BaseGeometry
 	}
 	`;
 
-	maxMarches = "300";
+	maxMarches = "250";
 	ambientOcclusionDenominator = "300.0";
 
 	
@@ -487,19 +476,18 @@ class NilGeometry extends BaseGeometry
 		return [0, 0, 0, 1];
 	}
 
-	lightGlsl = `
-		surfaceNormal.w = 0.0;
-
-		vec4 lightDirection1 = normalize(vec4(3.0, -3.0, 3.0, 1.0) - pos);
-		float dotProduct1 = dot(surfaceNormal, lightDirection1);
-
-		vec4 lightDirection2 = normalize(vec4(-4.0, 2.0, -1.0, 1.0) - pos);
-		float dotProduct2 = dot(surfaceNormal, lightDirection2);
-
-		float lightIntensity = 1.2 * lightBrightness * max(abs(dotProduct1), abs(dotProduct2));
-	`;
-
 	correctVectors() {}
+
+	baseColorIncreases = [
+		[1, 0, 0],
+		[-1, 0, 0],
+		[0, 1, 0],
+		[0, -1, 0],
+		[0, 0, 1],
+		[0, 0, -1]
+	];
+	
+	baseColor = [0, 0, 0];
 
 	teleportCamera()
 	{
@@ -552,136 +540,26 @@ class NilGeometry extends BaseGeometry
 		{
 			if (this.cameraPos[i] < -0.5)
 			{
-				// const oldA = getTransformationMatrix(this.cameraPos);
-
 				this.cameraPos = ThurstonGeometry.mat4TimesVector(
 					teleportations[2 * i],
 					this.cameraPos
 				);
 
-				// const newAinv = getTransformationMatrix([
-				// 	-this.cameraPos[0],
-				// 	-this.cameraPos[1],
-				// 	-this.cameraPos[2],
-				// 	1
-				// ]);
-
-				// this.forwardVec = ThurstonGeometry.mat4TimesVector(
-				// 	newAinv,
-				// 	ThurstonGeometry.mat4TimesVector(
-				// 		teleportations[2 * i],
-				// 		ThurstonGeometry.mat4TimesVector(
-				// 			oldA,
-				// 			this.forwardVec
-				// 		)
-				// 	)
-				// );
-
-				// this.rightVec = ThurstonGeometry.mat4TimesVector(
-				// 	newAinv,
-				// 	ThurstonGeometry.mat4TimesVector(
-				// 		teleportations[2 * i],
-				// 		ThurstonGeometry.mat4TimesVector(
-				// 			oldA,
-				// 			this.rightVec
-				// 		)
-				// 	)
-				// );
-
-				// this.upVec = ThurstonGeometry.mat4TimesVector(
-				// 	newAinv,
-				// 	ThurstonGeometry.mat4TimesVector(
-				// 		teleportations[2 * i],
-				// 		ThurstonGeometry.mat4TimesVector(
-				// 			oldA,
-				// 			this.upVec
-				// 		)
-				// 	)
-				// );
-
-				// const newRotatedForwardVec = ThurstonGeometry.mat4TimesVector(
-				// 	newAinv,
-				// 	ThurstonGeometry.mat4TimesVector(
-				// 		teleportations[2 * i],
-				// 		ThurstonGeometry.mat4TimesVector(
-				// 			oldA,
-				// 			rotatedForwardVec
-				// 		)
-				// 	)
-				// );
-
-				// recomputeRotation(newRotatedForwardVec);
-
-				baseColor[0] += baseColorIncreases[2 * i][0];
-				baseColor[1] += baseColorIncreases[2 * i][1];
-				baseColor[2] += baseColorIncreases[2 * i][2];
+				this.baseColor[0] += this.baseColorIncreases[2 * i][0];
+				this.baseColor[1] += this.baseColorIncreases[2 * i][1];
+				this.baseColor[2] += this.baseColorIncreases[2 * i][2];
 			}
 
 			else if (this.cameraPos[i] > 0.5)
 			{
-				// const oldA = getTransformationMatrix(this.cameraPos);
-
 				this.cameraPos = ThurstonGeometry.mat4TimesVector(
 					teleportations[2 * i + 1],
 					this.cameraPos
 				);
 
-				// const newAinv = getTransformationMatrix([
-				// 	-this.cameraPos[0],
-				// 	-this.cameraPos[1],
-				// 	-this.cameraPos[2],
-				// 	1
-				// ]);
-
-				// this.forwardVec = ThurstonGeometry.mat4TimesVector(
-				// 	newAinv,
-				// 	ThurstonGeometry.mat4TimesVector(
-				// 		teleportations[2 * i + 1],
-				// 		ThurstonGeometry.mat4TimesVector(
-				// 			oldA,
-				// 			this.forwardVec
-				// 		)
-				// 	)
-				// );
-
-				// this.rightVec = ThurstonGeometry.mat4TimesVector(
-				// 	newAinv,
-				// 	ThurstonGeometry.mat4TimesVector(
-				// 		teleportations[2 * i + 1],
-				// 		ThurstonGeometry.mat4TimesVector(
-				// 			oldA,
-				// 			this.rightVec
-				// 		)
-				// 	)
-				// );
-
-				// this.upVec = ThurstonGeometry.mat4TimesVector(
-				// 	newAinv,
-				// 	ThurstonGeometry.mat4TimesVector(
-				// 		teleportations[2 * i + 1],
-				// 		ThurstonGeometry.mat4TimesVector(
-				// 			oldA,
-				// 			this.upVec
-				// 		)
-				// 	)
-				// );
-
-				// const newRotatedForwardVec = ThurstonGeometry.mat4TimesVector(
-				// 	newAinv,
-				// 	ThurstonGeometry.mat4TimesVector(
-				// 		teleportations[2 * i + 1],
-				// 		ThurstonGeometry.mat4TimesVector(
-				// 			oldA,
-				// 			rotatedForwardVec
-				// 		)
-				// 	)
-				// );
-
-				// recomputeRotation(newRotatedForwardVec);
-
-				baseColor[0] += baseColorIncreases[2 * i + 1][0];
-				baseColor[1] += baseColorIncreases[2 * i + 1][1];
-				baseColor[2] += baseColorIncreases[2 * i + 1][2];
+				this.baseColor[0] += this.baseColorIncreases[2 * i + 1][0];
+				this.baseColor[1] += this.baseColorIncreases[2 * i + 1][1];
+				this.baseColor[2] += this.baseColorIncreases[2 * i + 1][2];
 			}
 		}
 	}
@@ -727,9 +605,9 @@ export class NilRooms extends NilGeometry
 
 	getColorGlsl = `
 		return vec3(
-			.25 + .75 * (.5 * (sin(floor(baseColor.x + globalColor.x + .5) * 40.0) + 1.0)),
-			.25 + .75 * (.5 * (sin(floor(baseColor.y + globalColor.y + .5) * 57.0) + 1.0)),
-			.25 + .75 * (.5 * (sin(floor(baseColor.z + globalColor.z + .5) * 89.0) + 1.0))
+			.35 + .65 * (.5 * (sin((.0125 * pos.x + baseColor.x + globalColor.x + .5) * 40.0) + 1.0)),
+			.35 + .65 * (.5 * (sin((.0125 * pos.y + baseColor.y + globalColor.y + .5) * 57.0) + 1.0)),
+			.35 + .65 * (.5 * (sin((.0125 * pos.z + baseColor.z + globalColor.z + .5) * 89.0) + 1.0))
 		);
 	`;
 
@@ -742,11 +620,15 @@ export class NilRooms extends NilGeometry
 		vec4 lightDirection2 = normalize(vec4(-4.0, 2.0, -1.0, 1.0) - pos);
 		float dotProduct2 = dot(surfaceNormal, lightDirection2);
 
-		float lightIntensity = 1.2 * lightBrightness * max(abs(dotProduct1), abs(dotProduct2));
+		vec4 lightDirection3 = normalize(vec4(3.0, 2.0, 0.5, 1.0) - pos);
+		float dotProduct3 = .5 * dot(surfaceNormal, lightDirection3);
+
+		float lightIntensity = 1.2 * lightBrightness * max(max(abs(dotProduct1), abs(dotProduct2)), abs(dotProduct3));
 	`;
 
 	getMovingSpeed()
 	{
+		console.log(this.cameraPos);
 		return 1;
 	}
 
@@ -766,7 +648,7 @@ export class NilRooms extends NilGeometry
 	updateUniforms(gl, uniformList)
 	{
 		gl.uniform1f(uniformList["wallThickness"], .703 - sliderValues.wallThickness / 10);
-		gl.uniform3fv(uniformList["baseColor"], baseColor);
+		gl.uniform3fv(uniformList["baseColor"], this.baseColor);
 	}
 
 	uiElementsUsed = "#wall-thickness-slider";
@@ -804,11 +686,11 @@ export class NilSpheres extends NilGeometry
 		// The distance to the x and y teleportation planes is the distance between the projections
 		// to E^2. Unfortunately for our performance, the tolerances really do need to be this tight
 		// to avoid artifacts.
-		float distance2 = abs(pos.x - 0.52);
-		float distance3 = abs(pos.x + 0.52);
+		float distance2 = abs(pos.x - 0.515);
+		float distance3 = abs(pos.x + 0.515);
 
-		float distance4 = abs(pos.y - 0.52);
-		float distance5 = abs(pos.y + 0.52);
+		float distance4 = abs(pos.y - 0.515);
+		float distance5 = abs(pos.y + 0.515);
 	`;
 
 	distanceEstimatorGlsl = `
@@ -836,10 +718,9 @@ export class NilSpheres extends NilGeometry
 		vec4 lightDirection2 = normalize(vec4(-4.0, 2.0, -1.0, 1.0) - pos);
 		float dotProduct2 = dot(surfaceNormal, lightDirection2);
 
-		float lightIntensity = 1.3 * lightBrightness * max(abs(dotProduct1), abs(dotProduct2));
+		float lightIntensity = 1.4 * lightBrightness * max(abs(dotProduct1), abs(dotProduct2));
 	`;
 
-	maxMarches = "200";
 	ambientOcclusionDenominator = "250.0";
 
 	getMovingSpeed()
@@ -847,11 +728,13 @@ export class NilSpheres extends NilGeometry
 		return 1;
 	}
 
-	cameraPos = [0, 0, 0, 1];
+	cameraPos = [0.163559, -0.438969, 0.124604, 1];
 	normalVec = [0, 0, 0, 1];
 	upVec = [0, 0, 1, 0];
-	rightVec = [0, 1, 0, 0];
-	forwardVec = [1, 0, 0, 0];
+	rightVec = [0.0748089, 0.997196, 0, 0];
+	forwardVec = [0.997199, -0.074809, 0, 0];
+
+	baseColor = [-2, 0, -2];
 
 	uniformGlsl = `
 		uniform vec3 baseColor;
@@ -861,6 +744,6 @@ export class NilSpheres extends NilGeometry
 
 	updateUniforms(gl, uniformList)
 	{
-		gl.uniform3fv(uniformList["baseColor"], baseColor);
+		gl.uniform3fv(uniformList["baseColor"], this.baseColor);
 	}
 }

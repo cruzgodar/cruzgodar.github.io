@@ -420,9 +420,9 @@ export class H2xERooms extends H2xEGeometry
 		float wColor = floor((pos.w + 3.0 * spacing / 2.0) / spacing) - spacing / 2.0;
 
 		return vec3(
-			.4 + .6 * .5 * (sin((wColor + globalColor.y + baseColor.y + globalColor.z + baseColor.z) * 5.0) + 1.0),
-			.4 + .6 * .5 * (sin((wColor + globalColor.y + baseColor.y) * 7.0) + 1.0),
-			.4 + .6 * .5 * (sin((wColor + globalColor.z + baseColor.z) * 11.0) + 1.0)
+			.4 + .6 * .5 * (sin((.05 * pos.x + wColor + globalColor.y + baseColor.y + globalColor.z + baseColor.z) * 5.0) + 1.0),
+			.4 + .6 * .5 * (sin((.05 * pos.y + wColor + globalColor.y + baseColor.y) * 7.0) + 1.0),
+			.4 + .6 * .5 * (sin((.05 * pos.z + wColor + globalColor.z + baseColor.z) * 11.0) + 1.0)
 		);
 	`;
 

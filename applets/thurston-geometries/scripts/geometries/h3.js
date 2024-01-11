@@ -3,17 +3,6 @@ import { sliderValues } from "../index.js";
 import { BaseGeometry, getMinGlslString } from "./base.js";
 import { $ } from "/scripts/src/main.js";
 
-const baseColorIncreases = [
-	[1, 0, 0],
-	[-1, 0, 0],
-	[0, 1, 0],
-	[0, -1, 0],
-	[0, 0, 1],
-	[0, 0, -1]
-];
-
-const baseColor = [0, 0, 0];
-
 class H3Geometry extends BaseGeometry
 {
 	geodesicGlsl = `vec4 pos = cosh(t) * startPos + sinh(t) * rayDirectionVec;
@@ -293,6 +282,17 @@ class H3Geometry extends BaseGeometry
 		this.forwardVec = this.normalize(this.forwardVec);
 	}
 
+	baseColorIncreases = [
+		[1, 0, 0],
+		[-1, 0, 0],
+		[0, 1, 0],
+		[0, -1, 0],
+		[0, 0, 1],
+		[0, 0, -1]
+	];
+	
+	baseColor = [0, 0, 0];
+
 	teleportCamera(rotatedForwardVec, recomputeRotation)
 	{
 		const cosine = Math.cos(sliderValues.gluingAngle);
@@ -391,9 +391,9 @@ class H3Geometry extends BaseGeometry
 
 				recomputeRotation(newRotatedForwardVec);
 
-				baseColor[0] += baseColorIncreases[i][0];
-				baseColor[1] += baseColorIncreases[i][1];
-				baseColor[2] += baseColorIncreases[i][2];
+				this.baseColor[0] += this.baseColorIncreases[i][0];
+				this.baseColor[1] += this.baseColorIncreases[i][1];
+				this.baseColor[2] += this.baseColorIncreases[i][2];
 			}
 		}
 	}
@@ -459,15 +459,15 @@ export class H3Rooms extends H3Geometry
 
 	getColorGlsl = `
 		return vec3(
-			.25 + .75 * (.5 * (sin(floor(baseColor.x + globalColor.x + .5) * 40.0) + 1.0)),
-			.25 + .75 * (.5 * (sin(floor(baseColor.y + globalColor.y + .5) * 57.0) + 1.0)),
-			.25 + .75 * (.5 * (sin(floor(baseColor.z + globalColor.z + .5) * 89.0) + 1.0))
+			.25 + .75 * (.5 * (sin((.004 * pos.x + baseColor.x + globalColor.x + .5) * 40.0) + 1.0)),
+			.25 + .75 * (.5 * (sin((.004 * pos.y + baseColor.y + globalColor.y + .5) * 57.0) + 1.0)),
+			.25 + .75 * (.5 * (sin((.004 * pos.z + baseColor.z + globalColor.z + .5) * 89.0) + 1.0))
 		);
 	`;
 
 	getMovingSpeed()
 	{
-		return 1.5;
+		return 1.25;
 	}
 
 	cameraPos = [0, 0, 0, 1];
@@ -491,7 +491,7 @@ export class H3Rooms extends H3Geometry
 
 		gl.uniform1f(uniformList["wallThickness"], wallThickness);
 		gl.uniform1f(uniformList["gluingAngle"], sliderValues.gluingAngle);
-		gl.uniform3fv(uniformList["baseColor"], baseColor);
+		gl.uniform3fv(uniformList["baseColor"], this.baseColor);
 	}
 
 	uiElementsUsed = "#wall-thickness-slider, #gluing-angle-slider";
