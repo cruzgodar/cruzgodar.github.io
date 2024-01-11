@@ -22,6 +22,7 @@ class NilGeometry extends BaseGeometry
 	{
 		// Binary search our way down until we're back in the fundamental domain.
 		float oldT = t - lastTIncrease;
+		totalT -= lastTIncrease;
 
 		// The factor by which we multiply lastTIncrease to get the usable increase.
 		float currentSearchPosition = 0.5;
@@ -46,7 +47,7 @@ class NilGeometry extends BaseGeometry
 
 		t = oldT + lastTIncrease * currentSearchPosition;
 		pos = getUpdatedPos(startPos, rayDirectionVec, t);
-		totalT += t - oldT;
+		totalT += lastTIncrease * currentSearchPosition;
 	}
 
 	globalColor += teleportPos(pos, startPos, rayDirectionVec, t, totalT);
@@ -58,7 +59,7 @@ class NilGeometry extends BaseGeometry
 	
 	return dir / magnitude;`;
 
-	fogGlsl = "return mix(color, fogColor, 1.0 - exp(-totalT * 0.2));";
+	fogGlsl = "return mix(color, fogColor, 1.0 - exp(-totalT * 0.1));";
 
 	functionGlsl = `mat4 getTransformationMatrix(vec4 pos)
 	{
@@ -835,7 +836,7 @@ export class NilSpheres extends NilGeometry
 		vec4 lightDirection2 = normalize(vec4(-4.0, 2.0, -1.0, 1.0) - pos);
 		float dotProduct2 = dot(surfaceNormal, lightDirection2);
 
-		float lightIntensity = 1.2 * lightBrightness * max(abs(dotProduct1), abs(dotProduct2));
+		float lightIntensity = 1.3 * lightBrightness * max(abs(dotProduct1), abs(dotProduct2));
 	`;
 
 	getMovingSpeed()
