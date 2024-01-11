@@ -1,6 +1,16 @@
 import { ThurstonGeometry } from "../class.js";
 import { BaseGeometry, getMinGlslString } from "./base.js";
 
+function getTransformationMatrix(pos)
+{
+	return [
+		[1, 0, 0, pos[0]],
+		[0, 1, 0, pos[1]],
+		[-pos[1] / 2, pos[0] / 2, 1, pos[2]],
+		[0, 0, 0, 1]
+	];
+}
+
 class NilGeometry extends BaseGeometry
 {
 	geodesicGlsl = `vec4 pos = getUpdatedPos(startPos, rayDirectionVec, t);
@@ -16,7 +26,17 @@ class NilGeometry extends BaseGeometry
 
 	fogGlsl = "return color;//mix(color, fogColor, 1.0 - exp(0.5 - totalT * 0.075));";
 
-	functionGlsl = `float chi(float rho, float z, float phi)
+	functionGlsl = `mat4 getTransformationMatrix(vec4 pos)
+	{
+		return mat4(
+			1.0, 0.0, -pos.y * .5, 0.0,
+			0.0, 1.0, pos.x * .5, 0.0,
+			0.0, 0.0, 1.0, 0.0,
+			pos.x, pos.y, pos.z, 1.0
+		);
+	}
+	
+	float chi(float rho, float z, float phi)
 	{
 		float sineThing = sin(phi * 0.5);
 
@@ -30,7 +50,7 @@ class NilGeometry extends BaseGeometry
 		return 1.0 - rho*rho / (8.0 * sineThing*sineThing) * (cos(phi) + (phi - sin(phi)) / tan(phi / 2.0) - 1.0);
 	}
 	
-	const int newtonIterations = 8;
+	const int newtonIterations = 10;
 	
 	// Returns the unique zero in (0, 2pi) of chi. z must be positive, so apply the flip transformation before doing this if it's not.
 	float chiZero(float rho, float z)
@@ -129,12 +149,7 @@ class NilGeometry extends BaseGeometry
 
 	vec4 getUpdatedPos(vec4 startPos, vec4 rayDirectionVec, float t)
 	{
-		mat4 A = mat4(
-			1.0, 0.0, -startPos.y * .5, 0.0,
-			0.0, 1.0, startPos.x * .5, 0.0,
-			0.0, 0.0, 1.0, 0.0,
-			startPos.x, startPos.y, startPos.z, 1.0
-		);
+		mat4 A = getTransformationMatrix(startPos);
 	
 		float alpha = atan(rayDirectionVec.y, rayDirectionVec.x);
 		float a = length(rayDirectionVec.xy);
@@ -142,7 +157,7 @@ class NilGeometry extends BaseGeometry
 	
 		vec4 pos;
 	
-		if (abs(c) < 0.00001)
+		if (abs(c) < .001)
 		{
 			return A * vec4(
 				a * cos(alpha) * t,
@@ -152,7 +167,7 @@ class NilGeometry extends BaseGeometry
 			);
 		}
 	
-		if (c * t < .01)
+		if (c * t < .001)
 		{
 			return A * vec4(
 				2.0 * a / c * sin(c * t / 2.0) * cos(c * t / 2.0 + alpha),
@@ -172,12 +187,7 @@ class NilGeometry extends BaseGeometry
 
 	vec4 getUpdatedDirectionVec(vec4 startPos, vec4 rayDirectionVec, float t)
 	{
-		mat4 A = mat4(
-			1.0, 0.0, -startPos.y * .5, 0.0,
-			0.0, 1.0, startPos.x * .5, 0.0,
-			0.0, 0.0, 1.0, 0.0,
-			startPos.x, startPos.y, startPos.z, 1.0
-		);
+		mat4 A = getTransformationMatrix(startPos);
 	
 		float alpha = atan(rayDirectionVec.y, rayDirectionVec.x);
 		float a = length(rayDirectionVec.xy);
@@ -186,7 +196,7 @@ class NilGeometry extends BaseGeometry
 		vec4 pos;
 	
 		// All the following formulas get differentiated dt.
-		if (abs(c) < 0.00001)
+		if (abs(c) < 0.001)
 		{
 			return A * vec4(
 				a * cos(alpha),
@@ -196,7 +206,7 @@ class NilGeometry extends BaseGeometry
 			);
 		}
 	
-		if (c * t < .01)
+		if (c * t < .001)
 		{
 			return A * vec4(
 				a * cos(alpha + c * t),
@@ -262,6 +272,8 @@ class NilGeometry extends BaseGeometry
 
 		if (pos.x < -0.5)
 		{
+			mat4 A = getTransformationMatrix(pos);
+
 			pos = teleportMatX1 * pos;
 
 			// !!!IMPORTANT!!! rayDirectionVec is the tangent vector from the *starting*
@@ -269,7 +281,10 @@ class NilGeometry extends BaseGeometry
 			// position to teleport the vector correctly. The correct tangent vector
 			// is just the derivative of the geodesic at the current value of t.
 
-			rayDirectionVec = teleportMatX1 * getUpdatedDirectionVec(startPos, rayDirectionVec, t);
+			// Also important! In Nil, the direction vec is from the origin, so we
+			// then need to translate the teleported vector back to the origin.
+
+			rayDirectionVec = getTransformationMatrix(-pos) * teleportMatX1 * A * rayDirectionVec;
 
 			startPos = pos;
 			
@@ -281,9 +296,10 @@ class NilGeometry extends BaseGeometry
 
 		else if (pos.x > 0.5)
 		{
+			mat4 A = getTransformationMatrix(pos);
 			pos = teleportMatX2 * pos;
 
-			rayDirectionVec = teleportMatX2 * getUpdatedDirectionVec(startPos, rayDirectionVec, t);
+			rayDirectionVec = getTransformationMatrix(-pos) * teleportMatX2 * A * rayDirectionVec;
 
 			startPos = pos;
 			
@@ -295,9 +311,11 @@ class NilGeometry extends BaseGeometry
 
 		if (pos.y < -0.5)
 		{
+
+			mat4 A = getTransformationMatrix(pos);
 			pos = teleportMatY1 * pos;
 
-			rayDirectionVec = teleportMatY1 * getUpdatedDirectionVec(startPos, rayDirectionVec, t);
+			rayDirectionVec = getTransformationMatrix(-pos) * teleportMatY1 * A * rayDirectionVec;
 
 			startPos = pos;
 			
@@ -309,9 +327,10 @@ class NilGeometry extends BaseGeometry
 
 		else if (pos.y > 0.5)
 		{
+			mat4 A = getTransformationMatrix(pos);
 			pos = teleportMatY2 * pos;
 
-			rayDirectionVec = teleportMatY2 * getUpdatedDirectionVec(startPos, rayDirectionVec, t);
+			rayDirectionVec = getTransformationMatrix(-pos) * teleportMatY2 * A * rayDirectionVec;
 
 			startPos = pos;
 			
@@ -323,9 +342,10 @@ class NilGeometry extends BaseGeometry
 
 		if (pos.z < -0.5)
 		{
+			mat4 A = getTransformationMatrix(pos);
 			pos = teleportMatZ1 * pos;
 
-			rayDirectionVec = teleportMatZ1 * getUpdatedDirectionVec(startPos, rayDirectionVec, t);
+			rayDirectionVec = getTransformationMatrix(-pos) * teleportMatZ1 * A * rayDirectionVec;
 
 			startPos = pos;
 			
@@ -337,9 +357,10 @@ class NilGeometry extends BaseGeometry
 
 		else if (pos.z > 0.5)
 		{
+			mat4 A = getTransformationMatrix(pos);
 			pos = teleportMatZ2 * pos;
 
-			rayDirectionVec = teleportMatZ2 * getUpdatedDirectionVec(startPos, rayDirectionVec, t);
+			rayDirectionVec = getTransformationMatrix(-pos) * teleportMatZ2 * A * rayDirectionVec;
 
 			startPos = pos;
 			
@@ -384,7 +405,7 @@ class NilGeometry extends BaseGeometry
 		const c = dir[2];
 
 		const newPos = ThurstonGeometry.mat4TimesVector(A,
-			Math.abs(c) < 0.00001
+			Math.abs(c) < 0.01
 				? [
 					a * Math.cos(alpha) * t,
 					a * Math.sin(alpha) * t,
@@ -420,10 +441,7 @@ class NilGeometry extends BaseGeometry
 		float lightIntensity = lightBrightness * abs(dotProduct1);
 	`;
 
-	correctVectors()
-	{
-		//No need!
-	}
+	correctVectors() {}
 
 	teleportCamera(rotatedForwardVec, recomputeRotation)
 	{
@@ -466,33 +484,72 @@ class NilGeometry extends BaseGeometry
 			]
 		];
 
+		// Okay so here's the thing. This isometry moves *points* on one face
+		// to points on the other, and therefore induces a map on the tangent spaces.
+		// However, our direction vectors are from the *origin*. So we'll transfer
+		// the vectors to the camera position, teleport them, and then transfer them back
+		// using the new camera position's transformation.
+
 		for (let i = 0; i < 3; i++)
 		{
 			if (this.cameraPos[i] < -0.5)
 			{
+				const oldA = getTransformationMatrix(this.cameraPos);
+
 				this.cameraPos = ThurstonGeometry.mat4TimesVector(
 					teleportations[2 * i],
 					this.cameraPos
 				);
 
+				const newAinv = getTransformationMatrix([
+					-this.cameraPos[0],
+					-this.cameraPos[1],
+					-this.cameraPos[2],
+					1
+				]);
+
 				this.forwardVec = ThurstonGeometry.mat4TimesVector(
-					teleportations[2 * i],
-					this.forwardVec
+					newAinv,
+					ThurstonGeometry.mat4TimesVector(
+						teleportations[2 * i],
+						ThurstonGeometry.mat4TimesVector(
+							oldA,
+							this.forwardVec
+						)
+					)
 				);
 
 				this.rightVec = ThurstonGeometry.mat4TimesVector(
-					teleportations[2 * i],
-					this.rightVec
+					newAinv,
+					ThurstonGeometry.mat4TimesVector(
+						teleportations[2 * i],
+						ThurstonGeometry.mat4TimesVector(
+							oldA,
+							this.rightVec
+						)
+					)
 				);
 
 				this.upVec = ThurstonGeometry.mat4TimesVector(
-					teleportations[2 * i],
-					this.upVec
+					newAinv,
+					ThurstonGeometry.mat4TimesVector(
+						teleportations[2 * i],
+						ThurstonGeometry.mat4TimesVector(
+							oldA,
+							this.upVec
+						)
+					)
 				);
 
 				const newRotatedForwardVec = ThurstonGeometry.mat4TimesVector(
-					teleportations[2 * i],
-					rotatedForwardVec
+					newAinv,
+					ThurstonGeometry.mat4TimesVector(
+						teleportations[2 * i],
+						ThurstonGeometry.mat4TimesVector(
+							oldA,
+							rotatedForwardVec
+						)
+					)
 				);
 
 				recomputeRotation(newRotatedForwardVec);
@@ -504,29 +561,62 @@ class NilGeometry extends BaseGeometry
 
 			else if (this.cameraPos[i] > 0.5)
 			{
+				const oldA = getTransformationMatrix(this.cameraPos);
+
 				this.cameraPos = ThurstonGeometry.mat4TimesVector(
 					teleportations[2 * i + 1],
 					this.cameraPos
 				);
 
+				const newAinv = getTransformationMatrix([
+					-this.cameraPos[0],
+					-this.cameraPos[1],
+					-this.cameraPos[2],
+					1
+				]);
+
 				this.forwardVec = ThurstonGeometry.mat4TimesVector(
-					teleportations[2 * i + 1],
-					this.forwardVec
+					newAinv,
+					ThurstonGeometry.mat4TimesVector(
+						teleportations[2 * i + 1],
+						ThurstonGeometry.mat4TimesVector(
+							oldA,
+							this.forwardVec
+						)
+					)
 				);
 
 				this.rightVec = ThurstonGeometry.mat4TimesVector(
-					teleportations[2 * i + 1],
-					this.rightVec
+					newAinv,
+					ThurstonGeometry.mat4TimesVector(
+						teleportations[2 * i + 1],
+						ThurstonGeometry.mat4TimesVector(
+							oldA,
+							this.rightVec
+						)
+					)
 				);
 
 				this.upVec = ThurstonGeometry.mat4TimesVector(
-					teleportations[2 * i + 1],
-					this.upVec
+					newAinv,
+					ThurstonGeometry.mat4TimesVector(
+						teleportations[2 * i + 1],
+						ThurstonGeometry.mat4TimesVector(
+							oldA,
+							this.upVec
+						)
+					)
 				);
 
 				const newRotatedForwardVec = ThurstonGeometry.mat4TimesVector(
-					teleportations[2 * i + 1],
-					rotatedForwardVec
+					newAinv,
+					ThurstonGeometry.mat4TimesVector(
+						teleportations[2 * i + 1],
+						ThurstonGeometry.mat4TimesVector(
+							oldA,
+							rotatedForwardVec
+						)
+					)
 				);
 
 				recomputeRotation(newRotatedForwardVec);
@@ -543,10 +633,10 @@ export class NilSpheres extends NilGeometry
 {
 	static distances = `
 		// A sphere at the origin (honestly, why would you want it to be anywhere else?)
-		float radius = .25;
+		float radius = .6;
 		float distance1 = approximateDistanceToOrigin(pos);
 
-		if (distance1 > radius + epsilon * 1000.0)
+		if (distance1 > radius + 1.0)
 		{
 			distance1 -= radius;
 		}
@@ -556,16 +646,16 @@ export class NilSpheres extends NilGeometry
 			distance1 = exactDistanceToOrigin(pos) - radius;
 		}
 
-		distance1 = 1.0;
+		distance1 = -distance1;
 
 		
 		// The distance to the x and y teleportation planes is the distance between the projections
 		// to E^2.
-		float distance2 = abs(pos.x - 0.45);
-		float distance3 = abs(pos.x + 0.45);
+		float distance2 = abs(pos.x - 0.51);
+		float distance3 = abs(pos.x + 0.51);
 
-		float distance4 = abs(pos.y - 0.45);
-		float distance5 = abs(pos.y + 0.45);
+		float distance4 = abs(pos.y - 0.51);
+		float distance5 = abs(pos.y + 0.51);
 	`;
 
 	distanceEstimatorGlsl = `
