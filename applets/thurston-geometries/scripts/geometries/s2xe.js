@@ -4,12 +4,16 @@ import { $ } from "/scripts/src/main.js";
 
 class S2xEGeometry extends BaseGeometry
 {
-	geodesicGlsl = `vec4 pos = vec4(
-		cos(length(rayDirectionVec.xyz) * t) * startPos.xyz + sin(length(rayDirectionVec.xyz) * t) * normalize(rayDirectionVec.xyz),
-		startPos.w + t * rayDirectionVec.w
-	);`;
+	geodesicGlsl = /*glsl*/`
+		vec4 pos = vec4(
+			cos(length(rayDirectionVec.xyz) * t) * startPos.xyz + sin(length(rayDirectionVec.xyz) * t) * normalize(rayDirectionVec.xyz),
+			startPos.w + t * rayDirectionVec.w
+		);
+	`;
 
-	fogGlsl = "return mix(color, fogColor, 1.0 - exp(-totalT * fogScaling * 8.0));";
+	fogGlsl = /*glsl*/`
+		return mix(color, fogColor, 1.0 - exp(-totalT * fogScaling * 8.0));
+	`;
 	
 	followGeodesic(pos, dir, t)
 	{
@@ -57,7 +61,7 @@ class S2xEGeometry extends BaseGeometry
 
 export class S2xERooms extends S2xEGeometry
 {
-	static distances = `
+	static distances = /*glsl*/`
 		float spacing = 1.09;
 
 		float distance1 = wallThickness - length(vec2(acos(pos.x), mod(pos.w + spacing / 2.0, spacing) - spacing / 2.0));
@@ -68,7 +72,7 @@ export class S2xERooms extends S2xEGeometry
 		float distance6 = wallThickness - length(vec2(acos(-pos.z), mod(pos.w + spacing / 2.0, spacing) - spacing / 2.0));
 	`;
 
-	distanceEstimatorGlsl = `
+	distanceEstimatorGlsl = /*glsl*/`
 		${S2xERooms.distances}
 
 		float minDistance = ${getMaxGlslString("distance", 6)};
@@ -76,7 +80,7 @@ export class S2xERooms extends S2xEGeometry
 		return minDistance;
 	`;
 
-	getColorGlsl = `
+	getColorGlsl = /*glsl*/`
 		${S2xERooms.distances}
 
 		float minDistance = ${getMaxGlslString("distance", 6)};
@@ -138,7 +142,7 @@ export class S2xERooms extends S2xEGeometry
 		}
 	`;
 
-	lightGlsl = `
+	lightGlsl = /*glsl*/`
 		// The cap of .05 fixes a very weird bug where the top and bottom of spheres had tiny dots of incorrect lighting.
 
 		vec4 lightDirection1 = normalize(vec4(2.0, 2.0, 2.0, -3.0) - pos);
@@ -158,7 +162,10 @@ export class S2xERooms extends S2xEGeometry
 		return 1;
 	}
 
-	uniformGlsl = "uniform float wallThickness;";
+	uniformGlsl = /*glsl*/`
+		uniform float wallThickness;
+	`;
+
 	uniformNames = ["wallThickness"];
 
 	updateUniforms(gl, uniformList)
@@ -187,7 +194,7 @@ export class S2xERooms extends S2xEGeometry
 
 export class S2xESpheres extends S2xEGeometry
 {
-	static distances = `
+	static distances = /*glsl*/`
 		float distance1 = length(vec2(acos(pos.x), mod(pos.w + .785398, 1.570796) - .785398)) - .5;
 		float distance2 = length(vec2(acos(-pos.x), mod(pos.w + .785398, 1.570796) - .785398)) - .5;
 		float distance3 = length(vec2(acos(pos.y), mod(pos.w + .785398, 1.570796) - .785398)) - .5;
@@ -195,7 +202,7 @@ export class S2xESpheres extends S2xEGeometry
 		float distance5 = length(vec2(acos(pos.z), mod(pos.w + .785398, 1.570796) - .785398)) - .5;
 	`;
 
-	distanceEstimatorGlsl = `
+	distanceEstimatorGlsl = /*glsl*/`
 		${S2xESpheres.distances}
 
 		float minDistance = ${getMinGlslString("distance", 5)};
@@ -203,7 +210,7 @@ export class S2xESpheres extends S2xEGeometry
 		return minDistance;
 	`;
 
-	getColorGlsl = `
+	getColorGlsl = /*glsl*/`
 		${S2xESpheres.distances}
 
 		float minDistance = ${getMinGlslString("distance", 5)};
@@ -256,7 +263,7 @@ export class S2xESpheres extends S2xEGeometry
 		}
 	`;
 
-	lightGlsl = `
+	lightGlsl = /*glsl*/`
 		// This is very weird, but it fixes an issue where the north and south poles
 		// of spheres had dots of incorrect lighting.
 		pos.xyz /= 1.001;

@@ -5,28 +5,37 @@ import { $ } from "/scripts/src/main.js";
 
 class H2xEGeometry extends BaseGeometry
 {
-	geodesicGlsl = `float h2Mag = sqrt(abs(
-		rayDirectionVec.x * rayDirectionVec.x
-		+ rayDirectionVec.y * rayDirectionVec.y
-		- rayDirectionVec.z * rayDirectionVec.z
-	));
-	
-	vec4 pos = vec4(
-		cosh(h2Mag * t) * startPos.xyz + sinh(h2Mag * t) * rayDirectionVec.xyz / h2Mag,
-		startPos.w + t * rayDirectionVec.w
-	);
-	
-	globalColor += teleportPos(pos, startPos, rayDirectionVec, t, totalT);`;
+	geodesicGlsl = /*glsl*/`
+		float h2Mag = sqrt(abs(
+			rayDirectionVec.x * rayDirectionVec.x
+			+ rayDirectionVec.y * rayDirectionVec.y
+			- rayDirectionVec.z * rayDirectionVec.z
+		));
+		
+		vec4 pos = vec4(
+			cosh(h2Mag * t) * startPos.xyz + sinh(h2Mag * t) * rayDirectionVec.xyz / h2Mag,
+			startPos.w + t * rayDirectionVec.w
+		);
+		
+		globalColor += teleportPos(pos, startPos, rayDirectionVec, t, totalT);
+	`;
 
-	dotProductGlsl = "return v.x * w.x + v.y * w.y - v.z * w.z + v.w * w.w;";
+	dotProductGlsl = /*glsl*/`
+		return v.x * w.x + v.y * w.y - v.z * w.z + v.w * w.w;
+	`;
 
-	normalizeGlsl = `float magnitude = sqrt(abs(geometryDot(dir, dir)));
-	
-	return dir / magnitude;`;
+	normalizeGlsl = /*glsl*/`
+		float magnitude = sqrt(abs(geometryDot(dir, dir)));
+		
+		return dir / magnitude;
+	`;
 
-	fogGlsl = "return mix(color, fogColor, 1.0 - exp(-totalT * 0.4));";
+	fogGlsl = /*glsl*/`
+		return mix(color, fogColor, 1.0 - exp(-totalT * 0.4));
+	`;
 
-	functionGlsl = `float sinh(float x)
+	functionGlsl = /*glsl*/`
+		float sinh(float x)
 		{
 			return .5 * (exp(x) - exp(-x));
 		}
@@ -369,7 +378,7 @@ class H2xEGeometry extends BaseGeometry
 
 export class H2xERooms extends H2xEGeometry
 {
-	static distances = `
+	static distances = /*glsl*/`
 		float spacing = 1.875;
 		float distance1 = wallThickness - length(vec2(acosh(pos.z), mod(pos.w + spacing / 2.0, spacing) - spacing / 2.0));
 
@@ -404,7 +413,7 @@ export class H2xERooms extends H2xEGeometry
 		));
 	`;
 
-	distanceEstimatorGlsl = `
+	distanceEstimatorGlsl = /*glsl*/`
 		${H2xERooms.distances}
 
 		float minDistance = ${getMinGlslString("distance", 5)};
@@ -412,7 +421,7 @@ export class H2xERooms extends H2xEGeometry
 		return minDistance;
 	`;
 
-	getColorGlsl = `
+	getColorGlsl = /*glsl*/`
 		${H2xERooms.distances}
 
 		float minDistance = ${getMinGlslString("distance", 5)};
@@ -426,7 +435,7 @@ export class H2xERooms extends H2xEGeometry
 		);
 	`;
 
-	lightGlsl = `
+	lightGlsl = /*glsl*/`
 		float spacing = 1.875;
 		vec4 moddedPos = vec4(pos.xyz, mod(pos.w + spacing / 2.0, spacing) - spacing / 2.0);
 
@@ -452,7 +461,11 @@ export class H2xERooms extends H2xEGeometry
 		return 1.25;
 	}
 
-	uniformGlsl = "uniform float wallThickness; uniform vec3 baseColor;";
+	uniformGlsl = /*glsl*/`
+		uniform float wallThickness;
+		uniform vec3 baseColor;
+	`;
+
 	uniformNames = ["wallThickness", "baseColor"];
 
 	updateUniforms(gl, uniformList)
@@ -481,7 +494,7 @@ export class H2xERooms extends H2xEGeometry
 
 export class H2xESpheres extends H2xEGeometry
 {
-	static distances = `
+	static distances = /*glsl*/`
 		float spacing = 1.5;
 		float distance1 = length(vec2(acosh(pos.z), mod(pos.w + spacing / 2.0, spacing) - spacing / 2.0)) - .5;
 
@@ -516,7 +529,7 @@ export class H2xESpheres extends H2xEGeometry
 		));
 	`;
 
-	distanceEstimatorGlsl = `
+	distanceEstimatorGlsl = /*glsl*/`
 		${H2xESpheres.distances}
 
 		float minDistance = ${getMinGlslString("distance", 5)};
@@ -524,7 +537,7 @@ export class H2xESpheres extends H2xEGeometry
 		return minDistance;
 	`;
 
-	getColorGlsl = `
+	getColorGlsl = /*glsl*/`
 		${H2xESpheres.distances}
 
 		float minDistance = ${getMinGlslString("distance", 5)};
@@ -540,7 +553,7 @@ export class H2xESpheres extends H2xEGeometry
 		);
 	`;
 
-	lightGlsl = `
+	lightGlsl = /*glsl*/`
 		// Equally weird to the S^2 x E fix, and equally necessary.
 		pos.xyz *= 1.001;
 		surfaceNormal = getSurfaceNormal(pos);
@@ -568,7 +581,10 @@ export class H2xESpheres extends H2xEGeometry
 		return 1.25;
 	}
 
-	uniformGlsl = "uniform vec3 baseColor;";
+	uniformGlsl = /*glsl*/`
+		uniform vec3 baseColor;
+	`;
+
 	uniformNames = ["baseColor"];
 
 	updateUniforms(gl, uniformList)

@@ -5,9 +5,13 @@ import { $ } from "/scripts/src/main.js";
 
 class S3Geometry extends BaseGeometry
 {
-	geodesicGlsl = "vec4 pos = cos(t) * startPos + sin(t) * rayDirectionVec;";
+	geodesicGlsl = /*glsl*/`
+		vec4 pos = cos(t) * startPos + sin(t) * rayDirectionVec;
+	`;
 
-	fogGlsl = "return mix(color, fogColor, 1.0 - exp(-acos(dot(pos, cameraPos)) * fogScaling));";
+	fogGlsl = /*glsl*/`
+		return mix(color, fogColor, 1.0 - exp(-acos(dot(pos, cameraPos)) * fogScaling));
+	`;
 
 	maxMarches = "100";
 	
@@ -50,7 +54,7 @@ class S3Geometry extends BaseGeometry
 
 export class S3Rooms extends S3Geometry
 {
-	static distances = `
+	static distances = /*glsl*/`
 		float distance1 = acos(pos.x) - wallThickness;
 		float distance2 = acos(-pos.x) - wallThickness;
 		float distance3 = acos(pos.y) - wallThickness;
@@ -61,7 +65,7 @@ export class S3Rooms extends S3Geometry
 		float distance8 = acos(-pos.w) - wallThickness;
 	`;
 
-	distanceEstimatorGlsl = `
+	distanceEstimatorGlsl = /*glsl*/`
 		${S3Rooms.distances}
 
 		float minDistance = ${getMinGlslString("distance", 8)};
@@ -69,7 +73,7 @@ export class S3Rooms extends S3Geometry
 		return -minDistance;
 	`;
 
-	getColorGlsl = `
+	getColorGlsl = /*glsl*/`
 		${S3Rooms.distances}
 
 		float minDistance = ${getMinGlslString("distance", 8)};
@@ -114,7 +118,7 @@ export class S3Rooms extends S3Geometry
 		}
 	`;
 
-	lightGlsl = `
+	lightGlsl = /*glsl*/`
 		vec4 lightDirection1 = normalize(vec4(1.0, 1.0, 1.0, -1.0) - pos);
 		float dotProduct1 = dot(surfaceNormal, lightDirection1);
 
@@ -135,7 +139,10 @@ export class S3Rooms extends S3Geometry
 		return 1;
 	}
 
-	uniformGlsl = "uniform float wallThickness;";
+	uniformGlsl = /*glsl*/`
+		uniform float wallThickness;
+	`;
+
 	uniformNames = ["wallThickness"];
 
 	updateUniforms(gl, uniformList)
@@ -165,7 +172,7 @@ export class S3Rooms extends S3Geometry
 
 export class S3Spheres extends S3Geometry
 {
-	distanceEstimatorGlsl = `
+	distanceEstimatorGlsl = /*glsl*/`
 		float distance1 = abs(acos(pos.x) - .3);
 		float distance2 = abs(acos(-pos.x) - .3);
 		float distance3 = abs(acos(pos.y) - .3);
@@ -179,7 +186,7 @@ export class S3Spheres extends S3Geometry
 		return minDistance;
 	`;
 
-	getColorGlsl = `
+	getColorGlsl = /*glsl*/`
 		float distance1 = abs(acos(pos.x) - .3);
 		float distance2 = abs(acos(-pos.x) - .3);
 		float distance3 = abs(acos(pos.y) - .3);
@@ -226,7 +233,7 @@ export class S3Spheres extends S3Geometry
 		}
 	`;
 
-	lightGlsl = `
+	lightGlsl = /*glsl*/`
 		vec4 lightDirection1 = normalize(vec4(1.0, 1.0, 1.0, 1.0) - pos);
 		float dotProduct1 = dot(surfaceNormal, lightDirection1);
 
@@ -288,12 +295,13 @@ function getHopfFiber(index, numFibers)
 	const vec1 = ThurstonGeometry.normalize([1 + p[2], -p[1], p[0], 0]);
 	const vec2 = ThurstonGeometry.normalize([0, p[0], p[1], 1 + p[2]]);
 
-	return [`float distance${index + 1} = greatCircleDistance(
-		pos,
-		vec4(${vec1[0]}, ${vec1[1]}, ${vec1[2]}, ${vec1[3]}),
-		vec4(${vec2[0]}, ${vec2[1]}, ${vec2[2]}, ${vec2[3]}),
-		fiberThickness);
-	`, rgb];
+	return [/*glsl*/`
+		float distance${index + 1} = greatCircleDistance(
+			pos,
+			vec4(${vec1[0]}, ${vec1[1]}, ${vec1[2]}, ${vec1[3]}),
+			vec4(${vec2[0]}, ${vec2[1]}, ${vec2[2]}, ${vec2[3]}),
+			fiberThickness);
+		`, rgb];
 }
 
 export class S3HopfFibration extends S3Geometry
@@ -315,7 +323,9 @@ export class S3HopfFibration extends S3Geometry
 			colors[i] = result[1];
 		}
 
-		this.distanceEstimatorGlsl += `float minDistance = ${getMinGlslString("distance", numFibers)};`;
+		this.distanceEstimatorGlsl += /*glsl*/`
+			float minDistance = ${getMinGlslString("distance", numFibers)};
+		`;
 
 		this.getColorGlsl = this.distanceEstimatorGlsl + getColorGlslString(
 			"distance",
@@ -326,7 +336,7 @@ export class S3HopfFibration extends S3Geometry
 		this.distanceEstimatorGlsl += "return minDistance;";
 	}
 	
-	functionGlsl = `
+	functionGlsl = /*glsl*/`
 		//p and v must be orthonormal.
 		float greatCircleDistance(vec4 pos, vec4 p, vec4 v, float r)
 		{
@@ -337,7 +347,7 @@ export class S3HopfFibration extends S3Geometry
 		}
 	`;
 
-	lightGlsl = `
+	lightGlsl = /*glsl*/`
 		vec4 lightDirection1 = normalize(vec4(1.0, 1.0, 1.0, 1.0) - pos);
 		float dotProduct1 = dot(surfaceNormal, lightDirection1);
 
@@ -367,11 +377,11 @@ export class S3HopfFibration extends S3Geometry
 		return 1;
 	}
 
-	uniformGlsl = "uniform float fiberThickness;";
+	uniformGlsl = /*glsl*/`
+		uniform float fiberThickness;
+	`;
+
 	uniformNames = ["fiberThickness"];
-	uniformData = {
-		fiberThickness: .025,
-	};
 
 	updateUniforms(gl, uniformList)
 	{

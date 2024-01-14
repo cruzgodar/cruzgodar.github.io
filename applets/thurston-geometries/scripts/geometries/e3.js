@@ -7,13 +7,13 @@ export class E3Geometry extends BaseGeometry {}
 
 export class E3Rooms extends E3Geometry
 {
-	distanceEstimatorGlsl = `
+	distanceEstimatorGlsl = /*glsl*/`
 		float distance1 = -length(mod(pos.xyz, 2.0) - vec3(1.0, 1.0, 1.0)) + wallThickness;
 
 		return distance1;
 	`;
 
-	getColorGlsl = `
+	getColorGlsl = /*glsl*/`
 		return vec3(
 			.25 + .75 * (.5 * (sin(pos.x) + 1.0)),
 			.25 + .75 * (.5 * (sin(pos.y) + 1.0)),
@@ -21,7 +21,7 @@ export class E3Rooms extends E3Geometry
 		);
 	`;
 
-	lightGlsl = `
+	lightGlsl = /*glsl*/`
 		vec4 lightDirection1 = normalize(vec4(1.0, 1.0, 1.0, 1.0) - pos);
 		float dotProduct1 = dot(surfaceNormal, lightDirection1);
 
@@ -37,7 +37,10 @@ export class E3Rooms extends E3Geometry
 	rightVec = [0, 1, 0, 0];
 	forwardVec = [1, 0, 0, 0];
 
-	uniformGlsl = "uniform float wallThickness;";
+	uniformGlsl = /*glsl*/`
+		uniform float wallThickness;
+	`;
+
 	uniformNames = ["wallThickness"];
 
 	updateUniforms(gl, uniformList)
@@ -64,13 +67,13 @@ export class E3Rooms extends E3Geometry
 
 export class E3Spheres extends E3Geometry
 {
-	distanceEstimatorGlsl = `
+	distanceEstimatorGlsl = /*glsl*/`
 		float distance1 = length(mod(pos.xyz, 2.0) - vec3(1.0, 1.0, 1.0)) - 0.5;
 
 		return distance1;
 	`;
 
-	getColorGlsl = `
+	getColorGlsl = /*glsl*/`
 		return vec3(
 			.25 + .75 * (.5 * (sin(floor(pos.x + .5) * 40.0) + 1.0)),
 			.25 + .75 * (.5 * (sin(floor(pos.y + .5) * 57.0) + 1.0)),
@@ -78,7 +81,7 @@ export class E3Spheres extends E3Geometry
 		);
 	`;
 
-	lightGlsl = `
+	lightGlsl = /*glsl*/`
 		vec4 lightDirection1 = normalize(vec4(1.0, 1.0, 1.0, 1.0) - pos);
 		float dotProduct1 = dot(surfaceNormal, lightDirection1);
 
@@ -116,13 +119,13 @@ const baseColor = [0, 0, 0];
 
 export class E3SeifertWeberSpace extends E3Geometry
 {
-	distanceEstimatorGlsl = `
+	distanceEstimatorGlsl = /*glsl*/`
 		float distance1 = length(pos.xyz) - wallThickness;
 
 		return -distance1;
 	`;
 
-	functionGlsl = `
+	functionGlsl = /*glsl*/`
 		const float maxDotProduct = 1.3763819;
 		
 		const vec3 plane1 = vec3(0.52573112, 0.85065077, 0.0);
@@ -323,15 +326,17 @@ export class E3SeifertWeberSpace extends E3Geometry
 		}
 	`;
 
-	fogGlsl = "return mix(color, fogColor, 1.0 - exp(-length(pos) * fogScaling));";
+	fogGlsl = /*glsl*/`
+		return mix(color, fogColor, 1.0 - exp(-length(pos) * fogScaling));
+	`;
 
-	geodesicGlsl = `
+	geodesicGlsl = /*glsl*/`
 		vec4 pos = startPos + t * rayDirectionVec;
 		
 		globalColor += teleportPos(pos, startPos, rayDirectionVec, t);
 	`;
 
-	getColorGlsl = `
+	getColorGlsl = /*glsl*/`
 		// The  color predominantly comes from the room we're in, and then there's a little extra from the position in that room.
 		return vec3(
 			.25 + .75 * (.5 * (sin(baseColor.x + globalColor.x + pos.x / 5.0) + 1.0)),
@@ -340,7 +345,7 @@ export class E3SeifertWeberSpace extends E3Geometry
 		);
 	`;
 
-	updateTGlsl = `
+	updateTGlsl = /*glsl*/`
 		float t1 = abs(getTToPlane(pos.xyz, rayDirectionVec.xyz, plane1, maxDotProduct));
 		float t2 = abs(getTToPlane(pos.xyz, rayDirectionVec.xyz, plane1, -maxDotProduct));
 		float t3 = abs(getTToPlane(pos.xyz, rayDirectionVec.xyz, plane2, maxDotProduct));
@@ -358,7 +363,7 @@ export class E3SeifertWeberSpace extends E3Geometry
 		t += min(minTToPlane + .01, distance) * stepFactor;
 	`;
 
-	lightGlsl = `
+	lightGlsl = /*glsl*/`
 		vec4 lightDirection1 = normalize(vec4(1.0, 2.0, 3.0, 1.0) - pos);
 		vec4 lightDirection2 = normalize(vec4(1.0, -2.0, 3.0, 1.0) - pos);
 		vec4 lightDirection3 = normalize(vec4(-1.0, 2.0, 3.0, 1.0) - pos);
@@ -473,7 +478,7 @@ export class E3SeifertWeberSpace extends E3Geometry
 		}
 	}
 
-	uniformGlsl = `
+	uniformGlsl = /*glsl*/`
 		uniform float wallThickness;
 		uniform float rotationAngle;
 		uniform vec3 baseColor;
