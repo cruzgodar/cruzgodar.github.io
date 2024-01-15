@@ -675,7 +675,7 @@ export class NilRooms extends NilGeometry
 export class NilSpheres extends NilGeometry
 {
 	static distances = /*glsl*/`
-		float radius = .25;
+		float radius = .2;
 		float distance1 = approximateDistanceToOrigin(pos);
 
 		if (distance1 > radius + 1.0)

@@ -96,7 +96,7 @@ class SL2RGeometry extends BaseGeometry
 			pos.xy = mat2(
 				cos(alpha), sin(alpha),
 				-sin(alpha), cos(alpha)
-			) * pos.xy);
+			) * pos.xy;
 
 			// Finally, translate this to the starting position. This is easier said than done:
 			// we have isometries of SL(2, R) (i.e. script Q), but not of the universal cover (i.e. X)
