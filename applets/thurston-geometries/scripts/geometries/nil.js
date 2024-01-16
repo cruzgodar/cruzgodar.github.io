@@ -688,10 +688,6 @@ export class NilSpheres extends NilGeometry
 			distance1 = exactDistanceToOrigin(pos) - radius;
 		}
 
-		
-		// The distance to the x and y teleportation planes is the distance between the projections
-		// to E^2. Unfortunately for our performance, the tolerances really do need to be this tight
-		// to avoid artifacts.
 		float distance2 = abs(pos.x - 0.515);
 		float distance3 = abs(pos.x + 0.515);
 

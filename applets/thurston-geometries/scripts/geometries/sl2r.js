@@ -39,12 +39,52 @@ class SL2RGeometry extends BaseGeometry
 			return (expTerm - 1.0) / (expTerm + 1.0);
 		}
 
+		// Projects a point p in the universal cover, i.e. H^2 x R, down to Q.
+		vec4 projectToQ(vec4 p)
+		{
+			float denominator = sqrt(2.0 * p.z + 2.0);
+
+			float zetaOutput = vec4(
+				sqrt((p.z + 1.0) * 0.5),
+				0.0,
+				p.x / denominator,
+				p.y / denominator
+			);
+
+			float cosineTerm = cos(pos.w * 0.5);
+			float sineTerm = sin(pos.w * 0.5);
+
+			return mat4(
+				cosineTerm, sineTerm, 0.0, 0.0,
+				-sineTerm, cosineTerm, 0.0, 0.0,
+				0.0, 0.0, cosineTerm, -sineTerm,
+				0.0, 0.0, sineTerm, cosineTerm
+			) * zetaOutput;
+		}
+
+		const mat2 E0 = mat2(1.0, 0.0, 0.0, 1.0);
+		const mat2 E1 = mat2(0.0, -1.0, 1.0, 0.0);
+		const mat2 E2 = mat2(0.0, 1.0, 1.0, 0.0);
+		const mat2 E0 = mat2(1.0, 0.0, 0.0, -1.0);
+
+		void applyH2Isometry(vec4 qElement, inout vec3 h2Element)
+		{
+			mat2 h2Matrix = -h2Element.x * E3 + h2Element.y * E2 + h2Element.z * E1;
+			mat2 qMatrix = qElement.x * E0 + qElement.y * E1 + qElement.z * E2 + qElement.w * E3;
+
+			mat2 conjugatedh2Matrix = qMatrix * h2Matrix * inverse(qMatrix);
+
+			h2Element = vec3(
+				conjugatedh2Matrix[1][1],
+				0.5 * (conjugatedh2Matrix[1][0] + conjugatedh2Matrix[0][1]),
+				0.5 * (conjugatedh2Matrix[1][0] - conjugatedh2Matrix[0][1])
+			);
+		}
+
 		const float root2Over2 = 0.70710678;
 		
 		vec4 getUpdatedPos(vec4 startPos, vec4 rayDirectionVec, float t)
 		{
-			mat4 A = getTransformationMatrix(startPos);
-		
 			float alpha = atan(rayDirectionVec.y, rayDirectionVec.x);
 			float a = length(rayDirectionVec.xy);
 			float c = rayDirectionVec.w;
@@ -98,10 +138,15 @@ class SL2RGeometry extends BaseGeometry
 				-sin(alpha), cos(alpha)
 			) * pos.xy;
 
-			// Finally, translate this to the starting position. This is easier said than done:
-			// we have isometries of SL(2, R) (i.e. script Q), but not of the universal cover (i.e. X)
-			// a priori. Instead, 
+			// Finally, translate this to the starting position, beginning by getting the element
+			// of Q corresponding to this.
+			vec4 qElement = projectToQ(pos);
 
+			// Now this element induces an isomorphism of H^2 by conjugation. We'll apply
+			// it to the H^2 part of pos.
+			applyH2Isometry(qElement, pos.xyz);
+
+			pos.w += startPos.w;
 		}
 
 		vec4 getUpdatedDirectionVec(vec4 startPos, vec4 rayDirectionVec, float t)
