@@ -205,29 +205,10 @@ class H3Geometry extends BaseGeometry
 
 		return [vec[0] / magnitude, vec[1] / magnitude, vec[2] / magnitude, vec[3] / magnitude];
 	}
-	
-	followGeodesic(pos, dir, t)
+
+	correctPosition(pos)
 	{
-		const newPos = new Array(4);
-
-		for (let i = 0; i < 4; i++)
-		{
-			newPos[i] = Math.cosh(t) * pos[i] + Math.sinh(t) * dir[i];
-		}
-		
-		//Since we're only doing a linear approximation, this position won't be exactly
-		//on the manifold. Therefore, we'll do a quick correction to get it back.
-
-		//Here, we just want the hyperbolic dot product to be -1.
-		const dot = this.dotProduct(newPos, newPos);
-		const magnitude = Math.sqrt(-dot);
-
-		newPos[0] /= magnitude;
-		newPos[1] /= magnitude;
-		newPos[2] /= magnitude;
-		newPos[3] /= magnitude;
-
-		return newPos;
+		return this.normalize(pos);
 	}
 
 	getNormalVec(cameraPos)
@@ -468,9 +449,9 @@ export class H3Rooms extends H3Geometry
 
 	getColorGlsl = /*glsl*/`
 		return vec3(
-			.25 + .75 * (.5 * (sin((.004 * pos.x + baseColor.x + globalColor.x + .5) * 40.0) + 1.0)),
-			.25 + .75 * (.5 * (sin((.004 * pos.y + baseColor.y + globalColor.y + .5) * 57.0) + 1.0)),
-			.25 + .75 * (.5 * (sin((.004 * pos.z + baseColor.z + globalColor.z + .5) * 89.0) + 1.0))
+			.25 + .75 * (.5 * (sin((.004 * pos.x + baseColor.x + globalColor.x) * 40.0) + 1.0)),
+			.25 + .75 * (.5 * (sin((.004 * pos.y + baseColor.y + globalColor.y) * 57.0) + 1.0)),
+			.25 + .75 * (.5 * (sin((.004 * pos.z + baseColor.z + globalColor.z) * 89.0) + 1.0))
 		);
 	`;
 

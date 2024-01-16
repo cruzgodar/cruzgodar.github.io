@@ -44,7 +44,7 @@ class NilGeometry extends BaseGeometry
 	`;
 
 	normalizeGlsl = /*glsl*/`
-		float zFactor = dir.z - (cameraPos.x * dir.y - cameraPos.y * dir.x) / 2.0;
+		float zFactor = dir.z;
 
 		float magnitude = length(vec3(dir.xy, zFactor));
 		
@@ -438,12 +438,13 @@ class NilGeometry extends BaseGeometry
 		return [vec[0] / magnitude, vec[1] / magnitude, vec[2] / magnitude, vec[3] / magnitude];
 	}
 	
+	// Frustratingly, doing a linear approximation produces weird movement patterns in Nil.
 	followGeodesic(pos, dir, t)
 	{
 		// Some subtlety here: we need to construct the transformation matrix to
 		// translate the geodesic from the origin, but we do *not* want to translate the current
 		// vectors backward to the origin. In the other geometries, I've gotten away with simply
-		// projecting the tangent space vectors onto the new trnagent space after moving, but the
+		// projecting the tangent space vectors onto the new tangent space after moving, but the
 		// twisting in Nil combined with the fact that all tangent spaces are literally equal
 		// means that such a correction would be extremely difficult. Instead, we'll leave
 		// the vectors at the origin (i.e. just not translate them back).

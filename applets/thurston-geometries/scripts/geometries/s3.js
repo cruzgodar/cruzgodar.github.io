@@ -14,28 +14,10 @@ class S3Geometry extends BaseGeometry
 	`;
 
 	maxMarches = "100";
-	
-	followGeodesic(pos, dir, t)
+
+	correctPosition(pos)
 	{
-		const newPos = [...pos];
-
-		for (let i = 0; i < 4; i++)
-		{
-			newPos[i] = Math.cos(t) * newPos[i] + Math.sin(t) * dir[i];
-		}
-		
-		//Since we're only doing a linear approximation, this position won't be exactly
-		//on the manifold. Therefore, we'll do a quick correction to get it back.
-
-		//Here, we just want the magnitude to be equal to 1.
-		const magnitude = ThurstonGeometry.magnitude(newPos);
-
-		newPos[0] /= magnitude;
-		newPos[1] /= magnitude;
-		newPos[2] /= magnitude;
-		newPos[3] /= magnitude;
-
-		return newPos;
+		return ThurstonGeometry.normalize(pos);
 	}
 
 	getNormalVec(cameraPos)

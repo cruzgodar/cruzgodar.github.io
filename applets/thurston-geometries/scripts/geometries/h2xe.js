@@ -191,35 +191,21 @@ class H2xEGeometry extends BaseGeometry
 			return vec3(0.0, 0.0, 0.0);
 		}
 	`;
-	
-	followGeodesic(pos, dir, t)
-	{
-		const h2Mag = Math.sqrt(dir[0] * dir[0] + dir[1] * dir[1] + dir[2] * dir[2]);
-		
-		const newPos = h2Mag === 0
-			? [pos[0], pos[1], pos[2], pos[3] + t * dir[3]]
-			: [
-				Math.cosh(h2Mag * t) * pos[0] + Math.sinh(h2Mag * t) * dir[0] / h2Mag,
-				Math.cosh(h2Mag * t) * pos[1] + Math.sinh(h2Mag * t) * dir[1] / h2Mag,
-				Math.cosh(h2Mag * t) * pos[2] + Math.sinh(h2Mag * t) * dir[2] / h2Mag,
-				pos[3] + t * dir[3]
-			];
-		
-		//Since we're only doing a linear approximation, this position won't be exactly
-		//on the manifold. Therefore, we'll do a quick correction to get it back.
 
-		//Here, we want the H2 magnitude to be equal to -1.
+	correctPosition(pos)
+	{
 		const magnitude = Math.sqrt(
-			-newPos[0] * newPos[0]
-			- newPos[1] * newPos[1]
-			+ newPos[2] * newPos[2]
+			-pos[0] * pos[0]
+			- pos[1] * pos[1]
+			+ pos[2] * pos[2]
 		);
 
-		newPos[0] /= magnitude;
-		newPos[1] /= magnitude;
-		newPos[2] /= magnitude;
-
-		return newPos;
+		return [
+			pos[0] / magnitude,
+			pos[1] / magnitude,
+			pos[2] / magnitude,
+			pos[3]
+		];
 	}
 
 	getNormalVec(cameraPos)

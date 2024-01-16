@@ -39,14 +39,12 @@ export class BaseGeometry
 
 	followGeodesic(pos, dir, t)
 	{
-		const newPos = [...pos];
-
-		for (let i = 0; i < 4; i++)
-		{
-			newPos[i] = newPos[i] + t * dir[i];
-		}
-		
-		return newPos;
+		return [
+			pos[0] + t * dir[0],
+			pos[1] + t * dir[1],
+			pos[2] + t * dir[2],
+			pos[3] + t * dir[3]
+		];
 	}
 
 	teleportCamera() {}
@@ -55,6 +53,11 @@ export class BaseGeometry
 	{
 		//f = w - 1.
 		return [0, 0, 0, 1];
+	}
+
+	correctPosition(pos)
+	{
+		return pos;
 	}
 
 	//Surprisingly necessary -- this corrects the frame so that no vector looks in the normal

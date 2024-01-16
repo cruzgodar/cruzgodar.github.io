@@ -10,15 +10,11 @@ class SL2RGeometry extends BaseGeometry
 	`;
 
 	normalizeGlsl = /*glsl*/`
-		float zFactor = dir.z - (cameraPos.x * dir.y - cameraPos.y * dir.x) / 2.0;
-
-		float magnitude = length(vec3(dir.xy, zFactor));
-		
-		return dir / magnitude;
+		return normalize(dir);
 	`;
 
 	fogGlsl = /*glsl*/`
-		return mix(color, fogColor, 1.0 - exp(-totalT * 0.2));
+		return color;//mix(color, fogColor, 1.0 - exp(-totalT * 0.2));
 	`;
 
 	functionGlsl = /*glsl*/`
@@ -140,7 +136,7 @@ class SL2RGeometry extends BaseGeometry
 
 			// Finally, translate this to the starting position, beginning by getting the element
 			// of Q corresponding to this.
-			vec4 qElement = projectToQ(pos);
+			vec4 qElement = projectToQ(startPos);
 
 			// Now this element induces an isomorphism of H^2 by conjugation. We'll apply
 			// it to the H^2 part of pos.
@@ -148,221 +144,11 @@ class SL2RGeometry extends BaseGeometry
 
 			pos.w += startPos.w;
 		}
-
-		vec4 getUpdatedDirectionVec(vec4 startPos, vec4 rayDirectionVec, float t)
-		{
-			mat4 A = getTransformationMatrix(startPos);
-		
-			float alpha = atan(rayDirectionVec.y, rayDirectionVec.x);
-			float a = length(rayDirectionVec.xy);
-			float c = rayDirectionVec.w;
-		
-			vec4 pos;
-		
-			// All the following formulas get differentiated dt.
-			if (abs(c) < 0.001)
-			{
-				return A * vec4(
-					a * cos(alpha),
-					a * sin(alpha),
-					0.0,
-					0.0
-				);
-			}
-		
-			if (c * t < .001)
-			{
-				return A * vec4(
-					a * cos(alpha + c * t),
-					a * sin(alpha + c * t),
-					c + a*a * (c*t*t / 4.0 - c*c*c*t*t*t*t / 48.0 + c*c*c*c*c*t*t*t*t*t*t / 1440.0),
-					0.0
-				);
-			}
-			
-			return A * vec4(
-				a * cos(alpha + c * t),
-				a * sin(alpha + c * t),
-				c - a*a / (2.0 * c) * (cos(c * t) - 1.0),
-				0.0
-			);
-		}
-
-		const mat4 teleportMatX1 = mat4(
-			1.0, 0.0, 0.0, 0.0,
-			0.0, 1.0, 0.5, 0.0,
-			0.0, 0.0, 1.0, 0.0,
-			1.0, 0.0, 0.0, 1.0
-		);
-
-		const mat4 teleportMatX2 = mat4(
-			1.0, 0.0, 0.0, 0.0,
-			0.0, 1.0, -0.5, 0.0,
-			0.0, 0.0, 1.0, 0.0,
-			-1.0, 0.0, 0.0, 1.0
-		);
-
-		const mat4 teleportMatY1 = mat4(
-			1.0, 0.0, -0.5, 0.0,
-			0.0, 1.0, 0.0, 0.0,
-			0.0, 0.0, 1.0, 0.0,
-			0.0, 1.0, 0.0, 1.0
-		);
-		
-		const mat4 teleportMatY2 = mat4(
-			1.0, 0.0, 0.5, 0.0,
-			0.0, 1.0, 0.0, 0.0,
-			0.0, 0.0, 1.0, 0.0,
-			0.0, -1.0, 0.0, 1.0
-		);
-		
-		const mat4 teleportMatZ1 = mat4(
-			1.0, 0.0, 0.0, 0.0,
-			0.0, 1.0, 0.0, 0.0,
-			0.0, 0.0, 1.0, 0.0,
-			0.0, 0.0, 1.0, 1.0
-		);
-		
-		const mat4 teleportMatZ2 = mat4(
-			1.0, 0.0, 0.0, 0.0,
-			0.0, 1.0, 0.0, 0.0,
-			0.0, 0.0, 1.0, 0.0,
-			0.0, 0.0, -1.0, 1.0
-		);
-
-		vec3 teleportPos(inout vec4 pos, inout vec4 startPos, inout vec4 rayDirectionVec, inout float t, inout float totalT)
-		{
-			vec3 color = vec3(0.0, 0.0, 0.0);
-
-			if (pos.x < -0.5)
-			{
-				mat4 A = getTransformationMatrix(pos);
-
-				pos = teleportMatX1 * pos;
-
-				// !!!IMPORTANT!!! rayDirectionVec is the tangent vector from the *starting*
-				// position, not the current one, so we need to calculate that current
-				// position to teleport the vector correctly. The correct tangent vector
-				// is just the derivative of the geodesic at the current value of t.
-
-				// Also important! In Nil, the direction vec is from the origin, so we
-				// then need to translate the teleported vector back to the origin.
-
-				rayDirectionVec = getTransformationMatrix(-pos) * teleportMatX1 * getUpdatedDirectionVec(startPos, rayDirectionVec, t);
-
-				startPos = pos;
-				
-				totalT += t;
-				t = 0.0;
-
-				color += vec3(1.0, 0.0, 0.0);
-			}
-
-			else if (pos.x > 0.5)
-			{
-				mat4 A = getTransformationMatrix(pos);
-				pos = teleportMatX2 * pos;
-
-				rayDirectionVec = getTransformationMatrix(-pos) * teleportMatX2 * getUpdatedDirectionVec(startPos, rayDirectionVec, t);
-
-				startPos = pos;
-				
-				totalT += t;
-				t = 0.0;
-
-				color += vec3(-1.0, 0.0, 0.0);
-			}
-
-			if (pos.y < -0.5)
-			{
-				mat4 A = getTransformationMatrix(pos);
-				pos = teleportMatY1 * pos;
-
-				rayDirectionVec = getTransformationMatrix(-pos) * teleportMatY1 * getUpdatedDirectionVec(startPos, rayDirectionVec, t);
-
-				startPos = pos;
-				
-				totalT += t;
-				t = 0.0;
-
-				color += vec3(0.0, 1.0, 0.0);
-			}
-
-			else if (pos.y > 0.5)
-			{
-				mat4 A = getTransformationMatrix(pos);
-				pos = teleportMatY2 * pos;
-
-				rayDirectionVec = getTransformationMatrix(-pos) * teleportMatY2 * getUpdatedDirectionVec(startPos, rayDirectionVec, t);
-
-				startPos = pos;
-				
-				totalT += t;
-				t = 0.0;
-
-				color += vec3(0.0, -1.0, 0.0);
-			}
-
-			if (pos.z < -0.5)
-			{
-				mat4 A = getTransformationMatrix(pos);
-				pos = teleportMatZ1 * pos;
-
-				rayDirectionVec = getTransformationMatrix(-pos) * teleportMatZ1 * getUpdatedDirectionVec(startPos, rayDirectionVec, t);
-
-				startPos = pos;
-				
-				totalT += t;
-				t = 0.0;
-
-				color += vec3(0.0, 0.0, 1.0);
-			}
-
-			else if (pos.z > 0.5)
-			{
-				mat4 A = getTransformationMatrix(pos);
-				pos = teleportMatZ2 * pos;
-
-				rayDirectionVec = getTransformationMatrix(-pos) * teleportMatZ2 * getUpdatedDirectionVec(startPos, rayDirectionVec, t);
-
-				startPos = pos;
-				
-				totalT += t;
-				t = 0.0;
-
-				color += vec3(0.0, 0.0, -1.0);
-			}
-
-			return color;
-		}
 	`;
-
-	
-	normalize(vec)
-	{
-		const zFactor = vec[2] - (this.cameraPos[0] * vec[1] - this.cameraPos[1] * vec[0]) / 2;
-
-		const magnitude = Math.sqrt(vec[0] * vec[0] + vec[1] * vec[1] + zFactor * zFactor);
-
-		return [vec[0] / magnitude, vec[1] / magnitude, vec[2] / magnitude, vec[3] / magnitude];
-	}
 	
 	followGeodesic(pos, dir, t)
 	{
-		// Some subtlety here: we need to construct the transformation matrix to
-		// translate the geodesic from the origin, but we do *not* want to translate the current
-		// vectors backward to the origin. In the other geometries, I've gotten away with simply
-		// projecting the tangent space vectors onto the new trnagent space after moving, but the
-		// twisting in Nil combined with the fact that all tangent spaces are literally equal
-		// means that such a correction would be extremely difficult. Instead, we'll leave
-		// the vectors at the origin (i.e. just not translate them back).
-		const A = [
-			[1, 0, 0, pos[0]],
-			[0, 1, 0, pos[1]],
-			[-pos[1] / 2, pos[0] / 2, 1, pos[2]],
-			[0, 0, 0, 1]
-		];
-
+		// As in Nil, the vectors are left at the origin.
 		const alpha = Math.atan2(dir[1], dir[0]);
 		const a = Math.sqrt(dir[0] * dir[0] + dir[1] * dir[1]);
 		const c = dir[2];

@@ -584,10 +584,8 @@ export class ThurstonGeometry extends Applet
 			//The magic formula is T' = curvature * N.
 			// const curvature = this.getCurvature(this.geometryData.cameraPos, tangentVec);
 
-			const newCameraPos = this.geometryData.followGeodesic(
-				this.geometryData.cameraPos,
-				tangentVec,
-				dt
+			const newCameraPos = this.geometryData.correctPosition(
+				this.geometryData.followGeodesic(this.geometryData.cameraPos, tangentVec, dt)
 			);
 
 			this.geometryData.cameraPos = newCameraPos;
@@ -596,51 +594,6 @@ export class ThurstonGeometry extends Applet
 				this.geometryData.cameraPos
 			);
 		}
-	}
-
-
-
-	parallelTransport(newCameraPos, vecToTransport)
-	{
-		const dt = 1;
-
-		//In the terminology of Schild's ladder,
-		//A = this.geometryData.cameraPos, and we need to find X_0.
-		const x0 = this.geometryData.followGeodesic(
-			this.geometryData.cameraPos,
-			vecToTransport,
-			dt
-		);
-
-		//Now we need to construct a geodesic between x0 and the updated cameraPosition.
-		const magnitude = this.geometryData.getGeodesicDistance(x0, newCameraPos);
-		const dir = this.geometryData.getGeodesicDirection(x0, newCameraPos, magnitude);
-
-		//Now find the point halfway there.
-		const p = this.geometryData.followGeodesic(x0, dir, magnitude / 2);
-
-		//Construct a geodesic between the original camera position and this point.
-		const magnitude2 = this.geometryData.getGeodesicDistance(this.geometryData.cameraPos, p);
-
-		const dir2 = this.geometryData.getGeodesicDirection(
-			this.geometryData.cameraPos,
-			p,
-			magnitude2
-		);
-
-		//Follow that twice as far.
-		const x1 = this.geometryData.followGeodesic(
-			this.geometryData.cameraPos,
-			dir2,
-			magnitude2 * 2
-		);
-
-		//Now at long last, construct the geodesic from te new camera position to this point.
-		const magnitude3 = this.geometryData.getGeodesicDistance(newCameraPos, x1);
-
-		const dir3 = this.geometryData.getGeodesicDirection(newCameraPos, x1, magnitude3);
-
-		return dir3;
 	}
 
 

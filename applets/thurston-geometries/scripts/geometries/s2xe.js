@@ -14,35 +14,21 @@ class S2xEGeometry extends BaseGeometry
 	fogGlsl = /*glsl*/`
 		return mix(color, fogColor, 1.0 - exp(-totalT * fogScaling * 8.0));
 	`;
-	
-	followGeodesic(pos, dir, t)
-	{
-		const s2Mag = Math.sqrt(dir[0] * dir[0] + dir[1] * dir[1] + dir[2] * dir[2]);
-		
-		const newPos = s2Mag === 0
-			? [pos[0], pos[1], pos[2], pos[3] + t * dir[3]]
-			: [
-				Math.cos(s2Mag * t) * pos[0] + Math.sin(s2Mag * t) * dir[0] / s2Mag,
-				Math.cos(s2Mag * t) * pos[1] + Math.sin(s2Mag * t) * dir[1] / s2Mag,
-				Math.cos(s2Mag * t) * pos[2] + Math.sin(s2Mag * t) * dir[2] / s2Mag,
-				pos[3] + t * dir[3]
-			];
-		
-		//Since we're only doing a linear approximation, this position won't be exactly
-		//on the manifold. Therefore, we'll do a quick correction to get it back.
 
-		//Here, we just want the S2 magnitude to be equal to 1.
+	correctPosition(pos)
+	{
 		const magnitude = Math.sqrt(
-			newPos[0] * newPos[0]
-			+ newPos[1] * newPos[1]
-			+ newPos[2] * newPos[2]
+			pos[0] * pos[0]
+			+ pos[1] * pos[1]
+			+ pos[2] * pos[2]
 		);
 
-		newPos[0] /= magnitude;
-		newPos[1] /= magnitude;
-		newPos[2] /= magnitude;
-
-		return newPos;
+		return [
+			pos[0] / magnitude,
+			pos[1] / magnitude,
+			pos[2] / magnitude,
+			pos[3]
+		];
 	}
 
 	getNormalVec(cameraPos)
