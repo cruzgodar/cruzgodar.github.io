@@ -292,6 +292,8 @@ export class ThurstonGeometry extends Applet
 				);
 			}
 		`;
+
+		console.log(fragShaderSource);
 		
 
 		

@@ -31,6 +31,8 @@ Something will go here eventually!
 	nil-rooms "Nil: Rooms"
 	nil-spheres "Nil: Spheres"
 
+	sl2r-spheres "$\widetilde{\operatorname{SL}}(2, \mathbb{R})$: Spheres"
+
 ###
 
 ### text-boxes

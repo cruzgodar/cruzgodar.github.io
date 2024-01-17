@@ -1,4 +1,4 @@
-import { BaseGeometry, getMinGlslString } from "./base.js";
+import { BaseGeometry } from "./base.js";
 
 class SL2RGeometry extends BaseGeometry
 {
@@ -39,15 +39,15 @@ class SL2RGeometry extends BaseGeometry
 		{
 			float denominator = sqrt(2.0 * p.z + 2.0);
 
-			float zetaOutput = vec4(
+			vec4 zetaOutput = vec4(
 				sqrt((p.z + 1.0) * 0.5),
 				0.0,
 				p.x / denominator,
 				p.y / denominator
 			);
 
-			float cosineTerm = cos(pos.w * 0.5);
-			float sineTerm = sin(pos.w * 0.5);
+			float cosineTerm = cos(p.w * 0.5);
+			float sineTerm = sin(p.w * 0.5);
 
 			return mat4(
 				cosineTerm, sineTerm, 0.0, 0.0,
@@ -60,14 +60,20 @@ class SL2RGeometry extends BaseGeometry
 		const mat2 E0 = mat2(1.0, 0.0, 0.0, 1.0);
 		const mat2 E1 = mat2(0.0, -1.0, 1.0, 0.0);
 		const mat2 E2 = mat2(0.0, 1.0, 1.0, 0.0);
-		const mat2 E0 = mat2(1.0, 0.0, 0.0, -1.0);
+		const mat2 E3 = mat2(1.0, 0.0, 0.0, -1.0);
 
 		void applyH2Isometry(vec4 qElement, inout vec3 h2Element)
 		{
 			mat2 h2Matrix = -h2Element.x * E3 + h2Element.y * E2 + h2Element.z * E1;
 			mat2 qMatrix = qElement.x * E0 + qElement.y * E1 + qElement.z * E2 + qElement.w * E3;
 
-			mat2 conjugatedh2Matrix = qMatrix * h2Matrix * inverse(qMatrix);
+			// Inverse function doesn't work for whatever reason, so I'll just do this myself.
+			mat2 qMatrixInv = mat2(
+				qMatrix[1][1], -qMatrix[0][1],
+				-qMatrix[1][0], qMatrix[0][0]
+			) / (qMatrix[0][0] * qMatrix[1][1] - qMatrix[1][0] * qMatrix[0][1]);
+
+			mat2 conjugatedh2Matrix = qMatrix * h2Matrix * qMatrixInv;
 
 			h2Element = vec3(
 				conjugatedh2Matrix[1][1],
@@ -92,7 +98,7 @@ class SL2RGeometry extends BaseGeometry
 				float trigArg = kappa * t * 0.5;
 				float sineFactor = sin(trigArg);
 
-				pos = vec3(
+				pos = vec4(
 					2.0 * a / kappa * sineFactor * cos(trigArg),
 					-2.0 * a * c / (kappa * kappa) * sineFactor * sineFactor,
 					1.0 + 2.0 * a * a / (kappa * kappa) * sineFactor * sineFactor,
@@ -119,7 +125,7 @@ class SL2RGeometry extends BaseGeometry
 				float trigArg = kappa * t * 0.5;
 				float sineFactor = sinh(trigArg);
 
-				pos = vec3(
+				pos = vec4(
 					2.0 * a / kappa * sineFactor * cosh(trigArg),
 					-2.0 * a * c / (kappa * kappa) * sineFactor * sineFactor,
 					1.0 + 2.0 * a * a / (kappa * kappa) * sineFactor * sineFactor,
@@ -142,6 +148,8 @@ class SL2RGeometry extends BaseGeometry
 			applyH2Isometry(qElement, pos.xyz);
 
 			pos.w += startPos.w;
+
+			return pos;
 		}
 	`;
 	
@@ -192,43 +200,29 @@ export class SL2RSpheres extends SL2RGeometry
 {
 	static distances = `
 		float radius = .25;
-		float distance1 = approximateDistanceToOrigin(pos);
-
-		if (distance1 > radius + 1.0)
-		{
-			distance1 -= radius;
-		}
-
-		else
-		{
-			distance1 = exactDistanceToOrigin(pos) - radius;
-		}
-
+		float distance1 = 1.0;
 		
-		// The distance to the x and y teleportation planes is the distance between the projections
-		// to E^2. Unfortunately for our performance, the tolerances really do need to be this tight
-		// to avoid artifacts.
-		float distance2 = abs(pos.x - 0.515);
-		float distance3 = abs(pos.x + 0.515);
+		// approximateDistanceToOrigin(pos);
 
-		float distance4 = abs(pos.y - 0.515);
-		float distance5 = abs(pos.y + 0.515);
+		// if (distance1 > radius + 1.0)
+		// {
+		// 	distance1 -= radius;
+		// }
+
+		// else
+		// {
+		// 	distance1 = exactDistanceToOrigin(pos) - radius;
+		// }
 	`;
 
 	distanceEstimatorGlsl = `
 		${SL2RSpheres.distances}
 
-		float minDistance = ${getMinGlslString("distance", 5)};
-
-		return minDistance;
+		return distance1;
 	`;
 
 	getColorGlsl = `
-		return vec3(
-			.25 + .75 * (.5 * (sin(floor(baseColor.x + globalColor.x + .5) * 40.0) + 1.0)),
-			.25 + .75 * (.5 * (sin(floor(baseColor.y + globalColor.y + .5) * 57.0) + 1.0)),
-			.25 + .75 * (.5 * (sin(floor(baseColor.z + globalColor.z + .5) * 89.0) + 1.0))
-		);
+		return vec3(1.0, 1.0, 1.0); 
 	`;
 
 	lightGlsl = `
@@ -240,7 +234,7 @@ export class SL2RSpheres extends SL2RGeometry
 		vec4 lightDirection2 = normalize(vec4(-4.0, 2.0, -1.0, 1.0) - pos);
 		float dotProduct2 = dot(surfaceNormal, lightDirection2);
 
-		float lightIntensity = 1.4 * lightBrightness * max(abs(dotProduct1), abs(dotProduct2));
+		float lightIntensity = 1.0;
 	`;
 
 	getMovingSpeed()
