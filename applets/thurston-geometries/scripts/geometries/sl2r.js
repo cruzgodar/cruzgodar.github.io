@@ -1,4 +1,3 @@
-import { ThurstonGeometry } from "../class.js";
 import { BaseGeometry, getMinGlslString } from "./base.js";
 
 class SL2RGeometry extends BaseGeometry
@@ -146,125 +145,47 @@ class SL2RGeometry extends BaseGeometry
 		}
 	`;
 	
-	followGeodesic(pos, dir, t)
+	// Just the same as in H^2 x E, since it's exactly the same model.
+	correctPosition(pos)
 	{
-		// As in Nil, the vectors are left at the origin.
-		const alpha = Math.atan2(dir[1], dir[0]);
-		const a = Math.sqrt(dir[0] * dir[0] + dir[1] * dir[1]);
-		const c = dir[2];
-
-		const newPos = ThurstonGeometry.mat4TimesVector(A,
-			Math.abs(c) < 0.01
-				? [
-					a * Math.cos(alpha) * t,
-					a * Math.sin(alpha) * t,
-					0,
-					1
-				]
-				: [
-					2 * a / c * Math.sin(c * t / 2) * Math.cos(c * t / 2 + alpha),
-					2 * a / c * Math.sin(c * t / 2) * Math.sin(c * t / 2 + alpha),
-					c * t + a * a / (2 * c * c) * (c * t - Math.sin(c * t)),
-					1
-				]
+		const magnitude = Math.sqrt(
+			-pos[0] * pos[0]
+			- pos[1] * pos[1]
+			+ pos[2] * pos[2]
 		);
-		
-		// No need to correct the position in Nil babyyy
-		return newPos;
+
+		return [
+			pos[0] / magnitude,
+			pos[1] / magnitude,
+			pos[2] / magnitude,
+			pos[3]
+		];
 	}
 
+	// Just like correctPosition, this is dependent on the model, not the geodesics.
+	// However, unlike H^2 x E, we're always staying at the origin in this geometry,
+	// so we're always going to return [0, 0, 1, 0].
 	getNormalVec()
 	{
-		return [0, 0, 0, 1];
+		return [0, 0, 1, 0];
 	}
 
-	correctVectors() {}
-
-	baseColorIncreases = [
-		[1, 0, 0],
-		[-1, 0, 0],
-		[0, 1, 0],
-		[0, -1, 0],
-		[0, 0, 1],
-		[0, 0, -1]
-	];
-	
-	baseColor = [0, 0, 0];
-
-	teleportCamera()
+	dotProduct(vec1, vec2)
 	{
-		const teleportations = [
-			[
-				[1, 0, 0, 1],
-				[0, 1, 0, 0],
-				[0, .5, 1, 0],
-				[0, 0, 0, 1]
-			],
-			[
-				[1, 0, 0, -1],
-				[0, 1, 0, 0],
-				[0, -.5, 1, 0],
-				[0, 0, 0, 1]
-			],
-			[
-				[1, 0, 0, 0],
-				[0, 1, 0, 1],
-				[-.5, 0, 1, 0],
-				[0, 0, 0, 1]
-			],
-			[
-				[1, 0, 0, 0],
-				[0, 1, 0, -1],
-				[.5, 0, 1, 0],
-				[0, 0, 0, 1]
-			],
-			[
-				[1, 0, 0, 0],
-				[0, 1, 0, 0],
-				[0, 0, 1, 1],
-				[0, 0, 0, 1]
-			],
-			[
-				[1, 0, 0, 0],
-				[0, 1, 0, 0],
-				[0, 0, 1, -1],
-				[0, 0, 0, 1]
-			]
-		];
-
-		// Okay so here's the thing. This isometry moves *points* on one face
-		// to points on the other, and therefore induces a map on the tangent spaces.
-		// However, our direction vectors are from the *origin*. So we'll transfer
-		// the vectors to the camera position, teleport them, and then transfer them back
-		// using the new camera position's transformation.
-
-		for (let i = 0; i < 3; i++)
-		{
-			if (this.cameraPos[i] < -0.5)
-			{
-				this.cameraPos = ThurstonGeometry.mat4TimesVector(
-					teleportations[2 * i],
-					this.cameraPos
-				);
-
-				this.baseColor[0] += this.baseColorIncreases[2 * i][0];
-				this.baseColor[1] += this.baseColorIncreases[2 * i][1];
-				this.baseColor[2] += this.baseColorIncreases[2 * i][2];
-			}
-
-			else if (this.cameraPos[i] > 0.5)
-			{
-				this.cameraPos = ThurstonGeometry.mat4TimesVector(
-					teleportations[2 * i + 1],
-					this.cameraPos
-				);
-
-				this.baseColor[0] += this.baseColorIncreases[2 * i + 1][0];
-				this.baseColor[1] += this.baseColorIncreases[2 * i + 1][1];
-				this.baseColor[2] += this.baseColorIncreases[2 * i + 1][2];
-			}
-		}
+		return vec1[0] * vec2[0] + vec1[1] * vec2[1] - vec1[2] * vec2[2] + vec1[3] * vec2[3];
 	}
+
+	normalize(vec)
+	{
+		const magnitude = Math.sqrt(Math.abs(this.dotProduct(vec, vec)));
+
+		return [vec[0] / magnitude, vec[1] / magnitude, vec[2] / magnitude, vec[3] / magnitude];
+	}
+
+	// Since we're at the origin, we just want all the vectors to be orthogonal to the
+	// normal vector, i.e. [0, 0, 1, 0]. Since we're never moving and projecting liek we usually
+	// do, this should take care of itself.
+	correctVectors() {}
 }
 
 export class SL2RSpheres extends SL2RGeometry
@@ -322,29 +243,14 @@ export class SL2RSpheres extends SL2RGeometry
 		float lightIntensity = 1.4 * lightBrightness * max(abs(dotProduct1), abs(dotProduct2));
 	`;
 
-	ambientOcclusionDenominator = "250.0";
-
 	getMovingSpeed()
 	{
 		return 1;
 	}
 
-	cameraPos = [0.163559, -0.438969, 0.124604, 1];
-	normalVec = [0, 0, 0, 1];
-	upVec = [0, 0, 1, 0];
-	rightVec = [0.0748089, 0.997196, 0, 0];
-	forwardVec = [0.997199, -0.074809, 0, 0];
-
-	baseColor = [-2, 0, -2];
-
-	uniformGlsl = `
-		uniform vec3 baseColor;
-	`;
-
-	uniformNames = ["baseColor"];
-
-	updateUniforms(gl, uniformList)
-	{
-		gl.uniform3fv(uniformList["baseColor"], this.baseColor);
-	}
+	cameraPos = [0, 0, 1, 0];
+	normalVec = [0, 0, 1, 0];
+	upVec = [0, 0, 0, 1];
+	rightVec = [0, 1, 0, 0];
+	forwardVec = [1, 0, 0, 0];
 }
