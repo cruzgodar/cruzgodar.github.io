@@ -180,17 +180,17 @@ class SL2RGeometry extends BaseGeometry
 
 			if (abs(tanPhi) == sinhTerm)
 			{
-				return -0.5 * w + phi - 2 * tanPhi;
+				return -0.5 * w + phi - 2.0 * tanPhi;
 			}
 
 			float sqrtTerm = sqrt(abs(sinhTerm * sinhTerm - tanPhi * tanPhi));
 
 			if (abs(tanPhi) < sinhTerm)
 			{
-				return -0.5 * w + phi - 2 * tanPhi * coshTerm / sqrtTerm * atanh(sqrtTerm / coshTerm);
+				return -0.5 * w + phi - 2.0 * tanPhi * coshTerm / sqrtTerm * atanh(sqrtTerm / coshTerm);
 			}
 
-			return -0.5 * w + phi - 2 * tanPhi * coshTerm / sqrtTerm * (
+			return -0.5 * w + phi - 2.0 * tanPhi * coshTerm / sqrtTerm * (
 				atan(sqrtTerm / coshTerm) - sign(tanPhi) * floor(0.5 - phi / pi) * pi
 			);
 		}
@@ -257,7 +257,7 @@ class SL2RGeometry extends BaseGeometry
 
 			for (int iteration = 0; iteration < newtonIterations; iteration++)
 			{
-				phi -= chi(rho, z, phi) / chiPrime(rho, z, phi);
+				phi -= chi(rho, w, phi) / chiPrime(rho, w, phi);
 			}
 
 			return phi;
@@ -271,11 +271,12 @@ class SL2RGeometry extends BaseGeometry
 				pos = vec4(pos.y, pos.x, pos.z, -pos.w);
 			}
 
-			float rho = asinh(length(pos.xy));
+			// float rho = asinh(length(pos.xy));
 
-			float phi = chiZero(rho, pos.w);
+			// float phi = chiZero(rho, pos.w);
 
 			// Now we have phi, and so we should be able to solve for t. This is easier said than done :/
+			return 0.0;
 		}
 	`;
 	
