@@ -34,6 +34,11 @@ class SL2RGeometry extends BaseGeometry
 			return (expTerm - 1.0) / (expTerm + 1.0);
 		}
 
+		float asinh(float x)
+		{
+			return log(x + sqrt(x*x + 1.0));
+		}
+
 		float acosh(float x)
 		{
 			return log(x + sqrt(x*x - 1.0));
@@ -44,7 +49,7 @@ class SL2RGeometry extends BaseGeometry
 			return 0.5 * log((1.0 + x) / (1.0 - x));
 		}
 
-		// Projects a point p in the universal cover, i.e. H^2 x R, down to Q.
+		// Projects a point p in the universal cover, i.e. H^2 x R, down to Q, via the map lambda.
 		vec4 projectToQ(vec4 p)
 		{
 			float denominator = sqrt(2.0 * p.z + 2.0);
@@ -278,6 +283,24 @@ class SL2RGeometry extends BaseGeometry
 			// Now we have phi, and so we should be able to solve for t. This is easier said than done :/
 			return 0.0;
 		}
+
+		float approximateDistanceToOrigin(vec4 pos)
+		{
+			float acoshTerm = acosh(pos.z * pos.z - pos.x * pos.x - pos.y * pos.y);
+			float sigma = 0.5 * sqrt(acoshTerm * acoshTerm + pos.w * pos.w);
+
+			return sigma;
+		}
+
+		float distanceToHalfPlane(vec4 pos)
+		{
+			vec4 qElement = projectToQ(pos);
+			vec3 h2Element = vec3(0.0, 0.0, 1.0);
+			
+			applyH2Isometry(qElement, h2Element);
+
+			return abs(asinh(h2Element.x));
+		}
 	`;
 	
 	// Just the same as in H^2 x E, since it's exactly the same model.
@@ -327,19 +350,7 @@ export class SL2RSpheres extends SL2RGeometry
 {
 	static distances = `
 		float radius = .25;
-		float distance1 = 1.0;
-		
-		// approximateDistanceToOrigin(pos);
-
-		// if (distance1 > radius + 1.0)
-		// {
-		// 	distance1 -= radius;
-		// }
-
-		// else
-		// {
-		// 	distance1 = exactDistanceToOrigin(pos) - radius;
-		// }
+		float distance1 = distanceToHalfPlane(pos);
 	`;
 
 	distanceEstimatorGlsl = `
@@ -349,7 +360,7 @@ export class SL2RSpheres extends SL2RGeometry
 	`;
 
 	getColorGlsl = `
-		return vec3(1.0, 1.0, 1.0); 
+		return vec3(0.5, 0.5, 0.5); 
 	`;
 
 	lightGlsl = `
