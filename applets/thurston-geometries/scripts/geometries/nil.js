@@ -572,7 +572,7 @@ export class NilRooms extends NilGeometry
 		float radius = wallThickness;
 		float distance1 = approximateDistanceToOrigin(pos);
 
-		if (distance1 > radius + 0.01)
+		if (distance1 > radius + 0.2)
 		{
 			distance1 -= radius;
 		}
@@ -671,7 +671,7 @@ export class NilSpheres extends NilGeometry
 		float radius = .2;
 		float distance1 = approximateDistanceToOrigin(pos);
 
-		if (distance1 > radius + 0.01)
+		if (distance1 > radius + 0.2)
 		{
 			distance1 -= radius;
 		}
