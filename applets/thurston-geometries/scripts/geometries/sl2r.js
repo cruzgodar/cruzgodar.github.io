@@ -245,27 +245,15 @@ class SL2RGeometry extends BaseGeometry
 				));
 		}
 		
-		const int newtonIterations = 10;
+		const int newtonIterations = 5;
 		
 		// Returns the unique zero in (-pi, 0] of chi. w must be positive, so apply the flip transformation before doing this if it's not.
 		float chiZero(float rho, float w)
 		{
-			float phi = 4.0;
+			// The minimum phi for which 
+			float M = atan(abs(sinh(rho * 0.5))) - pi;
 
-			if (rho <= 0.2)
-			{
-				phi = 6.2;
-			}
-
-			else if (rho <= 1.0)
-			{
-				phi = 6.0;
-			}
-
-			else if (rho <= 4.0)
-			{
-				phi = 5.0;
-			}
+			float phi = 0.5 * M;
 
 			for (int iteration = 0; iteration < newtonIterations; iteration++)
 			{
@@ -277,23 +265,17 @@ class SL2RGeometry extends BaseGeometry
 
 		float exactDistanceToOrigin(vec4 pos)
 		{
-			float rho = 2.0 * acosh(length(pos.xy));
-
-
-
 			// If w is negative, we need to flip the whole z-axis.
 			if (pos.w < 0.0)
 			{
 				pos = vec4(pos.y, pos.x, pos.z, -pos.w);
 			}
 
+			float rho = asinh(length(pos.xy));
+
 			float phi = chiZero(rho, pos.w);
 
-			float sineThing = 2.0 * sin(phi * 0.5);
-
-			float t = abs(phi * length(vec3(pos.xy, sineThing)) / sineThing);
-
-			return t;
+			// Now we have phi, and so we should be able to solve for t. This is easier said than done :/
 		}
 	`;
 	
