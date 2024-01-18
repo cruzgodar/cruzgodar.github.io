@@ -43,14 +43,6 @@ class NilGeometry extends BaseGeometry
 		globalColor += teleportPos(pos, startPos, rayDirectionVec, t, totalT);
 	`;
 
-	normalizeGlsl = /*glsl*/`
-		float zFactor = dir.z;
-
-		float magnitude = length(vec3(dir.xy, zFactor));
-		
-		return dir / magnitude;
-	`;
-
 	fogGlsl = /*glsl*/`
 		return mix(color, fogColor, 1.0 - exp(-totalT * 0.2));
 	`;
@@ -114,7 +106,9 @@ class NilGeometry extends BaseGeometry
 		// Only recommended when actually close and an underestimate isn't good enough for detail.
 		float exactDistanceToOrigin(vec4 pos)
 		{
-			if (length(pos.xy) < 0.001)
+			float rho = length(pos.xy);
+
+			if (rho < 0.001)
 			{
 				// The shortest path is just the straight line along the z-axis.
 				return abs(pos.z);
@@ -124,7 +118,7 @@ class NilGeometry extends BaseGeometry
 			{
 				// Here phi = 0, and  we want to avoid sin(x)/x stuff when possible.
 
-				return length(pos.xy);
+				return rho;
 			}
 
 			// If z is negative, we need to flip the whole z-axis.
@@ -132,8 +126,6 @@ class NilGeometry extends BaseGeometry
 			{
 				pos = vec4(pos.y, pos.x, -pos.z, 1.0);
 			}
-
-			float rho = length(pos.xy);
 
 			float phi = chiZero(rho, pos.z);
 
@@ -721,7 +713,7 @@ export class NilSpheres extends NilGeometry
 		vec4 lightDirection2 = normalize(vec4(-4.0, 2.0, -1.0, 1.0) - pos);
 		float dotProduct2 = dot(surfaceNormal, lightDirection2);
 
-		float lightIntensity = 1.4 * lightBrightness * max(abs(dotProduct1), abs(dotProduct2));
+		float lightIntensity = 1.3 * lightBrightness * max(abs(dotProduct1), abs(dotProduct2));
 	`;
 
 	ambientOcclusionDenominator = "250.0";
