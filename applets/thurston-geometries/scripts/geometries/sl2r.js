@@ -3,7 +3,8 @@ import { BaseGeometry } from "./base.js";
 class SL2RGeometry extends BaseGeometry
 {
 	geodesicGlsl = /*glsl*/`
-		vec4 pos = getUpdatedPos(startPos, rayDirectionVec, t);
+		float fiber;
+		vec4 pos = getUpdatedPos(startPos, rayDirectionVec, t, fiber);
 
 		// globalColor += teleportPos(pos, startPos, rayDirectionVec, t, totalT);
 	`;
@@ -79,27 +80,27 @@ class SL2RGeometry extends BaseGeometry
 
 		void applyH2Isometry(vec4 qElement, inout vec3 h2Element)
 		{
-			mat2 h2Matrix = -h2Element.x * E3 + h2Element.y * E2 + h2Element.z * E1;
-			mat2 qMatrix = qElement.x * E0 + qElement.y * E1 + qElement.z * E2 + qElement.w * E3;
-
-			// Inverse function doesn't work for whatever reason, so I'll just do this myself.
-			mat2 qMatrixInv = mat2(
-				qMatrix[1][1], -qMatrix[0][1],
-				-qMatrix[1][0], qMatrix[0][0]
-			) / (qMatrix[0][0] * qMatrix[1][1] - qMatrix[1][0] * qMatrix[0][1]);
-
-			mat2 conjugatedh2Matrix = qMatrix * h2Matrix * qMatrixInv;
-
-			h2Element = vec3(
-				conjugatedh2Matrix[1][1],
-				0.5 * (conjugatedh2Matrix[1][0] + conjugatedh2Matrix[0][1]),
-				0.5 * (conjugatedh2Matrix[1][0] - conjugatedh2Matrix[0][1])
-			);
+			// Yet another thing that should be in the paper but is only knowable
+			// by digging around in their code. I'd prefer to use mat4x3 and mat3x4 here,
+			// but WebGL doesn't seem to understand.
+			h2Element = mat3(
+				mat4(
+					qElement.x, qElement.y, qElement.z, 0.0,
+					-qElement.y, qElement.x, qElement.w, 0.0,
+					qElement.z, qElement.w, qElement.x, 0.0,
+					-qElement.w, qElement.z, qElement.y, 0.0
+				) * mat4(
+					qElement.x, qElement.y, qElement.z, qElement.w,
+					-qElement.y, qElement.x, qElement.w, -qElement.z,
+					qElement.z, qElement.w, qElement.x, qElement.y,
+					0.0, 0.0, 0.0, 0.0
+				)
+			) * h2Element;
 		}
 
 		const float root2Over2 = 0.70710678;
 		
-		vec4 getUpdatedPos(vec4 startPos, vec4 rayDirectionVec, float t)
+		vec4 getUpdatedPos(vec4 startPos, vec4 rayDirectionVec, float t, inout float fiber)
 		{
 			float alpha = atan(rayDirectionVec.y, rayDirectionVec.x);
 			float a = length(rayDirectionVec.xy);
@@ -348,22 +349,22 @@ class SL2RGeometry extends BaseGeometry
 
 export class SL2RSpheres extends SL2RGeometry
 {
-	static distances = `
+	static distances = /*glsl*/`
 		float radius = .25;
 		float distance1 = distanceToHalfPlane(pos);
 	`;
 
-	distanceEstimatorGlsl = `
+	distanceEstimatorGlsl = /*glsl*/`
 		${SL2RSpheres.distances}
 
 		return distance1;
 	`;
 
-	getColorGlsl = `
+	getColorGlsl = /*glsl*/`
 		return vec3(0.5, 0.5, 0.5); 
 	`;
 
-	lightGlsl = `
+	lightGlsl = /*glsl*/`
 		surfaceNormal.w = 0.0;
 
 		vec4 lightDirection1 = normalize(vec4(3.0, -3.0, 3.0, 1.0) - pos);
@@ -372,7 +373,7 @@ export class SL2RSpheres extends SL2RGeometry
 		vec4 lightDirection2 = normalize(vec4(-4.0, 2.0, -1.0, 1.0) - pos);
 		float dotProduct2 = dot(surfaceNormal, lightDirection2);
 
-		float lightIntensity = 1.0;
+		float lightIntensity = max(dotProduct1, dotProduct2);
 	`;
 
 	getMovingSpeed()
