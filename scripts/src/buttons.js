@@ -142,6 +142,8 @@ function setUpDropdown(selectElement)
 
 	let selectedItem = 0;
 
+	let scale = 1;
+
 	const buttonElement = selectElement.previousElementSibling;
 
 	buttonElement.innerHTML = "";
@@ -215,12 +217,16 @@ function setUpDropdown(selectElement)
 		});
 
 		const openHeight = flexElement.getBoundingClientRect().height + 4;
+		const headerHeight = headerElement.getBoundingClientRect().height;
+		const totalUsableHeight = window.innerHeight - headerHeight - 20;
+
+		scale = Math.min(totalUsableHeight / openHeight, 1);
+
+		const effectiveOpenHeight = openHeight * scale;
 
 		const rect = buttonElement.getBoundingClientRect();
-		const topWhenOpen = (rect.top + rect.height / 2) - openHeight / 2;
-		const bottomWhenOpen = (rect.bottom - rect.height / 2) + openHeight / 2;
-
-		const headerHeight = headerElement.getBoundingClientRect().height;
+		const topWhenOpen = (rect.top + rect.height / 2) - effectiveOpenHeight / 2;
+		const bottomWhenOpen = (rect.bottom - rect.height / 2) + effectiveOpenHeight / 2;
 
 		let translateY = 0;
 
@@ -229,9 +235,7 @@ function setUpDropdown(selectElement)
 			translateY = window.innerHeight - 10 - bottomWhenOpen;
 		}
 
-		// Putting this last means we error on the side of opening beyond the bottom of the page
-		// (although this si an extreme edge case).
-		if (topWhenOpen < 10 + headerHeight)
+		else if (topWhenOpen < 10 + headerHeight)
 		{
 			translateY = 10 + headerHeight - topWhenOpen;
 		}
@@ -243,6 +247,7 @@ function setUpDropdown(selectElement)
 				height: openHeight,
 				width: maxWidth + 29.75,
 				translateY,
+				scale,
 				easing: "easeOutQuad",
 				duration: opacityAnimationTime
 			}).finished,
@@ -292,7 +297,7 @@ function setUpDropdown(selectElement)
 
 		const otherElementHeights = optionElements
 			.slice(0, selectedItem)
-			.map(element => element.getBoundingClientRect().height);
+			.map(element => element.getBoundingClientRect().height / scale);
 		
 		let translateY = 0;
 		otherElementHeights.forEach(height => translateY -= height);
@@ -302,9 +307,10 @@ function setUpDropdown(selectElement)
 		await Promise.all([
 			anime({
 				targets: [buttonElement, buttonElement.parentNode.parentNode],
-				height: optionElements[selectedItem].getBoundingClientRect().height + 4,
-				width: (optionElements[selectedItem].getBoundingClientRect().width + 16),
+				height: optionElements[selectedItem].getBoundingClientRect().height / scale + 4,
+				width: (optionElements[selectedItem].getBoundingClientRect().width / scale + 16),
 				translateY: 0,
+				scale: 1,
 				easing: "easeOutQuad",
 				duration: opacityAnimationTime
 			}).finished,

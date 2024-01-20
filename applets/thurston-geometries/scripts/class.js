@@ -583,14 +583,9 @@ export class ThurstonGeometry extends Applet
 			const dt = timeElapsed / (1000 * this.movingSubsteps)
 				* this.geometryData.getMovingSpeed(this.geometryData.cameraPos);
 
-			//The magic formula is T' = curvature * N.
-			// const curvature = this.getCurvature(this.geometryData.cameraPos, tangentVec);
-
-			const newCameraPos = this.geometryData.correctPosition(
+			this.geometryData.cameraPos = this.geometryData.correctPosition(
 				this.geometryData.followGeodesic(this.geometryData.cameraPos, tangentVec, dt)
 			);
-
-			this.geometryData.cameraPos = newCameraPos;
 
 			this.geometryData.normalVec = this.geometryData.getNormalVec(
 				this.geometryData.cameraPos
@@ -675,23 +670,6 @@ export class ThurstonGeometry extends Applet
 
 
 
-	getCurvature(pos, dir)
-	{
-		const normalizedDir = ThurstonGeometry.normalize(dir);
-
-		const gammaPrime = this.geometryData.getGammaPrime(pos, normalizedDir);
-		const gammaDoublePrime = this.geometryData.getGammaDoublePrime(pos, normalizedDir);
-
-		const dotProduct = ThurstonGeometry.dotProduct(gammaPrime, gammaDoublePrime);
-		const gammaPrimeMag = ThurstonGeometry.magnitude(gammaPrime);
-		const gammaDoublePrimeMag = ThurstonGeometry.magnitude(gammaDoublePrime);
-
-		return Math.sqrt((gammaPrimeMag * gammaDoublePrimeMag) ** 2 - dotProduct ** 2)
-			/ (gammaPrimeMag ** 3);
-	}
-
-
-
 	handleKeydownEvent(e)
 	{
 		const key = e.key.length === 1 ? e.key.toLowerCase() : e.key;
@@ -703,8 +681,6 @@ export class ThurstonGeometry extends Applet
 			this.keysPressed[key] = true;
 		}
 	}
-
-
 
 	handleKeyupEvent(e)
 	{
@@ -718,14 +694,10 @@ export class ThurstonGeometry extends Applet
 		}
 	}
 
-
-
 	handleTouchEvent(e)
 	{
 		this.numTouches = e.touches.length;
 	}
-
-
 
 	changeResolution(resolution = this.resolution)
 	{

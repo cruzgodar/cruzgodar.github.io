@@ -15,10 +15,6 @@ class SL2RGeometry extends BaseGeometry
 		// globalColor += teleportPos(pos, startPos, rayDirectionVec, t, totalT);
 	`;
 
-	normalizeGlsl = /*glsl*/`
-		return normalize(dir);
-	`;
-
 	fogGlsl = /*glsl*/`
 		return color;//mix(color, fogColor, 1.0 - exp(-totalT * 0.2));
 	`;
@@ -168,6 +164,7 @@ class SL2RGeometry extends BaseGeometry
 			// is group multiplication in SL(2, R).
 			float sinct = sin(c * t);
 			float cosct = cos(c * t);
+
 			eta = vec4(
 				eta.x * cosct - eta.y * sinct,
 				eta.x * sinct + eta.y * cosct,
@@ -320,7 +317,7 @@ class SL2RGeometry extends BaseGeometry
 			
 			applyH2Isometry(pos, h2Element);
 
-			return abs(asinh(h2Element.x));
+			return abs(asinh(h2Element.y));
 		}
 	`;
 	
@@ -345,18 +342,6 @@ class SL2RGeometry extends BaseGeometry
 	getNormalVec()
 	{
 		return [0, 0, 1, 0];
-	}
-
-	dotProduct(vec1, vec2)
-	{
-		return vec1[0] * vec2[0] + vec1[1] * vec2[1] - vec1[2] * vec2[2] + vec1[3] * vec2[3];
-	}
-
-	normalize(vec)
-	{
-		const magnitude = Math.sqrt(Math.abs(this.dotProduct(vec, vec)));
-
-		return [vec[0] / magnitude, vec[1] / magnitude, vec[2] / magnitude, vec[3] / magnitude];
 	}
 
 	followGeodesic(pos, dir, t)
@@ -468,7 +453,7 @@ export class SL2RSpheres extends SL2RGeometry
 
 	getMovingSpeed()
 	{
-		return 1;
+		return 2;
 	}
 
 	cameraPos = [1, 0, 0, 0];
