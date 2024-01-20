@@ -178,6 +178,7 @@ class SL2RGeometry extends BaseGeometry
 			// Finally, apply R_alpha.
 			float sinAlpha = sin(alpha);
 			float cosAlpha = cos(alpha);
+
 			eta.zw = vec2(cosAlpha * eta.z - sinAlpha * eta.w, sinAlpha * eta.z + cosAlpha * eta.w);
 
 			// What we have at this point is eta in SL(2, R) and fiber, together specifying
@@ -365,8 +366,6 @@ class SL2RGeometry extends BaseGeometry
 		const c = dir[3];
 		const kappa = Math.sqrt(Math.abs(c * c - a * a));
 
-		console.log(a*a+c*c);
-
 		let eta;
 		let fiber;
 
@@ -395,8 +394,6 @@ class SL2RGeometry extends BaseGeometry
 			fiber = 2 * c * t + 2 * Math.atan(-c / kappa * Math.tanh(trigArg));
 		}
 
-		console.log(eta, fiber);
-
 		// This is eta * ksi, where ksi = (cos(ct), sin(ct), 0, 0) and the multiplication
 		// is group multiplication in SL(2, R).
 		const sinct = Math.sin(c * t);
@@ -413,8 +410,12 @@ class SL2RGeometry extends BaseGeometry
 		const sinAlpha = Math.sin(alpha);
 		const cosAlpha = Math.cos(alpha);
 
-		eta[2] = cosAlpha * eta[2] - sinAlpha * eta[3];
-		eta[3] = sinAlpha * eta[2] + cosAlpha * eta[3];
+		eta = [
+			eta[0],
+			eta[1],
+			cosAlpha * eta[2] - sinAlpha * eta[3],
+			sinAlpha * eta[2] + cosAlpha * eta[3]
+		];
 
 		// What we have at this point is eta in SL(2, R) and fiber, together specifying
 		// a point in the universal cover after flowing from the origin for time t. We now
@@ -422,18 +423,11 @@ class SL2RGeometry extends BaseGeometry
 
 		this.cameraFiber += fiber;
 
-		console.log(ThurstonGeometry.mat4TimesVector([
-			pos[0], -pos[1], pos[2], pos[3],
-			pos[1], pos[0], pos[3], -pos[2],
-			pos[2], pos[3], pos[0], -pos[1],
-			pos[3], -pos[2], pos[1], pos[0]
-		], eta), fiber);
-
 		return ThurstonGeometry.mat4TimesVector([
-			pos[0], -pos[1], pos[2], pos[3],
-			pos[1], pos[0], pos[3], -pos[2],
-			pos[2], pos[3], pos[0], -pos[1],
-			pos[3], -pos[2], pos[1], pos[0]
+			[pos[0], -pos[1], pos[2], pos[3]],
+			[pos[1], pos[0], pos[3], -pos[2]],
+			[pos[2], pos[3], pos[0], -pos[1]],
+			[pos[3], -pos[2], pos[1], pos[0]]
 		], eta);
 	}
 
