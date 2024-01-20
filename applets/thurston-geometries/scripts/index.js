@@ -31,7 +31,7 @@ export function load()
 		"s3-hopf-fibration": S3HopfFibration,
 
 		"h3-rooms": H3Rooms,
- 
+
 		"s2xe-rooms": S2xERooms,
 		"s2xe-spheres": S2xESpheres,
 

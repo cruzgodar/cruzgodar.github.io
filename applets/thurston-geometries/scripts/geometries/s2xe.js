@@ -59,78 +59,72 @@ export class S2xERooms extends S2xEGeometry
 	`;
 
 	distanceEstimatorGlsl = /*glsl*/`
-		float distanceEstimator(vec4 pos)
-		{
-			${S2xERooms.distances}
+		${S2xERooms.distances}
 
-			float minDistance = ${getMaxGlslString("distance", 6)};
+		float minDistance = ${getMaxGlslString("distance", 6)};
 
-			return minDistance;
-		}
+		return minDistance;
 	`;
 
 	getColorGlsl = /*glsl*/`
-		vec3 getColor(vec4 pos, vec3 globalColor)
+		${S2xERooms.distances}
+
+		float minDistance = ${getMaxGlslString("distance", 6)};
+
+		float wColor = floor((pos.w + spacing / 2.0) / spacing);
+
+		if (minDistance == distance1)
 		{
-			${S2xERooms.distances}
+			return vec3(
+				.75 + .25 * (.5 * (sin(wColor * 7.0) + 1.0)),
+				.65 * (.5 * (sin(wColor * 11.0) + 1.0)),
+				.65 * (.5 * (sin(wColor * 89.0) + 1.0))
+			);
+		}
 
-			float minDistance = ${getMaxGlslString("distance", 6)};
+		if (minDistance == distance2)
+		{
+			return vec3(
+				.65 * (.5 * (sin(wColor * 7.0) + 1.0)),
+				.75 + .25 * (.5 * (sin(wColor * 11.0) + 1.0)),
+				.65 * (.5 * (sin(wColor * 89.0) + 1.0))
+			);
+		}
 
-			float wColor = floor((pos.w + spacing / 2.0) / spacing);
+		if (minDistance == distance3)
+		{
+			return vec3(
+				.65 * (.5 * (sin(wColor * 7.0) + 1.0)),
+				.65 * (.5 * (sin(wColor * 11.0) + 1.0)),
+				.75 + .25 * (.5 * (sin(wColor * 17.0) + 1.0))
+			);
+		}
 
-			if (minDistance == distance1)
-			{
-				return vec3(
-					.75 + .25 * (.5 * (sin(wColor * 7.0) + 1.0)),
-					.65 * (.5 * (sin(wColor * 11.0) + 1.0)),
-					.65 * (.5 * (sin(wColor * 89.0) + 1.0))
-				);
-			}
+		if (minDistance == distance4)
+		{
+			return vec3(
+				.75 + .25 * (.5 * (sin(wColor * 7.0) + 1.0)),
+				.75 + .25 * (.5 * (sin(wColor * 11.0) + 1.0)),
+				.65 * (.5 * (sin(wColor * 17.0) + 1.0))
+			);
+		}
 
-			if (minDistance == distance2)
-			{
-				return vec3(
-					.65 * (.5 * (sin(wColor * 7.0) + 1.0)),
-					.75 + .25 * (.5 * (sin(wColor * 11.0) + 1.0)),
-					.65 * (.5 * (sin(wColor * 89.0) + 1.0))
-				);
-			}
+		if (minDistance == distance5)
+		{
+			return vec3(
+				.75 + .25 * (.5 * (sin(wColor * 7.0) + 1.0)),
+				.65 * (.5 * (sin(wColor * 11.0) + 1.0)),
+				.75 + .25 * (.5 * (sin(wColor * 17.0) + 1.0))
+			);
+		}
 
-			if (minDistance == distance3)
-			{
-				return vec3(
-					.65 * (.5 * (sin(wColor * 7.0) + 1.0)),
-					.65 * (.5 * (sin(wColor * 11.0) + 1.0)),
-					.75 + .25 * (.5 * (sin(wColor * 17.0) + 1.0))
-				);
-			}
-
-			if (minDistance == distance4)
-			{
-				return vec3(
-					.75 + .25 * (.5 * (sin(wColor * 7.0) + 1.0)),
-					.75 + .25 * (.5 * (sin(wColor * 11.0) + 1.0)),
-					.65 * (.5 * (sin(wColor * 17.0) + 1.0))
-				);
-			}
-
-			if (minDistance == distance5)
-			{
-				return vec3(
-					.75 + .25 * (.5 * (sin(wColor * 7.0) + 1.0)),
-					.65 * (.5 * (sin(wColor * 11.0) + 1.0)),
-					.75 + .25 * (.5 * (sin(wColor * 17.0) + 1.0))
-				);
-			}
-
-			if (minDistance == distance6)
-			{
-				return vec3(
-					.65 * (.5 * (sin(wColor * 7.0) + 1.0)),
-					.75 + .25 * (.5 * (sin(wColor * 11.0) + 1.0)),
-					.75 + .25 * (.5 * (sin(wColor * 17.0) + 1.0))
-				);
-			}
+		if (minDistance == distance6)
+		{
+			return vec3(
+				.65 * (.5 * (sin(wColor * 7.0) + 1.0)),
+				.75 + .25 * (.5 * (sin(wColor * 11.0) + 1.0)),
+				.75 + .25 * (.5 * (sin(wColor * 17.0) + 1.0))
+			);
 		}
 	`;
 
@@ -195,69 +189,63 @@ export class S2xESpheres extends S2xEGeometry
 	`;
 
 	distanceEstimatorGlsl = /*glsl*/`
-		float distanceEstimator(vec4 pos)
-		{
-			${S2xESpheres.distances}
+		${S2xESpheres.distances}
 
-			float minDistance = ${getMinGlslString("distance", 5)};
+		float minDistance = ${getMinGlslString("distance", 5)};
 
-			return minDistance;
-		}
+		return minDistance;
 	`;
 
 	getColorGlsl = /*glsl*/`
-		vec3 getColor(vec4 pos, vec3 globalColor)
+		${S2xESpheres.distances}
+
+		float minDistance = ${getMinGlslString("distance", 5)};
+
+		float wColor = floor((pos.w + .785398) / 1.570796);
+
+		if (minDistance == distance1)
 		{
-			${S2xESpheres.distances}
+			return vec3(
+				.75 + .25 * (.5 * (sin(wColor * 7.0) + 1.0)),
+				.65 * (.5 * (sin(wColor * 11.0) + 1.0)),
+				.65 * (.5 * (sin(wColor * 89.0) + 1.0))
+			);
+		}
 
-			float minDistance = ${getMinGlslString("distance", 5)};
+		if (minDistance == distance2)
+		{
+			return vec3(
+				.65 * (.5 * (sin(wColor * 7.0) + 1.0)),
+				.75 + .25 * (.5 * (sin(wColor * 11.0) + 1.0)),
+				.65 * (.5 * (sin(wColor * 89.0) + 1.0))
+			);
+		}
 
-			float wColor = floor((pos.w + .785398) / 1.570796);
+		if (minDistance == distance3)
+		{
+			return vec3(
+				.65 * (.5 * (sin(wColor * 7.0) + 1.0)),
+				.65 * (.5 * (sin(wColor * 11.0) + 1.0)),
+				.75 + .25 * (.5 * (sin(wColor * 17.0) + 1.0))
+			);
+		}
 
-			if (minDistance == distance1)
-			{
-				return vec3(
-					.75 + .25 * (.5 * (sin(wColor * 7.0) + 1.0)),
-					.65 * (.5 * (sin(wColor * 11.0) + 1.0)),
-					.65 * (.5 * (sin(wColor * 89.0) + 1.0))
-				);
-			}
+		if (minDistance == distance4)
+		{
+			return vec3(
+				.75 + .25 * (.5 * (sin(wColor * 7.0) + 1.0)),
+				.75 + .25 * (.5 * (sin(wColor * 11.0) + 1.0)),
+				.65 * (.5 * (sin(wColor * 17.0) + 1.0))
+			);
+		}
 
-			if (minDistance == distance2)
-			{
-				return vec3(
-					.65 * (.5 * (sin(wColor * 7.0) + 1.0)),
-					.75 + .25 * (.5 * (sin(wColor * 11.0) + 1.0)),
-					.65 * (.5 * (sin(wColor * 89.0) + 1.0))
-				);
-			}
-
-			if (minDistance == distance3)
-			{
-				return vec3(
-					.65 * (.5 * (sin(wColor * 7.0) + 1.0)),
-					.65 * (.5 * (sin(wColor * 11.0) + 1.0)),
-					.75 + .25 * (.5 * (sin(wColor * 17.0) + 1.0))
-				);
-			}
-
-			if (minDistance == distance4)
-			{
-				return vec3(
-					.75 + .25 * (.5 * (sin(wColor * 7.0) + 1.0)),
-					.75 + .25 * (.5 * (sin(wColor * 11.0) + 1.0)),
-					.65 * (.5 * (sin(wColor * 17.0) + 1.0))
-				);
-			}
-
-			if (minDistance == distance5)
-			{
-				return vec3(
-					.88 + .12 * (.5 * (sin(wColor * 7.0) + 1.0)),
-					.88 + .12 * (.5 * (sin(wColor * 11.0) + 1.0)),
-					.88 + .12 * (.5 * (sin(wColor * 17.0) + 1.0))
-				);
-			}
+		if (minDistance == distance5)
+		{
+			return vec3(
+				.88 + .12 * (.5 * (sin(wColor * 7.0) + 1.0)),
+				.88 + .12 * (.5 * (sin(wColor * 11.0) + 1.0)),
+				.88 + .12 * (.5 * (sin(wColor * 17.0) + 1.0))
+			);
 		}
 	`;
 

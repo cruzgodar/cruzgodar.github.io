@@ -103,6 +103,11 @@ export class BaseGeometry
 	raymarchSetupGlsl;
 	finalTeleportationGlsl;
 
+	// A somewhat hacky workaround: SL(2, R) needs to keep track of more than a single vec4
+	// of position data, so when this is set to true, every function that takes in position
+	// now also takes a float called fiber.
+	usesFiberComponent = false;
+
 	cameraPos;
 	normalVec;
 	upVec;

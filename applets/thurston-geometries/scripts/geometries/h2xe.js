@@ -400,31 +400,25 @@ export class H2xERooms extends H2xEGeometry
 	`;
 
 	distanceEstimatorGlsl = /*glsl*/`
-		float distanceEstimator(vec4 pos)
-		{
-			${H2xERooms.distances}
+		${H2xERooms.distances}
 
-			float minDistance = ${getMinGlslString("distance", 5)};
+		float minDistance = ${getMinGlslString("distance", 5)};
 
-			return minDistance;
-		}
+		return minDistance;
 	`;
 
 	getColorGlsl = /*glsl*/`
-		vec3 getColor(vec4 pos, vec3 globalColor)
-		{
-			${H2xERooms.distances}
+		${H2xERooms.distances}
 
-			float minDistance = ${getMinGlslString("distance", 5)};
+		float minDistance = ${getMinGlslString("distance", 5)};
 
-			float wColor = floor((pos.w + 3.0 * spacing / 2.0) / spacing) - spacing / 2.0;
+		float wColor = floor((pos.w + 3.0 * spacing / 2.0) / spacing) - spacing / 2.0;
 
-			return vec3(
-				.4 + .6 * .5 * (sin((.05 * pos.x + wColor + globalColor.y + baseColor.y + globalColor.z + baseColor.z) * 5.0) + 1.0),
-				.4 + .6 * .5 * (sin((.05 * pos.y + wColor + globalColor.y + baseColor.y) * 7.0) + 1.0),
-				.4 + .6 * .5 * (sin((.05 * pos.z + wColor + globalColor.z + baseColor.z) * 11.0) + 1.0)
-			);
-		}
+		return vec3(
+			.4 + .6 * .5 * (sin((.05 * pos.x + wColor + globalColor.y + baseColor.y + globalColor.z + baseColor.z) * 5.0) + 1.0),
+			.4 + .6 * .5 * (sin((.05 * pos.y + wColor + globalColor.y + baseColor.y) * 7.0) + 1.0),
+			.4 + .6 * .5 * (sin((.05 * pos.z + wColor + globalColor.z + baseColor.z) * 11.0) + 1.0)
+		);
 	`;
 
 	lightGlsl = /*glsl*/`
@@ -522,33 +516,27 @@ export class H2xESpheres extends H2xEGeometry
 	`;
 
 	distanceEstimatorGlsl = /*glsl*/`
-		float distanceEstimator(vec4 pos)
-		{
-			${H2xESpheres.distances}
+		${H2xESpheres.distances}
 
-			float minDistance = ${getMinGlslString("distance", 5)};
+		float minDistance = ${getMinGlslString("distance", 5)};
 
-			return minDistance;
-		}
+		return minDistance;
 	`;
 
 	getColorGlsl = /*glsl*/`
-		vec3 getColor(vec4 pos, vec3 globalColor)
-		{
-			${H2xESpheres.distances}
+		${H2xESpheres.distances}
 
-			float minDistance = ${getMinGlslString("distance", 5)};
+		float minDistance = ${getMinGlslString("distance", 5)};
 
-			float wColor = floor((pos.w + spacing / 2.0) / spacing);
+		float wColor = floor((pos.w + spacing / 2.0) / spacing);
 
-			float colorSum = globalColor.x + baseColor.x + globalColor.y + baseColor.y + globalColor.z + baseColor.z;
+		float colorSum = globalColor.x + baseColor.x + globalColor.y + baseColor.y + globalColor.z + baseColor.z;
 
-			return vec3(
-				.1 + .8 * .5 * (sin((wColor + colorSum) * 7.0) + 1.0),
-				.1 + .8 * .5 * (sin((wColor + colorSum) * 11.0) + 1.0),
-				.1 + .8 * .5 * (sin((wColor + colorSum) * 17.0) + 1.0)
-			);
-		}
+		return vec3(
+			.1 + .8 * .5 * (sin((wColor + colorSum) * 7.0) + 1.0),
+			.1 + .8 * .5 * (sin((wColor + colorSum) * 11.0) + 1.0),
+			.1 + .8 * .5 * (sin((wColor + colorSum) * 17.0) + 1.0)
+		);
 	`;
 
 	lightGlsl = /*glsl*/`

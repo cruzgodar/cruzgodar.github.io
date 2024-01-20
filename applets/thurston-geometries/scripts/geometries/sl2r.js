@@ -1,5 +1,5 @@
 import { ThurstonGeometry } from "../class.js";
-import { BaseGeometry, getMinGlslString } from "./base.js";
+import { BaseGeometry } from "./base.js";
 
 class SL2RGeometry extends BaseGeometry
 {
@@ -306,9 +306,9 @@ class SL2RGeometry extends BaseGeometry
 				fiber = -fiber;
 			}
 
-			float rho = acosh(length(pos.xy));
+			// float rho = asinh(length(pos.xy));
 
-			float phi = chiZero(rho, fiber);
+			// float phi = chiZero(rho, pos.w);
 
 			// Now we have phi, and so we should be able to solve for t. This is easier said than done :/
 			return 0.0;
@@ -331,6 +331,8 @@ class SL2RGeometry extends BaseGeometry
 			return abs(asinh(h2Element.x));
 		}
 	`;
+
+	usesFiberComponent = true;
 	
 	// Since cameraPos represents an element of SL(2, R), we want the determinant to be 1.
 	correctPosition(pos)
@@ -438,14 +440,9 @@ export class SL2RSpheres extends SL2RGeometry
 	`;
 
 	distanceEstimatorGlsl = /*glsl*/`
-		float distanceEstimator(vec4 pos)
-		{
-			${SL2RSpheres.distances}
+		${SL2RSpheres.distances}
 
-			float minDistance = ${getMinGlslString("distance", 2)};
-
-			return minDistance;
-		}
+		return distance1;
 	`;
 
 	getColorGlsl = /*glsl*/`

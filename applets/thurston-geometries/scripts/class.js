@@ -48,7 +48,7 @@ export class ThurstonGeometry extends Applet
 	{
 		super(canvas);
 
-		const tempShader = `
+		const tempShader = /*glsl*/`
 			precision highp float;
 			varying vec2 uv;
 			
@@ -139,7 +139,13 @@ export class ThurstonGeometry extends Applet
 	{
 		this.geometryData = geometryData;
 
-		const fragShaderSource = `
+		const posSignature = this.geometryData.usesFiberComponent
+			? "vec4 pos, float fiber"
+			: "vec4 pos";
+		
+		const addfiberArgument = this.geometryData.usesFiberComponent ? ", fiber" : "";
+
+		const fragShaderSource = /*glsl*/`
 			precision highp float;
 			
 			varying vec2 uv;
@@ -186,23 +192,30 @@ export class ThurstonGeometry extends Applet
 			}
 			
 			
-			${this.geometryData.distanceEstimatorGlsl}
-
-			${this.geometryData.getColorGlsl}
 			
-			
-			
-			vec4 getSurfaceNormal(vec4 pos)
+			float distanceEstimator(${posSignature})
 			{
-				float xStep1 = distanceEstimator(pos + vec4(epsilon, 0.0, 0.0, 0.0));
-				float yStep1 = distanceEstimator(pos + vec4(0.0, epsilon, 0.0, 0.0));
-				float zStep1 = distanceEstimator(pos + vec4(0.0, 0.0, epsilon, 0.0));
-				float wStep1 = distanceEstimator(pos + vec4(0.0, 0.0, 0.0, epsilon));
+				${this.geometryData.distanceEstimatorGlsl}
+			}
+			
+			vec3 getColor(${posSignature}, vec3 globalColor)
+			{
+				${this.geometryData.getColorGlsl}
+			}
+			
+			
+			
+			vec4 getSurfaceNormal(${posSignature})
+			{
+				float xStep1 = distanceEstimator(pos + vec4(epsilon, 0.0, 0.0, 0.0)${addfiberArgument});
+				float yStep1 = distanceEstimator(pos + vec4(0.0, epsilon, 0.0, 0.0)${addfiberArgument});
+				float zStep1 = distanceEstimator(pos + vec4(0.0, 0.0, epsilon, 0.0)${addfiberArgument});
+				float wStep1 = distanceEstimator(pos + vec4(0.0, 0.0, 0.0, epsilon)${addfiberArgument});
 				
-				float xStep2 = distanceEstimator(pos - vec4(epsilon, 0.0, 0.0, 0.0));
-				float yStep2 = distanceEstimator(pos - vec4(0.0, epsilon, 0.0, 0.0));
-				float zStep2 = distanceEstimator(pos - vec4(0.0, 0.0, epsilon, 0.0));
-				float wStep2 = distanceEstimator(pos - vec4(0.0, 0.0, 0.0, epsilon));
+				float xStep2 = distanceEstimator(pos - vec4(epsilon, 0.0, 0.0, 0.0)${addfiberArgument});
+				float yStep2 = distanceEstimator(pos - vec4(0.0, epsilon, 0.0, 0.0)${addfiberArgument});
+				float zStep2 = distanceEstimator(pos - vec4(0.0, 0.0, epsilon, 0.0)${addfiberArgument});
+				float wStep2 = distanceEstimator(pos - vec4(0.0, 0.0, 0.0, epsilon)${addfiberArgument});
 				
 				return normalize(vec4(
 					xStep1 - xStep2,
@@ -214,14 +227,14 @@ export class ThurstonGeometry extends Applet
 			
 			
 			
-			vec3 computeShading(vec4 pos, int iteration, vec3 globalColor, float totalT)
+			vec3 computeShading(${posSignature}, int iteration, vec3 globalColor, float totalT)
 			{
-				vec4 surfaceNormal = getSurfaceNormal(pos);
+				vec4 surfaceNormal = getSurfaceNormal(pos${addfiberArgument});
 				
 				${this.geometryData.lightGlsl}
 
 				//The last factor adds ambient occlusion.
-				vec3 color = getColor(pos, globalColor)
+				vec3 color = getColor(pos${addfiberArgument}, globalColor)
 					* lightIntensity
 					* max(
 						1.0 - float(iteration) / ${this.geometryData.ambientOcclusionDenominator},
@@ -253,13 +266,13 @@ export class ThurstonGeometry extends Applet
 				{
 					${this.geometryData.geodesicGlsl}
 					
-					float distance = distanceEstimator(pos);
+					float distance = distanceEstimator(pos${addfiberArgument});
 					
 					if (distance < epsilon)
 					{
 						${this.geometryData.finalTeleportationGlsl ?? ""}
 						
-						finalColor = computeShading(pos, iteration, globalColor, totalT);
+						finalColor = computeShading(pos${addfiberArgument}, iteration, globalColor, totalT);
 						break;
 					}
 
