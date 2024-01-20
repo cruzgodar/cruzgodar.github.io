@@ -1,9 +1,10 @@
+import { ThurstonGeometry } from "../class.js";
 import { BaseGeometry } from "./base.js";
 
 class SL2RGeometry extends BaseGeometry
 {
 	raymarchSetupGlsl = /*glsl*/`
-		float startFiber;
+		float startFiber = cameraFiber;
 	`;
 
 	geodesicGlsl = /*glsl*/`
@@ -104,6 +105,7 @@ class SL2RGeometry extends BaseGeometry
 					qElement.x, qElement.y, qElement.z, 0.0,
 					-qElement.y, qElement.x, qElement.w, 0.0,
 					qElement.z, qElement.w, qElement.x, 0.0,
+					//Weird that this one is negative
 					-qElement.w, qElement.z, qElement.y, 0.0
 				) * mat4(
 					qElement.x, qElement.y, qElement.z, qElement.w,
@@ -123,8 +125,7 @@ class SL2RGeometry extends BaseGeometry
 			float t,
 			inout vec4 pos,	
 			inout float fiber
-		)
-		{
+		) {
 			float alpha = atan(rayDirectionVec.y, rayDirectionVec.x);
 			float a = length(rayDirectionVec.xy);
 			float c = rayDirectionVec.w;
@@ -314,35 +315,32 @@ class SL2RGeometry extends BaseGeometry
 
 		float distanceToHalfPlane(vec4 pos)
 		{
-			vec4 qElement = projectToQ(pos);
 			vec3 h2Element = vec3(0.0, 0.0, 1.0);
 			
-			applyH2Isometry(qElement, h2Element);
+			applyH2Isometry(pos, h2Element);
 
 			return abs(asinh(h2Element.x));
 		}
 	`;
 	
-	// Just the same as in H^2 x E, since it's exactly the same model.
+	// Since cameraPos represents an element of SL(2, R), we want the determinant to be 1.
 	correctPosition(pos)
 	{
 		const magnitude = Math.sqrt(
-			-pos[0] * pos[0]
-			- pos[1] * pos[1]
-			+ pos[2] * pos[2]
+			pos[0] * pos[0]
+			+ pos[1] * pos[1]
+			- pos[2] * pos[2]
+			- pos[3] * pos[3]
 		);
 
 		return [
 			pos[0] / magnitude,
 			pos[1] / magnitude,
 			pos[2] / magnitude,
-			pos[3]
+			pos[3] / magnitude
 		];
 	}
 
-	// Just like correctPosition, this is dependent on the model, not the geodesics.
-	// However, unlike H^2 x E, we're always staying at the origin in this geometry,
-	// so we're always going to return [0, 0, 1, 0].
 	getNormalVec()
 	{
 		return [0, 0, 1, 0];
@@ -360,8 +358,87 @@ class SL2RGeometry extends BaseGeometry
 		return [vec[0] / magnitude, vec[1] / magnitude, vec[2] / magnitude, vec[3] / magnitude];
 	}
 
+	followGeodesic(pos, dir, t)
+	{
+		const alpha = Math.atan(dir[1], dir[0]);
+		const a = Math.sqrt(dir[0] * dir[0] + dir[1] * dir[1]);
+		const c = dir[3];
+		const kappa = Math.sqrt(Math.abs(c * c - a * a));
+
+		console.log(a*a+c*c);
+
+		let eta;
+		let fiber;
+
+		if (Math.abs(c) === a)
+		{
+			eta = [1, -0.35355339 * t, 0.35355339 * t, 0];
+			fiber = 2 * c * t + 2 * Math.atan(-0.35355339 * t);
+		}
+		
+		else if (Math.abs(c) > a)
+		{
+			const trigArg = kappa * t * 0.5;
+			const sineFactor = Math.sin(trigArg);
+
+			eta = [Math.cos(trigArg), -c / kappa * sineFactor, a / kappa * sineFactor, 0];
+			fiber = 2 * c * t + 2 * Math.atan(-c / kappa * Math.tan(trigArg))
+				- Math.sign(c) * Math.floor(0.5 * kappa * t / Math.PI + 0.5) * 2 * Math.PI;
+		}
+
+		else
+		{
+			const trigArg = kappa * t * 0.5;
+			const sinhFactor = Math.sinh(trigArg);
+
+			eta = [Math.cosh(trigArg), -c / kappa * sinhFactor, a / kappa * sinhFactor, 0];
+			fiber = 2 * c * t + 2 * Math.atan(-c / kappa * Math.tanh(trigArg));
+		}
+
+		console.log(eta, fiber);
+
+		// This is eta * ksi, where ksi = (cos(ct), sin(ct), 0, 0) and the multiplication
+		// is group multiplication in SL(2, R).
+		const sinct = Math.sin(c * t);
+		const cosct = Math.cos(c * t);
+		
+		eta = [
+			eta[0] * cosct - eta[1] * sinct,
+			eta[0] * sinct + eta[1] * cosct,
+			eta[2] * cosct,
+			-eta[2] * sinct
+		];
+
+		// Finally, apply R_alpha.
+		const sinAlpha = Math.sin(alpha);
+		const cosAlpha = Math.cos(alpha);
+
+		eta[2] = cosAlpha * eta[2] - sinAlpha * eta[3];
+		eta[3] = sinAlpha * eta[2] + cosAlpha * eta[3];
+
+		// What we have at this point is eta in SL(2, R) and fiber, together specifying
+		// a point in the universal cover after flowing from the origin for time t. We now
+		// need to translate these to pos.
+
+		this.cameraFiber += fiber;
+
+		console.log(ThurstonGeometry.mat4TimesVector([
+			pos[0], -pos[1], pos[2], pos[3],
+			pos[1], pos[0], pos[3], -pos[2],
+			pos[2], pos[3], pos[0], -pos[1],
+			pos[3], -pos[2], pos[1], pos[0]
+		], eta), fiber);
+
+		return ThurstonGeometry.mat4TimesVector([
+			pos[0], -pos[1], pos[2], pos[3],
+			pos[1], pos[0], pos[3], -pos[2],
+			pos[2], pos[3], pos[0], -pos[1],
+			pos[3], -pos[2], pos[1], pos[0]
+		], eta);
+	}
+
 	// Since we're at the origin, we just want all the vectors to be orthogonal to the
-	// normal vector, i.e. [0, 0, 1, 0]. Since we're never moving and projecting liek we usually
+	// normal vector, i.e. [0, 0, 1, 0]. Since we're never moving and projecting like we usually
 	// do, this should take care of itself.
 	correctVectors() {}
 }
@@ -380,7 +457,7 @@ export class SL2RSpheres extends SL2RGeometry
 	`;
 
 	getColorGlsl = /*glsl*/`
-		return vec3(0.5, 0.5, 0.5); 
+		return vec3(0.5, 0.5, 0.5) * getBanding(pos.y + pos.z + pos.w, 10.0);
 	`;
 
 	lightGlsl = /*glsl*/`
@@ -392,7 +469,7 @@ export class SL2RSpheres extends SL2RGeometry
 		vec4 lightDirection2 = normalize(vec4(-4.0, 2.0, -1.0, 1.0) - pos);
 		float dotProduct2 = dot(surfaceNormal, lightDirection2);
 
-		float lightIntensity = max(dotProduct1, dotProduct2);
+		float lightIntensity = 1.0;//max(dotProduct1, dotProduct2);
 	`;
 
 	getMovingSpeed()
@@ -400,9 +477,22 @@ export class SL2RSpheres extends SL2RGeometry
 		return 1;
 	}
 
-	cameraPos = [0, 0, 1, 0];
+	cameraPos = [1, 0, 0, 0];
+	cameraFiber = 0;
+
 	normalVec = [0, 0, 1, 0];
 	upVec = [0, 0, 0, 1];
 	rightVec = [0, 1, 0, 0];
 	forwardVec = [1, 0, 0, 0];
+
+	uniformGlsl = /*glsl*/`
+		uniform float cameraFiber;
+	`;
+
+	uniformNames = ["cameraFiber"];
+
+	updateUniforms(gl, uniformList)
+	{
+		gl.uniform1f(uniformList["cameraFiber"], this.cameraFiber);
+	}
 }
