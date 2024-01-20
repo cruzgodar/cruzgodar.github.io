@@ -8,17 +8,23 @@ export class E3Geometry extends BaseGeometry {}
 export class E3Rooms extends E3Geometry
 {
 	distanceEstimatorGlsl = /*glsl*/`
-		float distance1 = -length(mod(pos.xyz, 2.0) - vec3(1.0, 1.0, 1.0)) + wallThickness;
+		float distanceEstimator(vec4 pos)
+		{
+			float distance1 = -length(mod(pos.xyz, 2.0) - vec3(1.0, 1.0, 1.0)) + wallThickness;
 
-		return distance1;
+			return distance1;
+		}
 	`;
 
 	getColorGlsl = /*glsl*/`
-		return vec3(
-			.25 + .75 * (.5 * (sin(pos.x) + 1.0)),
-			.25 + .75 * (.5 * (sin(pos.y) + 1.0)),
-			.25 + .75 * (.5 * (sin(pos.z) + 1.0))
-		);
+		vec3 getColor(vec4 pos, vec3 globalColor)
+		{
+			return vec3(
+				.25 + .75 * (.5 * (sin(pos.x) + 1.0)),
+				.25 + .75 * (.5 * (sin(pos.y) + 1.0)),
+				.25 + .75 * (.5 * (sin(pos.z) + 1.0))
+			);
+		}
 	`;
 
 	lightGlsl = /*glsl*/`
@@ -68,17 +74,23 @@ export class E3Rooms extends E3Geometry
 export class E3Spheres extends E3Geometry
 {
 	distanceEstimatorGlsl = /*glsl*/`
-		float distance1 = length(mod(pos.xyz, 2.0) - vec3(1.0, 1.0, 1.0)) - 0.5;
+		float distanceEstimator(vec4 pos)
+		{
+			float distance1 = length(mod(pos.xyz, 2.0) - vec3(1.0, 1.0, 1.0)) - 0.5;
 
-		return distance1;
+			return distance1;
+		}
 	`;
 
 	getColorGlsl = /*glsl*/`
-		return vec3(
-			.25 + .75 * (.5 * (sin(floor(pos.x + .5) * 40.0) + 1.0)),
-			.25 + .75 * (.5 * (sin(floor(pos.y + .5) * 57.0) + 1.0)),
-			.25 + .75 * (.5 * (sin(floor(pos.z + .5) * 89.0) + 1.0))
-		);
+		vec3 getColor(vec4 pos, vec3 globalColor)
+		{
+			return vec3(
+				.25 + .75 * (.5 * (sin(floor(pos.x + .5) * 40.0) + 1.0)),
+				.25 + .75 * (.5 * (sin(floor(pos.y + .5) * 57.0) + 1.0)),
+				.25 + .75 * (.5 * (sin(floor(pos.z + .5) * 89.0) + 1.0))
+			);
+		}
 	`;
 
 	lightGlsl = /*glsl*/`
@@ -120,9 +132,12 @@ const baseColor = [0, 0, 0];
 export class E3SeifertWeberSpace extends E3Geometry
 {
 	distanceEstimatorGlsl = /*glsl*/`
-		float distance1 = length(pos.xyz) - wallThickness;
+		float distanceEstimator(vec4 pos)
+		{
+			float distance1 = length(pos.xyz) - wallThickness;
 
-		return -distance1;
+			return -distance1;
+		}
 	`;
 
 	functionGlsl = /*glsl*/`
@@ -337,12 +352,14 @@ export class E3SeifertWeberSpace extends E3Geometry
 	`;
 
 	getColorGlsl = /*glsl*/`
-		// The  color predominantly comes from the room we're in, and then there's a little extra from the position in that room.
-		return vec3(
-			.25 + .75 * (.5 * (sin(baseColor.x + globalColor.x + pos.x / 5.0) + 1.0)),
-			.25 + .75 * (.5 * (sin(baseColor.y + globalColor.y + pos.y / 5.0) + 1.0)),
-			.25 + .75 * (.5 * (sin(baseColor.z + globalColor.z + pos.z / 5.0) + 1.0))
-		);
+		vec3 getColor(vec4 pos, vec3 globalColor)
+		{
+			return vec3(
+				.25 + .75 * (.5 * (sin(baseColor.x + globalColor.x + pos.x / 5.0) + 1.0)),
+				.25 + .75 * (.5 * (sin(baseColor.y + globalColor.y + pos.y / 5.0) + 1.0)),
+				.25 + .75 * (.5 * (sin(baseColor.z + globalColor.z + pos.z / 5.0) + 1.0))
+			);
+		}
 	`;
 
 	updateTGlsl = /*glsl*/`

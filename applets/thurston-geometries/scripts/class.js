@@ -186,16 +186,9 @@ export class ThurstonGeometry extends Applet
 			}
 			
 			
-			
-			float distanceEstimator(vec4 pos)
-			{
-				${this.geometryData.distanceEstimatorGlsl}
-			}
-			
-			vec3 getColor(vec4 pos, vec3 globalColor)
-			{
-				${this.geometryData.getColorGlsl}
-			}
+			${this.geometryData.distanceEstimatorGlsl}
+
+			${this.geometryData.getColorGlsl}
 			
 			
 			
@@ -663,8 +656,6 @@ export class ThurstonGeometry extends Applet
 
 		this.rotatedForwardVec = result2[0];
 		this.rotatedUpVec = result2[1];
-
-		console.log(this.rotatedForwardVec);
 	}
 
 

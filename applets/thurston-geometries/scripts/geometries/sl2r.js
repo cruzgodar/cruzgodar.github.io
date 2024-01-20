@@ -1,5 +1,5 @@
 import { ThurstonGeometry } from "../class.js";
-import { BaseGeometry } from "./base.js";
+import { BaseGeometry, getMinGlslString } from "./base.js";
 
 class SL2RGeometry extends BaseGeometry
 {
@@ -110,6 +110,16 @@ class SL2RGeometry extends BaseGeometry
 					0.0, 0.0, 0.0, 0.0
 				)
 			) * h2Element;
+		}
+
+		// A special case of the previous function that acts on (0, 0, 1).
+		vec3 getH2Element(vec4 qElement)
+		{
+			return vec3(
+				2.0 * qElement.x * qElement.z - 2.0 * qElement.y * qElement.w,
+				2.0 * qElement.x * qElement.w + 2.0 * qElement.y * qElement.z,
+				qElement.x * qElement.x + qElement.y * qElement.y + qElement.z * qElement.z + qElement.w * qElement.w
+			);
 		}
 
 		const float root2Over2 = 0.70710678;
@@ -287,35 +297,36 @@ class SL2RGeometry extends BaseGeometry
 			return phi;
 		}
 
-		float exactDistanceToOrigin(vec4 pos)
+		float exactDistanceToOrigin(vec4 pos, float fiber)
 		{
-			// If w is negative, we need to flip the whole z-axis.
-			if (pos.w < 0.0)
+			// If the fiber component is negative, we need to apply the flip symmetry.
+			if (fiber < 0.0)
 			{
-				pos = vec4(pos.y, pos.x, pos.z, -pos.w);
+				pos = vec4(pos.x, -pos.y, pos.w, pos.z);
+				fiber = -fiber;
 			}
 
-			// float rho = asinh(length(pos.xy));
+			float rho = acosh(length(pos.xy));
 
-			// float phi = chiZero(rho, pos.w);
+			float phi = chiZero(rho, fiber);
 
 			// Now we have phi, and so we should be able to solve for t. This is easier said than done :/
 			return 0.0;
 		}
 
-		float approximateDistanceToOrigin(vec4 pos)
+		float approximateDistanceToOrigin(vec4 pos, float fiber)
 		{
-			float acoshTerm = acosh(pos.z * pos.z - pos.x * pos.x - pos.y * pos.y);
-			float sigma = 0.5 * sqrt(acoshTerm * acoshTerm + pos.w * pos.w);
+			vec3 h2Element = getH2Element(pos);
+
+			float acoshTerm = acosh(h2Element.z * h2Element.z - h2Element.x * h2Element.x - h2Element.y * h2Element.y);
+			float sigma = 0.5 * sqrt(acoshTerm * acoshTerm + fiber * fiber);
 
 			return sigma;
 		}
 
 		float distanceToHalfPlane(vec4 pos)
 		{
-			vec3 h2Element = vec3(0.0, 0.0, 1.0);
-			
-			applyH2Isometry(pos, h2Element);
+			vec3 h2Element = getH2Element(pos);
 
 			return abs(asinh(h2Element.x));
 		}
@@ -423,12 +434,18 @@ export class SL2RSpheres extends SL2RGeometry
 	static distances = /*glsl*/`
 		float radius = .25;
 		float distance1 = distanceToHalfPlane(pos);
+		float distance2 = approximateDistanceToOrigin(pos, fiber);
 	`;
 
 	distanceEstimatorGlsl = /*glsl*/`
-		${SL2RSpheres.distances}
+		float distanceEstimator(vec4 pos)
+		{
+			${SL2RSpheres.distances}
 
-		return distance1;
+			float minDistance = ${getMinGlslString("distance", 2)};
+
+			return minDistance;
+		}
 	`;
 
 	getColorGlsl = /*glsl*/`

@@ -440,19 +440,25 @@ export class H3Rooms extends H3Geometry
 	`;
 
 	distanceEstimatorGlsl = /*glsl*/`
-		${H3Rooms.distances}
+		float distanceEstimator(vec4 pos)
+		{
+			${H3Rooms.distances}
 
-		float minDistance = ${getMinGlslString("distance", 7)};
+			float minDistance = ${getMinGlslString("distance", 7)};
 
-		return minDistance;
+			return minDistance;
+		}
 	`;
 
 	getColorGlsl = /*glsl*/`
-		return vec3(
-			.25 + .75 * (.5 * (sin((.004 * pos.x + baseColor.x + globalColor.x) * 40.0) + 1.0)),
-			.25 + .75 * (.5 * (sin((.004 * pos.y + baseColor.y + globalColor.y) * 57.0) + 1.0)),
-			.25 + .75 * (.5 * (sin((.004 * pos.z + baseColor.z + globalColor.z) * 89.0) + 1.0))
-		);
+		vec3 getColor(vec4 pos, vec3 globalColor)
+		{
+			return vec3(
+				.25 + .75 * (.5 * (sin((.004 * pos.x + baseColor.x + globalColor.x) * 40.0) + 1.0)),
+				.25 + .75 * (.5 * (sin((.004 * pos.y + baseColor.y + globalColor.y) * 57.0) + 1.0)),
+				.25 + .75 * (.5 * (sin((.004 * pos.z + baseColor.z + globalColor.z) * 89.0) + 1.0))
+			);
+		}
 	`;
 
 	getMovingSpeed()

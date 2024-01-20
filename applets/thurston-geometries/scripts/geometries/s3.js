@@ -48,55 +48,61 @@ export class S3Rooms extends S3Geometry
 	`;
 
 	distanceEstimatorGlsl = /*glsl*/`
-		${S3Rooms.distances}
+		float distanceEstimator(vec4 pos)
+		{
+			${S3Rooms.distances}
 
-		float minDistance = ${getMinGlslString("distance", 8)};
+			float minDistance = ${getMinGlslString("distance", 8)};
 
-		return -minDistance;
+			return -minDistance;
+		}
 	`;
 
 	getColorGlsl = /*glsl*/`
-		${S3Rooms.distances}
-
-		float minDistance = ${getMinGlslString("distance", 8)};
-
-		if (minDistance == distance1)
+		vec3 getColor(vec4 pos, vec3 globalColor)
 		{
-			return vec3(1.0, 0.0, 0.0) * getBanding(pos.y + pos.z + pos.w, 10.0);
-		}
+			${S3Rooms.distances}
 
-		if (minDistance == distance2)
-		{
-			return vec3(0.0, 1.0, 1.0) * getBanding(pos.y + pos.z + pos.w, 10.0);
-		}
+			float minDistance = ${getMinGlslString("distance", 8)};
 
-		if (minDistance == distance3)
-		{
-			return vec3(0.0, 1.0, 0.0) * getBanding(pos.x + pos.z + pos.w, 10.0);
-		}
+			if (minDistance == distance1)
+			{
+				return vec3(1.0, 0.0, 0.0) * getBanding(pos.y + pos.z + pos.w, 10.0);
+			}
 
-		if (minDistance == distance4)
-		{
-			return vec3(1.0, 0.0, 1.0) * getBanding(pos.x + pos.z + pos.w, 10.0);
-		}
+			if (minDistance == distance2)
+			{
+				return vec3(0.0, 1.0, 1.0) * getBanding(pos.y + pos.z + pos.w, 10.0);
+			}
 
-		if (minDistance == distance5)
-		{
-			return vec3(0.0, 0.0, 1.0) * getBanding(pos.x + pos.y + pos.w, 10.0);
-		}
+			if (minDistance == distance3)
+			{
+				return vec3(0.0, 1.0, 0.0) * getBanding(pos.x + pos.z + pos.w, 10.0);
+			}
 
-		if (minDistance == distance6)
-		{
-			return vec3(1.0, 1.0, 0.0) * getBanding(pos.x + pos.y + pos.w, 10.0);
-		}
+			if (minDistance == distance4)
+			{
+				return vec3(1.0, 0.0, 1.0) * getBanding(pos.x + pos.z + pos.w, 10.0);
+			}
 
-		if (minDistance == distance7)
-		{
-			return vec3(0.5, 0.0, 1.0) * getBanding(pos.x + pos.y + pos.z, 10.0);
-		}
-		if (minDistance == distance8)
-		{
-			return vec3(1.0, 0.5, 0.0) * getBanding(pos.x + pos.y + pos.z, 10.0);
+			if (minDistance == distance5)
+			{
+				return vec3(0.0, 0.0, 1.0) * getBanding(pos.x + pos.y + pos.w, 10.0);
+			}
+
+			if (minDistance == distance6)
+			{
+				return vec3(1.0, 1.0, 0.0) * getBanding(pos.x + pos.y + pos.w, 10.0);
+			}
+
+			if (minDistance == distance7)
+			{
+				return vec3(0.5, 0.0, 1.0) * getBanding(pos.x + pos.y + pos.z, 10.0);
+			}
+			if (minDistance == distance8)
+			{
+				return vec3(1.0, 0.5, 0.0) * getBanding(pos.x + pos.y + pos.z, 10.0);
+			}
 		}
 	`;
 
@@ -155,63 +161,69 @@ export class S3Rooms extends S3Geometry
 export class S3Spheres extends S3Geometry
 {
 	distanceEstimatorGlsl = /*glsl*/`
-		float distance1 = abs(acos(pos.x) - .3);
-		float distance2 = abs(acos(-pos.x) - .3);
-		float distance3 = abs(acos(pos.y) - .3);
-		float distance4 = abs(acos(-pos.y) - .3);
-		float distance5 = abs(acos(pos.z) - .3);
-		float distance6 = abs(acos(-pos.z) - .3);
-		float distance7 = abs(acos(pos.w) - .3);
+		float distanceEstimator(vec4 pos)
+		{
+			float distance1 = abs(acos(pos.x) - .3);
+			float distance2 = abs(acos(-pos.x) - .3);
+			float distance3 = abs(acos(pos.y) - .3);
+			float distance4 = abs(acos(-pos.y) - .3);
+			float distance5 = abs(acos(pos.z) - .3);
+			float distance6 = abs(acos(-pos.z) - .3);
+			float distance7 = abs(acos(pos.w) - .3);
 
-		float minDistance = ${getMinGlslString("distance", 7)};
+			float minDistance = ${getMinGlslString("distance", 7)};
 
-		return minDistance;
+			return minDistance;
+		}
 	`;
 
 	getColorGlsl = /*glsl*/`
-		float distance1 = abs(acos(pos.x) - .3);
-		float distance2 = abs(acos(-pos.x) - .3);
-		float distance3 = abs(acos(pos.y) - .3);
-		float distance4 = abs(acos(-pos.y) - .3);
-		float distance5 = abs(acos(pos.z) - .3);
-		float distance6 = abs(acos(-pos.z) - .3);
-		float distance7 = abs(acos(pos.w) - .3);
-
-		float minDistance = ${getMinGlslString("distance", 7)};
-
-		if (minDistance == distance1)
+		vec3 getColor(vec4 pos, vec3 globalColor)
 		{
-			return vec3(1.0, 0.0, 0.0) * getBanding(pos.y + pos.z + pos.w, 10.0);
-		}
+			float distance1 = abs(acos(pos.x) - .3);
+			float distance2 = abs(acos(-pos.x) - .3);
+			float distance3 = abs(acos(pos.y) - .3);
+			float distance4 = abs(acos(-pos.y) - .3);
+			float distance5 = abs(acos(pos.z) - .3);
+			float distance6 = abs(acos(-pos.z) - .3);
+			float distance7 = abs(acos(pos.w) - .3);
 
-		if (minDistance == distance2)
-		{
-			return vec3(0.0, 1.0, 1.0) * getBanding(pos.y + pos.z + pos.w, 10.0);
-		}
+			float minDistance = ${getMinGlslString("distance", 7)};
 
-		if (minDistance == distance3)
-		{
-			return vec3(0.0, 1.0, 0.0) * getBanding(pos.x + pos.z + pos.w, 10.0);
-		}
+			if (minDistance == distance1)
+			{
+				return vec3(1.0, 0.0, 0.0) * getBanding(pos.y + pos.z + pos.w, 10.0);
+			}
 
-		if (minDistance == distance4)
-		{
-			return vec3(1.0, 0.0, 1.0) * getBanding(pos.x + pos.z + pos.w, 10.0);
-		}
+			if (minDistance == distance2)
+			{
+				return vec3(0.0, 1.0, 1.0) * getBanding(pos.y + pos.z + pos.w, 10.0);
+			}
 
-		if (minDistance == distance5)
-		{
-			return vec3(0.0, 0.0, 1.0) * getBanding(pos.x + pos.y + pos.w, 10.0);
-		}
+			if (minDistance == distance3)
+			{
+				return vec3(0.0, 1.0, 0.0) * getBanding(pos.x + pos.z + pos.w, 10.0);
+			}
 
-		if (minDistance == distance6)
-		{
-			return vec3(1.0, 1.0, 0.0) * getBanding(pos.x + pos.y + pos.w, 10.0);
-		}
+			if (minDistance == distance4)
+			{
+				return vec3(1.0, 0.0, 1.0) * getBanding(pos.x + pos.z + pos.w, 10.0);
+			}
 
-		if (minDistance == distance7)
-		{
-			return vec3(1.0, 1.0, 1.0) * getBanding(pos.x + pos.y + pos.z, 10.0);
+			if (minDistance == distance5)
+			{
+				return vec3(0.0, 0.0, 1.0) * getBanding(pos.x + pos.y + pos.w, 10.0);
+			}
+
+			if (minDistance == distance6)
+			{
+				return vec3(1.0, 1.0, 0.0) * getBanding(pos.x + pos.y + pos.w, 10.0);
+			}
+
+			if (minDistance == distance7)
+			{
+				return vec3(1.0, 1.0, 1.0) * getBanding(pos.x + pos.y + pos.z, 10.0);
+			}
 		}
 	`;
 
@@ -294,14 +306,18 @@ export class S3HopfFibration extends S3Geometry
 
 		const numFibers = 20;
 
-		this.distanceEstimatorGlsl = "";
+		this.distanceEstimatorGlsl = "float distanceEstimator(vec4 pos){";
+		this.getColorGlsl = "vec3 getColor(vec4 pos, vec3 globalColor){";
 
 		const colors = new Array(numFibers);
 
 		for (let i = 0; i < numFibers; i++)
 		{
 			const result = getHopfFiber(i, numFibers);
+
 			this.distanceEstimatorGlsl += result[0];
+			this.getColorGlsl += result[0];
+
 			colors[i] = result[1];
 		}
 
@@ -309,13 +325,14 @@ export class S3HopfFibration extends S3Geometry
 			float minDistance = ${getMinGlslString("distance", numFibers)};
 		`;
 
-		this.getColorGlsl = this.distanceEstimatorGlsl + getColorGlslString(
-			"distance",
-			"minDistance",
-			colors
-		);
+		this.getColorGlsl += /*glsl*/`
+				float minDistance = ${getMinGlslString("distance", numFibers)};
 
-		this.distanceEstimatorGlsl += "return minDistance;";
+				${getColorGlslString("distance", "minDistance", colors)}
+			}
+		`;
+
+		this.distanceEstimatorGlsl += "return minDistance;}";
 	}
 	
 	functionGlsl = /*glsl*/`

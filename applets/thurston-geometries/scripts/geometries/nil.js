@@ -596,19 +596,25 @@ export class NilRooms extends NilGeometry
 	`;
 
 	distanceEstimatorGlsl = /*glsl*/`
-		${NilRooms.distances}
+		float distanceEstimator(vec4 pos)
+		{
+			${NilRooms.distances}
 
-		float minDistance = ${getMinGlslString("distance", 5)};
+			float minDistance = ${getMinGlslString("distance", 5)};
 
-		return minDistance;
+			return minDistance;
+		}
 	`;
 
 	getColorGlsl = /*glsl*/`
+	vec3 getColor(vec4 pos, vec3 globalColor)
+	{
 		return vec3(
 			.35 + .65 * (.5 * (sin((.0125 * pos.x + baseColor.x + globalColor.x + .5) * 40.0) + 1.0)),
 			.35 + .65 * (.5 * (sin((.0125 * pos.y + baseColor.y + globalColor.y + .5) * 57.0) + 1.0)),
 			.35 + .65 * (.5 * (sin((.0125 * pos.z + baseColor.z + globalColor.z + .5) * 89.0) + 1.0))
 		);
+	}
 	`;
 
 	lightGlsl = /*glsl*/`
@@ -689,19 +695,25 @@ export class NilSpheres extends NilGeometry
 	`;
 
 	distanceEstimatorGlsl = /*glsl*/`
-		${NilSpheres.distances}
+		float distanceEstimator(vec4 pos)
+		{
+			${NilSpheres.distances}
 
-		float minDistance = ${getMinGlslString("distance", 5)};
+			float minDistance = ${getMinGlslString("distance", 5)};
 
-		return minDistance;
+			return minDistance;
+		}
 	`;
 
 	getColorGlsl = /*glsl*/`
+	vec3 getColor(vec4 pos, vec3 globalColor)
+	{
 		return vec3(
 			.25 + .75 * (.5 * (sin(floor(baseColor.x + globalColor.x + .5) * 40.0) + 1.0)),
 			.25 + .75 * (.5 * (sin(floor(baseColor.y + globalColor.y + .5) * 57.0) + 1.0)),
 			.25 + .75 * (.5 * (sin(floor(baseColor.z + globalColor.z + .5) * 89.0) + 1.0))
 		);
+	}
 	`;
 
 	lightGlsl = /*glsl*/`
