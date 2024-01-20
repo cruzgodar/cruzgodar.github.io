@@ -317,7 +317,7 @@ class SL2RGeometry extends BaseGeometry
 			
 			applyH2Isometry(pos, h2Element);
 
-			return abs(asinh(h2Element.y));
+			return abs(asinh(h2Element.x));
 		}
 	`;
 	
@@ -346,7 +346,6 @@ class SL2RGeometry extends BaseGeometry
 
 	followGeodesic(pos, dir, t)
 	{
-		const alpha = Math.atan(dir[1], dir[0]);
 		const a = Math.sqrt(dir[0] * dir[0] + dir[1] * dir[1]);
 		const c = dir[3];
 		const kappa = Math.sqrt(Math.abs(c * c - a * a));
@@ -356,7 +355,7 @@ class SL2RGeometry extends BaseGeometry
 
 		if (Math.abs(c) === a)
 		{
-			eta = [1, -0.35355339 * t, 0.35355339 * t, 0];
+			eta = [1, -0.35355339 * t, 0.5 * t, 0];
 			fiber = 2 * c * t + 2 * Math.atan(-0.35355339 * t);
 		}
 		
@@ -365,7 +364,7 @@ class SL2RGeometry extends BaseGeometry
 			const trigArg = kappa * t * 0.5;
 			const sineFactor = Math.sin(trigArg);
 
-			eta = [Math.cos(trigArg), -c / kappa * sineFactor, a / kappa * sineFactor, 0];
+			eta = [Math.cos(trigArg), -c / kappa * sineFactor, 1 / kappa * sineFactor, 0];
 			fiber = 2 * c * t + 2 * Math.atan(-c / kappa * Math.tan(trigArg))
 				- Math.sign(c) * Math.floor(0.5 * kappa * t / Math.PI + 0.5) * 2 * Math.PI;
 		}
@@ -375,7 +374,7 @@ class SL2RGeometry extends BaseGeometry
 			const trigArg = kappa * t * 0.5;
 			const sinhFactor = Math.sinh(trigArg);
 
-			eta = [Math.cosh(trigArg), -c / kappa * sinhFactor, a / kappa * sinhFactor, 0];
+			eta = [Math.cosh(trigArg), -c / kappa * sinhFactor, 1 / kappa * sinhFactor, 0];
 			fiber = 2 * c * t + 2 * Math.atan(-c / kappa * Math.tanh(trigArg));
 		}
 
@@ -391,20 +390,17 @@ class SL2RGeometry extends BaseGeometry
 			-eta[2] * sinct
 		];
 
-		// Finally, apply R_alpha.
-		const sinAlpha = Math.sin(alpha);
-		const cosAlpha = Math.cos(alpha);
+		// This is a trick they use in the repo that isn't in the paper for who
+		// knows what reason. Here, we rotate by the direction vector itself instead
+		// of the alpha expression -- without this, movement in the space is extremely
+		// glitchy.
 
-		eta = [
-			eta[0],
-			eta[1],
-			cosAlpha * eta[2] - sinAlpha * eta[3],
-			sinAlpha * eta[2] + cosAlpha * eta[3]
-		];
-
-		// What we have at this point is eta in SL(2, R) and fiber, together specifying
-		// a point in the universal cover after flowing from the origin for time t. We now
-		// need to translate these to pos.
+		eta = ThurstonGeometry.mat4TimesVector([
+			[1, 0, 0, 0],
+			[0, 1, 0, 0],
+			[0, 0, dir[0], -dir[1]],
+			[0, 0, dir[1], dir[0]]
+		], eta);
 
 		this.cameraFiber += fiber;
 
@@ -436,7 +432,7 @@ export class SL2RSpheres extends SL2RGeometry
 	`;
 
 	getColorGlsl = /*glsl*/`
-		return vec3(0.5, 0.5, 0.5) * getBanding(pos.y + pos.z + pos.w, 10.0);
+		return vec3(0.5, 0.5, 0.5) * getBanding(pos.w, 10.0);
 	`;
 
 	lightGlsl = /*glsl*/`
@@ -453,13 +449,13 @@ export class SL2RSpheres extends SL2RGeometry
 
 	getMovingSpeed()
 	{
-		return 2;
+		return 1;
 	}
 
 	cameraPos = [1, 0, 0, 0];
 	cameraFiber = 0;
 
-	normalVec = [0, 0, 1, 0];
+	normalVec = [0, 0, -1, 0];
 	upVec = [0, 0, 0, 1];
 	rightVec = [0, 1, 0, 0];
 	forwardVec = [1, 0, 0, 0];

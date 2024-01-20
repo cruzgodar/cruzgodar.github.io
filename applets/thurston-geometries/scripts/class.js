@@ -664,8 +664,7 @@ export class ThurstonGeometry extends Applet
 		this.rotatedForwardVec = result2[0];
 		this.rotatedUpVec = result2[1];
 
-		// this.geometryData.forwardVec = result2[0];
-		// this.geometryData.upVec = result2[1];
+		console.log(this.rotatedForwardVec);
 	}
 
 
