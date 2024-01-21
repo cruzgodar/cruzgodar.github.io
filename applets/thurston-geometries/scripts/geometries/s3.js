@@ -62,52 +62,52 @@ export class S3Rooms extends S3Geometry
 
 		if (minDistance == distance1)
 		{
-			return vec3(1.0, 0.0, 0.0) * getBanding(pos.y + pos.z + pos.w, 10.0);
+			return vec3(1.0, 0.0, 0.0);
 		}
 
 		if (minDistance == distance2)
 		{
-			return vec3(0.0, 1.0, 1.0) * getBanding(pos.y + pos.z + pos.w, 10.0);
+			return vec3(0.0, 1.0, 1.0);
 		}
 
 		if (minDistance == distance3)
 		{
-			return vec3(0.0, 1.0, 0.0) * getBanding(pos.x + pos.z + pos.w, 10.0);
+			return vec3(0.0, 1.0, 0.0);
 		}
 
 		if (minDistance == distance4)
 		{
-			return vec3(1.0, 0.0, 1.0) * getBanding(pos.x + pos.z + pos.w, 10.0);
+			return vec3(1.0, 0.0, 1.0);
 		}
 
 		if (minDistance == distance5)
 		{
-			return vec3(0.0, 0.0, 1.0) * getBanding(pos.x + pos.y + pos.w, 10.0);
+			return vec3(0.0, 0.0, 1.0);
 		}
 
 		if (minDistance == distance6)
 		{
-			return vec3(1.0, 1.0, 0.0) * getBanding(pos.x + pos.y + pos.w, 10.0);
+			return vec3(1.0, 1.0, 0.0);
 		}
 
 		if (minDistance == distance7)
 		{
-			return vec3(0.5, 0.0, 1.0) * getBanding(pos.x + pos.y + pos.z, 10.0);
+			return vec3(0.5, 0.0, 1.0);
 		}
 		if (minDistance == distance8)
 		{
-			return vec3(1.0, 0.5, 0.0) * getBanding(pos.x + pos.y + pos.z, 10.0);
+			return vec3(1.0, 0.5, 0.0);
 		}
 	`;
 
 	lightGlsl = /*glsl*/`
-		vec4 lightDirection1 = normalize(vec4(1.0, 1.0, 1.0, -1.0) - pos);
+		vec4 lightDirection1 = normalize(vec4(1.0, 1.0, 1.0, 1.0) - pos);
 		float dotProduct1 = dot(surfaceNormal, lightDirection1);
 
-		vec4 lightDirection2 = normalize(vec4(-1.0, -1.0, -1.0, 1.0) - pos);
+		vec4 lightDirection2 = normalize(vec4(-1.0, -1.0, -1.0, -1.0) - pos);
 		float dotProduct2 = dot(surfaceNormal, lightDirection2);
 
-		float lightIntensity = lightBrightness * max(abs(dotProduct1), abs(dotProduct2));
+		float lightIntensity = 3.5 * lightBrightness * max(dotProduct1, dotProduct2);
 	`;
 
 	cameraPos = [0, 0, 0, -1];
@@ -181,57 +181,54 @@ export class S3Spheres extends S3Geometry
 
 		if (minDistance == distance1)
 		{
-			return vec3(1.0, 0.0, 0.0) * getBanding(pos.y + pos.z + pos.w, 10.0);
+			return vec3(1.0, 0.0, 0.0);
 		}
 
 		if (minDistance == distance2)
 		{
-			return vec3(0.0, 1.0, 1.0) * getBanding(pos.y + pos.z + pos.w, 10.0);
+			return vec3(0.0, 1.0, 1.0);
 		}
 
 		if (minDistance == distance3)
 		{
-			return vec3(0.0, 1.0, 0.0) * getBanding(pos.x + pos.z + pos.w, 10.0);
+			return vec3(0.0, 1.0, 0.0);
 		}
 
 		if (minDistance == distance4)
 		{
-			return vec3(1.0, 0.0, 1.0) * getBanding(pos.x + pos.z + pos.w, 10.0);
+			return vec3(1.0, 0.0, 1.0);
 		}
 
 		if (minDistance == distance5)
 		{
-			return vec3(0.0, 0.0, 1.0) * getBanding(pos.x + pos.y + pos.w, 10.0);
+			return vec3(0.0, 0.0, 1.0);
 		}
 
 		if (minDistance == distance6)
 		{
-			return vec3(1.0, 1.0, 0.0) * getBanding(pos.x + pos.y + pos.w, 10.0);
+			return vec3(1.0, 1.0, 0.0);
 		}
 
 		if (minDistance == distance7)
 		{
-			return vec3(1.0, 1.0, 1.0) * getBanding(pos.x + pos.y + pos.z, 10.0);
+			return vec3(1.0, 1.0, 1.0);
 		}
 	`;
 
 	lightGlsl = /*glsl*/`
-		vec4 lightDirection1 = normalize(vec4(1.0, 1.0, 1.0, 1.0) - pos);
+		vec4 lightDirection1 = normalize(vec4(.5, .5, .5, .5) - pos);
 		float dotProduct1 = dot(surfaceNormal, lightDirection1);
 
-		vec4 lightDirection2 = normalize(vec4(-1.0, -1.0, -1.0, 1.0) - pos);
+		vec4 lightDirection2 = normalize(vec4(-.5, -.5, -.5, -.5) - pos);
 		float dotProduct2 = dot(surfaceNormal, lightDirection2);
 
-		vec4 lightDirection3 = normalize(vec4(1.0, 1.0, 1.0, 0.0) - pos);
+		vec4 lightDirection3 = normalize(vec4(0.0, 1.0, 1.0, 0.0) - pos);
 		float dotProduct3 = dot(surfaceNormal, lightDirection3);
 
 		vec4 lightDirection4 = normalize(vec4(-1.0, -1.0, -1.0, 0.0) - pos);
 		float dotProduct4 = dot(surfaceNormal, lightDirection4);
 
-		float lightIntensity = lightBrightness * max(
-			max(abs(dotProduct1), abs(dotProduct2)),
-			max(abs(dotProduct3), abs(dotProduct4))
-		);
+		float lightIntensity = 1.2 * lightBrightness * min(abs(dotProduct1), abs(dotProduct2));
 	`;
 
 	cameraPos = [0, 0, 0, -1];
