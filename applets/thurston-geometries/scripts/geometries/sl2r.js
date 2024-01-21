@@ -1,5 +1,5 @@
 import { ThurstonGeometry } from "../class.js";
-import { BaseGeometry } from "./base.js";
+import { BaseGeometry, getMinGlslString } from "./base.js";
 
 class SL2RGeometry extends BaseGeometry
 {
@@ -319,7 +319,7 @@ class SL2RGeometry extends BaseGeometry
 			vec3 h2Element = getH2Element(pos);
 
 			float acoshTerm = acosh(h2Element.z * h2Element.z - h2Element.x * h2Element.x - h2Element.y * h2Element.y);
-			float sigma = 0.5 * sqrt(acoshTerm * acoshTerm + fiber * fiber);
+			float sigma = 0.1 * sqrt(acoshTerm * acoshTerm + fiber * fiber);
 
 			return sigma;
 		}
@@ -436,17 +436,19 @@ export class SL2RSpheres extends SL2RGeometry
 	static distances = /*glsl*/`
 		float radius = .25;
 		float distance1 = distanceToHalfPlane(pos);
-		float distance2 = approximateDistanceToOrigin(pos, fiber);
+		float distance2 = approximateDistanceToOrigin(pos, fiber) - .2;
 	`;
 
 	distanceEstimatorGlsl = /*glsl*/`
 		${SL2RSpheres.distances}
 
-		return distance1;
+		float minDistance = ${getMinGlslString("distance", 2)};
+
+		return minDistance;
 	`;
 
 	getColorGlsl = /*glsl*/`
-		return vec3(0.5, 0.5, 0.5) * getBanding(pos.w, 10.0);
+		return vec3(0.5, 0.5, 0.5);
 	`;
 
 	lightGlsl = /*glsl*/`

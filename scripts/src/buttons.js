@@ -243,9 +243,8 @@ function setUpDropdown(selectElement)
 		await Promise.all([
 			anime({
 				targets: buttonElement,
-				//The +4 is for the border.
 				height: openHeight,
-				width: maxWidth + 29.75,
+				width: maxWidth + 29.75 - 14,
 				translateY,
 				scale,
 				easing: "easeOutQuad",
