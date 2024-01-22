@@ -43,8 +43,7 @@ export class SecantMethod extends Applet
 		rootAInputElement,
 		rootBInputElement,
 		colorSetterElement
-	})
-	{
+	}) {
 		super(canvas);
 
 		this.rootSetterElement = rootSetterElement;
@@ -568,8 +567,7 @@ export class SecantMethod extends Applet
 			&& this.colorSetterElement
 			&& this.rootAInputElement
 			&& this.rootBInputElement
-		)
-		{
+		) {
 			await Promise.all([
 				changeOpacity(this.rootSetterElement, 0),
 				changeOpacity(this.colorSetterElement, 0)

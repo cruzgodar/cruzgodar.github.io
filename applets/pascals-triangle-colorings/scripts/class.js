@@ -56,8 +56,7 @@ export class PascalsTriangleColoring extends Applet
 		resolution,
 		gridSize,
 		numColors
-	})
-	{
+	}) {
 		this.resolution = resolution;
 		this.gridSize = gridSize;
 		this.numColors = numColors;
@@ -191,8 +190,7 @@ export class PascalsTriangleColoring extends Applet
 								if (
 									this.activeNodes[k][0] === this.activeNodes[j][0] + 1
 									&& this.activeNodes[k][1] === this.activeNodes[j][1]
-								)
-								{
+								) {
 									found = true;
 
 									this.activeNodes[k][3] += this.delayOnMeet;
@@ -216,8 +214,7 @@ export class PascalsTriangleColoring extends Applet
 
 						if (
 							!this.isFinished[this.activeNodes[j][0] + 1][this.activeNodes[j][1] + 1]
-						)
-						{
+						) {
 							let found = false;
 
 							for (let k = 0; k < this.activeNodes.length; k++)
@@ -225,8 +222,7 @@ export class PascalsTriangleColoring extends Applet
 								if (
 									this.activeNodes[k][0] === this.activeNodes[j][0] + 1
 									&& this.activeNodes[k][1] === this.activeNodes[j][1] + 1
-								)
-								{
+								) {
 									found = true;
 
 									this.activeNodes[k][3] += this.delayOnMeet;
@@ -238,8 +234,7 @@ export class PascalsTriangleColoring extends Applet
 							if (
 								!found
 								&& this.activeNodes[j][1] + 1 <= (this.activeNodes[j][0] + 1) / 2
-							)
-							{
+							) {
 								this.activeNodes.push([
 									this.activeNodes[j][0] + 1,
 									this.activeNodes[j][1] + 1,

@@ -44,8 +44,7 @@ export class ThurstonGeometry extends Applet
 
 	constructor({
 		canvas,
-	})
-	{
+	}) {
 		super(canvas);
 
 		const tempShader = /*glsl*/`

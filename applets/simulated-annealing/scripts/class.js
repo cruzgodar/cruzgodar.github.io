@@ -42,8 +42,7 @@ export class SimulatedAnnealing extends Applet
 		resolution,
 		numNodes,
 		maximumSpeed
-	})
-	{
+	}) {
 		this.resolution = resolution;
 		this.numNodes = numNodes;
 		this.maximumSpeed = maximumSpeed;

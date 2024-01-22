@@ -169,8 +169,7 @@ async function drawAnnealingGraph()
 		if (
 			Math.abs(transposition[0] - transposition[1]) === 1
 			|| Math.abs(transposition[0] - transposition[1]) === numNodes - 1
-		)
-		{
+		) {
 			distanceDifference += 2 * euclideanDistance(
 				currentPath[transposition[0]],
 				currentPath[transposition[1]]

@@ -33,8 +33,7 @@ export function setUpInteractionListeners()
 				timeBetweenMousemoves >= 3
 				&& timeBetweenMousemoves <= 50
 				&& timeBetweenMousemoves !== 33
-			)
-			{
+			) {
 				currentlyTouchDevice = false;
 			}
 		}
@@ -60,8 +59,7 @@ export function setUpInteractionListeners()
 						&& document.activeElement.getAttribute("type") !== "button"
 					)
 				)
-			)
-			{
+			) {
 				document.activeElement.click();
 			}
 		}
@@ -76,8 +74,7 @@ export function setUpInteractionListeners()
 			document.activeElement.tagName !== "INPUT"
 			&& document.activeElement.tagName !== "TEXTAREA"
 			&& document.activeElement.tagName !== "SELECT"
-		)
-		{
+		) {
 			document.activeElement.blur();
 		}
 	});
@@ -91,8 +88,7 @@ function handleTouchEvent()
 		document.activeElement.tagName !== "INPUT"
 		&& document.activeElement.tagName !== "TEXTAREA"
 		&& document.activeElement.tagName !== "SELECT"
-	)
-	{
+	) {
 		document.activeElement.blur();
 	}
 

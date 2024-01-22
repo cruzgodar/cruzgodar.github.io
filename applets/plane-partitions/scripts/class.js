@@ -156,8 +156,7 @@ export class PlanePartitions extends Applet
 		canvas,
 		numbersCanvas,
 		useFullscreenButton = true
-	})
-	{
+	}) {
 		super(canvas);
 
 		this.useFullscreenButton = useFullscreenButton;
@@ -839,8 +838,7 @@ export class PlanePartitions extends Applet
 				if (
 					planePartition[i][j] < planePartition[i + 1][j]
 					|| planePartition[i][j] < planePartition[i][j + 1]
-				)
-				{
+				) {
 					return false;
 				}
 			}
@@ -860,8 +858,7 @@ export class PlanePartitions extends Applet
 				if (
 					(ssyt[i + 1][j] !== 0 && ssyt[i][j] >= ssyt[i + 1][j])
 					|| (ssyt[i][j + 1] !== 0 && ssyt[i][j] > ssyt[i][j + 1])
-				)
-				{
+				) {
 					return false;
 				}
 			}
@@ -2362,8 +2359,7 @@ export class PlanePartitions extends Applet
 		if (
 			array.numbers[row][col] !== Infinity
 			&& (array.numbers[row][col] !== 0 || this.floorLightness !== 0)
-		)
-		{
+		) {
 			const textMetrics = this.wilsonNumbers.ctx.measureText(array.numbers[row][col]);
 
 			//The height adjustment is an annoying spacing computation.
@@ -2518,8 +2514,7 @@ export class PlanePartitions extends Applet
 		targetArray,
 		targetCoordinates,
 		updateCubeArray = true
-	)
-	{
+	) {
 		const targets = [];
 
 		sourceCoordinates.forEach(xyz =>
@@ -2561,8 +2556,7 @@ export class PlanePartitions extends Applet
 					targetArray.cubes[xyz[0]][xyz[1]][xyz[2]]
 					&& !sourceCoordinates
 						.some(e => e[0] === xyz[0] && e[1] === xyz[1] && e[2] === xyz[2])
-				)
-				{
+				) {
 					console.warn(`Moving a cube to a location that's already occupied: ${xyz}. This is probably not what you want to do.`);
 				}
 
@@ -2836,8 +2830,7 @@ export class PlanePartitions extends Applet
 					while (
 						k < this.arrays[index + i].numbers[j].length
 						&& this.arrays[index + i].numbers[j][k] !== 0
-					)
-					{
+					) {
 						k++;
 					}
 
@@ -2955,8 +2948,7 @@ export class PlanePartitions extends Applet
 				startingCol >= 0
 				&& columnStarts[startingCol] < planePartition.length
 				&& planePartition[columnStarts[startingCol]][startingCol] === 0
-			)
-			{
+			) {
 				startingCol--;
 			}
 
@@ -2978,8 +2970,7 @@ export class PlanePartitions extends Applet
 					currentRow < planePartition.length - 1
 					&& planePartition[currentRow + 1][currentCol]
 						=== planePartition[currentRow][currentCol]
-				)
-				{
+				) {
 					currentRow++;
 				}
 
@@ -3227,8 +3218,7 @@ export class PlanePartitions extends Applet
 							while (
 								planePartition[currentRow][k] !== planePartition[currentRow - 1][k]
 								&& k < j
-							)
-							{
+							) {
 								k++;
 							}
 						}
@@ -3417,16 +3407,14 @@ export class PlanePartitions extends Applet
 		while (
 			rightLegSize < array.footprint
 			&& array.numbers[rightLegSize][array.footprint - 1] !== 0
-		)
-		{
+		) {
 			rightLegSize++;
 		}
 
 		while (
 			bottomLegSize < array.footprint
 			&& array.numbers[array.footprint - 1][bottomLegSize] !== 0
-		)
-		{
+		) {
 			bottomLegSize++;
 		}
 
@@ -3963,8 +3951,7 @@ export class PlanePartitions extends Applet
 				row < planePartition.length
 				&& col < planePartition.length
 				&& planePartition[row][col] === Infinity
-			)
-			{
+			) {
 				row++;
 				col++;
 			}
@@ -4035,8 +4022,7 @@ export class PlanePartitions extends Applet
 					startRow < planePartition.length
 					&& startCol < planePartition.length
 					&& planePartition[startRow][startCol] !== 0
-				)
-				{
+				) {
 					if (
 						(
 							startCol < planePartition.length - 1
@@ -4046,8 +4032,7 @@ export class PlanePartitions extends Applet
 							startCol === planePartition.length - 1
 							&& planePartition[startRow][startCol] > 0
 						)
-					)
-					{
+					) {
 						if (
 							diagonals[i] === 0
 							|| (
@@ -4063,8 +4048,7 @@ export class PlanePartitions extends Applet
 									)
 								)
 							)
-						)
-						{
+						) {
 							foundCandidate = true;
 							break;
 						}
@@ -4094,8 +4078,7 @@ export class PlanePartitions extends Applet
 						row < planePartition.length - 1
 						&& planePartition[row][col] === planePartition[row + 1][col]
 						&& (diagonals[currentContent] === 0 || diagonals[currentContent] === 3)
-					)
-					{
+					) {
 						row++;
 					}
 
@@ -4108,8 +4091,7 @@ export class PlanePartitions extends Applet
 								&& planePartition[row][col] > planePartition[row + 1][col]
 							)
 						)
-					)
-					{
+					) {
 						col--;
 					}
 
@@ -4486,8 +4468,7 @@ export class PlanePartitions extends Applet
 							nextIndex < targetCoordinates.length
 							&& targetCoordinates[nextIndex][0]
 								=== targetCoordinates[currentIndex][0]
-						)
-						{
+						) {
 							nextIndex++;
 						}
 
@@ -4503,8 +4484,7 @@ export class PlanePartitions extends Applet
 							if (
 								outputArray.numbers[coordinates[k][0]][coordinates[k][1]]
 									!== currentHeight
-							)
-							{
+							) {
 								insertionWorks = false;
 								break;
 							}
@@ -4548,8 +4528,7 @@ export class PlanePartitions extends Applet
 								if (
 									targetCoordinates[k][0] > outputArray.footprint
 									|| targetCoordinates[k][1] > outputArray.footprint
-								)
-								{
+								) {
 									console.error("Insertion failed!");
 									return;
 								}
@@ -5314,16 +5293,14 @@ export class PlanePartitions extends Applet
 		while (
 			rightLegSize < planePartition.length
 			&& planePartition[rightLegSize][planePartition.length - 1] !== 0
-		)
-		{
+		) {
 			rightLegSize++;
 		}
 
 		while (
 			bottomLegSize < planePartition.length
 			&& planePartition[planePartition.length - 1][bottomLegSize] !== 0
-		)
-		{
+		) {
 			bottomLegSize++;
 		}
 
@@ -5472,8 +5449,7 @@ export class PlanePartitions extends Applet
 				if (
 					row < planePartition.length - bottomLegSize
 					&& col < planePartition.length - rightLegSize
-				)
-				{
+				) {
 					for (let k = 0; k < this.arrays[index].numbers[row][col]; k++)
 					{
 						coordinates.push([row, col, k]);
@@ -5488,8 +5464,7 @@ export class PlanePartitions extends Applet
 						row < planePartition.length
 						&& col < planePartition.length
 						&& this.arrays[index].numbers[row][col] > 0
-					)
-					{
+					) {
 						ppSize = Math.max(
 							Math.max(
 								ppSize,
@@ -5952,8 +5927,7 @@ export class PlanePartitions extends Applet
 				if (
 					this.arrays[index].numbers[i][j] > 0
 					&& this.arrays[index].numbers[i][j] !== Infinity
-				)
-				{
+				) {
 					const sourceCoordinates = [];
 					const targetCoordinates = [];
 
@@ -5996,8 +5970,7 @@ export class PlanePartitions extends Applet
 				if (
 					this.arrays[index + 1].numbers[i][j] > 0
 					&& this.arrays[index + 1].numbers[i][j] !== Infinity
-				)
-				{
+				) {
 					const sourceCoordinates = [];
 					const targetCoordinates = [];
 

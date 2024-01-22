@@ -762,8 +762,7 @@ export class KaleidoscopicIFSFractal extends RaymarchApplet
 		newRotationAngleX2,
 		newRotationAngleY2,
 		newRotationAngleZ2
-	)
-	{
+	) {
 		const target = this;
 
 		anime({

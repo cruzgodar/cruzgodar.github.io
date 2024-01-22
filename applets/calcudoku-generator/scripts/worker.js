@@ -327,32 +327,28 @@ function expandCages(cageToDestroy)
 		if (
 			row !== 0 && cagesByLocation[row - 1][col] !== cageToDestroy
 			&& tryToAddCageToCage(cagesByLocation[row][col], cagesByLocation[row - 1][col])
-		)
-		{
+		) {
 			cageThatGrew = cagesByLocation[row - 1][col];
 		}
 
 		else if (
 			row !== gridSize - 1 && cagesByLocation[row + 1][col] !== cageToDestroy
 			&& tryToAddCageToCage(cagesByLocation[row][col], cagesByLocation[row + 1][col])
-		)
-		{
+		) {
 			cageThatGrew = cagesByLocation[row + 1][col];
 		}
 
 		else if (
 			col !== 0 && cagesByLocation[row][col - 1] !== cageToDestroy
 			&& tryToAddCageToCage(cagesByLocation[row][col], cagesByLocation[row][col - 1])
-		)
-		{
+		) {
 			cageThatGrew = cagesByLocation[row][col - 1];
 		}
 
 		else if (
 			col !== gridSize - 1 && cagesByLocation[row][col + 1] !== cageToDestroy
 			&& tryToAddCageToCage(cagesByLocation[row][col], cagesByLocation[row][col + 1])
-		)
-		{
+		) {
 			cageThatGrew = cagesByLocation[row][col + 1];
 		}
 
@@ -371,16 +367,14 @@ function expandCages(cageToDestroy)
 		if (
 			col !== 0 && cagesByLocation[row][col - 1] !== cageToDestroy
 			&& tryToAddCageToCage(cagesByLocation[row][col], cagesByLocation[row][col - 1])
-		)
-		{
+		) {
 			cageThatGrew = cagesByLocation[row][col - 1];
 		}
 
 		else if (
 			col !== gridSize - 1 && cagesByLocation[row][col + 1] !== cageToDestroy
 			&& tryToAddCageToCage(cagesByLocation[row][col], cagesByLocation[row][col + 1])
-		)
-		{
+		) {
 			cageThatGrew = cagesByLocation[row][col + 1];
 		}
 
@@ -388,17 +382,14 @@ function expandCages(cageToDestroy)
 			row !== 0 && cagesByLocation[row - 1][col] !== cageToDestroy
 			&& tryToAddCageToCage(cagesByLocation[row][col], cagesByLocation[row - 1][col])
 		)
-		{
-			cageThatGrew = cagesByLocation[row - 1][col];
+		) {cageThatGrew = cagesByLocation[row - 1][col];
 		}
 
 		else if (
 			row !== gridSize - 1 && cagesByLocation[row + 1][col] !== cageToDestroy
 			&& tryToAddCageToCage(cagesByLocation[row][col], cagesByLocation[row + 1][col])
-		)
-		{
-			cageThatGrew = cagesByLocation[row + 1][col];
-		}
+		) {
+		) {
 
 		else
 		{
@@ -469,8 +460,7 @@ function tryToAddCageToCage(cageToDestroy, cageToGrow)
 		&& cages[cageToGrow][4] + cages[cageToDestroy][4] <= (
 			2 * Math.max(cages[cageToGrow][3], cages[cageToDestroy][3])
 		)
-	)
-	{
+	) {
 		return true;
 	}
 

@@ -19,8 +19,7 @@ export class QuaternionicJuliaSet extends RaymarchApplet
 	constructor(
 		canvas,
 		switchBulbButtonElement,
-	)
-	{
+	) {
 		super(canvas);
 
 

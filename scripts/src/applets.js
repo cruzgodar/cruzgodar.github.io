@@ -1,8 +1,8 @@
 import { addHoverEventWithScale } from "./hover-events.js";
 import {
-	$$,
-	addTemporaryListener,
-	pageElement
+    $$,
+    addTemporaryListener,
+    pageElement
 } from "./main.js";
 import anime from "/scripts/anime.js";
 
@@ -1122,8 +1122,7 @@ export class RaymarchApplet extends Applet
 		if (
 			document.activeElement.tagName === "INPUT"
 			|| !(e.key === "w" || e.key === "s" || e.key === "d" || e.key === "a")
-		)
-		{
+		) {
 			return;
 		}
 
@@ -1162,8 +1161,7 @@ export class RaymarchApplet extends Applet
 		if (
 			document.activeElement.tagName === "INPUT"
 			|| !(e.key === "w" || e.key === "s" || e.key === "d" || e.key === "a")
-		)
-		{
+		) {
 			return;
 		}
 
@@ -1291,8 +1289,7 @@ export class RaymarchApplet extends Applet
 				this.movingRightKeyboard
 				|| this.movingLeftKeyboard
 			)
-		)
-		{
+		) {
 			this.cameraPos[0] = oldCameraPos[0]
 				+ (this.cameraPos[0] - oldCameraPos[0]) * .7071;
 			this.cameraPos[1] = oldCameraPos[1]
@@ -1320,8 +1317,7 @@ export class RaymarchApplet extends Applet
 			this.moveVelocity[0] !== 0
 			|| this.moveVelocity[1] !== 0
 			|| this.moveVelocity[2] !== 0
-		)
-		{
+		) {
 			this.cameraPos[0] += this.moveVelocity[0] * timeElapsed / 6.944;
 			this.cameraPos[1] += this.moveVelocity[1] * timeElapsed / 6.944;
 			this.cameraPos[2] += this.moveVelocity[2] * timeElapsed / 6.944;
@@ -1335,8 +1331,7 @@ export class RaymarchApplet extends Applet
 				+ this.moveVelocity[1] ** 2
 				+ this.moveVelocity[2] ** 2 <
 					(this.moveVelocityStopThreshhold * this.movingSpeed) ** 2
-			)
-			{
+			) {
 				this.moveVelocity[0] = 0;
 				this.moveVelocity[1] = 0;
 				this.moveVelocity[2] = 0;

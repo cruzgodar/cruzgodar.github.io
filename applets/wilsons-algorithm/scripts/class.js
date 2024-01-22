@@ -40,8 +40,7 @@ export class WilsonsAlgorithm extends Applet
 		maximumSpeed,
 		noBorders,
 		reverseGenerateSkeleton = false
-	})
-	{
+	}) {
 		let timeoutId = null;
 
 

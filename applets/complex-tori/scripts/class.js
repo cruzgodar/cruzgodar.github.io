@@ -198,8 +198,7 @@ export class EllipticCurve extends Applet
 			let i = isolationSearchRadius;
 			i < this.wilson.canvasHeight - isolationSearchRadius;
 			i++
-		)
-		{
+		) {
 			for (let j = isolationSearchRadius; j < width - isolationSearchRadius; j++)
 			{
 				const index = width * i + j;
@@ -263,8 +262,7 @@ export class EllipticCurve extends Applet
 				|| endpoints[i][1] < this.wilson.canvasHeight / 20
 				|| endpoints[i][0] > 19 * this.wilson.canvasWidth / 20
 				|| endpoints[i][1] > 19 * this.wilson.canvasHeight / 20
-			)
-			{
+			) {
 				continue;
 			}
 

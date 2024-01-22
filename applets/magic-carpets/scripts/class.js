@@ -41,8 +41,7 @@ export class MagicCarpet extends Applet
 		gridSize = 8,
 		maxCageSize = 16,
 		uniqueSolution = true
-	})
-	{
+	}) {
 		if (this.currentlyDrawing)
 		{
 			return;

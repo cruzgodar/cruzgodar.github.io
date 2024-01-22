@@ -179,8 +179,7 @@ function expandCage(cageIndex)
 			neighbor[1] === col
 			&& neighbor[3] === width
 			&& neighbor[2] * neighbor[3] + width * height <= maxCageSize
-		)
-		{
+		) {
 			directions.push([1, 0]);
 		}
 	}
@@ -197,8 +196,7 @@ function expandCage(cageIndex)
 			neighbor[0] === row
 			&& neighbor[2] === height
 			&& neighbor[2] * neighbor[3] + width * height <= maxCageSize
-		)
-		{
+		) {
 			directions.push([0, 1]);
 		}
 	}
@@ -359,8 +357,7 @@ function solvePuzzleStep(cageIndex, occupiedCageLocations)
 						if (
 							occupiedCageLocations[i + k][j + l]
 							&& !(i + k === row && j + l === col)
-						)
-						{
+						) {
 							broken = true;
 							break;
 						}

@@ -30,8 +30,7 @@ export function notesEnvironment(options, id, name)
 
 		else if (
 			name.toLowerCase().includes(notesEnvironmentNames[id].toLowerCase())
-		)
-		{
+		) {
 			return `<div class="notes-${id} notes-environment"><p class="body-text"</p><span class="notes-${id}-title">${name}</span></p>`;
 		}
 

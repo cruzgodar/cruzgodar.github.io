@@ -228,8 +228,7 @@ export class QuasiFuchsianGroups extends Applet
 		y1 = this.wilson.draggables.worldCoordinates[0][1],
 		x2 = this.wilson.draggables.worldCoordinates[1][0],
 		y2 = this.wilson.draggables.worldCoordinates[1][1]
-	)
-	{
+	) {
 		//Use Grandma's recipe, canidate for the worst-named algorithm of the last two decades.
 		const ta = new this.Complex(x1, y1);
 		const tb = new this.Complex(x2, y2);
@@ -321,8 +320,7 @@ export class QuasiFuchsianGroups extends Applet
 	rileyCoefficients(
 		x1 = this.wilson.draggables.worldCoordinates[0][0],
 		y1 = this.wilson.draggables.worldCoordinates[0][1]
-	)
-	{
+	) {
 		this.coefficients[0][0][0] = 1;
 		this.coefficients[0][0][1] = 0;
 
@@ -372,8 +370,7 @@ export class QuasiFuchsianGroups extends Applet
 		y2 = this.wilson.draggables.worldCoordinates[1][1],
 		x3 = this.wilson.draggables.worldCoordinates[2][0],
 		y3 = this.wilson.draggables.worldCoordinates[2][1]
-	)
-	{
+	) {
 		//Use Grandma's recipe, canidate for the worst-named algorithm of the last two decades.
 		const ta = new this.Complex(x1, y1);
 		const tb = new this.Complex(x2, y2);

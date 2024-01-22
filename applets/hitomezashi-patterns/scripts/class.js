@@ -63,8 +63,7 @@ export class HitomezashiPattern extends Applet
 		doDrawBoundaries = true,
 		doDrawRegions = true,
 		maximumSpeed = false
-	})
-	{
+	}) {
 		this.resolution = resolution;
 		this.gridSize = gridSize;
 		this.rowProb = rowProb;
@@ -377,8 +376,7 @@ export class HitomezashiPattern extends Applet
 						row > 0
 						&& this.regions[row - 1][col] === -1
 						&& !(this.patternRows[row][col])
-					)
-					{
+					) {
 						activeSquares.push([row - 1, col]);
 
 						this.regions[row - 1][col] = this.numRegions;
@@ -390,8 +388,7 @@ export class HitomezashiPattern extends Applet
 						row < this.gridSize - 1
 						&& this.regions[row + 1][col] === -1
 						&& !(this.patternRows[row + 1][col])
-					)
-					{
+					) {
 						activeSquares.push([row + 1, col]);
 
 						this.regions[row + 1][col] = this.numRegions;
@@ -403,8 +400,7 @@ export class HitomezashiPattern extends Applet
 						col > 0
 						&& this.regions[row][col - 1] === -1
 						&& !(this.patternCols[row][col])
-					)
-					{
+					) {
 						activeSquares.push([row, col - 1]);
 
 						this.regions[row][col - 1] = this.numRegions;
@@ -416,8 +412,7 @@ export class HitomezashiPattern extends Applet
 						col < this.gridSize - 1
 						&& this.regions[row][col + 1] === -1
 						&& !(this.patternCols[row][col + 1])
-					)
-					{
+					) {
 						activeSquares.push([row, col + 1]);
 
 						this.regions[row][col + 1] = this.numRegions;

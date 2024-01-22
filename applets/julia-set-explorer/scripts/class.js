@@ -897,8 +897,7 @@ export class JuliaSet extends Applet
 					|| !this.useDoublePrecision
 				)
 			)
-		)
-		{
+		) {
 			this.toggleDoublePrecision();
 		}
 

@@ -71,8 +71,7 @@ function isValidFile(file)
 
 		|| extension === "js"
 		|| extension === "css"
-	)
-	{
+	) {
 		return true;
 	}
 

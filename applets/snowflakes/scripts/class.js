@@ -605,8 +605,7 @@ export class Snowflake extends Applet
 		kappa = .0025,
 		mu = .015,
 		gamma = .0005
-	})
-	{
+	}) {
 		this.resume();
 
 		this.resolution = resolution;
@@ -792,8 +791,7 @@ export class Snowflake extends Applet
 				|| pixels[4 * index2]
 				|| pixels[4 * index3]
 				|| pixels[4 * index4]
-			)
-			{
+			) {
 				this.pause();
 			}
 		}

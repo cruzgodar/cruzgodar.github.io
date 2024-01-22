@@ -561,8 +561,7 @@ async function colorGraph(linearColoring = false)
 			if (
 				connectionDirections[row][column].includes(0)
 				&& distanceFromCenter[row - 1][column] === -1
-			)
-			{
+			) {
 				activePaths.push([row - 1, column, distance + 1]);
 				edgesByDistance.push([[row, column], [row - 1, column], distance]);
 			}
@@ -570,8 +569,7 @@ async function colorGraph(linearColoring = false)
 			if (
 				connectionDirections[row][column].includes(1)
 				&& distanceFromCenter[row][column + 1] === -1
-			)
-			{
+			) {
 				activePaths.push([row, column + 1, distance + 1]);
 				edgesByDistance.push([[row, column], [row, column + 1], distance]);
 			}
@@ -579,8 +577,7 @@ async function colorGraph(linearColoring = false)
 			if (
 				connectionDirections[row][column].includes(2)
 				&& distanceFromCenter[row + 1][column] === -1
-			)
-			{
+			) {
 				activePaths.push([row + 1, column, distance + 1]);
 				edgesByDistance.push([[row, column], [row + 1, column], distance]);
 			}
@@ -588,8 +585,7 @@ async function colorGraph(linearColoring = false)
 			if (
 				connectionDirections[row][column].includes(3)
 				&& distanceFromCenter[row][column - 1] === -1
-			)
-			{
+			) {
 				activePaths.push([row, column - 1, distance + 1]);
 				edgesByDistance.push([[row, column], [row, column - 1], distance]);
 			}

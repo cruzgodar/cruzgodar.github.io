@@ -126,8 +126,7 @@ export class JuliaSetMosaic extends Applet
 		setDensity = 10,
 		exposure = 1,
 		numIterations = 100
-	})
-	{
+	}) {
 		this.resolution = resolution;
 
 		this.wilson.changeCanvasSize(this.resolution, this.resolution);

@@ -158,8 +158,7 @@ export function getDesmosPoint({
 	color,
 	dragMode = "XY",
 	secret = true
-})
-{
+}) {
 	return [
 		{ latex: String.raw`(${point[0]}, ${point[1]})`, dragMode, color, secret },
 	];
@@ -171,8 +170,7 @@ export function getDesmosSlider({
 	max,
 	step,
 	secret = true
-})
-{
+}) {
 	return [
 		{ latex: String.raw`${expression}`, sliderBounds: { min, max, step }, secret },
 	];
@@ -182,8 +180,7 @@ export function getDesmosVector({
 	from, // ["a", "b"]
 	to,   // ["c", "d"]
 	color
-})
-{
+}) {
 	uid++;
 
 	return [

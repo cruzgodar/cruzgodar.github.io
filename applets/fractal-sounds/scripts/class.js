@@ -172,8 +172,7 @@ export class FractalSounds extends Applet
 		resolution,
 		exposure,
 		numIterations
-	})
-	{
+	}) {
 		this.currentFractalFunction = jsCode;
 
 		this.resolution = resolution;

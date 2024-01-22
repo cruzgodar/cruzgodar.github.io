@@ -59,8 +59,7 @@ export class DominoShuffling extends Applet
 		resolution,
 		diamondSize,
 		useSmoothColors
-	})
-	{
+	}) {
 		this.resolution = resolution;
 
 		this.wilson.changeCanvasSize(this.resolution, this.resolution);
@@ -324,8 +323,7 @@ export class DominoShuffling extends Applet
 						if (
 							this.aztecDiamond[i + this.aztecDiamond[i][j]][j]
 								=== -this.aztecDiamond[i][j]
-						)
-						{
+						) {
 							this.aztecDiamond[i + this.aztecDiamond[i][j]][j] = 0;
 							this.aztecDiamond[i][j] = 0;
 						}
@@ -337,8 +335,7 @@ export class DominoShuffling extends Applet
 						if (
 							this.aztecDiamond[i][j + Math.sign(this.aztecDiamond[i][j])]
 								=== -this.aztecDiamond[i][j]
-						)
-						{
+						) {
 							this.aztecDiamond[i][j + Math.sign(this.aztecDiamond[i][j])] = 0;
 							this.aztecDiamond[i][j] = 0;
 						}
@@ -405,8 +402,7 @@ export class DominoShuffling extends Applet
 					&& Math.abs(i + 1.5) + Math.abs(j + .5) <= this.currentDiamondSize
 					&& Math.abs(i + .5) + Math.abs(j + 1.5) <= this.currentDiamondSize
 					&& Math.abs(i + 1.5) + Math.abs(j + 1.5) <= this.currentDiamondSize
-				)
-				{
+				) {
 					const row = i + this.diamondSize;
 					const col = j + this.diamondSize;
 
@@ -421,8 +417,7 @@ export class DominoShuffling extends Applet
 						&& Math.abs(this.aztecDiamond[row - 1][col + 1]) !== 2
 						&& Math.abs(this.aztecDiamond[row][col - 1]) !== 1
 						&& Math.abs(this.aztecDiamond[row + 1][col - 1]) !== 1
-					)
-					{
+					) {
 						this.fillSpace(row, col);
 					}
 				}

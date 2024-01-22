@@ -41,8 +41,7 @@ export class KickedRotator extends Applet
 		resolution,
 		K,
 		orbitSeparation
-	})
-	{
+	}) {
 		const values = new Array(resolution * resolution);
 
 		for (let i = 0; i < resolution; i++)

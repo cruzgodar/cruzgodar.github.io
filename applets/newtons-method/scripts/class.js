@@ -43,8 +43,7 @@ export class NewtonsMethod extends Applet
 		rootAInputElement,
 		rootBInputElement,
 		colorSetterElement
-	})
-	{
+	}) {
 		super(canvas);
 
 		this.rootSetterElement = rootSetterElement;

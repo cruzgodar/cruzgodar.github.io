@@ -44,8 +44,7 @@ export class StrangeAttractor extends Applet
 		rho,
 		beta,
 		maximumSpeed
-	})
-	{
+	}) {
 		this.wilson.changeCanvasSize(resolution, resolution);
 
 		this.wilson.ctx.fillStyle = "rgb(0, 0, 0)";

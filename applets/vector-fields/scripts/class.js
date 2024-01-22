@@ -1,8 +1,8 @@
 import { Applet } from "/scripts/src/applets.js";
 import {
-	doubleEncodingGlsl,
-	getGlslBundle,
-	loadGlsl
+    doubleEncodingGlsl,
+    getGlslBundle,
+    loadGlsl
 } from "/scripts/src/complex-glsl.js";
 import { addTemporaryListener } from "/scripts/src/main.js";
 import { Wilson } from "/scripts/wilson.js";
@@ -340,8 +340,7 @@ export class VectorField extends Applet
 		worldCenterX = 0,
 		worldCenterY = 0,
 		zoomLevel = .6515
-	})
-	{
+	}) {
 		this.dt = dt;
 
 		const fragShaderSourceUpdateBase = `
@@ -507,8 +506,7 @@ export class VectorField extends Applet
 		worldCenterX = this.wilson.worldCenterX,
 		worldCenterY = this.wilson.worldCenterY,
 		zoomLevel = this.zoomLevel
-	})
-	{
+	}) {
 		this.resolution = resolution;
 		this.maxParticles = maxParticles;
 		this.dt = dt;
@@ -636,8 +634,7 @@ export class VectorField extends Applet
 					let i = this.freeParticleSlots.length - numToAdd;
 					i < this.freeParticleSlots.length;
 					i++
-				)
-				{
+				) {
 					this.createParticle(this.freeParticleSlots[i]);
 				}
 
@@ -908,8 +905,7 @@ export class VectorField extends Applet
 						&& row < this.wilson.canvasHeight
 						&& col >= 0
 						&& col < this.wilson.canvasWidth
-					)
-					{
+					) {
 						const newIndex = row * this.wilson.canvasWidth + col;
 
 						this.dimTexture[4 * newIndex] = this.lifetime;

@@ -56,8 +56,7 @@ export class SortingAlgorithm extends Applet
 		canvas,
 		numReadsElement,
 		numWritesElement
-	})
-	{
+	}) {
 		super(canvas);
 
 		this.numReadsElement = numReadsElement;
@@ -190,8 +189,7 @@ export class SortingAlgorithm extends Applet
 		algorithm,
 		dataLength,
 		doPlaySound
-	})
-	{
+	}) {
 		this.resolution = resolution;
 
 		this.generators = [

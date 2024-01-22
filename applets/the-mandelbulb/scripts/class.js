@@ -25,8 +25,7 @@ export class Mandelbulb extends RaymarchApplet
 
 	constructor({
 		canvas,
-	})
-	{
+	}) {
 		super(canvas);
 
 		const fragShaderSource = `

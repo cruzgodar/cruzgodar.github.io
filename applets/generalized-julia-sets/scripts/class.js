@@ -37,8 +37,7 @@ export class GeneralizedJuliaSet extends Applet
 	constructor({
 		canvas,
 		switchJuliaModeButtonElement
-	})
-	{
+	}) {
 		super(canvas);
 
 		this.switchJuliaModeButtonElement = switchJuliaModeButtonElement;
@@ -134,8 +133,7 @@ export class GeneralizedJuliaSet extends Applet
 		resolution = 500,
 		exposure = 1,
 		numIterations = 200
-	})
-	{
+	}) {
 		this.generatingCode = generatingCode;
 
 		this.resolution = resolution;

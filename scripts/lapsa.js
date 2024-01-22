@@ -143,8 +143,7 @@ export default class Lapsa
 			if (
 				this.shelfIconPaths.length >= 1
 				&& this.shelfIconPaths[this.shelfIconPaths.length - 1] !== "/"
-			)
-			{
+			) {
 				this.shelfIconPaths = `${this.shelfIconPaths}/`;
 			}
 			
@@ -647,8 +646,7 @@ export default class Lapsa
 			this.currentSlide >= 0
 			&& !skipBuilds && this._numBuilds[this.currentSlide] !== 0
 			&& this.buildState !== this._numBuilds[this.currentSlide]
-		)
-		{
+		) {
 			const promises = [];
 			
 			//Gross code because animation durations are weird as hell --
@@ -1483,8 +1481,7 @@ export default class Lapsa
 			this._inTableView
 			|| e.touches.length > 1
 			|| e.target.classList.contains("lapsa-interactable")
-		)
-		{
+		) {
 			return;
 		}
 		
@@ -1533,8 +1530,7 @@ export default class Lapsa
 					this._lastMoveThisDrag === 0
 					|| this._lastMoveThisDrag === -1
 				)
-			)
-			{
+			) {
 				this._lastMoveThisDrag = 1;
 				
 				this.nextSlide();
@@ -1546,8 +1542,7 @@ export default class Lapsa
 					this._lastMoveThisDrag === 0
 					|| this._lastMoveThisDrag === 1
 				)
-			)
-			{
+			) {
 				this._lastMoveThisDrag = -1;
 				
 				this.previousSlide();
@@ -1573,8 +1568,7 @@ export default class Lapsa
 					this._lastMoveThisDrag === 0
 					|| this._lastMoveThisDrag === 2
 				)
-			)
-			{
+			) {
 				this._lastMoveThisDrag = -2;
 				
 				this.hideShelf();
@@ -1586,8 +1580,7 @@ export default class Lapsa
 					this._lastMoveThisDrag === 0
 					|| this._lastMoveThisDrag === -2
 				)
-			)
-			{
+			) {
 				this._lastMoveThisDrag = 2;
 				
 				this.showShelf();
@@ -1617,8 +1610,7 @@ export default class Lapsa
 				timeBetweenMousemoves >= 3
 				&& timeBetweenMousemoves <= 50
 				&& timeBetweenMousemoves !== 33
-			)
-			{
+			) {
 				this._currentlyTouchDevice = false;
 				this._slideShelf.classList.add("lapsa-hover");
 				this.slideContainer.classList.add("lapsa-hover");

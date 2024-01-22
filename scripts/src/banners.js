@@ -1,10 +1,10 @@
 import { changeOpacity, opacityAnimationTime } from "./animation.js";
 import { cardIsAnimating, cardIsOpen } from "./cards.js";
 import {
-	$,
-	addStyle,
-	pageElement,
-	pageUrl
+    $,
+    addStyle,
+    pageElement,
+    pageUrl
 } from "./main.js";
 import anime from "/scripts/anime.js";
 
@@ -66,8 +66,7 @@ export function updateBannerOpacity(timestamp)
 		|| !contentElement
 		|| timestamp === lastBannerOpacityTimestamp
 		|| lastBannerOpacityTimestamp === -1
-	)
-	{
+	) {
 		lastBannerOpacityTimestamp = timestamp;
 
 		window.requestAnimationFrame(updateBannerOpacity);

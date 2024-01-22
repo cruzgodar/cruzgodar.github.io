@@ -141,8 +141,7 @@ export class ComplexMap extends Applet
 		addIndicatorDraggable = false,
 		draggableCallback = null,
 		selectorMode = false
-	})
-	{
+	}) {
 		this.generatingCode = generatingCode;
 		this.uniformCode = uniformCode;
 
