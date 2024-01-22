@@ -7,9 +7,9 @@ export function checkbox(options, id, name)
 				<div class="checkbox"></div>
 			</div>
 			
-			<div style="margin-left: 10px">
+			<label for="${id}-checkbox" style="margin-left: 10px">
 				<p class="body-text checkbox-subtext">${name}</p>
-			</div>
+			</label>
 		</div>
 	`;
 }
