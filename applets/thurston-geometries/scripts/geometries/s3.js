@@ -62,41 +62,41 @@ export class S3Rooms extends S3Geometry
 
 		if (minDistance == distance1)
 		{
-			return vec3(1.0, 0.0, 0.0);
+			return vec3(1.0, 0.0, 0.0) * getBanding(pos.x + pos.y + pos.z + pos.w, 10.0);
 		}
 
 		if (minDistance == distance2)
 		{
-			return vec3(0.0, 1.0, 1.0);
+			return vec3(0.0, 1.0, 1.0) * getBanding(pos.x + pos.y + pos.z + pos.w, 10.0);
 		}
 
 		if (minDistance == distance3)
 		{
-			return vec3(0.0, 1.0, 0.0);
+			return vec3(0.0, 1.0, 0.0) * getBanding(pos.x + pos.y + pos.z + pos.w, 10.0);
 		}
 
 		if (minDistance == distance4)
 		{
-			return vec3(1.0, 0.0, 1.0);
+			return vec3(1.0, 0.0, 1.0) * getBanding(pos.x + pos.y + pos.z + pos.w, 10.0);
 		}
 
 		if (minDistance == distance5)
 		{
-			return vec3(0.0, 0.0, 1.0);
+			return vec3(0.0, 0.0, 1.0) * getBanding(pos.x + pos.y + pos.z + pos.w, 10.0);
 		}
 
 		if (minDistance == distance6)
 		{
-			return vec3(1.0, 1.0, 0.0);
+			return vec3(1.0, 1.0, 0.0) * getBanding(pos.x + pos.y + pos.z + pos.w, 10.0);
 		}
 
 		if (minDistance == distance7)
 		{
-			return vec3(0.5, 0.0, 1.0);
+			return vec3(0.5, 0.0, 1.0) * getBanding(pos.x + pos.y + pos.z + pos.w, 10.0);
 		}
 		if (minDistance == distance8)
 		{
-			return vec3(1.0, 0.5, 0.0);
+			return vec3(1.0, 0.5, 0.0) * getBanding(pos.x + pos.y + pos.z + pos.w, 10.0);
 		}
 	`;
 
@@ -181,37 +181,37 @@ export class S3Spheres extends S3Geometry
 
 		if (minDistance == distance1)
 		{
-			return vec3(1.0, 0.0, 0.0);
+			return vec3(1.0, 0.0, 0.0) * getBanding(pos.x + pos.y + pos.z + pos.w, 10.0);
 		}
 
 		if (minDistance == distance2)
 		{
-			return vec3(0.0, 1.0, 1.0);
+			return vec3(0.0, 1.0, 1.0) * getBanding(pos.x + pos.y + pos.z + pos.w, 10.0);
 		}
 
 		if (minDistance == distance3)
 		{
-			return vec3(0.0, 1.0, 0.0);
+			return vec3(0.0, 1.0, 0.0) * getBanding(pos.x + pos.y + pos.z + pos.w, 10.0);
 		}
 
 		if (minDistance == distance4)
 		{
-			return vec3(1.0, 0.0, 1.0);
+			return vec3(1.0, 0.0, 1.0) * getBanding(pos.x + pos.y + pos.z + pos.w, 10.0);
 		}
 
 		if (minDistance == distance5)
 		{
-			return vec3(0.0, 0.0, 1.0);
+			return vec3(0.0, 0.0, 1.0) * getBanding(pos.x + pos.y + pos.z + pos.w, 10.0);
 		}
 
 		if (minDistance == distance6)
 		{
-			return vec3(1.0, 1.0, 0.0);
+			return vec3(1.0, 1.0, 0.0) * getBanding(pos.x + pos.y + pos.z + pos.w, 10.0);
 		}
 
 		if (minDistance == distance7)
 		{
-			return vec3(1.0, 1.0, 1.0);
+			return vec3(1.0, 1.0, 1.0) * getBanding(pos.x + pos.y + pos.z + pos.w, 10.0);
 		}
 	`;
 
