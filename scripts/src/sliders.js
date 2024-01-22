@@ -14,7 +14,6 @@ export function setUpSliders()
 
 		slider.addEventListener("input", () =>
 		{
-			document.activeElement.blur();
 			const value = logarithmic ? 10 ** parseFloat(slider.value) : parseFloat(slider.value);
 			label.textContent = int ? Math.round(value) : value.toFixed(precision);
 		});
