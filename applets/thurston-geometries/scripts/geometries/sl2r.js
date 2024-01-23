@@ -3,6 +3,63 @@ import { sliderValues } from "../index.js";
 import { BaseGeometry, getMinGlslString } from "./base.js";
 import { $ } from "/scripts/src/main.js";
 
+function getTransformationMatrix(pos)
+{
+	return [
+		[pos[0], -pos[1], pos[2], pos[3]],
+		[pos[1], pos[0], pos[3], -pos[2]],
+		[pos[2], pos[3], pos[0], -pos[1]],
+		[pos[3], -pos[2], pos[1], pos[0]]
+	];
+}
+
+const root2Over2Plus1 = 1.7071068;
+const root1PlusRoot2 = 1.55377397;
+const delta = 0.91017972;
+
+const teleportMatrices = [
+	//B1inv, B2inv
+	[
+		getTransformationMatrix([
+			root2Over2Plus1,
+			-root2Over2Plus1,
+			-root1PlusRoot2,
+			root1PlusRoot2
+		]),
+
+		getTransformationMatrix([
+			root2Over2Plus1,
+			-root2Over2Plus1,
+			root1PlusRoot2,
+			-root1PlusRoot2
+		])
+	],
+	[
+		[
+			[1, 0, 0, 0],
+			[0, 1, 0, 0],
+			[0, 0, 1, 0],
+			[0, 0, 0, 1]
+		],
+		[
+			[1, 0, 0, 0],
+			[0, 1, 0, 0],
+			[0, 0, 1, 0],
+			[0, 0, 0, 1]
+		]
+	]
+];
+
+const teleportFibers = [
+	[-Math.PI / 2, -Math.PI / 2],
+	[-2 * Math.PI, 2 * Math.PI]
+];
+
+const teleportVectors = [
+	[[1, 0, 0], delta],
+	[[0, 0, 1], Math.PI]
+];
+
 function getTeleportGlslChunk({
 	comparisonVec,
 	dotProductThreshhold,
@@ -16,7 +73,7 @@ function getTeleportGlslChunk({
 	return /*glsl*/`
 		dotProduct = dot(kleinElement, ${comparisonVec});
 
-		if (dotProduct > ${dotProductThreshhold})
+		if (dotProduct > (${dotProductThreshhold}))
 		{
 			applyH2Isometry(pos, rayDirectionVec.xyz);
 
@@ -27,13 +84,14 @@ function getTeleportGlslChunk({
 			applyH2Isometry(vec4(pos.x, -pos.yzw), rayDirectionVec.xyz);
 
 			startPos = pos;
+			startFiber = fiber;
 			totalT += t;
 			t = 0.0;
 
 			kleinElement = getKleinElement(pos, fiber);
 		}
 
-		else if (dotProduct < -${dotProductThreshhold})
+		else if (dotProduct < -(${dotProductThreshhold}))
 		{
 			applyH2Isometry(pos, rayDirectionVec.xyz);
 
@@ -44,6 +102,7 @@ function getTeleportGlslChunk({
 			applyH2Isometry(vec4(pos.x, -pos.yzw), rayDirectionVec.xyz);
 
 			startPos = pos;
+			startFiber = fiber;
 			totalT += t;
 			t = 0.0;
 
@@ -94,6 +153,8 @@ function getBinarySearchGlslChunk({
 
 			t = oldT + lastTIncrease * currentSearchPosition;
 
+			totalT -= lastTIncrease * (1.0 - currentSearchPosition);
+
 			getUpdatedPos(startPos, startFiber, rayDirectionVec, t, pos, fiber);
 
 			kleinElement = getKleinElement(pos, fiber);
@@ -135,13 +196,13 @@ class SL2RGeometry extends BaseGeometry
 		vec3 kleinElement = getKleinElement(pos, fiber);
 		
 		float dotProduct;
-/*
+
 	${getBinarySearchGlslChunk({
 		comparisonVec: "teleportVec1",
 		dotProductThreshhold: "delta + .001",
 		searchIterations: "5"
 	})}
-
+/*
 	${getBinarySearchGlslChunk({
 		comparisonVec: "teleportVec2",
 		dotProductThreshhold: "delta + .001",
@@ -459,7 +520,7 @@ class SL2RGeometry extends BaseGeometry
 			vec3 kleinElement = getKleinElement(pos, fiber);
 
 			float dotProduct;
-/*
+
 	${getTeleportGlslChunk({
 		comparisonVec: "teleportVec1",
 		dotProductThreshhold: "delta",
@@ -470,7 +531,7 @@ class SL2RGeometry extends BaseGeometry
 		teleportElementPos: "teleportElementB1inv",
 		teleportElementNeg: "teleportElementB2inv"
 	})}
-
+/*
 	${getTeleportGlslChunk({
 		comparisonVec: "teleportVec2",
 		dotProductThreshhold: "delta",
@@ -616,34 +677,23 @@ class SL2RGeometry extends BaseGeometry
 	// normal vector, i.e. [0, 0, 1, 0]. Since we're never moving and projecting like we usually
 	// do, this should take care of itself.
 	correctVectors() {}
-
-	teleportCamera()
-	{
-		const teleportMatrices = [
-			[
-				[
-					[1, 0, 0, 0],
-					[0, 1, 0, 0],
-					[0, 0, 1, 0],
-					[0, 0, 0, 1]
+	/*
+	[
+					[1.7071068, 1.7071068, -2.1973682, 0],
+					[-1.7071068, 1.7071068, 0, 2.1973682],
+					[-2.1973682, 0, 1.7071068, 1.7071068],
+					[0, 2.1973682, -1.7071068, 1.7071068]
 				],
 				[
-					[1, 0, 0, 0],
-					[0, 1, 0, 0],
-					[0, 0, 1, 0],
-					[0, 0, 0, 1]
+					[1.7071068, -1.7071068, 2.1973682, 0],
+					[1.7071068, 1.7071068, 0, -2.1973682],
+					[2.1973682, 0, 1.7071068, -1.7071068],
+					[0, -2.1973682, 1.7071068, 1.7071068]
 				]
-			]
-		];
+	*/
 
-		const teleportFibers = [
-			[-2 * Math.PI, 2 * Math.PI]
-		];
-
-		const teleportVectors = [
-			[[0, 0, 1], Math.PI]
-		];
-
+	teleportCamera(rotatedForwardVec, recomputeRotation)
+	{
 		let kleinElement = getKleinElement(this.cameraPos, this.cameraFiber);
 
 		for (let i = 0; i < teleportMatrices.length; i++)
@@ -662,6 +712,8 @@ class SL2RGeometry extends BaseGeometry
 				this.cameraFiber += teleportFibers[i][0];
 
 				kleinElement = getKleinElement(this.cameraPos, this.cameraFiber);
+
+				console.log("teleported!", i);
 			}
 
 			else if (dotProduct < -teleportVectors[i][1])
@@ -674,6 +726,8 @@ class SL2RGeometry extends BaseGeometry
 				this.cameraFiber += teleportFibers[i][1];
 
 				kleinElement = getKleinElement(this.cameraPos, this.cameraFiber);
+
+				console.log("teleported!", i);
 			}
 		}
 	}
@@ -682,7 +736,7 @@ class SL2RGeometry extends BaseGeometry
 export class SL2RSpheres extends SL2RGeometry
 {
 	static distances = /*glsl*/`
-		float radius = .15 + wallThickness;
+		float radius = 1.0 + wallThickness;
 
 		vec3 h2Element = getH2Element(pos);
 
@@ -701,7 +755,7 @@ export class SL2RSpheres extends SL2RGeometry
 
 		float minDistance = ${getMinGlslString("distance", 3)};
 
-		return minDistance;
+		return -minDistance;
 	`;
 
 	getColorGlsl = /*glsl*/`
