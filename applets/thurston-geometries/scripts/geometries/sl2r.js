@@ -10,16 +10,21 @@ function getTeleportGlslChunk({
 	teleportMatNeg,
 	fiberAdjustPos,
 	fiberAdjustNeg,
+	teleportElementPos,
+	teleportElementNeg,
 }) {
 	return /*glsl*/`
 		dotProduct = dot(kleinElement, ${comparisonVec});
 
 		if (dotProduct > ${dotProductThreshhold})
 		{
+			applyH2Isometry(pos, rayDirectionVec.xyz);
+
 			pos = ${teleportMatPos} * pos;
 			fiber += ${fiberAdjustPos};
 
-			// rayDirectionVec = getTransformationMatrix(vec4(pos.x, -pos.yzw)) * teleportMatB1inv * getUpdatedDirectionVec(oldPos, rayDirectionVec, t);
+			applyH2Isometry(${teleportElementPos}, rayDirectionVec.xyz);
+			applyH2Isometry(vec4(pos.x, -pos.yzw), rayDirectionVec.xyz);
 
 			startPos = pos;
 			totalT += t;
@@ -30,12 +35,66 @@ function getTeleportGlslChunk({
 
 		else if (dotProduct < -${dotProductThreshhold})
 		{
+			applyH2Isometry(pos, rayDirectionVec.xyz);
+
 			pos = ${teleportMatNeg} * pos;
 			fiber += ${fiberAdjustNeg};
+
+			applyH2Isometry(${teleportElementNeg}, rayDirectionVec.xyz);
+			applyH2Isometry(vec4(pos.x, -pos.yzw), rayDirectionVec.xyz);
 
 			startPos = pos;
 			totalT += t;
 			t = 0.0;
+
+			kleinElement = getKleinElement(pos, fiber);
+		}
+	`;
+}
+
+function getBinarySearchGlslChunk({
+	comparisonVec,
+	dotProductThreshhold,
+	searchIterations
+}) {
+	return /*glsl*/`
+		dotProduct = dot(kleinElement, ${comparisonVec});
+
+		if (abs(dotProduct) > ${dotProductThreshhold})
+		{
+			// Binary search our way down until we're back in the fundamental domain.
+			// It feels like we should change totalT here to reflect the new value, but that seems
+			// to badly affect fog calculations.
+			float oldT = t - lastTIncrease;
+
+			// The factor by which we multiply lastTIncrease to get the usable increase.
+			float currentSearchPosition = 0.5;
+			float currentSearchScale = 0.25;
+
+			for (int i = 0; i < ${searchIterations}; i++)
+			{
+				getUpdatedPos(startPos, startFiber, rayDirectionVec, oldT + lastTIncrease * currentSearchPosition, pos, fiber);
+
+				kleinElement = getKleinElement(pos, fiber);
+
+				dotProduct = dot(kleinElement, teleportVec5);
+
+				if (abs(dotProduct) > ${dotProductThreshhold})
+				{
+					currentSearchPosition -= currentSearchScale;
+				}
+
+				else 
+				{
+					currentSearchPosition += currentSearchScale;
+				}
+
+				currentSearchScale *= .5;
+			}
+
+			t = oldT + lastTIncrease * currentSearchPosition;
+
+			getUpdatedPos(startPos, startFiber, rayDirectionVec, t, pos, fiber);
 
 			kleinElement = getKleinElement(pos, fiber);
 		}
@@ -56,44 +115,37 @@ class SL2RGeometry extends BaseGeometry
 
 		vec3 kleinElement = getKleinElement(pos, fiber);
 		
-		float dotProduct = dot(kleinElement, teleportVec5);
+		float dotProduct;
+/*
+	${getBinarySearchGlslChunk({
+		comparisonVec: "teleportVec1",
+		dotProductThreshhold: "delta + .001",
+		searchIterations: "5"
+	})}
 
-		if (abs(dotProduct) > pi + 0.01)
-		{
-			// Binary search our way down until we're back in the fundamental domain.
-			// It feels like we should change totalT here to reflect the new value, but that seems
-			// to badly affect fog calculations.
-			float oldT = t - lastTIncrease;
+	${getBinarySearchGlslChunk({
+		comparisonVec: "teleportVec2",
+		dotProductThreshhold: "delta + .001",
+		searchIterations: "5"
+	})}
 
-			// The factor by which we multiply lastTIncrease to get the usable increase.
-			float currentSearchPosition = 0.5;
-			float currentSearchScale = 0.25;
+	${getBinarySearchGlslChunk({
+		comparisonVec: "teleportVec3",
+		dotProductThreshhold: "delta + .001",
+		searchIterations: "5"
+	})}
 
-			for (int i = 0; i < 5; i++)
-			{
-				getUpdatedPos(startPos, startFiber, rayDirectionVec, oldT + lastTIncrease * currentSearchPosition, pos, fiber);
-
-				kleinElement = getKleinElement(pos, fiber);
-
-				dotProduct = dot(kleinElement, teleportVec5);
-
-				if (abs(dotProduct) > pi + 0.01)
-				{
-					currentSearchPosition -= currentSearchScale;
-				}
-
-				else 
-				{
-					currentSearchPosition += currentSearchScale;
-				}
-
-				currentSearchScale *= .5;
-			}
-
-			t = oldT + lastTIncrease * currentSearchPosition;
-
-			getUpdatedPos(startPos, startFiber, rayDirectionVec, t, pos, fiber);
-		}
+	${getBinarySearchGlslChunk({
+		comparisonVec: "teleportVec4",
+		dotProductThreshhold: "delta + .001",
+		searchIterations: "5"
+	})}
+*/
+	${getBinarySearchGlslChunk({
+		comparisonVec: "teleportVec5",
+		dotProductThreshhold: "pi + .001",
+		searchIterations: "5"
+	})}
 
 		globalColor += teleportPos(pos, fiber, startPos, startFiber, rayDirectionVec, t, totalT);
 	`;
@@ -309,6 +361,7 @@ class SL2RGeometry extends BaseGeometry
 		const vec3 teleportVec4 = vec3(-root2Over2, root2Over2, 0.0);
 		const vec3 teleportVec5 = vec3(0.0, 0.0, 1.0);
 
+		const vec4 teleportElementA1 = vec4(root2Over2Plus1, -root2Over2Plus1, -root2 * root1PlusRoot2, 0.0);
 		const mat4 teleportMatA1 = mat4(
 			root2Over2Plus1, -root2Over2Plus1, -root2 * root1PlusRoot2, 0.0,
 			root2Over2Plus1, root2Over2Plus1, 0.0, root2 * root1PlusRoot2,
@@ -316,6 +369,7 @@ class SL2RGeometry extends BaseGeometry
 			0.0, root2 * root1PlusRoot2, root2Over2Plus1, root2Over2Plus1
 		);
 
+		const vec4 teleportElementA1inv = vec4(root2Over2Plus1, root2Over2Plus1, root2 * root1PlusRoot2, 0.0);
 		const mat4 teleportMatA1inv = mat4(
 			root2Over2Plus1, root2Over2Plus1, root2 * root1PlusRoot2, 0.0,
 			-root2Over2Plus1, root2Over2Plus1, 0.0, -root2 * root1PlusRoot2,
@@ -323,6 +377,7 @@ class SL2RGeometry extends BaseGeometry
 			0.0, -root2 * root1PlusRoot2, -root2Over2Plus1, root2Over2Plus1
 		);
 
+		const vec4 teleportElementA2 = vec4(root2Over2Plus1, -root2Over2Plus1, root2 * root1PlusRoot2, 0.0);
 		const mat4 teleportMatA2 = mat4(
 			root2Over2Plus1, -root2Over2Plus1, root2 * root1PlusRoot2, 0.0,
 			root2Over2Plus1, root2Over2Plus1, 0.0, -root2 * root1PlusRoot2,
@@ -330,6 +385,7 @@ class SL2RGeometry extends BaseGeometry
 			0.0, -root2 * root1PlusRoot2, root2Over2Plus1, root2Over2Plus1
 		);
 
+		const vec4 teleportElementA2inv = vec4(root2Over2Plus1, root2Over2Plus1, -root2 * root1PlusRoot2, 0.0);
 		const mat4 teleportMatA2inv = mat4(
 			root2Over2Plus1, root2Over2Plus1, -root2 * root1PlusRoot2, 0.0,
 			-root2Over2Plus1, root2Over2Plus1, 0.0, root2 * root1PlusRoot2,
@@ -337,6 +393,7 @@ class SL2RGeometry extends BaseGeometry
 			0.0, root2 * root1PlusRoot2, -root2Over2Plus1, root2Over2Plus1
 		);
 		
+		const vec4 teleportElementB1 = vec4(root2Over2Plus1, root2Over2Plus1, root2 * root1PlusRoot2, -root2 * root1PlusRoot2);
 		const mat4 teleportMatB1 = mat4(
 			root2Over2Plus1, root2Over2Plus1, root1PlusRoot2, -root1PlusRoot2,
 			-root2Over2Plus1, root2Over2Plus1, -root1PlusRoot2, -root1PlusRoot2,
@@ -344,6 +401,7 @@ class SL2RGeometry extends BaseGeometry
 			-root1PlusRoot2, -root1PlusRoot2, -root2Over2Plus1, root2Over2Plus1
 		);
 
+		const vec4 teleportElementB1inv = vec4(root2Over2Plus1, -root2Over2Plus1, -root2 * root1PlusRoot2, root2 * root1PlusRoot2);
 		const mat4 teleportMatB1inv = mat4(
 			root2Over2Plus1, -root2Over2Plus1, -root1PlusRoot2, root1PlusRoot2,
 			root2Over2Plus1, root2Over2Plus1, root1PlusRoot2, root1PlusRoot2,
@@ -351,6 +409,7 @@ class SL2RGeometry extends BaseGeometry
 			root1PlusRoot2, root1PlusRoot2, root2Over2Plus1, root2Over2Plus1
 		);
 		
+		const vec4 teleportElementB2 = vec4(root2Over2Plus1, root2Over2Plus1, -root2 * root1PlusRoot2, root2 * root1PlusRoot2);
 		const mat4 teleportMatB2 = mat4(
 			root2Over2Plus1, root2Over2Plus1, -root1PlusRoot2, root1PlusRoot2,
 			-root2Over2Plus1, root2Over2Plus1, root1PlusRoot2, root1PlusRoot2,
@@ -358,6 +417,7 @@ class SL2RGeometry extends BaseGeometry
 			root1PlusRoot2, root1PlusRoot2, -root2Over2Plus1, root2Over2Plus1
 		);
 
+		const vec4 teleportElementB2inv = vec4(root2Over2Plus1, -root2Over2Plus1, root2 * root1PlusRoot2, -root2 * root1PlusRoot2);
 		const mat4 teleportMatB2inv = mat4(
 			root2Over2Plus1, -root2Over2Plus1, root1PlusRoot2, -root1PlusRoot2,
 			root2Over2Plus1, root2Over2Plus1, -root1PlusRoot2, -root1PlusRoot2,
@@ -366,6 +426,7 @@ class SL2RGeometry extends BaseGeometry
 		);
 		
 		// The identity matrix, for function compatibility.
+		const vec4 teleportElementC = vec4(1.0, 0.0, 0.0, 0.0);
 		const mat4 teleportMatC = mat4(1.0);
 
 		const float delta = 0.91017972;
@@ -378,13 +439,17 @@ class SL2RGeometry extends BaseGeometry
 			// of the line from our point on the hyperboloid to the origin with the plane z = 1.
 			vec3 kleinElement = getKleinElement(pos, fiber);
 
-			float ${getTeleportGlslChunk({
+			float dotProduct;
+/*
+	${getTeleportGlslChunk({
 		comparisonVec: "teleportVec1",
 		dotProductThreshhold: "delta",
 		teleportMatPos: "teleportMatB1inv",
 		teleportMatNeg: "teleportMatB2inv",
 		fiberAdjustPos: "-piOver2",
-		fiberAdjustNeg: "-piOver2"
+		fiberAdjustNeg: "-piOver2",
+		teleportElementPos: "teleportElementB1inv",
+		teleportElementNeg: "teleportElementB2inv"
 	})}
 
 	${getTeleportGlslChunk({
@@ -393,7 +458,9 @@ class SL2RGeometry extends BaseGeometry
 		teleportMatPos: "teleportMatA1",
 		teleportMatNeg: "teleportMatA2",
 		fiberAdjustPos: "-piOver2",
-		fiberAdjustNeg: "-piOver2"
+		fiberAdjustNeg: "-piOver2",
+		teleportElementPos: "teleportElementA1",
+		teleportElementNeg: "teleportElementA2"
 	})}
 
 	${getTeleportGlslChunk({
@@ -402,7 +469,9 @@ class SL2RGeometry extends BaseGeometry
 		teleportMatPos: "teleportMatB1",
 		teleportMatNeg: "teleportMatB2",
 		fiberAdjustPos: "piOver2",
-		fiberAdjustNeg: "piOver2"
+		fiberAdjustNeg: "piOver2",
+		teleportElementPos: "teleportElementB1",
+		teleportElementNeg: "teleportElementB2"
 	})}
 
 	${getTeleportGlslChunk({
@@ -411,16 +480,20 @@ class SL2RGeometry extends BaseGeometry
 		teleportMatPos: "teleportMatA1inv",
 		teleportMatNeg: "teleportMatA2inv",
 		fiberAdjustPos: "piOver2",
-		fiberAdjustNeg: "piOver2"
+		fiberAdjustNeg: "piOver2",
+		teleportElementPos: "teleportElementA1inv",
+		teleportElementNeg: "teleportElementA2inv"
 	})}
-
+*/
 	${getTeleportGlslChunk({
 		comparisonVec: "teleportVec5",
 		dotProductThreshhold: "pi",
 		teleportMatPos: "teleportMatC",
 		teleportMatNeg: "teleportMatC",
 		fiberAdjustPos: "-2.0 * pi",
-		fiberAdjustNeg: "2.0 * pi"
+		fiberAdjustNeg: "2.0 * pi",
+		teleportElementPos: "teleportElementC",
+		teleportElementNeg: "teleportElementC"
 	})}
 
 			return color;
