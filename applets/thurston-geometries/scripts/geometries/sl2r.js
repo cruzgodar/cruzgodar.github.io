@@ -3,6 +3,45 @@ import { sliderValues } from "../index.js";
 import { BaseGeometry } from "./base.js";
 import { $ } from "/scripts/src/main.js";
 
+function getTeleportGlslChunk({
+	comparisonVec,
+	dotProductThreshhold,
+	teleportMatPos,
+	teleportMatNeg,
+	fiberAdjustPos,
+	fiberAdjustNeg,
+}) {
+	return /*glsl*/`
+		dotProduct = dot(kleinElement, ${comparisonVec});
+
+		if (dotProduct > ${dotProductThreshhold})
+		{
+			pos = ${teleportMatPos} * pos;
+			fiber += ${fiberAdjustPos};
+
+			// rayDirectionVec = getTransformationMatrix(vec4(pos.x, -pos.yzw)) * teleportMatB1inv * getUpdatedDirectionVec(oldPos, rayDirectionVec, t);
+
+			startPos = pos;
+			totalT += t;
+			t = 0.0;
+
+			kleinElement = getKleinElement(pos, fiber);
+		}
+
+		else if (dotProduct < -${dotProductThreshhold})
+		{
+			pos = ${teleportMatNeg} * pos;
+			fiber += ${fiberAdjustNeg};
+
+			startPos = pos;
+			totalT += t;
+			t = 0.0;
+
+			kleinElement = getKleinElement(pos, fiber);
+		}
+	`;
+}
+
 class SL2RGeometry extends BaseGeometry
 {
 	raymarchSetupGlsl = /*glsl*/`
@@ -12,7 +51,49 @@ class SL2RGeometry extends BaseGeometry
 	geodesicGlsl = /*glsl*/`
 		vec4 pos;
 		float fiber;
+
 		getUpdatedPos(startPos, startFiber, rayDirectionVec, t, pos, fiber);
+
+		vec3 kleinElement = getKleinElement(pos, fiber);
+		
+		float dotProduct = dot(kleinElement, teleportVec5);
+
+		if (abs(dotProduct) > pi + 0.01)
+		{
+			// Binary search our way down until we're back in the fundamental domain.
+			// It feels like we should change totalT here to reflect the new value, but that seems
+			// to badly affect fog calculations.
+			float oldT = t - lastTIncrease;
+
+			// The factor by which we multiply lastTIncrease to get the usable increase.
+			float currentSearchPosition = 0.5;
+			float currentSearchScale = 0.25;
+
+			for (int i = 0; i < 5; i++)
+			{
+				getUpdatedPos(startPos, startFiber, rayDirectionVec, oldT + lastTIncrease * currentSearchPosition, pos, fiber);
+
+				kleinElement = getKleinElement(pos, fiber);
+
+				dotProduct = dot(kleinElement, teleportVec5);
+
+				if (abs(dotProduct) > pi + 0.01)
+				{
+					currentSearchPosition -= currentSearchScale;
+				}
+
+				else 
+				{
+					currentSearchPosition += currentSearchScale;
+				}
+
+				currentSearchScale *= .5;
+			}
+
+			t = oldT + lastTIncrease * currentSearchPosition;
+
+			getUpdatedPos(startPos, startFiber, rayDirectionVec, t, pos, fiber);
+		}
 
 		globalColor += teleportPos(pos, fiber, startPos, startFiber, rayDirectionVec, t, totalT);
 	`;
@@ -125,6 +206,13 @@ class SL2RGeometry extends BaseGeometry
 			);
 		}
 
+		vec3 getKleinElement(vec4 qElement, float fiber)
+		{
+			vec3 h2Element = getH2Element(qElement);
+
+			return vec3(h2Element.x / h2Element.z, h2Element.y / h2Element.z, fiber);
+		}
+
 		const float root2Over2 = 0.70710678;
 		
 		void getUpdatedPos(
@@ -199,6 +287,15 @@ class SL2RGeometry extends BaseGeometry
 			fiber += startFiber;
 		}
 
+		vec4 getUpdatedDirectionVec(vec4 pos, vec4 rayDirectionVec, float t)
+		{
+			vec3 h2Element = rayDirectionVec.xyz;
+
+			applyH2Isometry(pos, h2Element);
+
+			return vec4(h2Element, rayDirectionVec.w);
+		}
+
 		const float pi = 3.14159265;
 		const float piOver2 = 1.5707963;
 
@@ -267,6 +364,9 @@ class SL2RGeometry extends BaseGeometry
 			root1PlusRoot2, -root1PlusRoot2, root2Over2Plus1, -root2Over2Plus1,
 			-root1PlusRoot2, -root1PlusRoot2, root2Over2Plus1, root2Over2Plus1
 		);
+		
+		// The identity matrix, for function compatibility.
+		const mat4 teleportMatC = mat4(1.0);
 
 		const float delta = 0.91017972;
 
@@ -275,26 +375,53 @@ class SL2RGeometry extends BaseGeometry
 			vec3 color = vec3(0.0, 0.0, 0.0);
 
 			// First, we need to get the corresponding point in the Klein model of H^2, which is given by the intersection
-			// of the line from our point on the hyperbolid to the origin with the plane z = 1.
-			vec3 h2Element = getH2Element(pos);
+			// of the line from our point on the hyperboloid to the origin with the plane z = 1.
+			vec3 kleinElement = getKleinElement(pos, fiber);
 
-			vec3 kleinElement = vec3(h2Element.x / h2Element.z, h2Element.y / h2Element.z, fiber);
+			float ${getTeleportGlslChunk({
+		comparisonVec: "teleportVec1",
+		dotProductThreshhold: "delta",
+		teleportMatPos: "teleportMatB1inv",
+		teleportMatNeg: "teleportMatB2inv",
+		fiberAdjustPos: "-piOver2",
+		fiberAdjustNeg: "-piOver2"
+	})}
 
-			float dotProduct = dot(kleinElement, teleportVec1);
+	${getTeleportGlslChunk({
+		comparisonVec: "teleportVec2",
+		dotProductThreshhold: "delta",
+		teleportMatPos: "teleportMatA1",
+		teleportMatNeg: "teleportMatA2",
+		fiberAdjustPos: "-piOver2",
+		fiberAdjustNeg: "-piOver2"
+	})}
 
-			if (dotProduct < -delta)
-			{
-				pos = teleportMatZ2 * pos;
+	${getTeleportGlslChunk({
+		comparisonVec: "teleportVec3",
+		dotProductThreshhold: "delta",
+		teleportMatPos: "teleportMatB1",
+		teleportMatNeg: "teleportMatB2",
+		fiberAdjustPos: "piOver2",
+		fiberAdjustNeg: "piOver2"
+	})}
 
-				rayDirectionVec = getTransformationMatrix(vec4(pos.x, -pos.yzw)) * teleportMatZ2 * getUpdatedDirectionVec(startPos, rayDirectionVec, t);
+	${getTeleportGlslChunk({
+		comparisonVec: "teleportVec4",
+		dotProductThreshhold: "delta",
+		teleportMatPos: "teleportMatA1inv",
+		teleportMatNeg: "teleportMatA2inv",
+		fiberAdjustPos: "piOver2",
+		fiberAdjustNeg: "piOver2"
+	})}
 
-				startPos = pos;
-				
-				totalT += t;
-				t = 0.0;
-
-				color += vec3(0.0, 0.0, -1.0);
-			}
+	${getTeleportGlslChunk({
+		comparisonVec: "teleportVec5",
+		dotProductThreshhold: "pi",
+		teleportMatPos: "teleportMatC",
+		teleportMatNeg: "teleportMatC",
+		fiberAdjustPos: "-2.0 * pi",
+		fiberAdjustNeg: "2.0 * pi"
+	})}
 
 			return color;
 		}
@@ -402,7 +529,7 @@ class SL2RGeometry extends BaseGeometry
 export class SL2RSpheres extends SL2RGeometry
 {
 	static distances = /*glsl*/`
-		float radius = .15;
+		float radius = .15 + wallThickness;
 
 		vec3 h2Element = getH2Element(pos);
 
