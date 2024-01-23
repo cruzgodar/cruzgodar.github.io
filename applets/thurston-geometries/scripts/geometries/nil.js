@@ -169,6 +169,11 @@ class NilGeometry extends BaseGeometry
 			return .5 * (length(pos.xy) + fInv);
 		}
 
+		float metricToOrigin(vec4 pos)
+		{
+			return length(vec3(pos.xyz));
+		}
+
 		vec4 getUpdatedPos(vec4 startPos, vec4 rayDirectionVec, float t)
 		{
 			mat4 A = getTransformationMatrix(startPos);
@@ -292,8 +297,6 @@ class NilGeometry extends BaseGeometry
 
 			if (pos.x < -0.5)
 			{
-				mat4 A = getTransformationMatrix(pos);
-
 				pos = teleportMatX1 * pos;
 
 				// !!!IMPORTANT!!! rayDirectionVec is the tangent vector from the *starting*
@@ -316,7 +319,6 @@ class NilGeometry extends BaseGeometry
 
 			else if (pos.x > 0.5)
 			{
-				mat4 A = getTransformationMatrix(pos);
 				pos = teleportMatX2 * pos;
 
 				rayDirectionVec = getTransformationMatrix(-pos) * teleportMatX2 * getUpdatedDirectionVec(startPos, rayDirectionVec, t);
@@ -331,7 +333,6 @@ class NilGeometry extends BaseGeometry
 
 			if (pos.y < -0.5)
 			{
-				mat4 A = getTransformationMatrix(pos);
 				pos = teleportMatY1 * pos;
 
 				rayDirectionVec = getTransformationMatrix(-pos) * teleportMatY1 * getUpdatedDirectionVec(startPos, rayDirectionVec, t);
@@ -346,7 +347,6 @@ class NilGeometry extends BaseGeometry
 
 			else if (pos.y > 0.5)
 			{
-				mat4 A = getTransformationMatrix(pos);
 				pos = teleportMatY2 * pos;
 
 				rayDirectionVec = getTransformationMatrix(-pos) * teleportMatY2 * getUpdatedDirectionVec(startPos, rayDirectionVec, t);
@@ -361,7 +361,6 @@ class NilGeometry extends BaseGeometry
 
 			if (pos.z < -0.5)
 			{
-				mat4 A = getTransformationMatrix(pos);
 				pos = teleportMatZ1 * pos;
 
 				rayDirectionVec = getTransformationMatrix(-pos) * teleportMatZ1 * getUpdatedDirectionVec(startPos, rayDirectionVec, t);
@@ -376,7 +375,6 @@ class NilGeometry extends BaseGeometry
 
 			else if (pos.z > 0.5)
 			{
-				mat4 A = getTransformationMatrix(pos);
 				pos = teleportMatZ2 * pos;
 
 				rayDirectionVec = getTransformationMatrix(-pos) * teleportMatZ2 * getUpdatedDirectionVec(startPos, rayDirectionVec, t);
@@ -567,22 +565,8 @@ export class NilRooms extends NilGeometry
 {
 	static distances = /*glsl*/`
 		// A sphere at the origin (honestly, why would you want it to be anywhere else?)
-		float radius = wallThickness;
-		float distance1 = approximateDistanceToOrigin(pos);
+		float distance1 = wallThickness - metricToOrigin(pos);
 
-		if (distance1 > radius + 0.2)
-		{
-			distance1 -= radius;
-		}
-
-		else
-		{
-			distance1 = exactDistanceToOrigin(pos) - radius;
-		}
-
-		distance1 = -distance1;
-
-		
 		// The distance to the x and y teleportation planes is the distance between the projections
 		// to E^2. Unfortunately for our performance, the tolerances really do need to be this tight
 		// to avoid artifacts.
@@ -666,18 +650,7 @@ export class NilRooms extends NilGeometry
 export class NilSpheres extends NilGeometry
 {
 	static distances = /*glsl*/`
-		float radius = .2;
-		float distance1 = approximateDistanceToOrigin(pos);
-
-		if (distance1 > radius + 0.2)
-		{
-			distance1 -= radius;
-		}
-
-		else
-		{
-			distance1 = exactDistanceToOrigin(pos) - radius;
-		}
+		float distance1 = metricToOrigin(pos) - .2;
 
 		float distance2 = abs(pos.x - 0.515);
 		float distance3 = abs(pos.x + 0.515);

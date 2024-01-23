@@ -1,5 +1,7 @@
 import { ThurstonGeometry } from "../class.js";
-import { BaseGeometry, getMinGlslString } from "./base.js";
+import { sliderValues } from "../index.js";
+import { BaseGeometry } from "./base.js";
+import { $ } from "/scripts/src/main.js";
 
 class SL2RGeometry extends BaseGeometry
 {
@@ -12,7 +14,7 @@ class SL2RGeometry extends BaseGeometry
 		float fiber;
 		getUpdatedPos(startPos, startFiber, rayDirectionVec, t, pos, fiber);
 
-		// globalColor += teleportPos(pos, startPos, rayDirectionVec, t, totalT);
+		globalColor += teleportPos(pos, fiber, startPos, startFiber, rayDirectionVec, t, totalT);
 	`;
 
 	fogGlsl = /*glsl*/`
@@ -53,6 +55,7 @@ class SL2RGeometry extends BaseGeometry
 		}
 
 		// Given an element in SL(2, R), returns an isometry sending the origin to that point.
+		// For future reference: the inverse to one of these is given by negating y, z, and w.
 		mat4 getTransformationMatrix(vec4 pos)
 		{
 			return mat4(
@@ -199,136 +202,101 @@ class SL2RGeometry extends BaseGeometry
 		const float pi = 3.14159265;
 		const float piOver2 = 1.5707963;
 
-		float chi(float rho, float w, float phi)
-		{
-			float sinhTerm = sinh(rho * 0.5);
-			float coshTerm = cosh(rho * 0.5);
-			float tanPhi = tan(phi);
+		const float root2 = 1.41421356;
+		const float root2Over2Plus1 = 1.7071068;
+		const float root1PlusRoot2 = 1.55377397;
 
-			if (phi == -piOver2)
-			{
-				// Typo in the paper: they have -2*cosh rather than pi*cosh, likely because
-				// they forgot to write pi/2 factored out of the whole thing.
-				return -0.5 * w + phi + pi * coshTerm;
-			}
+		const vec3 teleportVec1 = vec3(1.0, 0.0, 0.0);
+		const vec3 teleportVec2 = vec3(root2Over2, root2Over2, 0.0);
+		const vec3 teleportVec3 = vec3(0.0, 1.0, 0.0);
+		const vec3 teleportVec4 = vec3(-root2Over2, root2Over2, 0.0);
+		const vec3 teleportVec5 = vec3(0.0, 0.0, 1.0);
 
-			if (abs(tanPhi) == sinhTerm)
-			{
-				return -0.5 * w + phi - 2.0 * tanPhi;
-			}
+		const mat4 teleportMatA1 = mat4(
+			root2Over2Plus1, -root2Over2Plus1, -root2 * root1PlusRoot2, 0.0,
+			root2Over2Plus1, root2Over2Plus1, 0.0, root2 * root1PlusRoot2,
+			-root2 * root1PlusRoot2, 0.0, root2Over2Plus1, -root2Over2Plus1,
+			0.0, root2 * root1PlusRoot2, root2Over2Plus1, root2Over2Plus1
+		);
 
-			float sqrtTerm = sqrt(abs(sinhTerm * sinhTerm - tanPhi * tanPhi));
+		const mat4 teleportMatA1inv = mat4(
+			root2Over2Plus1, root2Over2Plus1, root2 * root1PlusRoot2, 0.0,
+			-root2Over2Plus1, root2Over2Plus1, 0.0, -root2 * root1PlusRoot2,
+			root2 * root1PlusRoot2, 0.0, root2Over2Plus1, root2Over2Plus1,
+			0.0, -root2 * root1PlusRoot2, -root2Over2Plus1, root2Over2Plus1
+		);
 
-			if (abs(tanPhi) < sinhTerm)
-			{
-				return -0.5 * w + phi - 2.0 * tanPhi * coshTerm / sqrtTerm * atanh(sqrtTerm / coshTerm);
-			}
+		const mat4 teleportMatA2 = mat4(
+			root2Over2Plus1, -root2Over2Plus1, root2 * root1PlusRoot2, 0.0,
+			root2Over2Plus1, root2Over2Plus1, 0.0, -root2 * root1PlusRoot2,
+			root2 * root1PlusRoot2, 0.0, root2Over2Plus1, -root2Over2Plus1,
+			0.0, -root2 * root1PlusRoot2, root2Over2Plus1, root2Over2Plus1
+		);
 
-			return -0.5 * w + phi - 2.0 * tanPhi * coshTerm / sqrtTerm * (
-				atan(sqrtTerm / coshTerm) - sign(tanPhi) * floor(0.5 - phi / pi) * pi
-			);
-		}
-
-		float chiPrime(float rho, float w, float phi)
-		{
-			float sinhTerm = sinh(rho * 0.5);
-			float coshTerm = cosh(rho * 0.5);
-			float tanPhi = tan(phi);
-			float cosPhi = cos(phi);
-
-			if (phi == -piOver2)
-			{
-				return -cosh(rho);
-			}
-
-			if (abs(tanPhi) == sinhTerm)
-			{
-				return .33333 * (-2.0 - cosh(rho));
-			}
-
-			float sqrtArg = abs(sinhTerm * sinhTerm - tanPhi * tanPhi);
-			float sqrtTerm = sqrt(sqrtArg);
-
-			float atanhTerm = atanh(sqrtTerm / coshTerm);
-
-			if (abs(tanPhi) < sinhTerm)
-			{
-				return 1.0 - (2.0 * atanhTerm * coshTerm * tanPhi * tanPhi)
-					/ (sqrtArg * sqrtTerm * cosPhi * cosPhi)
-				- (2.0 * atanhTerm * coshTerm) / (sqrtTerm * cosPhi * cosPhi)
-				+ (2.0 * tanPhi * tanPhi) / (cosPhi * cosPhi * sqrtArg * (
-					1.0 - sqrtArg / (coshTerm * coshTerm)
-				));
-			}
-
-			if (phi > -piOver2)
-			{
-				return 1.0 + (2.0 * atanhTerm * coshTerm * tanPhi * tanPhi)
-					/ (sqrtArg * sqrtTerm * cosPhi * cosPhi)
-				- (2.0 * atanhTerm * coshTerm) / (sqrtTerm * cosPhi * cosPhi)
-				- (2.0 * tanPhi * tanPhi) / (cosPhi * cosPhi * sqrtArg * (
-					1.0 + sqrtArg / (coshTerm * coshTerm)
-				));
-			}
-
-			return 1.0 + (2.0 * (atanhTerm - pi) * coshTerm * tanPhi * tanPhi)
-					/ (sqrtArg * sqrtTerm * cosPhi * cosPhi)
-				- (2.0 * (atanhTerm - pi) * coshTerm) / (sqrtTerm * cosPhi * cosPhi)
-				- (2.0 * tanPhi * tanPhi) / (cosPhi * cosPhi * sqrtArg * (
-					1.0 + sqrtArg / (coshTerm * coshTerm)
-				));
-		}
+		const mat4 teleportMatA2inv = mat4(
+			root2Over2Plus1, root2Over2Plus1, -root2 * root1PlusRoot2, 0.0,
+			-root2Over2Plus1, root2Over2Plus1, 0.0, root2 * root1PlusRoot2,
+			-root2 * root1PlusRoot2, 0.0, root2Over2Plus1, root2Over2Plus1,
+			0.0, root2 * root1PlusRoot2, -root2Over2Plus1, root2Over2Plus1
+		);
 		
-		const int newtonIterations = 5;
+		const mat4 teleportMatB1 = mat4(
+			root2Over2Plus1, root2Over2Plus1, root1PlusRoot2, -root1PlusRoot2,
+			-root2Over2Plus1, root2Over2Plus1, -root1PlusRoot2, -root1PlusRoot2,
+			root1PlusRoot2, -root1PlusRoot2, root2Over2Plus1, root2Over2Plus1,
+			-root1PlusRoot2, -root1PlusRoot2, -root2Over2Plus1, root2Over2Plus1
+		);
+
+		const mat4 teleportMatB1inv = mat4(
+			root2Over2Plus1, -root2Over2Plus1, -root1PlusRoot2, root1PlusRoot2,
+			root2Over2Plus1, root2Over2Plus1, root1PlusRoot2, root1PlusRoot2,
+			-root1PlusRoot2, root1PlusRoot2, root2Over2Plus1, -root2Over2Plus1,
+			root1PlusRoot2, root1PlusRoot2, root2Over2Plus1, root2Over2Plus1
+		);
 		
-		// Returns the unique zero in (-pi, 0] of chi. w must be positive, so apply the flip transformation before doing this if it's not.
-		float chiZero(float rho, float w)
+		const mat4 teleportMatB2 = mat4(
+			root2Over2Plus1, root2Over2Plus1, -root1PlusRoot2, root1PlusRoot2,
+			-root2Over2Plus1, root2Over2Plus1, root1PlusRoot2, root1PlusRoot2,
+			-root1PlusRoot2, root1PlusRoot2, root2Over2Plus1, root2Over2Plus1,
+			root1PlusRoot2, root1PlusRoot2, -root2Over2Plus1, root2Over2Plus1
+		);
+
+		const mat4 teleportMatB2inv = mat4(
+			root2Over2Plus1, -root2Over2Plus1, root1PlusRoot2, -root1PlusRoot2,
+			root2Over2Plus1, root2Over2Plus1, -root1PlusRoot2, -root1PlusRoot2,
+			root1PlusRoot2, -root1PlusRoot2, root2Over2Plus1, -root2Over2Plus1,
+			-root1PlusRoot2, -root1PlusRoot2, root2Over2Plus1, root2Over2Plus1
+		);
+
+		const float delta = 0.91017972;
+
+		vec3 teleportPos(inout vec4 pos, inout float fiber, inout vec4 startPos, inout float startFiber, inout vec4 rayDirectionVec, inout float t, inout float totalT)
 		{
-			// The minimum phi for which 
-			float M = atan(abs(sinh(rho * 0.5))) - pi;
+			vec3 color = vec3(0.0, 0.0, 0.0);
 
-			float phi = 0.5 * M;
-
-			for (int iteration = 0; iteration < newtonIterations; iteration++)
-			{
-				phi -= chi(rho, w, phi) / chiPrime(rho, w, phi);
-			}
-
-			return phi;
-		}
-
-		float exactDistanceToOrigin(vec4 pos, float fiber)
-		{
-			// If the fiber component is negative, we need to apply the flip symmetry.
-			if (fiber < 0.0)
-			{
-				pos = vec4(pos.x, -pos.y, pos.w, pos.z);
-				fiber = -fiber;
-			}
-
-			// float rho = asinh(length(pos.xy));
-
-			// float phi = chiZero(rho, pos.w);
-
-			// Now we have phi, and so we should be able to solve for t. This is easier said than done :/
-			return 0.0;
-		}
-
-		float approximateDistanceToOrigin(vec4 pos, float fiber)
-		{
+			// First, we need to get the corresponding point in the Klein model of H^2, which is given by the intersection
+			// of the line from our point on the hyperbolid to the origin with the plane z = 1.
 			vec3 h2Element = getH2Element(pos);
 
-			float acoshTerm = acosh(h2Element.z * h2Element.z - h2Element.x * h2Element.x - h2Element.y * h2Element.y);
-			float sigma = 0.1 * sqrt(acoshTerm * acoshTerm + fiber * fiber);
+			vec3 kleinElement = vec3(h2Element.x / h2Element.z, h2Element.y / h2Element.z, fiber);
 
-			return sigma;
-		}
+			float dotProduct = dot(kleinElement, teleportVec1);
 
-		float distanceToHalfPlane(vec4 pos)
-		{
-			vec3 h2Element = getH2Element(pos);
+			if (dotProduct < -delta)
+			{
+				pos = teleportMatZ2 * pos;
 
-			return abs(asinh(h2Element.x));
+				rayDirectionVec = getTransformationMatrix(vec4(pos.x, -pos.yzw)) * teleportMatZ2 * getUpdatedDirectionVec(startPos, rayDirectionVec, t);
+
+				startPos = pos;
+				
+				totalT += t;
+				t = 0.0;
+
+				color += vec3(0.0, 0.0, -1.0);
+			}
+
+			return color;
 		}
 	`;
 
@@ -434,15 +402,17 @@ class SL2RGeometry extends BaseGeometry
 export class SL2RSpheres extends SL2RGeometry
 {
 	static distances = /*glsl*/`
-		float radius = .25;
-		float distance1 = distanceToHalfPlane(pos);
-		float distance2 = approximateDistanceToOrigin(pos, fiber) - .2;
+		float radius = .15;
+
+		vec3 h2Element = getH2Element(pos);
+
+		float distance1 = length(vec2(acosh(h2Element.z), fiber)) - radius;
 	`;
 
 	distanceEstimatorGlsl = /*glsl*/`
 		${SL2RSpheres.distances}
 
-		float minDistance = ${getMinGlslString("distance", 2)};
+		float minDistance = distance1;
 
 		return minDistance;
 	`;
@@ -478,12 +448,28 @@ export class SL2RSpheres extends SL2RGeometry
 
 	uniformGlsl = /*glsl*/`
 		uniform float cameraFiber;
+		uniform float wallThickness;
 	`;
 
-	uniformNames = ["cameraFiber"];
+	uniformNames = ["cameraFiber", "wallThickness"];
 
 	updateUniforms(gl, uniformList)
 	{
 		gl.uniform1f(uniformList["cameraFiber"], this.cameraFiber);
+		gl.uniform1f(uniformList["wallThickness"], sliderValues.wallThickness);
+	}
+
+	uiElementsUsed = "#wall-thickness-slider";
+
+	initUI()
+	{
+		const wallThicknessSlider = $("#wall-thickness-slider");
+		const wallThicknessSliderValue = $("#wall-thickness-slider-value");
+
+		wallThicknessSlider.min = 0;
+		wallThicknessSlider.max = 1.0;
+		wallThicknessSlider.value = 0.0;
+		wallThicknessSliderValue.textContent = 0.0;
+		sliderValues.wallThickness = 0.0;
 	}
 }
