@@ -1,6 +1,6 @@
 import { ThurstonGeometry } from "../class.js";
 import { sliderValues } from "../index.js";
-import { BaseGeometry } from "./base.js";
+import { BaseGeometry, getMinGlslString } from "./base.js";
 import { $ } from "/scripts/src/main.js";
 
 function getTeleportGlslChunk({
@@ -101,6 +101,25 @@ function getBinarySearchGlslChunk({
 	`;
 }
 
+function getH2Element(qElement)
+{
+	return [
+		2.0 * qElement[0] * qElement[2] - 2.0 * qElement[1] * qElement[3],
+		2.0 * qElement[0] * qElement[3] + 2.0 * qElement[1] * qElement[2],
+		qElement[0] * qElement[0]
+			+ qElement[1] * qElement[1]
+			+ qElement[2] * qElement[2]
+			+ qElement[3] * qElement[3]
+	];
+}
+
+function getKleinElement(qElement, fiber)
+{
+	const h2Element = getH2Element(qElement);
+
+	return [h2Element[0] / h2Element[2], h2Element[1] / h2Element[2], fiber];
+}
+
 class SL2RGeometry extends BaseGeometry
 {
 	raymarchSetupGlsl = /*glsl*/`
@@ -143,7 +162,7 @@ class SL2RGeometry extends BaseGeometry
 */
 	${getBinarySearchGlslChunk({
 		comparisonVec: "teleportVec5",
-		dotProductThreshhold: "pi + .001",
+		dotProductThreshhold: "pi + .0001",
 		searchIterations: "5"
 	})}
 
@@ -597,6 +616,67 @@ class SL2RGeometry extends BaseGeometry
 	// normal vector, i.e. [0, 0, 1, 0]. Since we're never moving and projecting like we usually
 	// do, this should take care of itself.
 	correctVectors() {}
+
+	teleportCamera()
+	{
+		const teleportMatrices = [
+			[
+				[
+					[1, 0, 0, 0],
+					[0, 1, 0, 0],
+					[0, 0, 1, 0],
+					[0, 0, 0, 1]
+				],
+				[
+					[1, 0, 0, 0],
+					[0, 1, 0, 0],
+					[0, 0, 1, 0],
+					[0, 0, 0, 1]
+				]
+			]
+		];
+
+		const teleportFibers = [
+			[-2 * Math.PI, 2 * Math.PI]
+		];
+
+		const teleportVectors = [
+			[[0, 0, 1], Math.PI]
+		];
+
+		let kleinElement = getKleinElement(this.cameraPos, this.cameraFiber);
+
+		for (let i = 0; i < teleportMatrices.length; i++)
+		{
+			const dotProduct = kleinElement[0] * teleportVectors[i][0][0]
+				+ kleinElement[1] * teleportVectors[i][0][1]
+				+ kleinElement[2] * teleportVectors[i][0][2];
+
+			if (dotProduct > teleportVectors[i][1])
+			{
+				this.cameraPos = ThurstonGeometry.mat4TimesVector(
+					teleportMatrices[i][0],
+					this.cameraPos
+				);
+
+				this.cameraFiber += teleportFibers[i][0];
+
+				kleinElement = getKleinElement(this.cameraPos, this.cameraFiber);
+			}
+
+			else if (dotProduct < -teleportVectors[i][1])
+			{
+				this.cameraPos = ThurstonGeometry.mat4TimesVector(
+					teleportMatrices[i][1],
+					this.cameraPos
+				);
+
+				this.cameraFiber += teleportFibers[i][1];
+
+				kleinElement = getKleinElement(this.cameraPos, this.cameraFiber);
+			}
+		}
+	}
 }
 
 export class SL2RSpheres extends SL2RGeometry
@@ -607,12 +687,19 @@ export class SL2RSpheres extends SL2RGeometry
 		vec3 h2Element = getH2Element(pos);
 
 		float distance1 = length(vec2(acosh(h2Element.z), fiber)) - radius;
+
+		// The fundamental domain has height 2pi, so to evenly space three balls,
+		// we want the gap between them to be (2pi - 6 * radius) / 3.
+		// Solving for the center of the other spheres gives +/- 2pi/3.
+
+		float distance2 = length(vec2(acosh(h2Element.z), fiber - 0.66667 * pi)) - radius;
+		float distance3 = length(vec2(acosh(h2Element.z), fiber + 0.66667 * pi)) - radius;
 	`;
 
 	distanceEstimatorGlsl = /*glsl*/`
 		${SL2RSpheres.distances}
 
-		float minDistance = distance1;
+		float minDistance = ${getMinGlslString("distance", 3)};
 
 		return minDistance;
 	`;
