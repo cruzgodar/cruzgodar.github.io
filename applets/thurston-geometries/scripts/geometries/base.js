@@ -186,3 +186,57 @@ export function getColorGlslString(varName, minVarName, colors)
 
 	return colorGlsl;
 }
+
+export function getVectorGlsl(vector)
+{
+	if (vector.length === 2)
+	{
+		return `vec2(${vector[0]}, ${vector[1]})`;
+	}
+
+	if (vector.length === 3)
+	{
+		return `vec3(${vector[0]}, ${vector[1]}, ${vector[2]})`;
+	}
+
+	if (vector.length === 4)
+	{
+		return `vec4(${vector[0]}, ${vector[1]}, ${vector[2]}, ${vector[3]})`;
+	}
+
+	console.error("Invalid vector length!");
+	return "";
+}
+
+export function getMatrixGlsl(matrix)
+{
+	if (matrix.length === 2)
+	{
+		return `mat2(
+			${matrix[0][0]}, ${matrix[1][0]},
+			${matrix[0][1]}, ${matrix[1][1]}
+		)`;
+	}
+
+	if (matrix.length === 3)
+	{
+		return `mat3(
+			${matrix[0][0]}, ${matrix[1][0]}, ${matrix[2][0]},
+			${matrix[0][1]}, ${matrix[1][1]}, ${matrix[2][1]},
+			${matrix[0][2]}, ${matrix[1][2]}, ${matrix[2][2]}
+		)`;
+	}
+
+	if (matrix.length === 4)
+	{
+		return `mat4(
+			${matrix[0][0]}, ${matrix[1][0]}, ${matrix[2][0]}, ${matrix[3][0]},
+			${matrix[0][1]}, ${matrix[1][1]}, ${matrix[2][1]}, ${matrix[3][1]},
+			${matrix[0][2]}, ${matrix[1][2]}, ${matrix[2][2]}, ${matrix[3][2]},
+			${matrix[0][3]}, ${matrix[1][3]}, ${matrix[2][3]}, ${matrix[3][3]}
+		)`;
+	}
+
+	console.error("Invalid matrix shape!");
+	return "";
+}

@@ -1,7 +1,46 @@
 import { ThurstonGeometry } from "../class.js";
 import { sliderValues } from "../index.js";
-import { BaseGeometry, getMinGlslString } from "./base.js";
+import { BaseGeometry, getMatrixGlsl, getMinGlslString } from "./base.js";
 import { $ } from "/scripts/src/main.js";
+
+const teleportationMatrices = [
+	[
+		[1, 0, 0, 1],
+		[0, 1, 0, 0],
+		[0, .5, 1, 0],
+		[0, 0, 0, 1]
+	],
+	[
+		[1, 0, 0, -1],
+		[0, 1, 0, 0],
+		[0, -.5, 1, 0],
+		[0, 0, 0, 1]
+	],
+	[
+		[1, 0, 0, 0],
+		[0, 1, 0, 1],
+		[-.5, 0, 1, 0],
+		[0, 0, 0, 1]
+	],
+	[
+		[1, 0, 0, 0],
+		[0, 1, 0, -1],
+		[.5, 0, 1, 0],
+		[0, 0, 0, 1]
+	],
+	[
+		[1, 0, 0, 0],
+		[0, 1, 0, 0],
+		[0, 0, 1, 1],
+		[0, 0, 0, 1]
+	],
+	[
+		[1, 0, 0, 0],
+		[0, 1, 0, 0],
+		[0, 0, 1, -1],
+		[0, 0, 0, 1]
+	]
+];
 
 class NilGeometry extends BaseGeometry
 {
@@ -139,12 +178,12 @@ class NilGeometry extends BaseGeometry
 		// Returns an underestimate of the distance to the origin. The paper has variables
 		// m and psi that can be varied; I'm just using m = 1 and psi = 1/2.
 
-		const float sqrt2 = 1.414213562;
-		const float sqrt3 = 1.732050808;
-		const float sqrt6 = 2.449489743;
-		const float sqrt12 = 3.464101615;
-		const float sqrt48 = 6.928203230;
-		const float fourthRoot12 = 1.861209718;
+		const float sqrt2 = ${Math.sqrt(2)};
+		const float sqrt3 = ${Math.sqrt(3)};
+		const float sqrt6 = ${Math.sqrt(6)};
+		const float sqrt12 = ${Math.sqrt(12)};
+		const float sqrt48 = ${Math.sqrt(48)};
+		const float fourthRoot12 = ${Math.sqrt(Math.sqrt(12))};
 
 		float approximateDistanceToOrigin(vec4 pos)
 		{
@@ -249,47 +288,12 @@ class NilGeometry extends BaseGeometry
 			);
 		}
 
-		const mat4 teleportMatX1 = mat4(
-			1.0, 0.0, 0.0, 0.0,
-			0.0, 1.0, 0.5, 0.0,
-			0.0, 0.0, 1.0, 0.0,
-			1.0, 0.0, 0.0, 1.0
-		);
-
-		const mat4 teleportMatX2 = mat4(
-			1.0, 0.0, 0.0, 0.0,
-			0.0, 1.0, -0.5, 0.0,
-			0.0, 0.0, 1.0, 0.0,
-			-1.0, 0.0, 0.0, 1.0
-		);
-
-		const mat4 teleportMatY1 = mat4(
-			1.0, 0.0, -0.5, 0.0,
-			0.0, 1.0, 0.0, 0.0,
-			0.0, 0.0, 1.0, 0.0,
-			0.0, 1.0, 0.0, 1.0
-		);
-		
-		const mat4 teleportMatY2 = mat4(
-			1.0, 0.0, 0.5, 0.0,
-			0.0, 1.0, 0.0, 0.0,
-			0.0, 0.0, 1.0, 0.0,
-			0.0, -1.0, 0.0, 1.0
-		);
-		
-		const mat4 teleportMatZ1 = mat4(
-			1.0, 0.0, 0.0, 0.0,
-			0.0, 1.0, 0.0, 0.0,
-			0.0, 0.0, 1.0, 0.0,
-			0.0, 0.0, 1.0, 1.0
-		);
-		
-		const mat4 teleportMatZ2 = mat4(
-			1.0, 0.0, 0.0, 0.0,
-			0.0, 1.0, 0.0, 0.0,
-			0.0, 0.0, 1.0, 0.0,
-			0.0, 0.0, -1.0, 1.0
-		);
+		const mat4 teleportMatX1 = ${getMatrixGlsl(teleportationMatrices[0])};
+		const mat4 teleportMatX2 = ${getMatrixGlsl(teleportationMatrices[1])};
+		const mat4 teleportMatY1 = ${getMatrixGlsl(teleportationMatrices[2])};
+		const mat4 teleportMatY2 = ${getMatrixGlsl(teleportationMatrices[3])};
+		const mat4 teleportMatZ1 = ${getMatrixGlsl(teleportationMatrices[4])};
+		const mat4 teleportMatZ2 = ${getMatrixGlsl(teleportationMatrices[5])};
 
 		vec3 teleportPos(inout vec4 pos, inout vec4 startPos, inout vec4 rayDirectionVec, inout float t, inout float totalT)
 		{
@@ -487,45 +491,6 @@ class NilGeometry extends BaseGeometry
 
 	teleportCamera()
 	{
-		const teleportations = [
-			[
-				[1, 0, 0, 1],
-				[0, 1, 0, 0],
-				[0, .5, 1, 0],
-				[0, 0, 0, 1]
-			],
-			[
-				[1, 0, 0, -1],
-				[0, 1, 0, 0],
-				[0, -.5, 1, 0],
-				[0, 0, 0, 1]
-			],
-			[
-				[1, 0, 0, 0],
-				[0, 1, 0, 1],
-				[-.5, 0, 1, 0],
-				[0, 0, 0, 1]
-			],
-			[
-				[1, 0, 0, 0],
-				[0, 1, 0, -1],
-				[.5, 0, 1, 0],
-				[0, 0, 0, 1]
-			],
-			[
-				[1, 0, 0, 0],
-				[0, 1, 0, 0],
-				[0, 0, 1, 1],
-				[0, 0, 0, 1]
-			],
-			[
-				[1, 0, 0, 0],
-				[0, 1, 0, 0],
-				[0, 0, 1, -1],
-				[0, 0, 0, 1]
-			]
-		];
-
 		// Okay so here's the thing. This isometry moves *points* on one face
 		// to points on the other, and therefore induces a map on the tangent spaces.
 		// However, our direction vectors are from the *origin*. So we'll transfer
@@ -537,7 +502,7 @@ class NilGeometry extends BaseGeometry
 			if (this.cameraPos[i] < -0.5)
 			{
 				this.cameraPos = ThurstonGeometry.mat4TimesVector(
-					teleportations[2 * i],
+					teleportationMatrices[2 * i],
 					this.cameraPos
 				);
 
@@ -549,7 +514,7 @@ class NilGeometry extends BaseGeometry
 			else if (this.cameraPos[i] > 0.5)
 			{
 				this.cameraPos = ThurstonGeometry.mat4TimesVector(
-					teleportations[2 * i + 1],
+					teleportationMatrices[2 * i + 1],
 					this.cameraPos
 				);
 

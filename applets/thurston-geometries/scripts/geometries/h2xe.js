@@ -1,7 +1,49 @@
 import { ThurstonGeometry } from "../class.js";
 import { sliderValues } from "../index.js";
-import { BaseGeometry, getMinGlslString } from "./base.js";
+import { BaseGeometry, getMatrixGlsl, getMinGlslString, getVectorGlsl } from "./base.js";
 import { $ } from "/scripts/src/main.js";
+
+const teleportations = [
+	[
+		[1, 0, 1 / Math.sqrt(3), 0],
+		[
+			[2, 0, Math.sqrt(3), 0],
+			[0, 1, 0, 0],
+			[Math.sqrt(3), 0, 2, 0],
+			[0, 0, 0, 1]
+		]
+	],
+
+	[
+		[-1, 0, 1 / Math.sqrt(3), 0],
+		[
+			[2, 0, -Math.sqrt(3), 0],
+			[0, 1, 0, 0],
+			[-Math.sqrt(3), 0, 2, 0],
+			[0, 0, 0, 1]
+		]
+	],
+
+	[
+		[0, 1, 1 / Math.sqrt(3), 0],
+		[
+			[1, 0, 0, 0],
+			[0, 2, Math.sqrt(3), 0],
+			[0, Math.sqrt(3), 2, 0],
+			[0, 0, 0, 1]
+		]
+	],
+
+	[
+		[0, -1, 1 / Math.sqrt(3), 0],
+		[
+			[1, 0, 0, 0],
+			[0, 2, -Math.sqrt(3), 0],
+			[0, -Math.sqrt(3), 2, 0],
+			[0, 0, 0, 1]
+		]
+	]
+];
 
 class H2xEGeometry extends BaseGeometry
 {
@@ -55,42 +97,20 @@ class H2xEGeometry extends BaseGeometry
 			return log(x + sqrt(x*x - 1.0));
 		}
 
+		const vec4 teleportVec1 = ${getVectorGlsl(teleportations[0][0])};
+		const mat4 teleportMat1 = ${getMatrixGlsl(teleportations[0][1])};
+
+		const vec4 teleportVec2 = ${getVectorGlsl(teleportations[1][0])};
+		const mat4 teleportMat2 = ${getMatrixGlsl(teleportations[1][1])};
+
+		const vec4 teleportVec3 = ${getVectorGlsl(teleportations[2][0])};
+		const mat4 teleportMat3 = ${getMatrixGlsl(teleportations[2][1])};
+
+		const vec4 teleportVec4 = ${getVectorGlsl(teleportations[3][0])};
+		const mat4 teleportMat4 = ${getMatrixGlsl(teleportations[3][1])};
+
 		vec3 teleportPos(inout vec4 pos, inout vec4 startPos, inout vec4 rayDirectionVec, inout float t, inout float totalT)
 		{
-			vec4 teleportVec1 = vec4(1.0, 0.0, 0.577350269, 0.0);
-			mat4 teleportMat1 = mat4(
-				2.0, 0.0, 1.73205081, 0.0,
-				0.0, 1.0, 0.0, 0.0,
-				1.73205081, 0.0, 2.0, 0.0,
-				0.0, 0.0, 0.0, 1.0
-			);
-
-			vec4 teleportVec2 = vec4(-1.0, 0.0, 0.577350269, 0.0);
-			mat4 teleportMat2 = mat4(
-				2.0, 0.0, -1.73205081, 0.0,
-				0.0, 1.0, 0.0, 0.0,
-				-1.73205081, 0.0, 2.0, 0.0,
-				0.0, 0.0, 0.0, 1.0
-			);
-
-			vec4 teleportVec3 = vec4(0.0, 1.0, 0.577350269, 0.0);
-			mat4 teleportMat3 = mat4(
-				1.0, 0.0, 0.0, 0.0,
-				0.0, 2.0, 1.73205081, 0.0,
-				0.0, 1.73205081, 2.0, 0.0,
-				0.0, 0.0, 0.0, 1.0
-			);
-
-			vec4 teleportVec4 = vec4(0.0, -1.0, 0.577350269, 0.0);
-			mat4 teleportMat4 = mat4(
-				1.0, 0.0, 0.0, 0.0,
-				0.0, 2.0, -1.73205081, 0.0,
-				0.0, -1.73205081, 2.0, 0.0,
-				0.0, 0.0, 0.0, 1.0
-			);
-
-
-
 			if (dot(pos, teleportVec1) < 0.0)
 			{
 				pos = teleportMat1 * pos;
@@ -279,48 +299,6 @@ class H2xEGeometry extends BaseGeometry
 
 	teleportCamera(rotatedForwardVec, recomputeRotation)
 	{
-		const teleportations = [
-			[
-				[1, 0, 1 / Math.sqrt(3), 0],
-				[
-					[2, 0, Math.sqrt(3), 0],
-					[0, 1, 0, 0],
-					[Math.sqrt(3), 0, 2, 0],
-					[0, 0, 0, 1]
-				]
-			],
-	
-			[
-				[-1, 0, 1 / Math.sqrt(3), 0],
-				[
-					[2, 0, -Math.sqrt(3), 0],
-					[0, 1, 0, 0],
-					[-Math.sqrt(3), 0, 2, 0],
-					[0, 0, 0, 1]
-				]
-			],
-	
-			[
-				[0, 1, 1 / Math.sqrt(3), 0],
-				[
-					[1, 0, 0, 0],
-					[0, 2, Math.sqrt(3), 0],
-					[0, Math.sqrt(3), 2, 0],
-					[0, 0, 0, 1]
-				]
-			],
-	
-			[
-				[0, -1, 1 / Math.sqrt(3), 0],
-				[
-					[1, 0, 0, 0],
-					[0, 2, -Math.sqrt(3), 0],
-					[0, -Math.sqrt(3), 2, 0],
-					[0, 0, 0, 1]
-				]
-			]
-		];
-
 		for (let i = 0; i < teleportations.length; i++)
 		{
 			if (ThurstonGeometry.dotProduct(this.cameraPos, teleportations[i][0]) < 0)

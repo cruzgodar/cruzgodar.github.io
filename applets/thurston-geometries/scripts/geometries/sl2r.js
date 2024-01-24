@@ -1,6 +1,6 @@
 import { ThurstonGeometry } from "../class.js";
 import { sliderValues } from "../index.js";
-import { BaseGeometry, getMinGlslString } from "./base.js";
+import { BaseGeometry, getMatrixGlsl, getMinGlslString, getVectorGlsl } from "./base.js";
 import { $ } from "/scripts/src/main.js";
 
 function getTransformationMatrix(pos)
@@ -13,50 +13,61 @@ function getTransformationMatrix(pos)
 	];
 }
 
-const root2Over2Plus1 = 1.7071068;
-const root1PlusRoot2 = 1.55377397;
-const delta = 0.91017972;
+const root2 = Math.sqrt(2);
+const root2Over2 = Math.sqrt(2) / 2;
+const root1PlusRoot2 = Math.sqrt(1 + Math.sqrt(2));
+const delta = Math.sqrt(2) * Math.sqrt(Math.sqrt(2) - 1);
+
+const teleportElements = [
+	[root2Over2 + 1, -root2Over2 - 1, -root2 * root1PlusRoot2, 0], // A1
+	[root2Over2 + 1, -root2Over2 - 1, root2 * root1PlusRoot2, 0], // A2
+	[root2Over2 + 1, root2Over2 + 1, root1PlusRoot2, -root1PlusRoot2], // B1
+	[root2Over2 + 1, root2Over2 + 1, -root1PlusRoot2, root1PlusRoot2], // B2
+	[1, 0, 0, 0] // C
+];
+
+const teleportElementsInv = teleportElements.map(e => [e[0], -e[1], -e[2], -e[3]]);
 
 const teleportMatrices = [
 	//B1inv, B2inv
 	[
-		getTransformationMatrix([
-			root2Over2Plus1,
-			-root2Over2Plus1,
-			-root1PlusRoot2,
-			root1PlusRoot2
-		]),
-
-		getTransformationMatrix([
-			root2Over2Plus1,
-			-root2Over2Plus1,
-			root1PlusRoot2,
-			-root1PlusRoot2
-		])
+		getTransformationMatrix(teleportElementsInv[2]),
+		getTransformationMatrix(teleportElementsInv[3])
+	],
+	// A1, A2
+	[
+		getTransformationMatrix(teleportElements[0]),
+		getTransformationMatrix(teleportElements[1])
+	],
+	// B1, B2
+	[
+		getTransformationMatrix(teleportElements[2]),
+		getTransformationMatrix(teleportElements[3])
+	],
+	// A1inv, A2inv
+	[
+		getTransformationMatrix(teleportElementsInv[0]),
+		getTransformationMatrix(teleportElementsInv[1])
 	],
 	[
-		[
-			[1, 0, 0, 0],
-			[0, 1, 0, 0],
-			[0, 0, 1, 0],
-			[0, 0, 0, 1]
-		],
-		[
-			[1, 0, 0, 0],
-			[0, 1, 0, 0],
-			[0, 0, 1, 0],
-			[0, 0, 0, 1]
-		]
+		getTransformationMatrix(teleportElements[4]),
+		getTransformationMatrix(teleportElements[4])
 	]
 ];
 
 const teleportFibers = [
 	[-Math.PI / 2, -Math.PI / 2],
+	[-Math.PI / 2, -Math.PI / 2],
+	[Math.PI / 2, Math.PI / 2],
+	[Math.PI / 2, Math.PI / 2],
 	[-2 * Math.PI, 2 * Math.PI]
 ];
 
 const teleportVectors = [
 	[[1, 0, 0], delta],
+	[[root2Over2, root2Over2, 0], delta],
+	[[0, 1, 0], delta],
+	[[-root2Over2, root2Over2, 0], delta],
 	[[0, 0, 1], Math.PI]
 ];
 
@@ -75,13 +86,13 @@ function getTeleportGlslChunk({
 
 		if (dotProduct > (${dotProductThreshhold}))
 		{
-			applyH2Isometry(pos, rayDirectionVec.xyz);
+			// applyH2Isometry(pos, rayDirectionVec.xyz);
 
 			pos = ${teleportMatPos} * pos;
 			fiber += ${fiberAdjustPos};
 
-			applyH2Isometry(${teleportElementPos}, rayDirectionVec.xyz);
-			applyH2Isometry(vec4(pos.x, -pos.yzw), rayDirectionVec.xyz);
+			// applyH2Isometry(${teleportElementPos}, rayDirectionVec.xyz);
+			// applyH2Isometry(vec4(pos.x, -pos.yzw), rayDirectionVec.xyz);
 
 			startPos = pos;
 			startFiber = fiber;
@@ -93,13 +104,13 @@ function getTeleportGlslChunk({
 
 		else if (dotProduct < -(${dotProductThreshhold}))
 		{
-			applyH2Isometry(pos, rayDirectionVec.xyz);
+			// applyH2Isometry(pos, rayDirectionVec.xyz);
 
 			pos = ${teleportMatNeg} * pos;
 			fiber += ${fiberAdjustNeg};
 
-			applyH2Isometry(${teleportElementNeg}, rayDirectionVec.xyz);
-			applyH2Isometry(vec4(pos.x, -pos.yzw), rayDirectionVec.xyz);
+			// applyH2Isometry(${teleportElementNeg}, rayDirectionVec.xyz);
+			// applyH2Isometry(vec4(pos.x, -pos.yzw), rayDirectionVec.xyz);
 
 			startPos = pos;
 			startFiber = fiber;
@@ -199,28 +210,28 @@ class SL2RGeometry extends BaseGeometry
 
 	${getBinarySearchGlslChunk({
 		comparisonVec: "teleportVec1",
-		dotProductThreshhold: "delta + .001",
+		dotProductThreshhold: "delta + .0001",
 		searchIterations: "5"
 	})}
-/*
+
 	${getBinarySearchGlslChunk({
 		comparisonVec: "teleportVec2",
-		dotProductThreshhold: "delta + .001",
+		dotProductThreshhold: "delta + .0001",
 		searchIterations: "5"
 	})}
 
 	${getBinarySearchGlslChunk({
 		comparisonVec: "teleportVec3",
-		dotProductThreshhold: "delta + .001",
+		dotProductThreshhold: "delta + .0001",
 		searchIterations: "5"
 	})}
 
 	${getBinarySearchGlslChunk({
 		comparisonVec: "teleportVec4",
-		dotProductThreshhold: "delta + .001",
+		dotProductThreshhold: "delta + .0001",
 		searchIterations: "5"
 	})}
-*/
+
 	${getBinarySearchGlslChunk({
 		comparisonVec: "teleportVec5",
 		dotProductThreshhold: "pi + .0001",
@@ -435,81 +446,41 @@ class SL2RGeometry extends BaseGeometry
 		const float root2Over2Plus1 = 1.7071068;
 		const float root1PlusRoot2 = 1.55377397;
 
-		const vec3 teleportVec1 = vec3(1.0, 0.0, 0.0);
-		const vec3 teleportVec2 = vec3(root2Over2, root2Over2, 0.0);
-		const vec3 teleportVec3 = vec3(0.0, 1.0, 0.0);
-		const vec3 teleportVec4 = vec3(-root2Over2, root2Over2, 0.0);
-		const vec3 teleportVec5 = vec3(0.0, 0.0, 1.0);
+		const vec3 teleportVec1 = ${getVectorGlsl(teleportVectors[0][0])};
+		const vec3 teleportVec2 = ${getVectorGlsl(teleportVectors[1][0])};
+		const vec3 teleportVec3 = ${getVectorGlsl(teleportVectors[2][0])};
+		const vec3 teleportVec4 = ${getVectorGlsl(teleportVectors[3][0])};
+		const vec3 teleportVec5 = ${getVectorGlsl(teleportVectors[4][0])};
 
-		const vec4 teleportElementA1 = vec4(root2Over2Plus1, -root2Over2Plus1, -root2 * root1PlusRoot2, 0.0);
-		const mat4 teleportMatA1 = mat4(
-			root2Over2Plus1, -root2Over2Plus1, -root2 * root1PlusRoot2, 0.0,
-			root2Over2Plus1, root2Over2Plus1, 0.0, root2 * root1PlusRoot2,
-			-root2 * root1PlusRoot2, 0.0, root2Over2Plus1, -root2Over2Plus1,
-			0.0, root2 * root1PlusRoot2, root2Over2Plus1, root2Over2Plus1
-		);
+		const mat4 teleportMat1Pos = ${getMatrixGlsl(teleportMatrices[0][0])};
+		const mat4 teleportMat1Neg = ${getMatrixGlsl(teleportMatrices[0][1])};
+		const mat4 teleportMat2Pos = ${getMatrixGlsl(teleportMatrices[1][0])};
+		const mat4 teleportMat2Neg = ${getMatrixGlsl(teleportMatrices[1][1])};
+		const mat4 teleportMat3Pos = ${getMatrixGlsl(teleportMatrices[2][0])};
+		const mat4 teleportMat3Neg = ${getMatrixGlsl(teleportMatrices[2][1])};
+		const mat4 teleportMat4Pos = ${getMatrixGlsl(teleportMatrices[3][0])};
+		const mat4 teleportMat4Neg = ${getMatrixGlsl(teleportMatrices[3][1])};
+		const mat4 teleportMat5Pos = ${getMatrixGlsl(teleportMatrices[4][0])};
+		const mat4 teleportMat5Neg = ${getMatrixGlsl(teleportMatrices[4][1])};
 
-		const vec4 teleportElementA1inv = vec4(root2Over2Plus1, root2Over2Plus1, root2 * root1PlusRoot2, 0.0);
-		const mat4 teleportMatA1inv = mat4(
-			root2Over2Plus1, root2Over2Plus1, root2 * root1PlusRoot2, 0.0,
-			-root2Over2Plus1, root2Over2Plus1, 0.0, -root2 * root1PlusRoot2,
-			root2 * root1PlusRoot2, 0.0, root2Over2Plus1, root2Over2Plus1,
-			0.0, -root2 * root1PlusRoot2, -root2Over2Plus1, root2Over2Plus1
-		);
+		const float fiberAdjust1Pos = ${teleportFibers[0][0]};
+		const float fiberAdjust1Neg = ${teleportFibers[0][1]};
+		const float fiberAdjust2Pos = ${teleportFibers[1][0]};
+		const float fiberAdjust2Neg = ${teleportFibers[1][1]};
+		const float fiberAdjust3Pos = ${teleportFibers[2][0]};
+		const float fiberAdjust3Neg = ${teleportFibers[2][1]};
+		const float fiberAdjust4Pos = ${teleportFibers[3][0]};
+		const float fiberAdjust4Neg = ${teleportFibers[3][1]};
+		const float fiberAdjust5Pos = ${teleportFibers[4][0]};
+		const float fiberAdjust5Neg = ${teleportFibers[4][1]};
 
-		const vec4 teleportElementA2 = vec4(root2Over2Plus1, -root2Over2Plus1, root2 * root1PlusRoot2, 0.0);
-		const mat4 teleportMatA2 = mat4(
-			root2Over2Plus1, -root2Over2Plus1, root2 * root1PlusRoot2, 0.0,
-			root2Over2Plus1, root2Over2Plus1, 0.0, -root2 * root1PlusRoot2,
-			root2 * root1PlusRoot2, 0.0, root2Over2Plus1, -root2Over2Plus1,
-			0.0, -root2 * root1PlusRoot2, root2Over2Plus1, root2Over2Plus1
-		);
+		const float dotProductThreshhold1 = ${teleportVectors[0][1]};
+		const float dotProductThreshhold2 = ${teleportVectors[1][1]};
+		const float dotProductThreshhold3 = ${teleportVectors[2][1]};
+		const float dotProductThreshhold4 = ${teleportVectors[3][1]};
+		const float dotProductThreshhold5 = ${teleportVectors[4][1]};
 
-		const vec4 teleportElementA2inv = vec4(root2Over2Plus1, root2Over2Plus1, -root2 * root1PlusRoot2, 0.0);
-		const mat4 teleportMatA2inv = mat4(
-			root2Over2Plus1, root2Over2Plus1, -root2 * root1PlusRoot2, 0.0,
-			-root2Over2Plus1, root2Over2Plus1, 0.0, root2 * root1PlusRoot2,
-			-root2 * root1PlusRoot2, 0.0, root2Over2Plus1, root2Over2Plus1,
-			0.0, root2 * root1PlusRoot2, -root2Over2Plus1, root2Over2Plus1
-		);
-		
-		const vec4 teleportElementB1 = vec4(root2Over2Plus1, root2Over2Plus1, root2 * root1PlusRoot2, -root2 * root1PlusRoot2);
-		const mat4 teleportMatB1 = mat4(
-			root2Over2Plus1, root2Over2Plus1, root1PlusRoot2, -root1PlusRoot2,
-			-root2Over2Plus1, root2Over2Plus1, -root1PlusRoot2, -root1PlusRoot2,
-			root1PlusRoot2, -root1PlusRoot2, root2Over2Plus1, root2Over2Plus1,
-			-root1PlusRoot2, -root1PlusRoot2, -root2Over2Plus1, root2Over2Plus1
-		);
-
-		const vec4 teleportElementB1inv = vec4(root2Over2Plus1, -root2Over2Plus1, -root2 * root1PlusRoot2, root2 * root1PlusRoot2);
-		const mat4 teleportMatB1inv = mat4(
-			root2Over2Plus1, -root2Over2Plus1, -root1PlusRoot2, root1PlusRoot2,
-			root2Over2Plus1, root2Over2Plus1, root1PlusRoot2, root1PlusRoot2,
-			-root1PlusRoot2, root1PlusRoot2, root2Over2Plus1, -root2Over2Plus1,
-			root1PlusRoot2, root1PlusRoot2, root2Over2Plus1, root2Over2Plus1
-		);
-		
-		const vec4 teleportElementB2 = vec4(root2Over2Plus1, root2Over2Plus1, -root2 * root1PlusRoot2, root2 * root1PlusRoot2);
-		const mat4 teleportMatB2 = mat4(
-			root2Over2Plus1, root2Over2Plus1, -root1PlusRoot2, root1PlusRoot2,
-			-root2Over2Plus1, root2Over2Plus1, root1PlusRoot2, root1PlusRoot2,
-			-root1PlusRoot2, root1PlusRoot2, root2Over2Plus1, root2Over2Plus1,
-			root1PlusRoot2, root1PlusRoot2, -root2Over2Plus1, root2Over2Plus1
-		);
-
-		const vec4 teleportElementB2inv = vec4(root2Over2Plus1, -root2Over2Plus1, root2 * root1PlusRoot2, -root2 * root1PlusRoot2);
-		const mat4 teleportMatB2inv = mat4(
-			root2Over2Plus1, -root2Over2Plus1, root1PlusRoot2, -root1PlusRoot2,
-			root2Over2Plus1, root2Over2Plus1, -root1PlusRoot2, -root1PlusRoot2,
-			root1PlusRoot2, -root1PlusRoot2, root2Over2Plus1, -root2Over2Plus1,
-			-root1PlusRoot2, -root1PlusRoot2, root2Over2Plus1, root2Over2Plus1
-		);
-		
-		// The identity matrix, for function compatibility.
-		const vec4 teleportElementC = vec4(1.0, 0.0, 0.0, 0.0);
-		const mat4 teleportMatC = mat4(1.0);
-
-		const float delta = 0.91017972;
+		const float delta = ${delta};
 
 		vec3 teleportPos(inout vec4 pos, inout float fiber, inout vec4 startPos, inout float startFiber, inout vec4 rayDirectionVec, inout float t, inout float totalT)
 		{
@@ -523,57 +494,57 @@ class SL2RGeometry extends BaseGeometry
 
 	${getTeleportGlslChunk({
 		comparisonVec: "teleportVec1",
-		dotProductThreshhold: "delta",
-		teleportMatPos: "teleportMatB1inv",
-		teleportMatNeg: "teleportMatB2inv",
-		fiberAdjustPos: "-piOver2",
-		fiberAdjustNeg: "-piOver2",
-		teleportElementPos: "teleportElementB1inv",
-		teleportElementNeg: "teleportElementB2inv"
+		dotProductThreshhold: "dotProductThreshhold1",
+		teleportMatPos: "teleportMat1Pos",
+		teleportMatNeg: "teleportMat1Neg",
+		fiberAdjustPos: "fiberAdjust1Pos",
+		fiberAdjustNeg: "fiberAdjust1Neg",
+		teleportElementPos: "",
+		teleportElementNeg: ""
 	})}
-/*
+
 	${getTeleportGlslChunk({
 		comparisonVec: "teleportVec2",
-		dotProductThreshhold: "delta",
-		teleportMatPos: "teleportMatA1",
-		teleportMatNeg: "teleportMatA2",
-		fiberAdjustPos: "-piOver2",
-		fiberAdjustNeg: "-piOver2",
-		teleportElementPos: "teleportElementA1",
-		teleportElementNeg: "teleportElementA2"
+		dotProductThreshhold: "dotProductThreshhold2",
+		teleportMatPos: "teleportMat2Pos",
+		teleportMatNeg: "teleportMat2Neg",
+		fiberAdjustPos: "fiberAdjust2Pos",
+		fiberAdjustNeg: "fiberAdjust2Neg",
+		teleportElementPos: "",
+		teleportElementNeg: ""
 	})}
 
 	${getTeleportGlslChunk({
 		comparisonVec: "teleportVec3",
-		dotProductThreshhold: "delta",
-		teleportMatPos: "teleportMatB1",
-		teleportMatNeg: "teleportMatB2",
-		fiberAdjustPos: "piOver2",
-		fiberAdjustNeg: "piOver2",
-		teleportElementPos: "teleportElementB1",
-		teleportElementNeg: "teleportElementB2"
+		dotProductThreshhold: "dotProductThreshhold3",
+		teleportMatPos: "teleportMat3Pos",
+		teleportMatNeg: "teleportMat3Neg",
+		fiberAdjustPos: "fiberAdjust3Pos",
+		fiberAdjustNeg: "fiberAdjust3Neg",
+		teleportElementPos: "",
+		teleportElementNeg: ""
 	})}
 
 	${getTeleportGlslChunk({
 		comparisonVec: "teleportVec4",
-		dotProductThreshhold: "delta",
-		teleportMatPos: "teleportMatA1inv",
-		teleportMatNeg: "teleportMatA2inv",
-		fiberAdjustPos: "piOver2",
-		fiberAdjustNeg: "piOver2",
-		teleportElementPos: "teleportElementA1inv",
-		teleportElementNeg: "teleportElementA2inv"
+		dotProductThreshhold: "dotProductThreshhold4",
+		teleportMatPos: "teleportMat4Pos",
+		teleportMatNeg: "teleportMat4Neg",
+		fiberAdjustPos: "fiberAdjust4Pos",
+		fiberAdjustNeg: "fiberAdjust4Neg",
+		teleportElementPos: "",
+		teleportElementNeg: ""
 	})}
-*/
+
 	${getTeleportGlslChunk({
 		comparisonVec: "teleportVec5",
-		dotProductThreshhold: "pi",
-		teleportMatPos: "teleportMatC",
-		teleportMatNeg: "teleportMatC",
-		fiberAdjustPos: "-2.0 * pi",
-		fiberAdjustNeg: "2.0 * pi",
-		teleportElementPos: "teleportElementC",
-		teleportElementNeg: "teleportElementC"
+		dotProductThreshhold: "dotProductThreshhold5",
+		teleportMatPos: "teleportMat5Pos",
+		teleportMatNeg: "teleportMat5Neg",
+		fiberAdjustPos: "fiberAdjust5Pos",
+		fiberAdjustNeg: "fiberAdjust5Neg",
+		teleportElementPos: "",
+		teleportElementNeg: ""
 	})}
 
 			return color;

@@ -1,7 +1,16 @@
 import { ThurstonGeometry } from "../class.js";
 import { sliderValues } from "../index.js";
-import { BaseGeometry, getMinGlslString } from "./base.js";
+import { BaseGeometry, getMinGlslString, getVectorGlsl } from "./base.js";
 import { $ } from "/scripts/src/main.js";
+
+const teleportVectors = [
+	[1, 0, 0, 1 / Math.sqrt(3)],
+	[-1, 0, 0, 1 / Math.sqrt(3)],
+	[0, 1, 0, 1 / Math.sqrt(3)],
+	[0, -1, 0, 1 / Math.sqrt(3)],
+	[0, 0, 1, 1 / Math.sqrt(3)],
+	[0, 0, -1, 1 / Math.sqrt(3)],
+];
 
 class H3Geometry extends BaseGeometry
 {
@@ -46,63 +55,27 @@ class H3Geometry extends BaseGeometry
 			return log(x + sqrt(x*x - 1.0));
 		}
 
+		const vec4 teleportVec1 = ${getVectorGlsl(teleportVectors[0])};
+		const vec4 teleportVec2 = ${getVectorGlsl(teleportVectors[1])};
+		const vec4 teleportVec3 = ${getVectorGlsl(teleportVectors[2])};
+		const vec4 teleportVec4 = ${getVectorGlsl(teleportVectors[3])};
+		const vec4 teleportVec5 = ${getVectorGlsl(teleportVectors[4])};
+		const vec4 teleportVec6 = ${getVectorGlsl(teleportVectors[5])};
+
 		vec3 teleportPos(inout vec4 pos, inout vec4 startPos, inout vec4 rayDirectionVec, inout float t, inout float totalT)
 		{
 			float c = cos(gluingAngle);
 			float s = sin(gluingAngle);
 
-			vec4 teleportVec1 = vec4(1.0, 0.0, 0.0, 0.577350269);
-			mat4 teleportMat1 = mat4(
-				2.0, 0.0, 0.0, 1.73205081,
-				0.0, c, s, 0.0,
-				0.0, -s, c, 0.0,
-				1.73205081, 0.0, 0.0, 2.0
-			);
-
-			vec4 teleportVec2 = vec4(-1.0, 0.0, 0.0, 0.577350269);
-			mat4 teleportMat2 = mat4(
-				2.0, 0.0, 0.0, -1.73205081,
-				0.0, c, -s, 0.0,
-				0.0, s, c, 0.0,
-				-1.73205081, 0.0, 0.0, 2.0
-			);
-
-			vec4 teleportVec3 = vec4(0.0, 1.0, 0.0, 0.577350269);
-			mat4 teleportMat3 = mat4(
-				c, 0.0, s, 0.0,
-				0.0, 2.0, 0.0, 1.73205081,
-				-s, 0.0, c, 0.0,
-				0.0, 1.73205081, 0.0, 2.0
-			);
-
-			vec4 teleportVec4 = vec4(0.0, -1.0, 0.0, 0.577350269);
-			mat4 teleportMat4 = mat4(
-				c, 0.0, -s, 0.0,
-				0.0, 2.0, 0.0, -1.73205081,
-				s, 0.0, c, 0.0,
-				0.0, -1.73205081, 0.0, 2.0
-			);
-
-			vec4 teleportVec5 = vec4(0.0, 0.0, 1.0, 0.577350269);
-			mat4 teleportMat5 = mat4(
-				c, s, 0.0, 0.0,
-				-s, c, 0.0, 0.0,
-				0.0, 0.0, 2.0, 1.73205081,
-				0.0, 0.0, 1.73205081, 2.0
-			);
-
-			vec4 teleportVec6 = vec4(0.0, 0.0, -1.0, 0.577350269);
-			mat4 teleportMat6 = mat4(
-				c, -s, 0.0, 0.0,
-				s, c, 0.0, 0.0,
-				0.0, 0.0, 2.0, -1.73205081,
-				0.0, 0.0, -1.73205081, 2.0
-			);
-
-
-
 			if (dot(pos, teleportVec1) < 0.0)
 			{
+				mat4 teleportMat1 = mat4(
+					2.0, 0.0, 0.0, 1.73205081,
+					0.0, c, s, 0.0,
+					0.0, -s, c, 0.0,
+					1.73205081, 0.0, 0.0, 2.0
+				);
+
 				pos = teleportMat1 * pos;
 
 				// !!!IMPORTANT!!! rayDirectionVec is the tangent vector from the *starting*
@@ -122,6 +95,13 @@ class H3Geometry extends BaseGeometry
 
 			if (dot(pos, teleportVec2) < 0.0)
 			{
+				mat4 teleportMat2 = mat4(
+					2.0, 0.0, 0.0, -1.73205081,
+					0.0, c, -s, 0.0,
+					0.0, s, c, 0.0,
+					-1.73205081, 0.0, 0.0, 2.0
+				);
+
 				pos = teleportMat2 * pos;
 
 				rayDirectionVec = teleportMat2 * (sinh(t) * startPos + cosh(t) * rayDirectionVec);
@@ -136,6 +116,13 @@ class H3Geometry extends BaseGeometry
 
 			if (dot(pos, teleportVec3) < 0.0)
 			{
+				mat4 teleportMat3 = mat4(
+					c, 0.0, s, 0.0,
+					0.0, 2.0, 0.0, 1.73205081,
+					-s, 0.0, c, 0.0,
+					0.0, 1.73205081, 0.0, 2.0
+				);
+
 				pos = teleportMat3 * pos;
 
 				rayDirectionVec = teleportMat3 * (sinh(t) * startPos + cosh(t) * rayDirectionVec);
@@ -150,6 +137,13 @@ class H3Geometry extends BaseGeometry
 
 			if (dot(pos, teleportVec4) < 0.0)
 			{
+				mat4 teleportMat4 = mat4(
+					c, 0.0, -s, 0.0,
+					0.0, 2.0, 0.0, -1.73205081,
+					s, 0.0, c, 0.0,
+					0.0, -1.73205081, 0.0, 2.0
+				);
+
 				pos = teleportMat4 * pos;
 
 				rayDirectionVec = teleportMat4 * (sinh(t) * startPos + cosh(t) * rayDirectionVec);
@@ -164,6 +158,13 @@ class H3Geometry extends BaseGeometry
 
 			if (dot(pos, teleportVec5) < 0.0)
 			{
+				mat4 teleportMat5 = mat4(
+					c, s, 0.0, 0.0,
+					-s, c, 0.0, 0.0,
+					0.0, 0.0, 2.0, 1.73205081,
+					0.0, 0.0, 1.73205081, 2.0
+				);
+
 				pos = teleportMat5 * pos;
 
 				rayDirectionVec = teleportMat5 * (sinh(t) * startPos + cosh(t) * rayDirectionVec);
@@ -178,6 +179,13 @@ class H3Geometry extends BaseGeometry
 
 			if (dot(pos, teleportVec6) < 0.0)
 			{
+				mat4 teleportMat6 = mat4(
+					c, -s, 0.0, 0.0,
+					s, c, 0.0, 0.0,
+					0.0, 0.0, 2.0, -1.73205081,
+					0.0, 0.0, -1.73205081, 2.0
+				);
+
 				pos = teleportMat6 * pos;
 
 				rayDirectionVec = teleportMat6 * (sinh(t) * startPos + cosh(t) * rayDirectionVec);
@@ -288,94 +296,71 @@ class H3Geometry extends BaseGeometry
 		const cosine = Math.cos(sliderValues.gluingAngle);
 		const sine = Math.sin(sliderValues.gluingAngle);
 
-		const teleportations = [
+		const teleportMatrices = [
 			[
-				[1, 0, 0, 1 / Math.sqrt(3)],
-				[
-					[2, 0, 0, Math.sqrt(3)],
-					[0, cosine, -sine, 0],
-					[0, sine, cosine, 0],
-					[Math.sqrt(3), 0, 0, 2]
-				]
+				[2, 0, 0, Math.sqrt(3)],
+				[0, cosine, -sine, 0],
+				[0, sine, cosine, 0],
+				[Math.sqrt(3), 0, 0, 2]
 			],
-	
 			[
-				[-1, 0, 0, 1 / Math.sqrt(3)],
-				[
-					[2, 0, 0, -Math.sqrt(3)],
-					[0, cosine, sine, 0],
-					[0, -sine, cosine, 0],
-					[-Math.sqrt(3), 0, 0, 2]
-				]
+				[2, 0, 0, -Math.sqrt(3)],
+				[0, cosine, sine, 0],
+				[0, -sine, cosine, 0],
+				[-Math.sqrt(3), 0, 0, 2]
 			],
-	
 			[
-				[0, 1, 0, 1 / Math.sqrt(3)],
-				[
-					[cosine, 0, -sine, 0],
-					[0, 2, 0, Math.sqrt(3)],
-					[sine, 0, cosine, 0],
-					[0, Math.sqrt(3), 0, 2]
-				]
+				[cosine, 0, -sine, 0],
+				[0, 2, 0, Math.sqrt(3)],
+				[sine, 0, cosine, 0],
+				[0, Math.sqrt(3), 0, 2]
 			],
-	
 			[
-				[0, -1, 0, 1 / Math.sqrt(3)],
-				[
-					[cosine, 0, sine, 0],
-					[0, 2, 0, -Math.sqrt(3)],
-					[-sine, 0, cosine, 0],
-					[0, -Math.sqrt(3), 0, 2]
-				]
+				[cosine, 0, sine, 0],
+				[0, 2, 0, -Math.sqrt(3)],
+				[-sine, 0, cosine, 0],
+				[0, -Math.sqrt(3), 0, 2]
 			],
-	
 			[
-				[0, 0, 1, 1 / Math.sqrt(3)],
-				[
-					[cosine, -sine, 0, 0],
-					[sine, cosine, 0, 0],
-					[0, 0, 2, Math.sqrt(3)],
-					[0, 0, Math.sqrt(3), 2]
-				]
+				[cosine, -sine, 0, 0],
+				[sine, cosine, 0, 0],
+				[0, 0, 2, Math.sqrt(3)],
+				[0, 0, Math.sqrt(3), 2]
 			],
-	
 			[
-				[0, 0, -1, 1 / Math.sqrt(3)],
-				[
-					[cosine, sine, 0, 0],
-					[-sine, cosine, 0, 0],
-					[0, 0, 2, -Math.sqrt(3)],
-					[0, 0, -Math.sqrt(3), 2]
-				]
-			],
+				[cosine, sine, 0, 0],
+				[-sine, cosine, 0, 0],
+				[0, 0, 2, -Math.sqrt(3)],
+				[0, 0, -Math.sqrt(3), 2]
+			]
 		];
 
-		for (let i = 0; i < teleportations.length; i++)
+		for (let i = 0; i < teleportMatrices.length; i++)
 		{
-			if (ThurstonGeometry.dotProduct(this.cameraPos, teleportations[i][0]) < 0)
+			if (ThurstonGeometry.dotProduct(this.cameraPos, teleportVectors[i]) < 0)
 			{
 				this.cameraPos = ThurstonGeometry.mat4TimesVector(
-					teleportations[i][1],
+					teleportMatrices[i],
 					this.cameraPos
 				);
 
 				this.forwardVec = ThurstonGeometry.mat4TimesVector(
-					teleportations[i][1],
+					teleportMatrices[i],
 					this.forwardVec
 				);
 
 				this.rightVec = ThurstonGeometry.mat4TimesVector(
-					teleportations[i][1],
+					teleportMatrices[i],
 					this.rightVec
 				);
 
 				this.upVec = ThurstonGeometry.mat4TimesVector(
-					teleportations[i][1],
+					teleportMatrices[i],
 					this.upVec
 				);
 
 				const newRotatedForwardVec = ThurstonGeometry.mat4TimesVector(
-					teleportations[i][1],
+					teleportMatrices[i],
 					rotatedForwardVec
 				);
 
