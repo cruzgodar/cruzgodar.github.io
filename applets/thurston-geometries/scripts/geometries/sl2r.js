@@ -147,7 +147,7 @@ function getBinarySearchGlslChunk({
 
 				kleinElement = getKleinElement(pos, fiber);
 
-				dotProduct = dot(kleinElement, teleportVec5);
+				dotProduct = dot(kleinElement, ${comparisonVec});
 
 				if (abs(dotProduct) > ${dotProductThreshhold})
 				{
