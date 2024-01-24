@@ -73,7 +73,7 @@ class H2xEGeometry extends BaseGeometry
 	`;
 
 	fogGlsl = /*glsl*/`
-		return mix(color, fogColor, 1.0 - exp(-totalT * 0.4));
+		return mix(color, fogColor, 1.0 - exp(-totalT * 0.35));
 	`;
 
 	functionGlsl = /*glsl*/`

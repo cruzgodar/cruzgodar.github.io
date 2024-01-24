@@ -78,46 +78,43 @@ function getTeleportGlslChunk({
 	teleportMatNeg,
 	fiberAdjustPos,
 	fiberAdjustNeg,
-	teleportElementPos,
-	teleportElementNeg,
+	numTeleportations
 }) {
 	return /*glsl*/`
-		dotProduct = dot(kleinElement, ${comparisonVec});
-
-		if (dotProduct > (${dotProductThreshhold}))
+		for (int i = 0; i < ${numTeleportations}; i++)
 		{
-			// applyH2Isometry(pos, rayDirectionVec.xyz);
+			dotProduct = dot(kleinElement, ${comparisonVec});
 
-			pos = ${teleportMatPos} * pos;
-			fiber += ${fiberAdjustPos};
+			if (dotProduct > (${dotProductThreshhold}))
+			{
+				pos = ${teleportMatPos} * pos;
+				fiber += ${fiberAdjustPos};
 
-			// applyH2Isometry(${teleportElementPos}, rayDirectionVec.xyz);
-			// applyH2Isometry(vec4(pos.x, -pos.yzw), rayDirectionVec.xyz);
+				startPos = pos;
+				startFiber = fiber;
+				totalT += t;
+				t = 0.0;
 
-			startPos = pos;
-			startFiber = fiber;
-			totalT += t;
-			t = 0.0;
+				kleinElement = getKleinElement(pos, fiber);
+			}
 
-			kleinElement = getKleinElement(pos, fiber);
-		}
+			else if (dotProduct < -(${dotProductThreshhold}))
+			{
+				pos = ${teleportMatNeg} * pos;
+				fiber += ${fiberAdjustNeg};
 
-		else if (dotProduct < -(${dotProductThreshhold}))
-		{
-			// applyH2Isometry(pos, rayDirectionVec.xyz);
+				startPos = pos;
+				startFiber = fiber;
+				totalT += t;
+				t = 0.0;
 
-			pos = ${teleportMatNeg} * pos;
-			fiber += ${fiberAdjustNeg};
+				kleinElement = getKleinElement(pos, fiber);
+			}
 
-			// applyH2Isometry(${teleportElementNeg}, rayDirectionVec.xyz);
-			// applyH2Isometry(vec4(pos.x, -pos.yzw), rayDirectionVec.xyz);
-
-			startPos = pos;
-			startFiber = fiber;
-			totalT += t;
-			t = 0.0;
-
-			kleinElement = getKleinElement(pos, fiber);
+			else
+			{
+				break;
+			}
 		}
 	`;
 }
@@ -210,32 +207,32 @@ class SL2RGeometry extends BaseGeometry
 
 	${getBinarySearchGlslChunk({
 		comparisonVec: "teleportVec1",
-		dotProductThreshhold: "delta + .0001",
-		searchIterations: "5"
+		dotProductThreshhold: "delta + .00005",
+		searchIterations: "10"
 	})}
 
 	${getBinarySearchGlslChunk({
 		comparisonVec: "teleportVec2",
-		dotProductThreshhold: "delta + .0001",
-		searchIterations: "5"
+		dotProductThreshhold: "delta + .00005",
+		searchIterations: "10"
 	})}
 
 	${getBinarySearchGlslChunk({
 		comparisonVec: "teleportVec3",
-		dotProductThreshhold: "delta + .0001",
-		searchIterations: "5"
+		dotProductThreshhold: "delta + .00005",
+		searchIterations: "10"
 	})}
 
 	${getBinarySearchGlslChunk({
 		comparisonVec: "teleportVec4",
-		dotProductThreshhold: "delta + .0001",
-		searchIterations: "5"
+		dotProductThreshhold: "delta + .00005",
+		searchIterations: "10"
 	})}
 
 	${getBinarySearchGlslChunk({
 		comparisonVec: "teleportVec5",
-		dotProductThreshhold: "pi + .0001",
-		searchIterations: "5"
+		dotProductThreshhold: "pi + .00005",
+		searchIterations: "10"
 	})}
 
 		globalColor += teleportPos(pos, fiber, startPos, startFiber, rayDirectionVec, t, totalT);
@@ -263,19 +260,9 @@ class SL2RGeometry extends BaseGeometry
 			return (expTerm - 1.0) / (expTerm + 1.0);
 		}
 
-		float asinh(float x)
-		{
-			return log(x + sqrt(x*x + 1.0));
-		}
-
 		float acosh(float x)
 		{
 			return log(x + sqrt(x*x - 1.0));
-		}
-
-		float atanh(float x)
-		{
-			return 0.5 * log((1.0 + x) / (1.0 - x));
 		}
 
 		// Given an element in SL(2, R), returns an isometry sending the origin to that point.
@@ -430,15 +417,6 @@ class SL2RGeometry extends BaseGeometry
 			fiber += startFiber;
 		}
 
-		vec4 getUpdatedDirectionVec(vec4 pos, vec4 rayDirectionVec, float t)
-		{
-			vec3 h2Element = rayDirectionVec.xyz;
-
-			applyH2Isometry(pos, h2Element);
-
-			return vec4(h2Element, rayDirectionVec.w);
-		}
-
 		const float pi = 3.14159265;
 		const float piOver2 = 1.5707963;
 
@@ -480,6 +458,17 @@ class SL2RGeometry extends BaseGeometry
 		const float dotProductThreshhold4 = ${teleportVectors[3][1]};
 		const float dotProductThreshhold5 = ${teleportVectors[4][1]};
 
+		const vec4 teleportElement1Pos = ${getVectorGlsl(teleportElementsInv[2])};
+		const vec4 teleportElement1Neg = ${getVectorGlsl(teleportElementsInv[3])};
+		const vec4 teleportElement2Pos = ${getVectorGlsl(teleportElements[0])};
+		const vec4 teleportElement2Neg = ${getVectorGlsl(teleportElements[1])};
+		const vec4 teleportElement3Pos = ${getVectorGlsl(teleportElements[2])};
+		const vec4 teleportElement3Neg = ${getVectorGlsl(teleportElements[3])};
+		const vec4 teleportElement4Pos = ${getVectorGlsl(teleportElementsInv[0])};
+		const vec4 teleportElement4Neg = ${getVectorGlsl(teleportElementsInv[1])};
+		const vec4 teleportElement5Pos = ${getVectorGlsl(teleportElements[4])};
+		const vec4 teleportElement5Neg = ${getVectorGlsl(teleportElements[4])};
+
 		const float delta = ${delta};
 
 		vec3 teleportPos(inout vec4 pos, inout float fiber, inout vec4 startPos, inout float startFiber, inout vec4 rayDirectionVec, inout float t, inout float totalT)
@@ -499,8 +488,7 @@ class SL2RGeometry extends BaseGeometry
 		teleportMatNeg: "teleportMat1Neg",
 		fiberAdjustPos: "fiberAdjust1Pos",
 		fiberAdjustNeg: "fiberAdjust1Neg",
-		teleportElementPos: "",
-		teleportElementNeg: ""
+		numTeleportations: "1"
 	})}
 
 	${getTeleportGlslChunk({
@@ -510,8 +498,9 @@ class SL2RGeometry extends BaseGeometry
 		teleportMatNeg: "teleportMat2Neg",
 		fiberAdjustPos: "fiberAdjust2Pos",
 		fiberAdjustNeg: "fiberAdjust2Neg",
-		teleportElementPos: "",
-		teleportElementNeg: ""
+		teleportElementPos: "teleportElement2Pos",
+		teleportElementNeg: "teleportElement2Neg",
+		numTeleportations: "1"
 	})}
 
 	${getTeleportGlslChunk({
@@ -521,8 +510,9 @@ class SL2RGeometry extends BaseGeometry
 		teleportMatNeg: "teleportMat3Neg",
 		fiberAdjustPos: "fiberAdjust3Pos",
 		fiberAdjustNeg: "fiberAdjust3Neg",
-		teleportElementPos: "",
-		teleportElementNeg: ""
+		teleportElementPos: "teleportElement3Pos",
+		teleportElementNeg: "teleportElement3Neg",
+		numTeleportations: "1"
 	})}
 
 	${getTeleportGlslChunk({
@@ -532,8 +522,9 @@ class SL2RGeometry extends BaseGeometry
 		teleportMatNeg: "teleportMat4Neg",
 		fiberAdjustPos: "fiberAdjust4Pos",
 		fiberAdjustNeg: "fiberAdjust4Neg",
-		teleportElementPos: "",
-		teleportElementNeg: ""
+		teleportElementPos: "teleportElement4Pos",
+		teleportElementNeg: "teleportElement4Neg",
+		numTeleportations: "1"
 	})}
 
 	${getTeleportGlslChunk({
@@ -543,8 +534,9 @@ class SL2RGeometry extends BaseGeometry
 		teleportMatNeg: "teleportMat5Neg",
 		fiberAdjustPos: "fiberAdjust5Pos",
 		fiberAdjustNeg: "fiberAdjust5Neg",
-		teleportElementPos: "",
-		teleportElementNeg: ""
+		teleportElementPos: "teleportElement5Pos",
+		teleportElementNeg: "teleportElement5Neg",
+		numTeleportations: "1"
 	})}
 
 			return color;
@@ -648,22 +640,8 @@ class SL2RGeometry extends BaseGeometry
 	// normal vector, i.e. [0, 0, 1, 0]. Since we're never moving and projecting like we usually
 	// do, this should take care of itself.
 	correctVectors() {}
-	/*
-	[
-					[1.7071068, 1.7071068, -2.1973682, 0],
-					[-1.7071068, 1.7071068, 0, 2.1973682],
-					[-2.1973682, 0, 1.7071068, 1.7071068],
-					[0, 2.1973682, -1.7071068, 1.7071068]
-				],
-				[
-					[1.7071068, -1.7071068, 2.1973682, 0],
-					[1.7071068, 1.7071068, 0, -2.1973682],
-					[2.1973682, 0, 1.7071068, -1.7071068],
-					[0, -2.1973682, 1.7071068, 1.7071068]
-				]
-	*/
 
-	teleportCamera(rotatedForwardVec, recomputeRotation)
+	teleportCamera()
 	{
 		let kleinElement = getKleinElement(this.cameraPos, this.cameraFiber);
 
@@ -683,8 +661,6 @@ class SL2RGeometry extends BaseGeometry
 				this.cameraFiber += teleportFibers[i][0];
 
 				kleinElement = getKleinElement(this.cameraPos, this.cameraFiber);
-
-				console.log("teleported!", i);
 			}
 
 			else if (dotProduct < -teleportVectors[i][1])
@@ -697,32 +673,28 @@ class SL2RGeometry extends BaseGeometry
 				this.cameraFiber += teleportFibers[i][1];
 
 				kleinElement = getKleinElement(this.cameraPos, this.cameraFiber);
-
-				console.log("teleported!", i);
 			}
 		}
 	}
 }
 
-export class SL2RSpheres extends SL2RGeometry
+export class SL2RRooms extends SL2RGeometry
 {
 	static distances = /*glsl*/`
-		float radius = 1.0 + wallThickness;
-
 		vec3 h2Element = getH2Element(pos);
 
-		float distance1 = length(vec2(acosh(h2Element.z), fiber)) - radius;
+		float distance1 = length(vec2(acosh(h2Element.z), fiber)) - 1.83;
 
 		// The fundamental domain has height 2pi, so to evenly space three balls,
 		// we want the gap between them to be (2pi - 6 * radius) / 3.
 		// Solving for the center of the other spheres gives +/- 2pi/3.
 
-		float distance2 = length(vec2(acosh(h2Element.z), fiber - 0.66667 * pi)) - radius;
-		float distance3 = length(vec2(acosh(h2Element.z), fiber + 0.66667 * pi)) - radius;
+		float distance2 = length(vec2(acosh(h2Element.z), fiber - 0.66667 * pi)) - 1.83;
+		float distance3 = length(vec2(acosh(h2Element.z), fiber + 0.66667 * pi)) - 1.83;
 	`;
 
 	distanceEstimatorGlsl = /*glsl*/`
-		${SL2RSpheres.distances}
+		${SL2RRooms.distances}
 
 		float minDistance = ${getMinGlslString("distance", 3)};
 
@@ -750,7 +722,71 @@ export class SL2RSpheres extends SL2RGeometry
 		return 1;
 	}
 
-	cameraPos = [1, 0, 0, 0];
+	cameraPos = [1.0001, 0, 0.014142, 0];
+	cameraFiber = 0;
+
+	normalVec = [0, 0, -1, 0];
+	upVec = [0, 0, 0, 1];
+	rightVec = [0, 1, 0, 0];
+	forwardVec = [1, 0, 0, 0];
+
+	uniformGlsl = /*glsl*/`
+		uniform float cameraFiber;
+	`;
+
+	uniformNames = ["cameraFiber"];
+
+	updateUniforms(gl, uniformList)
+	{
+		gl.uniform1f(uniformList["cameraFiber"], this.cameraFiber);
+	}
+}
+
+export class SL2RSpheres extends SL2RGeometry
+{
+	static distances = /*glsl*/`
+		vec3 h2Element = getH2Element(pos);
+
+		float distance1 = length(vec2(acosh(h2Element.z), fiber)) - wallThickness;
+
+		// The fundamental domain has height 2pi, so to evenly space three balls,
+		// we want the gap between them to be (2pi - 6 * radius) / 3.
+		// Solving for the center of the other spheres gives +/- 2pi/3.
+
+		float distance2 = length(vec2(acosh(h2Element.z), fiber - 0.66667 * pi)) - wallThickness;
+		float distance3 = length(vec2(acosh(h2Element.z), fiber + 0.66667 * pi)) - wallThickness;
+	`;
+
+	distanceEstimatorGlsl = /*glsl*/`
+		${SL2RSpheres.distances}
+
+		float minDistance = ${getMinGlslString("distance", 3)};
+
+		return minDistance;
+	`;
+
+	getColorGlsl = /*glsl*/`
+		return vec3(0.5, 0.5, 0.5);
+	`;
+
+	lightGlsl = /*glsl*/`
+		surfaceNormal.w = 0.0;
+
+		vec4 lightDirection1 = normalize(vec4(3.0, -3.0, 3.0, 1.0) - pos);
+		float dotProduct1 = dot(surfaceNormal, lightDirection1);
+
+		vec4 lightDirection2 = normalize(vec4(-4.0, 2.0, -1.0, 1.0) - pos);
+		float dotProduct2 = dot(surfaceNormal, lightDirection2);
+
+		float lightIntensity = 1.0;//max(dotProduct1, dotProduct2);
+	`;
+
+	getMovingSpeed()
+	{
+		return 1;
+	}
+
+	cameraPos = [1.0001, 0, 0.014142, 0];
 	cameraFiber = 0;
 
 	normalVec = [0, 0, -1, 0];
