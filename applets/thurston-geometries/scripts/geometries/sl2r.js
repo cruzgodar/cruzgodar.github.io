@@ -238,32 +238,32 @@ class SL2RGeometry extends BaseGeometry
 
 	${getBinarySearchGlslChunk({
 		comparisonVec: "teleportVec1",
-		dotProductThreshhold: "delta + .000005",
-		searchIterations: "15"
+		dotProductThreshhold: "delta + .00001",
+		searchIterations: "10"
 	})}
 
 	${getBinarySearchGlslChunk({
 		comparisonVec: "teleportVec2",
-		dotProductThreshhold: "delta + .000005",
-		searchIterations: "15"
+		dotProductThreshhold: "delta + .00001",
+		searchIterations: "10"
 	})}
 
 	${getBinarySearchGlslChunk({
 		comparisonVec: "teleportVec3",
-		dotProductThreshhold: "delta + .000005",
-		searchIterations: "15"
+		dotProductThreshhold: "delta + .00001",
+		searchIterations: "10"
 	})}
 
 	${getBinarySearchGlslChunk({
 		comparisonVec: "teleportVec4",
-		dotProductThreshhold: "delta + .000005",
-		searchIterations: "15"
+		dotProductThreshhold: "delta + .00001",
+		searchIterations: "10"
 	})}
 
 	${getBinarySearchGlslChunk({
 		comparisonVec: "teleportVec5",
-		dotProductThreshhold: "pi + .000005",
-		searchIterations: "15"
+		dotProductThreshhold: "pi + .00001",
+		searchIterations: "10"
 	})}
 
 		globalColor += teleportPos(pos, fiber, startPos, startFiber, rayDirectionVec, t, totalT);
@@ -646,6 +646,8 @@ class SL2RGeometry extends BaseGeometry
 		}
 	`;
 
+	stepFactor = "0.8";
+
 	usesFiberComponent = true;
 	
 	// Since cameraPos represents an element of SL(2, R), we want the determinant to be 1.
@@ -848,19 +850,21 @@ export class SL2RRooms extends SL2RGeometry
 	uniformGlsl = /*glsl*/`
 		uniform float cameraFiber;
 		uniform float wallThickness;
+		uniform float gluingAngle;
 		uniform vec3 baseColor;
 	`;
 
-	uniformNames = ["cameraFiber", "wallThickness", "baseColor"];
+	uniformNames = ["cameraFiber", "wallThickness", "gluingAngle", "baseColor"];
 
 	updateUniforms(gl, uniformList)
 	{
 		gl.uniform1f(uniformList["cameraFiber"], this.cameraFiber);
 		gl.uniform1f(uniformList["wallThickness"], 1.85 - sliderValues.wallThickness);
 		gl.uniform3fv(uniformList["baseColor"], this.baseColor);
+		gl.uniform1f(uniformList["gluingAngle"], this.gluingAngle);
 	}
 
-	uiElementsUsed = "#wall-thickness-slider";
+	uiElementsUsed = "#wall-thickness-slider, #gluing-angle-slider";
 
 	initUI()
 	{
@@ -872,5 +876,14 @@ export class SL2RRooms extends SL2RGeometry
 		wallThicknessSlider.value = 0.175;
 		wallThicknessSliderValue.textContent = 0.175;
 		sliderValues.wallThickness = 0.175;
+
+		const gluingAngleSlider = $("#gluing-angle-slider");
+		const gluingAngleSliderValue = $("#gluing-angle-slider-value");
+
+		gluingAngleSlider.min = 0;
+		gluingAngleSlider.max = 0.1;
+		gluingAngleSlider.value = 0;
+		gluingAngleSliderValue.textContent = 0;
+		sliderValues.gluingAngle = 0;
 	}
 }

@@ -24,6 +24,7 @@ export class BaseGeometry
 
 	maxMarches = "200";
 	ambientOcclusionDenominator = "100.0";
+	stepFactor = "0.99";
 		
 	dotProduct(vec1, vec2)
 	{
