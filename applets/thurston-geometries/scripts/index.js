@@ -38,10 +38,10 @@ export function load()
 
 		"h2xe-rooms": H2xERooms,
 
-		"sl2r-rooms": SL2RRooms,
-
 		"nil-rooms": NilRooms,
 		"nil-spheres": NilSpheres,
+
+		"sl2r-rooms": SL2RRooms,
 
 		"sol-rooms": SolRooms
 	};

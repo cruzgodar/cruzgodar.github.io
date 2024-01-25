@@ -187,6 +187,16 @@ export function getColorGlslString(varName, minVarName, colors)
 	return colorGlsl;
 }
 
+export function getFloatGlsl(float)
+{
+	if (typeof float === "string" || float !== Math.floor(float))
+	{
+		return float;
+	}
+
+	return `float(${float})`;
+}
+
 export function getVectorGlsl(vector)
 {
 	if (vector.length === 2)

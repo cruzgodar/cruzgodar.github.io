@@ -1,6 +1,6 @@
 import { ThurstonGeometry } from "../class.js";
 import { sliderValues } from "../index.js";
-import { BaseGeometry, getMatrixGlsl, getMinGlslString, getVectorGlsl } from "./base.js";
+import { BaseGeometry, getFloatGlsl, getMatrixGlsl, getMinGlslString, getVectorGlsl } from "./base.js";
 import { $ } from "/scripts/src/main.js";
 
 function getTransformationMatrix(pos)
@@ -57,10 +57,10 @@ const teleportMatrices = [
 
 // Todo: try making most of these zero?
 const teleportFibers = [
-	[0.000000000001, 0.000000000001],
-	[0.000000000001, 0.000000000001],
-	[0.000000000001, 0.000000000001],
-	[0.000000000001, 0.000000000001],
+	[0, 0],
+	[0, 0],
+	[0, 0],
+	[0, 0],
 	[-2 * Math.PI, 2 * Math.PI]
 ];
 
@@ -72,6 +72,16 @@ const teleportVectors = [
 	[[0, 0, 1], Math.PI]
 ];
 
+// Getting this right is a little touchy, since the face pairings
+// aren't opposite one another.
+const baseColorIncreases = [
+	[[-1, -1, 0], [-1, 1, 0]],
+	[[1, 0, 0], [0, 1, 0]],
+	[[1, 1, 0], [1, -1, 0]],
+	[[-1, 0, 0], [0, -1, 0]],
+	[[0, 0, 1], [0, 0, -1]]
+];
+
 function getTeleportGlslChunk({
 	comparisonVec,
 	dotProductThreshhold,
@@ -80,7 +90,9 @@ function getTeleportGlslChunk({
 	fiberAdjustPos,
 	fiberAdjustNeg,
 	teleportElementPos,
-	teleportElementNeg
+	teleportElementNeg,
+	colorIncreasePos,
+	colorIncreaseNeg,
 }) {
 	return /*glsl*/`
 		dotProduct = dot(kleinElement, ${comparisonVec});
@@ -109,6 +121,8 @@ function getTeleportGlslChunk({
 			t = 0.0;
 
 			kleinElement = getKleinElement(pos, fiber);
+
+			color += ${colorIncreasePos};
 		}
 
 		else if (dotProduct < -(${dotProductThreshhold}))
@@ -130,6 +144,8 @@ function getTeleportGlslChunk({
 			t = 0.0;
 
 			kleinElement = getKleinElement(pos, fiber);
+
+			color += ${colorIncreaseNeg};
 		}
 	`;
 }
@@ -222,39 +238,39 @@ class SL2RGeometry extends BaseGeometry
 
 	${getBinarySearchGlslChunk({
 		comparisonVec: "teleportVec1",
-		dotProductThreshhold: "delta + .00001",
-		searchIterations: "10"
+		dotProductThreshhold: "delta + .000005",
+		searchIterations: "15"
 	})}
 
 	${getBinarySearchGlslChunk({
 		comparisonVec: "teleportVec2",
-		dotProductThreshhold: "delta + .00001",
-		searchIterations: "10"
+		dotProductThreshhold: "delta + .000005",
+		searchIterations: "15"
 	})}
 
 	${getBinarySearchGlslChunk({
 		comparisonVec: "teleportVec3",
-		dotProductThreshhold: "delta + .00001",
-		searchIterations: "10"
+		dotProductThreshhold: "delta + .000005",
+		searchIterations: "15"
 	})}
 
 	${getBinarySearchGlslChunk({
 		comparisonVec: "teleportVec4",
-		dotProductThreshhold: "delta + .00001",
-		searchIterations: "10"
+		dotProductThreshhold: "delta + .000005",
+		searchIterations: "15"
 	})}
 
 	${getBinarySearchGlslChunk({
 		comparisonVec: "teleportVec5",
-		dotProductThreshhold: "pi + .00001",
-		searchIterations: "10"
+		dotProductThreshhold: "pi + .000005",
+		searchIterations: "15"
 	})}
 
 		globalColor += teleportPos(pos, fiber, startPos, startFiber, rayDirectionVec, t, totalT);
 	`;
 
 	fogGlsl = /*glsl*/`
-		return color;//mix(color, fogColor, 1.0 - exp(-totalT * 0.2));
+		return color;// mix(color, fogColor, 1.0 - exp(-totalT * 0.3));
 	`;
 
 	functionGlsl = /*glsl*/`
@@ -282,22 +298,22 @@ class SL2RGeometry extends BaseGeometry
 		const mat4 teleportMat5Pos = ${getMatrixGlsl(teleportMatrices[4][0])};
 		const mat4 teleportMat5Neg = ${getMatrixGlsl(teleportMatrices[4][1])};
 
-		const float fiberAdjust1Pos = ${teleportFibers[0][0]};
-		const float fiberAdjust1Neg = ${teleportFibers[0][1]};
-		const float fiberAdjust2Pos = ${teleportFibers[1][0]};
-		const float fiberAdjust2Neg = ${teleportFibers[1][1]};
-		const float fiberAdjust3Pos = ${teleportFibers[2][0]};
-		const float fiberAdjust3Neg = ${teleportFibers[2][1]};
-		const float fiberAdjust4Pos = ${teleportFibers[3][0]};
-		const float fiberAdjust4Neg = ${teleportFibers[3][1]};
-		const float fiberAdjust5Pos = ${teleportFibers[4][0]};
-		const float fiberAdjust5Neg = ${teleportFibers[4][1]};
+		const float fiberAdjust1Pos = ${getFloatGlsl(teleportFibers[0][0])};
+		const float fiberAdjust1Neg = ${getFloatGlsl(teleportFibers[0][1])};
+		const float fiberAdjust2Pos = ${getFloatGlsl(teleportFibers[1][0])};
+		const float fiberAdjust2Neg = ${getFloatGlsl(teleportFibers[1][1])};
+		const float fiberAdjust3Pos = ${getFloatGlsl(teleportFibers[2][0])};
+		const float fiberAdjust3Neg = ${getFloatGlsl(teleportFibers[2][1])};
+		const float fiberAdjust4Pos = ${getFloatGlsl(teleportFibers[3][0])};
+		const float fiberAdjust4Neg = ${getFloatGlsl(teleportFibers[3][1])};
+		const float fiberAdjust5Pos = ${getFloatGlsl(teleportFibers[4][0])};
+		const float fiberAdjust5Neg = ${getFloatGlsl(teleportFibers[4][1])};
 
-		const float dotProductThreshhold1 = ${teleportVectors[0][1]};
-		const float dotProductThreshhold2 = ${teleportVectors[1][1]};
-		const float dotProductThreshhold3 = ${teleportVectors[2][1]};
-		const float dotProductThreshhold4 = ${teleportVectors[3][1]};
-		const float dotProductThreshhold5 = ${teleportVectors[4][1]};
+		const float dotProductThreshhold1 = ${getFloatGlsl(teleportVectors[0][1])};
+		const float dotProductThreshhold2 = ${getFloatGlsl(teleportVectors[1][1])};
+		const float dotProductThreshhold3 = ${getFloatGlsl(teleportVectors[2][1])};
+		const float dotProductThreshhold4 = ${getFloatGlsl(teleportVectors[3][1])};
+		const float dotProductThreshhold5 = ${getFloatGlsl(teleportVectors[4][1])};
 
 		const vec4 teleportElement1Pos = ${getVectorGlsl(teleportElementsInv[2])};
 		const vec4 teleportElement1Neg = ${getVectorGlsl(teleportElementsInv[3])};
@@ -309,6 +325,17 @@ class SL2RGeometry extends BaseGeometry
 		const vec4 teleportElement4Neg = ${getVectorGlsl(teleportElementsInv[1])};
 		const vec4 teleportElement5Pos = ${getVectorGlsl(teleportElements[4])};
 		const vec4 teleportElement5Neg = ${getVectorGlsl(teleportElements[4])};
+
+		const vec3 colorIncrease1Pos = ${getVectorGlsl(baseColorIncreases[0][0])};
+		const vec3 colorIncrease1Neg = ${getVectorGlsl(baseColorIncreases[0][1])};
+		const vec3 colorIncrease2Pos = ${getVectorGlsl(baseColorIncreases[1][0])};
+		const vec3 colorIncrease2Neg = ${getVectorGlsl(baseColorIncreases[1][1])};
+		const vec3 colorIncrease3Pos = ${getVectorGlsl(baseColorIncreases[2][0])};
+		const vec3 colorIncrease3Neg = ${getVectorGlsl(baseColorIncreases[2][1])};
+		const vec3 colorIncrease4Pos = ${getVectorGlsl(baseColorIncreases[3][0])};
+		const vec3 colorIncrease4Neg = ${getVectorGlsl(baseColorIncreases[3][1])};
+		const vec3 colorIncrease5Pos = ${getVectorGlsl(baseColorIncreases[4][0])};
+		const vec3 colorIncrease5Neg = ${getVectorGlsl(baseColorIncreases[4][1])};
 
 		const float delta = ${delta};
 
@@ -558,7 +585,9 @@ class SL2RGeometry extends BaseGeometry
 		fiberAdjustPos: "fiberAdjust1Pos",
 		fiberAdjustNeg: "fiberAdjust1Neg",
 		teleportElementPos: "teleportElement1Pos",
-		teleportElementNeg: "teleportElement1Neg"
+		teleportElementNeg: "teleportElement1Neg",
+		colorIncreasePos: "colorIncrease1Pos",
+		colorIncreaseNeg: "colorIncrease1Neg"
 	})}
 
 	${getTeleportGlslChunk({
@@ -569,7 +598,9 @@ class SL2RGeometry extends BaseGeometry
 		fiberAdjustPos: "fiberAdjust2Pos",
 		fiberAdjustNeg: "fiberAdjust2Neg",
 		teleportElementPos: "teleportElement2Pos",
-		teleportElementNeg: "teleportElement2Neg"
+		teleportElementNeg: "teleportElement2Neg",
+		colorIncreasePos: "colorIncrease2Pos",
+		colorIncreaseNeg: "colorIncrease2Neg"
 	})}
 
 	${getTeleportGlslChunk({
@@ -580,7 +611,9 @@ class SL2RGeometry extends BaseGeometry
 		fiberAdjustPos: "fiberAdjust3Pos",
 		fiberAdjustNeg: "fiberAdjust3Neg",
 		teleportElementPos: "teleportElement3Pos",
-		teleportElementNeg: "teleportElement3Neg"
+		teleportElementNeg: "teleportElement3Neg",
+		colorIncreasePos: "colorIncrease3Pos",
+		colorIncreaseNeg: "colorIncrease3Neg"
 	})}
 
 	${getTeleportGlslChunk({
@@ -591,7 +624,9 @@ class SL2RGeometry extends BaseGeometry
 		fiberAdjustPos: "fiberAdjust4Pos",
 		fiberAdjustNeg: "fiberAdjust4Neg",
 		teleportElementPos: "teleportElement4Pos",
-		teleportElementNeg: "teleportElement4Neg"
+		teleportElementNeg: "teleportElement4Neg",
+		colorIncreasePos: "colorIncrease4Pos",
+		colorIncreaseNeg: "colorIncrease4Neg"
 	})}
 
 	${getTeleportGlslChunk({
@@ -602,7 +637,9 @@ class SL2RGeometry extends BaseGeometry
 		fiberAdjustPos: "fiberAdjust5Pos",
 		fiberAdjustNeg: "fiberAdjust5Neg",
 		teleportElementPos: "teleportElement5Pos",
-		teleportElementNeg: "teleportElement5Neg"
+		teleportElementNeg: "teleportElement5Neg",
+		colorIncreasePos: "colorIncrease5Pos",
+		colorIncreaseNeg: "colorIncrease5Neg"
 	})}
 
 			return color;
@@ -706,6 +743,8 @@ class SL2RGeometry extends BaseGeometry
 	// normal vector, i.e. [0, 0, 1, 0]. Since we're never moving and projecting like we usually
 	// do, this should take care of itself.
 	correctVectors() {}
+	
+	baseColor = [0, 0, 0];
 
 	teleportCamera()
 	{
@@ -727,6 +766,10 @@ class SL2RGeometry extends BaseGeometry
 				this.cameraFiber += teleportFibers[i][0];
 
 				kleinElement = getKleinElement(this.cameraPos, this.cameraFiber);
+
+				this.baseColor[0] += baseColorIncreases[i][0][0];
+				this.baseColor[1] += baseColorIncreases[i][0][1];
+				this.baseColor[2] += baseColorIncreases[i][0][2];
 			}
 
 			else if (dotProduct < -teleportVectors[i][1])
@@ -739,6 +782,10 @@ class SL2RGeometry extends BaseGeometry
 				this.cameraFiber += teleportFibers[i][1];
 
 				kleinElement = getKleinElement(this.cameraPos, this.cameraFiber);
+
+				this.baseColor[0] += baseColorIncreases[i][1][0];
+				this.baseColor[1] += baseColorIncreases[i][1][1];
+				this.baseColor[2] += baseColorIncreases[i][1][2];
 			}
 		}
 	}
@@ -768,14 +815,18 @@ export class SL2RRooms extends SL2RGeometry
 	`;
 
 	getColorGlsl = /*glsl*/`
-		return vec3(0.5, 0.5, 0.5);
+		return vec3(
+			.35 + .65 * (.5 * (sin((.01 * (pos.x + pos.z) + baseColor.x + globalColor.x) * 40.0) + 1.0)),
+			.35 + .65 * (.5 * (sin((.01 * (pos.y + pos.w) + baseColor.y + globalColor.y) * 57.0) + 1.0)),
+			.35 + .65 * (.5 * (sin((.01 * fiber + baseColor.z + globalColor.z) * 89.0) + 1.0))
+		);
 	`;
 
 	lightGlsl = /*glsl*/`
-		vec4 lightDirection1 = normalize(vec4(3.0, -3.0, 3.0, 1.0) - pos);
+		vec4 lightDirection1 = normalize(vec4(1.0, 0.0, 1.0, 0.0) - pos);
 		float dotProduct1 = dot(surfaceNormal, lightDirection1);
 
-		vec4 lightDirection2 = normalize(vec4(-4.0, 2.0, -1.0, 1.0) - pos);
+		vec4 lightDirection2 = normalize(vec4(0.0, 1.0, 0.0, 1.0) - pos);
 		float dotProduct2 = dot(surfaceNormal, lightDirection2);
 
 		float lightIntensity = 1.0;//max(dotProduct1, dotProduct2);
@@ -786,7 +837,7 @@ export class SL2RRooms extends SL2RGeometry
 		return 1;
 	}
 
-	cameraPos = [1.0001, 0, 0.014142, 0];
+	cameraPos = [1.000000555682267, 0, 0.0010542129021898201, 0];
 	cameraFiber = 0;
 
 	normalVec = [0, 0, -1, 0];
@@ -797,14 +848,16 @@ export class SL2RRooms extends SL2RGeometry
 	uniformGlsl = /*glsl*/`
 		uniform float cameraFiber;
 		uniform float wallThickness;
+		uniform vec3 baseColor;
 	`;
 
-	uniformNames = ["cameraFiber", "wallThickness"];
+	uniformNames = ["cameraFiber", "wallThickness", "baseColor"];
 
 	updateUniforms(gl, uniformList)
 	{
 		gl.uniform1f(uniformList["cameraFiber"], this.cameraFiber);
 		gl.uniform1f(uniformList["wallThickness"], 1.85 - sliderValues.wallThickness);
+		gl.uniform3fv(uniformList["baseColor"], this.baseColor);
 	}
 
 	uiElementsUsed = "#wall-thickness-slider";
