@@ -55,6 +55,7 @@ const teleportMatrices = [
 	]
 ];
 
+// Todo: try making most of these zero?
 const teleportFibers = [
 	[-Math.PI / 2, -Math.PI / 2],
 	[-Math.PI / 2, -Math.PI / 2],
@@ -78,6 +79,8 @@ function getTeleportGlslChunk({
 	teleportMatNeg,
 	fiberAdjustPos,
 	fiberAdjustNeg,
+	teleportElementPos,
+	teleportElementNeg,
 	numTeleportations
 }) {
 	return /*glsl*/`
@@ -87,6 +90,10 @@ function getTeleportGlslChunk({
 
 			if (dotProduct > (${dotProductThreshhold}))
 			{
+				vec4 newPos = ${teleportMatPos} * pos;
+
+				rayDirectionVec = getTeleportedDirectionVec(startPos, rayDirectionVec, newPos, ${teleportElementPos}, t);
+
 				pos = ${teleportMatPos} * pos;
 				fiber += ${fiberAdjustPos};
 
@@ -100,7 +107,11 @@ function getTeleportGlslChunk({
 
 			else if (dotProduct < -(${dotProductThreshhold}))
 			{
-				pos = ${teleportMatNeg} * pos;
+				vec4 newPos = ${teleportMatNeg} * pos;
+
+				rayDirectionVec = getTeleportedDirectionVec(startPos, rayDirectionVec, newPos, ${teleportElementNeg}, t);
+
+				pos = newPos;
 				fiber += ${fiberAdjustNeg};
 
 				startPos = pos;
@@ -243,6 +254,60 @@ class SL2RGeometry extends BaseGeometry
 	`;
 
 	functionGlsl = /*glsl*/`
+		const float pi = ${Math.PI};
+		const float piOver2 = ${Math.PI / 2};
+
+		const float root2 = ${root2};
+		const float root2Over2Plus1 = ${root2Over2 + 1};
+		const float root1PlusRoot2 = ${root1PlusRoot2};
+
+		const vec3 teleportVec1 = ${getVectorGlsl(teleportVectors[0][0])};
+		const vec3 teleportVec2 = ${getVectorGlsl(teleportVectors[1][0])};
+		const vec3 teleportVec3 = ${getVectorGlsl(teleportVectors[2][0])};
+		const vec3 teleportVec4 = ${getVectorGlsl(teleportVectors[3][0])};
+		const vec3 teleportVec5 = ${getVectorGlsl(teleportVectors[4][0])};
+
+		const mat4 teleportMat1Pos = ${getMatrixGlsl(teleportMatrices[0][0])};
+		const mat4 teleportMat1Neg = ${getMatrixGlsl(teleportMatrices[0][1])};
+		const mat4 teleportMat2Pos = ${getMatrixGlsl(teleportMatrices[1][0])};
+		const mat4 teleportMat2Neg = ${getMatrixGlsl(teleportMatrices[1][1])};
+		const mat4 teleportMat3Pos = ${getMatrixGlsl(teleportMatrices[2][0])};
+		const mat4 teleportMat3Neg = ${getMatrixGlsl(teleportMatrices[2][1])};
+		const mat4 teleportMat4Pos = ${getMatrixGlsl(teleportMatrices[3][0])};
+		const mat4 teleportMat4Neg = ${getMatrixGlsl(teleportMatrices[3][1])};
+		const mat4 teleportMat5Pos = ${getMatrixGlsl(teleportMatrices[4][0])};
+		const mat4 teleportMat5Neg = ${getMatrixGlsl(teleportMatrices[4][1])};
+
+		const float fiberAdjust1Pos = ${teleportFibers[0][0]};
+		const float fiberAdjust1Neg = ${teleportFibers[0][1]};
+		const float fiberAdjust2Pos = ${teleportFibers[1][0]};
+		const float fiberAdjust2Neg = ${teleportFibers[1][1]};
+		const float fiberAdjust3Pos = ${teleportFibers[2][0]};
+		const float fiberAdjust3Neg = ${teleportFibers[2][1]};
+		const float fiberAdjust4Pos = ${teleportFibers[3][0]};
+		const float fiberAdjust4Neg = ${teleportFibers[3][1]};
+		const float fiberAdjust5Pos = ${teleportFibers[4][0]};
+		const float fiberAdjust5Neg = ${teleportFibers[4][1]};
+
+		const float dotProductThreshhold1 = ${teleportVectors[0][1]};
+		const float dotProductThreshhold2 = ${teleportVectors[1][1]};
+		const float dotProductThreshhold3 = ${teleportVectors[2][1]};
+		const float dotProductThreshhold4 = ${teleportVectors[3][1]};
+		const float dotProductThreshhold5 = ${teleportVectors[4][1]};
+
+		const vec4 teleportElement1Pos = ${getVectorGlsl(teleportElementsInv[2])};
+		const vec4 teleportElement1Neg = ${getVectorGlsl(teleportElementsInv[3])};
+		const vec4 teleportElement2Pos = ${getVectorGlsl(teleportElements[0])};
+		const vec4 teleportElement2Neg = ${getVectorGlsl(teleportElements[1])};
+		const vec4 teleportElement3Pos = ${getVectorGlsl(teleportElements[2])};
+		const vec4 teleportElement3Neg = ${getVectorGlsl(teleportElements[3])};
+		const vec4 teleportElement4Pos = ${getVectorGlsl(teleportElementsInv[0])};
+		const vec4 teleportElement4Neg = ${getVectorGlsl(teleportElementsInv[1])};
+		const vec4 teleportElement5Pos = ${getVectorGlsl(teleportElements[4])};
+		const vec4 teleportElement5Neg = ${getVectorGlsl(teleportElements[4])};
+
+		const float delta = ${delta};
+		
 		float sinh(float x)
 		{
 			return .5 * (exp(x) - exp(-x));
@@ -343,6 +408,17 @@ class SL2RGeometry extends BaseGeometry
 			return vec3(h2Element.x / h2Element.z, h2Element.y / h2Element.z, fiber);
 		}
 
+		// Returns the product element1 * element2 using multiplication in SL(2, R).
+		vec4 sl2Product(vec4 element1, vec4 element2)
+		{
+			return vec4(
+				element1.x * element2.x - element1.y * element2.y + element1.z * element2.z + element1.w * element2.w,
+				element1.x * element2.y + element1.y * element2.x - element1.z * element2.w + element1.w * element2.z,
+				element1.x * element2.z - element1.y * element2.w + element1.z * element2.x + element1.w * element2.y,
+				element1.x * element2.w + element1.y * element2.z - element1.z * element2.y + element1.w * element2.x
+			);
+		}
+
 		const float root2Over2 = 0.70710678;
 		
 		void getUpdatedPos(
@@ -391,17 +467,9 @@ class SL2RGeometry extends BaseGeometry
 				fiber = 2.0 * c * t + 2.0 * atan(-c / kappa * tanh(trigArg));
 			}
 
-			// This is eta * ksi, where ksi = (cos(ct), sin(ct), 0, 0) and the multiplication
-			// is group multiplication in SL(2, R).
-			float sinct = sin(c * t);
-			float cosct = cos(c * t);
+			vec4 ksi = vec4(cos(c * t), sin(c * t), 0.0, 0.0);
 
-			eta = vec4(
-				eta.x * cosct - eta.y * sinct,
-				eta.x * sinct + eta.y * cosct,
-				eta.z * cosct,
-				-eta.z * sinct
-			);
+			eta = sl2Product(eta, ksi);
 
 			// Finally, apply R_alpha.
 			float sinAlpha = sin(alpha);
@@ -417,29 +485,43 @@ class SL2RGeometry extends BaseGeometry
 			fiber += startFiber;
 		}
 
-		vec4 getUpdatedDirectionVec(
-			vec4 oldPos,
-			float oldFiber,
+		vec4 getTeleportedDirectionVec(
+			vec4 startPos,
 			vec4 rayDirectionVec,
-			float t,
 			vec4 newPos,
-			float newFiber
+			vec4 teleportElement,
+			float t
 		) {
-			float alpha = atan(rayDirectionVec.y, rayDirectionVec.x);
 			float a = length(rayDirectionVec.xy);
 			float c = rayDirectionVec.w;
 			float kappa = sqrt(abs(c*c - a*a));
 
-			vec3 h2DirectionVec;
+			// The direction vector in H^2 x E at the origin right before teleporting,
+			// derived from the derivative of the geodesic formula.
+			vec4 lastDirectionVec;
 
 			if (abs(c) == a)
 			{
-
+				lastDirectionVec = vec4(
+					root2 * rayDirectionVec.x + t * rayDirectionVec.y,
+					-t * rayDirectionVec.x + root2 * rayDirectionVec.y,
+					0.5 * t,
+					2.0 * c - 4.0 * root2 / (8.0 + t*t)
+				);
 			}
 		
 			else if (abs(c) > a)
 			{
-				
+				float trigArg = kappa * t;
+				float sinKappaT = sin(trigArg);
+				float cosKappaT = cos(trigArg);
+
+				lastDirectionVec = vec4(
+					rayDirectionVec.x * cosKappaT + c * rayDirectionVec.y * sinKappaT / kappa,
+					rayDirectionVec.y * cosKappaT - c * rayDirectionVec.x * sinKappaT / kappa,
+					a * a * sinKappaT / kappa,
+					2.0 * c * (1.0 - (c*c - a*a) / (2.0 * c*c - a*a * (1.0 + cos(kappa * t))))
+				);
 			}
 
 			else
@@ -447,93 +529,32 @@ class SL2RGeometry extends BaseGeometry
 				float trigArg = kappa * t;
 				float sinhKappaT = sinh(trigArg);
 				float coshKappaT = cosh(trigArg);
-				float sinhKappaHalfT = sinh(0.5 * trigArg);
 				float coshKappaHalfT = cosh(0.5 * trigArg);
+				float tanhKappaHalfT = tanh(0.5 * trigArg);
 
-				float almostMagnitude = oldPos.x * oldPos.x
-					- oldPos.y * oldPos.y
-					+ oldPos.z * oldPos.z
-					- oldPos.w * oldPos.w;
-				
-				float almostMagnitude2 = oldPos.x * oldPos.x
-					- oldPos.y * oldPos.y
-					- oldPos.z * oldPos.z
-					+ oldPos.w * oldPos.w;
-
-				float almostMagnitude3 = oldPos.x * oldPos.x
-					+ oldPos.y * oldPos.y
-					+ oldPos.z * oldPos.z
-					+ oldPos.w * oldPos.w;
-				
-
-				h2DirectionVec = vec3(
-					coshKappaT * (almostMagnitude * rayDirectionVec.x + 2.0 * (-oldPos.x * oldPos.y + oldPos.z * oldPos.w) * rayDirectionVec.y)
-						+ (-2.0 * a*a * (oldPos.y * oldPos.w - oldPos.x * oldPos.z) + 2.0 * c * (oldPos.x * oldPos.y - oldPos.z * oldPos.w) * rayDirectionVec.x + c * almostMagnitude * rayDirectionVec.y) * sinhKappaT / kappa,
-					
-					(coshKappaHalfT * coshKappaHalfT * sinhKappaHalfT * sinhKappaHalfT) * (2.0 * (oldPos.x * oldPos.y + oldPos.z * oldPos.w) * rayDirectionVec.x + almostMagnitude2 * rayDirectionVec.y)
-						+ (2.0 * a*a * (oldPos.x * oldPos.w + oldPos.y * oldPos.z) - c * almostMagnitude2 * rayDirectionVec.x + 2.0 * c * (oldPos.x * oldPos.y + oldPos.z * oldPos.w) * rayDirectionVec.y) * sinhKappaT / kappa,
-
-					2.0 * coshKappaT * ((oldPos.x * oldPos.z + oldPos.y * oldPos.w) * rayDirectionVec.x + (oldPos.x * oldPos.w - oldPos.y * oldPos.z) * rayDirectionVec.y)
-						+ (a*a * almostMagnitude3 + 2.0 * c * (oldPos.y * oldPos.z - oldPos.x * oldPos.w) * rayDirectionVec.x + 2.0 * c * (oldPos.x * oldPos.z + oldPos.y * oldPos.w) * rayDirectionVec.y) * sinhKappaT / kappa
+				lastDirectionVec = vec4(
+					rayDirectionVec.x * coshKappaT + c * rayDirectionVec.y * sinhKappaT / kappa,
+					rayDirectionVec.y * coshKappaT - c * rayDirectionVec.x * sinhKappaT / kappa,
+					a * a * sinhKappaT / kappa,
+					2.0 * c - c / (coshKappaHalfT * coshKappaHalfT * (1.0 + c * c * tanhKappaHalfT * tanhKappaHalfT / (kappa * kappa)))
 				);
 			}
 
-			return vec4(0.0);
+			// lastDirectionVec has a long journey to go on before it gets back to the origin.
+			// First, we need to translate it to startPos, which will place it right at the teleportation
+			// boundary. Then we'll teleport, and then apply the inverse translation of that position
+			// to take it back to the origin. All of these are linear maps, so they commute with differentiation,
+			// and so we've saved them until now. That goes for the projection to H^2 too.
+
+			vec4 totalTranslationElement = sl2Product(
+				vec4(newPos.x, -newPos.yzw),
+				sl2Product(teleportElement, startPos)
+			);
+
+			applyH2Isometry(totalTranslationElement, lastDirectionVec.xyz);
+
+			return lastDirectionVec;
 		}
-
-		const float pi = 3.14159265;
-		const float piOver2 = 1.5707963;
-
-		const float root2 = 1.41421356;
-		const float root2Over2Plus1 = 1.7071068;
-		const float root1PlusRoot2 = 1.55377397;
-
-		const vec3 teleportVec1 = ${getVectorGlsl(teleportVectors[0][0])};
-		const vec3 teleportVec2 = ${getVectorGlsl(teleportVectors[1][0])};
-		const vec3 teleportVec3 = ${getVectorGlsl(teleportVectors[2][0])};
-		const vec3 teleportVec4 = ${getVectorGlsl(teleportVectors[3][0])};
-		const vec3 teleportVec5 = ${getVectorGlsl(teleportVectors[4][0])};
-
-		const mat4 teleportMat1Pos = ${getMatrixGlsl(teleportMatrices[0][0])};
-		const mat4 teleportMat1Neg = ${getMatrixGlsl(teleportMatrices[0][1])};
-		const mat4 teleportMat2Pos = ${getMatrixGlsl(teleportMatrices[1][0])};
-		const mat4 teleportMat2Neg = ${getMatrixGlsl(teleportMatrices[1][1])};
-		const mat4 teleportMat3Pos = ${getMatrixGlsl(teleportMatrices[2][0])};
-		const mat4 teleportMat3Neg = ${getMatrixGlsl(teleportMatrices[2][1])};
-		const mat4 teleportMat4Pos = ${getMatrixGlsl(teleportMatrices[3][0])};
-		const mat4 teleportMat4Neg = ${getMatrixGlsl(teleportMatrices[3][1])};
-		const mat4 teleportMat5Pos = ${getMatrixGlsl(teleportMatrices[4][0])};
-		const mat4 teleportMat5Neg = ${getMatrixGlsl(teleportMatrices[4][1])};
-
-		const float fiberAdjust1Pos = ${teleportFibers[0][0]};
-		const float fiberAdjust1Neg = ${teleportFibers[0][1]};
-		const float fiberAdjust2Pos = ${teleportFibers[1][0]};
-		const float fiberAdjust2Neg = ${teleportFibers[1][1]};
-		const float fiberAdjust3Pos = ${teleportFibers[2][0]};
-		const float fiberAdjust3Neg = ${teleportFibers[2][1]};
-		const float fiberAdjust4Pos = ${teleportFibers[3][0]};
-		const float fiberAdjust4Neg = ${teleportFibers[3][1]};
-		const float fiberAdjust5Pos = ${teleportFibers[4][0]};
-		const float fiberAdjust5Neg = ${teleportFibers[4][1]};
-
-		const float dotProductThreshhold1 = ${teleportVectors[0][1]};
-		const float dotProductThreshhold2 = ${teleportVectors[1][1]};
-		const float dotProductThreshhold3 = ${teleportVectors[2][1]};
-		const float dotProductThreshhold4 = ${teleportVectors[3][1]};
-		const float dotProductThreshhold5 = ${teleportVectors[4][1]};
-
-		const vec4 teleportElement1Pos = ${getVectorGlsl(teleportElementsInv[2])};
-		const vec4 teleportElement1Neg = ${getVectorGlsl(teleportElementsInv[3])};
-		const vec4 teleportElement2Pos = ${getVectorGlsl(teleportElements[0])};
-		const vec4 teleportElement2Neg = ${getVectorGlsl(teleportElements[1])};
-		const vec4 teleportElement3Pos = ${getVectorGlsl(teleportElements[2])};
-		const vec4 teleportElement3Neg = ${getVectorGlsl(teleportElements[3])};
-		const vec4 teleportElement4Pos = ${getVectorGlsl(teleportElementsInv[0])};
-		const vec4 teleportElement4Neg = ${getVectorGlsl(teleportElementsInv[1])};
-		const vec4 teleportElement5Pos = ${getVectorGlsl(teleportElements[4])};
-		const vec4 teleportElement5Neg = ${getVectorGlsl(teleportElements[4])};
-
-		const float delta = ${delta};
 
 		vec3 teleportPos(inout vec4 pos, inout float fiber, inout vec4 startPos, inout float startFiber, inout vec4 rayDirectionVec, inout float t, inout float totalT)
 		{
@@ -552,6 +573,8 @@ class SL2RGeometry extends BaseGeometry
 		teleportMatNeg: "teleportMat1Neg",
 		fiberAdjustPos: "fiberAdjust1Pos",
 		fiberAdjustNeg: "fiberAdjust1Neg",
+		teleportElementPos: "teleportElement1Pos",
+		teleportElementNeg: "teleportElement1Neg",
 		numTeleportations: "1"
 	})}
 
