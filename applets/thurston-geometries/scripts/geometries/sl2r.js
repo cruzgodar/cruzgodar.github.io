@@ -176,7 +176,7 @@ function getBinarySearchGlslChunk({
 
 			t = oldT + lastTIncrease * currentSearchPosition;
 
-			totalT -= lastTIncrease * (1.0 - currentSearchPosition);
+			// totalT -= lastTIncrease * (1.0 - currentSearchPosition);
 
 			getUpdatedPos(startPos, startFiber, rayDirectionVec, t, pos, fiber);
 
@@ -222,31 +222,31 @@ class SL2RGeometry extends BaseGeometry
 
 	${getBinarySearchGlslChunk({
 		comparisonVec: "teleportVec1",
-		dotProductThreshhold: "delta + .000005",
+		dotProductThreshhold: "delta + .00001",
 		searchIterations: "10"
 	})}
 
 	${getBinarySearchGlslChunk({
 		comparisonVec: "teleportVec2",
-		dotProductThreshhold: "delta + .000005",
+		dotProductThreshhold: "delta + .00001",
 		searchIterations: "10"
 	})}
 
 	${getBinarySearchGlslChunk({
 		comparisonVec: "teleportVec3",
-		dotProductThreshhold: "delta + .000005",
+		dotProductThreshhold: "delta + .00001",
 		searchIterations: "10"
 	})}
 
 	${getBinarySearchGlslChunk({
 		comparisonVec: "teleportVec4",
-		dotProductThreshhold: "delta + .000005",
+		dotProductThreshhold: "delta + .00001",
 		searchIterations: "10"
 	})}
 
 	${getBinarySearchGlslChunk({
 		comparisonVec: "teleportVec5",
-		dotProductThreshhold: "pi + .000005",
+		dotProductThreshhold: "pi + .00001",
 		searchIterations: "10"
 	})}
 
@@ -772,8 +772,6 @@ export class SL2RRooms extends SL2RGeometry
 	`;
 
 	lightGlsl = /*glsl*/`
-		surfaceNormal.w = 0.0;
-
 		vec4 lightDirection1 = normalize(vec4(3.0, -3.0, 3.0, 1.0) - pos);
 		float dotProduct1 = dot(surfaceNormal, lightDirection1);
 
