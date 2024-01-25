@@ -57,10 +57,10 @@ const teleportMatrices = [
 
 // Todo: try making most of these zero?
 const teleportFibers = [
-	[-Math.PI / 2, -Math.PI / 2],
-	[-Math.PI / 2, -Math.PI / 2],
-	[Math.PI / 2, Math.PI / 2],
-	[Math.PI / 2, Math.PI / 2],
+	[0.000000000001, 0.000000000001],
+	[0.000000000001, 0.000000000001],
+	[0.000000000001, 0.000000000001],
+	[0.000000000001, 0.000000000001],
 	[-2 * Math.PI, 2 * Math.PI]
 ];
 
@@ -80,52 +80,56 @@ function getTeleportGlslChunk({
 	fiberAdjustPos,
 	fiberAdjustNeg,
 	teleportElementPos,
-	teleportElementNeg,
-	numTeleportations
+	teleportElementNeg
 }) {
 	return /*glsl*/`
-		for (int i = 0; i < ${numTeleportations}; i++)
+		dotProduct = dot(kleinElement, ${comparisonVec});
+
+		if (dotProduct > (${dotProductThreshhold}))
 		{
-			dotProduct = dot(kleinElement, ${comparisonVec});
+			pos = ${teleportMatPos} * pos;
+			fiber += ${fiberAdjustPos};
 
-			if (dotProduct > (${dotProductThreshhold}))
-			{
-				vec4 newPos = ${teleportMatPos} * pos;
+			// lastDirectionVec has a long journey to go on before it gets back to the origin.
+			// First, we need to translate it to startPos, which will place it right at the teleportation
+			// boundary. Then we'll teleport, and then apply the inverse translation of that position
+			// to take it back to the origin. All of these are linear maps, so they commute with differentiation,
+			// and so we've saved them until now. That goes for the projection to H^2 too.
+			vec4 totalTranslationElement = sl2Product(
+				vec4(pos.x, -pos.yzw),
+				sl2Product(${teleportElementPos}, startPos)
+			);
 
-				rayDirectionVec = getTeleportedDirectionVec(startPos, rayDirectionVec, newPos, ${teleportElementPos}, t);
+			rayDirectionVec = getUpdatedDirectionVec(startPos, rayDirectionVec, t);
+			applyH2Isometry(totalTranslationElement, rayDirectionVec.xyz);
 
-				pos = ${teleportMatPos} * pos;
-				fiber += ${fiberAdjustPos};
+			startPos = pos;
+			startFiber = fiber;
+			totalT += t;
+			t = 0.0;
 
-				startPos = pos;
-				startFiber = fiber;
-				totalT += t;
-				t = 0.0;
+			kleinElement = getKleinElement(pos, fiber);
+		}
 
-				kleinElement = getKleinElement(pos, fiber);
-			}
+		else if (dotProduct < -(${dotProductThreshhold}))
+		{
+			pos = ${teleportMatNeg} * pos;
+			fiber += ${fiberAdjustNeg};
 
-			else if (dotProduct < -(${dotProductThreshhold}))
-			{
-				vec4 newPos = ${teleportMatNeg} * pos;
+			vec4 totalTranslationElement = sl2Product(
+				vec4(pos.x, -pos.yzw),
+				sl2Product(${teleportElementNeg}, startPos)
+			);
 
-				rayDirectionVec = getTeleportedDirectionVec(startPos, rayDirectionVec, newPos, ${teleportElementNeg}, t);
+			rayDirectionVec = getUpdatedDirectionVec(startPos, rayDirectionVec, t);
+			applyH2Isometry(totalTranslationElement, rayDirectionVec.xyz);
 
-				pos = newPos;
-				fiber += ${fiberAdjustNeg};
+			startPos = pos;
+			startFiber = fiber;
+			totalT += t;
+			t = 0.0;
 
-				startPos = pos;
-				startFiber = fiber;
-				totalT += t;
-				t = 0.0;
-
-				kleinElement = getKleinElement(pos, fiber);
-			}
-
-			else
-			{
-				break;
-			}
+			kleinElement = getKleinElement(pos, fiber);
 		}
 	`;
 }
@@ -218,31 +222,31 @@ class SL2RGeometry extends BaseGeometry
 
 	${getBinarySearchGlslChunk({
 		comparisonVec: "teleportVec1",
-		dotProductThreshhold: "delta + .00005",
+		dotProductThreshhold: "delta + .000005",
 		searchIterations: "10"
 	})}
 
 	${getBinarySearchGlslChunk({
 		comparisonVec: "teleportVec2",
-		dotProductThreshhold: "delta + .00005",
+		dotProductThreshhold: "delta + .000005",
 		searchIterations: "10"
 	})}
 
 	${getBinarySearchGlslChunk({
 		comparisonVec: "teleportVec3",
-		dotProductThreshhold: "delta + .00005",
+		dotProductThreshhold: "delta + .000005",
 		searchIterations: "10"
 	})}
 
 	${getBinarySearchGlslChunk({
 		comparisonVec: "teleportVec4",
-		dotProductThreshhold: "delta + .00005",
+		dotProductThreshhold: "delta + .000005",
 		searchIterations: "10"
 	})}
 
 	${getBinarySearchGlslChunk({
 		comparisonVec: "teleportVec5",
-		dotProductThreshhold: "pi + .00005",
+		dotProductThreshhold: "pi + .000005",
 		searchIterations: "10"
 	})}
 
@@ -307,7 +311,7 @@ class SL2RGeometry extends BaseGeometry
 		const vec4 teleportElement5Neg = ${getVectorGlsl(teleportElements[4])};
 
 		const float delta = ${delta};
-		
+
 		float sinh(float x)
 		{
 			return .5 * (exp(x) - exp(-x));
@@ -485,11 +489,9 @@ class SL2RGeometry extends BaseGeometry
 			fiber += startFiber;
 		}
 
-		vec4 getTeleportedDirectionVec(
+		vec4 getUpdatedDirectionVec(
 			vec4 startPos,
 			vec4 rayDirectionVec,
-			vec4 newPos,
-			vec4 teleportElement,
 			float t
 		) {
 			float a = length(rayDirectionVec.xy);
@@ -502,7 +504,7 @@ class SL2RGeometry extends BaseGeometry
 
 			if (abs(c) == a)
 			{
-				lastDirectionVec = vec4(
+				return vec4(
 					root2 * rayDirectionVec.x + t * rayDirectionVec.y,
 					-t * rayDirectionVec.x + root2 * rayDirectionVec.y,
 					0.5 * t,
@@ -510,50 +512,32 @@ class SL2RGeometry extends BaseGeometry
 				);
 			}
 		
-			else if (abs(c) > a)
+			if (abs(c) > a)
 			{
 				float trigArg = kappa * t;
 				float sinKappaT = sin(trigArg);
 				float cosKappaT = cos(trigArg);
-
-				lastDirectionVec = vec4(
+				
+				return vec4(
 					rayDirectionVec.x * cosKappaT + c * rayDirectionVec.y * sinKappaT / kappa,
 					rayDirectionVec.y * cosKappaT - c * rayDirectionVec.x * sinKappaT / kappa,
 					a * a * sinKappaT / kappa,
-					2.0 * c * (1.0 - (c*c - a*a) / (2.0 * c*c - a*a * (1.0 + cos(kappa * t))))
+					2.0 * c * (1.0 - (c*c - a*a) / (2.0 * c*c - a*a * (1.0 + cosKappaT)))
 				);
 			}
 
-			else
-			{
-				float trigArg = kappa * t;
-				float sinhKappaT = sinh(trigArg);
-				float coshKappaT = cosh(trigArg);
-				float coshKappaHalfT = cosh(0.5 * trigArg);
-				float tanhKappaHalfT = tanh(0.5 * trigArg);
+			float trigArg = kappa * t;
+			float sinhKappaT = sinh(trigArg);
+			float coshKappaT = cosh(trigArg);
+			float coshKappaHalfT = cosh(0.5 * trigArg);
+			float tanhKappaHalfT = tanh(0.5 * trigArg);
 
-				lastDirectionVec = vec4(
-					rayDirectionVec.x * coshKappaT + c * rayDirectionVec.y * sinhKappaT / kappa,
-					rayDirectionVec.y * coshKappaT - c * rayDirectionVec.x * sinhKappaT / kappa,
-					a * a * sinhKappaT / kappa,
-					2.0 * c - c / (coshKappaHalfT * coshKappaHalfT * (1.0 + c * c * tanhKappaHalfT * tanhKappaHalfT / (kappa * kappa)))
-				);
-			}
-
-			// lastDirectionVec has a long journey to go on before it gets back to the origin.
-			// First, we need to translate it to startPos, which will place it right at the teleportation
-			// boundary. Then we'll teleport, and then apply the inverse translation of that position
-			// to take it back to the origin. All of these are linear maps, so they commute with differentiation,
-			// and so we've saved them until now. That goes for the projection to H^2 too.
-
-			vec4 totalTranslationElement = sl2Product(
-				vec4(newPos.x, -newPos.yzw),
-				sl2Product(teleportElement, startPos)
+			return vec4(
+				rayDirectionVec.x * coshKappaT + c * rayDirectionVec.y * sinhKappaT / kappa,
+				rayDirectionVec.y * coshKappaT - c * rayDirectionVec.x * sinhKappaT / kappa,
+				a * a * sinhKappaT / kappa,
+				2.0 * c - c / (coshKappaHalfT * coshKappaHalfT * (1.0 + c * c * tanhKappaHalfT * tanhKappaHalfT / (kappa * kappa)))
 			);
-
-			applyH2Isometry(totalTranslationElement, lastDirectionVec.xyz);
-
-			return lastDirectionVec;
 		}
 
 		vec3 teleportPos(inout vec4 pos, inout float fiber, inout vec4 startPos, inout float startFiber, inout vec4 rayDirectionVec, inout float t, inout float totalT)
@@ -574,8 +558,7 @@ class SL2RGeometry extends BaseGeometry
 		fiberAdjustPos: "fiberAdjust1Pos",
 		fiberAdjustNeg: "fiberAdjust1Neg",
 		teleportElementPos: "teleportElement1Pos",
-		teleportElementNeg: "teleportElement1Neg",
-		numTeleportations: "1"
+		teleportElementNeg: "teleportElement1Neg"
 	})}
 
 	${getTeleportGlslChunk({
@@ -586,8 +569,7 @@ class SL2RGeometry extends BaseGeometry
 		fiberAdjustPos: "fiberAdjust2Pos",
 		fiberAdjustNeg: "fiberAdjust2Neg",
 		teleportElementPos: "teleportElement2Pos",
-		teleportElementNeg: "teleportElement2Neg",
-		numTeleportations: "1"
+		teleportElementNeg: "teleportElement2Neg"
 	})}
 
 	${getTeleportGlslChunk({
@@ -598,8 +580,7 @@ class SL2RGeometry extends BaseGeometry
 		fiberAdjustPos: "fiberAdjust3Pos",
 		fiberAdjustNeg: "fiberAdjust3Neg",
 		teleportElementPos: "teleportElement3Pos",
-		teleportElementNeg: "teleportElement3Neg",
-		numTeleportations: "1"
+		teleportElementNeg: "teleportElement3Neg"
 	})}
 
 	${getTeleportGlslChunk({
@@ -610,8 +591,7 @@ class SL2RGeometry extends BaseGeometry
 		fiberAdjustPos: "fiberAdjust4Pos",
 		fiberAdjustNeg: "fiberAdjust4Neg",
 		teleportElementPos: "teleportElement4Pos",
-		teleportElementNeg: "teleportElement4Neg",
-		numTeleportations: "1"
+		teleportElementNeg: "teleportElement4Neg"
 	})}
 
 	${getTeleportGlslChunk({
@@ -622,8 +602,7 @@ class SL2RGeometry extends BaseGeometry
 		fiberAdjustPos: "fiberAdjust5Pos",
 		fiberAdjustNeg: "fiberAdjust5Neg",
 		teleportElementPos: "teleportElement5Pos",
-		teleportElementNeg: "teleportElement5Neg",
-		numTeleportations: "1"
+		teleportElementNeg: "teleportElement5Neg"
 	})}
 
 			return color;
@@ -770,14 +749,14 @@ export class SL2RRooms extends SL2RGeometry
 	static distances = /*glsl*/`
 		vec3 h2Element = getH2Element(pos);
 
-		float distance1 = length(vec2(acosh(h2Element.z), fiber)) - 1.83;
+		float distance1 = length(vec2(acosh(h2Element.z), fiber)) - wallThickness;
 
 		// The fundamental domain has height 2pi, so to evenly space three balls,
 		// we want the gap between them to be (2pi - 6 * radius) / 3.
 		// Solving for the center of the other spheres gives +/- 2pi/3.
 
-		float distance2 = length(vec2(acosh(h2Element.z), fiber - 0.66667 * pi)) - 1.83;
-		float distance3 = length(vec2(acosh(h2Element.z), fiber + 0.66667 * pi)) - 1.83;
+		float distance2 = length(vec2(acosh(h2Element.z), fiber - 0.66667 * pi)) - wallThickness;
+		float distance3 = length(vec2(acosh(h2Element.z), fiber + 0.66667 * pi)) - wallThickness;
 	`;
 
 	distanceEstimatorGlsl = /*glsl*/`
@@ -819,70 +798,6 @@ export class SL2RRooms extends SL2RGeometry
 
 	uniformGlsl = /*glsl*/`
 		uniform float cameraFiber;
-	`;
-
-	uniformNames = ["cameraFiber"];
-
-	updateUniforms(gl, uniformList)
-	{
-		gl.uniform1f(uniformList["cameraFiber"], this.cameraFiber);
-	}
-}
-
-export class SL2RSpheres extends SL2RGeometry
-{
-	static distances = /*glsl*/`
-		vec3 h2Element = getH2Element(pos);
-
-		float distance1 = length(vec2(acosh(h2Element.z), fiber)) - wallThickness;
-
-		// The fundamental domain has height 2pi, so to evenly space three balls,
-		// we want the gap between them to be (2pi - 6 * radius) / 3.
-		// Solving for the center of the other spheres gives +/- 2pi/3.
-
-		float distance2 = length(vec2(acosh(h2Element.z), fiber - 0.66667 * pi)) - wallThickness;
-		float distance3 = length(vec2(acosh(h2Element.z), fiber + 0.66667 * pi)) - wallThickness;
-	`;
-
-	distanceEstimatorGlsl = /*glsl*/`
-		${SL2RSpheres.distances}
-
-		float minDistance = ${getMinGlslString("distance", 3)};
-
-		return minDistance;
-	`;
-
-	getColorGlsl = /*glsl*/`
-		return vec3(0.5, 0.5, 0.5);
-	`;
-
-	lightGlsl = /*glsl*/`
-		surfaceNormal.w = 0.0;
-
-		vec4 lightDirection1 = normalize(vec4(3.0, -3.0, 3.0, 1.0) - pos);
-		float dotProduct1 = dot(surfaceNormal, lightDirection1);
-
-		vec4 lightDirection2 = normalize(vec4(-4.0, 2.0, -1.0, 1.0) - pos);
-		float dotProduct2 = dot(surfaceNormal, lightDirection2);
-
-		float lightIntensity = 1.0;//max(dotProduct1, dotProduct2);
-	`;
-
-	getMovingSpeed()
-	{
-		return 1;
-	}
-
-	cameraPos = [1.0001, 0, 0.014142, 0];
-	cameraFiber = 0;
-
-	normalVec = [0, 0, -1, 0];
-	upVec = [0, 0, 0, 1];
-	rightVec = [0, 1, 0, 0];
-	forwardVec = [1, 0, 0, 0];
-
-	uniformGlsl = /*glsl*/`
-		uniform float cameraFiber;
 		uniform float wallThickness;
 	`;
 
@@ -891,7 +806,7 @@ export class SL2RSpheres extends SL2RGeometry
 	updateUniforms(gl, uniformList)
 	{
 		gl.uniform1f(uniformList["cameraFiber"], this.cameraFiber);
-		gl.uniform1f(uniformList["wallThickness"], sliderValues.wallThickness);
+		gl.uniform1f(uniformList["wallThickness"], 1.85 - sliderValues.wallThickness);
 	}
 
 	uiElementsUsed = "#wall-thickness-slider";
@@ -901,10 +816,10 @@ export class SL2RSpheres extends SL2RGeometry
 		const wallThicknessSlider = $("#wall-thickness-slider");
 		const wallThicknessSliderValue = $("#wall-thickness-slider-value");
 
-		wallThicknessSlider.min = 0;
-		wallThicknessSlider.max = 1.0;
-		wallThicknessSlider.value = 0.0;
-		wallThicknessSliderValue.textContent = 0.0;
-		sliderValues.wallThickness = 0.0;
+		wallThicknessSlider.min = .05;
+		wallThicknessSlider.max = 0.2;
+		wallThicknessSlider.value = 0.175;
+		wallThicknessSliderValue.textContent = 0.175;
+		sliderValues.wallThickness = 0.175;
 	}
 }

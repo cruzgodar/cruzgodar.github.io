@@ -29,7 +29,6 @@ Something will go here eventually!
 	h2xe-rooms "$\mathbb{H}^2 \times \mathbb{E}$: Rooms"
 
 	sl2r-rooms "$\widetilde{\operatorname{SL}}(2, \mathbb{R})$: Rooms"
-	sl2r-spheres "$\widetilde{\operatorname{SL}}(2, \mathbb{R})$: Spheres"
 
 	nil-rooms "Nil: Rooms"
 	nil-spheres "Nil: Spheres"

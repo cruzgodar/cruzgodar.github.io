@@ -5,7 +5,7 @@ import { H3Rooms } from "./geometries/h3.js";
 import { NilRooms, NilSpheres } from "./geometries/nil.js";
 import { S2xERooms, S2xESpheres } from "./geometries/s2xe.js";
 import { S3HopfFibration, S3Rooms, S3Spheres } from "./geometries/s3.js";
-import { SL2RRooms, SL2RSpheres } from "./geometries/sl2r.js";
+import { SL2RRooms } from "./geometries/sl2r.js";
 import { SolRooms } from "./geometries/sol.js";
 import { showPage } from "/scripts/src/load-page.js";
 import { $, $$ } from "/scripts/src/main.js";
@@ -39,7 +39,6 @@ export function load()
 		"h2xe-rooms": H2xERooms,
 
 		"sl2r-rooms": SL2RRooms,
-		"sl2r-spheres": SL2RSpheres,
 
 		"nil-rooms": NilRooms,
 		"nil-spheres": NilSpheres,
