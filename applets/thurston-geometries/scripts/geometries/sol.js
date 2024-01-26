@@ -42,6 +42,11 @@ class SolGeometry extends BaseGeometry
 			);
 		}
 
+		vec4 getUpdatedPosNumerically(vec4 startPos, vec4 rayDirectionVec, float t)
+		{
+			
+		}
+
 		vec4 getUpdatedPos(vec4 startPos, vec4 rayDirectionVec, float t)
 		{
 			mat4 A = getTransformationMatrix(startPos);
@@ -79,6 +84,8 @@ class SolGeometry extends BaseGeometry
 			
 			else
 			{
+				// Following the paper, there are quite a few different strategies
+				// used at this point.
 				pos = vec4(0.0, 0.0, 0.0, 1.0);
 			}
 

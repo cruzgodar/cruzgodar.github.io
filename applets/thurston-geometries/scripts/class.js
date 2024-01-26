@@ -508,6 +508,8 @@ export class ThurstonGeometry extends Applet
 				angle
 			);
 
+			this.rotatedUpVec = [...this.geometryData.upVec];
+
 			this.rollingAmount *= ThurstonGeometry.rollingFriction ** (timeElapsed / 6.944);
 
 			if (Math.abs(this.rollingAmount) < ThurstonGeometry.rollingStopThreshhold)

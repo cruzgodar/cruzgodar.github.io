@@ -221,7 +221,7 @@ class NilGeometry extends BaseGeometry
 			float a = length(rayDirectionVec.xy);
 			float c = rayDirectionVec.z;
 		
-			if (abs(c) < .001)
+			if (abs(c) < .0002)
 			{
 				return A * vec4(
 					a * cos(alpha) * t,
