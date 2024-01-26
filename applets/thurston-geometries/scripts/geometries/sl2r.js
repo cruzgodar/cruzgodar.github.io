@@ -270,7 +270,7 @@ class SL2RGeometry extends BaseGeometry
 	`;
 
 	fogGlsl = /*glsl*/`
-		return color;// mix(color, fogColor, 1.0 - exp(-totalT * 0.3));
+		return mix(color, fogColor, 1.0 - exp(-totalT * 0.125));
 	`;
 
 	functionGlsl = /*glsl*/`
@@ -825,13 +825,13 @@ export class SL2RRooms extends SL2RGeometry
 	`;
 
 	lightGlsl = /*glsl*/`
-		vec4 lightDirection1 = normalize(vec4(1.0, 0.0, 1.0, 0.0) - pos);
+		vec4 lightDirection1 = normalize(vec4(3.0, -3.0, 3.0, 1.0) - pos);
 		float dotProduct1 = dot(surfaceNormal, lightDirection1);
 
-		vec4 lightDirection2 = normalize(vec4(0.0, 1.0, 0.0, 1.0) - pos);
+		vec4 lightDirection2 = normalize(vec4(-4.0, 2.0, -1.0, 1.0) - pos);
 		float dotProduct2 = dot(surfaceNormal, lightDirection2);
 
-		float lightIntensity = 1.0;//max(dotProduct1, dotProduct2);
+		float lightIntensity = 1.5 * max(dotProduct1, dotProduct2);
 	`;
 
 	getMovingSpeed()
@@ -850,21 +850,19 @@ export class SL2RRooms extends SL2RGeometry
 	uniformGlsl = /*glsl*/`
 		uniform float cameraFiber;
 		uniform float wallThickness;
-		uniform float gluingAngle;
 		uniform vec3 baseColor;
 	`;
 
-	uniformNames = ["cameraFiber", "wallThickness", "gluingAngle", "baseColor"];
+	uniformNames = ["cameraFiber", "wallThickness", "baseColor"];
 
 	updateUniforms(gl, uniformList)
 	{
 		gl.uniform1f(uniformList["cameraFiber"], this.cameraFiber);
 		gl.uniform1f(uniformList["wallThickness"], 1.85 - sliderValues.wallThickness);
 		gl.uniform3fv(uniformList["baseColor"], this.baseColor);
-		gl.uniform1f(uniformList["gluingAngle"], this.gluingAngle);
 	}
 
-	uiElementsUsed = "#wall-thickness-slider, #gluing-angle-slider";
+	uiElementsUsed = "#wall-thickness-slider";
 
 	initUI()
 	{
@@ -876,14 +874,5 @@ export class SL2RRooms extends SL2RGeometry
 		wallThicknessSlider.value = 0.175;
 		wallThicknessSliderValue.textContent = 0.175;
 		sliderValues.wallThickness = 0.175;
-
-		const gluingAngleSlider = $("#gluing-angle-slider");
-		const gluingAngleSliderValue = $("#gluing-angle-slider-value");
-
-		gluingAngleSlider.min = 0;
-		gluingAngleSlider.max = 0.1;
-		gluingAngleSlider.value = 0;
-		gluingAngleSliderValue.textContent = 0;
-		sliderValues.gluingAngle = 0;
 	}
 }

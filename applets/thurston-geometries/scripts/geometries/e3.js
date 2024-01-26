@@ -22,13 +22,13 @@ export class E3Rooms extends E3Geometry
 	`;
 
 	lightGlsl = /*glsl*/`
-		vec4 lightDirection1 = normalize(vec4(1.0, 1.0, 1.0, 1.0) - pos);
+		vec4 lightDirection1 = normalize(vec4(3.0, -3.0, 3.0, 0.0) - pos);
 		float dotProduct1 = dot(surfaceNormal, lightDirection1);
 
-		vec4 lightDirection2 = normalize(vec4(1.0, 1.0, 1.0, 0.0) - pos);
+		vec4 lightDirection2 = normalize(vec4(-4.0, 2.0, -1.0, 0.0) - pos);
 		float dotProduct2 = dot(surfaceNormal, lightDirection2);
 
-		float lightIntensity = lightBrightness * max(abs(dotProduct1), abs(dotProduct2)) * 1.5;
+		float lightIntensity = lightBrightness * max(abs(dotProduct1), abs(dotProduct2)) * 1.35;
 	`;
 
 	cameraPos = [1, 1, 1, 1];
@@ -58,10 +58,10 @@ export class E3Rooms extends E3Geometry
 		const wallThicknessSliderValue = $("#wall-thickness-slider-value");
 
 		wallThicknessSlider.min = -.85;
-		wallThicknessSlider.max = 1.15;
-		wallThicknessSlider.value = 1.15;
-		wallThicknessSliderValue.textContent = 1.15;
-		sliderValues.wallThickness = 1.15;
+		wallThicknessSlider.max = 1.55;
+		wallThicknessSlider.value = 1.55;
+		wallThicknessSliderValue.textContent = 1.55;
+		sliderValues.wallThickness = 1.55;
 	}
 }
 

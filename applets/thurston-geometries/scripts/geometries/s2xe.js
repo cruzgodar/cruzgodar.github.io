@@ -169,10 +169,10 @@ export class S2xERooms extends S2xEGeometry
 		const wallThicknessSliderValue = $("#wall-thickness-slider-value");
 
 		wallThicknessSlider.min = -.45;
-		wallThicknessSlider.max = .6;
-		wallThicknessSlider.value = .6;
-		wallThicknessSliderValue.textContent = .6;
-		sliderValues.wallThickness = .6;
+		wallThicknessSlider.max = .8;
+		wallThicknessSlider.value = .8;
+		wallThicknessSliderValue.textContent = .8;
+		sliderValues.wallThickness = .8;
 	}
 }
 

@@ -73,7 +73,7 @@ class H2xEGeometry extends BaseGeometry
 	`;
 
 	fogGlsl = /*glsl*/`
-		return mix(color, fogColor, 1.0 - exp(-totalT * 0.35));
+		return mix(color, fogColor, 1.0 - exp(-totalT * 0.25));
 	`;
 
 	functionGlsl = /*glsl*/`
@@ -449,10 +449,10 @@ export class H2xERooms extends H2xEGeometry
 		const wallThicknessSliderValue = $("#wall-thickness-slider-value");
 
 		wallThicknessSlider.min = -.55;
-		wallThicknessSlider.max = 1.05;
-		wallThicknessSlider.value = 1.05;
-		wallThicknessSliderValue.textContent = 1.05;
-		sliderValues.wallThickness = 1.05;
+		wallThicknessSlider.max = 1.55;
+		wallThicknessSlider.value = 1.55;
+		wallThicknessSliderValue.textContent = 1.55;
+		sliderValues.wallThickness = 1.55;
 	}
 }
 
