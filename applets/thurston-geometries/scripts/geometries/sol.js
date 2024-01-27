@@ -42,9 +42,72 @@ class SolGeometry extends BaseGeometry
 			);
 		}
 
+		
+		// Elliptic integral computations, sourced from
+		// https://github.com/henryseg/non-euclidean_VR/blob/master/src/geometries/sol/geometry/shaders/part1.glsl,
+		// which is in turn based on various sources in the literature.
+		
+		float mu;
+		float k;
+		float kPrime;
+		float m;
+		float K;
+		float E;
+		float L;
+
+		const int maxAGMSteps = 20;
+		
+		// We can terminate the algorithm early, and this is the actual length of the data vector.
+		int actualAGMSteps;
+
+		const float minAGMError = 0.000001;
+
+		// The results of the AGM algorithm at each step. Each entry is of the form
+		// (arithmetic mean, geometric mean, error).
+		vec3 AGMData[maxAGMSteps];
+
+		// The sequence of arithmetic-geometric means converges to an elliptic integral,
+		// and that's exactly what we need for some globals!
+		void runAGMAlgorithm()
+		{
+			// The starting values are 1 and kPrime. k starts as the initial error.
+			vec3 data = vec3(1.0, kPrime, k);
+			AGMData[0] = data;
+			actualAGMSteps = 1;
+
+			for (int i = 1; i < maxAGMSteps; i++)
+			{
+				float error = 0.5 * (data.x - data.y);
+
+				if (error < minAGMError)
+				{
+					break;
+				}
+
+				data = vec3(0.5 * (data.x + data.y), sqrt(data.x * data.y), error);
+				AGMData[i] = data;
+				actualAGMSteps = i;
+			}
+		}
+
+		// Called every time the direction chages (i.e. when we start marching and when we teleport)
+		void setGlobals(vec4 rayDirectionVec)
+		{
+			float absAB = abs(rayDirectionVec.x * rayDirectionVec.y);
+			float root1Minus2AbsAB = sqrt(1.0 - 2.0 * absAB);
+			float rootAbsAB = sqrt(absAB);
+			
+			mu = sqrt(1.0 + 2.0 * absAB);
+			k = root1Minus2AbsAB / mu;
+			kPrime = 2.0 * rootAbsAB / mu;
+			m = (1.0 - 2.0 * absAB) / (1.0 + 2.0 * absAB);
+
+			runAGMAlgorithm();
+		}
+
 		// Flow from the origin numerically. Used when objects in the scene are extremely close.
 		const float numericalStepDistance = 0.0002;
-		const int maxNumericalSteps = 100;
+		const int maxNumericalSteps = 20;
 		vec4 getUpdatedPosNumerically(vec4 rayDirectionVec, float t)
 		{
 			vec4 pos = vec4(0.0, 0.0, 0.0, 1.0);
@@ -81,17 +144,32 @@ class SolGeometry extends BaseGeometry
 			return pos;
 		}
 
+		// The full flow function, used in most cases.
+		vec4 getUpdatedPosExactly(vec4 rayDirectionVec, float t)
+		{
+			// The convention used in the paper.
+			float a = rayDirectionVec.x;
+			float b = rayDirectionVec.y;
+			float c = rayDirectionVec.z;
+
+			return vec4(0);
+		}
+
+		const float flowNumericallyThreshhold = 0.002;
+
 		vec4 getUpdatedPos(vec4 startPos, vec4 rayDirectionVec, float t)
 		{
-			mat4 A = getTransformationMatrix(startPos);
-		
 			float a = abs(rayDirectionVec.x);
 			float b = abs(rayDirectionVec.y);
 			float c = rayDirectionVec.z;
 
 			vec4 pos;
 		
-			// All the following formulas get differentiated dt.
+			if (t < flowNumericallyThreshhold)
+			{
+				pos = getUpdatedPosNumerically(rayDirectionVec, t);
+			}
+
 			if (a == 0.0)
 			{
 				float tanhT = tanh(t);
@@ -123,7 +201,7 @@ class SolGeometry extends BaseGeometry
 				pos = vec4(0.0, 0.0, 0.0, 1.0);
 			}
 
-			return pos;
+			return getTransformationMatrix(startPos) * pos;
 		}
 	`;
 
