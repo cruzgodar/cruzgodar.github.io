@@ -208,11 +208,13 @@ function setUpDropdown(selectElement)
 		const titleRect = flexElement.children[0].getBoundingClientRect();
 		const selectedElementRect = flexElement.children[selectedItem].getBoundingClientRect();
 		
+		const translateY = (titleRect.top - selectedElementRect.top) / scale - 10;
+
 		const translateX = -(
 			-titleRect.width / 2
 			+ selectedElementRect.left - titleRect.left
 			+ selectedElementRect.width / 2
-		);
+		) / scale;
 
 		await Promise.all([
 			anime({
@@ -228,7 +230,7 @@ function setUpDropdown(selectElement)
 
 			anime({
 				targets: flexElement,
-				translateY: titleRect.top - selectedElementRect.top - 10,
+				translateY,
 				translateX,
 				easing: "easeOutQuad",
 				duration: opacityAnimationTime
