@@ -15,6 +15,8 @@ class SolGeometry extends BaseGeometry
 	`;
 
 	functionGlsl = /* glsl*/`
+		const float pi = ${Math.PI};
+		
 		float sinh(float x)
 		{
 			return .5 * (exp(x) - exp(-x));
@@ -66,8 +68,13 @@ class SolGeometry extends BaseGeometry
 		// (arithmetic mean, geometric mean, error).
 		vec3 AGMData[maxAGMSteps];
 
+		// Equal to AGMData[actualAGMSteps - 1], which is invalid GLSL since it's not a compile-time
+		// constant index.
+		vec3 lastAGMData;
+
 		// The sequence of arithmetic-geometric means converges to an elliptic integral,
 		// and that's exactly what we need for some globals!
+		// See: https://en.wikipedia.org/wiki/Elliptic_integral#Computation
 		void runAGMAlgorithm()
 		{
 			// The starting values are 1 and kPrime. k starts as the initial error.
@@ -77,10 +84,13 @@ class SolGeometry extends BaseGeometry
 
 			for (int i = 1; i < maxAGMSteps; i++)
 			{
+				// This doesn't seem to match the Wikipedia article, although it does match
+				// https://en.wikipedia.org/wiki/Arithmetic%E2%80%93geometric_mean#The_number_%CF%80.
 				float error = 0.5 * (data.x - data.y);
 
 				if (error < minAGMError)
 				{
+					lastAGMData = data;
 					break;
 				}
 
@@ -103,6 +113,25 @@ class SolGeometry extends BaseGeometry
 			m = (1.0 - 2.0 * absAB) / (1.0 + 2.0 * absAB);
 
 			runAGMAlgorithm();
+
+			// With that elliptic integral computed, we can compute K and E.
+			K = 0.5 * pi / lastAGMData.x;
+
+			float sumTotal = 0.0;
+
+			for (int i = 0; i < maxAGMSteps; i++)
+			{
+				if (i == actualAGMSteps)
+				{
+					break;
+				}
+
+				sumTotal += pow(2.0, float(i - 1)) * AGMData[i].z * AGMData[i].z;
+			}
+
+			E = K * (1.0 - sumTotal);
+
+			L = E / (kPrime * K) - 0.5 * kPrime;
 		}
 
 		// Flow from the origin numerically. Used when objects in the scene are extremely close.
@@ -117,7 +146,7 @@ class SolGeometry extends BaseGeometry
 
 			for (int i = 0; i < maxNumericalSteps; i++)
 			{
-				if (i >= numSteps)
+				if (i == numSteps)
 				{
 					break;
 				}
