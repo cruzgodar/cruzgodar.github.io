@@ -1,38 +1,38 @@
 import {
-    fadeDownOut,
-    fadeLeftOut,
-    fadeOut,
-    fadeRightOut,
-    fadeUpOut,
-    opacityAnimationTime
+	fadeDownOut,
+	fadeLeftOut,
+	fadeOut,
+	fadeRightOut,
+	fadeUpOut,
+	opacityAnimationTime
 } from "./animation.js";
 import { Applet } from "./applets.js";
 import {
-    bannerElement,
-    loadBanner,
-    setScrollButtonExists
+	bannerElement,
+	loadBanner,
+	setScrollButtonExists
 } from "./banners.js";
 import { cardIsOpen, hideCard } from "./cards.js";
 import { clearDesmosGraphs, desmosGraphs } from "./desmos.js";
 import { loadPage } from "./load-page.js";
 import {
-    clearTemporaryIntervals,
-    clearTemporaryListeners,
-    clearTemporaryWorkers,
-    pageElement,
-    pageUrl,
-    setPageUrl,
-    temporaryIntervals,
-    temporaryListeners,
-    temporaryWorkers
+	clearTemporaryIntervals,
+	clearTemporaryListeners,
+	clearTemporaryWorkers,
+	pageElement,
+	pageUrl,
+	setPageUrl,
+	temporaryIntervals,
+	temporaryListeners,
+	temporaryWorkers
 } from "./main.js";
 import {
-    forceThemePages,
-    getQueryParams,
-    setForcedTheme,
-    setRevertThemeTo,
-    siteSettings,
-    toggleDarkTheme
+	forceThemePages,
+	getQueryParams,
+	setForcedTheme,
+	setRevertThemeTo,
+	siteSettings,
+	toggleDarkTheme
 } from "./settings.js";
 import { sitemap } from "./sitemap.js";
 

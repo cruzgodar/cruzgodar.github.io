@@ -64,10 +64,6 @@ export function load()
 
 	applet.setInputCaps([resolutionInputElement], [3000]);
 
-
-
-	const sectionNames = ["view-controls", "add-array", "edit-array", "remove-array", "algorithms"];
-
 	const sectionElements =
 	{
 		"view-controls": $$(".view-controls-section"),

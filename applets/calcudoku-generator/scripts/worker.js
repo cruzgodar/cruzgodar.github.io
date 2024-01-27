@@ -381,15 +381,16 @@ function expandCages(cageToDestroy)
 		else if (
 			row !== 0 && cagesByLocation[row - 1][col] !== cageToDestroy
 			&& tryToAddCageToCage(cagesByLocation[row][col], cagesByLocation[row - 1][col])
-		)
-		) {cageThatGrew = cagesByLocation[row - 1][col];
+		) {
+			cageThatGrew = cagesByLocation[row - 1][col];
 		}
 
 		else if (
 			row !== gridSize - 1 && cagesByLocation[row + 1][col] !== cageToDestroy
 			&& tryToAddCageToCage(cagesByLocation[row][col], cagesByLocation[row + 1][col])
 		) {
-		) {
+			cageThatGrew = cagesByLocation[row + 1][col];
+		}
 
 		else
 		{

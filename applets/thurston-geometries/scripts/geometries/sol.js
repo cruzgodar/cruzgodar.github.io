@@ -42,7 +42,8 @@ class SolGeometry extends BaseGeometry
 			);
 		}
 
-		vec4 getUpdatedPosNumerically(vec4 startPos, vec4 rayDirectionVec, float t)
+		// Flow from the origin numerically 
+		vec4 getUpdatedPosNumerically(vec4 rayDirectionVec, float t)
 		{
 			
 		}

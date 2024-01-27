@@ -1,8 +1,8 @@
 import { addHoverEventWithScale } from "./hover-events.js";
 import {
-    $$,
-    addTemporaryListener,
-    pageElement
+	$$,
+	addTemporaryListener,
+	pageElement
 } from "./main.js";
 import anime from "/scripts/anime.js";
 

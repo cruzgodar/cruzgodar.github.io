@@ -1,6 +1,12 @@
 import { ThurstonGeometry } from "../class.js";
 import { sliderValues } from "../index.js";
-import { BaseGeometry, getFloatGlsl, getMatrixGlsl, getMinGlslString, getVectorGlsl } from "./base.js";
+import {
+	BaseGeometry,
+	getFloatGlsl,
+	getMatrixGlsl,
+	getMinGlslString,
+	getVectorGlsl
+} from "./base.js";
 import { $ } from "/scripts/src/main.js";
 
 function getTransformationMatrix(pos)
