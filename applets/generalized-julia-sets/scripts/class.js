@@ -367,7 +367,7 @@ export class GeneralizedJuliaSet extends Applet
 
 
 
-		//Render the inital frame.
+		// Render the inital frame.
 		this.wilsonHidden.gl.uniform1f(this.wilsonHidden.uniforms["aspectRatio"], 1);
 
 

@@ -43,7 +43,7 @@ export function onResize()
 
 
 
-	//Fix the logo cause Firefox is dumb.
+	// Fix the logo cause Firefox is dumb.
 	const element = headerElement?.children[0]?.children[0];
 
 	if (element)
@@ -53,7 +53,7 @@ export function onResize()
 
 
 
-	//Handle single image link rows.
+	// Handle single image link rows.
 	const oneImageLinkElements = $$(".one-image-link .image-link");
 
 	let imageLinkElement = $(".image-links:not(.one-image-link) .image-link");
@@ -139,7 +139,7 @@ export function equalizeAppletColumns()
 
 
 
-	//Find the midpoint.
+	// Find the midpoint.
 
 	let minHeightDifference = Infinity;
 
@@ -164,7 +164,7 @@ export function equalizeAppletColumns()
 
 
 
-	//Move elements around.
+	// Move elements around.
 	if (midpointIndex < numLeftChildren)
 	{
 		for (let i = midpointIndex; i < numLeftChildren; i++)

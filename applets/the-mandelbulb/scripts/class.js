@@ -588,7 +588,7 @@ export class Mandelbulb extends RaymarchApplet
 
 
 
-			//Apply the rotation matrix.
+			// Apply the rotation matrix.
 
 			const tempX = mutableZ[0];
 			const tempY = mutableZ[1];

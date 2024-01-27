@@ -8,7 +8,7 @@ export class DominoShuffling extends Applet
 
 	useSmoothColors = true;
 
-	//As a fraction of domino size
+	// As a fraction of domino size
 	marginSize = .05;
 
 	aztecDiamond = [];
@@ -110,10 +110,10 @@ export class DominoShuffling extends Applet
 			}
 		}
 
-		//Initialize the size 1 diamond.
+		// Initialize the size 1 diamond.
 		if (Math.random() < .5)
 		{
-			//Horizontal
+			// Horizontal
 			this.aztecDiamond[this.diamondSize - 1][this.diamondSize - 1] = -1;
 			this.aztecDiamond[this.diamondSize][this.diamondSize - 1] = 1;
 
@@ -138,7 +138,7 @@ export class DominoShuffling extends Applet
 
 		else
 		{
-			//Vertical
+			// Vertical
 			this.aztecDiamond[this.diamondSize - 1][this.diamondSize - 1] = -2;
 			this.aztecDiamond[this.diamondSize - 1][this.diamondSize] = 2;
 
@@ -310,7 +310,7 @@ export class DominoShuffling extends Applet
 
 
 
-		//First deal with cancellations.
+		// First deal with cancellations.
 		for (let i = 0; i < 2 * this.diamondSize; i++)
 		{
 			for (let j = 0; j < 2 * this.diamondSize; j++)
@@ -319,7 +319,7 @@ export class DominoShuffling extends Applet
 				{
 					if (Math.abs(this.aztecDiamond[i][j]) === 1)
 					{
-						//If there's something there already, delete it.
+						// If there's something there already, delete it.
 						if (
 							this.aztecDiamond[i + this.aztecDiamond[i][j]][j]
 								=== -this.aztecDiamond[i][j]
@@ -331,7 +331,7 @@ export class DominoShuffling extends Applet
 
 					else
 					{
-						//If there's something there already, delete it.
+						// If there's something there already, delete it.
 						if (
 							this.aztecDiamond[i][j + Math.sign(this.aztecDiamond[i][j])]
 								=== -this.aztecDiamond[i][j]
@@ -346,7 +346,7 @@ export class DominoShuffling extends Applet
 
 
 
-		//Now it's safe to move the dominos that can move.
+		// Now it's safe to move the dominos that can move.
 		for (let i = 0; i < 2 * this.diamondSize; i++)
 		{
 			for (let j = 0; j < 2 * this.diamondSize; j++)
@@ -391,8 +391,8 @@ export class DominoShuffling extends Applet
 
 	fillSpaces()
 	{
-		//Now the diamond has a bunch of 2x2 holes in it,
-		//and we need to fill them with two parallel dominos each.
+		// Now the diamond has a bunch of 2x2 holes in it,
+		// and we need to fill them with two parallel dominos each.
 		for (let i = -this.currentDiamondSize; i < this.currentDiamondSize; i++)
 		{
 			for (let j = -this.currentDiamondSize; j < this.currentDiamondSize; j++)
@@ -406,8 +406,8 @@ export class DominoShuffling extends Applet
 					const row = i + this.diamondSize;
 					const col = j + this.diamondSize;
 
-					//The extra checks are needed because
-					//we only record the top/bottom square of a domino.
+					// The extra checks are needed because
+					// we only record the top/bottom square of a domino.
 					if (
 						this.aztecDiamond[row][col] === 0
 						&& this.aztecDiamond[row + 1][col] === 0
@@ -431,7 +431,7 @@ export class DominoShuffling extends Applet
 	{
 		if (Math.random() < .5)
 		{
-			//Horizontal
+			// Horizontal
 			this.aztecDiamond[row][col] = -1;
 			this.aztecDiamond[row + 1][col] = 1;
 
@@ -458,7 +458,7 @@ export class DominoShuffling extends Applet
 
 		else
 		{
-			//Vertical
+			// Vertical
 			this.aztecDiamond[row][col] = -2;
 			this.aztecDiamond[row][col + 1] = 2;
 

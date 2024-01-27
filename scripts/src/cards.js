@@ -59,7 +59,7 @@ export async function showCard(id)
 	container.style.opacity = 0;
 	container.style.transform = "scale(1)";
 
-	//Makes the animation look a little nicer (since it doesn't cut off the bottom of long cards).
+	// Makes the animation look a little nicer (since it doesn't cut off the bottom of long cards).
 	container.style.display = "flex";
 
 	currentCard = document.querySelector(`#${id}-card`);
@@ -98,7 +98,7 @@ export async function showCard(id)
 	const color = siteSettings.darkTheme ? "rgb(12, 12, 12)" : "rgb(127, 127, 127)";
 	const themeColor = siteSettings.darkTheme ? "#0c0c0c" : "#7f7f7f";
 
-	//Unfortunately necessary to make the animation work. We reset it later!
+	// Unfortunately necessary to make the animation work. We reset it later!
 	document.documentElement.style.backgroundColor = siteSettings.darkTheme
 		? "rgb(24, 24, 24)"
 		: "rgb(255, 255, 255)";

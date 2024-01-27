@@ -19,8 +19,8 @@ export class JuliaSet extends Applet
 
 	switchJuliaModeButtonElement = null;
 
-	//Experimentally, the level at which a 2k x 2k
-	//canvas can see the grain of single precision rendering.
+	// Experimentally, the level at which a 2k x 2k
+	// canvas can see the grain of single precision rendering.
 	doublePrecisionZoomThreshhold = -16;
 
 	pastBrightnessScales = [];
@@ -657,7 +657,7 @@ export class JuliaSet extends Applet
 
 		this.zoom.init();
 
-		//Render the inital frame.
+		// Render the inital frame.
 		window.requestAnimationFrame(this.drawFrame.bind(this));
 
 

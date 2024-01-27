@@ -44,7 +44,7 @@ const teleportationMatrices = [
 
 class NilGeometry extends BaseGeometry
 {
-	geodesicGlsl = /*glsl*/`
+	geodesicGlsl = /* glsl*/`
 		vec4 pos = getUpdatedPos(startPos, rayDirectionVec, t);
 
 		if (abs(pos.z) > 0.5002)
@@ -82,11 +82,11 @@ class NilGeometry extends BaseGeometry
 		globalColor += teleportPos(pos, startPos, rayDirectionVec, t, totalT);
 	`;
 
-	fogGlsl = /*glsl*/`
+	fogGlsl = /* glsl*/`
 		return mix(color, fogColor, 1.0 - exp(-totalT * 0.2));
 	`;
 
-	functionGlsl = /*glsl*/`
+	functionGlsl = /* glsl*/`
 		mat4 getTransformationMatrix(vec4 pos)
 		{
 			return mat4(
@@ -395,7 +395,7 @@ class NilGeometry extends BaseGeometry
 		}
 	`;
 
-	finalTeleportationGlsl = /*glsl*/`
+	finalTeleportationGlsl = /* glsl*/`
 		if (pos.x > 0.499 && rayDirectionVec.x < -0.05)
 		{
 			pos.x = -pos.x;
@@ -528,7 +528,7 @@ class NilGeometry extends BaseGeometry
 
 export class NilRooms extends NilGeometry
 {
-	static distances = /*glsl*/`
+	static distances = /* glsl*/`
 		// A sphere at the origin (honestly, why would you want it to be anywhere else?)
 		float distance1 = wallThickness - metricToOrigin(pos);
 
@@ -542,7 +542,7 @@ export class NilRooms extends NilGeometry
 		float distance5 = abs(pos.y + 0.5002);
 	`;
 
-	distanceEstimatorGlsl = /*glsl*/`
+	distanceEstimatorGlsl = /* glsl*/`
 		${NilRooms.distances}
 
 		float minDistance = ${getMinGlslString("distance", 5)};
@@ -550,7 +550,7 @@ export class NilRooms extends NilGeometry
 		return minDistance;
 	`;
 
-	getColorGlsl = /*glsl*/`
+	getColorGlsl = /* glsl*/`
 		return vec3(
 			.35 + .65 * (.5 * (sin((.0125 * pos.x + baseColor.x + globalColor.x + .5) * 40.0) + 1.0)),
 			.35 + .65 * (.5 * (sin((.0125 * pos.y + baseColor.y + globalColor.y + .5) * 57.0) + 1.0)),
@@ -558,7 +558,7 @@ export class NilRooms extends NilGeometry
 		);
 	`;
 
-	lightGlsl = /*glsl*/`
+	lightGlsl = /* glsl*/`
 		surfaceNormal.w = 0.0;
 
 		vec4 lightDirection1 = normalize(vec4(3.0, -3.0, 3.0, 1.0) - pos);
@@ -584,7 +584,7 @@ export class NilRooms extends NilGeometry
 	rightVec = [0, 1, 0, 0];
 	forwardVec = [1, 0, 0, 0];
 
-	uniformGlsl = /*glsl*/`
+	uniformGlsl = /* glsl*/`
 		uniform float wallThickness;
 		uniform vec3 baseColor;
 	`;
@@ -614,7 +614,7 @@ export class NilRooms extends NilGeometry
 
 export class NilSpheres extends NilGeometry
 {
-	static distances = /*glsl*/`
+	static distances = /* glsl*/`
 		float distance1 = metricToOrigin(pos) - .2;
 
 		float distance2 = abs(pos.x - 0.515);
@@ -624,7 +624,7 @@ export class NilSpheres extends NilGeometry
 		float distance5 = abs(pos.y + 0.515);
 	`;
 
-	distanceEstimatorGlsl = /*glsl*/`
+	distanceEstimatorGlsl = /* glsl*/`
 		${NilSpheres.distances}
 
 		float minDistance = ${getMinGlslString("distance", 5)};
@@ -632,7 +632,7 @@ export class NilSpheres extends NilGeometry
 		return minDistance;
 	`;
 
-	getColorGlsl = /*glsl*/`
+	getColorGlsl = /* glsl*/`
 		return vec3(
 			.25 + .75 * (.5 * (sin(floor(baseColor.x + globalColor.x + .5) * 40.0) + 1.0)),
 			.25 + .75 * (.5 * (sin(floor(baseColor.y + globalColor.y + .5) * 57.0) + 1.0)),
@@ -640,7 +640,7 @@ export class NilSpheres extends NilGeometry
 		);
 	`;
 
-	lightGlsl = /*glsl*/`
+	lightGlsl = /* glsl*/`
 		surfaceNormal.w = 0.0;
 
 		vec4 lightDirection1 = normalize(vec4(3.0, -3.0, 3.0, 1.0) - pos);
@@ -667,7 +667,7 @@ export class NilSpheres extends NilGeometry
 
 	baseColor = [-2, 0, -2];
 
-	uniformGlsl = /*glsl*/`
+	uniformGlsl = /* glsl*/`
 		uniform vec3 baseColor;
 	`;
 

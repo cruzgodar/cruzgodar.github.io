@@ -333,8 +333,8 @@ export class PascalsTriangleColoring extends Applet
 
 
 
-		//The reflected ones. Note that by reflecting the
-		//right path from before, we get the reflected left path.
+		// The reflected ones. Note that by reflecting the
+		// right path from before, we get the reflected left path.
 
 		col1 = row1 - col1;
 		col2 = row2 - col2;

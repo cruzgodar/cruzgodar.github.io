@@ -18,7 +18,7 @@ import { textBoxes } from "./components/text-boxes.js";
 import { parseText } from "./components/text.js";
 import { wilson } from "./components/wilson.js";
 
-//const root = process.argv[1].replace(/(\/cruzgodar.github.io\/).+$/, (match, $1) => $1)
+// const root = process.argv[1].replace(/(\/cruzgodar.github.io\/).+$/, (match, $1) => $1)
 
 let sitemap = null;
 let parentFolder = null;
@@ -113,8 +113,8 @@ function decodeHTMDL(html)
 		.replaceAll(/ {4}/g, "\t")
 		.replaceAll(/### banner/g, "");
 
-	//Tabs in code blocks stay, but the rest can go.
-	//We match two tabs here so that we can still indent the whole block by one.
+	// Tabs in code blocks stay, but the rest can go.
+	// We match two tabs here so that we can still indent the whole block by one.
 	while (html.match(/(```.+\n[\s\S]*?)\t\t([\s\S]*?```\n)/))
 	{
 		html = html.replaceAll(/(```.+\n[\s\S]*?)\t\t([\s\S]*?```\n)/g, (match, $1, $2) => `${$1}&#9;${$2}`);
@@ -124,7 +124,7 @@ function decodeHTMDL(html)
 
 
 
-	//Automatically add a header if there's not one already here.
+	// Automatically add a header if there's not one already here.
 	if (!html.match(/^[\n\t\s]*?\n#\s/g) && !manualHeaderPages.includes(parentFolder))
 	{
 		const title = sitemap[parentFolder].title;
@@ -142,7 +142,7 @@ function decodeHTMDL(html)
 
 	for (let i = 0; i < lines.length; i++)
 	{
-		//Filtering out lines beginning with < is a little rough, but pretty much necessary.
+		// Filtering out lines beginning with < is a little rough, but pretty much necessary.
 		if (lines[i].length === 0 || lines[i][0] === "<")
 		{
 			continue;
@@ -150,7 +150,7 @@ function decodeHTMDL(html)
 
 
 
-		//Leave math mostly alone (but wrap it in body text).
+		// Leave math mostly alone (but wrap it in body text).
 		if (lines[i] === "$$")
 		{
 			let sourceTex = "";
@@ -195,7 +195,7 @@ function decodeHTMDL(html)
 
 
 
-			//Remove the last line break.
+			// Remove the last line break.
 			lines[i - 1] = lines[i - 1].replace(/\\\\\[4px\]$/, "");
 
 			lines[i] = "\\end{align*}$$</span></p>";
@@ -205,7 +205,7 @@ function decodeHTMDL(html)
 
 
 
-		//Handle code blocks.
+		// Handle code blocks.
 		else if (lines[i].slice(0, 3) === "```")
 		{
 			if (lines[i].length > 3)
@@ -239,7 +239,7 @@ function decodeHTMDL(html)
 
 
 
-		//Handle debug blocks.
+		// Handle debug blocks.
 		else if (lines[i].slice(0, 3) === "???")
 		{
 			if (!inDebugEnvironment)
@@ -257,15 +257,15 @@ function decodeHTMDL(html)
 
 
 
-		//This is one of the many possible environments.
+		// This is one of the many possible environments.
 		else if (lines[i].slice(0, 3) === "###")
 		{
 			currentNumberedItem = 1;
 
 			if (lines[i] === "###")
 			{
-				//If we find one of these in the wild, we're
-				//in an environment and just need to end it.
+				// If we find one of these in the wild, we're
+				// in an environment and just need to end it.
 
 				inEnvironment = false;
 
@@ -277,7 +277,7 @@ function decodeHTMDL(html)
 
 			const [words, options] = splitCommandLine(lines[i].slice(4));
 
-			//The first word is the id.
+			// The first word is the id.
 			if (singleLineComponents.includes(words[0]))
 			{
 				lines[i] = components[words[0]](options, ...(words.slice(1)));
@@ -323,7 +323,7 @@ function decodeHTMDL(html)
 			}
 		}
 
-		//A new section.
+		// A new section.
 		else if (lines[i].slice(0, 2) === "##")
 		{
 			const title = parseText(lines[i].slice(2));
@@ -339,7 +339,7 @@ function decodeHTMDL(html)
 			}
 		}
 
-		//A heading. Only one of these per file.
+		// A heading. Only one of these per file.
 		else if (lines[i][0] === "#" && lines[i][1] !== ".")
 		{
 			const title = parseText(lines[i].slice(2));
@@ -367,7 +367,7 @@ function decodeHTMDL(html)
 			`;
 		}
 
-		//Regular text!
+		// Regular text!
 		else
 		{
 			const content = parseText(lines[i]);
@@ -391,7 +391,7 @@ function decodeHTMDL(html)
 		}
 	}
 
-	//Remove blank lines and tabs.
+	// Remove blank lines and tabs.
 	for (let i = 0; i < lines.length; i++)
 	{
 		lines[i] = lines[i].replace(/\t/g, "").replace(/\n/g, "");
@@ -407,12 +407,12 @@ function decodeHTMDL(html)
 
 	html = lines.join("");
 
-	//Gross
+	// Gross
 	html = html.replaceAll(/\[ESCAPEDNEWLINE\]/g, "\n");
 
 
 
-	//End the HTML properly.
+	// End the HTML properly.
 
 	html = `${html}</section></main>`;
 

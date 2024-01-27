@@ -47,7 +47,7 @@ const teleportations = [
 
 class H2xEGeometry extends BaseGeometry
 {
-	geodesicGlsl = /*glsl*/`
+	geodesicGlsl = /* glsl*/`
 		float h2Mag = sqrt(abs(
 			rayDirectionVec.x * rayDirectionVec.x
 			+ rayDirectionVec.y * rayDirectionVec.y
@@ -62,21 +62,21 @@ class H2xEGeometry extends BaseGeometry
 		globalColor += teleportPos(pos, startPos, rayDirectionVec, t, totalT);
 	`;
 
-	dotProductGlsl = /*glsl*/`
+	dotProductGlsl = /* glsl*/`
 		return v.x * w.x + v.y * w.y - v.z * w.z + v.w * w.w;
 	`;
 
-	normalizeGlsl = /*glsl*/`
+	normalizeGlsl = /* glsl*/`
 		float magnitude = sqrt(abs(geometryDot(dir, dir)));
 		
 		return dir / magnitude;
 	`;
 
-	fogGlsl = /*glsl*/`
+	fogGlsl = /* glsl*/`
 		return mix(color, fogColor, 1.0 - exp(-totalT * 0.25));
 	`;
 
-	functionGlsl = /*glsl*/`
+	functionGlsl = /* glsl*/`
 		float sinh(float x)
 		{
 			return .5 * (exp(x) - exp(-x));
@@ -230,7 +230,7 @@ class H2xEGeometry extends BaseGeometry
 
 	getNormalVec(cameraPos)
 	{
-		//f = -1 + x^2 + y^2 - z^2.
+		// f = -1 + x^2 + y^2 - z^2.
 		return this.normalize([
 			-cameraPos[0],
 			-cameraPos[1],
@@ -342,7 +342,7 @@ class H2xEGeometry extends BaseGeometry
 
 export class H2xERooms extends H2xEGeometry
 {
-	static distances = /*glsl*/`
+	static distances = /* glsl*/`
 		float spacing = 1.875;
 		float distance1 = wallThickness - length(vec2(acosh(pos.z), mod(pos.w + spacing / 2.0, spacing) - spacing / 2.0));
 
@@ -377,7 +377,7 @@ export class H2xERooms extends H2xEGeometry
 		));
 	`;
 
-	distanceEstimatorGlsl = /*glsl*/`
+	distanceEstimatorGlsl = /* glsl*/`
 		${H2xERooms.distances}
 
 		float minDistance = ${getMinGlslString("distance", 5)};
@@ -385,7 +385,7 @@ export class H2xERooms extends H2xEGeometry
 		return minDistance;
 	`;
 
-	getColorGlsl = /*glsl*/`
+	getColorGlsl = /* glsl*/`
 		${H2xERooms.distances}
 
 		float minDistance = ${getMinGlslString("distance", 5)};
@@ -399,7 +399,7 @@ export class H2xERooms extends H2xEGeometry
 		);
 	`;
 
-	lightGlsl = /*glsl*/`
+	lightGlsl = /* glsl*/`
 		float spacing = 1.875;
 		vec4 moddedPos = vec4(pos.xyz, mod(pos.w + spacing / 2.0, spacing) - spacing / 2.0);
 
@@ -425,7 +425,7 @@ export class H2xERooms extends H2xEGeometry
 		return 1.25;
 	}
 
-	uniformGlsl = /*glsl*/`
+	uniformGlsl = /* glsl*/`
 		uniform float wallThickness;
 		uniform vec3 baseColor;
 	`;
@@ -458,7 +458,7 @@ export class H2xERooms extends H2xEGeometry
 
 export class H2xESpheres extends H2xEGeometry
 {
-	static distances = /*glsl*/`
+	static distances = /* glsl*/`
 		float spacing = 1.5;
 		float distance1 = length(vec2(acosh(pos.z), mod(pos.w + spacing / 2.0, spacing) - spacing / 2.0)) - .5;
 
@@ -493,7 +493,7 @@ export class H2xESpheres extends H2xEGeometry
 		));
 	`;
 
-	distanceEstimatorGlsl = /*glsl*/`
+	distanceEstimatorGlsl = /* glsl*/`
 		${H2xESpheres.distances}
 
 		float minDistance = ${getMinGlslString("distance", 5)};
@@ -501,7 +501,7 @@ export class H2xESpheres extends H2xEGeometry
 		return minDistance;
 	`;
 
-	getColorGlsl = /*glsl*/`
+	getColorGlsl = /* glsl*/`
 		${H2xESpheres.distances}
 
 		float minDistance = ${getMinGlslString("distance", 5)};
@@ -517,7 +517,7 @@ export class H2xESpheres extends H2xEGeometry
 		);
 	`;
 
-	lightGlsl = /*glsl*/`
+	lightGlsl = /* glsl*/`
 		// Equally weird to the S^2 x E fix, and equally necessary.
 		pos.xyz *= 1.001;
 		surfaceNormal = getSurfaceNormal(pos);
@@ -545,7 +545,7 @@ export class H2xESpheres extends H2xEGeometry
 		return 1.25;
 	}
 
-	uniformGlsl = /*glsl*/`
+	uniformGlsl = /* glsl*/`
 		uniform vec3 baseColor;
 	`;
 

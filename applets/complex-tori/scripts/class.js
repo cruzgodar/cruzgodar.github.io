@@ -191,7 +191,7 @@ export class EllipticCurve extends Applet
 
 		const maxInterpolationDistance = this.wilson.canvasWidth;
 
-		//This means a 5x5 square will be searched around each endpoint...
+		// This means a 5x5 square will be searched around each endpoint...
 		const isolationSearchRadius = 2;
 
 		for (
@@ -205,7 +205,7 @@ export class EllipticCurve extends Applet
 
 				if (pixels[4 * index] !== 0)
 				{
-					//This is the sum of a radius 3 square centered at this pixel.
+					// This is the sum of a radius 3 square centered at this pixel.
 					const closeTotal =
 						pixels[4 * (index - 1)]
 						+ pixels[4 * (index + 1)]
@@ -236,8 +236,8 @@ export class EllipticCurve extends Applet
 							+ pixels[4 * (index + 2)]
 							+ pixels[4 * (index + width + 2)];
 
-						//This is an endpoint. Now we'll check to see if it's isolated,
-						//which means it's connected to only at most two other pixels.
+						// This is an endpoint. Now we'll check to see if it's isolated,
+						// which means it's connected to only at most two other pixels.
 						if (farTotal === 0)
 						{
 							endpoints.push([i, j, true]);
@@ -254,7 +254,7 @@ export class EllipticCurve extends Applet
 
 
 
-		//Connect every endpoint to the nearest other endpoint within a given radius.
+		// Connect every endpoint to the nearest other endpoint within a given radius.
 		for (let i = 0; i < endpoints.length; i++)
 		{
 			if (
@@ -294,9 +294,9 @@ export class EllipticCurve extends Applet
 
 				if (distance < minOpenDistance && distance >= 2)
 				{
-					//Only connect here if there are no white points in that general direction.
-					//General direction here means a 3x3 square centered at the shifted coordinate
-					//that doesn't intersect the endpoint itself.
+					// Only connect here if there are no white points in that general direction.
+					// General direction here means a 3x3 square centered at the shifted coordinate
+					// that doesn't intersect the endpoint itself.
 					let rowMovement = (endpoints[j][0] - endpoints[i][0]) / distance * 1.414214;
 					let colMovement = (endpoints[j][1] - endpoints[i][1]) / distance * 1.414214;
 
@@ -362,7 +362,7 @@ export class EllipticCurve extends Applet
 
 			if (minOpenJ !== -1)
 			{
-				//Interpolate between the two points.
+				// Interpolate between the two points.
 				for (let k = 1; k < 2 * minOpenDistance; k++)
 				{
 					const t = k / (2 * minOpenDistance);

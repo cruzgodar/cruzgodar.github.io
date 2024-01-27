@@ -2,8 +2,8 @@
 
 
 
-//Realistically this is never going to change, but since this code
-//is adapted from the calcudoku applet's, it's easier to just leave this variable as-is.
+// Realistically this is never going to change, but since this code
+// is adapted from the calcudoku applet's, it's easier to just leave this variable as-is.
 const gridSize = 9;
 
 let grid = [];
@@ -20,7 +20,7 @@ function generateSudokuGrid()
 
 
 
-	//First, we just need a random starting grid.
+	// First, we just need a random starting grid.
 	generateNumberGrid();
 
 	for (let i = 0; i < gridSize; i++)
@@ -46,8 +46,8 @@ function generateSudokuGrid()
 
 
 
-		//If this is no longer a unique solution, no problem! We'll just
-		//revert to our last uniquely-solvable grid and try a different cell next time.
+		// If this is no longer a unique solution, no problem! We'll just
+		// revert to our last uniquely-solvable grid and try a different cell next time.
 		if (numSolutionsFound !== 1)
 		{
 			grid[cellToRemove[0]][cellToRemove[1]] = numberToRemove;
@@ -63,19 +63,19 @@ function generateSudokuGrid()
 
 
 
-//Shuffles an array with the Fisher-Yates method.
+// Shuffles an array with the Fisher-Yates method.
 function shuffleArray(array)
 {
 	let currentIndex = array.length;
 
-	//While there are still elements to shuffle
+	// While there are still elements to shuffle
 	while (currentIndex !== 0)
 	{
-		//Pick a remaining element.
+		// Pick a remaining element.
 		const randomIndex = Math.floor(Math.random() * currentIndex);
 		currentIndex -= 1;
 
-		//Swap it with the current element.
+		// Swap it with the current element.
 		const temp = array[currentIndex];
 		array[currentIndex] = array[randomIndex];
 		array[randomIndex] = temp;
@@ -86,14 +86,14 @@ function shuffleArray(array)
 
 
 
-//Creates a grid of numbers with side length gridSize such that no column or row
-//contains a repeated number. This is normally a very hard thing to do,
-//becoming pretty much impossible most of the time after a side length of 10.
-//Good news is, we can do things much more simply -- becuase we don't need a uniformly random grid.
+// Creates a grid of numbers with side length gridSize such that no column or row
+// contains a repeated number. This is normally a very hard thing to do,
+// becoming pretty much impossible most of the time after a side length of 10.
+// Good news is, we can do things much more simply -- becuase we don't need a uniformly random grid.
 function generateNumberGrid()
 {
-	//I have no clue what the pattern is supposed to be,
-	//so I give up. Here's a random one from the internet.
+	// I have no clue what the pattern is supposed to be,
+	// so I give up. Here's a random one from the internet.
 	grid = [
 		[2, 9, 5, 7, 4, 3, 8, 6, 1],
 		[4, 3, 1, 8, 6, 5, 9, 2, 7],
@@ -108,10 +108,10 @@ function generateNumberGrid()
 
 
 
-	//Now we're going to do three things: shuffle some rows (within the same minigrid),
-	//shuffle some columns (also within the same minigrid),
-	//and shuffle the digits themselves. To top it all off, we'll do
-	//these three things in random order, twice each.
+	// Now we're going to do three things: shuffle some rows (within the same minigrid),
+	// shuffle some columns (also within the same minigrid),
+	// and shuffle the digits themselves. To top it all off, we'll do
+	// these three things in random order, twice each.
 
 	const shuffles = shuffleArray([
 		shuffleGridRows,
@@ -227,10 +227,10 @@ function shuffleGridDigits()
 
 
 
-//By default, we can't pass arrays to C functions. However, with the help of a library,
-//we can pass 1D arrays, but not higher-dimensional ones.
-//Therefore, we need to find a way to pass all of the cage data as a sequence of 1D arrays.
-//Good news is, this isn't so bad.
+// By default, we can't pass arrays to C functions. However, with the help of a library,
+// we can pass 1D arrays, but not higher-dimensional ones.
+// Therefore, we need to find a way to pass all of the cage data as a sequence of 1D arrays.
+// Good news is, this isn't so bad.
 function wasmSolvePuzzle()
 {
 	let gridFlat = [];
@@ -242,7 +242,7 @@ function wasmSolvePuzzle()
 
 
 
-	//With everything in place, we can now call the C function and let it do the heavy lifting.
+	// With everything in place, we can now call the C function and let it do the heavy lifting.
 	// eslint-disable-next-line no-undef
 	return ccallArrays("solve_puzzle", "number", ["array"], [gridFlat], { heapIn: "HEAPU8" });
 }

@@ -40,7 +40,7 @@ function drawKickedRotator()
 
 
 
-		//This randomness helps keep straight-line artefacts from appearing.
+		// This randomness helps keep straight-line artefacts from appearing.
 		const rand = Math.floor(Math.random() * (2 * orbitSeparation + 1)) - orbitSeparation;
 
 		const upperHalfPointsRatio = calculateOrbit(
@@ -58,10 +58,10 @@ function drawKickedRotator()
 
 
 
-		//Now that we've got our orbit, we can reflect it vertically and horizontally
-		//to get the other side -- but this is only necessary, and in fact only a good thing,
-		//if the orbit wasn't symmetric in the first place. We test for this by seeing
-		//if less than 45% of the points were above the half-way mark.
+		// Now that we've got our orbit, we can reflect it vertically and horizontally
+		// to get the other side -- but this is only necessary, and in fact only a good thing,
+		// if the orbit wasn't symmetric in the first place. We test for this by seeing
+		// if less than 45% of the points were above the half-way mark.
 		if (upperHalfPointsRatio < .45)
 		{
 			for (let j = 0; j < gridSize; j++)
@@ -85,7 +85,7 @@ function drawKickedRotator()
 
 
 
-//Runs through an entire orbit. Returns the fraction of points that were above the halfway mark.
+// Runs through an entire orbit. Returns the fraction of points that were above the halfway mark.
 function calculateOrbit(startRow, startCol)
 {
 	let numUpperHalfPoints = 0;
@@ -103,16 +103,16 @@ function calculateOrbit(startRow, startCol)
 
 
 
-	//Here's the idea. We can't just terminate an orbit if the point
-	//coincides with one of the places we've already been,
-	//since the rasterizing makes that happen way too often.
-	//We also don't want every orbit to go one forever though, so instead,
-	//we'll terminate an orbit if it hits enough points we've already seen in a row.
+	// Here's the idea. We can't just terminate an orbit if the point
+	// coincides with one of the places we've already been,
+	// since the rasterizing makes that happen way too often.
+	// We also don't want every orbit to go one forever though, so instead,
+	// we'll terminate an orbit if it hits enough points we've already seen in a row.
 	let numPoints = 0;
 
 	for (;;)
 	{
-		//Add the current point to the image.
+		// Add the current point to the image.
 		image[gridSize * currentRow + currentCol]++;
 
 		numPoints++;

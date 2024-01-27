@@ -143,8 +143,8 @@ async function buildJSFile(file)
 	
 	const js = await read(outputFile);
 
-	//The space after the import is very important --
-	//that prevents dynamic imports from getting screwed up.
+	// The space after the import is very important --
+	// that prevents dynamic imports from getting screwed up.
 	await write(
 		outputFile,
 		js.replace(/(import[ {].*?)\.(m*)js/g, (match, $1, $2) => `${$1}.min.${$2}js`)

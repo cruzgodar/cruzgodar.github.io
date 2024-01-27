@@ -48,8 +48,8 @@ export function setScrollButtonExists(newScrollButtonExists)
 
 
 
-//The banner opacity cannot be changed more than a certain amount each frame
-//to account for sudden changes in viewport height. This function handles that animation.
+// The banner opacity cannot be changed more than a certain amount each frame
+// to account for sudden changes in viewport height. This function handles that animation.
 
 export let bannerOpacity = 1;
 
@@ -160,7 +160,7 @@ export const multibannerPages =
 
 export async function loadBanner(large = false)
 {
-	//Only do banner things if the banner things are in the standard places.
+	// Only do banner things if the banner things are in the standard places.
 	if (!(bannerPages.includes(pageUrl)))
 	{
 		return;
@@ -230,7 +230,7 @@ export async function loadBanner(large = false)
 
 
 
-//The function called by pageLoad to load a small banner that fades into a large one when ready.
+// The function called by pageLoad to load a small banner that fades into a large one when ready.
 export function setUpBanner()
 {
 	if (bannerPages.includes(pageUrl))

@@ -22,7 +22,7 @@ export function notesEnvironment(options, id, name)
 	{
 		name = parseText(name);
 
-		//These two avoid awkward things like Theorem: The Fundamental Theorem.
+		// These two avoid awkward things like Theorem: The Fundamental Theorem.
 		if (options.includes("m"))
 		{
 			return `<div class="notes-${id} notes-environment"><p class="body-text"</p><span class="notes-${id}-title">${name}</span></p>`;

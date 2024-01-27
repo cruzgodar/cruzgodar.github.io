@@ -49,7 +49,7 @@ export let navigationTransitionType = 0;
 
 
 
-//Handles virtually all links.
+// Handles virtually all links.
 export async function redirect({
 	url,
 	inNewTab = false,
@@ -62,8 +62,8 @@ export async function redirect({
 		return;
 	}
 
-	//If we're going somewhere outside of the site,
-	//open it in a new tab and don't screw with the opacity.
+	// If we're going somewhere outside of the site,
+	// open it in a new tab and don't screw with the opacity.
 	if (inNewTab || url.indexOf(".") !== -1)
 	{
 		window.open(url, "_blank");
@@ -86,8 +86,8 @@ export async function redirect({
 
 	await fadeOutPage({ url, noFadeOut });
 
-	//Get the new data, fade out the page, and preload the next page's banner if it exists.
-	//When all of those things are successfully done, replace the current html with the new stuff.
+	// Get the new data, fade out the page, and preload the next page's banner if it exists.
+	// When all of those things are successfully done, replace the current html with the new stuff.
 	Promise.all([fetch(`${url}data.html`), loadBanner()])
 		.then((response) =>
 		{
@@ -116,7 +116,7 @@ export async function redirect({
 
 
 
-			//Record the page change in the url bar and in the browser history.
+			// Record the page change in the url bar and in the browser history.
 			if (noStatePush)
 			{
 				history.replaceState({ url }, document.title, getDisplayUrl());
@@ -129,7 +129,7 @@ export async function redirect({
 
 
 
-			//Restore the ability to scroll in case it was removed.
+			// Restore the ability to scroll in case it was removed.
 			document.documentElement.style.overflowY = "scroll";
 			document.body.style.overflowY = "visible";
 
@@ -158,9 +158,9 @@ export async function redirect({
 
 
 
-//Figures out what type of transition to use to get to this url.
-//Returns 1 for deeper, -1 for shallower, 2 for a sibling to the right,
-//-2 for one to the left, and 0 for anything else.
+// Figures out what type of transition to use to get to this url.
+// Returns 1 for deeper, -1 for shallower, 2 for a sibling to the right,
+// -2 for one to the left, and 0 for anything else.
 function getTransitionType(url)
 {
 	if (!(url in sitemap) || url === pageUrl || !pageUrl)
@@ -251,7 +251,7 @@ async function fadeOutPage({ url, noFadeOut })
 
 
 
-	//Fade out the current page's content.
+	// Fade out the current page's content.
 	await (() =>
 	{
 		if (navigationTransitionType === 1)
@@ -310,7 +310,7 @@ async function fadeOutPage({ url, noFadeOut })
 
 function unloadPage()
 {
-	//Remove temporary things outside the page element.
+	// Remove temporary things outside the page element.
 	document.querySelectorAll("script, .temporary-style").forEach(element => element.remove());
 	
 	temporaryListeners.forEach(temporaryListener =>

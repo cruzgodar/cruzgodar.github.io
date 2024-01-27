@@ -187,7 +187,7 @@ function fadeUpInCss(element, duration = pageAnimationTime * 2, targetOpacity = 
 			element.style.marginTop = `${navigationAnimationDistanceVertical}px`;
 			element.style.marginBottom = 0;
 
-			//Jesus
+			// Jesus
 			void(element.offsetHeight);
 
 			element.style.transition = `margin-top ${duration}ms cubic-bezier(.4, 1.0, .7, 1.0), opacity ${duration}ms cubic-bezier(.4, 1.0, .7, 1.0)`;

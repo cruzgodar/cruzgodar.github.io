@@ -494,7 +494,7 @@ export class SortingAlgorithm extends Applet
 
 		for (let i = 0; i < this.dataLength; i++)
 		{
-			//This isn't actually a write, but we want to animate the process.
+			// This isn't actually a write, but we want to animate the process.
 			if (this.writeToPosition(i)) {yield;}
 
 			if (i !== this.dataLength - 1 && this.data[i] > this.data[i + 1])
@@ -631,7 +631,7 @@ export class SortingAlgorithm extends Applet
 	{
 		this.operationsPerFrame = Math.ceil(this.dataLength * Math.log(this.dataLength) / 500);
 
-		//Build the heap.
+		// Build the heap.
 		for (let i = 1; i < this.dataLength; i++)
 		{
 			let index = i;
@@ -663,7 +663,7 @@ export class SortingAlgorithm extends Applet
 			}
 		}
 
-		//Disassemble the heap.
+		// Disassemble the heap.
 		for (let i = this.dataLength - 1; i >= 0; i--)
 		{
 			const temp = this.data[0];
@@ -762,7 +762,7 @@ export class SortingAlgorithm extends Applet
 
 
 
-		//First recursively sort the last half.
+		// First recursively sort the last half.
 
 		let rightHalfStart = start + Math.floor((end - start) / 2);
 		yield* this.mergeSort(rightHalfStart, end);
@@ -771,7 +771,7 @@ export class SortingAlgorithm extends Applet
 		{
 			if (rightHalfStart === start + 1)
 			{
-				//Insertion sort the single element up.
+				// Insertion sort the single element up.
 
 				let i = start;
 
@@ -793,11 +793,11 @@ export class SortingAlgorithm extends Applet
 				break;
 			}
 
-			//Sort the first quarter.
+			// Sort the first quarter.
 			const bufferStart = start + Math.floor((rightHalfStart - start) / 2);
 			yield* this.mergeSort(start, bufferStart);
 
-			//Now merge those together by using the middle area as a buffer.
+			// Now merge those together by using the middle area as a buffer.
 
 			let left = start;
 			let buffer = bufferStart;
@@ -810,7 +810,7 @@ export class SortingAlgorithm extends Applet
 					break;
 				}
 
-				//Compare the current elements of the left and right sorted parts.
+				// Compare the current elements of the left and right sorted parts.
 				if (buffer !== left && (right === end || this.data[left] < this.data[right]))
 				{
 					this.readFromPosition(left);
@@ -851,12 +851,12 @@ export class SortingAlgorithm extends Applet
 
 
 
-			//Now increase the amount marked as sorted.
+			// Now increase the amount marked as sorted.
 			rightHalfStart = start + (rightHalfStart - bufferStart);
 
 
 
-			//The last place to move needs to be insertion sorted to the correct place.
+			// The last place to move needs to be insertion sorted to the correct place.
 
 			let i = buffer - 1;
 
@@ -925,7 +925,7 @@ export class SortingAlgorithm extends Applet
 		{
 			for (let i = 0; i < numBlocks; i++)
 			{
-				//For each block, pick the middle element as the pivot.
+				// For each block, pick the middle element as the pivot.
 				const pivot = this.data[
 					Math.floor((currentEndpoints[2 * i] + currentEndpoints[2 * i + 1]) / 2)
 				];
@@ -934,8 +934,8 @@ export class SortingAlgorithm extends Applet
 					Math.floor((currentEndpoints[2 * i] + currentEndpoints[2 * i + 1]) / 2)
 				);
 
-				//Now we need to split the block so that everything before the pivot
-				//is less than it and everything after is greater.
+				// Now we need to split the block so that everything before the pivot
+				// is less than it and everything after is greater.
 				let leftIndex = currentEndpoints[2 * i] - 1;
 				let rightIndex = currentEndpoints[2 * i + 1] + 1;
 
@@ -1083,7 +1083,7 @@ export class SortingAlgorithm extends Applet
 
 			do
 			{
-				//Figure out where this index should go.
+				// Figure out where this index should go.
 				index = 0;
 
 				for (let j = 0; j < this.dataLength; j++)
@@ -1300,7 +1300,7 @@ export class SortingAlgorithm extends Applet
 				if (this.writeToPosition(j)) {yield;}
 			}
 
-			//We need to take care to reverse the top half of auxArray.
+			// We need to take care to reverse the top half of auxArray.
 			for (let j = 0; j < this.dataLength - index1; j++)
 			{
 				this.data[index1 + j] = auxArray[this.dataLength - 1 - j];

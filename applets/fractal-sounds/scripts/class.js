@@ -378,7 +378,7 @@ export class FractalSounds extends Applet
 
 
 
-		//Render the inital frame.
+		// Render the inital frame.
 		this.wilsonJulia.gl.uniform1f(this.wilsonJulia.uniforms["aspectRatio"][0], 1);
 		this.wilsonHidden.gl.uniform1f(this.wilsonHidden.uniforms["aspectRatio"][0], 1);
 

@@ -13,7 +13,7 @@ export class Applet
 
 	fpsDisplayCtx;
 
-	//Temporary things that should be destroyed when calling Applet.destroy.
+	// Temporary things that should be destroyed when calling Applet.destroy.
 
 	workers = [];
 	timeoutIds = [];
@@ -85,9 +85,9 @@ export class Applet
 
 	uncapEverything = false;
 
-	//Adds a friendly cap on these inputs: if a higher number is entered,
-	//the whole thing turns red and a the label turns into a modal
-	//with an option to remove the limit.
+	// Adds a friendly cap on these inputs: if a higher number is entered,
+	// the whole thing turns red and a the label turns into a modal
+	// with an option to remove the limit.
 	setInputCaps(elements, caps)
 	{
 		elements.forEach((element, index) =>
@@ -96,7 +96,7 @@ export class Applet
 
 
 
-			//Find the words on the last line.
+			// Find the words on the last line.
 			const words = element.nextElementSibling.innerHTML.split(" ");
 
 			const wordElement = document.createElement("p");
@@ -560,7 +560,7 @@ export class Applet
 
 		onReleaseCanvas()
 		{
-			//Find the max absolute value.
+			// Find the max absolute value.
 			for (let i = 0; i < this.velocityListLength; i++)
 			{
 				if (Math.abs(this.lastVelocitiesX[i]) > Math.abs(this.velocityX))
@@ -591,7 +591,7 @@ export class Applet
 			}
 		},
 
-		//Call this in the drawFrame loop.
+		// Call this in the drawFrame loop.
 		update(timeElapsed)
 		{
 			this.lastVelocitiesX[this.frame] = this.nextVelocityX;
@@ -599,7 +599,7 @@ export class Applet
 
 			this.frame = (this.frame + 1) % this.velocityListLength;
 
-			//This ensures that velocities don't get double-counted.
+			// This ensures that velocities don't get double-counted.
 			this.nextVelocityX = 0;
 			this.nextVelocityY = 0;
 
@@ -765,7 +765,7 @@ export class Applet
 
 		onReleaseCanvas()
 		{
-			//Find the max absolute value.
+			// Find the max absolute value.
 			for (let i = 0; i < this.velocityListLength; i++)
 			{
 				if (Math.abs(this.lastVelocities[i]) > Math.abs(this.velocity))
@@ -825,14 +825,14 @@ export class Applet
 			this.clamp();
 		},
 
-		//Call this in the drawFrame loop.
+		// Call this in the drawFrame loop.
 		update(timeElapsed)
 		{
 			this.lastVelocities[this.frame] = this.nextVelocity;
 
 			this.frame = (this.frame + 1) % this.velocityListLength;
 
-			//This ensures that velocities don't get double-counted.
+			// This ensures that velocities don't get double-counted.
 			this.nextVelocity = 0;
 
 			if (Math.abs(this.velocity) < this.velocityStopThreshhold)
@@ -879,26 +879,27 @@ export class Applet
 
 
 
-	//Turns expressions like 2(3x^2+1) into something equivalent to 2.0 * (3.0 * pow(x, 2.0) + 1.0).
+	// Turns expressions like 2(3x^2+1) into something equivalent
+	// to 2.0 * (3.0 * pow(x, 2.0) + 1.0).
 	static parseNaturalGLSL(GLSL)
 	{
-		let newGLSL = GLSL.replaceAll(/\s/g, ""); //Remove spaces
+		let newGLSL = GLSL.replaceAll(/\s/g, ""); // Remove spaces
 
 		while (newGLSL.match(/([^.0-9])([0-9]+)([^.0-9])/g))
 		{
-			newGLSL = newGLSL.replaceAll(/([^.0-9])([0-9]+)([^.0-9])/g, (match, $1, $2, $3) => `${$1}${$2}.0${$3}`); //Convert ints to floats
+			newGLSL = newGLSL.replaceAll(/([^.0-9])([0-9]+)([^.0-9])/g, (match, $1, $2, $3) => `${$1}${$2}.0${$3}`); // Convert ints to floats
 		}
 
-		newGLSL = newGLSL.replaceAll(/([^0-9])(\.[0-9])/g, (match, $1, $2) => `${$1}0${$2}`) //Lead decimals with zeros
-			.replaceAll(/([0-9]\.)([^0-9])/g, (match, $1, $2) => `${$1}0${$2}`) //End decimals with zeros
-			.replaceAll(/([0-9)])([a-z(])/g, (match, $1, $2) => `${$1} * ${$2}`); //Juxtaposition to multiplication
+		newGLSL = newGLSL.replaceAll(/([^0-9])(\.[0-9])/g, (match, $1, $2) => `${$1}0${$2}`) // Lead decimals with zeros
+			.replaceAll(/([0-9]\.)([^0-9])/g, (match, $1, $2) => `${$1}0${$2}`) // End decimals with zeros
+			.replaceAll(/([0-9)])([a-z(])/g, (match, $1, $2) => `${$1} * ${$2}`); // Juxtaposition to multiplication
 
 		while (newGLSL.match(/([xyz])([xyz])/g))
 		{
-			newGLSL = newGLSL.replaceAll(/([xyz])([xyz])/g, (match, $1, $2) => `${$1} * ${$2}`); //Particular juxtaposition to multiplication
+			newGLSL = newGLSL.replaceAll(/([xyz])([xyz])/g, (match, $1, $2) => `${$1} * ${$2}`); // Particular juxtaposition to multiplication
 		}
 
-		newGLSL = newGLSL.replaceAll(/([a-z0-9.]+)\^([a-z0-9.]+)/g, (match, $1, $2) => `pow(${$1}, ${$2})`); //Carats to power
+		newGLSL = newGLSL.replaceAll(/([a-z0-9.]+)\^([a-z0-9.]+)/g, (match, $1, $2) => `pow(${$1}, ${$2})`); // Carats to power
 
 		if (window.DEBUG)
 		{
@@ -1053,22 +1054,22 @@ export class RaymarchApplet extends Applet
 
 	calculateVectors()
 	{
-		//Here comes the serious math. Theta is the angle in the xy-plane and
-		//phi the angle down from the z-axis. We can use them get a normalized forward vector:
+		// Here comes the serious math. Theta is the angle in the xy-plane and
+		// phi the angle down from the z-axis. We can use them get a normalized forward vector:
 		this.forwardVec = [
 			Math.cos(this.theta) * Math.sin(this.phi),
 			Math.sin(this.theta) * Math.sin(this.phi),
 			Math.cos(this.phi)
 		];
 
-		//Now the right vector needs to be constrained to the xy-plane,
-		//since otherwise the image will appear tilted. For a vector (a, b, c),
-		//the orthogonal plane that passes through the origin is ax + by + cz = 0,
-		//so we want ax + by = 0. One solution is (b, -a), and that's the one that
-		//goes to the "right" of the forward vector (when looking down).
+		// Now the right vector needs to be constrained to the xy-plane,
+		// since otherwise the image will appear tilted. For a vector (a, b, c),
+		// the orthogonal plane that passes through the origin is ax + by + cz = 0,
+		// so we want ax + by = 0. One solution is (b, -a), and that's the one that
+		// goes to the "right" of the forward vector (when looking down).
 		this.rightVec = RaymarchApplet.normalize([this.forwardVec[1], -this.forwardVec[0], 0]);
 
-		//Finally, the upward vector is the cross product of the previous two.
+		// Finally, the upward vector is the cross product of the previous two.
 		this.upVec = RaymarchApplet.crossProduct(this.rightVec, this.forwardVec);
 
 		
@@ -1083,7 +1084,7 @@ export class RaymarchApplet extends Applet
 
 		this.focalLength = this.distanceToScene / 2;
 
-		//The factor we divide by here sets the fov.
+		// The factor we divide by here sets the fov.
 		this.rightVec[0] *= this.focalLength / 2;
 		this.rightVec[1] *= this.focalLength / 2;
 
@@ -1180,25 +1181,25 @@ export class RaymarchApplet extends Applet
 
 
 
-		//W
+		// W
 		if (e.key === "w")
 		{
 			this.movingForwardKeyboard = false;
 		}
 
-		//S
+		// S
 		else if (e.key === "s")
 		{
 			this.movingBackwardKeyboard = false;
 		}
 
-		//D
+		// D
 		if (e.key === "d")
 		{
 			this.movingRightKeyboard = false;
 		}
 
-		//A
+		// A
 		else if (e.key === "a")
 		{
 			this.movingLeftKeyboard = false;

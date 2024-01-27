@@ -229,7 +229,7 @@ export class QuasiFuchsianGroups extends Applet
 		x2 = this.wilson.draggables.worldCoordinates[1][0],
 		y2 = this.wilson.draggables.worldCoordinates[1][1]
 	) {
-		//Use Grandma's recipe, canidate for the worst-named algorithm of the last two decades.
+		// Use Grandma's recipe, canidate for the worst-named algorithm of the last two decades.
 		const ta = new this.Complex(x1, y1);
 		const tb = new this.Complex(x2, y2);
 
@@ -299,7 +299,7 @@ export class QuasiFuchsianGroups extends Applet
 
 
 
-		//This weirdness lets us do 3 - index to reference an inverse.
+		// This weirdness lets us do 3 - index to reference an inverse.
 		for (let i = 0; i < 2; i++)
 		{
 			const ax = this.coefficients[i][0][0];
@@ -345,7 +345,7 @@ export class QuasiFuchsianGroups extends Applet
 		this.coefficients[1][3][0] = 1;
 		this.coefficients[1][3][1] = 0;
 
-		//This weirdness lets us do 3 - index to reference an inverse.
+		// This weirdness lets us do 3 - index to reference an inverse.
 		for (let i = 0; i < 2; i++)
 		{
 			const ax = this.coefficients[i][0][0];
@@ -371,7 +371,7 @@ export class QuasiFuchsianGroups extends Applet
 		x3 = this.wilson.draggables.worldCoordinates[2][0],
 		y3 = this.wilson.draggables.worldCoordinates[2][1]
 	) {
-		//Use Grandma's recipe, canidate for the worst-named algorithm of the last two decades.
+		// Use Grandma's recipe, canidate for the worst-named algorithm of the last two decades.
 		const ta = new this.Complex(x1, y1);
 		const tb = new this.Complex(x2, y2);
 		const tab = new this.Complex(x3, y3);
@@ -427,7 +427,7 @@ export class QuasiFuchsianGroups extends Applet
 
 
 
-		//This weirdness lets us do 3 - index to reference an inverse.
+		// This weirdness lets us do 3 - index to reference an inverse.
 		for (let i = 0; i < 2; i++)
 		{
 			const ax = this.coefficients[i][0][0];
@@ -565,7 +565,7 @@ export class QuasiFuchsianGroups extends Applet
 
 
 
-		//Dilate the image.
+		// Dilate the image.
 
 		const numDilations = this.imageSize >= 1000 ? 1 : 0;
 

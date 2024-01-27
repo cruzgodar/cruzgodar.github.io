@@ -15,7 +15,7 @@ let pixels = [];
 const boxSize = 50;
 const dt = .0005;
 
-//Since the attractor is centered at a high z-value, we need to shift the viewport.
+// Since the attractor is centered at a high z-value, we need to shift the viewport.
 const minZ = 0;
 
 let stepsPerColor = 5000;

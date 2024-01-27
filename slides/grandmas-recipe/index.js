@@ -233,8 +233,8 @@ const lapsa = new Lapsa({
 
 					frame++;
 
-					//Extremely gross and hard-coded --- I'll add a solution
-					//for this sort of thing eventually.
+					// Extremely gross and hard-coded --- I'll add a solution
+					// for this sort of thing eventually.
 					if (lapsa.currentSlide === 17)
 					{
 						applet.onDragDraggable();

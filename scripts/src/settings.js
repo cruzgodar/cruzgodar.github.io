@@ -78,7 +78,7 @@ export function getQueryParams()
 
 
 
-//Set to false, true, or null for when a page has forced a theme and it needs to change back.
+// Set to false, true, or null for when a page has forced a theme and it needs to change back.
 let revertThemeTo = null;
 
 export function setRevertThemeTo(newRevertThemeTo)

@@ -557,11 +557,11 @@ export class KaleidoscopicIFSFractal extends RaymarchApplet
 
 	distanceEstimator(x, y, z)
 	{
-		//We'll find the closest vertex, scale everything by a factor of 2
-		//centered on that vertex (so that we don't need to recalculate the vertices), and repeat.
+		// We'll find the closest vertex, scale everything by a factor of 2
+		// centered on that vertex (so that we don't need to recalculate the vertices), and repeat.
 		for (let iteration = 0; iteration < this.numSierpinskiIterations; iteration++)
 		{
-			//Fold space over on itself so that we can reference only the top vertex.
+			// Fold space over on itself so that we can reference only the top vertex.
 			const t1 = RaymarchApplet.dotProduct([x, y, z], this.n1[this.polyhedronIndex]);
 
 			if (t1 < 0)
@@ -603,7 +603,7 @@ export class KaleidoscopicIFSFractal extends RaymarchApplet
 
 
 
-			//Apply the first rotation matrix.
+			// Apply the first rotation matrix.
 
 			let tempX = x;
 			let tempY = y;
@@ -635,18 +635,18 @@ export class KaleidoscopicIFSFractal extends RaymarchApplet
 
 
 
-			//This one takes a fair bit of thinking to get. What's happening here is that
-			//we're stretching from a vertex, but since we never scale the vertices,
-			//the four new ones are the four closest to the vertex we scaled from.
-			//Now (x, y, z) will get farther and farther away from the origin,
-			//but that makes sense -- we're really just zooming in on the tetrahedron.
+			// This one takes a fair bit of thinking to get. What's happening here is that
+			// we're stretching from a vertex, but since we never scale the vertices,
+			// the four new ones are the four closest to the vertex we scaled from.
+			// Now (x, y, z) will get farther and farther away from the origin,
+			// but that makes sense -- we're really just zooming in on the tetrahedron.
 			x = this.scale * x - (this.scale - 1) * this.scaleCenter[this.polyhedronIndex][0];
 			y = this.scale * y - (this.scale - 1) * this.scaleCenter[this.polyhedronIndex][1];
 			z = this.scale * z - (this.scale - 1) * this.scaleCenter[this.polyhedronIndex][2];
 
 
 
-			//Apply the second rotation matrix.
+			// Apply the second rotation matrix.
 
 			tempX = x;
 			tempY = y;
@@ -679,8 +679,8 @@ export class KaleidoscopicIFSFractal extends RaymarchApplet
 
 
 
-		//So at this point we've scaled up by 2x a total of numIterations times.
-		//The final distance is therefore:
+		// So at this point we've scaled up by 2x a total of numIterations times.
+		// The final distance is therefore:
 		return Math.sqrt(x * x + y * y + z * z)
 			* Math.pow(this.scale, -this.numSierpinskiIterations);
 	}

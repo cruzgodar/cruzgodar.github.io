@@ -95,7 +95,7 @@ export class MagicCarpet extends Applet
 
 
 
-		//Draw the light gridlines (width 4).
+		// Draw the light gridlines (width 4).
 		if (!rectanglesOnly)
 		{
 			for (let i = 0; i <= this.gridSize; i++)
@@ -141,7 +141,7 @@ export class MagicCarpet extends Applet
 		{
 			this.wilson.ctx.font = `${this.cellSize * .6}px sans-serif`;
 
-			//Finally, draw the numbers.
+			// Finally, draw the numbers.
 			for (let i = 0; i < this.cages.length; i++)
 			{
 				this.drawNumber(i);

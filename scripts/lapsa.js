@@ -495,8 +495,8 @@ export default class Lapsa
 			
 			
 			
-			//The first and last several slides have different animations
-			//since they can't be in the middle of the screen in the table view.
+			// The first and last several slides have different animations
+			// since they can't be in the middle of the screen in the table view.
 			const centerSlide = Math.min(
 				Math.max(
 					(scaledSlidesPerScreen - 1) / 2,
@@ -641,7 +641,7 @@ export default class Lapsa
 		
 		
 		
-		//If there's a build available, we do that instead of moving to the next slide.
+		// If there's a build available, we do that instead of moving to the next slide.
 		if (
 			this.currentSlide >= 0
 			&& !skipBuilds && this._numBuilds[this.currentSlide] !== 0
@@ -649,8 +649,8 @@ export default class Lapsa
 		) {
 			const promises = [];
 			
-			//Gross code because animation durations are weird as hell --
-			//see the corresponding previousSlide block for a better example.
+			// Gross code because animation durations are weird as hell --
+			// see the corresponding previousSlide block for a better example.
 			this.slides[this.currentSlide].querySelectorAll(`[data-build="${this.buildState}"]`).forEach(element =>
 			{
 				this.buildIn(element, this.transitionAnimationTime * 2);
@@ -671,7 +671,7 @@ export default class Lapsa
 
 			catch(ex)
 			{
-				//No callback defined
+				// No callback defined
 			}
 			
 			await Promise.all(promises);
@@ -693,12 +693,12 @@ export default class Lapsa
 		}
 		
 		
-		//Fade out the current slide, show all its builds (for the table view),
-		//then load in the next slide and hide all of its builds.
+		// Fade out the current slide, show all its builds (for the table view),
+		// then load in the next slide and hide all of its builds.
 		
 		await this.fadeUpOut(this.slideContainer, this.transitionAnimationTime);
 		
-		//Reset the slide if necessary.
+		// Reset the slide if necessary.
 		if (this.currentSlide >= 0 && this.buildState !== this._numBuilds[this.currentSlide])
 		{
 			try
@@ -712,7 +712,7 @@ export default class Lapsa
 
 			catch(ex)
 			{
-				//No reset defined
+				// No reset defined
 			}
 			
 			this.slides[this.currentSlide].querySelectorAll("[data-build]")
@@ -738,7 +738,7 @@ export default class Lapsa
 
 		catch(ex)
 		{
-			//No reset defined
+			// No reset defined
 		}
 		
 		
@@ -766,7 +766,7 @@ export default class Lapsa
 		
 		
 		
-		//If there's a build available, we do that instead of moving to the previous slide.
+		// If there's a build available, we do that instead of moving to the previous slide.
 		if (!skipBuilds && this._numBuilds[this.currentSlide] !== 0 && this.buildState !== 0)
 		{
 			this.buildState--;
@@ -786,7 +786,7 @@ export default class Lapsa
 
 			catch(ex)
 			{
-				//No callback defined
+				// No callback defined
 			}
 			
 			await Promise.all(promises);
@@ -807,12 +807,12 @@ export default class Lapsa
 		
 		
 		
-		//Fade out the current slide, show all its builds (for the table view),
-		//then load in the previous slide and show all of its builds.
+		// Fade out the current slide, show all its builds (for the table view),
+		// then load in the previous slide and show all of its builds.
 		
 		await this.fadeDownOut(this.slideContainer, this.transitionAnimationTime);
 		
-		//Reset the slide if necessary.
+		// Reset the slide if necessary.
 		if (this.buildState !== this._numBuilds[this.currentSlide])
 		{
 			try
@@ -826,7 +826,7 @@ export default class Lapsa
 
 			catch(ex)
 			{
-				//No reset defined
+				// No reset defined
 			}
 			
 			this.slides[this.currentSlide].querySelectorAll("[data-build]")
@@ -851,7 +851,7 @@ export default class Lapsa
 
 		catch(ex)
 		{
-			//No reset defined
+			// No reset defined
 		}
 		
 		
@@ -902,7 +902,7 @@ export default class Lapsa
 		
 		
 		
-		//Reset the slide if necessary.
+		// Reset the slide if necessary.
 		if (this.currentSlide !== -1 && this.buildState !== this._numBuilds[this.currentSlide])
 		{
 			try
@@ -916,7 +916,7 @@ export default class Lapsa
 
 			catch(ex)
 			{
-				//No reset defined
+				// No reset defined
 			}
 			
 			this.slides[this.currentSlide].querySelectorAll("[data-build]")
@@ -941,7 +941,7 @@ export default class Lapsa
 
 		catch(ex)
 		{
-			//No reset defined
+			// No reset defined
 		}
 		
 		
@@ -990,10 +990,10 @@ export default class Lapsa
 		
 		const bodyRect = document.body.getBoundingClientRect();
 		
-		//The goal is to have room to display just under 4 slides vertically,
-		//then center on one so that the others are clipped, indicating it's scrollable.
-		//In a horizontal orientation, exactly one slide fits per screen.
-		//In a vertical one, we take a ratio.
+		// The goal is to have room to display just under 4 slides vertically,
+		// then center on one so that the others are clipped, indicating it's scrollable.
+		// In a horizontal orientation, exactly one slide fits per screen.
+		// In a vertical one, we take a ratio.
 		const slidesPerScreen = bodyRect.width / bodyRect.height >= 152 / 89
 			? 1
 			: bodyRect.height / (bodyRect.width * 89 / 152);
@@ -1004,8 +1004,8 @@ export default class Lapsa
 		
 		
 		
-		//The first and last two slides have different animations since
-		//they can't be in the middle of the screen in the table view.
+		// The first and last two slides have different animations since
+		// they can't be in the middle of the screen in the table view.
 		const centerSlide = Math.min(
 			Math.max(
 				(scaledSlidesPerScreen - 1) / 2,
@@ -1031,8 +1031,8 @@ export default class Lapsa
 		{
 			element.parentNode.style.transition = `top ${duration}ms ${this.tableViewEasing}`;
 			
-			//On these, we include the top margin term to match with how
-			//things were before -- otherwise, the transformation center will be misaligned.
+			// On these, we include the top margin term to match with how
+			// things were before -- otherwise, the transformation center will be misaligned.
 			if (bodyRect.width / bodyRect.height >= 152 / 89)
 			{
 				element.parentNode.style.top = `calc(${58.125 * 152 / 89 * (index - this.currentSlide) + 100 * this.currentSlide + 2.5} * var(--safe-vh))`;
@@ -1046,8 +1046,8 @@ export default class Lapsa
 		
 		
 		
-		//While all the slides are moving, we also show all builds that are
-		//currently hidden and request that the slide be reset to its final state.
+		// While all the slides are moving, we also show all builds that are
+		// currently hidden and request that the slide be reset to its final state.
 		if (this.buildState !== this._numBuilds[this.currentSlide])
 		{
 			const builds = this.slides[this.currentSlide].querySelectorAll("[data-build]");
@@ -1062,8 +1062,8 @@ export default class Lapsa
 				element.style.opacity = 1;
 			});
 			
-			//We don't await this one because we want it to run concurrently
-			//with the table view animation.
+			// We don't await this one because we want it to run concurrently
+			// with the table view animation.
 			try
 			{
 				const callbacks = this.callbacks[this.slides[this.currentSlide].id];
@@ -1075,7 +1075,7 @@ export default class Lapsa
 
 			catch(ex)
 			{
-				//No reset defined
+				// No reset defined
 			}
 			
 			setTimeout(() =>
@@ -1089,7 +1089,7 @@ export default class Lapsa
 		
 		
 		
-		//Only once this is done can we snap to the end. They'll never know the difference!
+		// Only once this is done can we snap to the end. They'll never know the difference!
 		await new Promise(resolve =>
 		{
 			setTimeout(() =>
@@ -1102,10 +1102,10 @@ export default class Lapsa
 				{
 					element.parentNode.style.transition = "";
 					
-					//Here, we no longer include the margin, since we don't want the slides
-					//to have a gap at the top. It's accounted for in the translation amount
-					//on the container, so it's all fine. The 5 is due to a somewhat strange effect
-					//that I don't quite understand.
+					// Here, we no longer include the margin, since we don't want the slides
+					// to have a gap at the top. It's accounted for in the translation amount
+					// on the container, so it's all fine. The 5 is due to a somewhat strange effect
+					// that I don't quite understand.
 					if (bodyRect.width / bodyRect.height >= 152 / 89)
 					{
 						element.parentNode.style.top = `calc(${5 + 58.125 * 152 / 89 * (index - centerSlide) + 100 * centerSlide} * var(--safe-vh))`;
@@ -1137,10 +1137,10 @@ export default class Lapsa
 				
 				const newTop = this.slides[this.currentSlide].getBoundingClientRect().top;
 				
-				//The old way was to scroll to correctTop and get newTop at that point.
-				//If correctTop was 100 and newTop was 25, then after scrolling to position 100,
-				//newTop was 25 further, so it was 125 at first.
-				//Therefore, we want newTop - correctTop here.
+				// The old way was to scroll to correctTop and get newTop at that point.
+				// If correctTop was 100 and newTop was 25, then after scrolling to position 100,
+				// newTop was 25 further, so it was 125 at first.
+				// Therefore, we want newTop - correctTop here.
 				
 				window.scrollTo(0, newTop - correctTop);
 				
@@ -1171,15 +1171,15 @@ export default class Lapsa
 		
 		
 		
-		//As with opening, this is a two-step process. First we snap back to a translated version,
-		//and then we return everything to its rightful place.
+		// As with opening, this is a two-step process. First we snap back to a translated version,
+		// and then we return everything to its rightful place.
 		
 		const bodyRect = document.body.getBoundingClientRect();
 		
-		//The goal is to have room to display just under 4 slides vertically,
-		//then center on one so that the others are clipped, indicating it's scrollable.
-		//In a horizontal orientation, exactly one slide fits per screen.
-		//In a vertical one, we take a ratio.
+		// The goal is to have room to display just under 4 slides vertically,
+		// then center on one so that the others are clipped, indicating it's scrollable.
+		// In a horizontal orientation, exactly one slide fits per screen.
+		// In a vertical one, we take a ratio.
 		const slidesPerScreen = bodyRect.width / bodyRect.height >= 152 / 89
 			? 1
 			: bodyRect.height / (bodyRect.width * 89 / 152);
@@ -1187,8 +1187,8 @@ export default class Lapsa
 		const scale = Math.min(slidesPerScreen / this.tableViewSlidesPerScreen, 1);
 		
 		
-		//The first and last two slides have different animations since they can't be
-		//in the middle of the screen in the table view.
+		// The first and last two slides have different animations since they can't be
+		// in the middle of the screen in the table view.
 		const centerSlide = Math.min(Math.max(1.25, this.currentSlide), this.slides.length - 2.25);
 		
 		const correctTop = this.slides[0].getBoundingClientRect().top;
@@ -1204,8 +1204,8 @@ export default class Lapsa
 		
 		this.slides.forEach((element, index) =>
 		{
-			//On these, we include the top margin term to match with how things were before --
-			//otherwise, the transformation center will be misaligned.
+			// On these, we include the top margin term to match with how things were before --
+			// otherwise, the transformation center will be misaligned.
 			if (bodyRect.width / bodyRect.height >= 152 / 89)
 			{
 				element.parentNode.style.top = `calc(${58.125 * 152 / 89 * (index - this.currentSlide) + 100 * this.currentSlide + 2.5} * var(--safe-vh))`;
@@ -1233,8 +1233,8 @@ export default class Lapsa
 		
 		
 		
-		//While all the slides are moving, we also hide all builds that are currently shown
-		//and request that the slide be reset to its initial state.
+		// While all the slides are moving, we also hide all builds that are currently shown
+		// and request that the slide be reset to its initial state.
 		const builds = this.slides[this.currentSlide].querySelectorAll("[data-build]");
 		const oldTransitionStyles = new Array(builds.length);
 		
@@ -1247,8 +1247,8 @@ export default class Lapsa
 			element.style.opacity = 0;
 		});
 		
-		//We don't await this one because we want it to run concurrently
-		//with the table view animation.
+		// We don't await this one because we want it to run concurrently
+		// with the table view animation.
 		try
 		{
 			const callbacks = this.callbacks[this.slides[this.currentSlide].id];
@@ -1260,7 +1260,7 @@ export default class Lapsa
 
 		catch(ex)
 		{
-			//No reset defined
+			// No reset defined
 		}
 		
 		setTimeout(() =>
@@ -1273,10 +1273,10 @@ export default class Lapsa
 		
 		
 		
-		//Now we can return all the slides to their proper places.
+		// Now we can return all the slides to their proper places.
 		
-		//Someday, I will understand why these four lines need to be
-		//the way they are. And then I will finally rest.
+		// Someday, I will understand why these four lines need to be
+		// the way they are. And then I will finally rest.
 		this.slideContainer.style.transition = "";
 		this.slideContainer.style.transform = `matrix(${scale}, 0, 0, ${scale}, 0, ${scroll})`;
 		
@@ -1602,10 +1602,10 @@ export default class Lapsa
 			
 			this._lastMousemoveEvent = Date.now();
 			
-			//Checking if it's >= 3 kinda sucks, but it seems like touch devices
-			//like to fire two mousemoves in quick succession sometimes.
-			//They also like to make that delay exactly 33.
-			//Look, I hate this too, but it needs to be here.
+			// Checking if it's >= 3 kinda sucks, but it seems like touch devices
+			// like to fire two mousemoves in quick succession sometimes.
+			// They also like to make that delay exactly 33.
+			// Look, I hate this too, but it needs to be here.
 			if (
 				timeBetweenMousemoves >= 3
 				&& timeBetweenMousemoves <= 50

@@ -1,22 +1,22 @@
 export class BaseGeometry
 {
-	geodesicGlsl = /*glsl*/`
+	geodesicGlsl = /* glsl*/`
 		vec4 pos = startPos + t * rayDirectionVec;
 	`;
 
-	dotProductGlsl = /*glsl*/`
+	dotProductGlsl = /* glsl*/`
 		return dot(v, w);
 	`;
 
-	normalizeGlsl = /*glsl*/`
+	normalizeGlsl = /* glsl*/`
 		return normalize(dir);
 	`;
 
-	fogGlsl = /*glsl*/`
+	fogGlsl = /* glsl*/`
 		return mix(color, fogColor, 1.0 - exp(-length(pos - cameraPos) * fogScaling));
 	`;
 
-	updateTGlsl = /*glsl*/`
+	updateTGlsl = /* glsl*/`
 		lastTIncrease = distance * stepFactor;
 		
 		t += lastTIncrease;
@@ -52,7 +52,7 @@ export class BaseGeometry
 
 	getNormalVec()
 	{
-		//f = w - 1.
+		// f = w - 1.
 		return [0, 0, 0, 1];
 	}
 
@@ -61,8 +61,8 @@ export class BaseGeometry
 		return pos;
 	}
 
-	//Surprisingly necessary -- this corrects the frame so that no vector looks in the normal
-	//direction at all.
+	// Surprisingly necessary -- this corrects the frame so that no vector looks in the normal
+	// direction at all.
 	correctVectors()
 	{
 		const dotUp = this.dotProduct(

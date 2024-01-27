@@ -323,7 +323,7 @@ const options =
 
 
 
-			//Highlight the zigzag path.
+			// Highlight the zigzag path.
 			0: async (slide, forward, duration = 600) =>
 			{
 				applet.animationTime = duration;
@@ -356,7 +356,7 @@ const options =
 				}
 			},
 
-			//Highlight the pivot.
+			// Highlight the pivot.
 			1: async (slide, forward, duration = 600) =>
 			{
 				applet.animationTime = duration;
@@ -674,7 +674,7 @@ const options =
 				await changeOpacity(canvasBundle, 1, duration / 2);
 			},
 
-			//Highlight O.
+			// Highlight O.
 			0: async (slide, forward, duration = 600) =>
 			{
 				applet.animationTime = duration;
@@ -711,7 +711,7 @@ const options =
 				}
 			},
 
-			//Highlight I.
+			// Highlight I.
 			1: async (slide, forward, duration = 600) =>
 			{
 				applet.animationTime = duration;
@@ -743,7 +743,7 @@ const options =
 				}
 			},
 
-			//Highlight A.
+			// Highlight A.
 			2: async (slide, forward, duration = 600) =>
 			{
 				applet.animationTime = duration;
@@ -770,7 +770,7 @@ const options =
 				}
 			},
 
-			//Highlight B.
+			// Highlight B.
 			3: async (slide, forward, duration = 600) =>
 			{
 				applet.animationTime = duration;

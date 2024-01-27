@@ -135,7 +135,7 @@ export class SudokuGenerator extends Applet
 
 
 
-		//Draw the inner gridlines (width 2).
+		// Draw the inner gridlines (width 2).
 		for (let i = 0; i <= 9; i++)
 		{
 			if (i % 3 === 0)
@@ -150,7 +150,7 @@ export class SudokuGenerator extends Applet
 
 
 
-		//Finally, draw the numbers.
+		// Finally, draw the numbers.
 		for (let i = 0; i < 9; i++)
 		{
 			for (let j = 0; j < 9; j++)

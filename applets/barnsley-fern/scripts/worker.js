@@ -78,12 +78,12 @@ function drawFern()
 
 
 
-		//This scales col to [0, 1].
+		// This scales col to [0, 1].
 		let col = (currentX - minX) / (maxX - minX);
 
 		col = Math.floor(gridSize * col);
 
-		//This scales row to [0, 1].
+		// This scales row to [0, 1].
 		let row = (currentY - minY) / (maxY - minY);
 
 		row = Math.floor(gridSize * (1 - row));

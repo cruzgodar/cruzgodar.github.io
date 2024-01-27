@@ -22,9 +22,10 @@
 		"/jsconfig.json",
 		"/scripts/src/sitemap.js"
 	],
+	"plugins": ["@stylistic"],
     "rules": {
         "indent": [
-            "error",
+            "warn",
             "tab",
 			{ "SwitchCase": 1 }
         ],
@@ -36,7 +37,7 @@
             "warn",
             "double"
         ],
-        "semi": [
+        "@stylistic/semi": [
             "error",
             "always"
         ],
@@ -91,16 +92,20 @@
 			{ "max": 3, "maxEOF": 0 }
 		],
 		"object-shorthand": [
-			"error",
+			"warn",
 			"always",
 			{ "avoidQuotes": true }
 		],
 		"constructor-super": ["error"],
-		"no-constant-binary-expression": ["error"],
+		"no-constant-binary-expression": ["warn"],
 		"no-constructor-return": ["error"],
 		"no-duplicate-imports": ["warn"],
 		"no-new-native-nonconstructor": ["error"],
 		"no-self-compare": ["warn"],
-		"no-unmodified-loop-condition": ["warn"]
+		"no-unmodified-loop-condition": ["warn"],
+		"@stylistic/spaced-comment": [
+            "warn",
+            "always"
+        ]
 	}
 }

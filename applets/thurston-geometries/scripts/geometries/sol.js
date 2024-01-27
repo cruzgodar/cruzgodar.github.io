@@ -4,17 +4,17 @@ import { $ } from "/scripts/src/main.js";
 
 class SolGeometry extends BaseGeometry
 {
-	geodesicGlsl = /*glsl*/`
+	geodesicGlsl = /* glsl*/`
 		vec4 pos = getUpdatedPos(startPos, rayDirectionVec, t);
 
 		// globalColor += teleportPos(pos, startPos, rayDirectionVec, t, totalT);
 	`;
 
-	fogGlsl = /*glsl*/`
+	fogGlsl = /* glsl*/`
 		return mix(color, fogColor, 1.0 - exp(-totalT * 0.2));
 	`;
 
-	functionGlsl = /*glsl*/`
+	functionGlsl = /* glsl*/`
 		float sinh(float x)
 		{
 			return .5 * (exp(x) - exp(-x));
@@ -124,12 +124,12 @@ class SolGeometry extends BaseGeometry
 
 export class SolRooms extends SolGeometry
 {
-	static distances = /*glsl*/`
+	static distances = /* glsl*/`
 		float radius = wallThickness;
 		float distance1 = 0.0;
 	`;
 
-	distanceEstimatorGlsl = /*glsl*/`
+	distanceEstimatorGlsl = /* glsl*/`
 		${SolRooms.distances}
 
 		float minDistance = distance1;
@@ -137,7 +137,7 @@ export class SolRooms extends SolGeometry
 		return minDistance;
 	`;
 
-	getColorGlsl = /*glsl*/`
+	getColorGlsl = /* glsl*/`
 		// return vec3(
 		// 	.35 + .65 * (.5 * (sin((.0125 * pos.x + baseColor.x + globalColor.x + .5) * 40.0) + 1.0)),
 		// 	.35 + .65 * (.5 * (sin((.0125 * pos.y + baseColor.y + globalColor.y + .5) * 57.0) + 1.0)),
@@ -147,7 +147,7 @@ export class SolRooms extends SolGeometry
 		return vec3(0.5, 0.5, 0.5);
 	`;
 
-	lightGlsl = /*glsl*/`
+	lightGlsl = /* glsl*/`
 		surfaceNormal.w = 0.0;
 
 		vec4 lightDirection1 = normalize(vec4(3.0, -3.0, 3.0, 1.0) - pos);
@@ -175,7 +175,7 @@ export class SolRooms extends SolGeometry
 	rightVec = [0, 1, 0, 0];
 	forwardVec = [1, 0, 0, 0];
 
-	uniformGlsl = /*glsl*/`
+	uniformGlsl = /* glsl*/`
 		uniform float wallThickness;
 		uniform vec3 baseColor;
 	`;

@@ -9,7 +9,7 @@ const elementSelectors = `
 	.carousel-dot
 `;
 
-//These elements need to have their scale increased when hovered.
+// These elements need to have their scale increased when hovered.
 const elementSelectorsWithScale =
 [
 	["#logo img", 1.05],
@@ -27,7 +27,7 @@ const elementSelectorsWithScale =
 
 
 
-//Adds a listener to every element that needs a hover event.
+// Adds a listener to every element that needs a hover event.
 export function setUpHoverEvents()
 {
 	$$(elementSelectors).forEach(element => addHoverEvent(element));

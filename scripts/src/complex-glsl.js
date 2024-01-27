@@ -137,7 +137,7 @@ export async function loadGlsl()
 		return;
 	}
 
-	//If it's in the process of loading, return a promise that will resolve when it's done.
+	// If it's in the process of loading, return a promise that will resolve when it's done.
 	if (!loadedGlsl && loadGlslPromise)
 	{
 		return loadGlslPromise;
@@ -150,7 +150,7 @@ export async function loadGlsl()
 
 async function loadGlslLogic()
 {
-	//constants and main are always fetched.
+	// constants and main are always fetched.
 	const response = await fetch("/scripts/glsl/constants");
 
 	const text = await response.text();
@@ -204,7 +204,7 @@ async function loadGlslLogic()
 
 
 
-	//Figure out the depth of everything.
+	// Figure out the depth of everything.
 
 	const filenames = Object.keys(glslFiles);
 
@@ -271,10 +271,10 @@ async function loadGlslLogic()
 
 
 
-//Returns a bundle of all required glsl to handle the given function.
+// Returns a bundle of all required glsl to handle the given function.
 export function getGlslBundle(codeString)
 {
-	//First, we need to identify the keywords in the provided string.
+	// First, we need to identify the keywords in the provided string.
 	const keywords = codeString.match(/[a-zA-Z_][a-zA-Z0-9_]*/g);
 
 	let bundle = "";
@@ -285,7 +285,7 @@ export function getGlslBundle(codeString)
 
 	filenames.forEach(filename => filesToInclude[filename] = false);
 
-	//main is always required.
+	// main is always required.
 	filesToInclude["main"] = true;
 
 
@@ -331,7 +331,7 @@ export function getGlslBundle(codeString)
 
 
 
-	//constants and main are always included.
+	// constants and main are always included.
 	bundle = glslFiles["constants"].content + glslFiles["main"].content;
 
 	for (let i = 1; i < glslFilesByDepth.length; i++)

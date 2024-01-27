@@ -13,8 +13,8 @@ let edgesInTree = [];
 let verticesNotInTree = [];
 const verticesInTree = [];
 
-//This has 0s for the vertices not already in the tree and 1s for the
-//ones that are. It's 1D so that it can be passed through to the C.
+// This has 0s for the vertices not already in the tree and 1s for the
+// ones that are. It's 1D so that it can be passed through to the C.
 const grid = [];
 
 let newVertices = [];
@@ -37,7 +37,7 @@ async function drawWilsonGraph()
 {
 	edgesInTree = [];
 
-	//This is a one-dimensional list of length n*n, where the vertex (i, j) is at position n*i + j.
+	// This is a one-dimensional list of length n*n, where the vertex (i, j) is at position n*i + j.
 	verticesNotInTree = [];
 
 	for (let i = 0; i < gridSize; i++)
@@ -85,20 +85,20 @@ async function wilsonStep()
 
 	if (reverseGenerateSkeleton)
 	{
-		//The correct way to run Wilson's algorithm is to take a random point
-		//not on the tree and so a LERW until the tree is hit. When the tree is small
-		//and the graph is large, though, this is not feasible. The effect is that
-		//graphs above 1000x1000 are pretty much impossible. To make things faster,
-		//we'll instead use this method when the usual one takes longer than 3 seconds
-		//without response. Here, we start by drawing a relatively short line, then picking
-		//a point *on* the line and making a LERW away from that.
+		// The correct way to run Wilson's algorithm is to take a random point
+		// not on the tree and so a LERW until the tree is hit. When the tree is small
+		// and the graph is large, though, this is not feasible. The effect is that
+		// graphs above 1000x1000 are pretty much impossible. To make things faster,
+		// we'll instead use this method when the usual one takes longer than 3 seconds
+		// without response. Here, we start by drawing a relatively short line, then picking
+		// a point *on* the line and making a LERW away from that.
 
 
 
-		//This is a little subtle. If we've never drawn a single line, then we start
-		//somewhere pretty close to the center. Otherwise, we don't set currentRow
-		//and currentColumn to anything, thereby leaving them as the endpoints
-		//of the previous random walk.
+		// This is a little subtle. If we've never drawn a single line, then we start
+		// somewhere pretty close to the center. Otherwise, we don't set currentRow
+		// and currentColumn to anything, thereby leaving them as the endpoints
+		// of the previous random walk.
 
 		if (verticesInTree.length === 0)
 		{
@@ -112,15 +112,15 @@ async function wilsonStep()
 
 
 
-		//We don't include the last vertex, since it could connect back to the tree.
+		// We don't include the last vertex, since it could connect back to the tree.
 		newVertices.splice(newVertices.length - 1, 1);
 
 		if (newVertices.length < 99)
 		{
-			//If we failed to get a long enough random walk from here, there's a chance that
-			//we're inside a cage of some sort. We might need to pick a new starting location
-			//for the next run, but we want to make sure that we're giving this place a
-			//proper chance. Therefore, we'll give it 100 attempts.
+			// If we failed to get a long enough random walk from here, there's a chance that
+			// we're inside a cage of some sort. We might need to pick a new starting location
+			// for the next run, but we want to make sure that we're giving this place a
+			// proper chance. Therefore, we'll give it 100 attempts.
 			if (randomWalkFromEndpointAttmepts < 100)
 			{
 				randomWalkFromEndpointAttmepts++;
@@ -154,7 +154,7 @@ async function wilsonStep()
 
 		numSkeletonLines++;
 
-		//We need to stop doing this at some point.
+		// We need to stop doing this at some point.
 		if (numSkeletonLines === Math.floor(gridSize / 5))
 		{
 			reverseGenerateSkeleton = false;
@@ -167,7 +167,7 @@ async function wilsonStep()
 
 	else
 	{
-		//Pick a random vertex not in the tree.
+		// Pick a random vertex not in the tree.
 		const newIndex = Math.floor(Math.random() * verticesNotInTree.length);
 
 		currentRow = verticesNotInTree[newIndex][0];
@@ -200,7 +200,7 @@ async function wilsonStep()
 
 
 
-	//Draw this walk.
+	// Draw this walk.
 	for (let i = 0; i < newVertices.length - 1; i++)
 	{
 		if (maximumSpeed)
@@ -230,7 +230,7 @@ async function wilsonStep()
 
 
 
-	//Now we can add all the vertices and edges.
+	// Now we can add all the vertices and edges.
 	for (let i = 0; i < newVertices.length; i++)
 	{
 		grid[gridSize * newVertices[i][0] + newVertices[i][1]] = 1;
@@ -254,11 +254,11 @@ async function wilsonStep()
 
 
 
-//Performs a loop-erased random walk. If fixedLength === true,
-//then rather than waiting until the walk hits the tree,
-//it will just go until the walk is a certain length.
-//This keeps that first walk from taking a ridiculous amount of time
-//while still making the output graph be relatively random.
+// Performs a loop-erased random walk. If fixedLength === true,
+// then rather than waiting until the walk hits the tree,
+// it will just go until the walk is a certain length.
+// This keeps that first walk from taking a ridiculous amount of time
+// while still making the output graph be relatively random.
 function wasmRandomWalk(fixedLength = 0)
 {
 	// eslint-disable-next-line no-undef
@@ -270,7 +270,7 @@ function wasmRandomWalk(fixedLength = 0)
 		{ heapIn: "HEAPU32" }
 	);
 
-	//The length of the array is stored as its first element.
+	// The length of the array is stored as its first element.
 	// eslint-disable-next-line no-undef
 	const numNewVertices = Module.HEAPU32[newVerticesPtr / Uint32Array.BYTES_PER_ELEMENT];
 
@@ -289,10 +289,10 @@ function wasmRandomWalk(fixedLength = 0)
 
 
 
-	//Here's the idea. C is great when it can run by itself for a little while,
-	//but when there are tons and tons of calls back-and-forth, the overhead of WebAssembly
-	//starts to show itself. To that end, once we've had 10 random walks
-	//of length less than gridSize / 10, we'll switch to making the rest of the graph with js.
+	// Here's the idea. C is great when it can run by itself for a little while,
+	// but when there are tons and tons of calls back-and-forth, the overhead of WebAssembly
+	// starts to show itself. To that end, once we've had 10 random walks
+	// of length less than gridSize / 10, we'll switch to making the rest of the graph with js.
 	if (reverseGenerateSkeleton === false && numNewVertices < gridSize / 10)
 	{
 		numShortPathsInARow++;
@@ -319,10 +319,10 @@ function jsRandomWalk(fixedLength = 0)
 
 
 
-	//Go until we hit the tree.
+	// Go until we hit the tree.
 	for (;;)
 	{
-		//Move either up, left, down, or right. 0 = up, 1 = left, 2 = down, and 3 = right.
+		// Move either up, left, down, or right. 0 = up, 1 = left, 2 = down, and 3 = right.
 		let possibleDirections = [];
 
 
@@ -349,7 +349,7 @@ function jsRandomWalk(fixedLength = 0)
 
 
 
-		//Edges.
+		// Edges.
 		else if (currentRow === 0)
 		{
 			possibleDirections = [1, 2, 3];
@@ -372,7 +372,7 @@ function jsRandomWalk(fixedLength = 0)
 
 
 
-		//Everything else.
+		// Everything else.
 		else
 		{
 			possibleDirections = [0, 1, 2, 3];
@@ -406,9 +406,9 @@ function jsRandomWalk(fixedLength = 0)
 
 
 
-		//If not, then we need to know when we hit our own random walk --
-		//before we can put our new vertex into the walk, we need to see
-		//if we've already been there.
+		// If not, then we need to know when we hit our own random walk --
+		// before we can put our new vertex into the walk, we need to see
+		// if we've already been there.
 		const revertIndex = vertexInArray([currentRow, currentColumn], newVertices);
 
 		if (revertIndex !== -1)
@@ -426,7 +426,7 @@ function jsRandomWalk(fixedLength = 0)
 
 
 
-		//If we hit the tree or reached the right length, we're done.
+		// If we hit the tree or reached the right length, we're done.
 		if (grid[gridSize * currentRow + currentColumn] === 1)
 		{
 			break;
@@ -443,8 +443,8 @@ function jsRandomWalk(fixedLength = 0)
 
 async function colorGraph(linearColoring = false)
 {
-	//First, create an array whose (i, j) entry is a list of all
-	//the connection directions from vertex (i, j).
+	// First, create an array whose (i, j) entry is a list of all
+	// the connection directions from vertex (i, j).
 	const connectionDirections = [];
 
 	for (let i = 0; i < gridSize; i++)
@@ -467,7 +467,7 @@ async function colorGraph(linearColoring = false)
 		const row2 = edgesInTree[i][1][0];
 		const column2 = edgesInTree[i][1][1];
 
-		//The rows are the same, so the direction is either left or right.
+		// The rows are the same, so the direction is either left or right.
 		if (row1 === row2)
 		{
 			if (!(connectionDirections[row1][Math.min(column1, column2)].includes(1)))
@@ -481,7 +481,7 @@ async function colorGraph(linearColoring = false)
 			}
 		}
 
-		//The columns are the same, so the direction is either up or down.
+		// The columns are the same, so the direction is either up or down.
 		else
 		{
 			if (!(connectionDirections[Math.min(row1, row2)][column1].includes(2)))
@@ -502,8 +502,8 @@ async function colorGraph(linearColoring = false)
 
 
 
-	//Now start at the middle of the graph. The syntax for a path is
-	//(row, column, distance from center).
+	// Now start at the middle of the graph. The syntax for a path is
+	// (row, column, distance from center).
 	let activePaths = [];
 
 	if (gridSize % 2 === 1)
@@ -538,22 +538,22 @@ async function colorGraph(linearColoring = false)
 
 
 
-	//While there are still paths active, extend each one.
+	// While there are still paths active, extend each one.
 	while (activePaths.length > 0)
 	{
 		const numActivePaths = activePaths.length;
 
 
 
-		//For every vertex connected to each active path end,
-		//make a new path, but only if we've never been there before.
+		// For every vertex connected to each active path end,
+		// make a new path, but only if we've never been there before.
 		for (let i = 0; i < numActivePaths; i++)
 		{
 			const row = activePaths[i][0];
 			const column = activePaths[i][1];
 			const distance = activePaths[i][2];
 
-			//Record how far away from the center we are.
+			// Record how far away from the center we are.
 			distanceFromCenter[row][column] = distance;
 
 
@@ -593,23 +593,23 @@ async function colorGraph(linearColoring = false)
 
 
 
-		//Now remove all of the current paths.
+		// Now remove all of the current paths.
 		activePaths.splice(0, numActivePaths);
 	}
 
 
 
-	//Now that we finally have all the edges organized by
-	//distance, we can loop through all of them in order.
+	// Now that we finally have all the edges organized by
+	// distance, we can loop through all of them in order.
 	edgesByDistance.sort((a, b) => a[2] - b[2]);
 
-	//The factor of 7/6 makes the farthest color from red be colored pink rather than red again.
+	// The factor of 7/6 makes the farthest color from red be colored pink rather than red again.
 	const maxDistance = edgesByDistance[edgesByDistance.length - 1][2] * 7 / 6;
 
 
 
-	//We want to draw each color at once, so we need to
-	//split up the edges into sections with constant distance.
+	// We want to draw each color at once, so we need to
+	// split up the edges into sections with constant distance.
 
 	const distanceBreaks = [0];
 	let currentDistance = 0;
@@ -625,7 +625,7 @@ async function colorGraph(linearColoring = false)
 
 	distanceBreaks.push(edgesByDistance.length);
 
-	//Now, finally, we can draw the colors.
+	// Now, finally, we can draw the colors.
 	for (let i = 0; i < distanceBreaks.length; i++)
 	{
 		let j = 0;
@@ -648,7 +648,7 @@ async function colorGraph(linearColoring = false)
 			continue;
 		}
 
-		//We only wait for this one.
+		// We only wait for this one.
 		if (maximumSpeed)
 		{
 			drawLine(edgesByDistance[j][0][0], edgesByDistance[j][0][1], edgesByDistance[j][1][0], edgesByDistance[j][1][1], `rgb(${rgb[0]}, ${rgb[1]}, ${rgb[2]})`, 24);

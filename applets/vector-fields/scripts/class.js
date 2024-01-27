@@ -27,7 +27,7 @@ export class VectorField extends Applet
 
 	lastTimestamp = -1;
 
-	//A long array of particles of the form [x, y, remaining lifetime].
+	// A long array of particles of the form [x, y, remaining lifetime].
 	particles = [];
 
 	freeParticleSlots = [];
@@ -532,7 +532,7 @@ export class VectorField extends Applet
 
 		for (let i = 0; i < this.maxParticles; i++)
 		{
-			//x, y, lifetime, hue, saturation
+			// x, y, lifetime, hue, saturation
 			this.particles[i] = [0, 0, 0];
 			this.freeParticleSlots[i] = i;
 		}
@@ -590,10 +590,10 @@ export class VectorField extends Applet
 
 	drawFrame(timestamp)
 	{
-		//Wrapping everything in a try block and eating the occasional error is pretty gross,
-		//but it's actually a decent solution: everything is fine unless the user resizes the window
-		//faster than the screen refresh rate, meaning we access out of bounds in the middle of this
-		//function. We can fix that by just restarting whenever it happens.
+		// Wrapping everything in a try block and eating the occasional error is pretty gross,
+		// but it's actually a decent solution: everything is fine unless the user
+		// resizes the window faster than the screen refresh rate, meaning we access out of bounds
+		// in the middle of this function. We can fix that by just restarting whenever it happens.
 		try
 		{
 			const timeElapsed = timestamp - this.lastTimestamp;
@@ -619,12 +619,12 @@ export class VectorField extends Applet
 
 
 
-			//If there's not enough particles, we add what's missing,
-			//capped at 1% of the total particle count.
+			// If there's not enough particles, we add what's missing,
+			// capped at 1% of the total particle count.
 			if (this.numParticles < this.maxParticles)
 			{
-				//We find the first open slot we can and search from the end
-				//of the list so that we can slice more efficiently.
+				// We find the first open slot we can and search from the end
+				// of the list so that we can slice more efficiently.
 				const numToAdd = Math.min(
 					Math.ceil(this.maxParticles / 80),
 					this.maxParticles - this.numParticles
@@ -648,7 +648,7 @@ export class VectorField extends Applet
 			this.lastPanVelocitiesX.shift();
 			this.lastPanVelocitiesY.shift();
 
-			//This lets us only move the canvas when we have at least one pixel to move.
+			// This lets us only move the canvas when we have at least one pixel to move.
 			if (this.nextPanVelocityX !== 0 || this.nextPanVelocityY !== 0)
 			{
 				let xDelta = -this.nextPanVelocityX;
@@ -793,7 +793,7 @@ export class VectorField extends Applet
 
 	destroyParticle(index)
 	{
-		//Set the lifetime to 0 if it wasn't already.
+		// Set the lifetime to 0 if it wasn't already.
 		this.particles[index][2] = 0;
 
 		this.freeParticleSlots.push(index);
@@ -865,7 +865,7 @@ export class VectorField extends Applet
 
 
 
-		//Extremely hacky way to fix the saturation bug on iOS.
+		// Extremely hacky way to fix the saturation bug on iOS.
 
 		this.wilsonUpdate.gl.useProgram(this.wilsonUpdate.render.shaderPrograms[4]);
 		this.wilsonUpdate.render.drawFrame();
@@ -968,7 +968,7 @@ export class VectorField extends Applet
 
 
 
-	//Call this before changing the world parameters!
+	// Call this before changing the world parameters!
 	panGrid(xDelta, yDelta)
 	{
 		this.wilsonDim.gl.useProgram(this.wilsonDim.render.shaderPrograms[1]);
@@ -987,7 +987,7 @@ export class VectorField extends Applet
 
 
 
-	//Call this before changing the world parameters!
+	// Call this before changing the world parameters!
 	zoomGrid(fixedPointX, fixedPointY, zoomDelta)
 	{
 		if (this.zoomLevel <= -3 || this.zoomLevel >= 3)
@@ -995,8 +995,8 @@ export class VectorField extends Applet
 			return;
 		}
 
-		//Ex: if the scale is 2 and goes to 3, the delta is +1,
-		//so we actually want to multiply things by 2^(-1) to get the source places.
+		// Ex: if the scale is 2 and goes to 3, the delta is +1,
+		// so we actually want to multiply things by 2^(-1) to get the source places.
 		const scale = Math.pow(2, zoomDelta);
 
 		const fixedX = (fixedPointX - this.wilson.worldCenterX) / this.wilson.worldWidth + .5;
@@ -1016,7 +1016,7 @@ export class VectorField extends Applet
 		this.wilson.draggables.recalculateLocations();
 
 
-		//When we zoom out, we also cull the particles a little.
+		// When we zoom out, we also cull the particles a little.
 		if (zoomDelta > 0)
 		{
 			const chance = Math.pow(2, zoomDelta * 1.5);
@@ -1066,7 +1066,7 @@ export class VectorField extends Applet
 
 	onDragCanvas(x, y, xDelta, yDelta)
 	{
-		//The += here lets us only move the canvas when we have at least one pixel to move.
+		// The += here lets us only move the canvas when we have at least one pixel to move.
 		this.nextPanVelocityX += -xDelta;
 		this.nextPanVelocityY += -yDelta;
 	}

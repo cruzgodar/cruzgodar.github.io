@@ -1,8 +1,8 @@
 import { removeHoverEvents } from "./hover-events.js";
 
-//Whether this is a touchscreen device on the current page.
-//It's assumed to be false on every page until a touchstart or touchmove
-//event is detected, at which point it's set to true.
+// Whether this is a touchscreen device on the current page.
+// It's assumed to be false on every page until a touchstart or touchmove
+// event is detected, at which point it's set to true.
 export let currentlyTouchDevice =
 	"ontouchstart" in window
 	|| navigator.maxTouchPoints > 0
@@ -25,10 +25,10 @@ export function setUpInteractionListeners()
 
 			lastMousemoveEvent = Date.now();
 
-			//Checking if it's >= 3 kinda sucks, but it seems like touch devices
-			//like to fire two mousemoves in quick succession sometimes.
-			//They also like to make that delay exactly 33.
-			//Look, I hate this too, but it needs to be here.
+			// Checking if it's >= 3 kinda sucks, but it seems like touch devices
+			// like to fire two mousemoves in quick succession sometimes.
+			// They also like to make that delay exactly 33.
+			// Look, I hate this too, but it needs to be here.
 			if (
 				timeBetweenMousemoves >= 3
 				&& timeBetweenMousemoves <= 50
@@ -43,7 +43,7 @@ export function setUpInteractionListeners()
 
 	document.documentElement.addEventListener("keydown", (e) =>
 	{
-		//Click the focused element when the enter key is pressed.
+		// Click the focused element when the enter key is pressed.
 		if (e.key === "Enter")
 		{
 			if (document.activeElement.classList.contains("click-on-child"))
@@ -67,7 +67,7 @@ export function setUpInteractionListeners()
 
 
 
-	//Remove focus when moving the mouse or touching anything.
+	// Remove focus when moving the mouse or touching anything.
 	document.documentElement.addEventListener("mousedown", () =>
 	{
 		if (

@@ -48,7 +48,7 @@ export function load()
 		{
 			applet.drawingFractal = true;
 
-			//What the actual fuck
+			// What the actual fuck
 			applet.hidePendulumDrawerCanvas();
 
 

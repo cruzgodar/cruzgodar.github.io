@@ -64,7 +64,7 @@ export class SimulatedAnnealing extends Applet
 
 		this.webWorker.onmessage = (e) =>
 		{
-			//A circle with arguments (x, y, r, color).
+			// A circle with arguments (x, y, r, color).
 			if (e.data[0] === 0)
 			{
 				this.wilson.ctx.fillStyle = e.data[4];
@@ -84,7 +84,7 @@ export class SimulatedAnnealing extends Applet
 				this.wilson.ctx.fill();
 			}
 
-			//A line with arguments (x1, y1, x2, y2, color).
+			// A line with arguments (x1, y1, x2, y2, color).
 			else if (e.data[0] === 1)
 			{
 				this.wilson.ctx.strokeStyle = e.data[5];

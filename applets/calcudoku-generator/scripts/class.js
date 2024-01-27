@@ -136,7 +136,7 @@ export class CalcudokuGenerator extends Applet
 
 
 
-		//Draw the light gridlines (width 2).
+		// Draw the light gridlines (width 2).
 		for (let i = 0; i <= this.gridSize; i++)
 		{
 			this.wilson.ctx.fillRect(200 * i + 4, 0, 2, canvasSize + 9);
@@ -145,8 +145,8 @@ export class CalcudokuGenerator extends Applet
 
 
 
-		//Now draw the cages. For each cell of the grid, we draw a line
-		//with width 10 if an adjacent cell is part of a different cage.
+		// Now draw the cages. For each cell of the grid, we draw a line
+		// with width 10 if an adjacent cell is part of a different cage.
 		for (let i = 0; i < this.gridSize; i++)
 		{
 			for (let j = 0; j < this.gridSize; j++)
@@ -183,10 +183,10 @@ export class CalcudokuGenerator extends Applet
 
 
 
-		//Finally, draw the numbers.
+		// Finally, draw the numbers.
 		for (let i = 0; i < this.cages.length; i++)
 		{
-			//Find the leftmost cell in the top row of the cage.
+			// Find the leftmost cell in the top row of the cage.
 			let topLeftCell = [this.gridSize, this.gridSize];
 
 			for (let j = 0; j < this.cages[i][2].length; j++)

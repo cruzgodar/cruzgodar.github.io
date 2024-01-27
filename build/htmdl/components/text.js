@@ -3,13 +3,13 @@ import { parseLatex } from "./latex.js";
 
 export function parseText(text)
 {
-	//None of the delimiters * and ` can be parsed if they're inside
-	//math mode, so we'll modify those things and put them back afterward.
-	//The syntax [^\$] means any character other than a dollar sign.
+	// None of the delimiters * and ` can be parsed if they're inside
+	// math mode, so we'll modify those things and put them back afterward.
+	// The syntax [^\$] means any character other than a dollar sign.
 
-	//First, we replace ending dollar signs with [END$] to differentiate them
-	//for later. Otherwise, delimiters between dollar signs would be matched too.
-	//We also replace escaped characters.
+	// First, we replace ending dollar signs with [END$] to differentiate them
+	// for later. Otherwise, delimiters between dollar signs would be matched too.
+	// We also replace escaped characters.
 	let html = text
 		.replaceAll(/\\\$/g, "[DOLLARSIGN]")
 		.replaceAll(/\\`/g, "[BACKTICK]")
@@ -24,7 +24,7 @@ export function parseText(text)
 
 
 
-	//Escape every asterisk, backtick, and quote inside dollar signs.
+	// Escape every asterisk, backtick, and quote inside dollar signs.
 	while (html.match(/\$([^$]*?)\*([^$]*?)\[END\$\]/))
 	{
 		html = html.replaceAll(/\$([^$]*?)\*([^$]*?)\[END\$\]/g, (match, $1, $2) => `$${$1}[ASTERISK]${$2}[END$]`);
@@ -57,14 +57,14 @@ export function parseText(text)
 
 
 
-	//Now we can handle the backticks. Since all of the ones still present
-	//aren't inside math mode, we know they must be code.
-	//That means we need to play the same game we just did.
-	//First we can put back the dollar signs though.
+	// Now we can handle the backticks. Since all of the ones still present
+	// aren't inside math mode, we know they must be code.
+	// That means we need to play the same game we just did.
+	// First we can put back the dollar signs though.
 
 	html = html.replaceAll(/\[END\$\]/g, "$").replaceAll(/`(.*?)`/g, (match, $1) => `\`${$1}[END\`]`);
 
-	//Escape every asterisk and quote inside backticks.
+	// Escape every asterisk and quote inside backticks.
 	while (html.match(/`([^`]*?)\*([^`]*?)\[END`\]/))
 	{
 		html = html.replaceAll(/`([^`]*?)\*([^`]*?)\[END`\]/g, (match, $1, $2) => `\`${$1}[ASTERISK]${$2}[END\`]`);
@@ -82,7 +82,7 @@ export function parseText(text)
 
 
 
-	//Escape every quote inside a tag.
+	// Escape every quote inside a tag.
 	while (html.match(/<([^<>]*?)"([^<>]*?)>/))
 	{
 		html = html.replaceAll(/<([^<>]*?)"([^<>]*?)>/g, (match, $1, $2) => `<${$1}[DOUBLEQUOTE]${$2}>`);
@@ -95,7 +95,7 @@ export function parseText(text)
 
 
 
-	//Add leading tabs and bullet points.
+	// Add leading tabs and bullet points.
 	let numTabs = 0;
 
 	while (html[numTabs] === ">")
@@ -124,9 +124,9 @@ export function parseText(text)
 
 
 
-	//Now we're finally ready to add the code tags, and then the remaining
-	//em and strong tags, and then modify the quotes. Then at long last,
-	//we can unescape the remaining characters.
+	// Now we're finally ready to add the code tags, and then the remaining
+	// em and strong tags, and then modify the quotes. Then at long last,
+	// we can unescape the remaining characters.
 	return html
 		.replaceAll(/`(.*?)\[END`\]/g, (match, $1) => `<code>${$1}</code>`)
 		.replaceAll(/\*\*(.*?)\*\*/g, (match, $1) => `<strong>${$1}</strong>`)

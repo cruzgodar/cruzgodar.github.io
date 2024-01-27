@@ -128,7 +128,7 @@ export async function loadSite(url = pageUrl)
 		history.scrollRestoration = "manual";
 	}
 
-	//When in PWA form, disable text selection and drag-and-drop.
+	// When in PWA form, disable text selection and drag-and-drop.
 	if (window.matchMedia("(display-mode: standalone)").matches)
 	{
 		document.documentElement.style.WebkitUserSelect = "none";
@@ -137,8 +137,8 @@ export async function loadSite(url = pageUrl)
 
 		$$("body *").forEach(element => element.setAttribute("draggable", "false"));
 
-		//Also add a little extra spacing at the top of each page
-		//to keep content from feeling too close to the top of the screen.
+		// Also add a little extra spacing at the top of each page
+		// to keep content from feeling too close to the top of the screen.
 		addStyle(`
 			#logo, .name-text-container, .empty-top
 			{
@@ -147,10 +147,10 @@ export async function loadSite(url = pageUrl)
 		`, false);
 	}
 
-	//Fade in the opacity when the user presses the back button.
+	// Fade in the opacity when the user presses the back button.
 	window.addEventListener("popstate", (e) =>
 	{
-		//Ew
+		// Ew
 		if (window.location.href.indexOf("#") !== -1)
 		{
 			return;
@@ -174,11 +174,11 @@ export async function loadSite(url = pageUrl)
 
 	pageUrl = "";
 
-	//If it's not an html file, it shouldn't be anywhere near redirect().
+	// If it's not an html file, it shouldn't be anywhere near redirect().
 	if (url.indexOf(".") !== -1)
 	{
-		//This should really be using history.replaceState(),
-		//but that doesn't update the page to make the file show for some reason.
+		// This should really be using history.replaceState(),
+		// but that doesn't update the page to make the file show for some reason.
 		window.location.href = url;
 	}
 
@@ -194,7 +194,7 @@ export async function loadSite(url = pageUrl)
 
 
 
-//Loads a script with the given source and returns a promise for when it completes.
+// Loads a script with the given source and returns a promise for when it completes.
 export function loadScript(src, isModule = false)
 {
 	return new Promise((resolve, reject) =>
@@ -229,7 +229,7 @@ export function loadScript(src, isModule = false)
 
 
 
-//Loads a style with the given href.
+// Loads a style with the given href.
 export function loadStyle(href)
 {
 	const style = document.createElement("link");
@@ -246,8 +246,8 @@ export function loadStyle(href)
 
 
 
-//Adds a style tag to <head> with the given content.
-//If temporary is true, it will be removed at the next page load. Returns the style element added.
+// Adds a style tag to <head> with the given content.
+// If temporary is true, it will be removed at the next page load. Returns the style element added.
 export function addStyle(content, temporary = true, atBeginningOfHead = false)
 {
 	const element = document.createElement("style");

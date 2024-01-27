@@ -17,7 +17,7 @@ let progressThreshhold = 5;
 let currentRow = null;
 let currentCol = null;
 
-//New points will start on a circle with this as its radius.
+// New points will start on a circle with this as its radius.
 let spawnRadius = null;
 
 const directions = [[-1, 0], [0, 1], [1, 0], [0, -1]];
@@ -142,7 +142,7 @@ function drawBrownianTree()
 						255 * (gridSize / 2 - 10 - spawnRadius) / (gridSize / 2 - 10)
 					);
 
-					//We raise the progress to 2.71 to keep the speed effectively constant.
+					// We raise the progress to 2.71 to keep the speed effectively constant.
 					const progress = Math.pow((255 - currentBrightness) / 255, 2.71) * 100;
 
 					if (progress > progressThreshhold)

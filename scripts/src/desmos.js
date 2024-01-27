@@ -100,7 +100,7 @@ export async function createDesmosGraphs()
 	});
 }
 
-//Animates out and back in all the Desmos graphs. Used when switching themes.
+// Animates out and back in all the Desmos graphs. Used when switching themes.
 
 export async function recreateDesmosGraphs()
 {

@@ -308,8 +308,8 @@ export class DoublePendulumFractal extends Applet
 
 
 
-		//At this point, we've gone Init --> F1 --> T1 --> Update --> F2 --> T2 --> Draw.
-		//T2 is still bound, which is correct, but we cannot be bound to F2, so we bind to F1.
+		// At this point, we've gone Init --> F1 --> T1 --> Update --> F2 --> T2 --> Draw.
+		// T2 is still bound, which is correct, but we cannot be bound to F2, so we bind to F1.
 
 		this.wilson.gl.useProgram(this.wilson.render.shaderPrograms[1]);
 

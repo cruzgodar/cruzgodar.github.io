@@ -355,12 +355,12 @@ export class NewtonsMethodExtended extends Applet
 
 
 
-	//Pick 4 colors, each with a bright, medium, and dim component.
-	//Each of these colors will be interpolated between based on
-	//the target x and y coordinates of the attractive root,
-	//forming a quadrilateral in the color plane. Since these 4 corner points
-	//are brightish but not overly so and decently saturated,
-	//this process almost always produces a pleasing palette.
+	// Pick 4 colors, each with a bright, medium, and dim component.
+	// Each of these colors will be interpolated between based on
+	// the target x and y coordinates of the attractive root,
+	// forming a quadrilateral in the color plane. Since these 4 corner points
+	// are brightish but not overly so and decently saturated,
+	// this process almost always produces a pleasing palette.
 	generateNewPalette()
 	{
 		const newColors = new Array(12);

@@ -17,7 +17,7 @@ async function drawFiniteSubdivisions()
 
 
 
-	//This makes the size of the black bars on the top and bottom equal.
+	// This makes the size of the black bars on the top and bottom equal.
 	const middleAngle = Math.floor(numVertices / 2) * 2 * Math.PI / numVertices;
 
 	const topRow = gridSize / 2 - gridSize / 2.5;
@@ -58,7 +58,7 @@ async function drawOuterPolygon()
 	{
 		for (let i = 0; i < 120; i++)
 		{
-			//Draw 1/120 of each line.
+			// Draw 1/120 of each line.
 			for (let j = 0; j < numVertices; j++)
 			{
 				const rgb = HSVtoRGB((2 * j + 1) / (2 * numVertices), 1, 1);
@@ -148,7 +148,7 @@ async function drawLines(newLines)
 	{
 		for (let i = 0; i < 120; i++)
 		{
-			//Draw 1/120 of each line.
+			// Draw 1/120 of each line.
 			for (let j = 0; j < newLines.length; j++)
 			{
 				const rgb = HSVtoRGB(j / (newLines.length - 1), 1, 1);

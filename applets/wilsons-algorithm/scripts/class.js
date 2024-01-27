@@ -47,7 +47,8 @@ export class WilsonsAlgorithm extends Applet
 
 		const canvasDim = noBorders ? gridSize : 2 * gridSize + 1;
 
-		//Make sure that there is a proper density of pixels so that the canvas doesn't look blurry.
+		// Make sure that there is a proper density of pixels
+		// so that the canvas doesn't look blurry.
 		const canvasPixels = Math.min(window.innerWidth, window.innerHeight);
 
 		const canvasScaleFactor = Math.ceil(canvasPixels / canvasDim);
@@ -85,9 +86,9 @@ export class WilsonsAlgorithm extends Applet
 
 
 
-		//The worker has three seconds to draw its initial line.
-		//If it can't do that, we cancel it and spawn a new worker
-		//that reverse-generates a skeleton.
+		// The worker has three seconds to draw its initial line.
+		// If it can't do that, we cancel it and spawn a new worker
+		// that reverse-generates a skeleton.
 		if (!reverseGenerateSkeleton)
 		{
 			timeoutId = setTimeout(() =>

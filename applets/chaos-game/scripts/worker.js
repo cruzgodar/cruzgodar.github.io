@@ -37,7 +37,7 @@ function drawChaosGame()
 
 
 
-	//This makes the size of the black bars on the top and bottom equal.
+	// This makes the size of the black bars on the top and bottom equal.
 	const middleAngle = Math.floor(numVertices / 2) * 2 * Math.PI / numVertices;
 
 	const topRow = gridSize / 2 - gridSize / 2.5;

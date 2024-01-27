@@ -8,7 +8,7 @@ import {
 	visitedHomepage
 } from "/scripts/src/main.js";
 
-//On large screens, make the content be centered at the bottom of the page.
+// On large screens, make the content be centered at the bottom of the page.
 function centerContent()
 {
 	const contentHeight = $("main").getBoundingClientRect().height;

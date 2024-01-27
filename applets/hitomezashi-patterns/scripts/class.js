@@ -87,7 +87,7 @@ export class HitomezashiPattern extends Applet
 
 
 
-		//These are 0 if there is not a row/col in that position, and 1 if there is.
+		// These are 0 if there is not a row/col in that position, and 1 if there is.
 		this.patternRows = new Array(this.gridSize + 1);
 		this.patternCols = new Array(this.gridSize + 1);
 		this.regions = new Array(this.gridSize);
@@ -137,7 +137,7 @@ export class HitomezashiPattern extends Applet
 
 
 
-		//Place the rows.
+		// Place the rows.
 		for (let i = 0; i < this.gridSize + 1; i++)
 		{
 			const offset = Math.random() < this.rowProb ? 1 : 0;
@@ -150,7 +150,7 @@ export class HitomezashiPattern extends Applet
 
 
 
-		//Place the columns.
+		// Place the columns.
 		for (let i = 0; i < this.gridSize + 1; i++)
 		{
 			const offset = Math.random() < this.colProb ? 1 : 0;
@@ -205,8 +205,8 @@ export class HitomezashiPattern extends Applet
 
 	drawBoundaries()
 	{
-		//We don't include things on the boundary, since they don't
-		//play nice with the lines already drawn there.
+		// We don't include things on the boundary, since they don't
+		// play nice with the lines already drawn there.
 		for (let i = 1; i < this.gridSize; i++)
 		{
 			for (let j = 0; j < this.gridSize; j++)
@@ -346,9 +346,9 @@ export class HitomezashiPattern extends Applet
 
 	identifyRegions()
 	{
-		//This is kind of a mess, but we're just going to floodfill one region at a time
-		//and just use constant colors that range from red in the top left to magenta
-		//in the bottom right. That's the goal at least.
+		// This is kind of a mess, but we're just going to floodfill one region at a time
+		// and just use constant colors that range from red in the top left to magenta
+		// in the bottom right. That's the goal at least.
 
 		let startRow = 0;
 		let startCol = 0;
@@ -430,7 +430,7 @@ export class HitomezashiPattern extends Applet
 
 
 
-			//Now search radially outward from the center for the next starting square.
+			// Now search radially outward from the center for the next starting square.
 
 			let foundNewStart = false;
 
@@ -468,10 +468,10 @@ export class HitomezashiPattern extends Applet
 
 
 
-		//Get unique values.
+		// Get unique values.
 		this.regionSizes = [...new Set(this.regionSizes)];
 
-		//Sort descending.
+		// Sort descending.
 		this.regionSizes.sort((a, b) => b - a);
 
 		this.numUniqueRegionSizes = this.regionSizes.length;
@@ -490,12 +490,12 @@ export class HitomezashiPattern extends Applet
 		{
 			const regionLength = this.regionsOrdered[i].length;
 
-			//Cycle colors every 2 * gridSize regions (this is just an experimentally good value).
+			// Cycle colors every 2 * gridSize regions (this is just an experimentally good value).
 			const h = (i % (2 * this.gridSize)) / (2 * this.gridSize);
 
-			//Color the largest regions darkest, but linearly according to the list of lengths,
-			//so that all the medium regions aren't extremely bright
-			//when there's a very large region.
+			// Color the largest regions darkest, but linearly according to the list of lengths,
+			// so that all the medium regions aren't extremely bright
+			// when there's a very large region.
 			const v = regionLength === 1
 				? .5
 				: Math.sqrt(
@@ -531,12 +531,12 @@ export class HitomezashiPattern extends Applet
 		{
 			const regionLength = this.regionsOrdered[this.currentRegion].length;
 
-			//Cycle colors every gridSize regions (this is just an experimentally good value).
+			// Cycle colors every gridSize regions (this is just an experimentally good value).
 			const h = (this.currentRegion % (2 * this.gridSize)) / (2 * this.gridSize);
 
-			//Color the largest regions darkest, but linearly according to the list of lengths,
-			//so that all the medium regions aren't extremely bright when there's
-			//a very large region.
+			// Color the largest regions darkest, but linearly according to the list of lengths,
+			// so that all the medium regions aren't extremely bright when there's
+			// a very large region.
 			const v = regionLength === 1
 				? .5
 				: Math.sqrt(

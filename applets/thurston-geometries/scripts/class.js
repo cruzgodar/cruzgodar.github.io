@@ -14,14 +14,14 @@ export class ThurstonGeometry extends Applet
 
 	geometryData;
 
-	//Finally, we handle the rotation of the camera --- we can't bake this in, since otherwise
-	//the holonomy of the 2-sphere bites us. We'll allow rotating left and right to affect the
-	//base vectors, but rotating up and down affects these only,
-	//which finally get passed to the shader.
+	// Finally, we handle the rotation of the camera --- we can't bake this in, since otherwise
+	// the holonomy of the 2-sphere bites us. We'll allow rotating left and right to affect the
+	// base vectors, but rotating up and down affects these only,
+	// which finally get passed to the shader.
 	rotatedForwardVec;
 	rotatedUpVec;
 
-	//Moving forward/back, right/left, and up/down
+	// Moving forward/back, right/left, and up/down
 	movingAmount = [0, 0, 0];
 	rollingAmount = 0;
 
@@ -47,7 +47,7 @@ export class ThurstonGeometry extends Applet
 	}) {
 		super(canvas);
 
-		const tempShader = /*glsl*/`
+		const tempShader = /* glsl*/`
 			precision highp float;
 			varying vec2 uv;
 			
@@ -144,7 +144,7 @@ export class ThurstonGeometry extends Applet
 		
 		const addfiberArgument = this.geometryData.usesFiberComponent ? ", fiber" : "";
 
-		const fragShaderSource = /*glsl*/`
+		const fragShaderSource = /* glsl*/`
 			precision highp float;
 			
 			varying vec2 uv;
@@ -653,7 +653,7 @@ export class ThurstonGeometry extends Applet
 			this.wilson.worldCenterX
 		);
 
-		//Left/right rotation is allowed to be baked in to the underlying vectors.
+		// Left/right rotation is allowed to be baked in to the underlying vectors.
 
 		this.geometryData.forwardVec = result[0];
 		this.geometryData.rightVec = result[1];
