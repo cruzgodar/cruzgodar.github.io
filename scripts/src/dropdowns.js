@@ -204,15 +204,15 @@ function setUpDropdown(selectElement)
 		{
 			selectElement.dispatchEvent(new Event("input"));
 		}
-
-		const otherElementHeights = optionElements
-			.slice(0, selectedItem)
-			.map(element => element.getBoundingClientRect().height / scale);
 		
-		let translateY = 0;
-		otherElementHeights.forEach(height => translateY -= height);
-
-		translateY -= 10;
+		const titleRect = flexElement.children[0].getBoundingClientRect();
+		const selectedElementRect = flexElement.children[selectedItem].getBoundingClientRect();
+		
+		const translateX = -(
+			-titleRect.width / 2
+			+ selectedElementRect.left - titleRect.left
+			+ selectedElementRect.width / 2
+		);
 
 		await Promise.all([
 			anime({
@@ -228,7 +228,8 @@ function setUpDropdown(selectElement)
 
 			anime({
 				targets: flexElement,
-				translateY,
+				translateY: titleRect.top - selectedElementRect.top - 10,
+				translateX,
 				easing: "easeOutQuad",
 				duration: opacityAnimationTime
 			}).finished,

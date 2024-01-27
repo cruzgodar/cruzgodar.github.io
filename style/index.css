@@ -747,6 +747,11 @@ mjx-container
 	grid-template-columns: repeat(2, 1fr);
 }
 
+.text-button.dropdown .option-container.two-column > *:first-child
+{
+	grid-column: span 2;
+}
+
 .text-button.dropdown .option-container > *
 {
 	width: fit-content;
@@ -961,6 +966,7 @@ mjx-container
 	background-color: rgba(0, 0, 0, 0);
 	box-sizing: border-box;
 	-webkit-appearance: none;
+	appearance: none;
 	
 	margin-left: 16px;
 	margin-right: 16px;
