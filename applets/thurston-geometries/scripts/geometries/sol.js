@@ -173,6 +173,121 @@ class SolGeometry extends BaseGeometry
 			return pos;
 		}
 
+		const float jacobiEllipticTolerance = 0.001;
+
+		// Returns sn(u, m), cn(u, m), and dn(u, m).
+		// See https://en.wikipedia.org/wiki/Jacobi_elliptic_functions.
+		// Like most of the other math in this section, it's taken mostly
+		// wholecloth from the noneuclidean VR repo (which itself is taken
+		// partially wholecloth from other sources) --- the difference here
+		// is that I understand the math in this function much less.
+		vec3 computeJacobiEllipticFunctions(float u)
+		{
+			float uMod4K = mod(u, 4.0 * K);
+			
+			vec3 signVector = vec3(1.0);
+
+			if (uMod4K > 2.0 * K)
+			{
+				uMod4K = 4.0 * K - uMod4K;
+				signVector.x = -1.0;
+			}
+
+			if (uMod4K < jacobiEllipticTolerance)
+			{
+				// Series expansion about 0 of the Jacobi elliptic functions sn, cn and dn
+
+				float k2 = m;
+				float k4 = m * m;
+				float k6 = k4 * m;
+
+				float u1 = uMod4K;
+				float u2 = u1 * uMod4K;
+				float u3 = u2 * uMod4K;
+				float u4 = u3 * uMod4K;
+				float u5 = u4 * uMod4K;
+				float u6 = u5 * uMod4K;
+				float u7 = u6 * uMod4K;
+
+				return signVector * vec3(
+					u1
+					- (1.0 + k2) * u3 / 6.0
+					+ (1.0 + 14.0 * k2 + k4) * u5 / 120.0
+					- (1.0 + 135.0 * k2 + 135.0 * k4 + k6) * u7 / 5040.0,
+
+					1.0
+					- u2 / 2.0
+					+ (1.0 + 4.0 * k2) * u4 / 24.0
+					- (1.0 + 44.0 * k2 + 16.0 * k4) * u6 / 720.0,
+
+					1.0
+					- k2 * u2 / 2.0
+					+ k2 * (4.0 + k2) * u4 / 24.0
+					- k2 * (16.0 + 44.0 * k2 + k4) * u6 / 720.0
+				);
+			}
+
+			// This implementation comes ultimately (at least probably?)
+			// from https://www.shadertoy.com/view/4tlBRl.
+
+			float emc = 1.0 - m;
+
+			float a = 1.0;
+			float b;
+			float c;
+
+			float em[4];
+			float en[4];
+
+			float dn = 1.0;
+
+			for (int i = 0; i < 4; i++)
+			{
+				em[i] = a;
+				emc = sqrt(emc);
+				en[i] = emc;
+				c = 0.5 * (a + emc);
+				emc *= a;
+				a = c;
+			}
+
+			uMod4K *= c;
+
+			float sn = sin(uMod4K);
+			float cn = cos(uMod4K);
+
+			if (sn != 0.0)
+			{
+				a = cn / sn;
+				c *= a;
+
+				for (int i = 3; i >= 0; i--)
+				{
+					b = em[i];
+					a *= c;
+					c *= dn;
+					dn = (en[i] + a) / (b + a);
+					a = c / b;
+				}
+
+				a = 1.0 / sqrt(c * c + 1.0);
+				
+				if (sn < 0.0)
+				{
+					sn = -a;
+				}
+
+				else
+				{
+					sn = a;
+				}
+
+				cn = c * sn;
+			}
+
+			return signVector * vec3(sn, cn, dn);
+		}
+
 		// The full flow function, used in most cases.
 		vec4 getUpdatedPosExactly(vec4 rayDirectionVec, float t)
 		{
@@ -180,6 +295,20 @@ class SolGeometry extends BaseGeometry
 			float a = rayDirectionVec.x;
 			float b = rayDirectionVec.y;
 			float c = rayDirectionVec.z;
+
+			float root1Minus2AbsAB = sqrt(1.0 - 2.0 * abs(a * b));
+
+			float snAlpha = -c / root1Minus2AbsAB;
+			float cnAlpha = (abs(a) - abs(b)) / root1Minus2AbsAB;
+
+			// The functions sn and cn are periodic with period 4K, and we
+			// need to evaluate sn(s) and cn(s), where s = mu*t + alpha.
+			// To simplify this, we'll reduce mu*t mod 4K.
+			float muTimesTMod4K = mod(mu * t, 4.0 * K);
+
+			// Now we'll plug this into the zeta function. In the paper, we need
+			// zeta(alpha + mu*t) - zeta(alpha)
+			vec3 jacobiEllipticFunctions = computeJacobiEllipticFunctions(muTimesTMod4K);
 
 			return vec4(0);
 		}
@@ -227,7 +356,7 @@ class SolGeometry extends BaseGeometry
 			{
 				// Following the paper, there are quite a few different strategies
 				// used at this point.
-				pos = vec4(0.0, 0.0, 0.0, 1.0);
+				pos = getUpdatedPosExactly(rayDirectionVec, t);
 			}
 
 			return getTransformationMatrix(startPos) * pos;
