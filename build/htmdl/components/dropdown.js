@@ -9,8 +9,6 @@ export function dropdown(options, lines)
 			<div class="dropdown-container focus-on-child" tabindex="1">
 				<button class="text-button dropdown" type="button" id="${id}-dropdown-button" tabindex="-1">
 	`;
-	
-	let inOptgroup = false;
 
 	for (let i = 1; i < lines.length; i++)
 	{
@@ -21,20 +19,10 @@ export function dropdown(options, lines)
 			html += `${words[1]}</button><select id="${id}-dropdown">`;
 		}
 
-		//Option groups
-		const index = words[0].indexOf(":");
-
-		html += index !== -1
-			? `${inOptgroup ? "</optgroup>" : ""}<optgroup label="${words[0].slice(0, index)}">`
-			: `<option value="${words[0]}">${words[1]}</option>`;
-		
-		if (index !== -1)
-		{
-			inOptgroup = true;
-		}
+		html += `<option value="${words[0]}">${words[1]}</option>`;
 	}
 
-	html += `${inOptgroup ? "</optgroup>" : ""}</select></div></div>`;
+	html += "</select></div></div>";
 
 	return html;
 }

@@ -733,11 +733,18 @@ mjx-container
 
 .text-button.dropdown .option-container
 {
-	display: flex;
+	display: grid;
 	padding: 10px;
-	align-items: center;
 
-	flex-direction: column;
+	align-content: center;
+	align-items: center;
+	justify-content: center;
+	justify-items: center;
+}
+
+.text-button.dropdown .option-container.two-column
+{
+	grid-template-columns: repeat(2, 1fr);
 }
 
 .text-button.dropdown .option-container > *
