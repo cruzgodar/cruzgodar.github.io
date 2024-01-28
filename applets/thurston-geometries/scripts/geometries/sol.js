@@ -1,5 +1,8 @@
 import { BaseGeometry } from "./base.js";
 
+const numericalStepDistance = 0.0002;
+const maxNumericalSteps = 20;
+
 class SolGeometry extends BaseGeometry
 {
 	geodesicGlsl = /* glsl*/`
@@ -47,7 +50,6 @@ class SolGeometry extends BaseGeometry
 			);
 		}
 
-		
 		// Elliptic integral computations, sourced from
 		// https://github.com/henryseg/non-euclidean_VR/blob/master/src/geometries/sol/geometry/shaders/part1.glsl,
 		// which is in turn based on various sources in the literature.
@@ -137,9 +139,10 @@ class SolGeometry extends BaseGeometry
 			L = E / (kPrime * K) - 0.5 * kPrime;
 		}
 
+		const float numericalStepDistance = ${numericalStepDistance};
+		const int maxNumericalSteps = ${maxNumericalSteps};
+
 		// Flow from the origin numerically. Used when objects in the scene are extremely close.
-		const float numericalStepDistance = 0.0002;
-		const int maxNumericalSteps = 20;
 		vec4 getUpdatedPosNumerically(vec4 rayDirectionVec, float t)
 		{
 			vec4 pos = vec4(0.0, 0.0, 0.0, 1.0);
@@ -405,7 +408,7 @@ class SolGeometry extends BaseGeometry
 			float c = rayDirectionVec.z;
 
 			vec4 pos;
-		
+			
 			if (t < flowNumericallyThreshhold)
 			{
 				pos = getUpdatedPosNumerically(rayDirectionVec, t);
@@ -444,6 +447,11 @@ class SolGeometry extends BaseGeometry
 
 			return getTransformationMatrix(startPos) * pos;
 		}
+
+		float approximateDistanceToOrigin(vec4 pos)
+		{
+			return length(vec3(exp(-pos.z) * pos.x, exp(pos.z) * pos.y, pos.z));
+		}
 	`;
 
 	
@@ -463,7 +471,12 @@ class SolGeometry extends BaseGeometry
 	// Frustratingly, doing a linear approximation produces weird movement patterns in Nil.
 	followGeodesic(pos, dir, t)
 	{
-		
+		return [
+			pos[0] + t * dir[0] * Math.exp(pos[2]),
+			pos[1] + t * dir[1] * Math.exp(-pos[2]),
+			pos[2] + t * dir[2],
+			pos[3]
+		];
 	}
 
 	getNormalVec()
@@ -478,7 +491,7 @@ export class SolRooms extends SolGeometry
 {
 	static distances = /* glsl*/`
 		float radius = 0.5;
-		float distance1 = 0.0;
+		float distance1 = approximateDistanceToOrigin(pos) - radius;
 	`;
 
 	distanceEstimatorGlsl = /* glsl*/`
@@ -518,7 +531,7 @@ export class SolRooms extends SolGeometry
 
 	getMovingSpeed()
 	{
-		return 1;
+		return .1;
 	}
 
 	cameraPos = [0, 0, 0, 1];
