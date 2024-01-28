@@ -51,7 +51,7 @@ Something will go here eventually!
 
 	gluing-angle 0 0 1 "Gluing Angle"
 
-	fov 1.15 .5 2 "FOV"
+	fov 100 80 120 "FOV"
 	
 ###
 

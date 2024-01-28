@@ -59,6 +59,16 @@ class SolGeometry extends BaseGeometry
 			);
 		}
 
+		mat4 getInverseTransformationMatrix(vec4 pos)
+		{
+			return getTransformationMatrix(vec4(
+				-exp(-pos.z) * pos.x,
+				-exp(pos.z) * pos.y,
+				-pos.z,
+				1.0
+			));
+		}
+
 		// Elliptic integral computations, sourced from
 		// https://github.com/henryseg/non-euclidean_VR/blob/master/src/geometries/sol/geometry/shaders/part1.glsl,
 		// which is in turn based on various sources in the literature.
@@ -155,7 +165,7 @@ class SolGeometry extends BaseGeometry
 		const int maxNumericalSteps = ${maxNumericalSteps};
 
 		// Flow from the origin numerically. Used when objects in the scene are extremely close.
-		vec4 getUpdatedPosNumerically(vec4 rayDirectionVec, float t)
+		vec4 getUpdatedPosNumerically(inout vec4 rayDirectionVec, float t)
 		{
 			vec4 pos = vec4(0.0, 0.0, 0.0, 1.0);
 			vec4 dir = rayDirectionVec;
@@ -171,22 +181,26 @@ class SolGeometry extends BaseGeometry
 
 				// This translates dir to pos.
 				pos += numericalStepDistance * dir * vec4(exp(pos.z), exp(-pos.z), 1.0, 0.0);
-				dir += numericalStepDistance * vec4(
-					dir.x * dir.z,
-					-dir.y * dir.z,
-					-dir.x * dir.x + dir.y * dir.y,
-					0.0
+				dir = geometryNormalize(
+					dir + numericalStepDistance * vec4(
+						dir.x * dir.z,
+						-dir.y * dir.z,
+						-dir.x * dir.x + dir.y * dir.y,
+						0.0
+					)
 				);
 
 				// Normalize the direction.
 				float dirMagnitude = sqrt(
-					exp(-2.0 * dir.z) * dir.x * dir.x
-					+ exp(2.0 * dir.z) * dir.y * dir.y
+					exp(-2.0 * pos.z) * dir.x * dir.x
+					+ exp(2.0 * pos.z) * dir.y * dir.y
 					+ dir.z * dir.z
 				);
 
 				dir /= dirMagnitude;
 			}
+
+			rayDirectionVec = getInverseTransformationMatrix(pos) * dir;
 
 			return pos;
 		}

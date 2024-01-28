@@ -111,7 +111,7 @@ export function load()
 
 	fovSliderElement.addEventListener("input", () =>
 	{
-		applet.fov = parseFloat(fovSliderValueElement.textContent);
+		applet.fov = Math.tan(parseFloat(fovSliderValueElement.textContent) / 2 * Math.PI / 180);
 		applet.wilson.gl.uniform1f(applet.wilson.uniforms.fov, applet.fov);
 	});
 
