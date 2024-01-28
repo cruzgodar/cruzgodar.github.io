@@ -564,12 +564,12 @@ export class SolRooms extends SolGeometry
 
 		if (minDistance == distance1)
 		{
-			return vec3(0.5, 0.5, 0.5);
+			return vec3(0.5, 0.5, 0.5) * getBanding(pos.x + pos.y, 10.0);
 		}
 
 		if (minDistance == distance2)
 		{
-			return vec3(1.0, 0.5, 0.5);
+			return vec3(1.0, 0.5, 0.5) * getBanding(pos.x + pos.y, 10.0);
 		}
 
 		return vec3(0.5, 1.0, 0.5);

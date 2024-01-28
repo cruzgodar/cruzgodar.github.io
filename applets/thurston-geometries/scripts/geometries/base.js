@@ -23,6 +23,7 @@ export class BaseGeometry
 	`;
 
 	maxMarches = "200";
+	maxT = "50.0";
 	ambientOcclusionDenominator = "100.0";
 	stepFactor = "0.99";
 		

@@ -14,6 +14,7 @@ class S3Geometry extends BaseGeometry
 	`;
 
 	maxMarches = "100";
+	maxT = "6.283";
 
 	correctPosition(pos)
 	{

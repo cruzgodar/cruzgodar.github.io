@@ -418,6 +418,7 @@ class NilGeometry extends BaseGeometry
 	`;
 
 	maxMarches = "250";
+	maxT = "30.0";
 	ambientOcclusionDenominator = "300.0";
 
 	

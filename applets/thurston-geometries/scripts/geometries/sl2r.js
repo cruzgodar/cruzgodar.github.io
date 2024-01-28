@@ -652,6 +652,7 @@ class SL2RGeometry extends BaseGeometry
 		}
 	`;
 
+	maxT = "30.0";
 	stepFactor = "0.8";
 
 	usesFiberComponent = true;

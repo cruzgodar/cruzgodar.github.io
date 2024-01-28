@@ -212,6 +212,8 @@ class H2xEGeometry extends BaseGeometry
 		}
 	`;
 
+	maxT = "30.0";
+
 	correctPosition(pos)
 	{
 		const magnitude = Math.sqrt(
