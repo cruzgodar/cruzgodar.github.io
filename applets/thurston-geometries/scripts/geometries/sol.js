@@ -1,7 +1,10 @@
 import { BaseGeometry, getMaxGlslString } from "./base.js";
 
 const numericalStepDistance = 0.0002;
-const maxNumericalSteps = 20;
+const flowNumericallyThreshhold = 0.002;
+const flowNearPlaneThreshhold = 0.0001;
+
+const maxNumericalSteps = Math.ceil(flowNumericallyThreshhold / numericalStepDistance);
 
 class SolGeometry extends BaseGeometry
 {
@@ -17,7 +20,6 @@ class SolGeometry extends BaseGeometry
 
 	raymarchSetupGlsl = /* glsl */`
 		setGlobals(rayDirectionVec);
-
 	`;
 
 	functionGlsl = /* glsl */`
@@ -45,6 +47,8 @@ class SolGeometry extends BaseGeometry
 			return log(x + sqrt(x*x + 1.0));
 		}
 
+		// For the inverse transformation, pass
+		// vec3(-exp(-pos.z) * pos.x, -exp(pos.z) * pos.y, -pos.z).
 		mat4 getTransformationMatrix(vec4 pos)
 		{
 			return mat4(
@@ -59,13 +63,13 @@ class SolGeometry extends BaseGeometry
 		// https://github.com/henryseg/non-euclidean_VR/blob/master/src/geometries/sol/geometry/shaders/part1.glsl,
 		// which is in turn based on various sources in the literature.
 		
-		float mu;
-		float k;
-		float kPrime;
-		float m;
-		float K;
-		float E;
-		float L;
+		float global_mu;
+		float global_k;
+		float global_kPrime;
+		float global_m;
+		float global_K;
+		float global_E;
+		float global_L;
 
 		const int maxAGMSteps = 20;
 		
@@ -88,7 +92,7 @@ class SolGeometry extends BaseGeometry
 		void runAGMAlgorithm()
 		{
 			// The starting values are 1 and kPrime. k starts as the initial error.
-			vec3 data = vec3(1.0, kPrime, k);
+			vec3 data = vec3(1.0, global_kPrime, global_k);
 			AGMData[0] = data;
 			actualAGMSteps = 1;
 
@@ -117,15 +121,15 @@ class SolGeometry extends BaseGeometry
 			float root1Minus2AbsAB = sqrt(1.0 - 2.0 * absAB);
 			float rootAbsAB = sqrt(absAB);
 			
-			mu = sqrt(1.0 + 2.0 * absAB);
-			k = root1Minus2AbsAB / mu;
-			kPrime = 2.0 * rootAbsAB / mu;
-			m = (1.0 - 2.0 * absAB) / (1.0 + 2.0 * absAB);
+			global_mu = sqrt(1.0 + 2.0 * absAB);
+			global_k = root1Minus2AbsAB / global_mu;
+			global_kPrime = 2.0 * rootAbsAB / global_mu;
+			global_m = (1.0 - 2.0 * absAB) / (1.0 + 2.0 * absAB);
 
 			runAGMAlgorithm();
 
 			// With that elliptic integral computed, we can compute K and E.
-			K = 0.5 * pi / lastAGMData.x;
+			global_K = 0.5 * pi / lastAGMData.x;
 
 			float sumTotal = 0.0;
 
@@ -139,11 +143,11 @@ class SolGeometry extends BaseGeometry
 				sumTotal += pow(2.0, float(i - 1)) * AGMData[i].z * AGMData[i].z;
 			}
 
-			E = K * (1.0 - sumTotal);
+			global_E = global_K * (1.0 - sumTotal);
 
 			if (absAB != 0.0)
 			{
-				L = E / (kPrime * K) - 0.5 * kPrime;
+				global_L = global_E / (global_kPrime * global_K) - 0.5 * global_kPrime;
 			}
 		}
 
@@ -246,13 +250,13 @@ class SolGeometry extends BaseGeometry
 		// is that I understand the math in this function much less.
 		vec3 computeJacobiEllipticFunctions(float u)
 		{
-			float uMod4K = mod(u, 4.0 * K);
+			float uMod4K = mod(u, 4.0 * global_K);
 			
 			vec3 signVector = vec3(1.0, 1.0, 1.0);
 
-			if (uMod4K > 2.0 * K)
+			if (uMod4K > 2.0 * global_K)
 			{
-				uMod4K = 4.0 * K - uMod4K;
+				uMod4K = 4.0 * global_K - uMod4K;
 				signVector.x = -1.0;
 			}
 
@@ -260,9 +264,9 @@ class SolGeometry extends BaseGeometry
 			{
 				// Series expansion about 0 of the Jacobi elliptic functions sn, cn and dn
 
-				float k2 = m;
-				float k4 = m * m;
-				float k6 = k4 * m;
+				float k2 = global_m;
+				float k4 = global_m * global_m;
+				float k6 = k4 * global_m;
 
 				float u1 = uMod4K;
 				float u2 = u1 * uMod4K;
@@ -293,7 +297,7 @@ class SolGeometry extends BaseGeometry
 			// This implementation comes ultimately (at least probably?)
 			// from https://www.shadertoy.com/view/4tlBRl.
 
-			float emc = 1.0 - m;
+			float emc = 1.0 - global_m;
 
 			float a = 1.0;
 			float b;
@@ -356,14 +360,14 @@ class SolGeometry extends BaseGeometry
 			// The series expansion about 0.
 			if (t0 < jacobiZetaTolerance)
 			{
-				float k2 = m;
-				float k4 = k2 * m;
-				float k6 = k4 * m;
+				float k2 = global_m;
+				float k4 = k2 * global_m;
+				float k6 = k4 * global_m;
 
-				result = -(E / K - 1.0) * t0;
-				result -= (1.0 / 6.0) * (E * k2 / K + k2 - 2.0 * E / K + 2.0) * pow(t0, 3.0);
-				result -= (1.0 / 40.0) * (3.0 * E * k4 / K + k4 - 8.0 * E * k2 / K - 8.0 * k2 + 8.0 * E / K - 8.0) * pow(t0, 5.0);
-				result -= (1.0 / 112.0) * (5.0 * E * k6 / K + k6 - 18.0 * E * k4 / K - 6.0 * k4 + 24.0 * E * k2 / K + 24.0 * k2 - 16.0 * E / K + 16.0) * pow(t0, 7.0);
+				result = -(global_E / global_K - 1.0) * t0;
+				result -= (1.0 / 6.0) * (global_E * k2 / global_K + k2 - 2.0 * global_E / global_K + 2.0) * pow(t0, 3.0);
+				result -= (1.0 / 40.0) * (3.0 * global_E * k4 / global_K + k4 - 8.0 * global_E * k2 / global_K - 8.0 * k2 + 8.0 * global_E / global_K - 8.0) * pow(t0, 5.0);
+				result -= (1.0 / 112.0) * (5.0 * global_E * k6 / global_K + k6 - 18.0 * global_E * k4 / global_K - 6.0 * k4 + 24.0 * global_E * k2 / global_K + 24.0 * k2 - 16.0 * global_E / global_K + 16.0) * pow(t0, 7.0);
 			}
 
 			else
@@ -406,11 +410,11 @@ class SolGeometry extends BaseGeometry
 			vec3 jef0 = vec3(
 				-c / root1Minus2AbsAB,
 				(abs(a) - abs(b)) / root1Minus2AbsAB,
-				(abs(a) + abs(b)) / mu
+				(abs(a) + abs(b)) / global_mu
 			);
 
 			// The elliptic functions are periodic with period 4K.
-			float muTimesTMod4K = mod(mu * t, 4.0 * K);
+			float muTimesTMod4K = mod(global_mu * t, 4.0 * global_K);
 
 			// Now we'll plug this into the elliptic functions. In the paper, we need
 			// an argument of alpha + mu*t, but first we'll get just mu*t.
@@ -419,32 +423,32 @@ class SolGeometry extends BaseGeometry
 			vec3 jef2 = vec3(
 				jef1.x * jef0.y * jef0.z + jef0.x * jef1.y * jef1.z,
 				jef1.y * jef0.y - jef1.x * jef1.z * jef0.x * jef0.z,
-				jef1.z * jef0.z - m * jef1.x * jef1.y * jef0.x * jef0.y
-			) / (1.0 - m * jef1.x * jef1.x * jef0.x * jef0.x);
+				jef1.z * jef0.z - global_m * jef1.x * jef1.y * jef0.x * jef0.y
+			) / (1.0 - global_m * jef1.x * jef1.x * jef0.x * jef0.x);
 
 			// Compute the Jacobi zeta function.
-			float zeta = computeJacobiZetaFunction(jef1.x / jef1.y) - m * jef1.x * jef0.x * jef2.x;
+			float zeta = computeJacobiZetaFunction(jef1.x / jef1.y) - global_m * jef1.x * jef0.x * jef2.x;
 
 			// Now *finally* we can compute the formula for gamma
 			// from the paper.
 			return vec4(
 				sign(a) * sqrt(abs(b / a)) * (
-					zeta / kPrime
-					+ k * (jef2.x - jef0.x) / kPrime
-					+ L * mu * t
+					zeta / global_kPrime
+					+ global_k * (jef2.x - jef0.x) / global_kPrime
+					+ global_L * global_mu * t
 				),
 				sign(b) * sqrt(abs(a / b)) * (
-					zeta / kPrime,
-					- k * (jef2.x - jef0.x) / kPrime
-					+ L * mu * t
+					zeta / global_kPrime,
+					- global_k * (jef2.x - jef0.x) / global_kPrime
+					+ global_L * global_mu * t
 				),
-				0.5 * log(abs(b / a)) + asinh(k * jef2.y / kPrime),
+				0.5 * log(abs(b / a)) + asinh(global_k * jef2.y / global_kPrime),
 				1.0
 			);
 		}
 
-		const float flowNumericallyThreshhold = 0.002;
-		const float flowNearPlaneThreshhold = 0.0001;
+		const float flowNumericallyThreshhold = ${flowNumericallyThreshhold};
+		const float flowNearPlaneThreshhold = ${flowNearPlaneThreshhold};
 
 		vec4 getUpdatedPos(vec4 startPos, vec4 rayDirectionVec, float t)
 		{
@@ -596,7 +600,7 @@ export class SolRooms extends SolGeometry
 		float dotProduct3 = .5 * dot(surfaceNormal, lightDirection3);
 
 		float lightIntensity = 1.2 * lightBrightness * max(max(abs(dotProduct1), abs(dotProduct2)), abs(dotProduct3));
-
+		
 		lightIntensity = 1.0;
 	`;
 
