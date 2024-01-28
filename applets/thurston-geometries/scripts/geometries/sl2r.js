@@ -100,7 +100,7 @@ function getTeleportGlslChunk({
 	colorIncreasePos,
 	colorIncreaseNeg,
 }) {
-	return /* glsl*/`
+	return /* glsl */`
 		dotProduct = dot(kleinElement, ${comparisonVec});
 
 		if (dotProduct > (${dotProductThreshhold}))
@@ -161,7 +161,7 @@ function getBinarySearchGlslChunk({
 	dotProductThreshhold,
 	searchIterations
 }) {
-	return /* glsl*/`
+	return /* glsl */`
 		dotProduct = dot(kleinElement, ${comparisonVec});
 
 		if (abs(dotProduct) > ${dotProductThreshhold})
@@ -228,11 +228,11 @@ function getKleinElement(qElement, fiber)
 
 class SL2RGeometry extends BaseGeometry
 {
-	raymarchSetupGlsl = /* glsl*/`
+	raymarchSetupGlsl = /* glsl */`
 		float startFiber = cameraFiber;
 	`;
 
-	geodesicGlsl = /* glsl*/`
+	geodesicGlsl = /* glsl */`
 		vec4 pos;
 		float fiber;
 
@@ -275,11 +275,11 @@ class SL2RGeometry extends BaseGeometry
 		globalColor += teleportPos(pos, fiber, startPos, startFiber, rayDirectionVec, t, totalT);
 	`;
 
-	fogGlsl = /* glsl*/`
+	fogGlsl = /* glsl */`
 		return mix(color, fogColor, 1.0 - exp(-totalT * 0.125));
 	`;
 
-	functionGlsl = /* glsl*/`
+	functionGlsl = /* glsl */`
 		const float pi = ${Math.PI};
 		const float piOver2 = ${Math.PI / 2};
 
@@ -801,7 +801,7 @@ class SL2RGeometry extends BaseGeometry
 
 export class SL2RRooms extends SL2RGeometry
 {
-	static distances = /* glsl*/`
+	static distances = /* glsl */`
 		vec3 h2Element = getH2Element(pos);
 
 		float distance1 = length(vec2(acosh(h2Element.z), fiber)) - wallThickness;
@@ -814,7 +814,7 @@ export class SL2RRooms extends SL2RGeometry
 		float distance3 = length(vec2(acosh(h2Element.z), fiber + 0.66667 * pi)) - wallThickness;
 	`;
 
-	distanceEstimatorGlsl = /* glsl*/`
+	distanceEstimatorGlsl = /* glsl */`
 		${SL2RRooms.distances}
 
 		float minDistance = ${getMinGlslString("distance", 3)};
@@ -822,7 +822,7 @@ export class SL2RRooms extends SL2RGeometry
 		return -minDistance;
 	`;
 
-	getColorGlsl = /* glsl*/`
+	getColorGlsl = /* glsl */`
 		return vec3(
 			.35 + .65 * (.5 * (sin((.01 * (pos.x + pos.z) + baseColor.x + globalColor.x) * 40.0) + 1.0)),
 			.35 + .65 * (.5 * (sin((.01 * (pos.y + pos.w) + baseColor.y + globalColor.y) * 57.0) + 1.0)),
@@ -830,7 +830,7 @@ export class SL2RRooms extends SL2RGeometry
 		);
 	`;
 
-	lightGlsl = /* glsl*/`
+	lightGlsl = /* glsl */`
 		vec4 lightDirection1 = normalize(vec4(3.0, -3.0, 3.0, 1.0) - pos);
 		float dotProduct1 = dot(surfaceNormal, lightDirection1);
 
@@ -853,7 +853,7 @@ export class SL2RRooms extends SL2RGeometry
 	rightVec = [0, 1, 0, 0];
 	forwardVec = [1, 0, 0, 0];
 
-	uniformGlsl = /* glsl*/`
+	uniformGlsl = /* glsl */`
 		uniform float cameraFiber;
 		uniform float wallThickness;
 		uniform vec3 baseColor;

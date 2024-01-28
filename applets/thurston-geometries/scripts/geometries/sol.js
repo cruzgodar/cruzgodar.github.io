@@ -1,21 +1,25 @@
-import { BaseGeometry } from "./base.js";
+import { BaseGeometry, getMinGlslString } from "./base.js";
 
 const numericalStepDistance = 0.0002;
 const maxNumericalSteps = 20;
 
 class SolGeometry extends BaseGeometry
 {
-	geodesicGlsl = /* glsl*/`
+	geodesicGlsl = /* glsl */`
 		vec4 pos = getUpdatedPos(startPos, rayDirectionVec, t);
 
 		// globalColor += teleportPos(pos, startPos, rayDirectionVec, t, totalT);
 	`;
 
-	fogGlsl = /* glsl*/`
+	fogGlsl = /* glsl */`
 		return color;//mix(color, fogColor, 1.0 - exp(-totalT * 0.2));
 	`;
 
-	functionGlsl = /* glsl*/`
+	raymarchSetupGlsl = /* glsl */`
+		setGlobals(rayDirectionVec);
+	`;
+
+	functionGlsl = /* glsl */`
 		const float pi = ${Math.PI};
 		
 		float sinh(float x)
@@ -177,6 +181,55 @@ class SolGeometry extends BaseGeometry
 			}
 
 			return pos;
+		}
+
+		vec4 getUpdatedPosNearX0(vec4 rayDirectionVec, float t)
+		{
+			float a = rayDirectionVec.x;
+			float b = rayDirectionVec.y;
+			float c = rayDirectionVec.z;
+
+			float b2 = b * b;
+			float c2 = c * c;
+
+			float n1 = sqrt(b2 + c2);
+			float n2 = n1 * n1;
+			float n3 = n1 * n2;
+			float n4 = n1 * n3;
+			
+			// From the repo: cosh(s), sinh(s), and tanh(s) where s = n(t+t0)
+			float shs = (c * cosh(n1 * t) + n1 * sinh(n1 * t)) / abs(b);
+			float chs = (n1 * cosh(n1 * t) + c * sinh(n1 * t)) / abs(b);
+			float ths = shs / chs;
+
+			vec4 p0 = vec4(0.0, n1 * ths / b - c / b, log(abs(b) * chs / n1), 1.0);
+
+			vec4 p1 = vec4(b2 * (shs * chs + n1 * t) / (2.0 * n3) - c / (2.0 * n2), 0.0, 0.0, 0.0);
+
+			vec4 p2 = vec4(0.0,
+				b * n1 * t / (2.0 * n3)
+					- (b2 - 2.0 * c2) * ( n1 * t / pow(chs, 2.0) + ths) / (4.0 * b * n3)
+					+ 3.0 * c / (4.0 * b * n2 * pow(chs, 2.0))
+					- c / (2.0 * b * n2),
+				-b2 * pow(chs, 2.0) / (4.0 * n4)
+					- (b2 - 2.0 * c2) * (n1 * t * ths - 1.0) / (4.0 * n4)
+					+ 3.0 * c * ths / (4.0 * n3),
+				0.0
+			);
+
+			return p0 + a * p1 + a * a * p2;
+		}
+
+		vec4 getUpdatedPosNearY0(vec4 rayDirectionVec, float t)
+		{
+			// Applying the isometry S_2 from the paper lets us
+			// reuse the previous function.
+			vec4 pos = getUpdatedPosNearX0(
+				vec4(rayDirectionVec.y, rayDirectionVec.x, -rayDirectionVec.z, 0.0),
+				t
+			);
+
+			return vec4(pos.y, pos.x, -pos.z, 1.0);
 		}
 
 		const float jacobiEllipticTolerance = 0.001;
@@ -399,7 +452,8 @@ class SolGeometry extends BaseGeometry
 			);
 		}
 
-		const float flowNumericallyThreshhold = 0.002;
+		const float flowNumericallyThreshhold = 0.0001;
+		const float flowNearPlaneThreshhold = 0.002;
 
 		vec4 getUpdatedPos(vec4 startPos, vec4 rayDirectionVec, float t)
 		{
@@ -408,34 +462,20 @@ class SolGeometry extends BaseGeometry
 			float c = rayDirectionVec.z;
 
 			vec4 pos;
-			
+
 			if (t < flowNumericallyThreshhold)
 			{
 				pos = getUpdatedPosNumerically(rayDirectionVec, t);
 			}
 
-			if (a == 0.0)
+			else if (abs(a * t) < flowNearPlaneThreshhold)
 			{
-				float tanhT = tanh(t);
-
-				pos = vec4(
-					0.0,
-					b * tanhT / (1.0 + c * tanhT),
-					log(cosh(t) + c * sinh(t)),
-					1.0
-				);
+				pos = getUpdatedPosNearX0(rayDirectionVec, t);
 			}
 		
-			else if (b == 0.0)
+			else if (abs(b * t) < flowNearPlaneThreshhold)
 			{
-				float tanhT = tanh(t);
-
-				pos = vec4(
-					a * tanhT / (1.0 - c * tanhT),
-					0.0,
-					-log(cosh(t) - c * sinh(t)),
-					1.0
-				);
+				pos = getUpdatedPosNearY0(rayDirectionVec, t);
 			}
 			
 			else
@@ -450,7 +490,13 @@ class SolGeometry extends BaseGeometry
 
 		float approximateDistanceToOrigin(vec4 pos)
 		{
-			return length(vec3(exp(-pos.z) * pos.x, exp(pos.z) * pos.y, pos.z));
+			// return sqrt(
+			// 	exp(-2.0 * pos.z) * pos.x * pos.x
+			// 	+ exp(2.0 * pos.z) * pos.y * pos.y
+			// 	+ pos.z * pos.z
+			// );
+
+			return length(pos.xyz);
 		}
 	`;
 
@@ -489,30 +535,47 @@ class SolGeometry extends BaseGeometry
 
 export class SolRooms extends SolGeometry
 {
-	static distances = /* glsl*/`
+	static distances = /* glsl */`
 		float radius = 0.5;
-		float distance1 = approximateDistanceToOrigin(pos) - radius;
+		// float distance1 = approximateDistanceToOrigin(pos) - radius;
+		float distance1 = abs(pos.z - 1.0);
+		float distance2 = abs(pos.z + 1.0);
+		// float distance2 = abs(asinh(-pos.x * exp(-pos.z)));
+		// float distance3 = approximateDistanceToOrigin(pos) - radius;
+
+
+		float minDistance = ${getMinGlslString("distance", 2)};
 	`;
 
-	distanceEstimatorGlsl = /* glsl*/`
+	distanceEstimatorGlsl = /* glsl */`
 		${SolRooms.distances}
-
-		float minDistance = distance1;
 
 		return minDistance;
 	`;
 
-	getColorGlsl = /* glsl*/`
+	getColorGlsl = /* glsl */`
+		${SolRooms.distances}
+
 		// return vec3(
 		// 	.35 + .65 * (.5 * (sin((.0125 * pos.x + baseColor.x + globalColor.x + .5) * 40.0) + 1.0)),
 		// 	.35 + .65 * (.5 * (sin((.0125 * pos.y + baseColor.y + globalColor.y + .5) * 57.0) + 1.0)),
 		// 	.35 + .65 * (.5 * (sin((.0125 * pos.z + baseColor.z + globalColor.z + .5) * 89.0) + 1.0))
 		// );
 
-		return vec3(0.5, 0.5, 0.5);
+		if (minDistance == distance1)
+		{
+			return vec3(0.5, 0.5, 0.5);
+		}
+
+		if (minDistance == distance2)
+		{
+			return vec3(1.0, 0.5, 0.5);
+		}
+
+		return vec3(0.5, 1.0, 0.5);
 	`;
 
-	lightGlsl = /* glsl*/`
+	lightGlsl = /* glsl */`
 		surfaceNormal.w = 0.0;
 
 		vec4 lightDirection1 = normalize(vec4(3.0, -3.0, 3.0, 1.0) - pos);
@@ -531,7 +594,7 @@ export class SolRooms extends SolGeometry
 
 	getMovingSpeed()
 	{
-		return .1;
+		return 1;
 	}
 
 	cameraPos = [0, 0, 0, 1];

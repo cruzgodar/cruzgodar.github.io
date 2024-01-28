@@ -47,7 +47,7 @@ export class ThurstonGeometry extends Applet
 	}) {
 		super(canvas);
 
-		const tempShader = /* glsl*/`
+		const tempShader = /* glsl */`
 			precision highp float;
 			varying vec2 uv;
 			
@@ -144,7 +144,7 @@ export class ThurstonGeometry extends Applet
 		
 		const addfiberArgument = this.geometryData.usesFiberComponent ? ", fiber" : "";
 
-		const fragShaderSource = /* glsl*/`
+		const fragShaderSource = /* glsl */`
 			precision highp float;
 			
 			varying vec2 uv;

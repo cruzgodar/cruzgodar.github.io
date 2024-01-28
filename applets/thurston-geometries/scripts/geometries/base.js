@@ -1,22 +1,22 @@
 export class BaseGeometry
 {
-	geodesicGlsl = /* glsl*/`
+	geodesicGlsl = /* glsl */`
 		vec4 pos = startPos + t * rayDirectionVec;
 	`;
 
-	dotProductGlsl = /* glsl*/`
+	dotProductGlsl = /* glsl */`
 		return dot(v, w);
 	`;
 
-	normalizeGlsl = /* glsl*/`
+	normalizeGlsl = /* glsl */`
 		return normalize(dir);
 	`;
 
-	fogGlsl = /* glsl*/`
+	fogGlsl = /* glsl */`
 		return mix(color, fogColor, 1.0 - exp(-length(pos - cameraPos) * fogScaling));
 	`;
 
-	updateTGlsl = /* glsl*/`
+	updateTGlsl = /* glsl */`
 		lastTIncrease = distance * stepFactor;
 		
 		t += lastTIncrease;

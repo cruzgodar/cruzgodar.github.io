@@ -14,27 +14,27 @@ const teleportVectors = [
 
 class H3Geometry extends BaseGeometry
 {
-	geodesicGlsl = /* glsl*/`
+	geodesicGlsl = /* glsl */`
 		vec4 pos = cosh(t) * startPos + sinh(t) * rayDirectionVec;
 
 		globalColor += teleportPos(pos, startPos, rayDirectionVec, t, totalT);
 	`;
 
-	dotProductGlsl = /* glsl*/`
+	dotProductGlsl = /* glsl */`
 		return v.x * w.x + v.y * w.y + v.z * w.z - v.w * w.w;
 	`;
 
-	normalizeGlsl = /* glsl*/`
+	normalizeGlsl = /* glsl */`
 		float magnitude = sqrt(abs(geometryDot(dir, dir)));
 		
 		return dir / magnitude;
 	`;
 
-	fogGlsl = /* glsl*/`
+	fogGlsl = /* glsl */`
 		return mix(color, fogColor, 1.0 - exp(0.5 - totalT * 0.075));
 	`;
 
-	functionGlsl = /* glsl*/`
+	functionGlsl = /* glsl */`
 		float sinh(float x)
 		{
 			return .5 * (exp(x) - exp(-x));
@@ -230,7 +230,7 @@ class H3Geometry extends BaseGeometry
 		]);
 	}
 
-	lightGlsl = /* glsl*/`
+	lightGlsl = /* glsl */`
 		vec4 lightDirection1 = normalize(vec4(1.0, 1.0, 1.0, 1.0) - pos);
 		float dotProduct1 = dot(surfaceNormal, lightDirection1);
 
@@ -376,7 +376,7 @@ class H3Geometry extends BaseGeometry
 
 export class H3Rooms extends H3Geometry
 {
-	static distances = /* glsl*/`
+	static distances = /* glsl */`
 		float distance1 = wallThickness - acosh(pos.w);
 
 		// Translate the reflection plane to the x = 0 plane, then get the distance to it.
@@ -424,7 +424,7 @@ export class H3Rooms extends H3Geometry
 		));
 	`;
 
-	distanceEstimatorGlsl = /* glsl*/`
+	distanceEstimatorGlsl = /* glsl */`
 		${H3Rooms.distances}
 
 		float minDistance = ${getMinGlslString("distance", 7)};
@@ -432,7 +432,7 @@ export class H3Rooms extends H3Geometry
 		return minDistance;
 	`;
 
-	getColorGlsl = /* glsl*/`
+	getColorGlsl = /* glsl */`
 		return vec3(
 			.25 + .75 * (.5 * (sin((.004 * pos.x + baseColor.x + globalColor.x) * 40.0) + 1.0)),
 			.25 + .75 * (.5 * (sin((.004 * pos.y + baseColor.y + globalColor.y) * 57.0) + 1.0)),
@@ -451,7 +451,7 @@ export class H3Rooms extends H3Geometry
 	rightVec = [0, 1, 0, 0];
 	forwardVec = [1, 0, 0, 0];
 
-	uniformGlsl = /* glsl*/`
+	uniformGlsl = /* glsl */`
 		uniform float wallThickness;
 		uniform float gluingAngle;
 		uniform vec3 baseColor;
