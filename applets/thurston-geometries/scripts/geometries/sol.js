@@ -1,6 +1,4 @@
-import { sliderValues } from "../index.js";
 import { BaseGeometry } from "./base.js";
-import { $ } from "/scripts/src/main.js";
 
 class SolGeometry extends BaseGeometry
 {
@@ -11,7 +9,7 @@ class SolGeometry extends BaseGeometry
 	`;
 
 	fogGlsl = /* glsl*/`
-		return mix(color, fogColor, 1.0 - exp(-totalT * 0.2));
+		return color;//mix(color, fogColor, 1.0 - exp(-totalT * 0.2));
 	`;
 
 	functionGlsl = /* glsl*/`
@@ -32,6 +30,11 @@ class SolGeometry extends BaseGeometry
 			float expTerm = exp(2.0 * x);
 
 			return (expTerm - 1.0) / (expTerm + 1.0);
+		}
+
+		float asinh(float x)
+		{
+			return log(x + sqrt(x*x + 1.0));
 		}
 
 		mat4 getTransformationMatrix(vec4 pos)
@@ -288,6 +291,56 @@ class SolGeometry extends BaseGeometry
 			return signVector * vec3(sn, cn, dn);
 		}
 
+		const float jacobiZetaTolerance = 0.001;
+		// This is about as far as the project has gotten from my area of understanding.
+		// It's sourced from the noneuclidean VR repo, like many other functions
+		// in this shader.
+		float computeJacobiZetaFunction(float tanPhi)
+		{
+			float t0 = abs(tanPhi);
+			
+			float result = 0.0;
+
+			// The series expansion about 0.
+			if (t0 < jacobiZetaTolerance)
+			{
+				float k2 = m;
+				float k4 = k2 * m;
+				float k6 = k4 * m;
+
+				result = -(E / K - 1.0) * t0;
+				result -= (1.0 / 6.0) * (E * k2 / K + k2 - 2.0 * E / K + 2.0) * pow(t0, 3.0);
+				result -= (1.0 / 40.0) * (3.0 * E * k4 / K + k4 - 8.0 * E * k2 / K - 8.0 * k2 + 8.0 * E / K - 8.0) * pow(t0, 5.0);
+				result -= (1.0 / 112.0) * (5.0 * E * k6 / K + k6 - 18.0 * E * k4 / K - 6.0 * k4 + 24.0 * E * k2 / K + 24.0 * k2 - 16.0 * E / K + 16.0) * pow(t0, 7.0);
+			}
+
+			else
+			{
+				float t1;
+				float s1;
+				float temp;
+
+				for (int i = 0; i < maxAGMSteps; i++)
+				{
+					if (i == actualAGMSteps)
+					{
+						break;
+					}
+
+					temp = AGMData[i].y / AGMData[i].x;
+
+					t1 = t0 * (1.0 + temp) / (1.0 - temp * t0 * t0);
+					s1 = t0 * (1.0 + temp) / sqrt((1.0 + t0 * t0) * (1.0 + temp * temp * t0 * t0));
+
+					result += AGMData[i + 1].z * s1;
+
+					t0 = t1;
+				}
+			}
+
+			return sign(tanPhi) * result;
+		}
+
 		// The full flow function, used in most cases.
 		vec4 getUpdatedPosExactly(vec4 rayDirectionVec, float t)
 		{
@@ -300,25 +353,55 @@ class SolGeometry extends BaseGeometry
 
 			float snAlpha = -c / root1Minus2AbsAB;
 			float cnAlpha = (abs(a) - abs(b)) / root1Minus2AbsAB;
+			float dnAlpha = (abs(a) + abs(b)) / mu;
 
-			// The functions sn and cn are periodic with period 4K, and we
-			// need to evaluate sn(s) and cn(s), where s = mu*t + alpha.
-			// To simplify this, we'll reduce mu*t mod 4K.
+			// The elliptic functions are periodic with period 4K.
 			float muTimesTMod4K = mod(mu * t, 4.0 * K);
 
-			// Now we'll plug this into the zeta function. In the paper, we need
-			// zeta(alpha + mu*t) - zeta(alpha)
-			vec3 jacobiEllipticFunctions = computeJacobiEllipticFunctions(muTimesTMod4K);
+			// Now we'll plug this into the elliptic functions. In the paper, we need
+			// an argument of alpha + mu*t, but first we'll get just mu*t.
+			vec3 jacobiEllipticFunctions1 = computeJacobiEllipticFunctions(muTimesTMod4K);
 
-			return vec4(0);
+			float denominator = 1.0 - m * jacobiEllipticFunctions1.x * jacobiEllipticFunctions1.x * snAlpha * snAlpha;
+
+			vec3 jacobiEllipticFunctions2 = vec3(
+				jacobiEllipticFunctions1.x * cnAlpha * dnAlpha
+					+ snAlpha * jacobiEllipticFunctions1.y * jacobiEllipticFunctions1.z,
+				jacobiEllipticFunctions1.y * cnAlpha
+					- jacobiEllipticFunctions1.x * jacobiEllipticFunctions1.z * snAlpha * dnAlpha,
+				jacobiEllipticFunctions1.z * dnAlpha
+					- m * jacobiEllipticFunctions1.x * jacobiEllipticFunctions1.y * snAlpha * cnAlpha
+			) / denominator;
+
+			// Compute the Jacobi zeta function.
+			float zeta = computeJacobiZetaFunction(
+				jacobiEllipticFunctions1.x / jacobiEllipticFunctions1.y
+			) - m * jacobiEllipticFunctions1.x * snAlpha * jacobiEllipticFunctions2.x;
+
+			// Now *finally* we can compute the formula for gamma
+			// from the paper.
+			return vec4(
+				sign(a) * sqrt(abs(b / a)) * (
+					zeta / kPrime
+					+ k * (jacobiEllipticFunctions2.x - snAlpha) / kPrime
+					+ L * mu * t
+				),
+				sign(b) * sqrt(abs(a / b)) * (
+					zeta / kPrime,
+					- k * (jacobiEllipticFunctions2.x - snAlpha) / kPrime
+					+ L * mu * t
+				),
+				0.5 * log(abs(b / a)) + asinh(k * jacobiEllipticFunctions2.y / kPrime),
+				1.0
+			);
 		}
 
 		const float flowNumericallyThreshhold = 0.002;
 
 		vec4 getUpdatedPos(vec4 startPos, vec4 rayDirectionVec, float t)
 		{
-			float a = abs(rayDirectionVec.x);
-			float b = abs(rayDirectionVec.y);
+			float a = rayDirectionVec.x;
+			float b = rayDirectionVec.y;
 			float c = rayDirectionVec.z;
 
 			vec4 pos;
@@ -394,7 +477,7 @@ class SolGeometry extends BaseGeometry
 export class SolRooms extends SolGeometry
 {
 	static distances = /* glsl*/`
-		float radius = wallThickness;
+		float radius = 0.5;
 		float distance1 = 0.0;
 	`;
 
@@ -443,31 +526,4 @@ export class SolRooms extends SolGeometry
 	upVec = [0, 0, 1, 0];
 	rightVec = [0, 1, 0, 0];
 	forwardVec = [1, 0, 0, 0];
-
-	uniformGlsl = /* glsl*/`
-		uniform float wallThickness;
-		uniform vec3 baseColor;
-	`;
-
-	uniformNames = ["wallThickness", "baseColor"];
-
-	updateUniforms(gl, uniformList)
-	{
-		gl.uniform1f(uniformList["wallThickness"], .703 - sliderValues.wallThickness / 10);
-		gl.uniform3fv(uniformList["baseColor"], [0,0, 0]);
-	}
-
-	uiElementsUsed = "#wall-thickness-slider";
-
-	initUI()
-	{
-		const wallThicknessSlider = $("#wall-thickness-slider");
-		const wallThicknessSliderValue = $("#wall-thickness-slider-value");
-
-		wallThicknessSlider.min = -.72;
-		wallThicknessSlider.max = .78;
-		wallThicknessSlider.value = .78;
-		wallThicknessSliderValue.textContent = .78;
-		sliderValues.wallThickness = .78;
-	}
 }
