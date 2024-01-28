@@ -1,4 +1,4 @@
-import { BaseGeometry, getMinGlslString } from "./base.js";
+import { BaseGeometry, getMaxGlslString } from "./base.js";
 
 const numericalStepDistance = 0.0002;
 const maxNumericalSteps = 20;
@@ -17,6 +17,7 @@ class SolGeometry extends BaseGeometry
 
 	raymarchSetupGlsl = /* glsl */`
 		setGlobals(rayDirectionVec);
+
 	`;
 
 	functionGlsl = /* glsl */`
@@ -105,7 +106,7 @@ class SolGeometry extends BaseGeometry
 
 				data = vec3(0.5 * (data.x + data.y), sqrt(data.x * data.y), error);
 				AGMData[i] = data;
-				actualAGMSteps = i;
+				actualAGMSteps = i + 1;
 			}
 		}
 
@@ -140,7 +141,10 @@ class SolGeometry extends BaseGeometry
 
 			E = K * (1.0 - sumTotal);
 
-			L = E / (kPrime * K) - 0.5 * kPrime;
+			if (absAB != 0.0)
+			{
+				L = E / (kPrime * K) - 0.5 * kPrime;
+			}
 		}
 
 		const float numericalStepDistance = ${numericalStepDistance};
@@ -244,7 +248,7 @@ class SolGeometry extends BaseGeometry
 		{
 			float uMod4K = mod(u, 4.0 * K);
 			
-			vec3 signVector = vec3(1.0);
+			vec3 signVector = vec3(1.0, 1.0, 1.0);
 
 			if (uMod4K > 2.0 * K)
 			{
@@ -330,16 +334,8 @@ class SolGeometry extends BaseGeometry
 				}
 
 				a = 1.0 / sqrt(c * c + 1.0);
-				
-				if (sn < 0.0)
-				{
-					sn = -a;
-				}
 
-				else
-				{
-					sn = a;
-				}
+				sn = sign(sn) * a;
 
 				cn = c * sn;
 			}
@@ -407,60 +403,51 @@ class SolGeometry extends BaseGeometry
 
 			float root1Minus2AbsAB = sqrt(1.0 - 2.0 * abs(a * b));
 
-			float snAlpha = -c / root1Minus2AbsAB;
-			float cnAlpha = (abs(a) - abs(b)) / root1Minus2AbsAB;
-			float dnAlpha = (abs(a) + abs(b)) / mu;
+			vec3 jef0 = vec3(
+				-c / root1Minus2AbsAB,
+				(abs(a) - abs(b)) / root1Minus2AbsAB,
+				(abs(a) + abs(b)) / mu
+			);
 
 			// The elliptic functions are periodic with period 4K.
 			float muTimesTMod4K = mod(mu * t, 4.0 * K);
 
 			// Now we'll plug this into the elliptic functions. In the paper, we need
 			// an argument of alpha + mu*t, but first we'll get just mu*t.
-			vec3 jacobiEllipticFunctions1 = computeJacobiEllipticFunctions(muTimesTMod4K);
+			vec3 jef1 = computeJacobiEllipticFunctions(muTimesTMod4K);
 
-			float denominator = 1.0 - m * jacobiEllipticFunctions1.x * jacobiEllipticFunctions1.x * snAlpha * snAlpha;
-
-			vec3 jacobiEllipticFunctions2 = vec3(
-				jacobiEllipticFunctions1.x * cnAlpha * dnAlpha
-					+ snAlpha * jacobiEllipticFunctions1.y * jacobiEllipticFunctions1.z,
-				jacobiEllipticFunctions1.y * cnAlpha
-					- jacobiEllipticFunctions1.x * jacobiEllipticFunctions1.z * snAlpha * dnAlpha,
-				jacobiEllipticFunctions1.z * dnAlpha
-					- m * jacobiEllipticFunctions1.x * jacobiEllipticFunctions1.y * snAlpha * cnAlpha
-			) / denominator;
+			vec3 jef2 = vec3(
+				jef1.x * jef0.y * jef0.z + jef0.x * jef1.y * jef1.z,
+				jef1.y * jef0.y - jef1.x * jef1.z * jef0.x * jef0.z,
+				jef1.z * jef0.z - m * jef1.x * jef1.y * jef0.x * jef0.y
+			) / (1.0 - m * jef1.x * jef1.x * jef0.x * jef0.x);
 
 			// Compute the Jacobi zeta function.
-			float zeta = computeJacobiZetaFunction(
-				jacobiEllipticFunctions1.x / jacobiEllipticFunctions1.y
-			) - m * jacobiEllipticFunctions1.x * snAlpha * jacobiEllipticFunctions2.x;
+			float zeta = computeJacobiZetaFunction(jef1.x / jef1.y) - m * jef1.x * jef0.x * jef2.x;
 
 			// Now *finally* we can compute the formula for gamma
 			// from the paper.
 			return vec4(
 				sign(a) * sqrt(abs(b / a)) * (
 					zeta / kPrime
-					+ k * (jacobiEllipticFunctions2.x - snAlpha) / kPrime
+					+ k * (jef2.x - jef0.x) / kPrime
 					+ L * mu * t
 				),
 				sign(b) * sqrt(abs(a / b)) * (
 					zeta / kPrime,
-					- k * (jacobiEllipticFunctions2.x - snAlpha) / kPrime
+					- k * (jef2.x - jef0.x) / kPrime
 					+ L * mu * t
 				),
-				0.5 * log(abs(b / a)) + asinh(k * jacobiEllipticFunctions2.y / kPrime),
+				0.5 * log(abs(b / a)) + asinh(k * jef2.y / kPrime),
 				1.0
 			);
 		}
 
-		const float flowNumericallyThreshhold = 0.0001;
-		const float flowNearPlaneThreshhold = 0.002;
+		const float flowNumericallyThreshhold = 0.002;
+		const float flowNearPlaneThreshhold = 0.0001;
 
 		vec4 getUpdatedPos(vec4 startPos, vec4 rayDirectionVec, float t)
 		{
-			float a = rayDirectionVec.x;
-			float b = rayDirectionVec.y;
-			float c = rayDirectionVec.z;
-
 			vec4 pos;
 
 			if (t < flowNumericallyThreshhold)
@@ -468,20 +455,18 @@ class SolGeometry extends BaseGeometry
 				pos = getUpdatedPosNumerically(rayDirectionVec, t);
 			}
 
-			else if (abs(a * t) < flowNearPlaneThreshhold)
+			else if (abs(rayDirectionVec.x * t) < flowNearPlaneThreshhold)
 			{
 				pos = getUpdatedPosNearX0(rayDirectionVec, t);
 			}
 		
-			else if (abs(b * t) < flowNearPlaneThreshhold)
+			else if (abs(rayDirectionVec.y * t) < flowNearPlaneThreshhold)
 			{
 				pos = getUpdatedPosNearY0(rayDirectionVec, t);
 			}
 			
 			else
 			{
-				// Following the paper, there are quite a few different strategies
-				// used at this point.
 				pos = getUpdatedPosExactly(rayDirectionVec, t);
 			}
 
@@ -490,16 +475,17 @@ class SolGeometry extends BaseGeometry
 
 		float approximateDistanceToOrigin(vec4 pos)
 		{
-			// return sqrt(
-			// 	exp(-2.0 * pos.z) * pos.x * pos.x
-			// 	+ exp(2.0 * pos.z) * pos.y * pos.y
-			// 	+ pos.z * pos.z
-			// );
+			return sqrt(
+				exp(-2.0 * pos.z) * pos.x * pos.x
+				+ exp(2.0 * pos.z) * pos.y * pos.y
+				+ pos.z * pos.z
+			);
 
-			return length(pos.xyz);
+			// return length(pos.xyz);
 		}
 	`;
-
+	
+	stepFactor = "0.8";
 	
 	normalize(vec)
 	{
@@ -538,13 +524,17 @@ export class SolRooms extends SolGeometry
 	static distances = /* glsl */`
 		float radius = 0.5;
 		// float distance1 = approximateDistanceToOrigin(pos) - radius;
-		float distance1 = abs(pos.z - 1.0);
-		float distance2 = abs(pos.z + 1.0);
-		// float distance2 = abs(asinh(-pos.x * exp(-pos.z)));
-		// float distance3 = approximateDistanceToOrigin(pos) - radius;
+		float distance1 = pos.z - radius;
+		float distance2 = -(pos.z + radius);
+
+		float distance3 = asinh((pos.x - radius) * exp(-pos.z));
+		float distance4 = -asinh((pos.x + radius) * exp(-pos.z));
+
+		float distance5 = asinh((-radius - pos.y) * exp(pos.z));
+		float distance6 = -asinh((radius - pos.y) * exp(pos.z));
 
 
-		float minDistance = ${getMinGlslString("distance", 2)};
+		float minDistance = ${getMaxGlslString("distance", 6)};
 	`;
 
 	distanceEstimatorGlsl = /* glsl */`
@@ -564,15 +554,33 @@ export class SolRooms extends SolGeometry
 
 		if (minDistance == distance1)
 		{
-			return vec3(0.5, 0.5, 0.5) * getBanding(pos.x + pos.y, 10.0);
+			return vec3(0.5, 0.5, 0.5) * getBanding(pos.x, 10.0);
 		}
 
 		if (minDistance == distance2)
 		{
-			return vec3(1.0, 0.5, 0.5) * getBanding(pos.x + pos.y, 10.0);
+			return vec3(1.0, 0.5, 0.5) * getBanding(pos.x, 10.0);
 		}
 
-		return vec3(0.5, 1.0, 0.5);
+		if (minDistance == distance3)
+		{
+			return vec3(0.5, 1.0, 0.5) * getBanding(pos.y, 10.0);
+		}
+
+		if (minDistance == distance4)
+		{
+			return vec3(0.5, 0.5, 1.0) * getBanding(pos.y, 10.0);
+		}
+
+		if (minDistance == distance5)
+		{
+			return vec3(1.0, 1.0, 0.5) * getBanding(pos.x, 10.0);
+		}
+
+		if (minDistance == distance6)
+		{
+			return vec3(1.0, 0.5, 1.0) * getBanding(pos.x, 10.0);
+		}
 	`;
 
 	lightGlsl = /* glsl */`
