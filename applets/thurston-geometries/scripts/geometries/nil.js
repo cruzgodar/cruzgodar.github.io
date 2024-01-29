@@ -638,13 +638,10 @@ export class NilSpheres extends NilGeometry
 	lightGlsl = /* glsl */`
 		surfaceNormal.w = 0.0;
 
-		vec4 lightDirection1 = normalize(vec4(3.0, -3.0, 3.0, 1.0) - pos);
+		vec4 lightDirection1 = normalize(vec4(1.5, 1.5, 1.5, 1.0) - pos);
 		float dotProduct1 = dot(surfaceNormal, lightDirection1);
 
-		vec4 lightDirection2 = normalize(vec4(-4.0, 2.0, -1.0, 1.0) - pos);
-		float dotProduct2 = dot(surfaceNormal, lightDirection2);
-
-		float lightIntensity = 1.3 * max(abs(dotProduct1), abs(dotProduct2));
+		float lightIntensity = (.2 + .8 * max(dotProduct1, -.75 * dotProduct1)) * 1.15;
 	`;
 
 	ambientOcclusionDenominator = "250.0";
