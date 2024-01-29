@@ -320,7 +320,7 @@ export class ThurstonGeometry extends Applet
 			"normalVec",
 			"upVec",
 			"rightVec",
-			"forwardVec",
+			"forwardVec"
 		].concat(this.geometryData.uniformNames ?? []));
 
 		this.wilson.worldCenterX = 0;
@@ -392,7 +392,10 @@ export class ThurstonGeometry extends Applet
 			return;
 		}
 
-		this.geometryData.teleportCamera(this.rotatedForwardVec, this.recomputeRotation.bind(this));
+		this.geometryData.teleportCamera(
+			this.rotatedForwardVec,
+			this.recomputeRotation.bind(this)
+		);
 
 		this.geometryData.updateUniforms(this.wilson.gl, this.wilson.uniforms);
 
@@ -592,7 +595,7 @@ export class ThurstonGeometry extends Applet
 			]);
 
 			const dt = timeElapsed / (1000 * this.movingSubsteps)
-				* this.geometryData.getMovingSpeed(this.geometryData.cameraPos);
+				* this.geometryData.movingSpeed;
 
 			this.geometryData.cameraPos = this.geometryData.correctPosition(
 				this.geometryData.followGeodesic(this.geometryData.cameraPos, tangentVec, dt)

@@ -93,11 +93,6 @@ export class BaseGeometry
 		this.forwardVec = this.normalize(this.forwardVec);
 	}
 
-	getMovingSpeed()
-	{
-		return 2;
-	}
-
 	distanceEstimatorGlsl;
 	getColorGlsl;
 	lightGlsl;
@@ -116,6 +111,8 @@ export class BaseGeometry
 	rightVec;
 	forwardVec;
 
+	movingSpeed = 1;
+
 	uniformGlsl;
 	uniformNames;
 	uniformData = {};
@@ -124,6 +121,12 @@ export class BaseGeometry
 	initUI() {}
 
 	uiElementsUsed = "";
+
+	sliderValues = {
+		wallThickness: 0,
+		fiberThickness: 0,
+		gluingAngle: 0
+	};
 }
 
 

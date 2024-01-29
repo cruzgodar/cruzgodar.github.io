@@ -619,11 +619,6 @@ export class SolRooms extends SolGeometry
 		lightIntensity = 1.0;
 	`;
 
-	getMovingSpeed()
-	{
-		return 1;
-	}
-
 	cameraPos = [0, 0, 0, 1];
 	normalVec = [0, 0, 0, 1];
 	upVec = [0, 0, 1, 0];

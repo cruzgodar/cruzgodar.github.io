@@ -1,5 +1,4 @@
 import { ThurstonGeometry } from "../class.js";
-import { sliderValues } from "../index.js";
 import { BaseGeometry, getMinGlslString, getVectorGlsl } from "./base.js";
 import { $ } from "/scripts/src/main.js";
 
@@ -295,8 +294,8 @@ class H3Geometry extends BaseGeometry
 
 	teleportCamera(rotatedForwardVec, recomputeRotation)
 	{
-		const cosine = Math.cos(sliderValues.gluingAngle);
-		const sine = Math.sin(sliderValues.gluingAngle);
+		const cosine = Math.cos(this.sliderValues.gluingAngle);
+		const sine = Math.sin(this.sliderValues.gluingAngle);
 
 		const teleportMatrices = [
 			[
@@ -442,16 +441,13 @@ export class H3Rooms extends H3Geometry
 		);
 	`;
 
-	getMovingSpeed()
-	{
-		return 1.25;
-	}
-
 	cameraPos = [0, 0, 0, 1];
 	normalVec = [0, 0, 0, -1];
 	upVec = [0, 0, 1, 0];
 	rightVec = [0, 1, 0, 0];
 	forwardVec = [1, 0, 0, 0];
+
+	movingSpeed = 1.25;
 
 	uniformGlsl = /* glsl */`
 		uniform float wallThickness;
@@ -464,10 +460,10 @@ export class H3Rooms extends H3Geometry
 	updateUniforms(gl, uniformList)
 	{
 		const wallThickness = 1.5 -
-			(sliderValues.wallThickness - (-.357)) / (.143 - (-.357)) * (1.5 - 1);
+			(this.sliderValues.wallThickness - (-.357)) / (.143 - (-.357)) * (1.5 - 1);
 
 		gl.uniform1f(uniformList["wallThickness"], wallThickness);
-		gl.uniform1f(uniformList["gluingAngle"], sliderValues.gluingAngle);
+		gl.uniform1f(uniformList["gluingAngle"], this.sliderValues.gluingAngle);
 		gl.uniform3fv(uniformList["baseColor"], this.baseColor);
 	}
 
@@ -482,7 +478,7 @@ export class H3Rooms extends H3Geometry
 		wallThicknessSlider.max = .143;
 		wallThicknessSlider.value = .143;
 		wallThicknessSliderValue.textContent = .143;
-		sliderValues.wallThickness = .143;
+		this.sliderValues.wallThickness = .143;
 
 		const gluingAngleSlider = $("#gluing-angle-slider");
 		const gluingAngleSliderValue = $("#gluing-angle-slider-value");
@@ -491,6 +487,6 @@ export class H3Rooms extends H3Geometry
 		gluingAngleSlider.max = 2 * Math.PI;
 		gluingAngleSlider.value = 0;
 		gluingAngleSliderValue.textContent = 0;
-		sliderValues.gluingAngle = 0;
+		this.sliderValues.gluingAngle = 0;
 	}
 }

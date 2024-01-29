@@ -1,5 +1,4 @@
 import { ThurstonGeometry } from "../class.js";
-import { sliderValues } from "../index.js";
 import { BaseGeometry, getMatrixGlsl, getMinGlslString, getVectorGlsl } from "./base.js";
 import { $ } from "/scripts/src/main.js";
 
@@ -422,10 +421,7 @@ export class H2xERooms extends H2xEGeometry
 	rightVec = [0, 1, 0, 0];
 	forwardVec = [1, 0, 0, 0];
 
-	getMovingSpeed()
-	{
-		return 1.25;
-	}
+	movingSpeed = 1.25;
 
 	uniformGlsl = /* glsl */`
 		uniform float wallThickness;
@@ -436,7 +432,7 @@ export class H2xERooms extends H2xEGeometry
 
 	updateUniforms(gl, uniformList)
 	{
-		const wallThickness = 1.145 - sliderValues.wallThickness / 10;
+		const wallThickness = 1.145 - this.sliderValues.wallThickness / 10;
 
 		gl.uniform1f(uniformList["wallThickness"], wallThickness);
 
@@ -454,7 +450,7 @@ export class H2xERooms extends H2xEGeometry
 		wallThicknessSlider.max = 1.55;
 		wallThicknessSlider.value = 1.55;
 		wallThicknessSliderValue.textContent = 1.55;
-		sliderValues.wallThickness = 1.55;
+		this.sliderValues.wallThickness = 1.55;
 	}
 }
 
@@ -542,10 +538,7 @@ export class H2xESpheres extends H2xEGeometry
 	rightVec = [0, 1, 0, 0];
 	forwardVec = [1, 0, 0, 0];
 
-	getMovingSpeed()
-	{
-		return 1.25;
-	}
+	movingSpeed = 1.25;
 
 	uniformGlsl = /* glsl */`
 		uniform vec3 baseColor;

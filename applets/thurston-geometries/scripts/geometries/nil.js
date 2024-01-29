@@ -1,5 +1,4 @@
 import { ThurstonGeometry } from "../class.js";
-import { sliderValues } from "../index.js";
 import { BaseGeometry, getMatrixGlsl, getMinGlslString } from "./base.js";
 import { $ } from "/scripts/src/main.js";
 
@@ -568,11 +567,6 @@ export class NilRooms extends NilGeometry
 		float lightIntensity = (.25 + .75 * dotProduct1 * dotProduct1) * 1.15;
 	`;
 
-	getMovingSpeed()
-	{
-		return 1;
-	}
-
 	cameraPos = [0, 0, 0, 1];
 	normalVec = [0, 0, 0, 1];
 	upVec = [0, 0, 1, 0];
@@ -588,7 +582,7 @@ export class NilRooms extends NilGeometry
 
 	updateUniforms(gl, uniformList)
 	{
-		gl.uniform1f(uniformList["wallThickness"], .703 - sliderValues.wallThickness / 10);
+		gl.uniform1f(uniformList["wallThickness"], .703 - this.sliderValues.wallThickness / 10);
 		gl.uniform3fv(uniformList["baseColor"], this.baseColor);
 	}
 
@@ -603,7 +597,7 @@ export class NilRooms extends NilGeometry
 		wallThicknessSlider.max = .78;
 		wallThicknessSlider.value = .78;
 		wallThicknessSliderValue.textContent = .78;
-		sliderValues.wallThickness = .78;
+		this.sliderValues.wallThickness = .78;
 	}
 }
 
@@ -617,12 +611,12 @@ export class NilSpheres extends NilGeometry
 
 		float distance4 = abs(pos.y - 0.515);
 		float distance5 = abs(pos.y + 0.515);
+
+		float minDistance = ${getMinGlslString("distance", 5)};
 	`;
 
 	distanceEstimatorGlsl = /* glsl */`
 		${NilSpheres.distances}
-
-		float minDistance = ${getMinGlslString("distance", 5)};
 
 		return minDistance;
 	`;
@@ -646,11 +640,6 @@ export class NilSpheres extends NilGeometry
 
 	ambientOcclusionDenominator = "250.0";
 
-	getMovingSpeed()
-	{
-		return 1;
-	}
-
 	cameraPos = [0.163559, -0.438969, 0.124604, 1];
 	normalVec = [0, 0, 0, 1];
 	upVec = [0, 0, 1, 0];
@@ -658,6 +647,8 @@ export class NilSpheres extends NilGeometry
 	forwardVec = [0.997199, -0.074809, 0, 0];
 
 	baseColor = [-2, 0, -2];
+
+	uiElementsUsed = "#disable-teleportation-checkbox";
 
 	uniformGlsl = /* glsl */`
 		uniform vec3 baseColor;

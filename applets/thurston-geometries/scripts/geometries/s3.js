@@ -1,5 +1,4 @@
 import { ThurstonGeometry } from "../class.js";
-import { sliderValues } from "../index.js";
 import { BaseGeometry, getColorGlslString, getMinGlslString } from "./base.js";
 import { $ } from "/scripts/src/main.js";
 
@@ -31,6 +30,78 @@ class S3Geometry extends BaseGeometry
 			-cameraPos[3]
 		]);
 	}
+}
+
+
+
+export class S3Axes extends S3Geometry
+{
+	static distances = /* glsl */`
+		float distance1 = acos(length(pos.xw)) - .05;
+		float distance2 = acos(length(pos.yw)) - .05;
+		float distance3 = acos(length(pos.zw)) - .05;
+		float distance4 = acos(pos.w) - .25;
+
+		float minDistance = ${getMinGlslString("distance", 4)};
+	`;
+	distanceEstimatorGlsl = /* glsl */`
+		${S3Axes.distances}
+
+		return minDistance;
+	`;
+
+	getColorGlsl = /* glsl */`
+		${S3Axes.distances}
+
+		if (minDistance == distance1)
+		{
+			return vec3(
+				1.0,
+				.5 + .25 * (.5 * (sin(20.0 * pos.x) + 1.0)),
+				.5 + .25 * (.5 * (cos(20.0 * pos.x) + 1.0))
+			);
+		}
+
+		if (minDistance == distance2)
+		{
+			return vec3(
+				.5 + .25 * (.5 * (sin(20.0 * pos.y) + 1.0)),
+				1.0,
+				.5 + .25 * (.5 * (cos(20.0 * pos.y) + 1.0))
+			);
+		}
+
+		if (minDistance == distance3)
+		{
+			return vec3(
+				.5 + .25 * (.5 * (sin(20.0 * pos.z) + 1.0)),
+				.5 + .25 * (.5 * (cos(20.0 * pos.z) + 1.0)),
+				1.0
+			);
+		}
+
+		return vec3(
+			.25 + .75 * (.5 * (sin(5.0 * pos.x) + 1.0)),
+			.25 + .75 * (.5 * (sin(5.0 * pos.y) + 1.0)),
+			.25 + .75 * (.5 * (sin(5.0 * pos.z) + 1.0))
+		);
+	`;
+
+	lightGlsl = /* glsl */`
+		vec4 lightDirection1 = normalize(vec4(.5, .5, .5, .5) - pos);
+		float dotProduct1 = dot(surfaceNormal, lightDirection1);
+
+		vec4 lightDirection2 = normalize(vec4(-.5, -.5, -.5, -.5) - pos);
+		float dotProduct2 = dot(surfaceNormal, lightDirection2);
+
+		float lightIntensity = 1.5 * min(abs(dotProduct1), abs(dotProduct2));
+	`;
+
+	cameraPos = [0.6247, 0.6247, 0.4683, -0.0157];
+	normalVec = [-0.6247, -0.6247, -0.4683, 0.0157];
+	upVec = [-0.3268, -0.3268, 0.8657, -0.1925];
+	rightVec = [0.7071, -0.7071, 0, 0];
+	forwardVec = [-0.0542, -0.0542, 0.1773, 0.9812];
 }
 
 
@@ -117,11 +188,6 @@ export class S3Rooms extends S3Geometry
 	rightVec = [0, 1, 0, 0];
 	forwardVec = [1, 0, 0, 0];
 
-	getMovingSpeed()
-	{
-		return 1;
-	}
-
 	uniformGlsl = /* glsl */`
 		uniform float wallThickness;
 	`;
@@ -131,7 +197,7 @@ export class S3Rooms extends S3Geometry
 	updateUniforms(gl, uniformList)
 	{
 		const wallThickness = .97 -
-			(sliderValues.wallThickness - (-.15)) / (.35 - (-.15)) * (.97 - .92);
+			(this.sliderValues.wallThickness - (-.15)) / (.35 - (-.15)) * (.97 - .92);
 
 		gl.uniform1f(uniformList["wallThickness"], wallThickness);
 	}
@@ -147,7 +213,7 @@ export class S3Rooms extends S3Geometry
 		wallThicknessSlider.max = .35;
 		wallThicknessSlider.value = .35;
 		wallThicknessSliderValue.textContent = (.35).toFixed(3);
-		sliderValues.wallThickness = .35;
+		this.sliderValues.wallThickness = .35;
 	}
 }
 
@@ -223,12 +289,6 @@ export class S3Spheres extends S3Geometry
 		vec4 lightDirection2 = normalize(vec4(-.5, -.5, -.5, -.5) - pos);
 		float dotProduct2 = dot(surfaceNormal, lightDirection2);
 
-		vec4 lightDirection3 = normalize(vec4(0.0, 1.0, 1.0, 0.0) - pos);
-		float dotProduct3 = dot(surfaceNormal, lightDirection3);
-
-		vec4 lightDirection4 = normalize(vec4(-1.0, -1.0, -1.0, 0.0) - pos);
-		float dotProduct4 = dot(surfaceNormal, lightDirection4);
-
 		float lightIntensity = 1.2 * min(abs(dotProduct1), abs(dotProduct2));
 	`;
 
@@ -237,11 +297,6 @@ export class S3Spheres extends S3Geometry
 	upVec = [0, 0, 1, 0];
 	rightVec = [0, 1, 0, 0];
 	forwardVec = [1, 0, 0, 0];
-
-	getMovingSpeed()
-	{
-		return 1;
-	}
 }
 
 
@@ -352,11 +407,6 @@ export class S3HopfFibration extends S3Geometry
 	rightVec = [0, 1, 0, 0];
 	forwardVec = [1, 0, 0, 0];
 
-	getMovingSpeed()
-	{
-		return 1;
-	}
-
 	uniformGlsl = /* glsl */`
 		uniform float fiberThickness;
 	`;
@@ -365,7 +415,7 @@ export class S3HopfFibration extends S3Geometry
 
 	updateUniforms(gl, uniformList)
 	{
-		gl.uniform1f(uniformList["fiberThickness"], sliderValues.fiberThickness);
+		gl.uniform1f(uniformList["fiberThickness"], this.sliderValues.fiberThickness);
 	}
 
 	uiElementsUsed = "#fiber-thickness-slider";
@@ -379,6 +429,6 @@ export class S3HopfFibration extends S3Geometry
 		fiberThicknessSlider.max = .1;
 		fiberThicknessSlider.value = .025;
 		fiberThicknessSliderValue.textContent = (.025).toFixed(3);
-		sliderValues.fiberThickness = .025;
+		this.sliderValues.fiberThickness = .025;
 	}
 }

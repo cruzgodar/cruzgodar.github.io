@@ -1,5 +1,4 @@
 import { ThurstonGeometry } from "../class.js";
-import { sliderValues } from "../index.js";
 import {
 	BaseGeometry,
 	getFloatGlsl,
@@ -841,11 +840,6 @@ export class SL2RRooms extends SL2RGeometry
 		float lightIntensity = 1.5 * max(dotProduct1, dotProduct2);
 	`;
 
-	getMovingSpeed()
-	{
-		return 1;
-	}
-
 	cameraPos = [1.000000555682267, 0, 0.0010542129021898201, 0];
 	cameraFiber = 0;
 
@@ -865,7 +859,7 @@ export class SL2RRooms extends SL2RGeometry
 	updateUniforms(gl, uniformList)
 	{
 		gl.uniform1f(uniformList["cameraFiber"], this.cameraFiber);
-		gl.uniform1f(uniformList["wallThickness"], 1.85 - sliderValues.wallThickness);
+		gl.uniform1f(uniformList["wallThickness"], 1.85 - this.sliderValues.wallThickness);
 		gl.uniform3fv(uniformList["baseColor"], this.baseColor);
 	}
 
@@ -880,6 +874,6 @@ export class SL2RRooms extends SL2RGeometry
 		wallThicknessSlider.max = 0.2;
 		wallThicknessSlider.value = 0.2;
 		wallThicknessSliderValue.textContent = 0.2;
-		sliderValues.wallThickness = 0.2;
+		this.sliderValues.wallThickness = 0.2;
 	}
 }

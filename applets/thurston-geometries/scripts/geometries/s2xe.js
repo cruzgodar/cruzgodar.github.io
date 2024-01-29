@@ -1,4 +1,3 @@
-import { sliderValues } from "../index.js";
 import { BaseGeometry, getMaxGlslString, getMinGlslString } from "./base.js";
 import { $ } from "/scripts/src/main.js";
 
@@ -143,11 +142,6 @@ export class S2xERooms extends S2xEGeometry
 	rightVec = [0, 1, 0, 0];
 	forwardVec = [1, 0, 0, 0];
 
-	getMovingSpeed()
-	{
-		return 1;
-	}
-
 	uniformGlsl = /* glsl */`
 		uniform float wallThickness;
 	`;
@@ -156,7 +150,7 @@ export class S2xERooms extends S2xEGeometry
 
 	updateUniforms(gl, uniformList)
 	{
-		const wallThickness = .9557 - sliderValues.wallThickness / 10;
+		const wallThickness = .9557 - this.sliderValues.wallThickness / 10;
 
 		gl.uniform1f(uniformList["wallThickness"], wallThickness);
 	}
@@ -172,7 +166,7 @@ export class S2xERooms extends S2xEGeometry
 		wallThicknessSlider.max = .8;
 		wallThicknessSlider.value = .8;
 		wallThicknessSliderValue.textContent = .8;
-		sliderValues.wallThickness = .8;
+		this.sliderValues.wallThickness = .8;
 	}
 }
 
@@ -269,9 +263,4 @@ export class S2xESpheres extends S2xEGeometry
 	upVec = [0, 0, 0, 1];
 	rightVec = [0, 1, 0, 0];
 	forwardVec = [1, 0, 0, 0];
-
-	getMovingSpeed()
-	{
-		return 1;
-	}
 }
