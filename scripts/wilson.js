@@ -1395,7 +1395,7 @@ export class Wilson
 							right: 10px;
 							top: 10px;
 							
-							z-index: 100;
+							z-index: 50;
 						}
 
 						.wilson-exit-fullscreen-button

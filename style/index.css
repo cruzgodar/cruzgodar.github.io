@@ -651,7 +651,7 @@ mjx-container
 
 .text-buttons.dropdown-holder
 {
-	z-index: 105;
+	z-index: 75;
 }
 
 .sliders
@@ -722,7 +722,7 @@ mjx-container
 
 	transition: box-shadow .2s ease-out;
 
-	z-index: 105;
+	z-index: 75;
 }
 
 .text-button.dropdown.expanded
