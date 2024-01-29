@@ -40,9 +40,8 @@ export class S3Axes extends S3Geometry
 		float distance1 = acos(length(pos.xw)) - .05;
 		float distance2 = acos(length(pos.yw)) - .05;
 		float distance3 = acos(length(pos.zw)) - .05;
-		float distance4 = acos(pos.w) - .25;
 
-		float minDistance = ${getMinGlslString("distance", 4)};
+		float minDistance = ${getMinGlslString("distance", 3)};
 	`;
 	distanceEstimatorGlsl = /* glsl */`
 		${S3Axes.distances}
@@ -71,19 +70,10 @@ export class S3Axes extends S3Geometry
 			);
 		}
 
-		if (minDistance == distance3)
-		{
-			return vec3(
-				.5 + .25 * (.5 * (sin(20.0 * pos.z) + 1.0)),
-				.5 + .25 * (.5 * (cos(20.0 * pos.z) + 1.0)),
-				1.0
-			);
-		}
-
 		return vec3(
-			.25 + .75 * (.5 * (sin(5.0 * pos.x) + 1.0)),
-			.25 + .75 * (.5 * (sin(5.0 * pos.y) + 1.0)),
-			.25 + .75 * (.5 * (sin(5.0 * pos.z) + 1.0))
+			.5 + .25 * (.5 * (sin(20.0 * pos.z) + 1.0)),
+			.5 + .25 * (.5 * (cos(20.0 * pos.z) + 1.0)),
+			1.0
 		);
 	`;
 

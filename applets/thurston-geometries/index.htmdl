@@ -23,6 +23,7 @@ Something will go here eventually!
 	s3-spheres "$S^3$: Spheres"
 	s3-hopf-fibration "$S^3$: Hopf Fibration"
 
+	h3-axes "$\mathbb{H}^3$: Axes"
 	h3-rooms "$\mathbb{H}^3$: Rooms"
 
 	s2xe-rooms "$S^2 \times \mathbb{E}$: Rooms"

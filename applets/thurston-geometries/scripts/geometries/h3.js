@@ -231,25 +231,6 @@ class H3Geometry extends BaseGeometry
 		]);
 	}
 
-	lightGlsl = /* glsl */`
-		vec4 lightDirection1 = normalize(vec4(1.0, 1.0, 1.0, 1.0) - pos);
-		float dotProduct1 = dot(surfaceNormal, lightDirection1);
-
-		vec4 lightDirection2 = normalize(vec4(-1.0, -1.0, -1.0, 1.0) - pos);
-		float dotProduct2 = dot(surfaceNormal, lightDirection2);
-
-		vec4 lightDirection3 = normalize(vec4(1.0, 1.0, 1.0, 0.0) - pos);
-		float dotProduct3 = dot(surfaceNormal, lightDirection3);
-
-		vec4 lightDirection4 = normalize(vec4(-1.0, -1.0, -1.0, 0.0) - pos);
-		float dotProduct4 = dot(surfaceNormal, lightDirection4);
-
-		float lightIntensity = max(
-			max(abs(dotProduct1), abs(dotProduct2)),
-			max(abs(dotProduct3), abs(dotProduct4))
-		);
-	`;
-
 	correctVectors()
 	{
 		const dotUp = this.dotProduct(
@@ -375,6 +356,110 @@ class H3Geometry extends BaseGeometry
 	}
 }
 
+export class H3Axes extends H3Geometry
+{
+	geodesicGlsl = /* glsl */`
+		vec4 pos = cosh(t) * startPos + sinh(t) * rayDirectionVec;
+	`;
+
+	functionGlsl = /* glsl */`
+		float sinh(float x)
+		{
+			return .5 * (exp(x) - exp(-x));
+		}
+
+		float cosh(float x)
+		{
+			return .5 * (exp(x) + exp(-x));
+		}
+
+		float asinh(float x)
+		{
+			return log(x + sqrt(x*x + 1.0));
+		}
+
+		float acosh(float x)
+		{
+			return log(x + sqrt(x*x - 1.0));
+		}
+	`;
+
+	// fogGlsl = /* glsl */`
+	// 	return color;
+	// `;
+
+	static distances = /* glsl */`
+		float distance1 = acosh(sqrt(pos.w * pos.w - pos.x * pos.x)) - .05;
+		float distance2 = acosh(sqrt(pos.w * pos.w - pos.y * pos.y)) - .05;
+		float distance3 = acosh(sqrt(pos.w * pos.w - pos.z * pos.z)) - .05;
+
+		float minDistance = ${getMinGlslString("distance", 3)};
+	`;
+
+	distanceEstimatorGlsl = /* glsl */`
+		${H3Axes.distances}
+
+		return minDistance;
+	`;
+
+	getColorGlsl = /* glsl */`
+		${H3Axes.distances}
+		
+		if (minDistance == distance1)
+		{
+			return vec3(
+				1.0,
+				.5 + .25 * (.5 * (sin(10.0 * pos.x) + 1.0)),
+				.5 + .25 * (.5 * (cos(10.0 * pos.x) + 1.0))
+			);
+		}
+
+		if (minDistance == distance2)
+		{
+			return vec3(
+				.5 + .25 * (.5 * (sin(10.0 * pos.y) + 1.0)),
+				1.0,
+				.5 + .25 * (.5 * (cos(10.0 * pos.y) + 1.0))
+			);
+		}
+
+		return vec3(
+			.5 + .25 * (.5 * (sin(10.0 * pos.z) + 1.0)),
+			.5 + .25 * (.5 * (cos(10.0 * pos.z) + 1.0)),
+			1.0
+		);
+	`;
+
+	lightGlsl = /* glsl */`
+		vec4 lightDirection1 = normalize(vec4(1.0, 1.0, 1.0, 1.0) - pos);
+		float dotProduct1 = dot(surfaceNormal, lightDirection1);
+
+		vec4 lightDirection2 = normalize(vec4(-1.0, -1.0, -1.0, 1.0) - pos);
+		float dotProduct2 = dot(surfaceNormal, lightDirection2);
+
+		vec4 lightDirection3 = normalize(vec4(1.0, 1.0, 1.0, 0.0) - pos);
+		float dotProduct3 = dot(surfaceNormal, lightDirection3);
+
+		vec4 lightDirection4 = normalize(vec4(-1.0, -1.0, -1.0, 0.0) - pos);
+		float dotProduct4 = dot(surfaceNormal, lightDirection4);
+
+		float lightIntensity = max(
+			max(abs(dotProduct1), abs(dotProduct2)),
+			max(abs(dotProduct3), abs(dotProduct4))
+		);
+	`;
+
+	teleportCamera() {console.log(this.cameraPos, this.forwardVec, this.rightVec, this.upVec, this.normalVec);}
+
+	cameraPos = [0.89424, -0.89424, 0.24177, 1.63027];
+	normalVec = [-0.89424, 0.89424, -0.24177, 1.63027];
+	upVec = [0.07548, -0.07548, 1.02152, 0.23431];
+	rightVec = [0.70710, 0.70710, 0, 0];
+	forwardVec = [-1.13752, 1.13752, -0.12226, -1.26605];
+
+	movingSpeed = 1;
+}
+
 export class H3Rooms extends H3Geometry
 {
 	static distances = /* glsl */`
@@ -438,6 +523,25 @@ export class H3Rooms extends H3Geometry
 			.25 + .75 * (.5 * (sin((.004 * pos.x + baseColor.x + globalColor.x) * 40.0) + 1.0)),
 			.25 + .75 * (.5 * (sin((.004 * pos.y + baseColor.y + globalColor.y) * 57.0) + 1.0)),
 			.25 + .75 * (.5 * (sin((.004 * pos.z + baseColor.z + globalColor.z) * 89.0) + 1.0))
+		);
+	`;
+
+	lightGlsl = /* glsl */`
+		vec4 lightDirection1 = normalize(vec4(1.0, 1.0, 1.0, 1.0) - pos);
+		float dotProduct1 = dot(surfaceNormal, lightDirection1);
+
+		vec4 lightDirection2 = normalize(vec4(-1.0, -1.0, -1.0, 1.0) - pos);
+		float dotProduct2 = dot(surfaceNormal, lightDirection2);
+
+		vec4 lightDirection3 = normalize(vec4(1.0, 1.0, 1.0, 0.0) - pos);
+		float dotProduct3 = dot(surfaceNormal, lightDirection3);
+
+		vec4 lightDirection4 = normalize(vec4(-1.0, -1.0, -1.0, 0.0) - pos);
+		float dotProduct4 = dot(surfaceNormal, lightDirection4);
+
+		float lightIntensity = max(
+			max(abs(dotProduct1), abs(dotProduct2)),
+			max(abs(dotProduct3), abs(dotProduct4))
 		);
 	`;
 

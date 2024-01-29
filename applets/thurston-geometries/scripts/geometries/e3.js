@@ -9,9 +9,8 @@ export class E3Axes extends E3Geometry
 		float distance1 = length(pos.yz) - .25;
 		float distance2 = length(pos.xz) - .25;
 		float distance3 = length(pos.xy) - .25;
-		float distance4 = length(pos.xyz) - 1.0;
 
-		float minDistance = ${getMinGlslString("distance", 4)};
+		float minDistance = ${getMinGlslString("distance", 3)};
 	`;
 	distanceEstimatorGlsl = /* glsl */`
 		${E3Axes.distances}
@@ -48,12 +47,6 @@ export class E3Axes extends E3Geometry
 				1.0
 			);
 		}
-
-		return vec3(
-			.25 + .75 * (.5 * (sin(pos.x) + 1.0)),
-			.25 + .75 * (.5 * (sin(pos.y) + 1.0)),
-			.25 + .75 * (.5 * (sin(pos.z) + 1.0))
-		);
 	`;
 
 	lightGlsl = /* glsl */`
