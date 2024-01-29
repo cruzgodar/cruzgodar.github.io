@@ -24,10 +24,7 @@ export class E3Rooms extends E3Geometry
 		vec4 lightDirection1 = normalize(vec4(1.0, 1.0, 1.0, 1.0) - pos);
 		float dotProduct1 = dot(surfaceNormal, lightDirection1);
 
-		vec4 lightDirection2 = normalize(vec4(0.0, 0.0, 0.0, 0.0) - pos);
-		float dotProduct2 = dot(surfaceNormal, lightDirection2);
-
-		float lightIntensity = lightBrightness * (.25 + .75 * dotProduct1 * dotProduct1) * 1.5;
+		float lightIntensity = (.25 + .75 * dotProduct1 * dotProduct1) * 1.5;
 	`;
 
 	cameraPos = [1, 1, 1, 1];
@@ -84,7 +81,7 @@ export class E3Spheres extends E3Geometry
 		vec4 lightDirection1 = normalize(vec4(1.5, -1.5, 0.5, 1.0) - pos);
 		float dotProduct1 = dot(surfaceNormal, lightDirection1);
 
-		float lightIntensity = lightBrightness * max(dotProduct1, -.5 * dotProduct1) * 1.25;
+		float lightIntensity = max(dotProduct1, -.5 * dotProduct1) * 1.25;
 	`;
 
 	cameraPos = [0, 0, 0, 1];

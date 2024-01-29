@@ -1,6 +1,6 @@
-import { BaseGeometry, getMaxGlslString } from "./base.js";
+import { BaseGeometry, getMinGlslString } from "./base.js";
 
-const numericalStepDistance = 0.0002;
+const numericalStepDistance = 0.00002;
 const flowNumericallyThreshhold = 0.002;
 const flowNearPlaneThreshhold = 0.0001;
 
@@ -503,7 +503,7 @@ class SolGeometry extends BaseGeometry
 		}
 	`;
 	
-	stepFactor = "0.8";
+	stepFactor = "0.5";
 	
 	normalize(vec)
 	{
@@ -541,18 +541,19 @@ export class SolRooms extends SolGeometry
 {
 	static distances = /* glsl */`
 		float radius = 0.5;
-		// float distance1 = approximateDistanceToOrigin(pos) - radius;
-		float distance1 = pos.z - radius;
-		float distance2 = -(pos.z + radius);
+		float distance1 = length(pos.xyz) - radius;
+		
+		// float distance1 = abs(pos.z - radius);
+		// float distance2 = abs(-(pos.z + radius));
 
-		float distance3 = asinh((pos.x - radius) * exp(-pos.z));
-		float distance4 = -asinh((pos.x + radius) * exp(-pos.z));
+		// float distance1 = abs(asinh((pos.x) * exp(-pos.z)));
+		// float distance2 = abs(-asinh((radius + pos.x) * exp(-pos.z)));
 
-		float distance5 = asinh((-radius - pos.y) * exp(pos.z));
-		float distance6 = -asinh((radius - pos.y) * exp(pos.z));
+		// float distance1 = abs(asinh((-radius - pos.y) * exp(pos.z)));
+		float distance2 = abs(asinh((pos.y) * exp(pos.z)));
 
 
-		float minDistance = ${getMaxGlslString("distance", 6)};
+		float minDistance = distance1;//${getMinGlslString("distance", 2)};
 	`;
 
 	distanceEstimatorGlsl = /* glsl */`
@@ -572,33 +573,33 @@ export class SolRooms extends SolGeometry
 
 		if (minDistance == distance1)
 		{
-			return vec3(0.5, 0.5, 0.5) * getBanding(pos.x, 10.0);
+			return vec3(0.5, 0.5, 0.5) * getBanding(pos.z, 10.0);
 		}
 
 		if (minDistance == distance2)
 		{
-			return vec3(1.0, 0.5, 0.5) * getBanding(pos.x, 10.0);
+			return vec3(1.0, 0.5, 0.5) * getBanding(pos.z, 10.0);
 		}
 
-		if (minDistance == distance3)
-		{
-			return vec3(0.5, 1.0, 0.5) * getBanding(pos.y, 10.0);
-		}
+		// if (minDistance == distance3)
+		// {
+		// 	return vec3(0.5, 1.0, 0.5) * getBanding(pos.y, 10.0);
+		// }
 
-		if (minDistance == distance4)
-		{
-			return vec3(0.5, 0.5, 1.0) * getBanding(pos.y, 10.0);
-		}
+		// if (minDistance == distance4)
+		// {
+		// 	return vec3(0.5, 0.5, 1.0) * getBanding(pos.y, 10.0);
+		// }
 
-		if (minDistance == distance5)
-		{
-			return vec3(1.0, 1.0, 0.5) * getBanding(pos.x, 10.0);
-		}
+		// if (minDistance == distance5)
+		// {
+		// 	return vec3(1.0, 1.0, 0.5) * getBanding(pos.x, 10.0);
+		// }
 
-		if (minDistance == distance6)
-		{
-			return vec3(1.0, 0.5, 1.0) * getBanding(pos.x, 10.0);
-		}
+		// if (minDistance == distance6)
+		// {
+		// 	return vec3(1.0, 0.5, 1.0) * getBanding(pos.x, 10.0);
+		// }
 	`;
 
 	lightGlsl = /* glsl */`
@@ -613,7 +614,7 @@ export class SolRooms extends SolGeometry
 		vec4 lightDirection3 = normalize(vec4(3.0, 2.0, 0.5, 1.0) - pos);
 		float dotProduct3 = .5 * dot(surfaceNormal, lightDirection3);
 
-		float lightIntensity = 1.2 * lightBrightness * max(max(abs(dotProduct1), abs(dotProduct2)), abs(dotProduct3));
+		float lightIntensity = 1.2 * max(max(abs(dotProduct1), abs(dotProduct2)), abs(dotProduct3));
 		
 		lightIntensity = 1.0;
 	`;

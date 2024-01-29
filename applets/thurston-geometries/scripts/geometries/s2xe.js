@@ -134,7 +134,7 @@ export class S2xERooms extends S2xEGeometry
 		vec4 lightDirection1 = normalize(vec4(2.0, 2.0, 2.0, -3.0) - pos);
 		float dotProduct1 = abs(dot(surfaceNormal, lightDirection1));
 
-		float lightIntensity = 1.5 * lightBrightness * dotProduct1;
+		float lightIntensity = 1.5 * dotProduct1;
 	`;
 
 	cameraPos = [0, 0, -1, 0];
@@ -261,7 +261,7 @@ export class S2xESpheres extends S2xEGeometry
 		vec4 lightDirection2 = normalize(vec4(1.0, 0.0, -1.0, 1.0) - pos);
 		float dotProduct2 = dot(surfaceNormal, lightDirection2);
 
-		float lightIntensity = 1.3 * lightBrightness * max(dotProduct1, dotProduct2);
+		float lightIntensity = 1.3 * max(dotProduct1, dotProduct2);
 	`;
 
 	cameraPos = [0, 0, -1, 0];

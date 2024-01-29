@@ -245,7 +245,7 @@ class H3Geometry extends BaseGeometry
 		vec4 lightDirection4 = normalize(vec4(-1.0, -1.0, -1.0, 0.0) - pos);
 		float dotProduct4 = dot(surfaceNormal, lightDirection4);
 
-		float lightIntensity = lightBrightness * max(
+		float lightIntensity = max(
 			max(abs(dotProduct1), abs(dotProduct2)),
 			max(abs(dotProduct3), abs(dotProduct4))
 		);

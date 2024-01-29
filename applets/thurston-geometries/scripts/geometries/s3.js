@@ -108,7 +108,7 @@ export class S3Rooms extends S3Geometry
 		vec4 lightDirection2 = normalize(vec4(-1.0, -1.0, -1.0, -1.0) - pos);
 		float dotProduct2 = dot(surfaceNormal, lightDirection2);
 
-		float lightIntensity = 3.5 * lightBrightness * max(dotProduct1, dotProduct2);
+		float lightIntensity = 3.5 * max(dotProduct1, dotProduct2);
 	`;
 
 	cameraPos = [0, 0, 0, -1];
@@ -229,7 +229,7 @@ export class S3Spheres extends S3Geometry
 		vec4 lightDirection4 = normalize(vec4(-1.0, -1.0, -1.0, 0.0) - pos);
 		float dotProduct4 = dot(surfaceNormal, lightDirection4);
 
-		float lightIntensity = 1.2 * lightBrightness * min(abs(dotProduct1), abs(dotProduct2));
+		float lightIntensity = 1.2 * min(abs(dotProduct1), abs(dotProduct2));
 	`;
 
 	cameraPos = [0, 0, 0, -1];
@@ -340,7 +340,7 @@ export class S3HopfFibration extends S3Geometry
 		vec4 lightDirection4 = normalize(vec4(-1.0, -1.0, -1.0, 0.0) - pos);
 		float dotProduct4 = dot(surfaceNormal, lightDirection4);
 
-		float lightIntensity = lightBrightness * max(
+		float lightIntensity = max(
 			max(abs(dotProduct1), abs(dotProduct2)),
 			max(abs(dotProduct3), abs(dotProduct4))
 		);

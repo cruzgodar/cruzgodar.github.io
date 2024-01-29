@@ -413,7 +413,7 @@ export class H2xERooms extends H2xEGeometry
 
 		
 
-		float lightIntensity = 1.5 * lightBrightness * max(dotProduct1, dotProduct2);
+		float lightIntensity = 1.5 * max(dotProduct1, dotProduct2);
 	`;
 
 	cameraPos = [0, 0, 1, 0];
@@ -533,7 +533,7 @@ export class H2xESpheres extends H2xEGeometry
 		vec4 lightDirection2 = normalize(vec4(1.0, -1.0, 0.0, -.5) - moddedPos);
 		float dotProduct2 = dot(surfaceNormal, lightDirection2);
 
-		float lightIntensity = 2.0 * lightBrightness * max(dotProduct1, dotProduct2);
+		float lightIntensity = 2.0 * max(dotProduct1, dotProduct2);
 	`;
 
 	cameraPos = [0, 0, 1, .75];

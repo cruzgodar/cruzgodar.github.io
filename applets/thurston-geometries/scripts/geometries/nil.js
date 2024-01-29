@@ -553,25 +553,19 @@ export class NilRooms extends NilGeometry
 
 	getColorGlsl = /* glsl */`
 		return vec3(
-			.35 + .65 * (.5 * (sin((.0125 * pos.x + baseColor.x + globalColor.x + .5) * 40.0) + 1.0)),
-			.35 + .65 * (.5 * (sin((.0125 * pos.y + baseColor.y + globalColor.y + .5) * 57.0) + 1.0)),
-			.35 + .65 * (.5 * (sin((.0125 * pos.z + baseColor.z + globalColor.z + .5) * 89.0) + 1.0))
+			.3 + .7 * (.5 * (sin((.01 * (pos.x + pos.z) + baseColor.x + baseColor.z + globalColor.x + globalColor.z) * 40.0) + 1.0)),
+			.3 + .7 * (.5 * (sin((.01 * (pos.y + pos.z) + baseColor.y + baseColor.z + globalColor.y + globalColor.z) * 57.0) + 1.0)),
+			.3 + .7 * (.5 * (sin((.01 * (pos.x + pos.y) + baseColor.x + baseColor.y + globalColor.x + globalColor.y) * 89.0) + 1.0))
 		);
 	`;
 
 	lightGlsl = /* glsl */`
 		surfaceNormal.w = 0.0;
 
-		vec4 lightDirection1 = normalize(vec4(3.0, -3.0, 3.0, 1.0) - pos);
+		vec4 lightDirection1 = normalize(vec4(1.5, 1.5, 1.5, 1.0) - pos);
 		float dotProduct1 = dot(surfaceNormal, lightDirection1);
 
-		vec4 lightDirection2 = normalize(vec4(-4.0, 2.0, -1.0, 1.0) - pos);
-		float dotProduct2 = dot(surfaceNormal, lightDirection2);
-
-		vec4 lightDirection3 = normalize(vec4(3.0, 2.0, 0.5, 1.0) - pos);
-		float dotProduct3 = .5 * dot(surfaceNormal, lightDirection3);
-
-		float lightIntensity = 1.2 * lightBrightness * max(max(abs(dotProduct1), abs(dotProduct2)), abs(dotProduct3));
+		float lightIntensity = (.25 + .75 * dotProduct1 * dotProduct1) * 1.15;
 	`;
 
 	getMovingSpeed()
@@ -650,7 +644,7 @@ export class NilSpheres extends NilGeometry
 		vec4 lightDirection2 = normalize(vec4(-4.0, 2.0, -1.0, 1.0) - pos);
 		float dotProduct2 = dot(surfaceNormal, lightDirection2);
 
-		float lightIntensity = 1.3 * lightBrightness * max(abs(dotProduct1), abs(dotProduct2));
+		float lightIntensity = 1.3 * max(abs(dotProduct1), abs(dotProduct2));
 	`;
 
 	ambientOcclusionDenominator = "250.0";

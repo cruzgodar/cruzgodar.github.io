@@ -159,8 +159,6 @@ export class ThurstonGeometry extends Applet
 			uniform vec4 forwardVec;
 			
 			uniform int resolution;
-
-			const float lightBrightness = 1.0;
 			
 			const float epsilon = 0.00001;
 			const int maxMarches = ${this.geometryData.maxMarches};
