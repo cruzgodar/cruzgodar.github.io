@@ -231,6 +231,7 @@ class H2xEGeometry extends BaseGeometry
 
 	getNormalVec(cameraPos)
 	{
+		console.log(this.cameraPos, this.forwardVec, this.rightVec, this.upVec, this.normalVec);
 		// f = -1 + x^2 + y^2 - z^2.
 		return this.normalize([
 			-cameraPos[0],
@@ -339,7 +340,102 @@ class H2xEGeometry extends BaseGeometry
 	}
 }
 
+export class H2xEAxes extends H2xEGeometry
+{
+	geodesicGlsl = /* glsl */`
+		float h2Mag = sqrt(abs(
+			rayDirectionVec.x * rayDirectionVec.x
+			+ rayDirectionVec.y * rayDirectionVec.y
+			- rayDirectionVec.z * rayDirectionVec.z
+		));
+		
+		vec4 pos = vec4(
+			cosh(h2Mag * t) * startPos.xyz + sinh(h2Mag * t) * rayDirectionVec.xyz / h2Mag,
+			startPos.w + t * rayDirectionVec.w
+		);
+	`;
 
+	functionGlsl = /* glsl */`
+		float sinh(float x)
+		{
+			return .5 * (exp(x) - exp(-x));
+		}
+
+		float cosh(float x)
+		{
+			return .5 * (exp(x) + exp(-x));
+		}
+
+		float asinh(float x)
+		{
+			return log(x + sqrt(x*x + 1.0));
+		}
+
+		float acosh(float x)
+		{
+			return log(x + sqrt(x*x - 1.0));
+		}
+	`;
+
+	teleportCamera() {}
+
+	static distances = /* glsl */`
+		float distance1 = length(vec2(acosh(sqrt(1.0 + pos.y * pos.y)), pos.w)) - .05;
+		float distance2 = length(vec2(acosh(sqrt(1.0 + pos.x * pos.x)), pos.w)) - .05;
+		float distance3 = acosh(pos.z) - .05;
+
+		float minDistance = ${getMinGlslString("distance", 3)};
+	`;
+
+	distanceEstimatorGlsl = /* glsl */`
+		${H2xEAxes.distances}
+
+		return minDistance;
+	`;
+
+	getColorGlsl = /* glsl */`
+		${H2xEAxes.distances}
+
+		if (minDistance == distance1)
+		{
+			return vec3(
+				1.0,
+				.5 + .25 * (.5 * (sin(20.0 * pos.x) + 1.0)),
+				.5 + .25 * (.5 * (cos(20.0 * pos.x) + 1.0))
+			);
+		}
+
+		if (minDistance == distance2)
+		{
+			return vec3(
+				.5 + .25 * (.5 * (sin(20.0 * pos.y) + 1.0)),
+				1.0,
+				.5 + .25 * (.5 * (cos(20.0 * pos.y) + 1.0))
+			);
+		}
+
+		return vec3(
+			.5 + .25 * (.5 * (sin(5.0 * pos.w) + 1.0)),
+			.5 + .25 * (.5 * (cos(5.0 * pos.w) + 1.0)),
+			1.0
+		);
+	`;
+
+	lightGlsl = /* glsl */`
+		vec4 lightDirection1 = normalize(vec4(-1.0, 1.0, 0.0, .5) - pos);
+		float dotProduct1 = abs(dot(surfaceNormal, lightDirection1));
+
+		float lightIntensity = 1.5 * dotProduct1;
+	`;
+
+	cameraPos = [-0.52612, 0.55674, 1.25967, 0.34129];
+	normalVec = [0.52619, -0.55667, 1.25966, 0];
+	upVec = [0, 0, 0, 1];
+	rightVec = [0.70684, 0.70758, 0.01743, 0];
+	forwardVec = [0.88161, -0.89956, -0.76580, 0];
+
+	movingSpeed = 1.25;
+}
 
 export class H2xERooms extends H2xEGeometry
 {

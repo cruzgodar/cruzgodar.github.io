@@ -30,8 +30,10 @@ Something will go here eventually!
 	s2xe-rooms "$S^2 \times \mathbb{E}$: Rooms"
 	s2xe-spheres "$S^2 \times \mathbb{E}$: Spheres"
 
+	h2xe-axes "$\mathbb{H}^2 \times \mathbb{E}$: Axes"
 	h2xe-rooms "$\mathbb{H}^2 \times \mathbb{E}$: Rooms"
 
+	nil-axes "Nil: Axes"
 	nil-rooms "Nil: Rooms"
 	nil-spheres "Nil: Spheres"
 

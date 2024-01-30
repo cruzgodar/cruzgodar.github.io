@@ -39,14 +39,11 @@ export class E3Axes extends E3Geometry
 			);
 		}
 
-		if (minDistance == distance3)
-		{
-			return vec3(
-				.5 + .25 * (.5 * (sin(pos.z) + 1.0)),
-				.5 + .25 * (.5 * (cos(pos.z) + 1.0)),
-				1.0
-			);
-		}
+		return vec3(
+			.5 + .25 * (.5 * (sin(pos.z) + 1.0)),
+			.5 + .25 * (.5 * (cos(pos.z) + 1.0)),
+			1.0
+		);
 	`;
 
 	lightGlsl = /* glsl */`

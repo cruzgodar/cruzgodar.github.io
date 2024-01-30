@@ -384,9 +384,7 @@ export class H3Axes extends H3Geometry
 		}
 	`;
 
-	// fogGlsl = /* glsl */`
-	// 	return color;
-	// `;
+	teleportCamera() {}
 
 	static distances = /* glsl */`
 		float distance1 = acosh(sqrt(pos.w * pos.w - pos.x * pos.x)) - .05;
