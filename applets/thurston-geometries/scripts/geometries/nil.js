@@ -119,7 +119,7 @@ class NilGeometry extends BaseGeometry
 				);
 			}
 		
-			if (c * t < .001)
+			if (c * t < .005)
 			{
 				return A * vec4(
 					2.0 * a / c * sin(c * t / 2.0) * cos(c * t / 2.0 + alpha),
@@ -637,9 +637,9 @@ export class NilSpheres extends NilGeometry
 
 	getColorGlsl = /* glsl */`
 		return vec3(
-			.25 + .75 * (.5 * (sin(floor(baseColor.x + globalColor.x + .5) * 40.0) + 1.0)),
-			.25 + .75 * (.5 * (sin(floor(baseColor.y + globalColor.y + .5) * 57.0) + 1.0)),
-			.25 + .75 * (.5 * (sin(floor(baseColor.z + globalColor.z + .5) * 89.0) + 1.0))
+			.15 + .85 * (.5 * (sin(floor(baseColor.x + globalColor.x + .5) * 40.0) + 1.0)),
+			.15 + .85 * (.5 * (sin(floor(baseColor.y + globalColor.y + .5) * 57.0) + 1.0)),
+			.15 + .85 * (.5 * (sin(floor(baseColor.z + globalColor.z + .5) * 89.0) + 1.0))
 		);
 	`;
 
@@ -649,7 +649,7 @@ export class NilSpheres extends NilGeometry
 		vec4 lightDirection1 = normalize(vec4(1.5, 1.5, 1.5, 1.0) - pos);
 		float dotProduct1 = dot(surfaceNormal, lightDirection1);
 
-		float lightIntensity = (.2 + .8 * max(dotProduct1, -.75 * dotProduct1)) * 1.15;
+		float lightIntensity = (.2 + .8 * max(dotProduct1, -dotProduct1)) * 1.15;
 	`;
 
 	ambientOcclusionDenominator = "250.0";
@@ -661,8 +661,6 @@ export class NilSpheres extends NilGeometry
 	forwardVec = [0.997199, -0.074809, 0, 0];
 
 	baseColor = [-2, 0, -2];
-
-	uiElementsUsed = "#disable-teleportation-checkbox";
 
 	uniformGlsl = /* glsl */`
 		uniform vec3 baseColor;
