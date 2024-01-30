@@ -40,6 +40,7 @@ function setUpDropdown(selectElement)
 		const optionElement = document.createElement("div");
 
 		optionElement.textContent = option.textContent;
+		optionElement.setAttribute("data-option-name", option.getAttribute("value"));
 		optionElement.setAttribute("data-option-index", index);
 		optionElements.push(optionElement);
 		flexElement.appendChild(optionElement);
@@ -57,7 +58,6 @@ function setUpDropdown(selectElement)
 		optionElements[0].innerHTML +=
 			" <span style=\"font-size: 12px; margin-right: -2px\">&#x25BC;</span>";
 		
-		// The 24 accounts for the padding and border.
 		buttonElement.style.height = (
 			optionElements[selectedItem].getBoundingClientRect().height * 1.075
 		) + "px";

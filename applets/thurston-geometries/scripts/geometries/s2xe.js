@@ -44,6 +44,68 @@ class S2xEGeometry extends BaseGeometry
 
 
 
+export class S2xEAxes extends S2xEGeometry
+{
+	static distances = /* glsl */`
+		float distance1 = length(vec2(acos(sqrt(1.0 - pos.y * pos.y)), pos.w)) - .1;
+		float distance2 = length(vec2(acos(sqrt(1.0 - pos.x * pos.x)), pos.w)) - .1;
+		float distance3 = acos(pos.z) - .1;
+
+		float minDistance = ${getMinGlslString("distance", 3)};
+	`;
+
+	distanceEstimatorGlsl = /* glsl */`
+		${S2xEAxes.distances}
+
+		return minDistance;
+	`;
+
+	getColorGlsl = /* glsl */`
+		${S2xEAxes.distances}
+
+		if (minDistance == distance1)
+		{
+			return vec3(
+				1.0,
+				.5 + .25 * (.5 * (sin(20.0 * pos.x) + 1.0)),
+				.5 + .25 * (.5 * (cos(20.0 * pos.x) + 1.0))
+			);
+		}
+
+		if (minDistance == distance2)
+		{
+			return vec3(
+				.5 + .25 * (.5 * (sin(20.0 * pos.y) + 1.0)),
+				1.0,
+				.5 + .25 * (.5 * (cos(20.0 * pos.y) + 1.0))
+			);
+		}
+
+		return vec3(
+			.5 + .25 * (.5 * (sin(5.0 * pos.w) + 1.0)),
+			.5 + .25 * (.5 * (cos(5.0 * pos.w) + 1.0)),
+			1.0
+		);
+	`;
+
+	lightGlsl = /* glsl */`
+		// The cap of .05 fixes a very weird bug where the top and bottom of spheres had tiny dots of incorrect lighting.
+
+		vec4 lightDirection1 = vec4(normalize(vec3(2.0, 2.0, -2.0) - pos.xyz), 0.0);
+		float dotProduct1 = abs(dot(surfaceNormal, lightDirection1));
+
+		float lightIntensity = 1.5 * dotProduct1;
+	`;
+
+	cameraPos = [-0.69965, -0.70677, 0.10463, 0.61483];
+	normalVec = [0.69965, 0.70676, -0.10471, 0];
+	upVec = [0, 0, 0, 1];
+	rightVec = [0.71092, -0.70325, 0.00345, 0];
+	forwardVec = [0.07120, 0.07685, 0.99449, 0];
+}
+
+
+
 export class S2xERooms extends S2xEGeometry
 {
 	static distances = /* glsl */`
@@ -55,20 +117,18 @@ export class S2xERooms extends S2xEGeometry
 		float distance4 = wallThickness - length(vec2(acos(-pos.y), mod(pos.w + spacing / 2.0, spacing) - spacing / 2.0));
 		float distance5 = wallThickness - length(vec2(acos(pos.z), mod(pos.w + spacing / 2.0, spacing) - spacing / 2.0));
 		float distance6 = wallThickness - length(vec2(acos(-pos.z), mod(pos.w + spacing / 2.0, spacing) - spacing / 2.0));
+
+		float minDistance = ${getMaxGlslString("distance", 6)};
 	`;
 
 	distanceEstimatorGlsl = /* glsl */`
 		${S2xERooms.distances}
-
-		float minDistance = ${getMaxGlslString("distance", 6)};
 
 		return minDistance;
 	`;
 
 	getColorGlsl = /* glsl */`
 		${S2xERooms.distances}
-
-		float minDistance = ${getMaxGlslString("distance", 6)};
 
 		float wColor = floor((pos.w + spacing / 2.0) / spacing);
 
@@ -180,20 +240,18 @@ export class S2xESpheres extends S2xEGeometry
 		float distance3 = length(vec2(acos(pos.y), mod(pos.w + .785398, 1.570796) - .785398)) - .3;
 		float distance4 = length(vec2(acos(-pos.y), mod(pos.w + .785398, 1.570796) - .785398)) - .3;
 		float distance5 = length(vec2(acos(pos.z), mod(pos.w + .785398, 1.570796) - .785398)) - .3;
+
+		float minDistance = ${getMinGlslString("distance", 5)};
 	`;
 
 	distanceEstimatorGlsl = /* glsl */`
 		${S2xESpheres.distances}
-
-		float minDistance = ${getMinGlslString("distance", 5)};
 
 		return minDistance;
 	`;
 
 	getColorGlsl = /* glsl */`
 		${S2xESpheres.distances}
-
-		float minDistance = ${getMinGlslString("distance", 5)};
 
 		float wColor = floor((pos.w + .785398) / 1.570796);
 

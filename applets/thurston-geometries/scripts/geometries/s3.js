@@ -107,20 +107,18 @@ export class S3Rooms extends S3Geometry
 		float distance6 = acos(-pos.z) - wallThickness;
 		float distance7 = acos(pos.w) - wallThickness;
 		float distance8 = acos(-pos.w) - wallThickness;
+
+		float minDistance = ${getMinGlslString("distance", 8)};
 	`;
 
 	distanceEstimatorGlsl = /* glsl */`
 		${S3Rooms.distances}
-
-		float minDistance = ${getMinGlslString("distance", 8)};
 
 		return -minDistance;
 	`;
 
 	getColorGlsl = /* glsl */`
 		${S3Rooms.distances}
-
-		float minDistance = ${getMinGlslString("distance", 8)};
 
 		if (minDistance == distance1)
 		{
@@ -211,7 +209,7 @@ export class S3Rooms extends S3Geometry
 
 export class S3Spheres extends S3Geometry
 {
-	distanceEstimatorGlsl = /* glsl */`
+	static distances = /* glsl */`
 		float distance1 = abs(acos(pos.x) - .3);
 		float distance2 = abs(acos(-pos.x) - .3);
 		float distance3 = abs(acos(pos.y) - .3);
@@ -221,20 +219,15 @@ export class S3Spheres extends S3Geometry
 		float distance7 = abs(acos(pos.w) - .3);
 
 		float minDistance = ${getMinGlslString("distance", 7)};
+	`;
+	distanceEstimatorGlsl = /* glsl */`
+		${S3Spheres.distances}
 
 		return minDistance;
 	`;
 
 	getColorGlsl = /* glsl */`
-		float distance1 = abs(acos(pos.x) - .3);
-		float distance2 = abs(acos(-pos.x) - .3);
-		float distance3 = abs(acos(pos.y) - .3);
-		float distance4 = abs(acos(-pos.y) - .3);
-		float distance5 = abs(acos(pos.z) - .3);
-		float distance6 = abs(acos(-pos.z) - .3);
-		float distance7 = abs(acos(pos.w) - .3);
-
-		float minDistance = ${getMinGlslString("distance", 7)};
+		${S3Spheres.distances}
 
 		if (minDistance == distance1)
 		{

@@ -26,6 +26,7 @@ Something will go here eventually!
 	h3-axes "$\mathbb{H}^3$: Axes"
 	h3-rooms "$\mathbb{H}^3$: Rooms"
 
+	s2xe-axes "$S^2 \times \mathbb{E}$: Axes"
 	s2xe-rooms "$S^2 \times \mathbb{E}$: Rooms"
 	s2xe-spheres "$S^2 \times \mathbb{E}$: Spheres"
 

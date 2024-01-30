@@ -376,20 +376,18 @@ export class H2xERooms extends H2xEGeometry
 				pos
 			)
 		));
+
+		float minDistance = ${getMinGlslString("distance", 5)};
 	`;
 
 	distanceEstimatorGlsl = /* glsl */`
 		${H2xERooms.distances}
-
-		float minDistance = ${getMinGlslString("distance", 5)};
 
 		return minDistance;
 	`;
 
 	getColorGlsl = /* glsl */`
 		${H2xERooms.distances}
-
-		float minDistance = ${getMinGlslString("distance", 5)};
 
 		float wColor = floor((pos.w + 3.0 * spacing / 2.0) / spacing) - spacing / 2.0;
 
@@ -489,20 +487,18 @@ export class H2xESpheres extends H2xEGeometry
 				pos
 			)
 		));
+
+		float minDistance = ${getMinGlslString("distance", 5)};
 	`;
 
 	distanceEstimatorGlsl = /* glsl */`
 		${H2xESpheres.distances}
-
-		float minDistance = ${getMinGlslString("distance", 5)};
 
 		return minDistance;
 	`;
 
 	getColorGlsl = /* glsl */`
 		${H2xESpheres.distances}
-
-		float minDistance = ${getMinGlslString("distance", 5)};
 
 		float wColor = floor((pos.w + spacing / 2.0) / spacing);
 

@@ -540,12 +540,12 @@ export class NilRooms extends NilGeometry
 
 		float distance4 = abs(pos.y - 0.5002);
 		float distance5 = abs(pos.y + 0.5002);
+
+		float minDistance = ${getMinGlslString("distance", 5)};
 	`;
 
 	distanceEstimatorGlsl = /* glsl */`
 		${NilRooms.distances}
-
-		float minDistance = ${getMinGlslString("distance", 5)};
 
 		return minDistance;
 	`;

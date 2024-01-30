@@ -3,7 +3,7 @@ import { E3Axes, E3Rooms, E3Spheres } from "./geometries/e3.js";
 import { H2xERooms } from "./geometries/h2xe.js";
 import { H3Axes, H3Rooms } from "./geometries/h3.js";
 import { NilRooms, NilSpheres } from "./geometries/nil.js";
-import { S2xERooms, S2xESpheres } from "./geometries/s2xe.js";
+import { S2xEAxes, S2xERooms, S2xESpheres } from "./geometries/s2xe.js";
 import { S3Axes, S3HopfFibration, S3Rooms, S3Spheres } from "./geometries/s3.js";
 import { SL2RRooms } from "./geometries/sl2r.js";
 import { SolRooms } from "./geometries/sol.js";
@@ -30,6 +30,7 @@ export function load()
 		"h3-axes": H3Axes,
 		"h3-rooms": H3Rooms,
 
+		"s2xe-axes": S2xEAxes,
 		"s2xe-rooms": S2xERooms,
 		"s2xe-spheres": S2xESpheres,
 
@@ -44,6 +45,11 @@ export function load()
 	};
 
 	const sceneSelectorDropdownElement = $("#scene-selector-dropdown");
+
+	if (!window.DEBUG)
+	{
+		$$("[data-option-name$=axes]").forEach(element => element.style.display = "none");
+	}
 
 	function run()
 	{

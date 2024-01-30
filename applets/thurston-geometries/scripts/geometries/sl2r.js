@@ -812,12 +812,12 @@ export class SL2RRooms extends SL2RGeometry
 
 		float distance2 = length(vec2(acosh(h2Element.z), fiber - 0.66667 * pi)) - wallThickness;
 		float distance3 = length(vec2(acosh(h2Element.z), fiber + 0.66667 * pi)) - wallThickness;
+
+		float minDistance = ${getMinGlslString("distance", 3)};
 	`;
 
 	distanceEstimatorGlsl = /* glsl */`
 		${SL2RRooms.distances}
-
-		float minDistance = ${getMinGlslString("distance", 3)};
 
 		return -minDistance;
 	`;

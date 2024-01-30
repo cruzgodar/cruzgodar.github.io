@@ -449,8 +449,6 @@ export class H3Axes extends H3Geometry
 		);
 	`;
 
-	teleportCamera() {console.log(this.cameraPos, this.forwardVec, this.rightVec, this.upVec, this.normalVec);}
-
 	cameraPos = [0.89424, -0.89424, 0.24177, 1.63027];
 	normalVec = [-0.89424, 0.89424, -0.24177, 1.63027];
 	upVec = [0.07548, -0.07548, 1.02152, 0.23431];
@@ -508,12 +506,12 @@ export class H3Rooms extends H3Geometry
 				pos
 			)
 		));
+
+		float minDistance = ${getMinGlslString("distance", 7)};
 	`;
 
 	distanceEstimatorGlsl = /* glsl */`
 		${H3Rooms.distances}
-
-		float minDistance = ${getMinGlslString("distance", 7)};
 
 		return minDistance;
 	`;
@@ -545,8 +543,8 @@ export class H3Rooms extends H3Geometry
 		);
 	`;
 
-	cameraPos = [0, 0, 0, 1];
-	normalVec = [0, 0, 0, -1];
+	cameraPos = [.1, 0, 0, Math.sqrt(.1 * .1 + 1)];
+	normalVec = [-.1, 0, 0, Math.sqrt(.1 * .1 + 1)];
 	upVec = [0, 0, 1, 0];
 	rightVec = [0, 1, 0, 0];
 	forwardVec = [1, 0, 0, 0];
