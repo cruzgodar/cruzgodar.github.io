@@ -151,3 +151,251 @@ export function load()
 
 	showPage();
 }
+
+`
+precision highp float;
+			
+			varying vec2 uv;
+			
+			uniform float aspectRatioX;
+			uniform float aspectRatioY;
+			
+			uniform vec4 cameraPos;
+			uniform vec4 normalVec;
+			uniform vec4 upVec;
+			uniform vec4 rightVec;
+			uniform vec4 forwardVec;
+			
+			uniform int resolution;
+			
+			const float epsilon = 0.00001;
+			const int maxMarches = 100;
+			const float maxT = 6.283;
+			const float stepFactor = 0.99;
+			const vec3 fogColor = vec3(0.0, 0.0, 0.0);
+			const float fogScaling = .07;
+			uniform float fov;
+
+			
+		uniform float wallThickness;
+	
+
+			float geometryDot(vec4 v, vec4 w)
+			{
+				
+		return dot(v, w);
+	
+			}
+
+			vec4 geometryNormalize(vec4 dir)
+			{
+				
+		return normalize(dir);
+	
+			}
+
+			
+
+
+
+			float getBanding(float amount, float numBands)
+			{
+				return 1.0 - floor(mod(amount * numBands, 2.0)) / 2.0;
+			}
+			
+			
+			
+			float distanceEstimator(vec4 pos)
+			{
+				
+		
+		float distance1 = acos(pos.x) - wallThickness;
+		float distance2 = acos(-pos.x) - wallThickness;
+		float distance3 = acos(pos.y) - wallThickness;
+		float distance4 = acos(-pos.y) - wallThickness;
+		float distance5 = acos(pos.z) - wallThickness;
+		float distance6 = acos(-pos.z) - wallThickness;
+		float distance7 = acos(pos.w) - wallThickness;
+		float distance8 = acos(-pos.w) - wallThickness;
+
+		float minDistance = min(min(min(distance1, distance2), min(distance3, distance4)), min(min(distance5, distance6), min(distance7, distance8)));
+	
+
+		return -minDistance;
+	
+			}
+			
+			vec3 getColor(vec4 pos, vec3 globalColor)
+			{
+				
+		
+		float distance1 = acos(pos.x) - wallThickness;
+		float distance2 = acos(-pos.x) - wallThickness;
+		float distance3 = acos(pos.y) - wallThickness;
+		float distance4 = acos(-pos.y) - wallThickness;
+		float distance5 = acos(pos.z) - wallThickness;
+		float distance6 = acos(-pos.z) - wallThickness;
+		float distance7 = acos(pos.w) - wallThickness;
+		float distance8 = acos(-pos.w) - wallThickness;
+
+		float minDistance = min(min(min(distance1, distance2), min(distance3, distance4)), min(min(distance5, distance6), min(distance7, distance8)));
+	
+
+		if (minDistance == distance1)
+		{
+			return vec3(
+				.75 + .25 * (.5 * (sin((.03 * pos.x) * 7.0) + 1.0)),
+				.65 * (.5 * (sin((.03 * pos.y) * 11.0) + 1.0)),
+				.65 * (.5 * (sin((.03 * pos.z) * 89.0) + 1.0))
+			);
+		}
+
+		if (minDistance == distance2)
+		{
+			return vec3(.5 * abs(pos.y), 1.0 - .5 * abs(pos.z), 1.0 - 5 * abs(pos.w));
+		}
+
+		if (minDistance == distance3)
+		{
+			return vec3(0.0, 1.0, 0.0);
+		}
+
+		if (minDistance == distance4)
+		{
+			return vec3(1.0, 0.0, 1.0);
+		}
+
+		if (minDistance == distance5)
+		{
+			return vec3(0.0, 0.0, 1.0);
+		}
+
+		if (minDistance == distance6)
+		{
+			return vec3(1.0, 1.0, 0.0);
+		}
+
+		if (minDistance == distance7)
+		{
+			return vec3(0.5, 0.0, 1.0);
+		}
+		
+		return vec3(1.0, 0.5, 0.0);
+	
+			}
+			
+			
+			
+			vec4 getSurfaceNormal(vec4 pos)
+			{
+				float xStep1 = distanceEstimator(pos + vec4(epsilon, 0.0, 0.0, 0.0));
+				float yStep1 = distanceEstimator(pos + vec4(0.0, epsilon, 0.0, 0.0));
+				float zStep1 = distanceEstimator(pos + vec4(0.0, 0.0, epsilon, 0.0));
+				float wStep1 = distanceEstimator(pos + vec4(0.0, 0.0, 0.0, epsilon));
+				
+				float xStep2 = distanceEstimator(pos - vec4(epsilon, 0.0, 0.0, 0.0));
+				float yStep2 = distanceEstimator(pos - vec4(0.0, epsilon, 0.0, 0.0));
+				float zStep2 = distanceEstimator(pos - vec4(0.0, 0.0, epsilon, 0.0));
+				float wStep2 = distanceEstimator(pos - vec4(0.0, 0.0, 0.0, epsilon));
+				
+				return normalize(vec4(
+					xStep1 - xStep2,
+					yStep1 - yStep2,
+					zStep1 - zStep2,
+					wStep1 - wStep2
+				));
+			}
+			
+			
+			
+			vec3 computeShading(vec4 pos, int iteration, vec3 globalColor, float totalT)
+			{
+				vec4 surfaceNormal = getSurfaceNormal(pos);
+				
+				
+		vec4 lightDirection1 = normalize(vec4(1.0, 1.0, 1.0, 1.0) - pos);
+		float dotProduct1 = dot(surfaceNormal, lightDirection1);
+
+		vec4 lightDirection2 = normalize(vec4(-1.0, -1.0, -1.0, -1.0) - pos);
+		float dotProduct2 = dot(surfaceNormal, lightDirection2);
+
+		float lightIntensity = 3.5 * max(dotProduct1, dotProduct2);
+	
+
+				//The last factor adds ambient occlusion.
+				vec3 color = getColor(pos, globalColor)
+					* lightIntensity
+					* max(
+						1.0 - float(iteration) / 100.0,
+						0.0)
+					;
+
+				//Apply fog.
+				
+		return mix(color, fogColor, 1.0 - exp(-acos(dot(pos, cameraPos)) * fogScaling));
+	
+			}
+			
+			
+			
+			vec3 raymarch(vec4 rayDirectionVec)
+			{
+				vec3 finalColor = fogColor;
+				
+				float t = 0.0;
+				float totalT = 0.0;
+				
+				float lastTIncrease = 0.0;
+
+				vec4 startPos = cameraPos;
+
+				vec3 globalColor = vec3(0.0, 0.0, 0.0);
+
+				
+				
+				for (int iteration = 0; iteration < maxMarches; iteration++)
+				{
+					
+		vec4 pos = cos(t) * startPos + sin(t) * rayDirectionVec;
+	
+					
+					float distance = distanceEstimator(pos);
+					
+					if (distance < epsilon)
+					{
+						
+						
+						finalColor = computeShading(pos, iteration, globalColor, totalT);
+						break;
+					}
+
+					
+		lastTIncrease = distance * stepFactor;
+		
+		t += lastTIncrease;
+	
+
+					if (t > maxT || totalT > maxT)
+					{
+						return fogColor;
+					}
+				}
+				
+				return finalColor;
+			}
+			
+			
+			
+			void main(void)
+			{
+				gl_FragColor = vec4(
+					raymarch(
+						geometryNormalize(
+							forwardVec
+							+ rightVec * uv.x * aspectRatioX * fov
+							+ upVec * uv.y / aspectRatioY * fov
+						)
+					),
+					1.0
+				);
+			}`

@@ -20,6 +20,10 @@ export class ThurstonGeometry extends Applet
 	// which finally get passed to the shader.
 	rotatedForwardVec;
 	rotatedUpVec;
+	
+	// When false, up and down rotations are immediately baked in,
+	// resulting in complete freedom of rotation at the cost of holonomy.
+	restrictCamera = true;
 
 	// Moving forward/back, right/left, and up/down
 	movingAmount = [0, 0, 0];
@@ -673,10 +677,18 @@ export class ThurstonGeometry extends Applet
 			this.wilson.worldCenterY
 		);
 
-		// this.wilson.worldCenterY = 0;
-
 		this.rotatedForwardVec = result2[0];
 		this.rotatedUpVec = result2[1];
+
+		if (!this.restrictCamera)
+		{
+			this.wilson.worldCenterY = 0;
+
+			this.geometryData.forwardVec = result2[0];
+			this.geometryData.upVec = result2[1];
+			this.rotatedForwardVec = result2[0];
+			this.rotatedUpVec = result2[1];
+		}
 	}
 
 

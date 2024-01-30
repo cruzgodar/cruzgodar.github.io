@@ -89,8 +89,6 @@ export class S2xEAxes extends S2xEGeometry
 	`;
 
 	lightGlsl = /* glsl */`
-		// The cap of .05 fixes a very weird bug where the top and bottom of spheres had tiny dots of incorrect lighting.
-
 		vec4 lightDirection1 = vec4(normalize(vec3(2.0, 2.0, -2.0) - pos.xyz), 0.0);
 		float dotProduct1 = abs(dot(surfaceNormal, lightDirection1));
 
@@ -135,62 +133,59 @@ export class S2xERooms extends S2xEGeometry
 		if (minDistance == distance1)
 		{
 			return vec3(
-				.75 + .25 * (.5 * (sin(wColor * 7.0) + 1.0)),
-				.65 * (.5 * (sin(wColor * 11.0) + 1.0)),
-				.65 * (.5 * (sin(wColor * 89.0) + 1.0))
+				.75 + .25 * (.5 * (sin((.03 * pos.x + wColor) * 7.0) + 1.0)),
+				.65 * (.5 * (sin((.03 * pos.y + wColor) * 11.0) + 1.0)),
+				.65 * (.5 * (sin((.03 * pos.z + wColor) * 89.0) + 1.0))
 			);
 		}
 
 		if (minDistance == distance2)
 		{
 			return vec3(
-				.65 * (.5 * (sin(wColor * 7.0) + 1.0)),
-				.75 + .25 * (.5 * (sin(wColor * 11.0) + 1.0)),
-				.65 * (.5 * (sin(wColor * 89.0) + 1.0))
+				.65 * (.5 * (sin((.03 * pos.x + wColor) * 7.0) + 1.0)),
+				.75 + .25 * (.5 * (sin((.03 * pos.y + wColor) * 11.0) + 1.0)),
+				.65 * (.5 * (sin((.03 * pos.z + wColor) * 89.0) + 1.0))
 			);
 		}
 
 		if (minDistance == distance3)
 		{
 			return vec3(
-				.65 * (.5 * (sin(wColor * 7.0) + 1.0)),
-				.65 * (.5 * (sin(wColor * 11.0) + 1.0)),
-				.75 + .25 * (.5 * (sin(wColor * 17.0) + 1.0))
+				.65 * (.5 * (sin((.03 * pos.x + wColor) * 7.0) + 1.0)),
+				.65 * (.5 * (sin((.03 * pos.y + wColor) * 11.0) + 1.0)),
+				.75 + .25 * (.5 * (sin((.03 * pos.z + wColor) * 17.0) + 1.0))
 			);
 		}
 
 		if (minDistance == distance4)
 		{
 			return vec3(
-				.75 + .25 * (.5 * (sin(wColor * 7.0) + 1.0)),
-				.75 + .25 * (.5 * (sin(wColor * 11.0) + 1.0)),
-				.65 * (.5 * (sin(wColor * 17.0) + 1.0))
+				.75 + .25 * (.5 * (sin((.03 * pos.x + wColor) * 7.0) + 1.0)),
+				.75 + .25 * (.5 * (sin((.03 * pos.y + wColor) * 11.0) + 1.0)),
+				.65 * (.5 * (sin((.03 * pos.z + wColor) * 17.0) + 1.0))
 			);
 		}
 
 		if (minDistance == distance5)
 		{
 			return vec3(
-				.75 + .25 * (.5 * (sin(wColor * 7.0) + 1.0)),
-				.65 * (.5 * (sin(wColor * 11.0) + 1.0)),
-				.75 + .25 * (.5 * (sin(wColor * 17.0) + 1.0))
+				.75 + .25 * (.5 * (sin((.03 * pos.x + wColor) * 7.0) + 1.0)),
+				.65 * (.5 * (sin((.03 * pos.y + wColor) * 11.0) + 1.0)),
+				.75 + .25 * (.5 * (sin((.03 * pos.z + wColor) * 17.0) + 1.0))
 			);
 		}
 
-		if (minDistance == distance6)
-		{
-			return vec3(
-				.65 * (.5 * (sin(wColor * 7.0) + 1.0)),
-				.75 + .25 * (.5 * (sin(wColor * 11.0) + 1.0)),
-				.75 + .25 * (.5 * (sin(wColor * 17.0) + 1.0))
-			);
-		}
+		return vec3(
+			.65 * (.5 * (sin((.03 * pos.x + wColor) * 7.0) + 1.0)),
+			.75 + .25 * (.5 * (sin((.03 * pos.y + wColor) * 11.0) + 1.0)),
+			.75 + .25 * (.5 * (sin((.03 * pos.z + wColor) * 17.0) + 1.0))
+		);
 	`;
 
 	lightGlsl = /* glsl */`
-		// The cap of .05 fixes a very weird bug where the top and bottom of spheres had tiny dots of incorrect lighting.
+		float spacing = 1.09;
 
-		vec4 lightDirection1 = normalize(vec4(2.0, 2.0, 2.0, -3.0) - pos);
+		vec4 lightDirection1 = normalize(vec4(2.0, 2.0, 2.0, -2.0) - vec4(pos.xyz, mod(pos.w + spacing / 2.0, spacing) - spacing / 2.0));
 		float dotProduct1 = abs(dot(surfaceNormal, lightDirection1));
 
 		float lightIntensity = 1.5 * dotProduct1;
@@ -306,11 +301,13 @@ export class S2xESpheres extends S2xEGeometry
 		// of spheres had dots of incorrect lighting.
 		pos.xyz /= 1.001;
 		surfaceNormal = getSurfaceNormal(pos);
-		
-		vec4 lightDirection1 = normalize(vec4(0.0, 1.0, 0.0, 2.0) - pos);
+
+		float spacing = 1.570796;
+
+		vec4 lightDirection1 = normalize(vec4(0.0, 2.0, 2.0, 2.5) - vec4(pos.xyz, mod(pos.w + spacing / 2.0, spacing) - spacing / 2.0));
 		float dotProduct1 = dot(surfaceNormal, lightDirection1);
 
-		vec4 lightDirection2 = normalize(vec4(1.0, 0.0, -1.0, 1.0) - pos);
+		vec4 lightDirection2 = normalize(vec4(2.0, 0.0, -2.0, 2.5) - vec4(pos.xyz, mod(pos.w + spacing / 2.0, spacing) - spacing / 2.0));
 		float dotProduct2 = dot(surfaceNormal, lightDirection2);
 
 		float lightIntensity = 1.3 * max(dotProduct1, dotProduct2);

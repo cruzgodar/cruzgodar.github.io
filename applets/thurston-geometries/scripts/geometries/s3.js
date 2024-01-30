@@ -120,44 +120,76 @@ export class S3Rooms extends S3Geometry
 	getColorGlsl = /* glsl */`
 		${S3Rooms.distances}
 
+		float variation = .075;
+
 		if (minDistance == distance1)
 		{
-			return vec3(1.0, 0.0, 0.0) * getBanding(pos.x + pos.y + pos.z + pos.w, 10.0);
+			return vec3(
+				.85 + .15 * (.5 * (sin((variation * pos.y) * 17.0) + 1.0)),
+				.5 * (.5 * (sin((variation * pos.z) * 23.0) + 1.0)),
+				.5 * (.5 * (sin((variation * pos.w) * 29.0) + 1.0))
+			);
 		}
 
 		if (minDistance == distance2)
 		{
-			return vec3(0.0, 1.0, 1.0) * getBanding(pos.x + pos.y + pos.z + pos.w, 10.0);
+			return vec3(
+				.5 * (.5 * (sin((variation * pos.y) * 17.0) + 1.0)),
+				.85 + .15 * (.5 * (sin((variation * pos.z) * 23.0) + 1.0)),
+				.85 + .15 * (.5 * (sin((variation * pos.w) * 29.0) + 1.0))
+			);
 		}
 
 		if (minDistance == distance3)
 		{
-			return vec3(0.0, 1.0, 0.0) * getBanding(pos.x + pos.y + pos.z + pos.w, 10.0);
+			return vec3(
+				.5 * (.5 * (sin((variation * pos.x) * 17.0) + 1.0)),
+				.85 + .15 * (.5 * (sin((variation * pos.z) * 23.0) + 1.0)),
+				.5 * (.5 * (sin((variation * pos.w) * 29.0) + 1.0))
+			);
 		}
 
 		if (minDistance == distance4)
 		{
-			return vec3(1.0, 0.0, 1.0) * getBanding(pos.x + pos.y + pos.z + pos.w, 10.0);
+			return vec3(
+				.85 + .15 * (.5 * (sin((variation * pos.x) * 17.0) + 1.0)),
+				.5 * (.5 * (sin((variation * pos.z) * 23.0) + 1.0)),
+				.85 + .15 * (.5 * (sin((variation * pos.w) * 29.0) + 1.0))
+			);
 		}
 
 		if (minDistance == distance5)
 		{
-			return vec3(0.0, 0.0, 1.0) * getBanding(pos.x + pos.y + pos.z + pos.w, 10.0);
+			return vec3(
+				.5 * (.5 * (sin((variation * pos.x) * 17.0) + 1.0)),
+				.5 * (.5 * (sin((variation * pos.y) * 23.0) + 1.0)),
+				.85 + .15 * (.5 * (sin((variation * pos.w) * 29.0) + 1.0))
+			);
 		}
 
 		if (minDistance == distance6)
 		{
-			return vec3(1.0, 1.0, 0.0) * getBanding(pos.x + pos.y + pos.z + pos.w, 10.0);
+			return vec3(
+				.85 + .15 * (.5 * (sin((variation * pos.x) * 17.0) + 1.0)),
+				.85 + .15 * (.5 * (sin((variation * pos.y) * 23.0) + 1.0)),
+				.5 * (.5 * (sin((variation * pos.w) * 29.0) + 1.0))
+			);
 		}
 
 		if (minDistance == distance7)
 		{
-			return vec3(0.5, 0.0, 1.0) * getBanding(pos.x + pos.y + pos.z + pos.w, 10.0);
+			return vec3(
+				.5 + .15 * (.5 * (sin((variation * pos.x) * 17.0) + 1.0)),
+				.5 * (.5 * (sin((variation * pos.y) * 23.0) + 1.0)),
+				.85 + .15 * (.5 * (sin((variation * pos.z) * 29.0) + 1.0))
+			);
 		}
-		if (minDistance == distance8)
-		{
-			return vec3(1.0, 0.5, 0.0) * getBanding(pos.x + pos.y + pos.z + pos.w, 10.0);
-		}
+		
+		return vec3(
+			.85 + .15 * (.5 * (sin((variation * pos.x) * 17.0) + 1.0)),
+			.5 + .15 * (.5 * (sin((variation * pos.y) * 23.0) + 1.0)),
+			.5 * (.5 * (sin((variation * pos.z) * 29.0) + 1.0))
+		);
 	`;
 
 	lightGlsl = /* glsl */`
@@ -167,7 +199,7 @@ export class S3Rooms extends S3Geometry
 		vec4 lightDirection2 = normalize(vec4(-1.0, -1.0, -1.0, -1.0) - pos);
 		float dotProduct2 = dot(surfaceNormal, lightDirection2);
 
-		float lightIntensity = 3.5 * max(dotProduct1, dotProduct2);
+		float lightIntensity = 4.0 * max(dotProduct1, dotProduct2);
 	`;
 
 	cameraPos = [0, 0, 0, -1];
@@ -259,10 +291,7 @@ export class S3Spheres extends S3Geometry
 			return vec3(1.0, 1.0, 0.0) * getBanding(pos.x + pos.y + pos.z + pos.w, 10.0);
 		}
 
-		if (minDistance == distance7)
-		{
-			return vec3(1.0, 1.0, 1.0) * getBanding(pos.x + pos.y + pos.z + pos.w, 10.0);
-		}
+		return vec3(1.0, 1.0, 1.0) * getBanding(pos.x + pos.y + pos.z + pos.w, 10.0);
 	`;
 
 	lightGlsl = /* glsl */`
