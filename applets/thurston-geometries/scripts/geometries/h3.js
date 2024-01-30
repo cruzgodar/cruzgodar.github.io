@@ -541,11 +541,11 @@ export class H3Rooms extends H3Geometry
 		);
 	`;
 
-	cameraPos = [.1, 0, 0, Math.sqrt(.1 * .1 + 1)];
-	normalVec = [-.1, 0, 0, Math.sqrt(.1 * .1 + 1)];
+	cameraPos = [-.1, 0, 0, Math.sqrt(.1 * .1 + 1)];
+	normalVec = [.1, 0, 0, Math.sqrt(.1 * .1 + 1)];
 	upVec = [0, 0, 1, 0];
-	rightVec = [0, 1, 0, 0];
-	forwardVec = [1, 0, 0, 0];
+	rightVec = [0, -1, 0, 0];
+	forwardVec = [-1, 0, 0, 0];
 
 	movingSpeed = 1.25;
 

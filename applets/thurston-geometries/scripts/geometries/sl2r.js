@@ -676,6 +676,7 @@ class SL2RGeometry extends BaseGeometry
 
 	getNormalVec()
 	{
+		console.log(this.cameraPos, this.forwardVec, this.rightVec, this.upVec, this.normalVec);
 		return [0, 0, 1, 0];
 	}
 
@@ -796,6 +797,251 @@ class SL2RGeometry extends BaseGeometry
 				this.baseColor[2] += baseColorIncreases[i][1][2];
 			}
 		}
+	}
+}
+
+export class SL2RAxes extends SL2RGeometry
+{
+	geodesicGlsl = /* glsl */`
+		vec4 pos;
+		float fiber;
+
+		getUpdatedPos(startPos, startFiber, rayDirectionVec, t, pos, fiber);
+	`;
+
+	functionGlsl = /* glsl */`
+		const float pi = ${Math.PI};
+		const float piOver2 = ${Math.PI / 2};
+
+		const float root2 = ${root2};
+		const float root2Over2Plus1 = ${root2Over2 + 1};
+		const float root1PlusRoot2 = ${root1PlusRoot2};
+
+		const float delta = ${delta};
+
+		float sinh(float x)
+		{
+			return .5 * (exp(x) - exp(-x));
+		}
+
+		float cosh(float x)
+		{
+			return .5 * (exp(x) + exp(-x));
+		}
+
+		float tanh(float x)
+		{
+			float expTerm = exp(2.0 * x);
+
+			return (expTerm - 1.0) / (expTerm + 1.0);
+		}
+
+		float acosh(float x)
+		{
+			return log(x + sqrt(x*x - 1.0));
+		}
+
+		// Given an element in SL(2, R), returns an isometry sending the origin to that point.
+		// For future reference: the inverse to one of these is given by negating y, z, and w.
+		mat4 getTransformationMatrix(vec4 pos)
+		{
+			return mat4(
+				pos.x, pos.y, pos.z, pos.w,
+				-pos.y, pos.x, pos.w, -pos.z,
+				pos.z, pos.w, pos.x, pos.y,
+				pos.w, -pos.z, -pos.y, pos.x
+			);
+		}
+
+		// Projects a point p in the universal cover, i.e. H^2 x R, down to Q, via the map lambda.
+		vec4 projectToQ(vec4 p)
+		{
+			float denominator = sqrt(2.0 * p.z + 2.0);
+
+			vec4 zetaOutput = vec4(
+				sqrt((p.z + 1.0) * 0.5),
+				0.0,
+				p.x / denominator,
+				p.y / denominator
+			);
+
+			float cosineTerm = cos(p.w * 0.5);
+			float sineTerm = sin(p.w * 0.5);
+
+			return mat4(
+				cosineTerm, sineTerm, 0.0, 0.0,
+				-sineTerm, cosineTerm, 0.0, 0.0,
+				0.0, 0.0, cosineTerm, -sineTerm,
+				0.0, 0.0, sineTerm, cosineTerm
+			) * zetaOutput;
+		}
+
+		const mat2 E0 = mat2(1.0, 0.0, 0.0, 1.0);
+		const mat2 E1 = mat2(0.0, -1.0, 1.0, 0.0);
+		const mat2 E2 = mat2(0.0, 1.0, 1.0, 0.0);
+		const mat2 E3 = mat2(1.0, 0.0, 0.0, -1.0);
+
+		// A special case of the previous function that acts on (0, 0, 1).
+		vec3 getH2Element(vec4 qElement)
+		{
+			return vec3(
+				2.0 * qElement.x * qElement.z - 2.0 * qElement.y * qElement.w,
+				2.0 * qElement.x * qElement.w + 2.0 * qElement.y * qElement.z,
+				qElement.x * qElement.x + qElement.y * qElement.y + qElement.z * qElement.z + qElement.w * qElement.w
+			);
+		}
+
+		// Returns the product element1 * element2 using multiplication in SL(2, R).
+		vec4 sl2Product(vec4 element1, vec4 element2)
+		{
+			return vec4(
+				element1.x * element2.x - element1.y * element2.y + element1.z * element2.z + element1.w * element2.w,
+				element1.x * element2.y + element1.y * element2.x - element1.z * element2.w + element1.w * element2.z,
+				element1.x * element2.z - element1.y * element2.w + element1.z * element2.x + element1.w * element2.y,
+				element1.x * element2.w + element1.y * element2.z - element1.z * element2.y + element1.w * element2.x
+			);
+		}
+
+		const float root2Over2 = 0.70710678;
+		
+		void getUpdatedPos(
+			vec4 startPos,
+			float startFiber,
+			vec4 rayDirectionVec,
+			float t,
+			inout vec4 pos,	
+			inout float fiber
+		) {
+			float alpha = atan(rayDirectionVec.y, rayDirectionVec.x);
+			float a = length(rayDirectionVec.xy);
+			float c = rayDirectionVec.w;
+			float kappa = sqrt(abs(c*c - a*a));
+
+			vec4 eta;
+
+			if (abs(c) == a)
+			{
+				eta = vec4(1.0, -0.5 * root2Over2 * t, 0.5 * root2Over2 * t, 0.0);
+
+				fiber = 2.0 * c * t + 2.0 * atan(-0.5 * root2Over2 * t);
+			}
+		
+			else if (abs(c) > a)
+			{
+				float trigArg = kappa * t * 0.5;
+				float sineFactor = sin(trigArg);
+
+				eta = vec4(cos(trigArg), -c / kappa * sineFactor, a / kappa * sineFactor, 0.0);
+				
+				// Had to go digging in their code for this last term
+				// since it's only referred to in the paper as a adjustment by
+				// "the correct multiple of 2pi". This belongs in the paper!!
+				fiber = 2.0 * c * t + 2.0 * atan(-c / kappa * tan(trigArg))
+					- sign(c) * floor(0.5 * kappa * t / 3.14159265 + 0.5) * 6.28318531;
+			}
+
+			else
+			{
+				float trigArg = kappa * t * 0.5;
+				float sinhFactor = sinh(trigArg);
+
+				eta = vec4(cosh(trigArg), -c / kappa * sinhFactor, a / kappa * sinhFactor, 0.0);
+
+				fiber = 2.0 * c * t + 2.0 * atan(-c / kappa * tanh(trigArg));
+			}
+
+			vec4 ksi = vec4(cos(c * t), sin(c * t), 0.0, 0.0);
+
+			eta = sl2Product(eta, ksi);
+
+			// Finally, apply R_alpha.
+			float sinAlpha = sin(alpha);
+			float cosAlpha = cos(alpha);
+
+			eta.zw = vec2(cosAlpha * eta.z - sinAlpha * eta.w, sinAlpha * eta.z + cosAlpha * eta.w);
+
+			// What we have at this point is eta in SL(2, R) and fiber, together specifying
+			// a point in the universal cover after flowing from the origin for time t. We now
+			// need to translate these to startPos and startFiber, respectively.
+			pos = getTransformationMatrix(startPos) * eta;
+
+			fiber += startFiber;
+		}
+	`;
+
+	teleportCamera() {}
+
+	static distances = /* glsl */`
+		vec3 h2Element = getH2Element(pos);
+
+		float distance1 = length(vec2(acosh(sqrt(1.0 + h2Element.y * h2Element.y)), fiber)) - .05;
+		float distance2 = length(vec2(acosh(sqrt(1.0 + h2Element.x * h2Element.x)), fiber)) - .05;
+		float distance3 = acosh(h2Element.z) - .05;
+
+		float minDistance = ${getMinGlslString("distance", 3)};
+	`;
+
+	distanceEstimatorGlsl = /* glsl */`
+		${SL2RAxes.distances}
+
+		return minDistance;
+	`;
+
+	getColorGlsl = /* glsl */`
+		${SL2RAxes.distances}
+		
+		if (minDistance == distance1)
+		{
+			return vec3(
+				1.0,
+				.5 + .25 * (.5 * (sin(100.0 * (pos.x)) + 1.0)),
+				.5 + .25 * (.5 * (cos(100.0 * (pos.x)) + 1.0))
+			);
+		}
+
+		if (minDistance == distance2)
+		{
+			return vec3(
+				.5 + .25 * (.5 * (sin(100.0 * (pos.y)) + 1.0)),
+				1.0,
+				.5 + .25 * (.5 * (cos(100.0 * (pos.y)) + 1.0))
+			);
+		}
+
+		return vec3(
+			.5 + .25 * (.5 * (sin(15.0 * fiber) + 1.0)),
+			.5 + .25 * (.5 * (cos(15.0 * fiber) + 1.0)),
+			1.0
+		);
+	`;
+
+	lightGlsl = /* glsl */`
+		vec4 lightDirection1 = normalize(vec4(3.0, -3.0, 3.0, 1.0) - pos);
+		float dotProduct1 = dot(surfaceNormal, lightDirection1);
+
+		vec4 lightDirection2 = normalize(vec4(-1.0, 2.0, -1.0, 1.0) - pos);
+		float dotProduct2 = dot(surfaceNormal, lightDirection2);
+
+		float lightIntensity = 1.5 * max(abs(dotProduct1), abs(dotProduct2));
+	`;
+
+	cameraPos = [1.000000555682267, 0, 0.0010542129021898201, 0];
+	cameraFiber = 0;
+
+	normalVec = [0, 0, -1, 0];
+	upVec = [0, 0, 0, 1];
+	rightVec = [0, 1, 0, 0];
+	forwardVec = [1, 0, 0, 0];
+
+	uniformGlsl = /* glsl */`
+		uniform float cameraFiber;
+	`;
+
+	uniformNames = ["cameraFiber"];
+
+	updateUniforms(gl, uniformList)
+	{
+		gl.uniform1f(uniformList["cameraFiber"], this.cameraFiber);
 	}
 }
 

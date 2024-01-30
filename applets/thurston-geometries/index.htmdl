@@ -37,6 +37,7 @@ Something will go here eventually!
 	nil-rooms "Nil: Rooms"
 	nil-spheres "Nil: Spheres"
 
+	sl2r-axes "$\widetilde{\operatorname{SL}}(2, \mathbb{R})$: Axes"
 	sl2r-rooms "$\widetilde{\operatorname{SL}}(2, \mathbb{R})$: Rooms"
 
 	sol-rooms "Sol: Rooms"

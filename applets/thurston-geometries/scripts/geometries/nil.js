@@ -472,45 +472,6 @@ export class NilAxes extends NilGeometry
 				1.0
 			);
 		}
-
-		vec4 getUpdatedDirectionVec(vec4 startPos, vec4 rayDirectionVec, float t)
-		{
-			mat4 A = getTransformationMatrix(startPos);
-		
-			float alpha = atan(rayDirectionVec.y, rayDirectionVec.x);
-			float a = length(rayDirectionVec.xy);
-			float c = rayDirectionVec.z;
-		
-			vec4 pos;
-		
-			// All the following formulas get differentiated dt.
-			if (abs(c) < 0.001)
-			{
-				return A * vec4(
-					a * cos(alpha),
-					a * sin(alpha),
-					0.0,
-					0.0
-				);
-			}
-		
-			if (c * t < .001)
-			{
-				return A * vec4(
-					a * cos(alpha + c * t),
-					a * sin(alpha + c * t),
-					c + a*a * (c*t*t / 4.0 - c*c*c*t*t*t*t / 48.0 + c*c*c*c*c*t*t*t*t*t*t / 1440.0),
-					0.0
-				);
-			}
-			
-			return A * vec4(
-				a * cos(alpha + c * t),
-				a * sin(alpha + c * t),
-				c - a*a / (2.0 * c) * (cos(c * t) - 1.0),
-				0.0
-			);
-		}
 	`;
 
 	finalTeleportationGlsl = "";
@@ -623,8 +584,8 @@ export class NilRooms extends NilGeometry
 	cameraPos = [0, 0, 0, 1];
 	normalVec = [0, 0, 0, 1];
 	upVec = [0, 0, 1, 0];
-	rightVec = [0, 1, 0, 0];
-	forwardVec = [1, 0, 0, 0];
+	rightVec = [1, 0, 0, 0];
+	forwardVec = [0, -1, 0, 0];
 
 	uniformGlsl = /* glsl */`
 		uniform float wallThickness;
