@@ -1091,8 +1091,8 @@ export class SL2RRooms extends SL2RGeometry
 
 	normalVec = [0, 0, -1, 0];
 	upVec = [0, 0, 0, 1];
-	rightVec = [0, 1, 0, 0];
-	forwardVec = [1, 0, 0, 0];
+	rightVec = [-Math.sqrt(2) / 2, Math.sqrt(2) / 2, 0, 0];
+	forwardVec = [Math.sqrt(2) / 2, Math.sqrt(2) / 2, 0, 0];
 
 	uniformGlsl = /* glsl */`
 		uniform float cameraFiber;

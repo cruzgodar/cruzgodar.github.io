@@ -128,57 +128,59 @@ export class S2xERooms extends S2xEGeometry
 	getColorGlsl = /* glsl */`
 		${S2xERooms.distances}
 
-		float wColor = floor((pos.w + spacing / 2.0) / spacing);
+		float wColor = .3 * floor((pos.w + spacing / 2.0) / spacing);
+
+		float variation = .04;
 
 		if (minDistance == distance1)
 		{
 			return vec3(
-				.75 + .25 * (.5 * (sin((.03 * pos.x + wColor) * 7.0) + 1.0)),
-				.65 * (.5 * (sin((.03 * pos.y + wColor) * 11.0) + 1.0)),
-				.65 * (.5 * (sin((.03 * pos.z + wColor) * 89.0) + 1.0))
+				.75 + .25 * (.5 * (sin((variation * pos.x + wColor) * 7.0) + 1.0)),
+				.65 * (.5 * (sin((variation * pos.y + wColor) * 11.0) + 1.0)),
+				.65 * (.5 * (sin((variation * pos.z + wColor) * 89.0) + 1.0))
 			);
 		}
 
 		if (minDistance == distance2)
 		{
 			return vec3(
-				.65 * (.5 * (sin((.03 * pos.x + wColor) * 7.0) + 1.0)),
-				.75 + .25 * (.5 * (sin((.03 * pos.y + wColor) * 11.0) + 1.0)),
-				.65 * (.5 * (sin((.03 * pos.z + wColor) * 89.0) + 1.0))
+				.65 * (.5 * (sin((variation * pos.x + wColor) * 7.0) + 1.0)),
+				.75 + .25 * (.5 * (sin((variation * pos.y + wColor) * 11.0) + 1.0)),
+				.65 * (.5 * (sin((variation * pos.z + wColor) * 89.0) + 1.0))
 			);
 		}
 
 		if (minDistance == distance3)
 		{
 			return vec3(
-				.65 * (.5 * (sin((.03 * pos.x + wColor) * 7.0) + 1.0)),
-				.65 * (.5 * (sin((.03 * pos.y + wColor) * 11.0) + 1.0)),
-				.75 + .25 * (.5 * (sin((.03 * pos.z + wColor) * 17.0) + 1.0))
+				.65 * (.5 * (sin((variation * pos.x + wColor) * 7.0) + 1.0)),
+				.65 * (.5 * (sin((variation * pos.y + wColor) * 11.0) + 1.0)),
+				.75 + .25 * (.5 * (sin((variation * pos.z + wColor) * 17.0) + 1.0))
 			);
 		}
 
 		if (minDistance == distance4)
 		{
 			return vec3(
-				.75 + .25 * (.5 * (sin((.03 * pos.x + wColor) * 7.0) + 1.0)),
-				.75 + .25 * (.5 * (sin((.03 * pos.y + wColor) * 11.0) + 1.0)),
-				.65 * (.5 * (sin((.03 * pos.z + wColor) * 17.0) + 1.0))
+				.75 + .25 * (.5 * (sin((variation * pos.x + wColor) * 7.0) + 1.0)),
+				.75 + .25 * (.5 * (sin((variation * pos.y + wColor) * 11.0) + 1.0)),
+				.65 * (.5 * (sin((variation * pos.z + wColor) * 17.0) + 1.0))
 			);
 		}
 
 		if (minDistance == distance5)
 		{
 			return vec3(
-				.75 + .25 * (.5 * (sin((.03 * pos.x + wColor) * 7.0) + 1.0)),
-				.65 * (.5 * (sin((.03 * pos.y + wColor) * 11.0) + 1.0)),
-				.75 + .25 * (.5 * (sin((.03 * pos.z + wColor) * 17.0) + 1.0))
+				.65 * (.5 * (sin((variation * pos.x + wColor) * 7.0) + 1.0)),
+				.75 + .25 * (.5 * (sin((variation * pos.y + wColor) * 11.0) + 1.0)),
+				.75 + .25 * (.5 * (sin((variation * pos.z + wColor) * 17.0) + 1.0))
 			);
 		}
 
 		return vec3(
-			.65 * (.5 * (sin((.03 * pos.x + wColor) * 7.0) + 1.0)),
-			.75 + .25 * (.5 * (sin((.03 * pos.y + wColor) * 11.0) + 1.0)),
-			.75 + .25 * (.5 * (sin((.03 * pos.z + wColor) * 17.0) + 1.0))
+			.65 + .35 * (.5 * (sin((variation * pos.x + wColor) * 7.0) + 1.0)),
+			.65 + .35 * (.5 * (sin((variation * pos.y + wColor) * 11.0) + 1.0)),
+			.65 + .35 * (.5 * (sin((variation * pos.z + wColor) * 17.0) + 1.0))
 		);
 	`;
 
@@ -194,8 +196,8 @@ export class S2xERooms extends S2xEGeometry
 	cameraPos = [0, 0, -1, 0];
 	normalVec = [0, 0, -1, 0];
 	upVec = [0, 0, 0, 1];
-	rightVec = [0, 1, 0, 0];
-	forwardVec = [1, 0, 0, 0];
+	rightVec = [1, 0, 0, 0];
+	forwardVec = [0, -1, 0, 0];
 
 	uniformGlsl = /* glsl */`
 		uniform float wallThickness;

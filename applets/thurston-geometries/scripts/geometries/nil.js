@@ -578,7 +578,7 @@ export class NilRooms extends NilGeometry
 		vec4 lightDirection1 = normalize(vec4(1.5, 1.5, 1.5, 1.0) - pos);
 		float dotProduct1 = dot(surfaceNormal, lightDirection1);
 
-		float lightIntensity = (.25 + .75 * dotProduct1 * dotProduct1) * 1.15;
+		float lightIntensity = (.25 + .75 * dotProduct1 * dotProduct1) * 1.25;
 	`;
 
 	cameraPos = [0, 0, 0, 1];

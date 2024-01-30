@@ -488,9 +488,9 @@ export class H2xERooms extends H2xEGeometry
 		float wColor = floor((pos.w + 3.0 * spacing / 2.0) / spacing) - spacing / 2.0;
 
 		return vec3(
-			.4 + .6 * .5 * (sin((.05 * pos.x + wColor + globalColor.y + baseColor.y + globalColor.z + baseColor.z) * 5.0) + 1.0),
-			.4 + .6 * .5 * (sin((.05 * pos.y + wColor + globalColor.y + baseColor.y) * 7.0) + 1.0),
-			.4 + .6 * .5 * (sin((.05 * pos.z + wColor + globalColor.z + baseColor.z) * 11.0) + 1.0)
+			.15 + .85 * .5 * (sin((.05 * pos.x + wColor + globalColor.y + baseColor.y + globalColor.z + baseColor.z) * 5.0) + 1.0),
+			.15 + .85 * .5 * (sin((.05 * pos.y + wColor + globalColor.y + baseColor.y) * 7.0) + 1.0),
+			.15 + .85 * .5 * (sin((.05 * pos.z + wColor + globalColor.z + baseColor.z) * 11.0) + 1.0)
 		);
 	`;
 
@@ -509,11 +509,11 @@ export class H2xERooms extends H2xEGeometry
 		float lightIntensity = 1.5 * max(dotProduct1, dotProduct2);
 	`;
 
-	cameraPos = [0, 0, 1, 0];
-	normalVec = [0, 0, -1, 0];
+	cameraPos = [0, .025, Math.sqrt(.025 * .025 + 1), 0];
+	normalVec = [0, -.025, Math.sqrt(.025 * .025 + 1), 0];
 	upVec = [0, 0, 0, 1];
-	rightVec = [0, 1, 0, 0];
-	forwardVec = [1, 0, 0, 0];
+	rightVec = [-1, 0, 0, 0];
+	forwardVec = [0, 1, 0, 0];
 
 	movingSpeed = 1.25;
 

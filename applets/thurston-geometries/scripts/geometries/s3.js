@@ -153,8 +153,8 @@ export class S3Rooms extends S3Geometry
 		{
 			return vec3(
 				.85 + .15 * (.5 * (sin((variation * pos.x) * 17.0) + 1.0)),
-				.5 * (.5 * (sin((variation * pos.z) * 23.0) + 1.0)),
-				.85 + .15 * (.5 * (sin((variation * pos.w) * 29.0) + 1.0))
+				.5 + .15 * (.5 * (sin((variation * pos.y) * 23.0) + 1.0)),
+				.5 * (.5 * (sin((variation * pos.z) * 29.0) + 1.0))
 			);
 		}
 
@@ -186,9 +186,9 @@ export class S3Rooms extends S3Geometry
 		}
 		
 		return vec3(
-			.85 + .15 * (.5 * (sin((variation * pos.x) * 17.0) + 1.0)),
-			.5 + .15 * (.5 * (sin((variation * pos.y) * 23.0) + 1.0)),
-			.5 * (.5 * (sin((variation * pos.z) * 29.0) + 1.0))
+			.65 + .35 * (.5 * (sin((variation * pos.x) * 17.0) + 1.0)),
+			.65 + .35 * (.5 * (sin((variation * pos.y) * 23.0) + 1.0)),
+			.65 + .35 * (.5 * (sin((variation * pos.z) * 29.0) + 1.0))
 		);
 	`;
 
@@ -205,8 +205,8 @@ export class S3Rooms extends S3Geometry
 	cameraPos = [0, 0, 0, -1];
 	normalVec = [0, 0, 0, 1];
 	upVec = [0, 0, 1, 0];
-	rightVec = [0, 1, 0, 0];
-	forwardVec = [1, 0, 0, 0];
+	rightVec = [1, 0, 0, 0];
+	forwardVec = [0, -1, 0, 0];
 
 	uniformGlsl = /* glsl */`
 		uniform float wallThickness;
