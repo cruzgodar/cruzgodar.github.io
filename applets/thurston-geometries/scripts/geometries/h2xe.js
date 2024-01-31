@@ -231,7 +231,6 @@ class H2xEGeometry extends BaseGeometry
 
 	getNormalVec(cameraPos)
 	{
-		console.log(this.cameraPos, this.forwardVec, this.rightVec, this.upVec, this.normalVec);
 		// f = -1 + x^2 + y^2 - z^2.
 		return this.normalize([
 			-cameraPos[0],
@@ -545,101 +544,5 @@ export class H2xERooms extends H2xEGeometry
 		wallThicknessSlider.value = 1.55;
 		wallThicknessSliderValue.textContent = 1.55;
 		this.sliderValues.wallThickness = 1.55;
-	}
-}
-
-export class H2xESpheres extends H2xEGeometry
-{
-	static distances = /* glsl */`
-		float spacing = 1.5;
-		float distance1 = length(vec2(acosh(pos.z), mod(pos.w + spacing / 2.0, spacing) - spacing / 2.0)) - .5;
-
-		// Translate the reflection plane to the x = 0 plane, then get the distance to it.
-		// The DE to x = 0 is abs(asinh(pos.x)).
-		float distance2 = abs(asinh(
-			dot(
-				vec4(1.23188, 0.0, 0.71939, 0),
-				pos
-			)
-		));
-		
-		float distance3 = abs(asinh(
-			dot(
-				vec4(1.23188, 0.0, -0.71939, 0),
-				pos
-			)
-		));
-
-		float distance4 = abs(asinh(
-			dot(
-				vec4(0.0, 1.23188, 0.71939, 0),
-				pos
-			)
-		));
-		
-		float distance5 = abs(asinh(
-			dot(
-				vec4(0.0, -1.23188, 0.71939, 0),
-				pos
-			)
-		));
-
-		float minDistance = ${getMinGlslString("distance", 5)};
-	`;
-
-	distanceEstimatorGlsl = /* glsl */`
-		${H2xESpheres.distances}
-
-		return minDistance;
-	`;
-
-	getColorGlsl = /* glsl */`
-		${H2xESpheres.distances}
-
-		float wColor = floor((pos.w + spacing / 2.0) / spacing);
-
-		float colorSum = globalColor.x + baseColor.x + globalColor.y + baseColor.y + globalColor.z + baseColor.z;
-
-		return vec3(
-			.1 + .8 * .5 * (sin((wColor + colorSum) * 7.0) + 1.0),
-			.1 + .8 * .5 * (sin((wColor + colorSum) * 11.0) + 1.0),
-			.1 + .8 * .5 * (sin((wColor + colorSum) * 17.0) + 1.0)
-		);
-	`;
-
-	lightGlsl = /* glsl */`
-		// Equally weird to the S^2 x E fix, and equally necessary.
-		pos.xyz *= 1.001;
-		surfaceNormal = getSurfaceNormal(pos);
-
-		float spacing = 1.5;
-		vec4 moddedPos = vec4(pos.xyz, mod(pos.w + spacing / 2.0, spacing) - spacing / 2.0);
-
-		vec4 lightDirection1 = normalize(vec4(-1.0, 1.0, 0.0, .5) - moddedPos);
-		float dotProduct1 = abs(dot(surfaceNormal, lightDirection1));
-
-		vec4 lightDirection2 = normalize(vec4(1.0, -1.0, 0.0, -.5) - moddedPos);
-		float dotProduct2 = dot(surfaceNormal, lightDirection2);
-
-		float lightIntensity = 2.0 * max(dotProduct1, dotProduct2);
-	`;
-
-	cameraPos = [0, 0, 1, .75];
-	normalVec = [0, 0, -1, 0];
-	upVec = [0, 0, 0, 1];
-	rightVec = [0, 1, 0, 0];
-	forwardVec = [1, 0, 0, 0];
-
-	movingSpeed = 1.25;
-
-	uniformGlsl = /* glsl */`
-		uniform vec3 baseColor;
-	`;
-
-	uniformNames = ["baseColor"];
-
-	updateUniforms(gl, uniformList)
-	{
-		gl.uniform3fv(uniformList["baseColor"], this.baseColor);
 	}
 }

@@ -1,4 +1,4 @@
-import { BaseGeometry, getMinGlslString } from "./base.js";
+import { BaseGeometry, getMaxGlslString } from "./base.js";
 
 const numericalStepDistance = 0.00002;
 const flowNumericallyThreshhold = 0.002;
@@ -15,7 +15,8 @@ class SolGeometry extends BaseGeometry
 	`;
 
 	fogGlsl = /* glsl */`
-		return color;//mix(color, fogColor, 1.0 - exp(-totalT * 0.2));
+		return color;
+		//mix(color, fogColor, 1.0 - exp(-totalT * 0.2));
 	`;
 
 	raymarchSetupGlsl = /* glsl */`
@@ -61,12 +62,15 @@ class SolGeometry extends BaseGeometry
 
 		mat4 getInverseTransformationMatrix(vec4 pos)
 		{
-			return getTransformationMatrix(vec4(
-				-exp(-pos.z) * pos.x,
-				-exp(pos.z) * pos.y,
-				-pos.z,
-				1.0
-			));
+			float expZ = exp(pos.z);
+			float expNegZ = exp(-pos.z);
+
+			return mat4(
+				expNegZ, 0.0, 0.0, 0.0,
+				0.0, expZ, 0.0, 0.0,
+				0.0, 0.0, 1.0, 0.0,
+				-expNegZ * pos.x, -expZ * pos.y, -pos.z, 1.0
+			);
 		}
 
 		// Elliptic integral computations, sourced from
@@ -265,13 +269,15 @@ class SolGeometry extends BaseGeometry
 		vec3 computeJacobiEllipticFunctions(float u)
 		{
 			float uMod4K = mod(u, 4.0 * global_K);
+
+			float xSign = 1.0;
 			
 			vec3 signVector = vec3(1.0, 1.0, 1.0);
 
 			if (uMod4K > 2.0 * global_K)
 			{
 				uMod4K = 4.0 * global_K - uMod4K;
-				signVector.x = -1.0;
+				xSign = -1.0;
 			}
 
 			if (uMod4K < jacobiEllipticTolerance)
@@ -290,11 +296,13 @@ class SolGeometry extends BaseGeometry
 				float u6 = u5 * uMod4K;
 				float u7 = u6 * uMod4K;
 
-				return signVector * vec3(
-					u1
-					- (1.0 + k2) * u3 / 6.0
-					+ (1.0 + 14.0 * k2 + k4) * u5 / 120.0
-					- (1.0 + 135.0 * k2 + 135.0 * k4 + k6) * u7 / 5040.0,
+				return vec3(
+					xSign * (
+						u1
+						- (1.0 + k2) * u3 / 6.0
+						+ (1.0 + 14.0 * k2 + k4) * u5 / 120.0
+						- (1.0 + 135.0 * k2 + 135.0 * k4 + k6) * u7 / 5040.0
+					),
 
 					1.0
 					- u2 / 2.0
@@ -358,7 +366,7 @@ class SolGeometry extends BaseGeometry
 				cn = c * sn;
 			}
 
-			return signVector * vec3(sn, cn, dn);
+			return vec3(xSign * sn, cn, dn);
 		}
 
 		const float jacobiZetaTolerance = 0.001;
@@ -541,19 +549,18 @@ export class SolRooms extends SolGeometry
 {
 	static distances = /* glsl */`
 		float radius = 0.5;
-		float distance1 = length(pos.xyz) - radius;
+		// float distance1 = approximateDistanceToOrigin(pos) - radius;
 		
-		// float distance1 = abs(pos.z - radius);
-		// float distance2 = abs(-(pos.z + radius));
+		float distance1 = (pos.x - radius);
+		float distance2 = -(pos.x + radius);
 
-		// float distance1 = abs(asinh((pos.x) * exp(-pos.z)));
-		// float distance2 = abs(-asinh((radius + pos.x) * exp(-pos.z)));
+		float distance3 = (pos.y - radius);
+		float distance4 = -(pos.y + radius);
 
-		// float distance1 = abs(asinh((-radius - pos.y) * exp(pos.z)));
-		float distance2 = abs(asinh((pos.y) * exp(pos.z)));
+		float distance5 = (pos.z - radius);
+		float distance6 = -(pos.z + radius);
 
-
-		float minDistance = distance1;//${getMinGlslString("distance", 2)};
+		float minDistance = ${getMaxGlslString("distance", 6)};
 	`;
 
 	distanceEstimatorGlsl = /* glsl */`
@@ -581,25 +588,25 @@ export class SolRooms extends SolGeometry
 			return vec3(1.0, 0.5, 0.5) * getBanding(pos.z, 10.0);
 		}
 
-		// if (minDistance == distance3)
-		// {
-		// 	return vec3(0.5, 1.0, 0.5) * getBanding(pos.y, 10.0);
-		// }
+		if (minDistance == distance3)
+		{
+			return vec3(0.5, 1.0, 0.5) * getBanding(pos.y, 10.0);
+		}
 
-		// if (minDistance == distance4)
-		// {
-		// 	return vec3(0.5, 0.5, 1.0) * getBanding(pos.y, 10.0);
-		// }
+		if (minDistance == distance4)
+		{
+			return vec3(0.5, 0.5, 1.0) * getBanding(pos.y, 10.0);
+		}
 
-		// if (minDistance == distance5)
-		// {
-		// 	return vec3(1.0, 1.0, 0.5) * getBanding(pos.x, 10.0);
-		// }
+		if (minDistance == distance5)
+		{
+			return vec3(1.0, 1.0, 0.5) * getBanding(pos.x, 10.0);
+		}
 
-		// if (minDistance == distance6)
-		// {
-		// 	return vec3(1.0, 0.5, 1.0) * getBanding(pos.x, 10.0);
-		// }
+		if (minDistance == distance6)
+		{
+			return vec3(1.0, 0.5, 1.0) * getBanding(pos.x, 10.0);
+		}
 	`;
 
 	lightGlsl = /* glsl */`
