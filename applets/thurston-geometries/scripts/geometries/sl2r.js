@@ -676,7 +676,6 @@ class SL2RGeometry extends BaseGeometry
 
 	getNormalVec()
 	{
-		console.log(this.cameraPos, this.forwardVec, this.rightVec, this.upVec, this.normalVec);
 		return [0, 0, 1, 0];
 	}
 
@@ -1025,13 +1024,13 @@ export class SL2RAxes extends SL2RGeometry
 		float lightIntensity = 1.5 * max(abs(dotProduct1), abs(dotProduct2));
 	`;
 
-	cameraPos = [1.000000555682267, 0, 0.0010542129021898201, 0];
-	cameraFiber = 0;
+	cameraPos = [0.97747, 0.43873, -0.07210, 0.37782];
+	cameraFiber = 0.27459;
 
-	normalVec = [0, 0, -1, 0];
+	normalVec = [0, 0, 1, 0];
 	upVec = [0, 0, 0, 1];
-	rightVec = [0, 1, 0, 0];
-	forwardVec = [1, 0, 0, 0];
+	rightVec = [0.93604, -0.35188, 0, 0];
+	forwardVec = [-0.35188, -0.93604, 0, 0];
 
 	uniformGlsl = /* glsl */`
 		uniform float cameraFiber;

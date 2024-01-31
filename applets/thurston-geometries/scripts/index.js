@@ -66,26 +66,13 @@ export function load()
 			geometryData.uiElementsUsed
 				? $$(geometryData.uiElementsUsed)
 				: []
-		).map(element =>
-		{
-			// if (element.getAttribute("type") === "checkbox")
-			// {
-			// 	return element.parentNode.parentNode;
-			// }
-
-			return element.parentNode;
-		});
+		).map(element => element.parentNode);
 		
 		const elementsToHide = Array.from(
 			geometryData.uiElementsUsed
 				? $$(`.slider-container > input:not(#fov-slider, ${geometryData.uiElementsUsed})`)
 				: $$(".slider-container > input:not(#fov-slider)")
 		).map(element => element.parentNode);
-		// .concat(Array.from(
-		// 	geometryData.uiElementsUsed
-		// 		? $$(`input:not(${geometryData.uiElementsUsed}) ~ .checkbox`)
-		// 		: $$("input ~ .checkbox")
-		// ).map(element => element.parentNode.parentNode));
 
 		elementsToShow.forEach(element => element.style.display = "");
 		elementsToHide.forEach(element => element.style.display = "none");

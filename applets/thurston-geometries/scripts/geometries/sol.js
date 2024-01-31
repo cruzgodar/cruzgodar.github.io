@@ -1,7 +1,7 @@
 import { BaseGeometry, getMaxGlslString } from "./base.js";
 
-const numericalStepDistance = 0.00002;
-const flowNumericallyThreshhold = 0.002;
+const numericalStepDistance = 0.002;
+const flowNumericallyThreshhold = 2.5;
 const flowNearPlaneThreshhold = 0.0001;
 
 const maxNumericalSteps = Math.ceil(flowNumericallyThreshhold / numericalStepDistance);
