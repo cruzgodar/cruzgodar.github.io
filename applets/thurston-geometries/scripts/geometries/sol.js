@@ -1,4 +1,5 @@
-import { BaseGeometry, getMatrixGlsl, getMinGlslString } from "./base.js";
+import { ThurstonGeometry } from "../class.js";
+import { BaseGeometry, getMatrixGlsl } from "./base.js";
 import { $ } from "/scripts/src/main.js";
 
 const numericalStepDistance = 0.0002;
@@ -6,6 +7,9 @@ const flowNumericallyThreshhold = 0.002;
 const flowNearPlaneThreshhold = 0.0001;
 
 const maxNumericalSteps = Math.ceil(flowNumericallyThreshhold / numericalStepDistance);
+
+const phi = (1 + Math.sqrt(5)) / 2;
+const tauInverse = 1 / 2 * Math.log(phi);
 
 function getTransformationMatrix(pos)
 {
@@ -30,7 +34,65 @@ function getInverseTransformationMatrix(pos)
 	];
 }
 
-const phi = (1 + Math.sqrt(5)) / 2;
+function liftToM(pos)
+{
+	return [
+		phi * pos[0] - pos[1],
+		pos[0] + phi * pos[1],
+		tauInverse * pos[2]
+	];
+}
+
+function getBinarySearchGlslChunk({
+	comparisonVec,
+	dotProductThreshhold,
+	searchIterations
+}) {
+	return /* glsl */`
+		dotProduct = dot(mElement, ${comparisonVec});
+
+		if (abs(dotProduct) > ${dotProductThreshhold})
+		{
+			// Binary search our way down until we're back in the fundamental domain.
+			// It feels like we should change totalT here to reflect the new value, but that seems
+			// to badly affect fog calculations.
+			float oldT = t - lastTIncrease;
+
+			// The factor by which we multiply lastTIncrease to get the usable increase.
+			float currentSearchPosition = 0.5;
+			float currentSearchScale = 0.25;
+
+			for (int i = 0; i < ${searchIterations}; i++)
+			{
+				pos = getUpdatedPos(startPos, rayDirectionVec, oldT + lastTIncrease * currentSearchPosition);
+
+				mElement = liftToM(pos);
+
+				dotProduct = dot(mElement, ${comparisonVec});
+
+				if (abs(dotProduct) > ${dotProductThreshhold})
+				{
+					currentSearchPosition -= currentSearchScale;
+				}
+
+				else 
+				{
+					currentSearchPosition += currentSearchScale;
+				}
+
+				currentSearchScale *= .5;
+			}
+
+			t = oldT + lastTIncrease * currentSearchPosition;
+
+			// totalT -= lastTIncrease * (1.0 - currentSearchPosition);
+
+			pos = getUpdatedPos(startPos, rayDirectionVec, oldT + lastTIncrease * currentSearchPosition);
+
+			mElement = liftToM(pos);
+		}
+	`;
+}
 
 const teleportationElementA1 = [phi / (phi + 2), -1 / (phi + 2), 0, 1];
 const teleportationElementA2 = [1 / (phi + 2), phi / (phi + 2), 0, 1];
@@ -43,10 +105,40 @@ const teleportationMatrixA2inv = getInverseTransformationMatrix(teleportationEle
 const teleportationMatrixB = getTransformationMatrix(teleportationElementB);
 const teleportationMatrixBinv = getInverseTransformationMatrix(teleportationElementB);
 
+const teleportationMatrices = [
+	teleportationMatrixA1,
+	teleportationMatrixA1inv,
+	teleportationMatrixA2,
+	teleportationMatrixA2inv,
+	teleportationMatrixB,
+	teleportationMatrixBinv
+];
+
 class SolGeometry extends BaseGeometry
 {
 	geodesicGlsl = /* glsl */`
 		vec4 pos = getUpdatedPos(startPos, rayDirectionVec, t);
+
+		vec3 mElement = liftToM(pos);
+		float dotProduct;
+
+	${getBinarySearchGlslChunk({
+		comparisonVec: "vec3(0.0, 0.0, 1.0)",
+		dotProductThreshhold: "0.501",
+		searchIterations: "10"
+	})}
+
+	${getBinarySearchGlslChunk({
+		comparisonVec: "vec3(1.0, 0.0, 0.0)",
+		dotProductThreshhold: "0.501",
+		searchIterations: "10"
+	})}
+
+	${getBinarySearchGlslChunk({
+		comparisonVec: "vec3(0.0, 1.0, 0.0)",
+		dotProductThreshhold: "0.501",
+		searchIterations: "10"
+	})}
 
 		globalColor += teleportPos(pos, startPos, rayDirectionVec, t, totalT);
 	`;
@@ -63,8 +155,7 @@ class SolGeometry extends BaseGeometry
 	functionGlsl = /* glsl */`
 		const float pi = ${Math.PI};
 		const float phi = ${phi};
-		const float tau = ${2 * Math.log(phi)};
-		const float tauInverse = ${1 / (2 * Math.log(phi))};
+		const float tauInverse = ${tauInverse};
 
 		const mat4 teleportationMatrixA1 = ${getMatrixGlsl(teleportationMatrixA1)};
 		const mat4 teleportationMatrixA1inv = ${getMatrixGlsl(teleportationMatrixA1inv)};
@@ -227,7 +318,7 @@ class SolGeometry extends BaseGeometry
 		const int maxNumericalSteps = ${maxNumericalSteps};
 
 		// Flow from the origin numerically. Used when objects in the scene are extremely close.
-		vec4 getUpdatedPosNumerically(inout vec4 rayDirectionVec, float t)
+		vec4 getUpdatedPosNumerically(vec4 rayDirectionVec, float t)
 		{
 			vec4 pos = vec4(0.0, 0.0, 0.0, 1.0);
 			vec4 dir = rayDirectionVec;
@@ -243,29 +334,27 @@ class SolGeometry extends BaseGeometry
 
 				// This translates dir to pos.
 				pos += numericalStepDistance * dir * vec4(exp(pos.z), exp(-pos.z), 1.0, 0.0);
-				dir = geometryNormalize(
-					dir + numericalStepDistance * vec4(
-						dir.x * dir.z,
-						-dir.y * dir.z,
-						-dir.x * dir.x + dir.y * dir.y,
-						0.0
-					)
+				dir += numericalStepDistance * vec4(
+					dir.x * dir.z,
+					-dir.y * dir.z,
+					-dir.x * dir.x + dir.y * dir.y,
+					0.0
 				);
 
 				// Normalize the direction.
-				float dirMagnitude = sqrt(
-					exp(-2.0 * pos.z) * dir.x * dir.x
-					+ exp(2.0 * pos.z) * dir.y * dir.y
-					+ dir.z * dir.z
-				);
+				// float dirMagnitude = sqrt(
+				// 	exp(-2.0 * pos.z) * dir.x * dir.x
+				// 	+ exp(2.0 * pos.z) * dir.y * dir.y
+				// 	+ dir.z * dir.z
+				// );
 
-				dir /= dirMagnitude;
+				// dir /= dirMagnitude;
 			}
 
 			return pos;
 		}
 
-		vec4 getUpdatedDirectionVecNumerically(inout vec4 rayDirectionVec, float t)
+		vec4 getUpdatedDirectionVecNumerically(vec4 rayDirectionVec, float t)
 		{
 			vec4 pos = vec4(0.0, 0.0, 0.0, 1.0);
 			vec4 dir = rayDirectionVec;
@@ -281,26 +370,24 @@ class SolGeometry extends BaseGeometry
 
 				// This translates dir to pos.
 				pos += numericalStepDistance * dir * vec4(exp(pos.z), exp(-pos.z), 1.0, 0.0);
-				dir = geometryNormalize(
-					dir + numericalStepDistance * vec4(
-						dir.x * dir.z,
-						-dir.y * dir.z,
-						-dir.x * dir.x + dir.y * dir.y,
-						0.0
-					)
+				dir += numericalStepDistance * vec4(
+					dir.x * dir.z,
+					-dir.y * dir.z,
+					-dir.x * dir.x + dir.y * dir.y,
+					0.0
 				);
 
 				// Normalize the direction.
-				float dirMagnitude = sqrt(
-					exp(-2.0 * pos.z) * dir.x * dir.x
-					+ exp(2.0 * pos.z) * dir.y * dir.y
-					+ dir.z * dir.z
-				);
+				// float dirMagnitude = sqrt(
+				// 	exp(-2.0 * pos.z) * dir.x * dir.x
+				// 	+ exp(2.0 * pos.z) * dir.y * dir.y
+				// 	+ dir.z * dir.z
+				// );
 
-				dir /= dirMagnitude;
+				// dir /= dirMagnitude;
 			}
 
-			return getInverseTransformationMatrix(pos) * dir;
+			return dir;
 		}
 
 		vec4 getUpdatedPosNearX0(vec4 rayDirectionVec, float t)
@@ -361,7 +448,7 @@ class SolGeometry extends BaseGeometry
 
 			vec4 u0 = vec4(0.0, sign(b) * n1 / chs, n1 * ths, 0.0);
 
-			vec4 u1 = vec4( abs(b) * chs / n1, 0.0, 0.0, 0.0);
+			vec4 u1 = vec4(abs(b) * chs / n1, 0.0, 0.0, 0.0);
 
 			vec4 u2 = vec4(
 				0.0,
@@ -640,12 +727,12 @@ class SolGeometry extends BaseGeometry
 
 			// No need to compute the zeta function here.
 
-			return vec4(
+			return normalize(vec4(
 				a * sqrt(abs(b / a)) * (global_k * jef2.y / global_kPrime + jef2.z / global_kPrime),
 				-b * sqrt(abs(a / b)) * (global_k * jef2.y / global_kPrime - jef2.z / global_kPrime),
 				-global_k * global_mu * jef2.x,
 				0.0
-			);
+			));
 		}
 
 		const float flowNumericallyThreshhold = ${flowNumericallyThreshhold};
@@ -653,7 +740,7 @@ class SolGeometry extends BaseGeometry
 
 		vec4 getUpdatedPos(vec4 startPos, vec4 rayDirectionVec, float t)
 		{
-			vec4 pos;
+			vec4 pos = getUpdatedPosExactly(rayDirectionVec, t);
 
 			if (t < flowNumericallyThreshhold)
 			{
@@ -715,9 +802,8 @@ class SolGeometry extends BaseGeometry
 			{
 				pos = teleportationMatrixB * pos;
 
-				rayDirectionVec = getTransformationMatrix(-pos) * teleportationMatrixB * getUpdatedDirectionVec(startPos, rayDirectionVec, t);
+				rayDirectionVec = getInverseTransformationMatrix(pos) * teleportationMatrixB * getUpdatedDirectionVec(startPos, rayDirectionVec, t);
 
-				mElement = liftToM(pos);
 				startPos = pos;
 				
 				totalT += t;
@@ -732,7 +818,7 @@ class SolGeometry extends BaseGeometry
 			{
 				pos = teleportationMatrixBinv * pos;
 
-				rayDirectionVec = getTransformationMatrix(-pos) * teleportationMatrixBinv * getUpdatedDirectionVec(startPos, rayDirectionVec, t);
+				rayDirectionVec = getInverseTransformationMatrix(pos) * teleportationMatrixBinv * getUpdatedDirectionVec(startPos, rayDirectionVec, t);
 
 				startPos = pos;
 				
@@ -748,9 +834,8 @@ class SolGeometry extends BaseGeometry
 			{
 				pos = teleportationMatrixA1 * pos;
 
-				rayDirectionVec = getTransformationMatrix(-pos) * teleportationMatrixA1 * getUpdatedDirectionVec(startPos, rayDirectionVec, t);
+				rayDirectionVec = getInverseTransformationMatrix(pos) * teleportationMatrixA1 * getUpdatedDirectionVec(startPos, rayDirectionVec, t);
 
-				mElement = liftToM(pos);
 				startPos = pos;
 				
 				totalT += t;
@@ -765,7 +850,7 @@ class SolGeometry extends BaseGeometry
 			{
 				pos = teleportationMatrixA1inv * pos;
 
-				rayDirectionVec = getTransformationMatrix(-pos) * teleportationMatrixA1inv * getUpdatedDirectionVec(startPos, rayDirectionVec, t);
+				rayDirectionVec = getInverseTransformationMatrix(pos) * teleportationMatrixA1inv * getUpdatedDirectionVec(startPos, rayDirectionVec, t);
 
 				startPos = pos;
 				
@@ -781,9 +866,8 @@ class SolGeometry extends BaseGeometry
 			{
 				pos = teleportationMatrixA2 * pos;
 
-				rayDirectionVec = getTransformationMatrix(-pos) * teleportationMatrixA2 * getUpdatedDirectionVec(startPos, rayDirectionVec, t);
+				rayDirectionVec = getInverseTransformationMatrix(pos) * teleportationMatrixA2 * getUpdatedDirectionVec(startPos, rayDirectionVec, t);
 
-				mElement = liftToM(pos);
 				startPos = pos;
 				
 				totalT += t;
@@ -796,7 +880,7 @@ class SolGeometry extends BaseGeometry
 			{
 				pos = teleportationMatrixA2inv * pos;
 
-				rayDirectionVec = getTransformationMatrix(-pos) * teleportationMatrixA2inv * getUpdatedDirectionVec(startPos, rayDirectionVec, t);
+				rayDirectionVec = getInverseTransformationMatrix(pos) * teleportationMatrixA2inv * getUpdatedDirectionVec(startPos, rayDirectionVec, t);
 
 				startPos = pos;
 				
@@ -808,20 +892,9 @@ class SolGeometry extends BaseGeometry
 
 			return color;
 		}
-
-		float approximateDistanceToOrigin(vec4 pos)
-		{
-			return sqrt(
-				exp(-2.0 * pos.z) * pos.x * pos.x
-				+ exp(2.0 * pos.z) * pos.y * pos.y
-				+ pos.z * pos.z
-			);
-
-			// return length(pos.xyz);
-		}
 	`;
 
-	stepFactor = ".8";
+	stepFactor = ".9";
 	
 	normalize(vec)
 	{
@@ -836,7 +909,6 @@ class SolGeometry extends BaseGeometry
 		return [vec[0] / magnitude, vec[1] / magnitude, vec[2] / magnitude, vec[3] / magnitude];
 	}
 	
-	// Frustratingly, doing a linear approximation produces weird movement patterns in Nil.
 	followGeodesic(pos, dir, t)
 	{
 		return [
@@ -855,32 +927,70 @@ class SolGeometry extends BaseGeometry
 	correctVectors() {}
 
 	baseColorIncreases = [
-		[0, 1, 0],
+		[-1, 0, 0],
+		[1, 0, 0],
 		[0, -1, 0],
-		[0, 0, 1],
-		[0, 0, -1]
+		[0, 1, 0],
+		[0, 0, -1],
+		[0, 0, 1]
 	];
 	
 	baseColor = [0, 0, 0];
+
+	teleportCamera()
+	{
+		let mElement = liftToM(this.cameraPos);
+
+		for (let i = 2; i >= 0; i--)
+		{
+			if (mElement[i] < -0.5)
+			{
+				this.cameraPos = ThurstonGeometry.mat4TimesVector(
+					teleportationMatrices[2 * i],
+					this.cameraPos
+				);
+
+				mElement = liftToM(this.cameraPos);
+
+				this.baseColor[0] += this.baseColorIncreases[2 * i][0];
+				this.baseColor[1] += this.baseColorIncreases[2 * i][1];
+				this.baseColor[2] += this.baseColorIncreases[2 * i][2];
+			}
+
+			else if (mElement[i] > 0.5)
+			{
+				this.cameraPos = ThurstonGeometry.mat4TimesVector(
+					teleportationMatrices[2 * i + 1],
+					this.cameraPos
+				);
+
+				mElement = liftToM(this.cameraPos);
+
+				this.baseColor[0] += this.baseColorIncreases[2 * i + 1][0];
+				this.baseColor[1] += this.baseColorIncreases[2 * i + 1][1];
+				this.baseColor[2] += this.baseColorIncreases[2 * i + 1][2];
+			}
+		}
+	}
 }
 
 export class SolRooms extends SolGeometry
 {
 	static distances = /* glsl */`
-		float radius = wallThickness;
+		float wallPosition = .5;
 
-		float distance1 = radius - approximateDistanceToOrigin(pos);
+		float distance1 = wallThickness - length(pos.xyz);
 
-		float distance2 = abs(pos.z - 0.50001);
-		float distance3 = abs(pos.z + 0.50001);
+		// float distance2 = abs(pos.z - wallPosition);
+		// float distance3 = abs(pos.z + wallPosition);
 
-		float distance4 = abs(asinh(pos.x - 0.50001) * exp(-pos.z));
-		float distance5 = abs(asinh(pos.x + 0.50001) * exp(-pos.z));
+		// float distance4 = abs(asinh(pos.x - wallPosition) * exp(-pos.z));
+		// float distance5 = abs(asinh(pos.x + wallPosition) * exp(-pos.z));
 
-		float distance6 = abs(asinh(pos.y - 0.50001) * exp(pos.z));
-		float distance7 = abs(asinh(pos.y + 0.50001) * exp(pos.z));
+		// float distance6 = abs(asinh(pos.y - wallPosition) * exp(pos.z));
+		// float distance7 = abs(asinh(pos.y + wallPosition) * exp(pos.z));
 		
-		float minDistance = ${getMinGlslString("distance", 2)};
+		float minDistance = distance1;
 	`;
 
 	distanceEstimatorGlsl = /* glsl */`
@@ -892,7 +1002,11 @@ export class SolRooms extends SolGeometry
 	getColorGlsl = /* glsl */`
 		${SolRooms.distances}
 
-		return vec3(0.5, 0.5, 0.5);
+		return vec3(
+			.25 + .75 * (.5 * (sin((.004 * pos.x + baseColor.x + globalColor.x) * 40.0) + 1.0)),
+			.25 + .75 * (.5 * (sin((.004 * pos.y + baseColor.y + globalColor.y) * 57.0) + 1.0)),
+			.25 + .75 * (.5 * (sin((.004 * pos.z + baseColor.z + globalColor.z) * 89.0) + 1.0))
+		);
 	`;
 
 	lightGlsl = /* glsl */`
@@ -918,6 +1032,8 @@ export class SolRooms extends SolGeometry
 	rightVec = [0, 1, 0, 0];
 	forwardVec = [1, 0, 0, 0];
 
+	movingSpeed = .25;
+
 	uniformGlsl = /* glsl */`
 		uniform float wallThickness;
 		uniform vec3 baseColor;
@@ -941,10 +1057,10 @@ export class SolRooms extends SolGeometry
 		const wallThicknessSlider = $("#wall-thickness-slider");
 		const wallThicknessSliderValue = $("#wall-thickness-slider-value");
 
-		wallThicknessSlider.min = .25;
-		wallThicknessSlider.max = 2;
-		wallThicknessSlider.value = .25;
-		wallThicknessSliderValue.textContent = .25;
-		this.sliderValues.wallThickness = .25;
+		wallThicknessSlider.min = .33;
+		wallThicknessSlider.max = .6;
+		wallThicknessSlider.value = .33;
+		wallThicknessSliderValue.textContent = .33;
+		this.sliderValues.wallThickness = .33;
 	}
 }
