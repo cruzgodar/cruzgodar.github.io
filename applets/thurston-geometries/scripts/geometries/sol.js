@@ -1,4 +1,4 @@
-import { BaseGeometry } from "./base.js";
+import { BaseGeometry, getMatrixGlsl, getMinGlslString } from "./base.js";
 import { $ } from "/scripts/src/main.js";
 
 const numericalStepDistance = 0.0002;
@@ -7,12 +7,48 @@ const flowNearPlaneThreshhold = 0.0001;
 
 const maxNumericalSteps = Math.ceil(flowNumericallyThreshhold / numericalStepDistance);
 
+function getTransformationMatrix(pos)
+{
+	return [
+		[Math.exp(pos[2]), 0, 0, pos[0]],
+		[0, Math.exp(-pos[2]), 0, pos[1]],
+		[0, 0, 1, pos[2]],
+		[0, 0, 0, 1]
+	];
+}
+
+function getInverseTransformationMatrix(pos)
+{
+	const expZ = Math.exp(pos[2]);
+	const expNegZ = Math.exp(-pos[2]);
+
+	return [
+		[expNegZ, 0, 0, -expNegZ * pos[0]],
+		[0, expZ, 0, -expZ * pos[1]],
+		[0, 0, 1, -pos[2]],
+		[0, 0, 0, 1]
+	];
+}
+
+const phi = (1 + Math.sqrt(5)) / 2;
+
+const teleportationElementA1 = [phi / (phi + 2), -1 / (phi + 2), 0, 1];
+const teleportationElementA2 = [1 / (phi + 2), phi / (phi + 2), 0, 1];
+const teleportationElementB = [0, 0, 2 * Math.log(phi), 1];
+
+const teleportationMatrixA1 = getTransformationMatrix(teleportationElementA1);
+const teleportationMatrixA1inv = getInverseTransformationMatrix(teleportationElementA1);
+const teleportationMatrixA2 = getTransformationMatrix(teleportationElementA2);
+const teleportationMatrixA2inv = getInverseTransformationMatrix(teleportationElementA2);
+const teleportationMatrixB = getTransformationMatrix(teleportationElementB);
+const teleportationMatrixBinv = getInverseTransformationMatrix(teleportationElementB);
+
 class SolGeometry extends BaseGeometry
 {
 	geodesicGlsl = /* glsl */`
 		vec4 pos = getUpdatedPos(startPos, rayDirectionVec, t);
 
-		// globalColor += teleportPos(pos, startPos, rayDirectionVec, t, totalT);
+		globalColor += teleportPos(pos, startPos, rayDirectionVec, t, totalT);
 	`;
 
 	fogGlsl = /* glsl */`
@@ -26,6 +62,16 @@ class SolGeometry extends BaseGeometry
 
 	functionGlsl = /* glsl */`
 		const float pi = ${Math.PI};
+		const float phi = ${phi};
+		const float tau = ${2 * Math.log(phi)};
+		const float tauInverse = ${1 / (2 * Math.log(phi))};
+
+		const mat4 teleportationMatrixA1 = ${getMatrixGlsl(teleportationMatrixA1)};
+		const mat4 teleportationMatrixA1inv = ${getMatrixGlsl(teleportationMatrixA1inv)};
+		const mat4 teleportationMatrixA2 = ${getMatrixGlsl(teleportationMatrixA2)};
+		const mat4 teleportationMatrixA2inv = ${getMatrixGlsl(teleportationMatrixA2inv)};
+		const mat4 teleportationMatrixB = ${getMatrixGlsl(teleportationMatrixB)};
+		const mat4 teleportationMatrixBinv = ${getMatrixGlsl(teleportationMatrixBinv)};
 		
 		float sinh(float x)
 		{
@@ -71,6 +117,17 @@ class SolGeometry extends BaseGeometry
 				0.0, expZ, 0.0, 0.0,
 				0.0, 0.0, 1.0, 0.0,
 				-expNegZ * pos.x, -expZ * pos.y, -pos.z, 1.0
+			);
+		}
+
+		// Converts an element in Sol to an element in the universal cover of the suspension of the
+		// 2-torus, so that we can easily check if it needs to be teleported.
+		vec3 liftToM(vec4 pos)
+		{
+			return vec3(
+				phi * pos.x - pos.y,
+				pos.x + phi * pos.y,
+				tauInverse * pos.z
 			);
 		}
 
@@ -205,9 +262,45 @@ class SolGeometry extends BaseGeometry
 				dir /= dirMagnitude;
 			}
 
-			rayDirectionVec = getInverseTransformationMatrix(pos) * dir;
-
 			return pos;
+		}
+
+		vec4 getUpdatedDirectionVecNumerically(inout vec4 rayDirectionVec, float t)
+		{
+			vec4 pos = vec4(0.0, 0.0, 0.0, 1.0);
+			vec4 dir = rayDirectionVec;
+
+			int numSteps = int(floor(t / numericalStepDistance));
+
+			for (int i = 0; i < maxNumericalSteps; i++)
+			{
+				if (i == numSteps)
+				{
+					break;
+				}
+
+				// This translates dir to pos.
+				pos += numericalStepDistance * dir * vec4(exp(pos.z), exp(-pos.z), 1.0, 0.0);
+				dir = geometryNormalize(
+					dir + numericalStepDistance * vec4(
+						dir.x * dir.z,
+						-dir.y * dir.z,
+						-dir.x * dir.x + dir.y * dir.y,
+						0.0
+					)
+				);
+
+				// Normalize the direction.
+				float dirMagnitude = sqrt(
+					exp(-2.0 * pos.z) * dir.x * dir.x
+					+ exp(2.0 * pos.z) * dir.y * dir.y
+					+ dir.z * dir.z
+				);
+
+				dir /= dirMagnitude;
+			}
+
+			return getInverseTransformationMatrix(pos) * dir;
 		}
 
 		vec4 getUpdatedPosNearX0(vec4 rayDirectionVec, float t)
@@ -247,6 +340,43 @@ class SolGeometry extends BaseGeometry
 			return p0 + a * p1 + a * a * p2;
 		}
 
+		vec4 getUpdatedDirectionVecNearX0(vec4 rayDirectionVec, float t)
+		{
+			float a = rayDirectionVec.x;
+			float b = rayDirectionVec.y;
+			float c = rayDirectionVec.z;
+
+			float b2 = b * b;
+			float c2 = c * c;
+
+			float n1 = sqrt(b2 + c2);
+			float n2 = n1 * n1;
+			float n3 = n1 * n2;
+			float n4 = n1 * n3;
+			
+			// From the repo: cosh(s), sinh(s), and tanh(s) where s = n(t+t0)
+			float shs = (c * cosh(n1 * t) + n1 * sinh(n1 * t)) / abs(b);
+			float chs = (n1 * cosh(n1 * t) + c * sinh(n1 * t)) / abs(b);
+			float ths = shs / chs;
+
+			vec4 u0 = vec4(0.0, sign(b) * n1 / chs, n1 * ths, 0.0);
+
+			vec4 u1 = vec4( abs(b) * chs / n1, 0.0, 0.0, 0.0);
+
+			vec4 u2 = vec4(
+				0.0,
+				sign(b) * b2 * chs / (4.0 * n3)
+					+ sign(b) * (b2 - 2.0 * c2) * (n1 * t * shs / pow(chs, 2.0) - 1.0 / chs) / (4.0 * n3)
+					- 3.0 * sign(b) * c * shs / (4.0 * n2 * pow(chs, 2.0)),
+				-b2 * shs * chs / (2.0 * n3)
+					- (b2 - 2.0 * c2) * (ths - n1 * t / pow(chs, 2.0)) / (4.0 * n3)
+					+ 3.0 * c / (4.0 * n2 * pow(chs, 2.0)),
+				0.0
+			);
+
+			return u0 + a * u1 + a * a * u2;
+		}
+
 		vec4 getUpdatedPosNearY0(vec4 rayDirectionVec, float t)
 		{
 			// Applying the isometry S_2 from the paper lets us
@@ -257,6 +387,16 @@ class SolGeometry extends BaseGeometry
 			);
 
 			return vec4(pos.y, pos.x, -pos.z, 1.0);
+		}
+
+		vec4 getUpdatedDirectionVecNearY0(vec4 rayDirectionVec, float t)
+		{
+			vec4 dir = getUpdatedDirectionVecNearX0(
+				vec4(rayDirectionVec.y, rayDirectionVec.x, -rayDirectionVec.z, 0.0),
+				t
+			);
+
+			return vec4(dir.y, dir.x, -dir.z, 0.0);
 		}
 
 		const float jacobiEllipticTolerance = 0.001;
@@ -470,6 +610,44 @@ class SolGeometry extends BaseGeometry
 			);
 		}
 
+		vec4 getUpdatedDirectionVecExactly(vec4 rayDirectionVec, float t)
+		{
+			// The convention used in the paper.
+			float a = rayDirectionVec.x;
+			float b = rayDirectionVec.y;
+			float c = rayDirectionVec.z;
+
+			float root1Minus2AbsAB = sqrt(1.0 - 2.0 * abs(a * b));
+
+			vec3 jef0 = vec3(
+				-c / root1Minus2AbsAB,
+				(abs(a) - abs(b)) / root1Minus2AbsAB,
+				(abs(a) + abs(b)) / global_mu
+			);
+
+			// The elliptic functions are periodic with period 4K.
+			float muTimesTMod4K = mod(global_mu * t, 4.0 * global_K);
+
+			// Now we'll plug this into the elliptic functions. In the paper, we need
+			// an argument of alpha + mu*t, but first we'll get just mu*t.
+			vec3 jef1 = computeJacobiEllipticFunctions(muTimesTMod4K);
+
+			vec3 jef2 = vec3(
+				jef1.x * jef0.y * jef0.z + jef0.x * jef1.y * jef1.z,
+				jef1.y * jef0.y - jef1.x * jef1.z * jef0.x * jef0.z,
+				jef1.z * jef0.z - global_m * jef1.x * jef1.y * jef0.x * jef0.y
+			) / (1.0 - global_m * jef1.x * jef1.x * jef0.x * jef0.x);
+
+			// No need to compute the zeta function here.
+
+			return vec4(
+				a * sqrt(abs(b / a)) * (global_k * jef2.y / global_kPrime + jef2.z / global_kPrime),
+				-b * sqrt(abs(a / b)) * (global_k * jef2.y / global_kPrime - jef2.z / global_kPrime),
+				-global_k * global_mu * jef2.x,
+				0.0
+			);
+		}
+
 		const float flowNumericallyThreshhold = ${flowNumericallyThreshhold};
 		const float flowNearPlaneThreshhold = ${flowNearPlaneThreshhold};
 
@@ -498,6 +676,137 @@ class SolGeometry extends BaseGeometry
 			}
 
 			return getTransformationMatrix(startPos) * pos;
+		}
+
+		vec4 getUpdatedDirectionVec(vec4 startPos, vec4 rayDirectionVec, float t)
+		{
+			vec4 dir;
+
+			if (t < flowNumericallyThreshhold)
+			{
+				dir = getUpdatedDirectionVecNumerically(rayDirectionVec, t);
+			}
+
+			else if (abs(rayDirectionVec.x * t) < flowNearPlaneThreshhold)
+			{
+				dir = getUpdatedDirectionVecNearX0(rayDirectionVec, t);
+			}
+		
+			else if (abs(rayDirectionVec.y * t) < flowNearPlaneThreshhold)
+			{
+				dir = getUpdatedDirectionVecNearY0(rayDirectionVec, t);
+			}
+			
+			else
+			{
+				dir = getUpdatedDirectionVecExactly(rayDirectionVec, t);
+			}
+
+			return getTransformationMatrix(startPos) * dir;
+		}
+
+		vec3 teleportPos(inout vec4 pos, inout vec4 startPos, inout vec4 rayDirectionVec, inout float t, inout float totalT)
+		{
+			vec3 color = vec3(0.0, 0.0, 0.0);
+
+			vec3 mElement = liftToM(pos);
+
+			if (mElement.z < -0.5)
+			{
+				pos = teleportationMatrixB * pos;
+
+				rayDirectionVec = getTransformationMatrix(-pos) * teleportationMatrixB * getUpdatedDirectionVec(startPos, rayDirectionVec, t);
+
+				mElement = liftToM(pos);
+				startPos = pos;
+				
+				totalT += t;
+				t = 0.0;
+
+				mElement = liftToM(pos);
+
+				color += vec3(0.0, 0.0, -1.0);
+			}
+
+			else if (mElement.z > 0.5)
+			{
+				pos = teleportationMatrixBinv * pos;
+
+				rayDirectionVec = getTransformationMatrix(-pos) * teleportationMatrixBinv * getUpdatedDirectionVec(startPos, rayDirectionVec, t);
+
+				startPos = pos;
+				
+				totalT += t;
+				t = 0.0;
+
+				mElement = liftToM(pos);
+
+				color += vec3(0.0, 0.0, 1.0);
+			}
+
+			if (mElement.x < -0.5)
+			{
+				pos = teleportationMatrixA1 * pos;
+
+				rayDirectionVec = getTransformationMatrix(-pos) * teleportationMatrixA1 * getUpdatedDirectionVec(startPos, rayDirectionVec, t);
+
+				mElement = liftToM(pos);
+				startPos = pos;
+				
+				totalT += t;
+				t = 0.0;
+
+				mElement = liftToM(pos);
+
+				color += vec3(-1.0, 0.0, 0.0);
+			}
+
+			else if (mElement.x > 0.5)
+			{
+				pos = teleportationMatrixA1inv * pos;
+
+				rayDirectionVec = getTransformationMatrix(-pos) * teleportationMatrixA1inv * getUpdatedDirectionVec(startPos, rayDirectionVec, t);
+
+				startPos = pos;
+				
+				totalT += t;
+				t = 0.0;
+
+				mElement = liftToM(pos);
+
+				color += vec3(1.0, 0.0, 0.0);
+			}
+
+			if (mElement.y < -0.5)
+			{
+				pos = teleportationMatrixA2 * pos;
+
+				rayDirectionVec = getTransformationMatrix(-pos) * teleportationMatrixA2 * getUpdatedDirectionVec(startPos, rayDirectionVec, t);
+
+				mElement = liftToM(pos);
+				startPos = pos;
+				
+				totalT += t;
+				t = 0.0;
+
+				color += vec3(0.0, -1.0, 0.0);
+			}
+
+			else if (mElement.y > 0.5)
+			{
+				pos = teleportationMatrixA2inv * pos;
+
+				rayDirectionVec = getTransformationMatrix(-pos) * teleportationMatrixA2inv * getUpdatedDirectionVec(startPos, rayDirectionVec, t);
+
+				startPos = pos;
+				
+				totalT += t;
+				t = 0.0;
+
+				color += vec3(0.0, 1.0, 0.0);
+			}
+
+			return color;
 		}
 
 		float approximateDistanceToOrigin(vec4 pos)
@@ -559,11 +868,19 @@ export class SolRooms extends SolGeometry
 {
 	static distances = /* glsl */`
 		float radius = wallThickness;
-		// float distance1 = approximateDistanceToOrigin(pos) - radius;
-		
+
 		float distance1 = radius - approximateDistanceToOrigin(pos);
+
+		float distance2 = abs(pos.z - 0.50001);
+		float distance3 = abs(pos.z + 0.50001);
+
+		float distance4 = abs(asinh(pos.x - 0.50001) * exp(-pos.z));
+		float distance5 = abs(asinh(pos.x + 0.50001) * exp(-pos.z));
+
+		float distance6 = abs(asinh(pos.y - 0.50001) * exp(pos.z));
+		float distance7 = abs(asinh(pos.y + 0.50001) * exp(pos.z));
 		
-		float minDistance = distance1;
+		float minDistance = ${getMinGlslString("distance", 2)};
 	`;
 
 	distanceEstimatorGlsl = /* glsl */`
@@ -575,7 +892,7 @@ export class SolRooms extends SolGeometry
 	getColorGlsl = /* glsl */`
 		${SolRooms.distances}
 
-		return vec3(0.5, 0.5, 0.5) * getBanding(pos.z, 10.0);
+		return vec3(0.5, 0.5, 0.5);
 	`;
 
 	lightGlsl = /* glsl */`
