@@ -1,7 +1,8 @@
-import { BaseGeometry, getMaxGlslString } from "./base.js";
+import { BaseGeometry } from "./base.js";
+import { $ } from "/scripts/src/main.js";
 
-const numericalStepDistance = 0.002;
-const flowNumericallyThreshhold = 2.5;
+const numericalStepDistance = 0.0002;
+const flowNumericallyThreshhold = 0.002;
 const flowNearPlaneThreshhold = 0.0001;
 
 const maxNumericalSteps = Math.ceil(flowNumericallyThreshhold / numericalStepDistance);
@@ -460,7 +461,7 @@ class SolGeometry extends BaseGeometry
 					+ global_L * global_mu * t
 				),
 				sign(b) * sqrt(abs(a / b)) * (
-					zeta / global_kPrime,
+					zeta / global_kPrime
 					- global_k * (jef2.x - jef0.x) / global_kPrime
 					+ global_L * global_mu * t
 				),
@@ -510,8 +511,8 @@ class SolGeometry extends BaseGeometry
 			// return length(pos.xyz);
 		}
 	`;
-	
-	stepFactor = "0.5";
+
+	stepFactor = ".8";
 	
 	normalize(vec)
 	{
@@ -543,24 +544,26 @@ class SolGeometry extends BaseGeometry
 	}
 
 	correctVectors() {}
+
+	baseColorIncreases = [
+		[0, 1, 0],
+		[0, -1, 0],
+		[0, 0, 1],
+		[0, 0, -1]
+	];
+	
+	baseColor = [0, 0, 0];
 }
 
 export class SolRooms extends SolGeometry
 {
 	static distances = /* glsl */`
-		float radius = 0.5;
+		float radius = wallThickness;
 		// float distance1 = approximateDistanceToOrigin(pos) - radius;
 		
-		float distance1 = (pos.x - radius);
-		float distance2 = -(pos.x + radius);
-
-		float distance3 = (pos.y - radius);
-		float distance4 = -(pos.y + radius);
-
-		float distance5 = (pos.z - radius);
-		float distance6 = -(pos.z + radius);
-
-		float minDistance = ${getMaxGlslString("distance", 6)};
+		float distance1 = radius - approximateDistanceToOrigin(pos);
+		
+		float minDistance = distance1;
 	`;
 
 	distanceEstimatorGlsl = /* glsl */`
@@ -572,41 +575,7 @@ export class SolRooms extends SolGeometry
 	getColorGlsl = /* glsl */`
 		${SolRooms.distances}
 
-		// return vec3(
-		// 	.35 + .65 * (.5 * (sin((.0125 * pos.x + baseColor.x + globalColor.x + .5) * 40.0) + 1.0)),
-		// 	.35 + .65 * (.5 * (sin((.0125 * pos.y + baseColor.y + globalColor.y + .5) * 57.0) + 1.0)),
-		// 	.35 + .65 * (.5 * (sin((.0125 * pos.z + baseColor.z + globalColor.z + .5) * 89.0) + 1.0))
-		// );
-
-		if (minDistance == distance1)
-		{
-			return vec3(0.5, 0.5, 0.5) * getBanding(pos.z, 10.0);
-		}
-
-		if (minDistance == distance2)
-		{
-			return vec3(1.0, 0.5, 0.5) * getBanding(pos.z, 10.0);
-		}
-
-		if (minDistance == distance3)
-		{
-			return vec3(0.5, 1.0, 0.5) * getBanding(pos.y, 10.0);
-		}
-
-		if (minDistance == distance4)
-		{
-			return vec3(0.5, 0.5, 1.0) * getBanding(pos.y, 10.0);
-		}
-
-		if (minDistance == distance5)
-		{
-			return vec3(1.0, 1.0, 0.5) * getBanding(pos.x, 10.0);
-		}
-
-		if (minDistance == distance6)
-		{
-			return vec3(1.0, 0.5, 1.0) * getBanding(pos.x, 10.0);
-		}
+		return vec3(0.5, 0.5, 0.5) * getBanding(pos.z, 10.0);
 	`;
 
 	lightGlsl = /* glsl */`
@@ -631,4 +600,34 @@ export class SolRooms extends SolGeometry
 	upVec = [0, 0, 1, 0];
 	rightVec = [0, 1, 0, 0];
 	forwardVec = [1, 0, 0, 0];
+
+	uniformGlsl = /* glsl */`
+		uniform float wallThickness;
+		uniform vec3 baseColor;
+	`;
+
+	uniformNames = ["wallThickness", "baseColor"];
+
+	updateUniforms(gl, uniformList)
+	{
+		const wallThickness = this.sliderValues.wallThickness;
+
+		gl.uniform1f(uniformList["wallThickness"], wallThickness);
+
+		gl.uniform3fv(uniformList["baseColor"], this.baseColor);
+	}
+
+	uiElementsUsed = "#wall-thickness-slider";
+
+	initUI()
+	{
+		const wallThicknessSlider = $("#wall-thickness-slider");
+		const wallThicknessSliderValue = $("#wall-thickness-slider-value");
+
+		wallThicknessSlider.min = .25;
+		wallThicknessSlider.max = 2;
+		wallThicknessSlider.value = .25;
+		wallThicknessSliderValue.textContent = .25;
+		this.sliderValues.wallThickness = .25;
+	}
 }
