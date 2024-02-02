@@ -1,5 +1,5 @@
 import { ThurstonGeometry } from "../class.js";
-import { BaseGeometry, getMatrixGlsl } from "./base.js";
+import { BaseGeometry, getMatrixGlsl, getMinGlslString } from "./base.js";
 import { $ } from "/scripts/src/main.js";
 
 const numericalStepDistance = 0.0002;
@@ -9,7 +9,7 @@ const flowNearPlaneThreshhold = 0.0001;
 const maxNumericalSteps = Math.ceil(flowNumericallyThreshhold / numericalStepDistance);
 
 const phi = (1 + Math.sqrt(5)) / 2;
-const tauInverse = 1 / 2 * Math.log(phi);
+const tauInverse = 1 / (2 * Math.log(phi));
 
 function getTransformationMatrix(pos)
 {
@@ -186,8 +186,6 @@ class SolGeometry extends BaseGeometry
 			return log(x + sqrt(x*x + 1.0));
 		}
 
-		// For the inverse transformation, pass
-		// vec3(-exp(-pos.z) * pos.x, -exp(pos.z) * pos.y, -pos.z).
 		mat4 getTransformationMatrix(vec4 pos)
 		{
 			return mat4(
@@ -342,13 +340,13 @@ class SolGeometry extends BaseGeometry
 				);
 
 				// Normalize the direction.
-				// float dirMagnitude = sqrt(
-				// 	exp(-2.0 * pos.z) * dir.x * dir.x
-				// 	+ exp(2.0 * pos.z) * dir.y * dir.y
-				// 	+ dir.z * dir.z
-				// );
+				float dirMagnitude = sqrt(
+					exp(-2.0 * pos.z) * dir.x * dir.x
+					+ exp(2.0 * pos.z) * dir.y * dir.y
+					+ dir.z * dir.z
+				);
 
-				// dir /= dirMagnitude;
+				dir /= dirMagnitude;
 			}
 
 			return pos;
@@ -378,13 +376,13 @@ class SolGeometry extends BaseGeometry
 				);
 
 				// Normalize the direction.
-				// float dirMagnitude = sqrt(
-				// 	exp(-2.0 * pos.z) * dir.x * dir.x
-				// 	+ exp(2.0 * pos.z) * dir.y * dir.y
-				// 	+ dir.z * dir.z
-				// );
+				float dirMagnitude = sqrt(
+					exp(-2.0 * pos.z) * dir.x * dir.x
+					+ exp(2.0 * pos.z) * dir.y * dir.y
+					+ dir.z * dir.z
+				);
 
-				// dir /= dirMagnitude;
+				dir /= dirMagnitude;
 			}
 
 			return dir;
@@ -803,6 +801,7 @@ class SolGeometry extends BaseGeometry
 				pos = teleportationMatrixB * pos;
 
 				rayDirectionVec = getInverseTransformationMatrix(pos) * teleportationMatrixB * getUpdatedDirectionVec(startPos, rayDirectionVec, t);
+				setGlobals(rayDirectionVec);
 
 				startPos = pos;
 				
@@ -819,6 +818,7 @@ class SolGeometry extends BaseGeometry
 				pos = teleportationMatrixBinv * pos;
 
 				rayDirectionVec = getInverseTransformationMatrix(pos) * teleportationMatrixBinv * getUpdatedDirectionVec(startPos, rayDirectionVec, t);
+				setGlobals(rayDirectionVec);
 
 				startPos = pos;
 				
@@ -835,6 +835,7 @@ class SolGeometry extends BaseGeometry
 				pos = teleportationMatrixA1 * pos;
 
 				rayDirectionVec = getInverseTransformationMatrix(pos) * teleportationMatrixA1 * getUpdatedDirectionVec(startPos, rayDirectionVec, t);
+				setGlobals(rayDirectionVec);
 
 				startPos = pos;
 				
@@ -851,6 +852,7 @@ class SolGeometry extends BaseGeometry
 				pos = teleportationMatrixA1inv * pos;
 
 				rayDirectionVec = getInverseTransformationMatrix(pos) * teleportationMatrixA1inv * getUpdatedDirectionVec(startPos, rayDirectionVec, t);
+				setGlobals(rayDirectionVec);
 
 				startPos = pos;
 				
@@ -867,6 +869,7 @@ class SolGeometry extends BaseGeometry
 				pos = teleportationMatrixA2 * pos;
 
 				rayDirectionVec = getInverseTransformationMatrix(pos) * teleportationMatrixA2 * getUpdatedDirectionVec(startPos, rayDirectionVec, t);
+				setGlobals(rayDirectionVec);
 
 				startPos = pos;
 				
@@ -881,6 +884,7 @@ class SolGeometry extends BaseGeometry
 				pos = teleportationMatrixA2inv * pos;
 
 				rayDirectionVec = getInverseTransformationMatrix(pos) * teleportationMatrixA2inv * getUpdatedDirectionVec(startPos, rayDirectionVec, t);
+				setGlobals(rayDirectionVec);
 
 				startPos = pos;
 				
@@ -977,35 +981,26 @@ class SolGeometry extends BaseGeometry
 export class SolRooms extends SolGeometry
 {
 	static distances = /* glsl */`
-		float wallPosition = .5;
-
-		float distance1 = wallThickness - length(pos.xyz);
-
-		// float distance2 = abs(pos.z - wallPosition);
-		// float distance3 = abs(pos.z + wallPosition);
-
-		// float distance4 = abs(asinh(pos.x - wallPosition) * exp(-pos.z));
-		// float distance5 = abs(asinh(pos.x + wallPosition) * exp(-pos.z));
-
-		// float distance6 = abs(asinh(pos.y - wallPosition) * exp(pos.z));
-		// float distance7 = abs(asinh(pos.y + wallPosition) * exp(pos.z));
+		float distance1 = length(pos.xyz) - .33;
+		float distance2 = length(pos.xyz - vec3(0.0, 0.0, wallThickness)) - .33;
+		float distance3 = length(pos.xyz + vec3(0.0, 0.0, wallThickness)) - .33;
 		
-		float minDistance = distance1;
+		float minDistance = ${getMinGlslString("distance", 3)};
 	`;
 
 	distanceEstimatorGlsl = /* glsl */`
 		${SolRooms.distances}
 
-		return minDistance;
+		return -minDistance;
 	`;
 
 	getColorGlsl = /* glsl */`
 		${SolRooms.distances}
 
 		return vec3(
-			.25 + .75 * (.5 * (sin((.004 * pos.x + baseColor.x + globalColor.x) * 40.0) + 1.0)),
-			.25 + .75 * (.5 * (sin((.004 * pos.y + baseColor.y + globalColor.y) * 57.0) + 1.0)),
-			.25 + .75 * (.5 * (sin((.004 * pos.z + baseColor.z + globalColor.z) * 89.0) + 1.0))
+			.25 + .75 * (.5 * (sin((.02 * pos.x + baseColor.x + globalColor.x) * 40.0) + 1.0)),
+			.25 + .75 * (.5 * (sin((.02 * pos.y + baseColor.y + globalColor.y) * 57.0) + 1.0)),
+			.25 + .75 * (.5 * (sin((.02 * pos.z + baseColor.z + globalColor.z) * 89.0) + 1.0))
 		);
 	`;
 
@@ -1032,7 +1027,7 @@ export class SolRooms extends SolGeometry
 	rightVec = [0, 1, 0, 0];
 	forwardVec = [1, 0, 0, 0];
 
-	movingSpeed = .25;
+	movingSpeed = .5;
 
 	uniformGlsl = /* glsl */`
 		uniform float wallThickness;
@@ -1057,10 +1052,10 @@ export class SolRooms extends SolGeometry
 		const wallThicknessSlider = $("#wall-thickness-slider");
 		const wallThicknessSliderValue = $("#wall-thickness-slider-value");
 
-		wallThicknessSlider.min = .33;
+		wallThicknessSlider.min = 0;
 		wallThicknessSlider.max = .6;
-		wallThicknessSlider.value = .33;
-		wallThicknessSliderValue.textContent = .33;
-		this.sliderValues.wallThickness = .33;
+		wallThicknessSlider.value = 0;
+		wallThicknessSliderValue.textContent = 0;
+		this.sliderValues.wallThickness = 0;
 	}
 }

@@ -97,6 +97,7 @@ export function load()
 
 	resolutionInputElement.addEventListener("input", () =>
 	{
+		applet.needNewFrame = true;
 		const resolution = parseInt(resolutionInputElement.value || 500);
 
 		applet.changeResolution(resolution);
@@ -107,6 +108,7 @@ export function load()
 		sliders[key][0].addEventListener("input", () =>
 		{
 			applet.geometryData.sliderValues[key] = parseFloat(sliders[key][1].textContent);
+			applet.needNewFrame = true;
 		});
 	}
 
@@ -115,6 +117,7 @@ export function load()
 
 	fovSliderElement.addEventListener("input", () =>
 	{
+		applet.needNewFrame = true;
 		applet.fov = Math.tan(parseFloat(fovSliderValueElement.textContent) / 2 * Math.PI / 180);
 		applet.wilson.gl.uniform1f(applet.wilson.uniforms.fov, applet.fov);
 	});

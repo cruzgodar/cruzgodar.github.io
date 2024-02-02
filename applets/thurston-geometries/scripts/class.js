@@ -44,6 +44,8 @@ export class ThurstonGeometry extends Applet
 
 	movingSubsteps = 1;
 
+	needNewFrame = true;
+
 
 
 	constructor({
@@ -306,7 +308,10 @@ export class ThurstonGeometry extends Applet
 			}
 		`;
 
-		console.log(fragShaderSource);
+		if (window.DEBUG)
+		{
+			console.log(fragShaderSource);
+		}
 		
 
 		
@@ -378,7 +383,7 @@ export class ThurstonGeometry extends Applet
 			this.geometryData.forwardVec
 		);
 
-
+		this.needNewFrame = true;
 
 		window.requestAnimationFrame(this.drawFrame.bind(this));
 	}
@@ -450,18 +455,18 @@ export class ThurstonGeometry extends Applet
 
 
 		const totalMovingAmount = this.movingAmount[0] !== 0
-			+ this.movingAmount[1] !== 0
-			+ this.movingAmount[2] !== 0;
+			|| this.movingAmount[1] !== 0
+			|| this.movingAmount[2] !== 0;
 
 		if (totalMovingAmount)
 		{
-			const speedAdjust = 1 / totalMovingAmount;
+			this.needNewFrame = true;
 
 			if (this.movingAmount[0])
 			{
 				this.handleMoving(
 					[Math.sign(this.movingAmount[0]), 0, 0],
-					timeElapsed * speedAdjust * Math.abs(this.movingAmount[0])
+					timeElapsed * Math.abs(this.movingAmount[0])
 				);
 
 				this.geometryData.correctVectors();
@@ -471,7 +476,7 @@ export class ThurstonGeometry extends Applet
 			{
 				this.handleMoving(
 					[0, Math.sign(this.movingAmount[1]), 0],
-					timeElapsed * speedAdjust * Math.abs(this.movingAmount[1])
+					timeElapsed * Math.abs(this.movingAmount[1])
 				);
 
 				this.geometryData.correctVectors();
@@ -481,7 +486,7 @@ export class ThurstonGeometry extends Applet
 			{
 				this.handleMoving(
 					[0, 0, Math.sign(this.movingAmount[2])],
-					timeElapsed * speedAdjust * Math.abs(this.movingAmount[2])
+					timeElapsed * Math.abs(this.movingAmount[2])
 				);
 				
 				this.geometryData.correctVectors();
@@ -504,6 +509,8 @@ export class ThurstonGeometry extends Applet
 
 		if (this.rollingAmount)
 		{
+			this.needNewFrame = true;
+
 			if (this.wilson.worldCenterY)
 			{
 				this.wilson.worldCenterY = 0;
@@ -556,9 +563,12 @@ export class ThurstonGeometry extends Applet
 			this.rotatedForwardVec
 		);
 
-		this.wilson.render.drawFrame();
+		if (this.needNewFrame)
+		{
+			this.wilson.render.drawFrame();
 
-
+			this.needNewFrame = false;
+		}
 
 		if (!this.animationPaused)
 		{
@@ -650,9 +660,17 @@ export class ThurstonGeometry extends Applet
 	}
 
 
+	lastWorldCenterY = 0;
 
 	handleRotating()
 	{
+		if (this.wilson.worldCenterX !== 0 || this.wilson.worldCenterY !== this.lastWorldCenterY)
+		{
+			this.needNewFrame = true;
+		}
+
+		this.lastWorldCenterY = this.wilson.worldCenterY;
+
 		this.wilson.worldCenterY = Math.min(
 			Math.max(this.wilson.worldCenterY, -Math.PI / 2 + .01),
 			Math.PI / 2 - .01
