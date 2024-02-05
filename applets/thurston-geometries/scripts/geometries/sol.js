@@ -486,12 +486,17 @@ class SolGeometry extends BaseGeometry
 
 		const float jacobiEllipticTolerance = 0.001;
 
-		// Returns sn(u, m), cn(u, m), and dn(u, m).
+		// Returns sn(u, k), cn(u, k), and dn(u, k).
 		// See https://en.wikipedia.org/wiki/Jacobi_elliptic_functions.
 		// Like most of the other math in this section, it's taken mostly
 		// wholecloth from the noneuclidean VR repo (which itself is taken
 		// partially wholecloth from other sources) --- the difference here
 		// is that I understand the math in this function much less.
+
+		// One thing I do understand is that the comments in the noneuclidean-VR
+		// repo have it wrong: the elliptic modulus is k, not m = k^2. The shadertoy
+		// code they used (the second half of this function) specifies that the square
+		// of the modulus is to be passed in, but they stripped that comment.
 		vec3 computeJacobiEllipticFunctions(float u)
 		{
 			float uMod4K = mod(u, 4.0 * g_K);
@@ -508,8 +513,7 @@ class SolGeometry extends BaseGeometry
 
 			if (uMod4K < jacobiEllipticTolerance)
 			{
-				// Series expansion about 0 of the Jacobi elliptic functions sn, cn and dn
-
+				// Series expansion about 0.
 				float k2 = g_m;
 				float k4 = g_m * g_m;
 				float k6 = k4 * g_m;
@@ -677,8 +681,7 @@ class SolGeometry extends BaseGeometry
 			// Compute the Jacobi zeta function.
 			float zeta = computeJacobiZetaFunction(jef1.x / jef1.y) - g_m * jef1.x * jef0.x * jef2.x;
 
-			// Now *finally* we can compute the formula for gamma
-			// from the paper.
+			// Now we can finally compute the formula for gamma from the paper.
 			return vec4(
 				sign(a) * sqrt(abs(b / a)) * (
 					zeta / g_kPrime
@@ -695,90 +698,85 @@ class SolGeometry extends BaseGeometry
 			);
 		}
 
-		// vec4 getUpdatedDirectionVecExactly(vec4 rayDirectionVec, float t)
-		// {
-		// 	// The convention used in the paper.
-		// 	float a = rayDirectionVec.x;
-		// 	float b = rayDirectionVec.y;
-		// 	float c = rayDirectionVec.z;
+		vec4 getUpdatedDirectionVecExactly(vec4 rayDirectionVec, float t)
+		{
+			// The convention used in the paper.
+			float a = rayDirectionVec.x;
+			float b = rayDirectionVec.y;
+			float c = rayDirectionVec.z;
 
-		// 	float root1Minus2AbsAB = sqrt(1.0 - 2.0 * abs(a * b));
+			float root1Minus2AbsAB = sqrt(1.0 - 2.0 * abs(a * b));
 
-		// 	vec3 jef0 = vec3(
-		// 		-c / root1Minus2AbsAB,
-		// 		(abs(a) - abs(b)) / root1Minus2AbsAB,
-		// 		(abs(a) + abs(b)) / g_mu
-		// 	);
+			vec3 jef0 = vec3(
+				-c / root1Minus2AbsAB,
+				(abs(a) - abs(b)) / root1Minus2AbsAB,
+				(abs(a) + abs(b)) / g_mu
+			);
 
-		// 	// The elliptic functions are periodic with period 4K.
-		// 	float muTimesTMod4K = mod(g_mu * t, 4.0 * g_K);
+			// The elliptic functions are periodic with period 4K.
+			float muTimesTMod4K = mod(g_mu * t, 4.0 * g_K);
 
-		// 	// Now we'll plug this into the elliptic functions. In the paper, we need
-		// 	// an argument of alpha + mu*t, but first we'll get just mu*t.
-		// 	vec3 jef1 = computeJacobiEllipticFunctions(muTimesTMod4K);
+			// Now we'll plug this into the elliptic functions. In the paper, we need
+			// an argument of alpha + mu*t, but first we'll get just mu*t.
+			vec3 jef1 = computeJacobiEllipticFunctions(muTimesTMod4K);
 
-		// 	float jef2Den = 1.0 - g_m * jef1.x * jef1.x * jef0.x * jef0.x;
+			float jef2Den = 1.0 - g_m * jef1.x * jef1.x * jef0.x * jef0.x;
 
-		// 	vec3 jef2 = vec3(
-		// 		jef1.x * jef0.y * jef0.z + jef0.x * jef1.y * jef1.z,
-		// 		jef1.y * jef0.y - jef1.x * jef1.z * jef0.x * jef0.z,
-		// 		jef1.z * jef0.z - g_m * jef1.x * jef1.y * jef0.x * jef0.y
-		// 	) / jef2Den;
+			vec3 jef2 = vec3(
+				jef1.x * jef0.y * jef0.z + jef0.x * jef1.y * jef1.z,
+				jef1.y * jef0.y - jef1.x * jef1.z * jef0.x * jef0.z,
+				jef1.z * jef0.z - g_m * jef1.x * jef1.y * jef0.x * jef0.y
+			) / jef2Den;
 
+			float jef1xyMag2 = jef1.x * jef1.x + jef1.y * jef1.y;
 
+			float xTerm1 = g_k * (
+				2.0 * c * c * jef1.x * jef1.y * jef1.z * jef2.x
+				+ (jef0.y * jef0.z * jef1.y * jef1.z - jef0.x * jef1.x * (jef1.z * jef1.z + jef1.y * jef1.y * g_k)) * g_mu * g_mu
+			) / (jef2Den * g_kPrime * g_mu);
 
-		// 	float xTerm1 = g_k * (
-		// 		2.0 * c * c * jef1.x * jef1.y * jef1.z * jef2.x
-		// 		+ jef1.z * (jef0.y * jef0.z * jef1.y - jef0.x * jef1.x * jef1.z) * g_mu * g_mu
-		// 		+ c * jef1.x * jef1.y * jef1.y * root1Minus2AbsAB
-		// 	) / (jef2Den * g_kPrime * g_mu);
+			float xTerm2 = (jef1.z * (g_E * jef1xyMag2 - jef1.y * jef1.y * g_K + jef1.x * jef1.x * (g_k - 1.0) * g_K) * g_mu)
+				/ (jef1xyMag2 * g_K * sqrt(1.0 - jef1.x * jef1.x * g_k / jef1xyMag2));
 
-		// 	float xTerm2 = 2.0 * c * c * c * jef1.x * jef1.x * jef1.y * jef1.z * jef2.x * root1Minus2AbsAB / jef2Den;
+			float xTerm3 = (2.0 * c * c * c * jef1.x * jef1.x * jef1.y * jef1.z * jef2.x * root1Minus2AbsAB)
+				/ (jef2Den * g_mu * g_mu * g_mu);
 
-		// 	float xTerm3 = c * jef1.y * jef1.z * jef2.x * g_mu * g_mu * root1Minus2AbsAB;
+			float xTerm4 = (c * jef1.y * jef1.z * jef2.x * root1Minus2AbsAB) / g_mu;
 
-		// 	float xTerm4 = (
-		// 		c * jef1.x * jef1.z * (jef0.y * jef0.z * jef1.y - jef0.x * jef1.x * jef1.z) * g_mu * g_mu * root1Minus2AbsAB
-		// 		+ c * c * jef1.x * jef1.x * jef1.y * jef1.y * root1Minus2AbsAB * root1Minus2AbsAB
-		// 	) / jef2Den;
-
-		// 	float xTerm5 = (
-		// 		-((jef1.x * jef1.x + jef1.y * jef1.y) * jef1.z * (g_Em - g_Km) * g_mu * g_mu * g_mu * g_mu)
-		// 		- jef1.x * jef1.x * jef1.z * g_Km * g_mu * g_mu * root1Minus2AbsAB * root1Minus2AbsAB
-		// 	) / (
-		// 		(jef1.x * jef1.x + jef1.y * jef1.y) * g_Km * sqrt(1.0 - (
-		// 			jef1.x * jef1.x * root1Minus2AbsAB * root1Minus2AbsAB
-		// 		) / (
-		// 			(jef1.x * jef1.x + jef1.y * jef1.y) * g_mu * g_mu
-		// 		))
-		// 	);
+			float xTerm5 = (
+				c * jef1.x * root1Minus2AbsAB * (
+					-jef0.y * jef0.z * jef1.y * jef1.z
+					+ jef0.x * jef1.x * (jef1.z * jef1.z + jef1.y * jef1.y * g_k)
+				)
+			) / (jef2Den * g_mu);
 
 			
 
-		// 	float zNumTerm1 = -2.0 * c * c * jef1.x * jef1.y * jef1.z * jef2.y;
+			float zNumTerm1 = 2.0 * c * c * jef1.x * jef1.y * jef1.z * jef2.y;
 
-		// 	float zNumTerm2 = jef1.z * (jef0.y * jef1.x + jef0.x * jef0.z * jef1.y * jef1.z) * g_mu * g_mu;
+			float zNumTerm2 = (
+				jef0.y * jef1.x * jef1.z
+				+ jef0.x * jef0.z * jef1.y * (jef1.z * jef1.z - jef1.x * jef1.x * g_k)
+			) * g_mu * g_mu;
 
-		// 	float zNumTerm3 = c * jef0.z * jef1.x * jef1.x * jef1.y * root1Minus2AbsAB;
+			float zDen = jef2Den * g_kPrime * g_mu * sqrt(1.0 + (
+				jef2.y * jef2.y * g_k * g_k / (g_kPrime * g_kPrime)
+			));
 
-		// 	float zDen = jef2Den * g_kPrime * g_mu * sqrt(4.0 + (
-		// 		jef2.y * jef2.y * root1Minus2AbsAB * root1Minus2AbsAB / abs(a * b)
-		// 	));
+			return vec4(
+				sign(a) * sqrt(abs(b / a)) * (
+					g_L * g_mu + xTerm1 + (-xTerm2 + xTerm3 + xTerm4 - xTerm5) / g_kPrime
+				),
 
-		// 	return vec4(
-		// 		sign(a) * sqrt(abs(b / a)) * (
-		// 			g_L * g_mu + xTerm1 + (xTerm2 + xTerm3 + xTerm4 + xTerm5) / (g_kPrime * g_mu * g_mu * g_mu)
-		// 		),
+				sign(b) * sqrt(abs(a / b)) * (
+					g_L * g_mu - xTerm1 + (-xTerm2 + xTerm3 + xTerm4 - xTerm5) / g_kPrime
+				),
 
-		// 		sign(b) * sqrt(abs(a / b)) * (
-		// 			g_L * g_mu - xTerm1 + (xTerm2 + xTerm3 + xTerm4 + xTerm5) / (g_kPrime * g_mu * g_mu * g_mu)
-		// 		),
+				g_k * (zNumTerm1 - zNumTerm2) / zDen,
 
-		// 		-2.0 * g_k * (zNumTerm1 * zNumTerm2 * zNumTerm3) / zDen,
-
-		// 		0.0
-		// 	);
-		// }
+				0.0
+			);
+		}
 
 		const float flowNumericallyThreshhold = ${flowNumericallyThreshhold};
 		const float flowNearPlaneThreshhold = ${flowNearPlaneThreshhold};
@@ -817,24 +815,24 @@ class SolGeometry extends BaseGeometry
 				return getTransformationMatrix(startPos) * getUpdatedDirectionVecNumerically(rayDirectionVec, t);
 			}
 
-			else if (abs(rayDirectionVec.x * t) < flowNearPlaneThreshhold)
-			{
-				return getTransformationMatrix(startPos) * getUpdatedDirectionVecNearX0(rayDirectionVec, t);
-			}
+			// if (abs(rayDirectionVec.x * t) < flowNearPlaneThreshhold)
+			// {
+			// 	return getTransformationMatrix(startPos) * getUpdatedDirectionVecNearX0(rayDirectionVec, t);
+			// }
 		
-			else if (abs(rayDirectionVec.y * t) < flowNearPlaneThreshhold)
-			{
-				return getTransformationMatrix(startPos) * getUpdatedDirectionVecNearY0(rayDirectionVec, t);
-			}
+			// if (abs(rayDirectionVec.y * t) < flowNearPlaneThreshhold)
+			// {
+			// 	return getTransformationMatrix(startPos) * getUpdatedDirectionVecNearY0(rayDirectionVec, t);
+			// }
 			
-			else
-			{
-				float e = .0025;
-				return (
-					getUpdatedPos(startPos, rayDirectionVec, t + e)
-					- getUpdatedPos(startPos, rayDirectionVec, t)
-				) / e;
-			}
+			// float e = .0001;
+
+			// return (
+			// 	getUpdatedPos(startPos, rayDirectionVec, t + e)
+			// 	- getUpdatedPos(startPos, rayDirectionVec, t)
+			// ) / e;
+
+			return getTransformationMatrix(startPos) * getUpdatedDirectionVecExactly(rayDirectionVec, t);
 		}
 
 		vec3 teleportPos(inout vec4 pos, inout vec4 startPos, inout vec4 rayDirectionVec, inout float t, inout float totalT)
