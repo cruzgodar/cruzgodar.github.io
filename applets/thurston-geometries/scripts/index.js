@@ -288,13 +288,13 @@ return vec3(
 // https://github.com/henryseg/non-euclidean_VR/blob/master/src/geometries/sol/geometry/shaders/part1.glsl,
 // which is in turn based on various sources in the literature.
 
-float global_mu;
-float global_k;
-float global_kPrime;
-float global_m;
-float global_K;
-float global_E;
-float global_L;
+float g_mu;
+float g_k;
+float g_kPrime;
+float g_m;
+float g_K;
+float g_E;
+float g_L;
 
 const int maxAGMSteps = 20;
 
@@ -346,15 +346,15 @@ float absAB = abs(rayDirectionVec.x * rayDirectionVec.y);
 float root1Minus2AbsAB = sqrt(1.0 - 2.0 * absAB);
 float rootAbsAB = sqrt(absAB);
 
-global_mu = sqrt(1.0 + 2.0 * absAB);
-global_k = root1Minus2AbsAB / global_mu;
-global_kPrime = 2.0 * rootAbsAB / global_mu;
-global_m = (1.0 - 2.0 * absAB) / (1.0 + 2.0 * absAB);
+g_mu = sqrt(1.0 + 2.0 * absAB);
+g_k = root1Minus2AbsAB / g_mu;
+g_kPrime = 2.0 * rootAbsAB / g_mu;
+g_m = (1.0 - 2.0 * absAB) / (1.0 + 2.0 * absAB);
 
 runAGMAlgorithm();
 
 // With that elliptic integral computed, we can compute K and E.
-global_K = 0.5 * pi / lastAGMData.x;
+g_K = 0.5 * pi / lastAGMData.x;
 
 float sumTotal = 0.0;
 
@@ -368,11 +368,11 @@ for (int i = 0; i < maxAGMSteps; i++)
 	sumTotal += pow(2.0, float(i - 1)) * AGMData[i].z * AGMData[i].z;
 }
 
-global_E = global_K * (1.0 - sumTotal);
+g_E = g_K * (1.0 - sumTotal);
 
 if (absAB != 0.0)
 {
-	global_L = global_E / (global_kPrime * global_K) - 0.5 * global_kPrime;
+	g_L = g_E / (g_kPrime * g_K) - 0.5 * g_kPrime;
 }
 }
 
@@ -558,15 +558,15 @@ const float jacobiEllipticTolerance = 0.001;
 // is that I understand the math in this function much less.
 vec3 computeJacobiEllipticFunctions(float u)
 {
-float uMod4K = mod(u, 4.0 * global_K);
+float uMod4K = mod(u, 4.0 * g_K);
 
 float xSign = 1.0;
 
 vec3 signVector = vec3(1.0, 1.0, 1.0);
 
-if (uMod4K > 2.0 * global_K)
+if (uMod4K > 2.0 * g_K)
 {
-	uMod4K = 4.0 * global_K - uMod4K;
+	uMod4K = 4.0 * g_K - uMod4K;
 	xSign = -1.0;
 }
 
@@ -574,9 +574,9 @@ if (uMod4K < jacobiEllipticTolerance)
 {
 	// Series expansion about 0 of the Jacobi elliptic functions sn, cn and dn
 
-	float k2 = global_m;
-	float k4 = global_m * global_m;
-	float k6 = k4 * global_m;
+	float k2 = g_m;
+	float k4 = g_m * g_m;
+	float k6 = k4 * g_m;
 
 	float u1 = uMod4K;
 	float u2 = u1 * uMod4K;
@@ -609,7 +609,7 @@ if (uMod4K < jacobiEllipticTolerance)
 // This implementation comes ultimately (at least probably?)
 // from https://www.shadertoy.com/view/4tlBRl.
 
-float emc = 1.0 - global_m;
+float emc = 1.0 - g_m;
 
 float a = 1.0;
 float b;
@@ -672,14 +672,14 @@ float result = 0.0;
 // The series expansion about 0.
 if (t0 < jacobiZetaTolerance)
 {
-	float k2 = global_m;
-	float k4 = k2 * global_m;
-	float k6 = k4 * global_m;
+	float k2 = g_m;
+	float k4 = k2 * g_m;
+	float k6 = k4 * g_m;
 
-	result = -(global_E / global_K - 1.0) * t0;
-	result -= (1.0 / 6.0) * (global_E * k2 / global_K + k2 - 2.0 * global_E / global_K + 2.0) * pow(t0, 3.0);
-	result -= (1.0 / 40.0) * (3.0 * global_E * k4 / global_K + k4 - 8.0 * global_E * k2 / global_K - 8.0 * k2 + 8.0 * global_E / global_K - 8.0) * pow(t0, 5.0);
-	result -= (1.0 / 112.0) * (5.0 * global_E * k6 / global_K + k6 - 18.0 * global_E * k4 / global_K - 6.0 * k4 + 24.0 * global_E * k2 / global_K + 24.0 * k2 - 16.0 * global_E / global_K + 16.0) * pow(t0, 7.0);
+	result = -(g_E / g_K - 1.0) * t0;
+	result -= (1.0 / 6.0) * (g_E * k2 / g_K + k2 - 2.0 * g_E / g_K + 2.0) * pow(t0, 3.0);
+	result -= (1.0 / 40.0) * (3.0 * g_E * k4 / g_K + k4 - 8.0 * g_E * k2 / g_K - 8.0 * k2 + 8.0 * g_E / g_K - 8.0) * pow(t0, 5.0);
+	result -= (1.0 / 112.0) * (5.0 * g_E * k6 / g_K + k6 - 18.0 * g_E * k4 / g_K - 6.0 * k4 + 24.0 * g_E * k2 / g_K + 24.0 * k2 - 16.0 * g_E / g_K + 16.0) * pow(t0, 7.0);
 }
 
 else
@@ -722,11 +722,11 @@ float root1Minus2AbsAB = sqrt(1.0 - 2.0 * abs(a * b));
 vec3 jef0 = vec3(
 	-c / root1Minus2AbsAB,
 	(abs(a) - abs(b)) / root1Minus2AbsAB,
-	(abs(a) + abs(b)) / global_mu
+	(abs(a) + abs(b)) / g_mu
 );
 
 // The elliptic functions are periodic with period 4K.
-float muTimesTMod4K = mod(global_mu * t, 4.0 * global_K);
+float muTimesTMod4K = mod(g_mu * t, 4.0 * g_K);
 
 // Now we'll plug this into the elliptic functions. In the paper, we need
 // an argument of alpha + mu*t, but first we'll get just mu*t.
@@ -735,87 +735,121 @@ vec3 jef1 = computeJacobiEllipticFunctions(muTimesTMod4K);
 vec3 jef2 = vec3(
 	jef1.x * jef0.y * jef0.z + jef0.x * jef1.y * jef1.z,
 	jef1.y * jef0.y - jef1.x * jef1.z * jef0.x * jef0.z,
-	jef1.z * jef0.z - global_m * jef1.x * jef1.y * jef0.x * jef0.y
-) / (1.0 - global_m * jef1.x * jef1.x * jef0.x * jef0.x);
+	jef1.z * jef0.z - g_m * jef1.x * jef1.y * jef0.x * jef0.y
+) / (1.0 - g_m * jef1.x * jef1.x * jef0.x * jef0.x);
 
 // Compute the Jacobi zeta function.
-float zeta = computeJacobiZetaFunction(jef1.x / jef1.y) - global_m * jef1.x * jef0.x * jef2.x;
+float zeta = computeJacobiZetaFunction(jef1.x / jef1.y) - g_m * jef1.x * jef0.x * jef2.x;
 
 // Now *finally* we can compute the formula for gamma
 // from the paper.
 return vec4(
 	sign(a) * sqrt(abs(b / a)) * (
-		zeta / global_kPrime
-		+ global_k * (jef2.x - jef0.x) / global_kPrime
-		+ global_L * global_mu * t
+		zeta / g_kPrime
+		+ g_k * (jef2.x - jef0.x) / g_kPrime
+		+ g_L * g_mu * t
 	),
 	sign(b) * sqrt(abs(a / b)) * (
-		zeta / global_kPrime
-		- global_k * (jef2.x - jef0.x) / global_kPrime
-		+ global_L * global_mu * t
+		zeta / g_kPrime
+		- g_k * (jef2.x - jef0.x) / g_kPrime
+		+ g_L * g_mu * t
 	),
-	0.5 * log(abs(b / a)) + asinh(global_k * jef2.y / global_kPrime),
+	0.5 * log(abs(b / a)) + asinh(g_k * jef2.y / g_kPrime),
 	1.0
 );
 }
 
-vec4 getUpdatedDirectionVecExactly(vec4 rayDirectionVec, float t)
-{
-// The convention used in the paper.
-float a = rayDirectionVec.x;
-float b = rayDirectionVec.y;
-float c = rayDirectionVec.z;
+// vec4 getUpdatedDirectionVecExactly(vec4 rayDirectionVec, float t)
+// {
+// 	// The convention used in the paper.
+// 	float a = rayDirectionVec.x;
+// 	float b = rayDirectionVec.y;
+// 	float c = rayDirectionVec.z;
 
-float root1Minus2AbsAB = sqrt(1.0 - 2.0 * abs(a * b));
+// 	float root1Minus2AbsAB = sqrt(1.0 - 2.0 * abs(a * b));
 
-vec3 jef0 = vec3(
-	-c / root1Minus2AbsAB,
-	(abs(a) - abs(b)) / root1Minus2AbsAB,
-	(abs(a) + abs(b)) / global_mu
-);
+// 	vec3 jef0 = vec3(
+// 		-c / root1Minus2AbsAB,
+// 		(abs(a) - abs(b)) / root1Minus2AbsAB,
+// 		(abs(a) + abs(b)) / g_mu
+// 	);
 
-// The elliptic functions are periodic with period 4K.
-float muTimesTMod4K = mod(global_mu * t, 4.0 * global_K);
+// 	// The elliptic functions are periodic with period 4K.
+// 	float muTimesTMod4K = mod(g_mu * t, 4.0 * g_K);
 
-// Now we'll plug this into the elliptic functions. In the paper, we need
-// an argument of alpha + mu*t, but first we'll get just mu*t.
-vec3 jef1 = computeJacobiEllipticFunctions(muTimesTMod4K);
+// 	// Now we'll plug this into the elliptic functions. In the paper, we need
+// 	// an argument of alpha + mu*t, but first we'll get just mu*t.
+// 	vec3 jef1 = computeJacobiEllipticFunctions(muTimesTMod4K);
 
-vec3 jef2 = vec3(
-	jef1.x * jef0.y * jef0.z + jef0.x * jef1.y * jef1.z,
-	jef1.y * jef0.y - jef1.x * jef1.z * jef0.x * jef0.z,
-	jef1.z * jef0.z - global_m * jef1.x * jef1.y * jef0.x * jef0.y
-) / (1.0 - global_m * jef1.x * jef1.x * jef0.x * jef0.x);
+// 	float jef2Den = 1.0 - g_m * jef1.x * jef1.x * jef0.x * jef0.x;
 
-float sineThing = sin(global_mu * t + global_alpha);
-float sineTerm = sqrt(1.0 - global_k * sineTerm * sineTerm);
+// 	vec3 jef2 = vec3(
+// 		jef1.x * jef0.y * jef0.z + jef0.x * jef1.y * jef1.z,
+// 		jef1.y * jef0.y - jef1.x * jef1.z * jef0.x * jef0.z,
+// 		jef1.z * jef0.z - g_m * jef1.x * jef1.y * jef0.x * jef0.y
+// 	) / jef2Den;
 
-return vec4(
-	sign(a) * sqrt(abs(b / a)) * (
-		global_mu * (-global_kPrime + global_E / (2.0 * global_kPrime * global_K))
-		+ global_k * global_mu * jef2.y * jef2.z / (2.0 * global_kPrime)
-		+ mu * (sineTerm - global_E / (global_K * sineTerm)) / (2.0 * global_kPrime)
-	),
-	sign(b) * sqrt(abs(a / b)) * (
-		global_mu * (-global_kPrime + global_E / (2.0 * global_kPrime * global_K))
-		- global_k * global_mu * jef2.y * jef2.z / (2.0 * global_kPrime)
-		+ mu * (sineTerm - global_E / (global_K * sineTerm)) / (2.0 * global_kPrime)
-	),
-	-global_k * global_mu * jef2.x * jef2.z / (
-		2.0 * global_kPrime * sqrt(
-			1.0 + (1.0 - 2.0 * abs(a * b)) / (4.0 * abs(a * b)) * jef2.y * jef2.y
-		)
-	)
-	0.0
-);
-}
+
+
+// 	float xTerm1 = g_k * (
+// 		2.0 * c * c * jef1.x * jef1.y * jef1.z * jef2.x
+// 		+ jef1.z * (jef0.y * jef0.z * jef1.y - jef0.x * jef1.x * jef1.z) * g_mu * g_mu
+// 		+ c * jef1.x * jef1.y * jef1.y * root1Minus2AbsAB
+// 	) / (jef2Den * g_kPrime * g_mu);
+
+// 	float xTerm2 = 2.0 * c * c * c * jef1.x * jef1.x * jef1.y * jef1.z * jef2.x * root1Minus2AbsAB / jef2Den;
+
+// 	float xTerm3 = c * jef1.y * jef1.z * jef2.x * g_mu * g_mu * root1Minus2AbsAB;
+
+// 	float xTerm4 = (
+// 		c * jef1.x * jef1.z * (jef0.y * jef0.z * jef1.y - jef0.x * jef1.x * jef1.z) * g_mu * g_mu * root1Minus2AbsAB
+// 		+ c * c * jef1.x * jef1.x * jef1.y * jef1.y * root1Minus2AbsAB * root1Minus2AbsAB
+// 	) / jef2Den;
+
+// 	float xTerm5 = (
+// 		-((jef1.x * jef1.x + jef1.y * jef1.y) * jef1.z * (g_Em - g_Km) * g_mu * g_mu * g_mu * g_mu)
+// 		- jef1.x * jef1.x * jef1.z * g_Km * g_mu * g_mu * root1Minus2AbsAB * root1Minus2AbsAB
+// 	) / (
+// 		(jef1.x * jef1.x + jef1.y * jef1.y) * g_Km * sqrt(1.0 - (
+// 			jef1.x * jef1.x * root1Minus2AbsAB * root1Minus2AbsAB
+// 		) / (
+// 			(jef1.x * jef1.x + jef1.y * jef1.y) * g_mu * g_mu
+// 		))
+// 	);
+
+
+
+// 	float zNumTerm1 = -2.0 * c * c * jef1.x * jef1.y * jef1.z * jef2.y;
+
+// 	float zNumTerm2 = jef1.z * (jef0.y * jef1.x + jef0.x * jef0.z * jef1.y * jef1.z) * g_mu * g_mu;
+
+// 	float zNumTerm3 = c * jef0.z * jef1.x * jef1.x * jef1.y * root1Minus2AbsAB;
+
+// 	float zDen = jef2Den * g_kPrime * g_mu * sqrt(4.0 + (
+// 		jef2.y * jef2.y * root1Minus2AbsAB * root1Minus2AbsAB / abs(a * b)
+// 	));
+
+// 	return vec4(
+// 		sign(a) * sqrt(abs(b / a)) * (
+// 			g_L * g_mu + xTerm1 + (xTerm2 + xTerm3 + xTerm4 + xTerm5) / (g_kPrime * g_mu * g_mu * g_mu)
+// 		),
+
+// 		sign(b) * sqrt(abs(a / b)) * (
+// 			g_L * g_mu - xTerm1 + (xTerm2 + xTerm3 + xTerm4 + xTerm5) / (g_kPrime * g_mu * g_mu * g_mu)
+// 		),
+
+// 		-2.0 * g_k * (zNumTerm1 * zNumTerm2 * zNumTerm3) / zDen,
+
+// 		0.0
+// 	);
+// }
 
 const float flowNumericallyThreshhold = 0.002;
 const float flowNearPlaneThreshhold = 0.0001;
 
 vec4 getUpdatedPos(vec4 startPos, vec4 rayDirectionVec, float t)
 {
-vec4 pos = getUpdatedPosExactly(rayDirectionVec, t);
+vec4 pos;
 
 if (t < flowNumericallyThreshhold)
 {
@@ -842,29 +876,29 @@ return getTransformationMatrix(startPos) * pos;
 
 vec4 getUpdatedDirectionVec(vec4 startPos, vec4 rayDirectionVec, float t)
 {
-vec4 dir;
-
 if (t < flowNumericallyThreshhold)
 {
-	dir = getUpdatedDirectionVecNumerically(rayDirectionVec, t);
+	return getTransformationMatrix(startPos) * getUpdatedDirectionVecNumerically(rayDirectionVec, t);
 }
 
 else if (abs(rayDirectionVec.x * t) < flowNearPlaneThreshhold)
 {
-	dir = getUpdatedDirectionVecNearX0(rayDirectionVec, t);
+	return getTransformationMatrix(startPos) * getUpdatedDirectionVecNearX0(rayDirectionVec, t);
 }
 
 else if (abs(rayDirectionVec.y * t) < flowNearPlaneThreshhold)
 {
-	dir = getUpdatedDirectionVecNearY0(rayDirectionVec, t);
+	return getTransformationMatrix(startPos) * getUpdatedDirectionVecNearY0(rayDirectionVec, t);
 }
 
 else
 {
-	dir = getUpdatedDirectionVecExactly(rayDirectionVec, t);
+	float e = .0025;
+	return (
+		getUpdatedPos(startPos, rayDirectionVec, t + e)
+		- getUpdatedPos(startPos, rayDirectionVec, t)
+	) / e;
 }
-
-return getTransformationMatrix(startPos) * dir;
 }
 
 vec3 teleportPos(inout vec4 pos, inout vec4 startPos, inout vec4 rayDirectionVec, inout float t, inout float totalT)
@@ -877,7 +911,7 @@ if (mElement.z < -0.5)
 {
 	pos = teleportationMatrixB * pos;
 
-	// rayDirectionVec = getInverseTransformationMatrix(pos) * teleportationMatrixB * getUpdatedDirectionVec(startPos, rayDirectionVec, t);
+	rayDirectionVec = getInverseTransformationMatrix(pos) * teleportationMatrixB * getUpdatedDirectionVec(startPos, rayDirectionVec, t);
 	setGlobals(rayDirectionVec);
 
 	startPos = pos;
@@ -894,7 +928,7 @@ else if (mElement.z > 0.5)
 {
 	pos = teleportationMatrixBinv * pos;
 
-	// rayDirectionVec = getInverseTransformationMatrix(pos) * teleportationMatrixBinv * getUpdatedDirectionVec(startPos, rayDirectionVec, t);
+	rayDirectionVec = getInverseTransformationMatrix(pos) * teleportationMatrixBinv * getUpdatedDirectionVec(startPos, rayDirectionVec, t);
 	setGlobals(rayDirectionVec);
 
 	startPos = pos;
@@ -911,7 +945,7 @@ if (mElement.x < -0.5)
 {
 	pos = teleportationMatrixA1 * pos;
 
-	// rayDirectionVec = getInverseTransformationMatrix(pos) * teleportationMatrixA1 * getUpdatedDirectionVec(startPos, rayDirectionVec, t);
+	rayDirectionVec = getInverseTransformationMatrix(pos) * teleportationMatrixA1 * getUpdatedDirectionVec(startPos, rayDirectionVec, t);
 	setGlobals(rayDirectionVec);
 
 	startPos = pos;
@@ -928,7 +962,7 @@ else if (mElement.x > 0.5)
 {
 	pos = teleportationMatrixA1inv * pos;
 
-	// rayDirectionVec = getInverseTransformationMatrix(pos) * teleportationMatrixA1inv * getUpdatedDirectionVec(startPos, rayDirectionVec, t);
+	rayDirectionVec = getInverseTransformationMatrix(pos) * teleportationMatrixA1inv * getUpdatedDirectionVec(startPos, rayDirectionVec, t);
 	setGlobals(rayDirectionVec);
 
 	startPos = pos;
@@ -945,7 +979,7 @@ if (mElement.y < -0.5)
 {
 	pos = teleportationMatrixA2 * pos;
 
-	// rayDirectionVec = getInverseTransformationMatrix(pos) * teleportationMatrixA2 * getUpdatedDirectionVec(startPos, rayDirectionVec, t);
+	rayDirectionVec = getInverseTransformationMatrix(pos) * teleportationMatrixA2 * getUpdatedDirectionVec(startPos, rayDirectionVec, t);
 	setGlobals(rayDirectionVec);
 
 	startPos = pos;
@@ -960,7 +994,7 @@ else if (mElement.y > 0.5)
 {
 	pos = teleportationMatrixA2inv * pos;
 
-	// rayDirectionVec = getInverseTransformationMatrix(pos) * teleportationMatrixA2inv * getUpdatedDirectionVec(startPos, rayDirectionVec, t);
+	rayDirectionVec = getInverseTransformationMatrix(pos) * teleportationMatrixA2inv * getUpdatedDirectionVec(startPos, rayDirectionVec, t);
 	setGlobals(rayDirectionVec);
 
 	startPos = pos;

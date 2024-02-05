@@ -253,7 +253,7 @@ class SolGeometry extends BaseGeometry
 		void runAGMAlgorithm()
 		{
 			// The starting values are 1 and kPrime. k starts as the initial error.
-			vec3 data = vec3(1.0, global_kPrime, global_k);
+			vec3 data = vec3(1.0, g_kPrime, g_k);
 			AGMData[0] = data;
 			actualAGMSteps = 1;
 
