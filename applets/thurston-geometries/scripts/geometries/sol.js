@@ -730,59 +730,37 @@ class SolGeometry extends BaseGeometry
 				jef1.z * jef0.z - g_m * jef1.x * jef1.y * jef0.x * jef0.y
 			) / jef2Den;
 
-			float jef1xyMag2 = jef1.x * jef1.x + jef1.y * jef1.y;
+			// The core issue with all of these computations is that we don't know
+			// alpha, only its image under the Jacobi elliptic and zeta functions.
+			// The paper got around this in the position function by using addition
+			// formulas, but when we differentiate, there's this sin term involving
+			// alpha that we can't compute. However, it's only that one factor
+			// that appears, and so we can use the fact that the vector must have
+			// magnitude after being translated to the origin to solve for it.
+			float B = jef2.y * jef2.z * g_k / g_kPrime;
+			float C = -jef2.x * jef2.z * g_k * g_mu
+				/ length(vec2(g_kPrime, jef2.y * g_k));
 
-			float xTerm1 = g_k * (
-				2.0 * c * c * jef1.x * jef1.y * jef1.z * jef2.x
-				+ (jef0.y * jef0.z * jef1.y * jef1.z - jef0.x * jef1.x * (jef1.z * jef1.z + jef1.y * jef1.y * g_k)) * g_mu * g_mu
-			) / (jef2Den * g_kPrime * g_mu);
+			float z = 0.5 * log(abs(b / a)) + asinh(g_k * jef2.y / g_kPrime);
+			float exp2Z = exp(2.0 * z);
+			float expNeg2Z = exp(-2.0 * z);
 
-			float xTerm2 = (jef1.z * (g_E * jef1xyMag2 - jef1.y * jef1.y * g_K + jef1.x * jef1.x * (g_k - 1.0) * g_K) * g_mu)
-				/ (jef1xyMag2 * g_K * sqrt(1.0 - jef1.x * jef1.x * g_k / jef1xyMag2));
-
-			float xTerm3 = (2.0 * c * c * c * jef1.x * jef1.x * jef1.y * jef1.z * jef2.x * root1Minus2AbsAB)
-				/ (jef2Den * g_mu * g_mu * g_mu);
-
-			float xTerm4 = (c * jef1.y * jef1.z * jef2.x * root1Minus2AbsAB) / g_mu;
-
-			float xTerm5 = (
-				c * jef1.x * root1Minus2AbsAB * (
-					-jef0.y * jef0.z * jef1.y * jef1.z
-					+ jef0.x * jef1.x * (jef1.z * jef1.z + jef1.y * jef1.y * g_k)
+			float A = (
+				-b * b * B * g_mu * g_mu
+				+ a * a * B * exp2Z * exp2Z * g_mu * g_mu
+				+ sqrt(
+					abs(a * b) * exp2Z * exp2Z * g_mu * g_mu * (
+						-b * b * (C * C - 1.0) * expNeg2Z
+						- a * a * (C * C - 1.0) * exp2Z
+						- 4.0 * abs(a * b) * B * B * g_mu * g_mu
+					)
 				)
-			) / (jef2Den * g_mu);
-
-			
-
-			float zNumTerm1 = 2.0 * c * c * jef1.x * jef1.y * jef1.z * jef2.y;
-
-			float zNumTerm2 = (
-				jef0.y * jef1.x * jef1.z
-				+ jef0.x * jef0.z * jef1.y * (jef1.z * jef1.z - jef1.x * jef1.x * g_k)
-			) * g_mu * g_mu;
-
-			float zDen = jef2Den * g_kPrime * g_mu * sqrt(1.0 + (
-				jef2.y * jef2.y * g_k * g_k / (g_kPrime * g_kPrime)
-			));
-
-			// return vec4(
-			// 	sign(a) * sqrt(abs(b / a)) * (
-			// 		g_L * g_mu + xTerm1 + (-xTerm2 + xTerm3 + xTerm4 - xTerm5) / g_kPrime
-			// 	),
-
-			// 	sign(b) * sqrt(abs(a / b)) * (
-			// 		g_L * g_mu - xTerm1 + (-xTerm2 + xTerm3 + xTerm4 - xTerm5) / g_kPrime
-			// 	),
-
-			// 	g_k * (zNumTerm1 - zNumTerm2) / zDen,
-
-			// 	0.0
-			// );
+			) / (g_mu * g_mu * (b * b + a * a * exp2Z * exp2Z));
 
 			return vec4(
-				a * sqrt(abs(b / a)) * (g_k / g_kPrime * jef2.y + jef2.z / g_kPrime),
-				-b * sqrt(abs(a / b)) * (g_k / g_kPrime * jef2.y - jef2.z / g_kPrime),
-				-g_k * g_mu * jef2.x,
+				sign(a) * sqrt(abs(b / a)) * g_mu * (A + B),
+				sign(b) * sqrt(abs(a / b)) * g_mu * (A - B),
+				C,
 				0.0
 			);
 		}
@@ -824,24 +802,19 @@ class SolGeometry extends BaseGeometry
 				return getTransformationMatrix(startPos) * getUpdatedDirectionVecNumerically(rayDirectionVec, t);
 			}
 
-			// if (abs(rayDirectionVec.x * t) < flowNearPlaneThreshhold)
-			// {
-			// 	return getTransformationMatrix(startPos) * getUpdatedDirectionVecNearX0(rayDirectionVec, t);
-			// }
+			if (abs(rayDirectionVec.x * t) < flowNearPlaneThreshhold)
+			{
+				return getTransformationMatrix(startPos) * getUpdatedDirectionVecNumerically(rayDirectionVec, t);
+				return getTransformationMatrix(startPos) * getUpdatedDirectionVecNearX0(rayDirectionVec, t);
+			}
 		
-			// if (abs(rayDirectionVec.y * t) < flowNearPlaneThreshhold)
-			// {
-			// 	return getTransformationMatrix(startPos) * getUpdatedDirectionVecNearY0(rayDirectionVec, t);
-			// }
-			
-			float e = .0001;
+			if (abs(rayDirectionVec.y * t) < flowNearPlaneThreshhold)
+			{
+				return getTransformationMatrix(startPos) * getUpdatedDirectionVecNumerically(rayDirectionVec, t);
+				return getTransformationMatrix(startPos) * getUpdatedDirectionVecNearY0(rayDirectionVec, t);
+			}
 
-			return (
-				getUpdatedPos(startPos, rayDirectionVec, t + e)
-				- getUpdatedPos(startPos, rayDirectionVec, t - e)
-			) / (2.0 * e);
-
-			// return getTransformationMatrix(startPos) * getUpdatedDirectionVecExactly(rayDirectionVec, t);
+			return getTransformationMatrix(startPos) * getUpdatedDirectionVecExactly(rayDirectionVec, t);
 		}
 
 		vec3 teleportPos(inout vec4 pos, inout vec4 startPos, inout vec4 rayDirectionVec, inout float t, inout float totalT)
