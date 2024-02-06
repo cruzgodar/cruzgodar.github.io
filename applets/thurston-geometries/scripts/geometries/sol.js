@@ -1,5 +1,5 @@
 import { ThurstonGeometry } from "../class.js";
-import { BaseGeometry, getMatrixGlsl, getMinGlslString } from "./base.js";
+import { BaseGeometry, getMatrixGlsl } from "./base.js";
 import { $ } from "/scripts/src/main.js";
 
 const numericalStepDistance = 0.0002;
@@ -144,8 +144,7 @@ class SolGeometry extends BaseGeometry
 	`;
 
 	fogGlsl = /* glsl */`
-		return color;
-		//mix(color, fogColor, 1.0 - exp(-totalT * 0.2));
+		return mix(color, fogColor, 1.0 - exp(-totalT * 0.225));
 	`;
 
 	raymarchSetupGlsl = /* glsl */`
@@ -410,7 +409,8 @@ class SolGeometry extends BaseGeometry
 
 			vec4 p1 = vec4(b2 * (shs * chs + n1 * t) / (2.0 * n3) - c / (2.0 * n2), 0.0, 0.0, 0.0);
 
-			vec4 p2 = vec4(0.0,
+			vec4 p2 = vec4(
+				0.0,
 				b * n1 * t / (2.0 * n3)
 					- (b2 - 2.0 * c2) * ( n1 * t / pow(chs, 2.0) + ths) / (4.0 * b * n3)
 					+ 3.0 * c / (4.0 * b * n2 * pow(chs, 2.0))
@@ -430,35 +430,61 @@ class SolGeometry extends BaseGeometry
 			float b = rayDirectionVec.y;
 			float c = rayDirectionVec.z;
 
+			float a2 = a * a;
 			float b2 = b * b;
 			float c2 = c * c;
 
 			float n1 = sqrt(b2 + c2);
-			float n2 = n1 * n1;
+			float n2 = b2 + c2;
 			float n3 = n1 * n2;
-			float n4 = n1 * n3;
+			float n4 = n2 * n2;
 			
-			// From the repo: cosh(s), sinh(s), and tanh(s) where s = n(t+t0)
-			float shs = (c * cosh(n1 * t) + n1 * sinh(n1 * t)) / abs(b);
-			float chs = (n1 * cosh(n1 * t) + c * sinh(n1 * t)) / abs(b);
-			float ths = shs / chs;
+			float sinh1 = sinh(n1 * t);
+			float sinh2 = sinh(2.0 * n1 * t);
+			float sinh3 = sinh(3.0 * n1 * t);
+			float cosh1 = cosh(n1 * t);
+			float cosh2 = cosh(2.0 * n1 * t);
+			float cosh4 = cosh(4.0 * n1 * t);
 
-			vec4 u0 = vec4(0.0, sign(b) * n1 / chs, n1 * ths, 0.0);
+			float shs1 = c * cosh1 + n1 * sinh1;
+			float chs1 = n1 * cosh1 + c * sinh1;
+			float shs2 = c * cosh2 + n1 * sinh2;
+			float chs2 = n1 * cosh2 + c * sinh2;
 
-			vec4 u1 = vec4(abs(b) * chs / n1, 0.0, 0.0, 0.0);
+			return vec4(
+				a * (b2 * (1.0 + cosh2) + 2.0 * c * shs2) / (2.0 * n2),
 
-			vec4 u2 = vec4(
-				0.0,
-				sign(b) * b2 * chs / (4.0 * n3)
-					+ sign(b) * (b2 - 2.0 * c2) * (n1 * t * shs / pow(chs, 2.0) - 1.0 / chs) / (4.0 * n3)
-					- 3.0 * sign(b) * c * shs / (4.0 * n2 * pow(chs, 2.0)),
-				-b2 * shs * chs / (2.0 * n3)
-					- (b2 - 2.0 * c2) * (ths - n1 * t / pow(chs, 2.0)) / (4.0 * n3)
-					+ 3.0 * c / (4.0 * n2 * pow(chs, 2.0)),
+				b * (
+					8.0 * chs1 * n4 + a2 * (
+						4.0 * b2 * b2 * sinh1 * t
+						+ b2 * (
+							3.0 * c * sinh3
+							+ 2.0 * cosh1 * n1 * (-1.0 + cosh2 + 2.0 * c * t)
+							- c * sinh1 * (13.0 + 4.0 * c * t)
+						)
+						- 4.0 * c2 * (
+							2.0 * cosh1 * n1 * (1.0 - cosh2 + c * t)
+							+ c * (sinh1 - sinh3 + 2.0 * c * sinh1 * t)
+						)
+					)
+				) / (8.0 * chs1 * chs1 * chs1 * n2),
+
+				-(
+					4.0 * a2 * c * (b2 + 2.0 * c2) * cosh4 * n2
+					-8.0 * c * cosh2 * n2 * (a2 * (c2 - b2) + 2.0 * n4)
+					+ 2.0 * n1 * (
+						a2 * (
+							b2 * b2 * (2.0 + cosh2)
+							+ 4.0 * c2 * c2 * (-1.0 + 2.0 * cosh2)
+							+ 2.0 * b2 * c2 * (1.0 + 4.0 * cosh2)
+						)
+						- 4.0 * (b2 + 2.0 * c2) * n4
+					) * sinh2
+					+ 4.0 * a2 * b2 * n2 * (b2 * t - c * (3.0 + 2.0 * c * t))
+				) / (16.0 * chs1 * chs1 * n4),
+
 				0.0
 			);
-
-			return u0 + a * u1 + a * a * u2;
 		}
 
 		vec4 getUpdatedPosNearY0(vec4 rayDirectionVec, float t)
@@ -777,15 +803,15 @@ class SolGeometry extends BaseGeometry
 				pos = getUpdatedPosNumerically(rayDirectionVec, t);
 			}
 
-			// else if (abs(rayDirectionVec.x * t) < flowNearPlaneThreshhold)
-			// {
-			// 	pos = getUpdatedPosNearX0(rayDirectionVec, t);
-			// }
+			else if (abs(rayDirectionVec.x) < flowNearPlaneThreshhold * 20.0)
+			{
+				pos = getUpdatedPosNearX0(rayDirectionVec, t);
+			}
 		
-			// else if (abs(rayDirectionVec.y * t) < flowNearPlaneThreshhold)
-			// {
-			// 	pos = getUpdatedPosNearY0(rayDirectionVec, t);
-			// }
+			else if (abs(rayDirectionVec.y) < flowNearPlaneThreshhold * 2.0)
+			{
+				pos = getUpdatedPosNearY0(rayDirectionVec, t);
+			}
 			
 			else
 			{
@@ -803,15 +829,15 @@ class SolGeometry extends BaseGeometry
 				return getTransformationMatrix(startPos) * getUpdatedDirectionVecNumerically(rayDirectionVec, t);
 			}
 
-			// if (abs(rayDirectionVec.x * t) < flowNearPlaneThreshhold * 20.0)
-			// {
-			// 	return normalize((getUpdatedPos(startPos, rayDirectionVec, t + e) - getUpdatedPos(startPos, rayDirectionVec, t - e)) / (2.0 * e));
-			// }
+			if (abs(rayDirectionVec.x) < flowNearPlaneThreshhold * 20.0)
+			{
+				return getUpdatedDirectionVecNearX0(rayDirectionVec, t);
+			}
 		
-			// if (abs(rayDirectionVec.y * t) < flowNearPlaneThreshhold)
-			// {
-			// 	return normalize((getUpdatedPos(startPos, rayDirectionVec, t + e) - getUpdatedPos(startPos, rayDirectionVec, t - e)) / (2.0 * e));
-			// }
+			if (abs(rayDirectionVec.y) < flowNearPlaneThreshhold * 2.0)
+			{
+				return getUpdatedDirectionVecNearY0(rayDirectionVec, t);
+			}
 
 			return getTransformationMatrix(startPos) * getUpdatedDirectionVecExactly(rayDirectionVec, t);
 		}
@@ -942,8 +968,8 @@ class SolGeometry extends BaseGeometry
 	followGeodesic(pos, dir, t)
 	{
 		return [
-			pos[0] + t * dir[0] * Math.exp(pos[2]),
-			pos[1] + t * dir[1] * Math.exp(-pos[2]),
+			pos[0] + t * dir[0] * Math.exp(2 * pos[2]),
+			pos[1] + t * dir[1] * Math.exp(-2 * pos[2]),
 			pos[2] + t * dir[2],
 			pos[3]
 		];
@@ -1008,44 +1034,38 @@ export class SolRooms extends SolGeometry
 {
 	static distances = /* glsl */`
 		float distance1 = length(pos.xyz * vec3(1.0, 1.0, 0.55)) - wallThickness;
-		// float distance2 = length(pos.xyz - vec3(0.0, 0.0, wallThickness)) - .33;
-		// float distance3 = length(pos.xyz + vec3(0.0, 0.0, wallThickness)) - .33;
-		
-		float minDistance = ${getMinGlslString("distance", 1)};
 	`;
 
 	distanceEstimatorGlsl = /* glsl */`
 		${SolRooms.distances}
 
-		return -minDistance;
+		return -distance1;
 	`;
 
 	getColorGlsl = /* glsl */`
 		${SolRooms.distances}
 
+		vec3 roomColor = baseColor + globalColor;
+
 		return vec3(
-			.25 + .75 * (.5 * (sin((.02 * pos.x + baseColor.x + globalColor.x) * 40.0) + 1.0)),
-			.25 + .75 * (.5 * (sin((.02 * pos.y + baseColor.y + globalColor.y) * 57.0) + 1.0)),
-			.25 + .75 * (.5 * (sin((.02 * pos.z + baseColor.z + globalColor.z) * 89.0) + 1.0))
+			.3 + .7 * (.5 * (sin((.01 * (pos.x + pos.z) + roomColor.x + roomColor.z) * 40.0) + 1.0)),
+			.3 + .7 * (.5 * (sin((.01 * (pos.y + pos.z) + roomColor.y + roomColor.z) * 57.0) + 1.0)),
+			.3 + .7 * (.5 * (sin((.01 * (pos.x + pos.y) + roomColor.x + roomColor.y) * 89.0) + 1.0))
 		);
 	`;
 
 	lightGlsl = /* glsl */`
 		surfaceNormal.w = 0.0;
 
-		vec4 lightDirection1 = normalize(vec4(3.0, -3.0, 3.0, 1.0) - pos);
+		vec4 lightDirection1 = normalize(vec4(1.5, 1.5, 1.5, 1.0) - pos);
 		float dotProduct1 = dot(surfaceNormal, lightDirection1);
 
-		vec4 lightDirection2 = normalize(vec4(-4.0, 2.0, -1.0, 1.0) - pos);
-		float dotProduct2 = dot(surfaceNormal, lightDirection2);
-
-		vec4 lightDirection3 = normalize(vec4(3.0, 2.0, 0.5, 1.0) - pos);
-		float dotProduct3 = .5 * dot(surfaceNormal, lightDirection3);
-
-		float lightIntensity = 1.2 * max(max(abs(dotProduct1), abs(dotProduct2)), abs(dotProduct3));
-		
-		lightIntensity = 1.0;
+		float lightIntensity = (.25 + .75 * dotProduct1 * dotProduct1) * 1.4;
 	`;
+
+	maxMarches = "100";
+	ambientOcclusionDenominator = "100.0";
+	maxT = "15.0";
 
 	cameraPos = [0, 0, 0, 1];
 	normalVec = [0, 0, 0, 1];
@@ -1083,5 +1103,62 @@ export class SolRooms extends SolGeometry
 		wallThicknessSlider.value = 0.42;
 		wallThicknessSliderValue.textContent = 0.42;
 		this.sliderValues.wallThickness = 0.42;
+	}
+}
+
+export class SolSpheres extends SolGeometry
+{
+	static distances = /* glsl */`
+		float distance1 = length(pos.xyz) - .125;
+	`;
+
+	distanceEstimatorGlsl = /* glsl */`
+		${SolSpheres.distances}
+
+		return distance1;
+	`;
+
+	getColorGlsl = /* glsl */`
+		${SolSpheres.distances}
+
+		vec3 roomColor = baseColor + globalColor;
+
+		return vec3(
+			.15 + .85 * (.5 * (sin(floor(roomColor.x + .5) * .25) + 1.0)),
+			.15 + .85 * (.5 * (sin(floor(roomColor.y + .5) * .25) + 1.0)),
+			.15 + .85 * (.5 * (sin(floor(roomColor.z + .5) * .25) + 1.0))
+		);
+	`;
+
+	lightGlsl = /* glsl */`
+		surfaceNormal.w = 0.0;
+
+		vec4 lightDirection1 = normalize(vec4(1.5, 1.5, 1.5, 1.0) - pos);
+		float dotProduct1 = dot(surfaceNormal, lightDirection1);
+
+		float lightIntensity = (.2 + .8 * max(dotProduct1, -dotProduct1)) * 1.4;
+	`;
+
+	maxMarches = "50";
+	ambientOcclusionDenominator = "75.0";
+	maxT = "15.0";
+
+	cameraPos = [0, 0, 0, 1];
+	normalVec = [0, 0, 0, 1];
+	upVec = [0, 0, 1, 0];
+	rightVec = [0, 1, 0, 0];
+	forwardVec = [1, 0, 0, 0];
+
+	movingSpeed = .5;
+
+	uniformGlsl = /* glsl */`
+		uniform vec3 baseColor;
+	`;
+
+	uniformNames = ["baseColor"];
+
+	updateUniforms(gl, uniformList)
+	{
+		gl.uniform3fv(uniformList["baseColor"], this.baseColor);
 	}
 }

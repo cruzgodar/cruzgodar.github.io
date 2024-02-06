@@ -1,12 +1,12 @@
 import { ThurstonGeometry } from "./class.js";
 import { E3Axes, E3Rooms, E3Spheres } from "./geometries/e3.js";
 import { H2xEAxes, H2xERooms } from "./geometries/h2xe.js";
-import { H3Axes, H3Rooms } from "./geometries/h3.js";
+import { H3Axes, H3Rooms, H3Spheres } from "./geometries/h3.js";
 import { NilAxes, NilRooms, NilSpheres } from "./geometries/nil.js";
 import { S2xEAxes, S2xERooms, S2xESpheres } from "./geometries/s2xe.js";
 import { S3Axes, S3HopfFibration, S3Rooms, S3Spheres } from "./geometries/s3.js";
 import { SL2RAxes, SL2RRooms } from "./geometries/sl2r.js";
-import { SolRooms } from "./geometries/sol.js";
+import { SolRooms, SolSpheres } from "./geometries/sol.js";
 import { showPage } from "/scripts/src/load-page.js";
 import { $, $$ } from "/scripts/src/main.js";
 
@@ -29,6 +29,7 @@ export function load()
 
 		"h3-axes": H3Axes,
 		"h3-rooms": H3Rooms,
+		"h3-spheres": H3Spheres,
 
 		"s2xe-axes": S2xEAxes,
 		"s2xe-rooms": S2xERooms,
@@ -44,7 +45,8 @@ export function load()
 		"sl2r-axes": SL2RAxes,
 		"sl2r-rooms": SL2RRooms,
 
-		"sol-rooms": SolRooms
+		"sol-rooms": SolRooms,
+		"sol-spheres": SolSpheres
 	};
 
 	const sceneSelectorDropdownElement = $("#scene-selector-dropdown");
@@ -86,7 +88,6 @@ export function load()
 	const sliders = {
 		wallThickness: [$("#wall-thickness-slider"), $("#wall-thickness-slider-value")],
 		fiberThickness: [$("#fiber-thickness-slider"), $("#fiber-thickness-slider-value")],
-		gluingAngle: [$("#gluing-angle-slider"), $("#gluing-angle-slider-value")],
 	};
 
 	const resolutionInputElement = $("#resolution-input");

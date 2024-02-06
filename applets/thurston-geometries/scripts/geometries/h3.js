@@ -61,20 +61,52 @@ class H3Geometry extends BaseGeometry
 		const vec4 teleportVec5 = ${getVectorGlsl(teleportVectors[4])};
 		const vec4 teleportVec6 = ${getVectorGlsl(teleportVectors[5])};
 
+		const mat4 teleportMat1 = mat4(
+			2.0, 0.0, 0.0, 1.73205081,
+			0.0, 1.0, 0.0, 0.0,
+			0.0, 0.0, 1.0, 0.0,
+			1.73205081, 0.0, 0.0, 2.0
+		);
+		
+		const mat4 teleportMat2 = mat4(
+			2.0, 0.0, 0.0, -1.73205081,
+			0.0, 1.0, 0.0, 0.0,
+			0.0, 0.0, 1.0, 0.0,
+			-1.73205081, 0.0, 0.0, 2.0
+		);
+		
+		const mat4 teleportMat3 = mat4(
+			1.0, 0.0, 0.0, 0.0,
+			0.0, 2.0, 0.0, 1.73205081,
+			0.0, 0.0, 1.0, 0.0,
+			0.0, 1.73205081, 0.0, 2.0
+		);
+		
+		const mat4 teleportMat4 = mat4(
+			1.0, 0.0, 0.0, 0.0,
+			0.0, 2.0, 0.0, -1.73205081,
+			0.0, 0.0, 1.0, 0.0,
+			0.0, -1.73205081, 0.0, 2.0
+		);
+		
+		const mat4 teleportMat5 = mat4(
+			1.0, 0.0, 0.0, 0.0,
+			0.0, 1.0, 0.0, 0.0,
+			0.0, 0.0, 2.0, 1.73205081,
+			0.0, 0.0, 1.73205081, 2.0
+		);
+		
+		const mat4 teleportMat6 = mat4(
+			1.0, 0.0, 0.0, 0.0,
+			0.0, 1.0, 0.0, 0.0,
+			0.0, 0.0, 2.0, -1.73205081,
+			0.0, 0.0, -1.73205081, 2.0
+		);
+
 		vec3 teleportPos(inout vec4 pos, inout vec4 startPos, inout vec4 rayDirectionVec, inout float t, inout float totalT)
 		{
-			float c = cos(gluingAngle);
-			float s = sin(gluingAngle);
-
 			if (dot(pos, teleportVec1) < 0.0)
 			{
-				mat4 teleportMat1 = mat4(
-					2.0, 0.0, 0.0, 1.73205081,
-					0.0, c, s, 0.0,
-					0.0, -s, c, 0.0,
-					1.73205081, 0.0, 0.0, 2.0
-				);
-
 				pos = teleportMat1 * pos;
 
 				// !!!IMPORTANT!!! rayDirectionVec is the tangent vector from the *starting*
@@ -94,13 +126,6 @@ class H3Geometry extends BaseGeometry
 
 			if (dot(pos, teleportVec2) < 0.0)
 			{
-				mat4 teleportMat2 = mat4(
-					2.0, 0.0, 0.0, -1.73205081,
-					0.0, c, -s, 0.0,
-					0.0, s, c, 0.0,
-					-1.73205081, 0.0, 0.0, 2.0
-				);
-
 				pos = teleportMat2 * pos;
 
 				rayDirectionVec = teleportMat2 * (sinh(t) * startPos + cosh(t) * rayDirectionVec);
@@ -115,13 +140,6 @@ class H3Geometry extends BaseGeometry
 
 			if (dot(pos, teleportVec3) < 0.0)
 			{
-				mat4 teleportMat3 = mat4(
-					c, 0.0, s, 0.0,
-					0.0, 2.0, 0.0, 1.73205081,
-					-s, 0.0, c, 0.0,
-					0.0, 1.73205081, 0.0, 2.0
-				);
-
 				pos = teleportMat3 * pos;
 
 				rayDirectionVec = teleportMat3 * (sinh(t) * startPos + cosh(t) * rayDirectionVec);
@@ -136,13 +154,6 @@ class H3Geometry extends BaseGeometry
 
 			if (dot(pos, teleportVec4) < 0.0)
 			{
-				mat4 teleportMat4 = mat4(
-					c, 0.0, -s, 0.0,
-					0.0, 2.0, 0.0, -1.73205081,
-					s, 0.0, c, 0.0,
-					0.0, -1.73205081, 0.0, 2.0
-				);
-
 				pos = teleportMat4 * pos;
 
 				rayDirectionVec = teleportMat4 * (sinh(t) * startPos + cosh(t) * rayDirectionVec);
@@ -157,13 +168,6 @@ class H3Geometry extends BaseGeometry
 
 			if (dot(pos, teleportVec5) < 0.0)
 			{
-				mat4 teleportMat5 = mat4(
-					c, s, 0.0, 0.0,
-					-s, c, 0.0, 0.0,
-					0.0, 0.0, 2.0, 1.73205081,
-					0.0, 0.0, 1.73205081, 2.0
-				);
-
 				pos = teleportMat5 * pos;
 
 				rayDirectionVec = teleportMat5 * (sinh(t) * startPos + cosh(t) * rayDirectionVec);
@@ -178,13 +182,6 @@ class H3Geometry extends BaseGeometry
 
 			if (dot(pos, teleportVec6) < 0.0)
 			{
-				mat4 teleportMat6 = mat4(
-					c, -s, 0.0, 0.0,
-					s, c, 0.0, 0.0,
-					0.0, 0.0, 2.0, -1.73205081,
-					0.0, 0.0, -1.73205081, 2.0
-				);
-
 				pos = teleportMat6 * pos;
 
 				rayDirectionVec = teleportMat6 * (sinh(t) * startPos + cosh(t) * rayDirectionVec);
@@ -551,11 +548,10 @@ export class H3Rooms extends H3Geometry
 
 	uniformGlsl = /* glsl */`
 		uniform float wallThickness;
-		uniform float gluingAngle;
 		uniform vec3 baseColor;
 	`;
 
-	uniformNames = ["wallThickness", "gluingAngle", "baseColor"];
+	uniformNames = ["wallThickness", "baseColor"];
 
 	updateUniforms(gl, uniformList)
 	{
@@ -563,11 +559,10 @@ export class H3Rooms extends H3Geometry
 			(this.sliderValues.wallThickness - (-.357)) / (.143 - (-.357)) * (1.5 - 1);
 
 		gl.uniform1f(uniformList["wallThickness"], wallThickness);
-		gl.uniform1f(uniformList["gluingAngle"], this.sliderValues.gluingAngle);
 		gl.uniform3fv(uniformList["baseColor"], this.baseColor);
 	}
 
-	uiElementsUsed = "#wall-thickness-slider, #gluing-angle-slider";
+	uiElementsUsed = "#wall-thickness-slider";
 
 	initUI()
 	{
@@ -579,14 +574,114 @@ export class H3Rooms extends H3Geometry
 		wallThicknessSlider.value = .143;
 		wallThicknessSliderValue.textContent = .143;
 		this.sliderValues.wallThickness = .143;
-
-		const gluingAngleSlider = $("#gluing-angle-slider");
-		const gluingAngleSliderValue = $("#gluing-angle-slider-value");
-
-		gluingAngleSlider.min = 0;
-		gluingAngleSlider.max = 2 * Math.PI;
-		gluingAngleSlider.value = 0;
-		gluingAngleSliderValue.textContent = 0;
-		this.sliderValues.gluingAngle = 0;
 	}
+}
+
+export class H3Spheres extends H3Geometry
+{
+	static distances = /* glsl */`
+		float distance1 = acosh(pos.w) - .35;
+
+		// Translate the reflection plane to the x = 0 plane, then get the distance to it.
+		// The DE to x = 0 is abs(asinh(pos.x)).
+		float distance2 = abs(asinh(
+			dot(
+				vec4(1.23188, 0.0, 0.0, 0.71939),
+				pos
+			)
+		));
+		
+		float distance3 = abs(asinh(
+			dot(
+				vec4(1.23188, 0.0, 0.0, -0.71939),
+				pos
+			)
+		));
+
+		float distance4 = abs(asinh(
+			dot(
+				vec4(0.0, 1.23188, 0.0, 0.71939),
+				pos
+			)
+		));
+		
+		float distance5 = abs(asinh(
+			dot(
+				vec4(0.0, -1.23188, 0.0, 0.71939),
+				pos
+			)
+		));
+
+		float distance6 = abs(asinh(
+			dot(
+				vec4(0.0, 0.0, 1.23188, 0.71939),
+				pos
+			)
+		));
+		
+		float distance7 = abs(asinh(
+			dot(
+				vec4(0.0, 0.0, -1.23188, 0.71939),
+				pos
+			)
+		));
+
+		float minDistance = ${getMinGlslString("distance", 7)};
+	`;
+
+	distanceEstimatorGlsl = /* glsl */`
+		${H3Spheres.distances}
+
+		return minDistance;
+	`;
+
+	getColorGlsl = /* glsl */`
+		vec3 roomColor = baseColor + globalColor;
+
+		return vec3(
+			.25 + .75 * (.5 * (sin(floor(roomColor.x + .5) * .3) + 1.0)),
+			.25 + .75 * (.5 * (sin(floor(roomColor.y + .5) * .3) + 1.0)),
+			.25 + .75 * (.5 * (sin(floor(roomColor.z + .5) * .3) + 1.0))
+		);
+	`;
+
+	lightGlsl = /* glsl */`
+		vec4 lightDirection1 = normalize(vec4(1.0, 1.0, 1.0, 1.0) - pos);
+		float dotProduct1 = dot(surfaceNormal, lightDirection1);
+
+		vec4 lightDirection2 = normalize(vec4(-1.0, -1.0, -1.0, 1.0) - pos);
+		float dotProduct2 = dot(surfaceNormal, lightDirection2);
+
+		vec4 lightDirection3 = normalize(vec4(1.0, 1.0, 1.0, 0.0) - pos);
+		float dotProduct3 = dot(surfaceNormal, lightDirection3);
+
+		vec4 lightDirection4 = normalize(vec4(-1.0, -1.0, -1.0, 0.0) - pos);
+		float dotProduct4 = dot(surfaceNormal, lightDirection4);
+
+		float lightIntensity = 1.3 * max(
+			max(abs(dotProduct1), abs(dotProduct2)),
+			max(abs(dotProduct3), abs(dotProduct4))
+		);
+	`;
+
+	cameraPos = [-.1, 0, 0, Math.sqrt(.1 * .1 + 1)];
+	normalVec = [.1, 0, 0, Math.sqrt(.1 * .1 + 1)];
+	upVec = [0, 0, 1, 0];
+	rightVec = [0, -1, 0, 0];
+	forwardVec = [-1, 0, 0, 0];
+
+	movingSpeed = 1.25;
+
+	uniformGlsl = /* glsl */`
+		uniform vec3 baseColor;
+	`;
+
+	uniformNames = ["baseColor"];
+
+	updateUniforms(gl, uniformList)
+	{
+		gl.uniform3fv(uniformList["baseColor"], this.baseColor);
+	}
+
+	uiElementsUsed = "#wall-thickness-slider";
 }
