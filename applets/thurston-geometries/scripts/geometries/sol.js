@@ -777,15 +777,15 @@ class SolGeometry extends BaseGeometry
 				pos = getUpdatedPosNumerically(rayDirectionVec, t);
 			}
 
-			else if (abs(rayDirectionVec.x * t) < flowNearPlaneThreshhold)
-			{
-				pos = getUpdatedPosNearX0(rayDirectionVec, t);
-			}
+			// else if (abs(rayDirectionVec.x * t) < flowNearPlaneThreshhold)
+			// {
+			// 	pos = getUpdatedPosNearX0(rayDirectionVec, t);
+			// }
 		
-			else if (abs(rayDirectionVec.y * t) < flowNearPlaneThreshhold)
-			{
-				pos = getUpdatedPosNearY0(rayDirectionVec, t);
-			}
+			// else if (abs(rayDirectionVec.y * t) < flowNearPlaneThreshhold)
+			// {
+			// 	pos = getUpdatedPosNearY0(rayDirectionVec, t);
+			// }
 			
 			else
 			{
@@ -797,22 +797,21 @@ class SolGeometry extends BaseGeometry
 
 		vec4 getUpdatedDirectionVec(vec4 startPos, vec4 rayDirectionVec, float t)
 		{
+			float e = .001;
 			if (t < flowNumericallyThreshhold)
 			{
 				return getTransformationMatrix(startPos) * getUpdatedDirectionVecNumerically(rayDirectionVec, t);
 			}
 
-			if (abs(rayDirectionVec.x * t) < flowNearPlaneThreshhold)
-			{
-				return getTransformationMatrix(startPos) * getUpdatedDirectionVecNumerically(rayDirectionVec, t);
-				return getTransformationMatrix(startPos) * getUpdatedDirectionVecNearX0(rayDirectionVec, t);
-			}
+			// if (abs(rayDirectionVec.x * t) < flowNearPlaneThreshhold * 20.0)
+			// {
+			// 	return normalize((getUpdatedPos(startPos, rayDirectionVec, t + e) - getUpdatedPos(startPos, rayDirectionVec, t - e)) / (2.0 * e));
+			// }
 		
-			if (abs(rayDirectionVec.y * t) < flowNearPlaneThreshhold)
-			{
-				return getTransformationMatrix(startPos) * getUpdatedDirectionVecNumerically(rayDirectionVec, t);
-				return getTransformationMatrix(startPos) * getUpdatedDirectionVecNearY0(rayDirectionVec, t);
-			}
+			// if (abs(rayDirectionVec.y * t) < flowNearPlaneThreshhold)
+			// {
+			// 	return normalize((getUpdatedPos(startPos, rayDirectionVec, t + e) - getUpdatedPos(startPos, rayDirectionVec, t - e)) / (2.0 * e));
+			// }
 
 			return getTransformationMatrix(startPos) * getUpdatedDirectionVecExactly(rayDirectionVec, t);
 		}
@@ -925,7 +924,7 @@ class SolGeometry extends BaseGeometry
 		}
 	`;
 
-	stepFactor = ".9";
+	stepFactor = ".8";
 	
 	normalize(vec)
 	{
@@ -1008,11 +1007,11 @@ class SolGeometry extends BaseGeometry
 export class SolRooms extends SolGeometry
 {
 	static distances = /* glsl */`
-		float distance1 = length(pos.xyz) - .33;
-		float distance2 = length(pos.xyz - vec3(0.0, 0.0, wallThickness)) - .33;
-		float distance3 = length(pos.xyz + vec3(0.0, 0.0, wallThickness)) - .33;
+		float distance1 = length(pos.xyz * vec3(1.0, 1.0, 0.55)) - wallThickness;
+		// float distance2 = length(pos.xyz - vec3(0.0, 0.0, wallThickness)) - .33;
+		// float distance3 = length(pos.xyz + vec3(0.0, 0.0, wallThickness)) - .33;
 		
-		float minDistance = ${getMinGlslString("distance", 3)};
+		float minDistance = ${getMinGlslString("distance", 1)};
 	`;
 
 	distanceEstimatorGlsl = /* glsl */`
@@ -1065,7 +1064,7 @@ export class SolRooms extends SolGeometry
 
 	updateUniforms(gl, uniformList)
 	{
-		const wallThickness = this.sliderValues.wallThickness;
+		const wallThickness = .372 - this.sliderValues.wallThickness / 10;
 
 		gl.uniform1f(uniformList["wallThickness"], wallThickness);
 
@@ -1079,10 +1078,10 @@ export class SolRooms extends SolGeometry
 		const wallThicknessSlider = $("#wall-thickness-slider");
 		const wallThicknessSliderValue = $("#wall-thickness-slider-value");
 
-		wallThicknessSlider.min = 0;
-		wallThicknessSlider.max = .6;
-		wallThicknessSlider.value = 0;
-		wallThicknessSliderValue.textContent = 0;
-		this.sliderValues.wallThickness = 0;
+		wallThicknessSlider.min = -0.18;
+		wallThicknessSlider.max = 0.42;
+		wallThicknessSlider.value = 0.42;
+		wallThicknessSliderValue.textContent = 0.42;
+		this.sliderValues.wallThickness = 0.42;
 	}
 }

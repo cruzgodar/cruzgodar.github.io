@@ -4,7 +4,7 @@ import { addTemporaryListener } from "/scripts/src/main.js";
 import { Wilson } from "/scripts/wilson.js";
 
 let frame = 0;
-const startFrame = 0;
+const startFrame = 7687;
 
 export class ThurstonGeometry extends Applet
 {
@@ -591,7 +591,7 @@ export class ThurstonGeometry extends Applet
 					setTimeout(() =>
 					{
 						window.requestAnimationFrame(this.drawFrame.bind(this));
-					}, 750);
+					}, 250);
 				}
 			}
 		} while (frame < startFrame);
