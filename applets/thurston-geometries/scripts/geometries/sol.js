@@ -672,6 +672,8 @@ class SolGeometry extends BaseGeometry
 			// an argument of alpha + mu*t, but first we'll get just mu*t.
 			vec3 jef1 = computeJacobiEllipticFunctions(muTimesTMod4K);
 
+			// These appear to use formulas (48)-(50) on
+			// https://mathworld.wolfram.com/JacobiEllipticFunctions.html.
 			vec3 jef2 = vec3(
 				jef1.x * jef0.y * jef0.z + jef0.x * jef1.y * jef1.z,
 				jef1.y * jef0.y - jef1.x * jef1.z * jef0.x * jef0.z,
@@ -763,17 +765,24 @@ class SolGeometry extends BaseGeometry
 				jef2.y * jef2.y * g_k * g_k / (g_kPrime * g_kPrime)
 			));
 
+			// return vec4(
+			// 	sign(a) * sqrt(abs(b / a)) * (
+			// 		g_L * g_mu + xTerm1 + (-xTerm2 + xTerm3 + xTerm4 - xTerm5) / g_kPrime
+			// 	),
+
+			// 	sign(b) * sqrt(abs(a / b)) * (
+			// 		g_L * g_mu - xTerm1 + (-xTerm2 + xTerm3 + xTerm4 - xTerm5) / g_kPrime
+			// 	),
+
+			// 	g_k * (zNumTerm1 - zNumTerm2) / zDen,
+
+			// 	0.0
+			// );
+
 			return vec4(
-				sign(a) * sqrt(abs(b / a)) * (
-					g_L * g_mu + xTerm1 + (-xTerm2 + xTerm3 + xTerm4 - xTerm5) / g_kPrime
-				),
-
-				sign(b) * sqrt(abs(a / b)) * (
-					g_L * g_mu - xTerm1 + (-xTerm2 + xTerm3 + xTerm4 - xTerm5) / g_kPrime
-				),
-
-				g_k * (zNumTerm1 - zNumTerm2) / zDen,
-
+				a * sqrt(abs(b / a)) * (g_k / g_kPrime * jef2.y + jef2.z / g_kPrime),
+				-b * sqrt(abs(a / b)) * (g_k / g_kPrime * jef2.y - jef2.z / g_kPrime),
+				-g_k * g_mu * jef2.x,
 				0.0
 			);
 		}
@@ -825,12 +834,12 @@ class SolGeometry extends BaseGeometry
 			// 	return getTransformationMatrix(startPos) * getUpdatedDirectionVecNearY0(rayDirectionVec, t);
 			// }
 			
-			// float e = .0001;
+			float e = .0001;
 
-			// return (
-			// 	getUpdatedPos(startPos, rayDirectionVec, t + e)
-			// 	- getUpdatedPos(startPos, rayDirectionVec, t)
-			// ) / e;
+			return (
+				getUpdatedPos(startPos, rayDirectionVec, t + e)
+				- getUpdatedPos(startPos, rayDirectionVec, t)
+			) / e;
 
 			return getTransformationMatrix(startPos) * getUpdatedDirectionVecExactly(rayDirectionVec, t);
 		}

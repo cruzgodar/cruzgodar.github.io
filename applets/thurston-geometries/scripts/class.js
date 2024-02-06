@@ -783,6 +783,8 @@ export class ThurstonGeometry extends Applet
 		this.wilson.gl.uniform1f(this.wilson.uniforms["aspectRatioY"], this.aspectRatioY);
 
 		this.wilson.gl.uniform1i(this.wilson.uniforms["resolution"], this.resolution);
+
+		this.needNewFrame = true;
 	}
 
 
