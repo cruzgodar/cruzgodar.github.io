@@ -166,6 +166,7 @@ export class ThurstonGeometry extends Applet
 			
 			uniform int resolution;
 			
+			const float pi = ${Math.PI};
 			const float epsilon = 0.00001;
 			const int maxMarches = ${this.geometryData.maxMarches};
 			const float maxT = ${this.geometryData.maxT};

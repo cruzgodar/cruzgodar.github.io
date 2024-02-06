@@ -279,7 +279,6 @@ class SL2RGeometry extends BaseGeometry
 	`;
 
 	functionGlsl = /* glsl */`
-		const float pi = ${Math.PI};
 		const float piOver2 = ${Math.PI / 2};
 
 		const float root2 = ${root2};
@@ -809,7 +808,6 @@ export class SL2RAxes extends SL2RGeometry
 	`;
 
 	functionGlsl = /* glsl */`
-		const float pi = ${Math.PI};
 		const float piOver2 = ${Math.PI / 2};
 
 		const float root2 = ${root2};

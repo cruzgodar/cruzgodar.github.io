@@ -153,7 +153,6 @@ class SolGeometry extends BaseGeometry
 	`;
 
 	functionGlsl = /* glsl */`
-		const float pi = ${Math.PI};
 		const float phi = ${phi};
 		const float tauInverse = ${tauInverse};
 
@@ -680,7 +679,8 @@ class SolGeometry extends BaseGeometry
 				jef1.z * jef0.z - g_m * jef1.x * jef1.y * jef0.x * jef0.y
 			) / (1.0 - g_m * jef1.x * jef1.x * jef0.x * jef0.x);
 
-			// Compute the Jacobi zeta function.
+			// Compute the Jacobi zeta function. This uses an addition formula
+			// that I haven't been able to find.
 			float zeta = computeJacobiZetaFunction(jef1.x / jef1.y) - g_m * jef1.x * jef0.x * jef2.x;
 
 			// Now we can finally compute the formula for gamma from the paper.
@@ -838,10 +838,10 @@ class SolGeometry extends BaseGeometry
 
 			return (
 				getUpdatedPos(startPos, rayDirectionVec, t + e)
-				- getUpdatedPos(startPos, rayDirectionVec, t)
-			) / e;
+				- getUpdatedPos(startPos, rayDirectionVec, t - e)
+			) / (2.0 * e);
 
-			return getTransformationMatrix(startPos) * getUpdatedDirectionVecExactly(rayDirectionVec, t);
+			// return getTransformationMatrix(startPos) * getUpdatedDirectionVecExactly(rayDirectionVec, t);
 		}
 
 		vec3 teleportPos(inout vec4 pos, inout vec4 startPos, inout vec4 rayDirectionVec, inout float t, inout float totalT)

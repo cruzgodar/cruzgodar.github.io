@@ -2,6 +2,8 @@ import { ThurstonGeometry } from "../class.js";
 import { BaseGeometry, getMatrixGlsl, getMinGlslString } from "./base.js";
 import { $ } from "/scripts/src/main.js";
 
+const loopRoomColors = false;
+
 const teleportationMatrices = [
 	[
 		[1, 0, 0, 1],
@@ -394,10 +396,28 @@ class NilGeometry extends BaseGeometry
 					teleportationMatrices[2 * i],
 					this.cameraPos
 				);
+				
+				if (loopRoomColors)
+				{
+					this.baseColor[0] = (
+						this.baseColor[0] + this.baseColorIncreases[2 * i][0] + 25
+					) % 50 - 25;
 
-				this.baseColor[0] += this.baseColorIncreases[2 * i][0];
-				this.baseColor[1] += this.baseColorIncreases[2 * i][1];
-				this.baseColor[2] += this.baseColorIncreases[2 * i][2];
+					this.baseColor[1] = (
+						this.baseColor[1] + this.baseColorIncreases[2 * i][1] + 25
+					) % 50 - 25;
+
+					this.baseColor[2] = (
+						this.baseColor[2] + this.baseColorIncreases[2 * i][2] + 25
+					) % 50 - 25;
+				}
+
+				else
+				{
+					this.baseColor[0] += this.baseColorIncreases[2 * i][0];
+					this.baseColor[1] += this.baseColorIncreases[2 * i][1];
+					this.baseColor[2] += this.baseColorIncreases[2 * i][2];
+				}
 			}
 
 			else if (this.cameraPos[i] > 0.5)
@@ -407,9 +427,27 @@ class NilGeometry extends BaseGeometry
 					this.cameraPos
 				);
 
-				this.baseColor[0] += this.baseColorIncreases[2 * i + 1][0];
-				this.baseColor[1] += this.baseColorIncreases[2 * i + 1][1];
-				this.baseColor[2] += this.baseColorIncreases[2 * i + 1][2];
+				if (loopRoomColors)
+				{
+					this.baseColor[0] = (
+						this.baseColor[0] + this.baseColorIncreases[2 * i + 1][0] + 25
+					) % 50 - 25;
+
+					this.baseColor[1] = (
+						this.baseColor[1] + this.baseColorIncreases[2 * i + 1][1] + 25
+					) % 50 - 25;
+
+					this.baseColor[2] = (
+						this.baseColor[2] + this.baseColorIncreases[2 * i + 1][2] + 25
+					) % 50 - 25;
+				}
+
+				else
+				{
+					this.baseColor[0] += this.baseColorIncreases[2 * i + 1][0];
+					this.baseColor[1] += this.baseColorIncreases[2 * i + 1][1];
+					this.baseColor[2] += this.baseColorIncreases[2 * i + 1][2];
+				}
 			}
 		}
 	}
@@ -565,10 +603,12 @@ export class NilRooms extends NilGeometry
 	`;
 
 	getColorGlsl = /* glsl */`
+		vec3 roomColor = ${loopRoomColors ? "mod(globalColor + baseColor + vec3(25.0), 50.0) - vec3(25.0)" : "globalColor + baseColor"};
+
 		return vec3(
-			.3 + .7 * (.5 * (sin((.01 * (pos.x + pos.z) + baseColor.x + baseColor.z + globalColor.x + globalColor.z) * 40.0) + 1.0)),
-			.3 + .7 * (.5 * (sin((.01 * (pos.y + pos.z) + baseColor.y + baseColor.z + globalColor.y + globalColor.z) * 57.0) + 1.0)),
-			.3 + .7 * (.5 * (sin((.01 * (pos.x + pos.y) + baseColor.x + baseColor.y + globalColor.x + globalColor.y) * 89.0) + 1.0))
+			.3 + .7 * (.5 * (sin((.01 * (pos.x + pos.z) + roomColor.x + roomColor.z) * 40.0) + 1.0)),
+			.3 + .7 * (.5 * (sin((.01 * (pos.y + pos.z) + roomColor.y + roomColor.z) * 57.0) + 1.0)),
+			.3 + .7 * (.5 * (sin((.01 * (pos.x + pos.y) + roomColor.x + roomColor.y) * 89.0) + 1.0))
 		);
 	`;
 
@@ -613,6 +653,8 @@ export class NilRooms extends NilGeometry
 		wallThicknessSliderValue.textContent = .78;
 		this.sliderValues.wallThickness = .78;
 	}
+
+	// movingSpeed = .05;
 }
 
 export class NilSpheres extends NilGeometry
@@ -636,10 +678,12 @@ export class NilSpheres extends NilGeometry
 	`;
 
 	getColorGlsl = /* glsl */`
+		vec3 roomColor = globalColor + baseColor;
+
 		return vec3(
-			.15 + .85 * (.5 * (sin(floor(baseColor.x + globalColor.x + .5) * 40.0) + 1.0)),
-			.15 + .85 * (.5 * (sin(floor(baseColor.y + globalColor.y + .5) * 57.0) + 1.0)),
-			.15 + .85 * (.5 * (sin(floor(baseColor.z + globalColor.z + .5) * 89.0) + 1.0))
+			.15 + .85 * (.5 * (sin(floor(roomColor.x + .5) * 40.0) + 1.0)),
+			.15 + .85 * (.5 * (sin(floor(roomColor.y + .5) * 57.0) + 1.0)),
+			.15 + .85 * (.5 * (sin(floor(roomColor.z + .5) * 89.0) + 1.0))
 		);
 	`;
 
