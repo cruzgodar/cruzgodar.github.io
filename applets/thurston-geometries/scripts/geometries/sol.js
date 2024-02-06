@@ -1143,7 +1143,7 @@ export class SolSpheres extends SolGeometry
 	ambientOcclusionDenominator = "75.0";
 	maxT = "15.0";
 
-	cameraPos = [0, 0, 0, 1];
+	cameraPos = [0, 0, .5, 1];
 	normalVec = [0, 0, 0, 1];
 	upVec = [0, 0, 1, 0];
 	rightVec = [0, 1, 0, 0];
