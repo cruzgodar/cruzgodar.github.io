@@ -1,7 +1,7 @@
 import { BaseGeometry, getMaxGlslString, getMinGlslString } from "./base.js";
 import { $ } from "/scripts/src/main.js";
 
-class S2xEGeometry extends BaseGeometry
+export class S2xEGeometry extends BaseGeometry
 {
 	geodesicGlsl = /* glsl */`
 		vec4 pos = vec4(
@@ -101,8 +101,6 @@ export class S2xEAxes extends S2xEGeometry
 	rightVec = [0.71092, -0.70325, 0.00345, 0];
 	forwardVec = [0.07120, 0.07685, 0.99449, 0];
 }
-
-
 
 export class S2xERooms extends S2xEGeometry
 {
@@ -226,8 +224,6 @@ export class S2xERooms extends S2xEGeometry
 		this.sliderValues.wallThickness = .8;
 	}
 }
-
-
 
 export class S2xESpheres extends S2xEGeometry
 {

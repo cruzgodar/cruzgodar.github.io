@@ -111,6 +111,8 @@ export class BaseGeometry
 	rightVec;
 	forwardVec;
 
+	lockedOnOrigin = false;
+
 	movingSpeed = 1;
 
 	uniformGlsl;

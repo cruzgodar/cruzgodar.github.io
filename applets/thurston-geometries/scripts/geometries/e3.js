@@ -12,6 +12,7 @@ export class E3Axes extends E3Geometry
 
 		float minDistance = ${getMinGlslString("distance", 3)};
 	`;
+
 	distanceEstimatorGlsl = /* glsl */`
 		${E3Axes.distances}
 

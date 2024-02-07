@@ -13,6 +13,8 @@ Something will go here eventually!
 	scene-selector
 
 	none "Scenes"
+
+	s2-dots "$S^2$: Intro"
 	
 	e3-axes "$\mathbb{E}^3$: Axes"
 	e3-rooms "$\mathbb{E}^3$: Rooms"
