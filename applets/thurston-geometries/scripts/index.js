@@ -205,11 +205,19 @@ export function load()
 
 		geometryDataS2xE.drawFrameCallback = () =>
 		{
-			applet.geometryData.cameraDotPos = [
-				demoApplet.geometryData.cameraPos[0],
-				demoApplet.geometryData.cameraPos[1],
-				demoApplet.geometryData.cameraPos[2]
-			];
+			applet.geometryData.cameraDotPos = [...demoApplet.geometryData.cameraPos];
+
+			for (let i = 0; i < applet.geometryData.numRays; i++)
+			{
+				[
+					applet.geometryData.rayDirs[i],
+					applet.geometryData.testVecs[i]
+				] = ThurstonGeometry.rotateVectors(
+					demoApplet.geometryData.forwardVec,
+					demoApplet.geometryData.rightVec,
+					(i - Math.floor(applet.geometryData.numRays / 2)) * 0.28
+				);
+			}
 
 			applet.needNewFrame = true;
 		};
