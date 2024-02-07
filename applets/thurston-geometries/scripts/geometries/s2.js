@@ -92,7 +92,7 @@ export class E3S2Demo extends E3Geometry
 
 	fov = Math.tan(60 / 2 * Math.PI / 180);
 
-	controlMode = BaseGeometry.DISALLOW_MODIFIER;
+	controlMode = BaseGeometry.REQUIRE_MODIFIER;
 }
 
 export class S2xES2Demo extends S2xEGeometry
@@ -153,4 +153,8 @@ export class S2xES2Demo extends S2xEGeometry
 	upVec = [0, 0, 0, 1];
 	rightVec = [0, 1, 0, 0];
 	forwardVec = [1, 0, 0, 0];
+
+	aspectRatio = 10;
+
+	controlMode = BaseGeometry.DISALLOW_MODIFIER;
 }

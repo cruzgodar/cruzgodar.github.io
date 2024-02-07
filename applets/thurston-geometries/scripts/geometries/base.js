@@ -119,6 +119,7 @@ export class BaseGeometry
 
 	movingSpeed = 1;
 
+	aspectRatio;
 	fov;
 
 	// Setting this to DISALLOW_MODIFIER means controls will only be processed if control

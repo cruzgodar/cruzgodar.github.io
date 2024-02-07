@@ -72,7 +72,9 @@ Something will go here eventually!
 
 ### canvas
 
-<canvas id="1d-canvas" class="output-canvas" width="500" height="500"></canvas>
+<div id="demo-canvas-container" style="display: none">
+	<canvas id="demo-canvas" class="output-canvas" width="500" height="500"></canvas>
+</div>
 
 </div>
 

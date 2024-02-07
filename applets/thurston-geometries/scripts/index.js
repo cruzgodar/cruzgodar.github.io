@@ -3,7 +3,7 @@ import { E3Axes, E3Rooms, E3Spheres } from "./geometries/e3.js";
 import { H2xEAxes, H2xERooms } from "./geometries/h2xe.js";
 import { H3Axes, H3Rooms, H3Spheres } from "./geometries/h3.js";
 import { NilAxes, NilRooms, NilSpheres } from "./geometries/nil.js";
-import { E3S2Demo } from "./geometries/s2.js";
+import { E3S2Demo, S2xES2Demo } from "./geometries/s2.js";
 import { S2xEAxes, S2xERooms, S2xESpheres } from "./geometries/s2xe.js";
 import { S3Axes, S3HopfFibration, S3Rooms, S3Spheres } from "./geometries/s3.js";
 import { SL2RAxes, SL2RRooms } from "./geometries/sl2r.js";
@@ -16,6 +16,11 @@ export function load()
 	const applet = new ThurstonGeometry({
 		canvas: $("#output-canvas"),
 	});
+
+	const demoCanvas = $("#demo-canvas");
+	const demoCanvasContainer = $("#demo-canvas-container");
+
+	let demoApplet;
 
 	const scenes =
 	{
@@ -88,7 +93,15 @@ export function load()
 		).map(element => element.parentNode);
 
 		elementsToShow.forEach(element => element.style.display = "");
+		$(".sliders").style.display = "";
+
 		elementsToHide.forEach(element => element.style.display = "none");
+
+		demoCanvasContainer.style.display = "none";
+		if (demoApplet)
+		{
+			demoApplet.animationPaused = true;
+		}
 
 		applet.run(geometryData);
 		geometryData.initUI();
@@ -148,17 +161,43 @@ export function load()
 		applet.wilson.downloadFrame("a-thurston-geometry.png");
 	});
 
+
+
+	function setUpS2Demo()
+	{
+		$(".sliders").style.display = "none";
+
+		const geometryDataE3 = new E3S2Demo();
+
+		applet.run(geometryDataE3);
+
+		if (demoApplet === undefined)
+		{
+			demoApplet = new ThurstonGeometry({
+				canvas: demoCanvas,
+			});
+		}
+
+		else
+		{
+			demoApplet.animationPaused = false;
+
+			demoApplet.drawFrame();
+		}
+
+		const geometryDataS2xE = new S2xES2Demo();
+		demoApplet.run(geometryDataS2xE);
+
+		demoCanvasContainer.style.display = "";
+		
+		demoCanvasContainer.querySelector(".wilson-applet-canvas-container").style.setProperty(
+			"margin-top",
+			"4px",
+			"important"
+		);
+	}
+
 	
 
 	showPage();
-}
-
-
-
-function setUpS2Demo(applet)
-{
-	const geometryDataE3 = new E3S2Demo();
-
-	applet.run(geometryDataE3);
-	geometryDataE3.initUI();
 }

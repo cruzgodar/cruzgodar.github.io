@@ -317,6 +317,8 @@ export class ThurstonGeometry extends Applet
 		{
 			console.log(fragShaderSource);
 		}
+
+		window.dispatchEvent(new Event("resize"));
 		
 
 		
@@ -498,7 +500,7 @@ export class ThurstonGeometry extends Applet
 				this.geometryData.correctVectors();
 			}
 
-			if (this.movingAmount[2])
+			if (this.movingAmount[2] && !this.geometryData.render1D)
 			{
 				this.handleMoving(
 					[0, 0, Math.sign(this.movingAmount[2])],
@@ -512,13 +514,16 @@ export class ThurstonGeometry extends Applet
 			{
 				this.movingAmount[i] *= ThurstonGeometry.moveFriction ** (timeElapsed / 6.944);
 
-				if (
-					!this.currentlyControllable
-					|| Math.abs(this.movingAmount[i]) < ThurstonGeometry.moveStopThreshhold
-				) {
+				if (Math.abs(this.movingAmount[i]) < ThurstonGeometry.moveStopThreshhold)
+				{
 					this.movingAmount[i] = 0;
 				}
 			}
+		}
+
+		else
+		{
+			this.movingAmount = [0, 0, 0];
 		}
 
 		this.geometryData.correctVectors();
@@ -809,6 +814,22 @@ export class ThurstonGeometry extends Applet
 			this.wilson.worldHeight = Math.max(2, 2 / aspectRatio);
 		}
 
+		else if (this.geometryData.aspectRatio)
+		{
+			imageWidth = Math.min(
+				this.resolution,
+				Math.floor(this.resolution * this.geometryData.aspectRatio)
+			);
+
+			imageHeight = Math.min(
+				this.resolution,
+				Math.floor(this.resolution / this.geometryData.aspectRatio)
+			);
+
+			this.wilson.worldWidth = 2;
+			this.wilson.worldHeight = 2;
+		}
+
 		else
 		{
 			imageWidth = this.resolution;
@@ -821,7 +842,13 @@ export class ThurstonGeometry extends Applet
 
 
 
-		if (imageWidth >= imageHeight)
+		if (this.geometryData.aspectRatio)
+		{
+			this.aspectRatioX = 1;
+			this.aspectRatioY = 1;
+		}
+
+		else if (imageWidth >= imageHeight)
 		{
 			this.aspectRatioX = imageWidth / imageHeight;
 			this.aspectRatioY = 1;
