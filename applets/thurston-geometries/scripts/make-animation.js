@@ -528,7 +528,10 @@ export class ThurstonGeometry extends Applet
 				
 				const angle = timeElapsed * this.rollingAmount * .0015;
 
-				[this.geometryData.rightVec, this.geometryData.upVec] = ThurstonGeometry.rotateVectors(
+				[
+					this.geometryData.rightVec,
+					this.geometryData.upVec
+				] = ThurstonGeometry.rotateVectors(
 					this.geometryData.rightVec,
 					this.geometryData.upVec,
 					angle

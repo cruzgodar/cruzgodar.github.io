@@ -1,3 +1,4 @@
+import { BaseGeometry } from "./geometries/base.js";
 import { Applet } from "/scripts/src/applets.js";
 import { aspectRatio } from "/scripts/src/layout.js";
 import { addTemporaryListener } from "/scripts/src/main.js";
@@ -38,11 +39,14 @@ export class ThurstonGeometry extends Applet
 		"Shift": false,
 		"e": false,
 		"q": false,
+		"Control": false
 	};
 
 	numTouches = 0;
 
 	movingSubsteps = 1;
+
+	currentlyControllable = true;
 
 	needNewFrame = true;
 
@@ -402,6 +406,17 @@ export class ThurstonGeometry extends Applet
 			return;
 		}
 
+		this.currentlyControllable =
+			this.geometryData.controlMode === BaseGeometry.IGNORE_MODIFIER
+			|| (
+				this.geometryData.controlMode === BaseGeometry.DISALLOW_MODIFIER
+				&& !this.keysPressed.Control
+			)
+			|| (
+				this.geometryData.controlMode === BaseGeometry.REQUIRE_MODIFIER
+				&& this.keysPressed.Control
+			);
+
 		this.geometryData.teleportCamera(
 			this.rotatedForwardVec,
 			this.recomputeRotation.bind(this)
@@ -459,7 +474,7 @@ export class ThurstonGeometry extends Applet
 			|| this.movingAmount[1] !== 0
 			|| this.movingAmount[2] !== 0;
 
-		if (totalMovingAmount)
+		if (totalMovingAmount && this.currentlyControllable)
 		{
 			this.needNewFrame = true;
 
@@ -497,8 +512,10 @@ export class ThurstonGeometry extends Applet
 			{
 				this.movingAmount[i] *= ThurstonGeometry.moveFriction ** (timeElapsed / 6.944);
 
-				if (Math.abs(this.movingAmount[i]) < ThurstonGeometry.moveStopThreshhold)
-				{
+				if (
+					!this.currentlyControllable
+					|| Math.abs(this.movingAmount[i]) < ThurstonGeometry.moveStopThreshhold
+				) {
 					this.movingAmount[i] = 0;
 				}
 			}
@@ -508,7 +525,7 @@ export class ThurstonGeometry extends Applet
 
 		this.handleRotating();
 
-		if (this.rollingAmount)
+		if (this.rollingAmount && this.currentlyControllable)
 		{
 			this.needNewFrame = true;
 
@@ -670,10 +687,21 @@ export class ThurstonGeometry extends Applet
 
 	handleRotating()
 	{
-		if (this.geometryData.lockedOnOrigin)
+		if (!this.currentlyControllable)
 		{
 			this.wilson.worldCenterX = 0;
 			this.wilson.worldCenterY = 0;
+		}
+
+		if (this.geometryData.lockedOnOrigin)
+		{
+			this.wilson.worldCenterX = 0;
+			this.wilson.worldCenterY = -Math.atan(
+				this.geometryData.cameraPos[2] / Math.sqrt(
+					this.geometryData.cameraPos[0] ** 2
+					+ this.geometryData.cameraPos[1] ** 2
+				)
+			);
 		}
 
 		if (this.wilson.worldCenterX !== 0 || this.wilson.worldCenterY !== this.lastWorldCenterY)

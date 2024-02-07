@@ -1,4 +1,4 @@
-import { getMinGlslString } from "./base.js";
+import { BaseGeometry, getMinGlslString } from "./base.js";
 import { E3Geometry } from "./e3.js";
 import { S2xEGeometry } from "./s2xe.js";
 
@@ -63,14 +63,9 @@ export class E3S2Demo extends E3Geometry
 		this.forwardVec = this.normalize([
 			-this.cameraPos[0],
 			-this.cameraPos[1],
-			-this.cameraPos[2],
+			0,
 			0
 		]);
-
-		const dotUp = this.dotProduct(
-			this.forwardVec,
-			this.upVec
-		);
 
 		const dotRight = this.dotProduct(
 			this.forwardVec,
@@ -79,11 +74,9 @@ export class E3S2Demo extends E3Geometry
 
 		for (let i = 0; i < 4; i++)
 		{
-			this.upVec[i] -= dotUp * this.forwardVec[i];
 			this.rightVec[i] -= dotRight * this.forwardVec[i];
 		}
 
-		this.upVec = this.normalize(this.upVec);
 		this.rightVec = this.normalize(this.rightVec);
 	}
 
@@ -93,11 +86,13 @@ export class E3S2Demo extends E3Geometry
 	rightVec = [0, 1, 0, 0];
 	forwardVec = [1, 0, 0, 0];
 
-	movingSpeed = 3;
+	movingSpeed = 5;
 	
 	lockedOnOrigin = true;
 
 	fov = Math.tan(60 / 2 * Math.PI / 180);
+
+	controlMode = BaseGeometry.DISALLOW_MODIFIER;
 }
 
 export class S2xES2Demo extends S2xEGeometry
