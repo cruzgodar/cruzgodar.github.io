@@ -1,4 +1,4 @@
-import { BaseGeometry, getMinGlslString } from "./base.js";
+import { getMinGlslString } from "./base.js";
 import { E3Geometry } from "./e3.js";
 import { S2xEGeometry } from "./s2xe.js";
 
@@ -109,10 +109,6 @@ export class E3S2Demo extends E3Geometry
 
 	fov = Math.tan(60 / 2 * Math.PI / 180);
 
-	controlMode = BaseGeometry.REQUIRE_MODIFIER;
-
-
-
 	cameraDotPos = [0, 0, 1];
 
 	uniformGlsl = /* glsl */`
@@ -187,6 +183,4 @@ export class S2xES2Demo extends S2xEGeometry
 	forwardVec = [1, 0, 0, 0];
 
 	aspectRatio = 10;
-
-	controlMode = BaseGeometry.DISALLOW_MODIFIER;
 }

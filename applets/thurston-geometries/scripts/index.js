@@ -20,6 +20,8 @@ export function load()
 	const demoCanvas = $("#demo-canvas");
 	const demoCanvasContainer = $("#demo-canvas-container");
 
+	const outputCanvasContainer = $("#output-canvas-container");
+
 	let demoApplet;
 
 	const scenes =
@@ -184,6 +186,20 @@ export function load()
 
 			demoApplet.drawFrame();
 		}
+
+		demoApplet.currentlyControllable = false;
+
+		outputCanvasContainer.addEventListener("pointerdown", () =>
+		{
+			applet.currentlyControllable = true;
+			demoApplet.currentlyControllable = false;
+		});
+
+		demoCanvasContainer.addEventListener("pointerdown", () =>
+		{
+			applet.currentlyControllable = false;
+			demoApplet.currentlyControllable = true;
+		});
 
 		const geometryDataS2xE = new S2xES2Demo();
 

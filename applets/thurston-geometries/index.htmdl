@@ -70,7 +70,9 @@ Something will go here eventually!
 
 <div id="canvas-landscape-middle">
 
-### canvas
+<div id="output-canvas-container">
+	### canvas
+</div>
 
 <div id="demo-canvas-container" style="display: none">
 	<canvas id="demo-canvas" class="output-canvas" width="500" height="500"></canvas>

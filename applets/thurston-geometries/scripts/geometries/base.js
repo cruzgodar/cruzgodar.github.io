@@ -126,13 +126,6 @@ export class BaseGeometry
 	aspectRatio;
 	fov;
 
-	// Setting this to DISALLOW_MODIFIER means controls will only be processed if control
-	// is not held, and setting it to REQUIRE_MODIFIER means they'll only be processed if it is.
-	static IGNORE_MODIFIER = 0;
-	static DISALLOW_MODIFIER = 1;
-	static REQUIRE_MODIFIER = 2;
-	controlMode = BaseGeometry.IGNORE_MODIFIER;
-
 	uniformGlsl;
 	uniformNames;
 	uniformData = {};

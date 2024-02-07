@@ -1,4 +1,3 @@
-import { BaseGeometry } from "./geometries/base.js";
 import { Applet } from "/scripts/src/applets.js";
 import { aspectRatio } from "/scripts/src/layout.js";
 import { addTemporaryListener } from "/scripts/src/main.js";
@@ -38,8 +37,7 @@ export class ThurstonGeometry extends Applet
 		" ": false,
 		"Shift": false,
 		"e": false,
-		"q": false,
-		"Control": false
+		"q": false
 	};
 
 	numTouches = 0;
@@ -407,17 +405,6 @@ export class ThurstonGeometry extends Applet
 		{
 			return;
 		}
-
-		this.currentlyControllable =
-			this.geometryData.controlMode === BaseGeometry.IGNORE_MODIFIER
-			|| (
-				this.geometryData.controlMode === BaseGeometry.DISALLOW_MODIFIER
-				&& !this.keysPressed.Control
-			)
-			|| (
-				this.geometryData.controlMode === BaseGeometry.REQUIRE_MODIFIER
-				&& this.keysPressed.Control
-			);
 
 		this.geometryData.teleportCamera(
 			this.rotatedForwardVec,
