@@ -186,6 +186,18 @@ export function load()
 		}
 
 		const geometryDataS2xE = new S2xES2Demo();
+
+		geometryDataS2xE.drawFrameCallback = () =>
+		{
+			applet.geometryData.cameraDotPos = [
+				demoApplet.geometryData.cameraPos[0],
+				demoApplet.geometryData.cameraPos[1],
+				demoApplet.geometryData.cameraPos[2]
+			];
+
+			applet.needNewFrame = true;
+		};
+
 		demoApplet.run(geometryDataS2xE);
 
 		demoCanvasContainer.style.display = "";

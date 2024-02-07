@@ -6,13 +6,30 @@ import { S2xEGeometry } from "./s2xe.js";
 // polka dot circles, and the light rays.
 export class E3S2Demo extends E3Geometry
 {
-	distanceEstimatorGlsl = /* glsl */`
+	static distances = /* glsl */`
+		// The sphere itself.
 		float distance1 = length(pos.xyz) - 1.0;
 
-		return distance1;
+		// The camera.
+		float distance2 = length(pos.xyz - cameraDotPos) - 0.05;
+
+		float minDistance =  ${getMinGlslString("distance", 2)};
+	`;
+
+	distanceEstimatorGlsl = /* glsl */`
+		${E3S2Demo.distances}
+
+		return minDistance;
 	`;
 
 	getColorGlsl = /* glsl */`
+		${E3S2Demo.distances}
+
+		if (minDistance == distance2)
+		{
+			return vec3(0.2);
+		}
+
 		pos.xyz /= 1.001;
 
 		float radius = .5;
@@ -93,6 +110,21 @@ export class E3S2Demo extends E3Geometry
 	fov = Math.tan(60 / 2 * Math.PI / 180);
 
 	controlMode = BaseGeometry.REQUIRE_MODIFIER;
+
+
+
+	cameraDotPos = [0, 0, 1];
+
+	uniformGlsl = /* glsl */`
+		uniform vec3 cameraDotPos;
+	`;
+
+	uniformNames = ["cameraDotPos"];
+
+	updateUniforms(gl, uniformList)
+	{
+		gl.uniform3fv(uniformList["cameraDotPos"], this.cameraDotPos);
+	}
 }
 
 export class S2xES2Demo extends S2xEGeometry
@@ -123,12 +155,12 @@ export class S2xES2Demo extends S2xEGeometry
 
 		if (minDistance == distance2)
 		{
-			return vec3(0.0, 1.0, 0.0);
+			return vec3(0.0, 0.0, 1.0);
 		}
 
 		if (minDistance == distance3)
 		{
-			return vec3(0.0, 0.0, 1.0);
+			return vec3(0.0, 1.0, 0.0);
 		}
 
 		if (minDistance == distance4)

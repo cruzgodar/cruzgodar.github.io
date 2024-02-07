@@ -117,6 +117,10 @@ export class BaseGeometry
 	// When true, passes an upVec of 0, effectively making the render 1D.
 	render1D = false;
 
+	// Called every time a frame is drawn. To be set by the code
+	// instantiating the class to know when to update things.
+	drawFrameCallback() {}
+
 	movingSpeed = 1;
 
 	aspectRatio;

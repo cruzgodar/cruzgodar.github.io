@@ -318,7 +318,7 @@ export class ThurstonGeometry extends Applet
 			console.log(fragShaderSource);
 		}
 
-		window.dispatchEvent(new Event("resize"));
+		setTimeout(() => window.dispatchEvent(new Event("resize")), 16);
 		
 
 		
@@ -567,6 +567,8 @@ export class ThurstonGeometry extends Applet
 		if (this.needNewFrame)
 		{
 			this.wilson.render.drawFrame();
+
+			this.geometryData.drawFrameCallback();
 
 			this.needNewFrame = false;
 		}
