@@ -115,6 +115,8 @@ export class BaseGeometry
 
 	movingSpeed = 1;
 
+	fov;
+
 	uniformGlsl;
 	uniformNames;
 	uniformData = {};

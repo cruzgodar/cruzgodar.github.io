@@ -356,7 +356,7 @@ export class ThurstonGeometry extends Applet
 
 		this.wilson.gl.uniform1f(
 			this.wilson.uniforms["fov"],
-			this.fov
+			this.geometryData.fov ?? this.fov
 		);
 
 		this.wilson.gl.uniform4fv(
@@ -564,6 +564,11 @@ export class ThurstonGeometry extends Applet
 			this.rotatedForwardVec
 		);
 
+		this.wilson.gl.uniform1f(
+			this.wilson.uniforms["fov"],
+			this.geometryData.fov ?? this.fov
+		);
+
 		if (this.needNewFrame)
 		{
 			this.wilson.render.drawFrame();
@@ -665,6 +670,12 @@ export class ThurstonGeometry extends Applet
 
 	handleRotating()
 	{
+		if (this.geometryData.lockedOnOrigin)
+		{
+			this.wilson.worldCenterX = 0;
+			this.wilson.worldCenterY = 0;
+		}
+
 		if (this.wilson.worldCenterX !== 0 || this.wilson.worldCenterY !== this.lastWorldCenterY)
 		{
 			this.needNewFrame = true;

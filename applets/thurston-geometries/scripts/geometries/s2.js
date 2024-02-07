@@ -52,15 +52,52 @@ export class E3S2Demo extends E3Geometry
 		float lightIntensity = (.5 + .5 * dotProduct1 * dotProduct1) * 1.15;
 	`;
 
-	cameraPos = [-1.5, 0, 0, 1];
+	correctPosition(pos)
+	{
+		const mag = Math.sqrt(pos[0] * pos[0] + pos[1] * pos[1] + pos[2] * pos[2]) / 2.5;
+		return [pos[0] / mag, pos[1] / mag, pos[2] / mag, 1];
+	}
+
+	correctVectors()
+	{
+		this.forwardVec = this.normalize([
+			-this.cameraPos[0],
+			-this.cameraPos[1],
+			-this.cameraPos[2],
+			0
+		]);
+
+		const dotUp = this.dotProduct(
+			this.forwardVec,
+			this.upVec
+		);
+
+		const dotRight = this.dotProduct(
+			this.forwardVec,
+			this.rightVec
+		);
+
+		for (let i = 0; i < 4; i++)
+		{
+			this.upVec[i] -= dotUp * this.forwardVec[i];
+			this.rightVec[i] -= dotRight * this.forwardVec[i];
+		}
+
+		this.upVec = this.normalize(this.upVec);
+		this.rightVec = this.normalize(this.rightVec);
+	}
+
+	cameraPos = [-2.5, 0, 0, 1];
 	normalVec = [0, 0, 0, 1];
 	upVec = [0, 0, 1, 0];
 	rightVec = [0, 1, 0, 0];
 	forwardVec = [1, 0, 0, 0];
+
+	movingSpeed = 3;
 	
 	lockedOnOrigin = true;
 
-	movingSpeed = 1;
+	fov = Math.tan(60 / 2 * Math.PI / 180);
 }
 
 export class S2xES2Demo extends S2xEGeometry
