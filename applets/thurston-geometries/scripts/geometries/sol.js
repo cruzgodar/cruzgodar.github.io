@@ -430,58 +430,19 @@ class SolGeometry extends BaseGeometry
 			float b = rayDirectionVec.y;
 			float c = rayDirectionVec.z;
 
-			float a2 = a * a;
-			float b2 = b * b;
-			float c2 = c * c;
+			float sinhT = sinh(t);
+			float coshT = cosh(t);
+			float tanhT = tanh(t);
 
-			float n1 = sqrt(b2 + c2);
-			float n2 = b2 + c2;
-			float n3 = n1 * n2;
-			float n4 = n2 * n2;
-			
-			float sinh1 = sinh(n1 * t);
-			float sinh2 = sinh(2.0 * n1 * t);
-			float sinh3 = sinh(3.0 * n1 * t);
-			float cosh1 = cosh(n1 * t);
-			float cosh2 = cosh(2.0 * n1 * t);
-			float cosh4 = cosh(4.0 * n1 * t);
-
-			float shs1 = c * cosh1 + n1 * sinh1;
-			float chs1 = n1 * cosh1 + c * sinh1;
-			float shs2 = c * cosh2 + n1 * sinh2;
-			float chs2 = n1 * cosh2 + c * sinh2;
+			float onePlusCTanhT = 1.0 + c * tanhT;
 
 			return vec4(
-				a * (b2 * (1.0 + cosh2) + 2.0 * c * shs2) / (2.0 * n2),
+				0.0,
 
-				b * (
-					8.0 * chs1 * n4 + a2 * (
-						4.0 * b2 * b2 * sinh1 * t
-						+ b2 * (
-							3.0 * c * sinh3
-							+ 2.0 * cosh1 * n1 * (-1.0 + cosh2 + 2.0 * c * t)
-							- c * sinh1 * (13.0 + 4.0 * c * t)
-						)
-						- 4.0 * c2 * (
-							2.0 * cosh1 * n1 * (1.0 - cosh2 + c * t)
-							+ c * (sinh1 - sinh3 + 2.0 * c * sinh1 * t)
-						)
-					)
-				) / (8.0 * chs1 * chs1 * chs1 * n2),
+				-b * c * tanhT / (coshT * coshT * onePlusCTanhT * onePlusCTanhT)
+					+ b / (coshT * coshT * onePlusCTanhT),
 
-				-(
-					4.0 * a2 * c * (b2 + 2.0 * c2) * cosh4 * n2
-					-8.0 * c * cosh2 * n2 * (a2 * (c2 - b2) + 2.0 * n4)
-					+ 2.0 * n1 * (
-						a2 * (
-							b2 * b2 * (2.0 + cosh2)
-							+ 4.0 * c2 * c2 * (-1.0 + 2.0 * cosh2)
-							+ 2.0 * b2 * c2 * (1.0 + 4.0 * cosh2)
-						)
-						- 4.0 * (b2 + 2.0 * c2) * n4
-					) * sinh2
-					+ 4.0 * a2 * b2 * n2 * (b2 * t - c * (3.0 + 2.0 * c * t))
-				) / (16.0 * chs1 * chs1 * n4),
+				(c * coshT + sinhT) / (coshT + c * sinhT),
 
 				0.0
 			);
@@ -803,7 +764,7 @@ class SolGeometry extends BaseGeometry
 				pos = getUpdatedPosNumerically(rayDirectionVec, t);
 			}
 
-			else if (abs(rayDirectionVec.x) < flowNearPlaneThreshhold * 20.0)
+			else if (abs(rayDirectionVec.x) < flowNearPlaneThreshhold * 2.0)
 			{
 				pos = getUpdatedPosNearX0(rayDirectionVec, t);
 			}
@@ -829,14 +790,14 @@ class SolGeometry extends BaseGeometry
 				return getTransformationMatrix(startPos) * getUpdatedDirectionVecNumerically(rayDirectionVec, t);
 			}
 
-			if (abs(rayDirectionVec.x) < flowNearPlaneThreshhold * 20.0)
+			if (abs(rayDirectionVec.x) < flowNearPlaneThreshhold * 30.0)
 			{
-				return getUpdatedDirectionVecNearX0(rayDirectionVec, t);
+				return getTransformationMatrix(startPos) * getUpdatedDirectionVecNearX0(rayDirectionVec, t);
 			}
 		
-			if (abs(rayDirectionVec.y) < flowNearPlaneThreshhold * 2.0)
+			if (abs(rayDirectionVec.y) < flowNearPlaneThreshhold * 6.0)
 			{
-				return getUpdatedDirectionVecNearY0(rayDirectionVec, t);
+				return getTransformationMatrix(startPos) * getUpdatedDirectionVecNearY0(rayDirectionVec, t);
 			}
 
 			return getTransformationMatrix(startPos) * getUpdatedDirectionVecExactly(rayDirectionVec, t);
@@ -968,8 +929,8 @@ class SolGeometry extends BaseGeometry
 	followGeodesic(pos, dir, t)
 	{
 		return [
-			pos[0] + t * dir[0] * Math.exp(2 * pos[2]),
-			pos[1] + t * dir[1] * Math.exp(-2 * pos[2]),
+			pos[0] + t * dir[0] * Math.exp(pos[2]),
+			pos[1] + t * dir[1] * Math.exp(-pos[2]),
 			pos[2] + t * dir[2],
 			pos[3]
 		];
