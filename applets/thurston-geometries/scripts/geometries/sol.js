@@ -123,19 +123,19 @@ class SolGeometry extends BaseGeometry
 
 	${getBinarySearchGlslChunk({
 		comparisonVec: "vec3(0.0, 0.0, 1.0)",
-		dotProductThreshhold: "0.50025",
+		dotProductThreshhold: "0.501",
 		searchIterations: "10"
 	})}
 
 	${getBinarySearchGlslChunk({
 		comparisonVec: "vec3(1.0, 0.0, 0.0)",
-		dotProductThreshhold: "0.50025",
+		dotProductThreshhold: "0.501",
 		searchIterations: "10"
 	})}
 
 	${getBinarySearchGlslChunk({
 		comparisonVec: "vec3(0.0, 1.0, 0.0)",
-		dotProductThreshhold: "0.50025",
+		dotProductThreshhold: "0.501",
 		searchIterations: "10"
 	})}
 
