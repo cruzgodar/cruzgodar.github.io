@@ -1028,11 +1028,11 @@ export class SolRooms extends SolGeometry
 	ambientOcclusionDenominator = "100.0";
 	maxT = "15.0";
 
-	cameraPos = [0, 0, 0, 1];
+	cameraPos = [0.14282, 0.17857, -0.11161, 1];
 	normalVec = [0, 0, 0, 1];
 	upVec = [0, 0, 1, 0];
-	rightVec = [0, 1, 0, 0];
-	forwardVec = [1, 0, 0, 0];
+	rightVec = [-0.8415, 0.54025, 0, 0];
+	forwardVec = [0.54025, 0.8415, 0, 0];
 
 	movingSpeed = .5;
 
@@ -1060,10 +1060,10 @@ export class SolRooms extends SolGeometry
 		const wallThicknessSliderValue = $("#wall-thickness-slider-value");
 
 		wallThicknessSlider.min = -0.18;
-		wallThicknessSlider.max = 0.42;
-		wallThicknessSlider.value = 0.42;
-		wallThicknessSliderValue.textContent = 0.42;
-		this.sliderValues.wallThickness = 0.42;
+		wallThicknessSlider.max = 0.5;
+		wallThicknessSlider.value = 0.3;
+		wallThicknessSliderValue.textContent = 0.3;
+		this.sliderValues.wallThickness = 0.3;
 	}
 }
 
@@ -1097,7 +1097,7 @@ export class SolSpheres extends SolGeometry
 		vec4 lightDirection1 = normalize(vec4(1.5, 1.5, 1.5, 1.0) - pos);
 		float dotProduct1 = dot(surfaceNormal, lightDirection1);
 
-		float lightIntensity = (.2 + .8 * max(dotProduct1, -dotProduct1)) * 1.4;
+		float lightIntensity = (.2 + .8 * max(dotProduct1, -dotProduct1)) * 1.5;
 	`;
 
 	maxMarches = "50";
