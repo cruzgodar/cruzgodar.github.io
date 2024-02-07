@@ -790,12 +790,12 @@ class SolGeometry extends BaseGeometry
 				return getTransformationMatrix(startPos) * getUpdatedDirectionVecNumerically(rayDirectionVec, t);
 			}
 
-			if (abs(rayDirectionVec.x) < flowNearPlaneThreshhold * 30.0)
+			if (abs(rayDirectionVec.x) < flowNearPlaneThreshhold * 25.0)
 			{
 				return getTransformationMatrix(startPos) * getUpdatedDirectionVecNearX0(rayDirectionVec, t);
 			}
 		
-			if (abs(rayDirectionVec.y) < flowNearPlaneThreshhold * 6.0)
+			if (abs(rayDirectionVec.y) < flowNearPlaneThreshhold * 5.0)
 			{
 				return getTransformationMatrix(startPos) * getUpdatedDirectionVecNearY0(rayDirectionVec, t);
 			}
