@@ -1,0 +1,9 @@
+#canvas-landscape-middle
+{
+	position: relative;
+}
+
+#canvas-landscape-middle > *
+{
+	position: absolute;
+}
