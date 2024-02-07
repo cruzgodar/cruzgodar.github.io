@@ -111,7 +111,11 @@ export class BaseGeometry
 	rightVec;
 	forwardVec;
 
+	// When true, refuses rolling and panning, and rotates the camera to always look at the origin.
 	lockedOnOrigin = false;
+
+	// When true, passes an upVec of 0, effectively making the render 1D.
+	render1D = false;
 
 	movingSpeed = 1;
 

@@ -3,7 +3,7 @@ import { E3Axes, E3Rooms, E3Spheres } from "./geometries/e3.js";
 import { H2xEAxes, H2xERooms } from "./geometries/h2xe.js";
 import { H3Axes, H3Rooms, H3Spheres } from "./geometries/h3.js";
 import { NilAxes, NilRooms, NilSpheres } from "./geometries/nil.js";
-import { E3S2Demo } from "./geometries/s2.js";
+import { S2xES2Demo } from "./geometries/s2.js";
 import { S2xEAxes, S2xERooms, S2xESpheres } from "./geometries/s2xe.js";
 import { S3Axes, S3HopfFibration, S3Rooms, S3Spheres } from "./geometries/s3.js";
 import { SL2RAxes, SL2RRooms } from "./geometries/sl2r.js";
@@ -19,7 +19,7 @@ export function load()
 
 	const scenes =
 	{
-		"s2-dots": E3S2Demo,
+		"s2-dots": S2xES2Demo,
 
 		"e3-axes": E3Axes,
 		"e3-rooms": E3Rooms,

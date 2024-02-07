@@ -525,34 +525,7 @@ export class ThurstonGeometry extends Applet
 
 		this.handleRotating();
 
-		if (this.rollingAmount && this.currentlyControllable)
-		{
-			this.needNewFrame = true;
-
-			if (this.wilson.worldCenterY)
-			{
-				this.wilson.worldCenterY = 0;
-				this.geometryData.upVec = [...this.rotatedUpVec];
-				this.geometryData.forwardVec = [...this.rotatedForwardVec];
-			}
-			
-			const angle = timeElapsed * this.rollingAmount * .0015;
-
-			[this.geometryData.rightVec, this.geometryData.upVec] = ThurstonGeometry.rotateVectors(
-				this.geometryData.rightVec,
-				this.geometryData.upVec,
-				angle
-			);
-
-			this.rotatedUpVec = [...this.geometryData.upVec];
-
-			this.rollingAmount *= ThurstonGeometry.rollingFriction ** (timeElapsed / 6.944);
-
-			if (Math.abs(this.rollingAmount) < ThurstonGeometry.rollingStopThreshhold)
-			{
-				this.rollingAmount = 0;
-			}
-		}
+		this.handleRolling(timeElapsed);
 
 
 
@@ -568,7 +541,7 @@ export class ThurstonGeometry extends Applet
 
 		this.wilson.gl.uniform4fv(
 			this.wilson.uniforms["upVec"],
-			this.rotatedUpVec
+			this.geometryData.render1D ? [0, 0, 0, 0] : this.rotatedUpVec
 		);
 		
 		this.wilson.gl.uniform4fv(
@@ -704,6 +677,11 @@ export class ThurstonGeometry extends Applet
 			);
 		}
 
+		else if (this.geometryData.render1D)
+		{
+			this.wilson.worldCenterY = 0;
+		}
+
 		if (this.wilson.worldCenterX !== 0 || this.wilson.worldCenterY !== this.lastWorldCenterY)
 		{
 			this.needNewFrame = true;
@@ -749,7 +727,43 @@ export class ThurstonGeometry extends Applet
 		}
 	}
 
+	handleRolling(timeElapsed)
+	{
+		if (
+			!this.rollingAmount
+			|| !this.currentlyControllable
+			|| this.geometryData.lockedOnOrigin
+			|| this.geometryData.render1D
+		) {
+			return;
+		}
+	
+		this.needNewFrame = true;
 
+		if (this.wilson.worldCenterY)
+		{
+			this.wilson.worldCenterY = 0;
+			this.geometryData.upVec = [...this.rotatedUpVec];
+			this.geometryData.forwardVec = [...this.rotatedForwardVec];
+		}
+		
+		const angle = timeElapsed * this.rollingAmount * .0015;
+
+		[this.geometryData.rightVec, this.geometryData.upVec] = ThurstonGeometry.rotateVectors(
+			this.geometryData.rightVec,
+			this.geometryData.upVec,
+			angle
+		);
+
+		this.rotatedUpVec = [...this.geometryData.upVec];
+
+		this.rollingAmount *= ThurstonGeometry.rollingFriction ** (timeElapsed / 6.944);
+
+		if (Math.abs(this.rollingAmount) < ThurstonGeometry.rollingStopThreshhold)
+		{
+			this.rollingAmount = 0;
+		}
+	}
 
 	handleKeydownEvent(e)
 	{

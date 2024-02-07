@@ -98,11 +98,11 @@ export class E3S2Demo extends E3Geometry
 export class S2xES2Demo extends S2xEGeometry
 {
 	static distances = /* glsl */`
-		float distance1 = length(vec2(acos(pos.x), pos.w)) - .25;
-		float distance2 = length(vec2(acos(-pos.x), pos.w)) - .25;
-		float distance3 = length(vec2(acos(pos.y), pos.w)) - .25;
-		float distance4 = length(vec2(acos(-pos.y), pos.w)) - .25;
-		float distance5 = length(vec2(acos(pos.z), pos.w)) - .25;
+		float distance1 = length(vec2(acos(pos.x), pos.w)) - .5;
+		float distance2 = length(vec2(acos(-pos.x), pos.w)) - .5;
+		float distance3 = length(vec2(acos(pos.y), pos.w)) - .5;
+		float distance4 = length(vec2(acos(-pos.y), pos.w)) - .5;
+		float distance5 = length(vec2(acos(-pos.z), pos.w)) - .5;
 
 		float minDistance = ${getMinGlslString("distance", 5)};
 	`;
@@ -140,15 +140,17 @@ export class S2xES2Demo extends S2xEGeometry
 	`;
 
 	lightGlsl = /* glsl */`
-		vec4 lightDirection1 = normalize(vec4(2.0, 2.0, 2.0, -2.0) - pos);
+		vec4 lightDirection1 = normalize(vec4(0.0, 0.0, 1.0, 0.0) - pos);
 		float dotProduct1 = abs(dot(surfaceNormal, lightDirection1));
 
-		float lightIntensity = 1.5 * dotProduct1;
+		float lightIntensity = 1.25 * abs(dotProduct1);
 	`;
 
-	cameraPos = [0, 0, -1, 0];
-	normalVec = [0, 0, -1, 0];
+	render1D = true;
+
+	cameraPos = [0, 0, 1, 0];
+	normalVec = [0, 0, 1, 0];
 	upVec = [0, 0, 0, 1];
-	rightVec = [1, 0, 0, 0];
-	forwardVec = [0, -1, 0, 0];
+	rightVec = [0, 1, 0, 0];
+	forwardVec = [1, 0, 0, 0];
 }
