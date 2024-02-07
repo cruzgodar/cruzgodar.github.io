@@ -591,7 +591,7 @@ export class ThurstonGeometry extends Applet
 					setTimeout(() =>
 					{
 						window.requestAnimationFrame(this.drawFrame.bind(this));
-					}, 250);
+					}, frame % 100 === 0 ? 5000 : 500);
 				}
 			}
 		} while (frame < startFrame);
