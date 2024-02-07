@@ -1,10 +1,9 @@
 import { ThurstonGeometry } from "../class.js";
-import { BaseGeometry, getMatrixGlsl } from "./base.js";
+import { BaseGeometry, getMatrixGlsl, getMinGlslString } from "./base.js";
 import { $ } from "/scripts/src/main.js";
 
 const numericalStepDistance = 0.0002;
 const flowNumericallyThreshhold = 0.002;
-const flowNearPlaneThreshhold = 0.0001;
 
 const maxNumericalSteps = Math.ceil(flowNumericallyThreshhold / numericalStepDistance);
 
@@ -124,19 +123,19 @@ class SolGeometry extends BaseGeometry
 
 	${getBinarySearchGlslChunk({
 		comparisonVec: "vec3(0.0, 0.0, 1.0)",
-		dotProductThreshhold: "0.501",
+		dotProductThreshhold: "0.50025",
 		searchIterations: "10"
 	})}
 
 	${getBinarySearchGlslChunk({
 		comparisonVec: "vec3(1.0, 0.0, 0.0)",
-		dotProductThreshhold: "0.501",
+		dotProductThreshhold: "0.50025",
 		searchIterations: "10"
 	})}
 
 	${getBinarySearchGlslChunk({
 		comparisonVec: "vec3(0.0, 1.0, 0.0)",
-		dotProductThreshhold: "0.501",
+		dotProductThreshhold: "0.50025",
 		searchIterations: "10"
 	})}
 
@@ -753,7 +752,6 @@ class SolGeometry extends BaseGeometry
 		}
 
 		const float flowNumericallyThreshhold = ${flowNumericallyThreshhold};
-		const float flowNearPlaneThreshhold = ${flowNearPlaneThreshhold};
 
 		vec4 getUpdatedPos(vec4 startPos, vec4 rayDirectionVec, float t)
 		{
@@ -764,12 +762,12 @@ class SolGeometry extends BaseGeometry
 				pos = getUpdatedPosNumerically(rayDirectionVec, t);
 			}
 
-			else if (abs(rayDirectionVec.x) < flowNearPlaneThreshhold * 2.0)
+			else if (abs(rayDirectionVec.x) < 0.0002)
 			{
 				pos = getUpdatedPosNearX0(rayDirectionVec, t);
 			}
 		
-			else if (abs(rayDirectionVec.y) < flowNearPlaneThreshhold * 2.0)
+			else if (abs(rayDirectionVec.y) < 0.0002)
 			{
 				pos = getUpdatedPosNearY0(rayDirectionVec, t);
 			}
@@ -790,12 +788,12 @@ class SolGeometry extends BaseGeometry
 				return getTransformationMatrix(startPos) * getUpdatedDirectionVecNumerically(rayDirectionVec, t);
 			}
 
-			if (abs(rayDirectionVec.x) < flowNearPlaneThreshhold * 25.0)
+			if (abs(rayDirectionVec.x) < 0.0025)
 			{
 				return getTransformationMatrix(startPos) * getUpdatedDirectionVecNearX0(rayDirectionVec, t);
 			}
 		
-			if (abs(rayDirectionVec.y) < flowNearPlaneThreshhold * 5.0)
+			if (abs(rayDirectionVec.y) < 0.0005)
 			{
 				return getTransformationMatrix(startPos) * getUpdatedDirectionVecNearY0(rayDirectionVec, t);
 			}
@@ -991,6 +989,83 @@ class SolGeometry extends BaseGeometry
 	}
 }
 
+export class SolAxes extends SolGeometry
+{
+	geodesicGlsl = /* glsl */`
+		vec4 pos = getUpdatedPos(startPos, rayDirectionVec, t);
+	`;
+
+	teleportCamera() {}
+
+	static distances = /* glsl */`
+		float distance1 = length(pos.yz) - .025;
+		float distance2 = length(pos.xz) - .025;
+		float distance3 = length(pos.xy) - .025;
+
+		float minDistance = ${getMinGlslString("distance", 3)};
+	`;
+
+	distanceEstimatorGlsl = /* glsl */`
+		${SolAxes.distances}
+
+		return minDistance;
+	`;
+
+	getColorGlsl = /* glsl */`
+		${SolAxes.distances}
+
+		if (minDistance == distance1)
+		{
+			return vec3(
+				1.0,
+				.5 + .25 * (.5 * (sin(10.0 * pos.x) + 1.0)),
+				.5 + .25 * (.5 * (cos(10.0 * pos.x) + 1.0))
+			);
+		}
+
+		if (minDistance == distance2)
+		{
+			return vec3(
+				.5 + .25 * (.5 * (sin(10.0 * pos.y) + 1.0)),
+				1.0,
+				.5 + .25 * (.5 * (cos(10.0 * pos.y) + 1.0))
+			);
+		}
+
+		return vec3(
+			.5 + .25 * (.5 * (sin(10.0 * pos.z) + 1.0)),
+			.5 + .25 * (.5 * (cos(10.0 * pos.z) + 1.0)),
+			1.0
+		);
+	`;
+
+	lightGlsl = /* glsl */`
+		surfaceNormal.w = 0.0;
+
+		vec4 lightDirection1 = normalize(vec4(1.5, 1.5, 1.5, 1.0) - pos);
+		float dotProduct1 = dot(surfaceNormal, lightDirection1);
+
+		float lightIntensity = (.2 + .8 * max(dotProduct1, -dotProduct1)) * 1.5;
+	`;
+
+	stepFactor = ".5";
+	maxMarches = "100";
+	ambientOcclusionDenominator = "75.0";
+	maxT = "50.0";
+
+	cameraPos = [-0.29261, 0.20276, 0.14653, 1];
+	normalVec = [0, 0, 0, 1];
+	upVec = [0, 0, 1, 0];
+	rightVec = [0.57070, 0.82115, 0, 0];
+	forwardVec = [0.82115, -0.57070, 0, 0];
+
+	movingSpeed = .5;
+
+	uniformGlsl = /* glsl */`
+		uniform vec3 baseColor;
+	`;
+}
+
 export class SolRooms extends SolGeometry
 {
 	static distances = /* glsl */`
@@ -1060,7 +1135,7 @@ export class SolRooms extends SolGeometry
 		const wallThicknessSliderValue = $("#wall-thickness-slider-value");
 
 		wallThicknessSlider.min = -0.18;
-		wallThicknessSlider.max = 0.5;
+		wallThicknessSlider.max = 0.6;
 		wallThicknessSlider.value = 0.3;
 		wallThicknessSliderValue.textContent = 0.3;
 		this.sliderValues.wallThickness = 0.3;

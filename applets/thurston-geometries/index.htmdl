@@ -33,13 +33,14 @@ Something will go here eventually!
 	h2xe-axes "$\mathbb{H}^2 \times \mathbb{E}$: Axes"
 	h2xe-rooms "$\mathbb{H}^2 \times \mathbb{E}$: Rooms"
 
+	sl2r-axes "$\widetilde{\operatorname{SL}}(2, \mathbb{R})$: Axes"
+	sl2r-rooms "$\widetilde{\operatorname{SL}}(2, \mathbb{R})$: Rooms"
+
 	nil-axes "Nil: Axes"
 	nil-rooms "Nil: Rooms"
 	nil-spheres "Nil: Spheres"
 
-	sl2r-axes "$\widetilde{\operatorname{SL}}(2, \mathbb{R})$: Axes"
-	sl2r-rooms "$\widetilde{\operatorname{SL}}(2, \mathbb{R})$: Rooms"
-
+	sol-axes "Sol: Axes"
 	sol-rooms "Sol: Rooms"
 	sol-spheres "Sol: Spheres"
 
