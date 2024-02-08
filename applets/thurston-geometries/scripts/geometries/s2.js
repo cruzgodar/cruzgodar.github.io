@@ -12,12 +12,12 @@ function getSphereBandGlsl(index)
 
 			if (dot(directionToCamera, rayDir${index}.xyz) < 0.0)
 			{
-				effectiveDistance += pi;
+				effectiveDistance = 2.0 * pi - effectiveDistance;
 			}
 
-			if (effectiveDistance < rayLength${index})
+			if (effectiveDistance <rayLength${index})
 			{
-				return vec3(0);
+				return rayColor${index};
 			}
 		}
 	`;
@@ -27,6 +27,16 @@ function getSphereBandGlsl(index)
 // polka dot circles, and the light rays.
 export class E3S2Demo extends E3Geometry
 {
+	numRays = 15;
+
+	rayDirs = Array(this.numRays).fill([0, 0, 0, 0]);
+
+	testVecs = Array(this.numRays).fill([0, 0, 0, 0]);
+
+	rayLengths = Array(this.numRays).fill(0);
+
+	rayColors = Array(this.numRays).fill([0, 0, 0]);
+
 	static distances = /* glsl */`
 		// The sphere itself.
 		float distance1 = length(pos.xyz) - 1.0;
@@ -48,7 +58,7 @@ export class E3S2Demo extends E3Geometry
 
 		if (minDistance == distance2)
 		{
-			return vec3(0.2);
+			return vec3(1.5);
 		}
 
 		pos.xyz /= 1.001;
@@ -81,15 +91,9 @@ export class E3S2Demo extends E3Geometry
 		}
 
 		float distanceToCamera = acos(dot(pos.xyz, cameraDotPos.xyz));
-		vec3 directionToCamera = (pos.xyz - cos(distanceToCamera) * cameraDotPos.xyz) / sin(distanceToCamera);
+		vec3 directionToCamera = normalize((pos.xyz - cos(distanceToCamera) * cameraDotPos.xyz) / sin(distanceToCamera));
 
-		${getSphereBandGlsl(1)}
-		${getSphereBandGlsl(2)}
-		${getSphereBandGlsl(3)}
-		${getSphereBandGlsl(4)}
-		${getSphereBandGlsl(5)}
-		${getSphereBandGlsl(6)}
-		${getSphereBandGlsl(7)}
+		${this.rayLengths.map((_, index) => getSphereBandGlsl(index + 1)).join("")}
 
 
 
@@ -116,85 +120,23 @@ export class E3S2Demo extends E3Geometry
 	fov = Math.tan(60 / 2 * Math.PI / 180);
 
 	cameraDotPos = [0, 0, 1, 0];
-	
-	numRays = 7;
-
-	rayDirs = [
-		[0, 0, 0, 0],
-		[0, 0, 0, 0],
-		[0, 0, 0, 0],
-		[0, 0, 0, 0],
-		[0, 0, 0, 0],
-		[0, 0, 0, 0],
-		[0, 0, 0, 0],
-	];
-
-	testVecs = [
-		[0, 0, 0, 0],
-		[0, 0, 0, 0],
-		[0, 0, 0, 0],
-		[0, 0, 0, 0],
-		[0, 0, 0, 0],
-		[0, 0, 0, 0],
-		[0, 0, 0, 0],
-	];
-
-	rayLengths = [1, 1, 1, 1, 1, 1, 1];
 
 	uniformGlsl = /* glsl */`
 		uniform vec4 cameraDotPos;
 
-		uniform vec4 rayDir1;
-		uniform vec4 rayDir2;
-		uniform vec4 rayDir3;
-		uniform vec4 rayDir4;
-		uniform vec4 rayDir5;
-		uniform vec4 rayDir6;
-		uniform vec4 rayDir7;
-
-		uniform vec4 testVec1;
-		uniform vec4 testVec2;
-		uniform vec4 testVec3;
-		uniform vec4 testVec4;
-		uniform vec4 testVec5;
-		uniform vec4 testVec6;
-		uniform vec4 testVec7;
-
-		uniform float rayLength1;
-		uniform float rayLength2;
-		uniform float rayLength3;
-		uniform float rayLength4;
-		uniform float rayLength5;
-		uniform float rayLength6;
-		uniform float rayLength7;
+		${this.rayLengths.map((_, index) => "uniform vec4 rayDir" + (index + 1)).join(";")};
+		${this.rayLengths.map((_, index) => "uniform vec4 testVec" + (index + 1)).join(";")};
+		${this.rayLengths.map((_, index) => "uniform float rayLength" + (index + 1)).join(";")};
+		${this.rayLengths.map((_, index) => "uniform vec3 rayColor" + (index + 1)).join(";")};
 	`;
 
 	uniformNames = [
 		"cameraDotPos",
 
-		"rayDir1",
-		"rayDir2",
-		"rayDir3",
-		"rayDir4",
-		"rayDir5",
-		"rayDir6",
-		"rayDir7",
-
-		"testVec1",
-		"testVec2",
-		"testVec3",
-		"testVec4",
-		"testVec5",
-		"testVec6",
-		"testVec7",
-
-		"rayLength1",
-		"rayLength2",
-		"rayLength3",
-		"rayLength4",
-		"rayLength5",
-		"rayLength6",
-		"rayLength7"
+		...(this.rayLengths.map((_, index) => "rayDir" + (index + 1))),
+		...(this.rayLengths.map((_, index) => "testVec" + (index + 1))),
+		...(this.rayLengths.map((_, index) => "rayLength" + (index + 1))),
+		...(this.rayLengths.map((_, index) => "rayColor" + (index + 1))),
 	];
 
 	updateUniforms(gl, uniformList)
@@ -206,6 +148,7 @@ export class E3S2Demo extends E3Geometry
 			gl.uniform4fv(uniformList[`rayDir${i + 1}`], this.rayDirs[i]);
 			gl.uniform4fv(uniformList[`testVec${i + 1}`], this.testVecs[i]);
 			gl.uniform1f(uniformList[`rayLength${i + 1}`], this.rayLengths[i]);
+			gl.uniform3fv(uniformList[`rayColor${i + 1}`], this.rayColors[i]);
 		}
 	}
 }
@@ -213,11 +156,11 @@ export class E3S2Demo extends E3Geometry
 export class S2xES2Demo extends S2xEGeometry
 {
 	static distances = /* glsl */`
-		float distance1 = length(vec2(acos(pos.x), pos.w)) - .5;
-		float distance2 = length(vec2(acos(-pos.x), pos.w)) - .5;
-		float distance3 = length(vec2(acos(pos.y), pos.w)) - .5;
-		float distance4 = length(vec2(acos(-pos.y), pos.w)) - .5;
-		float distance5 = length(vec2(acos(-pos.z), pos.w)) - .5;
+		float distance1 = acos(pos.x) - .5;
+		float distance2 = acos(-pos.x) - .5;
+		float distance3 = acos(pos.y) - .5;
+		float distance4 = acos(-pos.y) - .5;
+		float distance5 = acos(-pos.z) - .5;
 
 		float minDistance = ${getMinGlslString("distance", 5)};
 	`;
@@ -270,4 +213,102 @@ export class S2xES2Demo extends S2xEGeometry
 	forwardVec = [1, 0, 0, 0];
 
 	aspectRatio = 10;
+
+	distanceEstimator(pos)
+	{
+		const distance1 = Math.acos(pos[0]) - .49;
+		const distance2 = Math.acos(-pos[0]) - .49;
+		const distance3 = Math.acos(pos[1]) - .49;
+		const distance4 = Math.acos(-pos[1]) - .49;
+		const distance5 = Math.acos(-pos[2]) - .49;
+
+		const minDistance = Math.min(
+			Math.min(
+				Math.min(distance1, distance2),
+				Math.min(distance3, distance4)
+			),
+			distance5
+		);
+
+		return minDistance;
+	}
+
+	getColor(pos)
+	{
+		const distance1 = Math.acos(pos[0]) - .5;
+		const distance2 = Math.acos(-pos[0]) - .5;
+		const distance3 = Math.acos(pos[1]) - .5;
+		const distance4 = Math.acos(-pos[1]) - .5;
+		const distance5 = Math.acos(-pos[2]) - .5;
+
+		const minDistance = Math.min(
+			Math.min(
+				Math.min(distance1, distance2),
+				Math.min(distance3, distance4)
+			),
+			distance5
+		);
+
+		if (minDistance > 0.00001)
+		{
+			return [0, 0, 0];
+		}
+
+		if (minDistance === distance1)
+		{
+			return [1, 0, 0];
+		}
+
+		if (minDistance === distance2)
+		{
+			return [0, 0, 1];
+		}
+
+		if (minDistance === distance3)
+		{
+			return [0, 1, 0];
+		}
+
+		if (minDistance === distance4)
+		{
+			return [1, 1, 0];
+		}
+
+		return [0.5, 0.5, 0.5];
+	}
+
+	getRayData(rayDirs)
+	{
+		const rayLengths = new Array(rayDirs.length);
+		const rayColors = new Array(rayDirs.length);
+
+		for (let i = 0; i < rayDirs.length; i++)
+		{
+			let t = 0;
+
+			const startPos = [...this.cameraPos];
+			let pos = [...startPos];
+
+			let distance = 0;
+
+			do
+			{
+				distance = this.distanceEstimator(pos);
+
+				t += distance * 0.99;
+
+				pos = [
+					Math.cos(t) * startPos[0] + Math.sin(t) * rayDirs[i][0],
+					Math.cos(t) * startPos[1] + Math.sin(t) * rayDirs[i][1],
+					Math.cos(t) * startPos[2] + Math.sin(t) * rayDirs[i][2],
+					0
+				];
+			} while (distance > 0.00001 && t < 2 * Math.PI);
+
+			rayLengths[i] = t;
+			rayColors[i] = this.getColor(pos);
+		}
+
+		return [rayLengths, rayColors];
+	}
 }

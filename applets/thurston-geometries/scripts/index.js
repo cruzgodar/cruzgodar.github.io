@@ -20,8 +20,6 @@ export function load()
 	const demoCanvas = $("#demo-canvas");
 	const demoCanvasContainer = $("#demo-canvas-container");
 
-	const outputCanvasContainer = $("#output-canvas-container");
-
 	let demoApplet;
 
 	const scenes =
@@ -64,7 +62,7 @@ export function load()
 
 	if (!window.DEBUG)
 	{
-		$$("[data-option-name$=axes], [data-option-name=s2-dots]")
+		$$("[data-option-name$=axes]")
 			.forEach(element => element.style.display = "none");
 	}
 
@@ -100,6 +98,7 @@ export function load()
 		elementsToHide.forEach(element => element.style.display = "none");
 
 		demoCanvasContainer.style.display = "none";
+
 		if (demoApplet)
 		{
 			demoApplet.animationPaused = true;
@@ -173,11 +172,17 @@ export function load()
 
 		applet.run(geometryDataE3);
 
+		applet.restrictCamera = false;
+		applet.wilson.worldCenterY = Math.PI / 4.5;
+		applet.wilson.worldCenterX = 3 * Math.PI / 4;
+
 		if (demoApplet === undefined)
 		{
 			demoApplet = new ThurstonGeometry({
 				canvas: demoCanvas,
 			});
+
+			$$(".wilson-enter-fullscreen-button")[1].remove();
 		}
 
 		else
@@ -187,20 +192,6 @@ export function load()
 			demoApplet.drawFrame();
 		}
 
-		demoApplet.currentlyControllable = false;
-
-		outputCanvasContainer.addEventListener("pointerdown", () =>
-		{
-			applet.currentlyControllable = true;
-			demoApplet.currentlyControllable = false;
-		});
-
-		demoCanvasContainer.addEventListener("pointerdown", () =>
-		{
-			applet.currentlyControllable = false;
-			demoApplet.currentlyControllable = true;
-		});
-
 		const geometryDataS2xE = new S2xES2Demo();
 
 		geometryDataS2xE.drawFrameCallback = () =>
@@ -209,20 +200,30 @@ export function load()
 
 			for (let i = 0; i < applet.geometryData.numRays; i++)
 			{
+				const angle = (i - Math.floor(applet.geometryData.numRays / 2))
+					/ applet.geometryData.numRays * 1.87;
+
 				[
 					applet.geometryData.rayDirs[i],
 					applet.geometryData.testVecs[i]
 				] = ThurstonGeometry.rotateVectors(
 					demoApplet.geometryData.forwardVec,
 					demoApplet.geometryData.rightVec,
-					(i - Math.floor(applet.geometryData.numRays / 2)) * 0.28
+					angle
 				);
+
+				[
+					applet.geometryData.rayLengths,
+					applet.geometryData.rayColors
+				] = demoApplet.geometryData.getRayData(applet.geometryData.rayDirs);
 			}
 
 			applet.needNewFrame = true;
 		};
 
 		demoApplet.run(geometryDataS2xE);
+
+		demoApplet.wilson.worldCenterX = Math.PI / 4;
 
 		demoCanvasContainer.style.display = "";
 		
@@ -232,8 +233,6 @@ export function load()
 			"important"
 		);
 	}
-
-	
 
 	showPage();
 }

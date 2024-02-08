@@ -44,8 +44,6 @@ export class ThurstonGeometry extends Applet
 
 	movingSubsteps = 1;
 
-	currentlyControllable = true;
-
 	needNewFrame = true;
 
 
@@ -463,7 +461,7 @@ export class ThurstonGeometry extends Applet
 			|| this.movingAmount[1] !== 0
 			|| this.movingAmount[2] !== 0;
 
-		if (totalMovingAmount && this.currentlyControllable)
+		if (totalMovingAmount)
 		{
 			this.needNewFrame = true;
 
@@ -656,13 +654,7 @@ export class ThurstonGeometry extends Applet
 	{
 		const sign = this.geometryData.lockedOnOrigin ? -1 : 1;
 
-		if (!this.currentlyControllable)
-		{
-			this.wilson.worldCenterX = 0;
-			this.wilson.worldCenterY = 0;
-		}
-
-		else if (this.geometryData.render1D)
+		if (this.geometryData.render1D)
 		{
 			this.wilson.worldCenterY = 0;
 		}
@@ -726,8 +718,6 @@ export class ThurstonGeometry extends Applet
 	{
 		if (
 			!this.rollingAmount
-			|| !this.currentlyControllable
-			|| this.geometryData.lockedOnOrigin
 			|| this.geometryData.render1D
 		) {
 			return;
