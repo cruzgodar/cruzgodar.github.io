@@ -63,7 +63,7 @@ function getBinarySearchGlslChunk({
 
 			for (int i = 0; i < ${searchIterations}; i++)
 			{
-				pos = getUpdatedPos(startPos, rayDirectionVec, oldT + lastTIncrease * currentSearchPosition, g_mu, g_k, g_kPrime, g_m, g_K, g_E, g_L, actualAGMSteps);
+				pos = getUpdatedPos(startPos, rayDirectionVec, oldT + lastTIncrease * currentSearchPosition, g_mu, g_k, g_kPrime, g_m, g_K, g_E, g_L, actualAGMSteps, AGMData);
 
 				mElement = liftToM(pos);
 
@@ -86,7 +86,7 @@ function getBinarySearchGlslChunk({
 
 			// totalT -= lastTIncrease * (1.0 - currentSearchPosition);
 
-			pos = getUpdatedPos(startPos, rayDirectionVec, oldT + lastTIncrease * currentSearchPosition, g_mu, g_k, g_kPrime, g_m, g_K, g_E, g_L, actualAGMSteps);
+			pos = getUpdatedPos(startPos, rayDirectionVec, oldT + lastTIncrease * currentSearchPosition, g_mu, g_k, g_kPrime, g_m, g_K, g_E, g_L, actualAGMSteps, AGMData);
 
 			mElement = liftToM(pos);
 		}
@@ -116,7 +116,7 @@ const teleportationMatrices = [
 class SolGeometry extends BaseGeometry
 {
 	geodesicGlsl = /* glsl */`
-		vec4 pos = getUpdatedPos(startPos, rayDirectionVec, t, g_mu, g_k, g_kPrime, g_m, g_K, g_E, g_L, actualAGMSteps);
+		vec4 pos = getUpdatedPos(startPos, rayDirectionVec, t, g_mu, g_k, g_kPrime, g_m, g_K, g_E, g_L, actualAGMSteps, AGMData);
 
 		vec3 mElement = liftToM(pos);
 		float dotProduct;
@@ -139,7 +139,7 @@ class SolGeometry extends BaseGeometry
 		searchIterations: "10"
 	})}
 
-		globalColor += teleportPos(pos, startPos, rayDirectionVec, t, totalT, g_mu, g_k, g_kPrime, g_m, g_K, g_E, g_L, actualAGMSteps);
+		globalColor += teleportPos(pos, startPos, rayDirectionVec, t, totalT, g_mu, g_k, g_kPrime, g_m, g_K, g_E, g_L, actualAGMSteps, AGMData);
 	`;
 
 	fogGlsl = /* glsl */`
@@ -158,7 +158,11 @@ class SolGeometry extends BaseGeometry
 		// We can terminate the algorithm early, and this is the actual length of the data vector.
 		int actualAGMSteps;
 
-		setGlobals(rayDirectionVec, g_mu, g_k, g_kPrime, g_m, g_K, g_E, g_L, actualAGMSteps);
+		// The results of the AGM algorithm at each step. Each entry is of the form
+		// (arithmetic mean, geometric mean, error).
+		vec3 AGMData[maxAGMSteps];
+
+		setGlobals(rayDirectionVec, g_mu, g_k, g_kPrime, g_m, g_K, g_E, g_L, actualAGMSteps, AGMData);
 	`;
 
 	functionGlsl = /* glsl */`
@@ -236,14 +240,10 @@ class SolGeometry extends BaseGeometry
 
 		const float minAGMError = 0.00001;
 
-		// The results of the AGM algorithm at each step. Each entry is of the form
-		// (arithmetic mean, geometric mean, error).
-		vec3 AGMData[maxAGMSteps];
-
 		// The sequence of arithmetic-geometric means converges to an elliptic integral,
 		// and that's exactly what we need for some globals!
 		// See: https://en.wikipedia.org/wiki/Elliptic_integral#Computation
-		void runAGMAlgorithm(float g_k, float g_kPrime, out int actualAGMSteps, out vec3 lastAGMData)
+		void runAGMAlgorithm(float g_k, float g_kPrime, out int actualAGMSteps, out vec3 lastAGMData, out vec3 AGMData[maxAGMSteps])
 		{
 			// The starting values are 1 and kPrime. k starts as the initial error.
 			vec3 data = vec3(1.0, g_kPrime, g_k);
@@ -269,7 +269,7 @@ class SolGeometry extends BaseGeometry
 		}
 
 		// Called every time the direction chages (i.e. when we start marching and when we teleport)
-		void setGlobals(vec4 rayDirectionVec, out float g_mu, out float g_k, out float g_kPrime, out float g_m, out float g_K, out float g_E, out float g_L, out int actualAGMSteps)
+		void setGlobals(vec4 rayDirectionVec, out float g_mu, out float g_k, out float g_kPrime, out float g_m, out float g_K, out float g_E, out float g_L, out int actualAGMSteps, out vec3 AGMData[maxAGMSteps])
 		{
 			float absAB = abs(rayDirectionVec.x * rayDirectionVec.y);
 			float root1Minus2AbsAB = sqrt(1.0 - 2.0 * absAB);
@@ -284,7 +284,7 @@ class SolGeometry extends BaseGeometry
 			// constant index.
 			vec3 lastAGMData;
 
-			runAGMAlgorithm(g_k, g_kPrime, actualAGMSteps, lastAGMData);
+			runAGMAlgorithm(g_k, g_kPrime, actualAGMSteps, lastAGMData, AGMData);
 
 			// With that elliptic integral computed, we can compute K and E.
 			g_K = 0.5 * pi / lastAGMData.x;
@@ -588,7 +588,7 @@ class SolGeometry extends BaseGeometry
 		// This is about as far as the project has gotten from my area of understanding.
 		// It's sourced from the noneuclidean VR repo, like many other functions
 		// in this shader.
-		float computeJacobiZetaFunction(float tanPhi, float g_m, float g_K, float g_E, int actualAGMSteps)
+		float computeJacobiZetaFunction(float tanPhi, float g_m, float g_K, float g_E, int actualAGMSteps, vec3 AGMData[maxAGMSteps])
 		{
 			float t0 = abs(tanPhi);
 			
@@ -635,7 +635,7 @@ class SolGeometry extends BaseGeometry
 		}
 
 		// The full flow function, used in most cases.
-		vec4 getUpdatedPosExactly(vec4 rayDirectionVec, float t, float g_mu, float g_k, float g_kPrime, float g_m, float g_K, float g_E, float g_L, int actualAGMSteps)
+		vec4 getUpdatedPosExactly(vec4 rayDirectionVec, float t, float g_mu, float g_k, float g_kPrime, float g_m, float g_K, float g_E, float g_L, int actualAGMSteps, vec3 AGMData[maxAGMSteps])
 		{
 			// The convention used in the paper.
 			float a = rayDirectionVec.x;
@@ -667,7 +667,7 @@ class SolGeometry extends BaseGeometry
 
 			// Compute the Jacobi zeta function. This uses an addition formula
 			// that I haven't been able to find.
-			float zeta = computeJacobiZetaFunction(jef1.x / jef1.y, g_m, g_K, g_E, actualAGMSteps) - g_m * jef1.x * jef0.x * jef2.x;
+			float zeta = computeJacobiZetaFunction(jef1.x / jef1.y, g_m, g_K, g_E, actualAGMSteps, AGMData) - g_m * jef1.x * jef0.x * jef2.x;
 
 			// Now we can finally compute the formula for gamma from the paper.
 			return vec4(
@@ -753,7 +753,7 @@ class SolGeometry extends BaseGeometry
 
 		const float flowNumericallyThreshhold = ${flowNumericallyThreshhold};
 
-		vec4 getUpdatedPos(vec4 startPos, vec4 rayDirectionVec, float t, float g_mu, float g_k, float g_kPrime, float g_m, float g_K, float g_E, float g_L, int actualAGMSteps)
+		vec4 getUpdatedPos(vec4 startPos, vec4 rayDirectionVec, float t, float g_mu, float g_k, float g_kPrime, float g_m, float g_K, float g_E, float g_L, int actualAGMSteps, vec3 AGMData[maxAGMSteps])
 		{
 			vec4 pos;
 
@@ -774,7 +774,7 @@ class SolGeometry extends BaseGeometry
 			
 			else
 			{
-				pos = getUpdatedPosExactly(rayDirectionVec, t, g_mu, g_k, g_kPrime, g_m, g_K, g_E, g_L, actualAGMSteps);
+				pos = getUpdatedPosExactly(rayDirectionVec, t, g_mu, g_k, g_kPrime, g_m, g_K, g_E, g_L, actualAGMSteps, AGMData);
 			}
 
 			return getTransformationMatrix(startPos) * pos;
@@ -800,7 +800,7 @@ class SolGeometry extends BaseGeometry
 			return getTransformationMatrix(startPos) * getUpdatedDirectionVecExactly(rayDirectionVec, t, g_mu, g_k, g_kPrime, g_m, g_K);
 		}
 
-		vec3 teleportPos(inout vec4 pos, inout vec4 startPos, inout vec4 rayDirectionVec, inout float t, inout float totalT, inout float g_mu, inout float g_k, inout float g_kPrime, inout float g_m, inout float g_K, inout float g_E, inout float g_L, inout int actualAGMSteps)
+		vec3 teleportPos(inout vec4 pos, inout vec4 startPos, inout vec4 rayDirectionVec, inout float t, inout float totalT, inout float g_mu, inout float g_k, inout float g_kPrime, inout float g_m, inout float g_K, inout float g_E, inout float g_L, inout int actualAGMSteps, inout vec3 AGMData[maxAGMSteps])
 		{
 			vec3 color = vec3(0.0, 0.0, 0.0);
 
@@ -811,7 +811,7 @@ class SolGeometry extends BaseGeometry
 				pos = teleportationMatrixB * pos;
 
 				rayDirectionVec = getInverseTransformationMatrix(pos) * teleportationMatrixB * getUpdatedDirectionVec(startPos, rayDirectionVec, t, g_mu, g_k, g_kPrime, g_m, g_K);
-				setGlobals(rayDirectionVec, g_mu, g_k, g_kPrime, g_m, g_K, g_E, g_L, actualAGMSteps);
+				setGlobals(rayDirectionVec, g_mu, g_k, g_kPrime, g_m, g_K, g_E, g_L, actualAGMSteps, AGMData);
 
 				startPos = pos;
 				
@@ -828,7 +828,7 @@ class SolGeometry extends BaseGeometry
 				pos = teleportationMatrixBinv * pos;
 
 				rayDirectionVec = getInverseTransformationMatrix(pos) * teleportationMatrixBinv * getUpdatedDirectionVec(startPos, rayDirectionVec, t, g_mu, g_k, g_kPrime, g_m, g_K);
-				setGlobals(rayDirectionVec, g_mu, g_k, g_kPrime, g_m, g_K, g_E, g_L, actualAGMSteps);
+				setGlobals(rayDirectionVec, g_mu, g_k, g_kPrime, g_m, g_K, g_E, g_L, actualAGMSteps, AGMData);
 
 				startPos = pos;
 				
@@ -845,7 +845,7 @@ class SolGeometry extends BaseGeometry
 				pos = teleportationMatrixA1 * pos;
 
 				rayDirectionVec = getInverseTransformationMatrix(pos) * teleportationMatrixA1 * getUpdatedDirectionVec(startPos, rayDirectionVec, t, g_mu, g_k, g_kPrime, g_m, g_K);
-				setGlobals(rayDirectionVec, g_mu, g_k, g_kPrime, g_m, g_K, g_E, g_L, actualAGMSteps);
+				setGlobals(rayDirectionVec, g_mu, g_k, g_kPrime, g_m, g_K, g_E, g_L, actualAGMSteps, AGMData);
 
 				startPos = pos;
 				
@@ -862,7 +862,7 @@ class SolGeometry extends BaseGeometry
 				pos = teleportationMatrixA1inv * pos;
 
 				rayDirectionVec = getInverseTransformationMatrix(pos) * teleportationMatrixA1inv * getUpdatedDirectionVec(startPos, rayDirectionVec, t, g_mu, g_k, g_kPrime, g_m, g_K);
-				setGlobals(rayDirectionVec, g_mu, g_k, g_kPrime, g_m, g_K, g_E, g_L, actualAGMSteps);
+				setGlobals(rayDirectionVec, g_mu, g_k, g_kPrime, g_m, g_K, g_E, g_L, actualAGMSteps, AGMData);
 
 				startPos = pos;
 				
@@ -879,7 +879,7 @@ class SolGeometry extends BaseGeometry
 				pos = teleportationMatrixA2 * pos;
 
 				rayDirectionVec = getInverseTransformationMatrix(pos) * teleportationMatrixA2 * getUpdatedDirectionVec(startPos, rayDirectionVec, t, g_mu, g_k, g_kPrime, g_m, g_K);
-				setGlobals(rayDirectionVec, g_mu, g_k, g_kPrime, g_m, g_K, g_E, g_L, actualAGMSteps);
+				setGlobals(rayDirectionVec, g_mu, g_k, g_kPrime, g_m, g_K, g_E, g_L, actualAGMSteps, AGMData);
 
 				startPos = pos;
 				
@@ -894,7 +894,7 @@ class SolGeometry extends BaseGeometry
 				pos = teleportationMatrixA2inv * pos;
 
 				rayDirectionVec = getInverseTransformationMatrix(pos) * teleportationMatrixA2inv * getUpdatedDirectionVec(startPos, rayDirectionVec, t, g_mu, g_k, g_kPrime, g_m, g_K);
-				setGlobals(rayDirectionVec, g_mu, g_k, g_kPrime, g_m, g_K, g_E, g_L, actualAGMSteps);
+				setGlobals(rayDirectionVec, g_mu, g_k, g_kPrime, g_m, g_K, g_E, g_L, actualAGMSteps, AGMData);
 
 				startPos = pos;
 				
@@ -991,7 +991,7 @@ class SolGeometry extends BaseGeometry
 export class SolAxes extends SolGeometry
 {
 	geodesicGlsl = /* glsl */`
-		vec4 pos = getUpdatedPos(startPos, rayDirectionVec, t, g_mu, g_k, g_kPrime, g_m, g_K, g_E, g_L, actualAGMSteps);
+		vec4 pos = getUpdatedPos(startPos, rayDirectionVec, t, g_mu, g_k, g_kPrime, g_m, g_K, g_E, g_L, actualAGMSteps, AGMData);
 	`;
 
 	teleportCamera() {}
