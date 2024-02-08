@@ -240,14 +240,10 @@ class SolGeometry extends BaseGeometry
 		// (arithmetic mean, geometric mean, error).
 		vec3 AGMData[maxAGMSteps];
 
-		// Equal to AGMData[actualAGMSteps - 1], which is invalid GLSL since it's not a compile-time
-		// constant index.
-		vec3 lastAGMData;
-
 		// The sequence of arithmetic-geometric means converges to an elliptic integral,
 		// and that's exactly what we need for some globals!
 		// See: https://en.wikipedia.org/wiki/Elliptic_integral#Computation
-		void runAGMAlgorithm(float g_k, float g_kPrime, out int actualAGMSteps)
+		void runAGMAlgorithm(float g_k, float g_kPrime, out int actualAGMSteps, out vec3 lastAGMData)
 		{
 			// The starting values are 1 and kPrime. k starts as the initial error.
 			vec3 data = vec3(1.0, g_kPrime, g_k);
@@ -284,7 +280,11 @@ class SolGeometry extends BaseGeometry
 			g_kPrime = 2.0 * rootAbsAB / g_mu;
 			g_m = (1.0 - 2.0 * absAB) / (1.0 + 2.0 * absAB);
 
-			runAGMAlgorithm(g_k, g_kPrime, actualAGMSteps);
+			// Equal to AGMData[actualAGMSteps - 1], which is invalid GLSL since it's not a compile-time
+			// constant index.
+			vec3 lastAGMData;
+
+			runAGMAlgorithm(g_k, g_kPrime, actualAGMSteps, lastAGMData);
 
 			// With that elliptic integral computed, we can compute K and E.
 			g_K = 0.5 * pi / lastAGMData.x;
