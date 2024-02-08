@@ -103,34 +103,6 @@ export class E3S2Demo extends E3Geometry
 		float lightIntensity = (.5 + .5 * dotProduct1 * dotProduct1) * 1.15;
 	`;
 
-	correctPosition(pos)
-	{
-		const mag = Math.sqrt(pos[0] * pos[0] + pos[1] * pos[1] + pos[2] * pos[2]) / 2.5;
-		return [pos[0] / mag, pos[1] / mag, pos[2] / mag, 1];
-	}
-
-	correctVectors()
-	{
-		this.forwardVec = this.normalize([
-			-this.cameraPos[0],
-			-this.cameraPos[1],
-			0,
-			0
-		]);
-
-		const dotRight = this.dotProduct(
-			this.forwardVec,
-			this.rightVec
-		);
-
-		for (let i = 0; i < 4; i++)
-		{
-			this.rightVec[i] -= dotRight * this.forwardVec[i];
-		}
-
-		this.rightVec = this.normalize(this.rightVec);
-	}
-
 	cameraPos = [-2.5, 0, 0, 1];
 	normalVec = [0, 0, 0, 1];
 	upVec = [0, 0, 1, 0];

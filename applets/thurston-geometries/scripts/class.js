@@ -654,21 +654,12 @@ export class ThurstonGeometry extends Applet
 
 	handleRotating()
 	{
+		const sign = this.geometryData.lockedOnOrigin ? -1 : 1;
+
 		if (!this.currentlyControllable)
 		{
 			this.wilson.worldCenterX = 0;
 			this.wilson.worldCenterY = 0;
-		}
-
-		if (this.geometryData.lockedOnOrigin)
-		{
-			this.wilson.worldCenterX = 0;
-			this.wilson.worldCenterY = -Math.atan(
-				this.geometryData.cameraPos[2] / Math.sqrt(
-					this.geometryData.cameraPos[0] ** 2
-					+ this.geometryData.cameraPos[1] ** 2
-				)
-			);
 		}
 
 		else if (this.geometryData.render1D)
@@ -691,7 +682,7 @@ export class ThurstonGeometry extends Applet
 		const result = ThurstonGeometry.rotateVectors(
 			this.geometryData.forwardVec,
 			this.geometryData.rightVec,
-			this.wilson.worldCenterX
+			sign * this.wilson.worldCenterX
 		);
 
 		// Left/right rotation is allowed to be baked in to the underlying vectors.
@@ -704,7 +695,7 @@ export class ThurstonGeometry extends Applet
 		const result2 = ThurstonGeometry.rotateVectors(
 			this.geometryData.forwardVec,
 			this.geometryData.upVec,
-			this.wilson.worldCenterY
+			sign * this.wilson.worldCenterY
 		);
 
 		this.rotatedForwardVec = result2[0];
@@ -718,6 +709,16 @@ export class ThurstonGeometry extends Applet
 			this.geometryData.upVec = result2[1];
 			this.rotatedForwardVec = result2[0];
 			this.rotatedUpVec = result2[1];
+		}
+
+		if (this.geometryData.lockedOnOrigin)
+		{
+			this.geometryData.cameraPos = ThurstonGeometry.scaleVector(
+				-2.5,
+				this.rotatedForwardVec
+			);
+
+			this.geometryData.cameraPos[3] = 1;
 		}
 	}
 

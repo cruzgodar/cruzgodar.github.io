@@ -2,8 +2,8 @@ import { ThurstonGeometry } from "../class.js";
 import { BaseGeometry, getMatrixGlsl, getMinGlslString } from "./base.js";
 import { $ } from "/scripts/src/main.js";
 
-const numericalStepDistance = 0.0002;
-const flowNumericallyThreshhold = 0.002;
+const numericalStepDistance = 0.0001;
+const flowNumericallyThreshhold = 0.0005;
 
 const maxNumericalSteps = Math.ceil(flowNumericallyThreshhold / numericalStepDistance);
 
