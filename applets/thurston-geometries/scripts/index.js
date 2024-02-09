@@ -8,6 +8,7 @@ import { S2xEAxes, S2xERooms, S2xESpheres } from "./geometries/s2xe.js";
 import { S3Axes, S3HopfFibration, S3Rooms, S3Spheres } from "./geometries/s3.js";
 import { SL2RAxes, SL2RRooms } from "./geometries/sl2r.js";
 import { SolAxes, SolRooms, SolSpheres } from "./geometries/sol.js";
+import { currentlyTouchDevice } from "/scripts/src/interaction.js";
 import { showPage } from "/scripts/src/load-page.js";
 import { $, $$ } from "/scripts/src/main.js";
 
@@ -63,6 +64,16 @@ export function load()
 	if (!window.DEBUG)
 	{
 		$$("[data-option-name$=axes]").forEach(element => element.style.display = "none");
+	}
+
+	if (currentlyTouchDevice)
+	{
+		$("#controls-text-wasd").remove();
+	}
+
+	else
+	{
+		$("#controls-text-touch").remove();
 	}
 
 	function run()
@@ -148,11 +159,11 @@ export function load()
 		applet.needNewFrame = true;
 	});
 
+	$$(".slider-container").forEach(element => element.style.display = "none");
+
 
 
 	sceneSelectorDropdownElement.addEventListener("input", run);
-
-	run();
 
 
 

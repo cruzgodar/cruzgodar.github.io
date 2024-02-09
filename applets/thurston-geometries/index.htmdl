@@ -1,12 +1,8 @@
-Something will go here eventually!
+When the ancient Greek geometer Euclid wrote his treatise *Elements*, a staggeringly broad treatment of geometry and the oldest known rigorous mathematical text, it contained just <a href="https://en.wikipedia.org/wiki/Euclidean_geometry#Axioms">five axioms</a> from which every other result was proven. The first three effectively state that lines, line segments, and circles can be constructed, and the fourth that all right angles are equal, but the fifth, called the <a href="https://en.wikipedia.org/wiki/Parallel_postulate">parallel postulate</a>, is subtler: a concise equivalent statement is that the angles of any triangle add up to $180^\circ$. After remaining unproven from the other four for centuries, mathematicians came to accept that not only was it necessary to take as an axiom, but that it could be replaced with similar statements to produce consistent --- but quite alien --- theories of geometry. If we require the angles of a triangle to sum to more than $180^\circ$, the result is *spherical* geometry. Try it yourself by drawing an equilateral triangle on the globe with its base on the equator and a vertex at the north pole: all of its angles are $90^\circ$. Insisting that the angles of a triangle sum to less than $180^\circ$ results in *hyperbolic* geometry, in which a seemingly impossible amount of area is crammed into a two-dimensional surface. These two geometries, along with the geometry of the flat plane, now called *euclidean*, are the <a href="https://en.wikipedia.org/wiki/Uniformization_theorem">only three</a> possible on a curved 2-dimensional surface (called a *2-manifold*) without holes.
 
-### wilson
+Stated in 1982 and first proven in the early 2000s, William Thurston's <a href="https://en.wikipedia.org/wiki/Geometrization_conjecture">geometrization conjecture</a> classifies the geometries of *3-manifolds* that have no holes and cannot be decomposed into other 3-manifolds, giving what amounts to a periodic table of geometries. There are eight in total, but all but our own are curved in higher dimensions, preventing us from understanding them from without like we can the 2-dimensional geometries. Instead, we can understand them from *within*, rendering scenes with light traveling along the paths of shortest distance. The results are in turns beautiful, mesmerizing, and unsettling, and quite often all three at once. Rather than describe the process further, the first scene in the dropdown demonstrates the details of the process on the sphere, rendering a 1D image. Drag on the scene to look around, and <span style="display: inline" id="controls-text-touch">hold with two fingers to move forward and three to move backward.</span><span style="display: inline" id="controls-text-wasd">use the WASD, Shift, and Space keys to move and Q and E to roll the camera.</span>
 
-
-
-<div id="canvas-landscape">
-
-<div id="canvas-landscape-left">
+As always, this applet was made with <a href="/projects/wilson/">Wilson</a>. It was a mathematically and computationally grueling project that spanned six months and many hundreds of hours, and I'm grateful to the many people that helped --- particularly <a href="https://ahuchala.com">Andy Huchala</a> and <a href="https://linktr.ee/aryayae">Arya Yae</a>, who put up with my incessant topology questions throughout the process and helped me avoid some of the most common pitfalls. Endless thanks go to <a href="https://rcoulon.perso.math.cnrs.fr/">Re&#769;mi Coulon</a>, <a href="https://physics.gatech.edu/user/elisabetta-matsumoto">Elisabetta Matsumoto</a>, <a href="http://www.segerman.org/">Henry Segerman</a>, and <a href="https://stevejtrettel.site/">Steve Trettel</a> for their paper on <a href="https://arxiv.org/abs/2010.15801">raymarching the Thurston geometries</a>, which was an excellent starting point for the applet I wanted to make and the current state of the art on rendering noneuclidean geometries.
 
 ### dropdown
 	
@@ -47,6 +43,11 @@ Something will go here eventually!
 	sol-spheres "Sol: Spheres"
 
 ###
+
+
+<div id="canvas-landscape">
+
+<div id="canvas-landscape-left">
 
 ### text-boxes
 	
