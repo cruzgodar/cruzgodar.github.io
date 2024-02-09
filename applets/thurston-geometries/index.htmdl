@@ -92,3 +92,7 @@ As always, this applet was made with <a href="/projects/wilson/">Wilson</a>. It 
 </div>
 
 </div>
+
+<div class="info-text" id="s2-dots-text">
+	Probably the simplest possible sorting algorithm, bubble sort looks at every adjacent pair of entries and swaps them if they&#x2019;re in the wrong order. It repeats this until it longer sees any pairs it can swap. It runs in $O(n^2)$ time and requires an horribly large number of both reads and writes, making it a worse choice than almost any other algorithm on this list. Its only advantage is how incredibly easy it is to implement.
+</div>
