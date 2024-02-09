@@ -15,7 +15,7 @@ function getSphereBandGlsl(index)
 				effectiveDistance = 2.0 * pi - effectiveDistance;
 			}
 
-			if (effectiveDistance <rayLength${index})
+			if (effectiveDistance < rayLength${index})
 			{
 				return rayColor${index};
 			}
@@ -113,7 +113,7 @@ export class E3S2Demo extends E3Geometry
 	rightVec = [0, 1, 0, 0];
 	forwardVec = [1, 0, 0, 0];
 
-	movingSpeed = 5;
+	movingSpeed = 0;
 	
 	lockedOnOrigin = true;
 
@@ -212,7 +212,7 @@ export class S2xES2Demo extends S2xEGeometry
 	rightVec = [0, 1, 0, 0];
 	forwardVec = [1, 0, 0, 0];
 
-	aspectRatio = 10;
+	aspectRatio = 7;
 
 	distanceEstimator(pos)
 	{

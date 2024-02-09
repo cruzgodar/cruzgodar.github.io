@@ -1,6 +1,4 @@
 .info-text
 {
-	transition: opacity .25s ease-in-out;
-	opacity: 0;
 	display: none;
 }

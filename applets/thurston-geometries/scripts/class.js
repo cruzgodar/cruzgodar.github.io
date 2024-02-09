@@ -606,6 +606,8 @@ export class ThurstonGeometry extends Applet
 			this.geometryData.normalVec = this.geometryData.getNormalVec(
 				this.geometryData.cameraPos
 			);
+
+			this.geometryData.handleMovingCallback(movingAmount, timeElapsed);
 		}
 	}
 

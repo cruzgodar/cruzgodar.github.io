@@ -1,5 +1,4 @@
 import { SortingAlgorithm } from "./class.js";
-import { opacityAnimationTime } from "/scripts/src/animation.js";
 import { Applet } from "/scripts/src/applets.js";
 import { showPage } from "/scripts/src/load-page.js";
 import { $, $$ } from "/scripts/src/main.js";
@@ -19,27 +18,19 @@ export function load()
 
 	const algorithmSelectorDropdownElement = $("#algorithm-selector-dropdown");
 
+	algorithmSelectorDropdownElement.value = "bubble";
+
 	algorithmSelectorDropdownElement.addEventListener("input", () =>
 	{
-		$$(".info-text").forEach(element => element.style.opacity = 0);
+		$$(".info-text").forEach(element => element.style.display = "none");
 
-		setTimeout(() =>
-		{
-			$$(".info-text").forEach(element => element.style.display = "none");
+		const value = algorithmSelectorDropdownElement.value === "none"
+			? "bubble"
+			: algorithmSelectorDropdownElement.value;
 
-			const value = algorithmSelectorDropdownElement.value === "none"
-				? "bubble"
-				: algorithmSelectorDropdownElement.value;
+		const element = $(`#${value}-info`);
 
-			const element = $(`#${value}-info`);
-
-			element.style.display = "block";
-
-			setTimeout(() =>
-			{
-				element.style.opacity = 1;
-			}, 10);
-		}, opacityAnimationTime);
+		element.style.display = "block";
 	});
 
 
@@ -80,7 +71,9 @@ export function load()
 	function run()
 	{
 		const resolution = parseInt(resolutionInputElement.value || 2000);
-		const algorithm = algorithmSelectorDropdownElement.value;
+		const algorithm = algorithmSelectorDropdownElement.value === "none"
+			? "bubble"
+			: algorithmSelectorDropdownElement.value;
 		const dataLength = parseInt(arraySizeInputElement.value || 256);
 		const doPlaySound = playSoundCheckboxElement.checked;
 

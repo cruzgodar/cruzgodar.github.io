@@ -73,9 +73,9 @@ export class E3Rooms extends E3Geometry
 
 	getColorGlsl = /* glsl */`
 		return vec3(
-			.25 + .75 * (.5 * (sin(pos.x) + 1.0)),
-			.25 + .75 * (.5 * (sin(pos.y) + 1.0)),
-			.25 + .75 * (.5 * (sin(pos.z) + 1.0))
+			.25 + .75 * (.5 * (sin(pos.x * 0.75) + 1.0)),
+			.25 + .75 * (.5 * (sin(pos.y * 0.75) + 1.0)),
+			.25 + .75 * (.5 * (sin(pos.z * 0.75) + 1.0))
 		);
 	`;
 

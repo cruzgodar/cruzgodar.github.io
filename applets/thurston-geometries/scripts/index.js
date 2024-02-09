@@ -62,8 +62,7 @@ export function load()
 
 	if (!window.DEBUG)
 	{
-		$$("[data-option-name$=axes]")
-			.forEach(element => element.style.display = "none");
+		$$("[data-option-name$=axes]").forEach(element => element.style.display = "none");
 	}
 
 	function run()
@@ -77,6 +76,8 @@ export function load()
 			setUpS2Demo(applet);
 			return;
 		}
+
+		applet.restrictCamera = true;
 		
 		const geometryData = new GeometryDataClass();
 
@@ -170,12 +171,6 @@ export function load()
 
 		const geometryDataE3 = new E3S2Demo();
 
-		applet.run(geometryDataE3);
-
-		applet.restrictCamera = false;
-		applet.wilson.worldCenterY = Math.PI / 4.5;
-		applet.wilson.worldCenterX = 3 * Math.PI / 4;
-
 		if (demoApplet === undefined)
 		{
 			demoApplet = new ThurstonGeometry({
@@ -191,6 +186,22 @@ export function load()
 
 			demoApplet.drawFrame();
 		}
+
+
+
+		geometryDataE3.handleMovingCallback = (movingAmount, timeElapsed) =>
+		{
+			demoApplet.handleMoving(movingAmount, timeElapsed);
+			demoApplet.needNewFrame = true;
+		};
+
+		applet.run(geometryDataE3);
+
+		applet.restrictCamera = false;
+		applet.wilson.worldCenterY = Math.PI / 4.5;
+		applet.wilson.worldCenterX = 3 * Math.PI / 4;
+
+
 
 		const geometryDataS2xE = new S2xES2Demo();
 

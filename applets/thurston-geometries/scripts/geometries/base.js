@@ -121,6 +121,8 @@ export class BaseGeometry
 	// instantiating the class to know when to update things.
 	drawFrameCallback() {}
 
+	handleMovingCallback() {}
+
 	movingSpeed = 1;
 
 	aspectRatio;
