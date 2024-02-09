@@ -78,9 +78,16 @@ export function load()
 
 	function run()
 	{
-		const GeometryDataClass = sceneSelectorDropdownElement.value === "none"
-			? E3Rooms
-			: scenes[sceneSelectorDropdownElement.value];
+		const value = sceneSelectorDropdownElement.value === "none"
+			? "s2-dots"
+			: sceneSelectorDropdownElement.value;
+
+		$$(`.info-text:not(#${value}-text)`)
+			.forEach(element => element.style.display = "none");
+		$$(`#${value}-text`)
+			.forEach(element => element.style.display = "block");
+
+		const GeometryDataClass = scenes[value];
 
 		if (GeometryDataClass === E3S2Demo)
 		{
@@ -94,8 +101,8 @@ export function load()
 
 		const elementsToShow = Array.from(
 			geometryData.uiElementsUsed
-				? $$(geometryData.uiElementsUsed)
-				: []
+				? $$(`#fov-slider,${geometryData.uiElementsUsed}`)
+				: $$("#fov-slider")
 		).map(element => element.parentNode);
 		
 		const elementsToHide = Array.from(
@@ -255,6 +262,8 @@ export function load()
 			"important"
 		);
 	}
+
+	run();
 
 	showPage();
 }

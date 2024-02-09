@@ -87,7 +87,7 @@ export class E3S2Demo extends E3Geometry
 
 		if (acos(dot(pos.xyz, normalize(vec3(0, 0, -1)))) - radius < 0.0)
 		{
-			return vec3(0.5, 0.5, 0.5);
+			return vec3(0.5, 0.0, 1.0);
 		}
 
 		float distanceToCamera = acos(dot(pos.xyz, cameraDotPos.xyz));
@@ -194,7 +194,7 @@ export class S2xES2Demo extends S2xEGeometry
 			return vec3(1.0, 1.0, 0.0);
 		}
 
-		return vec3(0.5, 0.5, 0.5);
+		return vec3(0.5, 0.0, 1.0);
 	`;
 
 	lightGlsl = /* glsl */`
@@ -274,7 +274,7 @@ export class S2xES2Demo extends S2xEGeometry
 			return [1, 1, 0];
 		}
 
-		return [0.5, 0.5, 0.5];
+		return [0.5, 0, 1];
 	}
 
 	getRayData(rayDirs)

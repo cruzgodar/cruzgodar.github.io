@@ -1,4 +1,5 @@
 .info-text
 {
-	margin-top: 32px;
+	margin-top: 32px; 
+	display: none;
 }
