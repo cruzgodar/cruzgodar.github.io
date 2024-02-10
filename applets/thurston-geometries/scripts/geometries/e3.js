@@ -1,3 +1,4 @@
+import { ThurstonGeometry } from "../class.js";
 import { BaseGeometry, getMinGlslString } from "./base.js";
 import { $ } from "/scripts/src/main.js";
 
@@ -157,23 +158,86 @@ export class E3Rooms extends E3Geometry
 			1
 		];
 
-		// Rooms to spheres. We'll move the camera to the origin.
+		// Rooms to spheres.
 		if (newSceneTransition === 1)
 		{
+			const corners = [
+				[0, 0, 0, 1],
+				[0, 0, 2, 1],
+				[0, 2, 0, 1],
+				[0, 2, 2, 1],
+				[2, 0, 0, 1],
+				[2, 0, 2, 1],
+				[2, 2, 0, 1],
+				[2, 2, 2, 1]
+			];
+
+			let minDistance = Infinity;
+			let minIndex = 0;
+
+			for (let i = 0; i < corners.length; i++)
+			{
+				const distance = ThurstonGeometry.magnitude(
+					[
+						cameraPosModded[0] - corners[i][0],
+						cameraPosModded[1] - corners[i][1],
+						cameraPosModded[2] - corners[i][2],
+						cameraPosModded[3] - corners[i][3]
+					]
+				);
+
+				if (distance < minDistance)
+				{
+					minDistance = distance;
+					minIndex = i;
+				}
+			}
+
 			return [
-				this.cameraPos[0] - cameraPosModded[0],
-				this.cameraPos[1] - cameraPosModded[1],
-				this.cameraPos[2] - cameraPosModded[2],
-				1
+				this.cameraPos[0] - cameraPosModded[0] + corners[minIndex][0],
+				this.cameraPos[1] - cameraPosModded[1] + corners[minIndex][1],
+				this.cameraPos[2] - cameraPosModded[2] + corners[minIndex][2],
+				this.cameraPos[3] - cameraPosModded[3] + corners[minIndex][3]
 			];
 		}
 
-		// Spheres to rooms. We'll move the camera to [1, 1, 1, 1].
+		const centers = [
+			[1, 1, 1, 1],
+			[1, 1, -1, 1],
+			[1, -1, 1, 1],
+			[1, -1, -1, 1],
+			[-1, 1, 1, 1],
+			[-1, 1, -1, 1],
+			[-1, -1, 1, 1],
+			[-1, -1, -1, 1]
+		];
+
+		let minDistance = Infinity;
+		let minIndex = 0;
+
+		for (let i = 0; i < centers.length; i++)
+		{
+			const distance = ThurstonGeometry.magnitude(
+				[
+					cameraPosModded[0] - centers[i][0],
+					cameraPosModded[1] - centers[i][1],
+					cameraPosModded[2] - centers[i][2],
+					cameraPosModded[3] - centers[i][3]
+				]
+			);
+
+			if (distance < minDistance)
+			{
+				minDistance = distance;
+				minIndex = i;
+			}
+		}
+
 		return [
-			this.cameraPos[0] - cameraPosModded[0] + 1,
-			this.cameraPos[1] - cameraPosModded[1] + 1,
-			this.cameraPos[2] - cameraPosModded[2] + 1,
-			1
+			this.cameraPos[0] - cameraPosModded[0] + centers[minIndex][0],
+			this.cameraPos[1] - cameraPosModded[1] + centers[minIndex][1],
+			this.cameraPos[2] - cameraPosModded[2] + centers[minIndex][2],
+			this.cameraPos[3] - cameraPosModded[3] + centers[minIndex][3]
 		];
 	}
 }
