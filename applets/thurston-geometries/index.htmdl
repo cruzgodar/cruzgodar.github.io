@@ -23,8 +23,7 @@ As always, this applet was made with <a href="/projects/wilson/">Wilson</a>. It 
 	h3-rooms "$\mathbb{H}^3$"
 
 	s2xe-axes "$S^2 \times \mathbb{E}$: Axes"
-	s2xe-rooms "$S^2 \times \mathbb{E}$: Rooms"
-	s2xe-spheres "$S^2 \times \mathbb{E}$: Spheres"
+	s2xe-rooms "$S^2 \times \mathbb{E}$"
 
 	h2xe-axes "$\mathbb{H}^2 \times \mathbb{E}$: Axes"
 	h2xe-rooms "$\mathbb{H}^2 \times \mathbb{E}$"

@@ -67,13 +67,22 @@ export class E3Axes extends E3Geometry
 export class E3Rooms extends E3Geometry
 {
 	static distances = /* glsl */`
-		float effectiveWallThickness = wallThickness + sceneTransition * .471 / .75;
-		float distance1 = effectiveWallThickness - length(mod(pos.xyz, 2.0) - vec3(1.0, 1.0, 1.0));
+		float roomDistance = 1000000.0;
+		float sphereDistance = 1000000.0;
 
-		float effectiveRadius = .5 - .5 / .75 * (1.0 - sceneTransition);
-		float distance2 = length(mod(pos.xyz, 2.0) - vec3(1.0, 1.0, 1.0)) - effectiveRadius;
+		if (sceneTransition < 1.0)
+		{
+			float effectiveWallThickness = wallThickness + sceneTransition * .471 / .75;
+			roomDistance = effectiveWallThickness - length(mod(pos.xyz, 2.0) - vec3(1.0, 1.0, 1.0));
+		}
+
+		if (sceneTransition > 0.0)
+		{
+			float effectiveRadius = .5 - .5 / .75 * (1.0 - sceneTransition);
+			sphereDistance = length(mod(pos.xyz, 2.0) - vec3(1.0, 1.0, 1.0)) - effectiveRadius;
+		}
 		
-		float minDistance = ${getMinGlslString("distance", 2)};
+		float minDistance = min(roomDistance, sphereDistance);
 	`;
 
 	distanceEstimatorGlsl = /* glsl */`
@@ -149,7 +158,7 @@ export class E3Rooms extends E3Geometry
 		this.sliderValues.wallThickness = 1.55;
 	}
 
-	getRelocatedCameraPos(newSceneTransition)
+	getNearestCenter()
 	{
 		const cameraPosModded = [
 			this.cameraPos[0] % 2,
@@ -157,49 +166,6 @@ export class E3Rooms extends E3Geometry
 			this.cameraPos[2] % 2,
 			1
 		];
-
-		// Rooms to spheres.
-		if (newSceneTransition === 1)
-		{
-			const corners = [
-				[0, 0, 0, 1],
-				[0, 0, 2, 1],
-				[0, 2, 0, 1],
-				[0, 2, 2, 1],
-				[2, 0, 0, 1],
-				[2, 0, 2, 1],
-				[2, 2, 0, 1],
-				[2, 2, 2, 1]
-			];
-
-			let minDistance = Infinity;
-			let minIndex = 0;
-
-			for (let i = 0; i < corners.length; i++)
-			{
-				const distance = ThurstonGeometry.magnitude(
-					[
-						cameraPosModded[0] - corners[i][0],
-						cameraPosModded[1] - corners[i][1],
-						cameraPosModded[2] - corners[i][2],
-						cameraPosModded[3] - corners[i][3]
-					]
-				);
-
-				if (distance < minDistance)
-				{
-					minDistance = distance;
-					minIndex = i;
-				}
-			}
-
-			return [
-				this.cameraPos[0] - cameraPosModded[0] + corners[minIndex][0],
-				this.cameraPos[1] - cameraPosModded[1] + corners[minIndex][1],
-				this.cameraPos[2] - cameraPosModded[2] + corners[minIndex][2],
-				this.cameraPos[3] - cameraPosModded[3] + corners[minIndex][3]
-			];
-		}
 
 		const centers = [
 			[1, 1, 1, 1],
@@ -238,6 +204,55 @@ export class E3Rooms extends E3Geometry
 			this.cameraPos[1] - cameraPosModded[1] + centers[minIndex][1],
 			this.cameraPos[2] - cameraPosModded[2] + centers[minIndex][2],
 			this.cameraPos[3] - cameraPosModded[3] + centers[minIndex][3]
+		];
+	}
+
+	getNearestCorner()
+	{
+		const cameraPosModded = [
+			this.cameraPos[0] % 2,
+			this.cameraPos[1] % 2,
+			this.cameraPos[2] % 2,
+			1
+		];
+
+		const corners = [
+			[0, 0, 0, 1],
+			[0, 0, 2, 1],
+			[0, 2, 0, 1],
+			[0, 2, 2, 1],
+			[2, 0, 0, 1],
+			[2, 0, 2, 1],
+			[2, 2, 0, 1],
+			[2, 2, 2, 1]
+		];
+
+		let minDistance = Infinity;
+		let minIndex = 0;
+
+		for (let i = 0; i < corners.length; i++)
+		{
+			const distance = ThurstonGeometry.magnitude(
+				[
+					cameraPosModded[0] - corners[i][0],
+					cameraPosModded[1] - corners[i][1],
+					cameraPosModded[2] - corners[i][2],
+					cameraPosModded[3] - corners[i][3]
+				]
+			);
+
+			if (distance < minDistance)
+			{
+				minDistance = distance;
+				minIndex = i;
+			}
+		}
+
+		return [
+			this.cameraPos[0] - cameraPosModded[0] + corners[minIndex][0],
+			this.cameraPos[1] - cameraPosModded[1] + corners[minIndex][1],
+			this.cameraPos[2] - cameraPosModded[2] + corners[minIndex][2],
+			this.cameraPos[3] - cameraPosModded[3] + corners[minIndex][3]
 		];
 	}
 }

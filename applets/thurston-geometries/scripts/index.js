@@ -4,7 +4,7 @@ import { H2xEAxes, H2xERooms } from "./geometries/h2xe.js";
 import { H3Axes, H3Rooms, H3Spheres } from "./geometries/h3.js";
 import { NilAxes, NilRooms, NilSpheres } from "./geometries/nil.js";
 import { E3S2Demo, S2xES2Demo } from "./geometries/s2.js";
-import { S2xEAxes, S2xERooms, S2xESpheres } from "./geometries/s2xe.js";
+import { S2xEAxes, S2xERooms } from "./geometries/s2xe.js";
 import { S3Axes, S3HopfFibration, S3Rooms } from "./geometries/s3.js";
 import { SL2RAxes, SL2RRooms } from "./geometries/sl2r.js";
 import { SolAxes, SolRooms, SolSpheres } from "./geometries/sol.js";
@@ -42,7 +42,6 @@ export function load()
 
 		"s2xe-axes": S2xEAxes,
 		"s2xe-rooms": S2xERooms,
-		"s2xe-spheres": S2xESpheres,
 
 		"h2xe-axes": H2xEAxes,
 		"h2xe-rooms": H2xERooms,
@@ -189,7 +188,9 @@ export function load()
 		const newSceneTransition = isRooms ? 1 : 0;
 
 		const oldCameraPos = [...applet.geometryData.cameraPos];
-		const newCameraPos = applet.geometryData.getRelocatedCameraPos(newSceneTransition);
+		const newCameraPos = newSceneTransition
+			? applet.geometryData.getNearestCorner()
+			: applet.geometryData.getNearestCenter();
 
 		const dummy = { t: 0 };
 

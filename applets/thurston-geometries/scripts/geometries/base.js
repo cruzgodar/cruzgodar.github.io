@@ -17,7 +17,7 @@ export class BaseGeometry
 	`;
 
 	updateTGlsl = /* glsl */`
-		lastTIncrease = distance * stepFactor;
+		lastTIncrease = distanceToScene * stepFactor;
 		
 		t += lastTIncrease;
 	`;
@@ -51,9 +51,14 @@ export class BaseGeometry
 
 	teleportCamera() {}
 
-	getRelocatedCameraPos()
+	getNearestCenter()
 	{
-		return this.cameraPos;
+		return [...this.cameraPos];
+	}
+
+	getNearestCorner()
+	{
+		return [...this.cameraPos];
 	}
 
 	getNormalVec()

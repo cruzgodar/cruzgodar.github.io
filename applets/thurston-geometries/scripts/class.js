@@ -271,9 +271,9 @@ export class ThurstonGeometry extends Applet
 				{
 					${this.geometryData.geodesicGlsl}
 					
-					float distance = distanceEstimator(pos${addfiberArgument});
+					float distanceToScene = distanceEstimator(pos${addfiberArgument});
 					
-					if (distance < epsilon)
+					if (distanceToScene < epsilon)
 					{
 						${this.geometryData.finalTeleportationGlsl ?? ""}
 						

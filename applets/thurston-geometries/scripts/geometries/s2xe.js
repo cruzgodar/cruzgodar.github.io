@@ -107,14 +107,59 @@ export class S2xERooms extends S2xEGeometry
 	static distances = /* glsl */`
 		float spacing = 1.09;
 
-		float distance1 = wallThickness - length(vec2(acos(pos.x), mod(pos.w + spacing / 2.0, spacing) - spacing / 2.0));
-		float distance2 = wallThickness - length(vec2(acos(-pos.x), mod(pos.w + spacing / 2.0, spacing) - spacing / 2.0));
-		float distance3 = wallThickness - length(vec2(acos(pos.y), mod(pos.w + spacing / 2.0, spacing) - spacing / 2.0));
-		float distance4 = wallThickness - length(vec2(acos(-pos.y), mod(pos.w + spacing / 2.0, spacing) - spacing / 2.0));
-		float distance5 = wallThickness - length(vec2(acos(pos.z), mod(pos.w + spacing / 2.0, spacing) - spacing / 2.0));
-		float distance6 = wallThickness - length(vec2(acos(-pos.z), mod(pos.w + spacing / 2.0, spacing) - spacing / 2.0));
+		float minRoomDistance = 1000000.0;
+		float minSphereDistance = 1000000.0;
 
-		float minDistance = ${getMaxGlslString("distance", 6)};
+		float acosX = acos(pos.x);
+		float acosNegX = pi - acosX;
+		float acosY = acos(pos.y);
+		float acosNegY = pi - acosY;
+		float acosZ = acos(pos.z);
+		float acosNegZ = pi - acosZ;
+
+		float modPosW = mod(pos.w + spacing / 2.0, spacing) - spacing / 2.0;
+
+		float roomDistance1 = maxT * 2.0;
+		float roomDistance2 = maxT * 2.0;
+		float roomDistance3 = maxT * 2.0;
+		float roomDistance4 = maxT * 2.0;
+		float roomDistance5 = maxT * 2.0;
+		float roomDistance6 = maxT * 2.0;
+
+		if (sceneTransition < 1.0)
+		{
+			float effectiveWallThickness = wallThickness + sceneTransition * .225 / .75;
+
+			roomDistance1 = effectiveWallThickness - length(vec2(acosX, modPosW));
+			roomDistance2 = effectiveWallThickness - length(vec2(acosNegX, modPosW));
+			roomDistance3 = effectiveWallThickness - length(vec2(acosY, modPosW));
+			roomDistance4 = effectiveWallThickness - length(vec2(acosNegY, modPosW));
+			roomDistance5 = effectiveWallThickness - length(vec2(acosZ, modPosW));
+			roomDistance6 = effectiveWallThickness - length(vec2(acosNegZ, modPosW));
+
+			minRoomDistance = ${getMaxGlslString("roomDistance", 6)};
+		}
+
+		float sphereDistance1 = maxT * 2.0;
+		float sphereDistance2 = maxT * 2.0;
+		float sphereDistance3 = maxT * 2.0;
+		float sphereDistance4 = maxT * 2.0;
+		float sphereDistance5 = maxT * 2.0;
+
+		if (sceneTransition > 0.0)
+		{
+			float effectiveRadius = .3 - .3 / .75 * (1.0 - sceneTransition);
+
+			sphereDistance1 = length(vec2(acosX, modPosW)) - effectiveRadius;
+			sphereDistance2 = length(vec2(acosNegX, modPosW)) - effectiveRadius;
+			sphereDistance3 = length(vec2(acosY, modPosW)) - effectiveRadius;
+			sphereDistance4 = length(vec2(acosNegY, modPosW)) - effectiveRadius;
+			sphereDistance5 = length(vec2(acosZ, modPosW)) - effectiveRadius;
+
+			minSphereDistance = ${getMinGlslString("sphereDistance", 5)};
+		}
+
+		float minDistance = min(minRoomDistance, minSphereDistance);
 	`;
 
 	distanceEstimatorGlsl = /* glsl */`
@@ -126,69 +171,128 @@ export class S2xERooms extends S2xEGeometry
 	getColorGlsl = /* glsl */`
 		${S2xERooms.distances}
 
-		float wColor = .3 * floor((pos.w + spacing / 2.0) / spacing);
+		float wColor = floor((pos.w + spacing / 2.0) / spacing);
 
 		float variation = .04;
 
-		if (minDistance == distance1)
+		if (minDistance == roomDistance1)
 		{
 			return vec3(
-				.75 + .25 * (.5 * (sin((variation * pos.x + wColor) * 7.0) + 1.0)),
-				.65 * (.5 * (sin((variation * pos.y + wColor) * 11.0) + 1.0)),
-				.65 * (.5 * (sin((variation * pos.z + wColor) * 89.0) + 1.0))
+				.75 + .25 * (.5 * (sin((variation * pos.x + 0.3 * wColor) * 7.0) + 1.0)),
+				.65 * (.5 * (sin((variation * pos.y + 0.3 * wColor) * 11.0) + 1.0)),
+				.65 * (.5 * (sin((variation * pos.z + 0.3 * wColor) * 89.0) + 1.0))
 			);
 		}
 
-		if (minDistance == distance2)
+		if (minDistance == roomDistance2)
 		{
 			return vec3(
-				.65 * (.5 * (sin((variation * pos.x + wColor) * 7.0) + 1.0)),
-				.75 + .25 * (.5 * (sin((variation * pos.y + wColor) * 11.0) + 1.0)),
-				.65 * (.5 * (sin((variation * pos.z + wColor) * 89.0) + 1.0))
+				.65 * (.5 * (sin((variation * pos.x + 0.3 * wColor) * 7.0) + 1.0)),
+				.75 + .25 * (.5 * (sin((variation * pos.y + 0.3 * wColor) * 11.0) + 1.0)),
+				.65 * (.5 * (sin((variation * pos.z + 0.3 * wColor) * 89.0) + 1.0))
 			);
 		}
 
-		if (minDistance == distance3)
+		if (minDistance == roomDistance3)
 		{
 			return vec3(
-				.65 * (.5 * (sin((variation * pos.x + wColor) * 7.0) + 1.0)),
-				.65 * (.5 * (sin((variation * pos.y + wColor) * 11.0) + 1.0)),
-				.75 + .25 * (.5 * (sin((variation * pos.z + wColor) * 17.0) + 1.0))
+				.65 * (.5 * (sin((variation * pos.x + 0.3 * wColor) * 7.0) + 1.0)),
+				.65 * (.5 * (sin((variation * pos.y + 0.3 * wColor) * 11.0) + 1.0)),
+				.75 + .25 * (.5 * (sin((variation * pos.z + 0.3 * wColor) * 17.0) + 1.0))
 			);
 		}
 
-		if (minDistance == distance4)
+		if (minDistance == roomDistance4)
 		{
 			return vec3(
-				.75 + .25 * (.5 * (sin((variation * pos.x + wColor) * 7.0) + 1.0)),
-				.75 + .25 * (.5 * (sin((variation * pos.y + wColor) * 11.0) + 1.0)),
-				.65 * (.5 * (sin((variation * pos.z + wColor) * 17.0) + 1.0))
+				.75 + .25 * (.5 * (sin((variation * pos.x + 0.3 * wColor) * 7.0) + 1.0)),
+				.75 + .25 * (.5 * (sin((variation * pos.y + 0.3 * wColor) * 11.0) + 1.0)),
+				.65 * (.5 * (sin((variation * pos.z + 0.3 * wColor) * 17.0) + 1.0))
 			);
 		}
 
-		if (minDistance == distance5)
+		if (minDistance == roomDistance5)
 		{
 			return vec3(
-				.65 * (.5 * (sin((variation * pos.x + wColor) * 7.0) + 1.0)),
-				.75 + .25 * (.5 * (sin((variation * pos.y + wColor) * 11.0) + 1.0)),
-				.75 + .25 * (.5 * (sin((variation * pos.z + wColor) * 17.0) + 1.0))
+				.65 * (.5 * (sin((variation * pos.x + 0.3 * wColor) * 7.0) + 1.0)),
+				.75 + .25 * (.5 * (sin((variation * pos.y + 0.3 * wColor) * 11.0) + 1.0)),
+				.75 + .25 * (.5 * (sin((variation * pos.z + 0.3 * wColor) * 17.0) + 1.0))
+			);
+		}
+
+		if (minDistance == roomDistance6)
+		{
+			return vec3(
+				.65 + .35 * (.5 * (sin((variation * pos.x + 0.3 * wColor) * 7.0) + 1.0)),
+				.65 + .35 * (.5 * (sin((variation * pos.y + 0.3 * wColor) * 11.0) + 1.0)),
+				.65 + .35 * (.5 * (sin((variation * pos.z + 0.3 * wColor) * 17.0) + 1.0))
+			);
+		}
+
+		if (minDistance == sphereDistance1)
+		{
+			return vec3(
+				.75 + .25 * (.5 * (sin(wColor * 7.0) + 1.0)),
+				.65 * (.5 * (sin(wColor * 11.0) + 1.0)),
+				.65 * (.5 * (sin(wColor * 89.0) + 1.0))
+			);
+		}
+
+		if (minDistance == sphereDistance2)
+		{
+			return vec3(
+				.65 * (.5 * (sin(wColor * 7.0) + 1.0)),
+				.75 + .25 * (.5 * (sin(wColor * 11.0) + 1.0)),
+				.65 * (.5 * (sin(wColor * 89.0) + 1.0))
+			);
+		}
+
+		if (minDistance == sphereDistance3)
+		{
+			return vec3(
+				.65 * (.5 * (sin(wColor * 7.0) + 1.0)),
+				.65 * (.5 * (sin(wColor * 11.0) + 1.0)),
+				.75 + .25 * (.5 * (sin(wColor * 17.0) + 1.0))
+			);
+		}
+
+		if (minDistance == sphereDistance4)
+		{
+			return vec3(
+				.75 + .25 * (.5 * (sin(wColor * 7.0) + 1.0)),
+				.75 + .25 * (.5 * (sin(wColor * 11.0) + 1.0)),
+				.65 * (.5 * (sin(wColor * 17.0) + 1.0))
 			);
 		}
 
 		return vec3(
-			.65 + .35 * (.5 * (sin((variation * pos.x + wColor) * 7.0) + 1.0)),
-			.65 + .35 * (.5 * (sin((variation * pos.y + wColor) * 11.0) + 1.0)),
-			.65 + .35 * (.5 * (sin((variation * pos.z + wColor) * 17.0) + 1.0))
+			.88 + .12 * (.5 * (sin(wColor * 7.0) + 1.0)),
+			.88 + .12 * (.5 * (sin(wColor * 11.0) + 1.0)),
+			.88 + .12 * (.5 * (sin(wColor * 17.0) + 1.0))
 		);
 	`;
 
 	lightGlsl = /* glsl */`
 		float spacing = 1.09;
+		vec4 modPos = vec4(pos.xyz, mod(pos.w + spacing / 2.0, spacing) - spacing / 2.0);
 
-		vec4 lightDirection1 = normalize(vec4(2.0, 2.0, 2.0, -2.0) - vec4(pos.xyz, mod(pos.w + spacing / 2.0, spacing) - spacing / 2.0));
+		vec4 lightDirection1 = normalize(vec4(2.0, 2.0, 2.0, -2.0) - modPos);
 		float dotProduct1 = abs(dot(surfaceNormal, lightDirection1));
 
-		float lightIntensity = 1.5 * dotProduct1;
+		float lightIntensity1 = 1.5 * dotProduct1;
+
+		pos.xyz /= 1.001;
+		surfaceNormal = getSurfaceNormal(pos);
+
+		vec4 lightDirection2 = normalize(vec4(0.0, 2.0, 2.0, 2.5) - modPos);
+		float dotProduct2 = dot(surfaceNormal, lightDirection2);
+
+		vec4 lightDirection3 = normalize(vec4(2.0, 0.0, -2.0, 2.5) - modPos);
+		float dotProduct3 = dot(surfaceNormal, lightDirection3);
+
+		float lightIntensity2 = 1.3 * max(dotProduct2, dotProduct3);
+
+		float lightIntensity = mix(lightIntensity1, lightIntensity2, sceneTransition);
 	`;
 
 	cameraPos = [0, 0, -1, 0];
@@ -198,19 +302,21 @@ export class S2xERooms extends S2xEGeometry
 	forwardVec = [0, -1, 0, 0];
 
 	uniformGlsl = /* glsl */`
+		uniform float sceneTransition;
 		uniform float wallThickness;
 	`;
 
-	uniformNames = ["wallThickness"];
+	uniformNames = ["sceneTransition", "wallThickness"];
 
 	updateUniforms(gl, uniformList)
 	{
 		const wallThickness = .9557 - this.sliderValues.wallThickness / 10;
 
+		gl.uniform1f(uniformList["sceneTransition"], this.sliderValues.sceneTransition);
 		gl.uniform1f(uniformList["wallThickness"], wallThickness);
 	}
 
-	uiElementsUsed = "#wall-thickness-slider";
+	uiElementsUsed = "#wall-thickness-slider, #switch-scene-button";
 
 	initUI()
 	{
@@ -223,97 +329,104 @@ export class S2xERooms extends S2xEGeometry
 		wallThicknessSliderValue.textContent = .8;
 		this.sliderValues.wallThickness = .8;
 	}
-}
 
-export class S2xESpheres extends S2xEGeometry
-{
-	static distances = /* glsl */`
-		float distance1 = length(vec2(acos(pos.x), mod(pos.w + .785398, 1.570796) - .785398)) - .3;
-		float distance2 = length(vec2(acos(-pos.x), mod(pos.w + .785398, 1.570796) - .785398)) - .3;
-		float distance3 = length(vec2(acos(pos.y), mod(pos.w + .785398, 1.570796) - .785398)) - .3;
-		float distance4 = length(vec2(acos(-pos.y), mod(pos.w + .785398, 1.570796) - .785398)) - .3;
-		float distance5 = length(vec2(acos(pos.z), mod(pos.w + .785398, 1.570796) - .785398)) - .3;
+	getNearestCenter()
+	{
+		const spacing = 1.09;
 
-		float minDistance = ${getMinGlslString("distance", 5)};
-	`;
+		const cameraPosWModded = (this.cameraPos[3] + spacing / 2) % spacing;
 
-	distanceEstimatorGlsl = /* glsl */`
-		${S2xESpheres.distances}
+		const centers = [
+			[1, 0, 0, -spacing / 2],
+			[-1, 0, 0, -spacing / 2],
+			[0, 1, 0, -spacing / 2],
+			[0, -1, 0, -spacing / 2],
+			[0, 0, 1, -spacing / 2],
+			[0, 0, -1, -spacing / 2],
+			[1, 0, 0, spacing / 2],
+			[-1, 0, 0, spacing / 2],
+			[0, 1, 0, spacing / 2],
+			[0, -1, 0, spacing / 2],
+			[0, 0, 1, spacing / 2],
+			[0, 0, -1, spacing / 2],
+		];
 
-		return minDistance;
-	`;
+		let minDistance = Math.PI;
+		let minIndex = 0;
 
-	getColorGlsl = /* glsl */`
-		${S2xESpheres.distances}
-
-		float wColor = floor((pos.w + .785398) / 1.570796);
-
-		if (minDistance == distance1)
+		for (let i = 0; i < centers.length; i++)
 		{
-			return vec3(
-				.75 + .25 * (.5 * (sin(wColor * 7.0) + 1.0)),
-				.65 * (.5 * (sin(wColor * 11.0) + 1.0)),
-				.65 * (.5 * (sin(wColor * 89.0) + 1.0))
+			const s2Distance = Math.acos(
+				centers[i][0] * this.cameraPos[0]
+				+ centers[i][1] * this.cameraPos[1]
+				+ centers[i][2] * this.cameraPos[2]
 			);
+
+			const e1Distance = Math.abs(cameraPosWModded - centers[i][3]);
+
+			// No need to square root the distance when we're just finding the minimum.
+			const distance = s2Distance * s2Distance + e1Distance * e1Distance;
+
+			if (distance < minDistance)
+			{
+				minDistance = distance;
+				minIndex = i;
+			}
 		}
 
-		if (minDistance == distance2)
+		return centers[minIndex];
+	}
+
+	getNearestCorner()
+	{
+		const spacing = 1.09;
+
+		const cameraPosWModded = (this.cameraPos[3] + spacing / 2) % spacing;
+
+		const oneOverRoot3 = 1 / Math.sqrt(3);
+
+		const corners = [
+			[oneOverRoot3, oneOverRoot3, oneOverRoot3, spacing / 2],
+			[oneOverRoot3, oneOverRoot3, oneOverRoot3, -spacing / 2],
+			[oneOverRoot3, oneOverRoot3, -oneOverRoot3, spacing / 2],
+			[oneOverRoot3, oneOverRoot3, -oneOverRoot3, -spacing / 2],
+			[oneOverRoot3, -oneOverRoot3, oneOverRoot3, spacing / 2],
+			[oneOverRoot3, -oneOverRoot3, oneOverRoot3, -spacing / 2],
+			[oneOverRoot3, -oneOverRoot3, -oneOverRoot3, spacing / 2],
+			[oneOverRoot3, -oneOverRoot3, -oneOverRoot3, -spacing / 2],
+			[-oneOverRoot3, oneOverRoot3, oneOverRoot3, spacing / 2],
+			[-oneOverRoot3, oneOverRoot3, oneOverRoot3, -spacing / 2],
+			[-oneOverRoot3, oneOverRoot3, -oneOverRoot3, spacing / 2],
+			[-oneOverRoot3, oneOverRoot3, -oneOverRoot3, -spacing / 2],
+			[-oneOverRoot3, -oneOverRoot3, oneOverRoot3, spacing / 2],
+			[-oneOverRoot3, -oneOverRoot3, oneOverRoot3, -spacing / 2],
+			[-oneOverRoot3, -oneOverRoot3, -oneOverRoot3, spacing / 2],
+			[-oneOverRoot3, -oneOverRoot3, -oneOverRoot3, -spacing / 2]
+		];
+
+		let minDistance = Math.PI;
+		let minIndex = 0;
+
+		for (let i = 0; i < corners.length; i++)
 		{
-			return vec3(
-				.65 * (.5 * (sin(wColor * 7.0) + 1.0)),
-				.75 + .25 * (.5 * (sin(wColor * 11.0) + 1.0)),
-				.65 * (.5 * (sin(wColor * 89.0) + 1.0))
+			const s2Distance = Math.acos(
+				corners[i][0] * this.cameraPos[0]
+				+ corners[i][1] * this.cameraPos[1]
+				+ corners[i][2] * this.cameraPos[2]
 			);
+
+			const e1Distance = Math.abs(cameraPosWModded - corners[i][3]);
+
+			// No need to square root the distance when we're just finding the minimum.
+			const distance = s2Distance * s2Distance + e1Distance * e1Distance;
+
+			if (distance < minDistance)
+			{
+				minDistance = distance;
+				minIndex = i;
+			}
 		}
 
-		if (minDistance == distance3)
-		{
-			return vec3(
-				.65 * (.5 * (sin(wColor * 7.0) + 1.0)),
-				.65 * (.5 * (sin(wColor * 11.0) + 1.0)),
-				.75 + .25 * (.5 * (sin(wColor * 17.0) + 1.0))
-			);
-		}
-
-		if (minDistance == distance4)
-		{
-			return vec3(
-				.75 + .25 * (.5 * (sin(wColor * 7.0) + 1.0)),
-				.75 + .25 * (.5 * (sin(wColor * 11.0) + 1.0)),
-				.65 * (.5 * (sin(wColor * 17.0) + 1.0))
-			);
-		}
-
-		if (minDistance == distance5)
-		{
-			return vec3(
-				.88 + .12 * (.5 * (sin(wColor * 7.0) + 1.0)),
-				.88 + .12 * (.5 * (sin(wColor * 11.0) + 1.0)),
-				.88 + .12 * (.5 * (sin(wColor * 17.0) + 1.0))
-			);
-		}
-	`;
-
-	lightGlsl = /* glsl */`
-		// This is very weird, but it fixes an issue where the north and south poles
-		// of spheres had dots of incorrect lighting.
-		pos.xyz /= 1.001;
-		surfaceNormal = getSurfaceNormal(pos);
-
-		float spacing = 1.570796;
-
-		vec4 lightDirection1 = normalize(vec4(0.0, 2.0, 2.0, 2.5) - vec4(pos.xyz, mod(pos.w + spacing / 2.0, spacing) - spacing / 2.0));
-		float dotProduct1 = dot(surfaceNormal, lightDirection1);
-
-		vec4 lightDirection2 = normalize(vec4(2.0, 0.0, -2.0, 2.5) - vec4(pos.xyz, mod(pos.w + spacing / 2.0, spacing) - spacing / 2.0));
-		float dotProduct2 = dot(surfaceNormal, lightDirection2);
-
-		float lightIntensity = 1.3 * max(dotProduct1, dotProduct2);
-	`;
-
-	cameraPos = [0, 0, -1, 0];
-	normalVec = [0, 0, -1, 0];
-	upVec = [0, 0, 0, 1];
-	rightVec = [0, 1, 0, 0];
-	forwardVec = [1, 0, 0, 0];
+		return corners[minIndex];
+	}
 }

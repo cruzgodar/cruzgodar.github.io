@@ -99,6 +99,9 @@ export class S3Axes extends S3Geometry
 export class S3Rooms extends S3Geometry
 {
 	static distances = /* glsl */`
+		float minRoomDistance = 1000000.0;
+		float minSphereDistance = 1000000.0;
+
 		float acosX = acos(pos.x);
 		float acosNegX = pi - acosX;
 		float acosY = acos(pos.y);
@@ -108,28 +111,53 @@ export class S3Rooms extends S3Geometry
 		float acosW = acos(pos.w);
 		float acosNegW = pi - acosW;
 
-		float effectiveWallThickness = wallThickness + sceneTransition * .125 / .75;
-		float distance1 = effectiveWallThickness - acosX;
-		float distance2 = effectiveWallThickness - acosNegX;
-		float distance3 = effectiveWallThickness - acosY;
-		float distance4 = effectiveWallThickness - acosNegY;
-		float distance5 = effectiveWallThickness - acosZ;
-		float distance6 = effectiveWallThickness - acosNegZ;
-		float distance7 = effectiveWallThickness - acosW;
-		float distance8 = effectiveWallThickness - acosNegW;
+		float roomDistance1 = maxT * 2.0;
+		float roomDistance2 = maxT * 2.0;
+		float roomDistance3 = maxT * 2.0;
+		float roomDistance4 = maxT * 2.0;
+		float roomDistance5 = maxT * 2.0;
+		float roomDistance6 = maxT * 2.0;
+		float roomDistance7 = maxT * 2.0;
+		float roomDistance8 = maxT * 2.0;
 
-		float effectiveRadius = .3 - .3 / .75 * (1.0 - sceneTransition);
-		float distance2_1 = acosX - effectiveRadius;
-		float distance2_2 = acosNegX - effectiveRadius;
-		float distance2_3 = acosY - effectiveRadius;
-		float distance2_4 = acosNegY - effectiveRadius;
-		float distance2_5 = acosZ - effectiveRadius;
-		float distance2_6 = acosNegZ - effectiveRadius;
-		float distance2_7 = acosW - effectiveRadius;
+		if (sceneTransition < 1.0)
+		{
+			float effectiveWallThickness = wallThickness + sceneTransition * .125 / .75;
+			roomDistance1 = effectiveWallThickness - acosX;
+			roomDistance2 = effectiveWallThickness - acosNegX;
+			roomDistance3 = effectiveWallThickness - acosY;
+			roomDistance4 = effectiveWallThickness - acosNegY;
+			roomDistance5 = effectiveWallThickness - acosZ;
+			roomDistance6 = effectiveWallThickness - acosNegZ;
+			roomDistance7 = effectiveWallThickness - acosW;
+			roomDistance8 = effectiveWallThickness - acosNegW;
 
-		float minDistance1 = ${getMaxGlslString("distance", 8)};
-		float minDistance2 = ${getMinGlslString("distance2_", 7)};
-		float minDistance = min(minDistance1, minDistance2);
+			minRoomDistance = ${getMaxGlslString("roomDistance", 8)};
+		}
+
+		float sphereDistance1 = maxT * 2.0;
+		float sphereDistance2 = maxT * 2.0;
+		float sphereDistance3 = maxT * 2.0;
+		float sphereDistance4 = maxT * 2.0;
+		float sphereDistance5 = maxT * 2.0;
+		float sphereDistance6 = maxT * 2.0;
+		float sphereDistance7 = maxT * 2.0;
+
+		if (sceneTransition > 0.0)
+		{
+			float effectiveRadius = .3 - .3 / .75 * (1.0 - sceneTransition);
+			sphereDistance1 = acosX - effectiveRadius;
+			sphereDistance2 = acosNegX - effectiveRadius;
+			sphereDistance3 = acosY - effectiveRadius;
+			sphereDistance4 = acosNegY - effectiveRadius;
+			sphereDistance5 = acosZ - effectiveRadius;
+			sphereDistance6 = acosNegZ - effectiveRadius;
+			sphereDistance7 = acosW - effectiveRadius;
+
+			minSphereDistance = ${getMinGlslString("sphereDistance", 7)};
+		}
+		
+		float minDistance = min(minRoomDistance, minSphereDistance);
 	`;
 
 	distanceEstimatorGlsl = /* glsl */`
@@ -143,7 +171,7 @@ export class S3Rooms extends S3Geometry
 
 		float variation = .075;
 
-		if (minDistance == distance1)
+		if (minDistance == roomDistance1)
 		{
 			return vec3(
 				.85 + .15 * (.5 * (sin((variation * pos.y) * 17.0) + 1.0)),
@@ -152,7 +180,7 @@ export class S3Rooms extends S3Geometry
 			);
 		}
 
-		if (minDistance == distance2)
+		if (minDistance == roomDistance2)
 		{
 			return vec3(
 				.5 * (.5 * (sin((variation * pos.y) * 17.0) + 1.0)),
@@ -161,7 +189,7 @@ export class S3Rooms extends S3Geometry
 			);
 		}
 
-		if (minDistance == distance3)
+		if (minDistance == roomDistance3)
 		{
 			return vec3(
 				.5 * (.5 * (sin((variation * pos.x) * 17.0) + 1.0)),
@@ -170,7 +198,7 @@ export class S3Rooms extends S3Geometry
 			);
 		}
 
-		if (minDistance == distance4)
+		if (minDistance == roomDistance4)
 		{
 			return vec3(
 				.85 + .15 * (.5 * (sin((variation * pos.x) * 17.0) + 1.0)),
@@ -179,7 +207,7 @@ export class S3Rooms extends S3Geometry
 			);
 		}
 
-		if (minDistance == distance5)
+		if (minDistance == roomDistance5)
 		{
 			return vec3(
 				.5 * (.5 * (sin((variation * pos.x) * 17.0) + 1.0)),
@@ -188,7 +216,7 @@ export class S3Rooms extends S3Geometry
 			);
 		}
 
-		if (minDistance == distance6)
+		if (minDistance == roomDistance6)
 		{
 			return vec3(
 				.85 + .15 * (.5 * (sin((variation * pos.x) * 17.0) + 1.0)),
@@ -197,7 +225,7 @@ export class S3Rooms extends S3Geometry
 			);
 		}
 
-		if (minDistance == distance7)
+		if (minDistance == roomDistance7)
 		{
 			return vec3(
 				.5 + .15 * (.5 * (sin((variation * pos.x) * 17.0) + 1.0)),
@@ -206,7 +234,7 @@ export class S3Rooms extends S3Geometry
 			);
 		}
 
-		if (minDistance == distance8)
+		if (minDistance == roomDistance8)
 		{
 			return vec3(
 				.65 + .35 * (.5 * (sin((variation * pos.x) * 17.0) + 1.0)),
@@ -215,32 +243,32 @@ export class S3Rooms extends S3Geometry
 			);
 		}
 
-		if (minDistance == distance2_1)
+		if (minDistance == sphereDistance1)
 		{
 			return vec3(1.0, 0.0, 0.0) * getBanding(pos.x + pos.y + pos.z + pos.w, 10.0);
 		}
 
-		if (minDistance == distance2_2)
+		if (minDistance == sphereDistance2)
 		{
 			return vec3(0.0, 1.0, 1.0) * getBanding(pos.x + pos.y + pos.z + pos.w, 10.0);
 		}
 
-		if (minDistance == distance2_3)
+		if (minDistance == sphereDistance3)
 		{
 			return vec3(0.0, 1.0, 0.0) * getBanding(pos.x + pos.y + pos.z + pos.w, 10.0);
 		}
 
-		if (minDistance == distance2_4)
+		if (minDistance == sphereDistance4)
 		{
 			return vec3(1.0, 0.0, 1.0) * getBanding(pos.x + pos.y + pos.z + pos.w, 10.0);
 		}
 
-		if (minDistance == distance2_5)
+		if (minDistance == sphereDistance5)
 		{
 			return vec3(0.0, 0.0, 1.0) * getBanding(pos.x + pos.y + pos.z + pos.w, 10.0);
 		}
 
-		if (minDistance == distance2_6)
+		if (minDistance == sphereDistance6)
 		{
 			return vec3(1.0, 1.0, 0.0) * getBanding(pos.x + pos.y + pos.z + pos.w, 10.0);
 		}
@@ -308,49 +336,8 @@ export class S3Rooms extends S3Geometry
 		this.sliderValues.wallThickness = .35;
 	}
 
-	getRelocatedCameraPos(newSceneTransition)
+	getNearestCenter()
 	{
-		// Rooms to spheres.
-		if (newSceneTransition === 1)
-		{
-			const corners = [
-				[.5, .5, .5, .5],
-				[.5, .5, .5, -.5],
-				[.5, .5, -.5, .5],
-				[.5, .5, -.5, -.5],
-				[.5, -.5, .5, .5],
-				[.5, -.5, .5, -.5],
-				[.5, -.5, -.5, .5],
-				[.5, -.5, -.5, -.5],
-				[-.5, .5, .5, .5],
-				[-.5, .5, .5, -.5],
-				[-.5, .5, -.5, .5],
-				[-.5, .5, -.5, -.5],
-				[-.5, -.5, .5, .5],
-				[-.5, -.5, .5, -.5],
-				[-.5, -.5, -.5, .5],
-				[-.5, -.5, -.5, -.5]
-			];
-
-			let minDistance = Math.PI;
-			let minIndex = 0;
-
-			for (let i = 0; i < corners.length; i++)
-			{
-				const distance = Math.acos(ThurstonGeometry.dotProduct(
-					corners[i], this.cameraPos
-				));
-
-				if (distance < minDistance)
-				{
-					minDistance = distance;
-					minIndex = i;
-				}
-			}
-
-			return corners[minIndex];
-		}
-		
 		const centers = [
 			[1, 0, 0, 0],
 			[-1, 0, 0, 0],
@@ -379,6 +366,46 @@ export class S3Rooms extends S3Geometry
 		}
 
 		return centers[minIndex];
+	}
+
+	getNearestCorner()
+	{
+		const corners = [
+			[.5, .5, .5, .5],
+			[.5, .5, .5, -.5],
+			[.5, .5, -.5, .5],
+			[.5, .5, -.5, -.5],
+			[.5, -.5, .5, .5],
+			[.5, -.5, .5, -.5],
+			[.5, -.5, -.5, .5],
+			[.5, -.5, -.5, -.5],
+			[-.5, .5, .5, .5],
+			[-.5, .5, .5, -.5],
+			[-.5, .5, -.5, .5],
+			[-.5, .5, -.5, -.5],
+			[-.5, -.5, .5, .5],
+			[-.5, -.5, .5, -.5],
+			[-.5, -.5, -.5, .5],
+			[-.5, -.5, -.5, -.5]
+		];
+
+		let minDistance = Math.PI;
+		let minIndex = 0;
+
+		for (let i = 0; i < corners.length; i++)
+		{
+			const distance = Math.acos(ThurstonGeometry.dotProduct(
+				corners[i], this.cameraPos
+			));
+
+			if (distance < minDistance)
+			{
+				minDistance = distance;
+				minIndex = i;
+			}
+		}
+
+		return corners[minIndex];
 	}
 }
 
