@@ -341,18 +341,18 @@ export class S2xERooms extends S2xEGeometry
 		const cameraPosWModded = (this.cameraPos[3] + spacing / 2) % spacing;
 
 		const centers = [
-			[1, 0, 0, -spacing / 2],
-			[-1, 0, 0, -spacing / 2],
-			[0, 1, 0, -spacing / 2],
-			[0, -1, 0, -spacing / 2],
-			[0, 0, 1, -spacing / 2],
-			[0, 0, -1, -spacing / 2],
-			[1, 0, 0, spacing / 2],
-			[-1, 0, 0, spacing / 2],
-			[0, 1, 0, spacing / 2],
-			[0, -1, 0, spacing / 2],
-			[0, 0, 1, spacing / 2],
-			[0, 0, -1, spacing / 2],
+			[1, 0, 0, -spacing],
+			[-1, 0, 0, -spacing],
+			[0, 1, 0, -spacing],
+			[0, -1, 0, -spacing],
+			[0, 0, 1, -spacing],
+			[0, 0, -1, -spacing],
+			[1, 0, 0, spacing],
+			[-1, 0, 0, spacing],
+			[0, 1, 0, spacing],
+			[0, -1, 0, spacing],
+			[0, 0, 1, spacing],
+			[0, 0, -1, spacing],
 		];
 
 		let minDistance = Math.PI;

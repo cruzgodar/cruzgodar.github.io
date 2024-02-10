@@ -270,6 +270,7 @@ export function load()
 	function setUpS2Demo()
 	{
 		$(".sliders").style.display = "none";
+		$("#switch-scene-button").parentNode.style.display = "none";
 
 		const geometryDataE3 = new E3S2Demo();
 
