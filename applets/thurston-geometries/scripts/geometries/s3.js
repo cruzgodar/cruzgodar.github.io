@@ -294,7 +294,7 @@ export class S3Rooms extends S3Geometry
 		gl.uniform1f(uniformList["wallThickness"], wallThickness);
 	}
 
-	uiElementsUsed = "#wall-thickness-slider";
+	uiElementsUsed = "#wall-thickness-slider, #switch-scene-button";
 
 	initUI()
 	{

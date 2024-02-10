@@ -83,7 +83,7 @@ export function load()
 			? "s2-dots"
 			: sceneSelectorDropdownElement.value;
 		
-		const alwaysShown = "#fov-slider, #test-slider";
+		const alwaysShown = "#fov-slider, #test-slider, #download-button";
 
 		$$(`.info-text:not(#${value}-text)`)
 			.forEach(element => element.style.display = "none");
@@ -110,8 +110,14 @@ export function load()
 		
 		const elementsToHide = Array.from(
 			geometryData.uiElementsUsed
-				? $$(`.slider-container > input:not(${alwaysShown}, ${geometryData.uiElementsUsed})`)
-				: $$(`.slider-container > input:not(${alwaysShown})`)
+				? $$(`
+					.slider-container > input:not(${alwaysShown}, ${geometryData.uiElementsUsed}),
+					.text-button:not(.dropdown, ${alwaysShown}, ${geometryData.uiElementsUsed})
+				`)
+				: $$(`
+					.slider-container > input:not(${alwaysShown}),
+					.text-button:not(.dropdown, ${alwaysShown})
+				`)
 		).map(element => element.parentNode);
 
 		elementsToShow.forEach(element => element.style.display = "");

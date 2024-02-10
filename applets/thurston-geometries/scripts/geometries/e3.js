@@ -135,7 +135,7 @@ export class E3Rooms extends E3Geometry
 		gl.uniform1f(uniformList["wallThickness"], wallThickness);
 	}
 
-	uiElementsUsed = "#wall-thickness-slider";
+	uiElementsUsed = "#wall-thickness-slider, #switch-scene-button";
 
 	initUI()
 	{

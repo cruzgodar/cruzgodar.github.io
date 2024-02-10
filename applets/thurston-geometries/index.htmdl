@@ -20,21 +20,21 @@ As always, this applet was made with <a href="/projects/wilson/">Wilson</a>. It 
 	s3-hopf-fibration "$S^3$: Hopf Fibration"
 
 	h3-axes "$\mathbb{H}^3$: Axes"
-	h3-rooms "$\mathbb{H}^3$: Rooms"
+	h3-rooms "$\mathbb{H}^3$"
 
 	s2xe-axes "$S^2 \times \mathbb{E}$: Axes"
 	s2xe-rooms "$S^2 \times \mathbb{E}$: Rooms"
 	s2xe-spheres "$S^2 \times \mathbb{E}$: Spheres"
 
 	h2xe-axes "$\mathbb{H}^2 \times \mathbb{E}$: Axes"
-	h2xe-rooms "$\mathbb{H}^2 \times \mathbb{E}$: Rooms"
+	h2xe-rooms "$\mathbb{H}^2 \times \mathbb{E}$"
 
 	nil-axes "Nil: Axes"
 	nil-rooms "Nil: Rooms"
 	nil-spheres "Nil: Spheres"
 
 	sl2r-axes "$\widetilde{\operatorname{SL}}(2, \mathbb{R})$: Axes"
-	sl2r-rooms "$\widetilde{\operatorname{SL}}(2, \mathbb{R})$: Rooms"
+	sl2r-rooms "$\widetilde{\operatorname{SL}}(2, \mathbb{R})$"
 
 	sol-axes "Sol: Axes"
 	sol-rooms "Sol: Rooms"
