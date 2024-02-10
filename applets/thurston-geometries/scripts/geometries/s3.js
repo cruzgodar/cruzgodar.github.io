@@ -122,6 +122,8 @@ export class S3Rooms extends S3Geometry
 
 		if (sceneTransition < 1.0)
 		{
+			float scale = exp(max(sceneTransition - 0.8, 0.0) * 5.0);
+
 			float effectiveWallThickness = wallThickness + sceneTransition * .125 / .75;
 			roomDistance1 = effectiveWallThickness - acosX;
 			roomDistance2 = effectiveWallThickness - acosNegX;
@@ -132,7 +134,7 @@ export class S3Rooms extends S3Geometry
 			roomDistance7 = effectiveWallThickness - acosW;
 			roomDistance8 = effectiveWallThickness - acosNegW;
 
-			minRoomDistance = ${getMaxGlslString("roomDistance", 8)};
+			minRoomDistance = ${getMaxGlslString("roomDistance", 8)} * scale;
 		}
 
 		float sphereDistance1 = maxT * 2.0;
@@ -145,6 +147,8 @@ export class S3Rooms extends S3Geometry
 
 		if (sceneTransition > 0.0)
 		{
+			float scale = exp(max(0.2 - sceneTransition, 0.0) * 5.0);
+
 			float effectiveRadius = .3 - .3 / .75 * (1.0 - sceneTransition);
 			sphereDistance1 = acosX - effectiveRadius;
 			sphereDistance2 = acosNegX - effectiveRadius;
@@ -154,7 +158,7 @@ export class S3Rooms extends S3Geometry
 			sphereDistance6 = acosNegZ - effectiveRadius;
 			sphereDistance7 = acosW - effectiveRadius;
 
-			minSphereDistance = ${getMinGlslString("sphereDistance", 7)};
+			minSphereDistance = ${getMinGlslString("sphereDistance", 7)} * scale;
 		}
 		
 		float minDistance = min(minRoomDistance, minSphereDistance);

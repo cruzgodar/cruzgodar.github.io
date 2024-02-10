@@ -128,6 +128,8 @@ export class S2xERooms extends S2xEGeometry
 
 		if (sceneTransition < 1.0)
 		{
+			float scale = exp(max(sceneTransition - 0.8, 0.0) * 5.0);
+
 			float effectiveWallThickness = wallThickness + sceneTransition * .225 / .75;
 
 			roomDistance1 = effectiveWallThickness - length(vec2(acosX, modPosW));
@@ -137,7 +139,7 @@ export class S2xERooms extends S2xEGeometry
 			roomDistance5 = effectiveWallThickness - length(vec2(acosZ, modPosW));
 			roomDistance6 = effectiveWallThickness - length(vec2(acosNegZ, modPosW));
 
-			minRoomDistance = ${getMaxGlslString("roomDistance", 6)};
+			minRoomDistance = ${getMaxGlslString("roomDistance", 6)} * scale;
 		}
 
 		float sphereDistance1 = maxT * 2.0;
@@ -148,6 +150,8 @@ export class S2xERooms extends S2xEGeometry
 
 		if (sceneTransition > 0.0)
 		{
+			float scale = exp(max(0.2 - sceneTransition, 0.0) * 5.0);
+
 			float effectiveRadius = .3 - .3 / .75 * (1.0 - sceneTransition);
 
 			sphereDistance1 = length(vec2(acosX, modPosW)) - effectiveRadius;
@@ -156,7 +160,7 @@ export class S2xERooms extends S2xEGeometry
 			sphereDistance4 = length(vec2(acosNegY, modPosW)) - effectiveRadius;
 			sphereDistance5 = length(vec2(acosZ, modPosW)) - effectiveRadius;
 
-			minSphereDistance = ${getMinGlslString("sphereDistance", 5)};
+			minSphereDistance = ${getMinGlslString("sphereDistance", 5)} * scale;
 		}
 
 		float minDistance = min(minRoomDistance, minSphereDistance);

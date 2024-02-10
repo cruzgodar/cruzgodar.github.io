@@ -72,14 +72,20 @@ export class E3Rooms extends E3Geometry
 
 		if (sceneTransition < 1.0)
 		{
+			float scale = exp(max(sceneTransition - 0.8, 0.0) * 5.0);
+
 			float effectiveWallThickness = wallThickness + sceneTransition * .471 / .75;
-			roomDistance = effectiveWallThickness - length(mod(pos.xyz, 2.0) - vec3(1.0, 1.0, 1.0));
+
+			roomDistance = (effectiveWallThickness - length(mod(pos.xyz, 2.0) - vec3(1.0, 1.0, 1.0))) * scale;
 		}
 
 		if (sceneTransition > 0.0)
 		{
+			float scale = exp(max(0.2 - sceneTransition, 0.0) * 5.0);
+
 			float effectiveRadius = .5 - .5 / .75 * (1.0 - sceneTransition);
-			sphereDistance = length(mod(pos.xyz, 2.0) - vec3(1.0, 1.0, 1.0)) - effectiveRadius;
+
+			sphereDistance = (length(mod(pos.xyz, 2.0) - vec3(1.0, 1.0, 1.0)) - effectiveRadius) * scale;
 		}
 		
 		float minDistance = min(roomDistance, sphereDistance);
