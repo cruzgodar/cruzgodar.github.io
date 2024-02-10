@@ -5,7 +5,7 @@ import { H3Axes, H3Rooms, H3Spheres } from "./geometries/h3.js";
 import { NilAxes, NilRooms, NilSpheres } from "./geometries/nil.js";
 import { E3S2Demo, S2xES2Demo } from "./geometries/s2.js";
 import { S2xEAxes, S2xERooms, S2xESpheres } from "./geometries/s2xe.js";
-import { S3Axes, S3HopfFibration, S3Rooms, S3Spheres } from "./geometries/s3.js";
+import { S3Axes, S3HopfFibration, S3Rooms } from "./geometries/s3.js";
 import { SL2RAxes, SL2RRooms } from "./geometries/sl2r.js";
 import { SolAxes, SolRooms, SolSpheres } from "./geometries/sol.js";
 import anime from "/scripts/anime.js";
@@ -34,7 +34,6 @@ export function load()
 
 		"s3-axes": S3Axes,
 		"s3-rooms": S3Rooms,
-		"s3-spheres": S3Spheres,
 		"s3-hopf-fibration": S3HopfFibration,
 
 		"h3-axes": H3Axes,
@@ -64,7 +63,8 @@ export function load()
 
 	if (!window.DEBUG)
 	{
-		$$("[data-option-name$=axes]").forEach(element => element.style.display = "none");
+		$$("[data-option-name$=axes], [data-option-name=s3-hopf-fibration]")
+			.forEach(element => element.style.display = "none");
 	}
 
 	if (currentlyTouchDevice)
@@ -83,7 +83,7 @@ export function load()
 			? "s2-dots"
 			: sceneSelectorDropdownElement.value;
 		
-		const alwaysShown = "#fov-slider";
+		const alwaysShown = "#fov-slider, #test-slider";
 
 		$$(`.info-text:not(#${value}-text)`)
 			.forEach(element => element.style.display = "none");
@@ -203,6 +203,10 @@ export function load()
 					]
 				);
 
+				applet.geometryData.normalVec = applet.geometryData.getNormalVec(
+					applet.geometryData.cameraPos
+				);
+
 				applet.geometryData.correctVectors();
 
 				applet.needNewFrame = true;
@@ -229,6 +233,16 @@ export function load()
 			duration: 500,
 			easing: "easeInOutSine",
 		});
+	});
+
+	const testSliderElement = $("#test-slider");
+	const testSliderValueElement = $("#test-slider-value");
+
+	testSliderElement.addEventListener("input", () =>
+	{
+		applet.geometryData.sliderValues.sceneTransition =
+		parseFloat(testSliderValueElement.textContent);
+		applet.needNewFrame = true;
 	});
 
 

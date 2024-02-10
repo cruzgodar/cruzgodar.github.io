@@ -1,5 +1,5 @@
 import { ThurstonGeometry } from "../class.js";
-import { BaseGeometry, getColorGlslString, getMinGlslString } from "./base.js";
+import { BaseGeometry, getColorGlslString, getMaxGlslString, getMinGlslString } from "./base.js";
 import { $ } from "/scripts/src/main.js";
 
 class S3Geometry extends BaseGeometry
@@ -99,22 +99,43 @@ export class S3Axes extends S3Geometry
 export class S3Rooms extends S3Geometry
 {
 	static distances = /* glsl */`
-		float distance1 = acos(pos.x) - wallThickness;
-		float distance2 = acos(-pos.x) - wallThickness;
-		float distance3 = acos(pos.y) - wallThickness;
-		float distance4 = acos(-pos.y) - wallThickness;
-		float distance5 = acos(pos.z) - wallThickness;
-		float distance6 = acos(-pos.z) - wallThickness;
-		float distance7 = acos(pos.w) - wallThickness;
-		float distance8 = acos(-pos.w) - wallThickness;
+		float acosX = acos(pos.x);
+		float acosNegX = pi - acosX;
+		float acosY = acos(pos.y);
+		float acosNegY = pi - acosY;
+		float acosZ = acos(pos.z);
+		float acosNegZ = pi - acosZ;
+		float acosW = acos(pos.w);
+		float acosNegW = pi - acosW;
 
-		float minDistance = ${getMinGlslString("distance", 8)};
+		float effectiveWallThickness = wallThickness + sceneTransition * .125 / .75;
+		float distance1 = effectiveWallThickness - acosX;
+		float distance2 = effectiveWallThickness - acosNegX;
+		float distance3 = effectiveWallThickness - acosY;
+		float distance4 = effectiveWallThickness - acosNegY;
+		float distance5 = effectiveWallThickness - acosZ;
+		float distance6 = effectiveWallThickness - acosNegZ;
+		float distance7 = effectiveWallThickness - acosW;
+		float distance8 = effectiveWallThickness - acosNegW;
+
+		float effectiveRadius = .3 - .3 / .75 * (1.0 - sceneTransition);
+		float distance2_1 = acosX - effectiveRadius;
+		float distance2_2 = acosNegX - effectiveRadius;
+		float distance2_3 = acosY - effectiveRadius;
+		float distance2_4 = acosNegY - effectiveRadius;
+		float distance2_5 = acosZ - effectiveRadius;
+		float distance2_6 = acosNegZ - effectiveRadius;
+		float distance2_7 = acosW - effectiveRadius;
+
+		float minDistance1 = ${getMaxGlslString("distance", 8)};
+		float minDistance2 = ${getMinGlslString("distance2_", 7)};
+		float minDistance = min(minDistance1, minDistance2);
 	`;
 
 	distanceEstimatorGlsl = /* glsl */`
 		${S3Rooms.distances}
 
-		return -minDistance;
+		return minDistance;
 	`;
 
 	getColorGlsl = /* glsl */`
@@ -184,12 +205,47 @@ export class S3Rooms extends S3Geometry
 				.85 + .15 * (.5 * (sin((variation * pos.z) * 29.0) + 1.0))
 			);
 		}
-		
-		return vec3(
-			.65 + .35 * (.5 * (sin((variation * pos.x) * 17.0) + 1.0)),
-			.65 + .35 * (.5 * (sin((variation * pos.y) * 23.0) + 1.0)),
-			.65 + .35 * (.5 * (sin((variation * pos.z) * 29.0) + 1.0))
-		);
+
+		if (minDistance == distance8)
+		{
+			return vec3(
+				.65 + .35 * (.5 * (sin((variation * pos.x) * 17.0) + 1.0)),
+				.65 + .35 * (.5 * (sin((variation * pos.y) * 23.0) + 1.0)),
+				.65 + .35 * (.5 * (sin((variation * pos.z) * 29.0) + 1.0))
+			);
+		}
+
+		if (minDistance == distance2_1)
+		{
+			return vec3(1.0, 0.0, 0.0) * getBanding(pos.x + pos.y + pos.z + pos.w, 10.0);
+		}
+
+		if (minDistance == distance2_2)
+		{
+			return vec3(0.0, 1.0, 1.0) * getBanding(pos.x + pos.y + pos.z + pos.w, 10.0);
+		}
+
+		if (minDistance == distance2_3)
+		{
+			return vec3(0.0, 1.0, 0.0) * getBanding(pos.x + pos.y + pos.z + pos.w, 10.0);
+		}
+
+		if (minDistance == distance2_4)
+		{
+			return vec3(1.0, 0.0, 1.0) * getBanding(pos.x + pos.y + pos.z + pos.w, 10.0);
+		}
+
+		if (minDistance == distance2_5)
+		{
+			return vec3(0.0, 0.0, 1.0) * getBanding(pos.x + pos.y + pos.z + pos.w, 10.0);
+		}
+
+		if (minDistance == distance2_6)
+		{
+			return vec3(1.0, 1.0, 0.0) * getBanding(pos.x + pos.y + pos.z + pos.w, 10.0);
+		}
+
+		return vec3(1.0, 1.0, 1.0) * getBanding(pos.x + pos.y + pos.z + pos.w, 10.0);
 	`;
 
 	lightGlsl = /* glsl */`
@@ -199,7 +255,21 @@ export class S3Rooms extends S3Geometry
 		vec4 lightDirection2 = normalize(vec4(-1.0, -1.0, -1.0, -1.0) - pos);
 		float dotProduct2 = dot(surfaceNormal, lightDirection2);
 
-		float lightIntensity = 4.0 * max(dotProduct1, dotProduct2);
+		float lightIntensity1 = 4.0 * max(dotProduct1, dotProduct2);
+
+
+
+		vec4 lightDirection3 = normalize(vec4(.5, .5, .5, .5) - pos);
+		float dotProduct3 = dot(surfaceNormal, lightDirection3);
+
+		vec4 lightDirection4 = normalize(vec4(-.5, -.5, -.5, -.5) - pos);
+		float dotProduct4 = dot(surfaceNormal, lightDirection4);
+
+		float lightIntensity2 = 1.75 * min(abs(dotProduct3), abs(dotProduct4));
+
+
+
+		float lightIntensity = mix(lightIntensity1, lightIntensity2, sceneTransition);
 	`;
 
 	cameraPos = [0, 0, 0, -1];
@@ -209,16 +279,18 @@ export class S3Rooms extends S3Geometry
 	forwardVec = [0, -1, 0, 0];
 
 	uniformGlsl = /* glsl */`
+		uniform float sceneTransition;
 		uniform float wallThickness;
 	`;
 
-	uniformNames = ["wallThickness"];
+	uniformNames = ["sceneTransition", "wallThickness"];
 
 	updateUniforms(gl, uniformList)
 	{
 		const wallThickness = .97 -
 			(this.sliderValues.wallThickness - (-.15)) / (.35 - (-.15)) * (.97 - .92);
 
+		gl.uniform1f(uniformList["sceneTransition"], this.sliderValues.sceneTransition);
 		gl.uniform1f(uniformList["wallThickness"], wallThickness);
 	}
 
@@ -235,82 +307,80 @@ export class S3Rooms extends S3Geometry
 		wallThicknessSliderValue.textContent = (.35).toFixed(3);
 		this.sliderValues.wallThickness = .35;
 	}
+
+	getRelocatedCameraPos(newSceneTransition)
+	{
+		// Rooms to spheres.
+		if (newSceneTransition === 1)
+		{
+			const corners = [
+				[.5, .5, .5, .5],
+				[.5, .5, .5, -.5],
+				[.5, .5, -.5, .5],
+				[.5, .5, -.5, -.5],
+				[.5, -.5, .5, .5],
+				[.5, -.5, .5, -.5],
+				[.5, -.5, -.5, .5],
+				[.5, -.5, -.5, -.5],
+				[-.5, .5, .5, .5],
+				[-.5, .5, .5, -.5],
+				[-.5, .5, -.5, .5],
+				[-.5, .5, -.5, -.5],
+				[-.5, -.5, .5, .5],
+				[-.5, -.5, .5, -.5],
+				[-.5, -.5, -.5, .5],
+				[-.5, -.5, -.5, -.5]
+			];
+
+			let minDistance = Math.PI;
+			let minIndex = 0;
+
+			for (let i = 0; i < corners.length; i++)
+			{
+				const distance = Math.acos(ThurstonGeometry.dotProduct(
+					corners[i], this.cameraPos
+				));
+
+				if (distance < minDistance)
+				{
+					minDistance = distance;
+					minIndex = i;
+				}
+			}
+
+			return corners[minIndex];
+		}
+		
+		const centers = [
+			[1, 0, 0, 0],
+			[-1, 0, 0, 0],
+			[0, 1, 0, 0],
+			[0, -1, 0, 0],
+			[0, 0, 1, 0],
+			[0, 0, -1, 0],
+			[0, 0, 0, 1],
+			[0, 0, 0, -1]
+		];
+
+		let minDistance = Math.PI;
+		let minIndex = 0;
+
+		for (let i = 0; i < centers.length; i++)
+		{
+			const distance = Math.acos(ThurstonGeometry.dotProduct(
+				centers[i], this.cameraPos
+			));
+
+			if (distance < minDistance)
+			{
+				minDistance = distance;
+				minIndex = i;
+			}
+		}
+
+		return centers[minIndex];
+	}
 }
-
-
-
-export class S3Spheres extends S3Geometry
-{
-	static distances = /* glsl */`
-		float distance1 = abs(acos(pos.x) - .3);
-		float distance2 = abs(acos(-pos.x) - .3);
-		float distance3 = abs(acos(pos.y) - .3);
-		float distance4 = abs(acos(-pos.y) - .3);
-		float distance5 = abs(acos(pos.z) - .3);
-		float distance6 = abs(acos(-pos.z) - .3);
-		float distance7 = abs(acos(pos.w) - .3);
-
-		float minDistance = ${getMinGlslString("distance", 7)};
-	`;
-	distanceEstimatorGlsl = /* glsl */`
-		${S3Spheres.distances}
-
-		return minDistance;
-	`;
-
-	getColorGlsl = /* glsl */`
-		${S3Spheres.distances}
-
-		if (minDistance == distance1)
-		{
-			return vec3(1.0, 0.0, 0.0) * getBanding(pos.x + pos.y + pos.z + pos.w, 10.0);
-		}
-
-		if (minDistance == distance2)
-		{
-			return vec3(0.0, 1.0, 1.0) * getBanding(pos.x + pos.y + pos.z + pos.w, 10.0);
-		}
-
-		if (minDistance == distance3)
-		{
-			return vec3(0.0, 1.0, 0.0) * getBanding(pos.x + pos.y + pos.z + pos.w, 10.0);
-		}
-
-		if (minDistance == distance4)
-		{
-			return vec3(1.0, 0.0, 1.0) * getBanding(pos.x + pos.y + pos.z + pos.w, 10.0);
-		}
-
-		if (minDistance == distance5)
-		{
-			return vec3(0.0, 0.0, 1.0) * getBanding(pos.x + pos.y + pos.z + pos.w, 10.0);
-		}
-
-		if (minDistance == distance6)
-		{
-			return vec3(1.0, 1.0, 0.0) * getBanding(pos.x + pos.y + pos.z + pos.w, 10.0);
-		}
-
-		return vec3(1.0, 1.0, 1.0) * getBanding(pos.x + pos.y + pos.z + pos.w, 10.0);
-	`;
-
-	lightGlsl = /* glsl */`
-		vec4 lightDirection1 = normalize(vec4(.5, .5, .5, .5) - pos);
-		float dotProduct1 = dot(surfaceNormal, lightDirection1);
-
-		vec4 lightDirection2 = normalize(vec4(-.5, -.5, -.5, -.5) - pos);
-		float dotProduct2 = dot(surfaceNormal, lightDirection2);
-
-		float lightIntensity = 1.2 * min(abs(dotProduct1), abs(dotProduct2));
-	`;
-
-	cameraPos = [0, 0, 0, -1];
-	normalVec = [0, 0, 0, -1];
-	upVec = [0, 0, 1, 0];
-	rightVec = [0, 1, 0, 0];
-	forwardVec = [1, 0, 0, 0];
-}
-
 
 
 function hsvToRgb(h, s, v)

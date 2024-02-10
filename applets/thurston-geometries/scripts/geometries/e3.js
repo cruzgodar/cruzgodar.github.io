@@ -66,9 +66,11 @@ export class E3Axes extends E3Geometry
 export class E3Rooms extends E3Geometry
 {
 	static distances = /* glsl */`
-		float distance1 = -length(mod(pos.xyz, 2.0) - vec3(1.0, 1.0, 1.0)) + wallThickness + sceneTransition * (.471 / .75);
+		float effectiveWallThickness = wallThickness + sceneTransition * .471 / .75;
+		float distance1 = effectiveWallThickness - length(mod(pos.xyz, 2.0) - vec3(1.0, 1.0, 1.0));
 
-		float distance2 = length(mod(pos.xyz, 2.0) - vec3(1.0, 1.0, 1.0)) - (.5 - .251 / .5 * (1.0 - sceneTransition));
+		float effectiveRadius = .5 - .5 / .75 * (1.0 - sceneTransition);
+		float distance2 = length(mod(pos.xyz, 2.0) - vec3(1.0, 1.0, 1.0)) - effectiveRadius;
 		
 		float minDistance = ${getMinGlslString("distance", 2)};
 	`;

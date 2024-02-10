@@ -10,14 +10,13 @@ As always, this applet was made with <a href="/projects/wilson/">Wilson</a>. It 
 
 	none "Scenes"
 
-	s2-dots "$S^2$: Intro"
+	s2-dots "$S^2$"
 	
 	e3-axes "$\mathbb{E}^3$: Axes"
 	e3-rooms "$\mathbb{E}^3$"
 
 	s3-axes "$S^3$: Axes"
-	s3-rooms "$S^3$: Rooms"
-	s3-spheres "$S^3$: Spheres"
+	s3-rooms "$S^3$"
 	s3-hopf-fibration "$S^3$: Hopf Fibration"
 
 	h3-axes "$\mathbb{H}^3$: Axes"
@@ -66,6 +65,7 @@ As always, this applet was made with <a href="/projects/wilson/">Wilson</a>. It 
 
 ### sliders
 	
+	test 0 0 1 "test"
 	wall-thickness 0 0 1 "Wall Thickness"
 
 	fiber-thickness 0 0 1 "Fiber Thickness"
