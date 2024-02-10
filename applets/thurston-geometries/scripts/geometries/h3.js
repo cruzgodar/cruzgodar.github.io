@@ -272,43 +272,40 @@ class H3Geometry extends BaseGeometry
 
 	teleportCamera(rotatedForwardVec, recomputeRotation)
 	{
-		const cosine = Math.cos(this.sliderValues.gluingAngle);
-		const sine = Math.sin(this.sliderValues.gluingAngle);
-
 		const teleportMatrices = [
 			[
 				[2, 0, 0, Math.sqrt(3)],
-				[0, cosine, -sine, 0],
-				[0, sine, cosine, 0],
+				[0, 1, 0, 0],
+				[0, 0, 1, 0],
 				[Math.sqrt(3), 0, 0, 2]
 			],
 			[
 				[2, 0, 0, -Math.sqrt(3)],
-				[0, cosine, sine, 0],
-				[0, -sine, cosine, 0],
+				[0, 1, 0, 0],
+				[0, 0, 1, 0],
 				[-Math.sqrt(3), 0, 0, 2]
 			],
 			[
-				[cosine, 0, -sine, 0],
+				[1, 0, 0, 0],
 				[0, 2, 0, Math.sqrt(3)],
-				[sine, 0, cosine, 0],
+				[0, 0, 1, 0],
 				[0, Math.sqrt(3), 0, 2]
 			],
 			[
-				[cosine, 0, sine, 0],
+				[1, 0, 0, 0],
 				[0, 2, 0, -Math.sqrt(3)],
-				[-sine, 0, cosine, 0],
+				[0, 0, 1, 0],
 				[0, -Math.sqrt(3), 0, 2]
 			],
 			[
-				[cosine, -sine, 0, 0],
-				[sine, cosine, 0, 0],
+				[1, 0, 0, 0],
+				[0, 1, 0, 0],
 				[0, 0, 2, Math.sqrt(3)],
 				[0, 0, Math.sqrt(3), 2]
 			],
 			[
-				[cosine, sine, 0, 0],
-				[-sine, cosine, 0, 0],
+				[1, 0, 0, 0],
+				[0, 1, 0, 0],
 				[0, 0, 2, -Math.sqrt(3)],
 				[0, 0, -Math.sqrt(3), 2]
 			]
