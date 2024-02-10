@@ -65,17 +65,33 @@ export class E3Axes extends E3Geometry
 
 export class E3Rooms extends E3Geometry
 {
-	distanceEstimatorGlsl = /* glsl */`
-		float distance1 = -length(mod(pos.xyz, 2.0) - vec3(1.0, 1.0, 1.0)) + wallThickness;
+	static distances = /* glsl */`
+		float distance1 = -length(mod(pos.xyz, 2.0) - vec3(1.0, 1.0, 1.0)) + wallThickness + sceneTransition * (.471 / .75);
 
-		return distance1;
+		float distance2 = length(mod(pos.xyz, 2.0) - vec3(1.0, 1.0, 1.0)) - (.5 - .251 / .5 * (1.0 - sceneTransition));
+		
+		float minDistance = ${getMinGlslString("distance", 2)};
+	`;
+
+	distanceEstimatorGlsl = /* glsl */`
+		${E3Rooms.distances}
+
+		return minDistance;
 	`;
 
 	getColorGlsl = /* glsl */`
-		return vec3(
-			.25 + .75 * (.5 * (sin(pos.x * 0.75) + 1.0)),
-			.25 + .75 * (.5 * (sin(pos.y * 0.75) + 1.0)),
-			.25 + .75 * (.5 * (sin(pos.z * 0.75) + 1.0))
+		return mix(
+			vec3(
+				.25 + .75 * (.5 * (sin(pos.z * 0.75) + 1.0)),
+				.25 + .75 * (.5 * (sin(pos.x * 0.75) + 1.0)),
+				.25 + .75 * (.5 * (sin((-pos.y + 2.0) * 0.75) + 1.0))
+			),
+			vec3(
+				.25 + .75 * (.5 * (sin(floor(pos.x + .5) * 40.0) + 1.0)),
+				.25 + .75 * (.5 * (sin(floor(pos.y + .5) * 57.0) + 1.0)),
+				.25 + .75 * (.5 * (sin(floor(pos.z + .5) * 89.0) + 1.0))
+			),
+			sceneTransition
 		);
 	`;
 
@@ -83,27 +99,36 @@ export class E3Rooms extends E3Geometry
 		vec4 lightDirection1 = normalize(vec4(1.0, 1.0, 1.0, 1.0) - pos);
 		float dotProduct1 = dot(surfaceNormal, lightDirection1);
 
-		float lightIntensity = (.25 + .75 * dotProduct1 * dotProduct1) * 1.5;
+		float lightIntensity1 = (.25 + .75 * dotProduct1 * dotProduct1) * 1.5;
+
+		vec4 lightDirection2 = normalize(vec4(1.5, -1.5, 0.5, 1.0) - pos);
+		float dotProduct2 = dot(surfaceNormal, lightDirection2);
+
+		float lightIntensity2 = max(dotProduct2, -.5 * dotProduct2) * 1.25;
+
+		float lightIntensity = mix(lightIntensity1, lightIntensity2, sceneTransition);
 	`;
 
-	cameraPos = [1, 1, .75, 1];
+	cameraPos = [1, 1.25, 1, 1];
 	normalVec = [0, 0, 0, 1];
-	upVec = [1, 0, 0, 0];
-	rightVec = [0, 1, 0, 0];
-	forwardVec = [0, 0, -1, 0];
+	upVec = [0, 0, 1, 0];
+	rightVec = [-1, 0, 0, 0];
+	forwardVec = [0, 1, 0, 0];
 
 	movingSpeed = 2;
 
 	uniformGlsl = /* glsl */`
+		uniform float sceneTransition;
 		uniform float wallThickness;
 	`;
 
-	uniformNames = ["wallThickness"];
+	uniformNames = ["sceneTransition", "wallThickness"];
 
 	updateUniforms(gl, uniformList)
 	{
 		const wallThickness = 1.5 - (this.sliderValues.wallThickness + .85) / 2 * .2;
 
+		gl.uniform1f(uniformList["sceneTransition"], this.sliderValues.sceneTransition);
 		gl.uniform1f(uniformList["wallThickness"], wallThickness);
 	}
 
@@ -120,36 +145,33 @@ export class E3Rooms extends E3Geometry
 		wallThicknessSliderValue.textContent = 1.55;
 		this.sliderValues.wallThickness = 1.55;
 	}
-}
 
-export class E3Spheres extends E3Geometry
-{
-	distanceEstimatorGlsl = /* glsl */`
-		float distance1 = length(mod(pos.xyz, 2.0) - vec3(1.0, 1.0, 1.0)) - 0.5;
+	getRelocatedCameraPos(newSceneTransition)
+	{
+		const cameraPosModded = [
+			this.cameraPos[0] % 2,
+			this.cameraPos[1] % 2,
+			this.cameraPos[2] % 2,
+			1
+		];
 
-		return distance1;
-	`;
+		// Rooms to spheres. We'll move the camera to the origin.
+		if (newSceneTransition === 1)
+		{
+			return [
+				this.cameraPos[0] - cameraPosModded[0],
+				this.cameraPos[1] - cameraPosModded[1],
+				this.cameraPos[2] - cameraPosModded[2],
+				1
+			];
+		}
 
-	getColorGlsl = /* glsl */`
-		return vec3(
-			.25 + .75 * (.5 * (sin(floor(pos.x + .5) * 40.0) + 1.0)),
-			.25 + .75 * (.5 * (sin(floor(pos.y + .5) * 57.0) + 1.0)),
-			.25 + .75 * (.5 * (sin(floor(pos.z + .5) * 89.0) + 1.0))
-		);
-	`;
-
-	lightGlsl = /* glsl */`
-		vec4 lightDirection1 = normalize(vec4(1.5, -1.5, 0.5, 1.0) - pos);
-		float dotProduct1 = dot(surfaceNormal, lightDirection1);
-
-		float lightIntensity = max(dotProduct1, -.5 * dotProduct1) * 1.25;
-	`;
-
-	cameraPos = [0, 0, 0, 1];
-	normalVec = [0, 0, 0, 1];
-	upVec = [0, 0, 1, 0];
-	rightVec = [0, 1, 0, 0];
-	forwardVec = [1, 0, 0, 0];
-
-	movingSpeed = 2;
+		// Spheres to rooms. We'll move the camera to [1, 1, 1, 1].
+		return [
+			this.cameraPos[0] - cameraPosModded[0] + 1,
+			this.cameraPos[1] - cameraPosModded[1] + 1,
+			this.cameraPos[2] - cameraPosModded[2] + 1,
+			1
+		];
+	}
 }

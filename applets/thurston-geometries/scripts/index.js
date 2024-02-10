@@ -1,5 +1,5 @@
 import { ThurstonGeometry } from "./class.js";
-import { E3Axes, E3Rooms, E3Spheres } from "./geometries/e3.js";
+import { E3Axes, E3Rooms } from "./geometries/e3.js";
 import { H2xEAxes, H2xERooms } from "./geometries/h2xe.js";
 import { H3Axes, H3Rooms, H3Spheres } from "./geometries/h3.js";
 import { NilAxes, NilRooms, NilSpheres } from "./geometries/nil.js";
@@ -8,7 +8,9 @@ import { S2xEAxes, S2xERooms, S2xESpheres } from "./geometries/s2xe.js";
 import { S3Axes, S3HopfFibration, S3Rooms, S3Spheres } from "./geometries/s3.js";
 import { SL2RAxes, SL2RRooms } from "./geometries/sl2r.js";
 import { SolAxes, SolRooms, SolSpheres } from "./geometries/sol.js";
+import anime from "/scripts/anime.js";
 import { currentlyTouchDevice } from "/scripts/src/interaction.js";
+import { equalizeAppletColumns } from "/scripts/src/layout.js";
 import { showPage } from "/scripts/src/load-page.js";
 import { $, $$ } from "/scripts/src/main.js";
 
@@ -29,7 +31,6 @@ export function load()
 
 		"e3-axes": E3Axes,
 		"e3-rooms": E3Rooms,
-		"e3-spheres": E3Spheres,
 
 		"s3-axes": S3Axes,
 		"s3-rooms": S3Rooms,
@@ -81,6 +82,8 @@ export function load()
 		const value = sceneSelectorDropdownElement.value === "none"
 			? "s2-dots"
 			: sceneSelectorDropdownElement.value;
+		
+		const alwaysShown = "#fov-slider";
 
 		$$(`.info-text:not(#${value}-text)`)
 			.forEach(element => element.style.display = "none");
@@ -101,20 +104,22 @@ export function load()
 
 		const elementsToShow = Array.from(
 			geometryData.uiElementsUsed
-				? $$(`#fov-slider,${geometryData.uiElementsUsed}`)
-				: $$("#fov-slider")
+				? $$(`${alwaysShown},${geometryData.uiElementsUsed}`)
+				: $$(alwaysShown)
 		).map(element => element.parentNode);
 		
 		const elementsToHide = Array.from(
 			geometryData.uiElementsUsed
-				? $$(`.slider-container > input:not(#fov-slider, ${geometryData.uiElementsUsed})`)
-				: $$(".slider-container > input:not(#fov-slider)")
+				? $$(`.slider-container > input:not(${alwaysShown}, ${geometryData.uiElementsUsed})`)
+				: $$(`.slider-container > input:not(${alwaysShown})`)
 		).map(element => element.parentNode);
 
 		elementsToShow.forEach(element => element.style.display = "");
 		$(".sliders").style.display = "";
 
 		elementsToHide.forEach(element => element.style.display = "none");
+
+		setTimeout(() => equalizeAppletColumns(), 0);
 
 		demoCanvasContainer.style.display = "none";
 
@@ -167,6 +172,64 @@ export function load()
 	});
 
 	$$(".slider-container").forEach(element => element.style.display = "none");
+
+	const switchSceneButtonElement = $("#switch-scene-button");
+
+	switchSceneButtonElement.addEventListener("click", () =>
+	{
+		const isRooms = applet.geometryData.sliderValues.sceneTransition === 0;
+
+		const oldSceneTransition = applet.geometryData.sliderValues.sceneTransition;
+		const newSceneTransition = isRooms ? 1 : 0;
+
+		const oldCameraPos = [...applet.geometryData.cameraPos];
+		const newCameraPos = applet.geometryData.getRelocatedCameraPos(newSceneTransition);
+
+		const dummy = { t: 0 };
+
+		anime({
+			targets: dummy,
+			t: 1,
+			duration: 500,
+			easing: "easeInOutSine",
+			update: () =>
+			{
+				applet.geometryData.cameraPos = applet.geometryData.correctPosition(
+					[
+						(1 - dummy.t) * oldCameraPos[0] + dummy.t * newCameraPos[0],
+						(1 - dummy.t) * oldCameraPos[1] + dummy.t * newCameraPos[1],
+						(1 - dummy.t) * oldCameraPos[2] + dummy.t * newCameraPos[2],
+						(1 - dummy.t) * oldCameraPos[3] + dummy.t * newCameraPos[3]
+					]
+				);
+
+				applet.geometryData.correctVectors();
+
+				applet.needNewFrame = true;
+			}
+		});
+
+		anime({
+			targets: dummy,
+			t: 1,
+			duration: 500,
+			easing: "easeInOutQuad",
+			update: () =>
+			{
+				applet.geometryData.sliderValues.sceneTransition =
+					(1 - dummy.t) * oldSceneTransition + dummy.t * newSceneTransition;
+			}
+		});
+
+		
+
+		anime({
+			targets: applet.geometryData.cameraPos,
+
+			duration: 500,
+			easing: "easeInOutSine",
+		});
+	});
 
 
 

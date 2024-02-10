@@ -167,12 +167,13 @@ export function equalizeAppletColumns()
 	// Move elements around.
 	if (midpointIndex < numLeftChildren)
 	{
+		const elementsToMove = [];
+
 		for (let i = midpointIndex; i < numLeftChildren; i++)
 		{
-			leftColumn.children[i].classList.add("move-to-right");
+			leftColumn.children[i].classList.add("moved-to-left");
+			elementsToMove.push(leftColumn.children[i]);
 		}
-
-		const elementsToMove = $$(".move-to-right");
 
 		for (let i = elementsToMove.length - 1; i >= 0; i--)
 		{
@@ -182,12 +183,13 @@ export function equalizeAppletColumns()
 
 	else
 	{
+		const elementsToMove = [];
+
 		for (let i = 0; i < midpointIndex - numLeftChildren; i++)
 		{
-			rightColumn.children[i].classList.add("move-to-left");
+			rightColumn.children[i].classList.add("moved-to-right");
+			elementsToMove.push(rightColumn.children[i]);
 		}
-
-		const elementsToMove = $$(".move-to-left");
 
 		for (let i = 0; i < elementsToMove.length; i++)
 		{
@@ -212,24 +214,24 @@ function destroyAppletColumns()
 
 
 
-	let elementsToMove = $$(".move-to-left");
+	let elementsToMove = $$(".moved-to-left");
 
 	for (let i = elementsToMove.length - 1; i >= 0; i--)
 	{
 		rightColumn.insertBefore(elementsToMove[i], rightColumn.firstElementChild);
 
-		elementsToMove[i].classList.remove("move-to-left");
+		elementsToMove[i].classList.remove("moved-to-left");
 	}
 
 
 
-	elementsToMove = $$(".move-to-right");
+	elementsToMove = $$(".moved-to-right");
 
 	for (let i = 0; i < elementsToMove.length; i++)
 	{
 		leftColumn.appendChild(elementsToMove[i]);
 
-		elementsToMove[i].classList.remove("move-to-right");
+		elementsToMove[i].classList.remove("moved-to-right");
 	}
 
 

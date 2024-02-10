@@ -51,6 +51,11 @@ export class BaseGeometry
 
 	teleportCamera() {}
 
+	getRelocatedCameraPos()
+	{
+		return this.cameraPos;
+	}
+
 	getNormalVec()
 	{
 		// f = w - 1.
@@ -130,7 +135,6 @@ export class BaseGeometry
 
 	uniformGlsl;
 	uniformNames;
-	uniformData = {};
 	updateUniforms() {}
 
 	initUI() {}
@@ -138,9 +142,9 @@ export class BaseGeometry
 	uiElementsUsed = "";
 
 	sliderValues = {
+		sceneTransition: 0,
 		wallThickness: 0,
-		fiberThickness: 0,
-		gluingAngle: 0
+		fiberThickness: 0
 	};
 }
 

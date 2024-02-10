@@ -13,8 +13,7 @@ As always, this applet was made with <a href="/projects/wilson/">Wilson</a>. It 
 	s2-dots "$S^2$: Intro"
 	
 	e3-axes "$\mathbb{E}^3$: Axes"
-	e3-rooms "$\mathbb{E}^3$: Rooms"
-	e3-spheres "$\mathbb{E}^3$: Spheres"
+	e3-rooms "$\mathbb{E}^3$"
 
 	s3-axes "$S^3$: Axes"
 	s3-rooms "$S^3$: Rooms"
@@ -50,6 +49,10 @@ As always, this applet was made with <a href="/projects/wilson/">Wilson</a>. It 
 	A peculiar aspect of $S^2$ geometry is that objects opposite the camera's position, like the purple dot at the bottom of the sphere when the camera is on top, are reached by *every* geodesic that isn't stopped by an earlier object --- that's why we can see the purple dot in our entire field of view behind all the others. In general, objects on the opposite hemisphere as the camera look *larger* the farther away from them we get, resulting in a bizarre sort of depth perception.
 </div>
 
+<div class="info-text" id="e3-rooms-text">
+	Our first geometry is hopefully familiar: it's the one we live in.
+</div>
+
 
 <div id="canvas-landscape">
 
@@ -68,6 +71,12 @@ As always, this applet was made with <a href="/projects/wilson/">Wilson</a>. It 
 	fiber-thickness 0 0 1 "Fiber Thickness"
 
 	fov 100 80 120 "FOV"
+	
+###
+
+### buttons
+	
+	switch-scene -l "Switch Scene"
 	
 ###
 
