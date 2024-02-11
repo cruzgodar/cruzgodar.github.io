@@ -27,33 +27,33 @@ export function load()
 
 	const scenes =
 	{
-		"s2-dots": E3S2Demo,
+		"s2": E3S2Demo,
 
 		"e3-axes": E3Axes,
-		"e3-rooms": E3Rooms,
+		"e3": E3Rooms,
 
 		"s3-axes": S3Axes,
-		"s3-rooms": S3Rooms,
+		"s3": S3Rooms,
 		"s3-hopf-fibration": S3HopfFibration,
 
 		"h3-axes": H3Axes,
-		"h3-rooms": H3Rooms,
+		"h3": H3Rooms,
 		"h3-spheres": H3Spheres,
 
 		"s2xe-axes": S2xEAxes,
-		"s2xe-rooms": S2xERooms,
+		"s2xe": S2xERooms,
 
 		"h2xe-axes": H2xEAxes,
-		"h2xe-rooms": H2xERooms,
+		"h2xe": H2xERooms,
 
 		"sl2r-axes": SL2RAxes,
-		"sl2r-rooms": SL2RRooms,
+		"sl2r": SL2RRooms,
 
 		"nil-axes": NilAxes,
-		"nil-rooms": NilRooms,
+		"nil": NilRooms,
 
 		"sol-axes": SolAxes,
-		"sol-rooms": SolRooms,
+		"sol": SolRooms,
 	};
 
 	const sceneSelectorDropdownElement = $("#scene-selector-dropdown");
@@ -77,7 +77,7 @@ export function load()
 	function run()
 	{
 		const value = sceneSelectorDropdownElement.value === "none"
-			? "s2-dots"
+			? "s2"
 			: sceneSelectorDropdownElement.value;
 		
 		const alwaysShown = "#fov-slider, #download-button";

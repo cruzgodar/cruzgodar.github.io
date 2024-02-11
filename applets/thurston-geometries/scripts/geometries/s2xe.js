@@ -378,7 +378,12 @@ export class S2xERooms extends S2xEGeometry
 			}
 		}
 
-		return centers[minIndex];
+		return [
+			centers[minIndex][0],
+			centers[minIndex][1],
+			centers[minIndex][2],
+			this.cameraPos[3] - cameraPosWModded + centers[minIndex][3]
+		];
 	}
 
 	getNearestCorner()

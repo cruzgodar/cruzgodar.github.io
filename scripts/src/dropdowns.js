@@ -85,22 +85,30 @@ function setUpDropdown(selectElement)
 
 		buttonElement.classList.add("expanded");
 
-		let maxWidth = 0;
-		optionElements.forEach(element =>
+		let maxWidth1 = 0;
+		let maxWidth2 = 0;
+		optionElements.forEach((element, index) =>
 		{
-			maxWidth = Math.max(maxWidth, element.getBoundingClientRect().width);
+			if (index % 2 === 0)
+			{
+				maxWidth1 = Math.max(maxWidth1, element.getBoundingClientRect().width);
+			}
+
+			else
+			{
+				maxWidth2 = Math.max(maxWidth2, element.getBoundingClientRect().width);
+			}
 		});
 
-		if (flexElement.classList.contains("two-column"))
-		{
-			maxWidth *= 2;
-		}
+		const maxWidth = flexElement.classList.contains("two-column")
+			? maxWidth1 + maxWidth2
+			: Math.max(maxWidth1, maxWidth2);
 
 		const openHeight = flexElement.getBoundingClientRect().height + 4;
 		const headerHeight = headerElement.getBoundingClientRect().height;
 		const totalUsableHeight = window.innerHeight - headerHeight - 20;
 
-		const openWidth = maxWidth + 8;
+		const openWidth = maxWidth + 28;
 		const totalUsableWidth = window.innerWidth - 20;
 
 		scale = Math.min(

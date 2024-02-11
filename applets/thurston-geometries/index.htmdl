@@ -8,46 +8,36 @@ As always, this applet was made with <a href="/projects/wilson/">Wilson</a>. It 
 	
 	scene-selector
 
-	none "Scenes"
+	none "Geometries"
 
-	s2-dots "$S^2$"
+	s2 "$S^2$"
 	
 	e3-axes "$\mathbb{E}^3$: Axes"
-	e3-rooms "$\mathbb{E}^3$"
+	e3 "$\mathbb{E}^3$"
 
 	s3-axes "$S^3$: Axes"
-	s3-rooms "$S^3$"
+	s3 "$S^3$"
 	s3-hopf-fibration "$S^3$: Hopf Fibration"
 
 	h3-axes "$\mathbb{H}^3$: Axes"
-	h3-rooms "$\mathbb{H}^3$"
+	h3 "$\mathbb{H}^3$"
 
 	s2xe-axes "$S^2 \times \mathbb{E}$: Axes"
-	s2xe-rooms "$S^2 \times \mathbb{E}$"
+	s2xe "$S^2 \times \mathbb{E}$"
 
 	h2xe-axes "$\mathbb{H}^2 \times \mathbb{E}$: Axes"
-	h2xe-rooms "$\mathbb{H}^2 \times \mathbb{E}$"
+	h2xe "$\mathbb{H}^2 \times \mathbb{E}$"
 
 	nil-axes "Nil: Axes"
-	nil-rooms "Nil"
+	nil "Nil"
 
 	sl2r-axes "$\widetilde{\operatorname{SL}}(2, \mathbb{R})$: Axes"
-	sl2r-rooms "$\widetilde{\operatorname{SL}}(2, \mathbb{R})$"
+	sl2r "$\widetilde{\operatorname{SL}}(2, \mathbb{R})$"
 
 	sol-axes "Sol: Axes"
-	sol-rooms "Sol"
+	sol "Sol"
 
 ###
-
-<div class="info-text" id="s2-dots-text">
-	To prepare for the Thurston geometries themselves, let's visualize the rendering process one dimension lower, when we can still view it from an outside perspective. The top canvas shows the sphere, called $S^2$, with the white dot indicating the location of the camera. The bottom canvas is the 1-dimensional image that it sees --- drag left and right on it to look around. The rays emanating from the camera demonstrate how that image is formed: light travels from the colored dots to the camera along paths of shortest distance, called *geodesics*, which here are circular arcs. For simplicity, we usually think of looking out from the camera along geodesics until we reach an object. Sometimes, the paths don't hit anything and wrap all the way around, in which case we color them black (the camera itself isn't rendered).
-
-	A peculiar aspect of $S^2$ geometry is that objects opposite the camera's position, like the purple dot at the bottom of the sphere when the camera is on top, are reached by *every* geodesic that isn't stopped by an earlier object --- that's why we can see the purple dot in our entire field of view behind all the others. In general, objects on the opposite hemisphere as the camera look *larger* the farther away from them we get, resulting in a bizarre sort of depth perception.
-</div>
-
-<div class="info-text" id="e3-rooms-text">
-	Our first geometry is hopefully familiar: it's the one we live in.
-</div>
 
 
 <div id="canvas-landscape">
@@ -102,4 +92,14 @@ As always, this applet was made with <a href="/projects/wilson/">Wilson</a>. It 
 
 </div>
 
+</div>
+
+<div class="info-text" id="s2-dots-text">
+	To prepare for the Thurston geometries themselves, let's visualize the rendering process one dimension lower, when we can still view it from an outside perspective. The top canvas shows the sphere, called $S^2$, with the white dot indicating the location of the camera. The bottom canvas is the 1-dimensional image that it sees --- drag left and right on it to look around. The rays emanating from the camera demonstrate how that image is formed: light travels from the colored dots to the camera along paths of shortest distance, called *geodesics*, which here are circular arcs. For simplicity, we usually think of looking out from the camera along geodesics until we reach an object. Sometimes, the paths don't hit anything and wrap all the way around, in which case we color them black (the camera itself isn't rendered).
+
+	A peculiar aspect of $S^2$ geometry is that objects opposite the camera's position, like the purple dot at the bottom of the sphere when the camera is on top, are reached by *every* geodesic that isn't stopped by an earlier object --- that's why we can see the purple dot in our entire field of view behind all the others. In general, objects on the opposite hemisphere as the camera look *larger* the farther away from them we get, resulting in a bizarre sort of depth perception.
+</div>
+
+<div class="info-text" id="e3-rooms-text">
+	Our first geometry is hopefully familiar: it's the one we live in.
 </div>
