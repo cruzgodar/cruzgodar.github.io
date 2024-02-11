@@ -63,7 +63,7 @@ export class E3S2Demo extends E3Geometry
 
 		pos.xyz /= 1.001;
 
-		float radius = .5;
+		float radius = .35;
 
 		if (acos(dot(pos.xyz, normalize(vec3(1, 0, 0)))) - radius < 0.0)
 		{
@@ -156,11 +156,13 @@ export class E3S2Demo extends E3Geometry
 export class S2xES2Demo extends S2xEGeometry
 {
 	static distances = /* glsl */`
-		float distance1 = acos(pos.x) - .5;
-		float distance2 = acos(-pos.x) - .5;
-		float distance3 = acos(pos.y) - .5;
-		float distance4 = acos(-pos.y) - .5;
-		float distance5 = acos(-pos.z) - .5;
+		float radius = .35;
+
+		float distance1 = acos(pos.x) - radius;
+		float distance2 = acos(-pos.x) - radius;
+		float distance3 = acos(pos.y) - radius;
+		float distance4 = acos(-pos.y) - radius;
+		float distance5 = acos(-pos.z) - radius;
 
 		float minDistance = ${getMinGlslString("distance", 5)};
 	`;
@@ -216,11 +218,13 @@ export class S2xES2Demo extends S2xEGeometry
 
 	distanceEstimator(pos)
 	{
-		const distance1 = Math.acos(pos[0]) - .49;
-		const distance2 = Math.acos(-pos[0]) - .49;
-		const distance3 = Math.acos(pos[1]) - .49;
-		const distance4 = Math.acos(-pos[1]) - .49;
-		const distance5 = Math.acos(-pos[2]) - .49;
+		const radius = .34;
+
+		const distance1 = Math.acos(pos[0]) - radius;
+		const distance2 = Math.acos(-pos[0]) - radius;
+		const distance3 = Math.acos(pos[1]) - radius;
+		const distance4 = Math.acos(-pos[1]) - radius;
+		const distance5 = Math.acos(-pos[2]) - radius;
 
 		const minDistance = Math.min(
 			Math.min(
@@ -235,11 +239,13 @@ export class S2xES2Demo extends S2xEGeometry
 
 	getColor(pos)
 	{
-		const distance1 = Math.acos(pos[0]) - .5;
-		const distance2 = Math.acos(-pos[0]) - .5;
-		const distance3 = Math.acos(pos[1]) - .5;
-		const distance4 = Math.acos(-pos[1]) - .5;
-		const distance5 = Math.acos(-pos[2]) - .5;
+		const radius = .35;
+
+		const distance1 = Math.acos(pos[0]) - radius;
+		const distance2 = Math.acos(-pos[0]) - radius;
+		const distance3 = Math.acos(pos[1]) - radius;
+		const distance4 = Math.acos(-pos[1]) - radius;
+		const distance5 = Math.acos(-pos[2]) - radius;
 
 		const minDistance = Math.min(
 			Math.min(

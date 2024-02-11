@@ -101,9 +101,9 @@ As always, this applet was made with <a href="/projects/wilson/">Wilson</a>. It 
 </div>
 
 <div class="info-text" id="e3-text">
-	Our first geometry is hopefully pretty familiar: it's the one we live in! In this notation, $\mathbb{E}$ stands for euclidean, so $\mathbb{E}^3$ means that the geometry is euclidean in all directions. The geodesics (the paths of shortest distance that light necessarily travels along) are straight lines, and so everything should look roughly normal. This geometry serves mostly as a control for what to expect in the others: the rooms are cubes with spherical holes cored out of them, and generally are better at demonstrating the local structure of the space, while the spheres are better at demonstrating the global structure.
+	Our first geometry is hopefully pretty familiar: it's the one we live in! In this notation, $#E#$ stands for euclidean, so $#E#^3$ means that the geometry is euclidean in all directions. The geodesics (the paths of shortest distance that light necessarily travels along) are straight lines, and so everything should look roughly normal. This geometry serves mostly as a control for what to expect in the others: the rooms are cubes with spherical holes cored out of them, and generally are better at demonstrating the local structure of the space, while the spheres are better at demonstrating the global structure.
 
-	$\mathbb{E}^3$ is an *isotropic* geometry, which means that it looks the same in every direction. This is something that's easy to take for granted: there's no up or down without gravity, but that's only the case because our universe is isotropic. As we'll see in the later geometries, moving in different directions can have fundamentally different results.
+	$#E#^3$ is an *isotropic* geometry, which means that it looks the same in every direction. This is something that's easy to take for granted: there's no up or down without gravity, but that's only the case because our universe is isotropic. As we'll see in the later geometries, moving in different directions can have fundamentally different results.
 </div>
 
 <div class="info-text" id="s3-text">
@@ -113,7 +113,13 @@ As always, this applet was made with <a href="/projects/wilson/">Wilson</a>. It 
 </div>
 
 <div class="info-text" id="h3-text">
-	The last of the isotropic geometries, $\mathbb{H}^3$ is 3-dimensional *hyperbolic* space. One simple comparison between these first three geometries is to count the number of cubical rooms that fit around a corner by making the wall thickness negative and looking down from above on one of the pointy corners left over. In $\mathbb{E}^3$, there are (of course) four rooms, but in $S^3$, there are only three, and in $\mathbb{H}^3$, there are more than four --- in this model, there are six.
+	The last of the isotropic geometries, $#H#^3$ is 3-dimensional *hyperbolic* space. One simple comparison between these first three geometries is to count the number of cubical rooms that fit around a corner by making the wall thickness negative and looking down from above on one of the pointy corners left over. In $#E#^3$, there are (of course) four rooms, but in $S^3$, there are only three, and in $#H#^3$, there are more than four --- in this model, there are six.
 
-	The geodesics are hyperbolas, so they eventually become close to being straight lines. However, the speed at which they necessarily have to travel makes the effect of moving forward look qualitatively different from moving in $\mathbb{E}^3$ --- it's more akin to zooming in on a picture, and it can feel like the camera is constantly about to crash into a wall. The same goes for moving left and right or up and down: distant rooms look like paintings on a wall instead of spaces with depth.
+	The geodesics are hyperbolas, so they eventually become close to being straight lines. However, the speed at which they necessarily have to travel makes the effect of moving forward look qualitatively different from moving in $#E#^3$ --- it's more akin to zooming in on a picture, and it can feel like the camera is constantly about to crash into a wall. The same goes for moving left and right or up and down: distant rooms look like paintings on a wall instead of spaces with depth.
+</div>
+
+<div class="info-text" id="s2xe-text">
+	The three geometries on simply connected 2-manifolds are $#E#^2$, $S^2$, and $#H#^2$, and we've just seen their direct 3-manifold analogues. If we're trying to produce all 8 geometries, the next-easiest thing to try is taking products of smaller geometries. There's only one possible geometry on a simply connected 1-manifold --- $#E#$ --- and sticking three copies of $#E#$ orthogonally together produces $#E# \times #E# \times #E# = #E#^3$, which we've already dealt with, so we'll need to use a 2-dimensional geometry. We can't use $#E#^2 \times #E#^1$ since that's just $#E#^3$ again, but the other two produce $S^2 \times #E#$ and $#H#^2 \times #E#$: two new geometries.
+
+	Here, the factor of $#E#$ is the vertical axis, so moving only up and down looks like euclidean space. Similarly, moving only laterally looks like $S^3$ (or the intro $S^2$ scene). The effect of antipodal objects filling the entire field of vision in $S^3$ is somehow made even stranger as antipodal spheres fill our view laterally, but we can also look down on them from above.
 </div>

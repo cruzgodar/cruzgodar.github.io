@@ -304,11 +304,11 @@ export class S3Rooms extends S3Geometry
 		float lightIntensity = mix(lightIntensity1, lightIntensity2, sceneTransition);
 	`;
 
-	cameraPos = [0, 0, 0, -1];
-	normalVec = [0, 0, 0, 1];
+	cameraPos = [0, -0.20927, 0, -0.97785];
+	normalVec = [-0, 0.20934, -0, 0.97784];
 	upVec = [0, 0, 1, 0];
 	rightVec = [1, 0, 0, 0];
-	forwardVec = [0, -1, 0, 0];
+	forwardVec = [0, -0.97784, 0, 0.20934];
 
 	uniformGlsl = /* glsl */`
 		uniform float sceneTransition;
