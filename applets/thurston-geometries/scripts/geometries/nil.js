@@ -581,19 +581,56 @@ export class NilAxes extends NilGeometry
 export class NilRooms extends NilGeometry
 {
 	static distances = /* glsl */`
-		// A sphere at the origin (honestly, why would you want it to be anywhere else?)
-		float distance1 = wallThickness - metricToOrigin(pos);
+
+		float distance1 = maxT * 2.0;
+		float distance2 = maxT * 2.0;
+		
+		if (sceneTransition < 1.0)
+		{
+			float scale = exp(max(sceneTransition - 0.8, 0.0) * 5.0);
+
+			float effectiveWallThickness = wallThickness + sceneTransition * .24 / .75;
+
+			distance1 = (effectiveWallThickness - metricToOrigin(pos)) * scale;
+		}
+
+		if (sceneTransition > 0.0)
+		{
+			float scale = exp(max(0.2 - sceneTransition, 0.0) * 5.0);
+
+			float effectiveRadius = .2 - .2 / .75 * (1.0 - sceneTransition);
+
+			distance2 = (metricToOrigin(pos) - effectiveRadius) * scale;
+		}
 
 		// The distance to the x and y teleportation planes is the distance between the projections
 		// to E^2. Unfortunately for our performance, the tolerances really do need to be this tight
 		// to avoid artifacts.
-		float distance2 = abs(pos.x - 0.5002);
-		float distance3 = abs(pos.x + 0.5002);
+		float distance3;
+		float distance4;
+		float distance5;
+		float distance6;
 
-		float distance4 = abs(pos.y - 0.5002);
-		float distance5 = abs(pos.y + 0.5002);
+		if (sceneTransition < 0.75)
+		{
+			distance3 = abs(pos.x - 0.5002);
+			distance4 = abs(pos.x + 0.5002);
 
-		float minDistance = ${getMinGlslString("distance", 5)};
+			distance5 = abs(pos.y - 0.5002);
+			distance6 = abs(pos.y + 0.5002);
+		}
+
+		else
+		{
+			float tolerance = mix(0.5002, 0.5125, (sceneTransition - .75) * 5.0);
+
+			distance3 = abs(pos.x - tolerance);
+			distance4 = abs(pos.x + tolerance);
+			distance5 = abs(pos.y - tolerance);
+			distance6 = abs(pos.y + tolerance);
+		}
+
+		float minDistance = ${getMinGlslString("distance", 6)};
 	`;
 
 	distanceEstimatorGlsl = /* glsl */`
@@ -605,10 +642,18 @@ export class NilRooms extends NilGeometry
 	getColorGlsl = /* glsl */`
 		vec3 roomColor = ${loopRoomColors ? "mod(globalColor + baseColor + vec3(25.0), 50.0) - vec3(25.0)" : "globalColor + baseColor"};
 
-		return vec3(
-			.3 + .7 * (.5 * (sin((.01 * (pos.x + pos.z) + roomColor.x + roomColor.z) * 40.0) + 1.0)),
-			.3 + .7 * (.5 * (sin((.01 * (pos.y + pos.z) + roomColor.y + roomColor.z) * 57.0) + 1.0)),
-			.3 + .7 * (.5 * (sin((.01 * (pos.x + pos.y) + roomColor.x + roomColor.y) * 89.0) + 1.0))
+		return mix(
+			vec3(
+				.3 + .7 * (.5 * (sin((.01 * (pos.x + pos.z) + roomColor.x + roomColor.z) * 40.0) + 1.0)),
+				.3 + .7 * (.5 * (sin((.01 * (pos.y + pos.z) + roomColor.y + roomColor.z) * 57.0) + 1.0)),
+				.3 + .7 * (.5 * (sin((.01 * (pos.x + pos.y) + roomColor.x + roomColor.y) * 89.0) + 1.0))
+			),
+			vec3(
+				.15 + .85 * (.5 * (sin(floor(roomColor.x + .5) * 40.0) + 1.0)),
+				.15 + .85 * (.5 * (sin(floor(roomColor.y + .5) * 57.0) + 1.0)),
+				.15 + .85 * (.5 * (sin(floor(roomColor.z + .5) * 89.0) + 1.0))
+			),
+			sceneTransition
 		);
 	`;
 
@@ -618,8 +663,21 @@ export class NilRooms extends NilGeometry
 		vec4 lightDirection1 = normalize(vec4(1.5, 1.5, 1.5, 1.0) - pos);
 		float dotProduct1 = dot(surfaceNormal, lightDirection1);
 
-		float lightIntensity = (.25 + .75 * dotProduct1 * dotProduct1) * 1.25;
+		float lightIntensity1 = (.25 + .75 * dotProduct1 * dotProduct1) * 1.25;
+
+
+
+		vec4 lightDirection2 = normalize(vec4(1.5, 1.5, 1.5, 1.0) - pos);
+		float dotProduct2 = dot(surfaceNormal, lightDirection2);
+
+		float lightIntensity2 = (.2 + .8 * max(dotProduct2, -dotProduct2)) * 1.15;
+
+
+
+		float lightIntensity = mix(lightIntensity1, lightIntensity2, sceneTransition);
 	`;
+
+	ambientOcclusionDenominator = "mix(300.0, 250.0, sceneTransition)";
 
 	cameraPos = [0, 0, 0, 1];
 	normalVec = [0, 0, 0, 1];
@@ -628,19 +686,21 @@ export class NilRooms extends NilGeometry
 	forwardVec = [0, -1, 0, 0];
 
 	uniformGlsl = /* glsl */`
+		uniform float sceneTransition;
 		uniform float wallThickness;
 		uniform vec3 baseColor;
 	`;
 
-	uniformNames = ["wallThickness", "baseColor"];
+	uniformNames = ["sceneTransition", "wallThickness", "baseColor"];
 
 	updateUniforms(gl, uniformList)
 	{
+		gl.uniform1f(uniformList["sceneTransition"], this.sliderValues.sceneTransition);
 		gl.uniform1f(uniformList["wallThickness"], .703 - this.sliderValues.wallThickness / 10);
 		gl.uniform3fv(uniformList["baseColor"], this.baseColor);
 	}
 
-	uiElementsUsed = "#wall-thickness-slider";
+	uiElementsUsed = "#wall-thickness-slider, #switch-scene-button";
 
 	initUI()
 	{
@@ -654,66 +714,45 @@ export class NilRooms extends NilGeometry
 		this.sliderValues.wallThickness = .78;
 	}
 
-	// movingSpeed = .05;
-}
-
-export class NilSpheres extends NilGeometry
-{
-	static distances = /* glsl */`
-		float distance1 = metricToOrigin(pos) - .2;
-
-		float distance2 = abs(pos.x - 0.515);
-		float distance3 = abs(pos.x + 0.515);
-
-		float distance4 = abs(pos.y - 0.515);
-		float distance5 = abs(pos.y + 0.515);
-
-		float minDistance = ${getMinGlslString("distance", 5)};
-	`;
-
-	distanceEstimatorGlsl = /* glsl */`
-		${NilSpheres.distances}
-
-		return minDistance;
-	`;
-
-	getColorGlsl = /* glsl */`
-		vec3 roomColor = globalColor + baseColor;
-
-		return vec3(
-			.15 + .85 * (.5 * (sin(floor(roomColor.x + .5) * 40.0) + 1.0)),
-			.15 + .85 * (.5 * (sin(floor(roomColor.y + .5) * 57.0) + 1.0)),
-			.15 + .85 * (.5 * (sin(floor(roomColor.z + .5) * 89.0) + 1.0))
-		);
-	`;
-
-	lightGlsl = /* glsl */`
-		surfaceNormal.w = 0.0;
-
-		vec4 lightDirection1 = normalize(vec4(1.5, 1.5, 1.5, 1.0) - pos);
-		float dotProduct1 = dot(surfaceNormal, lightDirection1);
-
-		float lightIntensity = (.2 + .8 * max(dotProduct1, -dotProduct1)) * 1.15;
-	`;
-
-	ambientOcclusionDenominator = "250.0";
-
-	cameraPos = [0.163559, -0.438969, 0.124604, 1];
-	normalVec = [0, 0, 0, 1];
-	upVec = [0, 0, 1, 0];
-	rightVec = [0.0748089, 0.997196, 0, 0];
-	forwardVec = [0.997199, -0.074809, 0, 0];
-
-	baseColor = [-2, 0, -2];
-
-	uniformGlsl = /* glsl */`
-		uniform vec3 baseColor;
-	`;
-
-	uniformNames = ["baseColor"];
-
-	updateUniforms(gl, uniformList)
+	getNearestCenter()
 	{
-		gl.uniform3fv(uniformList["baseColor"], this.baseColor);
+		return [0, 0, 0, 1];
+	}
+
+	getNearestCorner()
+	{
+		const corners = [
+			[.45, .45, .45, 1],
+			[.45, .45, -.45, 1],
+			[.45, -.45, .45, 1],
+			[.45, -.45, -.45, 1],
+			[-.45, .45, .45, 1],
+			[-.45, .45, -.45, 1],
+			[-.45, -.45, .45, 1],
+			[-.45, -.45, -.45, 1]
+		];
+
+		let minDistance = Infinity;
+		let minIndex = 0;
+
+		for (let i = 0; i < corners.length; i++)
+		{
+			const distance = ThurstonGeometry.magnitude(
+				[
+					this.cameraPos[0] - corners[i][0],
+					this.cameraPos[1] - corners[i][1],
+					this.cameraPos[2] - corners[i][2],
+					this.cameraPos[3] - corners[i][3]
+				]
+			);
+
+			if (distance < minDistance)
+			{
+				minDistance = distance;
+				minIndex = i;
+			}
+		}
+
+		return corners[minIndex];
 	}
 }

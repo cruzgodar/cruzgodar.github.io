@@ -2,7 +2,7 @@ import { ThurstonGeometry } from "./class.js";
 import { E3Axes, E3Rooms } from "./geometries/e3.js";
 import { H2xEAxes, H2xERooms } from "./geometries/h2xe.js";
 import { H3Axes, H3Rooms, H3Spheres } from "./geometries/h3.js";
-import { NilAxes, NilRooms, NilSpheres } from "./geometries/nil.js";
+import { NilAxes, NilRooms } from "./geometries/nil.js";
 import { E3S2Demo, S2xES2Demo } from "./geometries/s2.js";
 import { S2xEAxes, S2xERooms } from "./geometries/s2xe.js";
 import { S3Axes, S3HopfFibration, S3Rooms } from "./geometries/s3.js";
@@ -51,7 +51,6 @@ export function load()
 
 		"nil-axes": NilAxes,
 		"nil-rooms": NilRooms,
-		"nil-spheres": NilSpheres,
 
 		"sol-axes": SolAxes,
 		"sol-rooms": SolRooms,
