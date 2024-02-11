@@ -123,3 +123,11 @@ As always, this applet was made with <a href="/projects/wilson/">Wilson</a>. It 
 
 	Here, the factor of $#E#$ is the vertical axis, so moving only up and down looks like euclidean space. Similarly, moving only laterally looks like $S^3$ (or the intro $S^2$ scene). The effect of antipodal objects filling the entire field of vision in $S^3$ is somehow made even stranger as antipodal spheres fill our view laterally, but we can also look down on them from above.
 </div>
+
+<div class="info-text" id="h2xe-text">
+	After seeing $S^2 \times #E#$, there's little more to say about the other product geometry. Something interesting to note, though, is how the zooming effect of $#H#^3$ is largely gone, replaced with something more like the rooms ahead of the camera spreading out laterally as it moves forward, even when moving mostly up or down. In both product geometries, the curvature of the noneuclidean component spills out into the middle space between the two, making it only look euclidean when moving straight up or down.
+</div>
+
+<div class="info-text" id="nil-text">
+	So, why are there more geometries? Going from one dimension to two resulted in two new geometries that didn't exist before ($S^2$ and $#H#^2$), so it's not unreasonable that there would be more 3-dimensional geometries than the five we can form from 2-dimensional ones.
+</div>
