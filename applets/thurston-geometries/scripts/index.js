@@ -119,7 +119,16 @@ export function load()
 
 		elementsToShow.forEach(element => element.style.display = "");
 		$(".sliders").style.display = "";
-		$$(".text-buttons")[1].style.display = "";
+
+		if (value === "h3" || value === "h2xe" || value === "sl2r")
+		{
+			$$(".text-buttons")[1].style.display = "none";
+		}
+
+		else
+		{
+			$$(".text-buttons")[1].style.display = "";
+		}
 
 		elementsToHide.forEach(element => element.style.display = "none");
 
