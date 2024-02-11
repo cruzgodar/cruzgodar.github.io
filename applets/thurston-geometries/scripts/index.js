@@ -119,6 +119,7 @@ export function load()
 
 		elementsToShow.forEach(element => element.style.display = "");
 		$(".sliders").style.display = "";
+		$$(".text-buttons")[1].style.display = "";
 
 		elementsToHide.forEach(element => element.style.display = "none");
 
@@ -258,7 +259,7 @@ export function load()
 	function setUpS2Demo()
 	{
 		$(".sliders").style.display = "none";
-		$("#switch-scene-button").parentNode.style.display = "none";
+		$$(".text-buttons")[1].style.display = "none";
 
 		const geometryDataE3 = new E3S2Demo();
 
