@@ -129,5 +129,25 @@ As always, this applet was made with <a href="/projects/wilson/">Wilson</a>. It 
 </div>
 
 <div class="info-text" id="nil-text">
-	So, why are there more geometries? Going from one dimension to two resulted in two new geometries that didn't exist before ($S^2$ and $#H#^2$), so it's not unreasonable that there would be more 3-dimensional geometries than the five we can form from 2-dimensional ones.
+	So, why are there more geometries? Going from one dimension to two resulted in two new geometries that didn't exist before ($S^2$ and $#H#^2$), so it's not unreasonable that there would be more 3-dimensional geometries than the five we can form from 2-dimensional ones. What we're really after are 3-dimensional *Lie groups* (pronounced "Lee"), which are 3-manifolds with a particularly nice algebraic structure. This construction produces three additional geometries: Nil and Sol, which are named for uniquely-determining properties of a corresponding object called their *Lie algebras* (nilpotence and solvability), and $\widetilde{\operatorname{SL}}(2, \mathbb{R})$, which we'll primarily think of as arising from matrices.
+
+	Let's start with Nil. The geodesics are <a href="https://www.desmos.com/3d/a0820f7dd1">helices</a>, which marks a new phenomenon: the previous five geometries had geodesics without torsion, so although they curved, they never *spiraled*. Objects vertically above or below the camera untwist as we move toward them since the farther away from them we are, the more we have to look at an angle to make the light rays eventually reach them. Looking in a mostly vertical direction with a small horizontal component results in a tight spiral that can flow through the rooms vertically without ever hitting a wall, so we see a large hole looking up instead of the typical series of rooms with a vanishing point. On the other hand, looking in a mostly horizontal direction produces geodesics that flow horizontally for a while before eventually lifting up vertically in a shallow helix. The result is distant horizontal objects appearing squished and translated vertically: there are fewer directions to look in that reach them than normal, and the ones that do require us to account for the twisting.
+</div>
+
+<div class="info-text" id="sl2r-text">
+	To a very rough approximation, Nil acts like $#E#^3$, but if the geodesics were helices spiraling vertically. In a similar way, this geometry acts like an analogous construction on $#H#^2 \times #E#$. This <a href="https://www.desmos.com/3d/5c3b0e07a1">Desmos graph</a> shows similar behavior to Nil, but it now needs quite a bit more interpretation: the $xy$-plane has been projected from $#H#^2$, so straight horizontal lines are actually hyperbolic geodesics.
+
+	To actually construct this space, we start with $2 \times 2$ matrices with determinant 1, i.e. those of the form
+
+	$$
+		[[ a, b ; c, d ]],\quad ad - bc = 1.
+	$$
+
+	Multiplying two of these matrices produces a third since the determinant is multiplicative, and so the set of all of these matrices forms a structure called a group, denoted $\operatorname{SL}(2, #R#)$. Since we have four variables and one relation between them, it's a 3-manifold curved in 4-dimensional space --- a great candidate for a Thurston geometry! Unfortunately, it's not simply connected: its structure turns out to be the hyperbolic plane $#H#^2$ with a circle attached to every point, and those circles are exactly the holes we need to avoid. However, a topological construction called a *universal cover* lets us construct a space that removes the holes in a unique way, turning the circles into lines. The result is no longer a collection of matrices, but it is a new geometry, denoted $\widetilde{\operatorname{SL}}(2, #R#)$.
+
+	This space is *very* twisted, to the extent that moving just a single room up or down rotates by $120^\circ$. The effects of that twisting are largely the same as in Nil: we see large voids when looking up or down since light can spiral forever without hitting anything, and distant horizontal objects are sheared, becoming squished and translated. But now we also have the additional confusion of the horizontal directions being hyperbolic, so there's a staggering amount of material there to be twisted.
+</div>
+
+<div class="info-text" id="sol-text">
+	Our final
 </div>

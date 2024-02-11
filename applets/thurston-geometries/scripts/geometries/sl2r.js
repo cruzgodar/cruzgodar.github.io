@@ -1114,9 +1114,9 @@ export class SL2RRooms extends SL2RGeometry
 		const wallThicknessSliderValue = $("#wall-thickness-slider-value");
 
 		wallThicknessSlider.min = .05;
-		wallThicknessSlider.max = 0.2;
-		wallThicknessSlider.value = 0.2;
-		wallThicknessSliderValue.textContent = 0.2;
-		this.sliderValues.wallThickness = 0.2;
+		wallThicknessSlider.max = 0.175;
+		wallThicknessSlider.value = 0.175;
+		wallThicknessSliderValue.textContent = 0.175;
+		this.sliderValues.wallThickness = 0.175;
 	}
 }
