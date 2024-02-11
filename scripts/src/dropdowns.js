@@ -100,7 +100,7 @@ function setUpDropdown(selectElement)
 		const headerHeight = headerElement.getBoundingClientRect().height;
 		const totalUsableHeight = window.innerHeight - headerHeight - 20;
 
-		const openWidth = maxWidth + 29.75 - 14;
+		const openWidth = maxWidth + 8;
 		const totalUsableWidth = window.innerWidth - 20;
 
 		scale = Math.min(

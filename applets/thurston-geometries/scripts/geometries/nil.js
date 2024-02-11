@@ -581,7 +581,6 @@ export class NilAxes extends NilGeometry
 export class NilRooms extends NilGeometry
 {
 	static distances = /* glsl */`
-
 		float distance1 = maxT * 2.0;
 		float distance2 = maxT * 2.0;
 		

@@ -7,7 +7,7 @@ import { E3S2Demo, S2xES2Demo } from "./geometries/s2.js";
 import { S2xEAxes, S2xERooms } from "./geometries/s2xe.js";
 import { S3Axes, S3HopfFibration, S3Rooms } from "./geometries/s3.js";
 import { SL2RAxes, SL2RRooms } from "./geometries/sl2r.js";
-import { SolAxes, SolRooms, SolSpheres } from "./geometries/sol.js";
+import { SolAxes, SolRooms } from "./geometries/sol.js";
 import anime from "/scripts/anime.js";
 import { currentlyTouchDevice } from "/scripts/src/interaction.js";
 import { equalizeAppletColumns } from "/scripts/src/layout.js";
@@ -54,7 +54,6 @@ export function load()
 
 		"sol-axes": SolAxes,
 		"sol-rooms": SolRooms,
-		"sol-spheres": SolSpheres
 	};
 
 	const sceneSelectorDropdownElement = $("#scene-selector-dropdown");
@@ -81,7 +80,7 @@ export function load()
 			? "s2-dots"
 			: sceneSelectorDropdownElement.value;
 		
-		const alwaysShown = "#fov-slider, #test-slider, #download-button";
+		const alwaysShown = "#fov-slider, #download-button";
 
 		$$(`.info-text:not(#${value}-text)`)
 			.forEach(element => element.style.display = "none");
@@ -239,16 +238,6 @@ export function load()
 			duration: 500,
 			easing: "easeInOutSine",
 		});
-	});
-
-	const testSliderElement = $("#test-slider");
-	const testSliderValueElement = $("#test-slider-value");
-
-	testSliderElement.addEventListener("input", () =>
-	{
-		applet.geometryData.sliderValues.sceneTransition =
-		parseFloat(testSliderValueElement.textContent);
-		applet.needNewFrame = true;
 	});
 
 

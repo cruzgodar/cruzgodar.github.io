@@ -35,8 +35,7 @@ As always, this applet was made with <a href="/projects/wilson/">Wilson</a>. It 
 	sl2r-rooms "$\widetilde{\operatorname{SL}}(2, \mathbb{R})$"
 
 	sol-axes "Sol: Axes"
-	sol-rooms "Sol: Rooms"
-	sol-spheres "Sol: Spheres"
+	sol-rooms "Sol"
 
 ###
 
@@ -63,7 +62,6 @@ As always, this applet was made with <a href="/projects/wilson/">Wilson</a>. It 
 
 ### sliders
 	
-	test 0 0 1 "test"
 	wall-thickness 0 0 1 "Wall Thickness"
 
 	fiber-thickness 0 0 1 "Fiber Thickness"
