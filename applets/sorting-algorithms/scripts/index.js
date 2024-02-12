@@ -1,6 +1,7 @@
 import { showPage } from "../../../scripts/src/loadPage.js";
 import { SortingAlgorithm } from "./class.js";
 import { Applet } from "/scripts/src/applets.js";
+import { Button, DownloadButton } from "/scripts/src/buttons.js";
 import { $, $$ } from "/scripts/src/main.js";
 
 export function load()
@@ -12,6 +13,18 @@ export function load()
 		canvas: $("#output-canvas"),
 		numReadsElement,
 		numWritesElement
+	});
+
+	new Button({
+		element: $("#generate-button"),
+		name: "Sort",
+		onClick: run
+	});
+
+	new DownloadButton({
+		element: $("#download-button"),
+		wilson: applet.wilson,
+		filename: "a-sorting-algorithm.png"
 	});
 
 
@@ -35,12 +48,6 @@ export function load()
 
 
 
-	const generateButtonElement = $("#generate-button");
-
-	generateButtonElement.addEventListener("click", run);
-
-
-
 	const resolutionInputElement = $("#resolution-input");
 
 	const arraySizeInputElement = $("#array-size-input");
@@ -52,15 +59,6 @@ export function load()
 	const playSoundCheckboxElement = $("#play-sound-checkbox");
 
 	playSoundCheckboxElement.checked = true;
-
-
-
-	const downloadButtonElement = $("#download-button");
-
-	downloadButtonElement.addEventListener("click", () =>
-	{
-		applet.wilson.downloadFrame("a-sorting-algorithm.png");
-	});
 
 
 

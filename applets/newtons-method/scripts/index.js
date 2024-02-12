@@ -1,6 +1,6 @@
 import { showPage } from "../../../scripts/src/loadPage.js";
 import { NewtonsMethod } from "./class.js";
-import { Button, DownloadButton } from "/scripts/src/buttons.js";
+import { Button, DownloadButton, ToggleButton } from "/scripts/src/buttons.js";
 import { $ } from "/scripts/src/main.js";
 
 export function load()
@@ -18,6 +18,14 @@ export function load()
 		rootAInputElement,
 		rootBInputElement,
 		colorSetterElement
+	});
+
+	new ToggleButton({
+		element: $("#switch-method-button"),
+		name0: "Switch to Secant Method",
+		name1: "Switch to Newton's Method",
+		onClick0: () => applet.switchMethod(),
+		onClick1: () => applet.switchMethod()
 	});
 
 	new Button({
@@ -64,10 +72,7 @@ export function load()
 	});
 
 
-
-
-
-
+	
 	function setRoot()
 	{
 		const x = parseFloat(rootAInputElement.value || 0);

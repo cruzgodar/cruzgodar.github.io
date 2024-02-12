@@ -1,12 +1,13 @@
 import { showPage } from "../../../scripts/src/loadPage.js";
 import { QuasiFuchsianGroups } from "./class.js";
+import { GenerateButton } from "/scripts/src/buttons.js";
 import { $ } from "/scripts/src/main.js";
 
 export function load()
 {
 	const applet = new QuasiFuchsianGroups({ canvas: $("#output-canvas") });
 
-
+	
 
 	const resolutionInputElement = $("#resolution-input");
 
@@ -31,7 +32,19 @@ export function load()
 		]
 	);
 
+	new GenerateButton({
+		element: $("#generate-button"),
+		onClick: async () =>
+		{
+			const imageSize = parseInt(highResolutionInputElement.value || 1000);
+			const maxDepth = parseInt(maxDepthInputElement.value || 250);
+			const maxPixelBrightness = parseInt(maxPixelBrightnessInputElement.value || 50);
 
+			await applet.requestHighResFrame(imageSize, maxDepth, maxPixelBrightness);
+
+			applet.wilson.downloadFrame("a-quasi-fuchsian-group.png");
+		}
+	});
 
 	resolutionInputElement.addEventListener("input", () =>
 	{
@@ -47,13 +60,7 @@ export function load()
 
 	generateButtonElement.addEventListener("click", async () =>
 	{
-		const imageSize = parseInt(highResolutionInputElement.value || 1000);
-		const maxDepth = parseInt(maxDepthInputElement.value || 250);
-		const maxPixelBrightness = parseInt(maxPixelBrightnessInputElement.value || 50);
-
-		await applet.requestHighResFrame(imageSize, maxDepth, maxPixelBrightness);
-
-		applet.wilson.downloadFrame("a-quasi-fuchsian-group.png");
+		
 	});
 
 

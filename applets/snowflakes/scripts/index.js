@@ -1,12 +1,11 @@
 import { showPage } from "../../../scripts/src/loadPage.js";
 import { Snowflake } from "./class.js";
+import { Button, DownloadButton, GenerateButton } from "/scripts/src/buttons.js";
 import { $ } from "/scripts/src/main.js";
 
 export function load()
 {
 	const applet = new Snowflake({ canvas: $("#output-canvas") });
-
-
 
 	const resolutionInputElement = $("#resolution-input");
 	const computationsPerFrameInputElement = $("#computations-per-frame-input");
@@ -20,35 +19,45 @@ export function load()
 
 	applet.setInputCaps([resolutionInputElement, computationsPerFrameInputElement], [1000, 20]);
 
-
-
-	const randomizeParametersButtonElement = $("#randomize-parameters-button");
-
-	randomizeParametersButtonElement.addEventListener("click", () =>
-	{
-		rhoInputElement.value = Math.round((.3 + (.6 - .3) * Math.random()) * 100000) / 100000;
-		betaInputElement.value = Math.round((.9 + (1.7 - .9) * Math.random()) * 100000) / 100000;
-		alphaInputElement.value = Math.round((.2 + (.6 - .2) * Math.random()) * 100000) / 100000;
-		thetaInputElement.value = Math.round((.01 + (.05 - .01) * Math.random()) * 100000) / 100000;
-		kappaInputElement.value = Math.round((0 + (.01 - 0) * Math.random()) * 100000) / 100000;
-		muInputElement.value = Math.round((0 + (.065 - 0) * Math.random()) * 100000) / 100000;
-		muInputElement.value = Math.round((0 + (.05 - 0) * Math.random()) * 100000) / 100000;
+	new GenerateButton({
+		element: $("#generate-button"),
+		onClick: run
 	});
 
+	new Button({
+		element: $("#randomize-parameters-button"),
+		name: "Randomize Parameters",
+		onClick: () =>
+		{
+			rhoInputElement.value = Math.round(
+				(.3 + (.6 - .3) * Math.random()
+				) * 100000) / 100000;
+			betaInputElement.value = Math.round(
+				(.9 + (1.7 - .9) * Math.random()
+				) * 100000) / 100000;
+			alphaInputElement.value = Math.round(
+				(.2 + (.6 - .2) * Math.random()
+				) * 100000) / 100000;
+			thetaInputElement.value = Math.round(
+				(.01 + (.05 - .01) * Math.random()
+				) * 100000) / 100000;
+			kappaInputElement.value = Math.round(
+				(0 + (.01 - 0) * Math.random()
+				) * 100000) / 100000;
+			muInputElement.value = Math.round(
+				(0 + (.065 - 0) * Math.random()
+				) * 100000) / 100000;
+			muInputElement.value = Math.round(
+				(0 + (.05 - 0) * Math.random()
+				) * 100000) / 100000;
+		}
+	});
 
-
-	const generateButtonElement = $("#generate-button");
-
-	generateButtonElement.addEventListener("click", run);
-
-
-
-	const downloadButtonElement = $("#download-button");
-
-	downloadButtonElement.addEventListener(
-		"click",
-		() => applet.wilson.downloadFrame("a-gravner-griffeath-snowflake.png")
-	);
+	new DownloadButton({
+		element: $("#download-button"),
+		wilson: applet.wilson,
+		filename: "a-gravner-griffeath-snowflake.png"
+	});
 
 
 

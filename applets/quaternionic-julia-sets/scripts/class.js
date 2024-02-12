@@ -1,13 +1,10 @@
 import anime from "/scripts/anime.js";
-import { changeOpacity } from "/scripts/src/animation.js";
 import { RaymarchApplet } from "/scripts/src/applets.js";
 import { aspectRatio } from "/scripts/src/layout.js";
 import { Wilson } from "/scripts/wilson.js";
 
 export class QuaternionicJuliaSet extends RaymarchApplet
 {
-	switchBulbButtonElement = null;
-
 	cameraPos = [-1.11619, -2.63802, 1.67049];
 	c = [-.54, -.25, -.668];
 	lightPos = [-5, -5, 5];
@@ -16,17 +13,9 @@ export class QuaternionicJuliaSet extends RaymarchApplet
 
 
 
-	constructor(
-		canvas,
-		switchBulbButtonElement,
-	) {
+	constructor({ canvas })
+	{
 		super(canvas);
-
-
-
-		this.switchBulbButtonElement = switchBulbButtonElement;
-
-
 
 		const fragShaderSource = `
 			precision highp float;
@@ -572,32 +561,13 @@ export class QuaternionicJuliaSet extends RaymarchApplet
 			return;
 		}
 
-
-
 		const oldJuliaProportion = this.juliaProportion;
 		const newJuliaProportion = 1 - this.juliaProportion;
-
-		if (this.switchBulbButtonElement)
-		{
-			changeOpacity(this.switchBulbButtonElement, 0)
-				.then(() =>
-				{
-					this.switchBulbButtonElement.textContent = oldJuliaProportion === 0
-						? "Switch to Mandelbrot Set"
-						: "Switch to Julia Set";
-
-					changeOpacity(this.switchBulbButtonElement, 1);
-				});
-		}
-
-
 
 		if (this.juliaProportion === 0)
 		{
 			this.wilson.gl.uniform3fv(this.wilson.uniforms["c"], this.c);
 		}
-
-
 
 		const dummy = { t: 0 };
 

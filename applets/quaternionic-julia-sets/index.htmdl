@@ -29,9 +29,7 @@ The controls are the same as in the Mandelbulb applet. While changing $c$, use t
 ###
 
 ### buttons
-
-	switch-bulb -l "Switch to Mandelbrot Set"
-	
+	switch-bulb
 ###
 
 </div>
@@ -49,7 +47,7 @@ The controls are the same as in the Mandelbulb applet. While changing $c$, use t
 <div id="canvas-landscape-right">
 
 ### buttons
-	download -l "Download"
+	download
 ###
 
 </div>

@@ -46,5 +46,5 @@ Popularized in the book <a href="https://en.m.wikipedia.org/wiki/Indra%27s_Pearl
 ###
 
 ### buttons
-	generate -l "Generate"
+	generate
 ###

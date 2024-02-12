@@ -17,7 +17,6 @@ home Cruz Godar
 		complex-maps Complex Maps
 		lyapunov-fractals Lyapunov Fractals
 		newtons-method-extended Newton's Method, Extended
-		secant-method The Secant Method
 		quasi-fuchsian-groups Quasi-Fuchsian Groups
 		the-mandelbulb The Mandelbulb
 		kaleidoscopic-ifs-fractals Kaleidoscopic IFS Fractals

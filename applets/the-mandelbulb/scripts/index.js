@@ -1,7 +1,6 @@
 import { showPage } from "../../../scripts/src/loadPage.js";
 import { Mandelbulb } from "./class.js";
-import { changeOpacity, opacityAnimationTime } from "/scripts/src/animation.js";
-import { equalizeTextButtons } from "/scripts/src/buttons.js";
+import { Button, ToggleButton } from "/scripts/src/buttons.js";
 import { $ } from "/scripts/src/main.js";
 
 export function load()
@@ -28,6 +27,37 @@ export function load()
 		canvas: $("#output-canvas"),
 	});
 
+	new ToggleButton({
+		element: $("#switch-bulb-button"),
+		name0: "Switch to Juliabulb",
+		name1: "Return to Mandelbulb",
+		onClick0: () => applet.switchBulb(),
+		onClick1: () => applet.switchBulb()
+	});
+
+	new Button({
+		element: $("#download-button"),
+		name: "Download",
+		onClick: () =>
+		{
+			applet.wilson.gl.uniform1i(applet.wilson.uniforms["maxMarches"], 1024);
+			applet.wilson.gl.uniform1f(applet.wilson.uniforms["stepFactor"], 12);
+
+			if (applet.juliaProportion < .5)
+			{
+				applet.wilson.downloadFrame("the-mandelbulb.png");
+			}
+
+			else
+			{
+				applet.wilson.downloadFrame("a-juliabulb.png");
+			}
+
+			applet.wilson.gl.uniform1i(applet.wilson.uniforms["maxMarches"], applet.maxMarches);
+			applet.wilson.gl.uniform1f(applet.wilson.uniforms["stepFactor"], 1);
+		}
+	});
+
 
 
 	const resolutionInputElement = $("#resolution-input");
@@ -50,29 +80,6 @@ export function load()
 
 
 
-	const downloadButtonElement = $("#download-button");
-
-	downloadButtonElement.addEventListener("click", () =>
-	{
-		applet.wilson.gl.uniform1i(applet.wilson.uniforms["maxMarches"], 1024);
-		applet.wilson.gl.uniform1f(applet.wilson.uniforms["stepFactor"], 12);
-
-		if (applet.juliaProportion < .5)
-		{
-			applet.wilson.downloadFrame("the-mandelbulb.png");
-		}
-
-		else
-		{
-			applet.wilson.downloadFrame("a-juliabulb.png");
-		}
-
-		applet.wilson.gl.uniform1i(applet.wilson.uniforms["maxMarches"], applet.maxMarches);
-		applet.wilson.gl.uniform1f(applet.wilson.uniforms["stepFactor"], 1);
-	});
-
-
-
 	const powerSliderElement = $("#power-slider");
 	const powerSliderValueElement = $("#power-slider-value");
 
@@ -88,18 +95,6 @@ export function load()
 	];
 
 	elements.forEach(element => element.addEventListener("input", updateParameters));
-
-
-
-	const switchBulbButtonElement = $("#switch-bulb-button");
-
-	switchBulbButtonElement.style.opacity = 1;
-
-	switchBulbButtonElement.addEventListener("click", switchBulb);
-
-
-
-	equalizeTextButtons();
 
 
 
@@ -127,31 +122,5 @@ export function load()
 		applet.wilson.gl.uniform1i(applet.wilson.uniforms["maxIterations"], applet.maxIterations);
 
 		applet.updateRotationMatrix();
-	}
-
-
-
-	function switchBulb()
-	{
-		changeOpacity(switchBulbButtonElement, 0);
-
-		setTimeout(() =>
-		{
-			if (applet.juliaProportion < .5)
-			{
-				switchBulbButtonElement.textContent = "Switch to Mandelbulb";
-			}
-
-			else
-			{
-				switchBulbButtonElement.textContent = "Switch to Juliabulb";
-			}
-
-			equalizeTextButtons();
-
-			changeOpacity(switchBulbButtonElement, 1);
-		}, opacityAnimationTime);
-
-		applet.switchBulb();
 	}
 }

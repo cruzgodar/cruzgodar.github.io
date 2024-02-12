@@ -59,7 +59,6 @@ export const sitemap =
 			"/applets/complex-maps/",
 			"/applets/lyapunov-fractals/",
 			"/applets/newtons-method-extended/",
-			"/applets/secant-method/",
 			"/applets/quasi-fuchsian-groups/",
 			"/applets/the-mandelbulb/",
 			"/applets/kaleidoscopic-ifs-fractals/",
@@ -255,19 +254,6 @@ export const sitemap =
 	"/applets/newtons-method-extended/":
 	{
 		"title": "Newton's Method, Extended",
-		
-		"parent": "/applets/",
-		
-		"children": [],
-
-		"customScript": true,
-
-		"customStyle": true
-	},
-	
-	"/applets/secant-method/":
-	{
-		"title": "The Secant Method",
 		
 		"parent": "/applets/",
 		

@@ -11,7 +11,7 @@ Maybe I should have started with this applet before building that one, but the u
 <div id="canvas-landscape-left">
 
 ### buttons
-	generate -l "Generate"
+	generate
 ###
 
 </div>
@@ -31,7 +31,7 @@ Maybe I should have started with this applet before building that one, but the u
 <div id="canvas-landscape-right">
 
 ### buttons
-	download -l "Download"
+	download
 ###
 
 </div>

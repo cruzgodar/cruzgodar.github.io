@@ -28,6 +28,8 @@ export class NewtonsMethod extends Applet
 
 	numIterations = 100;
 
+	secantProportion = 0;
+
 	pastBrightnessScales = [];
 
 	resolution = 500;
@@ -76,6 +78,8 @@ export class NewtonsMethod extends Applet
 			uniform vec2 c;
 			
 			uniform float brightnessScale;
+
+			uniform float secantProportion;
 			
 			const float derivativePrecision = 6.0;
 			
@@ -148,7 +152,11 @@ export class NewtonsMethod extends Applet
 				
 				for (int iteration = 0; iteration < 100; iteration++)
 				{
-					vec2 temp = cmul(cmul(cpoly(z), cinv(cderiv(z))), a) + c;
+					vec2 temp = mix(
+						cmul(cmul(cpoly(z), cinv(cderiv(z))), a) + c,
+						cmul(cmul(cpoly(z), cmul(z - lastZ, cinv(cpoly(z) - cpoly(lastZ)))), a) + c,
+						secantProportion
+					);
 					
 					lastZ = z;
 					
@@ -260,7 +268,8 @@ export class NewtonsMethod extends Applet
 			"colors",
 			"a",
 			"c",
-			"brightnessScale"
+			"brightnessScale",
+			"secantProportion"
 		]);
 
 
@@ -277,7 +286,8 @@ export class NewtonsMethod extends Applet
 			"colors",
 			"a",
 			"c",
-			"brightnessScale"
+			"brightnessScale",
+			"secantProportion"
 		]);
 
 
@@ -363,6 +373,26 @@ export class NewtonsMethod extends Applet
 		this.wilsonHidden.gl.uniform3fv(this.wilsonHidden.uniforms["colors"], this.colors);
 
 		window.requestAnimationFrame(this.drawFrame.bind(this));
+	}
+
+
+
+	switchMethod()
+	{
+		const dummy = { t: this.secantProportion };
+
+		const newSecantProportion = this.secantProportion === 0 ? 1 : 0;
+
+		anime({
+			targets: dummy,
+			t: newSecantProportion,
+			duration: 1000,
+			easing: "easeInOutQuad",
+			update: () =>
+			{
+				this.secantProportion = dummy.t;
+			}
+		});
 	}
 
 
@@ -681,6 +711,11 @@ export class NewtonsMethod extends Applet
 			30
 		);
 
+		this.wilsonHidden.gl.uniform1f(
+			this.wilsonHidden.uniforms["secantProportion"],
+			this.secantProportion
+		);
+
 		this.wilsonHidden.render.drawFrame();
 
 
@@ -766,6 +801,11 @@ export class NewtonsMethod extends Applet
 		this.wilson.gl.uniform1f(
 			this.wilson.uniforms["brightnessScale"],
 			brightnessScale
+		);
+
+		this.wilson.gl.uniform1f(
+			this.wilson.uniforms["secantProportion"],
+			this.secantProportion
 		);
 
 		this.wilson.render.drawFrame();

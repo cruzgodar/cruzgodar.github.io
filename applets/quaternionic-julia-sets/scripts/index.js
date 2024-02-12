@@ -1,5 +1,6 @@
 import { showPage } from "../../../scripts/src/loadPage.js";
 import { QuaternionicJuliaSet } from "./class.js";
+import { Button, ToggleButton } from "/scripts/src/buttons.js";
 import { $ } from "/scripts/src/main.js";
 
 export function load()
@@ -12,18 +13,32 @@ export function load()
 	const cYSliderValueElement = $("#c-y-slider-value");
 	const cZSliderValueElement = $("#c-z-slider-value");
 
-	const switchBulbButtonElement = $("#switch-bulb-button");
+	const applet = new QuaternionicJuliaSet({ canvas: $("#output-canvas") });
 
-	const applet = new QuaternionicJuliaSet(
-		$("#output-canvas"),
-		switchBulbButtonElement,
-		cXSliderElement,
-		cYSliderElement,
-		cZSliderElement,
-		cXSliderValueElement,
-		cYSliderValueElement,
-		cZSliderValueElement
-	);
+	new ToggleButton({
+		element: $("#switch-bulb-button"),
+		name0: "Switch to Mandelbrot",
+		name1: "Return to Julia Set",
+		onClick0: () => applet.switchBulb(),
+		onClick1: () => applet.switchBulb()
+	});
+
+	new Button({
+		element: $("#download-button"),
+		name: "Download",
+		onClick: () =>
+		{
+			if (applet.juliaProportion === 0)
+			{
+				applet.wilson.downloadFrame("the-quaternionic-mandelbrot-set.png");
+			}
+
+			else
+			{
+				applet.wilson.downloadFrame("a-quaternionic-julia-set.png");
+			}
+		}
+	});
 
 
 
@@ -52,23 +67,6 @@ export function load()
 
 
 
-	const downloadButtonElement = $("#download-button");
-
-	downloadButtonElement.addEventListener("click", () =>
-	{
-		if (applet.juliaProportion === 0)
-		{
-			applet.wilson.downloadFrame("the-quaternionic-mandelbrot-set.png");
-		}
-
-		else
-		{
-			applet.wilson.downloadFrame("a-quaternionic-julia-set.png");
-		}
-	});
-
-
-
 	const elements = [cXSliderElement, cYSliderElement, cZSliderElement];
 
 	for (let i = 0; i < elements.length; i++)
@@ -84,12 +82,6 @@ export function load()
 			applet.updateC(c);
 		});
 	}
-
-
-
-	switchBulbButtonElement.style.opacity = 1;
-
-	switchBulbButtonElement.addEventListener("click", () => applet.switchBulb());
 
 
 
