@@ -1,6 +1,6 @@
 /* eslint-disable max-len */
+import { showPage } from "../../scripts/src/loadPage.js";
 import { showCard } from "/scripts/src/cards.js";
-import { showPage } from "/scripts/src/load-page.js";
 import { $, $$ } from "/scripts/src/main.js";
 import { redirect } from "/scripts/src/navigation.js";
 

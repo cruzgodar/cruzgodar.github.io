@@ -1,6 +1,5 @@
-import { changeOpacity } from "/scripts/src/animation.js";
+import { getGlslBundle, loadGlsl } from "../../../scripts/src/complexGlsl.js";
 import { Applet } from "/scripts/src/applets.js";
-import { getGlslBundle, loadGlsl } from "/scripts/src/complex-glsl.js";
 import { addTemporaryListener } from "/scripts/src/main.js";
 import { Wilson } from "/scripts/wilson.js";
 
@@ -12,7 +11,7 @@ export class GeneralizedJuliaSet extends Applet
 
 	wilsonHidden = null;
 
-	switchJuliaModeButtonElement = null;
+	switchJuliaModeButton;
 
 	juliaMode = 0;
 
@@ -36,11 +35,11 @@ export class GeneralizedJuliaSet extends Applet
 
 	constructor({
 		canvas,
-		switchJuliaModeButtonElement
+		switchJuliaModeButton
 	}) {
 		super(canvas);
 
-		this.switchJuliaModeButtonElement = switchJuliaModeButtonElement;
+		this.switchJuliaModeButton = switchJuliaModeButton;
 
 		const hiddenCanvas = this.createHiddenCanvas();
 
@@ -228,7 +227,7 @@ export class GeneralizedJuliaSet extends Applet
 							return;
 						}
 						
-						if (length(z) >= 4.0)
+						if (length(z) >= 1000.0)
 						{
 							break;
 						}
@@ -261,7 +260,7 @@ export class GeneralizedJuliaSet extends Applet
 							break;
 						}
 						
-						if (length(z) >= 4.0)
+						if (length(z) >= 1000.0)
 						{
 							break;
 						}
@@ -397,27 +396,6 @@ export class GeneralizedJuliaSet extends Applet
 
 	switchJuliaMode()
 	{
-		if (this.switchJuliaModeButtonElement)
-		{
-			changeOpacity(this.switchJuliaModeButtonElement, 0)
-				.then(() =>
-				{
-					if (this.juliaMode === 2)
-					{
-						this.switchJuliaModeButtonElement.textContent = "Return to Mandelbrot Set";
-					}
-
-					else if (this.juliaMode === 0)
-					{
-						this.switchJuliaModeButtonElement.textContent = "Pick Julia Set";
-
-						changeOpacity(this.switchJuliaModeButtonElement, 1);
-					}
-				});
-		}
-
-
-
 		if (this.juliaMode === 0)
 		{
 			this.juliaMode = 2;
@@ -426,6 +404,11 @@ export class GeneralizedJuliaSet extends Applet
 			this.b = 0;
 
 			this.pastBrightnessScales = [];
+
+			if (this.switchJuliaModeButton)
+			{
+				this.switchJuliaModeButton.disabled = true;
+			}
 		}
 
 		else if (this.juliaMode === 1)
@@ -463,9 +446,9 @@ export class GeneralizedJuliaSet extends Applet
 
 			this.pastBrightnessScales = [];
 
-			if (this.switchJuliaModeButtonElement)
+			if (this.switchJuliaModeButton)
 			{
-				changeOpacity(this.switchJuliaModeButtonElement, 1);
+				this.switchJuliaModeButton.disabled = false;
 			}
 		}
 	}
@@ -513,9 +496,9 @@ export class GeneralizedJuliaSet extends Applet
 
 			this.pastBrightnessScales = [];
 
-			if (this.switchJuliaModeButtonElement)
+			if (this.switchJuliaModeButton)
 			{
-				changeOpacity(this.switchJuliaModeButtonElement, 1);
+				this.switchJuliaModeButton.disabled = false;
 			}
 		}
 

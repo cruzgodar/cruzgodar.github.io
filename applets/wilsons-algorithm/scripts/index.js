@@ -1,6 +1,6 @@
+import { showPage } from "../../../scripts/src/loadPage.js";
 import { WilsonsAlgorithm } from "./class.js";
 import { Applet } from "/scripts/src/applets.js";
-import { showPage } from "/scripts/src/load-page.js";
 import { $ } from "/scripts/src/main.js";
 
 export function load()

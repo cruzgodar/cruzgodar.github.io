@@ -14,7 +14,7 @@ import {
 } from "./banners.js";
 import { cardIsOpen, hideCard } from "./cards.js";
 import { clearDesmosGraphs, desmosGraphs } from "./desmos.js";
-import { loadPage } from "./load-page.js";
+import { loadPage } from "./loadPage.js";
 import {
 	clearTemporaryIntervals,
 	clearTemporaryListeners,

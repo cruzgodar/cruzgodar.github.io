@@ -1,7 +1,7 @@
+import { showPage } from "../../../scripts/src/loadPage.js";
 import { DoublePendulumFractal } from "./class.js";
-import { changeOpacity } from "/scripts/src/animation.js";
 import { Applet } from "/scripts/src/applets.js";
-import { showPage } from "/scripts/src/load-page.js";
+import { DownloadButton, GenerateButton, ToggleButton } from "/scripts/src/buttons.js";
 import { $ } from "/scripts/src/main.js";
 
 export function load()
@@ -11,6 +11,29 @@ export function load()
 		pendulumCanvas: $("#pendulum-canvas")
 	});
 
+	new GenerateButton({
+		element: $("#generate-button"),
+		onClick: run
+	});
+
+	new ToggleButton({
+		element: $("#switch-pendulum-canvas-button"),
+		name0: "Pick Pendulum",
+		name1: "Return to Fractal",
+		onClick0: () => applet.drawingFractal = false,
+		onClick1: () =>
+		{
+			applet.drawingFractal = true;
+			applet.hidePendulumDrawerCanvas(); // :(
+		}
+	});
+
+	new DownloadButton({
+		element: $("#download-button"),
+		wilson: applet.wilson,
+		filename: "the-double-pendulum-fractal.png"
+	});
+
 
 
 	const resolutionInputElement = $("#resolution-input");
@@ -18,59 +41,6 @@ export function load()
 	Applet.listenToInputElements([resolutionInputElement], run);
 
 	applet.setInputCaps([resolutionInputElement], [2000]);
-
-
-
-	const generateButtonElement = $("#generate-button");
-
-	generateButtonElement.addEventListener("click", run);
-
-
-
-	const switchPendulumCanvasButtonElement = $("#switch-pendulum-canvas-button");
-
-	switchPendulumCanvasButtonElement.addEventListener("click", () =>
-	{
-		if (applet.drawingFractal)
-		{
-			applet.drawingFractal = false;
-
-			changeOpacity(switchPendulumCanvasButtonElement, 0)
-				.then(() =>
-				{
-					switchPendulumCanvasButtonElement.textContent = "Return to Fractal";
-
-					changeOpacity(switchPendulumCanvasButtonElement, 1);
-				});
-		}
-
-		else
-		{
-			applet.drawingFractal = true;
-
-			// What the actual fuck
-			applet.hidePendulumDrawerCanvas();
-
-
-
-			changeOpacity(switchPendulumCanvasButtonElement, 0)
-				.then(() =>
-				{
-					switchPendulumCanvasButtonElement.textContent = "Pick Pendulum";
-
-					changeOpacity(switchPendulumCanvasButtonElement, 1);
-				});
-		}
-	});
-
-
-
-	const downloadButtonElement = $("#download-button");
-
-	downloadButtonElement.addEventListener(
-		"click",
-		() => applet.wilson.downloadFrame("the-double-pendulum-fractal.png")
-	);
 
 
 

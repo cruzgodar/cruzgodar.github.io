@@ -1,10 +1,34 @@
+import { showPage } from "../../../scripts/src/loadPage.js";
 import { MagicCarpet } from "./class.js";
-import { showPage } from "/scripts/src/load-page.js";
+import { Button, DownloadButton, GenerateButton } from "/scripts/src/buttons.js";
 import { $ } from "/scripts/src/main.js";
 
 export function load()
 {
 	const applet = new MagicCarpet({ canvas: $("#output-canvas") });
+
+	new GenerateButton({
+		element: $("#generate-button"),
+		onClick: run
+	});
+
+	new Button({
+		element: $("#draw-solution-button"),
+		name: "Show Solution",
+		onClick: () => applet.drawSolution()
+	});
+
+	new Button({
+		element: $("#draw-rectangles-button"),
+		name: "Show Rectangles Only",
+		onClick: () => applet.drawSolution(true)
+	});
+
+	new DownloadButton({
+		element: $("#download-button"),
+		wilson: applet.wilson,
+		filename: "a-magic-carpet.png"
+	});
 
 	const gridSizeInputElement = $("#grid-size-input");
 
@@ -48,39 +72,6 @@ export function load()
 			uniqueSolution
 		});
 	}
-
-
-
-	const generateButtonElement = $("#generate-button");
-
-	generateButtonElement.addEventListener("click", run);
-
-
-
-	const drawSolutionButtonElement = $("#draw-solution-button");
-
-	drawSolutionButtonElement.addEventListener("click", () =>
-	{
-		applet.drawSolution();
-	});
-
-
-
-	const drawRectanglesButtonElement = $("#draw-rectangles-button");
-
-	drawRectanglesButtonElement.addEventListener("click", () =>
-	{
-		applet.drawSolution(true);
-	});
-
-
-
-	const downloadButtonElement = $("#download-button");
-
-	downloadButtonElement.addEventListener("click", () =>
-	{
-		applet.wilson.downloadFrame("a-magic-carpet.png");
-	});
 
 
 

@@ -1,14 +1,41 @@
+import { showPage } from "../../../scripts/src/loadPage.js";
 import { JuliaSet } from "./class.js";
-import { showPage } from "/scripts/src/load-page.js";
+import { Button, ToggleButton } from "/scripts/src/buttons.js";
 import { $ } from "/scripts/src/main.js";
 
 export function load()
 {
-	const switchJuliaModeButtonElement = $("#switch-julia-mode-button");
+	// eslint-disable-next-line prefer-const
+	let applet;
 
-	const applet = new JuliaSet({
+	const switchJuliaModeButton = new ToggleButton({
+		element: $("#switch-julia-mode-button"),
+		name0: "Pick Julia Set",
+		name1: "Return to Mandelbrot",
+		onClick0: () => applet.advanceJuliaMode(),
+		onClick1: () => applet.advanceJuliaMode(),
+	});
+
+	applet = new JuliaSet({
 		canvas: $("#output-canvas"),
-		switchJuliaModeButtonElement
+		switchJuliaModeButton
+	});
+
+	new Button({
+		element: $("#download-button"),
+		name: "Download",
+		onClick: () =>
+		{
+			if (applet.juliaMode === 0)
+			{
+				applet.wilson.downloadFrame("the-mandelbrot-set.png");
+			}
+
+			else
+			{
+				applet.wilson.downloadFrame("a-julia-set.png");
+			}
+		}
 	});
 
 
@@ -27,11 +54,6 @@ export function load()
 		applet.changeAspectRatio();
 	});
 
-	switchJuliaModeButtonElement.addEventListener("click", () =>
-	{
-		applet.advanceJuliaMode();
-	});
-
 	doublePrecisionCheckboxElement.addEventListener("input", () =>
 	{
 		applet.toggleUseDoublePrecision();
@@ -43,15 +65,7 @@ export function load()
 
 	downloadButtonElement.addEventListener("click", () =>
 	{
-		if (applet.juliaMode === 0)
-		{
-			applet.wilson.downloadFrame("the-mandelbrot-set.png");
-		}
-
-		else
-		{
-			applet.wilson.downloadFrame("a-julia-set.png");
-		}
+		
 	});
 
 

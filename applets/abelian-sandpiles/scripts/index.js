@@ -1,6 +1,7 @@
+import { showPage } from "../../../scripts/src/loadPage.js";
 import { AbelianSandpile } from "./class.js";
 import { Applet } from "/scripts/src/applets.js";
-import { showPage } from "/scripts/src/load-page.js";
+import { DownloadButton, GenerateButton } from "/scripts/src/buttons.js";
 import { $ } from "/scripts/src/main.js";
 
 export function load()
@@ -19,18 +20,16 @@ export function load()
 
 
 
-	const generateButtonElement = $("#generate-button");
+	new GenerateButton({
+		element: $("#generate-button"),
+		onClick: run
+	});
 
-	generateButtonElement.addEventListener("click", run);
-
-
-
-	const downloadButtonElement = $("#download-button");
-
-	downloadButtonElement.addEventListener(
-		"click",
-		() => applet.wilson.downloadFrame("an-abelian-sandpile.png")
-	);
+	new DownloadButton({
+		element: $("#download-button"),
+		wilson: applet.wilson,
+		filename: "an-abelian-sandpile.png"
+	});
 
 
 

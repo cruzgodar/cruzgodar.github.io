@@ -1,11 +1,23 @@
+import { showPage } from "../../../scripts/src/loadPage.js";
 import { DominoShuffling } from "./class.js";
 import { Applet } from "/scripts/src/applets.js";
-import { showPage } from "/scripts/src/load-page.js";
+import { DownloadButton, GenerateButton } from "/scripts/src/buttons.js";
 import { $ } from "/scripts/src/main.js";
 
 export function load()
 {
 	const applet = new DominoShuffling({ canvas: $("#output-canvas") });
+
+	new GenerateButton({
+		element: $("#generate-button"),
+		onClick: run
+	});
+
+	new DownloadButton({
+		element: $("#download-button"),
+		wilson: applet.wilson,
+		filename: "a-domino-tiling.png"
+	});
 
 	const resolutionInputElement = $("#resolution-input");
 
@@ -15,25 +27,8 @@ export function load()
 
 	applet.setInputCaps([resolutionInputElement, diamondSizeInputElement], [3000, 200]);
 
-
-
-	const generateButtonElement = $("#generate-button");
-
-	generateButtonElement.addEventListener("click", run);
-
-
-
 	const useSmoothColorsCheckboxElement = $("#use-smooth-colors-checkbox");
 	useSmoothColorsCheckboxElement.checked = true;
-
-
-
-	const downloadButtonElement = $("#download-button");
-
-	downloadButtonElement.addEventListener(
-		"click",
-		() => applet.wilson.downloadFrame("an-aztec-diamond.png")
-	);
 
 
 

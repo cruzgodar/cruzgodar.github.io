@@ -1,5 +1,5 @@
-import { getGlslBundle, loadGlsl } from "/scripts/src/complex-glsl.js";
-import { showPage } from "/scripts/src/load-page.js";
+import { getGlslBundle, loadGlsl } from "../../../../scripts/src/complexGlsl.js";
+import { showPage } from "../../../../scripts/src/loadPage.js";
 import { $ } from "/scripts/src/main.js";
 import { Wilson } from "/scripts/wilson.js";
 

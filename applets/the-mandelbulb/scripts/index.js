@@ -1,7 +1,7 @@
+import { showPage } from "../../../scripts/src/loadPage.js";
 import { Mandelbulb } from "./class.js";
 import { changeOpacity, opacityAnimationTime } from "/scripts/src/animation.js";
 import { equalizeTextButtons } from "/scripts/src/buttons.js";
-import { showPage } from "/scripts/src/load-page.js";
 import { $ } from "/scripts/src/main.js";
 
 export function load()

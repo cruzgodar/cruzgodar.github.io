@@ -1,6 +1,7 @@
+import { showPage } from "../../../scripts/src/loadPage.js";
 import { ComplexMap } from "./class.js";
 import { Applet } from "/scripts/src/applets.js";
-import { showPage } from "/scripts/src/load-page.js";
+import { DownloadButton, GenerateButton } from "/scripts/src/buttons.js";
 import { $ } from "/scripts/src/main.js";
 
 export function load()
@@ -10,33 +11,21 @@ export function load()
 		generatingCode: "cexp(cinv(z))"
 	});
 
+	new GenerateButton({
+		element: $("#generate-button"),
+		onClick: run
+	});
+
+	new DownloadButton({
+		element: $("#download-button"),
+		wilson: applet.wilson,
+		filename: "a-complex-map.png"
+	});
 
 
 	const codeInputElement = $("#code-textarea");
 
 	Applet.listenToInputElements([codeInputElement], run);
-
-
-
-	const generateButtonElement = $("#generate-button");
-
-	generateButtonElement.addEventListener("click", run);
-
-
-
-	const selectorModeButtonElement = $("#selector-mode-button");
-
-	selectorModeButtonElement.addEventListener("click", () => applet.useSelectorMode = true);
-
-
-
-	const benchmarkButtonElement = $("#benchmark-button");
-
-	benchmarkButtonElement.addEventListener("click", () => applet.runBenchmark());
-
-
-
-	$("#debug-buttons").remove();
 
 
 
@@ -52,15 +41,6 @@ export function load()
 
 		applet.changeAspectRatio(true);
 	});
-
-
-
-	const downloadButtonElement = $("#download-button");
-
-	downloadButtonElement.addEventListener(
-		"click",
-		() => applet.wilson.downloadFrame("a-complex-map.png")
-	);
 
 
 

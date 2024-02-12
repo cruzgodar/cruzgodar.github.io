@@ -1,23 +1,29 @@
+import { showPage } from "../../../scripts/src/loadPage.js";
 import { LyapunovFractal } from "./class.js";
 import { Applet } from "/scripts/src/applets.js";
-import { showPage } from "/scripts/src/load-page.js";
+import { DownloadButton, GenerateButton } from "/scripts/src/buttons.js";
 import { $ } from "/scripts/src/main.js";
 
 export function load()
 {
 	const applet = new LyapunovFractal({ canvas: $("#output-canvas") });
 
+	new GenerateButton({
+		element: $("#generate-button"),
+		onClick: run
+	});
+
+	new DownloadButton({
+		element: $("#download-button"),
+		wilson: applet.wilson,
+		filename: "a-lyapunov-fractal.png"
+	});
+
 
 
 	const generatingStringInputElement = $("#generating-string-input");
 
 	Applet.listenToInputElements([generatingStringInputElement], run);
-
-
-
-	const generateButtonElement = $("#generate-button");
-
-	generateButtonElement.addEventListener("click", run);
 
 
 
@@ -32,15 +38,6 @@ export function load()
 		applet.resolution = resolution;
 
 		applet.changeAspectRatio(true);
-	});
-
-
-
-	const downloadButtonElement = $("#download-button");
-
-	downloadButtonElement.addEventListener("click", () =>
-	{
-		applet.wilson.downloadFrame("a-lyapunov-fractal.png");
 	});
 
 

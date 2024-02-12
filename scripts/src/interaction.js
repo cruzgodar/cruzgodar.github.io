@@ -1,4 +1,4 @@
-import { removeHoverEvents } from "./hover-events.js";
+import { removeHoverEvents } from "./hoverEvents.js";
 
 // Whether this is a touchscreen device on the current page.
 // It's assumed to be false on every page until a touchstart or touchmove

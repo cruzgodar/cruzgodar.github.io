@@ -1,3 +1,4 @@
+import { showPage } from "../../../scripts/src/loadPage.js";
 import { ThurstonGeometry } from "./class.js";
 import { E3Axes, E3Rooms } from "./geometries/e3.js";
 import { H2xEAxes, H2xERooms } from "./geometries/h2xe.js";
@@ -11,7 +12,6 @@ import { SolAxes, SolRooms } from "./geometries/sol.js";
 import anime from "/scripts/anime.js";
 import { currentlyTouchDevice } from "/scripts/src/interaction.js";
 import { equalizeAppletColumns } from "/scripts/src/layout.js";
-import { showPage } from "/scripts/src/load-page.js";
 import { $, $$ } from "/scripts/src/main.js";
 
 export function load()

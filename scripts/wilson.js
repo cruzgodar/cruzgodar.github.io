@@ -1,6 +1,6 @@
 import anime from "./anime.js";
+import { addHoverEventWithScale } from "./src/hoverEvents.js";
 import { changeOpacity, opacityAnimationTime } from "/scripts/src/animation.js";
-import { addHoverEventWithScale } from "/scripts/src/hover-events.js";
 import { addTemporaryListener } from "/scripts/src/main.js";
 import { metaThemeColorElement } from "/scripts/src/settings.js";
 

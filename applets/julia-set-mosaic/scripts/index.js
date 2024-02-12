@@ -1,12 +1,17 @@
+import { showPage } from "../../../scripts/src/loadPage.js";
 import { JuliaSetMosaic } from "./class.js";
-import { showPage } from "/scripts/src/load-page.js";
+import { DownloadButton } from "/scripts/src/buttons.js";
 import { $ } from "/scripts/src/main.js";
 
 export function load()
 {
 	const applet = new JuliaSetMosaic({ canvas: $("#output-canvas") });
 
-
+	new DownloadButton({
+		element: $("#download-button"),
+		wilson: applet.wilson,
+		filename: "a-julia-set-mosaic.png"
+	});
 
 	const resolutionInputElement = $("#resolution-input");
 
@@ -32,17 +37,6 @@ export function load()
 
 
 	run();
-
-
-
-	const downloadButtonElement = $("#download-button");
-
-	downloadButtonElement.addEventListener("click", () =>
-	{
-		applet.wilson.downloadFrame("a-generalized-julia-set.png");
-	});
-
-
 
 	showPage();
 

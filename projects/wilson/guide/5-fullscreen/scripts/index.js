@@ -1,4 +1,4 @@
-import { showPage } from "/scripts/src/load-page.js";
+import { showPage } from "../../../../../scripts/src/loadPage.js";
 import {
 	$,
 	$$,

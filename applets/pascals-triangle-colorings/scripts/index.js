@@ -1,17 +1,23 @@
+import { showPage } from "../../../scripts/src/loadPage.js";
 import { PascalsTriangleColoring } from "./class.js";
 import { Applet } from "/scripts/src/applets.js";
-import { showPage } from "/scripts/src/load-page.js";
+import { DownloadButton, GenerateButton } from "/scripts/src/buttons.js";
 import { $ } from "/scripts/src/main.js";
 
 export function load()
 {
 	const applet = new PascalsTriangleColoring({ canvas: $("#output-canvas") });
 
+	new GenerateButton({
+		element: $("#generate-button"),
+		onClick: run
+	});
 
-
-	const generateButtonElement = $("#generate-button");
-
-	generateButtonElement.addEventListener("click", run);
+	new DownloadButton({
+		element: $("#download-button"),
+		wilson: applet.wilson,
+		filename: "a-pascals-triangle-coloring.png"
+	});
 
 
 
@@ -30,15 +36,6 @@ export function load()
 		[resolutionInputElement, gridSizeInputElement, numColorsInputElement],
 		[4000, 243, Infinity]
 	);
-
-
-
-	const downloadButtonElement = $("#download-button");
-
-	downloadButtonElement.addEventListener("click", () =>
-	{
-		applet.wilson.downloadFrame("a-pascals-triangle-coloring.png");
-	});
 
 
 

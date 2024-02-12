@@ -1,8 +1,7 @@
+import { showPage } from "../../../scripts/src/loadPage.js";
 import { PlanePartitions } from "./class.js";
-import { changeOpacity } from "/scripts/src/animation.js";
-import { equalizeTextButtons } from "/scripts/src/buttons.js";
+import { Button, ToggleButton, equalizeTextButtons } from "/scripts/src/buttons.js";
 import { equalizeAppletColumns } from "/scripts/src/layout.js";
-import { showPage } from "/scripts/src/load-page.js";
 import { $, $$ } from "/scripts/src/main.js";
 
 export function load()
@@ -14,53 +13,181 @@ export function load()
 
 	const categorySelectorDropdownElement = $("#category-selector-dropdown");
 
-	const resolutionInputElement = $("#resolution-input");
 
-	const showDimersButtonElement = $("#show-dimers-button");
-
-	const switchViewButtonElement = $("#switch-view-button");
-
-	const maximumSpeedCheckboxElement = $("#maximum-speed-checkbox");
 
 	const arrayDataTextareaElement = $("#array-data-textarea");
-
-	const addArrayButtonElement = $("#add-array-button");
 
 	const editArrayTextareaElement = $("#edit-array-textarea");
 
 	const editArrayIndexInputElement = $("#edit-array-index-input");
 
-	const editArrayButtonElement = $("#edit-array-button");
-
 	const removeArrayIndexInputElement = $("#remove-array-index-input");
 
-	const removeArrayButtonElement = $("#remove-array-button");
+	const maximumSpeedCheckboxElement = $("#maximum-speed-checkbox");
 
 	const algorithmIndexInputElement = $("#algorithm-index-input");
 
-	const hillmanGrasslButtonElement = $("#hillman-grassl-button");
 
-	const hillmanGrasslInverseButtonElement = $("#hillman-grassl-inverse-button");
 
-	const pakButtonElement = $("#pak-button");
+	// eslint-disable-next-line prefer-const
+	let switchDimersButton;
 
-	const pakInverseButtonElement = $("#pak-inverse-button");
+	const switchViewButton = new ToggleButton({
+		element: $("#switch-view-button"),
+		name0: "Show 2D View",
+		name1: "Show Hex View",
+		onClick0: () =>
+		{
+			if (applet.dimersShown)
+			{
+				switchDimersButton.setState(0);
+			}
 
-	const sulzgruberButtonElement = $("#sulzgruber-button");
+			applet.show2dView();
+		},
+		onClick1: () =>
+		{
+			applet.showHexView();
+		}
+	});
 
-	const sulzgruberInverseButtonElement = $("#sulzgruber-inverse-button");
+	switchDimersButton = new ToggleButton({
+		element: $("#show-dimers-button"),
+		name0: "Show Dimers",
+		name1: "Hide Dimers",
+		onClick0: () =>
+		{
+			if (applet.in2dView)
+			{
+				switchViewButton.setState(0);
+			}
 
-	const rskButtonElement = $("#rsk-button");
+			applet.showDimers();
+		},
+		onClick1: () =>
+		{
+			applet.hideDimers();
+		}
+	});
 
-	const rskInverseButtonElement = $("#rsk-inverse-button");
+	new Button({
+		element: $("#add-array-button"),
+		name: "Add",
+		onClick: () =>
+		{
+			applet.addNewArray(
+				applet.arrays.length,
+				PlanePartitions.parseArray(arrayDataTextareaElement.value)
+			);
+		}
+	});
 
-	const example1ButtonElement = $("#example-1-button");
+	new Button({
+		element: $("#edit-array-button"),
+		name: "Edit",
+		onClick: async () =>
+		{
+			const index = parseInt(editArrayIndexInputElement.value || 0);
 
-	const example2ButtonElement = $("#example-2-button");
+			await applet.editArray(
+				index,
+				PlanePartitions.parseArray(editArrayTextareaElement.value)
+			);
 
-	const example3ButtonElement = $("#example-3-button");
+			editArrayTextareaElement.value = PlanePartitions.arrayToAscii(
+				applet.arrays[index].numbers
+			);
+		}
+	});
 
-	const downloadButtonElement = $("#download-button");
+	new Button({
+		element: $("#remove-array-button"),
+		name: "Remove",
+		onClick: () =>
+		{
+			applet.removeArray(parseInt(removeArrayIndexInputElement.value));
+		}
+	});
+
+	new Button({
+		element: $("#hillman-grassl-button"),
+		name: "Hillman-Grassl",
+		onClick: () => applet.runAlgorithm(
+			"hillmanGrassl",
+			parseInt(algorithmIndexInputElement.value)
+		)
+	});
+
+	new Button({
+		element: $("#hillman-grassl-inverse-button"),
+		name: "Hillman-Grassl Inverse",
+		onClick: () => applet.runAlgorithm(
+			"hillmanGrasslInverse",
+			parseInt(algorithmIndexInputElement.value)
+		)
+	});
+
+	new Button({
+		element: $("#pak-button"),
+		name: "Pak",
+		onClick: () => applet.runAlgorithm(
+			"pak",
+			parseInt(algorithmIndexInputElement.value)
+		)
+	});
+
+	new Button({
+		element: $("#pak-inverse-button"),
+		name: "Pak Inverse",
+		onClick: () => applet.runAlgorithm(
+			"pakInverse",
+			parseInt(algorithmIndexInputElement.value)
+		)
+	});
+
+	new Button({
+		element: $("#sulzgruber-button"),
+		name: "Sulzgruber",
+		onClick: () => applet.runAlgorithm(
+			"sulzgruber",
+			parseInt(algorithmIndexInputElement.value)
+		)
+	});
+
+	new Button({
+		element: $("#sulzgruber-inverse-button"),
+		name: "Sulzgruber Inverse",
+		onClick: () => applet.runAlgorithm(
+			"sulzgruberInverse",
+			parseInt(algorithmIndexInputElement.value)
+		)
+	});
+
+	new Button({
+		element: $("#rsk-button"),
+		name: "RSK",
+		onClick: () => applet.runAlgorithm(
+			"rsk",
+			parseInt(algorithmIndexInputElement.value)
+		)
+	});
+
+	new Button({
+		element: $("#rsk-inverse-button"),
+		name: "RSK Inverse",
+		onClick: () => applet.runAlgorithm(
+			"rskInverse",
+			parseInt(algorithmIndexInputElement.value)
+		)
+	});
+
+	new Button({
+		element: $("#download-button"),
+		name: "Download",
+		onClick: () => applet.needDownload = true
+	});
+
+	const resolutionInputElement = $("#resolution-input");
 
 	applet.setInputCaps([resolutionInputElement], [3000]);
 
@@ -71,7 +198,6 @@ export function load()
 		"edit-array": $$(".edit-array-section"),
 		"remove-array": $$(".remove-array-section"),
 		"algorithms": $$(".algorithms-section"),
-		"examples": $$(".examples-section")
 	};
 
 	const categoryHolderElement = $("#category-holder");
@@ -84,21 +210,16 @@ export function load()
 
 
 
-	equalizeTextButtons();
-	setTimeout(equalizeTextButtons, 10);
-
-
-
 	categorySelectorDropdownElement.addEventListener("input", () =>
 	{
 		sectionElements[visibleSection]
 			.forEach(element => categoryHolderElement.appendChild(element));
 
 		sectionElements[visibleSection]
-			.forEach(element => element.classList.remove("move-to-left"));
+			.forEach(element => element.classList.remove("moved-to-left"));
 
 		sectionElements[visibleSection]
-			.forEach(element => element.classList.remove("move-to-right"));
+			.forEach(element => element.classList.remove("moved-to-right"));
 
 		visibleSection = categorySelectorDropdownElement.value === "none"
 			? "view-controls"
@@ -137,83 +258,9 @@ export function load()
 
 
 
-	async function switchDimersButton(dimersShown = applet.dimersShown)
-	{
-		await changeOpacity(showDimersButtonElement, 0);
-
-		showDimersButtonElement.textContent = dimersShown ? "Show Dimers" : "Hide Dimers";
-
-		await changeOpacity(showDimersButtonElement, 1);
-	}
-
-	async function switchViewButton(in2dView = applet.in2dView)
-	{
-		await changeOpacity(switchViewButtonElement, 0);
-
-		switchViewButtonElement.textContent = in2dView ? "Show 2D View" : "Show Hex View";
-
-		await changeOpacity(switchViewButtonElement, 1);
-	}
-
-
-
-	showDimersButtonElement.addEventListener("click", () =>
-	{
-		switchDimersButton();
-
-		if (!applet.dimersShown && applet.in2dView)
-		{
-			switchViewButton();
-		}
-
-		if (applet.dimersShown)
-		{
-			applet.hideDimers();
-		}
-
-		else
-		{
-			applet.showDimers();
-		}
-	});
-
-
-
-	switchViewButtonElement.addEventListener("click", () =>
-	{
-		switchViewButton();
-
-		if (applet.dimersShown && !applet.in2dView)
-		{
-			switchDimersButton();
-		}
-
-		if (applet.in2dView)
-		{
-			applet.showHexView();
-		}
-
-		else
-		{
-			applet.show2dView();
-		}
-	});
-
-
-
 	maximumSpeedCheckboxElement.addEventListener("input", () =>
 	{
 		applet.animationTime = maximumSpeedCheckboxElement.checked ? 60 : 600;
-	});
-
-
-
-	addArrayButtonElement.addEventListener("click", () =>
-	{
-		applet.addNewArray(
-			applet.arrays.length,
-			PlanePartitions.parseArray(arrayDataTextareaElement.value)
-		);
 	});
 
 
@@ -231,98 +278,6 @@ export function load()
 			applet.arrays[index].numbers
 		);
 	});
-
-
-
-	editArrayButtonElement.addEventListener("click", async () =>
-	{
-		const index = parseInt(editArrayIndexInputElement.value || 0);
-
-		await applet.editArray(index, PlanePartitions.parseArray(editArrayTextareaElement.value));
-
-		editArrayTextareaElement.value = PlanePartitions.arrayToAscii(applet.arrays[index].numbers);
-	});
-
-
-
-	removeArrayButtonElement.addEventListener("click", () =>
-	{
-		applet.removeArray(parseInt(removeArrayIndexInputElement.value));
-	});
-
-
-
-	hillmanGrasslButtonElement.addEventListener(
-		"click",
-		() => applet.runAlgorithm(
-			"hillmanGrassl",
-			parseInt(algorithmIndexInputElement.value)
-		)
-	);
-
-	hillmanGrasslInverseButtonElement.addEventListener(
-		"click",
-		() => applet.runAlgorithm(
-			"hillmanGrasslInverse",
-			parseInt(algorithmIndexInputElement.value)
-		)
-	);
-
-	pakButtonElement.addEventListener(
-		"click",
-		() => applet.runAlgorithm(
-			"pak",
-			parseInt(algorithmIndexInputElement.value)
-		)
-	);
-
-	pakInverseButtonElement.addEventListener(
-		"click",
-		() => applet.runAlgorithm(
-			"pakInverse",
-			parseInt(algorithmIndexInputElement.value)
-		)
-	);
-
-	sulzgruberButtonElement.addEventListener(
-		"click",
-		() => applet.runAlgorithm(
-			"sulzgruber",
-			parseInt(algorithmIndexInputElement.value)
-		)
-	);
-
-	sulzgruberInverseButtonElement.addEventListener(
-		"click",
-		() => applet.runAlgorithm(
-			"sulzgruberInverse",
-			parseInt(algorithmIndexInputElement.value)
-		)
-	);
-
-	rskButtonElement.addEventListener(
-		"click",
-		() => applet.runAlgorithm(
-			"rsk",
-			parseInt(algorithmIndexInputElement.value)
-		)
-	);
-
-	rskInverseButtonElement.addEventListener(
-		"click",
-		() => applet.runAlgorithm(
-			"rskInverse",
-			parseInt(algorithmIndexInputElement.value)
-		)
-	);
-
-	example1ButtonElement.addEventListener("click", () => applet.runExample(1));
-
-	example2ButtonElement.addEventListener("click", () => applet.runExample(2));
-
-	example3ButtonElement.addEventListener("click", () => applet.runExample(3));
-
-	downloadButtonElement.addEventListener("click", () => applet.needDownload = true);
 
 
 

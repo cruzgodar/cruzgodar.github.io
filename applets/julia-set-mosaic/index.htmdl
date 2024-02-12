@@ -31,7 +31,7 @@ The <a href="/applets/julia-set-explorer/">Mandelbrot set and Julia sets</a> sha
 <div id="canvas-landscape-right">
 
 ### buttons
-	download -l "Download"
+	download
 ###
 
 </div>

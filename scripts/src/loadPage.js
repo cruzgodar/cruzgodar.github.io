@@ -19,7 +19,7 @@ import {
 import { setUpCards } from "./cards.js";
 import { setUpCarousels } from "./carousels.js";
 import { setUpDropdowns } from "./dropdowns.js";
-import { setUpFocusEvents, setUpHoverEvents } from "./hover-events.js";
+import { setUpFocusEvents, setUpHoverEvents } from "./hoverEvents.js";
 import { equalizeAppletColumns, onResize } from "./layout.js";
 import {
 	$$,

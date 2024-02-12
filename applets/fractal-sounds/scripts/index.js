@@ -1,5 +1,6 @@
+import { showPage } from "../../../scripts/src/loadPage.js";
 import { FractalSounds } from "./class.js";
-import { showPage } from "/scripts/src/load-page.js";
+import { DownloadButton } from "/scripts/src/buttons.js";
 import { $ } from "/scripts/src/main.js";
 
 export function load()
@@ -10,6 +11,12 @@ export function load()
 	});
 
 	applet.loadPromise.then(() => run());
+
+	new DownloadButton({
+		element: $("#download-button"),
+		wilson: applet.wilson,
+		filename: "a-sound-fractal.png"
+	});
 
 
 
@@ -98,15 +105,6 @@ export function load()
 		applet.resolution = parseInt(resolutionInputElement.value || 500);
 
 		applet.changeAspectRatio(true);
-	});
-
-
-
-	const downloadButtonElement = $("#download-button");
-
-	downloadButtonElement.addEventListener("click", () =>
-	{
-		applet.wilson.downloadFrame("a-sound-fractal.png");
 	});
 
 

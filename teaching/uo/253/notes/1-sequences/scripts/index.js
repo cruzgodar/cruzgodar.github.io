@@ -1,3 +1,4 @@
+import { showPage } from "../../../../../../scripts/src/loadPage.js";
 import {
 	createDesmosGraphs,
 	desmosBlue,
@@ -5,7 +6,6 @@ import {
 	desmosRed,
 	setGetDesmosData
 } from "/scripts/src/desmos.js";
-import { showPage } from "/scripts/src/load-page.js";
 
 function getDerivativeString(n)
 {

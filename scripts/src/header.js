@@ -1,4 +1,4 @@
-import { addHoverEvent } from "./hover-events.js";
+import { addHoverEvent } from "./hoverEvents.js";
 import { redirect } from "./navigation.js";
 import { toggleDarkTheme } from "./settings.js";
 

@@ -1,7 +1,7 @@
 import anime from "../anime.js";
 import { opacityAnimationTime } from "./animation.js";
 import { headerElement } from "./header.js";
-import { addHoverEvent } from "./hover-events.js";
+import { addHoverEvent } from "./hoverEvents.js";
 import { $$ } from "./main.js";
 
 const maxSingleColumnOptions = 7;

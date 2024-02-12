@@ -15,12 +15,10 @@ The theory of **Diffusion-limited aggregation** applies to crystals that form as
 ###
 
 ### buttons
-	generate -l "Generate"
+	generate
 ###
 
 </div>
-
-
 
 <div id="canvas-landscape-middle">
 
@@ -28,12 +26,10 @@ The theory of **Diffusion-limited aggregation** applies to crystals that form as
 
 </div>
 
-
-
 <div id="canvas-landscape-right">
 
 ### buttons
-	download -l "Download"
+	download
 ###
 
 </div>

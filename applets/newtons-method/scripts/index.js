@@ -1,5 +1,6 @@
+import { showPage } from "../../../scripts/src/loadPage.js";
 import { NewtonsMethod } from "./class.js";
-import { showPage } from "/scripts/src/load-page.js";
+import { Button, DownloadButton } from "/scripts/src/buttons.js";
 import { $ } from "/scripts/src/main.js";
 
 export function load()
@@ -19,7 +20,37 @@ export function load()
 		colorSetterElement
 	});
 
+	new Button({
+		element: $("#add-root-button"),
+		name: "Add Root",
+		onClick: () => applet.addRoot()
+	});
 
+	new Button({
+		element: $("#remove-root-button"),
+		name: "Remove Root",
+		onClick: () => applet.removeRoot()
+	});
+
+	new Button({
+		element: $("#spread-roots-button"),
+		name: "Spread Roots",
+		onClick: () => applet.spreadRoots(false, false)
+	});
+
+	new Button({
+		element: $("#randomize-roots-button"),
+		name: "Randomize Roots",
+		onClick: () => applet.spreadRoots(false, true)
+	});
+
+	new DownloadButton({
+		element: $("#download-button"),
+		wilson: applet.wilson,
+		filename: "newtons-method.png"
+	});
+
+	
 
 	const resolutionInputElement = $("#resolution-input");
 
@@ -34,36 +65,6 @@ export function load()
 
 
 
-	const addRootButtonElement = $("#add-root-button");
-
-	addRootButtonElement.addEventListener("click", () => applet.addRoot());
-
-
-
-	const removeRootButtonElement = $("#remove-root-button");
-
-	removeRootButtonElement.addEventListener("click", () => applet.removeRoot());
-
-
-
-	const spreadRootsButtonElement = $("#spread-roots-button");
-
-	spreadRootsButtonElement.addEventListener("click", () => applet.spreadRoots(false, false));
-
-
-
-	const randomizeRootsButtonElement = $("#randomize-roots-button");
-
-	randomizeRootsButtonElement.addEventListener("click", () => applet.spreadRoots(false, true));
-
-
-
-	const downloadButtonElement = $("#download-button");
-
-	downloadButtonElement.addEventListener("click", () =>
-	{
-		applet.wilson.downloadFrame("newtons-method.png");
-	});
 
 
 

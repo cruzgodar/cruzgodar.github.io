@@ -1,6 +1,5 @@
-import { changeOpacity } from "/scripts/src/animation.js";
+import { doubleEmulationGlsl, loadGlsl } from "../../../scripts/src/complexGlsl.js";
 import { Applet } from "/scripts/src/applets.js";
-import { doubleEmulationGlsl, loadGlsl } from "/scripts/src/complex-glsl.js";
 import { addTemporaryListener } from "/scripts/src/main.js";
 import { Wilson } from "/scripts/wilson.js";
 
@@ -17,7 +16,7 @@ export class JuliaSet extends Applet
 	useDoublePrecision = false;
 	doublePrecision = false;
 
-	switchJuliaModeButtonElement = null;
+	switchJuliaModeButton = null;
 
 	// Experimentally, the level at which a 2k x 2k
 	// canvas can see the grain of single precision rendering.
@@ -35,22 +34,16 @@ export class JuliaSet extends Applet
 
 
 
-	constructor({ canvas, switchJuliaModeButtonElement })
+	constructor({ canvas, switchJuliaModeButton })
 	{
 		super(canvas);
-
-
 
 		this.pan.minX = -2.75;
 		this.pan.maxX = 1.25;
 		this.pan.minY = -2;
 		this.pan.maxY = 2;
 
-
-
-		this.switchJuliaModeButtonElement = switchJuliaModeButtonElement;
-
-
+		this.switchJuliaModeButton = switchJuliaModeButton;
 
 		loadGlsl().then(() => this.run({ canvas }));
 	}
@@ -708,13 +701,9 @@ export class JuliaSet extends Applet
 
 			this.pastBrightnessScales = [];
 
-			if (this.switchJuliaModeButtonElement)
+			if (this.switchJuliaModeButton)
 			{
-				changeOpacity(this.switchJuliaModeButtonElement, 0)
-					.then(() =>
-					{
-						this.switchJuliaModeButtonElement.textContent = "Return to Mandelbrot";
-					});
+				this.switchJuliaModeButton.disabled = true;
 			}
 		}
 
@@ -735,17 +724,6 @@ export class JuliaSet extends Applet
 			this.zoom.init();
 
 			this.pastBrightnessScales = [];
-
-			if (this.switchJuliaModeButtonElement)
-			{
-				changeOpacity(this.switchJuliaModeButtonElement, 0)
-					.then(() =>
-					{
-						this.switchJuliaModeButtonElement.textContent = "Pick Julia Set";
-
-						changeOpacity(this.switchJuliaModeButtonElement, 1);
-					});
-			}
 		}
 	}
 
@@ -776,9 +754,9 @@ export class JuliaSet extends Applet
 
 			this.pastBrightnessScales = [];
 
-			if (this.switchJuliaModeButtonElement)
+			if (this.switchJuliaModeButton)
 			{
-				changeOpacity(this.switchJuliaModeButtonElement, 1);
+				this.switchJuliaModeButton.disabled = false;
 			}
 		}
 	}
@@ -832,9 +810,9 @@ export class JuliaSet extends Applet
 
 			this.pastBrightnessScales = [];
 
-			if (this.switchJuliaModeButtonElement)
+			if (this.switchJuliaModeButton)
 			{
-				changeOpacity(this.switchJuliaModeButtonElement, 1);
+				this.switchJuliaModeButton.disabled = false;
 			}
 		}
 

@@ -1,3 +1,4 @@
+import { showPage } from "../../../scripts/src/loadPage.js";
 import { VectorField } from "/applets/vector-fields/scripts/class.js";
 import {
 	createDesmosGraphs,
@@ -5,7 +6,6 @@ import {
 	desmosPurple,
 	setGetDesmosData
 } from "/scripts/src/desmos.js";
-import { showPage } from "/scripts/src/load-page.js";
 import { $ } from "/scripts/src/main.js";
 
 export function load()

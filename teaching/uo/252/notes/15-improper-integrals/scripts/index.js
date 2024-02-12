@@ -1,9 +1,9 @@
+import { showPage } from "../../../../../../scripts/src/loadPage.js";
 import {
 	createDesmosGraphs,
 	desmosPurple,
 	setGetDesmosData
 } from "/scripts/src/desmos.js";
-import { showPage } from "/scripts/src/load-page.js";
 
 export function load()
 {

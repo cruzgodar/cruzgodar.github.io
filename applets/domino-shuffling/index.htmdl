@@ -19,7 +19,7 @@ A **perfect matching** on a graph is a pairing of adjacent vertices so that ever
 ### checkbox use-smooth-colors "Use smooth colors"
 
 ### buttons
-	generate -l "Generate"
+	generate
 ###
 
 </div>
@@ -37,7 +37,7 @@ A **perfect matching** on a graph is a pairing of adjacent vertices so that ever
 <div id="canvas-landscape-right">
 
 ### buttons
-	download -l "Download"
+	download
 ###
 
 </div>

@@ -41,15 +41,10 @@ gives us two new parameters to modify --- here, $a$ and $c$ are represented by t
 ###
 
 ### buttons
-	
-	add-root -l "Add Root"
-	
-	remove-root -l "Remove Root"
-	
-	spread-roots -l "Spread Roots"
-	
-	randomize-roots -l "Randomize Roots"
-	
+	add-root
+	remove-root
+	spread-roots
+	randomize-roots
 ###
 
 
@@ -87,7 +82,7 @@ gives us two new parameters to modify --- here, $a$ and $c$ are represented by t
 <div id="canvas-landscape-right">
 
 ### buttons
-	download -l "Download"
+	download
 ###
 
 </div>

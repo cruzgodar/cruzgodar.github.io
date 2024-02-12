@@ -1,20 +1,39 @@
+import { showPage } from "../../../scripts/src/loadPage.js";
 import { GeneralizedJuliaSet } from "./class.js";
 import { Applet } from "/scripts/src/applets.js";
-import { showPage } from "/scripts/src/load-page.js";
+import { DownloadButton, GenerateButton, ToggleButton } from "/scripts/src/buttons.js";
 import { $ } from "/scripts/src/main.js";
 
 export function load()
 {
-	const switchJuliaModeButtonElement = $("#switch-julia-mode-button");
+	// eslint-disable-next-line prefer-const
+	let applet;
 
-	switchJuliaModeButtonElement.style.opacity = 1;
+	const switchJuliaModeButton = new ToggleButton({
+		element: $("#switch-julia-mode-button"),
+		name0: "Pick Julia Set",
+		name1: "Return to Mandelbrot",
+		onClick0: () => applet.switchJuliaMode(),
+		onClick1: () => applet.switchJuliaMode(),
+	});
 
-	const applet = new GeneralizedJuliaSet({
+	applet = new GeneralizedJuliaSet({
 		canvas: $("#output-canvas"),
-		switchJuliaModeButtonElement
+		switchJuliaModeButton
 	});
 
 	applet.loadPromise.then(() => run());
+
+	new GenerateButton({
+		element: $("#generate-button"),
+		onClick: run
+	});
+
+	new DownloadButton({
+		element: $("#download-button"),
+		wilson: applet.wilson,
+		filename: "a-generalized-julia-set.png"
+	});
 
 
 
@@ -67,25 +86,6 @@ export function load()
 
 
 
-	const generateButtonElement = $("#generate-button");
-
-	generateButtonElement.addEventListener("click", run);
-
-
-
-	switchJuliaModeButtonElement.addEventListener("click", () => applet.switchJuliaMode());
-
-
-
-	const downloadButtonElement = $("#download-button");
-
-	downloadButtonElement.addEventListener("click", () =>
-	{
-		applet.wilson.downloadFrame("a-generalized-julia-set.png");
-	});
-
-
-
 	showPage();
 
 
@@ -95,6 +95,9 @@ export function load()
 		const generatingCode = codeInputElement.value || "cadd(cpow(z, 2.0), c)";
 
 		const resolution = parseInt(resolutionInputElement.value || 500);
+
+		switchJuliaModeButton.setState(0);
+		switchJuliaModeButton.disabled = false;
 
 		applet.run({
 			generatingCode,

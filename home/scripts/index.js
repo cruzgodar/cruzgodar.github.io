@@ -1,6 +1,6 @@
+import { disableLinks, showPage } from "../../scripts/src/loadPage.js";
 import { fadeLeft, opacityAnimationTime } from "/scripts/src/animation.js";
 import { scrollButtonOpacity } from "/scripts/src/banners.js";
-import { disableLinks, showPage } from "/scripts/src/load-page.js";
 import {
 	$,
 	addTemporaryListener,

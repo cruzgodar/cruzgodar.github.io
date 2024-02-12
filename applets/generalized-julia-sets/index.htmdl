@@ -42,11 +42,8 @@ This one's been a long time coming. The first applet I ever made for the site wa
 ###
 
 ### buttons
-	
-	generate -l "Generate"
-	
-	switch-julia-mode -l "Pick Julia Set"
-	
+	generate
+	switch-julia-mode
 ###
 
 </div>
@@ -64,7 +61,7 @@ This one's been a long time coming. The first applet I ever made for the site wa
 <div id="canvas-landscape-right">
 
 ### buttons
-	download -l "Download"
+	download
 ###
 
 </div>

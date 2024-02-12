@@ -1,5 +1,5 @@
+import { showPage } from "../../../scripts/src/loadPage.js";
 import { QuasiFuchsianGroups } from "./class.js";
-import { showPage } from "/scripts/src/load-page.js";
 import { $ } from "/scripts/src/main.js";
 
 export function load()

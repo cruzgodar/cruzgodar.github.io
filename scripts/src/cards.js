@@ -1,5 +1,5 @@
 import { cardAnimationTime } from "./animation.js";
-import { addHoverEvent } from "./hover-events.js";
+import { addHoverEvent } from "./hoverEvents.js";
 import { $$, pageElement } from "./main.js";
 import { metaThemeColorElement, siteSettings } from "./settings.js";
 import anime from "/scripts/anime.js";

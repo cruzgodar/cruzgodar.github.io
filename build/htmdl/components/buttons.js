@@ -1,26 +1,23 @@
-// Options:
-
 import { splitCommandLine } from "../build.js";
 
-// -l: Linked. Will ensure its size is equal to all other linked text buttons on the page.
-function button(options, id, name)
+function button(id)
 {
 	return `
 		<div class="focus-on-child" tabindex="1">
-			<button class="text-button${options.includes("l") ? " linked-text-button" : ""}" type="button" id="${id}-button" tabindex="-1">${name}</button>
+			<button class="text-button" type="button" id="${id}-button" tabindex="-1"></button>
 		</div>
 	`;
 }
 
-export function buttons(options, lines)
+export function buttons(_options, lines)
 {
 	let html = "<div class='text-buttons'>";
 
 	lines.forEach(line =>
 	{
-		const [words, options] = splitCommandLine(line);
+		const [words] = splitCommandLine(line);
 
-		html = `${html}${button(options, ...words)}`;
+		html = `${html}${button(...words)}`;
 	});
 
 	html = `${html}</div>`;

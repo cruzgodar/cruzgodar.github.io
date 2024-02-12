@@ -4,8 +4,6 @@ Plane partitions can be made **asymptotic** to a shape. When adding or editing a
 
 Plane partitions are frequently studied, and many correspondences involving them have been implemented here. The first three take a plane partition and convert it to a **tableau** of the same shape --- a tableau is a collection of numbers with no restriction on box heights decreasing in any direction. The inverse algorithms take a tableau and convert it back to a plane partition. Pak and Sulzgruber are independently discovered correspondences with wildly different descriptions that amazingly produce the same results, while Hillman-Grassl is a unique correspondence all its own. RSK is something else entirely: it takes two semi-standard Young tableaux, or SSYT, and converts them to a regular tableau. An SSYT is similar to a plane partition, but rather than heights needing to decrease along rows and columns, they must *increase*, and the increasing that happens on columns must be strict (i.e. the heights always increase and never remain the same).
 
-Due to the complexity of the algorithms and the difficulty in getting them to work for those unused to plane partitions, applets like this, or both, I've included a few examples in the final section so that pretty pictures are easy to find without too much tinkering.
-
 
 
 
@@ -28,8 +26,6 @@ Due to the complexity of the algorithms and the difficulty in getting them to wo
 	remove-array "Remove Array"
 	
 	algorithms "Algorithms"
-	
-	examples "Examples"
 
 ###	
 </div>
@@ -55,7 +51,7 @@ Due to the complexity of the algorithms and the difficulty in getting them to wo
 <div id="canvas-landscape-right">
 
 ### buttons
-	download -l "Download"
+	download
 ###
 
 </div>
@@ -73,11 +69,8 @@ Due to the complexity of the algorithms and the difficulty in getting them to wo
 		
 	<div class="view-controls-section category-section">
 		### buttons
-			
-			switch-view -l "Show 2D View"
-			
-			show-dimers -l "Show Dimers"
-			
+			switch-view
+			show-dimers
 		###
 	</div>
 	
@@ -98,7 +91,7 @@ Due to the complexity of the algorithms and the difficulty in getting them to wo
 	
 	<div class="add-array-section category-section">
 		### buttons
-			add-array -l "Add"
+			add-array
 		###
 	</div>
 	
@@ -121,7 +114,7 @@ Due to the complexity of the algorithms and the difficulty in getting them to wo
 	
 	<div class="edit-array-section category-section">
 		### buttons
-			edit-array -l "Edit"
+			edit-array
 		###
 	</div>
 	
@@ -135,7 +128,7 @@ Due to the complexity of the algorithms and the difficulty in getting them to wo
 	
 	<div class="remove-array-section category-section">
 		### buttons
-			remove-array -l "Remove Array"
+			remove-array
 		###
 	</div>
 	
@@ -149,37 +142,14 @@ Due to the complexity of the algorithms and the difficulty in getting them to wo
 	
 	<div class="algorithms-section category-section">
 		### buttons
-			
-			hillman-grassl -l "Hillman-Grassl"
-			
-			hillman-grassl-inverse -l "Hillman-Grassl Inverse"
-			
-			pak -l "Pak"
-			
-			pak-inverse -l "Pak Inverse"
-			
-			sulzgruber -l "Sulzgruber"
-			
-			sulzgruber-inverse -l "Sulzgruber Inverse"
-			
-			rsk -l "RSK"
-			
-			rsk-inverse -l "RSK Inverse"
-			
-		###
-	</div>
-	
-	
-	
-	<div class="examples-section category-section">
-		### buttons
-			
-			example-1 -l "Hillman-Grassl and Back"
-			
-			example-2 -l "Pak and Sulzgruber"
-			
-			example-3 -l "RSK and Back"
-			
+			hillman-grassl
+			hillman-grassl-inverse
+			pak
+			pak-inverse
+			sulzgruber
+			sulzgruber-inverse
+			rsk
+			rsk-inverse
 		###
 	</div>
 </div>

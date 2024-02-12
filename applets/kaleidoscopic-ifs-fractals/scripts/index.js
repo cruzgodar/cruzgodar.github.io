@@ -1,13 +1,18 @@
+import { showPage } from "../../../scripts/src/loadPage.js";
 import { KaleidoscopicIFSFractal } from "./class.js";
 import { opacityAnimationTime } from "/scripts/src/animation.js";
-import { showPage } from "/scripts/src/load-page.js";
+import { DownloadButton } from "/scripts/src/buttons.js";
 import { $ } from "/scripts/src/main.js";
 
 export function load()
 {
 	const applet = new KaleidoscopicIFSFractal({ canvas: $("#output-canvas") });
 
-
+	new DownloadButton({
+		element: $("#download-button"),
+		wilson: applet.wilson,
+		filename: "a-kaleidoscopic-ifs-fractal.png"
+	});
 
 	const resolutionInputElement = $("#resolution-input");
 
@@ -19,16 +24,6 @@ export function load()
 
 		applet.changeResolution(resolution);
 	});
-
-
-
-	const downloadButtonElement = $("#download-button");
-
-	downloadButtonElement.addEventListener("click", () =>
-	{
-		applet.wilson.downloadFrame("a-kaleidoscopic-ifs-fractal.png");
-	});
-
 
 	
 	const rotationAngleX2SliderElement = $("#rotation-angle-x-2-slider");

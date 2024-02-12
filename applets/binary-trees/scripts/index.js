@@ -1,21 +1,17 @@
+import { showPage } from "../../../scripts/src/loadPage.js";
 import { BinaryTree } from "./class.js";
-import { showPage } from "/scripts/src/load-page.js";
+import { DownloadButton } from "/scripts/src/buttons.js";
 import { $ } from "/scripts/src/main.js";
 
 export function load()
 {
 	const applet = new BinaryTree({ canvas: $("#output-canvas") });
 
-
-
-	const downloadButtonElement = $("#download-button");
-
-	downloadButtonElement.addEventListener(
-		"click",
-		() => applet.wilson.downloadFrame("a-binary-tree.png")
-	);
-
-
+	new DownloadButton({
+		element: $("#download-button"),
+		wilson: applet.wilson,
+		filename: "a-binary-tree.png"
+	});
 
 	showPage();
 }

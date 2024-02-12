@@ -1,6 +1,7 @@
+import { showPage } from "../../../scripts/src/loadPage.js";
 import { NewtonsMethodExtended } from "./class.js";
 import { Applet } from "/scripts/src/applets.js";
-import { showPage } from "/scripts/src/load-page.js";
+import { Button, DownloadButton, GenerateButton } from "/scripts/src/buttons.js";
 import { $ } from "/scripts/src/main.js";
 
 export function load()
@@ -8,6 +9,23 @@ export function load()
 	const applet = new NewtonsMethodExtended({ canvas: $("#output-canvas") });
 
 	applet.loadPromise.then(() => run());
+
+	new GenerateButton({
+		element: $("#generate-button"),
+		onClick: run
+	});
+
+	new Button({
+		element: $("#randomize-palette-button"),
+		name: "Regenerate Palette",
+		onClick: () => applet.animatePaletteChange()
+	});
+
+	new DownloadButton({
+		element: $("#download-button"),
+		wilson: applet.wilson,
+		filename: "newtons-method-extended.png"
+	});
 
 
 
@@ -18,18 +36,6 @@ export function load()
 
 
 	Applet.listenToInputElements([codeInputElement], run);
-
-
-
-	const randomizePaletteButton = $("#randomize-palette-button");
-
-	randomizePaletteButton.addEventListener("click", applet.animatePaletteChange.bind(applet));
-
-
-
-	const generateButtonElement = $("#generate-button");
-
-	generateButtonElement.addEventListener("click", run);
 
 
 
@@ -63,16 +69,6 @@ export function load()
 			applet.derivativePrecision
 		);
 	});
-
-
-
-	const downloadButtonElement = $("#download-button");
-
-	downloadButtonElement.addEventListener("click", () =>
-	{
-		applet.wilson.downloadFrame("newtons-method-extended.png");
-	});
-
 
 
 	const examples =

@@ -1,3 +1,5 @@
+import { changeOpacity } from "./animation.js";
+import { InputElement } from "./inputElement.js";
 import {
 	$$,
 	addTemporaryListener,
@@ -5,6 +7,142 @@ import {
 } from "./main.js";
 import { redirect } from "./navigation.js";
 import { sitemap } from "./sitemap.js";
+
+export class Button extends InputElement
+{
+	linked;
+	disabled = false;
+
+	constructor({
+		element,
+		name,
+		onClick,
+		linked = true
+	}) {
+		super({ element, name });
+		this.linked = linked;
+		this.onClick = onClick;
+		
+		this.element.textContent = this.name;
+
+		if (this.linked)
+		{
+			element.classList.add("linked-text-button");
+		}
+
+		element.addEventListener("click", () =>
+		{
+			if (!this.disabled)
+			{
+				this.onClick();
+			}
+		});
+
+		equalizeTextButtons();
+	}
+}
+
+export class GenerateButton extends Button
+{
+	constructor({
+		element,
+		onClick,
+		linked = true
+	}) {
+		super({
+			element,
+			name: "Generate",
+			onClick,
+			linked
+		});
+	}
+}
+
+export class DownloadButton extends Button
+{
+	constructor({
+		element,
+		linked = true,
+		wilson,
+		filename
+	}) {
+		super({
+			element,
+			name: "Download",
+			onClick: () => wilson.downloadFrame(filename),
+			linked
+		});
+	}
+}
+
+// Starts on name0 and toggles when clicked.
+export class ToggleButton extends Button
+{
+	state = 0;
+	name0;
+	name1;
+	onClick0;
+	onClick1;
+	currentlyAnimating = false;
+
+	constructor({
+		element,
+		name0,
+		name1,
+		onClick0,
+		onClick1,
+		linked = true
+	}) {
+		const onClick = async () =>
+		{
+			if (this.currentlyAnimating)
+			{
+				return;
+			}
+
+			this.currentlyAnimating = true;
+
+			(this.state ? this.onClick1 : this.onClick0)();
+
+			this.state = !this.state;
+
+			await changeOpacity(this.element, 0);
+
+			this.element.textContent = this.state ? this.name1 : this.name0;
+
+			await changeOpacity(this.element, 1);
+
+			this.currentlyAnimating = false;
+		};
+
+		super({
+			element,
+			name: name0,
+			onClick,
+			linked
+		});
+
+		this.name0 = name0;
+		this.name1 = name1;
+		this.onClick0 = onClick0;
+		this.onClick1 = onClick1;
+	}
+
+	async setState(newState)
+	{
+		if (this.state !== newState)
+		{
+			await changeOpacity(this.element, 0);
+			
+			this.state = newState;
+			this.element.textContent = this.state ? this.name1 : this.name0;
+
+			await changeOpacity(this.element, 1);
+		}
+	}
+}
+
+
 
 export function setUpTextButtons()
 {

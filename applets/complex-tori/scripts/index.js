@@ -1,6 +1,6 @@
+import { showPage } from "../../../scripts/src/loadPage.js";
 import { ComplexMap } from "../../complex-maps/scripts/class.js";
 import { EllipticCurve } from "./class.js";
-import { showPage } from "/scripts/src/load-page.js";
 import { $, $$ } from "/scripts/src/main.js";
 
 export function load()
@@ -9,7 +9,6 @@ export function load()
 	let g3 = 0;
 
 	const ecApplet = new EllipticCurve({ canvas: $("#ec-plot-canvas") });
-
 
 
 	const uniformCode = "uniform float g2Arg; uniform float g3Arg;";
@@ -131,12 +130,6 @@ export function load()
 
 		run();
 	}
-
-
-
-	const downloadButtonElement = $("#download-button");
-
-	downloadButtonElement.addEventListener("click", () => wpApplet.wilson.downloadFrame("wp.png"));
 
 
 

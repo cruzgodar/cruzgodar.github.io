@@ -60,7 +60,7 @@ The colors roughly indicate the fundamental frequencies of each point. Hover or 
 <div id="canvas-landscape-right">
 
 ### buttons
-	download -l "Download"
+	download
 ###
 
 </div>

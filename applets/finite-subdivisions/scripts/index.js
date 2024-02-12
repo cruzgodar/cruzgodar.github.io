@@ -1,17 +1,23 @@
+import { showPage } from "../../../scripts/src/loadPage.js";
 import { FiniteSubdivision } from "./class.js";
 import { Applet } from "/scripts/src/applets.js";
-import { showPage } from "/scripts/src/load-page.js";
+import { DownloadButton, GenerateButton } from "/scripts/src/buttons.js";
 import { $ } from "/scripts/src/main.js";
 
 export function load()
 {
 	const applet = new FiniteSubdivision({ canvas: $("#output-canvas") });
 
+	new GenerateButton({
+		element: $("#generate-button"),
+		onClick: run
+	});
 
-
-	const generateButtonElement = $("#generate-button");
-
-	generateButtonElement.addEventListener("click", run);
+	new DownloadButton({
+		element: $("#download-button"),
+		wilson: applet.wilson,
+		filename: "a-finite-subdivision.png"
+	});
 
 
 
@@ -26,15 +32,6 @@ export function load()
 
 
 	const maximumSpeedCheckboxElement = $("#toggle-maximum-speed-checkbox");
-
-
-
-	const downloadButtonElement = $("#download-button");
-
-	downloadButtonElement.addEventListener(
-		"click",
-		() => applet.wilson.downloadFrame("a-finite-subdivision.png")
-	);
 
 
 

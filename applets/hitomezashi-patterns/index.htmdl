@@ -31,7 +31,7 @@ Inspired by the recent (at the time of writing) <a href="https://www.youtube.com
 
 
 ### buttons
-	generate -l "Generate"
+	generate
 ###
 
 </div>
@@ -49,7 +49,7 @@ Inspired by the recent (at the time of writing) <a href="https://www.youtube.com
 <div id="canvas-landscape-right">
 
 ### buttons
-	download -l "Download"
+	download
 ###
 
 </div>

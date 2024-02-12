@@ -19,7 +19,7 @@ This one isn't too complicated! Draw a polygon and connect its center of mass to
 ### checkbox toggle-maximum-speed "Maximum speed"
 
 ### buttons
-	generate -l "Generate"
+	generate
 ###
 
 </div>
@@ -37,7 +37,7 @@ This one isn't too complicated! Draw a polygon and connect its center of mass to
 <div id="canvas-landscape-right">
 
 ### buttons
-	download -l "Download"
+	download
 ###
 
 </div>

@@ -1,17 +1,28 @@
+import { showPage } from "../../../scripts/src/loadPage.js";
 import { CalcudokuGenerator } from "./class.js";
 import { Applet } from "/scripts/src/applets.js";
-import { showPage } from "/scripts/src/load-page.js";
+import { Button, GenerateButton } from "/scripts/src/buttons.js";
 import { $ } from "/scripts/src/main.js";
 
 export function load()
 {
 	const applet = new CalcudokuGenerator({ canvas: $("#output-canvas") });
 
+	new GenerateButton({
+		element: $("#generate-button"),
+		onClick: run
+	});
 
-
-	const generateButtonElement = $("#generate-button");
-
-	generateButtonElement.addEventListener("click", run);
+	new Button({
+		element: $("#download-button"),
+		name: "Download",
+		onClick: () =>
+		{
+			applet.drawGrid(true);
+			applet.wilson.downloadFrame("a-calcudoku-puzzle.png");
+			applet.drawGrid(false);
+		}
+	});
 
 
 
@@ -22,19 +33,6 @@ export function load()
 	Applet.listenToInputElements([gridSizeInputElement, maxCageSizeInputElement], run);
 
 	applet.setInputCaps([gridSizeInputElement, maxCageSizeInputElement], [10, 5]);
-
-
-
-	const downloadButtonElement = $("#download-button");
-
-	downloadButtonElement.addEventListener("click", () =>
-	{
-		applet.drawGrid(true);
-
-		applet.wilson.downloadFrame("a-calcudoku-puzzle.png");
-
-		applet.drawGrid(false);
-	});
 
 
 

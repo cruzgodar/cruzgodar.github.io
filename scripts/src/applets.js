@@ -1,4 +1,4 @@
-import { addHoverEventWithScale } from "./hover-events.js";
+import { addHoverEventWithScale } from "./hoverEvents.js";
 import {
 	$$,
 	addTemporaryListener,

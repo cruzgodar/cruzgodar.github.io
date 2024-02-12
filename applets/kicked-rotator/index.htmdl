@@ -21,7 +21,7 @@ By varying the strength of the gravity, which we represent with the letter $K$, 
 ###
 
 ### buttons
-	generate -l "Generate"
+	generate
 ###
 
 </div>
@@ -39,7 +39,7 @@ By varying the strength of the gravity, which we represent with the letter $K$, 
 <div id="canvas-landscape-right">
 
 ### buttons
-	download -l "Download"
+	download
 ###
 
 </div>

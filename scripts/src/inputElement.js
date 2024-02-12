@@ -1,0 +1,11 @@
+export class InputElement
+{
+	element;
+	name;
+
+	constructor({ element, name })
+	{
+		this.element = element;
+		this.name = name;
+	}
+}

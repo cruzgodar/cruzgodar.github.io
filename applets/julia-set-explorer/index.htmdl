@@ -31,7 +31,7 @@ This applet runs on the GPU, which traditionally sacrifices precision in exchang
 ### checkbox double-precision "Allow double precision"
 
 ### buttons
-	switch-julia-mode -l "Pick Julia Set"
+	switch-julia-mode
 ###
 
 </div>
@@ -55,7 +55,7 @@ This applet runs on the GPU, which traditionally sacrifices precision in exchang
 <div id="canvas-landscape-right">
 
 ### buttons
-	download -l "Download"
+	download
 ###
 
 </div>
