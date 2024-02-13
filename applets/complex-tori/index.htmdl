@@ -3,7 +3,7 @@ Elliptic curves are solutions to the equation $y^2 = x^3 + g_2x + g_3$, where $g
 The idea for this applet, along with the code implementing all of the complex maps, is due to <a href="https://ahuchala.com">Andy Huchala</a>. I wrote the elliptic curve plotter, and the applet itself was built with <a href="/projects/wilson/">Wilson</a>, a library I wrote to make high-performance, polished applets easier to create.
 
 ### text-boxes
-	resolution 500 "Resolution"
+	resolution
 ###
 
 ### sliders

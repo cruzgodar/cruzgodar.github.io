@@ -3,6 +3,7 @@ import { GeneralizedJuliaSet } from "./class.js";
 import { Applet } from "/scripts/src/applets.js";
 import { DownloadButton, GenerateButton, ToggleButton } from "/scripts/src/buttons.js";
 import { $ } from "/scripts/src/main.js";
+import { TextBox } from "/scripts/src/textBoxes.js";
 
 export function load()
 {
@@ -69,41 +70,36 @@ export function load()
 		run();
 	});
 
-
-
-	const resolutionInputElement = $("#resolution-input");
-
-	applet.setInputCaps([resolutionInputElement], [2000]);
-
-
-
-	resolutionInputElement.addEventListener("input", () =>
-	{
-		applet.resolution = parseInt(resolutionInputElement.value || 500);
-
-		applet.changeAspectRatio(true);
+	const resolutionInput = new TextBox({
+		element: $("#resolution-input"),
+		name: "Resolution",
+		value: 500,
+		maxValue: 2000,
+		onEnter: run,
+		onInput: changeResolution
 	});
 
-
-
 	showPage();
-
-
 
 	function run()
 	{
 		const generatingCode = codeInputElement.value || "cadd(cpow(z, 2.0), c)";
-
-		const resolution = parseInt(resolutionInputElement.value || 500);
 
 		switchJuliaModeButton.setState(0);
 		switchJuliaModeButton.disabled = false;
 
 		applet.run({
 			generatingCode,
-			resolution,
+			resolution: resolutionInput.value,
 			exposure: 1,
 			numIterations: 200
 		});
+	}
+
+	function changeResolution()
+	{
+		applet.resolution = resolutionInput.value;
+
+		applet.changeAspectRatio(true);
 	}
 }

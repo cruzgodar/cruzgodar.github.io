@@ -1,8 +1,8 @@
 import { showPage } from "../../../scripts/src/loadPage.js";
 import { HitomezashiPattern } from "./class.js";
-import { Applet } from "/scripts/src/applets.js";
 import { DownloadButton, GenerateButton } from "/scripts/src/buttons.js";
 import { $ } from "/scripts/src/main.js";
+import { TextBox } from "/scripts/src/textBoxes.js";
 
 export function load()
 {
@@ -19,15 +19,35 @@ export function load()
 		filename: "a-hitomezashi-pattern.png"
 	});
 
+	const resolutionInput = new TextBox({
+		element: $("#resolution-input"),
+		name: "Resolution",
+		value: 2000,
+		maxValue: 4000,
+		onEnter: run
+	});
 
+	const gridSizeInput = new TextBox({
+		element: $("#grid-size-input"),
+		name: "Grid Size",
+		value: 50,
+		maxValue: 200,
+		onEnter: run,
+	});
 
-	const resolutionInputElement = $("#resolution-input");
+	const rowProbInput = new TextBox({
+		element: $("#row-prob-input"),
+		name: "Row Offset Chance",
+		value: 0.5,
+		onEnter: run,
+	});
 
-	const gridSizeInputElement = $("#grid-size-input");
-
-	const rowProbInputElement = $("#row-prob-input");
-
-	const colProbInputElement = $("#col-prob-input");
+	const colProbInput = new TextBox({
+		element: $("#col-prob-input"),
+		name: "Column Offset Chance",
+		value: 0.5,
+		onEnter: run,
+	});
 
 	const drawBoundariesCheckboxElement = $("#toggle-draw-boundaries-checkbox");
 
@@ -38,18 +58,6 @@ export function load()
 	drawBoundariesCheckboxElement.checked = true;
 
 	drawRegionsCheckboxElement.checked = true;
-
-
-	Applet.listenToInputElements([
-		resolutionInputElement,
-		gridSizeInputElement,
-		rowProbInputElement,
-		colProbInputElement
-	], run);
-
-	applet.setInputCaps([resolutionInputElement, gridSizeInputElement], [4000, 200]);
-
-
 
 	drawBoundariesCheckboxElement.addEventListener("input", () =>
 	{
@@ -67,27 +75,19 @@ export function load()
 		}
 	});
 
-
-
 	showPage();
-
-
 
 	function run()
 	{
-		const resolution = parseInt(resolutionInputElement.value || 2000);
-		const gridSize = parseInt(gridSizeInputElement.value || 50);
-		const rowProb = parseFloat(rowProbInputElement.value || .5);
-		const colProb = parseFloat(colProbInputElement.value || .5);
 		const doDrawBoundaries = drawBoundariesCheckboxElement.checked;
 		const doDrawRegions = drawRegionsCheckboxElement.checked;
 		const maximumSpeed = maximumSpeedCheckboxElement.checked;
 
 		applet.run({
-			resolution,
-			gridSize,
-			rowProb,
-			colProb,
+			resolution: resolutionInput.value,
+			gridSize: gridSizeInput.value,
+			rowProb: rowProbInput.value,
+			colProb: colProbInput.value,
 			doDrawBoundaries,
 			doDrawRegions,
 			maximumSpeed

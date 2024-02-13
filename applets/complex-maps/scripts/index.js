@@ -3,6 +3,7 @@ import { ComplexMap } from "./class.js";
 import { Applet } from "/scripts/src/applets.js";
 import { DownloadButton, GenerateButton } from "/scripts/src/buttons.js";
 import { $ } from "/scripts/src/main.js";
+import { TextBox } from "/scripts/src/textBoxes.js";
 
 export function load()
 {
@@ -22,25 +23,19 @@ export function load()
 		filename: "a-complex-map.png"
 	});
 
+	const resolutionInput = new TextBox({
+		element: $("#resolution-input"),
+		name: "Resolution",
+		value: 500,
+		maxValue: 2000,
+		onEnter: run,
+		onInput: changeResolution
+	});
+
 
 	const codeInputElement = $("#code-textarea");
 
 	Applet.listenToInputElements([codeInputElement], run);
-
-
-
-	const resolutionInputElement = $("#resolution-input");
-
-	applet.setInputCaps([resolutionInputElement], [2000]);
-
-
-
-	resolutionInputElement.addEventListener("input", () =>
-	{
-		applet.resolution = parseInt(resolutionInputElement.value || 500);
-
-		applet.changeAspectRatio(true);
-	});
 
 
 
@@ -77,5 +72,12 @@ export function load()
 		const generatingCode = codeInputElement.value || "cexp(cinv(z))";
 
 		applet.run({ generatingCode });
+	}
+
+	function changeResolution()
+	{
+		applet.resolution = resolutionInput.value;
+
+		applet.changeAspectRatio(true);
 	}
 }

@@ -9,11 +9,8 @@ This one isn't too complicated! Draw a polygon and connect its center of mass to
 <div id="canvas-landscape-left">
 
 ### text-boxes
-
-	num-vertices 6 "Vertices"
-	
-	num-iterations 5 "Iterations"
-	
+	num-vertices
+	num-iterations
 ###
 
 ### checkbox toggle-maximum-speed "Maximum speed"

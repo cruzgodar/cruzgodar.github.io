@@ -2,6 +2,7 @@ import { showPage } from "../../../scripts/src/loadPage.js";
 import { FractalSounds } from "./class.js";
 import { DownloadButton } from "/scripts/src/buttons.js";
 import { $ } from "/scripts/src/main.js";
+import { TextBox } from "/scripts/src/textBoxes.js";
 
 export function load()
 {
@@ -92,26 +93,16 @@ export function load()
 
 	fractalSelectorDropdownElement.addEventListener("input", run);
 
-
-
-	const resolutionInputElement = $("#resolution-input");
-
-	applet.setInputCaps([resolutionInputElement], [2000]);
-
-
-
-	resolutionInputElement.addEventListener("input", () =>
-	{
-		applet.resolution = parseInt(resolutionInputElement.value || 500);
-
-		applet.changeAspectRatio(true);
+	const resolutionInput = new TextBox({
+		element: $("#resolution-input"),
+		name: "Resolution",
+		value: 500,
+		maxValue: 2000,
+		onEnter: run,
+		onInput: changeResolution
 	});
 
-
-
 	showPage();
-
-
 
 	function run()
 	{
@@ -121,7 +112,7 @@ export function load()
 
 		const glslCode = examples[value][0];
 		const jsCode = examples[value][1];
-		const resolution = parseInt(resolutionInputElement.value || 500);
+		const resolution = resolutionInput.value;
 		const exposure = 1;
 		const numIterations = 200;
 
@@ -132,5 +123,12 @@ export function load()
 			exposure,
 			numIterations
 		});
+	}
+
+	function changeResolution()
+	{
+		applet.resolution = resolutionInput.value;
+
+		applet.changeAspectRatio(true);
 	}
 }

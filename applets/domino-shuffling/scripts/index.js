@@ -1,8 +1,8 @@
 import { showPage } from "../../../scripts/src/loadPage.js";
 import { DominoShuffling } from "./class.js";
-import { Applet } from "/scripts/src/applets.js";
 import { DownloadButton, GenerateButton } from "/scripts/src/buttons.js";
 import { $ } from "/scripts/src/main.js";
+import { TextBox } from "/scripts/src/textBoxes.js";
 
 export function load()
 {
@@ -19,32 +19,34 @@ export function load()
 		filename: "a-domino-tiling.png"
 	});
 
-	const resolutionInputElement = $("#resolution-input");
+	const resolutionInput = new TextBox({
+		element: $("#resolution-input"),
+		name: "Resolution",
+		value: 2000,
+		maxValue: 3000,
+		onEnter: run,
+	});
 
-	const diamondSizeInputElement = $("#diamond-size-input");
-
-	Applet.listenToInputElements([resolutionInputElement, diamondSizeInputElement], run);
-
-	applet.setInputCaps([resolutionInputElement, diamondSizeInputElement], [3000, 200]);
+	const diamondSizeInput = new TextBox({
+		element: $("#diamond-size-input"),
+		name: "Diamond Size",
+		value: 20,
+		maxValue: 200,
+		onEnter: run,
+	});
 
 	const useSmoothColorsCheckboxElement = $("#use-smooth-colors-checkbox");
 	useSmoothColorsCheckboxElement.checked = true;
 
-
-
 	showPage();
-
-
 
 	function run()
 	{
-		const resolution = parseInt(resolutionInputElement.value || 2000);
-		const diamondSize = parseInt(diamondSizeInputElement.value || 20) + 1;
 		const useSmoothColors = useSmoothColorsCheckboxElement.checked;
 
 		applet.run({
-			resolution,
-			diamondSize,
+			resolution: resolutionInput.value,
+			diamondSize: diamondSizeInput.value + 1,
 			useSmoothColors
 		});
 	}

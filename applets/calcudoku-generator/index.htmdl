@@ -11,11 +11,8 @@ The core of the algorithm is written in a language called WebAssembly that runs 
 <div id="canvas-landscape-left">
 
 ### text-boxes
-	
-	grid-size 6 "Grid Size"
-	
-	max-cage-size 2 "Max Cage Size"
-	
+	grid-size
+	max-cage-size
 ###
 
 ### buttons

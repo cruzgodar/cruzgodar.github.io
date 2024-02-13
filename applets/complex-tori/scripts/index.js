@@ -2,6 +2,7 @@ import { showPage } from "../../../scripts/src/loadPage.js";
 import { ComplexMap } from "../../complex-maps/scripts/class.js";
 import { EllipticCurve } from "./class.js";
 import { $, $$ } from "/scripts/src/main.js";
+import { TextBox } from "/scripts/src/textBoxes.js";
 
 export function load()
 {
@@ -18,6 +19,7 @@ export function load()
 		generatingCode: "wp(z, inverse_g2_g3(g2Arg, g3Arg))",
 		uniformCode
 	});
+
 	wpApplet.loadPromise.then(
 		() => wpApplet.wilson.render.initUniforms(["g2Arg", "g3Arg"])
 	);
@@ -27,6 +29,7 @@ export function load()
 		generatingCode: "wpprime(z, inverse_g2_g3(g2Arg, g3Arg))",
 		uniformCode
 	});
+
 	wpprimeApplet.loadPromise.then(
 		() => wpprimeApplet.wilson.render.initUniforms(["g2Arg", "g3Arg"])
 	);
@@ -48,6 +51,7 @@ export function load()
 		addIndicatorDraggable: true,
 		draggableCallback: onDragDraggable
 	});
+
 	g2Applet.loadPromise.then(() =>
 	{
 		g2Applet.wilson.render.initUniforms(["g2Arg", "g3Arg"]);
@@ -65,22 +69,13 @@ export function load()
 
 
 
-	const resolutionInputElement = $("#resolution-input");
-
-	ecApplet.setInputCaps([resolutionInputElement], [1000]);
-
-	resolutionInputElement.addEventListener("input", () =>
-	{
-		const resolution = parseInt(resolutionInputElement.value || 500);
-
-		ecApplet.changeResolution(resolution);
-
-		wpApplet.wilson.changeCanvasSize(resolution, resolution);
-		wpprimeApplet.wilson.changeCanvasSize(resolution, resolution);
-		kleinjApplet.wilson.changeCanvasSize(resolution, resolution);
-		g2Applet.wilson.changeCanvasSize(resolution, resolution);
-
-		run();
+	const resolutionInput = new TextBox({
+		element: $("#resolution-input"),
+		name: "Resolution",
+		value: 500,
+		maxValue: 1000,
+		onEnter: run,
+		onInput: changeResolution
 	});
 
 
@@ -117,6 +112,10 @@ export function load()
 
 
 
+	showPage();
+
+	
+
 	function onDragDraggable(activeDraggable, x, y)
 	{
 		g2 = x * 5;
@@ -130,12 +129,6 @@ export function load()
 
 		run();
 	}
-
-
-
-	showPage();
-
-
 
 	function run()
 	{
@@ -152,5 +145,19 @@ export function load()
 		g2Applet.wilson.gl.uniform1f(g2Applet.wilson.uniforms["g2Arg"], g2);
 		g2Applet.wilson.gl.uniform1f(g2Applet.wilson.uniforms["g3Arg"], g3);
 		g2Applet.drawFrame();
+	}
+
+	function changeResolution()
+	{
+		const resolution = resolutionInput.value;
+
+		ecApplet.changeResolution(resolution);
+
+		wpApplet.wilson.changeCanvasSize(resolution, resolution);
+		wpprimeApplet.wilson.changeCanvasSize(resolution, resolution);
+		kleinjApplet.wilson.changeCanvasSize(resolution, resolution);
+		g2Applet.wilson.changeCanvasSize(resolution, resolution);
+
+		run();
 	}
 }

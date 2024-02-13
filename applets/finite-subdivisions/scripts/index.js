@@ -1,8 +1,8 @@
 import { showPage } from "../../../scripts/src/loadPage.js";
 import { FiniteSubdivision } from "./class.js";
-import { Applet } from "/scripts/src/applets.js";
 import { DownloadButton, GenerateButton } from "/scripts/src/buttons.js";
 import { $ } from "/scripts/src/main.js";
+import { TextBox } from "/scripts/src/textBoxes.js";
 
 export function load()
 {
@@ -19,35 +19,33 @@ export function load()
 		filename: "a-finite-subdivision.png"
 	});
 
+	const numVerticesInput = new TextBox({
+		element: $("#num-vertices-input"),
+		name: "Vertices",
+		value: 6,
+		maxValue: 10,
+		onEnter: run,
+	});
 
-
-	const numVerticesInputElement = $("#num-vertices-input");
-
-	const numIterationsInputElement = $("#num-iterations-input");
-
-	Applet.listenToInputElements([numVerticesInputElement, numIterationsInputElement], run);
-
-	applet.setInputCaps([numVerticesInputElement, numIterationsInputElement], [10, 7]);
-
-
+	const numIterationsInput = new TextBox({
+		element: $("#num-iterations-input"),
+		name: "Iterations",
+		value: 5,
+		maxValue: 7,
+		onEnter: run,
+	});
 
 	const maximumSpeedCheckboxElement = $("#toggle-maximum-speed-checkbox");
 
-
-
 	showPage();
-
-
 
 	function run()
 	{
-		const numVertices = parseInt(numVerticesInputElement.value || 6);
-		const numIterations = parseInt(numIterationsInputElement.value || 5);
 		const maximumSpeed = maximumSpeedCheckboxElement.checked;
 
 		applet.run({
-			numVertices,
-			numIterations,
+			numVertices: numVerticesInput.value,
+			numIterations: numIterationsInput.value,
 			maximumSpeed
 		});
 	}

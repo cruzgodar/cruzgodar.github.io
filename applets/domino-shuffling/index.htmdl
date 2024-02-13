@@ -9,11 +9,8 @@ A **perfect matching** on a graph is a pairing of adjacent vertices so that ever
 <div id="canvas-landscape-left">
 
 ### text-boxes
-	
-	resolution 2000 "Resolution"
-	
-	diamond-size 20 "Diamond Size"
-	
+	resolution
+	diamond-size
 ###
 
 ### checkbox use-smooth-colors "Use smooth colors"

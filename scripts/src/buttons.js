@@ -11,7 +11,6 @@ import { sitemap } from "./sitemap.js";
 export class Button extends InputElement
 {
 	linked;
-	disabled = false;
 
 	constructor({
 		element,

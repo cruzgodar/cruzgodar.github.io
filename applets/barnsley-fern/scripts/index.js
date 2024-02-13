@@ -1,14 +1,12 @@
 import { showPage } from "../../../scripts/src/loadPage.js";
 import { BarnsleyFern } from "./class.js";
-import { Applet } from "/scripts/src/applets.js";
 import { DownloadButton, GenerateButton } from "/scripts/src/buttons.js";
 import { $ } from "/scripts/src/main.js";
+import { TextBox } from "/scripts/src/textBoxes.js";
 
 export function load()
 {
 	const applet = new BarnsleyFern({ canvas: $("#output-canvas") });
-
-
 
 	new GenerateButton({
 		element: $("#generate-button"),
@@ -21,24 +19,18 @@ export function load()
 		filename: "the-barnsley-fern.png"
 	});
 
-
-
-	const numIterationsInputElement = $("#num-iterations-input");
-
-	Applet.listenToInputElements([numIterationsInputElement], run);
-
-	applet.setInputCaps([numIterationsInputElement], [100000]);
-
-
+	const numIterationsInput = new TextBox({
+		element: $("#num-iterations-input"),
+		name: "Iterations (x1000)",
+		value: 10000,
+		maxValue: 100000,
+		onEnter: run,
+	});
 
 	showPage();
 
-
-
 	function run()
 	{
-		const numIterations = 1000 * parseInt(numIterationsInputElement.value || 10000);
-
-		applet.run({ numIterations });
+		applet.run({ numIterations: 1000 * numIterationsInput.value });
 	}
 }

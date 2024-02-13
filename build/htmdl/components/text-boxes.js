@@ -1,24 +1,24 @@
 import { splitCommandLine } from "../build.js";
 
-function textBox(options, id, defaultValue, name)
+function textBox(id)
 {
 	return `
 		<div class="text-box-container">
-			<input id="${id}-input" class="text-box" type="text" value="${defaultValue}" tabindex="1">
-			<p class="body-text text-box-subtext">${name}</p>
+			<input id="${id}-input" class="text-box" type="text" value="" tabindex="1">
+			<p class="body-text text-box-subtext"></p>
 		</div>
 	`;
 }
 
-export function textBoxes(options, lines)
+export function textBoxes(_options, lines)
 {
 	let html = "<div class='text-boxes'>";
 
 	lines.forEach(line =>
 	{
-		const [words, options] = splitCommandLine(line);
+		const [words] = splitCommandLine(line);
 
-		html = `${html}${textBox(options, ...words)}`;
+		html = `${html}${textBox(...words)}`;
 	});
 
 	html = `${html}</div>`;

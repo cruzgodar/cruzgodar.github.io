@@ -9,11 +9,8 @@ Draw a pentagon and a single dot in the center. Now roll a five-sided die to ran
 <div id="canvas-landscape-left">
 
 ### text-boxes
-	
-	resolution 1000 "Resolution"
-	
-	num-vertices 5 "Vertices"
-	
+	resolution
+	num-vertices
 ###
 
 ### buttons

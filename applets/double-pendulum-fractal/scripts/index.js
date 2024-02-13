@@ -1,8 +1,8 @@
 import { showPage } from "../../../scripts/src/loadPage.js";
 import { DoublePendulumFractal } from "./class.js";
-import { Applet } from "/scripts/src/applets.js";
 import { DownloadButton, GenerateButton, ToggleButton } from "/scripts/src/buttons.js";
 import { $ } from "/scripts/src/main.js";
+import { TextBox } from "/scripts/src/textBoxes.js";
 
 export function load()
 {
@@ -34,24 +34,18 @@ export function load()
 		filename: "the-double-pendulum-fractal.png"
 	});
 
-
-
-	const resolutionInputElement = $("#resolution-input");
-
-	Applet.listenToInputElements([resolutionInputElement], run);
-
-	applet.setInputCaps([resolutionInputElement], [2000]);
-
-
+	const resolutionInput = new TextBox({
+		element: $("#resolution-input"),
+		name: "Resolution",
+		value: 1000,
+		maxValue: 2000,
+		onEnter: run,
+	});
 
 	showPage();
 
-
-
 	function run()
 	{
-		const resolution = parseInt(resolutionInputElement.value || 1000);
-
-		applet.run({ resolution });
+		applet.run({ resolution: resolutionInput.value });
 	}
 }

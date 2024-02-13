@@ -1,8 +1,8 @@
 import { showPage } from "../../../scripts/src/loadPage.js";
 import { CalcudokuGenerator } from "./class.js";
-import { Applet } from "/scripts/src/applets.js";
 import { Button, GenerateButton } from "/scripts/src/buttons.js";
 import { $ } from "/scripts/src/main.js";
+import { TextBox } from "/scripts/src/textBoxes.js";
 
 export function load()
 {
@@ -24,28 +24,29 @@ export function load()
 		}
 	});
 
+	const gridSizeInput = new TextBox({
+		element: $("#grid-size-input"),
+		name: "Grid Size",
+		value: 6,
+		maxValue: 10,
+		onEnter: run,
+	});
 
-
-	const gridSizeInputElement = $("#grid-size-input");
-
-	const maxCageSizeInputElement = $("#max-cage-size-input");
-
-	Applet.listenToInputElements([gridSizeInputElement, maxCageSizeInputElement], run);
-
-	applet.setInputCaps([gridSizeInputElement, maxCageSizeInputElement], [10, 5]);
-
-
+	const maxCageSizeInput = new TextBox({
+		element: $("#max-cage-size-input"),
+		name: "Max Cage Size",
+		value: 3,
+		maxValue: 5,
+		onEnter: run,
+	});
 
 	showPage();
 
-
-
 	function run()
 	{
-		const gridSize = parseInt(gridSizeInputElement.value || 6);
-
-		const maxCageSize = parseInt(maxCageSizeInputElement.value || 1000);
-
-		applet.run({ gridSize, maxCageSize });
+		applet.run({
+			gridSize: gridSizeInput.value,
+			maxCageSize: maxCageSizeInput.value
+		});
 	}
 }

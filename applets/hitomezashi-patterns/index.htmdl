@@ -9,15 +9,10 @@ Inspired by the recent (at the time of writing) <a href="https://www.youtube.com
 <div id="canvas-landscape-left">
 
 ### text-boxes
-	
-	resolution 2000 "Resolution"
-	
-	grid-size 50 "Grid Size"
-	
-	row-prob .5 "Row Offset Chance"
-	
-	col-prob .5 "Column Offset Chance"
-	
+	resolution
+	grid-size
+	row-prob
+	col-prob
 ###
 
 

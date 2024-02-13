@@ -1,24 +1,28 @@
 import { showPage } from "../../../scripts/src/loadPage.js";
 import { AbelianSandpile } from "./class.js";
-import { Applet } from "/scripts/src/applets.js";
 import { DownloadButton, GenerateButton } from "/scripts/src/buttons.js";
 import { $ } from "/scripts/src/main.js";
+import { TextBox } from "/scripts/src/textBoxes.js";
 
 export function load()
 {
 	const applet = new AbelianSandpile({ canvas: $("#output-canvas") });
 
+	const numGrainsInput = new TextBox({
+		element: $("#num-grains-input"),
+		name: "Grains",
+		value: 100000,
+		maxValue: 1000000,
+		onEnter: run,
+	});
 
-
-	const numGrainsInputElement = $("#num-grains-input");
-
-	const computationsPerFrameInputElement = $("#computations-per-frame-input");
-
-	Applet.listenToInputElements([numGrainsInputElement, computationsPerFrameInputElement], run);
-
-	applet.setInputCaps([numGrainsInputElement, computationsPerFrameInputElement], [1000000, 20]);
-
-
+	const computationsPerFrameInput = new TextBox({
+		element: $("#computations-per-frame-input"),
+		name: "Computation Speed",
+		value: 10,
+		maxValue: 20,
+		onEnter: run,
+	});
 
 	new GenerateButton({
 		element: $("#generate-button"),
@@ -31,17 +35,13 @@ export function load()
 		filename: "an-abelian-sandpile.png"
 	});
 
-
-
 	showPage();
-
-
 
 	function run()
 	{
-		const numGrains = parseInt(numGrainsInputElement.value || 10000);
-		const computationsPerFrame = parseInt(computationsPerFrameInputElement.value || 25);
-
-		applet.run({ numGrains, computationsPerFrame });
+		applet.run({
+			numGrains: numGrainsInput.value,
+			computationsPerFrame: computationsPerFrameInput.value
+		});
 	}
 }
