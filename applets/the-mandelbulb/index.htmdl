@@ -13,9 +13,7 @@ Drag on the scene to look around. On a keyboard, use WASD to move, and on a touc
 <div id="canvas-landscape-left">
 
 ### text-boxes
-	
-	resolution 400 "Resolution"
-	
+	resolution
 ###
 
 ### sliders

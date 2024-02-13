@@ -14,11 +14,20 @@ import { DownloadButton, ToggleButton } from "/scripts/src/buttons.js";
 import { currentlyTouchDevice } from "/scripts/src/interaction.js";
 import { equalizeAppletColumns } from "/scripts/src/layout.js";
 import { $, $$ } from "/scripts/src/main.js";
+import { TextBox } from "/scripts/src/textBoxes.js";
 
 export function load()
 {
 	const applet = new ThurstonGeometry({
 		canvas: $("#output-canvas"),
+	});
+
+	const resolutionInput = new TextBox({
+		element: $("#resolution-input"),
+		name: "Resolution",
+		value: 500,
+		maxValue: 1000,
+		onInput: changeResolution
 	});
 
 	const demoCanvas = $("#demo-canvas");
@@ -154,20 +163,6 @@ export function load()
 		wallThickness: [$("#wall-thickness-slider"), $("#wall-thickness-slider-value")],
 		fiberThickness: [$("#fiber-thickness-slider"), $("#fiber-thickness-slider-value")],
 	};
-
-	const resolutionInputElement = $("#resolution-input");
-
-	applet.setInputCaps([resolutionInputElement], [1000]);
-
-
-
-	resolutionInputElement.addEventListener("input", () =>
-	{
-		applet.needNewFrame = true;
-		const resolution = parseInt(resolutionInputElement.value || 500);
-
-		applet.changeResolution(resolution);
-	});
 
 	for (const key in sliders)
 	{
@@ -355,4 +350,11 @@ export function load()
 	run();
 
 	showPage();
+
+	function changeResolution()
+	{
+		applet.needNewFrame = true;
+		
+		applet.changeResolution(resolutionInput.value);
+	}
 }

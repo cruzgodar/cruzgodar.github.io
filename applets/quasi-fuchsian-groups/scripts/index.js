@@ -2,68 +2,67 @@ import { showPage } from "../../../scripts/src/loadPage.js";
 import { QuasiFuchsianGroups } from "./class.js";
 import { GenerateButton } from "/scripts/src/buttons.js";
 import { $ } from "/scripts/src/main.js";
+import { TextBox } from "/scripts/src/textBoxes.js";
 
 export function load()
 {
 	const applet = new QuasiFuchsianGroups({ canvas: $("#output-canvas") });
 
-	
+	const resolutionInput = new TextBox({
+		element: $("#resolution-input"),
+		name: "Resolution",
+		value: 400,
+		maxValue: 800,
+		onInput: changeResolution
+	});
 
-	const resolutionInputElement = $("#resolution-input");
+	const highResolutionInput = new TextBox({
+		element: $("#high-resolution-input"),
+		name: "Resolution",
+		value: 1000,
+		maxValue: 3000,
+		onEnter: run
+	});
 
-	const highResolutionInputElement = $("#high-resolution-input");
+	const maxDepthInput = new TextBox({
+		element: $("#max-depth-input"),
+		name: "Iterations",
+		value: 500,
+		maxValue: 1000,
+		onEnter: run
+	});
 
-	const maxDepthInputElement = $("#max-depth-input");
-
-	const maxPixelBrightnessInputElement = $("#max-pixel-brightness-input");
-
-	applet.setInputCaps(
-		[
-			resolutionInputElement,
-			highResolutionInputElement,
-			maxDepthInputElement,
-			maxPixelBrightnessInputElement
-		],
-		[
-			500,
-			3000,
-			1000,
-			500
-		]
-	);
+	const maxPixelBrightnessInput = new TextBox({
+		element: $("#max-pixel-brightness-input"),
+		name: "Quality",
+		value: 100,
+		maxValue: 500,
+		onEnter: run
+	});
 
 	new GenerateButton({
 		element: $("#generate-button"),
-		onClick: async () =>
-		{
-			const imageSize = parseInt(highResolutionInputElement.value || 1000);
-			const maxDepth = parseInt(maxDepthInputElement.value || 250);
-			const maxPixelBrightness = parseInt(maxPixelBrightnessInputElement.value || 50);
-
-			await applet.requestHighResFrame(imageSize, maxDepth, maxPixelBrightness);
-
-			applet.wilson.downloadFrame("a-quasi-fuchsian-group.png");
-		}
+		onClick: run
 	});
-
-	resolutionInputElement.addEventListener("input", () =>
-	{
-		applet.resolutionSmall = parseInt(resolutionInputElement.value || 300);
-		applet.resolutionLarge = parseInt(resolutionInputElement.value || 300) * 3;
-
-		applet.changeAspectRatio();
-	});
-
-
-
-	const generateButtonElement = $("#generate-button");
-
-	generateButtonElement.addEventListener("click", async () =>
-	{
-		
-	});
-
-
 
 	showPage();
+
+	async function run()
+	{
+		await applet.requestHighResFrame(
+			highResolutionInput.value,
+			maxDepthInput.value,
+			maxPixelBrightnessInput.value
+		);
+
+		applet.wilson.downloadFrame("a-quasi-fuchsian-group.png");
+	}
+
+	function changeResolution()
+	{
+		applet.resolutionSmall = resolutionInput.value;
+		applet.resolutionLarge = resolutionInput.value * 3;
+
+		applet.changeAspectRatio();
+	}
 }

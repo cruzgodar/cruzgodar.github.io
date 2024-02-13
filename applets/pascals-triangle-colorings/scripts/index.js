@@ -1,8 +1,8 @@
 import { showPage } from "../../../scripts/src/loadPage.js";
 import { PascalsTriangleColoring } from "./class.js";
-import { Applet } from "/scripts/src/applets.js";
 import { DownloadButton, GenerateButton } from "/scripts/src/buttons.js";
 import { $ } from "/scripts/src/main.js";
+import { TextBox } from "/scripts/src/textBoxes.js";
 
 export function load()
 {
@@ -19,40 +19,37 @@ export function load()
 		filename: "a-pascals-triangle-coloring.png"
 	});
 
+	const resolutionInput = new TextBox({
+		element: $("#resolution-input"),
+		name: "Resolution",
+		value: 2000,
+		maxValue: 4000,
+		onEnter: run
+	});
 
+	const gridSizeInput = new TextBox({
+		element: $("#grid-size-input"),
+		name: "Triangle Size",
+		value: 27,
+		maxValue: 243,
+		onEnter: run
+	});
 
-	const resolutionInputElement = $("#resolution-input");
-
-	const gridSizeInputElement = $("#grid-size-input");
-
-	const numColorsInputElement = $("#num-colors-input");
-
-	Applet.listenToInputElements(
-		[resolutionInputElement, gridSizeInputElement, numColorsInputElement],
-		run
-	);
-
-	applet.setInputCaps(
-		[resolutionInputElement, gridSizeInputElement, numColorsInputElement],
-		[4000, 243, Infinity]
-	);
-
-
+	const numColorsInput = new TextBox({
+		element: $("#num-colors-input"),
+		name: "Colors",
+		value: 3,
+		onEnter: run
+	});
 
 	showPage();
 
-
-
 	function run()
 	{
-		const resolution = parseInt(resolutionInputElement.value || 2000);
-		const gridSize = parseInt(gridSizeInputElement.value || 27);
-		const numColors = parseInt(numColorsInputElement.value || 3);
-
 		applet.run({
-			resolution,
-			gridSize,
-			numColors
+			resolution: resolutionInput.value,
+			gridSize: gridSizeInput.value,
+			numColors: numColorsInput.value
 		});
 	}
 }

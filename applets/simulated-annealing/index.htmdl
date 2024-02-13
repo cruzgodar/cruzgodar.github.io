@@ -11,9 +11,8 @@ There are plenty of ways to quickly approximate it, though. One of them, called 
 <div id="canvas-landscape-left">
 
 ### text-boxes
-	resolution 1000 "Resolution"
-	
-	num-nodes 20 "Nodes"
+	resolution
+	num-nodes
 ###
 
 ### checkbox toggle-maximum-speed "Maximum speed"

@@ -11,9 +11,7 @@ The controls are the same as in the Mandelbulb applet. While changing $c$, use t
 <div id="canvas-landscape-left">
 
 ### text-boxes
-	
-	resolution 400 "Resolution"
-	
+	resolution
 ###
 
 ### sliders

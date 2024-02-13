@@ -2,6 +2,7 @@ import { showPage } from "../../../scripts/src/loadPage.js";
 import { Mandelbulb } from "./class.js";
 import { Button, ToggleButton } from "/scripts/src/buttons.js";
 import { $ } from "/scripts/src/main.js";
+import { TextBox } from "/scripts/src/textBoxes.js";
 
 export function load()
 {
@@ -58,27 +59,16 @@ export function load()
 		}
 	});
 
-
-
-	const resolutionInputElement = $("#resolution-input");
-
-	applet.setInputCaps([resolutionInputElement], [750]);
-
-
-
-	resolutionInputElement.addEventListener("input", () =>
-	{
-		const resolution = parseInt(resolutionInputElement.value || 500);
-
-		applet.changeResolution(resolution);
+	const resolutionInput = new TextBox({
+		element: $("#resolution-input"),
+		name: "Resolution",
+		value: 500,
+		maxValue: 750,
+		onInput: changeResolution
 	});
-
-
 
 	const iterationsSliderElement = $("#iterations-slider");
 	const iterationsSliderValueElement = $("#iterations-slider-value");
-
-
 
 	const powerSliderElement = $("#power-slider");
 	const powerSliderValueElement = $("#power-slider-value");
@@ -96,11 +86,7 @@ export function load()
 
 	elements.forEach(element => element.addEventListener("input", updateParameters));
 
-
-
 	showPage();
-
-
 
 	function updateParameters()
 	{
@@ -122,5 +108,10 @@ export function load()
 		applet.wilson.gl.uniform1i(applet.wilson.uniforms["maxIterations"], applet.maxIterations);
 
 		applet.updateRotationMatrix();
+	}
+
+	function changeResolution()
+	{
+		applet.changeResolution(resolutionInput.value);
 	}
 }

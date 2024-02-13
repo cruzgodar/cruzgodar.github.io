@@ -1,8 +1,9 @@
 import { showPage } from "../../../scripts/src/loadPage.js";
 import { StrangeAttractor } from "./class.js";
-import { Applet } from "/scripts/src/applets.js";
 import { DownloadButton, GenerateButton } from "/scripts/src/buttons.js";
 import { $ } from "/scripts/src/main.js";
+import { typesetMath } from "/scripts/src/math.js";
+import { TextBox } from "/scripts/src/textBoxes.js";
 
 export function load()
 {
@@ -19,58 +20,53 @@ export function load()
 		filename: "a-strange-attractor.png"
 	});
 
+	const resolutionInput = new TextBox({
+		element: $("#resolution-input"),
+		name: "Resolution",
+		value: 750,
+		maxValue: 1500,
+		onEnter: run
+	});
 
+	const sigmaInput = new TextBox({
+		element: $("#sigma-input"),
+		name: "$\\sigma$",
+		value: 10,
+		maxValue: 20,
+		onEnter: run
+	});
 
-	const resolutionInputElement = $("#resolution-input");
+	const rhoInput = new TextBox({
+		element: $("#rho-input"),
+		name: "$\\rho$",
+		value: 28,
+		maxValue: 50,
+		onEnter: run
+	});
 
-	const sigmaInputElement = $("#sigma-input");
+	const betaInput = new TextBox({
+		element: $("#beta-input"),
+		name: "$\\beta$",
+		value: 2.67,
+		maxValue: 3.6,
+		onEnter: run
+	});
 
-	const rhoInputElement = $("#rho-input");
-
-	const betaInputElement = $("#beta-input");
-
-	Applet.listenToInputElements([
-		resolutionInputElement,
-		sigmaInputElement,
-		rhoInputElement,
-		betaInputElement
-	], run);
-
-	applet.setInputCaps([
-		resolutionInputElement,
-		sigmaInputElement,
-		rhoInputElement,
-		betaInputElement
-	], [
-		1500,
-		20,
-		50,
-		3.6
-	]);
-
-
+	typesetMath();
 
 	const maximumSpeedCheckboxElement = $("#toggle-maximum-speed-checkbox");
 
-
-
 	showPage();
-
-
 
 	function run()
 	{
-		const resolution = parseInt(resolutionInputElement.value || 1000);
-		const sigma = parseFloat(sigmaInputElement.value || 10);
-		const rho = parseFloat(rhoInputElement.value || 28);
-		const beta = parseFloat(betaInputElement.value || 2.67);
 		const maximumSpeed = maximumSpeedCheckboxElement.checked;
 
 		applet.run({
-			resolution,
-			sigma,
-			rho,
-			beta,
+			resolution: resolutionInput.value,
+			sigma: sigmaInput.value,
+			rho: rhoInput.value,
+			beta: betaInput.value,
 			maximumSpeed
 		});
 	}

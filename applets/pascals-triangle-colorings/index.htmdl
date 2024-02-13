@@ -9,13 +9,9 @@ Pascal's Triangle is a commonly-seen construction that proves useful from time t
 <div id="canvas-landscape-left">
 
 ### text-boxes
-	
-	resolution 2000 "Resolution"
-	
-	grid-size 27 "Triangle Size"
-	
-	num-colors 3 "Colors"
-	
+	resolution
+	grid-size
+	num-colors
 ###
 
 ### buttons

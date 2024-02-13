@@ -2,6 +2,7 @@ import { showPage } from "../../../scripts/src/loadPage.js";
 import { QuaternionicJuliaSet } from "./class.js";
 import { Button, ToggleButton } from "/scripts/src/buttons.js";
 import { $ } from "/scripts/src/main.js";
+import { TextBox } from "/scripts/src/textBoxes.js";
 
 export function load()
 {
@@ -40,23 +41,16 @@ export function load()
 		}
 	});
 
-
-
-	const resolutionInputElement = $("#resolution-input");
+	const resolutionInput = new TextBox({
+		element: $("#resolution-input"),
+		name: "Resolution",
+		value: 400,
+		maxValue: 800,
+		onInput: changeResolution
+	});
 
 	const iterationsSliderElement = $("#iterations-slider");
 	const iterationsSliderValueElement = $("#iterations-slider-value");
-
-	applet.setInputCaps([resolutionInputElement], [750]);
-
-
-
-	resolutionInputElement.addEventListener("input", () =>
-	{
-		const resolution = parseInt(resolutionInputElement.value || 500);
-
-		applet.changeResolution(resolution);
-	});
 
 	iterationsSliderElement.addEventListener("input", () =>
 	{
@@ -64,8 +58,6 @@ export function load()
 
 		applet.wilson.gl.uniform1i(applet.wilson.uniforms["maxIterations"], applet.maxIterations);
 	});
-
-
 
 	const elements = [cXSliderElement, cYSliderElement, cZSliderElement];
 
@@ -86,4 +78,9 @@ export function load()
 
 
 	showPage();
+
+	function changeResolution()
+	{
+		applet.changeResolution(resolutionInput.value);
+	}
 }

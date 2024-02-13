@@ -36,9 +36,7 @@ The derivative precision determines the accuracy with which the applet computes 
 </div>
 
 ### text-boxes
-	
-	resolution 500 "Resolution"
-	
+	resolution
 ###
 
 ### sliders

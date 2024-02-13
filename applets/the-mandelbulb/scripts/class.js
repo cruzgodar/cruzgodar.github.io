@@ -285,8 +285,8 @@ export class Mandelbulb extends RaymarchApplet
 
 			shader: fragShaderSource,
 
-			canvasWidth: 400,
-			canvasHeight: 400,
+			canvasWidth: 500,
+			canvasHeight: 500,
 
 			worldCenterX: -4.6601,
 			worldCenterY: -2.272,

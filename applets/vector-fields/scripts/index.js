@@ -3,12 +3,36 @@ import { VectorField } from "./class.js";
 import { Applet } from "/scripts/src/applets.js";
 import { DownloadButton, GenerateButton } from "/scripts/src/buttons.js";
 import { $ } from "/scripts/src/main.js";
+import { TextBox } from "/scripts/src/textBoxes.js";
 
 export function load()
 {
 	const applet = new VectorField({ canvas: $("#output-canvas") });
 
 	applet.loadPromise.then(() => run());
+
+	const resolutionInput = new TextBox({
+		element: $("#resolution-input"),
+		name: "Resolution",
+		value: 500,
+		maxValue: 1000,
+		onInput: generateNewField
+	});
+
+	const maxParticlesInput = new TextBox({
+		element: $("#max-particles-input"),
+		name: "Particles",
+		value: 10000,
+		maxValue: 100000,
+		onInput: generateNewField
+	});
+
+	const lifetimeInput = new TextBox({
+		element: $("#lifetime-input"),
+		name: "Particle Lifetime",
+		value: 150,
+		onInput: generateNewField
+	});
 
 
 
@@ -49,11 +73,7 @@ export function load()
 		}
 	});
 
-
-
 	const rawGLSLCheckboxElement = $("#raw-glsl-checkbox");
-
-
 
 	new GenerateButton({
 		element: $("#generate-button"),
@@ -66,34 +86,12 @@ export function load()
 		filename: "a-vector-field.png"
 	});
 
-
-
-	const resolutionInputElement = $("#resolution-input");
-
-	const maxParticlesInputElement = $("#max-particles-input");
-
 	const speedSliderElement = $("#speed-slider");
 	const speedSliderValueElement = $("#speed-slider-value");
 
-	const lifetimeInputElement = $("#lifetime-input");
-
-	applet.setInputCaps([resolutionInputElement, maxParticlesInputElement], [1000, 100000]);
-
-	
-
-	resolutionInputElement.addEventListener("input", generateNewField);
-
-	maxParticlesInputElement.addEventListener("input", generateNewField);
-
 	speedSliderElement.addEventListener("input", updateParameters);
 
-	lifetimeInputElement.addEventListener("input", generateNewField);
-
-
-
 	showPage();
-
-
 
 	function run()
 	{
@@ -101,23 +99,14 @@ export function load()
 			? codeTextareaElement.value
 			: Applet.parseNaturalGLSL(codeTextareaElement.value);
 
-		const resolution = parseInt(resolutionInputElement.value || 500);
-		
-		const maxParticles = Math.max(
-			parseInt(maxParticlesInputElement.value || 10000),
-			100
-		);
-
 		const dt = parseFloat(speedSliderValueElement.textContent || 1) / 300;
-
-		const lifetime = Math.min(parseInt(lifetimeInputElement.value || 150), 255);
 		
 		applet.run({
 			generatingCode,
-			resolution,
-			maxParticles,
+			resolution: resolutionInput.value,
+			maxParticles: Math.max(maxParticlesInput.value, 100),
 			dt,
-			lifetime,
+			lifetime: Math.min(lifetimeInput.value, 255),
 			worldCenterX: 0,
 			worldCenterY: 0,
 			zoomLevel: .5
@@ -135,22 +124,13 @@ export function load()
 
 	function generateNewField()
 	{
-		const resolution = parseInt(resolutionInputElement.value || 500);
-		
-		const maxParticles = Math.max(
-			parseInt(maxParticlesInputElement.value || 10000),
-			100
-		);
-
 		const dt = parseFloat(speedSliderValueElement.textContent || 1) / 300;
-
-		const lifetime = Math.min(parseInt(lifetimeInputElement.value || 150), 255);
 		
 		applet.generateNewField({
-			resolution,
-			maxParticles,
+			resolution: resolutionInput.value,
+			maxParticles: Math.max(maxParticlesInput.value, 100),
 			dt,
-			lifetime
+			lifetime: Math.min(lifetimeInput.value, 255)
 		});
 	}
 }

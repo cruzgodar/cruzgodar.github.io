@@ -2,22 +2,79 @@ import { showPage } from "../../../scripts/src/loadPage.js";
 import { Snowflake } from "./class.js";
 import { Button, DownloadButton, GenerateButton } from "/scripts/src/buttons.js";
 import { $ } from "/scripts/src/main.js";
+import { typesetMath } from "/scripts/src/math.js";
+import { TextBox } from "/scripts/src/textBoxes.js";
 
 export function load()
 {
 	const applet = new Snowflake({ canvas: $("#output-canvas") });
 
-	const resolutionInputElement = $("#resolution-input");
-	const computationsPerFrameInputElement = $("#computations-per-frame-input");
-	const rhoInputElement = $("#rho-input");
-	const betaInputElement = $("#beta-input");
-	const alphaInputElement = $("#alpha-input");
-	const thetaInputElement = $("#theta-input");
-	const kappaInputElement = $("#kappa-input");
-	const muInputElement = $("#mu-input");
-	const gammaInputElement = $("#gamma-input");
+	const resolutionInput = new TextBox({
+		element: $("#resolution-input"),
+		name: "Resolution",
+		value: 500,
+		maxValue: 2000,
+		onEnter: run
+	});
 
-	applet.setInputCaps([resolutionInputElement, computationsPerFrameInputElement], [1000, 20]);
+	const computationsPerFrameInput = new TextBox({
+		element: $("#computations-per-frame-input"),
+		name: "Computation Speed",
+		value: 25,
+		maxValue: 50,
+		onEnter: run
+	});
+
+	const rhoInput = new TextBox({
+		element: $("#rho-input"),
+		name: "$\\rho$",
+		value: .3673,
+		onEnter: run
+	});
+
+	const betaInput = new TextBox({
+		element: $("#beta-input"),
+		name: "$\\beta$",
+		value: 1.1016,
+		onEnter: run
+	});
+
+	const alphaInput = new TextBox({
+		element: $("#alpha-input"),
+		name: "$\\alpha$",
+		value: .4022,
+		onEnter: run
+	});
+
+	const thetaInput = new TextBox({
+		element: $("#theta-input"),
+		name: "$\\theta$",
+		value: .0311,
+		onEnter: run
+	});
+
+	const kappaInput = new TextBox({
+		element: $("#kappa-input"),
+		name: "$\\kappa$",
+		value: .0013,
+		onEnter: run
+	});
+
+	const muInput = new TextBox({
+		element: $("#mu-input"),
+		name: "$\\mu$",
+		value: .019,
+		onEnter: run
+	});
+
+	const gammaInput = new TextBox({
+		element: $("#gamma-input"),
+		name: "$\\gamma$",
+		value: .0005,
+		onEnter: run
+	});
+
+	typesetMath();
 
 	new GenerateButton({
 		element: $("#generate-button"),
@@ -27,30 +84,7 @@ export function load()
 	new Button({
 		element: $("#randomize-parameters-button"),
 		name: "Randomize Parameters",
-		onClick: () =>
-		{
-			rhoInputElement.value = Math.round(
-				(.3 + (.6 - .3) * Math.random()
-				) * 100000) / 100000;
-			betaInputElement.value = Math.round(
-				(.9 + (1.7 - .9) * Math.random()
-				) * 100000) / 100000;
-			alphaInputElement.value = Math.round(
-				(.2 + (.6 - .2) * Math.random()
-				) * 100000) / 100000;
-			thetaInputElement.value = Math.round(
-				(.01 + (.05 - .01) * Math.random()
-				) * 100000) / 100000;
-			kappaInputElement.value = Math.round(
-				(0 + (.01 - 0) * Math.random()
-				) * 100000) / 100000;
-			muInputElement.value = Math.round(
-				(0 + (.065 - 0) * Math.random()
-				) * 100000) / 100000;
-			muInputElement.value = Math.round(
-				(0 + (.05 - 0) * Math.random()
-				) * 100000) / 100000;
-		}
+		onClick: randomizeParameters
 	});
 
 	new DownloadButton({
@@ -67,26 +101,55 @@ export function load()
 
 	function run()
 	{
-		const resolution = parseInt(resolutionInputElement.value || 500);
-		const computationsPerFrame = parseInt(computationsPerFrameInputElement.value || 25);
-		const rho = parseFloat(rhoInputElement.value || .45);
-		const beta = parseFloat(betaInputElement.value || 1.3);
-		const alpha = parseFloat(alphaInputElement.value || .4);
-		const theta = parseFloat(thetaInputElement.value || .03);
-		const kappa = parseFloat(kappaInputElement.value || .005);
-		const mu = parseFloat(muInputElement.value || .0325);
-		const gamma = parseFloat(gammaInputElement.value || .025);
-
 		applet.run({
-			resolution,
-			computationsPerFrame,
-			rho,
-			beta,
-			alpha,
-			theta,
-			kappa,
-			mu,
-			gamma
+			resolution: resolutionInput.value,
+			computationsPerFrame: computationsPerFrameInput.value,
+			rho: rhoInput.value,
+			beta: betaInput.value,
+			alpha: alphaInput.value,
+			theta: thetaInput.value,
+			kappa: kappaInput.value,
+			mu: muInput.value,
+			gamma: gammaInput.value
 		});
+	}
+
+	function randomizeParameters()
+	{
+		rhoInput.setValue(
+			Math.round((.3 + (.6 - .3) * Math.random()) * 100000) / 100000,
+			false
+		);
+
+		betaInput.setValue(
+			Math.round((.9 + (1.7 - .9) * Math.random()) * 100000) / 100000,
+			false
+		);
+
+		alphaInput.setValue(
+			Math.round((.2 + (.6 - .2) * Math.random()) * 100000) / 100000,
+			false
+		);
+
+		thetaInput.setValue(
+			Math.round((.01 + (.05 - .01) * Math.random()) * 100000) / 100000,
+			false
+		);
+
+		kappaInput.setValue(
+			Math.round((0 + (.01 - 0) * Math.random()) * 100000) / 100000,
+			false
+		);
+
+		muInput.setValue(
+			Math.round((0 + (.065 - 0) * Math.random()) * 100000) / 100000,
+			false
+		);
+
+		muInput.setValue(
+			Math.round((0 + (.05 - 0) * Math.random()) * 100000) / 100000,
+			false
+		);
+
 	}
 }

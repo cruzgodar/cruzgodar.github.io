@@ -3,6 +3,7 @@ import { NewtonsMethodExtended } from "./class.js";
 import { Applet } from "/scripts/src/applets.js";
 import { Button, DownloadButton, GenerateButton } from "/scripts/src/buttons.js";
 import { $ } from "/scripts/src/main.js";
+import { TextBox } from "/scripts/src/textBoxes.js";
 
 export function load()
 {
@@ -27,33 +28,27 @@ export function load()
 		filename: "newtons-method-extended.png"
 	});
 
+	const resolutionInput = new TextBox({
+		element: $("#resolution-input"),
+		name: "Resolution",
+		value: 500,
+		maxValue: 2000,
+		onInput: changeResolution
+	});
+
 
 
 	const codeInputElement = $("#code-textarea");
 
 	codeInputElement.value = "cmul(csin(z), sin(cmul(z, i)))";
 
-
-
 	Applet.listenToInputElements([codeInputElement], run);
 
 
 
-	const resolutionInputElement = $("#resolution-input");
-
 	const derivativePrecisionSliderElement = $("#derivative-precision-slider");
 	const derivativePrecisionSliderValueElement = $("#derivative-precision-slider-value");
 
-	applet.setInputCaps([resolutionInputElement], [2000]);
-
-
-
-	resolutionInputElement.addEventListener("input", () =>
-	{
-		applet.resolution = parseInt(resolutionInputElement.value || 500);
-
-		applet.changeAspectRatio(true);
-	});
 
 	derivativePrecisionSliderElement.addEventListener("input", () =>
 	{
@@ -69,7 +64,6 @@ export function load()
 			applet.derivativePrecision
 		);
 	});
-
 
 	const examples =
 	{
@@ -105,5 +99,12 @@ export function load()
 		const generatingCode = codeInputElement.value;
 
 		applet.run({ generatingCode });
+	}
+
+	function changeResolution()
+	{
+		applet.resolution = resolutionInput.value;
+
+		applet.changeAspectRatio(true);
 	}
 }

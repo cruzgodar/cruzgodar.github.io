@@ -1,8 +1,8 @@
 import { showPage } from "../../../scripts/src/loadPage.js";
 import { SortingAlgorithm } from "./class.js";
-import { Applet } from "/scripts/src/applets.js";
 import { Button, DownloadButton } from "/scripts/src/buttons.js";
 import { $, $$ } from "/scripts/src/main.js";
+import { TextBox } from "/scripts/src/textBoxes.js";
 
 export function load()
 {
@@ -27,6 +27,22 @@ export function load()
 		filename: "a-sorting-algorithm.png"
 	});
 
+	const resolutionInput = new TextBox({
+		element: $("#resolution-input"),
+		name: "Resolution",
+		value: 2000,
+		maxValue: 4000,
+		onEnter: run
+	});
+
+	const arraySizeInput = new TextBox({
+		element: $("#array-size-input"),
+		name: "Array Size",
+		value: 512,
+		maxValue: 2048,
+		onEnter: run
+	});
+
 
 
 	const algorithmSelectorDropdownElement = $("#algorithm-selector-dropdown");
@@ -46,39 +62,24 @@ export function load()
 		element.style.display = "block";
 	});
 
-
-
-	const resolutionInputElement = $("#resolution-input");
-
-	const arraySizeInputElement = $("#array-size-input");
-
-	Applet.listenToInputElements([resolutionInputElement, arraySizeInputElement], run);
-
-	applet.setInputCaps([resolutionInputElement, arraySizeInputElement], [4000, 2048]);
-
 	const playSoundCheckboxElement = $("#play-sound-checkbox");
 
 	playSoundCheckboxElement.checked = true;
 
-
-
 	showPage();
-
-
 
 	function run()
 	{
-		const resolution = parseInt(resolutionInputElement.value || 2000);
 		const algorithm = algorithmSelectorDropdownElement.value === "none"
 			? "bubble"
 			: algorithmSelectorDropdownElement.value;
-		const dataLength = parseInt(arraySizeInputElement.value || 256);
+
 		const doPlaySound = playSoundCheckboxElement.checked;
 
 		applet.run({
-			resolution,
+			resolution: resolutionInput.value,
 			algorithm,
-			dataLength,
+			dataLength: arraySizeInput.value,
 			doPlaySound
 		});
 	}

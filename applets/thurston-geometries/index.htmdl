@@ -45,9 +45,7 @@ As always, this applet was made with <a href="/projects/wilson/">Wilson</a>. It 
 <div id="canvas-landscape-left">
 
 ### text-boxes
-	
-	resolution 500 "Resolution"
-	
+	resolution
 ###
 
 ### sliders

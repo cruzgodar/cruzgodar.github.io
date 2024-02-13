@@ -11,15 +11,10 @@ The **Lorenz system** is a bare-bones model of atmospheric convection. Constants
 <div id="canvas-landscape-left">
 
 ### text-boxes
-	
-	resolution 1000 "Image Size"
-	
-	sigma 10 "&#x1D6D4;"
-	
-	rho 28 "&#x1D6D2;"
-	
-	beta 2.67 "&#x1D6C3;"
-	
+	resolution
+	sigma
+	rho
+	beta
 ###
 
 ### checkbox toggle-maximum-speed "Maximum speed"

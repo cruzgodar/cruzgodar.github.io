@@ -3,12 +3,42 @@ import { PlanePartitions } from "./class.js";
 import { Button, ToggleButton, equalizeTextButtons } from "/scripts/src/buttons.js";
 import { equalizeAppletColumns } from "/scripts/src/layout.js";
 import { $, $$ } from "/scripts/src/main.js";
+import { TextBox } from "/scripts/src/textBoxes.js";
 
 export function load()
 {
 	const applet = new PlanePartitions({
 		canvas: $("#output-canvas"),
 		numbersCanvas: $("#numbers-canvas")
+	});
+
+	const resolutionInput = new TextBox({
+		element: $("#resolution-input"),
+		name: "Resolution",
+		value: 2000,
+		maxValue: 4000,
+		onInput: changeResolution
+	});
+
+	const editArrayIndexInput = new TextBox({
+		element: $("#edit-array-index-input"),
+		name: "Index to Edit",
+		value: 0,
+		onEnter: editArray,
+		onInput: updateEditArrayTextarea
+	});
+
+	const removeArrayIndexInput = new TextBox({
+		element: $("#remove-array-index-input"),
+		name: "Index to Remove",
+		value: 0,
+		onEnter: removeArray
+	});
+
+	const algorithmIndexInput = new TextBox({
+		element: $("#algorithm-index-input"),
+		name: "Index to Use",
+		value: 0
 	});
 
 	const categorySelectorDropdownElement = $("#category-selector-dropdown");
@@ -19,13 +49,7 @@ export function load()
 
 	const editArrayTextareaElement = $("#edit-array-textarea");
 
-	const editArrayIndexInputElement = $("#edit-array-index-input");
-
-	const removeArrayIndexInputElement = $("#remove-array-index-input");
-
 	const maximumSpeedCheckboxElement = $("#maximum-speed-checkbox");
-
-	const algorithmIndexInputElement = $("#algorithm-index-input");
 
 
 
@@ -85,28 +109,13 @@ export function load()
 	new Button({
 		element: $("#edit-array-button"),
 		name: "Edit",
-		onClick: async () =>
-		{
-			const index = parseInt(editArrayIndexInputElement.value || 0);
-
-			await applet.editArray(
-				index,
-				PlanePartitions.parseArray(editArrayTextareaElement.value)
-			);
-
-			editArrayTextareaElement.value = PlanePartitions.arrayToAscii(
-				applet.arrays[index].numbers
-			);
-		}
+		onClick: editArray
 	});
 
 	new Button({
 		element: $("#remove-array-button"),
 		name: "Remove",
-		onClick: () =>
-		{
-			applet.removeArray(parseInt(removeArrayIndexInputElement.value));
-		}
+		onClick: removeArray
 	});
 
 	new Button({
@@ -114,7 +123,7 @@ export function load()
 		name: "Hillman-Grassl",
 		onClick: () => applet.runAlgorithm(
 			"hillmanGrassl",
-			parseInt(algorithmIndexInputElement.value)
+			algorithmIndexInput.value
 		)
 	});
 
@@ -123,7 +132,7 @@ export function load()
 		name: "Hillman-Grassl Inverse",
 		onClick: () => applet.runAlgorithm(
 			"hillmanGrasslInverse",
-			parseInt(algorithmIndexInputElement.value)
+			algorithmIndexInput.value
 		)
 	});
 
@@ -132,7 +141,7 @@ export function load()
 		name: "Pak",
 		onClick: () => applet.runAlgorithm(
 			"pak",
-			parseInt(algorithmIndexInputElement.value)
+			algorithmIndexInput.value
 		)
 	});
 
@@ -141,7 +150,7 @@ export function load()
 		name: "Pak Inverse",
 		onClick: () => applet.runAlgorithm(
 			"pakInverse",
-			parseInt(algorithmIndexInputElement.value)
+			algorithmIndexInput.value
 		)
 	});
 
@@ -150,7 +159,7 @@ export function load()
 		name: "Sulzgruber",
 		onClick: () => applet.runAlgorithm(
 			"sulzgruber",
-			parseInt(algorithmIndexInputElement.value)
+			algorithmIndexInput.value
 		)
 	});
 
@@ -159,7 +168,7 @@ export function load()
 		name: "Sulzgruber Inverse",
 		onClick: () => applet.runAlgorithm(
 			"sulzgruberInverse",
-			parseInt(algorithmIndexInputElement.value)
+			algorithmIndexInput.value
 		)
 	});
 
@@ -168,7 +177,7 @@ export function load()
 		name: "RSK",
 		onClick: () => applet.runAlgorithm(
 			"rsk",
-			parseInt(algorithmIndexInputElement.value)
+			algorithmIndexInput.value
 		)
 	});
 
@@ -177,7 +186,7 @@ export function load()
 		name: "RSK Inverse",
 		onClick: () => applet.runAlgorithm(
 			"rskInverse",
-			parseInt(algorithmIndexInputElement.value)
+			algorithmIndexInput.value
 		)
 	});
 
@@ -186,10 +195,6 @@ export function load()
 		name: "Download",
 		onClick: () => applet.needDownload = true
 	});
-
-	const resolutionInputElement = $("#resolution-input");
-
-	applet.setInputCaps([resolutionInputElement], [3000]);
 
 	const sectionElements =
 	{
@@ -236,24 +241,8 @@ export function load()
 
 		if (visibleSection === "edit-array")
 		{
-			const index = parseInt(editArrayIndexInputElement.value || 0);
-
-			if (index < applet.arrays.length && index >= 0)
-			{
-				editArrayTextareaElement.value = PlanePartitions.arrayToAscii(
-					applet.arrays[index].numbers
-				);
-			}
+			updateEditArrayTextarea();
 		}
-	});
-
-
-
-	resolutionInputElement.addEventListener("input", () =>
-	{
-		applet.resolution = parseInt(resolutionInputElement.value || 2000);
-
-		applet.renderer.setSize(applet.resolution, applet.resolution, false);
 	});
 
 
@@ -265,22 +254,6 @@ export function load()
 
 
 
-	editArrayIndexInputElement.addEventListener("input", () =>
-	{
-		const index = parseInt(editArrayIndexInputElement.value || 0);
-
-		if (index >= applet.arrays.length || index < 0)
-		{
-			return;
-		}
-
-		applet.editArrayTextareaElement.value = PlanePartitions.arrayToAscii(
-			applet.arrays[index].numbers
-		);
-	});
-
-
-
 	const planePartition = PlanePartitions.generateRandomPlanePartition();
 	arrayDataTextareaElement.value = PlanePartitions.arrayToAscii(planePartition);
 	applet.addNewArray(0, planePartition);
@@ -288,4 +261,46 @@ export function load()
 
 
 	showPage();
+
+
+
+	function changeResolution()
+	{
+		applet.resolution = resolutionInput.value;
+
+		applet.renderer.setSize(applet.resolution, applet.resolution, false);
+	}
+
+	async function editArray()
+	{
+		await applet.editArray(
+			editArrayIndexInput.value,
+			PlanePartitions.parseArray(editArrayTextareaElement.value)
+		);
+
+		editArrayTextareaElement.value = PlanePartitions.arrayToAscii(
+			applet.arrays[editArrayIndexInput.value].numbers
+		);
+	}
+
+	function updateEditArrayTextarea()
+	{
+		const index = editArrayIndexInput.value;
+
+		console.log(index);
+
+		if (index >= applet.arrays.length || index < 0)
+		{
+			return;
+		}
+
+		editArrayTextareaElement.value = PlanePartitions.arrayToAscii(
+			applet.arrays[index].numbers
+		);
+	}
+
+	function removeArray()
+	{
+		applet.removeArray(removeArrayIndexInput.value);
+	}
 }

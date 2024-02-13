@@ -67,11 +67,8 @@ Whenever a sorting algorithm modifies the list, that location in the color wheel
 <div id="canvas-landscape-left">
 
 ### text-boxes
-	
-	resolution 2000 "Resolution"
-	
-	array-size 512 "List Size"
-	
+	resolution
+	array-size
 ###
 
 ### checkbox play-sound "Play sound"
