@@ -25,7 +25,7 @@ This applet runs on the GPU, which traditionally sacrifices precision in exchang
 <div id="canvas-landscape-left">
 
 ### text-boxes
-	resolution 500 "Resolution"
+	resolution
 ###
 
 ### checkbox double-precision "Allow double precision"

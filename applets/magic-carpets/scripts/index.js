@@ -2,6 +2,7 @@ import { showPage } from "../../../scripts/src/loadPage.js";
 import { MagicCarpet } from "./class.js";
 import { Button, DownloadButton, GenerateButton } from "/scripts/src/buttons.js";
 import { $ } from "/scripts/src/main.js";
+import { TextBox } from "/scripts/src/textBoxes.js";
 
 export function load()
 {
@@ -30,50 +31,33 @@ export function load()
 		filename: "a-magic-carpet.png"
 	});
 
-	const gridSizeInputElement = $("#grid-size-input");
-
-	const maxCageSizeInputElement = $("#max-cage-size-input");
-
-	applet.setInputCaps([gridSizeInputElement], [100]);
-
-
-
-	gridSizeInputElement.addEventListener("keydown", e =>
-	{
-		if (e.key === "Enter")
-		{
-			run();
-		}
+	const gridSizeInput = new TextBox({
+		element: $("#grid-size-input"),
+		name: "Grid Size",
+		value: 8,
+		maxValue: 100,
+		onEnter: run
 	});
 
-	maxCageSizeInputElement.addEventListener("keydown", e =>
-	{
-		if (e.key === "Enter")
-		{
-			run();
-		}
+	const maxCageSizeInput = new TextBox({
+		element: $("#max-cage-size-input"),
+		name: "Max Cage Size",
+		value: 16,
+		onEnter: run
 	});
-
-
 
 	const uniqueSolutionCheckboxElement = $("#unique-solution-checkbox");
 
-
-
 	function run()
 	{
-		const gridSize = parseInt(gridSizeInputElement.value || 8);
-		const maxCageSize = parseInt(maxCageSizeInputElement.value || 16);
 		const uniqueSolution = uniqueSolutionCheckboxElement.checked;
 
 		applet.run({
-			gridSize,
-			maxCageSize,
+			gridSize: gridSizeInput.value,
+			maxCageSize: maxCageSizeInput.value,
 			uniqueSolution
 		});
 	}
-
-
 
 	showPage();
 }

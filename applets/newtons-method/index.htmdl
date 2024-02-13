@@ -37,7 +37,7 @@ gives us two new parameters to modify --- here, $a$ and $c$ are represented by t
 <div id="canvas-landscape-left">
 
 ### text-boxes
-	resolution 500 "Resolution"
+	resolution
 ###
 
 ### buttons
@@ -52,9 +52,8 @@ gives us two new parameters to modify --- here, $a$ and $c$ are represented by t
 
 <div id="root-setter">
 	### text-boxes
-		root-a 0 "Root $a$"
-		
-		root-b 0 "Root $b$"
+		root-a
+		root-b
 	###
 </div>
 

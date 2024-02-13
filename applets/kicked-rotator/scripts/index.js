@@ -1,8 +1,8 @@
 import { showPage } from "../../../scripts/src/loadPage.js";
 import { KickedRotator } from "./class.js";
-import { Applet } from "/scripts/src/applets.js";
 import { DownloadButton, GenerateButton } from "/scripts/src/buttons.js";
 import { $ } from "/scripts/src/main.js";
+import { TextBox } from "/scripts/src/textBoxes.js";
 
 export function load()
 {
@@ -19,37 +19,30 @@ export function load()
 		filename: "a-kicked-rotator.png"
 	});
 
+	const resolutionInput = new TextBox({
+		element: $("#resolution-input"),
+		name: "Resolution",
+		value: 1000,
+		maxValue: 2000,
+		onEnter: run
+	});
 
-
-	const resolutionInputElement = $("#resolution-input");
-
-	const kInputElement = $("#k-input");
-
-	const orbitSeparationInputElement = $("#orbit-separation-input");
-
-	Applet.listenToInputElements(
-		[resolutionInputElement, kInputElement, orbitSeparationInputElement],
-		run
-	);
-
-	applet.setInputCaps([resolutionInputElement, kInputElement], [1000, 2]);
-
-
+	const kInput = new TextBox({
+		element: $("#k-input"),
+		name: "K",
+		value: 0.75,
+		maxValue: 2,
+		onEnter: run
+	});
 
 	showPage();
 
-
-
 	function run()
 	{
-		const resolution = parseInt(resolutionInputElement.value || 1000);
-		const K = parseFloat(kInputElement.value || .75);
-		const orbitSeparation = parseInt(orbitSeparationInputElement.value || 0);
-
 		applet.run({
-			resolution,
-			K,
-			orbitSeparation
+			resolution: resolutionInput.value,
+			K: kInput.value,
+			orbitSeparation: 0
 		});
 	}
 }

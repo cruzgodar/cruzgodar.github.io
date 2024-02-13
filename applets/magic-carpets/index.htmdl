@@ -9,11 +9,8 @@ Given a square carpet and a handful of numbers, can the carpet be completely cov
 <div id="canvas-landscape-left">
 
 ### text-boxes
-	
-	grid-size 8 "Grid Size"
-	
-	max-cage-size 16 "Max Area"
-	
+	grid-size
+	max-cage-size
 ###
 
 ### checkbox unique-solution "Require unique solution"

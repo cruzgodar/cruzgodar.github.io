@@ -2,21 +2,33 @@ import { showPage } from "../../../scripts/src/loadPage.js";
 import { NewtonsMethod } from "./class.js";
 import { Button, DownloadButton, ToggleButton } from "/scripts/src/buttons.js";
 import { $ } from "/scripts/src/main.js";
+import { TextBox } from "/scripts/src/textBoxes.js";
 
 export function load()
 {
 	const rootSetterElement = $("#root-setter");
 
-	const rootAInputElement = $("#root-a-input");
-	const rootBInputElement = $("#root-b-input");
-
 	const colorSetterElement = $("#color-setter");
+
+	const rootAInput = new TextBox({
+		element: $("#root-a-input"),
+		name: "Root a",
+		value: 0,
+		onInput: setRoot
+	});
+
+	const rootBInput = new TextBox({
+		element: $("#root-b-input"),
+		name: "Root b",
+		value: 0,
+		onInput: setRoot
+	});
 
 	const applet = new NewtonsMethod({
 		canvas: $("#output-canvas"),
 		rootSetterElement,
-		rootAInputElement,
-		rootBInputElement,
+		rootAInput,
+		rootBInput,
 		colorSetterElement
 	});
 
@@ -58,33 +70,13 @@ export function load()
 		filename: "newtons-method.png"
 	});
 
-	
-
-	const resolutionInputElement = $("#resolution-input");
-
-	applet.setInputCaps([resolutionInputElement], [2000]);
-
-	resolutionInputElement.addEventListener("input", () =>
-	{
-		applet.resolution = parseInt(resolutionInputElement.value || 500);
-
-		applet.changeAspectRatio(true);
+	const resolutionInput = new TextBox({
+		element: $("#resolution-input"),
+		name: "Resolution",
+		value: 500,
+		maxValue: 2000,
+		onInput: changeResolution
 	});
-
-
-	
-	function setRoot()
-	{
-		const x = parseFloat(rootAInputElement.value || 0);
-		const y = parseFloat(rootBInputElement.value || 0);
-
-		applet.setRoot(x, y);
-	}
-
-	rootAInputElement.addEventListener("input", setRoot);
-	rootBInputElement.addEventListener("input", setRoot);
-
-
 
 	const rootColorInputElement = $("#root-color-input");
 
@@ -95,7 +87,17 @@ export function load()
 		applet.setColor(hex);
 	});
 
-
-
 	showPage();
+
+	function setRoot()
+	{
+		applet.setRoot(rootAInput.value, rootBInput.value);
+	}
+
+	function changeResolution()
+	{
+		applet.resolution = resolutionInput.value;
+
+		applet.changeAspectRatio(true);
+	}
 }

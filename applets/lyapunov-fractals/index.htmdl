@@ -9,11 +9,8 @@ The <a href="https://en.wikipedia.org/wiki/Logistic_map">logistic map</a> is one
 <div id="canvas-landscape-left">
 
 ### text-boxes
-	
-	resolution 500 "Resolution"
-	
-	generating-string AB "Generating String"
-	
+	resolution
+	generating-string
 ###
 
 ### buttons

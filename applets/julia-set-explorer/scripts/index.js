@@ -2,6 +2,7 @@ import { showPage } from "../../../scripts/src/loadPage.js";
 import { JuliaSet } from "./class.js";
 import { Button, ToggleButton } from "/scripts/src/buttons.js";
 import { $ } from "/scripts/src/main.js";
+import { TextBox } from "/scripts/src/textBoxes.js";
 
 export function load()
 {
@@ -38,37 +39,26 @@ export function load()
 		}
 	});
 
-
-
-	const resolutionInputElement = $("#resolution-input");
-
-	applet.setInputCaps([resolutionInputElement], [2000]);
+	const resolutionInput = new TextBox({
+		element: $("#resolution-input"),
+		name: "Resolution",
+		value: 500,
+		maxValue: 2000,
+		onInput: changeResolution
+	});
 
 	const doublePrecisionCheckboxElement = $("#double-precision-checkbox");
-
-
-
-	resolutionInputElement.addEventListener("input", () =>
-	{
-		applet.resolution = parseInt(resolutionInputElement.value || 500);
-		applet.changeAspectRatio();
-	});
 
 	doublePrecisionCheckboxElement.addEventListener("input", () =>
 	{
 		applet.toggleUseDoublePrecision();
 	});
 
-
-
-	const downloadButtonElement = $("#download-button");
-
-	downloadButtonElement.addEventListener("click", () =>
-	{
-		
-	});
-
-
-
 	showPage();
+
+	function changeResolution()
+	{
+		applet.resolution = resolutionInput.value;
+		applet.changeAspectRatio();
+	}
 }

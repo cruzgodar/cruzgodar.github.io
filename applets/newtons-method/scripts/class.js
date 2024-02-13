@@ -9,8 +9,8 @@ export class NewtonsMethod extends Applet
 	wilsonHidden = null;
 
 	rootSetterElement = null;
-	rootAInputElement = null;
-	rootBInputElement = null;
+	rootAInput = null;
+	rootBInput = null;
 	colorSetterElement = null;
 
 	a = [1, 0];
@@ -42,15 +42,15 @@ export class NewtonsMethod extends Applet
 	constructor({
 		canvas,
 		rootSetterElement,
-		rootAInputElement,
-		rootBInputElement,
+		rootAInput,
+		rootBInput,
 		colorSetterElement
 	}) {
 		super(canvas);
 
 		this.rootSetterElement = rootSetterElement;
-		this.rootAInputElement = rootAInputElement;
-		this.rootBInputElement = rootBInputElement;
+		this.rootAInput = rootAInput;
+		this.rootBInput = rootBInput;
 		this.colorSetterElement = colorSetterElement;
 
 		const hiddenCanvas = this.createHiddenCanvas();
@@ -500,6 +500,7 @@ export class NewtonsMethod extends Applet
 
 	setRoot(x, y)
 	{
+		console.log(this.lastActiveRoot);
 		if (this.lastActiveRoot === 0)
 		{
 			this.a[0] = x;
@@ -525,7 +526,7 @@ export class NewtonsMethod extends Applet
 			this.currentRoots[2 * (this.lastActiveRoot - 2)] = x;
 			this.currentRoots[2 * (this.lastActiveRoot - 2) + 1] = y;
 
-			this.wilson.draggables.worldCoordinates[this.lastActiveRoot - 2] = [
+			this.wilson.draggables.worldCoordinates[this.lastActiveRoot] = [
 				this.currentRoots[2 * (this.lastActiveRoot - 2)],
 				this.currentRoots[2 * (this.lastActiveRoot - 2) + 1]
 			];
@@ -612,25 +613,29 @@ export class NewtonsMethod extends Applet
 
 			if (this.lastActiveRoot === 0)
 			{
-				this.rootAInputElement.value = Math.round(this.a[0] * 1000) / 1000;
-				this.rootBInputElement.value = Math.round(this.a[1] * 1000) / 1000;
+				this.rootAInput.setValue(Math.round(this.a[0] * 1000) / 1000, false);
+				this.rootBInput.setValue(Math.round(this.a[1] * 1000) / 1000, false);
 			}
 
 			else if (this.lastActiveRoot === 1)
 			{
-				this.rootAInputElement.value = Math.round(this.c[0] * 1000) / 10000;
-				this.rootBInputElement.value = Math.round(this.c[1] * 1000) / 10000;
+				this.rootAInput.setValue(Math.round(this.c[0] * 1000) / 10000, false);
+				this.rootBInput.setValue(Math.round(this.c[1] * 1000) / 10000, false);
 			}
 
 			else
 			{
 				const index = this.lastActiveRoot - 2;
 
-				this.rootAInputElement.value =
-					Math.round(this.currentRoots[2 * index] * 1000) / 1000;
+				this.rootAInput.setValue(
+					Math.round(this.currentRoots[2 * index] * 1000) / 1000,
+					false
+				);
 
-				this.rootBInputElement.value =
-					Math.round(this.currentRoots[2 * index + 1] * 1000) / 1000;
+				this.rootBInput.setValue(
+					Math.round(this.currentRoots[2 * index + 1] * 1000) / 1000,
+					false
+				);
 
 				this.colorSetterElement.value = Applet.rgbToHex(
 					this.colors[3 * index] * 255,

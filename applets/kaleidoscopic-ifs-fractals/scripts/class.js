@@ -324,8 +324,8 @@ export class KaleidoscopicIFSFractal extends RaymarchApplet
 
 			shader: fragShaderSource,
 
-			canvasWidth: 400,
-			canvasHeight: 400,
+			canvasWidth: 500,
+			canvasHeight: 500,
 
 			worldCenterX: -.2391,
 			worldCenterY: -1.6925,

@@ -11,13 +11,8 @@ By varying the strength of the gravity, which we represent with the letter $K$, 
 <div id="canvas-landscape-left">
 
 ### text-boxes
-	
-	resolution 1000 "Resolution"
-	
-	k .75 "K"
-	
-	orbit-separation 0 "Orbit Separation"
-	
+	resolution
+	k
 ###
 
 ### buttons

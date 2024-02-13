@@ -3,6 +3,7 @@ import { KaleidoscopicIFSFractal } from "./class.js";
 import { opacityAnimationTime } from "/scripts/src/animation.js";
 import { DownloadButton } from "/scripts/src/buttons.js";
 import { $ } from "/scripts/src/main.js";
+import { TextBox } from "/scripts/src/textBoxes.js";
 
 export function load()
 {
@@ -14,17 +15,13 @@ export function load()
 		filename: "a-kaleidoscopic-ifs-fractal.png"
 	});
 
-	const resolutionInputElement = $("#resolution-input");
-
-	applet.setInputCaps([resolutionInputElement], [1000]);
-
-	resolutionInputElement.addEventListener("input", () =>
-	{
-		const resolution = parseInt(resolutionInputElement.value || 500);
-
-		applet.changeResolution(resolution);
+	const resolutionInput = new TextBox({
+		element: $("#resolution-input"),
+		name: "Resolution",
+		value: 500,
+		maxValue: 1000,
+		onInput: changeResolution
 	});
-
 	
 	const rotationAngleX2SliderElement = $("#rotation-angle-x-2-slider");
 	const rotationAngleX2SliderValueElement = $("#rotation-angle-x-2-slider-value");
@@ -122,5 +119,10 @@ export function load()
 		rotationAngleZ2SliderValueElement.textContent = "0.000";
 
 		updateRotation();
+	}
+
+	function changeResolution()
+	{
+		applet.changeResolution(resolutionInput.value);
 	}
 }

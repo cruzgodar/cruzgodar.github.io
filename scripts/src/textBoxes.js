@@ -8,6 +8,7 @@ let uncapEverything = false;
 export class TextBox extends InputElement
 {
 	defaultValue;
+	valueTypeIsString = false;
 
 	constructor({
 		element,
@@ -27,29 +28,12 @@ export class TextBox extends InputElement
 		this.element.value = this.value;
 		this.element.nextElementSibling.textContent = this.name;
 
-		this.element.addEventListener("input", () =>
+		if (typeof this.value === "string")
 		{
-			if (!this.disabled)
-			{
-				this.value = parseFloat(this.element.value || this.defaultValue);
+			this.valueTypeIsString = true;
+		}
 
-				if (this.value > this.maxValue && !uncapEverything)
-				{
-					this.value = this.maxValue;
-
-					this.element.value = this.value;
-
-					this.element.parentNode.classList.add("capped-input");
-				}
-
-				else
-				{
-					this.element.parentNode.classList.remove("capped-input");
-				}
-
-				this.onInput();
-			}
-		});
+		this.element.addEventListener("input", () => this.inputCallback());
 
 		this.element.addEventListener("keydown", (e) =>
 		{
@@ -59,7 +43,52 @@ export class TextBox extends InputElement
 			}
 		});
 
-		this.setCap();
+		if (!this.valueTypeIsString)
+		{
+			this.setCap();
+		}
+	}
+
+	inputCallback()
+	{
+		if (this.disabled)
+		{
+			return;
+		}
+
+		this.value = this.valueTypeIsString
+			? this.element.value || this.defaultValue
+			: parseFloat(this.element.value || this.defaultValue);
+
+		if (!this.valueTypeIsString)
+		{
+			if (this.value > this.maxValue && !uncapEverything)
+			{
+				this.value = this.maxValue;
+
+				this.element.value = this.value;
+
+				this.element.parentNode.classList.add("capped-input");
+			}
+
+			else
+			{
+				this.element.parentNode.classList.remove("capped-input");
+			}
+		}
+
+		this.onInput();
+	}
+
+	setValue(newValue, callOnInput = false)
+	{
+		this.value = newValue;
+		this.element.value = this.value;
+
+		if (callOnInput)
+		{
+			this.inputCallback();
+		}
 	}
 
 	setCap()
