@@ -71,7 +71,7 @@ Whenever a sorting algorithm modifies the list, that location in the color wheel
 	array-size
 ###
 
-### checkbox play-sound "Play sound"
+### checkbox play-sound
 
 ### buttons
 	generate

@@ -2,6 +2,7 @@ import { showPage } from "../../../scripts/src/loadPage.js";
 import { VectorField } from "./class.js";
 import { Applet } from "/scripts/src/applets.js";
 import { DownloadButton, GenerateButton } from "/scripts/src/buttons.js";
+import { Checkbox } from "/scripts/src/checkboxes.js";
 import { $ } from "/scripts/src/main.js";
 import { TextBox } from "/scripts/src/textBoxes.js";
 
@@ -32,6 +33,11 @@ export function load()
 		name: "Particle Lifetime",
 		value: 150,
 		onInput: generateNewField
+	});
+
+	const rawGlslCheckbox = new Checkbox({
+		element: $("#raw-glsl-checkbox"),
+		name: "Use Raw GLSL"
 	});
 
 
@@ -73,8 +79,6 @@ export function load()
 		}
 	});
 
-	const rawGLSLCheckboxElement = $("#raw-glsl-checkbox");
-
 	new GenerateButton({
 		element: $("#generate-button"),
 		onClick: run
@@ -95,7 +99,7 @@ export function load()
 
 	function run()
 	{
-		const generatingCode = rawGLSLCheckboxElement.checked
+		const generatingCode = rawGlslCheckbox.checked
 			? codeTextareaElement.value
 			: Applet.parseNaturalGLSL(codeTextareaElement.value);
 

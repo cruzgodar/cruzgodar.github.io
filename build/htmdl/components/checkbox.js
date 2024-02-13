@@ -1,4 +1,4 @@
-export function checkbox(options, id, name)
+export function checkbox(options, id)
 {
 	return `
 		<div class="checkbox-row">
@@ -8,7 +8,7 @@ export function checkbox(options, id, name)
 			</div>
 			
 			<label for="${id}-checkbox" style="margin-left: 10px">
-				<p class="body-text checkbox-subtext">${name}</p>
+				<p class="body-text checkbox-subtext"></p>
 			</label>
 		</div>
 	`;

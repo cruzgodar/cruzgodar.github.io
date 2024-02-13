@@ -13,7 +13,7 @@ A **perfect matching** on a graph is a pairing of adjacent vertices so that ever
 	diamond-size
 ###
 
-### checkbox use-smooth-colors "Use smooth colors"
+### checkbox use-smooth-colors
 
 ### buttons
 	generate

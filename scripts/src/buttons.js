@@ -29,7 +29,7 @@ export class Button extends InputElement
 			element.classList.add("linked-text-button");
 		}
 
-		element.addEventListener("click", () =>
+		this.element.addEventListener("click", () =>
 		{
 			if (!this.disabled)
 			{

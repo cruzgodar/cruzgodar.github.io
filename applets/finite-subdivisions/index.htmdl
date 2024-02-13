@@ -13,7 +13,7 @@ This one isn't too complicated! Draw a polygon and connect its center of mass to
 	num-iterations
 ###
 
-### checkbox toggle-maximum-speed "Maximum speed"
+### checkbox maximum-speed
 
 ### buttons
 	generate

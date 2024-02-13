@@ -1,6 +1,7 @@
 import { showPage } from "../../../scripts/src/loadPage.js";
 import { DominoShuffling } from "./class.js";
 import { DownloadButton, GenerateButton } from "/scripts/src/buttons.js";
+import { Checkbox } from "/scripts/src/checkboxes.js";
 import { $ } from "/scripts/src/main.js";
 import { TextBox } from "/scripts/src/textBoxes.js";
 
@@ -35,19 +36,20 @@ export function load()
 		onEnter: run,
 	});
 
-	const useSmoothColorsCheckboxElement = $("#use-smooth-colors-checkbox");
-	useSmoothColorsCheckboxElement.checked = true;
+	const useSmoothColorsCheckbox = new Checkbox({
+		element: $("#use-smooth-colors-checkbox"),
+		name: "Use Smooth Colors",
+		checked: true
+	});
 
 	showPage();
 
 	function run()
 	{
-		const useSmoothColors = useSmoothColorsCheckboxElement.checked;
-
 		applet.run({
 			resolution: resolutionInput.value,
 			diamondSize: diamondSizeInput.value + 1,
-			useSmoothColors
+			useSmoothColors: useSmoothColorsCheckbox.checked
 		});
 	}
 }

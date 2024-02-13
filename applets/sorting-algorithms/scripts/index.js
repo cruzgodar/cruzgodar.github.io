@@ -1,6 +1,7 @@
 import { showPage } from "../../../scripts/src/loadPage.js";
 import { SortingAlgorithm } from "./class.js";
 import { Button, DownloadButton } from "/scripts/src/buttons.js";
+import { Checkbox } from "/scripts/src/checkboxes.js";
 import { $, $$ } from "/scripts/src/main.js";
 import { TextBox } from "/scripts/src/textBoxes.js";
 
@@ -43,6 +44,12 @@ export function load()
 		onEnter: run
 	});
 
+	const playSoundCheckbox = new Checkbox({
+		element: $("#play-sound-checkbox"),
+		name: "Play Sound",
+		checked: true
+	});
+
 
 
 	const algorithmSelectorDropdownElement = $("#algorithm-selector-dropdown");
@@ -62,10 +69,6 @@ export function load()
 		element.style.display = "block";
 	});
 
-	const playSoundCheckboxElement = $("#play-sound-checkbox");
-
-	playSoundCheckboxElement.checked = true;
-
 	showPage();
 
 	function run()
@@ -74,13 +77,11 @@ export function load()
 			? "bubble"
 			: algorithmSelectorDropdownElement.value;
 
-		const doPlaySound = playSoundCheckboxElement.checked;
-
 		applet.run({
 			resolution: resolutionInput.value,
 			algorithm,
 			dataLength: arraySizeInput.value,
-			doPlaySound
+			doPlaySound: playSoundCheckbox.checked
 		});
 	}
 }

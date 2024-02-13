@@ -17,11 +17,9 @@ Inspired by the recent (at the time of writing) <a href="https://www.youtube.com
 
 
 
-### checkbox toggle-draw-boundaries "Draw boundaries"
-
-### checkbox toggle-draw-regions "Color regions"
-
-### checkbox toggle-maximum-speed "Maximum speed"
+### checkbox draw-boundaries
+### checkbox draw-regions
+### checkbox maximum-speed
 
 
 

@@ -1,6 +1,7 @@
 import { showPage } from "../../../scripts/src/loadPage.js";
 import { PlanePartitions } from "./class.js";
 import { Button, ToggleButton, equalizeTextButtons } from "/scripts/src/buttons.js";
+import { Checkbox } from "/scripts/src/checkboxes.js";
 import { equalizeAppletColumns } from "/scripts/src/layout.js";
 import { $, $$ } from "/scripts/src/main.js";
 import { TextBox } from "/scripts/src/textBoxes.js";
@@ -41,6 +42,12 @@ export function load()
 		value: 0
 	});
 
+	const maximumSpeedCheckbox = new Checkbox({
+		element: $("#maximum-speed-checkbox"),
+		name: "Maximum Speed",
+		onInput: toggleMaximumSpeed
+	});
+
 	const categorySelectorDropdownElement = $("#category-selector-dropdown");
 
 
@@ -48,8 +55,6 @@ export function load()
 	const arrayDataTextareaElement = $("#array-data-textarea");
 
 	const editArrayTextareaElement = $("#edit-array-textarea");
-
-	const maximumSpeedCheckboxElement = $("#maximum-speed-checkbox");
 
 
 
@@ -245,15 +250,6 @@ export function load()
 		}
 	});
 
-
-
-	maximumSpeedCheckboxElement.addEventListener("input", () =>
-	{
-		applet.animationTime = maximumSpeedCheckboxElement.checked ? 60 : 600;
-	});
-
-
-
 	const planePartition = PlanePartitions.generateRandomPlanePartition();
 	arrayDataTextareaElement.value = PlanePartitions.arrayToAscii(planePartition);
 	applet.addNewArray(0, planePartition);
@@ -302,5 +298,10 @@ export function load()
 	function removeArray()
 	{
 		applet.removeArray(removeArrayIndexInput.value);
+	}
+
+	function toggleMaximumSpeed()
+	{
+		applet.animationTime = maximumSpeedCheckbox.checked ? 60 : 600;
 	}
 }

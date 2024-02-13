@@ -1,6 +1,7 @@
 import { showPage } from "../../../scripts/src/loadPage.js";
 import { JuliaSet } from "./class.js";
 import { Button, ToggleButton } from "/scripts/src/buttons.js";
+import { Checkbox } from "/scripts/src/checkboxes.js";
 import { $ } from "/scripts/src/main.js";
 import { TextBox } from "/scripts/src/textBoxes.js";
 
@@ -47,11 +48,10 @@ export function load()
 		onInput: changeResolution
 	});
 
-	const doublePrecisionCheckboxElement = $("#double-precision-checkbox");
-
-	doublePrecisionCheckboxElement.addEventListener("input", () =>
-	{
-		applet.toggleUseDoublePrecision();
+	const doublePrecisionCheckbox = new Checkbox({
+		element: $("#double-precision-checkbox"),
+		name: "Allow Double Precision",
+		onInput: () => applet.toggleUseDoublePrecision()
 	});
 
 	showPage();

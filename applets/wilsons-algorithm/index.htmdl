@@ -18,9 +18,8 @@ The other thing to watch out for is hitting the single white dot you selected at
 	grid-size
 ###
 
-### checkbox toggle-maximum-speed "Maximum speed"
-
-### checkbox no-borders "Don't draw black borders"
+### checkbox maximum-speed
+### checkbox draw-borders
 
 ### buttons
 	generate

@@ -1,6 +1,7 @@
 import { showPage } from "../../../scripts/src/loadPage.js";
 import { WilsonsAlgorithm } from "./class.js";
 import { DownloadButton, GenerateButton } from "/scripts/src/buttons.js";
+import { Checkbox } from "/scripts/src/checkboxes.js";
 import { $ } from "/scripts/src/main.js";
 import { TextBox } from "/scripts/src/textBoxes.js";
 
@@ -27,21 +28,25 @@ export function load()
 		filename: "wilsons-algorithm.png"
 	});
 
-	const maximumSpeedCheckboxElement = $("#toggle-maximum-speed-checkbox");
+	const maximumSpeedCheckbox = new Checkbox({
+		element: $("#maximum-speed-checkbox"),
+		name: "Maximum Speed"
+	});
 
-	const noBordersCheckboxElement = $("#no-borders-checkbox");
+	const drawBordersCheckbox = new Checkbox({
+		element: $("#draw-borders-checkbox"),
+		name: "Draw Borders",
+		checked: true
+	});
 
 	showPage();
 
 	function run()
 	{
-		const maximumSpeed = maximumSpeedCheckboxElement.checked;
-		const noBorders = noBordersCheckboxElement.checked;
-
 		applet.run({
 			gridSize: gridSizeInput.value,
-			maximumSpeed,
-			noBorders
+			maximumSpeed: maximumSpeedCheckbox.checked,
+			noBorders: !drawBordersCheckbox.checked
 		});
 	}
 }

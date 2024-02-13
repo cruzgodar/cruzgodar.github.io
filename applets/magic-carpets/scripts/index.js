@@ -1,6 +1,7 @@
 import { showPage } from "../../../scripts/src/loadPage.js";
 import { MagicCarpet } from "./class.js";
 import { Button, DownloadButton, GenerateButton } from "/scripts/src/buttons.js";
+import { Checkbox } from "/scripts/src/checkboxes.js";
 import { $ } from "/scripts/src/main.js";
 import { TextBox } from "/scripts/src/textBoxes.js";
 
@@ -46,16 +47,17 @@ export function load()
 		onEnter: run
 	});
 
-	const uniqueSolutionCheckboxElement = $("#unique-solution-checkbox");
+	const uniqueSolutionCheckbox = new Checkbox({
+		element: $("#unique-solution-checkbox"),
+		name: "Require Unique Solution"
+	});
 
 	function run()
 	{
-		const uniqueSolution = uniqueSolutionCheckboxElement.checked;
-
 		applet.run({
 			gridSize: gridSizeInput.value,
 			maxCageSize: maxCageSizeInput.value,
-			uniqueSolution
+			uniqueSolution: uniqueSolutionCheckbox.checked
 		});
 	}
 

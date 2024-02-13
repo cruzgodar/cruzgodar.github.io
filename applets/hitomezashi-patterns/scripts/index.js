@@ -1,6 +1,7 @@
 import { showPage } from "../../../scripts/src/loadPage.js";
 import { HitomezashiPattern } from "./class.js";
 import { DownloadButton, GenerateButton } from "/scripts/src/buttons.js";
+import { Checkbox } from "/scripts/src/checkboxes.js";
 import { $ } from "/scripts/src/main.js";
 import { TextBox } from "/scripts/src/textBoxes.js";
 
@@ -49,48 +50,53 @@ export function load()
 		onEnter: run,
 	});
 
-	const drawBoundariesCheckboxElement = $("#toggle-draw-boundaries-checkbox");
-
-	const drawRegionsCheckboxElement = $("#toggle-draw-regions-checkbox");
-
-	const maximumSpeedCheckboxElement = $("#toggle-maximum-speed-checkbox");
-
-	drawBoundariesCheckboxElement.checked = true;
-
-	drawRegionsCheckboxElement.checked = true;
-
-	drawBoundariesCheckboxElement.addEventListener("input", () =>
-	{
-		if (!drawBoundariesCheckboxElement.checked && !drawRegionsCheckboxElement.checked)
-		{
-			drawRegionsCheckboxElement.checked = true;
-		}
+	const drawBoundariesCheckbox = new Checkbox({
+		element: $("#draw-boundaries-checkbox"),
+		name: "Draw Boundaries",
+		checked: true,
+		onInput: onCheckDrawBoundariesCheckbox
 	});
 
-	drawRegionsCheckboxElement.addEventListener("input", () =>
-	{
-		if (!drawBoundariesCheckboxElement.checked && !drawRegionsCheckboxElement.checked)
-		{
-			drawBoundariesCheckboxElement.checked = true;
-		}
+	const drawRegionsCheckbox = new Checkbox({
+		element: $("#draw-regions-checkbox"),
+		name: "Color Regions",
+		checked: true,
+		onInput: onCheckDrawRegionsCheckbox
+	});
+
+	const maximumSpeedCheckbox = new Checkbox({
+		element: $("#maximum-speed-checkbox"),
+		name: "Maximum Speed"
 	});
 
 	showPage();
 
 	function run()
 	{
-		const doDrawBoundaries = drawBoundariesCheckboxElement.checked;
-		const doDrawRegions = drawRegionsCheckboxElement.checked;
-		const maximumSpeed = maximumSpeedCheckboxElement.checked;
-
 		applet.run({
 			resolution: resolutionInput.value,
 			gridSize: gridSizeInput.value,
 			rowProb: rowProbInput.value,
 			colProb: colProbInput.value,
-			doDrawBoundaries,
-			doDrawRegions,
-			maximumSpeed
+			doDrawBoundaries: drawBoundariesCheckbox.checked,
+			doDrawRegions: drawRegionsCheckbox.checked,
+			maximumSpeed: maximumSpeedCheckbox.checked
 		});
+	}
+
+	function onCheckDrawBoundariesCheckbox()
+	{
+		if (!drawBoundariesCheckbox.checked && !drawRegionsCheckbox.checked)
+		{
+			drawRegionsCheckbox.setChecked(true);
+		}
+	}
+
+	function onCheckDrawRegionsCheckbox()
+	{
+		if (!drawBoundariesCheckbox.checked && !drawRegionsCheckbox.checked)
+		{
+			drawBoundariesCheckbox.setChecked(true);
+		}
 	}
 }

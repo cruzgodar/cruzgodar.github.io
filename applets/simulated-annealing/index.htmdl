@@ -15,7 +15,7 @@ There are plenty of ways to quickly approximate it, though. One of them, called 
 	num-nodes
 ###
 
-### checkbox toggle-maximum-speed "Maximum speed"
+### checkbox maximum-speed
 
 ### buttons
 	generate

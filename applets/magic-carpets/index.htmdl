@@ -13,7 +13,7 @@ Given a square carpet and a handful of numbers, can the carpet be completely cov
 	max-cage-size
 ###
 
-### checkbox unique-solution "Require unique solution"
+### checkbox unique-solution
 
 ### buttons
 	generate

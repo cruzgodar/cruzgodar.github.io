@@ -1,6 +1,7 @@
 import { showPage } from "../../../scripts/src/loadPage.js";
 import { StrangeAttractor } from "./class.js";
 import { DownloadButton, GenerateButton } from "/scripts/src/buttons.js";
+import { Checkbox } from "/scripts/src/checkboxes.js";
 import { $ } from "/scripts/src/main.js";
 import { typesetMath } from "/scripts/src/math.js";
 import { TextBox } from "/scripts/src/textBoxes.js";
@@ -54,20 +55,21 @@ export function load()
 
 	typesetMath();
 
-	const maximumSpeedCheckboxElement = $("#toggle-maximum-speed-checkbox");
+	const maximumSpeedCheckbox = new Checkbox({
+		element: $("#maximum-speed-checkbox"),
+		name: "Maximum Speed"
+	});
 
 	showPage();
 
 	function run()
 	{
-		const maximumSpeed = maximumSpeedCheckboxElement.checked;
-
 		applet.run({
 			resolution: resolutionInput.value,
 			sigma: sigmaInput.value,
 			rho: rhoInput.value,
 			beta: betaInput.value,
-			maximumSpeed
+			maximumSpeed: maximumSpeedCheckbox.checked
 		});
 	}
 }

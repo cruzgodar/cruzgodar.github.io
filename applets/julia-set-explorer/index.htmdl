@@ -28,7 +28,7 @@ This applet runs on the GPU, which traditionally sacrifices precision in exchang
 	resolution
 ###
 
-### checkbox double-precision "Allow double precision"
+### checkbox double-precision
 
 ### buttons
 	switch-julia-mode
