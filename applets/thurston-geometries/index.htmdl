@@ -61,9 +61,7 @@ As always, this applet was made with <a href="/projects/wilson/">Wilson</a>. It 
 ###
 
 ### buttons
-	
-	switch-scene -l "Switch Scene"
-	
+	switch-scene
 ###
 
 </div>
@@ -87,7 +85,7 @@ As always, this applet was made with <a href="/projects/wilson/">Wilson</a>. It 
 <div id="canvas-landscape-right">
 
 ### buttons
-	download -l "Download"
+	download
 ###
 
 </div>

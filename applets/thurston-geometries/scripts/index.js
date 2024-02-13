@@ -10,6 +10,7 @@ import { S3Axes, S3HopfFibration, S3Rooms } from "./geometries/s3.js";
 import { SL2RAxes, SL2RRooms } from "./geometries/sl2r.js";
 import { SolAxes, SolRooms } from "./geometries/sol.js";
 import anime from "/scripts/anime.js";
+import { DownloadButton, ToggleButton } from "/scripts/src/buttons.js";
 import { currentlyTouchDevice } from "/scripts/src/interaction.js";
 import { equalizeAppletColumns } from "/scripts/src/layout.js";
 import { $, $$ } from "/scripts/src/main.js";
@@ -57,6 +58,8 @@ export function load()
 	};
 
 	const sceneSelectorDropdownElement = $("#scene-selector-dropdown");
+
+	sceneSelectorDropdownElement.addEventListener("input", run);
 
 	if (!window.DEBUG)
 	{
@@ -186,9 +189,25 @@ export function load()
 
 	$$(".slider-container").forEach(element => element.style.display = "none");
 
-	const switchSceneButtonElement = $("#switch-scene-button");
 
-	switchSceneButtonElement.addEventListener("click", () =>
+
+	new ToggleButton({
+		element: $("#switch-scene-button"),
+		name0: "Switch to Spheres",
+		name1: "Switch to Rooms",
+		onClick0: switchScene,
+		onClick1: switchScene
+	});
+
+	new DownloadButton({
+		element: $("#download-button"),
+		wilson: applet.wilson,
+		filename: "a-thurston-geometry.png"
+	});
+
+
+
+	function switchScene()
 	{
 		const isRooms = applet.geometryData.sliderValues.sceneTransition === 0;
 
@@ -248,20 +267,7 @@ export function load()
 			duration: 500,
 			easing: "easeInOutSine",
 		});
-	});
-
-
-
-	sceneSelectorDropdownElement.addEventListener("input", run);
-
-
-
-	const downloadButtonElement = $("#download-button");
-
-	downloadButtonElement.addEventListener("click", () =>
-	{
-		applet.wilson.downloadFrame("a-thurston-geometry.png");
-	});
+	}
 
 
 

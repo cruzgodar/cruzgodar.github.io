@@ -1,6 +1,7 @@
 import { showPage } from "../../../scripts/src/loadPage.js";
 import { WilsonsAlgorithm } from "./class.js";
 import { Applet } from "/scripts/src/applets.js";
+import { DownloadButton, GenerateButton } from "/scripts/src/buttons.js";
 import { $ } from "/scripts/src/main.js";
 
 export function load()
@@ -9,9 +10,16 @@ export function load()
 
 
 
-	const generateButtonElement = $("#generate-button");
+	new GenerateButton({
+		element: $("#generate-button"),
+		onClick: run
+	});
 
-	generateButtonElement.addEventListener("click", run);
+	new DownloadButton({
+		element: $("#download-button"),
+		wilson: applet.wilson,
+		filename: "wilsons-algorithm.png"
+	});
 
 
 
@@ -20,15 +28,6 @@ export function load()
 	applet.setInputCaps([gridSizeInputElement], [200]);
 
 	Applet.listenToInputElements([gridSizeInputElement], run);
-
-
-
-	const downloadButtonElement = $("#download-button");
-
-	downloadButtonElement.addEventListener("click", () =>
-	{
-		applet.wilson.downloadFrame("wilsons-algorithm.png");
-	});
 
 
 

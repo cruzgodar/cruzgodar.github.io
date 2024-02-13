@@ -1,12 +1,14 @@
 import { showPage } from "../../../../scripts/src/loadPage.js";
+import { Button } from "/scripts/src/buttons.js";
 import { $ } from "/scripts/src/main.js";
 import { redirect } from "/scripts/src/navigation.js";
 
 !function()
 {
-	$("#homepage-button").addEventListener("click", () =>
-	{
-		redirect({ url: "/projects/wilson/" });
+	new Button({
+		element: $("#homepage-button"),
+		name: "Homepage",
+		onClick: () => redirect({ url: "/projects/wilson/" })
 	});
 	
 	showPage();
