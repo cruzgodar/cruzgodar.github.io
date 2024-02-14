@@ -39,6 +39,7 @@ const singleLineComponents = [
 	"center",
 	"checkbox",
 	"desmos",
+	"dropdown",
 	"glsl-docs",
 	"nav-buttons",
 	"wilson"

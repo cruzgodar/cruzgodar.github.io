@@ -2,6 +2,7 @@ import { showPage } from "../../../scripts/src/loadPage.js";
 import { ComplexMap } from "./class.js";
 import { Applet } from "/scripts/src/applets.js";
 import { DownloadButton, GenerateButton } from "/scripts/src/buttons.js";
+import { Dropdown } from "/scripts/src/dropdowns.js";
 import { $ } from "/scripts/src/main.js";
 import { TextBox } from "/scripts/src/textBoxes.js";
 
@@ -49,23 +50,20 @@ export function load()
 		lattices: "wp(z, draggableArg)"
 	};
 
-	const exampleSelectorDropdownElement = $("#example-selector-dropdown");
-
-	exampleSelectorDropdownElement.addEventListener("input", () =>
-	{
-		if (exampleSelectorDropdownElement.value !== "none")
-		{
-			codeInputElement.value = examples[exampleSelectorDropdownElement.value];
-
-			run();
-		}
+	const exampleSelectorDropdown = new Dropdown({
+		element: $("#example-selector-dropdown"),
+		name: "Examples",
+		options: {
+			trig: "Trig",
+			poles: "Poles",
+			es: "Essential Singularity",
+			tet: "Tetration",
+			lattices: "Lattices"
+		},
+		onInput: onDropdownInput
 	});
 
-
-
 	showPage();
-
-
 
 	function run()
 	{
@@ -79,5 +77,12 @@ export function load()
 		applet.resolution = resolutionInput.value;
 
 		applet.changeAspectRatio(true);
+	}
+
+	function onDropdownInput()
+	{
+		codeInputElement.value = examples[exampleSelectorDropdown.value];
+
+		run();
 	}
 }

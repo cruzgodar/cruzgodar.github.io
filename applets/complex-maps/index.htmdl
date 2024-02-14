@@ -2,23 +2,7 @@ It's not a coincidence that many of the applets I've made revolve around the com
 
 ### wilson glsl
 
-### dropdown
-	
-	example-selector
-	
-	none "Examples"
-	
-	trig "Trig Function"
-	
-	poles "Poles"
-	
-	es "Essential Singluarity"
-	
-	tet "Tetration"
-	
-	lattices "Lattices"
-
-###
+### dropdown example-selector
 
 
 
