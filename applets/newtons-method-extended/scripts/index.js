@@ -2,6 +2,7 @@ import { showPage } from "../../../scripts/src/loadPage.js";
 import { NewtonsMethodExtended } from "./class.js";
 import { Applet } from "/scripts/src/applets.js";
 import { Button, DownloadButton, GenerateButton } from "/scripts/src/buttons.js";
+import { Dropdown } from "/scripts/src/dropdowns.js";
 import { $ } from "/scripts/src/main.js";
 import { TextBox } from "/scripts/src/textBoxes.js";
 
@@ -76,23 +77,20 @@ export function load()
 		swatches: "cmul(csin(vec2(z.x, sign(z.y) * min(abs(z.y), mod(abs(z.y), 2.0*PI) + 2.0*PI))), sin(cmul(vec2(z.x, sign(z.y) * min(abs(z.y), mod(abs(z.y), 2.0*PI) + 2.0*PI)), i)))"
 	};
 
-	const exampleSelectorDropdownElement = $("#example-selector-dropdown");
-
-	exampleSelectorDropdownElement.addEventListener("input", () =>
-	{
-		if (exampleSelectorDropdownElement.value !== "none")
-		{
-			codeInputElement.value = examples[exampleSelectorDropdownElement.value];
-
-			run();
-		}
+	const examplesDropdown = new Dropdown({
+		element: $("#examples-dropdown"),
+		name: "Examples",
+		options: {
+			trig: "Trig Function",
+			crosshatch: "Crosshatch",
+			palette: "Palette Demonstration",
+			butterflies: "Butterflies",
+			swatches: "Color Swatches"
+		},
+		onInput: onDropdownInput
 	});
 
-
-
 	showPage();
-
-
 
 	function run()
 	{
@@ -106,5 +104,12 @@ export function load()
 		applet.resolution = resolutionInput.value;
 
 		applet.changeAspectRatio(true);
+	}
+
+	function onDropdownInput()
+	{
+		codeInputElement.value = examples[examplesDropdown.value];
+
+		run();
 	}
 }

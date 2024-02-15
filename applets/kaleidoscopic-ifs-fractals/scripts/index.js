@@ -2,6 +2,7 @@ import { showPage } from "../../../scripts/src/loadPage.js";
 import { KaleidoscopicIFSFractal } from "./class.js";
 import { opacityAnimationTime } from "/scripts/src/animation.js";
 import { DownloadButton } from "/scripts/src/buttons.js";
+import { Dropdown } from "/scripts/src/dropdowns.js";
 import { $ } from "/scripts/src/main.js";
 import { TextBox } from "/scripts/src/textBoxes.js";
 
@@ -43,60 +44,18 @@ export function load()
 		sliderElements[i].addEventListener("input", updateRotation);
 	}
 
-
-
-	const polyhedronSelectorDropdownElement = $("#polyhedron-selector-dropdown");
-
-	polyhedronSelectorDropdownElement.addEventListener("input", () =>
-	{
-		if (polyhedronSelectorDropdownElement.value === "tetrahedron")
-		{
-			applet.changePolyhedron(0);
-
-			setTimeout(() =>
-			{
-				resetSliders();
-
-				rotationAngleX2SliderElement.setAttribute("max", 2 * Math.PI);
-				rotationAngleY2SliderElement.setAttribute("max", 2 * Math.PI);
-				rotationAngleZ2SliderElement.setAttribute("max", 2 * Math.PI / 3);
-			}, opacityAnimationTime);
-		}
-
-		else if (polyhedronSelectorDropdownElement.value === "cube")
-		{
-			applet.changePolyhedron(1);
-
-			setTimeout(() =>
-			{
-				resetSliders();
-
-				rotationAngleX2SliderElement.setAttribute("max", Math.PI / 2);
-				rotationAngleY2SliderElement.setAttribute("max", Math.PI / 2);
-				rotationAngleZ2SliderElement.setAttribute("max", Math.PI / 2);
-			}, opacityAnimationTime);
-		}
-
-		else
-		{
-			applet.changePolyhedron(2);
-			
-			setTimeout(() =>
-			{
-				resetSliders();
-
-				rotationAngleX2SliderElement.setAttribute("max", Math.PI / 2);
-				rotationAngleY2SliderElement.setAttribute("max", Math.PI / 2);
-				rotationAngleZ2SliderElement.setAttribute("max", Math.PI / 2);
-			}, opacityAnimationTime);
-		}
+	const polyhedraDropdown = new Dropdown({
+		element: $("#polyhedra-dropdown"),
+		name: "Polyhedra",
+		options: {
+			octahedron: "Octahedron",
+			tetrahedron: "Tetrahedron",
+			cube: "Cube",
+		},
+		onInput: onDropdownInput
 	});
 
-
-
 	showPage();
-
-
 
 	function updateRotation()
 	{
@@ -124,5 +83,50 @@ export function load()
 	function changeResolution()
 	{
 		applet.changeResolution(resolutionInput.value);
+	}
+
+	function onDropdownInput()
+	{
+		if (polyhedraDropdown.value === "tetrahedron")
+		{
+			applet.changePolyhedron(0);
+
+			setTimeout(() =>
+			{
+				resetSliders();
+
+				rotationAngleX2SliderElement.setAttribute("max", 2 * Math.PI);
+				rotationAngleY2SliderElement.setAttribute("max", 2 * Math.PI);
+				rotationAngleZ2SliderElement.setAttribute("max", 2 * Math.PI / 3);
+			}, opacityAnimationTime);
+		}
+
+		else if (polyhedraDropdown.value === "cube")
+		{
+			applet.changePolyhedron(1);
+
+			setTimeout(() =>
+			{
+				resetSliders();
+
+				rotationAngleX2SliderElement.setAttribute("max", Math.PI / 2);
+				rotationAngleY2SliderElement.setAttribute("max", Math.PI / 2);
+				rotationAngleZ2SliderElement.setAttribute("max", Math.PI / 2);
+			}, opacityAnimationTime);
+		}
+
+		else
+		{
+			applet.changePolyhedron(2);
+			
+			setTimeout(() =>
+			{
+				resetSliders();
+
+				rotationAngleX2SliderElement.setAttribute("max", Math.PI / 2);
+				rotationAngleY2SliderElement.setAttribute("max", Math.PI / 2);
+				rotationAngleZ2SliderElement.setAttribute("max", Math.PI / 2);
+			}, opacityAnimationTime);
+		}
 	}
 }

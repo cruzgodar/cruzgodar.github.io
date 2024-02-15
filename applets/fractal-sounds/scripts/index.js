@@ -1,6 +1,7 @@
 import { showPage } from "../../../scripts/src/loadPage.js";
 import { FractalSounds } from "./class.js";
 import { DownloadButton } from "/scripts/src/buttons.js";
+import { Dropdown } from "/scripts/src/dropdowns.js";
 import { $ } from "/scripts/src/main.js";
 import { TextBox } from "/scripts/src/textBoxes.js";
 
@@ -23,12 +24,12 @@ export function load()
 
 	const examples =
 	{
-		"mandelbrot": [
+		mandelbrot: [
 			"cmul(z, z) + c",
 			(x, y, a, b) => [x * x - y * y + a, 2 * x * y + b]
 		],
 
-		"sfx": [
+		sfx: [
 			"cmul(z, dot(z, z)) - cmul(z, c*c)",
 			(x, y, a, b) => [
 				x * x * x + x * y * y - x * a * a + y * b * b,
@@ -36,12 +37,12 @@ export function load()
 			]
 		],
 
-		"burning-ship": [
+		burningShip: [
 			"-vec2(z.x * z.x - z.y * z.y, 2.0 * abs(z.x * z.y)) + c",
 			(x, y, a, b) => [-(x * x - y * y) + a, -(2 * Math.abs(x * y)) + b]
 		],
 
-		"feather": [
+		feather: [
 			"cdiv(cmul(cmul(z, z), z), ONE + z*z) + c",
 			(x, y, a, b) => [
 				a + (
@@ -68,12 +69,12 @@ export function load()
 			]
 		],
 
-		"duffing": [
+		duffing: [
 			"vec2(z.y, -c.y * z.x + c.x * z.y - z.y * z.y * z.y)",
 			(x, y, a, b) => [y, -b * x + a * y - y * y * y]
 		],
 
-		"ikeda": [
+		ikeda: [
 			// eslint-disable-next-line max-len
 			"vec2(1.0 + c.x * (z.x * cos(.4 - 6.0 / (1.0 + dot(z, z))) - z.y * sin(.4 - 6.0 / (1.0 + dot(z, z)))), c.y * (z.x * sin(.4 - 6.0 / (1.0 + dot(z, z))) + z.y * cos(.4 - 6.0 / (1.0 + dot(z, z)))))",
 			(x, y, a, b) => [
@@ -89,9 +90,19 @@ export function load()
 		]
 	};
 
-	const fractalSelectorDropdownElement = $("#fractal-selector-dropdown");
-
-	fractalSelectorDropdownElement.addEventListener("input", run);
+	const fractalsDropdown = new Dropdown({
+		element: $("#fractals-dropdown"),
+		name: "Fractals",
+		options: {
+			mandelbrot: "Mandelbrot",
+			sfx: "SFX Fractal",
+			burningShip: "Burning Ship",
+			feather: "Feather Fractal",
+			duffing: "Duffing",
+			ikeda: "Ikeda"
+		},
+		onInput: run
+	});
 
 	const resolutionInput = new TextBox({
 		element: $("#resolution-input"),
@@ -106,9 +117,7 @@ export function load()
 
 	function run()
 	{
-		const value = fractalSelectorDropdownElement.value === "none"
-			? "mandelbrot"
-			: fractalSelectorDropdownElement.value;
+		const value = fractalsDropdown.value || "mandelbrot";
 
 		const glslCode = examples[value][0];
 		const jsCode = examples[value][1];

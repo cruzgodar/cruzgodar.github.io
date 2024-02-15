@@ -1574,7 +1574,6 @@ export const sitemap =
 		
 		"children":
 		[
-			"/debug/htmdl-test/",
 			"/debug/tests/glsl-test/",
 			"/debug/js-lines/",
 			"/debug/glsl-docs/"
@@ -1583,29 +1582,6 @@ export const sitemap =
 		"customScript": true
 	},
 		
-	"/debug/htmdl-test/":
-	{
-		"title": "HTMDL Testing",
-		
-		"parent": "/debug/",
-		
-		"children":
-		[
-			"/debug/htmdl-test/subpage/"
-		],
-
-		"customScript": true
-	},
-		
-	"/debug/htmdl-test/subpage/":
-	{
-		"title": "HTMDL Testing Subpage",
-		
-		"parent": "/debug/htmdl-test/",
-		
-		"children": []
-	},
-	
 	"/debug/tests/glsl-test/":
 	{
 		"title": "GLSL Tests",

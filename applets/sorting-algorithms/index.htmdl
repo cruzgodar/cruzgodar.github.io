@@ -6,35 +6,7 @@ Whenever a sorting algorithm modifies the list, that location in the color wheel
 	
 ### wilson
 
-### dropdown
-	
-	algorithm-selector
-
-	none "Algorithms"
-	
-	bubble "Bubble Sort"
-	
-	insertion "Insertion Sort"
-	
-	selection "Selection Sort"
-	
-	heap "Heapsort"
-	
-	merge "Merge Sort"
-	
-	quick "Quicksort"
-	
-	shell "Shellsort"
-	
-	cycle "Cycle Sort"
-	
-	msd-radix "MSD Radix Sort"
-	
-	lsd-radix "LSD Radix Sort"
-	
-	gravity "Gravity Sort"
-
-###
+### dropdown algorithms
 
 <br>
 
@@ -54,9 +26,9 @@ Whenever a sorting algorithm modifies the list, that location in the color wheel
 
 <p class="body-text info-text" id="cycle-info">With most of the common algorithms out of the way, we can look at some stranger ones. Where most algorithms try to minimize the total number of operations, cycle sort only concerns itself with writing to the list as little as possible &mdash; in fact, it only writes once to each location, with the correct entry each time. The idea is that we know exactly where any entry should go &mdash; if there are 102 entries smaller than $x$, then $x$ should be the 103rd entry in the sorted list. So we just put it there and remove whatever was in its place, and repeat the process with that entry. This continues until we get back to where we started, at which point we find the next entry we haven&#x2019;t moved yet. Since the algorithm needs to read <strong>the entire list</strong> every time it moves an entry, it takes $O(n^2)$ time, but for memory devices whose performance degrades quickly when written to, this can be an acceptable tradeoff.</p>
 
-<p class="body-text info-text" id="msd-radix-info">Where insertion sort is the way most people tend to sort money in a wallet or playing cards in a hand, radix sort is the way you&#x2019;d probably go about sorting words into a dictionary. First put them into 26 different buckets based on their first letter, and then for each bucket, split the words into 26 sub-buckets based on their second letter. Here, we only need two buckets at each level instead of 26, since we sort based on digits in the binary representation of the entries, which are either 0 or 1. MSD stands for most significant digit &mdash; i.e. we sort first based on the first digit, not the last. With $n$ entries to sort and $\log(n)$ binary digits to consider, the algorithm takes $O(n\log(n))$ time. It&#x2019;s also the first algorithm in the list that&#x2019;s not a comparision sort, since entries are never compared against one another, just put into buckets.</p>
+<p class="body-text info-text" id="msdRadix-info">Where insertion sort is the way most people tend to sort money in a wallet or playing cards in a hand, radix sort is the way you&#x2019;d probably go about sorting words into a dictionary. First put them into 26 different buckets based on their first letter, and then for each bucket, split the words into 26 sub-buckets based on their second letter. Here, we only need two buckets at each level instead of 26, since we sort based on digits in the binary representation of the entries, which are either 0 or 1. MSD stands for most significant digit &mdash; i.e. we sort first based on the first digit, not the last. With $n$ entries to sort and $\log(n)$ binary digits to consider, the algorithm takes $O(n\log(n))$ time. It&#x2019;s also the first algorithm in the list that&#x2019;s not a comparision sort, since entries are never compared against one another, just put into buckets.</p>
 
-<p class="body-text info-text" id="lsd-radix-info">This is the same algorithm as the previous one, except it makes the strange decision to sort based on the last (least significant) digit first. What results is a progression that appears to be less and less sorted as time goes on, until the final step when everything falls into place like magic. It also runs in $O(n\log(n))$ time.</p>
+<p class="body-text info-text" id="lsdRadix-info">This is the same algorithm as the previous one, except it makes the strange decision to sort based on the last (least significant) digit first. What results is a progression that appears to be less and less sorted as time goes on, until the final step when everything falls into place like magic. It also runs in $O(n\log(n))$ time.</p>
 
 <p class="body-text info-text" id="gravity-info">Possibly the strangest algorithm on the list, gravity sort simulates placing the list entries as rows of beads on a vertical abacus, and then letting them fall. The resulting rows at the bottom will be the sorted list. If this is somehow physically simulated, then it will run in $O(\sqrt{n})$ time, since the $n$ rows will all fall at once, and the time for a falling object to hit the ground is proportional to the square root of its starting height. This would crush every other sorting algorithm, but it unfortunately isn&#x2019;t possible to implement in a computer &mdash; the best we can do is moving every bead in a row in a single operation by parallelizing the process, which makes it $O(n)$. The non-parallel version is implemented here, which moves one bead at a time and takes $O(n^2)$ time. Sadly, even with the parallel version, the algorithm requires $O(n^2)$ <strong>memory space</strong> to store the square abacus, and this is prohibitively expensive for large lists.</p>
 

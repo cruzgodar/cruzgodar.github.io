@@ -2,6 +2,7 @@ import { showPage } from "../../../scripts/src/loadPage.js";
 import { SortingAlgorithm } from "./class.js";
 import { Button, DownloadButton } from "/scripts/src/buttons.js";
 import { Checkbox } from "/scripts/src/checkboxes.js";
+import { Dropdown } from "/scripts/src/dropdowns.js";
 import { $, $$ } from "/scripts/src/main.js";
 import { TextBox } from "/scripts/src/textBoxes.js";
 
@@ -50,38 +51,45 @@ export function load()
 		checked: true
 	});
 
-
-
-	const algorithmSelectorDropdownElement = $("#algorithm-selector-dropdown");
-
-	algorithmSelectorDropdownElement.value = "bubble";
-
-	algorithmSelectorDropdownElement.addEventListener("input", () =>
-	{
-		$$(".info-text").forEach(element => element.style.display = "none");
-
-		const value = algorithmSelectorDropdownElement.value === "none"
-			? "bubble"
-			: algorithmSelectorDropdownElement.value;
-
-		const element = $(`#${value}-info`);
-
-		element.style.display = "block";
+	const algorithmsDropdown = new Dropdown({
+		element: $("#algorithms-dropdown"),
+		name: "Algorithms",
+		options: {
+			bubble: "Bubble Sort",
+			insertion: "Insertion Sort",
+			selection: "Selection Sort",
+			heap: "Heapsort",
+			merge: "Merge Sort",
+			quick: "Quicksort",
+			shell: "Shellsort",
+			cycle: "Cycle Sort",
+			msdRadix: "MSD Radix Sort",
+			lsdRadix: "LSD Radix Sort",
+			gravity: "Gravity Sort",
+		},
+		onInput: onDropdownInput
 	});
 
 	showPage();
 
 	function run()
 	{
-		const algorithm = algorithmSelectorDropdownElement.value === "none"
-			? "bubble"
-			: algorithmSelectorDropdownElement.value;
-
 		applet.run({
 			resolution: resolutionInput.value,
-			algorithm,
+			algorithm: algorithmsDropdown.value || "bubble",
 			dataLength: arraySizeInput.value,
 			doPlaySound: playSoundCheckbox.checked
 		});
+	}
+
+	function onDropdownInput()
+	{
+		$$(".info-text").forEach(element => element.style.display = "none");
+
+		const value = algorithmsDropdown.value || "bubble";
+
+		const element = $(`#${value}-info`);
+
+		element.style.display = "block";
 	}
 }

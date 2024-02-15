@@ -10,25 +10,7 @@ The colors roughly indicate the fundamental frequencies of each point. Hover or 
 
 <div id="canvas-landscape-left">
 
-### dropdown
-	
-	fractal-selector
-
-	none "Fractals"
-	
-	mandelbrot "Mandelbrot Set"
-	
-	sfx "SFX Fractal"
-	
-	burning-ship "Burning Ship"
-	
-	feather "Feather Fractal"
-	
-	duffing "Duffing Map"
-	
-	ikeda "Ikeda Map"
-
-###
+### dropdown fractals
 
 ### text-boxes
 	resolution

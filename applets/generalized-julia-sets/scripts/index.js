@@ -2,6 +2,7 @@ import { showPage } from "../../../scripts/src/loadPage.js";
 import { GeneralizedJuliaSet } from "./class.js";
 import { Applet } from "/scripts/src/applets.js";
 import { DownloadButton, GenerateButton, ToggleButton } from "/scripts/src/buttons.js";
+import { Dropdown } from "/scripts/src/dropdowns.js";
 import { $ } from "/scripts/src/main.js";
 import { TextBox } from "/scripts/src/textBoxes.js";
 
@@ -36,38 +37,34 @@ export function load()
 		filename: "a-generalized-julia-set.png"
 	});
 
-
-
 	const codeInputElement = $("#code-textarea");
 
 	codeInputElement.value = "cadd(cpow(z, 2.0), c)";
 
 	Applet.listenToInputElements([codeInputElement], run);
 
-
-
 	const examples =
 	{
-		"mandelbrot": "cadd(cpow(z, 2.0), c)",
-		"var-exp": "cadd(cpow(z, 4.0), c)",
-		"trig": "csin(cmul(z, c))",
-		"burning-ship": "cadd(cpow(vec2(abs(z.x), -abs(z.y)), 2.0), c)",
-		"rational-map": "cadd(csub(cpow(z, 2.0), cmul(.05, cpow(z, -2.0))), c)",
-		"mandelbrot-dust": "cadd(csub(cpow(z, 2.0), vec2(0.0, cmul(.05, cpow(z, -2.0).y))), c)"
+		mandelbrot: "cadd(cpow(z, 2.0), c)",
+		variedExponent: "cadd(cpow(z, 4.0), c)",
+		trig: "csin(cmul(z, c))",
+		burningShip: "cadd(cpow(vec2(abs(z.x), -abs(z.y)), 2.0), c)",
+		rationalMap: "cadd(csub(cpow(z, 2.0), cmul(.05, cpow(z, -2.0))), c)",
+		mandelbrotDust: "cadd(csub(cpow(z, 2.0), vec2(0.0, cmul(.05, cpow(z, -2.0).y))), c)"
 	};
 
-	const exampleSelectorDropdownElement = $("#example-selector-dropdown");
-
-	exampleSelectorDropdownElement.addEventListener("input", () =>
-	{
-		if (exampleSelectorDropdownElement.value === "none")
-		{
-			return;
-		}
-
-		codeInputElement.value = examples[exampleSelectorDropdownElement.value];
-
-		run();
+	const examplesDropdown = new Dropdown({
+		element: $("#examples-dropdown"),
+		name: "Examples",
+		options: {
+			mandelbrot: "Classical Mandelbrot",
+			variedExponent: "Varied Exponent",
+			trig: "Trig Example",
+			burningShip: "Burning Ship",
+			rationalMap: "Rational Map",
+			mandelbrotDust: "Mandelbrot Dust"
+		},
+		onInput: onDropdownInput
 	});
 
 	const resolutionInput = new TextBox({
@@ -101,5 +98,12 @@ export function load()
 		applet.resolution = resolutionInput.value;
 
 		applet.changeAspectRatio(true);
+	}
+
+	function onDropdownInput()
+	{
+		codeInputElement.value = examples[examplesDropdown.value];
+
+		run();
 	}
 }

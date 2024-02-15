@@ -799,40 +799,4 @@
 		<lastmod>2023-12-13</lastmod>
 		<priority>0.5</priority>
 	</url>
-		
-	<url>
-		<loc>https://www.cruzgodar.com/debug/</loc>
-		<lastmod>2024-2-13</lastmod>
-		<priority>0.0</priority>
-	</url>
-		
-	<url>
-		<loc>https://www.cruzgodar.com/debug/htmdl-test/</loc>
-		<lastmod>2023-12-13</lastmod>
-		<priority>0.0</priority>
-	</url>
-		
-	<url>
-		<loc>https://www.cruzgodar.com/debug/htmdl-test/subpage/</loc>
-		<lastmod>2024-1-7</lastmod>
-		<priority>0.0</priority>
-	</url>
-		
-	<url>
-		<loc>https://www.cruzgodar.com/debug/tests/glsl-test/</loc>
-		<lastmod>2023-11-30</lastmod>
-		<priority>0.0</priority>
-	</url>
-		
-	<url>
-		<loc>https://www.cruzgodar.com/debug/js-lines/</loc>
-		<lastmod>2023-11-30</lastmod>
-		<priority>0.0</priority>
-	</url>
-		
-	<url>
-		<loc>https://www.cruzgodar.com/debug/glsl-docs/</loc>
-		<lastmod>2023-12-13</lastmod>
-		<priority>0.0</priority>
-	</url>
 </urlset>

@@ -31,7 +31,7 @@ export class Dropdown extends InputElement
 	{
 		super({ element, name });
 
-		this.options = Object.assign({"": this.name}, options);
+		this.options = Object.assign({ "": this.name }, options);
 		this.onInput = onInput;
 		this.value = "";
 
@@ -130,11 +130,17 @@ export class Dropdown extends InputElement
 
 		this.buttonElement.classList.add("expanded");
 
+		let titleWidth = 0;
 		let maxWidth1 = 0;
 		let maxWidth2 = 0;
 		this.optionElements.forEach((element, index) =>
 		{
-			if (index % 2 === 0)
+			if (index === 0)
+			{
+				titleWidth = element.getBoundingClientRect().width;
+			}
+
+			else if (index % 2 === 0)
 			{
 				maxWidth1 = Math.max(maxWidth1, element.getBoundingClientRect().width);
 			}
@@ -145,15 +151,18 @@ export class Dropdown extends InputElement
 			}
 		});
 
-		const maxWidth = this.optionContainerElement.classList.contains("two-column")
-			? maxWidth1 + maxWidth2
-			: Math.max(maxWidth1, maxWidth2);
+		const maxWidth = Math.max(
+			this.optionContainerElement.classList.contains("two-column")
+				? maxWidth1 + maxWidth2
+				: Math.max(maxWidth1, maxWidth2),
+			titleWidth
+		);
 
 		const openHeight = this.optionContainerElement.getBoundingClientRect().height + 4;
 		const headerHeight = headerElement.getBoundingClientRect().height;
 		const totalUsableHeight = window.innerHeight - headerHeight - 20;
 
-		const openWidth = maxWidth + 28;
+		const openWidth = maxWidth + 24;
 		const totalUsableWidth = window.innerWidth - 20;
 
 		this.scale = Math.min(

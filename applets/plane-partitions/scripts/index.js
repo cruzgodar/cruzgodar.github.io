@@ -2,6 +2,7 @@ import { showPage } from "../../../scripts/src/loadPage.js";
 import { PlanePartitions } from "./class.js";
 import { Button, ToggleButton, equalizeTextButtons } from "/scripts/src/buttons.js";
 import { Checkbox } from "/scripts/src/checkboxes.js";
+import { Dropdown } from "/scripts/src/dropdowns.js";
 import { equalizeAppletColumns } from "/scripts/src/layout.js";
 import { $, $$ } from "/scripts/src/main.js";
 import { TextBox } from "/scripts/src/textBoxes.js";
@@ -48,8 +49,18 @@ export function load()
 		onInput: toggleMaximumSpeed
 	});
 
-	const categorySelectorDropdownElement = $("#category-selector-dropdown");
-
+	const categoriesDropdown = new Dropdown({
+		element: $("#categories-dropdown"),
+		name: "Menus",
+		options: {
+			viewControls: "View Controls",
+			addArray: "Add Array",
+			editArray: "Edit Array",
+			removeArray: "Remove Array",
+			algorithms: "Algorithms"
+		},
+		onInput: onDropdownInput
+	});
 
 
 	const arrayDataTextareaElement = $("#array-data-textarea");
@@ -203,52 +214,20 @@ export function load()
 
 	const sectionElements =
 	{
-		"view-controls": $$(".view-controls-section"),
-		"add-array": $$(".add-array-section"),
-		"edit-array": $$(".edit-array-section"),
-		"remove-array": $$(".remove-array-section"),
-		"algorithms": $$(".algorithms-section"),
+		viewControls: $$(".view-controls-section"),
+		addArray: $$(".add-array-section"),
+		editArray: $$(".edit-array-section"),
+		removeArray: $$(".remove-array-section"),
+		algorithms: $$(".algorithms-section"),
 	};
 
 	const categoryHolderElement = $("#category-holder");
 	const canvasLandscapeLeftElement = $("#canvas-landscape-left");
 
-	let visibleSection = "view-controls";
+	let visibleSection = "viewControls";
 
 	sectionElements[visibleSection]
 		.forEach(element => canvasLandscapeLeftElement.appendChild(element));
-
-
-
-	categorySelectorDropdownElement.addEventListener("input", () =>
-	{
-		sectionElements[visibleSection]
-			.forEach(element => categoryHolderElement.appendChild(element));
-
-		sectionElements[visibleSection]
-			.forEach(element => element.classList.remove("moved-to-left"));
-
-		sectionElements[visibleSection]
-			.forEach(element => element.classList.remove("moved-to-right"));
-
-		visibleSection = categorySelectorDropdownElement.value === "none"
-			? "view-controls"
-			: categorySelectorDropdownElement.value;
-
-		sectionElements[visibleSection]
-			.forEach(element => canvasLandscapeLeftElement.appendChild(element));
-
-		equalizeTextButtons();
-		setTimeout(equalizeTextButtons, 10);
-
-		equalizeAppletColumns();
-		setTimeout(equalizeAppletColumns, 10);
-
-		if (visibleSection === "edit-array")
-		{
-			updateEditArrayTextarea();
-		}
-	});
 
 	const planePartition = PlanePartitions.generateRandomPlanePartition();
 	arrayDataTextareaElement.value = PlanePartitions.arrayToAscii(planePartition);
@@ -303,5 +282,33 @@ export function load()
 	function toggleMaximumSpeed()
 	{
 		applet.animationTime = maximumSpeedCheckbox.checked ? 60 : 600;
+	}
+
+	function onDropdownInput()
+	{
+		sectionElements[visibleSection]
+			.forEach(element => categoryHolderElement.appendChild(element));
+
+		sectionElements[visibleSection]
+			.forEach(element => element.classList.remove("moved-to-left"));
+
+		sectionElements[visibleSection]
+			.forEach(element => element.classList.remove("moved-to-right"));
+
+		visibleSection = categoriesDropdown.value || "viewControls";
+
+		sectionElements[visibleSection]
+			.forEach(element => canvasLandscapeLeftElement.appendChild(element));
+
+		equalizeTextButtons();
+		setTimeout(equalizeTextButtons, 10);
+
+		equalizeAppletColumns();
+		setTimeout(equalizeAppletColumns, 10);
+
+		if (visibleSection === "editArray")
+		{
+			updateEditArrayTextarea();
+		}
 	}
 }

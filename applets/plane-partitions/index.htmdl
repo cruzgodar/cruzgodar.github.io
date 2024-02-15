@@ -4,23 +4,7 @@ Plane partitions can be made **asymptotic** to a shape. When adding or editing a
 
 Plane partitions are frequently studied, and many correspondences involving them have been implemented here. The first three take a plane partition and convert it to a **tableau** of the same shape --- a tableau is a collection of numbers with no restriction on box heights decreasing in any direction. The inverse algorithms take a tableau and convert it back to a plane partition. Pak and Sulzgruber are independently discovered correspondences with wildly different descriptions that amazingly produce the same results, while Hillman-Grassl is a unique correspondence all its own. RSK is something else entirely: it takes two semi-standard Young tableaux, or SSYT, and converts them to a regular tableau. An SSYT is similar to a plane partition, but rather than heights needing to decrease along rows and columns, they must *increase*, and the increasing that happens on columns must be strict (i.e. the heights always increase and never remain the same).
 
-### dropdown
-	
-	category-selector
-
-	none "Control Menus"
-	
-	view-controls "View Controls"
-	
-	add-array "Add Array"
-	
-	edit-array "Edit Array"
-	
-	remove-array "Remove Array"
-	
-	algorithms "Algorithms"
-
-###
+### dropdown categories
 
 
 

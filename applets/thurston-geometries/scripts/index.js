@@ -1,19 +1,21 @@
 import { showPage } from "../../../scripts/src/loadPage.js";
 import { ThurstonGeometry } from "./class.js";
-import { E3Axes, E3Rooms } from "./geometries/e3.js";
-import { H2xEAxes, H2xERooms } from "./geometries/h2xe.js";
-import { H3Axes, H3Rooms, H3Spheres } from "./geometries/h3.js";
-import { NilAxes, NilRooms } from "./geometries/nil.js";
+import { E3Rooms } from "./geometries/e3.js";
+import { H2xERooms } from "./geometries/h2xe.js";
+import { H3Rooms } from "./geometries/h3.js";
+import { NilRooms } from "./geometries/nil.js";
 import { E3S2Demo, S2xES2Demo } from "./geometries/s2.js";
-import { S2xEAxes, S2xERooms } from "./geometries/s2xe.js";
-import { S3Axes, S3HopfFibration, S3Rooms } from "./geometries/s3.js";
-import { SL2RAxes, SL2RRooms } from "./geometries/sl2r.js";
-import { SolAxes, SolRooms } from "./geometries/sol.js";
+import { S2xERooms } from "./geometries/s2xe.js";
+import { S3Rooms } from "./geometries/s3.js";
+import { SL2RRooms } from "./geometries/sl2r.js";
+import { SolRooms } from "./geometries/sol.js";
 import anime from "/scripts/anime.js";
 import { DownloadButton, ToggleButton } from "/scripts/src/buttons.js";
+import { Dropdown } from "/scripts/src/dropdowns.js";
 import { currentlyTouchDevice } from "/scripts/src/interaction.js";
 import { equalizeAppletColumns } from "/scripts/src/layout.js";
 import { $, $$ } from "/scripts/src/main.js";
+import { typesetMath } from "/scripts/src/math.js";
 import { TextBox } from "/scripts/src/textBoxes.js";
 
 export function load()
@@ -37,44 +39,35 @@ export function load()
 
 	const scenes =
 	{
-		"s2": E3S2Demo,
-
-		"e3-axes": E3Axes,
-		"e3": E3Rooms,
-
-		"s3-axes": S3Axes,
-		"s3": S3Rooms,
-		"s3-hopf-fibration": S3HopfFibration,
-
-		"h3-axes": H3Axes,
-		"h3": H3Rooms,
-		"h3-spheres": H3Spheres,
-
-		"s2xe-axes": S2xEAxes,
-		"s2xe": S2xERooms,
-
-		"h2xe-axes": H2xEAxes,
-		"h2xe": H2xERooms,
-
-		"sl2r-axes": SL2RAxes,
-		"sl2r": SL2RRooms,
-
-		"nil-axes": NilAxes,
-		"nil": NilRooms,
-
-		"sol-axes": SolAxes,
-		"sol": SolRooms,
+		s2: E3S2Demo,
+		e3: E3Rooms,
+		s3: S3Rooms,
+		h3: H3Rooms,
+		s2xe: S2xERooms,
+		h2xe: H2xERooms,
+		nil: NilRooms,
+		sl2r: SL2RRooms,
+		sol: SolRooms,
 	};
 
-	const sceneSelectorDropdownElement = $("#scene-selector-dropdown");
+	const geometriesDropdown = new Dropdown({
+		element: $("#geometries-dropdown"),
+		name: "Geometries",
+		options: {
+			s2: "$S^2$",
+			e3: "$\\mathbb{E}^3$",
+			s3: "$S^3$",
+			h3: "$\\mathbb{H}^3$",
+			s2xe: "$S^2 \\times \\mathbb{E}$",
+			h2xe: "$\\mathbb{H}^2 \\times \\mathbb{E}$",
+			nil: "Nil",
+			sl2r: "$\\widetilde{\\operatorname{SL}}(2, \\mathbb{R})$",
+			sol: "Sol",
+		},
+		onInput: run
+	});
 
-	sceneSelectorDropdownElement.addEventListener("input", run);
-
-	if (!window.DEBUG)
-	{
-		$$("[data-option-name$=axes], [data-option-name=s3-hopf-fibration]")
-			.forEach(element => element.style.display = "none");
-	}
+	typesetMath();
 
 	if (currentlyTouchDevice)
 	{
@@ -88,9 +81,7 @@ export function load()
 
 	function run()
 	{
-		const value = sceneSelectorDropdownElement.value === "none"
-			? "s2"
-			: sceneSelectorDropdownElement.value;
+		const value = geometriesDropdown.value || "s2";
 		
 		const alwaysShown = "#fov-slider, #download-button";
 

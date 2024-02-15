@@ -50,8 +50,8 @@ export function load()
 		lattices: "wp(z, draggableArg)"
 	};
 
-	const exampleSelectorDropdown = new Dropdown({
-		element: $("#example-selector-dropdown"),
+	const examplesDropdown = new Dropdown({
+		element: $("#examples-dropdown"),
 		name: "Examples",
 		options: {
 			trig: "Trig",
@@ -81,7 +81,7 @@ export function load()
 
 	function onDropdownInput()
 	{
-		codeInputElement.value = examples[exampleSelectorDropdown.value];
+		codeInputElement.value = examples[examplesDropdown.value];
 
 		run();
 	}

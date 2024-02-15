@@ -6,23 +6,7 @@ The derivative precision determines the accuracy with which the applet computes 
 
 ### wilson glsl
 
-### dropdown
-	
-	example-selector
-	
-	none "Examples"
-	
-	trig "Trig Function"
-	
-	crosshatch "Crosshatch"
-	
-	palette "Palette Demonstration"
-	
-	butterflies "Butterflies"
-	
-	swatches "Color Swatches"
-
-###
+### dropdown examples
 
 
 

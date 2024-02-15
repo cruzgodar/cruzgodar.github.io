@@ -12,19 +12,7 @@ Drag on the scene to look around. On a keyboard, use WASD to move, and on a touc
 
 <div id="canvas-landscape-left">
 
-### dropdown
-	
-	polyhedron-selector
-
-	none "Polyhedra"
-	
-	octahedron "Octahedron"
-
-	tetrahedron "Tetrahedron"
-	
-	cube "Cube"
-
-###
+### dropdown polyhedra
 
 
 

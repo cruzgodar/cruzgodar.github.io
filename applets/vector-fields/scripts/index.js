@@ -3,6 +3,7 @@ import { VectorField } from "./class.js";
 import { Applet } from "/scripts/src/applets.js";
 import { DownloadButton, GenerateButton } from "/scripts/src/buttons.js";
 import { Checkbox } from "/scripts/src/checkboxes.js";
+import { Dropdown } from "/scripts/src/dropdowns.js";
 import { $ } from "/scripts/src/main.js";
 import { TextBox } from "/scripts/src/textBoxes.js";
 
@@ -58,25 +59,26 @@ export function load()
 
 	const examples =
 	{
-		"none": "",
-		"sources-and-sinks": "((0.6x - 1)(0.6x + 1), (0.6y + 1)(0.6y - 1))",
-		"saddle-points": "(0.49y^2, 1 - 0.49x^2)",
-		"clockwork": "(sin(1.5y), -sin(1.5x))",
-		"df": "(1, sin(y) / (x^2 + 1))",
-		"cross": "(sin(y / 2.5), tan(x / 2.5))",
-		"draggables": "(draggableArg.x * x - y, x + draggableArg.y * y)"
+		sourcesAndSinks: "((0.6x - 1)(0.6x + 1), (0.6y + 1)(0.6y - 1))",
+		saddlePoints: "(0.49y^2, 1 - 0.49x^2)",
+		clockwork: "(sin(1.5y), -sin(1.5x))",
+		directionField: "(1, sin(y) / (x^2 + 1))",
+		divergingDiamond: "(sin(y / 2.5), tan(x / 2.5))",
+		draggables: "(draggableArg.x * x - y, x + draggableArg.y * y)"
 	};
 
-	const exampleSelectorDropdownElement = $("#example-selector-dropdown");
-
-	exampleSelectorDropdownElement.addEventListener("input", () =>
-	{
-		if (exampleSelectorDropdownElement.value !== "none")
-		{
-			codeTextareaElement.value = examples[exampleSelectorDropdownElement.value];
-
-			run();
-		}
+	const examplesDropdown = new Dropdown({
+		element: $("#examples-dropdown"),
+		name: "Examples",
+		options: {
+			sourcesAndSinks: "Sources and Sinks",
+			saddlePoints: "Saddle Points",
+			clockwork: "Clockwork",
+			directionField: "Direction Field",
+			divergingDiamond: "Diverging Diamond",
+			draggables: "Draggables Example",
+		},
+		onInput: onDropdownInput
 	});
 
 	new GenerateButton({
@@ -136,5 +138,15 @@ export function load()
 			dt,
 			lifetime: Math.min(lifetimeInput.value, 255)
 		});
+	}
+
+	function onDropdownInput()
+	{
+		if (examplesDropdown.value)
+		{
+			codeTextareaElement.value = examples[examplesDropdown.value];
+
+			run();
+		}
 	}
 }

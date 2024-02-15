@@ -4,40 +4,7 @@ Stated in 1982 and first proven in the early 2000s, William Thurston's <a href="
 
 As always, this applet was made with <a href="/projects/wilson/">Wilson</a>. It was a mathematically and computationally grueling project that spanned six months and many hundreds of hours, and I'm grateful to the many people that helped --- particularly <a href="https://ahuchala.com">Andy Huchala</a> and <a href="https://linktr.ee/aryayae">Arya Yae</a>, who put up with my incessant topology questions throughout the process and helped me avoid some of the most common pitfalls. Endless thanks go to <a href="https://rcoulon.perso.math.cnrs.fr/">Re&#769;mi Coulon</a>, <a href="https://physics.gatech.edu/user/elisabetta-matsumoto">Elisabetta Matsumoto</a>, <a href="http://www.segerman.org/">Henry Segerman</a>, and <a href="https://stevejtrettel.site/">Steve Trettel</a> for their paper on <a href="https://arxiv.org/abs/2010.15801">raymarching the Thurston geometries</a>, which was an excellent starting point for the applet I wanted to make and the current state of the art on rendering noneuclidean geometries.
 
-### dropdown
-	
-	scene-selector
-
-	none "Geometries"
-
-	s2 "$S^2$"
-	
-	e3-axes "$\mathbb{E}^3$: Axes"
-	e3 "$\mathbb{E}^3$"
-
-	s3-axes "$S^3$: Axes"
-	s3 "$S^3$"
-	s3-hopf-fibration "$S^3$: Hopf Fibration"
-
-	h3-axes "$\mathbb{H}^3$: Axes"
-	h3 "$\mathbb{H}^3$"
-
-	s2xe-axes "$S^2 \times \mathbb{E}$: Axes"
-	s2xe "$S^2 \times \mathbb{E}$"
-
-	h2xe-axes "$\mathbb{H}^2 \times \mathbb{E}$: Axes"
-	h2xe "$\mathbb{H}^2 \times \mathbb{E}$"
-
-	nil-axes "Nil: Axes"
-	nil "Nil"
-
-	sl2r-axes "$\widetilde{\operatorname{SL}}(2, \mathbb{R})$: Axes"
-	sl2r "$\widetilde{\operatorname{SL}}(2, \mathbb{R})$"
-
-	sol-axes "Sol: Axes"
-	sol "Sol"
-
-###
+### dropdown geometries
 
 
 <div id="canvas-landscape">
