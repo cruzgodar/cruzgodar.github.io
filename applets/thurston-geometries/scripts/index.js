@@ -83,7 +83,7 @@ export function load()
 			sl2r: "$\\widetilde{\\operatorname{SL}}(2, \\mathbb{R})$",
 			sol: "Sol",
 		},
-		onInput: run
+		onInput: onDropdownInput
 	});
 
 	typesetMath();
@@ -182,7 +182,7 @@ export function load()
 
 
 
-	new ToggleButton({
+	const switchSceneButton = new ToggleButton({
 		element: $("#switch-scene-button"),
 		name0: "Switch to Spheres",
 		name1: "Switch to Rooms",
@@ -361,5 +361,15 @@ export function load()
 		applet.fov = Math.tan(fovSlider.value / 2 * Math.PI / 180);
 
 		applet.needNewFrame = true;
+	}
+
+	function onDropdownInput()
+	{
+		if (switchSceneButton.state)
+		{
+			switchSceneButton.setState(0);
+		}
+		
+		run();
 	}
 }
