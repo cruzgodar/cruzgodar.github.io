@@ -4,6 +4,8 @@ import { opacityAnimationTime } from "/scripts/src/animation.js";
 import { DownloadButton } from "/scripts/src/buttons.js";
 import { Dropdown } from "/scripts/src/dropdowns.js";
 import { $ } from "/scripts/src/main.js";
+import { typesetMath } from "/scripts/src/math.js";
+import { Slider } from "/scripts/src/sliders.js";
 import { TextBox } from "/scripts/src/textBoxes.js";
 
 export function load()
@@ -23,26 +25,37 @@ export function load()
 		maxValue: 1000,
 		onInput: changeResolution
 	});
-	
-	const rotationAngleX2SliderElement = $("#rotation-angle-x-2-slider");
-	const rotationAngleX2SliderValueElement = $("#rotation-angle-x-2-slider-value");
 
-	const rotationAngleY2SliderElement = $("#rotation-angle-y-2-slider");
-	const rotationAngleY2SliderValueElement = $("#rotation-angle-y-2-slider-value");
+	// 0 0 1.5708 "$\theta_x$"
+	// 0 0 1.5708 "$\theta_y$"
+	// 0 0 1.5708 "$\theta_z$"
 
-	const rotationAngleZ2SliderElement = $("#rotation-angle-z-2-slider");
-	const rotationAngleZ2SliderValueElement = $("#rotation-angle-z-2-slider-value");
+	const rotationAngleX2Slider = new Slider({
+		element: $("#rotation-angle-x-2-slider"),
+		name: "$\\theta_x$",
+		value: 0,
+		min: 0,
+		max: Math.PI / 2,
+		onInput: onSliderInput
+	});
 
-	const sliderElements = [
-		rotationAngleX2SliderElement,
-		rotationAngleY2SliderElement,
-		rotationAngleZ2SliderElement
-	];
+	const rotationAngleY2Slider = new Slider({
+		element: $("#rotation-angle-y-2-slider"),
+		name: "$\\theta_y$",
+		value: 0,
+		min: 0,
+		max: Math.PI / 2,
+		onInput: onSliderInput
+	});
 
-	for (let i = 0; i < sliderElements.length; i++)
-	{
-		sliderElements[i].addEventListener("input", updateRotation);
-	}
+	const rotationAngleZ2Slider = new Slider({
+		element: $("#rotation-angle-z-2-slider"),
+		name: "$\\theta_z$",
+		value: 0,
+		min: 0,
+		max: Math.PI / 2,
+		onInput: onSliderInput
+	});
 
 	const polyhedraDropdown = new Dropdown({
 		element: $("#polyhedra-dropdown"),
@@ -55,29 +68,26 @@ export function load()
 		onInput: onDropdownInput
 	});
 
+	typesetMath();
+
 	showPage();
 
-	function updateRotation()
+	function onSliderInput()
 	{
-		applet.rotationAngleX2 = parseFloat(rotationAngleX2SliderValueElement.textContent);
-		applet.rotationAngleY2 = parseFloat(rotationAngleY2SliderValueElement.textContent);
-		applet.rotationAngleZ2 = parseFloat(rotationAngleZ2SliderValueElement.textContent);
+		applet.rotationAngleX2 = rotationAngleX2Slider.value;
+		applet.rotationAngleY2 = rotationAngleY2Slider.value;
+		applet.rotationAngleZ2 = rotationAngleZ2Slider.value;
 
 		applet.updateMatrices();
 	}
 
 	function resetSliders()
 	{
-		rotationAngleX2SliderElement.value = 0;
-		rotationAngleX2SliderValueElement.textContent = "0.000";
+		rotationAngleX2Slider.setValue(0);
+		rotationAngleY2Slider.setValue(0);
+		rotationAngleZ2Slider.setValue(0);
 
-		rotationAngleY2SliderElement.value = 0;
-		rotationAngleY2SliderValueElement.textContent = "0.000";
-
-		rotationAngleZ2SliderElement.value = 0;
-		rotationAngleZ2SliderValueElement.textContent = "0.000";
-
-		updateRotation();
+		onSliderInput();
 	}
 
 	function changeResolution()
@@ -95,9 +105,9 @@ export function load()
 			{
 				resetSliders();
 
-				rotationAngleX2SliderElement.setAttribute("max", 2 * Math.PI);
-				rotationAngleY2SliderElement.setAttribute("max", 2 * Math.PI);
-				rotationAngleZ2SliderElement.setAttribute("max", 2 * Math.PI / 3);
+				rotationAngleX2Slider.setBounds({ max: 2 * Math.PI });
+				rotationAngleY2Slider.setBounds({ max: 2 * Math.PI });
+				rotationAngleZ2Slider.setBounds({ max: 2 * Math.PI / 3 });
 			}, opacityAnimationTime);
 		}
 
@@ -109,9 +119,9 @@ export function load()
 			{
 				resetSliders();
 
-				rotationAngleX2SliderElement.setAttribute("max", Math.PI / 2);
-				rotationAngleY2SliderElement.setAttribute("max", Math.PI / 2);
-				rotationAngleZ2SliderElement.setAttribute("max", Math.PI / 2);
+				rotationAngleX2Slider.setBounds({ max: 2 * Math.PI / 2 });
+				rotationAngleY2Slider.setBounds({ max: 2 * Math.PI / 2 });
+				rotationAngleZ2Slider.setBounds({ max: 2 * Math.PI / 2 });
 			}, opacityAnimationTime);
 		}
 
@@ -123,9 +133,9 @@ export function load()
 			{
 				resetSliders();
 
-				rotationAngleX2SliderElement.setAttribute("max", Math.PI / 2);
-				rotationAngleY2SliderElement.setAttribute("max", Math.PI / 2);
-				rotationAngleZ2SliderElement.setAttribute("max", Math.PI / 2);
+				rotationAngleX2Slider.setBounds({ max: 2 * Math.PI / 2 });
+				rotationAngleY2Slider.setBounds({ max: 2 * Math.PI / 2 });
+				rotationAngleZ2Slider.setBounds({ max: 2 * Math.PI / 2 });
 			}, opacityAnimationTime);
 		}
 	}

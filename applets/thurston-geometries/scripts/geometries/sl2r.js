@@ -6,7 +6,6 @@ import {
 	getMinGlslString,
 	getVectorGlsl
 } from "./base.js";
-import { $ } from "/scripts/src/main.js";
 
 function getTransformationMatrix(pos)
 {
@@ -1108,15 +1107,5 @@ export class SL2RRooms extends SL2RGeometry
 
 	uiElementsUsed = "#wall-thickness-slider";
 
-	initUI()
-	{
-		const wallThicknessSlider = $("#wall-thickness-slider");
-		const wallThicknessSliderValue = $("#wall-thickness-slider-value");
-
-		wallThicknessSlider.min = .05;
-		wallThicknessSlider.max = 0.175;
-		wallThicknessSlider.value = 0.175;
-		wallThicknessSliderValue.textContent = 0.175;
-		this.sliderValues.wallThickness = 0.175;
-	}
+	wallThicknessData = [0.175, 0.05, 0.175];
 }

@@ -16,13 +16,8 @@ As always, this applet was made with <a href="/projects/wilson/">Wilson</a>. It 
 ###
 
 ### sliders
-	
-	wall-thickness 0 0 1 "Wall Thickness"
-
-	fiber-thickness 0 0 1 "Fiber Thickness"
-
-	fov 100 80 120 "FOV"
-	
+	wall-thickness
+	fov
 ###
 
 ### buttons

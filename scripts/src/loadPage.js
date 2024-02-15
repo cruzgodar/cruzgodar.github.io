@@ -38,7 +38,6 @@ import {
 	siteSettings
 } from "./settings.js";
 import { sitemap } from "./sitemap.js";
-import { setUpSliders } from "./sliders.js";
 
 // The big one. Gets a page ready to be shown but doesn't
 // do anything that requires it to be visible.
@@ -75,8 +74,6 @@ export async function loadPage()
 	setUpTextButtons();
 
 	setUpNavButtons();
-
-	setUpSliders();
 
 	setUpCarousels();
 

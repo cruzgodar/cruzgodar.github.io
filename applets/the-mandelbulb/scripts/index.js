@@ -2,28 +2,12 @@ import { showPage } from "../../../scripts/src/loadPage.js";
 import { Mandelbulb } from "./class.js";
 import { Button, ToggleButton } from "/scripts/src/buttons.js";
 import { $ } from "/scripts/src/main.js";
+import { typesetMath } from "/scripts/src/math.js";
+import { Slider } from "/scripts/src/sliders.js";
 import { TextBox } from "/scripts/src/textBoxes.js";
 
 export function load()
 {
-	const rotationAngleXSliderElement = $("#rotation-angle-x-slider");
-	const rotationAngleXSliderValueElement = $("#rotation-angle-x-slider-value");
-
-	const rotationAngleYSliderElement = $("#rotation-angle-y-slider");
-	const rotationAngleYSliderValueElement = $("#rotation-angle-y-slider-value");
-
-	const rotationAngleZSliderElement = $("#rotation-angle-z-slider");
-	const rotationAngleZSliderValueElement = $("#rotation-angle-z-slider-value");
-
-	const cXSliderElement = $("#c-x-slider");
-	const cXSliderValueElement = $("#c-x-slider-value");
-
-	const cYSliderElement = $("#c-y-slider");
-	const cYSliderValueElement = $("#c-y-slider-value");
-
-	const cZSliderElement = $("#c-z-slider");
-	const cZSliderValueElement = $("#c-z-slider-value");
-
 	const applet = new Mandelbulb({
 		canvas: $("#output-canvas"),
 	});
@@ -67,44 +51,101 @@ export function load()
 		onInput: changeResolution
 	});
 
-	const iterationsSliderElement = $("#iterations-slider");
-	const iterationsSliderValueElement = $("#iterations-slider-value");
+	const iterationsSlider = new Slider({
+		element: $("#iterations-slider"),
+		name: "Iterations",
+		value: 16,
+		min: 0,
+		max: 32,
+		logarithmic: true,
+		integer: true,
+		onInput: onSliderInput
+	});
 
-	const powerSliderElement = $("#power-slider");
-	const powerSliderValueElement = $("#power-slider-value");
+	const powerSlider = new Slider({
+		element: $("#power-slider"),
+		name: "Power",
+		value: 8,
+		min: 2,
+		max: 16,
+		onInput: onSliderInput
+	});
 
-	const elements = [
-		rotationAngleXSliderElement,
-		rotationAngleYSliderElement,
-		rotationAngleZSliderElement,
-		cXSliderElement,
-		cYSliderElement,
-		cZSliderElement,
-		powerSliderElement,
-		iterationsSliderElement
-	];
+	const cXSlider = new Slider({
+		element: $("#c-x-slider"),
+		name: "$c_x$",
+		value: -0.54,
+		min: -1,
+		max: 1,
+		onInput: onSliderInput
+	});
 
-	elements.forEach(element => element.addEventListener("input", updateParameters));
+	const cYSlider = new Slider({
+		element: $("#c-y-slider"),
+		name: "$c_y$",
+		value: -0.25,
+		min: -1,
+		max: 1,
+		onInput: onSliderInput
+	});
+
+	const cZSlider = new Slider({
+		element: $("#c-z-slider"),
+		name: "$c_z$",
+		value: -0.668,
+		min: -1,
+		max: 1,
+		onInput: onSliderInput
+	});
+
+	const rotationAngleXSlider = new Slider({
+		element: $("#rotation-angle-x-slider"),
+		name: "$\\theta_x$",
+		value: 0,
+		min: 0,
+		max: Math.PI,
+		onInput: onSliderInput
+	});
+
+	const rotationAngleYSlider = new Slider({
+		element: $("#rotation-angle-y-slider"),
+		name: "$\\theta_y$",
+		value: 0,
+		min: 0,
+		max: Math.PI,
+		onInput: onSliderInput
+	});
+
+	const rotationAngleZSlider = new Slider({
+		element: $("#rotation-angle-z-slider"),
+		name: "$\\theta_z$",
+		value: 0,
+		min: 0,
+		max: Math.PI,
+		onInput: onSliderInput
+	});
+
+	typesetMath();
 
 	showPage();
 
-	function updateParameters()
+	function onSliderInput()
 	{
-		const cx = parseFloat(cXSliderValueElement.textContent);
-		const cy = parseFloat(cYSliderValueElement.textContent);
-		const cz = parseFloat(cZSliderValueElement.textContent);
+		const cx = cXSlider.value;
+		const cy = cYSlider.value;
+		const cz = cZSlider.value;
 
 		applet.c = [cx, cy, cz];
 		applet.wilson.gl.uniform3fv(applet.wilson.uniforms["c"], applet.c);
 
-		applet.rotationAngleX = parseFloat(rotationAngleXSliderValueElement.textContent);
-		applet.rotationAngleY = parseFloat(rotationAngleYSliderValueElement.textContent);
-		applet.rotationAngleZ = parseFloat(rotationAngleZSliderValueElement.textContent);
+		applet.rotationAngleX = rotationAngleXSlider.value;
+		applet.rotationAngleY = rotationAngleYSlider.value;
+		applet.rotationAngleZ = rotationAngleZSlider.value;
 
-		applet.power = parseFloat(powerSliderValueElement.textContent);
+		applet.power = powerSlider.value;
 		applet.wilson.gl.uniform1f(applet.wilson.uniforms["power"], applet.power);
 
-		applet.maxIterations = parseInt(iterationsSliderValueElement.textContent);
+		applet.maxIterations = iterationsSlider.value;
 		applet.wilson.gl.uniform1i(applet.wilson.uniforms["maxIterations"], applet.maxIterations);
 
 		applet.updateRotationMatrix();

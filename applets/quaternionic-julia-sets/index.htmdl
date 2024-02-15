@@ -15,15 +15,10 @@ The controls are the same as in the Mandelbulb applet. While changing $c$, use t
 ###
 
 ### sliders
-
-	iterations 1.204119 0 1.501029 -l -i "Iterations"
-	
-	c-x -0.54 -1 1 "$c_x$"
-	
-	c-y -0.25 -1 1 "$c_y$"
-	
-	c-z -0.668 -1 1 "$c_z$"
-
+	iterations
+	c-x
+	c-y
+	c-z
 ###
 
 ### buttons

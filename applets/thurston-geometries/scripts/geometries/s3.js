@@ -1,6 +1,5 @@
 import { ThurstonGeometry } from "../class.js";
 import { BaseGeometry, getColorGlslString, getMaxGlslString, getMinGlslString } from "./base.js";
-import { $ } from "/scripts/src/main.js";
 
 class S3Geometry extends BaseGeometry
 {
@@ -328,17 +327,7 @@ export class S3Rooms extends S3Geometry
 
 	uiElementsUsed = "#wall-thickness-slider, #switch-scene-button";
 
-	initUI()
-	{
-		const wallThicknessSlider = $("#wall-thickness-slider");
-		const wallThicknessSliderValue = $("#wall-thickness-slider-value");
-
-		wallThicknessSlider.min = -.15;
-		wallThicknessSlider.max = .35;
-		wallThicknessSlider.value = .35;
-		wallThicknessSliderValue.textContent = (.35).toFixed(3);
-		this.sliderValues.wallThickness = .35;
-	}
+	wallThicknessData = [.35, -.15, .35];
 
 	getNearestCenter()
 	{
@@ -525,23 +514,4 @@ export class S3HopfFibration extends S3Geometry
 	`;
 
 	uniformNames = ["fiberThickness"];
-
-	updateUniforms(gl, uniformList)
-	{
-		gl.uniform1f(uniformList["fiberThickness"], this.sliderValues.fiberThickness);
-	}
-
-	uiElementsUsed = "#fiber-thickness-slider";
-
-	initUI()
-	{
-		const fiberThicknessSlider = $("#fiber-thickness-slider");
-		const fiberThicknessSliderValue = $("#fiber-thickness-slider-value");
-
-		fiberThicknessSlider.min = .005;
-		fiberThicknessSlider.max = .1;
-		fiberThicknessSlider.value = .025;
-		fiberThicknessSliderValue.textContent = (.025).toFixed(3);
-		this.sliderValues.fiberThickness = .025;
-	}
 }

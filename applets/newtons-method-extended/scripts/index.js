@@ -4,6 +4,7 @@ import { Applet } from "/scripts/src/applets.js";
 import { Button, DownloadButton, GenerateButton } from "/scripts/src/buttons.js";
 import { Dropdown } from "/scripts/src/dropdowns.js";
 import { $ } from "/scripts/src/main.js";
+import { Slider } from "/scripts/src/sliders.js";
 import { TextBox } from "/scripts/src/textBoxes.js";
 
 export function load()
@@ -47,23 +48,13 @@ export function load()
 
 
 
-	const derivativePrecisionSliderElement = $("#derivative-precision-slider");
-	const derivativePrecisionSliderValueElement = $("#derivative-precision-slider-value");
-
-
-	derivativePrecisionSliderElement.addEventListener("input", () =>
-	{
-		applet.derivativePrecision = parseFloat(derivativePrecisionSliderValueElement.textContent);
-
-		applet.wilson.gl.uniform1f(
-			applet.wilson.uniforms["derivativePrecision"],
-			applet.derivativePrecision
-		);
-
-		applet.wilsonHidden.gl.uniform1f(
-			applet.wilsonHidden.uniforms["derivativePrecision"],
-			applet.derivativePrecision
-		);
+	const derivativePrecisionSlider = new Slider({
+		element: $("#derivative-precision-slider"),
+		name: "Derivative Precision",
+		value: 6,
+		min: 3,
+		max: 20,
+		onInput: onSliderInput
 	});
 
 	const examples =
@@ -111,5 +102,20 @@ export function load()
 		codeInputElement.value = examples[examplesDropdown.value];
 
 		run();
+	}
+
+	function onSliderInput()
+	{
+		applet.derivativePrecision = derivativePrecisionSlider.value;
+
+		applet.wilson.gl.uniform1f(
+			applet.wilson.uniforms["derivativePrecision"],
+			applet.derivativePrecision
+		);
+
+		applet.wilsonHidden.gl.uniform1f(
+			applet.wilsonHidden.uniforms["derivativePrecision"],
+			applet.derivativePrecision
+		);
 	}
 }

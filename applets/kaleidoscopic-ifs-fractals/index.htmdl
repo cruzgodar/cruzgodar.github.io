@@ -21,13 +21,9 @@ Drag on the scene to look around. On a keyboard, use WASD to move, and on a touc
 ###
 
 ### sliders
-
-	rotation-angle-x-2 0 0 1.5708 "$\theta_x$"
-	
-	rotation-angle-y-2 0 0 1.5708 "$\theta_y$"
-	
-	rotation-angle-z-2 0 0 1.5708 "$\theta_z$"
-	
+	rotation-angle-x-2
+	rotation-angle-y-2
+	rotation-angle-z-2
 ###
 
 </div>

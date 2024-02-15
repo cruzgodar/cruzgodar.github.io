@@ -5,6 +5,7 @@ import { DownloadButton, GenerateButton } from "/scripts/src/buttons.js";
 import { Checkbox } from "/scripts/src/checkboxes.js";
 import { Dropdown } from "/scripts/src/dropdowns.js";
 import { $ } from "/scripts/src/main.js";
+import { Slider } from "/scripts/src/sliders.js";
 import { TextBox } from "/scripts/src/textBoxes.js";
 
 export function load()
@@ -92,10 +93,15 @@ export function load()
 		filename: "a-vector-field.png"
 	});
 
-	const speedSliderElement = $("#speed-slider");
-	const speedSliderValueElement = $("#speed-slider-value");
-
-	speedSliderElement.addEventListener("input", updateParameters);
+	const speedSlider = new Slider({
+		element: $("#speed-slider"),
+		name: "Simulation Speed",
+		value: 1,
+		min: 0.5,
+		max: 3,
+		logarithmic: true,
+		onInput: onSliderInput
+	});
 
 	showPage();
 
@@ -104,14 +110,12 @@ export function load()
 		const generatingCode = rawGlslCheckbox.checked
 			? codeTextareaElement.value
 			: Applet.parseNaturalGLSL(codeTextareaElement.value);
-
-		const dt = parseFloat(speedSliderValueElement.textContent || 1) / 300;
 		
 		applet.run({
 			generatingCode,
 			resolution: resolutionInput.value,
 			maxParticles: Math.max(maxParticlesInput.value, 100),
-			dt,
+			dt: speedSlider.value / 300,
 			lifetime: Math.min(lifetimeInput.value, 255),
 			worldCenterX: 0,
 			worldCenterY: 0,
@@ -121,21 +125,19 @@ export function load()
 
 
 
-	function updateParameters()
+	function onSliderInput()
 	{
-		const dt = parseFloat(speedSliderValueElement.textContent || 1) / 300;
+		const dt = speedSlider.value / 300;
 		
 		applet.dt = dt;
 	}
 
 	function generateNewField()
 	{
-		const dt = parseFloat(speedSliderValueElement.textContent || 1) / 300;
-		
 		applet.generateNewField({
 			resolution: resolutionInput.value,
 			maxParticles: Math.max(maxParticlesInput.value, 100),
-			dt,
+			dt: speedSlider.value / 300,
 			lifetime: Math.min(lifetimeInput.value, 255)
 		});
 	}

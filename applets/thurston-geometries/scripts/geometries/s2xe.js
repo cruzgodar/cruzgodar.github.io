@@ -1,5 +1,4 @@
 import { BaseGeometry, getMaxGlslString, getMinGlslString } from "./base.js";
-import { $ } from "/scripts/src/main.js";
 
 export class S2xEGeometry extends BaseGeometry
 {
@@ -322,17 +321,7 @@ export class S2xERooms extends S2xEGeometry
 
 	uiElementsUsed = "#wall-thickness-slider, #switch-scene-button";
 
-	initUI()
-	{
-		const wallThicknessSlider = $("#wall-thickness-slider");
-		const wallThicknessSliderValue = $("#wall-thickness-slider-value");
-
-		wallThicknessSlider.min = -.45;
-		wallThicknessSlider.max = .8;
-		wallThicknessSlider.value = .8;
-		wallThicknessSliderValue.textContent = .8;
-		this.sliderValues.wallThickness = .8;
-	}
+	wallThicknessData = [.8, -.45, .8];
 
 	getNearestCenter()
 	{

@@ -142,7 +142,7 @@ export class BaseGeometry
 	uniformNames;
 	updateUniforms() {}
 
-	initUI() {}
+	wallThicknessData;
 
 	uiElementsUsed = "";
 

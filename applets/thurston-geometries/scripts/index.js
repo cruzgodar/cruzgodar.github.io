@@ -16,6 +16,7 @@ import { currentlyTouchDevice } from "/scripts/src/interaction.js";
 import { equalizeAppletColumns } from "/scripts/src/layout.js";
 import { $, $$ } from "/scripts/src/main.js";
 import { typesetMath } from "/scripts/src/math.js";
+import { Slider } from "/scripts/src/sliders.js";
 import { TextBox } from "/scripts/src/textBoxes.js";
 
 export function load()
@@ -30,6 +31,24 @@ export function load()
 		value: 500,
 		maxValue: 1000,
 		onInput: changeResolution
+	});
+
+	const wallThicknessSlider = new Slider({
+		element: $("#wall-thickness-slider"),
+		name: "Wall Thickness",
+		value: 0,
+		min: 0,
+		max: 1,
+		onInput: onSliderInput
+	});
+
+	const fovSlider = new Slider({
+		element: $("#fov-slider"),
+		name: "FOV",
+		value: 100,
+		min: 80,
+		max: 120,
+		onInput: onSliderInput
 	});
 
 	const demoCanvas = $("#demo-canvas");
@@ -144,34 +163,20 @@ export function load()
 			demoApplet.animationPaused = true;
 		}
 
-		applet.run(geometryData);
-		geometryData.initUI();
-	}
-
-
-
-	const sliders = {
-		wallThickness: [$("#wall-thickness-slider"), $("#wall-thickness-slider-value")],
-		fiberThickness: [$("#fiber-thickness-slider"), $("#fiber-thickness-slider-value")],
-	};
-
-	for (const key in sliders)
-	{
-		sliders[key][0].addEventListener("input", () =>
+		if (geometryData.wallThicknessData)
 		{
-			applet.geometryData.sliderValues[key] = parseFloat(sliders[key][1].textContent);
-			applet.needNewFrame = true;
-		});
+			wallThicknessSlider.setBounds({
+				min: geometryData.wallThicknessData[1],
+				max: geometryData.wallThicknessData[2]
+			});
+
+			wallThicknessSlider.setValue(geometryData.wallThicknessData[0]);
+
+			geometryData.sliderValues.wallThickness = geometryData.wallThicknessData[0];
+		}
+
+		applet.run(geometryData);
 	}
-
-	const fovSliderElement = $("#fov-slider");
-	const fovSliderValueElement = $("#fov-slider-value");
-
-	fovSliderElement.addEventListener("input", () =>
-	{
-		applet.fov = Math.tan(parseFloat(fovSliderValueElement.textContent) / 2 * Math.PI / 180);
-		applet.needNewFrame = true;
-	});
 
 	$$(".slider-container").forEach(element => element.style.display = "none");
 
@@ -347,5 +352,14 @@ export function load()
 		applet.needNewFrame = true;
 		
 		applet.changeResolution(resolutionInput.value);
+	}
+
+	function onSliderInput()
+	{
+		applet.geometryData.sliderValues.wallThickness = parseFloat(wallThicknessSlider.value);
+
+		applet.fov = Math.tan(fovSlider.value / 2 * Math.PI / 180);
+
+		applet.needNewFrame = true;
 	}
 }

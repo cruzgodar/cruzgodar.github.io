@@ -1,6 +1,5 @@
 import { ThurstonGeometry } from "../class.js";
 import { BaseGeometry, getMinGlslString } from "./base.js";
-import { $ } from "/scripts/src/main.js";
 
 export class E3Geometry extends BaseGeometry {}
 
@@ -152,17 +151,7 @@ export class E3Rooms extends E3Geometry
 
 	uiElementsUsed = "#wall-thickness-slider, #switch-scene-button";
 
-	initUI()
-	{
-		const wallThicknessSlider = $("#wall-thickness-slider");
-		const wallThicknessSliderValue = $("#wall-thickness-slider-value");
-
-		wallThicknessSlider.min = -.85;
-		wallThicknessSlider.max = 1.55;
-		wallThicknessSlider.value = 1.55;
-		wallThicknessSliderValue.textContent = 1.55;
-		this.sliderValues.wallThickness = 1.55;
-	}
+	wallThicknessData = [1.55, -0.85, 1.55];
 
 	getNearestCenter()
 	{

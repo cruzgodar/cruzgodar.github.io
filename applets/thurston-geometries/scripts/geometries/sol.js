@@ -1,6 +1,5 @@
 import { ThurstonGeometry } from "../class.js";
 import { BaseGeometry, getMatrixGlsl, getMinGlslString } from "./base.js";
-import { $ } from "/scripts/src/main.js";
 
 const numericalStepDistance = 0.0001;
 const flowNumericallyThreshhold = 0.0005;
@@ -1165,17 +1164,7 @@ export class SolRooms extends SolGeometry
 
 	uiElementsUsed = "#wall-thickness-slider, #switch-scene-button";
 
-	initUI()
-	{
-		const wallThicknessSlider = $("#wall-thickness-slider");
-		const wallThicknessSliderValue = $("#wall-thickness-slider-value");
-
-		wallThicknessSlider.min = -0.18;
-		wallThicknessSlider.max = 0.6;
-		wallThicknessSlider.value = 0.3;
-		wallThicknessSliderValue.textContent = 0.3;
-		this.sliderValues.wallThickness = 0.3;
-	}
+	wallThicknessData = [0.3, -0.18, 0.6];
 
 	getNearestCenter()
 	{

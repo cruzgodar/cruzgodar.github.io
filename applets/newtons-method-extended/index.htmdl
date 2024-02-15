@@ -24,7 +24,7 @@ The derivative precision determines the accuracy with which the applet computes 
 ###
 
 ### sliders
-	derivative-precision 6 3 20 "Derivative Precision"
+	derivative-precision
 ###
 
 ### buttons

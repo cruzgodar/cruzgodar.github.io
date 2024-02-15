@@ -2,6 +2,7 @@ import { showPage } from "../../../scripts/src/loadPage.js";
 import { JuliaSetMosaic } from "./class.js";
 import { DownloadButton } from "/scripts/src/buttons.js";
 import { $ } from "/scripts/src/main.js";
+import { Slider } from "/scripts/src/sliders.js";
 import { TextBox } from "/scripts/src/textBoxes.js";
 
 export function load()
@@ -23,12 +24,13 @@ export function load()
 		onInput: changeResolution
 	});
 
-	const setDensitySliderElement = $("#set-density-slider");
-	const setDensitySliderValueElement = $("#set-density-slider-value");
-
-	setDensitySliderElement.addEventListener("input", () =>
-	{
-		applet.setDensity = parseFloat(setDensitySliderValueElement.textContent);
+	const setDensitySlider = new Slider({
+		element: $("#set-density-slider"),
+		name: "Set Density",
+		value: 10,
+		min: 2,
+		max: 20,
+		onInput: onSliderInput
 	});
 
 	run();
@@ -50,5 +52,10 @@ export function load()
 		applet.resolution = resolutionInput.value;
 
 		applet.changeAspectRatio();
+	}
+
+	function onSliderInput()
+	{
+		applet.setDensity = setDensitySlider.value;
 	}
 }

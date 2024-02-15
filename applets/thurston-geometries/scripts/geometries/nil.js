@@ -1,6 +1,5 @@
 import { ThurstonGeometry } from "../class.js";
 import { BaseGeometry, getMatrixGlsl, getMinGlslString } from "./base.js";
-import { $ } from "/scripts/src/main.js";
 
 const loopRoomColors = false;
 
@@ -701,17 +700,7 @@ export class NilRooms extends NilGeometry
 
 	uiElementsUsed = "#wall-thickness-slider, #switch-scene-button";
 
-	initUI()
-	{
-		const wallThicknessSlider = $("#wall-thickness-slider");
-		const wallThicknessSliderValue = $("#wall-thickness-slider-value");
-
-		wallThicknessSlider.min = -.72;
-		wallThicknessSlider.max = .78;
-		wallThicknessSlider.value = .78;
-		wallThicknessSliderValue.textContent = .78;
-		this.sliderValues.wallThickness = .78;
-	}
+	wallThicknessData = [.78, -.72, .78];
 
 	getNearestCenter()
 	{

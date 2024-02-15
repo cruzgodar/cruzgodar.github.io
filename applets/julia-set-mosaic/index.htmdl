@@ -13,7 +13,7 @@ The <a href="/applets/julia-set-explorer/">Mandelbrot set and Julia sets</a> sha
 ###
 
 ### sliders
-	set-density 10 2 20 "Set Density"
+	set-density
 ###
 
 </div>

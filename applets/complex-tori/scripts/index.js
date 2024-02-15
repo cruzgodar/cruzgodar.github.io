@@ -2,6 +2,8 @@ import { showPage } from "../../../scripts/src/loadPage.js";
 import { ComplexMap } from "../../complex-maps/scripts/class.js";
 import { EllipticCurve } from "./class.js";
 import { $, $$ } from "/scripts/src/main.js";
+import { typesetMath } from "/scripts/src/math.js";
+import { Slider } from "/scripts/src/sliders.js";
 import { TextBox } from "/scripts/src/textBoxes.js";
 
 export function load()
@@ -78,54 +80,35 @@ export function load()
 		onInput: changeResolution
 	});
 
-
-
-	const g2SliderElement = $("#g2-slider");
-	const g2SliderValueElement = $("#g2-slider-value");
-
-	g2SliderElement.addEventListener("input", () =>
-	{
-		g2 = parseFloat(g2SliderValueElement.textContent);
-
-		g2Applet.wilson.draggables.worldCoordinates[0][0] = g2 / 5;
-
-		g2Applet.wilson.draggables.recalculateLocations();
-
-		run();
+	const g2Slider = new Slider({
+		element: $("#g2-slider"),
+		name: "$g_2$",
+		value: g2,
+		min: -5,
+		max: 5,
+		onInput: onSliderInput
 	});
 
-
-
-	const g3SliderElement = $("#g3-slider");
-	const g3SliderValueElement = $("#g3-slider-value");
-
-	g3SliderElement.addEventListener("input", () =>
-	{
-		g3 = parseFloat(g3SliderValueElement.textContent);
-
-		g2Applet.wilson.draggables.worldCoordinates[0][1] = g3 / 5;
-
-		g2Applet.wilson.draggables.recalculateLocations();
-
-		run();
+	const g3Slider = new Slider({
+		element: $("#g3-slider"),
+		name: "$g_3$",
+		value: g3,
+		min: -5,
+		max: 5,
+		onInput: onSliderInput
 	});
 
-
+	typesetMath();
 
 	showPage();
-
-	
 
 	function onDragDraggable(activeDraggable, x, y)
 	{
 		g2 = x * 5;
 		g3 = y * 5;
 
-		g2SliderElement.value = g2;
-		g3SliderElement.value = g3;
-
-		g2SliderValueElement.textContent = g2.toFixed(3);
-		g3SliderValueElement.textContent = g3.toFixed(3);
+		g2Slider.setValue(g2);
+		g3Slider.setValue(g3);
 
 		run();
 	}
@@ -157,6 +140,21 @@ export function load()
 		wpprimeApplet.wilson.changeCanvasSize(resolution, resolution);
 		kleinjApplet.wilson.changeCanvasSize(resolution, resolution);
 		g2Applet.wilson.changeCanvasSize(resolution, resolution);
+
+		run();
+	}
+
+	function onSliderInput()
+	{
+		g2 = g2Slider.value;
+
+		g2Applet.wilson.draggables.worldCoordinates[0][0] = g2 / 5;
+
+		g3 = g3Slider.value;
+
+		g2Applet.wilson.draggables.worldCoordinates[0][1] = g3 / 5;
+
+		g2Applet.wilson.draggables.recalculateLocations();
 
 		run();
 	}

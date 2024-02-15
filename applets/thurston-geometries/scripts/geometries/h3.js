@@ -1,6 +1,5 @@
 import { ThurstonGeometry } from "../class.js";
 import { BaseGeometry, getMinGlslString, getVectorGlsl } from "./base.js";
-import { $ } from "/scripts/src/main.js";
 
 const teleportVectors = [
 	[1, 0, 0, 1 / Math.sqrt(3)],
@@ -561,17 +560,7 @@ export class H3Rooms extends H3Geometry
 
 	uiElementsUsed = "#wall-thickness-slider";
 
-	initUI()
-	{
-		const wallThicknessSlider = $("#wall-thickness-slider");
-		const wallThicknessSliderValue = $("#wall-thickness-slider-value");
-
-		wallThicknessSlider.min = -.357;
-		wallThicknessSlider.max = .143;
-		wallThicknessSlider.value = .143;
-		wallThicknessSliderValue.textContent = .143;
-		this.sliderValues.wallThickness = .143;
-	}
+	wallThicknessData = [.143, -.357, .143];
 }
 
 export class H3Spheres extends H3Geometry

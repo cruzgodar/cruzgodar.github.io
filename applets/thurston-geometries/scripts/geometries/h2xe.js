@@ -1,6 +1,5 @@
 import { ThurstonGeometry } from "../class.js";
 import { BaseGeometry, getMatrixGlsl, getMinGlslString, getVectorGlsl } from "./base.js";
-import { $ } from "/scripts/src/main.js";
 
 const teleportations = [
 	[
@@ -534,15 +533,5 @@ export class H2xERooms extends H2xEGeometry
 
 	uiElementsUsed = "#wall-thickness-slider";
 
-	initUI()
-	{
-		const wallThicknessSlider = $("#wall-thickness-slider");
-		const wallThicknessSliderValue = $("#wall-thickness-slider-value");
-
-		wallThicknessSlider.min = -.55;
-		wallThicknessSlider.max = 1.55;
-		wallThicknessSlider.value = 1.55;
-		wallThicknessSliderValue.textContent = 1.55;
-		this.sliderValues.wallThickness = 1.55;
-	}
+	wallThicknessData = [1.55, -0.55, 1.55];
 }

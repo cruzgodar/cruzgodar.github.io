@@ -1,21 +1,123 @@
-import { $$ } from "./main.js";
+import { InputElement } from "./inputElement.js";
 
-export function setUpSliders()
+export class Slider extends InputElement
 {
-	const sliderContainers = $$(".slider-container");
+	subtextElement;
+	valueElement;
+	value;
+	min;
+	max;
+	precision;
+	logarithmic;
+	integer;
+	onInput;
 
-	sliderContainers.forEach(sliderContainer =>
+	constructor({
+		element,
+		name,
+		value,
+		min,
+		max,
+		logarithmic = false,
+		integer = false,
+		onInput = () => {}
+	})
 	{
-		const slider = sliderContainer.children[0];
-		const label = sliderContainer.children[1].querySelector("span");
-		const precision = parseInt(slider.getAttribute("data-precision"));
-		const logarithmic = slider.getAttribute("data-logarithmic") === "1";
-		const int = slider.getAttribute("data-int") === "1";
+		super({ element, name });
+		this.subtextElement = this.element.nextElementSibling.firstElementChild;
 
-		slider.addEventListener("input", () =>
+		this.logarithmic = logarithmic;
+		this.integer = integer;
+
+		this.value = parseFloat(value);
+		this.min = parseFloat(min);
+		this.max = parseFloat(max);
+
+		if (this.logarithmic)
 		{
-			const value = logarithmic ? 10 ** parseFloat(slider.value) : parseFloat(slider.value);
-			label.textContent = int ? Math.round(value) : value.toFixed(precision);
+			this.value = Math.log10(this.value);
+			this.min = Math.log10(this.min);
+			this.max = Math.log10(this.max);
+		}
+
+		this.onInput = onInput;
+
+		// The number of decimal places to round to to get 4 significant figures.
+		this.precision = Math.max(
+			0,
+			3 - Math.floor(
+				Math.log10(
+					(this.logarithmic ? 10 ** this.max : this.max)
+						- (this.logarithmic ? 10 ** this.min : this.min)
+				)
+			)
+		);
+
+		this.value = (this.logarithmic ? 10 ** this.value : this.value);
+
+		this.value = this.integer
+			? Math.round(this.value)
+			: this.value.toFixed(this.precision);
+		
+		this.element.setAttribute("min", this.min);
+		this.element.setAttribute("max", this.max);
+
+		// This isn't this.value since we don't want to apply log / int stuff
+		this.element.setAttribute("value", this.logarithmic ? Math.log10(value) : value);
+
+		this.subtextElement.textContent = `${name}: `;
+		this.valueElement = document.createElement("span");
+		this.valueElement.textContent = this.value;
+		this.subtextElement.appendChild(this.valueElement);
+
+		this.element.addEventListener("input", () =>
+		{
+			this.value = this.logarithmic
+				? 10 ** parseFloat(this.element.value)
+				: parseFloat(this.element.value);
+			this.value = this.integer
+				? Math.round(this.value)
+				: this.value.toFixed(this.precision);
+			this.valueElement.textContent = this.value;
+
+			this.onInput();
 		});
-	});
+	}
+
+	setValue(newValue, callOnInput = false)
+	{
+		this.element.value = newValue;
+
+		this.value = this.logarithmic
+			? 10 ** parseFloat(this.element.value)
+			: parseFloat(this.element.value);
+		this.value = this.integer
+			? Math.round(this.value)
+			: this.value.toFixed(this.precision);
+		this.valueElement.textContent = this.value;
+
+		if (callOnInput)
+		{
+			this.onInput();
+		}
+	}
+
+	setBounds({ min = this.min, max = this.max })
+	{
+		this.min = min;
+		this.max = max;
+
+		this.precision = Math.max(
+			0,
+			3 - Math.floor(
+				Math.log10(
+					(this.logarithmic ? 10 ** this.max : this.max)
+						- (this.logarithmic ? 10 ** this.min : this.min)
+				)
+			)
+		);
+		
+		this.element.setAttribute("min", this.min);
+		this.element.setAttribute("max", this.max);
+	}
 }

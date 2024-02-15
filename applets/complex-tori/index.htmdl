@@ -7,11 +7,8 @@ The idea for this applet, along with the code implementing all of the complex ma
 ###
 
 ### sliders
-	
-	g2 -2 -5 5 "$g_2$"
-	
-	g3 0 -5 5 "$g_3$"
-	
+	g2
+	g3
 ###
 
 

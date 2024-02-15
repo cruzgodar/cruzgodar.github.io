@@ -2,18 +2,12 @@ import { showPage } from "../../../scripts/src/loadPage.js";
 import { QuaternionicJuliaSet } from "./class.js";
 import { Button, ToggleButton } from "/scripts/src/buttons.js";
 import { $ } from "/scripts/src/main.js";
+import { typesetMath } from "/scripts/src/math.js";
+import { Slider } from "/scripts/src/sliders.js";
 import { TextBox } from "/scripts/src/textBoxes.js";
 
 export function load()
 {
-	const cXSliderElement = $("#c-x-slider");
-	const cYSliderElement = $("#c-y-slider");
-	const cZSliderElement = $("#c-z-slider");
-
-	const cXSliderValueElement = $("#c-x-slider-value");
-	const cYSliderValueElement = $("#c-y-slider-value");
-	const cZSliderValueElement = $("#c-z-slider-value");
-
 	const applet = new QuaternionicJuliaSet({ canvas: $("#output-canvas") });
 
 	new ToggleButton({
@@ -49,38 +43,63 @@ export function load()
 		onInput: changeResolution
 	});
 
-	const iterationsSliderElement = $("#iterations-slider");
-	const iterationsSliderValueElement = $("#iterations-slider-value");
-
-	iterationsSliderElement.addEventListener("input", () =>
-	{
-		applet.maxIterations = parseInt(iterationsSliderValueElement.textContent || 16);
-
-		applet.wilson.gl.uniform1i(applet.wilson.uniforms["maxIterations"], applet.maxIterations);
+	const iterationsSlider = new Slider({
+		element: $("#iterations-slider"),
+		name: "Iterations",
+		value: 16,
+		min: 0,
+		max: 32,
+		logarithmic: true,
+		integer: true,
+		onInput: onSliderInput
 	});
 
-	const elements = [cXSliderElement, cYSliderElement, cZSliderElement];
+	const cXSlider = new Slider({
+		element: $("#c-x-slider"),
+		name: "$c_x$",
+		value: -0.54,
+		min: -1,
+		max: 1,
+		onInput: onSliderInput
+	});
 
-	for (let i = 0; i < elements.length; i++)
-	{
-		elements[i].addEventListener("input", () =>
-		{
-			const c = [
-				parseFloat(cXSliderValueElement.textContent),
-				parseFloat(cYSliderValueElement.textContent),
-				parseFloat(cZSliderValueElement.textContent),
-			];
+	const cYSlider = new Slider({
+		element: $("#c-y-slider"),
+		name: "$c_y$",
+		value: -0.25,
+		min: -1,
+		max: 1,
+		onInput: onSliderInput
+	});
 
-			applet.updateC(c);
-		});
-	}
+	const cZSlider = new Slider({
+		element: $("#c-z-slider"),
+		name: "$c_z$",
+		value: -0.668,
+		min: -1,
+		max: 1,
+		onInput: onSliderInput
+	});
 
-
+	typesetMath();
 
 	showPage();
 
 	function changeResolution()
 	{
 		applet.changeResolution(resolutionInput.value);
+	}
+
+	function onSliderInput()
+	{
+		applet.maxIterations = iterationsSlider.value;
+
+		applet.wilson.gl.uniform1i(applet.wilson.uniforms["maxIterations"], applet.maxIterations);
+
+		applet.updateC([
+			cXSlider.value,
+			cYSlider.value,
+			cZSlider.value,
+		]);
 	}
 }

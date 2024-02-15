@@ -1081,6 +1081,11 @@ mjx-container
 	margin-top: 4px;
 }
 
+.slider-subtext
+{
+	white-space: nowrap;
+}
+
 .slider-subtext span
 {
 	font-family: Menlo, Monaco, Consolas, monospace;
