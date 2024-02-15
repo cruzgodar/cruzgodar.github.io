@@ -4,7 +4,7 @@
 
 <div id="gallery">
 	### gallery-block
-		newtons-method-2 2 Newton's Method
+		thurston-geometry-h3 2 A Thurston Geometry
 		
 		finite-subdivision-1 1 A Finite Subdivision
 		
@@ -20,11 +20,11 @@
 	### gallery-block
 		brownian-tree 1 A Brownian Tree
 		
-		snowflake 1 A Gravner-Griffeath Snowflake
+		pascals-triangle-coloring 1 A Pascal's Triangle Coloring
 		
 		strange-attractor 1 A Strange Attractor
 		
-		double-pendulum-fractal 2 The Double Pendulum Fractal
+		snowflake 2 A Gravner-Griffeath Snowflake
 		
 		julia-set-1 1 A Julia Set
 		
@@ -50,11 +50,11 @@
 	###
 	
 	### gallery-block
-		wilsons-algorithm-2 3 Wilson's Algorithm
+		thurston-geometry-e3 3 A Thurston Geometry
 	###
 	
 	### gallery-block
-		julia-set-mosaic 2 A Julia Set Mosaic
+		newtons-method-2 2 Newton's Method
 		
 		barnsley-fern 1 The Barnsley Fern
 		
@@ -66,23 +66,23 @@
 		
 		kaleidoscopic-ifs-2 1 A Kaleidoscopic IFS Fractal
 	###
-	
+
 	### gallery-block
-		vector-field 2 A Vector Field
-		
-		juliabulb-1 1 A Juliabulb
-		
-		juliabulb-2 1 A Juliabulb
-		
-		quaternionic-julia-set-2 1 A Quaternionic Julia Set
-		
-		chaos-game-2 1 A Chaos Game
-		
-		juliabulb-3 1 A Juliabulb
+		thurston-geometry-sl2r 2 A Thurston Geometry
+
+		thurston-geometry-nil 1 A Thurston Geometry
+
+		thurston-geometry-h2xe 1 A Thurston Geometry
+
+		thurston-geometry-sol 1 A Thurston Geometry
+
+		thurston-geometry-s2xe 1 A Thurston Geometry
+
+		thurston-geometry-s3 1 A Thurston Geometry
 	###
 	
 	### gallery-block
-		mandelbulb 3 The Mandelbulb
+		wilsons-algorithm-2 3 Wilson's Algorithm
 	###
 	
 	### gallery-block
@@ -98,9 +98,29 @@
 		
 		complex-map-2 1 A Complex Map
 	###
+
+	### gallery-block
+		mandelbulb 3 The Mandelbulb
+	###
+
+	### gallery-block
+		vector-field 2 A Vector Field
+		
+		juliabulb-1 1 A Juliabulb
+		
+		juliabulb-2 1 A Juliabulb
+		
+		quaternionic-julia-set-2 1 A Quaternionic Julia Set
+		
+		chaos-game-2 1 A Chaos Game
+		
+		juliabulb-3 1 A Juliabulb
+	###
+
+	### gallery-block
+		double-pendulum-fractal 3 The Double Pendulum Fractal
+	###
 </div>
-
-
 
 ### card high-res-viewer "Title"
 	<div class="center-content" style="margin-bottom: 16px">
