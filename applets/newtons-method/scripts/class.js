@@ -57,7 +57,7 @@ export class NewtonsMethod extends Applet
 
 
 
-		const fragShaderSource = `
+		const fragShaderSource = /* glsl */`
 			precision highp float;
 			
 			varying vec2 uv;

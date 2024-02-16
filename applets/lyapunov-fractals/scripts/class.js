@@ -129,7 +129,7 @@ export class LyapunovFractal extends Applet
 
 
 
-		const fragShaderSource = `
+		const fragShaderSource = /* glsl */`
 			precision highp float;
 			
 			varying vec2 uv;

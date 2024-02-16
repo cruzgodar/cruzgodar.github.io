@@ -160,7 +160,7 @@ export class ComplexMap extends Applet
 
 		if (selectorMode)
 		{
-			selectorModeString = `
+			selectorModeString = /* glsl */`
 				imageZ.x += 127.0;
 				imageZ.y += 127.0;
 				
@@ -178,7 +178,7 @@ export class ComplexMap extends Applet
 
 
 
-		const fragShaderSource = `
+		const fragShaderSource = /* glsl */`
 			precision highp float;
 			
 			varying vec2 uv;

@@ -19,7 +19,7 @@ export class Snowflake extends Applet
 
 
 
-		const fragShaderSourceInit = `
+		const fragShaderSourceInit = /* glsl */`
 			precision highp float;
 			precision highp sampler2D;
 			
@@ -57,7 +57,7 @@ export class Snowflake extends Applet
 
 
 
-		const fragShaderSourceDiffuse = `
+		const fragShaderSourceDiffuse = /* glsl */`
 			precision highp float;
 			precision highp sampler2D;
 			
@@ -199,7 +199,7 @@ export class Snowflake extends Applet
 
 
 
-		const fragShaderSourceFreeze = `
+		const fragShaderSourceFreeze = /* glsl */`
 			precision highp float;
 			precision highp sampler2D;
 			
@@ -268,7 +268,7 @@ export class Snowflake extends Applet
 
 
 
-		const fragShaderSourceAttach = `
+		const fragShaderSourceAttach = /* glsl */`
 			precision highp float;
 			precision highp sampler2D;
 			
@@ -408,7 +408,7 @@ export class Snowflake extends Applet
 
 
 
-		const fragShaderSourceMelt = `
+		const fragShaderSourceMelt = /* glsl */`
 			precision highp float;
 			precision highp sampler2D;
 			
@@ -477,7 +477,7 @@ export class Snowflake extends Applet
 
 
 
-		const fragShaderSourceDraw = `
+		const fragShaderSourceDraw = /* glsl */`
 			precision highp float;
 			precision highp sampler2D;
 			

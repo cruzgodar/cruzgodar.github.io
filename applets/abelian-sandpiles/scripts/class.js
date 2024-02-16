@@ -22,7 +22,7 @@ export class AbelianSandpile extends Applet
 
 		const hiddenCanvas = this.createHiddenCanvas();
 
-		const fragShaderSourceInit = `
+		const fragShaderSourceInit = /* glsl */`
 			precision highp float;
 			precision highp sampler2D;
 			
@@ -53,7 +53,7 @@ export class AbelianSandpile extends Applet
 
 
 
-		const fragShaderSourceUpdate = `
+		const fragShaderSourceUpdate = /* glsl */`
 			precision highp float;
 			precision highp sampler2D;
 			
@@ -161,7 +161,7 @@ export class AbelianSandpile extends Applet
 
 
 
-		const fragShaderSourceDraw = `
+		const fragShaderSourceDraw = /* glsl */`
 			precision highp float;
 			precision highp sampler2D;
 			

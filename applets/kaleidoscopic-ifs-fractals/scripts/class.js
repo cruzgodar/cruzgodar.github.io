@@ -42,7 +42,7 @@ export class KaleidoscopicIFSFractal extends RaymarchApplet
 	{
 		super(canvas);
 
-		const fragShaderSource = `
+		const fragShaderSource = /* glsl */`
 			precision highp float;
 			
 			varying vec2 uv;

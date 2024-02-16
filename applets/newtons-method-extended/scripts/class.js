@@ -170,7 +170,7 @@ export class NewtonsMethodExtended extends Applet
 
 	run({ generatingCode })
 	{
-		const fragShaderSource = `
+		const fragShaderSource = /* glsl */`
 			precision highp float;
 			
 			varying vec2 uv;

@@ -179,7 +179,7 @@ export class FractalSounds extends Applet
 		this.exposure = exposure;
 		this.numIterations = numIterations;
 
-		const fragShaderSource = `
+		const fragShaderSource = /* glsl */`
 			precision highp float;
 			
 			varying vec2 uv;

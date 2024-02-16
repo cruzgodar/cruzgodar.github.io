@@ -106,7 +106,7 @@ export class VectorField extends Applet
 
 
 
-		const fragShaderSourceDim = `
+		const fragShaderSourceDim = /* glsl */`
 			precision highp float;
 			precision highp sampler2D;
 			
@@ -122,7 +122,7 @@ export class VectorField extends Applet
 			}
 		`;
 
-		const fragShaderSourcePan = `
+		const fragShaderSourcePan = /* glsl */`
 			precision highp float;
 			precision highp sampler2D;
 			
@@ -149,7 +149,7 @@ export class VectorField extends Applet
 			}
 		`;
 
-		const fragShaderSourceZoom = `
+		const fragShaderSourceZoom = /* glsl */`
 			precision highp float;
 			precision highp sampler2D;
 			
@@ -220,7 +220,7 @@ export class VectorField extends Applet
 
 
 
-		const fragShaderSourceDraw = `
+		const fragShaderSourceDraw = /* glsl */`
 			precision highp float;
 			precision highp sampler2D;
 			
@@ -343,7 +343,7 @@ export class VectorField extends Applet
 	}) {
 		this.dt = dt;
 
-		const fragShaderSourceUpdateBase = `
+		const fragShaderSourceUpdateBase = /* glsl */`
 			precision highp float;
 			precision highp sampler2D;
 			
@@ -382,35 +382,35 @@ export class VectorField extends Applet
 				vec2 d = f(sample.x, sample.y);
 		`;
 
-		const fragShaderSourceUpdateX = `
+		const fragShaderSourceUpdateX = /* glsl */`
 				${fragShaderSourceUpdateBase}
 				
 				gl_FragColor = encodeFloat(dt * d.x + sample.x);
 			}
 		`;
 
-		const fragShaderSourceUpdateY = `
+		const fragShaderSourceUpdateY = /* glsl */`
 				${fragShaderSourceUpdateBase}
 				
 				gl_FragColor = encodeFloat(dt * d.y + sample.y);
 			}
 		`;
 
-		const fragShaderSourceUpdateH = `
+		const fragShaderSourceUpdateH = /* glsl */`
 				${fragShaderSourceUpdateBase}
 				
 				gl_FragColor = encodeFloat((atan(d.y, d.x) + 3.14159265) / 6.28318531);
 			}
 		`;
 
-		const fragShaderSourceUpdateS = `
+		const fragShaderSourceUpdateS = /* glsl */`
 				${fragShaderSourceUpdateBase}
 				
 				gl_FragColor = encodeFloat(1.0 - exp(-1.2 * (d.x * d.x + d.y * d.y)));
 			}
 		`;
 
-		const fragShaderSourceUpdateS2 = `
+		const fragShaderSourceUpdateS2 = /* glsl */`
 				${fragShaderSourceUpdateBase}
 				
 				gl_FragColor = encodeFloat(1.0 - exp(-1.2 * .9 * (d.x * d.x + d.y * d.y)));

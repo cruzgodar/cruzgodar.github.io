@@ -62,7 +62,7 @@ export class SortingAlgorithm extends Applet
 		this.numReadsElement = numReadsElement;
 		this.numWritesElement = numWritesElement;
 
-		const fragShaderSource = `
+		const fragShaderSource = /* glsl */`
 			precision highp float;
 			
 			varying vec2 uv;

@@ -46,7 +46,7 @@ export class DoublePendulumFractal extends Applet
 
 
 
-		const fragShaderSourceInit = `
+		const fragShaderSourceInit = /* glsl */`
 			precision highp float;
 			
 			varying vec2 uv;
@@ -61,7 +61,7 @@ export class DoublePendulumFractal extends Applet
 
 
 
-		const fragShaderSourceUpdate = `
+		const fragShaderSourceUpdate = /* glsl */`
 			precision highp float;
 			precision highp sampler2D;
 			
@@ -97,7 +97,7 @@ export class DoublePendulumFractal extends Applet
 
 
 
-		const fragShaderSourceDraw = `
+		const fragShaderSourceDraw = /* glsl */`
 			precision highp float;
 			precision highp sampler2D;
 			

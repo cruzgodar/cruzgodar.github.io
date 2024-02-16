@@ -52,7 +52,7 @@ export class JuliaSet extends Applet
 
 	run({ canvas })
 	{
-		const fragShaderSourceSingle0 = `
+		const fragShaderSourceSingle0 = /* glsl */`
 			precision highp float;
 			
 			varying vec2 uv;
@@ -117,7 +117,7 @@ export class JuliaSet extends Applet
 
 
 
-		const fragShaderSourceSingle1 = `
+		const fragShaderSourceSingle1 = /* glsl */`
 			precision highp float;
 			
 			varying vec2 uv;
@@ -182,7 +182,7 @@ export class JuliaSet extends Applet
 
 
 
-		const fragShaderSourceSingle2 = `
+		const fragShaderSourceSingle2 = /* glsl */`
 			precision highp float;
 			
 			varying vec2 uv;
@@ -294,7 +294,7 @@ export class JuliaSet extends Applet
 
 
 
-		const fragShaderSourceDouble0 = `
+		const fragShaderSourceDouble0 = /* glsl */`
 			precision highp float;
 			
 			varying vec2 uv;
@@ -360,7 +360,7 @@ export class JuliaSet extends Applet
 
 
 
-		const fragShaderSourceDouble1 = `
+		const fragShaderSourceDouble1 = /* glsl */`
 			precision highp float;
 			
 			varying vec2 uv;
@@ -429,7 +429,7 @@ export class JuliaSet extends Applet
 
 
 
-		const fragShaderSourceDouble2 = `
+		const fragShaderSourceDouble2 = /* glsl */`
 			precision highp float;
 			
 			varying vec2 uv;

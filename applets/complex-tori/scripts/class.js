@@ -16,7 +16,7 @@ export class EllipticCurve extends Applet
 	{
 		super(canvas);
 
-		const fragShaderSource = `
+		const fragShaderSource = /* glsl */`
 			precision highp float;
 			
 			varying vec2 uv;
@@ -72,7 +72,7 @@ export class EllipticCurve extends Applet
 
 
 
-		const fragShaderSource2 = `
+		const fragShaderSource2 = /* glsl */`
 			precision highp float;
 			precision highp sampler2D;
 			
