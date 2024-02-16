@@ -29,8 +29,8 @@ export class PlanePartitions extends Applet
 	infiniteHeight = 100;
 
 	addWalls = false;
-	wallWidth = 7;
-	wallHeight = 7;
+	wallWidth = 20;
+	wallHeight = 20;
 
 	scene = null;
 
@@ -264,10 +264,10 @@ export class PlanePartitions extends Applet
 		this.wilsonHidden3.ctx.strokeStyle = "rgb(255, 255, 255)";
 		this.wilsonHidden3.ctx._alpha = 1;
 
-		this.wilsonHidden3.ctx.fillStyle = `rgba(32, 32, 32, ${this.addWalls ? 0 : 1})`;
+		this.wilsonHidden3.ctx.fillStyle = `rgba(32, 32, 32, ${this.addWalls ? 1 : 0})`;
 		this.wilsonHidden3.ctx.fillRect(0, 0, 64, 64);
 
-		this.wilsonHidden3.ctx.fillStyle = `rgba(64, 64, 64, ${this.addWalls ? 0 : 1})`;
+		this.wilsonHidden3.ctx.fillStyle = `rgba(64, 64, 64, ${this.addWalls ? 1 : 0})`;
 		this.wilsonHidden3.ctx.fillRect(4, 4, 56, 56);
 
 		this.wilsonHidden3.ctx.lineWidth = 6;
@@ -277,10 +277,10 @@ export class PlanePartitions extends Applet
 		this.wilsonHidden4.ctx.strokeStyle = "rgb(255, 255, 255)";
 		this.wilsonHidden4.ctx._alpha = 1;
 
-		this.wilsonHidden4.ctx.fillStyle = `rgba(32, 32, 32, ${this.addWalls ? 0 : 1})`;
+		this.wilsonHidden4.ctx.fillStyle = `rgba(32, 32, 32, ${this.addWalls ? 1 : 0})`;
 		this.wilsonHidden4.ctx.fillRect(0, 0, 64, 64);
 
-		this.wilsonHidden4.ctx.fillStyle = `rgba(64, 64, 64, ${this.addWalls ? 0 : 1})`;
+		this.wilsonHidden4.ctx.fillStyle = `rgba(64, 64, 64, ${this.addWalls ? 1 : 0})`;
 		this.wilsonHidden4.ctx.fillRect(4, 4, 56, 56);
 
 		this.wilsonHidden4.ctx.lineWidth = 6;
@@ -1554,7 +1554,7 @@ export class PlanePartitions extends Applet
 		// This aligns the thing correctly.
 		if (this.addWalls)
 		{
-			wall.position.set(-.5 - .0005, y - this.wallWidth, z);
+			wall.position.set(-.5 - .0005, y, z);
 		}
 
 		else
@@ -1620,7 +1620,7 @@ export class PlanePartitions extends Applet
 		// This aligns the thing correctly.
 		if (this.addWalls)
 		{
-			wall.position.set(x, y - this.wallWidth, -.5 - .0005);
+			wall.position.set(x, y, -.5 - .0005);
 		}
 
 		else
@@ -1940,25 +1940,21 @@ export class PlanePartitions extends Applet
 						targets.push(array.cubes[i][j][k].material[1]);
 						targets.push(array.cubes[i][j][k].material[3]);
 						targets.push(array.cubes[i][j][k].material[5]);
+
+						if (this.addWalls && i === 0)
+						{
+							targets.push(array.rightWall[j][k].material[4]);
+						}
+
+						if (this.addWalls && j === 0)
+						{
+							targets.push(array.leftWall[i][k].material[0]);
+						}
 					}
 
 					if (array.cubes[i][j].length !== 0)
 					{
 						targets.push(array.floor[i][j].material[2]);
-					}
-				}
-			}
-
-
-
-			if (this.addWalls)
-			{
-				for (let i = 0; i < this.wallWidth; i++)
-				{
-					for (let j = 0; j < this.wallHeight; j++)
-					{
-						targets.push(array.rightWall[i][j].material[0]);
-						targets.push(array.leftWall[i][j].material[4]);
 					}
 				}
 			}
