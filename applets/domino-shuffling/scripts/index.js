@@ -38,7 +38,7 @@ export function load()
 
 	const useSmoothColorsCheckbox = new Checkbox({
 		element: $("#use-smooth-colors-checkbox"),
-		name: "Use Smooth Colors",
+		name: "Use smooth colors",
 		checked: true
 	});
 

@@ -47,7 +47,7 @@ export function load()
 
 	const playSoundCheckbox = new Checkbox({
 		element: $("#play-sound-checkbox"),
-		name: "Play Sound",
+		name: "Play sound",
 		checked: true
 	});
 

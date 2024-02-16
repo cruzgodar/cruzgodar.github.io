@@ -49,7 +49,7 @@ export function load()
 
 	const uniqueSolutionCheckbox = new Checkbox({
 		element: $("#unique-solution-checkbox"),
-		name: "Require Unique Solution"
+		name: "Require unique solution"
 	});
 
 	function run()

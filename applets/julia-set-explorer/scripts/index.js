@@ -50,7 +50,7 @@ export function load()
 
 	const doublePrecisionCheckbox = new Checkbox({
 		element: $("#double-precision-checkbox"),
-		name: "Allow Double Precision",
+		name: "Allow double precision",
 		onInput: () => applet.toggleUseDoublePrecision()
 	});
 

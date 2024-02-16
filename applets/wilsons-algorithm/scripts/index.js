@@ -30,12 +30,12 @@ export function load()
 
 	const maximumSpeedCheckbox = new Checkbox({
 		element: $("#maximum-speed-checkbox"),
-		name: "Maximum Speed"
+		name: "Maximum speed"
 	});
 
 	const drawBordersCheckbox = new Checkbox({
 		element: $("#draw-borders-checkbox"),
-		name: "Draw Borders",
+		name: "Draw borders",
 		checked: true
 	});
 

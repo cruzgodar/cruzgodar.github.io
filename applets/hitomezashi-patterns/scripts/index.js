@@ -52,21 +52,21 @@ export function load()
 
 	const drawBoundariesCheckbox = new Checkbox({
 		element: $("#draw-boundaries-checkbox"),
-		name: "Draw Boundaries",
+		name: "Draw boundaries",
 		checked: true,
 		onInput: onCheckDrawBoundariesCheckbox
 	});
 
 	const drawRegionsCheckbox = new Checkbox({
 		element: $("#draw-regions-checkbox"),
-		name: "Color Regions",
+		name: "Color regions",
 		checked: true,
 		onInput: onCheckDrawRegionsCheckbox
 	});
 
 	const maximumSpeedCheckbox = new Checkbox({
 		element: $("#maximum-speed-checkbox"),
-		name: "Maximum Speed"
+		name: "Maximum speed"
 	});
 
 	showPage();

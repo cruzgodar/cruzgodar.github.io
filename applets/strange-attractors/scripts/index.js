@@ -57,7 +57,7 @@ export function load()
 
 	const maximumSpeedCheckbox = new Checkbox({
 		element: $("#maximum-speed-checkbox"),
-		name: "Maximum Speed"
+		name: "Maximum speed"
 	});
 
 	showPage();

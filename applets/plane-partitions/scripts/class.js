@@ -28,7 +28,7 @@ export class PlanePartitions extends Applet
 
 	infiniteHeight = 100;
 
-	addWalls = false;
+	addWalls = true;
 	wallWidth = 20;
 	wallHeight = 20;
 
@@ -958,7 +958,14 @@ export class PlanePartitions extends Applet
 		array.cubeGroup = new THREE.Object3D();
 		this.scene.add(array.cubeGroup);
 
-		if (!this.addWalls)
+		if (this.addWalls)
+		{
+			// Quick hack to make PT objects render properly.
+			const y = this.arrays.length === 2 ? 4 : 0;
+			array.cubeGroup.position.set(0, 0, 0);
+		}
+
+		else
 		{
 			if (this.in2dView)
 			{

@@ -39,7 +39,7 @@ export function load()
 
 	const rawGlslCheckbox = new Checkbox({
 		element: $("#raw-glsl-checkbox"),
-		name: "Use Raw GLSL"
+		name: "Use raw GLSL"
 	});
 
 
