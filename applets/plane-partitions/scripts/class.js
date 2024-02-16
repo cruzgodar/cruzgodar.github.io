@@ -28,7 +28,7 @@ export class PlanePartitions extends Applet
 
 	infiniteHeight = 100;
 
-	addWalls = true;
+	addWalls = false;
 	wallWidth = 20;
 	wallHeight = 20;
 
