@@ -262,8 +262,6 @@ export function load()
 	{
 		const index = editArrayIndexInput.value;
 
-		console.log(index);
-
 		if (index >= applet.arrays.length || index < 0)
 		{
 			return;

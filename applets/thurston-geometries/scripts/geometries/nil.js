@@ -110,7 +110,7 @@ class NilGeometry extends BaseGeometry
 			float a = length(rayDirectionVec.xy);
 			float c = rayDirectionVec.z;
 		
-			if (abs(c) < .0002)
+			if (abs(c) < .002)
 			{
 				return A * vec4(
 					a * cos(alpha) * t,
@@ -149,7 +149,7 @@ class NilGeometry extends BaseGeometry
 			vec4 pos;
 		
 			// All the following formulas get differentiated dt.
-			if (abs(c) < 0.001)
+			if (abs(c) < 0.002)
 			{
 				return A * vec4(
 					a * cos(alpha),
@@ -159,7 +159,7 @@ class NilGeometry extends BaseGeometry
 				);
 			}
 		
-			if (c * t < .001)
+			if (c * t < .005)
 			{
 				return A * vec4(
 					a * cos(alpha + c * t),
