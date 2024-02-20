@@ -6,7 +6,7 @@ function getSphereBandGlsl(index)
 {
 	return /* glsl */`
 		if (
-			length((pos.xyz - dot(pos.xyz, testVec${index}.xyz) * testVec${index}.xyz)) > 0.99897
+			length((normalizedPos - dot(normalizedPos, testVec${index}.xyz) * testVec${index}.xyz)) > 0.99995
 		){
 			float effectiveDistance = distanceToCamera;
 
@@ -92,6 +92,8 @@ export class E3S2Demo extends E3Geometry
 
 		float distanceToCamera = acos(dot(pos.xyz, cameraDotPos.xyz));
 		vec3 directionToCamera = normalize((pos.xyz - cos(distanceToCamera) * cameraDotPos.xyz) / sin(distanceToCamera));
+
+		vec3 normalizedPos = normalize(pos.xyz);
 
 		${this.rayLengths.map((_, index) => getSphereBandGlsl(index + 1)).join("")}
 
