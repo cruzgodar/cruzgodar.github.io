@@ -573,7 +573,7 @@ class SolGeometry extends BaseGeometry
 					a = c / b;
 				}
 
-				a = 1.0 / sqrt(c * c + 1.0);
+				a = inversesqrt(c * c + 1.0);
 
 				sn = sign(sn) * a;
 
@@ -622,7 +622,7 @@ class SolGeometry extends BaseGeometry
 					temp = AGMData[i].y / AGMData[i].x;
 
 					t1 = t0 * (1.0 + temp) / (1.0 - temp * t0 * t0);
-					s1 = t0 * (1.0 + temp) / sqrt((1.0 + t0 * t0) * (1.0 + temp * temp * t0 * t0));
+					s1 = t0 * (1.0 + temp) * inversesqrt((1.0 + t0 * t0) * (1.0 + temp * temp * t0 * t0));
 
 					result += AGMData[i + 1].z * s1;
 

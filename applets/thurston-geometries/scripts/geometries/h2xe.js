@@ -65,9 +65,7 @@ class H2xEGeometry extends BaseGeometry
 	`;
 
 	normalizeGlsl = /* glsl */`
-		float magnitude = sqrt(abs(geometryDot(dir, dir)));
-		
-		return dir / magnitude;
+		return dir * inversesqrt(abs(geometryDot(dir, dir)));
 	`;
 
 	fogGlsl = /* glsl */`
