@@ -355,7 +355,7 @@ export class S2xERooms extends S2xEGeometry
 				+ centers[i][2] * this.cameraPos[2]
 			);
 
-			const e1Distance = Math.abs(cameraPosWModded - centers[i][3]);
+			const e1Distance = cameraPosWModded - centers[i][3];
 
 			// No need to square root the distance when we're just finding the minimum.
 			const distance = s2Distance * s2Distance + e1Distance * e1Distance;
@@ -413,7 +413,7 @@ export class S2xERooms extends S2xEGeometry
 				+ corners[i][2] * this.cameraPos[2]
 			);
 
-			const e1Distance = Math.abs(cameraPosWModded - corners[i][3]);
+			const e1Distance = cameraPosWModded - corners[i][3];
 
 			// No need to square root the distance when we're just finding the minimum.
 			const distance = s2Distance * s2Distance + e1Distance * e1Distance;
@@ -425,6 +425,11 @@ export class S2xERooms extends S2xEGeometry
 			}
 		}
 
-		return corners[minIndex];
+		return [
+			corners[minIndex][0],
+			corners[minIndex][1],
+			corners[minIndex][2],
+			this.cameraPos[3] - cameraPosWModded + corners[minIndex][3]
+		];
 	}
 }
