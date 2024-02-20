@@ -10,9 +10,9 @@ export const galleryImageData =
 
 		appletLink: "thurston-geometries",
 
-		imageLink: "https://drive.google.com/uc?id=1VnuIW68eihDLuD0QC6tBxdY2l29I0G0J&export=download"
+		imageLink: "https://drive.google.com/uc?id=1-i3E0bNdMpRwaJzTwXvS3z6-GqjcByBz&export=download"
 	},
-	
+
 	"thurston-geometry-e3":
 	{
 		title: "The Thurston Geometry $\\mathbb{E}^3$",
@@ -21,7 +21,7 @@ export const galleryImageData =
 
 		appletLink: "thurston-geometries",
 
-		imageLink: "https://drive.google.com/uc?id=14LIE4m6vMYz1iPVYBQQaJTTk-jczwy0d&export=download"
+		imageLink: "https://drive.google.com/uc?id=1XqXEVoe82btwYcTolWTKT3tlsWz_98c0&export=download"
 	},
 
 	"thurston-geometry-nil":
@@ -32,9 +32,9 @@ export const galleryImageData =
 
 		appletLink: "thurston-geometries",
 
-		imageLink: "https://drive.google.com/uc?id=1AAVG7yAjqw_ov2S6VuTqwiO5imWxe7-3&export=download"
+		imageLink: "https://drive.google.com/uc?id=12z46uejUh_5C2AHD_bpE23TArud_QfDn&export=download"
 	},
-
+	
 	"thurston-geometry-sl2r":
 	{
 		title: "The Thurston Geometry $\\widetilde{\\operatorname{SL}}(2, \\mathbb{R})$",
@@ -43,7 +43,7 @@ export const galleryImageData =
 
 		appletLink: "thurston-geometries",
 
-		imageLink: "https://drive.google.com/uc?id=1TLNneIl-qD5BC0luy-iyRHc-tsPGY4DD&export=download"
+		imageLink: "https://drive.google.com/uc?id=1XBJVX2kWVWz1dH06DIAVlDeqr21ei8Ty&export=download"
 	},
 
 	"thurston-geometry-sol":
@@ -54,7 +54,7 @@ export const galleryImageData =
 
 		appletLink: "thurston-geometries",
 
-		imageLink: "https://drive.google.com/uc?id=1NZrUtXOabuom6Nxf6979c25L-EQv1dxv&export=download"
+		imageLink: "https://drive.google.com/uc?id=1Pz0IUsM43_-qEXIf27CWzjOkTnMyLXz6&export=download"
 	},
 
 	"thurston-geometry-s2xe":
@@ -65,7 +65,7 @@ export const galleryImageData =
 
 		appletLink: "thurston-geometries",
 
-		imageLink: "https://drive.google.com/uc?id=1Yg5SGKy0i4HkvUGidP_6L40AdmM74T_4&export=download"
+		imageLink: "https://drive.google.com/uc?id=1bA57Lhq12oJ1W611UkRjOwuTs8mIXtm-&export=download"
 	},
 
 	"thurston-geometry-h2xe":
@@ -76,9 +76,9 @@ export const galleryImageData =
 
 		appletLink: "thurston-geometries",
 
-		imageLink: "https://drive.google.com/uc?id=1SkkO_zVqXArOvjyCTv9KprPzxrlyT5fV&export=download"
+		imageLink: "https://drive.google.com/uc?id=1LCBMWW4n8IcF3_bGo4up4dcO0ISDqH0n&export=download"
 	},
-
+	
 	"thurston-geometry-s3":
 	{
 		title: "The Thurston Geometry $S^3$",
@@ -87,7 +87,7 @@ export const galleryImageData =
 
 		appletLink: "thurston-geometries",
 
-		imageLink: "https://drive.google.com/uc?id=1biUJGpDO8e0X2A1coScRcnYsWyWsL1gj&export=download"
+		imageLink: "https://drive.google.com/uc?id=1yvG5KfAg7qiYjzBDuXDilaSV23X-KyzB&export=download"
 	},
 
 	"pascals-triangle-coloring":

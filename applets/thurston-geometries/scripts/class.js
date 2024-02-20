@@ -252,8 +252,14 @@ export class ThurstonGeometry extends Applet
 			
 			
 			
-			vec3 raymarch(vec4 rayDirectionVec)
+			vec3 raymarch(float u, float v)
 			{
+				vec4 rayDirectionVec = geometryNormalize(
+					forwardVec
+					+ rightVec * u * aspectRatioX * fov
+					+ upVec * v / aspectRatioY * fov
+				);
+
 				vec3 finalColor = fogColor;
 				
 				float t = 0.0;
@@ -277,8 +283,7 @@ export class ThurstonGeometry extends Applet
 					{
 						${this.geometryData.finalTeleportationGlsl ?? ""}
 						
-						finalColor = computeShading(pos${addfiberArgument}, iteration, globalColor, totalT);
-						break;
+						return computeShading(pos${addfiberArgument}, iteration, globalColor, totalT);
 					}
 
 					${this.geometryData.updateTGlsl}
@@ -289,21 +294,27 @@ export class ThurstonGeometry extends Applet
 					}
 				}
 				
-				return finalColor;
+				return fogColor;
 			}
 			
 			
 			
 			void main(void)
 			{
+				// float stepSize = 0.5 / 4000.0;
+
+				// gl_FragColor = vec4(
+				// 	.25 * (
+				// 		raymarch(uv.x - stepSize, uv.y - stepSize)
+				// 		+ raymarch(uv.x - stepSize, uv.y + stepSize)
+				// 		+ raymarch(uv.x + stepSize, uv.y - stepSize)
+				// 		+ raymarch(uv.x + stepSize, uv.y + stepSize)
+				// 	),
+				// 	1.0
+				// );
+
 				gl_FragColor = vec4(
-					raymarch(
-						geometryNormalize(
-							forwardVec
-							+ rightVec * uv.x * aspectRatioX * fov
-							+ upVec * uv.y / aspectRatioY * fov
-						)
-					),
+					raymarch(uv.x, uv.y),
 					1.0
 				);
 			}
