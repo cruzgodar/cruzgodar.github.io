@@ -7,6 +7,8 @@ import {
 	getVectorGlsl
 } from "./base.js";
 
+const loopRoomColors = false;
+
 function getTransformationMatrix(pos)
 {
 	return [
@@ -773,9 +775,27 @@ class SL2RGeometry extends BaseGeometry
 
 				kleinElement = getKleinElement(this.cameraPos, this.cameraFiber);
 
-				this.baseColor[0] += baseColorIncreases[i][0][0];
-				this.baseColor[1] += baseColorIncreases[i][0][1];
-				this.baseColor[2] += baseColorIncreases[i][0][2];
+				if (loopRoomColors)
+				{
+					this.baseColor[0] = (
+						this.baseColor[0] + baseColorIncreases[i][0][0] + 25
+					) % 50 - 25;
+
+					this.baseColor[1] = (
+						this.baseColor[1] + baseColorIncreases[i][0][1] + 25
+					) % 50 - 25;
+
+					this.baseColor[2] = (
+						this.baseColor[2] + baseColorIncreases[i][0][2] + 25
+					) % 50 - 25;
+				}
+
+				else
+				{
+					this.baseColor[0] += baseColorIncreases[i][0][0];
+					this.baseColor[1] += baseColorIncreases[i][0][1];
+					this.baseColor[2] += baseColorIncreases[i][0][2];
+				}
 			}
 
 			else if (dotProduct < -teleportVectors[i][1])
@@ -789,9 +809,27 @@ class SL2RGeometry extends BaseGeometry
 
 				kleinElement = getKleinElement(this.cameraPos, this.cameraFiber);
 
-				this.baseColor[0] += baseColorIncreases[i][1][0];
-				this.baseColor[1] += baseColorIncreases[i][1][1];
-				this.baseColor[2] += baseColorIncreases[i][1][2];
+				if (loopRoomColors)
+				{
+					this.baseColor[0] = (
+						this.baseColor[0] + baseColorIncreases[i][1][0] + 25
+					) % 50 - 25;
+
+					this.baseColor[1] = (
+						this.baseColor[1] + baseColorIncreases[i][1][1] + 25
+					) % 50 - 25;
+
+					this.baseColor[2] = (
+						this.baseColor[2] + baseColorIncreases[i][1][2] + 25
+					) % 50 - 25;
+				}
+
+				else
+				{
+					this.baseColor[0] += baseColorIncreases[i][1][0];
+					this.baseColor[1] += baseColorIncreases[i][1][1];
+					this.baseColor[2] += baseColorIncreases[i][1][2];
+				}
 			}
 		}
 	}
@@ -1065,10 +1103,12 @@ export class SL2RRooms extends SL2RGeometry
 	`;
 
 	getColorGlsl = /* glsl */`
+		vec3 roomColor = ${loopRoomColors ? "mod(globalColor + baseColor + vec3(25.0), 50.0) - vec3(25.0)" : "globalColor + baseColor"};
+
 		return vec3(
-			.35 + .65 * (.5 * (sin((.01 * (pos.x + pos.z) + baseColor.x + globalColor.x) * 40.0) + 1.0)),
-			.35 + .65 * (.5 * (sin((.01 * (pos.y + pos.w) + baseColor.y + globalColor.y) * 57.0) + 1.0)),
-			.35 + .65 * (.5 * (sin((.01 * fiber + baseColor.z + globalColor.z) * 89.0) + 1.0))
+			.35 + .65 * (.5 * (sin((.01 * (pos.x + pos.z) + roomColor.x) * 40.0) + 1.0)),
+			.35 + .65 * (.5 * (sin((.01 * (pos.y + pos.w) + roomColor.y) * 57.0) + 1.0)),
+			.35 + .65 * (.5 * (sin((.01 * fiber + roomColor.z) * 89.0) + 1.0))
 		);
 	`;
 
@@ -1082,7 +1122,10 @@ export class SL2RRooms extends SL2RGeometry
 		float lightIntensity = 1.5 * max(dotProduct1, dotProduct2);
 	`;
 
-	cameraPos = [1.000000555682267, 0, 0.0010542129021898201, 0];
+	cameraPos = loopRoomColors
+		? [1.000000555682267, 0, 0.0010542129021898201, 0]
+		: [1, 0, 0, 0];
+	
 	cameraFiber = 0;
 
 	normalVec = [0, 0, -1, 0];
