@@ -1,16 +1,22 @@
 
-import { Applet, getMinGlslString, getVectorGlsl } from "/scripts/src/applets.js";
+import { Applet, getFloatGlsl, getMinGlslString, getVectorGlsl } from "/scripts/src/applets.js";
 import { Wilson } from "/scripts/wilson.js";
 
 export class VoronoiDiagram extends Applet
 {
+	wilsonHidden;
+
 	lastTimestamp = -1;
 
 	numPoints = 20;
 	metric = 2;
 	resolution = 1000;
+	resolutionHidden = 100;
 
+	t;
 	radius;
+	maxRadius;
+
 	pointRadius;
 	points;
 	colors;
@@ -48,6 +54,18 @@ export class VoronoiDiagram extends Applet
 		};
 
 		this.wilson = new Wilson(this.canvas, options);
+
+		const optionsHidden =
+		{
+			renderer: "gpu",
+
+			shader: fragShaderSource,
+
+			canvasWidth: this.resolutionHidden,
+			canvasHeight: this.resolutionHidden,
+		};
+
+		this.wilsonHidden = new Wilson(this.createHiddenCanvas(), optionsHidden);
 	}
 
 
@@ -61,12 +79,36 @@ export class VoronoiDiagram extends Applet
 		this.numPoints = numPoints;
 		this.metric = metric;
 
-		this.radius = 0;
+		this.t = -0.1;
+		this.lastTimestamp = -1;
 
 		this.wilson.changeCanvasSize(this.resolution, this.resolution);
 
 		this.generatePoints();
 
+
+
+		this.wilsonHidden.render.shaderPrograms = [];
+		this.wilsonHidden.render.loadNewShader(this.getFragShaderSource(true));
+		this.wilsonHidden.gl.useProgram(this.wilsonHidden.render.shaderPrograms[0]);
+
+		this.wilsonHidden.render.initUniforms(["radius"]);
+		this.wilsonHidden.gl.uniform1f(this.wilsonHidden.uniforms.radius, this.radius);
+
+		this.maxRadius = this.findMaxRadius();
+
+		this.wilson.render.shaderPrograms = [];
+		this.wilson.render.loadNewShader(this.getFragShaderSource());
+		this.wilson.gl.useProgram(this.wilson.render.shaderPrograms[0]);
+
+		this.wilson.render.initUniforms(["radius"]);
+		this.wilson.gl.uniform1f(this.wilson.uniforms.radius, this.radius);
+
+		setTimeout(() => window.requestAnimationFrame(this.drawFrame.bind(this)), 100);
+	}
+
+	getFragShaderSource(forHiddenCanvas = false)
+	{
 		const metricGlsl = (() =>
 		{
 			if (this.metric === 1)
@@ -83,15 +125,62 @@ export class VoronoiDiagram extends Applet
 				`;
 			}
 
-			else
+			else if (this.metric === Infinity)
 			{
 				return /* glsl */`
 					max(abs(p.x - q.x), abs(p.y - q.y))
 				`;
 			}
+
+			else
+			{
+				return /* glsl */`
+					pow(
+						pow(abs(p.x - q.x), ${getFloatGlsl(this.metric)})
+						+ pow(abs(p.y - q.y), ${getFloatGlsl(this.metric)}),
+						${getFloatGlsl(1 / this.metric)}
+					)
+				`;
+			}
 		})();
 
-		const fragShaderSource = /* glsl */`
+		const colorGlsl = forHiddenCanvas
+			? /* glsl */`
+				if (minDistance < radius)
+				{
+					gl_FragColor = vec4(color, 1);
+					return;
+				}
+			`
+			: /* glsl */`
+			if (minDistance < pointRadius)
+			{
+				gl_FragColor = vec4(1, 1, 1, 1);
+				return;
+			}
+
+			if (minDistance < (1.0 + blurRatio) * pointRadius)
+			{
+				float t = 1.0 - (minDistance - pointRadius) / (blurRatio * pointRadius);
+
+				gl_FragColor = vec4(t, t, t, 1);
+				return;
+			}
+
+			if (minDistance < radius)
+			{
+				gl_FragColor = vec4(color, 1);
+				return;
+			}
+
+			if (minDistance < radius + boundaryWidth)
+			{
+				gl_FragColor = vec4(color * 0.5, 1);
+				return;
+			}
+		`;
+
+		return /* glsl */`
 			precision highp float;
 			
 			varying vec2 uv;
@@ -149,49 +238,11 @@ export class VoronoiDiagram extends Applet
 				vec3 color;
 				float minDistance = getMinDistanceToPoints(uv, color);
 
-				if (minDistance < pointRadius)
-				{
-					gl_FragColor = vec4(1, 1, 1, 1);
-					return;
-				}
-
-				if (minDistance < (1.0 + blurRatio) * pointRadius)
-				{
-					float t = 1.0 - (minDistance - pointRadius) / (blurRatio * pointRadius);
-
-					gl_FragColor = vec4(t, t, t, 1);
-					return;
-				}
-
-				if (minDistance < radius)
-				{
-					gl_FragColor = vec4(color, 1);
-					return;
-				}
-
-				if (minDistance < radius + boundaryWidth)
-				{
-					gl_FragColor = vec4(color * 0.5, 1);
-					return;
-				}
+				${colorGlsl}
 
 				gl_FragColor = vec4(0, 0, 0, 1);
 			}
 		`;
-
-		if (window.DEBUG)
-		{
-			console.log(fragShaderSource);
-		}
-
-		this.wilson.render.shaderPrograms = [];
-		this.wilson.render.loadNewShader(fragShaderSource);
-		this.wilson.gl.useProgram(this.wilson.render.shaderPrograms[0]);
-
-		this.wilson.render.initUniforms(["radius"]);
-		this.wilson.gl.uniform1f(this.wilson.uniforms.radius, this.radius);
-
-		window.requestAnimationFrame(this.drawFrame.bind(this));
 	}
 
 	generatePoints()
@@ -201,8 +252,8 @@ export class VoronoiDiagram extends Applet
 		for (let i = 0; i < this.numPoints; i++)
 		{
 			this.points[i] = [
-				0.8 * (Math.random() - 0.5) * this.wilson.worldWidth,
-				0.8 * (Math.random() - 0.5) * this.wilson.worldHeight,
+				0.9 * (Math.random() - 0.5) * this.wilson.worldWidth,
+				0.9 * (Math.random() - 0.5) * this.wilson.worldHeight,
 			];
 		}
 
@@ -270,6 +321,60 @@ export class VoronoiDiagram extends Applet
 		}
 	}
 
+	// Finds the maximum necessary radius to cover the entire canvas
+	// with binary search.
+	findMaxRadius()
+	{
+		let t = 0.5;
+		const upperBound = 2;
+		const iterations = 10;
+		let stepSize = 0.25;
+
+		for (let i = 0; i < iterations; i++)
+		{
+			const radius = upperBound * t;
+
+			if (this.testRadius(radius))
+			{
+				if (i !== iterations - 1)
+				{
+					t -= stepSize;
+				}
+			}
+
+			else
+			{
+				t += stepSize;
+			}
+
+			stepSize /= 2;
+		}
+
+		return upperBound * t + 0.025;
+	}
+
+	testRadius(radius)
+	{
+		this.wilsonHidden.gl.uniform1f(this.wilsonHidden.uniforms.radius, radius);
+
+		this.wilsonHidden.render.drawFrame();
+
+		const pixelData = this.wilsonHidden.render.getPixelData();
+
+		for (let i = 0; i < pixelData.length; i += 4)
+		{
+			if (
+				pixelData[i] === 0
+				&& pixelData[i + 1] === 0
+				&& pixelData[i + 2] === 0
+			) {
+				return false;
+			}
+		}
+
+		return true;
+	}
+
 
 
 	drawFrame(timestamp)
@@ -292,14 +397,26 @@ export class VoronoiDiagram extends Applet
 
 		this.wilson.render.drawFrame();
 
-		this.radius += 0.0005 * timeElapsed;
+		this.t += 0.0005 * timeElapsed;
+		// this.radius = this.bezierCurve([0, 0.5, 0.5, 1], this.t);
+		this.radius = this.t < 0
+			? 0
+			: (0.5 + 0.5 * Math.sin(Math.PI * this.t - Math.PI / 2)) * this.maxRadius;
 		this.wilson.gl.uniform1f(this.wilson.uniforms.radius, this.radius);
 		
 		this.wilson.render.drawFrame();
 
-		if (!this.animationPaused)
+		if (!this.animationPaused && this.t < 1)
 		{
 			window.requestAnimationFrame(this.drawFrame.bind(this));
 		}
+	}
+
+	bezierCurve(controlPoints, t)
+	{
+		return (1 - t) * (1 - t) * (1 - t) * controlPoints[0]
+		+ 3 * (1 - t) * (1 - t) * t * controlPoints[1]
+		+ 3 * (1 - t) * t * t * controlPoints[2]
+		+ t * t * t * controlPoints[3];
 	}
 }
