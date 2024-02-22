@@ -1239,3 +1239,129 @@ function hsvToRgb(h, s, v)
 
 	return [255 * f(5), 255 * f(3), 255 * f(1)];
 }
+
+/*
+	Produces strings like
+ 	min(
+		min(
+			min(distance1, distance2),
+			min(distance3, distance4)
+		),
+		min(
+			min(distance5, distance6),
+			distance7
+		)
+	);
+ */
+export function getMinGlslString(varName, numVars, functionName = "min")
+{
+	const numLayers = Math.ceil(Math.log2(numVars));
+
+	let strings = new Array(numVars);
+
+	for (let i = 0; i < numVars; i++)
+	{
+		strings[i] = `${varName}${i + 1}`;
+	}
+
+	for (let i = 0; i < numLayers; i++)
+	{
+		const newStrings = new Array(Math.ceil(strings.length / 2));
+
+		for (let j = 0; j < strings.length; j += 2)
+		{
+			newStrings[j / 2] = `${functionName}(${strings[j]}, ${strings[j + 1]})`;
+		}
+
+		if (strings.length % 2 === 1)
+		{
+			newStrings[newStrings.length - 1] = strings[strings.length - 1];
+		}
+
+		strings = newStrings;
+	}
+
+	return strings[0];
+}
+
+export function getMaxGlslString(varName, numVars)
+{
+	return getMinGlslString(varName, numVars, "max");
+}
+
+export function getColorGlslString(varName, minVarName, colors)
+{
+	let colorGlsl = "";
+
+	for (let i = 0; i < colors.length; i++)
+	{
+		colorGlsl += `if (${minVarName} == ${varName}${i + 1}) { return vec3(${colors[i][0] / 255}, ${colors[i][1] / 255}, ${colors[i][2] / 255}); }
+		`;
+	}
+
+	return colorGlsl;
+}
+
+export function getFloatGlsl(float)
+{
+	if (typeof float === "string" || float !== Math.floor(float))
+	{
+		return float;
+	}
+
+	return `float(${float})`;
+}
+
+export function getVectorGlsl(vector)
+{
+	if (vector.length === 2)
+	{
+		return `vec2(${vector[0]}, ${vector[1]})`;
+	}
+
+	if (vector.length === 3)
+	{
+		return `vec3(${vector[0]}, ${vector[1]}, ${vector[2]})`;
+	}
+
+	if (vector.length === 4)
+	{
+		return `vec4(${vector[0]}, ${vector[1]}, ${vector[2]}, ${vector[3]})`;
+	}
+
+	console.error("Invalid vector length!");
+	return "";
+}
+
+export function getMatrixGlsl(matrix)
+{
+	if (matrix.length === 2)
+	{
+		return `mat2(
+			${matrix[0][0]}, ${matrix[1][0]},
+			${matrix[0][1]}, ${matrix[1][1]}
+		)`;
+	}
+
+	if (matrix.length === 3)
+	{
+		return `mat3(
+			${matrix[0][0]}, ${matrix[1][0]}, ${matrix[2][0]},
+			${matrix[0][1]}, ${matrix[1][1]}, ${matrix[2][1]},
+			${matrix[0][2]}, ${matrix[1][2]}, ${matrix[2][2]}
+		)`;
+	}
+
+	if (matrix.length === 4)
+	{
+		return `mat4(
+			${matrix[0][0]}, ${matrix[1][0]}, ${matrix[2][0]}, ${matrix[3][0]},
+			${matrix[0][1]}, ${matrix[1][1]}, ${matrix[2][1]}, ${matrix[3][1]},
+			${matrix[0][2]}, ${matrix[1][2]}, ${matrix[2][2]}, ${matrix[3][2]},
+			${matrix[0][3]}, ${matrix[1][3]}, ${matrix[2][3]}, ${matrix[3][3]}
+		)`;
+	}
+
+	console.error("Invalid matrix shape!");
+	return "";
+}

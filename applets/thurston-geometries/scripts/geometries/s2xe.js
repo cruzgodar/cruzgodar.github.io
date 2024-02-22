@@ -1,4 +1,5 @@
-import { BaseGeometry, getMaxGlslString, getMinGlslString } from "./base.js";
+import { BaseGeometry } from "./base.js";
+import { getMaxGlslString, getMinGlslString } from "/scripts/src/applets.js";
 
 export class S2xEGeometry extends BaseGeometry
 {

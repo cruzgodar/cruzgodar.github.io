@@ -1,11 +1,8 @@
 import { ThurstonGeometry } from "../class.js";
 import {
-	BaseGeometry,
-	getFloatGlsl,
-	getMatrixGlsl,
-	getMinGlslString,
-	getVectorGlsl
+	BaseGeometry
 } from "./base.js";
+import { getFloatGlsl, getMatrixGlsl, getMinGlslString, getVectorGlsl } from "/scripts/src/applets.js";
 
 const loopRoomColors = false;
 

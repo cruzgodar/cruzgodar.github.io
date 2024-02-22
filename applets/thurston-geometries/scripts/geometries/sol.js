@@ -1,5 +1,6 @@
 import { ThurstonGeometry } from "../class.js";
-import { BaseGeometry, getMatrixGlsl, getMinGlslString } from "./base.js";
+import { BaseGeometry } from "./base.js";
+import { getMatrixGlsl, getMinGlslString } from "/scripts/src/applets.js";
 
 const numericalStepDistance = 0.0001;
 const flowNumericallyThreshhold = 0.0005;

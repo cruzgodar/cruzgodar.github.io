@@ -1,4 +1,5 @@
-import { Applet } from "/scripts/src/applets.js";
+
+import { Applet, getMinGlslString, getVectorGlsl } from "/scripts/src/applets.js";
 import { Wilson } from "/scripts/wilson.js";
 
 export class VoronoiDiagram extends Applet
@@ -17,9 +18,22 @@ export class VoronoiDiagram extends Applet
 	{
 		super(canvas);
 
+		const fragShaderSource = /* glsl */`
+			precision highp float;
+			
+			varying vec2 uv;
+			
+			void main(void)
+			{
+				gl_FragColor = vec4(0, 0, 0, 1);
+			}
+		`;
+
 		const options =
 		{
-			renderer: "cpu",
+			renderer: "gpu",
+
+			shader: fragShaderSource,
 
 			canvasWidth: this.resolution,
 			canvasHeight: this.resolution,
@@ -48,9 +62,91 @@ export class VoronoiDiagram extends Applet
 
 		this.wilson.changeCanvasSize(this.resolution, this.resolution);
 
-		this.pointRadius = this.resolution * 0.01;
-
 		this.generatePoints();
+
+		const metricGlsl = (() =>
+		{
+			if (this.metric === 1)
+			{
+				return /* glsl */`
+					abs(p.x - q.x) + abs(p.y - q.y)
+				`;
+			}
+
+			else if (this.metric === 2)
+			{
+				return /* glsl */`
+					distance(p, q)
+				`;
+			}
+
+			else
+			{
+				return /* glsl */`
+					max(abs(p.x - q.x), abs(p.y - q.y))
+				`;
+			}
+		})();
+
+		const fragShaderSource = /* glsl */`
+			precision highp float;
+			
+			varying vec2 uv;
+
+			const float pointRadius = 0.01;
+			const float blurRatio = 0.5;
+
+	${this.points.map((point, index) =>
+	{
+		return /* glsl */`
+			const vec2 point${index} = ${getVectorGlsl(point)};
+		`;
+	}).join("")}
+			
+			float metricDistance(vec2 p, vec2 q)
+			{
+				return ${metricGlsl};
+			}
+
+			float getMinDistanceToPoints(vec2 p)
+			{
+	${this.points.map((point, index) =>
+	{
+		return /* glsl */`
+			float distance${index + 1} = metricDistance(p, point${index});
+		`;
+	}).join("")}
+
+				return ${getMinGlslString("distance", this.numPoints)};
+			}
+
+			void main(void)
+			{
+				float minDistance = getMinDistanceToPoints(uv);
+
+				if (minDistance < pointRadius)
+				{
+					gl_FragColor = vec4(1, 1, 1, 1);
+					return;
+				}
+
+				if (minDistance < (1.0 + blurRatio) * pointRadius)
+				{
+					float t = 1.0 - (minDistance - pointRadius) / (blurRatio * pointRadius);
+
+					gl_FragColor = vec4(t, t, t, 1);
+					return;
+				}
+
+				gl_FragColor = vec4(0, 0, 0, 1);
+			}
+		`;
+
+		this.wilson.render.shaderPrograms = [];
+		this.wilson.render.loadNewShader(fragShaderSource);
+		this.wilson.gl.useProgram(this.wilson.render.shaderPrograms[0]);
+
+
 
 		window.requestAnimationFrame(this.drawFrame.bind(this));
 	}
@@ -62,8 +158,8 @@ export class VoronoiDiagram extends Applet
 		for (let i = 0; i < this.numPoints; i++)
 		{
 			this.points[i] = [
-				0.8 * (Math.random() - 0.5) * this.wilson.worldWidth + this.wilson.worldCenterX,
-				0.8 * (Math.random() - 0.5) * this.wilson.worldHeight + this.wilson.worldCenterY,
+				0.8 * (Math.random() - 0.5) * this.wilson.worldWidth,
+				0.8 * (Math.random() - 0.5) * this.wilson.worldHeight,
 			];
 		}
 
@@ -90,7 +186,7 @@ export class VoronoiDiagram extends Applet
 				forces[i][1] += (this.points[i][1] - this.points[j][1]) / distance2;
 			}
 		}
-		
+
 		for (let i = 0; i < this.numPoints; i++)
 		{
 			this.points[i][0] += forceFactor * forces[i][0];
@@ -99,17 +195,17 @@ export class VoronoiDiagram extends Applet
 			this.points[i][0] = Math.min(
 				Math.max(
 					this.points[i][0],
-					this.wilson.worldCenterX - this.wilson.worldWidth / 2
+					-this.wilson.worldWidth / 2
 				),
-				this.wilson.worldCenterX + this.wilson.worldWidth / 2
+				this.wilson.worldWidth / 2
 			);
 
 			this.points[i][1] = Math.min(
 				Math.max(
 					this.points[i][1],
-					this.wilson.worldCenterY - this.wilson.worldHeight / 2
+					-this.wilson.worldHeight / 2
 				),
-				this.wilson.worldCenterY + this.wilson.worldHeight / 2
+				this.wilson.worldHeight / 2
 			);
 		}
 	}
@@ -127,41 +223,13 @@ export class VoronoiDiagram extends Applet
 			return;
 		}
 
-		this.drawPoints();
+		this.wilson.render.drawFrame();
 
 
 
 		if (!this.animationPaused)
 		{
 			window.requestAnimationFrame(this.drawFrame.bind(this));
-		}
-	}
-
-	drawPoints()
-	{
-		this.wilson.ctx.fillStyle = "rgb(0, 0, 0)";
-		this.wilson.ctx.fillRect(0, 0, this.resolution, this.resolution);
-
-		this.wilson.ctx.fillStyle = "rgb(255, 255, 255)";
-
-		for (let i = 0; i < this.numPoints; i++)
-		{
-			const canvasCoordinates = this.wilson.utils.interpolate.worldToCanvas(
-				...this.points[i]
-			);
-			
-			this.wilson.ctx.beginPath();
-			this.wilson.ctx.moveTo(...canvasCoordinates);
-
-			this.wilson.ctx.arc(
-				...canvasCoordinates,
-				this.pointRadius,
-				0,
-				2 * Math.PI,
-				false
-			);
-
-			this.wilson.ctx.fill();
 		}
 	}
 }

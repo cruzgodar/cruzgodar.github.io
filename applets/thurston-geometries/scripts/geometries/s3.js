@@ -1,5 +1,6 @@
 import { ThurstonGeometry } from "../class.js";
-import { BaseGeometry, getColorGlslString, getMaxGlslString, getMinGlslString } from "./base.js";
+import { BaseGeometry } from "./base.js";
+import { getColorGlslString, getMaxGlslString, getMinGlslString } from "/scripts/src/applets.js";
 
 class S3Geometry extends BaseGeometry
 {

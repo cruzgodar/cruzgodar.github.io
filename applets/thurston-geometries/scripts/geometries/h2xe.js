@@ -1,5 +1,6 @@
 import { ThurstonGeometry } from "../class.js";
-import { BaseGeometry, getMatrixGlsl, getMinGlslString, getVectorGlsl } from "./base.js";
+import { BaseGeometry } from "./base.js";
+import { getMatrixGlsl, getMinGlslString, getVectorGlsl } from "/scripts/src/applets.js";
 
 const teleportations = [
 	[
