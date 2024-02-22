@@ -29,8 +29,8 @@ export class PlanePartitions extends Applet
 	infiniteHeight = 100;
 
 	addWalls = false;
-	wallWidth = 20;
-	wallHeight = 20;
+	wallWidth = 17;
+	wallHeight = 17;
 
 	scene = null;
 
@@ -943,9 +943,9 @@ export class PlanePartitions extends Applet
 				{
 					anime({
 						targets: this.arrays[i].cubeGroup.position,
-						x: this.arrays[i].centerOffset,
+						x: this.addWalls ? 0 : this.arrays[i].centerOffset,
 						y: 0,
-						z: -this.arrays[i].centerOffset,
+						z: this.addWalls ? 0 : -this.arrays[i].centerOffset,
 						duration: this.animationTime,
 						easing: "easeInOutQuad"
 					});
@@ -961,7 +961,6 @@ export class PlanePartitions extends Applet
 		if (this.addWalls)
 		{
 			// Quick hack to make PT objects render properly.
-			const y = this.arrays.length === 2 ? 4 : 0;
 			array.cubeGroup.position.set(0, 0, 0);
 		}
 
@@ -1106,7 +1105,7 @@ export class PlanePartitions extends Applet
 
 			this._2dViewCameraPos = [0, this.totalArraySize + 10, 0];
 
-			if (this.in2dView && !keepNumbersCanvasVisible)
+			if (this.in2dView && !keepNumbersCanvasVisible && !this.addWalls)
 			{
 				this.updateCameraHeight(true);
 			}
@@ -1367,9 +1366,9 @@ export class PlanePartitions extends Applet
 			{
 				anime({
 					targets: this.arrays[i].cubeGroup.position,
-					x: this.arrays[i].centerOffset,
+					x: this.addWalls ? 0 : this.arrays[i].centerOffset,
 					y: 0,
-					z: -this.arrays[i].centerOffset,
+					z: this.addWalls ? 0 : -this.arrays[i].centerOffset,
 					duration: this.animationTime,
 					easing: "easeInOutQuad"
 				});
@@ -1796,6 +1795,11 @@ export class PlanePartitions extends Applet
 			}
 
 			this.currentlyAnimatingCamera = true;
+		}
+
+		if (this.arrays.length > 1 && this.addWalls)
+		{
+			return;
 		}
 
 

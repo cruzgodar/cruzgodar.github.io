@@ -19,7 +19,7 @@ export class Checkbox extends InputElement
 
 		this.element.checked = this.checked;
 
-		this.element.addEventListener("input", (e) =>
+		this.element.addEventListener("input", () =>
 		{
 			this.checked = this.element.checked;
 
