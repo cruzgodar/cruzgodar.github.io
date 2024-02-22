@@ -7,7 +7,7 @@ export class VoronoiDiagram extends Applet
 
 	numPoints = 20;
 	metric = 2;
-	resolution = 500;
+	resolution = 1000;
 
 	pointRadius;
 
@@ -50,17 +50,68 @@ export class VoronoiDiagram extends Applet
 
 		this.pointRadius = this.resolution * 0.01;
 
+		this.generatePoints();
+
+		window.requestAnimationFrame(this.drawFrame.bind(this));
+	}
+
+	generatePoints()
+	{
 		this.points = new Array(this.numPoints);
 
 		for (let i = 0; i < this.numPoints; i++)
 		{
 			this.points[i] = [
-				0.9 * (Math.random() - 0.5) * this.wilson.worldWidth + this.wilson.worldCenterX,
-				0.9 * (Math.random() - 0.5) * this.wilson.worldHeight + this.wilson.worldCenterY,
+				0.8 * (Math.random() - 0.5) * this.wilson.worldWidth + this.wilson.worldCenterX,
+				0.8 * (Math.random() - 0.5) * this.wilson.worldHeight + this.wilson.worldCenterY,
 			];
 		}
 
-		window.requestAnimationFrame(this.drawFrame.bind(this));
+		// Balance the points by repelling nearby ones.
+		const forces = new Array(this.numPoints);
+		const forceFactor = 0.1 / this.numPoints;
+
+		for (let i = 0; i < this.numPoints; i++)
+		{
+			forces[i] = [0, 0];
+
+			for (let j = 0; j < this.numPoints; j++)
+			{
+				if (j === i)
+				{
+					continue;
+				}
+
+				const distance2 =
+					(this.points[j][0] - this.points[i][0]) ** 2
+					+ (this.points[j][1] - this.points[i][1]) ** 2;
+				
+				forces[i][0] += (this.points[i][0] - this.points[j][0]) / distance2;
+				forces[i][1] += (this.points[i][1] - this.points[j][1]) / distance2;
+			}
+		}
+		
+		for (let i = 0; i < this.numPoints; i++)
+		{
+			this.points[i][0] += forceFactor * forces[i][0];
+			this.points[i][1] += forceFactor * forces[i][1];
+
+			this.points[i][0] = Math.min(
+				Math.max(
+					this.points[i][0],
+					this.wilson.worldCenterX - this.wilson.worldWidth / 2
+				),
+				this.wilson.worldCenterX + this.wilson.worldWidth / 2
+			);
+
+			this.points[i][1] = Math.min(
+				Math.max(
+					this.points[i][1],
+					this.wilson.worldCenterY - this.wilson.worldHeight / 2
+				),
+				this.wilson.worldCenterY + this.wilson.worldHeight / 2
+			);
+		}
 	}
 
 

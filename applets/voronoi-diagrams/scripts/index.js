@@ -11,8 +11,8 @@ export function load()
 	const resolutionInput = new TextBox({
 		element: $("#resolution-input"),
 		name: "Resolution",
-		value: 500,
-		maxValue: 2000,
+		value: 1000,
+		maxValue: 4000,
 		onEnter: run,
 	});
 
