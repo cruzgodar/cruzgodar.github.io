@@ -2,6 +2,7 @@ home Cruz Godar
 	gallery Gallery
 
 	applets Applets
+		voronoi-diagrams Voronoi Diagrams
 		thurston-geometries Thurston Geometries
 		magic-carpets Magic Carpets
 		vector-fields Vector Fields

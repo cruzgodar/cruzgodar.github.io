@@ -44,6 +44,7 @@ export const sitemap =
 		
 		"children":
 		[
+			"/applets/voronoi-diagrams/",
 			"/applets/thurston-geometries/",
 			"/applets/magic-carpets/",
 			"/applets/vector-fields/",
@@ -83,6 +84,17 @@ export const sitemap =
 		]
 	},
 		
+	"/applets/voronoi-diagrams/":
+	{
+		"title": "Voronoi Diagrams",
+		
+		"parent": "/applets/",
+		
+		"children": [],
+
+		"customScript": true
+	},
+	
 	"/applets/thurston-geometries/":
 	{
 		"title": "Thurston Geometries",
