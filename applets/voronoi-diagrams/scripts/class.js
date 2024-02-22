@@ -10,9 +10,10 @@ export class VoronoiDiagram extends Applet
 	metric = 2;
 	resolution = 1000;
 
+	radius;
 	pointRadius;
-
 	points;
+	colors;
 
 	constructor({ canvas })
 	{
@@ -60,6 +61,8 @@ export class VoronoiDiagram extends Applet
 		this.numPoints = numPoints;
 		this.metric = metric;
 
+		this.radius = 0;
+
 		this.wilson.changeCanvasSize(this.resolution, this.resolution);
 
 		this.generatePoints();
@@ -93,13 +96,23 @@ export class VoronoiDiagram extends Applet
 			
 			varying vec2 uv;
 
+			uniform float radius;
+
 			const float pointRadius = 0.01;
 			const float blurRatio = 0.5;
+			const float boundaryWidth = 0.02;
 
 	${this.points.map((point, index) =>
 	{
 		return /* glsl */`
 			const vec2 point${index} = ${getVectorGlsl(point)};
+		`;
+	}).join("")}
+
+	${this.colors.map((color, index) =>
+	{
+		return /* glsl */`
+			const vec3 color${index} = ${getVectorGlsl(color)};
 		`;
 	}).join("")}
 			
@@ -108,7 +121,7 @@ export class VoronoiDiagram extends Applet
 				return ${metricGlsl};
 			}
 
-			float getMinDistanceToPoints(vec2 p)
+			float getMinDistanceToPoints(vec2 p, out vec3 color)
 			{
 	${this.points.map((point, index) =>
 	{
@@ -117,12 +130,24 @@ export class VoronoiDiagram extends Applet
 		`;
 	}).join("")}
 
-				return ${getMinGlslString("distance", this.numPoints)};
+				float minDistance = ${getMinGlslString("distance", this.numPoints)};
+
+	${this.colors.map((color, index) =>
+	{
+		return /* glsl */`
+			if (minDistance == distance${index + 1})
+			{
+				color = color${index};
+				return minDistance;
+			}
+		`;
+	}).join("")}
 			}
 
 			void main(void)
 			{
-				float minDistance = getMinDistanceToPoints(uv);
+				vec3 color;
+				float minDistance = getMinDistanceToPoints(uv, color);
 
 				if (minDistance < pointRadius)
 				{
@@ -138,15 +163,33 @@ export class VoronoiDiagram extends Applet
 					return;
 				}
 
+				if (minDistance < radius)
+				{
+					gl_FragColor = vec4(color, 1);
+					return;
+				}
+
+				if (minDistance < radius + boundaryWidth)
+				{
+					gl_FragColor = vec4(color * 0.5, 1);
+					return;
+				}
+
 				gl_FragColor = vec4(0, 0, 0, 1);
 			}
 		`;
+
+		if (window.DEBUG)
+		{
+			console.log(fragShaderSource);
+		}
 
 		this.wilson.render.shaderPrograms = [];
 		this.wilson.render.loadNewShader(fragShaderSource);
 		this.wilson.gl.useProgram(this.wilson.render.shaderPrograms[0]);
 
-
+		this.wilson.render.initUniforms(["radius"]);
+		this.wilson.gl.uniform1f(this.wilson.uniforms.radius, this.radius);
 
 		window.requestAnimationFrame(this.drawFrame.bind(this));
 	}
@@ -208,6 +251,23 @@ export class VoronoiDiagram extends Applet
 				this.wilson.worldHeight / 2
 			);
 		}
+
+		// Finally, pick some random colors.
+
+		this.colors = new Array(this.numPoints);
+
+		for (let i = 0; i < this.numPoints; i++)
+		{
+			this.colors[i] = this.wilson.utils.hsvToRgb(
+				Math.random(),
+				0.5 + 0.25 * Math.random(),
+				0.5 + 0.5 * Math.random()
+			);
+
+			this.colors[i][0] /= 255;
+			this.colors[i][1] /= 255;
+			this.colors[i][2] /= 255;
+		}
 	}
 
 
@@ -215,6 +275,13 @@ export class VoronoiDiagram extends Applet
 	drawFrame(timestamp)
 	{
 		const timeElapsed = timestamp - this.lastTimestamp;
+
+		if (this.lastTimestamp === -1)
+		{
+			this.lastTimestamp = timestamp;
+			window.requestAnimationFrame(this.drawFrame.bind(this));
+			return;
+		}
 
 		this.lastTimestamp = timestamp;
 
@@ -225,7 +292,10 @@ export class VoronoiDiagram extends Applet
 
 		this.wilson.render.drawFrame();
 
-
+		this.radius += 0.0005 * timeElapsed;
+		this.wilson.gl.uniform1f(this.wilson.uniforms.radius, this.radius);
+		
+		this.wilson.render.drawFrame();
 
 		if (!this.animationPaused)
 		{
