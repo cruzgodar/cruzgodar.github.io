@@ -101,6 +101,8 @@ export class VoronoiDiagram extends Applet
 
 		this.generatePoints();
 
+		console.log(this.getFragShaderSource());
+
 		this.wilsonHidden.render.shaderPrograms = [];
 		this.wilsonHidden.render.loadNewShader(this.getFragShaderSource(true));
 		this.wilsonHidden.gl.useProgram(this.wilsonHidden.render.shaderPrograms[0]);
@@ -171,7 +173,7 @@ export class VoronoiDiagram extends Applet
 		anime({
 			targets: dummy,
 			t: 1,
-			pointOpacity: 1,
+			pointOpacity: -0.5,
 			duration: 3000,
 			delay: 2 * this.numPoints,
 			easing: "easeOutQuad",
@@ -201,6 +203,17 @@ export class VoronoiDiagram extends Applet
 
 	getFragShaderSource(forHiddenCanvas = false)
 	{
+		const testDirections = [
+			"boundaryWidth / 4.0, 0",
+			"-boundaryWidth / 4.0, 0",
+			"0, boundaryWidth / 4.0",
+			"0, -boundaryWidth / 4.0",
+			"boundaryWidth / 4.0, boundaryWidth / 4.0",
+			"boundaryWidth / 4.0, -boundaryWidth / 4.0",
+			"-boundaryWidth / 4.0, boundaryWidth / 4.0",
+			"-boundaryWidth / 4.0, -boundaryWidth / 4.0",
+		];
+
 		const colorGlsl = forHiddenCanvas
 			? /* glsl */`
 				if (minDistance < radius)
@@ -236,19 +249,32 @@ export class VoronoiDiagram extends Applet
 				{
 					float boundaryDistance = secondMinDistance - minDistance;
 
-					if (boundaryDistance < boundaryWidth)
+					if (boundaryDistance < boundaryWidth / 2.0)
 					{
-						float t = .5 + .5 * boundaryDistance / boundaryWidth;
+						// Despite all our best efforts, we can still sometimes get here mistakenly.
+						// We sample 8 nearby points to make sure this is actually a boundary.
+						vec3 newColor;
 
-						gl_FragColor = vec4(color * t, 1);
-						return;
+	${testDirections.map(testDirection =>
+	{
+		return /* glsl */`
+			getMinDistanceToPoints(uv + vec2(${testDirection}), minDistance, secondMinDistance, newColor);
+
+			if (color != newColor)
+			{
+				float t = .5 + .5 * boundaryDistance / (boundaryWidth / 2.0);
+				gl_FragColor = vec4(color * t, 1);
+				return;
+			}
+		`;
+	}).join("")}
 					}
 					
 					gl_FragColor = vec4(color, 1);
 					return;
 				}
 
-				if (minDistance < radius + boundaryWidth)
+				if (minDistance < radius + 0.01)
 				{
 					gl_FragColor = vec4(color * 0.5, 1);
 					return;
@@ -266,7 +292,7 @@ export class VoronoiDiagram extends Applet
 
 			const float pointRadius = 0.01;
 			const float blurRatio = 0.5;
-			const float boundaryWidth = 0.01;
+			const float boundaryWidth = 0.02;
 
 	${this.points.map((point, index) =>
 	{
@@ -351,6 +377,8 @@ export class VoronoiDiagram extends Applet
 			];
 		}
 
+
+
 		// Balance the points by repelling nearby ones.
 		const forces = new Array(this.numPoints);
 		const forceFactor = 0.2 / this.numPoints;
@@ -379,7 +407,50 @@ export class VoronoiDiagram extends Applet
 		{
 			this.points[i][0] += forceFactor * forces[i][0];
 			this.points[i][1] += forceFactor * forces[i][1];
+		}
 
+
+
+		// Avoid points being in the 8 cardinal directions. We do 2 passes
+		// to minimize the chance of one slipping through.
+		for (let k = 0; k < 2; k++)
+		{
+			const sign = (k % 2) ? 1 : -1;
+
+			for (let i = 0; i < this.numPoints; i++)
+			{
+				for (let j = 0; j < this.numPoints; j++)
+				{
+					if (j === i)
+					{
+						continue;
+					}
+
+					const xDistance = Math.abs(this.points[i][0] - this.points[j][0]);
+					const yDistance = Math.abs(this.points[i][1] - this.points[j][1]);
+
+					if (xDistance < 0.01)
+					{
+						this.points[i][0] += sign * 0.01;
+					}
+
+					if (yDistance < 0.01)
+					{
+						this.points[i][1] += sign * 0.01;
+					}
+
+					if (Math.abs(xDistance - yDistance) < 0.01)
+					{
+						this.points[i][0] += sign * 0.02;
+					}
+				}
+			}
+		}
+
+
+		// Make sure everything is in range.
+		for (let i = 0; i < this.numPoints; i++)
+		{
 			this.points[i][0] = Math.min(
 				Math.max(
 					this.points[i][0],
@@ -396,6 +467,8 @@ export class VoronoiDiagram extends Applet
 				this.wilson.worldHeight / 2
 			);
 		}
+
+
 
 		// Finally, pick some random colors.
 		this.colors = new Array(this.numPoints);
