@@ -1,6 +1,6 @@
 
 import anime from "/scripts/anime.js";
-import { Applet, getFloatGlsl, getMinGlslString, getVectorGlsl } from "/scripts/src/applets.js";
+import { Applet, getMinGlslString, getVectorGlsl } from "/scripts/src/applets.js";
 import { Wilson } from "/scripts/wilson.js";
 
 export class VoronoiDiagram extends Applet
@@ -8,6 +8,7 @@ export class VoronoiDiagram extends Applet
 	wilsonHidden;
 
 	lastTimestamp = -1;
+	currentlyAnimating = false;
 
 	numPoints = 20;
 	metric = 2;
@@ -96,9 +97,17 @@ export class VoronoiDiagram extends Applet
 		this.wilsonHidden.render.loadNewShader(this.getFragShaderSource(true));
 		this.wilsonHidden.gl.useProgram(this.wilsonHidden.render.shaderPrograms[0]);
 
-		this.wilsonHidden.render.initUniforms(["radius", "pointOpacity"]);
+		this.wilsonHidden.render.initUniforms([
+			"radius",
+			"pointOpacity",
+			"metric"
+		]);
+
 		this.wilsonHidden.gl.uniform1f(this.wilsonHidden.uniforms.radius, this.radius);
 		this.wilsonHidden.gl.uniform1f(this.wilsonHidden.uniforms.pointOpacity, 1);
+		// This one always gets the L^1 norm since that's when the balls
+		// are smallest.
+		this.wilsonHidden.gl.uniform1f(this.wilsonHidden.uniforms.metric, 1);
 
 		this.maxRadius = this.findMaxRadius();
 
@@ -106,65 +115,41 @@ export class VoronoiDiagram extends Applet
 		this.wilson.render.loadNewShader(this.getFragShaderSource());
 		this.wilson.gl.useProgram(this.wilson.render.shaderPrograms[0]);
 
-		this.wilson.render.initUniforms(["radius", "pointOpacity"]);
+		this.wilson.render.initUniforms([
+			"radius",
+			"pointOpacity",
+			"metric"
+		]);
+
 		this.wilson.gl.uniform1f(this.wilson.uniforms.radius, this.radius);
 		this.wilson.gl.uniform1f(this.wilson.uniforms.pointOpacity, 1);
+		this.wilson.gl.uniform1f(this.wilson.uniforms.metric, this.metric);
 
 		const dummy = { t: -0.1, pointOpacity: 1 };
 
+		this.currentlyAnimating = true;
 		anime({
 			targets: dummy,
 			t: 1,
 			pointOpacity: -0.25,
-			duration: 3000,
-			easing: "easeOutSine",
+			duration: 3500,
+			easing: "easeOutQuad",
 			update: () =>
 			{
 				this.t = dummy.t;
 				this.pointOpacity = Math.max(dummy.pointOpacity, 0);
 
 				this.drawFrame();
+			},
+			complete: () =>
+			{
+				this.currentlyAnimating = false;
 			}
 		});
 	}
 
 	getFragShaderSource(forHiddenCanvas = false)
 	{
-		const metricGlsl = (() =>
-		{
-			if (this.metric === 1)
-			{
-				return /* glsl */`
-					abs(p.x - q.x) + abs(p.y - q.y)
-				`;
-			}
-
-			else if (this.metric === 2)
-			{
-				return /* glsl */`
-					distance(p, q)
-				`;
-			}
-
-			else if (this.metric === Infinity)
-			{
-				return /* glsl */`
-					max(abs(p.x - q.x), abs(p.y - q.y))
-				`;
-			}
-
-			else
-			{
-				return /* glsl */`
-					pow(
-						pow(abs(p.x - q.x), ${getFloatGlsl(this.metric)})
-						+ pow(abs(p.y - q.y), ${getFloatGlsl(this.metric)}),
-						${getFloatGlsl(1 / this.metric)}
-					)
-				`;
-			}
-		})();
-
 		const colorGlsl = forHiddenCanvas
 			? /* glsl */`
 				if (minDistance < radius)
@@ -216,6 +201,7 @@ export class VoronoiDiagram extends Applet
 
 			uniform float radius;
 			uniform float pointOpacity;
+			uniform float metric;
 
 			const float pointRadius = 0.01;
 			const float blurRatio = 0.5;
@@ -237,7 +223,11 @@ export class VoronoiDiagram extends Applet
 			
 			float metricDistance(vec2 p, vec2 q)
 			{
-				return ${metricGlsl};
+				return pow(
+					pow(abs(p.x - q.x), metric)
+					+ pow(abs(p.y - q.y), metric),
+					1.0 / metric
+				);
 			}
 
 			float getMinDistanceToPoints(vec2 p, out vec3 color)

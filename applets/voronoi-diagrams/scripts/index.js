@@ -2,6 +2,7 @@ import { showPage } from "../../../scripts/src/loadPage.js";
 import { VoronoiDiagram } from "./class.js";
 import { DownloadButton, GenerateButton } from "/scripts/src/buttons.js";
 import { $ } from "/scripts/src/main.js";
+import { Slider } from "/scripts/src/sliders.js";
 import { TextBox } from "/scripts/src/textBoxes.js";
 
 export function load()
@@ -35,6 +36,16 @@ export function load()
 		filename: "a-voronoi-diagram.png"
 	});
 
+	const metricSlider = new Slider({
+		element: $("#metric-slider"),
+		name: "Metric",
+		value: 2,
+		min: 1,
+		max: 20,
+		logarithmic: true,
+		onInput: onSliderInput
+	});
+
 	showPage();
 
 	function run()
@@ -42,7 +53,18 @@ export function load()
 		applet.run({
 			resolution: resolutionInput.value,
 			numPoints: numPointsInput.value,
-			metric: 2
+			metric: metricSlider.value
 		});
+	}
+
+	function onSliderInput()
+	{
+		applet.metric = metricSlider.value;
+		applet.wilson.gl.uniform1f(applet.wilson.uniforms.metric, applet.metric);
+
+		if (!applet.currentlyAnimating)
+		{
+			applet.wilson.render.drawFrame();
+		}
 	}
 }
