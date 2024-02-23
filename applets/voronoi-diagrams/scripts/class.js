@@ -1,4 +1,3 @@
-
 import anime from "/scripts/anime.js";
 import { Applet, getMinGlslString, getVectorGlsl } from "/scripts/src/applets.js";
 import { Wilson } from "/scripts/wilson.js";
@@ -23,6 +22,8 @@ export class VoronoiDiagram extends Applet
 	pointOpacity;
 	points;
 	colors;
+
+	cancelAnimaton = () => {};
 
 	constructor({ canvas })
 	{
@@ -78,6 +79,11 @@ export class VoronoiDiagram extends Applet
 		numPoints = 20,
 		metric = 2
 	}) {
+		if (this.currentlyAnimating)
+		{
+			return;
+		}
+
 		this.resolution = resolution;
 		this.numPoints = numPoints;
 		this.metric = metric;
@@ -105,9 +111,7 @@ export class VoronoiDiagram extends Applet
 
 		this.wilsonHidden.gl.uniform1f(this.wilsonHidden.uniforms.radius, this.radius);
 		this.wilsonHidden.gl.uniform1f(this.wilsonHidden.uniforms.pointOpacity, 1);
-		// This one always gets the L^1 norm since that's when the balls
-		// are smallest.
-		this.wilsonHidden.gl.uniform1f(this.wilsonHidden.uniforms.metric, 1);
+		this.wilsonHidden.gl.uniform1f(this.wilsonHidden.uniforms.metric, this.metric);
 
 		this.maxRadius = this.findMaxRadius();
 
@@ -128,14 +132,29 @@ export class VoronoiDiagram extends Applet
 		const dummy = { t: -0.1, pointOpacity: 1 };
 
 		this.currentlyAnimating = true;
+		let thisAnimationCanceled = false;
+
+		this.cancelAnimaton();
+		this.cancelAnimaton = () =>
+		{
+			this.currentlyAnimating = false;
+			thisAnimationCanceled = true;
+		};
+
 		anime({
 			targets: dummy,
 			t: 1,
-			pointOpacity: -0.25,
-			duration: 3500,
+			pointOpacity: -0.5,
+			duration: 3000,
+			delay: 100,
 			easing: "easeOutQuad",
 			update: () =>
 			{
+				if (thisAnimationCanceled)
+				{
+					return;
+				}
+
 				this.t = dummy.t;
 				this.pointOpacity = Math.max(dummy.pointOpacity, 0);
 
@@ -143,6 +162,11 @@ export class VoronoiDiagram extends Applet
 			},
 			complete: () =>
 			{
+				if (thisAnimationCanceled)
+				{
+					return;
+				}
+
 				this.currentlyAnimating = false;
 			}
 		});
@@ -404,5 +428,14 @@ export class VoronoiDiagram extends Applet
 		this.wilson.gl.uniform1f(this.wilson.uniforms.pointOpacity, this.pointOpacity);
 		
 		this.wilson.render.drawFrame();
+	}
+
+	updateMetric()
+	{
+		this.cancelAnimaton();
+
+		this.t = 2;
+		this.wilson.gl.uniform1f(this.wilson.uniforms.metric, this.metric);
+		this.drawFrame();
 	}
 }

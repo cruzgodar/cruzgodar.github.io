@@ -60,11 +60,7 @@ export function load()
 	function onSliderInput()
 	{
 		applet.metric = metricSlider.value;
-		applet.wilson.gl.uniform1f(applet.wilson.uniforms.metric, applet.metric);
 
-		if (!applet.currentlyAnimating)
-		{
-			applet.wilson.render.drawFrame();
-		}
+		applet.updateMetric();
 	}
 }
