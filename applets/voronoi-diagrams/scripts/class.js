@@ -1,4 +1,5 @@
 
+import anime from "/scripts/anime.js";
 import { Applet, getFloatGlsl, getMinGlslString, getVectorGlsl } from "/scripts/src/applets.js";
 import { Wilson } from "/scripts/wilson.js";
 
@@ -18,6 +19,7 @@ export class VoronoiDiagram extends Applet
 	maxRadius;
 
 	pointRadius;
+	pointOpacity;
 	points;
 	colors;
 
@@ -80,6 +82,8 @@ export class VoronoiDiagram extends Applet
 		this.metric = metric;
 
 		this.t = -0.1;
+		this.radius = -0.1;
+		this.pointOpacity = 1;
 		this.lastTimestamp = -1;
 
 		this.wilson.changeCanvasSize(this.resolution, this.resolution);
@@ -92,8 +96,9 @@ export class VoronoiDiagram extends Applet
 		this.wilsonHidden.render.loadNewShader(this.getFragShaderSource(true));
 		this.wilsonHidden.gl.useProgram(this.wilsonHidden.render.shaderPrograms[0]);
 
-		this.wilsonHidden.render.initUniforms(["radius"]);
+		this.wilsonHidden.render.initUniforms(["radius", "pointOpacity"]);
 		this.wilsonHidden.gl.uniform1f(this.wilsonHidden.uniforms.radius, this.radius);
+		this.wilsonHidden.gl.uniform1f(this.wilsonHidden.uniforms.pointOpacity, 1);
 
 		this.maxRadius = this.findMaxRadius();
 
@@ -101,10 +106,26 @@ export class VoronoiDiagram extends Applet
 		this.wilson.render.loadNewShader(this.getFragShaderSource());
 		this.wilson.gl.useProgram(this.wilson.render.shaderPrograms[0]);
 
-		this.wilson.render.initUniforms(["radius"]);
+		this.wilson.render.initUniforms(["radius", "pointOpacity"]);
 		this.wilson.gl.uniform1f(this.wilson.uniforms.radius, this.radius);
+		this.wilson.gl.uniform1f(this.wilson.uniforms.pointOpacity, 1);
 
-		setTimeout(() => window.requestAnimationFrame(this.drawFrame.bind(this)), 100);
+		const dummy = { t: -0.1, pointOpacity: 1 };
+
+		anime({
+			targets: dummy,
+			t: 1,
+			pointOpacity: -0.25,
+			duration: 3000,
+			easing: "easeOutSine",
+			update: () =>
+			{
+				this.t = dummy.t;
+				this.pointOpacity = Math.max(dummy.pointOpacity, 0);
+
+				this.drawFrame();
+			}
+		});
 	}
 
 	getFragShaderSource(forHiddenCanvas = false)
@@ -155,7 +176,11 @@ export class VoronoiDiagram extends Applet
 			: /* glsl */`
 			if (minDistance < pointRadius)
 			{
-				gl_FragColor = vec4(1, 1, 1, 1);
+				gl_FragColor = mix(
+					vec4(color, 1),
+					vec4(1, 1, 1, 1),
+					pointOpacity
+				);
 				return;
 			}
 
@@ -163,7 +188,11 @@ export class VoronoiDiagram extends Applet
 			{
 				float t = 1.0 - (minDistance - pointRadius) / (blurRatio * pointRadius);
 
-				gl_FragColor = vec4(t, t, t, 1);
+				gl_FragColor = mix(
+					vec4(color, 1),
+					vec4(t, t, t, 1),
+					pointOpacity
+				);
 				return;
 			}
 
@@ -186,6 +215,7 @@ export class VoronoiDiagram extends Applet
 			varying vec2 uv;
 
 			uniform float radius;
+			uniform float pointOpacity;
 
 			const float pointRadius = 0.01;
 			const float blurRatio = 0.5;
@@ -304,7 +334,6 @@ export class VoronoiDiagram extends Applet
 		}
 
 		// Finally, pick some random colors.
-
 		this.colors = new Array(this.numPoints);
 
 		for (let i = 0; i < this.numPoints; i++)
@@ -377,46 +406,13 @@ export class VoronoiDiagram extends Applet
 
 
 
-	drawFrame(timestamp)
+	drawFrame()
 	{
-		const timeElapsed = timestamp - this.lastTimestamp;
+		this.radius = this.t * this.maxRadius;
 
-		if (this.lastTimestamp === -1)
-		{
-			this.lastTimestamp = timestamp;
-			window.requestAnimationFrame(this.drawFrame.bind(this));
-			return;
-		}
-
-		this.lastTimestamp = timestamp;
-
-		if (timeElapsed === 0)
-		{
-			return;
-		}
-
-		this.wilson.render.drawFrame();
-
-		this.t += 0.0005 * timeElapsed;
-		// this.radius = this.bezierCurve([0, 0.5, 0.5, 1], this.t);
-		this.radius = this.t < 0
-			? 0
-			: (0.5 + 0.5 * Math.sin(Math.PI * this.t - Math.PI / 2)) * this.maxRadius;
 		this.wilson.gl.uniform1f(this.wilson.uniforms.radius, this.radius);
+		this.wilson.gl.uniform1f(this.wilson.uniforms.pointOpacity, this.pointOpacity);
 		
 		this.wilson.render.drawFrame();
-
-		if (!this.animationPaused && this.t < 1)
-		{
-			window.requestAnimationFrame(this.drawFrame.bind(this));
-		}
-	}
-
-	bezierCurve(controlPoints, t)
-	{
-		return (1 - t) * (1 - t) * (1 - t) * controlPoints[0]
-		+ 3 * (1 - t) * (1 - t) * t * controlPoints[1]
-		+ 3 * (1 - t) * t * t * controlPoints[2]
-		+ t * t * t * controlPoints[3];
 	}
 }

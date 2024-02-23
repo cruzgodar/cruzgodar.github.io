@@ -42,7 +42,7 @@ export function load()
 		applet.run({
 			resolution: resolutionInput.value,
 			numPoints: numPointsInput.value,
-			metric: 1
+			metric: 2
 		});
 	}
 }
