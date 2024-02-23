@@ -52,6 +52,12 @@ export function load()
 		name: "Use draggable"
 	});
 
+	const hidePointsCheckbox = new Checkbox({
+		element: $("#hide-points-checkbox"),
+		name: "Hide points",
+		checked: true
+	});
+
 	const maximumSpeedCheckbox = new Checkbox({
 		element: $("#maximum-speed-checkbox"),
 		name: "Maximum speed"
@@ -66,6 +72,7 @@ export function load()
 			numPoints: numPointsInput.value,
 			metric: metricSlider.value,
 			maximumSpeed: maximumSpeedCheckbox.checked,
+			drawPoints: !hidePointsCheckbox.checked,
 			useDraggable: useDraggableCheckbox.checked
 		});
 	}

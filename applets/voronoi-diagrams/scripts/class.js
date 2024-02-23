@@ -15,6 +15,7 @@ export class VoronoiDiagram extends Applet
 	resolutionHidden = 100;
 
 	maximumSpeed;
+	drawPoints;
 	useDraggable;
 
 	t;
@@ -90,12 +91,14 @@ export class VoronoiDiagram extends Applet
 		numPoints = 20,
 		metric = 2,
 		maximumSpeed = false,
+		drawPoints = false,
 		useDraggable = false
 	}) {
 		this.resolution = resolution;
 		this.numPoints = numPoints;
 		this.metric = metric;
 		this.maximumSpeed = maximumSpeed;
+		this.drawPoints = drawPoints;
 		this.useDraggable = useDraggable;
 
 		this.t = -0.1;
@@ -185,7 +188,7 @@ export class VoronoiDiagram extends Applet
 		if (this.maximumSpeed)
 		{
 			this.t = 1;
-			this.pointOpacity = 0;
+			this.pointOpacity = this.drawPoints ? 1 : 0;
 			this.drawFrame();
 
 			this.currentlyAnimating = false;
@@ -196,7 +199,7 @@ export class VoronoiDiagram extends Applet
 		anime({
 			targets: dummy,
 			t: 1,
-			pointOpacity: -0.5,
+			pointOpacity: this.drawPoints ? 1 : -0.5,
 			duration: 3000,
 			delay: 2 * this.numPoints,
 			easing: "easeOutQuad",
