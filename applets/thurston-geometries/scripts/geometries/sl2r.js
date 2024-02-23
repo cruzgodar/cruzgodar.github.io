@@ -1120,8 +1120,8 @@ export class SL2RRooms extends SL2RGeometry
 	`;
 
 	cameraPos = loopRoomColors
-		? [1.000000555682267, 0, 0.0010542129021898201, 0]
-		: [1, 0, 0, 0];
+		? [1, 0, 0, 0]
+		: [1.000000555682267, 0, 0.0010542129021898201, 0];
 	
 	cameraFiber = 0;
 

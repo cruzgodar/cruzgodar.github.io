@@ -92,11 +92,6 @@ export class VoronoiDiagram extends Applet
 		maximumSpeed = false,
 		useDraggable = false
 	}) {
-		if (this.currentlyAnimating)
-		{
-			return;
-		}
-
 		this.resolution = resolution;
 		this.numPoints = numPoints;
 		this.metric = metric;
@@ -179,7 +174,7 @@ export class VoronoiDiagram extends Applet
 
 		this.currentlyAnimating = true;
 		let thisAnimationCanceled = false;
-
+		
 		this.cancelAnimaton();
 		this.cancelAnimaton = () =>
 		{

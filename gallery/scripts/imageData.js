@@ -2,6 +2,29 @@
 
 export const galleryImageData =
 {
+
+	"voronoi-diagram-1":
+	{
+		title: "A Voronoi Diagram",
+
+		resolution: "4000x4000",
+
+		appletLink: "voronoi-diagrams",
+
+		imageLink: "https://drive.google.com/uc?id=1J1dfHbqx1tX1qkkuJF0ZUp-OPlRezEsV&export=download"
+	},
+
+	"voronoi-diagram-2":
+	{
+		title: "A Voronoi Diagram",
+
+		resolution: "4000x4000",
+
+		appletLink: "voronoi-diagrams",
+
+		imageLink: "https://drive.google.com/uc?id=1TrBXxbjYeHMbznxnT1NiNXWSj8jVBthA&export=download"
+	},
+
 	"thurston-geometry-h3":
 	{
 		title: "The Thurston Geometry $\\mathbb{H}^3$",
