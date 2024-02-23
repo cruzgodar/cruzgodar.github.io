@@ -1,6 +1,7 @@
 import { showPage } from "../../../scripts/src/loadPage.js";
 import { VoronoiDiagram } from "./class.js";
 import { DownloadButton, GenerateButton } from "/scripts/src/buttons.js";
+import { Checkbox } from "/scripts/src/checkboxes.js";
 import { $ } from "/scripts/src/main.js";
 import { Slider } from "/scripts/src/sliders.js";
 import { TextBox } from "/scripts/src/textBoxes.js";
@@ -21,7 +22,7 @@ export function load()
 		element: $("#num-points-input"),
 		name: "Points",
 		value: 20,
-		maxValue: 200,
+		maxValue: 100,
 		onEnter: run,
 	});
 
@@ -46,6 +47,11 @@ export function load()
 		onInput: onSliderInput
 	});
 
+	const maximumSpeedCheckbox = new Checkbox({
+		element: $("#maximum-speed-checkbox"),
+		name: "Maximum speed"
+	});
+
 	showPage();
 
 	function run()
@@ -53,7 +59,8 @@ export function load()
 		applet.run({
 			resolution: resolutionInput.value,
 			numPoints: numPointsInput.value,
-			metric: metricSlider.value
+			metric: metricSlider.value,
+			maximumSpeed: maximumSpeedCheckbox.checked
 		});
 	}
 

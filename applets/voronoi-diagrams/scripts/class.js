@@ -14,6 +14,8 @@ export class VoronoiDiagram extends Applet
 	resolution = 1000;
 	resolutionHidden = 100;
 
+	maximumSpeed;
+
 	t;
 	radius;
 	maxRadius;
@@ -77,7 +79,8 @@ export class VoronoiDiagram extends Applet
 	run({
 		resolution = 500,
 		numPoints = 20,
-		metric = 2
+		metric = 2,
+		maximumSpeed = false
 	}) {
 		if (this.currentlyAnimating)
 		{
@@ -87,6 +90,7 @@ export class VoronoiDiagram extends Applet
 		this.resolution = resolution;
 		this.numPoints = numPoints;
 		this.metric = metric;
+		this.maximumSpeed = maximumSpeed;
 
 		this.t = -0.1;
 		this.radius = -0.1;
@@ -96,8 +100,6 @@ export class VoronoiDiagram extends Applet
 		this.wilson.changeCanvasSize(this.resolution, this.resolution);
 
 		this.generatePoints();
-
-
 
 		this.wilsonHidden.render.shaderPrograms = [];
 		this.wilsonHidden.render.loadNewShader(this.getFragShaderSource(true));
@@ -113,12 +115,24 @@ export class VoronoiDiagram extends Applet
 		this.wilsonHidden.gl.uniform1f(this.wilsonHidden.uniforms.pointOpacity, 1);
 		this.wilsonHidden.gl.uniform1f(this.wilsonHidden.uniforms.metric, this.metric);
 
-		this.maxRadius = this.findMaxRadius();
+
+
+		if (!this.maximumSpeed)
+		{
+			this.maxRadius = this.findMaxRadius();
+		}
+
+		else
+		{
+			this.maxRadius = 2;
+		}
+
+
 
 		this.wilson.render.shaderPrograms = [];
 		this.wilson.render.loadNewShader(this.getFragShaderSource());
 		this.wilson.gl.useProgram(this.wilson.render.shaderPrograms[0]);
-
+		
 		this.wilson.render.initUniforms([
 			"radius",
 			"pointOpacity",
@@ -129,7 +143,9 @@ export class VoronoiDiagram extends Applet
 		this.wilson.gl.uniform1f(this.wilson.uniforms.pointOpacity, 1);
 		this.wilson.gl.uniform1f(this.wilson.uniforms.metric, this.metric);
 
-		const dummy = { t: -0.1, pointOpacity: 1 };
+
+
+		const dummy = { t: -0.3, pointOpacity: 1 };
 
 		this.currentlyAnimating = true;
 		let thisAnimationCanceled = false;
@@ -141,12 +157,23 @@ export class VoronoiDiagram extends Applet
 			thisAnimationCanceled = true;
 		};
 
+		if (this.maximumSpeed)
+		{
+			this.t = 1;
+			this.pointOpacity = 0;
+			this.drawFrame();
+
+			this.currentlyAnimating = false;
+
+			return;
+		}
+
 		anime({
 			targets: dummy,
 			t: 1,
-			pointOpacity: -0.5,
+			pointOpacity: 1,
 			duration: 3000,
-			delay: 100,
+			delay: 2 * this.numPoints,
 			easing: "easeOutQuad",
 			update: () =>
 			{
@@ -183,40 +210,50 @@ export class VoronoiDiagram extends Applet
 				}
 			`
 			: /* glsl */`
-			if (minDistance < pointRadius)
-			{
-				gl_FragColor = mix(
-					vec4(color, 1),
-					vec4(1, 1, 1, 1),
-					pointOpacity
-				);
-				return;
-			}
+				if (minDistance < pointRadius)
+				{
+					gl_FragColor = mix(
+						vec4(color, 1),
+						vec4(1, 1, 1, 1),
+						pointOpacity
+					);
+					return;
+				}
 
-			if (minDistance < (1.0 + blurRatio) * pointRadius)
-			{
-				float t = 1.0 - (minDistance - pointRadius) / (blurRatio * pointRadius);
+				if (minDistance < (1.0 + blurRatio) * pointRadius)
+				{
+					float t = 1.0 - (minDistance - pointRadius) / (blurRatio * pointRadius);
 
-				gl_FragColor = mix(
-					vec4(color, 1),
-					vec4(t, t, t, 1),
-					pointOpacity
-				);
-				return;
-			}
+					gl_FragColor = mix(
+						vec4(color, 1),
+						vec4(t, t, t, 1),
+						pointOpacity
+					);
+					return;
+				}
 
-			if (minDistance < radius)
-			{
-				gl_FragColor = vec4(color, 1);
-				return;
-			}
+				if (minDistance < radius)
+				{
+					float boundaryDistance = secondMinDistance - minDistance;
 
-			if (minDistance < radius + boundaryWidth)
-			{
-				gl_FragColor = vec4(color * 0.5, 1);
-				return;
-			}
-		`;
+					if (boundaryDistance < boundaryWidth)
+					{
+						float t = .5 + .5 * boundaryDistance / boundaryWidth;
+
+						gl_FragColor = vec4(color * t, 1);
+						return;
+					}
+					
+					gl_FragColor = vec4(color, 1);
+					return;
+				}
+
+				if (minDistance < radius + boundaryWidth)
+				{
+					gl_FragColor = vec4(color * 0.5, 1);
+					return;
+				}
+			`;
 
 		return /* glsl */`
 			precision highp float;
@@ -229,7 +266,7 @@ export class VoronoiDiagram extends Applet
 
 			const float pointRadius = 0.01;
 			const float blurRatio = 0.5;
-			const float boundaryWidth = 0.02;
+			const float boundaryWidth = 0.01;
 
 	${this.points.map((point, index) =>
 	{
@@ -254,7 +291,7 @@ export class VoronoiDiagram extends Applet
 				);
 			}
 
-			float getMinDistanceToPoints(vec2 p, out vec3 color)
+			void getMinDistanceToPoints(vec2 p, out float minDistance, out float secondMinDistance, out vec3 color)
 			{
 	${this.points.map((point, index) =>
 	{
@@ -263,15 +300,26 @@ export class VoronoiDiagram extends Applet
 		`;
 	}).join("")}
 
-				float minDistance = ${getMinGlslString("distance", this.numPoints)};
+				minDistance = ${getMinGlslString("distance", this.numPoints)};
 
 	${this.colors.map((color, index) =>
 	{
 		return /* glsl */`
-			if (minDistance == distance${index + 1})
+			${index ? "else if" : "if"} (minDistance == distance${index + 1})
 			{
 				color = color${index};
-				return minDistance;
+			}
+		`;
+	}).join("")}
+
+	secondMinDistance = 10.0;
+
+	${this.points.map((point, index) =>
+	{
+		return /* glsl */`
+			if (distance${index + 1} < secondMinDistance && distance${index + 1} != minDistance)
+			{
+				secondMinDistance = distance${index + 1};
 			}
 		`;
 	}).join("")}
@@ -280,7 +328,9 @@ export class VoronoiDiagram extends Applet
 			void main(void)
 			{
 				vec3 color;
-				float minDistance = getMinDistanceToPoints(uv, color);
+				float minDistance;
+				float secondMinDistance;
+				getMinDistanceToPoints(uv, minDistance, secondMinDistance, color);
 
 				${colorGlsl}
 
@@ -303,7 +353,7 @@ export class VoronoiDiagram extends Applet
 
 		// Balance the points by repelling nearby ones.
 		const forces = new Array(this.numPoints);
-		const forceFactor = 0.1 / this.numPoints;
+		const forceFactor = 0.2 / this.numPoints;
 
 		for (let i = 0; i < this.numPoints; i++)
 		{
