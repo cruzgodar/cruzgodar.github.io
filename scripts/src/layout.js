@@ -171,7 +171,7 @@ export function equalizeAppletColumns()
 
 		for (let i = midpointIndex; i < numLeftChildren; i++)
 		{
-			leftColumn.children[i].classList.add("moved-to-left");
+			leftColumn.children[i].classList.add("moved-to-right");
 			elementsToMove.push(leftColumn.children[i]);
 		}
 
@@ -187,7 +187,7 @@ export function equalizeAppletColumns()
 
 		for (let i = 0; i < midpointIndex - numLeftChildren; i++)
 		{
-			rightColumn.children[i].classList.add("moved-to-right");
+			rightColumn.children[i].classList.add("moved-to-left");
 			elementsToMove.push(rightColumn.children[i]);
 		}
 
