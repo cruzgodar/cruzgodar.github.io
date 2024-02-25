@@ -29,19 +29,6 @@ export class ThurstonGeometry extends Applet
 	movingAmount = [0, 0, 0];
 	rollingAmount = 0;
 
-	keysPressed = {
-		"w": false,
-		"a": false,
-		"s": false,
-		"d": false,
-		" ": false,
-		"Shift": false,
-		"e": false,
-		"q": false
-	};
-
-	numTouches = 0;
-
 	movingSubsteps = 1;
 
 	needNewFrame = true;
@@ -111,31 +98,8 @@ export class ThurstonGeometry extends Applet
 			callback: boundFunction
 		});
 
-		const boundFunction2 = this.handleKeydownEvent.bind(this);
-		addTemporaryListener({
-			object: document.documentElement,
-			event: "keydown",
-			callback: boundFunction2
-		});
-
-		const boundFunction3 = this.handleKeyupEvent.bind(this);
-		addTemporaryListener({
-			object: document.documentElement,
-			event: "keyup",
-			callback: boundFunction3
-		});
-
-		const boundFunction4 = this.handleTouchEvent.bind(this);
-		addTemporaryListener({
-			object: canvas.parentNode.nextElementSibling,
-			event: "touchstart",
-			callback: boundFunction4
-		});
-		addTemporaryListener({
-			object: canvas.parentNode.nextElementSibling,
-			event: "touchend",
-			callback: boundFunction4
-		});
+		this.listenForKeysPressed(["w", "s", "a", "d", "q", "e", " ", "shift"]);
+		this.listenForNumTouches();
 	}
 
 
@@ -451,7 +415,7 @@ export class ThurstonGeometry extends Applet
 			this.movingAmount[2] = 1;
 		}
 
-		else if (this.keysPressed.Shift)
+		else if (this.keysPressed.shift)
 		{
 			this.movingAmount[2] = -1;
 		}
@@ -761,35 +725,6 @@ export class ThurstonGeometry extends Applet
 		{
 			this.rollingAmount = 0;
 		}
-	}
-
-	handleKeydownEvent(e)
-	{
-		const key = e.key.length === 1 ? e.key.toLowerCase() : e.key;
-
-		if (Object.prototype.hasOwnProperty.call(this.keysPressed, key))
-		{
-			e.preventDefault();
-
-			this.keysPressed[key] = true;
-		}
-	}
-
-	handleKeyupEvent(e)
-	{
-		const key = e.key.length === 1 ? e.key.toLowerCase() : e.key;
-
-		if (Object.prototype.hasOwnProperty.call(this.keysPressed, key))
-		{
-			e.preventDefault();
-
-			this.keysPressed[key] = false;
-		}
-	}
-
-	handleTouchEvent(e)
-	{
-		this.numTouches = e.touches.length;
 	}
 
 	changeResolution(resolution = this.resolution)

@@ -15,7 +15,11 @@ export class Applet
 	workers = [];
 	timeoutIds = [];
 
+	needNewFrame = true;
 	animationPaused = false;
+
+	keysPressed = {};
+	numTouches = 0;
 
 
 
@@ -202,14 +206,10 @@ export class Applet
 		this.zoom.onGrabCanvas();
 	}
 
-
-
 	onDragCanvas(x, y, xDelta, yDelta)
 	{
 		this.pan.onDragCanvas(x, y, xDelta, yDelta);
 	}
-
-
 
 	onReleaseCanvas()
 	{
@@ -217,21 +217,93 @@ export class Applet
 		this.zoom.onReleaseCanvas();
 	}
 
-
-
 	onWheelCanvas(x, y, scrollAmount)
 	{
 		this.zoom.onWheelCanvas(x, y, scrollAmount);
 	}
-
-
 
 	onPinchCanvas(x, y, touchDistanceDelta)
 	{
 		this.zoom.onPinchCanvas(x, y, touchDistanceDelta);
 	}
 
+	handleKeydownEvent(e)
+	{
+		const key = e.key.toLowerCase();
 
+		if (Object.prototype.hasOwnProperty.call(this.keysPressed, key))
+		{
+			e.preventDefault();
+
+			this.keysPressed[key] = true;
+		}
+	}
+
+	handleKeyupEvent(e)
+	{
+		const key = e.key.toLowerCase();
+
+		if (Object.prototype.hasOwnProperty.call(this.keysPressed, key))
+		{
+			e.preventDefault();
+
+			this.keysPressed[key] = false;
+		}
+	}
+
+	handleTouchStartEvent(e)
+	{
+		this.numTouches = e.touches.length;
+	}
+
+	handleTouchEndEvent(e)
+	{
+		// Prevents abruptly moving back then forward.
+		if (this.numTouches >= 3 && e.touches.length === 2)
+		{
+			this.numTouches = 1;
+		}
+
+		else
+		{
+			this.numTouches = e.touches.length;
+		}
+	}
+
+
+	listenForKeysPressed(keys)
+	{
+		keys.forEach(key => this.keysPressed[key] = false);
+
+		addTemporaryListener({
+			object: document.documentElement,
+			event: "keydown",
+			callback:  this.handleKeydownEvent.bind(this)
+		});
+
+		addTemporaryListener({
+			object: document.documentElement,
+			event: "keyup",
+			callback: this.handleKeyupEvent.bind(this)
+		});
+	}
+
+	listenForNumTouches()
+	{
+		addTemporaryListener({
+			object: this.canvas.parentNode.nextElementSibling,
+			event: "touchstart",
+			callback: this.handleTouchStartEvent.bind(this)
+		});
+
+		addTemporaryListener({
+			object: this.canvas.parentNode.nextElementSibling,
+			event: "touchend",
+			callback: this.handleTouchEndEvent.bind(this)
+		});
+	}
+	
+	
 
 	changeAspectRatio(useZoomLevel = false, wilsons = [this.wilson])
 	{
@@ -755,24 +827,11 @@ export class Applet
 
 export class RaymarchApplet extends Applet
 {
-	movingForwardKeyboard = false;
-	movingBackwardKeyboard = false;
-	movingRightKeyboard = false;
-	movingLeftKeyboard = false;
-
-	movingForwardTouch = false;
-	movingBackwardTouch = false;
-
-	wasMovingTouch = false;
-
-	movingSpeed = 0;
-
-	nextMoveVelocity = [0, 0, 0];
-
+	movingSpeed = .1;
 	moveVelocity = [0, 0, 0];
 
-	moveFriction = .95;
-	moveVelocityStopThreshhold = .0005;
+	moveFriction = .96;
+	moveStopThreshhold = .01;
 
 
 
@@ -780,18 +839,12 @@ export class RaymarchApplet extends Applet
 
 	lastTimestamp = -1;
 
-
-
 	theta = 0;
 	phi = 0;
-
-
 
 	imageSize = 400;
 	imageWidth = 400;
 	imageHeight = 400;
-
-	maxIterations = 16;
 
 	maxMarches = 100;
 
@@ -813,41 +866,17 @@ export class RaymarchApplet extends Applet
 	{
 		super(canvas);
 
-		const boundFunction = this.handleKeydownEvent.bind(this);
-		addTemporaryListener({
-			object: document.documentElement,
-			event: "keydown",
-			callback: boundFunction
-		});
-
-		const boundFunction2 = this.handleKeyupEvent.bind(this);
-		addTemporaryListener({
-			object: document.documentElement,
-			event: "keyup",
-			callback: boundFunction2
-		});
+		this.listenForKeysPressed(["w", "s", "a", "d", "q", "e", " ", "shift"]);
 
 		const refreshId = setInterval(() =>
 		{
 			if (this?.wilson?.draggables?.container)
 			{
-				const boundFunction3 = this.handleTouchstartEvent.bind(this);
-				addTemporaryListener({
-					object: this.wilson.draggables.container,
-					event: "touchstart",
-					callback: boundFunction3
-				});
-
-				const boundFunction4 = this.handleTouchendEvent.bind(this);
-				addTemporaryListener({
-					object: this.wilson.draggables.container,
-					event: "touchend",
-					callback: boundFunction4
-				});
+				this.listenForNumTouches();
 
 				clearInterval(refreshId);
 			}
-		}, 500);
+		}, 100);
 	}
 
 
@@ -882,9 +911,13 @@ export class RaymarchApplet extends Applet
 
 
 
-		this.focalLength = this.distanceToScene / 2;
+		this.focalLength = Math.min(this.distanceToScene, .5) / 2;
 
 		// The factor we divide by here sets the fov.
+		this.forwardVec[0] *= this.focalLength / 2;
+		this.forwardVec[1] *= this.focalLength / 2;
+		this.forwardVec[2] *= this.focalLength / 2;
+
 		this.rightVec[0] *= this.focalLength / 2;
 		this.rightVec[1] *= this.focalLength / 2;
 
@@ -895,9 +928,9 @@ export class RaymarchApplet extends Applet
 		
 
 		this.imagePlaneCenterPos = [
-			this.cameraPos[0] + this.focalLength * this.forwardVec[0],
-			this.cameraPos[1] + this.focalLength * this.forwardVec[1],
-			this.cameraPos[2] + this.focalLength * this.forwardVec[2]
+			this.cameraPos[0] + this.forwardVec[0],
+			this.cameraPos[1] + this.forwardVec[1],
+			this.cameraPos[2] + this.forwardVec[2]
 		];
 
 		
@@ -918,224 +951,70 @@ export class RaymarchApplet extends Applet
 
 
 
-	handleKeydownEvent(e)
-	{
-		if (
-			document.activeElement.tagName === "INPUT"
-			|| !(e.key === "w" || e.key === "s" || e.key === "d" || e.key === "a")
-		) {
-			return;
-		}
-
-
-
-		this.nextMoveVelocity = [0, 0, 0];
-		this.moveVelocity = [0, 0, 0];
-
-
-
-		if (e.key === "w")
-		{
-			this.movingForwardKeyboard = true;
-		}
-
-		else if (e.key === "s")
-		{
-			this.movingBackwardKeyboard = true;
-		}
-
-		if (e.key === "d")
-		{
-			this.movingRightKeyboard = true;
-		}
-
-		else if (e.key === "a")
-		{
-			this.movingLeftKeyboard = true;
-		}
-	}
-
-
-
-	handleKeyupEvent(e)
-	{
-		if (
-			document.activeElement.tagName === "INPUT"
-			|| !(e.key === "w" || e.key === "s" || e.key === "d" || e.key === "a")
-		) {
-			return;
-		}
-
-
-
-		if (this.moveVelocity[0] === 0 && this.moveVelocity[1] === 0 && this.moveVelocity[2] === 0)
-		{
-			this.moveVelocity[0] = this.nextMoveVelocity[0];
-			this.moveVelocity[1] = this.nextMoveVelocity[1];
-			this.moveVelocity[2] = this.nextMoveVelocity[2];
-
-			this.nextMoveVelocity[0] = 0;
-			this.nextMoveVelocity[1] = 0;
-			this.nextMoveVelocity[2] = 0;
-		}
-
-
-
-		// W
-		if (e.key === "w")
-		{
-			this.movingForwardKeyboard = false;
-		}
-
-		// S
-		else if (e.key === "s")
-		{
-			this.movingBackwardKeyboard = false;
-		}
-
-		// D
-		if (e.key === "d")
-		{
-			this.movingRightKeyboard = false;
-		}
-
-		// A
-		else if (e.key === "a")
-		{
-			this.movingLeftKeyboard = false;
-		}
-	}
-
-
-
-	handleTouchstartEvent(e)
-	{
-		if (e.touches.length === 2)
-		{
-			this.movingForwardTouch = true;
-			this.movingBackwardTouch = false;
-		}
-
-		else if (e.touches.length === 3)
-		{
-			this.movingBackwardTouch = true;
-			this.movingForwardTouch = false;
-		}
-	}
-
-	handleTouchendEvent(e)
-	{
-		if (e.touches.length === 2)
-		{
-			this.movingForwardTouch = true;
-			this.movingBackwardTouch = false;
-		}
-
-		else if (e.touches.length === 3)
-		{
-			this.movingBackwardTouch = true;
-			this.movingForwardTouch = false;
-		}
-	}
-
-
-
-	updateCameraParameters()
-	{
-		this.movingSpeed = Math.min(Math.max(.000001, this.distanceToScene / 20), .02);
-
-		const oldCameraPos = [...this.cameraPos];
-
-
-
-		if (this.movingForwardKeyboard || this.movingForwardTouch)
-		{
-			this.cameraPos[0] += this.movingSpeed * this.forwardVec[0];
-			this.cameraPos[1] += this.movingSpeed * this.forwardVec[1];
-			this.cameraPos[2] += this.movingSpeed * this.forwardVec[2];
-		}
-
-		else if (this.movingBackwardKeyboard || this.movingBackwardTouch)
-		{
-			this.cameraPos[0] -= this.movingSpeed * this.forwardVec[0];
-			this.cameraPos[1] -= this.movingSpeed * this.forwardVec[1];
-			this.cameraPos[2] -= this.movingSpeed * this.forwardVec[2];
-		}
-
-
-
-		if (this.movingRightKeyboard)
-		{
-			this.cameraPos[0] += this.movingSpeed * this.rightVec[0] / this.focalLength * .7;
-			this.cameraPos[1] += this.movingSpeed * this.rightVec[1] / this.focalLength * .7;
-			this.cameraPos[2] += this.movingSpeed * this.rightVec[2] / this.focalLength * .7;
-		}
-
-		else if (this.movingLeftKeyboard)
-		{
-			this.cameraPos[0] -= this.movingSpeed * this.rightVec[0] / this.focalLength * .7;
-			this.cameraPos[1] -= this.movingSpeed * this.rightVec[1] / this.focalLength * .7;
-			this.cameraPos[2] -= this.movingSpeed * this.rightVec[2] / this.focalLength * .7;
-		}
-
-
-
-		if (
-			(
-				this.movingForwardKeyboard
-				|| this.movingForwardTouch
-				|| this.movingBackwardKeyboard
-				|| this.movingBackwardTouch
-			) && (
-				this.movingRightKeyboard
-				|| this.movingLeftKeyboard
-			)
-		) {
-			this.cameraPos[0] = oldCameraPos[0]
-				+ (this.cameraPos[0] - oldCameraPos[0]) * .7071;
-			this.cameraPos[1] = oldCameraPos[1]
-				+ (this.cameraPos[1] - oldCameraPos[1]) * .7071;
-			this.cameraPos[2] = oldCameraPos[2]
-				+ (this.cameraPos[2] - oldCameraPos[2]) * .7071;
-		}
-
-
-
-		this.nextMoveVelocity[0] = (this.cameraPos[0] - oldCameraPos[0]) * .8;
-		this.nextMoveVelocity[1] = (this.cameraPos[1] - oldCameraPos[1]) * .8;
-		this.nextMoveVelocity[2] = (this.cameraPos[2] - oldCameraPos[2]) * .8;
-
-
-
-		this.calculateVectors();
-	}
-
-
-
 	moveUpdate(timeElapsed)
 	{
-		if (
-			this.moveVelocity[0] !== 0
+		if (this.keysPressed.w || this.numTouches === 2)
+		{
+			this.moveVelocity[0] = 1;
+		}
+
+		else if (this.keysPressed.s || this.numTouches === 3)
+		{
+			this.moveVelocity[0] = -1;
+		}
+
+		if (this.keysPressed.d)
+		{
+			this.moveVelocity[1] = 1;
+		}
+
+		else if (this.keysPressed.a)
+		{
+			this.moveVelocity[1] = -1;
+		}
+
+		if (this.keysPressed[" "])
+		{
+			this.moveVelocity[2] = 1;
+		}
+
+		else if (this.keysPressed.shift)
+		{
+			this.moveVelocity[2] = -1;
+		}
+
+		if (this.moveVelocity[0] !== 0
 			|| this.moveVelocity[1] !== 0
 			|| this.moveVelocity[2] !== 0
 		) {
-			this.cameraPos[0] += this.moveVelocity[0] * timeElapsed / 6.944;
-			this.cameraPos[1] += this.moveVelocity[1] * timeElapsed / 6.944;
-			this.cameraPos[2] += this.moveVelocity[2] * timeElapsed / 6.944;
+			const tangentVec = [
+				this.moveVelocity[0] * this.forwardVec[0]
+					+ this.moveVelocity[1] * this.rightVec[0]
+					+ this.moveVelocity[2] * this.upVec[0],
+				this.moveVelocity[0] * this.forwardVec[1]
+					+ this.moveVelocity[1] * this.rightVec[1]
+					+ this.moveVelocity[2] * this.upVec[1],
+				this.moveVelocity[0] * this.forwardVec[2]
+					+ this.moveVelocity[1] * this.rightVec[2]
+					+ this.moveVelocity[2] * this.upVec[2],
+			];
 
-			this.moveVelocity[0] *= this.moveFriction ** (timeElapsed / 6.944);
-			this.moveVelocity[1] *= this.moveFriction ** (timeElapsed / 6.944);
-			this.moveVelocity[2] *= this.moveFriction ** (timeElapsed / 6.944);
+			this.cameraPos[0] += this.movingSpeed * tangentVec[0] * (timeElapsed / 6.944);
+			this.cameraPos[1] += this.movingSpeed * tangentVec[1] * (timeElapsed / 6.944);
+			this.cameraPos[2] += this.movingSpeed * tangentVec[2] * (timeElapsed / 6.944);
 
-			if (
-				this.moveVelocity[0] ** 2
-				+ this.moveVelocity[1] ** 2
-				+ this.moveVelocity[2] ** 2 <
-					(this.moveVelocityStopThreshhold * this.movingSpeed) ** 2
-			) {
-				this.moveVelocity[0] = 0;
-				this.moveVelocity[1] = 0;
-				this.moveVelocity[2] = 0;
+			this.needNewFrame = true;
+		}
+
+		this.calculateVectors();
+
+		for (let i = 0; i < 3; i++)
+		{
+			this.moveVelocity[i] *= this.moveFriction ** (timeElapsed / 6.944);
+
+			if (Math.abs(this.moveVelocity[i]) < this.moveStopThreshhold)
+			{
+				this.moveVelocity[i] = 0;
 			}
 		}
 	}

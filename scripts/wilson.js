@@ -2109,8 +2109,6 @@ export class Wilson
 				return;
 			}
 
-
-
 			e.preventDefault();
 
 			this.mouseX = e.clientX;
@@ -2156,8 +2154,6 @@ export class Wilson
 				return;
 			}
 
-
-
 			this.mouseX = e.touches[0].clientX;
 			this.mouseY = e.touches[0].clientY;
 
@@ -2202,6 +2198,8 @@ export class Wilson
 
 			this.touchDistance = -1;
 
+			this.lastRow1 = -1;
+			this.lastCol1 = -1;
 			this.lastRow2 = -1;
 			this.lastCol2 = -1;
 
@@ -2235,8 +2233,6 @@ export class Wilson
 			{
 				return;
 			}
-
-
 
 			e.preventDefault();
 
@@ -2311,6 +2307,13 @@ export class Wilson
 
 			const row = (this.mouseY - rect.top - this.parent.topBorder - this.parent.topPadding) * this.parent.canvasHeight / this.parent.draggables.restrictedHeight;
 			const col = (this.mouseX - rect.left - this.parent.leftBorder - this.parent.leftPadding) * this.parent.canvasWidth / this.parent.draggables.restrictedWidth;
+
+			if (this.lastRow1 === -1 || this.lastCol1 === -1)
+			{
+				this.lastRow1 = row;
+				this.lastCol1 = col;
+				return;
+			}
 
 			const worldCoordinates = this.parent.utils.interpolate.canvasToWorld(row, col);
 

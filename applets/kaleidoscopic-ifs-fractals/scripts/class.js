@@ -7,14 +7,25 @@ import { Wilson } from "/scripts/wilson.js";
 
 export class KaleidoscopicIFSFractal extends RaymarchApplet
 {
-	theta = .2391;
-	phi = 1.6925;
-
 	numSierpinskiIterations = 24;
 
 	scale = 2.0;
 	
-	cameraPos = [-2.4426, -0.6339, 0.3633];
+	startingCameraPos = [
+		[0.7752, 1.3176, 0.5478],
+		[1.1748, 1.1675, 1.1673],
+		[-1.7346, -0.4485, 0.2596]
+	];
+
+	startingAngle = [
+		[4.1804, 1.8147],
+		[3.9036, 2.2196],
+		[0.2004, 1.6538]
+	];
+
+	cameraPos = [...this.startingCameraPos[2]];
+	theta = this.startingAngle[2][0];
+	phi = this.startingAngle[2][1];
 
 	polyhedronIndex = 2;
 
@@ -248,7 +259,7 @@ export class KaleidoscopicIFSFractal extends RaymarchApplet
 				
 				float dotProduct = dot(surfaceNormal, lightDirection);
 				
-				float lightIntensity = lightBrightness * max(dotProduct, -.25 * dotProduct);
+				float lightIntensity = lightBrightness * max(dotProduct, -.4 * dotProduct);
 				
 				//The last factor adds ambient occlusion.
 				vec3 color = getColor(pos) * lightIntensity * max((1.0 - float(iteration) / float(maxMarches)), 0.0);
@@ -524,11 +535,6 @@ export class KaleidoscopicIFSFractal extends RaymarchApplet
 		this.pan.update(timeElapsed);
 		this.zoom.update(timeElapsed);
 		this.moveUpdate(timeElapsed);
-
-		this.calculateVectors();
-		this.updateCameraParameters();
-
-
 		
 		this.wilson.worldCenterY = Math.min(
 			Math.max(
@@ -867,6 +873,10 @@ export class KaleidoscopicIFSFractal extends RaymarchApplet
 		await changeOpacity(this.wilson.canvas, 0);
 
 		this.polyhedronIndex = newPolyhedronIndex;
+
+		this.cameraPos = this.startingCameraPos[this.polyhedronIndex];
+		this.wilson.worldCenterX = -this.startingAngle[this.polyhedronIndex][0];
+		this.wilson.worldCenterY = -this.startingAngle[this.polyhedronIndex][1];
 
 		this.wilson.gl.uniform3fv(
 			this.wilson.uniforms["lightPos"],

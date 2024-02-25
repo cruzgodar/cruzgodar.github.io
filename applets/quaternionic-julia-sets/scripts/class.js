@@ -5,11 +5,14 @@ import { Wilson } from "/scripts/wilson.js";
 
 export class QuaternionicJuliaSet extends RaymarchApplet
 {
-	cameraPos = [-1.11619, -2.63802, 1.67049];
+	cameraPos = [-0.5881, -1.5735, 0.7451];
+	theta = 1.3094;
+	phi = 1.9975;
 	c = [-.54, -.25, -.668];
 	lightPos = [-5, -5, 5];
 
 	juliaProportion = 1;
+	maxIterations = 16;
 
 
 
@@ -255,8 +258,8 @@ export class QuaternionicJuliaSet extends RaymarchApplet
 			canvasWidth: 400,
 			canvasHeight: 400,
 
-			worldCenterX: -1.21557,
-			worldCenterY:  -2.10801,
+			worldCenterX: -this.theta,
+			worldCenterY:  -this.phi,
 
 
 
@@ -423,9 +426,6 @@ export class QuaternionicJuliaSet extends RaymarchApplet
 		this.zoom.update(timeElapsed);
 		this.moveUpdate(timeElapsed);
 
-		this.calculateVectors();
-		this.updateCameraParameters();
-
 		
 		
 		this.wilson.worldCenterY = Math.min(
@@ -438,8 +438,6 @@ export class QuaternionicJuliaSet extends RaymarchApplet
 		
 		this.theta = -this.wilson.worldCenterX;
 		this.phi = -this.wilson.worldCenterY;
-
-
 
 		this.wilson.render.drawFrame();
 

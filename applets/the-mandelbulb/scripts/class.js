@@ -8,12 +8,13 @@ export class Mandelbulb extends RaymarchApplet
 {
 	theta = 4.6601;
 	phi = 2.272;
-	cameraPos = [.0828, 2.17, 1.8925];
+	cameraPos = [0.0718, 1.6264, 1.4416];
 
 	power = 8;
 	c = [0, 0, 0];
 	cOld = [0, 0, 0];
 	cDelta = [0, 0, 0];
+	maxIterations = 16;
 
 	rotationAngleX = 0;
 	rotationAngleY = 0;
@@ -472,14 +473,9 @@ export class Mandelbulb extends RaymarchApplet
 			return;
 		}
 
-		
-
 		this.pan.update(timeElapsed);
 		this.zoom.update(timeElapsed);
 		this.moveUpdate(timeElapsed);
-
-		this.calculateVectors();
-		this.updateCameraParameters();
 
 		
 		
