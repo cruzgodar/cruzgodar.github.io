@@ -1,5 +1,5 @@
+import { Applet } from "../../../scripts/applets/applet.js";
 import { opacityAnimationTime } from "/scripts/src/animation.js";
-import { Applet } from "/scripts/src/applets.js";
 import { aspectRatio } from "/scripts/src/layout.js";
 import {
 	$$,

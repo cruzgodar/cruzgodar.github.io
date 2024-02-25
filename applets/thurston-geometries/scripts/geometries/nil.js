@@ -1,6 +1,6 @@
+import { getMatrixGlsl, getMinGlslString } from "../../../../scripts/applets/applet.js";
 import { ThurstonGeometry } from "../class.js";
 import { BaseGeometry } from "./base.js";
-import { getMatrixGlsl, getMinGlslString } from "/scripts/src/applets.js";
 
 const loopRoomColors = false;
 

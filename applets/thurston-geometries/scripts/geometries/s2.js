@@ -1,6 +1,6 @@
+import { getMinGlslString } from "../../../../scripts/applets/applet.js";
 import { E3Geometry } from "./e3.js";
 import { S2xEGeometry } from "./s2xe.js";
-import { getMinGlslString } from "/scripts/src/applets.js";
 
 function getSphereBandGlsl(index)
 {

@@ -1,9 +1,9 @@
+import { Applet } from "../../../scripts/applets/applet.js";
 import {
 	doubleEncodingGlsl,
 	getGlslBundle,
 	loadGlsl
 } from "../../../scripts/src/complexGlsl.js";
-import { Applet } from "/scripts/src/applets.js";
 import { addTemporaryListener } from "/scripts/src/main.js";
 import { Wilson } from "/scripts/wilson.js";
 

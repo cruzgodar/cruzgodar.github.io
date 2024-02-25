@@ -1,6 +1,6 @@
+import { getMinGlslString } from "../../../../scripts/applets/applet.js";
 import { ThurstonGeometry } from "../class.js";
 import { BaseGeometry } from "./base.js";
-import { getMinGlslString } from "/scripts/src/applets.js";
 
 export class E3Geometry extends BaseGeometry {}
 

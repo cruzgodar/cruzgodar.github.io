@@ -1,5 +1,5 @@
+import { Applet } from "../../../scripts/applets/applet.js";
 import { buttonAnimationTime, changeOpacity } from "/scripts/src/animation.js";
-import { Applet } from "/scripts/src/applets.js";
 import { Wilson } from "/scripts/wilson.js";
 
 export class DoublePendulumFractal extends Applet

@@ -1,6 +1,6 @@
+import { Applet } from "../../../scripts/applets/applet.js";
 import anime from "/scripts/anime.js";
 import { changeOpacity } from "/scripts/src/animation.js";
-import { Applet } from "/scripts/src/applets.js";
 import { $$ } from "/scripts/src/main.js";
 import * as THREE from "/scripts/three.js";
 import { Wilson } from "/scripts/wilson.js";

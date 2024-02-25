@@ -1,4 +1,4 @@
-import { Applet } from "/scripts/src/applets.js";
+import { Applet } from "../../../scripts/applets/applet.js";
 import { Wilson } from "/scripts/wilson.js";
 
 export class PascalsTriangleColoring extends Applet

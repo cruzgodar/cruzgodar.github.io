@@ -1,6 +1,6 @@
+import { Applet } from "../../../scripts/applets/applet.js";
 import { showPage } from "../../../scripts/src/loadPage.js";
 import { VectorField } from "./class.js";
-import { Applet } from "/scripts/src/applets.js";
 import { DownloadButton, GenerateButton } from "/scripts/src/buttons.js";
 import { Checkbox } from "/scripts/src/checkboxes.js";
 import { Dropdown } from "/scripts/src/dropdowns.js";

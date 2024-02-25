@@ -1,5 +1,5 @@
+import { Applet } from "../../../scripts/applets/applet.js";
 import { opacityAnimationTime } from "/scripts/src/animation.js";
-import { Applet } from "/scripts/src/applets.js";
 import { addTemporaryWorker } from "/scripts/src/main.js";
 import { siteSettings } from "/scripts/src/settings.js";
 import { Wilson } from "/scripts/wilson.js";

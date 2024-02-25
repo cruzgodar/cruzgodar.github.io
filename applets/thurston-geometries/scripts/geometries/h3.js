@@ -1,6 +1,6 @@
+import { getMinGlslString, getVectorGlsl } from "../../../../scripts/applets/applet.js";
 import { ThurstonGeometry } from "../class.js";
 import { BaseGeometry } from "./base.js";
-import { getMinGlslString, getVectorGlsl } from "/scripts/src/applets.js";
 
 const teleportVectors = [
 	[1, 0, 0, 1 / Math.sqrt(3)],

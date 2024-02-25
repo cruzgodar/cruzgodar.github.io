@@ -1,5 +1,5 @@
 import anime from "/scripts/anime.js";
-import { RaymarchApplet } from "/scripts/src/applets.js";
+import { RaymarchApplet } from "/scripts/applets/raymarchApplet.js";
 import { aspectRatio } from "/scripts/src/layout.js";
 import { Wilson } from "/scripts/wilson.js";
 

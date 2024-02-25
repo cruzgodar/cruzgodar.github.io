@@ -1,4 +1,4 @@
-import { Applet } from "/scripts/src/applets.js";
+import { Applet } from "../../../scripts/applets/applet.js";
 import { aspectRatio } from "/scripts/src/layout.js";
 import { addTemporaryListener } from "/scripts/src/main.js";
 import { Wilson } from "/scripts/wilson.js";

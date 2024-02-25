@@ -1,13 +1,13 @@
-import { ThurstonGeometry } from "../class.js";
-import {
-	BaseGeometry
-} from "./base.js";
 import {
 	getFloatGlsl,
 	getMatrixGlsl,
 	getMinGlslString,
 	getVectorGlsl
-} from "/scripts/src/applets.js";
+} from "../../../../scripts/applets/applet.js";
+import { ThurstonGeometry } from "../class.js";
+import {
+	BaseGeometry
+} from "./base.js";
 
 const loopRoomColors = false;
 

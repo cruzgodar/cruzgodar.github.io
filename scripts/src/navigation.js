@@ -1,3 +1,4 @@
+import { Applet } from "../applets/applet.js";
 import {
 	fadeDownOut,
 	fadeLeftOut,
@@ -6,7 +7,6 @@ import {
 	fadeUpOut,
 	opacityAnimationTime
 } from "./animation.js";
-import { Applet } from "./applets.js";
 import {
 	bannerElement,
 	loadBanner,

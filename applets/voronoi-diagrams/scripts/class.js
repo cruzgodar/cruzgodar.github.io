@@ -1,5 +1,5 @@
+import { Applet, getMinGlslString, getVectorGlsl } from "../../../scripts/applets/applet.js";
 import anime from "/scripts/anime.js";
-import { Applet, getMinGlslString, getVectorGlsl } from "/scripts/src/applets.js";
 import { Wilson } from "/scripts/wilson.js";
 
 export class VoronoiDiagram extends Applet
