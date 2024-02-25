@@ -22,8 +22,6 @@ export class JuliaSetMosaic extends Applet
 	resolution = 500;
 	resolutionHidden = 50;
 
-	lastTimestamp = -1;
-
 
 
 	constructor({ canvas })
@@ -253,30 +251,18 @@ export class JuliaSetMosaic extends Applet
 
 		// Render the inital frame.
 		this.wilsonHidden.gl.uniform1f(this.wilsonHidden.uniforms["aspectRatio"], 1);
-
-		window.requestAnimationFrame(this.drawFrame.bind(this));
+		
+		this.resume();
 	}
 
-
-
-	drawFrame(timestamp)
+	prepareFrame(timeElapsed)
 	{
-		const timeElapsed = timestamp - this.lastTimestamp;
-
-		this.lastTimestamp = timestamp;
-
-		if (timeElapsed === 0)
-		{
-			return;
-		}
-
-
-
 		this.pan.update(timeElapsed);
 		this.zoom.update(timeElapsed);
+	}
 
-
-
+	drawFrame()
+	{
 		this.numIterations = (-this.zoomLevel * 30) + 200;
 
 		this.wilsonHidden.gl.uniform1f(
@@ -376,12 +362,5 @@ export class JuliaSetMosaic extends Applet
 		this.wilson.gl.uniform1f(this.wilson.uniforms["brightnessScale"], brightnessScale);
 
 		this.wilson.render.drawFrame();
-
-
-
-		if (!this.animationPaused)
-		{
-			window.requestAnimationFrame(this.drawFrame.bind(this));
-		}
 	}
 }

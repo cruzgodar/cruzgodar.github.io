@@ -40,6 +40,51 @@ export class Applet
 
 
 
+	// When an applet needs to draw potentially frame, it registers these two functions.
+	// The first is called every frame and can be used to determine if a new frame is needed,
+	// while the second is the actual Wilson call to render the frame. This makes it easier
+	// to not needlessly draw frames and also harder to forget to check for animationPaused.
+	prepareFrame() {}
+	drawFrame() {}
+
+	lastTimestamp = -1;
+
+	drawFrameLoop(timestamp)
+	{
+		const timeElapsed = timestamp - this.lastTimestamp;
+
+		if (this.lastTimestamp === -1)
+		{
+			this.lastTimestamp = timestamp;
+			window.requestAnimationFrame(this.drawFrameLoopBound);
+			return;
+		}
+
+		this.lastTimestamp = timestamp;
+
+		if (timeElapsed === 0)
+		{
+			return;
+		}
+
+		this.prepareFrame(timeElapsed);
+
+		if (this.needNewFrame)
+		{
+			this.drawFrame(timeElapsed);
+			this.needNewFrame = false;
+		}
+
+		if (!this.animationPaused)
+		{
+			window.requestAnimationFrame(this.drawFrameLoopBound);
+		}
+	}
+
+	drawFrameLoopBound = this.drawFrameLoop.bind(this);
+
+
+
 	pause()
 	{
 		this.animationPaused = true;
@@ -50,6 +95,8 @@ export class Applet
 	resume()
 	{
 		this.animationPaused = false;
+
+		window.requestAnimationFrame(this.drawFrameLoopBound);
 	}
 
 
@@ -360,6 +407,8 @@ export class Applet
 		{
 			this.zoom.clamp();
 		}
+
+		this.needNewFrame = true;
 	}
 
 
@@ -424,6 +473,8 @@ export class Applet
 			this.parent.wilson.worldCenterX -= xDelta;
 			this.parent.wilson.worldCenterY -= yDelta;
 
+			this.parent.needNewFrame = true;
+
 			this.clamp();
 
 			this.nextVelocityX = -xDelta / this.parent.wilson.worldWidth;
@@ -485,6 +536,8 @@ export class Applet
 
 			else
 			{
+				this.parent.needNewFrame = true;
+
 				this.parent.wilson.worldCenterX += this.velocityX
 					* this.parent.wilson.worldWidth * timeElapsed / 6.944;
 
@@ -579,6 +632,8 @@ export class Applet
 
 		onWheelCanvas(x, y, scrollAmount)
 		{
+			this.parent.needNewFrame = true;
+
 			this.fixedPointX = x;
 			this.fixedPointY = y;
 
@@ -719,6 +774,8 @@ export class Applet
 				this.zoomCanvas();
 
 				this.velocity *= this.friction ** (timeElapsed / 6.944);
+
+				this.parent.needNewFrame = true;
 			}
 
 			if (this.parent?.wilson?.draggables?.recalculateLocations)

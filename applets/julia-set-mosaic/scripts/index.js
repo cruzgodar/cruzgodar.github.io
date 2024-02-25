@@ -57,5 +57,6 @@ export function load()
 	function onSliderInput()
 	{
 		applet.setDensity = setDensitySlider.value;
+		applet.needNewFrame = true;
 	}
 }

@@ -30,8 +30,6 @@ export class JuliaSet extends Applet
 	resolution = 1000;
 	resolutionHidden = 100;
 
-	lastTimestamp = -1;
-
 
 
 	constructor({ canvas, switchJuliaModeButton })
@@ -650,8 +648,7 @@ export class JuliaSet extends Applet
 
 		this.zoom.init();
 
-		// Render the inital frame.
-		window.requestAnimationFrame(this.drawFrame.bind(this));
+		this.resume();
 
 
 		const boundFunction = () => this.changeAspectRatio(true);
@@ -669,6 +666,8 @@ export class JuliaSet extends Applet
 		this.useDoublePrecision = !this.useDoublePrecision;
 
 		this.zoomCanvas();
+
+		this.needNewFrame = true;
 	}
 
 
@@ -725,6 +724,8 @@ export class JuliaSet extends Applet
 
 			this.pastBrightnessScales = [];
 		}
+
+		this.needNewFrame = true;
 	}
 
 
@@ -759,6 +760,8 @@ export class JuliaSet extends Applet
 				this.switchJuliaModeButton.disabled = false;
 			}
 		}
+
+		this.needNewFrame = true;
 	}
 
 
@@ -775,6 +778,8 @@ export class JuliaSet extends Applet
 		{
 			this.pan.onDragCanvas(x, y, xDelta, yDelta);
 		}
+
+		this.needNewFrame = true;
 	}
 
 
@@ -785,6 +790,8 @@ export class JuliaSet extends Applet
 		{
 			this.a = x;
 			this.b = y;
+
+			this.needNewFrame = true;
 		}
 	}
 
@@ -821,6 +828,8 @@ export class JuliaSet extends Applet
 			this.pan.onReleaseCanvas();
 			this.zoom.onReleaseCanvas();
 		}
+
+		this.needNewFrame = true;
 	}
 
 
@@ -830,6 +839,8 @@ export class JuliaSet extends Applet
 		if (this.juliaMode !== 2)
 		{
 			this.zoom.onWheelCanvas(x, y, scrollAmount);
+
+			this.needNewFrame = true;
 		}
 	}
 
@@ -840,29 +851,19 @@ export class JuliaSet extends Applet
 		if (this.juliaMode !== 2)
 		{
 			this.zoom.onPinchCanvas(x, y, touchDistanceDelta);
+
+			this.needNewFrame = true;
 		}
 	}
 
-
-
-	drawFrame(timestamp)
+	prepareFrame(timeElapsed)
 	{
-		const timeElapsed = timestamp - this.lastTimestamp;
-
-		this.lastTimestamp = timestamp;
-
-		if (timeElapsed === 0)
-		{
-			return;
-		}
-
-
-
 		this.pan.update(timeElapsed);
 		this.zoom.update(timeElapsed);
+	}
 
-
-
+	drawFrame()
+	{
 		if (
 			(
 				!this.doublePrecision
@@ -1010,11 +1011,5 @@ export class JuliaSet extends Applet
 		);
 
 		this.wilson.render.drawFrame();
-
-
-		if (!this.animationPaused)
-		{
-			window.requestAnimationFrame(this.drawFrame.bind(this));
-		}
 	}
 }
