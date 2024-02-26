@@ -127,6 +127,14 @@ export class VoronoiDiagram extends Applet
 		this.wilsonHidden.gl.uniform1f(this.wilsonHidden.uniforms.pointOpacity, 1);
 		this.wilsonHidden.gl.uniform1f(this.wilsonHidden.uniforms.metric, this.metric);
 
+		if (this.useDraggable)
+		{
+			this.wilsonHidden.gl.uniform2fv(
+				this.wilsonHidden.uniforms.point0,
+				this.wilson.draggables.worldCoordinates[0]
+			);
+		}
+
 
 
 		if (!this.maximumSpeed)
@@ -136,7 +144,7 @@ export class VoronoiDiagram extends Applet
 
 		else
 		{
-			this.maxRadius = 2;
+			this.maxRadius = 8;
 		}
 
 
@@ -525,8 +533,8 @@ export class VoronoiDiagram extends Applet
 	findMaxRadius()
 	{
 		let t = 0.5;
-		const upperBound = 2;
-		const iterations = 10;
+		const upperBound = 4;
+		const iterations = 15;
 		let stepSize = 0.25;
 
 		for (let i = 0; i < iterations; i++)
