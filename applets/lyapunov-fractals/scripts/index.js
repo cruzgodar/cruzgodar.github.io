@@ -1,17 +1,12 @@
 import { showPage } from "../../../scripts/src/loadPage.js";
 import { LyapunovFractal } from "./class.js";
-import { DownloadButton, GenerateButton } from "/scripts/src/buttons.js";
+import { DownloadButton } from "/scripts/src/buttons.js";
 import { $ } from "/scripts/src/main.js";
 import { TextBox } from "/scripts/src/textBoxes.js";
 
 export function load()
 {
 	const applet = new LyapunovFractal({ canvas: $("#output-canvas") });
-
-	new GenerateButton({
-		element: $("#generate-button"),
-		onClick: run
-	});
 
 	new DownloadButton({
 		element: $("#download-button"),

@@ -1,7 +1,7 @@
-import { Applet } from "../../../scripts/applets/applet.js";
+import { AnimationFrameApplet } from "/scripts/applets/animationFrameApplet.js";
 import { Wilson } from "/scripts/wilson.js";
 
-export class DominoShuffling extends Applet
+export class DominoShuffling extends AnimationFrameApplet
 {
 	resolution = 2000;
 	diamondSize = 20;
@@ -24,8 +24,6 @@ export class DominoShuffling extends Applet
 	frame = 0;
 	framesPerAnimationStep = 1;
 	drawDiamondWithHoles = true;
-
-	lastTimestamp = -1;
 
 
 
@@ -167,24 +165,13 @@ export class DominoShuffling extends Applet
 
 		this.frame = this.framesPerAnimationStep - 1;
 
-		window.requestAnimationFrame(this.drawFrame.bind(this));
+		this.resume();
 	}
 
 
 
-	drawFrame(timestamp)
+	drawFrame()
 	{
-		const timeElapsed = timestamp - this.lastTimestamp;
-
-		this.lastTimestamp = timestamp;
-
-		if (timeElapsed === 0)
-		{
-			return;
-		}
-
-
-
 		this.frame++;
 
 		if (this.frame === this.framesPerAnimationStep)
@@ -203,29 +190,17 @@ export class DominoShuffling extends Applet
 
 
 
-		if (this.animationPaused)
-		{
-			return;
-		}
-
-
-
 		if (this.frame === 0 && this.currentDiamondSize === this.diamondSize - 1)
 		{
 			this.wilson.ctx.fillStyle = "rgb(0, 0, 0)";
 			this.wilson.ctx.fillRect(0, 0, this.resolution, this.resolution);
 
 			this.drawDiamond();
-
-			return;
 		}
 
 		else
 		{
-			if (!this.animationPaused)
-			{
-				window.requestAnimationFrame(this.drawFrame.bind(this));
-			}
+			this.needNewFrame = true;
 		}
 	}
 

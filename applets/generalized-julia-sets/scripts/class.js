@@ -1,9 +1,9 @@
-import { Applet } from "../../../scripts/applets/applet.js";
 import { getGlslBundle, loadGlsl } from "../../../scripts/src/complexGlsl.js";
+import { AnimationFrameApplet } from "/scripts/applets/animationFrameApplet.js";
 import { addTemporaryListener } from "/scripts/src/main.js";
 import { Wilson } from "/scripts/wilson.js";
 
-export class GeneralizedJuliaSet extends Applet
+export class GeneralizedJuliaSet extends AnimationFrameApplet
 {
 	loadPromise = null;
 
@@ -28,8 +28,6 @@ export class GeneralizedJuliaSet extends Applet
 
 	resolution = 500;
 	resolutionHidden = 50;
-
-	lastTimestamp = -1;
 
 
 
@@ -389,7 +387,7 @@ export class GeneralizedJuliaSet extends Applet
 			this.wilson.draggables.draggables = [];
 		}
 
-		window.requestAnimationFrame(this.drawFrame.bind(this));
+		this.resume();
 	}
 
 
@@ -423,6 +421,8 @@ export class GeneralizedJuliaSet extends Applet
 
 			this.pastBrightnessScales = [];
 		}
+
+		this.needNewFrame = true;
 	}
 
 
@@ -450,6 +450,8 @@ export class GeneralizedJuliaSet extends Applet
 			{
 				this.switchJuliaModeButton.disabled = false;
 			}
+
+			this.needNewFrame = true;
 		}
 	}
 
@@ -467,6 +469,8 @@ export class GeneralizedJuliaSet extends Applet
 		{
 			this.pan.onDragCanvas(x, y, xDelta, yDelta);
 		}
+
+		this.needNewFrame = true;
 	}
 
 
@@ -477,6 +481,8 @@ export class GeneralizedJuliaSet extends Applet
 		{
 			this.a = x;
 			this.b = y;
+
+			this.needNewFrame = true;
 		}
 	}
 
@@ -500,6 +506,8 @@ export class GeneralizedJuliaSet extends Applet
 			{
 				this.switchJuliaModeButton.disabled = false;
 			}
+
+			this.needNewFrame = true;
 		}
 
 		else
@@ -517,6 +525,8 @@ export class GeneralizedJuliaSet extends Applet
 		{
 			this.zoom.onWheelCanvas(x, y, scrollAmount);
 		}
+
+		this.needNewFrame = true;
 	}
 
 
@@ -527,6 +537,8 @@ export class GeneralizedJuliaSet extends Applet
 		{
 			this.zoom.onPinchCanvas(x, y, touchDistanceDelta);
 		}
+
+		this.needNewFrame = true;
 	}
 
 
@@ -534,28 +546,20 @@ export class GeneralizedJuliaSet extends Applet
 	onDragDraggable(activeDraggable, x, y)
 	{
 		this.wilson.gl.uniform2f(this.wilson.uniforms["draggableArg"], x, y);
+
+		this.needNewFrame = true;
 	}
 
 
 
-	drawFrame(timestamp)
+	prepareFrame(timeElapsed)
 	{
-		const timeElapsed = timestamp - this.lastTimestamp;
-
-		this.lastTimestamp = timestamp;
-
-		if (timeElapsed === 0)
-		{
-			return;
-		}
-
-
-
 		this.pan.update(timeElapsed);
 		this.zoom.update(timeElapsed);
+	}
 
-
-
+	drawFrame()
+	{
 		this.numIterations = (-this.zoom.level * 30) + 200;
 
 
@@ -657,12 +661,5 @@ export class GeneralizedJuliaSet extends Applet
 		this.wilson.gl.uniform1f(this.wilson.uniforms["brightnessScale"], brightnessScale);
 
 		this.wilson.render.drawFrame();
-
-
-
-		if (!this.animationPaused)
-		{
-			window.requestAnimationFrame(this.drawFrame.bind(this));
-		}
 	}
 }

@@ -1,13 +1,11 @@
-import { Applet } from "../../../scripts/applets/applet.js";
+import { AnimationFrameApplet } from "/scripts/applets/animationFrameApplet.js";
 import { Wilson } from "/scripts/wilson.js";
 
-export class Snowflake extends Applet
+export class Snowflake extends AnimationFrameApplet
 {
 	loadPromise = null;
 
 	resolution = 500;
-
-	lastTimestamp = -1;
 
 	computationsPerFrame = 20;
 
@@ -606,8 +604,6 @@ export class Snowflake extends Applet
 		mu = .015,
 		gamma = .0005
 	}) {
-		this.resume();
-
 		this.resolution = resolution;
 		this.computationsPerFrame = computationsPerFrame;
 
@@ -682,24 +678,14 @@ export class Snowflake extends Applet
 
 
 
-		window.requestAnimationFrame(this.drawFrame.bind(this));
+		this.resume();
 	}
 
 
 
-	drawFrame(timestamp)
+	drawFrame()
 	{
-		const timeElapsed = timestamp - this.lastTimestamp;
-
-		this.lastTimestamp = timestamp;
-
-		if (timeElapsed === 0)
-		{
-			return;
-		}
-
-
-
+		console.log("hi!");
 		for (let i = 0; i < this.computationsPerFrame; i++)
 		{
 			this.wilson.gl.useProgram(this.wilson.render.shaderPrograms[1]);
@@ -796,11 +782,6 @@ export class Snowflake extends Applet
 			}
 		}
 
-
-
-		if (!this.animationPaused)
-		{
-			window.requestAnimationFrame(this.drawFrame.bind(this));
-		}
+		this.needNewFrame = true;
 	}
 }

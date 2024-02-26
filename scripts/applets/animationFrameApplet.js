@@ -4,7 +4,7 @@ export class AnimationFrameApplet extends Applet
 {
 	needNewFrame = true;
 	animationPaused = false;
-	
+
 	constructor(canvas)
 	{
 		super(canvas);
@@ -42,8 +42,8 @@ export class AnimationFrameApplet extends Applet
 
 		if (this.needNewFrame)
 		{
-			this.drawFrame(timeElapsed);
 			this.needNewFrame = false;
+			this.drawFrame(timeElapsed);
 		}
 
 		if (!this.animationPaused)
@@ -62,6 +62,7 @@ export class AnimationFrameApplet extends Applet
 	resume()
 	{
 		this.animationPaused = false;
+		this.needNewFrame = true;
 
 		window.requestAnimationFrame(this.drawFrameLoopBound);
 	}

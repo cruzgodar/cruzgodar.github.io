@@ -1,9 +1,9 @@
-import { Applet } from "../../../scripts/applets/applet.js";
 import { getGlslBundle, loadGlsl } from "../../../scripts/src/complexGlsl.js";
+import { AnimationFrameApplet } from "/scripts/applets/animationFrameApplet.js";
 import { addTemporaryListener } from "/scripts/src/main.js";
 import { Wilson } from "/scripts/wilson.js";
 
-export class ComplexMap extends Applet
+export class ComplexMap extends AnimationFrameApplet
 {
 	loadPromise = null;
 
@@ -20,8 +20,6 @@ export class ComplexMap extends Applet
 	whitePoint = 1;
 
 	draggableCallback = null;
-
-	lastTimestamp = -1;
 
 	addIndicatorDraggable = false;
 	useSelectorMode = false;
@@ -287,11 +285,8 @@ export class ComplexMap extends Applet
 
 			this.wilson.draggables.draggables = [];
 		}
-
-		if (!this.animationPaused)
-		{
-			window.requestAnimationFrame(this.drawFrame.bind(this));
-		}
+		
+		this.resume();
 	}
 
 
@@ -379,28 +374,20 @@ export class ComplexMap extends Applet
 		}
 
 		this.wilson.gl.uniform2f(this.wilson.uniforms["draggableArg"], x, y);
+
+		this.needNewFrame = true;
 	}
 
 
 
-	drawFrame(timestamp)
+	prepareFrame(timeElapsed)
 	{
-		const timeElapsed = timestamp - this.lastTimestamp;
-
-		this.lastTimestamp = timestamp;
-
-		if (timeElapsed === 0)
-		{
-			return;
-		}
-
-
-
 		this.pan.update(timeElapsed);
 		this.zoom.update(timeElapsed);
+	}
 
-
-
+	drawFrame()
+	{
 		this.wilson.gl.uniform1f(this.wilson.uniforms["aspectRatio"], this.aspectRatio);
 		this.wilson.gl.uniform1f(this.wilson.uniforms["worldCenterX"], this.wilson.worldCenterX);
 		this.wilson.gl.uniform1f(this.wilson.uniforms["worldCenterY"], this.wilson.worldCenterY);
@@ -414,13 +401,6 @@ export class ComplexMap extends Applet
 		this.wilson.gl.uniform1f(this.wilson.uniforms["whitePoint"], this.whitePoint);
 
 		this.wilson.render.drawFrame();
-
-
-
-		if (!this.animationPaused)
-		{
-			window.requestAnimationFrame(this.drawFrame.bind(this));
-		}
 	}
 
 

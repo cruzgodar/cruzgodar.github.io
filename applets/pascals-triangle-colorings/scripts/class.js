@@ -1,7 +1,7 @@
-import { Applet } from "../../../scripts/applets/applet.js";
+import { AnimationFrameApplet } from "/scripts/applets/animationFrameApplet.js";
 import { Wilson } from "/scripts/wilson.js";
 
-export class PascalsTriangleColoring extends Applet
+export class PascalsTriangleColoring extends AnimationFrameApplet
 {
 	gridSize = 20;
 	pixelsPerRow = 0;
@@ -20,8 +20,6 @@ export class PascalsTriangleColoring extends Applet
 	coordinates = [];
 	colors = [];
 	isFinished = [];
-
-	lastTimestamp = -1;
 
 	activeNodes = [];
 
@@ -140,24 +138,13 @@ export class PascalsTriangleColoring extends Applet
 
 		this.wilson.ctx.lineWidth = Math.sqrt(this.pixelsPerRow / 150) * 10;
 
-		window.requestAnimationFrame(this.drawFrame.bind(this));
+		this.resume();
 	}
 
 
 
-	drawFrame(timestamp)
+	drawFrame()
 	{
-		const timeElapsed = timestamp - this.lastTimestamp;
-
-		this.lastTimestamp = timestamp;
-
-		if (timeElapsed === 0)
-		{
-			return;
-		}
-
-
-
 		for (let i = 0; i < this.pixelsPerFrame; i++)
 		{
 			for (let j = 0; j < this.activeNodes.length; j++)
@@ -256,9 +243,9 @@ export class PascalsTriangleColoring extends Applet
 
 
 
-		if (!this.animationPaused && this.activeNodes.length !== 0)
+		if (this.activeNodes.length !== 0)
 		{
-			window.requestAnimationFrame(this.drawFrame.bind(this));
+			this.needNewFrame = true;
 		}
 	}
 

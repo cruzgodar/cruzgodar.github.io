@@ -512,30 +512,20 @@ export class KaleidoscopicIFSFractal extends RaymarchApplet
 
 
 
-		window.requestAnimationFrame(this.drawFrame.bind(this));
+		this.resume();
 	}
 
 
 
-	drawFrame(timestamp)
+	prepareFrame(timeElapsed)
 	{
-		const timeElapsed = timestamp - this.lastTimestamp;
-
-		this.lastTimestamp = timestamp;
-
-
-
-		if (timeElapsed === 0)
-		{
-			return;
-		}
-
-
-
 		this.pan.update(timeElapsed);
 		this.zoom.update(timeElapsed);
 		this.moveUpdate(timeElapsed);
-		
+	}
+
+	drawFrame()
+	{
 		this.wilson.worldCenterY = Math.min(
 			Math.max(
 				this.wilson.worldCenterY,
@@ -547,16 +537,7 @@ export class KaleidoscopicIFSFractal extends RaymarchApplet
 		this.theta = -this.wilson.worldCenterX;
 		this.phi = -this.wilson.worldCenterY;
 
-
-
 		this.wilson.render.drawFrame();
-
-
-
-		if (!this.animationPaused)
-		{
-			window.requestAnimationFrame(this.drawFrame.bind(this));
-		}
 	}
 
 
@@ -756,7 +737,7 @@ export class KaleidoscopicIFSFractal extends RaymarchApplet
 
 
 
-		window.requestAnimationFrame(this.drawFrame.bind(this));
+		this.needNewFrame = true;
 	}
 
 
@@ -863,7 +844,7 @@ export class KaleidoscopicIFSFractal extends RaymarchApplet
 			]
 		);
 
-		window.requestAnimationFrame(this.drawFrame.bind(this));
+		this.needNewFrame = true;
 	}
 
 
@@ -902,18 +883,23 @@ export class KaleidoscopicIFSFractal extends RaymarchApplet
 			this.wilson.uniforms["n3"],
 			this.n3[this.polyhedronIndex]
 		);
-		
-		this.wilson.gl.uniform3fv(
-			this.wilson.uniforms["n4"],
-			this.n4[this.polyhedronIndex]
-		);
+
+		if (this.numNs[this.polyhedronIndex] >= 4)
+		{
+			this.wilson.gl.uniform3fv(
+				this.wilson.uniforms["n4"],
+				this.n4[this.polyhedronIndex]
+			);
+		}
 
 		this.wilson.gl.uniform1i(
 			this.wilson.uniforms["numNs"],
 			this.numNs[this.polyhedronIndex]
 		);
 
-		window.requestAnimationFrame(this.drawFrame.bind(this));
+		// This dance is required to get all the uniforms over properly.
+		this.needNewFrame = true;
+		window.requestAnimationFrame(() => this.updateMatrices());
 
 		changeOpacity(this.wilson.canvas, 1);
 	}

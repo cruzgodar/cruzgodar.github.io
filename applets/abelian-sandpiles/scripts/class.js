@@ -1,14 +1,12 @@
-import { Applet } from "../../../scripts/applets/applet.js";
+import { AnimationFrameApplet } from "/scripts/applets/animationFrameApplet.js";
 import { Wilson } from "/scripts/wilson.js";
 
-export class AbelianSandpile extends Applet
+export class AbelianSandpile extends AnimationFrameApplet
 {
 	wilsonUpscale = null;
 
 	numGrains = 10000;
 	resolution = 500;
-
-	lastTimestamp = -1;
 
 	computationsPerFrame = 20;
 
@@ -280,8 +278,6 @@ export class AbelianSandpile extends Applet
 
 	run({ numGrains = 10000, computationsPerFrame = 25 })
 	{
-		this.resume();
-
 		this.numGrains = numGrains;
 
 		this.resolution = Math.floor(Math.sqrt(this.numGrains)) + 2;
@@ -378,22 +374,13 @@ export class AbelianSandpile extends Applet
 
 
 
-		window.requestAnimationFrame(this.drawFrame.bind(this));
+		this.resume();
 	}
 
 
 
-	drawFrame(timestamp)
+	drawFrame()
 	{
-		const timeElapsed = timestamp - this.lastTimestamp;
-
-		this.lastTimestamp = timestamp;
-
-		if (timeElapsed === 0)
-		{
-			return;
-		}
-
 		this.wilson.gl.viewport(0, 0, this.resolution, this.resolution);
 
 		for (let i = 0; i < this.computationsPerFrame; i++)
@@ -456,13 +443,12 @@ export class AbelianSandpile extends Applet
 
 			if (!foundDiff)
 			{
+				this.pause();
 				return;
 			}
 		}
 
 		this.lastPixelData = pixelData;
-
-
 
 		this.wilsonUpscale.gl.texImage2D(
 			this.wilsonUpscale.gl.TEXTURE_2D,
@@ -480,11 +466,6 @@ export class AbelianSandpile extends Applet
 
 		this.wilsonUpscale.render.drawFrame();
 
-
-
-		if (!this.animationPaused)
-		{
-			window.requestAnimationFrame(this.drawFrame.bind(this));
-		}
+		this.needNewFrame = true;
 	}
 }

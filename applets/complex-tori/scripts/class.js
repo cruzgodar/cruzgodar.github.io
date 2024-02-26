@@ -1,14 +1,12 @@
-import { Applet } from "../../../scripts/applets/applet.js";
+import { AnimationFrameApplet } from "/scripts/applets/animationFrameApplet.js";
 import { Wilson } from "/scripts/wilson.js";
 
-export class EllipticCurve extends Applet
+export class EllipticCurve extends AnimationFrameApplet
 {
 	resolution = 500;
 
 	g2 = -2;
 	g3 = 0;
-
-	lastTimestamp = -1;
 
 
 
@@ -143,7 +141,7 @@ export class EllipticCurve extends Applet
 
 
 
-		window.requestAnimationFrame(this.drawFrame.bind(this));
+		this.resume();
 	}
 
 
@@ -153,26 +151,13 @@ export class EllipticCurve extends Applet
 		this.g2 = g2;
 		this.g3 = g3;
 
-		window.requestAnimationFrame(this.drawFrame.bind(this));
+		this.needNewFrame = true;
 	}
 
 
 
-	drawFrame(timestamp)
+	drawFrame()
 	{
-		const timeElapsed = timestamp - this.lastTimestamp;
-
-		this.lastTimestamp = timestamp;
-
-
-
-		if (timeElapsed === 0)
-		{
-			return;
-		}
-
-
-
 		this.wilson.gl.useProgram(this.wilson.render.shaderPrograms[0]);
 
 		this.wilson.gl.uniform1f(this.wilson.uniforms["g2Arg"], this.g2);
@@ -417,6 +402,6 @@ export class EllipticCurve extends Applet
 
 		this.wilson.gl.uniform1f(this.wilson.uniforms["textureStep"], 1 / this.resolution);
 
-		window.requestAnimationFrame(this.drawFrame.bind(this));
+		this.needNewFrame = true;
 	}
 }

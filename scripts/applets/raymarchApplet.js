@@ -1,6 +1,6 @@
-import { Applet } from "./applet.js";
+import { AnimationFrameApplet } from "./animationFrameApplet.js";
 
-export class RaymarchApplet extends Applet
+export class RaymarchApplet extends AnimationFrameApplet
 {
 	movingSpeed = .1;
 	moveVelocity = [0, 0, 0];
@@ -32,8 +32,6 @@ export class RaymarchApplet extends Applet
 	cameraPos = [0, 0, 0];
 
 	focalLength = 2;
-
-	lightPos = [0, 0, 5];
 
 
 

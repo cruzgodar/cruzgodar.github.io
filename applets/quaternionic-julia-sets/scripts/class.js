@@ -402,32 +402,20 @@ export class QuaternionicJuliaSet extends RaymarchApplet
 			this.maxIterations
 		);
 
-
-
-		window.requestAnimationFrame(this.drawFrame.bind(this));
+		this.resume();
 	}
 
 
 
-	drawFrame(timestamp)
+	prepareFrame(timeElapsed)
 	{
-		const timeElapsed = timestamp - this.lastTimestamp;
-
-		this.lastTimestamp = timestamp;
-
-		if (timeElapsed === 0)
-		{
-			return;
-		}
-
-
-
 		this.pan.update(timeElapsed);
 		this.zoom.update(timeElapsed);
 		this.moveUpdate(timeElapsed);
+	}
 
-		
-		
+	drawFrame()
+	{
 		this.wilson.worldCenterY = Math.min(
 			Math.max(
 				this.wilson.worldCenterY,
@@ -440,13 +428,6 @@ export class QuaternionicJuliaSet extends RaymarchApplet
 		this.phi = -this.wilson.worldCenterY;
 
 		this.wilson.render.drawFrame();
-
-
-
-		if (!this.animationPaused)
-		{
-			window.requestAnimationFrame(this.drawFrame.bind(this));
-		}
 	}
 
 
@@ -539,6 +520,8 @@ export class QuaternionicJuliaSet extends RaymarchApplet
 		}
 
 		this.wilson.gl.uniform1i(this.wilson.uniforms["imageSize"], this.imageSize);
+
+		this.needNewFrame = true;
 	}
 
 
@@ -548,6 +531,8 @@ export class QuaternionicJuliaSet extends RaymarchApplet
 		this.c = newC;
 
 		this.wilson.gl.uniform3fv(this.wilson.uniforms["c"], this.c);
+
+		this.needNewFrame = true;
 	}
 
 
@@ -583,6 +568,8 @@ export class QuaternionicJuliaSet extends RaymarchApplet
 					this.wilson.uniforms["juliaProportion"],
 					this.juliaProportion
 				);
+
+				this.needNewFrame = true;
 			}
 		});
 	}

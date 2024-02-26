@@ -117,5 +117,7 @@ export function load()
 			applet.wilsonHidden.uniforms["derivativePrecision"],
 			applet.derivativePrecision
 		);
+
+		applet.needNewFrame = true;
 	}
 }

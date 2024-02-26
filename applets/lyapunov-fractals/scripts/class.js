@@ -1,8 +1,8 @@
-import { Applet } from "../../../scripts/applets/applet.js";
+import { AnimationFrameApplet } from "/scripts/applets/animationFrameApplet.js";
 import { addTemporaryListener } from "/scripts/src/main.js";
 import { Wilson } from "/scripts/wilson.js";
 
-export class LyapunovFractal extends Applet
+export class LyapunovFractal extends AnimationFrameApplet
 {
 	wilsonHidden = null;
 
@@ -16,8 +16,6 @@ export class LyapunovFractal extends Applet
 
 	resolution = 500;
 	resolutionHidden = 100;
-
-	lastTimestamp = -1;
 
 
 
@@ -246,29 +244,20 @@ export class LyapunovFractal extends Applet
 
 
 
-		window.requestAnimationFrame(this.drawFrame.bind(this));
+		this.resume();
 	}
 
 
 
-	drawFrame(timestamp)
+	prepareFrame(timeElapsed)
 	{
-		const timeElapsed = timestamp - this.lastTimestamp;
-
-		this.lastTimestamp = timestamp;
-
-		if (timeElapsed === 0)
-		{
-			return;
-		}
-
-
-
 		this.pan.update(timeElapsed);
 		this.zoom.update(timeElapsed);
+	}
 
 
-
+	drawFrame()
+	{
 		this.wilsonHidden.gl.uniform1f(
 			this.wilsonHidden.uniforms["aspectRatio"],
 			this.aspectRatio
@@ -353,12 +342,5 @@ export class LyapunovFractal extends Applet
 		);
 
 		this.wilson.render.drawFrame();
-
-
-
-		if (!this.animationPaused)
-		{
-			window.requestAnimationFrame(this.drawFrame.bind(this));
-		}
 	}
 }

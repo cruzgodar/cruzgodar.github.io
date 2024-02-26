@@ -1,7 +1,7 @@
-import { Applet } from "../../../scripts/applets/applet.js";
+import { AnimationFrameApplet } from "/scripts/applets/animationFrameApplet.js";
 import { Wilson } from "/scripts/wilson.js";
 
-export class SortingAlgorithm extends Applet
+export class SortingAlgorithm extends AnimationFrameApplet
 {
 	resolution = 2000;
 
@@ -17,7 +17,6 @@ export class SortingAlgorithm extends Applet
 
 	doPlaySound = true;
 
-	lastTimestamp = -1;
 	timeElapsed = 0;
 
 	algorithms = {
@@ -260,29 +259,19 @@ export class SortingAlgorithm extends Applet
 		}
 
 		this.currentGenerator = this.generators[0]();
-
-
-		if (!this.animationPaused)
-		{
-			window.requestAnimationFrame(this.drawFrame.bind(this));
-		}
+		
+		this.resume();
 	}
 
 
 
-	drawFrame(timestamp)
+	prepareFrame(timeElapsed)
 	{
-		this.timeElapsed = timestamp - this.lastTimestamp;
+		this.timeElapsed = timeElapsed;
+	}
 
-		this.lastTimestamp = timestamp;
-
-		if (this.timeElapsed === 0)
-		{
-			return;
-		}
-
-
-
+	drawFrame()
+	{
 		const textureData = new Uint8Array(this.dataLength * 4);
 
 		for (let i = 0; i < this.dataLength; i++)
@@ -338,10 +327,7 @@ export class SortingAlgorithm extends Applet
 			}
 		}
 
-		else
-		{
-			window.requestAnimationFrame(this.drawFrame.bind(this));
-		}
+		this.needNewFrame = true;
 	}
 
 

@@ -1,10 +1,10 @@
-import { Applet } from "../../../scripts/applets/applet.js";
 import { getGlslBundle, loadGlsl } from "../../../scripts/src/complexGlsl.js";
 import anime from "/scripts/anime.js";
+import { AnimationFrameApplet } from "/scripts/applets/animationFrameApplet.js";
 import { addTemporaryListener } from "/scripts/src/main.js";
 import { Wilson } from "/scripts/wilson.js";
 
-export class NewtonsMethodExtended extends Applet
+export class NewtonsMethodExtended extends AnimationFrameApplet
 {
 	loadPromise = null;
 
@@ -25,8 +25,6 @@ export class NewtonsMethodExtended extends Applet
 	resolutionHidden = 100;
 
 	derivativePrecision = 6;
-
-	lastTimestamp = -1;
 
 	colors = null;
 
@@ -350,7 +348,7 @@ export class NewtonsMethodExtended extends Applet
 
 
 
-		window.requestAnimationFrame(this.drawFrame.bind(this));
+		this.resume();
 	}
 
 
@@ -431,6 +429,8 @@ export class NewtonsMethodExtended extends Applet
 						this.wilsonHidden.uniforms["colors"],
 						this.colors
 					);
+
+					this.needNewFrame = true;
 				}
 			}
 		});
@@ -449,28 +449,20 @@ export class NewtonsMethodExtended extends Applet
 		{
 			this.c = [x, y];
 		}
+
+		this.needNewFrame = true;
 	}
 
 
 
-	drawFrame(timestamp)
+	prepareFrame(timeElapsed)
 	{
-		const timeElapsed = timestamp - this.lastTimestamp;
-
-		this.lastTimestamp = timestamp;
-
-		if (timeElapsed === 0)
-		{
-			return;
-		}
-
-
-
 		this.pan.update(timeElapsed);
 		this.zoom.update(timeElapsed);
+	}
 
-
-
+	drawFrame()
+	{
 		this.wilsonHidden.gl.uniform1f(
 			this.wilsonHidden.uniforms["aspectRatio"],
 			this.aspectRatio
@@ -584,12 +576,5 @@ export class NewtonsMethodExtended extends Applet
 		);
 
 		this.wilson.render.drawFrame();
-
-
-
-		if (!this.animationPaused)
-		{
-			window.requestAnimationFrame(this.drawFrame.bind(this));
-		}
 	}
 }

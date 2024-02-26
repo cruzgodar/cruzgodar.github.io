@@ -1,10 +1,10 @@
-import { Applet } from "../../../scripts/applets/applet.js";
 import { getGlslBundle, loadGlsl } from "../../../scripts/src/complexGlsl.js";
+import { AnimationFrameApplet } from "/scripts/applets/animationFrameApplet.js";
 import { changeOpacity } from "/scripts/src/animation.js";
 import { $$, addTemporaryListener } from "/scripts/src/main.js";
 import { Wilson } from "/scripts/wilson.js";
 
-export class FractalSounds extends Applet
+export class FractalSounds extends AnimationFrameApplet
 {
 	loadPromise = null;
 
@@ -31,15 +31,11 @@ export class FractalSounds extends Applet
 	fixedPointX = 0;
 	fixedPointY = 0;
 
-	numTouches = 0;
-
 	moved = 0;
 
 	lastX = 0;
 	lastY = 0;
 	zoomingWithMouse = false;
-
-	lastTimestamp = -1;
 
 
 
@@ -152,14 +148,14 @@ export class FractalSounds extends Applet
 
 		this.zoom.init();
 
+		this.listenForNumTouches();
+
 		const boundFunction = () => this.changeAspectRatio(true, [this.wilson, this.wilsonJulia]);
 		addTemporaryListener({
 			object: window,
 			event: "resize",
 			callback: boundFunction
 		});
-
-
 
 		this.loadPromise = loadGlsl();
 	}
@@ -382,7 +378,7 @@ export class FractalSounds extends Applet
 		this.wilsonJulia.gl.uniform1f(this.wilsonJulia.uniforms["aspectRatio"][0], 1);
 		this.wilsonHidden.gl.uniform1f(this.wilsonHidden.uniforms["aspectRatio"][0], 1);
 
-		window.requestAnimationFrame(this.drawFrame.bind(this));
+		this.resume();
 	}
 
 
@@ -432,6 +428,8 @@ export class FractalSounds extends Applet
 			{
 				this.wilson.ctx.clearRect(0, 0, this.resolution, this.resolution);
 			}
+
+			this.needNewFrame = true;
 		}
 
 		else
@@ -613,24 +611,14 @@ export class FractalSounds extends Applet
 
 
 
-	drawFrame(timestamp)
+	prepareFrame(timeElapsed)
 	{
-		const timeElapsed = timestamp - this.lastTimestamp;
-
-		this.lastTimestamp = timestamp;
-
-		if (timeElapsed === 0)
-		{
-			return;
-		}
-
-
-
 		this.pan.update(timeElapsed);
 		this.zoom.update(timeElapsed);
+	}
 
-
-
+	drawFrame()
+	{
 		this.wilsonHidden.gl.uniform1f(
 			this.wilsonHidden.uniforms["worldCenterX"][0],
 			this.wilson.worldCenterX
@@ -731,13 +719,6 @@ export class FractalSounds extends Applet
 		);
 
 		this.wilsonJulia.render.drawFrame();
-
-
-
-		if (!this.animationPaused)
-		{
-			window.requestAnimationFrame(this.drawFrame.bind(this));
-		}
 	}
 
 
