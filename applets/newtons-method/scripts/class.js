@@ -1,10 +1,11 @@
 import { Applet } from "../../../scripts/applets/applet.js";
 import anime from "/scripts/anime.js";
+import { AnimationFrameApplet } from "/scripts/applets/animationFrameApplet.js";
 import { changeOpacity } from "/scripts/src/animation.js";
 import { addTemporaryListener } from "/scripts/src/main.js";
 import { Wilson } from "/scripts/wilson.js";
 
-export class NewtonsMethod extends Applet
+export class NewtonsMethod extends AnimationFrameApplet
 {
 	wilsonHidden = null;
 
@@ -34,8 +35,6 @@ export class NewtonsMethod extends Applet
 
 	resolution = 500;
 	resolutionHidden = 100;
-
-	lastTimestamp = -1;
 
 
 
@@ -372,7 +371,7 @@ export class NewtonsMethod extends Applet
 		this.wilson.gl.uniform3fv(this.wilson.uniforms["colors"], this.colors);
 		this.wilsonHidden.gl.uniform3fv(this.wilsonHidden.uniforms["colors"], this.colors);
 
-		window.requestAnimationFrame(this.drawFrame.bind(this));
+		this.resume();
 	}
 
 
@@ -391,6 +390,7 @@ export class NewtonsMethod extends Applet
 			update: () =>
 			{
 				this.secantProportion = dummy.t;
+				this.needNewFrame = true;
 			}
 		});
 	}
@@ -415,6 +415,8 @@ export class NewtonsMethod extends Applet
 		this.currentRoots.push(y);
 
 		this.numRoots++;
+
+		this.needNewFrame = true;
 	}
 
 
@@ -438,6 +440,8 @@ export class NewtonsMethod extends Applet
 		this.wilson.draggables.worldCoordinates.pop();
 
 		this.wilson.draggables.numDraggables--;
+
+		this.needNewFrame = true;
 	}
 
 
@@ -479,6 +483,8 @@ export class NewtonsMethod extends Applet
 						this.currentRoots[2 * i + 1]
 					];
 				}
+
+				this.needNewFrame = true;
 			},
 			complete: () =>
 			{
@@ -492,6 +498,8 @@ export class NewtonsMethod extends Applet
 						this.currentRoots[2 * i + 1]
 					];
 				}
+
+				this.needNewFrame = true;
 			}
 		});
 	}
@@ -500,7 +508,6 @@ export class NewtonsMethod extends Applet
 
 	setRoot(x, y)
 	{
-		console.log(this.lastActiveRoot);
 		if (this.lastActiveRoot === 0)
 		{
 			this.a[0] = x;
@@ -535,6 +542,8 @@ export class NewtonsMethod extends Applet
 
 
 		this.wilson.draggables.recalculateLocations();
+
+		this.needNewFrame = true;
 	}
 
 
@@ -573,6 +582,8 @@ export class NewtonsMethod extends Applet
 
 				this.wilson.gl.uniform3fv(this.wilson.uniforms["colors"], this.colors);
 				this.wilsonHidden.gl.uniform3fv(this.wilsonHidden.uniforms["colors"], this.colors);
+
+				this.needNewFrame = true;
 			}
 		});
 	}
@@ -596,6 +607,8 @@ export class NewtonsMethod extends Applet
 			this.currentRoots[2 * (activeDraggable - 2)] = x;
 			this.currentRoots[2 * (activeDraggable - 2) + 1] = y;
 		}
+
+		this.needNewFrame = true;
 	}
 
 
@@ -651,25 +664,15 @@ export class NewtonsMethod extends Applet
 
 
 
-	drawFrame(timestamp)
+	prepareFrame(timeElapsed)
 	{
-		const timeElapsed = timestamp - this.lastTimestamp;
-
-		this.lastTimestamp = timestamp;
-
-		if (timeElapsed === 0)
-		{
-			return;
-		}
-
-
-
-		this.wilson.draggables.recalculateLocations();
-
 		this.pan.update(timeElapsed);
 		this.zoom.update(timeElapsed);
+	}
 
-
+	drawFrame()
+	{
+		this.wilson.draggables.recalculateLocations();
 
 		this.wilsonHidden.gl.uniform1f(
 			this.wilsonHidden.uniforms["aspectRatio"],
@@ -814,12 +817,5 @@ export class NewtonsMethod extends Applet
 		);
 
 		this.wilson.render.drawFrame();
-
-
-
-		if (!this.animationPaused)
-		{
-			window.requestAnimationFrame(this.drawFrame.bind(this));
-		}
 	}
 }

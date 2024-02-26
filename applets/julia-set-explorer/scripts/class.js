@@ -1,9 +1,10 @@
 import { Applet } from "../../../scripts/applets/applet.js";
 import { doubleEmulationGlsl, loadGlsl } from "../../../scripts/src/complexGlsl.js";
+import { AnimationFrameApplet } from "/scripts/applets/animationFrameApplet.js";
 import { addTemporaryListener } from "/scripts/src/main.js";
 import { Wilson } from "/scripts/wilson.js";
 
-export class JuliaSet extends Applet
+export class JuliaSet extends AnimationFrameApplet
 {
 	wilsonHidden = null;
 
@@ -894,17 +895,19 @@ export class JuliaSet extends Applet
 
 
 		this.wilsonHidden.gl.useProgram(
-			this.wilsonHidden.render.shaderPrograms[shaderProgramIndex]);
+			this.wilsonHidden.render.shaderPrograms[shaderProgramIndex]
+		);
 
 		this.wilsonHidden.gl.uniform1f(
 			this.wilsonHidden.uniforms["aspectRatio"][shaderProgramIndex],
-			1)
-		;
+			1
+		);
 
 		this.wilsonHidden.gl.uniform2fv(
 			this.wilsonHidden.uniforms["worldCenterX"][shaderProgramIndex],
 			cx
 		);
+
 		this.wilsonHidden.gl.uniform2fv(
 			this.wilsonHidden.uniforms["worldCenterY"][shaderProgramIndex],
 			cy
@@ -968,7 +971,9 @@ export class JuliaSet extends Applet
 
 
 
-		this.wilson.gl.useProgram(this.wilson.render.shaderPrograms[shaderProgramIndex]);
+		this.wilson.gl.useProgram(
+			this.wilson.render.shaderPrograms[shaderProgramIndex]
+		);
 
 		this.wilson.gl.uniform1f(
 			this.wilson.uniforms["aspectRatio"][shaderProgramIndex],

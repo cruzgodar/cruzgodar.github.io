@@ -128,15 +128,13 @@ export const galleryImageData =
 	{
 		title: "Newton&#x2019;s Method",
 
-		resolution: "5000x5000",
+		resolution: "4000x4000",
 
 		parameters: "Roots at (&#x00B1;1, 0), (0, &#x00B1;1.5), (&#x00B1;1.5, &#x00B1;1.5)",
 
-		featured: "Featured in UO&#x2019;s Erb Memorial Union and University Hall",
-
 		appletLink: "newtons-method",
 
-		imageLink: "https://drive.google.com/uc?id=1I19shEUp7KEPThaj16eV9H9hqBeSwJm3&export=download"
+		imageLink: "https://drive.google.com/uc?id=1T8X5JduKEg8BkakXzGXZzu3CFW_R88i6&export=download"
 	},
 
 	"abelian-sandpile":

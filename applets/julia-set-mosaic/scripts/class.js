@@ -1,8 +1,8 @@
-import { Applet } from "../../../scripts/applets/applet.js";
+import { AnimationFrameApplet } from "/scripts/applets/animationFrameApplet.js";
 import { addTemporaryListener } from "/scripts/src/main.js";
 import { Wilson } from "/scripts/wilson.js";
 
-export class JuliaSetMosaic extends Applet
+export class JuliaSetMosaic extends AnimationFrameApplet
 {
 	wilsonHidden = null;
 

@@ -15,11 +15,9 @@ export class Applet
 	workers = [];
 	timeoutIds = [];
 
-	needNewFrame = true;
-	animationPaused = false;
-
 	keysPressed = {};
 	numTouches = 0;
+	needNewFrame = false;
 
 
 
@@ -37,69 +35,6 @@ export class Applet
 
 		Applet.current.push(this);
 	}
-
-
-
-	// When an applet needs to draw potentially frame, it registers these two functions.
-	// The first is called every frame and can be used to determine if a new frame is needed,
-	// while the second is the actual Wilson call to render the frame. This makes it easier
-	// to not needlessly draw frames and also harder to forget to check for animationPaused.
-	prepareFrame() {}
-	drawFrame() {}
-
-	lastTimestamp = -1;
-
-	drawFrameLoop(timestamp)
-	{
-		const timeElapsed = timestamp - this.lastTimestamp;
-
-		if (this.lastTimestamp === -1)
-		{
-			this.lastTimestamp = timestamp;
-			window.requestAnimationFrame(this.drawFrameLoopBound);
-			return;
-		}
-
-		this.lastTimestamp = timestamp;
-
-		if (timeElapsed === 0)
-		{
-			return;
-		}
-
-		this.prepareFrame(timeElapsed);
-
-		if (this.needNewFrame)
-		{
-			this.drawFrame(timeElapsed);
-			this.needNewFrame = false;
-		}
-
-		if (!this.animationPaused)
-		{
-			window.requestAnimationFrame(this.drawFrameLoopBound);
-		}
-	}
-
-	drawFrameLoopBound = this.drawFrameLoop.bind(this);
-
-
-
-	pause()
-	{
-		this.animationPaused = true;
-	}
-
-
-
-	resume()
-	{
-		this.animationPaused = false;
-
-		window.requestAnimationFrame(this.drawFrameLoopBound);
-	}
-
-
 
 	destroy()
 	{
@@ -653,6 +588,8 @@ export class Applet
 
 		onDragCanvas(x, y, xDelta, yDelta)
 		{
+			this.parent.needNewFrame = true;
+
 			this.parent.wilson.worldCenterX -= xDelta;
 			this.parent.wilson.worldCenterY -= yDelta;
 
@@ -662,6 +599,8 @@ export class Applet
 
 		onPinchCanvas(x, y, touchDistanceDelta)
 		{
+			this.parent.needNewFrame = true;
+			
 			if (this.parent.wilson.worldWidth >= this.parent.wilson.worldHeight)
 			{
 				this.level -= touchDistanceDelta / this.parent.wilson.worldWidth

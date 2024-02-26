@@ -2198,11 +2198,6 @@ export class Wilson
 
 			this.touchDistance = -1;
 
-			this.lastRow1 = -1;
-			this.lastCol1 = -1;
-			this.lastRow2 = -1;
-			this.lastCol2 = -1;
-
 			if (e.touches.length === 0)
 			{
 				this.wasPinching = false;
@@ -2223,6 +2218,11 @@ export class Wilson
 
 				this.touchendCallback(...lastWorldCoordinates, e);
 			}
+
+			this.lastRow1 = -1;
+			this.lastCol1 = -1;
+			this.lastRow2 = -1;
+			this.lastCol2 = -1;
 		},
 
 
