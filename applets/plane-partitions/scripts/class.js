@@ -1,11 +1,11 @@
-import { Applet } from "../../../scripts/applets/applet.js";
 import anime from "/scripts/anime.js";
+import { AnimationFrameApplet } from "/scripts/applets/animationFrameApplet.js";
 import { changeOpacity } from "/scripts/src/animation.js";
 import { $$ } from "/scripts/src/main.js";
 import * as THREE from "/scripts/three.js";
 import { Wilson } from "/scripts/wilson.js";
 
-export class PlanePartitions extends Applet
+export class PlanePartitions extends AnimationFrameApplet
 {
 	wilsonNumbers = null;
 
@@ -338,7 +338,7 @@ export class PlanePartitions extends Applet
 		this.pointLight.position.set(750, 1000, 500);
 		this.scene.add(this.pointLight);
 
-		this.drawFrame();
+		this.resume();
 	}
 
 
@@ -464,7 +464,7 @@ export class PlanePartitions extends Applet
 
 
 
-		window.requestAnimationFrame(this.drawFrame.bind(this));
+		this.needNewFrame = true;
 	}
 
 

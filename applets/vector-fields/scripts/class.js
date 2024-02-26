@@ -1,13 +1,13 @@
-import { Applet } from "../../../scripts/applets/applet.js";
 import {
 	doubleEncodingGlsl,
 	getGlslBundle,
 	loadGlsl
 } from "../../../scripts/src/complexGlsl.js";
+import { AnimationFrameApplet } from "/scripts/applets/animationFrameApplet.js";
 import { addTemporaryListener } from "/scripts/src/main.js";
 import { Wilson } from "/scripts/wilson.js";
 
-export class VectorField extends Applet
+export class VectorField extends AnimationFrameApplet
 {
 	loadPromise = null;
 
@@ -24,8 +24,6 @@ export class VectorField extends Applet
 	dt = .00375;
 
 	lifetime = 150;
-
-	lastTimestamp = -1;
 
 	// A long array of particles of the form [x, y, remaining lifetime].
 	particles = [];
@@ -574,21 +572,12 @@ export class VectorField extends Applet
 
 
 
-		window.requestAnimationFrame(this.drawFrame.bind(this));
+		this.resume();
 	}
 
 
 
-	resume()
-	{
-		this.animationPaused = false;
-
-		window.requestAnimationFrame(this.drawFrame.bind(this));
-	}
-
-
-
-	drawFrame(timestamp)
+	drawFrame(timeElapsed)
 	{
 		// Wrapping everything in a try block and eating the occasional error is pretty gross,
 		// but it's actually a decent solution: everything is fine unless the user
@@ -596,17 +585,6 @@ export class VectorField extends Applet
 		// in the middle of this function. We can fix that by just restarting whenever it happens.
 		try
 		{
-			const timeElapsed = timestamp - this.lastTimestamp;
-
-			this.lastTimestamp = timestamp;
-
-			if (timeElapsed === 0)
-			{
-				return;
-			}
-
-
-
 			for (let i = 0; i < 5; i++)
 			{
 				this.wilsonUpdate.gl.useProgram(this.wilsonUpdate.render.shaderPrograms[i]);
@@ -762,12 +740,7 @@ export class VectorField extends Applet
 
 			this.drawField();
 
-
-
-			if (!this.animationPaused)
-			{
-				window.requestAnimationFrame(this.drawFrame.bind(this));
-			}
+			this.needNewFrame = true;
 		}
 
 		catch(ex)
