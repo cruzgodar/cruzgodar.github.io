@@ -15,13 +15,11 @@ Inspired by the recent (at the time of writing) <a href="https://www.youtube.com
 	col-prob
 ###
 
-
-
-### checkbox draw-boundaries
-### checkbox draw-regions
-### checkbox maximum-speed
-
-
+### checkboxes
+	draw-boundaries
+	draw-regions
+	maximum-speed
+###
 
 ### buttons
 	generate

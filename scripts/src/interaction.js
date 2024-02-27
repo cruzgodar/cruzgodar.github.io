@@ -46,12 +46,7 @@ export function setUpInteractionListeners()
 		// Click the focused element when the enter key is pressed.
 		if (e.key === "Enter")
 		{
-			if (document.activeElement.classList.contains("click-on-child"))
-			{
-				document.activeElement.children[0].click();
-			}
-
-			else if (
+			if (
 				!(
 					document.activeElement.tagName === "BUTTON"
 					|| (

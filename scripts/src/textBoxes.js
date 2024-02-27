@@ -171,7 +171,7 @@ export class TextBox extends InputElement
 
 		dialog.innerHTML = `Higher values than this may take an extremely long time to compute, cause substantial lag, or crash the tab or entire browser. Only continue if you know what you&#x2019;re doing!
 		<div class="checkbox-row keep-dialog-open">
-			<div class="checkbox-container click-on-child keep-dialog-open">
+			<div class="checkbox-container keep-dialog-open">
 				<input type="checkbox" class="uncap-inputs-checkbox keep-dialog-open"/>
 				<div class="checkbox keep-dialog-open"></div>
 			</div>

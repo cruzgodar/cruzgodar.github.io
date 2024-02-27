@@ -17,7 +17,9 @@ The **Lorenz system** is a bare-bones model of atmospheric convection. Constants
 	beta
 ###
 
-### checkbox maximum-speed
+### checkboxes
+	maximum-speed
+###
 
 ### buttons
 	generate

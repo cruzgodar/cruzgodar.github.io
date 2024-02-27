@@ -5,7 +5,7 @@ import { canvas } from "./components/canvas.js";
 import { card } from "./components/card.js";
 import { carousel } from "./components/carousel.js";
 import { center } from "./components/center.js";
-import { checkbox } from "./components/checkbox.js";
+import { checkboxes } from "./components/checkboxes.js";
 import { desmos } from "./components/desmos.js";
 import { dropdown } from "./components/dropdown.js";
 import { galleryBlock } from "./components/gallery-block.js";
@@ -37,7 +37,6 @@ const singleLineComponents = [
 	"canvas",
 	"card",
 	"center",
-	"checkbox",
 	"desmos",
 	"dropdown",
 	"glsl-docs",
@@ -52,7 +51,7 @@ const components = {
 	"card": card,
 	"carousel": carousel,
 	"center": center,
-	"checkbox": checkbox,
+	"checkboxes": checkboxes,
 	"desmos": desmos,
 	"dropdown": dropdown,
 	"gallery-block": galleryBlock,

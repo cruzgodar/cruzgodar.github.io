@@ -19,10 +19,11 @@ By adjusting the definition of a circle, we can change the appearance of the res
 	metric
 ###
 
-### checkbox maximum-speed
-### checkbox hide-points
-### checkbox use-draggable
-
+### checkboxes
+	maximum-speed
+	hide-points
+	use-draggable
+###
 
 ### buttons
 	generate

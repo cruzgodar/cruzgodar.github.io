@@ -18,8 +18,10 @@ The other thing to watch out for is hitting the single white dot you selected at
 	grid-size
 ###
 
-### checkbox maximum-speed
-### checkbox draw-borders
+### checkboxes
+	maximum-speed
+	draw-borders
+###
 
 ### buttons
 	generate

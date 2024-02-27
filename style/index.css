@@ -643,8 +643,8 @@ mjx-container
 
 	grid-template-columns: repeat(auto-fit, 100px);
 	
-	grid-row-gap: 10px;
-	grid-column-gap: 10px;
+	row-gap: 10px;
+	column-gap: 10px;
 	
 	margin-top: 32px;
 }
@@ -670,9 +670,6 @@ mjx-container
 	
 	margin-bottom: 32px;
 }
-
-
-
 
 
 .text-button
@@ -769,14 +766,25 @@ mjx-container
 
 
 
-.checkbox-row
+.checkboxes
 {
+	position: relative;
+	display: flex;
+	flex-wrap: wrap;
+	
+	justify-content: center;
+	align-items: center;
+	
 	width: 70%;
-	height: 32px;
 	margin: 0 auto;
+	column-gap: 32px;
+	row-gap: 32px;
 	
 	margin-top: 32px;
-	
+}
+
+.checkbox-row
+{
 	display: flex;
 	align-items: center;
 	justify-content: center;
@@ -806,6 +814,7 @@ mjx-container
 	border: 2px solid var(--normal-contrast);
 	border-radius: 6px;
 	padding: 2px;
+	cursor: pointer;
 }
 
 .checkbox-container:not(:hover):focus
@@ -1136,7 +1145,7 @@ option
 
 @media (min-aspect-ratio: 1/1), (max-width: 900px)
 {
-	.text-boxes, .text-buttons, .sliders
+	.text-boxes, .text-buttons, .sliders, .checkboxes
 	{
 		width: 90%;
 	}
@@ -1489,8 +1498,8 @@ option
 {
 	display: grid;
 	
-	grid-row-gap: 18px;
-	grid-column-gap: 30px;
+	row-gap: 18px;
+	column-gap: 30px;
 	grid-template-columns: repeat(5, 1fr);
 	justify-content: center;
 	

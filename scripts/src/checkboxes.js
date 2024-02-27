@@ -28,6 +28,15 @@ export class Checkbox extends InputElement
 				this.onInput();
 			}
 		});
+
+		this.element.parentNode.addEventListener("click", () =>
+		{
+			// This is only satisfied when we click on the border.
+			if (this.checked === this.element.checked)
+			{
+				this.element.click();
+			}
+		});
 	}
 
 	setChecked(newChecked, callOnInput = false)

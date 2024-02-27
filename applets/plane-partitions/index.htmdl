@@ -58,7 +58,9 @@ Plane partitions are frequently studied, and many correspondences involving them
 	</div>
 	
 	<div class="view-controls-section category-section">
-		### checkbox maximum-speed
+		### checkboxes
+			maximum-speed
+		###
 	</div>
 	
 	

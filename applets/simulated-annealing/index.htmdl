@@ -15,7 +15,9 @@ There are plenty of ways to quickly approximate it, though. One of them, called 
 	num-nodes
 ###
 
-### checkbox maximum-speed
+### checkboxes
+	maximum-speed
+###
 
 ### buttons
 	generate
