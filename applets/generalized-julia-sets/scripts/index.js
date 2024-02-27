@@ -1,10 +1,10 @@
-import { Applet } from "../../../scripts/applets/applet.js";
 import { showPage } from "../../../scripts/src/loadPage.js";
 import { GeneralizedJuliaSet } from "./class.js";
 import { DownloadButton, GenerateButton, ToggleButton } from "/scripts/src/buttons.js";
 import { Dropdown } from "/scripts/src/dropdowns.js";
 import { $ } from "/scripts/src/main.js";
 import { TextBox } from "/scripts/src/textBoxes.js";
+import { Textarea } from "/scripts/src/textareas.js";
 
 export function load()
 {
@@ -37,11 +37,12 @@ export function load()
 		filename: "a-generalized-julia-set.png"
 	});
 
-	const codeInputElement = $("#code-textarea");
-
-	codeInputElement.value = "cadd(cpow(z, 2.0), c)";
-
-	Applet.listenToInputElements([codeInputElement], run);
+	const glslTextarea = new Textarea({
+		element: $("#glsl-textarea"),
+		name: "Generating Code",
+		value: "cadd(cpow(z, 2.0), c)",
+		onEnter: run
+	});
 
 	const examples =
 	{
@@ -80,13 +81,11 @@ export function load()
 
 	function run()
 	{
-		const generatingCode = codeInputElement.value || "cadd(cpow(z, 2.0), c)";
-
 		switchJuliaModeButton.setState(0);
 		switchJuliaModeButton.disabled = false;
 
 		applet.run({
-			generatingCode,
+			generatingCode: glslTextarea.value,
 			resolution: resolutionInput.value,
 			exposure: 1,
 			numIterations: 200
@@ -102,7 +101,7 @@ export function load()
 
 	function onDropdownInput()
 	{
-		codeInputElement.value = examples[examplesDropdown.value];
+		glslTextarea.setValue(examples[examplesDropdown.value]);
 
 		run();
 	}

@@ -30,7 +30,7 @@ export class LyapunovFractal extends AnimationFrameApplet
 
 		const hiddenCanvas = this.createHiddenCanvas();
 
-		const tempShader = `
+		const tempShader = /* glsl */`
 			precision highp float;
 			varying vec2 uv;
 			

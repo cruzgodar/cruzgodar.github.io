@@ -6,6 +6,7 @@ import { Dropdown } from "/scripts/src/dropdowns.js";
 import { equalizeAppletColumns } from "/scripts/src/layout.js";
 import { $, $$ } from "/scripts/src/main.js";
 import { TextBox } from "/scripts/src/textBoxes.js";
+import { Textarea } from "/scripts/src/textareas.js";
 
 export function load()
 {
@@ -62,10 +63,17 @@ export function load()
 		onInput: onDropdownInput
 	});
 
+	const addArrayTextarea = new Textarea({
+		element: $("#add-array-textarea"),
+		name: "Array",
+		onEnter: addArray
+	});
 
-	const arrayDataTextareaElement = $("#array-data-textarea");
-
-	const editArrayTextareaElement = $("#edit-array-textarea");
+	const editArrayTextarea = new Textarea({
+		element: $("#edit-array-textarea"),
+		name: "Array",
+		onEnter: editArray
+	});
 
 
 
@@ -113,13 +121,7 @@ export function load()
 	new Button({
 		element: $("#add-array-button"),
 		name: "Add",
-		onClick: () =>
-		{
-			applet.addNewArray(
-				applet.arrays.length,
-				PlanePartitions.parseArray(arrayDataTextareaElement.value)
-			);
-		}
+		onClick: addArray
 	});
 
 	new Button({
@@ -230,7 +232,7 @@ export function load()
 		.forEach(element => canvasLandscapeLeftElement.appendChild(element));
 
 	const planePartition = PlanePartitions.generateRandomPlanePartition();
-	arrayDataTextareaElement.value = PlanePartitions.arrayToAscii(planePartition);
+	addArrayTextarea.setValue(PlanePartitions.arrayToAscii(planePartition));
 	applet.addNewArray(0, planePartition);
 
 
@@ -245,15 +247,23 @@ export function load()
 
 		applet.renderer.setSize(applet.resolution, applet.resolution, false);
 	}
+	
+	async function addArray()
+	{
+		applet.addNewArray(
+			applet.arrays.length,
+			PlanePartitions.parseArray(addArrayTextarea.value)
+		);
+	}
 
 	async function editArray()
 	{
 		await applet.editArray(
 			editArrayIndexInput.value,
-			PlanePartitions.parseArray(editArrayTextareaElement.value)
+			PlanePartitions.parseArray(editArrayTextarea.value)
 		);
 
-		editArrayTextareaElement.value = PlanePartitions.arrayToAscii(
+		editArrayTextarea.value = PlanePartitions.arrayToAscii(
 			applet.arrays[editArrayIndexInput.value].numbers
 		);
 	}
@@ -267,8 +277,8 @@ export function load()
 			return;
 		}
 
-		editArrayTextareaElement.value = PlanePartitions.arrayToAscii(
-			applet.arrays[index].numbers
+		editArrayTextarea.setValue(
+			PlanePartitions.arrayToAscii(applet.arrays[index].numbers)
 		);
 	}
 

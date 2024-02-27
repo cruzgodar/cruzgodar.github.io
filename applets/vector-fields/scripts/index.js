@@ -7,6 +7,7 @@ import { Dropdown } from "/scripts/src/dropdowns.js";
 import { $ } from "/scripts/src/main.js";
 import { Slider } from "/scripts/src/sliders.js";
 import { TextBox } from "/scripts/src/textBoxes.js";
+import { Textarea } from "/scripts/src/textareas.js";
 
 export function load()
 {
@@ -42,18 +43,11 @@ export function load()
 		name: "Use raw GLSL"
 	});
 
-
-
-	const codeTextareaElement = $("#code-textarea");
-
-	codeTextareaElement.addEventListener("keydown", (e) =>
-	{
-		if (e.key === "Enter")
-		{
-			e.preventDefault();
-
-			run();
-		}
+	const glslTextarea = new Textarea({
+		element: $("#glsl-textarea"),
+		name: "Generating Code",
+		value: "(sin(1.5y), -sin(1.5x))",
+		onEnter: run
 	});
 
 
@@ -64,6 +58,16 @@ export function load()
 		saddlePoints: "(0.49y^2, 1 - 0.49x^2)",
 		clockwork: "(sin(1.5y), -sin(1.5x))",
 		directionField: "(1, sin(y) / (x^2 + 1))",
+		divergingDiamond: "(sin(y / 2.5), tan(x / 2.5))",
+		draggables: "(draggableArg.x * x - y, x + draggableArg.y * y)"
+	};
+
+	const examplesRaw =
+	{
+		sourcesAndSinks: "((0.6 * x - 1.0) * (0.6 * x + 1.0), (0.6 * y + 1.0) * (0.6 * y - 1.0))",
+		saddlePoints: "(0.49 * y * y, 1.0 - 0.49 * x * x)",
+		clockwork: "(sin(1.5 * y), -sin(1.5 * x))",
+		directionField: "(1.0, sin(y) / (x * x + 1.0))",
 		divergingDiamond: "(sin(y / 2.5), tan(x / 2.5))",
 		draggables: "(draggableArg.x * x - y, x + draggableArg.y * y)"
 	};
@@ -108,8 +112,8 @@ export function load()
 	function run()
 	{
 		const generatingCode = rawGlslCheckbox.checked
-			? codeTextareaElement.value
-			: Applet.parseNaturalGLSL(codeTextareaElement.value);
+			? glslTextarea.value
+			: Applet.parseNaturalGLSL(glslTextarea.value);
 		
 		applet.run({
 			generatingCode,
@@ -146,7 +150,11 @@ export function load()
 	{
 		if (examplesDropdown.value)
 		{
-			codeTextareaElement.value = examples[examplesDropdown.value];
+			glslTextarea.setValue(
+				rawGlslCheckbox.checked
+					? examplesRaw[examplesDropdown.value]
+					: examples[examplesDropdown.value]
+			);
 
 			run();
 		}

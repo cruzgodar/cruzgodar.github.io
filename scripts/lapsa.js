@@ -295,7 +295,7 @@ export default class Lapsa
 		this._shelfContainer = document.createElement("div");
 		this._shelfContainer.id = "lapsa-slide-shelf-container";
 		
-		this._shelfContainer.innerHTML = `
+		this._shelfContainer.innerHTML = /* html */`
 			<div id="lapsa-slide-shelf" class="lapsa-hover lapsa-interactable" style="margin-left: ${-this._shelfMargin}px; opacity: 0">
 				<input type="image" id="lapsa-up-2-button" class="shelf-button lapsa-interactable" src="${this.shelfIconPaths[0]}">
 				<input type="image" id="lapsa-up-1-button" class="shelf-button lapsa-interactable" src="${this.shelfIconPaths[1]}">
@@ -314,7 +314,7 @@ export default class Lapsa
 		
 		if (this.useShelfIndicator)
 		{
-			this._shelfIndicatorContainer.innerHTML = `<img id="lapsa-slide-shelf-indicator" src="${this.shelfIconPaths[5]}"></img>`;
+			this._shelfIndicatorContainer.innerHTML = /* html */`<img id="lapsa-slide-shelf-indicator" src="${this.shelfIconPaths[5]}"></img>`;
 		}
 		
 		document.body.appendChild(this._shelfIndicatorContainer);

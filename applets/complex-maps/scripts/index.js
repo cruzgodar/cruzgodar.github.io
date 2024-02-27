@@ -1,10 +1,10 @@
-import { Applet } from "../../../scripts/applets/applet.js";
 import { showPage } from "../../../scripts/src/loadPage.js";
 import { ComplexMap } from "./class.js";
 import { DownloadButton, GenerateButton } from "/scripts/src/buttons.js";
 import { Dropdown } from "/scripts/src/dropdowns.js";
 import { $ } from "/scripts/src/main.js";
 import { TextBox } from "/scripts/src/textBoxes.js";
+import { Textarea } from "/scripts/src/textareas.js";
 
 export function load()
 {
@@ -33,10 +33,12 @@ export function load()
 		onInput: changeResolution
 	});
 
-
-	const codeInputElement = $("#code-textarea");
-
-	Applet.listenToInputElements([codeInputElement], run);
+	const glslTextarea = new Textarea({
+		element: $("#glsl-textarea"),
+		name: "Complex Map",
+		value: "cexp(cinv(z))",
+		onEnter: run
+	});
 
 
 
@@ -67,9 +69,7 @@ export function load()
 
 	function run()
 	{
-		const generatingCode = codeInputElement.value || "cexp(cinv(z))";
-
-		applet.run({ generatingCode });
+		applet.run({ generatingCode: glslTextarea.value });
 	}
 
 	function changeResolution()
@@ -81,7 +81,7 @@ export function load()
 
 	function onDropdownInput()
 	{
-		codeInputElement.value = examples[examplesDropdown.value];
+		glslTextarea.setValue(examples[examplesDropdown.value]);
 
 		run();
 	}

@@ -36,7 +36,7 @@ export class NewtonsMethodExtended extends AnimationFrameApplet
 
 
 
-		const tempShader = `
+		const tempShader = /* glsl */`
 			precision highp float;
 			varying vec2 uv;
 			

@@ -901,24 +901,24 @@ export function getFloatGlsl(float)
 		return float;
 	}
 
-	return `float(${float})`;
+	return /* glsl */`float(${float})`;
 }
 
 export function getVectorGlsl(vector)
 {
 	if (vector.length === 2)
 	{
-		return `vec2(${vector[0]}, ${vector[1]})`;
+		return /* glsl */`vec2(${vector[0]}, ${vector[1]})`;
 	}
 
 	if (vector.length === 3)
 	{
-		return `vec3(${vector[0]}, ${vector[1]}, ${vector[2]})`;
+		return /* glsl */`vec3(${vector[0]}, ${vector[1]}, ${vector[2]})`;
 	}
 
 	if (vector.length === 4)
 	{
-		return `vec4(${vector[0]}, ${vector[1]}, ${vector[2]}, ${vector[3]})`;
+		return /* glsl */`vec4(${vector[0]}, ${vector[1]}, ${vector[2]}, ${vector[3]})`;
 	}
 
 	console.error("Invalid vector length!");
@@ -929,7 +929,7 @@ export function getMatrixGlsl(matrix)
 {
 	if (matrix.length === 2)
 	{
-		return `mat2(
+		return /* glsl */`mat2(
 			${matrix[0][0]}, ${matrix[1][0]},
 			${matrix[0][1]}, ${matrix[1][1]}
 		)`;
@@ -937,7 +937,7 @@ export function getMatrixGlsl(matrix)
 
 	if (matrix.length === 3)
 	{
-		return `mat3(
+		return /* glsl */`mat3(
 			${matrix[0][0]}, ${matrix[1][0]}, ${matrix[2][0]},
 			${matrix[0][1]}, ${matrix[1][1]}, ${matrix[2][1]},
 			${matrix[0][2]}, ${matrix[1][2]}, ${matrix[2][2]}
@@ -946,7 +946,7 @@ export function getMatrixGlsl(matrix)
 
 	if (matrix.length === 4)
 	{
-		return `mat4(
+		return /* glsl */`mat4(
 			${matrix[0][0]}, ${matrix[1][0]}, ${matrix[2][0]}, ${matrix[3][0]},
 			${matrix[0][1]}, ${matrix[1][1]}, ${matrix[2][1]}, ${matrix[3][1]},
 			${matrix[0][2]}, ${matrix[1][2]}, ${matrix[2][2]}, ${matrix[3][2]},

@@ -46,7 +46,7 @@ export class QuasiFuchsianGroups extends Applet
 
 
 
-		const fragShaderTrim = `
+		const fragShaderTrim = /* glsl */`
 			precision highp float;
 			precision highp sampler2D;
 			
@@ -87,7 +87,7 @@ export class QuasiFuchsianGroups extends Applet
 
 
 
-		const fragShaderDilate = `
+		const fragShaderDilate = /* glsl */`
 			precision highp float;
 			precision highp sampler2D;
 			
@@ -123,7 +123,7 @@ export class QuasiFuchsianGroups extends Applet
 
 
 
-		const fragShaderColor = `
+		const fragShaderColor = /* glsl */`
 			precision highp float;
 			precision highp sampler2D;
 			

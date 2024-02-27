@@ -10,10 +10,7 @@ It's not a coincidence that many of the applets I've made revolve around the com
 
 <div id="canvas-landscape-left">
 
-<div class="text-field-container">
-	<textarea cols="16" rows="4" name="code-textarea" id="code-textarea" class="text-field" style="font-family: 'Source Code Pro', monospace">cexp(cinv(z))</textarea>
-	<p class="body-text" style="text-align: center">Generating Function</p>
-</div>
+### textarea glsl
 
 ### text-boxes
 	resolution

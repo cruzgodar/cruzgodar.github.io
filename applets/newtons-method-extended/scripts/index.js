@@ -1,4 +1,3 @@
-import { Applet } from "../../../scripts/applets/applet.js";
 import { showPage } from "../../../scripts/src/loadPage.js";
 import { NewtonsMethodExtended } from "./class.js";
 import { Button, DownloadButton, GenerateButton } from "/scripts/src/buttons.js";
@@ -6,6 +5,7 @@ import { Dropdown } from "/scripts/src/dropdowns.js";
 import { $ } from "/scripts/src/main.js";
 import { Slider } from "/scripts/src/sliders.js";
 import { TextBox } from "/scripts/src/textBoxes.js";
+import { Textarea } from "/scripts/src/textareas.js";
 
 export function load()
 {
@@ -37,16 +37,6 @@ export function load()
 		maxValue: 2000,
 		onInput: changeResolution
 	});
-
-
-
-	const codeInputElement = $("#code-textarea");
-
-	codeInputElement.value = "cmul(csin(z), sin(cmul(z, i)))";
-
-	Applet.listenToInputElements([codeInputElement], run);
-
-
 
 	const derivativePrecisionSlider = new Slider({
 		element: $("#derivative-precision-slider"),
@@ -81,13 +71,18 @@ export function load()
 		onInput: onDropdownInput
 	});
 
+	const glslTextarea = new Textarea({
+		element: $("#glsl-textarea"),
+		name: "Generating Code",
+		value: "cmul(csin(z), sin(cmul(z, i)))",
+		onEnter: run
+	});
+
 	showPage();
 
 	function run()
 	{
-		const generatingCode = codeInputElement.value;
-
-		applet.run({ generatingCode });
+		applet.run({ generatingCode: glslTextarea.value });
 	}
 
 	function changeResolution()
@@ -99,7 +94,7 @@ export function load()
 
 	function onDropdownInput()
 	{
-		codeInputElement.value = examples[examplesDropdown.value];
+		glslTextarea.setValue(examples[examplesDropdown.value]);
 
 		run();
 	}

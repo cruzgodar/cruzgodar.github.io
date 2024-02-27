@@ -67,10 +67,7 @@ Plane partitions are frequently studied, and many correspondences involving them
 	
 	<div class="add-array-section category-section">
 		<div class="center-content" style="margin-top: 5vh">
-			<div class="text-field-container">
-				<textarea cols="8" rows="8" name="array-data-textarea" id="array-data-textarea" class="text-field" style="font-family: 'Source Code Pro', monospace"></textarea>
-				<p class="body-text" style="text-align: center">Array</p>
-			</div>
+			### textarea add-array
 		</div>
 	</div>	
 	
@@ -90,10 +87,7 @@ Plane partitions are frequently studied, and many correspondences involving them
 	
 	<div class="edit-array-section category-section">
 		<div class="center-content" style="margin-top: 5vh">
-			<div class="text-field-container">
-				<textarea cols="8" rows="8" name="edit-array-textarea" id="edit-array-textarea" class="text-field" style="font-family: 'Source Code Pro', monospace"></textarea>
-				<p class="body-text" style="text-align: center">Array</p>
-			</div>
+			### textarea edit-array
 		</div>
 	</div>	
 	

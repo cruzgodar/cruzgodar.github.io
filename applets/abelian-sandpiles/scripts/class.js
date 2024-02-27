@@ -236,7 +236,7 @@ export class AbelianSandpile extends AnimationFrameApplet
 
 
 
-		const fragShaderSourceUpscale = `
+		const fragShaderSourceUpscale = /* glsl */`
 			precision highp float;
 			precision highp sampler2D;
 			

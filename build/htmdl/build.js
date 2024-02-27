@@ -16,6 +16,7 @@ import { notesEnvironment, notesEnvironmentNames } from "./components/notes-envi
 import { sliders } from "./components/sliders.js";
 import { textBoxes } from "./components/text-boxes.js";
 import { parseText } from "./components/text.js";
+import { textarea } from "./components/textarea.js";
 import { wilson } from "./components/wilson.js";
 
 // const root = process.argv[1].replace(/(\/cruzgodar.github.io\/).+$/, (match, $1) => $1)
@@ -41,6 +42,7 @@ const singleLineComponents = [
 	"dropdown",
 	"glsl-docs",
 	"nav-buttons",
+	"textarea",
 	"wilson"
 ];
 
@@ -60,6 +62,7 @@ const components = {
 	"nav-buttons": navButtons,
 	"notes-environment": notesEnvironment,
 	"sliders": sliders,
+	"textarea": textarea,
 	"text-boxes": textBoxes,
 	"wilson": wilson
 };
@@ -200,7 +203,7 @@ function decodeHTMDL(html)
 
 			lines[i] = "\\end{align*}$$</span></p>";
 
-			lines[startI] = `<p class="body-text" style="text-align: center"><span class="tex-holder" style="padding: 8px" data-source-tex="${sourceTex}">$$\\begin{align*}`;
+			lines[startI] = /* html */`<p class="body-text" style="text-align: center"><span class="tex-holder" style="padding: 8px" data-source-tex="${sourceTex}">$$\\begin{align*}`;
 		}
 
 
@@ -210,7 +213,7 @@ function decodeHTMDL(html)
 		{
 			if (lines[i].length > 3)
 			{
-				lines[i] = `<pre><code class="language-${lines[i].slice(3)}">`;
+				lines[i] = /* html */`<pre><code class="language-${lines[i].slice(3)}">`;
 			}
 
 			else
@@ -230,7 +233,7 @@ function decodeHTMDL(html)
 				i++;
 			}
 
-			lines[i - 1] = `${lines[i - 1]}</code></pre>`;
+			lines[i - 1] = /* html */`${lines[i - 1]}</code></pre>`;
 
 			lines.splice(i, 1);
 
@@ -330,12 +333,12 @@ function decodeHTMDL(html)
 
 			if (inEnvironment)
 			{
-				lines[i] = `<h2 class="section-text" style="margin-top: 80px">${title}</h2>`;
+				lines[i] = /* html */`<h2 class="section-text" style="margin-top: 80px">${title}</h2>`;
 			}
 
 			else
 			{
-				lines[i] = `</section><h2 class="section-text">${title}</h2><section>`;
+				lines[i] = /* html */`</section><h2 class="section-text">${title}</h2><section>`;
 			}
 		}
 
@@ -348,7 +351,7 @@ function decodeHTMDL(html)
 
 			const bannerHtml = usesBanner ? banner() :  "";
 
-			lines[i] = `
+			lines[i] = /* html */`
 				${bannerHtml}
 				<header>
 					<div id="logo">
@@ -374,19 +377,19 @@ function decodeHTMDL(html)
 
 			if (content.match(/^#+?\./))
 			{
-				lines[i] = `<p class="body-text numbered-list-item">${content.replace(/^#+?\./, `${currentNumberedItem}.`)}</p>`;
+				lines[i] = /* html */`<p class="body-text numbered-list-item">${content.replace(/^#+?\./, `${currentNumberedItem}.`)}</p>`;
 
 				currentNumberedItem++;
 			}
 
 			else if (content.match(/^[0-9]+?\./))
 			{
-				lines[i] = `<p class="body-text numbered-list-item">${content}</p>`;
+				lines[i] = /* html */`<p class="body-text numbered-list-item">${content}</p>`;
 			}
 
 			else
 			{
-				lines[i] = `<p class="body-text">${content}</p>`;
+				lines[i] = /* html */`<p class="body-text">${content}</p>`;
 			}
 		}
 	}
@@ -414,11 +417,11 @@ function decodeHTMDL(html)
 
 	// End the HTML properly.
 
-	html = `${html}</section></main>`;
+	html = /* html */`${html}</section></main>`;
 
 	if (usesBanner)
 	{
-		html = `${html}</div>`;
+		html = /* html */`${html}</div>`;
 	}
 
 
@@ -428,9 +431,9 @@ function decodeHTMDL(html)
 		pageTitle = "Cruz Godar";
 	}
 
-	const headHtml = `<title>${pageTitle}</title><meta property="og:title" content="${pageTitle}"/><meta property="og:type" content="website"/><meta property="og:url" content="https://cruzgodar.com${parentFolder}"/><meta property="og:image" content="https://cruzgodar.com${parentFolder}cover.webp"/><meta property="og:locale" content="en_US"/><meta property="og:site_name" content="Cruz Godar"/>`;
+	const headHtml = /* html */`<title>${pageTitle}</title><meta property="og:title" content="${pageTitle}"/><meta property="og:type" content="website"/><meta property="og:url" content="https://cruzgodar.com${parentFolder}"/><meta property="og:image" content="https://cruzgodar.com${parentFolder}cover.webp"/><meta property="og:locale" content="en_US"/><meta property="og:site_name" content="Cruz Godar"/>`;
 
-	const indexHtml = `<!DOCTYPE html><html lang="en"><head>${headHtml}<style>body {opacity: 0;}</style></head><body><noscript><p class="body-text" style="text-align: center">JavaScript is required to use this site and many others. Consider enabling it.</p></noscript><script src="/scripts/init.min.js"></script></body></html>`;
+	const indexHtml = /* html */`<!DOCTYPE html><html lang="en"><head>${headHtml}<style>body {opacity: 0;}</style></head><body><noscript><p class="body-text" style="text-align: center">JavaScript is required to use this site and many others. Consider enabling it.</p></noscript><script src="/scripts/init.min.js"></script></body></html>`;
 
 	return [html, indexHtml];
 }

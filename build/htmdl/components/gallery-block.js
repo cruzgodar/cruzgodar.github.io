@@ -2,7 +2,7 @@ import { splitCommandLine } from "../build.js";
 
 function galleryImage(options, id, size, name)
 {
-	return `
+	return /* html */`
 		<div class="gallery-image-${size}-${size}">
 			<img src="/gallery/thumbnails/${id}.webp" data-image-id="${id}" alt="${name}"></img>
 		</div>
@@ -20,7 +20,7 @@ export function galleryBlock(options, lines)
 		html = `${html}${galleryImage(options, ...words)}`;
 	});
 
-	html = `${html}</div>`;
+	html = /* html */`${html}</div>`;
 
 	return html;
 }

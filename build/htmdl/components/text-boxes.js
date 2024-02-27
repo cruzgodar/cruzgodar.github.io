@@ -2,7 +2,7 @@ import { splitCommandLine } from "../build.js";
 
 function textBox(id)
 {
-	return `
+	return /* html */`
 		<div class="text-box-container">
 			<input id="${id}-input" class="text-box" type="text" value="" tabindex="1">
 			<p class="body-text text-box-subtext"></p>
@@ -21,7 +21,7 @@ export function textBoxes(_options, lines)
 		html = `${html}${textBox(...words)}`;
 	});
 
-	html = `${html}</div>`;
+	html = /* html */`${html}</div>`;
 
 	return html;
 }

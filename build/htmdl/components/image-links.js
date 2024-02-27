@@ -21,7 +21,7 @@ function imageLink(options, url, name)
 	{
 		const src = `${url.slice(0, url.lastIndexOf("/"))}/cards/${id}.webp`;
 
-		return `
+		return /* html */`
 			<div class="image-link">
 				<a data-card-id="${id}" tabindex="-1">
 					<img src="${src}" alt="${name}" tabindex="1"></img>
@@ -32,7 +32,7 @@ function imageLink(options, url, name)
 		`;
 	}
 
-	return `
+	return /* html */`
 		<div class="image-link">
 			<a href="${url}"${options.includes("t") ? " data-in-new-tab='1'" : ""} tabindex="-1">
 				<img src="${url}cover.webp" alt="${name}" tabindex="1"></img>
@@ -45,7 +45,7 @@ function imageLink(options, url, name)
 
 export function imageLinks(options, lines)
 {
-	let html = `<div class="image-links${lines.length === 1 ? " one-image-link" : ""}">`;
+	let html = /* html */`<div class="image-links${lines.length === 1 ? " one-image-link" : ""}">`;
 
 	lines.forEach(line =>
 	{
@@ -54,7 +54,7 @@ export function imageLinks(options, lines)
 		html = `${html}${imageLink(options, ...words)}`;
 	});
 
-	html = `${html}</div>`;
+	html = /* html */`${html}</div>`;
 
 	return html;
 }

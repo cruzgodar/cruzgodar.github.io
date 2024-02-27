@@ -15,7 +15,7 @@ export function carousel(options, lines)
 			+ "</p>";
 	});
 
-	return `
+	return /* html */`
 		<div class="carousel">
 			<div class="carousel-content">
 				${htmlLines.map(line => `<div class="carousel-entry">${line}</div>`).join("")}

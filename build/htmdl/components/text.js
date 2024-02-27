@@ -116,10 +116,10 @@ export function parseText(text)
 
 		if (html[0] === "." && html[1] === " ")
 		{
-			html = `<strong>&#8226;</strong> ${html.slice(2)}`;
+			html = /* html */`<strong>&#8226;</strong> ${html.slice(2)}`;
 		}
 
-		html = `<span style=[DOUBLEQUOTE]width: ${32 * numTabs}px[DOUBLEQUOTE]></span>${html}`;
+		html = /* html */`<span style=[DOUBLEQUOTE]width: ${32 * numTabs}px[DOUBLEQUOTE]></span>${html}`;
 	}
 
 

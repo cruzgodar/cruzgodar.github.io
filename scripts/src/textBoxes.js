@@ -37,7 +37,7 @@ export class TextBox extends InputElement
 
 		this.element.addEventListener("keydown", (e) =>
 		{
-			if (e.key === "Enter")
+			if (e.key === "Enter" && !this.disabled)
 			{
 				this.onEnter();
 			}
@@ -125,7 +125,7 @@ export class TextBox extends InputElement
 
 		wordElement.remove();
 
-		this.element.nextElementSibling.innerHTML = `<span>${words.slice(0, startIndex).join(" ")}</span>${startIndex !== 0 ? " " : ""}<span style="white-space: nowrap">${words.slice(startIndex).join(" ")}<span class="triangle">&#x25BC;</span></span>`;
+		this.element.nextElementSibling.innerHTML = /* html */`<span>${words.slice(0, startIndex).join(" ")}</span>${startIndex !== 0 ? " " : ""}<span style="white-space: nowrap">${words.slice(startIndex).join(" ")}<span class="triangle">&#x25BC;</span></span>`;
 
 
 
@@ -169,7 +169,7 @@ export class TextBox extends InputElement
 		dialog.style.opacity = 0;
 		dialog.style.transform = "scale(1)";
 
-		dialog.innerHTML = `Higher values than this may take an extremely long time to compute, cause substantial lag, or crash the tab or entire browser. Only continue if you know what you&#x2019;re doing!
+		dialog.innerHTML = /* html */`Higher values than this may take an extremely long time to compute, cause substantial lag, or crash the tab or entire browser. Only continue if you know what you&#x2019;re doing!
 		<div class="checkbox-row keep-dialog-open">
 			<div class="checkbox-container keep-dialog-open">
 				<input type="checkbox" class="uncap-inputs-checkbox keep-dialog-open"/>
