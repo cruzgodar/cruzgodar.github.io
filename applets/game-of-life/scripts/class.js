@@ -27,7 +27,7 @@ export class GameOfLife extends AnimationFrameApplet
 			
 			void main(void)
 			{
-				if (length(uv) < 0.5)
+				if (abs(uv.y) < 0.01)
 				{
 					gl_FragColor = vec4(1.0, 1.0, 1.0, 0.0);
 					return;
@@ -61,26 +61,24 @@ export class GameOfLife extends AnimationFrameApplet
 					return;
 				}
 
-				float state = texture2D(uTexture, center).x;
+				float state = texture2D(uTexture, center).y;
 
 				float surroundingState = (
-					texture2D(uTexture, center + vec2(step, 0.0)).x
-					+ texture2D(uTexture, center + vec2(-step, 0.0)).x
-					+ texture2D(uTexture, center + vec2(0.0, step)).x
-					+ texture2D(uTexture, center + vec2(0.0, -step)).x
-					+ texture2D(uTexture, center + vec2(step, step)).x
-					+ texture2D(uTexture, center + vec2(step, -step)).x
-					+ texture2D(uTexture, center + vec2(-step, step)).x
-					+ texture2D(uTexture, center + vec2(-step, -step)).x
+					texture2D(uTexture, center + vec2(step, 0.0)).y
+					+ texture2D(uTexture, center + vec2(-step, 0.0)).y
+					+ texture2D(uTexture, center + vec2(0.0, step)).y
+					+ texture2D(uTexture, center + vec2(0.0, -step)).y
+					+ texture2D(uTexture, center + vec2(step, step)).y
+					+ texture2D(uTexture, center + vec2(step, -step)).y
+					+ texture2D(uTexture, center + vec2(-step, step)).y
+					+ texture2D(uTexture, center + vec2(-step, -step)).y
 				);
-				gl_FragColor = vec4(state, 0.0, 0.0, 1.0);
-				return;
 
 				if (state < 0.5)
 				{
-					if (surroundingState >= 3.5 && surroundingState <= 4.5)
+					if (surroundingState >= 2.5 && surroundingState <= 3.5)
 					{
-						gl_FragColor = vec4(1.0, 1.0, 1.0, 1.0);
+						gl_FragColor = vec4(0.0, 1.0, 0.0, 1.0);
 						return;
 					}
 					
@@ -90,7 +88,7 @@ export class GameOfLife extends AnimationFrameApplet
 
 				if (surroundingState <= 1.5 || surroundingState >= 3.5)
 				{
-					gl_FragColor = vec4(0.0, 0.0, 0.0, 1.0);
+					gl_FragColor = vec4(1.0, 0.0, 0.0, 1.0);
 					return;
 				}
 
@@ -270,6 +268,7 @@ export class GameOfLife extends AnimationFrameApplet
 
 		this.wilson.gl.bindFramebuffer(this.wilson.gl.FRAMEBUFFER, null);
 
+
 		this.wilson.render.drawFrame();
 
 
@@ -292,6 +291,6 @@ export class GameOfLife extends AnimationFrameApplet
 
 		this.wilsonUpscale.render.drawFrame();
 
-		this.needNewFrame = true;
+		setTimeout(() => this.needNewFrame = true, 100);
 	}
 }
