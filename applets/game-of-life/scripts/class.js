@@ -63,20 +63,21 @@ export class GameOfLife extends AnimationFrameApplet
 
 				float state = texture2D(uTexture, center).x;
 
-				float surroundingState = texture2D(uTexture, center + vec2(step, 0.0)).x
+				float surroundingState = (
+					texture2D(uTexture, center + vec2(step, 0.0)).x
 					+ texture2D(uTexture, center + vec2(-step, 0.0)).x
 					+ texture2D(uTexture, center + vec2(0.0, step)).x
 					+ texture2D(uTexture, center + vec2(0.0, -step)).x
 					+ texture2D(uTexture, center + vec2(step, step)).x
 					+ texture2D(uTexture, center + vec2(step, -step)).x
 					+ texture2D(uTexture, center + vec2(-step, step)).x
-					+ texture2D(uTexture, center + vec2(-step, -step)).x;
-				
+					+ texture2D(uTexture, center + vec2(-step, -step)).x
+				);
+				gl_FragColor = vec4(state, 0.0, 0.0, 1.0);
+				return;
+
 				if (state < 0.5)
 				{
-					gl_FragColor = vec4(0.0, 0.0, 0.0, 1.0);
-					return;
-					
 					if (surroundingState >= 3.5 && surroundingState <= 4.5)
 					{
 						gl_FragColor = vec4(1.0, 1.0, 1.0, 1.0);
@@ -87,9 +88,6 @@ export class GameOfLife extends AnimationFrameApplet
 					return;
 				}
 
-				gl_FragColor = vec4(1.0, 1.0, 1.0, 1.0);
-				return;
-				
 				if (surroundingState <= 1.5 || surroundingState >= 3.5)
 				{
 					gl_FragColor = vec4(0.0, 0.0, 0.0, 1.0);
@@ -117,8 +115,8 @@ export class GameOfLife extends AnimationFrameApplet
 
 		this.wilson.render.initUniforms(["step"], 1);
 
-		this.wilson.render.createFramebufferTexturePair();
-		this.wilson.render.createFramebufferTexturePair();
+		this.wilson.render.createFramebufferTexturePair(this.wilson.gl.UNSIGNED_BYTE);
+		this.wilson.render.createFramebufferTexturePair(this.wilson.gl.UNSIGNED_BYTE);
 
 		this.wilson.gl.bindTexture(
 			this.wilson.gl.TEXTURE_2D,
@@ -244,26 +242,26 @@ export class GameOfLife extends AnimationFrameApplet
 
 	drawFrame()
 	{
-		// this.wilson.gl.bindFramebuffer(
-		// 	this.wilson.gl.FRAMEBUFFER,
-		// 	this.wilson.render.framebuffers[1].framebuffer
-		// );
+		this.wilson.gl.bindFramebuffer(
+			this.wilson.gl.FRAMEBUFFER,
+			this.wilson.render.framebuffers[1].framebuffer
+		);
 
-		// this.wilson.render.drawFrame();
+		this.wilson.render.drawFrame();
 
 
 
-		// this.wilson.gl.bindTexture(
-		// 	this.wilson.gl.TEXTURE_2D,
-		// 	this.wilson.render.framebuffers[1].texture
-		// );
+		this.wilson.gl.bindTexture(
+			this.wilson.gl.TEXTURE_2D,
+			this.wilson.render.framebuffers[1].texture
+		);
 
-		// this.wilson.gl.bindFramebuffer(
-		// 	this.wilson.gl.FRAMEBUFFER,
-		// 	this.wilson.render.framebuffers[0].framebuffer
-		// );
+		this.wilson.gl.bindFramebuffer(
+			this.wilson.gl.FRAMEBUFFER,
+			this.wilson.render.framebuffers[0].framebuffer
+		);
 
-		// this.wilson.render.drawFrame();
+		this.wilson.render.drawFrame();
 
 		this.wilson.gl.bindTexture(
 			this.wilson.gl.TEXTURE_2D,

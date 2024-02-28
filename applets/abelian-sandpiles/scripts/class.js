@@ -381,7 +381,7 @@ export class AbelianSandpile extends AnimationFrameApplet
 
 	drawFrame()
 	{
-		this.wilson.gl.viewport(0, 0, this.resolution, this.resolution);
+		// this.wilson.gl.viewport(0, 0, this.resolution, this.resolution);
 
 		for (let i = 0; i < this.computationsPerFrame; i++)
 		{
