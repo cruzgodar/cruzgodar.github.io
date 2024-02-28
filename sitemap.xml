@@ -16,7 +16,13 @@
 		
 	<url>
 		<loc>https://www.cruzgodar.com/applets/</loc>
-		<lastmod>2024-2-22</lastmod>
+		<lastmod>2024-2-28</lastmod>
+		<priority>0.5</priority>
+	</url>
+		
+	<url>
+		<loc>https://www.cruzgodar.com/applets/game-of-life/</loc>
+		<lastmod>2024-2-28</lastmod>
 		<priority>0.5</priority>
 	</url>
 		

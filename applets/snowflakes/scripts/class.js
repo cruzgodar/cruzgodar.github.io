@@ -685,7 +685,6 @@ export class Snowflake extends AnimationFrameApplet
 
 	drawFrame()
 	{
-		console.log("hi!");
 		for (let i = 0; i < this.computationsPerFrame; i++)
 		{
 			this.wilson.gl.useProgram(this.wilson.render.shaderPrograms[1]);

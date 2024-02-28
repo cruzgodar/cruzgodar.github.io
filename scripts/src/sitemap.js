@@ -44,6 +44,7 @@ export const sitemap =
 		
 		"children":
 		[
+			"/applets/game-of-life/",
 			"/applets/voronoi-diagrams/",
 			"/applets/thurston-geometries/",
 			"/applets/magic-carpets/",
@@ -84,6 +85,17 @@ export const sitemap =
 		]
 	},
 		
+	"/applets/game-of-life/":
+	{
+		"title": "Conway's Game of Life",
+		
+		"parent": "/applets/",
+		
+		"children": [],
+
+		"customScript": true
+	},
+	
 	"/applets/voronoi-diagrams/":
 	{
 		"title": "Voronoi Diagrams",
