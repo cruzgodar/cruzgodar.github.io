@@ -8,7 +8,9 @@ export class GameOfLife extends AnimationFrameApplet
 	gridSize = 100;
 	resolution = 1000;
 
-	lastPixelData = null;
+	framesPerUpdate = 10;
+	updatesPerFrame = 1;
+	frame = 0;
 
 
 
@@ -254,6 +256,8 @@ export class GameOfLife extends AnimationFrameApplet
 
 
 
+		this.frame = 0;
+
 		this.resume();
 	}
 
@@ -267,34 +271,63 @@ export class GameOfLife extends AnimationFrameApplet
 
 	drawFrame()
 	{
-		this.wilsonHidden.gl.bindFramebuffer(
-			this.wilsonHidden.gl.FRAMEBUFFER,
-			this.wilsonHidden.render.framebuffers[1].framebuffer
+		if (this.frame % this.framesPerUpdate === 0)
+		{
+			this.updateGame();
+		}
+
+		this.wilson.gl.uniform2f(
+			this.wilson.uniforms.worldCenter,
+			this.wilson.worldCenterX,
+			this.wilson.worldCenterY
 		);
 
-		this.wilsonHidden.render.drawFrame();
-
-
-
-		this.wilsonHidden.gl.bindTexture(
-			this.wilsonHidden.gl.TEXTURE_2D,
-			this.wilsonHidden.render.framebuffers[1].texture
+		this.wilson.gl.uniform1f(
+			this.wilson.uniforms.worldRadius,
+			this.wilson.worldWidth / 2
 		);
 
-		this.wilsonHidden.gl.bindFramebuffer(
-			this.wilsonHidden.gl.FRAMEBUFFER,
-			this.wilsonHidden.render.framebuffers[0].framebuffer
-		);
+		this.wilson.render.drawFrame();
 
-		this.wilsonHidden.render.drawFrame();
+		this.frame++;
+		this.needNewFrame = true;
+	}
 
-		this.wilsonHidden.gl.bindTexture(
-			this.wilsonHidden.gl.TEXTURE_2D,
-			this.wilsonHidden.render.framebuffers[0].texture
-		);
+	updateGame()
+	{
+		if (this.animationPaused)
+		{
+			return;
+		}
+
+		for (let i = 0; i < this.updatesPerFrame; i++)
+		{
+			this.wilsonHidden.gl.bindFramebuffer(
+				this.wilsonHidden.gl.FRAMEBUFFER,
+				this.wilsonHidden.render.framebuffers[1].framebuffer
+			);
+
+			this.wilsonHidden.render.drawFrame();
+
+			this.wilsonHidden.gl.bindTexture(
+				this.wilsonHidden.gl.TEXTURE_2D,
+				this.wilsonHidden.render.framebuffers[1].texture
+			);
+
+			this.wilsonHidden.gl.bindFramebuffer(
+				this.wilsonHidden.gl.FRAMEBUFFER,
+				this.wilsonHidden.render.framebuffers[0].framebuffer
+			);
+
+			this.wilsonHidden.render.drawFrame();
+
+			this.wilsonHidden.gl.bindTexture(
+				this.wilsonHidden.gl.TEXTURE_2D,
+				this.wilsonHidden.render.framebuffers[0].texture
+			);
+		}
 
 		this.wilsonHidden.gl.bindFramebuffer(this.wilsonHidden.gl.FRAMEBUFFER, null);
-
 
 		this.wilsonHidden.render.drawFrame();
 
@@ -315,20 +348,5 @@ export class GameOfLife extends AnimationFrameApplet
 		);
 
 		this.wilson.gl.bindFramebuffer(this.wilson.gl.FRAMEBUFFER, null);
-
-		this.wilson.gl.uniform2f(
-			this.wilson.uniforms.worldCenter,
-			this.wilson.worldCenterX,
-			this.wilson.worldCenterY
-		);
-
-		this.wilson.gl.uniform1f(
-			this.wilson.uniforms.worldRadius,
-			this.wilson.worldWidth / 2
-		);
-
-		this.wilson.render.drawFrame();
-
-		setTimeout(() => this.needNewFrame = true, 100);
 	}
 }

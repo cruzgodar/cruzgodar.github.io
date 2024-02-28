@@ -13,6 +13,10 @@ Text
 	grid-size
 ###
 
+### sliders
+	speed
+###
+
 ### buttons
 	generate
 ###

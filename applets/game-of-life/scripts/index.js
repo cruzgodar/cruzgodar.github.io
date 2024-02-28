@@ -2,6 +2,7 @@ import { showPage } from "../../../scripts/src/loadPage.js";
 import { GameOfLife } from "./class.js";
 import { DownloadButton, GenerateButton } from "/scripts/src/buttons.js";
 import { $ } from "/scripts/src/main.js";
+import { Slider } from "/scripts/src/sliders.js";
 import { TextBox } from "/scripts/src/textBoxes.js";
 
 export function load()
@@ -24,6 +25,16 @@ export function load()
 		onEnter: run,
 	});
 
+	const speedSlider = new Slider({
+		element: $("#speed-slider"),
+		name: "Speed",
+		value: 1,
+		min: 0.2,
+		max: 50,
+		logarithmic: true,
+		onInput: onSliderInput,
+	});
+
 	new GenerateButton({
 		element: $("#generate-button"),
 		onClick: run
@@ -43,5 +54,12 @@ export function load()
 			resolution: resolutionInput.value,
 			gridSize: gridSizeInput.value
 		});
+	}
+
+	function onSliderInput()
+	{
+		applet.framesPerUpdate = Math.ceil(10 / speedSlider.value);
+
+		applet.updatesPerFrame = Math.ceil(speedSlider.value / 10);
 	}
 }
