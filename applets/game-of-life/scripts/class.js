@@ -97,7 +97,7 @@ export class GameOfLife extends AnimationFrameApplet
 			}
 		`;
 
-		const options =
+		const optionsHidden =
 		{
 			renderer: "gpu",
 
@@ -107,21 +107,21 @@ export class GameOfLife extends AnimationFrameApplet
 			canvasHeight: this.resolution
 		};
 
-		this.wilson = new Wilson(hiddenCanvas, options);
+		this.wilsonHidden = new Wilson(hiddenCanvas, optionsHidden);
 
-		this.wilson.render.loadNewShader(fragShaderSourceUpdate);
+		this.wilsonHidden.render.loadNewShader(fragShaderSourceUpdate);
 
-		this.wilson.render.initUniforms(["step"], 1);
+		this.wilsonHidden.render.initUniforms(["step"], 1);
 
-		this.wilson.render.createFramebufferTexturePair(this.wilson.gl.UNSIGNED_BYTE);
-		this.wilson.render.createFramebufferTexturePair(this.wilson.gl.UNSIGNED_BYTE);
+		this.wilsonHidden.render.createFramebufferTexturePair(this.wilsonHidden.gl.UNSIGNED_BYTE);
+		this.wilsonHidden.render.createFramebufferTexturePair(this.wilsonHidden.gl.UNSIGNED_BYTE);
 
-		this.wilson.gl.bindTexture(
-			this.wilson.gl.TEXTURE_2D,
-			this.wilson.render.framebuffers[0].texture
+		this.wilsonHidden.gl.bindTexture(
+			this.wilsonHidden.gl.TEXTURE_2D,
+			this.wilsonHidden.render.framebuffers[0].texture
 		);
 
-		this.wilson.gl.bindFramebuffer(this.wilson.gl.FRAMEBUFFER, null);
+		this.wilsonHidden.gl.bindFramebuffer(this.wilsonHidden.gl.FRAMEBUFFER, null);
 
 
 		
@@ -132,14 +132,17 @@ export class GameOfLife extends AnimationFrameApplet
 			varying vec2 uv;
 			
 			uniform sampler2D uTexture;
+
+			uniform vec2 worldCenter;
+			uniform float worldRadius;
 			
 			void main(void)
 			{
-				gl_FragColor = texture2D(uTexture, (uv + vec2(1.0, 1.0)) / 2.0);
+				gl_FragColor = texture2D(uTexture, (uv + (worldCenter + vec2(1.0, 1.0)) / worldRadius) * worldRadius / 2.0);
 			}
 		`;
 
-		const optionsUpscale =
+		const options =
 		{
 			renderer: "gpu",
 
@@ -155,12 +158,29 @@ export class GameOfLife extends AnimationFrameApplet
 			useFullscreenButton: true,
 
 			enterFullscreenButtonIconPath: "/graphics/general-icons/enter-fullscreen.png",
-			exitFullscreenButtonIconPath: "/graphics/general-icons/exit-fullscreen.png"
+			exitFullscreenButtonIconPath: "/graphics/general-icons/exit-fullscreen.png",
+
+
+
+			mousedownCallback: this.onGrabCanvas.bind(this),
+			touchstartCallback: this.onGrabCanvas.bind(this),
+
+			mousedragCallback: this.onDragCanvas.bind(this),
+			touchmoveCallback: this.onDragCanvas.bind(this),
+
+			mouseupCallback: this.onReleaseCanvas.bind(this),
+			touchendCallback: this.onReleaseCanvas.bind(this),
+
+			wheelCallback: this.onWheelCanvas.bind(this),
+			pinchCallback: this.onPinchCanvas.bind(this)
 		};
 
-		this.wilsonUpscale = new Wilson(canvas, optionsUpscale);
+		this.wilson = new Wilson(canvas, options);
 
-		this.wilsonUpscale.render.createFramebufferTexturePair(this.wilsonUpscale.gl.UNSIGNED_BYTE);
+		this.wilson.render.initUniforms(["worldCenter", "worldRadius"]);
+		this.zoom.init();
+
+		this.wilson.render.createFramebufferTexturePair(this.wilson.gl.UNSIGNED_BYTE);
 	}
 
 
@@ -170,66 +190,67 @@ export class GameOfLife extends AnimationFrameApplet
 		this.resolution = resolution;
 		this.gridSize = gridSize;
 
-		this.wilson.gl.useProgram(this.wilson.render.shaderPrograms[0]);
+		this.wilsonHidden.gl.useProgram(this.wilsonHidden.render.shaderPrograms[0]);
 
-		this.wilson.gl.useProgram(this.wilson.render.shaderPrograms[1]);
-		this.wilson.gl.uniform1f(this.wilson.uniforms["step"][1], 1 / this.gridSize);
+		this.wilsonHidden.gl.useProgram(this.wilsonHidden.render.shaderPrograms[1]);
+		this.wilsonHidden.gl.uniform1f(this.wilsonHidden.uniforms["step"][1], 1 / this.gridSize);
 
 
 
-		this.wilson.changeCanvasSize(this.gridSize, this.gridSize);
+		this.wilsonHidden.changeCanvasSize(this.gridSize, this.gridSize);
+		this.wilson.changeCanvasSize(this.resolution, this.resolution);
 
-		this.wilson.gl.bindTexture(
-			this.wilson.gl.TEXTURE_2D,
-			this.wilson.render.framebuffers[0].texture
+		this.wilsonHidden.gl.bindTexture(
+			this.wilsonHidden.gl.TEXTURE_2D,
+			this.wilsonHidden.render.framebuffers[0].texture
 		);
 
-		this.wilson.gl.texImage2D(
-			this.wilson.gl.TEXTURE_2D,
+		this.wilsonHidden.gl.texImage2D(
+			this.wilsonHidden.gl.TEXTURE_2D,
 			0,
-			this.wilson.gl.RGBA,
-			this.wilson.canvasWidth,
-			this.wilson.canvasHeight,
+			this.wilsonHidden.gl.RGBA,
+			this.wilsonHidden.canvasWidth,
+			this.wilsonHidden.canvasHeight,
 			0,
-			this.wilson.gl.RGBA,
-			this.wilson.gl.UNSIGNED_BYTE,
+			this.wilsonHidden.gl.RGBA,
+			this.wilsonHidden.gl.UNSIGNED_BYTE,
 			null
 		);
 
-		this.wilson.gl.bindTexture(
-			this.wilson.gl.TEXTURE_2D,
-			this.wilson.render.framebuffers[1].texture
+		this.wilsonHidden.gl.bindTexture(
+			this.wilsonHidden.gl.TEXTURE_2D,
+			this.wilsonHidden.render.framebuffers[1].texture
 		);
 
-		this.wilson.gl.texImage2D(
-			this.wilson.gl.TEXTURE_2D,
+		this.wilsonHidden.gl.texImage2D(
+			this.wilsonHidden.gl.TEXTURE_2D,
 			0,
-			this.wilson.gl.RGBA,
-			this.wilson.canvasWidth,
-			this.wilson.canvasHeight,
+			this.wilsonHidden.gl.RGBA,
+			this.wilsonHidden.canvasWidth,
+			this.wilsonHidden.canvasHeight,
 			0,
-			this.wilson.gl.RGBA,
-			this.wilson.gl.UNSIGNED_BYTE,
+			this.wilsonHidden.gl.RGBA,
+			this.wilsonHidden.gl.UNSIGNED_BYTE,
 			null
 		);
 
 
 
-		this.wilson.gl.useProgram(this.wilson.render.shaderPrograms[0]);
+		this.wilsonHidden.gl.useProgram(this.wilsonHidden.render.shaderPrograms[0]);
 
-		this.wilson.gl.bindTexture(
-			this.wilson.gl.TEXTURE_2D,
-			this.wilson.render.framebuffers[0].texture
+		this.wilsonHidden.gl.bindTexture(
+			this.wilsonHidden.gl.TEXTURE_2D,
+			this.wilsonHidden.render.framebuffers[0].texture
 		);
 
-		this.wilson.gl.bindFramebuffer(
-			this.wilson.gl.FRAMEBUFFER,
-			this.wilson.render.framebuffers[0].framebuffer
+		this.wilsonHidden.gl.bindFramebuffer(
+			this.wilsonHidden.gl.FRAMEBUFFER,
+			this.wilsonHidden.render.framebuffers[0].framebuffer
 		);
 
-		this.wilson.render.drawFrame();
+		this.wilsonHidden.render.drawFrame();
 
-		this.wilson.gl.useProgram(this.wilson.render.shaderPrograms[1]);
+		this.wilsonHidden.gl.useProgram(this.wilsonHidden.render.shaderPrograms[1]);
 
 
 
@@ -238,58 +259,75 @@ export class GameOfLife extends AnimationFrameApplet
 
 
 
+	prepareFrame(timeElapsed)
+	{
+		this.pan.update(timeElapsed);
+		this.zoom.update(timeElapsed);
+	}
+
 	drawFrame()
 	{
-		this.wilson.gl.bindFramebuffer(
-			this.wilson.gl.FRAMEBUFFER,
-			this.wilson.render.framebuffers[1].framebuffer
+		this.wilsonHidden.gl.bindFramebuffer(
+			this.wilsonHidden.gl.FRAMEBUFFER,
+			this.wilsonHidden.render.framebuffers[1].framebuffer
 		);
 
-		this.wilson.render.drawFrame();
+		this.wilsonHidden.render.drawFrame();
 
 
 
-		this.wilson.gl.bindTexture(
+		this.wilsonHidden.gl.bindTexture(
+			this.wilsonHidden.gl.TEXTURE_2D,
+			this.wilsonHidden.render.framebuffers[1].texture
+		);
+
+		this.wilsonHidden.gl.bindFramebuffer(
+			this.wilsonHidden.gl.FRAMEBUFFER,
+			this.wilsonHidden.render.framebuffers[0].framebuffer
+		);
+
+		this.wilsonHidden.render.drawFrame();
+
+		this.wilsonHidden.gl.bindTexture(
+			this.wilsonHidden.gl.TEXTURE_2D,
+			this.wilsonHidden.render.framebuffers[0].texture
+		);
+
+		this.wilsonHidden.gl.bindFramebuffer(this.wilsonHidden.gl.FRAMEBUFFER, null);
+
+
+		this.wilsonHidden.render.drawFrame();
+
+
+
+		const pixelData = this.wilsonHidden.render.getPixelData();
+
+		this.wilson.gl.texImage2D(
 			this.wilson.gl.TEXTURE_2D,
-			this.wilson.render.framebuffers[1].texture
-		);
-
-		this.wilson.gl.bindFramebuffer(
-			this.wilson.gl.FRAMEBUFFER,
-			this.wilson.render.framebuffers[0].framebuffer
-		);
-
-		this.wilson.render.drawFrame();
-
-		this.wilson.gl.bindTexture(
-			this.wilson.gl.TEXTURE_2D,
-			this.wilson.render.framebuffers[0].texture
+			0,
+			this.wilson.gl.RGBA,
+			this.wilsonHidden.canvasWidth,
+			this.wilsonHidden.canvasHeight,
+			0,
+			this.wilson.gl.RGBA,
+			this.wilson.gl.UNSIGNED_BYTE,
+			pixelData
 		);
 
 		this.wilson.gl.bindFramebuffer(this.wilson.gl.FRAMEBUFFER, null);
 
-
-		this.wilson.render.drawFrame();
-
-
-
-		const pixelData = this.wilson.render.getPixelData();
-
-		this.wilsonUpscale.gl.texImage2D(
-			this.wilsonUpscale.gl.TEXTURE_2D,
-			0,
-			this.wilsonUpscale.gl.RGBA,
-			this.wilson.canvasWidth,
-			this.wilson.canvasHeight,
-			0,
-			this.wilsonUpscale.gl.RGBA,
-			this.wilsonUpscale.gl.UNSIGNED_BYTE,
-			pixelData
+		this.wilson.gl.uniform2f(
+			this.wilson.uniforms.worldCenter,
+			this.wilson.worldCenterX,
+			this.wilson.worldCenterY
 		);
 
-		this.wilsonUpscale.gl.bindFramebuffer(this.wilsonUpscale.gl.FRAMEBUFFER, null);
+		this.wilson.gl.uniform1f(
+			this.wilson.uniforms.worldRadius,
+			this.wilson.worldWidth / 2
+		);
 
-		this.wilsonUpscale.render.drawFrame();
+		this.wilson.render.drawFrame();
 
 		setTimeout(() => this.needNewFrame = true, 100);
 	}
