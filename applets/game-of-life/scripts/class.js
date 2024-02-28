@@ -140,7 +140,20 @@ export class GameOfLife extends AnimationFrameApplet
 			
 			void main(void)
 			{
-				gl_FragColor = texture2D(uTexture, (uv + (worldCenter + vec2(1.0, 1.0)) / worldRadius) * worldRadius / 2.0);
+				vec2 xy = (uv + (worldCenter + vec2(1.0, 1.0)) / worldRadius) * worldRadius / 2.0;
+
+				if (max(xy.x, xy.y) >= 1.0 || min(xy.x, xy.y) <= 0.0)
+				{
+					gl_FragColor = vec4(0.0, 0.0, 0.0, 1.0);
+					return;
+				}
+
+				gl_FragColor = texture2D(uTexture, xy);
+
+				if (gl_FragColor.w == 0.0)
+				{
+					gl_FragColor = vec4(0.5, 0.5, 0.5, 1.0);
+				}
 			}
 		`;
 
