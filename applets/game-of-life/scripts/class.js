@@ -12,6 +12,8 @@ export class GameOfLife extends AnimationFrameApplet
 	updatesPerFrame = 1;
 	frame = 0;
 
+	currentFramebuffer = 0;
+
 
 
 	constructor({ canvas })
@@ -29,13 +31,13 @@ export class GameOfLife extends AnimationFrameApplet
 			
 			void main(void)
 			{
-				if (abs(uv.y) < 0.01)
+				if (abs(uv.y) < 0.01 || abs(uv.x) < 0.01)
 				{
-					gl_FragColor = vec4(1.0, 1.0, 1.0, 0.0);
+					gl_FragColor = vec4(1.0, 1.0, 1.0, 1.0);
 					return;
 				}
 
-				gl_FragColor = vec4(0.0, 0.0, 0.0, 0.0);
+				gl_FragColor = vec4(0.0, 0.0, 0.0, 1.0);
 			}
 		`;
 
@@ -48,8 +50,9 @@ export class GameOfLife extends AnimationFrameApplet
 			varying vec2 uv;
 			
 			uniform sampler2D uTexture;
-			
 			uniform float step;
+
+			const float glowChangeSpeed = 0.15;
 			
 			
 			
@@ -63,38 +66,44 @@ export class GameOfLife extends AnimationFrameApplet
 					return;
 				}
 
-				float state = texture2D(uTexture, center).y;
+				vec4 thisPixel = texture2D(uTexture, center);
+
+				float state = thisPixel.z;
 
 				float surroundingState = (
-					texture2D(uTexture, center + vec2(step, 0.0)).y
-					+ texture2D(uTexture, center + vec2(-step, 0.0)).y
-					+ texture2D(uTexture, center + vec2(0.0, step)).y
-					+ texture2D(uTexture, center + vec2(0.0, -step)).y
-					+ texture2D(uTexture, center + vec2(step, step)).y
-					+ texture2D(uTexture, center + vec2(step, -step)).y
-					+ texture2D(uTexture, center + vec2(-step, step)).y
-					+ texture2D(uTexture, center + vec2(-step, -step)).y
+					texture2D(uTexture, center + vec2(step, 0.0)).z
+					+ texture2D(uTexture, center + vec2(-step, 0.0)).z
+					+ texture2D(uTexture, center + vec2(0.0, step)).z
+					+ texture2D(uTexture, center + vec2(0.0, -step)).z
+					+ texture2D(uTexture, center + vec2(step, step)).z
+					+ texture2D(uTexture, center + vec2(step, -step)).z
+					+ texture2D(uTexture, center + vec2(-step, step)).z
+					+ texture2D(uTexture, center + vec2(-step, -step)).z
 				);
 
 				if (state < 0.5)
 				{
 					if (surroundingState >= 2.5 && surroundingState <= 3.5)
 					{
-						gl_FragColor = vec4(0.0, 1.0, 0.0, 1.0);
+						// Becoming alive
+						gl_FragColor = vec4(0.0, 1.0, 1.0, 1.0);
 						return;
 					}
 					
-					gl_FragColor = vec4(0.0, 0.0, 0.0, 1.0);
+					// Staying dead
+					gl_FragColor = vec4(max(thisPixel.x - glowChangeSpeed, 0.0), 0.0, 0.0, 1.0);
 					return;
 				}
 
 				if (surroundingState <= 1.5 || surroundingState >= 3.5)
 				{
+					// Becoming dead
 					gl_FragColor = vec4(1.0, 0.0, 0.0, 1.0);
 					return;
 				}
 
-				gl_FragColor = vec4(1.0, 1.0, 1.0, 1.0);
+				// Staying alive
+				gl_FragColor = vec4(0.0, max(thisPixel.y - glowChangeSpeed, 0.0), 1.0, 1.0);
 				return;
 			}
 		`;
@@ -137,6 +146,11 @@ export class GameOfLife extends AnimationFrameApplet
 
 			uniform vec2 worldCenter;
 			uniform float worldRadius;
+
+			const vec4 aliveColor = vec4(1.0, 1.0, 1.0, 1.0);
+			const vec4 growingColor = vec4(0.5, 0.0, 1.0, 1.0);
+			const vec4 dyingColor = vec4(0.0, 0.0, 1.0, 1.0);
+			const vec4 deadColor = vec4(0.0, 0.0, 0.0, 1.0);
 			
 			void main(void)
 			{
@@ -153,7 +167,18 @@ export class GameOfLife extends AnimationFrameApplet
 				if (gl_FragColor.w == 0.0)
 				{
 					gl_FragColor = vec4(0.5, 0.5, 0.5, 1.0);
+					return;
 				}
+
+				// Convert red to blue and green to purple.
+				if (gl_FragColor.z > 0.5)
+				{
+					gl_FragColor = mix(aliveColor, growingColor, gl_FragColor.y);
+					return;
+				}
+
+				gl_FragColor = mix(deadColor, dyingColor, gl_FragColor.x);
+				return;
 			}
 		`;
 
@@ -271,6 +296,8 @@ export class GameOfLife extends AnimationFrameApplet
 
 		this.frame = 0;
 
+		this.currentFramebuffer = 1;
+
 		this.resume();
 	}
 
@@ -317,27 +344,17 @@ export class GameOfLife extends AnimationFrameApplet
 		{
 			this.wilsonHidden.gl.bindFramebuffer(
 				this.wilsonHidden.gl.FRAMEBUFFER,
-				this.wilsonHidden.render.framebuffers[1].framebuffer
+				this.wilsonHidden.render.framebuffers[this.currentFramebuffer].framebuffer
 			);
 
 			this.wilsonHidden.render.drawFrame();
 
 			this.wilsonHidden.gl.bindTexture(
 				this.wilsonHidden.gl.TEXTURE_2D,
-				this.wilsonHidden.render.framebuffers[1].texture
+				this.wilsonHidden.render.framebuffers[this.currentFramebuffer].texture
 			);
 
-			this.wilsonHidden.gl.bindFramebuffer(
-				this.wilsonHidden.gl.FRAMEBUFFER,
-				this.wilsonHidden.render.framebuffers[0].framebuffer
-			);
-
-			this.wilsonHidden.render.drawFrame();
-
-			this.wilsonHidden.gl.bindTexture(
-				this.wilsonHidden.gl.TEXTURE_2D,
-				this.wilsonHidden.render.framebuffers[0].texture
-			);
+			this.currentFramebuffer = 1 - this.currentFramebuffer;
 		}
 
 		this.wilsonHidden.gl.bindFramebuffer(this.wilsonHidden.gl.FRAMEBUFFER, null);

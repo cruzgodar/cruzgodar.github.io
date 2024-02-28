@@ -28,10 +28,11 @@ export function load()
 	const speedSlider = new Slider({
 		element: $("#speed-slider"),
 		name: "Speed",
-		value: 1,
-		min: 0.2,
-		max: 50,
+		value: 4,
+		min: 1,
+		max: 200,
 		logarithmic: true,
+		integer: true,
 		onInput: onSliderInput,
 	});
 
@@ -58,8 +59,8 @@ export function load()
 
 	function onSliderInput()
 	{
-		applet.framesPerUpdate = Math.ceil(10 / speedSlider.value);
+		applet.framesPerUpdate = Math.ceil(40 / speedSlider.value);
 
-		applet.updatesPerFrame = Math.ceil(speedSlider.value / 10);
+		applet.updatesPerFrame = Math.ceil(speedSlider.value / 40);
 	}
 }
