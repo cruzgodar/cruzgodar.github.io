@@ -24,26 +24,6 @@ export class GameOfLife extends AnimationFrameApplet
 
 		const hiddenCanvas = this.createHiddenCanvas();
 
-		// Draws a completely black scene into a framebuffer that we can then edit.
-		const fragShaderSourceInit = /* glsl */`
-			precision highp float;
-			precision highp sampler2D;
-			
-			varying vec2 uv;
-			
-			void main(void)
-			{
-				if (abs(uv.y) < 0.01 || abs(uv.x) < 0.01)
-				{
-					gl_FragColor = vec4(1.0, 1.0, 1.0, 1.0);
-					return;
-				}
-
-				gl_FragColor = vec4(0.0, 0.0, 0.0, 1.0);
-			}
-		`;
-
-
 		// Iterates the game one step.
 		const fragShaderSourceUpdate = /* glsl */`
 			precision highp float;
@@ -114,7 +94,7 @@ export class GameOfLife extends AnimationFrameApplet
 		{
 			renderer: "gpu",
 
-			shader: fragShaderSourceInit,
+			shader: fragShaderSourceUpdate,
 
 			canvasWidth: this.resolution,
 			canvasHeight: this.resolution
@@ -122,9 +102,7 @@ export class GameOfLife extends AnimationFrameApplet
 
 		this.wilsonHidden = new Wilson(hiddenCanvas, optionsHidden);
 
-		this.wilsonHidden.render.loadNewShader(fragShaderSourceUpdate);
-
-		this.wilsonHidden.render.initUniforms(["step"], 1);
+		this.wilsonHidden.render.initUniforms(["step"]);
 
 		this.wilsonHidden.render.createFramebufferTexturePair(this.wilsonHidden.gl.UNSIGNED_BYTE);
 		this.wilsonHidden.render.createFramebufferTexturePair(this.wilsonHidden.gl.UNSIGNED_BYTE);
@@ -198,7 +176,8 @@ export class GameOfLife extends AnimationFrameApplet
 			canvasWidth: this.resolution,
 			canvasHeight: this.resolution,
 
-
+			worldWidth: 2.2,
+			worldHeight: 2.2,
 
 			useFullscreen: true,
 			trueFullscreen: true,
@@ -258,37 +237,17 @@ export class GameOfLife extends AnimationFrameApplet
 
 
 
-	run({ resolution = 1000, gridSize = 100 })
+	run({ resolution = 1000, gridSize = 100, state })
 	{
 		this.resolution = resolution;
 		this.gridSize = gridSize;
 
-		this.wilsonHidden.gl.useProgram(this.wilsonHidden.render.shaderPrograms[0]);
-
-		this.wilsonHidden.gl.useProgram(this.wilsonHidden.render.shaderPrograms[1]);
-		this.wilsonHidden.gl.uniform1f(this.wilsonHidden.uniforms["step"][1], 1 / this.gridSize);
+		this.wilsonHidden.gl.uniform1f(this.wilsonHidden.uniforms["step"], 1 / this.gridSize);
 
 
 
 		this.wilsonHidden.changeCanvasSize(this.gridSize, this.gridSize);
 		this.wilson.changeCanvasSize(this.resolution, this.resolution);
-
-		this.wilsonHidden.gl.bindTexture(
-			this.wilsonHidden.gl.TEXTURE_2D,
-			this.wilsonHidden.render.framebuffers[0].texture
-		);
-
-		this.wilsonHidden.gl.texImage2D(
-			this.wilsonHidden.gl.TEXTURE_2D,
-			0,
-			this.wilsonHidden.gl.RGBA,
-			this.wilsonHidden.canvasWidth,
-			this.wilsonHidden.canvasHeight,
-			0,
-			this.wilsonHidden.gl.RGBA,
-			this.wilsonHidden.gl.UNSIGNED_BYTE,
-			null
-		);
 
 		this.wilsonHidden.gl.bindTexture(
 			this.wilsonHidden.gl.TEXTURE_2D,
@@ -307,23 +266,12 @@ export class GameOfLife extends AnimationFrameApplet
 			null
 		);
 
-
-
-		this.wilsonHidden.gl.useProgram(this.wilsonHidden.render.shaderPrograms[0]);
-
 		this.wilsonHidden.gl.bindTexture(
 			this.wilsonHidden.gl.TEXTURE_2D,
 			this.wilsonHidden.render.framebuffers[0].texture
 		);
 
-		this.wilsonHidden.gl.bindFramebuffer(
-			this.wilsonHidden.gl.FRAMEBUFFER,
-			this.wilsonHidden.render.framebuffers[0].framebuffer
-		);
-
-		this.wilsonHidden.render.drawFrame();
-
-		this.wilsonHidden.gl.useProgram(this.wilsonHidden.render.shaderPrograms[1]);
+		this.loadState(state);
 
 
 
@@ -412,6 +360,43 @@ export class GameOfLife extends AnimationFrameApplet
 		);
 
 		this.wilson.gl.bindFramebuffer(this.wilson.gl.FRAMEBUFFER, null);
+	}
+
+
+
+	// state is a Uint8Array of 0s and 1s, and we'll create the actual
+	// texture data by quadrupling every one (and multiplying by 255).
+	loadState(state)
+	{
+		const stateSize = Math.sqrt(state.length);
+
+		if (stateSize !== this.gridSize)
+		{
+			console.error("Invalid state size!");
+			return;
+		}
+
+		const pixelData = new Uint8Array(state.length * 4);
+
+		for (let i = 0; i < state.length; i++)
+		{
+			pixelData[4 * i] = state[i] * 255;
+			pixelData[4 * i + 1] = state[i] * 255;
+			pixelData[4 * i + 2] = state[i] * 255;
+			pixelData[4 * i + 3] = state[i] * 255;
+		}
+
+		this.wilsonHidden.gl.texImage2D(
+			this.wilsonHidden.gl.TEXTURE_2D,
+			0,
+			this.wilsonHidden.gl.RGBA,
+			this.wilsonHidden.canvasWidth,
+			this.wilsonHidden.canvasHeight,
+			0,
+			this.wilsonHidden.gl.RGBA,
+			this.wilsonHidden.gl.UNSIGNED_BYTE,
+			pixelData
+		);
 	}
 
 

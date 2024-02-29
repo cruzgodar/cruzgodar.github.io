@@ -1,5 +1,6 @@
 import { showPage } from "../../../scripts/src/loadPage.js";
 import { GameOfLife } from "./class.js";
+import { random } from "./startingStates.js";
 import { DownloadButton, GenerateButton } from "/scripts/src/buttons.js";
 import { $ } from "/scripts/src/main.js";
 import { Slider } from "/scripts/src/sliders.js";
@@ -53,7 +54,8 @@ export function load()
 	{
 		applet.run({
 			resolution: resolutionInput.value,
-			gridSize: gridSizeInput.value
+			gridSize: gridSizeInput.value,
+			state: random(gridSizeInput.value)
 		});
 	}
 
