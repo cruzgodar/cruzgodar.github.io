@@ -1,5 +1,6 @@
 import { AnimationFrameApplet } from "/scripts/applets/animationFrameApplet.js";
 import { aspectRatio } from "/scripts/src/layout.js";
+import { addTemporaryListener } from "/scripts/src/main.js";
 import { Wilson } from "/scripts/wilson.js";
 
 export class GameOfLife extends AnimationFrameApplet
@@ -160,10 +161,7 @@ export class GameOfLife extends AnimationFrameApplet
 			{
 				vec2 aspectRatio = vec2(aspectRatioX, aspectRatioY);
 
-				vec2 xy = (
-					uv * aspectRatio
-					+ (worldCenter + vec2(1.0, 1.0)) / (worldRadius / aspectRatio)
-				) * worldRadius / 2.0;
+				vec2 xy = (uv * aspectRatio * worldRadius + worldCenter) / 2.0 + vec2(0.5, 0.5);
 
 				if (max(xy.x, xy.y) >= 1.0 || min(xy.x, xy.y) <= 0.0)
 				{
@@ -249,6 +247,12 @@ export class GameOfLife extends AnimationFrameApplet
 		this.switchFullscreen();
 
 		this.wilson.render.createFramebufferTexturePair(this.wilson.gl.UNSIGNED_BYTE);
+
+		addTemporaryListener({
+			object: window,
+			event: "resize",
+			callback: this.switchFullscreen.bind(this)
+		});
 	}
 
 
@@ -426,6 +430,9 @@ export class GameOfLife extends AnimationFrameApplet
 					this.wilson.uniforms["aspectRatioY"],
 					1
 				);
+
+				this.pan.xDragMultiplier = aspectRatio;
+				this.pan.yDragMultiplier = 1;
 			}
 
 			else
@@ -439,6 +446,9 @@ export class GameOfLife extends AnimationFrameApplet
 					this.wilson.uniforms["aspectRatioY"],
 					1 / aspectRatio
 				);
+
+				this.pan.xDragMultiplier = 1;
+				this.pan.yDragMultiplier = 1 / aspectRatio;
 			}
 		}
 
@@ -453,6 +463,9 @@ export class GameOfLife extends AnimationFrameApplet
 				this.wilson.uniforms["aspectRatioY"],
 				1
 			);
+
+			this.pan.xDragMultiplier = 1;
+			this.pan.yDragMultiplier = 1;
 		}
 	}
 }

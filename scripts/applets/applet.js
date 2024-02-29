@@ -366,6 +366,9 @@ export class Applet
 		lastVelocitiesX: new Array(this.velocityListLength),
 		lastVelocitiesY: new Array(this.velocityListLength),
 
+		xDragMultiplier: 1,
+		yDragMultiplier: 1,
+
 		friction: .93,
 		velocityStartThreshhold: .005,
 		velocityStopThreshhold: .0005,
@@ -405,8 +408,8 @@ export class Applet
 
 		onDragCanvas(x, y, xDelta, yDelta)
 		{
-			this.parent.wilson.worldCenterX -= xDelta;
-			this.parent.wilson.worldCenterY -= yDelta;
+			this.parent.wilson.worldCenterX -= xDelta * this.xDragMultiplier;
+			this.parent.wilson.worldCenterY -= yDelta * this.yDragMultiplier;
 
 			this.parent.needNewFrame = true;
 
