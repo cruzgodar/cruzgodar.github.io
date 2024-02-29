@@ -1,4 +1,5 @@
 import { AnimationFrameApplet } from "/scripts/applets/animationFrameApplet.js";
+import { aspectRatio } from "/scripts/src/layout.js";
 import { Wilson } from "/scripts/wilson.js";
 
 export class GameOfLife extends AnimationFrameApplet
@@ -147,6 +148,9 @@ export class GameOfLife extends AnimationFrameApplet
 			uniform vec2 worldCenter;
 			uniform float worldRadius;
 
+			uniform float aspectRatioX;
+			uniform float aspectRatioY;
+
 			const vec4 aliveColor = vec4(1.0, 1.0, 1.0, 1.0);
 			const vec4 growingColor = vec4(0.5, 0.0, 1.0, 1.0);
 			const vec4 dyingColor = vec4(0.0, 0.0, 1.0, 1.0);
@@ -154,7 +158,12 @@ export class GameOfLife extends AnimationFrameApplet
 			
 			void main(void)
 			{
-				vec2 xy = (uv + (worldCenter + vec2(1.0, 1.0)) / worldRadius) * worldRadius / 2.0;
+				vec2 aspectRatio = vec2(aspectRatioX, aspectRatioY);
+
+				vec2 xy = (
+					uv * aspectRatio
+					+ (worldCenter + vec2(1.0, 1.0)) / (worldRadius / aspectRatio)
+				) * worldRadius / 2.0;
 
 				if (max(xy.x, xy.y) >= 1.0 || min(xy.x, xy.y) <= 0.0)
 				{
@@ -194,11 +203,14 @@ export class GameOfLife extends AnimationFrameApplet
 
 
 			useFullscreen: true,
+			trueFullscreen: true,
 
 			useFullscreenButton: true,
 
 			enterFullscreenButtonIconPath: "/graphics/general-icons/enter-fullscreen.png",
 			exitFullscreenButtonIconPath: "/graphics/general-icons/exit-fullscreen.png",
+
+			switchFullscreenCallback: this.switchFullscreen.bind(this),
 
 
 
@@ -217,8 +229,24 @@ export class GameOfLife extends AnimationFrameApplet
 
 		this.wilson = new Wilson(canvas, options);
 
-		this.wilson.render.initUniforms(["worldCenter", "worldRadius"]);
+		this.wilson.render.initUniforms([
+			"worldCenter",
+			"worldRadius",
+			"aspectRatioX",
+			"aspectRatioY"
+		]);
+
 		this.zoom.init();
+
+		this.zoom.minLevel = -5;
+		this.zoom.maxLevel = 0;
+
+		this.pan.minX = -1.5;
+		this.pan.maxX = 1.5;
+		this.pan.minY = -1.5;
+		this.pan.maxY = 1.5;
+
+		this.switchFullscreen();
 
 		this.wilson.render.createFramebufferTexturePair(this.wilson.gl.UNSIGNED_BYTE);
 	}
@@ -313,6 +341,7 @@ export class GameOfLife extends AnimationFrameApplet
 	{
 		if (this.frame % this.framesPerUpdate === 0)
 		{
+			this.frame = 0;
 			this.updateGame();
 		}
 
@@ -378,5 +407,52 @@ export class GameOfLife extends AnimationFrameApplet
 		);
 
 		this.wilson.gl.bindFramebuffer(this.wilson.gl.FRAMEBUFFER, null);
+	}
+
+
+
+	switchFullscreen()
+	{
+		if (this.wilson.fullscreen.currentlyFullscreen)
+		{
+			if (aspectRatio >= 1)
+			{
+				this.wilson.gl.uniform1f(
+					this.wilson.uniforms["aspectRatioX"],
+					aspectRatio
+				);
+
+				this.wilson.gl.uniform1f(
+					this.wilson.uniforms["aspectRatioY"],
+					1
+				);
+			}
+
+			else
+			{
+				this.wilson.gl.uniform1f(
+					this.wilson.uniforms["aspectRatioX"],
+					1
+				);
+
+				this.wilson.gl.uniform1f(
+					this.wilson.uniforms["aspectRatioY"],
+					1 / aspectRatio
+				);
+			}
+		}
+
+		else
+		{
+			this.wilson.gl.uniform1f(
+				this.wilson.uniforms["aspectRatioX"],
+				1
+			);
+
+			this.wilson.gl.uniform1f(
+				this.wilson.uniforms["aspectRatioY"],
+				1
+			);
+		}
 	}
 }

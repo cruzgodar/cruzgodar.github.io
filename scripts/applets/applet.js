@@ -501,6 +501,7 @@ export class Applet
 		pinchMultiplier: 9,
 
 		level: 0,
+		maxLevel: Infinity,
 		minLevel: -Infinity,
 
 		fixedPointX: 0,
@@ -548,7 +549,7 @@ export class Applet
 				);
 			}
 
-			this.level = Math.max(this.level, this.minLevel);
+			this.level = Math.min(Math.max(this.level, this.minLevel), this.maxLevel);
 
 			this.parent.pan.clamp();
 		},
@@ -575,7 +576,6 @@ export class Applet
 			if (Math.abs(scrollAmount / 100) < .3)
 			{
 				this.level += scrollAmount / 100;
-				this.clamp();
 			}
 
 			else
@@ -606,8 +606,6 @@ export class Applet
 				this.level -= touchDistanceDelta / this.parent.wilson.worldWidth
 					* this.pinchMultiplier;
 
-				this.clamp();
-
 				this.nextVelocity = -touchDistanceDelta / this.parent.wilson.worldWidth
 					* this.pinchMultiplier;
 			}
@@ -616,8 +614,6 @@ export class Applet
 			{
 				this.level -= touchDistanceDelta / this.parent.wilson.worldHeight
 					* this.pinchMultiplier;
-
-				this.clamp();
 
 				this.nextVelocity = -touchDistanceDelta / this.parent.wilson.worldHeight
 					* this.pinchMultiplier;
@@ -654,6 +650,8 @@ export class Applet
 
 		zoomCanvas()
 		{
+			this.clamp();
+
 			const aspectRatio = this.parent.wilson.worldWidth / this.parent.wilson.worldHeight;
 
 			if (aspectRatio >= 1)
@@ -687,8 +685,6 @@ export class Applet
 				this.parent.wilson.worldCenterX = newWorldCenter[0];
 				this.parent.wilson.worldCenterY = newWorldCenter[1];
 			}
-
-			this.clamp();
 		},
 
 		// Call this in the drawFrame loop.
