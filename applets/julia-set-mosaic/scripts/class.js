@@ -30,15 +30,6 @@ export class JuliaSetMosaic extends AnimationFrameApplet
 
 		const hiddenCanvas = this.createHiddenCanvas();
 
-
-
-		this.pan.minX = -2.75;
-		this.pan.maxX = 1.25;
-		this.pan.minY = -2;
-		this.pan.maxY = 2;
-
-
-
 		const tempShader = /* glsl */`
 			precision highp float;
 			varying vec2 uv;
@@ -104,6 +95,13 @@ export class JuliaSetMosaic extends AnimationFrameApplet
 		this.wilsonHidden = new Wilson(hiddenCanvas, optionsHidden);
 
 
+
+		this.pan.setBounds({
+			minX: -2.75,
+			maxX: 1.25,
+			minY: -2,
+			maxY: 2,
+		});
 
 		this.zoom.init();
 

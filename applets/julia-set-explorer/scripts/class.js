@@ -37,11 +37,6 @@ export class JuliaSet extends AnimationFrameApplet
 	{
 		super(canvas);
 
-		this.pan.minX = -2.75;
-		this.pan.maxX = 1.25;
-		this.pan.minY = -2;
-		this.pan.maxY = 2;
-
 		this.switchJuliaModeButton = switchJuliaModeButton;
 
 		loadGlsl().then(() => this.run({ canvas }));
@@ -647,6 +642,13 @@ export class JuliaSet extends AnimationFrameApplet
 			], i);
 		}
 
+		this.pan.setBounds({
+			minX: -2.75,
+			maxX: 1.25,
+			minY: -2,
+			maxY: 2,
+		});
+
 		this.zoom.init();
 
 		this.resume();
@@ -716,10 +718,12 @@ export class JuliaSet extends AnimationFrameApplet
 			this.wilson.worldWidth = 4;
 			this.wilson.worldHeight = 4;
 
-			this.pan.minX = -2.75;
-			this.pan.maxX = 1.25;
-			this.pan.minY = -2;
-			this.pan.maxY = 2;
+			this.pan.setBounds({
+				minX: -2.75,
+				maxX: 1.25,
+				minY: -2,
+				maxY: 2,
+			});
 
 			this.zoom.init();
 
@@ -747,10 +751,12 @@ export class JuliaSet extends AnimationFrameApplet
 			this.wilson.worldWidth = 4;
 			this.wilson.worldHeight = 4;
 
-			this.pan.minX = -2;
-			this.pan.maxX = 2;
-			this.pan.minY = -2;
-			this.pan.maxY = 2;
+			this.pan.setBounds({
+				minX: -2,
+				maxX: 2,
+				minY: -2,
+				maxY: 2,
+			});
 
 			this.zoom.init();
 
@@ -809,10 +815,12 @@ export class JuliaSet extends AnimationFrameApplet
 			this.wilson.worldWidth = 4;
 			this.wilson.worldHeight = 4;
 
-			this.pan.minX = -2;
-			this.pan.maxX = 2;
-			this.pan.minY = -2;
-			this.pan.maxY = 2;
+			this.pan.setBounds({
+				minX: -2,
+				maxX: 2,
+				minY: -2,
+				maxY: 2,
+			});
 
 			this.zoom.init();
 

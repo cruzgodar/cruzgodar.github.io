@@ -43,15 +43,6 @@ export class FractalSounds extends AnimationFrameApplet
 	{
 		super(canvas);
 
-
-
-		this.pan.minX = -3;
-		this.pan.maxX = 3;
-		this.pan.minY = -3;
-		this.pan.maxY = 3;
-
-
-
 		const tempShader = /* glsl */`
 			precision highp float;
 			varying vec2 uv;
@@ -145,6 +136,13 @@ export class FractalSounds extends AnimationFrameApplet
 		this.wilson.ctx.lineWidth = 40;
 
 
+
+		this.pan.setBounds({
+			minX: -3,
+			maxX: 3,
+			minY: -3,
+			maxY: 3,
+		});
 
 		this.zoom.init();
 

@@ -23,11 +23,6 @@ export class LyapunovFractal extends AnimationFrameApplet
 	{
 		super(canvas);
 
-		this.pan.minX = 0;
-		this.pan.maxX = 4;
-		this.pan.minY = 0;
-		this.pan.maxY = 4;
-
 		const hiddenCanvas = this.createHiddenCanvas();
 
 		const tempShader = /* glsl */`
@@ -95,6 +90,13 @@ export class LyapunovFractal extends AnimationFrameApplet
 		this.wilson = new Wilson(canvas, options);
 
 		this.wilsonHidden = new Wilson(hiddenCanvas, optionsHidden);
+
+		this.pan.setBounds({
+			minX: 0,
+			maxX: 4,
+			minY: 0,
+			maxY: 4,
+		});
 
 		this.zoom.init();
 

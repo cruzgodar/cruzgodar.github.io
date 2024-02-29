@@ -237,12 +237,13 @@ export class GameOfLife extends AnimationFrameApplet
 		this.zoom.init();
 
 		this.zoom.minLevel = -5;
-		this.zoom.maxLevel = 0;
 
-		this.pan.minX = -1.5;
-		this.pan.maxX = 1.5;
-		this.pan.minY = -1.5;
-		this.pan.maxY = 1.5;
+		this.pan.setBounds({
+			minX: -1.1,
+			maxX: 1.1,
+			minY: -1.1,
+			maxY: 1.1,
+		});
 
 		this.switchFullscreen();
 
@@ -417,39 +418,21 @@ export class GameOfLife extends AnimationFrameApplet
 
 	switchFullscreen()
 	{
+		this.changeAspectRatio(true);
+
+		
+
 		if (this.wilson.fullscreen.currentlyFullscreen)
 		{
-			if (aspectRatio >= 1)
-			{
-				this.wilson.gl.uniform1f(
-					this.wilson.uniforms["aspectRatioX"],
-					aspectRatio
-				);
-
-				this.wilson.gl.uniform1f(
-					this.wilson.uniforms["aspectRatioY"],
-					1
-				);
-
-				this.pan.xDragMultiplier = aspectRatio;
-				this.pan.yDragMultiplier = 1;
-			}
-
-			else
-			{
-				this.wilson.gl.uniform1f(
-					this.wilson.uniforms["aspectRatioX"],
-					1
-				);
-
-				this.wilson.gl.uniform1f(
-					this.wilson.uniforms["aspectRatioY"],
-					1 / aspectRatio
-				);
-
-				this.pan.xDragMultiplier = 1;
-				this.pan.yDragMultiplier = 1 / aspectRatio;
-			}
+			this.wilson.gl.uniform1f(
+				this.wilson.uniforms["aspectRatioX"],
+				Math.max(aspectRatio, 1)
+			);
+	
+			this.wilson.gl.uniform1f(
+				this.wilson.uniforms["aspectRatioY"],
+				Math.max(1 / aspectRatio, 1)
+			);
 		}
 
 		else
@@ -463,9 +446,6 @@ export class GameOfLife extends AnimationFrameApplet
 				this.wilson.uniforms["aspectRatioY"],
 				1
 			);
-
-			this.pan.xDragMultiplier = 1;
-			this.pan.yDragMultiplier = 1;
 		}
 	}
 }

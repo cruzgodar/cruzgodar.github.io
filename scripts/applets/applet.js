@@ -373,23 +373,63 @@ export class Applet
 		velocityStartThreshhold: .005,
 		velocityStopThreshhold: .0005,
 
-		clamp()
-		{
-			this.parent.wilson.worldCenterX = Math.min(
-				Math.max(
-					this.parent.wilson.worldCenterX,
-					this.minX + this.parent.wilson.worldWidth / 2
-				),
-				this.maxX - this.parent.wilson.worldWidth / 2
+		setBounds({
+			minX,
+			maxX,
+			minY,
+			maxY
+		}) {
+			this.minX = minX;
+			this.maxX = maxX;
+			this.minY = minY;
+			this.maxY = maxY;
+
+			this.parent.zoom.maxLevel = Math.log2(
+				Math.min(this.maxX - this.minX, this.maxY - this.minY) / 3
 			);
 
-			this.parent.wilson.worldCenterY = Math.min(
-				Math.max(
-					this.parent.wilson.worldCenterY,
-					this.minY + this.parent.wilson.worldHeight / 2
-				),
-				this.maxY - this.parent.wilson.worldHeight / 2
-			);
+			this.parent.zoom.clamp();
+		},
+
+		clamp()
+		{
+			if (this.parent.wilson.worldWidth > this.maxX - this.minX)
+			{
+				this.parent.wilson.worldCenterX = (this.maxX + this.minX) / 2;
+			}
+
+			else
+			{
+				const minWorldCenterX = this.minX + this.parent.wilson.worldWidth / 2;
+				const maxWorldCenterX = this.maxX - this.parent.wilson.worldWidth / 2;
+
+				this.parent.wilson.worldCenterX = Math.min(
+					Math.max(
+						this.parent.wilson.worldCenterX,
+						minWorldCenterX
+					),
+					maxWorldCenterX
+				);
+			}
+
+			if (this.parent.wilson.worldHeight > this.maxY - this.minY)
+			{
+				this.parent.wilson.worldCenterY = (this.maxY + this.minY) / 2;
+			}
+
+			else
+			{
+				const minWorldCenterY = this.minY + this.parent.wilson.worldHeight / 2;
+				const maxWorldCenterY = this.maxY - this.parent.wilson.worldHeight / 2;
+
+				this.parent.wilson.worldCenterY = Math.min(
+					Math.max(
+						this.parent.wilson.worldCenterY,
+						minWorldCenterY
+					),
+					maxWorldCenterY
+				);
+			}
 		},
 
 		onGrabCanvas()
@@ -529,23 +569,26 @@ export class Applet
 		clamp()
 		{
 			const aspectRatio = this.parent.wilson.worldWidth / this.parent.wilson.worldHeight;
+			const maxWidth = this.parent.pan.maxX - this.parent.pan.minX;
+			const maxHeight = this.parent.pan.maxY - this.parent.pan.minY;
 
-			if (this.parent.wilson.worldWidth > this.parent.pan.maxX - this.parent.pan.minX)
-			{
-				this.parent.wilson.worldWidth = this.parent.pan.maxX - this.parent.pan.minX;
+			if (
+				this.parent.wilson.worldWidth > maxWidth
+				&& this.parent.wilson.worldHeight > maxHeight
+			) {
+				if (aspectRatio >= 1)
+				{
+					this.parent.wilson.worldWidth = maxWidth;
 
-				this.parent.wilson.worldHeight = this.parent.wilson.worldWidth / aspectRatio;
+					this.parent.wilson.worldHeight = this.parent.wilson.worldWidth / aspectRatio;
+				}
+				
+				else
+				{
+					this.parent.wilson.worldHeight = maxHeight;
 
-				this.level = Math.log2(
-					Math.min(this.parent.wilson.worldWidth, this.parent.wilson.worldHeight) / 3
-				);
-			}
-
-			if (this.parent.wilson.worldHeight > this.parent.pan.maxY - this.parent.pan.minY)
-			{
-				this.parent.wilson.worldHeight = this.parent.pan.maxY - this.parent.pan.minY;
-
-				this.parent.wilson.worldWidth = this.parent.wilson.worldHeight * aspectRatio;
+					this.parent.wilson.worldWidth = this.parent.wilson.worldHeight * aspectRatio;
+				}
 
 				this.level = Math.log2(
 					Math.min(this.parent.wilson.worldWidth, this.parent.wilson.worldHeight) / 3
