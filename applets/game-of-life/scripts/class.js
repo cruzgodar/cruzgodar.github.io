@@ -1,5 +1,4 @@
 import { AnimationFrameApplet } from "/scripts/applets/animationFrameApplet.js";
-import { aspectRatio } from "/scripts/src/layout.js";
 import { addTemporaryListener } from "/scripts/src/main.js";
 import { Wilson } from "/scripts/wilson.js";
 
@@ -127,8 +126,7 @@ export class GameOfLife extends AnimationFrameApplet
 			uniform vec2 worldCenter;
 			uniform float worldRadius;
 
-			uniform float aspectRatioX;
-			uniform float aspectRatioY;
+			uniform float aspectRatio;
 
 			const vec4 aliveColor = vec4(1.0, 1.0, 1.0, 1.0);
 			const vec4 growingColor = vec4(0.5, 0.0, 1.0, 1.0);
@@ -137,8 +135,8 @@ export class GameOfLife extends AnimationFrameApplet
 			
 			void main(void)
 			{
-				vec2 aspectRatio = vec2(aspectRatioX, aspectRatioY);
-
+				vec2 aspectRatio = vec2(max(aspectRatio, 1.0), max(1.0 / aspectRatio, 1.0));
+				
 				vec2 xy = (uv * aspectRatio * worldRadius + worldCenter) / 2.0 + vec2(0.5, 0.5);
 
 				if (max(xy.x, xy.y) >= 1.0 || min(xy.x, xy.y) <= 0.0)
@@ -187,7 +185,7 @@ export class GameOfLife extends AnimationFrameApplet
 			enterFullscreenButtonIconPath: "/graphics/general-icons/enter-fullscreen.png",
 			exitFullscreenButtonIconPath: "/graphics/general-icons/exit-fullscreen.png",
 
-			switchFullscreenCallback: this.switchFullscreen.bind(this),
+			switchFullscreenCallback: this.changeAspectRatio.bind(this),
 
 
 
@@ -209,8 +207,7 @@ export class GameOfLife extends AnimationFrameApplet
 		this.wilson.render.initUniforms([
 			"worldCenter",
 			"worldRadius",
-			"aspectRatioX",
-			"aspectRatioY"
+			"aspectRatio",
 		]);
 
 		this.zoom.init();
@@ -224,14 +221,14 @@ export class GameOfLife extends AnimationFrameApplet
 			maxY: 1.1,
 		});
 
-		this.switchFullscreen();
+		this.changeAspectRatio();
 
 		this.wilson.render.createFramebufferTexturePair(this.wilson.gl.UNSIGNED_BYTE);
 
 		addTemporaryListener({
 			object: window,
 			event: "resize",
-			callback: this.switchFullscreen.bind(this)
+			callback: this.changeAspectRatio.bind(this)
 		});
 	}
 
@@ -306,7 +303,12 @@ export class GameOfLife extends AnimationFrameApplet
 
 		this.wilson.gl.uniform1f(
 			this.wilson.uniforms.worldRadius,
-			this.wilson.worldWidth / 2
+			Math.min(this.wilson.worldWidth, this.wilson.worldHeight) / 2
+		);
+
+		this.wilson.gl.uniform1f(
+			this.wilson.uniforms.aspectRatio,
+			this.aspectRatio
 		);
 
 		this.wilson.render.drawFrame();
@@ -397,40 +399,5 @@ export class GameOfLife extends AnimationFrameApplet
 			this.wilsonHidden.gl.UNSIGNED_BYTE,
 			pixelData
 		);
-	}
-
-
-
-	switchFullscreen()
-	{
-		this.changeAspectRatio(true);
-
-		
-
-		if (this.wilson.fullscreen.currentlyFullscreen)
-		{
-			this.wilson.gl.uniform1f(
-				this.wilson.uniforms["aspectRatioX"],
-				Math.max(aspectRatio, 1)
-			);
-	
-			this.wilson.gl.uniform1f(
-				this.wilson.uniforms["aspectRatioY"],
-				Math.max(1 / aspectRatio, 1)
-			);
-		}
-
-		else
-		{
-			this.wilson.gl.uniform1f(
-				this.wilson.uniforms["aspectRatioX"],
-				1
-			);
-
-			this.wilson.gl.uniform1f(
-				this.wilson.uniforms["aspectRatioY"],
-				1
-			);
-		}
 	}
 }

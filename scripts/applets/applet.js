@@ -19,6 +19,8 @@ export class Applet
 	numTouches = 0;
 	needNewFrame = false;
 
+	aspectRatio = 1;
+
 
 
 	constructor(canvas)
@@ -627,17 +629,6 @@ export class Applet
 			}
 
 			this.zoomCanvas();
-		},
-
-		onDragCanvas(x, y, xDelta, yDelta)
-		{
-			this.parent.needNewFrame = true;
-
-			this.parent.wilson.worldCenterX -= xDelta;
-			this.parent.wilson.worldCenterY -= yDelta;
-
-			this.nextVelocityX = -xDelta / this.parent.wilson.worldWidth;
-			this.nextVelocityY = -yDelta / this.parent.wilson.worldHeight;
 		},
 
 		onPinchCanvas(x, y, touchDistanceDelta)
