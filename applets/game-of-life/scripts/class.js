@@ -185,7 +185,7 @@ export class GameOfLife extends AnimationFrameApplet
 			enterFullscreenButtonIconPath: "/graphics/general-icons/enter-fullscreen.png",
 			exitFullscreenButtonIconPath: "/graphics/general-icons/exit-fullscreen.png",
 
-			switchFullscreenCallback: this.changeAspectRatio.bind(this),
+			switchFullscreenCallback: () => this.changeAspectRatio(true),
 
 
 
@@ -221,14 +221,14 @@ export class GameOfLife extends AnimationFrameApplet
 			maxY: 1.1,
 		});
 
-		this.changeAspectRatio();
+		this.changeAspectRatio(true);
 
 		this.wilson.render.createFramebufferTexturePair(this.wilson.gl.UNSIGNED_BYTE);
 
 		addTemporaryListener({
 			object: window,
 			event: "resize",
-			callback: this.changeAspectRatio.bind(this)
+			callback: () => this.changeAspectRatio(true)
 		});
 	}
 
@@ -399,5 +399,11 @@ export class GameOfLife extends AnimationFrameApplet
 			this.wilsonHidden.gl.UNSIGNED_BYTE,
 			pixelData
 		);
+	}
+
+	changeResolution(newResolution)
+	{
+		this.resolution = newResolution;
+		this.wilson.changeCanvasSize(this.resolution, this.resolution);
 	}
 }

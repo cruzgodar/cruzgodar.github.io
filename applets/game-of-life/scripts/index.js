@@ -16,6 +16,7 @@ export function load()
 		value: 1000,
 		maxValue: 4000,
 		onEnter: run,
+		onInput: changeResolution
 	});
 
 	const gridSizeInput = new TextBox({
@@ -64,5 +65,10 @@ export function load()
 		applet.framesPerUpdate = Math.ceil(40 / speedSlider.value);
 
 		applet.updatesPerFrame = Math.ceil(speedSlider.value / 40);
+	}
+
+	function changeResolution()
+	{
+		applet.changeResolution(resolutionInput.value);
 	}
 }
