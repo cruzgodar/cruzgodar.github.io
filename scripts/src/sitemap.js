@@ -44,6 +44,7 @@ export const sitemap =
 		
 		"children":
 		[
+			"/applets/extruded-sponge/",
 			"/applets/game-of-life/",
 			"/applets/voronoi-diagrams/",
 			"/applets/thurston-geometries/",
@@ -85,6 +86,17 @@ export const sitemap =
 		]
 	},
 		
+	"/applets/extruded-sponge/":
+	{
+		"title": "An Extruded Sponge",
+		
+		"parent": "/applets/",
+		
+		"children": [],
+
+		"customScript": true
+	},
+	
 	"/applets/game-of-life/":
 	{
 		"title": "Conway's Game of Life",

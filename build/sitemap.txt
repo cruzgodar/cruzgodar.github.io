@@ -2,6 +2,7 @@ home Cruz Godar
 	gallery Gallery
 
 	applets Applets
+		extruded-sponge An Extruded Sponge
 		game-of-life Conway's Game of Life
 		voronoi-diagrams Voronoi Diagrams
 		thurston-geometries Thurston Geometries
