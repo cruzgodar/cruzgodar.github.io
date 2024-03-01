@@ -5,9 +5,10 @@ import { Wilson } from "/scripts/wilson.js";
 
 export class ExtrudedSponge extends RaymarchApplet
 {
-	scale = 2.0;
+	scale = 3;
+	separation = 1;
 
-	maxIterations = 16;
+	maxIterations = 20;
 
 	cameraPos = [2, 2, 2];
 	theta = 1.25 * Math.PI;
@@ -35,7 +36,7 @@ export class ExtrudedSponge extends RaymarchApplet
 			
 			uniform float focalLength;
 			
-			const vec3 lightPos = vec3(5.0, 7.0, 10.0);
+			const vec3 lightPos = vec3(50.0, 70.0, 100.0);
 			const float lightBrightness = 2.0;
 			
 			uniform int imageSize;
@@ -48,23 +49,15 @@ export class ExtrudedSponge extends RaymarchApplet
 			const float fogScaling = .2;
 			const int maxIterations = ${this.maxIterations};
 			
-			
-			
-			const vec3 color1 = vec3(1.0, 0.0, 0.0);
-			const vec3 color2 = vec3(0.0, 1.0, 0.0);
-			const vec3 color3 = vec3(0.0, 0.0, 1.0);
-			const vec3 color4 = vec3(1.0, 1.0, 0.0);
-			
-			
-			
-			uniform vec3 scaleCenter;
-			
-			const float scale = 2.0;
+			uniform float scale;
+			uniform float separation;
 			
 			
 			
 			float distanceEstimator(vec3 pos)
 			{
+				float scaleCenter = (scale + 1.0) / (scale - 1.0) * separation;
+
 				vec3 mutablePos = abs(pos);
 
 				float totalDistance = (max(max(mutablePos.x, mutablePos.y), mutablePos.z) - 1.0);
@@ -74,17 +67,17 @@ export class ExtrudedSponge extends RaymarchApplet
 					if (mutablePos.x > max(mutablePos.y, mutablePos.z))
 					{
 						// Scale from (2, 0, 0).
-						mutablePos = 3.0 * mutablePos - 2.0 * vec3(2.0, 0.0, 0.0);
+						mutablePos = scale * mutablePos - (scale - 1.0) * vec3(scaleCenter, 0.0, 0.0);
 					}
 
 					else if (mutablePos.y > max(mutablePos.x, mutablePos.z))
 					{
-						mutablePos = 3.0 * mutablePos - 2.0 * vec3(0.0, 2.0, 0.0);
+						mutablePos = scale * mutablePos - (scale - 1.0) * vec3(0.0, scaleCenter, 0.0);
 					}
 
 					else
 					{
-						mutablePos = 3.0 * mutablePos - 2.0 * vec3(0.0, 0.0, 2.0);
+						mutablePos = scale * mutablePos - (scale - 1.0) * vec3(0.0, 0.0, scaleCenter);
 					}
 
 					mutablePos = abs(mutablePos);
@@ -92,7 +85,7 @@ export class ExtrudedSponge extends RaymarchApplet
 					totalDistance = min(
 						totalDistance,
 						(max(max(mutablePos.x, mutablePos.y), mutablePos.z) - 1.0)
-							/ pow(3.0, float(iteration + 1))
+							/ pow(scale, float(iteration + 1))
 					);
 				}
 				
@@ -103,7 +96,40 @@ export class ExtrudedSponge extends RaymarchApplet
 			
 			vec3 getColor(vec3 pos)
 			{
-				return vec3(1.0, 1.0, 1.0);
+				vec3 color = vec3(1.0);
+
+				float scaleCenter = (scale + 1.0) / (scale - 1.0) * separation;
+
+				vec3 mutablePos = abs(pos);
+
+				for (int iteration = 0; iteration < maxIterations; iteration++)
+				{
+					if (mutablePos.x > max(mutablePos.y, mutablePos.z))
+					{
+						// Scale from (2, 0, 0).
+						mutablePos = scale * mutablePos - (scale - 1.0) * vec3(scaleCenter, 0.0, 0.0);
+					}
+
+					else if (mutablePos.y > max(mutablePos.x, mutablePos.z))
+					{
+						mutablePos = scale * mutablePos - (scale - 1.0) * vec3(0.0, scaleCenter, 0.0);
+					}
+
+					else
+					{
+						mutablePos = scale * mutablePos - (scale - 1.0) * vec3(0.0, 0.0, scaleCenter);
+					}
+
+					color = mix(
+						color,
+						abs(normalize(mutablePos)),
+						1.0 / pow(2.0, float(iteration + 1))
+					);
+
+					mutablePos = abs(mutablePos);
+				}
+				
+				return abs(normalize(color));
 			}
 			
 			
@@ -164,7 +190,7 @@ export class ExtrudedSponge extends RaymarchApplet
 					float distance = distanceEstimator(pos);
 					
 					//This lowers the detail far away, which makes everything run nice and fast.
-					epsilon = max(.0000006, 3.0 * t / float(imageSize));
+					epsilon = max(.0000006, 1.0 * t / float(imageSize));
 					
 					
 					
@@ -250,7 +276,8 @@ export class ExtrudedSponge extends RaymarchApplet
 			"rightVec",
 			"upVec",
 			"focalLength",
-			"scaleCenter",
+			"scale",
+			"separation"
 		]);
 
 		
@@ -318,6 +345,16 @@ export class ExtrudedSponge extends RaymarchApplet
 			this.focalLength
 		);
 
+		this.wilson.gl.uniform1f(
+			this.wilson.uniforms["scale"],
+			this.scale
+		);
+
+		this.wilson.gl.uniform1f(
+			this.wilson.uniforms["separation"],
+			this.separation
+		);
+
 
 
 		const boundFunction = () => this.changeResolution();
@@ -361,7 +398,13 @@ export class ExtrudedSponge extends RaymarchApplet
 
 	distanceEstimator(x, y, z)
 	{
-		let mutablePos = [Math.abs(x), Math.abs(y), Math.abs(z)];
+		const scaleCenter = (this.scale + 1) / (this.scale - 1) * this.separation;
+
+		let mutablePos = [
+			Math.abs(x),
+			Math.abs(y),
+			Math.abs(z)
+		];
 
 		let totalDistance = Math.max(
 			Math.max(mutablePos[0], mutablePos[1]),
@@ -373,27 +416,27 @@ export class ExtrudedSponge extends RaymarchApplet
 			if (mutablePos[0] > Math.max(mutablePos[1], mutablePos[2]))
 			{
 				mutablePos = [
-					3 * mutablePos[0] - 2 * 2,
-					3 * mutablePos[1],
-					3 * mutablePos[2]
+					this.scale * mutablePos[0] - (this.scale - 1) * scaleCenter,
+					this.scale * mutablePos[1],
+					this.scale * mutablePos[2]
 				];
 			}
 
 			else if (mutablePos[1] > Math.max(mutablePos[0], mutablePos[2]))
 			{
 				mutablePos = [
-					3 * mutablePos[0],
-					3 * mutablePos[1] - 2 * 2,
-					3 * mutablePos[2]
+					this.scale * mutablePos[0],
+					this.scale * mutablePos[1] - (this.scale - 1) * scaleCenter,
+					this.scale * mutablePos[2]
 				];
 			}
 
 			else
 			{
 				mutablePos = [
-					3 * mutablePos[0],
-					3 * mutablePos[1],
-					3 * mutablePos[2] - 2 * 2
+					this.scale * mutablePos[0],
+					this.scale * mutablePos[1],
+					this.scale * mutablePos[2] - (this.scale - 1) * scaleCenter
 				];
 			}
 
@@ -406,7 +449,7 @@ export class ExtrudedSponge extends RaymarchApplet
 			totalDistance = Math.min(
 				totalDistance,
 				(Math.max(Math.max(mutablePos[0], mutablePos[1]), mutablePos[2]) - 1)
-					/ Math.pow(3.0, iteration + 1)
+					/ Math.pow(this.scale, iteration + 1)
 			);
 		}
 		

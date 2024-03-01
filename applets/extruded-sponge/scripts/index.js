@@ -2,6 +2,7 @@ import { showPage } from "../../../scripts/src/loadPage.js";
 import { ExtrudedSponge } from "./class.js";
 import { DownloadButton } from "/scripts/src/buttons.js";
 import { $ } from "/scripts/src/main.js";
+import { Slider } from "/scripts/src/sliders.js";
 import { TextBox } from "/scripts/src/textBoxes.js";
 
 export function load()
@@ -22,10 +23,39 @@ export function load()
 		onInput: changeResolution
 	});
 
+	const scaleSlider = new Slider({
+		element: $("#scale-slider"),
+		name: "Scale",
+		value: 3,
+		min: 1.1,
+		max: 4,
+		onInput: onSliderInput
+	});
+
+	const separationSlider = new Slider({
+		element: $("#separation-slider"),
+		name: "Separation",
+		value: 1,
+		min: 0.5,
+		max: 2,
+		onInput: onSliderInput
+	});
+
 	showPage();
 
 	function changeResolution()
 	{
 		applet.changeResolution(resolutionInput.value);
+	}
+
+	function onSliderInput()
+	{
+		applet.scale = scaleSlider.value;
+		applet.wilson.gl.uniform1f(applet.wilson.uniforms.scale, applet.scale);
+
+		applet.separation = separationSlider.value;
+		applet.wilson.gl.uniform1f(applet.wilson.uniforms.separation, applet.separation);
+
+		applet.needNewFrame = true;
 	}
 }

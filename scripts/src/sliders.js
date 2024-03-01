@@ -70,6 +70,8 @@ export class Slider extends InputElement
 		this.valueElement.textContent = this.value;
 		this.subtextElement.appendChild(this.valueElement);
 
+		this.value = parseFloat(this.value);
+
 		this.element.addEventListener("input", () =>
 		{
 			this.value = this.logarithmic
@@ -79,6 +81,8 @@ export class Slider extends InputElement
 				? Math.round(this.value)
 				: this.value.toFixed(this.precision);
 			this.valueElement.textContent = this.value;
+
+			this.value = parseFloat(this.value);
 
 			this.onInput();
 		});
