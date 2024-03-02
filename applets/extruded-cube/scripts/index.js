@@ -29,6 +29,7 @@ export function load()
 		value: 3,
 		min: 1.1,
 		max: 4,
+		snapPoints: [1.5, 2, 3],
 		onInput: onSliderInput
 	});
 
@@ -38,6 +39,7 @@ export function load()
 		value: 1,
 		min: 0.5,
 		max: 2,
+		snapPoints: [1],
 		onInput: onSliderInput
 	});
 

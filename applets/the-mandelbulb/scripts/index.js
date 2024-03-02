@@ -68,6 +68,7 @@ export function load()
 		value: 8,
 		min: 2,
 		max: 16,
+		snapPoints: [8],
 		onInput: onSliderInput
 	});
 

@@ -7,6 +7,8 @@ export class Slider extends InputElement
 	value;
 	min;
 	max;
+	snapPoints;
+	snapThreshhold;
 	precision;
 	logarithmic;
 	integer;
@@ -18,6 +20,8 @@ export class Slider extends InputElement
 		value,
 		min,
 		max,
+		snapThreshhold = (max - min) / 80,
+		snapPoints = [],
 		logarithmic = false,
 		integer = false,
 		onInput = () => {}
@@ -32,6 +36,8 @@ export class Slider extends InputElement
 		this.value = parseFloat(value);
 		this.min = parseFloat(min);
 		this.max = parseFloat(max);
+		this.snapPoints = snapPoints;
+		this.snapThreshhold = snapThreshhold;
 
 		if (this.logarithmic)
 		{
@@ -77,9 +83,21 @@ export class Slider extends InputElement
 			this.value = this.logarithmic
 				? 10 ** parseFloat(this.element.value)
 				: parseFloat(this.element.value);
+
+			for (let i = 0; i < this.snapPoints.length; i++)
+			{
+				const distanceToSnapPoint = Math.abs(this.value - this.snapPoints[i]);
+
+				if (distanceToSnapPoint < this.snapThreshhold)
+				{
+					this.value = this.snapPoints[i];
+				}
+			}
+
 			this.value = this.integer
 				? Math.round(this.value)
 				: this.value.toFixed(this.precision);
+
 			this.valueElement.textContent = this.value;
 
 			this.value = parseFloat(this.value);

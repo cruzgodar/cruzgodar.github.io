@@ -48,6 +48,7 @@ export function load()
 		value: 100,
 		min: 80,
 		max: 120,
+		snapPoints: [100],
 		onInput: onSliderInput
 	});
 
