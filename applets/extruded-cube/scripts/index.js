@@ -39,7 +39,7 @@ export function load()
 		value: 1,
 		min: 0.5,
 		max: 2,
-		snapPoints: [1],
+		snapPoints: [2 / 3, 1],
 		onInput: onSliderInput
 	});
 

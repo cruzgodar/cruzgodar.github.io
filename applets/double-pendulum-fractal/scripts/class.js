@@ -5,6 +5,7 @@ import { Wilson } from "/scripts/wilson.js";
 export class DoublePendulumFractal extends Applet
 {
 	resolution = 1000;
+	centerUnstableEquilibrium = false;
 
 	dt = .002;
 
@@ -50,10 +51,12 @@ export class DoublePendulumFractal extends Applet
 			precision highp float;
 			
 			varying vec2 uv;
+
+			uniform float movementAdjust;
 			
 			void main(void)
 			{
-				gl_FragColor = vec4((uv + vec2(1.0, 1.0)) / 2.0, 0.5, 0.5);
+				gl_FragColor = fract(vec4((uv + vec2(1.0 + movementAdjust)) / 2.0, 0.5, 0.5));
 				
 				return;
 			}
@@ -104,6 +107,7 @@ export class DoublePendulumFractal extends Applet
 			varying vec2 uv;
 			
 			uniform sampler2D uTexture;
+			uniform float movementAdjust;
 			
 			
 			
@@ -126,7 +130,7 @@ export class DoublePendulumFractal extends Applet
 				
 				float vAdd = .9 * (1.0 - 4.0 * ((uv.x * uv.x) / 4.0 + (uv.y * uv.y) / 4.0));
 				
-				float v = min(2.0 * length(state.zw) + vAdd, 1.0);
+				float v = min(2.0 * length(state.zw) + vAdd * (1.0 - movementAdjust), 1.0);
 				
 				vec3 rgb = hsv2rgb(vec3(h, s, v));
 				
@@ -157,8 +161,13 @@ export class DoublePendulumFractal extends Applet
 
 		this.wilson = new Wilson(canvas, options);
 
+		this.wilson.render.initUniforms(["movementAdjust"], 0);
+		this.wilson.gl.uniform1f(this.wilson.uniforms.movementAdjust[0], 0);
+
 		this.wilson.render.loadNewShader(fragShaderSourceUpdate);
 		this.wilson.render.loadNewShader(fragShaderSourceDraw);
+		this.wilson.render.initUniforms(["movementAdjust"], 2);
+		this.wilson.gl.uniform1f(this.wilson.uniforms.movementAdjust[2], 0);
 
 		this.wilson.render.createFramebufferTexturePair();
 		this.wilson.render.createFramebufferTexturePair();
@@ -200,12 +209,14 @@ export class DoublePendulumFractal extends Applet
 
 
 
-	run({ resolution })
+	run({ resolution, centerUnstableEquilibrium = false })
 	{
 		this.drawnFractal = false;
 		this.drawingFractal = true;
 
 		this.resolution = resolution;
+		this.centerUnstableEquilibrium = centerUnstableEquilibrium;
+		
 		this.wilson.changeCanvasSize(this.resolution, this.resolution);
 
 
@@ -244,9 +255,21 @@ export class DoublePendulumFractal extends Applet
 			null
 		);
 
+		this.wilson.gl.useProgram(this.wilson.render.shaderPrograms[2]);
+
+		this.wilson.gl.uniform1f(
+			this.wilson.uniforms.movementAdjust[2],
+			this.centerUnstableEquilibrium ? 1 : 0
+		);
+
 
 
 		this.wilson.gl.useProgram(this.wilson.render.shaderPrograms[0]);
+
+		this.wilson.gl.uniform1f(
+			this.wilson.uniforms.movementAdjust[0],
+			this.centerUnstableEquilibrium ? 1 : 0
+		);
 
 		this.wilson.gl.bindTexture(
 			this.wilson.gl.TEXTURE_2D,
@@ -343,6 +366,12 @@ export class DoublePendulumFractal extends Applet
 			return;
 		}
 
+		if (this.centerUnstableEquilibrium)
+		{
+			x = (x + 2) % 2 - 1;
+			y = (y + 2) % 2 - 1;
+		}
+		
 		if (this.pendulumCanvasVisible === 0)
 		{
 			this.showPendulumCanvasPreview();

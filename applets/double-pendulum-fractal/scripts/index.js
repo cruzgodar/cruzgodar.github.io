@@ -1,6 +1,7 @@
 import { showPage } from "../../../scripts/src/loadPage.js";
 import { DoublePendulumFractal } from "./class.js";
 import { DownloadButton, GenerateButton, ToggleButton } from "/scripts/src/buttons.js";
+import { Checkbox } from "/scripts/src/checkboxes.js";
 import { $ } from "/scripts/src/main.js";
 import { TextBox } from "/scripts/src/textBoxes.js";
 
@@ -42,10 +43,18 @@ export function load()
 		onEnter: run,
 	});
 
+	const centerUnstableEquilibriumCheckbox = new Checkbox({
+		element: $("#center-unstable-equilibrium-checkbox"),
+		name: "Center unstable equilibrium"
+	});
+
 	showPage();
 
 	function run()
 	{
-		applet.run({ resolution: resolutionInput.value });
+		applet.run({
+			resolution: resolutionInput.value,
+			centerUnstableEquilibrium: centerUnstableEquilibriumCheckbox.checked
+		});
 	}
 }
