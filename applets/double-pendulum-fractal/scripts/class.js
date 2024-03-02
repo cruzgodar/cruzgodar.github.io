@@ -6,7 +6,7 @@ export class DoublePendulumFractal extends Applet
 {
 	resolution = 1000;
 
-	dt = .01;
+	dt = .002;
 
 	drawnFractal = false;
 
@@ -69,7 +69,7 @@ export class DoublePendulumFractal extends Applet
 			
 			uniform sampler2D uTexture;
 			
-			const float dt = .01;
+			const float dt = .002;
 			
 			
 			
@@ -120,13 +120,13 @@ export class DoublePendulumFractal extends Applet
 			{
 				vec4 state = (texture2D(uTexture, (uv + vec2(1.0, 1.0)) / 2.0) - vec4(.5, .5, .5, .5));
 				
-				float h = atan(state.y, state.x) / 3.14159265258 + 1.0;
+				float h = atan(state.y, state.x) / 6.283;
 				
-				float s = min((state.x * state.x + state.y * state.y) * 100.0, 1.0);
+				float s = min((state.x * state.x + state.y * state.y) * 20.0, 1.0);
 				
 				float vAdd = .9 * (1.0 - 4.0 * ((uv.x * uv.x) / 4.0 + (uv.y * uv.y) / 4.0));
 				
-				float v = min(sqrt(state.z * state.z + state.w * state.w) + vAdd, 1.0);
+				float v = min(2.0 * length(state.zw) + vAdd, 1.0);
 				
 				vec3 rgb = hsv2rgb(vec3(h, s, v));
 				
@@ -282,43 +282,36 @@ export class DoublePendulumFractal extends Applet
 			return;
 		}
 
-
-
-		this.wilson.gl.useProgram(this.wilson.render.shaderPrograms[1]);
-
-		this.wilson.gl.bindFramebuffer(
-			this.wilson.gl.FRAMEBUFFER,
-			this.wilson.render.framebuffers[1].framebuffer
-		);
-
-		this.wilson.render.drawFrame();
-
-
-
-		this.wilson.gl.useProgram(this.wilson.render.shaderPrograms[2]);
-
-		this.wilson.gl.bindTexture(
-			this.wilson.gl.TEXTURE_2D,
-			this.wilson.render.framebuffers[1].texture
-		);
-
-		this.wilson.gl.bindFramebuffer(this.wilson.gl.FRAMEBUFFER, null);
-
-		this.wilson.render.drawFrame();
-
-
-
-		// At this point, we've gone Init --> F1 --> T1 --> Update --> F2 --> T2 --> Draw.
-		// T2 is still bound, which is correct, but we cannot be bound to F2, so we bind to F1.
+		const numInternalFrames = timeElapsed > 10 ? 3 : 1;
 
 		this.wilson.gl.useProgram(this.wilson.render.shaderPrograms[1]);
 
-		this.wilson.gl.bindFramebuffer(
-			this.wilson.gl.FRAMEBUFFER,
-			this.wilson.render.framebuffers[0].framebuffer
-		);
+		for (let i = 0; i < numInternalFrames; i++)
+		{
+			this.wilson.gl.bindTexture(
+				this.wilson.gl.TEXTURE_2D,
+				this.wilson.render.framebuffers[0].texture
+			);
 
-		this.wilson.render.drawFrame();
+			this.wilson.gl.bindFramebuffer(
+				this.wilson.gl.FRAMEBUFFER,
+				this.wilson.render.framebuffers[1].framebuffer
+			);
+
+			this.wilson.render.drawFrame();
+
+			this.wilson.gl.bindTexture(
+				this.wilson.gl.TEXTURE_2D,
+				this.wilson.render.framebuffers[1].texture
+			);
+
+			this.wilson.gl.bindFramebuffer(
+				this.wilson.gl.FRAMEBUFFER,
+				this.wilson.render.framebuffers[0].framebuffer
+			);
+
+			this.wilson.render.drawFrame();
+		}
 
 
 

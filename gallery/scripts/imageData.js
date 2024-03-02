@@ -634,10 +634,10 @@ export const galleryImageData =
 	{
 		title: "The Double Pendulum Fractal",
 
-		resolution: "5000x5000",
+		resolution: "4000x4000",
 
 		appletLink: "double-pendulum-fractal",
 
-		imageLink: "https://drive.google.com/uc?id=1vyekqHESbwyD7PWBbWxVnw96rhNT-ZtB&export=download"
+		imageLink: "https://drive.google.com/uc?id=1X4qJm3ChGYLQtU7wDyp9_wMxs0vebpqU&export=download"
 	}
 };
