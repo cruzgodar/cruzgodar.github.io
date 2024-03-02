@@ -1,5 +1,5 @@
 import { showPage } from "../../../scripts/src/loadPage.js";
-import { ExtrudedSponge } from "./class.js";
+import { ExtrudedCube } from "./class.js";
 import { DownloadButton } from "/scripts/src/buttons.js";
 import { $ } from "/scripts/src/main.js";
 import { Slider } from "/scripts/src/sliders.js";
@@ -7,12 +7,12 @@ import { TextBox } from "/scripts/src/textBoxes.js";
 
 export function load()
 {
-	const applet = new ExtrudedSponge({ canvas: $("#output-canvas") });
+	const applet = new ExtrudedCube({ canvas: $("#output-canvas") });
 
 	new DownloadButton({
 		element: $("#download-button"),
 		wilson: applet.wilson,
-		filename: "a-kaleidoscopic-ifs-fractal.png"
+		filename: "an-extruded-cube.png"
 	});
 
 	const resolutionInput = new TextBox({

@@ -3,16 +3,16 @@ import { aspectRatio } from "/scripts/src/layout.js";
 import { addTemporaryListener } from "/scripts/src/main.js";
 import { Wilson } from "/scripts/wilson.js";
 
-export class ExtrudedSponge extends RaymarchApplet
+export class ExtrudedCube extends RaymarchApplet
 {
 	scale = 3;
 	separation = 1;
 
 	maxIterations = 20;
 
-	cameraPos = [2, 2, 2];
+	cameraPos = [1.75, 1.75, 1.75];
 	theta = 1.25 * Math.PI;
-	phi = .75 * Math.PI;
+	phi = 2.1539;
 
 
 
@@ -44,7 +44,7 @@ export class ExtrudedSponge extends RaymarchApplet
 			
 			
 			const float clipDistance = 1000.0;
-			const int maxMarches = 64;
+			const int maxMarches = 256;
 			const vec3 fogColor = vec3(0.0, 0.0, 0.0);
 			const float fogScaling = .2;
 			const int maxIterations = ${this.maxIterations};
@@ -66,7 +66,6 @@ export class ExtrudedSponge extends RaymarchApplet
 				{
 					if (mutablePos.x > max(mutablePos.y, mutablePos.z))
 					{
-						// Scale from (2, 0, 0).
 						mutablePos = scale * mutablePos - (scale - 1.0) * vec3(scaleCenter, 0.0, 0.0);
 					}
 
@@ -96,7 +95,7 @@ export class ExtrudedSponge extends RaymarchApplet
 			
 			vec3 getColor(vec3 pos)
 			{
-				vec3 color = vec3(1.0);
+				vec3 color = vec3(0.25);
 
 				float scaleCenter = (scale + 1.0) / (scale - 1.0) * separation;
 
@@ -106,30 +105,29 @@ export class ExtrudedSponge extends RaymarchApplet
 				{
 					if (mutablePos.x > max(mutablePos.y, mutablePos.z))
 					{
-						// Scale from (2, 0, 0).
 						mutablePos = scale * mutablePos - (scale - 1.0) * vec3(scaleCenter, 0.0, 0.0);
+
+						color += vec3(0.0, 0.75, 1.0) * pow(2.0, -float(iteration + 1));
 					}
 
 					else if (mutablePos.y > max(mutablePos.x, mutablePos.z))
 					{
 						mutablePos = scale * mutablePos - (scale - 1.0) * vec3(0.0, scaleCenter, 0.0);
+
+						color += vec3(0.75, 0.0, 1.0) * pow(2.0, -float(iteration + 1));
 					}
 
 					else
 					{
 						mutablePos = scale * mutablePos - (scale - 1.0) * vec3(0.0, 0.0, scaleCenter);
-					}
 
-					color = mix(
-						color,
-						abs(normalize(mutablePos)),
-						1.0 / pow(2.0, float(iteration + 1))
-					);
+						color += vec3(0.0, 0.0, 1.0) * pow(2.0, -float(iteration + 1));
+					}
 
 					mutablePos = abs(mutablePos);
 				}
 				
-				return abs(normalize(color));
+				return color;
 			}
 			
 			
@@ -160,7 +158,7 @@ export class ExtrudedSponge extends RaymarchApplet
 				float lightIntensity = lightBrightness * max(dotProduct, -.4 * dotProduct);
 				
 				//The last factor adds ambient occlusion.
-				vec3 color = getColor(pos) * lightIntensity * max((1.0 - float(iteration) / float(maxMarches)), 0.0);
+				vec3 color = getColor(pos) * lightIntensity * max((1.0 - float(iteration) / float(64)), 0.0);
 				
 				
 				
@@ -380,6 +378,7 @@ export class ExtrudedSponge extends RaymarchApplet
 
 	drawFrame()
 	{
+		console.log(this.theta, this.phi, this.cameraPos);
 		this.wilson.worldCenterY = Math.min(
 			Math.max(
 				this.wilson.worldCenterY,

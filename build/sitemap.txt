@@ -3,7 +3,7 @@ home Cruz Godar
 
 	applets Applets
 		game-of-life Conway's Game of Life
-		extruded-sponge An Extruded Sponge
+		extruded-cube An Extruded Cube
 		voronoi-diagrams Voronoi Diagrams
 		thurston-geometries Thurston Geometries
 		magic-carpets Magic Carpets

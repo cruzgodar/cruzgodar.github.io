@@ -45,7 +45,7 @@ export const sitemap =
 		"children":
 		[
 			"/applets/game-of-life/",
-			"/applets/extruded-sponge/",
+			"/applets/extruded-cube/",
 			"/applets/voronoi-diagrams/",
 			"/applets/thurston-geometries/",
 			"/applets/magic-carpets/",
@@ -97,9 +97,9 @@ export const sitemap =
 		"customScript": true
 	},
 	
-	"/applets/extruded-sponge/":
+	"/applets/extruded-cube/":
 	{
-		"title": "An Extruded Sponge",
+		"title": "An Extruded Cube",
 		
 		"parent": "/applets/",
 		
