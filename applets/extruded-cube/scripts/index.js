@@ -56,6 +56,8 @@ export function load()
 		applet.separation = separationSlider.value;
 		applet.wilson.gl.uniform1f(applet.wilson.uniforms.separation, applet.separation);
 
+		applet.calculateVectors();
+
 		applet.needNewFrame = true;
 	}
 }

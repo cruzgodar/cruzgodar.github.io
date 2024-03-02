@@ -10,7 +10,7 @@ export class ExtrudedCube extends RaymarchApplet
 
 	maxIterations = 20;
 
-	cameraPos = [1.75, 1.75, 1.75];
+	cameraPos = [1.749, 1.75, 1.751];
 	theta = 1.25 * Math.PI;
 	phi = 2.1539;
 
@@ -378,7 +378,6 @@ export class ExtrudedCube extends RaymarchApplet
 
 	drawFrame()
 	{
-		console.log(this.theta, this.phi, this.cameraPos);
 		this.wilson.worldCenterY = Math.min(
 			Math.max(
 				this.wilson.worldCenterY,
@@ -452,7 +451,7 @@ export class ExtrudedCube extends RaymarchApplet
 			);
 		}
 		
-		return totalDistance;
+		return Math.abs(totalDistance);
 	}
 
 
@@ -460,8 +459,6 @@ export class ExtrudedCube extends RaymarchApplet
 	changeResolution(resolution = this.imageSize)
 	{
 		this.imageSize = Math.max(100, resolution);
-
-
 
 		if (this.wilson.fullscreen.currentlyFullscreen)
 		{
