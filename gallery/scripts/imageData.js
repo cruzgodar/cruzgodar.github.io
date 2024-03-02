@@ -632,12 +632,34 @@ export const galleryImageData =
 
 	"double-pendulum-fractal":
 	{
-		title: "The Double Pendulum Fractal",
+		title: "A Double Pendulum Fractal",
 
 		resolution: "4000x4000",
 
 		appletLink: "double-pendulum-fractal",
 
 		imageLink: "https://drive.google.com/uc?id=1X4qJm3ChGYLQtU7wDyp9_wMxs0vebpqU&export=download"
+	},
+
+	"double-pendulum-fractal-2":
+	{
+		title: "A Double Pendulum Fractal",
+
+		resolution: "4000x4000",
+
+		appletLink: "double-pendulum-fractal",
+
+		imageLink: "https://drive.google.com/uc?id=1QOANk6bBI2ktFwABkmK8zkQUzxqdnP-9&export=download"
+	},
+
+	"extruded-cube":
+	{
+		title: "An Extruded Cube",
+
+		resolution: "4000x4000",
+
+		appletLink: "extruded-cube",
+		
+		imageLink: "https://drive.google.com/uc?id=1udLVBsti2An9TUonpOKApHdpaz_A8ole&export=download"
 	}
 };

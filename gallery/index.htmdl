@@ -88,11 +88,11 @@
 	### gallery-block
 		voronoi-diagram-1 1 A Voronoi Diagram
 		
-		hitomezashi-pattern-1 2 A Hitomezashi Pattern
+		double-pendulum-fractal-2 2 A Double Pendulum Fractal
 		
 		newtons-method-extended 1 Newton's Method, Extended
 		
-		wilsons-algorithm-1 1 Wilson's Algorithm
+		extruded-cube 1 An Extruded Cube
 		
 		lyapunov-fractal 1 A Lyapunov Fractal
 		
@@ -118,7 +118,7 @@
 	###
 
 	### gallery-block
-		double-pendulum-fractal 3 The Double Pendulum Fractal
+		double-pendulum-fractal 3 A Double Pendulum Fractal
 	###
 </div>
 
