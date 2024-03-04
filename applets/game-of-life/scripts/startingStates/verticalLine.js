@@ -1,4 +1,4 @@
-export function verticalRow(gridSize)
+export function verticalLine(gridSize)
 {
 	const state = new Uint8Array(gridSize * gridSize);
 
@@ -12,20 +12,5 @@ export function verticalRow(gridSize)
 		state[i] = (col === middleCol1 || col === middleCol2) ? 1 : 0;
 	}
 
-	return state;
-}
-
-export function random(gridSize)
-{
-	const state = new Uint8Array(gridSize * gridSize);
-
-	for (let i = 0; i < state.length; i++)
-	{
-		if (Math.random() < 0.5)
-		{
-			state[i] = 1;
-		}
-	}
-
-	return state;
+	return [state, gridSize];
 }

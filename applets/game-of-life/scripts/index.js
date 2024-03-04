@@ -1,7 +1,10 @@
 import { showPage } from "../../../scripts/src/loadPage.js";
 import { GameOfLife } from "./class.js";
-import { random } from "./startingStates.js";
-import { DownloadButton, GenerateButton } from "/scripts/src/buttons.js";
+import { acorn } from "./startingStates/acorn.js";
+import { random } from "./startingStates/random.js";
+import { verticalLine } from "./startingStates/verticalLine.js";
+import { Button, DownloadButton } from "/scripts/src/buttons.js";
+import { Dropdown } from "/scripts/src/dropdowns.js";
 import { $ } from "/scripts/src/main.js";
 import { Slider } from "/scripts/src/sliders.js";
 import { TextBox } from "/scripts/src/textBoxes.js";
@@ -23,7 +26,7 @@ export function load()
 		element: $("#grid-size-input"),
 		name: "Grid Size",
 		value: 100,
-		maxValue: 500,
+		maxValue: 1000,
 		onEnter: run,
 	});
 
@@ -38,9 +41,21 @@ export function load()
 		onInput: onSliderInput,
 	});
 
-	new GenerateButton({
-		element: $("#generate-button"),
-		onClick: run
+	new Button({
+		element: $("#start-button"),
+		name: "Start",
+		onClick: () =>
+		{
+			if (applet.pauseUpdating)
+			{
+				applet.resumeUpdating();
+			}
+
+			else
+			{
+				run(false);
+			}
+		}
 	});
 
 	new DownloadButton({
@@ -49,16 +64,39 @@ export function load()
 		filename: "a-game-of-life.png"
 	});
 
+	const startingStatesDropdown = new Dropdown({
+		element: $("#starting-states-dropdown"),
+		name: "Starting States",
+		options: {
+			random: "Random",
+			verticalLine: "Vertical Line",
+			acorn: "Acorn"
+		},
+		onInput: run
+	});
+
+	const examples = {
+		"": random,
+		"random": random,
+		"verticalLine": verticalLine,
+		"acorn": acorn
+	};
+
 	showPage();
 
-	function run()
+	function run(pauseUpdating = true)
 	{
+		const [state, newGridSize] = examples[startingStatesDropdown.value](gridSizeInput.value);
+
 		applet.run({
 			resolution: resolutionInput.value,
-			gridSize: gridSizeInput.value,
-			state: random(gridSizeInput.value)
+			gridSize: newGridSize,
+			state,
+			pauseUpdating
 		});
 	}
+
+	run();
 
 	function onSliderInput()
 	{

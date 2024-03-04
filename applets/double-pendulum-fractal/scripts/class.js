@@ -7,7 +7,7 @@ export class DoublePendulumFractal extends Applet
 	resolution = 1000;
 	centerUnstableEquilibrium = false;
 
-	dt = .002;
+	dt = .005;
 
 	drawnFractal = false;
 

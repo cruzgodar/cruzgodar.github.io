@@ -15,6 +15,8 @@ export class GameOfLife extends AnimationFrameApplet
 
 	currentFramebuffer = 0;
 
+	pauseUpdating = true;
+
 
 
 	constructor({ canvas })
@@ -22,6 +24,36 @@ export class GameOfLife extends AnimationFrameApplet
 		super(canvas);
 
 		const hiddenCanvas = this.createHiddenCanvas();
+
+		// Writes out the current state without iterating it.
+		const fragShaderSourceNoUpdate = /* glsl */`
+			precision highp float;
+			precision highp sampler2D;
+			
+			varying vec2 uv;
+			
+			uniform sampler2D uTexture;
+			uniform float step;
+			
+			
+			
+			void main(void)
+			{
+				vec2 center = (uv + vec2(1.0, 1.0)) / 2.0;
+				
+				if (center.x <= step || center.x >= 1.0 - step || center.y <= step || center.y >= 1.0 - step)
+				{
+					gl_FragColor = vec4(0.0, 0.0, 0.0, 0.0);
+					return;
+				}
+
+				vec4 thisPixel = texture2D(uTexture, center);
+
+				float state = thisPixel.z;
+
+				gl_FragColor = vec4(0.0, state, state, 1.0);
+			}
+		`;
 
 		// Iterates the game one step.
 		const fragShaderSourceUpdate = /* glsl */`
@@ -93,7 +125,7 @@ export class GameOfLife extends AnimationFrameApplet
 		{
 			renderer: "gpu",
 
-			shader: fragShaderSourceUpdate,
+			shader: fragShaderSourceNoUpdate,
 
 			canvasWidth: this.resolution,
 			canvasHeight: this.resolution
@@ -101,7 +133,10 @@ export class GameOfLife extends AnimationFrameApplet
 
 		this.wilsonHidden = new Wilson(hiddenCanvas, optionsHidden);
 
-		this.wilsonHidden.render.initUniforms(["step"]);
+		this.wilsonHidden.render.loadNewShader(fragShaderSourceUpdate);
+
+		this.wilsonHidden.render.initUniforms(["step"], 0);
+		this.wilsonHidden.render.initUniforms(["step"], 1);
 
 		this.wilsonHidden.render.createFramebufferTexturePair(this.wilsonHidden.gl.UNSIGNED_BYTE);
 		this.wilsonHidden.render.createFramebufferTexturePair(this.wilsonHidden.gl.UNSIGNED_BYTE);
@@ -234,12 +269,26 @@ export class GameOfLife extends AnimationFrameApplet
 
 
 
-	run({ resolution = 1000, gridSize = 100, state })
-	{
+	// Loads a state paused and draws just the initial frame.
+	run({
+		resolution = 1000,
+		gridSize = 100,
+		state,
+		pauseUpdating = true
+	}) {
 		this.resolution = resolution;
 		this.gridSize = gridSize;
 
-		this.wilsonHidden.gl.uniform1f(this.wilsonHidden.uniforms["step"], 1 / this.gridSize);
+		this.pauseUpdating = pauseUpdating;
+
+		this.wilsonHidden.gl.useProgram(
+			this.wilsonHidden.render.shaderPrograms[this.pauseUpdating ? 0 : 1]
+		);
+		
+		this.wilsonHidden.gl.uniform1f(
+			this.wilsonHidden.uniforms["step"][this.pauseUpdating ? 0 : 1],
+			1 / this.gridSize
+		);
 
 
 
@@ -324,7 +373,7 @@ export class GameOfLife extends AnimationFrameApplet
 			return;
 		}
 
-		for (let i = 0; i < this.updatesPerFrame; i++)
+		for (let i = 0; i < this.updatesPerFrame * !this.pauseUpdating; i++)
 		{
 			this.wilsonHidden.gl.bindFramebuffer(
 				this.wilsonHidden.gl.FRAMEBUFFER,
@@ -362,6 +411,14 @@ export class GameOfLife extends AnimationFrameApplet
 		);
 
 		this.wilson.gl.bindFramebuffer(this.wilson.gl.FRAMEBUFFER, null);
+	}
+
+	resumeUpdating()
+	{
+		this.pauseUpdating = false;
+
+		this.wilsonHidden.gl.useProgram(this.wilsonHidden.render.shaderPrograms[1]);
+		this.wilsonHidden.gl.uniform1f(this.wilsonHidden.uniforms["step"][1], 1 / this.gridSize);
 	}
 
 
