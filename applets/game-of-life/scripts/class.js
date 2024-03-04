@@ -12,6 +12,7 @@ export class GameOfLife extends AnimationFrameApplet
 	framesPerUpdate = 10;
 	updatesPerFrame = 1;
 	frame = 0;
+	onTorus = false;
 
 	currentFramebuffer = 0;
 
@@ -70,7 +71,7 @@ export class GameOfLife extends AnimationFrameApplet
 			
 			vec2 getModdedPos(vec2 xy)
 			{
-				return xy;
+				return mod(xy - vec2(step), 1.0 - 2.0 * step) + vec2(step);
 			}
 			
 			void main(void)
@@ -87,16 +88,35 @@ export class GameOfLife extends AnimationFrameApplet
 
 				float state = thisPixel.z;
 
-				float surroundingState = (
-					texture2D(uTexture, center + vec2(step, 0.0)).z
-					+ texture2D(uTexture, center + vec2(-step, 0.0)).z
-					+ texture2D(uTexture, center + vec2(0.0, step)).z
-					+ texture2D(uTexture, center + vec2(0.0, -step)).z
-					+ texture2D(uTexture, center + vec2(step, step)).z
-					+ texture2D(uTexture, center + vec2(step, -step)).z
-					+ texture2D(uTexture, center + vec2(-step, step)).z
-					+ texture2D(uTexture, center + vec2(-step, -step)).z
-				);
+				float surroundingState;
+
+				if (torus != 0)
+				{
+					surroundingState = (
+						texture2D(uTexture, getModdedPos(center + vec2(step, 0.0))).z
+						+ texture2D(uTexture, getModdedPos(center + vec2(-step, 0.0))).z
+						+ texture2D(uTexture, getModdedPos(center + vec2(0.0, step))).z
+						+ texture2D(uTexture, getModdedPos(center + vec2(0.0, -step))).z
+						+ texture2D(uTexture, getModdedPos(center + vec2(step, step))).z
+						+ texture2D(uTexture, getModdedPos(center + vec2(step, -step))).z
+						+ texture2D(uTexture, getModdedPos(center + vec2(-step, step))).z
+						+ texture2D(uTexture, getModdedPos(center + vec2(-step, -step))).z
+					);
+				}
+
+				else
+				{
+					surroundingState = (
+						texture2D(uTexture, center + vec2(step, 0.0)).z
+						+ texture2D(uTexture, center + vec2(-step, 0.0)).z
+						+ texture2D(uTexture, center + vec2(0.0, step)).z
+						+ texture2D(uTexture, center + vec2(0.0, -step)).z
+						+ texture2D(uTexture, center + vec2(step, step)).z
+						+ texture2D(uTexture, center + vec2(step, -step)).z
+						+ texture2D(uTexture, center + vec2(-step, step)).z
+						+ texture2D(uTexture, center + vec2(-step, -step)).z
+					);
+				}
 
 				if (state < 0.5)
 				{
@@ -140,7 +160,7 @@ export class GameOfLife extends AnimationFrameApplet
 		this.wilsonHidden.render.loadNewShader(fragShaderSourceUpdate);
 
 		this.wilsonHidden.render.initUniforms(["step"], 0);
-		this.wilsonHidden.render.initUniforms(["step"], 1);
+		this.wilsonHidden.render.initUniforms(["step", "torus"], 1);
 
 		this.wilsonHidden.render.createFramebufferTexturePair(this.wilsonHidden.gl.UNSIGNED_BYTE);
 		this.wilsonHidden.render.createFramebufferTexturePair(this.wilsonHidden.gl.UNSIGNED_BYTE);
@@ -278,12 +298,25 @@ export class GameOfLife extends AnimationFrameApplet
 		resolution = 1000,
 		gridSize = 100,
 		state,
-		pauseUpdating = true
+		pauseUpdating = true,
+		onTorus = this.onTorus
 	}) {
 		this.resolution = resolution;
 		this.gridSize = gridSize;
+		this.onTorus = onTorus;
 
 		this.pauseUpdating = pauseUpdating;
+
+
+
+		this.wilsonHidden.gl.useProgram(this.wilsonHidden.render.shaderPrograms[1]);
+
+		this.wilsonHidden.gl.uniform1i(
+			this.wilsonHidden.uniforms["torus"][1],
+			this.onTorus ? 1 : 0
+		);
+
+
 
 		this.wilsonHidden.gl.useProgram(
 			this.wilsonHidden.render.shaderPrograms[this.pauseUpdating ? 0 : 1]
@@ -443,7 +476,7 @@ export class GameOfLife extends AnimationFrameApplet
 
 		for (let i = 0; i < state.length; i++)
 		{
-			pixelData[4 * i] = state[i] * 255;
+			pixelData[4 * i] = 0;
 			pixelData[4 * i + 1] = state[i] * 255;
 			pixelData[4 * i + 2] = state[i] * 255;
 			pixelData[4 * i + 3] = state[i] * 255;

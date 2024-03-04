@@ -33,8 +33,8 @@ export function load()
 	const gridSizeInput = new TextBox({
 		element: $("#grid-size-input"),
 		name: "Grid Size",
-		value: 100,
-		maxValue: 1000,
+		value: 200,
+		maxValue: 1500,
 		onEnter: run,
 	});
 
@@ -124,7 +124,8 @@ export function load()
 			resolution: resolutionInput.value,
 			gridSize: newGridSize,
 			state,
-			pauseUpdating
+			pauseUpdating,
+			onTorus: torusCheckbox.checked
 		});
 	}
 
@@ -144,6 +145,11 @@ export function load()
 
 	function onTorusCheckboxInput()
 	{
-		
+		applet.onTorus = torusCheckbox.checked;
+
+		applet.wilsonHidden.gl.uniform1i(
+			applet.wilsonHidden.uniforms["torus"][1],
+			applet.onTorus
+		);
 	}
 }

@@ -143,7 +143,7 @@ export function puffer(gridSize)
 		state,
 		gridSize,
 		ascii,
-		startCol: 2
+		startCol: 25
 	});
 
 	return [state, gridSize];
