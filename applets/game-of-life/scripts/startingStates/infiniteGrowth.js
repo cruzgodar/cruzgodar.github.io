@@ -1,15 +1,17 @@
 import { writeStateFromAscii } from "./writeStateFromArray.js";
 
-export function acorn(gridSize)
+export function infiniteGrowth(gridSize)
 {
 	gridSize = Math.max(gridSize, 300);
 
 	const state = new Uint8Array(gridSize * gridSize);
 
 	writeStateFromAscii(state, gridSize, `
-.o.....
-...o...
-oo..ooo
+ooo.o
+o....
+...oo
+.oo.o
+o.o.o
 `);
 
 	return [state, gridSize];

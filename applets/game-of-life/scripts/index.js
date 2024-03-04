@@ -1,6 +1,8 @@
 import { showPage } from "../../../scripts/src/loadPage.js";
 import { GameOfLife } from "./class.js";
 import { acorn } from "./startingStates/acorn.js";
+import { gliderGun } from "./startingStates/gliderGun.js";
+import { infiniteGrowth } from "./startingStates/infiniteGrowth.js";
 import { random } from "./startingStates/random.js";
 import { verticalLine } from "./startingStates/verticalLine.js";
 import { Button, DownloadButton } from "/scripts/src/buttons.js";
@@ -70,7 +72,9 @@ export function load()
 		options: {
 			random: "Random",
 			verticalLine: "Vertical Line",
-			acorn: "Acorn"
+			acorn: "Acorn",
+			infiniteGrowth: "Square Builder",
+			gliderGun: "Glider Gun"
 		},
 		onInput: run
 	});
@@ -79,7 +83,9 @@ export function load()
 		"": random,
 		"random": random,
 		"verticalLine": verticalLine,
-		"acorn": acorn
+		"acorn": acorn,
+		"infiniteGrowth": infiniteGrowth,
+		"gliderGun": gliderGun
 	};
 
 	showPage();
@@ -87,6 +93,8 @@ export function load()
 	function run(pauseUpdating = true)
 	{
 		const [state, newGridSize] = examples[startingStatesDropdown.value](gridSizeInput.value);
+
+		gridSizeInput.setValue(newGridSize);
 
 		applet.run({
 			resolution: resolutionInput.value,
