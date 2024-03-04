@@ -6,13 +6,19 @@ export function infiniteGrowth(gridSize)
 
 	const state = new Uint8Array(gridSize * gridSize);
 
-	writeStateFromAscii(state, gridSize, `
-ooo.o
-o....
-...oo
-.oo.o
-o.o.o
-`);
+	const ascii = `
+		ooo.o
+		o....
+		...oo
+		.oo.o
+		o.o.o
+	`;
+
+	writeStateFromAscii({
+		state,
+		gridSize,
+		ascii
+	});
 
 	return [state, gridSize];
 }

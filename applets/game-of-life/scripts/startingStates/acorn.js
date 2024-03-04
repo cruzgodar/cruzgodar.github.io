@@ -6,11 +6,17 @@ export function acorn(gridSize)
 
 	const state = new Uint8Array(gridSize * gridSize);
 
-	writeStateFromAscii(state, gridSize, `
-.o.....
-...o...
-oo..ooo
-`);
+	const ascii = `
+		.o.....
+		...o...
+		oo..ooo
+	`;
+
+	writeStateFromAscii({
+		state,
+		gridSize,
+		ascii
+	});
 
 	return [state, gridSize];
 }

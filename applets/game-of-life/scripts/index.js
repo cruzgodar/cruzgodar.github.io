@@ -3,6 +3,7 @@ import { GameOfLife } from "./class.js";
 import { acorn } from "./startingStates/acorn.js";
 import { gliderGun } from "./startingStates/gliderGun.js";
 import { infiniteGrowth } from "./startingStates/infiniteGrowth.js";
+import { puffer } from "./startingStates/puffer.js";
 import { random } from "./startingStates/random.js";
 import { verticalLine } from "./startingStates/verticalLine.js";
 import { Button, DownloadButton } from "/scripts/src/buttons.js";
@@ -74,7 +75,8 @@ export function load()
 			verticalLine: "Vertical Line",
 			acorn: "Acorn",
 			infiniteGrowth: "Square Builder",
-			gliderGun: "Glider Gun"
+			gliderGun: "Glider Gun",
+			puffer: "Puffer"
 		},
 		onInput: run
 	});
@@ -85,7 +87,8 @@ export function load()
 		"verticalLine": verticalLine,
 		"acorn": acorn,
 		"infiniteGrowth": infiniteGrowth,
-		"gliderGun": gliderGun
+		"gliderGun": gliderGun,
+		"puffer": puffer
 	};
 
 	showPage();

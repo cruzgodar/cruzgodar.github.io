@@ -63,7 +63,12 @@ export class Applet
 			this.hiddenCanvasContainer.remove();
 		}
 
-		console.log(`Destroyed an applet of type ${this.constructor.name}`);
+		const vowel = ["a", "e", "i", "o", "u", "y"]
+			.includes(this.constructor.name[0].toLowerCase())
+			? "n"
+			: "";
+
+		console.log(`Destroyed a${vowel} ${this.constructor.name} applet`);
 	}
 
 
