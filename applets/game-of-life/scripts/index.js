@@ -1,12 +1,17 @@
 import { showPage } from "../../../scripts/src/loadPage.js";
 import { GameOfLife } from "./class.js";
 import { acorn } from "./startingStates/acorn.js";
+import { expansion } from "./startingStates/expansion.js";
 import { gliderGun } from "./startingStates/gliderGun.js";
+import { grayship } from "./startingStates/grayship.js";
 import { infiniteGrowth } from "./startingStates/infiniteGrowth.js";
 import { puffer } from "./startingStates/puffer.js";
 import { random } from "./startingStates/random.js";
+import { rocket } from "./startingStates/rocket.js";
+import { spaceshipFactory } from "./startingStates/spaceshipFactory.js";
 import { verticalLine } from "./startingStates/verticalLine.js";
 import { Button, DownloadButton } from "/scripts/src/buttons.js";
+import { Checkbox } from "/scripts/src/checkboxes.js";
 import { Dropdown } from "/scripts/src/dropdowns.js";
 import { $ } from "/scripts/src/main.js";
 import { Slider } from "/scripts/src/sliders.js";
@@ -67,6 +72,12 @@ export function load()
 		filename: "a-game-of-life.png"
 	});
 
+	const torusCheckbox = new Checkbox({
+		element: $("#torus-checkbox"),
+		name: "Loop on boundary",
+		onInput: onTorusCheckboxInput
+	});
+
 	const startingStatesDropdown = new Dropdown({
 		element: $("#starting-states-dropdown"),
 		name: "Starting States",
@@ -76,7 +87,11 @@ export function load()
 			acorn: "Acorn",
 			infiniteGrowth: "Square Builder",
 			gliderGun: "Glider Gun",
-			puffer: "Puffer"
+			puffer: "Puffer",
+			expansion: "Infinite Growth",
+			rocket: "Rocket",
+			grayship: "Grayship",
+			spaceshipFactory: "Spaceship Factory"
 		},
 		onInput: run
 	});
@@ -88,14 +103,20 @@ export function load()
 		"acorn": acorn,
 		"infiniteGrowth": infiniteGrowth,
 		"gliderGun": gliderGun,
-		"puffer": puffer
+		"puffer": puffer,
+		"expansion": expansion,
+		"rocket": rocket,
+		"grayship": grayship,
+		"spaceshipFactory": spaceshipFactory
 	};
 
 	showPage();
 
 	function run(pauseUpdating = true)
 	{
-		const [state, newGridSize] = examples[startingStatesDropdown.value](gridSizeInput.value);
+		const exampleFunction = examples[startingStatesDropdown.value];
+
+		const [state, newGridSize] = exampleFunction(gridSizeInput.value);
 
 		gridSizeInput.setValue(newGridSize);
 
@@ -119,5 +140,10 @@ export function load()
 	function changeResolution()
 	{
 		applet.changeResolution(resolutionInput.value);
+	}
+
+	function onTorusCheckboxInput()
+	{
+		
 	}
 }

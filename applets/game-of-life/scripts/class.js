@@ -64,10 +64,14 @@ export class GameOfLife extends AnimationFrameApplet
 			
 			uniform sampler2D uTexture;
 			uniform float step;
+			uniform int torus;
 
 			const float glowChangeSpeed = 0.15;
 			
-			
+			vec2 getModdedPos(vec2 xy)
+			{
+				return xy;
+			}
 			
 			void main(void)
 			{

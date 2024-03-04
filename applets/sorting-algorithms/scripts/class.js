@@ -20,17 +20,17 @@ export class SortingAlgorithm extends AnimationFrameApplet
 	timeElapsed = 0;
 
 	algorithms = {
-		"bubble": this.bubbleSort,
-		"insertion": this.insertionSort,
-		"selection": this.selectionSort,
-		"heap": this.heapsort,
-		"merge": this.mergeSort,
-		"quick": this.quicksort,
-		"shell": this.shellsort,
-		"cycle": this.cycleSort,
-		"msd-radix": this.msdRadixSort,
-		"lsd-radix": this.lsdRadixSort,
-		"gravity": this.gravitySort
+		bubble: this.bubbleSort,
+		insertion: this.insertionSort,
+		selection: this.selectionSort,
+		heap: this.heapsort,
+		merge: this.mergeSort,
+		quick: this.quicksort,
+		shell: this.shellsort,
+		cycle: this.cycleSort,
+		msdRadix: this.msdRadixSort,
+		lsdRadix: this.lsdRadixSort,
+		gravity: this.gravitySort,
 	};
 
 	generators = [this.shuffleArray, null, this.verifyArray];
