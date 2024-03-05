@@ -44,6 +44,7 @@ export const sitemap =
 		
 		"children":
 		[
+			"/applets/menger-sponge/",
 			"/applets/game-of-life/",
 			"/applets/extruded-cube/",
 			"/applets/voronoi-diagrams/",
@@ -86,6 +87,17 @@ export const sitemap =
 		]
 	},
 		
+	"/applets/menger-sponge/":
+	{
+		"title": "The Menger Sponge",
+		
+		"parent": "/applets/",
+		
+		"children": [],
+
+		"customScript": true
+	},
+	
 	"/applets/game-of-life/":
 	{
 		"title": "Conway's Game of Life",

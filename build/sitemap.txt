@@ -2,6 +2,7 @@ home Cruz Godar
 	gallery Gallery
 
 	applets Applets
+		menger-sponge The Menger Sponge
 		game-of-life Conway's Game of Life
 		extruded-cube An Extruded Cube
 		voronoi-diagrams Voronoi Diagrams
