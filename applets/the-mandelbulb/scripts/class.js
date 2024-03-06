@@ -201,8 +201,6 @@ export class Mandelbulb extends RaymarchApplet
 				//That factor of .9 is important -- without it, we're always stepping as far as possible, which results in artefacts and weirdness.
 				vec3 rayDirectionVec = normalize(startPos - cameraPos) * .9 / stepFactor;
 				
-				vec3 finalColor = fogColor;
-				
 				float epsilon = 0.0;
 				
 				float t = 0.0;
@@ -235,8 +233,7 @@ export class Mandelbulb extends RaymarchApplet
 					
 					if (distance < epsilon)
 					{
-						finalColor = computeShading(pos, iteration);
-						break;
+						return computeShading(pos, iteration);
 					}
 					
 					//Uncomment to add aggressive understepping when close to the fractal boundary, which helps to prevent flickering but is a significant performance hit.
@@ -258,17 +255,13 @@ export class Mandelbulb extends RaymarchApplet
 					
 					else if (t > clipDistance)
 					{
-						break;
+						return fogColor;
 					}
-					
-					
 					
 					t += distance;
 				}
 				
-				
-				
-				return finalColor;
+				return fogColor;
 			}
 			
 			

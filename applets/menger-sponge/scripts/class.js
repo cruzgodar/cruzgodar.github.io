@@ -11,13 +11,12 @@ const changeColorGlsl = /* glsl */`
 
 function getDistanceEstimatorGlsl(useForGetColor = false)
 {
+	// We're very interested in minimizing the number of distances we compute.
+	// By taking the absolute value of pos, we limit ourselves to the first octant,
+	// and then we can arrange for the xyz values to be in ascending order with some
+	// cheeky min and max business. That ensures that the nearest edge block is the one
+	// with scale center at (0, 1, 1).
 	return /* glsl */`
-		// We're very interested in minimizing the number of distances we compute.
-		// By taking the absolute value of pos, we limit ourselves to the first octant,
-		// and then we can arrange for the xyz values to be in ascending order with some
-		// cheeky min and max business. That ensures that the nearest edge block is the one
-		// with scale center at (0, 1, 1).
-
 		vec3 mutablePos = abs(pos);
 		float maxAbsPos = max(max(mutablePos.x, mutablePos.y), mutablePos.z);
 		float minAbsPos = min(min(mutablePos.x, mutablePos.y), mutablePos.z);
@@ -42,7 +41,8 @@ function getDistanceEstimatorGlsl(useForGetColor = false)
 		float cornerRadius = 0.5 * (separation - invScale);
 		float cornerCenter = 0.5 * (separation + invScale);
 
-		float edgeRadius = 0.5 * (1.0 - invScale);
+		float edgeLongRadius = invScale;
+		float edgeShortRadius = 0.5 * (1.0 - invScale);
 		float edgeCenter = 0.5 * (1.0 + invScale);
 
 		for (int iteration = 0; iteration < maxIterations; iteration++)
@@ -52,9 +52,9 @@ function getDistanceEstimatorGlsl(useForGetColor = false)
 			float distanceToCornerZ = abs(mutablePos.z - cornerCenter) - cornerRadius;
 			float distanceToCorner = max(distanceToCornerX, max(distanceToCornerY, distanceToCornerZ));
 			
-			float distanceToEdgeX = abs(mutablePos.x) - invScale;
-			float distanceToEdgeY = abs(mutablePos.y - edgeCenter) - edgeRadius;
-			float distanceToEdgeZ = abs(mutablePos.z - edgeCenter) - edgeRadius;
+			float distanceToEdgeX = abs(mutablePos.x) - edgeLongRadius;
+			float distanceToEdgeY = abs(mutablePos.y - edgeCenter) - edgeShortRadius;
+			float distanceToEdgeZ = abs(mutablePos.z - edgeCenter) - edgeShortRadius;
 			float distanceToEdge = max(distanceToEdgeX, max(distanceToEdgeY, distanceToEdgeZ));
 
 			if (distanceToCorner < distanceToEdge)
@@ -116,7 +116,7 @@ function getDistanceEstimatorGlsl(useForGetColor = false)
 			mutablePos = vec3(minAbsPos, sumAbsPos - minAbsPos - maxAbsPos, maxAbsPos);
 		}
 		
-		${useForGetColor ? "return abs(color);" : "return totalDistance / effectiveScale;"}
+		${useForGetColor ? "if (totalDistance < 0.0) {return vec3(1.0, 0.0, 0.0);} return abs(color);" : "return totalDistance / effectiveScale;"}
 	`;
 }
 
@@ -126,7 +126,7 @@ export class MengerSponge extends RaymarchApplet
 	scale = 3;
 	separation = 1;
 
-	maxIterations = 16;
+	maxIterations = 2;
 
 	cameraPos = [1.749, 1.75, 1.751];
 	theta = 1.25 * Math.PI;
@@ -224,47 +224,51 @@ export class MengerSponge extends RaymarchApplet
 			
 			vec3 raymarch(vec3 startPos)
 			{
-				//That factor of .9 is important -- without it, we're always stepping as far as possible, which results in artefacts and weirdness.
 				vec3 rayDirectionVec = normalize(startPos - cameraPos) * .5;
-				
-				vec3 finalColor = fogColor;
 				
 				float epsilon;
 				
 				float t = 0.0;
+				float oldT = 0.0;
+				vec3 oldPos = startPos;
 				
-				
+				// This lets us stop a march early if it passes throughthe plane between the corner and the edge.
+				float boundaryX = 1.0 / scale;
 				
 				for (int iteration = 0; iteration < maxMarches; iteration++)
 				{
 					vec3 pos = startPos + t * rayDirectionVec;
+
+					if (sign(pos.x - boundaryX) != sign(oldPos.x - boundaryX))
+					{
+						t = oldT + (boundaryX - oldPos.x) / (pos.x - oldPos.x) * (t - oldT) + epsilon;
+
+						pos = startPos + t * rayDirectionVec;
+					}
 					
 					float distance = distanceEstimator(pos);
 					
 					//This lowers the detail far away, which makes everything run nice and fast.
 					epsilon = max(.0000006, 0.1 * scale * t / min(float(imageSize), 500.0));
 					
-					
-					
 					if (distance < epsilon)
 					{
-						finalColor = computeShading(pos, iteration);
-						break;
+						return computeShading(pos, iteration);
 					}
 					
 					else if (t > clipDistance)
 					{
-						break;
+						return fogColor;
 					}
 					
 					
+					oldT = t;
+					oldPos = pos;
 					
 					t += distance;
 				}
 				
-				
-				
-				return finalColor;
+				return fogColor;
 			}
 			
 			
@@ -276,6 +280,8 @@ export class MengerSponge extends RaymarchApplet
 				gl_FragColor = vec4(finalColor.xyz, 1.0);
 			}
 		`;
+
+		console.log(fragShaderSource);
 
 
 

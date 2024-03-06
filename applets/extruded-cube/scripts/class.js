@@ -173,8 +173,6 @@ export class ExtrudedCube extends RaymarchApplet
 				//That factor of .9 is important -- without it, we're always stepping as far as possible, which results in artefacts and weirdness.
 				vec3 rayDirectionVec = normalize(startPos - cameraPos) * .9;
 				
-				vec3 finalColor = fogColor;
-				
 				float epsilon = .0000001;
 				
 				float t = 0.0;
@@ -194,13 +192,12 @@ export class ExtrudedCube extends RaymarchApplet
 					
 					if (distance < epsilon)
 					{
-						finalColor = computeShading(pos, iteration);
-						break;
+						return computeShading(pos, iteration);
 					}
 					
 					else if (t > clipDistance)
 					{
-						break;
+						return fogColor;
 					}
 					
 					
@@ -208,9 +205,7 @@ export class ExtrudedCube extends RaymarchApplet
 					t += distance;
 				}
 				
-				
-				
-				return finalColor;
+				return fogColor;
 			}
 			
 			
