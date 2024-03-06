@@ -44,7 +44,7 @@ export class MengerSponge extends RaymarchApplet
 			
 			
 			const float clipDistance = 1000.0;
-			const int maxMarches = 256;
+			const int maxMarches = 128;
 			const vec3 fogColor = vec3(0.0, 0.0, 0.0);
 			const float fogScaling = .2;
 			const int maxIterations = ${this.maxIterations};
@@ -215,7 +215,7 @@ export class MengerSponge extends RaymarchApplet
 					float distance = distanceEstimator(pos);
 					
 					//This lowers the detail far away, which makes everything run nice and fast.
-					epsilon = max(.0000006, 1.0 * t / float(imageSize));
+					epsilon = max(.0000006, 0.5 * t / float(imageSize));
 					
 					
 					
