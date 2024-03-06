@@ -3,12 +3,130 @@ import { aspectRatio } from "/scripts/src/layout.js";
 import { addTemporaryListener } from "/scripts/src/main.js";
 import { Wilson } from "/scripts/wilson.js";
 
+const changeColorGlsl = /* glsl */`
+	vec3 colorAdd = abs(mutablePos / effectiveScale);
+	color = normalize(color + colorAdd * colorScale);
+	colorScale *= 0.5;
+`;
+
+function getDistanceEstimatorGlsl(useForGetColor = false)
+{
+	return /* glsl */`
+		// We're very interested in minimizing the number of distances we compute.
+		// By taking the absolute value of pos, we limit ourselves to the first octant,
+		// and then we can arrange for the xyz values to be in ascending order with some
+		// cheeky min and max business. That ensures that the nearest edge block is the one
+		// with scale center at (0, 1, 1).
+
+		vec3 mutablePos = abs(pos);
+		float maxAbsPos = max(max(mutablePos.x, mutablePos.y), mutablePos.z);
+		float minAbsPos = min(min(mutablePos.x, mutablePos.y), mutablePos.z);
+		float sumAbsPos = mutablePos.x + mutablePos.y + mutablePos.z;
+		mutablePos = vec3(minAbsPos, sumAbsPos - minAbsPos - maxAbsPos, maxAbsPos);
+
+		${useForGetColor ? "vec3 color = vec3(0.25); float colorScale = 0.5;" : ""}
+
+		float totalDistance;
+		vec3 totalScale = vec3(1.0, 1.0, 1.0);
+		float effectiveScale;
+
+		float invScale = 1.0 / scale;
+		float cornerFactor = 2.0 * scale / (separation * scale - 1.0);
+		float edgeFactor = 2.0 * scale / (scale - 1.0);
+
+		vec3 cornerScaleCenter = (cornerFactor - 1.0) * vec3(
+			(1.0 + separation * scale) / (1.0 + 2.0 * scale - separation * scale)
+		);
+		vec3 edgeScaleCenter = vec3(0.0, edgeFactor - 1.0, edgeFactor - 1.0);
+
+		float cornerRadius = 0.5 * (separation - invScale);
+		float cornerCenter = 0.5 * (separation + invScale);
+
+		float edgeRadius = 0.5 * (1.0 - invScale);
+		float edgeCenter = 0.5 * (1.0 + invScale);
+
+		for (int iteration = 0; iteration < maxIterations; iteration++)
+		{
+			float distanceToCornerX = abs(mutablePos.x - cornerCenter) - cornerRadius;
+			float distanceToCornerY = abs(mutablePos.y - cornerCenter) - cornerRadius;
+			float distanceToCornerZ = abs(mutablePos.z - cornerCenter) - cornerRadius;
+			float distanceToCorner = max(distanceToCornerX, max(distanceToCornerY, distanceToCornerZ));
+			
+			float distanceToEdgeX = abs(mutablePos.x) - invScale;
+			float distanceToEdgeY = abs(mutablePos.y - edgeCenter) - edgeRadius;
+			float distanceToEdgeZ = abs(mutablePos.z - edgeCenter) - edgeRadius;
+			float distanceToEdge = max(distanceToEdgeX, max(distanceToEdgeY, distanceToEdgeZ));
+
+			if (distanceToCorner < distanceToEdge)
+			{
+				totalDistance = distanceToCorner;
+
+				if (distanceToCornerX > max(distanceToCornerY, distanceToCornerZ))
+				{
+					effectiveScale = totalScale.x;
+				}
+
+				else if (distanceToCornerY > max(distanceToCornerX, distanceToCornerZ))
+				{
+					effectiveScale = totalScale.y;
+				}
+
+				else
+				{
+					effectiveScale = totalScale.z;
+				}
+
+				// Scale all directions by 2s/(s-1) from (1, 1, 1) * separation.
+				mutablePos = cornerFactor * mutablePos - cornerScaleCenter;
+
+				totalScale *= cornerFactor;
+			}
+
+			else
+			{
+				totalDistance = distanceToEdge;
+				
+				if (distanceToEdgeX > max(distanceToEdgeY, distanceToEdgeZ))
+				{
+					effectiveScale = totalScale.x;
+				}
+
+				else if (distanceToEdgeY > max(distanceToEdgeX, distanceToEdgeZ))
+				{
+					effectiveScale = totalScale.y;
+				}
+
+				else
+				{
+					effectiveScale = totalScale.z;
+				}
+
+				// Scale x by s and y and z by 2s/(s-1) from (0, 1, 1). The second term is equal to
+				mutablePos = vec3(scale, edgeFactor, edgeFactor) * mutablePos - edgeScaleCenter;
+
+				totalScale *= vec3(scale, edgeFactor, edgeFactor);
+			}
+
+			${useForGetColor ? changeColorGlsl : ""}
+
+			mutablePos = abs(mutablePos);
+			maxAbsPos = max(max(mutablePos.x, mutablePos.y), mutablePos.z);
+			minAbsPos = min(min(mutablePos.x, mutablePos.y), mutablePos.z);
+			sumAbsPos = mutablePos.x + mutablePos.y + mutablePos.z;
+			mutablePos = vec3(minAbsPos, sumAbsPos - minAbsPos - maxAbsPos, maxAbsPos);
+		}
+		
+		${useForGetColor ? "return abs(color);" : "return totalDistance / effectiveScale;"}
+	`;
+}
+
+
 export class MengerSponge extends RaymarchApplet
 {
 	scale = 3;
 	separation = 1;
 
-	maxIterations = 16;
+	maxIterations = 2;
 
 	cameraPos = [1.749, 1.75, 1.751];
 	theta = 1.25 * Math.PI;
@@ -37,7 +155,7 @@ export class MengerSponge extends RaymarchApplet
 			uniform float focalLength;
 			
 			const vec3 lightPos = vec3(50.0, 70.0, 100.0);
-			const float lightBrightness = 2.0;
+			const float lightBrightness = 3.0;
 			
 			uniform int imageSize;
 			
@@ -56,134 +174,27 @@ export class MengerSponge extends RaymarchApplet
 			
 			float distanceEstimator(vec3 pos)
 			{
-				// We're very interested in minimizing the number of distances we compute.
-				// By taking the absolute value of pos, we limit ourselves to the first octant,
-				// and then we can arrange for the xyz values to be in ascending order with some
-				// cheeky min and max business. That ensures that the nearest edge block is the one
-				// with scale center at (0, 1, 1).
-
-				vec3 mutablePos = abs(pos);
-				float maxAbsPos = max(max(mutablePos.x, mutablePos.y), mutablePos.z);
-				float minAbsPos = min(min(mutablePos.x, mutablePos.y), mutablePos.z);
-				float sumAbsPos = mutablePos.x + mutablePos.y + mutablePos.z;
-				mutablePos = vec3(minAbsPos, sumAbsPos - minAbsPos - maxAbsPos, maxAbsPos);
-
-				float totalDistance;
-				vec3 totalScale = vec3(1.0, 1.0, 1.0);
-				float effectiveScale;
-
-				float invScale = 1.0 / scale;
-				float cornerFactor = 2.0 * scale / (separation * scale - 1.0);
-				float edgeFactor = 2.0 * scale / (scale - 1.0);
-
-				vec3 cornerScaleCenter = (cornerFactor - 1.0) * vec3(
-					(1.0 + separation * scale) / (1.0 + 2.0 * scale - separation * scale)
-				);
-				vec3 edgeScaleCenter = vec3(0.0, edgeFactor - 1.0, edgeFactor - 1.0);
-
-				float cornerRadius = 0.5 * (separation - invScale);
-				float cornerCenter = 0.5 * (separation + invScale);
-
-				float edgeRadius = 0.5 * (1.0 - invScale);
-				float edgeCenter = 0.5 * (1.0 + invScale);
-
-				for (int iteration = 0; iteration < maxIterations; iteration++)
-				{
-					float distanceToCornerX = abs(mutablePos.x - cornerCenter) - cornerRadius;
-					float distanceToCornerY = abs(mutablePos.y - cornerCenter) - cornerRadius;
-					float distanceToCornerZ = abs(mutablePos.z - cornerCenter) - cornerRadius;
-					float distanceToCorner = max(distanceToCornerX, max(distanceToCornerY, distanceToCornerZ));
-					
-					float distanceToEdgeX = mutablePos.x - invScale;
-					float distanceToEdgeY = abs(mutablePos.y - edgeCenter) - edgeRadius;
-					float distanceToEdgeZ = abs(mutablePos.z - edgeCenter) - edgeRadius;
-					float distanceToEdge = max(distanceToEdgeX, max(distanceToEdgeY, distanceToEdgeZ));
-
-					if (distanceToCorner < distanceToEdge)
-					{
-						totalDistance = distanceToCorner;
-
-						if (distanceToCornerX > max(distanceToCornerY, distanceToCornerZ))
-						{
-							effectiveScale = totalScale.x;
-						}
-
-						else if (distanceToCornerY > max(distanceToCornerX, distanceToCornerZ))
-						{
-							effectiveScale = totalScale.y;
-						}
-
-						else
-						{
-							effectiveScale = totalScale.z;
-						}
-
-						// Scale all directions by 2s/(s-1) from (1, 1, 1) * separation.
-						mutablePos = cornerFactor * mutablePos - cornerScaleCenter;
-
-						totalScale *= cornerFactor;
-					}
-
-					else
-					{
-						totalDistance = distanceToEdge;
-						
-						if (distanceToEdgeX > max(distanceToEdgeY, distanceToEdgeZ))
-						{
-							effectiveScale = totalScale.x;
-						}
-
-						else if (distanceToEdgeY > max(distanceToEdgeX, distanceToEdgeZ))
-						{
-							effectiveScale = totalScale.y;
-						}
-
-						else
-						{
-							effectiveScale = totalScale.z;
-						}
-
-						// Scale x by s and y and z by 2s/(s-1) from (0, 1, 1). The second term is equal to
-						mutablePos = vec3(scale, edgeFactor, edgeFactor) * mutablePos - edgeScaleCenter;
-
-						totalScale *= vec3(scale, edgeFactor, edgeFactor);
-					}
-
-					mutablePos = abs(mutablePos);
-					maxAbsPos = max(max(mutablePos.x, mutablePos.y), mutablePos.z);
-					minAbsPos = min(min(mutablePos.x, mutablePos.y), mutablePos.z);
-					sumAbsPos = mutablePos.x + mutablePos.y + mutablePos.z;
-					mutablePos = vec3(minAbsPos, sumAbsPos - minAbsPos - maxAbsPos, maxAbsPos);
-				}
-				
-				return totalDistance / effectiveScale;
+				${getDistanceEstimatorGlsl()}
 			}
 			
 			
 			
 			vec3 getColor(vec3 pos)
 			{
-				float totalDistance = distanceEstimator(pos);
-				
-				if (totalDistance < 0.0)
-				{
-					return vec3(1.0, 0.0, 0.0);
-				}
-
-				return vec3(1.0, 1.0, 1.0);
+				${getDistanceEstimatorGlsl(true)}
 			}
 			
 			
 			
 			vec3 getSurfaceNormal(vec3 pos)
 			{
-				float xStep1 = distanceEstimator(pos + vec3(.000001, 0.0, 0.0));
-				float yStep1 = distanceEstimator(pos + vec3(0.0, .000001, 0.0));
-				float zStep1 = distanceEstimator(pos + vec3(0.0, 0.0, .000001));
+				float xStep1 = distanceEstimator(pos + vec3(.00001, 0.0, 0.0));
+				float yStep1 = distanceEstimator(pos + vec3(0.0, .00001, 0.0));
+				float zStep1 = distanceEstimator(pos + vec3(0.0, 0.0, .00001));
 				
-				float xStep2 = distanceEstimator(pos - vec3(.000001, 0.0, 0.0));
-				float yStep2 = distanceEstimator(pos - vec3(0.0, .000001, 0.0));
-				float zStep2 = distanceEstimator(pos - vec3(0.0, 0.0, .000001));
+				float xStep2 = distanceEstimator(pos - vec3(.00001, 0.0, 0.0));
+				float yStep2 = distanceEstimator(pos - vec3(0.0, .00001, 0.0));
+				float zStep2 = distanceEstimator(pos - vec3(0.0, 0.0, .00001));
 				
 				return normalize(vec3(xStep1 - xStep2, yStep1 - yStep2, zStep1 - zStep2));
 			}
@@ -214,7 +225,7 @@ export class MengerSponge extends RaymarchApplet
 			vec3 raymarch(vec3 startPos)
 			{
 				//That factor of .9 is important -- without it, we're always stepping as far as possible, which results in artefacts and weirdness.
-				vec3 rayDirectionVec = normalize(startPos - cameraPos) * .5;
+				vec3 rayDirectionVec = normalize(startPos - cameraPos) * .4;
 				
 				vec3 finalColor = fogColor;
 				
