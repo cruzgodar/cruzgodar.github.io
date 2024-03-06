@@ -27,9 +27,9 @@ export function load()
 		element: $("#scale-slider"),
 		name: "Scale",
 		value: 3,
-		min: 1.5,
+		min: 1.25,
 		max: 3,
-		snapPoints: [2],
+		snapPoints: [1.5, 2],
 		onInput: onSliderInput
 	});
 
@@ -37,9 +37,9 @@ export function load()
 		element: $("#separation-slider"),
 		name: "Separation",
 		value: 1,
-		min: .55555,
-		max: 1.333,
-		snapPoints: [1],
+		min: 5 / 9,
+		max: 4 / 3,
+		snapPoints: [6 / 9, 7 / 9, 1],
 		onInput: onSliderInput
 	});
 

@@ -126,7 +126,7 @@ export class MengerSponge extends RaymarchApplet
 	scale = 3;
 	separation = 1;
 
-	maxIterations = 2;
+	maxIterations = 16;
 
 	cameraPos = [1.749, 1.75, 1.751];
 	theta = 1.25 * Math.PI;
@@ -162,7 +162,7 @@ export class MengerSponge extends RaymarchApplet
 			
 			
 			const float clipDistance = 1000.0;
-			const int maxMarches = 128;
+			const int maxMarches = 256;
 			const vec3 fogColor = vec3(0.0, 0.0, 0.0);
 			const float fogScaling = .2;
 			const int maxIterations = ${this.maxIterations};
@@ -225,7 +225,7 @@ export class MengerSponge extends RaymarchApplet
 			vec3 raymarch(vec3 startPos)
 			{
 				//That factor of .9 is important -- without it, we're always stepping as far as possible, which results in artefacts and weirdness.
-				vec3 rayDirectionVec = normalize(startPos - cameraPos) * .4;
+				vec3 rayDirectionVec = normalize(startPos - cameraPos) * .5;
 				
 				vec3 finalColor = fogColor;
 				
@@ -242,7 +242,7 @@ export class MengerSponge extends RaymarchApplet
 					float distance = distanceEstimator(pos);
 					
 					//This lowers the detail far away, which makes everything run nice and fast.
-					epsilon = max(.0000006, 0.05 * scale * scale * t / float(imageSize));
+					epsilon = max(.0000006, 0.1 * scale * t / min(float(imageSize), 500.0));
 					
 					
 					
