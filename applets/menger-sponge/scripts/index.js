@@ -28,8 +28,8 @@ export function load()
 		name: "Scale",
 		value: 3,
 		min: 1.1,
-		max: 4,
-		snapPoints: [1.5, 2, 3],
+		max: 3,
+		snapPoints: [1.5, 2],
 		onInput: onSliderInput
 	});
 
