@@ -182,7 +182,7 @@ export class MengerSponge extends RaymarchApplet
 				
 				float dotProduct = dot(surfaceNormal, lightDirection);
 				
-				float lightIntensity = lightBrightness * max(dotProduct, -.4 * dotProduct);
+				float lightIntensity = lightBrightness * abs(dotProduct);
 				
 				//The last factor adds ambient occlusion.
 				vec3 color = getColor(pos) * lightIntensity * max((1.0 - float(iteration) / float(64)), 0.0);
@@ -198,7 +198,7 @@ export class MengerSponge extends RaymarchApplet
 			vec3 raymarch(vec3 startPos)
 			{
 				//That factor of .9 is important -- without it, we're always stepping as far as possible, which results in artefacts and weirdness.
-				vec3 rayDirectionVec = normalize(startPos - cameraPos) * .9;
+				vec3 rayDirectionVec = normalize(startPos - cameraPos) * .5;
 				
 				vec3 finalColor = fogColor;
 				
@@ -215,7 +215,7 @@ export class MengerSponge extends RaymarchApplet
 					float distance = distanceEstimator(pos);
 					
 					//This lowers the detail far away, which makes everything run nice and fast.
-					epsilon = max(.0000006, 0.5 * t / float(imageSize));
+					epsilon = max(.0000006, 0.05 * scale * scale * t / float(imageSize));
 					
 					
 					
