@@ -229,7 +229,7 @@ export class MengerSponge extends RaymarchApplet
 				
 				vec3 finalColor = fogColor;
 				
-				float epsilon = .0000001;
+				float epsilon;
 				
 				float t = 0.0;
 				
