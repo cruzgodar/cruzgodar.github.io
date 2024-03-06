@@ -73,47 +73,60 @@ export class MengerSponge extends RaymarchApplet
 				float effectiveScale;
 
 				float invScale = 1.0 / scale;
-				float factor = 2.0 * scale / (scale - 1.0);
+				float cornerFactor = 2.0 * scale / (separation * scale - 1.0);
+				float edgeFactor = 2.0 * scale / (scale - 1.0);
+
+				vec3 cornerScaleCenter = (cornerFactor - 1.0) * vec3(
+					(1.0 + separation * scale) / (1.0 + 2.0 * scale - separation * scale)
+				);
+				vec3 edgeScaleCenter = vec3(0.0, edgeFactor - 1.0, edgeFactor - 1.0);
+
+				float cornerRadius = 0.5 * (separation - invScale);
+				float cornerCenter = 0.5 * (separation + invScale);
+
+				float edgeRadius = 0.5 * (1.0 - invScale);
+				float edgeCenter = 0.5 * (1.0 + invScale);
 
 				for (int iteration = 0; iteration < maxIterations; iteration++)
 				{
-					float distanceToCornerTop = maxAbsPos - 1.0;
-					float distanceToCornerSide = invScale - minAbsPos;
-					float distanceToCorner = max(distanceToCornerTop, distanceToCornerSide);
+					float distanceToCornerX = abs(mutablePos.x - cornerCenter) - cornerRadius;
+					float distanceToCornerY = abs(mutablePos.y - cornerCenter) - cornerRadius;
+					float distanceToCornerZ = abs(mutablePos.z - cornerCenter) - cornerRadius;
+					float distanceToCorner = max(distanceToCornerX, max(distanceToCornerY, distanceToCornerZ));
 					
 					float distanceToEdgeX = mutablePos.x - invScale;
-					float distanceToEdgeY = abs(mutablePos.y - 0.5 * (1.0 + invScale)) - 0.5 * (1.0 - invScale);
-					float distanceToEdgeZ = abs(mutablePos.z - 0.5 * (1.0 + invScale)) - 0.5 * (1.0 - invScale);
+					float distanceToEdgeY = abs(mutablePos.y - edgeCenter) - edgeRadius;
+					float distanceToEdgeZ = abs(mutablePos.z - edgeCenter) - edgeRadius;
 					float distanceToEdge = max(distanceToEdgeX, max(distanceToEdgeY, distanceToEdgeZ));
 
 					if (distanceToCorner < distanceToEdge)
 					{
 						totalDistance = distanceToCorner;
 
-						if (distanceToCornerTop > distanceToCornerSide)
-						{
-							effectiveScale = totalScale.z;
-						}
-
-						else
+						if (distanceToCornerX > max(distanceToCornerY, distanceToCornerZ))
 						{
 							effectiveScale = totalScale.x;
 						}
 
-						// Scale all directions by 2s/(s-1) from (1, 1, 1).
-						mutablePos = factor * mutablePos - (factor - 1.0) * vec3(1.0);
+						else if (distanceToCornerY > max(distanceToCornerX, distanceToCornerZ))
+						{
+							effectiveScale = totalScale.y;
+						}
 
-						totalScale *= factor;
+						else
+						{
+							effectiveScale = totalScale.z;
+						}
+
+						// Scale all directions by 2s/(s-1) from (1, 1, 1) * separation.
+						mutablePos = cornerFactor * mutablePos - cornerScaleCenter;
+
+						totalScale *= cornerFactor;
 					}
 
 					else
 					{
 						totalDistance = distanceToEdge;
-
-						// Scale x by s and y and z by 2s/(s-1) from (0, 1, 1). The second term is equal to
-						// vec3(scale - 1.0, factor - 1.0, factor - 1.0) * vec3(0.0, 1.0, 1.0).
-						mutablePos = vec3(scale, factor, factor) * mutablePos
-							- vec3(0.0, factor - 1.0, factor - 1.0);
 						
 						if (distanceToEdgeX > max(distanceToEdgeY, distanceToEdgeZ))
 						{
@@ -130,7 +143,10 @@ export class MengerSponge extends RaymarchApplet
 							effectiveScale = totalScale.z;
 						}
 
-						totalScale *= vec3(scale, factor, factor);
+						// Scale x by s and y and z by 2s/(s-1) from (0, 1, 1). The second term is equal to
+						mutablePos = vec3(scale, edgeFactor, edgeFactor) * mutablePos - edgeScaleCenter;
+
+						totalScale *= vec3(scale, edgeFactor, edgeFactor);
 					}
 
 					mutablePos = abs(mutablePos);
@@ -435,28 +451,51 @@ export class MengerSponge extends RaymarchApplet
 		mutablePos = [minAbsPos, sumAbsPos - minAbsPos - maxAbsPos, maxAbsPos];
 
 		let totalDistance;
-		let totalScale = [1, 1, 1];
+		const totalScale = [1, 1, 1];
 		let effectiveScale;
 
 		const invScale = 1 / this.scale;
-		const factor = 2 * this.scale / (this.scale - 1.0);
+		const cornerFactor = 2 * this.scale / (this.separation * this.scale - 1);
+		const edgeFactor = 2 * this.scale / (this.scale - 1);
+
+		const cornerScaleCenter = [
+			(cornerFactor - 1) * (
+				(1 + this.separation * this.scale) / (1 + 2 * this.scale
+				- this.separation * this.scale)
+			),
+
+			(cornerFactor - 1) * (
+				(1 + this.separation * this.scale) / (1 + 2 * this.scale
+				- this.separation * this.scale)
+			),
+
+			(cornerFactor - 1) * (
+				(1 + this.separation * this.scale) / (1 + 2 * this.scale
+				- this.separation * this.scale)
+			)
+		];
+		
+		const edgeScaleCenter = [0, edgeFactor - 1, edgeFactor - 1];
+
+		const cornerRadius = 0.5 * (this.separation - invScale);
+		const cornerCenter = 0.5 * (this.separation + invScale);
+
+		const edgeRadius = 0.5 * (1 - invScale);
+		const edgeCenter = 0.5 * (1 + invScale);
 
 		for (let iteration = 0; iteration < this.maxIterations; iteration++)
 		{
-			const distanceToCornerTop = maxAbsPos - 1;
-			const distanceToCornerSide = invScale - minAbsPos;
-			const distanceToCorner = Math.max(distanceToCornerTop, distanceToCornerSide);
+			const distanceToCornerX = Math.abs(mutablePos[0] - cornerCenter) - cornerRadius;
+			const distanceToCornerY = Math.abs(mutablePos[1] - cornerCenter) - cornerRadius;
+			const distanceToCornerZ = Math.abs(mutablePos[2] - cornerCenter) - cornerRadius;
+			const distanceToCorner = Math.max(
+				distanceToCornerX,
+				Math.max(distanceToCornerY, distanceToCornerZ)
+			);
 			
 			const distanceToEdgeX = mutablePos[0] - invScale;
-
-			const distanceToEdgeY = Math.abs(
-				mutablePos[1] - 0.5 * (1.0 + invScale)
-			) - 0.5 * (1.0 - invScale);
-
-			const distanceToEdgeZ = Math.abs(
-				mutablePos[2] - 0.5 * (1.0 + invScale)
-			) - 0.5 * (1.0 - invScale);
-
+			const distanceToEdgeY = Math.abs(mutablePos[1] - edgeCenter) - edgeRadius;
+			const distanceToEdgeZ = Math.abs(mutablePos[2] - edgeCenter) - edgeRadius;
 			const distanceToEdge = Math.max(
 				distanceToEdgeX,
 				Math.max(distanceToEdgeY, distanceToEdgeZ)
@@ -466,41 +505,37 @@ export class MengerSponge extends RaymarchApplet
 			{
 				totalDistance = distanceToCorner;
 
-				if (distanceToCornerTop > distanceToCornerSide)
-				{
-					effectiveScale = totalScale[2];
-				}
-
-				else
+				if (distanceToCornerX > Math.max(distanceToCornerY, distanceToCornerZ))
 				{
 					effectiveScale = totalScale[0];
 				}
 
-				// Scale all directions by 2s/(s-1) from (1, 1, 1).
+				else if (distanceToCornerY > Math.max(distanceToCornerX, distanceToCornerZ))
+				{
+					effectiveScale = totalScale[1];
+				}
+
+				else
+				{
+					effectiveScale = totalScale[2];
+				}
+
+				// Scale all directions by 2s/(s-1) from (1, 1, 1) * separation.
 				mutablePos = [
-					factor * mutablePos[0] - (factor - 1),
-					factor * mutablePos[1] - (factor - 1),
-					factor * mutablePos[2] - (factor - 1)
+					cornerFactor * mutablePos[0] - cornerScaleCenter[0],
+					cornerFactor * mutablePos[1] - cornerScaleCenter[1],
+					cornerFactor * mutablePos[2] - cornerScaleCenter[2]
 				];
 
-				totalScale[0] *= factor;
-				totalScale[1] *= factor;
-				totalScale[2] *= factor;
+				totalScale[0] *= cornerFactor;
+				totalScale[1] *= cornerFactor;
+				totalScale[2] *= cornerFactor;
 			}
 
 			else
 			{
 				totalDistance = distanceToEdge;
-
-				// Scale x by s and y and z by 2s/(s-1) from (0, 1, 1).
-				// The second term is equal to
-				// vec3(scale - 1.0, factor - 1.0, factor - 1.0) * vec3(0.0, 1.0, 1.0).
-				mutablePos = [
-					this.scale * mutablePos[0],
-					factor * mutablePos[1] - (factor - 1),
-					factor * mutablePos[2] - (factor - 1)
-				];
-
+				
 				if (distanceToEdgeX > Math.max(distanceToEdgeY, distanceToEdgeZ))
 				{
 					effectiveScale = totalScale[0];
@@ -516,9 +551,15 @@ export class MengerSponge extends RaymarchApplet
 					effectiveScale = totalScale[2];
 				}
 
+				mutablePos = [
+					this.scale * mutablePos[0] - edgeScaleCenter[0],
+					edgeFactor * mutablePos[1] - edgeScaleCenter[1],
+					edgeFactor * mutablePos[2] - edgeScaleCenter[2]
+				];
+
 				totalScale[0] *= this.scale;
-				totalScale[1] *= factor;
-				totalScale[2] *= factor;
+				totalScale[1] *= edgeFactor;
+				totalScale[2] *= edgeFactor;
 			}
 
 			mutablePos = [

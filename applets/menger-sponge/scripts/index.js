@@ -37,9 +37,9 @@ export function load()
 		element: $("#separation-slider"),
 		name: "Separation",
 		value: 1,
-		min: 0.5,
-		max: 2,
-		snapPoints: [2 / 3, 1],
+		min: .55555,
+		max: 1.333,
+		snapPoints: [1],
 		onInput: onSliderInput
 	});
 
