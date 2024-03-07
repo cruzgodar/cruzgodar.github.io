@@ -27,9 +27,9 @@ export function load()
 		element: $("#scale-slider"),
 		name: "Scale",
 		value: 3,
-		min: 1.25,
+		min: 1.5,
 		max: 3,
-		snapPoints: [1.5, 2],
+		snapPoints: [2],
 		onInput: onSliderInput
 	});
 

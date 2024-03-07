@@ -162,7 +162,7 @@ export class MengerSponge extends RaymarchApplet
 			
 			
 			const float clipDistance = 1000.0;
-			const int maxMarches = 100;
+			const int maxMarches = 110;
 			const vec3 fogColor = vec3(0.0, 0.0, 0.0);
 			const float fogScaling = .2;
 			const int maxIterations = ${this.maxIterations};
