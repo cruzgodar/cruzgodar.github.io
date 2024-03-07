@@ -102,9 +102,9 @@ function getDistanceEstimatorGlsl(useForGetColor = false)
 				}
 
 				// Scale x by s and y and z by 2s/(s-1) from (0, 1, 1). The second term is equal to
-				mutablePos = vec3(scale, edgeFactor, edgeFactor) * mutablePos - edgeScaleCenter;
+				mutablePos = vec3(1.0 / edgeLongRadius, edgeFactor, edgeFactor) * mutablePos - edgeScaleCenter;
 
-				totalScale *= vec3(scale, edgeFactor, edgeFactor);
+				totalScale *= vec3(1.0 / edgeLongRadius, edgeFactor, edgeFactor);
 			}
 
 			${useForGetColor ? changeColorGlsl : ""}
@@ -126,11 +126,11 @@ export class MengerSponge extends RaymarchApplet
 	scale = 3;
 	separation = 1;
 
-	maxIterations = 2;
+	maxIterations = 16;
 
-	cameraPos = [1.749, 1.75, 1.751];
-	theta = 1.25 * Math.PI;
-	phi = 2.1539;
+	cameraPos = [2.0160, 1.3095, 1.3729];
+	theta = 3.7518;
+	phi = 2.1482;
 
 
 
@@ -155,14 +155,14 @@ export class MengerSponge extends RaymarchApplet
 			uniform float focalLength;
 			
 			const vec3 lightPos = vec3(50.0, 70.0, 100.0);
-			const float lightBrightness = 3.0;
+			const float lightBrightness = 2.5;
 			
 			uniform int imageSize;
 			
 			
 			
 			const float clipDistance = 1000.0;
-			const int maxMarches = 256;
+			const int maxMarches = 100;
 			const vec3 fogColor = vec3(0.0, 0.0, 0.0);
 			const float fogScaling = .2;
 			const int maxIterations = ${this.maxIterations};
@@ -212,7 +212,7 @@ export class MengerSponge extends RaymarchApplet
 				float lightIntensity = lightBrightness * abs(dotProduct);
 				
 				//The last factor adds ambient occlusion.
-				vec3 color = getColor(pos) * lightIntensity * max((1.0 - float(iteration) / float(64)), 0.0);
+				vec3 color = getColor(pos) * lightIntensity * max((1.0 - float(iteration) / float(maxMarches)), 0.0);
 				
 				
 				
@@ -238,18 +238,11 @@ export class MengerSponge extends RaymarchApplet
 				for (int iteration = 0; iteration < maxMarches; iteration++)
 				{
 					vec3 pos = startPos + t * rayDirectionVec;
-
-					if (sign(pos.x - boundaryX) != sign(oldPos.x - boundaryX))
-					{
-						t = oldT + (boundaryX - oldPos.x) / (pos.x - oldPos.x) * (t - oldT) + epsilon;
-
-						pos = startPos + t * rayDirectionVec;
-					}
 					
 					float distance = distanceEstimator(pos);
 					
 					//This lowers the detail far away, which makes everything run nice and fast.
-					epsilon = max(.0000006, 0.1 * scale * t / min(float(imageSize), 500.0));
+					epsilon = max(.0000006, 0.01 * scale * scale * scale * t / min(float(imageSize), 500.0));
 					
 					if (distance < epsilon)
 					{
@@ -280,8 +273,6 @@ export class MengerSponge extends RaymarchApplet
 				gl_FragColor = vec4(finalColor.xyz, 1.0);
 			}
 		`;
-
-		console.log(fragShaderSource);
 
 
 
@@ -438,6 +429,7 @@ export class MengerSponge extends RaymarchApplet
 
 	drawFrame()
 	{
+		
 		this.wilson.worldCenterY = Math.min(
 			Math.max(
 				this.wilson.worldCenterY,
