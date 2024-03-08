@@ -661,5 +661,16 @@ export const galleryImageData =
 		appletLink: "extruded-cube",
 		
 		imageLink: "https://drive.google.com/uc?id=1udLVBsti2An9TUonpOKApHdpaz_A8ole&export=download"
+	},
+
+	"menger-sponge":
+	{
+		title: "A Menger Sponge",
+
+		resolution: "4000x4000",
+
+		appletLink: "menger-sponge",
+		
+		imageLink: "https://drive.google.com/uc?id=1x9MvudTiKCYzV8Lmkvf19a9CAlMdAE3R&export=download"
 	}
 };
