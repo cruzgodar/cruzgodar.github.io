@@ -98,7 +98,6 @@ a
 {
 	color: var(--link);
 	text-decoration: none;
-	transition: color .125s ease-in-out;
 	
 	cursor: pointer;
 }
