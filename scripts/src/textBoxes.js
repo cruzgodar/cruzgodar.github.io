@@ -1,4 +1,5 @@
 import anime from "../anime.js";
+import { Checkbox } from "./checkboxes.js";
 import { addHoverEventWithScale } from "./hoverEvents.js";
 import { InputElement } from "./inputElement.js";
 import { $$, addTemporaryListener, pageElement } from "./main.js";
@@ -171,13 +172,14 @@ export class TextBox extends InputElement
 
 		dialog.innerHTML = /* html */`Higher values than this may take an extremely long time to compute, cause substantial lag, or crash the tab or entire browser. Only continue if you know what you&#x2019;re doing!
 		<div class="checkbox-row keep-dialog-open">
-			<div class="checkbox-container keep-dialog-open">
-				<input type="checkbox" class="uncap-inputs-checkbox keep-dialog-open"/>
+			<div class="checkbox-container keep-dialog-open" tabindex="1">
+				<input type="checkbox" id="${this.element.id}-checkbox" class="uncap-inputs-checkbox keep-dialog-open">
 				<div class="checkbox keep-dialog-open"></div>
 			</div>
-			<div style="margin-left: 10px" class="keep-dialog-open">
-				<p class="body-text checkbox-subtext keep-dialog-open">Uncap all inputs</p>
-			</div>
+			
+			<label for="${this.element.id}-checkbox" style="margin-left: 10px" class="keep-dialog-open">
+				<p class="body-text checkbox-subtext keep-dialog-open"></p>
+			</label>
 		</div>`;
 
 		pageElement.appendChild(dialog);
@@ -199,13 +201,16 @@ export class TextBox extends InputElement
 
 		setTimeout(() =>
 		{
-			const checkboxElement = dialog.querySelector(".uncap-inputs-checkbox");
+			const checkbox = new Checkbox({
+				element: dialog.querySelector(".uncap-inputs-checkbox"),
+				name: "Uncap all inputs",
+				checked: uncapEverything,
+				onInput: removeCaps
+			});
 
-			checkboxElement.checked = uncapEverything;
-
-			checkboxElement.addEventListener("input", () =>
+			function removeCaps()
 			{
-				uncapEverything = checkboxElement.checked;
+				uncapEverything = checkbox.checked;
 
 				if (uncapEverything)
 				{
@@ -214,9 +219,9 @@ export class TextBox extends InputElement
 						cappedInputElement.classList.remove("capped-input");
 					});
 				}
-			});
+			}
 
-			addHoverEventWithScale(checkboxElement.parentNode, 1.1);
+			addHoverEventWithScale(checkbox.element.parentNode, 1.1);
 
 			anime({
 				targets: dialog,
