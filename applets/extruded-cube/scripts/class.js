@@ -5,10 +5,9 @@ import { Wilson } from "/scripts/wilson.js";
 
 export class ExtrudedCube extends RaymarchApplet
 {
+	iterations = 16;
 	scale = 3;
 	separation = 1;
-
-	maxIterations = 20;
 
 	cameraPos = [1.749, 1.75, 1.751];
 	theta = 1.25 * Math.PI;
@@ -47,8 +46,9 @@ export class ExtrudedCube extends RaymarchApplet
 			const int maxMarches = 256;
 			const vec3 fogColor = vec3(0.0, 0.0, 0.0);
 			const float fogScaling = .2;
-			const int maxIterations = ${this.maxIterations};
+			const int maxIterations = 32;
 			
+			uniform int iterations;
 			uniform float scale;
 			uniform float separation;
 			
@@ -64,6 +64,11 @@ export class ExtrudedCube extends RaymarchApplet
 
 				for (int iteration = 0; iteration < maxIterations; iteration++)
 				{
+					if (iteration == iterations)
+					{
+						break;
+					}
+
 					if (mutablePos.x > max(mutablePos.y, mutablePos.z))
 					{
 						mutablePos = scale * mutablePos - (scale - 1.0) * vec3(scaleCenter, 0.0, 0.0);
@@ -103,6 +108,11 @@ export class ExtrudedCube extends RaymarchApplet
 
 				for (int iteration = 0; iteration < maxIterations; iteration++)
 				{
+					if (iteration == iterations)
+					{
+						break;
+					}
+
 					if (mutablePos.x > max(mutablePos.y, mutablePos.z))
 					{
 						mutablePos = scale * mutablePos - (scale - 1.0) * vec3(scaleCenter, 0.0, 0.0);
@@ -269,6 +279,7 @@ export class ExtrudedCube extends RaymarchApplet
 			"rightVec",
 			"upVec",
 			"focalLength",
+			"iterations",
 			"scale",
 			"separation"
 		]);
@@ -338,6 +349,11 @@ export class ExtrudedCube extends RaymarchApplet
 			this.focalLength
 		);
 
+		this.wilson.gl.uniform1i(
+			this.wilson.uniforms["iterations"],
+			this.iterations
+		);
+
 		this.wilson.gl.uniform1f(
 			this.wilson.uniforms["scale"],
 			this.scale
@@ -404,7 +420,7 @@ export class ExtrudedCube extends RaymarchApplet
 			mutablePos[2]
 		) - 1;
 
-		for (let iteration = 0; iteration < this.maxIterations; iteration++)
+		for (let iteration = 0; iteration < this.iterations; iteration++)
 		{
 			if (mutablePos[0] > Math.max(mutablePos[1], mutablePos[2]))
 			{

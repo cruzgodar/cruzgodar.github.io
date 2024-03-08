@@ -47,6 +47,11 @@ function getDistanceEstimatorGlsl(useForGetColor = false)
 
 		for (int iteration = 0; iteration < maxIterations; iteration++)
 		{
+			if (iteration == iterations)
+			{
+				break;
+			}
+
 			float distanceToCornerX = abs(mutablePos.x - cornerCenter) - cornerRadius;
 			float distanceToCornerY = abs(mutablePos.y - cornerCenter) - cornerRadius;
 			float distanceToCornerZ = abs(mutablePos.z - cornerCenter) - cornerRadius;
@@ -123,10 +128,9 @@ function getDistanceEstimatorGlsl(useForGetColor = false)
 
 export class MengerSponge extends RaymarchApplet
 {
+	iterations = 16;
 	scale = 3;
 	separation = 1;
-
-	maxIterations = 16;
 
 	cameraPos = [2.0160, 1.3095, 1.3729];
 	theta = 3.7518;
@@ -165,10 +169,11 @@ export class MengerSponge extends RaymarchApplet
 			const int maxMarches = 110;
 			const vec3 fogColor = vec3(0.0, 0.0, 0.0);
 			const float fogScaling = .2;
-			const int maxIterations = ${this.maxIterations};
+			const int maxIterations = 32;
 			
+			uniform int iterations;
 			uniform float scale;
-			uniform float separation;
+			const float separation = 1.0;
 			
 
 			
@@ -325,8 +330,8 @@ export class MengerSponge extends RaymarchApplet
 			"rightVec",
 			"upVec",
 			"focalLength",
+			"iterations",
 			"scale",
-			"separation"
 		]);
 
 		
@@ -394,14 +399,14 @@ export class MengerSponge extends RaymarchApplet
 			this.focalLength
 		);
 
-		this.wilson.gl.uniform1f(
-			this.wilson.uniforms["scale"],
-			this.scale
+		this.wilson.gl.uniform1i(
+			this.wilson.uniforms["iterations"],
+			this.iterations
 		);
 
 		this.wilson.gl.uniform1f(
-			this.wilson.uniforms["separation"],
-			this.separation
+			this.wilson.uniforms["scale"],
+			this.scale
 		);
 
 
@@ -492,7 +497,7 @@ export class MengerSponge extends RaymarchApplet
 		const edgeRadius = 0.5 * (1 - invScale);
 		const edgeCenter = 0.5 * (1 + invScale);
 
-		for (let iteration = 0; iteration < this.maxIterations; iteration++)
+		for (let iteration = 0; iteration < this.iterations; iteration++)
 		{
 			const distanceToCornerX = Math.abs(mutablePos[0] - cornerCenter) - cornerRadius;
 			const distanceToCornerY = Math.abs(mutablePos[1] - cornerCenter) - cornerRadius;

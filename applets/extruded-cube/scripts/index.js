@@ -23,6 +23,16 @@ export function load()
 		onInput: changeResolution
 	});
 
+	const iterationsSlider = new Slider({
+		element: $("#iterations-slider"),
+		name: "Iterations",
+		value: 16,
+		min: 1,
+		max: 32,
+		integer: true,
+		onInput: onSliderInput
+	});
+
 	const scaleSlider = new Slider({
 		element: $("#scale-slider"),
 		name: "Scale",
@@ -52,6 +62,9 @@ export function load()
 
 	function onSliderInput()
 	{
+		applet.iterations = iterationsSlider.value;
+		applet.wilson.gl.uniform1i(applet.wilson.uniforms.iterations, applet.iterations);
+
 		applet.scale = scaleSlider.value;
 		applet.wilson.gl.uniform1f(applet.wilson.uniforms.scale, applet.scale);
 
