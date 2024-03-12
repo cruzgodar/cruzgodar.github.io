@@ -43,7 +43,7 @@ function changeOpacityCss(element, endValue, duration = opacityAnimationTime, ea
 	{
 		const timeoutId = element.getAttribute("data-opacity-timeout-id");
 
-		if (timeoutId != null)
+		if (timeoutId)
 		{
 			clearTimeout(timeoutId);
 		}
@@ -85,7 +85,7 @@ function changeScaleCss(element, endValue, duration = buttonAnimationTime, easeI
 	{
 		const timeoutId = element.getAttribute("data-scale-timeout-id");
 
-		if (timeoutId != null)
+		if (timeoutId)
 		{
 			clearTimeout(timeoutId);
 		}
@@ -128,7 +128,7 @@ function fadeLeftCss(element, duration = baseAnimationTime * 3, easeInOut = fals
 	{
 		const timeoutId = element.getAttribute("data-fade-left-timeout-id");
 
-		if (timeoutId != null)
+		if (timeoutId)
 		{
 			clearTimeout(timeoutId);
 		}
@@ -175,7 +175,7 @@ function fadeUpInCss(element, duration = pageAnimationTime * 2, targetOpacity = 
 	{
 		const timeoutId = element.getAttribute("data-fade-up-in-timeout-id");
 
-		if (timeoutId != null)
+		if (timeoutId)
 		{
 			clearTimeout(timeoutId);
 		}
@@ -232,7 +232,7 @@ function fadeUpOutCss(element, duration = pageAnimationTime, noOpacityChange = f
 	{
 		const timeoutId = element.getAttribute("data-fade-up-out-timeout-id");
 
-		if (timeoutId != null)
+		if (timeoutId)
 		{
 			clearTimeout(timeoutId);
 		}
@@ -292,7 +292,7 @@ function fadeDownInCss(element, duration = pageAnimationTime * 2, targetOpacity 
 	{
 		const timeoutId = element.getAttribute("data-fade-down-in-timeout-id");
 
-		if (timeoutId != null)
+		if (timeoutId)
 		{
 			clearTimeout(timeoutId);
 		}
@@ -348,7 +348,7 @@ function fadeDownOutCss(element, duration = pageAnimationTime, noOpacityChange =
 	{
 		const timeoutId = element.getAttribute("data-fade-down-out-timeout-id");
 
-		if (timeoutId != null)
+		if (timeoutId)
 		{
 			clearTimeout(timeoutId);
 		}
@@ -407,7 +407,7 @@ function fadeLeftInCss(element, duration = pageAnimationTime * 2, targetOpacity 
 	{
 		const timeoutId = element.getAttribute("data-fade-left-in-timeout-id");
 
-		if (timeoutId != null)
+		if (timeoutId)
 		{
 			clearTimeout(timeoutId);
 		}
@@ -460,7 +460,7 @@ function fadeLeftOutCss(element, duration = pageAnimationTime, noOpacityChange =
 	{
 		const timeoutId = element.getAttribute("data-fade-left-out-timeout-id");
 
-		if (timeoutId != null)
+		if (timeoutId)
 		{
 			clearTimeout(timeoutId);
 		}
@@ -517,7 +517,7 @@ function fadeRightInCss(element, duration = pageAnimationTime * 2, targetOpacity
 	{
 		const timeoutId = element.getAttribute("data-fade-right-in-timeout-id");
 
-		if (timeoutId != null)
+		if (timeoutId)
 		{
 			clearTimeout(timeoutId);
 		}
@@ -570,7 +570,7 @@ function fadeRightOutCss(element, duration = pageAnimationTime, noOpacityChange 
 	{
 		const timeoutId = element.getAttribute("data-fade-right-out-timeout-id");
 
-		if (timeoutId != null)
+		if (timeoutId)
 		{
 			clearTimeout(timeoutId);
 		}
@@ -624,7 +624,7 @@ function fadeInCss(element, duration = pageAnimationTime * 2, targetOpacity = 1)
 	{
 		const timeoutId = element.getAttribute("data-fade-in-timeout-id");
 
-		if (timeoutId != null)
+		if (timeoutId)
 		{
 			clearTimeout(timeoutId);
 		}
@@ -673,7 +673,7 @@ function fadeOutCss(element, duration = pageAnimationTime, noOpacityChange = fal
 	{
 		const timeoutId = element.getAttribute("data-fade-out-timeout-id");
 
-		if (timeoutId != null)
+		if (timeoutId)
 		{
 			clearTimeout(timeoutId);
 		}
