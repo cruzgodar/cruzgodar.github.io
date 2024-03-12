@@ -100,12 +100,6 @@
 					/about/
 				###
 			</div>
-
-			???
-				<div style="margin-top: 32px">
-					Debug: <a href="/debug/htmdl-test/">HTMDL Test</a>
-				</div>
-			???
 		</section>
 	</main>
 </div>
