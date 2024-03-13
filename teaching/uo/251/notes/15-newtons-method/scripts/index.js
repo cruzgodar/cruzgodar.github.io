@@ -39,7 +39,7 @@ export function load()
 					{ latex: String.raw`x = x_2\{0 \leq y \leq f(x_2)\}`, color: desmosGreen, lineStyle: "DASHED", secret: true },
 					{ latex: String.raw`x = x_2\{f(x_2) \leq y \leq 0\}`, color: desmosGreen, lineStyle: "DASHED", secret: true },
 					{ latex: String.raw`x_3 = x_2 - \frac{f(x_2)}{f'(x_2)}`, secret: true },
-					{ latex: String.raw`y = f(x_2) + f'(x_2)(x - x2) \{x_2 \leq x \leq x_3\}`, color: desmosGreen, secret: true },
+					{ latex: String.raw`y = f(x_2) + f'(x_2)(x - x_2) \{x_2 \leq x \leq x_3\}`, color: desmosGreen, secret: true },
 					{ latex: String.raw`y = f(x_2) + f'(x_2)(x - x_2) \{x_3 \leq x \leq x_2\}`, color: desmosGreen, secret: true },
 
 					{ latex: String.raw`(x_3, 0)`, color: desmosGreen, showLabel: true, secret: true },
