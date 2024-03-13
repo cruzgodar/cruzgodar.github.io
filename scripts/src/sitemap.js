@@ -655,6 +655,7 @@ export const sitemap =
 		
 		"children":
 		[
+			"/teaching/uo/342/",
 			"/teaching/uo/341/",
 			"/teaching/uo/256/",
 			"/teaching/uo/253/",
@@ -667,6 +668,29 @@ export const sitemap =
 		]
 	},
 		
+	"/teaching/uo/342/":
+	{
+		"title": "Math 342",
+		
+		"parent": "/teaching/",
+		
+		"children":
+		[
+			"/teaching/uo/342/notes/0-linear-algebra-1-review/"
+		]
+	},
+		
+	"/teaching/uo/342/notes/0-linear-algebra-1-review/":
+	{
+		"title": "Section 0: Linear Algebra I Review",
+		
+		"parent": "/teaching/uo/342/",
+		
+		"children": [],
+
+		"customScript": true
+	},
+	
 	"/teaching/uo/341/":
 	{
 		"title": "Math 341",

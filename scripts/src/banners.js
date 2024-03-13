@@ -8,7 +8,7 @@ import {
 } from "./main.js";
 import anime from "/scripts/anime.js";
 
-export let bannerElement = null;
+export let bannerElement;
 
 export function setBannerElement(newBannerElement)
 {
@@ -17,7 +17,7 @@ export function setBannerElement(newBannerElement)
 
 
 
-export let contentElement = null;
+export let contentElement;
 
 export function setContentElement(newContentElement)
 {
@@ -26,7 +26,7 @@ export function setContentElement(newContentElement)
 
 
 
-export let bannerMaxScroll = null;
+export let bannerMaxScroll;
 
 export function setBannerMaxScroll(newBannerMaxScroll)
 {
@@ -245,7 +245,7 @@ export function setUpBanner()
 
 	else
 	{
-		bannerElement = null;
+		bannerElement;
 	}
 }
 

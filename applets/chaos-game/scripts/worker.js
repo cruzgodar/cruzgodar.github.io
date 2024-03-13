@@ -2,18 +2,18 @@
 
 
 
-let numVertices = null;
-let gridSize = null;
+let numVertices;
+let gridSize;
 
 let image = [];
 
 let vertices = [];
 
-let centerRow = null;
-let centerCol = null;
+let centerRow;
+let centerCol;
 
-let currentRow = null;
-let currentCol = null;
+let currentRow;
+let currentCol;
 
 let numPixelsAtMax = 0;
 

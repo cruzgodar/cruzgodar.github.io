@@ -15,7 +15,7 @@ export class BinaryTree extends Applet
 
 	numPreviewIterations = 5;
 
-	webWorker = null;
+	webWorker;
 
 
 

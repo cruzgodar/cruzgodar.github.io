@@ -6,9 +6,9 @@ import { Wilson } from "/scripts/wilson.js";
 
 export class NewtonsMethodExtended extends AnimationFrameApplet
 {
-	loadPromise = null;
+	loadPromise;
 
-	wilsonHidden = null;
+	wilsonHidden;
 
 
 
@@ -26,7 +26,7 @@ export class NewtonsMethodExtended extends AnimationFrameApplet
 
 	derivativePrecision = 6;
 
-	colors = null;
+	colors;
 
 
 

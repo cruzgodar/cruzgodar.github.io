@@ -4,7 +4,7 @@ import { Wilson } from "/scripts/wilson.js";
 
 export class StrangeAttractor extends Applet
 {
-	webWorker = null;
+	webWorker;
 
 	image = [];
 

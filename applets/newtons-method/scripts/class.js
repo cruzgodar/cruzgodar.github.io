@@ -7,12 +7,12 @@ import { Wilson } from "/scripts/wilson.js";
 
 export class NewtonsMethod extends AnimationFrameApplet
 {
-	wilsonHidden = null;
+	wilsonHidden;
 
-	rootSetterElement = null;
-	rootAInput = null;
-	rootBInput = null;
-	colorSetterElement = null;
+	rootSetterElement;
+	rootAInput;
+	rootBInput;
+	colorSetterElement;
 
 	a = [1, 0];
 	c = [0, 0];

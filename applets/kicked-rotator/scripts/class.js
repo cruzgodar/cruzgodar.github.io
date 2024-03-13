@@ -4,7 +4,7 @@ import { Wilson } from "/scripts/wilson.js";
 
 export class KickedRotator extends Applet
 {
-	webWorker = null;
+	webWorker;
 
 	hues = [];
 	values = [];

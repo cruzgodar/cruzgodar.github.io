@@ -2,14 +2,14 @@
 
 
 
-let gridSize = null;
-let numNodes = null;
-let maximumSpeed = null;
+let gridSize;
+let numNodes;
+let maximumSpeed;
 
 const initialTemperature = 500;
-let temperature = null;
+let temperature;
 
-let coolingFactor = null;
+let coolingFactor;
 
 let nodes = [];
 

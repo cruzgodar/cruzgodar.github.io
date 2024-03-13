@@ -9,7 +9,7 @@ import { Wilson } from "/scripts/wilson.js";
 
 export class VectorField extends AnimationFrameApplet
 {
-	loadPromise = null;
+	loadPromise;
 
 	resolution = 500;
 
@@ -30,13 +30,13 @@ export class VectorField extends AnimationFrameApplet
 
 	freeParticleSlots = [];
 
-	updateTexture = null;
-	dimTexture = null;
+	updateTexture;
+	dimTexture;
 
-	updateCanvas = null;
-	dimCanvas = null;
-	wilsonUpdate = null;
-	wilsonDim = null;
+	updateCanvas;
+	dimCanvas;
+	wilsonUpdate;
+	wilsonDim;
 
 	panVelocityX = 0;
 	panVelocityY = 0;

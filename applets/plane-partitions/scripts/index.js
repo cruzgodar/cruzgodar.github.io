@@ -235,6 +235,33 @@ export function load()
 	addArrayTextarea.setValue(PlanePartitions.arrayToAscii(planePartition));
 	applet.addNewArray(0, planePartition);
 
+	/*
+	applet.addNewArray(0, PlanePartitions.parseArray(
+`16 16 16 16 16 16 16 16 11 10 9 8 8 8 8 8
+16 16 16 16 16 16 16 16 11 10 9 8 8 8 8 8
+16 16 16 16 16 16 16 16 11 10 9 8 8 8 8 8
+16 16 16 16 16 16 16 16 11 10 9 8 8 8 8 8
+16 16 16 16 16 16 16 16 11 10 9 8 8 8 8 8
+16 16 16 16 16 16 16 16 11 10 9 8 8 8 8 8
+16 16 16 16 16 16 16 16 11 10 9 8 8 8 8 8
+16 16 16 16 16 16 16 16 11 10 9 8 8 8 8 8
+10 10 10 10 10 10 10 10 10 10 0 0 0 0 0 0
+10 10 10 10 10 10 10 10 10  0 0 0 0 0 0 0
+10 10 10 10 10 10 10 10  0  0 0 0 0 0 0 0
+ 8  8  8  8  8  8  8  8  0  0 0 0 0 0 0 0
+ 8  8  8  8  8  8  8  8  0  0 0 0 0 0 0 0
+ 8  8  8  8  8  8  8  8  0  0 0 0 0 0 0 0
+ 8  8  8  8  8  8  8  8  0  0 0 0 0 0 0 0
+ 8  8  8  8  8  8  8  8  0  0 0 0 0 0 0 0`
+ ));
+
+ 	applet.addNewArray(0, PlanePartitions.parseArray(
+`3 2 1 0 0 0 0 0 0 0 0 0 0 0 0 0
+3 2 1
+2 2 1`
+));
+	*/
+
 
 
 	showPage();

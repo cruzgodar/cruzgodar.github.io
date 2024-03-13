@@ -4,9 +4,9 @@ import { Wilson } from "/scripts/wilson.js";
 
 export class MagicCarpet extends Applet
 {
-	gridSize = null;
-	maxCageSize = null;
-	uniqueSolution = null;
+	gridSize;
+	maxCageSize;
+	uniqueSolution;
 
 	cages = [];
 
@@ -14,7 +14,7 @@ export class MagicCarpet extends Applet
 
 	cellSize = 200;
 
-	webWorker = null;
+	webWorker;
 
 
 

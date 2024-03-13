@@ -6,10 +6,10 @@ import { Wilson } from "/scripts/wilson.js";
 
 export class FractalSounds extends AnimationFrameApplet
 {
-	loadPromise = null;
+	loadPromise;
 
-	wilsonHidden = null;
-	wilsonJulia = null;
+	wilsonHidden;
+	wilsonJulia;
 
 	juliaMode = 0;
 

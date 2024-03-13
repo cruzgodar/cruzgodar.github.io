@@ -6,7 +6,7 @@ import { Wilson } from "/scripts/wilson.js";
 
 export class CalcudokuGenerator extends Applet
 {
-	gridSize = null;
+	gridSize;
 
 	grid = [];
 	cages = [];
@@ -14,7 +14,7 @@ export class CalcudokuGenerator extends Applet
 
 	animateNextDraw = false;
 
-	webWorker = null;
+	webWorker;
 
 
 
@@ -236,7 +236,7 @@ export class CalcudokuGenerator extends Applet
 
 
 
-			let fontSize = null;
+			let fontSize;
 
 			if (label.length <= 6)
 			{

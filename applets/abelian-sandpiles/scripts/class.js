@@ -3,14 +3,14 @@ import { Wilson } from "/scripts/wilson.js";
 
 export class AbelianSandpile extends AnimationFrameApplet
 {
-	wilsonUpscale = null;
+	wilsonUpscale;
 
 	numGrains = 10000;
 	resolution = 500;
 
 	computationsPerFrame = 20;
 
-	lastPixelData = null;
+	lastPixelData;
 
 
 
@@ -428,7 +428,7 @@ export class AbelianSandpile extends AnimationFrameApplet
 
 		const pixelData = this.wilson.render.getPixelData();
 
-		if (this.lastPixelData !== null)
+		if (this.lastPixelData)
 		{
 			let foundDiff = false;
 

@@ -134,8 +134,8 @@ async function getPageString(url, parent, children, title)
 		read(`${url}/style/index.css`)
 	]);
 
-	const customScriptString = scriptData !== null ? ",\n\n\t\t\"customScript\": true" : "";
-	const customStyleString = styleData !== null ? ",\n\n\t\t\"customStyle\": true" : "";
+	const customScriptString = scriptData ? ",\n\n\t\t\"customScript\": true" : "";
+	const customStyleString = styleData ? ",\n\n\t\t\"customStyle\": true" : "";
 
 	if (children.length !== 0)
 	{

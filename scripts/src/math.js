@@ -48,8 +48,8 @@ export async function showTex(element)
 
 
 
-	let texElement = null;
-	let flexElement = null;
+	let texElement;
+	let flexElement;
 
 	if (tex.indexOf("\n") !== -1)
 	{

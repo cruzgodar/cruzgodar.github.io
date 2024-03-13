@@ -7,10 +7,10 @@ export class HitomezashiPattern extends Applet
 	doDrawRegions = true;
 	maximumSpeed = false;
 
-	resolution = null;
-	gridSize = null;
-	rowProb = null;
-	colProb = null;
+	resolution;
+	gridSize;
+	rowProb;
+	colProb;
 
 	patternRows = [];
 	patternCols = [];
@@ -25,7 +25,7 @@ export class HitomezashiPattern extends Applet
 	currentCol = 1;
 	currentRegion = 0;
 
-	lineWidth = null;
+	lineWidth;
 
 
 

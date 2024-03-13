@@ -6,7 +6,7 @@ import { Wilson } from "/scripts/wilson.js";
 
 export class JuliaSet extends AnimationFrameApplet
 {
-	wilsonHidden = null;
+	wilsonHidden;
 
 	juliaMode = 0;
 
@@ -17,7 +17,7 @@ export class JuliaSet extends AnimationFrameApplet
 	useDoublePrecision = false;
 	doublePrecision = false;
 
-	switchJuliaModeButton = null;
+	switchJuliaModeButton;
 
 	// Experimentally, the level at which a 2k x 2k
 	// canvas can see the grain of single precision rendering.

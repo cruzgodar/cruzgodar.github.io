@@ -5,11 +5,11 @@ import { Wilson } from "/scripts/wilson.js";
 
 export class GeneralizedJuliaSet extends AnimationFrameApplet
 {
-	loadPromise = null;
+	loadPromise;
 
 	generatingCode = "cadd(cpow(z, 2.0), c)";
 
-	wilsonHidden = null;
+	wilsonHidden;
 
 	switchJuliaModeButton;
 

@@ -4,7 +4,7 @@ import { Wilson } from "/scripts/wilson.js";
 
 export class JuliaSetMosaic extends AnimationFrameApplet
 {
-	wilsonHidden = null;
+	wilsonHidden;
 
 	aspectRatio = 1;
 

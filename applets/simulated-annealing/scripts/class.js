@@ -4,11 +4,11 @@ import { Wilson } from "/scripts/wilson.js";
 
 export class SimulatedAnnealing extends Applet
 {
-	webWorker = null;
+	webWorker;
 
-	resolution = null;
-	numNodes = null;
-	maximumSpeed = null;
+	resolution;
+	numNodes;
+	maximumSpeed;
 
 
 

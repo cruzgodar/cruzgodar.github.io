@@ -58,10 +58,7 @@ export function load()
 
 	const applet = new NewtonsMethod({ canvas: outputCanvas });
 
-	applet.loadPromise.then(() =>
-	{
-		applet.pauseWhenOffscreen();
-	});
+	applet.pauseWhenOffscreen();
 
 
 

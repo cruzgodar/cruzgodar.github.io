@@ -9,7 +9,7 @@ export class FiniteSubdivision extends Applet
 	numVertices = 6;
 	numIterations = 5;
 
-	webWorker = null;
+	webWorker;
 
 
 

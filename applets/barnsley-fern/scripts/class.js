@@ -7,7 +7,7 @@ export class BarnsleyFern extends Applet
 	numIterations = 10000000;
 	resolution = 1000;
 
-	webWorker = null;
+	webWorker;
 
 
 

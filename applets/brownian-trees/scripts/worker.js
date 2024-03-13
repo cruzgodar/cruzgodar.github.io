@@ -2,9 +2,9 @@
 
 
 
-let gridSize = null;
+let gridSize;
 
-let margin = null;
+let margin;
 
 let brownianTreeGraph = [];
 
@@ -14,11 +14,11 @@ let currentBrightness = 255;
 
 let progressThreshhold = 5;
 
-let currentRow = null;
-let currentCol = null;
+let currentRow;
+let currentCol;
 
 // New points will start on a circle with this as its radius.
-let spawnRadius = null;
+let spawnRadius;
 
 const directions = [[-1, 0], [0, 1], [1, 0], [0, -1]];
 

@@ -162,7 +162,7 @@ import { Wilson } from "/scripts/wilson.js";
 	
 	
 	
-	let wilson = null;
+	let wilson;
 	
 	let canvasLocationElement = $("#canvas-location");
 	

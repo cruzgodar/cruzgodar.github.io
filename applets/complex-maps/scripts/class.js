@@ -5,7 +5,7 @@ import { Wilson } from "/scripts/wilson.js";
 
 export class ComplexMap extends AnimationFrameApplet
 {
-	loadPromise = null;
+	loadPromise;
 
 	generatingCode = "";
 	uniformCode = "";
@@ -19,7 +19,7 @@ export class ComplexMap extends AnimationFrameApplet
 	blackPoint = 1;
 	whitePoint = 1;
 
-	draggableCallback = null;
+	draggableCallback;
 
 	addIndicatorDraggable = false;
 	useSelectorMode = false;
@@ -39,7 +39,7 @@ export class ComplexMap extends AnimationFrameApplet
 		worldCenterY = 0,
 		zoomLevel = -.585,
 		addIndicatorDraggable = false,
-		draggableCallback = null,
+		draggableCallback,
 		selectorMode = false
 	}) {
 		super(canvas);
@@ -137,7 +137,7 @@ export class ComplexMap extends AnimationFrameApplet
 		worldCenterY = 0,
 		zoomLevel = -.585,
 		addIndicatorDraggable = false,
-		draggableCallback = null,
+		draggableCallback,
 		selectorMode = false
 	}) {
 		this.generatingCode = generatingCode;

@@ -2,10 +2,10 @@
 
 
 
-let gridSize = null;
-let numIterations = null;
+let gridSize;
+let numIterations;
 
-let fernGraph = null;
+let fernGraph;
 
 const transformationCoefficients =
 [

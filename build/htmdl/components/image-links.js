@@ -14,6 +14,11 @@ function imageLink(options, url, name)
 
 	if (!name)
 	{
+		if (!sitemap[url])
+		{
+			throw new Error(`${url} is not in sitemap!`);
+		}
+		
 		name = sitemap[url].title;
 	}
 

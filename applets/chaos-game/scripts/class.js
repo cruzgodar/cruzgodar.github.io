@@ -6,7 +6,7 @@ export class ChaosGame extends Applet
 {
 	resolution = 500;
 
-	webWorker = null;
+	webWorker;
 
 
 

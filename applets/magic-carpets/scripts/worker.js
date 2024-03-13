@@ -2,9 +2,9 @@
 
 
 
-let gridSize = null;
-let maxCageSize = null;
-let uniqueSolution = null;
+let gridSize;
+let maxCageSize;
+let uniqueSolution;
 
 // Each element is of the form
 // [top-left row, top-left col, width, height, label row offset, label col offset].

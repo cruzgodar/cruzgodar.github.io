@@ -227,7 +227,7 @@ function setLinks()
 	{
 		const href = link.getAttribute("href");
 
-		if (href === null)
+		if (!href)
 		{
 			return;
 		}

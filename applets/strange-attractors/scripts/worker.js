@@ -2,13 +2,13 @@
 
 
 
-let gridSize = null;
+let gridSize;
 
-let sigma = null;
-let rho = null;
-let beta = null;
+let sigma;
+let rho;
+let beta;
 
-let maximumSpeed = null;
+let maximumSpeed;
 
 let pixels = [];
 
@@ -19,14 +19,14 @@ const dt = .0005;
 const minZ = 0;
 
 let stepsPerColor = 5000;
-let numColors = null;
+let numColors;
 
 let currentX = 1;
 let currentY = 1;
 let currentZ = 25;
 
-let currentRow = null;
-let currentCol = null;
+let currentRow;
+let currentCol;
 
 
 

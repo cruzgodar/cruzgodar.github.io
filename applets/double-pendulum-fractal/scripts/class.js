@@ -11,7 +11,7 @@ export class DoublePendulumFractal extends Applet
 
 	drawnFractal = false;
 
-	pendulumCanvas = null;
+	pendulumCanvas;
 
 	lastTimestamp = -1;
 
@@ -19,7 +19,7 @@ export class DoublePendulumFractal extends Applet
 
 
 
-	wilsonPendulum = null;
+	wilsonPendulum;
 
 	resolutionPendulum = 2000;
 

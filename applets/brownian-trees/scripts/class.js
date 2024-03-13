@@ -6,7 +6,7 @@ export class BrownianTree extends Applet
 {
 	resolution = 500;
 
-	webWorker = null;
+	webWorker;
 
 
 

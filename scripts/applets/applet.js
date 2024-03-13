@@ -169,14 +169,14 @@ export class Applet
 
 
 
-	hiddenCanvasContainer = null;
+	hiddenCanvasContainer;
 
 	createHiddenCanvas()
 	{
 		const hiddenCanvas = document.createElement("canvas");
 		hiddenCanvas.classList.add("hidden-canvas");
 
-		if (this.hiddenCanvasContainer === null)
+		if (!this.hiddenCanvasContainer)
 		{
 			this.hiddenCanvasContainer = document.createElement("div");
 			this.hiddenCanvasContainer.style.display = "none";

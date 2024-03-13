@@ -5,7 +5,7 @@ import { Wilson } from "/scripts/wilson.js";
 
 export class QuasiFuchsianGroups extends Applet
 {
-	wilsonHidden = null;
+	wilsonHidden;
 
 	resolutionSmall = 400;
 	resolutionLarge = 1200;
@@ -16,7 +16,7 @@ export class QuasiFuchsianGroups extends Applet
 
 	boxSize = 4;
 
-	webWorker = null;
+	webWorker;
 
 	lastTimestamp = -1;
 
@@ -33,8 +33,8 @@ export class QuasiFuchsianGroups extends Applet
 	x = 0;
 	y = 0;
 
-	brightness = null;
-	image = null;
+	brightness;
+	image;
 
 	Complex;
 

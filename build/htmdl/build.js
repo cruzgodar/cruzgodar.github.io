@@ -21,8 +21,8 @@ import { wilson } from "./components/wilson.js";
 
 // const root = process.argv[1].replace(/(\/cruzgodar.github.io\/).+$/, (match, $1) => $1)
 
-let sitemap = null;
-let parentFolder = null;
+let sitemap;
+let parentFolder;
 
 const manualHeaderPages =
 [
@@ -130,6 +130,10 @@ function decodeHTMDL(html)
 	// Automatically add a header if there's not one already here.
 	if (!html.match(/^[\n\t\s]*?\n#\s/g) && !manualHeaderPages.includes(parentFolder))
 	{
+		if (!sitemap[parentFolder])
+		{
+			throw new Error(`${parentFolder} is not in sitemap!`);
+		}
 		const title = sitemap[parentFolder].title;
 
 		html = html.replaceAll(/(<div.*?>)?(### banner)?([\s\S]+)/g, (match, $1, $2, $3) => `${$1 ? $1 : ""}${$2 ? $2 : ""}\n\n# ${title}\n\n${$3 ? $3 : ""}`);

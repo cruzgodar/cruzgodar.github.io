@@ -2,19 +2,19 @@
 
 
 
-let gridSize = null;
+let gridSize;
 
-let K = null;
+let K;
 
-let orbitSeparation = null;
+let orbitSeparation;
 
 let image = [];
 
-let currentRow = null;
-let currentCol = null;
+let currentRow;
+let currentCol;
 
-let currentP = null;
-let currentTheta = null;
+let currentP;
+let currentTheta;
 
 
 

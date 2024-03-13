@@ -5,7 +5,7 @@ import { Wilson } from "/scripts/wilson.js";
 
 export class WilsonsAlgorithm extends Applet
 {
-	webWorker = null;
+	webWorker;
 
 
 
@@ -41,7 +41,7 @@ export class WilsonsAlgorithm extends Applet
 		noBorders,
 		reverseGenerateSkeleton = false
 	}) {
-		let timeoutId = null;
+		let timeoutId;
 
 
 

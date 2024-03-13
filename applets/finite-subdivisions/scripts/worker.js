@@ -2,10 +2,10 @@
 
 
 
-let numVertices = null;
-let numIterations = null;
-let gridSize = null;
-let maximumSpeed = null;
+let numVertices;
+let numIterations;
+let gridSize;
+let maximumSpeed;
 
 let polygons = [];
 

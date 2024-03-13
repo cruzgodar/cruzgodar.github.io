@@ -30,8 +30,8 @@ const glslFiles =
 	}
 };
 
-export let doubleEmulationGlsl = null;
-export let doubleEncodingGlsl = null;
+export let doubleEmulationGlsl;
+export let doubleEncodingGlsl;
 
 function splitGlslFile(filename, text)
 {

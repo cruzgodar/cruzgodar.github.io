@@ -3,8 +3,6 @@ import { Wilson } from "/scripts/wilson.js";
 
 export class Snowflake extends AnimationFrameApplet
 {
-	loadPromise = null;
-
 	resolution = 500;
 
 	computationsPerFrame = 20;

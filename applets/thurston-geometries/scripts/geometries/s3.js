@@ -1,4 +1,8 @@
-import { getColorGlslString, getMaxGlslString, getMinGlslString } from "../../../../scripts/applets/applet.js";
+import {
+	getColorGlslString,
+	getMaxGlslString,
+	getMinGlslString
+} from "../../../../scripts/applets/applet.js";
 import { ThurstonGeometry } from "../class.js";
 import { BaseGeometry } from "./base.js";
 

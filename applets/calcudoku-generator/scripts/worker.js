@@ -2,9 +2,9 @@
 
 
 
-let gridSize = null;
+let gridSize;
 
-let maxCageSize = null;
+let maxCageSize;
 
 let grid = [];
 
@@ -313,7 +313,7 @@ function assignInitialCages()
 // Destroys a cage, using the cells left over to merge with an adjacent cage.
 function expandCages(cageToDestroy)
 {
-	let cageThatGrew = null;
+	let cageThatGrew;
 
 
 

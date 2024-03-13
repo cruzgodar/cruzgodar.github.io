@@ -7,12 +7,12 @@ import { Wilson } from "/scripts/wilson.js";
 
 export class PlanePartitions extends AnimationFrameApplet
 {
-	wilsonNumbers = null;
+	wilsonNumbers;
 
-	wilsonHidden = null;
-	wilsonHidden2 = null;
-	wilsonHidden3 = null;
-	wilsonHidden4 = null;
+	wilsonHidden;
+	wilsonHidden2;
+	wilsonHidden3;
+	wilsonHidden4;
 
 	useFullscreenButton = false;
 
@@ -32,31 +32,31 @@ export class PlanePartitions extends AnimationFrameApplet
 	wallWidth = 17;
 	wallHeight = 17;
 
-	scene = null;
+	scene;
 
-	orthographicCamera = null;
+	orthographicCamera;
 
-	renderer = null;
+	renderer;
 
-	loader = null;
+	loader;
 
-	cubeTexture = null;
-	cubeTexture2 = null;
-	floorTexture = null;
-	floorTexture2 = null;
+	cubeTexture;
+	cubeTexture2;
+	floorTexture;
+	floorTexture2;
 
-	cubeGeometry = null;
-	floorGeometry = null;
-	wallLeftGeometry = null;
-	wallRightGeometry = null;
+	cubeGeometry;
+	floorGeometry;
+	wallLeftGeometry;
+	wallRightGeometry;
 
-	ambientLight = null;
+	ambientLight;
 
 
 
 	dimersShown = false;
 
-	pointLight = null;
+	pointLight;
 
 	rotationY = 0;
 	rotationYVelocity = 0;
@@ -2268,7 +2268,7 @@ export class PlanePartitions extends AnimationFrameApplet
 
 			array.cubeGroup.remove(array.floor[coordinates[0]][coordinates[1]]);
 
-			array.floor[coordinates[0]][coordinates[1]] = null;
+			array.floor[coordinates[0]][coordinates[1]] = undefined;
 		});
 
 		if (this.in2dView)
@@ -2340,7 +2340,7 @@ export class PlanePartitions extends AnimationFrameApplet
 			{
 				for (let j = 0; j < array.footprint; j++)
 				{
-					if (array.floor[i][j] !== null)
+					if (array.floor[i][j])
 					{
 						this.drawSingleCell2dViewText(array, i, j);
 					}
@@ -2508,7 +2508,7 @@ export class PlanePartitions extends AnimationFrameApplet
 			array.cubes[xyz[0]][xyz[1]][array.numbers[xyz[0]][xyz[1]]]
 				= array.cubes[xyz[0]][xyz[1]][xyz[2]];
 
-			array.cubes[xyz[0]][xyz[1]][xyz[2]] = null;
+			array.cubes[xyz[0]][xyz[1]][xyz[2]] = undefined;
 		});
 	}
 
@@ -2550,7 +2550,7 @@ export class PlanePartitions extends AnimationFrameApplet
 			const sourceCubes = sourceCoordinates
 				.map(xyz => sourceArray.cubes[xyz[0]][xyz[1]][xyz[2]]);
 
-			sourceCoordinates.forEach(xyz => sourceArray.cubes[xyz[0]][xyz[1]][xyz[2]] = null);
+			sourceCoordinates.forEach(xyz => sourceArray.cubes[xyz[0]][xyz[1]][xyz[2]]);
 
 			targetCoordinates.forEach((xyz, index) =>
 			{
@@ -2631,7 +2631,7 @@ export class PlanePartitions extends AnimationFrameApplet
 		{
 			array.cubeGroup.remove(array.cubes[xyz[0]][xyz[1]][xyz[2]]);
 
-			array.cubes[xyz[0]][xyz[1]][xyz[2]] = null;
+			array.cubes[xyz[0]][xyz[1]][xyz[2]] = undefined;
 		});
 	}
 
@@ -2660,7 +2660,7 @@ export class PlanePartitions extends AnimationFrameApplet
 		{
 			array.cubeGroup.remove(array.floor[xyz[0]][xyz[1]]);
 
-			array.cubes[xyz[0]][xyz[1]] = null;
+			array.cubes[xyz[0]][xyz[1]] = undefined;
 		});
 	}
 
@@ -5526,7 +5526,7 @@ export class PlanePartitions extends AnimationFrameApplet
 			}
 		}
 
-		let rppArray = null;
+		let rppArray;
 
 		if (rppSize > 0)
 		{

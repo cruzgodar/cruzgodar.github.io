@@ -4,7 +4,7 @@ import { Wilson } from "/scripts/wilson.js";
 
 export class GameOfLife extends AnimationFrameApplet
 {
-	wilsonUpscale = null;
+	wilsonUpscale;
 
 	gridSize = 100;
 	resolution = 1000;

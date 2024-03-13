@@ -5,12 +5,12 @@ export class SortingAlgorithm extends AnimationFrameApplet
 {
 	resolution = 2000;
 
-	dataLength = null;
+	dataLength;
 	data = [];
 	brightness = [];
 	maxBrightness = 40;
 
-	currentGenerator = null;
+	currentGenerator;
 
 	minFrequency = 30;
 	maxFrequency = 600;
@@ -42,8 +42,8 @@ export class SortingAlgorithm extends AnimationFrameApplet
 	operationsPerFrame = 1;
 	updateReadsAndWrites = false;
 
-	numReadsElement = null;
-	numWritesElement = null;
+	numReadsElement;
+	numWritesElement;
 
 	changingSound = false;
 

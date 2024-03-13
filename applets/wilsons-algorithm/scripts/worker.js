@@ -2,10 +2,10 @@
 
 
 
-let gridSize = null;
-let maximumSpeed = null;
-let noBorders = null;
-let reverseGenerateSkeleton = null;
+let gridSize;
+let maximumSpeed;
+let noBorders;
+let reverseGenerateSkeleton;
 
 let numSkeletonLines = 0;
 
@@ -19,11 +19,11 @@ const grid = [];
 
 let newVertices = [];
 
-let currentRow = null;
-let currentColumn = null;
+let currentRow;
+let currentColumn;
 
-let currentRowBaseCamp = null;
-let currentColumnBaseCamp = null;
+let currentRowBaseCamp;
+let currentColumnBaseCamp;
 let randomWalkFromEndpointAttmepts = 0;
 
 let randomWalk = wasmRandomWalk;

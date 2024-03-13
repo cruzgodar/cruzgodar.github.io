@@ -8,7 +8,7 @@ export class SudokuGenerator extends Applet
 {
 	grid = [];
 
-	webWorker = null;
+	webWorker;
 
 	generatedFirstPuzzle = false;
 

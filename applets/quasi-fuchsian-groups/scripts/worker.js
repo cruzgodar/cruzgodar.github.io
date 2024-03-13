@@ -2,11 +2,11 @@
 
 
 
-let canvasWidth = null;
-let canvasHeight = null;
-let maxDepth = null;
-let maxPixelBrightness = null;
-let boxSize = null;
+let canvasWidth;
+let canvasHeight;
+let maxDepth;
+let maxPixelBrightness;
+let boxSize;
 
 let coefficients = [];
 
