@@ -165,6 +165,42 @@ The **kernel** of a linear transformation $T : V \to W$, written $\ker T$, is th
 
 
 
+## The Determinant
+
+The matrix $A$ of a linear transformation $T : V \to W$ tells most of the story of how $T$ operates: the product $Av$ is equal to $T(v)$, and the number of linearly independent columns determines if the map is one-to-one (if all the columns are linearly independent; equivalently if $\ker T = \{0\}$) and/or onto (if there are at least as many linearly independent columns as there are rows; equivalently if $\image T = W$). In the case when the matrix is square, though, there's an even more concise piece of information that tells us about the matrix: the determinant. The method of computing $\det A$ is rather in-depth; let's work through a brief example to review how it works.
+
+### ex "a determinant"
+
+	Compute $\det A$ for
+
+	$$
+		A = [[ 1, 3, 2 ; 0, 3, 1 ; 1, -3, -4 ]].
+	$$
+
+	Let's expand about row 2. For each of the three entries, we cross off its row and column, compute the determinant of the $2 \times 2$ matrix that's left, and then multiply by the entry, possibly with a sign. That sign alternates between $+$ and $-$, starting with $+$ if it's an even row or column and $-$ if it's odd.
+
+	$$
+		\det A = -0 \det [[ 3, 2 ; -3, -4 ]] + 3 \det [[ 1, 2 ; 1, -4 ]] - 1\det [[ 1, 3 ; 1, -3 ]]
+	$$
+
+	The determinant of a $2 \times 2$ matrix $[[ a, b ; c, d ]]$ is just $ad - bc$ (or we can expand about any row and column, and the determinant of a $1 \times 1$ matrix is just its entry). In total, we have
+
+	$$
+		\det A = 3 (-4 - 2) - (-3 - 3) = -12.
+	$$
+
+###
+
+### exc "a determinant"
+
+	Compute $\det [[ 1, -6, 5, 3 ; 0, 4, 2, -1 ; 0, 0, 9, 9 ; 0, 0, 0, -3 ]]$.
+
+###
+
+The determinant of a matrix $A$ is nonzero exactly when $A$ is invertible, or equivalently if all of its columns are linearly independent. The value $\det A$ is also equal to the volume scaling factor of $A$: how many times more length/area/volume $Av$ has than $v$.
+
+
+
 
 ## Bases and Dimension
 
@@ -320,7 +356,7 @@ One final but crucial result from linear algebra I is the **fundamental theorem 
 	
 ###
 
-### exc kernel and image
+### exc "kernel and image"
 	
 	With the transformation $T$ from the previous example, find bases for $\ker T$ and $\image T$.
 	
