@@ -32,10 +32,15 @@ function imageLink(options, url, name)
 		`;
 	}
 
+	// pdf files, etc.
+	const imgSrc = url.includes(".")
+		? `${url.slice(0, url.lastIndexOf("/"))}/cover.webp`
+		: `${url}cover.webp`;
+
 	return /* html */`
 		<div class="image-link">
 			<a href="${url}"${options.includes("t") ? " data-in-new-tab='1'" : ""} tabindex="-1">
-				<img src="${url}cover.webp" alt="${name}" tabindex="1"></img>
+				<img src="${imgSrc}" alt="${name}" tabindex="1"></img>
 			</a>
 			
 			<p class="image-link-subtext">${name}</p>
