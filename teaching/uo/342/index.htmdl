@@ -154,13 +154,13 @@ Welcome to Math 342! We'll use this page for the interactive notes, the homework
 
 
 
-### card syllabus "Math 341: Elementary Linear Algebra"
+### card syllabus "Math 342: Elementary Linear Algebra"
 	
 	Instructor: Cruz Godar (cgodar@uoregon.edu)
 
-	Class meetings: 9--9:50 MTWF in Eslinger 107
+	Class meetings: 9--9:50 MTWF in Peterson 107
 	
-	Office hours: M 11--11:50 and 2--2:50, W 12--12:50, and F 11--11:50 in the Fenton Hall atrium (the middle of the third floor).
+	Office hours: TBD in the Fenton Hall atrium (the middle of the third floor).
 	
 	
 	
@@ -197,7 +197,7 @@ Welcome to Math 342! We'll use this page for the interactive notes, the homework
 	
 	## What will the homework be like?
 	
-	The homework is available on this site, and there will be roughly 15--20 problems due each week. Your grade on each is out of 20 points --- 8 are for thoroughly attempting every problem regardless of whether your answers are correct, and I'll select three problems per homework to grade on correctness for 4 points each.
+	The homework is available on this site, and there will be roughly 20 problems due each week. Your grade on each is out of 20 points --- 8 are for thoroughly attempting every problem regardless of whether your answers are correct, and I'll select three problems per homework to grade on correctness for 4 points each.
 	
 	All of our homework is submitted through Canvas. One option is to handwrite your work and then scan it with a scanning app that produces PDFs (e.g. the scanner in the Files app on iOS or Adobe Scan on Android). Another option that I highly recommend is to try typing your homework with Latex. This is how scientific papers and books (and our notes and homework) are written, and it has the benefit of being easily editable if you make a mistake part of the way through a problem. The simplest way to get started is to make an account at <a href="https://www.overleaf.com">Overleaf</a>, and to make things as easy as possible, **every bit of math in the homework can be clicked or tapped to show and easily copy the Latex source**. Try it on the equation below!
 	
@@ -223,7 +223,7 @@ Welcome to Math 342! We'll use this page for the interactive notes, the homework
 	
 	The most important things to focus on are (fittingly) the ones worth credit: coming to class and completing the homework early are crucial to staying on top of all the material. Beyond that, the single best thing you can do is **show up to every office hour that fits in your schedule**. You should expect to spend 8 hours per week studying and completing the homework if you're fully comfortable with all of the prerequisites for the class, and more if not. Regularly coming to office hours is a great way to make sure you're putting in that time --- even if you don't have any questions, it's an environment where you can focus on homework and get help if any questions do come up.
 	
-	I also recommend studying and working on homework in groups. While the final work you submit must be your own, it can be helpful to work with others --- part of the reason we have group work is to help build those friendships!
+	I also highly recommend studying and working on homework in groups. While the final work you submit must be your own, it can be helpful to work with others --- part of the reason we have group work is to help build those friendships!
 	
 	
 	
@@ -242,17 +242,21 @@ Welcome to Math 342! We'll use this page for the interactive notes, the homework
 	
 	We will learn how to:
 	
-	> . Solve a linear system with matrices and row reduction
+	> . Find and apply change-of-basis matrices
 	
-	> . Determine linear dependence or independence of a set of vectors
+	> . Find eigenvectors, eigenvalues, and eigenspaces of matrices
 	
-	> . Find the determinant and inverse of a matrix
+	> . Diagonalize matrices and use the process to solve systems of equations
 	
-	> . Understand the definitions of a vector space, subspace, basis, and dimension
+	> . Apply and understand inner products on vector spaces, and use them to understand notions of length, distance, and angle as they apply to vectors
 	
-	> . Express a vector in terms of a basis
+	> . Understand and generate orthonormal bases for vector spaces
 	
-	> . Find the kernel and image of a linear transformation
+	> . Apply and understand the Real Spectral Theorem
+
+	> . Apply and understand the singular value decomposition of a matrix
+
+	> . Apply and understand the Complex Spectral Theorem (if time permits)
 	
 	
 	
