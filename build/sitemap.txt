@@ -55,6 +55,7 @@ home Cruz Godar
 	teaching Teaching
 		uo/342 Math 342
 			notes/0-linear-algebra-1-review Section 0: Linear Algebra I Review
+			notes/1-eigenvectors-and-eigenvalues Section 1: Eigenvectors and Eigenvalues
 
 		uo/341 Math 341
 			notes/1-vectors-and-matrices Section 1: Vectors and Matrices

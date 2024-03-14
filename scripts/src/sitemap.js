@@ -676,13 +676,25 @@ export const sitemap =
 		
 		"children":
 		[
-			"/teaching/uo/342/notes/0-linear-algebra-1-review/"
+			"/teaching/uo/342/notes/0-linear-algebra-1-review/",
+			"/teaching/uo/342/notes/1-eigenvectors-and-eigenvalues/"
 		]
 	},
 		
 	"/teaching/uo/342/notes/0-linear-algebra-1-review/":
 	{
 		"title": "Section 0: Linear Algebra I Review",
+		
+		"parent": "/teaching/uo/342/",
+		
+		"children": [],
+
+		"customScript": true
+	},
+	
+	"/teaching/uo/342/notes/1-eigenvectors-and-eigenvalues/":
+	{
+		"title": "Section 1: Eigenvectors and Eigenvalues",
 		
 		"parent": "/teaching/uo/342/",
 		

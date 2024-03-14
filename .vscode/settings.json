@@ -8,6 +8,8 @@
 		"**/favicon*": true,
 		"**/index.html": true,
 		"**/ms-icon*": true,
+		"**/scripts/src/sitemap.js": true,
+		"**/sitemap.xml": true,
 		"/scripts/anime.js": true,
 		"/scripts/three.js": true,
 		"/scripts/wilson.js": true
