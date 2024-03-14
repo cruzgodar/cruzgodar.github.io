@@ -42,7 +42,7 @@ Welcome to Math 342! We'll use this page for the interactive notes, the homework
 
 	## Section 0
 
-	In problems 5#, do the following:
+	In problems 3#, do the following:
 
 	> a) Write the system of equations in the form $A\vec{x} = \vec{b}$ for a matrix $A$ and a vector $\vec{b}$ of constants, and a vector $\vec{x}$ of variables.
 
@@ -67,17 +67,6 @@ Welcome to Math 342! We'll use this page for the interactive notes, the homework
 	#.
 
 	$$
-		x + 2y + z &= 0
-		
-		-x + y + z &= -2
-		
-		x + y &= 3
-		
-	$$
-
-	#.
-
-	$$
 		x + 2y - z &= -1
 		
 		2x + 3y - w &= -2
@@ -93,21 +82,9 @@ Welcome to Math 342! We'll use this page for the interactive notes, the homework
 		-3x - y + 4z &= 0
 	$$
 
-	#.
-
-	$$
-		x + y + z + w &= 5
-		
-		x + 2y - 2z + 3w &= 0
-		
-		3x + 5y - 3z + 7w &= 5
-
-		x - y + 7z - 3w &= 15
-	$$
-
 	- - -
 
-	In problems 5#, do the following:
+	In problems 4#, do the following:
 	
 	> a) The given sets $V$ and $W$ are vector spaces. Determine whether the subset $X$ of $V$ is a subspace. If it is, show it satisfies all three subspace properties, and if not, give a specific example showing one of the properties fails.
 	
@@ -126,8 +103,10 @@ Welcome to Math 342! We'll use this page for the interactive notes, the homework
 	#. $V = M_{2 \times 2}(#R#)$, $W = M_{2 \times 2}(#R#)$, $X$ is the set of matrices $A$ such that $\det A = 0$, and $T : V \to W$ is defined by
 	
 	$$
-		T(A) = A^T.
+		T(A) = A^T,
 	$$
+
+	where $A^T$ is the **transpose** of $A$, defined by $(A^T)_{ij} = A_{ji}$ (it effectively flips $A$ across its diagonal).
 	
 	#. $V$ is the space of polynomials with degree at most 3, $W = #R#^2$, $X$ is the set of polynomials $p(x)$ such that $p'(x) = 1$, and $T : V \to W$ is defined by
 	
@@ -142,14 +121,6 @@ Welcome to Math 342! We'll use this page for the interactive notes, the homework
 	$$
 	
 	i.e. the outputs of $S$ are placed as columns in a $2 \times 2$ matrix.
-	
-	#. $V = M_{2 \times 2}(#R#)$, $W$ is the space of polynomials with degree at most 2, $X$ is the set of matrices $[[ a, b ; c, d ]]$ with $a + d = 1$, and $T : V \to W$ is defined by
-	
-	$$
-		T(A) = \chi(A),
-	$$
-	
-	where $\chi(A)$ is the characteristic polynomial of $A$, as described in homework 5.
 
 ###
 
