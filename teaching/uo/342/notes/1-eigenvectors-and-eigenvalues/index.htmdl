@@ -1,15 +1,53 @@
-
 ### nav-buttons
 
 Before we dive into more linear algebra, I want to take a step back and look at some of its many applications that motivate devoting two terms to its study. Now that we have the terminology of bases, the definition of a linear map $T : V \to W$ couldn't be much simpler: it's a function that splits across addition and scalar multiplication (i.e. $T(cv_1 + v_2) = cT(v_1) + T(v_2)$) that's completely determined by its action on a basis.
 
 With $V = #R#^3$ and $W = #R#^2$, there's the classic example of 3D graphics. *Raster* graphics, the technology underlying most 3D video games, works by modeling 3D shapes as a massive collection of triangles, then projecting each onto the 2D screen by a linear map determined by the position and rotation of the camera. The projection of a 3D triangle is a 2D triangle (this takes a little thought!), and so the result is a collection of triangles in the image plane. We can then test every pixel to see if it's in the interior of a triangle, and color it accordingly if so. At the time of writing, there's no Desmos 3D API I can use to embed a graph directly in the notes, but here's <a href="https://www.desmos.com/3d/947d6c19bf">a small demonstration I put together</a>. The gray lines connecting the vertices of the red triangle in the world to its blue rendered image are projections from the ambient space onto the camera's image plane.
 
-### exc
+### exc "3D rendering"
 
-	In the previous example, what would be a good choice of basis for the domain and codomain of the projection map to make its matrix representation as simple as possible? Explain your answer.
+	In the previous example, what would be a good choice of bases for the domain and codomain of the projection map to make its matrix representation as simple as possible? Explain your answer --- it doesn't need to be in symbols.
 
 ###
+
+On the subject of 3D rendering, I completed a project to render the Thurston geometries not too long ago. These are the eight different geometries possible in curved three-dimensional space; as a two-dimensional analogue, the geometry of the sphere is different than that of the plane. Here's a rendering of three-dimensional *hyperbolic* space --- drag on the scene to look around and use WASD or hold down with two fingers on a touchscreen to move.
+
+### canvas h3-geometry
+
+Linear algebra is all over this project. All of the geometries are represented as curved spaces in 4-dimensional space, similar to how a sphere is curved in 3-dimensional space, and so the facing of the camera is stored as four vectors in $#R#^4$ that are all perpendicular to one another. Although the scene itself looks like an infinite collection of rooms, there's actually only a single one. The camera casts a rays out to render each pixel, and whenever it passes through one of the room's windows, a linear map (i.e. a $4 \times 4$ matrix) gets applied to its position and rotation to teleport it to the opposite window. By doing the same thing to the camera itself when it passes through windows and keeping careful track of the color changes, we get a perfect illusion of an infinite series of rooms with the rendering cost of just one.
+
+When the domain and codomain are the same, linear maps can be *iterated*: applied over and over to an input. If we take four specific maps from $#R#^2$ to itself (let's call them $A$, $B$, $C$, and $D$), we can repeatedly apply them to a starting point and see where it goes. At each step, we take a random map out of the four and apply it to a starting point of $(0, 0)$, then take a random map and apply it to that point, and so on. We'll plot the points it visits --- the brighter the point, the more frequently it's been there. 
+
+### canvas barnsley-fern
+
+The result for these four maps in particular is called the *Barnsley fern*, named after its creator --- amazingly, with enough iterations (10 million in this example), the picture converges to the same thing, even with the random choices of maps. Strictly speaking, these are *affine* linear maps, which means they multiply by a matrix and then add a vector, but it's a good demonstration nevertheless.
+
+As one final application, we can use linear maps to create systems of linear *differential* equations, not just algebraic ones. For example, the system
+
+$$
+	x' &= x - y
+	y' &= x + y
+$$
+
+is really a matrix equation in disguise:
+
+$$
+	[[ x' ; y' ]] = [[ 1, -1 ; 1, 1 ]] [[ x ; y ]].
+$$
+
+A great way to visualize these is by plotting a field of moving particles, where the velocity of one at $(x, y)$ is given by this formula for $(x', y')$. Coloring the points by their velocity and direction, we get a striking picture.
+
+### canvas vector-field
+
+We'll continue to touch on topics from all of these examples throughout the term. If you'd like to see more from any of them, they come from interactive applets I've written --- have a look!
+
+### image-links
+	/applets/thurston-geometries/
+	/applets/barnsley-fern/
+	/applets/vector-fields/
+###
+
+<div style="height: 64px"></div>
 
 
 

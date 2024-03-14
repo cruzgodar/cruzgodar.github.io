@@ -73,22 +73,26 @@ export class Applet
 
 
 
-	pauseWhenOffscreen()
+	runWhenOnscreen(data)
 	{
+		let hasRun = false;
+
 		const onScroll = () =>
 		{
+			if (hasRun)
+			{
+				return;
+			}
+
 			const rect = this.canvas.getBoundingClientRect();
 			const top = rect.top;
 			const height = rect.height;
 
 			if (top >= -height && top < window.innerHeight)
 			{
-				this.resume();
-			}
-
-			else
-			{
-				this.pause();
+				hasRun = true;
+				
+				setTimeout(() => this.run(data), 250);
 			}
 		};
 

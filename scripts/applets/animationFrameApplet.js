@@ -1,3 +1,4 @@
+import { addTemporaryListener } from "../src/main.js";
 import { Applet } from "./applet.js";
 
 export class AnimationFrameApplet extends Applet
@@ -65,5 +66,33 @@ export class AnimationFrameApplet extends Applet
 		this.needNewFrame = true;
 
 		window.requestAnimationFrame(this.drawFrameLoopBound);
+	}
+
+	pauseWhenOffscreen()
+	{
+		const onScroll = () =>
+		{
+			const rect = this.canvas.getBoundingClientRect();
+			const top = rect.top;
+			const height = rect.height;
+
+			if (top >= -height && top < window.innerHeight)
+			{
+				this.resume();
+			}
+
+			else
+			{
+				this.pause();
+			}
+		};
+
+		addTemporaryListener({
+			object: window,
+			event: "scroll",
+			callback: onScroll
+		});
+
+		onScroll();
 	}
 }
