@@ -233,7 +233,7 @@ In a deeply unfortunate naming collision, this equation is called the **characte
 	Now $6v_1 - 3v_2 = 0$, so $2v_1 = v_2$. We'll just take $v_1 = 1$ and $v_2 = 2$ to get our second eigenvector of
 	
 	$$
-		**v** = [[ 1 ; 2 ]]
+		**v** = [[ 1 ; 2 ]].
 	$$
 	
 ###

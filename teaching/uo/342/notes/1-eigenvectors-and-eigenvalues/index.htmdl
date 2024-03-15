@@ -47,7 +47,115 @@ We'll continue to touch on topics from all of these examples throughout the term
 	/applets/vector-fields/
 ###
 
-<div style="height: 64px"></div>
+
+
+## Eigenvectors
+
+Let's start with a topic from the second example: iterated linear maps. If we're trying to evaluate $A^{100}v$ for an $n \times n$ matrix $A$ and a vector $v \in #R#^n$, then we'd desperately like a trick to avoid doing $100$ matrix-vector products. The best possible scenario would be if we had a basis $\{ v_1, ..., v_n \}$ of fixed points for $A$: vectors so that $Av_i = v_i$. Then for any vector $v = c_1 v_1 + \cdots + c_n v_n$, we'd have
+
+$$
+	Av &= A(c_1 v_1 + \cdots + c_n v_n)
+
+	&= c_1 A v_1 + \cdots + c_n A v_n
+
+	&= c_1 v_1 + \cdots + c_n v_n
+
+	&= v,
+$$
+
+so $A^{100}v = v$, and we've sidestepped the problem entirely. Unfortunately, this calculation shows that having a basis of fixed points implies that *every* vector is a fixed point of $A$, meaning $A$ has to be the identity matrix $I$. The reality of what we can expect will turn out to not be that far off, though, as surprising as that may be. Let's take a look at an example to get our bearings. With $A$, $v_1$, and $v_2$ defined as
+
+$$
+	A &= [[ 5, 6 ; -3, -4 ]]
+	
+	v_1 &= [[ -2 ; 1 ]]
+
+	v_2 &= [[ 1 ; -1 ]],
+$$
+
+we have
+
+$$
+	Av_1 &= [[ -4 ; 2 ]] = 2v_1
+
+	Av_2 &= [[ -1 ; 1 ]] = -v_2.
+$$
+
+Neither of these is a fixed point, but they're the next best thing. If we want to evaluate $A^{100}v_1$, it's just $2^{100}v_1$, since every application of $A$ just multiplies by 2. Similarly, $A^{100}v_2 = (-1)^{100}v_2 = v_2$. And if we want to evaluate $A^{100}v$ for any other vector $v$, all we have to do is express $v = c_1v_1 + c_2v_2$ (since $v_1$ and $v_2$ are linearly independent and therefore form a basis for $#R#^2$), and then we can apply powers of $A$ with no trouble at all. These objects are important enough that we'll want to give them a name:
+
+### def "eigenvectors and eigenvalues"
+
+	Let $A$ be an $n \times n$ matrix. An **eigenvector** of $A$ is a nonzero vector $v \in #R#^n$ such that $Av = \lambda v$ for some number $\lambda \in #R#$, called the **eigenvalue** corresponding to $v$.
+
+###
+
+*Eigen* is German for *characteristic* (and *strange*), and refers to the way these objects are intrinsic to the matrix they come from. Eigenvectors and eigenvalues are defined only for square matrices, since if $A$ isn't square, its outputs have different lengths than its inputs, so there's no hope of the two being multiples of one another. We also exclude the zero vector since $A\vec{0} = \vec{0}$
+
+So --- how can we find the eigenvectors and eigenvalues of a matrix from scratch? We can rewrite the equation $Av = \lambda v$ as $Av - \lambda v = \vec{0}$, and to express the left side as a single linear map acting on $v$, we can write it as $(A - \lambda I)v = \vec{0}$. If we knew $\lambda$, we could solve for $v$ by row reduction, we usually won't know the eigenvalues ahead of time. To that end, let's start by finding all the possible values for $\lambda$. If $(A - \lambda I)v = \vec{0}$, then $v \in \ker (A - \lambda I)$, which means $A - \lambda I$ isn't one-to-one. An equivalent condition is that $\det(A - \lambda I) = 0$, and that's an equation we can solve. Since the determinant is just a complicated series of multiplications and additions, the result will be a polynomial in $\lambda$, which we call the **characteristic polynomial** of $A$ and denote $\chi_A(\lambda)$. Once we solve $\chi_A(\lambda) = 0$ for the eigenvalues of $A$, we can then plug each into $(A - \lambda I)v = \vec{0}$ in turn to find the corresponding eigenvectors.
+
+### ex "eigenvalues and eigenvectors"
+
+	Find the eigenvalues and eigenvectors of
+
+	$$
+		A = [[ 5, -3 ; 2, -2 ]].
+	$$
+	
+	To get the characteristic polynomial, we subtract $\lambda I$, which just means subtracting $\lambda$ from every entry in the diagonal, and then take the determinant.
+	
+	$$
+		\det (A - \lambda I) &= \det [[ 5 - \lambda, -3 ; 2, -2 - \lambda ]]
+		
+		&= (5 - \lambda)(-2 - \lambda) - (-3)(2)
+		
+		&= -10 - 3\lambda + \lambda^2 + 6
+		
+		&= \lambda^2 - 3\lambda - 4
+		
+		&= (\lambda - 4)(\lambda + 1).
+	$$
+	
+	Since the characteristic polynomial is supposed to equal zero, the eigenvalues are $4$ and $-1$. We'll handle them one at a time to find the eigenvectors.
+	
+	First, let's take $\lambda = 4$. That gives us the system $(A - 4 I)v = 0$, which corresponds to the augmented matrix
+	
+	$$
+		[[ 1, -3 | 0 ; 2, -6 | 0 ]] & 
+		
+		[[ 1, -3 | 0 ; 0, 0 | 0 ]] & \qquad r_2 \pe -2r_1.
+	$$
+	
+	In the form of an equation, $v_1 - 3v_2 = 0$, so $v_1 = 3v_2$. We just need one eigenvector, so let's take $v_2 = 1$ and $v_1 = 3$ to get our first eigenvector of
+	
+	$$
+		v = [[ 3 ; 1 ]]
+	$$
+	
+	with $\lambda_1 = 4$. For the other eigenvalue, we have
+	
+	$$
+		[[ 6, -3 | 0 ; 2, -1 | 0 ]] & 
+			
+		[[ 6, -3 | 0 ; 0, 0 | 0 ]] & \qquad r_2 \pe -\frac{1}{3}r_1.
+	$$
+	
+	Now $6v_1 - 3v_2 = 0$, so $2v_1 = v_2$. We'll just take $v_1 = 1$ and $v_2 = 2$ to get our second eigenvector of
+	
+	$$
+		v = [[ 1 ; 2 ]].
+	$$
+
+###
+
+### exc "eigenvectors and eigenvalues"
+	
+	Find the eigenvalues and eigenvectors of
+	
+	$$
+		B = [[ 1, 1, 0 ; 0, 0, 0 ; 0, 1, 1 ]].
+	$$
+	
+###
 
 
 
