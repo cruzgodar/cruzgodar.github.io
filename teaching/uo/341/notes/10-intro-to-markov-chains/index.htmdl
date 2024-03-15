@@ -22,7 +22,7 @@ There's a surprising amount of information we can extract from just this descrip
 
 ### ex "Markov chain"
 
-	A particular university has exclusively math, physics, and computer science majors, and doesn't allow double majors. Every year, 5% of the math majors at a university switch to a physics major, and 10% switch to computer science. On the other hand, 10% of the physics majors switch to math and 15% to computer science. 5% of the computer science majors switch to math, and 15% to physics. If there are initially 100 students in each of the three majors and no one ever graduates, how many will be in each major after 2 years?
+	A particular university has exclusively math, physics, and computer science majors, and doesn't allow double majors. Every year, 5% of the math majors at the university switch to a physics major, and 10% switch to computer science. On the other hand, 10% of the physics majors switch to math and 15% to computer science. 5% of the computer science majors switch to math, and 15% to physics. If there are initially 100 students in each of the three majors and no one ever graduates, how many will be in each major after 2 years?
 	
 	The three states here are being a math, physics, and computer science major. The state vector is initially
 	
