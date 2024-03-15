@@ -157,6 +157,44 @@ So --- how can we find the eigenvectors and eigenvalues of a matrix from scratch
 	
 ###
 
+As we mentioned before, we'd ideally like a *basis* of eigenvectors for a matrix. The characteristic polynomial $\chi_A(\lambda)$ of an $n \times n$ matrix is always degree-$n$, since there's exactly one term in the determinant expansion that involves multiplying together every diagonal entry of $A - \lambda I$, each of which is of the form $a_{ii} - \lambda$. That means that we'll at least have $n$ eigenvalues $\lambda$, but that number is counted with multiplicity --- the eigenvalues could be repeated or even complex numbers. We'll dig more into those possibilities in future sections, but for now, we can at least verify that when all the eigenvalues are distinct, we get the basis of eigenvectors we're looking for.
+
+### prop "distinct eigenvalues guarantee a basis of eigenvectors"
+
+	Let $A$ be an $n \times n$ matrix with eigenvalues $\lambda_1, ..., \lambda_n$ so that $\lambda_i \neq \lambda_j$ for $i \neq j$. Then the corresponding eigenvectors $v_1, ..., v_n$ form a basis for $#R#^n$.
+
+###
+
+### pf
+
+	We'll often get the chance to prove our results in this course, and it's worth taking it whenever we can. While this course isn't proof-based, it's good preparation for future ones that are, and there's usually value in seeing *why* results are true regardless.
+
+	Since $v_1, ..., v_n$ is a list of $n$ vectors in $#R#^n$, we only need to check if they're linearly independent or they span --- if one is true, the other must be (this might be a more familiar fact if the $v_i$ are placed as columns in a matrix; then the two conditions are that the corresponding map is one-to-one or onto). Linear independence is usually an easier condition to check, so let's try that.
+
+	We'll show this result one vector at a time, first showing that $v_1$ and $v_2$ are linearly independent. If $c_1v_1 + c_2v_2 = \vec{0}$, then all we can really do is apply $A$ to both sides --- otherwise, the $\lambda_i$ don't appear. The result of doing that is
+
+	$$
+		c_1 \lambda_1 v_1 + c_2 \lambda_2 v_2 = \vec{0},
+	$$
+
+	which looks very similar to our original equation. Multiplying it by $\lambda_1$ results in
+
+	$$
+		c_1 \lambda_1 v_1 + c_2 \lambda_1 v_2 = \vec{0},
+	$$
+
+	and subtracting these two equations from one another, we have
+
+	$$
+		c_2 (\lambda_2 - \lambda_1) v_2 &= \vec{0}
+
+		c_2 (\lambda_2 - \lambda_1) v_2 &= \vec{0}.
+	$$
+
+	Since $v_2$ is an eigenvector, it's not the zero vector, and $\lambda_1 \neq \lambda_2$ by assumption, so $c_2 = 0$. Then $c_1 = 0$ too since $v_1 \neq \vec{0}$, and so $v_1$ and $v_2$ are linearly independent. 
+
+###
+
 
 
 ### nav-buttons
