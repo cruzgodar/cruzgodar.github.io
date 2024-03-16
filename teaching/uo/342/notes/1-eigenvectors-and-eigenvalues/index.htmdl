@@ -14,7 +14,7 @@ On the subject of 3D rendering, I completed a project to render the Thurston geo
 
 ### canvas h3-geometry
 
-Linear algebra is all over this project. All of the geometries are represented as curved spaces in 4-dimensional space, similar to how a sphere is curved in 3-dimensional space, and so the facing of the camera is stored as four vectors in $#R#^4$ that are all perpendicular to one another. Although the scene itself looks like an infinite collection of rooms, there's actually only a single one. The camera casts a rays out to render each pixel, and whenever it passes through one of the room's windows, a linear map (i.e. a $4 \times 4$ matrix) gets applied to its position and rotation to teleport it to the opposite window. By doing the same thing to the camera itself when it passes through windows and keeping careful track of the color changes, we get a perfect illusion of an infinite series of rooms with the rendering cost of just one.
+Linear algebra is all over this project. All of the geometries are represented as curved spaces in 4-dimensional space, similar to how a sphere is curved in 3-dimensional space, and so the facing of the camera is stored as four vectors in $#R#^4$ that are all perpendicular to one another. Although the scene itself looks like an infinite collection of rooms, there's actually only a single one. The camera casts a ray out to render each pixel, and whenever it passes through one of the room's windows, a linear map (i.e. a $4 \times 4$ matrix) gets applied to its position and rotation to teleport it to the opposite window. By doing the same thing to the camera itself when it passes through windows and keeping careful track of the color changes, we get a perfect illusion of an infinite series of rooms with the rendering cost of just one.
 
 When the domain and codomain are the same, linear maps can be *iterated*: applied over and over to an input. If we take four specific maps from $#R#^2$ to itself (let's call them $A$, $B$, $C$, and $D$), we can repeatedly apply them to a starting point and see where it goes. At each step, we take a random map out of the four and apply it to a starting point of $(0, 0)$, then take a random map and apply it to that point, and so on. We'll plot the points it visits --- the brighter the point, the more frequently it's been there. 
 
@@ -288,7 +288,7 @@ One way to quickly put these ideas to use is with *dynamical systems*, a fancy t
 	$$
 		\lim_{t \to \infty} A^t \vec{x}(0) &= \lim_{t \to \infty} A^t (100 \vec{v_1} + -50 \vec{v_2} + -50 \vec{v_3})
 
-		&= \lim_{t \to \infty} (100 \cdot 1^t \vec{v_1}  -50 \cdot 0.75^t \vec{v_2} - 50 \cdot 0.25^t \vec{v_3})
+		&= \lim_{t \to \infty} (100 \cdot 1^t \vec{v_1} -50 \cdot 0.75^t \vec{v_2} - 50 \cdot 0.25^t \vec{v_3})
 
 		&= 100 \vec{v_1}
 
@@ -299,6 +299,42 @@ One way to quickly put these ideas to use is with *dynamical systems*, a fancy t
 
 ###
 
+### exc "a dynamical system"
 
+	Solutions A and B are mixed in a chemical reaction. Every minute, 25% of the mass of solution A is converted to solution B, and 40% of the mass of solution B is converted back to A. If there are initially 10 grams of solution A and 25 of solution B, how much will there be in the long run?
+
+###
+
+
+
+## Diagonalization
+
+Suppose we have an $n \times n$ matrix $A$ whose eigenvectors $\{\vec{v_1}, ..., \vec{v_n}\}$ form a basis and have corresponding eigenvalues $\lambda_1, ..., \lambda_n$. As we've seen in the last example, it's most convenient to deal with $A$ when we're using this basis. If $B$ is the matrix with columns $\vec{v_i}$, then $B^{-1}AB$ acts by converting a vector in the basis $\{\vec{v_1}, ..., \vec{v_n}\}$ to the standard basis, runs $A$ on it, and then converts the output back to $\{\vec{v_1}, ..., \vec{v_n}\}$. Specifically,
+
+$$
+	B^{-1}AB\vec{e_i} &= BA\vec{v_i}
+
+	&= B^{-1}\lambda_i \vec{v_i}
+
+	&= \lambda_i\vec{e_i},
+$$
+
+so the total matrix is
+
+$$
+	B^{-1}AB = [[ \lambda_1, 0, \cdots, 0 ; 0, \lambda_2, \cdots, 0 ; \vdots, \vdots, \ddots, \vdots ; 0, 0, \cdots, \lambda_n ]].
+$$
+
+That matrix is what's called **diagonal**: only its diagonal entries are nonzero. Calling it $D$, we've expressed $A$ as $A = BDB^{-1}$. This puts the ideas of the previous section into a more symbolic form: the reason why this makes $A^{100}$ easier to compute is that
+
+$$
+	A^{100} &= \left( BDB^{-1} \right)^{100}
+
+	&= BDB^{-1} BDB^{-1} \cdots BDB^{-1}
+
+	&= BD^{100}B^{-1},
+$$
+
+and since $D$ is diagonal, $D^{100}$ is just $D$ with each entry raised to the 100th power. The process of expressing $A$ in the form $BDB^{-1}$ is called **diagonalizing** $A$, and it's possible exactly when $B$ is an invertible matrix --- that is, when the eigenvectors of $A$ are linearly independent. We know that's the case when the eigenvalues are all distinct, but when that's not the case --- when some eigenvalues are repeated --- we'll need to do some more work to know if $A$ can be diagonalized. In the next section, we'll begin to examine repeated eigenvalues, as well as complex ones, and their impact on the eigenvectors.
 
 ### nav-buttons
