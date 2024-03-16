@@ -1,0 +1,107 @@
+### nav-buttons
+
+Suppose we have an $n \times n$ matrix $A$ whose eigenvectors $\{\vec{v_1}, ..., \vec{v_n}\}$ form a basis and have corresponding eigenvalues $\lambda_1, ..., \lambda_n$. As we've seen in the last section, it's most convenient to deal with $A$ when we're using this basis. If $B$ is the matrix with columns $\vec{v_i}$, then $B^{-1}AB$ acts (from right to left) by converting a vector in the basis $\{\vec{v_1}, ..., \vec{v_n}\}$ to the standard basis, applies $A$ on it, and then converts the output back to $\{\vec{v_1}, ..., \vec{v_n}\}$. Specifically,
+
+$$
+	B^{-1}AB\vec{e_i} &= BA\vec{v_i}
+
+	&= B^{-1}\lambda_i \vec{v_i}
+
+	&= \lambda_i\vec{e_i},
+$$
+
+so the total matrix is
+
+$$
+	B^{-1}AB = [[ \lambda_1, 0, \cdots, 0 ; 0, \lambda_2, \cdots, 0 ; \vdots, \vdots, \ddots, \vdots ; 0, 0, \cdots, \lambda_n ]].
+$$
+
+That matrix is what's called **diagonal**: only its diagonal entries are nonzero. Calling it $D$, we've expressed $A$ as $A = BDB^{-1}$. This puts the ideas of the previous section into a more symbolic form: the reason why this makes $A^{100}$ easier to compute is that
+
+$$
+	A^{100} &= \left( BDB^{-1} \right)^{100}
+
+	&= BDB^{-1} BDB^{-1} \cdots BDB^{-1}
+
+	&= BD^{100}B^{-1},
+$$
+
+and since $D$ is diagonal, $D^{100}$ is just $D$ with each entry raised to the 100th power. The process of expressing $A$ in the form $BDB^{-1}$ is called **diagonalizing** $A$, and it's possible exactly when $B$ is an invertible matrix --- that is, when the eigenvectors of $A$ are linearly independent. We know that's the case when the eigenvalues are all distinct, but when that's not the case --- when some eigenvalues are repeated --- we'll need to do some more work.
+
+
+
+## Repeated Eigenvalues and Eigenspaces
+
+Having $n$ distinct eigenvalues might be a sufficient condition for a matrix to be diagonalizable, but we know it can't be necessary: the $2 \times 2$ identity matrix has the single eigenvalue of $1$ repeated twice, and it's definitely diagonalizable since it's already diagonal. On the other hand, there are matrices where the diagonalization process breaks down because of repeated eigenvalues. Let's take a look at one as a case study to see where things go wrong.
+
+Let $A$ be the matrix
+
+$$
+	A = [[ -1, -3, 3 ; -3, -2, 4 ; -3, -4, 6 ]].
+$$
+
+Find the eigenvectors and eigenvalues of $A$.
+
+We'll begin as usual by find the roots of the characteristic polynomial $\chi_A(\lambda)$. We have
+
+$$
+	\chi_A(\lambda) &= \det (A - \lambda I)
+
+	&= (-1 - \lambda)((-2 - \lambda)(6 - \lambda) + 16) + 3(-3(6 - \lambda) + 12) + 3(12 + 3(-2 - \lambda))
+	
+	&= -\lambda^3 + 3\lambda^2 - 4.
+$$
+
+Cubics are hard to factor, and unless there's an easy factor of $\lambda = 0$, we may as well just ask a computer. This one factors as
+
+$$
+	\chi_A(\lambda) &= -(\lambda + 1)(\lambda - 2)^2,
+$$
+
+so either $\lambda = -1$ or $\lambda = 2$. For the first possibility, we have
+
+$$
+	[[ 0, -3, 3 | 0 ; -3, -1, 4 | 0 ; -3, -4, 7 | 0 ]] & 
+
+	[[ 0, -3, 3 | 0 ; -3, -1, 4 | 0 ; 0, -3, 3 | 0 ]] & \quad \vec{r_3} \me \vec{r_2}
+
+	[[ 0, -3, 3 | 0 ; -3, -1, 4 | 0 ; 0, 0, 0 | 0 ]] & \quad \vec{r_3} \me \vec{r_1}
+
+	[[ 0, 1, -1 | 0 ; -3, -1, 4 | 0 ; 0, 0, 0 | 0 ]] & \quad \vec{r_1} \te -\frac{1}{3}
+
+	[[ 0, 1, -1 | 0 ; -3, 0, 3 | 0 ; 0, 0, 0 | 0 ]] & \quad \vec{r_2} \pe \vec{r_1}
+
+	[[ 0, 1, -1 | 0 ; 1, 0, -1 | 0 ; 0, 0, 0 | 0 ]] & \quad \vec{r_2} \te -\frac{1}{3}
+$$
+
+and so a solution is
+
+$$
+	\vec{v_1} = [[ 1 ; 1 ; 1 ]].
+$$
+
+Let's take a look at the other eigenvalue:
+
+$$
+	[[ -3, -3, 3 | 0 ; -3, -4, 4 | 0 ; -3, -4, 4 | 0 ]] & 
+
+	[[ -3, -3, 3 | 0 ; -3, -4, 4 | 0 ; 0, 0, 0 | 0 ]] & \quad \vec{r_3} \me \vec{r_2}
+
+	[[ -3, -3, 3 | 0 ; 0, -1, 1 | 0 ; 0, 0, 0 | 0 ]] & \quad \vec{r_2} \me \vec{r_1}
+
+	[[ 1, 1, -1 | 0 ; 0, 1, -1 | 0 ; 0, 0, 0 | 0 ]] & \quad :: \vec{r_1} \te -\frac{1}{3} ; \vec{r_2} \te -1 ::
+
+	[[ 1, 0, 0 | 0 ; 0, 1, -1 | 0 ; 0, 0, 0 | 0 ]] & \quad \vec{r_1} \me \vec{r_2}
+$$
+
+Our solution here is
+
+$$
+	\vec{v_2} = [[ 0 ; 1 ; 1 ]].
+$$
+
+There are only two eigenvectors for $A$, and 
+
+
+
+### nav-buttons

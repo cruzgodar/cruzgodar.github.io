@@ -89,7 +89,7 @@ Neither of these is a fixed point, but they're the next best thing. If we want t
 
 ###
 
-*Eigen* is German for *characteristic* (and *strange*), and refers to the way these objects are intrinsic to the matrix they come from. Eigenvectors and eigenvalues are defined only for square matrices, since if $A$ isn't square, its outputs have different lengths than its inputs, so there's no hope of the two being multiples of one another. We also exclude the zero vector since $A\vec{0} = \vec{0}$ no matter what $A$ is, and the eigenvalue wouldn't even be defined.
+*Eigen* is German for *characteristic* (as well as *strange*), and refers to the way these objects are intrinsic to the matrix they come from. Eigenvectors and eigenvalues are defined only for square matrices, since if $A$ isn't square, its outputs have different lengths than its inputs, so there's no hope of the two being multiples of one another. We also exclude the zero vector since $A\vec{0} = \vec{0}$ no matter what $A$ is, and the eigenvalue wouldn't even be defined.
 
 So --- how can we find the eigenvectors and eigenvalues of a matrix from scratch? We can rewrite the equation $A\vec{v} = \lambda \vec{v}$ as $A\vec{v} - \lambda \vec{v} = \vec{0}$, and to express the left side as a single linear map acting on $\vec{v}$, we can write it as $(A - \lambda I)\vec{v} = \vec{0}$. If we knew $\lambda$, we could solve for $\vec{v}$ by row reduction, we usually won't know the eigenvalues ahead of time. To that end, let's start by finding all the possible values for $\lambda$. If $(A - \lambda I)\vec{v} = \vec{0}$, then $\vec{v} \in \ker (A - \lambda I)$, which means $A - \lambda I$ isn't one-to-one. An equivalent condition is that $\det(A - \lambda I) = 0$, and that's an equation we can solve. Since the determinant is just a complicated series of multiplications and additions, the result will be a polynomial in $\lambda$, which we call the **characteristic polynomial** of $A$ and denote $\chi_A(\lambda)$. Once we solve $\chi_A(\lambda) = 0$ for the eigenvalues of $A$, we can then plug each into $(A - \lambda I)\vec{v} = \vec{0}$ in turn to find the corresponding eigenvectors.
 
@@ -157,7 +157,37 @@ So --- how can we find the eigenvectors and eigenvalues of a matrix from scratch
 	
 ###
 
-As we mentioned before, we'd ideally like a *basis* of eigenvectors for a matrix. The characteristic polynomial $\chi_A(\lambda)$ of an $n \times n$ matrix is always degree-$n$, since there's exactly one term in the determinant expansion that involves multiplying together every diagonal entry of $A - \lambda I$, each of which is of the form $a_{ii} - \lambda$. That means that we'll at least have $n$ eigenvalues $\lambda$, but that number is counted with multiplicity --- the eigenvalues could be repeated or even complex numbers. We'll dig more into those possibilities in future sections, but for now, we can at least verify that when all the eigenvalues are distinct, we get the basis of eigenvectors we're looking for.
+There's an important fact relating eigenvalues and determinants that we should take the opportunity to write down. Since the eigenvalues $\lambda_1, ..., \lambda_n$ of an $n \times n$ matrix $A$ are just roots of its characteristic polynomial $\chi_A(\lambda)$, we can write that polynomial as
+
+$$
+	\chi_A(\lambda) = (\lambda_1 - \lambda)(\lambda_2 - \lambda) \cdots (\lambda_n - \lambda).
+$$
+
+On the other hand, $\chi_A(\lambda) = \det(A - \lambda I)$. If we set $\lambda = 0$ on both sides, we find that
+
+$$
+	\lambda_1 \lambda_2 \cdots \lambda_n = \det A.
+$$
+
+In other words,
+
+### thm eigenvalues and the determinant
+
+	Let $A$ be an $n \times n$ matrix. Then $\det A$ is the product of the eigenvalues of $A$.
+
+###
+
+An immediate corollary is that $A$ is invertible exactly if no eigenvalue of $A$ is zero. This description makes the volume-scaling interpretation of the determinant quite a bit more clear: for example, the matrix
+
+$$
+	A = [[ 4, -2 ; 1, 1 ]]
+$$
+
+has eigenvectors $\vec{v_1} = [[ 1 ; 1 ]]$ and $\vec{v_2} = [[ 2 ; 1 ]]$, with corresponding eigenvalues $\lambda_1 = 3$ and $\lambda_2 = 2$. Using these vectors and their images as sides of parallelograms shows exactly how $A$ scales area: the purple and blue vectors are $\vec{v_1}$ and $\vec{v_2}$, and the red and green ones are $A\vec{v_1} = 3\vec{v_1}$ and $A\vec{v_2} = 2\vec{v_2}$, respectively.
+
+### desmos area-scaling
+
+As is becoming increasingly clear, we'd always like a *basis* of eigenvectors for a matrix. The characteristic polynomial $\chi_A(\lambda)$ of an $n \times n$ matrix is always of degree $n$, since there's exactly one term in the determinant expansion that involves multiplying together every diagonal entry of $A - \lambda I$, each of which is of the form $a_{ii} - \lambda$. That means that we'll at least have $n$ eigenvalues $\lambda$, but that number is counted with multiplicity --- the eigenvalues could be repeated or even complex numbers. We'll dig more into those possibilities in future sections, but for now, we can at least verify that when all the eigenvalues are distinct, we get the basis of eigenvectors we're looking for.
 
 ### prop "distinct eigenvalues guarantee a basis of eigenvectors"
 
@@ -304,37 +334,5 @@ One way to quickly put these ideas to use is with *dynamical systems*, a fancy t
 	Solutions A and B are mixed in a chemical reaction. Every minute, 25% of the mass of solution A is converted to solution B, and 40% of the mass of solution B is converted back to A. If there are initially 10 grams of solution A and 25 of solution B, how much will there be in the long run?
 
 ###
-
-
-
-## Diagonalization
-
-Suppose we have an $n \times n$ matrix $A$ whose eigenvectors $\{\vec{v_1}, ..., \vec{v_n}\}$ form a basis and have corresponding eigenvalues $\lambda_1, ..., \lambda_n$. As we've seen in the last example, it's most convenient to deal with $A$ when we're using this basis. If $B$ is the matrix with columns $\vec{v_i}$, then $B^{-1}AB$ acts by converting a vector in the basis $\{\vec{v_1}, ..., \vec{v_n}\}$ to the standard basis, runs $A$ on it, and then converts the output back to $\{\vec{v_1}, ..., \vec{v_n}\}$. Specifically,
-
-$$
-	B^{-1}AB\vec{e_i} &= BA\vec{v_i}
-
-	&= B^{-1}\lambda_i \vec{v_i}
-
-	&= \lambda_i\vec{e_i},
-$$
-
-so the total matrix is
-
-$$
-	B^{-1}AB = [[ \lambda_1, 0, \cdots, 0 ; 0, \lambda_2, \cdots, 0 ; \vdots, \vdots, \ddots, \vdots ; 0, 0, \cdots, \lambda_n ]].
-$$
-
-That matrix is what's called **diagonal**: only its diagonal entries are nonzero. Calling it $D$, we've expressed $A$ as $A = BDB^{-1}$. This puts the ideas of the previous section into a more symbolic form: the reason why this makes $A^{100}$ easier to compute is that
-
-$$
-	A^{100} &= \left( BDB^{-1} \right)^{100}
-
-	&= BDB^{-1} BDB^{-1} \cdots BDB^{-1}
-
-	&= BD^{100}B^{-1},
-$$
-
-and since $D$ is diagonal, $D^{100}$ is just $D$ with each entry raised to the 100th power. The process of expressing $A$ in the form $BDB^{-1}$ is called **diagonalizing** $A$, and it's possible exactly when $B$ is an invertible matrix --- that is, when the eigenvectors of $A$ are linearly independent. We know that's the case when the eigenvalues are all distinct, but when that's not the case --- when some eigenvalues are repeated --- we'll need to do some more work to know if $A$ can be diagonalized. In the next section, we'll begin to examine repeated eigenvalues, as well as complex ones, and their impact on the eigenvectors.
 
 ### nav-buttons

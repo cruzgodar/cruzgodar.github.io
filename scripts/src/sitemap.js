@@ -677,7 +677,8 @@ export const sitemap =
 		"children":
 		[
 			"/teaching/uo/342/notes/0-linear-algebra-1-review/",
-			"/teaching/uo/342/notes/1-eigenvectors-and-eigenvalues/"
+			"/teaching/uo/342/notes/1-eigenvectors-and-eigenvalues/",
+			"/teaching/uo/342/notes/2-diagonalization/"
 		]
 	},
 		
@@ -703,6 +704,15 @@ export const sitemap =
 		"customScript": true,
 
 		"customStyle": true
+	},
+	
+	"/teaching/uo/342/notes/2-diagonalization/":
+	{
+		"title": "Section 2: Diagonalization",
+		
+		"parent": "/teaching/uo/342/",
+		
+		"children": []
 	},
 	
 	"/teaching/uo/341/":
