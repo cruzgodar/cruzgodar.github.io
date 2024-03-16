@@ -171,7 +171,7 @@ $$
 
 In other words,
 
-### thm eigenvalues and the determinant
+### thm "eigenvalues and the determinant"
 
 	Let $A$ be an $n \times n$ matrix. Then $\det A$ is the product of the eigenvalues of $A$.
 
