@@ -532,7 +532,12 @@ export class Wilson
 		//Gets WebGL started for the canvas.
 		initWebglHybrid()
 		{
-			this.parent.gl = this.parent.canvas.getContext("webgl2");
+			this.parent.gl = this.parent.canvas.getContext("webgl");
+
+			if ("drawingBufferColorSpace" in this.parent.gl)
+			{
+				this.parent.gl.drawingBufferColorSpace = "display-p3";
+			}
 
 			const vertexShaderSource = `
 				attribute vec3 position;
@@ -642,6 +647,11 @@ export class Wilson
 		loadNewShader(fragShaderSource)
 		{
 			this.parent.gl = this.parent.canvas.getContext("webgl");
+
+			if ("drawingBufferColorSpace" in this.parent.gl)
+			{
+				this.parent.gl.drawingBufferColorSpace = "display-p3";
+			}
 
 			const vertexShaderSource = `
 				attribute vec3 position;
