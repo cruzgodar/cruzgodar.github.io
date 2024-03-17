@@ -52,7 +52,7 @@ $$
 	&= -\lambda^3 + 3\lambda^2 - 4.
 $$
 
-Cubics are hard to factor, and unless there's an easy factor of $\lambda = 0$, we may as well just ask a computer. This one factors as
+Cubics are hard to factor, and unless there's an easy root of $\lambda = 0$, we may as well just ask a computer. This one factors as
 
 $$
 	\chi_A(\lambda) &= -(\lambda + 1)(\lambda - 2)^2,
@@ -100,7 +100,95 @@ $$
 	\vec{v_2} = [[ 0 ; 1 ; 1 ]].
 $$
 
-There are only two eigenvectors for $A$, and 
+There are only two eigenvectors for $A$, and so $A$ isn't diagonalizable. So what went wrong? The repeated eigenvalue of $\lambda = 2$ feels like it might be the culprit: since it appeared as a root of the characteristic polynomial with multiplicity 2, we'd expect there to be two linearly independent eigenvectors corresponding to it. Let's dig into that a little more and see if we can find exactly where our expectation deviates from reality.
+
+Suppose $\vec{v_1}, ..., \vec{v_k}$ are all the eigenvectors of an $n \times n$ matrix $A$ with the eigenvalue $\lambda_1$. Then we can form a basis for $#R#^n$ by extending $\{ \vec{v_1}, ..., \vec{v_k} \}$ to
+
+$$
+	\{ \vec{v_1}, ..., \vec{v_k}, \vec{v_{k+1}}, ..., \vec{v_n} \}.
+$$
+
+If $B$ is the matrix with these $\vec{v_i}$ as columns (i.e. the change-of-basis matrix from this basis to the standard one), then
+
+$$
+	A = B [[ \lambda_1 I | C_1 ; \hline 0, C_2 ]] B^{-1}.
+$$
+
+This is a matrix written in *block* form: in the top left is a $k \times k$ block with $\lambda_1$ down the diagonal, in the bottom right is an $(n - k) \times (n - k)$ block called $C_2$ with arbitrary entries, and similarly for the other two blocks. What's important is that the bottom-left block is all zeros, since $A\vec{v_i} = \lambda_1\vec{v_i}$ for all $i$ with $1 \leq i \leq k$. If we take the characteristic polynomial of both sides, we find
+
+$$
+	\chi_A(\lambda) &= \det \left( B [[ \lambda_1 I | C_1 ; \hline 0, C_2 ]] B^{-1} - \lambda I \right)
+
+	&= \det \left( B [[ \lambda_1 I | C_1 ; \hline 0, C_2 ]] B^{-1} - \lambda (BIB^{-1}) \right)
+
+	&= \det \left( B \left( [[ \lambda_1 I | C_1 ; \hline 0, C_2 ]] - \lambda I \right) B^{-1} \right)
+
+	&= \det B \det \left( [[ \lambda_1 I | C_1 ; \hline 0, C_2 ]] - \lambda I \right) \det B^{-1}
+
+	&= \det \left( [[ \lambda_1 I | C_1 ; \hline 0, C_2 ]] - \lambda I \right).
+
+	&= (\lambda_1 - \lambda)^k \chi_{C_2}(\lambda).
+$$
+
+So, what has all this work told us? If a matrix has at least $k$ linearly independent eigenvectors with eigenvalue $\lambda_1$, then $\lambda_1$ appears as a root of the characteristic polynomial $\chi_A(\lambda)$ with multiplicity *at least* $k$, but possibly more. Let's give these two multiplicities names to properly distinguish them.
+
+### def "algebraic and geometric multiplicity"
+
+	Let $A$ be an $n \times n$ matrix. The **algebraic multiplicity** of an eigenvalue $\lambda_i$ of $A$ is the power of the factor $(\lambda_i - \lambda)$ in $\chi_A(\lambda)$. The **eigenspace** $E_i$ corresponding to $\lambda_i$ is the subspace of $#R#^n$ of eigenvectors $\vec{v}$ with eigenvalue $\lambda_i$, and the **geometric multiplicity** of $\lambda_i$ is $\dim E_i$.
+
+	The sum of the algebraic multiplicities of the eigenvalues of $A$ is always equal to $n$ (since $\deg \chi_A(\lambda) = n$), but the sum of the geometric multiplicities is equal to $n$ only if $A$ is diagonalizable (and vice versa). Moreover, the geometric multiplicity of a $\lambda_i$ is at least 1 and no more than its algebraic multiplicity.
+
+###
+
+### exc "eigenspaces"
+
+	Let $A$ be an $n \times n$ matrix and let $\lambda_1$ be an eigenvalue of $A$. Show that the eigenspace $E_1$ is actually a subspace of $#R#^n$.
+
+###
+
+### ex "algebraic and geometric multiplicity"
+	
+	Consider the matrices
+
+	$$
+		A_1 = [[ 3, 0, 0 ; 0, 5, 0 ; 0, 0, 5 ]], \quad A_2 = [[ 3, 0, 0 ; 0, 5, 1 ; 0, 0, 5 ]].
+	$$
+
+	Both have characteristic polynomials of $(3 - \lambda)(5 - \lambda)^2$, so their eigenvalues are $\lambda_1 = 3$ and $\lambda_2 = 5$, with algebraic multiplicities 1 and 2, respectively. The previous definition tells us that the geometric multiplicity of $\lambda_1$ should be 1 for both $A_1$ and $A_2$, but that the geometric multiplicity of $\lambda_2$ will either be 1 or 2. Solving for the eigenvectors of $A_1$, we have
+
+	$$
+		[[ A_1 - 3I | \vec{0} ]] &= [[ 0, 0, 0 | 0 ; 0, 2, 0 | 0 ; 0, 0, 2 | 0 ]]
+
+		[[ A_1 - 5I | \vec{0} ]] &= [[ -2, 0, 0 | 0 ; 0, 0, 0 | 0 ; 0, 0, 0 | 0 ]],
+	$$
+
+	so the eigenspaces $E_1$ and $E_2$ are
+
+	$$
+		E_1 &= \span\left\{ [[ 1 ; 0 ; 0 ]] \right\}
+
+		E_2 &= \span\left\{ [[ 0 ; 1 ; 0 ]], [[ 0 ; 0 ; 1 ]] \right\},
+	$$
+
+	meaning the geometric multiplicities of both $\lambda_1$ and $\lambda_2$ are equal to their algebraic multiplicities. That means $A_1$ is diagonalizable, which is pretty unsurprising since it's already diagonal. In contrast, $A_2$ fails to be diagonalizable:
+
+	$$
+		[[ A_2 - 3I | \vec{0} ]] &= [[ 0, 0, 0 | 0 ; 0, 2, 1 | 0 ; 0, 0, 2 | 0 ]]
+
+		[[ A_2 - 5I | \vec{0} ]] &= [[ -2, 0, 0 | 0 ; 0, 0, 1 | 0 ; 0, 0, 0 | 0 ]],
+	$$
+
+	so the eigenspaces are
+
+	$$
+		E_1 &= \span\left\{ [[ 1 ; 0 ; 0 ]] \right\}
+
+		E_2 &= \span\left\{ [[ 0 ; 1 ; 0 ]] \right\},
+	$$
+
+	so both eigenvalues have geometric multiplicities of 1. Later in the course, we'll develop a sense in $A_2$ is "almost" diagonal, or at least the closest we can get, but for now, it's a black-and-white distinction.
+
+###
 
 
 
