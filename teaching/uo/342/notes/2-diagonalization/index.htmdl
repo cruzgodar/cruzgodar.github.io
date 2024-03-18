@@ -26,81 +26,85 @@ $$
 	&= BD^{100}B^{-1},
 $$
 
-and since $D$ is diagonal, $D^{100}$ is just $D$ with each entry raised to the 100th power. The process of expressing $A$ in the form $BDB^{-1}$ is called **diagonalizing** $A$, and it's possible exactly when $B$ is an invertible matrix --- that is, when the eigenvectors of $A$ are linearly independent. We know that's the case when the eigenvalues are all distinct, but when that's not the case --- when some eigenvalues are repeated --- we'll need to do some more work.
+and since $D$ is diagonal, $D^{100}$ is just $D$ with each entry raised to the 100th power. The process of expressing $A$ in the form $BDB^{-1}$ is called **diagonalizing** $A$, and it's possible exactly when $B$ is an invertible matrix --- that is, when the eigenvectors of $A$ are linearly independent. We know that's the case when the eigenvalues are all distinct, but when some eigenvalues are repeated, we'll need to do some more work.
 
 
 
 ## Repeated Eigenvalues and Eigenspaces
 
-Having $n$ distinct eigenvalues might be a sufficient condition for a matrix to be diagonalizable, but we know it can't be necessary: the $2 \times 2$ identity matrix has the single eigenvalue of $1$ repeated twice, and it's definitely diagonalizable since it's already diagonal. On the other hand, there are matrices where the diagonalization process breaks down because of repeated eigenvalues. Let's take a look at one as a case study to see where things go wrong.
+Having $n$ distinct eigenvalues might be a sufficient condition for a matrix to be diagonalizable, but we know it can't be necessary: the $2 \times 2$ identity matrix has the single eigenvalue of $1$ repeated twice, and it's definitely diagonalizable, since it's already diagonal. On the other hand, there are matrices where the diagonalization process breaks down because of repeated eigenvalues. Let's take a look at one as a case study to see where things go wrong.
 
-Let $A$ be the matrix
+### ex "repeated eigenvalues"
 
-$$
-	A = [[ -1, -3, 3 ; -3, -2, 4 ; -3, -4, 6 ]].
-$$
+	Let $A$ be the matrix
 
-Find the eigenvectors and eigenvalues of $A$.
+	$$
+		A = [[ -1, -3, 3 ; -3, -2, 4 ; -3, -4, 6 ]].
+	$$
 
-We'll begin as usual by find the roots of the characteristic polynomial $\chi_A(\lambda)$. We have
+	Find the eigenvectors and eigenvalues of $A$.
 
-$$
-	\chi_A(\lambda) &= \det (A - \lambda I)
+	We'll begin as usual by find the roots of the characteristic polynomial $\chi_A(\lambda)$. We have
 
-	&= (-1 - \lambda)((-2 - \lambda)(6 - \lambda) + 16) + 3(-3(6 - \lambda) + 12) + 3(12 + 3(-2 - \lambda))
-	
-	&= -\lambda^3 + 3\lambda^2 - 4.
-$$
+	$$
+		\chi_A(\lambda) &= \det (A - \lambda I)
 
-Cubics are hard to factor, and unless there's an easy root of $\lambda = 0$, we may as well just ask a computer. This one factors as
+		&= (-1 - \lambda)((-2 - \lambda)(6 - \lambda) + 16) + 3(-3(6 - \lambda) + 12) + 3(12 + 3(-2 - \lambda))
+		
+		&= -\lambda^3 + 3\lambda^2 - 4.
+	$$
 
-$$
-	\chi_A(\lambda) &= -(\lambda + 1)(\lambda - 2)^2,
-$$
+	Cubics are hard to factor, and unless there's an easy root of $\lambda = 0$, we may as well just ask a computer. This one factors as
 
-so either $\lambda = -1$ or $\lambda = 2$. For the first possibility, we have
+	$$
+		\chi_A(\lambda) &= -(\lambda + 1)(\lambda - 2)^2,
+	$$
 
-$$
-	[[ 0, -3, 3 | 0 ; -3, -1, 4 | 0 ; -3, -4, 7 | 0 ]] & 
+	so either $\lambda = -1$ or $\lambda = 2$. For the first possibility, we have
 
-	[[ 0, -3, 3 | 0 ; -3, -1, 4 | 0 ; 0, -3, 3 | 0 ]] & \quad \vec{r_3} \me \vec{r_2}
+	$$
+		[[ 0, -3, 3 | 0 ; -3, -1, 4 | 0 ; -3, -4, 7 | 0 ]] & 
 
-	[[ 0, -3, 3 | 0 ; -3, -1, 4 | 0 ; 0, 0, 0 | 0 ]] & \quad \vec{r_3} \me \vec{r_1}
+		[[ 0, -3, 3 | 0 ; -3, -1, 4 | 0 ; 0, -3, 3 | 0 ]] & \quad \vec{r_3} \me \vec{r_2}
 
-	[[ 0, 1, -1 | 0 ; -3, -1, 4 | 0 ; 0, 0, 0 | 0 ]] & \quad \vec{r_1} \te -\frac{1}{3}
+		[[ 0, -3, 3 | 0 ; -3, -1, 4 | 0 ; 0, 0, 0 | 0 ]] & \quad \vec{r_3} \me \vec{r_1}
 
-	[[ 0, 1, -1 | 0 ; -3, 0, 3 | 0 ; 0, 0, 0 | 0 ]] & \quad \vec{r_2} \pe \vec{r_1}
+		[[ 0, 1, -1 | 0 ; -3, -1, 4 | 0 ; 0, 0, 0 | 0 ]] & \quad \vec{r_1} \te -\frac{1}{3}
 
-	[[ 0, 1, -1 | 0 ; 1, 0, -1 | 0 ; 0, 0, 0 | 0 ]] & \quad \vec{r_2} \te -\frac{1}{3}
-$$
+		[[ 0, 1, -1 | 0 ; -3, 0, 3 | 0 ; 0, 0, 0 | 0 ]] & \quad \vec{r_2} \pe \vec{r_1}
 
-and so a solution is
+		[[ 0, 1, -1 | 0 ; 1, 0, -1 | 0 ; 0, 0, 0 | 0 ]] & \quad \vec{r_2} \te -\frac{1}{3}
+	$$
 
-$$
-	\vec{v_1} = [[ 1 ; 1 ; 1 ]].
-$$
+	and so a solution is
 
-Let's take a look at the other eigenvalue:
+	$$
+		\vec{v_1} = [[ 1 ; 1 ; 1 ]].
+	$$
 
-$$
-	[[ -3, -3, 3 | 0 ; -3, -4, 4 | 0 ; -3, -4, 4 | 0 ]] & 
+	Let's take a look at the other eigenvalue:
 
-	[[ -3, -3, 3 | 0 ; -3, -4, 4 | 0 ; 0, 0, 0 | 0 ]] & \quad \vec{r_3} \me \vec{r_2}
+	$$
+		[[ -3, -3, 3 | 0 ; -3, -4, 4 | 0 ; -3, -4, 4 | 0 ]] & 
 
-	[[ -3, -3, 3 | 0 ; 0, -1, 1 | 0 ; 0, 0, 0 | 0 ]] & \quad \vec{r_2} \me \vec{r_1}
+		[[ -3, -3, 3 | 0 ; -3, -4, 4 | 0 ; 0, 0, 0 | 0 ]] & \quad \vec{r_3} \me \vec{r_2}
 
-	[[ 1, 1, -1 | 0 ; 0, 1, -1 | 0 ; 0, 0, 0 | 0 ]] & \quad :: \vec{r_1} \te -\frac{1}{3} ; \vec{r_2} \te -1 ::
+		[[ -3, -3, 3 | 0 ; 0, -1, 1 | 0 ; 0, 0, 0 | 0 ]] & \quad \vec{r_2} \me \vec{r_1}
 
-	[[ 1, 0, 0 | 0 ; 0, 1, -1 | 0 ; 0, 0, 0 | 0 ]] & \quad \vec{r_1} \me \vec{r_2}
-$$
+		[[ 1, 1, -1 | 0 ; 0, 1, -1 | 0 ; 0, 0, 0 | 0 ]] & \quad :: \vec{r_1} \te -\frac{1}{3} ; \vec{r_2} \te -1 ::
 
-Our solution here is
+		[[ 1, 0, 0 | 0 ; 0, 1, -1 | 0 ; 0, 0, 0 | 0 ]] & \quad \vec{r_1} \me \vec{r_2}
+	$$
 
-$$
-	\vec{v_2} = [[ 0 ; 1 ; 1 ]].
-$$
+	Our solution here is
 
-There are only two eigenvectors for $A$, and so $A$ isn't diagonalizable. So what went wrong? The repeated eigenvalue of $\lambda = 2$ feels like it might be the culprit: since it appeared as a root of the characteristic polynomial with multiplicity 2, we'd expect there to be two linearly independent eigenvectors corresponding to it. Let's dig into that a little more and see if we can find exactly where our expectation deviates from reality.
+	$$
+		\vec{v_2} = [[ 0 ; 1 ; 1 ]].
+	$$
+
+###
+
+There are only two linearly independent eigenvectors for $A$, and so it's not diagonalizable. So what went wrong? The repeated eigenvalue of $\lambda = 2$ feels like it might be the culprit: since it appeared as a root of the characteristic polynomial with multiplicity 2, we'd expect there to be two linearly independent eigenvectors corresponding to it. Let's dig into that a little more and see if we can find exactly where our expectation deviates from reality.
 
 Suppose $\vec{v_1}, ..., \vec{v_k}$ are all the eigenvectors of an $n \times n$ matrix $A$ with the eigenvalue $\lambda_1$. Then we can form a basis for $#R#^n$ by extending $\{ \vec{v_1}, ..., \vec{v_k} \}$ to
 
@@ -142,7 +146,7 @@ So, what has all this work told us? If a matrix has at least $k$ linearly indepe
 
 ### exc "eigenspaces"
 
-	Let $A$ be an $n \times n$ matrix and let $\lambda_1$ be an eigenvalue of $A$. Show that the eigenspace $E_1$ is actually a subspace of $#R#^n$.
+	Let $A$ be an $n \times n$ matrix and let $\lambda_i$ be an eigenvalue of $A$. Show that the eigenspace $E_i$ is actually a subspace of $#R#^n$.
 
 ###
 
@@ -186,7 +190,7 @@ So, what has all this work told us? If a matrix has at least $k$ linearly indepe
 		E_2 &= \span\left\{ [[ 0 ; 1 ; 0 ]] \right\},
 	$$
 
-	so both eigenvalues have geometric multiplicities of 1. Later on, we'll develop a sense in $A_2$ is "almost" diagonal, or at least the closest we can get, but for now, it's a black-and-white distinction.
+	and so both eigenvalues have geometric multiplicities of 1. Later on, we'll develop a sense in $A_2$ is "almost" diagonal, or at least the closest we can get, but for now, it's a black-and-white distinction.
 
 ###
 
@@ -200,7 +204,7 @@ $$
 	A = [[ 0, 1 ; -1, 0 ]]
 $$
 
-is $\chi_A(\lambda) = \lambda^2 + 1$, whose roots are $\pm i$ --- complex numbers. To properly understand diagonalization in every possible case, we'll sometimes need to deal with complex eigenvalues. As a quick refresher, defining $i = \sqrt{-1}$ produces a number system $#C#$ (the complex numbers), that's **algebraically closed**, meaning any polynomial in $#C#[x]$ has roots in $#C#$. Moreover, if a polynomial in $#R#[x]$ has complex roots, they come in conjugate pairs: if $a + bi$ is a root, then so is $a - bi$. In fact, this even extends to the eigenvectors.
+is $\chi_A(\lambda) = \lambda^2 + 1$, whose roots are $\pm i$ --- complex numbers. To fully understand diagonalization in every possible case, we'll sometimes need to deal with complex eigenvalues. As a quick refresher, defining $i = \sqrt{-1}$ produces a number system $#C#$ (the complex numbers), that's **algebraically closed**, meaning any polynomial in $#C#[x]$ has roots in $#C#$. Moreover, if a polynomial in $#R#[x]$ has complex roots, they come in conjugate pairs: if $a + bi$ is a root, then so is $a - bi$. In fact, this even extends to the eigenvectors.
 
 ### prop "complex eigenvectors"
 
@@ -294,8 +298,44 @@ Although it's a little frustrating that we'll have to work with complex numbers 
 	Since the remaining two eigenvalues are a conjugate pair, we only have to find an eigenvector for one of them, and then the other will be its conjugate. With $\lambda_2 = 6 + 3i$, we have
 
 	$$
-		[[ -3 - 3i, 0, -3 | 0 ; -2, -1 - 3i, 2 | 0 ; -4, -11 - 3i, 4 | 0 ]] &
+		[[ -3 - 3i, 0, -3 | 0 ; -2, -1 - 3i, 2 | 0 ; -4, -5, -2 - 3i | 0 ]] &
+
+		[[ 1 + i, 0, 1 | 0 ; -2, -1 - 3i, 2 | 0 ; -4, -5, -2 - 3i | 0 ]] & \quad \vec{r_1} \te -\frac{1}{3}
+
+		[[ 2, 0, 1 - i | 0 ; -2, -1 - 3i, 2 | 0 ; -4, -5, -2 - 3i | 0 ]] & \quad \vec{r_1} \te 1 - i
+
+		[[ 2, 0, 1 - i | 0 ; 0, -1 - 3i, 3 - i | 0 ; 0, -5, -5i | 0 ]] & \quad :: \vec{r_2} \pe \vec{r_1} ; \vec{r_3} \pe 2\vec{r_1} ::
+
+		[[ 2, 0, 1 - i | 0 ; 0, -1 - 3i, 3 - i | 0 ; 0, 1, i | 0 ]] & \quad \vec{r_3} \te -\frac{1}{5}
+
+		[[ 2, 0, 1 - i | 0 ; 0, 1, i | 0 ; 0, -1 - 3i, 3 - i | 0 ]] & \quad \swap \vec{r_2}, \vec{r_3}
+
+		[[ 2, 0, 1 - i | 0 ; 0, 1, i | 0 ; 0, 0, 0 | 0 ]] & \quad \vec{r_3} \pe (1 + 3i)\vec{r_2}
+
+		\vec{v_2} = [[ -1 + i ; -2i ; 2 ]] = [[ -1 ; 0 ; 2 ]] + [[ 1 ; -2 ; 0 ]]i.
 	$$
+
+	The final eigenvector $\vec{v_3}$ corresponding to $\lambda_3$ is then
+
+	$$
+		\vec{v_3} = [[ -1 ; 0 ; 2 ]] - [[ 1 ; -2 ; 0 ]]i.
+	$$
+
+	The eigenvalues *and* eigenvectors being complex might seem like there's no hope of diagonalizing the matrix at all, but we can actually get shockingly close. Let's look at the action of $A$ not on $\vec{v_2}$ and $\vec{v_3}$, but their real and imaginary parts separately:
+
+	$$
+		A [[ -1 ; 0 ; 2 ]] &= [[ -9 ; 6 ; 12 ]] = 6 [[ -1 ; 0 ; 2 ]] - 3 [[ 1 ; -2 ; 0 ]]
+
+		A [[ 1 ; -2 ; 0 ]] &= [[ 3 ; -12 ; 6 ]] = 3 [[ -1 ; 0 ; 2 ]] + 6 [[ 1 ; -2 ; 0 ]].
+	$$
+
+	We've come very close to diagonalizing $A$: while the output of these two vectors aren't scalar multiples of themselves like eigenvectors, they're linear combinations of one another --- so instead of a perfectly diagonal matrix, we'll have a $2 \times 2$ block in the lower right.
+
+	$$
+		A = [[ 1, -1, 1 ; 0, 0, -2 ; 1, 2, 0 ]] [[ 0, 0, 0 ; 0, 6, 3 ; 0, -3, 6 ]] [[ 1, -1, 1 ; 0, 0, -2 ; 1, 2, 0 ]]^{-1}.
+	$$
+
+	How are we supposed to interpret this geometrically? When all the eigenvalues and eigenvectors of a diagonalizable matrix were real, 
 
 ###
 

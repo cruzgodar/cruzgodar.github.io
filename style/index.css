@@ -262,10 +262,10 @@ img
 
 mjx-container
 {
-	overflow-x: auto;
 	overflow-y: hidden;
 	margin: 0 !important;
 	pointer-events: none;
+	width: fit-content;
 }
 
 .tex-holder
@@ -275,6 +275,11 @@ mjx-container
 	box-shadow: 0px 0px 0px 0px rgba(0, 0, 0, .2);
 	
 	max-width: calc(100% - 16px);
+}
+
+.tex-holder:not(.inline-math)
+{
+	overflow-x: auto;
 }
 
 .tex-holder.hover

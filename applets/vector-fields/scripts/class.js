@@ -111,12 +111,13 @@ export class VectorField extends AnimationFrameApplet
 			varying vec2 uv;
 			
 			uniform sampler2D uTexture;
+			uniform float dimAmount;
 			
 			void main(void)
 			{
 				vec3 v = texture2D(uTexture, (uv + vec2(1.0, 1.0)) / 2.0).xyz;
 				
-				gl_FragColor = vec4(v.x - 1.0 / 255.0, v.y, v.z, 1.0);
+				gl_FragColor = vec4(v.x - dimAmount / 255.0, v.y, v.z, 1.0);
 			}
 		`;
 
@@ -186,6 +187,8 @@ export class VectorField extends AnimationFrameApplet
 		};
 
 		this.wilsonDim = new Wilson(this.dimCanvas, optionsDim);
+
+		this.wilsonDim.render.initUniforms(["dimAmount"], 0);
 
 
 
@@ -594,6 +597,13 @@ export class VectorField extends AnimationFrameApplet
 					this.dt * timeElapsed / 6.944
 				);
 			}
+
+			this.wilsonDim.gl.useProgram(this.wilsonDim.render.shaderPrograms[0]);
+
+			this.wilsonDim.gl.uniform1f(
+				this.wilsonDim.uniforms["dimAmount"][0],
+				timeElapsed / 6.944
+			);
 
 
 
