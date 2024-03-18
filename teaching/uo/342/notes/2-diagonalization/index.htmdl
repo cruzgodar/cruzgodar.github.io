@@ -335,10 +335,46 @@ Although it's a little frustrating that we'll have to work with complex numbers 
 		A = [[ 1, -1, 1 ; 0, 0, -2 ; 1, 2, 0 ]] [[ 0, 0, 0 ; 0, 6, 3 ; 0, -3, 6 ]] [[ 1, -1, 1 ; 0, 0, -2 ; 1, 2, 0 ]]^{-1}.
 	$$
 
-	How are we supposed to interpret this geometrically? When all the eigenvalues and eigenvectors of a diagonalizable matrix were real, 
+	How are we supposed to interpret this geometrically? When all the eigenvalues and eigenvectors of a diagonalizable matrix were real, the eigenvectors were the axes along which the matrix exclusively scaled, but now there's no real eigenvectors in the $yz$-plane. Instead, let's focus in on the matrix
+
+	$$
+		[[ 6, 3 ; -3, 6 ]].
+	$$
+
+	The entries might look familiar: they follow the same pattern as
+
+	$$
+		[[ \cos(\theta), -\sin(\theta) ; \sin(\theta), \cos(\theta) ]],
+	$$
+
+	which is the matrix that acts on $#R#^2$ by rotating counterclockwise by $\theta$. By factoring out a number from our matrix so that the rows have magnitude $1$, we can express our matrix as a constant times a rotation matrix:
+
+	$$
+		[[ 6, 3 ; -3, 6 ]] &= \sqrt{45} [[ \frac{6}{\sqrt{45}}, \frac{3}{\sqrt{45}} ; -\frac{3}{\sqrt{45}}, \frac{6}{\sqrt{45}} ]]
+
+		&\approx \sqrt{45} [[ \cos(-0.4636), \sin(-0.4636) ; -\sin(-0.4636), \cos(-0.4636) ]].
+	$$
+
+	So in total, this matrix scales its inputs by $\sqrt{45} \approx 6.71$ and rotates them by about $0.4636$ radians (about $22.6^\circ$) clockwise.
+
+	### desmos rotation-matrix
+
+	Here, the blue vector is the output of multiplying the purple one by this matrix.
 
 ###
 
+This is more than a motivating example: it holds in general.
 
+### thm "block diagonalization for complex eigenvalues"
+
+	Let $A$ be an $n \times n$ diagonalizable matrix with real entries, eigenvectors $\vec{v_1}, ..., \vec{v_n}$, and corresponding eigenvalues $\lambda_1, ..., \lambda_n$ (possibly repeated). Define $\vec{w_1}, ..., \vec{w_n}$ as follows: if $\lambda_i$ (and therefore $\vec{v_i}$) is real, then $\vec{w_i} = \vec{v_i}$. Otherwise, $\lambda_i = a + bi$, and another eigenvalue, say $\lambda_{i + 1}$, is $a - bi$. Moreover, the eigenvectors $\vec{v_i}$ and $\vec{v_{i + 1}}$ are conjugates. In that case, we define $\vec{w_i} = \operatorname{Re} \vec{v_i}$ and $\vec{w_{i + 1}} = \operatorname{Im} \vec{v_i}$ (i.e. the real and imaginary parts). Then $\{\vec{w_1}, ..., \vec{w_n}\}$ is a basis for $#R#^n$, and if $B$ is the matrix with $\vec{w_i}$ as its columns and $D$ is the nearly-diagonal matrix with entries of $\lambda_i$ for real $\lambda_i$ and $2 \times 2$ blocks
+
+	$$
+		[[ a, b ; -b, a ]]
+	$$
+
+	for any pair of complex eigenvalues $\lambda_i = a + bi$ and $\lambda_{i + 1} = a - bi$, then $A = BDB^{-1}$.
+
+###
 
 ### nav-buttons
