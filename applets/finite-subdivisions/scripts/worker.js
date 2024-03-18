@@ -63,8 +63,6 @@ async function drawOuterPolygon()
 			{
 				const rgb = HSVtoRGB((2 * j + 1) / (2 * numVertices), 1, 1);
 
-				const color = `rgb(${rgb[0]}, ${rgb[1]}, ${rgb[2]})`;
-
 				postMessage([
 					polygons[0][j][0],
 					polygons[0][j][1],
@@ -74,7 +72,7 @@ async function drawOuterPolygon()
 					polygons[0][j][1]
 						+ ((i + 1) / 120)
 							* (polygons[0][(j + 1) % numVertices][1] - polygons[0][j][1]),
-					color
+					rgb
 				]);
 			}
 
@@ -88,14 +86,12 @@ async function drawOuterPolygon()
 		{
 			const rgb = HSVtoRGB((2 * j + 1) / (2 * numVertices), 1, 1);
 
-			const color = `rgb(${rgb[0]}, ${rgb[1]}, ${rgb[2]})`;
-
 			postMessage([
 				polygons[0][j][0],
 				polygons[0][j][1],
 				polygons[0][(j + 1) % numVertices][0],
 				polygons[0][(j + 1) % numVertices][1],
-				color
+				rgb
 			]);
 		}
 	}
@@ -153,8 +149,6 @@ async function drawLines(newLines)
 			{
 				const rgb = HSVtoRGB(j / (newLines.length - 1), 1, 1);
 
-				const color = `rgb(${rgb[0]}, ${rgb[1]}, ${rgb[2]})`;
-
 				postMessage([
 					newLines[j][0][0],
 					newLines[j][0][1],
@@ -162,7 +156,7 @@ async function drawLines(newLines)
 						+ ((i + 1) / 120) * (newLines[j][1][0] - newLines[j][0][0]) + 1,
 					newLines[j][0][1]
 						+ ((i + 1) / 120) * (newLines[j][1][1] - newLines[j][0][1]),
-					color
+					rgb
 				]);
 			}
 
@@ -177,14 +171,12 @@ async function drawLines(newLines)
 		{
 			const rgb = HSVtoRGB(j / (newLines.length - 1), 1, 1);
 
-			const color = `rgb(${rgb[0]}, ${rgb[1]}, ${rgb[2]})`;
-
 			postMessage([
 				newLines[j][0][0],
 				newLines[j][0][1],
 				newLines[j][1][0],
 				newLines[j][1][1],
-				color
+				rgb
 			]);
 		}
 	}

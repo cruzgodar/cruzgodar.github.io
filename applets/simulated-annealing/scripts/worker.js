@@ -30,7 +30,7 @@ async function drawAnnealingGraph()
 	{
 		nodes[i] = [Math.floor(Math.random() * gridSize), Math.floor(Math.random() * gridSize)];
 
-		postMessage([0, nodes[i][1], nodes[i][0], 4, "rgb(255, 0, 0)"]);
+		postMessage([0, nodes[i][1], nodes[i][0], 4, [255, 0, 0]]);
 	}
 
 
@@ -51,7 +51,7 @@ async function drawAnnealingGraph()
 			nodes[i][0],
 			nodes[i + 1][1],
 			nodes[i + 1][0],
-			"rgb(255, 0, 0)"
+			[255, 0, 0]
 		]);
 	}
 
@@ -61,7 +61,7 @@ async function drawAnnealingGraph()
 		nodes[numNodes - 1][0],
 		nodes[0][1],
 		nodes[0][0],
-		"rgb(255, 0, 0)"
+		[255, 0, 0]
 	]);
 
 
@@ -242,15 +242,47 @@ async function drawLines()
 
 	for (let i = 0; i < numNodes; i++)
 	{
-		postMessage([0, nodes[i][1], nodes[i][0], 4, `rgb(255, ${255 * (initialTemperature - temperature) / initialTemperature}, ${255 * (initialTemperature - temperature) / initialTemperature})`]);
+		postMessage([
+			0,
+			nodes[i][1],
+			nodes[i][0],
+			4,
+			[
+				255,
+				255 * (initialTemperature - temperature) / initialTemperature,
+				255 * (initialTemperature - temperature) / initialTemperature
+			]
+		]);
 	}
 
 	for (let i = 0; i < numNodes - 1; i++)
 	{
-		postMessage([1, nodes[currentPath[i]][1], nodes[currentPath[i]][0], nodes[currentPath[i + 1]][1], nodes[currentPath[i + 1]][0], `rgb(255, ${255 * (initialTemperature - temperature) / initialTemperature}, ${255 * (initialTemperature - temperature) / initialTemperature})`]);
+		postMessage([
+			1,
+			nodes[currentPath[i]][1],
+			nodes[currentPath[i]][0],
+			nodes[currentPath[i + 1]][1],
+			nodes[currentPath[i + 1]][0],
+			[
+				255,
+				255 * (initialTemperature - temperature) / initialTemperature,
+				255 * (initialTemperature - temperature) / initialTemperature
+			]
+		]);
 	}
 
-	postMessage([1, nodes[currentPath[numNodes - 1]][1], nodes[currentPath[numNodes - 1]][0], nodes[currentPath[0]][1], nodes[currentPath[0]][0], `rgb(255, ${255 * (initialTemperature - temperature) / initialTemperature}, ${255 * (initialTemperature - temperature) / initialTemperature})`]);
+	postMessage([
+		1,
+		nodes[currentPath[numNodes - 1]][1],
+		nodes[currentPath[numNodes - 1]][0],
+		nodes[currentPath[0]][1],
+		nodes[currentPath[0]][0],
+		[
+			255,
+			255 * (initialTemperature - temperature) / initialTemperature,
+			255 * (initialTemperature - temperature) / initialTemperature
+		]
+	]);
 
 	await new Promise(resolve => setTimeout(resolve, 50));
 }

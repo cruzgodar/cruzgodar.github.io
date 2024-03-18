@@ -38,14 +38,14 @@ export function load()
 
 	const rowProbInput = new TextBox({
 		element: $("#row-prob-input"),
-		name: "Row Offset Chance",
+		name: "Row Chance",
 		value: 0.5,
 		onEnter: run,
 	});
 
 	const colProbInput = new TextBox({
 		element: $("#col-prob-input"),
-		name: "Column Offset Chance",
+		name: "Column Chance",
 		value: 0.5,
 		onEnter: run,
 	});

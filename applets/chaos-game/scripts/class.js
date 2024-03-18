@@ -16,7 +16,7 @@ export class ChaosGame extends Applet
 
 		const options =
 		{
-			renderer: "cpu",
+			renderer: "hybrid",
 
 			canvasWidth: this.resolution,
 			canvasHeight: this.resolution,
@@ -43,18 +43,9 @@ export class ChaosGame extends Applet
 
 		this.wilson.changeCanvasSize(this.resolution, this.resolution);
 
-		this.wilson.ctx.fillStyle = "rgb(0, 0, 0)";
-		this.wilson.ctx.fillRect(0, 0, this.resolution, this.resolution);
-
-
-
 		this.webWorker = addTemporaryWorker("/applets/chaos-game/scripts/worker.js");
 
-
-
 		this.webWorker.onmessage = (e) => this.wilson.render.drawFrame(e.data[0]);
-
-
 
 		this.webWorker.postMessage([this.numVertices, this.resolution]);
 	}

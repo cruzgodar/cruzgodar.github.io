@@ -1,5 +1,6 @@
 import { Applet } from "../../../scripts/applets/applet.js";
 import { buttonAnimationTime, changeOpacity } from "/scripts/src/animation.js";
+import { convertColor } from "/scripts/src/browser.js";
 import { Wilson } from "/scripts/wilson.js";
 
 export class DoublePendulumFractal extends Applet
@@ -192,9 +193,9 @@ export class DoublePendulumFractal extends Applet
 
 		this.wilsonPendulum.ctx.lineWidth = this.resolutionPendulum / 100;
 
-		this.wilsonPendulum.ctx.strokeStyle = "rgb(127, 0, 255)";
+		this.wilsonPendulum.ctx.strokeStyle = convertColor(127, 0, 255);
 
-		this.wilsonPendulum.ctx.fillStyle = "rgb(0, 0, 0)";
+		this.wilsonPendulum.ctx.fillStyle = convertColor(0, 0, 0);
 
 		this.wilsonPendulum.draggables.container.addEventListener("mouseleave", () =>
 		{
@@ -502,7 +503,7 @@ export class DoublePendulumFractal extends Applet
 
 		const rgb = this.wilsonPendulum.utils.hsvToRgb(hue, saturation, value);
 
-		this.wilsonPendulum.ctx.strokeStyle = `rgb(${rgb[0]}, ${rgb[1]}, ${rgb[2]})`;
+		this.wilsonPendulum.ctx.strokeStyle = convertColor(...rgb);
 
 
 

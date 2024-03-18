@@ -1,4 +1,5 @@
 import { Applet } from "../../../scripts/applets/applet.js";
+import { convertColor } from "/scripts/src/browser.js";
 import { addTemporaryWorker } from "/scripts/src/main.js";
 import { Wilson } from "/scripts/wilson.js";
 
@@ -47,7 +48,7 @@ export class StrangeAttractor extends Applet
 	}) {
 		this.wilson.changeCanvasSize(resolution, resolution);
 
-		this.wilson.ctx.fillStyle = "rgb(0, 0, 0)";
+		this.wilson.ctx.fillStyle = convertColor(0, 0, 0);
 		this.wilson.ctx.fillRect(0, 0, resolution, resolution);
 
 
@@ -83,7 +84,11 @@ export class StrangeAttractor extends Applet
 				const brightnessAdjust = this.image[resolution * pixels[i][0] + pixels[i][1]]
 					/ this.brightnessScale;
 
-				this.wilson.ctx.fillStyle = `rgb(${rgb[0] * brightnessAdjust}, ${rgb[1] * brightnessAdjust}, ${rgb[2] * brightnessAdjust})`;
+				this.wilson.ctx.fillStyle = convertColor(
+					rgb[0] * brightnessAdjust,
+					rgb[1] * brightnessAdjust,
+					rgb[2] * brightnessAdjust
+				);
 
 				this.wilson.ctx.fillRect(pixels[i][1], pixels[i][0], 1, 1);
 			}

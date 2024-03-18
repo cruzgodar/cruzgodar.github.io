@@ -1,4 +1,5 @@
 import { Applet } from "../../../scripts/applets/applet.js";
+import { convertColor } from "/scripts/src/browser.js";
 import { addTemporaryWorker } from "/scripts/src/main.js";
 import { Wilson } from "/scripts/wilson.js";
 
@@ -55,7 +56,7 @@ export class FiniteSubdivision extends Applet
 
 		this.wilson.changeCanvasSize(this.resolution, this.resolution);
 
-		this.wilson.ctx.fillStyle = "rgb(0, 0, 0)";
+		this.wilson.ctx.fillStyle = convertColor(0, 0, 0);
 		this.wilson.ctx.fillRect(0, 0, this.resolution, this.resolution);
 
 
@@ -70,7 +71,7 @@ export class FiniteSubdivision extends Applet
 
 		this.webWorker.onmessage = (e) =>
 		{
-			this.wilson.ctx.strokeStyle = e.data[4];
+			this.wilson.ctx.strokeStyle = convertColor(...e.data[4]);
 
 			this.wilson.ctx.beginPath();
 			this.wilson.ctx.moveTo(e.data[1], e.data[0]);

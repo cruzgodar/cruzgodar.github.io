@@ -1,4 +1,5 @@
 import { Applet } from "../../../scripts/applets/applet.js";
+import { convertColor } from "/scripts/src/browser.js";
 import { addTemporaryWorker } from "/scripts/src/main.js";
 import { Wilson } from "/scripts/wilson.js";
 
@@ -87,11 +88,11 @@ export class MagicCarpet extends Applet
 
 		else
 		{
-			this.wilson.ctx.fillStyle = "rgb(255, 255, 255)";
+			this.wilson.ctx.fillStyle = convertColor(255, 255, 255);
 			this.wilson.ctx.fillRect(0, 0, canvasSize, canvasSize);
 		}
 
-		this.wilson.ctx.fillStyle = "rgb(0, 0, 0)";
+		this.wilson.ctx.fillStyle = convertColor(0, 0, 0);
 
 
 
@@ -190,7 +191,7 @@ export class MagicCarpet extends Applet
 
 		else
 		{
-			this.wilson.ctx.fillStyle = "rgb(255, 255, 255)";
+			this.wilson.ctx.fillStyle = convertColor(255, 255, 255);
 			this.wilson.ctx.fillRect(0, 0, canvasSize, canvasSize);
 		}
 
@@ -216,7 +217,7 @@ export class MagicCarpet extends Applet
 
 		let rgb = this.wilson.utils.hsvToRgb(index / this.cages.length * 6 / 7, 1, 1);
 
-		this.wilson.ctx.fillStyle = `rgba(${rgb[0]}, ${rgb[1]}, ${rgb[2]}, ${rectanglesOnly ? .5 : .2})`;
+		this.wilson.ctx.fillStyle = convertColor(...rgb, rectanglesOnly ? .5 : .2);
 
 		const row = this.cages[index][0] * this.cellSize;
 		const col = this.cages[index][1] * this.cellSize;
@@ -229,7 +230,7 @@ export class MagicCarpet extends Applet
 
 		rgb = this.wilson.utils.hsvToRgb(index / this.cages.length * 6 / 7, 1, .9);
 
-		this.wilson.ctx.fillStyle = `rgba(${rgb[0]}, ${rgb[1]}, ${rgb[2]}, 1)`;
+		this.wilson.ctx.fillStyle = convertColor(...rgb);
 
 		const rowAdjust = this.cages[index][0] === 0 ? 0 : 5;
 		const colAdjust = this.cages[index][1] === 0 ? 0 : 5;

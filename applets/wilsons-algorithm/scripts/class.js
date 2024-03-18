@@ -1,4 +1,5 @@
 import { Applet } from "../../../scripts/applets/applet.js";
+import { convertColor } from "/scripts/src/browser.js";
 import { addTemporaryWorker } from "/scripts/src/main.js";
 import { Wilson } from "/scripts/wilson.js";
 
@@ -57,7 +58,7 @@ export class WilsonsAlgorithm extends Applet
 
 		this.wilson.changeCanvasSize(canvasDim * canvasScaleFactor, canvasDim * canvasScaleFactor);
 
-		this.wilson.ctx.fillStyle = "rgb(0, 0, 0)";
+		this.wilson.ctx.fillStyle = convertColor(0, 0, 0);
 		this.wilson.ctx.fillRect(
 			0,
 			0,
@@ -74,7 +75,7 @@ export class WilsonsAlgorithm extends Applet
 		this.webWorker.onmessage = e =>
 		{
 			clearTimeout(timeoutId);
-			this.wilson.ctx.fillStyle = e.data[4];
+			this.wilson.ctx.fillStyle = convertColor(...(e.data[4] ?? [255, 255, 255]));
 
 			this.wilson.ctx.fillRect(
 				e.data[0] * canvasScaleFactor,

@@ -1,5 +1,6 @@
 import { Applet } from "../../../scripts/applets/applet.js";
 import { changeOpacity, opacityAnimationTime } from "/scripts/src/animation.js";
+import { convertColor } from "/scripts/src/browser.js";
 import { addTemporaryWorker } from "/scripts/src/main.js";
 import { siteSettings } from "/scripts/src/settings.js";
 import { Wilson } from "/scripts/wilson.js";
@@ -114,9 +115,9 @@ export class CalcudokuGenerator extends Applet
 
 		if (printMode)
 		{
-			this.wilson.ctx.fillStyle = "rgb(255, 255, 255)";
+			this.wilson.ctx.fillStyle = convertColor(255, 255, 255);
 			this.wilson.ctx.fillRect(0, 0, canvasSize, canvasSize);
-			this.wilson.ctx.fillStyle = "rgb(0, 0, 0)";
+			this.wilson.ctx.fillStyle = convertColor(0, 0, 0);
 		}
 
 		else
@@ -125,12 +126,12 @@ export class CalcudokuGenerator extends Applet
 
 			if (siteSettings.darkTheme)
 			{
-				this.wilson.ctx.fillStyle = "rgb(192, 192, 192)";
+				this.wilson.ctx.fillStyle = convertColor(192, 192, 192);
 			}
 
 			else
 			{
-				this.wilson.ctx.fillStyle = "rgb(64, 64, 64)";
+				this.wilson.ctx.fillStyle = convertColor(64, 64, 64);
 			}
 		}
 

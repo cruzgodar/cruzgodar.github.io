@@ -1,6 +1,7 @@
 import { getGlslBundle, loadGlsl } from "../../../scripts/src/complexGlsl.js";
 import { AnimationFrameApplet } from "/scripts/applets/animationFrameApplet.js";
 import { changeOpacity } from "/scripts/src/animation.js";
+import { convertColor } from "/scripts/src/browser.js";
 import { $$, addTemporaryListener } from "/scripts/src/main.js";
 import { Wilson } from "/scripts/wilson.js";
 
@@ -475,7 +476,7 @@ export class FractalSounds extends AnimationFrameApplet
 		this.wilson.ctx.lineWidth = 2;
 
 		this.wilson.canvas.style.opacity = 1;
-		this.wilson.ctx.strokeStyle = "rgb(255, 255, 255)";
+		this.wilson.ctx.strokeStyle = convertColor(255, 255, 255);
 		this.wilson.ctx.clearRect(0, 0, this.resolution, this.resolution);
 
 		this.wilson.ctx.beginPath();

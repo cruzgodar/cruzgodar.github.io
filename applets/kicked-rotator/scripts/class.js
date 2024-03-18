@@ -1,4 +1,5 @@
 import { Applet } from "../../../scripts/applets/applet.js";
+import { convertColor } from "/scripts/src/browser.js";
 import { addTemporaryWorker } from "/scripts/src/main.js";
 import { Wilson } from "/scripts/wilson.js";
 
@@ -56,7 +57,7 @@ export class KickedRotator extends Applet
 
 		this.wilson.changeCanvasSize(resolution, resolution);
 
-		this.wilson.ctx.fillStyle = "rgb(0, 0, 0)";
+		this.wilson.ctx.fillStyle = convertColor(0, 0, 0);
 		this.wilson.ctx.fillRect(0, 0, resolution, resolution);
 
 
@@ -82,7 +83,7 @@ export class KickedRotator extends Applet
 							valueDelta[resolution * i + j] / 255
 						);
 
-						this.wilson.ctx.fillStyle = `rgb(${rgb[0]}, ${rgb[1]}, ${rgb[2]})`;
+						this.wilson.ctx.fillStyle = convertColor(...rgb);
 
 						this.wilson.ctx.fillRect(j, i, 1, 1);
 

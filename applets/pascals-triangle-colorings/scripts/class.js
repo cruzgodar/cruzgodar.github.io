@@ -1,4 +1,5 @@
 import { AnimationFrameApplet } from "/scripts/applets/animationFrameApplet.js";
+import { convertColor } from "/scripts/src/browser.js";
 import { Wilson } from "/scripts/wilson.js";
 
 export class PascalsTriangleColoring extends AnimationFrameApplet
@@ -133,7 +134,7 @@ export class PascalsTriangleColoring extends AnimationFrameApplet
 
 
 
-		this.wilson.ctx.fillStyle = "rgb(0, 0, 0)";
+		this.wilson.ctx.fillStyle = convertColor(0, 0, 0);
 		this.wilson.ctx.fillRect(0, 0, this.resolution, this.resolution);
 
 		this.wilson.ctx.lineWidth = Math.sqrt(this.pixelsPerRow / 150) * 10;
@@ -282,7 +283,11 @@ export class PascalsTriangleColoring extends AnimationFrameApplet
 		const row2 = row1 + 1;
 		let col2 = col1;
 
-		this.wilson.ctx.strokeStyle = `rgb(${this.colors[row1][col1][0] * (1 - oldT) + this.colors[row2][col2][0] * oldT}, ${this.colors[row1][col1][1] * (1 - oldT) + this.colors[row2][col2][1] * oldT}, ${this.colors[row1][col1][2] * (1 - oldT) + this.colors[row2][col2][2] * oldT})`;
+		this.wilson.ctx.strokeStyle = convertColor(
+			this.colors[row1][col1][0] * (1 - oldT) + this.colors[row2][col2][0] * oldT,
+			this.colors[row1][col1][1] * (1 - oldT) + this.colors[row2][col2][1] * oldT,
+			this.colors[row1][col1][2] * (1 - oldT) + this.colors[row2][col2][2] * oldT
+		);
 
 		this.wilson.ctx.beginPath();
 
@@ -302,7 +307,11 @@ export class PascalsTriangleColoring extends AnimationFrameApplet
 
 		col2++;
 
-		this.wilson.ctx.strokeStyle = `rgb(${this.colors[row1][col1][0] * (1 - oldT) + this.colors[row2][col2][0] * oldT}, ${this.colors[row1][col1][1] * (1 - oldT) + this.colors[row2][col2][1] * oldT}, ${this.colors[row1][col1][2] * (1 - oldT) + this.colors[row2][col2][2] * oldT})`;
+		this.wilson.ctx.strokeStyle = convertColor(
+			this.colors[row1][col1][0] * (1 - oldT) + this.colors[row2][col2][0] * oldT,
+			this.colors[row1][col1][1] * (1 - oldT) + this.colors[row2][col2][1] * oldT,
+			this.colors[row1][col1][2] * (1 - oldT) + this.colors[row2][col2][2] * oldT
+		);
 
 		this.wilson.ctx.beginPath();
 
@@ -326,7 +335,11 @@ export class PascalsTriangleColoring extends AnimationFrameApplet
 		col1 = row1 - col1;
 		col2 = row2 - col2;
 
-		this.wilson.ctx.strokeStyle = `rgb(${this.colors[row1][col1][0] * (1 - oldT) + this.colors[row2][col2][0] * oldT}, ${this.colors[row1][col1][1] * (1 - oldT) + this.colors[row2][col2][1] * oldT}, ${this.colors[row1][col1][2] * (1 - oldT) + this.colors[row2][col2][2] * oldT})`;
+		this.wilson.ctx.strokeStyle = convertColor(
+			this.colors[row1][col1][0] * (1 - oldT) + this.colors[row2][col2][0] * oldT,
+			this.colors[row1][col1][1] * (1 - oldT) + this.colors[row2][col2][1] * oldT,
+			this.colors[row1][col1][2] * (1 - oldT) + this.colors[row2][col2][2] * oldT
+		);
 
 		this.wilson.ctx.beginPath();
 
@@ -346,7 +359,11 @@ export class PascalsTriangleColoring extends AnimationFrameApplet
 
 		col2++;
 
-		this.wilson.ctx.strokeStyle = `rgb(${this.colors[row1][col1][0] * (1 - oldT) + this.colors[row2][col2][0] * oldT}, ${this.colors[row1][col1][1] * (1 - oldT) + this.colors[row2][col2][1] * oldT}, ${this.colors[row1][col1][2] * (1 - oldT) + this.colors[row2][col2][2] * oldT})`;
+		this.wilson.ctx.strokeStyle = convertColor(
+			this.colors[row1][col1][0] * (1 - oldT) + this.colors[row2][col2][0] * oldT,
+			this.colors[row1][col1][1] * (1 - oldT) + this.colors[row2][col2][1] * oldT,
+			this.colors[row1][col1][2] * (1 - oldT) + this.colors[row2][col2][2] * oldT
+		);
 
 		this.wilson.ctx.beginPath();
 

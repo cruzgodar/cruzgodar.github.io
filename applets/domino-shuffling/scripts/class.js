@@ -1,4 +1,5 @@
 import { AnimationFrameApplet } from "/scripts/applets/animationFrameApplet.js";
+import { convertColor } from "/scripts/src/browser.js";
 import { Wilson } from "/scripts/wilson.js";
 
 export class DominoShuffling extends AnimationFrameApplet
@@ -182,7 +183,7 @@ export class DominoShuffling extends AnimationFrameApplet
 
 			this.fillSpaces();
 
-			this.wilson.ctx.fillStyle = "rgb(0, 0, 0)";
+			this.wilson.ctx.fillStyle = convertColor(0, 0, 0);
 			this.wilson.ctx.fillRect(0, 0, this.resolution, this.resolution);
 
 			this.drawDiamond();
@@ -192,7 +193,7 @@ export class DominoShuffling extends AnimationFrameApplet
 
 		if (this.frame === 0 && this.currentDiamondSize === this.diamondSize - 1)
 		{
-			this.wilson.ctx.fillStyle = "rgb(0, 0, 0)";
+			this.wilson.ctx.fillStyle = convertColor(0, 0, 0);
 			this.wilson.ctx.fillRect(0, 0, this.resolution, this.resolution);
 
 			this.drawDiamond();
@@ -241,7 +242,7 @@ export class DominoShuffling extends AnimationFrameApplet
 
 		const rgb = this.wilson.utils.hsvToRgb(h, s, 1);
 
-		this.wilson.ctx.fillStyle = `rgb(${rgb[0]}, ${rgb[1]}, ${rgb[2]})`;
+		this.wilson.ctx.fillStyle = convertColor(...rgb);
 
 
 

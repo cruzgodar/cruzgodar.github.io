@@ -210,7 +210,7 @@ async function wilsonStep()
 				newVertices[i][1],
 				newVertices[i + 1][0],
 				newVertices[i + 1][1],
-				"rgb(255, 255, 255)",
+				[255, 255, 255],
 				0
 			);
 		}
@@ -222,7 +222,7 @@ async function wilsonStep()
 				newVertices[i][1],
 				newVertices[i + 1][0],
 				newVertices[i + 1][1],
-				"rgb(255, 255, 255)",
+				[255, 255, 255],
 				300 / gridSize
 			);
 		}
@@ -640,7 +640,14 @@ async function colorGraph(linearColoring = false)
 
 		for (j = distanceBreaks[i]; j < distanceBreaks[i + 1] - 1; j++)
 		{
-			drawLine(edgesByDistance[j][0][0], edgesByDistance[j][0][1], edgesByDistance[j][1][0], edgesByDistance[j][1][1], `rgb(${rgb[0]}, ${rgb[1]}, ${rgb[2]})`, 0);
+			drawLine(
+				edgesByDistance[j][0][0],
+				edgesByDistance[j][0][1],
+				edgesByDistance[j][1][0],
+				edgesByDistance[j][1][1],
+				rgb,
+				0
+			);
 		}
 
 		if (!edgesByDistance[j])
@@ -651,19 +658,33 @@ async function colorGraph(linearColoring = false)
 		// We only wait for this one.
 		if (maximumSpeed)
 		{
-			drawLine(edgesByDistance[j][0][0], edgesByDistance[j][0][1], edgesByDistance[j][1][0], edgesByDistance[j][1][1], `rgb(${rgb[0]}, ${rgb[1]}, ${rgb[2]})`, 24);
+			drawLine(
+				edgesByDistance[j][0][0],
+				edgesByDistance[j][0][1],
+				edgesByDistance[j][1][0],
+				edgesByDistance[j][1][1],
+				rgb,
+				24
+			);
 		}
 
 		else
 		{
-			await drawLine(edgesByDistance[j][0][0], edgesByDistance[j][0][1], edgesByDistance[j][1][0], edgesByDistance[j][1][1], `rgb(${rgb[0]}, ${rgb[1]}, ${rgb[2]})`, 24);
+			await drawLine(
+				edgesByDistance[j][0][0],
+				edgesByDistance[j][0][1],
+				edgesByDistance[j][1][0],
+				edgesByDistance[j][1][1],
+				rgb,
+				24
+			);
 		}
 	}
 }
 
 
 
-async function drawLine(row1, column1, row2, column2, color, delay)
+async function drawLine(row1, column1, row2, column2, rgb, delay)
 {
 	if (column1 === column2)
 	{
@@ -672,12 +693,12 @@ async function drawLine(row1, column1, row2, column2, color, delay)
 
 		if (noBorders)
 		{
-			postMessage([x, y, 1, 2, color]);
+			postMessage([x, y, 1, 2, rgb]);
 		}
 
 		else
 		{
-			postMessage([2 * x + 1, 2 * y + 1, 1, 3, color]);
+			postMessage([2 * x + 1, 2 * y + 1, 1, 3, rgb]);
 		}
 	}
 
@@ -688,12 +709,12 @@ async function drawLine(row1, column1, row2, column2, color, delay)
 
 		if (noBorders)
 		{
-			postMessage([x, y, 2, 1, color]);
+			postMessage([x, y, 2, 1, rgb]);
 		}
 
 		else
 		{
-			postMessage([2 * x + 1, 2 * y + 1, 3, 1, color]);
+			postMessage([2 * x + 1, 2 * y + 1, 3, 1, rgb]);
 		}
 	}
 

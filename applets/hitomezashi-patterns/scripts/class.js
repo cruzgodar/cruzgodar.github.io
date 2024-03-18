@@ -1,4 +1,5 @@
 import { Applet } from "../../../scripts/applets/applet.js";
+import { convertColor } from "/scripts/src/browser.js";
 import { Wilson } from "/scripts/wilson.js";
 
 export class HitomezashiPattern extends Applet
@@ -76,10 +77,10 @@ export class HitomezashiPattern extends Applet
 
 
 
-		this.wilson.ctx.fillStyle = "rgb(0, 0, 0)";
+		this.wilson.ctx.fillStyle = convertColor(0, 0, 0);
 		this.wilson.ctx.fillRect(0, 0, this.resolution, this.resolution);
 
-		this.wilson.ctx.strokeStyle = "rgb(127, 127, 127)";
+		this.wilson.ctx.strokeStyle = convertColor(127, 127, 127);
 
 		this.lineWidth = this.resolution / this.gridSize / 20;
 
@@ -481,7 +482,7 @@ export class HitomezashiPattern extends Applet
 
 	drawRegions()
 	{
-		this.wilson.ctx.fillStyle = "rgb(0, 0, 0)";
+		this.wilson.ctx.fillStyle = convertColor(0, 0, 0);
 		this.wilson.ctx.fillRect(0, 0, this.resolution, this.resolution);
 
 
@@ -504,7 +505,7 @@ export class HitomezashiPattern extends Applet
 
 			const rgb = this.wilson.utils.hsvToRgb(h, 1, v);
 
-			this.wilson.ctx.fillStyle = `rgb(${rgb[0]}, ${rgb[1]}, ${rgb[2]})`;
+			this.wilson.ctx.fillStyle = convertColor(...rgb);
 
 
 
@@ -546,7 +547,7 @@ export class HitomezashiPattern extends Applet
 			const rgb = this.wilson.utils.hsvToRgb(h, 1, v);
 
 
-			this.wilson.ctx.fillStyle = "rgb(0, 0, 0)";
+			this.wilson.ctx.fillStyle = convertColor(0, 0, 0);
 
 			for (let j = 0; j < regionLength; j++)
 			{
@@ -562,7 +563,7 @@ export class HitomezashiPattern extends Applet
 			}
 
 
-			this.wilson.ctx.fillStyle = `rgb(${rgb[0]}, ${rgb[1]}, ${rgb[2]})`;
+			this.wilson.ctx.fillStyle = convertColor(...rgb);
 
 			for (let j = 0; j < regionLength; j++)
 			{

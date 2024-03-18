@@ -1,5 +1,6 @@
 import { Applet } from "../../../scripts/applets/applet.js";
 import { opacityAnimationTime } from "/scripts/src/animation.js";
+import { convertColor } from "/scripts/src/browser.js";
 import { aspectRatio } from "/scripts/src/layout.js";
 import {
 	$$,
@@ -59,7 +60,7 @@ export class BinaryTree extends Applet
 
 		this.wilson = new Wilson(canvas, options);
 
-		this.wilson.ctx.fillStyle = "rgb(0, 0, 0)";
+		this.wilson.ctx.fillStyle = convertColor(0, 0, 0);
 		this.wilson.ctx.fillRect(0, 0, this.wilson.canvasWidth, this.wilson.canvasHeight);
 
 		this.initBranchMarkers();
@@ -74,7 +75,7 @@ export class BinaryTree extends Applet
 
 
 
-		this.wilson.ctx.fillStyle = "rgb(0, 0, 0)";
+		this.wilson.ctx.fillStyle = convertColor(0, 0, 0);
 		this.wilson.ctx.fillRect(0, 0, this.wilson.canvasWidth, this.wilson.canvasHeight);
 
 
@@ -128,7 +129,7 @@ export class BinaryTree extends Applet
 			const r = Math.sqrt(scale) * 139;
 			const g = Math.sqrt(scale) * 69 + (1 - Math.sqrt(scale)) * 128;
 			const b = Math.sqrt(scale) * 19;
-			this.wilson.ctx.strokeStyle = `rgb(${r}, ${g}, ${b})`;
+			this.wilson.ctx.strokeStyle = convertColor(r, g, b);
 
 
 
@@ -204,7 +205,7 @@ export class BinaryTree extends Applet
 
 
 
-			this.wilson.ctx.strokeStyle = e.data[4];
+			this.wilson.ctx.strokeStyle = convertColor(...e.data[4]);
 			this.wilson.ctx.lineWidth = e.data[5];
 
 			this.wilson.ctx.beginPath();
@@ -248,7 +249,7 @@ export class BinaryTree extends Applet
 
 		$$(".wilson-draggable").forEach(element => element.style.opacity = 1);
 
-		this.wilson.ctx.fillStyle = "rgb(0, 0, 0)";
+		this.wilson.ctx.fillStyle = convertColor(0, 0, 0);
 		this.wilson.ctx.fillRect(0, 0, this.wilson.canvasWidth, this.wilson.canvasHeight);
 
 		this.preview(this.root, this.branchPoints);
@@ -280,7 +281,7 @@ export class BinaryTree extends Applet
 		const callback = () =>
 		{
 			const alpha = step / 37;
-			that.wilson.ctx.fillStyle = `rgba(0, 0, 0, ${alpha})`;
+			that.wilson.ctx.fillStyle = convertColor(0, 0, 0, alpha);
 			that.wilson.ctx.fillRect(0, 0, that.wilson.canvasWidth, that.wilson.canvasHeight);
 
 			step++;
@@ -294,7 +295,7 @@ export class BinaryTree extends Applet
 		{
 			clearInterval(refreshId);
 
-			that.wilson.ctx.fillStyle = "rgb(0, 0, 0)";
+			that.wilson.ctx.fillStyle = convertColor(0, 0, 0);
 			that.wilson.ctx.fillRect(0, 0, that.wilson.canvasWidth, that.wilson.canvasHeight);
 
 			that.animate(that.root, that.branchPoints);

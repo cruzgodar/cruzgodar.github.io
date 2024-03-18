@@ -1,4 +1,5 @@
 import { Applet } from "../../../scripts/applets/applet.js";
+import { convertColor } from "/scripts/src/browser.js";
 import { addTemporaryWorker } from "/scripts/src/main.js";
 import { Wilson } from "/scripts/wilson.js";
 
@@ -51,7 +52,7 @@ export class SimulatedAnnealing extends Applet
 
 		this.wilson.changeCanvasSize(resolution, resolution);
 
-		this.wilson.ctx.fillStyle = "rgb(0, 0, 0)";
+		this.wilson.ctx.fillStyle = convertColor(0, 0, 0);
 		this.wilson.ctx.fillRect(0, 0, resolution, resolution);
 
 		this.wilson.ctx.lineWidth = scalingFactor;
@@ -67,7 +68,7 @@ export class SimulatedAnnealing extends Applet
 			// A circle with arguments (x, y, r, color).
 			if (e.data[0] === 0)
 			{
-				this.wilson.ctx.fillStyle = e.data[4];
+				this.wilson.ctx.fillStyle = convertColor(...(e.data[4]));
 
 				this.wilson.ctx.beginPath();
 				this.wilson.ctx.moveTo(e.data[1], e.data[2]);
@@ -87,7 +88,7 @@ export class SimulatedAnnealing extends Applet
 			// A line with arguments (x1, y1, x2, y2, color).
 			else if (e.data[0] === 1)
 			{
-				this.wilson.ctx.strokeStyle = e.data[5];
+				this.wilson.ctx.strokeStyle = convertColor(...(e.data[5]));
 
 				this.wilson.ctx.beginPath();
 				this.wilson.ctx.moveTo(e.data[1], e.data[2]);
@@ -97,7 +98,7 @@ export class SimulatedAnnealing extends Applet
 
 			else
 			{
-				this.wilson.ctx.fillStyle = "rgb(0, 0, 0)";
+				this.wilson.ctx.fillStyle = convertColor(0, 0, 0);
 				this.wilson.ctx.fillRect(0, 0, this.resolution, this.resolution);
 			}
 		};

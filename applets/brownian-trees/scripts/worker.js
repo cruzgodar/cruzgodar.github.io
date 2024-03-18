@@ -44,7 +44,7 @@ function drawBrownianTree()
 	brownianTreeGraph[Math.floor(gridSize / 2)][Math.floor(gridSize / 2)] = 1;
 	color[Math.floor(gridSize / 2)][Math.floor(gridSize / 2)] = [255, 255, 255];
 
-	postMessage([2, Math.floor(gridSize / 2), Math.floor(gridSize / 2), "rgb(255, 255, 255)"]);
+	postMessage([2, Math.floor(gridSize / 2), Math.floor(gridSize / 2), [255, 255, 255]]);
 
 
 
@@ -119,13 +119,11 @@ function drawBrownianTree()
 					2,
 					currentCol,
 					currentRow,
-					`rgb(${
-						currentBrightness / 255 * color[currentRow][currentCol][0]
-					}, ${
-						currentBrightness / 255 * color[currentRow][currentCol][1]
-					}, ${
+					[
+						currentBrightness / 255 * color[currentRow][currentCol][0],
+						currentBrightness / 255 * color[currentRow][currentCol][1],
 						currentBrightness / 255 * color[currentRow][currentCol][2]
-					})`
+					]
 				]);
 
 

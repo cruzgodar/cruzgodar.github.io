@@ -50,7 +50,7 @@ async function drawAnimatedBinaryTree()
 		const r = Math.sqrt(scale) * 139;
 		const g = Math.sqrt(scale) * 69 + (1 - Math.sqrt(scale)) * 128;
 		const b = Math.sqrt(scale) * 19;
-		const color = `rgb(${r}, ${g}, ${b})`;
+		const color = [r, g, b];
 
 
 

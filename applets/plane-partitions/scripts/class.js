@@ -1,6 +1,7 @@
 import anime from "/scripts/anime.js";
 import { AnimationFrameApplet } from "/scripts/applets/animationFrameApplet.js";
 import { changeOpacity } from "/scripts/src/animation.js";
+import { convertColor } from "/scripts/src/browser.js";
 import { $$ } from "/scripts/src/main.js";
 import * as THREE from "/scripts/three.js";
 import { Wilson } from "/scripts/wilson.js";
@@ -193,20 +194,22 @@ export class PlanePartitions extends AnimationFrameApplet
 
 		this.wilsonNumbers = new Wilson(numbersCanvas, optionsNumbers);
 
-		this.wilsonNumbers.ctx.fillStyle = "rgb(255, 255, 255)";
+		this.wilsonNumbers.ctx.fillStyle = convertColor(255, 255, 255);
 
 		document.body.querySelector(".wilson-fullscreen-components-container").style
 			.setProperty("z-index", 200, "important");
 
 		$$(".wilson-applet-canvas-container")
 			.forEach(element => element.style
-				.setProperty("background-color", "rgba(0, 0, 0, 0)", "important")
+				.setProperty("background-color", convertColor(0, 0, 0, 0), "important")
 			);
 
 
 
 		const options =
 		{
+			renderer: "gpu",
+
 			canvasWidth: this.resolution,
 			canvasHeight: this.resolution,
 
@@ -237,50 +240,50 @@ export class PlanePartitions extends AnimationFrameApplet
 		this.wilsonHidden3 = new Wilson(hiddenCanvas3, optionsHidden);
 		this.wilsonHidden4 = new Wilson(hiddenCanvas4, optionsHidden);
 
-		this.wilsonHidden.ctx.strokeStyle = "rgb(255, 255, 255)";
+		this.wilsonHidden.ctx.strokeStyle = convertColor(255, 255, 255);
 		this.wilsonHidden.ctx._alpha = 1;
 
-		this.wilsonHidden.ctx.fillStyle = "rgba(64, 64, 64, 1)";
+		this.wilsonHidden.ctx.fillStyle = convertColor(64, 64, 64);
 		this.wilsonHidden.ctx.fillRect(0, 0, 64, 64);
 
-		this.wilsonHidden.ctx.fillStyle = "rgba(128, 128, 128, 1)";
+		this.wilsonHidden.ctx.fillStyle = convertColor(128, 128, 128);
 		this.wilsonHidden.ctx.fillRect(4, 4, 56, 56);
 
 		this.wilsonHidden.ctx.lineWidth = 6;
 
-		this.wilsonHidden2.ctx.strokeStyle = "rgb(255, 255, 255)";
+		this.wilsonHidden2.ctx.strokeStyle = convertColor(255, 255, 255);
 		this.wilsonHidden2.ctx._alpha = 1;
 
-		this.wilsonHidden2.ctx.fillStyle = "rgba(64, 64, 64, 1)";
+		this.wilsonHidden2.ctx.fillStyle = convertColor(64, 64, 64);
 		this.wilsonHidden2.ctx.fillRect(0, 0, 64, 64);
 
-		this.wilsonHidden2.ctx.fillStyle = "rgba(128, 128, 128, 1)";
+		this.wilsonHidden2.ctx.fillStyle = convertColor(128, 128, 128);
 		this.wilsonHidden2.ctx.fillRect(4, 4, 56, 56);
 
 		this.wilsonHidden2.ctx.lineWidth = 6;
 
 
 
-		this.wilsonHidden3.ctx.strokeStyle = "rgb(255, 255, 255)";
+		this.wilsonHidden3.ctx.strokeStyle = convertColor(255, 255, 255);
 		this.wilsonHidden3.ctx._alpha = 1;
 
-		this.wilsonHidden3.ctx.fillStyle = `rgba(32, 32, 32, ${this.addWalls ? 1 : 0})`;
+		this.wilsonHidden3.ctx.fillStyle = convertColor(32, 32, 32, this.addWalls ? 1 : 0);
 		this.wilsonHidden3.ctx.fillRect(0, 0, 64, 64);
 
-		this.wilsonHidden3.ctx.fillStyle = `rgba(64, 64, 64, ${this.addWalls ? 1 : 0})`;
+		this.wilsonHidden3.ctx.fillStyle = convertColor(64, 64, 64, this.addWalls ? 1 : 0);
 		this.wilsonHidden3.ctx.fillRect(4, 4, 56, 56);
 
 		this.wilsonHidden3.ctx.lineWidth = 6;
 
 
 
-		this.wilsonHidden4.ctx.strokeStyle = "rgb(255, 255, 255)";
+		this.wilsonHidden4.ctx.strokeStyle = convertColor(255, 255, 255);
 		this.wilsonHidden4.ctx._alpha = 1;
 
-		this.wilsonHidden4.ctx.fillStyle = `rgba(32, 32, 32, ${this.addWalls ? 1 : 0})`;
+		this.wilsonHidden4.ctx.fillStyle = convertColor(32, 32, 32, this.addWalls ? 1 : 0);
 		this.wilsonHidden4.ctx.fillRect(0, 0, 64, 64);
 
-		this.wilsonHidden4.ctx.fillStyle = `rgba(64, 64, 64, ${this.addWalls ? 1 : 0})`;
+		this.wilsonHidden4.ctx.fillStyle = convertColor(64, 64, 64, this.addWalls ? 1 : 0);
 		this.wilsonHidden4.ctx.fillRect(4, 4, 56, 56);
 
 		this.wilsonHidden4.ctx.lineWidth = 6;
@@ -292,7 +295,11 @@ export class PlanePartitions extends AnimationFrameApplet
 
 
 
-		this.renderer = new THREE.WebGLRenderer({ canvas: this.wilson.canvas, antialias: true });
+		this.renderer = new THREE.WebGLRenderer({
+			canvas: this.wilson.canvas,
+			antialias: true,
+			context: this.wilson.gl
+		});
 
 		this.renderer.setSize(this.resolution, this.resolution, false);
 
@@ -1982,7 +1989,7 @@ export class PlanePartitions extends AnimationFrameApplet
 				this.wilsonHidden3.ctx,
 				this.wilsonHidden4.ctx
 			],
-			strokeStyle: "rgba(255, 255, 255, 1)",
+			strokeStyle: convertColor(255, 255, 255),
 			_alpha: 0,
 			duration: this.animationTime / 2,
 			easing: "easeOutQuad",
@@ -1990,10 +1997,20 @@ export class PlanePartitions extends AnimationFrameApplet
 			{
 				this.wilsonHidden.ctx.clearRect(0, 0, 64, 64);
 
-				this.wilsonHidden.ctx.fillStyle = `rgba(64, 64, 64, ${this.wilsonHidden.ctx._alpha})`;
+				this.wilsonHidden.ctx.fillStyle = convertColor(
+					64,
+					64,
+					64,
+					this.wilsonHidden.ctx._alpha
+				);
 				this.wilsonHidden.ctx.fillRect(0, 0, 64, 64);
 
-				this.wilsonHidden.ctx.fillStyle = `rgba(128, 128, 128, ${this.wilsonHidden.ctx._alpha})`;
+				this.wilsonHidden.ctx.fillStyle = convertColor(
+					128,
+					128,
+					128,
+					this.wilsonHidden.ctx._alpha
+				);
 				this.wilsonHidden.ctx.fillRect(4, 4, 56, 56);
 
 				this.wilsonHidden.ctx.moveTo(42.7, 21.3);
@@ -2006,10 +2023,20 @@ export class PlanePartitions extends AnimationFrameApplet
 
 				this.wilsonHidden2.ctx.clearRect(0, 0, 64, 64);
 
-				this.wilsonHidden2.ctx.fillStyle = `rgba(64, 64, 64, ${this.wilsonHidden2.ctx._alpha})`;
+				this.wilsonHidden2.ctx.fillStyle = convertColor(
+					64,
+					64,
+					64,
+					this.wilsonHidden2.ctx._alpha
+				);
 				this.wilsonHidden2.ctx.fillRect(0, 0, 64, 64);
 
-				this.wilsonHidden2.ctx.fillStyle = `rgba(128, 128, 128, ${this.wilsonHidden2.ctx._alpha})`;
+				this.wilsonHidden2.ctx.fillStyle = convertColor(
+					128,
+					128,
+					128,
+					this.wilsonHidden2.ctx._alpha
+				);
 				this.wilsonHidden2.ctx.fillRect(4, 4, 56, 56);
 
 				this.wilsonHidden2.ctx.moveTo(21.3, 21.3);
@@ -2022,10 +2049,20 @@ export class PlanePartitions extends AnimationFrameApplet
 
 				this.wilsonHidden3.ctx.clearRect(0, 0, 64, 64);
 
-				this.wilsonHidden3.ctx.fillStyle = `rgba(32, 32, 32, ${this.addWalls ? 0 : this.wilsonHidden3.ctx._alpha})`;
+				this.wilsonHidden3.ctx.fillStyle = convertColor(
+					32,
+					32,
+					32,
+					this.addWalls ? 0 : this.wilsonHidden3.ctx._alpha
+				);
 				this.wilsonHidden3.ctx.fillRect(0, 0, 64, 64);
 
-				this.wilsonHidden3.ctx.fillStyle = `rgba(64, 64, 64, ${this.addWalls ? 0 : this.wilsonHidden3.ctx._alpha})`;
+				this.wilsonHidden3.ctx.fillStyle = convertColor(
+					64,
+					64,
+					64,
+					this.addWalls ? 0 : this.wilsonHidden3.ctx._alpha
+				);
 				this.wilsonHidden3.ctx.fillRect(4, 4, 56, 56);
 
 				this.wilsonHidden3.ctx.moveTo(42.7, 21.3);
@@ -2038,10 +2075,20 @@ export class PlanePartitions extends AnimationFrameApplet
 
 				this.wilsonHidden4.ctx.clearRect(0, 0, 64, 64);
 
-				this.wilsonHidden4.ctx.fillStyle = `rgba(32, 32, 32, ${this.addWalls ? 0 : this.wilsonHidden4.ctx._alpha})`;
+				this.wilsonHidden4.ctx.fillStyle = convertColor(
+					32,
+					32,
+					32,
+					this.addWalls ? 0 : this.wilsonHidden4.ctx._alpha
+				);
 				this.wilsonHidden4.ctx.fillRect(0, 0, 64, 64);
 
-				this.wilsonHidden4.ctx.fillStyle = `rgba(64, 64, 64, ${this.addWalls ? 0 : this.wilsonHidden4.ctx._alpha})`;
+				this.wilsonHidden4.ctx.fillStyle = convertColor(
+					64,
+					64,
+					64,
+					this.addWalls ? 0 : this.wilsonHidden4.ctx._alpha
+				);
 				this.wilsonHidden4.ctx.fillRect(4, 4, 56, 56);
 
 				this.wilsonHidden4.ctx.moveTo(21.3, 21.3);
@@ -2133,7 +2180,7 @@ export class PlanePartitions extends AnimationFrameApplet
 				this.wilsonHidden3.ctx,
 				this.wilsonHidden4.ctx
 			],
-			strokeStyle: "rgba(255, 255, 255, 0)",
+			strokeStyle: convertColor(255, 255, 255, 0),
 			_alpha: 1,
 			duration: this.animationTime / 2,
 			easing: "easeOutQuad",
@@ -2141,10 +2188,20 @@ export class PlanePartitions extends AnimationFrameApplet
 			{
 				this.wilsonHidden.ctx.clearRect(0, 0, 64, 64);
 
-				this.wilsonHidden.ctx.fillStyle = `rgba(64, 64, 64, ${this.wilsonHidden.ctx._alpha})`;
+				this.wilsonHidden.ctx.fillStyle = convertColor(
+					64,
+					64,
+					64,
+					this.wilsonHidden.ctx._alpha
+				);
 				this.wilsonHidden.ctx.fillRect(0, 0, 64, 64);
 
-				this.wilsonHidden.ctx.fillStyle = `rgba(128, 128, 128, ${this.wilsonHidden.ctx._alpha})`;
+				this.wilsonHidden.ctx.fillStyle = convertColor(
+					128,
+					128,
+					128,
+					this.wilsonHidden.ctx._alpha
+				);
 				this.wilsonHidden.ctx.fillRect(4, 4, 56, 56);
 
 				this.wilsonHidden.ctx.moveTo(42.7, 21.3);
@@ -2157,10 +2214,20 @@ export class PlanePartitions extends AnimationFrameApplet
 
 				this.wilsonHidden2.ctx.clearRect(0, 0, 64, 64);
 
-				this.wilsonHidden2.ctx.fillStyle = `rgba(64, 64, 64, ${this.wilsonHidden2.ctx._alpha})`;
+				this.wilsonHidden2.ctx.fillStyle = convertColor(
+					64,
+					64,
+					64,
+					this.wilsonHidden2.ctx._alpha
+				);
 				this.wilsonHidden2.ctx.fillRect(0, 0, 64, 64);
 
-				this.wilsonHidden2.ctx.fillStyle = `rgba(128, 128, 128, ${this.wilsonHidden2.ctx._alpha})`;
+				this.wilsonHidden2.ctx.fillStyle = convertColor(
+					128,
+					128,
+					128,
+					this.wilsonHidden2.ctx._alpha
+				);
 				this.wilsonHidden2.ctx.fillRect(4, 4, 56, 56);
 
 				this.wilsonHidden2.ctx.moveTo(21.3, 21.3);
@@ -2173,10 +2240,20 @@ export class PlanePartitions extends AnimationFrameApplet
 
 				this.wilsonHidden3.ctx.clearRect(0, 0, 64, 64);
 
-				this.wilsonHidden3.ctx.fillStyle = `rgba(32, 32, 32, ${this.addWalls ? 0 : this.wilsonHidden3.ctx._alpha})`;
+				this.wilsonHidden3.ctx.fillStyle = convertColor(
+					32,
+					32,
+					32,
+					this.addWalls ? 0 : this.wilsonHidden3.ctx._alpha
+				);
 				this.wilsonHidden3.ctx.fillRect(0, 0, 64, 64);
 
-				this.wilsonHidden3.ctx.fillStyle = `rgba(64, 64, 64, ${this.addWalls ? 0 : this.wilsonHidden3.ctx._alpha})`;
+				this.wilsonHidden3.ctx.fillStyle = convertColor(
+					64,
+					64,
+					64,
+					this.addWalls ? 0 : this.wilsonHidden3.ctx._alpha
+				);
 				this.wilsonHidden3.ctx.fillRect(4, 4, 56, 56);
 
 				this.wilsonHidden3.ctx.moveTo(42.7, 21.3);
@@ -2189,10 +2266,20 @@ export class PlanePartitions extends AnimationFrameApplet
 
 				this.wilsonHidden4.ctx.clearRect(0, 0, 64, 64);
 
-				this.wilsonHidden4.ctx.fillStyle = `rgba(32, 32, 32, ${this.addWalls ? 0 : this.wilsonHidden4.ctx._alpha})`;
+				this.wilsonHidden4.ctx.fillStyle = convertColor(
+					32,
+					32,
+					32,
+					this.addWalls ? 0 : this.wilsonHidden4.ctx._alpha
+				);
 				this.wilsonHidden4.ctx.fillRect(0, 0, 64, 64);
 
-				this.wilsonHidden4.ctx.fillStyle = `rgba(64, 64, 64, ${this.addWalls ? 0 : this.wilsonHidden4.ctx._alpha})`;
+				this.wilsonHidden4.ctx.fillStyle = convertColor(
+					64,
+					64,
+					64,
+					this.addWalls ? 0 : this.wilsonHidden4.ctx._alpha
+				);
 				this.wilsonHidden4.ctx.fillRect(4, 4, 56, 56);
 
 				this.wilsonHidden4.ctx.moveTo(21.3, 21.3);
@@ -6078,7 +6165,7 @@ export class PlanePartitions extends AnimationFrameApplet
 
 					const rgb = this.wilson.utils.hsvToRgb(h, 1, 1);
 
-					rects.push([i, j, true, `rgba(${rgb[0]}, ${rgb[1]}, ${rgb[2]}, `]);
+					rects.push([i, j, true, rgb]);
 
 					hueIndex++;
 				}
@@ -6091,7 +6178,7 @@ export class PlanePartitions extends AnimationFrameApplet
 
 			const rgb = this.wilson.utils.hsvToRgb(h, 1, 1);
 
-			rects.push([i, j, false, `rgba(${rgb[0]}, ${rgb[1]}, ${rgb[2]}, `]);
+			rects.push([i, j, false, rgb]);
 
 			hueIndex++;
 		}
@@ -6107,7 +6194,7 @@ export class PlanePartitions extends AnimationFrameApplet
 
 				const rgb = this.wilson.utils.hsvToRgb(h, 1, 1);
 
-				rects.push([i, j, true, `rgba(${rgb[0]}, ${rgb[1]}, ${rgb[2]}, `]);
+				rects.push([i, j, true, rgb]);
 
 				hueIndex++;
 			}
@@ -6117,14 +6204,14 @@ export class PlanePartitions extends AnimationFrameApplet
 
 		rects.forEach(rect =>
 		{
-			this.drawBoundaryRect(array, rect[0], rect[1], rect[2], `${rect[3]} 1)`);
+			this.drawBoundaryRect(array, rect[0], rect[1], rect[2], rect[3]);
 		});
 
 
 
 		await changeOpacity(this.wilsonNumbers.canvas, 1, this.animationTime / 3);
 
-		this.wilsonNumbers.ctx.fillStyle = "rgb(255, 255, 255)";
+		this.wilsonNumbers.ctx.fillStyle = convertColor(255, 255, 255);
 
 		return rects;
 	}
@@ -6158,7 +6245,13 @@ export class PlanePartitions extends AnimationFrameApplet
 				{
 					const opacity = index % n === m ? 1 : dummy.t;
 
-					this.drawBoundaryRect(array, rect[0], rect[1], rect[2], `${rect[3]} ${opacity})`);
+					this.drawBoundaryRect(
+						array,
+						rect[0],
+						rect[1],
+						rect[2],
+						[...(rect[3]), opacity]
+					);
 				});
 			}
 		}).finished;
@@ -6174,7 +6267,13 @@ export class PlanePartitions extends AnimationFrameApplet
 		{
 			const opacity = index % n === m ? 1 : 0;
 
-			this.drawBoundaryRect(array, rect[0], rect[1], rect[2], `${rect[3]} ${opacity})`);
+			this.drawBoundaryRect(
+				array,
+				rect[0],
+				rect[1],
+				rect[2],
+				[...(rect[3]), opacity]
+			);
 		});
 
 
@@ -6230,7 +6329,13 @@ export class PlanePartitions extends AnimationFrameApplet
 
 				rects.forEach((rect, index) =>
 				{
-					this.drawBoundaryRect(array, (1 - dummy.t) * rect[0] + dummy.t * targetRects[index][0], (1 - dummy.t) * rect[1] + dummy.t * targetRects[index][1], rect[2], `${rect[3]} 1)`);
+					this.drawBoundaryRect(
+						array,
+						(1 - dummy.t) * rect[0] + dummy.t * targetRects[index][0],
+						(1 - dummy.t) * rect[1] + dummy.t * targetRects[index][1],
+						rect[2],
+						rect[3]
+					);
 				});
 			}
 		}).finished;
@@ -6244,7 +6349,13 @@ export class PlanePartitions extends AnimationFrameApplet
 
 		rects.forEach((rect, index) =>
 		{
-			this.drawBoundaryRect(array, targetRects[index][0], targetRects[index][1], rect[2], `${rect[3]} 1)`);
+			this.drawBoundaryRect(
+				array,
+				targetRects[index][0],
+				targetRects[index][1],
+				rect[2],
+				rect[3]
+			);
 		});
 
 
@@ -6308,12 +6419,23 @@ export class PlanePartitions extends AnimationFrameApplet
 
 				rects.forEach((rect, index) =>
 				{
-					this.drawBoundaryRect(array, targetRects[index][0], targetRects[index][1], rect[2], `${rect[3]} 1)`);
+					this.drawBoundaryRect(
+						array,
+						targetRects[index][0],
+						targetRects[index][1],
+						rect[2],
+						rect[3]);
 				});
 
 				bonusRects.forEach(rect =>
 				{
-					this.drawBoundaryRect(array, rect[0], rect[1], rect[2], `${rects[0][3]} ${dummy.t})`);
+					this.drawBoundaryRect(
+						array,
+						rect[0],
+						rect[1],
+						rect[2],
+						[...(rects[0][3]), dummy.t]
+					);
 				});
 			}
 		}).finished;
@@ -6327,15 +6449,27 @@ export class PlanePartitions extends AnimationFrameApplet
 
 		rects.forEach((rect, index) =>
 		{
-			this.drawBoundaryRect(array, targetRects[index][0], targetRects[index][1], rect[2], `${rect[3]} 1)`);
+			this.drawBoundaryRect(
+				array,
+				targetRects[index][0],
+				targetRects[index][1],
+				rect[2],
+				rect[3]
+			);
 		});
 
 		bonusRects.forEach(rect =>
 		{
-			this.drawBoundaryRect(array, rect[0], rect[1], rect[2], `${rects[0][3]} 1)`);
+			this.drawBoundaryRect(
+				array,
+				rect[0],
+				rect[1],
+				rect[2],
+				rect[3]
+			);
 		});
 
-		this.wilsonNumbers.ctx.fillStyle = "rgb(255, 255, 255)";
+		this.wilsonNumbers.ctx.fillStyle = convertColor(255, 255, 255);
 	}
 
 
@@ -6345,7 +6479,7 @@ export class PlanePartitions extends AnimationFrameApplet
 		const top = (this.totalArrayFootprint - array.footprint - 1) / 2;
 		const left = array.partialFootprintSum - array.footprint;
 
-		this.wilsonNumbers.ctx.fillStyle = rgba;
+		this.wilsonNumbers.ctx.fillStyle = convertColor(...rgba);
 
 		if (horizontal)
 		{
