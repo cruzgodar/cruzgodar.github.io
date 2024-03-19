@@ -48,7 +48,7 @@ In other words, $\vec{v}$ is an eigenvector of $A$ with eigenvalue $\lambda$. Al
 	
 	Three tanks are set up next to one another. Tank 1 initially contains $100\,L$ of water in which $990\,g$ of salt is dissolved, tank 2 initially contains $1\,L$ of water in which $500\,g$ of salt is dissolved, and tank 3 initially contains $50\,L$ of water. At time $t = 0$, we open a lot of valves: a pure water solution is poured into tank 1 at a rate of $2\,\frac{L}{s}$, and the well-mixed solution from tank 1 is drained into tank 2 at the same rate. Similarly, the mixed solution in tank 2 drains into tank 3, and the mixed solution in tank 3 drains and is discarded, all at $2\,\frac{L}{s}$. Find the mass of salt in each tank after 5 minutes.
 	
-	There's a lot to do here! First of all, let's define some variables. Let $x_1$, $x_2$, and $x_3$ be the *masses* of salt in tanks 1, 2, and 3 at time $t$. Then the derivative of each is the inflow rate minus the outflow rate to that particular tank.
+	There's a lot to do here! First of all, let's define some variables. Let $x_1$, $x_2$, and $x_3$ be the *masses* of salt in tanks 1, 2, and 3 at time $t$. Then the derivative of each is the inflow rate minus the outflow rate to that particular tank. Those rates have units of grams per second, so each one is the liquid flow rate in liters per second times the concentration in grams per liter (which is the mass divided by the total volume).
 	
 	$$
 		x_1' &= -2\frac{x_1}{100} = -\frac{1}{50}x_1
@@ -61,7 +61,7 @@ In other words, $\vec{v}$ is an eigenvector of $A$ with eigenvalue $\lambda$. Al
 	In total, our matrix equation is
 	
 	$$
-		**x**' = [[ -\frac{1}{50}, 0, 0 ; \frac{1}{50}, -2, 0 ; 0, 2, -\frac{1}{25} ]]**x**.
+		\vec{x}' = [[ -\frac{1}{50}, 0, 0 ; \frac{1}{50}, -2, 0 ; 0, 2, -\frac{1}{25} ]]\vec{x}.
 	$$
 	
 	Solving for the eigenvalues, we have
@@ -85,7 +85,7 @@ In other words, $\vec{v}$ is an eigenvector of $A$ with eigenvalue $\lambda$. Al
 		
 		[[ 0, 0, 0 | 0 ; \frac{1}{50}, \frac{-99}{50}, 0 | 0 ; 0, 2, -\frac{1}{50} | 0 ]] & 
 		
-		[[ 0, 0, 0 | 0 ; 1, -99, 0 | 0 ; 0, -100, 1 | 0 ]] & \qquad \begin{array}{l} **r_2** \te 50 \\ **r_3** \te -50 \end{array}
+		[[ 0, 0, 0 | 0 ; 1, -99, 0 | 0 ; 0, -100, 1 | 0 ]] & \qquad :: \vec{r_2} \te 50 ; \vec{r_3} \te -50 ::
 		
 		v_1 = 99v_2, & \quad v_3 = 100v_2.
 	$$
@@ -93,7 +93,7 @@ In other words, $\vec{v}$ is an eigenvector of $A$ with eigenvalue $\lambda$. Al
 	Taking $v_2 = 1$, our first eigenvector is
 	
 	$$
-		**v** = [[ 99 ; 1 ; 100 ]].
+		\vec{v} = [[ 99 ; 1 ; 100 ]].
 	$$
 	
 	Now we just need to repeat this for the other eigenvalues. When $\lambda = 2$, we have
@@ -103,9 +103,9 @@ In other words, $\vec{v}$ is an eigenvector of $A$ with eigenvalue $\lambda$. Al
 		
 		[[ \frac{99}{50}, 0, 0 | 0 ; \frac{1}{50}, 0, 0 | 0 ; 0, 2, \frac{49}{25} | 0 ]] & 
 		
-		[[ 1, 0, 0 | 0 ; 1, 0, 0 | 0 ; 0, 50, 49 | 0 ]] & \qquad \begin{array}{l} **r_1** \te \frac{50}{99} \\ **r_2** \te 50 \\ **r_3** \te 25 \end{array}
+		[[ 1, 0, 0 | 0 ; 1, 0, 0 | 0 ; 0, 50, 49 | 0 ]] & \qquad :: \vec{r_1} \te \frac{50}{99} ; \vec{r_2} \te 50 ; \vec{r_3} \te 25 ::
 		
-		[[ 1, 0, 0 | 0 ; 0, 0, 0 | 0 ; 0, 50, 49 | 0 ]] & \qquad **r_2** \pe -**r_1**
+		[[ 1, 0, 0 | 0 ; 0, 0, 0 | 0 ; 0, 50, 49 | 0 ]] & \qquad \vec{r_2} \pe -\vec{r_1}
 		
 		v_1 = 0, & \quad v_2 = -\frac{49}{50} v_3.
 	$$
@@ -113,7 +113,7 @@ In other words, $\vec{v}$ is an eigenvector of $A$ with eigenvalue $\lambda$. Al
 	With $v_3 = 50$, we have an eigenvector of
 	
 	$$
-		**v** = [[ 0 ; -49 ; 50 ]].
+		\vec{v} = [[ 0 ; -49 ; 50 ]].
 	$$
 	
 	Finally, we have $\lambda = \frac{1}{25}$:
@@ -123,9 +123,9 @@ In other words, $\vec{v}$ is an eigenvector of $A$ with eigenvalue $\lambda$. Al
 		
 		[[ \frac{1}{50}, 0, 0 | 0 ; \frac{1}{50}, -\frac{49}{25}, 0 | 0 ; 0, 2, 0 | 0 ]] & 
 		
-		[[ 1, 0, 0 | 0 ; 1, -98, 0 | 0 ; 0, 1, 0 | 0 ]] & \qquad \begin{array}{l} **r_1** \te 50 \\ **r_2** \te 50 \\ **r_3** \te \frac{1}{2} \end{array}
+		[[ 1, 0, 0 | 0 ; 1, -98, 0 | 0 ; 0, 1, 0 | 0 ]] & \qquad :: \vec{r_1} \te 50 ; \vec{r_2} \te 50 ; \vec{r_3} \te \frac{1}{2} ::
 		
-		[[ 1, 0, 0 | 0 ; 0, 0, 0 | 0 ; 0, 1, 0 | 0 ]] & \qquad \begin{array}{l} **r_2** \pe -**r_1** \\ **r_2** \pe 98**r_3** \end{array}
+		[[ 1, 0, 0 | 0 ; 0, 0, 0 | 0 ; 0, 1, 0 | 0 ]] & \qquad :: \vec{r_2} \pe -\vec{r_1} ; \vec{r_2} \pe 98\vec{r_3} ::
 		
 		v_1 = 0, & \quad v_2 = 0.
 	$$
@@ -133,13 +133,13 @@ In other words, $\vec{v}$ is an eigenvector of $A$ with eigenvalue $\lambda$. Al
 	That leaves $v_3$ undetermined, so let's just set $v_3 = 1$. Then our eigenvector is
 	
 	$$
-		**v** = [[ 0 ; 0 ; 1 ]].
+		\vec{v} = [[ 0 ; 0 ; 1 ]].
 	$$
 	
 	At long last, we're done! Our general solution is
 	
 	$$
-		**x** = c_1 e^{-t / 50} [[ 99 ; 1 ; 100 ]] + c_2 e^{-2t} [[ 0 ; -49 ; 50 ]] + c_3 e^{-t / 25} [[ 0 ; 0 ; 1 ]].
+		\vec{x} = c_1 e^{-t / 50} [[ 99 ; 1 ; 100 ]] + c_2 e^{-2t} [[ 0 ; -49 ; 50 ]] + c_3 e^{-t / 25} [[ 0 ; 0 ; 1 ]].
 	$$
 	
 	Now we just need to find our particular solution:
@@ -149,13 +149,13 @@ In other words, $\vec{v}$ is an eigenvector of $A$ with eigenvalue $\lambda$. Al
 		
 		[[ 99, 0, 0 | 990 ; 1, -49, 0 | 500 ; 100, 50, 1 | 0 ]] & 
 		
-		[[ 1, 0, 0 | 10 ; 1, -49, 0 | 500 ; 100, 50, 1 | 0 ]] & \qquad **r_1** \te \frac{1}{99}
+		[[ 1, 0, 0 | 10 ; 1, -49, 0 | 500 ; 100, 50, 1 | 0 ]] & \qquad \vec{r_1} \te \frac{1}{99}
 		
-		[[ 1, 0, 0 | 10 ; 0, -49, 0 | 490 ; 100, 50, 1 | 0 ]] & \qquad **r_2** \pe -**r_1**
+		[[ 1, 0, 0 | 10 ; 0, -49, 0 | 490 ; 100, 50, 1 | 0 ]] & \qquad \vec{r_2} \pe -\vec{r_1}
 		
-		[[ 1, 0, 0 | 10 ; 0, 1, 0 | -10 ; 100, 50, 1 | 0 ]] & \qquad **r_2** \te -\frac{1}{49}
+		[[ 1, 0, 0 | 10 ; 0, 1, 0 | -10 ; 100, 50, 1 | 0 ]] & \qquad \vec{r_2} \te -\frac{1}{49}
 		
-		[[ 1, 0, 0 | 10 ; 0, 1, 0 | -10 ; 0, 0, 1 | -500 ]] & \qquad \begin{array}{l} **r_3** \pe -100**r_1** \\ **r_3** \pe -50**r_2** \end{array}
+		[[ 1, 0, 0 | 10 ; 0, 1, 0 | -10 ; 0, 0, 1 | -500 ]] & \qquad :: \vec{r_3} \pe -100\vec{r_1} ; \vec{r_3} \pe -50\vec{r_2} ::
 		
 		c_1 = 10, \quad c_2 = -10, & \quad c_3 = -500.
 	$$
@@ -163,7 +163,7 @@ In other words, $\vec{v}$ is an eigenvector of $A$ with eigenvalue $\lambda$. Al
 	The original problem asked for the masses of salt after 5 minutes, which is when $t = 300$:
 	
 	$$
-		**x** &= 10 e^{-300 / 50} [[ 99 ; 1 ; 100 ]] -10 e^{-2(300)} [[ 0 ; -49 ; 50 ]] - 500 e^{-300 / 25} [[ 0 ; 0 ; 1 ]]
+		\vec{x} &= 10 e^{-300 / 50} [[ 99 ; 1 ; 100 ]] -10 e^{-2(300)} [[ 0 ; -49 ; 50 ]] - 500 e^{-300 / 25} [[ 0 ; 0 ; 1 ]]
 		
 		&\approx [[ 2.454 ; 0.025 ; 2.479 ]] + [[ 0 ; 0 ; 0 ]] + [[ 0 ; 0 ; -0.003 ]]
 		
@@ -189,5 +189,11 @@ In other words, $\vec{v}$ is an eigenvector of $A$ with eigenvalue $\lambda$. Al
 	Find the general solution to the system.
 	
 ###
+
+
+
+## Complex Eigenvalues
+
+Let's focus on the specific case of $2 \times 2$ systems, since those are the ones we can easily plot. In $\vec{x}' = A\vec{x}$, we had 
 
 ### nav-buttons
