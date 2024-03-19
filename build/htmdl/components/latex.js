@@ -6,8 +6,8 @@ export function parseLatex(latex)
 		.replaceAll(/(?<!\\)\\me(?![a-zA-Z])/g, "\\ -\\!\\!=")
 		.replaceAll(/(?<!\\)\\te(?![a-zA-Z])/g, "\\ \\times\\!\\!=")
 
-		// \span, \image, \swap
-		.replaceAll(/(?<!\\)\\(span|image|swap)(?![a-zA-Z])/g, (match, $1) => `\\operatorname{${$1}}`)
+		// \span, \image, \swap, \re, \im
+		.replaceAll(/(?<!\\)\\(span|image|swap|Re|Im)(?![a-zA-Z])/g, (match, $1) => `\\operatorname{${$1}}`)
 
 		// Matrices: [[1, 2, 3 ; 4, 5, 6 ; 7, 8, 9]]
 		.replaceAll(/\[\[(.+?)\]\]/g, (match, $1) =>

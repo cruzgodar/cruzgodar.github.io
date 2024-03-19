@@ -367,13 +367,74 @@ This is more than a motivating example: it holds in general.
 
 ### thm "block diagonalization for complex eigenvalues"
 
-	Let $A$ be an $n \times n$ diagonalizable matrix with real entries, eigenvectors $\vec{v_1}, ..., \vec{v_n}$, and corresponding eigenvalues $\lambda_1, ..., \lambda_n$ (possibly repeated). Define $\vec{w_1}, ..., \vec{w_n}$ as follows: if $\lambda_i$ (and therefore $\vec{v_i}$) is real, then $\vec{w_i} = \vec{v_i}$. Otherwise, $\lambda_i = a + bi$, and another eigenvalue, say $\lambda_{i + 1}$, is $a - bi$. Moreover, the eigenvectors $\vec{v_i}$ and $\vec{v_{i + 1}}$ are conjugates. In that case, we define $\vec{w_i} = \operatorname{Re} \vec{v_i}$ and $\vec{w_{i + 1}} = \operatorname{Im} \vec{v_i}$ (i.e. the real and imaginary parts). Then $\{\vec{w_1}, ..., \vec{w_n}\}$ is a basis for $#R#^n$, and if $B$ is the matrix with $\vec{w_i}$ as its columns and $D$ is the nearly-diagonal matrix with entries of $\lambda_i$ for real $\lambda_i$ and $2 \times 2$ blocks
+	Let $A$ be an $n \times n$ diagonalizable matrix with real entries, eigenvectors $\vec{v_1}, ..., \vec{v_n}$, and corresponding eigenvalues $\lambda_1, ..., \lambda_n$ (possibly repeated). Define $\vec{w_1}, ..., \vec{w_n}$ as follows: if $\lambda_i$ (and therefore $\vec{v_i}$) is real, then $\vec{w_i} = \vec{v_i}$. Otherwise, $\lambda_i = a + bi$, and another eigenvalue, say $\lambda_{i + 1}$, is $a - bi$. Moreover, the eigenvectors $\vec{v_i}$ and $\vec{v_{i + 1}}$ are conjugates. In that case, we define $\vec{w_i} = \Re \vec{v_i}$ and $\vec{w_{i + 1}} = \Im \vec{v_i}$ (i.e. the real and imaginary parts). Then $\{\vec{w_1}, ..., \vec{w_n}\}$ is a basis for $#R#^n$, and if $B$ is the matrix with $\vec{w_i}$ as its columns and $D$ is the nearly-diagonal matrix with entries of $\lambda_i$ for real $\lambda_i$ and $2 \times 2$ blocks
 
 	$$
 		[[ a, b ; -b, a ]]
 	$$
 
 	for any pair of complex eigenvalues $\lambda_i = a + bi$ and $\lambda_{i + 1} = a - bi$, then $A = BDB^{-1}$.
+
+###
+
+This theorem is so dense with math that it's almost more trouble than it's worth, but when we look past the symbols to the meaning, it's valuable to know. A diagonalizable matrix $A$ with real entries and all real eigenvalues diagonalizes **over $#R#$**, in the sense that we can write it as $A = BDB^{-1}$ for real matrices $B$ and $D$. If $A$ is diagonalizable and real entries but not all real eigenvalues, though, we have a choice to make: we can diagonalize it over $#C#$, but it's often more useful to get as close as we can without using complex numbers in the expansion. To that end, the previous theorem tells us that if we replace adjacent conjugate columns in $B$ by the real and imaginary parts of one of them, and also replace $2 \times 2$ blocks of $D$ with the following move:
+
+$$
+	\begin{array}{cc} a + bi & 0 \\ 0 & a - bi \end{array} \ \longmapsto\ \begin{array}{cc} a & b \\ -b & a \end{array}
+$$
+
+then the resulting expression $BDB^{-1}$ is both all real and still equals $A$.
+
+### pf
+
+	To show this result, let $A$ be a diagonalizable $n \times n$ matrix with all real entries and suppose $a + bi$ is an eigenvalue with algebraic multiplicity $k$. Then $a - bi$ is also an eigenvalue with algebraic multiplicity $k$, and since $A$ is diagonalizable, the geometric multiplicities of both are also $k$. Let's call their eigenspaces $E_1$ and $E_2$, respectively; if $\{\vec{v_1}, ..., \vec{v_k}\}$ is a basis for $E_1$, then $\{\overline{\vec{v_1}}, ..., \overline{\vec{v_k}}\}$ is a basis for $E_2$. Now since $A$ is diagonalizable, all $2k$ of these vectors are linearly independent, and so is the collection of linearly transformed vectors
+
+	$$
+		\frac{1}{2}\left( \vec{v_1} + \overline{\vec{v_1}} \right), \frac{1}{2}\left( \vec{v_1} - \overline{\vec{v_1}} \right), ..., \frac{1}{2}\left( \vec{v_n} + \overline{\vec{v_n}} \right), \frac{1}{2}\left( \vec{v_n} - \overline{\vec{v_n}} \right).
+	$$
+
+	Now for any complex number $z$, $\Re z = \frac{1}{2}\left( z + \overline{z} \right)$ and $\Im z = -\frac{i}{2}\left( z - \overline{z} \right)$: if $z = c + di$, then
+
+	$$
+		\frac{1}{2}\left( z + \overline{z} \right) &= \frac{1}{2}\left( c + di + c - di \right) = \frac{1}{2}(2c) = c
+
+		-\frac{i}{2}\left( z - \overline{z} \right) &= \frac{1}{2}\left( c + di - c + di \right) = -\frac{i}{2}(2di) = d.
+	$$
+
+
+	So these new $2k$ vectors are exactly the new columns of $B$ from the theorem, and all that remains is to check that $A$ has the correct effect on them. For any $\vec{v_j}$, we have
+
+	$$
+		A\left( \Re \vec{v_j} \right) &= A\left( \frac{1}{2}\left( \vec{v_j} + \overline{\vec{v_j}} \right) \right)
+
+		&= \frac{1}{2} \left( (a + bi)\vec{v_j} + (a - bi)\overline{\vec{v_j}} \right)
+
+		&= \frac{a}{2} \vec{v_j} + \frac{a}{2} \overline{\vec{v_j}} + \frac{bi}{2} \vec{v_j} - \frac{bi}{2} \overline{\vec{v_j}}
+
+		&= \frac{a}{2}\left( \vec{v_j} + \overline{\vec{v_j}} \right) + \frac{bi}{2}\left( \vec{v_j} - \overline{\vec{v_j}} \right)
+
+		&= a \Re\vec{v_j} - b\Im\vec{v_j}.
+	$$
+
+	Similarly,
+
+	$$
+		A\left( \Im \vec{v_j} \right) = b \Re\vec{v_j} + a \Im\vec{v_j},
+	$$
+
+	showing the result.
+
+###
+
+### exc "block diagonalization"
+
+	Find the eigenvectors and eigenvalues of
+
+	$$
+		A = [[ 2, 1, 2 ; 1, 0, -6 ; -1, 1, 5 ]]
+	$$
+
+	and use them to write $A = BDB^{-1}$ for real matrices $B$ and $D$, where $D$ is block diagonal with at most $2 \times 2$ blocks.
 
 ###
 
