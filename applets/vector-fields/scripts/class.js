@@ -58,6 +58,10 @@ export class VectorField extends AnimationFrameApplet
 	zoomVelocityStartThreshhold = .002;
 	zoomVelocityStopThreshhold = .002;
 
+	timeElapsedHistoryLength = 30;
+	lastTimeElapsed = new Array(this.timeElapsedHistoryLength);
+	frame = 0;
+
 
 
 	constructor({ canvas })
@@ -600,10 +604,26 @@ export class VectorField extends AnimationFrameApplet
 
 			this.wilsonDim.gl.useProgram(this.wilsonDim.render.shaderPrograms[0]);
 
-			this.wilsonDim.gl.uniform1f(
-				this.wilsonDim.uniforms["dimAmount"][0],
-				timeElapsed / 6.944
-			);
+			this.lastTimeElapsed[this.frame % this.timeElapsedHistoryLength] = timeElapsed;
+
+			if (this.frame >= this.timeElapsedHistoryLength)
+			{
+				let averageTimeElapsed = 0;
+
+				for (let i = 0; i < this.timeElapsedHistoryLength; i++)
+				{
+					averageTimeElapsed += this.lastTimeElapsed[i];
+				}
+
+				this.wilsonDim.gl.uniform1f(
+					this.wilsonDim.uniforms["dimAmount"][0],
+					(averageTimeElapsed / this.timeElapsedHistoryLength) / 6.944
+				);
+
+				console.log(averageTimeElapsed / this.timeElapsedHistoryLength);
+			}
+
+			this.frame++;
 
 
 

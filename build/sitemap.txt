@@ -57,6 +57,7 @@ home Cruz Godar
 			notes/0-linear-algebra-1-review Section 0: Linear Algebra I Review
 			notes/1-eigenvectors-and-eigenvalues Section 1: Eigenvectors and Eigenvalues
 			notes/2-diagonalization Section 2: Diagonalization
+			notes/3-intro-to-des Section 3: Intro to Differential Equations
 
 		uo/341 Math 341
 			notes/1-vectors-and-matrices Section 1: Vectors and Matrices

@@ -1,0 +1,37 @@
+### nav-buttons
+
+With the theory of eigenvectors and eigenvalues largely complete, let's return to one of our motivating examples: dynamical systems. As a quick reminder, a **differential equation**, or **DE** is an equation involving a function $x(t)$ and its derivatives, and a solution is a formula for $x(t)$. For example, $x' = 2t$ has a general solution of $x = t^2 + c$, and $x' = 2x$ has a general solution of $x = ce^{2t}$. We'll be dealing with **linear systems** of DEs, which is one of the form
+
+$$
+	\vec{x}' = A\vec{x}
+$$
+
+for a matrix $A$ with real (and constant) entries. In two variables, this is just
+
+$$
+	x' &= ax + by
+
+	y' &= cx + dy
+$$
+
+for constants $a$, $b$, $c$, and $d$. The most natural way to visualize these is as **vector fields**: since $(x', y')$ is the velocity at $(x, y)$, we can draw a grid of vectors arrows, where the arrow at $(x, y)$ is given by $(x', y')$. For example, the system
+
+$$
+	x &= x + 3y
+
+	y &= 4x + 2y
+$$
+
+has the following vector field plot.
+
+### desmos vector-field
+
+Solutions to the system are curves that follow the field at every point, like the blue curve here. Alternatively, we can represent systems of two DEs as a field of flowing particles, moving according the the velocity given by $(x', y')$.
+
+### canvas vector-field
+
+This time, a solution is just the path that one specific particle takes over its lifetime.
+
+
+
+### nav-buttons

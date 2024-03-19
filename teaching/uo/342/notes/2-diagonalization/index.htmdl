@@ -44,7 +44,7 @@ Having $n$ distinct eigenvalues might be a sufficient condition for a matrix to 
 
 	Find the eigenvectors and eigenvalues of $A$.
 
-	We'll begin as usual by find the roots of the characteristic polynomial $\chi_A(\lambda)$. We have
+	We'll begin as usual by finding the roots of the characteristic polynomial $\chi_A(\lambda)$. We have
 
 	$$
 		\chi_A(\lambda) &= \det (A - \lambda I)
@@ -190,7 +190,7 @@ So, what has all this work told us? If a matrix has at least $k$ linearly indepe
 		E_2 &= \span\left\{ [[ 0 ; 1 ; 0 ]] \right\},
 	$$
 
-	and so both eigenvalues have geometric multiplicities of 1. Later on, we'll develop a sense in $A_2$ is "almost" diagonal, or at least the closest we can get, but for now, it's a black-and-white distinction.
+	and so both eigenvalues have geometric multiplicities of 1. Later on, we'll develop a sense in which $A_2$ is "almost" diagonal, or at least the closest we can get, but for now, it's a black-and-white distinction.
 
 ###
 
@@ -329,13 +329,13 @@ Although it's a little frustrating that we'll have to work with complex numbers 
 		A [[ 1 ; -2 ; 0 ]] &= [[ 3 ; -12 ; 6 ]] = 3 [[ -1 ; 0 ; 2 ]] + 6 [[ 1 ; -2 ; 0 ]].
 	$$
 
-	We've come very close to diagonalizing $A$: while the output of these two vectors aren't scalar multiples of themselves like eigenvectors, they're linear combinations of one another --- so instead of a perfectly diagonal matrix, we'll have a $2 \times 2$ block in the lower right.
+	We've come very close to diagonalizing $A$: while the outputs of these two vectors aren't scalar multiples of themselves like eigenvectors, they're linear combinations of one another --- so instead of a perfectly diagonal matrix, we'll have a $2 \times 2$ block in the lower right.
 
 	$$
 		A = [[ 1, -1, 1 ; 0, 0, -2 ; 1, 2, 0 ]] [[ 0, 0, 0 ; 0, 6, 3 ; 0, -3, 6 ]] [[ 1, -1, 1 ; 0, 0, -2 ; 1, 2, 0 ]]^{-1}.
 	$$
 
-	How are we supposed to interpret this geometrically? When all the eigenvalues and eigenvectors of a diagonalizable matrix were real, the eigenvectors were the axes along which the matrix exclusively scaled, but now there's no real eigenvectors in the $yz$-plane. Instead, let's focus in on the matrix
+	How are we supposed to interpret this geometrically? When all the eigenvalues and eigenvectors of a diagonalizable matrix were real, the eigenvectors were the axes along which the matrix exclusively scaled, but now there are no real eigenvectors in the $yz$-plane. Instead, let's focus in on the matrix
 
 	$$
 		[[ 6, 3 ; -3, 6 ]].

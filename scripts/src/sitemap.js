@@ -678,7 +678,8 @@ export const sitemap =
 		[
 			"/teaching/uo/342/notes/0-linear-algebra-1-review/",
 			"/teaching/uo/342/notes/1-eigenvectors-and-eigenvalues/",
-			"/teaching/uo/342/notes/2-diagonalization/"
+			"/teaching/uo/342/notes/2-diagonalization/",
+			"/teaching/uo/342/notes/3-intro-to-des/"
 		]
 	},
 		
@@ -709,6 +710,17 @@ export const sitemap =
 	"/teaching/uo/342/notes/2-diagonalization/":
 	{
 		"title": "Section 2: Diagonalization",
+		
+		"parent": "/teaching/uo/342/",
+		
+		"children": [],
+
+		"customScript": true
+	},
+	
+	"/teaching/uo/342/notes/3-intro-to-des/":
+	{
+		"title": "Section 3: Intro to Differential Equations",
 		
 		"parent": "/teaching/uo/342/",
 		
