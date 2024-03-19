@@ -604,7 +604,9 @@ export class VectorField extends AnimationFrameApplet
 
 			this.wilsonDim.gl.useProgram(this.wilsonDim.render.shaderPrograms[0]);
 
-			this.lastTimeElapsed[this.frame % this.timeElapsedHistoryLength] = timeElapsed;
+			this.lastTimeElapsed[
+				this.frame % this.timeElapsedHistoryLength
+			] = Math.min(timeElapsed, 16);
 
 			if (this.frame >= this.timeElapsedHistoryLength)
 			{
@@ -619,8 +621,6 @@ export class VectorField extends AnimationFrameApplet
 					this.wilsonDim.uniforms["dimAmount"][0],
 					(averageTimeElapsed / this.timeElapsedHistoryLength) / 6.944
 				);
-
-				console.log(averageTimeElapsed / this.timeElapsedHistoryLength);
 			}
 
 			this.frame++;
