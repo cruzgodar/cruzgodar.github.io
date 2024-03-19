@@ -190,10 +190,40 @@ In other words, $\vec{v}$ is an eigenvector of $A$ with eigenvalue $\lambda$. Al
 	
 ###
 
+When the eigenvalues of the matrix $A$ are complex or repeated, the solution to the system $\vec{x}' = A\vec{x}$ are a little out of the scope of our class.
 
+Let's focus on the specific case of $2 \times 2$ systems, since those are the ones we can easily plot. If $A$ is diagonalizable with real eigenvalues $\lambda_1$ and $\lambda_2$ and corresponding linearly independent eigenvectors $\vec{v_1}$ and $\vec{v_2}$, then the general solution of 
 
-## Complex Eigenvalues
+$$
+	\vec{x} = c_1e^{\lambda_1 t}\vec{v_1} + c_2e^{\lambda_2 t}\vec{v_2}
+$$
 
-Let's focus on the specific case of $2 \times 2$ systems, since those are the ones we can easily plot. In $\vec{x}' = A\vec{x}$, we had 
+means that when $\vec{x}$ is parallel to either $\vec{v_1}$ or $\vec{v_2}$, so is its velocity, so it stays on that line. The result is equilibrium solutions lying on lines perpendicular to the eigenvectors. Moreover, as $t \to \infty$, the factor of $e^{\lambda t}$ approaches zero for negative $\lambda$ and $\infty$ for positive $\lambda$, and so the sign of the eigenvalue determines the direction of flow along the line perpendicular to the eigenvector --- either toward the origin or away from it. The opening example of
+
+$$
+	[[ x' ; y' ]] &= [[ 1, 3 ; 4, 2 ]] [[ x ; y ]],
+$$
+
+for instance, has eigenvectors of $[[ 3 ; 4 ]]$ and $[[ -1 ; -1 ]]$ with eigenvalues of $5$ and $-2$, respectively.
+
+Let's close the section by examining a matrix that can exhibit all possible configurations of eigenvalues to see how the vector field differs. With draggable points $(a, b)$ and $(c, d)$, the system
+
+$$
+	x' &= ax + by
+
+	y' &= cx + dy
+$$
+
+is plotted below.
+
+### canvas eigenvector-axes
+
+If you'd like to see more of this content, consider taking Math 256! Alternatively, I have a full set of notes for the course, including many more of these vector field animations.
+
+### image-links
+	/teaching/uo/256/ "Math 256 Notes"
+###
+
+<div style="height: 32px"></div>
 
 ### nav-buttons

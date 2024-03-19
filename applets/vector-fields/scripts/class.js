@@ -64,8 +64,11 @@ export class VectorField extends AnimationFrameApplet
 
 
 
-	constructor({ canvas })
-	{
+	constructor({
+		canvas,
+		draggable1Location = [1, 0],
+		draggable2Location = [-1, 0]
+	}) {
 		super(canvas);
 
 		this.updateCanvas = this.createHiddenCanvas();
@@ -316,9 +319,8 @@ export class VectorField extends AnimationFrameApplet
 
 
 
-		this.wilson.draggables.add(1, 0);
-
-		this.wilson.draggables.draggables[0].style.display = "none";
+		this.wilson.draggables.add(...draggable1Location);
+		this.wilson.draggables.add(...draggable2Location);
 
 
 
@@ -359,6 +361,7 @@ export class VectorField extends AnimationFrameApplet
 			uniform float dt;
 			
 			uniform vec2 draggableArg;
+			uniform vec2 draggableArg2;
 			
 			
 			
@@ -430,63 +433,31 @@ export class VectorField extends AnimationFrameApplet
 		this.wilsonUpdate.render.loadNewShader(fragShaderSourceUpdateS);
 		this.wilsonUpdate.render.loadNewShader(fragShaderSourceUpdateS2);
 
-		this.wilsonUpdate.render.initUniforms(["dt", "draggableArg"], 0);
-		this.wilsonUpdate.render.initUniforms(["dt", "draggableArg"], 1);
-		this.wilsonUpdate.render.initUniforms(["dt", "draggableArg"], 2);
-		this.wilsonUpdate.render.initUniforms(["dt", "draggableArg"], 3);
-		this.wilsonUpdate.render.initUniforms(["dt", "draggableArg"], 4);
-
-		this.wilsonUpdate.gl.useProgram(this.wilsonUpdate.render.shaderPrograms[0]);
-		this.wilsonUpdate.gl.uniform1f(this.wilsonUpdate.uniforms["dt"][0], this.dt);
-		
-		this.wilsonUpdate.gl.uniform2fv(
-			this.wilsonUpdate.uniforms["draggableArg"][0],
-			this.wilson.draggables.worldCoordinates[0]
-		);
-
-		this.wilsonUpdate.gl.useProgram(this.wilsonUpdate.render.shaderPrograms[1]);
-		this.wilsonUpdate.gl.uniform1f(this.wilsonUpdate.uniforms["dt"][1], this.dt);
-		
-		this.wilsonUpdate.gl.uniform2fv(
-			this.wilsonUpdate.uniforms["draggableArg"][1],
-			this.wilson.draggables.worldCoordinates[0]
-		);
-
-		this.wilsonUpdate.gl.useProgram(this.wilsonUpdate.render.shaderPrograms[2]);
-		this.wilsonUpdate.gl.uniform1f(this.wilsonUpdate.uniforms["dt"][2], this.dt);
-		
-		this.wilsonUpdate.gl.uniform2fv(
-			this.wilsonUpdate.uniforms["draggableArg"][2],
-			this.wilson.draggables.worldCoordinates[0]
-		);
-
-		this.wilsonUpdate.gl.useProgram(this.wilsonUpdate.render.shaderPrograms[3]);
-		this.wilsonUpdate.gl.uniform1f(this.wilsonUpdate.uniforms["dt"][3], this.dt);
-		
-		this.wilsonUpdate.gl.uniform2fv(
-			this.wilsonUpdate.uniforms["draggableArg"][3],
-			this.wilson.draggables.worldCoordinates[0]
-		);
-
-		this.wilsonUpdate.gl.useProgram(this.wilsonUpdate.render.shaderPrograms[4]);
-		this.wilsonUpdate.gl.uniform1f(this.wilsonUpdate.uniforms["dt"][4], this.dt);
-		
-		this.wilsonUpdate.gl.uniform2fv(
-			this.wilsonUpdate.uniforms["draggableArg"][4],
-			this.wilson.draggables.worldCoordinates[0]
-		);
-
-
-
-		if (generatingCode.indexOf("draggableArg") !== -1)
+		for (let i = 0; i < 5; i++)
 		{
-			this.wilson.draggables.draggables[0].style.display = "block";
+			this.wilsonUpdate.render.initUniforms(["dt", "draggableArg", "draggableArg2"], i);
+
+			this.wilsonUpdate.gl.useProgram(this.wilsonUpdate.render.shaderPrograms[i]);
+			this.wilsonUpdate.gl.uniform1f(this.wilsonUpdate.uniforms["dt"][i], this.dt);
+			
+			this.wilsonUpdate.gl.uniform2fv(
+				this.wilsonUpdate.uniforms["draggableArg"][i],
+				this.wilson.draggables.worldCoordinates[0]
+			);
+
+			this.wilsonUpdate.gl.uniform2fv(
+				this.wilsonUpdate.uniforms["draggableArg2"][i],
+				this.wilson.draggables.worldCoordinates[1]
+			);
 		}
 
-		else
-		{
-			this.wilson.draggables.draggables[0].style.display = "none";
-		}
+
+
+		this.wilson.draggables.draggables[0].style.display =
+			generatingCode.indexOf("draggableArg") !== -1 ? "block" : "none";
+		
+		this.wilson.draggables.draggables[1].style.display =
+			generatingCode.indexOf("draggableArg2") !== -1 ? "block" : "none";
 
 
 
@@ -520,6 +491,7 @@ export class VectorField extends AnimationFrameApplet
 		this.wilson.worldCenterX = worldCenterX;
 		this.wilson.worldCenterY = worldCenterY;
 		this.zoomLevel = zoomLevel;
+		this.zoomCanvas();
 
 		this.wilson.gl.uniform1f(this.wilson.uniforms["maxBrightness"], this.lifetime / 255);
 
@@ -1036,22 +1008,20 @@ export class VectorField extends AnimationFrameApplet
 
 
 
-	onDragDraggable(activeDraggable, x, y)
-	{
-		this.wilsonUpdate.gl.useProgram(this.wilsonUpdate.render.shaderPrograms[0]);
-		this.wilsonUpdate.gl.uniform2f(this.wilsonUpdate.uniforms["draggableArg"][0], x, y);
+	onDragDraggable(
+		activeDraggable = 0,
+		x = this.wilson.draggables.worldCoordinates[0][0],
+		y = this.wilson.draggables.worldCoordinates[0][1]
+	) {
+		const uniforms = activeDraggable === 0
+			? this.wilsonUpdate.uniforms["draggableArg"]
+			: this.wilsonUpdate.uniforms["draggableArg2"];
 
-		this.wilsonUpdate.gl.useProgram(this.wilsonUpdate.render.shaderPrograms[1]);
-		this.wilsonUpdate.gl.uniform2f(this.wilsonUpdate.uniforms["draggableArg"][1], x, y);
-
-		this.wilsonUpdate.gl.useProgram(this.wilsonUpdate.render.shaderPrograms[2]);
-		this.wilsonUpdate.gl.uniform2f(this.wilsonUpdate.uniforms["draggableArg"][2], x, y);
-
-		this.wilsonUpdate.gl.useProgram(this.wilsonUpdate.render.shaderPrograms[3]);
-		this.wilsonUpdate.gl.uniform2f(this.wilsonUpdate.uniforms["draggableArg"][3], x, y);
-
-		this.wilsonUpdate.gl.useProgram(this.wilsonUpdate.render.shaderPrograms[4]);
-		this.wilsonUpdate.gl.uniform2f(this.wilsonUpdate.uniforms["draggableArg"][4], x, y);
+		for (let i = 0; i < 5; i++)
+		{
+			this.wilsonUpdate.gl.useProgram(this.wilsonUpdate.render.shaderPrograms[i]);
+			this.wilsonUpdate.gl.uniform2f(uniforms[i], x, y);
+		}
 	}
 
 
@@ -1218,6 +1188,8 @@ export class VectorField extends AnimationFrameApplet
 			this.wilson.worldCenterX = newWorldCenter[0];
 			this.wilson.worldCenterY = newWorldCenter[1];
 		}
+
+		this.wilson.draggables.recalculateLocations();
 	}
 
 

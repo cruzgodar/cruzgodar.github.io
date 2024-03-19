@@ -55,18 +55,41 @@ export function load()
 
 	createDesmosGraphs();
 
-	const outputCanvas = $("#vector-field-canvas");
 
-	const applet = new VectorField({ canvas: outputCanvas });
 
-	applet.loadPromise.then(() =>
+	const vectorFieldCanvas = $("#vector-field-canvas");
+
+	const vectorFieldApplet = new VectorField({ canvas: vectorFieldCanvas });
+
+	vectorFieldApplet.loadPromise.then(() =>
 	{
-		applet.run({
+		vectorFieldApplet.run({
 			generatingCode: "((x + 3.0 * y) / 8.0, (4.0 * x + 2.0 * y) / 8.0)",
 			zoomLevel: 1
 		});
-		applet.pauseWhenOffscreen();
+		vectorFieldApplet.pauseWhenOffscreen();
 	});
+
+	
+
+	const eigenvectorAxesCanvas = $("#eigenvector-axes-canvas");
+
+	const eigenvectorAxesApplet = new VectorField({
+		canvas: eigenvectorAxesCanvas,
+		draggable1Location: [-1, -1],
+		draggable2Location: [1, 0]
+	});
+
+	eigenvectorAxesApplet.loadPromise.then(() =>
+	{
+		eigenvectorAxesApplet.run({
+			generatingCode: "(dot(draggableArg, vec2(x,y)), dot(draggableArg2, vec2(x,y)))",
+			zoomLevel: -.75
+		});
+		eigenvectorAxesApplet.pauseWhenOffscreen();
+	});
+
+
 
 	showPage();
 }
