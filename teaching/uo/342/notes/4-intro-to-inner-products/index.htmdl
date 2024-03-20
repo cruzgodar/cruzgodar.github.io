@@ -1,0 +1,65 @@
+### nav-buttons
+
+So far in linear algebra, we've focused on vectors as fairly abstract concepts. Vectors can look like lists of $n$ numbers in $#R#^n$, polynomials in $#R#[x]$, or even matrices or linear transformations. But largely speaking, we've refrained from talking about the *geometry* of these spaces. Vectors in $#R#^2$, typically represented as arrows in the plane, have notions of length and direction in addition to the component representation we're more familiar with, and there's often a lot to be gained from thinking about vectors in this way. There's also the **dot product**, which takes two vectors and produces a number that measures their lengths and the angle between them, and in $#R#^3$ specifically, there's also the **cross product**, which takes two vectors and produces a third vector that's orthogonal (i.e. perpendicular) to them.
+
+So what can we expect to generalize to arbitrary vector spaces? Probably not the cross product, since it's not even defined in $#R#^n$ unless $n = 3$ (there are technically generalizations to higher dimensions, but they're still specific to $#R#^n$ and won't generalize past that). Also, the notion of a vector having a single direction in $#R#^2$ breaks down immediately in $#R#^3$, where we need to know two angles and a length (i.e. spherical coordinates) to pin down a vector. In an $n$-dimensional space, there are $n$ degrees of freedom, so we'd need $n - 1$ angles to keep track of a vector if we know its length, and that's probably not a realistic goal. On the other hand, the angle *between* two vectors works just fine in every $#R#^n$, as does the dot product. In fact, everything that feels like it should generalize --- the angle between vectors, orthogonality, and magnitude --- can be defined in terms of the dot product. Let's review how it works in $#R#^n$, and then we'll begin to bring its ideas to more general vector spaces.
+
+### def "the dot product"
+
+	Let $\vec{v}, \vec{w} \in #R#^n$. The **dot product** of $\vec{v}$ and $\vec{w}$, written $\vec{v} \bullet \vec{w}$, is defined by
+
+	$$
+		[[ v_1 ; v_2 ; \vdots ; v_n ]] \bullet [[ w_1 ; w_2 ; \vdots ; w_n ]] = v_1 w_1 + v_2 w_2 + \cdots + v_n w_n.
+	$$
+
+###
+
+It's not particularly clear why this is something we'd care about initially, especially when $\vec{v} \bullet \vec{w}$ isn't even a vector in $#R#^n$. To start, let's write down a few fundamental properties of the dot product, and then we'll look at what it can be used for.
+
+### prop "properties of the dot product"
+
+	1. The dot product is **symmetric**: $\vec{v} \bullet \vec{w} = \vec{w} \bullet \vec{v}$ for all $\vec{v}, \vec{w} \in #R#^n$.
+
+	2. The dot product is **bilinear**:
+	
+	$$
+		\left( \vec{u} + \vec{v} \right) \bullet \vec{w} = \vec{u} \bullet \vec{w} + \vec{v} \bullet \vec{w}
+	$$
+
+	and
+
+	$$
+		\left( c\vec{v} \right) \bullet \vec{w} = c \left( \vec{v} \bullet \vec{w} \right)
+	$$
+
+	for all $\vec{u}, \vec{v}, \vec{w} \in #R#^n$ and $c \in #R#$.
+
+	3. The dot product is **positive definite**: $\vec{v} \bullet \vec{v} \geq 0$ for all $\vec{v} \in #R#^n$, and the only $\vec{v}$ for which $\vec{v} \bullet \vec{v} = 0$ is $\vec{v} = 0$.
+
+###
+
+The last property lets us define a notion of length in terms of only the dot product, finally connecting us to some of the geometry that we haven't been dealing with directly.
+
+### def "magnitude"
+
+	Let $\vec{v} \in #R#^n$. The **magnitude** of $\vec{v}$, also called the **length** or **norm**, is $||\vec{v}|| = \sqrt{\vec{v} \bullet \vec{v}}$.
+
+###
+
+This is exactly the notion of length we're used to: the vector $\vec{v} = [[ 2 ; -3 ]] \in #R#^2$ has magnitude
+
+$$
+	||\vec{v}|| &= \sqrt{\vec{v} \bullet \vec{v}}
+
+	&= \sqrt{(2)(2) + (-3)(-3)}
+
+	&= \sqrt{13}.
+$$
+
+By dividing a nonzero vector by its magnitude, we produce a parallel vector with magnitude $1$. This is called **normalizing**, and any vector with magnitude $1$ is called a **unit vector**. For example, the vector $\vec{v}$ from before normalizes to
+
+$$
+	\frac{\vec{v}}{||\vec{v}||} = [[ \frac{2}{\sqrt{13}} ; -\frac{3}{\sqrt{13}} ]].
+$$
+
+### nav-buttons

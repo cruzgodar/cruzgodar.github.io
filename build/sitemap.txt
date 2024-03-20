@@ -58,6 +58,7 @@ home Cruz Godar
 			notes/1-eigenvectors-and-eigenvalues Section 1: Eigenvectors and Eigenvalues
 			notes/2-diagonalization Section 2: Diagonalization
 			notes/3-intro-to-des Section 3: Intro to Differential Equations
+			notes/4-intro-to-inner-products Section 4: Intro to Inner Products
 
 		uo/341 Math 341
 			notes/1-vectors-and-matrices Section 1: Vectors and Matrices

@@ -679,7 +679,8 @@ export const sitemap =
 			"/teaching/uo/342/notes/0-linear-algebra-1-review/",
 			"/teaching/uo/342/notes/1-eigenvectors-and-eigenvalues/",
 			"/teaching/uo/342/notes/2-diagonalization/",
-			"/teaching/uo/342/notes/3-intro-to-des/"
+			"/teaching/uo/342/notes/3-intro-to-des/",
+			"/teaching/uo/342/notes/4-intro-to-inner-products/"
 		]
 	},
 		
@@ -721,6 +722,17 @@ export const sitemap =
 	"/teaching/uo/342/notes/3-intro-to-des/":
 	{
 		"title": "Section 3: Intro to Differential Equations",
+		
+		"parent": "/teaching/uo/342/",
+		
+		"children": [],
+
+		"customScript": true
+	},
+	
+	"/teaching/uo/342/notes/4-intro-to-inner-products/":
+	{
+		"title": "Section 4: Intro to Inner Products",
 		
 		"parent": "/teaching/uo/342/",
 		
