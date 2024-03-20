@@ -1,6 +1,6 @@
 ### nav-buttons
 
-With the theory of eigenvectors and eigenvalues largely complete, let's return to one of our motivating examples: dynamical systems. As a quick reminder, a **differential equation**, or **DE** is an equation involving a function $x(t)$ and its derivatives, and a solution is a formula for $x(t)$. For example, $x' = 2t$ has a general solution of $x = t^2 + c$, and $x' = 2x$ has a general solution of $x = ce^{2t}$. We'll be dealing with **linear systems** of DEs, which is one of the form
+With the theory of eigenvectors and eigenvalues largely complete, let's return to one of our motivating examples: dynamical systems. As a quick reminder, a **differential equation**, or **DE** is an equation involving a function $x(t)$ and its derivatives, and a solution is a formula for $x(t)$. For example, $x' = 2t$ has a general solution of $x = t^2 + c$, and $x' = 2x$ has a general solution of $x = ce^{2t}$. We'll be dealing with **linear systems** of DEs, which are those of the form
 
 $$
 	\vec{x}' = A\vec{x}
@@ -26,7 +26,7 @@ has the following vector field plot.
 
 ### desmos vector-field
 
-Solutions to the system are curves that follow the field at every point, like the blue curve here. Alternatively, we can represent systems of two DEs as a field of flowing particles, moving according the the velocity given by $(x', y')$.
+Solutions to the system are curves that follow the field at every point, like the blue curve here. Alternatively, we can represent systems of two DEs as a field of flowing particles, moving according to the velocity given by $(x', y')$.
 
 ### canvas vector-field
 
@@ -190,9 +190,7 @@ In other words, $\vec{v}$ is an eigenvector of $A$ with eigenvalue $\lambda$. Al
 	
 ###
 
-When the eigenvalues of the matrix $A$ are complex or repeated, the solution to the system $\vec{x}' = A\vec{x}$ are a little out of the scope of our class.
-
-Let's focus on the specific case of $2 \times 2$ systems, since those are the ones we can easily plot. If $A$ is diagonalizable with real eigenvalues $\lambda_1$ and $\lambda_2$ and corresponding linearly independent eigenvectors $\vec{v_1}$ and $\vec{v_2}$, then the general solution of 
+When the eigenvalues of the matrix $A$ are complex or repeated, the solution to the system $\vec{x}' = A\vec{x}$ is unfortunately a little out of the scope of our class. Let's focus on the specific case of $2 \times 2$ systems, since those are the ones we can easily plot. If $A$ is diagonalizable with real eigenvalues $\lambda_1$ and $\lambda_2$ and corresponding linearly independent eigenvectors $\vec{v_1}$ and $\vec{v_2}$, then the general solution of 
 
 $$
 	\vec{x} = c_1e^{\lambda_1 t}\vec{v_1} + c_2e^{\lambda_2 t}\vec{v_2}
