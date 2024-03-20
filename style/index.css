@@ -277,6 +277,11 @@ mjx-container
 	max-width: calc(100% - 16px);
 }
 
+.tex-holder.inline-math
+{
+	white-space: nowrap;
+}
+
 .tex-holder:not(.inline-math)
 {
 	overflow-x: auto;

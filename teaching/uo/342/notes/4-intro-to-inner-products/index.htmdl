@@ -56,10 +56,62 @@ $$
 	&= \sqrt{13}.
 $$
 
-By dividing a nonzero vector by its magnitude, we produce a parallel vector with magnitude $1$. This is called **normalizing**, and any vector with magnitude $1$ is called a **unit vector**. For example, the vector $\vec{v}$ from before normalizes to
+By dividing a nonzero vector by its magnitude, we produce a parallel vector with magnitude $1$. This is called **normalizing**, and any vector with magnitude $1$ is called a **unit vector**. For example, the vector $\vec{v}$ from before normalizes to the unit vector
 
 $$
 	\frac{\vec{v}}{||\vec{v}||} = [[ \frac{2}{\sqrt{13}} ; -\frac{3}{\sqrt{13}} ]].
 $$
+
+The magnitude of a vector is implicitly its distance from the zero vector, and that notion generalizes to the distance *between* two vectors as well.
+
+### def "distance between vectors"
+
+	Let $\vec{v}, \vec{w} \in #R#^n$. The **distance** between $\vec{v}$ and $\vec{w}$ is $||\vec{v} - \vec{w}||$.
+
+###
+
+Again, this is exactly the usual distance between points in $#R#^n$.
+
+### desmos vector-subtraction
+
+Here, the purple vector is $\vec{v} = [[ 3 ; 2 ]]$, the blue one is $\vec{w} = [[ -2 ; 1 ]]$, and the distance between them is the magnitude of the red vector, which is
+
+$$
+	\vec{v} - \vec{w} = [[ 3 - (-2) ; 2 - 1 ]] = [[ 5 ; 1 ]].
+$$
+
+Let's use these vectors to demonstrate one more property of the dot product: its ability to measure the angle between vectors. We'll need the rarely-used **law of cosines**, which states that for any triangle with sides of length $a$, $b$, and $c$, and angle $\theta$ opposite $c$,
+
+$$
+	c^2 = a^2 + b^2 - 2ab\cos(\theta).
+$$
+
+If $\theta$ is the angle between $\vec{v}$ and $\vec{w}$, then we can see from the previous graph and the law of cosines that
+
+$$
+	||\vec{v} - \vec{w}||^2 &= ||\vec{v}||^2 + ||\vec{w}||^2 - 2||\vec{v}|| \cdot ||\vec{w}|| \cos(\theta)
+
+	\left( \vec{v} - \vec{w} \right) \bullet \left( \vec{v} - \vec{w} \right) &= \vec{v} \bullet \vec{v} + \vec{w} \bullet \vec{w} - 2||\vec{v}|| \cdot ||\vec{w}|| \cos(\theta)
+
+	\vec{v} \bullet \vec{v} - 2\left( \vec{v} \bullet \vec{w} \right) + \vec{w} \bullet \vec{w} &= \vec{v} \bullet \vec{v} + \vec{w} \bullet \vec{w} - 2||\vec{v}|| \cdot ||\vec{w}|| \cos(\theta)
+
+	\vec{v} \bullet \vec{w} &= ||\vec{v}|| \cdot ||\vec{w}|| \cos(\theta)
+
+	\theta &= \arccos \left( \frac{\vec{v} \bullet \vec{w}}{||\vec{v}|| \cdot ||\vec{w}||} \right).
+$$
+
+We generally need to be careful when applying inverse trig functions, but everything's fine here since $\arccos$ has a range of $[0, \pi]$, which is exactly the interval of possible angles between vectors.
+
+### exc "distance and angle between vectors"
+
+	Let $\vec{v}$ and $\vec{w}$ be the vectors
+
+	$$
+		\vec{v} = [[ 1 ; 2 ; 4 ]], \quad \vec{w} = [[ 0 ; -3 ; 3 ]].
+	$$
+
+	Find the distance between $\vec{v}$ and $\vec{w}$ and the angle between them.
+
+###
 
 ### nav-buttons
