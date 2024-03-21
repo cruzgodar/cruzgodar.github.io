@@ -150,10 +150,52 @@ Orthogonality will be surprisingly critical to most of the rest of the class. We
 
 ###
 
+### ex "orthogonal complement"
+
+	Let $X = \span\left\{ [[ 1 ; 1 ; 0 ]], [[ 0 ; -1 ; 2 ]] \right\}$. Find a basis for $X^\perp$.
+
+	For a vector $\vec{v} = [[ v_1 ; v_2 ; v_3 ]]$ to be in the orthogonal complement, we need
+
+	$$
+		[[ v_1 ; v_2 ; v_3 ]] \bullet [[ 1 ; 1 ; 0 ]] &= 0
+
+		[[ v_1 ; v_2 ; v_3 ]] \bullet [[ 0 ; -1 ; 2 ]] &= 0,
+	$$
+
+	so
+
+	$$
+		v_1 + v_2 &= 0
+
+		-v_2 + 2v_3 &= 0.
+	$$
+
+	And that's a matrix equation once again! Row reducing, we have
+
+	$$
+		[[ 1, 1, 0 | 0 ; 0, -1, 2 | 0 ]] & 
+
+		[[ 1, 0, 2 | 0 ; 0, -1, 2 | 0 ]] & \quad \vec{r_1} \pe \vec{r_2}
+
+		[[ 1, 0, 2 | 0 ; 0, 1, -2 | 0 ]] & \quad \vec{r_2} \te -1
+
+		\vec{v} = [[ -2t ; 2t ; t ]] & .
+	$$
+
+	In total, the orthogonal complement is $X^\perp = \span\left\{ [[ -2 ; 2 ; 1 ]] \right\}$.
+
+###
+
 ### exc
 
 	Let $\vec{v} \in #R#^n$. Show that $\vec{v}^\perp$ is a subspace.
 
 ###
+
+
+
+## Orthonormal Bases
+
+In general
 
 ### nav-buttons
