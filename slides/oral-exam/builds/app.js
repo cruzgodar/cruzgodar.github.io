@@ -4,7 +4,11 @@ import { changeOpacity } from "/scripts/src/animation.js";
 
 async function reset({ slide, duration })
 {
-	await changeOpacity(canvasBundle, 0, duration / 2);
+	await changeOpacity({
+		element: canvasBundle,
+		opacity: 0,
+		duration: duration / 2
+	});
 
 	slide.appendChild(canvasBundle);
 
@@ -33,7 +37,11 @@ async function reset({ slide, duration })
 		await applet.show2dView();
 	}
 
-	await changeOpacity(canvasBundle, 1, duration / 2);
+	await changeOpacity({
+		element: canvasBundle,
+		opacity: 1,
+		duration: duration / 2
+	});
 }
 
 export const appBuilds =

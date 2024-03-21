@@ -9,7 +9,11 @@ async function reset({ slide, duration })
 		return;
 	}
 
-	await changeOpacity(canvasBundle, 0, duration / 2);
+	await changeOpacity({
+		element: canvasBundle,
+		opacity: 0,
+		duration: duration / 2
+	});
 
 	applet.animationTime = 0;
 
@@ -37,7 +41,11 @@ async function reset({ slide, duration })
 		await applet.show2dView();
 	}
 
-	await changeOpacity(canvasBundle, 1, duration / 2);
+	await changeOpacity({
+		element: canvasBundle,
+		opacity: 1,
+		duration: duration / 2
+	});
 }
 
 async function build0({ forward, duration = 600 })

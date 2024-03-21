@@ -102,7 +102,7 @@ export function addHoverEventWithScale(element, scale)
 
 			element.classList.add("hover");
 
-			changeScale(element, scale);
+			changeScale({ element, scale });
 		}
 	});
 
@@ -117,7 +117,7 @@ export function addHoverEventWithScale(element, scale)
 
 			element.classList.remove("hover");
 
-			changeScale(element, 1);
+			changeScale({ element, scale: 1 });
 		}
 	});
 }

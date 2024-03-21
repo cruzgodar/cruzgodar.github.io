@@ -844,7 +844,7 @@ export class KaleidoscopicIFSFractal extends RaymarchApplet
 
 	async changePolyhedron(newPolyhedronIndex)
 	{
-		await changeOpacity(this.wilson.canvas, 0);
+		await changeOpacity({ element: this.wilson.canvas, opacity: 0 });
 
 		this.polyhedronIndex = newPolyhedronIndex;
 
@@ -894,6 +894,6 @@ export class KaleidoscopicIFSFractal extends RaymarchApplet
 		this.needNewFrame = true;
 		window.requestAnimationFrame(() => this.updateMatrices());
 
-		changeOpacity(this.wilson.canvas, 1);
+		changeOpacity({ element: this.wilson.canvas, opacity: 1 });
 	}
 }

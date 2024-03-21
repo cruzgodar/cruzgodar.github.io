@@ -137,8 +137,6 @@ let bannerFilepath = "";
 
 export const bannerPages =
 [
-	"/home/",
-
 	"/about/",
 
 	"/writing/mist/",
@@ -147,14 +145,7 @@ export const bannerPages =
 	"/debug/htmdl-test/"
 ];
 
-export const multibannerPages =
-{
-	"/home/":
-	{
-		currentBanner: Math.floor(Math.random() * 11) + 1,
-		numBanners: 11
-	}
-};
+export const multibannerPages = {};
 
 
 
@@ -238,7 +229,11 @@ export function setUpBanner()
 		loadBanner(true)
 			.then(() =>
 			{
-				changeOpacity($("#banner-small"), 0, 700)
+				changeOpacity({
+					element: $("#banner-small"),
+					opacity: 0,
+					duration: 700
+				})
 					.then(() => $("#banner-small").remove());
 			});
 	}

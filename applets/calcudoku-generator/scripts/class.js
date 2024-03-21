@@ -40,7 +40,7 @@ export class CalcudokuGenerator extends Applet
 	{
 		if (this.canvas.style.opacity == 1)
 		{
-			await changeOpacity(this.canvas, 0);
+			await changeOpacity({ element: this.canvas, opacity: 0 });
 		}
 
 
@@ -95,7 +95,7 @@ export class CalcudokuGenerator extends Applet
 			{
 				this.animateNextDraw = false;
 
-				changeOpacity(this.canvas, 1);
+				changeOpacity({ element: this.canvas, opacity: 1 });
 			}
 		};
 
