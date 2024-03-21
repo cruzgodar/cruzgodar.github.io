@@ -1,3 +1,39 @@
+#content
+{
+	overflow-x: hidden;
+	z-index: 10;
+}
+
+.quote-row
+{
+	display: flex;
+	width: min(90vw, 900px);
+	justify-content: space-between;
+	margin: 0 auto;
+}
+
+.quote-container
+{
+	width: 30%;
+}
+
+.quote-text
+{
+	font-size: 100%;
+	color: var(--normal-contrast);
+	text-align: justify;
+	padding-right: .1em;
+}
+
+.quote-attribution
+{
+	font-size: 100%;
+	color: var(--high-contrast);
+	text-align: right;
+}
+
+
+
 .name-text
 {
 	font-size: 17.5vmin;
@@ -19,4 +55,33 @@
 {
 	margin-top: calc(19.6875vmin + 25px);
 	margin-left: calc(4.9583vmin - 30px);
+}
+
+
+
+.title-text
+{
+	margin: 0 auto;
+	font-size: 150%;
+	color: var(--high-contrast);
+	width: 90vw;
+	text-align: center;
+}
+
+
+
+
+/* Compact layout: stack the quote columns on top of one another. */
+@media (max-width: 900px)
+{
+	.quote-container
+	{
+		width: 90vw;
+		margin-bottom: 5vh;
+	}
+	
+	.quote-row
+	{
+		flex-direction: column;
+	}
 }
