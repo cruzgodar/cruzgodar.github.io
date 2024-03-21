@@ -196,6 +196,6 @@ Orthogonality will be surprisingly critical to most of the rest of the class. We
 
 ## Orthonormal Bases
 
-In general
+When we're asked to come up with a basis for $#R#^n$, there are two generally good choices we've seen at this point: if we have some diagonalizable $n \times n$ matrix $A$ that's relevant to the situation, we might want to choose a basis of eigenvectors of $A$, and otherwise, the standard basis $\left\{ \vec{e_1}, ..., \vec{e_n} \right\}$ is a reliable choice.
 
 ### nav-buttons

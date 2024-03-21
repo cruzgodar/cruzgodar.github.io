@@ -680,7 +680,7 @@ export const sitemap =
 			"/teaching/uo/342/notes/1-eigenvectors-and-eigenvalues/",
 			"/teaching/uo/342/notes/2-diagonalization/",
 			"/teaching/uo/342/notes/3-intro-to-des/",
-			"/teaching/uo/342/notes/4-intro-to-inner-products/"
+			"/teaching/uo/342/notes/4-orthogonality/"
 		]
 	},
 		
@@ -730,9 +730,9 @@ export const sitemap =
 		"customScript": true
 	},
 	
-	"/teaching/uo/342/notes/4-intro-to-inner-products/":
+	"/teaching/uo/342/notes/4-orthogonality/":
 	{
-		"title": "Section 4: Intro to Inner Products",
+		"title": "Section 4: Orthogonality",
 		
 		"parent": "/teaching/uo/342/",
 		
