@@ -114,4 +114,46 @@ We generally need to be careful when applying inverse trig functions, but everyt
 
 ###
 
+This definition of angle lets us talk about perpendicular vectors. If the angle between $\vec{v}$ and $\vec{w}$ is exactly $90^\circ$, then
+
+$$
+	\vec{v} \bullet \vec{w} = ||\vec{v}|| \cdot ||\vec{w}|| \cos(90^\circ) = 0.
+$$
+
+Since we're defining everything in terms of the dot product, let's do that here too.
+
+### def orthogonality
+
+	Two vectors $\vec{v}, \vec{w} \in #R#^n$ are **orthogonal** if $\vec{v} \bullet \vec{w} = 0$.
+
+###
+
+We can immediately start getting applications of orthogonality: notably, the Pythagorean theorem can be stated in the language of linear algebra.
+
+### thm "The Pythagorean Theorem"
+
+	Two vectors $\vec{v}, \vec{w} \in #R#^n$ are **orthogonal** if and only if $||\vec{v}||^2 + ||\vec{w}||^2 = ||\vec{v} + \vec{w}||^2$.
+
+###
+
+### exc
+
+	Show that this theorem holds. Start by assuming $\vec{v}$ and $\vec{w}$ are orthogonal and show $||\vec{v}||^2 + ||\vec{w}||^2 = ||\vec{v} + \vec{w}||^2$. Then assume that $||\vec{v}||^2 + ||\vec{w}||^2 = ||\vec{v} + \vec{w}||^2$ and show that $\vec{v}$ and $\vec{w}$ must be orthogonal.
+
+###
+
+Orthogonality will be surprisingly critical to most of the rest of the class. We'll want to talk often about all the vectors orthogonal to a given one, and so we'll give that object a name.
+
+### def "orthogonal complement"
+
+	Let $X$ be a subspace of $#R#^n$. The **orthogonal complement** to $X$ is the subspace $X^\perp$ of $#R#^n$ consisting of the vectors $\vec{v}$ that are orthogonal to every vector in $X$.
+
+###
+
+### exc
+
+	Let $\vec{v} \in #R#^n$. Show that $\vec{v}^\perp$ is a subspace.
+
+###
+
 ### nav-buttons
