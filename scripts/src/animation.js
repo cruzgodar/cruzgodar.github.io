@@ -127,6 +127,56 @@ export const changeScale = useJsAnimation ? changeScaleJs : changeScaleCss;
 
 
 
+function fadeLeftJs({
+	element,
+	duration = baseAnimationTime * 3,
+	easeInOut = false
+}) {
+	return anime({
+		targets: element,
+		translateX: 0,
+		opacity: 1,
+		duration,
+		easing: easeInOut ? "easeInOutQuad" : "easeOutQuad",
+	}).finished;
+}
+
+function fadeLeftCss({
+	element,
+	duration = baseAnimationTime * 3,
+	easeInOut = false
+}) {
+	return new Promise(resolve =>
+	{
+		const timeoutId = element.getAttribute("data-fade-left-timeout-id");
+
+		if (timeoutId)
+		{
+			clearTimeout(timeoutId);
+		}
+
+		element.style.transition = `transform ${duration}ms ${easeInOut ? "ease-in-out" : "ease-out"}, opacity ${duration}ms ${easeInOut ? "ease-in-out" : "ease-out"}`;
+
+		setTimeout(() =>
+		{
+			element.style.transform = "translateX(0px)";
+			element.style.opacity = 1;
+
+			const timeoutId = setTimeout(() =>
+			{
+				element.style.transition = "";
+				resolve();
+			}, duration);
+
+			element.setAttribute("data-fade-left-timeout-id", timeoutId);
+		}, 10);
+	});
+}
+
+export const fadeLeft = useJsAnimation ? fadeLeftJs : fadeLeftCss;
+
+
+
 function fadeUpInJs({
 	element,
 	duration = pageAnimationTime * 2,

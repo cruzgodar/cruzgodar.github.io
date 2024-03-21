@@ -137,6 +137,8 @@ let bannerFilepath = "";
 
 export const bannerPages =
 [
+	"/home/",
+
 	"/about/",
 
 	"/writing/mist/",
@@ -145,7 +147,14 @@ export const bannerPages =
 	"/debug/htmdl-test/"
 ];
 
-export const multibannerPages = {};
+export const multibannerPages =
+{
+	"/home/":
+	{
+		currentBanner: Math.floor(Math.random() * 11) + 1,
+		numBanners: 11
+	}
+};
 
 
 
