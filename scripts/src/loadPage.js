@@ -4,8 +4,7 @@ import {
 	fadeLeftIn,
 	fadeRightIn,
 	fadeUpIn,
-	opacityAnimationTime,
-	pageAnimationTime
+	opacityAnimationTime
 } from "./animation.js";
 import {
 	bannerElement,
@@ -150,7 +149,7 @@ function loadCustomScripts()
 
 async function fadeInPage()
 {
-	fadeIn(document.querySelector("#header"));
+	fadeIn({ element: document.querySelector("#header") });
 	document.querySelector("#header-container").style.opacity = 1;
 
 	if (!opacityAnimationTime)
@@ -171,50 +170,65 @@ async function fadeInPage()
 		{
 			return bannerElement
 				? Promise.all([
-					fadeUpIn(bannerElement, pageAnimationTime * 2, bannerOpacity),
-					fadeUpIn(pageElement)
+					fadeUpIn({
+						element: bannerElement,
+						opacity: bannerOpacity
+					}),
+					fadeUpIn({ element: pageElement })
 				])
-				: fadeUpIn(pageElement);
+				: fadeUpIn({ element: pageElement });
 		}
 
 		else if (navigationTransitionType === -1)
 		{
 			return bannerElement
 				? Promise.all([
-					fadeDownIn(bannerElement, pageAnimationTime * 2, bannerOpacity),
-					fadeDownIn(pageElement)
+					fadeDownIn({
+						element: bannerElement,
+						opacity: bannerOpacity
+					}),
+					fadeDownIn({ element: pageElement })
 				])
-				: fadeDownIn(pageElement);
+				: fadeDownIn({ element: pageElement });
 		}
 
 		else if (navigationTransitionType === 2)
 		{
 			return bannerElement
 				? Promise.all([
-					fadeLeftIn(bannerElement, pageAnimationTime * 2, bannerOpacity),
-					fadeLeftIn(pageElement)
+					fadeLeftIn({
+						element: bannerElement,
+						opacity: bannerOpacity
+					}),
+					fadeLeftIn({ element: pageElement })
 				])
-				: fadeLeftIn(pageElement);
+				: fadeLeftIn({ element: pageElement });
 		}
 
 		else if (navigationTransitionType === -2)
 		{
 			return bannerElement
 				? Promise.all([
-					fadeRightIn(bannerElement, pageAnimationTime * 2, bannerOpacity),
-					fadeRightIn(pageElement)
+					fadeRightIn({
+						element: bannerElement,
+						opacity: bannerOpacity
+					}),
+					fadeRightIn({ element: pageElement })
 				])
-				: fadeRightIn(pageElement);
+				: fadeRightIn({ element: pageElement });
 		}
 
 		else
 		{
 			return bannerElement
 				? Promise.all([
-					fadeIn(bannerElement, pageAnimationTime * 2, bannerOpacity),
-					fadeIn(pageElement)
+					fadeIn({
+						element: bannerElement,
+						opacity: bannerOpacity
+					}),
+					fadeIn({ element: pageElement })
 				])
-				: fadeIn(pageElement);
+				: fadeIn({ element: pageElement });
 		}
 	})();
 }

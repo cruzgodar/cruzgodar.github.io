@@ -188,7 +188,7 @@ Orthogonality will be surprisingly critical to most of the rest of the class. We
 
 ### exc
 
-	Let $\vec{v} \in #R#^n$. Show that $\vec{v}^\perp$ is a subspace.
+	Let $X$ be a subspace of $#R#^n$. Show that $X^\perp$ is in fact a subspace.
 
 ###
 

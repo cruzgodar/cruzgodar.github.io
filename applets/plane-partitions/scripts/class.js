@@ -904,7 +904,11 @@ export class PlanePartitions extends AnimationFrameApplet
 
 		if (this.in2dView && !keepNumbersCanvasVisible)
 		{
-			await changeOpacity(this.wilsonNumbers.canvas, 0, this.animationTime / 5);
+			await changeOpacity({
+				element: this.wilsonNumbers.canvas,
+				opacity: 0,
+				duration: this.animationTime / 5
+			});
 		}
 
 
@@ -1287,7 +1291,11 @@ export class PlanePartitions extends AnimationFrameApplet
 
 		if (this.in2dView && !keepNumbersCanvasVisible)
 		{
-			await changeOpacity(this.wilsonNumbers.canvas, 0, this.animationTime / 5);
+			await changeOpacity({
+				element: this.wilsonNumbers.canvas,
+				opacity: 0,
+				duration: this.animationTime / 5
+			});
 		}
 
 
@@ -1661,7 +1669,11 @@ export class PlanePartitions extends AnimationFrameApplet
 
 		if (this.in2dView)
 		{
-			await changeOpacity(this.wilsonNumbers.canvas, 0, this.animationTime / 5);
+			await changeOpacity({
+				element: this.wilsonNumbers.canvas,
+				opacity: 0,
+				duration: this.animationTime / 5
+			});
 		}
 
 		this.in2dView = false;
@@ -1782,7 +1794,11 @@ export class PlanePartitions extends AnimationFrameApplet
 
 		this.drawAll2dViewText();
 
-		await changeOpacity(this.wilsonNumbers.canvas, 1, this.animationTime / 5);
+		await changeOpacity({
+			element: this.wilsonNumbers.canvas,
+			opacity: 1,
+			duration: this.animationTime / 5
+		});
 
 		this.currentlyAnimatingCamera = false;
 
@@ -1872,7 +1888,11 @@ export class PlanePartitions extends AnimationFrameApplet
 
 			this.drawAll2dViewText();
 
-			changeOpacity(this.wilsonNumbers.canvas, 1, this.animationTime / 5);
+			changeOpacity({
+				element: this.wilsonNumbers.canvas,
+				opacity: 1,
+				duration: this.animationTime / 5
+			});
 		}
 
 		else
@@ -6133,7 +6153,11 @@ export class PlanePartitions extends AnimationFrameApplet
 
 		if (this.wilsonNumbers.canvas.style.opacity !== "0")
 		{
-			await changeOpacity(this.wilsonNumbers.canvas, 0, this.animationTime / 3);
+			await changeOpacity({
+				element: this.wilsonNumbers.canvas,
+				opacity: 0,
+				duration: this.animationTime / 3
+			});
 		}
 
 		this.wilsonNumbers.ctx.clearRect(
@@ -6209,7 +6233,11 @@ export class PlanePartitions extends AnimationFrameApplet
 
 
 
-		await changeOpacity(this.wilsonNumbers.canvas, 1, this.animationTime / 3);
+		await changeOpacity({
+			element: this.wilsonNumbers.canvas,
+			opacity: 1,
+			duration: this.animationTime / 3
+		});
 
 		this.wilsonNumbers.ctx.fillStyle = convertColor(255, 255, 255);
 

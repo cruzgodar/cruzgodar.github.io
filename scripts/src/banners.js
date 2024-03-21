@@ -238,7 +238,11 @@ export function setUpBanner()
 		loadBanner(true)
 			.then(() =>
 			{
-				changeOpacity($("#banner-small"), 0, 700)
+				changeOpacity({
+					element: $("#banner-small"),
+					opacity: 0,
+					duration: 700
+				})
 					.then(() => $("#banner-small").remove());
 			});
 	}

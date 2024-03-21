@@ -49,9 +49,9 @@ export function load()
 
 	setTimeout(() =>
 	{
-		fadeLeft(cruzTextElement);
+		fadeLeft({ element: cruzTextElement });
 
-		setTimeout(() => fadeLeft(godarTextElement), opacityAnimationTime);
+		setTimeout(() => fadeLeft({ element: godarTextElement }), opacityAnimationTime);
 	}, opacityAnimationTime);
 
 	setTimeout(() => onScroll(1), 100);

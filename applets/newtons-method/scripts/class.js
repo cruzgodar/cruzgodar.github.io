@@ -620,8 +620,8 @@ export class NewtonsMethod extends AnimationFrameApplet
 		if (this.rootSetterElement && this.colorSetterElement)
 		{
 			await Promise.all([
-				changeOpacity(this.rootSetterElement, 0),
-				changeOpacity(this.colorSetterElement, 0)
+				changeOpacity({ element: this.rootSetterElement, opacity: 0 }),
+				changeOpacity({ element: this.colorSetterElement, opacity: 0 })
 			]);
 
 			if (this.lastActiveRoot === 0)
@@ -657,8 +657,8 @@ export class NewtonsMethod extends AnimationFrameApplet
 				);
 			}
 
-			changeOpacity(this.rootSetterElement, 1);
-			changeOpacity(this.colorSetterElement, 1);
+			changeOpacity({ element: this.rootSetterElement, opacity: 1 });
+			changeOpacity({ element: this.colorSetterElement, opacity: 1 });
 		}
 	}
 

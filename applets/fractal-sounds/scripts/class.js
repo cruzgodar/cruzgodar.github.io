@@ -402,7 +402,7 @@ export class FractalSounds extends AnimationFrameApplet
 
 			else
 			{
-				changeOpacity(this.wilson.canvas, 0);
+				changeOpacity({ element: this.wilson.canvas, opacity: 0 });
 			}
 		}
 
@@ -463,7 +463,7 @@ export class FractalSounds extends AnimationFrameApplet
 
 		else
 		{
-			changeOpacity(this.wilson.canvas, 0);
+			changeOpacity({ element: this.wilson.canvas, opacity: 0 });
 		}
 
 		this.moved = 0;

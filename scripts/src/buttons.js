@@ -105,11 +105,11 @@ export class ToggleButton extends Button
 
 			this.state = !this.state;
 
-			await changeOpacity(this.element, 0);
+			await changeOpacity({ element: this.element, opacity: 0 });
 
 			this.element.textContent = this.state ? this.name1 : this.name0;
 
-			await changeOpacity(this.element, 1);
+			await changeOpacity({ element: this.element, opacity: 1 });
 
 			this.currentlyAnimating = false;
 		};
@@ -131,12 +131,12 @@ export class ToggleButton extends Button
 	{
 		if (this.state !== newState)
 		{
-			await changeOpacity(this.element, 0);
+			await changeOpacity({ element: this.element, opacity: 0 });
 			
 			this.state = newState;
 			this.element.textContent = this.state ? this.name1 : this.name0;
 
-			await changeOpacity(this.element, 1);
+			await changeOpacity({ element: this.element, opacity: 1 });
 		}
 	}
 }

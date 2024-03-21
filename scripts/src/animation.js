@@ -27,18 +27,26 @@ export const carouselFillAnimationTime = 20000;
 
 
 
-function changeOpacityJs(element, endValue, duration = opacityAnimationTime, easeInOut = false)
-{
+function changeOpacityJs({
+	element,
+	opacity,
+	duration = opacityAnimationTime,
+	easeInOut = false
+}) {
 	return anime({
 		targets: element,
-		opacity: endValue,
+		opacity,
 		duration,
 		easing: easeInOut ? "easeInOutQuad" : "easeOutQuad",
 	}).finished;
 }
 
-function changeOpacityCss(element, endValue, duration = opacityAnimationTime, easeInOut = false)
-{
+function changeOpacityCss({
+	element,
+	opacity,
+	duration = opacityAnimationTime,
+	easeInOut = false
+}) {
 	return new Promise(resolve =>
 	{
 		const timeoutId = element.getAttribute("data-opacity-timeout-id");
@@ -52,7 +60,7 @@ function changeOpacityCss(element, endValue, duration = opacityAnimationTime, ea
 
 		setTimeout(() =>
 		{
-			element.style.opacity = endValue;
+			element.style.opacity = opacity;
 
 			const timeoutId = setTimeout(() =>
 			{
@@ -69,18 +77,26 @@ export const changeOpacity = useJsAnimation ? changeOpacityJs : changeOpacityCss
 
 
 
-export function changeScaleJs(element, endValue, duration = buttonAnimationTime, easeInOut = false)
-{
+export function changeScaleJs({
+	element,
+	scale,
+	duration = buttonAnimationTime,
+	easeInOut = false
+}) {
 	return anime({
 		targets: element,
-		scale: endValue,
+		scale,
 		duration,
 		easing: easeInOut ? "easeInOutQuad" : "easeOutQuad",
 	}).finished;
 }
 
-function changeScaleCss(element, endValue, duration = buttonAnimationTime, easeInOut = false)
-{
+function changeScaleCss({
+	element,
+	scale,
+	duration = buttonAnimationTime,
+	easeInOut = false
+}) {
 	return new Promise(resolve =>
 	{
 		const timeoutId = element.getAttribute("data-scale-timeout-id");
@@ -94,7 +110,7 @@ function changeScaleCss(element, endValue, duration = buttonAnimationTime, easeI
 
 		setTimeout(() =>
 		{
-			element.style.transform = `scale(${endValue})`;
+			element.style.transform = `scale(${scale})`;
 
 			const timeoutId = setTimeout(() =>
 			{
@@ -111,8 +127,11 @@ export const changeScale = useJsAnimation ? changeScaleJs : changeScaleCss;
 
 
 
-function fadeLeftJs(element, duration = baseAnimationTime * 3, easeInOut = false)
-{
+function fadeLeftJs({
+	element,
+	duration = baseAnimationTime * 3,
+	easeInOut = false
+}) {
 	return anime({
 		targets: element,
 		translateX: 0,
@@ -122,8 +141,11 @@ function fadeLeftJs(element, duration = baseAnimationTime * 3, easeInOut = false
 	}).finished;
 }
 
-function fadeLeftCss(element, duration = baseAnimationTime * 3, easeInOut = false)
-{
+function fadeLeftCss({
+	element,
+	duration = baseAnimationTime * 3,
+	easeInOut = false
+}) {
 	return new Promise(resolve =>
 	{
 		const timeoutId = element.getAttribute("data-fade-left-timeout-id");
@@ -155,22 +177,28 @@ export const fadeLeft = useJsAnimation ? fadeLeftJs : fadeLeftCss;
 
 
 
-function fadeUpInJs(element, duration = pageAnimationTime * 2, targetOpacity = 1)
-{
+function fadeUpInJs({
+	element,
+	duration = pageAnimationTime * 2,
+	opacity = 1
+}) {
 	element.style.marginTop = `${navigationAnimationDistanceVertical}px`;
 	element.style.marginBottom = 0;
 
 	return anime({
 		targets: element,
 		marginTop: "0px",
-		opacity: targetOpacity,
+		opacity,
 		duration,
 		easing: "cubicBezier(.4, 1.0, .7, 1.0)",
 	}).finished;
 }
 
-function fadeUpInCss(element, duration = pageAnimationTime * 2, targetOpacity = 1)
-{
+function fadeUpInCss({
+	element,
+	duration = pageAnimationTime * 2,
+	opacity = 1
+}) {
 	return new Promise(resolve =>
 	{
 		const timeoutId = element.getAttribute("data-fade-up-in-timeout-id");
@@ -195,7 +223,7 @@ function fadeUpInCss(element, duration = pageAnimationTime * 2, targetOpacity = 
 			setTimeout(() =>
 			{
 				element.style.marginTop = 0;
-				element.style.opacity = targetOpacity;
+				element.style.opacity = opacity;
 
 				const timeoutId = setTimeout(() =>
 				{
@@ -213,8 +241,11 @@ export const fadeUpIn = useJsAnimation ? fadeUpInJs : fadeUpInCss;
 
 
 
-function fadeUpOutJs(element, duration = pageAnimationTime, noOpacityChange = false)
-{
+function fadeUpOutJs({
+	element,
+	duration = pageAnimationTime,
+	noOpacityChange = false
+}) {
 	element.style.marginBottom = "20vmin";
 
 	return anime({
@@ -226,8 +257,11 @@ function fadeUpOutJs(element, duration = pageAnimationTime, noOpacityChange = fa
 	}).finished;
 }
 
-function fadeUpOutCss(element, duration = pageAnimationTime, noOpacityChange = false)
-{
+function fadeUpOutCss({
+	element,
+	duration = pageAnimationTime,
+	noOpacityChange = false
+}) {
 	return new Promise(resolve =>
 	{
 		const timeoutId = element.getAttribute("data-fade-up-out-timeout-id");
@@ -272,22 +306,28 @@ export const fadeUpOut = useJsAnimation ? fadeUpOutJs : fadeUpOutCss;
 
 
 
-function fadeDownInJs(element, duration = pageAnimationTime * 2, targetOpacity = 1)
-{
+function fadeDownInJs({
+	element,
+	duration = pageAnimationTime * 2,
+	opacity = 1
+}) {
 	element.style.marginTop = `${-navigationAnimationDistanceVertical}px`;
 	element.style.marginBottom = 0;
 
 	return anime({
 		targets: element,
 		marginTop: "0px",
-		opacity: targetOpacity,
+		opacity,
 		duration,
 		easing: "cubicBezier(.4, 1.0, .7, 1.0)",
 	}).finished;
 }
 
-function fadeDownInCss(element, duration = pageAnimationTime * 2, targetOpacity = 1)
-{
+function fadeDownInCss({
+	element,
+	duration = pageAnimationTime * 2,
+	opacity = 1
+}) {
 	return new Promise(resolve =>
 	{
 		const timeoutId = element.getAttribute("data-fade-down-in-timeout-id");
@@ -311,7 +351,7 @@ function fadeDownInCss(element, duration = pageAnimationTime * 2, targetOpacity 
 			setTimeout(() =>
 			{
 				element.style.marginTop = 0;
-				element.style.opacity = targetOpacity;
+				element.style.opacity = opacity;
 
 				const timeoutId = setTimeout(() =>
 				{
@@ -329,8 +369,11 @@ export const fadeDownIn = useJsAnimation ? fadeDownInJs : fadeDownInCss;
 
 
 
-function fadeDownOutJs(element, duration = pageAnimationTime, noOpacityChange = false)
-{
+function fadeDownOutJs({
+	element,
+	duration = pageAnimationTime,
+	noOpacityChange = false
+}) {
 	element.style.marginBottom = "20vmin";
 
 	return anime({
@@ -342,8 +385,11 @@ function fadeDownOutJs(element, duration = pageAnimationTime, noOpacityChange = 
 	}).finished;
 }
 
-function fadeDownOutCss(element, duration = pageAnimationTime, noOpacityChange = false)
-{
+function fadeDownOutCss({
+	element,
+	duration = pageAnimationTime,
+	noOpacityChange = false
+}) {
 	return new Promise(resolve =>
 	{
 		const timeoutId = element.getAttribute("data-fade-down-out-timeout-id");
@@ -388,21 +434,27 @@ export const fadeDownOut = useJsAnimation ? fadeDownOutJs : fadeDownOutCss;
 
 
 
-function fadeLeftInJs(element, duration = pageAnimationTime * 2, targetOpacity = 1)
-{
+function fadeLeftInJs({
+	element,
+	duration = pageAnimationTime * 2,
+	opacity = 1
+}) {
 	element.style.marginLeft = `${navigationAnimationDistanceHorizontal}px`;
 
 	return anime({
 		targets: element,
 		marginLeft: "0px",
-		opacity: targetOpacity,
+		opacity,
 		duration,
 		easing: "cubicBezier(.4, 1.0, .7, 1.0)",
 	}).finished;
 }
 
-function fadeLeftInCss(element, duration = pageAnimationTime * 2, targetOpacity = 1)
-{
+function fadeLeftInCss({
+	element,
+	duration = pageAnimationTime * 2,
+	opacity = 1
+}) {
 	return new Promise(resolve =>
 	{
 		const timeoutId = element.getAttribute("data-fade-left-in-timeout-id");
@@ -425,7 +477,7 @@ function fadeLeftInCss(element, duration = pageAnimationTime * 2, targetOpacity 
 			setTimeout(() =>
 			{
 				element.style.marginLeft = 0;
-				element.style.opacity = targetOpacity;
+				element.style.opacity = opacity;
 
 				const timeoutId = setTimeout(() =>
 				{
@@ -443,8 +495,11 @@ export const fadeLeftIn = useJsAnimation ? fadeLeftInJs : fadeLeftInCss;
 
 
 
-function fadeLeftOutJs(element, duration = pageAnimationTime, noOpacityChange = false)
-{
+function fadeLeftOutJs({
+	element,
+	duration = pageAnimationTime,
+	noOpacityChange = false
+}) {
 	return anime({
 		targets: element,
 		marginLeft: `${-navigationAnimationDistanceHorizontal}px`,
@@ -454,8 +509,11 @@ function fadeLeftOutJs(element, duration = pageAnimationTime, noOpacityChange = 
 	}).finished;
 }
 
-function fadeLeftOutCss(element, duration = pageAnimationTime, noOpacityChange = false)
-{
+function fadeLeftOutCss({
+	element,
+	duration = pageAnimationTime,
+	noOpacityChange = false
+}) {
 	return new Promise(resolve =>
 	{
 		const timeoutId = element.getAttribute("data-fade-left-out-timeout-id");
@@ -498,21 +556,27 @@ export const fadeLeftOut = useJsAnimation ? fadeLeftOutJs : fadeLeftOutCss;
 
 
 
-function fadeRightInJs(element, duration = pageAnimationTime * 2, targetOpacity = 1)
-{
+function fadeRightInJs({
+	element,
+	duration = pageAnimationTime * 2,
+	opacity = 1
+}) {
 	element.style.marginLeft = `${-navigationAnimationDistanceHorizontal}px`;
 
 	return anime({
 		targets: element,
 		marginLeft: "0px",
-		opacity: targetOpacity,
+		opacity,
 		duration,
 		easing: "cubicBezier(.4, 1.0, .7, 1.0)",
 	}).finished;
 }
 
-function fadeRightInCss(element, duration = pageAnimationTime * 2, targetOpacity = 1)
-{
+function fadeRightInCss({
+	element,
+	duration = pageAnimationTime * 2,
+	opacity = 1
+}) {
 	return new Promise(resolve =>
 	{
 		const timeoutId = element.getAttribute("data-fade-right-in-timeout-id");
@@ -535,7 +599,7 @@ function fadeRightInCss(element, duration = pageAnimationTime * 2, targetOpacity
 			setTimeout(() =>
 			{
 				element.style.marginLeft = 0;
-				element.style.opacity = targetOpacity;
+				element.style.opacity = opacity;
 
 				const timeoutId = setTimeout(() =>
 				{
@@ -553,8 +617,11 @@ export const fadeRightIn = useJsAnimation ? fadeRightInJs : fadeRightInCss;
 
 
 
-function fadeRightOutJs(element, duration = pageAnimationTime, noOpacityChange = false)
-{
+function fadeRightOutJs({
+	element,
+	duration = pageAnimationTime,
+	noOpacityChange = false
+}) {
 	return anime({
 		targets: element,
 		marginLeft: `${navigationAnimationDistanceHorizontal}px`,
@@ -564,8 +631,11 @@ function fadeRightOutJs(element, duration = pageAnimationTime, noOpacityChange =
 	}).finished;
 }
 
-function fadeRightOutCss(element, duration = pageAnimationTime, noOpacityChange = false)
-{
+function fadeRightOutCss({
+	element,
+	duration = pageAnimationTime,
+	noOpacityChange = false
+}) {
 	return new Promise(resolve =>
 	{
 		const timeoutId = element.getAttribute("data-fade-right-out-timeout-id");
@@ -608,18 +678,24 @@ export const fadeRightOut = useJsAnimation ? fadeRightOutJs : fadeRightOutCss;
 
 
 
-function fadeInJs(element, duration = pageAnimationTime * 2, targetOpacity = 1)
-{
+function fadeInJs({
+	element,
+	duration = pageAnimationTime * 2,
+	opacity = 1
+}) {
 	return anime({
 		targets: element,
-		opacity: targetOpacity,
+		opacity,
 		duration,
 		easing: "cubicBezier(.4, 1.0, .7, 1.0)",
 	}).finished;
 }
 
-function fadeInCss(element, duration = pageAnimationTime * 2, targetOpacity = 1)
-{
+function fadeInCss({
+	element,
+	duration = pageAnimationTime * 2,
+	opacity = 1
+}) {
 	return new Promise(resolve =>
 	{
 		const timeoutId = element.getAttribute("data-fade-in-timeout-id");
@@ -639,7 +715,7 @@ function fadeInCss(element, duration = pageAnimationTime * 2, targetOpacity = 1)
 
 			setTimeout(() =>
 			{
-				element.style.opacity = targetOpacity;
+				element.style.opacity = opacity;
 
 				const timeoutId = setTimeout(() =>
 				{
@@ -657,8 +733,11 @@ export const fadeIn = useJsAnimation ? fadeInJs : fadeInCss;
 
 
 
-function fadeOutJs(element, duration = pageAnimationTime, noOpacityChange = false)
-{
+function fadeOutJs({
+	element,
+	duration = pageAnimationTime,
+	noOpacityChange = false
+}) {
 	return anime({
 		targets: element,
 		duration,
@@ -667,8 +746,11 @@ function fadeOutJs(element, duration = pageAnimationTime, noOpacityChange = fals
 	}).finished;
 }
 
-function fadeOutCss(element, duration = pageAnimationTime, noOpacityChange = false)
-{
+function fadeOutCss({
+	element,
+	duration = pageAnimationTime,
+	noOpacityChange = false
+}) {
 	return new Promise(resolve =>
 	{
 		const timeoutId = element.getAttribute("data-fade-out-timeout-id");
