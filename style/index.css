@@ -440,6 +440,35 @@ mjx-container
 
 
 
+#contents-container
+{
+	position: fixed;
+	height: calc(100% - 112px);
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+
+	/* To account for the header. */
+	top: 56px;
+	left: 0;
+
+	z-index: 100;
+}
+
+#contents
+{
+	width: min(300px, 100vw - 64px);
+	border-radius: 16px;
+	margin-left: 16px;
+	margin-right: 16px;
+	box-shadow: 0px 0px 16px 0px rgba(0, 0, 0, .3);
+	height: 100px;
+	background-color: var(--background);
+}
+
+
+
 *:focus
 {
 	outline: none;

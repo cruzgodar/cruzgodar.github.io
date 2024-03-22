@@ -158,7 +158,13 @@ export function setUpTextButtons()
 // Makes linked text buttons have the same width and height.
 export function equalizeTextButtons()
 {
-	$$(".text-button").forEach(textButton => textButton.parentNode.style.margin = "0 auto");
+	$$(".text-button").forEach(textButton =>
+	{
+		if (!textButton.parentNode.classList.contains("contents-container"))
+		{
+			textButton.parentNode.style.margin = "0 auto";
+		}
+	});
 
 	const heights = [];
 	let maxHeight = 0;
@@ -210,7 +216,19 @@ export function equalizeTextButtons()
 			element.style.width = "fit-content";
 		}
 
-		element.parentNode.parentNode.style.gridTemplateColumns = `repeat(auto-fit, ${maxWidth}px`;
+
+
+		const navButtonsElement = element.parentNode.parentNode;
+
+		if (navButtonsElement.classList.contains("contents-container"))
+		{
+			navButtonsElement.style.gridTemplateColumns = `150px repeat(auto-fit, ${maxWidth}px`;
+		}
+
+		else
+		{
+			navButtonsElement.style.gridTemplateColumns = `repeat(auto-fit, ${maxWidth}px`;
+		}
 	});
 }
 

@@ -12,6 +12,7 @@ import {
 	setUpBanner
 } from "./banners.js";
 import {
+	equalizeTextButtons,
 	setUpNavButtons,
 	setUpTextButtons
 } from "./buttons.js";
@@ -31,6 +32,7 @@ import {
 	redirect,
 	setCurrentlyRedirecting
 } from "./navigation.js";
+import { setUpPageContents } from "./pageContent.js";
 import {
 	condenseApplet,
 	revertTheme,
@@ -73,6 +75,10 @@ export async function loadPage()
 	setUpTextButtons();
 
 	setUpNavButtons();
+
+	equalizeTextButtons();
+
+	setUpPageContents();
 
 	setUpCarousels();
 
