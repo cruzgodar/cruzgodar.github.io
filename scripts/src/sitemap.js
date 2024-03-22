@@ -680,7 +680,7 @@ export const sitemap =
 			"/teaching/uo/342/notes/1-eigenvectors-and-eigenvalues/",
 			"/teaching/uo/342/notes/2-diagonalization/",
 			"/teaching/uo/342/notes/3-intro-to-des/",
-			"/teaching/uo/342/notes/4-orthogonality/"
+			"/teaching/uo/342/notes/4-the-dot-product/"
 		]
 	},
 		
@@ -730,9 +730,9 @@ export const sitemap =
 		"customScript": true
 	},
 	
-	"/teaching/uo/342/notes/4-orthogonality/":
+	"/teaching/uo/342/notes/4-the-dot-product/":
 	{
-		"title": "Section 4: Orthogonality",
+		"title": "Section 4: The Dot Product",
 		
 		"parent": "/teaching/uo/342/",
 		

@@ -2,7 +2,7 @@
 
 So far in linear algebra, we've focused on vectors as fairly abstract concepts. Vectors can look like lists of $n$ numbers in $#R#^n$, polynomials in $#R#[x]$, or even matrices or linear transformations. But largely speaking, we've refrained from talking about the *geometry* of these spaces. Vectors in $#R#^2$, typically represented as arrows in the plane, have notions of length and direction in addition to the component representation we're more familiar with, and there's often a lot to be gained from thinking about vectors in this way. There's also the **dot product**, which takes two vectors and produces a number that measures their lengths and the angle between them, and in $#R#^3$ specifically, there's also the **cross product**, which takes two vectors and produces a third vector that's orthogonal (i.e. perpendicular) to them.
 
-So what can we expect to generalize to arbitrary vector spaces? Probably not the cross product, since it's not even defined in $#R#^n$ unless $n = 3$ (there are technically generalizations to higher dimensions, but they're still specific to $#R#^n$ and won't generalize past that). Also, the notion of a vector having a single direction in $#R#^2$ breaks down immediately in $#R#^3$, where we need to know two angles and a length (i.e. spherical coordinates) to pin down a vector. In an $n$-dimensional space, there are $n$ degrees of freedom, so we'd need $n - 1$ angles to keep track of a vector if we know its length, and that's probably not a realistic goal. On the other hand, the angle *between* two vectors works just fine in every $#R#^n$, as does the dot product. In fact, everything that feels like it should generalize --- the angle between vectors, orthogonality, and magnitude --- can be defined in terms of the dot product. Let's review how it works in $#R#^n$, and then we'll begin to bring its ideas to more general vector spaces.
+So what can we expect to generalize to arbitrary vector spaces? Probably not the cross product, since it's not even defined in $#R#^n$ unless $n = 3$ (there are technically generalizations to higher dimensions, but they're still specific to $#R#^n$ and won't generalize past that). Also, the notion of a vector having a single direction in $#R#^2$ breaks down immediately in $#R#^3$, where we need to know two angles and a length (i.e. spherical coordinates) to pin down a vector. In an $n$-dimensional space, there are $n$ degrees of freedom, so we'd need $n - 1$ angles to keep track of a vector if we know its length, and that's probably not a realistic goal. On the other hand, the angle *between* two vectors works just fine in every $#R#^n$, as does the dot product. In fact, everything that feels like it should generalize --- the angle between vectors, orthogonality, and magnitude --- can be defined in terms of the dot product. We'll see how it works in $#R#^n$ in this section, apply it to some common applications in the next, and then we'll bring its ideas to more general vector spaces in the section after that.
 
 ### def "the dot product"
 
@@ -196,6 +196,106 @@ Orthogonality will be surprisingly critical to most of the rest of the class. We
 
 ## Orthonormal Bases
 
-When we're asked to come up with a basis for $#R#^n$, there are two generally good choices we've seen at this point: if we have some diagonalizable $n \times n$ matrix $A$ that's relevant to the situation, we might want to choose a basis of eigenvectors of $A$, and otherwise, the standard basis $\left\{ \vec{e_1}, ..., \vec{e_n} \right\}$ is a reliable choice.
+When we're asked to come up with a basis for $#R#^n$, there are two generally good choices we've seen at this point: if we have some diagonalizable $n \times n$ matrix $A$ that's relevant to the situation, we might want to choose a basis of eigenvectors of $A$, and otherwise, the standard basis $\left\{ \vec{e_1}, ..., \vec{e_n} \right\}$ is a reliable choice. Let's dig into that a little more and understand *why* it's so reliable. The standard basis has many useful properties, but let's focus on the most relevant:
+
+### def "orthonormal"
+
+	A collection of vectors $\left\{ \vec{v_1}, ..., \vec{v_n} \right\}$ is **orthogonal** if $\vec{v_i} \bullet \vec{v_j} = 0$ whenever $i \neq j$, and it is **orthonormal** if additionally, $||\vec{v_i}|| = 1$ for every $\vec{v_i}$.
+
+###
+
+When a basis $\left\{ \vec{v_1}, ..., \vec{v_n} \right\}$ is **orthonormal**, finding the expression of a vector in terms of the basis is much, *much* easier than it otherwise would be. Normally, that process requires inverting a change-of-basis matrix, but now we can sidestep that entirely. Let $\vec{v} \in #R#^n$ be a vector with the expression
+
+$$
+	\vec{v} = c_1 \vec{v_1} + \cdots + c_n \vec{v_n}.
+$$
+
+Now take the dot product of both sides with $\vec{v_i}$:
+
+$$
+	\vec{v} \bullet \vec{v_i} &= \left( c_1 \vec{v_1} + \cdots + c_n \vec{v_n} \right) \bullet \vec{v_i}
+
+	&= c_1 \vec{v_1} \bullet \vec{v_i} + \cdots + c_n \vec{v_n} \bullet \vec{v_i}
+
+	&= c_i.
+$$
+
+In other words,
+
+### prop "expression in an orthonormal basis"
+
+	Let $\left\{ \vec{v_1}, ..., \vec{v_n} \right\}$ be an orthonormal basis for $#R#^n$. Then for any $\vec{v} \in #R#^n$,
+
+	$$
+		\vec{v} = \left( \vec{v} \bullet \vec{v_1} \right) \vec{v_1} + \cdots + \left( \vec{v} \bullet \vec{v_n} \right) \vec{v_n}.
+	$$
+
+###
+
+Another point of convenience is that any collection of nonzero orthonormal vectors --- or even just orthogonal ones --- is necessarily linearly independent, so a collection of $n$ of them in $#R#^n$ must be a basis.
+
+### prop "orthogonal vectors are linearly independent"
+
+	If $\vec{v_1}, ..., \vec{v_k} \in #R#^n$ are orthogonal and nonzero, then they are linearly independent.
+
+###
+
+### pf
+
+	Suppose $c_1\vec{v_1} + \cdots + c_k\vec{v_k} = \vec{0}$. Dotting both sides by $\vec{v_i}$ results in
+
+	$$
+		c_i \left( \vec{v_i} \bullet \vec{v_i} \right) \vec{v_i} = 0,
+	$$
+
+	and since $\vec{v_i} \neq 0$, $\vec{v_i} \bullet \vec{v_i} \neq 0$, meaning $c_i = 0$. In total, every $c_i = 0$, and so the $\vec{v_i}$ are linearly independent.
+
+###
+
+### exc "expression in an orthonormal basis"
+
+	Given the vectors
+
+	$$
+		\vec{v_1} = [[ 1 ; -2 ; 1 ]], \quad \vec{v_2} = [[ -1 ; -1 ; -1 ]], \quad \vec{v_3} = [[ 3 ; 0 ; -3 ]].
+	$$
+
+	1. Show that $\left\{ \vec{v_1}, \vec{v_2}, \vec{v_3} \right\}$ is an orthogonal set, and therefore a basis for $#R#^3$.
+
+	2. Find an orthonormal basis $\left\{ \vec{w_1}, \vec{w_2}, \vec{w_3} \right\}$, where $\vec{w_i}$ is parallel to $\vec{v_i}$.
+
+	3. Express the vector
+
+	$$
+		\vec{v} = [[ 4 ; 3 ; -1 ]]
+	$$
+
+	in the basis $\left\{ \vec{w_1}, \vec{w_2}, \vec{w_3} \right\}$.
+
+###
+
+Just like linear independence is closely related to invertibility of matrices --- in that $n$ vectors in $#R#^n$ are linearly independent if and only if the matrix with them as columns is invertible --- orthonormality is closely related to another property a matrix can have.
+
+### def "unitary matrix"
+
+	An $m \times n$ matrix is **unitary** if its columns are orthonormal.
+
+###
+
+Unitary matrices don't have to be square, but any square unitary matrix has to be invertible, since the columns have to be linearly independent. Even non-square unitary matrices have a sort of pseudoinverse in their transpose: if $A$ is unitary, then $A^T A = I$, since every entry in a matrix product is really just a dot product in disguise, and the rows of $A^T$ are the columns of $A$ by definition.
+
+We'll have more to say about unitary matrices later on, but for now, let's see a few nice properties they have.
+
+### prop "properties of unitary matrices"
+
+	
+
+###
+
+
+
+## Projections
+
+
 
 ### nav-buttons
