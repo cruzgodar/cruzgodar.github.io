@@ -1568,7 +1568,7 @@ export class Wilson
 
 
 
-				changeOpacity(document.body, 0);
+				changeOpacity({ element: document.body, opacity: 0 });
 
 				setTimeout(() =>
 				{
@@ -1719,7 +1719,7 @@ export class Wilson
 
 
 
-					changeOpacity(document.body, 1);
+					changeOpacity({ element: document.body, opacity: 1 });
 
 					setTimeout(() =>
 					{
@@ -1754,7 +1754,7 @@ export class Wilson
 					easing: "cubicBezier(.42, 0, .58, 1)"
 				});
 
-				changeOpacity(document.body, 0);
+				changeOpacity({ element: document.body, opacity: 0 });
 
 				setTimeout(() =>
 				{
@@ -1869,7 +1869,7 @@ export class Wilson
 					{
 						window.scroll(0, this.fullscreenOldScroll);
 
-						changeOpacity(document.body, 1);
+						changeOpacity({ element: document.body, opacity: 1 });
 
 						setTimeout(() =>
 						{
