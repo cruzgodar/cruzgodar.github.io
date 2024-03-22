@@ -29,7 +29,7 @@ export function navButtons()
 {
 	return /* html */`
 		<div class="text-buttons nav-buttons">
-			<div class="focus-on-child" tabindex="1">
+			<div class="focus-on-child tabindex="1">
 				<button class="text-button linked-text-button previous-nav-button" type="button" tabindex="-1">Previous</button>
 			</div>
 			
