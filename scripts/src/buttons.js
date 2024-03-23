@@ -158,7 +158,10 @@ export function setUpTextButtons()
 // Makes linked text buttons have the same width and height.
 export function equalizeTextButtons()
 {
-	$$(".text-button").forEach(textButton => textButton.parentNode.style.margin = "0 auto");
+	$$(".text-button").forEach(textButton =>
+	{
+		textButton.parentNode.style.margin = "0 auto";
+	});
 
 	const heights = [];
 	let maxHeight = 0;
@@ -210,7 +213,34 @@ export function equalizeTextButtons()
 			element.style.width = "fit-content";
 		}
 
-		element.parentNode.parentNode.style.gridTemplateColumns = `repeat(auto-fit, ${maxWidth}px`;
+		element.parentNode.parentNode.style.gridTemplateColumns = `repeat(auto-fit, ${maxWidth}px)`;
+	});
+
+	$$(".nav-buttons.contents-container").forEach(navButtonsElement =>
+	{
+		if (navButtonsElement.children.length >= 4 && window.innerWidth < 460)
+		{
+			if (window.innerWidth < 316)
+			{
+				navButtonsElement.style.gridTemplateColumns = `repeat(2, ${maxWidth}px)`;
+				
+				navButtonsElement.lastElementChild.style.gridColumn = "";
+			}
+
+			else
+			{
+				navButtonsElement.style.gridTemplateColumns = `repeat(3, ${maxWidth}px)`;
+
+				navButtonsElement.lastElementChild.style.gridColumn = "1 / 3";
+			}
+		}
+
+		else
+		{
+			navButtonsElement.style.gridTemplateColumns = `repeat(${navButtonsElement.children.length - 1}, ${maxWidth}px) 118px`;
+
+			navButtonsElement.lastElementChild.style.gridColumn = "";
+		}
 	});
 }
 

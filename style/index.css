@@ -46,6 +46,9 @@
 
 	--about-color: rgb(222, 222, 222);
 	/* --about-color: lch(90% 0 0); */
+
+	--contents-border-color-component: calc(255 + (var(--theme) * (208 - 255)));
+	--contents-border-color: rgb(var(--contents-border-color-component), var(--contents-border-color-component), var(--contents-border-color-component));
 }
 
 html
@@ -439,6 +442,98 @@ mjx-container
 }
 
 
+#contents-indicator
+{
+	position: fixed;
+	right: 0;
+	top: calc((100vh - 128px) / 2);
+	width: 8px;
+	padding-right: 8px;
+	padding-left: 32px;
+	padding-top: 48px;
+	padding-bottom: 48px;
+	cursor: pointer;
+}
+
+@media (max-width: 440px)
+{
+	#contents-indicator
+	{
+		width: 6px;
+		padding-right: 6px;
+		padding-right: 8px;
+		padding-left: 24px;
+		padding-top: 36px;
+		padding-bottom: 36px;
+	}
+}
+
+@media (max-width: 320px)
+{
+	#contents-indicator
+	{
+		width: 4px;
+		padding-right: 4px;
+		padding-right: 4px;
+		padding-left: 16px;
+		padding-top: 24px;
+		padding-bottom: 24px;
+	}
+}
+
+#contents-container
+{
+	position: fixed;
+	height: calc(100% - 112px);
+	width: fit-content;
+	max-width: 100%;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+
+	/* To account for the header. */
+	top: 56px;
+	right: 0;
+
+	z-index: 100;
+}
+
+#contents
+{
+	width: fit-content;
+	max-width: 100%;
+	overflow-y: auto;
+	padding: 16px;
+	border-radius: 16px;
+	margin-left: 16px;
+	margin-right: 16px;
+	box-shadow: 0px 0px 16px 0px rgba(0, 0, 0, 0.35);
+	border: 2px solid var(--contents-border-color);
+	background-color: var(--background);
+}
+
+#contents > *
+{
+	cursor: pointer;
+}
+
+#contents > .section-text, #contents > .heading-text
+{
+	width: fit-content;
+}
+
+#contents > .section-text
+{
+	margin-top: 48px;
+}
+
+#contents > *:last-child
+{
+	margin-bottom: 0;
+}
+
+
 
 *:focus
 {
@@ -671,6 +766,17 @@ mjx-container
 .text-boxes
 {
 	align-items: start;
+}
+
+.contents-button-container
+{
+	display: flex;
+	justify-content: flex-end;
+	margin: 0 !important;
+}
+.contents-button-container > *
+{
+	margin: 0 !important;
 }
 
 .nav-buttons:first-of-type
@@ -1766,14 +1872,16 @@ img[src="/about/cover.webp"]
 
 
 
-.notes-ex-title, .notes-exc-title, .notes-def-title, .notes-prop-title, .notes-thm-title, .notes-pf-title, .notes-cor-title, .notes-lem-title, .notes-ax-title, .notes-as-title
+.notes-title
 {
 	color: rgb(255, 255, 255);
 	
-	border-radius: 5px;
-	padding: 0px 6px 0px 6px;
+	border-radius: 6px;
+	padding: 3px 6px 3px 6px;
+	margin-bottom: 16px;
 	
 	font-weight: bold;
+	width: fit-content;
 	
 	text-align: left !important;
 }
