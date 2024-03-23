@@ -222,7 +222,7 @@ export function equalizeTextButtons()
 
 		if (navButtonsElement.classList.contains("contents-container"))
 		{
-			navButtonsElement.style.gridTemplateColumns = `150px repeat(auto-fit, ${maxWidth}px`;
+			navButtonsElement.style.gridTemplateColumns = `132px repeat(auto-fit, ${maxWidth}px`;
 		}
 
 		else

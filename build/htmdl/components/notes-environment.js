@@ -25,23 +25,23 @@ export function notesEnvironment(options, id, name)
 		// These two avoid awkward things like Theorem: The Fundamental Theorem.
 		if (options.includes("m"))
 		{
-			return /* html */`<div class="notes-${id} notes-environment"><p class="body-text"</p><span class="notes-${id}-title">${name}</span></p>`;
+			return /* html */`<div class="notes-${id} notes-environment"><div class="notes-${id}-title notes-title">${name}</div>`;
 		}
 
 		else if (
 			name.toLowerCase().includes(notesEnvironmentNames[id].toLowerCase())
 		) {
-			return /* html */`<div class="notes-${id} notes-environment"><p class="body-text"</p><span class="notes-${id}-title">${name}</span></p>`;
+			return /* html */`<div class="notes-${id} notes-environment"><div class="notes-${id}-title notes-title">${name}</div>`;
 		}
 
 		else
 		{
-			return /* html */`<div class="notes-${id} notes-environment"><p class="body-text"</p><span class="notes-${id}-title">${notesEnvironmentNames[id]}: ${name}</span></p>`;
+			return /* html */`<div class="notes-${id} notes-environment"><div class="notes-${id}-title notes-title">${notesEnvironmentNames[id]}: ${name}</div>`;
 		}
 	}
 
 	else
 	{
-		return /* html */`<div class="notes-${id} notes-environment"><p class="body-text"</p><span class="notes-${id}-title">${notesEnvironmentNames[id]}</span></p>`;
+		return /* html */`<div class="notes-${id} notes-environment"><div class="notes-${id}-title notes-title">${notesEnvironmentNames[id]}</div>`;
 	}
 }
