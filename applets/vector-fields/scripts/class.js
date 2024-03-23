@@ -58,10 +58,11 @@ export class VectorField extends AnimationFrameApplet
 	zoomVelocityStartThreshhold = .002;
 	zoomVelocityStopThreshhold = .002;
 
-	timeElapsedHistoryLength = 30;
+	timeElapsedHistoryLength = 60;
 	lastTimeElapsed = new Array(this.timeElapsedHistoryLength);
+	averageTimeElapsed;
 	frame = 0;
-
+	
 
 
 	constructor({
@@ -576,26 +577,27 @@ export class VectorField extends AnimationFrameApplet
 
 			this.wilsonDim.gl.useProgram(this.wilsonDim.render.shaderPrograms[0]);
 
-			this.lastTimeElapsed[
-				this.frame % this.timeElapsedHistoryLength
-			] = Math.min(timeElapsed, 16);
-
-			if (this.frame >= this.timeElapsedHistoryLength)
+			if (this.frame < this.timeElapsedHistoryLength)
 			{
-				let averageTimeElapsed = 0;
+				this.lastTimeElapsed[this.frame] = Math.min(timeElapsed, 16);
 
-				for (let i = 0; i < this.timeElapsedHistoryLength; i++)
+				if (this.frame === this.timeElapsedHistoryLength - 1)
 				{
-					averageTimeElapsed += this.lastTimeElapsed[i];
+					let totalTimeElapsed = 0;
+
+					for (let i = 0; i < this.timeElapsedHistoryLength; i++)
+					{
+						totalTimeElapsed += this.lastTimeElapsed[i];
+					}
+
+					this.wilsonDim.gl.uniform1f(
+						this.wilsonDim.uniforms["dimAmount"][0],
+						(totalTimeElapsed / this.timeElapsedHistoryLength) / 6.944
+					);
 				}
 
-				this.wilsonDim.gl.uniform1f(
-					this.wilsonDim.uniforms["dimAmount"][0],
-					(averageTimeElapsed / this.timeElapsedHistoryLength) / 6.944
-				);
+				this.frame++;
 			}
-
-			this.frame++;
 
 
 
