@@ -7,6 +7,7 @@ const contentsSelector = ".notes-title:not(.notes-pf-title), .section-text, .hea
 
 let contentsContainerElement;
 let contentsElement;
+let indicatorElement;
 let contentsShown = false;
 
 export function setUpPageContents()
@@ -80,6 +81,16 @@ function prepareContents()
 	contentsContainerElement.style.opacity = 0;
 	contentsContainerElement.style.marginRight = "-32px";
 	contentsContainerElement.style.display = "none";
+
+
+
+	indicatorElement = document.createElement("img");
+	indicatorElement.id = "contents-indicator";
+	indicatorElement.src = "/graphics/general-icons/contents-indicator.png";
+	pageElement.appendChild(indicatorElement);
+
+	addHoverEventWithScale(indicatorElement, 1.1);
+	indicatorElement.addEventListener("click", showContents);
 }
 
 async function showContents()
@@ -93,13 +104,22 @@ async function showContents()
 
 	contentsContainerElement.style.display = "flex";
 
-	await anime({
-		targets: contentsContainerElement,
-		opacity: 1,
-		marginRight: 0,
-		duration: cardAnimationTime,
-		easing: "easeOutQuint"
-	}).finished;
+	await Promise.all([
+		anime({
+			targets: contentsContainerElement,
+			opacity: 1,
+			marginRight: 0,
+			duration: cardAnimationTime,
+			easing: "easeOutQuint"
+		}).finished,
+
+		anime({
+			targets: indicatorElement,
+			opacity: 0,
+			duration: cardAnimationTime,
+			easing: "easeOutQuint"
+		}).finished
+	]);
 
 	document.documentElement.addEventListener("click", handleClickEvent);
 }
@@ -113,13 +133,22 @@ async function hideContents()
 	
 	document.documentElement.removeEventListener("click", handleClickEvent);
 
-	await anime({
-		targets: contentsContainerElement,
-		opacity: 0,
-		marginRight: "-32px",
-		duration: cardAnimationTime,
-		easing: "easeOutQuint"
-	}).finished;
+	await Promise.all([
+		anime({
+			targets: contentsContainerElement,
+			opacity: 0,
+			marginRight: "-32px",
+			duration: cardAnimationTime,
+			easing: "easeOutQuint"
+		}).finished,
+
+		anime({
+			targets: indicatorElement,
+			opacity: 1,
+			duration: cardAnimationTime,
+			easing: "easeOutQuint"
+		}).finished
+	]);
 
 	contentsContainerElement.style.display = "none";
 

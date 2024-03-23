@@ -442,6 +442,44 @@ mjx-container
 }
 
 
+#contents-indicator
+{
+	position: fixed;
+	right: 0;
+	top: calc((100vh - 128px) / 2);
+	width: 8px;
+	padding-right: 8px;
+	padding-left: 32px;
+	padding-top: 48px;
+	padding-bottom: 48px;
+	cursor: pointer;
+}
+
+@media (max-width: 440px)
+{
+	#contents-indicator
+	{
+		width: 6px;
+		padding-right: 6px;
+		padding-right: 8px;
+		padding-left: 24px;
+		padding-top: 36px;
+		padding-bottom: 36px;
+	}
+}
+
+@media (max-width: 320px)
+{
+	#contents-indicator
+	{
+		width: 4px;
+		padding-right: 4px;
+		padding-right: 4px;
+		padding-left: 16px;
+		padding-top: 24px;
+		padding-bottom: 24px;
+	}
+}
 
 #contents-container
 {
