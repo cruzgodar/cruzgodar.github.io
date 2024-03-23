@@ -47,8 +47,7 @@
 	--about-color: rgb(222, 222, 222);
 	/* --about-color: lch(90% 0 0); */
 
-	--contents-border-color-component: calc(255 + (var(--theme) * (208 - 255)));
-	--contents-border-color: rgb(var(--contents-border-color-component), var(--contents-border-color-component), var(--contents-border-color-component));
+	--contents-border-color: rgba(208, 208, 208, var(--theme));
 }
 
 html
@@ -486,7 +485,9 @@ mjx-container
 	position: fixed;
 	height: calc(100% - 112px);
 	width: fit-content;
-	max-width: 100%;
+
+	/* To account for the border. */
+	max-width: calc(100% - 4px);
 	display: flex;
 	flex-direction: column;
 	justify-content: center;
@@ -506,8 +507,11 @@ mjx-container
 	overflow-y: auto;
 	padding: 16px;
 	border-radius: 16px;
+
 	margin-left: 16px;
-	margin-right: 16px;
+
+	/* This accounts for the total 4px of the border. */
+	margin-right: 20px;
 	box-shadow: 0px 0px 16px 0px rgba(0, 0, 0, 0.35);
 	border: 2px solid var(--contents-border-color);
 	background-color: var(--background);
@@ -1772,8 +1776,8 @@ img[src="/about/cover.webp"]
 
 .desmos-border, .desmos-container, .dcg-container
 {
-	width: min(min(calc(900px - 4px), calc(90vw - 4px)), calc(50vh - 4px)) !important;
-	height: min(min(calc(900px - 4px), calc(90vw - 4px)), calc(50vh - 4px)) !important;
+	width: min(min(calc(900px - 8px), calc(90vw - 8px)), calc(50vh - 8px)) !important;
+	height: min(min(calc(900px - 8px), calc(90vw - 8px)), calc(50vh - 8px)) !important;
 }
 
 .notes-environment .desmos-border, .notes-environment .desmos-container, .notes-environment .dcg-container

@@ -9,6 +9,7 @@ let contentsContainerElement;
 let contentsElement;
 let indicatorElement;
 let contentsShown = false;
+let contentsAnimating = false;
 
 export function setUpPageContents()
 {
@@ -95,11 +96,12 @@ function prepareContents()
 
 async function showContents()
 {
-	if (contentsShown)
+	if (contentsShown || contentsAnimating)
 	{
 		return;
 	}
 
+	contentsAnimating = true;
 	contentsShown = true;
 
 	contentsContainerElement.style.display = "flex";
@@ -122,15 +124,19 @@ async function showContents()
 	]);
 
 	document.documentElement.addEventListener("click", handleClickEvent);
+	contentsAnimating = false;
 }
 
 async function hideContents()
 {
-	if (!contentsShown)
+	if (!contentsShown || contentsAnimating)
 	{
 		return;
 	}
-	
+
+	contentsAnimating = true;
+	contentsShown = false;
+
 	document.documentElement.removeEventListener("click", handleClickEvent);
 
 	await Promise.all([
@@ -151,8 +157,7 @@ async function hideContents()
 	]);
 
 	contentsContainerElement.style.display = "none";
-
-	contentsShown = false;
+	contentsAnimating = false;
 }
 
 function handleClickEvent(e)
