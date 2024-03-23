@@ -46,6 +46,9 @@
 
 	--about-color: rgb(222, 222, 222);
 	/* --about-color: lch(90% 0 0); */
+
+	--contents-border-color-component: calc(255 + (var(--theme) * (208 - 255)));
+	--contents-border-color: rgb(var(--contents-border-color-component), var(--contents-border-color-component), var(--contents-border-color-component));
 }
 
 html
@@ -444,6 +447,8 @@ mjx-container
 {
 	position: fixed;
 	height: calc(100% - 112px);
+	width: fit-content;
+	max-width: 100%;
 	display: flex;
 	flex-direction: column;
 	justify-content: center;
@@ -458,13 +463,15 @@ mjx-container
 
 #contents
 {
-	max-width: calc(100vw - 64px);
+	width: fit-content;
+	max-width: 100%;
 	overflow-y: auto;
 	padding: 16px;
 	border-radius: 16px;
 	margin-left: 16px;
 	margin-right: 16px;
-	box-shadow: 0px 0px 16px 0px rgba(0, 0, 0, .3);
+	box-shadow: 0px 0px 16px 0px rgba(0, 0, 0, 0.35);
+	border: 2px solid var(--contents-border-color);
 	background-color: var(--background);
 }
 
@@ -473,12 +480,12 @@ mjx-container
 	cursor: pointer;
 }
 
-#contents > .section-text
+#contents > .section-text, #contents > .heading-text
 {
 	width: fit-content;
 }
 
-#contents > .section-text:not(:first-child)
+#contents > .section-text
 {
 	margin-top: 48px;
 }
@@ -721,6 +728,17 @@ mjx-container
 .text-boxes
 {
 	align-items: start;
+}
+
+.contents-button-container
+{
+	display: flex;
+	justify-content: flex-end;
+	margin: 0 !important;
+}
+.contents-button-container > *
+{
+	margin: 0 !important;
 }
 
 .nav-buttons:first-of-type

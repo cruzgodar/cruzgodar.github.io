@@ -3,7 +3,7 @@ import { cardAnimationTime } from "./animation.js";
 import { addHoverEventWithScale } from "./hoverEvents.js";
 import { $, $$, pageElement } from "./main.js";
 
-const contentsSelector = ".notes-title:not(.notes-pf-title), .section-text";
+const contentsSelector = ".notes-title:not(.notes-pf-title), .section-text, .heading-text";
 
 let contentsContainerElement;
 let contentsElement;
@@ -20,8 +20,8 @@ export function setUpPageContents()
 
 	prepareContents();
 
-	navButtonsElement.firstElementChild.insertAdjacentHTML("beforebegin", /* html */`
-		<div class="focus-on-child contents-container" style="margin-left: 0 !important" tabindex="1">
+	navButtonsElement.lastElementChild.insertAdjacentHTML("afterend", /* html */`
+		<div class="focus-on-child contents-button-container" tabindex="1">
 			<button class="text-button linked-text-button" type="button" tabindex="-1">Contents</button>
 		</div>
 	`);
@@ -30,7 +30,7 @@ export function setUpPageContents()
 
 	setTimeout(() =>
 	{
-		const contentButtonElement = navButtonsElement.firstElementChild.firstElementChild;
+		const contentButtonElement = navButtonsElement.lastElementChild.firstElementChild;
 
 		addHoverEventWithScale(contentButtonElement, 1.075);
 
@@ -52,11 +52,26 @@ function prepareContents()
 	{
 		const clonedElement = element.cloneNode(true);
 
+		if (clonedElement.classList.contains("heading-text"))
+		{
+			const index = clonedElement.textContent.indexOf(":");
+			
+			if (index !== -1)
+			{
+				clonedElement.textContent = clonedElement.textContent.slice(index + 2);
+			}
+		}
+
 		contentsElement.appendChild(clonedElement);
 
 		clonedElement.addEventListener("click", () =>
 		{
 			element.scrollIntoView({ behavior: "smooth", block: "center", inline: "center" });
+
+			if (window.innerWidth < 1000)
+			{
+				hideContents();
+			}
 		});
 
 		addHoverEventWithScale(clonedElement, 1.025);

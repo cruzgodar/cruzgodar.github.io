@@ -222,12 +222,12 @@ export function equalizeTextButtons()
 
 		if (navButtonsElement.classList.contains("contents-container"))
 		{
-			navButtonsElement.style.gridTemplateColumns = `132px repeat(auto-fit, ${maxWidth}px`;
+			navButtonsElement.style.gridTemplateColumns = `repeat(${element.parentNode.parentNode.children.length - 1}, ${maxWidth}px) 118px`;
 		}
 
 		else
 		{
-			navButtonsElement.style.gridTemplateColumns = `repeat(auto-fit, ${maxWidth}px`;
+			navButtonsElement.style.gridTemplateColumns = `repeat(auto-fit, ${maxWidth}px)`;
 		}
 	});
 }
