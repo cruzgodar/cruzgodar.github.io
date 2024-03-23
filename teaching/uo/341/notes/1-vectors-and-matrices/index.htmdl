@@ -259,13 +259,13 @@ $$
 where the $1$ is in position $j$. When we evaluate $B\vec{e_j}$, only column $j$ of $B$ is picked out --- in other words, if we write
 
 $$
-	B = [[ |, |,, |, | ; \vec{b_1}, \vec{b_2}, \cdots, \vec{b_{k - 1}}, \vec{b_k} ; |, |,, |, | ]],
+	B = [[ \mid, \mid,, \mid, \mid ; \vec{b_1}, \vec{b_2}, \cdots, \vec{b_{k - 1}}, \vec{b_k} ; \mid, \mid,, \mid, \mid ]],
 $$
 
 so that $\vec{b_j}$ is the $j$th column of $B$, then $B\vec{e_j} = \vec{b_j}$. By the same token, $(AB)\vec{e_j} = A\vec{b_j}$ is the $j$th column of $AB$. So the matrix product $AB$ is defined by
 
 $$
-	AB = [[ |, |,, |, | ; A\vec{b_1}, A\vec{b_2}, \cdots, A\vec{b_{k - 1}}, A\vec{b_k} ; |, |,, |, | ]].
+	AB = [[ \mid, \mid,, \mid, \mid ; A\vec{b_1}, A\vec{b_2}, \cdots, A\vec{b_{k - 1}}, A\vec{b_k} ; \mid, \mid,, \mid, \mid ]].
 $$
 
 Thankfully, we can streamline this formula to make it easier to remember. To get the $i$th entry of $A\vec{b_j}$, we turn $\vec{b_j}$ sideways and look at its product with the $i$th row of $A$. So, thankfully, we can get a formula for $AB$ one entry at a time.
