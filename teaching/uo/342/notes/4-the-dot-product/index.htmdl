@@ -136,7 +136,7 @@ We can immediately start getting applications of orthogonality: notably, the Pyt
 
 ###
 
-### exc
+### exc "the Pythagorean theorem"
 
 	Show that this theorem holds. Start by assuming $\vec{v}$ and $\vec{w}$ are orthogonal and show $||\vec{v}||^2 + ||\vec{w}||^2 = ||\vec{v} + \vec{w}||^2$. Then assume that $||\vec{v}||^2 + ||\vec{w}||^2 = ||\vec{v} + \vec{w}||^2$ and show that $\vec{v}$ and $\vec{w}$ must be orthogonal.
 
@@ -186,7 +186,7 @@ Orthogonality will be surprisingly critical to most of the rest of the class. We
 
 ###
 
-### exc
+### exc "orthogonal complement"
 
 	Let $X$ be a subspace of $#R#^n$. Show that $X^\perp$ is in fact a subspace.
 

@@ -487,7 +487,7 @@ mjx-container
 	width: fit-content;
 
 	/* To account for the border. */
-	max-width: calc(100% - 4px);
+	max-width: min(100% - 4px, 500px);
 	display: flex;
 	flex-direction: column;
 	justify-content: center;

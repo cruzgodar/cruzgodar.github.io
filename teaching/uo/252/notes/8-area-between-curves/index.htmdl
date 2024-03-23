@@ -114,7 +114,7 @@ Sometimes --- particularly in cases like the previous example with multiple boun
 
 
 
-### ex "integrating with respect to $y$."
+### ex "integrating with respect to $y$"
 	
 	Find the area of the shaded region bounded by $y = 1$, $y = 3 - x$, and $y = x^2 + 1$ by integrating with respect to $y$.
 	

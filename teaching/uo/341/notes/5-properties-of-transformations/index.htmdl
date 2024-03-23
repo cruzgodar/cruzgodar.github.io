@@ -141,7 +141,7 @@ Since neither of the first two rows is all zero, we're going to be able to reduc
 
 On the other hand, if $n < m$, then there are more rows than columns. This case is a lot simpler: for $T$ to be onto, there need to be at least $m$ linearly independent columns, but there are only $n$ columns at all, linearly independent or not. We can sum up our findings in far fewer words:
 
-### prop
+### prop "one-to-one and/or onto rectangular matrices"
 
 	Let $T : #R#^n \to #R#^m$ be a linear transformation. If $n > m$, then $T$ can't be one-to-one. If $n < m$, then $T$ can't be onto.
 
