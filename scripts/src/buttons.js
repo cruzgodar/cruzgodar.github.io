@@ -160,10 +160,7 @@ export function equalizeTextButtons()
 {
 	$$(".text-button").forEach(textButton =>
 	{
-		if (!textButton.parentNode.classList.contains("contents-container"))
-		{
-			textButton.parentNode.style.margin = "0 auto";
-		}
+		textButton.parentNode.style.margin = "0 auto";
 	});
 
 	const heights = [];
@@ -216,18 +213,33 @@ export function equalizeTextButtons()
 			element.style.width = "fit-content";
 		}
 
+		element.parentNode.parentNode.style.gridTemplateColumns = `repeat(auto-fit, ${maxWidth}px)`;
+	});
 
-
-		const navButtonsElement = element.parentNode.parentNode;
-
-		if (navButtonsElement.classList.contains("contents-container"))
+	$$(".nav-buttons.contents-container").forEach(navButtonsElement =>
+	{
+		if (navButtonsElement.children.length >= 4 && window.innerWidth < 460)
 		{
-			navButtonsElement.style.gridTemplateColumns = `repeat(${element.parentNode.parentNode.children.length - 1}, ${maxWidth}px) 118px`;
+			if (window.innerWidth < 316)
+			{
+				navButtonsElement.style.gridTemplateColumns = `repeat(2, ${maxWidth}px)`;
+				
+				navButtonsElement.lastElementChild.style.gridColumn = "";
+			}
+
+			else
+			{
+				navButtonsElement.style.gridTemplateColumns = `repeat(3, ${maxWidth}px)`;
+
+				navButtonsElement.lastElementChild.style.gridColumn = "1 / 3";
+			}
 		}
 
 		else
 		{
-			navButtonsElement.style.gridTemplateColumns = `repeat(auto-fit, ${maxWidth}px)`;
+			navButtonsElement.style.gridTemplateColumns = `repeat(${navButtonsElement.children.length - 1}, ${maxWidth}px) 118px`;
+
+			navButtonsElement.lastElementChild.style.gridColumn = "";
 		}
 	});
 }
