@@ -31,6 +31,7 @@ import {
 	redirect,
 	setCurrentlyRedirecting
 } from "./navigation.js";
+import { setUpPageContents } from "./pageContent.js";
 import {
 	condenseApplet,
 	revertTheme,
@@ -73,6 +74,8 @@ export async function loadPage()
 	setUpTextButtons();
 
 	setUpNavButtons();
+
+	setUpPageContents();
 
 	setUpCarousels();
 
