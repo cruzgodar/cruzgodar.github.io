@@ -146,7 +146,7 @@ Orthogonality will be surprisingly critical to most of the rest of the class. We
 
 ### def "orthogonal complement"
 
-	Let $X$ be a subspace of $#R#^n$. The **orthogonal complement** to $X$ is the subspace $X^\perp$ of $#R#^n$ consisting of the vectors $\vec{v}$ that are orthogonal to every vector in $X$.
+	Let $X$ be a subspace of $#R#^n$. The **orthogonal complement** to $X$ is the subspace $X^\perp$ of $#R#^n$ (pronounced "X perp", like perpendicular) consisting of the vectors $\vec{v}$ that are orthogonal to every vector in $X$.
 
 ###
 
@@ -303,8 +303,32 @@ We'll have more to say about unitary matrices later on, but for now, let's see a
 	and denote the columns of $A$ by $\vec{v_1}, ..., \vec{v_n}$. Then
 
 	$$
-		\left| \left| A\vec{v} \right| \right| &= \left| \left|  \right| \right|
+		\left| \left| A\vec{v} \right| \right|^2 &= \left| \left| c_1 \vec{v_1} + \cdots + c_n \vec{v_n} \right| \right|^2
+
+		&= \left| \left| c_1 \right| \right|^2 \left| \left| \vec{v_1} \right| \right|^2 + \cdots + \left| \left| c_n \right| \right|^2 \left| \left| \vec{v_n} \right| \right|^2
+
+		&= \left| \left| c_1 \right| \right|^2 + \cdots + \left| \left| c_n \right| \right|^2
+
+		&= \left| \left| \vec{v} \right| \right|^2.
 	$$
+
+###
+
+### exc "properties of unitary matrices"
+
+	Let $A$ be a unitary $m \times n$ matrix. Show that $\left( A\vec{v} \right) \bullet \left( A\vec{w} \right) = \vec{v} \bullet \vec{w}$ for all $\vec{v}, \vec{w} \in #R#^n$.
+
+###
+
+
+
+## The Gram-Schmidt Process
+
+Now that we've seen some of the nice properties of orthonormal bases, the natural next question is when we can find them. The good news is that unlike bases of eigenvectors of a matrix, which only exist when the matrix is diagonalizable, orthonormal bases always exist! We'll take a look at the standard process of finding one from a general basis, but in practice, we'll mainly use it to guarantee that an orthonormal basis *exists* rather than actually finding it.
+
+### thm -m "The Gram-Schmidt Process"
+
+	
 
 ###
 
@@ -312,6 +336,30 @@ We'll have more to say about unitary matrices later on, but for now, let's see a
 
 ## Projections
 
+There's another perspective on orthogonal bases that's worth discussing. If we express $\vec{v} \in #R#^3$ in the standard basis as
 
+$$
+	\vec{v} = c_1 \vec{e_1} + c_2 \vec{e_2} + c_3 \vec{e_3},
+$$
+
+we can think about the vector $c_1 \vec{v_1}$ as being the vector in $\span\left\{ \vec{v_1} \right\}$ that's closest to $\vec{v}$. Similarly, $c_1 \vec{v_1} + c_3 \vec{v_3}$ is the vector in $\span\left\{ \vec{v_1}, \vec{v_3} \right\}$ closest to $\vec{v}$, where *closest* means minimizing $\left| \left| \vec{v} - \vec{w} \right| \right|$ across all $\vec{w}$ in a subspace. <a href="https://www.desmos.com/3d/d1f12d74a5">This 3D Desmos graph</a> shows the red vector
+
+$$
+	\vec{v} = [[ 2 ; 1 ; 3 ]] \in #R#^3
+$$
+
+and the closest vector in $\span\left\{ \vec{e_1}, \vec{e_2} \right\}$, colored blue. Toggling on the surface $d(x, y)$ shows a 3D plot of the distances to the red vector, where the height of the surface at $(x, y)$ is the distance to $\vec{v}$ from the vector
+
+$$
+	\vec{w} = [[ x ; y ; 0 ]].
+$$
+
+Unsurprisingly, the minimum is at $x = 2$ and $y = 1$. We'll talk more about these closest approximations and how to find them in the next section, but for now let's focus on their existence and uniqueness.
+
+### prop "orthogonal decomposition"
+
+	Let $X$ be a subspace of $#R#^n$ and $X^\perp$ its orthogonal complement, and let $\vec{v} \in #R#^n$. Then $\vec{v}$ can be written uniquely as $\vec{v} = \vec{x} + \vec{x}'$ for $\vec{x} \in X$ and $\vec{x}' \in X^\perp$.
+
+###
 
 ### nav-buttons
