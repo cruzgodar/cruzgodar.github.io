@@ -532,6 +532,11 @@ mjx-container
 	margin-top: 48px;
 }
 
+#contents > .notes-pf-title, #contents > .notes-dor-title
+{
+	margin-left: 16px;
+}
+
 #contents > *:last-child
 {
 	margin-bottom: 0;
@@ -775,12 +780,9 @@ mjx-container
 .contents-button-container
 {
 	display: flex;
-	justify-content: flex-end;
-	margin: 0 !important;
-}
-.contents-button-container > *
-{
-	margin: 0 !important;
+	justify-content: center;
+	margin-top: -22px;
+	margin-bottom: 32px;
 }
 
 .nav-buttons:first-of-type

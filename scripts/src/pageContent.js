@@ -3,7 +3,7 @@ import { cardAnimationTime } from "./animation.js";
 import { addHoverEventWithScale } from "./hoverEvents.js";
 import { $, $$, pageElement } from "./main.js";
 
-const contentsSelector = ".notes-title:not(.notes-pf-title), .section-text, .heading-text";
+const contentsSelector = ".notes-title, .section-text, .heading-text";
 
 let contentsContainerElement;
 let contentsElement;
@@ -22,9 +22,11 @@ export function setUpPageContents()
 
 	prepareContents();
 
-	navButtonsElement.lastElementChild.insertAdjacentHTML("afterend", /* html */`
-		<div class="focus-on-child contents-button-container" tabindex="1">
-			<button class="text-button linked-text-button" type="button" tabindex="-1">Contents</button>
+	navButtonsElement.insertAdjacentHTML("afterend", /* html */`
+		<div class="text-buttons nav-buttons contents-button-container" style="grid-template-columns: repeat(auto-fit, 88px);">
+			<div class="focus-on-child" tabindex="1">
+				<button class="text-button linked-text-button" type="button" tabindex="-1">Contents</button>
+			</div>
 		</div>
 	`);
 
@@ -32,7 +34,7 @@ export function setUpPageContents()
 
 	setTimeout(() =>
 	{
-		const contentButtonElement = navButtonsElement.lastElementChild.firstElementChild;
+		const contentButtonElement = navButtonsElement.nextElementSibling.firstElementChild;
 
 		addHoverEventWithScale(contentButtonElement, 1.075);
 

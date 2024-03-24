@@ -282,13 +282,29 @@ Just like linear independence is closely related to invertibility of matrices --
 
 ###
 
-Unitary matrices don't have to be square, but any square unitary matrix has to be invertible, since the columns have to be linearly independent. Even non-square unitary matrices have a sort of pseudoinverse in their transpose: if $A$ is unitary, then $A^T A = I$, since every entry in a matrix product is really just a dot product in disguise, and the rows of $A^T$ are the columns of $A$ by definition.
+Unitary matrices don't have to be square, but any square unitary matrix has to be invertible, since the columns have to be linearly independent. Even non-square unitary matrices have a sort of pseudoinverse in their transpose: if $A$ is unitary, then $A^T A = I$, since every entry in a matrix product is really just a dot product in disguise, and the rows of $A^T$ are the columns of $A$ by definition. Putting these two facts together, a square unitary matrix is always invertible, and $A^{-1} = A^T$.
 
 We'll have more to say about unitary matrices later on, but for now, let's see a few nice properties they have.
 
 ### prop "properties of unitary matrices"
 
-	
+ Let $A$ be a unitary $m \times n$ matrix. Then $A$ preserves distances and angles: $\left| \left| A\vec{v} \right| \right| = \left| \left| \vec{v} \right| \right|$ and $\left( A\vec{v} \right) \bullet \left( A\vec{w} \right) = \vec{v} \bullet \vec{w}$ for all $\vec{v}, \vec{w} \in #R#^n$.
+
+###
+
+### pf
+
+	We'll show that $A$ preserves distances. Let
+
+	$$
+		\vec{v} = [[ c_1 ; \vdots ; c_n ]],
+	$$
+
+	and denote the columns of $A$ by $\vec{v_1}, ..., \vec{v_n}$. Then
+
+	$$
+		\left| \left| A\vec{v} \right| \right| &= \left| \left|  \right| \right|
+	$$
 
 ###
 
