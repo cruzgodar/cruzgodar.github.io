@@ -368,7 +368,7 @@ Now that we've seen some of the nice properties of orthonormal bases, the natura
 		&= 0.
 	$$
 
-	As in past sections, you might recognize this as a proof by induction or just as a convincing argument, but either way, it shows that all the $\vec{y_i}$ are mutually orthogonal.
+	As in past sections, you might recognize this as a proof by induction or just as a convincing argument, but either way, it shows that all the $\vec{y_i}$ are mutually orthogonal. That means they're linearly independent, and they're all still in $X$ since they're just linear combinations of the $\vec{x_i}$, and so they must form a basis.
 
 ###
 
@@ -395,22 +395,50 @@ which is what the Gram-Schmidt process will subtract from $\vec{x_2}$, is shown 
 	Let $X$ be the subspace of $#R#^4$ given by
 
 	$$
-		X = \span \left\{ [[ 1 ; 2 ; 0 ; -1 ]], [[ 3 ; 1 ; 1 ; 0 ]], [[ 0 ; -1 ; -1 ; 2 ]] \right\}.
+		X = \span \left\{ [[ 1 ; 2 ; 0 ; -1 ]], [[ 2 ; 3 ; 1 ; 0 ]], [[ 0 ; -1 ; 1 ; 3 ]] \right\}.
 	$$
 
 	Find an orthonormal basis for $X$.
 
-	We'll start by finding an orthogonal basis with the Gram-Schmidt process, beginning with
+	Let's call those three basis vectors $\vec{x_1}$, $\vec{x_2}$, and $\vec{x_3}$. We'll start by finding an orthogonal basis with the Gram-Schmidt process, beginning with
 
 	$$
-		\vec{y_1} = [[ 1 ; 2 ; 0 ; -1 ]].
+		\vec{y_1} = \vec{x_1} = [[ 1 ; 2 ; 0 ; -1 ]].
 	$$
 
-	Now $\vec{y_1} \bullet \vec{y_1} = 6$, and so our next vector is
+	Now $\vec{y_1} \bullet \vec{y_1} = 6$ and $\vec{x_2} \bullet \vec{y_1} = 8$, and so our next vector is
 
 	$$
-		\vec{y_2} = [[ 1 ; 2 ; 0 ; -1 ]] - 
+		[[ 2 ; 3 ; 1 ; 0 ]] - \frac{8}{6}[[ 1 ; 2 ; 0 ; -1 ]] &= [[ 2/3 ; 1/3 ; 1 ; 4/3 ]].
 	$$
+
+	We'd like to avoid dealing with fractions if at all possible. Since this is orthogonal to $\vec{y_1}$, rescaling it won't change that (and we'll have to do it anyway later when we normalize everything), so we might as well take
+
+	$$
+		\vec{y_2} = [[ 2 ; 1 ; 3 ; 4 ]].
+	$$
+
+	Now our final vector is
+
+	$$
+		\vec{x_3} - \frac{\vec{x_3} \bullet \vec{y_1}}{\vec{y_1} \bullet \vec{y_1}}\vec{y_1} - \frac{\vec{x_3} \bullet \vec{y_2}}{\vec{y_2} \bullet \vec{y_2}}\vec{y_2} &= [[ 0 ; -1 ; 1 ; 3 ]] - \frac{-5}{6}[[ 1 ; 2 ; 0 ; -1 ]] - \frac{14}{30}[[ 2 ; 1 ; 3 ; 4 ]]
+
+		&= [[ -1/10 ; 1/5 ; -2/5 ; 3/10 ]]
+
+		\vec{y_3} &= [[ -1 ; 2 ; -4 ; 3 ]].
+	$$
+
+	Sure enough, all these vectors are orthogonal. To make them orthonormal, we just need to normalize them, producing a final basis of
+
+	$$
+		\left\{ \frac{1}{\sqrt{6}}[[ 1 ; 2 ; 0 ; -1 ]], \frac{1}{\sqrt{30}}[[ 2 ; 1 ; 3 ; 4 ]], \frac{1}{\sqrt{30}}[[ -1 ; 2 ; -4 ; 3 ]] \right\}
+	$$
+
+###
+
+### exc "the Gram-Schmidt process"
+
+	
 
 ###
 
