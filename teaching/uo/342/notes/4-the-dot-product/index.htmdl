@@ -328,7 +328,89 @@ Now that we've seen some of the nice properties of orthonormal bases, the natura
 
 ### thm -m "The Gram-Schmidt Process"
 
-	
+	Let $\left\{ \vec{x_1}, ..., \vec{x_n} \right\}$ be a basis for a subspace $X$ of $#R#^m$. Then an orthogonal basis for $X$ is $\left\{ \vec{y_1}, ..., \vec{y_n} \right\}$, where
+
+	$$
+		\vec{y_1} &= \vec{x_1}
+
+		\vec{y_2} &= \vec{x_2} - \frac{\vec{x_2} \bullet \vec{y_1}}{\vec{y_1} \bullet \vec{y_1}}\vec{y_1}
+
+		\vec{y_3} &= \vec{x_3} - \frac{\vec{x_3} \bullet \vec{y_1}}{\vec{y_1} \bullet \vec{y_1}}\vec{y_1} - \frac{\vec{x_3} \bullet \vec{y_2}}{\vec{y_2} \bullet \vec{y_2}}\vec{y_2}
+
+		&\ \ \vdots
+	$$
+
+	By normalizing every $\vec{y_i}$, we can also produce an orthonormal basis.
+
+###
+
+### pf
+
+	As with many results about orthogonality, this amounts to a long-winded computation, and we'll show it one vector at a time. To show $\vec{y_1}$ and $\vec{y_2}$ are orthogonal, we can just compute
+
+	$$
+		\vec{y_1} \bullet \vec{y_2} &= \vec{x_1} \bullet \left( \vec{x_2} - \frac{\vec{x_2} \bullet \vec{y_1}}{\vec{y_1} \bullet \vec{y_1}}\vec{y_1} \right)
+
+		&= \vec{x_1} \bullet \vec{x_2} - \vec{x_1} \bullet \frac{\vec{x_2} \bullet \vec{x_1}}{\vec{x_1} \bullet \vec{x_1}}\vec{x_1}
+
+		&= \vec{x_1} \bullet \vec{x_2} - \vec{x_2} \bullet \vec{x_1}
+
+		&= 0.
+	$$
+
+	For the general case, suppose we've shown that $\vec{y_1}, ..., \vec{y_{k - 1}}$ are all orthogonal. We'll show that $\vec{y_k}$ is orthogonal to all of them --- if $1 \leq i \leq k - 1$, then
+
+	$$
+		\vec{y_k} \bullet \vec{y_i} &= \left( \vec{x_k} - \frac{\vec{x_k} \bullet \vec{y_1}}{\vec{y_1} \bullet \vec{y_1}}\vec{y_1} - \frac{\vec{x_k} \bullet \vec{y_2}}{\vec{y_2} \bullet \vec{y_2}}\vec{y_2} - \cdots - \frac{\vec{x_k} \bullet \vec{y_{k - 1}}}{\vec{y_{k - 1}} \bullet \vec{y_{k - 1}}}\vec{y_{k - 1}} \right) \bullet \vec{y_i}
+
+		&= \vec{x_k} \bullet \vec{y_i} - \frac{\vec{x_k} \bullet \vec{y_i}}{\vec{y_i} \bullet \vec{y_i}}\vec{y_i} \bullet \vec{y_i}
+
+		&= 0.
+	$$
+
+	As in past sections, you might recognize this as a proof by induction or just as a convincing argument, but either way, it shows that all the $\vec{y_i}$ are mutually orthogonal.
+
+###
+
+Intuitively, every step of the Gram-Schmidt process begins with $\vec{x_i}$ and removes any component of the previous vectors, leaving behind a vector that's orthogonal to every one that came before.
+
+### desmos gram-schmidt
+
+In this Desmos graph, the purple and blue vectors are
+
+$$
+	\vec{x_1} = [[ 3 ; 2 ]], \quad \vec{x_2} = [[ -3 ; 1 ]],
+$$
+
+respectively. Then $\vec{x_1} \bullet \vec{x_2} = -7$, and $\vec{x_1} \bullet \vec{x_1} = 13$. The vector
+
+$$
+	\frac{\vec{x_2} \bullet \vec{x_1}}{\vec{x_1} \bullet \vec{x_1}}\vec{x_1} &= -\frac{7}{13}[[ 3 ; 2 ]],
+$$
+
+which is what the Gram-Schmidt process will subtract from $\vec{x_2}$, is shown in red. The final vector $\vec{y_2}$ is in green, drawn both as the geometric subtraction between the blue and red vectors, and again from the origin to highlight how it's orthogonal to the purple vector $\vec{x_1} = \vec{y_1}$. Notice how the red vector looks like the shadow cast on the line $\span\left\{ \vec{x_1} \right\}$ by a faraway light source orthogonal to it --- we'll have more to say about that later in this section.
+
+### ex "the Gram-Schmidt process"
+
+	Let $X$ be the subspace of $#R#^4$ given by
+
+	$$
+		X = \span \left\{ [[ 1 ; 2 ; 0 ; -1 ]], [[ 3 ; 1 ; 1 ; 0 ]], [[ 0 ; -1 ; -1 ; 2 ]] \right\}.
+	$$
+
+	Find an orthonormal basis for $X$.
+
+	We'll start by finding an orthogonal basis with the Gram-Schmidt process, beginning with
+
+	$$
+		\vec{y_1} = [[ 1 ; 2 ; 0 ; -1 ]].
+	$$
+
+	Now $\vec{y_1} \bullet \vec{y_1} = 6$, and so our next vector is
+
+	$$
+		\vec{y_2} = [[ 1 ; 2 ; 0 ; -1 ]] - 
+	$$
 
 ###
 
