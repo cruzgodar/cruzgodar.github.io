@@ -438,7 +438,13 @@ which is what the Gram-Schmidt process will subtract from $\vec{x_2}$, is shown 
 
 ### exc "the Gram-Schmidt process"
 
-	
+	Let $X$ be the subspace of $#R#^4$ given by
+
+	$$
+		X = \span \left\{ [[ -1 ; 1 ; 1 ; -1 ]], [[ 3 ; 0 ; 2 ; -1 ]], [[ 1 ; 2 ; 0 ; 3 ]] \right\}.
+	$$
+
+	Find an orthonormal basis for $X$.
 
 ###
 
@@ -464,12 +470,180 @@ $$
 	\vec{w} = [[ x ; y ; 0 ]].
 $$
 
-Unsurprisingly, the minimum is at $x = 2$ and $y = 1$. We'll talk more about these closest approximations and how to find them in the next section, but for now let's focus on their existence and uniqueness.
+Unsurprisingly, the minimum is at $x = 2$ and $y = 1$. We'll talk more about these closest approximations and how to find them in the next section, but let's focus on their existence and uniqueness right now.
 
 ### prop "orthogonal decomposition"
 
 	Let $X$ be a subspace of $#R#^n$ and $X^\perp$ its orthogonal complement, and let $\vec{v} \in #R#^n$. Then $\vec{v}$ can be written uniquely as $\vec{v} = \vec{x} + \vec{x}'$ for $\vec{x} \in X$ and $\vec{x}' \in X^\perp$.
 
 ###
+
+### pf
+
+	This is a great example of how useful orthonormal bases can be --- not only in computations, but also in proofs. Let $\left\{ \vec{x_1}, ..., \vec{x_k} \right\}$ be an orthonormal basis for $X$ (which exists via the Gram-Schmidt process), and extend it to a basis
+
+	$$
+		\left\{ \vec{x_1}, ..., \vec{x_k}, \vec{x_{k + 1}}, ..., \vec{x_n} \right\}
+	$$
+
+	for $#R#^n$. By applying the Gram-Schmidt process to this new basis, we can assume it too is orthonormal (and therefore $\left\{ \vec{x_{k + 1}}, ..., \vec{x_n} \right\}$ is a basis for $X^\perp$). Now $\vec{v}$ has a unique expression
+
+	$$
+		\vec{v} = c_1\vec{x_1} + \cdots + c_n \vec{x_n},
+	$$
+
+	and so we can (uniquely) define
+
+	$$
+		\vec{x} &= c_1\vec{x_1} + \cdots + c_k \vec{x_k}
+
+		\vec{x}' &= c_{k + 1}\vec{x_{k + 1}} + \cdots + c_n \vec{x_n}.
+	$$
+
+###
+
+### ex "orthogonal decomposition"
+
+	Let $X$ be the subspace of $#R#^4$ from the previous example, given by
+
+	$$
+		X = \span \left\{ [[ 1 ; 2 ; 0 ; -1 ]], [[ 2 ; 3 ; 1 ; 0 ]], [[ 0 ; -1 ; 1 ; 3 ]] \right\}.
+	$$
+
+	Decompose the vector
+
+	$$
+		\vec{v} = [[ 1 ; 1 ; 2 ; 3 ]]
+	$$
+
+	as $\vec{v} = \vec{x} + \vec{x}'$ for $\vec{x} \in X$ and $\vec{x}' \in X^\perp$.
+
+	We already have an orthonormal basis for $X$, but to produce a basis for $X^\perp$, we need to extend this to a basis for $#R#^4$ and then run the Gram-Schmidt process on the new vectors. To that end, let's start at the step before we normalized the basis vectors:
+
+	$$
+		X = \span \left\{ [[ 1 ; 2 ; 0 ; -1 ]], [[ 2 ; 1 ; 3 ; 4 ]], [[ -1 ; 2 ; -4 ; 3 ]] \right\}.
+	$$
+
+	Extending a basis in general is a little finicky, but nothing too terrible. At least one of the standard basis vectors (and likely most or all of them) will work, so let's try adding the first one. To check if
+
+	$$
+		\left\{ [[ 1 ; 2 ; 0 ; -1 ]], [[ 2 ; 1 ; 3 ; 4 ]], [[ -1 ; 2 ; -4 ; 3 ]], [[ 1 ; 0 ; 0 ; 0 ]] \right\}
+	$$
+
+	is a linearly independent set, we just need to show that a matrix with those vectors as rows or columns is invertible, which we can do by showing its determinant is nonzero:
+
+	$$
+		\det [[ 1, 2, -1, 1 ; 2, 1, 2, 0 ; 0, 3, -4, 0 ; -1, 4, 3, 0 ]] &= -\det [[ 2, 1, 2 ; 0, 3, -4 ; -1, 4, 3 ]]
+
+		&= -\left( 2\left( 9 + 16 \right) - \left( -4 - 8 \right) \right)
+
+		&= -124.
+	$$
+
+	Now that we've extended the basis, we just need to run Gram-Schmidt on this last vector. With the notation from the last example, we have
+
+	$$
+		\vec{y_4} &= \vec{x_4} - \frac{\vec{x_4} \bullet \vec{y_1}}{\vec{y_1} \bullet \vec{y_1}}\vec{y_1} - \frac{\vec{x_4} \bullet \vec{y_2}}{\vec{y_2} \bullet \vec{y_2}}\vec{y_2} - \frac{\vec{x_4} \bullet \vec{y_3}}{\vec{y_3} \bullet \vec{y_3}}\vec{y_3}
+
+		&= [[ 1 ; 0 ; 0 ; 0 ]] - \frac{1}{6}[[ 1 ; 2 ; 0 ; -1 ]] - \frac{2}{30} [[ 2 ; 1 ; 3 ; 4 ]] - \frac{-1}{30} [[ -1 ; 2 ; -4 ; 3 ]]
+
+		&= [[ 2/3 ; -1/3 ; -1/3 ; 0 ]].
+	$$
+
+	Normalizing this and throwing it into the orthonormal basis for $X$, we have an orthonormal basis of
+
+	$$
+		\left\{ \vec{y_1}, \vec{y_2}, \vec{y_3}, \vec{y_4} \right\} = \left\{ \frac{1}{\sqrt{6}}[[ 1 ; 2 ; 0 ; -1 ]], \frac{1}{\sqrt{30}}[[ 2 ; 1 ; 3 ; 4 ]], \frac{1}{\sqrt{30}}[[ -1 ; 2 ; -4 ; 3 ]], \frac{1}{\sqrt{6}} [[ 2 ; -1 ; -1 ; 0 ]] \right\}
+	$$
+
+	for $#R#^4$, and expressing our vector $\vec{v}$ in it is as simple as taking four dot products.
+
+	$$
+		\vec{v} &= \left( \vec{v} \bullet \vec{y_1} \right) \vec{y_1} + \left( \vec{v} \bullet \vec{y_2} \right) \vec{y_2} + \left( \vec{v} \bullet \vec{y_3} \right) \vec{y_3} + \left( \vec{v} \bullet \vec{y_4} \right) \vec{y_4}
+
+		&= \frac{0}{6}[[ 1 ; 2 ; 0 ; -1 ]] + \frac{21}{30}[[ 2 ; 1 ; 3 ; 4 ]] + \frac{2}{30}[[ -1 ; 2 ; -4 ; 3 ]] + \frac{-1}{6} [[ 2 ; -1 ; -1 ; 0 ]]
+
+		&= \frac{7}{10}[[ 2 ; 1 ; 3 ; 4 ]] + \frac{1}{15}[[ -1 ; 2 ; -4 ; 3 ]] - \frac{1}{6} [[ 2 ; -1 ; -1 ; 0 ]].
+	$$
+
+	As an orthogonal decomposition,
+
+	$$
+		\frac{7}{10}[[ 2 ; 1 ; 3 ; 4 ]] + \frac{1}{15}[[ -1 ; 2 ; -4 ; 3 ]] &\in X
+
+		- \frac{1}{6} [[ 2 ; -1 ; -1 ; 0 ]] &\in X^\perp
+	$$
+
+###
+
+### exc "orthogonal decomposition"
+
+	Similar to the previous exercise, let $X$ be the subspace of $#R#^4$ given by
+
+	$$
+		X = \span \left\{ [[ -1 ; 1 ; 1 ; -1 ]], [[ 3 ; 0 ; 2 ; -1 ]] \right\}.
+	$$
+
+	Decompose the vector
+
+	$$
+		\vec{v} = [[ 1 ; 0 ; 1 ; 0 ]]
+	$$
+
+	as $\vec{v} = \vec{x} + \vec{x}'$ for $\vec{x} \in X$ and $\vec{x}' \in X^\perp$.
+
+###
+
+The existence and uniqueness of orthogonal decompositions merits a simpler (and somewhat more descriptive) name:
+
+### def projection
+
+	Given a subspace $X$ of $#R#^n$ and an orthogonal decomposition $\vec{v} = \vec{x} + \vec{x}'$, we say that $\vec{x}$ is the **projection** of $\vec{v}$ onto $X$ and write $\proj_X\left( \vec{v} \right) = \vec{x}$.
+
+###
+
+The term *projection* calls to mind the same sort of shadow-casting idea that we saw in the Gram-Schmidt process example, and in fact, each step in the Gram-Schmidt process is a projection onto the orthogonal complement of the current basis --- more on this in the homework!
+
+As we saw in the proof of orthogonal decomposition, if $\left\{ \vec{x_1}, ..., \vec{x_k} \right\}$ is an orthonormal basis for $X$, then this projection map is given by
+
+$$
+	\proj_X\left( \vec{v} \right) = \left( \vec{v} \bullet \vec{x_1} \right) \vec{x_1} + \cdots + \left( \vec{v} \bullet \vec{x_k} \right) \vec{x_k}.
+$$
+
+That means the projection map is linear, and a simple linear map at that. Extending $\left\{ \vec{x_1}, ..., \vec{x_k} \right\}$ to an orthonormal basis $\left\{ \vec{x_1}, ..., \vec{x_n} \right\}$ for $#R#^n$, the matrix for $\proj_X$ expressed in this basis is
+
+$$
+	[[ I_k | 0 ; \hline 0 | 0 ]];
+$$
+
+that is, the top-left $k \times k$ block is the identity matrix, and every other entry is zero. Expressed in the standard basis, we have a matrix of
+
+$$
+	& \hspace{13.3pt} [[ \mid, , \mid ; \vec{x_1}, \cdots, \vec{x_n} ; \mid, , \mid ]] [[ I_k | 0 ; \hline 0 | 0 ]] [[ \mid, , \mid ; \vec{x_1}, \cdots, \vec{x_n} ; \mid, , \mid ]]^{-1}
+
+	&= [[ \mid, , \mid ; \vec{x_1}, \cdots, \vec{x_n} ; \mid, , \mid ]] [[ I_k | 0 ; \hline 0 | 0 ]] [[ -, \vec{x_1}, - ; , \vdots, ; -, \vec{x_n}, - ]]
+
+	&= [[ \mid, , \mid, \mid, , \mid ; \vec{x_1}, \cdots, \vec{x_k}, \vec{0}, \cdots, \vec{0} ; \mid, , \mid, \mid, , \mid ]] [[ -, \vec{x_1}, - ; , \vdots, ; -, \vec{x_n}, - ]]
+
+	&= [[ \mid, , \mid ; \vec{x_1}, \cdots, \vec{x_k} ; \mid, , \mid ]] [[ -, \vec{x_1}, - ; , \vdots, ; -, \vec{x_k}, - ]].
+$$
+
+This can make computing projections quite a bit easier.
+
+### exc "projections"
+
+	Let $X = \span \left\{ [[ -1 ; 1 ; 1 ; -1 ]], [[ 3 ; 0 ; 2 ; -1 ]] \right\}$ be the subspace from the previous exercise. Verify that
+
+	$$
+		\proj_X \left( [[ 1 ; 0 ; 1 ; 0 ]] \right) &= \vec{x}
+
+		\proj_{X^\perp} \left( [[ 1 ; 0 ; 1 ; 0 ]] \right) &= \vec{x}',
+	$$
+
+	where $\vec{x} + \vec{x}'$ was the orthogonal decomposition from before.
+
+###
+
+
 
 ### nav-buttons

@@ -532,7 +532,7 @@ mjx-container
 	margin-top: 48px;
 }
 
-#contents > .notes-pf-title, #contents > .notes-dor-title
+#contents > .notes-pf-title, #contents > .notes-thm-title + .notes-cor-title, #contents > .notes-prop-title + .notes-cor-title, #contents > .notes-pf-title + .notes-cor-title
 {
 	margin-left: 16px;
 }
@@ -1829,8 +1829,8 @@ img[src="/about/cover.webp"]
 
 .notes-exc
 {
-	border-color: rgb(0% 50.21% 72.47%);
-	border-color: lch(50% 45 250);
+	border-color: rgb(0% 49.83% 75.18%);
+	border-color: lch(50% 45 255);
 }
 
 .notes-prop, .notes-thm
@@ -1841,14 +1841,14 @@ img[src="/about/cover.webp"]
 
 .notes-pf
 {
-	border-color: rgb(46.71% 12.58% 76.86%);
-	border-color: lch(35% 90 310);
+	border-color: rgb(55.46% 29.75% 77.56%);
+	border-color: lch(45% 70 310);
 }
 
 .notes-cor
 {
-	border-color: rgb(0% 3.81% 56.57%);
-	border-color: lch(15% 85 300);
+	border-color: rgb(9.81% 30.27% 72.48%);
+	border-color: lch(35% 65 285);
 }
 
 .notes-lem
@@ -1906,8 +1906,8 @@ img[src="/about/cover.webp"]
 
 .notes-exc-title
 {
-	background-color: rgb(0% 50.21% 72.47%);
-	background-color: lch(50% 45 250);
+	background-color: rgb(0% 49.83% 75.18%);
+	background-color: lch(50% 45 255);
 }
 
 .notes-prop-title, .notes-thm-title
@@ -1918,14 +1918,14 @@ img[src="/about/cover.webp"]
 
 .notes-pf-title
 {
-	background-color: rgb(46.71% 12.58% 76.86%);
-	background-color: lch(35% 90 310);
+	background-color: rgb(55.46% 29.75% 77.56%);
+	background-color: lch(45% 70 310);
 }
 
 .notes-cor-title
 {
-	background-color: rgb(0% 3.81% 56.57%);
-	background-color: lch(15% 85 300);
+	background-color: rgb(9.81% 30.27% 72.48%);
+	background-color: lch(35% 65 285);
 }
 
 .notes-lem-title
