@@ -680,7 +680,8 @@ export const sitemap =
 			"/teaching/uo/342/notes/1-eigenvectors-and-eigenvalues/",
 			"/teaching/uo/342/notes/2-diagonalization/",
 			"/teaching/uo/342/notes/3-intro-to-des/",
-			"/teaching/uo/342/notes/4-the-dot-product/"
+			"/teaching/uo/342/notes/4-the-dot-product/",
+			"/teaching/uo/342/notes/5-least-squares/"
 		]
 	},
 		
@@ -733,6 +734,17 @@ export const sitemap =
 	"/teaching/uo/342/notes/4-the-dot-product/":
 	{
 		"title": "Section 4: The Dot Product",
+		
+		"parent": "/teaching/uo/342/",
+		
+		"children": [],
+
+		"customScript": true
+	},
+	
+	"/teaching/uo/342/notes/5-least-squares/":
+	{
+		"title": "Section 5: Least-Squares Approximations",
 		
 		"parent": "/teaching/uo/342/",
 		

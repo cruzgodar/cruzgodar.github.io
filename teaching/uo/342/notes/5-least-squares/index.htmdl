@@ -1,0 +1,33 @@
+### nav-buttons
+
+After the behemoth that was the last section, let's take the opportunity to apply linear algebra to some more concrete problems. When we solve a matrix equation $A\vec{x} = \vec{b}$ currently, there are three different possible outcomes: either there's exactly one solution for $\vec{x}$, there's infinitely many (i.e. the solution contains one or more free parameters), or there are no solutions. Up to this point, we haven't been able to handle that last case beyond saying that we're unable to solve the system, but now that we have the language of the previous section, we're much better prepared to discuss it in more depth. In particular, what's the closest we can get? For any value of $\vec{x}$, $A\vec{x}$ is a linear combination of the columns of $A$ with weights given by the entries of $\vec{x}$, so $A\vec{x} = \vec{b}$ is solvable exactly when $\vec{b} \in \image A$, which is just the span of the columns of $A$. If that's not the case, then the closest vector that *is* in the image is given by a projection. Specifically, the closest output is $\vec{b}'$, where
+
+$$
+	\vec{b}' = \proj_{\image A} \vec{b}.
+$$
+
+So how can we solve $A\vec{x}' = \vec{b}'$ for a solution $\vec{x}'$? We can't use the convenient projection formula from the last section without an orthonormal basis for the image of $A$, but we do know that the vectors $\vec{b}'$ and $\vec{b} - \vec{b}'$ are orthogonal because the latter necessarily lives in the orthogonal complement of $\image A$. That means that the dot product of $\vec{b} - \vec{b}'$ with any column of $A$ is zero, and so
+
+$$
+	\left( \vec{b} - \vec{b}' \right)^T A = \vec{0}^T,
+$$
+
+since every component of that vector is one of those dot products. That's a very awkward way to write the product, though, and we're better off transposing both sides, remembering that transposing a matrix product reverses the order of the factors:
+
+$$
+		A^T \left( \vec{b} - \vec{b}' \right) &= \vec{0}
+
+		A^T \vec{b}' &= A^T \vec{b}
+
+		A^T A \vec{x}' &= A^T \vec{b}.
+$$
+
+And now this is a standard matrix equation we can solve for $\vec{x}'$! The moral here is that if $A\vec{x} = \vec{b}$ is unsolvable, multiplying both sides by $A^T$ produces a solvable equation whose solution is the best approximation to $\vec{b}$. Since "best" means minimizing $\left| \left| \vec{b}' - \vec{b} \right| \right|$, or equivalently minimizing
+
+$$
+	\left| \left| \vec{b}' - \vec{b} \right| \right|^2 = \left( \vec{b}' - \vec{b} \right)_1^2 + \cdots + \left( \vec{b}' - \vec{b} \right)_n^2,
+$$
+
+these approximation problems are called **least-squares problems**.
+
+### nav-buttons
