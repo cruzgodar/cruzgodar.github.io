@@ -15,11 +15,11 @@ $$
 since every component of that vector is one of those dot products. That's a very awkward way to write the product, though, and we're better off transposing both sides, remembering that transposing a matrix product reverses the order of the factors:
 
 $$
-		A^T \left( \vec{b} - \vec{b}' \right) &= \vec{0}
+	A^T \left( \vec{b} - \vec{b}' \right) &= \vec{0}
 
-		A^T \vec{b}' &= A^T \vec{b}
+	A^T \vec{b}' &= A^T \vec{b}
 
-		A^T A \vec{x}' &= A^T \vec{b}.
+	A^T A \vec{x}' &= A^T \vec{b}.
 $$
 
 And now this is a standard matrix equation we can solve for $\vec{x}'$! The moral here is that if $A\vec{x} = \vec{b}$ is unsolvable, multiplying both sides by $A^T$ produces a solvable equation whose solution is the best approximation to $\vec{b}$. Since "best" means minimizing $\left| \left| \vec{b}' - \vec{b} \right| \right|$, or equivalently minimizing
@@ -29,5 +29,7 @@ $$
 $$
 
 these approximation problems are called **least-squares problems**.
+
+To wrap-up the discussion, let's see when a least-squares solution is unique. Since we're solving $A^T A \vec{x}' &= A^T \vec{b}$, that's exactly when $A^T A$ is invertible, regardless of $\vec{b}$.
 
 ### nav-buttons
