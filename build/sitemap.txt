@@ -145,6 +145,7 @@ home Cruz Godar
 		uo/105 Math 105
 	
 	slides Slides
+		marys-3-manifold Mary's 3-Manifold: The Value of Mathematical Visualization
 		grandmas-recipe Grandma's Recipe for Quasi-Fuchsian Groups
 		oral-exam Prelude to an Oral Exam
 		lapsa Lapsa

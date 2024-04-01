@@ -1881,6 +1881,7 @@ img[src="/about/cover.webp"]
 .notes-title
 {
 	color: rgb(255, 255, 255);
+	font-weight: bold;
 	
 	border-radius: 6px;
 	padding: 3px 6px 3px 6px;

@@ -1618,12 +1618,22 @@ export const sitemap =
 		
 		"children":
 		[
+			"/slides/marys-3-manifold/",
 			"/slides/grandmas-recipe/",
 			"/slides/oral-exam/",
 			"/slides/lapsa/"
 		]
 	},
 		
+	"/slides/marys-3-manifold/":
+	{
+		"title": "Mary's 3-Manifold: The Value of Mathematical Visualization",
+		
+		"parent": "/slides/",
+		
+		"children": []
+	},
+	
 	"/slides/grandmas-recipe/":
 	{
 		"title": "Grandma's Recipe for Quasi-Fuchsian Groups",

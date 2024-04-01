@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="utf-8"/>
+	<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+	<meta id="theme-color-meta" name="theme-color" content="#181818">
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=Rubik&display=swap" rel="stylesheet">
+	
+	<link rel="stylesheet" type="text/css" href="/style/lapsa.min.css">
+	
+	<link rel="stylesheet" type="text/css" href="index.css">
+</head>
+
+<body>	
+	<div id="lapsa-slide-container">
+		<div id="title" class="slide medium-canvas">
+			<h1>Grandma's Recipe for Quasi-Fuchsian Groups</h1>
+			
+			<h2>Cruz Godar</h2>
+			
+			<p class="lapsa-align-bottom">Made with <a href="/about/index.html"><img class="inline-image" src="/graphics/general-icons/heart.webp"></img></a> and <a href="/slides/lapsa/index.html"><img class="inline-image" src="/graphics/general-icons/lapsa.webp"></img></a></p>
+		</div>
+		
+		
+		
+		<div class="slide">
+			<h1>M&#x00F6;bius Transformations</h1>
+			
+			<p class="build">For complex constants $a, b, c,$ and $d$ with $ad - bc \neq 0$, the complex map $z \mapsto \frac{az + b}{cz + d}$ is called a <strong>M&#x00F6;bius transformation</strong>.</p>
+			
+			<p class="build">These have a surprising amount of structure: writing them as matrices</p>
+			
+			<p data-build="1" style="text-align: center">$\displaystyle \left[ \begin{array}{cc} a & b \\ c & d \end{array} \right]$</p>
+			
+			<p data-build="1">is compatible with composition and inverses, so M&#x00F6;bius transformations are actually a group isomorphic to $PGL_2(\mathbb{C})$ (and $\operatorname{Aut} \hat{\mathbb{C}}$).</p>
+		</div>
+		
+		
+		
+		<div class="slide">
+			<p>A M&#x00F6;bius transformation maps the inside of one circle in the complex plane to the outside of another circle, and so we might expect some self-similarity to arise from iterating them.</p>
+			
+			<p class="build">Taking a single M&#x00F6;bius transformation $A$ and forming the group $\left< A \right>$ doesn't get us far, though &mdash; the two circles are exchanged, but there just isn't enough complexity in a free group on one generator to create an interesting picture in the plane.</p>
+		</div>
+		
+		
+		
+		<div class="slide">
+			<p>Instead, we can take <em>two</em> M&#x00F6;bius transformations $A$ and $B$ and consider the subgroup $\Gamma = \left< A, B \right>$.</p>
+			
+			<p class="build">To visualize $\Gamma$, we can plot its set of limit points: moving from a free group on one generator to two drastically increases the number of number of leaves in the Cayley graph.</p>
+		</div>
+		
+		
+		
+		<div id="untamed" class="slide large-canvas">
+			<p style="text-align: center">$\displaystyle A = \frac{1}{2} \left[ \begin{array}{cc} 3 & 3 + 2i \\ 3 + 2i & 3 + 4i \end{array} \right], \displaystyle B \approx \left[ \begin{array}{cc} 0.5 - i & 1.05 - 1.33i \\ -0.18 - 1.18i & 0.5 - i \end{array} \right]$</p>
+		</div>
+		
+		
+		
+		<div class="slide">
+			<p>This may be beautiful, but it's not quite what we were promised.</p>
+			
+			<p class="build">Clearly, not any two choices of $A$ and $B$ will do. We'd ideally like to reduce the dimension of the parameter space to only the "good" choices for $A$ and $B$.</p>
+			
+			<p class="build">And with a treasured family secret, we can do just that...</p>
+		</div>
+		
+		
+		
+		<div class="slide">
+			<h1>Grandma's Recipe</h1>
+			
+			<p class="build">Long ago, Grandma set out to solve this very problem herself and wrote down a two-parameter recipe for creating only the nicest M&#x00F6;bius transformations.</p>
+			
+			<p class="build">Scaling all four entries of $A$ or $B$ by a nonzero factor $p \in \mathbb{C}$ scales the determinant by $p^2$ but doesn't change the map, so we may assume $\det A = \det B = 1$, meaning $A, B \in PSL_2(\mathbb{C})$.</p>
+			
+			<p class="build">Discrete subgroups of $PSL_2(\mathbb{C})$ are called <strong>Kleinian</strong>, and so $\Gamma = \left< A, B \right>$ will always be a Kleinian group for our purposes.</p>
+		</div>
+		
+		
+		
+		<div class="slide">
+			<p>Next, Grandma only considered groups $\Gamma$ up to conjugation by other elements of $PSL_2(\mathbb{C})$.</p>
+			
+			<p class="build">Any M&#x00F6;bius transformation acts by rotating the Riemann sphere, so they are completely determined by specifying three corresponding inputs and outputs.</p>
+			
+			<p class="build">Therefore, considering $\Gamma$ only up to commutation reduces the number of free parameters to just three.</p>
+		</div>
+		
+		
+		
+		<div class="slide">
+			<p>But which three? Grandma chose $\operatorname{tr} A, \operatorname{tr} B,$ and $\operatorname{tr} AB$: they are unaffected by conjugation and independent of $\det A$ and $\det B$ and one another.</p>
+			
+			<p class="build">For the limit set to be a non-space-filling curve, we want the boundary circles of $A$ and $B$ and their inverses to be tangent, and it turns out this is equivalent to $\operatorname{tr} ABA^{-1}B^{-1} = -2$.</p>
+			
+			<p class="build">The <strong>Markov identity</strong> for traces states that $\operatorname{tr} A B A^{-1} B^{-1}$ is equal to</p>
+			
+			<p data-build="1" style="text-align: center">$\displaystyle (\operatorname{tr} A)^2 + (\operatorname{tr} B)^2 + (\operatorname{tr} AB)^2 - (\operatorname{tr} A)(\operatorname{tr} B)(\operatorname{tr} AB) - 2,$</p>
+			
+			<p class="build">so given $\operatorname{tr} A$ and $\operatorname{tr} B$, $\operatorname{tr} AB$ is determined by a quadratic equation.</p>
+		</div>
+		
+		
+		
+		<div class="slide">
+			<h1>Grandma's Special Parabolic Commutator Groups</h1>
+			
+			<p class="build">1. Freely choose $t_A, t_B\in \mathbb{C}$ (specifying $\operatorname{tr} A$ and $\operatorname{tr} B$, respectively).</p>
+			
+			<p class="build">2. Let $t_{AB}$ be one of the solutions to $x^2 - t_At_Bx + t_A^2 + t_B^2 = 0.$</p>
+			
+			<p class="build">3. Let $\displaystyle z_0 = \frac{(t_{AB} - 2)t_B}{t_Bt_{AB} - 2t_A + 2it_{AB}}$.</p>
+		</div>
+		
+		
+		
+		<div class="slide">
+			<p>4. Define $A$ and $B$ to be</p>
+			
+			<p class="build" style="text-align: center">$\displaystyle A = \left[ \begin{array}{cc} \frac{t_A}{2} & \frac{t_At_{AB} - 2t_B + 4i}{(2t_{AB} + 4)z_0} \\ \frac{(t_At_{AB} - 2t_B + 4i)z_0}{2t_{AB} - 4} & \frac{t_A}{2} \end{array} \right]$</p>
+			
+			<p class="build" style="text-align: center">$\displaystyle B = \left[ \begin{array}{cc} \frac{t_B - 2i}{2} & \frac{t_B}{2} \\ \frac{t_B}{2} & \frac{t_B + 2i}{2} \end{array} \right]$.</p>
+			
+			<p class="build">Matrices baked with Grandma's Recipe have traces $t_A$ and $t_B$, determinant $1$, satisfy the Markov identity, and some other nice properties: the equal diagonal entries in $A$ ensure $180^\circ$ rotational symmetry in the limit sets, and the factor of $z_0$ is from conjugating by a map that centers them correctly.</p>
+		</div>
+		
+		
+		
+		<div id="grandmas-recipe" class="slide visible-draggables grandma-draggables full-canvas"></div>
+		
+		
+		
+		<div class="slide">
+			<p>If the matrices aren't working properly, Grandma suggests recalculating everything from scratch twice more and hoping the right answer wins two out of three times.</p>
+			
+			<p class="build">While discrete subgroups of $PSL_2(\mathbb{C})$ are called <strong>Kleinian</strong>, discrete subgroups of $PSL_2(\mathbb{R})$ are called <strong>Fuchsian</strong>. When the limit set of a Kleinian group is a Jordan curve (as it frequently is with this recipe), the group is called <strong>quasi-Fuchsian</strong>.</p>
+			
+			<p class="build">These curves are great examples of why the Jordan curve theorem is so hard to prove! In fact, whenever the limit set is a Jordan curve other than a line or circle, it must have Hausdorff dimension strictly between $1$ and $2$.</p>
+		</div>
+		
+		
+		
+		<div class="slide">
+			<h1>Another Recipe</h1>
+			
+			<p class="build">Grandma's friend Riley has a much more straightforward recipe that produces related fractals. Here, we simply set</p>
+			
+			<p class="build" style="text-align: center">$\displaystyle A = \left[ \begin{array}{cc} 1 & 0 \\ c & 1 \end{array} \right], \qquad B = \left[ \begin{array}{cc} 1 & 2 \\ 0 & 1 \end{array} \right],$</p>
+			
+			<p class="build">where $c$ is a freely-chosen complex number.</p>
+		</div>
+		
+		
+		
+		<div id="rileys-recipe" class="slide visible-draggables riley-draggables full-canvas"></div>
+		
+		
+		
+		<div class="slide">
+			<h1>Grandma's Four-Alarm Special</h1>
+			
+			<p class="build">By dropping the Markov identity requirement, $t_{AB}$ becomes a free parameter. Through a staggering amount of computation, we can work out the formulas for $A$ and $B$ in terms of all three traces.</p>
+			
+			<p class="build">Unfortunately, the results are often akin to letting vinegar be a free parameter when making cake.</p>
+		</div>
+		
+		
+		
+		<div id="special-recipe" class="slide visible-draggables full-canvas"></div>
+		
+		
+		
+		<div id="animation" class="slide medium-canvas">
+			<h1>Thank You!</h1>
+			
+			<p class="build left-text">And thanks (I think?) to chapter 8 of <em>Indra's Pearls</em> for being an unhinged but half-decent reference.</p>
+			
+			<p class="build left-text">If you'd like to learn more, chapter 9 is titled "Accidents will happen" (seriously)</p>
+		</div>
+	</div>
+
+
+
+	<div id="canvas-bundle" style="opacity: 0">
+		<canvas id="output-canvas"></canvas>
+	</div>
+	
+	<script>
+		window.MathJax =
+		{
+			tex:
+			{
+				inlineMath: [["$", "$"], ["\\(", "\\)"]]
+			}
+		};
+	</script>
+
+	<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+
+	<script src="https://cdn.jsdelivr.net/npm/mathjax@3.2.0/es5/tex-mml-chtml.js"></script>
+	
+	<script src="index.js" type="module"></script>
+</body>
+
+</html>
