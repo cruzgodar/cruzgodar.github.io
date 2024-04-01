@@ -30,22 +30,22 @@
 	--link-hover: rgb(var(--link-hover-rb-component), var(--link-hover-g-component), var(--link-hover-rb-component));
 
 	--gallery-color: rgb(176, 238, 173);
-	--gallery-color: lch(90% 35 140);
+	/* --gallery-color: lch(90% 35 140); */
 
 	--applets-color: rgb(255, 180, 203);
-	--applets-color: lch(90% 50 12);
+	/* --applets-color: lch(90% 50 12); */
 
 	--teaching-color: rgb(255, 216, 150);
-	--teaching-color: lch(90% 35 80);
+	/* --teaching-color: lch(90% 35 80); */
 
 	--slides-color: rgb(244, 199, 255);
-	--slides-color: lch(90% 70 300);
+	/* --slides-color: lch(90% 70 300); */
 
 	--writing-color: rgb(175, 229, 255);
-	--writing-color: lch(90% 30 255);
+	/* --writing-color: lch(90% 30 255); */
 
 	--about-color: rgb(222, 222, 222);
-	--about-color: lch(90% 0 0);
+	/* --about-color: lch(90% 0 0); */
 
 	--contents-border-color: rgba(208, 208, 208, var(--theme));
 }

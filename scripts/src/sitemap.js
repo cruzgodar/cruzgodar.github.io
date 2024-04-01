@@ -748,9 +748,7 @@ export const sitemap =
 		
 		"parent": "/teaching/uo/342/",
 		
-		"children": [],
-
-		"customScript": true
+		"children": []
 	},
 	
 	"/teaching/uo/341/":

@@ -98,7 +98,7 @@ In so many symbols, $\ker \left( A^T A \right) = \left\{ \vec{0} \right\}$, so $
 
 ###
 
-### exc
+### exc "least-squares approximations"
 
 	Find the least-squares solution to
 
