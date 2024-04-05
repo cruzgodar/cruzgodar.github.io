@@ -681,7 +681,8 @@ export const sitemap =
 			"/teaching/uo/342/notes/2-diagonalization/",
 			"/teaching/uo/342/notes/3-intro-to-des/",
 			"/teaching/uo/342/notes/4-the-dot-product/",
-			"/teaching/uo/342/notes/5-least-squares/"
+			"/teaching/uo/342/notes/5-least-squares/",
+			"/teaching/uo/342/notes/6-inner-product-spaces/"
 		]
 	},
 		
@@ -745,6 +746,15 @@ export const sitemap =
 	"/teaching/uo/342/notes/5-least-squares/":
 	{
 		"title": "Section 5: Least-Squares Approximations",
+		
+		"parent": "/teaching/uo/342/",
+		
+		"children": []
+	},
+	
+	"/teaching/uo/342/notes/6-inner-product-spaces/":
+	{
+		"title": "Section 6: Inner Product Spaces",
 		
 		"parent": "/teaching/uo/342/",
 		

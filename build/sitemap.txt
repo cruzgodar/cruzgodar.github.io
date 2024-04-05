@@ -60,6 +60,7 @@ home Cruz Godar
 			notes/3-intro-to-des Section 3: Intro to Differential Equations
 			notes/4-the-dot-product Section 4: The Dot Product
 			notes/5-least-squares Section 5: Least-Squares Approximations
+			notes/6-inner-product-spaces Section 6: Inner Product Spaces
 		
 		uo/341 Math 341
 			notes/1-vectors-and-matrices Section 1: Vectors and Matrices

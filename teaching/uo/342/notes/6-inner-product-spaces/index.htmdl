@@ -1,0 +1,61 @@
+### nav-buttons
+
+In linear algebra I, we first developed our theory of matrices and linear transformations for $#R#^n$, and then brought them to more general vector spaces. Now that we've seen the dot product in $#R#^n$, we'll do the same to them to bring them to arbitrary vector spaces. The definitions of length, angle, and orthogonality could all be defined in terms of the dot product alone in $#R#^n$, and so we'll start there, trying to keep the definitions and their conditions to a minimum.
+
+### def "inner product"
+
+	Let $V$ be a vector space. An **inner product** on $V$ is a function that takes two vectors $\vec{v}$ and $\vec{w}$ and outputs an element of $#R#$, written $\left< \vec{v}, \vec{w} \right>$, such that:
+
+	1. It's **symmetric**: $\left< \vec{v}, \vec{w} \right> = \left< \vec{w}, \vec{v} \right>$.
+
+	2. It's **bilinear**: $\left< c\vec{u} + \vec{v}, \vec{w} \right> = c\left< \vec{u}, \vec{w} \right> + \left< \vec{v}, \vec{w} \right>$.
+
+	3. It's **positive definite**: $\left< \vec{v}, \vec{v} \right> \geq 0$, and the only vector $\vec{v}$ for which $\left< \vec{v}, \vec{v} \right> = 0$ is $\vec{v} = \vec{0}$.
+
+	An **inner product space** is a vector space equipped with an inner product.
+
+###
+
+All of these properties were true of the dot product --- in fact, they were the content of our first proposition about it --- and so the dot product is the primordial example of an inner product. Let's use general inner products to define the related concepts, and then we'll take a look at some more exotic examples.
+
+### def "magnitude, angle, and orthogonality"
+
+	Let $V$ be an inner product space. The **magnitude** (or **length** or **norm**) of $\vec{v} \in V$ is $\left| \left| \vec{v} \right| \right| = \sqrt{\left< \vec{v}, \vec{v} \right>}$. The **angle** between vectors $\vec{v}$ and $\vec{w}$ is
+	
+	$$
+		\arccos\left( \frac{\left< \vec{v}, \vec{w} \right>}{\left| \left| \vec{v} \right| \right| \cdot \left| \left| \vec{w} \right| \right|} \right),
+	$$
+
+	and we say that $\vec{v}$ and $\vec{w}$ are **orthogonal** if $\left< \vec{v}, \vec{w} \right> = 0$ (i.e. the angle between them is $90^\circ$).
+
+###
+
+Let's take a look at the most common inner products on our usual vector spaces. On $#R#^2$, for example, the typical choice is the standard dot product:
+
+$$
+	\left< [[ x_1 ; y_1 ]], [[ x_2 ; y_2 ]] \right> = x_1x_2 + y_1y_2.
+$$
+
+However, we could also replace the coefficients on $x_1x_2$ and $y_1y_2$ with any positive number.
+
+### ex "alternative inner products on $#R#^2$"
+
+	Show that
+
+	$$
+		\left< [[ x_1 ; y_1 ]], [[ x_2 ; y_2 ]] \right>_1 = 2x_1x_2 + 5y_1y_2
+	$$
+
+	is an inner product, but
+
+	$$
+		\left< [[ x_1 ; y_1 ]], [[ x_2 ; y_2 ]] \right>_2 = -x_1x_2
+	$$
+
+	is not.
+
+	For the first, we have that 
+
+###
+
+### nav-buttons
