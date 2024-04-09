@@ -55,7 +55,7 @@ Welcome to Math 342! We'll use this page for the interactive notes, the homework
 
 	## Section 2
 
-	In problems 4#, find the eigenvalues and eigenvectors of $A$, and diagonalize $A$ if possible.
+	In problems 6#, find the eigenvalues and eigenvectors of $A$ and the algebraic and geometric multiplicity of the eigenvalues. Then diagonalize $A$ if possible, using block diagonalization with at most $2 \times 2$ blocks if necessary.
 
 	#. $A = [[ -8, 10 ; -5, 7 ]]$.
 
@@ -63,7 +63,11 @@ Welcome to Math 342! We'll use this page for the interactive notes, the homework
 
 	#. $A = [[ -4, -6, 12 ; 9, 11, -18 ; 3, 3, -4 ]]$.
 
+	#. $A = [[ -10, 4, -4 ; -13, 4, -10 ; 1, 0, 2 ]]$
+
 	#. $A = [[ 11, -6, -4, -8 ; -4, 1, -12, -4 ; -12, 6, 3, 8 ; 20, -10, 0, -11 ]]$.
+
+	#. $A = [[ 10, 6, -7, 12 ; -4, -3, 4, -12 ; 7, 6, -4, 12 ; -1, 0, 1, 3 ]]$.
 
 ###
 
