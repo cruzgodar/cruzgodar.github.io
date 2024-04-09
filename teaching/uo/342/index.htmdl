@@ -33,7 +33,38 @@ Welcome to Math 342! We'll use this page for the interactive notes, the homework
 ### image-links
 	
 	homework-1 -c "Homework 1"
+	homework-2 -c "Homework 2"
 	
+###
+
+
+
+### card homework-2 "Homework 2"
+	
+	*Due Wednesday of Week 3 at the start of class*
+	
+	Complete the following problems and submit them as a pdf to Canvas. 8 points are awarded for thoroughly attempting every problem, and I'll select three problems to grade on correctness for 4 points each. Enough work should be shown that there is no question about the mathematical process used to obtain your answers.
+
+
+
+	## Section 1
+
+	#. Suppose every 5 years, an average of 5% of people from California move to Oregon, and 10% move to Washington; 15% from Oregon move to California and 10% to Washington; and 5% from Washington move to Oregon and 10% to California. California currently has a population of 40 million people, Oregon has a population of 4 million, and Washington has a population of 8 million. With this model, assuming no one arrives from or leaves to anywhere else, what will the population settle down to over time?
+
+
+
+	## Section 2
+
+	In problems 4#, find the eigenvalues and eigenvectors of $A$, and diagonalize $A$ if possible.
+
+	#. $A = [[ -8, 10 ; -5, 7 ]]$.
+
+	#. $A = [[ -1, -1 ; 10, 5 ]]$.
+
+	#. $A = [[ -4, -6, 12 ; 9, 11, -18 ; 3, 3, -4 ]]$.
+
+	#. $A = [[ 11, -6, -4, -8 ; -4, 1, -12, -4 ; -12, 6, 3, 8 ; 20, -10, 0, -11 ]]$.
+
 ###
 
 
