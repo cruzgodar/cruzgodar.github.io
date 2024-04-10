@@ -28,6 +28,7 @@ export class ThurstonGeometry extends Applet
 	// Moving forward/back, right/left, and up/down
 	movingAmount = [0, 0, 0];
 	rollingAmount = 0;
+	automoving = false;
 
 	movingSubsteps = 1;
 
@@ -107,6 +108,9 @@ export class ThurstonGeometry extends Applet
 	run(geometryData)
 	{
 		this.geometryData = geometryData;
+
+		this.updateAutomaticMoving = () => {};
+		this.movingAmount = [0, 0, 0];
 
 		const posSignature = this.geometryData.usesFiberComponent
 			? "vec4 pos, float fiber"
@@ -430,7 +434,9 @@ export class ThurstonGeometry extends Applet
 			this.rollingAmount = -1;
 		}
 
+		this.updateAutomaticMoving(timeElapsed);
 
+		
 
 		const totalMovingAmount = this.movingAmount[0] !== 0
 			|| this.movingAmount[1] !== 0
@@ -574,9 +580,19 @@ export class ThurstonGeometry extends Applet
 			const dt = timeElapsed / (1000 * this.movingSubsteps)
 				* this.geometryData.movingSpeed;
 
-			this.geometryData.cameraPos = this.geometryData.correctPosition(
-				this.geometryData.followGeodesic(this.geometryData.cameraPos, tangentVec, dt)
-			);
+			if (this.automoving)
+			{
+				this.geometryData.cameraPos = this.geometryData.correctPosition(
+					this.geometryData.followGeodesic(this.geometryData.cameraPos, [1, 0, 0, 0], dt)
+				);
+			}
+
+			else
+			{
+				this.geometryData.cameraPos = this.geometryData.correctPosition(
+					this.geometryData.followGeodesic(this.geometryData.cameraPos, tangentVec, dt)
+				);
+			}
 
 			this.geometryData.normalVec = this.geometryData.getNormalVec(
 				this.geometryData.cameraPos
@@ -794,6 +810,26 @@ export class ThurstonGeometry extends Applet
 		this.wilson.gl.uniform1i(this.wilson.uniforms["resolution"], this.resolution);
 
 		this.needNewFrame = true;
+	}
+
+	moveForever({
+		rampStart = false
+	}) {
+		let totalTimeElapsed = 0;
+
+		this.automoving = true;
+		
+		this.updateAutomaticMoving = (timeElapsed) =>
+		{
+			totalTimeElapsed += timeElapsed;
+			
+			this.movingAmount = [1, 0, 0];
+
+			if (rampStart)
+			{
+				this.movingAmount[0] *= Math.min(totalTimeElapsed / 300, 1);
+			}
+		};
 	}
 
 
