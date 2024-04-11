@@ -3,7 +3,7 @@ import { SolRooms, SolSpheres } from "./geometries/sol.js";
 import anime from "/scripts/anime.js";
 import { opacityAnimationTime } from "/scripts/src/animation.js";
 import { aspectRatio } from "/scripts/src/layout.js";
-import { addTemporaryListener } from "/scripts/src/main.js";
+import { $, addTemporaryListener } from "/scripts/src/main.js";
 import { Wilson } from "/scripts/wilson.js";
 
 export class ThurstonGeometry extends Applet
@@ -779,8 +779,17 @@ export class ThurstonGeometry extends Applet
 				Math.floor(this.resolution / this.geometryData.aspectRatio)
 			);
 
-			this.wilson.worldWidth = 2;
-			this.wilson.worldHeight = 2;
+			if (this.geometryData.ignoreAspectRatio)
+			{
+				this.wilson.worldWidth = 2;
+				this.wilson.worldHeight = 2;
+			}
+
+			else
+			{
+				this.wilson.worldWidth = 2 * Math.max(this.geometryData.aspectRatio, 1);
+				this.wilson.worldHeight = 2 / Math.min(this.geometryData.aspectRatio, 1);
+			}
 		}
 
 		else
@@ -862,6 +871,9 @@ export class ThurstonGeometry extends Applet
 
 			this.run(new SolSpheres());
 
+			try { $("#wall-thickness-slider").parentNode.style.display = "none"; }
+			catch(ex) { /* Element doesn't exist */ }
+
 			await anime({
 				targets: this.canvas,
 				opacity: 1,
@@ -883,6 +895,9 @@ export class ThurstonGeometry extends Applet
 
 			this.run(new SolRooms());
 			this.geometryData.sliderValues.wallThickness = .3;
+
+			try { $("#wall-thickness-slider").parentNode.style.display = ""; }
+			catch(ex) { /* Element doesn't exist */ }
 
 			await anime({
 				targets: this.canvas,

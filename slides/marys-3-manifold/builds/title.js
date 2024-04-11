@@ -18,7 +18,7 @@ async function reset({ slide, duration })
 	slide.appendChild(canvasBundle);
 
 	const geometryData = new NilRooms();
-	geometryData.sliderValues.wallThickness = .78;
+	geometryData.sliderValues.wallThickness = .7;
 	geometryData.aspectRatio = 95 / 55.625;
 
 	applet.run(geometryData);

@@ -118,7 +118,13 @@ body
 
 .slide.full-canvas h1, .slide.full-canvas h2, .slide.full-canvas p
 {
-	text-shadow: 0px 0px 1vw rgb(0, 0, 0);
+	color: rgb(255, 255, 255) !important;
+	text-shadow: 0px 0px 2vw rgb(0, 0, 0);
+}
+
+.slide.full-canvas .inline-image
+{
+	filter: invert(1) !important;
 }
 
 .full-canvas canvas
@@ -134,7 +140,10 @@ body
 	
 	left: 0;
 	top: 0;
+}
 
+.under-text #canvas-bundle
+{
 	z-index: -1;
 }
 
