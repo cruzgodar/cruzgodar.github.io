@@ -1,25 +1,12 @@
-import { animationBuilds } from "./builds/animation.js";
-import { grandmasRecipeBuilds } from "./builds/grandmasRecipe.js";
-import { rileysRecipeBuilds } from "./builds/rileysRecipe.js";
-import { specialRecipeBuilds } from "./builds/specialRecipe.js";
 import { titleBuilds } from "./builds/title.js";
-import { untamedBuilds } from "./builds/untamed.js";
-import { QuasiFuchsianGroups } from "/applets/quasi-fuchsian-groups/scripts/class.js";
+import { ThurstonGeometry } from "/applets/thurston-geometries/scripts/class.js";
 import Lapsa from "/scripts/lapsa.js";
 
-export const applet = new QuasiFuchsianGroups({
+export const applet = new ThurstonGeometry({
 	canvas: document.body.querySelector("#output-canvas")
 });
 
 export const canvasBundle = document.body.querySelector("#canvas-bundle");
-
-setTimeout(() =>
-{
-	document.body.querySelectorAll(".wilson-draggable")
-		.forEach(element => element.classList.add("lapsa-interactable"));
-}, 500);
-
-
 
 const options =
 {
@@ -27,12 +14,7 @@ const options =
 
 	builds:
 	{
-		"title": titleBuilds,
-		"untamed": untamedBuilds,
-		"grandmas-recipe": grandmasRecipeBuilds,
-		"rileys-recipe": rileysRecipeBuilds,
-		"special-recipe": specialRecipeBuilds,
-		"animation": animationBuilds
+		title: titleBuilds,
 	}
 };
 

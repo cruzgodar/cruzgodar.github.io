@@ -29,7 +29,9 @@ export class ThurstonGeometry extends Applet
 	// Moving forward/back, right/left, and up/down
 	movingAmount = [0, 0, 0];
 	rollingAmount = 0;
+
 	automoving = false;
+	automovingDirection = [0, 0, 0, 0];
 
 	movingSubsteps = 1;
 
@@ -439,11 +441,11 @@ export class ThurstonGeometry extends Applet
 
 		
 
-		const totalMovingAmount = this.movingAmount[0] !== 0
+		const isMoving = this.movingAmount[0] !== 0
 			|| this.movingAmount[1] !== 0
 			|| this.movingAmount[2] !== 0;
-
-		if (totalMovingAmount)
+		
+		if (isMoving)
 		{
 			this.needNewFrame = true;
 
@@ -584,7 +586,11 @@ export class ThurstonGeometry extends Applet
 			if (this.automoving)
 			{
 				this.geometryData.cameraPos = this.geometryData.correctPosition(
-					this.geometryData.followGeodesic(this.geometryData.cameraPos, [1, 0, 0, 0], dt)
+					this.geometryData.followGeodesic(
+						this.geometryData.cameraPos,
+						this.automovingDirection,
+						dt
+					)
 				);
 			}
 
@@ -787,7 +793,7 @@ export class ThurstonGeometry extends Applet
 
 
 
-		if (this.geometryData.aspectRatio)
+		if (this.geometryData.ignoreAspectRatio)
 		{
 			this.aspectRatioX = 1;
 			this.aspectRatioY = 1;
@@ -814,23 +820,29 @@ export class ThurstonGeometry extends Applet
 	}
 
 	moveForever({
-		rampStart = false
+		speed = 1,
+		direction = [1, 0, 0, 0],
+		rampStart = false,
 	}) {
 		let totalTimeElapsed = 0;
 
 		this.automoving = true;
-		
-		this.updateAutomaticMoving = (timeElapsed) =>
-		{
-			totalTimeElapsed += timeElapsed;
-			
-			this.movingAmount = [1, 0, 0];
+		this.automovingDirection = direction;
 
-			if (rampStart)
+		setTimeout(() =>
+		{
+			this.updateAutomaticMoving = (timeElapsed) =>
 			{
-				this.movingAmount[0] *= Math.min(totalTimeElapsed / 300, 1);
-			}
-		};
+				totalTimeElapsed += timeElapsed;
+				
+				this.movingAmount = [speed, 0, 0];
+
+				if (rampStart)
+				{
+					this.movingAmount[0] *= Math.min(totalTimeElapsed / 300, 1);
+				}
+			};
+		}, 16);
 	}
 
 

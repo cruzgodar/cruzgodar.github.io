@@ -49,6 +49,11 @@ body
 	box-shadow: 0px 0px 2vw 0px rgb(127, 127, 127) !important;
 }
 
+.wilson-enter-fullscreen-button
+{
+	display: none;
+}
+
 
 
 .inline-image
@@ -75,7 +80,7 @@ body
 
 .slide canvas
 {
-	border-radius: 3vw !important;
+	border-radius: 3vw;
 }
 
 .medium-canvas canvas
@@ -108,38 +113,29 @@ body
 
 .slide.full-canvas
 {
-	background-color: rgb(0, 0, 0);
+	background-color: rgba(0, 0, 0, 0);
+}
+
+.slide.full-canvas h1, .slide.full-canvas h2, .slide.full-canvas p
+{
+	text-shadow: 0px 0px 1vw rgb(0, 0, 0);
 }
 
 .full-canvas canvas
 {
-	width: 55.625vw;
+	width: 95vw;
 	height: 55.625vw;
+	border-radius: 0;
 }
 
 .full-canvas #canvas-bundle
 {
 	position: absolute;
 	
-	left: calc((95vw - 55.625vw) / 2);
+	left: 0;
 	top: 0;
-}
 
-
-
-.slide:not(.visible-draggables) .wilson-enter-fullscreen-button, .slide:not(.visible-draggables) .wilson-draggable
-{
-	display: none !important;
-}
-
-.slide.grandma-draggables .wilson-draggable-2
-{
-	display: none !important;
-}
-
-.slide.riley-draggables .wilson-draggable-1, .slide.riley-draggables .wilson-draggable-2
-{
-	display: none !important;
+	z-index: -1;
 }
 
 
@@ -173,7 +169,7 @@ body
 	}
 	
 	.medium-canvas canvas
-	{	
+	{
 		width: calc(45 * var(--safe-vh) * 152 / 89);
 		height: calc(45 * var(--safe-vh) * 152 / 89);
 	}
@@ -192,12 +188,9 @@ body
 	
 	.full-canvas canvas
 	{
-		width: calc(55.625 * var(--safe-vh) * 152 / 89);
+		width: calc(95 * var(--safe-vh) * 152 / 89);
 		height: calc(55.625 * var(--safe-vh) * 152 / 89);
-	}
 
-	.full-canvas #canvas-bundle
-	{
-		left: calc(((95 - 55.625) * var(--safe-vh) * 152 / 89) / 2);
+		border-radius: 0;
 	}
 }

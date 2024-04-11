@@ -289,21 +289,29 @@ class NilGeometry extends BaseGeometry
 		if (pos.x > 0.499 && rayDirectionVec.x < -0.05)
 		{
 			pos.x = -pos.x;
+
+			globalColor -= vec3(1.0, 0.0, 0.0);
 		}
 
 		else if (pos.x < -0.499 && rayDirectionVec.x > 0.05)
 		{
 			pos.x = -pos.x;
+
+			globalColor += vec3(1.0, 0.0, 0.0);
 		}
 
 		if (pos.y > 0.499 && rayDirectionVec.y < -0.05)
 		{
 			pos.y = -pos.y;
+
+			globalColor -= vec3(0.0, 1.0, 0.0);
 		}
 
 		else if (pos.y < -0.499 && rayDirectionVec.y > 0.05)
 		{
 			pos.y = -pos.y;
+
+			globalColor += vec3(0.0, 1.0, 0.0);
 		}
 	`;
 

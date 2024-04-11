@@ -136,6 +136,8 @@ export class BaseGeometry
 	movingSpeed = 1;
 
 	aspectRatio;
+	ignoreAspectRatio = false;
+	
 	fov;
 
 	uniformGlsl;
