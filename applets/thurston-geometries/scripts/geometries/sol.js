@@ -238,7 +238,7 @@ class SolGeometry extends BaseGeometry
 
 		const int maxAGMSteps = 10;
 
-		const float minAGMError = 0.00001;
+		const float minAGMError = 0.000001;
 
 		// The sequence of arithmetic-geometric means converges to an elliptic integral,
 		// and that's exactly what we need for some globals!
@@ -907,8 +907,6 @@ class SolGeometry extends BaseGeometry
 			return color;
 		}
 	`;
-
-	stepFactor = ".8";
 	
 	normalize(vec)
 	{
@@ -1068,34 +1066,13 @@ export class SolAxes extends SolGeometry
 export class SolRooms extends SolGeometry
 {
 	static distances = /* glsl */`
-		float distance1 = maxT * 2.0;
-		float distance2 = maxT * 2.0;
-
-		if (sceneTransition < 1.0)
-		{
-			float scale = exp(max(sceneTransition - 0.8, 0.0) * 5.0);
-
-			float effectiveWallThickness = wallThickness + sceneTransition * .114 / .75;
-
-			distance1 = (effectiveWallThickness - length(pos.xyz * vec3(1.0, 1.0, 0.55))) * scale;
-		}
-
-		if (sceneTransition > 0.0)
-		{
-			float scale = exp(max(0.2 - sceneTransition, 0.0) * 5.0);
-
-			float effectiveRadius = .125 - .125 / .75 * (1.0 - sceneTransition);
-
-			distance2 = (length(pos.xyz) - effectiveRadius) * scale;
-		}
-		
-		float minDistance = ${getMinGlslString("distance", 2)};
+		float distance1 = wallThickness - length(pos.xyz * vec3(1.0, 1.0, 0.55));
 	`;
 
 	distanceEstimatorGlsl = /* glsl */`
 		${SolRooms.distances}
 
-		return minDistance;
+		return distance1;
 	`;
 
 	getColorGlsl = /* glsl */`
@@ -1103,18 +1080,10 @@ export class SolRooms extends SolGeometry
 
 		vec3 roomColor = baseColor + globalColor;
 
-		return mix(
-			vec3(
-				.3 + .7 * (.5 * (sin((.01 * (pos.x + pos.z) + roomColor.x + roomColor.z) * 40.0) + 1.0)),
-				.3 + .7 * (.5 * (sin((.01 * (pos.y + pos.z) + roomColor.y + roomColor.z) * 57.0) + 1.0)),
-				.3 + .7 * (.5 * (sin((.01 * (pos.x + pos.y) + roomColor.x + roomColor.y) * 89.0) + 1.0))
-			),
-			vec3(
-				.15 + .85 * (.5 * (sin(floor(roomColor.x + .5) * .25) + 1.0)),
-				.15 + .85 * (.5 * (sin(floor(roomColor.y + .5) * .25) + 1.0)),
-				.15 + .85 * (.5 * (sin(floor(roomColor.z + .5) * .25) + 1.0))
-			),
-			sceneTransition
+		return vec3(
+			.3 + .7 * (.5 * (sin((.01 * (pos.x + pos.z) + roomColor.x + roomColor.z) * 40.0) + 1.0)),
+			.3 + .7 * (.5 * (sin((.01 * (pos.y + pos.z) + roomColor.y + roomColor.z) * 57.0) + 1.0)),
+			.3 + .7 * (.5 * (sin((.01 * (pos.x + pos.y) + roomColor.x + roomColor.y) * 89.0) + 1.0))
 		);
 	`;
 
@@ -1124,19 +1093,13 @@ export class SolRooms extends SolGeometry
 		vec4 lightDirection1 = normalize(vec4(1.5, 1.5, 1.5, 1.0) - pos);
 		float dotProduct1 = dot(surfaceNormal, lightDirection1);
 
-		float lightIntensity1 = (.25 + .75 * dotProduct1 * dotProduct1) * 1.4;
-
-		vec4 lightDirection2 = normalize(vec4(1.5, 1.5, 1.5, 1.0) - pos);
-		float dotProduct2 = dot(surfaceNormal, lightDirection2);
-
-		float lightIntensity2 = (.2 + .8 * max(dotProduct2, -dotProduct2)) * 1.5;
-
-		float lightIntensity = mix(lightIntensity1, lightIntensity2, sceneTransition);
+		float lightIntensity = (.25 + .75 * dotProduct1 * dotProduct1) * 1.4;
 	`;
 
 	maxMarches = "100";
-	ambientOcclusionDenominator = "mix(100.0, 75.0, sceneTransition)";
-	maxT = "15.0";
+	stepFactor = ".8";
+	ambientOcclusionDenominator = "100.0";
+	maxT = "5.0";
 
 	cameraPos = [0.14282, 0.17857, -0.11161, 1];
 	normalVec = [0, 0, 0, 1];
@@ -1147,18 +1110,16 @@ export class SolRooms extends SolGeometry
 	movingSpeed = .5;
 
 	uniformGlsl = /* glsl */`
-		uniform float sceneTransition;
 		uniform float wallThickness;
 		uniform vec3 baseColor;
 	`;
 
-	uniformNames = ["sceneTransition", "wallThickness", "baseColor"];
+	uniformNames = ["wallThickness", "baseColor"];
 
 	updateUniforms(gl, uniformList)
 	{
 		const wallThickness = .372 - this.sliderValues.wallThickness / 10;
 
-		gl.uniform1f(uniformList["sceneTransition"], this.sliderValues.sceneTransition);
 		gl.uniform1f(uniformList["wallThickness"], wallThickness);
 		gl.uniform3fv(uniformList["baseColor"], this.baseColor);
 	}
@@ -1166,46 +1127,64 @@ export class SolRooms extends SolGeometry
 	uiElementsUsed = "#wall-thickness-slider, #switch-scene-button";
 
 	wallThicknessData = [0.3, -0.18, 0.6];
+}
 
-	getNearestCenter()
+export class SolSpheres extends SolGeometry
+{
+	static distances = /* glsl */`
+		float distance1 = length(pos.xyz) - .125;
+	`;
+
+	distanceEstimatorGlsl = /* glsl */`
+		${SolSpheres.distances}
+
+		return distance1;
+	`;
+
+	getColorGlsl = /* glsl */`
+		${SolSpheres.distances}
+
+		vec3 roomColor = baseColor + globalColor;
+
+		return vec3(
+			.15 + .85 * (.5 * (sin(floor(roomColor.x + .5) * .25) + 1.0)),
+			.15 + .85 * (.5 * (sin(floor(roomColor.y + .5) * .25) + 1.0)),
+			.15 + .85 * (.5 * (sin(floor(roomColor.z + .5) * .25) + 1.0))
+		);
+	`;
+
+	lightGlsl = /* glsl */`
+		surfaceNormal.w = 0.0;
+
+		vec4 lightDirection2 = normalize(vec4(1.5, 1.5, 1.5, 1.0) - pos);
+		float dotProduct2 = dot(surfaceNormal, lightDirection2);
+
+		float lightIntensity = (.2 + .8 * max(dotProduct2, -dotProduct2)) * 1.5;
+	`;
+
+	maxMarches = "55";
+	stepFactor = ".9";
+	ambientOcclusionDenominator = "75.0";
+	maxT = "5.0";
+
+	cameraPos = [0.14282, 0.17857, -0.11161, 1];
+	normalVec = [0, 0, 0, 1];
+	upVec = [0, 0, 1, 0];
+	rightVec = [-0.8415, 0.54025, 0, 0];
+	forwardVec = [0.54025, 0.8415, 0, 0];
+
+	movingSpeed = .5;
+
+	uniformGlsl = /* glsl */`
+		uniform vec3 baseColor;
+	`;
+
+	uniformNames = ["wallThickness", "baseColor"];
+
+	updateUniforms(gl, uniformList)
 	{
-		return [0, 0, 0, 1];
+		gl.uniform3fv(uniformList["baseColor"], this.baseColor);
 	}
 
-	getNearestCorner()
-	{
-		const corners = [
-			[.2, 0, .4, 1],
-			[0, .2, .4, 1],
-			[-.2, 0, .4, 1],
-			[0, -.2, .4, 1],
-			[.2, 0, -.4, 1],
-			[0, .2, -.4, 1],
-			[-.2, 0, -.4, 1],
-			[0, -.2, -.4, 1]
-		];
-
-		let minDistance = Infinity;
-		let minIndex = 0;
-
-		for (let i = 0; i < corners.length; i++)
-		{
-			const distance = ThurstonGeometry.magnitude(
-				[
-					this.cameraPos[0] - corners[i][0],
-					this.cameraPos[1] - corners[i][1],
-					this.cameraPos[2] - corners[i][2],
-					this.cameraPos[3] - corners[i][3]
-				]
-			);
-
-			if (distance < minDistance)
-			{
-				minDistance = distance;
-				minIndex = i;
-			}
-		}
-
-		return corners[minIndex];
-	}
+	uiElementsUsed = "#switch-scene-button";
 }

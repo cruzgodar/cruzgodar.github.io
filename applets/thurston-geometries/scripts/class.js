@@ -1,5 +1,7 @@
 import { Applet } from "../../../scripts/applets/applet.js";
+import { SolRooms, SolSpheres } from "./geometries/sol.js";
 import anime from "/scripts/anime.js";
+import { opacityAnimationTime } from "/scripts/src/animation.js";
 import { aspectRatio } from "/scripts/src/layout.js";
 import { addTemporaryListener } from "/scripts/src/main.js";
 import { Wilson } from "/scripts/wilson.js";
@@ -847,8 +849,51 @@ export class ThurstonGeometry extends Applet
 
 
 
-	switchScene()
+	async switchScene()
 	{
+		if (this.geometryData instanceof SolRooms)
+		{
+			await anime({
+				targets: this.canvas,
+				opacity: 0,
+				duration: opacityAnimationTime,
+				easing: "easeOutQuad"
+			}).finished;
+
+			this.run(new SolSpheres());
+
+			await anime({
+				targets: this.canvas,
+				opacity: 1,
+				duration: opacityAnimationTime,
+				easing: "easeOutQuad",
+			}).finished;
+
+			return;
+		}
+
+		if (this.geometryData instanceof SolSpheres)
+		{
+			await anime({
+				targets: this.canvas,
+				opacity: 0,
+				duration: opacityAnimationTime,
+				easing: "easeOutQuad"
+			}).finished;
+
+			this.run(new SolRooms());
+			this.geometryData.sliderValues.wallThickness = .3;
+
+			await anime({
+				targets: this.canvas,
+				opacity: 1,
+				duration: opacityAnimationTime,
+				easing: "easeOutQuad",
+			}).finished;
+
+			return;
+		}
+
 		const isRooms = this.geometryData.sliderValues.sceneTransition === 0;
 
 		const oldSceneTransition = this.geometryData.sliderValues.sceneTransition;

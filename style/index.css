@@ -557,8 +557,6 @@ mjx-container
 	border: 2px solid var(--normal-contrast);
 	border-radius: 16px;
 	padding: 2px;
-	
-	transition: opacity .25s ease-in-out, border-color .25s ease-in-out;
 }
 
 .hidden-canvas
@@ -567,14 +565,6 @@ mjx-container
 	left: -200vw;
 	width: 10px;
 	height: 10px;
-}
-
-
-
-.applet-progress-bar
-{
-	width: 100% !important;
-	transition: opacity .25s ease-in-out, margin-top .25s ease-in-out, margin-bottom .25s ease-in-out;
 }
 
 
