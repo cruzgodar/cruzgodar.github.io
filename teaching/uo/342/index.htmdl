@@ -69,6 +69,12 @@ Welcome to Math 342! We'll use this page for the interactive notes, the homework
 
 	#. $A = [[ 10, 6, -7, 12 ; -4, -3, 4, -12 ; 7, 6, -4, 12 ; -1, 0, 1, 3 ]]$.
 
+	- - -
+
+	#. Let $A = B^{-1}DB$ be a diagonalized $n \times n$ matrix, so that the columns of $B$ are eigenvectors of $A$. Use this factorization to describe the eigenvectors of $A^T$ (remember that transposing a product reverses the order of the factors).
+
+	#. Give an example of an invertible $3 \times 3$ matrix that is not diagonalizable, and an example of a diagonalizable $3 \times 3$ matrix that is not invertible.
+
 ###
 
 

@@ -9,7 +9,6 @@ import { S2xERooms } from "./geometries/s2xe.js";
 import { S3Rooms } from "./geometries/s3.js";
 import { SL2RRooms } from "./geometries/sl2r.js";
 import { SolRooms } from "./geometries/sol.js";
-import anime from "/scripts/anime.js";
 import { DownloadButton, ToggleButton } from "/scripts/src/buttons.js";
 import { Dropdown } from "/scripts/src/dropdowns.js";
 import { currentlyTouchDevice } from "/scripts/src/interaction.js";
@@ -187,8 +186,8 @@ export function load()
 		element: $("#switch-scene-button"),
 		name0: "Switch to Spheres",
 		name1: "Switch to Rooms",
-		onClick0: switchScene,
-		onClick1: switchScene
+		onClick0: () => applet.switchScene(),
+		onClick1: () => applet.switchScene()
 	});
 
 	new DownloadButton({
@@ -196,70 +195,6 @@ export function load()
 		wilson: applet.wilson,
 		filename: "a-thurston-geometry.png"
 	});
-
-
-
-	function switchScene()
-	{
-		const isRooms = applet.geometryData.sliderValues.sceneTransition === 0;
-
-		const oldSceneTransition = applet.geometryData.sliderValues.sceneTransition;
-		const newSceneTransition = isRooms ? 1 : 0;
-
-		const oldCameraPos = [...applet.geometryData.cameraPos];
-		const newCameraPos = newSceneTransition
-			? applet.geometryData.getNearestCorner()
-			: applet.geometryData.getNearestCenter();
-
-		const dummy = { t: 0 };
-
-		anime({
-			targets: dummy,
-			t: 1,
-			duration: 500,
-			easing: "easeInOutSine",
-			update: () =>
-			{
-				applet.geometryData.cameraPos = applet.geometryData.correctPosition(
-					[
-						(1 - dummy.t) * oldCameraPos[0] + dummy.t * newCameraPos[0],
-						(1 - dummy.t) * oldCameraPos[1] + dummy.t * newCameraPos[1],
-						(1 - dummy.t) * oldCameraPos[2] + dummy.t * newCameraPos[2],
-						(1 - dummy.t) * oldCameraPos[3] + dummy.t * newCameraPos[3]
-					]
-				);
-
-				applet.geometryData.normalVec = applet.geometryData.getNormalVec(
-					applet.geometryData.cameraPos
-				);
-
-				applet.geometryData.correctVectors();
-
-				applet.needNewFrame = true;
-			}
-		});
-
-		anime({
-			targets: dummy,
-			t: 1,
-			duration: 500,
-			easing: "easeInOutQuad",
-			update: () =>
-			{
-				applet.geometryData.sliderValues.sceneTransition =
-					(1 - dummy.t) * oldSceneTransition + dummy.t * newSceneTransition;
-			}
-		});
-
-		
-
-		anime({
-			targets: applet.geometryData.cameraPos,
-
-			duration: 500,
-			easing: "easeInOutSine",
-		});
-	}
 
 
 

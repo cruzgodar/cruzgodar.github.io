@@ -1,4 +1,5 @@
 import { Applet } from "../../../scripts/applets/applet.js";
+import anime from "/scripts/anime.js";
 import { aspectRatio } from "/scripts/src/layout.js";
 import { addTemporaryListener } from "/scripts/src/main.js";
 import { Wilson } from "/scripts/wilson.js";
@@ -830,6 +831,70 @@ export class ThurstonGeometry extends Applet
 				this.movingAmount[0] *= Math.min(totalTimeElapsed / 300, 1);
 			}
 		};
+	}
+
+
+
+	switchScene()
+	{
+		const isRooms = this.geometryData.sliderValues.sceneTransition === 0;
+
+		const oldSceneTransition = this.geometryData.sliderValues.sceneTransition;
+		const newSceneTransition = isRooms ? 1 : 0;
+
+		const oldCameraPos = [...this.geometryData.cameraPos];
+		const newCameraPos = newSceneTransition
+			? this.geometryData.getNearestCorner()
+			: this.geometryData.getNearestCenter();
+
+		const dummy = { t: 0 };
+
+		anime({
+			targets: dummy,
+			t: 1,
+			duration: 500,
+			easing: "easeInOutSine",
+			update: () =>
+			{
+				this.geometryData.cameraPos = this.geometryData.correctPosition(
+					[
+						(1 - dummy.t) * oldCameraPos[0] + dummy.t * newCameraPos[0],
+						(1 - dummy.t) * oldCameraPos[1] + dummy.t * newCameraPos[1],
+						(1 - dummy.t) * oldCameraPos[2] + dummy.t * newCameraPos[2],
+						(1 - dummy.t) * oldCameraPos[3] + dummy.t * newCameraPos[3]
+					]
+				);
+
+				this.geometryData.normalVec = this.geometryData.getNormalVec(
+					this.geometryData.cameraPos
+				);
+
+				this.geometryData.correctVectors();
+
+				this.needNewFrame = true;
+			}
+		});
+
+		anime({
+			targets: dummy,
+			t: 1,
+			duration: 500,
+			easing: "easeInOutQuad",
+			update: () =>
+			{
+				this.geometryData.sliderValues.sceneTransition =
+					(1 - dummy.t) * oldSceneTransition + dummy.t * newSceneTransition;
+			}
+		});
+
+		
+
+		anime({
+			targets: this.geometryData.cameraPos,
+
+			duration: 500,
+			easing: "easeInOutSine",
+		});
 	}
 
 
