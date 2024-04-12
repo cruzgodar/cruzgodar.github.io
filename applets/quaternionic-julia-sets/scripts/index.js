@@ -54,34 +54,36 @@ export function load()
 		onInput: onSliderInput
 	});
 
-	const cXSlider = new Slider({
-		element: $("#c-x-slider"),
-		name: "$c_x$",
-		value: -0.54,
-		min: -1,
+	const rhoSlider = new Slider({
+		element: $("#rho-slider"),
+		name: "$\\rho$",
+		value: .895,
+		min: 0,
 		max: 1,
 		onInput: onSliderInput
 	});
 
-	const cYSlider = new Slider({
-		element: $("#c-y-slider"),
-		name: "$c_y$",
-		value: -0.25,
-		min: -1,
-		max: 1,
+	const thetaSlider = new Slider({
+		element: $("#theta-slider"),
+		name: "$\\theta$",
+		value: 3.353,
+		min: 0,
+		max: 2 * Math.PI,
 		onInput: onSliderInput
 	});
 
-	const cZSlider = new Slider({
-		element: $("#c-z-slider"),
-		name: "$c_z$",
-		value: -0.668,
-		min: -1,
-		max: 1,
+	const phiSlider = new Slider({
+		element: $("#phi-slider"),
+		name: "$\\phi$",
+		value: -.9,
+		min: -Math.PI / 2,
+		max: Math.PI / 2,
 		onInput: onSliderInput
 	});
 
 	typesetMath();
+
+	onSliderInput();
 
 	showPage();
 
@@ -96,10 +98,12 @@ export function load()
 
 		applet.wilson.gl.uniform1i(applet.wilson.uniforms["maxIterations"], applet.maxIterations);
 
-		applet.updateC([
-			cXSlider.value,
-			cYSlider.value,
-			cZSlider.value,
-		]);
+		const c = [
+			rhoSlider.value * Math.cos(thetaSlider.value) * Math.cos(phiSlider.value),
+			rhoSlider.value * Math.sin(thetaSlider.value) * Math.cos(phiSlider.value),
+			rhoSlider.value * Math.sin(phiSlider.value),
+		];
+
+		applet.updateC(c);
 	}
 }

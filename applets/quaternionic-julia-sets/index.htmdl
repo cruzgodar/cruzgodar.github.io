@@ -14,9 +14,9 @@ The <a href="/applets/julia-set-explorer/">Mandelbrot and Julia sets</a> are def
 
 ### sliders
 	iterations
-	c-x
-	c-y
-	c-z
+	rho
+	theta
+	phi
 ###
 
 ### buttons
