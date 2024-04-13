@@ -15,7 +15,9 @@ const options =
 	builds:
 	{
 		title: titleBuilds,
-	}
+	},
+
+	setupBuild: () => applet.animationPaused = true
 };
 
 new Lapsa(options);

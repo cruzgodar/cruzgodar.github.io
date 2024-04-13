@@ -4,11 +4,6 @@ import { changeOpacity } from "/scripts/src/animation.js";
 
 async function reset({ slide, duration })
 {
-	if (slide.contains(canvasBundle))
-	{
-		return;
-	}
-
 	await changeOpacity({
 		element: canvasBundle,
 		opacity: 0,
@@ -24,7 +19,7 @@ async function reset({ slide, duration })
 	applet.run(geometryData);
 	applet.changeResolution(1000);
 	applet.moveForever({
-		speed: .3,
+		speed: .25,
 		direction: [0, 0, -1, 0]
 	});
 

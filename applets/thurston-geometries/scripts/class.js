@@ -370,12 +370,16 @@ export class ThurstonGeometry extends Applet
 			this.geometryData.forwardVec
 		);
 
+		this.resume();
+	}
+
+	resume()
+	{
 		this.needNewFrame = true;
+		this.animationPaused = false;
 
 		window.requestAnimationFrame(this.drawFrame.bind(this));
 	}
-
-
 
 	drawFrame(timestamp)
 	{
