@@ -8,7 +8,6 @@ import {
 } from "./animation.js";
 import {
 	bannerElement,
-	bannerOpacity,
 	setUpBanner
 } from "./banners.js";
 import {
@@ -175,7 +174,6 @@ async function fadeInPage()
 				? Promise.all([
 					fadeUpIn({
 						element: bannerElement,
-						opacity: bannerOpacity
 					}),
 					fadeUpIn({ element: pageElement })
 				])
@@ -188,7 +186,6 @@ async function fadeInPage()
 				? Promise.all([
 					fadeDownIn({
 						element: bannerElement,
-						opacity: bannerOpacity
 					}),
 					fadeDownIn({ element: pageElement })
 				])
@@ -201,7 +198,6 @@ async function fadeInPage()
 				? Promise.all([
 					fadeLeftIn({
 						element: bannerElement,
-						opacity: bannerOpacity
 					}),
 					fadeLeftIn({ element: pageElement })
 				])
@@ -214,7 +210,6 @@ async function fadeInPage()
 				? Promise.all([
 					fadeRightIn({
 						element: bannerElement,
-						opacity: bannerOpacity
 					}),
 					fadeRightIn({ element: pageElement })
 				])
@@ -227,7 +222,6 @@ async function fadeInPage()
 				? Promise.all([
 					fadeIn({
 						element: bannerElement,
-						opacity: bannerOpacity
 					}),
 					fadeIn({ element: pageElement })
 				])

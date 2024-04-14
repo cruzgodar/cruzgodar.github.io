@@ -11,15 +11,11 @@
 	<p id="godar-text" class="name-text" style="opacity: 0; transform: translateX(100px)">Godar</p>
 </div>
 
-<div id="banner-gradient"></div>
-
 <div class="name-text"></div>
 
 <div id="banner-cover"></div>
-	
+
 <div id="content">
-	<div style="height: 2.5vh"></div>
-	
 	<div id="scroll-to"></div>
 	
 	<main>

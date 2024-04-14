@@ -108,11 +108,11 @@ export async function recreateDesmosGraphs()
 
 	if (elements)
 	{
-		await Promise.all(elements.map(element => changeOpacity({ element: element, opacity: 0 })));
+		await Promise.all(elements.map(element => changeOpacity({ element, opacity: 0 })));
 
 		await createDesmosGraphs();
 
-		await Promise.all(elements.map(element => changeOpacity({ element: element, opacity: 1 })));
+		await Promise.all(elements.map(element => changeOpacity({ element, opacity: 1 })));
 	}
 }
 

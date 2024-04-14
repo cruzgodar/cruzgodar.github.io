@@ -10,7 +10,6 @@ import {
 import {
 	bannerElement,
 	loadBanner,
-	setScrollButtonExists
 } from "./banners.js";
 import { cardIsOpen, hideCard } from "./cards.js";
 import { clearDesmosGraphs, desmosGraphs } from "./desmos.js";
@@ -372,10 +371,6 @@ function unloadPage()
 	});
 
 	Applet.current = [];
-
-
-
-	setScrollButtonExists(false);
 
 
 	pageElement.remove();

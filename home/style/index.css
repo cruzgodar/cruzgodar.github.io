@@ -7,7 +7,7 @@
 .quote-row
 {
 	display: flex;
-	width: min(90vw, 900px);
+	width: 100%;
 	justify-content: space-between;
 	margin: 0 auto;
 }
@@ -22,7 +22,6 @@
 	font-size: 100%;
 	color: var(--normal-contrast);
 	text-align: justify;
-	padding-right: .1em;
 }
 
 .quote-attribution
@@ -64,8 +63,13 @@
 	margin: 0 auto;
 	font-size: 150%;
 	color: var(--high-contrast);
-	width: 90vw;
+	max-width: 900px;
 	text-align: center;
+}
+
+.image-links
+{
+	margin-top: 32px !important;
 }
 
 
@@ -76,8 +80,8 @@
 {
 	.quote-container
 	{
-		width: 90vw;
-		margin-bottom: 5vh;
+		width: 100%;
+		margin-bottom: 32px;
 	}
 	
 	.quote-row

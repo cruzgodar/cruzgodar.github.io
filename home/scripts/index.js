@@ -1,6 +1,5 @@
 import { disableLinks, showPage } from "../../scripts/src/loadPage.js";
 import { fadeLeft, opacityAnimationTime } from "/scripts/src/animation.js";
-import { scrollButtonOpacity } from "/scripts/src/banners.js";
 import {
 	$,
 	addTemporaryListener,
@@ -42,8 +41,8 @@ export function load()
 	{
 		window.requestAnimationFrame(() =>
 		{
-			cruzTextElement.parentNode.style.opacity = scrollButtonOpacity;
-			godarTextElement.parentNode.style.opacity = scrollButtonOpacity;
+			// cruzTextElement.parentNode.style.opacity = scrollButtonOpacity;
+			// godarTextElement.parentNode.style.opacity = scrollButtonOpacity;
 		});
 	}
 

@@ -78,7 +78,9 @@ body
 .page
 {
 	overflow-x: hidden;
-	width: 100%;
+	width: calc(100% - 32px);
+	padding-left: 16px;
+	padding-right: 16px;
 }
 
 
@@ -149,7 +151,7 @@ code
 pre code.highlightable
 {
 	position: relative;
-	width: min(calc(90% - 24px), 900px);
+	max-width: 900px;
 	margin: 0 auto;
 	tab-size: 4;
 	-moz-tab-size: 4;
@@ -196,7 +198,7 @@ img
 .heading-text, .section-text, .body-text, .song-lyrics
 {
 	position: relative;
-	width: min(90%, 900px);
+	max-width: 900px;
 	margin: 0 auto;
 	margin-bottom: 16px;
 }
@@ -356,7 +358,7 @@ mjx-container
 	
 	opacity: 1;
 	
-	width: min(900px, 100% - 64px);
+	max-width: 900px;
 	padding: 16px;
 	
 	margin-left: 16px;
@@ -627,7 +629,7 @@ mjx-container
 
 
 
-@media (min-aspect-ratio: 1/1)
+@media (min-aspect-ratio: 1/1) and (min-width: 750px)
 {
 	
 	#canvas-landscape
@@ -677,56 +679,18 @@ mjx-container
 
 #banner-cover
 {
-	height: 50vh;
+	height: 90vh;
 	position: absolute;
 }
-
-#new-banner-cover
-{
-	height: 50vh;
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	position: absolute;
-	width: 100%;
-	z-index: 20;
-}
-
-
-
-#scroll-button
-{
-	color: var(--high-contrast);
-	background-color: rgb(255, 255, 255);
-	width: 20px;
-	position: relative;
-	margin-bottom: 0;
-	
-	align-self: flex-end;
-
-	border: 2px solid var(--normal-contrast);
-	border-radius: 10px;
-	padding: 10px;
-	
-	margin-bottom: -25vh;
-
-	cursor: default;
-	
-	outline: none;
-}
-
-
 
 #content
 {
-	background: rgba(0, 0, 0, 0);
+	background: var(--background);
 	position: relative;
-	margin: 0 auto;
-	margin-top: 50vh;
-	
-	opacity: 0;
-	
-	width: 100%;
+	border-radius: 16px;
+	padding: 16px;
+	margin-top: 90vh;
+	max-width: 900px;
 }
 
 
@@ -1614,7 +1578,7 @@ option
 	grid-template-columns: repeat(5, 1fr);
 	justify-content: center;
 	
-	width: min(900px, 90vw);
+	max-width: 900px;
 	margin: 0 auto;
 	
 	margin-top: 48px;
@@ -1792,7 +1756,7 @@ img[src="/about/cover.webp"]
 
 .notes-environment
 {
-	width: min(calc(900px - 12px), calc(90% - 12px)) !important;
+	max-width: 888px;
 	margin: 0 auto;
 	margin-bottom: 16px;
 	border-width: 0 0 0 4px;

@@ -1,12 +1,10 @@
-import { changeOpacity, opacityAnimationTime } from "./animation.js";
-import { cardIsAnimating, cardIsOpen } from "./cards.js";
+import { changeOpacity } from "./animation.js";
 import {
 	$,
 	addStyle,
 	pageElement,
 	pageUrl
 } from "./main.js";
-import anime from "/scripts/anime.js";
 
 export let bannerElement;
 
@@ -35,100 +33,29 @@ export function setBannerMaxScroll(newBannerMaxScroll)
 
 
 
-let scrollButtonElement;
+let lastBannerChangeTimestamp = -1;
 
-export let scrollButtonOpacity = 1;
-
-export let scrollButtonExists = false;
-
-export function setScrollButtonExists(newScrollButtonExists)
+export function updateBanner(timestamp)
 {
-	scrollButtonExists = newScrollButtonExists;
-}
-
-
-
-// The banner opacity cannot be changed more than a certain amount each frame
-// to account for sudden changes in viewport height. This function handles that animation.
-
-export let bannerOpacity = 1;
-
-let lastBannerOpacityTimestamp = -1;
-
-let cardWasAnimating = 0;
-
-export function updateBannerOpacity(timestamp)
-{
-	const timeElapsed = timestamp - lastBannerOpacityTimestamp;
-
 	if (
 		!bannerElement
 		|| !contentElement
-		|| timestamp === lastBannerOpacityTimestamp
-		|| lastBannerOpacityTimestamp === -1
+		|| timestamp === lastBannerChangeTimestamp
+		|| lastBannerChangeTimestamp === -1
 	) {
-		lastBannerOpacityTimestamp = timestamp;
+		lastBannerChangeTimestamp = timestamp;
 
-		window.requestAnimationFrame(updateBannerOpacity);
+		window.requestAnimationFrame(updateBanner);
 
 		return;
 	}
 
-	lastBannerOpacityTimestamp = timestamp;
+	lastBannerChangeTimestamp = timestamp;
 
-	const newBannerOpacity = 1 - window.scrollY / bannerMaxScroll;
-	
-	const maxSingleFrameChange = .085 * timeElapsed / 6.944;
-
-	bannerOpacity = Math.min(
-		Math.max(
-			Math.max(bannerOpacity - maxSingleFrameChange, 0),
-			newBannerOpacity
-		),
-		Math.min(bannerOpacity + maxSingleFrameChange, 1)
-	);
-
-	if (bannerElement)
-	{
-		bannerElement.style.opacity = bannerOpacity;
-	}
-
-	if (contentElement && !cardIsOpen && !cardIsAnimating)
-	{
-		if (cardWasAnimating)
-		{
-			cardWasAnimating--;
-		}
-
-		else
-		{
-			contentElement.style.opacity = 1 - bannerOpacity;
-		}
-	}
-
-	else
-	{
-		cardWasAnimating = 50;
-	}
-
-	scrollButtonOpacity = Math.min(Math.max(1 - window.scrollY / (bannerMaxScroll / 2.5), 0), 1);
-
-	if (scrollButtonExists)
-	{
-		scrollButtonElement.style.opacity = scrollButtonOpacity;
-
-		if (scrollButtonOpacity === 0)
-		{
-			scrollButtonExists = false;
-
-			scrollButtonElement.remove();
-		}
-	}
-
-	window.requestAnimationFrame(updateBannerOpacity);
+	window.requestAnimationFrame(updateBanner);
 }
 
-window.requestAnimationFrame(updateBannerOpacity);
+window.requestAnimationFrame(updateBanner);
 
 
 
@@ -204,11 +131,6 @@ export async function loadBanner(large = false)
 		{
 			img.remove();
 
-			if (!large)
-			{
-				setTimeout(() => insertScrollButton(), 2000);
-			}
-
 			resolve();
 		};
 	});
@@ -251,61 +173,4 @@ export function setUpBanner()
 	{
 		bannerElement;
 	}
-}
-
-
-
-export function insertScrollButton()
-{
-	if (window.scrollY > bannerMaxScroll / 2.5)
-	{
-		return;
-	}
-
-	const bannerCoverElement = document.querySelector("#banner-cover");
-
-	if (!bannerCoverElement)
-	{
-		return;
-	}
-
-	bannerCoverElement.insertAdjacentHTML("beforebegin", `
-		<div id="new-banner-cover">
-			<input type="image" id="scroll-button" src="/graphics/general-icons/chevron-down.png" style="opacity: 0" alt="Scroll down">
-		</div>
-	`);
-
-	setTimeout(() =>
-	{
-		const newBannerCoverElement = $("#new-banner-cover");
-
-		if (!newBannerCoverElement)
-		{
-			return;
-		}
-
-		scrollButtonElement = $("#scroll-button");
-
-		newBannerCoverElement.style.opacity = 0;
-		newBannerCoverElement.style.transform = "translateY(-100px)";
-
-		anime({
-			targets: newBannerCoverElement,
-			opacity: 1,
-			translateY: 0,
-			duration: opacityAnimationTime * 4,
-			easing: "easeOutCubic"
-		});
-
-		anime({
-			targets: scrollButtonElement,
-			opacity: scrollButtonOpacity,
-			duration: opacityAnimationTime * 4,
-			easing: "easeOutCubic"
-		});
-
-		setTimeout(() => scrollButtonExists = true, opacityAnimationTime * 4);
-	}, 100);
-
-	document.querySelector("#banner-cover").remove();
 }
