@@ -3,6 +3,6 @@
 	.image-links
 	{
 		grid-template-columns: repeat(3, 1fr) !important;
-		max-width: 528px;
+		max-width: 528px !important;
 	}
 }
