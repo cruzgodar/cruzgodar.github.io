@@ -83,12 +83,27 @@ body
 	padding-right: 16px;
 }
 
+@media (max-width: 500px)
+{
+	.page
+	{
+		width: calc(100% - 16px);
+		padding-left: 8px;
+		padding-right: 8px;
+	}
+}
+
 
 
 header
 {
 	margin-top: 80px;
 	margin-bottom: 32px;
+}
+
+#banner ~ #content-container header
+{
+	margin-top: 8px;
 }
 
 section

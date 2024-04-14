@@ -8,11 +8,7 @@ export function banner()
 		
 		<div id="banner-gradient"></div>
 
-		<div id="banner-cover"></div>
-
-		<div id="content">
-			<div id="scroll-to"></div>
-			
-			<div style="height: 5vh"></div>
+		<div id="content-container">
+			<div id="content">
 	`;
 }

@@ -53,19 +53,31 @@ export function updateBanner(timestamp)
 		// This speeds up and smooths out the animation.
 		t = Math.sqrt(Math.min(t, 1));
 
-		const fullPadding = Math.max((window.innerWidth - 932) / 2, 16);
+		const padding = window.innerWidth <= 500 ? 8 : 16;
+
+		const fullPadding = Math.max((window.innerWidth - 900 - padding * 2) / 2, padding);
 		
-		contentElement.style.borderRadius = `${16 * (1 - t)}px`;
+		contentElement.style.borderRadius = `${padding * (1 - t)}px`;
 
-		contentElement.style.paddingLeft = `${16 + t * fullPadding}px`;
-		contentElement.style.paddingRight = `${16 + t * fullPadding}px`;
-		contentElement.style.paddingTop = `${16 + t * 16}px`;
+		contentElement.style.paddingLeft = `${padding + t * fullPadding}px`;
+		contentElement.style.paddingRight = `${padding + t * fullPadding}px`;
+		contentElement.style.paddingTop = `${padding + t * padding}px`;
 
-		contentElement.parentElement.style.marginLeft = `-${16 * t}px`;
-		contentElement.parentElement.style.marginRight = `-${16 * t}px`;
-		contentElement.parentElement.style.marginBottom = 0;
+		contentElement.parentElement.style.marginLeft = `-${padding * t}px`;
+		contentElement.parentElement.style.marginRight = `-${padding * t}px`;
 
 		bannerElement.style.opacity = 1 - t;
+
+		if (contentElement.offsetHeight < window.innerHeight - headerElement.offsetHeight - 32)
+		{
+			contentElement.parentElement.style.marginBottom =
+				`${(window.innerHeight - headerElement.offsetHeight - contentElement.offsetHeight) / 2}px`;
+		}
+
+		else
+		{
+			contentElement.parentElement.style.marginBottom = 0;
+		}
 	}
 
 	else

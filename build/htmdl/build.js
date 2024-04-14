@@ -425,7 +425,7 @@ function decodeHTMDL(html)
 
 	if (usesBanner)
 	{
-		html = /* html */`${html}</div>`;
+		html = /* html */`${html}</div></div>`;
 	}
 
 
