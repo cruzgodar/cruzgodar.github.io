@@ -133,27 +133,27 @@ html.theme-transition
 	transition: background-color var(--theme-transition-time) ease-in-out;
 }
 
-#lapsa-slide-container.theme-transition .slide
+#lapsa-slide-container.theme-transition .lapsa-slide
 {
 	transition: background-color var(--theme-transition-time) ease-in-out, border var(--theme-transition-time) ease-in-out, border-radius var(--theme-transition-time) ease-in-out, box-shadow var(--theme-transition-time) ease-in-out;
 }
 
-#lapsa-slide-container.theme-transition .slide h1, #lapsa-slide-container.theme-transition .slide h2, #lapsa-slide-container.theme-transition .slide p
+#lapsa-slide-container.theme-transition .lapsa-slide h1, #lapsa-slide-container.theme-transition .lapsa-slide h2, #lapsa-slide-container.theme-transition .lapsa-slide p
 {
 	transition: opacity calc(var(--theme-transition-time) / 2) ease-in-out;
 }
 
-#lapsa-slide-container.theme-opacity-change .slide h1, #lapsa-slide-container.theme-opacity-change .slide h2, #lapsa-slide-container.theme-opacity-change .slide p
+#lapsa-slide-container.theme-opacity-change .lapsa-slide h1, #lapsa-slide-container.theme-opacity-change .lapsa-slide h2, #lapsa-slide-container.theme-opacity-change .lapsa-slide p
 {
 	opacity: 0 !important;
 }
 
-#lapsa-slide-container.theme-transition .slide .rainbow-gradient
+#lapsa-slide-container.theme-transition .lapsa-slide .rainbow-gradient
 {
 	transition: height var(--theme-transition-time) ease-in-out;
 }
 
-#lapsa-slide-container.theme-transition .slide .purple-wave
+#lapsa-slide-container.theme-transition .lapsa-slide .purple-wave
 {
 	transition: bottom var(--theme-transition-time) ease-in-out;
 }
@@ -167,7 +167,7 @@ html.dark-industrial-theme-1
 	background-color: rgb(0, 0, 0);
 }
 
-#lapsa-slide-container.dark-industrial-theme-1 .slide
+#lapsa-slide-container.dark-industrial-theme-1 .lapsa-slide
 {
 	background-color: rgb(24, 24, 24);
 	
@@ -177,7 +177,7 @@ html.dark-industrial-theme-1
 	box-shadow: 0px 0px 0px 0px rgb(127, 127, 127);
 }
 
-#lapsa-slide-container.dark-industrial-theme-2 .slide h1, #lapsa-slide-container.dark-industrial-theme-2 .slide h2
+#lapsa-slide-container.dark-industrial-theme-2 .lapsa-slide h1, #lapsa-slide-container.dark-industrial-theme-2 .lapsa-slide h2
 {
 	text-align: center;
 	
@@ -186,7 +186,7 @@ html.dark-industrial-theme-1
 	font-family: "Roboto Slab", serif;
 }
 
-#lapsa-slide-container.dark-industrial-theme-2 .slide p
+#lapsa-slide-container.dark-industrial-theme-2 .lapsa-slide p
 {
 	color: rgb(192, 192, 192);
 	
@@ -202,24 +202,24 @@ html.blue-whimsical-theme-1
 	background-color: rgb(189, 214, 228);
 }
 
-#lapsa-slide-container.blue-whimsical-theme-1 .slide
+#lapsa-slide-container.blue-whimsical-theme-1 .lapsa-slide
 {
 	background-color: rgb(170, 220, 247);
 }
 
-#lapsa-slide-container.blue-whimsical-theme-1 .slide .rainbow-gradient
+#lapsa-slide-container.blue-whimsical-theme-1 .lapsa-slide .rainbow-gradient
 {
 	height: 22.5vw;
 }
 
-#lapsa-slide-container.blue-whimsical-theme-2 .slide h1, #lapsa-slide-container.blue-whimsical-theme-2 .slide h2
+#lapsa-slide-container.blue-whimsical-theme-2 .lapsa-slide h1, #lapsa-slide-container.blue-whimsical-theme-2 .lapsa-slide h2
 {
 	color: rgb(70, 0, 140);
 	
 	font-family: "Sofia", cursive;
 }
 
-#lapsa-slide-container.blue-whimsical-theme-2 .slide p
+#lapsa-slide-container.blue-whimsical-theme-2 .lapsa-slide p
 {
 	color: rgb(83, 47, 119);
 	
@@ -233,7 +233,7 @@ html.dark-futuristic-theme-1
 	background-color: rgb(24, 24, 24);
 }
 
-#lapsa-slide-container.dark-futuristic-theme-1 .slide
+#lapsa-slide-container.dark-futuristic-theme-1 .lapsa-slide
 {
 	background-color: rgb(0, 0, 0);
 	
@@ -244,22 +244,22 @@ html.dark-futuristic-theme-1
 	box-shadow: 0px 0px 0px 0px rgb(127, 127, 127);
 }
 
-#lapsa-slide-container.dark-futuristic-theme-1 .slide .purple-wave
+#lapsa-slide-container.dark-futuristic-theme-1 .lapsa-slide .purple-wave
 {
 	bottom: 0;
 }
 
-#lapsa-slide-container.dark-futuristic-theme-1 .slide .purple-wave-2
+#lapsa-slide-container.dark-futuristic-theme-1 .lapsa-slide .purple-wave-2
 {
 	bottom: -2vw;
 }
 
-#lapsa-slide-container.dark-futuristic-theme-1 .slide .purple-wave-3
+#lapsa-slide-container.dark-futuristic-theme-1 .lapsa-slide .purple-wave-3
 {
 	bottom: -4vw;
 }
 
-#lapsa-slide-container.dark-futuristic-theme-2 .slide h1, #lapsa-slide-container.dark-futuristic-theme-2 .slide h2
+#lapsa-slide-container.dark-futuristic-theme-2 .lapsa-slide h1, #lapsa-slide-container.dark-futuristic-theme-2 .lapsa-slide h2
 {
 	color: rgb(255, 255, 204);
 	
@@ -268,7 +268,7 @@ html.dark-futuristic-theme-1
 	font-family: "Oswald", sans-serif;
 }
 
-#lapsa-slide-container.dark-futuristic-theme-2 .slide p
+#lapsa-slide-container.dark-futuristic-theme-2 .lapsa-slide p
 {
 	color: rgb(191, 191, 153);
 	
@@ -317,17 +317,17 @@ html.dark-futuristic-theme-1
 	
 	
 	
-	#lapsa-slide-container.dark-futuristic-theme-1 .slide
+	#lapsa-slide-container.dark-futuristic-theme-1 .lapsa-slide
 	{
 		border-radius: calc(var(--safe-vh) * 152 / 89);
 	}
 
-	#lapsa-slide-container.dark-futuristic-theme-1 .slide .purple-wave-2
+	#lapsa-slide-container.dark-futuristic-theme-1 .lapsa-slide .purple-wave-2
 	{
 		bottom: calc(-2 * var(--safe-vh) * 152 / 89);
 	}
 
-	#lapsa-slide-container.dark-futuristic-theme-1 .slide .purple-wave-3
+	#lapsa-slide-container.dark-futuristic-theme-1 .lapsa-slide .purple-wave-3
 	{
 		bottom: calc(-4 * var(--safe-vh) * 152 / 89);
 	}

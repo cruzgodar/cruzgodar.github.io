@@ -17,7 +17,9 @@ const options =
 		title: titleBuilds,
 	},
 
-	setupBuild: () => applet.animationPaused = true
+	setupBuild: () => applet.animationPaused = true,
+
+	startingSlide: document.body.querySelectorAll(".slide").length - 1
 };
 
 new Lapsa(options);

@@ -129,13 +129,14 @@ class Lapsa {
         }
         this.slideContainer = slideContainerElement;
         this.slideContainer.classList.add("lapsa-hover");
+        this.slides = document.body.querySelectorAll("#lapsa-slide-container > *");
         __classPrivateFieldSet(this, _Lapsa_bottomMarginElement, document.createElement("div"), "f");
         __classPrivateFieldGet(this, _Lapsa_bottomMarginElement, "f").id = "lapsa-bottom-margin";
         this.slideContainer.appendChild(__classPrivateFieldGet(this, _Lapsa_bottomMarginElement, "f"));
-        this.slides = document.body.querySelectorAll(".slide");
         __classPrivateFieldSet(this, _Lapsa_numBuilds, new Array(this.slides.length), "f");
         this.slides.forEach((element, index) => {
             var _a, _b;
+            element.classList.add("lapsa-slide");
             const wrapper = document.createElement("div");
             wrapper.classList.add("lapsa-slide-wrapper");
             wrapper.style.top = window.innerWidth / window.innerHeight >= 152 / 89 ? `calc(${index * 100 + 2.5} * var(--safe-vh))` : `calc(${index * 100} * var(--safe-vh) + (100 * var(--safe-vh) - 55.625vw) / 2)`;
