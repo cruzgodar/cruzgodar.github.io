@@ -93,7 +93,7 @@ header
 
 section
 {
-	margin-bottom: 128px;
+	margin-bottom: 96px;
 }
 
 
@@ -683,13 +683,19 @@ mjx-container
 	position: absolute;
 }
 
+#content-container
+{
+	display: flex;
+	justify-content: center;
+	margin-top: 90vh;
+}
+
 #content
 {
 	background: var(--background);
 	position: relative;
 	border-radius: 16px;
 	padding: 16px;
-	margin-top: 90vh;
 	max-width: 900px;
 }
 

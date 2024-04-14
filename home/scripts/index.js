@@ -1,19 +1,12 @@
 import { disableLinks, showPage } from "../../scripts/src/loadPage.js";
 import { fadeLeft, opacityAnimationTime } from "/scripts/src/animation.js";
+import { nameTextOpacity } from "/scripts/src/banners.js";
 import {
 	$,
 	addTemporaryListener,
 	setVisitedHomepage,
 	visitedHomepage
 } from "/scripts/src/main.js";
-
-// On large screens, make the content be centered at the bottom of the page.
-function centerContent()
-{
-	const contentHeight = $("main").getBoundingClientRect().height;
-	const marginBottom = Math.max(128, (window.innerHeight - contentHeight) / 2);
-	$("section:last-of-type").style.marginBottom = `${marginBottom}px`;
-}
 
 export function load()
 {
@@ -24,14 +17,6 @@ export function load()
 
 	setVisitedHomepage(true);
 
-	addTemporaryListener({
-		object: window,
-		event: "resize",
-		callback: centerContent
-	});
-
-	centerContent();
-
 
 
 	const cruzTextElement = $("#cruz-text");
@@ -41,8 +26,8 @@ export function load()
 	{
 		window.requestAnimationFrame(() =>
 		{
-			// cruzTextElement.parentNode.style.opacity = scrollButtonOpacity;
-			// godarTextElement.parentNode.style.opacity = scrollButtonOpacity;
+			cruzTextElement.parentNode.style.opacity = nameTextOpacity;
+			godarTextElement.parentNode.style.opacity = nameTextOpacity;
 		});
 	}
 

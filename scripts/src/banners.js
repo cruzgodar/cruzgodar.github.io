@@ -1,4 +1,5 @@
 import { changeOpacity } from "./animation.js";
+import { headerElement } from "./header.js";
 import {
 	$,
 	addStyle,
@@ -8,30 +9,16 @@ import {
 
 export let bannerElement;
 
-export function setBannerElement(newBannerElement)
-{
-	bannerElement = newBannerElement;
-}
-
-
-
 export let contentElement;
 
-export function setContentElement(newContentElement)
-{
-	contentElement = newContentElement;
-}
-
-
-
-export let bannerMaxScroll;
+let bannerMaxScroll;
 
 export function setBannerMaxScroll(newBannerMaxScroll)
 {
 	bannerMaxScroll = newBannerMaxScroll;
 }
 
-
+export let nameTextOpacity = 1;
 
 let lastBannerChangeTimestamp = -1;
 
@@ -51,6 +38,65 @@ export function updateBanner(timestamp)
 	}
 
 	lastBannerChangeTimestamp = timestamp;
+
+	// This denominator accounts for the total distance the content needs to scroll
+	// and the header's height.
+	let t = Math.min(Math.max(window.scrollY / bannerMaxScroll, 0), 1);
+
+	nameTextOpacity = 1 - Math.min(t * 1.5, 1);
+
+	// If the screen is narrow enough for it not to be jarring,
+	// we'll fade out the banner and zoom in the content element to fit
+	// the window width.
+	if (window.innerWidth <= 1200)
+	{
+		// This speeds up and smooths out the animation.
+		t = Math.sqrt(Math.min(t, 1));
+
+		const fullPadding = Math.max((window.innerWidth - 932) / 2, 16);
+		
+		contentElement.style.borderRadius = `${16 * (1 - t)}px`;
+
+		contentElement.style.paddingLeft = `${16 + t * fullPadding}px`;
+		contentElement.style.paddingRight = `${16 + t * fullPadding}px`;
+		contentElement.style.paddingTop = `${16 + t * 16}px`;
+
+		contentElement.parentElement.style.marginLeft = `-${16 * t}px`;
+		contentElement.parentElement.style.marginRight = `-${16 * t}px`;
+		contentElement.parentElement.style.marginBottom = 0;
+
+		bannerElement.style.opacity = 1 - t;
+	}
+
+	else
+	{
+		// This speeds up and smooths out the animation.
+		t = Math.sqrt(Math.min(t * 1.25, 1));
+
+		// If the entire content element fits on screen,
+		// then we'll just let it scroll normally and just expand its padding a little.
+		contentElement.style.borderRadius = "16px";
+
+		contentElement.style.padding = `${16 + t * 16}px`;
+
+		contentElement.parentElement.style.marginLeft = 0;
+		contentElement.parentElement.style.marginRight = 0;
+
+		if (contentElement.offsetHeight < window.innerHeight - headerElement.offsetHeight - 32)
+		{
+			contentElement.parentElement.style.marginBottom =
+				`${(window.innerHeight - headerElement.offsetHeight - contentElement.offsetHeight) / 2}px`;
+
+			bannerElement.style.opacity = 1;
+		}
+
+		else
+		{
+			bannerElement.style.opacity = 1 - t;
+
+			contentElement.parentElement.style.marginBottom = 0;
+		}
+	}
 
 	window.requestAnimationFrame(updateBanner);
 }
