@@ -14,6 +14,23 @@
 	<link rel="stylesheet" type="text/css" href="/style/lapsa.min.css">
 	
 	<link rel="stylesheet" type="text/css" href="/style/lapsa-dark.css">
+
+	<style>
+		.lapsa-slide:not(.visible-draggables) .wilson-enter-fullscreen-button, .lapsa-slide:not(.visible-draggables) .wilson-draggable
+		{
+			display: none !important;
+		}
+
+		.lapsa-slide.grandma-draggables .wilson-draggable-2
+		{
+			display: none !important;
+		}
+
+		.lapsa-slide.riley-draggables .wilson-draggable-1, .lapsa-slide.riley-draggables .wilson-draggable-2
+		{
+			display: none !important;
+		}
+	</style>
 </head>
 
 <body>	
@@ -134,7 +151,7 @@
 		
 		
 		
-		<div id="grandmas-recipe" class="visible-draggables grandma-draggables full-canvas"></div>
+		<div id="grandmas-recipe" class="visible-draggables grandma-draggables full-square-canvas"></div>
 		
 		
 		
@@ -160,7 +177,7 @@
 		
 		
 		
-		<div id="rileys-recipe" class="visible-draggables riley-draggables full-canvas"></div>
+		<div id="rileys-recipe" class="visible-draggables riley-draggables full-square-canvas"></div>
 		
 		
 		
@@ -174,7 +191,7 @@
 		
 		
 		
-		<div id="special-recipe" class="visible-draggables full-canvas"></div>
+		<div id="special-recipe" class="visible-draggables full-square-canvas"></div>
 		
 		
 		

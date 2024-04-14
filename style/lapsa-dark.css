@@ -111,7 +111,26 @@ body
 	bottom: 2.5vw;
 }
 
-.lapsa-slide.full-canvas
+.lapsa-slide.full-square-canvas
+{
+	background-color: rgb(0, 0, 0);
+}
+
+.full-square-canvas canvas
+{
+	width: 55.625vw;
+	height: 55.625vw;
+}
+
+.full-square-canvas #canvas-bundle
+{
+	position: absolute;
+	
+	left: calc((95vw - 55.625vw) / 2);
+	top: 0;
+}
+
+.lapsa-slide.full-canvas.under-text
 {
 	background-color: rgba(0, 0, 0, 0);
 }
