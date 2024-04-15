@@ -1,5 +1,6 @@
 import { changeOpacity } from "./animation.js";
 import { headerElement } from "./header.js";
+import { contentShowingAmount } from "./layout.js";
 import {
 	$,
 	addStyle,
@@ -48,7 +49,7 @@ export function updateBanner(timestamp)
 	// If the screen is narrow enough for it not to be jarring,
 	// we'll fade out the banner and zoom in the content element to fit
 	// the window width.
-	if (window.innerWidth <= 1200)
+	if (window.innerWidth <= 1000)
 	{
 		// This speeds up and smooths out the animation.
 		t = Math.sqrt(Math.min(t, 1));
@@ -153,6 +154,8 @@ export async function loadBanner(large = false)
 
 	bannerElement = $("#banner");
 	contentElement = $("#content");
+
+	contentElement.parentElement.style.marginTop = `calc(100vh - ${contentShowingAmount}px)`;
 
 	bannerFilename = `${large ? "large" : "small"}.webp`;
 

@@ -14,11 +14,20 @@ export let navigationAnimationDistanceHorizontal = Math.min(window.innerWidth / 
 
 let appletColumnsAreEqualized = false;
 
+// A gross hack to make the content not have wildly varying margins
+// between e.g. desktop Chrome and iOS Safari.
+const heightMeasurerElement = document.body.querySelector("#height-measurer");
+
+const likelyFullHeight = heightMeasurerElement.getBoundingClientRect().height;
+heightMeasurerElement.remove();
+
+export const contentShowingAmount = likelyFullHeight - window.innerHeight + 64;
+
 export function onResize()
 {
 	setBannerMaxScroll(
 		Math.min(
-			window.innerHeight * .9 - headerElement.offsetHeight,
+			(window.innerHeight - contentShowingAmount) - headerElement.offsetHeight,
 			document.body.offsetHeight - window.innerHeight
 		)
 	);

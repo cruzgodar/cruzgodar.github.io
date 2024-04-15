@@ -3,22 +3,11 @@ import { fadeLeft, opacityAnimationTime } from "/scripts/src/animation.js";
 import { nameTextOpacity } from "/scripts/src/banners.js";
 import {
 	$,
-	addTemporaryListener,
-	setVisitedHomepage,
-	visitedHomepage
+	addTemporaryListener
 } from "/scripts/src/main.js";
 
 export function load()
 {
-	if (visitedHomepage)
-	{
-		$("#return-scroll-to").scrollIntoView();
-	}
-
-	setVisitedHomepage(true);
-
-
-
 	const cruzTextElement = $("#cruz-text");
 	const godarTextElement = $("#godar-text");
 

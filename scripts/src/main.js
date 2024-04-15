@@ -93,15 +93,6 @@ export function clearTemporaryWorkers()
 
 
 
-export let visitedHomepage = false;
-
-export function setVisitedHomepage(newVisitedHomepage)
-{
-	visitedHomepage = newVisitedHomepage;
-}
-
-
-
 const scriptsLoaded =
 {
 	glsl: 0
