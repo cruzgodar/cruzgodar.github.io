@@ -21,7 +21,7 @@ const heightMeasurerElement = document.body.querySelector("#height-measurer");
 const likelyFullHeight = heightMeasurerElement.getBoundingClientRect().height;
 heightMeasurerElement.remove();
 
-export const contentShowingAmount = likelyFullHeight - window.innerHeight + 64;
+export const contentShowingAmount = likelyFullHeight - window.innerHeight + 40;
 
 export function onResize()
 {

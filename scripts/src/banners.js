@@ -42,7 +42,9 @@ export function updateBanner(timestamp)
 
 	// This denominator accounts for the total distance the content needs to scroll
 	// and the header's height.
-	let t = Math.min(Math.max(window.scrollY / bannerMaxScroll, 0), 1);
+	const t = Math.sqrt(
+		Math.min(Math.max(window.scrollY / bannerMaxScroll * 1.25, 0), 1)
+	);
 
 	nameTextOpacity = 1 - Math.min(t * 1.5, 1);
 
@@ -51,14 +53,9 @@ export function updateBanner(timestamp)
 	// the window width.
 	if (window.innerWidth <= 1000)
 	{
-		// This speeds up and smooths out the animation.
-		t = Math.sqrt(Math.min(t, 1));
-
 		const padding = window.innerWidth <= 500 ? 8 : 16;
 
 		const fullPadding = Math.max((window.innerWidth - 900 - padding * 2) / 2, padding);
-		
-		contentElement.style.borderRadius = `${padding * (1 - t)}px`;
 
 		contentElement.style.paddingLeft = `${padding + t * fullPadding}px`;
 		contentElement.style.paddingRight = `${padding + t * fullPadding}px`;
@@ -94,11 +91,6 @@ export function updateBanner(timestamp)
 
 	else
 	{
-		// This speeds up and smooths out the animation.
-		t = Math.sqrt(Math.min(t * 1.25, 1));
-
-		contentElement.style.borderRadius = "16px";
-
 		contentElement.style.padding = `${16 + t * 16}px`;
 
 		contentElement.parentElement.style.marginLeft = 0;
