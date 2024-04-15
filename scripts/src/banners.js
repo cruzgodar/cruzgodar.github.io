@@ -88,6 +88,8 @@ export function updateBanner(timestamp)
 		{
 			contentElement.parentElement.style.marginBottom = 0;
 		}
+
+		contentElement.style.boxShadow = `0px 0px 16px 4px rgba(0, 0, 0, ${(1 - t) * .35})`;
 	}
 
 	else
@@ -95,8 +97,6 @@ export function updateBanner(timestamp)
 		// This speeds up and smooths out the animation.
 		t = Math.sqrt(Math.min(t * 1.25, 1));
 
-		// If the entire content element fits on screen,
-		// then we'll just let it scroll normally and just expand its padding a little.
 		contentElement.style.borderRadius = "16px";
 
 		contentElement.style.padding = `${16 + t * 16}px`;
@@ -104,18 +104,20 @@ export function updateBanner(timestamp)
 		contentElement.parentElement.style.marginLeft = 0;
 		contentElement.parentElement.style.marginRight = 0;
 
+		bannerElement.style.opacity = 1 - t;
+
+		contentElement.style.boxShadow = `0px 0px 16px 4px rgba(0, 0, 0, ${(1 - t) * .35})`;
+
+		// If the entire content element fits on screen,
+		// then we'll just let it scroll normally and just expand its padding a little.
 		if (contentElement.offsetHeight < window.innerHeight - headerElement.offsetHeight - 32)
 		{
 			contentElement.parentElement.style.marginBottom =
 				`${(window.innerHeight - headerElement.offsetHeight - contentElement.offsetHeight) / 2}px`;
-
-			bannerElement.style.opacity = 1;
 		}
 
 		else
 		{
-			bannerElement.style.opacity = 1 - t;
-
 			contentElement.parentElement.style.marginBottom = 0;
 		}
 	}
