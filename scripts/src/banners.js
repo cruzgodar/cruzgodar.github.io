@@ -64,8 +64,17 @@ export function updateBanner(timestamp)
 		contentElement.style.paddingRight = `${padding + t * fullPadding}px`;
 		contentElement.style.paddingTop = `${padding + t * padding}px`;
 
-		contentElement.parentElement.style.marginLeft = `-${padding * t}px`;
-		contentElement.parentElement.style.marginRight = `-${padding * t}px`;
+		if (window.innerWidth <= 500)
+		{
+			contentElement.parentElement.style.marginLeft = `-${8 + padding * t}px`;
+			contentElement.parentElement.style.marginRight = `-${8 + padding * t}px`;
+		}
+
+		else
+		{
+			contentElement.parentElement.style.marginLeft = `-${padding * t}px`;
+			contentElement.parentElement.style.marginRight = `-${padding * t}px`;
+		}
 
 		bannerElement.style.opacity = 1 - t;
 
