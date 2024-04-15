@@ -19,7 +19,7 @@ const options =
 
 	setupBuild: () => applet.animationPaused = true,
 
-	startingSlide: document.body.querySelectorAll(".slide").length - 1
+	startingSlide: document.body.querySelectorAll("#lapsa-slide-container > div").length - 1
 };
 
 new Lapsa(options);

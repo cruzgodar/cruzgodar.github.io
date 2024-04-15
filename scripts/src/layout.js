@@ -107,6 +107,9 @@ export function onResize()
 export function setUpOnResize()
 {
 	window.addEventListener("resize", onResize);
+
+	try { setTimeout(() => onResize(), 16); }
+	catch(ex) {/* Relevant elements aren't defined yet */}
 }
 
 
