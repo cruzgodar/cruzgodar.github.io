@@ -3,7 +3,7 @@
 Suppose we have an $n \times n$ matrix $A$ whose eigenvectors $\{\vec{v_1}, ..., \vec{v_n}\}$ form a basis and have corresponding eigenvalues $\lambda_1, ..., \lambda_n$. As we've seen in the last section, it's most convenient to deal with $A$ when we're using this basis. If $B$ is the matrix with columns $\vec{v_i}$, then $B^{-1}AB$ acts (from right to left) by converting a vector in the basis $\{\vec{v_1}, ..., \vec{v_n}\}$ to the standard basis, applies $A$ on it, and then converts the output back to $\{\vec{v_1}, ..., \vec{v_n}\}$. Specifically,
 
 $$
-	B^{-1}AB\vec{e_i} &= BA\vec{v_i}
+	B^{-1}AB\vec{e_i} &= B^{-1}A\vec{v_i}
 
 	&= B^{-1}\lambda_i \vec{v_i}
 
