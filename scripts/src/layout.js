@@ -32,7 +32,7 @@ export function onResize()
 		
 	setBannerMaxScroll(
 		Math.min(
-			viewportHeight - 40 - headerElement.offsetHeight,
+			viewportHeight - 40 - (headerElement ? headerElement.offsetHeight : 0),
 			document.body.offsetHeight - window.innerHeight
 		)
 	);
@@ -107,9 +107,6 @@ export function onResize()
 export function setUpOnResize()
 {
 	window.addEventListener("resize", onResize);
-
-	try { setTimeout(() => onResize(), 16); }
-	catch(ex) {/* Relevant elements aren't defined yet */}
 }
 
 
