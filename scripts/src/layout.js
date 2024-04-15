@@ -18,8 +18,14 @@ let appletColumnsAreEqualized = false;
 // between e.g. desktop Chrome and iOS Safari.
 const heightMeasurerElement = document.body.querySelector("#height-measurer");
 
-const likelyFullHeight = heightMeasurerElement.getBoundingClientRect().height;
-heightMeasurerElement.remove();
+const likelyFullHeight = heightMeasurerElement
+	? heightMeasurerElement.getBoundingClientRect().height
+	: window.innerHeight;
+
+if (heightMeasurerElement)
+{
+	heightMeasurerElement.remove();
+}
 
 export const contentShowingAmount = likelyFullHeight - window.innerHeight + 40;
 
