@@ -1,6 +1,6 @@
 import { changeOpacity } from "./animation.js";
 import { headerElement } from "./header.js";
-import { contentShowingAmount } from "./layout.js";
+import { likelyWindowChromeHeight, viewportHeight } from "./layout.js";
 import {
 	$,
 	addStyle,
@@ -75,10 +75,10 @@ export function updateBanner(timestamp)
 
 		bannerElement.style.opacity = 1 - t;
 
-		if (contentElement.offsetHeight < window.innerHeight - headerElement.offsetHeight - 32)
+		if (contentElement.offsetHeight < viewportHeight - headerElement.offsetHeight - 32)
 		{
 			contentElement.parentElement.style.marginBottom =
-				`${(window.innerHeight - headerElement.offsetHeight - contentElement.offsetHeight) / 2}px`;
+				`${(viewportHeight - headerElement.offsetHeight - contentElement.offsetHeight) / 2}px`;
 		}
 
 		else
@@ -102,10 +102,10 @@ export function updateBanner(timestamp)
 
 		// If the entire content element fits on screen,
 		// then we'll just let it scroll normally and just expand its padding a little.
-		if (contentElement.offsetHeight < window.innerHeight - headerElement.offsetHeight - 32)
+		if (contentElement.offsetHeight < viewportHeight - headerElement.offsetHeight - 32)
 		{
 			contentElement.parentElement.style.marginBottom =
-				`${(window.innerHeight - headerElement.offsetHeight - contentElement.offsetHeight) / 2}px`;
+				`${(viewportHeight - headerElement.offsetHeight - contentElement.offsetHeight) / 2}px`;
 		}
 
 		else
@@ -158,7 +158,7 @@ export async function loadBanner(large = false)
 	bannerElement = $("#banner");
 	contentElement = $("#content");
 
-	contentElement.parentElement.style.marginTop = `calc(100vh - ${contentShowingAmount}px)`;
+	contentElement.parentElement.style.marginTop = `calc(100vh - ${likelyWindowChromeHeight + 40}px)`;
 
 	bannerFilename = `${large ? "large" : "small"}.webp`;
 
