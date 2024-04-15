@@ -83,6 +83,16 @@ body
 	padding-right: 16px;
 }
 
+@media (min-width: 501px)
+{
+	.page
+	{
+		width: calc(100% - 64px);
+		padding-left: 32px;
+		padding-right: 32px;
+	}
+}
+
 
 
 header
@@ -692,15 +702,15 @@ mjx-container
 {
 	display: flex;
 	justify-content: center;
-	margin-top: 85vh;
+	margin-top: calc(100vh - 40px);
 }
 
 @media (max-width: 500px)
 {
 	#banner ~ #content-container
 	{
-		margin-left: -8px;
-		margin-right: -8px;
+		margin-left: -24px;
+		margin-right: -24px;
 	}
 }
 

@@ -15,8 +15,6 @@
 
 <div id="content-container">
 	<div id="content">
-		<div id="scroll-to"></div>
-		
 		<main>
 			<section style="margin-bottom: 0">
 				<div class="quote-row">
@@ -52,12 +50,7 @@
 				</div>
 			</section>
 			
-			
-			<div id="return-scroll-to"></div>
-			
 			<div style="height: 80px"></div>
-			
-			
 			
 			<section>
 				<div id="logo-no-link">
@@ -77,8 +70,6 @@
 						<span>Hello! My name is Cruz, and I&#x2019;m a graduate student in math at the University of Oregon. I&#x2019;m particularly drawn to the beautiful visualizations that math can often create, and I&#x2019;ve built a number of polished, high-performance web apps for exploring them. I&#x2019;ve also created interactive notes for many of the classes I&#x2019;ve taught in pursuit of quality teaching, and occasionally I&#x2019;ve found time to practice creative writing. All of that is collected here, and no matter what you&#x2019;re looking for, I think you&#x2019;ll find something you enjoy.</span>
 					</p>
 				</div>
-
-				
 				
 				<div class="narrow-image-links" style="margin-top: 20px">
 					### image-links

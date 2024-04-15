@@ -42,18 +42,25 @@
 	width: 100vw;
 	font-family: "Gentium Book Basic", serif;
 	text-shadow: 0px 0px 4vmin rgb(0, 0, 0);
+	margin-left: calc(4.9583vmin - 30px);
 }
 
 #cruz-text
 {
 	margin-top: calc(2.1875vmin + 25px);
-	margin-left: calc(4.9583vmin - 30px);
 }
 
 #godar-text
 {
 	margin-top: calc(19.6875vmin + 25px);
-	margin-left: calc(4.9583vmin - 30px);
+}
+
+@media (max-width: 500px)
+{
+	.name-text
+	{
+		margin-left: calc(4.9583vmin - 46px);
+	}
 }
 
 

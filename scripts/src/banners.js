@@ -44,7 +44,7 @@ export function updateBanner(timestamp)
 	// and the header's height.
 	const t0 = Math.min(Math.max(window.scrollY / bannerMaxScroll * 1.22, 0), 1);
 
-	const t = 0.5 + 0.5 * Math.sin(Math.PI * (Math.pow(t0, 0.75) - 0.5));
+	const t = 0.5 + 0.5 * Math.sin(Math.PI * (Math.pow(t0, 0.5) - 0.5));
 
 	nameTextOpacity = 1 - Math.min(t * 1.5, 1);
 

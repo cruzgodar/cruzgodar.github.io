@@ -26,6 +26,40 @@
 	<link rel="stylesheet" type="text/css" href="/style/lapsa.min.css">
 	
 	<link rel="stylesheet" type="text/css" href="/style/lapsa-dark.css">
+
+	<style>
+		#s2 #canvas-bundle
+		{
+			top: 0;
+		}
+
+		#demo-canvas
+		{
+			width: 40vw;
+			height: 3vw;
+			border-radius: 1vw;
+		}
+
+		.lapsa-slide:not(#s2) #canvas-bundle > *:last-child
+		{
+			display: none;
+		}
+
+		p strong
+		{
+			color: rgb(255, 255, 255) !important;
+		}
+
+		@media (min-aspect-ratio: 152/89)
+		{
+			#demo-canvas
+			{
+				width: calc(40 * var(--safe-vh) * 152 / 89);
+				height: calc(3 * var(--safe-vh) * 152 / 89);
+				border-radius: calc(1 * var(--safe-vh) * 152 / 89);
+			}
+		}
+	</style>
 </head>
 
 <body>	
@@ -37,22 +71,41 @@
 		</div>
 
 		<div>
-			<h1>What's a Geometry, Anyway?</h1>
-
-			<p class="build">A <strong>geometry</strong> on a manifold $X$ is a bilinear form $\left&lt; \cdot, \cdot \right&gt;$ defined on each tangent space $T_p X$ that is symmetric and nondegenerate, and varies smoothly across tangent spaces.</p>
-
-			<p class="build">A <strong>Riemannian</strong> metric is one that's also positive definite (matching the usual definition of an inner product).</p>
+			<h1>Mary&#x2019;s Room</h1>
+			
+			<p>Australian philosopher Frank Jackson proposed the thought experiment of a scientist who is devoted to learning everything there is to know about color, despite being stuck in a strictly black-and-white room.</p>
 		</div>
 
 		<div>
-			<p class="build">The uniformization theorem </p>
+			<h1>What&#x2019;s a Geometry, Anyway?</h1>
+
+			<p class="build">A <strong>geometry</strong> on a smooth manifold $X$ is a maximal Lie group $G$ acting transitively on $X$ with compact point stabilizers, which implies the existence of a $G$-invariant Riemannian metric.</p>
+
+			<p class="build">The uniformization theorem classifies simply connected Riemannian 2-manifolds into three classes up to conformal (angle-preserving) mapping: the sphere, the torus, and the open disk.</p>
+
+			<p class="build">Since the metric on a Riemannian manifold induces a metric on its universal cover, geometries on Riemannian manifolds are classified by the induced geometry on the universal cover.</p>
+		</div>
+
+		<div id="s2" class="medium-canvas">
+			<p class="left-text">By simulating a scene with light traveling along geodesics, we can see what it&#x2019;s like to live in a 2-manifold like the sphere.</p>
+
+			<p class="left-text">The rendered image is 1-dimensional, with each point corresponding to a unit vector in the tangent plane to the sphere at the camera&#x2019;s position.</p>
+		</div>
+
+		<div>
+			<h1>What About 3-Manifolds?</h1>
+	
+			<p class="build">Thurston&#x2019;s geometrization conjecture is an analogue of the uniformization theorem for oriented and closed 3-manifolds: those that are compact and have no boundary.</p>
+
+			<p class="build">Unlike with 2-manifolds, not every closed 3-manifolds is differmorphic to one a single geometric structure. Instead, they decompose as connected sums of <strong>prime</strong> 3-manifolds &mdash; those that are not a nontrivial connected sum.</p>
+
+			<p class="build">Prime 3-manifolds have 8 possible geometric structures: three direct analogues of the 2-dimensional ones, two product geometries, and three new ones that are substantially stranger.</p>
 		</div>
 	</div>
 
-
-
 	<div id="canvas-bundle" style="opacity: 0">
 		<canvas id="output-canvas"></canvas>
+		<canvas id="demo-canvas"></canvas>
 	</div>
 	
 	<script>
