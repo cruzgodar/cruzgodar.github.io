@@ -5,10 +5,7 @@ section
 
 #gallery
 {
-	width: calc(100vw - 20px);
-	
 	margin-top: 50px;
-	margin-left: 10px;
 	
 	display: grid;
 	grid-template-columns: repeat(2, 1fr);
