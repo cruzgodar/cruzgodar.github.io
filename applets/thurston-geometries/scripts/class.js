@@ -166,7 +166,7 @@ export class ThurstonGeometry extends Applet
 
 			float getBanding(float amount, float numBands)
 			{
-				return 1.0 - floor(mod(amount * numBands, 2.0)) / 2.0;
+				return 1.0 - floor(mod(abs(amount) * numBands, 2.0)) * 0.5;
 			}
 			
 			

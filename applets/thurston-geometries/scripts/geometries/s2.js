@@ -64,30 +64,51 @@ export class E3S2Demo extends E3Geometry
 		pos.xyz /= 1.001;
 
 		float radius = .35;
+		float variation = .175;
 
 		if (acos(dot(pos.xyz, normalize(vec3(1, 0, 0)))) - radius < 0.0)
 		{
-			return vec3(.969, .773, .404);
+			return vec3(
+				.5 * (.5 * (sin((variation * pos.x) * 17.0) + 1.0)),
+				.85 + .15 * (.5 * (sin((variation * pos.y) * 23.0) + 1.0)),
+				.85 + .15 * (.5 * (sin((variation * pos.z) * 29.0) + 1.0))
+			);
 		}
 
 		if (acos(dot(pos.xyz, normalize(vec3(0, 1, 0)))) - radius < 0.0)
 		{
-			return vec3(.863, .420, .098);
+			return vec3(
+				.5 * (.5 * (sin((variation * pos.x) * 17.0) + 1.0)),
+				.5 * (.5 * (sin((variation * pos.y) * 23.0) + 1.0)),
+				.85 + .15 * (.5 * (sin((variation * pos.z) * 29.0) + 1.0))
+			);
 		}
 
 		if (acos(dot(pos.xyz, normalize(vec3(-1, 0, 0)))) - radius < 0.0)
 		{
-			return vec3(.424, .012, .271);
+			return vec3(
+				.85 + .15 * (.5 * (sin((variation * pos.x) * 17.0) + 1.0)),
+				.5 * (.5 * (sin((variation * pos.y) * 23.0) + 1.0)),
+				.5 * (.5 * (sin((variation * pos.z) * 29.0) + 1.0))
+			);
 		}
 
 		if (acos(dot(pos.xyz, normalize(vec3(0, -1, 0)))) - radius < 0.0)
 		{
-			return vec3(.290, .565, .886);
+			return vec3(
+				.85 + .15 * (.5 * (sin((variation * pos.x) * 17.0) + 1.0)),
+				.5 + .15 * (.5 * (sin((variation * pos.y) * 23.0) + 1.0)),
+				.5 * (.5 * (sin((variation * pos.z) * 29.0) + 1.0))
+			);
 		}
 
 		if (acos(dot(pos.xyz, normalize(vec3(0, 0, -1)))) - radius < 0.0)
 		{
-			return vec3(.777 * 1.1, .749 * 1.1, .6643 * 1.1);
+			return vec3(
+				.5 + .15 * (.5 * (sin((variation * pos.x) * 17.0) + 1.0)),
+				.5 * (.5 * (sin((variation * pos.y) * 23.0) + 1.0)),
+				.85 + .15 * (.5 * (sin((variation * pos.z) * 29.0) + 1.0))
+			);
 		}
 
 		float distanceToCamera = acos(dot(pos.xyz, cameraDotPos.xyz));
@@ -161,8 +182,8 @@ export class S2xES2Demo extends S2xEGeometry
 		float radius = .35;
 
 		float distance1 = acos(pos.x) - radius;
-		float distance2 = acos(-pos.x) - radius;
-		float distance3 = acos(pos.y) - radius;
+		float distance2 = acos(pos.y) - radius;
+		float distance3 = acos(-pos.x) - radius;
 		float distance4 = acos(-pos.y) - radius;
 		float distance5 = acos(-pos.z) - radius;
 
@@ -178,27 +199,49 @@ export class S2xES2Demo extends S2xEGeometry
 	getColorGlsl = /* glsl */`
 		${S2xES2Demo.distances}
 
+		float variation = .175;
+		
 		if (minDistance == distance1)
 		{
-			return vec3(.969, .773, .404);
+			return vec3(
+				.5 * (.5 * (sin((variation * pos.x) * 17.0) + 1.0)),
+				.85 + .15 * (.5 * (sin((variation * pos.y) * 23.0) + 1.0)),
+				.85 + .15 * (.5 * (sin((variation * pos.z) * 29.0) + 1.0))
+			);
 		}
 
 		if (minDistance == distance2)
 		{
-			return vec3(.424, .012, .271);
+			return vec3(
+				.5 * (.5 * (sin((variation * pos.x) * 17.0) + 1.0)),
+				.5 * (.5 * (sin((variation * pos.y) * 23.0) + 1.0)),
+				.85 + .15 * (.5 * (sin((variation * pos.z) * 29.0) + 1.0))
+			);
 		}
 
 		if (minDistance == distance3)
 		{
-			return vec3(.863, .420, .098);
+			return vec3(
+				.85 + .15 * (.5 * (sin((variation * pos.x) * 17.0) + 1.0)),
+				.5 * (.5 * (sin((variation * pos.y) * 23.0) + 1.0)),
+				.5 * (.5 * (sin((variation * pos.z) * 29.0) + 1.0))
+			);
 		}
 
 		if (minDistance == distance4)
 		{
-			return vec3(.290, .565, .886);
+			return vec3(
+				.85 + .15 * (.5 * (sin((variation * pos.x) * 17.0) + 1.0)),
+				.5 + .15 * (.5 * (sin((variation * pos.y) * 23.0) + 1.0)),
+				.5 * (.5 * (sin((variation * pos.z) * 29.0) + 1.0))
+			);
 		}
 
-		return vec3(.777, .749, .6643);
+		return vec3(
+			.5 + .15 * (.5 * (sin((variation * pos.x) * 17.0) + 1.0)),
+			.5 * (.5 * (sin((variation * pos.y) * 23.0) + 1.0)),
+			.85 + .15 * (.5 * (sin((variation * pos.z) * 29.0) + 1.0))
+		);
 	`;
 
 	lightGlsl = /* glsl */`
@@ -245,8 +288,8 @@ export class S2xES2Demo extends S2xEGeometry
 		const radius = .35;
 
 		const distance1 = Math.acos(pos[0]) - radius;
-		const distance2 = Math.acos(-pos[0]) - radius;
-		const distance3 = Math.acos(pos[1]) - radius;
+		const distance2 = Math.acos(pos[1]) - radius;
+		const distance3 = Math.acos(-pos[0]) - radius;
 		const distance4 = Math.acos(-pos[1]) - radius;
 		const distance5 = Math.acos(-pos[2]) - radius;
 
@@ -258,6 +301,8 @@ export class S2xES2Demo extends S2xEGeometry
 			distance5
 		);
 
+		const variation = .175;
+
 		if (minDistance > 0.00001)
 		{
 			return [0, 0, 0];
@@ -265,25 +310,45 @@ export class S2xES2Demo extends S2xEGeometry
 
 		if (minDistance === distance1)
 		{
-			return [.969, .773, .404];
+			return [
+				.5 * (.5 * (Math.sin((variation * pos[0]) * 17.0) + 1.0)),
+				.85 + .15 * (.5 * (Math.sin((variation * pos[1]) * 23.0) + 1.0)),
+				.85 + .15 * (.5 * (Math.sin((variation * pos[2]) * 29.0) + 1.0))
+			];
 		}
 
 		if (minDistance === distance2)
 		{
-			return [.424, .012, .271];
+			return [
+				.5 * (.5 * (Math.sin((variation * pos[0]) * 17.0) + 1.0)),
+				.5 * (.5 * (Math.sin((variation * pos[1]) * 23.0) + 1.0)),
+				.85 + .15 * (.5 * (Math.sin((variation * pos[2]) * 29.0) + 1.0))
+			];
 		}
 
 		if (minDistance === distance3)
 		{
-			return [.863, .420, .098];
+			return [
+				.85 + .15 * (.5 * (Math.sin((variation * pos[0]) * 17.0) + 1.0)),
+				.5 * (.5 * (Math.sin((variation * pos[1]) * 23.0) + 1.0)),
+				.5 * (.5 * (Math.sin((variation * pos[2]) * 29.0) + 1.0))
+			];
 		}
 
 		if (minDistance === distance4)
 		{
-			return [.290, .565, .886];
+			return [
+				.85 + .15 * (.5 * (Math.sin((variation * pos[0]) * 17.0) + 1.0)),
+				.5 + .15 * (.5 * (Math.sin((variation * pos[1]) * 23.0) + 1.0)),
+				.5 * (.5 * (Math.sin((variation * pos[2]) * 29.0) + 1.0))
+			];
 		}
 
-		return [.777 * 1.1, .749 * 1.1, .6643 * 1.1];
+		return [
+			.5 + .15 * (.5 * (Math.sin((variation * pos[0]) * 17.0) + 1.0)),
+			.5 * (.5 * (Math.sin((variation * pos[1]) * 23.0) + 1.0)),
+			.85 + .15 * (.5 * (Math.sin((variation * pos[2]) * 29.0) + 1.0))
+		];
 	}
 
 	getRayData(rayDirs)
