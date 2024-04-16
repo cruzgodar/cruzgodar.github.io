@@ -1,11 +1,20 @@
 section
 {
-	margin-bottom: 10px !important;
+	margin-bottom: 32px !important;
+}
+
+@media (max-width: 500px)
+{
+	section
+	{
+		margin-bottom: 16px !important;
+	}
 }
 
 #gallery
 {
 	margin-top: 50px;
+	margin-bottom: 0px;
 	
 	display: grid;
 	grid-template-columns: repeat(2, 1fr);
