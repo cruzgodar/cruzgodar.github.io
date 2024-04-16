@@ -48,71 +48,39 @@ export function updateBanner(timestamp)
 
 	nameTextOpacity = 1 - Math.min(t * 1.5, 1);
 
-	// If the screen is narrow enough for it not to be jarring,
-	// we'll fade out the banner and zoom in the content element to fit
-	// the window width.
-	if (window.innerWidth <= 1000)
+	bannerElement.style.opacity = 1 - t;
+
+
+
+	const minPadding = window.innerWidth <= 500 ? 8 : 16;
+
+	const additionalPadding = Math.min(
+		Math.max(
+			(window.innerWidth - 900 - minPadding * 2) / 2,
+			minPadding
+		),
+		16
+	);
+
+	contentElement.style.paddingLeft = `${minPadding + t * additionalPadding}px`;
+	contentElement.style.paddingRight = `${minPadding + t * additionalPadding}px`;
+	contentElement.style.paddingTop = `${minPadding + t * minPadding}px`;
+
+	contentElement.parentElement.style.marginLeft = `-${minPadding + additionalPadding * t}px`;
+	contentElement.parentElement.style.marginRight = `-${minPadding + additionalPadding * t}px`;
+
+	if (contentElement.offsetHeight < viewportHeight - headerElement.offsetHeight - 32)
 	{
-		const padding = window.innerWidth <= 500 ? 8 : 16;
-
-		const fullPadding = Math.max((window.innerWidth - 900 - padding * 2) / 2, padding);
-
-		contentElement.style.paddingLeft = `${padding + t * fullPadding}px`;
-		contentElement.style.paddingRight = `${padding + t * fullPadding}px`;
-		contentElement.style.paddingTop = `${padding + t * padding}px`;
-
-		if (window.innerWidth <= 500)
-		{
-			contentElement.parentElement.style.marginLeft = `-${8 + padding * t}px`;
-			contentElement.parentElement.style.marginRight = `-${8 + padding * t}px`;
-		}
-
-		else
-		{
-			contentElement.parentElement.style.marginLeft = `-${padding * t}px`;
-			contentElement.parentElement.style.marginRight = `-${padding * t}px`;
-		}
-
-		bannerElement.style.opacity = 1 - t;
-
-		if (contentElement.offsetHeight < viewportHeight - headerElement.offsetHeight - 32)
-		{
-			contentElement.parentElement.style.marginBottom =
-				`${(viewportHeight - headerElement.offsetHeight - contentElement.offsetHeight) / 2}px`;
-		}
-
-		else
-		{
-			contentElement.parentElement.style.marginBottom = 0;
-		}
-
-		contentElement.style.boxShadow = `0px 0px 16px 4px rgba(0, 0, 0, ${(1 - t) * .35})`;
+		contentElement.parentElement.style.marginBottom =
+			`${(viewportHeight - headerElement.offsetHeight - contentElement.offsetHeight) / 2}px`;
 	}
 
 	else
 	{
-		contentElement.style.padding = `${16 + t * 16}px`;
-
-		contentElement.parentElement.style.marginLeft = 0;
-		contentElement.parentElement.style.marginRight = 0;
-
-		bannerElement.style.opacity = 1 - t;
-
-		contentElement.style.boxShadow = `0px 0px 16px 4px rgba(0, 0, 0, ${(1 - t) * .35})`;
-
-		// If the entire content element fits on screen,
-		// then we'll just let it scroll normally and just expand its padding a little.
-		if (contentElement.offsetHeight < viewportHeight - headerElement.offsetHeight - 32)
-		{
-			contentElement.parentElement.style.marginBottom =
-				`${(viewportHeight - headerElement.offsetHeight - contentElement.offsetHeight) / 2}px`;
-		}
-
-		else
-		{
-			contentElement.parentElement.style.marginBottom = 0;
-		}
+		contentElement.parentElement.style.marginBottom = 0;
 	}
+
+	contentElement.style.boxShadow = `0px 0px 16px 4px rgba(0, 0, 0, ${(1 - t) * .35})`;
 
 	window.requestAnimationFrame(updateBanner);
 }
