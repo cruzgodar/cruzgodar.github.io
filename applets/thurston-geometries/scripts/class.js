@@ -724,6 +724,7 @@ export class ThurstonGeometry extends Applet
 		if (
 			!this.rollingAmount
 			|| this.geometryData.render1D
+			|| this.automoving
 		) {
 			return;
 		}
@@ -851,7 +852,7 @@ export class ThurstonGeometry extends Applet
 				{
 					return;
 				}
-				
+
 				totalTimeElapsed += timeElapsed;
 				
 				this.movingAmount = [speed, 0, 0];

@@ -447,13 +447,12 @@ function hsvToRgb(h, s, v)
 	return [255 * f(5), 255 * f(3), 255 * f(1)];
 }
 
-function getHopfFiber(index, numFibers)
+function getHopfFiber(index, numFibers, theta, startingFiber)
 {
 	const phi = index / numFibers * (2 * Math.PI);
-	const theta = Math.PI / 2;
 
 	const rgb = hsvToRgb(
-		theta / (2 * Math.PI),
+		theta / (Math.PI),
 		Math.abs((phi % Math.PI) - Math.PI / 2) / (Math.PI / 2),
 		1
 	);
@@ -466,7 +465,7 @@ function getHopfFiber(index, numFibers)
 	const vec2 = ThurstonGeometry.normalize([0, p[0], p[1], 1 + p[2]]);
 
 	return [/* glsl */`
-		float distance${index + 1} = greatCircleDistance(
+		float distance${index + 1 + startingFiber} = greatCircleDistance(
 			pos,
 			vec4(${vec1[0]}, ${vec1[1]}, ${vec1[2]}, ${vec1[3]}),
 			vec4(${vec2[0]}, ${vec2[1]}, ${vec2[2]}, ${vec2[3]}),
@@ -484,17 +483,31 @@ export class S3HopfFibration extends S3Geometry
 
 		this.distanceEstimatorGlsl = "";
 
-		const colors = new Array(numFibers);
+		const colors = new Array(numFibers * 3);
 
 		for (let i = 0; i < numFibers; i++)
 		{
-			const result = getHopfFiber(i, numFibers);
+			const result = getHopfFiber(i, numFibers, Math.PI / 4, 0);
 			this.distanceEstimatorGlsl += result[0];
 			colors[i] = result[1];
 		}
 
+		for (let i = 0; i < numFibers; i++)
+		{
+			const result = getHopfFiber(i, numFibers, Math.PI / 2, numFibers);
+			this.distanceEstimatorGlsl += result[0];
+			colors[numFibers + i] = result[1];
+		}
+
+		for (let i = 0; i < numFibers; i++)
+		{
+			const result = getHopfFiber(i, numFibers, 3 * Math.PI / 4, 2 * numFibers);
+			this.distanceEstimatorGlsl += result[0];
+			colors[2 * numFibers + i] = result[1];
+		}
+
 		this.distanceEstimatorGlsl += /* glsl */`
-			float minDistance = ${getMinGlslString("distance", numFibers)};
+			float minDistance = ${getMinGlslString("distance", numFibers * 3)};
 		`;
 
 		this.getColorGlsl = this.distanceEstimatorGlsl + getColorGlslString(
@@ -547,4 +560,9 @@ export class S3HopfFibration extends S3Geometry
 	`;
 
 	uniformNames = ["fiberThickness"];
+
+	updateUniforms(gl, uniformList)
+	{
+		gl.uniform1f(uniformList["fiberThickness"], this.sliderValues.fiberThickness);
+	}
 }
