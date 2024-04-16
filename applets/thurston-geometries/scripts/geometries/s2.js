@@ -67,27 +67,27 @@ export class E3S2Demo extends E3Geometry
 
 		if (acos(dot(pos.xyz, normalize(vec3(1, 0, 0)))) - radius < 0.0)
 		{
-			return vec3(1.0, 0.0, 0.0);
+			return vec3(.969, .773, .404);
 		}
 
 		if (acos(dot(pos.xyz, normalize(vec3(0, 1, 0)))) - radius < 0.0)
 		{
-			return vec3(0.0, 1.0, 0.0);
+			return vec3(.863, .420, .098);
 		}
 
 		if (acos(dot(pos.xyz, normalize(vec3(-1, 0, 0)))) - radius < 0.0)
 		{
-			return vec3(0.0, 0.0, 1.0);
+			return vec3(.424, .012, .271);
 		}
 
 		if (acos(dot(pos.xyz, normalize(vec3(0, -1, 0)))) - radius < 0.0)
 		{
-			return vec3(1.0, 1.0, 0.0);
+			return vec3(.290, .565, .886);
 		}
 
 		if (acos(dot(pos.xyz, normalize(vec3(0, 0, -1)))) - radius < 0.0)
 		{
-			return vec3(0.5, 0.0, 1.0);
+			return vec3(.777 * 1.1, .749 * 1.1, .6643 * 1.1);
 		}
 
 		float distanceToCamera = acos(dot(pos.xyz, cameraDotPos.xyz));
@@ -180,32 +180,32 @@ export class S2xES2Demo extends S2xEGeometry
 
 		if (minDistance == distance1)
 		{
-			return vec3(1.0, 0.0, 0.0);
+			return vec3(.969, .773, .404);
 		}
 
 		if (minDistance == distance2)
 		{
-			return vec3(0.0, 0.0, 1.0);
+			return vec3(.424, .012, .271);
 		}
 
 		if (minDistance == distance3)
 		{
-			return vec3(0.0, 1.0, 0.0);
+			return vec3(.863, .420, .098);
 		}
 
 		if (minDistance == distance4)
 		{
-			return vec3(1.0, 1.0, 0.0);
+			return vec3(.290, .565, .886);
 		}
 
-		return vec3(0.5, 0.0, 1.0);
+		return vec3(.777, .749, .6643);
 	`;
 
 	lightGlsl = /* glsl */`
 		vec4 lightDirection1 = normalize(vec4(0.0, 0.0, 1.0, 0.0) - pos);
 		float dotProduct1 = abs(dot(surfaceNormal, lightDirection1));
 
-		float lightIntensity = 1.25 * abs(dotProduct1);
+		float lightIntensity = abs(dotProduct1);
 	`;
 
 	render1D = true;
@@ -265,25 +265,25 @@ export class S2xES2Demo extends S2xEGeometry
 
 		if (minDistance === distance1)
 		{
-			return [1, 0, 0];
+			return [.969, .773, .404];
 		}
 
 		if (minDistance === distance2)
 		{
-			return [0, 0, 1];
+			return [.424, .012, .271];
 		}
 
 		if (minDistance === distance3)
 		{
-			return [0, 1, 0];
+			return [.863, .420, .098];
 		}
 
 		if (minDistance === distance4)
 		{
-			return [1, 1, 0];
+			return [.290, .565, .886];
 		}
 
-		return [0.5, 0, 1];
+		return [.777 * 1.1, .749 * 1.1, .6643 * 1.1];
 	}
 
 	getRayData(rayDirs)
