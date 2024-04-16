@@ -216,7 +216,7 @@ export class S2xES2Demo extends S2xEGeometry
 	rightVec = [0, 1, 0, 0];
 	forwardVec = [1, 0, 0, 0];
 
-	aspectRatio = 7;
+	aspectRatio = 10;
 	ignoreAspectRatio = true;
 
 	distanceEstimator(pos)
