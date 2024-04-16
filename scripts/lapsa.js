@@ -19,6 +19,8 @@ const defaultOptions = {
     shelfAnimationTime: 275,
     slideAnimateInEasing: "cubic-bezier(.4, 1.0, .7, 1.0)",
     slideAnimateOutEasing: "cubic-bezier(.1, 0.0, .2, 0.0)",
+    buildAnimateInEasing: "cubic-bezier(.4, 1.0, .7, 1.0)",
+    buildAnimateOutEasing: "cubic-bezier(.1, 0.0, .2, 0.0)",
     shelfAnimateInEasing: "cubic-bezier(.4, 1.0, .7, 1.0)",
     shelfAnimateOutEasing: "cubic-bezier(.4, 0.0, .4, 1.0)",
     tableViewEasing: "cubic-bezier(.25, 1.0, .5, 1.0)",
@@ -112,6 +114,8 @@ class Lapsa {
         }
         this.slideAnimateInEasing = options.slideAnimateInEasing;
         this.slideAnimateOutEasing = options.slideAnimateOutEasing;
+        this.buildAnimateInEasing = options.buildAnimateInEasing;
+        this.buildAnimateOutEasing = options.buildAnimateOutEasing;
         this.shelfAnimateInEasing = options.shelfAnimateInEasing;
         this.shelfAnimateOutEasing = options.shelfAnimateOutEasing;
         this.tableViewEasing = options.tableViewEasing;
@@ -833,7 +837,7 @@ class Lapsa {
         await new Promise(resolve => {
             setTimeout(() => {
                 const oldTransitionStyle = element.style.transition;
-                element.style.transition = `margin-top ${duration}ms ${this.slideAnimateInEasing}, margin-bottom ${duration}ms ${this.slideAnimateInEasing}, opacity ${duration}ms ${this.slideAnimateInEasing}`;
+                element.style.transition = `margin-top ${duration}ms ${this.buildAnimateInEasing}, margin-bottom ${duration}ms ${this.buildAnimateInEasing}, opacity ${duration}ms ${this.buildAnimateInEasing}`;
                 element.style.marginTop = "0";
                 element.style.marginBottom = "0";
                 element.style.opacity = "1";
@@ -848,7 +852,7 @@ class Lapsa {
         await new Promise(resolve => {
             setTimeout(() => {
                 const oldTransitionStyle = element.style.transition;
-                element.style.transition = `margin-top ${duration}ms ${this.slideAnimateInEasing}, margin-bottom ${duration}ms ${this.slideAnimateInEasing}, opacity ${duration}ms ${this.slideAnimateInEasing}`;
+                element.style.transition = `margin-top ${duration}ms ${this.buildAnimateOutEasing}, margin-bottom ${duration}ms ${this.buildAnimateOutEasing}, opacity ${duration}ms ${this.buildAnimateOutEasing}`;
                 element.style.marginTop = `${__classPrivateFieldGet(this, _Lapsa_transitionAnimationDistance, "f")}px`;
                 element.style.marginBottom = `${-__classPrivateFieldGet(this, _Lapsa_transitionAnimationDistance, "f")}px`;
                 element.style.opacity = "0";

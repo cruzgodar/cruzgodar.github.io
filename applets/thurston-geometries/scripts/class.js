@@ -1,7 +1,6 @@
 import { Applet } from "../../../scripts/applets/applet.js";
 import { SolRooms, SolSpheres } from "./geometries/sol.js";
 import anime from "/scripts/anime.js";
-import { opacityAnimationTime } from "/scripts/src/animation.js";
 import { aspectRatio } from "/scripts/src/layout.js";
 import { $, addTemporaryListener } from "/scripts/src/main.js";
 import { Wilson } from "/scripts/wilson.js";
@@ -33,7 +32,7 @@ export class ThurstonGeometry extends Applet
 	rollingAmount = 0;
 
 	automoving = false;
-	automovingDirection = [0, 0, 0, 0];
+	automovingDirection = () => [0, 0, 0, 0];
 
 	movingSubsteps = 1;
 
@@ -594,7 +593,7 @@ export class ThurstonGeometry extends Applet
 				this.geometryData.cameraPos = this.geometryData.correctPosition(
 					this.geometryData.followGeodesic(
 						this.geometryData.cameraPos,
-						this.automovingDirection,
+						this.automovingDirection(),
 						dt
 					)
 				);
@@ -771,7 +770,7 @@ export class ThurstonGeometry extends Applet
 			this.wilson.worldHeight = Math.max(2, 2 / aspectRatio);
 		}
 
-		else if (this.geometryData.aspectRatio)
+		else if (this.geometryData?.aspectRatio)
 		{
 			imageWidth = Math.min(
 				this.resolution,
@@ -808,7 +807,7 @@ export class ThurstonGeometry extends Applet
 
 
 
-		if (this.geometryData.ignoreAspectRatio)
+		if (this.geometryData?.ignoreAspectRatio)
 		{
 			this.aspectRatioX = 1;
 			this.aspectRatioY = 1;
@@ -836,7 +835,7 @@ export class ThurstonGeometry extends Applet
 
 	moveForever({
 		speed = 1,
-		direction = [1, 0, 0, 0],
+		direction = () => [1, 0, 0, 0],
 		rampStart = false,
 	}) {
 		let totalTimeElapsed = 0;
@@ -848,6 +847,11 @@ export class ThurstonGeometry extends Applet
 		{
 			this.updateAutomaticMoving = (timeElapsed) =>
 			{
+				if (!this.automoving)
+				{
+					return;
+				}
+				
 				totalTimeElapsed += timeElapsed;
 				
 				this.movingAmount = [speed, 0, 0];
@@ -862,14 +866,16 @@ export class ThurstonGeometry extends Applet
 
 
 
-	async switchScene()
-	{
+	async switchScene({
+		newCameraPosOverride,
+		duration = 500
+	} = {}) {
 		if (this.geometryData instanceof SolRooms)
 		{
 			await anime({
 				targets: this.canvas,
 				opacity: 0,
-				duration: opacityAnimationTime,
+				duration: duration / 2,
 				easing: "easeOutQuad"
 			}).finished;
 
@@ -881,7 +887,7 @@ export class ThurstonGeometry extends Applet
 			await anime({
 				targets: this.canvas,
 				opacity: 1,
-				duration: opacityAnimationTime,
+				duration: duration / 2,
 				easing: "easeOutQuad",
 			}).finished;
 
@@ -893,7 +899,7 @@ export class ThurstonGeometry extends Applet
 			await anime({
 				targets: this.canvas,
 				opacity: 0,
-				duration: opacityAnimationTime,
+				duration: duration / 2,
 				easing: "easeOutQuad"
 			}).finished;
 
@@ -906,7 +912,7 @@ export class ThurstonGeometry extends Applet
 			await anime({
 				targets: this.canvas,
 				opacity: 1,
-				duration: opacityAnimationTime,
+				duration: duration / 2,
 				easing: "easeOutQuad",
 			}).finished;
 
@@ -918,17 +924,53 @@ export class ThurstonGeometry extends Applet
 		const oldSceneTransition = this.geometryData.sliderValues.sceneTransition;
 		const newSceneTransition = isRooms ? 1 : 0;
 
-		const oldCameraPos = [...this.geometryData.cameraPos];
-		const newCameraPos = newSceneTransition
-			? this.geometryData.getNearestCorner()
-			: this.geometryData.getNearestCenter();
+		const newCameraPos = newCameraPosOverride ?? (
+			newSceneTransition
+				? this.geometryData.getNearestCorner()
+				: this.geometryData.getNearestCenter()
+		);
+
+		this.moveCameraTo({
+			newCameraPos,
+			duration
+		});
 
 		const dummy = { t: 0 };
 
 		anime({
 			targets: dummy,
 			t: 1,
-			duration: 500,
+			duration,
+			easing: "easeInOutQuad",
+			update: () =>
+			{
+				this.geometryData.sliderValues.sceneTransition =
+					(1 - dummy.t) * oldSceneTransition + dummy.t * newSceneTransition;
+			},
+			complete: () =>
+			{
+				dummy.t = 1;
+
+				this.geometryData.sliderValues.sceneTransition =
+					(1 - dummy.t) * oldSceneTransition + dummy.t * newSceneTransition;
+			}
+		});
+	}
+
+
+
+	async moveCameraTo({
+		newCameraPos,
+		duration
+	}) {
+		const oldCameraPos = [...this.geometryData.cameraPos];
+
+		const dummy = { t: 0 };
+
+		anime({
+			targets: dummy,
+			t: 1,
+			duration,
 			easing: "easeInOutSine",
 			update: () =>
 			{
@@ -948,28 +990,27 @@ export class ThurstonGeometry extends Applet
 				this.geometryData.correctVectors();
 
 				this.needNewFrame = true;
-			}
-		});
-
-		anime({
-			targets: dummy,
-			t: 1,
-			duration: 500,
-			easing: "easeInOutQuad",
-			update: () =>
+			},
+			complete: () =>
 			{
-				this.geometryData.sliderValues.sceneTransition =
-					(1 - dummy.t) * oldSceneTransition + dummy.t * newSceneTransition;
+				dummy.t = 1;
+				this.geometryData.cameraPos = this.geometryData.correctPosition(
+					[
+						(1 - dummy.t) * oldCameraPos[0] + dummy.t * newCameraPos[0],
+						(1 - dummy.t) * oldCameraPos[1] + dummy.t * newCameraPos[1],
+						(1 - dummy.t) * oldCameraPos[2] + dummy.t * newCameraPos[2],
+						(1 - dummy.t) * oldCameraPos[3] + dummy.t * newCameraPos[3]
+					]
+				);
+
+				this.geometryData.normalVec = this.geometryData.getNormalVec(
+					this.geometryData.cameraPos
+				);
+
+				this.geometryData.correctVectors();
+
+				this.needNewFrame = true;
 			}
-		});
-
-		
-
-		anime({
-			targets: this.geometryData.cameraPos,
-
-			duration: 500,
-			easing: "easeInOutSine",
 		});
 	}
 

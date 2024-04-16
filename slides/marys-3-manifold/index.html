@@ -71,7 +71,7 @@
 		</div>
 
 		<div>
-			<h1>Mary&#x2019;s Closed, Bounded Room</h1>
+			<h1>Mary&#x2019;s Compact Room</h1>
 			
 			<p class="build">Australian philosopher Frank Jackson proposed the thought experiment of a scientist who is devoted to gathering all the knowledge she can about color, despite being stuck in a strictly black-and-white room.</p>
 
@@ -105,11 +105,35 @@
 
 			<p class="build">We&#x2019;ll render scenes inside of each, which will be 2-dimensional since the tangent spaces are now $\mathbb{R}^3$, and see how curved geodesics give rise to strange and surprising results.</p>
 		</div>
+
+		<div id="e3-axes" class="medium-canvas">
+			<h1>$\mathbb{E}^3$: Euclidean Space</h1>
+	
+			<p class="build left-text">This one should be familiar! It's mostly here as a control for what to expect in the other geometries.</p>
+
+			<p class="build left-text">The model space is $\mathbb{R}^3$ with the usual Euclidean metric, and geodesics are straight lines.</p>
+		</div>
+
+		<div id="e3" class="full-canvas"></div>
+
+		<div id="s3-axes" class="medium-canvas">
+			<h1>$S^3$: The 3-Sphere</h1>
+
+			<p class="build left-text">The model space is $\mathbb{R}^3$ with the usual Euclidean metric, and geodesics are straight lines.</p>
+		</div>
+
+		<div id="s3" class="full-canvas"></div>
+
+		<div></div>
 	</div>
 
-	<div id="canvas-bundle" style="opacity: 0">
-		<canvas id="output-canvas"></canvas>
-		<canvas id="demo-canvas"></canvas>
+
+
+	<div style="display: none">
+		<div id="canvas-bundle" style="opacity: 0">
+			<canvas id="output-canvas"></canvas>
+			<canvas id="demo-canvas"></canvas>
+		</div>
 	</div>
 	
 	<script>
