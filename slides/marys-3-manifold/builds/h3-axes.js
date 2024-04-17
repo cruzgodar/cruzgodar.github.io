@@ -1,5 +1,5 @@
 import { applet, canvasBundle } from "../index.js";
-import { S3HopfFibration } from "/applets/thurston-geometries/scripts/geometries/s3.js";
+import { H3Axes } from "/applets/thurston-geometries/scripts/geometries/h3.js";
 import { changeOpacity } from "/scripts/src/animation.js";
 
 async function reset({ slide, duration })
@@ -12,12 +12,10 @@ async function reset({ slide, duration })
 
 	slide.appendChild(canvasBundle);
 
-	const geometryData = new S3HopfFibration();
-	geometryData.sliderValues.fiberThickness = .0325;
-	geometryData.aspectRatio = 95 / 55.625;
+	const geometryData = new H3Axes();
 
 	applet.run(geometryData);
-	applet.changeResolution(500);
+	applet.changeResolution(2000);
 
 	await changeOpacity({
 		element: canvasBundle,
@@ -26,7 +24,7 @@ async function reset({ slide, duration })
 	});
 }
 
-export const s3HopfFibrationBuilds =
+export const h3AxesBuilds =
 {
 	reset,
 };

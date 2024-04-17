@@ -479,11 +479,11 @@ export class S3HopfFibration extends S3Geometry
 	{
 		super();
 
-		const numFibers = 20;
+		const numFibers = 18;
 
 		this.distanceEstimatorGlsl = "";
 
-		const colors = new Array(numFibers * 3);
+		const colors = new Array(numFibers * 3 + 2);
 
 		for (let i = 0; i < numFibers; i++)
 		{
@@ -506,8 +506,18 @@ export class S3HopfFibration extends S3Geometry
 			colors[2 * numFibers + i] = result[1];
 		}
 
+		const result = getHopfFiber(0, 1, 0, 3 * numFibers);
+		this.distanceEstimatorGlsl += result[0];
+		colors[3 * numFibers] = [255, 255, 96];
+
+		const result2 = getHopfFiber(0, 1, Math.PI, 3 * numFibers + 1);
+		this.distanceEstimatorGlsl += result2[0];
+		colors[3 * numFibers + 1] = [255, 96, 96];
+
+
+
 		this.distanceEstimatorGlsl += /* glsl */`
-			float minDistance = ${getMinGlslString("distance", numFibers * 3)};
+			float minDistance = ${getMinGlslString("distance", numFibers * 3 + 2)};
 		`;
 
 		this.getColorGlsl = this.distanceEstimatorGlsl + getColorGlslString(
@@ -549,11 +559,11 @@ export class S3HopfFibration extends S3Geometry
 		);
 	`;
 
-	cameraPos = [0, 0, 0, -1];
-	normalVec = [0, 0, 0, 1];
-	upVec = [0, 0, 1, 0];
-	rightVec = [0, 1, 0, 0];
-	forwardVec = [1, 0, 0, 0];
+	cameraPos = [-0.0403, 0.4848, -0.0054, -0.8736];
+	normalVec = [0.0403, -0.4848, 0.0054, 0.8736];
+	upVec = [-0.0002, 0.0021, 0.9999, -0.0050];
+	rightVec = [-0.9987, 0.0057, -0.0000, 0.0493];
+	forwardVec = [0.0289, 0.8745, 0.0006, 0.4839];
 
 	uniformGlsl = /* glsl */`
 		uniform float fiberThickness;

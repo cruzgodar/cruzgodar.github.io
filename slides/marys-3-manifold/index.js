@@ -1,5 +1,6 @@
 import { e3AxesBuilds } from "./builds/e3-axes.js";
 import { e3Builds } from "./builds/e3.js";
+import { h3AxesBuilds } from "./builds/h3-axes.js";
 import { s2Builds } from "./builds/s2.js";
 import { s3AxesBuilds } from "./builds/s3-axes.js";
 import { s3HopfFibrationBuilds } from "./builds/s3-hopf-fibration.js";
@@ -29,11 +30,15 @@ const options =
 	{
 		"title": titleBuilds,
 		"s2": s2Builds,
+
 		"e3-axes": e3AxesBuilds,
 		"e3": e3Builds,
+
 		"s3-axes": s3AxesBuilds,
 		"s3": s3Builds,
-		"s3-hopf-fibration": s3HopfFibrationBuilds
+		"s3-hopf-fibration": s3HopfFibrationBuilds,
+
+		"h3-axes": h3AxesBuilds,
 	},
 
 	setupBuild: () =>
