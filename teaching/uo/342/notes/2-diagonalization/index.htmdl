@@ -352,7 +352,7 @@ Although it's a little frustrating that we'll have to work with complex numbers 
 	$$
 		[[ 6, 3 ; -3, 6 ]] &= \sqrt{45} [[ \frac{6}{\sqrt{45}}, \frac{3}{\sqrt{45}} ; -\frac{3}{\sqrt{45}}, \frac{6}{\sqrt{45}} ]]
 
-		&\approx \sqrt{45} [[ \cos(-0.4636), \sin(-0.4636) ; -\sin(-0.4636), \cos(-0.4636) ]].
+		&\approx \sqrt{45} [[ \cos(-0.4636), -\sin(-0.4636) ; \sin(-0.4636), \cos(-0.4636) ]].
 	$$
 
 	So in total, this matrix scales its inputs by $\sqrt{45} \approx 6.71$ and rotates them by about $0.4636$ radians (about $22.6^\circ$) clockwise.
