@@ -4,6 +4,8 @@ import { h2xeAxesBuilds } from "./builds/h2xe-axes.js";
 import { h2xeBuilds } from "./builds/h2xe.js";
 import { h3AxesBuilds } from "./builds/h3-axes.js";
 import { h3Builds } from "./builds/h3.js";
+import { nilAxesBuilds } from "./builds/nil-axes.js";
+import { nilBuilds } from "./builds/nil.js";
 import { s2Builds } from "./builds/s2.js";
 import { s2xeAxesBuilds } from "./builds/s2xe-axes.js";
 import { s2xeBuilds } from "./builds/s2xe.js";
@@ -51,6 +53,9 @@ const options =
 
 		"h2xe-axes": h2xeAxesBuilds,
 		"h2xe": h2xeBuilds,
+
+		"nil-axes": nilAxesBuilds,
+		"nil": nilBuilds,
 	},
 
 	setupBuild: () =>

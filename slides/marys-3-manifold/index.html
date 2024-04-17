@@ -109,9 +109,9 @@
 		<div id="e3-axes" class="medium-canvas">
 			<h1>$\mathbb{E}^3$: Euclidean Space</h1>
 	
-			<p class="build left-text">This one should be familiar! It's mostly here as a control for what to expect in the other geometries.</p>
-
 			<p class="build left-text">Our model space is $\mathbb{R}^3$ with the usual Euclidean metric, and geodesics are straight lines.</p>
+
+			<p class="build left-text">If $M$ is any finite-volume manifold with a geometric structure and $\pi_1(M)$ is infinite and virtually cyclic (i.e. contains a cyclic subgroup of finite index), then $M$ has $\mathbb{E}^3$ geometry.</p>
 		</div>
 
 		<div id="e3" class="full-canvas"></div>
@@ -120,6 +120,8 @@
 			<h1>$S^3$: The 3-Sphere</h1>
 
 			<p class="build left-text">Our model space is the length-1 elements of $\mathbb{R}^4$ with the usual Euclidean metric, and geodesics are great circles.</p>
+
+			<p class="build left-text">If $M$ is any finite-volume manifold with a geometric structure and $\pi_1(M)$ is finite, then $M$ has $S^3$ geometry.</p>
 		</div>
 
 		<div id="s3" class="full-canvas"></div>
@@ -129,28 +131,42 @@
 		<div id="h3-axes" class="medium-canvas">
 			<h1>$\mathbb{H}^3$: Hyperbolic Space</h1>
 
-			<p class="build left-text">Our model space is a connected component of the radius-$(-1)$ sphere in the Lorentz metric on $\mathbb{R}^4$ (i.e. the positive-$w$ sheet of the hyperboloid $x^2 + y^2 + z^2 - w^2 = -1$), and geodesics are hyperbolas.</p>
+			<p class="build left-text">Our model space is the top sheet of the hyperboloid $x^2 + y^2 + z^2 - w^2 = -1$, and geodesics are hyperbolas.</p>
+
+			<p class="build left-text">If $M$ is any finite-volume manifold with a geometric structure and $\pi_1(M)$ has no infinite normal cyclic subgroup and is not virtually solvable, then $M$ has $\mathbb{H}^3$ geometry (this is effectively the catch-all case).</p>
 		</div>
 
 		<div id="h3" class="full-canvas"></div>
 
 		<div id="s2xe-axes" class="medium-canvas">
-			<h1>$S^2 \times \mathbb{E}$: The Spherical Product Geometry</h1>
+			<h1>$S^2 \times \mathbb{E}$</h1>
 
-			<p class="build left-text">Our model space is the cylinder $S^2 \times \mathbb{R} \subseteq \mathbb{R}^4$ &mdash; geodesics are of the form $(\gamma_{S^2}(t), \gamma_{\mathbb{E}}(t))$ for great circles $\gamma_{S^2}$ and straight lines $\gamma_{\mathbb{E}}$.</p>
+			<p class="build left-text">Our model space is the cylinder $S^2 \times \mathbb{R} \subseteq \mathbb{R}^4$; geodesics are formed from lower-dimensional geodesics in the factors.</p>
+
+			<p class="build left-text">If $M$ is any finite-volume manifold with a geometric structure and $\pi_1(M)$ is virtually cyclic but not finite, then $M$ has $S^2 \times \mathbb{E}$ geometry.</p>
 		</div>
 
 		<div id="s2xe" class="full-canvas"></div>
 
 		<div id="h2xe-axes" class="medium-canvas">
-			<h1>$\mathbb{H}^2 \times \mathbb{E}$: The Hyperbolic Product Geometry</h1>
+			<h1>$\mathbb{H}^2 \times \mathbb{E}$</h1>
 
-			<p class="build left-text">Our model space is $H^2 \times \mathbb{R} \subseteq \mathbb{R}^4$, where $H^2$ is the upper sheet of $x^2 + y^2 - z^2 = -1$ &mdash; geodesics are of the form $(\gamma_{\mathbb{H}^2}(t), \gamma_{\mathbb{E}}(t))$ for hyperbolas $\gamma_{\mathbb{H}^2}$ and straight lines $\gamma_{\mathbb{E}}$.</p>
+			<p class="build left-text">Our model space is exactly analogous to that of $S^2 \times \mathbb{E}$.</p>
 
-			<p class="build left-text">Easily the most hated render!</p>
+			<p class="build left-text">If $M$ is any finite-volume manifold with a geometric structure and $\pi_1(M)$ has an infinite normal cyclic subgroup but is not virtually solvable, then $M$ has either $\mathbb{H}^2 \times \mathbb{E}$ geometry or that of $\widetilde{\operatorname{SL}}(2, \mathbb{R})$.</p>
 		</div>
 
 		<div id="h2xe" class="full-canvas"></div>
+
+		<div id="nil-axes" class="medium-canvas">
+			<h1>$\text{Nil}$</h1>
+
+			<p class="build left-text">Our model space is $\mathbb{R}^3$ with isometry group given by the Heisenberg group, and geodesics are helices about lines parallel to the $z$-axis.</p>
+
+			<p class="build left-text">If $M$ is any finite-volume manifold with a geometric structure and $\pi_1(M)$ is virtually nilpotent but not virtually abelian, then $M$ has Nil geometry.</p>
+		</div>
+
+		<div id="nil" class="full-canvas"></div>
 	</div>
 
 
