@@ -841,8 +841,9 @@ export class ThurstonGeometry extends Applet
 	}) {
 		let totalTimeElapsed = 0;
 
-		this.automoving = true;
+		this.movingAmount = [0, 0, 0];
 		this.automovingDirection = direction;
+		this.automoving = true;
 
 		setTimeout(() =>
 		{

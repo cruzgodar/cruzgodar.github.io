@@ -1,5 +1,5 @@
 import { applet, canvasBundle } from "../index.js";
-import { S2xEAxes } from "/applets/thurston-geometries/scripts/geometries/s2xe.js";
+import { H2xEAxes } from "/applets/thurston-geometries/scripts/geometries/h2xe.js";
 import { changeOpacity } from "/scripts/src/animation.js";
 
 async function reset({ slide, duration })
@@ -12,7 +12,7 @@ async function reset({ slide, duration })
 
 	slide.appendChild(canvasBundle);
 
-	const geometryData = new S2xEAxes();
+	const geometryData = new H2xEAxes();
 
 	applet.run(geometryData);
 	applet.changeResolution(1000);
@@ -24,7 +24,7 @@ async function reset({ slide, duration })
 	});
 }
 
-export const s2xeAxesBuilds =
+export const h2xeAxesBuilds =
 {
 	reset,
 };

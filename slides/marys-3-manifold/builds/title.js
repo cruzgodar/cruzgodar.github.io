@@ -20,7 +20,7 @@ async function reset({ slide, duration })
 	applet.changeResolution(1000);
 	applet.moveForever({
 		speed: .25,
-		direction: [0, 0, -1, 0]
+		direction: () => [0, 0, -1, 0]
 	});
 
 	await changeOpacity({

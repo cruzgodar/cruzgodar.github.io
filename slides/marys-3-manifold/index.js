@@ -1,5 +1,7 @@
 import { e3AxesBuilds } from "./builds/e3-axes.js";
 import { e3Builds } from "./builds/e3.js";
+import { h2xeAxesBuilds } from "./builds/h2xe-axes.js";
+import { h2xeBuilds } from "./builds/h2xe.js";
 import { h3AxesBuilds } from "./builds/h3-axes.js";
 import { h3Builds } from "./builds/h3.js";
 import { s2Builds } from "./builds/s2.js";
@@ -46,6 +48,9 @@ const options =
 
 		"s2xe-axes": s2xeAxesBuilds,
 		"s2xe": s2xeBuilds,
+
+		"h2xe-axes": h2xeAxesBuilds,
+		"h2xe": h2xeBuilds,
 	},
 
 	setupBuild: () =>

@@ -15,7 +15,7 @@ async function reset({ slide, duration })
 	const geometryData = new H3Axes();
 
 	applet.run(geometryData);
-	applet.changeResolution(2000);
+	applet.changeResolution(1000);
 
 	await changeOpacity({
 		element: canvasBundle,
