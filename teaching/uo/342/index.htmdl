@@ -34,7 +34,106 @@ Welcome to Math 342! We'll use this page for the interactive notes, the homework
 	
 	homework-1 -c "Homework 1"
 	homework-2 -c "Homework 2"
+	homework-3 -c "Homework 3"
 	
+###
+
+
+
+### card homework-3 "Homework 3"
+	
+	*Due Wednesday of Week 4 at the start of class*
+	
+	Complete the following problems and submit them as a pdf to Canvas. 8 points are awarded for thoroughly attempting every problem, and I'll select three problems to grade on correctness for 4 points each. Enough work should be shown that there is no question about the mathematical process used to obtain your answers.
+
+
+
+	## Section 3
+	
+	#.
+	
+	$$
+		x_1' &= 2x_1 - x_2
+		
+		x_2' &= 3x_1 - 2x_2.
+	$$
+	
+	For this problem, also sketch a vector field.
+	
+	#.
+	
+	$$
+		x_1' &= 19x_1 - 4x_2 + 8x_3
+		
+		x_2' &= -8x_1 + 5x_2 - 10x_3
+		
+		x_3' &= -x_1 - 2x_2 + 4x_3.
+	$$
+	
+	#.
+	
+	$$
+		x' &= 2x + 2y - 2z
+		
+		y' &= -3x + 7y + 3z
+		
+		z' &= -5x + 5y + 5z.
+	$$
+	
+	#.
+	
+	$$
+		a' &= 5a + 6b + 4c - 4d
+		
+		b' &= 3a + 8b - 2c + 2d
+		
+		c' &= 3a - 3b + 9c + 2d
+		
+		d' &= 11d.
+	$$
+	
+
+
+	- - -
+
+	#. Two tanks are set up in a cyclical cascade. Tank 1 initially contains $100$ gallons of water and $10$ pounds of sugar, and tank 2 initially contains $50$ gallons of water and no sugar. At time $t = 0$, two valves are opened --- the well-mixed solution in tank 1 flows into tank 2 at a rate of $5$ gallons per second, and the well-mixed solution in tank 2 flows *back* into tank 1 at $5$ gallons per second. After one minute, what is the concentration of sugar in each tank?
+	
+
+
+	- - -
+
+	#. Let $f(\lambda) = \lambda^2 + a\lambda + b$ be a polynomial. The **companion matrix** to $f$ is the $2 \times 2$ matrix
+	
+	$$
+		C(f) = [[0, -b ; 1, -a]].
+	$$
+	
+	Show that the characteristic polynomial $\chi_{C(f)}$ is $f$.
+
+	#. Using companion matrices, create $2 \times 2$ matrices with real entries and the following eigenvalues:
+	
+	> a) $\lambda_1 = 1, \quad \lambda_2 = 1$.
+	
+	> b) $\lambda_1 = 1, \quad \lambda_2 = -1$.
+	
+	> c) $\lambda_1 = -1, \quad \lambda_2 = -1$.
+	
+	> d) $\lambda_1 = 1 + 2i, \quad \lambda_2 = 1 - 2i$.
+	
+	> e) $\lambda_1 = -1 + 2i, \quad \lambda_2 = -1 - 2i$.
+	
+	> f) $\lambda_1 = i, \quad \lambda_2 = -i$.
+	
+	#. For each of the six matrices in the previous problem, sketch a vector field for $-2 \leq x \leq 2$ and $-2 \leq y \leq 2$. Check your answer with the <a href="/applets/vector-fields/">vector fields applet</a> --- for example, to plot
+	
+	$$
+		x' &= 2x - y
+		
+		y' &= x + 4y,
+	$$
+	
+	enter `(2x - y, x + 4y)` in the box and hit generate.
+
 ###
 
 

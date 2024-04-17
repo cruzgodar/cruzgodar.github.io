@@ -79,9 +79,7 @@ export function onResize()
 
 		element.classList.add("image-links");
 		element.style.opacity = 0;
-		element.style.position = "fixed";
-		element.style.top = "-1000px";
-		element.style.left = "0";
+		element.style.marginTop = 0;
 
 		pageElement.appendChild(element);
 

@@ -229,7 +229,7 @@ Welcome to Math 256! We'll use this page for the interactive notes, the homework
 		y' &= x + 4y,
 	$$
 	
-	enter `(2.0 * x - y, x + 4.0 * y)` in the box and hit generate. For compatibility with the language it's written in, all numbers must have a decimal point like this.
+	enter `(2x - y, x + 4y)` in the box and hit generate.
 
 ###
 
