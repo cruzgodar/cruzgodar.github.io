@@ -49,12 +49,12 @@ async function build0({ forward })
 				applet.automovingDirection = () => [
 					0,
 					Math.min(
-						Math.abs(geometryData.cameraPos[1]) * 5,
+						Math.abs(geometryData.cameraPos[1]) * 3,
 						1
 					),
 					0,
 					dummy.t * Math.min(
-						(1 - Math.abs(geometryData.cameraPos[1])) * 5,
+						(1 - Math.abs(geometryData.cameraPos[1])) * 3,
 						1
 					),
 				];
@@ -76,14 +76,14 @@ async function build0({ forward })
 					dummy.t * Math.min(
 						(1 - Math.abs(
 							Math.abs((geometryData.cameraPos[3] + 1.875 / 2) % 1.875) - 1.875 / 2
-						)) * 5,
+						)) * 3,
 						1
 					),
 					0,
 					Math.min(
 						Math.abs(
 							Math.abs((geometryData.cameraPos[3] + 1.875 / 2) % 1.875) - 1.875 / 2
-						) * 5,
+						) * 3,
 						1
 					),
 				];
