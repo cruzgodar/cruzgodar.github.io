@@ -6,8 +6,6 @@ export function banner()
 			<div id="banner-large"></div>
 		</div>
 		
-		<div id="banner-gradient"></div>
-
 		<div id="content-container">
 			<div id="content">
 	`;

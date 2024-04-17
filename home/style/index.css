@@ -4,6 +4,11 @@
 	z-index: 10;
 }
 
+header
+{
+	margin-bottom: 64px !important;
+}
+
 .quote-row
 {
 	display: flex;

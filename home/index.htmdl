@@ -16,43 +16,7 @@
 <div id="content-container">
 	<div id="content">
 		<main>
-			<section style="margin-bottom: 0">
-				<div class="quote-row">
-					<div class="quote-container">
-						<p class="quote-text">
-							<q>You can only be truly accomplished at something you love. Don&#x2019;t make money the goal. Instead, pursue the things you love doing, and do them so well that people can&#x2019;t take their eyes off you. All the other tangible rewards will come as a result.</q>
-						</p>
-						
-						<br>
-						
-						<p class="quote-attribution">&mdash;Maya Angelou</p>
-					</div>
-
-					<div class="quote-container">
-						<p class="quote-text">
-							<q>A mathematician is a blind man in a dark room looking for a black cat which isn&#x2019;t there.</q>
-						</p>
-						
-						<br>
-						
-						<p class="quote-attribution">&mdash;Charles Darwin</p>
-					</div>
-
-					<div class="quote-container">
-						<p class="quote-text">
-							<q>I hate algebra.</q>
-						</p>
-							
-						<br>
-						
-						<p class="quote-attribution">&mdash;John Conway</p>
-					</div>
-				</div>
-			</section>
-			
-			<div style="height: 80px"></div>
-			
-			<section>
+			<header>
 				<div id="logo-no-link">
 					<img src="/graphics/general-icons/logo.png" alt="Logo" tabindex="1"></img>
 				</div>
@@ -86,7 +50,7 @@
 						/about/
 					###
 				</div>
-			</section>
+			</header>
 		</main>
 	</div>
 </div>
