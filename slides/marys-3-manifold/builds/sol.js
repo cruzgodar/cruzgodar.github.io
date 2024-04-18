@@ -22,7 +22,7 @@ async function reset({ slide, forward, duration })
 	applet.run(geometryData);
 	applet.changeResolution(750);
 	applet.moveForever({
-		speed: .5,
+		speed: .4,
 		direction: forward ? () => [0.525731, 0.850651, 0, 0] : () => [0, 0, 1, 0]
 	});
 
@@ -178,10 +178,28 @@ async function build2({ forward })
 	}
 }
 
+async function build3({ forward })
+{
+	await applet.switchScene();
+
+	applet.changeResolution(400);
+
+	applet.moveForever({
+		speed: .4,
+		direction: () =>
+		{
+			geometryData.cameraPos[2] *= .99;
+
+			return [0, 0, 1, 0];
+		}
+	});
+}
+
 export const solBuilds =
 {
 	reset,
 	0: build0,
 	1: build1,
 	2: build2,
+	3: build3
 };

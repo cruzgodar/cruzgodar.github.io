@@ -57,8 +57,8 @@ async function build0({ forward })
 					geometryData.cameraPos[1] *= .99;
 
 					return [
-						1 * (1 - dummy.t) + 0 * dummy.t,
 						0,
+						-1 * (1 - dummy.t) + 0 * dummy.t,
 						0 * (1 - dummy.t) + 1 * dummy.t,
 						0,
 					];
@@ -81,8 +81,8 @@ async function build0({ forward })
 					geometryData.cameraPos[2] *= .99;
 
 					return [
-						0 * (1 - dummy.t) + 1 * dummy.t,
 						0,
+						0 * (1 - dummy.t) - 1 * dummy.t,
 						1 * (1 - dummy.t) + 0 * dummy.t,
 						0,
 					];
