@@ -18,7 +18,7 @@ async function reset({ slide, forward, duration })
 	geometryData.cameraPos = [1, 1, 1, 1];
 
 	applet.run(geometryData);
-	applet.changeResolution(2000);
+	applet.changeResolution(1500);
 	applet.moveForever({
 		speed: .25,
 		direction: () => [0, 1, 0, 0]

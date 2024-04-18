@@ -177,138 +177,139 @@ export class S3Rooms extends S3Geometry
 	getColorGlsl = /* glsl */`
 		${S3Rooms.distances}
 
-		float variation = .075;
+		float roomVariation = .075;
+		float sphereVariation = .25;
 
 		if (minDistance == roomDistance1)
 		{
 			return vec3(
-				.85 + .15 * (.5 * (sin((variation * pos.y) * 17.0) + 1.0)),
-				.5 * (.5 * (sin((variation * pos.z) * 23.0) + 1.0)),
-				.5 * (.5 * (sin((variation * pos.w) * 29.0) + 1.0))
+				.85 + .15 * (.5 * (sin((roomVariation * pos.y) * 17.0) + 1.0)),
+				.5 * (.5 * (sin((roomVariation * pos.z) * 23.0) + 1.0)),
+				.5 * (.5 * (sin((roomVariation * pos.w) * 29.0) + 1.0))
 			);
 		}
 
 		if (minDistance == roomDistance2)
 		{
 			return vec3(
-				.5 * (.5 * (sin((variation * pos.y) * 17.0) + 1.0)),
-				.85 + .15 * (.5 * (sin((variation * pos.z) * 23.0) + 1.0)),
-				.85 + .15 * (.5 * (sin((variation * pos.w) * 29.0) + 1.0))
+				.5 * (.5 * (sin((roomVariation * pos.y) * 17.0) + 1.0)),
+				.85 + .15 * (.5 * (sin((roomVariation * pos.z) * 23.0) + 1.0)),
+				.85 + .15 * (.5 * (sin((roomVariation * pos.w) * 29.0) + 1.0))
 			);
 		}
 
 		if (minDistance == roomDistance3)
 		{
 			return vec3(
-				.5 * (.5 * (sin((variation * pos.x) * 17.0) + 1.0)),
-				.85 + .15 * (.5 * (sin((variation * pos.z) * 23.0) + 1.0)),
-				.5 * (.5 * (sin((variation * pos.w) * 29.0) + 1.0))
+				.5 * (.5 * (sin((roomVariation * pos.x) * 17.0) + 1.0)),
+				.85 + .15 * (.5 * (sin((roomVariation * pos.z) * 23.0) + 1.0)),
+				.5 * (.5 * (sin((roomVariation * pos.w) * 29.0) + 1.0))
 			);
 		}
 
 		if (minDistance == roomDistance4)
 		{
 			return vec3(
-				.85 + .15 * (.5 * (sin((variation * pos.x) * 17.0) + 1.0)),
-				.5 + .15 * (.5 * (sin((variation * pos.y) * 23.0) + 1.0)),
-				.5 * (.5 * (sin((variation * pos.z) * 29.0) + 1.0))
+				.85 + .15 * (.5 * (sin((roomVariation * pos.x) * 17.0) + 1.0)),
+				.5 + .15 * (.5 * (sin((roomVariation * pos.y) * 23.0) + 1.0)),
+				.5 * (.5 * (sin((roomVariation * pos.z) * 29.0) + 1.0))
 			);
 		}
 
 		if (minDistance == roomDistance5)
 		{
 			return vec3(
-				.5 * (.5 * (sin((variation * pos.x) * 17.0) + 1.0)),
-				.5 * (.5 * (sin((variation * pos.y) * 23.0) + 1.0)),
-				.85 + .15 * (.5 * (sin((variation * pos.w) * 29.0) + 1.0))
+				.5 * (.5 * (sin((roomVariation * pos.x) * 17.0) + 1.0)),
+				.5 * (.5 * (sin((roomVariation * pos.y) * 23.0) + 1.0)),
+				.85 + .15 * (.5 * (sin((roomVariation * pos.w) * 29.0) + 1.0))
 			);
 		}
 
 		if (minDistance == roomDistance6)
 		{
 			return vec3(
-				.85 + .15 * (.5 * (sin((variation * pos.x) * 17.0) + 1.0)),
-				.85 + .15 * (.5 * (sin((variation * pos.y) * 23.0) + 1.0)),
-				.5 * (.5 * (sin((variation * pos.w) * 29.0) + 1.0))
+				.85 + .15 * (.5 * (sin((roomVariation * pos.x) * 17.0) + 1.0)),
+				.85 + .15 * (.5 * (sin((roomVariation * pos.y) * 23.0) + 1.0)),
+				.5 * (.5 * (sin((roomVariation * pos.w) * 29.0) + 1.0))
 			);
 		}
 
 		if (minDistance == roomDistance7)
 		{
 			return vec3(
-				.5 + .15 * (.5 * (sin((variation * pos.x) * 17.0) + 1.0)),
-				.5 * (.5 * (sin((variation * pos.y) * 23.0) + 1.0)),
-				.85 + .15 * (.5 * (sin((variation * pos.z) * 29.0) + 1.0))
+				.5 + .15 * (.5 * (sin((roomVariation * pos.x) * 17.0) + 1.0)),
+				.5 * (.5 * (sin((roomVariation * pos.y) * 23.0) + 1.0)),
+				.85 + .15 * (.5 * (sin((roomVariation * pos.z) * 29.0) + 1.0))
 			);
 		}
 
 		if (minDistance == roomDistance8)
 		{
 			return vec3(
-				.65 + .35 * (.5 * (sin((variation * pos.x) * 17.0) + 1.0)),
-				.65 + .35 * (.5 * (sin((variation * pos.y) * 23.0) + 1.0)),
-				.65 + .35 * (.5 * (sin((variation * pos.z) * 29.0) + 1.0))
+				.65 + .35 * (.5 * (sin((roomVariation * pos.x) * 17.0) + 1.0)),
+				.65 + .35 * (.5 * (sin((roomVariation * pos.y) * 23.0) + 1.0)),
+				.65 + .35 * (.5 * (sin((roomVariation * pos.z) * 29.0) + 1.0))
 			);
 		}
 
 		if (minDistance == sphereDistance1)
 		{
 			return vec3(
-				.85 + .15 * (.5 * (sin((variation * pos.y) * 17.0) + 1.0)),
-				.5 * (.5 * (sin((variation * pos.z) * 23.0) + 1.0)),
-				.5 * (.5 * (sin((variation * pos.w) * 29.0) + 1.0))
+				.85 + .15 * (.5 * (sin((sphereVariation * pos.y) * 17.0) + 1.0)),
+				.5 * (.5 * (sin((sphereVariation * pos.z) * 23.0) + 1.0)),
+				.5 * (.5 * (sin((sphereVariation * pos.w) * 29.0) + 1.0))
 			) * getBanding(pos.x + pos.y + pos.z + pos.w, 7.854);
 		}
 
 		if (minDistance == sphereDistance2)
 		{
 			return vec3(
-				.5 * (.5 * (sin((variation * pos.y) * 17.0) + 1.0)),
-				.85 + .15 * (.5 * (sin((variation * pos.z) * 23.0) + 1.0)),
-				.85 + .15 * (.5 * (sin((variation * pos.w) * 29.0) + 1.0))
+				.5 * (.5 * (sin((sphereVariation * pos.y) * 17.0) + 1.0)),
+				.85 + .15 * (.5 * (sin((sphereVariation * pos.z) * 23.0) + 1.0)),
+				.85 + .15 * (.5 * (sin((sphereVariation * pos.w) * 29.0) + 1.0))
 			) * getBanding(pos.x + pos.y + pos.z + pos.w, 7.854);
 		}
 
 		if (minDistance == sphereDistance3)
 		{
 			return vec3(
-				.5 * (.5 * (sin((variation * pos.x) * 17.0) + 1.0)),
-				.85 + .15 * (.5 * (sin((variation * pos.z) * 23.0) + 1.0)),
-				.5 * (.5 * (sin((variation * pos.w) * 29.0) + 1.0))
+				.5 * (.5 * (sin((sphereVariation * pos.x) * 17.0) + 1.0)),
+				.85 + .15 * (.5 * (sin((sphereVariation * pos.z) * 23.0) + 1.0)),
+				.5 * (.5 * (sin((sphereVariation * pos.w) * 29.0) + 1.0))
 			) * getBanding(pos.x + pos.y + pos.z + pos.w, 7.854);
 		}
 
 		if (minDistance == sphereDistance4)
 		{
 			return vec3(
-				.85 + .15 * (.5 * (sin((variation * pos.x) * 17.0) + 1.0)),
-				.5 + .15 * (.5 * (sin((variation * pos.y) * 23.0) + 1.0)),
-				.5 * (.5 * (sin((variation * pos.z) * 29.0) + 1.0))
+				.85 + .15 * (.5 * (sin((sphereVariation * pos.x) * 17.0) + 1.0)),
+				.5 + .15 * (.5 * (sin((sphereVariation * pos.y) * 23.0) + 1.0)),
+				.5 * (.5 * (sin((sphereVariation * pos.z) * 29.0) + 1.0))
 			) * getBanding(pos.x + pos.y + pos.z + pos.w, 7.854);
 		}
 
 		if (minDistance == sphereDistance5)
 		{
 			return vec3(
-				.5 * (.5 * (sin((variation * pos.x) * 17.0) + 1.0)),
-				.5 * (.5 * (sin((variation * pos.y) * 23.0) + 1.0)),
-				.85 + .15 * (.5 * (sin((variation * pos.w) * 29.0) + 1.0))
+				.5 * (.5 * (sin((sphereVariation * pos.x) * 17.0) + 1.0)),
+				.5 * (.5 * (sin((sphereVariation * pos.y) * 23.0) + 1.0)),
+				.85 + .15 * (.5 * (sin((sphereVariation * pos.w) * 29.0) + 1.0))
 			) * getBanding(pos.x + pos.y + pos.z + pos.w, 7.854);
 		}
 
 		if (minDistance == sphereDistance6)
 		{
 			return vec3(
-				.85 + .15 * (.5 * (sin((variation * pos.x) * 17.0) + 1.0)),
-				.85 + .15 * (.5 * (sin((variation * pos.y) * 23.0) + 1.0)),
-				.5 * (.5 * (sin((variation * pos.w) * 29.0) + 1.0))
+				.85 + .15 * (.5 * (sin((sphereVariation * pos.x) * 17.0) + 1.0)),
+				.85 + .15 * (.5 * (sin((sphereVariation * pos.y) * 23.0) + 1.0)),
+				.5 * (.5 * (sin((sphereVariation * pos.w) * 29.0) + 1.0))
 			) * getBanding(pos.x + pos.y + pos.z + pos.w, 7.854);
 		}
 
 		return vec3(
-			.5 + .15 * (.5 * (sin((variation * pos.x) * 17.0) + 1.0)),
-			.5 * (.5 * (sin((variation * pos.y) * 23.0) + 1.0)),
-			.85 + .15 * (.5 * (sin((variation * pos.z) * 29.0) + 1.0))
+			.5 + .15 * (.5 * (sin((sphereVariation * pos.x) * 17.0) + 1.0)),
+			.5 * (.5 * (sin((sphereVariation * pos.y) * 23.0) + 1.0)),
+			.85 + .15 * (.5 * (sin((sphereVariation * pos.z) * 29.0) + 1.0))
 		) * getBanding(pos.x + pos.y + pos.z + pos.w, 7.854);
 	`;
 

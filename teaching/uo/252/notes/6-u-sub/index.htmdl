@@ -140,14 +140,14 @@ While the chain rule works for all compositions, $u$-sub works only in the parti
 	
 	Find $$\int 2t^2 e^{4t^3 + 3}\,dt$$.
 	
-	**Solution:** let $u = 4t^3 + 3$. Then $du = 12t^2\,dt$, but we have $2t^2\,dt$, so we solve for $2t^2\,dt$ to get $2t^2\,dt = 6\,du$. Now we have
+	**Solution:** let $u = 4t^3 + 3$. Then $du = 12t^2\,dt$, but we have $2t^2\,dt$, so we solve for $2t^2\,dt$ to get $2t^2\,dt = \frac{1}{6}\,du$. Now we have
 	
 	$$
-		\int 2t^2 e^{4t^3 + 3}\,dt &= \int 6 e^u\,du
+		\int 2t^2 e^{4t^3 + 3}\,dt &= \int \frac{1}{6} e^u\,du
 		
-		&= 6e^u + C
+		&= \frac{1}{6}e^u + C
 		
-		&= 6e^{4t^3 + 3} + C.
+		&= \frac{1}{6}e^{4t^3 + 3} + C.
 	$$
 	
 ###

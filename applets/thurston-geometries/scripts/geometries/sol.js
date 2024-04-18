@@ -1101,11 +1101,11 @@ export class SolRooms extends SolGeometry
 	ambientOcclusionDenominator = "100.0";
 	maxT = "5.0";
 
-	cameraPos = [0.14282, 0.17857, -0.11161, 1];
+	cameraPos = [0, 0, 0, 1];
 	normalVec = [0, 0, 0, 1];
 	upVec = [0, 0, 1, 0];
-	rightVec = [-0.8415, 0.54025, 0, 0];
-	forwardVec = [0.54025, 0.8415, 0, 0];
+	rightVec = [-0.850651, 0.525731, 0, 0];
+	forwardVec = [0.525731, 0.850651, 0, 0];
 
 	movingSpeed = .5;
 

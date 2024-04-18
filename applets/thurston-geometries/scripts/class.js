@@ -881,7 +881,9 @@ export class ThurstonGeometry extends Applet
 				easing: "easeOutQuad"
 			}).finished;
 
-			this.run(new SolSpheres());
+			const geometryData = new SolSpheres();
+			geometryData.aspectRatio = this.geometryData.aspectRatio;
+			this.run(geometryData);
 
 			try { $("#wall-thickness-slider").parentNode.style.display = "none"; }
 			catch(ex) { /* Element doesn't exist */ }
@@ -905,8 +907,10 @@ export class ThurstonGeometry extends Applet
 				easing: "easeOutQuad"
 			}).finished;
 
-			this.run(new SolRooms());
-			this.geometryData.sliderValues.wallThickness = .3;
+			const geometryData = new SolRooms();
+			geometryData.aspectRatio = this.geometryData.aspectRatio;
+			geometryData.sliderValues.wallThickness = .3;
+			this.run(geometryData);
 
 			try { $("#wall-thickness-slider").parentNode.style.display = ""; }
 			catch(ex) { /* Element doesn't exist */ }

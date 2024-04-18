@@ -18,14 +18,11 @@ async function reset({ slide, forward, duration })
 	geometryData = new SolRooms();
 	geometryData.sliderValues.wallThickness = .3;
 	geometryData.aspectRatio = 95 / 55.625;
-	geometryData.cameraPos = [0, 0, 0, 1];
-	geometryData.rightVec = [-0.850651, 0.525731, 0, 0];
-	geometryData.forwardVec = [0.525731, 0.850651, 0, 0];
 
 	applet.run(geometryData);
-	applet.changeResolution(1000);
+	applet.changeResolution(750);
 	applet.moveForever({
-		speed: 1,
+		speed: .5,
 		direction: forward ? () => [0.525731, 0.850651, 0, 0] : () => [0, 0, 1, 0]
 	});
 
@@ -45,25 +42,51 @@ async function build0({ forward })
 {
 	const dummy = { t: 0 };
 
+	applet.automoving = false;
+
+	applet.automovingDirection = () =>
+	{
+		const magnitude = Math.min(Math.sqrt(
+			(geometryData.cameraPos[0] + 0.0525731) ** 2
+			+ (geometryData.cameraPos[0] + 0.0850651) ** 2
+		) * 3, 1);
+		
+		return [0.525731 * magnitude, 0.850651 * magnitude, 0, 0];
+	};
+
+	await new Promise(resolve =>
+	{
+		// Ew
+		const intervalId = setInterval(() =>
+		{
+			clearInterval(intervalId);
+		}, 100);
+	});
+
+	applet.moveForever({
+		speed: .5,
+		direction: forward ? () => [1, 0, 0, 0] : () => [0.525731, 0.850651, 0, 0],
+		rampStart: true
+	});
+}
+
+async function build1({ forward })
+{
+	const dummy = { t: 0 };
+
 	if (forward)
 	{
 		await anime({
 			targets: dummy,
 			t: 1,
-			duration: 500,
+			duration: 1000,
 			easing: "easeOutQuad",
 			update: () =>
 			{
 				applet.automovingDirection = () => [
+					1 * (1 - dummy.t) + 0 * dummy.t,
+					0 * (1 - dummy.t) + 1 * dummy.t,
 					0,
-					-Math.min(
-						Math.abs(geometryData.cameraPos[1]) * 3,
-						1
-					),
-					dummy.t * Math.min(
-						(1 - Math.abs(geometryData.cameraPos[1])) * 3,
-						1
-					),
 					0,
 				];
 			}
@@ -75,24 +98,14 @@ async function build0({ forward })
 		await anime({
 			targets: dummy,
 			t: 1,
-			duration: 500,
+			duration: 1000,
 			easing: "easeOutQuad",
 			update: () =>
 			{
 				applet.automovingDirection = () => [
+					0 * (1 - dummy.t) + 1 * dummy.t,
+					1 * (1 - dummy.t) + 0 * dummy.t,
 					0,
-					-dummy.t * Math.min(
-						(1 - Math.abs(
-							Math.abs((geometryData.cameraPos[2] + 1 / 2) % 1) - 1 / 2
-						)) * 3,
-						1
-					),
-					Math.min(
-						Math.abs(
-							Math.abs((geometryData.cameraPos[2] + 1 / 2) % 1) - 1 / 2
-						) * 3,
-						1
-					),
 					0,
 				];
 			}
@@ -100,7 +113,50 @@ async function build0({ forward })
 	}
 }
 
-async function build1()
+async function build2({ forward })
+{
+	const dummy = { t: 0 };
+
+	if (forward)
+	{
+		await anime({
+			targets: dummy,
+			t: 1,
+			duration: 1000,
+			easing: "easeOutQuad",
+			update: () =>
+			{
+				applet.automovingDirection = () => [
+					0,
+					1 * (1 - dummy.t) + 0 * dummy.t,
+					0 * (1 - dummy.t) + 1 * dummy.t,
+					0,
+				];
+			}
+		}).finished;
+	}
+
+	else
+	{
+		await anime({
+			targets: dummy,
+			t: 1,
+			duration: 1000,
+			easing: "easeOutQuad",
+			update: () =>
+			{
+				applet.automovingDirection = () => [
+					0,
+					0 * (1 - dummy.t) + 1 * dummy.t,
+					1 * (1 - dummy.t) + 0 * dummy.t,
+					0,
+				];
+			}
+		}).finished;
+	}
+}
+
+async function build3()
 {
 	await applet.switchScene();
 }
@@ -110,4 +166,6 @@ export const solBuilds =
 	reset,
 	0: build0,
 	1: build1,
+	2: build2,
+	3: build3
 };

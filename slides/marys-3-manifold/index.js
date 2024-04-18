@@ -70,6 +70,7 @@ const options =
 
 	setupBuild: () =>
 	{
+		applet.restrictCamera = true;
 		applet.animationPaused = true;
 		applet.automoving = false;
 	},
