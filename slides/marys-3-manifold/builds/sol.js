@@ -42,32 +42,43 @@ async function build0({ forward })
 {
 	const dummy = { t: 0 };
 
-	applet.automoving = false;
-
-	applet.automovingDirection = () =>
+	if (forward)
 	{
-		const magnitude = Math.min(Math.sqrt(
-			(geometryData.cameraPos[0] + 0.0525731) ** 2
-			+ (geometryData.cameraPos[0] + 0.0850651) ** 2
-		) * 3, 1);
-		
-		return [0.525731 * magnitude, 0.850651 * magnitude, 0, 0];
-	};
+		await anime({
+			targets: dummy,
+			t: 1,
+			duration: 1000,
+			easing: "easeOutQuad",
+			update: () =>
+			{
+				applet.automovingDirection = () => [
+					0.525731 * (1 - dummy.t) + 1 * dummy.t,
+					0.850651 * (1 - dummy.t) + 0 * dummy.t,
+					0,
+					0,
+				];
+			}
+		}).finished;
+	}
 
-	await new Promise(resolve =>
+	else
 	{
-		// Ew
-		const intervalId = setInterval(() =>
-		{
-			clearInterval(intervalId);
-		}, 100);
-	});
-
-	applet.moveForever({
-		speed: .5,
-		direction: forward ? () => [1, 0, 0, 0] : () => [0.525731, 0.850651, 0, 0],
-		rampStart: true
-	});
+		await anime({
+			targets: dummy,
+			t: 1,
+			duration: 1000,
+			easing: "easeOutQuad",
+			update: () =>
+			{
+				applet.automovingDirection = () => [
+					1 * (1 - dummy.t) + 0.525731 * dummy.t,
+					0 * (1 - dummy.t) + 0.850651 * dummy.t,
+					0,
+					0,
+				];
+			}
+		}).finished;
+	}
 }
 
 async function build1({ forward })
@@ -126,12 +137,18 @@ async function build2({ forward })
 			easing: "easeOutQuad",
 			update: () =>
 			{
-				applet.automovingDirection = () => [
-					0,
-					1 * (1 - dummy.t) + 0 * dummy.t,
-					0 * (1 - dummy.t) + 1 * dummy.t,
-					0,
-				];
+				applet.automovingDirection = () =>
+				{
+					geometryData.cameraPos[0] *= .99;
+					geometryData.cameraPos[1] *= .99;
+
+					return [
+						0,
+						1 * (1 - dummy.t) + 0 * dummy.t,
+						0 * (1 - dummy.t) + 1 * dummy.t,
+						0,
+					];
+				};
 			}
 		}).finished;
 	}
@@ -145,20 +162,20 @@ async function build2({ forward })
 			easing: "easeOutQuad",
 			update: () =>
 			{
-				applet.automovingDirection = () => [
-					0,
-					0 * (1 - dummy.t) + 1 * dummy.t,
-					1 * (1 - dummy.t) + 0 * dummy.t,
-					0,
-				];
+				applet.automovingDirection = () =>
+				{
+					geometryData.cameraPos[2] *= .99;
+
+					return [
+						0,
+						0 * (1 - dummy.t) + 1 * dummy.t,
+						1 * (1 - dummy.t) + 0 * dummy.t,
+						0,
+					];
+				};
 			}
 		}).finished;
 	}
-}
-
-async function build3()
-{
-	await applet.switchScene();
 }
 
 export const solBuilds =
@@ -167,5 +184,4 @@ export const solBuilds =
 	0: build0,
 	1: build1,
 	2: build2,
-	3: build3
 };

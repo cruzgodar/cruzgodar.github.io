@@ -74,8 +74,6 @@ const options =
 		applet.animationPaused = true;
 		applet.automoving = false;
 	},
-
-	startingSlide: document.body.querySelectorAll("#lapsa-slide-container > div").length - 1
 };
 
 new Lapsa(options);

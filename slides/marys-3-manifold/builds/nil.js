@@ -47,22 +47,22 @@ async function build0({ forward })
 		await anime({
 			targets: dummy,
 			t: 1,
-			duration: 500,
+			duration: 1000,
 			easing: "easeOutQuad",
 			update: () =>
 			{
-				applet.automovingDirection = () => [
-					0,
-					-Math.min(
-						Math.abs(geometryData.cameraPos[1]) * 3,
-						1
-					),
-					dummy.t * Math.min(
-						(1 - Math.abs(geometryData.cameraPos[1])) * 3,
-						1
-					),
-					0,
-				];
+				applet.automovingDirection = () =>
+				{
+					geometryData.cameraPos[0] *= .99;
+					geometryData.cameraPos[1] *= .99;
+
+					return [
+						1 * (1 - dummy.t) + 0 * dummy.t,
+						0,
+						0 * (1 - dummy.t) + 1 * dummy.t,
+						0,
+					];
+				};
 			}
 		}).finished;
 	}
@@ -72,33 +72,50 @@ async function build0({ forward })
 		await anime({
 			targets: dummy,
 			t: 1,
-			duration: 500,
+			duration: 1000,
 			easing: "easeOutQuad",
 			update: () =>
 			{
-				applet.automovingDirection = () => [
-					0,
-					-dummy.t * Math.min(
-						(1 - Math.abs(
-							Math.abs((geometryData.cameraPos[2] + 1 / 2) % 1) - 1 / 2
-						)) * 3,
-						1
-					),
-					Math.min(
-						Math.abs(
-							Math.abs((geometryData.cameraPos[2] + 1 / 2) % 1) - 1 / 2
-						) * 3,
-						1
-					),
-					0,
-				];
+				applet.automovingDirection = () =>
+				{
+					geometryData.cameraPos[2] *= .99;
+
+					return [
+						0 * (1 - dummy.t) + 1 * dummy.t,
+						0,
+						1 * (1 - dummy.t) + 0 * dummy.t,
+						0,
+					];
+				};
 			}
 		}).finished;
 	}
 }
 
-async function build1()
+async function build1({ forward })
 {
+	if (forward)
+	{
+		applet.automovingDirection = () =>
+		{
+			geometryData.cameraPos[0] += .01 * Math.abs(geometryData.cameraPos[0] - .45);
+			geometryData.cameraPos[1] += .01 * Math.abs(geometryData.cameraPos[1] - .45);
+
+			return [0, 0, 1, 0];
+		};
+	}
+
+	else
+	{
+		applet.automovingDirection = () =>
+		{
+			geometryData.cameraPos[0] *= .99;
+			geometryData.cameraPos[1] *= .99;
+
+			return [0, 0, 1, 0];
+		};
+	}
+
 	await applet.switchScene();
 }
 

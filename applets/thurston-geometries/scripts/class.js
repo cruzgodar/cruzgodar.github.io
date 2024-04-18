@@ -860,7 +860,7 @@ export class ThurstonGeometry extends Applet
 
 				if (rampStart)
 				{
-					this.movingAmount[0] *= Math.min(totalTimeElapsed / 300, 1);
+					this.movingAmount[0] *= Math.min(totalTimeElapsed / 500, 1);
 				}
 			};
 		}, 16);
