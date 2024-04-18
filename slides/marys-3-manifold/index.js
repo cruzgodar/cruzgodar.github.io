@@ -14,6 +14,8 @@ import { s3HopfFibrationBuilds } from "./builds/s3-hopf-fibration.js";
 import { s3Builds } from "./builds/s3.js";
 import { sl2rAxesBuilds } from "./builds/sl2r-axes.js";
 import { sl2rBuilds } from "./builds/sl2r.js";
+import { solAxesBuilds } from "./builds/sol-axes.js";
+import { solBuilds } from "./builds/sol.js";
 import { titleBuilds } from "./builds/title.js";
 import { ThurstonGeometry } from "/applets/thurston-geometries/scripts/class.js";
 import Lapsa from "/scripts/lapsa.js";
@@ -61,6 +63,9 @@ const options =
 
 		"sl2r-axes": sl2rAxesBuilds,
 		"sl2r": sl2rBuilds,
+
+		"sol-axes": solAxesBuilds,
+		"sol": solBuilds,
 	},
 
 	setupBuild: () =>
