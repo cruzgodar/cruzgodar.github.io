@@ -38,9 +38,9 @@ export function load()
 
 
 
-		if (galleryImageData[id]["featured"])
+		if (galleryImageData[id].featured)
 		{
-			featuredTextElement.innerHTML = galleryImageData[id]["featured"];
+			featuredTextElement.innerHTML = galleryImageData[id].featured;
 
 			featuredTextElement.parentElement.style.display = "block";
 		}
@@ -52,9 +52,9 @@ export function load()
 
 
 
-		appletLinkElement.setAttribute("href", `/applets/${galleryImageData[id]["appletLink"]}/`);
+		appletLinkElement.setAttribute("href", `/applets/${galleryImageData[id].appletLink}/`);
 
-		fullResLinkElement.setAttribute("href", galleryImageData[id]["imageLink"]);
+		fullResLinkElement.setAttribute("href", `https://drive.google.com/uc?id=${galleryImageData[id].driveId}&export=download`);
 
 
 
@@ -91,7 +91,7 @@ export function load()
 
 	fullResLinkElement.addEventListener("click", () =>
 	{
-		redirect({ url: galleryImageData[currentId].imageLink, inNewTab: true });
+		redirect({ url: `https://drive.google.com/uc?id=${galleryImageData[currentId].driveId}&export=download`, inNewTab: true });
 	});
 
 	showPage();

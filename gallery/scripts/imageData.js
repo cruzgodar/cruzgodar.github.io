@@ -2,7 +2,6 @@
 
 export const galleryImageData =
 {
-
 	"voronoi-diagram-1":
 	{
 		title: "A Voronoi Diagram",
@@ -11,7 +10,7 @@ export const galleryImageData =
 
 		appletLink: "voronoi-diagrams",
 
-		imageLink: "https://drive.google.com/uc?id=1J1dfHbqx1tX1qkkuJF0ZUp-OPlRezEsV&export=download"
+		driveId: "1J1dfHbqx1tX1qkkuJF0ZUp-OPlRezEsV"
 	},
 
 	"voronoi-diagram-2":
@@ -22,7 +21,7 @@ export const galleryImageData =
 
 		appletLink: "voronoi-diagrams",
 
-		imageLink: "https://drive.google.com/uc?id=1TrBXxbjYeHMbznxnT1NiNXWSj8jVBthA&export=download"
+		driveId: "1TrBXxbjYeHMbznxnT1NiNXWSj8jVBthA"
 	},
 
 	"thurston-geometry-h3":
@@ -33,7 +32,7 @@ export const galleryImageData =
 
 		appletLink: "thurston-geometries",
 
-		imageLink: "https://drive.google.com/uc?id=1-i3E0bNdMpRwaJzTwXvS3z6-GqjcByBz&export=download"
+		driveId: "1wm59bChDwRgm91lONQR1bVKTCBKGWien"
 	},
 
 	"thurston-geometry-e3":
@@ -44,7 +43,7 @@ export const galleryImageData =
 
 		appletLink: "thurston-geometries",
 
-		imageLink: "https://drive.google.com/uc?id=1XqXEVoe82btwYcTolWTKT3tlsWz_98c0&export=download"
+		driveId: "1XqXEVoe82btwYcTolWTKT3tlsWz_98c0"
 	},
 
 	"thurston-geometry-nil":
@@ -55,7 +54,7 @@ export const galleryImageData =
 
 		appletLink: "thurston-geometries",
 
-		imageLink: "https://drive.google.com/uc?id=12z46uejUh_5C2AHD_bpE23TArud_QfDn&export=download"
+		driveId: "1-1h44Q9CEVGqyCkkxAQ-ykODsVzWYKwE"
 	},
 	
 	"thurston-geometry-sl2r":
@@ -66,7 +65,7 @@ export const galleryImageData =
 
 		appletLink: "thurston-geometries",
 
-		imageLink: "https://drive.google.com/uc?id=1XBJVX2kWVWz1dH06DIAVlDeqr21ei8Ty&export=download"
+		driveId: "1XBJVX2kWVWz1dH06DIAVlDeqr21ei8Ty"
 	},
 
 	"thurston-geometry-sol":
@@ -77,7 +76,7 @@ export const galleryImageData =
 
 		appletLink: "thurston-geometries",
 
-		imageLink: "https://drive.google.com/uc?id=1Pz0IUsM43_-qEXIf27CWzjOkTnMyLXz6&export=download"
+		driveId: "1Pz0IUsM43_-qEXIf27CWzjOkTnMyLXz6"
 	},
 
 	"thurston-geometry-s2xe":
@@ -88,7 +87,7 @@ export const galleryImageData =
 
 		appletLink: "thurston-geometries",
 
-		imageLink: "https://drive.google.com/uc?id=1bA57Lhq12oJ1W611UkRjOwuTs8mIXtm-&export=download"
+		driveId: "1bA57Lhq12oJ1W611UkRjOwuTs8mIXtm-"
 	},
 
 	"thurston-geometry-h2xe":
@@ -99,7 +98,7 @@ export const galleryImageData =
 
 		appletLink: "thurston-geometries",
 
-		imageLink: "https://drive.google.com/uc?id=1LCBMWW4n8IcF3_bGo4up4dcO0ISDqH0n&export=download"
+		driveId: "1LCBMWW4n8IcF3_bGo4up4dcO0ISDqH0n"
 	},
 	
 	"thurston-geometry-s3":
@@ -110,7 +109,7 @@ export const galleryImageData =
 
 		appletLink: "thurston-geometries",
 
-		imageLink: "https://drive.google.com/uc?id=1yvG5KfAg7qiYjzBDuXDilaSV23X-KyzB&export=download"
+		driveId: "1yvG5KfAg7qiYjzBDuXDilaSV23X-KyzB"
 	},
 
 	"pascals-triangle-coloring":
@@ -121,7 +120,7 @@ export const galleryImageData =
 
 		appletLink: "pascals-triangle-colorings",
 
-		imageLink: "https://drive.google.com/uc?id=13sryJfjORay3ArQspZhgTvzQSbTs-osJ&export=download"
+		driveId: "13sryJfjORay3ArQspZhgTvzQSbTs-osJ"
 	},
 
 	"newtons-method-2":
@@ -134,7 +133,7 @@ export const galleryImageData =
 
 		appletLink: "newtons-method",
 
-		imageLink: "https://drive.google.com/uc?id=1T8X5JduKEg8BkakXzGXZzu3CFW_R88i6&export=download"
+		driveId: "1T8X5JduKEg8BkakXzGXZzu3CFW_R88i6"
 	},
 
 	"abelian-sandpile":
@@ -147,7 +146,7 @@ export const galleryImageData =
 
 		appletLink: "abelian-sandpiles",
 
-		imageLink: "https://drive.google.com/uc?id=1pqpf8z08AgJ9oFXQLU0J6eWaJvgg6oME&export=download"
+		driveId: "1pqpf8z08AgJ9oFXQLU0J6eWaJvgg6oME"
 	},
 
 	"aztec-diamond":
@@ -158,7 +157,7 @@ export const galleryImageData =
 
 		appletLink: "domino-shuffling",
 
-		imageLink: "https://drive.google.com/uc?id=1XaoTpV0dKscPtOvrjU6sUuD1Mo-pyQzH&export=download"
+		driveId: "1XaoTpV0dKscPtOvrjU6sUuD1Mo-pyQzH"
 	},
 
 	"finite-subdivision-1":
@@ -173,7 +172,7 @@ export const galleryImageData =
 
 		appletLink: "finite-subdivisions",
 
-		imageLink: "https://drive.google.com/uc?id=1qdHVX58lkTdrcebrzDyQC4690C0IgpJE&export=download"
+		driveId: "1ohpmOx1bVGszGolKGxphW4qc15fghyIc"
 	},
 
 	"generalized-julia-set-2":
@@ -188,7 +187,7 @@ export const galleryImageData =
 
 		appletLink: "generalized-julia-sets",
 
-		imageLink: "https://drive.google.com/uc?id=1l7lChOVrzWkJSsydmEte1f3pPZe3Txro&export=download"
+		driveId: "16LcsF7n7w329sO4T-IwWb-p7ykpglNQO"
 	},
 
 	"hitomezashi-pattern-2":
@@ -199,7 +198,7 @@ export const galleryImageData =
 
 		appletLink: "hitomezashi-patterns",
 
-		imageLink: "https://drive.google.com/uc?id=1JkngUmUdSEJvzYMRTTUIa3jy26F0c6m8&export=download"
+		driveId: "1JkngUmUdSEJvzYMRTTUIa3jy26F0c6m8"
 	},
 
 
@@ -214,7 +213,7 @@ export const galleryImageData =
 
 		appletLink: "brownian-trees",
 
-		imageLink: "https://drive.google.com/uc?id=1BSuYpCW9jQKqu8NOu6f_6omr_LVMXprh&export=download"
+		driveId: "1BSuYpCW9jQKqu8NOu6f_6omr_LVMXprh"
 	},
 
 	"lyapunov-fractal":
@@ -227,7 +226,7 @@ export const galleryImageData =
 
 		appletLink: "lyapunov-fractals",
 
-		imageLink: "https://drive.google.com/uc?id=1Xb5BMuz-iB9f-CN4l5wyZtbCLLOXrz80&export=download"
+		driveId: "1Xb5BMuz-iB9f-CN4l5wyZtbCLLOXrz80"
 	},
 
 	"strange-attractor":
@@ -238,7 +237,7 @@ export const galleryImageData =
 
 		appletLink: "strange-attractors",
 
-		imageLink: "https://drive.google.com/uc?id=1sRCKC-WE8a2iYNW942uKgAJbHVkAYDrQ&export=download"
+		driveId: "1sRCKC-WE8a2iYNW942uKgAJbHVkAYDrQ"
 	},
 
 	"vector-field":
@@ -251,7 +250,7 @@ export const galleryImageData =
 
 		appletLink: "vector-fields",
 
-		imageLink: "https://drive.google.com/uc?id=1016R9thI8dQdvEhTJGNMFehaCRhrbSxA&export=download"
+		driveId: "1016R9thI8dQdvEhTJGNMFehaCRhrbSxA"
 	},
 
 	"julia-set-1":
@@ -262,7 +261,7 @@ export const galleryImageData =
 
 		appletLink: "julia-set-explorer",
 
-		imageLink: "https://drive.google.com/uc?id=1V4B0ULle-Dq0-ludCNyQg5lQ8Hm6cm_X&export=download"
+		driveId: "1V4B0ULle-Dq0-ludCNyQg5lQ8Hm6cm_X"
 	},
 
 	"snowflake":
@@ -275,7 +274,7 @@ export const galleryImageData =
 
 		appletLink: "snowflakes",
 
-		imageLink: "https://drive.google.com/uc?id=1qCDJIacawSFc8rAJK57YbqQjVC_79Lu9&export=download"
+		driveId: "1qCDJIacawSFc8rAJK57YbqQjVC_79Lu9"
 	},
 
 
@@ -292,24 +291,7 @@ export const galleryImageData =
 
 		appletLink: "quaternionic-julia-sets",
 
-		imageLink: "https://drive.google.com/uc?id=1092d-V4qcvcW5_lsf5xsyDQvlDs1LdO9&export=download"
-	},
-
-
-
-	"newtons-method-1":
-	{
-		title: "Newton&#x2019;s Method",
-
-		resolution: "5000x5000",
-
-		parameters: "Generated from the polynomial z&#x2078; - 1",
-
-		featured: "Featured in the Jordan Schnitzer Museum of Art",
-
-		appletLink: "newtons-method",
-
-		imageLink: "https://drive.google.com/uc?id=1u5HfagNZ0E1SmEu4kcLFCuwGmLOoX-qL&export=download"
+		driveId: "1092d-V4qcvcW5_lsf5xsyDQvlDs1LdO9"
 	},
 
 	"kicked-rotator":
@@ -324,7 +306,7 @@ export const galleryImageData =
 
 		appletLink: "the-kicked-rotator",
 
-		imageLink: "https://drive.google.com/uc?id=1vXP_8ArZg7F2o7rbFCsksoHDT3nw8y66&export=download"
+		driveId: "1vXP_8ArZg7F2o7rbFCsksoHDT3nw8y66"
 	},
 
 	"kaleidoscopic-ifs-1":
@@ -337,7 +319,7 @@ export const galleryImageData =
 
 		appletLink: "kaleidoscopic-ifs-fractals",
 
-		imageLink: "https://drive.google.com/uc?id=1XhywTt1u8SY8JR9GUiauZRBnLzzLUOxP&export=download"
+		driveId: "1XhywTt1u8SY8JR9GUiauZRBnLzzLUOxP"
 	},
 
 	"generalized-julia-set-1":
@@ -352,7 +334,7 @@ export const galleryImageData =
 
 		appletLink: "generalized-julia-sets",
 
-		imageLink: "https://drive.google.com/uc?id=1rgAIVr9Ztfs2EiVtY_39-GQ91ayeMJXu&export=download"
+		driveId: "1rgAIVr9Ztfs2EiVtY_39-GQ91ayeMJXu"
 	},
 
 	"quasi-fuchsian-group":
@@ -365,7 +347,7 @@ export const galleryImageData =
 
 		appletLink: "quasi-fuchsian-groups",
 
-		imageLink: "https://drive.google.com/uc?id=1mAQCyO3bHIL7yAV1I8uxVFmLBGbhQwRQ&export=download"
+		driveId: "1mAQCyO3bHIL7yAV1I8uxVFmLBGbhQwRQ"
 	},
 
 	"chaos-game-1":
@@ -378,7 +360,7 @@ export const galleryImageData =
 
 		appletLink: "the-chaos-game",
 
-		imageLink: "https://drive.google.com/uc?id=15NZyBmIqZxCaTrT9C9m87bqfM1sUmY5i&export=download"
+		driveId: "15NZyBmIqZxCaTrT9C9m87bqfM1sUmY5i"
 	},
 
 
@@ -393,7 +375,7 @@ export const galleryImageData =
 
 		appletLink: "wilsons-algorithm",
 
-		imageLink: "https://drive.google.com/uc?id=1EJD5tYppybnvAxK1bWpLEXK2gjKAnMqZ&export=download"
+		driveId: "1EJD5tYppybnvAxK1bWpLEXK2gjKAnMqZ"
 	},
 
 
@@ -408,7 +390,7 @@ export const galleryImageData =
 
 		appletLink: "julia-set-mosaic",
 
-		imageLink: "https://drive.google.com/uc?id=17lVqXB7yFmoZRpEievJBV6BbwogOlM5U&export=download"
+		driveId: ""
 	},
 
 	"barnsley-fern":
@@ -421,7 +403,7 @@ export const galleryImageData =
 
 		appletLink: "the-barnsley-fern",
 
-		imageLink: "https://drive.google.com/uc?id=1ED5_vAUhFEF0E3fcnY4NOEYJSVf1P7cA&export=download"
+		driveId: "1ED5_vAUhFEF0E3fcnY4NOEYJSVf1P7cA"
 	},
 
 	"generalized-julia-set-3":
@@ -434,7 +416,7 @@ export const galleryImageData =
 
 		appletLink: "generalized-julia-sets",
 
-		imageLink: "https://drive.google.com/uc?id=1ZOh2bya7QzuvSQqkM55cLxV3v-0MlET3&export=download"
+		driveId: "1ZOh2bya7QzuvSQqkM55cLxV3v-0MlET3"
 	},
 
 	"magic-carpet":
@@ -445,7 +427,7 @@ export const galleryImageData =
 
 		appletLink: "magic-carpets",
 
-		imageLink: "https://drive.google.com/uc?id=1bD3P4pzIU7M6Ni_lp9oSjtrwoAJQpJ98&export=download"
+		driveId: "1bD3P4pzIU7M6Ni_lp9oSjtrwoAJQpJ98"
 	},
 
 	"complex-map-1":
@@ -458,7 +440,7 @@ export const galleryImageData =
 
 		appletLink: "complex-maps",
 
-		imageLink: "https://drive.google.com/uc?id=1rcF2qy4gGCJ3lg3X8jQW0Z0_OcFYKv8Q&export=download"
+		driveId: "1rcF2qy4gGCJ3lg3X8jQW0Z0_OcFYKv8Q"
 	},
 
 	"kaleidoscopic-ifs-2":
@@ -469,7 +451,7 @@ export const galleryImageData =
 
 		appletLink: "kaleidoscopic-ifs-fractals",
 
-		imageLink: "https://drive.google.com/uc?id=1vmRBT5i-KEq1DbReB87DhDJqzgpzlpWE&export=download"
+		driveId: "1vmRBT5i-KEq1DbReB87DhDJqzgpzlpWE"
 	},
 
 
@@ -484,7 +466,7 @@ export const galleryImageData =
 
 		appletLink: "secant-method",
 
-		imageLink: "https://drive.google.com/uc?id=1XaNHxtiX5oA9KcLGs8ZSPFJwpDWt4mPk&export=download"
+		driveId: "1XaNHxtiX5oA9KcLGs8ZSPFJwpDWt4mPk"
 	},
 
 	"juliabulb-1":
@@ -497,7 +479,7 @@ export const galleryImageData =
 
 		appletLink: "the-mandelbulb",
 
-		imageLink: "https://drive.google.com/uc?id=13vuMeBG2XX-cVar60W9bN_PoDhb9kC8H&export=download"
+		driveId: "13vuMeBG2XX-cVar60W9bN_PoDhb9kC8H"
 	},
 
 	"juliabulb-2":
@@ -510,7 +492,7 @@ export const galleryImageData =
 
 		appletLink: "the-mandelbulb",
 
-		imageLink: "https://drive.google.com/uc?id=1j9kMfSl5fwTaHysRWROjuhwKgrc0i5SD&export=download"
+		driveId: "1j9kMfSl5fwTaHysRWROjuhwKgrc0i5SD"
 	},
 
 	"newtons-method-extended":
@@ -523,7 +505,7 @@ export const galleryImageData =
 
 		appletLink: "newtons-method-extended",
 
-		imageLink: "https://drive.google.com/uc?id=1yQCt0FaiBzQKM5h9RKh5akHs3wihil7B&export=download"
+		driveId: "1yQCt0FaiBzQKM5h9RKh5akHs3wihil7B"
 	},
 
 	"chaos-game-2":
@@ -536,7 +518,7 @@ export const galleryImageData =
 
 		appletLink: "the-chaos-game",
 
-		imageLink: "https://drive.google.com/uc?id=14ADChQ4KHV426ySW_CIVvTAXe2irMKU0&export=download"
+		driveId: "14ADChQ4KHV426ySW_CIVvTAXe2irMKU0"
 	},
 
 	"juliabulb-3":
@@ -549,7 +531,7 @@ export const galleryImageData =
 
 		appletLink: "the-mandelbulb",
 
-		imageLink: "https://drive.google.com/uc?id=1UZaqN8xkOc4a2rMtA9_85YllnJDfwqO2&export=download"
+		driveId: "1UZaqN8xkOc4a2rMtA9_85YllnJDfwqO2"
 	},
 
 
@@ -564,31 +546,7 @@ export const galleryImageData =
 
 		appletLink: "the-mandelbulb",
 
-		imageLink: "https://drive.google.com/uc?id=1GfsC_gm0DU1j2X79Ros6lQY4HAUp-iy4&export=download"
-	},
-
-
-
-	"hitomezashi-pattern-1":
-	{
-		title: "A Hitomezashi Pattern",
-
-		resolution: "5000x5000",
-
-		appletLink: "hitomezashi-patterns",
-
-		imageLink: "https://drive.google.com/uc?id=1PqAZLMb0u-u8FR5ieN8ysWNOn5GhPGkD&export=download"
-	},
-
-	"quaternionic-julia-set-2":
-	{
-		title: "A Quaternionic Julia Set",
-
-		resolution: "5000x5000",
-
-		appletLink: "quaternionic-julia-sets",
-
-		imageLink: "https://drive.google.com/uc?id=17yHyELz5FaAVIgSfBUjYTwy--yOBxGWv&export=download"
+		driveId: "1GfsC_gm0DU1j2X79Ros6lQY4HAUp-iy4"
 	},
 
 	"wilsons-algorithm-1":
@@ -601,18 +559,7 @@ export const galleryImageData =
 
 		appletLink: "wilsons-algorithm",
 
-		imageLink: "https://drive.google.com/uc?id=1kgWTqci85uCCkGQksCrqYqjhYH2416pq&export=download"
-	},
-
-	"quaternionic-julia-set-3":
-	{
-		title: "A Quaternionic Julia Set",
-
-		resolution: "4500x4500",
-
-		appletLink: "quaternionic-julia-sets",
-
-		imageLink: "https://drive.google.com/uc?id=1RI64txpZ_EW9ppP5X7WVO9P4bZuP2Jk3&export=download"
+		driveId: ""
 	},
 
 	"complex-map-2":
@@ -625,7 +572,7 @@ export const galleryImageData =
 
 		appletLink: "complex-maps",
 
-		imageLink: "https://drive.google.com/uc?id=1ulWn8MMjzNTiTRuZKYWlqHoJOQBUwAnz&export=download"
+		driveId: "1ulWn8MMjzNTiTRuZKYWlqHoJOQBUwAnz"
 	},
 
 
@@ -638,7 +585,7 @@ export const galleryImageData =
 
 		appletLink: "double-pendulum-fractal",
 
-		imageLink: "https://drive.google.com/uc?id=1X4qJm3ChGYLQtU7wDyp9_wMxs0vebpqU&export=download"
+		driveId: "1X4qJm3ChGYLQtU7wDyp9_wMxs0vebpqU"
 	},
 
 	"double-pendulum-fractal-2":
@@ -649,7 +596,7 @@ export const galleryImageData =
 
 		appletLink: "double-pendulum-fractal",
 
-		imageLink: "https://drive.google.com/uc?id=1QOANk6bBI2ktFwABkmK8zkQUzxqdnP-9&export=download"
+		driveId: "1QOANk6bBI2ktFwABkmK8zkQUzxqdnP-9"
 	},
 
 	"extruded-cube":
@@ -660,7 +607,7 @@ export const galleryImageData =
 
 		appletLink: "extruded-cube",
 		
-		imageLink: "https://drive.google.com/uc?id=1udLVBsti2An9TUonpOKApHdpaz_A8ole&export=download"
+		driveId: "1udLVBsti2An9TUonpOKApHdpaz_A8ole"
 	},
 
 	"menger-sponge":
@@ -671,6 +618,6 @@ export const galleryImageData =
 
 		appletLink: "menger-sponge",
 		
-		imageLink: "https://drive.google.com/uc?id=1x9MvudTiKCYzV8Lmkvf19a9CAlMdAE3R&export=download"
+		driveId: "1x9MvudTiKCYzV8Lmkvf19a9CAlMdAE3R"
 	}
 };
