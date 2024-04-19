@@ -1,14 +1,6 @@
 section
 {
-	margin-bottom: 32px !important;
-}
-
-@media (max-width: 500px)
-{
-	section
-	{
-		margin-bottom: 16px !important;
-	}
+	margin-bottom: 10px !important;
 }
 
 #gallery
@@ -20,6 +12,14 @@ section
 	grid-template-columns: repeat(2, 1fr);
 	
 	grid-gap: 10px;
+	overflow-y: hidden !important;
+}
+
+.page
+{
+	width: calc(100% - 20px) !important;
+	padding-left: 10px !important;
+	padding-right: 10px !important;
 }
 
 .gallery-block
@@ -63,28 +63,6 @@ section
 {
 	grid-row: span 3;
 	grid-column: span 3;
-}
-
-
-.gallery-image-1-1 img:not(:hover):focus
-{
-	transform: scale(1.075);
-	
-	z-index: 1000;
-}
-
-.gallery-image-2-2 img:not(:hover):focus
-{
-	transform: scale(1.0375);
-	
-	z-index: 1000;
-}
-
-.gallery-image-3-3 img:not(:hover):focus
-{
-	transform: scale(1.025);
-	
-	z-index: 1000;
 }
 
 
