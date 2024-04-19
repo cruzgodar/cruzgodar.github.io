@@ -70,6 +70,7 @@ const options =
 
 	setupBuild: () =>
 	{
+		applet.fov = Math.tan(100 / 2 * Math.PI / 180);
 		applet.restrictCamera = true;
 		applet.animationPaused = true;
 		applet.automoving = false;

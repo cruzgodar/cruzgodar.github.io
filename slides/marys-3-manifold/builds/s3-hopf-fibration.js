@@ -18,6 +18,7 @@ async function reset({ slide, duration })
 
 	applet.run(geometryData);
 	applet.changeResolution(500);
+	applet.fov = Math.tan(130 / 2 * Math.PI / 180);
 
 	await changeOpacity({
 		element: canvasBundle,

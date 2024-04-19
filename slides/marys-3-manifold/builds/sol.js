@@ -20,7 +20,7 @@ async function reset({ slide, forward, duration })
 	geometryData.aspectRatio = 95 / 55.625;
 
 	applet.run(geometryData);
-	applet.changeResolution(750);
+	applet.changeResolution(forward ? 800 : 400);
 	applet.moveForever({
 		speed: .4,
 		direction: forward ? () => [0.525731, 0.850651, 0, 0] : () => [0, 0, 1, 0]
@@ -42,86 +42,60 @@ async function build0({ forward })
 {
 	const dummy = { t: 0 };
 
-	if (forward)
-	{
-		await anime({
-			targets: dummy,
-			t: 1,
-			duration: 1000,
-			easing: "easeOutQuad",
-			update: () =>
-			{
-				applet.automovingDirection = () => [
-					0.525731 * (1 - dummy.t) + 1 * dummy.t,
-					0.850651 * (1 - dummy.t) + 0 * dummy.t,
-					0,
-					0,
-				];
-			}
-		}).finished;
-	}
+	applet.automoving = false;
 
-	else
-	{
-		await anime({
-			targets: dummy,
-			t: 1,
-			duration: 1000,
-			easing: "easeOutQuad",
-			update: () =>
-			{
-				applet.automovingDirection = () => [
-					1 * (1 - dummy.t) + 0.525731 * dummy.t,
-					0 * (1 - dummy.t) + 0.850651 * dummy.t,
-					0,
-					0,
-				];
-			}
-		}).finished;
-	}
+	await anime({
+		targets: dummy,
+		t: 1,
+		duration: 1000,
+		easing: "easeOutQuad",
+		update: () =>
+		{
+			geometryData.cameraPos[0] += .075 * (-geometryData.cameraPos[0]);
+			geometryData.cameraPos[1] += .075 * ((forward ? -.1 : 0) - geometryData.cameraPos[1]);
+			geometryData.cameraPos[2] += .075 * (-geometryData.cameraPos[2]);
+
+			applet.needNewFrame = true;
+		}
+	}).finished;
+
+	geometryData.cameraPos = forward ? [0, -.1, 0, 1] : [0, 0, 0, 1];
+
+	applet.moveForever({
+		speed: .4,
+		direction: forward ? () => [1, 0, 0, 0] : () => [0.525731, 0.850651, 0, 0],
+		rampStart: true
+	});
 }
 
 async function build1({ forward })
 {
 	const dummy = { t: 0 };
 
-	if (forward)
-	{
-		await anime({
-			targets: dummy,
-			t: 1,
-			duration: 1000,
-			easing: "easeOutQuad",
-			update: () =>
-			{
-				applet.automovingDirection = () => [
-					1 * (1 - dummy.t) + 0 * dummy.t,
-					0 * (1 - dummy.t) + 1 * dummy.t,
-					0,
-					0,
-				];
-			}
-		}).finished;
-	}
+	applet.automoving = false;
 
-	else
-	{
-		await anime({
-			targets: dummy,
-			t: 1,
-			duration: 1000,
-			easing: "easeOutQuad",
-			update: () =>
-			{
-				applet.automovingDirection = () => [
-					0 * (1 - dummy.t) + 1 * dummy.t,
-					1 * (1 - dummy.t) + 0 * dummy.t,
-					0,
-					0,
-				];
-			}
-		}).finished;
-	}
+	await anime({
+		targets: dummy,
+		t: 1,
+		duration: 1000,
+		easing: "easeOutQuad",
+		update: () =>
+		{
+			geometryData.cameraPos[0] += .075 * ((forward ? .1 : 0) - geometryData.cameraPos[0]);
+			geometryData.cameraPos[1] += .075 * ((forward ? 0 : -.1) - geometryData.cameraPos[1]);
+			geometryData.cameraPos[2] += .075 * (-geometryData.cameraPos[2]);
+
+			applet.needNewFrame = true;
+		}
+	}).finished;
+
+	geometryData.cameraPos = forward ? [.1, 0, 0, 1] : [0, -.1, 0, 1];
+
+	applet.moveForever({
+		speed: .4,
+		direction: forward ? () => [0, 1, 0, 0] : () => [1, 0, 0, 0],
+		rampStart: true
+	});
 }
 
 async function build2({ forward })
@@ -155,6 +129,8 @@ async function build2({ forward })
 
 	else
 	{
+		applet.automoving = false;
+
 		await anime({
 			targets: dummy,
 			t: 1,
@@ -162,19 +138,21 @@ async function build2({ forward })
 			easing: "easeOutQuad",
 			update: () =>
 			{
-				applet.automovingDirection = () =>
-				{
-					geometryData.cameraPos[2] *= .99;
+				geometryData.cameraPos[0] += .075 * (.1 - geometryData.cameraPos[0]);
+				geometryData.cameraPos[1] += .075 * (-geometryData.cameraPos[1]);
+				geometryData.cameraPos[2] += .075 * (-geometryData.cameraPos[2]);
 
-					return [
-						0,
-						0 * (1 - dummy.t) + 1 * dummy.t,
-						1 * (1 - dummy.t) + 0 * dummy.t,
-						0,
-					];
-				};
+				applet.needNewFrame = true;
 			}
 		}).finished;
+
+		geometryData.cameraPos = [.1, 0, 0, 1];
+
+		applet.moveForever({
+			speed: .4,
+			direction: () => [0, 1, 0, 0],
+			rampStart: true
+		});
 	}
 }
 
@@ -182,16 +160,13 @@ async function build3({ forward })
 {
 	await applet.switchScene();
 
-	applet.changeResolution(400);
+	geometryData = applet.geometryData;
+
+	applet.changeResolution(forward ? 400 : 800);
 
 	applet.moveForever({
 		speed: .4,
-		direction: () =>
-		{
-			geometryData.cameraPos[2] *= .99;
-
-			return [0, 0, 1, 0];
-		}
+		direction: () => [0, 0, 1, 0]
 	});
 }
 

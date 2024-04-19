@@ -888,7 +888,7 @@ export class ThurstonGeometry extends Applet
 			try { $("#wall-thickness-slider").parentNode.style.display = "none"; }
 			catch(ex) { /* Element doesn't exist */ }
 
-			await anime({
+			anime({
 				targets: this.canvas,
 				opacity: 1,
 				duration: duration / 2,
@@ -915,7 +915,7 @@ export class ThurstonGeometry extends Applet
 			try { $("#wall-thickness-slider").parentNode.style.display = ""; }
 			catch(ex) { /* Element doesn't exist */ }
 
-			await anime({
+			anime({
 				targets: this.canvas,
 				opacity: 1,
 				duration: duration / 2,
@@ -973,7 +973,7 @@ export class ThurstonGeometry extends Applet
 
 		const dummy = { t: 0 };
 
-		anime({
+		await anime({
 			targets: dummy,
 			t: 1,
 			duration,
@@ -1017,7 +1017,7 @@ export class ThurstonGeometry extends Applet
 
 				this.needNewFrame = true;
 			}
-		});
+		}).finished;
 	}
 
 

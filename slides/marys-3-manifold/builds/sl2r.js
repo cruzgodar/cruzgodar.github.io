@@ -16,7 +16,7 @@ async function reset({ slide, forward, duration })
 	slide.appendChild(canvasBundle);
 
 	geometryData = new SL2RRooms();
-	geometryData.sliderValues.wallThickness = forward ? .175 : -.05;
+	geometryData.sliderValues.wallThickness = forward ? .125 : -.05;
 	geometryData.aspectRatio = 95 / 55.625;
 
 	geometryData.forwardVec = [1, 0, 0, 0];
@@ -121,8 +121,8 @@ async function build1({ forward })
 		update: () =>
 		{
 			geometryData.sliderValues.wallThickness = forward
-				? (1 - dummy.t) * .175 + dummy.t * (-.05)
-				: (1 - dummy.t) * (-.05) + dummy.t * .175;
+				? (1 - dummy.t) * .125 + dummy.t * (-.05)
+				: (1 - dummy.t) * (-.05) + dummy.t * .125;
 		}
 	}).finished;
 }
