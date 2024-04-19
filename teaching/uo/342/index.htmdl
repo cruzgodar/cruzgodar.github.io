@@ -50,7 +50,7 @@ Welcome to Math 342! We'll use this page for the interactive notes, the homework
 
 	## Section 3
 
-	In problems 4#, find the general solution to the system of differential equations.
+	In problems 3#, find the general solution to the system of differential equations.
 	
 	#.
 	
@@ -80,18 +80,6 @@ Welcome to Math 342! We'll use this page for the interactive notes, the homework
 		y' &= -3x + 7y + 3z
 		
 		z' &= -5x + 5y + 5z.
-	$$
-	
-	#.
-	
-	$$
-		a' &= 5a + 6b + 4c - 4d
-		
-		b' &= 3a + 8b - 2c + 2d
-		
-		c' &= 3a - 3b + 9c + 2d
-		
-		d' &= 11d.
 	$$
 	
 
