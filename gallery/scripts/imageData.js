@@ -378,20 +378,7 @@ export const galleryImageData =
 		driveId: "1EJD5tYppybnvAxK1bWpLEXK2gjKAnMqZ"
 	},
 
-
-
-	"julia-set-mosaic":
-	{
-		title: "A Julia Set Mosaic",
-
-		resolution: "5000x5000",
-
-		featured: "Featured in UO&#x2019;s Erb Memorial Union and University Hall",
-
-		appletLink: "julia-set-mosaic",
-
-		driveId: ""
-	},
+	
 
 	"barnsley-fern":
 	{
