@@ -77,4 +77,4 @@ const options =
 	},
 };
 
-setTimeout(() => new Lapsa(options), 50);
+new Lapsa(options);

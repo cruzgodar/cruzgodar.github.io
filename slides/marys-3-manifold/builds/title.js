@@ -17,6 +17,9 @@ async function reset({ slide, duration })
 	geometryData.aspectRatio = 95 / 55.625;
 
 	applet.run(geometryData);
+
+	await new Promise(resolve => setTimeout(resolve, 50));
+
 	applet.changeResolution(1000);
 	applet.moveForever({
 		speed: .25,
