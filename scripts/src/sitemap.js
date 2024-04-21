@@ -44,6 +44,7 @@ export const sitemap =
 		
 		"children":
 		[
+			"/applets/bernoulli-percolation/",
 			"/applets/menger-sponge/",
 			"/applets/game-of-life/",
 			"/applets/extruded-cube/",
@@ -87,6 +88,17 @@ export const sitemap =
 		]
 	},
 		
+	"/applets/bernoulli-percolation/":
+	{
+		"title": "Bernoulli Percolation",
+		
+		"parent": "/applets/",
+		
+		"children": [],
+
+		"customScript": true
+	},
+	
 	"/applets/menger-sponge/":
 	{
 		"title": "The Menger Sponge",

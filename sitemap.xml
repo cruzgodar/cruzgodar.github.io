@@ -16,7 +16,13 @@
 		
 	<url>
 		<loc>https://www.cruzgodar.com/applets/</loc>
-		<lastmod>2024-3-11</lastmod>
+		<lastmod>2024-4-21</lastmod>
+		<priority>0.5</priority>
+	</url>
+		
+	<url>
+		<loc>https://www.cruzgodar.com/applets/bernoulli-percolation/</loc>
+		<lastmod>2024-4-21</lastmod>
 		<priority>0.5</priority>
 	</url>
 		
