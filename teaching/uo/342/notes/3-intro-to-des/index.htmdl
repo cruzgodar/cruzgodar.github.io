@@ -17,9 +17,9 @@ $$
 for constants $a$, $b$, $c$, and $d$. The most natural way to visualize these is as **vector fields**: since $(x', y')$ is the velocity at $(x, y)$, we can draw a grid of vectors arrows, where the arrow at $(x, y)$ is given by $(x', y')$. For example, the system
 
 $$
-	x &= x + 3y
+	x' &= x + 3y
 
-	y &= 4x + 2y
+	y' &= 4x + 2y
 $$
 
 has the following vector field plot.
