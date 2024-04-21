@@ -14,7 +14,7 @@ import {
 	setUpNavButtons,
 	setUpTextButtons
 } from "./buttons.js";
-import { setUpCards } from "./cards.js";
+import { setUpCards, showCard } from "./cards.js";
 import { setUpCarousels } from "./carousels.js";
 import { setUpFocusEvents, setUpHoverEvents } from "./hoverEvents.js";
 import { equalizeAppletColumns, onResize } from "./layout.js";
@@ -100,6 +100,11 @@ export async function loadPage()
 export async function showPage()
 {
 	await new Promise(resolve => setTimeout(resolve, 10));
+
+	if (siteSettings.card)
+	{
+		showCard(siteSettings.card);
+	}
 
 	await fadeInPage();
 

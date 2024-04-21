@@ -44,6 +44,7 @@ const darkTheme = (() =>
 export const siteSettings =
 {
 	darkTheme,
+	card: params.get("card"),
 	condensedApplets: params.get("condensedapplets") === "1"
 };
 
@@ -61,6 +62,11 @@ export function getQueryParams()
 	else if (!siteSettings.darkTheme && window.matchMedia("(prefers-color-scheme: dark)").matches)
 	{
 		params.push("theme=0");
+	}
+
+	if (siteSettings.card)
+	{
+		params.push(`card=${siteSettings.card}`);
 	}
 
 	if (window.DEBUG)

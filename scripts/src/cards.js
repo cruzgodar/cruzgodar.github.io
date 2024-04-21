@@ -1,6 +1,7 @@
 import { cardAnimationTime } from "./animation.js";
 import { addHoverEvent } from "./hoverEvents.js";
-import { $$, pageElement } from "./main.js";
+import { $$, pageElement, pageUrl } from "./main.js";
+import { getDisplayUrl } from "./navigation.js";
 import { metaThemeColorElement, siteSettings } from "./settings.js";
 import anime from "/scripts/anime.js";
 
@@ -42,7 +43,7 @@ export function setUpCards()
 	});
 }
 
-export async function showCard(id)
+export async function showCard(id, animationTime = cardAnimationTime)
 {
 	if (cardIsAnimating)
 	{
@@ -54,6 +55,9 @@ export async function showCard(id)
 	scrollBeforeCard = window.scrollY;
 
 	cardIsOpen = true;
+	
+	siteSettings.card = id;
+	history.replaceState({ url: pageUrl }, document.title, getDisplayUrl());
 	
 	container.style.display = "flex";
 	container.style.opacity = 0;
@@ -112,7 +116,7 @@ export async function showCard(id)
 			targets: container,
 			opacity: 1,
 			scale: 1,
-			duration: cardAnimationTime,
+			duration: animationTime,
 			easing: "easeOutQuint",
 		}).finished,
 
@@ -124,21 +128,21 @@ export async function showCard(id)
 			],
 			filter: "brightness(.5)",
 			scale: .975,
-			duration: cardAnimationTime,
+			duration: animationTime,
 			easing: "easeOutQuint",
 		}).finished,
 
 		anime({
 			targets: metaThemeColorElement,
 			content: themeColor,
-			duration: cardAnimationTime,
+			duration: animationTime,
 			easing: "easeOutQuint",
 		}).finished,
 
 		anime({
 			targets: document.documentElement,
 			backgroundColor: color,
-			duration: cardAnimationTime,
+			duration: animationTime,
 			easing: "easeOutQuint",
 		}).finished,
 	]);
@@ -146,7 +150,7 @@ export async function showCard(id)
 	cardIsAnimating = false;
 }
 
-export async function hideCard()
+export async function hideCard(animationTime = cardAnimationTime)
 {
 	if (cardIsAnimating)
 	{
@@ -156,6 +160,9 @@ export async function hideCard()
 	cardIsAnimating = true;
 
 	cardIsOpen = false;
+
+	siteSettings.card = undefined;
+	history.replaceState({ url: pageUrl }, document.title, getDisplayUrl());
 
 	await new Promise(resolve => setTimeout(resolve, 0));
 
@@ -171,21 +178,21 @@ export async function hideCard()
 			],
 			filter: "brightness(1)",
 			scale: 1,
-			duration: cardAnimationTime,
+			duration: animationTime,
 			easing: "easeOutQuint",
 		}).finished,
 
 		anime({
 			targets: metaThemeColorElement,
 			content: themeColor,
-			duration: cardAnimationTime,
+			duration: animationTime,
 			easing: "easeOutQuint",
 		}).finished,
 
 		anime({
 			targets: document.documentElement,
 			backgroundColor: color,
-			duration: cardAnimationTime,
+			duration: animationTime,
 			easing: "easeOutQuint",
 		}).finished,
 
@@ -193,7 +200,7 @@ export async function hideCard()
 			targets: container,
 			opacity: 0,
 			scale: .95,
-			duration: cardAnimationTime,
+			duration: animationTime,
 			easing: "easeOutQuint",
 		}).finished
 	]);
