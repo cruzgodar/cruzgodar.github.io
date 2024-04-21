@@ -108,19 +108,19 @@ export class BernoulliPercolation extends AnimationFrameApplet
 
 
 				this.connections[i][j] = [
-					Math.ceil(Math.random() * 1000) / 1000,
-					Math.ceil(Math.random() * 1000) / 1000
+					Math.ceil(Math.random() * 1000),
+					Math.ceil(Math.random() * 1000)
 				];
 
 				if (j !== this.gridSize - 1)
 				{
-					this.connectionsByValue[Math.floor(this.connections[i][j][0] * 1000 - 1)]
+					this.connectionsByValue[Math.floor(this.connections[i][j][0] - 1)]
 						.push([i, j, 0]);
 				}
 
 				if (i !== this.gridSize - 1)
 				{
-					this.connectionsByValue[Math.floor(this.connections[i][j][1] * 1000 - 1)]
+					this.connectionsByValue[Math.floor(this.connections[i][j][1] - 1)]
 						.push([i, j, 1]);
 				}
 
@@ -185,12 +185,51 @@ export class BernoulliPercolation extends AnimationFrameApplet
 	addEdge(i, j, index)
 	{
 		// The larger connected component size determines the new color.
-		const dot1Size = this.components[this.componentsByLocation[i][j]].length;
+		const component1Index = this.componentsByLocation[i][j];
+		const dot1Size = this.components[component1Index].length;
 
 		const row2 = i + (index === 0 ? 0 : 1);
 		const col2 = j + (index === 0 ? 1 : 0);
 
-		const dot2Size = this.components[this.componentsByLocation[row2][col2]].length;
+		const component2Index = this.componentsByLocation[row2][col2];
+		const dot2Size = this.components[component2Index].length;
+
+		const biggerRow = dot1Size > dot2Size ? i : row2;
+		const biggerCol = dot1Size > dot2Size ? j : col2;
+		const biggerComponentIndex = dot1Size > dot2Size ? component1Index : component2Index;
+		const smallerComponentIndex = dot1Size > dot2Size ? component2Index : component1Index;
+
+		if (smallerComponentIndex === biggerComponentIndex)
+		{
+			this.drawEdge(i, j, index);
+			return;
+		}
+
+		// Merge the two components.
+		for (let k = 0; k < this.components[smallerComponentIndex].length; k++)
+		{
+			const [row, col] = this.components[smallerComponentIndex][k];
+
+			this.colors[row][col] = [...this.colors[biggerRow][biggerCol]];
+			this.componentsByLocation[row][col] = biggerComponentIndex;
+
+			this.drawDot(row, col);
+
+			if (col !== this.gridSize - 1 && this.connections[row][col][0] <= this.threshhold)
+			{
+				this.drawEdge(row, col, 0);
+			}
+
+			if (row !== this.gridSize - 1 && this.connections[row][col][1] <= this.threshhold)
+			{
+				this.drawEdge(row, col, 1);
+			}
+		}
+
+		this.components[biggerComponentIndex] = this.components[biggerComponentIndex]
+			.concat(this.components[smallerComponentIndex]);
+		
+		this.components[smallerComponentIndex] = [];
 
 		this.drawEdge(i, j, index);
 	}
