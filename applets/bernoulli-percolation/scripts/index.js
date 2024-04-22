@@ -22,7 +22,7 @@ export function load()
 	const gridSizeInput = new TextBox({
 		element: $("#grid-size-input"),
 		name: "Grid Size",
-		value: 50,
+		value: 25,
 		maxValue: 200,
 		onEnter: run,
 	});
@@ -31,7 +31,7 @@ export function load()
 		element: $("#draw-edges-checkbox"),
 		name: "Draw edges",
 		checked: true,
-		onInput: redrawEverything
+		onInput: () => applet.switchDrawEdges()
 	});
 
 	const threshholdSlider = new Slider({
