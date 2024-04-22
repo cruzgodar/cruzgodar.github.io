@@ -55,7 +55,7 @@ export class BernoulliPercolation extends AnimationFrameApplet
 
 
 
-	run({ resolution = 2000, gridSize = 3 })
+	run({ resolution = 2000, gridSize = 5 })
 	{
 		this.resolution = resolution;
 		this.gridSize = gridSize;
@@ -73,7 +73,14 @@ export class BernoulliPercolation extends AnimationFrameApplet
 		this.resume();
 	}
 
-
+	getRandomColor()
+	{
+		return this.wilson.utils.hsvToRgb(
+			Math.random(),
+			0.4 + 0.25 * Math.random(),
+			0.5 + 0.5 * Math.random()
+		);
+	}
 
 	generateGrid()
 	{
@@ -97,11 +104,7 @@ export class BernoulliPercolation extends AnimationFrameApplet
 
 			for (let j = 0; j < this.gridSize; j++)
 			{
-				this.colors[i][j] = this.wilson.utils.hsvToRgb(
-					Math.random(),
-					0.4 + 0.25 * Math.random(),
-					0.5 + 0.5 * Math.random()
-				);
+				this.colors[i][j] = this.getRandomColor();
 
 				this.drawDot(i, j);
 
@@ -132,10 +135,10 @@ export class BernoulliPercolation extends AnimationFrameApplet
 		}
 	}
 
-	getComponentSize(i, j)
+	getComponent(i, j)
 	{
 		// Can't store arrays properly in sets, so we'll store
-		// [a, b] as "a,b". 
+		// [a, b] as "a,b".
 		let explored = new Set();
 		let active = new Set();
 		active.add(`${i},${j}`);
@@ -198,7 +201,7 @@ export class BernoulliPercolation extends AnimationFrameApplet
 			active = new Set(futureActive);
 		}
 
-		return explored.size;
+		return explored;
 	}
 
 	drawDot(i, j)
@@ -234,18 +237,18 @@ export class BernoulliPercolation extends AnimationFrameApplet
 		{
 			this.wilson.ctx.fillRect(
 				x,
-				y - this.edgeWidthPixels / 2,
+				y - this.edgeWidthPixels / 2 - (remove ? 1 : 0),
 				this.edgeLengthPixels,
-				this.edgeWidthPixels
+				this.edgeWidthPixels + (remove ? 2 : 0)
 			);
 		}
 
 		else
 		{
 			this.wilson.ctx.fillRect(
-				x - this.edgeWidthPixels / 2,
+				x - this.edgeWidthPixels / 2 - (remove ? 1 : 0),
 				y,
-				this.edgeWidthPixels,
+				this.edgeWidthPixels + (remove ? 2 : 0),
 				this.edgeLengthPixels
 			);
 		}
@@ -308,10 +311,72 @@ export class BernoulliPercolation extends AnimationFrameApplet
 		const row2 = i + (index === 0 ? 0 : 1);
 		const col2 = j + (index === 0 ? 1 : 0);
 
-		const component1Size = this.getComponentSize(i, j);
-		const component2Size = this.getComponentSize(row2, col2);
+		const dot1Component = this.getComponent(i, j);
+		const dot2Component = this.getComponent(row2, col2);
 
-		console.log(i, j, index, component1Size, component2Size);
+		if (dot1Component.has(`${row2},${col2}`))
+		{
+			this.drawEdge(i, j, index, true);
+
+			this.drawDot(i, j);
+
+			if (index === 0)
+			{
+				this.drawDot(i, j + 1);
+			}
+
+			else
+			{
+				this.drawDot(i + 1, j);
+			}
+
+			return;
+		}
+
+		const biggerComponentIndex = dot1Component.size > dot2Component.size
+			? this.componentsByLocation[i][j]
+			: this.componentsByLocation[row2][col2];
+
+		const smallerComponentIndex = this.components
+			.findIndex(component => component.length === 0);
+
+		const biggerComponent = dot1Component.size > dot2Component.size
+			? dot1Component
+			: dot2Component;
+
+		const smallerComponent = dot1Component.size > dot2Component.size
+			? dot2Component
+			: dot1Component;
+
+		this.components[biggerComponentIndex] = Array.from(biggerComponent).map(dot =>
+		{
+			const pieces = dot.split(",");
+			return [parseInt(pieces[0]), parseInt(pieces[1])];
+		});
+		
+		const newColor = this.getRandomColor();
+
+		smallerComponent.forEach(dot =>
+		{
+			const pieces = dot.split(",");
+			const [row, col] = [parseInt(pieces[0]), parseInt(pieces[1])];
+
+			this.colors[row][col] = [...newColor];
+			this.componentsByLocation[row][col] = smallerComponentIndex;
+			this.components[smallerComponentIndex].push([row, col]);
+
+			this.drawDot(row, col);
+
+			if (col !== this.gridSize - 1 && this.connections[row][col][0] <= this.threshhold)
+			{
+				this.drawEdge(row, col, 0);
+			}
+
+			if (row !== this.gridSize - 1 && this.connections[row][col][1] <= this.threshhold)
+			{
+				this.drawEdge(row, col, 1);
+			}
+		});
 
 		this.drawEdge(i, j, index, true);
 
@@ -338,10 +403,14 @@ export class BernoulliPercolation extends AnimationFrameApplet
 
 	drawFrame()
 	{
+		const newThreshhold = this.threshhold;
+
 		if (this.threshhold > this.lastThreshhold)
 		{
-			for (let i = this.lastThreshhold + 1; i <= this.threshhold; i++)
+			for (let i = this.lastThreshhold + 1; i <= newThreshhold; i++)
 			{
+				this.threshhold = i - 1;
+
 				for (let j = 0; j < this.connectionsByValue[i - 1].length; j++)
 				{
 					this.addEdge(...this.connectionsByValue[i - 1][j]);
@@ -351,8 +420,10 @@ export class BernoulliPercolation extends AnimationFrameApplet
 
 		else
 		{
-			for (let i = this.lastThreshhold; i > this.threshhold; i--)
+			for (let i = this.lastThreshhold; i > newThreshhold; i--)
 			{
+				this.threshhold = i - 1;
+
 				for (let j = 0; j < this.connectionsByValue[i - 1].length; j++)
 				{
 					this.removeEdge(...this.connectionsByValue[i - 1][j]);
@@ -360,6 +431,12 @@ export class BernoulliPercolation extends AnimationFrameApplet
 			}
 		}
 
+		this.threshhold = newThreshhold;
 		this.lastThreshhold = this.threshhold;
+
+		const filtered = this.components.map(c => c.length).filter(l => l !== 0);
+
+		let total = 0;
+		filtered.forEach(l => total += l);
 	}
 }
