@@ -717,8 +717,6 @@ export class BernoulliPercolation extends AnimationFrameApplet
 		{
 			for (let i = this.lastthreshold + 1; i <= newthreshold; i++)
 			{
-				this.threshold = i - 1;
-
 				for (let j = 0; j < this.connectionsByValue[i - 1].length; j++)
 				{
 					this.addEdge(...this.connectionsByValue[i - 1][j]);
@@ -732,8 +730,6 @@ export class BernoulliPercolation extends AnimationFrameApplet
 		{
 			for (let i = this.lastthreshold; i > newthreshold; i--)
 			{
-				this.threshold = i - 1;
-
 				for (let j = 0; j < this.connectionsByValue[i - 1].length; j++)
 				{
 					this.removeEdge(...this.connectionsByValue[i - 1][j]);
