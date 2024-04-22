@@ -55,7 +55,7 @@ export class BernoulliPercolation extends AnimationFrameApplet
 
 
 
-	run({ resolution = 2000, gridSize = 5 })
+	run({ resolution = 2000, gridSize = 50 })
 	{
 		this.resolution = resolution;
 		this.gridSize = gridSize;
@@ -143,11 +143,8 @@ export class BernoulliPercolation extends AnimationFrameApplet
 		let active = new Set();
 		active.add(`${i},${j}`);
 
-		let iteration = 0;
-
-		while (active.size !== 0 && iteration < 10)
+		while (active.size !== 0)
 		{
-			iteration++;
 			const futureActive = new Set();
 
 			active.forEach(dot =>
@@ -353,6 +350,7 @@ export class BernoulliPercolation extends AnimationFrameApplet
 			const pieces = dot.split(",");
 			return [parseInt(pieces[0]), parseInt(pieces[1])];
 		});
+		// console.log(biggerComponent, this.components[biggerComponentIndex].length);
 		
 		const newColor = this.getRandomColor();
 
@@ -438,5 +436,7 @@ export class BernoulliPercolation extends AnimationFrameApplet
 
 		let total = 0;
 		filtered.forEach(l => total += l);
+
+		console.log(total);
 	}
 }
