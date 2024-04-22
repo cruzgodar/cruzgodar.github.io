@@ -29,6 +29,9 @@ export class BernoulliPercolation extends AnimationFrameApplet
 
 	doDrawDots;
 
+	hueRangeStart;
+	hueRangeLength;
+
 	// As fractions of the box with side length resolution/gridSize;
 	// 1/2 makes all the dots tangent.
 	dotRadiusFraction = .25;
@@ -85,6 +88,9 @@ export class BernoulliPercolation extends AnimationFrameApplet
 		this.wilson.ctx.fillStyle = "rgb(0, 0, 0)";
 		this.wilson.ctx.fillRect(0, 0, this.resolution, this.resolution);
 
+		this.hueRangeStart = Math.random();
+		this.hueRangeLength = .45;
+
 		this.generateGrid();
 
 		this.resume();
@@ -93,9 +99,9 @@ export class BernoulliPercolation extends AnimationFrameApplet
 	getRandomColor()
 	{
 		return this.wilson.utils.hsvToRgb(
-			Math.random(),
-			0.35 + 0.2 * Math.random(),
-			0.75 + 0.25 * Math.random()
+			(this.hueRangeStart + Math.random() * this.hueRangeLength) % 1,
+			0.3 + 0.1 * Math.random(),
+			0.7 + 0.3 * Math.random()
 		);
 	}
 
