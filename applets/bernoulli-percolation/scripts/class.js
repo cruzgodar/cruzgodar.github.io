@@ -24,8 +24,10 @@ export class BernoulliPercolation extends AnimationFrameApplet
 	gridSize;
 	resolution = 500;
 
-	threshhold = 0;
-	lastThreshhold = 0;
+	threshhold;
+	lastThreshhold;
+
+	doDrawDots;
 
 	// As fractions of the box with side length resolution/gridSize;
 	// 1/2 makes all the dots tangent.
@@ -45,24 +47,39 @@ export class BernoulliPercolation extends AnimationFrameApplet
 			renderer: "cpu",
 
 			canvasWidth: this.resolution,
-			canvasHeight: this.resolution
+			canvasHeight: this.resolution,
+
+			useFullscreen: true,
+
+			useFullscreenButton: true,
+
+			enterFullscreenButtonIconPath: "/graphics/general-icons/enter-fullscreen.png",
+			exitFullscreenButtonIconPath: "/graphics/general-icons/exit-fullscreen.png"
 		};
 
 		this.wilson = new Wilson(canvas, options);
-
-		this.run({});
 	}
 
 
 
-	run({ resolution = 2000, gridSize = 50 })
-	{
+	run({
+		resolution = 2000,
+		gridSize = 200,
+		threshhold = 500,
+		doDrawDots = false
+	}) {
 		this.resolution = resolution;
 		this.gridSize = gridSize;
+		this.lastThreshhold = 0;
+		this.threshhold = threshhold;
+		this.doDrawDots = doDrawDots;
 
 		this.dotRadiusPixels = Math.floor(this.resolution / this.gridSize * this.dotRadiusFraction);
 		this.edgeWidthPixels = Math.floor(this.resolution / this.gridSize * this.edgeWidthFraction);
 		this.edgeLengthPixels = Math.floor(this.resolution / this.gridSize);
+
+		this.drawDot = this.doDrawDots ? this.drawDotCircle : this.drawDotRectangle;
+		this.drawEdge = this.doDrawDots ? this.drawEdgeRectangle : this.drawEdgeNone;
 
 		this.wilson.changeCanvasSize(this.resolution, this.resolution);
 		this.wilson.ctx.fillStyle = "rgb(0, 0, 0)";
@@ -77,8 +94,8 @@ export class BernoulliPercolation extends AnimationFrameApplet
 	{
 		return this.wilson.utils.hsvToRgb(
 			Math.random(),
-			0.4 + 0.25 * Math.random(),
-			0.5 + 0.5 * Math.random()
+			0.35 + 0.2 * Math.random(),
+			0.75 + 0.25 * Math.random()
 		);
 	}
 
@@ -201,12 +218,12 @@ export class BernoulliPercolation extends AnimationFrameApplet
 		return explored;
 	}
 
-	drawDot(i, j)
+	drawDotCircle(i, j)
 	{
-		this.wilson.ctx.fillStyle = convertColor(...this.colors[i][j]);
-
 		const x = (j + .5) / this.gridSize * this.resolution;
 		const y = (i + .5) / this.gridSize * this.resolution;
+
+		this.wilson.ctx.fillStyle = convertColor(...this.colors[i][j]);
 
 		this.wilson.ctx.beginPath();
 		this.wilson.ctx.moveTo(x, y);
@@ -223,7 +240,17 @@ export class BernoulliPercolation extends AnimationFrameApplet
 		this.wilson.ctx.fill();
 	}
 
-	drawEdge(i, j, index, remove = false)
+	drawDotRectangle(i, j)
+	{
+		const x = j / this.gridSize * this.resolution;
+		const y = i / this.gridSize * this.resolution;
+
+		this.wilson.ctx.fillStyle = convertColor(...this.colors[i][j]);
+
+		this.wilson.ctx.fillRect(x, y,this.edgeLengthPixels, this.edgeLengthPixels);
+	}
+
+	drawEdgeRectangle(i, j, index, remove = false)
 	{
 		this.wilson.ctx.fillStyle = convertColor(...(remove ? [0, 0, 0] : this.colors[i][j]));
 
@@ -250,6 +277,8 @@ export class BernoulliPercolation extends AnimationFrameApplet
 			);
 		}
 	}
+
+	drawEdgeNone() {}
 
 	addEdge(i, j, index)
 	{
@@ -305,77 +334,6 @@ export class BernoulliPercolation extends AnimationFrameApplet
 
 	removeEdge(i, j, index)
 	{
-		const row2 = i + (index === 0 ? 0 : 1);
-		const col2 = j + (index === 0 ? 1 : 0);
-
-		// const dot1Component = this.getComponent(i, j);
-		// const dot2Component = this.getComponent(row2, col2);
-
-		// if (dot1Component.has(`${row2},${col2}`))
-		// {
-		// 	this.drawEdge(i, j, index, true);
-
-		// 	this.drawDot(i, j);
-
-		// 	if (index === 0)
-		// 	{
-		// 		this.drawDot(i, j + 1);
-		// 	}
-
-		// 	else
-		// 	{
-		// 		this.drawDot(i + 1, j);
-		// 	}
-
-		// 	return;
-		// }
-/*
-		const biggerComponentIndex = dot1Component.size > dot2Component.size
-			? this.componentsByLocation[i][j]
-			: this.componentsByLocation[row2][col2];
-
-		const smallerComponentIndex = this.components
-			.findIndex(component => component.length === 0);
-
-		const biggerComponent = dot1Component.size > dot2Component.size
-			? dot1Component
-			: dot2Component;
-
-		const smallerComponent = dot1Component.size > dot2Component.size
-			? dot2Component
-			: dot1Component;
-
-		this.components[biggerComponentIndex] = Array.from(biggerComponent).map(dot =>
-		{
-			const pieces = dot.split(",");
-			return [parseInt(pieces[0]), parseInt(pieces[1])];
-		});
-		// console.log(biggerComponent, this.components[biggerComponentIndex].length);
-		
-		const newColor = this.getRandomColor();
-
-		smallerComponent.forEach(dot =>
-		{
-			const pieces = dot.split(",");
-			const [row, col] = [parseInt(pieces[0]), parseInt(pieces[1])];
-
-			this.colors[row][col] = [...newColor];
-			this.componentsByLocation[row][col] = smallerComponentIndex;
-			this.components[smallerComponentIndex].push([row, col]);
-
-			this.drawDot(row, col);
-
-			if (col !== this.gridSize - 1 && this.connections[row][col][0] <= this.threshhold)
-			{
-				this.drawEdge(row, col, 0);
-			}
-
-			if (row !== this.gridSize - 1 && this.connections[row][col][1] <= this.threshhold)
-			{
-				this.drawEdge(row, col, 1);
-			}
-		});
-*/
 		this.drawEdge(i, j, index, true);
 
 		this.drawDot(i, j);
@@ -508,6 +466,42 @@ export class BernoulliPercolation extends AnimationFrameApplet
 		}
 	}
 
+	redrawEverything()
+	{
+		this.wilson.changeCanvasSize(this.resolution, this.resolution);
+		this.wilson.ctx.fillStyle = "rgb(0, 0, 0)";
+		this.wilson.ctx.fillRect(0, 0, this.resolution, this.resolution);
+
+		this.dotRadiusPixels = Math.floor(this.resolution / this.gridSize * this.dotRadiusFraction);
+		this.edgeWidthPixels = Math.floor(this.resolution / this.gridSize * this.edgeWidthFraction);
+		this.edgeLengthPixels = Math.floor(this.resolution / this.gridSize);
+
+		this.drawDot = this.doDrawDots ? this.drawDotCircle : this.drawDotRectangle;
+		this.drawEdge = this.doDrawDots ? this.drawEdgeRectangle : this.drawEdgeNone;
+
+		for (let i = 0; i < this.gridSize; i++)
+		{
+			for (let j = 0; j < this.gridSize; j++)
+			{
+				this.drawDot(i, j);
+
+				if (
+					j !== this.gridSize - 1
+					&& this.connections[i][j][0] <= this.threshhold
+				) {
+					this.drawEdge(i, j, 0);
+				}
+
+				if (
+					i !== this.gridSize - 1
+					&& this.connections[i][j][1] <= this.threshhold
+				) {
+					this.drawEdge(i, j, 1);
+				}
+			}
+		}
+	}
+
 	prepareFrame()
 	{
 		if (this.threshhold !== this.lastThreshhold)
@@ -547,16 +541,8 @@ export class BernoulliPercolation extends AnimationFrameApplet
 
 			this.updateComponents();
 		}
-		
 
 		this.threshhold = newThreshhold;
 		this.lastThreshhold = this.threshhold;
-
-		const filtered = this.components.map(c => c.length).filter(l => l !== 0);
-
-		let total = 0;
-		filtered.forEach(l => total += l);
-
-		console.log(total);
 	}
 }

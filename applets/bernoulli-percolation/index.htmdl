@@ -7,8 +7,21 @@ Text
 <div id="canvas-landscape">
 
 <div id="canvas-landscape-left">
+	### text-boxes
+		resolution
+		grid-size
+	###
+
+	### checkboxes
+		draw-edges
+	###
+
 	### sliders
 		threshhold
+	###
+
+	### buttons
+		generate
 	###
 </div>
 
