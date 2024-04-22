@@ -55,7 +55,7 @@ export class BernoulliPercolation extends AnimationFrameApplet
 
 
 
-	run({ resolution = 2000, gridSize = 50 })
+	run({ resolution = 2000, gridSize = 3 })
 	{
 		this.resolution = resolution;
 		this.gridSize = gridSize;
@@ -130,6 +130,75 @@ export class BernoulliPercolation extends AnimationFrameApplet
 				this.componentsByLocation[i][j] = this.gridSize * i + j;
 			}
 		}
+	}
+
+	getComponentSize(i, j)
+	{
+		// Can't store arrays properly in sets, so we'll store
+		// [a, b] as "a,b". 
+		let explored = new Set();
+		let active = new Set();
+		active.add(`${i},${j}`);
+
+		let iteration = 0;
+
+		while (active.size !== 0 && iteration < 10)
+		{
+			iteration++;
+			const futureActive = new Set();
+
+			active.forEach(dot =>
+			{
+				const pieces = dot.split(",");
+				const [row, col] = [parseInt(pieces[0]), parseInt(pieces[1])];
+
+				// Down.
+				if (
+					row !== this.gridSize - 1
+					&& !active.has(`${row + 1},${col}`)
+					&& !explored.has(`${row + 1},${col}`)
+					&& this.connections[row][col][1] <= this.threshhold
+				) {
+					futureActive.add(`${row + 1},${col}`);
+				}
+
+				// Right.
+				if (
+					col !== this.gridSize - 1
+					&& !active.has(`${row},${col + 1}`)
+					&& !explored.has(`${row},${col + 1}`)
+					&& this.connections[row][col][0] <= this.threshhold
+				) {
+					futureActive.add(`${row},${col + 1}`);
+				}
+
+				// Up.
+				if (
+					row !== 0
+					&& !active.has(`${row - 1},${col}`)
+					&& !explored.has(`${row - 1},${col}`)
+					&& this.connections[row - 1][col][1] <= this.threshhold
+				) {
+					futureActive.add(`${row - 1},${col}`);
+				}
+
+				// Left.
+				if (
+					col !== 0
+					&& !active.has(`${row},${col - 1}`)
+					&& !explored.has(`${row},${col - 1}`)
+					&& this.connections[row][col - 1][0] <= this.threshhold
+				) {
+					futureActive.add(`${row},${col - 1}`);
+				}
+			});
+
+			explored = explored.union(active);
+
+			active = new Set(futureActive);
+		}
+
+		return explored.size;
 	}
 
 	drawDot(i, j)
@@ -236,6 +305,14 @@ export class BernoulliPercolation extends AnimationFrameApplet
 
 	removeEdge(i, j, index)
 	{
+		const row2 = i + (index === 0 ? 0 : 1);
+		const col2 = j + (index === 0 ? 1 : 0);
+
+		const component1Size = this.getComponentSize(i, j);
+		const component2Size = this.getComponentSize(row2, col2);
+
+		console.log(i, j, index, component1Size, component2Size);
+
 		this.drawEdge(i, j, index, true);
 
 		this.drawDot(i, j);
