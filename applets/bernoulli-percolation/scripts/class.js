@@ -21,8 +21,8 @@ export class BernoulliPercolation extends AnimationFrameApplet
 	// Meanwhile, this stores a look table of component index by dot coordinate.
 	componentsByLocation;
 
-	gridSize = 50;
-	resolution = 2000;
+	gridSize;
+	resolution = 500;
 
 	threshhold = 0;
 	lastThreshhold = 0;
@@ -308,28 +308,28 @@ export class BernoulliPercolation extends AnimationFrameApplet
 		const row2 = i + (index === 0 ? 0 : 1);
 		const col2 = j + (index === 0 ? 1 : 0);
 
-		const dot1Component = this.getComponent(i, j);
-		const dot2Component = this.getComponent(row2, col2);
+		// const dot1Component = this.getComponent(i, j);
+		// const dot2Component = this.getComponent(row2, col2);
 
-		if (dot1Component.has(`${row2},${col2}`))
-		{
-			this.drawEdge(i, j, index, true);
+		// if (dot1Component.has(`${row2},${col2}`))
+		// {
+		// 	this.drawEdge(i, j, index, true);
 
-			this.drawDot(i, j);
+		// 	this.drawDot(i, j);
 
-			if (index === 0)
-			{
-				this.drawDot(i, j + 1);
-			}
+		// 	if (index === 0)
+		// 	{
+		// 		this.drawDot(i, j + 1);
+		// 	}
 
-			else
-			{
-				this.drawDot(i + 1, j);
-			}
+		// 	else
+		// 	{
+		// 		this.drawDot(i + 1, j);
+		// 	}
 
-			return;
-		}
-
+		// 	return;
+		// }
+/*
 		const biggerComponentIndex = dot1Component.size > dot2Component.size
 			? this.componentsByLocation[i][j]
 			: this.componentsByLocation[row2][col2];
@@ -375,7 +375,7 @@ export class BernoulliPercolation extends AnimationFrameApplet
 				this.drawEdge(row, col, 1);
 			}
 		});
-
+*/
 		this.drawEdge(i, j, index, true);
 
 		this.drawDot(i, j);
@@ -388,6 +388,123 @@ export class BernoulliPercolation extends AnimationFrameApplet
 		else
 		{
 			this.drawDot(i + 1, j);
+		}
+	}
+
+	updateComponents()
+	{
+		const oldComponents = structuredClone(this.components);
+
+		// First of all, we'll classify all the components anew.
+		this.components = new Array(this.gridSize * this.gridSize);
+		this.componentsByLocation = new Array(this.gridSize);
+
+		for (let i = 0; i < this.gridSize; i++)
+		{
+			this.componentsByLocation[i] = new Array(this.gridSize);
+
+			for (let j = 0; j < this.gridSize; j++)
+			{
+				this.components[this.gridSize * i + j] = [];
+				this.componentsByLocation[i][j] = -1;
+			}
+		}
+
+		let currentComponentIndex = 0;
+
+		for (let i = 0; i < this.gridSize; i++)
+		{
+			for (let j = 0; j < this.gridSize; j++)
+			{
+				if (this.componentsByLocation[i][j] === -1)
+				{
+					this.components[currentComponentIndex] = Array.from(this.getComponent(i, j))
+						.map(dot =>
+						{
+							const pieces = dot.split(",");
+							
+							this.componentsByLocation[pieces[0]][pieces[1]] = currentComponentIndex;
+
+							return [parseInt(pieces[0]), parseInt(pieces[1])];
+						});
+
+					currentComponentIndex++;
+				}
+			}
+		}
+
+		// Now the hard part. We need to compare these to the previous components and split apart
+		// the ones that have changed.
+
+		for (let i = 0; i < oldComponents.length; i++)
+		{
+			if (oldComponents[i].length === 0)
+			{
+				continue;
+			}
+
+			const fragmentIndicesSet = new Set();
+
+			for (let j = 0; j < oldComponents[i].length; j++)
+			{
+				const [row, col] = oldComponents[i][j];
+
+				fragmentIndicesSet.add(this.componentsByLocation[row][col]);
+			}
+
+			if (fragmentIndicesSet.size === 1)
+			{
+				continue;
+			}
+
+			const fragmentIndices = Array.from(fragmentIndicesSet);
+
+			let biggestFragmentIndex = 0;
+			let biggestComponentSize = 0;
+
+			for (let j = 0; j < fragmentIndices.length; j++)
+			{
+				if (this.components[fragmentIndices[j]].length > biggestComponentSize)
+				{
+					biggestComponentSize = this.components[fragmentIndices[j]].length;
+					biggestFragmentIndex = j;
+				}
+			}
+
+			// At this point, biggestFragmentIndex is the unique component that keeps its color.
+
+			for (let j = 0; j < fragmentIndices.length; j++)
+			{
+				if (j === biggestFragmentIndex)
+				{
+					continue;
+				}
+
+				const newColor = this.getRandomColor();
+
+				this.components[fragmentIndices[j]].forEach(dot =>
+				{
+					const [row, col] = dot;
+
+					this.colors[row][col] = [...newColor];
+
+					this.drawDot(row, col);
+
+					if (
+						col !== this.gridSize - 1
+						&& this.connections[row][col][0] <= this.threshhold
+					) {
+						this.drawEdge(row, col, 0);
+					}
+
+					if (
+						row !== this.gridSize - 1
+						&& this.connections[row][col][1] <= this.threshhold
+					) {
+						this.drawEdge(row, col, 1);
+					}
+				});
+			}
 		}
 	}
 
@@ -427,7 +544,10 @@ export class BernoulliPercolation extends AnimationFrameApplet
 					this.removeEdge(...this.connectionsByValue[i - 1][j]);
 				}
 			}
+
+			this.updateComponents();
 		}
+		
 
 		this.threshhold = newThreshhold;
 		this.lastThreshhold = this.threshhold;
