@@ -36,6 +36,7 @@ export function load()
 		element: $("#grid-size-input"),
 		name: "Grid Size",
 		value: 8,
+		minValue: 3,
 		maxValue: 100,
 		onEnter: run
 	});
@@ -44,6 +45,7 @@ export function load()
 		element: $("#max-cage-size-input"),
 		name: "Max Cage Size",
 		value: 16,
+		minValue: 2,
 		onEnter: run
 	});
 

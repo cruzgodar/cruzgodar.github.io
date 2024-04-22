@@ -14,7 +14,8 @@ export function load()
 		element: $("#resolution-input"),
 		name: "Resolution",
 		value: 2000,
-		maxValue: 4000,
+		minValue: 1000,
+		maxValue: 3000,
 		onInput: redrawEverything,
 		onEnter: run,
 	});
@@ -23,6 +24,7 @@ export function load()
 		element: $("#grid-size-input"),
 		name: "Grid Size",
 		value: 25,
+		minValue: 1,
 		maxValue: 200,
 		onEnter: run,
 	});
@@ -34,9 +36,9 @@ export function load()
 		onInput: () => applet.switchDrawEdges()
 	});
 
-	const threshholdSlider = new Slider({
-		element: $("#threshhold-slider"),
-		name: "Threshhold",
+	const thresholdSlider = new Slider({
+		element: $("#threshold-slider"),
+		name: "threshold",
 		value: 0.5,
 		min: 0,
 		max: 1,
@@ -65,7 +67,7 @@ export function load()
 			resolution: resolutionInput.value,
 			gridSize: gridSizeInput.value,
 			doDrawDots: drawEdgesCheckbox.checked,
-			threshhold: threshholdSlider.value * 1000
+			threshold: thresholdSlider.value * 1000
 		});
 	}
 
@@ -74,11 +76,11 @@ export function load()
 		applet.resolution = resolutionInput.value;
 		applet.doDrawDots = drawEdgesCheckbox.checked;
 
-		applet.redrawEverything();
+		applet.redrawEverything(!applet.doDrawDots);
 	}
 
 	function onSliderInput()
 	{
-		applet.threshhold = Math.floor(threshholdSlider.value * 1000);
+		applet.threshold = Math.floor(thresholdSlider.value * 1000);
 	}
 }

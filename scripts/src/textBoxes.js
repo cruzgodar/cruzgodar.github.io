@@ -16,6 +16,7 @@ export class TextBox extends InputElement
 		name,
 		value,
 		maxValue = Infinity,
+		minValue = -Infinity,
 		onInput = () => {},
 		onEnter = () => {},
 	}) {
@@ -25,6 +26,7 @@ export class TextBox extends InputElement
 		this.onInput = onInput;
 		this.onEnter = onEnter;
 		this.maxValue = maxValue;
+		this.minValue = minValue;
 		
 		this.element.value = this.value;
 		this.element.nextElementSibling.textContent = this.name;
@@ -36,10 +38,35 @@ export class TextBox extends InputElement
 
 		this.element.addEventListener("input", () => this.inputCallback());
 
+		this.element.addEventListener("focusout", () =>
+		{
+			if (this.element.value === "")
+			{
+				this.element.value = this.defaultValue;
+				
+				this.value = this.valueTypeIsString
+					? this.element.value
+					: parseFloat(this.element.value);
+			}
+
+			this.updateCaps();
+		});
+
 		this.element.addEventListener("keydown", (e) =>
 		{
 			if (e.key === "Enter" && !this.disabled)
 			{
+				if (this.element.value === "")
+				{
+					this.element.value = this.defaultValue;
+					
+					this.value = this.valueTypeIsString
+						? this.element.value
+						: parseFloat(this.element.value);
+				}
+				
+				this.updateCaps();
+				
 				this.onEnter();
 			}
 		});
@@ -66,19 +93,55 @@ export class TextBox extends InputElement
 			if (this.value > this.maxValue && !uncapEverything)
 			{
 				this.value = this.maxValue;
+			}
 
-				this.element.value = this.value;
-
-				this.element.parentNode.classList.add("capped-input");
+			else if (this.value < this.minValue && !uncapEverything)
+			{
+				this.value = this.minValue;
 			}
 
 			else
 			{
-				this.element.parentNode.classList.remove("capped-input");
+				this.element.parentNode.classList.remove("capped-input-max");
+				this.element.parentNode.classList.remove("capped-input-min");
 			}
 		}
 
 		this.onInput();
+	}
+
+	updateCaps()
+	{
+		if (this.valueTypeIsString || uncapEverything)
+		{
+			return;
+		}
+
+		if (this.value >= this.maxValue)
+		{
+			this.value = this.maxValue;
+
+			this.element.value = this.value;
+
+			this.element.parentNode.classList.remove("capped-input-min");
+			this.element.parentNode.classList.add("capped-input-max");
+		}
+
+		else if (this.value <= this.minValue)
+		{
+			this.value = this.minValue;
+
+			this.element.value = this.value;
+
+			this.element.parentNode.classList.remove("capped-input-max");
+			this.element.parentNode.classList.add("capped-input-min");
+		}
+
+		else
+		{
+			this.element.parentNode.classList.remove("capped-input-max");
+			this.element.parentNode.classList.remove("capped-input-min");
+		}
 	}
 
 	setValue(newValue, callOnInput = false)
@@ -126,17 +189,31 @@ export class TextBox extends InputElement
 
 		wordElement.remove();
 
-		this.element.nextElementSibling.innerHTML = /* html */`<span>${words.slice(0, startIndex).join(" ")}</span>${startIndex !== 0 ? " " : ""}<span style="white-space: nowrap">${words.slice(startIndex).join(" ")}<span class="triangle">&#x25BC;</span></span>`;
+		if (startIndex === 0)
+		{
+			this.element.nextElementSibling.innerHTML = /* html */`<span style="white-space: nowrap">${words.slice(startIndex).join(" ")}<span class="triangle">&#x25BC;</span></span>`;
+		}
+		else
+		{
+			this.element.nextElementSibling.innerHTML = /* html */`<span>${words.slice(0, startIndex).join(" ")}</span> <span style="white-space: nowrap">${words.slice(startIndex).join(" ")}<span class="triangle">&#x25BC;</span></span>`;
+		}
 
 
 
 		this.element.nextElementSibling.addEventListener("click", () =>
 		{
-			if (this.element.parentNode.classList.contains("capped-input"))
+			if (this.element.parentNode.classList.contains("capped-input-max"))
 			{
 				hideAllCapDialogs();
 
 				this.showCapDialog();
+			}
+
+			else if (this.element.parentNode.classList.contains("capped-input-min"))
+			{
+				hideAllCapDialogs();
+
+				this.showCapDialog(true);
 			}
 		});
 
@@ -160,7 +237,7 @@ export class TextBox extends InputElement
 		});
 	}
 
-	showCapDialog()
+	showCapDialog(tooSmall = false)
 	{
 		const dialog = document.createElement("div");
 
@@ -170,17 +247,37 @@ export class TextBox extends InputElement
 		dialog.style.opacity = 0;
 		dialog.style.transform = "scale(1)";
 
-		dialog.innerHTML = /* html */`Higher values than this may take an extremely long time to compute, cause substantial lag, or crash the tab or entire browser. Only continue if you know what you&#x2019;re doing!
-		<div class="checkbox-row keep-dialog-open">
-			<div class="checkbox-container keep-dialog-open" tabindex="1">
-				<input type="checkbox" id="${this.element.id}-checkbox" class="uncap-inputs-checkbox keep-dialog-open">
-				<div class="checkbox keep-dialog-open"></div>
-			</div>
-			
-			<label for="${this.element.id}-checkbox" style="margin-left: 10px" class="keep-dialog-open">
-				<p class="body-text checkbox-subtext keep-dialog-open"></p>
-			</label>
-		</div>`;
+		if (tooSmall)
+		{
+			dialog.innerHTML = /* html */`Smaller values than this may cause unexpected results, break the intended functionality of the applet, or crash the tab or entire browser. Only continue if you know what you&#x2019;re doing!
+			<div class="checkbox-row keep-dialog-open">
+				<div class="checkbox-container keep-dialog-open" tabindex="1">
+					<input type="checkbox" id="${this.element.id}-checkbox" class="uncap-inputs-checkbox keep-dialog-open">
+					<div class="checkbox keep-dialog-open"></div>
+				</div>
+				
+				<label for="${this.element.id}-checkbox" style="margin-left: 10px" class="keep-dialog-open">
+					<p class="body-text checkbox-subtext keep-dialog-open"></p>
+				</label>
+			</div>`;
+		}
+
+		else
+		{
+			dialog.innerHTML = /* html */`Larger values than this may take an extremely long time to compute, cause substantial lag, or crash the tab or entire browser. Only continue if you know what you&#x2019;re doing!
+			<div class="checkbox-row keep-dialog-open">
+				<div class="checkbox-container keep-dialog-open" tabindex="1">
+					<input type="checkbox" id="${this.element.id}-checkbox" class="uncap-inputs-checkbox keep-dialog-open">
+					<div class="checkbox keep-dialog-open"></div>
+				</div>
+				
+				<label for="${this.element.id}-checkbox" style="margin-left: 10px" class="keep-dialog-open">
+					<p class="body-text checkbox-subtext keep-dialog-open"></p>
+				</label>
+			</div>`;
+		}
+
+		
 
 		pageElement.appendChild(dialog);
 
@@ -214,9 +311,10 @@ export class TextBox extends InputElement
 
 				if (uncapEverything)
 				{
-					$$(".capped-input").forEach(cappedInputElement =>
+					$$(".capped-input-max, .capped-input-min").forEach(cappedInputElement =>
 					{
-						cappedInputElement.classList.remove("capped-input");
+						cappedInputElement.classList.remove("capped-input-max");
+						cappedInputElement.classList.remove("capped-input-min");
 					});
 				}
 			}

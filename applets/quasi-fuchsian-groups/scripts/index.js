@@ -12,6 +12,7 @@ export function load()
 		element: $("#resolution-input"),
 		name: "Resolution",
 		value: 400,
+		minValue: 100,
 		maxValue: 800,
 		onInput: changeResolution
 	});
@@ -20,6 +21,7 @@ export function load()
 		element: $("#high-resolution-input"),
 		name: "Resolution",
 		value: 1000,
+		minValue: 100,
 		maxValue: 3000,
 		onEnter: run
 	});
@@ -28,6 +30,7 @@ export function load()
 		element: $("#max-depth-input"),
 		name: "Iterations",
 		value: 500,
+		minValue: 50,
 		maxValue: 1000,
 		onEnter: run
 	});
@@ -36,6 +39,7 @@ export function load()
 		element: $("#max-pixel-brightness-input"),
 		name: "Quality",
 		value: 100,
+		minValue: 50,
 		maxValue: 500,
 		onEnter: run
 	});

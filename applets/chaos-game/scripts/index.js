@@ -23,6 +23,7 @@ export function load()
 		element: $("#resolution-input"),
 		name: "Resolution",
 		value: 500,
+		minValue: 100,
 		maxValue: 2000,
 		onEnter: run,
 	});
@@ -31,6 +32,7 @@ export function load()
 		element: $("#num-vertices-input"),
 		name: "Vertices",
 		value: 5,
+		minValue: 3,
 		onEnter: run,
 	});
 	

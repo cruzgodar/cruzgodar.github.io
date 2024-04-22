@@ -1026,15 +1026,27 @@ mjx-container
 	transition: color .25s ease-out;
 }
 
-.text-box-container.capped-input .text-box
+.text-box-container.capped-input-max .text-box
 {
 	border-bottom: 2px solid rgb(192, 0, 0) !important;
 	color: rgb(192, 0, 0) !important;
 }
 
-.text-box-container.capped-input .text-box-subtext span
+.text-box-container.capped-input-max .text-box-subtext span
 {
 	color: rgb(192, 0, 0) !important;
+	cursor: pointer;
+}
+
+.text-box-container.capped-input-min .text-box
+{
+	border-bottom: 2px solid rgb(0, 0, 255) !important;
+	color: rgb(0, 0, 255) !important;
+}
+
+.text-box-container.capped-input-min .text-box-subtext span
+{
+	color: rgb(0, 0, 255) !important;
 	cursor: pointer;
 }
 
@@ -1049,7 +1061,8 @@ mjx-container
 	transition: width .25s ease-out, opacity .25s ease-out, padding .25s ease-out, color .25s ease-out;
 }
 
-.text-box-container.capped-input .body-text .triangle
+.text-box-container.capped-input-max .body-text .triangle,
+.text-box-container.capped-input-min .body-text .triangle
 {
 	width: 12px;
 	padding-left: 2px;
@@ -1066,7 +1079,7 @@ mjx-container
 	padding: 12px;
 	padding-top: 10px;
 	border-radius: 12px;
-	box-shadow: 0px 0px 8px 0px rgba(0, 0, 0, .4);
+	box-shadow: 0px 0px 16px calc(var(--theme) * 8px) rgba(0, 0, 0, .4);
 	position: absolute;
 	z-index: 100;
 }

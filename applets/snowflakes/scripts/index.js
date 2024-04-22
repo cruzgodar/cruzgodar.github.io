@@ -13,6 +13,7 @@ export function load()
 		element: $("#resolution-input"),
 		name: "Resolution",
 		value: 500,
+		minValue: 100,
 		maxValue: 2000,
 		onEnter: run
 	});
@@ -21,6 +22,7 @@ export function load()
 		element: $("#computations-per-frame-input"),
 		name: "Computation Speed",
 		value: 25,
+		minValue: 1,
 		maxValue: 50,
 		onEnter: run
 	});
@@ -29,6 +31,8 @@ export function load()
 		element: $("#rho-input"),
 		name: "$\\rho$",
 		value: .3673,
+		minValue: 0,
+		maxValue: 1,
 		onEnter: run
 	});
 
@@ -36,6 +40,8 @@ export function load()
 		element: $("#beta-input"),
 		name: "$\\beta$",
 		value: 1.1016,
+		minValue: 0,
+		maxValue: 2,
 		onEnter: run
 	});
 
@@ -43,6 +49,7 @@ export function load()
 		element: $("#alpha-input"),
 		name: "$\\alpha$",
 		value: .4022,
+		minValue: 0,
 		onEnter: run
 	});
 
@@ -57,6 +64,8 @@ export function load()
 		element: $("#kappa-input"),
 		name: "$\\kappa$",
 		value: .0013,
+		minValue: -.5,
+		maxValue: .25,
 		onEnter: run
 	});
 
@@ -64,6 +73,8 @@ export function load()
 		element: $("#mu-input"),
 		name: "$\\mu$",
 		value: .019,
+		minValue: -1,
+		maxValue: .1,
 		onEnter: run
 	});
 
@@ -71,6 +82,8 @@ export function load()
 		element: $("#gamma-input"),
 		name: "$\\gamma$",
 		value: .0005,
+		minValue: -.02,
+		maxValue: 2,
 		onEnter: run
 	});
 

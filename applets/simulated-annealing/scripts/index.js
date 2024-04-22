@@ -24,6 +24,7 @@ export function load()
 		element: $("#resolution-input"),
 		name: "Resolution",
 		value: 1000,
+		minValue: 500,
 		maxValue: 3000,
 		onEnter: run
 	});
@@ -32,6 +33,7 @@ export function load()
 		element: $("#num-nodes-input"),
 		name: "Nodes",
 		value: 20,
+		minValue: 4,
 		maxValue: 100,
 		onEnter: run
 	});

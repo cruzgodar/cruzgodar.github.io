@@ -23,6 +23,7 @@ export function load()
 		element: $("#resolution-input"),
 		name: "Resolution",
 		value: 2000,
+		minValue: 500,
 		maxValue: 4000,
 		onEnter: run
 	});
@@ -31,6 +32,7 @@ export function load()
 		element: $("#grid-size-input"),
 		name: "Triangle Size",
 		value: 27,
+		minValue: 9,
 		maxValue: 243,
 		onEnter: run
 	});
@@ -39,6 +41,7 @@ export function load()
 		element: $("#num-colors-input"),
 		name: "Colors",
 		value: 3,
+		minValue: 1,
 		onEnter: run
 	});
 

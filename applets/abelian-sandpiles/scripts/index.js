@@ -12,6 +12,7 @@ export function load()
 		element: $("#num-grains-input"),
 		name: "Grains",
 		value: 100000,
+		minValue: 100,
 		maxValue: 1000000,
 		onEnter: run,
 	});
@@ -20,6 +21,7 @@ export function load()
 		element: $("#computations-per-frame-input"),
 		name: "Computation Speed",
 		value: 10,
+		minValue: 1,
 		maxValue: 20,
 		onEnter: run,
 	});

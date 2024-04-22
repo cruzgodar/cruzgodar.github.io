@@ -111,7 +111,7 @@ export function setUpOnResize()
 
 export function equalizeAppletColumns()
 {
-	if (siteSettings.condensedApplets || aspectRatio < 1)
+	if (siteSettings.condensedApplets || aspectRatio < 1 || window.innerWidth < 750)
 	{
 		return;
 	}

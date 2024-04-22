@@ -19,6 +19,7 @@ export function load()
 		element: $("#resolution-input"),
 		name: "Resolution",
 		value: 1000,
+		minValue: 200,
 		maxValue: 2000,
 		onEnter: run,
 		onInput: changeResolution

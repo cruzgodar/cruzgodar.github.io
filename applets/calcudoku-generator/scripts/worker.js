@@ -42,12 +42,12 @@ function generateCalcudokuGrid()
 
 	for (;;)
 	{
-		let expandedACage = false;
-
 		// Go through the cages from smallest to largest, but in a random order for each size.
 		const cageOrder = shuffleArray([...Array(cages.length).keys()]);
 
 		cageOrder.sort((a, b) => cages[a][2].length - cages[b][2].length);
+
+		const oldCages = JSON.stringify(cages);
 
 
 		for (let i = 0; i < cageOrder.length; i++)
@@ -56,8 +56,6 @@ function generateCalcudokuGrid()
 
 			if (expandCages(cage) !== -1)
 			{
-				expandedACage = true;
-
 				// Shift the rest of the cages in the cage order down so that none is out of bounds.
 				for (let j = 0; j < cageOrder.length; j++)
 				{
@@ -98,7 +96,7 @@ function generateCalcudokuGrid()
 		// The program almost never ends this way, but if no cell
 		// can be expanded in the first place (this is before we've even
 		// thought about unique solutions), then there's no point in continuing.
-		if (expandedACage === false)
+		if (JSON.stringify(cages) === oldCages)
 		{
 			return;
 		}
@@ -355,7 +353,7 @@ function expandCages(cageToDestroy)
 		else
 		{
 			// Apparently this cell can't join with anything, so we're forced to move on.
-			return;
+			return -1;
 		}
 	}
 
@@ -395,7 +393,7 @@ function expandCages(cageToDestroy)
 		else
 		{
 			// Apparently this cell can't join with anything, so we're forced to move on.
-			return;
+			return -1;
 		}
 	}
 

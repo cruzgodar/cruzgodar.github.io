@@ -24,6 +24,7 @@ export function load()
 		element: $("#num-vertices-input"),
 		name: "Vertices",
 		value: 6,
+		minValue: 3,
 		maxValue: 10,
 		onEnter: run,
 	});
@@ -32,6 +33,7 @@ export function load()
 		element: $("#num-iterations-input"),
 		name: "Iterations",
 		value: 5,
+		minValue: 0,
 		maxValue: 7,
 		onEnter: run,
 	});

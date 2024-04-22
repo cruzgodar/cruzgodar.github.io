@@ -19,6 +19,7 @@ export function load()
 		element: $("#resolution-input"),
 		name: "Resolution",
 		value: 500,
+		minValue: 100,
 		maxValue: 1000,
 		onInput: generateNewField
 	});
@@ -27,6 +28,7 @@ export function load()
 		element: $("#max-particles-input"),
 		name: "Particles",
 		value: 10000,
+		minValue: 1000,
 		maxValue: 100000,
 		onInput: generateNewField
 	});
@@ -35,6 +37,7 @@ export function load()
 		element: $("#lifetime-input"),
 		name: "Particle Lifetime",
 		value: 150,
+		minValue: 50,
 		onInput: generateNewField
 	});
 

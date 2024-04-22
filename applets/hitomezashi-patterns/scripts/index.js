@@ -24,6 +24,7 @@ export function load()
 		element: $("#resolution-input"),
 		name: "Resolution",
 		value: 2000,
+		minValue: 500,
 		maxValue: 4000,
 		onEnter: run
 	});
@@ -32,6 +33,7 @@ export function load()
 		element: $("#grid-size-input"),
 		name: "Grid Size",
 		value: 50,
+		minValue: 10,
 		maxValue: 200,
 		onEnter: run,
 	});
@@ -40,6 +42,8 @@ export function load()
 		element: $("#row-prob-input"),
 		name: "Row Chance",
 		value: 0.5,
+		minValue: 0,
+		maxValue: 1,
 		onEnter: run,
 	});
 
@@ -47,6 +51,8 @@ export function load()
 		element: $("#col-prob-input"),
 		name: "Column Chance",
 		value: 0.5,
+		minValue: 0,
+		maxValue: 1,
 		onEnter: run,
 	});
 

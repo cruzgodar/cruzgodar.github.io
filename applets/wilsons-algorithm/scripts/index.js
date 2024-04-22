@@ -13,6 +13,7 @@ export function load()
 		element: $("#grid-size-input"),
 		name: "Grid Size",
 		value: 50,
+		minValue: 5,
 		maxValue: 200,
 		onEnter: run
 	});

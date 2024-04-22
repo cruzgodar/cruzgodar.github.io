@@ -25,8 +25,8 @@ export class BernoulliPercolation extends AnimationFrameApplet
 	gridSize;
 	resolution = 500;
 
-	threshhold;
-	lastThreshhold;
+	threshold;
+	lastthreshold;
 
 	doDrawDots;
 
@@ -43,7 +43,7 @@ export class BernoulliPercolation extends AnimationFrameApplet
 	edgeLengthPixels;
 
 	// Helps the animation run smoother.
-	roundRectFudgePixels = 4;
+	roundRectFudgePixels = 2;
 
 	constructor({ canvas })
 	{
@@ -72,13 +72,13 @@ export class BernoulliPercolation extends AnimationFrameApplet
 	run({
 		resolution = 2000,
 		gridSize = 50,
-		threshhold = 500,
+		threshold = 500,
 		doDrawDots = false
 	}) {
 		this.resolution = resolution;
 		this.gridSize = gridSize;
-		this.lastThreshhold = 0;
-		this.threshhold = threshhold;
+		this.lastthreshold = 0;
+		this.threshold = threshold;
 		this.doDrawDots = doDrawDots;
 
 		// Check for roundRect support.
@@ -86,6 +86,8 @@ export class BernoulliPercolation extends AnimationFrameApplet
 		{
 			this.drawDot = this.drawDotRoundRect;
 			this.drawEdge = this.drawEdgeRectangle;
+
+			this.roundRectFudgePixels = 0;
 
 			this.dotRadiusFraction = this.doDrawDots ? .35 : .5;
 			this.edgeWidthFraction = this.doDrawDots ? .2 : 0;
@@ -109,6 +111,11 @@ export class BernoulliPercolation extends AnimationFrameApplet
 		this.hueRangeLength = .45;
 
 		this.generateGrid();
+
+		if (!this.doDrawDots)
+		{
+			this.redrawEverything();
+		}
 
 		this.resume();
 	}
@@ -197,7 +204,7 @@ export class BernoulliPercolation extends AnimationFrameApplet
 					row !== this.gridSize - 1
 					&& !active.has(`${row + 1},${col}`)
 					&& !explored.has(`${row + 1},${col}`)
-					&& this.connections[row][col][1] <= this.threshhold
+					&& this.connections[row][col][1] <= this.threshold
 				) {
 					futureActive.add(`${row + 1},${col}`);
 				}
@@ -207,7 +214,7 @@ export class BernoulliPercolation extends AnimationFrameApplet
 					col !== this.gridSize - 1
 					&& !active.has(`${row},${col + 1}`)
 					&& !explored.has(`${row},${col + 1}`)
-					&& this.connections[row][col][0] <= this.threshhold
+					&& this.connections[row][col][0] <= this.threshold
 				) {
 					futureActive.add(`${row},${col + 1}`);
 				}
@@ -217,7 +224,7 @@ export class BernoulliPercolation extends AnimationFrameApplet
 					row !== 0
 					&& !active.has(`${row - 1},${col}`)
 					&& !explored.has(`${row - 1},${col}`)
-					&& this.connections[row - 1][col][1] <= this.threshhold
+					&& this.connections[row - 1][col][1] <= this.threshold
 				) {
 					futureActive.add(`${row - 1},${col}`);
 				}
@@ -227,7 +234,7 @@ export class BernoulliPercolation extends AnimationFrameApplet
 					col !== 0
 					&& !active.has(`${row},${col - 1}`)
 					&& !explored.has(`${row},${col - 1}`)
-					&& this.connections[row][col - 1][0] <= this.threshhold
+					&& this.connections[row][col - 1][0] <= this.threshold
 				) {
 					futureActive.add(`${row},${col - 1}`);
 				}
@@ -292,7 +299,12 @@ export class BernoulliPercolation extends AnimationFrameApplet
 
 		this.wilson.ctx.fillStyle = convertColor(...this.colors[i][j]);
 
-		this.wilson.ctx.fillRect(x, y,this.edgeLengthPixels, this.edgeLengthPixels);
+		this.wilson.ctx.fillRect(
+			x - this.roundRectFudgePixels / 2,
+			y - this.roundRectFudgePixels / 2,
+			this.edgeLengthPixels + this.roundRectFudgePixels,
+			this.edgeLengthPixels + this.roundRectFudgePixels
+		);
 	}
 
 	drawEdgeRectangle(i, j, index, remove = false)
@@ -444,14 +456,14 @@ export class BernoulliPercolation extends AnimationFrameApplet
 
 				if (
 					col !== this.gridSize - 1
-					&& this.connections[row][col][0] <= this.threshhold
+					&& this.connections[row][col][0] <= this.threshold
 				) {
 					this.drawEdge(row, col, 0);
 				}
 
 				if (
 					row !== this.gridSize - 1
-					&& this.connections[row][col][1] <= this.threshhold
+					&& this.connections[row][col][1] <= this.threshold
 				) {
 					this.drawEdge(row, col, 1);
 				}
@@ -560,14 +572,14 @@ export class BernoulliPercolation extends AnimationFrameApplet
 
 					if (
 						col !== this.gridSize - 1
-						&& this.connections[row][col][0] <= this.threshhold
+						&& this.connections[row][col][0] <= this.threshold
 					) {
 						this.drawEdge(row, col, 0);
 					}
 
 					if (
 						row !== this.gridSize - 1
-						&& this.connections[row][col][1] <= this.threshhold
+						&& this.connections[row][col][1] <= this.threshold
 					) {
 						this.drawEdge(row, col, 1);
 					}
@@ -586,14 +598,13 @@ export class BernoulliPercolation extends AnimationFrameApplet
 		this.edgeWidthPixels = Math.floor(this.resolution / this.gridSize * this.edgeWidthFraction);
 		this.edgeLengthPixels = Math.floor(this.resolution / this.gridSize);
 
-		// this.drawDot = this.doDrawDots ? this.drawDotCircle : this.drawDotRectangle;
-		// this.drawEdge = this.doDrawDots ? this.drawEdgeRectangle : this.drawEdgeNone;
-
 		const oldDrawDot = this.drawDot;
+		const oldDrawEdge = this.drawEdge;
 		
 		if (forceRectangles)
 		{
 			this.drawDot = this.drawDotRectangle;
+			this.drawEdge = this.drawEdgeNone;
 		}
 
 		for (let i = 0; i < this.gridSize; i++)
@@ -604,14 +615,14 @@ export class BernoulliPercolation extends AnimationFrameApplet
 
 				if (
 					j !== this.gridSize - 1
-					&& this.connections[i][j][0] <= this.threshhold
+					&& this.connections[i][j][0] <= this.threshold
 				) {
 					this.drawEdge(i, j, 0);
 				}
 
 				if (
 					i !== this.gridSize - 1
-					&& this.connections[i][j][1] <= this.threshhold
+					&& this.connections[i][j][1] <= this.threshold
 				) {
 					this.drawEdge(i, j, 1);
 				}
@@ -619,10 +630,25 @@ export class BernoulliPercolation extends AnimationFrameApplet
 		}
 
 		this.drawDot = oldDrawDot;
+		this.drawEdge = oldDrawEdge;
 	}
 
 	async switchDrawEdges()
 	{
+		if (!this.wilson.ctx.roundRect)
+		{
+			this.doDrawDots = !this.doDrawDots;
+
+			this.drawDot = this.doDrawDots ? this.drawDotCircle : this.drawDotRectangle;
+			this.drawEdge = this.doDrawDots ? this.drawEdgeRectangle : this.drawEdgeNone;
+
+			this.roundRectFudgePixels = 0;
+
+			this.redrawEverything();
+
+			return;
+		}
+
 		const dummy = { t: 0 };
 
 		if (this.doDrawDots)
@@ -645,8 +671,6 @@ export class BernoulliPercolation extends AnimationFrameApplet
 				complete: () =>
 				{
 					this.roundRectFudgePixels = 0;
-					this.dotRadiusFraction = .5;
-					this.edgeWidthFraction = .5;
 					this.redrawEverything(true);
 				}
 			}).finished;
@@ -679,7 +703,7 @@ export class BernoulliPercolation extends AnimationFrameApplet
 
 	prepareFrame()
 	{
-		if (this.threshhold !== this.lastThreshhold)
+		if (this.threshold !== this.lastthreshold)
 		{
 			this.needNewFrame = true;
 		}
@@ -687,13 +711,13 @@ export class BernoulliPercolation extends AnimationFrameApplet
 
 	drawFrame()
 	{
-		const newThreshhold = this.threshhold;
+		const newthreshold = this.threshold;
 
-		if (this.threshhold > this.lastThreshhold)
+		if (this.threshold > this.lastthreshold)
 		{
-			for (let i = this.lastThreshhold + 1; i <= newThreshhold; i++)
+			for (let i = this.lastthreshold + 1; i <= newthreshold; i++)
 			{
-				this.threshhold = i - 1;
+				this.threshold = i - 1;
 
 				for (let j = 0; j < this.connectionsByValue[i - 1].length; j++)
 				{
@@ -706,9 +730,9 @@ export class BernoulliPercolation extends AnimationFrameApplet
 
 		else
 		{
-			for (let i = this.lastThreshhold; i > newThreshhold; i--)
+			for (let i = this.lastthreshold; i > newthreshold; i--)
 			{
-				this.threshhold = i - 1;
+				this.threshold = i - 1;
 
 				for (let j = 0; j < this.connectionsByValue[i - 1].length; j++)
 				{
@@ -719,7 +743,7 @@ export class BernoulliPercolation extends AnimationFrameApplet
 			this.splitComponents();
 		}
 
-		this.threshhold = newThreshhold;
-		this.lastThreshhold = this.threshhold;
+		this.threshold = newthreshold;
+		this.lastthreshold = this.threshold;
 	}
 }

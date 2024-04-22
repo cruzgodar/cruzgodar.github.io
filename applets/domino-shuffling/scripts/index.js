@@ -24,6 +24,7 @@ export function load()
 		element: $("#resolution-input"),
 		name: "Resolution",
 		value: 2000,
+		minValue: 200,
 		maxValue: 3000,
 		onEnter: run,
 	});
@@ -32,6 +33,7 @@ export function load()
 		element: $("#diamond-size-input"),
 		name: "Diamond Size",
 		value: 20,
+		minValue: 2,
 		maxValue: 200,
 		onEnter: run,
 	});

@@ -33,6 +33,7 @@ export function load()
 		element: $("#resolution-input"),
 		name: "Resolution",
 		value: 2000,
+		minValue: 500,
 		maxValue: 4000,
 		onEnter: run
 	});
@@ -41,6 +42,7 @@ export function load()
 		element: $("#array-size-input"),
 		name: "Array Size",
 		value: 512,
+		minValue: 16,
 		maxValue: 2048,
 		onEnter: run
 	});

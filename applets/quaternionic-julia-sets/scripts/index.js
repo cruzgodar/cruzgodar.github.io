@@ -39,6 +39,7 @@ export function load()
 		element: $("#resolution-input"),
 		name: "Resolution",
 		value: 400,
+		minValue: 100,
 		maxValue: 800,
 		onInput: changeResolution
 	});

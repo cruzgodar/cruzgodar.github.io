@@ -25,6 +25,7 @@ export function load()
 		element: $("#resolution-input"),
 		name: "Resolution",
 		value: 1000,
+		minValue: 500,
 		maxValue: 4000,
 		onEnter: run,
 		onInput: changeResolution
@@ -34,6 +35,7 @@ export function load()
 		element: $("#grid-size-input"),
 		name: "Grid Size",
 		value: 200,
+		minValue: 10,
 		maxValue: 1500,
 		onEnter: run,
 	});

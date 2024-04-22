@@ -1,4 +1,4 @@
-Text
+A classic example of the boundary between order and chaos, Bernoulli percolation works by assigning values randomly between 0 and 1 to every edge in a square grid. By choosing only connecting edges with value below a threshold, then coloring the vertices and edges by the connected components, we see scattered and chaotic small components slowly be overtaken by larger ones as the threshold increases. When it's exactly 0.5, the system undergoes a phase transition, where the probability that a single component dominates (specifically, that there's an unbounded component on the infinite grid graph) switches from 0 to 1, and order overtakes chaos.
 	
 ### wilson
 
@@ -17,7 +17,7 @@ Text
 	###
 
 	### sliders
-		threshhold
+		threshold
 	###
 
 	### buttons

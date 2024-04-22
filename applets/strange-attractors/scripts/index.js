@@ -25,6 +25,7 @@ export function load()
 		element: $("#resolution-input"),
 		name: "Resolution",
 		value: 750,
+		minValue: 250,
 		maxValue: 1500,
 		onEnter: run
 	});
@@ -33,6 +34,7 @@ export function load()
 		element: $("#sigma-input"),
 		name: "$\\sigma$",
 		value: 10,
+		minValue: 5,
 		maxValue: 20,
 		onEnter: run
 	});
@@ -41,6 +43,7 @@ export function load()
 		element: $("#rho-input"),
 		name: "$\\rho$",
 		value: 28,
+		minValue: 10,
 		maxValue: 50,
 		onEnter: run
 	});
@@ -49,6 +52,7 @@ export function load()
 		element: $("#beta-input"),
 		name: "$\\beta$",
 		value: 2.67,
+		minValue: .6,
 		maxValue: 3.6,
 		onEnter: run
 	});

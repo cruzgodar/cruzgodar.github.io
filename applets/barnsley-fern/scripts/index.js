@@ -23,6 +23,7 @@ export function load()
 		element: $("#num-iterations-input"),
 		name: "Iterations (x1000)",
 		value: 10000,
+		minValue: 100,
 		maxValue: 100000,
 		onEnter: run,
 	});
