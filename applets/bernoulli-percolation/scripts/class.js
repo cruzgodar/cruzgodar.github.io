@@ -114,7 +114,7 @@ export class BernoulliPercolation extends AnimationFrameApplet
 
 		if (!this.doDrawDots)
 		{
-			this.redrawEverything();
+			this.redrawEverything(true);
 		}
 
 		this.resume();
@@ -605,6 +605,8 @@ export class BernoulliPercolation extends AnimationFrameApplet
 		{
 			this.drawDot = this.drawDotRectangle;
 			this.drawEdge = this.drawEdgeNone;
+
+			this.roundRectFudgePixels = 2 * Math.ceil(this.resolution / 2000);
 		}
 
 		for (let i = 0; i < this.gridSize; i++)
@@ -655,7 +657,7 @@ export class BernoulliPercolation extends AnimationFrameApplet
 		{
 			this.doDrawDots = false;
 
-			this.roundRectFudgePixels = 2;
+			this.roundRectFudgePixels = 2 * Math.ceil(this.resolution / 2000);
 
 			await anime({
 				targets: dummy,
