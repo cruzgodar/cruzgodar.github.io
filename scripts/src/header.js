@@ -81,9 +81,13 @@ export function addHeader()
 
 		const element = document.body.querySelector("#header-theme-button");
 
-		addHoverEvent(element);
 
-		element.addEventListener("click", () => toggleDarkTheme({}));
+
+		element.addEventListener("click", e =>
+		{
+			e.preventDefault();
+			toggleDarkTheme({});
+		});
 
 
 

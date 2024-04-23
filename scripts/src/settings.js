@@ -283,15 +283,22 @@ function handleEasterEgg()
 
 	clearTimeout(timeoutId);
 
-	timeoutId = setTimeout(() => themeToggles = 0, 250);
+	timeoutId = setTimeout(() => themeToggles = 0, 300);
 	
-	if (themeToggles >= 7 && !shownEasterEgg)
+	if (themeToggles >= 8 && !shownEasterEgg)
 	{
 		shownEasterEgg = true;
 
 		clearTimeout(timeoutId);
 
 		document.body.querySelector("#header-theme-button").innerHTML = "boo";
+
+		addStyle(`
+			#banner, img
+			{
+				filter: brightness(max(calc(var(--extra-brightness) / 10), 1)) saturate(var(--extra-brightness)) contrast(var(--extra-brightness)) hue-rotate(calc(var(--extra-brightness) * 5deg));
+			}
+		`, false);
 
 		const dummy = { t: 1 };
 
@@ -310,6 +317,8 @@ function handleEasterEgg()
 		const startingLowContrast = siteSettings.darkTheme
 			? "lch(74.78% 0 0)"
 			: "lch(40.73% 0 0)";
+
+		document.documentElement.style.filter = "brightness(1)";
 
 		anime({
 			targets: dummy,
@@ -338,7 +347,10 @@ function handleEasterEgg()
 					`color-mix(in lch, ${startingLowContrast} ${dummy.t * 100}%, lch(79.24% 134.33 134.57))`
 				);
 
-				document.documentElement.style.filter = `brightness(${2 - dummy.t})`;
+				rootElement.style.setProperty(
+					"--extra-brightness",
+					(1 - dummy.t) * 10 + 1
+				);
 			}
 		});
 	}
