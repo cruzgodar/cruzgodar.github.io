@@ -305,9 +305,9 @@ We'll have more to say about unitary matrices later on, but for now, let's see a
 	$$
 		\left| \left| A\vec{v} \right| \right|^2 &= \left| \left| c_1 \vec{v_1} + \cdots + c_n \vec{v_n} \right| \right|^2
 
-		&= \left| \left| c_1 \right| \right|^2 \left| \left| \vec{v_1} \right| \right|^2 + \cdots + \left| \left| c_n \right| \right|^2 \left| \left| \vec{v_n} \right| \right|^2
+		&= \left| c_1 \right|^2 \left| \left| \vec{v_1} \right| \right|^2 + \cdots + \left| c_n \right|^2 \left| \left| \vec{v_n} \right| \right|^2
 
-		&= \left| \left| c_1 \right| \right|^2 + \cdots + \left| \left| c_n \right| \right|^2
+		&= \left| c_1 \right|^2 + \cdots + \left| c_n \right|^2
 
 		&= \left| \left| \vec{v} \right| \right|^2.
 	$$
