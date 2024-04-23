@@ -81,7 +81,7 @@ export function addHeader()
 
 		const element = document.body.querySelector("#header-theme-button");
 
-
+		addHoverEvent(element);
 
 		element.addEventListener("click", e =>
 		{
