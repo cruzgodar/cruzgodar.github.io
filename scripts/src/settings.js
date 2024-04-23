@@ -28,6 +28,8 @@ const rootElement = document.querySelector(":root");
 export const metaThemeColorElement = document.querySelector("#theme-color-meta");
 
 
+let themeToggles = 0;
+
 
 const params = new URLSearchParams(window.location.search);
 
@@ -169,6 +171,11 @@ export async function toggleDarkTheme({ noAnimation = false, force = false })
 		return;
 	}
 
+	if (handleEasterEgg())
+	{
+		return;
+	}
+
 	siteSettings.darkTheme = !siteSettings.darkTheme;
 
 	recreateDesmosGraphs();
@@ -262,4 +269,79 @@ export function condenseApplet()
 	{
 		downloadButtonElement.parentNode.parentNode.style.display = "none";
 	}
+}
+
+
+
+let timeoutId;
+
+let shownEasterEgg = false;
+
+function handleEasterEgg()
+{
+	themeToggles++;
+
+	clearTimeout(timeoutId);
+
+	timeoutId = setTimeout(() => themeToggles = 0, 250);
+	
+	if (themeToggles >= 7 && !shownEasterEgg)
+	{
+		shownEasterEgg = true;
+
+		clearTimeout(timeoutId);
+
+		document.body.querySelector("#header-theme-button").innerHTML = "boo";
+
+		const dummy = { t: 1 };
+
+		const startingBackground = siteSettings.darkTheme
+			? "lch(8.25% 0 0)"
+			: "lch(100% 0 0)";
+
+		const startingHighContrast = siteSettings.darkTheme
+			? "lch(100% 23.2 0)"
+			: "lch(0% 0 0)";
+
+		const startingNormalContrast = siteSettings.darkTheme
+			? "lch(83.48% 0 0)"
+			: "lch(27.09% 0 0)";
+
+		const startingLowContrast = siteSettings.darkTheme
+			? "lch(74.78% 0 0)"
+			: "lch(40.73% 0 0)";
+
+		anime({
+			targets: dummy,
+			t: 0,
+			duration: 2000,
+			easing: "easeOutQuad",
+			update: () =>
+			{
+				rootElement.style.setProperty(
+					"--background",
+					`color-mix(in lch, ${startingBackground} ${dummy.t * 100}%, lch(46.62% 108.32 40.84))`
+				);
+
+				rootElement.style.setProperty(
+					"--high-contrast",
+					`color-mix(in lch, ${startingHighContrast} ${dummy.t * 100}%, lch(79.24% 134.33 134.57))`
+				);
+
+				rootElement.style.setProperty(
+					"--normal-contrast",
+					`color-mix(in lch, ${startingNormalContrast} ${dummy.t * 100}%, lch(79.24% 134.33 134.57))`
+				);
+
+				rootElement.style.setProperty(
+					"--low-contrast",
+					`color-mix(in lch, ${startingLowContrast} ${dummy.t * 100}%, lch(79.24% 134.33 134.57))`
+				);
+
+				document.documentElement.style.filter = `brightness(${2 - dummy.t})`;
+			}
+		});
+	}
+
+	return shownEasterEgg;
 }
