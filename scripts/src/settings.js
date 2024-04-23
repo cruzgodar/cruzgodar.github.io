@@ -294,7 +294,7 @@ function handleEasterEgg()
 		document.body.querySelector("#header-theme-button").innerHTML = "boo";
 
 		addStyle(`
-			#banner, img
+			#banner, img, canvas
 			{
 				filter: brightness(max(calc(var(--extra-brightness) / 10), 1)) saturate(var(--extra-brightness)) contrast(var(--extra-brightness)) hue-rotate(calc(var(--extra-brightness) * 5deg));
 			}
