@@ -1,0 +1,61 @@
+### nav-buttons
+
+In the first part of the course, we studied bases of eigenvectors, and in the second part, orthonormal bases. These two notions are somewhat in conflict: while we can always construct an orthonormal basis for a vector space with the Gram-Schmidt process, applying that to a basis of eigenvectors for a diagonalizable matrix generally won't preserve the fact that they're eigenvectors. What we'll explore in this last part of the course is the situation in which we can get the best of both worlds --- an orthonormal basis of eigenvectors. Without any more preliminaries, let's state and prove the theorem that characterizes exactly when this is possible.
+
+### thm "The Real Spectral Theorem"
+
+	A matrix $A$ with real entries has an orthonormal basis of eigenvectors with real eigenvalues if and only if $A$ is symmetric (i.e. $A^T = A$).
+
+###
+
+### pf
+
+	To begin, let's show that if $A$ has an orthonormal basis $\left\{ \vec{v_1}, ..., \vec{v_n} \right\}$ of eigenvectors, then it must be symmetric. This is just a direct computation: we know $A = BDB^{-1}$, but $B$ must be a unitary matrix, and so $B^{-1} = B^T$. Then
+
+	$$
+		A^T &= \left( BDB^T \right)^T
+
+		&= \left( B^T \right)^T D^T B^T
+
+		&= BDB^T
+
+		&= A,
+	$$
+
+	so $A$ is symmetric.
+
+	The other direction is a little more complicated. We'll start by showing that if $A$ is a symmetric matrix with real entries, then all of its eigenvalues must be real. Let $\vec{v} \in #C#^n$ be an eigenvector with eigenvalue $\lambda \in #C#$ --- we have to assume both are complex since we haven't yet shown that they have to be real. Multiplying $A$ on the right by $\vec{v}$ and the left by $\overline{\vec{v}}^T$, we have
+
+	$$
+		\overline{\vec{v}^T} A \vec{v} &= \overline{\vec{v}^T} \lambda \vec{v}
+
+		&= \lambda \left( \vec{v} \bullet \overline{\vec{v}} \right).
+	$$
+
+	Now $\vec{v} \bullet \overline{\vec{v}}$ is a real number, since
+
+	$$
+		\overline{\vec{v} \bullet \overline{\vec{v}}} &= \overline{\vec{v}} \bullet \vec{v}
+
+		&= \vec{v} \bullet \overline{\vec{v}},
+	$$
+
+	and the same is true for $\overline{\vec{v}^T} A \vec{v}$:
+
+	$$
+		\overline{\overline{\vec{v}^T} A \vec{v}} &= \vec{v}^T \overline{A} \overline{\vec{v}}
+
+		&= \vec{v}^T A \overline{\vec{v}}
+
+		&= \vec{v}^T A^T \overline{\vec{v}}
+
+		&= \left( \overline{\vec{v}}^T A \vec{v} \right)^T
+
+		&= \overline{\vec{v}}^T A \vec{v}.
+	$$
+
+	All that is to say that $\lambda$ itself must also be real. It remains to show that $A$ is diagonalizable and that all its eigenvectors are orthonormal.
+
+###
+
+### nav-buttons

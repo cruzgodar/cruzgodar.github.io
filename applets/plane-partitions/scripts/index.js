@@ -19,6 +19,7 @@ export function load()
 		element: $("#resolution-input"),
 		name: "Resolution",
 		value: 2000,
+		minValue: 500,
 		maxValue: 4000,
 		onInput: changeResolution
 	});
@@ -66,12 +67,14 @@ export function load()
 	const addArrayTextarea = new Textarea({
 		element: $("#add-array-textarea"),
 		name: "Array",
+		allowEnter: true,
 		onEnter: addArray
 	});
 
 	const editArrayTextarea = new Textarea({
 		element: $("#edit-array-textarea"),
 		name: "Array",
+		allowEnter: true,
 		onEnter: editArray
 	});
 

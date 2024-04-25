@@ -8,11 +8,13 @@ export class Textarea extends InputElement
 		element,
 		name,
 		value = "",
+		allowEnter = false,
 		onInput = () => {},
 		onEnter = () => {},
 	}) {
 		super({ element, name });
 		this.value = value;
+		this.allowEnter = allowEnter;
 		this.onInput = onInput;
 		this.onEnter = onEnter;
 		
@@ -24,6 +26,11 @@ export class Textarea extends InputElement
 		{
 			if (e.key === "Enter")
 			{
+				if (this.allowEnter && !(e.shiftKey || e.metaKey || e.ctrlKey))
+				{
+					return;
+				}
+				
 				e.preventDefault();
 				
 				if (!this.disabled)

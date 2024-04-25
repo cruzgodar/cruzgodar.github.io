@@ -694,7 +694,8 @@ export const sitemap =
 			"/teaching/uo/342/notes/3-intro-to-des/",
 			"/teaching/uo/342/notes/4-the-dot-product/",
 			"/teaching/uo/342/notes/5-least-squares/",
-			"/teaching/uo/342/notes/6-inner-product-spaces/"
+			"/teaching/uo/342/notes/6-inner-product-spaces/",
+			"/teaching/uo/342/notes/7-the-real-spectral-theorem/"
 		]
 	},
 		
@@ -767,6 +768,15 @@ export const sitemap =
 	"/teaching/uo/342/notes/6-inner-product-spaces/":
 	{
 		"title": "Section 6: Inner Product Spaces",
+		
+		"parent": "/teaching/uo/342/",
+		
+		"children": []
+	},
+	
+	"/teaching/uo/342/notes/7-the-real-spectral-theorem/":
+	{
+		"title": "Section 7: The Real Spectral Theorem",
 		
 		"parent": "/teaching/uo/342/",
 		
