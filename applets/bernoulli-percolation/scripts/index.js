@@ -26,6 +26,7 @@ export function load()
 		value: 25,
 		minValue: 1,
 		maxValue: 200,
+		onInput: run,
 		onEnter: run,
 	});
 
