@@ -18,7 +18,7 @@ if (closeButton)
 {
 	addHoverEvent(closeButton);
 
-	closeButton.addEventListener("click", hideCard);
+	closeButton.addEventListener("click", () => hideCard());
 
 	document.documentElement.addEventListener("keydown", (e) =>
 	{
