@@ -1,5 +1,5 @@
 import { setBannerMaxScroll } from "./banners.js";
-import { resizeCard } from "./cards.js";
+import { currentCard, resizeCard } from "./cards.js";
 import { headerElement } from "./header.js";
 import {
 	$,
@@ -99,6 +99,24 @@ export function onResize()
 		{
 			element.style.width = `${oneImageLinkWidth}px`;
 		});
+	}
+
+
+
+	// Handle images in cards.
+
+	if (currentCard)
+	{
+		const image = currentCard?.querySelector("img");
+
+		if (image)
+		{
+			const rectHeight = currentCard.getBoundingClientRect().height;
+			const imageHeight = image.getBoundingClientRect().height;
+			const margin = window.innerWidth <= 500 ? 8 : 16;
+
+			image.style.maxHeight = `calc(100vh - ${rectHeight - imageHeight + 2 * margin}px)`;
+		}
 	}
 }
 

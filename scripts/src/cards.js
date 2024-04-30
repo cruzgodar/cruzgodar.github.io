@@ -10,7 +10,7 @@ export let cardIsAnimating = false;
 
 const container = document.querySelector("#card-container");
 
-let currentCard;
+export let currentCard;
 
 const closeButton = document.querySelector("#card-close-button");
 
@@ -85,6 +85,18 @@ export async function showCard(id, animationTime = cardAnimationTime)
 	else
 	{
 		container.style.justifyContent = "center";
+	}
+
+
+
+	const image = currentCard.querySelector("img");
+
+	if (image)
+	{
+		const imageHeight = image.getBoundingClientRect().height;
+		const margin = window.innerWidth <= 500 ? 8 : 16;
+
+		image.style.maxHeight = `calc(100vh - ${rect.height - imageHeight + 2 * margin}px)`;
 	}
 
 

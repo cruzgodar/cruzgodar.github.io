@@ -12,7 +12,6 @@ section
 	grid-template-columns: repeat(2, 1fr);
 	
 	grid-gap: 10px;
-	overflow-y: hidden !important;
 }
 
 .page

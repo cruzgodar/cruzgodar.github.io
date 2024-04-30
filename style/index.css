@@ -379,13 +379,21 @@ mjx-container
 	margin-left: 16px;
 	margin-right: 16px;
 	
-	margin-top: calc(16px + 100vh * .05);
-	margin-bottom: calc(16px + 100vh * .05);
-	
 	border-radius: 16px;
 	
 	background-color: var(--background);
 	box-shadow: 0px 0px 16px 0px rgba(0, 0, 0, .3);
+}
+
+@media (max-width: 500px)
+{
+	.card
+	{
+		margin-left: 8px;
+		margin-right: 8px;
+
+		padding: 8px;
+	}
 }
 
 .card .body-text, .card .section-text, .card .heading-text
