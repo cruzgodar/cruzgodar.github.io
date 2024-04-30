@@ -378,6 +378,9 @@ mjx-container
 	
 	margin-left: 16px;
 	margin-right: 16px;
+
+	margin-top: calc(16px + 5vh);
+	margin-bottom: calc(16px + 5vh);
 	
 	border-radius: 16px;
 	
@@ -391,6 +394,9 @@ mjx-container
 	{
 		margin-left: 8px;
 		margin-right: 8px;
+
+		margin-top: calc(8px + 5vh);
+		margin-bottom: calc(8px + 5vh);
 
 		padding: 8px;
 	}
