@@ -107,7 +107,7 @@ export function onResize()
 
 	if (currentCard)
 	{
-		const image = currentCard?.querySelector("img");
+		const image = currentCard.querySelector("img");
 
 		if (image)
 		{
