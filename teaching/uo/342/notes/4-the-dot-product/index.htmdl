@@ -458,7 +458,7 @@ $$
 	\vec{v} = c_1 \vec{e_1} + c_2 \vec{e_2} + c_3 \vec{e_3},
 $$
 
-we can think about the vector $c_1 \vec{v_1}$ as being the vector in $\span\left\{ \vec{v_1} \right\}$ that's closest to $\vec{v}$. Similarly, $c_1 \vec{v_1} + c_3 \vec{v_3}$ is the vector in $\span\left\{ \vec{v_1}, \vec{v_3} \right\}$ closest to $\vec{v}$, where *closest* means minimizing $\left| \left| \vec{v} - \vec{w} \right| \right|$ across all $\vec{w}$ in a subspace. <a href="https://www.desmos.com/3d/d1f12d74a5">This 3D Desmos graph</a> shows the red vector
+we can think about the vector $c_1 \vec{e_1}$ as being the vector in $\span\left\{ \vec{v_1} \right\}$ that's closest to $\vec{v}$. Similarly, $c_1 \vec{e_1} + c_3 \vec{e_3}$ is the vector in $\span\left\{ \vec{e_1}, \vec{e_3} \right\}$ closest to $\vec{v}$, where *closest* means minimizing $\left| \left| \vec{v} - \vec{w} \right| \right|$ across all $\vec{w}$ in a subspace. <a href="https://www.desmos.com/3d/d1f12d74a5">This 3D Desmos graph</a> shows the red vector
 
 $$
 	\vec{v} = [[ 2 ; 1 ; 3 ]] \in #R#^3
