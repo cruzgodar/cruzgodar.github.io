@@ -1,4 +1,4 @@
-import { getMinGlslString } from "/scripts/applets/applet.js";
+import { getFloatGlsl, getMinGlslString, getVectorGlsl } from "/scripts/applets/applet.js";
 import { RaymarchApplet } from "/scripts/applets/raymarchApplet.js";
 import { aspectRatio } from "/scripts/src/layout.js";
 import { addTemporaryListener } from "/scripts/src/main.js";
@@ -32,8 +32,7 @@ export class HopfFibration extends RaymarchApplet
 			uniform vec3 forwardVec;
 			uniform vec3 rightVec;
 			uniform vec3 upVec;
-
-			uniform int imageSize;
+			uniform float fiberThickness;
 			
 			uniform float focalLength;
 			
@@ -58,7 +57,7 @@ export class HopfFibration extends RaymarchApplet
 						length(movedPos - posNComponent * normal) - radius,
 						posNComponent
 					)
-				) - 0.1;
+				) - fiberThickness;
 			}
 			
 			float distanceEstimator(vec3 pos)
@@ -111,7 +110,7 @@ export class HopfFibration extends RaymarchApplet
 			{
 				vec3 rayDirectionVec = normalize(startPos - cameraPos) * .5;
 				
-				float epsilon;
+				float epsilon = .00001;
 				
 				float t = 0.0;
 
@@ -120,8 +119,6 @@ export class HopfFibration extends RaymarchApplet
 					vec3 pos = startPos + t * rayDirectionVec;
 					
 					float distanceToScene = distanceEstimator(pos);
-					
-					epsilon = max(.0000006, 0.01 * t / min(float(imageSize), 500.0));
 					
 					if (distanceToScene < epsilon)
 					{
@@ -148,6 +145,8 @@ export class HopfFibration extends RaymarchApplet
 				gl_FragColor = vec4(finalColor.xyz, 1.0);
 			}
 		`;
+
+		console.log(fragShaderSource);
 
 
 
@@ -193,7 +192,7 @@ export class HopfFibration extends RaymarchApplet
 		this.wilson.render.initUniforms([
 			"aspectRatioX",
 			"aspectRatioY",
-			"imageSize",
+			"fiberThickness",
 			"cameraPos",
 			"imagePlaneCenterPos",
 			"forwardVec",
@@ -231,11 +230,6 @@ export class HopfFibration extends RaymarchApplet
 				this.imageWidth / this.imageHeight
 			);
 		}
-		
-		this.wilson.gl.uniform1i(
-			this.wilson.uniforms["imageSize"],
-			this.imageSize
-		);
 
 		this.wilson.gl.uniform3fv(
 			this.wilson.uniforms["cameraPos"],
@@ -267,6 +261,11 @@ export class HopfFibration extends RaymarchApplet
 			this.focalLength
 		);
 
+		this.wilson.gl.uniform1f(
+			this.wilson.uniforms["fiberThickness"],
+			.05
+		);
+
 
 
 		const boundFunction = () => this.changeResolution();
@@ -281,7 +280,91 @@ export class HopfFibration extends RaymarchApplet
 		this.resume();
 	}
 
+	// Point is a length-3 array containing xyz coordinates.
+	// This returns [center, normal, radius].
+	s2PointToCircle(point)
+	{
+		if (Math.abs(point[2]) === 1)
+		{
+			throw new Error("Don't pass the north pole to the projection function!");
+		}
 
+		const scalingFactor = 1 / Math.sqrt(2 * (point[2] + 1));
+
+		// We start by choosing a point on the fiber
+		// with maximum w component, which will help later.
+		const p = [
+			0,
+			scalingFactor * point[0],
+			scalingFactor * point[1],
+			scalingFactor * (1 + point[2]),
+		];
+
+		// Next we'll look at the image of this point under the projection.
+		const projectedP = [
+			p[0] / (1 - p[3]),
+			p[1] / (1 - p[3]),
+			p[2] / (1 - p[3])
+		];
+
+		// Now we'll do the same for the antipode to p. Since we started with
+		// a point with maximal w-coordinate, this is guaranteed to be antipodal on the output too.
+		const projectedPAntipode = [
+			-p[0] / (1 + p[3]),
+			-p[1] / (1 + p[3]),
+			-p[2] / (1 + p[3])
+		];
+
+		const center = [
+			(projectedP[0] + projectedPAntipode[0]) / 2,
+			(projectedP[1] + projectedPAntipode[1]) / 2,
+			(projectedP[2] + projectedPAntipode[2]) / 2
+		];
+
+		// Now the radius is the distance between projectedP and center.
+		const radius = Math.sqrt(
+			(projectedP[0] - center[0]) ** 2
+			+ (projectedP[1] - center[1]) ** 2
+			+ (projectedP[2] - center[2]) ** 2
+		);
+
+		// To find the normal vector, we'll start by getting a third point on the circle
+		// that's guaranteed to not be collinear with these two.
+		const otherP = [
+			scalingFactor * (1 + point[2]),
+			-scalingFactor * point[1],
+			scalingFactor * point[0],
+			0
+		];
+
+		const projectedOtherP = [
+			otherP[0] / (1 - otherP[3]),
+			otherP[1] / (1 - otherP[3]),
+			otherP[2] / (1 - otherP[3])
+		];
+
+		// Finally, we can get a normal vector by taking a cross product
+		// of these two.
+		const crossProduct = [
+			projectedP[1] * projectedOtherP[2] - projectedP[2] * projectedOtherP[1],
+			projectedP[2] * projectedOtherP[0] - projectedP[0] * projectedOtherP[2],
+			projectedP[0] * projectedOtherP[1] - projectedP[1] * projectedOtherP[0]
+		];
+
+		const magnitude = Math.sqrt(
+			crossProduct[0] * crossProduct[0]
+			+ crossProduct[1] * crossProduct[1]
+			+ crossProduct[2] * crossProduct[2]
+		);
+
+		const normal = [
+			crossProduct[0] / magnitude,
+			crossProduct[1] / magnitude,
+			crossProduct[2] / magnitude
+		];
+
+		return [center, normal, radius];
+	}
 
 	getDistanceEstimatorGlsl()
 	{
@@ -289,12 +372,36 @@ export class HopfFibration extends RaymarchApplet
 		let index = 3;
 
 		glsl += /* glsl */`
-			float distance1 = torusDistance(pos, vec3(0), vec3(0, 0, 1), 1.0);
-			float distance2 = torusDistance(pos, vec3(0), vec3(0, 1, 0), 1.0);
+			float distance1 = torusDistance(pos, vec3(0.0, 0.0, 0.0), vec3(1.0, 0.0, 1.0), 1.0);
+			float distance2 = length(pos.yz) - fiberThickness;
 		`;
 
+		for (let i = 0; i < this.numLatitudes; i++)
+		{
+			const phi = (i + 1) / (this.numLatitudes + 1) * Math.PI;
+
+			for (let j = 0; j < this.numLongitudesPerLatitude; j++)
+			{
+				const theta = j / this.numLongitudesPerLatitude * 2 * Math.PI;
+
+				const s2Point = [
+					Math.sin(phi) * Math.cos(theta),
+					Math.sin(phi) * Math.sin(theta),
+					Math.cos(phi)
+				];
+
+				const [center, normal, radius] = this.s2PointToCircle(s2Point);
+
+				glsl += /* glsl */`
+					float distance${index} = torusDistance(pos, ${getVectorGlsl(center)}, ${getVectorGlsl(normal)}, ${getFloatGlsl(radius)});
+				`;
+
+				index++;
+			}
+		}
+
 		glsl += /* glsl */`
-			float minDistance = ${getMinGlslString("distance", 2)};
+			float minDistance = ${getMinGlslString("distance", index - 1)};
 		`;
 
 		return glsl;
@@ -391,8 +498,6 @@ export class HopfFibration extends RaymarchApplet
 				this.imageWidth / this.imageHeight
 			);
 		}
-
-		this.wilson.gl.uniform1i(this.wilson.uniforms["imageSize"], this.imageSize);
 
 
 
