@@ -2,6 +2,7 @@ home Cruz Godar
 	gallery Gallery
 
 	applets Applets
+		hopf-fibration The Hopf Fibration
 		bernoulli-percolation Bernoulli Percolation
 		menger-sponge The Menger Sponge
 		game-of-life Conway's Game of Life
@@ -42,16 +43,6 @@ home Cruz Godar
 		abelian-sandpiles Abelian Sandpiles
 		wilsons-algorithm Wilson's Algorithm
 		julia-set-explorer Julia Set Explorer
-		
-		/projects/wilson Wilson
-			guide/1-getting-started Part 1: Getting Started
-			guide/2-draggables Part 2: Draggables
-			guide/3-parallelizing Part 3: Parallelizing
-			guide/4-hidden-canvases Part 4: Hidden Canvases
-			guide/5-fullscreen Part 5: Fullscreen
-			guide/6-interactivity Part 6: Interactivity
-			
-			docs Wilson Documentation
 	
 	teaching Teaching
 		uo/342 Math 342

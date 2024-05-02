@@ -27,8 +27,6 @@ $$
 $$
 
 gives us two new parameters to modify --- here, $a$ and $c$ are represented by the red and blue dots, respectively. Finally, we also use the secant method, an algorithm that predates Newton's method by thousands of years and doesn't even require taking a derivative. Its ability to find roots is markedly worse, and it's for that reason that the fractals it makes are often more intricate and interesting. Drag on the scene to move around, and either pinch on a touchscreen or use the scrollwheel on a mouse to zoom.
-	
-### wilson
 
 
 

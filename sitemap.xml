@@ -16,7 +16,13 @@
 		
 	<url>
 		<loc>https://www.cruzgodar.com/applets/</loc>
-		<lastmod>2024-4-26</lastmod>
+		<lastmod>2024-5-2</lastmod>
+		<priority>0.5</priority>
+	</url>
+		
+	<url>
+		<loc>https://www.cruzgodar.com/applets/hopf-fibration/</loc>
+		<lastmod>2024-5-2</lastmod>
 		<priority>0.5</priority>
 	</url>
 		
@@ -256,54 +262,6 @@
 		
 	<url>
 		<loc>https://www.cruzgodar.com/applets/julia-set-explorer/</loc>
-		<lastmod>2024-3-9</lastmod>
-		<priority>0.5</priority>
-	</url>
-		
-	<url>
-		<loc>https://www.cruzgodar.com/projects/wilson/</loc>
-		<lastmod>2024-3-9</lastmod>
-		<priority>0.5</priority>
-	</url>
-		
-	<url>
-		<loc>https://www.cruzgodar.com/projects/wilson/guide/1-getting-started/</loc>
-		<lastmod>2024-3-23</lastmod>
-		<priority>0.5</priority>
-	</url>
-		
-	<url>
-		<loc>https://www.cruzgodar.com/projects/wilson/guide/2-draggables/</loc>
-		<lastmod>2024-3-23</lastmod>
-		<priority>0.5</priority>
-	</url>
-		
-	<url>
-		<loc>https://www.cruzgodar.com/projects/wilson/guide/3-parallelizing/</loc>
-		<lastmod>2024-3-23</lastmod>
-		<priority>0.5</priority>
-	</url>
-		
-	<url>
-		<loc>https://www.cruzgodar.com/projects/wilson/guide/4-hidden-canvases/</loc>
-		<lastmod>2024-3-23</lastmod>
-		<priority>0.5</priority>
-	</url>
-		
-	<url>
-		<loc>https://www.cruzgodar.com/projects/wilson/guide/5-fullscreen/</loc>
-		<lastmod>2024-3-23</lastmod>
-		<priority>0.5</priority>
-	</url>
-		
-	<url>
-		<loc>https://www.cruzgodar.com/projects/wilson/guide/6-interactivity/</loc>
-		<lastmod>2024-3-23</lastmod>
-		<priority>0.5</priority>
-	</url>
-		
-	<url>
-		<loc>https://www.cruzgodar.com/projects/wilson/docs/</loc>
 		<lastmod>2024-3-9</lastmod>
 		<priority>0.5</priority>
 	</url>

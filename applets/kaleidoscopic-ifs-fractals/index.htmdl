@@ -3,8 +3,6 @@ In 2010, as graphics cards were becoming commonplace, a <a href="http://www.frac
 As interesting as the fractals is the technique used to render them --- <a href="http://blog.hvidtfeldts.net/index.php/2011/06/distance-estimated-3d-fractals-part-i/">raymarching</a>, an seldom-seen algorithm that's ideal for this purpose. It's not hard to implement, makes detailed images, and runs fast enough to render in real time. If you find yourself interested in creating 3D fractals, researching raymarching is the place to start.
 	
 Drag on the scene to look around. On a keyboard, use WASD to move, and on a touchscreen, hold with two fingers to move forward and three to move back.
-	
-### wilson
 
 
 

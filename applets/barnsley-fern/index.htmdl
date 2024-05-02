@@ -1,7 +1,5 @@
 Have you ever looked at a fern up close? The tiny leaves are exactly the same shape as the big ones. This is a textbook example of a fractal, and while a fern may seem firmly rooted in the physical world, it's just as naturally a product of math. Placing a tiny green dot on a canvas, repeatedly applying a simple kind of function (called an affine transformation) to it, and drawing a new dot in every place it visits, we wind up with the Barnsley fern, named after its creator. The function we apply may have been carefully engineered, but it's no less remarkable that something so beautiful and complex can arise from something so simple.
 
-### wilson
-
 
 
 <div id="canvas-landscape">

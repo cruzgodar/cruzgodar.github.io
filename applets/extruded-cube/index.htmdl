@@ -3,8 +3,6 @@ The technique of raymarching is particularly suited to fractals: with <a href="/
 When the scale is exactly 2, the Sierpinski octahedron returns once again, and when it is very close to 1, we see a macroscopic structure emerge. Finally, lowering the scale and increasing the separation near the origin results in a beautiful inner world of tiny cubes and fragments that seems quite unexpected from the outside.
 	
 Drag on the scene to look around. On a keyboard, use WASD to move, and on a touchscreen, hold with two fingers to move forward and three to move back.
-	
-### wilson
 
 
 

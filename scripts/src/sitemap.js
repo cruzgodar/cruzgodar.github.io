@@ -44,6 +44,7 @@ export const sitemap =
 		
 		"children":
 		[
+			"/applets/hopf-fibration/",
 			"/applets/bernoulli-percolation/",
 			"/applets/menger-sponge/",
 			"/applets/game-of-life/",
@@ -83,11 +84,21 @@ export const sitemap =
 			"/applets/simulated-annealing/",
 			"/applets/abelian-sandpiles/",
 			"/applets/wilsons-algorithm/",
-			"/applets/julia-set-explorer/",
-			"/projects/wilson/"
+			"/applets/julia-set-explorer/"
 		]
 	},
 		
+	"/applets/hopf-fibration/":
+	{
+		"title": "The Hopf Fibration",
+		
+		"parent": "/applets/",
+		
+		"children": [],
+
+		"customScript": true
+	},
+	
 	"/applets/bernoulli-percolation/":
 	{
 		"title": "Bernoulli Percolation",
@@ -550,109 +561,6 @@ export const sitemap =
 		"title": "Julia Set Explorer",
 		
 		"parent": "/applets/",
-		
-		"children": [],
-
-		"customScript": true
-	},
-	
-	"/projects/wilson/":
-	{
-		"title": "Wilson",
-		
-		"parent": "/applets/",
-		
-		"children":
-		[
-			"/projects/wilson/guide/1-getting-started/",
-			"/projects/wilson/guide/2-draggables/",
-			"/projects/wilson/guide/3-parallelizing/",
-			"/projects/wilson/guide/4-hidden-canvases/",
-			"/projects/wilson/guide/5-fullscreen/",
-			"/projects/wilson/guide/6-interactivity/",
-			"/projects/wilson/docs/"
-		],
-
-		"customScript": true,
-
-		"customStyle": true
-	},
-		
-	"/projects/wilson/guide/1-getting-started/":
-	{
-		"title": "Part 1: Getting Started",
-		
-		"parent": "/projects/wilson/",
-		
-		"children": [],
-
-		"customScript": true
-	},
-	
-	"/projects/wilson/guide/2-draggables/":
-	{
-		"title": "Part 2: Draggables",
-		
-		"parent": "/projects/wilson/",
-		
-		"children": [],
-
-		"customScript": true
-	},
-	
-	"/projects/wilson/guide/3-parallelizing/":
-	{
-		"title": "Part 3: Parallelizing",
-		
-		"parent": "/projects/wilson/",
-		
-		"children": [],
-
-		"customScript": true
-	},
-	
-	"/projects/wilson/guide/4-hidden-canvases/":
-	{
-		"title": "Part 4: Hidden Canvases",
-		
-		"parent": "/projects/wilson/",
-		
-		"children": [],
-
-		"customScript": true
-	},
-	
-	"/projects/wilson/guide/5-fullscreen/":
-	{
-		"title": "Part 5: Fullscreen",
-		
-		"parent": "/projects/wilson/",
-		
-		"children": [],
-
-		"customScript": true,
-
-		"customStyle": true
-	},
-	
-	"/projects/wilson/guide/6-interactivity/":
-	{
-		"title": "Part 6: Interactivity",
-		
-		"parent": "/projects/wilson/",
-		
-		"children": [],
-
-		"customScript": true,
-
-		"customStyle": true
-	},
-	
-	"/projects/wilson/docs/":
-	{
-		"title": "Wilson Documentation",
-		
-		"parent": "/projects/wilson/",
 		
 		"children": [],
 

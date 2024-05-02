@@ -1,8 +1,6 @@
 In a glass of water, every molecule is bumped constantly by the others around it. This makes them jump around in very short, straight lines, not moving far in any direction on average. **Brownian motion** is a model for this behavior that has wide-ranging applications, one of which is the growth of crystals.
 	
 The theory of **Diffusion-limited aggregation** applies to crystals that form as the result of a substance that can only move through diffusion --- think salt that's dissolved in water and is therefore subject to Brownian motion. When one salt molecule hits another, it sticks, and over time, this forms a crystal structure. This applet colors the salt red and the water black, and centers the starting point of the crystal. The later a salt particle joins the group, the darker it's colored. The resulting construction is called a **Brownian tree**, a beautiful object that often looks more like a tree's roots than its canopy.
-	
-### wilson
 
 
 

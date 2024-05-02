@@ -3,8 +3,6 @@ How do you sort a long list of numbers? Or, more accurately, how do you instruct
 Every algorithm is explained in more detail below, but there are a few general things to mention beforehand. When comparing the speed of algorithms, we need a measurement of time that doesn't depend on the power of the computer running it. Because of this, we typically don't use actual time units, like seconds, but instead something called **big-O notation**. If a sorting algorithm is $O(n^2)$, then the time it takes to run increases with the square of the amount of data given to it. We may not know how long it will take to sort a list of length 500, but it will take about 4 times as long to sort a list that's twice as long. An algorithm that's $O(n)$, on the other hand, will only take about twice the time.
 
 Whenever a sorting algorithm modifies the list, that location in the color wheel (i.e. a thin band) is highlighted, and if it's enabled, a sound is played with pitch based on the number written. All of the algorithms are normalized to take about 20 seconds to complete, regardless of how fast they actually take, so to compare them, look at the number of reads and writes.
-	
-### wilson
 
 ### dropdown algorithms
 

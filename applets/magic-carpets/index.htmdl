@@ -1,6 +1,4 @@
 Given a square carpet and a handful of numbers, can the carpet be completely covered by nonoverlapping rectangles so that every number is contained in a rectangle of that area? The answer is often yes, and solving the puzzle is more satisfying than it has any right to be. To get the feel of the puzzles, generate a few and show the solution, then give one a try yourself. For these, I recommend checking the box requiring a unique solution: that ensures only one collection of rectangles works. The rectangles can form beautiful patterns for large grid sizes, though, and requiring a unique solution takes a prohibitively long time. For generating rectangle tilings, leave that box unchecked.
-	
-### wilson
 
 
 

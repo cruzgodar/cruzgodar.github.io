@@ -2,9 +2,7 @@
 
 This applet aims to draw Newton's method fractals for *any* elementary function, not just a polynomial. There are a number of challenges with this, chief among them making a palette for a large and potentially infinite number of roots. There's also the issue of knowing when the algorithm is near a root without knowing where those roots are ahead of time, and making sure that different points that converge to the same root always get the same color, again without knowing what they're converging to. But all these problems turned out to be solvable --- even the palette generation part, which was my first time working with color science. It turned out better than expected!
 
-The derivative precision determines the accuracy with which the applet computes the derivatives it needs to apply the algorithm. Lower values will result in images with deeper possible zooms and less noise at the cost of mild distortion, while higher values give more accurate images, but usually with shallower possible zooms and slight noise. The syntax is the same as in the <a href="/applets/generalized-julia-sets/">generalized Julia sets</a> applet. Below are some examples to get started --- see what you can come up with!
-
-### wilson glsl
+The derivative precision determines the accuracy with which the applet computes the derivatives it needs to apply the algorithm. Lower values will result in images with deeper possible zooms and less noise at the cost of mild distortion, while higher values give more accurate images, but usually with shallower possible zooms and slight noise. The syntax is the same as in the <a href="/applets/generalized-julia-sets/">generalized Julia sets</a> applet. Below are some examples to get started --- see what you can come up with! glsl
 
 ### dropdown examples
 

@@ -4,8 +4,6 @@ The typical Mandelbulb uses a power-8 formula, but any power larger than 1 works
 
 Drag on the scene to look around. On a keyboard, use WASD to move, and on a touchscreen, hold with two fingers to move forward and three to move back.
 
-### wilson
-
 
 
 <div id="canvas-landscape">
