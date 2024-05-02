@@ -4,6 +4,17 @@ import { aspectRatio } from "/scripts/src/layout.js";
 import { addTemporaryListener } from "/scripts/src/main.js";
 import { Wilson } from "/scripts/wilson.js";
 
+function hsvToRgb(h, s, v)
+{
+	function f(n)
+	{
+		const k = (n + 6 * h) % 6;
+		return v - v * s * Math.max(0, Math.min(k, Math.min(4 - k, 1)));
+	}
+
+	return [255 * f(5), 255 * f(3), 255 * f(1)];
+}
+
 export class HopfFibration extends RaymarchApplet
 {
 	cameraPos = [2, 2, 2];
@@ -11,8 +22,8 @@ export class HopfFibration extends RaymarchApplet
 	phi = 2.1482;
 
 	// This is in addition to the north and south poles.
-	numLatitudes = 3;
-	numLongitudesPerLatitude = 15;
+	numLatitudes = 4;
+	numLongitudesPerLatitude = 16;
 
 
 	constructor({ canvas })
@@ -37,7 +48,7 @@ export class HopfFibration extends RaymarchApplet
 			uniform float focalLength;
 			
 			const vec3 lightPos = vec3(50.0, 70.0, 100.0);
-			const float lightBrightness = 2.5;
+			const float lightBrightness = 2.0;
 			
 			const float clipDistance = 1000.0;
 			const int maxMarches = 100;
@@ -69,7 +80,9 @@ export class HopfFibration extends RaymarchApplet
 			
 			vec3 getColor(vec3 pos)
 			{
-				return vec3(1.0, 0.0, 0.0);
+				${this.getDistanceEstimatorGlsl()}
+
+				${this.getGetColorGlsl()}
 			}
 			
 			vec3 getSurfaceNormal(vec3 pos)
@@ -116,7 +129,7 @@ export class HopfFibration extends RaymarchApplet
 
 				for (int iteration = 0; iteration < maxMarches; iteration++)
 				{
-					vec3 pos = startPos + t * rayDirectionVec;
+					vec3 pos = cameraPos + t * rayDirectionVec;
 					
 					float distanceToScene = distanceEstimator(pos);
 					
@@ -403,6 +416,44 @@ export class HopfFibration extends RaymarchApplet
 		glsl += /* glsl */`
 			float minDistance = ${getMinGlslString("distance", index - 1)};
 		`;
+
+		return glsl;
+	}
+
+	getGetColorGlsl()
+	{
+		let glsl = "";
+		let index = 3;
+
+		const rgbTop = hsvToRgb(0, .5, 1);
+		const rgbBottom = hsvToRgb(6 / 7, .5, 1);
+
+		glsl += /* glsl */`
+			if (minDistance == distance1) {return vec3(${rgbBottom[0] / 255}, ${rgbBottom[1] / 255}, ${rgbBottom[2] / 255});}
+			if (minDistance == distance2) {return vec3(${rgbTop[0] / 255}, ${rgbTop[1] / 255}, ${rgbTop[2] / 255});}
+		`;
+
+		for (let i = 0; i < this.numLatitudes; i++)
+		{
+			const phi = (i + 1) / (this.numLatitudes + 1) * Math.PI;
+
+			for (let j = 0; j < this.numLongitudesPerLatitude; j++)
+			{
+				const theta = j / this.numLongitudesPerLatitude * 2 * Math.PI;
+
+				const rgb = hsvToRgb(
+					phi / (Math.PI) * 6 / 7,
+					Math.abs((theta % Math.PI) - Math.PI / 2) / (Math.PI / 2),
+					1
+				);
+
+				glsl += /* glsl */`
+					if (minDistance == distance${index}) {return vec3(${rgb[0] / 255}, ${rgb[1] / 255}, ${rgb[2] / 255});}
+				`;
+
+				index++;
+			}
+		}
 
 		return glsl;
 	}
