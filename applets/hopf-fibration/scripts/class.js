@@ -1,3 +1,4 @@
+import { getMinGlslString } from "/scripts/applets/applet.js";
 import { RaymarchApplet } from "/scripts/applets/raymarchApplet.js";
 import { aspectRatio } from "/scripts/src/layout.js";
 import { addTemporaryListener } from "/scripts/src/main.js";
@@ -9,6 +10,9 @@ export class HopfFibration extends RaymarchApplet
 	theta = 3.7518;
 	phi = 2.1482;
 
+	// This is in addition to the north and south poles.
+	numLatitudes = 3;
+	numLongitudesPerLatitude = 15;
 
 
 	constructor({ canvas })
@@ -36,26 +40,38 @@ export class HopfFibration extends RaymarchApplet
 			const vec3 lightPos = vec3(50.0, 70.0, 100.0);
 			const float lightBrightness = 2.5;
 			
-			
-			
 			const float clipDistance = 1000.0;
 			const int maxMarches = 100;
 			const vec3 fogColor = vec3(0.0, 0.0, 0.0);
 			const float fogScaling = .2;
 			
 
+
+			float torusDistance(vec3 pos, vec3 center, vec3 normal, float radius)
+			{
+				vec3 movedPos = pos - center;
+
+				float posNComponent = dot(movedPos, normal);
+
+				return length(
+					vec2(
+						length(movedPos - posNComponent * normal) - radius,
+						posNComponent
+					)
+				) - 0.1;
+			}
 			
 			float distanceEstimator(vec3 pos)
 			{
-				return length(pos) - .5;
+				${this.getDistanceEstimatorGlsl()}
+
+				return minDistance;
 			}
 			
 			vec3 getColor(vec3 pos)
 			{
 				return vec3(1.0, 0.0, 0.0);
 			}
-			
-			
 			
 			vec3 getSurfaceNormal(vec3 pos)
 			{
@@ -263,6 +279,25 @@ export class HopfFibration extends RaymarchApplet
 
 
 		this.resume();
+	}
+
+
+
+	getDistanceEstimatorGlsl()
+	{
+		let glsl = "";
+		let index = 3;
+
+		glsl += /* glsl */`
+			float distance1 = torusDistance(pos, vec3(0), vec3(0, 0, 1), 1.0);
+			float distance2 = torusDistance(pos, vec3(0), vec3(0, 1, 0), 1.0);
+		`;
+
+		glsl += /* glsl */`
+			float minDistance = ${getMinGlslString("distance", 2)};
+		`;
+
+		return glsl;
 	}
 
 
