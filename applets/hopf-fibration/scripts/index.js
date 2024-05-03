@@ -1,6 +1,6 @@
 import { showPage } from "../../../scripts/src/loadPage.js";
 import { HopfFibration } from "./class.js";
-import { DownloadButton } from "/scripts/src/buttons.js";
+import { Button, ToggleButton } from "/scripts/src/buttons.js";
 import { $ } from "/scripts/src/main.js";
 import { Slider } from "/scripts/src/sliders.js";
 import { TextBox } from "/scripts/src/textBoxes.js";
@@ -9,37 +9,51 @@ export function load()
 {
 	const applet = new HopfFibration({ canvas: $("#output-canvas") });
 
-	new DownloadButton({
+	new Button({
 		element: $("#download-button"),
-		wilson: applet.wilson,
-		filename: "a-menger-sponge.png"
+		name: "Download",
+		onClick: () =>
+		{
+			applet.needDownload = true;
+			applet.needNewFrame = true;
+		}
 	});
 
 	const resolutionInput = new TextBox({
 		element: $("#resolution-input"),
 		name: "Resolution",
-		value: 500,
+		value: 1000,
 		minValue: 100,
-		maxValue: 1000,
+		maxValue: 2000,
 		onInput: changeResolution
 	});
 
-	const fiberThicknessSlider = new Slider({
-		element: $("#fiber-thickness-slider"),
-		name: "Fiber Thickness",
-		value: 1,
-		min: .5,
-		max: 1.5,
+	const latitudesSlider = new Slider({
+		element: $("#latitudes-slider"),
+		name: "Latitudes",
+		value: 3,
+		min: 1,
+		max: 5,
+		integer: true,
 		onInput: onSliderInput
 	});
 
-	const compressionSlider = new Slider({
-		element: $("#compression-slider"),
-		name: "Compression",
-		value: 0,
-		min: 0,
-		max: 1,
+	const longitudesSlider = new Slider({
+		element: $("#longitudes-slider"),
+		name: "Longitudes",
+		value: 30,
+		min: 8,
+		max: 100,
+		integer: true,
 		onInput: onSliderInput
+	});
+
+	new ToggleButton({
+		element: $("#toggle-compression-button"),
+		name0: "Show Compressed Fibration",
+		name1: "Show Projected Fibration",
+		onClick0: () => applet.toggleCompression(),
+		onClick1: () => applet.toggleCompression()
 	});
 
 	showPage();
@@ -51,16 +65,9 @@ export function load()
 
 	function onSliderInput()
 	{
-		applet.wilson.gl.uniform1f(
-			applet.wilson.uniforms.fiberThickness,
-			fiberThicknessSlider.value / 20
-		);
-
-		applet.wilson.gl.uniform1f(
-			applet.wilson.uniforms.compression,
-			compressionSlider.value
-		);
-
+		applet.numLatitudes = latitudesSlider.value;
+		applet.numLongitudesPerLatitude = longitudesSlider.value;
+		applet.createAllFibers();
 		applet.needNewFrame = true;
 	}
 }
