@@ -27,10 +27,6 @@ export function load()
 		onInput: changeResolution
 	});
 
-	// 0 0 1.5708 "$\theta_x$"
-	// 0 0 1.5708 "$\theta_y$"
-	// 0 0 1.5708 "$\theta_z$"
-
 	const rotationAngleX2Slider = new Slider({
 		element: $("#rotation-angle-x-2-slider"),
 		name: "$\\theta_x$",
@@ -70,6 +66,8 @@ export function load()
 	});
 
 	typesetMath();
+
+	applet.changePolyhedron(2);
 
 	showPage();
 

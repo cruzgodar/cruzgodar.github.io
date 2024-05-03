@@ -144,7 +144,7 @@ export class ThurstonGeometry extends Applet
 			const float maxT = ${this.geometryData.maxT};
 			const float stepFactor = ${this.geometryData.stepFactor};
 			const vec3 fogColor = vec3(0.0, 0.0, 0.0);
-			const float fogScaling = .07;
+			const float fogScaling = .05;
 			uniform float fov;
 
 			${this.geometryData.uniformGlsl ?? ""}

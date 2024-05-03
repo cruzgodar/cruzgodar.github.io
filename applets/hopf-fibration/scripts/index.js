@@ -33,6 +33,15 @@ export function load()
 		onInput: onSliderInput
 	});
 
+	const compressionSlider = new Slider({
+		element: $("#compression-slider"),
+		name: "Compression",
+		value: 0,
+		min: 0,
+		max: 1,
+		onInput: onSliderInput
+	});
+
 	showPage();
 
 	function changeResolution()
@@ -45,6 +54,11 @@ export function load()
 		applet.wilson.gl.uniform1f(
 			applet.wilson.uniforms.fiberThickness,
 			fiberThicknessSlider.value / 20
+		);
+
+		applet.wilson.gl.uniform1f(
+			applet.wilson.uniforms.compression,
+			compressionSlider.value
 		);
 
 		applet.needNewFrame = true;

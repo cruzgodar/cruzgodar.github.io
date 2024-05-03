@@ -49,7 +49,7 @@ export class QuaternionicJuliaSet extends RaymarchApplet
 			uniform int maxMarches;
 			uniform float stepFactor;
 			const vec3 fogColor = vec3(0.0, 0.0, 0.0);
-			const float fogScaling = .1;
+			const float fogScaling = .05;
 			
 			
 			uniform vec3 c;

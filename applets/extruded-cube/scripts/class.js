@@ -45,7 +45,7 @@ export class ExtrudedCube extends RaymarchApplet
 			const float clipDistance = 1000.0;
 			const int maxMarches = 256;
 			const vec3 fogColor = vec3(0.0, 0.0, 0.0);
-			const float fogScaling = .2;
+			const float fogScaling = .05;
 			const int maxIterations = 32;
 			
 			uniform int iterations;
