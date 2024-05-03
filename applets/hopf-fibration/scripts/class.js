@@ -1,7 +1,8 @@
 import { getFloatGlsl, getMinGlslString, getVectorGlsl } from "/scripts/applets/applet.js";
-import { RaymarchApplet } from "/scripts/applets/raymarchApplet.js";
+import { ThreeApplet } from "/scripts/applets/threeApplet.js";
 import { aspectRatio } from "/scripts/src/layout.js";
 import { addTemporaryListener } from "/scripts/src/main.js";
+import * as THREE from "/scripts/three.js";
 import { Wilson } from "/scripts/wilson.js";
 
 function hsvToRgb(h, s, v)
@@ -15,159 +16,65 @@ function hsvToRgb(h, s, v)
 	return [255 * f(5), 255 * f(3), 255 * f(1)];
 }
 
-export class HopfFibration extends RaymarchApplet
+class Fiber extends THREE.Curve
+{
+	// Standard 3D point + vector + center for a parametric circle.
+	p;
+	v;
+	center;
+
+	// Used for the inverse exponential view.
+	s3Point;
+
+	constructor({
+		p,
+		v,
+		center,
+		s3Point
+	}) {
+		super();
+
+		this.p = p;
+		this.v = v;
+		this.center = center;
+		this.s3Point = s3Point;
+	}
+
+	getPoint(t, optionalTarget = new THREE.Vector3())
+	{
+		const c = Math.cos(2 * Math.PI * t);
+		const s = Math.sin(2 * Math.PI * t);
+
+		const tx = c * this.p[0] + s * this.v[0] + this.center[0];
+		const ty = c * this.p[1] + s * this.v[1] + this.center[1];
+		const tz = c * this.p[2] + s * this.v[2] + this.center[2];
+
+		return optionalTarget.set(tx, ty, tz);
+	}
+}
+
+export class HopfFibration extends ThreeApplet
 {
 	cameraPos = [2, 2, 2];
 	theta = 3.7518;
 	phi = 2.1482;
 
+	movingSpeed = .025;
+
 	// This is in addition to the north and south poles.
 	numLatitudes = 4;
 	numLongitudesPerLatitude = 16;
+
+	fibers = [];
 
 
 	constructor({ canvas })
 	{
 		super(canvas);
 
-		const fragShaderSource = /* glsl */`
-			precision highp float;
-			
-			varying vec2 uv;
-			
-			uniform float aspectRatioX;
-			uniform float aspectRatioY;
-			
-			uniform vec3 cameraPos;
-			uniform vec3 imagePlaneCenterPos;
-			uniform vec3 forwardVec;
-			uniform vec3 rightVec;
-			uniform vec3 upVec;
-			uniform float fiberThickness;
-			
-			uniform float focalLength;
-			
-			const vec3 lightPos = vec3(50.0, 70.0, 100.0);
-			const float lightBrightness = 2.0;
-			
-			const float clipDistance = 1000.0;
-			const int maxMarches = 100;
-			const vec3 fogColor = vec3(0.0, 0.0, 0.0);
-			const float fogScaling = .05;
-			
-
-
-			float torusDistance(vec3 pos, vec3 center, vec3 normal, float radius)
-			{
-				vec3 movedPos = pos - center;
-
-				float posNComponent = dot(movedPos, normal);
-
-				return length(
-					vec2(
-						length(movedPos - posNComponent * normal) - radius,
-						posNComponent
-					)
-				) - fiberThickness;
-			}
-			
-			float distanceEstimator(vec3 pos)
-			{
-				${this.getDistanceEstimatorGlsl()}
-
-				return minDistance;
-			}
-			
-			vec3 getColor(vec3 pos)
-			{
-				${this.getDistanceEstimatorGlsl()}
-
-				${this.getGetColorGlsl()}
-			}
-			
-			vec3 getSurfaceNormal(vec3 pos)
-			{
-				float xStep1 = distanceEstimator(pos + vec3(.00001, 0.0, 0.0));
-				float yStep1 = distanceEstimator(pos + vec3(0.0, .00001, 0.0));
-				float zStep1 = distanceEstimator(pos + vec3(0.0, 0.0, .00001));
-				
-				float xStep2 = distanceEstimator(pos - vec3(.00001, 0.0, 0.0));
-				float yStep2 = distanceEstimator(pos - vec3(0.0, .00001, 0.0));
-				float zStep2 = distanceEstimator(pos - vec3(0.0, 0.0, .00001));
-				
-				return normalize(vec3(xStep1 - xStep2, yStep1 - yStep2, zStep1 - zStep2));
-			}
-			
-			
-			
-			vec3 computeShading(vec3 pos, int iteration)
-			{
-				vec3 surfaceNormal = getSurfaceNormal(pos);
-				
-				vec3 lightDirection = normalize(lightPos - pos);
-				
-				float dotProduct = dot(surfaceNormal, lightDirection);
-				
-				float lightIntensity = lightBrightness * abs(dotProduct);
-				
-				//The last factor adds ambient occlusion.
-				vec3 color = getColor(pos) * lightIntensity * max((1.0 - float(iteration) / float(maxMarches)), 0.0);
-				
-				//Apply fog.
-				return mix(color, fogColor, 1.0 - exp(-distance(pos, cameraPos) * fogScaling));
-			}
-			
-			
-			
-			vec3 raymarch(vec3 startPos)
-			{
-				vec3 rayDirectionVec = normalize(startPos - cameraPos) * .5;
-				
-				float epsilon = .00001;
-				
-				float t = 0.0;
-
-				for (int iteration = 0; iteration < maxMarches; iteration++)
-				{
-					vec3 pos = cameraPos + t * rayDirectionVec;
-					
-					float distanceToScene = distanceEstimator(pos);
-					
-					if (distanceToScene < epsilon)
-					{
-						return computeShading(pos, iteration);
-					}
-					
-					else if (t > clipDistance)
-					{
-						return fogColor;
-					}
-					
-					t += distanceToScene;
-				}
-				
-				return fogColor;
-			}
-			
-			
-			
-			void main(void)
-			{
-				vec3 finalColor = raymarch(imagePlaneCenterPos + rightVec * uv.x * aspectRatioX + upVec * uv.y / aspectRatioY);
-				
-				gl_FragColor = vec4(finalColor.xyz, 1.0);
-			}
-		`;
-
-		console.log(fragShaderSource);
-
-
-
 		const options =
 		{
 			renderer: "gpu",
-
-			shader: fragShaderSource,
 
 			canvasWidth: 500,
 			canvasHeight: 500,
@@ -202,84 +109,7 @@ export class HopfFibration extends RaymarchApplet
 
 		this.wilson = new Wilson(canvas, options);
 
-		this.wilson.render.initUniforms([
-			"aspectRatioX",
-			"aspectRatioY",
-			"fiberThickness",
-			"cameraPos",
-			"imagePlaneCenterPos",
-			"forwardVec",
-			"rightVec",
-			"upVec",
-			"focalLength",
-		]);
-
-		
-
-		this.calculateVectors();
-		
-		if (this.imageWidth >= this.imageHeight)
-		{
-			this.wilson.gl.uniform1f(
-				this.wilson.uniforms["aspectRatioX"],
-				this.imageWidth / this.imageHeight
-			);
-
-			this.wilson.gl.uniform1f(
-				this.wilson.uniforms["aspectRatioY"],
-				1
-			);
-		}
-
-		else
-		{
-			this.wilson.gl.uniform1f(
-				this.wilson.uniforms["aspectRatioX"],
-				1
-			);
-
-			this.wilson.gl.uniform1f(
-				this.wilson.uniforms["aspectRatioY"],
-				this.imageWidth / this.imageHeight
-			);
-		}
-
-		this.wilson.gl.uniform3fv(
-			this.wilson.uniforms["cameraPos"],
-			this.cameraPos
-		);
-
-		this.wilson.gl.uniform3fv(
-			this.wilson.uniforms["imagePlaneCenterPos"],
-			this.imagePlaneCenterPos
-		);
-
-		this.wilson.gl.uniform3fv(
-			this.wilson.uniforms["forwardVec"],
-			this.forwardVec
-		);
-
-		this.wilson.gl.uniform3fv(
-			this.wilson.uniforms["rightVec"],
-			this.rightVec
-		);
-
-		this.wilson.gl.uniform3fv(
-			this.wilson.uniforms["upVec"],
-			this.upVec
-		);
-
-		this.wilson.gl.uniform1f(
-			this.wilson.uniforms["focalLength"],
-			this.focalLength
-		);
-
-		this.wilson.gl.uniform1f(
-			this.wilson.uniforms["fiberThickness"],
-			.05
-		);
-
-
+		this.initThree();
 
 		const boundFunction = () => this.changeResolution();
 		addTemporaryListener({
@@ -288,9 +118,163 @@ export class HopfFibration extends RaymarchApplet
 			callback: boundFunction
 		});
 
-
+		this.createAllFibers();
 
 		this.resume();
+	}
+
+	createFiber(theta, phi)
+	{
+		const s2Point = [
+			Math.sin(phi) * Math.cos(theta),
+			Math.sin(phi) * Math.sin(theta),
+			Math.cos(phi)
+		];
+
+		const scalingFactor = 1 / Math.sqrt(2 * (s2Point[2] + 1));
+
+		// We start by choosing a point on the fiber
+		// with maximum w component, which will help later.
+		const p = [
+			0,
+			scalingFactor * s2Point[0],
+			scalingFactor * s2Point[1],
+			scalingFactor * (1 + s2Point[2]),
+		];
+
+		// Next we'll look at the image of this point under the projection.
+		const projectedP = [
+			p[0] / (1 - p[3]),
+			p[1] / (1 - p[3]),
+			p[2] / (1 - p[3])
+		];
+
+		// Now we'll do the same for the antipode to p. Since we started with
+		// a point with maximal w-coordinate, this is guaranteed to be antipodal on the output too.
+		const projectedPAntipode = [
+			-p[0] / (1 + p[3]),
+			-p[1] / (1 + p[3]),
+			-p[2] / (1 + p[3])
+		];
+
+		const center = [
+			(projectedP[0] + projectedPAntipode[0]) / 2,
+			(projectedP[1] + projectedPAntipode[1]) / 2,
+			(projectedP[2] + projectedPAntipode[2]) / 2
+		];
+
+		// Now the radius is the distance between projectedP and center.
+		const radius = Math.sqrt(
+			(projectedP[0] - center[0]) ** 2
+			+ (projectedP[1] - center[1]) ** 2
+			+ (projectedP[2] - center[2]) ** 2
+		);
+
+		// To find the normal vector, we'll start by getting a third point on the circle
+		// that's guaranteed to not be collinear with these two.
+		const otherP = [
+			scalingFactor * (1 + s2Point[2]),
+			-scalingFactor * s2Point[1],
+			scalingFactor * s2Point[0],
+			0
+		];
+
+		const projectedOtherP = [
+			otherP[0] / (1 - otherP[3]),
+			otherP[1] / (1 - otherP[3]),
+			otherP[2] / (1 - otherP[3])
+		];
+
+		// What we need now is to take the component of this new point that's orthogonal
+		// to the first point.
+		const centerToProjectedP = [
+			projectedP[0] - center[0],
+			projectedP[1] - center[1],
+			projectedP[2] - center[2]
+		];
+
+		const centerToProjectedOtherP = [
+			projectedOtherP[0] - center[0],
+			projectedOtherP[1] - center[1],
+			projectedOtherP[2] - center[2]
+		];
+
+		const scalingFactor2 = (
+			centerToProjectedOtherP[0] * centerToProjectedP[0]
+			+ centerToProjectedOtherP[1] * centerToProjectedP[1]
+			+ centerToProjectedOtherP[2] * centerToProjectedP[2]
+		) / (
+			centerToProjectedP[0] * centerToProjectedP[0]
+			+ centerToProjectedP[1] * centerToProjectedP[1]
+			+ centerToProjectedP[2] * centerToProjectedP[2]
+		);
+
+		const orthogonalVector = [
+			centerToProjectedOtherP[0] - scalingFactor2 * centerToProjectedP[0],
+			centerToProjectedOtherP[1] - scalingFactor2 * centerToProjectedP[1],
+			centerToProjectedOtherP[2] - scalingFactor2 * centerToProjectedP[2]
+		];
+
+		const magnitude = Math.sqrt(
+			orthogonalVector[0] ** 2
+			+ orthogonalVector[1] ** 2
+			+ orthogonalVector[2] ** 2
+		);
+
+		const right = [
+			radius / magnitude * orthogonalVector[0],
+			radius / magnitude * orthogonalVector[1],
+			radius / magnitude * orthogonalVector[2]
+		];
+
+		const path = new Fiber({
+			p: centerToProjectedP,
+			v: right,
+			center,
+		});
+		const tubularSegments = 100;
+		const fiberThickness = 0.05;
+		const radialSegments = 20;
+
+		const rgb = hsvToRgb(
+			phi / (Math.PI) * 6 / 7,
+			Math.abs((theta % Math.PI) - Math.PI / 2) / (Math.PI / 2),
+			1
+		);
+
+		const mesh = new THREE.Mesh(
+			new THREE.TubeGeometry(
+				path,
+				tubularSegments,
+				fiberThickness,
+				radialSegments,
+				false
+			),
+			new THREE.MeshStandardMaterial({
+				color: new THREE.Color(rgb[0] / 255, rgb[1] / 255, rgb[2] / 255)
+			})
+		);
+
+		this.scene.add(mesh);
+
+		return mesh;
+	}
+
+	createAllFibers()
+	{
+		for (let i = 0; i < this.numLatitudes; i++)
+		{
+			const phi = (i + 1) / (this.numLatitudes + 1) * Math.PI;
+
+			for (let j = 0; j < this.numLongitudesPerLatitude; j++)
+			{
+				const theta = j / this.numLongitudesPerLatitude * 2 * Math.PI;
+
+				const fiber = this.createFiber(theta, phi);
+
+				this.fibers.push(fiber);
+			}
+		}
 	}
 
 	// Point is a length-3 array containing xyz coordinates.
@@ -299,7 +283,7 @@ export class HopfFibration extends RaymarchApplet
 	{
 		if (Math.abs(point[2]) === 1)
 		{
-			throw new Error("Don't pass the north pole to the projection function!");
+			throw new Error("Don't pass poles to the projection function!");
 		}
 
 		const scalingFactor = 1 / Math.sqrt(2 * (point[2] + 1));
@@ -420,43 +404,6 @@ export class HopfFibration extends RaymarchApplet
 		return glsl;
 	}
 
-	getGetColorGlsl()
-	{
-		let glsl = "";
-		let index = 3;
-
-		const rgbTop = hsvToRgb(0, .5, 1);
-		const rgbBottom = hsvToRgb(6 / 7, .5, 1);
-
-		glsl += /* glsl */`
-			if (minDistance == distance1) {return vec3(${rgbBottom[0] / 255}, ${rgbBottom[1] / 255}, ${rgbBottom[2] / 255});}
-			if (minDistance == distance2) {return vec3(${rgbTop[0] / 255}, ${rgbTop[1] / 255}, ${rgbTop[2] / 255});}
-		`;
-
-		for (let i = 0; i < this.numLatitudes; i++)
-		{
-			const phi = (i + 1) / (this.numLatitudes + 1) * Math.PI;
-
-			for (let j = 0; j < this.numLongitudesPerLatitude; j++)
-			{
-				const theta = j / this.numLongitudesPerLatitude * 2 * Math.PI;
-
-				const rgb = hsvToRgb(
-					phi / (Math.PI) * 6 / 7,
-					Math.abs((theta % Math.PI) - Math.PI / 2) / (Math.PI / 2),
-					1
-				);
-
-				glsl += /* glsl */`
-					if (minDistance == distance${index}) {return vec3(${rgb[0] / 255}, ${rgb[1] / 255}, ${rgb[2] / 255});}
-				`;
-
-				index++;
-			}
-		}
-
-		return glsl;
-	}
 
 
 
@@ -481,14 +428,8 @@ export class HopfFibration extends RaymarchApplet
 		this.theta = -this.wilson.worldCenterX;
 		this.phi = -this.wilson.worldCenterY;
 
-		this.wilson.render.drawFrame();
-	}
-
-
-
-	distanceEstimator(x, y, z)
-	{
-		return 1.0;
+		this.renderer.render(this.scene, this.camera);
+		// this.wilson.render.drawFrame();
 	}
 
 
@@ -550,7 +491,9 @@ export class HopfFibration extends RaymarchApplet
 			);
 		}
 
-
+		this.renderer.setSize(this.imageWidth, this.imageHeight, false);
+		this.camera.aspect = this.imageWidth / this.imageHeight;
+		this.camera.updateProjectionMatrix();
 
 		this.needNewFrame = true;
 	}
