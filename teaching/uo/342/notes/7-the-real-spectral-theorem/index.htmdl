@@ -8,23 +8,17 @@ In the first part of the course, we studied bases of eigenvectors, and in the se
 
 ###
 
+We'll see the proof of this shortly; to keep it from being overwhelmingly long, we'll split it into a few chunks that we can tackle one at a time.
+
+### lem "real symmetric matrices have real eigenvalues"
+	
+	Let $A$ be an $n \times n$ symmetric matrix with real entries. Then all of the eigenvalues of $A$ are real.
+
+###
+
 ### pf
-
-	To begin, let's show that if $A$ has an orthonormal basis $\left\{ \vec{v_1}, ..., \vec{v_n} \right\}$ of eigenvectors, then it must be symmetric. This is just a direct computation: we know $A = BDB^{-1}$, but $B$ must be a unitary matrix, and so $B^{-1} = B^T$. Then
-
-	$$
-		A^T &= \left( BDB^T \right)^T
-
-		&= \left( B^T \right)^T D^T B^T
-
-		&= BDB^T
-
-		&= A,
-	$$
-
-	so $A$ is symmetric.
-
-	The other direction is a little more complicated. We'll start by showing that if $A$ is a symmetric matrix with real entries, then all of its eigenvalues must be real. Let $\vec{v} \in #C#^n$ be an eigenvector with eigenvalue $\lambda \in #C#$ --- we have to assume both are complex since we haven't yet shown that they have to be real. Multiplying $A$ on the right by $\vec{v}$ and the left by $\overline{\vec{v}}^T$, we have
+	
+	Let $\vec{v} \in #C#^n$ be an eigenvector with eigenvalue $\lambda \in #C#$ --- we have to assume both are complex since we haven't yet shown that they have to be real. Multiplying $A$ on the right by $\vec{v}$ and the left by $\overline{\vec{v}}^T$, we have
 
 	$$
 		\overline{\vec{v}^T} A \vec{v} &= \overline{\vec{v}^T} \lambda \vec{v}
@@ -54,7 +48,120 @@ In the first part of the course, we studied bases of eigenvectors, and in the se
 		&= \overline{\vec{v}}^T A \vec{v}.
 	$$
 
-	All that is to say that $\lambda$ itself must also be real. It remains to show that $A$ is diagonalizable and that all its eigenvectors are orthonormal.
+	All that is to say that $\lambda$ itself must also be real, since
+
+	$$
+
+		\lambda = \frac{\overline{\vec{v}^T} A \vec{v}}{\vec{v} \bullet \overline{\vec{v}}}.
+	$$
+
+###
+
+This lemma also implies that all the eigenvectors of a real symmetric matrix are real, since row reducing $A - \lambda I$ for a real-valued matrix $A$ and a real eigenvalue $\lambda$ will only produce real solutions.
+
+### lem "real symmetric matrices have orthogonal eigenspaces"
+
+	Let $A$ be an $n \times n$ symmetric matrix with real entries and let $\vec{v}$ and $\vec{w}$ be eigenvectors corresponding to distinct eigenvalues $\lambda_i$ and $\lambda_j$. Then $\vec{v} \bullet \vec{w} = 0$.
+
+###
+
+### pf
+
+	We can verify this with a direct computation:
+
+	$$
+		(\lambda_i - \lambda_j) \left( \vec{v} \bullet \vec{w} \right) &= \lambda_i \left( \vec{v} \bullet \vec{w} \right) - \lambda_j \left( \vec{v} \bullet \vec{w} \right)
+
+		&= \left( \lambda_i \vec{v} \right) \bullet \vec{w} - \vec{v} \bullet \left( \lambda_j \vec{w} \right)
+
+		&= \left( A \vec{v} \right) \bullet \vec{w} - \vec{v} \bullet \left( A \vec{w} \right)
+
+		&= \left( A \vec{v} \right)^T \vec{w} - \vec{v}^T \left( A \vec{w} \right)
+
+		&= \vec{v}^T A^T \vec{w} - \vec{v}^T A \vec{w}
+
+		&= \vec{v}^T A \vec{w} - \vec{v}^T A \vec{w}
+
+		&= 0.
+	$$
+
+	Since $\lambda_i \neq \lambda_j$, $\lambda_i - \lambda_j \neq 0$, and so $\vec{v} \bullet \vec{w} = 0$.
+
+###
+
+Our final lemma is considerably more technical, but it'll let us put all the pieces together.
+
+### lem "symmetric matrices have symmetric restrictions"
+
+	Let $A$ be an $n \times n$ symmetric matrix, let $\vec{v}$ be an eigenvector of $A$ with eigenvalue $\lambda$, and let $X = \span\left\{ \vec{v} \right\}$ Then if $\vec{w} \in X^\perp$, $A\vec{w} \in X^\perp$ too, and if $A|_{X^\perp} : X^\perp \to X^\perp$ is the linear map given by restricting $A$ to $X^\perp$, then the matrix for $A|_{X^\perp}$ is symmetric.
+
+###
+
+### pf
+
+	There are a ton of symbols here, but the moral of this lemma is that $A$ can be split cleanly into its action on two subspaces: $X = \span\left\{ \vec{v} \right\}$ and $X^\perp$. We already know that $A : X \to X$, since $A \vec{v} = \lambda \vec{v} \in X$, and now we'll also show that $A : X^\perp \to X^\perp$ as the lemma states.
+
+	Let $\vec{w} \in X^\perp$. Then $\vec{w} \bullet \vec{v} = 0$, and so
+
+	$$
+		\left( A\vec{w} \right) \bullet \vec{v} &= \left( A\vec{w} \right)^T \bullet \vec{v}
+
+		&= \vec{w}^T A^T \vec{v}
+
+		&= \vec{w}^T A \vec{v}
+
+		&= \vec{w}^T \lambda \vec{v}
+
+		&= \lambda \left( \vec{w} \bullet \vec{v} \right)
+
+		&= 0,
+	$$
+
+	meaning $A\vec{w} \in X^\perp$.
+
+	Now let $\left\{ \vec{w_1}, ..., \vec{w_{n - 1}} \right\}$ be a basis for $X^\perp$. What we've shown is that the matrix of $A$ with respect to the basis $\left\{ \vec{v}, \vec{w_1}, ..., \vec{w_{n - 1}} \right\}$ for $#R#^n$ is
+
+	$$
+		[[ \lambda | 0, \cdots, 0 ; \hline 0 | ,, ; \vdots | , C, ; 0 | ,, ]]
+	$$
+
+	for some matrix $C$ --- the second statement of this lemma is that $C$ is also symmetric. This amounts to showing that changing basis preserves symmetry: if
+
+	$$
+		B = [[ \mid, \mid, , \mid ; \vec{v}, \vec{w_1}, \cdots, \vec{w_{n - 1}} ; \mid, \mid, , \mid ]],
+	$$
+
+	then
+
+	$$
+		B^{-1}AB = [[ \lambda | 0, \cdots, 0 ; \hline 0 | ,, ; \vdots | , C, ; 0 | ,, ]],
+	$$
+
+###
+
+### pf -m "Proof of the Real Spectral Theorem"
+
+	To begin, let's show that if $A$ has an orthonormal basis $\left\{ \vec{v_1}, ..., \vec{v_n} \right\}$ of eigenvectors, then it must be symmetric. This is just a direct computation: we know $A = BDB^{-1}$, but $B$ must be a unitary matrix, and so $B^{-1} = B^T$. Then
+
+	$$
+		A^T &= \left( BDB^T \right)^T
+
+		&= \left( B^T \right)^T D^T B^T
+
+		&= BDB^T
+
+		&= A,
+	$$
+
+	so $A$ is symmetric.
+
+	The other direction is a little more complicated. We'll start by showing that if $A$ is a symmetric matrix with real entries, then all of its eigenvalues must be real. 
+
+	To finish the proof, we now need to show that $A$ is diagonalizable and that all its eigenvectors are orthonormal. That sounds like quite a lot, but all it means for $A$ to be diagonalizable is that it has $n$ linearly independent eigenvectors, and since orthogonality implies linear independence, all we need to show is that there are $n$ orthogonal eigenvectors --- we can also freely rescale them, so orthonormality will follow for free.
+
+	First of all, we can always arrange for eigenvectors corresponding to the same eigenvalue to be orthogonal: if $E_i$ is the eigenspace corresponding to $\lambda_i$ (i.e. the subspace consisting of all eigenvectors with eigenvalue $\lambda_i$), then we can just run the Gram-Schmidt process on $E_i$ to produce an orthogonal basis. That approach doesn't work for the entire space, though, since the linear combinations of eigenvectors that the Gram-Schmidt process produces are only still eigenvectors when they share all the same eigenvalue.
+
+	We're almost done! We've shown that all the eigenvalues and eigenvectors are real, and that the eigenvectors are also orthogonal. The only thing left to show is that there are enough eigenvectors --- that the algebraic multiplicity of every eigenvalue is the same as the geometric multiplicity.
 
 ###
 

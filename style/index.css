@@ -561,9 +561,14 @@ mjx-container
 	margin-top: 48px;
 }
 
-#contents > .notes-pf-title, #contents > .notes-thm-title + .notes-cor-title, #contents > .notes-prop-title + .notes-cor-title, #contents > .notes-pf-title + .notes-cor-title
+#contents > .notes-pf-title, #contents > .notes-thm-title + .notes-cor-title, #contents > .notes-prop-title + .notes-cor-title, #contents > .notes-pf-title + .notes-cor-title, #contents > .notes-lem-title
 {
 	margin-left: 16px;
+}
+
+#contents > .notes-lem-title + .notes-pf-title
+{
+	margin-left: 32px;
 }
 
 #contents > *:last-child
@@ -1871,8 +1876,8 @@ img[src="/about/cover.webp"]
 
 .notes-lem
 {
-	border-color: rgb(80.62% 64.82% 0%);
-	border-color: lch(70% 75 85);
+	border-color: rgb(71.64% 53.3% 0%);
+	border-color: lch(60% 100 80);
 }
 
 .notes-ax
@@ -1948,8 +1953,8 @@ img[src="/about/cover.webp"]
 
 .notes-lem-title
 {
-	background-color: rgb(80.62% 64.82% 0%);
-	background-color: lch(70% 75 85);
+	background-color: rgb(71.64% 53.3% 0%);
+	background-color: lch(60% 100 80);
 }
 
 .notes-ax-title
