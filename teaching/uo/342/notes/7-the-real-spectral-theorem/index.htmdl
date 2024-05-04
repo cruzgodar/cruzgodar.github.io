@@ -93,7 +93,7 @@ Our final lemma is considerably more technical, but it'll let us put all the pie
 
 ### lem "symmetric matrices have symmetric restrictions"
 
-	Let $A$ be an $n \times n$ symmetric matrix, let $\vec{v}$ be an eigenvector of $A$ with eigenvalue $\lambda$, and let $X = \span\left\{ \vec{v} \right\}$ Then if $\vec{w} \in X^\perp$, $A\vec{w} \in X^\perp$ too, and if $A|_{X^\perp} : X^\perp \to X^\perp$ is the linear map given by restricting $A$ to $X^\perp$, then the matrix for $A|_{X^\perp}$ is symmetric.
+	Let $A$ be an $n \times n$ symmetric matrix, let $\vec{v}$ be an eigenvector of $A$ and eigenvalue $\lambda$, and let $X = \span\left\{ \vec{v} \right\}$ Then if $\vec{w} \in X^\perp$, $A\vec{w} \in X^\perp$ too, and if $A|_{X^\perp} : X^\perp \to X^\perp$ is the linear map given by restricting $A$ to $X^\perp$, then there is a basis for $X^\perp$ in which the matrix for $A|_{X^\perp}$ is symmetric.
 
 ###
 
@@ -119,25 +119,41 @@ Our final lemma is considerably more technical, but it'll let us put all the pie
 
 	meaning $A\vec{w} \in X^\perp$.
 
-	Now let $\left\{ \vec{w_1}, ..., \vec{w_{n - 1}} \right\}$ be a basis for $X^\perp$. What we've shown is that the matrix of $A$ with respect to the basis $\left\{ \vec{v}, \vec{w_1}, ..., \vec{w_{n - 1}} \right\}$ for $#R#^n$ is
+	Now let $\left\{ \vec{w_1}, ..., \vec{w_{n - 1}} \right\}$ be an orthonormal basis for $X^\perp$ (via the Gram-Schmidt process). We can freely assume $\left| \left| \vec{v} \right| \right| = 1$ since it's an eigenvector, and so what we've shown is that the matrix of $A$ with respect to the orthonormal basis $\left\{ \vec{v}, \vec{w_1}, ..., \vec{w_{n - 1}} \right\}$ for $#R#^n$ is
 
 	$$
 		[[ \lambda | 0, \cdots, 0 ; \hline 0 | ,, ; \vdots | , C, ; 0 | ,, ]]
 	$$
 
-	for some matrix $C$ --- the second statement of this lemma is that $C$ is also symmetric. This amounts to showing that changing basis preserves symmetry: if
+	for some matrix $C$ --- the second statement of this lemma is that $C$ is also symmetric. If
 
 	$$
 		B = [[ \mid, \mid, , \mid ; \vec{v}, \vec{w_1}, \cdots, \vec{w_{n - 1}} ; \mid, \mid, , \mid ]],
 	$$
 
-	then
+	then what we've shown is that
 
 	$$
 		B^{-1}AB = [[ \lambda | 0, \cdots, 0 ; \hline 0 | ,, ; \vdots | , C, ; 0 | ,, ]],
 	$$
 
+	and so transposing both sides results in
+
+	$$
+		B^T A \left( B^{-1} \right)^T = [[ \lambda | 0, \cdots, 0 ; \hline 0 | ,, ; \vdots | , C^T, ; 0 | ,, ]].
+	$$
+
+	But since $B$ is a matrix whose columns form an orthonormal basis, it's unitary, and so $B^T = B^{-1}$. Therefore,
+
+	$$
+		B^{-1} A B = [[ \lambda | 0, \cdots, 0 ; \hline 0 | ,, ; \vdots | , C^T, ; 0 | ,, ]],
+	$$
+
+	and so $C = C^T$, proving the result.
+
 ###
+
+At long last, we're ready to return to the Spectral theorem itself.
 
 ### pf -m "Proof of the Real Spectral Theorem"
 
@@ -155,14 +171,12 @@ Our final lemma is considerably more technical, but it'll let us put all the pie
 
 	so $A$ is symmetric.
 
-	The other direction is a little more complicated. We'll start by showing that if $A$ is a symmetric matrix with real entries, then all of its eigenvalues must be real. 
+	The other direction is where all the complexity lies. If $A$ is a symmetric matrix with real entries, then by the first lemma, all of its eigenvalues and eigenvectors are real. By the second, any two eigenvectors from different eigenspaces are orthogonal, and we can arrange for eigenvectors within a single eigenspace to be orthogonal too: if $E_i$ is the eigenspace corresponding to $\lambda_i$, then we can just run the Gram-Schmidt process on $E_i$ to produce an orthogonal basis.
 
-	To finish the proof, we now need to show that $A$ is diagonalizable and that all its eigenvectors are orthonormal. That sounds like quite a lot, but all it means for $A$ to be diagonalizable is that it has $n$ linearly independent eigenvectors, and since orthogonality implies linear independence, all we need to show is that there are $n$ orthogonal eigenvectors --- we can also freely rescale them, so orthonormality will follow for free.
-
-	First of all, we can always arrange for eigenvectors corresponding to the same eigenvalue to be orthogonal: if $E_i$ is the eigenspace corresponding to $\lambda_i$ (i.e. the subspace consisting of all eigenvectors with eigenvalue $\lambda_i$), then we can just run the Gram-Schmidt process on $E_i$ to produce an orthogonal basis. That approach doesn't work for the entire space, though, since the linear combinations of eigenvectors that the Gram-Schmidt process produces are only still eigenvectors when they share all the same eigenvalue.
-
-	We're almost done! We've shown that all the eigenvalues and eigenvectors are real, and that the eigenvectors are also orthogonal. The only thing left to show is that there are enough eigenvectors --- that the algebraic multiplicity of every eigenvalue is the same as the geometric multiplicity.
+	We're almost done! We've shown that all the eigenvalues and eigenvectors are real, and that the eigenvectors are also orthogonal. The only substantive thing left to show is that there are enough eigenvectors --- that the algebraic multiplicity of every eigenvalue is the same as the geometric multiplicity. This is where the final lemma comes in. Every matrix is guaranteed to have one eigenvector at the very least (the worst case scenario is that there's only a single eigenvalue with algebraic multiplicity $n$ and geometric multiplicity $1$). Let's call that guaranteed eigenvector for $A$ $\vec{v_1}$. The third lemma tells us that if we take an orthonormal basis for $\left( \span\left\{ \vec{v_1} \right\} \right)^\perp$, then $A$ is still a symmetric matrix when expressed in that basis. That means it's guaranteed to have another eigenvector $\vec{v_2}$, and so we can repeat this process $n$ times until all that's left is a $1 \times 1$ matrix, which is always diagonalizable (since it's diagonal). In total, we have $n$ distinct, orthogonal eigenvectors with real eigenvectors, and to cap off the proof, we can rescale every eigenvector to have magnitude $1$, making them orthonormal.
 
 ###
+
+That was a ton of work! It's easily the most complicated theorem we'll prove in the course, and now that it's done, we can turn to some of its many applications.
 
 ### nav-buttons
