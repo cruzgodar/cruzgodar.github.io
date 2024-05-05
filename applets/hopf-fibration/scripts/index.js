@@ -33,7 +33,7 @@ export function load()
 		name: "Latitudes",
 		value: 3,
 		min: 1,
-		max: 5,
+		max: 10,
 		integer: true,
 		onInput: onSliderInput
 	});
@@ -45,6 +45,16 @@ export function load()
 		min: 8,
 		max: 100,
 		integer: true,
+		onInput: onSliderInput
+	});
+
+	const coreSlider = new Slider({
+		element: $("#core-slider"),
+		name: "Core Amount",
+		value: 1,
+		min: .75,
+		max: 1,
+		snapPoints: [.8, .85, .9, .95],
 		onInput: onSliderInput
 	});
 
@@ -67,7 +77,7 @@ export function load()
 	{
 		applet.numLatitudes = latitudesSlider.value;
 		applet.numLongitudesPerLatitude = longitudesSlider.value;
+		applet.numLongitudesShown = coreSlider.value * applet.numLongitudesPerLatitude;
 		applet.createAllFibers();
-		applet.needNewFrame = true;
 	}
 }

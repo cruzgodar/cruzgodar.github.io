@@ -113,9 +113,11 @@ export class Slider extends InputElement
 		this.value = this.logarithmic
 			? 10 ** parseFloat(this.element.value)
 			: parseFloat(this.element.value);
+
 		this.value = this.integer
 			? Math.round(this.value)
 			: this.value.toFixed(this.precision);
+
 		this.valueElement.textContent = this.value;
 
 		if (callOnInput)
@@ -124,8 +126,16 @@ export class Slider extends InputElement
 		}
 	}
 
-	setBounds({ min = this.min, max = this.max })
-	{
+	setBounds({
+		min = this.min,
+		max = this.max,
+		callOnInput = false
+	}) {
+		if (min > max)
+		{
+			throw new Error(`Minimum slider value of ${min} is larger than maximum of ${max}!`);
+		}
+
 		this.min = min;
 		this.max = max;
 
@@ -141,5 +151,15 @@ export class Slider extends InputElement
 		
 		this.element.setAttribute("min", this.min);
 		this.element.setAttribute("max", this.max);
+
+		if (this.value > this.max)
+		{
+			this.setValue(this.max, callOnInput);
+		}
+
+		else if (this.value < this.min)
+		{
+			this.setValue(this.min, callOnInput);
+		}
 	}
 }

@@ -430,17 +430,16 @@ export const galleryImageData =
 		driveId: "1rcF2qy4gGCJ3lg3X8jQW0Z0_OcFYKv8Q"
 	},
 
-	"kaleidoscopic-ifs-2":
+	"hopf-fibration":
 	{
-		title: "The Sierpinski Tetrahedron",
+		title: "The Hopf Fibration",
 
-		resolution: "5000x5000",
+		resolution: "4000x4000",
 
-		appletLink: "kaleidoscopic-ifs-fractals",
+		appletLink: "hopf-fibration",
 
-		driveId: "1vmRBT5i-KEq1DbReB87DhDJqzgpzlpWE"
+		driveId: "1h8kmCtONHyUEX28IF2JzFNL-Qgn-TFEX"
 	},
-
 
 
 	"secant-method":

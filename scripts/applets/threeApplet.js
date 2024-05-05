@@ -70,10 +70,6 @@ export class ThreeApplet extends AnimationFrameApplet
 		this.ambientLight = new THREE.AmbientLight(0xffffff, .15);
 		this.scene.add(this.ambientLight);
 
-		this.pointLight = new THREE.PointLight(0xffffff, 1, 10000);
-		this.pointLight.position.set(-750, -1000, 500);
-		this.scene.add(this.pointLight);
-
 		this.renderer.useLegacyLights = true;
 	}
 

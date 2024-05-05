@@ -87,7 +87,8 @@ export class HopfFibration extends ThreeApplet
 
 	// This is in addition to the north and south poles.
 	numLatitudes = 3;
-	numLongitudesPerLatitude = 20;
+	numLongitudesPerLatitude = 30;
+	numLongitudesShown = 30;
 
 	fibers = [];
 
@@ -136,6 +137,14 @@ export class HopfFibration extends ThreeApplet
 		this.wilson = new Wilson(canvas, options);
 
 		this.initThree();
+
+		const pointLight = new THREE.PointLight(0xffffff, 1, 10000);
+		pointLight.position.set(-750, -1000, 500);
+		this.scene.add(pointLight);
+
+		const pointLight2 = new THREE.PointLight(0xffffff, .5, 10000);
+		pointLight2.position.set(750, 1000, 500);
+		this.scene.add(pointLight2);
 
 		const boundFunction = () => this.changeResolution();
 		addTemporaryListener({
@@ -292,6 +301,8 @@ export class HopfFibration extends ThreeApplet
 			color: new THREE.Color(rgb[0] / 255, rgb[1] / 255, rgb[2] / 255)
 		});
 
+		material.transparent = true;
+
 		const mesh = new THREE.Mesh(geometry, material);
 
 		this.scene.add(mesh);
@@ -310,12 +321,21 @@ export class HopfFibration extends ThreeApplet
 
 		this.fibers = [];
 
+		const halfFibersHidden = Math.floor(
+			(this.numLongitudesPerLatitude - this.numLongitudesShown) / 2
+		);
+
 		for (let i = 0; i < this.numLatitudes; i++)
 		{
 			const phi = (i + 1) / (this.numLatitudes + 1) * Math.PI;
 
 			for (let j = 0; j < this.numLongitudesPerLatitude; j++)
 			{
+				if (j < halfFibersHidden || j >= this.numLongitudesPerLatitude - halfFibersHidden)
+				{
+					continue;
+				}
+
 				const theta = (j + 0.5) / this.numLongitudesPerLatitude * 2 * Math.PI;
 
 				const fiber = this.createFiber(theta, phi);
@@ -323,6 +343,8 @@ export class HopfFibration extends ThreeApplet
 				this.fibers.push(fiber);
 			}
 		}
+
+		this.needNewFrame = true;
 	}
 
 	async toggleCompression()
