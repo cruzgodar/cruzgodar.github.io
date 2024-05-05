@@ -53,7 +53,7 @@ home Cruz Godar
 			notes/4-the-dot-product Section 4: The Dot Product
 			notes/5-least-squares Section 5: Least-Squares Approximations
 			notes/6-inner-product-spaces Section 6: Inner Product Spaces
-			notes/7-the-real-spectral-theorem Section 7: The Real Spectral Theorem
+			notes/7-the-spectral-theorems Section 7: The Spectral Theorems
 		
 		uo/341 Math 341
 			notes/1-vectors-and-matrices Section 1: Vectors and Matrices

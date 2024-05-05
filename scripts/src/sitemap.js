@@ -603,7 +603,7 @@ export const sitemap =
 			"/teaching/uo/342/notes/4-the-dot-product/",
 			"/teaching/uo/342/notes/5-least-squares/",
 			"/teaching/uo/342/notes/6-inner-product-spaces/",
-			"/teaching/uo/342/notes/7-the-real-spectral-theorem/"
+			"/teaching/uo/342/notes/7-the-spectral-theorems/"
 		]
 	},
 		
@@ -682,9 +682,9 @@ export const sitemap =
 		"children": []
 	},
 	
-	"/teaching/uo/342/notes/7-the-real-spectral-theorem/":
+	"/teaching/uo/342/notes/7-the-spectral-theorems/":
 	{
-		"title": "Section 7: The Real Spectral Theorem",
+		"title": "Section 7: The Spectral Theorems",
 		
 		"parent": "/teaching/uo/342/",
 		
