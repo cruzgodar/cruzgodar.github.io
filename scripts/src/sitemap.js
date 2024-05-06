@@ -603,7 +603,8 @@ export const sitemap =
 			"/teaching/uo/342/notes/4-the-dot-product/",
 			"/teaching/uo/342/notes/5-least-squares/",
 			"/teaching/uo/342/notes/6-inner-product-spaces/",
-			"/teaching/uo/342/notes/7-the-spectral-theorems/"
+			"/teaching/uo/342/notes/7-the-spectral-theorems/",
+			"/teaching/uo/342/notes/8-jordan-normal-form/"
 		]
 	},
 		
@@ -685,6 +686,15 @@ export const sitemap =
 	"/teaching/uo/342/notes/7-the-spectral-theorems/":
 	{
 		"title": "Section 7: The Spectral Theorems",
+		
+		"parent": "/teaching/uo/342/",
+		
+		"children": []
+	},
+	
+	"/teaching/uo/342/notes/8-jordan-normal-form/":
+	{
+		"title": "Section 8: Jordan Normal Form",
 		
 		"parent": "/teaching/uo/342/",
 		

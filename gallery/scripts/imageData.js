@@ -6,8 +6,6 @@ export const galleryImageData =
 	{
 		title: "A Voronoi Diagram",
 
-		resolution: "4000x4000",
-
 		appletLink: "voronoi-diagrams",
 
 		driveId: "1J1dfHbqx1tX1qkkuJF0ZUp-OPlRezEsV"
@@ -16,8 +14,6 @@ export const galleryImageData =
 	"voronoi-diagram-2":
 	{
 		title: "A Voronoi Diagram",
-
-		resolution: "4000x4000",
 
 		appletLink: "voronoi-diagrams",
 
@@ -28,8 +24,6 @@ export const galleryImageData =
 	{
 		title: "The Thurston Geometry $\\mathbb{H}^3$",
 
-		resolution: "4000x4000",
-
 		appletLink: "thurston-geometries",
 
 		driveId: "1wm59bChDwRgm91lONQR1bVKTCBKGWien"
@@ -38,8 +32,6 @@ export const galleryImageData =
 	"thurston-geometry-e3":
 	{
 		title: "The Thurston Geometry $\\mathbb{E}^3$",
-
-		resolution: "4000x4000",
 
 		appletLink: "thurston-geometries",
 
@@ -50,8 +42,6 @@ export const galleryImageData =
 	{
 		title: "The Thurston Geometry Nil",
 
-		resolution: "4000x4000",
-
 		appletLink: "thurston-geometries",
 
 		driveId: "1-1h44Q9CEVGqyCkkxAQ-ykODsVzWYKwE"
@@ -60,8 +50,6 @@ export const galleryImageData =
 	"thurston-geometry-sl2r":
 	{
 		title: "The Thurston Geometry $\\widetilde{\\operatorname{SL}}(2, \\mathbb{R})$",
-
-		resolution: "4000x4000",
 
 		appletLink: "thurston-geometries",
 
@@ -72,8 +60,6 @@ export const galleryImageData =
 	{
 		title: "The Thurston Geometry Sol",
 
-		resolution: "4000x4000",
-
 		appletLink: "thurston-geometries",
 
 		driveId: "1Pz0IUsM43_-qEXIf27CWzjOkTnMyLXz6"
@@ -82,8 +68,6 @@ export const galleryImageData =
 	"thurston-geometry-s2xe":
 	{
 		title: "The Thurston Geometry $S^2 \\times \\mathbb{E}$",
-
-		resolution: "4000x4000",
 
 		appletLink: "thurston-geometries",
 
@@ -94,8 +78,6 @@ export const galleryImageData =
 	{
 		title: "The Thurston Geometry $\\mathbb{H}^2 \\times \\mathbb{E}$",
 
-		resolution: "4000x4000",
-
 		appletLink: "thurston-geometries",
 
 		driveId: "1LCBMWW4n8IcF3_bGo4up4dcO0ISDqH0n"
@@ -104,8 +86,6 @@ export const galleryImageData =
 	"thurston-geometry-s3":
 	{
 		title: "The Thurston Geometry $S^3$",
-
-		resolution: "4000x4000",
 
 		appletLink: "thurston-geometries",
 
@@ -116,8 +96,6 @@ export const galleryImageData =
 	{
 		title: "A Pascal&#x2019;s Triangle Coloring",
 
-		resolution: "4000x4000",
-
 		appletLink: "pascals-triangle-colorings",
 
 		driveId: "13sryJfjORay3ArQspZhgTvzQSbTs-osJ"
@@ -126,8 +104,6 @@ export const galleryImageData =
 	"newtons-method-2":
 	{
 		title: "Newton&#x2019;s Method",
-
-		resolution: "4000x4000",
 
 		parameters: /* html */`
 			Roots at $(\\pm 1, 0), (0, \\pm 1.5), (\\pm 1.5, \\pm 1.5)$
@@ -142,8 +118,6 @@ export const galleryImageData =
 	{
 		title: "An Abelian Sandpile",
 
-		resolution: "4747x4747",
-
 		featured: "Featured in UO&#x2019;s Erb Memorial Union and University Hall",
 
 		appletLink: "abelian-sandpiles",
@@ -155,8 +129,6 @@ export const galleryImageData =
 	{
 		title: "An Aztec Diamond",
 
-		resolution: "5000x5000",
-
 		appletLink: "domino-shuffling",
 
 		driveId: "1XaoTpV0dKscPtOvrjU6sUuD1Mo-pyQzH"
@@ -165,8 +137,6 @@ export const galleryImageData =
 	"finite-subdivision-1":
 	{
 		title: "A Finite Subdivision",
-
-		resolution: "5000x5000",
 
 		parameters: "6 vertices, 6 iterations",
 
@@ -180,8 +150,6 @@ export const galleryImageData =
 	"generalized-julia-set-2":
 	{
 		title: "A Generalized Julia Set",
-
-		resolution: "5000x5000",
 
 		parameters: /* html */`
 			Generated from $z^2 - 0.05z^{-2} + c$
@@ -198,8 +166,6 @@ export const galleryImageData =
 	{
 		title: "A Hitomezashi Pattern",
 
-		resolution: "5000x5000",
-
 		appletLink: "hitomezashi-patterns",
 
 		driveId: "1JkngUmUdSEJvzYMRTTUIa3jy26F0c6m8"
@@ -210,8 +176,6 @@ export const galleryImageData =
 	"brownian-tree":
 	{
 		title: "A Brownian Tree",
-
-		resolution: "5000x5000",
 
 		featured: "Featured in UO&#x2019;s Erb Memorial Union",
 
@@ -224,8 +188,6 @@ export const galleryImageData =
 	{
 		title: "A Lyapunov Fractal",
 
-		resolution: "5000x5000",
-
 		parameters: "Generating string <code>AABB</code>",
 
 		appletLink: "lyapunov-fractals",
@@ -237,8 +199,6 @@ export const galleryImageData =
 	{
 		title: "A Lorenz Attractor",
 
-		resolution: "5000x5000",
-
 		appletLink: "strange-attractors",
 
 		driveId: "1sRCKC-WE8a2iYNW942uKgAJbHVkAYDrQ"
@@ -247,8 +207,6 @@ export const galleryImageData =
 	"vector-field":
 	{
 		title: "A Vector Field",
-
-		resolution: "2000x2000",
 
 		parameters: /* html */`
 			Generated from $\\left( \\sin\\left( \\frac{y}{2.5} \\right), \\tan\\left( \\frac{x}{2.5} \\right) \\right)$
@@ -263,8 +221,6 @@ export const galleryImageData =
 	{
 		title: "A Julia Set",
 
-		resolution: "5000x5000",
-
 		appletLink: "julia-set-explorer",
 
 		driveId: "1V4B0ULle-Dq0-ludCNyQg5lQ8Hm6cm_X"
@@ -273,8 +229,6 @@ export const galleryImageData =
 	"snowflake":
 	{
 		title: "A Gravner-Griffeath Snowflake",
-
-		resolution: "2000x2000",
 
 		parameters: /* html */`
 			Generated with $\\rho = 0.3673$, $\\beta = 1.1016$, $\\alpha = 0.4022$, $\\theta = 0.0311$, $\\kappa = 0.0013$, $\\mu = 0.019$, and $\\gamma = 0.0005$
@@ -291,8 +245,6 @@ export const galleryImageData =
 	{
 		title: "A Quaternionic Julia Set",
 
-		resolution: "5000x5000",
-
 		parameters: /* html */`
 			Generated with $c = (-0.54, -0.25, -0.668, 0)$
 		`,
@@ -307,8 +259,6 @@ export const galleryImageData =
 	"kicked-rotator":
 	{
 		title: "A Kicked Rotator",
-
-		resolution: "5000x5000",
 
 		parameters: /* html */`
 			Generated with $K = 0.75$
@@ -325,8 +275,6 @@ export const galleryImageData =
 	{
 		title: "The Sierpinski Octahedron",
 
-		resolution: "5000x5000",
-
 		featured: "Featured in UO&#x2019;s Erb Memorial Union and University Hall",
 
 		appletLink: "kaleidoscopic-ifs-fractals",
@@ -337,8 +285,6 @@ export const galleryImageData =
 	"generalized-julia-set-1":
 	{
 		title: "A Generalized Julia Set",
-
-		resolution: "5000x5000",
 
 		parameters: /* html */`
 			Generated from $\\sin(cz)$
@@ -355,8 +301,6 @@ export const galleryImageData =
 	{
 		title: "A Quasi-Fuchsian Group",
 
-		resolution: "5000x5000",
-
 		featured: "Featured in UO&#x2019;s Erb Memorial Union and University Hall",
 
 		appletLink: "quasi-fuchsian-groups",
@@ -367,8 +311,6 @@ export const galleryImageData =
 	"chaos-game-1":
 	{
 		title: "A Chaos Game",
-
-		resolution: "5000x5000",
 
 		featured: "Featured in UO&#x2019;s Erb Memorial Union",
 
@@ -383,8 +325,6 @@ export const galleryImageData =
 	{
 		title: "Wilson&#x2019;s Algorithm",
 
-		resolution: "7218x7218",
-
 		featured: "Featured in UO&#x2019;s Erb Memorial Union and University Hall",
 
 		appletLink: "wilsons-algorithm",
@@ -398,8 +338,6 @@ export const galleryImageData =
 	{
 		title: "The Barnsley Fern",
 
-		resolution: "5000x5000",
-
 		featured: "Featured in the Jordan Schnitzer Museum of Art",
 
 		appletLink: "the-barnsley-fern",
@@ -410,8 +348,6 @@ export const galleryImageData =
 	"generalized-julia-set-3":
 	{
 		title: "A Generalized Julia Set",
-
-		resolution: "5000x5000",
 
 		parameters: /* html */`
 			Generated from $\\left( \\left| \\operatorname{Re} z \\right| - \\left| \\operatorname{Im} z \\right| \\right)^2 + c$
@@ -426,8 +362,6 @@ export const galleryImageData =
 	{
 		title: "A Magic Carpet",
 
-		resolution: "4009x4009",
-
 		appletLink: "magic-carpets",
 
 		driveId: "1bD3P4pzIU7M6Ni_lp9oSjtrwoAJQpJ98"
@@ -436,8 +370,6 @@ export const galleryImageData =
 	"complex-map-1":
 	{
 		title: "A Complex Map",
-
-		resolution: "5000x5000",
 
 		parameters: /* html */`
 			Generated from $e^{1/z}$
@@ -452,8 +384,6 @@ export const galleryImageData =
 	{
 		title: "The Hopf Fibration",
 
-		resolution: "4000x4000",
-
 		appletLink: "hopf-fibration",
 
 		driveId: "1h8kmCtONHyUEX28IF2JzFNL-Qgn-TFEX"
@@ -463,8 +393,6 @@ export const galleryImageData =
 	"secant-method":
 	{
 		title: "The Secant Method",
-
-		resolution: "5000x5000",
 
 		parameters: /* html */`
 			Generated from the polynomial $z^6 - 1$ with $a = 1.5$
@@ -479,8 +407,6 @@ export const galleryImageData =
 	{
 		title: "A Juliabulb",
 
-		resolution: "5000x5000",
-
 		featured: "Featured in UO&#x2019;s Erb Memorial Union",
 
 		appletLink: "the-mandelbulb",
@@ -492,8 +418,6 @@ export const galleryImageData =
 	{
 		title: "A Juliabulb",
 
-		resolution: "5000x5000",
-
 		featured: "Featured in UO&#x2019;s Erb Memorial Union",
 
 		appletLink: "the-mandelbulb",
@@ -504,8 +428,6 @@ export const galleryImageData =
 	"newtons-method-extended":
 	{
 		title: "Newton&#x2019;s Method, Extended",
-
-		resolution: "5000x5000",
 
 		parameters: /* html */`
 			Generated from $\\sin(z)\\left( -\\sin\\left( \\operatorname{Im}(z) \\right) + i\\sin \\left( \\operatorname{Re} z \\right) \\right)$
@@ -520,8 +442,6 @@ export const galleryImageData =
 	{
 		title: "A Chaos Game",
 
-		resolution: "5000x5000",
-
 		featured: "Featured in UO&#x2019;s Erb Memorial Union",
 
 		appletLink: "the-chaos-game",
@@ -532,8 +452,6 @@ export const galleryImageData =
 	"juliabulb-3":
 	{
 		title: "A Juliabulb",
-
-		resolution: "5000x5000",
 
 		featured: "Featured in UO&#x2019;s Erb Memorial Union",
 
@@ -548,8 +466,6 @@ export const galleryImageData =
 	{
 		title: "The Mandelbulb",
 
-		resolution: "5000x5000",
-
 		featured: "Featured in the 2022 Bridges Conference, as well as UO&#x2019;s Erb Memorial Union and University Hall",
 
 		appletLink: "the-mandelbulb",
@@ -561,8 +477,6 @@ export const galleryImageData =
 	{
 		title: "Wilson&#x2019;s Algorithm",
 
-		resolution: "3015x3015",
-
 		featured: "Featured in the Jordan Schnitzer Museum of Art",
 
 		appletLink: "wilsons-algorithm",
@@ -573,8 +487,6 @@ export const galleryImageData =
 	"complex-map-2":
 	{
 		title: "A Complex Map",
-
-		resolution: "5000x5000",
 
 		parameters: /* html */`
 			Generated from $\\mathcal{p}\\left( z, \\frac{2\\pi}{3} \\right)$
@@ -591,8 +503,6 @@ export const galleryImageData =
 	{
 		title: "A Double Pendulum Fractal",
 
-		resolution: "4000x4000",
-
 		appletLink: "double-pendulum-fractal",
 
 		driveId: "1X4qJm3ChGYLQtU7wDyp9_wMxs0vebpqU"
@@ -601,8 +511,6 @@ export const galleryImageData =
 	"double-pendulum-fractal-2":
 	{
 		title: "A Double Pendulum Fractal",
-
-		resolution: "4000x4000",
 
 		appletLink: "double-pendulum-fractal",
 
@@ -613,8 +521,6 @@ export const galleryImageData =
 	{
 		title: "An Extruded Cube",
 
-		resolution: "4000x4000",
-
 		appletLink: "extruded-cube",
 		
 		driveId: "1udLVBsti2An9TUonpOKApHdpaz_A8ole"
@@ -623,8 +529,6 @@ export const galleryImageData =
 	"menger-sponge":
 	{
 		title: "A Menger Sponge",
-
-		resolution: "4000x4000",
 
 		appletLink: "menger-sponge",
 		
