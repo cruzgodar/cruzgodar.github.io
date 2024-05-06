@@ -72,6 +72,8 @@ export function load()
 		};
 
 		highResImageElement.src = `/gallery/high-res/${id}.webp`;
+
+		typesetMath();
 	}
 
 

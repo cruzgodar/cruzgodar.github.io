@@ -129,7 +129,9 @@ export const galleryImageData =
 
 		resolution: "4000x4000",
 
-		parameters: "Roots at (&#x00B1;1, 0), (0, &#x00B1;1.5), (&#x00B1;1.5, &#x00B1;1.5)",
+		parameters: /* html */`
+			Roots at $(\\pm 1, 0), (0, \\pm 1.5), (\\pm 1.5, \\pm 1.5)$
+		`,
 
 		appletLink: "newtons-method",
 
@@ -181,7 +183,9 @@ export const galleryImageData =
 
 		resolution: "5000x5000",
 
-		parameters: "Generated from z&#x00B2; - .05z&#x207B;&#x00B2; + c",
+		parameters: /* html */`
+			Generated from $z^2 - 0.05z^{-2} + c$
+		`,
 
 		featured: "Featured in UO&#x2019;s Erb Memorial Union and University Hall",
 
@@ -222,7 +226,7 @@ export const galleryImageData =
 
 		resolution: "5000x5000",
 
-		parameters: "Generating string AABB",
+		parameters: "Generating string <code>AABB</code>",
 
 		appletLink: "lyapunov-fractals",
 
@@ -246,7 +250,9 @@ export const galleryImageData =
 
 		resolution: "2000x2000",
 
-		parameters: "Generated from (sin(y / 2.5), tan(x / 2.5))",
+		parameters: /* html */`
+			Generated from $\\left( \\sin\\left( \\frac{y}{2.5} \\right), \\tan\\left( \\frac{x}{2.5} \\right) \\right)$
+		`,
 
 		appletLink: "vector-fields",
 
@@ -270,7 +276,9 @@ export const galleryImageData =
 
 		resolution: "2000x2000",
 
-		parameters: "Generated with &#x03c1; = .3673, &#x03b2; = 1.1016, &#x03b1; = .4022, &#x03b8; = .0311, &#x03ba; = .0013, &#x03bc; = .019, &#x03b3; = .0005",
+		parameters: /* html */`
+			Generated with $\\rho = 0.3673$, $\\beta = 1.1016$, $\\alpha = 0.4022$, $\\theta = 0.0311$, $\\kappa = 0.0013$, $\\mu = 0.019$, and $\\gamma = 0.0005$
+		`,
 
 		appletLink: "snowflakes",
 
@@ -285,7 +293,9 @@ export const galleryImageData =
 
 		resolution: "5000x5000",
 
-		parameters: "Generated with c = (-0.54, -0.25, -0.668, 0)",
+		parameters: /* html */`
+			Generated with $c = (-0.54, -0.25, -0.668, 0)$
+		`,
 
 		featured: "Featured in the 2023 Bridges Conference",
 
@@ -300,7 +310,9 @@ export const galleryImageData =
 
 		resolution: "5000x5000",
 
-		parameters: "K = .75",
+		parameters: /* html */`
+			Generated with $K = 0.75$
+		`,
 
 		featured: "Featured in the Jordan Schnitzer Museum of Art and UO&#x2019;s Erb Memorial Union and University Hall",
 
@@ -328,7 +340,9 @@ export const galleryImageData =
 
 		resolution: "5000x5000",
 
-		parameters: "Generated from sin(cz)",
+		parameters: /* html */`
+			Generated from $\\sin(cz)$
+		`,
 
 		featured: "Featured in UO&#x2019;s Erb Memorial Union and University Hall",
 
@@ -399,7 +413,9 @@ export const galleryImageData =
 
 		resolution: "5000x5000",
 
-		parameters: "Generated from (|z.x| - |z.y|)&#x00B2; + c",
+		parameters: /* html */`
+			Generated from $\\left( \\left| \\operatorname{Re} z \\right| - \\left| \\operatorname{Im} z \\right| \\right)^2 + c$
+		`,
 
 		appletLink: "generalized-julia-sets",
 
@@ -423,7 +439,9 @@ export const galleryImageData =
 
 		resolution: "5000x5000",
 
-		parameters: "Generated from exp(1/z)",
+		parameters: /* html */`
+			Generated from $e^{1/z}$
+		`,
 
 		appletLink: "complex-maps",
 
@@ -448,7 +466,9 @@ export const galleryImageData =
 
 		resolution: "5000x5000",
 
-		parameters: "Generated from the polynomial z&#x2076; - 1 with a = 1.5",
+		parameters: /* html */`
+			Generated from the polynomial $z^6 - 1$ with $a = 1.5$
+		`,
 
 		appletLink: "secant-method",
 
@@ -487,7 +507,9 @@ export const galleryImageData =
 
 		resolution: "5000x5000",
 
-		parameters: "Generated from cmul(csin(z), sin(cmul(z, i)))",
+		parameters: /* html */`
+			Generated from $\\sin(z)\\left( -\\sin\\left( \\operatorname{Im}(z) \\right) + i\\sin \\left( \\operatorname{Re} z \\right) \\right)$
+		`,
 
 		appletLink: "newtons-method-extended",
 
@@ -554,7 +576,9 @@ export const galleryImageData =
 
 		resolution: "5000x5000",
 
-		parameters: "Generated from wp(z, rho)",
+		parameters: /* html */`
+			Generated from $\\mathcal{p}\\left( z, \\frac{2\\pi}{3} \\right)$
+		`,
 
 		appletLink: "complex-maps",
 
