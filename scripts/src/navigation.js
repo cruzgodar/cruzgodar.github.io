@@ -325,7 +325,8 @@ async function fadeOutPage({ url, noFadeOut })
 function unloadPage()
 {
 	// Remove temporary things outside the page element.
-	document.querySelectorAll("script, .temporary-style").forEach(element => element.remove());
+	document.querySelectorAll("script, .temporary-style, .wilson-fullscreen-components-container")
+		.forEach(element => element.remove());
 	
 	temporaryListeners.forEach(temporaryListener =>
 	{
