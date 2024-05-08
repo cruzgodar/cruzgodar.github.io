@@ -42,7 +42,7 @@ $$
 
 Since $A$ isn't diagonalizable, something like this is as close as we're going to get. In fact, this is remarkably close to a diagonalization, with the sole exception of the $1$ off the diagonal of $D$ that means the eigenspace corresponding to $\lambda = 3$ has dimension $1$ instead of $2$. With the goal of bringing this almost-diagonalization to any square matrix, let's back up and state a few definitions that formalize what we've seen here.
 
-### def generalized eigenvector
+### def "generalized eigenvector"
 
 	Let $A$ be an $n \times n$ matrix and $\lambda$ an eigenvalue of $A$. A **generalized eigenvector** of $A$ with eigenvalue $\lambda$ is a vector $\vec{v}$ so that $(A - \lambda I)^k\vec{v} = \vec{0}$ for some $k \geq 1$. The **rank** of a generalized eigenvector is the smallest $k$ for which this holds.
 
@@ -55,5 +55,7 @@ $$
 $$
 
 but $(A - \lambda I)\vec{v} \neq \vec{0}$, which is exactly what it means for $(A - \lambda I)\vec{v}$ to be an eigenvector of $A$ with eigenvalue $\lambda$. Similarly, the rank 3 generalized eigenvectors are those which are taken to rank 2 ones when plugged into $A - \lambda I$.
+
+### thm "f"
 
 ### nav-buttons

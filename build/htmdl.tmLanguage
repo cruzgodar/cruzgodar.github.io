@@ -17,7 +17,7 @@
 		<!-- Multi-line page elements -->
 		<dict>
 			<key>begin</key>
-			<string>^\t*?(###) (image\-links|buttons|carousel|text\-boxes|sliders|dropdown|gallery\-block|exc|ex|def|prop|thm|lem|cor|pf|ax|as|card)(.*$)</string>
+			<string>^\t*?(###) (image\-links|buttons|carousel|checkboxes|text\-boxes|sliders|gallery\-block|exc|ex|def|prop|thm|lem|cor|pf|ax|as|card)(.*$)</string>
 			<key>end</key>
 			<string>^\t*?(###)\s*$</string>
 			<key>beginCaptures</key>
@@ -60,7 +60,7 @@
 		<!-- Single-line page elements -->
 		<dict>
 			<key>match</key>
-			<string>^\t*?(###) (banner|canvas|checkbox|desmos|nav\-buttons|glsl\-docs|wilson)(.*?)$</string>
+			<string>^\t*?(###) (banner|canvas|desmos|dropdown|nav\-buttons|glsl\-docs|textarea|wilson)(.*?)$</string>
 			<key>captures</key>
 			<dict>
 				<key>1</key>
