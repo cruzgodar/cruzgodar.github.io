@@ -38,7 +38,86 @@ Welcome to Math 342! We'll use this page for the interactive notes, the homework
 	homework-3 -c "Homework 3"
 	homework-4 -c "Homework 4"
 	homework-5 -c "Homework 5"
+	homework-6 -c "Homework 6"
 	
+###
+
+
+
+### card homework-7 "Homework 7"
+
+	#. Let $A$ be a symmetric (i.e. $A^T = A$), $n \times n$, real matrix with all positive eigenvalues and define $\left< \vec{v}, \vec{w} \right> = \vec{v}^T A \vec{w}$ for $\vec{v}, \vec{w} \in #R#^n$.
+
+	> a) Show from the formula that this is symmetric --- that $\left< \vec{v}, \vec{w} \right> = \left< \vec{w}, \vec{v} \right>$.
+
+	> b) Show that it's also bilinear --- that $\left< c\vec{u} + \vec{v}, \vec{w} \right> = c\left< \vec{u}, \vec{w} \right> + \left< \vec{v}, \vec{w} \right>$.
+
+	> c) Setting $\vec{v} = \vec{w} = \vec{0}$, we have that $\left< \vec{0}, \vec{0} \right> = 0$. Explain why for any nonzero vector $\vec{v} \in #R#^n$, $\left< \vec{v}, \vec{v} \right> > 0$.
+
+###
+
+
+
+### card homework-6 "Homework 6"
+	
+	*Due Wednesday of Week 7 at the start of class*
+	
+	Complete the following problems and submit them as a pdf to Canvas. 8 points are awarded for thoroughly attempting every problem, and I'll select three problems to grade on correctness for 4 points each. Enough work should be shown that there is no question about the mathematical process used to obtain your answers.
+
+
+
+	## Section 5
+
+	In problems 4#, find the least-squares solution $\vec{x}'$ to the matrix equation $A\vec{x} = \vec{b}$ and the distance between $A\vec{x}'$ and $\vec{b}$. Also determine if that least-squares solution is unique.
+
+	#. $[[ 1, 1 ; 2, 3 ; 0, 2 ]]\vec{x} = [[ 1 ; 0 ; 2 ]]$.
+
+	#. $[[ 1, 2, 3 ; -1, 3, 2 ; 0, 2, 2 ]]\vec{x} = [[ 3 ; 1 ; 6 ]]$.
+
+	#. $[[ 1, 2, 1 ; 4, 2, -1 ; 3, 0, 1 ]]\vec{x} = [[ 8 ; 5 ; 6 ]]$.
+
+	#. $[[ 1, 0, 2 ; 2, 0, 1 ; 1, 1, 2 ; 3, 1, 1 ]]\vec{x} = [[ 1 ; 1 ; -2 ; -3 ]]$.
+
+	- - -
+
+	#. Let $A$ be an $m \times n$ unitary matrix (i.e. not necessarily square). What is the least-squares solution to $A\vec{x} = \vec{b}$ in terms of $A$ and $\vec{b}$?
+
+
+
+	## Section 6
+
+	In problems 3#, compute $\left< \vec{v}, \vec{w} \right>$, $\left| \left| \vec{v} \right| \right|$, $\left| \left| \vec{w} \right| \right|$, and the angle between $\vec{v}$ and $\vec{w}$ for the given inner product $V$.
+
+	#. $\vec{v} = 1 + 2x$ and $\vec{w} = 2x + x^2 - x^3$ for $V = \span\left\{ 1, x, x^2, x^3 \right\}$ with the inner product
+
+	$$
+		\left< p, q \right> = \sum_{n = 0}^3 p(n)q(n).
+	$$
+
+	#. $\vec{v} = [[ 1 ; 2 ; -1 ]]$ and $\vec{w} = [[ 2 ; 1 ; 0 ]]$ for $V = #R#^3$ with the inner product
+
+	$$
+		\left< \vec{v}, \vec{w} \right> = 2v_1w_1 + v_2w_2 + 50v_3w_3.
+	$$
+
+	#. $\vec{v}(x) = e^x$ and $\vec{w}(x) = x$ for $V = C[0, 1]$ with the inner product
+
+	$$
+		\left< f, g \right> = \int_0^1 f(x)g(x)\,dx.
+	$$
+
+	- - -
+
+	#. Let $V = C[0, 1]$. For each of the following possible inner product formulas, give an example showing that it does not define an inner product.
+
+	> a) $$\left< f, g \right> = \int_0^1 |f(x) + g(x)|\,dx.$$
+
+	> b) $$\left< f, g \right> = \int_0^1 (f(x)g(x))^2\,dx.$$
+
+	> c) $$\left< f, g \right> = \int_0^1 f(g(x))\,dx.$$
+
+	> d) $$\left< f, g \right> = \int_{1/4}^{3/4} f(x)g(x)\,dx.$$
+
 ###
 
 

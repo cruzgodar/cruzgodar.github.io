@@ -148,7 +148,7 @@ defines an inner product on $#R#^n$ (and in fact these are *all* the possible in
 
 ###
 
-Two of the most fundamental results about inner products relate the sizes of inner products to the magnitudes of their arguments.
+We'll close with two fundamental results that relate the sizes of inner products to the magnitudes of their arguments.
 
 ### thm "the Cauchy-Schwarz inequality"
 
@@ -169,7 +169,5 @@ Two of the most fundamental results about inner products relate the sizes of inn
 	$$
 
 ###
-
-We'll see simple justifications for both on the homework, as well as a handful of applications.
 
 ### nav-buttons
