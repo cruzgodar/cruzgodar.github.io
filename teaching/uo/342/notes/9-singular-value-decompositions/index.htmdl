@@ -1,0 +1,5 @@
+### nav-buttons
+
+For most of the course up to this point, we've focused on square matrices. There's good reason for that --- square matrices are the ones that have eigenvectors and eigenvalues, and the only ones that are possibly diagonalizable. But the framing of diagonalization as a convenient consequence of eigenvectors does a disservice to how useful a concept it is in isolation. In the last section, we saw one way to produce a diagonal-like decomposition that's still extremely useful in its own right, even when the matrix itself wasn't diagonalizable. That required it to be square, though, since we still found ourselves falling back to notions of eigenvectors and eigenvalues eventually. Many "naturally occurring" matrices --- those that come up in real-world applications --- are very much not square, and though they might not have eigenvectors to speak of, they're still worth our time and attention. Let's consider an $m \times n$ matrix $A$ and see what we can do.
+
+### nav-buttons

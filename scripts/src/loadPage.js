@@ -103,7 +103,7 @@ export async function showPage()
 
 	if (siteSettings.card)
 	{
-		showCard(siteSettings.card);
+		showCard(siteSettings.card, 10);
 	}
 
 	await fadeInPage();
