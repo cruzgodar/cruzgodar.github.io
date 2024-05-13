@@ -10,6 +10,7 @@
 		"**/ms-icon*": true,
 		"**/scripts/src/sitemap.js": true,
 		"**/sitemap.xml": true,
+		"**/teaching/uo/342/eigenfaces-demo/scripts/data.js": true,
 		"/scripts/anime.js": true,
 		"/scripts/three.js": true,
 		"/scripts/wilson.js": true
