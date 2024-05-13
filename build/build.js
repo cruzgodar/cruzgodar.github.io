@@ -13,6 +13,7 @@ const excludeFromBuild =
 	/scripts\/three\.js/,
 	/scripts\/anime\.js/,
 	/scripts\/math\.js/,
+	/teaching\/uo\/342\/eigenfaces-demo\/scripts\/data\.js/,
 ];
 
 const options =

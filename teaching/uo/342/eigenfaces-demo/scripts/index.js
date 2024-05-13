@@ -68,6 +68,7 @@ export async function load()
 
 	setTimeout(() => onSliderInput(), 100);
 	
+	// eslint-disable-next-line no-unused-vars
 	async function parseImage(index)
 	{
 		return new Promise(resolve =>
@@ -93,6 +94,7 @@ export async function load()
 		});
 	}
 
+	// eslint-disable-next-line no-unused-vars
 	function computeATA()
 	{
 		const output = new Array(21);
@@ -117,6 +119,7 @@ export async function load()
 		console.log(output);
 	}
 
+	// eslint-disable-next-line no-unused-vars
 	function computeUVectors()
 	{
 		const outputs = [];
