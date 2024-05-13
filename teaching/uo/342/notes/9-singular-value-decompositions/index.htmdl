@@ -120,6 +120,6 @@ and so the vectors $A\vec{v_1}, ..., A\vec{v_k}$ form an orthogonal basis for $\
 
 ## An Application to Image Compression
 
-
+Most of the value in linear algebra comes from treating matrices as linear maps, but we can also use them to represent rectangular data, especially when the images
 
 ### nav-buttons

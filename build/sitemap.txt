@@ -56,6 +56,8 @@ home Cruz Godar
 			notes/7-the-spectral-theorems Section 7: The Spectral Theorems
 			notes/8-jordan-normal-form Section 8: Jordan Normal Form
 			notes/9-singular-value-decompositions Section 9: Singular Value Decompositions
+
+			eigenfaces-demo Eigenfaces
 		
 		uo/341 Math 341
 			notes/1-vectors-and-matrices Section 1: Vectors and Matrices
