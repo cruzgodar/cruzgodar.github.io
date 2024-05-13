@@ -1812,13 +1812,30 @@ img[src="/about/cover.webp"]
 }
 
 
+.notes-images
+{
+	display: flex;
+	justify-content: center;
+	margin: 0 auto;
+	flex-wrap: wrap;
+	column-gap: 16px;
+	max-width: min(900px, 100%);
+}
 
 .notes-image
 {
-	width: min(min(calc(900px - 32px), calc(90vw - 32px)), calc(50vh - 32px)) !important;
-	margin: 0 auto;
+	max-width: min(900px, 100%);
+	max-height: 30vh;
 	border-radius: 16px;
 	margin-bottom: 16px;
+}
+
+@media (max-width: 500px)
+{
+	.notes-image
+	{
+		border-radius: 8px;
+	}
 }
 
 

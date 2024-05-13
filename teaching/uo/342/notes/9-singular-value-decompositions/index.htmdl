@@ -120,6 +120,44 @@ and so the vectors $A\vec{v_1}, ..., A\vec{v_k}$ form an orthogonal basis for $\
 
 ## An Application to Image Compression
 
-Most of the value in linear algebra comes from treating matrices as linear maps, but we can also use them to represent rectangular data, especially when the images
+Most of the value in linear algebra comes from treating matrices as linear maps, but we can also use them to simply represent rectangular data. Let's begin with an $800 \times 600$ pixel image $A$ and see what we can learn from its SVD.
+
+### image graphics/original.webp
+
+First of all, this doesn't directly translate to a matrix, since each pixel has red, green, and blue components, rather than a single number. Let's account for that by splitting it up into three images --- rather than red, green, and blue components, though, let's use hue, saturation, and value, which are much more perceptually distinct.
+
+### image graphics/h.webp graphics/s.webp graphics/v.webp
+
+Each of these is an $800 \times 600$ matrix with values in $[0, 1]$, but I've rendered their meanings here as opposed to their values --- the first image uses its data to show hue while leaving saturation and value constant, and so on.
+
+Let's call these matrices $H$, $S$, and $V$, and let's focus on just $V$ for now. Like all matrices, it has an SVD $V = U \Sigma W^T$ (we'll use $W$ since the name $V$ is already taken), where $U$ is an $800 \times 800$ unitary matrix, $W$ is a $600 \times 600$ unitary one, and $\Sigma$ is an $800 \times 600$ matrix whose only nonzero values lie along its diagonal.
+
+We need to take a brief tangent to think about another perspective on matrix multiplication. Given an $m \times n$ matrix $A$ and an $n \times k$ matrix $B$, the entry in row $i$ and column $j$ of $AB$ is
+
+$$
+	\sum_{l = 1}^n a_{il}b_{lj} = a_{i1}b_{1j} + \cdots + a_{in}b_{nj},
+$$
+
+as we're very well used to by now. Each of these sums contains $n$ terms, so the entire matrix is a sum of $n$ of them:
+
+$$
+	AB = [[ a_{11}b_{11}, a_{11}b_{12}, \cdots, a_{11}b_{1k} ; a_{21}b_{11}, a_{21}b_{12}, \cdots, a_{21}b_{1k} ; \vdots, \vdots, \ddots, \vdots ; a_{m1}b_{11}, a_{m1}b_{12}, \cdots, a_{m1}b_{1k} ]] + \cdots + [[ a_{1n}b_{n1}, a_{1n}b_{n2}, \cdots, a_{1n}b_{nk} ; a_{2n}b_{n1}, a_{2n}b_{n2}, \cdots, a_{2n}b_{nk} ; \vdots, \vdots, \ddots, \vdots ; a_{mn}b_{n1}, a_{mn}b_{n2}, \cdots, a_{mn}b_{nk} ]].
+$$
+
+This looks like a truly horrible way to compute a matrix product at first, but notice that the $l$th matrix in the series involves only the entries in the column $l$ of $A$ and the column $l$ of $B$. In fact, each term is a product of those two, just in the opposite order from what we're used to:
+
+$$
+	AB = [[ a_{11} ; a_{21} ; \vdots ; a_{m1} ]] [[ b_{11}, b_{12}, \cdots, b_{1k} ]] + \cdots + [[ a_{1n} ; a_{2n} ; \vdots ; a_{mn} ]] [[ b_{n1}, b_{n2}, \cdots, b_{nk} ]].
+$$
+
+In total, we've shown the following (fairly strange) fact: the product of $A$ and $B$ is equal to the matrix formed by multiplying every column of $A$ by the corresponding row of $B$ and adding up all the results.
+
+Now let's return to the SVD. In $V = U \Sigma W^T$, if we denote the columns of $U$ by $\vec{u_i}$, the columns of $W$ by $\vec{w_i}$, and the singular values by $\sigma_i$, then
+
+$$
+	V = \sigma_1 \vec{u_1}\vec{w_1}^T + \cdots + \sigma_{600} \vec{u_{600}}\vec{w_{600}}^T,
+$$
+
+and since all of the $\vec{u_i}$ and $\vec{w_i}$ have length $1$, the singular values (which we've arranged in descending order) are the only part of the data that can effectively change the magnitude. Among all matrices of the form $c\vec{u}\vec{w}^T$, the one closest to $V$ is then $\sigma_1 \vec{u_1}\vec{w_1}^T$. Among all matrices that are the sum of two of these terms, the closest is $\sigma_1 \vec{u_1}\vec{w_1}^T + \sigma_2 \vec{u_2}\vec{w_2}^T$, and so on. This points to a type of image compression we can easily extract: keep a few of the most important terms and throw out lots of the lower ones. That corresponds to deleting some of the right-most columns of $U$ and $W$ --- then we can store something near the data of all of $V$ by storing only a few columns of $U$ and $W$ and a few elements of $\Sigma$. The example below shows an approximation of $V$ with between $1$ and $600$ terms.
 
 ### nav-buttons
