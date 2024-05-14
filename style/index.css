@@ -1807,6 +1807,7 @@ img[src="/about/cover.webp"]
 .notes-environment .desmos-border, .notes-environment .desmos-container, .notes-environment .dcg-container
 {
 	width: min(min(calc(900px - 20px), calc(90vw - 20px)), calc(50vh - 20px)) !important;
+	height: min(min(calc(900px - 20px), calc(90vw - 20px)), calc(50vh - 20px)) !important;
 }
 
 

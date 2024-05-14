@@ -274,7 +274,7 @@
 		
 	<url>
 		<loc>https://www.cruzgodar.com/teaching/uo/342/</loc>
-		<lastmod>2024-5-13</lastmod>
+		<lastmod>2024-5-14</lastmod>
 		<priority>0.5</priority>
 	</url>
 		
@@ -335,12 +335,6 @@
 	<url>
 		<loc>https://www.cruzgodar.com/teaching/uo/342/notes/9-singular-value-decompositions/</loc>
 		<lastmod>2024-5-13</lastmod>
-		<priority>0.5</priority>
-	</url>
-		
-	<url>
-		<loc>https://www.cruzgodar.com/teaching/uo/342/eigenfaces-demo/</loc>
-		<lastmod>2024-5-14</lastmod>
 		<priority>0.5</priority>
 	</url>
 		
@@ -888,5 +882,11 @@
 		<loc>https://www.cruzgodar.com/debug/glsl-docs/</loc>
 		<lastmod>2024-3-9</lastmod>
 		<priority>0.0</priority>
+	</url>
+		
+	<url>
+		<loc>https://www.cruzgodar.com/teaching/uo/342/extra/eigenfaces-demo/</loc>
+		<lastmod>2024-5-14</lastmod>
+		<priority>0.5</priority>
 	</url>
 </urlset>

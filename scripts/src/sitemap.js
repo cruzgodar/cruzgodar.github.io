@@ -605,8 +605,7 @@ export const sitemap =
 			"/teaching/uo/342/notes/6-inner-product-spaces/",
 			"/teaching/uo/342/notes/7-the-spectral-theorems/",
 			"/teaching/uo/342/notes/8-jordan-normal-form/",
-			"/teaching/uo/342/notes/9-singular-value-decompositions/",
-			"/teaching/uo/342/eigenfaces-demo/"
+			"/teaching/uo/342/notes/9-singular-value-decompositions/"
 		]
 	},
 		
@@ -706,17 +705,6 @@ export const sitemap =
 	"/teaching/uo/342/notes/9-singular-value-decompositions/":
 	{
 		"title": "Section 9: Singular Value Decompositions",
-		
-		"parent": "/teaching/uo/342/",
-		
-		"children": [],
-
-		"customScript": true
-	},
-	
-	"/teaching/uo/342/eigenfaces-demo/":
-	{
-		"title": "Eigenfaces",
 		
 		"parent": "/teaching/uo/342/",
 		
@@ -1723,6 +1711,17 @@ export const sitemap =
 		"title": "GLSL Docs",
 		
 		"parent": "/debug/",
+		
+		"children": [],
+
+		"customScript": true
+	},
+	
+	"/teaching/uo/342/extra/eigenfaces-demo/":
+	{
+		"title": "Eigenfaces",
+		
+		"parent": "/home/",
 		
 		"children": [],
 
