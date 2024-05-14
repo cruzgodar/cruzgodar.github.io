@@ -9,7 +9,6 @@
 	},
 	"exclude": [
 		"teaching/uo/342/eigenfaces-demo/scripts/data.js",
-		"teaching/uo/342/notes/9-singular-value-decompositions/scripts/data.js",
-		"teaching/uo/342/notes/9-singular-value-decompositions/scripts/data.min.js",
+		"teaching/uo/342/notes/9-singular-value-decompositions/scripts/vData.js",
 	]
 }
