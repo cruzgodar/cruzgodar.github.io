@@ -14,6 +14,7 @@ const excludeFromBuild =
 	/scripts\/anime\.js/,
 	/scripts\/math\.js/,
 	/teaching\/uo\/342\/eigenfaces-demo\/scripts\/data\.js/,
+	/teaching\/uo\/342\/notes\/9-singular-value-decompositions\/scripts\/data\.js/,
 ];
 
 const options =

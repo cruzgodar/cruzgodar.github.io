@@ -709,7 +709,9 @@ export const sitemap =
 		
 		"parent": "/teaching/uo/342/",
 		
-		"children": []
+		"children": [],
+
+		"customScript": true
 	},
 	
 	"/teaching/uo/342/eigenfaces-demo/":

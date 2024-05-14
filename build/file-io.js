@@ -14,7 +14,7 @@ export async function read(filepath)
 			{
 				resolve(data);
 			}
-
+			
 			resolve(null);
 		});
 	});

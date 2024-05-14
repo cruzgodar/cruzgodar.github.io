@@ -120,7 +120,7 @@ and so the vectors $A\vec{v_1}, ..., A\vec{v_k}$ form an orthogonal basis for $\
 
 ## An Application to Image Compression
 
-Most of the value in linear algebra comes from treating matrices as linear maps, but we can also use them to simply represent rectangular data. Let's begin with an $800 \times 600$ pixel image $A$ and see what we can learn from its SVD.
+Most of the value in linear algebra comes from treating matrices as linear maps, but we can also use them to simply represent rectangular data. Let's begin with an 400 pixel wide, 300 pixel tall image $A$ and see what we can learn from its SVD.
 
 ### image graphics/original.webp
 
@@ -128,9 +128,9 @@ First of all, this doesn't directly translate to a matrix, since each pixel has 
 
 ### image graphics/h.webp graphics/s.webp graphics/v.webp
 
-Each of these is an $800 \times 600$ matrix with values in $[0, 1]$, but I've rendered their meanings here as opposed to their values --- the first image uses its data to show hue while leaving saturation and value constant, and so on.
+Each of these is an $300 \times 400$ matrix with values in $[0, 1]$, but I've rendered their meanings here as opposed to their values --- the first image uses its data to show hue while leaving saturation and value constant, and so on.
 
-Let's call these matrices $H$, $S$, and $V$, and let's focus on just $V$ for now. Like all matrices, it has an SVD $V = U \Sigma W^T$ (we'll use $W$ since the name $V$ is already taken), where $U$ is an $800 \times 800$ unitary matrix, $W$ is a $600 \times 600$ unitary one, and $\Sigma$ is an $800 \times 600$ matrix whose only nonzero values lie along its diagonal.
+Let's call these matrices $H$, $S$, and $V$, and let's focus on just $V$ for now. Like all matrices, it has an SVD $V = U \Sigma W^T$ (we'll use $W$ since the name $V$ is already taken), where $U$ is a $300 \times 300$ unitary matrix, $W$ is an $400 \times 400$ unitary one, and $\Sigma$ is a $300 \times 400$ matrix whose only nonzero values lie along its diagonal.
 
 We need to take a brief tangent to think about another perspective on matrix multiplication. Given an $m \times n$ matrix $A$ and an $n \times k$ matrix $B$, the entry in row $i$ and column $j$ of $AB$ is
 
@@ -155,9 +155,21 @@ In total, we've shown the following (fairly strange) fact: the product of $A$ an
 Now let's return to the SVD. In $V = U \Sigma W^T$, if we denote the columns of $U$ by $\vec{u_i}$, the columns of $W$ by $\vec{w_i}$, and the singular values by $\sigma_i$, then
 
 $$
-	V = \sigma_1 \vec{u_1}\vec{w_1}^T + \cdots + \sigma_{600} \vec{u_{600}}\vec{w_{600}}^T,
+	V = \sigma_1 \vec{u_1}\vec{w_1}^T + \cdots + \sigma_{300} \vec{u_{300}}\vec{w_{300}}^T,
 $$
 
-and since all of the $\vec{u_i}$ and $\vec{w_i}$ have length $1$, the singular values (which we've arranged in descending order) are the only part of the data that can effectively change the magnitude. Among all matrices of the form $c\vec{u}\vec{w}^T$, the one closest to $V$ is then $\sigma_1 \vec{u_1}\vec{w_1}^T$. Among all matrices that are the sum of two of these terms, the closest is $\sigma_1 \vec{u_1}\vec{w_1}^T + \sigma_2 \vec{u_2}\vec{w_2}^T$, and so on. This points to a type of image compression we can easily extract: keep a few of the most important terms and throw out lots of the lower ones. That corresponds to deleting some of the right-most columns of $U$ and $W$ --- then we can store something near the data of all of $V$ by storing only a few columns of $U$ and $W$ and a few elements of $\Sigma$. The example below shows an approximation of $V$ with between $1$ and $600$ terms.
+and since all of the $\vec{u_i}$ and $\vec{w_i}$ have length $1$, the singular values (which we've arranged in descending order) are the only part of the data that can effectively change the magnitude. Among all matrices of the form $c\vec{u}\vec{w}^T$, the one closest to $V$ is then $\sigma_1 \vec{u_1}\vec{w_1}^T$. Among all matrices that are the sum of two of these terms, the closest is $\sigma_1 \vec{u_1}\vec{w_1}^T + \sigma_2 \vec{u_2}\vec{w_2}^T$, and so on. This points to a type of image compression we can easily extract: keep a few of the most important terms and throw out lots of the lower ones. That corresponds to deleting some of the right-most columns of $U$ and $W$ --- then we can store something near the data of all of $V$ by storing only a few columns of $U$ and $W$ and a few elements of $\Sigma$. The example below shows an approximation of $V$ with between 1 and 200 terms.
+
+### sliders
+	depth
+###
+
+### canvas v
+
+That's not bad! It's worth noting that unless we use fewer than half of the number of columns in the original image, we're not actually saving space, since using all the columns means all of $U$ and $V$, which is roughly twice the space of the original image.
+
+It might seem like high levels of compression are functionally useless since the artifacts are so strong, but that's largely just for the value component $V$ --- in fact, that's largely why we did this example with it. By using different levels of compression with all three data channels, we can achieve substantial compression at minimum visual noise.
+
+### canvas composite
 
 ### nav-buttons
