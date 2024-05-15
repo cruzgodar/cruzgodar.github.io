@@ -174,7 +174,7 @@ It might seem like high levels of compression are functionally useless since the
 
 ## Eigenfaces
 
-For one final demo, here's another SVD application. I've taken every graduate student with a directory photo at UO, run a small script to autocrop them all to the face and center the eyes, thrown out a few outliers that weren't taken head-on or were so close to the camera that they couldn't be lined up with the others, and finally scaled them all to $100 \times 100$. Then I placed them as columns in a $30000 \times 44$ matrix and ran an SVD on it, and the result is the faces below. By changing the face and depth, we can see how well the first $n$ eigenvectors approximate any given student, and the first one (called the principal eigenvector, or in this case the principal eigenface) is the closest face to every one in the list.
+For one final demo, here's another SVD application. I've taken every graduate student with a directory photo at UO, run a small script to autocrop them all to the face and center the eyes, thrown out a few outliers that weren't taken head-on or were so close to the camera that they couldn't be lined up with the others, and finally scaled them all to $100 \times 100$. Then I placed them as columns in a $30000 \times 44$ matrix and ran an SVD on it, and the result is the faces below. By changing the face and depth, we can see how well the first $n$ eigenvectors approximate any given student, and the first one (called the **principal eigenvector**, or in this case the principal eigenface) is the closest face to every one in the list.
 
 ### sliders
 	index
@@ -182,5 +182,7 @@ For one final demo, here's another SVD application. I've taken every graduate st
 ###
 
 ### canvas eigenface
+
+That's it for this course! 
 
 ### nav-buttons

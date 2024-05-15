@@ -39,7 +39,6 @@ export async function load()
 		value: 0,
 		min: 0,
 		max: 20,
-		integer: true,
 		onInput: onSliderInput
 	});
 
@@ -49,7 +48,6 @@ export async function load()
 		value: 1,
 		min: 1,
 		max: 21,
-		integer: true,
 		onInput: onSliderInput
 	});
 
@@ -59,7 +57,19 @@ export async function load()
 	{
 		if (eigenfaceCheckbox.checked)
 		{
-			drawEigenface(uVectors[indexSlider.value]);
+			const uVectorFloor = uVectors[Math.floor(indexSlider.value)];
+			const uVectorCeil = uVectors[Math.ceil(indexSlider.value)];
+			const t = indexSlider.value - Math.floor(indexSlider.value);
+
+			const uVector = new Array(dataLength);
+
+			for (let i = 0; i < dataLength; i++)
+			{
+				uVector[i] = (1 - t) * uVectorFloor[i] + t * uVectorCeil[i];
+			}
+
+			drawEigenface(uVector);
+
 			return;
 		}
 
@@ -199,8 +209,19 @@ export async function load()
 
 		for (let i = 0; i < 21; i++)
 		{
+			const floor = Math.floor(index);
+
 			// All the eigenvectors have length 21 as output by sage.
-			svdCoefficients[i] = Math.sqrt(eigendata[i][0]) * eigendata[i][1][index] / 21;
+			svdCoefficients[i] = (1 - (index - floor))
+				* Math.sqrt(eigendata[i][0])
+				* eigendata[i][1][floor] / 21;
+
+			if (index < 20)
+			{
+				svdCoefficients[i] += (index - floor)
+					* Math.sqrt(eigendata[i][0])
+					* eigendata[i][1][floor + 1] / 21;
+			}
 		}
 
 		// The coefficients are the roots of the eigenvalues times
@@ -210,9 +231,16 @@ export async function load()
 		{
 			vec[i] = 0;
 
-			for (let j = 0; j < depth; j++)
+			for (let j = 0; j < Math.floor(depth); j++)
 			{
 				vec[i] += svdCoefficients[j] * uVectors[j][i] / uMagnitudes[j];
+			}
+
+			// If depth is a float, we partially add the last bit.
+			if (depth < 20)
+			{
+				const j = Math.floor(depth);
+				vec[i] += (depth - j) * svdCoefficients[j] * uVectors[j][i] / uMagnitudes[j];
 			}
 		}
 

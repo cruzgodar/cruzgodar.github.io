@@ -117,7 +117,6 @@ export async function load()
 			value: 0,
 			min: 0,
 			max: numCols - 1,
-			integer: true,
 			onInput: onSliderInput
 		});
 
@@ -127,7 +126,6 @@ export async function load()
 			value: 1,
 			min: 1,
 			max: numCols,
-			integer: true,
 			onInput: onSliderInput
 		});
 
@@ -191,10 +189,21 @@ export async function load()
 
 			const svdCoefficients = new Array(numCols);
 
+			const floor = Math.floor(index);
+
 			for (let i = 0; i < numCols; i++)
 			{
 				// All the eigenvectors have length numCols as output by sage.
-				svdCoefficients[i] = Math.sqrt(eigendata[i][0]) * eigendata[i][1][index] / numCols;
+				svdCoefficients[i] = (1 - (index - floor))
+					* Math.sqrt(eigendata[i][0])
+					* eigendata[i][1][floor] / numCols;
+				
+				if (index < numCols - 1)
+				{
+					svdCoefficients[i] += (index - floor)
+						* Math.sqrt(eigendata[i][0])
+						* eigendata[i][1][floor + 1] / numCols;
+				}
 			}
 
 			// The coefficients are the roots of the eigenvalues times
@@ -204,9 +213,16 @@ export async function load()
 			{
 				vec[i] = 0;
 
-				for (let j = 0; j < depth; j++)
+				for (let j = 0; j < Math.floor(depth); j++)
 				{
 					vec[i] += svdCoefficients[j] * uVectors[j][i] / uMagnitudes[j];
+				}
+
+				// If depth is a float, we partially add the last bit.
+				if (depth < numCols - 1)
+				{
+					const j = Math.floor(depth);
+					vec[i] += (depth - j) * svdCoefficients[j] * uVectors[j][i] / uMagnitudes[j];
 				}
 			}
 
