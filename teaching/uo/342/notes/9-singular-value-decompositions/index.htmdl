@@ -170,6 +170,8 @@ That's not bad! It's worth noting that unless we use fewer than half of the numb
 
 It might seem like high levels of compression are functionally useless since the artifacts are so strong, but that's largely just for the value component $V$ --- in fact, that's largely why we did this example with it. By using different levels of compression with all three data channels, we can achieve substantial compression at minimum visual noise. Looking at the original channels, it's no coincidence that the hue and saturation channels had less detail in the first place --- the image processor in the camera I took the photo with already removed detail from them to save space.
 
+To my knowledge, SVD compression isn't actually used by any mainstream formats, but 
+
 
 
 ## Eigenfaces

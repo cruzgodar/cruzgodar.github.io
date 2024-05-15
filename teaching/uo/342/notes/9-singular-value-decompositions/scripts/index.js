@@ -129,8 +129,28 @@ export async function load()
 			onInput: onSliderInput
 		});
 
+		const drawEigenfaces = false;
+
 		function onSliderInput()
 		{
+			if (drawEigenfaces)
+			{
+				const uVectorFloor = uVectors[Math.floor(indexSlider.value)];
+				const uVectorCeil = uVectors[Math.ceil(indexSlider.value)];
+				const t = indexSlider.value - Math.floor(indexSlider.value);
+	
+				const uVector = new Array(dataLength);
+	
+				for (let i = 0; i < dataLength; i++)
+				{
+					uVector[i] = (1 - t) * uVectorFloor[i] + t * uVectorCeil[i];
+				}
+	
+				drawEigenface(uVector);
+	
+				return;
+			}
+			
 			drawTruncatedEigenface(indexSlider.value, depthSlider.value);
 		}
 
