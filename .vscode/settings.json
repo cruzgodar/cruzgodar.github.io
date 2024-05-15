@@ -10,7 +10,9 @@
 		"**/ms-icon*": true,
 		"**/scripts/src/sitemap.js": true,
 		"**/sitemap.xml": true,
-		"**/teaching/uo/342/eigenfaces-demo/scripts/data.js": true,
+		"**/teaching/uo/342/extra/eigenfaces-demo/scripts/data.js": true,
+		"**/teaching/uo/342/notes/9-singular-value-decompositions/scripts/data.js": true,
+		"**/teaching/uo/342/notes/9-singular-value-decompositions/scripts/vData.js": true,
 		"/scripts/anime.js": true,
 		"/scripts/three.js": true,
 		"/scripts/wilson.js": true
