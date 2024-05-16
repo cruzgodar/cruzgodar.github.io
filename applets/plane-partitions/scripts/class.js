@@ -538,6 +538,164 @@ export class PlanePartitions extends AnimationFrameApplet
 		this.wilsonNumbers.fullscreen.switchFullscreen();
 	}
 
+	isValidABConfig({
+		lambda,
+		mu,
+		nu,
+		A,
+		B
+	}) {
+		while (lambda.length < nu[0])
+		{
+			lambda.push(0);
+		}
+
+		while (mu.length < nu.length)
+		{
+			mu.push(0);
+		}
+
+		// Elements of this are of the form [x, y, z, label], where a label of 0 is unlabeled.
+		const boxes = [];
+
+		let numNegativeARows = 0;
+		let numNegativeACols = 0;
+
+		while (A[numNegativeARows][0] === Infinity)
+		{
+			numNegativeARows++;
+		}
+
+		while (A[0][numNegativeACols] === Infinity)
+		{
+			numNegativeACols++;
+		}
+
+		if (A[numNegativeARows - 1][numNegativeACols - 1] !== Infinity)
+		{
+			throw new Error("Infinite part of A is not rectangular!");
+		}
+
+		for (let i = 0; i < A.length; i++)
+		{
+			for (let j = 0; j < A[i].length; j++)
+			{
+				const row = i - numNegativeARows;
+				const col = j - numNegativeACols;
+
+				if (row < 0 && col < 0)
+				{
+					continue;
+				}
+
+				const inNu = row >= 0 && row < nu.length && col >= 0 && col < nu[row];
+
+				const [maxAEntry, maxBEntry] = (() =>
+				{
+					if (row < 0)
+					{
+						return [lambda[col], 0];
+					}
+					
+					if (col < 0)
+					{
+						return [mu[row], 0];
+					}
+					
+					if (inNu)
+					{
+						return [
+							Math.min(lambda[col], mu[row]),
+							Math.max(lambda[col], mu[row])
+						];
+					}
+
+					return [0, Math.min(lambda[col], mu[row])];
+				})();
+
+				const minEntry = inNu ? -5 : 0;
+
+				for (
+					let k = minEntry;
+					k < Math.max(maxAEntry, maxBEntry);
+					k++
+				) {
+					const [region, label] = (() =>
+					{
+						if (row < 0)
+						{
+							return [1, 1];
+						}
+
+						if (col < 0)
+						{
+							return [1, 2];
+						}
+
+						if (k < 0)
+						{
+							return [1, 3];
+						}
+						
+						if (inNu && k < Math.min(lambda[col], mu[row]))
+						{
+							return [3, 0];
+						}
+
+						if (!inNu)
+						{
+							return [2, 3];
+						}
+
+						if (k >= lambda[col])
+						{
+							return [2, 1];
+						}
+
+						if (k >= mu[row])
+						{
+							return [2, 2];
+						}
+
+						throw new Error("Region/label code is broken");
+					})();
+
+					const boxIsInA = A[i][j] <= k && k < maxAEntry;
+					const boxIsInB = (row >= 0 && col >= 0)
+						? B[row][col] <= k && k < maxBEntry
+						: false;
+					const boxCouldBeInB = (row >= 0 && col >= 0)
+						? k < maxBEntry && k >= 0
+						: false;
+
+					if (boxIsInA)
+					{
+						console.log(row, col, k, region, label);
+					}
+
+					if (region === 1 && boxIsInA)
+					{
+						boxes.push([row, col, k, label]);
+					}
+
+					else if (region === 2 && !boxIsInB && boxCouldBeInB)
+					{
+						boxes.push([row, col, k, label]);
+					}
+
+					else if (
+						region === 3
+						&& ((boxIsInA && !boxIsInB) || (!boxIsInA && boxIsInB))
+					) {
+						boxes.push([row, col, k, label]);
+					}
+				}
+			}
+		}
+
+		console.log(boxes);
+	}
+
 	static generateRandomPlanePartition = generateRandomPlanePartition;
 	static generateRandomTableau = generateRandomTableau;
 	static generateRandomSsyt = generateRandomSsyt;

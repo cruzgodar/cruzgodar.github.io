@@ -22,4 +22,5 @@
 	"prettier.requireConfig": true,
 	"editor.formatOnSave": false,
 	"editor.maxTokenizationLineLength": 200000,
+	"editor.autoIndent": "advanced",
 }
