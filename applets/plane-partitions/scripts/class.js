@@ -693,7 +693,95 @@ export class PlanePartitions extends AnimationFrameApplet
 			}
 		}
 
-		console.log(boxes);
+
+
+		const components = [];
+		const unexplored = structuredClone(boxes);
+
+		const directions = [
+			[-1, 0, 0],
+			[1, 0, 0],
+			[0, -1, 0],
+			[0, 1, 0],
+			[0, 0, -1],
+			[0, 0, 1]
+		];
+		
+		while (unexplored.length !== 0)
+		{
+			let component = [];
+			let active = [unexplored[0]];
+			unexplored.splice(0, 1);
+
+			while (active.length !== 0)
+			{
+				const nextActive = [];
+
+				// Each element of active checks everything around it.
+				active.forEach(activeBox =>
+				{
+					directions.forEach(direction =>
+					{
+						const adjacentBox = [
+							activeBox[0] + direction[0],
+							activeBox[1] + direction[1],
+							activeBox[2] + direction[2]
+						];
+
+						const index = this.boxIsInArray(adjacentBox, unexplored);
+
+						if (index !== -1)
+						{
+							nextActive.push(unexplored[index]);
+							unexplored.splice(index, 1);
+						}
+					});
+				});
+
+				component = component.concat(active);
+				active = nextActive;
+			}
+
+			components.push(component);
+		}
+
+
+
+		// Finally, determine if there's a label conflict.
+
+		for (let i = 0; i < components.length; i++)
+		{
+			const labels = new Set(components[i].map(box => box[3]));
+			
+			labels.delete(0);
+
+			console.log(components[i], labels);
+
+			if (labels.size > 1)
+			{
+				return false;
+			}
+		}
+
+		return true;
+	}
+
+	boxIsInArray(box, array)
+	{
+		for (let i = 0; i < array.length; i++)
+		{
+			const element = array[i];
+
+			if (
+				element[0] === box[0]
+				&& element[1] === box[1]
+				&& element[2] === box[2]
+			) {
+				return i;
+			}
+		}
+
+		return -1;
 	}
 
 	static generateRandomPlanePartition = generateRandomPlanePartition;

@@ -265,7 +265,23 @@ export function load()
 ));
 	*/
 
+	// const I = Infinity;
 
+	// console.log(applet.isValidABConfig({
+	// 	lambda: [3, 1],
+	// 	mu: [2, 2],
+	// 	nu: [2, 1],
+	// 	A: [
+	// 		[I, I, 3, 1],
+	// 		[I, I, 3, 1],
+	// 		[2, 2, 2, 0],
+	// 		[2, 2, 2, -I]
+	// 	],
+	// 	B: [
+	// 		[3, 2],
+	// 		[1, 1]
+	// 	]
+	// }));
 
 	showPage();
 
