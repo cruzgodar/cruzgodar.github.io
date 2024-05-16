@@ -41,12 +41,23 @@ Welcome to Math 342! We'll use this page for the interactive notes, the homework
 	homework-4 -c "Homework 4"
 	homework-5 -c "Homework 5"
 	homework-6 -c "Homework 6"
+	homework-7 -c "Homework 7"
 	
 ###
 
 
 
 ### card homework-7 "Homework 7"
+
+	*Due Wednesday of Week 8 at the start of class*
+	
+	Complete the following problems and submit them as a pdf to Canvas. 8 points are awarded for thoroughly attempting every problem, and I'll select three problems to grade on correctness for 4 points each. Enough work should be shown that there is no question about the mathematical process used to obtain your answers.
+	
+	## Section 7
+
+	#. Let $A$ be a real $m \times n$ matrix. Explain why $A^T A$ is guaranteed to be diagonalizable.
+
+	#. Let $A$ be a real $n \times n$ matrix. What are the eigenvalues of $A^T A$ in terms of the eigenvalues of $A$?
 
 	#. Let $A$ be a symmetric (i.e. $A^T = A$), $n \times n$, real matrix with all positive eigenvalues and define $\left< \vec{v}, \vec{w} \right> = \vec{v}^T A \vec{w}$ for $\vec{v}, \vec{w} \in #R#^n$.
 
@@ -55,6 +66,16 @@ Welcome to Math 342! We'll use this page for the interactive notes, the homework
 	> b) Show that it's also bilinear --- that $\left< c\vec{u} + \vec{v}, \vec{w} \right> = c\left< \vec{u}, \vec{w} \right> + \left< \vec{v}, \vec{w} \right>$.
 
 	> c) Setting $\vec{v} = \vec{w} = \vec{0}$, we have that $\left< \vec{0}, \vec{0} \right> = 0$. Explain why for any nonzero vector $\vec{v} \in #R#^n$, $\left< \vec{v}, \vec{v} \right> > 0$.
+
+	## Section 8
+
+	In problems 3#, write the matrix as $A = BJB^{-1}$ for a matrix $J$ in Jordan normal form.
+
+	#. $A = [[ 0, -5, -2 ; 2, 6, 1 ; -2, -3, 2 ]]$.
+
+	#. $A = [[ -3, -1, -2 ; -1, -1, -1 ; 2, 1, 1 ]]$.
+
+	#. $A = [[ 12, 4, 4, -24, -8, -8 ; -3, -1, 0 ]]$.
 
 ###
 
