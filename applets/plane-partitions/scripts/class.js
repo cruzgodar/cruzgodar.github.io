@@ -1,4 +1,4 @@
-import { getMinimalABConfig, isValidABConfig, iterateThroughEntries } from "./abConfigs.js";
+import { getMinimalABConfig, isValidABConfig, iterateThroughEntries, printABConfig } from "./abConfigs.js";
 import { addCube, addFloor, addLeftWall, addRightWall } from "./addGeometry.js";
 import { godar1, godar1Inverse } from "./algorithms/goder1.js";
 import { hillmanGrassl, hillmanGrasslInverse } from "./algorithms/hillmanGrassl.js";
@@ -550,6 +550,7 @@ export class PlanePartitions extends AnimationFrameApplet
 	isValidABConfig = isValidABConfig;
 	getMinimalABConfig = getMinimalABConfig;
 	iterateThroughEntries = iterateThroughEntries;
+	printABConfig = printABConfig;
 
 	addNewArray = addNewArray;
 	editArray = editArray;

@@ -380,17 +380,13 @@ export function iterateThroughEntries({
 
 	let outputString = "";
 
-	for (
-		let a = cappedMaxAEntry;
-		a >= cappedMinAEntry;
-		a--
-	) {
+	if (cappedMaxAEntry === -Infinity)
+	{
 		for (
 			let b = cappedMaxBEntry;
 			b >= cappedMinBEntry;
 			b--
 		) {
-			newA[i][j] = a;
 			newB[row][col] = b;
 
 			if (isValidABConfig({
@@ -400,7 +396,7 @@ export function iterateThroughEntries({
 				A: newA,
 				B: newB
 			})) {
-				outputString = outputString + " *";
+				outputString = outputString + "* ";
 			}
 
 			else
@@ -408,8 +404,86 @@ export function iterateThroughEntries({
 				outputString = outputString + "  ";
 			}
 		}
+	}
 
-		outputString = outputString + "\n";
+	else
+	{
+		for (
+			let a = cappedMaxAEntry;
+			a >= cappedMinAEntry;
+			a--
+		) {
+			for (
+				let b = cappedMaxBEntry;
+				b >= cappedMinBEntry;
+				b--
+			) {
+				newA[i][j] = a;
+				newB[row][col] = b;
+
+				if (isValidABConfig({
+					lambda,
+					mu,
+					nu,
+					A: newA,
+					B: newB
+				})) {
+					outputString = outputString + "* ";
+				}
+
+				else
+				{
+					outputString = outputString + "  ";
+				}
+			}
+
+			outputString = outputString + "\n";
+		}
+	}
+
+	console.log(outputString);
+}
+
+export function printABConfig({ A, B })
+{
+	let outputString = "";
+
+	let numNegativeARows = 0;
+	let numNegativeACols = 0;
+
+	while (A[numNegativeARows][0] === Infinity)
+	{
+		numNegativeARows++;
+	}
+
+	while (A[0][numNegativeACols] === Infinity)
+	{
+		numNegativeACols++;
+	}
+
+	for (let i = 0; i < A.length; i++)
+	{
+		const row = i - numNegativeARows;
+
+		for (let j = 0; j < A[i].length; j++)
+		{
+			const char = A[i][j] === Infinity
+				? "^"
+				: A[i][j] === -Infinity ? "v" : A[i][j];
+			outputString += `${char} `;
+		}
+
+		if (row >= 0)
+		{
+			outputString += "  ";
+
+			for (let col = 0; col < B[row].length; col++)
+			{
+				outputString += `${B[row][col]} `;
+			}
+		}
+
+		outputString += "\n";
 	}
 
 	console.log(outputString);

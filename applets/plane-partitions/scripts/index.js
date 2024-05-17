@@ -264,35 +264,27 @@ export function load()
 2 2 1`
 ));
 	*/
-	// const lambda = [3, 1];
-	// const mu = [2, 2];
-	// const nu = [2, 2];
+	const lambda = [6, 2];
+	const mu = [5, 1];
+	const nu = [1];
 
-	// const [A, B] = applet.getMinimalABConfig({
-	// 	lambda,
-	// 	mu,
-	// 	nu,
-	// });
+	const [A, B] = applet.getMinimalABConfig({
+		lambda,
+		mu,
+		nu,
+	});
 
-	// applet.iterateThroughEntries({
-	// 	A,
-	// 	B,
-	// 	lambda,
-	// 	mu,
-	// 	nu,
-	// 	i: 3,
-	// 	j: 3,
-	// });
+	applet.printABConfig({ A, B });
 
-	// applet.iterateThroughEntries({
-	// 	A,
-	// 	B,
-	// 	lambda,
-	// 	mu,
-	// 	nu,
-	// 	i: 2,
-	// 	j: 2,
-	// });
+	applet.iterateThroughEntries({
+		A,
+		B,
+		lambda,
+		mu,
+		nu,
+		i: 3,
+		j: 3,
+	});
 
 
 
