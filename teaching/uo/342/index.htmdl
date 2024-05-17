@@ -75,7 +75,7 @@ Welcome to Math 342! We'll use this page for the interactive notes, the homework
 
 	#. $A = [[ -3, -1, -2 ; -1, -1, -1 ; 2, 1, 1 ]]$.
 
-	#. $A = [[ 12, 4, 4, -24, -8, -8 ; -3, -1, 0 ]]$.
+	#. $A = [[ 12, 4, 4 ; -24, -8, -8 ; -3, -1, 0 ]]$.
 
 	- - -
 
