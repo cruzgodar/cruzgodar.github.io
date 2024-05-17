@@ -264,24 +264,37 @@ export function load()
 2 2 1`
 ));
 	*/
+	// const lambda = [3, 1];
+	// const mu = [2, 2];
+	// const nu = [2, 2];
 
-	// const I = Infinity;
+	// const [A, B] = applet.getMinimalABConfig({
+	// 	lambda,
+	// 	mu,
+	// 	nu,
+	// });
 
-	// console.log(applet.isValidABConfig({
-	// 	lambda: [3, 1],
-	// 	mu: [2, 2],
-	// 	nu: [2, 1],
-	// 	A: [
-	// 		[I, I, 3, 1],
-	// 		[I, I, 3, 1],
-	// 		[2, 2, 2, 0],
-	// 		[2, 2, 2, -I]
-	// 	],
-	// 	B: [
-	// 		[3, 2],
-	// 		[1, 1]
-	// 	]
-	// }));
+	// applet.iterateThroughEntries({
+	// 	A,
+	// 	B,
+	// 	lambda,
+	// 	mu,
+	// 	nu,
+	// 	i: 3,
+	// 	j: 3,
+	// });
+
+	// applet.iterateThroughEntries({
+	// 	A,
+	// 	B,
+	// 	lambda,
+	// 	mu,
+	// 	nu,
+	// 	i: 2,
+	// 	j: 2,
+	// });
+
+
 
 	showPage();
 

@@ -1,1 +1,416 @@
-export function
+export function isValidABConfig({
+	lambda,
+	mu,
+	nu,
+	A,
+	B
+}) {
+	while (lambda.length < nu[0])
+	{
+		lambda.push(0);
+	}
+
+	while (mu.length < nu.length)
+	{
+		mu.push(0);
+	}
+
+	// Elements of this are of the form [x, y, z, label], where a label of 0 is unlabeled.
+	const boxes = [];
+
+	let numNegativeARows = 0;
+	let numNegativeACols = 0;
+
+	while (A[numNegativeARows][0] === Infinity)
+	{
+		numNegativeARows++;
+	}
+
+	while (A[0][numNegativeACols] === Infinity)
+	{
+		numNegativeACols++;
+	}
+
+	if (A[numNegativeARows - 1][numNegativeACols - 1] !== Infinity)
+	{
+		throw new Error("Infinite part of A is not rectangular!");
+	}
+
+	for (let i = 0; i < A.length; i++)
+	{
+		for (let j = 0; j < A[i].length; j++)
+		{
+			const row = i - numNegativeARows;
+			const col = j - numNegativeACols;
+
+			if (row < 0 && col < 0)
+			{
+				continue;
+			}
+
+			const inNu = row >= 0 && row < nu.length && col >= 0 && col < nu[row];
+
+			const [maxAEntry, maxBEntry] = (() =>
+			{
+				if (row < 0)
+				{
+					return [lambda[col], 0];
+				}
+				
+				if (col < 0)
+				{
+					return [mu[row], 0];
+				}
+				
+				if (inNu)
+				{
+					return [
+						Math.min(lambda[col], mu[row]),
+						Math.max(lambda[col], mu[row])
+					];
+				}
+
+				return [0, Math.min(lambda[col], mu[row])];
+			})();
+
+			const minEntry = inNu ? -5 : 0;
+
+			for (
+				let k = minEntry;
+				k < Math.max(maxAEntry, maxBEntry);
+				k++
+			) {
+				const [region, label] = (() =>
+				{
+					if (row < 0)
+					{
+						return [1, 1];
+					}
+
+					if (col < 0)
+					{
+						return [1, 2];
+					}
+
+					if (k < 0)
+					{
+						return [1, 3];
+					}
+					
+					if (inNu && k < Math.min(lambda[col], mu[row]))
+					{
+						return [3, 0];
+					}
+
+					if (!inNu)
+					{
+						return [2, 3];
+					}
+
+					if (k >= lambda[col])
+					{
+						return [2, 1];
+					}
+
+					if (k >= mu[row])
+					{
+						return [2, 2];
+					}
+
+					throw new Error("Region/label code is broken");
+				})();
+
+				const boxIsInA = A[i][j] <= k && k < maxAEntry;
+				const boxIsInB = (row >= 0 && col >= 0)
+					? B[row][col] <= k && k < maxBEntry
+					: false;
+				const boxCouldBeInB = (row >= 0 && col >= 0)
+					? k < maxBEntry && k >= 0
+					: false;
+
+				if (region === 1 && boxIsInA)
+				{
+					boxes.push([row, col, k, label]);
+				}
+
+				else if (region === 2 && !boxIsInB && boxCouldBeInB)
+				{
+					boxes.push([row, col, k, label]);
+				}
+
+				else if (
+					region === 3
+					&& ((boxIsInA && !boxIsInB) || (!boxIsInA && boxIsInB))
+				) {
+					boxes.push([row, col, k, label]);
+				}
+			}
+		}
+	}
+
+
+
+	const components = [];
+	const unexplored = structuredClone(boxes);
+
+	const directions = [
+		[-1, 0, 0],
+		[1, 0, 0],
+		[0, -1, 0],
+		[0, 1, 0],
+		[0, 0, -1],
+		[0, 0, 1]
+	];
+	
+	while (unexplored.length !== 0)
+	{
+		let component = [];
+		let active = [unexplored[0]];
+		unexplored.splice(0, 1);
+
+		while (active.length !== 0)
+		{
+			const nextActive = [];
+
+			// Each element of active checks everything around it.
+			active.forEach(activeBox =>
+			{
+				directions.forEach(direction =>
+				{
+					const adjacentBox = [
+						activeBox[0] + direction[0],
+						activeBox[1] + direction[1],
+						activeBox[2] + direction[2]
+					];
+
+					const index = boxIsInArray(adjacentBox, unexplored);
+
+					if (index !== -1)
+					{
+						nextActive.push(unexplored[index]);
+						unexplored.splice(index, 1);
+					}
+				});
+			});
+
+			component = component.concat(active);
+			active = nextActive;
+		}
+
+		components.push(component);
+	}
+
+
+
+	// Finally, determine if there's a label conflict.
+
+	for (let i = 0; i < components.length; i++)
+	{
+		const labels = new Set(components[i].map(box => box[3]));
+		
+		labels.delete(0);
+
+		if (labels.size > 1)
+		{
+			return false;
+		}
+	}
+
+	return true;
+}
+
+function boxIsInArray(box, array)
+{
+	for (let i = 0; i < array.length; i++)
+	{
+		const element = array[i];
+
+		if (
+			element[0] === box[0]
+			&& element[1] === box[1]
+			&& element[2] === box[2]
+		) {
+			return i;
+		}
+	}
+
+	return -1;
+}
+
+
+
+export function getMinimalABConfig({
+	lambda,
+	mu,
+	nu,
+	negativeWidth = 2
+}) {
+	while (lambda.length < nu[0])
+	{
+		lambda.push(0);
+	}
+
+	while (mu.length < nu.length)
+	{
+		mu.push(0);
+	}
+
+	const A = new Array(negativeWidth + mu.length);
+	const B = new Array(mu.length);
+
+	for (let i = 0; i < A.length; i++)
+	{
+		A[i] = new Array(negativeWidth + lambda.length);
+
+		if (i >= negativeWidth)
+		{
+			B[i - negativeWidth] = new Array(lambda.length);
+		}
+
+		for (let j = 0; j < A[i].length; j++)
+		{
+			const row = i - negativeWidth;
+			const col = j - negativeWidth;
+
+			if (row < 0 && col < 0)
+			{
+				A[i][j] = Infinity;
+				continue;
+			}
+
+			const inNu = row >= 0 && row < nu.length && col >= 0 && col < nu[row];
+
+			const [maxAEntry, maxBEntry] = (() =>
+			{
+				if (row < 0)
+				{
+					return [lambda[col], 0];
+				}
+				
+				if (col < 0)
+				{
+					return [mu[row], 0];
+				}
+				
+				if (inNu)
+				{
+					return [
+						Math.min(lambda[col], mu[row]),
+						Math.max(lambda[col], mu[row])
+					];
+				}
+
+				return [-Infinity, Math.min(lambda[col], mu[row])];
+			})();
+
+			A[i][j] = maxAEntry;
+
+			if (row >= 0 && col >= 0)
+			{
+				B[row][col] = maxBEntry;
+			}
+		}
+	}
+	
+	return [A, B];
+}
+
+
+// A and B must be of minimal weight (i.e. the entries at (i, j)
+// are maximal).
+export function iterateThroughEntries({
+	lambda,
+	mu,
+	nu,
+	A,
+	B,
+	i,
+	j
+}) {
+	while (lambda.length < nu[0])
+	{
+		lambda.push(0);
+	}
+
+	while (mu.length < nu.length)
+	{
+		mu.push(0);
+	}
+
+	let numNegativeARows = 0;
+	let numNegativeACols = 0;
+
+	while (A[numNegativeARows][0] === Infinity)
+	{
+		numNegativeARows++;
+	}
+
+	while (A[0][numNegativeACols] === Infinity)
+	{
+		numNegativeACols++;
+	}
+
+	const row = i - numNegativeARows;
+	const col = j - numNegativeACols;
+
+	if (row < 0 && col < 0)
+	{
+		return;
+	}
+
+	const inNu = row >= 0 && row < nu.length && col >= 0 && col < nu[row];
+
+	const cappedMaxAEntry = A[i][j];
+	const cappedMinAEntry = Math.max(
+		Math.max(
+			i === A.length - 1 ? -Infinity : A[i + 1][j],
+			j === A[0].length - 1 ? -Infinity : A[i][j + 1]
+		),
+		inNu ? -5 : 0
+	);
+
+	const cappedMaxBEntry = B[row][col];
+	const cappedMinBEntry = Math.max(
+		row === B.length - 1 ? 0 : B[row + 1][col],
+		col === B[0].length - 1 ? 0 : B[col][col + 1]
+	);
+
+	const newA = structuredClone(A);
+	const newB = structuredClone(B);
+
+	let outputString = "";
+
+	for (
+		let a = cappedMaxAEntry;
+		a >= cappedMinAEntry;
+		a--
+	) {
+		for (
+			let b = cappedMaxBEntry;
+			b >= cappedMinBEntry;
+			b--
+		) {
+			newA[i][j] = a;
+			newB[row][col] = b;
+
+			if (isValidABConfig({
+				lambda,
+				mu,
+				nu,
+				A: newA,
+				B: newB
+			})) {
+				outputString = outputString + " *";
+			}
+
+			else
+			{
+				outputString = outputString + "  ";
+			}
+		}
+
+		outputString = outputString + "\n";
+	}
+
+	console.log(outputString);
+}
