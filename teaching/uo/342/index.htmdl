@@ -77,14 +77,6 @@ Welcome to Math 342! We'll use this page for the interactive notes, the homework
 
 	#. $A = [[ 12, 4, 4 ; -24, -8, -8 ; -3, -1, 0 ]]$.
 
-	- - -
-
-	#. One of the difficulties of finding generalized eigenvectors is that in certain cases, there might appear to be fewer solutions than there should be.
-	
-	> a) Give an example of a $3 \times 3$ matrix $A$ that has only two linearly independent eigenvectors $\vec{v_1}$ and $\vec{v_2}$, corresponding to eigenvalues $\lambda_1$ and $\lambda_2$, but both $(A - \lambda_1 I)\vec{v} = \vec{v_1}$ and $(A - \lambda_2 I)\vec{v} = \vec{v_2}$ have no solutions.
-
-	> b) Express this matrix in Jordan normal form.
-
 ###
 
 
