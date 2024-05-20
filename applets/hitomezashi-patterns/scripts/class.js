@@ -287,7 +287,7 @@ export class HitomezashiPattern extends Applet
 		{
 			if (!this.animationPaused)
 			{
-				window.requestAnimationFrame(this.drawBoundaryRowStep.bind(this));
+				requestAnimationFrame(this.drawBoundaryRowStep.bind(this));
 			}
 		}
 
@@ -295,7 +295,7 @@ export class HitomezashiPattern extends Applet
 		{
 			if (!this.animationPaused)
 			{
-				window.requestAnimationFrame(this.drawBoundaryColStep.bind(this));
+				requestAnimationFrame(this.drawBoundaryColStep.bind(this));
 			}
 		}
 
@@ -329,7 +329,7 @@ export class HitomezashiPattern extends Applet
 		{
 			if (!this.animationPaused)
 			{
-				window.requestAnimationFrame(this.drawBoundaryColStep.bind(this));
+				requestAnimationFrame(this.drawBoundaryColStep.bind(this));
 			}
 		}
 
@@ -592,7 +592,7 @@ export class HitomezashiPattern extends Applet
 		{
 			if (!this.animationPaused)
 			{
-				window.requestAnimationFrame(this.drawRegionsStep.bind(this));
+				requestAnimationFrame(this.drawRegionsStep.bind(this));
 			}
 		}
 	}

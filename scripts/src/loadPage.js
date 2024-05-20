@@ -145,7 +145,7 @@ function loadCustomScripts()
 {
 	if (!sitemap[pageUrl].customScript)
 	{
-		window.requestAnimationFrame(showPage);
+		requestAnimationFrame(showPage);
 
 		return;
 	}

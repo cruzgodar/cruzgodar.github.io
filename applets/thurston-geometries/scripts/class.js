@@ -384,7 +384,7 @@ export class ThurstonGeometry extends Applet
 		this.needNewFrame = true;
 		this.animationPaused = false;
 
-		window.requestAnimationFrame(this.drawFrame.bind(this));
+		requestAnimationFrame(this.drawFrame.bind(this));
 	}
 
 	drawFrame(timestamp)
@@ -556,7 +556,7 @@ export class ThurstonGeometry extends Applet
 
 		if (!this.animationPaused)
 		{
-			window.requestAnimationFrame(this.drawFrame.bind(this));
+			requestAnimationFrame(this.drawFrame.bind(this));
 		}
 	}
 

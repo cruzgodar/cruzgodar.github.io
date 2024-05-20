@@ -892,7 +892,7 @@ export class KaleidoscopicIFSFractal extends RaymarchApplet
 
 		// This dance is required to get all the uniforms over properly.
 		this.needNewFrame = true;
-		window.requestAnimationFrame(() => this.updateMatrices());
+		requestAnimationFrame(() => this.updateMatrices());
 
 		changeOpacity({ element: this.wilson.canvas, opacity: 1 });
 	}

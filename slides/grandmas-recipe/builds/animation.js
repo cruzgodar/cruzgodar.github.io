@@ -88,11 +88,11 @@ async function reset({ lapsa, slide, duration })
 		{
 			applet.onDragDraggable();
 
-			window.requestAnimationFrame(animationFrame);
+			requestAnimationFrame(animationFrame);
 		}
 	};
 
-	window.requestAnimationFrame(animationFrame);
+	requestAnimationFrame(animationFrame);
 
 
 

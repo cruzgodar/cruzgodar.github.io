@@ -3,6 +3,8 @@ import {
 	pageElement
 } from "../src/main.js";
 
+import loadMP4Module from "https://unpkg.com/mp4-wasm@1.0.6";
+
 export class Applet
 {
 	canvas;
@@ -125,7 +127,7 @@ export class Applet
 
 		this.fpsDisplayCtx = fpsDisplayElement.getContext("2d");
 
-		window.requestAnimationFrame(this.updateFpsDisplay.bind(this));
+		requestAnimationFrame(this.updateFpsDisplay.bind(this));
 	}
 
 	lastFpsDisplayTimestamp;
@@ -139,7 +141,7 @@ export class Applet
 		{
 			this.lastFpsDisplayTimestamp = timestamp;
 
-			window.requestAnimationFrame(this.updateFpsDisplay.bind(this));
+			requestAnimationFrame(this.updateFpsDisplay.bind(this));
 
 			return;
 		}
@@ -168,7 +170,7 @@ export class Applet
 		this.fpsDisplayCtx.fillRect(0, 100 - 16.667, 100, 2);
 		this.fpsDisplayCtx.fillRect(0, 100 - 33.333, 100, 2);
 
-		window.requestAnimationFrame(this.updateFpsDisplay.bind(this));
+		requestAnimationFrame(this.updateFpsDisplay.bind(this));
 	}
 
 
@@ -762,6 +764,80 @@ export class Applet
 			}
 		}
 	};
+
+
+
+	async createVideo({
+		perFrameCallback,
+		totalFrames,
+		fps
+	}) {
+		const MP4 = await loadMP4Module();
+		const encoder = MP4.createWebCodecsEncoder({
+			width: this.wilson.canvasWidth,
+			height: this.wilson.canvasHeight,
+			fps,
+			bitrate: 70_000_000
+		});
+
+		let frame = 0;
+
+		requestAnimationFrame(loop.bind(this));
+
+		async function loop()
+		{
+			if (frame < totalFrames)
+			{
+				console.log(`Encoding frame ${frame + 1} of ${totalFrames}`);
+
+				perFrameCallback(frame);
+
+				// Create a bitmap out of the frame
+				const bitmap = await createImageBitmap(this.canvas);
+
+				// Add bitmap to encoder
+				await encoder.addFrame(bitmap);
+
+				// Trigger next frame loop
+				frame++;
+				requestAnimationFrame(loop.bind(this));
+			}
+			
+			else
+			{
+				// Get an Uint8Array buffer
+				const buf = await encoder.end();
+				show(buf, this.wilson.canvasWidth, this.wilson.canvasHeight);
+				return;
+			}
+		}
+
+		function show(data, width, height)
+		{
+			const url = URL.createObjectURL(new Blob([data], { type: "video/mp4" }));
+			const video = document.createElement("video");
+			video.setAttribute("muted", "muted");
+			video.setAttribute("autoplay", "autoplay");
+			video.setAttribute("controls", "controls");
+			const min = Math.min(width, window.innerWidth, window.innerHeight);
+			const aspect = width / height;
+			const size = min * 0.75;
+			video.style.width = `${size}px`;
+			video.style.height = `${size / aspect}px`;
+
+			pageElement.appendChild(video);
+			video.src = url;
+
+			const text = document.createElement("div");
+			const anchor = document.createElement("a");
+			text.appendChild(anchor);
+			anchor.href = url;
+			anchor.id = "download";
+			anchor.textContent = "Click here to download MP4 file...";
+			anchor.download = "download.mp4";
+			pageElement.appendChild(text);
+		}
+	}
 
 
 

@@ -33,7 +33,7 @@ export function updateBanner(timestamp)
 	) {
 		lastBannerChangeTimestamp = timestamp;
 
-		window.requestAnimationFrame(updateBanner);
+		requestAnimationFrame(updateBanner);
 
 		return;
 	}
@@ -82,10 +82,10 @@ export function updateBanner(timestamp)
 
 	contentElement.style.boxShadow = `0px 0px 16px 4px rgba(0, 0, 0, ${(1 - t) * .35})`;
 
-	window.requestAnimationFrame(updateBanner);
+	requestAnimationFrame(updateBanner);
 }
 
-window.requestAnimationFrame(updateBanner);
+requestAnimationFrame(updateBanner);
 
 
 

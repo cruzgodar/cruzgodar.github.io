@@ -290,7 +290,7 @@ export class DoublePendulumFractal extends Applet
 
 
 
-		window.requestAnimationFrame(this.drawFrame.bind(this));
+		requestAnimationFrame(this.drawFrame.bind(this));
 
 
 
@@ -358,7 +358,7 @@ export class DoublePendulumFractal extends Applet
 
 		if (this.drawingFractal && !this.animationPaused)
 		{
-			window.requestAnimationFrame(this.drawFrame.bind(this));
+			requestAnimationFrame(this.drawFrame.bind(this));
 		}
 	}
 
@@ -390,7 +390,7 @@ export class DoublePendulumFractal extends Applet
 			this.p1 = 0;
 			this.p2 = 0;
 
-			window.requestAnimationFrame(this.drawFramePendulum.bind(this));
+			requestAnimationFrame(this.drawFramePendulum.bind(this));
 		}
 	}
 
@@ -447,7 +447,7 @@ export class DoublePendulumFractal extends Applet
 
 		this.pendulumCanvasVisible = 2;
 
-		window.requestAnimationFrame(this.drawFramePendulum.bind(this));
+		requestAnimationFrame(this.drawFramePendulum.bind(this));
 	}
 
 	hidePendulumDrawerCanvas()
@@ -467,7 +467,7 @@ export class DoublePendulumFractal extends Applet
 
 		this.pendulumCanvasVisible = 0;
 
-		window.requestAnimationFrame(this.drawFrame.bind(this));
+		requestAnimationFrame(this.drawFrame.bind(this));
 	}
 
 
@@ -561,7 +561,7 @@ export class DoublePendulumFractal extends Applet
 		{
 			this.updateAngles();
 
-			window.requestAnimationFrame(this.drawFramePendulum.bind(this));
+			requestAnimationFrame(this.drawFramePendulum.bind(this));
 		}
 	}
 

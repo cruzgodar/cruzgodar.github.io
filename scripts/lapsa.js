@@ -743,7 +743,7 @@ class Lapsa {
                     if (__classPrivateFieldGet(this, _Lapsa_missedResizeAnimation, "f")) {
                         __classPrivateFieldSet(this, _Lapsa_startWindowHeight, __classPrivateFieldGet(this, _Lapsa_lastWindowHeight, "f"), "f");
                         __classPrivateFieldSet(this, _Lapsa_windowHeightAnimationFrame, 1, "f");
-                        window.requestAnimationFrame(__classPrivateFieldGet(this, _Lapsa_resizeAnimationBound, "f"));
+                        requestAnimationFrame(__classPrivateFieldGet(this, _Lapsa_resizeAnimationBound, "f"));
                     }
                     resolve();
                 }, duration);
@@ -906,7 +906,7 @@ _Lapsa_rootSelector = new WeakMap(), _Lapsa_bottomMarginElement = new WeakMap(),
         if (this.resizeOnTableView) {
             __classPrivateFieldSet(this, _Lapsa_startWindowHeight, __classPrivateFieldGet(this, _Lapsa_lastWindowHeight, "f"), "f");
             __classPrivateFieldSet(this, _Lapsa_windowHeightAnimationFrame, 1, "f");
-            window.requestAnimationFrame(__classPrivateFieldGet(this, _Lapsa_resizeAnimationBound, "f"));
+            requestAnimationFrame(__classPrivateFieldGet(this, _Lapsa_resizeAnimationBound, "f"));
         }
         else {
             __classPrivateFieldSet(this, _Lapsa_missedResizeAnimation, true, "f");
@@ -952,7 +952,7 @@ _Lapsa_rootSelector = new WeakMap(), _Lapsa_bottomMarginElement = new WeakMap(),
     }
     __classPrivateFieldSet(this, _Lapsa_windowHeightAnimationFrame, (_a = __classPrivateFieldGet(this, _Lapsa_windowHeightAnimationFrame, "f"), _a++, _a), "f");
     if (__classPrivateFieldGet(this, _Lapsa_windowHeightAnimationFrame, "f") <= this.windowHeightAnimationFrames) {
-        window.requestAnimationFrame(__classPrivateFieldGet(this, _Lapsa_resizeAnimationBound, "f"));
+        requestAnimationFrame(__classPrivateFieldGet(this, _Lapsa_resizeAnimationBound, "f"));
     }
 }, _Lapsa_showSlideShelf = async function _Lapsa_showSlideShelf(element, duration = this.shelfAnimationTime) {
     const oldTransitionStyle = element.style.transition;

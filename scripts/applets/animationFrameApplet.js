@@ -28,7 +28,7 @@ export class AnimationFrameApplet extends Applet
 		if (this.lastTimestamp === -1)
 		{
 			this.lastTimestamp = timestamp;
-			window.requestAnimationFrame(this.drawFrameLoopBound);
+			requestAnimationFrame(this.drawFrameLoopBound);
 			return;
 		}
 
@@ -49,7 +49,7 @@ export class AnimationFrameApplet extends Applet
 
 		if (!this.animationPaused)
 		{
-			window.requestAnimationFrame(this.drawFrameLoopBound);
+			requestAnimationFrame(this.drawFrameLoopBound);
 		}
 	}
 
@@ -65,7 +65,7 @@ export class AnimationFrameApplet extends Applet
 		this.animationPaused = false;
 		this.needNewFrame = true;
 
-		window.requestAnimationFrame(this.drawFrameLoopBound);
+		requestAnimationFrame(this.drawFrameLoopBound);
 	}
 
 	pauseWhenOffscreen()

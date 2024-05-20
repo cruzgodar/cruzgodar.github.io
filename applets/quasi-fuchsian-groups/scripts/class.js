@@ -706,7 +706,7 @@ export class QuasiFuchsianGroups extends Applet
 		this.wilson.draggables.add(2, 0);
 		this.wilson.draggables.add(2, -2);
 
-		window.requestAnimationFrame(this.drawFrame.bind(this));
+		requestAnimationFrame(this.drawFrame.bind(this));
 	}
 
 
@@ -747,7 +747,7 @@ export class QuasiFuchsianGroups extends Applet
 
 
 
-		window.requestAnimationFrame(this.drawFrame.bind(this));
+		requestAnimationFrame(this.drawFrame.bind(this));
 	}
 
 
@@ -788,7 +788,7 @@ export class QuasiFuchsianGroups extends Applet
 
 
 
-		window.requestAnimationFrame(this.drawFrame.bind(this));
+		requestAnimationFrame(this.drawFrame.bind(this));
 	}
 
 
@@ -803,7 +803,7 @@ export class QuasiFuchsianGroups extends Applet
 			}
 		}
 
-		window.requestAnimationFrame(this.drawFrame.bind(this));
+		requestAnimationFrame(this.drawFrame.bind(this));
 	}
 
 
@@ -942,6 +942,6 @@ export class QuasiFuchsianGroups extends Applet
 
 		this.regenerateHueAndBrightness();
 
-		window.requestAnimationFrame(this.drawFrame.bind(this));
+		requestAnimationFrame(this.drawFrame.bind(this));
 	}
 }

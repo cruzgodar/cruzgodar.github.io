@@ -13,7 +13,7 @@ export function load()
 
 	function onScroll()
 	{
-		window.requestAnimationFrame(() =>
+		requestAnimationFrame(() =>
 		{
 			cruzTextElement.parentNode.style.opacity = nameTextOpacity;
 			godarTextElement.parentNode.style.opacity = nameTextOpacity;
