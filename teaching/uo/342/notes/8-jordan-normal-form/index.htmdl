@@ -93,29 +93,37 @@ When expressed in such a basis, the matrix for $A$ has all its eigenvalues down 
 	$$
 		[[ -3, -1, -2 | 0 ; 1, -1, 1 | 0 ; 4, 0, 3 | 0 ]] &
 
-		[[ 0, -4, 1 | 0 ; 1, 0, 1 | 0 ; 0, 4, -1 | 0 ]] & \quad :: \vec{r_1} \pe 3\vec{r_2} ; \vec{r_3} \me 4\vec{r_2} ::
+		[[ 0, -4, 1 | 0 ; 1, -1, 1 | 0 ; 0, 4, -1 | 0 ]] & \quad :: \vec{r_1} \pe 3\vec{r_2} ; \vec{r_3} \me 4\vec{r_2} ::
 
-		[[ 0, -4, 1 | 0 ; 1, 0, 1 | 0; 0, 0, 0 | 0 ]] & \quad \vec{r_3} \me \vec{r_1}
+		[[ 0, -4, 1 | 0 ; 1, -1, 1 | 0; 0, 0, 0 | 0 ]] & \quad \vec{r_3} \me \vec{r_1}
 
-		\vec{v_2} = [[ -4 ; 1 ; 4 ]]&.
+		[[ 0, -4, 1 | 0 ; 4, -4, 4 | 0; 0, 0, 0 | 0 ]] & \quad \vec{r_2} \te 4
+
+		[[ 0, -4, 1 | 0 ; 4, 0, 3 | 0; 0, 0, 0 | 0 ]] & \quad \vec{r_2} \me \vec{r_1}
+
+		\vec{v_2} = [[ -3 ; 1 ; 4 ]] &.
 	$$
 
 	There isn't a basis of eigenvectors, but we know there should be a second generalized eigenvector for $\lambda = 2$, since its algebraic multiplicity is $2$ but its geometric multiplicity is $1$. To find it, we solve $A - 2I = \vec{v_2}$, but the left side of the row reduction is identical, since it's the same matrix:
 
 	$$
-		[[ -3, -1, -2 | -4 ; 1, -1, 1 | 1 ; 4, 0, 3 | 4 ]] &
+		[[ -3, -1, -2 | -3 ; 1, -1, 1 | 1 ; 4, 0, 3 | 4 ]] &
 
-		[[ 0, -4, 1 | -1 ; 1, 0, 1 | 1 ; 0, 4, -1 | 0 ]] & \quad :: \vec{r_1} \pe 3\vec{r_2} ; \vec{r_3} \me 4\vec{r_2} ::
+		[[ 0, -4, 1 | 0 ; 1, -1, 1 | 1 ; 0, 4, -1 | 0 ]] & \quad :: \vec{r_1} \pe 3\vec{r_2} ; \vec{r_3} \me 4\vec{r_2} ::
 
-		[[ 0, -4, 1 | -1 ; 1, 0, 1 | 1; 0, 0, 0 | 1 ]] & \quad \vec{r_3} \me \vec{r_1}
+		[[ 0, -4, 1 | -1 ; 1, -1, 1 | 1; 0, 0, 0 | 0 ]] & \quad \vec{r_3} \me \vec{r_1}
 
-		\vec{v_3} = [[ -1 - 4t ; 1 + t ; 1 + 4t ]]&.
+		[[ 0, -4, 1 | 0 ; 4, -4, 4 | 4; 0, 0, 0 | 0 ]] & \quad \vec{r_2} \te 4
+
+		[[ 0, -4, 1 | 0 ; 4, 0, 3 | 4; 0, 0, 0 | 0 ]] & \quad \vec{r_2} \me \vec{r_1}
+
+		\vec{v_3} = [[ 1 - 3t ; t ; 4t ]]&.
 	$$
 
 	Here we're taking care to spell out the free parameter fully. When we're solving for eigenvectors normally, we set $t$ to a convenient nonzero value, since the zero vector is the only disallowed one. Here, though, $t = 0$ is a perfectly fine choice, and in fact the simplest one, since it doesn't produce the zero vector. Therefore, we'll take
 
 	$$
-		\vec{v_3} = [[ -1 ; 1 ; 1 ]],
+		\vec{v_3} = [[ 1 ; 0 ; 0 ]],
 	$$
 
 	and so we've expressed our matrix as $A = BJB^{-1}$, where
