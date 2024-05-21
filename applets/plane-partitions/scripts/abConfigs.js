@@ -369,11 +369,13 @@ export function iterateThroughEntries({
 		inNu ? -5 : 0
 	);
 
-	const cappedMaxBEntry = B[row][col];
-	const cappedMinBEntry = Math.max(
-		row === B.length - 1 ? 0 : B[row + 1][col],
-		col === B[0].length - 1 ? 0 : B[col][col + 1]
-	);
+	const cappedMaxBEntry = row >= 0 && col >= 0 ? B[row][col] : Infinity;
+	const cappedMinBEntry = row >= 0 && col >= 0
+		? Math.max(
+			row === B.length - 1 ? 0 : B[row + 1][col],
+			col === B[0].length - 1 ? 0 : B[col][col + 1]
+		)
+		: Infinity;
 
 	const newA = structuredClone(A);
 	const newB = structuredClone(B);
@@ -402,6 +404,32 @@ export function iterateThroughEntries({
 			else
 			{
 				outputString = outputString + "  ";
+			}
+		}
+	}
+
+	else if (cappedMaxBEntry === Infinity)
+	{
+		for (
+			let a = cappedMaxAEntry;
+			a >= cappedMinAEntry;
+			a--
+		) {
+			newA[i][j] = a;
+
+			if (isValidABConfig({
+				lambda,
+				mu,
+				nu,
+				A: newA,
+				B: newB
+			})) {
+				outputString = outputString + "*\n";
+			}
+
+			else
+			{
+				outputString = outputString + " \n";
 			}
 		}
 	}

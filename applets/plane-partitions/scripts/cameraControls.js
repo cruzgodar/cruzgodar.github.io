@@ -212,7 +212,8 @@ export async function updateCameraHeight(force = false)
 				y: this._2dViewCameraPos[1],
 				z: this._2dViewCameraPos[2],
 				duration: this.animationTime,
-				easing: "easeInOutQuad"
+				easing: "easeInOutQuad",
+				update: () => this.needNewFrame = true
 			}).finished,
 
 			anime({
@@ -223,7 +224,11 @@ export async function updateCameraHeight(force = false)
 				bottom: -(this.totalArrayFootprint / 2 + .5),
 				duration: this.animationTime,
 				easing: "easeInOutQuad",
-				update: () => this.orthographicCamera.updateProjectionMatrix(),
+				update: () =>
+				{
+					this.orthographicCamera.updateProjectionMatrix();
+					this.needNewFrame = true;
+				}
 			}).finished
 		]);
 
@@ -248,7 +253,8 @@ export async function updateCameraHeight(force = false)
 				y: this.hexViewCameraPos[1],
 				z: this.hexViewCameraPos[2],
 				duration: this.animationTime,
-				easing: "easeInOutQuad"
+				easing: "easeInOutQuad",
+				update: () => this.needNewFrame = true
 			}).finished,
 
 			anime({
@@ -259,7 +265,11 @@ export async function updateCameraHeight(force = false)
 				bottom: -this.totalArraySize,
 				duration: this.animationTime,
 				easing: "easeInOutQuad",
-				update: () => this.orthographicCamera.updateProjectionMatrix(),
+				update: () =>
+				{
+					this.orthographicCamera.updateProjectionMatrix();
+					this.needNewFrame = true;
+				}
 			}).finished
 		]);
 
@@ -353,7 +363,8 @@ export async function showDimers()
 			this.wilsonHidden3.ctx,
 			this.wilsonHidden4.ctx
 		],
-		strokeStyle: convertColor(255, 255, 255),
+		// Necessary to make three.js animate correctly.
+		strokeStyle: "rgba(255, 255, 255, 1)",
 		_alpha: 0,
 		duration: this.animationTime / 2,
 		easing: "easeOutQuad",
@@ -475,6 +486,8 @@ export async function hideDimers()
 		return;
 	}
 
+	this.currentlyAnimatingCamera = true;
+
 	this.dimersShown = false;
 
 
@@ -535,8 +548,6 @@ export async function hideDimers()
 		}
 	});
 
-
-
 	await anime({
 		targets: [
 			this.wilsonHidden.ctx,
@@ -544,7 +555,8 @@ export async function hideDimers()
 			this.wilsonHidden3.ctx,
 			this.wilsonHidden4.ctx
 		],
-		strokeStyle: convertColor(255, 255, 255, 0),
+		// Necessary to make three.js animate correctly.
+		strokeStyle:  "rgba(255, 255, 255, 0)",
 		_alpha: 1,
 		duration: this.animationTime / 2,
 		easing: "easeOutQuad",

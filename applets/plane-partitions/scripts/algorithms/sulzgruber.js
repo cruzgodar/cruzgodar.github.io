@@ -353,7 +353,7 @@ export async function sulzgruber(index)
 		await new Promise(resolve => setTimeout(resolve, this.animationTime));
 	}
 
-
+	this.currentlyAnimatingCamera = false;
 
 	await this.removeArray(index);
 }
@@ -686,7 +686,7 @@ export async function sulzgruberInverse(index)
 		}
 	}
 
-
+	this.currentlyAnimatingCamera = false;
 
 	await this.removeArray(index);
 }

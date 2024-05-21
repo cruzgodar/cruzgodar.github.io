@@ -238,65 +238,79 @@ export function load()
 	addArrayTextarea.setValue(PlanePartitions.arrayToAscii(planePartition));
 	applet.addNewArray(0, planePartition);
 
-	/*
-	applet.addNewArray(0, PlanePartitions.parseArray(
-`16 16 16 16 16 16 16 16 11 10 9 8 8 8 8 8
-16 16 16 16 16 16 16 16 11 10 9 8 8 8 8 8
-16 16 16 16 16 16 16 16 11 10 9 8 8 8 8 8
-16 16 16 16 16 16 16 16 11 10 9 8 8 8 8 8
-16 16 16 16 16 16 16 16 11 10 9 8 8 8 8 8
-16 16 16 16 16 16 16 16 11 10 9 8 8 8 8 8
-16 16 16 16 16 16 16 16 11 10 9 8 8 8 8 8
-16 16 16 16 16 16 16 16 11 10 9 8 8 8 8 8
-10 10 10 10 10 10 10 10 10 10 0 0 0 0 0 0
-10 10 10 10 10 10 10 10 10  0 0 0 0 0 0 0
-10 10 10 10 10 10 10 10  0  0 0 0 0 0 0 0
- 8  8  8  8  8  8  8  8  0  0 0 0 0 0 0 0
- 8  8  8  8  8  8  8  8  0  0 0 0 0 0 0 0
- 8  8  8  8  8  8  8  8  0  0 0 0 0 0 0 0
- 8  8  8  8  8  8  8  8  0  0 0 0 0 0 0 0
- 8  8  8  8  8  8  8  8  0  0 0 0 0 0 0 0`
- ));
+// 	applet.addNewArray(0, PlanePartitions.parseArray(
+// `16 16 16 16 16 16 16 16 11 10 9 8 8 8 8 8
+// 16 16 16 16 16 16 16 16 11 10 9 8 8 8 8 8
+// 16 16 16 16 16 16 16 16 11 10 9 8 8 8 8 8
+// 16 16 16 16 16 16 16 16 11 10 9 8 8 8 8 8
+// 16 16 16 16 16 16 16 16 11 10 9 8 8 8 8 8
+// 16 16 16 16 16 16 16 16 11 10 9 8 8 8 8 8
+// 16 16 16 16 16 16 16 16 11 10 9 8 8 8 8 8
+// 16 16 16 16 16 16 16 16 11 10 9 8 8 8 8 8
+// 10 10 10 10 10 10 10 10 10 10 0 0 0 0 0 0
+// 10 10 10 10 10 10 10 10 10  0 0 0 0 0 0 0
+// 10 10 10 10 10 10 10 10  0  0 0 0 0 0 0 0
+//  8  8  8  8  8  8  8  8  0  0 0 0 0 0 0 0
+//  8  8  8  8  8  8  8  8  0  0 0 0 0 0 0 0
+//  8  8  8  8  8  8  8  8  0  0 0 0 0 0 0 0
+//  8  8  8  8  8  8  8  8  0  0 0 0 0 0 0 0
+//  8  8  8  8  8  8  8  8  0  0 0 0 0 0 0 0`
+//  ));
 
- 	applet.addNewArray(0, PlanePartitions.parseArray(
-`3 2 1 0 0 0 0 0 0 0 0 0 0 0 0 0
-3 2 1
-2 2 1`
-));
-	*/
-	const lambda = [6, 2];
-	const mu = [5, 1];
-	const nu = [1];
+//  	applet.addNewArray(0, PlanePartitions.parseArray(
+// `3 2 1 0 0 0 0 0 0 0 0 0 0 0 0 0
+// 3 2 1
+// 2 2 1`
+// ));
 
-	const [A, B] = applet.getMinimalABConfig({
-		lambda,
-		mu,
-		nu,
-	});
+	// const lambda = [6, 3, 0];
+	// const mu = [5, 2, 0];
+	// const nu = [3, 2];
 
-	applet.printABConfig({ A, B });
+	// const [A, B] = applet.getMinimalABConfig({
+	// 	lambda,
+	// 	mu,
+	// 	nu,
+	// });
 
-	applet.iterateThroughEntries({
-		A,
-		B,
-		lambda,
-		mu,
-		nu,
-		i: 3,
-		j: 3,
-	});
+	// console.clear();
 
+	// console.log(applet.isValidABConfig({ lambda, mu, nu, A, B }));
 
+	// applet.printABConfig({ A, B });
+
+	// for (let i = 0; i <= 4; i++)
+	// {
+	// 	for (let j = 0; j <= 4; j++)
+	// 	{
+	// 		if (i < 2 && j < 2)
+	// 		{
+	// 			continue;
+	// 		}
+
+	// 		console.log(i, j);
+
+	// 		applet.iterateThroughEntries({
+	// 			A,
+	// 			B,
+	// 			lambda,
+	// 			mu,
+	// 			nu,
+	// 			i,
+	// 			j,
+	// 		});
+	// 	}
+	// }
 
 	showPage();
-
-
 
 	function changeResolution()
 	{
 		applet.resolution = resolutionInput.value;
 
 		applet.renderer.setSize(applet.resolution, applet.resolution, false);
+
+		applet.needNewFrame = true;
 	}
 	
 	async function addArray()

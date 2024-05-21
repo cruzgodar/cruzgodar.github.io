@@ -230,7 +230,7 @@ export async function hillmanGrassl(index)
 		await new Promise(resolve => setTimeout(resolve, this.animationTime));
 	}
 
-
+	this.currentlyAnimatingCamera = false;
 
 	await this.removeArray(index);
 }
@@ -482,7 +482,7 @@ export async function hillmanGrasslInverse(index)
 		await new Promise(resolve => setTimeout(resolve, this.animationTime / 2));
 	}
 
-
+	this.currentlyAnimatingCamera = false;
 
 	await this.removeArray(index);
 }

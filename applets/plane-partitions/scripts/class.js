@@ -127,69 +127,6 @@ export class PlanePartitions extends AnimationFrameApplet
 	hexViewCameraPos = [15, 15, 15];
 	_2dViewCameraPos = [0, 20, 0];
 
-	algorithmData = {
-		hillmanGrassl:
-		{
-			method: this.hillmanGrassl,
-			inputType: ["pp"]
-		},
-
-		hillmanGrasslInverse:
-		{
-			method: this.hillmanGrasslInverse,
-			inputType: ["tableau"]
-		},
-
-		pak:
-		{
-			method: this.pak,
-			inputType: ["pp"]
-		},
-
-		pakInverse:
-		{
-			method: this.pakInverse,
-			inputType: ["tableau"]
-		},
-
-		sulzgruber:
-		{
-			method: this.sulzgruber,
-			inputType: ["pp"]
-		},
-
-		sulzgruberInverse:
-		{
-			method: this.sulzgruberInverse,
-			inputType: ["tableau"]
-		},
-
-		rsk:
-		{
-			method: this.rsk,
-			inputType: ["ssyt", "ssyt"],
-			sameShape: true
-		},
-
-		rskInverse:
-		{
-			method: this.rskInverse,
-			inputType: ["tableau"]
-		},
-
-		godar1:
-		{
-			method: this.godar1,
-			inputType: ["pp"]
-		},
-
-		godar1Inverse:
-		{
-			method: this.godar1Inverse,
-			inputType: ["pp", "pp"]
-		}
-	};
-
 
 
 	constructor({
@@ -279,7 +216,7 @@ export class PlanePartitions extends AnimationFrameApplet
 		this.wilsonHidden3 = new Wilson(hiddenCanvas3, optionsHidden);
 		this.wilsonHidden4 = new Wilson(hiddenCanvas4, optionsHidden);
 
-		this.wilsonHidden.ctx.strokeStyle = convertColor(255, 255, 255);
+		this.wilsonHidden.ctx.strokeStyle = "rgba(255, 255, 255, 0)";
 		this.wilsonHidden.ctx._alpha = 1;
 
 		this.wilsonHidden.ctx.fillStyle = convertColor(64, 64, 64);
@@ -290,7 +227,7 @@ export class PlanePartitions extends AnimationFrameApplet
 
 		this.wilsonHidden.ctx.lineWidth = 6;
 
-		this.wilsonHidden2.ctx.strokeStyle = convertColor(255, 255, 255);
+		this.wilsonHidden2.ctx.strokeStyle = "rgba(255, 255, 255, 0)";
 		this.wilsonHidden2.ctx._alpha = 1;
 
 		this.wilsonHidden2.ctx.fillStyle = convertColor(64, 64, 64);
@@ -303,7 +240,7 @@ export class PlanePartitions extends AnimationFrameApplet
 
 
 
-		this.wilsonHidden3.ctx.strokeStyle = convertColor(255, 255, 255);
+		this.wilsonHidden3.ctx.strokeStyle = "rgba(255, 255, 255, 0)";
 		this.wilsonHidden3.ctx._alpha = 1;
 
 		this.wilsonHidden3.ctx.fillStyle = convertColor(32, 32, 32, this.addWalls ? 1 : 0);
@@ -316,7 +253,7 @@ export class PlanePartitions extends AnimationFrameApplet
 
 
 
-		this.wilsonHidden4.ctx.strokeStyle = convertColor(255, 255, 255);
+		this.wilsonHidden4.ctx.strokeStyle = "rgba(255, 255, 255, 0)";
 		this.wilsonHidden4.ctx._alpha = 1;
 
 		this.wilsonHidden4.ctx.fillStyle = convertColor(32, 32, 32, this.addWalls ? 1 : 0);
@@ -396,6 +333,8 @@ export class PlanePartitions extends AnimationFrameApplet
 		this.rotationYVelocity = 0;
 
 		this.lastRotationYVelocities = [0, 0, 0, 0];
+
+		this.needNewFrame = true;
 	}
 
 	onDragCanvas(x, y, xDelta)
@@ -420,6 +359,8 @@ export class PlanePartitions extends AnimationFrameApplet
 		this.scene.children.forEach(object => object.rotation.y = this.rotationY);
 
 		this.nextRotationYVelocity = xDelta;
+
+		this.needNewFrame = true;
 	}
 
 	onReleaseCanvas()
@@ -449,14 +390,8 @@ export class PlanePartitions extends AnimationFrameApplet
 		this.lastRotationYVelocities = [0, 0, 0, 0];
 	}
 
-
-
-	drawFrame()
+	prepareFrame()
 	{
-		this.renderer.render(this.scene, this.orthographicCamera);
-
-
-
 		this.lastRotationYVelocities.push(this.nextRotationYVelocity);
 		this.lastRotationYVelocities.shift();
 
@@ -474,9 +409,22 @@ export class PlanePartitions extends AnimationFrameApplet
 			{
 				this.rotationYVelocity = 0;
 			}
+
+			else
+			{
+				this.needNewFrame = true;
+			}
 		}
 
+		if (this.currentlyAnimatingCamera)
+		{
+			this.needNewFrame = true;
+		}
+	}
 
+	drawFrame()
+	{
+		this.renderer.render(this.scene, this.orthographicCamera);
 
 		if (this.rotationY > Math.PI)
 		{
@@ -487,8 +435,6 @@ export class PlanePartitions extends AnimationFrameApplet
 		{
 			this.rotationY += 2 * Math.PI;
 		}
-
-
 
 		if (this.needDownload)
 		{
@@ -507,10 +453,6 @@ export class PlanePartitions extends AnimationFrameApplet
 				link.remove();
 			});
 		}
-
-
-
-		this.needNewFrame = true;
 	}
 
 	switchFullscreen()
@@ -605,4 +547,67 @@ export class PlanePartitions extends AnimationFrameApplet
 
 	godar1 = godar1;
 	godar1Inverse = godar1Inverse;
+
+	algorithmData = {
+		hillmanGrassl:
+		{
+			method: this.hillmanGrassl,
+			inputType: ["pp"]
+		},
+
+		hillmanGrasslInverse:
+		{
+			method: this.hillmanGrasslInverse,
+			inputType: ["tableau"]
+		},
+
+		pak:
+		{
+			method: this.pak,
+			inputType: ["pp"]
+		},
+
+		pakInverse:
+		{
+			method: this.pakInverse,
+			inputType: ["tableau"]
+		},
+
+		sulzgruber:
+		{
+			method: this.sulzgruber,
+			inputType: ["pp"]
+		},
+
+		sulzgruberInverse:
+		{
+			method: this.sulzgruberInverse,
+			inputType: ["tableau"]
+		},
+
+		rsk:
+		{
+			method: this.rsk,
+			inputType: ["ssyt", "ssyt"],
+			sameShape: true
+		},
+
+		rskInverse:
+		{
+			method: this.rskInverse,
+			inputType: ["tableau"]
+		},
+
+		godar1:
+		{
+			method: this.godar1,
+			inputType: ["pp"]
+		},
+
+		godar1Inverse:
+		{
+			method: this.godar1Inverse,
+			inputType: ["pp", "pp"]
+		}
+	};
 }

@@ -777,7 +777,7 @@ export class Applet
 			width: this.wilson.canvasWidth,
 			height: this.wilson.canvasHeight,
 			fps,
-			bitrate: 70_000_000
+			bitrate: 50_000_000
 		});
 
 		let frame = 0;

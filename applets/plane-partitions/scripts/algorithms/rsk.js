@@ -285,7 +285,7 @@ export async function rsk(index)
 		await new Promise(resolve => setTimeout(resolve, this.animationTime / 2));
 	}
 
-
+	this.currentlyAnimatingCamera = false;
 
 	await this.removeArray(index);
 
@@ -626,6 +626,8 @@ export async function rskInverse(index)
 
 		await new Promise(resolve => setTimeout(resolve, this.animationTime / 2));
 	}
+
+	this.currentlyAnimatingCamera = false;
 
 	await this.removeArray(index);
 }

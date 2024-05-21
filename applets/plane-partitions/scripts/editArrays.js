@@ -8,10 +8,14 @@ export async function addNewArray(
 	keepNumbersCanvasVisible = false,
 	horizontalLegs = true
 ) {
-	if (this.currentlyAnimating)
+	if (this.currentlyAnimatingCamera)
 	{
 		return;
 	}
+
+	this.currentlyAnimatingCamera = true;
+
+	let updatingCamera = false;
 
 
 
@@ -249,6 +253,7 @@ export async function addNewArray(
 		if (this.in2dView && !keepNumbersCanvasVisible && !this.addWalls)
 		{
 			this.updateCameraHeight(true);
+			updatingCamera = true;
 		}
 
 		else
@@ -272,6 +277,7 @@ export async function addNewArray(
 	else if (!this.addWalls && !keepNumbersCanvasVisible)
 	{
 		this.updateCameraHeight(true);
+		updatingCamera = true;
 	}
 
 
@@ -307,12 +313,17 @@ export async function addNewArray(
 		this.drawAll2dViewText();
 	}
 
+	if (!updatingCamera)
+	{
+		this.currentlyAnimatingCamera = false;
+	}
+
 	return array;
 }
 
 export async function editArray(index, numbers)
 {
-	if (this.currentlyAnimating)
+	if (this.currentlyAnimatingCamera)
 	{
 		return;
 	}
@@ -327,6 +338,8 @@ export async function editArray(index, numbers)
 	await this.removeArray(index);
 
 	await this.addNewArray(index, numbers);
+
+	this.currentlyAnimatingCamera = false;
 
 	if (!this.in2dView)
 	{
@@ -401,10 +414,12 @@ export async function trimArray(index)
 
 export async function removeArray(index, keepNumbersCanvasVisible = false)
 {
-	if (this.currentlyAnimating)
+	if (this.currentlyAnimatingCamera)
 	{
 		return;
 	}
+
+	this.currentlyAnimatingCamera = true;
 
 
 
@@ -518,6 +533,9 @@ export async function removeArray(index, keepNumbersCanvasVisible = false)
 		}
 	}
 
+
+
+	this.currentlyAnimatingCamera = false;
 
 	if (this.arrays.length !== 0 && !keepNumbersCanvasVisible)
 	{
