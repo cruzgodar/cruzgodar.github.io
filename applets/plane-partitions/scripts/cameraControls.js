@@ -428,7 +428,7 @@ export async function showDimers()
 				32,
 				32,
 				32,
-				this.addWalls ? 0 : this.wilsonHidden3.ctx._alpha
+				this.addWalls ? this.wilsonHidden3.ctx._alpha : 0
 			);
 			this.wilsonHidden3.ctx.fillRect(0, 0, 64, 64);
 
@@ -436,7 +436,7 @@ export async function showDimers()
 				64,
 				64,
 				64,
-				this.addWalls ? 0 : this.wilsonHidden3.ctx._alpha
+				this.addWalls ? this.wilsonHidden3.ctx._alpha : 0
 			);
 			this.wilsonHidden3.ctx.fillRect(4, 4, 56, 56);
 
@@ -454,7 +454,7 @@ export async function showDimers()
 				32,
 				32,
 				32,
-				this.addWalls ? 0 : this.wilsonHidden4.ctx._alpha
+				this.addWalls ? this.wilsonHidden4.ctx._alpha : 0
 			);
 			this.wilsonHidden4.ctx.fillRect(0, 0, 64, 64);
 
@@ -462,7 +462,7 @@ export async function showDimers()
 				64,
 				64,
 				64,
-				this.addWalls ? 0 : this.wilsonHidden4.ctx._alpha
+				this.addWalls ? this.wilsonHidden4.ctx._alpha : 0
 			);
 			this.wilsonHidden4.ctx.fillRect(4, 4, 56, 56);
 
@@ -620,7 +620,7 @@ export async function hideDimers()
 				32,
 				32,
 				32,
-				this.addWalls ? 0 : this.wilsonHidden3.ctx._alpha
+				this.addWalls ? this.wilsonHidden3.ctx._alpha : 0
 			);
 			this.wilsonHidden3.ctx.fillRect(0, 0, 64, 64);
 
@@ -628,7 +628,7 @@ export async function hideDimers()
 				64,
 				64,
 				64,
-				this.addWalls ? 0 : this.wilsonHidden3.ctx._alpha
+				this.addWalls ? this.wilsonHidden3.ctx._alpha : 0
 			);
 			this.wilsonHidden3.ctx.fillRect(4, 4, 56, 56);
 
@@ -646,7 +646,7 @@ export async function hideDimers()
 				32,
 				32,
 				32,
-				this.addWalls ? 0 : this.wilsonHidden4.ctx._alpha
+				this.addWalls ? this.wilsonHidden4.ctx._alpha : 0
 			);
 			this.wilsonHidden4.ctx.fillRect(0, 0, 64, 64);
 
@@ -654,7 +654,7 @@ export async function hideDimers()
 				64,
 				64,
 				64,
-				this.addWalls ? 0 : this.wilsonHidden4.ctx._alpha
+				this.addWalls ? this.wilsonHidden4.ctx._alpha : 0
 			);
 			this.wilsonHidden4.ctx.fillRect(4, 4, 56, 56);
 
