@@ -254,7 +254,28 @@ function setLinks()
 			&& link.getAttribute("data-in-new-tab") != 1
 		);
 
-		link.addEventListener("click", () => redirect({ url: href, inNewTab }));
+		link.addEventListener("click", (e) =>
+		{
+			redirect({ url: href, inNewTab: inNewTab || e.metaKey });
+		});
+	});
+
+	$$("a[data-card-id]").forEach(link =>
+	{
+		const href = link.getAttribute("href");
+
+		if (!href)
+		{
+			return;
+		}
+
+		link.addEventListener("click", (e) =>
+		{
+			if (e.metaKey)
+			{
+				redirect({ url: href, inNewTab: true });
+			}
+		});
 	});
 }
 

@@ -73,7 +73,7 @@ export function addHeader()
 			{
 				e.preventDefault();
 
-				redirect({ url: href });
+				redirect({ url: href, inNewTab: e.metaKey });
 			});
 		});
 
