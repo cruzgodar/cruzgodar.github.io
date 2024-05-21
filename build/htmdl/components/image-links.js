@@ -24,11 +24,12 @@ function imageLink(options, url, name)
 
 	if (options.includes("c"))
 	{
-		const src = `${url.slice(0, url.lastIndexOf("/"))}/cards/${id}.webp`;
+		const slicedUrl = url.slice(0, url.lastIndexOf("/"));
+		const src = `${slicedUrl}/cards/${id}.webp`;
 
 		return /* html */`
 			<div class="image-link">
-				<a data-card-id="${id}" tabindex="-1">
+				<a href="${slicedUrl}/?card=${id}" data-card-id="${id}" tabindex="-1">
 					<img src="${src}" alt="${name}" tabindex="1"></img>
 				</a>
 				

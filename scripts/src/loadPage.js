@@ -239,7 +239,7 @@ async function fadeInPage()
 
 function setLinks()
 {
-	$$("a").forEach(link =>
+	$$("a:not([data-card-id])").forEach(link =>
 	{
 		const href = link.getAttribute("href");
 
