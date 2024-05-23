@@ -588,3 +588,111 @@ export function testAllEntriesOfABConfig({
 		}
 	}
 }
+
+export function getArrayVersionOfABConfig({
+	lambda,
+	mu,
+	nu,
+	A,
+	B
+}) {
+	let numNegativeARows = 0;
+	let numNegativeACols = 0;
+
+	while (A[numNegativeARows][0] === Infinity)
+	{
+		numNegativeARows++;
+	}
+
+	while (A[0][numNegativeACols] === Infinity)
+	{
+		numNegativeACols++;
+	}
+
+	const bigA = new Array(16);
+	const bigB = new Array(16);
+
+	for (let i = 0; i < 16; i++)
+	{
+		bigA[i] = new Array(16);
+		bigB[i] = new Array(16);
+
+		for (let j = 0; j < 16; j++)
+		{
+			const row = i - 8 + numNegativeARows;
+			const col = j - 8 + numNegativeACols;
+
+			if (row >= 0 && row < A.length && col >= 0 && col < A[row].length)
+			{
+				bigA[i][j] = Math.min(Math.max(A[row][col] + 8, 0), 16);
+			}
+
+			else
+			{
+				const lambdaEntry = (() =>
+				{
+					if (j - 8 < 0)
+					{
+						return Infinity;
+					}
+
+					if (j - 8 >= lambda.length)
+					{
+						return 0;
+					}
+
+					return lambda[j - 8];
+				})();
+
+				const muEntry = (() =>
+				{
+					if (i - 8 < 0)
+					{
+						return Infinity;
+					}
+
+					if (i - 8 >= mu.length)
+					{
+						return 0;
+					}
+
+					return mu[i - 8];
+				})();
+
+				const aEntry = (() =>
+				{
+					if (
+						(i - 8 >= 0 && i - 8 < nu.length && j - 8 < nu[i - 8])
+						|| i - 8 < 0
+						|| j - 8 < 0
+					) {
+						return Math.min(lambdaEntry, muEntry);
+					}
+
+					return -Infinity;
+				})();
+
+				bigA[i][j] = Math.min(Math.max(aEntry + 8, 0), 16);
+			}
+
+			if (bigA[i][j] === 16)
+			{
+				bigA[i][j] = Infinity;
+			}
+
+			
+
+			if (i < B.length && j < B[i].length)
+			{
+				bigB[i][j] = B[i][j];
+			}
+
+			else
+			{
+				bigB[i][j] = 0;
+			}
+		}
+	}
+
+	return [bigA, bigB];
+}

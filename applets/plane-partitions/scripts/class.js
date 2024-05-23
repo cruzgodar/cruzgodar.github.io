@@ -1,4 +1,5 @@
 import {
+	getArrayVersionOfABConfig,
 	getMinimalABConfig,
 	isValidABConfig,
 	iterateThroughEntries,
@@ -72,11 +73,11 @@ export class PlanePartitions extends AnimationFrameApplet
 	cubeLightness = .4;
 	floorLightness = .4;
 
-	infiniteHeight = 100;
+	infiniteHeight = 50;
 
 	addWalls = false;
-	wallWidth = 17;
-	wallHeight = 17;
+	wallWidth = 16;
+	wallHeight = 16;
 
 	scene;
 
@@ -501,6 +502,7 @@ export class PlanePartitions extends AnimationFrameApplet
 	iterateThroughEntries = iterateThroughEntries;
 	printABConfig = printABConfig;
 	testAllEntriesOfABConfig = testAllEntriesOfABConfig;
+	getArrayVersionOfABConfig = getArrayVersionOfABConfig;
 
 	addNewArray = addNewArray;
 	editArray = editArray;

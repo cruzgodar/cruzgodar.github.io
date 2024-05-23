@@ -238,48 +238,30 @@ export async function load()
 	addArrayTextarea.setValue(PlanePartitions.arrayToAscii(planePartition));
 	applet.addNewArray(0, planePartition);
 
-// 	const AString =
-// `16 16 16 16 16 16 16 16 13 13 8 8 8 8 8 8
-// 16 16 16 16 16 16 16 16 13 13 8 8 8 8 8 8
-// 16 16 16 16 16 16 16 16 13 13 8 8 8 8 8 8
-// 16 16 16 16 16 16 16 16 13 13 8 8 8 8 8 8
-// 16 16 16 16 16 16 16 16 13 13 8 8 8 8 8 8
-// 16 16 16 16 16 16 16 16 13 13 8 8 8 8 8 8
-// 16 16 16 16 16 16 16 16 13 13 8 8 8 8 8 8
-// 16 16 16 16 16 16 16 16 13 13 8 8 8 8 8 8
-// 10 10 10 10 10 10 10 10 10  9 0 0 0 0 0 0
-// 10 10 10 10 10 10 10 10  0  0 0 0 0 0 0 0
-//  8  8  8  8  8  8  8  8  0  0 0 0 0 0 0 0
-//  8  8  8  8  8  8  8  8  0  0 0 0 0 0 0 0
-//  8  8  8  8  8  8  8  8  0  0 0 0 0 0 0 0
-//  8  8  8  8  8  8  8  8  0  0 0 0 0 0 0 0
-//  8  8  8  8  8  8  8  8  0  0 0 0 0 0 0 0
-//  8  8  8  8  8  8  8  8  0  0 0 0 0 0 0 0`;
+	// const lambda = [7, 3];
+	// const mu = [5, 2];
+	// const nu = [1];
 
-// 	const BString =
-// `5 5 0 0 0 0 0 0 0 0 0 0 0 0 0 0
-// 2 2`;
+	// const [A, B] = applet.getMinimalABConfig({
+	// 	lambda,
+	// 	mu,
+	// 	nu,
+	// });
 
-// 	await applet.addNewArray(0, PlanePartitions.parseArray(AString));
-// 	await applet.addNewArray(0, PlanePartitions.parseArray(BString));
+	// console.clear();
 
-// 	const lambda = [7, 0];
-// 	const mu = [2, 0];
-// 	const nu = [1];
+	// console.log(applet.isValidABConfig({ lambda, mu, nu, A, B }));
 
-// 	const [A, B] = applet.getMinimalABConfig({
-// 		lambda,
-// 		mu,
-// 		nu,
-// 	});
+	// applet.printABConfig({ A, B });
 
-// 	console.clear();
+	// applet.testAllEntriesOfABConfig({ lambda, mu, nu, A, B });
 
-// 	console.log(applet.isValidABConfig({ lambda, mu, nu, A, B }));
+	// const [bigA, bigB] = applet.getArrayVersionOfABConfig({ lambda, mu, nu, A, B });
 
-// 	applet.printABConfig({ A, B });
+	// console.log(bigA, bigB);
 
-// 	applet.testAllEntriesOfABConfig({ lambda, mu, nu, A, B });
+	// await applet.addNewArray(0, bigA);
+	// await applet.addNewArray(0, bigB);
 
 	showPage();
 
