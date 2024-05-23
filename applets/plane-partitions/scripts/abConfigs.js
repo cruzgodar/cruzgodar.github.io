@@ -1,3 +1,5 @@
+const absoluteMinAEntry = -5;
+
 export function isValidABConfig({
 	lambda,
 	mu,
@@ -73,7 +75,7 @@ export function isValidABConfig({
 				return [0, Math.min(lambda[col], mu[row])];
 			})();
 
-			const minEntry = inNu ? -5 : 0;
+			const minEntry = inNu ? absoluteMinAEntry : 0;
 
 			for (
 				let k = minEntry;
@@ -366,7 +368,7 @@ export function iterateThroughEntries({
 			i === A.length - 1 ? -Infinity : A[i + 1][j],
 			j === A[0].length - 1 ? -Infinity : A[i][j + 1]
 		),
-		inNu ? -5 : 0
+		inNu ? absoluteMinAEntry : 0
 	);
 
 	const cappedMaxBEntry = row >= 0 && col >= 0 ? B[row][col] : Infinity;
@@ -424,12 +426,12 @@ export function iterateThroughEntries({
 				A: newA,
 				B: newB
 			})) {
-				outputString = outputString + "*\n";
+				outputString = outputString + (a === absoluteMinAEntry ? "v\n" : "*\n");
 			}
 
 			else
 			{
-				outputString = outputString + " \n";
+				outputString = outputString + "\n";
 			}
 		}
 	}
@@ -456,7 +458,7 @@ export function iterateThroughEntries({
 					A: newA,
 					B: newB
 				})) {
-					outputString = outputString + "* ";
+					outputString = outputString + (a === absoluteMinAEntry ? "v " : "* ");
 				}
 
 				else
@@ -515,4 +517,74 @@ export function printABConfig({ A, B })
 	}
 
 	console.log(outputString);
+}
+
+export function testAllEntriesOfABConfig({
+	lambda,
+	mu,
+	nu,
+	A,
+	B
+}) {
+	let numNegativeARows = 0;
+	let numNegativeACols = 0;
+
+	while (A[numNegativeARows][0] === Infinity)
+	{
+		numNegativeARows++;
+	}
+
+	while (A[0][numNegativeACols] === Infinity)
+	{
+		numNegativeACols++;
+	}
+
+	for (let i = 0; i < A.length; i++)
+	{
+		for (let j = 0; j < A.length; j++)
+		{
+			if (i < numNegativeARows && j < numNegativeACols)
+			{
+				continue;
+			}
+
+			console.log(i, j);
+
+			this.iterateThroughEntries({
+				A,
+				B,
+				lambda,
+				mu,
+				nu,
+				i,
+				j,
+			});
+
+			const row = i - numNegativeARows;
+			const col = j - numNegativeACols;
+
+			if (row >= 0 && col >= 0 && row < nu.length && col === nu[row] - 1)
+			{
+				nu[row]--;
+
+				const newA = structuredClone(A);
+				const newB = structuredClone(B);
+
+				newA[i][j] = -Infinity;
+				newB[row][col] = Math.min(lambda[col], mu[row]);
+
+				this.iterateThroughEntries({
+					A: newA,
+					B: newB,
+					lambda,
+					mu,
+					nu,
+					i,
+					j,
+				});
+
+				nu[row]++;
+			}
+		}
+	}
 }
