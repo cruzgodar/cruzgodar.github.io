@@ -113,12 +113,7 @@ export class Applet
 	{
 		const fpsDisplayElement = document.createElement("canvas");
 
-		fpsDisplayElement.style.width = "100px";
-		fpsDisplayElement.style.height = "100px";
-		fpsDisplayElement.style.position = "absolute";
-		fpsDisplayElement.style.bottom = "4px";
-		fpsDisplayElement.style.right = "4px";
-		fpsDisplayElement.style.borderBottomRightRadius = "12px";
+		fpsDisplayElement.classList.add("fps-canvas");
 
 		fpsDisplayElement.setAttribute("width", "100");
 		fpsDisplayElement.setAttribute("height", "100");
