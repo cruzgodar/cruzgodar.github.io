@@ -164,11 +164,6 @@ export async function updateCameraHeight(force = false)
 		this.currentlyAnimatingCamera = true;
 	}
 
-	if (this.arrays.length > 1 && this.addWalls)
-	{
-		return;
-	}
-
 
 
 	this.totalArrayHeight = 0;
@@ -182,7 +177,7 @@ export async function updateCameraHeight(force = false)
 
 
 
-	const hexViewCameraOffset = (
+	const hexViewCameraOffset = this.addWalls ? 0 : (
 		-this.arrays[0].footprint / 2
 		+ this.arrays[this.arrays.length - 1].centerOffset
 		+ this.arrays[this.arrays.length - 1].footprint / 2
@@ -197,7 +192,7 @@ export async function updateCameraHeight(force = false)
 	if (this.addWalls)
 	{
 		this.hexViewCameraPos[0] += 10;
-		this.hexViewCameraPos[1] += 10;
+		this.hexViewCameraPos[1] += 6;
 		this.hexViewCameraPos[2] += 10;
 	}
 
@@ -246,6 +241,8 @@ export async function updateCameraHeight(force = false)
 
 	else
 	{
+		const cameraBound = this.addWalls ? 5.65 : this.totalArraySize;
+
 		await Promise.all([
 			anime({
 				targets: this.orthographicCamera.position,
@@ -259,10 +256,10 @@ export async function updateCameraHeight(force = false)
 
 			anime({
 				targets: this.orthographicCamera,
-				left: -this.totalArraySize,
-				right: this.totalArraySize,
-				top: this.totalArraySize,
-				bottom: -this.totalArraySize,
+				left: -cameraBound,
+				right: cameraBound,
+				top: cameraBound,
+				bottom: -cameraBound,
 				duration: this.animationTime,
 				easing: "easeInOutQuad",
 				update: () =>

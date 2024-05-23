@@ -262,6 +262,7 @@ export async function load()
 
 	// await applet.addNewArray(0, bigA);
 	// await applet.addNewArray(0, bigB);
+	// applet.updateCameraHeight(true);
 
 	showPage();
 
