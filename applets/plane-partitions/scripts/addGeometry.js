@@ -46,7 +46,7 @@ export function addCube(array, x, y, z, h = 0, s = 0, v = this.cubeLightness)
 
 	array.cubeGroup.add(cube);
 
-	if (this.addWalls)
+	if (this.abConfigMode)
 	{
 		cube.position.set(x, y, z);
 	}
@@ -108,7 +108,7 @@ export function addFloor(array, x, z, h = 0, s = 0, v = this.floorLightness)
 	array.cubeGroup.add(floor);
 
 	// This aligns the thing correctly.
-	if (this.addWalls)
+	if (this.abConfigMode)
 	{
 		floor.position.set(x, -.5 - .0005, z);
 	}
@@ -174,7 +174,7 @@ export function addLeftWall(array, y, z, h = 0, s = 0, v = this.floorLightness)
 	array.cubeGroup.add(wall);
 
 	// This aligns the thing correctly.
-	if (this.addWalls)
+	if (this.abConfigMode)
 	{
 		wall.position.set(-.5 - .0005, y, z);
 	}
@@ -240,7 +240,7 @@ export function addRightWall(array, x, y, h = 0, s = 0, v = this.floorLightness)
 	array.cubeGroup.add(wall);
 
 	// This aligns the thing correctly.
-	if (this.addWalls)
+	if (this.abConfigMode)
 	{
 		wall.position.set(x, y, -.5 - .0005);
 	}

@@ -177,7 +177,7 @@ export async function updateCameraHeight(force = false)
 
 
 
-	const hexViewCameraOffset = this.addWalls ? 0 : (
+	const hexViewCameraOffset = this.abConfigMode ? 0 : (
 		-this.arrays[0].footprint / 2
 		+ this.arrays[this.arrays.length - 1].centerOffset
 		+ this.arrays[this.arrays.length - 1].footprint / 2
@@ -189,10 +189,10 @@ export async function updateCameraHeight(force = false)
 		this.totalArraySize - hexViewCameraOffset
 	];
 
-	if (this.addWalls)
+	if (this.abConfigMode)
 	{
 		this.hexViewCameraPos[0] += 10;
-		this.hexViewCameraPos[1] += 6;
+		this.hexViewCameraPos[1] += 7;
 		this.hexViewCameraPos[2] += 10;
 	}
 
@@ -241,7 +241,7 @@ export async function updateCameraHeight(force = false)
 
 	else
 	{
-		const cameraBound = this.addWalls ? 5.65 : this.totalArraySize;
+		const cameraBound = this.abConfigMode ? 5.65 : this.totalArraySize;
 
 		await Promise.all([
 			anime({
@@ -330,12 +330,12 @@ export async function showDimers()
 					targets.push(array.cubes[i][j][k].material[3]);
 					targets.push(array.cubes[i][j][k].material[5]);
 
-					if (this.addWalls && i === 0)
+					if (this.abConfigMode && i === 0)
 					{
 						targets.push(array.rightWall[j][k].material[4]);
 					}
 
-					if (this.addWalls && j === 0)
+					if (this.abConfigMode && j === 0)
 					{
 						targets.push(array.leftWall[i][k].material[0]);
 					}
@@ -425,7 +425,7 @@ export async function showDimers()
 				32,
 				32,
 				32,
-				this.addWalls ? this.wilsonHidden3.ctx._alpha : 0
+				this.abConfigMode ? this.wilsonHidden3.ctx._alpha : 0
 			);
 			this.wilsonHidden3.ctx.fillRect(0, 0, 64, 64);
 
@@ -433,7 +433,7 @@ export async function showDimers()
 				64,
 				64,
 				64,
-				this.addWalls ? this.wilsonHidden3.ctx._alpha : 0
+				this.abConfigMode ? this.wilsonHidden3.ctx._alpha : 0
 			);
 			this.wilsonHidden3.ctx.fillRect(4, 4, 56, 56);
 
@@ -451,7 +451,7 @@ export async function showDimers()
 				32,
 				32,
 				32,
-				this.addWalls ? this.wilsonHidden4.ctx._alpha : 0
+				this.abConfigMode ? this.wilsonHidden4.ctx._alpha : 0
 			);
 			this.wilsonHidden4.ctx.fillRect(0, 0, 64, 64);
 
@@ -459,7 +459,7 @@ export async function showDimers()
 				64,
 				64,
 				64,
-				this.addWalls ? this.wilsonHidden4.ctx._alpha : 0
+				this.abConfigMode ? this.wilsonHidden4.ctx._alpha : 0
 			);
 			this.wilsonHidden4.ctx.fillRect(4, 4, 56, 56);
 
@@ -532,7 +532,7 @@ export async function hideDimers()
 
 
 
-		if (this.addWalls)
+		if (this.abConfigMode)
 		{
 			for (let i = 0; i < this.wallWidth; i++)
 			{
@@ -617,7 +617,7 @@ export async function hideDimers()
 				32,
 				32,
 				32,
-				this.addWalls ? this.wilsonHidden3.ctx._alpha : 0
+				this.abConfigMode ? this.wilsonHidden3.ctx._alpha : 0
 			);
 			this.wilsonHidden3.ctx.fillRect(0, 0, 64, 64);
 
@@ -625,7 +625,7 @@ export async function hideDimers()
 				64,
 				64,
 				64,
-				this.addWalls ? this.wilsonHidden3.ctx._alpha : 0
+				this.abConfigMode ? this.wilsonHidden3.ctx._alpha : 0
 			);
 			this.wilsonHidden3.ctx.fillRect(4, 4, 56, 56);
 
@@ -643,7 +643,7 @@ export async function hideDimers()
 				32,
 				32,
 				32,
-				this.addWalls ? this.wilsonHidden4.ctx._alpha : 0
+				this.abConfigMode ? this.wilsonHidden4.ctx._alpha : 0
 			);
 			this.wilsonHidden4.ctx.fillRect(0, 0, 64, 64);
 
@@ -651,7 +651,7 @@ export async function hideDimers()
 				64,
 				64,
 				64,
-				this.addWalls ? this.wilsonHidden4.ctx._alpha : 0
+				this.abConfigMode ? this.wilsonHidden4.ctx._alpha : 0
 			);
 			this.wilsonHidden4.ctx.fillRect(4, 4, 56, 56);
 

@@ -238,31 +238,7 @@ export async function load()
 	addArrayTextarea.setValue(PlanePartitions.arrayToAscii(planePartition));
 	applet.addNewArray(0, planePartition);
 
-	// const lambda = [7, 3];
-	// const mu = [5, 2];
-	// const nu = [1];
-
-	// const [A, B] = applet.getMinimalABConfig({
-	// 	lambda,
-	// 	mu,
-	// 	nu,
-	// });
-
-	// console.clear();
-
-	// console.log(applet.isValidABConfig({ lambda, mu, nu, A, B }));
-
-	// applet.printABConfig({ A, B });
-
-	// applet.testAllEntriesOfABConfig({ lambda, mu, nu, A, B });
-
-	// const [bigA, bigB] = applet.getArrayVersionOfABConfig({ lambda, mu, nu, A, B });
-
-	// console.log(bigA, bigB);
-
-	// await applet.addNewArray(0, bigA);
-	// await applet.addNewArray(0, bigB);
-	// applet.updateCameraHeight(true);
+	// testABConfigs();
 
 	showPage();
 
@@ -345,5 +321,47 @@ export async function load()
 		{
 			updateEditArrayTextarea();
 		}
+	}
+
+	async function testABConfigs()
+	{
+		console.clear();
+
+		applet.abConfigMode = true;
+		applet.infiniteHeight = 20;
+		applet.animationTime = 150;
+
+		// const lambda = [Math.floor(Math.random() * 5) + 3];
+		// const mu = [Math.floor(Math.random() * 5) + 3];
+		// const nu = [Math.floor(Math.random() * 5) + 3];
+
+		// for (let i = 0; i < 5; i++)
+		// {
+		// 	lambda.push(Math.max(lambda[i] - Math.floor(Math.random() * 4), 0));
+		// 	mu.push(Math.max(mu[i] - Math.floor(Math.random() * 4), 0));
+		// 	nu.push(Math.max(nu[i] - Math.floor(Math.random() * 4), 0));
+		// }
+
+		const lambda = [2, 2, 1, 1];
+		const mu = [2, 2, 0, 0];
+		const nu = [3, 3, 0, 0];
+
+		const [A, B] = applet.getMinimalABConfig({
+			lambda,
+			mu,
+			nu,
+		});
+
+		console.log(applet.isValidABConfig({ lambda, mu, nu, A, B }));
+
+		applet.printABConfig({ A, B });
+
+		applet.testAllEntriesOfABConfig({ lambda, mu, nu, A, B, onlyUnboundedBelow: true });
+
+		const [bigA, bigB] = applet.getArrayVersionOfABConfig({ lambda, mu, nu, A, B });
+
+		await applet.addNewArray(0, bigA);
+		await applet.addNewArray(0, bigB);
+		applet.updateCameraHeight();
 	}
 }

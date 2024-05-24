@@ -375,7 +375,7 @@ export function iterateThroughEntries({
 	const cappedMinBEntry = row >= 0 && col >= 0
 		? Math.max(
 			row === B.length - 1 ? 0 : B[row + 1][col],
-			col === B[0].length - 1 ? 0 : B[col][col + 1]
+			col === B[0].length - 1 ? 0 : B[row][col + 1]
 		)
 		: Infinity;
 
@@ -471,7 +471,7 @@ export function iterateThroughEntries({
 		}
 	}
 
-	console.log(outputString);
+	return outputString;
 }
 
 export function printABConfig({ A, B })
@@ -524,7 +524,8 @@ export function testAllEntriesOfABConfig({
 	mu,
 	nu,
 	A,
-	B
+	B,
+	onlyUnboundedBelow = false
 }) {
 	let numNegativeARows = 0;
 	let numNegativeACols = 0;
@@ -548,9 +549,7 @@ export function testAllEntriesOfABConfig({
 				continue;
 			}
 
-			console.log(i, j);
-
-			this.iterateThroughEntries({
+			const outputString = this.iterateThroughEntries({
 				A,
 				B,
 				lambda,
@@ -559,6 +558,12 @@ export function testAllEntriesOfABConfig({
 				i,
 				j,
 			});
+
+			if (!onlyUnboundedBelow)
+			{
+				console.log(i, j);
+				console.log(outputString);
+			}
 
 			const row = i - numNegativeARows;
 			const col = j - numNegativeACols;
@@ -573,15 +578,22 @@ export function testAllEntriesOfABConfig({
 				newA[i][j] = -Infinity;
 				newB[row][col] = Math.min(lambda[col], mu[row]);
 
-				this.iterateThroughEntries({
-					A: newA,
-					B: newB,
-					lambda,
-					mu,
-					nu,
-					i,
-					j,
-				});
+				if (onlyUnboundedBelow)
+				{
+					console.log(outputString);
+				}
+
+				console.log(
+					this.iterateThroughEntries({
+						A: newA,
+						B: newB,
+						lambda,
+						mu,
+						nu,
+						i,
+						j,
+					})
+				);
 
 				nu[row]++;
 			}

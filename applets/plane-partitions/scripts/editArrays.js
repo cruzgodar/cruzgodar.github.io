@@ -88,9 +88,9 @@ export async function addNewArray(
 			{
 				anime({
 					targets: this.arrays[i].cubeGroup.position,
-					x: this.addWalls ? 0 : this.arrays[i].centerOffset,
+					x: this.abConfigMode ? 0 : this.arrays[i].centerOffset,
 					y: 0,
-					z: this.addWalls ? 0 : -this.arrays[i].centerOffset,
+					z: this.abConfigMode ? 0 : -this.arrays[i].centerOffset,
 					duration: this.animationTime,
 					easing: "easeInOutQuad"
 				});
@@ -103,7 +103,7 @@ export async function addNewArray(
 	array.cubeGroup = new THREE.Object3D();
 	this.scene.add(array.cubeGroup);
 
-	if (this.addWalls)
+	if (this.abConfigMode)
 	{
 		// Quick hack to make PT objects render properly.
 		array.cubeGroup.position.set(0, 0, 0);
@@ -210,7 +210,7 @@ export async function addNewArray(
 
 
 	// Add walls. Disabled by default.
-	if (this.addWalls)
+	if (this.abConfigMode)
 	{
 		array.leftWall = new Array(this.wallWidth);
 		array.rightWall = new Array(this.wallWidth);
@@ -250,7 +250,7 @@ export async function addNewArray(
 
 		this._2dViewCameraPos = [0, this.totalArraySize + 10, 0];
 
-		if (this.in2dView && !keepNumbersCanvasVisible && !this.addWalls)
+		if (this.in2dView && !keepNumbersCanvasVisible && !this.abConfigMode)
 		{
 			this.updateCameraHeight(true);
 			updatingCamera = true;
@@ -274,7 +274,7 @@ export async function addNewArray(
 		}
 	}
 
-	else if (!this.addWalls && !keepNumbersCanvasVisible)
+	else if (!this.abConfigMode && !keepNumbersCanvasVisible)
 	{
 		this.updateCameraHeight(true);
 		updatingCamera = true;
@@ -526,9 +526,9 @@ export async function removeArray(index, keepNumbersCanvasVisible = false)
 		{
 			anime({
 				targets: this.arrays[i].cubeGroup.position,
-				x: this.addWalls ? 0 : this.arrays[i].centerOffset,
+				x: this.abConfigMode ? 0 : this.arrays[i].centerOffset,
 				y: 0,
-				z: this.addWalls ? 0 : -this.arrays[i].centerOffset,
+				z: this.abConfigMode ? 0 : -this.arrays[i].centerOffset,
 				duration: this.animationTime,
 				easing: "easeInOutQuad",
 				update: () => this.needNewFrame = true
