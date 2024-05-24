@@ -115,34 +115,36 @@ export async function drawNQuotient(index, n, m, rects)
 
 	const dummy = { t: 1 };
 
+	let update = () =>
+	{
+		this.wilsonNumbers.ctx.clearRect(
+			0,
+			0,
+			this.wilsonNumbers.canvasWidth,
+			this.wilsonNumbers.canvasHeight
+		);
+
+		rects.forEach((rect, index) =>
+		{
+			const opacity = index % n === m ? 1 : dummy.t;
+
+			this.drawBoundaryRect(
+				array,
+				rect[0],
+				rect[1],
+				rect[2],
+				[...(rect[3]), opacity]
+			);
+		});
+	};
+
 	await anime({
 		targets: dummy,
 		t: 0,
 		duration: this.animationTime,
 		easing: "easeOutQuad",
-
-		update: () =>
-		{
-			this.wilsonNumbers.ctx.clearRect(
-				0,
-				0,
-				this.wilsonNumbers.canvasWidth,
-				this.wilsonNumbers.canvasHeight
-			);
-
-			rects.forEach((rect, index) =>
-			{
-				const opacity = index % n === m ? 1 : dummy.t;
-
-				this.drawBoundaryRect(
-					array,
-					rect[0],
-					rect[1],
-					rect[2],
-					[...(rect[3]), opacity]
-				);
-			});
-		}
+		update,
+		complete: update
 	}).finished;
 
 	this.wilsonNumbers.ctx.clearRect(
@@ -201,32 +203,34 @@ export async function drawNQuotient(index, n, m, rects)
 
 	dummy.t = 0;
 
+	update = () =>
+	{
+		this.wilsonNumbers.ctx.clearRect(
+			0,
+			0,
+			this.wilsonNumbers.canvasWidth,
+			this.wilsonNumbers.canvasHeight
+		);
+
+		rects.forEach((rect, index) =>
+		{
+			this.drawBoundaryRect(
+				array,
+				(1 - dummy.t) * rect[0] + dummy.t * targetRects[index][0],
+				(1 - dummy.t) * rect[1] + dummy.t * targetRects[index][1],
+				rect[2],
+				rect[3]
+			);
+		});
+	};
+
 	await anime({
 		targets: dummy,
 		t: 1,
 		duration: this.animationTime,
 		easing: "easeInOutQuad",
-
-		update: () =>
-		{
-			this.wilsonNumbers.ctx.clearRect(
-				0,
-				0,
-				this.wilsonNumbers.canvasWidth,
-				this.wilsonNumbers.canvasHeight
-			);
-
-			rects.forEach((rect, index) =>
-			{
-				this.drawBoundaryRect(
-					array,
-					(1 - dummy.t) * rect[0] + dummy.t * targetRects[index][0],
-					(1 - dummy.t) * rect[1] + dummy.t * targetRects[index][1],
-					rect[2],
-					rect[3]
-				);
-			});
-		}
+		update,
+		complete: update
 	}).finished;
 
 	this.wilsonNumbers.ctx.clearRect(
@@ -291,42 +295,44 @@ export async function drawNQuotient(index, n, m, rects)
 
 	dummy.t = 0;
 
+	update = () =>
+	{
+		this.wilsonNumbers.ctx.clearRect(
+			0,
+			0,
+			this.wilsonNumbers.canvasWidth,
+			this.wilsonNumbers.canvasHeight
+		);
+
+		rects.forEach((rect, index) =>
+		{
+			this.drawBoundaryRect(
+				array,
+				targetRects[index][0],
+				targetRects[index][1],
+				rect[2],
+				rect[3]);
+		});
+
+		bonusRects.forEach(rect =>
+		{
+			this.drawBoundaryRect(
+				array,
+				rect[0],
+				rect[1],
+				rect[2],
+				[...(rects[0][3]), dummy.t]
+			);
+		});
+	};
+
 	await anime({
 		targets: dummy,
 		t: 1,
 		duration: this.animationTime / 2,
 		easing: "easeInQuad",
-
-		update: () =>
-		{
-			this.wilsonNumbers.ctx.clearRect(
-				0,
-				0,
-				this.wilsonNumbers.canvasWidth,
-				this.wilsonNumbers.canvasHeight
-			);
-
-			rects.forEach((rect, index) =>
-			{
-				this.drawBoundaryRect(
-					array,
-					targetRects[index][0],
-					targetRects[index][1],
-					rect[2],
-					rect[3]);
-			});
-
-			bonusRects.forEach(rect =>
-			{
-				this.drawBoundaryRect(
-					array,
-					rect[0],
-					rect[1],
-					rect[2],
-					[...(rects[0][3]), dummy.t]
-				);
-			});
-		}
+		update,
+		complete: update
 	}).finished;
 
 	this.wilsonNumbers.ctx.clearRect(

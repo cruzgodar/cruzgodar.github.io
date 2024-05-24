@@ -458,7 +458,8 @@ export async function removeArray(index, keepNumbersCanvasVisible = false)
 		opacity: 0,
 		duration: this.animationTime / 2,
 		easing: "easeOutQuad",
-		update: () => this.needNewFrame = true
+		update: () => this.needNewFrame = true,
+		complete: () => this.needNewFrame = true
 	}).finished;
 
 
@@ -518,7 +519,8 @@ export async function removeArray(index, keepNumbersCanvasVisible = false)
 				z: 0,
 				duration: this.animationTime,
 				easing: "easeInOutQuad",
-				update: () => this.needNewFrame = true
+				update: () => this.needNewFrame = true,
+				complete: () => this.needNewFrame = true
 			});
 		}
 
@@ -531,7 +533,8 @@ export async function removeArray(index, keepNumbersCanvasVisible = false)
 				z: this.abConfigMode ? 0 : -this.arrays[i].centerOffset,
 				duration: this.animationTime,
 				easing: "easeInOutQuad",
-				update: () => this.needNewFrame = true
+				update: () => this.needNewFrame = true,
+				complete: () => this.needNewFrame = true
 			});
 		}
 	}

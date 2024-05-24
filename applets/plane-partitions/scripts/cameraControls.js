@@ -208,7 +208,8 @@ export async function updateCameraHeight(force = false)
 				z: this._2dViewCameraPos[2],
 				duration: this.animationTime,
 				easing: "easeInOutQuad",
-				update: () => this.needNewFrame = true
+				update: () => this.needNewFrame = true,
+				complete: () => this.needNewFrame = true
 			}).finished,
 
 			anime({
@@ -220,6 +221,11 @@ export async function updateCameraHeight(force = false)
 				duration: this.animationTime,
 				easing: "easeInOutQuad",
 				update: () =>
+				{
+					this.orthographicCamera.updateProjectionMatrix();
+					this.needNewFrame = true;
+				},
+				complete: () =>
 				{
 					this.orthographicCamera.updateProjectionMatrix();
 					this.needNewFrame = true;
@@ -251,7 +257,8 @@ export async function updateCameraHeight(force = false)
 				z: this.hexViewCameraPos[2],
 				duration: this.animationTime,
 				easing: "easeInOutQuad",
-				update: () => this.needNewFrame = true
+				update: () => this.needNewFrame = true,
+				complete: () => this.needNewFrame = true
 			}).finished,
 
 			anime({
@@ -263,6 +270,11 @@ export async function updateCameraHeight(force = false)
 				duration: this.animationTime,
 				easing: "easeInOutQuad",
 				update: () =>
+				{
+					this.orthographicCamera.updateProjectionMatrix();
+					this.needNewFrame = true;
+				},
+				complete: () =>
 				{
 					this.orthographicCamera.updateProjectionMatrix();
 					this.needNewFrame = true;
@@ -353,6 +365,115 @@ export async function showDimers()
 
 
 
+	const updateAlpha = () =>
+	{
+		this.wilsonHidden.ctx.clearRect(0, 0, 64, 64);
+
+		this.wilsonHidden.ctx.fillStyle = convertColor(
+			64,
+			64,
+			64,
+			this.wilsonHidden.ctx._alpha
+		);
+		this.wilsonHidden.ctx.fillRect(0, 0, 64, 64);
+
+		this.wilsonHidden.ctx.fillStyle = convertColor(
+			128,
+			128,
+			128,
+			this.wilsonHidden.ctx._alpha
+		);
+		this.wilsonHidden.ctx.fillRect(4, 4, 56, 56);
+
+		this.wilsonHidden.ctx.moveTo(42.7, 21.3);
+		this.wilsonHidden.ctx.lineTo(21.3, 42.7);
+		this.wilsonHidden.ctx.stroke();
+
+		this.cubeTexture.needsUpdate = true;
+
+
+
+		this.wilsonHidden2.ctx.clearRect(0, 0, 64, 64);
+
+		this.wilsonHidden2.ctx.fillStyle = convertColor(
+			64,
+			64,
+			64,
+			this.wilsonHidden2.ctx._alpha
+		);
+		this.wilsonHidden2.ctx.fillRect(0, 0, 64, 64);
+
+		this.wilsonHidden2.ctx.fillStyle = convertColor(
+			128,
+			128,
+			128,
+			this.wilsonHidden2.ctx._alpha
+		);
+		this.wilsonHidden2.ctx.fillRect(4, 4, 56, 56);
+
+		this.wilsonHidden2.ctx.moveTo(21.3, 21.3);
+		this.wilsonHidden2.ctx.lineTo(42.7, 42.7);
+		this.wilsonHidden2.ctx.stroke();
+
+		this.cubeTexture2.needsUpdate = true;
+
+
+
+		this.wilsonHidden3.ctx.clearRect(0, 0, 64, 64);
+
+		this.wilsonHidden3.ctx.fillStyle = convertColor(
+			32,
+			32,
+			32,
+			this.abConfigMode ? this.wilsonHidden3.ctx._alpha : 0
+		);
+		this.wilsonHidden3.ctx.fillRect(0, 0, 64, 64);
+
+		this.wilsonHidden3.ctx.fillStyle = convertColor(
+			64,
+			64,
+			64,
+			this.abConfigMode ? this.wilsonHidden3.ctx._alpha : 0
+		);
+		this.wilsonHidden3.ctx.fillRect(4, 4, 56, 56);
+
+		this.wilsonHidden3.ctx.moveTo(42.7, 21.3);
+		this.wilsonHidden3.ctx.lineTo(21.3, 42.7);
+		this.wilsonHidden3.ctx.stroke();
+
+		this.floorTexture.needsUpdate = true;
+
+
+
+		this.wilsonHidden4.ctx.clearRect(0, 0, 64, 64);
+
+		this.wilsonHidden4.ctx.fillStyle = convertColor(
+			32,
+			32,
+			32,
+			this.abConfigMode ? this.wilsonHidden4.ctx._alpha : 0
+		);
+		this.wilsonHidden4.ctx.fillRect(0, 0, 64, 64);
+
+		this.wilsonHidden4.ctx.fillStyle = convertColor(
+			64,
+			64,
+			64,
+			this.abConfigMode ? this.wilsonHidden4.ctx._alpha : 0
+		);
+		this.wilsonHidden4.ctx.fillRect(4, 4, 56, 56);
+
+		this.wilsonHidden4.ctx.moveTo(21.3, 21.3);
+		this.wilsonHidden4.ctx.lineTo(42.7, 42.7);
+		this.wilsonHidden4.ctx.stroke();
+
+		this.floorTexture2.needsUpdate = true;
+
+		this.needNewFrame = true;
+	};
+
+
+
 	await anime({
 		targets: [
 			this.wilsonHidden.ctx,
@@ -365,110 +486,8 @@ export async function showDimers()
 		_alpha: 0,
 		duration: this.animationTime / 2,
 		easing: "easeOutQuad",
-		update: () =>
-		{
-			this.wilsonHidden.ctx.clearRect(0, 0, 64, 64);
-
-			this.wilsonHidden.ctx.fillStyle = convertColor(
-				64,
-				64,
-				64,
-				this.wilsonHidden.ctx._alpha
-			);
-			this.wilsonHidden.ctx.fillRect(0, 0, 64, 64);
-
-			this.wilsonHidden.ctx.fillStyle = convertColor(
-				128,
-				128,
-				128,
-				this.wilsonHidden.ctx._alpha
-			);
-			this.wilsonHidden.ctx.fillRect(4, 4, 56, 56);
-
-			this.wilsonHidden.ctx.moveTo(42.7, 21.3);
-			this.wilsonHidden.ctx.lineTo(21.3, 42.7);
-			this.wilsonHidden.ctx.stroke();
-
-			this.cubeTexture.needsUpdate = true;
-
-
-
-			this.wilsonHidden2.ctx.clearRect(0, 0, 64, 64);
-
-			this.wilsonHidden2.ctx.fillStyle = convertColor(
-				64,
-				64,
-				64,
-				this.wilsonHidden2.ctx._alpha
-			);
-			this.wilsonHidden2.ctx.fillRect(0, 0, 64, 64);
-
-			this.wilsonHidden2.ctx.fillStyle = convertColor(
-				128,
-				128,
-				128,
-				this.wilsonHidden2.ctx._alpha
-			);
-			this.wilsonHidden2.ctx.fillRect(4, 4, 56, 56);
-
-			this.wilsonHidden2.ctx.moveTo(21.3, 21.3);
-			this.wilsonHidden2.ctx.lineTo(42.7, 42.7);
-			this.wilsonHidden2.ctx.stroke();
-
-			this.cubeTexture2.needsUpdate = true;
-
-
-
-			this.wilsonHidden3.ctx.clearRect(0, 0, 64, 64);
-
-			this.wilsonHidden3.ctx.fillStyle = convertColor(
-				32,
-				32,
-				32,
-				this.abConfigMode ? this.wilsonHidden3.ctx._alpha : 0
-			);
-			this.wilsonHidden3.ctx.fillRect(0, 0, 64, 64);
-
-			this.wilsonHidden3.ctx.fillStyle = convertColor(
-				64,
-				64,
-				64,
-				this.abConfigMode ? this.wilsonHidden3.ctx._alpha : 0
-			);
-			this.wilsonHidden3.ctx.fillRect(4, 4, 56, 56);
-
-			this.wilsonHidden3.ctx.moveTo(42.7, 21.3);
-			this.wilsonHidden3.ctx.lineTo(21.3, 42.7);
-			this.wilsonHidden3.ctx.stroke();
-
-			this.floorTexture.needsUpdate = true;
-
-
-
-			this.wilsonHidden4.ctx.clearRect(0, 0, 64, 64);
-
-			this.wilsonHidden4.ctx.fillStyle = convertColor(
-				32,
-				32,
-				32,
-				this.abConfigMode ? this.wilsonHidden4.ctx._alpha : 0
-			);
-			this.wilsonHidden4.ctx.fillRect(0, 0, 64, 64);
-
-			this.wilsonHidden4.ctx.fillStyle = convertColor(
-				64,
-				64,
-				64,
-				this.abConfigMode ? this.wilsonHidden4.ctx._alpha : 0
-			);
-			this.wilsonHidden4.ctx.fillRect(4, 4, 56, 56);
-
-			this.wilsonHidden4.ctx.moveTo(21.3, 21.3);
-			this.wilsonHidden4.ctx.lineTo(42.7, 42.7);
-			this.wilsonHidden4.ctx.stroke();
-
-			this.floorTexture2.needsUpdate = true;
-		}
+		update: updateAlpha,
+		complete: updateAlpha
 	}).finished;
 
 	this.currentlyAnimatingCamera = false;
@@ -545,6 +564,113 @@ export async function hideDimers()
 		}
 	});
 
+	const updateAlpha = () =>
+	{
+		this.wilsonHidden.ctx.clearRect(0, 0, 64, 64);
+
+		this.wilsonHidden.ctx.fillStyle = convertColor(
+			64,
+			64,
+			64,
+			this.wilsonHidden.ctx._alpha
+		);
+		this.wilsonHidden.ctx.fillRect(0, 0, 64, 64);
+
+		this.wilsonHidden.ctx.fillStyle = convertColor(
+			128,
+			128,
+			128,
+			this.wilsonHidden.ctx._alpha
+		);
+		this.wilsonHidden.ctx.fillRect(4, 4, 56, 56);
+
+		this.wilsonHidden.ctx.moveTo(42.7, 21.3);
+		this.wilsonHidden.ctx.lineTo(21.3, 42.7);
+		this.wilsonHidden.ctx.stroke();
+
+		this.cubeTexture.needsUpdate = true;
+
+
+
+		this.wilsonHidden2.ctx.clearRect(0, 0, 64, 64);
+
+		this.wilsonHidden2.ctx.fillStyle = convertColor(
+			64,
+			64,
+			64,
+			this.wilsonHidden2.ctx._alpha
+		);
+		this.wilsonHidden2.ctx.fillRect(0, 0, 64, 64);
+
+		this.wilsonHidden2.ctx.fillStyle = convertColor(
+			128,
+			128,
+			128,
+			this.wilsonHidden2.ctx._alpha
+		);
+		this.wilsonHidden2.ctx.fillRect(4, 4, 56, 56);
+
+		this.wilsonHidden2.ctx.moveTo(21.3, 21.3);
+		this.wilsonHidden2.ctx.lineTo(42.7, 42.7);
+		this.wilsonHidden2.ctx.stroke();
+
+		this.cubeTexture2.needsUpdate = true;
+
+
+
+		this.wilsonHidden3.ctx.clearRect(0, 0, 64, 64);
+
+		this.wilsonHidden3.ctx.fillStyle = convertColor(
+			32,
+			32,
+			32,
+			this.abConfigMode ? this.wilsonHidden3.ctx._alpha : 0
+		);
+		this.wilsonHidden3.ctx.fillRect(0, 0, 64, 64);
+
+		this.wilsonHidden3.ctx.fillStyle = convertColor(
+			64,
+			64,
+			64,
+			this.abConfigMode ? this.wilsonHidden3.ctx._alpha : 0
+		);
+		this.wilsonHidden3.ctx.fillRect(4, 4, 56, 56);
+
+		this.wilsonHidden3.ctx.moveTo(42.7, 21.3);
+		this.wilsonHidden3.ctx.lineTo(21.3, 42.7);
+		this.wilsonHidden3.ctx.stroke();
+
+		this.floorTexture.needsUpdate = true;
+
+
+
+		this.wilsonHidden4.ctx.clearRect(0, 0, 64, 64);
+
+		this.wilsonHidden4.ctx.fillStyle = convertColor(
+			32,
+			32,
+			32,
+			this.abConfigMode ? this.wilsonHidden4.ctx._alpha : 0
+		);
+		this.wilsonHidden4.ctx.fillRect(0, 0, 64, 64);
+
+		this.wilsonHidden4.ctx.fillStyle = convertColor(
+			64,
+			64,
+			64,
+			this.abConfigMode ? this.wilsonHidden4.ctx._alpha : 0
+		);
+		this.wilsonHidden4.ctx.fillRect(4, 4, 56, 56);
+
+		this.wilsonHidden4.ctx.moveTo(21.3, 21.3);
+		this.wilsonHidden4.ctx.lineTo(42.7, 42.7);
+		this.wilsonHidden4.ctx.stroke();
+
+		this.floorTexture2.needsUpdate = true;
+
+		this.needNewFrame = true;
+	};
+
 	await anime({
 		targets: [
 			this.wilsonHidden.ctx,
@@ -557,110 +683,8 @@ export async function hideDimers()
 		_alpha: 1,
 		duration: this.animationTime / 2,
 		easing: "easeOutQuad",
-		update: () =>
-		{
-			this.wilsonHidden.ctx.clearRect(0, 0, 64, 64);
-
-			this.wilsonHidden.ctx.fillStyle = convertColor(
-				64,
-				64,
-				64,
-				this.wilsonHidden.ctx._alpha
-			);
-			this.wilsonHidden.ctx.fillRect(0, 0, 64, 64);
-
-			this.wilsonHidden.ctx.fillStyle = convertColor(
-				128,
-				128,
-				128,
-				this.wilsonHidden.ctx._alpha
-			);
-			this.wilsonHidden.ctx.fillRect(4, 4, 56, 56);
-
-			this.wilsonHidden.ctx.moveTo(42.7, 21.3);
-			this.wilsonHidden.ctx.lineTo(21.3, 42.7);
-			this.wilsonHidden.ctx.stroke();
-
-			this.cubeTexture.needsUpdate = true;
-
-
-
-			this.wilsonHidden2.ctx.clearRect(0, 0, 64, 64);
-
-			this.wilsonHidden2.ctx.fillStyle = convertColor(
-				64,
-				64,
-				64,
-				this.wilsonHidden2.ctx._alpha
-			);
-			this.wilsonHidden2.ctx.fillRect(0, 0, 64, 64);
-
-			this.wilsonHidden2.ctx.fillStyle = convertColor(
-				128,
-				128,
-				128,
-				this.wilsonHidden2.ctx._alpha
-			);
-			this.wilsonHidden2.ctx.fillRect(4, 4, 56, 56);
-
-			this.wilsonHidden2.ctx.moveTo(21.3, 21.3);
-			this.wilsonHidden2.ctx.lineTo(42.7, 42.7);
-			this.wilsonHidden2.ctx.stroke();
-
-			this.cubeTexture2.needsUpdate = true;
-
-
-
-			this.wilsonHidden3.ctx.clearRect(0, 0, 64, 64);
-
-			this.wilsonHidden3.ctx.fillStyle = convertColor(
-				32,
-				32,
-				32,
-				this.abConfigMode ? this.wilsonHidden3.ctx._alpha : 0
-			);
-			this.wilsonHidden3.ctx.fillRect(0, 0, 64, 64);
-
-			this.wilsonHidden3.ctx.fillStyle = convertColor(
-				64,
-				64,
-				64,
-				this.abConfigMode ? this.wilsonHidden3.ctx._alpha : 0
-			);
-			this.wilsonHidden3.ctx.fillRect(4, 4, 56, 56);
-
-			this.wilsonHidden3.ctx.moveTo(42.7, 21.3);
-			this.wilsonHidden3.ctx.lineTo(21.3, 42.7);
-			this.wilsonHidden3.ctx.stroke();
-
-			this.floorTexture.needsUpdate = true;
-
-
-
-			this.wilsonHidden4.ctx.clearRect(0, 0, 64, 64);
-
-			this.wilsonHidden4.ctx.fillStyle = convertColor(
-				32,
-				32,
-				32,
-				this.abConfigMode ? this.wilsonHidden4.ctx._alpha : 0
-			);
-			this.wilsonHidden4.ctx.fillRect(0, 0, 64, 64);
-
-			this.wilsonHidden4.ctx.fillStyle = convertColor(
-				64,
-				64,
-				64,
-				this.abConfigMode ? this.wilsonHidden4.ctx._alpha : 0
-			);
-			this.wilsonHidden4.ctx.fillRect(4, 4, 56, 56);
-
-			this.wilsonHidden4.ctx.moveTo(21.3, 21.3);
-			this.wilsonHidden4.ctx.lineTo(42.7, 42.7);
-			this.wilsonHidden4.ctx.stroke();
-
-			this.floorTexture2.needsUpdate = true;
-		}
+		update: updateAlpha,
+		complete: updateAlpha
 	}).finished;
 
 	targets.forEach(material => material.opacity = 1);

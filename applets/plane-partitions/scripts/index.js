@@ -328,8 +328,8 @@ export async function load()
 		console.clear();
 
 		applet.abConfigMode = true;
-		applet.infiniteHeight = 20;
-		applet.animationTime = 150;
+		applet.infiniteHeight = 16;
+		applet.animationTime = 0;
 
 		// const lambda = [Math.floor(Math.random() * 5) + 3];
 		// const mu = [Math.floor(Math.random() * 5) + 3];

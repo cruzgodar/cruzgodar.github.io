@@ -39,6 +39,11 @@ export async function colorCubes(array, coordinates, hue)
 		{
 			targets.forEach(color => color.setRGB(color.r, color.g, color.b));
 			this.needNewFrame = true;
+		},
+		complete: () =>
+		{
+			targets.forEach(color => color.setRGB(color.r, color.g, color.b));
+			this.needNewFrame = true;
 		}
 	}).finished;
 }
@@ -63,6 +68,16 @@ export async function uncolorCubes(array, coordinates)
 		duration: this.animationTime,
 		easing: "easeOutQuad",
 		update: () =>
+		{
+			targets.forEach(color => color.setHSL(
+				color.h,
+				color.s,
+				this.cubeLightness
+			));
+
+			this.needNewFrame = true;
+		},
+		complete: () =>
 		{
 			targets.forEach(color => color.setHSL(
 				color.h,
@@ -99,7 +114,8 @@ export async function raiseCubes(array, coordinates, height)
 		y: height,
 		duration,
 		easing: "easeInOutQuad",
-		update: () => this.needNewFrame = true
+		update: () => this.needNewFrame = true,
+		complete: () => this.needNewFrame = true
 	}).finished;
 }
 
@@ -127,7 +143,8 @@ export async function lowerCubes(array, coordinates)
 		y: (element, index) => array.numbers[coordinates[index][0]][coordinates[index][1]],
 		duration,
 		easing: "easeInOutQuad",
-		update: () => this.needNewFrame = true
+		update: () => this.needNewFrame = true,
+		complete: () => this.needNewFrame = true
 	}).finished;
 
 	coordinates.forEach(xyz =>
@@ -169,7 +186,8 @@ export async function moveCubes(
 		z: (element, index) => targetCoordinates[index][0] - (targetArray.footprint - 1) / 2,
 		duration: this.animationTime,
 		easing: "easeInOutQuad",
-		update: () => this.needNewFrame = true
+		update: () => this.needNewFrame = true,
+		complete: () => this.needNewFrame = true
 	}).finished;
 
 	if (updateCubeArray)
@@ -229,7 +247,8 @@ export async function revealCubes(array, coordinates)
 		duration: this.animationTime / 2,
 		delay: (element, index) => Math.floor(index / 6) * this.animationTime / 10,
 		easing: "easeOutQuad",
-		update: () => this.needNewFrame = true
+		update: () => this.needNewFrame = true,
+		complete: () => this.needNewFrame = true
 	}).finished;
 }
 
@@ -252,7 +271,8 @@ export async function deleteCubes(array, coordinates, instant = false, noAnimati
 		duration: this.animationTime / 2 * !noAnimation,
 		delay: (element, index) => (!instant) * Math.floor(index / 6) * this.animationTime / 10,
 		easing: "easeOutQuad",
-		update: () => this.needNewFrame = true
+		update: () => this.needNewFrame = true,
+		complete: () => this.needNewFrame = true
 	}).finished;
 
 	targets.forEach(material => material.dispose());
@@ -282,7 +302,8 @@ export async function deleteFloor(array, coordinates)
 		opacity: 0,
 		duration: this.animationTime / 2,
 		easing: "easeOutQuad",
-		update: () => this.needNewFrame = true
+		update: () => this.needNewFrame = true,
+		complete: () => this.needNewFrame = true
 	}).finished;
 
 	targets.forEach(material => material.dispose());
