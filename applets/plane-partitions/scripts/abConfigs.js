@@ -1,3 +1,5 @@
+import { PlanePartitions } from "./class.js";
+
 const absoluteMinAEntry = -5;
 
 export function isValidABConfig({
@@ -7,6 +9,11 @@ export function isValidABConfig({
 	A,
 	B
 }) {
+	if (!PlanePartitions.verifyPp(A) || !PlanePartitions.verifyPp(B))
+	{
+		return false;
+	}
+
 	while (lambda.length < nu[0])
 	{
 		lambda.push(0);
@@ -51,6 +58,44 @@ export function isValidABConfig({
 			}
 
 			const inNu = row >= 0 && row < nu.length && col >= 0 && col < nu[row];
+
+			const lambdaTerm = col >= 0 ? lambda[col] : Infinity;
+			const muTerm = row >= 0 ? mu[row] : Infinity;
+
+			if (A[i][j] > Math.min(lambdaTerm, muTerm))
+			{
+				return false;
+			}
+
+			if (row >= 0 && col >= 0)
+			{
+				if (B[row][col] < 0)
+				{
+					return false;
+				}
+
+				if (inNu && B[row][col] > Math.max(lambdaTerm, muTerm))
+				{
+					return false;
+				}
+
+				if (!inNu && B[row][col] > Math.min(lambdaTerm, muTerm))
+				{
+					return false;
+				}
+
+				if (!inNu && A[i][j] !== -Infinity)
+				{
+					return false;
+				}
+			}
+
+			else if (A[i][j] < 0)
+			{
+				return false;
+			}
+
+
 
 			const [maxAEntry, maxBEntry] = (() =>
 			{
@@ -362,7 +407,12 @@ export function iterateThroughEntries({
 
 	const inNu = row >= 0 && row < nu.length && col >= 0 && col < nu[row];
 
-	const cappedMaxAEntry = A[i][j];
+	const cappedMaxAEntry = (row >= 0 && col >= 0 && !inNu)
+		? -Infinity
+		: Math.min(
+			i === 0 ? lambda[col] : A[i - 1][j],
+			j === 0 ? mu[row] : A[i][j - 1]
+		);
 	const cappedMinAEntry = Math.max(
 		Math.max(
 			i === A.length - 1 ? -Infinity : A[i + 1][j],
@@ -371,7 +421,12 @@ export function iterateThroughEntries({
 		inNu ? absoluteMinAEntry : 0
 	);
 
-	const cappedMaxBEntry = row >= 0 && col >= 0 ? B[row][col] : Infinity;
+	const cappedMaxBEntry = row >= 0 && col >= 0
+		? Math.min(
+			row === 0 ? Infinity : B[row - 1][col],
+			col === 0 ? Infinity : B[row][col - 1]
+		)
+		: Infinity;
 	const cappedMinBEntry = row >= 0 && col >= 0
 		? Math.max(
 			row === B.length - 1 ? 0 : B[row + 1][col],
@@ -580,6 +635,7 @@ export function testAllEntriesOfABConfig({
 
 				if (onlyUnboundedBelow)
 				{
+					console.log(i, j);
 					console.log(outputString);
 				}
 

@@ -331,28 +331,58 @@ export async function load()
 		applet.infiniteHeight = 16;
 		applet.animationTime = 0;
 
-		// const lambda = [Math.floor(Math.random() * 5) + 3];
-		// const mu = [Math.floor(Math.random() * 5) + 3];
-		// const nu = [Math.floor(Math.random() * 5) + 3];
+		const lambda = [Math.floor(Math.random() * 5) + 3];
+		const mu = [Math.floor(Math.random() * 5) + 3];
+		const nu = [Math.floor(Math.random() * 5) + 3];
 
-		// for (let i = 0; i < 5; i++)
-		// {
-		// 	lambda.push(Math.max(lambda[i] - Math.floor(Math.random() * 4), 0));
-		// 	mu.push(Math.max(mu[i] - Math.floor(Math.random() * 4), 0));
-		// 	nu.push(Math.max(nu[i] - Math.floor(Math.random() * 4), 0));
-		// }
+		for (let i = 0; i < 5; i++)
+		{
+			lambda.push(Math.max(lambda[i] - Math.floor(Math.random() * 3), 0));
+			mu.push(Math.max(mu[i] - Math.floor(Math.random() * 3), 0));
+			nu.push(Math.max(nu[i] - Math.floor(Math.random() * 3), 0));
+		}
 
-		const lambda = [2, 2, 1, 1];
-		const mu = [2, 2, 0, 0];
-		const nu = [3, 3, 0, 0];
+		// const lambda = [2, 2, 1, 1];
+		// const mu = [2, 2, 0, 0];
+		// const nu = [3, 3, 0, 0];
 
 		const [A, B] = applet.getMinimalABConfig({
 			lambda,
 			mu,
 			nu,
+			negativeWidth: 2,
 		});
 
-		console.log(applet.isValidABConfig({ lambda, mu, nu, A, B }));
+		applet.printABConfig({ A, B });
+
+		for (let k = 0; k < 500; k++)
+		{
+			if (Math.random() < 0.5)
+			{
+				const i = Math.floor(Math.random() * A.length);
+				const j = Math.floor(Math.random() * A[0].length);
+
+				A[i][j]--;
+
+				if (!applet.isValidABConfig({ lambda, mu, nu, A, B }))
+				{
+					A[i][j]++;
+				}
+			}
+
+			else
+			{
+				const row = Math.floor(Math.random() * B.length);
+				const col = Math.floor(Math.random() * B[0].length);
+
+				B[row][col]--;
+
+				if (!applet.isValidABConfig({ lambda, mu, nu, A, B }))
+				{
+					B[row][col]++;
+				}
+			}
+		}
 
 		applet.printABConfig({ A, B });
 

@@ -67,7 +67,7 @@ export class PlanePartitions extends AnimationFrameApplet
 
 	resolution = 2000;
 
-	animationTime = 600;
+	animationTime = 0;
 
 	asymptoteLightness = .6;
 	cubeLightness = .4;
@@ -335,6 +335,11 @@ export class PlanePartitions extends AnimationFrameApplet
 
 	onGrabCanvas()
 	{
+		if (this.abConfigMode)
+		{
+			return;
+		}
+		
 		this.inExactHexView = false;
 
 		this.rotationYVelocity = 0;
@@ -346,7 +351,7 @@ export class PlanePartitions extends AnimationFrameApplet
 
 	onDragCanvas(x, y, xDelta)
 	{
-		if (this.in2dView)
+		if (this.in2dView || this.abConfigMode)
 		{
 			return;
 		}
@@ -372,7 +377,7 @@ export class PlanePartitions extends AnimationFrameApplet
 
 	onReleaseCanvas()
 	{
-		if (!this.in2dView)
+		if (!this.in2dView && !this.abConfigMode)
 		{
 			let maxIndex = 0;
 

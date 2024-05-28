@@ -197,13 +197,15 @@ export function arrayToAscii(numbers)
 
 export function verifyPp(planePartition)
 {
-	for (let i = 0; i < planePartition.length - 1; i++)
+	for (let i = 0; i < planePartition.length; i++)
 	{
-		for (let j = 0; j < planePartition[i].length - 1; j++)
+		for (let j = 0; j < planePartition[i].length; j++)
 		{
 			if (
-				planePartition[i][j] < planePartition[i + 1][j]
-				|| planePartition[i][j] < planePartition[i][j + 1]
+				(i !== planePartition.length - 1
+					&& planePartition[i][j] < planePartition[i + 1][j])
+				|| (j !== planePartition[0].length - 1
+					&& planePartition[i][j] < planePartition[i][j + 1])
 			) {
 				return false;
 			}
