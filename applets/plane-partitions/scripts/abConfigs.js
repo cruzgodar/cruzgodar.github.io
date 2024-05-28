@@ -546,6 +546,26 @@ export function printABConfig({ A, B })
 		numNegativeACols++;
 	}
 
+	let columnWidth = 2;
+
+	for (let j = 0; j < A[0].length; j++)
+	{
+		for (let i = 0; i < A.length; i++)
+		{
+			const width = (() =>
+			{
+				if (Math.abs(A[i][j]) === Infinity)
+				{
+					return 1;
+				}
+
+				return `${A[i][j]}`.length;
+			})();
+
+			columnWidth = Math.max(columnWidth, width + 1);
+		}
+	}
+
 	for (let i = 0; i < A.length; i++)
 	{
 		const row = i - numNegativeARows;
@@ -554,8 +574,11 @@ export function printABConfig({ A, B })
 		{
 			const char = A[i][j] === Infinity
 				? "^"
-				: A[i][j] === -Infinity ? "v" : A[i][j];
-			outputString += `${char} `;
+				: A[i][j] === -Infinity ? "v" : `${A[i][j]}`;
+			
+			const numSpaces = columnWidth - char.length;
+
+			outputString += `${" ".repeat(numSpaces - 1)}${char} `;
 		}
 
 		if (row >= 0)
