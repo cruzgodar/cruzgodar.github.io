@@ -42,7 +42,72 @@ Welcome to Math 342! We'll use this page for the interactive notes, the homework
 	homework-5 -c "Homework 5"
 	homework-6 -c "Homework 6"
 	homework-7 -c "Homework 7"
+	homework-8 -c "Homework 8"
 	
+###
+
+
+
+### card homework-8 "Homework 8"
+
+	*Due Wednesday of Week 10 at the start of class*
+	
+	Complete the following problems and submit them as a pdf to Canvas. 8 points are awarded for thoroughly attempting every problem, and I'll select three problems to grade on correctness for 4 points each. Enough work should be shown that there is no question about the mathematical process used to obtain your answers.
+
+	- - -
+
+	In problems 5#, do the following:
+
+	> a) Find the eigenvalues of $A$.
+
+	> b) Find the corresponding eigenvectors and generalized eigenvectors of $A$.
+
+	> c) Determine if $A$ is diagonalizable. If it is, write $A = BDB^{-1}$ for a diagonal matrix $D$, and if not, write $A = BJB^{-1}$ for a matrix $J$ in Jordan normal form.
+
+	> d) If $A$ is diagonalizable, determine if there is an orthonormal basis of eigenvectors; if so, find it.
+
+	> e) If the eigenvalues of $A$ are distinct, find the general solution to the system of differential equations $\vec{x}' = A\vec{x}$.
+
+	#. $A = [[ 3, 1 ; -1, 1 ]]$.
+
+	#. $A = [[ 2, 1, 0 ; 0, 1, 0 ; 1, -1, 3 ]]$.
+
+	#. $A = [[ -3, -1, -3 ; -8, -3, -8 ; 4, 1, 3 ]]$.
+
+	#. $A = [[ -9, -10, -10 ; 4, 4, 3 ; 1, 2, 3 ]]$.
+
+	#. $A = [[ 0, 0, 1, 0 ; 1, -1, -1, -1 ; 0, 0, 0, 0 ; 0, 1, 0, 1 ]]$.
+
+	- - -
+
+	In problems 3#, do the following:
+
+	> a) Find a singular value decomposition $A = U \Sigma V^T$.
+
+	> b) Find a least-squares solution to $A\vec{x} = \vec{b}$.
+
+	> c) Determine if the least-squares solution is unique.
+
+	#. $A = [[ 1, 2 ; 2, 1 ; 1, 1 ]]$ and $\vec{x} = [[ 1 ; 2 ; 2 ]]$.
+
+	#. $A = [[ 3, 1, 4 ; 2, 0, 1 ]]$ and $\vec{x} = [[ 1 ; -2 ]]$.
+
+	#. $A = [[ 1, -1, 0 ; 1, 0, 1 ; 2, -1, 1 ]]$ and $\vec{x} = [[ 1 ; 2 ; -1 ]]$.
+
+	- - -
+
+	In problems 3#, do the following:
+
+	> a) Find an orthonormal basis for the given inner product space $X$, and then extend it to an orthonormal basis for $V$.
+
+	> b) Find the orthogonal decomposition of the vector $\vec{v}$ as $\vec{v} = \vec{x} + \vec{x}'$ for $\vec{x} \in X$ and $\vec{x}' \in X^\perp$.
+
+	#. $V = #R#^3$ with $\left< \vec{v}, \vec{w} \right> = \vec{v} \bullet \vec{w}$, $X = \span\left\{ [[ 1 ; 2 ; 0 ]], [[ -1 ; 3 ; 1 ]] \right\}$, and $\vec{v} = [[ 4 ; 5 ; 2 ]]$.
+
+	#. $V = \span\left\{ 1, x, x^2 \right\}$ with $\left< p, q \right> = \sum_{n = 0}^2 p(n)q(n)$, $X$ is the subspace of polynomials $p$ with $p'(0) = 0$, and $\vec{v} = 1 + 2x + x^2$.
+
+	#. $V = \span\left\{ 1, \sin(x), \cos(x) \right\}$ with $\left< f, g \right> = \int_0^1 f(x)g(x)\,dx$, $X$ is the subspace of functions $f$ with $f'(0) = 0$, and $\vec{v} = \sin(x) + 2\cos(x) - 1$.
+
 ###
 
 
