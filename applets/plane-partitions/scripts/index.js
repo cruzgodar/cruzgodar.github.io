@@ -343,19 +343,37 @@ export async function load()
 		// }
 
 		const lambda = [5, 3, 2, 0];
-		const mu = [5, 0, 0, 0];
+		const mu = [5, 4, 1, 0];
 		const nu = [3, 2, 1, 0];
 
-		const [A, B] = applet.getMinimalABConfig({
+		let [A, B] = applet.getMinimalABConfig({
 			lambda,
 			mu,
 			nu,
 			negativeWidth: 2,
 		});
 
+		A = [
+			[Infinity, Infinity, 5, 3, 2, 0],
+			[Infinity, Infinity, 4, 3, 1, 0],
+			[5, 5, 3, 3, 0, -Infinity],
+			[4, 3, 3, 1, -Infinity, -Infinity],
+			[1, 1, 1, -Infinity, -Infinity, -Infinity],
+			[0, 0, -Infinity, -Infinity, -Infinity, -Infinity]
+		];
+
+		B = [
+			[2, 2, 2, 0],
+			[1, 0, 0, 0],
+			[0, 0, 0, 0],
+			[0, 0, 0, 0]
+		];
+
+
+
 		applet.printABConfig({ A, B });
 
-		const numRemovalAttempts = 0;//15 * lambda.concat(mu).concat(nu).reduce((a, b) => a + b);
+		const numRemovalAttempts = 0;// 5 * lambda.concat(mu).concat(nu).reduce((a, b) => a + b);
 
 		for (let k = 0; k < numRemovalAttempts; k++)
 		{
