@@ -62,7 +62,7 @@ Welcome to Math 342! We'll use this page for the interactive notes, the homework
 
 	> b) Find the corresponding eigenvectors and generalized eigenvectors of $A$.
 
-	> c) Determine if $A$ is diagonalizable. If it is, write $A = BDB^{-1}$ for a diagonal matrix $D$, and if not, write $A = BJB^{-1}$ for a matrix $J$ in Jordan normal form.
+	> c) Determine if $A$ is diagonalizable. If it is, write $A = BDB^{-1}$ for a diagonal matrix $D$, and if not, write $A = BJB^{-1}$ for a matrix $J$ in Jordan normal form (you don't need to invert $B$).
 
 	> d) If $A$ is diagonalizable, determine if there is an orthonormal basis of eigenvectors; if so, find it.
 
