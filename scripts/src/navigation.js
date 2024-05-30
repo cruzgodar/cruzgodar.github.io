@@ -218,7 +218,14 @@ function getTransitionType(url)
 
 export function getDisplayUrl()
 {
-	return pageUrl.replace(/\/home\//, "/") + getQueryParams();
+	let displayUrl = pageUrl.replace(/\/home\//, "/") + getQueryParams();
+
+	if (displayUrl[displayUrl.length - 1] === "/")
+	{
+		displayUrl = displayUrl.slice(0, displayUrl.length - 1);
+	}
+
+	return displayUrl;
 }
 
 
