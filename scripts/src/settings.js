@@ -109,14 +109,14 @@ export function setUpDarkTheme()
 {
 	window.matchMedia("(prefers-color-scheme: dark)").addListener((e) =>
 	{
-		if (revertTheme !== -1 || cardIsOpen)
+		if (cardIsOpen)
 		{
 			return;
 		}
 
 		if ((e.matches && !siteSettings.darkTheme) || (!e.matches && siteSettings.darkTheme))
 		{
-			toggleDarkTheme();
+			toggleDarkTheme({});
 		}
 	});
 
