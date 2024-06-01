@@ -259,11 +259,25 @@ export function isValidABConfig({
 
 		if (labels.size > 1)
 		{
-			return false;
+			return [false, undefined];
 		}
+
+		if (labels.size === 0)
+		{
+			continue;
+		}
+
+		const [label] = labels;
+
+		components[i].forEach(box =>
+		{
+			const index = boxIsInArray(box, boxes);
+
+			boxes[index][3] = label;
+		});
 	}
 
-	return true;
+	return [true, boxes];
 }
 
 function boxIsInArray(box, array)
@@ -282,6 +296,20 @@ function boxIsInArray(box, array)
 	}
 
 	return -1;
+}
+
+function getAsciiLabel(box, boxes)
+{
+	const index = boxIsInArray(box, boxes);
+
+	if (index === -1)
+	{
+		return "?";
+	}
+
+	const label = boxes[index][3];
+
+	return label === 0 ? "*" : `${label}`;
 }
 
 
@@ -448,14 +476,24 @@ export function iterateThroughEntries({
 		) {
 			newB[row][col] = b;
 
-			if (isValidABConfig({
+			const result = isValidABConfig({
 				lambda,
 				mu,
 				nu,
 				A: newA,
 				B: newB
-			})) {
-				outputString = outputString + "* ";
+			});
+
+			if (result[0])
+			{
+				let label = getAsciiLabel([row, col, newA[i][j]], result[1]);
+				
+				if (label === "?" && row >= 0 && col >= 0)
+				{
+					label = getAsciiLabel([row, col, newB[row][col]], result[1]);
+				}
+
+				outputString = outputString + label + " ";
 			}
 
 			else
@@ -474,14 +512,26 @@ export function iterateThroughEntries({
 		) {
 			newA[i][j] = a;
 
-			if (isValidABConfig({
+			const result = isValidABConfig({
 				lambda,
 				mu,
 				nu,
 				A: newA,
 				B: newB
-			})) {
-				outputString = outputString + (a === absoluteMinAEntry ? "v\n" : "*\n");
+			});
+
+			if (result[0])
+			{
+				let label = getAsciiLabel([row, col, newA[i][j]], result[1]);
+				
+				if (label === "?" && row >= 0 && col >= 0)
+				{
+					label = getAsciiLabel([row, col, newB[row][col]], result[1]);
+				}
+
+				outputString = outputString
+					+ (a === absoluteMinAEntry ? "v" : label)
+					+ "\n";
 			}
 
 			else
@@ -506,14 +556,26 @@ export function iterateThroughEntries({
 				newA[i][j] = a;
 				newB[row][col] = b;
 
-				if (isValidABConfig({
+				const result = isValidABConfig({
 					lambda,
 					mu,
 					nu,
 					A: newA,
 					B: newB
-				})) {
-					outputString = outputString + (a === absoluteMinAEntry ? "v " : "* ");
+				});
+
+				if (result[0])
+				{
+					let label = getAsciiLabel([row, col, newA[i][j]], result[1]);
+					
+					if (label === "?" && row >= 0 && col >= 0)
+					{
+						label = getAsciiLabel([row, col, newB[row][col]], result[1]);
+					}
+					
+					outputString = outputString
+						+ (a === absoluteMinAEntry ? "v" : label)
+						+ " ";
 				}
 
 				else

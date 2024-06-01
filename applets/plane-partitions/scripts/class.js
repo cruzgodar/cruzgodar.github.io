@@ -67,7 +67,7 @@ export class PlanePartitions extends AnimationFrameApplet
 
 	resolution = 2000;
 
-	animationTime = 0;
+	animationTime = 600;
 
 	asymptoteLightness = .6;
 	cubeLightness = .4;
@@ -339,7 +339,7 @@ export class PlanePartitions extends AnimationFrameApplet
 		{
 			return;
 		}
-		
+
 		this.inExactHexView = false;
 
 		this.rotationYVelocity = 0;

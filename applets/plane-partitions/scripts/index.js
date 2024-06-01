@@ -342,32 +342,42 @@ export async function load()
 		// 	nu.push(Math.max(nu[i] - Math.floor(Math.random() * 3), 0));
 		// }
 
-		const lambda = [5, 3, 2, 0];
-		const mu = [5, 4, 1, 0];
-		const nu = [3, 2, 1, 0];
+		const lambda = [5, 5, 0, 0];
+		const mu = [5, 5, 0, 0];
+		const nu = [2, 2, 0, 0];
 
-		let [A, B] = applet.getMinimalABConfig({
+		const [A, B] = applet.getMinimalABConfig({
 			lambda,
 			mu,
 			nu,
 			negativeWidth: 2,
 		});
 
-		A = [
-			[Infinity, Infinity, 5, 3, 2, 0],
-			[Infinity, Infinity, 4, 3, 1, 0],
-			[5, 5, 3, 3, 0, -Infinity],
-			[4, 3, 3, 1, -Infinity, -Infinity],
-			[1, 1, 1, -Infinity, -Infinity, -Infinity],
-			[0, 0, -Infinity, -Infinity, -Infinity, -Infinity]
-		];
+		// A[1][3] = 3;
+		// A[2][3] = 3;
+		// A[3][3] = 3;
+		// A[3][1] = 4;
+		// A[3][2] = 4;
+		// B[0][1] = 5;
+		// B[1][1] = 3;
 
-		B = [
-			[2, 2, 2, 0],
-			[1, 0, 0, 0],
-			[0, 0, 0, 0],
-			[0, 0, 0, 0]
-		];
+		console.log(applet.isValidABConfig({ lambda, mu, nu, A, B }));
+
+		// A = [
+		// 	[Infinity, Infinity, 5, 3, 2, 0],
+		// 	[Infinity, Infinity, 4, 3, 1, 0],
+		// 	[5, 5, 3, 3, 0, -Infinity],
+		// 	[4, 3, 3, 1, -Infinity, -Infinity],
+		// 	[1, 1, 1, -Infinity, -Infinity, -Infinity],
+		// 	[0, 0, -Infinity, -Infinity, -Infinity, -Infinity]
+		// ];
+
+		// B = [
+		// 	[2, 2, 2, 0],
+		// 	[1, 0, 0, 0],
+		// 	[0, 0, 0, 0],
+		// 	[0, 0, 0, 0]
+		// ];
 
 
 
