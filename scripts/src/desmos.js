@@ -32,7 +32,7 @@ export function setGetDesmosData(newGetDesmosData)
 
 
 
-export async function createDesmosGraphs()
+export async function createDesmosGraphs(recreating = false)
 {
 	await loadScript(
 		"https://www.desmos.com/api/v1.7/calculator.js?apiKey=dcb31709b452b1cf9dc26972add0fda6"
@@ -97,6 +97,17 @@ export async function createDesmosGraphs()
 		desmosGraphs[element.id].setExpressions(data[element.id].expressions);
 
 		desmosGraphs[element.id].setDefaultState(desmosGraphs[element.id].getState());
+
+		if (window.DEBUG && !recreating)
+		{
+			element.addEventListener("click", (e) =>
+			{
+				if (e.metaKey)
+				{
+					getDesmosScreenshot(element.id, e.altKey);
+				}
+			});
+		}
 	});
 }
 
@@ -110,7 +121,7 @@ export async function recreateDesmosGraphs()
 	{
 		await Promise.all(elements.map(element => changeOpacity({ element, opacity: 0 })));
 
-		await createDesmosGraphs();
+		await createDesmosGraphs(true);
 
 		await Promise.all(elements.map(element => changeOpacity({ element, opacity: 1 })));
 	}
