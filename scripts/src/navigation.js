@@ -209,8 +209,6 @@ function getTransitionType(url)
 		return -2;
 	}
 
-
-
 	return 0;
 }
 
@@ -220,7 +218,7 @@ export function getDisplayUrl()
 {
 	let displayUrl = pageUrl.replace(/\/home\//, "/") + getQueryParams();
 
-	if (displayUrl[displayUrl.length - 1] === "/")
+	if (displayUrl.length > 1 && displayUrl[displayUrl.length - 1] === "/")
 	{
 		displayUrl = displayUrl.slice(0, displayUrl.length - 1);
 	}
