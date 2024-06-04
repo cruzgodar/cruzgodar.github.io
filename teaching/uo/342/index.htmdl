@@ -88,11 +88,11 @@ Welcome to Math 342! We'll use this page for the interactive notes, the homework
 
 	> c) Determine if the least-squares solution is unique.
 
-	#. $A = [[ 1, 2 ; 2, 1 ; 1, 1 ]]$ and $\vec{x} = [[ 1 ; 2 ; 2 ]]$.
+	#. $A = [[ 1, 2 ; 2, 1 ; 1, 1 ]]$ and $\vec{b} = [[ 1 ; 2 ; 2 ]]$.
 
-	#. $A = [[ 3, 1, 4 ; 2, 0, 1 ]]$ and $\vec{x} = [[ 1 ; -2 ]]$.
+	#. $A = [[ 3, 1, 4 ; 2, 0, 1 ]]$ and $\vec{b} = [[ 1 ; -2 ]]$.
 
-	#. $A = [[ 1, -1, 0 ; 1, 0, 1 ; 2, -1, 1 ]]$ and $\vec{x} = [[ 1 ; 2 ; -1 ]]$.
+	#. $A = [[ 1, -1, 0 ; 1, 0, 1 ; 2, -1, 1 ]]$ and $\vec{b} = [[ 1 ; 2 ; -1 ]]$.
 
 	- - -
 
