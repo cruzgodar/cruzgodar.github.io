@@ -2,21 +2,21 @@
 
 For most of the course up to this point, we've focused on square matrices. There's good reason for that --- square matrices are the ones that have eigenvectors and eigenvalues, and the only ones that are possibly diagonalizable. But the framing of diagonalization as a convenient consequence of eigenvectors does a disservice to how useful a concept it is in isolation. In the last section, we saw one way to produce a diagonal-like decomposition that's still extremely useful in its own right, even when the matrix itself wasn't diagonalizable. That required it to be square, though, since we still found ourselves falling back to notions of eigenvectors and eigenvalues eventually. Many "naturally occurring" matrices --- those that come up in real-world applications --- are very much not square, and though they might not have eigenvectors to speak of, they're still worth our time and attention. Let's consider an $m \times n$ matrix $A$ and see what we can do.
 
-While $A$ might not be square, we've already seen a matrix in section 7 that's guaranteed to be: $A^T A$. It's also diagonalizable with an orthonormal basis of eigenvectors, and in an extremely loose sense, if $A$ were symmetric and had eigenvalues, then the eigenvalues of $A^T$ would be the same, and so the eigenvalues of $A^T A$ would be the squares of the eigenvalues of $A$.
+While $A$ might not be square, we've already seen a matrix in section 7 that's guaranteed to be: $A^T\!A$. It's also diagonalizable with an orthonormal basis of eigenvectors, and in an extremely loose sense, if $A$ were symmetric and had eigenvalues, then the eigenvalues of $A^T$ would be the same, and so the eigenvalues of $A^T\!A$ would be the squares of the eigenvalues of $A$.
 
-Let's see if we can turn that intuitive but technically-bankrupt notion into something actually meaningful. Since $A^T A$ is an $n \times n$ real symmetric matrix, it has eigenvalues $\lambda_1, ..., \lambda_n$ and an orthonormal basis of eigenvectors $\vec{v_1}, ..., \vec{v_n}$. If we place these $\vec{v_i}$ as columns in a matrix $V$ (that's an unusual letter to use for a matrix, but it's standard notation), then $V$ is unitary, so $V^{-1} = V^T$. Now for each $\vec{v_i}$,
+Let's see if we can turn that intuitive but technically-bankrupt notion into something actually meaningful. Since $A^T\!A$ is an $n \times n$ real symmetric matrix, it has eigenvalues $\lambda_1, ..., \lambda_n$ and an orthonormal basis of eigenvectors $\vec{v_1}, ..., \vec{v_n}$. If we place these $\vec{v_i}$ as columns in a matrix $V$ (that's an unusual letter to use for a matrix, but it's standard notation), then $V$ is unitary, so $V^{-1} = V^T$. Now for each $\vec{v_i}$,
 
 $$
 	\left| \left| A\vec{v} \right| \right|^2 &= A\vec{v_i} \bullet A\vec{v_i}
 
-	&= \vec{v_i}^T A^T A \vec{v_i}
+	&= \vec{v_i}^T A^T\!A \vec{v_i}
 
 	&= \vec{v_i}^T \lambda_i \vec{v_i}
 
 	&= \lambda_i.
 $$
 
-That tells us quite a bit: first, that all the eigenvalues of $A^T A$ are positive, and second, that those quantities that were analogous to the square roots of the eigenvalues are given by the values $\left| \left| A\vec{v_i} \right| \right|$ for each $\vec{v_i}$. Let's give those values a name, and then we'll finish the decomposition.
+That tells us quite a bit: first, that all the eigenvalues of $A^T\!A$ are positive, and second, that those quantities that were analogous to the square roots of the eigenvalues are given by the values $\left| \left| A\vec{v_i} \right| \right|$ for each $\vec{v_i}$. Let's give those values a name, and then we'll finish the decomposition.
 
 ### def "singular value"
 
@@ -26,14 +26,14 @@ That tells us quite a bit: first, that all the eigenvalues of $A^T A$ are positi
 		\sigma_i = \sqrt{\lambda_i},
 	$$
 
-	and $\lambda_1, ..., \lambda_n$ are the eigenvalues of $A^T A$. Importantly, we always write the singular values in decreasing order.
+	and $\lambda_1, ..., \lambda_n$ are the eigenvalues of $A^T\!A$. Importantly, we always write the singular values in decreasing order.
 
 ###
 
 Let's return to decomposing our matrix $A$. The outputs $A\vec{v_i}$ and $A\vec{v_j}$ are orthogonal, since
 
 $$
-	\left( A\vec{v_i} \right) \bullet \left( A\vec{v_j} \right) &= \vec{v_i}^T A^T A \vec{v_j}
+	\left( A\vec{v_i} \right) \bullet \left( A\vec{v_j} \right) &= \vec{v_i}^T A^T\!A \vec{v_j}
 
 	&= \vec{v_i}^T \lambda_j \vec{v_j}
 
@@ -56,7 +56,7 @@ and so the vectors $A\vec{v_1}, ..., A\vec{v_k}$ form an orthogonal basis for $\
 		V = [[ \mid, , \mid ; \vec{v_1}, \cdots, \vec{v_n} ; \mid, , \mid ]]
 	$$
 
-	is a unitary $n \times n$ matrix whose columns are the eigenvectors of $A^T A$,
+	is a unitary $n \times n$ matrix whose columns are the eigenvectors of $A^T\!A$,
 
 	$$
 		\Sigma = [[ D | 0 ; \hline 0 | 0 ]] = [[ \sigma_1, \cdots, 0 | 0, \cdots, 0 ; \vdots, \ddots, \vdots | \vdots, \ddots, \vdots ; 0, \cdots, \sigma_k | 0, \cdots, 0 ; \hline 0, \cdots, 0 | 0, \cdots, 0 ; \vdots, \ddots, \vdots | \vdots, \ddots, \vdots ; 0, \cdots, 0 | 0, \cdots, 0 ]]
@@ -76,10 +76,10 @@ and so the vectors $A\vec{v_1}, ..., A\vec{v_k}$ form an orthogonal basis for $\
 
 	Find a singular value decomposition for $A = [[ 1, 1, 2 ; 1, -1, 1 ]]$.
 
-	We'll start by finding the eigenvectors and eigenvalues for $A^T A$. We have
+	We'll start by finding the eigenvectors and eigenvalues for $A^T\!A$. We have
 
 	$$
-		A^T A = [[ 2, 0, 3 ; 0, 2, 1 ; 3, 1, 5 ]],
+		A^T\!A = [[ 2, 0, 3 ; 0, 2, 1 ; 3, 1, 5 ]],
 	$$
 
 	which has eigenvalues $\lambda_1 = 7$, $\lambda_2 = 2$, and $\lambda_3 = 0$ (arranged in decreasing order), with corresponding eigenvectors
@@ -106,7 +106,7 @@ and so the vectors $A\vec{v_1}, ..., A\vec{v_k}$ form an orthogonal basis for $\
 		V &= [[ 3 / \sqrt{35}, -1 / \sqrt{10}, -3 / \sqrt{14} ; 1 / \sqrt{35}, 3 / \sqrt{10}, 1 / \sqrt{14} ; 5 / \sqrt{35}, 0, 2 / \sqrt{14} ]].
 	$$
 
-	Geometrically, the expression $A = U \Sigma V^T$ expresses the action of $A : #R#^3 \to #R#^2$ in four steps: a rotation / reflection in $#R#^3$, a projection to $#R#^2$, a scaling of the axes in $#R#^2$, and finally a rotation / reflection in $#R#^2$. Since every matrix has an SVD, that means every linear map is expressible as these four steps, possibly swapping the projection for an inclusion to a higher-dimensional space, or just an identity matrix if the domain and codomain are equal.
+	Geometrically, the expression $A = U \Sigma V^T$ expresses the action of $A : #R#^3 \to #R#^2$ in four steps: a rotation/reflection in $#R#^3$, a projection to $#R#^2$, a scaling of the axes in $#R#^2$, and finally a rotation/reflection in $#R#^2$. Since every matrix has an SVD, that means every linear map is expressible as these four steps, possibly swapping the projection for an inclusion to a higher-dimensional space, or just an identity matrix if the domain and codomain are equal.
 
 ###
 

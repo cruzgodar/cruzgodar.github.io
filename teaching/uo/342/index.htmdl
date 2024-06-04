@@ -122,7 +122,7 @@ Welcome to Math 342! We'll use this page for the interactive notes, the homework
 	
 	## Section 7
 
-	#. Let $A$ be a real $m \times n$ matrix. Explain why $A^T A$ is guaranteed to be diagonalizable.
+	#. Let $A$ be a real $m \times n$ matrix. Explain why $A^T\!A$ is guaranteed to be diagonalizable.
 
 	#. Let $A$ be a symmetric (i.e. $A^T = A$), $n \times n$, real matrix with all positive eigenvalues and define $\left< \vec{v}, \vec{w} \right> = \vec{v}^T A \vec{w}$ for $\vec{v}, \vec{w} \in #R#^n$.
 

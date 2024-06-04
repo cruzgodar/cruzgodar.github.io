@@ -19,7 +19,7 @@ $$
 
 	A^T \vec{b}' &= A^T \vec{b}
 
-	A^T A \vec{x}' &= A^T \vec{b}.
+	A^T\!A \vec{x}' &= A^T \vec{b}.
 $$
 
 And now this is a standard matrix equation we can solve for $\vec{x}'$! The moral here is that if $A\vec{x} = \vec{b}$ is unsolvable, multiplying both sides by $A^T$ produces a solvable equation whose solution is the best approximation to $\vec{b}$. Since "best" means minimizing $\left| \left| \vec{b}' - \vec{b} \right| \right|$, or equivalently minimizing
@@ -30,12 +30,12 @@ $$
 
 these approximation problems are called **least-squares problems**.
 
-To wrap up the discussion, let's see when a least-squares solution is unique. Since we're solving $A^T A \vec{x}' = A^T \vec{b}$, that's exactly when $A^T A$ is invertible, regardless of $\vec{b}$. That's not a particularly convenient condition, so let's explore it a little further. Even though $A^T A$ is square, $A$ itself might not be. However, since $A^T A$ is invertible, $\ker A^T A = \left\{ \vec{0} \right\}$, and so $\ker A = \left\{ \vec{0} \right\}$ too --- since any vector in the kernel of $A$ is also in the kernel of $A^T A$. That means $A$ has linearly independent columns, and the reverse is true too: if $\ker A = \left\{ \vec{0} \right\}$, then any vector $\vec{x}$ satisfying $A^T A\vec{x} = \vec{0}$ also satisfies
+To wrap up the discussion, let's see when a least-squares solution is unique. Since we're solving $A^T\!A \vec{x}' = A^T \vec{b}$, that's exactly when $A^T\!A$ is invertible, regardless of $\vec{b}$. That's not a particularly convenient condition, so let's explore it a little further. Even though $A^T\!A$ is square, $A$ itself might not be. However, since $A^T\!A$ is invertible, $\ker A^T\!A = \left\{ \vec{0} \right\}$, and so $\ker A = \left\{ \vec{0} \right\}$ too --- since any vector in the kernel of $A$ is also in the kernel of $A^T\!A$. That means $A$ has linearly independent columns, and the reverse is true too: if $\ker A = \left\{ \vec{0} \right\}$, then any vector $\vec{x}$ satisfying $A^T\!A\vec{x} = \vec{0}$ also satisfies
 
 $$
-	\vec{x} \bullet \left( A^T A \vec{x} \right) &= 0
+	\vec{x} \bullet \left( A^T\!A \vec{x} \right) &= 0
 
-	\vec{x}^T A^T A \vec{x} &= 0
+	\vec{x}^T A^T\!A \vec{x} &= 0
 
 	\left( A \vec{x} \right)^T \left( A \vec{x} \right) &= 0
 
@@ -46,11 +46,11 @@ $$
 	\vec{x} &= \vec{0}.
 $$
 
-In so many symbols, $\ker \left( A^T A \right) = \left\{ \vec{0} \right\}$, so $A^T A$ is invertible. It's been a bit of symbol-pushing, but we've solved and characterized least-squares problems in general.
+In so many symbols, $\ker \left( A^T\!A \right) = \left\{ \vec{0} \right\}$, so $A^T\!A$ is invertible. It's been a bit of symbol-pushing, but we've solved and characterized least-squares problems in general.
 
 ### thm "least-squares approximations"
 
-	Let $A$ be an $m \times n$ matrix and let $\vec{b} \in #R#^m$. A vector $\vec{x}' \in #R#^n$ that minimizes $\left| \left| A\vec{x}' - \vec{b} \right| \right|$ is the projection of $\vec{b}$ onto the image of $A$, or equivalently, a solution to $A^T A \vec{x}' = A^T \vec{b}$. Moreover, this least-squares solution $\vec{x}'$ is unique exactly when the columns of $A$ are linearly independent.
+	Let $A$ be an $m \times n$ matrix and let $\vec{b} \in #R#^m$. A vector $\vec{x}' \in #R#^n$ that minimizes $\left| \left| A\vec{x}' - \vec{b} \right| \right|$ is the projection of $\vec{b}$ onto the image of $A$, or equivalently, a solution to $A^T\!A \vec{x}' = A^T \vec{b}$. Moreover, this least-squares solution $\vec{x}'$ is unique exactly when the columns of $A$ are linearly independent.
 
 ###
 

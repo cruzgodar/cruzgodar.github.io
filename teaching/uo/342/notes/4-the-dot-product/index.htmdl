@@ -282,7 +282,7 @@ Just like linear independence is closely related to invertibility of matrices --
 
 ###
 
-Unitary matrices don't have to be square, but any square unitary matrix has to be invertible, since the columns have to be linearly independent. Even non-square unitary matrices have a sort of pseudoinverse in their transpose: if $A$ is unitary, then $A^T A = I$, since every entry in a matrix product is really just a dot product in disguise, and the rows of $A^T$ are the columns of $A$ by definition. Putting these two facts together, a square unitary matrix is always invertible, and $A^{-1} = A^T$.
+Unitary matrices don't have to be square, but any square unitary matrix has to be invertible, since the columns have to be linearly independent. Even non-square unitary matrices have a sort of pseudoinverse in their transpose: if $A$ is unitary, then $A^T\!A = I$, since every entry in a matrix product is really just a dot product in disguise, and the rows of $A^T$ are the columns of $A$ by definition. Putting these two facts together, a square unitary matrix is always invertible, and $A^{-1} = A^T$.
 
 We'll have more to say about unitary matrices later on, but for now, let's see a few nice properties they have.
 
