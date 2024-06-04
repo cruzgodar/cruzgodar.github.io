@@ -3,7 +3,7 @@ import { SudokuGenerator } from "./class.js";
 import { DownloadButton, GenerateButton } from "/scripts/src/buttons.js";
 import { $ } from "/scripts/src/main.js";
 
-export function load()
+export default function()
 {
 	const applet = new SudokuGenerator({ canvas: $("#sudoku-grid") });
 

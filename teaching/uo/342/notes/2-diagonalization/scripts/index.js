@@ -1,15 +1,15 @@
 import {
-	createDesmosGraphs,
-	desmosBlue,
-	desmosPurple,
-	getDesmosPoint,
-	getDesmosSlider,
-	getDesmosVector,
-	setGetDesmosData
+    createDesmosGraphs,
+    desmosBlue,
+    desmosPurple,
+    getDesmosPoint,
+    getDesmosSlider,
+    getDesmosVector,
+    setGetDesmosData
 } from "/scripts/src/desmos.js";
 import { showPage } from "/scripts/src/loadPage.js";
 
-export function load()
+export default function()
 {
 	setGetDesmosData(() =>
 	{

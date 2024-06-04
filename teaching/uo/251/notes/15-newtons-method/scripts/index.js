@@ -1,16 +1,16 @@
 import { showPage } from "../../../../../../scripts/src/loadPage.js";
 import { NewtonsMethod } from "/applets/newtons-method/scripts/class.js";
 import {
-	createDesmosGraphs,
-	desmosBlue,
-	desmosGreen,
-	desmosPurple,
-	desmosRed,
-	setGetDesmosData
+    createDesmosGraphs,
+    desmosBlue,
+    desmosGreen,
+    desmosPurple,
+    desmosRed,
+    setGetDesmosData
 } from "/scripts/src/desmos.js";
 import { $ } from "/scripts/src/main.js";
 
-export function load()
+export default function()
 {
 	setGetDesmosData(() =>
 	{

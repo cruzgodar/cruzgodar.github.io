@@ -1,10 +1,10 @@
 import { showPage } from "../../../../../../scripts/src/loadPage.js";
 import {
-	createDesmosGraphs,
-	desmosBlue,
-	desmosPurple,
-	desmosRed,
-	setGetDesmosData
+    createDesmosGraphs,
+    desmosBlue,
+    desmosPurple,
+    desmosRed,
+    setGetDesmosData
 } from "/scripts/src/desmos.js";
 
 function getDerivativeString(n)
@@ -23,7 +23,7 @@ function getDerivativeString(n)
 
 
 
-export function load()
+export default function()
 {
 	const derivatives = [];
 

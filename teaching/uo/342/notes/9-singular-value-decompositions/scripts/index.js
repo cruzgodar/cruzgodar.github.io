@@ -5,7 +5,7 @@ import { $ } from "/scripts/src/main.js";
 import { Slider } from "/scripts/src/sliders.js";
 import { Wilson } from "/scripts/wilson.js";
 
-export async function load()
+export defaultc function()
 {
 	initValueWilson();
 

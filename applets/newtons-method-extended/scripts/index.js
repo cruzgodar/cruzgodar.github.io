@@ -7,7 +7,7 @@ import { Slider } from "/scripts/src/sliders.js";
 import { TextBox } from "/scripts/src/textBoxes.js";
 import { Textarea } from "/scripts/src/textareas.js";
 
-export function load()
+export default function()
 {
 	const applet = new NewtonsMethodExtended({ canvas: $("#output-canvas") });
 

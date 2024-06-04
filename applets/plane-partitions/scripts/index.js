@@ -8,7 +8,7 @@ import { $, $$ } from "/scripts/src/main.js";
 import { TextBox } from "/scripts/src/textBoxes.js";
 import { Textarea } from "/scripts/src/textareas.js";
 
-export async function load()
+export default function()
 {
 	const applet = new PlanePartitions({
 		canvas: $("#output-canvas"),
@@ -342,9 +342,9 @@ export async function load()
 		// 	nu.push(Math.max(nu[i] - Math.floor(Math.random() * 3), 0));
 		// }
 
-		const lambda = [5, 5, 0, 0];
-		const mu = [5, 5, 0, 0];
-		const nu = [2, 2, 0, 0];
+		const lambda = [2, 0];
+		const mu = [1, 0];
+		const nu = [1, 0];
 
 		const [A, B] = applet.getMinimalABConfig({
 			lambda,
@@ -353,15 +353,7 @@ export async function load()
 			negativeWidth: 2,
 		});
 
-		// A[1][3] = 3;
-		// A[2][3] = 3;
-		// A[3][3] = 3;
-		// A[3][1] = 4;
-		// A[3][2] = 4;
-		// B[0][1] = 5;
-		// B[1][1] = 3;
-
-		console.log(applet.isValidABConfig({ lambda, mu, nu, A, B }));
+		console.log(applet.isValidABConfig({ lambda, mu, nu, A, B })[0]);
 
 		// A = [
 		// 	[Infinity, Infinity, 5, 3, 2, 0],
@@ -383,7 +375,7 @@ export async function load()
 
 		applet.printABConfig({ A, B });
 
-		const numRemovalAttempts = 0;// 5 * lambda.concat(mu).concat(nu).reduce((a, b) => a + b);
+		const numRemovalAttempts = 0 * lambda.concat(mu).concat(nu).reduce((a, b) => a + b);
 
 		for (let k = 0; k < numRemovalAttempts; k++)
 		{
@@ -399,7 +391,7 @@ export async function load()
 
 				A[i][j]--;
 
-				if (!applet.isValidABConfig({ lambda, mu, nu, A, B }))
+				if (!applet.isValidABConfig({ lambda, mu, nu, A, B })[0])
 				{
 					A[i][j]++;
 				}
@@ -412,7 +404,7 @@ export async function load()
 
 				B[row][col]--;
 
-				if (!applet.isValidABConfig({ lambda, mu, nu, A, B }))
+				if (!applet.isValidABConfig({ lambda, mu, nu, A, B })[0])
 				{
 					B[row][col]++;
 				}
@@ -421,7 +413,7 @@ export async function load()
 
 		applet.printABConfig({ A, B });
 
-		applet.testAllEntriesOfABConfig({ lambda, mu, nu, A, B, onlyUnboundedBelow: true });
+		applet.testAllEntriesOfABConfig({ lambda, mu, nu, A, B, onlyUnboundedBelow: false });
 
 		const [bigA, bigB] = applet.getArrayVersionOfABConfig({ lambda, mu, nu, A, B });
 

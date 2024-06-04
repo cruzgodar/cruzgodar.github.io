@@ -6,7 +6,7 @@ import { $ } from "/scripts/src/main.js";
 import { Slider } from "/scripts/src/sliders.js";
 import { TextBox } from "/scripts/src/textBoxes.js";
 
-export function load()
+export default function()
 {
 	const applet = new BernoulliPercolation({ canvas: $("#output-canvas") });
 

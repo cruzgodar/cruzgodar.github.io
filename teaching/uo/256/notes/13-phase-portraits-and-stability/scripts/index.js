@@ -1,16 +1,16 @@
 import { showPage } from "../../../../../../scripts/src/loadPage.js";
 import { VectorField } from "/applets/vector-fields/scripts/class.js";
 import {
-	createDesmosGraphs,
-	desmosBlack,
-	desmosBlue,
-	desmosPurple,
-	desmosRed,
-	setGetDesmosData
+    createDesmosGraphs,
+    desmosBlack,
+    desmosBlue,
+    desmosPurple,
+    desmosRed,
+    setGetDesmosData
 } from "/scripts/src/desmos.js";
 import { $ } from "/scripts/src/main.js";
 
-export function load()
+export default function()
 {
 	setGetDesmosData(() =>
 	{

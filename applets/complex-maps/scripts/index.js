@@ -6,7 +6,7 @@ import { $ } from "/scripts/src/main.js";
 import { TextBox } from "/scripts/src/textBoxes.js";
 import { Textarea } from "/scripts/src/textareas.js";
 
-export function load()
+export default function()
 {
 	const applet = new ComplexMap({
 		canvas: $("#output-canvas"),

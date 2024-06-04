@@ -6,7 +6,7 @@ import { $ } from "/scripts/src/main.js";
 import { typesetMath } from "/scripts/src/math.js";
 import { TextBox } from "/scripts/src/textBoxes.js";
 
-export function load()
+export default function()
 {
 	const applet = new StrangeAttractor({ canvas: $("#output-canvas") });
 

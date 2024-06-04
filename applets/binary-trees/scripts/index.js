@@ -3,7 +3,7 @@ import { BinaryTree } from "./class.js";
 import { DownloadButton } from "/scripts/src/buttons.js";
 import { $ } from "/scripts/src/main.js";
 
-export function load()
+export default function()
 {
 	const applet = new BinaryTree({ canvas: $("#output-canvas") });
 

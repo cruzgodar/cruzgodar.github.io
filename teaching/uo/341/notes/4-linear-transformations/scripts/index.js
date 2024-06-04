@@ -10,7 +10,7 @@ import {
 	setGetDesmosData
 } from "/scripts/src/desmos.js";
 
-export function load()
+export default function()
 {
 	setGetDesmosData(() =>
 	{

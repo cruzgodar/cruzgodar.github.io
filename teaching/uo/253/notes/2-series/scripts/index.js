@@ -1,12 +1,12 @@
 import { showPage } from "../../../../../../scripts/src/loadPage.js";
 import {
-	createDesmosGraphs,
-	desmosBlack,
-	desmosBlue,
-	setGetDesmosData
+    createDesmosGraphs,
+    desmosBlack,
+    desmosBlue,
+    setGetDesmosData
 } from "/scripts/src/desmos.js";
 
-export function load()
+export default function()
 {
 	setGetDesmosData(() =>
 	{

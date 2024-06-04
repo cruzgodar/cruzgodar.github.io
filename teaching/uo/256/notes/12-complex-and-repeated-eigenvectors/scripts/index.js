@@ -1,13 +1,13 @@
 import { showPage } from "../../../../../../scripts/src/loadPage.js";
 import { VectorField } from "/applets/vector-fields/scripts/class.js";
 import {
-	createDesmosGraphs,
-	desmosPurple,
-	setGetDesmosData
+    createDesmosGraphs,
+    desmosPurple,
+    setGetDesmosData
 } from "/scripts/src/desmos.js";
 import { $ } from "/scripts/src/main.js";
 
-export function load()
+export default function()
 {
 	setGetDesmosData(() =>
 	{

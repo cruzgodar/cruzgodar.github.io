@@ -6,7 +6,7 @@ import { typesetMath } from "/scripts/src/math.js";
 import { Slider } from "/scripts/src/sliders.js";
 import { TextBox } from "/scripts/src/textBoxes.js";
 
-export function load()
+export default function()
 {
 	let g2 = -2;
 	let g3 = 0;

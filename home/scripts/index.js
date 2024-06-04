@@ -2,11 +2,11 @@ import { disableLinks, showPage } from "../../scripts/src/loadPage.js";
 import { fadeLeft, opacityAnimationTime } from "/scripts/src/animation.js";
 import { nameTextOpacity } from "/scripts/src/banners.js";
 import {
-	$,
-	addTemporaryListener
+    $,
+    addTemporaryListener
 } from "/scripts/src/main.js";
 
-export function load()
+export default function()
 {
 	const cruzTextElement = $("#cruz-text");
 	const godarTextElement = $("#godar-text");

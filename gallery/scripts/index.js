@@ -6,7 +6,7 @@ import { $, $$ } from "/scripts/src/main.js";
 import { typesetMath } from "/scripts/src/math.js";
 import { redirect } from "/scripts/src/navigation.js";
 
-export function load()
+export default function()
 {
 	const titleElement = $("#high-res-viewer-card h1");
 	const descriptionTextElement = $("#description-text");

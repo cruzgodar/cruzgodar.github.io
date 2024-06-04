@@ -8,7 +8,7 @@ import {
 import { showPage } from "/scripts/src/loadPage.js";
 import { $ } from "/scripts/src/main.js";
 
-export function load()
+export default function()
 {
 	setGetDesmosData(() =>
 	{

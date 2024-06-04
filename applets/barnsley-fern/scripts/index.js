@@ -4,7 +4,7 @@ import { DownloadButton, GenerateButton } from "/scripts/src/buttons.js";
 import { $ } from "/scripts/src/main.js";
 import { TextBox } from "/scripts/src/textBoxes.js";
 
-export function load()
+export default function()
 {
 	const applet = new BarnsleyFern({ canvas: $("#output-canvas") });
 

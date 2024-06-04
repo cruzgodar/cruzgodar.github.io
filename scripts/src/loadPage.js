@@ -151,7 +151,7 @@ function loadCustomScripts()
 	}
 	
 	import(`${pageUrl}scripts/index.${window.DEBUG ? "js" : "min.js"}`)
-		.then(Module => Module.load());
+		.then(Module => Module.default());
 }
 
 async function fadeInPage()

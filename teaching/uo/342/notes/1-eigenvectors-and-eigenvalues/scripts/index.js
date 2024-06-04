@@ -3,18 +3,18 @@ import { ThurstonGeometry } from "/applets/thurston-geometries/scripts/class.js"
 import { H3Rooms } from "/applets/thurston-geometries/scripts/geometries/h3.js";
 import { VectorField } from "/applets/vector-fields/scripts/class.js";
 import {
-	createDesmosGraphs,
-	desmosBlue,
-	desmosGreen,
-	desmosPurple,
-	desmosRed,
-	getDesmosVector,
-	setGetDesmosData
+    createDesmosGraphs,
+    desmosBlue,
+    desmosGreen,
+    desmosPurple,
+    desmosRed,
+    getDesmosVector,
+    setGetDesmosData
 } from "/scripts/src/desmos.js";
 import { showPage } from "/scripts/src/loadPage.js";
 import { $ } from "/scripts/src/main.js";
 
-export function load()
+export default function()
 {
 	setGetDesmosData(() =>
 	{

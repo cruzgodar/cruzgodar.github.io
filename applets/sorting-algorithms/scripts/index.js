@@ -6,7 +6,7 @@ import { Dropdown } from "/scripts/src/dropdowns.js";
 import { $, $$ } from "/scripts/src/main.js";
 import { TextBox } from "/scripts/src/textBoxes.js";
 
-export function load()
+export default function()
 {
 	const numReadsElement = $("#num-reads");
 	const numWritesElement = $("#num-writes");
