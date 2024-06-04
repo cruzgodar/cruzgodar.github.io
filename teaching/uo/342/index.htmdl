@@ -96,7 +96,7 @@ Welcome to Math 342! We'll use this page for the interactive notes, the homework
 
 	- - -
 
-	In problems 3#, do the following:
+	In problems 4#, do the following:
 
 	> a) Find an orthonormal basis for the given inner product space $X$, and then extend it to an orthonormal basis for $V$.
 
@@ -106,7 +106,9 @@ Welcome to Math 342! We'll use this page for the interactive notes, the homework
 
 	#. $V = \span\left\{ 1, x, x^2 \right\}$ with $\left< p, q \right> = \sum_{n = 0}^2 p(n)q(n)$, $X$ is the subspace of polynomials $p$ with $p'(0) = 0$, and $\vec{v} = 1 + 2x + x^2$.
 
-	#. $V = \span\left\{ 1, \sin(x), \cos(x) \right\}$ with $\left< f, g \right> = \int_0^1 f(x)g(x)\,dx$, $X$ is the subspace of functions $f$ with $f'(0) = 0$, and $\vec{v} = \sin(x) + 2\cos(x) - 1$.
+	#. (optional) $V = \span\left\{ 1, \sin(x), \cos(x) \right\}$ with $\left< f, g \right> = \int_0^1 f(x)g(x)\,dx$, $X$ is the subspace of functions $f$ with $f'(0) = 0$, and $\vec{v} = \sin(x) + 2\cos(x) - 1$.
+
+	#. (optional; more recommended than the previous problem) $V = \span\left\{ 1, \cos(x) \right\}$ with $\left< f, g \right> = \int_0^{\pi/2} f(x)g(x)\,dx$, $X = \span\{1\}$, and $\vec{v} = \cos(x) - 2$.
 
 ###
 
