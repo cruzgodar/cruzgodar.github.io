@@ -435,6 +435,8 @@ export function iterateThroughEntries({
 
 	const inNu = row >= 0 && row < nu.length && col >= 0 && col < nu[row];
 
+	
+
 	const cappedMaxAEntry = (row >= 0 && col >= 0 && !inNu)
 		? -Infinity
 		: Math.min(
@@ -451,8 +453,8 @@ export function iterateThroughEntries({
 
 	const cappedMaxBEntry = row >= 0 && col >= 0
 		? Math.min(
-			row === 0 ? Infinity : B[row - 1][col],
-			col === 0 ? Infinity : B[row][col - 1]
+			row === 0 ? Math.max(lambda[col], mu[row]) : B[row - 1][col],
+			col === 0 ? Math.max(lambda[col], mu[row]) : B[row][col - 1]
 		)
 		: Infinity;
 	const cappedMinBEntry = row >= 0 && col >= 0
