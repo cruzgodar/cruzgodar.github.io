@@ -8,12 +8,30 @@ export default function()
 {
 	const applet = new AbelianSandpile({ canvas: $("#output-canvas") });
 
-	const numGrainsInput = new TextBox({
-		element: $("#num-grains-input"),
-		name: "Grains",
+	const resolutionInput = new TextBox({
+		element: $("#resolution-input"),
+		name: "Grid Size",
+		value: 319,
+		minValue: 10,
+		maxValue: 2000,
+		onEnter: run,
+	});
+
+	const centerGrainsInput = new TextBox({
+		element: $("#center-grains-input"),
+		name: "Center Grains",
 		value: 100000,
-		minValue: 100,
+		minValue: 0,
 		maxValue: 1000000,
+		onEnter: run,
+	});
+
+	const surroundingGrainsInput = new TextBox({
+		element: $("#surrounding-grains-input"),
+		name: "Surrounding Grains",
+		value: 0,
+		minValue: 0,
+		maxValue: 8,
 		onEnter: run,
 	});
 
@@ -22,7 +40,7 @@ export default function()
 		name: "Computation Speed",
 		value: 10,
 		minValue: 1,
-		maxValue: 20,
+		maxValue: 100,
 		onEnter: run,
 	});
 
@@ -41,8 +59,18 @@ export default function()
 
 	function run()
 	{
+		let resolution = Math.max(
+			resolutionInput.value,
+			Math.floor(Math.sqrt(centerGrainsInput.value)) + 2
+		);
+		resolution = resolution + 1 - (resolution % 2);
+
+		resolutionInput.setValue(resolution);
+
 		applet.run({
-			numGrains: numGrainsInput.value,
+			resolution: resolutionInput.value,
+			numGrains: centerGrainsInput.value,
+			floodGrains: surroundingGrainsInput.value,
 			computationsPerFrame: computationsPerFrameInput.value
 		});
 	}

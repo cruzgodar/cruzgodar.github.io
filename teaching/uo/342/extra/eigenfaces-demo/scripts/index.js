@@ -6,7 +6,7 @@ import { $ } from "/scripts/src/main.js";
 import { Slider } from "/scripts/src/sliders.js";
 import { Wilson } from "/scripts/wilson.js";
 
-export defaultc function()
+export default function()
 {
 	const options = {
 		renderer: "cpu",

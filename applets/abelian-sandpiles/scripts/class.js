@@ -6,6 +6,7 @@ export class AbelianSandpile extends AnimationFrameApplet
 	wilsonUpscale;
 
 	numGrains = 10000;
+	floodGrains = 0;
 	resolution = 500;
 
 	computationsPerFrame = 20;
@@ -31,6 +32,7 @@ export class AbelianSandpile extends AnimationFrameApplet
 			uniform float step;
 			
 			uniform vec4 startGrains;
+			uniform vec4 floodGrains;
 			
 			
 			
@@ -45,7 +47,7 @@ export class AbelianSandpile extends AnimationFrameApplet
 					return;
 				}
 				
-				gl_FragColor = vec4(0.0, 0.0, 0.0, 0.0);
+				gl_FragColor = floodGrains;
 			}
 		`;
 
@@ -221,7 +223,7 @@ export class AbelianSandpile extends AnimationFrameApplet
 		this.wilson.render.loadNewShader(fragShaderSourceUpdate);
 		this.wilson.render.loadNewShader(fragShaderSourceDraw);
 
-		this.wilson.render.initUniforms(["step", "startGrains"], 0);
+		this.wilson.render.initUniforms(["step", "startGrains", "floodGrains"], 0);
 		this.wilson.render.initUniforms(["step"], 1);
 
 		this.wilson.render.createFramebufferTexturePair();
@@ -276,13 +278,15 @@ export class AbelianSandpile extends AnimationFrameApplet
 
 
 
-	run({ numGrains = 10000, computationsPerFrame = 25 })
-	{
+	run({
+		resolution = 100,
+		numGrains = 10000,
+		floodGrains = 0,
+		computationsPerFrame = 25
+	}) {
+		this.resolution = resolution;
 		this.numGrains = numGrains;
-
-		this.resolution = Math.floor(Math.sqrt(this.numGrains)) + 2;
-		this.resolution = this.resolution + 1 - (this.resolution % 2);
-
+		this.floodGrains = floodGrains;
 		this.computationsPerFrame = computationsPerFrame;
 
 		const grains4 = (this.numGrains % 256) / 256;
@@ -299,6 +303,11 @@ export class AbelianSandpile extends AnimationFrameApplet
 			grains2,
 			grains3,
 			grains4
+		);
+
+		this.wilson.gl.uniform4fv(
+			this.wilson.uniforms["floodGrains"][0],
+			[0, 0, 0, this.floodGrains / 256]
 		);
 
 		this.wilson.gl.useProgram(this.wilson.render.shaderPrograms[1]);
