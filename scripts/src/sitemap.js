@@ -606,7 +606,9 @@ export const sitemap =
 			"/teaching/uo/342/notes/7-the-spectral-theorems/",
 			"/teaching/uo/342/notes/8-jordan-normal-form/",
 			"/teaching/uo/342/notes/9-singular-value-decompositions/"
-		]
+		],
+
+		"customScript": true
 	},
 		
 	"/teaching/uo/342/notes/0-linear-algebra-1-review/":
@@ -731,7 +733,9 @@ export const sitemap =
 			"/teaching/uo/341/notes/8-bases-and-dimension/",
 			"/teaching/uo/341/notes/9-the-fundamental-theorem-of-linear-algebra/",
 			"/teaching/uo/341/notes/10-intro-to-markov-chains/"
-		]
+		],
+
+		"customScript": true
 	},
 		
 	"/teaching/uo/341/notes/1-vectors-and-matrices/":
@@ -860,7 +864,9 @@ export const sitemap =
 			"/teaching/uo/256/notes/11-intro-to-systems/",
 			"/teaching/uo/256/notes/12-complex-and-repeated-eigenvectors/",
 			"/teaching/uo/256/notes/13-phase-portraits-and-stability/"
-		]
+		],
+
+		"customScript": true
 	},
 		
 	"/teaching/uo/256/notes/0-calc-review/":

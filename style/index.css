@@ -291,8 +291,6 @@ mjx-container
 {
 	position: relative;
 	
-	box-shadow: 0px 0px 0px 0px rgba(0, 0, 0, .2);
-	
 	max-width: calc(100% - 16px);
 }
 
@@ -304,20 +302,6 @@ mjx-container
 .tex-holder:not(.inline-math)
 {
 	overflow-x: auto;
-}
-
-.tex-holder.hover
-{
-	box-shadow: 0px 0px 16px calc(var(--theme) * 4px) rgba(0, 0, 0, calc(.2 + (var(--theme) * (1 - .2))));
-
-	z-index: 1100;
-}
-
-.tex-holder.active
-{
-	cursor: pointer;
-	
-	transition: box-shadow .1s ease-out;
 }
 
 .tex-holder textarea
@@ -424,6 +408,11 @@ mjx-container
 .card > *:last-child
 {
 	margin-bottom: 0;
+}
+
+.card .text-buttons
+{
+	grid-template-columns: unset !important;
 }
 
 #card-container .card

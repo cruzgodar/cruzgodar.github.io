@@ -37,20 +37,36 @@ export function convertCardToLatex(element, title, course)
 	const tex = preamble
 		+ `${title} | ${course} | Cruz Godar \\vspace{4pt} \\normalsize\n\n`
 		+ clonedElement.innerHTML
-			.replaceAll(/<h2.*?>(.+?)<\/h2>/g, (match, $1) => `\\section{${$1}}\n\n`)
 			.replaceAll(/<p.*?>(.+?)<\/p>/g, (match, $1) => `${$1}\n\n`)
 			.replaceAll(
-				/<span[^>]*?inline-math[^>]*?data-source-tex="([^>]*?)"[^>]*?>(.*?)<\/span>/g,
+				/<span[^>]*?inline-math[^>]*?data-source-tex="(.*?)"[^>]*?>(.*?)<\/span>/g,
 				(match, $1, $2) => `$${$1}$${$2}`
 			)
+			.replaceAll(
+				/<span[^>]*?tex-holder[^>]*?data-source-tex="(.*?)"[^>]*?>(.*?)<\/span>/g,
+				(match, $1, $2) => `${$1}${$2}`
+			)
+			.replaceAll(/\[NEWLINE\]/g, "\n")
+			.replaceAll(/\[TAB\]/g, "\t")
 			.replaceAll(/<strong.*?>(.+?)<\/strong>/g, (match, $1) => `\\textbf{${$1}}`)
 			.replaceAll(/<em.*?>(.+?)<\/em>/g, (match, $1) => `\\textit{${$1}}`)
-			.replaceAll(/<span.*?><\/span>[a-z]\)/g, "\\item")
+			.replaceAll(/<span.*?><\/span>[a-z]\)/g, "\t\\item")
+			.replaceAll(
+				/((?:\t\\item.*\n\n)+)/g,
+				(match, $1) => `\\begin{enumerate}\n\n${$1}\\end{enumerate}\n\n`
+			)
+			.replaceAll(/\n\n/g, "\n")
+			.replaceAll(/%/g, "\\%")
+			.replaceAll(/(\n[0-9]+\.)/g, (match, $1) => `\n${$1}`)
+			.replaceAll(/<span style="height: 32px"><\/span>/g, "\n~\\\\")
+			.replaceAll(/<h2.*?>(.+?)<\/h2>/g, (match, $1) => `\n\\section{${$1}}\n\n`)
+			.replaceAll(/&amp;/g, " &")
+			.replaceAll(/\s\s&/g, " &")
 			.replaceAll(/–/g, "--")
 			.replaceAll(/—/g, "---")
-		+ "\\end{document}"
+		+ "\n\\end{document}";
 
-	console.log(tex);
+	downloadText(`${title}.tex`, tex);
 }
 
 function downloadText(filename, text)

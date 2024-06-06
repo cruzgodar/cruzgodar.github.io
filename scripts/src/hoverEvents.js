@@ -1,7 +1,6 @@
 import { buttonAnimationTime, changeScale } from "./animation.js";
 import { currentlyTouchDevice } from "./interaction.js";
 import { $$ } from "./main.js";
-import { showTex } from "./math.js";
 import anime from "/scripts/anime.js";
 
 const elementSelectors = `
@@ -35,13 +34,6 @@ export function setUpHoverEvents()
 	elementSelectorsWithScale.forEach(selector =>
 	{
 		$$(selector[0]).forEach(element => addHoverEventWithScale(element, selector[1]));
-	});
-
-	$$(".card .tex-holder").forEach(element =>
-	{
-		addHoverEventForTexHolder(element);
-
-		element.addEventListener("click", () => showTex(element));
 	});
 }
 
