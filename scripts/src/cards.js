@@ -166,6 +166,8 @@ export async function showCard(id, animationTime = cardAnimationTime)
 	]);
 
 	cardIsAnimating = false;
+
+	// convertCardToLatex(currentCard);
 }
 
 export async function hideCard(animationTime = cardAnimationTime)

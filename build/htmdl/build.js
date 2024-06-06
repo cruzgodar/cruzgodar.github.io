@@ -336,7 +336,7 @@ function decodeHTMDL(html)
 		// A new section.
 		else if (lines[i].slice(0, 2) === "##")
 		{
-			const title = parseText(lines[i].slice(2));
+			const title = parseText(lines[i].slice(3));
 
 			if (inEnvironment)
 			{
