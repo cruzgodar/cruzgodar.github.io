@@ -66,15 +66,15 @@ export function convertCardToLatex(element, title, course)
 			.replaceAll(/—/g, "---")
 		+ "\n\\end{document}";
 
-	downloadText(`${title}.tex`, tex);
+	downloadTex(`${title}.tex`, tex);
 }
 
-function downloadText(filename, text)
+function downloadTex(filename, text)
 {
 	const element = document.createElement("a");
 	element.setAttribute(
 		"href",
-		"data:text/plain;charset=utf-8," + encodeURIComponent(text)
+		"data:text/x-tex;charset=utf-8," + encodeURIComponent(text)
 	);
 	element.setAttribute("download", filename);
 
