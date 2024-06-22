@@ -214,7 +214,11 @@ export default function()
 	new Button({
 		element: $("#download-button"),
 		name: "Download",
-		onClick: () => applet.needDownload = true
+		onClick: () =>
+		{
+			applet.needDownload = true;
+			applet.needNewFrame = true;
+		}
 	});
 
 	const sectionElements =
@@ -323,6 +327,7 @@ export default function()
 		}
 	}
 
+	// eslint-disable-next-line no-unused-vars
 	async function testABConfigs()
 	{
 		console.clear();
