@@ -356,6 +356,59 @@ export class Applet
 
 
 
+	makeVideo(time)
+	{
+		const record = () =>
+		{
+			const recordedChunks = [];
+			return new Promise(resolve =>
+			{
+				const stream = this.canvas.captureStream(120);
+				const mediaRecorder = new MediaRecorder(
+					stream,
+					{ mimeType: "video/mp4", videoBitsPerSecond: Infinity }
+				);
+				
+				// ondataavailable will fire in interval of `time || 4000 ms`
+				mediaRecorder.start(time || 4000);
+
+				mediaRecorder.ondataavailable = function(event)
+				{
+					recordedChunks.push(event.data);
+					// after stop `dataavilable` event run one more time
+					if (mediaRecorder.state === "recording")
+					{
+						mediaRecorder.stop();
+					}
+
+				};
+
+				mediaRecorder.onstop = function()
+				{
+					const blob = new Blob(recordedChunks, { type: "video/mp4" });
+					const url = URL.createObjectURL(blob);
+					resolve(url);
+				};
+			});
+		};
+
+		const recording = record(10000);
+
+		const video = document.createElement("video");
+		pageElement.appendChild(video);
+		recording.then(url => video.setAttribute("src", url));
+
+		const link = document.createElement("a");
+		link.setAttribute("download","recordingVideo");
+		recording.then(url =>
+		{
+			link.setAttribute("href", url);
+			link.click();
+		});
+	}
+
+
+
 	pan = {
 		parent: null,
 
