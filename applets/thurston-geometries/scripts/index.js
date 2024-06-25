@@ -114,7 +114,7 @@ export default function()
 
 		if (GeometryDataClass === E3S2Demo)
 		{
-			setUpS2Demo(applet);
+			initS2Demo(applet);
 			return;
 		}
 
@@ -199,7 +199,7 @@ export default function()
 
 
 
-	function setUpS2Demo()
+	function initS2Demo()
 	{
 		$(".sliders").style.display = "none";
 		$$(".text-buttons")[1].style.display = "none";

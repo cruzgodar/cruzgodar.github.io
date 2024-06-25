@@ -1,7 +1,6 @@
-import { buttonAnimationTime, changeScale } from "./animation.js";
+import { changeScale } from "./animation.js";
 import { currentlyTouchDevice } from "./interaction.js";
 import { $$ } from "./main.js";
-import anime from "/scripts/anime.js";
 
 const elementSelectors = `
 	a,
@@ -27,7 +26,7 @@ const elementSelectorsWithScale =
 
 
 // Adds a listener to every element that needs a hover event.
-export function setUpHoverEvents()
+export function initHoverEvents()
 {
 	$$(elementSelectors).forEach(element => addHoverEvent(element));
 
@@ -114,49 +113,12 @@ export function addHoverEventWithScale(element, scale)
 	});
 }
 
-function addHoverEventForTexHolder(element)
-{
-	element.classList.add("active");
-
-	element.addEventListener("mouseenter", () =>
-	{
-		if (!currentlyTouchDevice && element.getAttribute("data-showing-tex") !== "1")
-		{
-			element.classList.add("hover");
-
-			anime({
-				targets: element,
-				scale: 1.05,
-				borderRadius: "8px",
-				duration: buttonAnimationTime,
-				easing: "easeOutQuad",
-			});
-		}
-	});
-
-	element.addEventListener("mouseleave", () =>
-	{
-		if (!currentlyTouchDevice)
-		{
-			element.classList.remove("hover");
-
-			anime({
-				targets: element,
-				scale: 1,
-				borderRadius: "0px",
-				duration: buttonAnimationTime,
-				easing: "easeInOutQuad",
-			});
-		}
-	});
-}
-
 export function removeHoverEvents()
 {
 	$$(elementSelectors).forEach(element => element.classList.remove("hover"));
 }
 
-export function setUpFocusEvents()
+export function initFocusEvents()
 {
 	$$(".focus-on-child").forEach(element =>
 	{

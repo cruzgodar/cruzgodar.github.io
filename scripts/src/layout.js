@@ -120,7 +120,7 @@ export function onResize()
 	}
 }
 
-export function setUpOnResize()
+export function initOnResize()
 {
 	window.addEventListener("resize", onResize);
 }

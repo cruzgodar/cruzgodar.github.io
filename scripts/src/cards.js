@@ -35,7 +35,7 @@ export let scrollBeforeCard = 0;
 
 
 
-export function setUpCards()
+export function initCards()
 {
 	$$("[data-card-id]").forEach(element =>
 	{

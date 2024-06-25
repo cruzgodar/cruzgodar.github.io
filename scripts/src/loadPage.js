@@ -8,15 +8,12 @@ import {
 } from "./animation.js";
 import {
 	bannerElement,
-	setUpBanner
+	initBanner
 } from "./banners.js";
-import {
-	setUpNavButtons,
-	setUpTextButtons
-} from "./buttons.js";
-import { setUpCards, showCard } from "./cards.js";
-import { setUpCarousels } from "./carousels.js";
-import { setUpFocusEvents, setUpHoverEvents } from "./hoverEvents.js";
+import { initNavButtons, initTextButtons } from "./buttons.js";
+import { initCards, showCard } from "./cards.js";
+import { initCarousels } from "./carousels.js";
+import { initFocusEvents, initHoverEvents } from "./hoverEvents.js";
 import { equalizeAppletColumns, onResize } from "./layout.js";
 import {
 	$$,
@@ -30,7 +27,7 @@ import {
 	redirect,
 	setCurrentlyRedirecting
 } from "./navigation.js";
-import { setUpPageContents } from "./pageContent.js";
+import { initPageContents } from "./pageContent.js";
 import {
 	condenseApplet,
 	revertTheme,
@@ -56,7 +53,7 @@ export async function loadPage()
 
 
 
-	setUpBanner();
+	initBanner();
 
 	loadCustomStyle();
 
@@ -68,19 +65,19 @@ export async function loadPage()
 
 	disableLinks();
 
-	setUpHoverEvents();
+	initHoverEvents();
 
-	setUpTextButtons();
+	initTextButtons();
 
-	setUpNavButtons();
+	initNavButtons();
 
-	setUpPageContents();
+	initPageContents();
 
-	setUpCarousels();
+	initCarousels();
 
 	typesetMath();
 
-	setUpCards();
+	initCards();
 
 	onResize();
 
@@ -91,7 +88,7 @@ export async function loadPage()
 		condenseApplet();
 	}
 
-	setTimeout(setUpFocusEvents, 50);
+	setTimeout(initFocusEvents, 50);
 	setTimeout(equalizeAppletColumns, 100);
 }
 

@@ -10,7 +10,7 @@ export let currentlyTouchDevice =
 
 let lastMousemoveEvent = 0;
 
-export function setUpInteractionListeners()
+export function initInteractionListeners()
 {
 	const boundFunction = handleTouchEvent.bind(this);
 

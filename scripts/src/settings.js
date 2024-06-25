@@ -105,7 +105,7 @@ export function setForcedTheme(newForcedTheme)
 
 
 
-export function setUpDarkTheme()
+export function initDarkTheme()
 {
 	window.matchMedia("(prefers-color-scheme: dark)").addListener((e) =>
 	{

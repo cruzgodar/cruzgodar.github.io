@@ -143,7 +143,7 @@ export class ToggleButton extends Button
 
 
 
-export function setUpTextButtons()
+export function initTextButtons()
 {
 	addTemporaryListener({
 		object: window,
@@ -217,7 +217,7 @@ export function equalizeTextButtons()
 	});
 }
 
-export function setUpNavButtons()
+export function initNavButtons()
 {
 	const parent = sitemap[pageUrl].parent;
 

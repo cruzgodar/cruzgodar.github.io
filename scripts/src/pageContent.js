@@ -11,7 +11,7 @@ let indicatorElement;
 let contentsShown = false;
 let contentsAnimating = false;
 
-export function setUpPageContents()
+export function initPageContents()
 {
 	const navButtonsElement = $(".nav-buttons");
 

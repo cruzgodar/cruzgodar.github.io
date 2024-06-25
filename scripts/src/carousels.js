@@ -218,7 +218,7 @@ class Carousel
 	}
 }
 
-export function setUpCarousels()
+export function initCarousels()
 {
 	$$(".carousel").forEach(element => new Carousel(element));
 }

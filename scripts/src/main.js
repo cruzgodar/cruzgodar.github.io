@@ -1,8 +1,8 @@
 import { addHeader } from "./header.js";
-import { setUpInteractionListeners } from "./interaction.js";
-import { setUpOnResize } from "./layout.js";
+import { initInteractionListeners } from "./interaction.js";
+import { initOnResize } from "./layout.js";
 import { redirect } from "./navigation.js";
-import { setUpDarkTheme } from "./settings.js";
+import { initDarkTheme } from "./settings.js";
 
 export let pageElement = document.createElement("div");
 
@@ -102,15 +102,15 @@ const scriptsLoaded =
 
 export async function loadSite(url = pageUrl)
 {
-	setUpDarkTheme();
+	initDarkTheme();
 
 	pageElement.classList.add("page");
 
 	document.body.insertBefore(pageElement, document.body.firstChild);
 
-	setUpInteractionListeners();
+	initInteractionListeners();
 
-	setUpOnResize();
+	initOnResize();
 
 
 
