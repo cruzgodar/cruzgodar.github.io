@@ -2,8 +2,8 @@ import { disableLinks, showPage } from "../../scripts/src/loadPage.js";
 import { fadeLeft, opacityAnimationTime } from "/scripts/src/animation.js";
 import { nameTextOpacity } from "/scripts/src/banners.js";
 import {
-    $,
-    addTemporaryListener
+	$,
+	addTemporaryListener
 } from "/scripts/src/main.js";
 
 export default function()

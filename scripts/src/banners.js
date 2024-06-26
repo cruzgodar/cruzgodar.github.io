@@ -1,6 +1,6 @@
 import { changeOpacity } from "./animation.js";
 import { headerElement } from "./header.js";
-import { likelyWindowChromeHeight, viewportHeight } from "./layout.js";
+import { likelyWindowChromeHeight, onResize, viewportHeight } from "./layout.js";
 import {
 	$,
 	addStyle,
@@ -42,7 +42,7 @@ export function updateBanner(timestamp)
 
 	// This denominator accounts for the total distance the content needs to scroll
 	// and the header's height.
-	const t0 = Math.min(Math.max(window.scrollY / bannerMaxScroll * 1.22, 0), 1);
+	const t0 = Math.min(Math.max(window.scrollY / bannerMaxScroll * 1.35, 0), 1);
 
 	const t = 0.5 + 0.5 * Math.sin(Math.PI * (Math.pow(t0, 0.5) - 0.5));
 
@@ -73,6 +73,8 @@ export function updateBanner(timestamp)
 	{
 		contentElement.parentElement.style.marginBottom =
 			`${(viewportHeight - headerElement.offsetHeight - contentElement.offsetHeight) / 2}px`;
+
+		setTimeout(() => onResize(), 16);
 	}
 
 	else

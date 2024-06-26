@@ -1,3 +1,4 @@
+
 /* eslint-disable @stylistic/semi */
 const preamble = String.raw`\documentclass{article}
 \usepackage[utf8]{inputenc}
@@ -27,7 +28,10 @@ export function convertCardToLatex(element, title, course)
 	clonedElement.querySelectorAll(".tex-holder > *, #card-close-button, h1")
 		.forEach(e => e.remove());
 	
-	const firstSection = clonedElement.querySelector("h2");
+	const firstSection = clonedElement.querySelector("h2")
+		?? clonedElement.querySelector(".text-buttons").nextElementSibling;
+
+	console.log(firstSection);
 	
 	while (firstSection.previousElementSibling)
 	{
