@@ -593,7 +593,7 @@ export class H2xERooms extends H2xEGeometry
 	getNearestCorner()
 	{
 		const spacing = 1.875;
-		const cameraPosWModded = (this.cameraPos[3] + spacing / 2) % spacing;
+		const cameraPosWModded = (this.cameraPos[3] + spacing / 2) % spacing - spacing / 2;
 
 		const corners = [
 			[1, 1, Math.sqrt(3), spacing / 2],
@@ -629,6 +629,11 @@ export class H2xERooms extends H2xEGeometry
 			}
 		}
 
-		return corners[minIndex];
+		return [
+			corners[minIndex][0],
+			corners[minIndex][1],
+			corners[minIndex][2],
+			this.cameraPos[3] - cameraPosWModded + corners[minIndex][3]
+		];
 	}
 }

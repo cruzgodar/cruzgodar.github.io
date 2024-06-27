@@ -380,7 +380,7 @@ export class S2xERooms extends S2xEGeometry
 	{
 		const spacing = 1.09;
 
-		const cameraPosWModded = (this.cameraPos[3] + spacing / 2) % spacing;
+		const cameraPosWModded = (this.cameraPos[3] + spacing / 2) % spacing - spacing / 2;
 
 		const oneOverRoot3 = 1 / Math.sqrt(3);
 
