@@ -582,7 +582,7 @@ export class H3Rooms extends H3Geometry
 
 	uiElementsUsed = "#wall-thickness-slider, #switch-scene-button";
 
-	wallThicknessData = [.143, -4.357, .143];
+	wallThicknessData = [.143, -.357, .143];
 
 	getNearestCenter()
 	{
