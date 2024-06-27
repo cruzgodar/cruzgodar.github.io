@@ -1154,3 +1154,71 @@ export class SL2RRooms extends SL2RGeometry
 
 	wallThicknessData = [0.175, 0.05, 0.175];
 }
+
+export class SL2RSpheres extends SL2RGeometry
+{
+	static distances = /* glsl */`
+		vec3 h2Element = getH2Element(pos);
+
+		float distance1 = length(vec2(acosh(h2Element.z), fiber)) - .5;
+
+		// The fundamental domain has height 2pi, so to evenly space three balls,
+		// we want the gap between them to be (2pi - 6 * radius) / 3.
+		// Solving for the center of the other spheres gives +/- 2pi/3.
+
+		float distance2 = length(vec2(acosh(h2Element.z), fiber - 0.66667 * pi)) - .5;
+		float distance3 = length(vec2(acosh(h2Element.z), fiber + 0.66667 * pi)) - .5;
+
+		float minDistance = ${getMinGlslString("distance", 3)};
+	`;
+
+	distanceEstimatorGlsl = /* glsl */`
+		${SL2RSpheres.distances}
+
+		return minDistance;
+	`;
+
+	getColorGlsl = /* glsl */`
+		vec3 roomColor = ${loopRoomColors ? "mod(globalColor + baseColor + vec3(25.0), 50.0) - vec3(25.0)" : "globalColor + baseColor"};
+
+		return vec3(
+			.35 + .65 * (.5 * (sin((.01 * (pos.x + pos.z) + roomColor.x) * 40.0) + 1.0)),
+			.35 + .65 * (.5 * (sin((.01 * (pos.y + pos.w) + roomColor.y) * 57.0) + 1.0)),
+			.35 + .65 * (.5 * (sin((.01 * fiber + roomColor.z) * 89.0) + 1.0))
+		);
+	`;
+
+	lightGlsl = /* glsl */`
+		vec4 lightDirection1 = normalize(vec4(3.0, -3.0, 3.0, 1.0) - pos);
+		float dotProduct1 = dot(surfaceNormal, lightDirection1);
+
+		vec4 lightDirection2 = normalize(vec4(-4.0, 2.0, -1.0, 1.0) - pos);
+		float dotProduct2 = dot(surfaceNormal, lightDirection2);
+
+		float lightIntensity = 1.5 * max(dotProduct1, dotProduct2);
+	`;
+
+	cameraPos = loopRoomColors
+		? [1, 0, 0, 0]
+		: [1.000000555682267, 0, 0.0010542129021898201, 0];
+	
+	cameraFiber = 0;
+
+	normalVec = [0, 0, -1, 0];
+	upVec = [0, 0, 0, 1];
+	rightVec = [-Math.sqrt(2) / 2, Math.sqrt(2) / 2, 0, 0];
+	forwardVec = [Math.sqrt(2) / 2, Math.sqrt(2) / 2, 0, 0];
+
+	uniformGlsl = /* glsl */`
+		uniform float cameraFiber;
+		uniform vec3 baseColor;
+	`;
+
+	uniformNames = ["cameraFiber", "baseColor"];
+
+	updateUniforms(gl, uniformList)
+	{
+		gl.uniform1f(uniformList["cameraFiber"], this.cameraFiber);
+		gl.uniform3fv(uniformList["baseColor"], this.baseColor);
+	}
+}

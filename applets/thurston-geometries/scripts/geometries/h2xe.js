@@ -442,39 +442,60 @@ export class H2xERooms extends H2xEGeometry
 {
 	static distances = /* glsl */`
 		float spacing = 1.875;
-		float distance1 = wallThickness - length(vec2(acosh(pos.z), mod(pos.w + spacing / 2.0, spacing) - spacing / 2.0));
+
+		float distance1 = maxT * 2.0;
+		float distance2 = maxT * 2.0;
+
+		if (sceneTransition < 1.0)
+		{
+			float scale = exp(max(sceneTransition - 0.8, 0.0) * 5.0);
+
+			float effectiveWallThickness = wallThickness + sceneTransition * .48 / .75;
+
+			distance1 = effectiveWallThickness - length(vec2(acosh(pos.z), mod(pos.w + spacing / 2.0, spacing) - spacing / 2.0));
+		}
+
+		if (sceneTransition > 0.0)
+		{
+			float scale = exp(max(0.2 - sceneTransition, 0.0) * 5.0);
+
+			float effectiveRadius = .4 - .4 / .75 * (1.0 - sceneTransition);
+
+			distance2 = (length(vec2(acosh(pos.z), mod(pos.w + spacing / 2.0, spacing) - spacing / 2.0)) - effectiveRadius) * scale;
+		}
+		
 
 		// Translate the reflection plane to the x = 0 plane, then get the distance to it.
 		// The DE to x = 0 is abs(asinh(pos.x)).
-		float distance2 = abs(asinh(
+		float distance3 = abs(asinh(
 			dot(
 				vec4(1.23188, 0.0, 0.71939, 0),
 				pos
 			)
 		));
 		
-		float distance3 = abs(asinh(
+		float distance4 = abs(asinh(
 			dot(
 				vec4(1.23188, 0.0, -0.71939, 0),
 				pos
 			)
 		));
 
-		float distance4 = abs(asinh(
+		float distance5 = abs(asinh(
 			dot(
 				vec4(0.0, 1.23188, 0.71939, 0),
 				pos
 			)
 		));
 		
-		float distance5 = abs(asinh(
+		float distance6 = abs(asinh(
 			dot(
 				vec4(0.0, -1.23188, 0.71939, 0),
 				pos
 			)
 		));
 
-		float minDistance = ${getMinGlslString("distance", 5)};
+		float minDistance = ${getMinGlslString("distance", 6)};
 	`;
 
 	distanceEstimatorGlsl = /* glsl */`
@@ -486,18 +507,34 @@ export class H2xERooms extends H2xEGeometry
 	getColorGlsl = /* glsl */`
 		${H2xERooms.distances}
 
+		vec3 roomColor = globalColor + baseColor;
+
 		float wColor = floor((pos.w + 3.0 * spacing / 2.0) / spacing) - spacing / 2.0;
 
-		return vec3(
-			.15 + .85 * .5 * (sin((.05 * pos.x + wColor + globalColor.y + baseColor.y + globalColor.z + baseColor.z) * 5.0) + 1.0),
-			.15 + .85 * .5 * (sin((.05 * pos.y + wColor + globalColor.y + baseColor.y) * 7.0) + 1.0),
-			.15 + .85 * .5 * (sin((.05 * pos.z + wColor + globalColor.z + baseColor.z) * 11.0) + 1.0)
+		return mix(
+			vec3(
+				.15 + .85 * .5 * (sin((.05 * pos.x + wColor + roomColor.y + roomColor.z) * 5.0) + 1.0),
+				.15 + .85 * .5 * (sin((.05 * pos.y + wColor + roomColor.y) * 7.0) + 1.0),
+				.15 + .85 * .5 * (sin((.05 * pos.z + wColor + roomColor.z) * 11.0) + 1.0)
+			),
+			vec3(
+				.15 + .85 * (.5 * (sin(floor(wColor + roomColor.x + .5) * .25) + 1.0)),
+				.15 + .85 * (.5 * (sin(floor(wColor + roomColor.y + .5) * .25) + 1.0)),
+				.15 + .85 * (.5 * (sin(floor(wColor + roomColor.z + .5) * .25) + 1.0))
+			),
+			sceneTransition
 		);
 	`;
 
 	lightGlsl = /* glsl */`
 		float spacing = 1.875;
 		vec4 moddedPos = vec4(pos.xyz, mod(pos.w + spacing / 2.0, spacing) - spacing / 2.0);
+
+		if (sceneTransition == 1.0)
+		{
+			moddedPos.xyz *= 1.001;
+			surfaceNormal = getSurfaceNormal(moddedPos);
+		}
 
 		vec4 lightDirection1 = normalize(vec4(-1.0, 1.0, 0.0, .5) - moddedPos);
 		float dotProduct1 = abs(dot(surfaceNormal, lightDirection1));
@@ -510,6 +547,10 @@ export class H2xERooms extends H2xEGeometry
 		float lightIntensity = 1.5 * max(dotProduct1, dotProduct2);
 	`;
 
+	fogGlsl = /* glsl */`
+		return mix(color, fogColor, 1.0 - exp(-totalT * mix(0.25, 0.05, sceneTransition)));
+	`;
+
 	cameraPos = [0, .025, Math.sqrt(.025 * .025 + 1), 0];
 	normalVec = [0, -.025, Math.sqrt(.025 * .025 + 1), 0];
 	upVec = [0, 0, 0, 1];
@@ -519,22 +560,75 @@ export class H2xERooms extends H2xEGeometry
 	movingSpeed = 1.25;
 
 	uniformGlsl = /* glsl */`
+		uniform float sceneTransition;
 		uniform float wallThickness;
 		uniform vec3 baseColor;
 	`;
 
-	uniformNames = ["wallThickness", "baseColor"];
+	uniformNames = ["sceneTransition", "wallThickness", "baseColor"];
 
 	updateUniforms(gl, uniformList)
 	{
+		gl.uniform1f(uniformList["sceneTransition"], this.sliderValues.sceneTransition);
+
 		const wallThickness = 1.145 - this.sliderValues.wallThickness / 10;
+		console.log(wallThickness);
 
 		gl.uniform1f(uniformList["wallThickness"], wallThickness);
 
 		gl.uniform3fv(uniformList["baseColor"], this.baseColor);
 	}
 
-	uiElementsUsed = "#wall-thickness-slider";
+	uiElementsUsed = "#wall-thickness-slider, #switch-scene-button";
 
-	wallThicknessData = [1.55, -0.55, 1.55];
+	wallThicknessData = [1.55, -3.55, 1.55];
+
+	getNearestCenter()
+	{
+		const spacing = 1.875;
+
+		return [0, 0, 1, Math.round(this.cameraPos[3] / spacing) * spacing];
+	}
+
+	getNearestCorner()
+	{
+		const spacing = 1.875;
+		const cameraPosWModded = (this.cameraPos[3] + spacing / 2) % spacing;
+
+		const corners = [
+			[1, 1, Math.sqrt(3), spacing / 2],
+			[1, -1, Math.sqrt(3), spacing / 2],
+			[-1, 1, Math.sqrt(3), spacing / 2],
+			[-1, -1, Math.sqrt(3), spacing / 2],
+			[1, 1, Math.sqrt(3), -spacing / 2],
+			[1, -1, Math.sqrt(3), -spacing / 2],
+			[-1, 1, Math.sqrt(3), -spacing / 2],
+			[-1, -1, Math.sqrt(3), -spacing / 2],
+		];
+
+		let minDistance = Infinity;
+		let minIndex = 0;
+
+		for (let i = 0; i < corners.length; i++)
+		{
+			const h2Distance = Math.acosh(
+				this.cameraPos[0] * corners[i][0]
+				+ this.cameraPos[1] * corners[i][1]
+				+ this.cameraPos[2] * corners[i][2]
+			);
+
+			const e1Distance = cameraPosWModded - corners[i][3];
+
+			// No need to square root the distance when we're just finding the minimum.
+			const distance = h2Distance * h2Distance + e1Distance * e1Distance;
+
+			if (distance < minDistance)
+			{
+				minDistance = distance;
+				minIndex = i;
+			}
+		}
+
+		return corners[minIndex];
+	}
 }
