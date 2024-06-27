@@ -1172,6 +1172,49 @@ export class SL2RSpheres extends SL2RGeometry
 		float minDistance = ${getMinGlslString("distance", 3)};
 	`;
 
+	geodesicGlsl = /* glsl */`
+		vec4 pos;
+		float fiber;
+
+		getUpdatedPos(startPos, startFiber, rayDirectionVec, t, pos, fiber);
+
+		vec3 kleinElement = getKleinElement(pos, fiber);
+		
+		float dotProduct;
+
+	${getBinarySearchGlslChunk({
+		comparisonVec: "teleportVec1",
+		dotProductThreshhold: "delta + .000001",
+		searchIterations: "50"
+	})}
+
+	${getBinarySearchGlslChunk({
+		comparisonVec: "teleportVec2",
+		dotProductThreshhold: "delta + .000001",
+		searchIterations: "50"
+	})}
+
+	${getBinarySearchGlslChunk({
+		comparisonVec: "teleportVec3",
+		dotProductThreshhold: "delta + .000001",
+		searchIterations: "50"
+	})}
+
+	${getBinarySearchGlslChunk({
+		comparisonVec: "teleportVec4",
+		dotProductThreshhold: "delta + .000001",
+		searchIterations: "50"
+	})}
+
+	${getBinarySearchGlslChunk({
+		comparisonVec: "teleportVec5",
+		dotProductThreshhold: "pi + .000001",
+		searchIterations: "50"
+	})}
+
+		globalColor += teleportPos(pos, fiber, startPos, startFiber, rayDirectionVec, t, totalT);
+	`;
+
 	distanceEstimatorGlsl = /* glsl */`
 		${SL2RSpheres.distances}
 
@@ -1197,6 +1240,8 @@ export class SL2RSpheres extends SL2RGeometry
 
 		float lightIntensity = 1.5 * max(dotProduct1, dotProduct2);
 	`;
+
+	stepFactor = "0.3";
 
 	cameraPos = loopRoomColors
 		? [1, 0, 0, 0]
