@@ -2,12 +2,12 @@ import { showPage } from "../../../scripts/src/loadPage.js";
 import { ThurstonGeometry } from "./class.js";
 import { E3Rooms } from "./geometries/e3.js";
 import { H2xERooms } from "./geometries/h2xe.js";
-import { H3Spheres } from "./geometries/h3.js";
+import { H3Rooms } from "./geometries/h3.js";
 import { NilRooms } from "./geometries/nil.js";
 import { E3S2Demo, S2xES2Demo } from "./geometries/s2.js";
 import { S2xERooms } from "./geometries/s2xe.js";
 import { S3Rooms } from "./geometries/s3.js";
-import { SL2RSpheres } from "./geometries/sl2r.js";
+import { SL2RRooms } from "./geometries/sl2r.js";
 import { SolRooms } from "./geometries/sol.js";
 import { DownloadButton, ToggleButton } from "/scripts/src/buttons.js";
 import { Dropdown } from "/scripts/src/dropdowns.js";
@@ -62,11 +62,11 @@ export default function()
 		s2: E3S2Demo,
 		e3: E3Rooms,
 		s3: S3Rooms,
-		h3: H3Spheres,
+		h3: H3Rooms,
 		s2xe: S2xERooms,
 		h2xe: H2xERooms,
 		nil: NilRooms,
-		sl2r: SL2RSpheres,
+		sl2r: SL2RRooms,
 		sol: SolRooms,
 	};
 

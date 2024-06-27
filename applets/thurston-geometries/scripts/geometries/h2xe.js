@@ -544,7 +544,7 @@ export class H2xERooms extends H2xEGeometry
 
 		
 
-		float lightIntensity = 1.5 * max(dotProduct1, dotProduct2);
+		float lightIntensity = mix(1.5, 2.0, sceneTransition) * max(dotProduct1, dotProduct2);
 	`;
 
 	fogGlsl = /* glsl */`
@@ -581,7 +581,7 @@ export class H2xERooms extends H2xEGeometry
 
 	uiElementsUsed = "#wall-thickness-slider, #switch-scene-button";
 
-	wallThicknessData = [1.55, -3.55, 1.55];
+	wallThicknessData = [1.55, -.55, 1.55];
 
 	getNearestCenter()
 	{

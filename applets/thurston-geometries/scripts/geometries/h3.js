@@ -451,53 +451,72 @@ export class H3Axes extends H3Geometry
 export class H3Rooms extends H3Geometry
 {
 	static distances = /* glsl */`
-		float distance1 = wallThickness - acosh(pos.w);
+		float distance1 = maxT * 2.0;
+		float distance2 = maxT * 2.0;
+
+		if (sceneTransition < 1.0)
+		{
+			float scale = exp(max(sceneTransition - 0.8, 0.0) * 5.0);
+
+			float effectiveWallThickness = wallThickness + sceneTransition * 4.0 / .75;
+
+			distance1 = effectiveWallThickness - acosh(pos.w);
+		}
+
+		if (sceneTransition > 0.0)
+		{
+			float scale = exp(max(0.2 - sceneTransition, 0.0) * 5.0);
+
+			float effectiveRadius = .425 - .425 / .75 * (1.0 - sceneTransition);
+
+			distance2 = acosh(pos.w) - effectiveRadius;
+		}
 
 		// Translate the reflection plane to the x = 0 plane, then get the distance to it.
 		// The DE to x = 0 is abs(asinh(pos.x)).
-		float distance2 = abs(asinh(
+		float distance3 = abs(asinh(
 			dot(
 				vec4(1.23188, 0.0, 0.0, 0.71939),
 				pos
 			)
 		));
 		
-		float distance3 = abs(asinh(
+		float distance4 = abs(asinh(
 			dot(
 				vec4(1.23188, 0.0, 0.0, -0.71939),
 				pos
 			)
 		));
 
-		float distance4 = abs(asinh(
+		float distance5 = abs(asinh(
 			dot(
 				vec4(0.0, 1.23188, 0.0, 0.71939),
 				pos
 			)
 		));
 		
-		float distance5 = abs(asinh(
+		float distance6 = abs(asinh(
 			dot(
 				vec4(0.0, -1.23188, 0.0, 0.71939),
 				pos
 			)
 		));
 
-		float distance6 = abs(asinh(
+		float distance7 = abs(asinh(
 			dot(
 				vec4(0.0, 0.0, 1.23188, 0.71939),
 				pos
 			)
 		));
 		
-		float distance7 = abs(asinh(
+		float distance8 = abs(asinh(
 			dot(
 				vec4(0.0, 0.0, -1.23188, 0.71939),
 				pos
 			)
 		));
 
-		float minDistance = ${getMinGlslString("distance", 7)};
+		float minDistance = ${getMinGlslString("distance", 8)};
 	`;
 
 	distanceEstimatorGlsl = /* glsl */`
@@ -507,30 +526,31 @@ export class H3Rooms extends H3Geometry
 	`;
 
 	getColorGlsl = /* glsl */`
-		return vec3(
-			.25 + .75 * (.5 * (sin((.004 * pos.x + baseColor.x + globalColor.x) * 40.0) + 1.0)),
-			.25 + .75 * (.5 * (sin((.004 * pos.y + baseColor.y + globalColor.y) * 57.0) + 1.0)),
-			.25 + .75 * (.5 * (sin((.004 * pos.z + baseColor.z + globalColor.z) * 89.0) + 1.0))
+		vec3 roomColor = globalColor + baseColor;
+
+		return mix(
+			vec3(
+				.25 + .75 * (.5 * (sin((.004 * pos.x + roomColor.x) * 40.0) + 1.0)),
+				.25 + .75 * (.5 * (sin((.004 * pos.y + roomColor.y) * 57.0) + 1.0)),
+				.25 + .75 * (.5 * (sin((.004 * pos.z + roomColor.z) * 89.0) + 1.0))
+			),
+			vec3(
+				.15 + .85 * (.5 * (sin(floor(roomColor.x + .5) * .25) + 1.0)),
+				.15 + .85 * (.5 * (sin(floor(roomColor.y + .5) * .25) + 1.0)),
+				.15 + .85 * (.5 * (sin(floor(roomColor.z + .5) * .25) + 1.0))
+			),
+			sceneTransition
 		);
 	`;
 
 	lightGlsl = /* glsl */`
-		vec4 lightDirection1 = normalize(vec4(1.0, 1.0, 1.0, 1.0) - pos);
+		vec4 lightDirection1 = normalize(vec4(1.0, 1.0, 1.0, 0.0) - pos);
 		float dotProduct1 = dot(surfaceNormal, lightDirection1);
 
-		vec4 lightDirection2 = normalize(vec4(-1.0, -1.0, -1.0, 1.0) - pos);
+		vec4 lightDirection2 = normalize(vec4(-1.0, -1.0, -1.0, 0.0) - pos);
 		float dotProduct2 = dot(surfaceNormal, lightDirection2);
 
-		vec4 lightDirection3 = normalize(vec4(1.0, 1.0, 1.0, 0.0) - pos);
-		float dotProduct3 = dot(surfaceNormal, lightDirection3);
-
-		vec4 lightDirection4 = normalize(vec4(-1.0, -1.0, -1.0, 0.0) - pos);
-		float dotProduct4 = dot(surfaceNormal, lightDirection4);
-
-		float lightIntensity = max(
-			max(abs(dotProduct1), abs(dotProduct2)),
-			max(abs(dotProduct3), abs(dotProduct4))
-		);
+		float lightIntensity = mix(1.0, 1.25, sceneTransition) * max(abs(dotProduct1), abs(dotProduct2));
 	`;
 
 	cameraPos = [-.1, 0, 0, Math.sqrt(.1 * .1 + 1)];
@@ -542,14 +562,17 @@ export class H3Rooms extends H3Geometry
 	movingSpeed = 1.25;
 
 	uniformGlsl = /* glsl */`
+		uniform float sceneTransition;
 		uniform float wallThickness;
 		uniform vec3 baseColor;
 	`;
 
-	uniformNames = ["wallThickness", "baseColor"];
+	uniformNames = ["sceneTransition", "wallThickness", "baseColor"];
 
 	updateUniforms(gl, uniformList)
 	{
+		gl.uniform1f(uniformList["sceneTransition"], this.sliderValues.sceneTransition);
+
 		const wallThickness = 1.5 -
 			(this.sliderValues.wallThickness - (-.357)) / (.143 - (-.357)) * (1.5 - 1);
 
@@ -557,116 +580,47 @@ export class H3Rooms extends H3Geometry
 		gl.uniform3fv(uniformList["baseColor"], this.baseColor);
 	}
 
-	uiElementsUsed = "#wall-thickness-slider";
+	uiElementsUsed = "#wall-thickness-slider, #switch-scene-button";
 
-	wallThicknessData = [.143, -.357, .143];
-}
+	wallThicknessData = [.143, -4.357, .143];
 
-export class H3Spheres extends H3Geometry
-{
-	static distances = /* glsl */`
-		float distance1 = acosh(pos.w) - .35;
-
-		// Translate the reflection plane to the x = 0 plane, then get the distance to it.
-		// The DE to x = 0 is abs(asinh(pos.x)).
-		float distance2 = abs(asinh(
-			dot(
-				vec4(1.23188, 0.0, 0.0, 0.71939),
-				pos
-			)
-		));
-		
-		float distance3 = abs(asinh(
-			dot(
-				vec4(1.23188, 0.0, 0.0, -0.71939),
-				pos
-			)
-		));
-
-		float distance4 = abs(asinh(
-			dot(
-				vec4(0.0, 1.23188, 0.0, 0.71939),
-				pos
-			)
-		));
-		
-		float distance5 = abs(asinh(
-			dot(
-				vec4(0.0, -1.23188, 0.0, 0.71939),
-				pos
-			)
-		));
-
-		float distance6 = abs(asinh(
-			dot(
-				vec4(0.0, 0.0, 1.23188, 0.71939),
-				pos
-			)
-		));
-		
-		float distance7 = abs(asinh(
-			dot(
-				vec4(0.0, 0.0, -1.23188, 0.71939),
-				pos
-			)
-		));
-
-		float minDistance = ${getMinGlslString("distance", 7)};
-	`;
-
-	distanceEstimatorGlsl = /* glsl */`
-		${H3Spheres.distances}
-
-		return minDistance;
-	`;
-
-	getColorGlsl = /* glsl */`
-		vec3 roomColor = baseColor + globalColor;
-
-		return vec3(
-			.25 + .75 * (.5 * (sin(floor(roomColor.x + .5) * .3) + 1.0)),
-			.25 + .75 * (.5 * (sin(floor(roomColor.y + .5) * .3) + 1.0)),
-			.25 + .75 * (.5 * (sin(floor(roomColor.z + .5) * .3) + 1.0))
-		);
-	`;
-
-	lightGlsl = /* glsl */`
-		vec4 lightDirection1 = normalize(vec4(1.0, 1.0, 1.0, 1.0) - pos);
-		float dotProduct1 = dot(surfaceNormal, lightDirection1);
-
-		vec4 lightDirection2 = normalize(vec4(-1.0, -1.0, -1.0, 1.0) - pos);
-		float dotProduct2 = dot(surfaceNormal, lightDirection2);
-
-		vec4 lightDirection3 = normalize(vec4(1.0, 1.0, 1.0, 0.0) - pos);
-		float dotProduct3 = dot(surfaceNormal, lightDirection3);
-
-		vec4 lightDirection4 = normalize(vec4(-1.0, -1.0, -1.0, 0.0) - pos);
-		float dotProduct4 = dot(surfaceNormal, lightDirection4);
-
-		float lightIntensity = 1.3 * max(
-			max(abs(dotProduct1), abs(dotProduct2)),
-			max(abs(dotProduct3), abs(dotProduct4))
-		);
-	`;
-
-	cameraPos = [-.1, 0, 0, Math.sqrt(.1 * .1 + 1)];
-	normalVec = [.1, 0, 0, Math.sqrt(.1 * .1 + 1)];
-	upVec = [0, 0, 1, 0];
-	rightVec = [0, -1, 0, 0];
-	forwardVec = [-1, 0, 0, 0];
-
-	movingSpeed = 1.25;
-
-	uniformGlsl = /* glsl */`
-		uniform vec3 baseColor;
-	`;
-
-	uniformNames = ["baseColor"];
-
-	updateUniforms(gl, uniformList)
+	getNearestCenter()
 	{
-		gl.uniform3fv(uniformList["baseColor"], this.baseColor);
+		return [0, 0, 0, 1];
 	}
 
-	uiElementsUsed = "#wall-thickness-slider";
+	getNearestCorner()
+	{
+		const corners = [
+			[1, 1, 1, 2],
+			[1, -1, 1, 2],
+			[-1, 1, 1, 2],
+			[-1, -1, 1, 2],
+			[1, 1, -1, 2],
+			[1, -1, -1, 2],
+			[-1, 1, -1, 2],
+			[-1, -1, -1, 2],
+		];
+
+		let minDistance = Infinity;
+		let minIndex = 0;
+
+		for (let i = 0; i < corners.length; i++)
+		{
+			const distance = Math.acosh(
+				this.cameraPos[0] * corners[i][0]
+				+ this.cameraPos[1] * corners[i][1]
+				+ this.cameraPos[2] * corners[i][2]
+				+ this.cameraPos[3] * corners[i][3]
+			);
+
+			if (distance < minDistance)
+			{
+				minDistance = distance;
+				minIndex = i;
+			}
+		}
+
+		return corners[minIndex];
+	}
 }
