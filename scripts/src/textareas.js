@@ -13,6 +13,7 @@ export class Textarea extends InputElement
 		onEnter = () => {},
 	}) {
 		super({ element, name });
+		this.element.nextElementSibling.textContent = this.name;
 		this.value = value;
 		this.allowEnter = allowEnter;
 		this.onInput = onInput;
