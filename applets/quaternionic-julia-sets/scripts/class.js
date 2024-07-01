@@ -1,6 +1,6 @@
 import anime from "/scripts/anime.js";
+import { Applet } from "/scripts/applets/applet.js";
 import { RaymarchApplet } from "/scripts/applets/raymarchApplet.js";
-import { aspectRatio } from "/scripts/src/layout.js";
 import { Wilson } from "/scripts/wilson.js";
 
 export class QuaternionicJuliaSet extends RaymarchApplet
@@ -450,17 +450,7 @@ export class QuaternionicJuliaSet extends RaymarchApplet
 
 		if (this.wilson.fullscreen.currentlyFullscreen)
 		{
-			if (aspectRatio >= 1)
-			{
-				this.imageWidth = this.imageSize;
-				this.imageHeight = Math.floor(this.imageSize / aspectRatio);
-			}
-
-			else
-			{
-				this.imageWidth = Math.floor(this.imageSize * aspectRatio);
-				this.imageHeight = this.imageSize;
-			}
+			[this.imageWidth, this.imageHeight] = Applet.getEqualPixelFullScreen(this.imageSize);
 		}
 
 		else

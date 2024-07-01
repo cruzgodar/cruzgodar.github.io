@@ -771,8 +771,7 @@ export class ThurstonGeometry extends Applet
 
 		if (this.wilson.fullscreen.currentlyFullscreen)
 		{
-			imageWidth = Math.min(this.resolution, Math.floor(this.resolution * aspectRatio));
-			imageHeight = Math.min(this.resolution, Math.floor(this.resolution / aspectRatio));
+			[imageWidth, imageHeight] = Applet.getEqualPixelFullScreen(resolution);
 
 			this.wilson.worldWidth = Math.max(2, 2 * aspectRatio);
 			this.wilson.worldHeight = Math.max(2, 2 / aspectRatio);

@@ -301,15 +301,14 @@ export class Applet
 		{
 			if (wilson.fullscreen.currentlyFullscreen)
 			{
+				wilson.changeCanvasSize(
+					...Applet.getEqualPixelFullScreen(this.resolution)
+				);
+
 				this.aspectRatio = window.innerWidth / window.innerHeight;
 
 				if (this.aspectRatio >= 1)
 				{
-					wilson.changeCanvasSize(
-						this.resolution,
-						Math.floor(this.resolution / this.aspectRatio)
-					);
-
 					if (useZoomLevel)
 					{
 						wilson.worldWidth = 3 * Math.pow(2, this.zoom.level) * this.aspectRatio;
@@ -319,11 +318,6 @@ export class Applet
 
 				else
 				{
-					wilson.changeCanvasSize(
-						Math.floor(this.resolution * this.aspectRatio),
-						this.resolution
-					);
-
 					if (useZoomLevel)
 					{
 						wilson.worldWidth = 3 * Math.pow(2, this.zoom.level);
@@ -979,6 +973,13 @@ export class Applet
 	static rgbToHex(r, g, b)
 	{
 		return "#" + Applet.componentToHex(r) + Applet.componentToHex(g) + Applet.componentToHex(b);
+	}
+
+	static getEqualPixelFullScreen(resolution)
+	{
+		const sqrtAspectRatio = Math.sqrt(window.innerWidth / window.innerHeight);
+
+		return [Math.round(resolution * sqrtAspectRatio), Math.round(resolution / sqrtAspectRatio)];
 	}
 }
 

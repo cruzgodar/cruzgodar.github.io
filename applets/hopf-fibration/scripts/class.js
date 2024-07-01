@@ -1,6 +1,6 @@
 import anime from "/scripts/anime.js";
+import { Applet } from "/scripts/applets/applet.js";
 import { ThreeApplet } from "/scripts/applets/threeApplet.js";
-import { aspectRatio } from "/scripts/src/layout.js";
 import { addTemporaryListener } from "/scripts/src/main.js";
 import * as THREE from "/scripts/three.js";
 import { Wilson } from "/scripts/wilson.js";
@@ -442,17 +442,7 @@ export class HopfFibration extends ThreeApplet
 
 		if (this.wilson.fullscreen.currentlyFullscreen)
 		{
-			if (aspectRatio >= 1)
-			{
-				this.imageWidth = this.imageSize;
-				this.imageHeight = Math.floor(this.imageSize / aspectRatio);
-			}
-
-			else
-			{
-				this.imageWidth = Math.floor(this.imageSize * aspectRatio);
-				this.imageHeight = this.imageSize;
-			}
+			[this.imageWidth, this.imageHeight] = Applet.getEqualPixelFullScreen(this.imageSize);
 		}
 
 		else

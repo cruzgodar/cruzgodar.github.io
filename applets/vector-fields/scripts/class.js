@@ -4,6 +4,7 @@ import {
 	loadGlsl
 } from "../../../scripts/src/complexGlsl.js";
 import { AnimationFrameApplet } from "/scripts/applets/animationFrameApplet.js";
+import { Applet } from "/scripts/applets/applet.js";
 import { addTemporaryListener } from "/scripts/src/main.js";
 import { Wilson } from "/scripts/wilson.js";
 
@@ -1202,34 +1203,22 @@ export class VectorField extends AnimationFrameApplet
 		{
 			this.aspectRatio = window.innerWidth / window.innerHeight;
 
+			this.wilson.changeCanvasSize(
+				...Applet.getEqualPixelFullScreen(this.resolution)
+			);
+
+			this.wilsonDim.changeCanvasSize(
+				...Applet.getEqualPixelFullScreen(this.resolution)
+			);
+			
 			if (this.aspectRatio >= 1)
 			{
-				this.wilson.changeCanvasSize(
-					Math.ceil(this.resolution * this.aspectRatio),
-					this.resolution
-				);
-
-				this.wilsonDim.changeCanvasSize(
-					Math.ceil(this.resolution * this.aspectRatio),
-					this.resolution
-				);
-
 				this.wilson.worldWidth = 4 * Math.pow(2, this.zoomLevel) * this.aspectRatio;
 				this.wilson.worldHeight = 4 * Math.pow(2, this.zoomLevel);
 			}
 
 			else
 			{
-				this.wilson.changeCanvasSize(
-					this.resolution,
-					Math.ceil(this.resolution / this.aspectRatio)
-				);
-
-				this.wilsonDim.changeCanvasSize(
-					this.resolution,
-					Math.ceil(this.resolution / this.aspectRatio)
-				);
-
 				this.wilson.worldWidth = 4 * Math.pow(2, this.zoomLevel);
 				this.wilson.worldHeight = 4 * Math.pow(2, this.zoomLevel) / this.aspectRatio;
 			}

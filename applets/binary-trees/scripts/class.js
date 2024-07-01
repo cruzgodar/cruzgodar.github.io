@@ -1,7 +1,6 @@
 import { Applet } from "../../../scripts/applets/applet.js";
 import { opacityAnimationTime } from "/scripts/src/animation.js";
 import { convertColor } from "/scripts/src/browser.js";
-import { aspectRatio } from "/scripts/src/layout.js";
 import {
 	$$,
 	addTemporaryInterval,
@@ -319,15 +318,9 @@ export class BinaryTree extends Applet
 
 		if (this.wilson.fullscreen.currentlyFullscreen)
 		{
-			if (aspectRatio >= 1)
-			{
-				this.wilson.changeCanvasSize(2000, 2000 / aspectRatio);
-			}
-
-			else
-			{
-				this.wilson.changeCanvasSize(2000 * aspectRatio, 2000);
-			}
+			this.wilson.changeCanvasSize(
+				...Applet.getEqualPixelFullScreen(2000)
+			);
 		}
 
 		else

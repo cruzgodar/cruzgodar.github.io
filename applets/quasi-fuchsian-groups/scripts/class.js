@@ -917,17 +917,7 @@ export class QuasiFuchsianGroups extends Applet
 
 		if (this.wilson.fullscreen.currentlyFullscreen)
 		{
-			if (aspectRatio >= 1)
-			{
-				this.imageWidth = Math.floor(this.imageSize * aspectRatio);
-				this.imageHeight = this.imageSize;
-			}
-
-			else
-			{
-				this.imageWidth = this.imageSize;
-				this.imageHeight = Math.floor(this.imageSize / aspectRatio);
-			}
+			[this.imageWidth, this.imageHeight] = Applet.getEqualPixelFullScreen(this.imageSize);
 		}
 
 		else
