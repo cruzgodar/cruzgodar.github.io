@@ -118,7 +118,7 @@ export class SortingAlgorithm extends AnimationFrameApplet
 					
 					float s = clamp((length(uv) / circleSize - .03) * (1.0 - brightness), 0.0, 1.0);
 					
-					float v = clamp((1.0 - length(uv) / circleSize) * 100.0, 0.0, 1.0);
+					float v = clamp((1.0 - length(uv) / circleSize) * 300.0, 0.0, 1.0);
 					
 					gl_FragColor = vec4(hsv2rgb(vec3(h, s, v)), 1.0);
 				}
