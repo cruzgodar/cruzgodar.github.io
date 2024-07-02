@@ -6,15 +6,15 @@ import { $, addTemporaryListener } from "/scripts/src/main.js";
 import { Wilson } from "/scripts/wilson.js";
 
 export const makeAnimation = false;
-const animationInitialResolution = 25;
-const animationResolution = 2560;
+const animationInitialResolution = 38;
+const animationResolution = 3840;
 const animationAspectRatio = 16 / 9;
 
 const animationWaitTime = 1000;
 let animationFrame = -1;
 const animationStartFrame = 0;
 
-const animationMovingSpeed = 0.005;
+const animationMovingSpeed = 0.001;
 const animationMovingDirection = [0.54025, 0.8415, 0, 0];
 
 export class ThurstonGeometry extends Applet
@@ -606,6 +606,8 @@ export class ThurstonGeometry extends Applet
 				else
 				{
 					requestAnimationFrame(this.drawFrame.bind(this));
+
+					console.log(animationFrame);
 				}
 
 				animationFrame++;
@@ -664,7 +666,7 @@ export class ThurstonGeometry extends Applet
 					this.geometryData.followGeodesic(
 						this.geometryData.cameraPos,
 						this.automovingDirection(),
-						dt
+						animationMovingSpeed
 					)
 				);
 			}

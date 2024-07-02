@@ -1,5 +1,5 @@
 import { getMatrixGlsl, getMinGlslString } from "../../../../scripts/applets/applet.js";
-import { ThurstonGeometry } from "../class.js";
+import { ThurstonGeometry, makeAnimation } from "../class.js";
 import { BaseGeometry } from "./base.js";
 
 const numericalStepDistance = 0.0001;
@@ -964,9 +964,27 @@ class SolGeometry extends BaseGeometry
 
 				mElement = liftToM(this.cameraPos);
 
-				this.baseColor[0] += this.baseColorIncreases[2 * i][0];
-				this.baseColor[1] += this.baseColorIncreases[2 * i][1];
-				this.baseColor[2] += this.baseColorIncreases[2 * i][2];
+				if (makeAnimation)
+				{
+					this.baseColor[0] = (
+						this.baseColor[0] + this.baseColorIncreases[2 * i][0] + 25
+					) % 50 - 25;
+
+					this.baseColor[1] = (
+						this.baseColor[1] + this.baseColorIncreases[2 * i][1] + 25
+					) % 50 - 25;
+
+					this.baseColor[2] = (
+						this.baseColor[2] + this.baseColorIncreases[2 * i][2] + 25
+					) % 50 - 25;
+				}
+
+				else
+				{
+					this.baseColor[0] += this.baseColorIncreases[2 * i][0];
+					this.baseColor[1] += this.baseColorIncreases[2 * i][1];
+					this.baseColor[2] += this.baseColorIncreases[2 * i][2];
+				}
 			}
 
 			else if (mElement[i] > 0.5)
@@ -978,9 +996,27 @@ class SolGeometry extends BaseGeometry
 
 				mElement = liftToM(this.cameraPos);
 
-				this.baseColor[0] += this.baseColorIncreases[2 * i + 1][0];
-				this.baseColor[1] += this.baseColorIncreases[2 * i + 1][1];
-				this.baseColor[2] += this.baseColorIncreases[2 * i + 1][2];
+				if (makeAnimation)
+				{
+					this.baseColor[0] = (
+						this.baseColor[0] + this.baseColorIncreases[2 * i + 1][0] + 25
+					) % 50 - 25;
+
+					this.baseColor[1] = (
+						this.baseColor[1] + this.baseColorIncreases[2 * i + 1][1] + 25
+					) % 50 - 25;
+
+					this.baseColor[2] = (
+						this.baseColor[2] + this.baseColorIncreases[2 * i + 1][2] + 25
+					) % 50 - 25;
+				}
+
+				else
+				{
+					this.baseColor[0] += this.baseColorIncreases[2 * i + 1][0];
+					this.baseColor[1] += this.baseColorIncreases[2 * i + 1][1];
+					this.baseColor[2] += this.baseColorIncreases[2 * i + 1][2];
+				}
 			}
 		}
 	}
