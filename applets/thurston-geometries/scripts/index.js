@@ -1,5 +1,5 @@
 import { showPage } from "../../../scripts/src/loadPage.js";
-import { ThurstonGeometry } from "./class.js";
+import { ThurstonGeometry, makeAnimation } from "./class.js";
 import { E3Rooms } from "./geometries/e3.js";
 import { H2xERooms } from "./geometries/h2xe.js";
 import { H3Rooms } from "./geometries/h3.js";
@@ -280,7 +280,10 @@ export default function()
 		);
 	}
 
-	run();
+	if (!makeAnimation)
+	{
+		run();
+	}
 
 	showPage();
 

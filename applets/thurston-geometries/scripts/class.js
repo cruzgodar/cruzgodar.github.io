@@ -5,6 +5,18 @@ import { aspectRatio } from "/scripts/src/layout.js";
 import { $, addTemporaryListener } from "/scripts/src/main.js";
 import { Wilson } from "/scripts/wilson.js";
 
+export const makeAnimation = false;
+const animationInitialResolution = 25;
+const animationResolution = 2560;
+const animationAspectRatio = 16 / 9;
+
+const animationWaitTime = 1000;
+let animationFrame = -1;
+const animationStartFrame = 0;
+
+const animationMovingSpeed = 0.005;
+const animationMovingDirection = [0.54025, 0.8415, 0, 0];
+
 export class ThurstonGeometry extends Applet
 {
 	resolution = 500;
@@ -115,6 +127,18 @@ export class ThurstonGeometry extends Applet
 
 		this.updateAutomaticMoving = () => {};
 		this.movingAmount = [0, 0, 0];
+
+		if (makeAnimation)
+		{
+			geometryData.aspectRatio = animationAspectRatio;
+			this.changeResolution(animationInitialResolution);
+
+			this.moveForever({
+				speed: animationMovingSpeed,
+				direction: () => animationMovingDirection,
+				rampStart: false
+			});
+		}
 
 		const posSignature = this.geometryData.usesFiberComponent
 			? "vec4 pos, float fiber"
@@ -556,7 +580,46 @@ export class ThurstonGeometry extends Applet
 
 		if (!this.animationPaused)
 		{
-			requestAnimationFrame(this.drawFrame.bind(this));
+			if (makeAnimation)
+			{
+				if (animationFrame >= animationStartFrame && animationFrame >= 0)
+				{
+					this.canvas.toBlob(blob =>
+					{
+						const link = document.createElement("a");
+
+						link.download = String(animationFrame).padStart(5, "0") + ".png";
+
+						link.href = window.URL.createObjectURL(blob);
+
+						link.click();
+
+						link.remove();
+					});
+
+					setTimeout(
+						() => requestAnimationFrame(this.drawFrame.bind(this)),
+						animationWaitTime
+					);
+				}
+
+				else
+				{
+					requestAnimationFrame(this.drawFrame.bind(this));
+				}
+
+				animationFrame++;
+
+				if (animationFrame === animationStartFrame)
+				{
+					this.changeResolution(animationResolution);
+				}
+			}
+
+			else
+			{
+				requestAnimationFrame(this.drawFrame.bind(this));
+			}
 		}
 	}
 
@@ -844,7 +907,7 @@ export class ThurstonGeometry extends Applet
 		speed = 1,
 		direction = () => [1, 0, 0, 0],
 		rampStart = false,
-	}) {
+	} = {}) {
 		let totalTimeElapsed = 0;
 
 		this.movingAmount = [0, 0, 0];
