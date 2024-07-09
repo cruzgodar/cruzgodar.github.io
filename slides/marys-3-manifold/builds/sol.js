@@ -22,7 +22,7 @@ async function reset({ slide, forward, duration })
 	applet.run(geometryData);
 	applet.changeResolution(forward ? 800 : 400);
 	applet.moveForever({
-		speed: .4,
+		speed: .5,
 		direction: forward ? () => [0.525731, 0.850651, 0, 0] : () => [0, 0, 1, 0]
 	});
 

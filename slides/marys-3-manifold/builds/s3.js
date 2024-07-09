@@ -27,7 +27,7 @@ async function reset({ slide, forward, duration })
 	applet.changeResolution(1500);
 	
 	applet.moveForever({
-		speed: .25,
+		speed: .5,
 		direction: () =>
 		{
 			return [

@@ -45,6 +45,7 @@ export class ThurstonGeometry extends Applet
 
 	automoving = false;
 	automovingDirection = () => [0, 0, 0, 0];
+	automovingSpeed = 1;
 
 	movingSubsteps = 1;
 
@@ -666,7 +667,7 @@ export class ThurstonGeometry extends Applet
 					this.geometryData.followGeodesic(
 						this.geometryData.cameraPos,
 						this.automovingDirection(),
-						animationMovingSpeed
+						this.automovingSpeed * (makeAnimation ? 1 : dt)
 					)
 				);
 			}
@@ -915,6 +916,7 @@ export class ThurstonGeometry extends Applet
 		this.movingAmount = [0, 0, 0];
 		this.automovingDirection = direction;
 		this.automoving = true;
+		this.automovingSpeed = speed;
 
 		setTimeout(() =>
 		{
