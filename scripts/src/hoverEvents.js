@@ -1,6 +1,7 @@
 import { changeScale } from "./animation.js";
 import { currentlyTouchDevice } from "./interaction.js";
 import { $$ } from "./main.js";
+import { prefetchPage } from "./navigation.js";
 
 const elementSelectors = `
 	a,
@@ -33,6 +34,14 @@ export function initHoverEvents()
 	elementSelectorsWithScale.forEach(selector =>
 	{
 		$$(selector[0]).forEach(element => addHoverEventWithScale(element, selector[1]));
+	});
+
+	$$("a").forEach(element =>
+	{
+		element.addEventListener("mouseenter", () =>
+		{
+			prefetchPage(element.href);
+		});
 	});
 }
 

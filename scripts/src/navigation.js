@@ -9,6 +9,7 @@ import {
 } from "./animation.js";
 import {
 	bannerElement,
+	bannerPages,
 	loadBanner,
 } from "./banners.js";
 import { cardIsOpen, hideCard } from "./cards.js";
@@ -46,6 +47,8 @@ let lastPageScroll = 0;
 
 export let navigationTransitionType = 0;
 
+const urlsFetched = [];
+
 
 
 // Handles virtually all links.
@@ -81,78 +84,70 @@ export async function redirect({
 
 	navigationTransitionType = getTransitionType(url);
 
-
-
-	await fadeOutPage({ url, noFadeOut });
-
 	// Get the new data, fade out the page, and preload the next page's banner if it exists.
 	// When all of those things are successfully done, replace the current html with the new stuff.
-	Promise.all([fetch(`${url}data.html`), loadBanner()])
-		.then((response) =>
-		{
-			if (!response[0].ok)
-			{
-				window.location.replace("/404.html");
-			}
+	const [response] = await Promise.all([fetch(`${url}data.html`), loadBanner(), fadeOutPage({ url, noFadeOut })]);
 
-			else
-			{
-				return response[0].text();
-			}
-		})
-		.then((data) =>
-		{
-			unloadPage();
+	if (!response.ok)
+	{
+		window.location.replace("/404.html");
+		return;
+	}
 
-			document.body.firstElementChild.insertAdjacentHTML(
-				"beforebegin",
-				`<div class="page"${opacityAnimationTime ? "style=\"opacity: 0\"" : ""}>${data}</div>`
-			);
+	const text = await response.text();
 
-			setPageUrl(url);
+	unloadPage();
 
-			loadPage();
+	document.body.firstElementChild.insertAdjacentHTML(
+		"beforebegin",
+		`<div class="page"${opacityAnimationTime ? "style=\"opacity: 0\"" : ""}>${text}</div>`
+	);
+
+	setPageUrl(url);
+
+	urlsFetched.push(url);
+
+	loadPage();
 
 
 
-			// Record the page change in the url bar and in the browser history.
-			if (noStatePush)
-			{
-				history.replaceState({ url }, document.title, getDisplayUrl());
-			}
+	// Record the page change in the url bar and in the browser history.
+	if (noStatePush)
+	{
+		history.replaceState({ url }, document.title, getDisplayUrl());
+	}
 
-			else
-			{
-				history.pushState({ url }, document.title, getDisplayUrl());
-			}
-
-
-
-			// Restore the ability to scroll in case it was removed.
-			document.documentElement.style.overflowY = "scroll";
-			document.body.style.overflowY = "visible";
-
-			document.body.style.userSelect = "auto";
-			document.body.style.WebkitUserSelect = "auto";
+	else
+	{
+		history.pushState({ url }, document.title, getDisplayUrl());
+	}
 
 
-			if (window.DEBUG)
-			{
-				window.scrollTo(0, 100000);
-			}
 
-			else if (restoreScroll)
-			{
-				window.scrollTo(0, lastPageScroll);
-			}
+	// Restore the ability to scroll in case it was removed.
+	document.documentElement.style.overflowY = "scroll";
+	document.body.style.overflowY = "visible";
 
-			else
-			{
-				window.scrollTo(0, 0);
-			}
+	document.body.style.userSelect = "auto";
+	document.body.style.WebkitUserSelect = "auto";
 
-			lastPageScroll = temp;
-		});
+
+	if (window.DEBUG)
+	{
+		window.scrollTo(0, 100000);
+	}
+
+	else if (restoreScroll)
+	{
+		window.scrollTo(0, lastPageScroll);
+	}
+
+	else
+	{
+		window.scrollTo(0, 0);
+	}
+
+	lastPageScroll = temp;
 }
 
 
@@ -378,6 +373,48 @@ function unloadPage()
 
 	Applet.current = [];
 
-
 	pageElement.remove();
+}
+
+// Fetches (and caches) a url, including all the page images
+// and banner images, and its scripts and styles.
+export async function prefetchPage(url)
+{
+	url = url.replace(/^https*:\/\/.+?(\/.+)$/, (match, $1) => $1);
+
+	if (urlsFetched.includes(url))
+	{
+		return;
+	}
+
+	urlsFetched.push(url);
+
+	const html = await (await fetch(`${url}data.html`)).text();
+
+	const urlsToFetch = [];
+	
+	html.replaceAll(/<img.*?src="(.+?)".*?>.+?<\/img>/g, (match, $1) =>
+	{
+		urlsToFetch.push($1);
+		return match;
+	});
+
+	if (bannerPages.includes(url))
+	{
+		urlsToFetch.push(`${url}banners/small.webp`);
+	}
+	
+	const sitemapEntry = sitemap[url];
+
+	if (sitemapEntry.customScript)
+	{
+		urlsToFetch.push(`${url}scripts/index.min.js`);
+	}
+
+	if (sitemapEntry.customStyle)
+	{
+		urlsToFetch.push(`${url}style/index.min.css`);
+	}
+
+	await Promise.all(urlsToFetch.map(urlToFetch => fetch(urlToFetch)));
 }
