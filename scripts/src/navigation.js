@@ -392,12 +392,6 @@ export async function prefetchPage(url)
 	const html = await (await fetch(`${url}data.html`)).text();
 
 	const urlsToFetch = [];
-	
-	html.replaceAll(/<img.*?src="(.+?)".*?>.+?<\/img>/g, (match, $1) =>
-	{
-		urlsToFetch.push($1);
-		return match;
-	});
 
 	if (bannerPages.includes(url))
 	{
