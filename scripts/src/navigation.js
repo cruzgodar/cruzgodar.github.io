@@ -389,9 +389,7 @@ export async function prefetchPage(url)
 
 	urlsFetched.push(url);
 
-	const html = await (await fetch(`${url}data.html`)).text();
-
-	const urlsToFetch = [];
+	const urlsToFetch = [`${url}data.html`];
 
 	if (bannerPages.includes(url))
 	{

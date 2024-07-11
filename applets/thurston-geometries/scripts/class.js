@@ -51,6 +51,8 @@ export class ThurstonGeometry extends Applet
 
 	needNewFrame = true;
 
+	defaultState = { geometry: "s2" };
+
 
 
 	constructor({

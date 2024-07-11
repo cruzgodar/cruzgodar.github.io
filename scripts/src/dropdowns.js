@@ -237,6 +237,18 @@ export class Dropdown extends InputElement
 
 	async close(e)
 	{
+		let element = document.elementFromPoint(e.clientX, e.clientY);
+
+		while (!element.hasAttribute("data-option-index") && element.tagName !== "HTML")
+		{
+			element = element.parentNode;
+		}
+
+		await this.setValue(element.getAttribute("data-option-name"));
+	}
+
+	async setValue(newValue)
+	{
 		document.documentElement.removeEventListener("click", this.boundClose);
 
 		this.isOpen = false;
@@ -245,12 +257,7 @@ export class Dropdown extends InputElement
 
 		const oldSelectedItem = this.selectedItem;
 		
-		let element = document.elementFromPoint(e.clientX, e.clientY);
-
-		while (!element.hasAttribute("data-option-index") && element.tagName !== "HTML")
-		{
-			element = element.parentNode;
-		}
+		const element = this.element.querySelector(`[data-option-name=${newValue}]`);
 
 		// Using || rather than ?? handles both the case where we click the background
 		// and clicking the title option.

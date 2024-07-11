@@ -87,6 +87,13 @@ export default function()
 		onInput: onDropdownInput
 	});
 
+	applet.initState();
+
+	if (this.state.geometry)
+	{
+		geometriesDropdown.setValue(this.state.geometry);
+	}
+
 	typesetMath();
 
 	if (currentlyTouchDevice)
@@ -101,16 +108,16 @@ export default function()
 
 	function run()
 	{
-		const value = geometriesDropdown.value || "s2";
+		this.state.geometry = geometriesDropdown.value || "s2";
 		
 		const alwaysShown = "#fov-slider, #download-button";
 
-		$$(`.info-text:not(#${value}-text)`)
+		$$(`.info-text:not(#${this.state.geometry}-text)`)
 			.forEach(element => element.style.display = "none");
-		$$(`#${value}-text`)
+		$$(`#${this.state.geometry}-text`)
 			.forEach(element => element.style.display = "block");
 
-		const GeometryDataClass = scenes[value];
+		const GeometryDataClass = scenes[this.state.geometry];
 
 		if (GeometryDataClass === E3S2Demo)
 		{
@@ -143,7 +150,7 @@ export default function()
 		elementsToShow.forEach(element => element.style.display = "");
 		$(".sliders").style.display = "";
 
-		if (value === "sl2r")
+		if (this.state.geometry === "sl2r")
 		{
 			$$(".text-buttons")[1].style.display = "none";
 		}

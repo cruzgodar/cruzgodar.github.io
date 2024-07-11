@@ -23,6 +23,23 @@ export class Applet
 
 	aspectRatio = 1;
 
+	#windowSearchParams = new URLSearchParams(window.location.search);
+	#state = {};
+	defaultState = {};
+
+	set state(params)
+	{
+		console.log(params);
+		this.#state = params;
+
+		for (const key in this.#state)
+		{
+			this.#windowSearchParams.set(key, this.#state[key]);
+		}
+
+		window.history.replaceState(null, "", `?${this.#windowSearchParams.toString()}`);
+	}
+
 
 
 	constructor(canvas)
@@ -73,7 +90,14 @@ export class Applet
 		console.log(`Destroyed a${vowel} ${this.constructor.name} applet`);
 	}
 
-
+	initState()
+	{
+		for (const key in this.defaultSearchParams)
+		{
+			this.#state[key] = this.#windowSearchParams.get(key)
+				?? this.defaultState[key];
+		}
+	}
 
 	runWhenOnscreen(data)
 	{
