@@ -52,6 +52,14 @@ export default function()
 		onInput: onSliderInput
 	});
 
+	const switchSceneButton = new ToggleButton({
+		element: $("#switch-scene-button"),
+		name0: "Switch to Spheres",
+		name1: "Switch to Rooms",
+		onClick0: () => applet.switchScene(),
+		onClick1: () => applet.switchScene()
+	});
+
 	const demoCanvas = $("#demo-canvas");
 	const demoCanvasContainer = $("#demo-canvas-container");
 
@@ -89,9 +97,9 @@ export default function()
 
 	applet.initState();
 
-	if (this.state.geometry)
+	if (applet.state.geometry)
 	{
-		geometriesDropdown.setValue(this.state.geometry);
+		geometriesDropdown.setValue(applet.state.geometry);
 	}
 
 	typesetMath();
@@ -108,16 +116,16 @@ export default function()
 
 	function run()
 	{
-		this.state.geometry = geometriesDropdown.value || "s2";
+		applet.setState("geometry", geometriesDropdown.value || "s2");
 		
 		const alwaysShown = "#fov-slider, #download-button";
 
-		$$(`.info-text:not(#${this.state.geometry}-text)`)
+		$$(`.info-text:not(#${applet.state.geometry}-text)`)
 			.forEach(element => element.style.display = "none");
-		$$(`#${this.state.geometry}-text`)
+		$$(`#${applet.state.geometry}-text`)
 			.forEach(element => element.style.display = "block");
 
-		const GeometryDataClass = scenes[this.state.geometry];
+		const GeometryDataClass = scenes[applet.state.geometry];
 
 		if (GeometryDataClass === E3S2Demo)
 		{
@@ -150,7 +158,7 @@ export default function()
 		elementsToShow.forEach(element => element.style.display = "");
 		$(".sliders").style.display = "";
 
-		if (this.state.geometry === "sl2r")
+		if (applet.state.geometry === "sl2r")
 		{
 			$$(".text-buttons")[1].style.display = "none";
 		}
@@ -189,14 +197,6 @@ export default function()
 	$$(".slider-container").forEach(element => element.style.display = "none");
 
 
-
-	const switchSceneButton = new ToggleButton({
-		element: $("#switch-scene-button"),
-		name0: "Switch to Spheres",
-		name1: "Switch to Rooms",
-		onClick0: () => applet.switchScene(),
-		onClick1: () => applet.switchScene()
-	});
 
 	new DownloadButton({
 		element: $("#download-button"),

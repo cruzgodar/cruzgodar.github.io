@@ -211,7 +211,7 @@ function getTransitionType(url)
 
 export function getDisplayUrl()
 {
-	let displayUrl = pageUrl.replace(/\/home\//, "/") + getQueryParams();
+	let displayUrl = pageUrl.replace(/\/home\//, "/") + "?" + getQueryParams();
 
 	if (displayUrl.length > 1 && displayUrl[displayUrl.length - 1] === "/")
 	{

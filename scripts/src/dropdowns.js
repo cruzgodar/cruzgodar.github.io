@@ -257,13 +257,16 @@ export class Dropdown extends InputElement
 
 		const oldSelectedItem = this.selectedItem;
 		
-		const element = this.element.querySelector(`[data-option-name=${newValue}]`);
+		if (newValue)
+		{
+			const element = this.optionContainerElement.querySelector(`[data-option-name=${newValue}]`);
 
-		// Using || rather than ?? handles both the case where we click the background
-		// and clicking the title option.
-		this.selectedItem = parseInt(
-			element.getAttribute("data-option-index") ?? this.selectedItem
-		) || this.selectedItem;
+			// Using || rather than ?? handles both the case where we click the background
+			// and clicking the title option.
+			this.selectedItem = parseInt(
+				element.getAttribute("data-option-index") ?? this.selectedItem
+			) || this.selectedItem;
+		}
 
 		this.element.value = this.selectOptionElements[this.selectedItem].value;
 		this.value = this.element.value;

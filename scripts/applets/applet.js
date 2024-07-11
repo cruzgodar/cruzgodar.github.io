@@ -23,24 +23,8 @@ export class Applet
 
 	aspectRatio = 1;
 
-	#windowSearchParams = new URLSearchParams(window.location.search);
-	#state = {};
+	state = {};
 	defaultState = {};
-
-	set state(params)
-	{
-		console.log(params);
-		this.#state = params;
-
-		for (const key in this.#state)
-		{
-			this.#windowSearchParams.set(key, this.#state[key]);
-		}
-
-		window.history.replaceState(null, "", `?${this.#windowSearchParams.toString()}`);
-	}
-
-
 
 	constructor(canvas)
 	{
@@ -92,11 +76,22 @@ export class Applet
 
 	initState()
 	{
-		for (const key in this.defaultSearchParams)
+		const searchParams = new URLSearchParams(window.location.search);
+
+		for (const key in this.defaultState)
 		{
-			this.#state[key] = this.#windowSearchParams.get(key)
-				?? this.defaultState[key];
+			this.state[key] = searchParams.get(key) ?? this.defaultState[key];
 		}
+	}
+
+	setState(key, value)
+	{
+		this.state[key] = value;
+
+		const searchParams = new URLSearchParams(window.location.search);
+		searchParams.set(key, value);
+
+		window.history.replaceState(null, "", `?${searchParams.toString()}`);
 	}
 
 	runWhenOnscreen(data)

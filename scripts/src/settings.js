@@ -54,34 +54,48 @@ export const siteSettings =
 
 export function getQueryParams()
 {
-	const params = [];
+	const params = new URLSearchParams(window.location.search);
 
 	if (siteSettings.darkTheme && !window.matchMedia("(prefers-color-scheme: dark)").matches)
 	{
-		params.push("theme=1");
+		params.set("theme", "1");
 	}
 
 	else if (!siteSettings.darkTheme && window.matchMedia("(prefers-color-scheme: dark)").matches)
 	{
-		params.push("theme=0");
+		params.set("theme", "0");
 	}
+
+	else
+	{
+		params.delete("theme");
+	}
+
+
 
 	if (siteSettings.card)
 	{
-		params.push(`card=${siteSettings.card}`);
+		params.set("card", siteSettings.card);
 	}
+
+	else
+	{
+		params.delete("card");
+	}
+
+
 
 	if (window.DEBUG)
 	{
-		params.push("debug=1");
+		params.set("debug", "1");
 	}
 
-	if (params.length !== 0)
+	else
 	{
-		return "?" + params.join("&");
+		params.delete("debug");
 	}
-
-	return "";
+	
+	return params.toString();
 }
 
 
