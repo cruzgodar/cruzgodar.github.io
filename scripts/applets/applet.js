@@ -1,6 +1,7 @@
 import {
 	addTemporaryListener,
-	pageElement
+	pageElement,
+	pageUrl
 } from "../src/main.js";
 
 import loadMP4Module from "https://unpkg.com/mp4-wasm@1.0.6";
@@ -66,6 +67,20 @@ export class Applet
 			this.hiddenCanvasContainer.remove();
 		}
 
+		const params = new URLSearchParams(window.location.search);
+
+		for (const key in this.state)
+		{
+			console.log(key, this.state[key])
+			params.delete(key);
+		}
+
+		window.history.replaceState(
+			{ url: pageUrl },
+			document.title,
+			pageUrl.replace(/\/home\//, "/") + "?" + params.toString()
+		);
+
 		const vowel = ["a", "e", "i", "o", "u", "y"]
 			.includes(this.constructor.name[0].toLowerCase())
 			? "n"
@@ -91,7 +106,7 @@ export class Applet
 		const searchParams = new URLSearchParams(window.location.search);
 		searchParams.set(key, value);
 
-		window.history.replaceState(null, "", `?${searchParams.toString()}`);
+		window.history.replaceState({ url: pageUrl }, "", `?${searchParams.toString()}`);
 	}
 
 	runWhenOnscreen(data)

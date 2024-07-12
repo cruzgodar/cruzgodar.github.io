@@ -572,7 +572,6 @@ export class H2xERooms extends H2xEGeometry
 		gl.uniform1f(uniformList["sceneTransition"], this.sliderValues.sceneTransition);
 
 		const wallThickness = 1.145 - this.sliderValues.wallThickness / 10;
-		console.log(wallThickness);
 
 		gl.uniform1f(uniformList["wallThickness"], wallThickness);
 

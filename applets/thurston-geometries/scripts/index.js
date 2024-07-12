@@ -102,7 +102,16 @@ export default function()
 		geometriesDropdown.setValue(applet.state.geometry);
 	}
 
-	typesetMath();
+	typesetMath().then(() =>
+	{
+		setTimeout(() =>
+		{
+			if (applet.state.geometry)
+			{
+				geometriesDropdown.setValue(applet.state.geometry);
+			}
+		}, 100);
+	});
 
 	if (currentlyTouchDevice)
 	{

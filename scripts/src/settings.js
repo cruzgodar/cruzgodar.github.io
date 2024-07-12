@@ -56,6 +56,10 @@ export function getQueryParams()
 {
 	const params = new URLSearchParams(window.location.search);
 
+
+
+	params.delete("page");
+
 	if (siteSettings.darkTheme && !window.matchMedia("(prefers-color-scheme: dark)").matches)
 	{
 		params.set("theme", "1");
