@@ -40,7 +40,10 @@ export function initHoverEvents()
 	{
 		element.addEventListener("mouseenter", () =>
 		{
-			prefetchPage(element.href);
+			if (element.href[0] === "/")
+			{
+				prefetchPage(element.href);
+			}
 		});
 	});
 }

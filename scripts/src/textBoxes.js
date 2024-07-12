@@ -10,6 +10,7 @@ export class TextBox extends InputElement
 {
 	defaultValue;
 	valueTypeIsString = false;
+	affectedByResMult = false;
 
 	constructor({
 		element,

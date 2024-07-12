@@ -10,6 +10,7 @@ export class Applet
 {
 	canvas;
 	wilson;
+	allowFullscreenWithKeyboard = true;
 
 	fpsDisplayCtx;
 
@@ -38,6 +39,19 @@ export class Applet
 		{
 			setTimeout(() => this.addFpsDisplay(), 500);
 		}
+
+		
+		addTemporaryListener({
+			object: document.documentElement,
+			event: "keydown",
+			callback: e =>
+			{
+				if (e.key === "f" && this.allowFullscreenWithKeyboard)
+				{
+					this.wilson.fullscreen.switchFullscreen();
+				}
+			}
+		});
 
 		Applet.current.push(this);
 	}
@@ -71,14 +85,15 @@ export class Applet
 
 		for (const key in this.state)
 		{
-			console.log(key, this.state[key])
 			params.delete(key);
 		}
+
+		const string = params.toString();
 
 		window.history.replaceState(
 			{ url: pageUrl },
 			document.title,
-			pageUrl.replace(/\/home\//, "/") + "?" + params.toString()
+			pageUrl.replace(/\/home\//, "/") + (string ? `?${string}` : "")
 		);
 
 		const vowel = ["a", "e", "i", "o", "u", "y"]
@@ -95,7 +110,7 @@ export class Applet
 
 		for (const key in this.defaultState)
 		{
-			this.state[key] = searchParams.get(key) ?? this.defaultState[key];
+			this.state[key] = searchParams.get(key);
 		}
 	}
 
@@ -106,7 +121,9 @@ export class Applet
 		const searchParams = new URLSearchParams(window.location.search);
 		searchParams.set(key, value);
 
-		window.history.replaceState({ url: pageUrl }, "", `?${searchParams.toString()}`);
+		const string = searchParams.toString();
+
+		window.history.replaceState({ url: pageUrl }, "", pageUrl.replace(/\/home\//, "/") + (string ? `?${string}` : ""));
 	}
 
 	runWhenOnscreen(data)

@@ -4,6 +4,8 @@ import { changeOpacity, opacityAnimationTime } from "/scripts/src/animation.js";
 import { addTemporaryListener } from "/scripts/src/main.js";
 import { metaThemeColorElement } from "/scripts/src/settings.js";
 
+const fullscreenAnimationTime = opacityAnimationTime * .6;
+
 export class Wilson
 {
 	canvas = null;
@@ -1568,7 +1570,7 @@ export class Wilson
 
 
 
-				changeOpacity({ element: document.body, opacity: 0 });
+				changeOpacity({ element: document.body, opacity: 0, duration: fullscreenAnimationTime });
 
 				setTimeout(() =>
 				{
@@ -1642,7 +1644,7 @@ export class Wilson
 					anime({
 						targets: metaThemeColorElement,
 						content: "#000000",
-						duration: opacityAnimationTime,
+						duration: fullscreenAnimationTime,
 						easing: "cubicBezier(.42, 0, .58, 1)"
 					});
 
@@ -1719,15 +1721,13 @@ export class Wilson
 
 
 
-					changeOpacity({ element: document.body, opacity: 1 });
+					changeOpacity({ element: document.body, opacity: 1, duration: fullscreenAnimationTime });
 
 					setTimeout(() =>
 					{
 						this.currentlyAnimating = false;
-
-						this.onResize();
-					}, opacityAnimationTime);
-				}, opacityAnimationTime);
+					}, fullscreenAnimationTime);
+				}, fullscreenAnimationTime);
 			}
 
 
@@ -1750,11 +1750,11 @@ export class Wilson
 				anime({
 					targets: metaThemeColorElement,
 					content: this.oldMetaThemeColor,
-					duration: opacityAnimationTime,
+					duration: fullscreenAnimationTime,
 					easing: "cubicBezier(.42, 0, .58, 1)"
 				});
 
-				changeOpacity({ element: document.body, opacity: 0 });
+				changeOpacity({ element: document.body, opacity: 0, duration: fullscreenAnimationTime });
 
 				setTimeout(() =>
 				{
@@ -1869,14 +1869,14 @@ export class Wilson
 					{
 						window.scroll(0, this.fullscreenOldScroll);
 
-						changeOpacity({ element: document.body, opacity: 1 });
+						changeOpacity({ element: document.body, opacity: 1, duration: fullscreenAnimationTime });
 
 						setTimeout(() =>
 						{
 							this.currentlyAnimating = false;
-						}, opacityAnimationTime);
+						}, fullscreenAnimationTime);
 					}, 10);
-				}, opacityAnimationTime);
+				}, fullscreenAnimationTime);
 			}
 		},
 

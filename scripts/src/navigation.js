@@ -211,7 +211,9 @@ function getTransitionType(url)
 
 export function getDisplayUrl()
 {
-	let displayUrl = pageUrl.replace(/\/home\//, "/") + "?" + getQueryParams();
+	const queryParams = getQueryParams();
+
+	let displayUrl = pageUrl.replace(/\/home\//, "/") + (queryParams ? `?${queryParams}` : "");
 
 	if (displayUrl.length > 1 && displayUrl[displayUrl.length - 1] === "/")
 	{
@@ -398,12 +400,12 @@ export async function prefetchPage(url)
 	
 	const sitemapEntry = sitemap[url];
 
-	if (sitemapEntry.customScript)
+	if (sitemapEntry?.customScript)
 	{
 		urlsToFetch.push(`${url}scripts/index.min.js`);
 	}
 
-	if (sitemapEntry.customStyle)
+	if (sitemapEntry?.customStyle)
 	{
 		urlsToFetch.push(`${url}style/index.min.css`);
 	}

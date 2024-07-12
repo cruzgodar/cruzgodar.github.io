@@ -124,7 +124,7 @@ export class Dropdown extends InputElement
 		}, 16);
 	}
 
-	async open()
+	async open(animationTime = opacityAnimationTime)
 	{
 		this.isOpen = true;
 
@@ -220,7 +220,7 @@ export class Dropdown extends InputElement
 				translateX,
 				scale: this.scale,
 				easing: "easeOutQuad",
-				duration: opacityAnimationTime
+				duration: animationTime
 			}).finished,
 
 			anime({
@@ -228,7 +228,7 @@ export class Dropdown extends InputElement
 				translateY: 0,
 				translateX: 0,
 				easing: "easeOutQuad",
-				duration: opacityAnimationTime
+				duration: animationTime
 			}).finished,
 		]);
 
@@ -244,11 +244,16 @@ export class Dropdown extends InputElement
 			element = element.parentNode;
 		}
 
-		await this.setValue(element.getAttribute("data-option-name"));
+		await this.setValue(element.getAttribute("data-option-name"), opacityAnimationTime);
 	}
 
-	async setValue(newValue)
+	async setValue(newValue, animationTime = 20)
 	{
+		if (!this.isOpen)
+		{
+			await this.open(20);
+		}
+
 		document.documentElement.removeEventListener("click", this.boundClose);
 
 		this.isOpen = false;
@@ -299,7 +304,7 @@ export class Dropdown extends InputElement
 				translateX: 0,
 				scale: 1,
 				easing: "easeOutQuad",
-				duration: opacityAnimationTime
+				duration: animationTime
 			}).finished,
 
 			anime({
@@ -307,7 +312,7 @@ export class Dropdown extends InputElement
 				translateY,
 				translateX,
 				easing: "easeOutQuad",
-				duration: opacityAnimationTime
+				duration: animationTime
 			}).finished,
 		]);
 	}

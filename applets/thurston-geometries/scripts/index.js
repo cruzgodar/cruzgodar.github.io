@@ -110,7 +110,7 @@ export default function()
 			{
 				geometriesDropdown.setValue(applet.state.geometry);
 			}
-		}, 100);
+		}, 50);
 	});
 
 	if (currentlyTouchDevice)
@@ -125,16 +125,21 @@ export default function()
 
 	function run()
 	{
-		applet.setState("geometry", geometriesDropdown.value || "s2");
+		if (geometriesDropdown.value)
+		{
+			applet.setState("geometry", geometriesDropdown.value);
+		}
+
+		const geometry = geometriesDropdown.value || "s2";
 		
 		const alwaysShown = "#fov-slider, #download-button";
 
-		$$(`.info-text:not(#${applet.state.geometry}-text)`)
+		$$(`.info-text:not(#${geometry}-text)`)
 			.forEach(element => element.style.display = "none");
-		$$(`#${applet.state.geometry}-text`)
+		$$(`#${geometry}-text`)
 			.forEach(element => element.style.display = "block");
 
-		const GeometryDataClass = scenes[applet.state.geometry];
+		const GeometryDataClass = scenes[geometry];
 
 		if (GeometryDataClass === E3S2Demo)
 		{
@@ -167,7 +172,7 @@ export default function()
 		elementsToShow.forEach(element => element.style.display = "");
 		$(".sliders").style.display = "";
 
-		if (applet.state.geometry === "sl2r")
+		if (geometry === "sl2r")
 		{
 			$$(".text-buttons")[1].style.display = "none";
 		}
@@ -227,6 +232,8 @@ export default function()
 			demoApplet = new ThurstonGeometry({
 				canvas: demoCanvas,
 			});
+
+			demoApplet.allowFullscreenWithKeyboard = false;
 
 			$$(".wilson-enter-fullscreen-button")[1].remove();
 		}
