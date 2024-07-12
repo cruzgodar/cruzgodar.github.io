@@ -46,8 +46,12 @@ export class Applet
 			event: "keydown",
 			callback: e =>
 			{
-				if (e.key === "f" && this.allowFullscreenWithKeyboard)
-				{
+				if (
+					e.key === "f"
+					&& this.allowFullscreenWithKeyboard
+					&& document.activeElement.tagName !== "INPUT"
+					&& document.activeElement.tagName !== "TEXTAREA"
+				) {
 					this.wilson.fullscreen.switchFullscreen();
 				}
 			}
