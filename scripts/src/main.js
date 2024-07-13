@@ -93,6 +93,20 @@ export function clearTemporaryWorkers()
 
 
 
+export let temporaryParams = [];
+
+export function addTemporaryParam(key)
+{
+	temporaryParams.push(key);
+}
+
+export function clearTemporaryParams()
+{
+	temporaryParams = [];
+}
+
+
+
 const scriptsLoaded =
 {
 	glsl: 0

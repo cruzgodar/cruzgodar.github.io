@@ -84,7 +84,7 @@ export default function()
 			clockwork: "Clockwork",
 			directionField: "Direction Field",
 			divergingDiamond: "Diverging Diamond",
-			draggables: "Draggables Example",
+			draggables: "Draggables",
 		},
 		onInput: onDropdownInput
 	});

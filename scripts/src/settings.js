@@ -182,8 +182,11 @@ export function revertTheme()
 
 
 
-export async function toggleDarkTheme({ noAnimation = false, force = false })
-{
+export async function toggleDarkTheme({
+	noAnimation = false,
+	force = false,
+	duration = opacityAnimationTime * 2
+}) {
 	if (!force && preventThemeChangePages.includes(pageUrl))
 	{
 		return;
@@ -225,14 +228,14 @@ export async function toggleDarkTheme({ noAnimation = false, force = false })
 			anime({
 				targets: metaThemeColorElement,
 				content: siteSettings.darkTheme ? "#181818" : "#ffffff",
-				duration: opacityAnimationTime * 2,
+				duration,
 				easing: "cubicBezier(.25, .1, .25, 1)",
 			}).finished,
 
 			anime({
 				targets: dummy,
 				t: siteSettings.darkTheme ? 1 : 0,
-				duration: opacityAnimationTime * 2,
+				duration,
 				easing: "cubicBezier(.25, .1, .25, 1)",
 				update: () =>
 				{

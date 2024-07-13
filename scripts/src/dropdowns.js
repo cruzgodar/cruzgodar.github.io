@@ -3,6 +3,7 @@ import { opacityAnimationTime } from "./animation.js";
 import { headerElement } from "./header.js";
 import { addHoverEvent } from "./hoverEvents.js";
 import { InputElement } from "./inputElement.js";
+import { addTemporaryParam, pageUrl } from "./main.js";
 
 const maxSingleColumnOptions = 7;
 
@@ -10,6 +11,7 @@ export class Dropdown extends InputElement
 {
 	value;
 	options;
+	persistState;
 	onInput;
 
 	buttonElement;
@@ -25,15 +27,16 @@ export class Dropdown extends InputElement
 	constructor({
 		element,
 		name,
+		persistState = true,
 		options,
 		onInput = () => {}
-	})
-	{
+	}) {
 		super({ element, name });
 
 		this.options = Object.assign({ "": this.name }, options);
 		this.onInput = onInput;
 		this.value = "";
+		this.persistState = persistState;
 
 		this.buttonElement = this.element.previousElementSibling;
 
@@ -121,6 +124,18 @@ export class Dropdown extends InputElement
 					this.open();
 				}
 			});
+
+			if (this.persistState)
+			{
+				const value = new URLSearchParams(window.location.search).get(this.element.id);
+				
+				if (value)
+				{
+					this.setValue(decodeURIComponent(value));
+				}
+
+				addTemporaryParam(this.element.id);
+			}
 		}, 16);
 	}
 
@@ -292,6 +307,33 @@ export class Dropdown extends InputElement
 			+ selectedElementRect.left - titleRect.left
 			+ selectedElementRect.width / 2
 		) / this.scale;
+
+
+
+		if (this.persistState)
+		{
+			const searchParams = new URLSearchParams(window.location.search);
+
+			if (this.selectedItem !== 0)
+			{
+				searchParams.set(
+					this.element.id,
+					encodeURIComponent(
+						this.optionElements[this.selectedItem].getAttribute("data-option-name")
+					)
+				);
+			}
+
+			const string = searchParams.toString();
+
+			window.history.replaceState(
+				{ url: pageUrl },
+				"",
+				pageUrl.replace(/\/home\//, "/") + (string ? `?${string}` : "")
+			);
+		}
+		
+
 
 		await Promise.all([
 			anime({

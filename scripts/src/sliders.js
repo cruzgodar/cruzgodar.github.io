@@ -25,8 +25,7 @@ export class Slider extends InputElement
 		logarithmic = false,
 		integer = false,
 		onInput = () => {}
-	})
-	{
+	}) {
 		super({ element, name });
 		this.subtextElement = this.element.nextElementSibling.firstElementChild;
 

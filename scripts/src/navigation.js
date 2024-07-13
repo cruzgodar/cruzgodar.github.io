@@ -18,12 +18,14 @@ import { loadPage } from "./loadPage.js";
 import {
 	clearTemporaryIntervals,
 	clearTemporaryListeners,
+	clearTemporaryParams,
 	clearTemporaryWorkers,
 	pageElement,
 	pageUrl,
 	setPageUrl,
 	temporaryIntervals,
 	temporaryListeners,
+	temporaryParams,
 	temporaryWorkers
 } from "./main.js";
 import {
@@ -363,6 +365,26 @@ function unloadPage()
 	}
 
 	clearDesmosGraphs();
+
+
+
+	const searchParams = new URLSearchParams(window.location.search);
+
+	temporaryParams.forEach(key =>
+	{
+		searchParams.delete(key);
+	});
+
+	const string = searchParams.toString();
+
+	window.history.replaceState(
+		{ url: pageUrl },
+		"",
+		pageUrl.replace(/\/home\//, "/") + (string ? `?${string}` : "")
+	);
+
+	clearTemporaryParams();
+
 
 
 	Applet.current.forEach(applet =>

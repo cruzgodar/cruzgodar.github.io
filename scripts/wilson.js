@@ -2,7 +2,12 @@ import anime from "./anime.js";
 import { addHoverEventWithScale } from "./src/hoverEvents.js";
 import { changeOpacity, fullscreenAnimationTime } from "/scripts/src/animation.js";
 import { addTemporaryListener } from "/scripts/src/main.js";
-import { metaThemeColorElement } from "/scripts/src/settings.js";
+import { metaThemeColorElement, siteSettings } from "/scripts/src/settings.js";
+
+function getFullscreenAnimationTime()
+{
+	return siteSettings.darkTheme ? fullscreenAnimationTime : fullscreenAnimationTime * 1.5;
+}
 
 export class Wilson
 {
@@ -1568,7 +1573,7 @@ export class Wilson
 
 
 
-				changeOpacity({ element: document.body, opacity: 0, duration: fullscreenAnimationTime });
+				changeOpacity({ element: document.body, opacity: 0, duration: getFullscreenAnimationTime() });
 
 				setTimeout(() =>
 				{
@@ -1642,7 +1647,7 @@ export class Wilson
 					anime({
 						targets: metaThemeColorElement,
 						content: "#000000",
-						duration: fullscreenAnimationTime,
+						duration: getFullscreenAnimationTime(),
 						easing: "cubicBezier(.42, 0, .58, 1)"
 					});
 
@@ -1719,13 +1724,13 @@ export class Wilson
 
 
 
-					changeOpacity({ element: document.body, opacity: 1, duration: fullscreenAnimationTime });
+					changeOpacity({ element: document.body, opacity: 1, duration: getFullscreenAnimationTime() });
 
 					setTimeout(() =>
 					{
 						this.currentlyAnimating = false;
-					}, fullscreenAnimationTime);
-				}, fullscreenAnimationTime);
+					}, getFullscreenAnimationTime());
+				}, getFullscreenAnimationTime());
 			}
 
 
@@ -1748,11 +1753,11 @@ export class Wilson
 				anime({
 					targets: metaThemeColorElement,
 					content: this.oldMetaThemeColor,
-					duration: fullscreenAnimationTime,
+					duration: getFullscreenAnimationTime(),
 					easing: "cubicBezier(.42, 0, .58, 1)"
 				});
 
-				changeOpacity({ element: document.body, opacity: 0, duration: fullscreenAnimationTime });
+				changeOpacity({ element: document.body, opacity: 0, duration: getFullscreenAnimationTime() });
 
 				setTimeout(() =>
 				{
@@ -1867,14 +1872,14 @@ export class Wilson
 					{
 						window.scroll(0, this.fullscreenOldScroll);
 
-						changeOpacity({ element: document.body, opacity: 1, duration: fullscreenAnimationTime });
+						changeOpacity({ element: document.body, opacity: 1, duration: getFullscreenAnimationTime() });
 
 						setTimeout(() =>
 						{
 							this.currentlyAnimating = false;
-						}, fullscreenAnimationTime);
+						}, getFullscreenAnimationTime());
 					}, 10);
-				}, fullscreenAnimationTime);
+				}, getFullscreenAnimationTime());
 			}
 		},
 

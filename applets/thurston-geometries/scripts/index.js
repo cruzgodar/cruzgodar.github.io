@@ -95,23 +95,7 @@ export default function()
 		onInput: onDropdownInput
 	});
 
-	applet.initState();
-
-	if (applet.state.geometry)
-	{
-		geometriesDropdown.setValue(applet.state.geometry);
-	}
-
-	typesetMath().then(() =>
-	{
-		setTimeout(() =>
-		{
-			if (applet.state.geometry)
-			{
-				geometriesDropdown.setValue(applet.state.geometry);
-			}
-		}, 50);
-	});
+	typesetMath();
 
 	if (currentlyTouchDevice)
 	{
@@ -125,11 +109,6 @@ export default function()
 
 	function run()
 	{
-		if (geometriesDropdown.value)
-		{
-			applet.setState("geometry", geometriesDropdown.value);
-		}
-
 		const geometry = geometriesDropdown.value || "s2";
 		
 		const alwaysShown = "#fov-slider, #download-button";
