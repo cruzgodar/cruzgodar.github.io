@@ -22,6 +22,10 @@ export const backgroundColorAnimationTime = baseAnimationTime * 2;
 
 export const cardAnimationTime = baseAnimationTime * 2;
 
+export const fullscreenAnimationTime = useJsAnimation
+	? baseAnimationTime * .55
+	: baseAnimationTime * .475;
+
 export const carouselSwitchAnimationTime = 250;
 export const carouselFillAnimationTime = 20000;
 

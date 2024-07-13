@@ -1,10 +1,8 @@
 import anime from "./anime.js";
 import { addHoverEventWithScale } from "./src/hoverEvents.js";
-import { changeOpacity, opacityAnimationTime } from "/scripts/src/animation.js";
+import { changeOpacity, fullscreenAnimationTime } from "/scripts/src/animation.js";
 import { addTemporaryListener } from "/scripts/src/main.js";
 import { metaThemeColorElement } from "/scripts/src/settings.js";
-
-const fullscreenAnimationTime = opacityAnimationTime * .6;
 
 export class Wilson
 {
