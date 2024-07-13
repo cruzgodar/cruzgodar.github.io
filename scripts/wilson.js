@@ -6,7 +6,7 @@ import { metaThemeColorElement, siteSettings } from "/scripts/src/settings.js";
 
 function getFullscreenAnimationTime()
 {
-	return siteSettings.darkTheme ? fullscreenAnimationTime : fullscreenAnimationTime * 1.5;
+	return siteSettings.darkTheme ? fullscreenAnimationTime : fullscreenAnimationTime * 1.25;
 }
 
 export class Wilson
