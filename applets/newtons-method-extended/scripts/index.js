@@ -76,6 +76,13 @@ export default function()
 		element: $("#glsl-textarea"),
 		name: "Generating Code",
 		value: "cmul(csin(z), sin(cmul(z, i)))",
+		onInput: () =>
+		{
+			if (examplesDropdown.value)
+			{
+				examplesDropdown.setValue(null);
+			}
+		},
 		onEnter: run
 	});
 

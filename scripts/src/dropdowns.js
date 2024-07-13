@@ -1,5 +1,5 @@
 import anime from "../anime.js";
-import { opacityAnimationTime } from "./animation.js";
+import { changeOpacity, opacityAnimationTime } from "./animation.js";
 import { headerElement } from "./header.js";
 import { addHoverEvent } from "./hoverEvents.js";
 import { InputElement } from "./inputElement.js";
@@ -131,7 +131,7 @@ export class Dropdown extends InputElement
 				
 				if (value)
 				{
-					this.setValue(decodeURIComponent(value));
+					this.setValue(decodeURIComponent(value), true);
 				}
 
 				addTemporaryParam(this.element.id);
@@ -259,14 +259,28 @@ export class Dropdown extends InputElement
 			element = element.parentNode;
 		}
 
-		await this.setValue(element.getAttribute("data-option-name"), opacityAnimationTime);
+		await this.setValue(element.getAttribute("data-option-name"));
 	}
 
-	async setValue(newValue, animationTime = 20)
+	// Sets the value of the dropdown and closes it.
+	// If it's open, it will animate to the new value, and otherwise it will change instantly.
+	// Can pass null to reset to the default value.
+	async setValue(newValue, instant = false)
 	{
-		if (!this.isOpen)
+		const needToOpen = !this.isOpen;
+
+		if (needToOpen)
 		{
-			await this.open(20);
+			if (!instant)
+			{
+				await changeOpacity({
+					element: this.buttonElement,
+					opacity: 0,
+					duration: opacityAnimationTime / 2.5
+				});
+			}
+
+			await this.open(16);
 		}
 
 		document.documentElement.removeEventListener("click", this.boundClose);
@@ -288,10 +302,15 @@ export class Dropdown extends InputElement
 			) || this.selectedItem;
 		}
 
+		else
+		{
+			this.selectedItem = 0;
+		}
+
 		this.element.value = this.selectOptionElements[this.selectedItem].value;
 		this.value = this.element.value;
 
-		if (oldSelectedItem !== this.selectedItem)
+		if (oldSelectedItem !== this.selectedItem && this.selectedItem)
 		{
 			this.onInput();
 		}
@@ -324,6 +343,11 @@ export class Dropdown extends InputElement
 				);
 			}
 
+			else
+			{
+				searchParams.delete(this.element.id);
+			}
+
 			const string = searchParams.toString();
 
 			window.history.replaceState(
@@ -346,7 +370,7 @@ export class Dropdown extends InputElement
 				translateX: 0,
 				scale: 1,
 				easing: "easeOutQuad",
-				duration: animationTime
+				duration: instant ? 16 : opacityAnimationTime
 			}).finished,
 
 			anime({
@@ -354,8 +378,17 @@ export class Dropdown extends InputElement
 				translateY,
 				translateX,
 				easing: "easeOutQuad",
-				duration: animationTime
+				duration: instant ? 16 : opacityAnimationTime
 			}).finished,
 		]);
+
+		if (needToOpen && !instant)
+		{
+			await changeOpacity({
+				element: this.buttonElement,
+				opacity: 1,
+				duration: opacityAnimationTime / 3
+			});
+		}
 	}
 }

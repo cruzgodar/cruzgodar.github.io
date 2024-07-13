@@ -46,13 +46,6 @@ export default function()
 		name: "Use raw GLSL"
 	});
 
-	const glslTextarea = new Textarea({
-		element: $("#glsl-textarea"),
-		name: "Generating Code",
-		value: "(sin(1.5y), -sin(1.5x))",
-		onEnter: run
-	});
-
 
 
 	const examples =
@@ -87,6 +80,20 @@ export default function()
 			draggables: "Draggables",
 		},
 		onInput: onDropdownInput
+	});
+
+	const glslTextarea = new Textarea({
+		element: $("#glsl-textarea"),
+		name: "Generating Code",
+		value: "(sin(1.5y), -sin(1.5x))",
+		onInput: () =>
+		{
+			if (examplesDropdown.value)
+			{
+				examplesDropdown.setValue(null);
+			}
+		},
+		onEnter: run
 	});
 
 	new GenerateButton({

@@ -37,13 +37,6 @@ export default function()
 		filename: "a-generalized-julia-set.png"
 	});
 
-	const glslTextarea = new Textarea({
-		element: $("#glsl-textarea"),
-		name: "Generating Code",
-		value: "cadd(cpow(z, 2.0), c)",
-		onEnter: run
-	});
-
 	const examples =
 	{
 		mandelbrot: "cadd(cpow(z, 2.0), c)",
@@ -66,6 +59,20 @@ export default function()
 			mandelbrotDust: "Mandelbrot Dust"
 		},
 		onInput: onDropdownInput
+	});
+
+	const glslTextarea = new Textarea({
+		element: $("#glsl-textarea"),
+		name: "Generating Code",
+		value: "cadd(cpow(z, 2.0), c)",
+		onInput: () =>
+		{
+			if (examplesDropdown.value)
+			{
+				examplesDropdown.setValue(null);
+			}
+		},
+		onEnter: run
 	});
 
 	const resolutionInput = new TextBox({

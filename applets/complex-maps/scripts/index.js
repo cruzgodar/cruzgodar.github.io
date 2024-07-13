@@ -34,13 +34,6 @@ export default function()
 		onInput: changeResolution
 	});
 
-	const glslTextarea = new Textarea({
-		element: $("#glsl-textarea"),
-		name: "Complex Map",
-		value: "cexp(cinv(z))",
-		onEnter: run
-	});
-
 
 
 	const examples =
@@ -64,6 +57,20 @@ export default function()
 			lattices: "Lattices"
 		},
 		onInput: onDropdownInput
+	});
+
+	const glslTextarea = new Textarea({
+		element: $("#glsl-textarea"),
+		name: "Complex Map",
+		value: "cexp(cinv(z))",
+		onInput: () =>
+		{
+			if (examplesDropdown.value)
+			{
+				examplesDropdown.setValue(null);
+			}
+		},
+		onEnter: run
 	});
 
 	showPage();
