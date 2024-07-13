@@ -1,5 +1,6 @@
 import { showPage } from "../../../scripts/src/loadPage.js";
 import { GeneralizedJuliaSet } from "./class.js";
+import { Applet } from "/scripts/applets/applet.js";
 import { DownloadButton, GenerateButton, ToggleButton } from "/scripts/src/buttons.js";
 import { Dropdown } from "/scripts/src/dropdowns.js";
 import { $ } from "/scripts/src/main.js";
@@ -56,7 +57,8 @@ export default function()
 			trig: "Trig Example",
 			burningShip: "Burning Ship",
 			rationalMap: "Rational Map",
-			mandelbrotDust: "Mandelbrot Dust"
+			mandelbrotDust: "Mandelbrot Dust",
+			...(window.DEBUG && {random: "Random"})
 		},
 		onInput: onDropdownInput
 	});
@@ -109,7 +111,21 @@ export default function()
 
 	function onDropdownInput()
 	{
-		glslTextarea.setValue(examples[examplesDropdown.value]);
+		if (examplesDropdown.value === "random")
+		{
+			const glsl = Applet.getRandomGlsl({
+				variables: ["z", "c"]
+			});
+
+			console.log(glsl);
+
+			glslTextarea.setValue(glsl);
+		}
+
+		else
+		{
+			glslTextarea.setValue(examples[examplesDropdown.value]);
+		}
 
 		run();
 	}

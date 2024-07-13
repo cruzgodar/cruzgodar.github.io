@@ -124,7 +124,7 @@ export default function()
 	{
 		const generatingCode = rawGlslCheckbox.checked
 			? glslTextarea.value
-			: Applet.parseNaturalGLSL(glslTextarea.value);
+			: Applet.parseNaturalGlsl(glslTextarea.value);
 		
 		applet.run({
 			generatingCode,

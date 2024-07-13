@@ -6,6 +6,24 @@ import {
 
 import loadMP4Module from "https://unpkg.com/mp4-wasm@1.0.6";
 
+// Each entry is an array beginning with the return type,
+// followed by the parameter types. The types are either "float" or "vec2",
+// or "float | vec2" to indicate that the function can return either.
+const glslFunctions = {
+	cadd: ["vec2", "vec2", "vec2"],
+	csub: ["vec2", "vec2", "vec2"],
+	cmul: ["vec2", "vec2", "vec2"],
+	cdiv: ["vec2", "vec2", "vec2"],
+
+	cpow: ["vec2", "vec2", "vec2"],
+	cexp: ["vec2", "vec2"],
+	// clog: ["vec2", "vec2"],
+
+	csin: ["vec2", "vec2"],
+	ccos: ["vec2", "vec2"],
+	// ctan: ["vec2", "vec2"],
+};
+
 export class Applet
 {
 	canvas;
@@ -961,32 +979,86 @@ export class Applet
 
 	// Turns expressions like 2(3x^2+1) into something equivalent
 	// to 2.0 * (3.0 * pow(x, 2.0) + 1.0).
-	static parseNaturalGLSL(GLSL)
+	static parseNaturalGlsl(glsl)
 	{
-		let newGLSL = GLSL.replaceAll(/\s/g, ""); // Remove spaces
+		let newGlsl = glsl.replaceAll(/\s/g, ""); // Remove spaces
 
-		while (newGLSL.match(/([^.0-9])([0-9]+)([^.0-9])/g))
+		while (newGlsl.match(/([^.0-9])([0-9]+)([^.0-9])/g))
 		{
-			newGLSL = newGLSL.replaceAll(/([^.0-9])([0-9]+)([^.0-9])/g, (match, $1, $2, $3) => `${$1}${$2}.0${$3}`); // Convert ints to floats
+			newGlsl = newGlsl.replaceAll(/([^.0-9])([0-9]+)([^.0-9])/g, (match, $1, $2, $3) => `${$1}${$2}.0${$3}`); // Convert ints to floats
 		}
 
-		newGLSL = newGLSL.replaceAll(/([^0-9])(\.[0-9])/g, (match, $1, $2) => `${$1}0${$2}`) // Lead decimals with zeros
+		newGlsl = newGlsl.replaceAll(/([^0-9])(\.[0-9])/g, (match, $1, $2) => `${$1}0${$2}`) // Lead decimals with zeros
 			.replaceAll(/([0-9]\.)([^0-9])/g, (match, $1, $2) => `${$1}0${$2}`) // End decimals with zeros
 			.replaceAll(/([0-9)])([a-z(])/g, (match, $1, $2) => `${$1} * ${$2}`); // Juxtaposition to multiplication
 
-		while (newGLSL.match(/([xyz])([xyz])/g))
+		while (newGlsl.match(/([xyz])([xyz])/g))
 		{
-			newGLSL = newGLSL.replaceAll(/([xyz])([xyz])/g, (match, $1, $2) => `${$1} * ${$2}`); // Particular juxtaposition to multiplication
+			newGlsl = newGlsl.replaceAll(/([xyz])([xyz])/g, (match, $1, $2) => `${$1} * ${$2}`); // Particular juxtaposition to multiplication
 		}
 
-		newGLSL = newGLSL.replaceAll(/([a-z0-9.]+)\^([a-z0-9.]+)/g, (match, $1, $2) => `pow(${$1}, ${$2})`); // Carats to power
+		newGlsl = newGlsl.replaceAll(/([a-z0-9.]+)\^([a-z0-9.]+)/g, (match, $1, $2) => `pow(${$1}, ${$2})`); // Carats to power
 
 		if (window.DEBUG)
 		{
-			console.log(newGLSL);
+			console.log(newGlsl);
 		}
 
-		return newGLSL;
+		return newGlsl;
+	}
+
+	static getRandomGlsl({
+		depth = 0,
+		maxDepth,
+		variables = [],
+		returnType = "vec2"
+	}) {
+		if (!maxDepth)
+		{
+			maxDepth = Math.floor(Math.random() * 3) + 2;
+		}
+
+		if (depth >= maxDepth)
+		{
+			if (Math.random() < 0.8)
+			{
+				const variable = variables[Math.floor(Math.random() * variables.length)];
+
+				return variable;
+			}
+
+			const x = Math.random() < 0.99
+				? `${variables[Math.floor(Math.random() * variables.length)]}.${Math.random() < 0.5 ? "x" : "y"}`
+				: `${Math.round((Math.random()) * 100) / 100}`;
+			
+			const y = Math.random() < 0.99
+				? `${variables[Math.floor(Math.random() * variables.length)]}.${Math.random() < 0.5 ? "x" : "y"}`
+				: `${Math.round((Math.random()) * 100) / 100}`;
+
+			return `vec2(${x}, ${y})`;
+		}
+
+		// Otherwise, select a function with the correct return type.
+		const possibleFunctions = Object.keys(glslFunctions)
+			.filter(key => glslFunctions[key][0] === returnType); 
+		
+		const functionName = possibleFunctions[
+			Math.floor(Math.random() * possibleFunctions.length)
+		];
+		
+		const parameterTypes = glslFunctions[functionName].slice(1);
+
+		const parameters = parameterTypes.map(type =>
+		{
+			return Applet.getRandomGlsl({
+				depth: depth + 1,
+				maxDepth,
+				variables,
+				returnType: type
+			});
+		});
+
+		return `${functionName}(${parameters.join(",")})`;
 	}
 
 
