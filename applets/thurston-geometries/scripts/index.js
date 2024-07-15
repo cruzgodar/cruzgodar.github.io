@@ -15,6 +15,7 @@ import { currentlyTouchDevice } from "/scripts/src/interaction.js";
 import { equalizeAppletColumns } from "/scripts/src/layout.js";
 import { $, $$ } from "/scripts/src/main.js";
 import { typesetMath } from "/scripts/src/math.js";
+import { siteSettings } from "/scripts/src/settings.js";
 import { Slider } from "/scripts/src/sliders.js";
 import { TextBox } from "/scripts/src/textBoxes.js";
 
@@ -293,7 +294,7 @@ export default function()
 	{
 		applet.needNewFrame = true;
 		
-		applet.changeResolution(resolutionInput.value);
+		applet.changeResolution(resolutionInput.value * siteSettings.resolutionMultiplier);
 	}
 
 	function onSliderInput()

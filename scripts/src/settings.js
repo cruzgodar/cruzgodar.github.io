@@ -47,6 +47,7 @@ export const siteSettings =
 {
 	darkTheme,
 	card: params.get("card"),
+	resolutionMultiplier: parseFloat(params.get("resmult") ?? "1"),
 	condensedApplets: params.get("condensedapplets") === "1"
 };
 
@@ -85,6 +86,18 @@ export function getQueryParams()
 	else
 	{
 		params.delete("card");
+	}
+
+	
+
+	if (siteSettings.resolutionMultiplier && siteSettings.resolutionMultiplier !== 1)
+	{
+		params.set("resmult", siteSettings.resolutionMultiplier);
+	}
+
+	else
+	{
+		params.delete("resmult");
 	}
 
 

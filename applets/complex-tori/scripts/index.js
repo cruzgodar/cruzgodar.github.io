@@ -3,6 +3,7 @@ import { ComplexMap } from "../../complex-maps/scripts/class.js";
 import { EllipticCurve } from "./class.js";
 import { $, $$ } from "/scripts/src/main.js";
 import { typesetMath } from "/scripts/src/math.js";
+import { siteSettings } from "/scripts/src/settings.js";
 import { Slider } from "/scripts/src/sliders.js";
 import { TextBox } from "/scripts/src/textBoxes.js";
 
@@ -133,7 +134,7 @@ export default function()
 
 	function changeResolution()
 	{
-		const resolution = resolutionInput.value;
+		const resolution = resolutionInput.value * siteSettings.resolutionMultiplier;
 
 		ecApplet.changeResolution(resolution);
 

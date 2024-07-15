@@ -2,6 +2,7 @@ import { showPage } from "../../../scripts/src/loadPage.js";
 import { QuasiFuchsianGroups } from "./class.js";
 import { GenerateButton } from "/scripts/src/buttons.js";
 import { $ } from "/scripts/src/main.js";
+import { siteSettings } from "/scripts/src/settings.js";
 import { TextBox } from "/scripts/src/textBoxes.js";
 
 export default function()
@@ -54,7 +55,7 @@ export default function()
 	async function run()
 	{
 		await applet.requestHighResFrame(
-			highResolutionInput.value,
+			highResolutionInput.value * siteSettings.resolutionMultiplier,
 			maxDepthInput.value,
 			maxPixelBrightnessInput.value
 		);
@@ -64,8 +65,8 @@ export default function()
 
 	function changeResolution()
 	{
-		applet.resolutionSmall = resolutionInput.value;
-		applet.resolutionLarge = resolutionInput.value * 3;
+		applet.resolutionSmall = resolutionInput.value * siteSettings.resolutionMultiplier;
+		applet.resolutionLarge = resolutionInput.value * siteSettings.resolutionMultiplier * 3;
 
 		applet.changeAspectRatio();
 	}

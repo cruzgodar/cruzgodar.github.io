@@ -3,6 +3,7 @@ import { FractalSounds } from "./class.js";
 import { DownloadButton } from "/scripts/src/buttons.js";
 import { Dropdown } from "/scripts/src/dropdowns.js";
 import { $ } from "/scripts/src/main.js";
+import { siteSettings } from "/scripts/src/settings.js";
 import { TextBox } from "/scripts/src/textBoxes.js";
 
 export default function()
@@ -122,7 +123,7 @@ export default function()
 
 		const glslCode = examples[value][0];
 		const jsCode = examples[value][1];
-		const resolution = resolutionInput.value;
+		const resolution = resolutionInput.value * siteSettings.resolutionMultiplier;
 		const exposure = 1;
 		const numIterations = 200;
 
@@ -137,7 +138,7 @@ export default function()
 
 	function changeResolution()
 	{
-		applet.resolution = resolutionInput.value;
+		applet.resolution = resolutionInput.value * siteSettings.resolutionMultiplier;
 
 		applet.changeAspectRatio(true);
 	}

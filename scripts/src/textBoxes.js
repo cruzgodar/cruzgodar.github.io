@@ -3,6 +3,7 @@ import { Checkbox } from "./checkboxes.js";
 import { addHoverEventWithScale } from "./hoverEvents.js";
 import { InputElement } from "./inputElement.js";
 import { $$, addTemporaryListener, pageElement } from "./main.js";
+import { siteSettings } from "./settings.js";
 
 let uncapEverything = false;
 
@@ -75,6 +76,13 @@ export class TextBox extends InputElement
 		if (!this.valueTypeIsString)
 		{
 			this.setCap();
+		}
+
+		if (
+			this.name.toLowerCase().includes("resolution")
+			&& siteSettings.resolutionMultiplier !== 1
+		) {
+			setTimeout(() => this.onInput());
 		}
 	}
 

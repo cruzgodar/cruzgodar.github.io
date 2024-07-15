@@ -2,6 +2,7 @@ import { showPage } from "../../../scripts/src/loadPage.js";
 import { JuliaSetMosaic } from "./class.js";
 import { DownloadButton } from "/scripts/src/buttons.js";
 import { $ } from "/scripts/src/main.js";
+import { siteSettings } from "/scripts/src/settings.js";
 import { Slider } from "/scripts/src/sliders.js";
 import { TextBox } from "/scripts/src/textBoxes.js";
 
@@ -41,7 +42,7 @@ export default function()
 	function run()
 	{
 		applet.run({
-			resolution: resolutionInput.value,
+			resolution: resolutionInput.value * siteSettings.resolutionMultiplier,
 			setDensity: 10,
 			exposure: 1,
 			numIterations: 100
@@ -50,7 +51,7 @@ export default function()
 
 	function changeResolution()
 	{
-		applet.resolution = resolutionInput.value;
+		applet.resolution = resolutionInput.value * siteSettings.resolutionMultiplier;
 
 		applet.changeAspectRatio();
 	}

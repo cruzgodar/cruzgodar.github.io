@@ -3,6 +3,7 @@ import { HitomezashiPattern } from "./class.js";
 import { DownloadButton, GenerateButton } from "/scripts/src/buttons.js";
 import { Checkbox } from "/scripts/src/checkboxes.js";
 import { $ } from "/scripts/src/main.js";
+import { siteSettings } from "/scripts/src/settings.js";
 import { TextBox } from "/scripts/src/textBoxes.js";
 
 export default function()
@@ -80,7 +81,7 @@ export default function()
 	function run()
 	{
 		applet.run({
-			resolution: resolutionInput.value,
+			resolution: resolutionInput.value * siteSettings.resolutionMultiplier,
 			gridSize: gridSizeInput.value,
 			rowProb: rowProbInput.value,
 			colProb: colProbInput.value,

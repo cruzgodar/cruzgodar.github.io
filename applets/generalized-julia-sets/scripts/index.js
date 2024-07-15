@@ -4,6 +4,7 @@ import { Applet } from "/scripts/applets/applet.js";
 import { DownloadButton, GenerateButton, ToggleButton } from "/scripts/src/buttons.js";
 import { Dropdown } from "/scripts/src/dropdowns.js";
 import { $ } from "/scripts/src/main.js";
+import { siteSettings } from "/scripts/src/settings.js";
 import { TextBox } from "/scripts/src/textBoxes.js";
 import { Textarea } from "/scripts/src/textareas.js";
 
@@ -58,7 +59,7 @@ export default function()
 			burningShip: "Burning Ship",
 			rationalMap: "Rational Map",
 			mandelbrotDust: "Mandelbrot Dust",
-			...(window.DEBUG && {random: "Random"})
+			...(window.DEBUG && { random: "Random" })
 		},
 		onInput: onDropdownInput
 	});
@@ -96,7 +97,7 @@ export default function()
 
 		applet.run({
 			generatingCode: glslTextarea.value,
-			resolution: resolutionInput.value,
+			resolution: resolutionInput.value * siteSettings.resolutionMultiplier,
 			exposure: 1,
 			numIterations: 200
 		});
@@ -104,7 +105,7 @@ export default function()
 
 	function changeResolution()
 	{
-		applet.resolution = resolutionInput.value;
+		applet.resolution = resolutionInput.value * siteSettings.resolutionMultiplier;
 
 		applet.changeAspectRatio(true);
 	}

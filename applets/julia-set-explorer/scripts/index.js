@@ -3,6 +3,7 @@ import { JuliaSet } from "./class.js";
 import { Button, ToggleButton } from "/scripts/src/buttons.js";
 import { Checkbox } from "/scripts/src/checkboxes.js";
 import { $ } from "/scripts/src/main.js";
+import { siteSettings } from "/scripts/src/settings.js";
 import { TextBox } from "/scripts/src/textBoxes.js";
 
 export default function()
@@ -59,7 +60,7 @@ export default function()
 
 	function changeResolution()
 	{
-		applet.resolution = resolutionInput.value;
+		applet.resolution = resolutionInput.value * siteSettings.resolutionMultiplier;
 		applet.changeAspectRatio();
 	}
 }

@@ -5,6 +5,7 @@ import { Checkbox } from "/scripts/src/checkboxes.js";
 import { Dropdown } from "/scripts/src/dropdowns.js";
 import { equalizeAppletColumns } from "/scripts/src/layout.js";
 import { $, $$ } from "/scripts/src/main.js";
+import { siteSettings } from "/scripts/src/settings.js";
 import { TextBox } from "/scripts/src/textBoxes.js";
 import { Textarea } from "/scripts/src/textareas.js";
 
@@ -248,7 +249,7 @@ export default function()
 
 	function changeResolution()
 	{
-		applet.resolution = resolutionInput.value;
+		applet.resolution = resolutionInput.value * siteSettings.resolutionMultiplier;
 
 		applet.renderer.setSize(applet.resolution, applet.resolution, false);
 

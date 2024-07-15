@@ -14,6 +14,7 @@ import { Button, DownloadButton } from "/scripts/src/buttons.js";
 import { Checkbox } from "/scripts/src/checkboxes.js";
 import { Dropdown } from "/scripts/src/dropdowns.js";
 import { $ } from "/scripts/src/main.js";
+import { siteSettings } from "/scripts/src/settings.js";
 import { Slider } from "/scripts/src/sliders.js";
 import { TextBox } from "/scripts/src/textBoxes.js";
 
@@ -123,7 +124,7 @@ export default function()
 		gridSizeInput.setValue(newGridSize);
 
 		applet.run({
-			resolution: resolutionInput.value,
+			resolution: resolutionInput.value * siteSettings.resolutionMultiplier,
 			gridSize: newGridSize,
 			state,
 			pauseUpdating,
@@ -142,7 +143,7 @@ export default function()
 
 	function changeResolution()
 	{
-		applet.changeResolution(resolutionInput.value);
+		applet.changeResolution(resolutionInput.value * siteSettings.resolutionMultiplier);
 	}
 
 	function onTorusCheckboxInput()
