@@ -271,16 +271,21 @@ export class Dropdown extends InputElement
 
 		if (needToOpen)
 		{
-			if (!instant)
+			if (instant)
+			{
+				this.buttonElement.style.opacity = 0;
+			}
+
+			else
 			{
 				await changeOpacity({
 					element: this.buttonElement,
-					opacity: 0,
+					opacity: 1,
 					duration: opacityAnimationTime / 2.5
 				});
 			}
 
-			await this.open(16);
+			await this.open(10);
 		}
 
 		document.documentElement.removeEventListener("click", this.boundClose);
@@ -370,7 +375,7 @@ export class Dropdown extends InputElement
 				translateX: 0,
 				scale: 1,
 				easing: "easeOutQuad",
-				duration: instant ? 16 : opacityAnimationTime
+				duration: instant ? 1 : opacityAnimationTime
 			}).finished,
 
 			anime({
@@ -378,17 +383,25 @@ export class Dropdown extends InputElement
 				translateY,
 				translateX,
 				easing: "easeOutQuad",
-				duration: instant ? 16 : opacityAnimationTime
+				duration: instant ? 1 : opacityAnimationTime
 			}).finished,
 		]);
 
-		if (needToOpen && !instant)
+		if (needToOpen)
 		{
-			await changeOpacity({
-				element: this.buttonElement,
-				opacity: 1,
-				duration: opacityAnimationTime / 3
-			});
+			if (instant)
+			{
+				this.buttonElement.style.opacity = 1;
+			}
+
+			else
+			{
+				await changeOpacity({
+					element: this.buttonElement,
+					opacity: 1,
+					duration: opacityAnimationTime / 3
+				});
+			}
 		}
 	}
 }
