@@ -14,13 +14,13 @@ export const opacityAnimationTime = useJsAnimation
 	: baseAnimationTime * .75;
 
 export const buttonAnimationTime = useJsAnimation
-	? baseAnimationTime * .5
-	: baseAnimationTime * .45;
+	? baseAnimationTime * .4
+	: baseAnimationTime * .35;
 	
 export const pageAnimationTime = baseAnimationTime * .475;
 export const backgroundColorAnimationTime = baseAnimationTime * 2;
 
-export const cardAnimationTime = baseAnimationTime * 1.65;
+export const cardAnimationTime = baseAnimationTime * 2;
 
 export const fullscreenAnimationTime = useJsAnimation
 	? baseAnimationTime * .6

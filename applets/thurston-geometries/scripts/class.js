@@ -1045,6 +1045,10 @@ export class ThurstonGeometry extends Applet
 		const oldCameraPos = [...this.geometryData.cameraPos];
 
 		const dummy = { t: 0 };
+		let oldT = 0;
+		
+		// Extreme measures, but this ensures that the vectors don't desync while moving.
+		const numSubSteps = 60;
 
 		await anime({
 			targets: dummy,
@@ -1053,40 +1057,43 @@ export class ThurstonGeometry extends Applet
 			easing: "easeInOutSine",
 			update: () =>
 			{
-				this.geometryData.cameraPos = this.geometryData.correctPosition(
-					[
-						(1 - dummy.t) * oldCameraPos[0] + dummy.t * newCameraPos[0],
-						(1 - dummy.t) * oldCameraPos[1] + dummy.t * newCameraPos[1],
-						(1 - dummy.t) * oldCameraPos[2] + dummy.t * newCameraPos[2],
-						(1 - dummy.t) * oldCameraPos[3] + dummy.t * newCameraPos[3]
-					]
-				);
+				for (let i = 0; i < numSubSteps; i++)
+				{
+					const t = oldT + (dummy.t - oldT) * i / numSubSteps;
 
-				this.geometryData.normalVec = this.geometryData.getNormalVec(
-					this.geometryData.cameraPos
-				);
+					this.geometryData.cameraPos = this.geometryData.correctPosition(
+						[
+							(1 - t) * oldCameraPos[0] + t * newCameraPos[0],
+							(1 - t) * oldCameraPos[1] + t * newCameraPos[1],
+							(1 - t) * oldCameraPos[2] + t * newCameraPos[2],
+							(1 - t) * oldCameraPos[3] + t * newCameraPos[3]
+						]
+					);
 
-				this.geometryData.correctVectors();
+					this.geometryData.normalVec = this.geometryData.getNormalVec(
+						this.geometryData.cameraPos
+					);
+
+					this.geometryData.correctVectors();
+
+					this.handleRotating();
+				}
 
 				this.needNewFrame = true;
+
+				oldT = dummy.t;
 			},
 			complete: () =>
 			{
-				dummy.t = 1;
-				this.geometryData.cameraPos = this.geometryData.correctPosition(
-					[
-						(1 - dummy.t) * oldCameraPos[0] + dummy.t * newCameraPos[0],
-						(1 - dummy.t) * oldCameraPos[1] + dummy.t * newCameraPos[1],
-						(1 - dummy.t) * oldCameraPos[2] + dummy.t * newCameraPos[2],
-						(1 - dummy.t) * oldCameraPos[3] + dummy.t * newCameraPos[3]
-					]
-				);
+				this.geometryData.cameraPos = this.geometryData.correctPosition(newCameraPos);
 
 				this.geometryData.normalVec = this.geometryData.getNormalVec(
 					this.geometryData.cameraPos
 				);
 
 				this.geometryData.correctVectors();
+
+				this.handleRotating();
 
 				this.needNewFrame = true;
 			}

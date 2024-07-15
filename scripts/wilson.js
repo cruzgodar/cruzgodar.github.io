@@ -1,13 +1,6 @@
-import anime from "./anime.js";
 import { addHoverEventWithScale } from "./src/hoverEvents.js";
-import { changeOpacity, fullscreenAnimationTime } from "/scripts/src/animation.js";
 import { addTemporaryListener } from "/scripts/src/main.js";
-import { metaThemeColorElement, siteSettings } from "/scripts/src/settings.js";
-
-function getFullscreenAnimationTime()
-{
-	return siteSettings.darkTheme ? fullscreenAnimationTime : fullscreenAnimationTime * 1.25;
-}
+import { metaThemeColorElement } from "/scripts/src/settings.js";
 
 export class Wilson
 {
@@ -1573,164 +1566,147 @@ export class Wilson
 
 
 
-				changeOpacity({ element: document.body, opacity: 0, duration: getFullscreenAnimationTime() });
+				document.body.appendChild(this.fullscreenComponentsContainer);
 
-				setTimeout(() =>
+				const header = document.body.querySelector("#header");
+				const headerContainer = document.body.querySelector("#header-container");
+
+				if (header && headerContainer)
 				{
-					document.body.appendChild(this.fullscreenComponentsContainer);
+					header.style.zIndex = 90;
+					headerContainer.style.zIndex = 90;
+				}
 
-					const header = document.body.querySelector("#header");
-					const headerContainer = document.body.querySelector("#header-container");
 
-					if (header && headerContainer)
+
+				this.parent.canvas.classList.add("wilson-fullscreen");
+				this.parent.canvas.parentNode.classList.add("wilson-fullscreen");
+				this.fullscreenComponentsContainer.classList.add("wilson-fullscreen");
+
+
+
+				if (this.enterFullscreenButton)
+				{
+					this.enterFullscreenButton.remove();
+				}
+
+
+
+				if (this.useFullscreenButton)
+				{
+					this.exitFullscreenButton = document.createElement("input");
+
+					this.exitFullscreenButton.type = "image";
+					this.exitFullscreenButton.classList.add("wilson-exit-fullscreen-button");
+					this.exitFullscreenButton.src = this.exitFullscreenButtonIconPath;
+					this.exitFullscreenButton.alt = "Exit Fullscreen";
+					this.exitFullscreenButton.setAttribute("tabindex", "-1");
+
+					document.body.appendChild(this.exitFullscreenButton);
+
+					addHoverEventWithScale(this.exitFullscreenButton, 1.1);
+
+					this.exitFullscreenButton.addEventListener("click", () =>
 					{
-						header.style.zIndex = 90;
-						headerContainer.style.zIndex = 90;
-					}
-
-
-
-					this.parent.canvas.classList.add("wilson-fullscreen");
-					this.parent.canvas.parentNode.classList.add("wilson-fullscreen");
-					this.fullscreenComponentsContainer.classList.add("wilson-fullscreen");
-
-
-
-					if (this.enterFullscreenButton)
-					{
-						this.enterFullscreenButton.remove();
-					}
-
-
-
-					if (this.useFullscreenButton)
-					{
-						this.exitFullscreenButton = document.createElement("input");
-
-						this.exitFullscreenButton.type = "image";
-						this.exitFullscreenButton.classList.add("wilson-exit-fullscreen-button");
-						this.exitFullscreenButton.src = this.exitFullscreenButtonIconPath;
-						this.exitFullscreenButton.alt = "Exit Fullscreen";
-						this.exitFullscreenButton.setAttribute("tabindex", "-1");
-
-						document.body.appendChild(this.exitFullscreenButton);
-
-						addHoverEventWithScale(this.exitFullscreenButton, 1.1);
-
-						this.exitFullscreenButton.addEventListener("click", () =>
-						{
-							this.switchFullscreen();
-						});
-					}
-
-
-
-					this.oldMetaThemeColor = metaThemeColorElement.getAttribute("content");
-
-
-
-					document.documentElement.style.overflowY = "hidden";
-					document.body.style.overflowY = "hidden";
-
-					document.body.style.width = "100vw";
-					document.body.style.height = "100%";
-
-					document.documentElement.style.userSelect = "none";
-					document.documentElement.style.WebkitUserSelect = "none";
-
-					document.addEventListener("gesturestart", this.preventGestures);
-					document.addEventListener("gesturechange", this.preventGestures);
-					document.addEventListener("gestureend", this.preventGestures);
-
-
-
-					anime({
-						targets: metaThemeColorElement,
-						content: "#000000",
-						duration: getFullscreenAnimationTime(),
-						easing: "cubicBezier(.42, 0, .58, 1)"
+						this.switchFullscreen();
 					});
+				}
 
 
 
-					if (this.trueFullscreen)
+				this.oldMetaThemeColor = metaThemeColorElement.getAttribute("content");
+
+
+
+				document.documentElement.style.overflowY = "hidden";
+				document.body.style.overflowY = "hidden";
+
+				document.body.style.width = "100vw";
+				document.body.style.height = "100%";
+
+				document.documentElement.style.userSelect = "none";
+				document.documentElement.style.WebkitUserSelect = "none";
+
+				document.addEventListener("gesturestart", this.preventGestures);
+				document.addEventListener("gesturechange", this.preventGestures);
+				document.addEventListener("gestureend", this.preventGestures);
+
+				metaThemeColorElement.setAttribute("content", "#000000");
+
+
+
+				if (this.trueFullscreen)
+				{
+					this.fullscreenComponentsContainer.classList.add("wilson-true-fullscreen-canvas");
+
+					for (let i = 0; i < this.canvasesToResize.length; i++)
 					{
-						this.fullscreenComponentsContainer.classList.add("wilson-true-fullscreen-canvas");
+						this.canvasesToResize[i].classList.add("wilson-true-fullscreen-canvas");
 
-						for (let i = 0; i < this.canvasesToResize.length; i++)
-						{
-							this.canvasesToResize[i].classList.add("wilson-true-fullscreen-canvas");
-
-							//We do this to accomodate weirdly-set-up applets like the ones with draggable inputs, since they rely on their canvas container to keep the content below flowing properly.
-							this.parent.canvas.parentNode.parentNode.classList.add("wilson-black-background");
-
-							try
-							{
-								this.switchFullscreenCallback();
-							}
-
-							catch(ex)
-							{
-								//No switch fullscreen callback
-							}
-
-							this.parent.draggables.onResize();
-						}
-
-						window.scroll(0, 0);
-					}
-
-
-
-					else
-					{
-						for (let i = 0; i < this.canvasesToResize.length; i++)
-						{
-							this.canvasesToResize[i].classList.add("wilson-letterboxed-fullscreen-canvas");
-
-							try
-							{
-								this.switchFullscreenCallback();
-							}
-
-							catch(ex)
-							{
-								//No switch fullscreen callback
-							}
-
-							this.parent.draggables.onResize();
-						}
-
-
-
-						//One of these is for vertical aspect ratios and the other is for horizontal ones, but we add both in case the user resizes the window while in applet is fullscreen.
-
-						this.parent.canvas.parentNode.parentNode.insertAdjacentHTML("beforebegin", "<div class='wilson-letterboxed-canvas-background'></div>");
-						this.parent.canvas.parentNode.parentNode.insertAdjacentHTML("afterend", "<div class='wilson-letterboxed-canvas-background'></div>");
-
+						//We do this to accomodate weirdly-set-up applets like the ones with draggable inputs, since they rely on their canvas container to keep the content below flowing properly.
 						this.parent.canvas.parentNode.parentNode.classList.add("wilson-black-background");
 
+						try
+						{
+							this.switchFullscreenCallback();
+						}
 
+						catch(ex)
+						{
+							//No switch fullscreen callback
+						}
 
-						this.onResize();
+						this.parent.draggables.onResize();
 					}
 
+					window.scroll(0, 0);
+				}
 
 
-					if (this.parent.useDraggables)
+
+				else
+				{
+					for (let i = 0; i < this.canvasesToResize.length; i++)
 					{
+						this.canvasesToResize[i].classList.add("wilson-letterboxed-fullscreen-canvas");
+
+						try
+						{
+							this.switchFullscreenCallback();
+						}
+
+						catch(ex)
+						{
+							//No switch fullscreen callback
+						}
+
 						this.parent.draggables.onResize();
 					}
 
 
 
-					changeOpacity({ element: document.body, opacity: 1, duration: getFullscreenAnimationTime() });
+					//One of these is for vertical aspect ratios and the other is for horizontal ones, but we add both in case the user resizes the window while in applet is fullscreen.
 
-					setTimeout(() =>
-					{
-						this.currentlyAnimating = false;
-					}, getFullscreenAnimationTime());
-				}, getFullscreenAnimationTime());
+					this.parent.canvas.parentNode.parentNode.insertAdjacentHTML("beforebegin", "<div class='wilson-letterboxed-canvas-background'></div>");
+					this.parent.canvas.parentNode.parentNode.insertAdjacentHTML("afterend", "<div class='wilson-letterboxed-canvas-background'></div>");
+
+					this.parent.canvas.parentNode.parentNode.classList.add("wilson-black-background");
+
+
+
+					this.onResize();
+				}
+
+
+
+				if (this.parent.useDraggables)
+				{
+					this.parent.draggables.onResize();
+				}
+
+
+
+				this.currentlyAnimating = false;
 			}
 
 
@@ -1748,138 +1724,118 @@ export class Wilson
 
 				this.currentlyAnimating = true;
 
+				metaThemeColorElement.setAttribute("content", this.oldMetaThemeColor);
 
+				this.fullscreenComponentsContainerLocation.appendChild(this.fullscreenComponentsContainer);
 
-				anime({
-					targets: metaThemeColorElement,
-					content: this.oldMetaThemeColor,
-					duration: getFullscreenAnimationTime(),
-					easing: "cubicBezier(.42, 0, .58, 1)"
-				});
+				const header = document.body.querySelector("#header");
+				const headerContainer = document.body.querySelector("#header-container");
 
-				changeOpacity({ element: document.body, opacity: 0, duration: getFullscreenAnimationTime() });
-
-				setTimeout(() =>
+				if (header && headerContainer)
 				{
-					this.fullscreenComponentsContainerLocation.appendChild(this.fullscreenComponentsContainer);
+					header.style.zIndex = 110;
+					headerContainer.style.zIndex = 105;
+				}
 
-					const header = document.body.querySelector("#header");
-					const headerContainer = document.body.querySelector("#header-container");
 
-					if (header && headerContainer)
+
+				this.parent.canvas.classList.remove("wilson-fullscreen");
+				this.parent.canvas.parentNode.classList.remove("wilson-fullscreen");
+				this.fullscreenComponentsContainer.classList.remove("wilson-fullscreen");
+
+
+
+				document.documentElement.style.overflowY = "scroll";
+				document.body.style.overflowY = "visible";
+
+				document.body.style.width = "";
+				document.body.style.height = "";
+
+				document.documentElement.style.userSelect = "auto";
+				document.documentElement.style.WebkitUserSelect = "auto";
+
+				document.removeEventListener("gesturestart", this.preventGestures);
+				document.removeEventListener("gesturechange", this.preventGestures);
+				document.removeEventListener("gestureend", this.preventGestures);
+
+
+
+				if (this.exitFullscreenButton)
+				{
+					this.exitFullscreenButton.remove();
+				}
+
+
+
+				if (this.useFullscreenButton)
+				{
+					this.enterFullscreenButton = document.createElement("input");
+
+					this.enterFullscreenButton.type = "image";
+					this.enterFullscreenButton.classList.add("wilson-enter-fullscreen-button");
+					this.enterFullscreenButton.src = this.enterFullscreenButtonIconPath;
+					this.enterFullscreenButton.alt = "Enter Fullscreen";
+					this.enterFullscreenButton.setAttribute("tabindex", "-1");
+
+					this.parent.canvas.parentNode.appendChild(this.enterFullscreenButton);
+
+					addHoverEventWithScale(this.enterFullscreenButton, 1.1);
+
+					this.enterFullscreenButton.addEventListener("click", () =>
 					{
-						header.style.zIndex = 110;
-						headerContainer.style.zIndex = 105;
-					}
+						this.switchFullscreen();
+					});
+				}
 
 
 
-					this.parent.canvas.classList.remove("wilson-fullscreen");
-					this.parent.canvas.parentNode.classList.remove("wilson-fullscreen");
-					this.fullscreenComponentsContainer.classList.remove("wilson-fullscreen");
+				this.fullscreenComponentsContainer.classList.remove("wilson-true-fullscreen-canvas");
+
+				for (let i = 0; i < this.canvasesToResize.length; i++)
+				{
+					this.canvasesToResize[i].classList.remove("wilson-true-fullscreen-canvas");
+					this.canvasesToResize[i].classList.remove("wilson-letterboxed-fullscreen-canvas");
+
+					this.parent.canvas.parentNode.parentNode.classList.remove("wilson-black-background");
 
 
 
-					document.documentElement.style.overflowY = "scroll";
-					document.body.style.overflowY = "visible";
+					const elements = document.querySelectorAll(".wilson-letterboxed-canvas-background");
 
-					document.body.style.width = "";
-					document.body.style.height = "";
-
-					document.documentElement.style.userSelect = "auto";
-					document.documentElement.style.WebkitUserSelect = "auto";
-
-					document.removeEventListener("gesturestart", this.preventGestures);
-					document.removeEventListener("gesturechange", this.preventGestures);
-					document.removeEventListener("gestureend", this.preventGestures);
-
-
-
-					if (this.exitFullscreenButton)
+					for (let i = 0; i < elements.length; i++)
 					{
-						this.exitFullscreenButton.remove();
-					}
-
-
-
-					if (this.useFullscreenButton)
-					{
-						this.enterFullscreenButton = document.createElement("input");
-
-						this.enterFullscreenButton.type = "image";
-						this.enterFullscreenButton.classList.add("wilson-enter-fullscreen-button");
-						this.enterFullscreenButton.src = this.enterFullscreenButtonIconPath;
-						this.enterFullscreenButton.alt = "Enter Fullscreen";
-						this.enterFullscreenButton.setAttribute("tabindex", "-1");
-
-						this.parent.canvas.parentNode.appendChild(this.enterFullscreenButton);
-
-						addHoverEventWithScale(this.enterFullscreenButton, 1.1);
-
-						this.enterFullscreenButton.addEventListener("click", () =>
+						if (elements[i])
 						{
-							this.switchFullscreen();
-						});
-					}
-
-
-
-					this.fullscreenComponentsContainer.classList.remove("wilson-true-fullscreen-canvas");
-
-					for (let i = 0; i < this.canvasesToResize.length; i++)
-					{
-						this.canvasesToResize[i].classList.remove("wilson-true-fullscreen-canvas");
-						this.canvasesToResize[i].classList.remove("wilson-letterboxed-fullscreen-canvas");
-
-						this.parent.canvas.parentNode.parentNode.classList.remove("wilson-black-background");
-
-
-
-						const elements = document.querySelectorAll(".wilson-letterboxed-canvas-background");
-
-						for (let i = 0; i < elements.length; i++)
-						{
-							if (elements[i])
-							{
-								elements[i].remove();
-							}
+							elements[i].remove();
 						}
-
-
-
-						try
-						{
-							this.switchFullscreenCallback();
-						}
-
-						catch(ex)
-						{
-							//No switch fullscreen callback
-						}
-
-						this.parent.draggables.onResize();
 					}
 
 
 
-					if (this.parent.useDraggables)
+					try
 					{
-						this.parent.draggables.onResize();
+						this.switchFullscreenCallback();
 					}
 
-
-					setTimeout(() =>
+					catch(ex)
 					{
-						window.scroll(0, this.fullscreenOldScroll);
+						//No switch fullscreen callback
+					}
 
-						changeOpacity({ element: document.body, opacity: 1, duration: getFullscreenAnimationTime() });
+					this.parent.draggables.onResize();
+				}
 
-						setTimeout(() =>
-						{
-							this.currentlyAnimating = false;
-						}, getFullscreenAnimationTime());
-					}, 10);
-				}, getFullscreenAnimationTime());
+
+
+				if (this.parent.useDraggables)
+				{
+					this.parent.draggables.onResize();
+				}
+
+
+				window.scroll(0, this.fullscreenOldScroll);
+
+				this.currentlyAnimating = false;
 			}
 		},
 
