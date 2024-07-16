@@ -1152,7 +1152,7 @@ export class SL2RRooms extends SL2RGeometry
 
 	uiElementsUsed = "#wall-thickness-slider";
 
-	wallThicknessData = [0.175, 0.05, 0.175];
+	wallThicknessData = [0.1, 0.05, 0.15];
 }
 
 export class SL2RSpheres extends SL2RGeometry
