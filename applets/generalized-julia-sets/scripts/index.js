@@ -46,7 +46,9 @@ export default function()
 		trig: "csin(cmul(z, c))",
 		burningShip: "cadd(cpow(vec2(abs(z.x), -abs(z.y)), 2.0), c)",
 		rationalMap: "cadd(csub(cpow(z, 2.0), cmul(.05, cpow(z, -2.0))), c)",
-		mandelbrotDust: "cadd(csub(cpow(z, 2.0), vec2(0.0, cmul(.05, cpow(z, -2.0).y))), c)"
+		mandelbrotDust: "cadd(csub(cpow(z, 2.0), vec2(0.0, cmul(.05, cpow(z, -2.0).y))), c)",
+		// eslint-disable-next-line max-len
+		vertebrae: "cdiv(cadd(cexp(cmul(c, z)), csub(cadd(z, z), cdiv(c, z))), ccos(csin(cdiv(c, vec2(z.y, z.x)))))"
 	};
 
 	const examplesDropdown = new Dropdown({
@@ -59,6 +61,7 @@ export default function()
 			burningShip: "Burning Ship",
 			rationalMap: "Rational Map",
 			mandelbrotDust: "Mandelbrot Dust",
+			vertebrae: "Vertebrae",
 			...(window.DEBUG && { random: "Random" })
 		},
 		onInput: onDropdownInput

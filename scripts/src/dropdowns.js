@@ -307,11 +307,6 @@ export class Dropdown extends InputElement
 			) || this.selectedItem;
 		}
 
-		else
-		{
-			this.selectedItem = 0;
-		}
-
 		this.element.value = this.selectOptionElements[this.selectedItem].value;
 		this.value = this.element.value;
 

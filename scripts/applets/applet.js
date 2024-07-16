@@ -15,7 +15,6 @@ const glslFunctions = {
 	cmul: ["vec2", "vec2", "vec2"],
 	cdiv: ["vec2", "vec2", "vec2"],
 
-	cpow: ["vec2", "vec2", "vec2"],
 	cexp: ["vec2", "vec2"],
 	// clog: ["vec2", "vec2"],
 
