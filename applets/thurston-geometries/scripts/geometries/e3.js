@@ -158,7 +158,6 @@ export class E3Rooms extends E3Geometry
 
 	wallThicknessData = [1.55, -0.85, 1.55];
 	maxClipDistance = 15;
-	doClipBrightening = true;
 
 	getNearestCenter()
 	{
