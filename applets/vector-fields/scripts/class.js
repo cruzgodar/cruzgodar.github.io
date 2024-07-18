@@ -240,8 +240,10 @@ export class VectorField extends AnimationFrameApplet
 			
 			uniform float maxBrightness;
 
-			uniform float stepSizeDownRight;
-			uniform float stepSizeUpLeft;
+			uniform float stepSizeX1;
+			uniform float stepSizeY1;
+			uniform float stepSizeX2;
+			uniform float stepSizeY2;
 			
 			vec3 hsv2rgb(vec3 c)
 			{
@@ -261,15 +263,15 @@ export class VectorField extends AnimationFrameApplet
 			{
 				vec3 distance1 = getPixel(uv);
 
-				vec3 distance2 = getPixel(uv + vec2(stepSizeDownRight, 0.0));
-				vec3 distance3 = getPixel(uv + vec2(0.0, stepSizeDownRight));
-				vec3 distance6 = getPixel(uv + vec2(stepSizeDownRight, stepSizeDownRight));
+				vec3 distance2 = getPixel(uv + vec2(stepSizeX1, 0.0));
+				vec3 distance3 = getPixel(uv + vec2(0.0, stepSizeY1));
+				vec3 distance6 = getPixel(uv + vec2(stepSizeX1, stepSizeY1));
 
-				vec3 distance4 = getPixel(uv + vec2(-stepSizeUpLeft, 0.0));
-				vec3 distance5 = getPixel(uv + vec2(0.0, -stepSizeUpLeft));
-				vec3 distance7 = getPixel(uv + vec2(stepSizeUpLeft, -stepSizeUpLeft));
-				vec3 distance8 = getPixel(uv + vec2(-stepSizeUpLeft, stepSizeUpLeft));
-				vec3 distance9 = getPixel(uv + vec2(-stepSizeUpLeft, -stepSizeUpLeft));
+				vec3 distance4 = getPixel(uv + vec2(-stepSizeX2, 0.0));
+				vec3 distance5 = getPixel(uv + vec2(0.0, -stepSizeY2));
+				vec3 distance7 = getPixel(uv + vec2(stepSizeX2, -stepSizeY2));
+				vec3 distance8 = getPixel(uv + vec2(-stepSizeX2, stepSizeY2));
+				vec3 distance9 = getPixel(uv + vec2(-stepSizeX2, -stepSizeY2));
 				gl_FragColor = vec4(${getMaxGlslString("distance", 9)}, 1.0);
 			}
 		`;
@@ -325,7 +327,13 @@ export class VectorField extends AnimationFrameApplet
 
 		this.wilson = new Wilson(canvas, options);
 
-		this.wilson.render.initUniforms(["maxBrightness", "stepSizeDownRight", "stepSizeUpLeft"]);
+		this.wilson.render.initUniforms([
+			"maxBrightness",
+			"stepSizeX1",
+			"stepSizeY1",
+			"stepSizeX2",
+			"stepSizeY2"
+		]);
 
 		this.wilson.gl.uniform1f(this.wilson.uniforms["maxBrightness"], this.lifetime / 255);
 
@@ -1255,13 +1263,23 @@ export class VectorField extends AnimationFrameApplet
 		}
 
 		this.wilson.gl.uniform1f(
-			this.wilson.uniforms["stepSizeDownRight"],
-			this.resolution >= 750 ? 2 / this.resolution : 0
+			this.wilson.uniforms["stepSizeX1"],
+			this.resolution >= 750 ? 2 / this.wilson.canvasWidth : 0
 		);
 
 		this.wilson.gl.uniform1f(
-			this.wilson.uniforms["stepSizeUpLeft"],
-			this.resolution >= 1500 ? 2 / this.resolution : 0
+			this.wilson.uniforms["stepSizeY1"],
+			this.resolution >= 750 ? 2 / this.wilson.canvasHeight : 0
+		);
+
+		this.wilson.gl.uniform1f(
+			this.wilson.uniforms["stepSizeX2"],
+			this.resolution >= 1500 ? 2 / this.wilson.canvasWidth : 0
+		);
+
+		this.wilson.gl.uniform1f(
+			this.wilson.uniforms["stepSizeY2"],
+			this.resolution >= 1500 ? 2 / this.wilson.canvasHeight : 0
 		);
 	}
 
