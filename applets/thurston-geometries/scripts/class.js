@@ -170,6 +170,8 @@ export class ThurstonGeometry extends Applet
 			const float stepFactor = ${this.geometryData.stepFactor};
 			const vec3 fogColor = vec3(0.0, 0.0, 0.0);
 			const float fogScaling = .05;
+
+			uniform float clipDistance;
 			uniform float fov;
 
 			${this.geometryData.uniformGlsl ?? ""}
@@ -202,29 +204,29 @@ export class ThurstonGeometry extends Applet
 			
 			
 			
-			float distanceEstimator(${posSignature})
+			float distanceEstimator(${posSignature}, float totalT)
 			{
 				${this.geometryData.distanceEstimatorGlsl}
 			}
 			
-			vec3 getColor(${posSignature}, vec3 globalColor)
+			vec3 getColor(${posSignature}, vec3 globalColor, float totalT)
 			{
 				${this.geometryData.getColorGlsl}
 			}
 			
 			
 			
-			vec4 getSurfaceNormal(${posSignature})
+			vec4 getSurfaceNormal(${posSignature}, float totalT)
 			{
-				float xStep1 = distanceEstimator(pos + vec4(epsilon, 0.0, 0.0, 0.0)${addfiberArgument});
-				float yStep1 = distanceEstimator(pos + vec4(0.0, epsilon, 0.0, 0.0)${addfiberArgument});
-				float zStep1 = distanceEstimator(pos + vec4(0.0, 0.0, epsilon, 0.0)${addfiberArgument});
-				float wStep1 = distanceEstimator(pos + vec4(0.0, 0.0, 0.0, epsilon)${addfiberArgument});
+				float xStep1 = distanceEstimator(pos + vec4(epsilon, 0.0, 0.0, 0.0)${addfiberArgument}, totalT);
+				float yStep1 = distanceEstimator(pos + vec4(0.0, epsilon, 0.0, 0.0)${addfiberArgument}, totalT);
+				float zStep1 = distanceEstimator(pos + vec4(0.0, 0.0, epsilon, 0.0)${addfiberArgument}, totalT);
+				float wStep1 = distanceEstimator(pos + vec4(0.0, 0.0, 0.0, epsilon)${addfiberArgument}, totalT);
 				
-				float xStep2 = distanceEstimator(pos - vec4(epsilon, 0.0, 0.0, 0.0)${addfiberArgument});
-				float yStep2 = distanceEstimator(pos - vec4(0.0, epsilon, 0.0, 0.0)${addfiberArgument});
-				float zStep2 = distanceEstimator(pos - vec4(0.0, 0.0, epsilon, 0.0)${addfiberArgument});
-				float wStep2 = distanceEstimator(pos - vec4(0.0, 0.0, 0.0, epsilon)${addfiberArgument});
+				float xStep2 = distanceEstimator(pos - vec4(epsilon, 0.0, 0.0, 0.0)${addfiberArgument}, totalT);
+				float yStep2 = distanceEstimator(pos - vec4(0.0, epsilon, 0.0, 0.0)${addfiberArgument}, totalT);
+				float zStep2 = distanceEstimator(pos - vec4(0.0, 0.0, epsilon, 0.0)${addfiberArgument}, totalT);
+				float wStep2 = distanceEstimator(pos - vec4(0.0, 0.0, 0.0, epsilon)${addfiberArgument}, totalT);
 				
 				return normalize(vec4(
 					xStep1 - xStep2,
@@ -238,17 +240,17 @@ export class ThurstonGeometry extends Applet
 			
 			vec3 computeShading(${posSignature}, int iteration, vec3 globalColor, float totalT)
 			{
-				vec4 surfaceNormal = getSurfaceNormal(pos${addfiberArgument});
+				vec4 surfaceNormal = getSurfaceNormal(pos${addfiberArgument}, totalT);
 				
 				${this.geometryData.lightGlsl}
 
 				//The last factor adds ambient occlusion.
-				vec3 color = getColor(pos${addfiberArgument}, globalColor)
+				vec3 color = getColor(pos${addfiberArgument}, globalColor, totalT)
 					* lightIntensity
 					* max(
 						1.0 - float(iteration) / ${this.geometryData.ambientOcclusionDenominator},
 						0.0)
-					;
+					${this.geometryData.doClipBrightening ? "* (1.0 + clipDistance / 5.0)" : ""};
 
 				//Apply fog.
 				${this.geometryData.fogGlsl}
@@ -281,11 +283,16 @@ export class ThurstonGeometry extends Applet
 				{
 					${this.geometryData.geodesicGlsl}
 					
-					float distanceToScene = distanceEstimator(pos${addfiberArgument});
+					float distanceToScene = distanceEstimator(pos${addfiberArgument}, totalT);
 					
 					if (distanceToScene < epsilon)
 					{
 						${this.geometryData.finalTeleportationGlsl ?? ""}
+
+						if (totalT == 0.0 && clipDistance > 0.0)
+						{
+							totalT = t;
+						}
 						
 						return computeShading(pos${addfiberArgument}, iteration, globalColor, totalT);
 					}
@@ -341,13 +348,14 @@ export class ThurstonGeometry extends Applet
 			"aspectRatioX",
 			"aspectRatioY",
 			"resolution",
+			"clipDistance",
 			"fov",
 
 			"cameraPos",
 			"normalVec",
 			"upVec",
 			"rightVec",
-			"forwardVec"
+			"forwardVec",
 		].concat(this.geometryData.uniformNames ?? []));
 
 		this.wilson.worldCenterX = 0;

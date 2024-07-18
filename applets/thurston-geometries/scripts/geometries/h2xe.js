@@ -463,6 +463,12 @@ export class H2xERooms extends H2xEGeometry
 
 			distance2 = (length(vec2(acosh(pos.z), mod(pos.w + spacing / 2.0, spacing) - spacing / 2.0)) - effectiveRadius) * scale;
 		}
+
+		if (totalT < clipDistance)
+		{
+			distance1 = maxT * 2.0;
+			distance2 = maxT * 2.0;
+		}
 		
 
 		// Translate the reflection plane to the x = 0 plane, then get the distance to it.
@@ -533,7 +539,7 @@ export class H2xERooms extends H2xEGeometry
 		if (sceneTransition == 1.0)
 		{
 			moddedPos.xyz *= 1.001;
-			surfaceNormal = getSurfaceNormal(moddedPos);
+			surfaceNormal = getSurfaceNormal(moddedPos, totalT);
 		}
 
 		vec4 lightDirection1 = normalize(vec4(-1.0, 1.0, 0.0, .5) - moddedPos);
@@ -574,13 +580,15 @@ export class H2xERooms extends H2xEGeometry
 		const wallThickness = 1.145 - this.sliderValues.wallThickness / 10;
 
 		gl.uniform1f(uniformList["wallThickness"], wallThickness);
-
+		gl.uniform1f(uniformList["clipDistance"], this.sliderValues.clipDistance);
 		gl.uniform3fv(uniformList["baseColor"], this.baseColor);
 	}
 
-	uiElementsUsed = "#wall-thickness-slider, #switch-scene-button";
+	uiElementsUsed = "#wall-thickness-slider, #switch-scene-button, #clip-distance-slider";
 
 	wallThicknessData = [1.55, -.55, 1.55];
+	maxClipDistance = 5;
+	doClipBrightening = true;
 
 	getNearestCenter()
 	{

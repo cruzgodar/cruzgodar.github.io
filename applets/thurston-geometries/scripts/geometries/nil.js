@@ -610,6 +610,12 @@ export class NilRooms extends NilGeometry
 			distance2 = (metricToOrigin(pos) - effectiveRadius) * scale;
 		}
 
+		if (totalT < clipDistance)
+		{
+			distance1 = maxT * 2.0;
+			distance2 = maxT * 2.0;
+		}
+
 		// The distance to the x and y teleportation planes is the distance between the projections
 		// to E^2. Unfortunately for our performance, the tolerances really do need to be this tight
 		// to avoid artifacts.
@@ -704,12 +710,15 @@ export class NilRooms extends NilGeometry
 	{
 		gl.uniform1f(uniformList["sceneTransition"], this.sliderValues.sceneTransition);
 		gl.uniform1f(uniformList["wallThickness"], .703 - this.sliderValues.wallThickness / 10);
+		gl.uniform1f(uniformList["clipDistance"], this.sliderValues.clipDistance);
 		gl.uniform3fv(uniformList["baseColor"], this.baseColor);
 	}
 
-	uiElementsUsed = "#wall-thickness-slider, #switch-scene-button";
+	uiElementsUsed = "#wall-thickness-slider, #switch-scene-button, #clip-distance-slider";
 
 	wallThicknessData = [.78, -.72, .78];
+
+	doClipBrightening = true;
 
 	getNearestCenter()
 	{

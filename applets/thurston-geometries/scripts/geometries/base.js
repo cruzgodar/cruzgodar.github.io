@@ -145,12 +145,15 @@ export class BaseGeometry
 	updateUniforms() {}
 
 	wallThicknessData;
+	maxClipDistance = 5;
+	doClipBrightening = false;
 
 	uiElementsUsed = "";
 
 	sliderValues = {
 		sceneTransition: 0,
 		wallThickness: 0,
+		clipDistance: 0,
 		fiberThickness: 0
 	};
 }

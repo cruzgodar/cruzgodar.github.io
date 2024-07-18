@@ -11,7 +11,7 @@ export class S2xEGeometry extends BaseGeometry
 	`;
 
 	fogGlsl = /* glsl */`
-		return mix(color, fogColor, 1.0 - exp(-totalT * fogScaling * 8.0));
+		return mix(color, fogColor, 1.0 - exp(-totalT * fogScaling * 1.0));
 	`;
 
 	correctPosition(pos)
@@ -162,8 +162,13 @@ export class S2xERooms extends S2xEGeometry
 
 			minSphereDistance = ${getMinGlslString("sphereDistance", 5)} * scale;
 		}
-
+	
 		float minDistance = min(minRoomDistance, minSphereDistance);
+
+		if (totalT < clipDistance)
+		{
+			minDistance = max(minDistance, clipDistance - length(vec2(acos(dot(pos.xyz, cameraPos.xyz)), abs(pos.w - cameraPos.w))));
+		}
 	`;
 
 	distanceEstimatorGlsl = /* glsl */`
@@ -269,11 +274,14 @@ export class S2xERooms extends S2xEGeometry
 			);
 		}
 
-		return vec3(
-			.88 + .12 * (.5 * (sin(wColor * 7.0) + 1.0)),
-			.88 + .12 * (.5 * (sin(wColor * 11.0) + 1.0)),
-			.88 + .12 * (.5 * (sin(wColor * 17.0) + 1.0))
-		);
+		if (minDistance == sphereDistance5)
+		{
+			return vec3(
+				.88 + .12 * (.5 * (sin(wColor * 7.0) + 1.0)),
+				.88 + .12 * (.5 * (sin(wColor * 11.0) + 1.0)),
+				.88 + .12 * (.5 * (sin(wColor * 17.0) + 1.0))
+			);
+		}
 	`;
 
 	lightGlsl = /* glsl */`
@@ -286,7 +294,7 @@ export class S2xERooms extends S2xEGeometry
 		float lightIntensity1 = 1.5 * dotProduct1;
 
 		pos.xyz /= 1.001;
-		surfaceNormal = getSurfaceNormal(pos);
+		surfaceNormal = getSurfaceNormal(pos, totalT);
 
 		vec4 lightDirection2 = normalize(vec4(0.0, 2.0, 2.0, 2.5) - modPos);
 		float dotProduct2 = dot(surfaceNormal, lightDirection2);
@@ -317,12 +325,15 @@ export class S2xERooms extends S2xEGeometry
 		const wallThickness = .9557 - this.sliderValues.wallThickness / 10;
 
 		gl.uniform1f(uniformList["sceneTransition"], this.sliderValues.sceneTransition);
+		gl.uniform1f(uniformList["clipDistance"], this.sliderValues.clipDistance);
 		gl.uniform1f(uniformList["wallThickness"], wallThickness);
 	}
 
-	uiElementsUsed = "#wall-thickness-slider, #switch-scene-button";
+	uiElementsUsed = "#wall-thickness-slider, #switch-scene-button, #clip-distance-slider";
 
 	wallThicknessData = [.8, -.45, .8];
+
+	doClipBrightening = true;
 
 	getNearestCenter()
 	{

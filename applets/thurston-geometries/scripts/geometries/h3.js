@@ -472,6 +472,12 @@ export class H3Rooms extends H3Geometry
 			distance2 = acosh(pos.w) - effectiveRadius;
 		}
 
+		if (totalT < clipDistance)
+		{
+			distance1 = maxT * 2.0;
+			distance2 = maxT * 2.0;
+		}
+
 		// Translate the reflection plane to the x = 0 plane, then get the distance to it.
 		// The DE to x = 0 is abs(asinh(pos.x)).
 		float distance3 = abs(asinh(
@@ -577,12 +583,15 @@ export class H3Rooms extends H3Geometry
 			(this.sliderValues.wallThickness - (-.357)) / (.143 - (-.357)) * (1.5 - 1);
 
 		gl.uniform1f(uniformList["wallThickness"], wallThickness);
+		gl.uniform1f(uniformList["clipDistance"], this.sliderValues.clipDistance);
 		gl.uniform3fv(uniformList["baseColor"], this.baseColor);
 	}
 
-	uiElementsUsed = "#wall-thickness-slider, #switch-scene-button";
+	uiElementsUsed = "#wall-thickness-slider, #switch-scene-button, #clip-distance-slider";
 
 	wallThicknessData = [.143, -.357, .143];
+	maxClipDistance = 6;
+	doClipBrightening = true;
 
 	getNearestCenter()
 	{

@@ -88,7 +88,10 @@ export class E3Rooms extends E3Geometry
 			sphereDistance = (length(mod(pos.xyz, 2.0) - vec3(1.0, 1.0, 1.0)) - effectiveRadius) * scale;
 		}
 		
-		float minDistance = min(roomDistance, sphereDistance);
+		float minDistance = max(
+			min(roomDistance, sphereDistance),
+			clipDistance - length(pos.xyz - cameraPos.xyz)
+		);
 	`;
 
 	distanceEstimatorGlsl = /* glsl */`
@@ -148,11 +151,14 @@ export class E3Rooms extends E3Geometry
 
 		gl.uniform1f(uniformList["sceneTransition"], this.sliderValues.sceneTransition);
 		gl.uniform1f(uniformList["wallThickness"], wallThickness);
+		gl.uniform1f(uniformList["clipDistance"], this.sliderValues.clipDistance);
 	}
 
-	uiElementsUsed = "#wall-thickness-slider, #switch-scene-button";
+	uiElementsUsed = "#wall-thickness-slider, #switch-scene-button, #clip-distance-slider";
 
 	wallThicknessData = [1.55, -0.85, 1.55];
+	maxClipDistance = 15;
+	doClipBrightening = true;
 
 	getNearestCenter()
 	{
