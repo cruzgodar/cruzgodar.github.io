@@ -59,8 +59,6 @@ export async function loadPage()
 
 	loadCustomScripts();
 
-	equalizeAppletColumns();
-
 	setLinks();
 
 	disableLinks();
@@ -89,6 +87,7 @@ export async function loadPage()
 	}
 
 	setTimeout(initFocusEvents, 50);
+	setTimeout(equalizeAppletColumns, 50);
 	setTimeout(equalizeAppletColumns, 100);
 }
 

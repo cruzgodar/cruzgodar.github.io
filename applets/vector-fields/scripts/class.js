@@ -4,7 +4,7 @@ import {
 	loadGlsl
 } from "../../../scripts/src/complexGlsl.js";
 import { AnimationFrameApplet } from "/scripts/applets/animationFrameApplet.js";
-import { Applet } from "/scripts/applets/applet.js";
+import { Applet, getMaxGlslString } from "/scripts/applets/applet.js";
 import { addTemporaryListener } from "/scripts/src/main.js";
 import { Wilson } from "/scripts/wilson.js";
 
@@ -239,6 +239,9 @@ export class VectorField extends AnimationFrameApplet
 			uniform sampler2D uTexture;
 			
 			uniform float maxBrightness;
+
+			uniform float stepSizeDownRight;
+			uniform float stepSizeUpLeft;
 			
 			vec3 hsv2rgb(vec3 c)
 			{
@@ -246,12 +249,28 @@ export class VectorField extends AnimationFrameApplet
 				vec3 p = abs(fract(c.xxx + K.xyz) * 6.0 - K.www);
 				return c.z * mix(K.xxx, clamp(p - K.xxx, 0.0, 1.0), c.y);
 			}
+
+			vec3 getPixel(vec2 uv)
+			{
+				vec3 v = texture2D(uTexture, (vec2(1.0 + uv.x, 1.0 - uv.y)) / 2.0).xyz;
+
+				return hsv2rgb(vec3(v.y, v.z, v.x / maxBrightness));
+			}
 			
 			void main(void)
 			{
-				vec3 v = texture2D(uTexture, (vec2(1.0 + uv.x, 1.0 - uv.y)) / 2.0).xyz;
-				
-				gl_FragColor = vec4(hsv2rgb(vec3(v.y, v.z, v.x / maxBrightness)), 1.0);
+				vec3 distance1 = getPixel(uv);
+
+				vec3 distance2 = getPixel(uv + vec2(stepSizeDownRight, 0.0));
+				vec3 distance3 = getPixel(uv + vec2(0.0, stepSizeDownRight));
+				vec3 distance6 = getPixel(uv + vec2(stepSizeDownRight, stepSizeDownRight));
+
+				vec3 distance4 = getPixel(uv + vec2(-stepSizeUpLeft, 0.0));
+				vec3 distance5 = getPixel(uv + vec2(0.0, -stepSizeUpLeft));
+				vec3 distance7 = getPixel(uv + vec2(stepSizeUpLeft, -stepSizeUpLeft));
+				vec3 distance8 = getPixel(uv + vec2(-stepSizeUpLeft, stepSizeUpLeft));
+				vec3 distance9 = getPixel(uv + vec2(-stepSizeUpLeft, -stepSizeUpLeft));
+				gl_FragColor = vec4(${getMaxGlslString("distance", 9)}, 1.0);
 			}
 		`;
 
@@ -306,7 +325,7 @@ export class VectorField extends AnimationFrameApplet
 
 		this.wilson = new Wilson(canvas, options);
 
-		this.wilson.render.initUniforms(["maxBrightness"]);
+		this.wilson.render.initUniforms(["maxBrightness", "stepSizeDownRight", "stepSizeUpLeft"]);
 
 		this.wilson.gl.uniform1f(this.wilson.uniforms["maxBrightness"], this.lifetime / 255);
 
@@ -1234,6 +1253,16 @@ export class VectorField extends AnimationFrameApplet
 			this.wilson.worldWidth = 4 * Math.pow(2, this.zoomLevel);
 			this.wilson.worldHeight = 4 * Math.pow(2, this.zoomLevel);
 		}
+
+		this.wilson.gl.uniform1f(
+			this.wilson.uniforms["stepSizeDownRight"],
+			this.resolution >= 750 ? 2 / this.resolution : 0
+		);
+
+		this.wilson.gl.uniform1f(
+			this.wilson.uniforms["stepSizeUpLeft"],
+			this.resolution >= 1500 ? 2 / this.resolution : 0
+		);
 	}
 
 

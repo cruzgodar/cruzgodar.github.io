@@ -5,6 +5,7 @@ import { DownloadButton, GenerateButton } from "/scripts/src/buttons.js";
 import { Checkbox } from "/scripts/src/checkboxes.js";
 import { Dropdown } from "/scripts/src/dropdowns.js";
 import { $ } from "/scripts/src/main.js";
+import { siteSettings } from "/scripts/src/settings.js";
 import { Slider } from "/scripts/src/sliders.js";
 import { TextBox } from "/scripts/src/textBoxes.js";
 import { Textarea } from "/scripts/src/textareas.js";
@@ -20,7 +21,7 @@ export default function()
 		name: "Resolution",
 		value: 500,
 		minValue: 100,
-		maxValue: 1000,
+		maxValue: 2000,
 		onInput: generateNewField
 	});
 
@@ -29,7 +30,7 @@ export default function()
 		name: "Particles",
 		value: 10000,
 		minValue: 1000,
-		maxValue: 100000,
+		maxValue: 20000,
 		onInput: generateNewField
 	});
 
@@ -128,7 +129,7 @@ export default function()
 		
 		applet.run({
 			generatingCode,
-			resolution: resolutionInput.value,
+			resolution: resolutionInput.value * siteSettings.resolutionMultiplier,
 			maxParticles: Math.max(maxParticlesInput.value, 100),
 			dt: speedSlider.value / 300,
 			lifetime: Math.min(lifetimeInput.value, 255),
@@ -150,7 +151,7 @@ export default function()
 	function generateNewField()
 	{
 		applet.generateNewField({
-			resolution: resolutionInput.value,
+			resolution: resolutionInput.value * siteSettings.resolutionMultiplier,
 			maxParticles: Math.max(maxParticlesInput.value, 100),
 			dt: speedSlider.value / 300,
 			lifetime: Math.min(lifetimeInput.value, 255)
