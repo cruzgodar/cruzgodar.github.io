@@ -1,10 +1,10 @@
 import { showPage } from "../../../../../../scripts/src/loadPage.js";
 import { VectorField } from "/applets/vector-fields/scripts/class.js";
 import {
-    createDesmosGraphs,
-    desmosBlue,
-    desmosPurple,
-    setGetDesmosData
+	createDesmosGraphs,
+	desmosBlue,
+	desmosPurple,
+	setGetDesmosData
 } from "/scripts/src/desmos.js";
 import { $ } from "/scripts/src/main.js";
 
@@ -65,6 +65,7 @@ export default function()
 	{
 		applet.run({
 			generatingCode: "((x + 3.0 * y) / 8.0, (4.0 * x + 2.0 * y) / 8.0)",
+			resolution: 750,
 			zoomLevel: 1
 		});
 		applet.pauseWhenOffscreen();

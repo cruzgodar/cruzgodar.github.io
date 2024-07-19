@@ -1,12 +1,12 @@
 import { showPage } from "../../../../../../scripts/src/loadPage.js";
 import { VectorField } from "/applets/vector-fields/scripts/class.js";
 import {
-    createDesmosGraphs,
-    desmosBlack,
-    desmosBlue,
-    desmosPurple,
-    desmosRed,
-    setGetDesmosData
+	createDesmosGraphs,
+	desmosBlack,
+	desmosBlue,
+	desmosPurple,
+	desmosRed,
+	setGetDesmosData
 } from "/scripts/src/desmos.js";
 import { $ } from "/scripts/src/main.js";
 
@@ -249,6 +249,7 @@ export default function()
 	{
 		applet.run({
 			generatingCode: "((x - 1.0) * (x + 1.0), (y + 1.0) * (y - 1.0))",
+			resolution: 750,
 			dt: .002,
 			zoomLevel: -.15
 		});
@@ -265,6 +266,7 @@ export default function()
 	{
 		applet2.run({
 			generatingCode: "(y*y, 1.0 - x*x)",
+			resolution: 750,
 			dt: .002,
 			zoomLevel: 0
 		});
@@ -281,6 +283,7 @@ export default function()
 	{
 		applet3.run({
 			generatingCode: "(y, -.5*y - sin(x))",
+			resolution: 750,
 			dt: .002,
 			zoomLevel: 2
 		});

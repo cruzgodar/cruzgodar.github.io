@@ -1,9 +1,9 @@
 import { showPage } from "../../../../../../scripts/src/loadPage.js";
 import { VectorField } from "/applets/vector-fields/scripts/class.js";
 import {
-    createDesmosGraphs,
-    desmosPurple,
-    setGetDesmosData
+	createDesmosGraphs,
+	desmosPurple,
+	setGetDesmosData
 } from "/scripts/src/desmos.js";
 import { $ } from "/scripts/src/main.js";
 
@@ -60,6 +60,7 @@ export default function()
 	{
 		applet.run({
 			generatingCode: "(.23 * (x + y), .23 * (-2.0 * x + 3.0 * y))",
+			resolution: 750,
 			zoomLevel: 1
 		});
 		applet.pauseWhenOffscreen();
