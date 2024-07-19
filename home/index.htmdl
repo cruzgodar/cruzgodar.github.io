@@ -18,7 +18,7 @@
 		<main>
 			<header>
 				<div id="logo-no-link">
-					<img src="/graphics/general-icons/logo.png" alt="Logo" tabindex="1"></img>
+					<img src="/graphics/general-icons/logo.webp" alt="Logo" tabindex="1"></img>
 				</div>
 					
 				<div style="height: 20px"></div>

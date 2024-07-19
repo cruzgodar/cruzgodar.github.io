@@ -363,7 +363,7 @@ function decodeHTMDL(html)
 				<header>
 					<div id="logo">
 						<a href="/home/" tabindex="-1">
-							<img src="/graphics/general-icons/logo.png" alt="Logo" tabindex="1"></img>
+							<img src="/graphics/general-icons/logo.webp" alt="Logo" tabindex="1"></img>
 						</a>
 					</div>
 					

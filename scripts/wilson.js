@@ -1388,7 +1388,11 @@ export class Wilson
 							
 							background-color: rgb(255, 255, 255);
 							
-							border: 2px solid rgb(127, 127, 127);
+							border: 2px solid rgb(
+								calc((1 - var(--theme)) * var(--normal-contrast-component) + var(--theme) * 127),
+								calc((1 - var(--theme)) * var(--normal-contrast-component) + var(--theme) * 127),
+								calc((1 - var(--theme)) * var(--normal-contrast-component) + var(--theme) * 127)
+							);
 							border-radius: 25%;
 							padding: 5px;
 							
