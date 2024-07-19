@@ -244,6 +244,8 @@ export class VectorField extends AnimationFrameApplet
 			uniform float stepSizeY1;
 			uniform float stepSizeX2;
 			uniform float stepSizeY2;
+			uniform float stepSizeX3;
+			uniform float stepSizeY3;
 			
 			vec3 hsv2rgb(vec3 c)
 			{
@@ -263,16 +265,33 @@ export class VectorField extends AnimationFrameApplet
 			{
 				vec3 distance1 = getPixel(uv);
 
+				// Make a 2x2 square down and right.
 				vec3 distance2 = getPixel(uv + vec2(stepSizeX1, 0.0));
 				vec3 distance3 = getPixel(uv + vec2(0.0, stepSizeY1));
 				vec3 distance6 = getPixel(uv + vec2(stepSizeX1, stepSizeY1));
 
+				// Make a 3x3 square centered on the pixel.
 				vec3 distance4 = getPixel(uv + vec2(-stepSizeX2, 0.0));
 				vec3 distance5 = getPixel(uv + vec2(0.0, -stepSizeY2));
 				vec3 distance7 = getPixel(uv + vec2(stepSizeX2, -stepSizeY2));
 				vec3 distance8 = getPixel(uv + vec2(-stepSizeX2, stepSizeY2));
 				vec3 distance9 = getPixel(uv + vec2(-stepSizeX2, -stepSizeY2));
-				gl_FragColor = vec4(${getMaxGlslString("distance", 9)}, 1.0);
+
+				// Make a 5x5 circle centered on the pixel.
+				vec3 distance10 = getPixel(uv + vec2(2.0 * stepSizeX3, 0.0));
+				vec3 distance11 = getPixel(uv + vec2(2.0 * stepSizeX3, stepSizeY3));
+				vec3 distance12 = getPixel(uv + vec2(2.0 * stepSizeX3, -stepSizeY3));
+				vec3 distance13 = getPixel(uv + vec2(-2.0 * stepSizeX3, 0.0));
+				vec3 distance14 = getPixel(uv + vec2(-2.0 * stepSizeX3, stepSizeY3));
+				vec3 distance15 = getPixel(uv + vec2(-2.0 * stepSizeX3, -stepSizeY3));
+				vec3 distance16 = getPixel(uv + vec2(0.0, 2.0 * stepSizeY3));
+				vec3 distance17 = getPixel(uv + vec2(stepSizeX3, 2.0 * stepSizeY3));
+				vec3 distance18 = getPixel(uv + vec2(-stepSizeX3, 2.0 * stepSizeY3));
+				vec3 distance19 = getPixel(uv + vec2(0.0, -2.0 * stepSizeY3));
+				vec3 distance20 = getPixel(uv + vec2(stepSizeX3, -2.0 * stepSizeY3));
+				vec3 distance21 = getPixel(uv + vec2(-stepSizeX3, -2.0 * stepSizeY3));
+
+				gl_FragColor = vec4(${getMaxGlslString("distance", 21)}, 1.0);
 			}
 		`;
 
@@ -332,7 +351,9 @@ export class VectorField extends AnimationFrameApplet
 			"stepSizeX1",
 			"stepSizeY1",
 			"stepSizeX2",
-			"stepSizeY2"
+			"stepSizeY2",
+			"stepSizeX3",
+			"stepSizeY3"
 		]);
 
 		this.wilson.gl.uniform1f(this.wilson.uniforms["maxBrightness"], this.lifetime / 255);
@@ -1264,21 +1285,31 @@ export class VectorField extends AnimationFrameApplet
 
 		this.wilson.gl.uniform1f(
 			this.wilson.uniforms["stepSizeX1"],
-			this.resolution >= 750 ? 2 / this.wilson.canvasWidth : 0
+			this.resolution >= 700 ? 2 / this.wilson.canvasWidth : 0
 		);
 
 		this.wilson.gl.uniform1f(
 			this.wilson.uniforms["stepSizeY1"],
-			this.resolution >= 750 ? 2 / this.wilson.canvasHeight : 0
+			this.resolution >= 700 ? 2 / this.wilson.canvasHeight : 0
 		);
 
 		this.wilson.gl.uniform1f(
 			this.wilson.uniforms["stepSizeX2"],
-			this.resolution >= 1500 ? 2 / this.wilson.canvasWidth : 0
+			this.resolution >= 1000 ? 2 / this.wilson.canvasWidth : 0
 		);
 
 		this.wilson.gl.uniform1f(
 			this.wilson.uniforms["stepSizeY2"],
+			this.resolution >= 1000 ? 2 / this.wilson.canvasHeight : 0
+		);
+
+		this.wilson.gl.uniform1f(
+			this.wilson.uniforms["stepSizeX3"],
+			this.resolution >= 1500 ? 2 / this.wilson.canvasWidth : 0
+		);
+
+		this.wilson.gl.uniform1f(
+			this.wilson.uniforms["stepSizeY3"],
 			this.resolution >= 1500 ? 2 / this.wilson.canvasHeight : 0
 		);
 	}
