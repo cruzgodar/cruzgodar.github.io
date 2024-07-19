@@ -83,7 +83,10 @@ export class Dropdown extends InputElement
 			const optionElement = document.createElement("div");
 
 			optionElement.textContent = option.textContent;
-			optionElement.setAttribute("data-option-name", option.getAttribute("value"));
+			optionElement.setAttribute(
+				"data-option-name",
+				index === 0 ? "default" : option.getAttribute("value")
+			);
 			optionElement.setAttribute("data-option-index", index);
 			this.optionElements.push(optionElement);
 			this.optionContainerElement.appendChild(optionElement);
@@ -131,7 +134,10 @@ export class Dropdown extends InputElement
 				
 				if (value)
 				{
-					this.setValue(decodeURIComponent(value), true);
+					this.setValue({
+						newValue: decodeURIComponent(value),
+						instant: true,
+					});
 				}
 
 				addTemporaryParam(this.element.id);
@@ -259,14 +265,20 @@ export class Dropdown extends InputElement
 			element = element.parentNode;
 		}
 
-		await this.setValue(element.getAttribute("data-option-name"));
+		await this.setValue({
+			newValue: element.getAttribute("data-option-name"),
+			fromOnClickHandler: true
+		});
 	}
 
 	// Sets the value of the dropdown and closes it.
 	// If it's open, it will animate to the new value, and otherwise it will change instantly.
 	// Can pass null to reset to the default value.
-	async setValue(newValue, instant = false)
-	{
+	async setValue({
+		newValue,
+		instant = false,
+		fromOnClickHandler = false
+	}) {
 		const needToOpen = !this.isOpen;
 
 		if (needToOpen)
@@ -280,7 +292,7 @@ export class Dropdown extends InputElement
 			{
 				await changeOpacity({
 					element: this.buttonElement,
-					opacity: 1,
+					opacity: 0,
 					duration: opacityAnimationTime / 2.5
 				});
 			}
@@ -304,7 +316,12 @@ export class Dropdown extends InputElement
 			// and clicking the title option.
 			this.selectedItem = parseInt(
 				element.getAttribute("data-option-index") ?? this.selectedItem
-			) || this.selectedItem;
+			);
+
+			if (this.selectedItem === 0 && fromOnClickHandler)
+			{
+				this.selectedItem = oldSelectedItem;
+			}
 		}
 
 		this.element.value = this.selectOptionElements[this.selectedItem].value;
@@ -312,7 +329,8 @@ export class Dropdown extends InputElement
 
 		if (oldSelectedItem !== this.selectedItem && this.selectedItem)
 		{
-			this.onInput();
+			try { this.onInput(); }
+			catch(ex) { /* No onInput */ }
 		}
 		
 		const titleRect = this.optionContainerElement.children[0].getBoundingClientRect();

@@ -68,7 +68,7 @@ export default function()
 		{
 			if (examplesDropdown.value)
 			{
-				examplesDropdown.setValue(null);
+				examplesDropdown.setValue({ newValue: "default" });
 			}
 		},
 		onEnter: run
