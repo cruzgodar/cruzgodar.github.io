@@ -14,6 +14,7 @@ import { initNavButtons, initTextButtons } from "./buttons.js";
 import { initCards, showCard } from "./cards.js";
 import { initCarousels } from "./carousels.js";
 import { initFocusEvents, initHoverEvents } from "./hoverEvents.js";
+import { listenForFullscreenKey } from "./interaction.js";
 import { equalizeAppletColumns, onResize } from "./layout.js";
 import {
 	$$,
@@ -80,6 +81,8 @@ export async function loadPage()
 	onResize();
 
 	revertTheme();
+
+	listenForFullscreenKey();
 
 	if (siteSettings.condensedApplets && sitemap[pageUrl].parent === "/applets/")
 	{

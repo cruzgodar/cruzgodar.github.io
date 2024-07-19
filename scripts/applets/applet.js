@@ -57,23 +57,6 @@ export class Applet
 			setTimeout(() => this.addFpsDisplay(), 500);
 		}
 
-		
-		addTemporaryListener({
-			object: document.documentElement,
-			event: "keydown",
-			callback: e =>
-			{
-				if (
-					e.key === "f"
-					&& this.allowFullscreenWithKeyboard
-					&& document.activeElement.tagName !== "INPUT"
-					&& document.activeElement.tagName !== "TEXTAREA"
-				) {
-					this.wilson.fullscreen.switchFullscreen();
-				}
-			}
-		});
-
 		Applet.current.push(this);
 	}
 

@@ -1,4 +1,6 @@
+import { Applet } from "../applets/applet.js";
 import { removeHoverEvents } from "./hoverEvents.js";
+import { addTemporaryListener } from "./main.js";
 
 // Whether this is a touchscreen device on the current page.
 // It's assumed to be false on every page until a touchstart or touchmove
@@ -104,4 +106,51 @@ function handleTouchEvent()
 
 		currentlyTouchDevice = true;
 	}
+}
+
+export function listenForFullscreenKey()
+{
+	addTemporaryListener({
+		object: document.documentElement,
+		event: "keydown",
+		callback: e =>
+		{
+			if (
+				e.key === "f"
+				&& document.activeElement.tagName !== "INPUT"
+				&& document.activeElement.tagName !== "TEXTAREA"
+			) {
+				let minDistance = Infinity;
+				let minIndex = 0;
+
+				for (let i = 0; i < Applet.current.length; i++)
+				{
+					const applet = Applet.current[i];
+
+					if (!applet.allowFullscreenWithKeyboard)
+					{
+						continue;
+					}
+					
+					if (applet.wilson.fullscreen.currentlyFullscreen)
+					{
+						applet.wilson.fullscreen.switchFullscreen();
+						return;
+					}
+
+					const rect = applet.canvas.getBoundingClientRect();
+					const center = rect.top + rect.height / 2;
+					const distance = Math.abs(window.innerHeight / 2 - center);
+
+					if (distance < minDistance)
+					{
+						minDistance = distance;
+						minIndex = i;
+					}
+				}
+
+				Applet.current[minIndex].wilson.fullscreen.switchFullscreen();
+			}
+		}
+	});
 }
