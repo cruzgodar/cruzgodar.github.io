@@ -76,6 +76,7 @@ export class FractalSounds extends AnimationFrameApplet
 		};
 
 		this.wilsonJulia = new Wilson(canvas, optionsJulia);
+		this.wilsonForFullscreen = this.wilsonJulia;
 
 
 

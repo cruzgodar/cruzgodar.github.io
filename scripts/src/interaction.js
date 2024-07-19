@@ -131,10 +131,12 @@ export function listenForFullscreenKey()
 					{
 						continue;
 					}
+
+					const wilson = applet.wilsonForFullscreen ?? applet.wilson;
 					
-					if (applet.wilson.fullscreen.currentlyFullscreen)
+					if (wilson.fullscreen.currentlyFullscreen)
 					{
-						applet.wilson.fullscreen.switchFullscreen();
+						wilson.fullscreen.switchFullscreen();
 						return;
 					}
 
@@ -149,7 +151,10 @@ export function listenForFullscreenKey()
 					}
 				}
 
-				Applet.current[minIndex].wilson.fullscreen.switchFullscreen();
+				const wilson = Applet.current[minIndex].wilsonForFullscreen
+					?? Applet.current[minIndex].wilson;
+
+				wilson.fullscreen.switchFullscreen();
 			}
 		}
 	});

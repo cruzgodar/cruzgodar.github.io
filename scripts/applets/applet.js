@@ -27,6 +27,7 @@ export class Applet
 {
 	canvas;
 	wilson;
+	wilsonForFullscreen;
 	allowFullscreenWithKeyboard = true;
 
 	fpsDisplayCtx;
