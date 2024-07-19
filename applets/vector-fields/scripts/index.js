@@ -22,7 +22,7 @@ export default function()
 		value: 750,
 		minValue: 100,
 		maxValue: 2000,
-		onInput: generateNewField
+		onInput: run
 	});
 
 	const maxParticlesInput = new TextBox({
