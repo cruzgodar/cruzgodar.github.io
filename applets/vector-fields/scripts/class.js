@@ -560,7 +560,6 @@ export class VectorField extends AnimationFrameApplet
 
 		let glsl = "";
 		let numDistances = 0;
-		let printString = "";
 
 		for (let i = -radius + 1; i < radius; i++)
 		{
@@ -570,11 +569,8 @@ export class VectorField extends AnimationFrameApplet
 
 				if (distanceToCenter2 > (radius - 0.5) * (radius - 0.5))
 				{
-					printString += ".";
 					continue;
 				}
-
-				printString += "*";
 
 				numDistances++;
 				glsl += /* glsl */`
@@ -586,16 +582,11 @@ export class VectorField extends AnimationFrameApplet
 					);
 				`;
 			}
-
-			printString += "\n";
 		}
 
 		glsl += /* glsl */`
 			gl_FragColor = vec4(${getMaxGlslString("distance", numDistances)}, 1.0);
 		`;
-
-		console.log(radius);
-		console.log(printString);
 
 		return glsl;
 	}
