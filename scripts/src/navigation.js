@@ -319,6 +319,8 @@ async function fadeOutPage({ url, noFadeOut })
 				: fadeOut({ element: pageElement });
 		}
 	})();
+
+	await new Promise(resolve => setTimeout(resolve, 33));
 }
 
 
