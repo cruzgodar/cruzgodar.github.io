@@ -1457,7 +1457,7 @@ export class Wilson
 					.wilson-true-fullscreen-canvas
 					{
 						width: 100vw !important;
-						height: calc(100% + 4px) !important;
+						height: 100% !important;
 						
 						border: none !important;
 						border-radius: 0 !important;
@@ -1467,7 +1467,8 @@ export class Wilson
 					.wilson-letterboxed-fullscreen-canvas
 					{
 						width: 100vmin !important;
-						height: calc(100vmin + 4px) !important;
+						height: 100vmin !important;
+						margin-top: -4px !important;
 						
 						border: none !important;
 						border-radius: 0 !important;
@@ -1477,7 +1478,7 @@ export class Wilson
 					.wilson-letterboxed-canvas-background
 					{
 						width: 100vw;
-						height: calc((100vh - 100vmin) / 2 + 4px);
+						height: calc((100vh - 100vmin) / 2);
 						
 						background-color: rgb(0, 0, 0);
 					}
@@ -1485,7 +1486,7 @@ export class Wilson
 					.wilson-black-background
 					{
 						width: 100vw !important;
-						height: calc(100% + 4px) !important;
+						height: 100% !important;
 						
 						background-color: rgb(0, 0, 0) !important;
 					}
