@@ -1,6 +1,7 @@
+import { VectorField } from "/applets/vector-fields/scripts/class.js";
 import { Applet } from "/scripts/applets/applet.js";
 import { RaymarchApplet } from "/scripts/applets/raymarchApplet.js";
-import { addTemporaryListener } from "/scripts/src/main.js";
+import { addTemporaryListener, pageElement } from "/scripts/src/main.js";
 import { Wilson } from "/scripts/wilson.js";
 
 export class HairyBall extends RaymarchApplet
@@ -11,11 +12,35 @@ export class HairyBall extends RaymarchApplet
 	distanceFromOrigin = 1.55;
 	cameraPos = [this.distanceFromOrigin, 0, 0];
 
+	vectorFieldApplet;
+
 
 
 	constructor({ canvas })
 	{
 		super(canvas);
+
+		const hiddenCanvas = this.createHiddenCanvas();
+		hiddenCanvas.style.display = "block";
+		hiddenCanvas.classList.remove("hidden-canvas");
+		hiddenCanvas.classList.add("output-canvas");
+		pageElement.appendChild(hiddenCanvas);
+		this.vectorFieldApplet = new VectorField({ canvas: hiddenCanvas });
+		this.vectorFieldApplet.drawFrameCallback = this.drawFrame.bind(this);
+
+		this.vectorFieldApplet.loadPromise.then(() =>
+		{
+			this.vectorFieldApplet.run({
+				generatingCode: "(sin(1.5*y), -sin(1.5*x))",
+				resolution: 1000,
+				maxParticles: 10000,
+				dt: .00375,
+				lifetime: 150,
+				worldCenterX: 0,
+				worldCenterY: 0,
+				zoomLevel: .6515
+			});
+		});
 
 		const fragShaderSource = /* glsl */`
 			precision highp float;
@@ -33,6 +58,8 @@ export class HairyBall extends RaymarchApplet
 			uniform float focalLength;
 
 			uniform int imageSize;
+
+			uniform sampler2D uTexture;
 			
 			const vec3 lightPos = vec3(50.0, 70.0, 100.0);
 			const float lightBrightness = 2.0;
@@ -53,7 +80,7 @@ export class HairyBall extends RaymarchApplet
 				vec3 normalizedPos = normalize(pos);
 				float phi = acos(normalizedPos.z);
 				float theta = atan(normalizedPos.y, normalizedPos.x);
-				return vec3(0.25);
+				return texture2D(uTexture, vec2(theta / 6.28318531, phi / 3.14159265)).xyz;
 			}
 			
 			vec3 getSurfaceNormal(vec3 pos)
@@ -185,6 +212,15 @@ export class HairyBall extends RaymarchApplet
 			"focalLength",
 		]);
 
+		this.wilson.render.createFramebufferTexturePair(this.wilson.gl.UNSIGNED_BYTE);
+
+		this.wilson.gl.bindTexture(
+			this.wilson.gl.TEXTURE_2D,
+			this.wilson.render.framebuffers[0].texture
+		);
+
+		this.wilson.gl.bindFramebuffer(this.wilson.gl.FRAMEBUFFER, null);
+
 		
 
 		this.calculateVectors();
@@ -273,6 +309,20 @@ export class HairyBall extends RaymarchApplet
 
 	drawFrame()
 	{
+		const texture = this.vectorFieldApplet.wilson.render.getPixelData();
+
+		this.wilson.gl.texImage2D(
+			this.wilson.gl.TEXTURE_2D,
+			0,
+			this.wilson.gl.RGBA,
+			this.vectorFieldApplet.wilson.canvasWidth,
+			this.vectorFieldApplet.wilson.canvasHeight,
+			0,
+			this.wilson.gl.RGBA,
+			this.wilson.gl.UNSIGNED_BYTE,
+			texture
+		);
+
 		this.wilson.worldCenterY = Math.min(
 			Math.max(
 				this.wilson.worldCenterY,
@@ -344,9 +394,5 @@ export class HairyBall extends RaymarchApplet
 		}
 
 		this.wilson.gl.uniform1i(this.wilson.uniforms["imageSize"], this.imageSize);
-
-
-
-		this.needNewFrame = true;
 	}
 }

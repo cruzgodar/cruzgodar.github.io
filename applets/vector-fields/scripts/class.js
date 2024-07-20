@@ -63,6 +63,8 @@ export class VectorField extends AnimationFrameApplet
 	lastTimeElapsed = new Array(this.timeElapsedHistoryLength);
 	averageTimeElapsed;
 	frame = 0;
+
+	drawFrameCallback = () => {};
 	
 
 
@@ -861,6 +863,8 @@ export class VectorField extends AnimationFrameApplet
 			this.updateParticles(timeElapsed);
 
 			this.drawField();
+
+			this.drawFrameCallback();
 
 			this.needNewFrame = true;
 		}
