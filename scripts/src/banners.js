@@ -4,6 +4,7 @@ import { likelyWindowChromeHeight, onResize, viewportHeight } from "./layout.js"
 import {
 	$,
 	addStyle,
+	asyncFetch,
 	pageElement,
 	pageUrl
 } from "./main.js";
@@ -152,10 +153,8 @@ export async function loadBanner(large = false)
 			background-size: cover;
 		}
 	`);
-
-
 	
-	await fetch(bannerFilepath + bannerFilename);
+	await asyncFetch(bannerFilepath + bannerFilename);
 
 	const img = new Image();
 

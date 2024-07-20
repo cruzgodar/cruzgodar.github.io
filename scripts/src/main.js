@@ -276,3 +276,22 @@ export function addStyle(content, temporary = true, atBeginningOfHead = false)
 
 	return element;
 }
+
+
+
+export async function asyncFetch(url)
+{
+	return new Promise((resolve, reject) =>
+	{
+		const fetcher = new Worker("/scripts/src/asyncFetcher.js");
+
+		fetcher.postMessage([url]);
+
+		fetcher.onmessage = (e) =>
+		{
+			resolve(e.data[0]);
+		};
+
+		fetcher.onerror = reject;
+	});
+}

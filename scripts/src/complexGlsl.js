@@ -1,3 +1,5 @@
+import { asyncFetch } from "./main.js";
+
 const glslFilenames =
 [
 	"equality",
@@ -151,35 +153,10 @@ export async function loadGlsl()
 async function loadGlslLogic()
 {
 	// constants and main are always fetched.
-	const response = await fetch("/scripts/glsl/constants");
-
-	const text = await response.text();
-
-	glslFiles.constants.content = text;
-
-
-
-	const response2 = await fetch("/scripts/glsl/main");
-
-	const text2 = await response2.text();
-
-	glslFiles.main.content = text2;
-
-
-
-	const response3 = await fetch("/scripts/glsl/double_emulation");
-
-	const text3 = await response3.text();
-
-	doubleEmulationGlsl = text3;
-
-
-
-	const response4 = await fetch("/scripts/glsl/double_encoding");
-
-	const text4 = await response4.text();
-
-	doubleEncodingGlsl = text4;
+	glslFiles.constants.content = await asyncFetch("/scripts/glsl/constants");
+	glslFiles.main.content = await asyncFetch("/scripts/glsl/main");
+	doubleEmulationGlsl = await asyncFetch("/scripts/glsl/double_emulation");
+	doubleEncodingGlsl = await asyncFetch("/scripts/glsl/double_encoding");
 
 
 
@@ -189,8 +166,7 @@ async function loadGlslLogic()
 	{
 		return new Promise(resolve =>
 		{
-			fetch(`/scripts/glsl/${filename}`)
-				.then(response => response.text())
+			asyncFetch(`/scripts/glsl/${filename}`)
 				.then(text =>
 				{
 					texts[filename] = text;

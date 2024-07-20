@@ -18,6 +18,7 @@ import { listenForFullscreenKey } from "./interaction.js";
 import { equalizeAppletColumns, onResize } from "./layout.js";
 import {
 	$$,
+	asyncFetch,
 	pageElement,
 	pageUrl,
 	updatePageElement
@@ -112,30 +113,26 @@ export async function showPage()
 
 
 
-function loadCustomStyle()
+async function loadCustomStyle()
 {
 	if (!sitemap[pageUrl].customStyle)
 	{
 		return;
 	}
 
-	fetch(`${pageUrl}style/index.${window.DEBUG ? "css" : "min.css"}`)
-		.then(response => response.text())
-		.then(text =>
-		{
-			const element = document.createElement("style");
+	const element = document.createElement("style");
 
-			element.textContent = text;
-			
-			element.classList.add("temporary-style");
-			
-			// This is kind of subtle. If we append this new style to the end of the head,
-			// then it will take precendence over settings styles, which is terrible --
-			// for example, the homepage will render all of its custom classes like
-			// quote-text and quote-attribution incorrectly. Therefore, we need to
-			//* prepend* it, ensuring it has the lowest-possible priority.
-			document.head.insertBefore(element, document.head.firstChild);
-		});
+	element.textContent = await asyncFetch(
+		`${pageUrl}style/index.${window.DEBUG ? "css" : "min.css"}`);
+	
+	element.classList.add("temporary-style");
+	
+	// This is kind of subtle. If we append this new style to the end of the head,
+	// then it will take precendence over settings styles, which is terrible --
+	// for example, the homepage will render all of its custom classes like
+	// quote-text and quote-attribution incorrectly. Therefore, we need to
+	//* prepend* it, ensuring it has the lowest-possible priority.
+	document.head.insertBefore(element, document.head.firstChild);
 }
 
 

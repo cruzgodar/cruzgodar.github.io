@@ -10,12 +10,13 @@ import {
 import {
 	bannerElement,
 	bannerPages,
-	loadBanner,
+	loadBanner
 } from "./banners.js";
 import { cardIsOpen, hideCard } from "./cards.js";
 import { clearDesmosGraphs, desmosGraphs } from "./desmos.js";
 import { loadPage } from "./loadPage.js";
 import {
+	asyncFetch,
 	clearTemporaryIntervals,
 	clearTemporaryListeners,
 	clearTemporaryParams,
@@ -88,15 +89,11 @@ export async function redirect({
 
 	// Get the new data, fade out the page, and preload the next page's banner if it exists.
 	// When all of those things are successfully done, replace the current html with the new stuff.
-	const [response] = await Promise.all([fetch(`${url}data.html`), loadBanner(), fadeOutPage({ url, noFadeOut })]);
-
-	if (!response.ok)
-	{
-		window.location.replace("/404.html");
-		return;
-	}
-
-	const text = await response.text();
+	const [text] = await Promise.all([
+		asyncFetch(`${url}data.html`),
+		loadBanner(),
+		fadeOutPage({ url, noFadeOut })
+	]);
 
 	unloadPage();
 
@@ -432,5 +429,5 @@ export async function prefetchPage(url)
 		urlsToFetch.push(`${url}style/index.min.css`);
 	}
 
-	await Promise.all(urlsToFetch.map(urlToFetch => fetch(urlToFetch)));
+	await Promise.all(urlsToFetch.map(urlToFetch => asyncFetch(urlToFetch)));
 }
