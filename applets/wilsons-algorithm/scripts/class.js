@@ -52,18 +52,23 @@ export class WilsonsAlgorithm extends Applet
 		// so that the canvas doesn't look blurry.
 		const canvasPixels = Math.min(window.innerWidth, window.innerHeight);
 
-		const canvasScaleFactor = Math.ceil(canvasPixels / canvasDim);
+		let canvasScaleFactor = Math.ceil(canvasPixels / canvasDim) * 2;
+		
+		if (canvasScaleFactor * canvasDim > 5000)
+		{
+			canvasScaleFactor = 5000 / canvasDim;
+		}
 
+		const resolution = canvasDim * canvasScaleFactor;
 
-
-		this.wilson.changeCanvasSize(canvasDim * canvasScaleFactor, canvasDim * canvasScaleFactor);
+		this.wilson.changeCanvasSize(resolution, resolution);
 
 		this.wilson.ctx.fillStyle = convertColor(0, 0, 0);
 		this.wilson.ctx.fillRect(
 			0,
 			0,
-			canvasDim * canvasScaleFactor,
-			canvasDim * canvasScaleFactor
+			resolution,
+			resolution
 		);
 
 
