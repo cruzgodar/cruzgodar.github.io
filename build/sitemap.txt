@@ -2,6 +2,7 @@ home Cruz Godar
 	gallery Gallery
 
 	applets Applets
+		hairy-ball-theorem The Hairy Ball Theorem
 		hopf-fibration The Hopf Fibration
 		bernoulli-percolation Bernoulli Percolation
 		menger-sponge The Menger Sponge

@@ -33,13 +33,19 @@ export class RaymarchApplet extends AnimationFrameApplet
 
 	focalLength = 2;
 
+	lockedOnOrigin = false;
+	distanceFromOrigin = 1;
+
 
 
 	constructor(canvas)
 	{
 		super(canvas);
 
-		this.listenForKeysPressed(["w", "s", "a", "d", "q", "e", " ", "shift"]);
+		if (!this.lockedOnOrigin)
+		{
+			this.listenForKeysPressed(["w", "s", "a", "d", "q", "e", " ", "shift"]);
+		}
 
 		const refreshId = setInterval(() =>
 		{
@@ -58,9 +64,11 @@ export class RaymarchApplet extends AnimationFrameApplet
 	{
 		// Here comes the serious math. Theta is the angle in the xy-plane and
 		// phi the angle down from the z-axis. We can use them get a normalized forward vector:
+		const sign = this.lockedOnOrigin ? -1 : 1;
+
 		this.forwardVec = [
-			Math.cos(this.theta) * Math.sin(this.phi),
-			Math.sin(this.theta) * Math.sin(this.phi),
+			Math.cos(sign * this.theta) * Math.sin(this.phi),
+			Math.sin(sign * this.theta) * Math.sin(this.phi),
 			Math.cos(this.phi)
 		];
 
@@ -73,6 +81,14 @@ export class RaymarchApplet extends AnimationFrameApplet
 
 		// Finally, the upward vector is the cross product of the previous two.
 		this.upVec = RaymarchApplet.crossProduct(this.rightVec, this.forwardVec);
+
+		if (this.lockedOnOrigin)
+		{
+			this.cameraPos = RaymarchApplet.scaleVector(
+				-this.distanceFromOrigin,
+				this.forwardVec
+			);
+		}
 
 		
 
@@ -156,10 +172,11 @@ export class RaymarchApplet extends AnimationFrameApplet
 			this.moveVelocity[2] = -1;
 		}
 
-		if (this.moveVelocity[0] !== 0
-			|| this.moveVelocity[1] !== 0
-			|| this.moveVelocity[2] !== 0
-		) {
+		if (!this.lockedOnOrigin && (
+			this.moveVelocity[0] !== 0
+				|| this.moveVelocity[1] !== 0
+				|| this.moveVelocity[2] !== 0
+		)) {
 			const tangentVec = [
 				this.moveVelocity[0] * this.forwardVec[0]
 					+ this.moveVelocity[1] * this.rightVec[0],

@@ -44,6 +44,7 @@ export const sitemap =
 		
 		"children":
 		[
+			"/applets/hairy-ball-theorem/",
 			"/applets/hopf-fibration/",
 			"/applets/bernoulli-percolation/",
 			"/applets/menger-sponge/",
@@ -88,6 +89,17 @@ export const sitemap =
 		]
 	},
 		
+	"/applets/hairy-ball-theorem/":
+	{
+		"title": "The Hairy Ball Theorem",
+		
+		"parent": "/applets/",
+		
+		"children": [],
+
+		"customScript": true
+	},
+	
 	"/applets/hopf-fibration/":
 	{
 		"title": "The Hopf Fibration",
