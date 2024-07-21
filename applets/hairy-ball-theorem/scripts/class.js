@@ -31,8 +31,8 @@ export class HairyBall extends RaymarchApplet
 		this.vectorFieldApplet.loadPromise.then(() =>
 		{
 			this.vectorFieldApplet.run({
-				generatingCode: "(sin(1.5*y), -sin(1.5*x))",
-				resolution: 1000,
+				generatingCode: "(sin(0.5*(y+3.14159))*cos(x), -sin(0.5*(y+3.14159))*sin(x))",
+				resolution: this.imageSize,
 				maxParticles: 10000,
 				dt: .00375,
 				lifetime: 150,
@@ -62,7 +62,7 @@ export class HairyBall extends RaymarchApplet
 			uniform sampler2D uTexture;
 			
 			const vec3 lightPos = vec3(50.0, 70.0, 100.0);
-			const float lightBrightness = 2.0;
+			const float lightBrightness = 1.5;
 			
 			const float clipDistance = 1000.0;
 			const int maxMarches = 256;
@@ -79,7 +79,7 @@ export class HairyBall extends RaymarchApplet
 				// Convert to spherical coordinates.
 				vec3 normalizedPos = normalize(pos);
 				float phi = acos(normalizedPos.z);
-				float theta = atan(normalizedPos.y, normalizedPos.x);
+				float theta = atan(normalizedPos.y, normalizedPos.x) + 3.14159265;
 				return texture2D(uTexture, vec2(theta / 6.28318531, phi / 3.14159265)).xyz;
 			}
 			
@@ -213,6 +213,18 @@ export class HairyBall extends RaymarchApplet
 		]);
 
 		this.wilson.render.createFramebufferTexturePair(this.wilson.gl.UNSIGNED_BYTE);
+
+		this.wilson.gl.texParameteri(
+			this.wilson.gl.TEXTURE_2D,
+			this.wilson.gl.TEXTURE_MAG_FILTER,
+			this.wilson.gl.LINEAR
+		);
+
+		this.wilson.gl.texParameteri(
+			this.wilson.gl.TEXTURE_2D,
+			this.wilson.gl.TEXTURE_MIN_FILTER,
+			this.wilson.gl.LINEAR
+		);
 
 		this.wilson.gl.bindTexture(
 			this.wilson.gl.TEXTURE_2D,

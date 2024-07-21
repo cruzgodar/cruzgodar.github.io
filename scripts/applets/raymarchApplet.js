@@ -66,10 +66,13 @@ export class RaymarchApplet extends AnimationFrameApplet
 		// phi the angle down from the z-axis. We can use them get a normalized forward vector:
 		const sign = this.lockedOnOrigin ? -1 : 1;
 
+		const theta = this.lockedOnOrigin ? -this.theta : this.theta;
+		const phi = this.lockedOnOrigin ? Math.PI - this.phi : this.phi;
+
 		this.forwardVec = [
-			Math.cos(sign * this.theta) * Math.sin(this.phi),
-			Math.sin(sign * this.theta) * Math.sin(this.phi),
-			Math.cos(this.phi)
+			Math.cos(theta) * Math.sin(phi),
+			Math.sin(theta) * Math.sin(phi),
+			Math.cos(phi)
 		];
 
 		// Now the right vector needs to be constrained to the xy-plane,
