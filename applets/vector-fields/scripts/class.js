@@ -16,6 +16,8 @@ export class VectorField extends AnimationFrameApplet
 
 	numParticles = 0;
 	maxParticles = 5000;
+	loopEdges = false;
+	particleDilation;
 
 	aspectRatio = 1;
 	zoomLevel = .6515;
@@ -71,9 +73,14 @@ export class VectorField extends AnimationFrameApplet
 	constructor({
 		canvas,
 		draggable1Location = [1, 0],
-		draggable2Location = [-1, 0]
+		draggable2Location = [-1, 0],
+		loopEdges = false,
+		particleDilation = undefined
 	}) {
 		super(canvas);
+
+		this.loopEdges = loopEdges;
+		this.particleDilation = particleDilation;
 
 		this.updateCanvas = this.createHiddenCanvas();
 		this.dimCanvas = this.createHiddenCanvas();
@@ -538,7 +545,7 @@ export class VectorField extends AnimationFrameApplet
 
 	getSamplingGlsl()
 	{
-		const radius = Math.floor(this.resolution / 500);
+		const radius = this.particleDilation ?? Math.floor(this.resolution / 500);
 
 		if (radius === 0)
 		{
@@ -984,20 +991,43 @@ export class VectorField extends AnimationFrameApplet
 					this.particles[index][0] = floatsX[index];
 					this.particles[index][1] = floatsY[index];
 
-					const row = Math.round(
+					let row = Math.round(
 						(
 							.5 - (
 								this.particles[index][1] - this.wilson.worldCenterY
 							) / this.wilson.worldHeight
 						) * this.wilson.canvasHeight);
 
-					const col = Math.round(
+					let col = Math.round(
 						(
 							(this.particles[index][0] - this.wilson.worldCenterX)
 								/ this.wilson.worldWidth
 								+ .5
 						) * this.wilson.canvasWidth
 					);
+
+					if (this.loopEdges)
+					{
+						if (row >= this.wilson.canvasHeight)
+						{
+							row -= this.wilson.canvasHeight;
+						}
+
+						else if (row < 0)
+						{
+							row += this.wilson.canvasHeight;
+						}
+
+						if (col >= this.wilson.canvasWidth)
+						{
+							col -= this.wilson.canvasWidth;
+						}
+
+						else if (col < 0)
+						{
+							col += this.wilson.canvasWidth;
+						}
+					}
 
 					if (
 						row >= 0

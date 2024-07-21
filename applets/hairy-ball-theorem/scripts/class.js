@@ -1,7 +1,7 @@
 import { VectorField } from "/applets/vector-fields/scripts/class.js";
 import { Applet } from "/scripts/applets/applet.js";
 import { RaymarchApplet } from "/scripts/applets/raymarchApplet.js";
-import { addTemporaryListener, pageElement } from "/scripts/src/main.js";
+import { addTemporaryListener } from "/scripts/src/main.js";
 import { Wilson } from "/scripts/wilson.js";
 
 export class HairyBall extends RaymarchApplet
@@ -14,27 +14,31 @@ export class HairyBall extends RaymarchApplet
 
 	vectorFieldApplet;
 
-
-
 	constructor({ canvas })
 	{
 		super(canvas);
 
 		const hiddenCanvas = this.createHiddenCanvas();
-		hiddenCanvas.style.display = "block";
-		hiddenCanvas.classList.remove("hidden-canvas");
-		hiddenCanvas.classList.add("output-canvas");
-		pageElement.appendChild(hiddenCanvas);
-		this.vectorFieldApplet = new VectorField({ canvas: hiddenCanvas });
+		
+		// hiddenCanvas.style.display = "block";
+		// hiddenCanvas.classList.remove("hidden-canvas");
+		// hiddenCanvas.classList.add("output-canvas");
+		// pageElement.appendChild(hiddenCanvas);
+
+		this.vectorFieldApplet = new VectorField({
+			canvas: hiddenCanvas,
+			loopEdges: true,
+			particleDilation: 1
+		});
 		this.vectorFieldApplet.drawFrameCallback = this.drawFrame.bind(this);
 
 		this.vectorFieldApplet.loadPromise.then(() =>
 		{
 			this.vectorFieldApplet.run({
-				generatingCode: "(sin(0.5*(y+3.14159))*cos(x), -sin(0.5*(y+3.14159))*sin(x))",
+				generatingCode: "(sin(0.5*(y+3.14159265))*cos(x), -sin(0.5*(y+3.14159265))*sin(x))",
 				resolution: this.imageSize,
-				maxParticles: 10000,
-				dt: .00375,
+				maxParticles: 25000,
+				dt: .003,
 				lifetime: 150,
 				worldCenterX: 0,
 				worldCenterY: 0,
@@ -62,7 +66,7 @@ export class HairyBall extends RaymarchApplet
 			uniform sampler2D uTexture;
 			
 			const vec3 lightPos = vec3(50.0, 70.0, 100.0);
-			const float lightBrightness = 1.5;
+			const float lightBrightness = 1.1;
 			
 			const float clipDistance = 1000.0;
 			const int maxMarches = 256;
@@ -104,7 +108,7 @@ export class HairyBall extends RaymarchApplet
 				
 				float dotProduct = dot(surfaceNormal, lightDirection);
 				
-				float lightIntensity = lightBrightness * (.5 + .5 * dotProduct * dotProduct);
+				float lightIntensity = lightBrightness * (.65 + .35 * dotProduct * dotProduct);
 				
 				//The last factor adds ambient occlusion.
 				vec3 color = getColor(pos) * lightIntensity * max((1.0 - float(iteration) / float(maxMarches)), 0.0);
@@ -167,8 +171,8 @@ export class HairyBall extends RaymarchApplet
 
 			shader: fragShaderSource,
 
-			canvasWidth: 500,
-			canvasHeight: 500,
+			canvasWidth: this.imageSize,
+			canvasHeight: this.imageSize,
 
 			worldCenterX: -this.theta,
 			worldCenterY: -this.phi,
@@ -406,5 +410,16 @@ export class HairyBall extends RaymarchApplet
 		}
 
 		this.wilson.gl.uniform1i(this.wilson.uniforms["imageSize"], this.imageSize);
+
+		this.vectorFieldApplet.run({
+			generatingCode: "(sin(0.5*(y+3.14159))*cos(x), -sin(0.5*(y+3.14159))*sin(x))",
+			resolution: this.imageSize,
+			maxParticles: 25000,
+			dt: .003,
+			lifetime: 150,
+			worldCenterX: 0,
+			worldCenterY: 0,
+			zoomLevel: .6515
+		});
 	}
 }
