@@ -79,6 +79,8 @@ export class Slider extends InputElement
 
 		this.element.addEventListener("input", () =>
 		{
+			const oldValue = this.value;
+
 			this.value = this.logarithmic
 				? 10 ** parseFloat(this.element.value)
 				: parseFloat(this.element.value);
@@ -100,8 +102,11 @@ export class Slider extends InputElement
 			this.valueElement.textContent = this.value;
 
 			this.value = parseFloat(this.value);
-
-			this.onInput();
+			
+			if (oldValue !== this.value)
+			{
+				this.onInput();
+			}
 		});
 	}
 

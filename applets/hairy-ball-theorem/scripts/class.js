@@ -1,7 +1,7 @@
 import { VectorField } from "/applets/vector-fields/scripts/class.js";
 import { Applet } from "/scripts/applets/applet.js";
 import { RaymarchApplet } from "/scripts/applets/raymarchApplet.js";
-import { addTemporaryListener } from "/scripts/src/main.js";
+import { addTemporaryListener, pageElement } from "/scripts/src/main.js";
 import { Wilson } from "/scripts/wilson.js";
 
 export class HairyBall extends RaymarchApplet
@@ -12,38 +12,37 @@ export class HairyBall extends RaymarchApplet
 	distanceFromOrigin = 1.55;
 	cameraPos = [this.distanceFromOrigin, 0, 0];
 
+	vectorFieldAppletResolution;
+	vectorFieldDilation = 1;
 	vectorFieldApplet;
 
-	constructor({ canvas })
-	{
+	constructor({
+		canvas,
+		vectorFieldAppletResolution = 500,
+		vectorFieldDilation = 1
+	}) {
 		super(canvas);
 
+		this.vectorFieldAppletResolution = vectorFieldAppletResolution;
+		this.vectorFieldDilation = vectorFieldDilation;
+
 		const hiddenCanvas = this.createHiddenCanvas();
-		
-		// hiddenCanvas.style.display = "block";
-		// hiddenCanvas.classList.remove("hidden-canvas");
-		// hiddenCanvas.classList.add("output-canvas");
-		// pageElement.appendChild(hiddenCanvas);
+
+		hiddenCanvas.style.display = "block";
+		hiddenCanvas.classList.remove("hidden-canvas");
+		hiddenCanvas.classList.add("output-canvas");
+		pageElement.appendChild(hiddenCanvas);
 
 		this.vectorFieldApplet = new VectorField({
 			canvas: hiddenCanvas,
-			loopEdges: true,
-			particleDilation: 1
+			loopEdges: false,
 		});
+
 		this.vectorFieldApplet.drawFrameCallback = this.drawFrame.bind(this);
 
 		this.vectorFieldApplet.loadPromise.then(() =>
 		{
-			this.vectorFieldApplet.run({
-				generatingCode: "(sin(0.5*(y+3.14159265))*cos(x), -sin(0.5*(y+3.14159265))*sin(x))",
-				resolution: this.imageSize,
-				maxParticles: 25000,
-				dt: .003,
-				lifetime: 150,
-				worldCenterX: 0,
-				worldCenterY: 0,
-				zoomLevel: .6515
-			});
+			this.runVectorField();
 		});
 
 		const fragShaderSource = /* glsl */`
@@ -84,7 +83,11 @@ export class HairyBall extends RaymarchApplet
 				vec3 normalizedPos = normalize(pos);
 				float phi = acos(normalizedPos.z);
 				float theta = atan(normalizedPos.y, normalizedPos.x) + 3.14159265;
-				return texture2D(uTexture, vec2(theta / 6.28318531, phi / 3.14159265)).xyz;
+				return texture2D(
+					uTexture,
+					vec2(theta / 6.28318531, phi / 3.14159265)
+						* (float(imageSize) - 1.0) / float(imageSize) 
+				).xyz;
 			}
 			
 			vec3 getSurfaceNormal(vec3 pos)
@@ -353,7 +356,20 @@ export class HairyBall extends RaymarchApplet
 		this.wilson.render.drawFrame();
 	}
 
-
+	runVectorField()
+	{
+		this.vectorFieldApplet.run({
+			generatingCode: "(x, y)",
+			resolution: this.vectorFieldAppletResolution,
+			maxParticles: 10000,
+			dt: .003,
+			lifetime: 150,
+			worldCenterX: 0,
+			worldCenterY: 0,
+			zoomLevel: .6515,
+			particleDilation: this.vectorFieldDilation
+		});
+	}
 
 	distanceEstimator()
 	{
@@ -410,16 +426,5 @@ export class HairyBall extends RaymarchApplet
 		}
 
 		this.wilson.gl.uniform1i(this.wilson.uniforms["imageSize"], this.imageSize);
-
-		this.vectorFieldApplet.run({
-			generatingCode: "(sin(0.5*(y+3.14159))*cos(x), -sin(0.5*(y+3.14159))*sin(x))",
-			resolution: this.imageSize,
-			maxParticles: 25000,
-			dt: .003,
-			lifetime: 150,
-			worldCenterX: 0,
-			worldCenterY: 0,
-			zoomLevel: .6515
-		});
 	}
 }

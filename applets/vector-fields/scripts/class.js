@@ -75,12 +75,10 @@ export class VectorField extends AnimationFrameApplet
 		draggable1Location = [1, 0],
 		draggable2Location = [-1, 0],
 		loopEdges = false,
-		particleDilation = undefined
 	}) {
 		super(canvas);
 
 		this.loopEdges = loopEdges;
-		this.particleDilation = particleDilation;
 
 		this.updateCanvas = this.createHiddenCanvas();
 		this.dimCanvas = this.createHiddenCanvas();
@@ -369,10 +367,12 @@ export class VectorField extends AnimationFrameApplet
 		lifetime = 150,
 		worldCenterX = 0,
 		worldCenterY = 0,
-		zoomLevel = .6515
+		zoomLevel = .6515,
+		particleDilation = undefined
 	}) {
 		this.dt = dt;
 		this.resolution = resolution;
+		this.particleDilation = particleDilation;
 
 		const fragShaderSourceUpdateBase = /* glsl */`
 			precision highp float;

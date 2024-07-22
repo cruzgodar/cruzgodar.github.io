@@ -8,6 +8,11 @@ Text
 
 ### text-boxes
 	resolution
+	vector-field-resolution
+###
+
+### sliders
+	vector-field-dilation
 ###
 
 </div>
