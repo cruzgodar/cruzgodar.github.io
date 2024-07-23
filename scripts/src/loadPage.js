@@ -32,7 +32,6 @@ import {
 import { initPageContents } from "./pageContent.js";
 import {
 	condenseApplet,
-	revertTheme,
 	siteSettings
 } from "./settings.js";
 import { sitemap } from "./sitemap.js";
@@ -80,8 +79,6 @@ export async function loadPage()
 	initCards();
 
 	onResize();
-
-	revertTheme();
 
 	listenForFullscreenKey();
 

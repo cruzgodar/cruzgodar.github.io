@@ -201,9 +201,4 @@ export function initBanner()
 					.then(() => $("#banner-small").remove());
 			});
 	}
-
-	else
-	{
-		bannerElement;
-	}
 }

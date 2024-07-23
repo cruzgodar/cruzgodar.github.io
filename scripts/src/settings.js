@@ -172,12 +172,11 @@ export function initDarkTheme()
 
 
 
-export function revertTheme()
+export async function revertTheme(url)
 {
 	if (forcedTheme)
 	{
 		forcedTheme = false;
-		return;
 	}
 
 	if (revertThemeTo === null)
@@ -189,7 +188,7 @@ export function revertTheme()
 
 	if (siteSettings.darkTheme !== revertThemeTo)
 	{
-		toggleDarkTheme({});
+		await toggleDarkTheme({ force: true });
 	}
 }
 

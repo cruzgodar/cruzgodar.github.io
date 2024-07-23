@@ -32,6 +32,7 @@ import {
 import {
 	forceThemePages,
 	getQueryParams,
+	revertTheme,
 	setForcedTheme,
 	setRevertThemeTo,
 	siteSettings,
@@ -226,17 +227,6 @@ export function getDisplayUrl()
 
 async function fadeOutPage({ url, noFadeOut })
 {
-	if (
-		forceThemePages[url]
-		&& siteSettings.darkTheme !== forceThemePages[url]
-	) {
-		setRevertThemeTo(siteSettings.darkTheme);
-
-		setForcedTheme(true);
-
-		toggleDarkTheme({ force: true });
-	}
-
 	if (!opacityAnimationTime)
 	{
 		return;
@@ -319,6 +309,22 @@ async function fadeOutPage({ url, noFadeOut })
 				: fadeOut({ element: pageElement });
 		}
 	})();
+
+	if (
+		forceThemePages[url]
+		&& siteSettings.darkTheme !== forceThemePages[url]
+	) {
+		setRevertThemeTo(siteSettings.darkTheme);
+
+		setForcedTheme(true);
+
+		await toggleDarkTheme({ force: true });
+	}
+
+	else
+	{
+		await revertTheme();
+	}
 
 	await new Promise(resolve => setTimeout(resolve, 33));
 }
