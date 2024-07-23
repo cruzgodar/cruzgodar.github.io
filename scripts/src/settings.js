@@ -172,7 +172,7 @@ export function initDarkTheme()
 
 
 
-export async function revertTheme(url)
+export async function revertTheme()
 {
 	if (forcedTheme)
 	{

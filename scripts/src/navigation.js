@@ -321,7 +321,10 @@ async function fadeOutPage({ url, noFadeOut })
 		await toggleDarkTheme({ force: true });
 	}
 
-	await revertTheme();
+	else if (!forceThemePages[url])
+	{
+		await revertTheme();
+	}
 
 	await new Promise(resolve => setTimeout(resolve, 33));
 }
