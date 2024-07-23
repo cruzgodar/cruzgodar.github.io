@@ -310,6 +310,8 @@ async function fadeOutPage({ url, noFadeOut })
 		}
 	})();
 
+	await new Promise(resolve => setTimeout(resolve, 33));
+
 	if (
 		forceThemePages[url]
 		&& siteSettings.darkTheme !== forceThemePages[url]
@@ -325,8 +327,6 @@ async function fadeOutPage({ url, noFadeOut })
 	{
 		await revertTheme();
 	}
-
-	await new Promise(resolve => setTimeout(resolve, 33));
 }
 
 
