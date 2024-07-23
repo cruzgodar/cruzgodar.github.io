@@ -56,7 +56,7 @@ export async function loadPage()
 
 	initBanner();
 
-	loadCustomStyle();
+	await loadCustomStyle();
 
 	loadCustomScripts();
 
