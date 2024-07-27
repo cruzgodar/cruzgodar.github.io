@@ -2,7 +2,7 @@ import anime from "/scripts/anime.js";
 
 // coordinates is a list of length-3 arrays [i, j, k]
 // containing the coordinates of the cubes to highlight.
-export async function colorCubes(array, coordinates, hue)
+export async function colorCubes(array, coordinates, hue, saturation = 1)
 {
 	if (coordinates.length === 0)
 	{
@@ -23,7 +23,7 @@ export async function colorCubes(array, coordinates, hue)
 	const v = this.cubeLightness + 1 * Math.min(this.cubeLightness, 1 - this.cubeLightness);
 	const s = v === 0 ? 0 : 2 * (1 - this.cubeLightness / v);
 
-	const targetColor = this.wilson.utils.hsvToRgb(hue, s, v);
+	const targetColor = this.wilson.utils.hsvToRgb(hue, saturation * s, v);
 
 
 

@@ -1,4 +1,5 @@
 import {
+	colorABConfigRegions,
 	getArrayVersionOfABConfig,
 	getMinimalABConfig,
 	isValidABConfig,
@@ -508,6 +509,7 @@ export class PlanePartitions extends AnimationFrameApplet
 	printABConfig = printABConfig;
 	testAllEntriesOfABConfig = testAllEntriesOfABConfig;
 	getArrayVersionOfABConfig = getArrayVersionOfABConfig;
+	colorABConfigRegions = colorABConfigRegions;
 
 	addNewArray = addNewArray;
 	editArray = editArray;

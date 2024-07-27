@@ -348,9 +348,9 @@ export default function()
 		// 	nu.push(Math.max(nu[i] - Math.floor(Math.random() * 3), 0));
 		// }
 
-		const lambda = [2, 0];
-		const mu = [1, 0];
-		const nu = [1, 0];
+		const lambda = [3, 2];
+		const mu = [2, 1, 1];
+		const nu = [4, 2, 1];
 
 		const [A, B] = applet.getMinimalABConfig({
 			lambda,
@@ -426,5 +426,15 @@ export default function()
 		await applet.addNewArray(0, bigA);
 		await applet.addNewArray(0, bigB);
 		applet.updateCameraHeight();
+
+		applet.colorABConfigRegions({
+			bigA,
+			bigB,
+			lambda,
+			mu,
+			nu,
+			arrayA: applet.arrays[1],
+			arrayB: applet.arrays[0]
+		});
 	}
 }

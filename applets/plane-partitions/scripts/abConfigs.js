@@ -851,3 +851,74 @@ export function getArrayVersionOfABConfig({
 
 	return [bigA, bigB];
 }
+
+
+
+function getABConfigRegions({ bigA, bigB, lambda, mu, nu })
+{
+	const I = [];
+	const II = [];
+	const IIIA = [];
+	const IIIB = [];
+
+	for (let i = 0; i < bigA.length; i++)
+	{
+		for (let j = 0; j < bigA[i].length; j++)
+		{
+			if (bigA[i][j] === Infinity)
+			{
+				continue;
+			}
+
+			const row = i - 8;
+			const col = j - 8;
+			const inNu = row >= 0 && row < nu.length && col >= 0 && col < nu[row];
+
+			const aHeight = bigA[i][j];
+			const bHeight = row >= 0 && col >= 0 ? bigB[row][col] + 8 : 0;
+
+			for (let k = 0; k < Math.max(aHeight, bHeight); k++)
+			{
+				const height = k - 8;
+
+				const inLambda = col >= 0
+					&& col < lambda.length
+					&& height >= 0
+					&& height < lambda[col];
+				
+				const inMu = row >= 0 && row < mu.length && height >= 0 && height < mu[row];
+
+				const region = inNu + inLambda + inMu;
+
+				switch (region)
+				{
+					case 1:
+						I.push([i, j, k]);
+						break;
+
+					case 2:
+						II.push([row, col, height]);
+						break;
+
+					case 3:
+						IIIA.push([i, j, k]);
+						IIIB.push([row, col, height]);
+						break;
+				}
+			}
+		}
+	}
+
+	return [I, II, IIIA, IIIB];
+}
+
+export async function colorABConfigRegions({ bigA, bigB, lambda, mu, nu, arrayA, arrayB })
+{
+	const regions = getABConfigRegions({ bigA, bigB, lambda, mu, nu });
+
+	await this.colorCubes(arrayA, regions[0], .05, .5);
+	await this.colorCubes(arrayA, regions[2], .7, .6);
+
+	await this.colorCubes(arrayB, regions[1], .15, .6);
+	await this.colorCubes(arrayB, regions[3], .7, .6);
+}
