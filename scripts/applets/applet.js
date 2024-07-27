@@ -4,8 +4,6 @@ import {
 	pageUrl
 } from "../src/main.js";
 
-import loadMP4Module from "https://unpkg.com/mp4-wasm@1.0.6";
-
 // Each entry is an array beginning with the return type,
 // followed by the parameter types. The types are either "float" or "vec2",
 // or "float | vec2" to indicate that the function can return either.
@@ -870,7 +868,8 @@ export class Applet
 		totalFrames,
 		fps
 	}) {
-		const MP4 = await loadMP4Module();
+		const module = await import("https://unpkg.com/mp4-wasm@1.0.6");
+		const MP4 = await module.loadMP4Module();
 		const encoder = MP4.createWebCodecsEncoder({
 			width: this.wilson.canvasWidth,
 			height: this.wilson.canvasHeight,
@@ -1023,7 +1022,7 @@ export class Applet
 
 		// Otherwise, select a function with the correct return type.
 		const possibleFunctions = Object.keys(glslFunctions)
-			.filter(key => glslFunctions[key][0] === returnType); 
+			.filter(key => glslFunctions[key][0] === returnType);
 		
 		const functionName = possibleFunctions[
 			Math.floor(Math.random() * possibleFunctions.length)

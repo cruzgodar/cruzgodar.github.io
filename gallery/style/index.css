@@ -3,6 +3,19 @@ section
 	margin-bottom: 0 !important;
 }
 
+.body-text:first-of-type
+{
+	width: calc(100% - 64px);
+}
+
+@media (max-width: 500px)
+{
+	.body-text:first-of-type
+	{
+		width: calc(100% - 32px);
+	}
+}
+
 #gallery
 {
 	padding: 10px;
