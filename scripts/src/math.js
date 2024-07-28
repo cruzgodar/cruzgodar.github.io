@@ -4,6 +4,10 @@ import anime from "/scripts/anime.js";
 
 export function typesetMath()
 {
+	if (window.OFFLINE)
+	{
+		return;
+	}
 	// eslint-disable-next-line no-undef
 	return MathJax.typesetPromise();
 }

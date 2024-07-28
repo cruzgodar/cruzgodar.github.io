@@ -102,7 +102,12 @@ export function getQueryParams()
 
 
 
-	if (window.DEBUG)
+	if (window.OFFLINE)
+	{
+		params.set("debug", "2");
+	}
+
+	else if (window.DEBUG)
 	{
 		params.set("debug", "1");
 	}

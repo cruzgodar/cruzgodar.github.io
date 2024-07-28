@@ -34,6 +34,11 @@ export function setGetDesmosData(newGetDesmosData)
 
 export async function createDesmosGraphs(recreating = false)
 {
+	if (window.OFFLINE)
+	{
+		return;
+	}
+	
 	await loadScript(
 		"https://www.desmos.com/api/v1.7/calculator.js?apiKey=dcb31709b452b1cf9dc26972add0fda6"
 	);
