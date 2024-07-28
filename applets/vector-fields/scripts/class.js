@@ -368,7 +368,8 @@ export class VectorField extends AnimationFrameApplet
 		worldCenterX = 0,
 		worldCenterY = 0,
 		zoomLevel = .6515,
-		particleDilation = undefined
+		particleDilation = undefined,
+		appendGlsl = ""
 	}) {
 		this.dt = dt;
 		this.resolution = resolution;
@@ -393,10 +394,10 @@ export class VectorField extends AnimationFrameApplet
 			
 			${doubleEncodingGlsl}
 			
-			
-			
 			vec2 f(float x, float y)
 			{
+				${appendGlsl}
+
 				return vec2${generatingCode};
 			}
 			
@@ -1010,12 +1011,14 @@ export class VectorField extends AnimationFrameApplet
 					{
 						if (row >= this.wilson.canvasHeight)
 						{
-							row -= this.wilson.canvasHeight;
+							row = 2 * this.wilson.canvasHeight - 2 - row;
+							col += Math.floor(this.wilson.canvasWidth / 2);
 						}
 
 						else if (row < 0)
 						{
-							row += this.wilson.canvasHeight;
+							row = Math.abs(row);
+							col += Math.floor(this.wilson.canvasWidth / 2);
 						}
 
 						if (col >= this.wilson.canvasWidth)

@@ -273,6 +273,13 @@ export class Applet
 
 	handleKeydownEvent(e)
 	{
+		if (
+			document.activeElement.tagName === "INPUT"
+			|| document.activeElement.tagName === "TEXTAREA"
+		) {
+			return;
+		}
+		
 		const key = e.key.toLowerCase();
 
 		if (Object.prototype.hasOwnProperty.call(this.keysPressed, key))

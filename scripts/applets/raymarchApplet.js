@@ -41,7 +41,7 @@ export class RaymarchApplet extends AnimationFrameApplet
 	constructor(canvas)
 	{
 		super(canvas);
-
+		
 		if (!this.lockedOnOrigin)
 		{
 			this.listenForKeysPressed(["w", "s", "a", "d", "q", "e", " ", "shift"]);

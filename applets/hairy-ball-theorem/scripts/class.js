@@ -1,7 +1,7 @@
 import { VectorField } from "/applets/vector-fields/scripts/class.js";
 import { Applet } from "/scripts/applets/applet.js";
 import { RaymarchApplet } from "/scripts/applets/raymarchApplet.js";
-import { addTemporaryListener, pageElement } from "/scripts/src/main.js";
+import { addTemporaryListener } from "/scripts/src/main.js";
 import { Wilson } from "/scripts/wilson.js";
 
 export class HairyBall extends RaymarchApplet
@@ -12,12 +12,17 @@ export class HairyBall extends RaymarchApplet
 	distanceFromOrigin = 1.55;
 	cameraPos = [this.distanceFromOrigin, 0, 0];
 
+	imageSize = 1000;
+	imageWidth = 1000;
+	imageHeight = 1000;
+
 	vectorFieldAppletResolution;
 	vectorFieldDilation = 1;
 	vectorFieldApplet;
 
 	constructor({
 		canvas,
+		vectorFieldGeneratingCode = "(x, y)",
 		vectorFieldAppletResolution = 500,
 		vectorFieldDilation = 1
 	}) {
@@ -28,21 +33,21 @@ export class HairyBall extends RaymarchApplet
 
 		const hiddenCanvas = this.createHiddenCanvas();
 
-		hiddenCanvas.style.display = "block";
-		hiddenCanvas.classList.remove("hidden-canvas");
-		hiddenCanvas.classList.add("output-canvas");
-		pageElement.appendChild(hiddenCanvas);
+		// hiddenCanvas.style.display = "block";
+		// hiddenCanvas.classList.remove("hidden-canvas");
+		// hiddenCanvas.classList.add("output-canvas");
+		// pageElement.appendChild(hiddenCanvas);
 
 		this.vectorFieldApplet = new VectorField({
 			canvas: hiddenCanvas,
-			loopEdges: false,
+			loopEdges: true,
 		});
 
 		this.vectorFieldApplet.drawFrameCallback = this.drawFrame.bind(this);
 
 		this.vectorFieldApplet.loadPromise.then(() =>
 		{
-			this.runVectorField();
+			this.runVectorField(vectorFieldGeneratingCode);
 		});
 
 		const fragShaderSource = /* glsl */`
@@ -356,10 +361,10 @@ export class HairyBall extends RaymarchApplet
 		this.wilson.render.drawFrame();
 	}
 
-	runVectorField()
+	runVectorField(generatingCode)
 	{
 		this.vectorFieldApplet.run({
-			generatingCode: "(x, y)",
+			generatingCode,
 			resolution: this.vectorFieldAppletResolution,
 			maxParticles: 10000,
 			dt: .003,
@@ -367,7 +372,18 @@ export class HairyBall extends RaymarchApplet
 			worldCenterX: 0,
 			worldCenterY: 0,
 			zoomLevel: .6515,
-			particleDilation: this.vectorFieldDilation
+			particleDilation: this.vectorFieldDilation,
+			appendGlsl: /* glsl */`
+				vec3 c = vec3(
+					cos(x) * cos(y * 0.5),
+					sin(x) * cos(y * 0.5),
+					sin(y * 0.5)
+				);
+
+				x = c.x;
+				y = c.y;
+				float z = c.z;
+			`
 		});
 	}
 
