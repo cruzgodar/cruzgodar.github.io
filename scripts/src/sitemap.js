@@ -44,6 +44,7 @@ export const sitemap =
 		
 		"children":
 		[
+			"/applets/curved-light/",
 			"/applets/hairy-ball-theorem/",
 			"/applets/hopf-fibration/",
 			"/applets/bernoulli-percolation/",
@@ -89,6 +90,17 @@ export const sitemap =
 		]
 	},
 		
+	"/applets/curved-light/":
+	{
+		"title": "Curved Light",
+		
+		"parent": "/applets/",
+		
+		"children": [],
+
+		"customScript": true
+	},
+	
 	"/applets/hairy-ball-theorem/":
 	{
 		"title": "The Hairy Ball Theorem",
