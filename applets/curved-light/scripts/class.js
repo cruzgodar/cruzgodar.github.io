@@ -61,12 +61,18 @@ export class CurvedLight extends RaymarchApplet
 				// float scaledT = t / (curvature * ${Math.PI});
 				// vec3 p = normalize(cross(-dir, rightVec));
 				// vec3 q = normalize(cross(dir, p));
-				// return pos + dir * scaledT + cos(curvature * scaledT) * p + sin(curvature * scaledT) * q;
+				// return pos + dir * scaledT + (cos(curvature * scaledT) * p + sin(curvature * scaledT) * q) * (1.0 - 1.0 / (1.0 + scaledT));
 
-				float scaledT = t / (curvature * ${Math.PI});
+				// Spiral with curvature.
+				// float scaledT = t / (curvature * 2.0 * ${Math.PI});
+				// vec3 p = normalize(cross(-dir, rightVec));
+				// vec3 q = normalize(cross(dir, p));
+				// return pos + dir * scaledT + scaledT * (cos(curvature * scaledT) * p + sin(curvature * scaledT) * q);
+
+				float scaledT = t / (curvature * 2.0 * ${Math.PI});
 				vec3 p = normalize(cross(-dir, rightVec));
 				vec3 q = normalize(cross(dir, p));
-				return pos + dir * scaledT + cos(curvature * scaledT) * p + sin(curvature * scaledT) * q;
+				return pos + dir * scaledT + scaledT * (cos(curvature * scaledT) * p + sin(curvature * scaledT) * q);
 			}
 			
 			
