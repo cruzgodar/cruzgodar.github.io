@@ -1468,7 +1468,6 @@ export class Wilson
 					{
 						width: 100vmin !important;
 						height: 100vmin !important;
-						margin-top: -4px !important;
 						
 						border: none !important;
 						border-radius: 0 !important;

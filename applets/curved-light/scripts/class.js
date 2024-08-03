@@ -11,6 +11,7 @@ export class CurvedLight extends RaymarchApplet
 
 	radius = 1;
 	curvature = 1;
+	interpolation = 0;
 
 
 
@@ -40,6 +41,7 @@ export class CurvedLight extends RaymarchApplet
 			uniform int imageSize;
 			uniform float radius;
 			uniform float curvature;
+			uniform float interpolation;
 			
 			
 			
@@ -47,8 +49,6 @@ export class CurvedLight extends RaymarchApplet
 			const int maxMarches = 256;
 			const vec3 fogColor = vec3(0.0, 0.0, 0.0);
 			const float fogScaling = .05;
-
-
 
 			vec3 geodesic(vec3 pos, vec3 dir, float t)
 			{
@@ -72,29 +72,27 @@ export class CurvedLight extends RaymarchApplet
 				float scaledT = t / (curvature * 2.0 * ${Math.PI});
 				vec3 p = normalize(cross(-dir, rightVec));
 				vec3 q = normalize(cross(dir, p));
-				return pos + dir * scaledT + scaledT * (cos(curvature * scaledT) * p + sin(curvature * scaledT) * q);
+
+				return mix(
+					pos + dir * t,
+					pos + dir * scaledT + scaledT * (cos(curvature * scaledT) * p + sin(curvature * scaledT) * q),
+					interpolation
+				);
 			}
 			
 			
 			
 			float distanceEstimator(vec3 pos)
 			{
-				return length(mod(pos, 2.0) - vec3(1.0, 1.0, 1.0)) - 0.45;
+				return length(mod(pos, 2.0) - vec3(1.0, 1.0, 1.0)) - .5;
 			}
-			
-			
 			
 			vec3 getColor(vec3 pos)
 			{
-				// if (distanceEstimator(pos) < 0.0)
-				// {
-				// 	return vec3(1.0, 0.0, 1.0);
-				// }
-
 				return vec3(
-					.25 + .75 * (.5 * (sin(floor(pos.x + .5) * 40.0) + 1.0)),
-					.25 + .75 * (.5 * (sin(floor(pos.y + .5) * 57.0) + 1.0)),
-					.25 + .75 * (.5 * (sin(floor(pos.z + .5) * 89.0) + 1.0))
+					.25 + .75 * (.5 * (sin(floor(pos.x * .5) * 40.0) + 1.0)),
+					.25 + .75 * (.5 * (sin(floor(pos.y * .5) * 57.0) + 1.0)),
+					.25 + .75 * (.5 * (sin(floor(pos.z * .5) * 89.0) + 1.0))
 				);
 			}
 			
@@ -117,9 +115,11 @@ export class CurvedLight extends RaymarchApplet
 			
 			vec3 computeShading(vec3 pos, int iteration)
 			{
-				vec3 surfaceNormal = getSurfaceNormal(pos);
+				vec3 modPos = mod(pos, 2.0);
+
+				vec3 surfaceNormal = getSurfaceNormal(modPos);
 				
-				vec3 lightDirection = normalize(lightPos - mod(pos, 2.0));
+				vec3 lightDirection = normalize(lightPos - modPos);
 				
 				float dotProduct = dot(surfaceNormal, lightDirection);
 				
@@ -238,7 +238,8 @@ export class CurvedLight extends RaymarchApplet
 			"upVec",
 			"focalLength",
 			"radius",
-			"curvature"
+			"curvature",
+			"interpolation"
 		]);
 
 		
@@ -314,6 +315,11 @@ export class CurvedLight extends RaymarchApplet
 		this.wilson.gl.uniform1f(
 			this.wilson.uniforms["curvature"],
 			this.curvature
+		);
+
+		this.wilson.gl.uniform1f(
+			this.wilson.uniforms["interpolation"],
+			this.interpolation
 		);
 
 

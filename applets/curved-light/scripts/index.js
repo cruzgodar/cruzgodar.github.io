@@ -39,7 +39,16 @@ export default function()
 		name: "Curvature",
 		value: 1,
 		min: 1,
-		max: 10,
+		max: 5,
+		onInput: onSliderInput
+	});
+
+	const interpolationSlider = new Slider({
+		element: $("#interpolation-slider"),
+		name: "Interpolation",
+		value: 0,
+		min: 0,
+		max: 1,
 		onInput: onSliderInput
 	});
 
@@ -57,6 +66,9 @@ export default function()
 
 		applet.curvature = curvatureSlider.value;
 		applet.wilson.gl.uniform1f(applet.wilson.uniforms.curvature, applet.curvature);
+
+		applet.interpolation = interpolationSlider.value;
+		applet.wilson.gl.uniform1f(applet.wilson.uniforms.interpolation, applet.interpolation);
 
 		applet.needNewFrame = true;
 	}

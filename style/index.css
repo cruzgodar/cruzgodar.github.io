@@ -623,7 +623,7 @@ mjx-container
 
 body > .wilson-fullscreen-components-container .fps-canvas
 {
-	bottom: 8px;
+	bottom: 0px;
 	right: 0px;
 	border-bottom-right-radius: 0;
 }
