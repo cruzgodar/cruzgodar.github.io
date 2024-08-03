@@ -11,7 +11,7 @@ export class CurvedLight extends RaymarchApplet
 
 	radius = 1;
 	curvature = 1;
-	interpolation = 0;
+	cValues = [1, 0, 0, 0, 0, 0];
 
 
 
@@ -41,7 +41,13 @@ export class CurvedLight extends RaymarchApplet
 			uniform int imageSize;
 			uniform float radius;
 			uniform float curvature;
-			uniform float interpolation;
+
+			uniform float c0;
+			uniform float c1;
+			uniform float c2;
+			uniform float c3;
+			uniform float c4;
+			uniform float c5;
 			
 			
 			
@@ -50,34 +56,66 @@ export class CurvedLight extends RaymarchApplet
 			const vec3 fogColor = vec3(0.0, 0.0, 0.0);
 			const float fogScaling = .05;
 
+			float rand(vec2 co)
+			{
+				return fract(sin(dot(co, vec2(12.9898, 78.233))) * 43758.5453);
+			}
+
 			vec3 geodesic(vec3 pos, vec3 dir, float t)
 			{
-				// Circle of radius r curving upward.
-				// float scaledT = t / radius;
-				// vec3 p = normalize(cross(-dir, rightVec));
-				// return pos + radius * (p + cos(scaledT) * p + sin(scaledT) * dir);
-
-				// Helix with radius 1 and curvature.
-				// float scaledT = t / (curvature * ${Math.PI});
-				// vec3 p = normalize(cross(-dir, rightVec));
-				// vec3 q = normalize(cross(dir, p));
-				// return pos + dir * scaledT + (cos(curvature * scaledT) * p + sin(curvature * scaledT) * q) * (1.0 - 1.0 / (1.0 + scaledT));
-
-				// Spiral with curvature.
-				// float scaledT = t / (curvature * 2.0 * ${Math.PI});
-				// vec3 p = normalize(cross(-dir, rightVec));
-				// vec3 q = normalize(cross(dir, p));
-				// return pos + dir * scaledT + scaledT * (cos(curvature * scaledT) * p + sin(curvature * scaledT) * q);
-
-				float scaledT = t / (curvature * 2.0 * ${Math.PI});
+				vec3 returnValue = vec3(0.0);
 				vec3 p = normalize(cross(-dir, rightVec));
 				vec3 q = normalize(cross(dir, p));
 
-				return mix(
-					pos + dir * t,
-					pos + dir * scaledT + scaledT * (cos(curvature * scaledT) * p + sin(curvature * scaledT) * q),
-					interpolation
-				);
+				if (c0 > 0.0)
+				{
+					returnValue += c0 * dir * t;
+				}
+
+				// Circle of radius r curving upward.
+				if (c1 > 0.0)
+				{
+					float scaledT = t / radius;
+					returnValue += c1 * radius * (p + cos(scaledT) * p + sin(scaledT) * dir);
+				}
+
+				// Helix with radius 1 and curvature.
+				if (c2 > 0.0)
+				{
+					float scaledT = t / (curvature * ${Math.PI});
+					returnValue += c2 * (
+						dir * scaledT + (cos(curvature * scaledT) * p + sin(curvature * scaledT) * q) * (1.0 - 1.0 / (1.0 + scaledT))
+					);
+				}
+
+				// Spiral with curvature.
+				if (c3 > 0.0)
+				{
+					float scaledT = t / (curvature * 2.0 * ${Math.PI});
+					returnValue += c3 * (
+						dir * scaledT + scaledT * (cos(curvature * scaledT) * p + sin(curvature * scaledT) * q)
+					);
+				}
+
+				// Square.
+				if (c4 > 0.0)
+				{
+					float scaledT = t / radius;
+					returnValue += c4 * radius * (
+						dir * min(scaledT, 1.0)
+						+ p * clamp(scaledT - 1.0, 0.0, 1.0)
+						- dir * clamp(scaledT - 2.0, 0.0, 1.0)
+						- p * clamp(scaledT - 3.0, 0.0, 1.0)
+					);
+				}
+
+				// Fuzzed edges.
+				if (c5 > 0.0)
+				{
+					returnValue += c5 * (dir + (0.1 * (rand(uv) - 0.5) * length(uv))) * t;
+				}
+
+				return pos + returnValue;
 			}
 			
 			
@@ -239,7 +277,12 @@ export class CurvedLight extends RaymarchApplet
 			"focalLength",
 			"radius",
 			"curvature",
-			"interpolation"
+			"c0",
+			"c1",
+			"c2",
+			"c3",
+			"c4",
+			"c5"
 		]);
 
 		
@@ -317,10 +360,13 @@ export class CurvedLight extends RaymarchApplet
 			this.curvature
 		);
 
-		this.wilson.gl.uniform1f(
-			this.wilson.uniforms["interpolation"],
-			this.interpolation
-		);
+		for (let i = 0; i < this.cValues.length; i++)
+		{
+			this.wilson.gl.uniform1f(
+				this.wilson.uniforms[`c${i}`],
+				this.cValues[i]
+			);
+		}
 
 
 

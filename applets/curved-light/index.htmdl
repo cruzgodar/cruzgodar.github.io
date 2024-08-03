@@ -4,7 +4,9 @@ When the scale is exactly 2, the Sierpinski octahedron returns once again, and w
 	
 Drag on the scene to look around. On a keyboard, use WASD to move, and on a touchscreen, hold with two fingers to move forward and three to move back.
 
-
+### dropdown
+	effects
+###
 
 <div id="canvas-landscape">
 
@@ -17,7 +19,6 @@ Drag on the scene to look around. On a keyboard, use WASD to move, and on a touc
 ### sliders
 	radius
 	curvature
-	interpolation
 ###
 
 </div>

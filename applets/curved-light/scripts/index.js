@@ -10,6 +10,20 @@ export default function()
 {
 	const applet = new CurvedLight({ canvas: $("#output-canvas") });
 
+	// const effectsDropdown = new Dropdown({
+	// 	element: $("#effects-dropdown"),
+	// 	name: "Effects",
+	// 	options: {
+	// 		none: "None",
+	// 		circle: "Circle of radius 1",
+	// 		helix: "Helix with radius 1 and curvature",
+	// 		spiral: "Spiral with curvature",
+	// 		square: "Square",
+	// 		fuzzed: "Fuzzed edges",
+	// 	},
+	// 	onInput: onDropdownInput
+	// });
+
 	new DownloadButton({
 		element: $("#download-button"),
 		wilson: applet.wilson,
@@ -43,15 +57,6 @@ export default function()
 		onInput: onSliderInput
 	});
 
-	const interpolationSlider = new Slider({
-		element: $("#interpolation-slider"),
-		name: "Interpolation",
-		value: 0,
-		min: 0,
-		max: 1,
-		onInput: onSliderInput
-	});
-
 	showPage();
 
 	function changeResolution()
@@ -66,9 +71,6 @@ export default function()
 
 		applet.curvature = curvatureSlider.value;
 		applet.wilson.gl.uniform1f(applet.wilson.uniforms.curvature, applet.curvature);
-
-		applet.interpolation = interpolationSlider.value;
-		applet.wilson.gl.uniform1f(applet.wilson.uniforms.interpolation, applet.interpolation);
 
 		applet.needNewFrame = true;
 	}
