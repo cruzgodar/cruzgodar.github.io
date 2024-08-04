@@ -9,7 +9,7 @@ export class CurvedLight extends RaymarchApplet
 	theta = 1.25 * Math.PI;
 	phi = 2.1539;
 
-	radius = 1;
+	radius = 5;
 	curvature = 1;
 	cValues = [1, 0, 0, 0, 0, 0];
 

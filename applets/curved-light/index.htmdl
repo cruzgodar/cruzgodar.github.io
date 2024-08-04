@@ -1,12 +1,8 @@
-The technique of raymarching is particularly suited to fractals: with <a href="/applets/kaleidoscopic-ifs-fractals/">kaleidoscopic IFS fractals</a>, we produce repeating fractals with no volume --- the Sierpinski tetrahedron and octahedron --- by beginning with a polyhedron and repeatedly carving out regions from it. Here, we start with a cube and add smaller cubes around the sides, where each is scaled down by a particular factor (3 by default). We typically place them right on the boundary of the larger cube, but we can also move them inside or farther away by changing the separation value.
-
-When the scale is exactly 2, the Sierpinski octahedron returns once again, and when it is very close to 1, we see a macroscopic structure emerge. Finally, lowering the scale and increasing the separation near the origin results in a beautiful inner world of tiny cubes and fragments that seems quite unexpected from the outside.
+Raymarching is an extraordinarily versatile method for rendering 3D scenes of all sorts, from <a href="/applets/quaternionic-julia-sets/">fractals</a> to <a href="/applets/thurston-geometries/">curved spaces</a>, but this time, things are a little different. By exchanging the straight line that line normally moves along for a different curve, we can produce all sorts of bizarre renderings that showcase the curvature of space, even if it's artificially imposed.
 	
 Drag on the scene to look around. On a keyboard, use WASD to move, and on a touchscreen, hold with two fingers to move forward and three to move back.
 
-### dropdown
-	effects
-###
+### dropdown effects
 
 <div id="canvas-landscape">
 
