@@ -272,8 +272,10 @@ export class AbelianSandpile extends AnimationFrameApplet
 		};
 
 		this.wilsonUpscale = new Wilson(canvas, optionsUpscale);
+		this.wilsonForFullscreen = this.wilsonUpscale;
 
 		this.wilsonUpscale.render.createFramebufferTexturePair(this.wilsonUpscale.gl.UNSIGNED_BYTE);
+
 	}
 
 
@@ -353,9 +355,11 @@ export class AbelianSandpile extends AnimationFrameApplet
 
 
 
-		const outputResolution = Math.max(
-			this.resolution,
-			this.canvas.getBoundingClientRect().width
+		const outputResolution = Math.min(4000,
+			Math.max(
+				this.resolution,
+				Math.min(window.innerWidth, window.innerHeight)
+			)
 		);
 
 		this.wilsonUpscale.gl.bindTexture(
