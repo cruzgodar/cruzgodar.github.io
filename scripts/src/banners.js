@@ -4,6 +4,7 @@ import { likelyWindowChromeHeight, onResize, viewportHeight } from "./layout.js"
 import {
 	$,
 	addStyle,
+	addTemporaryListener,
 	asyncFetch,
 	pageElement,
 	pageUrl
@@ -13,6 +14,8 @@ export let bannerElement;
 
 export let contentElement;
 
+
+
 let bannerMaxScroll;
 
 export function setBannerMaxScroll(newBannerMaxScroll)
@@ -20,9 +23,22 @@ export function setBannerMaxScroll(newBannerMaxScroll)
 	bannerMaxScroll = newBannerMaxScroll;
 }
 
+
+
 export let nameTextOpacity = 1;
 
 let lastBannerChangeTimestamp = -1;
+
+
+
+export let overflowScrollTimeoutId;
+
+export function setOverflowScrollTimeoutId(newOverflowScrollTimeoutId)
+{
+	overflowScrollTimeoutId = newOverflowScrollTimeoutId;
+}
+
+
 
 export function updateBanner(timestamp)
 {
@@ -84,6 +100,8 @@ export function updateBanner(timestamp)
 	}
 
 	contentElement.style.boxShadow = `0px 0px 16px 4px rgba(0, 0, 0, ${(1 - t) * .35})`;
+
+
 
 	requestAnimationFrame(updateBanner);
 }
@@ -201,4 +219,25 @@ export function initBanner()
 					.then(() => $("#banner-small").remove());
 			});
 	}
+
+	addTemporaryListener({
+		object: window,
+		event: "scroll",
+		callback: () => {
+			clearTimeout(overflowScrollTimeoutId);
+			
+			if (window.scrollY <= 0)
+			{
+				overflowScrollTimeoutId = setTimeout(() =>
+				{
+					document.documentElement.style.overscrollBehaviorY = "none";
+				}, 800);
+			}
+
+			else
+			{
+				document.documentElement.style.overscrollBehaviorY = "auto";
+			}
+		}
+	});
 }
