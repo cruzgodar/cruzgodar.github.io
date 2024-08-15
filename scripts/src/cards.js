@@ -107,7 +107,7 @@ export async function showCard(id, animationTime = cardAnimationTime)
 
 
 
-	container.style.transform = "scale(.95)";
+	container.style.transform = "scale(.975)";
 
 	pageElement.style.filter = "brightness(1)";
 	document.querySelector("#header").style.filter = "brightness(1)";
@@ -217,7 +217,7 @@ export async function hideCard(animationTime = cardAnimationTime)
 		anime({
 			targets: container,
 			opacity: 0,
-			scale: .95,
+			scale: .975,
 			duration: animationTime,
 			easing: "easeOutQuint",
 		}).finished
