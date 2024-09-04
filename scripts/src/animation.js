@@ -20,7 +20,7 @@ export const buttonAnimationTime = useJsAnimation
 export const pageAnimationTime = baseAnimationTime * .475;
 export const backgroundColorAnimationTime = baseAnimationTime * 2;
 
-export const cardAnimationTime = baseAnimationTime * 1.65;
+export const cardAnimationTime = baseAnimationTime * 2;
 
 export const fullscreenAnimationTime = useJsAnimation
 	? baseAnimationTime * .6

@@ -66,8 +66,8 @@ export async function showCard(id, animationTime = cardAnimationTime)
 	history.replaceState({ url: pageUrl }, document.title, getDisplayUrl());
 	
 	container.style.display = "flex";
-	container.style.opacity = 0;
-	container.style.transform = "scale(1)";
+	container.style.opacity = 1;
+	container.style.top = "100vh";
 
 	// Makes the animation look a little nicer (since it doesn't cut off the bottom of long cards).
 	container.style.display = "flex";
@@ -106,9 +106,6 @@ export async function showCard(id, animationTime = cardAnimationTime)
 	}
 
 
-
-	container.style.transform = "scale(.975)";
-
 	pageElement.style.filter = "brightness(1)";
 	document.querySelector("#header").style.filter = "brightness(1)";
 	document.querySelector("#header-container").style.filter = "brightness(1)";
@@ -132,8 +129,7 @@ export async function showCard(id, animationTime = cardAnimationTime)
 	await Promise.all([
 		anime({
 			targets: container,
-			opacity: 1,
-			scale: 1,
+			top: 0,
 			duration: animationTime,
 			easing: "easeOutQuint",
 		}).finished,
