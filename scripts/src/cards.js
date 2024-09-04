@@ -1,4 +1,5 @@
 import { cardAnimationTime } from "./animation.js";
+import { browserIsIos } from "./browser.js";
 import { addHoverEvent } from "./hoverEvents.js";
 import { $$, pageElement, pageUrl } from "./main.js";
 import { getDisplayUrl } from "./navigation.js";
@@ -110,7 +111,7 @@ export async function showCard(id, animationTime = cardAnimationTime)
 	document.querySelector("#header").style.filter = "brightness(1)";
 	document.querySelector("#header-container").style.filter = "brightness(1)";
  
-	pageElement.style.transformOrigin = "50% calc(50vh)";
+	pageElement.style.transformOrigin = browserIsIos ? `50% calc(50vh + ${window.scrollY}px)` : "50% 50vh";
 
 	document.documentElement.addEventListener("click", handleClickEvent);
 
@@ -121,10 +122,13 @@ export async function showCard(id, animationTime = cardAnimationTime)
 	document.documentElement.style.backgroundColor = siteSettings.darkTheme
 		? "rgb(24, 24, 24)"
 		: "rgb(255, 255, 255)";
-	
-	window.scrollTo(0, 0);
-	pageElement.style.transform = `scale(1) translateY(-${scrollBeforeCard}px)`;
-	pageElement.style.position = "fixed";
+
+	if (!browserIsIos)
+	{
+		window.scrollTo(0, 0);
+		pageElement.style.transform = `scale(1) translateY(-${scrollBeforeCard}px)`;
+		pageElement.style.position = "fixed";
+	}
 
 	await Promise.all([
 		anime({
@@ -183,6 +187,11 @@ export async function hideCard(animationTime = cardAnimationTime)
 	const color = siteSettings.darkTheme ? "rgb(24, 24, 24)" : "rgb(255, 255, 255)";
 	const themeColor = siteSettings.darkTheme ? "#181818" : "#ffffff";
 
+	if (browserIsIos)
+	{
+		pageElement.style.transformOrigin = `50% calc(50vh + ${window.scrollY}px)`;
+	}
+
 	await Promise.all([
 		anime({
 			targets: [
@@ -219,12 +228,13 @@ export async function hideCard(animationTime = cardAnimationTime)
 		}).finished
 	]);
 
-
-
-	pageElement.style.position = "relative";
-	
-	window.scrollTo(0, scrollBeforeCard);
-	pageElement.style.transform = "";
+	if (!browserIsIos)
+	{
+		pageElement.style.position = "relative";
+		
+		window.scrollTo(0, scrollBeforeCard);
+		pageElement.style.transform = "";
+	}
 
 	document.documentElement.style.backgroundColor = "var(--background)";
 
