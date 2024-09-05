@@ -80,12 +80,6 @@ export async function redirect({
 
 	currentlyRedirecting = true;
 
-	if (cardIsOpen)
-	{
-		await hideCard();
-	}
-
-
 	const temp = window.scrollY;
 
 	navigationTransitionType = getTransitionType(url);
@@ -95,7 +89,8 @@ export async function redirect({
 	const [text] = await Promise.all([
 		asyncFetch(`${url}data.html`),
 		loadBanner(),
-		fadeOutPage({ url, noFadeOut })
+		fadeOutPage({ url, noFadeOut }),
+		cardIsOpen ? hideCard() : Promise.resolve()
 	]);
 
 	unloadPage();
