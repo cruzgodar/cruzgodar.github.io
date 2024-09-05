@@ -194,7 +194,7 @@ export async function hideCard(animationTime = cardAnimationTime)
 
 	const dummy = { t: 0 };
 	const containerOldScroll = container.scrollTop;
-	const totalHeightToMove = containerOldScroll + window.innerHeight;
+	const totalHeightToMove = containerOldScroll + window.innerHeight + 32;
 
 	await Promise.all([
 		anime({
