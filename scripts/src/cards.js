@@ -192,6 +192,10 @@ export async function hideCard(animationTime = cardAnimationTime)
 		pageElement.style.transformOrigin = `50% calc(50vh + ${window.scrollY}px)`;
 	}
 
+	const dummy = { t: 0 };
+	const containerOldScroll = container.scrollTop;
+	const totalHeightToMove = containerOldScroll + window.innerHeight;
+
 	await Promise.all([
 		anime({
 			targets: [
@@ -220,12 +224,20 @@ export async function hideCard(animationTime = cardAnimationTime)
 		}).finished,
 
 		anime({
-			targets: container,
-			opacity: 0,
-			scale: .975,
+			targets: dummy,
+			t: 1,
 			duration: animationTime,
 			easing: "easeOutQuint",
-		}).finished
+			update: () =>
+			{
+				const heightMoved = dummy.t * totalHeightToMove;
+				const scroll = Math.max(containerOldScroll - heightMoved, 0);
+				container.scrollTo(0, scroll);
+
+				const remainingHeight = Math.max(heightMoved - containerOldScroll, 0);
+				container.style.top = `${remainingHeight}px`;
+			}
+		}).finished,
 	]);
 
 	if (!browserIsIos)
