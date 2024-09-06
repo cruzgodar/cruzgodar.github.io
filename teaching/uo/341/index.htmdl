@@ -870,7 +870,7 @@ Welcome to Math 341! We'll use this page for the interactive notes, the homework
 
 	In problems 3#, we'll show that many of the nice properties of multiplication of numbers don't hold for matrices.
 
-	#. With real numbers $x$ and $y$, $xy = yx$, but this isn't true with matrices. Define matrices $A$ and $B$ by
+	#. With real numbers $x$ and $y$, it must be the case that $xy = yx$, but this isn't true with matrices. Define matrices $A$ and $B$ by
 
 	$$
 		A = [[1, 2, 3 ; 4, 5, 6 ; 7, 8, 9]], \quad B = [[1, 0, 2 ; -2, 3, 0 ; 0, 4, 1]]
@@ -878,7 +878,7 @@ Welcome to Math 341! We'll use this page for the interactive notes, the homework
 
 	Compute $AB$ and $BA$ and show that they're different.
 
-	#. With real numbers $x$, $y$, and $z$ where $x \neq 0$ and $xy = xz$, $y = z$, but this also isn't true for matrices. Define matrices $A$, $B$, and $C$ by
+	#. With real numbers $x$, $y$, and $z$ where $x \neq 0$ and $xy = xz$, it's always the case that $y = z$, but this also isn't true for matrices. Define matrices $A$, $B$, and $C$ by
 
 	$$
 		A = [[1, 2 ; 0, 0]], \quad B = [[1, 2 ; 3, 4]], \quad C = [[5, 4 ; 1, 3]]
@@ -886,7 +886,7 @@ Welcome to Math 341! We'll use this page for the interactive notes, the homework
 
 	Show that $AB = AC$, despite $B \neq C$.
 
-	#. With real numbers $x$ and $y$ where $xy = 0$ either $x = 0$ or $y = 0$. Unfortunately, this also isn't the case for matrices. Define $A$ and $B$ by
+	#. With real numbers $x$ and $y$ where $xy = 0$, either $x = 0$ or $y = 0$. Unfortunately, this also isn't the case for matrices. Define $A$ and $B$ by
 
 	$$
 		A = [[1, 0, 0 ; 0, 0, 0 ; 0, 0, 0]], \quad B = [[0, 0, 0 ; 0, 2, 3 ; 0, 4, 5]].
