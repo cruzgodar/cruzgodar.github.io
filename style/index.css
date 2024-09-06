@@ -304,6 +304,19 @@ mjx-container
 	overflow-x: auto;
 }
 
+.card .tex-holder:not(.inline-math)
+{
+	max-width: calc(100vw - 80px);
+}
+
+@media (max-width: 500px)
+{
+	.card .tex-holder:not(.inline-math)
+	{
+		max-width: calc(100vw - 64px);
+	}
+}
+
 .tex-holder textarea
 {
 	tab-size: 4;
@@ -357,7 +370,7 @@ mjx-container
 	
 	opacity: 1;
 	
-	max-width: 900px;
+	max-width: min(900px, calc(100vw - 64px));
 	padding: 16px;
 	
 	margin-left: 16px;
@@ -370,6 +383,8 @@ mjx-container
 	
 	background-color: var(--background);
 	box-shadow: 0px 0px 16px 0px rgba(0, 0, 0, .3);
+
+	overflow-x: scroll;
 }
 
 @media (max-width: 500px)
@@ -381,6 +396,8 @@ mjx-container
 
 		margin-top: calc(8px + 5vh);
 		margin-bottom: calc(8px + 5vh);
+
+		max-width: calc(100vw - 48px);
 	}
 }
 
