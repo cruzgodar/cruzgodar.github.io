@@ -383,8 +383,6 @@ mjx-container
 	
 	background-color: var(--background);
 	box-shadow: 0px 0px 16px 0px rgba(0, 0, 0, .3);
-
-	overflow-x: scroll;
 }
 
 @media (max-width: 500px)
