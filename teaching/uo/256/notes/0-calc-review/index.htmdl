@@ -244,7 +244,7 @@ While we won't use calculus III to quite the same extent in this course, it's st
 
 
 
-### thm "!Series Tests"
+### thm -m "Series Tests"
 	
 	Let $$\sum_{n = 1}^\infty a_n$$ be a series.
 	
@@ -276,7 +276,7 @@ This series is guaranteed to converge to $f$ in some interval centered at $x = a
 
 
 
-### thm "!Common Taylor Series"
+### thm -m "Common Taylor Series"
 	
 	$$
 		\frac{1}{1 - x} &= \sum_{n = 0}^\infty x^n = 1 + x + x^2 + x^3 + \cdots & (-1, 1)
