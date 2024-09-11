@@ -10,9 +10,7 @@ import {
 import {
 	bannerElement,
 	bannerPages,
-	loadBanner,
-	overflowScrollTimeoutId,
-	setOverflowScrollTimeoutId
+	loadBanner
 } from "./banners.js";
 import { cardIsOpen, hideCard } from "./cards.js";
 import { clearDesmosGraphs, desmosGraphs } from "./desmos.js";
@@ -386,11 +384,6 @@ function unloadPage()
 	);
 
 	clearTemporaryParams();
-
-
-
-	clearTimeout(overflowScrollTimeoutId);
-	setOverflowScrollTimeoutId(null);
 
 	document.documentElement.style.overscrollBehaviorY = "auto";
 
