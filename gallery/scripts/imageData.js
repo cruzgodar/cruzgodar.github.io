@@ -505,7 +505,7 @@ export const galleryImageData =
 
 		appletLink: "double-pendulum-fractal",
 
-		driveId: "1X4qJm3ChGYLQtU7wDyp9_wMxs0vebpqU"
+		driveId: "1zkTbCjaQlwxsTdqDpyOVSUXcRRHjQ5eI"
 	},
 
 	"double-pendulum-fractal-2":
@@ -514,7 +514,7 @@ export const galleryImageData =
 
 		appletLink: "double-pendulum-fractal",
 
-		driveId: "1QOANk6bBI2ktFwABkmK8zkQUzxqdnP-9"
+		driveId: "1Mo-R78eX10oNCc1Ywo9NlIpywK0Zfzxe"
 	},
 
 	"extruded-cube":
