@@ -11,17 +11,17 @@ const elementSelectors = `
 // These elements need to have their scale increased when hovered.
 const elementSelectorsWithScale =
 [
-	["#logo img", 1.05],
-	[".text-button:not(.dropdown)", 1.075],
-	["select", 1.075],
-	[".checkbox-container", 1.1],
-	[".radio-button-container", 1.1],
-	[".image-link img", 1.05],
-	["#enter-fullscreen-button", 1.1],
-	["#exit-fullscreen-button", 1.1],
-	[".gallery-image-1-1 img", 1.075],
-	[".gallery-image-2-2 img", 1.0375],
-	[".gallery-image-3-3 img", 1.025],
+	["#logo img", 1.05, false],
+	[".text-button:not(.dropdown)", 1.075, true],
+	[".checkbox-container", 1.1, false],
+	[".radio-button-container", 1.1, false],
+	[".image-link a[data-card-id] img", 1.05, true],
+	[".image-link a:not([data-card-id]) img", 1.05, false],
+	["#enter-fullscreen-button", 1.1, false],
+	["#exit-fullscreen-button", 1.1, false],
+	[".gallery-image-1-1 img", 1.075, true],
+	[".gallery-image-2-2 img", 1.0375, true],
+	[".gallery-image-3-3 img", 1.025, true],
 ];
 
 
@@ -33,7 +33,14 @@ export function initHoverEvents()
 
 	elementSelectorsWithScale.forEach(selector =>
 	{
-		$$(selector[0]).forEach(element => addHoverEventWithScale(element, selector[1]));
+		$$(selector[0]).forEach(element =>
+		{
+			addHoverEventWithScale({
+				element,
+				scale: selector[1],
+				addBounceOnTouch: selector[2]
+			});
+		});
 	});
 
 	$$("a").forEach(element =>
@@ -92,7 +99,7 @@ export function addHoverEvent(element)
 	});
 }
 
-export function addHoverEventWithScale(element, scale)
+export function addHoverEventWithScale({ element, scale, addBounceOnTouch = false })
 {
 	element.addEventListener("mouseenter", () =>
 	{
@@ -123,6 +130,15 @@ export function addHoverEventWithScale(element, scale)
 			changeScale({ element, scale: 1 });
 		}
 	});
+
+	if (addBounceOnTouch)
+	{
+		element.addEventListener("touchstart", async () =>
+		{
+			await changeScale({ element, scale, duration: 100 });
+			changeScale({ element, scale: 1, duration: 100 });
+		});
+	}
 }
 
 export function removeHoverEvents()

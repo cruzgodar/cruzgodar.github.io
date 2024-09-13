@@ -36,7 +36,11 @@ export function initPageContents()
 	{
 		const contentButtonElement = navButtonsElement.nextElementSibling.firstElementChild;
 
-		addHoverEventWithScale(contentButtonElement, 1.075);
+		addHoverEventWithScale({
+			element: contentButtonElement,
+			scale: 1.075,
+			addBounceOnTouch: false
+		});
 
 		contentButtonElement.addEventListener("click", showContents);
 	});
@@ -78,7 +82,11 @@ function prepareContents()
 			}
 		});
 
-		addHoverEventWithScale(clonedElement, 1.025);
+		addHoverEventWithScale({
+			element: clonedElement,
+			scale: 1.025,
+			addBounceOnTouch: false
+		});
 	});
 
 	contentsContainerElement.style.opacity = 0;
@@ -92,7 +100,12 @@ function prepareContents()
 	indicatorElement.src = "/graphics/general-icons/contents-indicator.png";
 	pageElement.appendChild(indicatorElement);
 
-	addHoverEventWithScale(indicatorElement, 1.1);
+	addHoverEventWithScale({
+		element: indicatorElement,
+		scale: 1.1,
+		addBounceOnTouch: false
+	});
+
 	indicatorElement.addEventListener("click", showContents);
 }
 

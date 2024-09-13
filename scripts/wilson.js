@@ -1517,7 +1517,11 @@ export class Wilson
 
 				this.parent.canvas.parentNode.appendChild(this.enterFullscreenButton);
 
-				addHoverEventWithScale(this.enterFullscreenButton, 1.1);
+				addHoverEventWithScale({
+					element: this.enterFullscreenButton,
+					scale: 1.1,
+					addBounceOnTouch: false
+				});
 
 				this.enterFullscreenButton.addEventListener("click", () =>
 				{
@@ -1608,7 +1612,11 @@ export class Wilson
 
 					document.body.appendChild(this.exitFullscreenButton);
 
-					addHoverEventWithScale(this.exitFullscreenButton, 1.1);
+					addHoverEventWithScale({
+						element: this.exitFullscreenButton,
+						scale: 1.1,
+						addBounceOnTouch: false
+					});
 
 					this.exitFullscreenButton.addEventListener("click", () =>
 					{
@@ -1783,7 +1791,11 @@ export class Wilson
 
 					this.parent.canvas.parentNode.appendChild(this.enterFullscreenButton);
 
-					addHoverEventWithScale(this.enterFullscreenButton, 1.1);
+					addHoverEventWithScale({
+						element: this.enterFullscreenButton,
+						scale: 1.1,
+						addBounceOnTouch: false
+					});
 
 					this.enterFullscreenButton.addEventListener("click", () =>
 					{

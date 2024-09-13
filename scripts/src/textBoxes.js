@@ -327,8 +327,12 @@ export class TextBox extends InputElement
 					});
 				}
 			}
-
-			addHoverEventWithScale(checkbox.element.parentNode, 1.1);
+		
+			addHoverEventWithScale({
+				element: checkbox.element.parentNode,
+				scale: 1.1,
+				addBounceOnTouch: false
+			});
 
 			anime({
 				targets: dialog,
