@@ -3,6 +3,7 @@ import { buildSitemap, sitemapPath } from "./build-sitemap.js";
 import { buildXmlSitemap } from "./build-xml-sitemap.js";
 import { read, write } from "./file-io.js";
 import buildHTMLFile from "./htmdl/build.js";
+import { validateAllLinks } from "./validate-links.js";
 
 const root = process.argv[1].replace(/(\/cruzgodar.github.io\/).+$/, (match, $1) => $1);
 
@@ -55,7 +56,9 @@ async function buildSite()
 
 	await parseModifiedFiles(proc.stdout.toString().split("\n"));
 	
-	buildXmlSitemap();
+	await buildXmlSitemap();
+
+	await validateAllLinks(true);
 
 	console.log("\nDone!");
 }
