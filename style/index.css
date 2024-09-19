@@ -1,33 +1,17 @@
-/* Provides support for the various kinds of text, the logo, and the footer. */
-
 :root
 {
 	--theme: 0;
 
-	--background-component: calc(255 + (var(--theme) * (24 - 255)));
-	--background: rgb(var(--background-component), var(--background-component), var(--background-component));
+	--background: color-mix(in srgb, rgb(255, 255, 255), rgb(24, 24, 24) calc(var(--theme) * 100%));
 
-	/* E.g. heading text */
-	--high-contrast-component: calc(0 + (var(--theme) * 255));
-	--high-contrast: rgb(var(--high-contrast-component), var(--high-contrast-component), var(--high-contrast-component));
+	--high-contrast: color-mix(in srgb, rgb(0, 0, 0), rgb(255, 255, 255) calc(var(--theme) * 100%));
+	--normal-contrast: color-mix(in srgb, rgb(64, 64, 64), rgb(208, 208, 208) calc(var(--theme) * 100%));
+	--low-contrast: color-mix(in srgb, rgb(96, 96, 96), rgb(184, 184, 184) calc(var(--theme) * 100%));
 
-	/* E.g. body text */
-	--normal-contrast-component: calc(64 + (var(--theme) * (208 - 64)));
-	--normal-contrast: rgb(var(--normal-contrast-component), var(--normal-contrast-component), var(--normal-contrast-component));
+	--neutral-hover: color-mix(in srgb, rgb(208, 208, 208), rgb(64, 64, 64) calc(var(--theme) * 100%));
 
-	--low-contrast-component: calc(96 + (var(--theme) * (184 - 96)));
-	--low-contrast: rgb(var(--low-contrast-component), var(--low-contrast-component), var(--low-contrast-component));
-
-	--neutral-hover-component: calc(208 + (var(--theme) * (64 - 208)));
-	--neutral-hover: rgb(var(--neutral-hover-component), var(--neutral-hover-component), var(--neutral-hover-component));
-
-	--link-rb-component: calc(80 + (var(--theme) * (160 - 80)));
-	--link-g-component: calc(192 + (var(--theme) * (224 - 192)));
-	--link: rgb(var(--link-rb-component), var(--link-g-component), var(--link-rb-component));
-
-	--link-hover-rb-component: calc(160 + (var(--theme) * (192 - 160)));
-	--link-hover-g-component: calc(224 + (var(--theme) * (255 - 224)));
-	--link-hover: rgb(var(--link-hover-rb-component), var(--link-hover-g-component), var(--link-hover-rb-component));
+	--link: color-mix(in srgb, rgb(80, 192, 80), rgb(160, 224, 160) calc(var(--theme) * 100%));
+	--link-hover: color-mix(in srgb, rgb(160, 224, 160), rgb(192, 255, 192) calc(var(--theme) * 100%));
 
 	--gallery-color: rgb(176, 238, 173);
 	/* --gallery-color: lch(90% 35 140); */
