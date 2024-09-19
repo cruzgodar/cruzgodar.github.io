@@ -60,7 +60,6 @@ export function convertCardToLatex(element, title, course)
 				(match, $1) => `\\begin{enumerate}\n\n${$1}\\end{enumerate}\n\n`
 			)
 			.replaceAll(/\n\n/g, "\n")
-			.replaceAll(/%/g, "\\%")
 			.replaceAll(/(\n[0-9]+\.)/g, (match, $1) => `\n${$1}`)
 			.replaceAll(/<span style="height: 32px"><\/span>/g, "\n~\\\\")
 			.replaceAll(/<h2.*?>(.+?)<\/h2>/g, (match, $1) => `\n\\section{${$1}}\n\n`)
