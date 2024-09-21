@@ -92,6 +92,51 @@ export async function uncolorCubes(array, coordinates)
 
 
 
+export async function colorWalls(array, hue, saturation = 1)
+{
+	const targets = [];
+
+	array.floor.concat(array.leftWall).concat(array.rightWall).forEach(row =>
+	{
+		row.forEach(wall =>
+		{
+			wall.material.forEach(material => targets.push(material.color));
+		});
+	});
+
+	targets.forEach(color => color.getRGB(color));
+
+	// Convert HSV to HSL.
+	const v = this.cubeLightness + 1 * Math.min(this.cubeLightness, 1 - this.cubeLightness);
+	const s = v === 0 ? 0 : 2 * (1 - this.cubeLightness / v);
+
+	const targetColor = this.wilson.utils.hsvToRgb(hue, saturation * s, v);
+
+
+
+	await anime({
+		targets,
+		r: targetColor[0] / 255,
+		g: targetColor[1] / 255,
+		b: targetColor[2] / 255,
+		duration: this.animationTime,
+		delay: (element, index) => Math.floor(index / 6) * this.animationTime / 10,
+		easing: "easeOutQuad",
+		update: () =>
+		{
+			targets.forEach(color => color.setRGB(color.r, color.g, color.b));
+			this.needNewFrame = true;
+		},
+		complete: () =>
+		{
+			targets.forEach(color => color.setRGB(color.r, color.g, color.b));
+			this.needNewFrame = true;
+		}
+	}).finished;
+}
+
+
+
 // Lifts the specified cubes to the specified height. The animation is skipped in 2d mode.
 export async function raiseCubes(array, coordinates, height)
 {
@@ -255,7 +300,7 @@ export async function revealCubes(array, coordinates)
 
 
 // Fades the specified cubes' opacity to zero, and then deletes them.
-export async function deleteCubes(array, coordinates, instant = false, noAnimation = false)
+export async function deleteCubes(array, coordinates, allAtOnce = false, noAnimation = false)
 {
 	const targets = [];
 
@@ -269,7 +314,7 @@ export async function deleteCubes(array, coordinates, instant = false, noAnimati
 		targets,
 		opacity: 0,
 		duration: this.animationTime / 2 * !noAnimation,
-		delay: (element, index) => (!instant) * Math.floor(index / 6) * this.animationTime / 10,
+		delay: (element, index) => (!allAtOnce) * Math.floor(index / 6) * this.animationTime / 10,
 		easing: "easeOutQuad",
 		update: () => this.needNewFrame = true,
 		complete: () => this.needNewFrame = true

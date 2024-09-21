@@ -1,5 +1,6 @@
 import {
 	colorABConfigRegions,
+	colorABConfigs,
 	getArrayVersionOfABConfig,
 	getMinimalABConfig,
 	isValidABConfig,
@@ -39,6 +40,7 @@ import { arrayToAscii, parseArray, verifyPp, verifySsyt } from "./parseAndVerify
 import { runAlgorithm, runExample } from "./runAlgorithm.js";
 import {
 	colorCubes,
+	colorWalls,
 	deleteCubes,
 	deleteFloor,
 	lowerCubes,
@@ -510,6 +512,7 @@ export class PlanePartitions extends AnimationFrameApplet
 	testAllEntriesOfABConfig = testAllEntriesOfABConfig;
 	getArrayVersionOfABConfig = getArrayVersionOfABConfig;
 	colorABConfigRegions = colorABConfigRegions;
+	colorABConfigs = colorABConfigs;
 
 	addNewArray = addNewArray;
 	editArray = editArray;
@@ -536,6 +539,7 @@ export class PlanePartitions extends AnimationFrameApplet
 
 	colorCubes = colorCubes;
 	uncolorCubes = uncolorCubes;
+	colorWalls = colorWalls;
 	raiseCubes = raiseCubes;
 	lowerCubes = lowerCubes;
 	moveCubes = moveCubes;

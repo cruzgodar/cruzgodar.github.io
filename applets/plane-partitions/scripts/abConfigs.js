@@ -177,19 +177,19 @@ export function isValidABConfig({
 
 				if (region === 1 && boxIsInA)
 				{
-					boxes.push([row, col, k, label]);
+					boxes.push([row, col, k, label, region]);
 				}
 
 				else if (region === 2 && !boxIsInB && boxCouldBeInB)
 				{
-					boxes.push([row, col, k, label]);
+					boxes.push([row, col, k, label, region]);
 				}
 
 				else if (
 					region === 3
 					&& ((boxIsInA && !boxIsInB) || (!boxIsInA && boxIsInB))
 				) {
-					boxes.push([row, col, k, label]);
+					boxes.push([row, col, k, label, region]);
 				}
 			}
 		}
@@ -277,7 +277,7 @@ export function isValidABConfig({
 		});
 	}
 
-	return [true, boxes];
+	return [true, boxes, components];
 }
 
 function boxIsInArray(box, array)
@@ -304,7 +304,7 @@ function getAsciiLabel(box, boxes)
 
 	if (index === -1)
 	{
-		return "?";
+		return "∅";
 	}
 
 	const label = boxes[index][3];
@@ -490,7 +490,7 @@ export function iterateThroughEntries({
 			{
 				let label = getAsciiLabel([row, col, newA[i][j]], result[1]);
 				
-				if (label === "?" && row >= 0 && col >= 0)
+				if (label === "∅" && row >= 0 && col >= 0)
 				{
 					label = getAsciiLabel([row, col, newB[row][col]], result[1]);
 				}
@@ -526,7 +526,7 @@ export function iterateThroughEntries({
 			{
 				let label = getAsciiLabel([row, col, newA[i][j]], result[1]);
 				
-				if (label === "?" && row >= 0 && col >= 0)
+				if (label === "∅" && row >= 0 && col >= 0)
 				{
 					label = getAsciiLabel([row, col, newB[row][col]], result[1]);
 				}
@@ -570,7 +570,7 @@ export function iterateThroughEntries({
 				{
 					let label = getAsciiLabel([row, col, newA[i][j]], result[1]);
 					
-					if (label === "?" && row >= 0 && col >= 0)
+					if (label === "∅" && row >= 0 && col >= 0)
 					{
 						label = getAsciiLabel([row, col, newB[row][col]], result[1]);
 					}
@@ -921,4 +921,13 @@ export async function colorABConfigRegions({ bigA, bigB, lambda, mu, nu, arrayA,
 
 	await this.colorCubes(arrayB, regions[1], .15, .6);
 	await this.colorCubes(arrayB, regions[3], .7, .6);
+}
+
+export async function colorABConfigs({ bigA, bigB, lambda, mu, nu, arrayB })
+{
+	const regions = getABConfigRegions({ bigA, bigB, lambda, mu, nu });
+
+	await this.colorWalls(arrayB, .69, .75);
+	await this.colorCubes(arrayB, regions[1], .69, .75);
+	await this.colorCubes(arrayB, regions[3], .69, .75);
 }
