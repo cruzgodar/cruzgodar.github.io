@@ -1385,14 +1385,10 @@ export class Wilson
 						.wilson-enter-fullscreen-button, .wilson-exit-fullscreen-button
 						{
 							width: 15px;
+							height: 15px;
 							
-							background-color: rgb(255, 255, 255);
-							
-							border: 2px solid rgb(
-								calc((1 - var(--theme)) * var(--normal-contrast-component) + var(--theme) * 127),
-								calc((1 - var(--theme)) * var(--normal-contrast-component) + var(--theme) * 127),
-								calc((1 - var(--theme)) * var(--normal-contrast-component) + var(--theme) * 127)
-							);
+							background: var(--background);
+							border: 2px solid var(--normal-contrast);
 							border-radius: 25%;
 							padding: 5px;
 							
@@ -1418,6 +1414,13 @@ export class Wilson
 							top: 10px;
 							
 							z-index: 100;
+						}
+
+						.wilson-enter-fullscreen-button img, .wilson-exit-fullscreen-button img
+						{
+							width: 100%;
+							height: 100%;
+							filter: invert(calc(.25 + var(--theme) * .5657));
 						}
 					`;
 
@@ -1507,15 +1510,16 @@ export class Wilson
 
 			if (this.useFullscreenButton)
 			{
-				this.enterFullscreenButton = document.createElement("input");
+				this.enterFullscreenButton = document.createElement("div");
 
-				this.enterFullscreenButton.type = "image";
 				this.enterFullscreenButton.classList.add("wilson-enter-fullscreen-button");
-				this.enterFullscreenButton.src = this.enterFullscreenButtonIconPath;
-				this.enterFullscreenButton.alt = "Enter Fullscreen";
 				this.enterFullscreenButton.setAttribute("tabindex", "-1");
 
 				this.parent.canvas.parentNode.appendChild(this.enterFullscreenButton);
+
+				const img = document.createElement("img");
+				img.src = this.enterFullscreenButtonIconPath;
+				this.enterFullscreenButton.appendChild(img);
 
 				addHoverEventWithScale({
 					element: this.enterFullscreenButton,
@@ -1602,15 +1606,16 @@ export class Wilson
 
 				if (this.useFullscreenButton)
 				{
-					this.exitFullscreenButton = document.createElement("input");
+					this.exitFullscreenButton = document.createElement("div");
 
-					this.exitFullscreenButton.type = "image";
 					this.exitFullscreenButton.classList.add("wilson-exit-fullscreen-button");
-					this.exitFullscreenButton.src = this.exitFullscreenButtonIconPath;
-					this.exitFullscreenButton.alt = "Exit Fullscreen";
 					this.exitFullscreenButton.setAttribute("tabindex", "-1");
 
 					document.body.appendChild(this.exitFullscreenButton);
+
+					const img = document.createElement("img");
+					img.src = this.exitFullscreenButtonIconPath;
+					this.exitFullscreenButton.appendChild(img);
 
 					addHoverEventWithScale({
 						element: this.exitFullscreenButton,
@@ -1781,15 +1786,16 @@ export class Wilson
 
 				if (this.useFullscreenButton)
 				{
-					this.enterFullscreenButton = document.createElement("input");
+					this.enterFullscreenButton = document.createElement("div");
 
-					this.enterFullscreenButton.type = "image";
 					this.enterFullscreenButton.classList.add("wilson-enter-fullscreen-button");
-					this.enterFullscreenButton.src = this.enterFullscreenButtonIconPath;
-					this.enterFullscreenButton.alt = "Enter Fullscreen";
 					this.enterFullscreenButton.setAttribute("tabindex", "-1");
 
 					this.parent.canvas.parentNode.appendChild(this.enterFullscreenButton);
+
+					const img = document.createElement("img");
+					img.src = this.enterFullscreenButtonIconPath;
+					this.enterFullscreenButton.appendChild(img);
 
 					addHoverEventWithScale({
 						element: this.enterFullscreenButton,

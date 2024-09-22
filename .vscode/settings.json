@@ -6,16 +6,15 @@
 		"**/apple-icon*": true,
 		"**/data.html": true,
 		"**/favicon*": true,
-		"**/index.html": true,
 		"**/ms-icon*": true,
 		"**/scripts/src/sitemap.js": true,
 		"**/sitemap.xml": true,
 		"**/teaching/uo/342/extra/eigenfaces-demo/scripts/data.js": true,
 		"**/teaching/uo/342/notes/9-singular-value-decompositions/scripts/data.js": true,
 		"**/teaching/uo/342/notes/9-singular-value-decompositions/scripts/vData.js": true,
+		"*/**/index.html": true,
 		"/scripts/anime.js": true,
-		"/scripts/three.js": true,
-		"/scripts/wilson.js": true
+		"/scripts/three.js": true
 	},
 	"editor.wordWrap": "on",
 	"editor.wordWrapColumn": 128,

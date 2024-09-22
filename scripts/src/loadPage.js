@@ -36,6 +36,10 @@ import {
 } from "./settings.js";
 import { sitemap } from "./sitemap.js";
 
+const blockCardPages = [
+	"/gallery/"
+];
+
 // The big one. Gets a page ready to be shown but doesn't
 // do anything that requires it to be visible.
 export async function loadPage()
@@ -98,7 +102,7 @@ export async function showPage()
 {
 	await new Promise(resolve => setTimeout(resolve, 10));
 
-	if (siteSettings.card)
+	if (siteSettings.card && !blockCardPages.includes(pageUrl))
 	{
 		showCard(siteSettings.card, 10);
 	}
