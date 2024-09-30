@@ -174,7 +174,7 @@ The two types of integrals are connected through the **Fundamental Theorem of Ca
 
 ### thm "The Fundamental Theorem of Calculus"
 	
-	Let $f$ be an integrable function. Then
+	Let $f$ be an integrable function, and let $F$ be an antiderivative of $f$. Then
 	
 	$$
 		\int_a^b f(x)\,dx = \left. \left[ \int f(x)\,dx \right] \right|_a^b = F(b) - F(a).
