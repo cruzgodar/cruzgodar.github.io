@@ -9,6 +9,8 @@ import anime from "/scripts/anime.js";
 export let cardIsOpen = false;
 export let cardIsAnimating = false;
 
+const easing = "cubicBezier(.25, 1, .25, 1)";
+
 const container = document.querySelector("#card-container");
 
 export let currentCard;
@@ -135,7 +137,7 @@ export async function showCard(id, animationTime = cardAnimationTime)
 			targets: container,
 			top: 0,
 			duration: animationTime,
-			easing: "easeOutQuint",
+			easing,
 		}).finished,
 
 		anime({
@@ -147,21 +149,21 @@ export async function showCard(id, animationTime = cardAnimationTime)
 			filter: "brightness(.5)",
 			scale: .975,
 			duration: animationTime,
-			easing: "easeOutQuint",
+			easing,
 		}).finished,
 
 		anime({
 			targets: metaThemeColorElement,
 			content: themeColor,
 			duration: animationTime,
-			easing: "easeOutQuint",
+			easing,
 		}).finished,
 
 		anime({
 			targets: document.documentElement,
 			backgroundColor: color,
 			duration: animationTime,
-			easing: "easeOutQuint",
+			easing,
 		}).finished,
 	]);
 
@@ -194,7 +196,7 @@ export async function hideCard(animationTime = cardAnimationTime)
 
 	const dummy = { t: 0 };
 	const containerOldScroll = container.scrollTop;
-	const totalHeightToMove = containerOldScroll + window.innerHeight + 32;
+	const totalHeightToMove = containerOldScroll + window.innerHeight + 64;
 
 	await Promise.all([
 		anime({
@@ -206,28 +208,28 @@ export async function hideCard(animationTime = cardAnimationTime)
 			filter: "brightness(1)",
 			scale: 1,
 			duration: animationTime,
-			easing: "easeOutQuint",
+			easing,
 		}).finished,
 
 		anime({
 			targets: metaThemeColorElement,
 			content: themeColor,
 			duration: animationTime,
-			easing: "easeOutQuint",
+			easing,
 		}).finished,
 
 		anime({
 			targets: document.documentElement,
 			backgroundColor: color,
 			duration: animationTime,
-			easing: "easeOutQuint",
+			easing,
 		}).finished,
 
 		anime({
 			targets: dummy,
 			t: 1,
 			duration: animationTime,
-			easing: "easeOutQuint",
+			easing,
 			update: () =>
 			{
 				const heightMoved = dummy.t * totalHeightToMove;
