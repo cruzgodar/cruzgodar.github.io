@@ -141,12 +141,20 @@ export async function showCard(id, animationTime = cardAnimationTime)
 		}).finished,
 
 		anime({
-			targets: [
-				pageElement,
-				document.querySelector("#header"),
-				document.querySelector("#header-container")
-			],
+			targets: pageElement,
 			filter: "brightness(.5)",
+			scale: .975,
+			duration: animationTime,
+			easing,
+		}).finished,
+
+		anime({
+			targets: [
+				document.querySelector("#header"),
+				document.querySelector("#header-container"),
+			],
+			// ???
+			filter: siteSettings.darkTheme ? "brightness(.65)" : "brightness(.455)",
 			scale: .975,
 			duration: animationTime,
 			easing,
