@@ -125,6 +125,10 @@ export async function showCard(id, animationTime = cardAnimationTime)
 		? "rgb(24, 24, 24)"
 		: "rgb(255, 255, 255)";
 
+	document.querySelector("#header-container").style.backgroundColor = siteSettings.darkTheme
+		? "rgb(24, 24, 24)"
+		: "rgb(255, 255, 255)";
+
 	if (!browserIsIos)
 	{
 		window.scrollTo(0, 0);
@@ -144,9 +148,16 @@ export async function showCard(id, animationTime = cardAnimationTime)
 			targets: [
 				pageElement,
 				document.querySelector("#header"),
-				document.querySelector("#header-container"),
 			],
 			filter: "brightness(.5)",
+			scale: .975,
+			duration: animationTime,
+			easing,
+		}).finished,
+
+		anime({
+			targets: document.querySelector("#header-container"),
+			backgroundColor: color,
 			scale: .975,
 			duration: animationTime,
 			easing,
@@ -202,10 +213,17 @@ export async function hideCard(animationTime = cardAnimationTime)
 		anime({
 			targets: [
 				pageElement,
-				document.querySelector("#header"),
-				document.querySelector("#header-container")
+				document.querySelector("#header")
 			],
 			filter: "brightness(1)",
+			scale: 1,
+			duration: animationTime,
+			easing,
+		}).finished,
+
+		anime({
+			targets: document.querySelector("#header-container"),
+			backgroundColor: color,
 			scale: 1,
 			duration: animationTime,
 			easing,
@@ -251,6 +269,7 @@ export async function hideCard(animationTime = cardAnimationTime)
 	}
 
 	document.documentElement.style.backgroundColor = "var(--background)";
+	document.querySelector("#header-container").style.backgroundColor = "var(--background)";
 
 	container.style.display = "none";
 
