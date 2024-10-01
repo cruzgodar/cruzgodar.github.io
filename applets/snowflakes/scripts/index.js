@@ -165,5 +165,6 @@ export default function()
 			false
 		);
 
+		run();
 	}
 }
