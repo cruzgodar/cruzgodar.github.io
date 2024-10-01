@@ -102,9 +102,17 @@ export async function showPage()
 {
 	await new Promise(resolve => setTimeout(resolve, 10));
 
-	if (siteSettings.card && !blockCardPages.includes(pageUrl))
+	if (siteSettings.card)
 	{
-		showCard(siteSettings.card, 10);
+		if (!blockCardPages.includes(pageUrl))
+		{
+			showCard(siteSettings.card, 10);
+		}
+
+		else
+		{
+			siteSettings.card = undefined;
+		}
 	}
 
 	await fadeInPage();
