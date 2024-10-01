@@ -134,6 +134,12 @@ In practice, we don't use the limit definition of the derivative all that often.
 
 Beware! This course uses $\log$ to denote the base-$e$ logarithm --- what you've probably seen as $\ln$ before. This is standard for higher-level math courses, and while I'll of course understand what you nean if you write $\ln$, I encourage you to use $\log$!
 
+### exc "derivative rules"
+
+	Evaluate $$\frac{d}{dx} \left. \left[ \log \left( \cos\left( x^2 \right) \right) \right] \right|_{x = \sqrt{3\pi / 4}}$$.
+
+###
+
 We'll be using limits and derivatives quite a bit throughout the course --- derivatives are in the title, after all! I have a full set of interactive notes available for calculus I, so if you're feeling rusty, have a look at those.
 
 
