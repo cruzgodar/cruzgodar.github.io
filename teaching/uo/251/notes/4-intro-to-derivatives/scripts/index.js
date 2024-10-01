@@ -1,9 +1,9 @@
 import { showPage } from "../../../../../../scripts/src/loadPage.js";
 import {
-    createDesmosGraphs,
-    desmosBlue,
-    desmosPurple,
-    setGetDesmosData
+	createDesmosGraphs,
+	desmosBlue,
+	desmosPurple,
+	setGetDesmosData
 } from "/scripts/src/desmos.js";
 
 export default function()
@@ -20,7 +20,7 @@ export default function()
 				[
 					{ latex: String.raw`f(x) = x^2`, color: desmosPurple },
 					{ latex: String.raw`a = 1` },
-					{ latex: String.raw`h = .1`, sliderBounds: { min: 0, max: 1 } },
+					{ latex: String.raw`h = .1`, sliderBounds: { min: 0, max: 10 } },
 					{ latex: String.raw`m = \frac{f(a + h) - f(a)}{h}`, secret: true },
 					{ latex: String.raw`(a, f(a))`, color: desmosBlue, secret: true },
 					{ latex: String.raw`(a + h, f(a + h))`, color: desmosBlue, secret: true },
