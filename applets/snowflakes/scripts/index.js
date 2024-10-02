@@ -131,12 +131,12 @@ export default function()
 	function randomizeParameters()
 	{
 		rhoInput.setValue(
-			Math.round((.3 + (.6 - .3) * Math.random()) * 100000) / 100000,
+			Math.round((.325 + (.5 - .325) * Math.random()) * 100000) / 100000,
 			false
 		);
 
 		betaInput.setValue(
-			Math.round((.9 + (1.7 - .9) * Math.random()) * 100000) / 100000,
+			Math.round((.9 + (1.5 - .9) * Math.random()) * 100000) / 100000,
 			false
 		);
 
