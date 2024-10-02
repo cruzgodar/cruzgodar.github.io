@@ -230,13 +230,9 @@ export const galleryImageData =
 	{
 		title: "A Gravner-Griffeath Snowflake",
 
-		parameters: /* html */`
-			Generated with $\\rho = 0.3673$, $\\beta = 1.1016$, $\\alpha = 0.4022$, $\\theta = 0.0311$, $\\kappa = 0.0013$, $\\mu = 0.019$, and $\\gamma = 0.0005$
-		`,
-
 		appletLink: "snowflakes",
 
-		driveId: "1qCDJIacawSFc8rAJK57YbqQjVC_79Lu9"
+		driveId: "1G4GWlWJvQWlP04IxWpNGmVCfwj0RZnX0"
 	},
 
 
