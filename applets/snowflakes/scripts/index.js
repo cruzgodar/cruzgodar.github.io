@@ -160,8 +160,8 @@ export default function()
 			false
 		);
 
-		muInput.setValue(
-			Math.round((0 + (.05 - 0) * Math.random()) * 100000) / 100000,
+		gammaInput.setValue(
+			Math.round((0 + (.1 - 0) * Math.random()) * 100000) / 100000,
 			false
 		);
 
