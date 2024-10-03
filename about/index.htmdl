@@ -66,7 +66,7 @@ Graph theory, particularly large networks with power-law degree distributions.
 
 ## Projects
 
-**<a href="/applets/">Interactive Math Applets</a>**: created more than 40 interactive JavaScript applets for exploring fractals and other beautiful objects in math. Whenever possible, the applets use WebGL and WebAssembly for extremely high performance, and modern tools like WebWorkers and promises for simple and organized code. Still images and animations from them have been featured in five exhibitions, including the <a href="http://gallery.bridgesmathart.org/exhibitions/2022-bridges-conference">2022</a> and <a href="https://gallery.bridgesmathart.org/exhibitions/2023-bridges-conference">2023</a> Bridges conferences.
+**<a href="/applets/">Interactive Math Applets</a>**: created more than 40 interactive JavaScript applets for exploring fractals and other beautiful objects in math. Whenever possible, the applets use WebGL and WebAssembly for extremely high performance, and modern tools like WebWorkers and promises for simple and organized code. Still images and animations from them have been featured in five exhibitions, including the <a href="https://gallery.bridgesmathart.org/exhibitions/2022-bridges-conference">2022</a> and <a href="https://gallery.bridgesmathart.org/exhibitions/2023-bridges-conference">2023</a> Bridges conferences.
 
 **<a href="/teaching/">Interactive Class Notes</a>**: written full class notes for Calculus I, II, and III, Differential Equations I, and Linear Algebra I, incorporating MathJax to render equations and the Desmos API to include graphs. The design is fully responsive, so students can just as easily view them with a phone as with a laptop.
 

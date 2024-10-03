@@ -18,10 +18,24 @@ export async function validateAllLinks(clean = false)
 		.split("\n")
 		.filter(file => file.slice(file.lastIndexOf(".")) === ".html");
 
-	await Promise.all(files.map(validateLinksInFile));
+	const links = Array.from(
+		new Set(
+			(await Promise.all(files.map(getLinksInFile))).flat()
+		)
+	);
+
+	const statuses = await Promise.all(links.map(validateLink));
+
+	for (let i = 0; i < statuses.length; i++)
+	{
+		if (!statuses[i])
+		{
+			console.error(`Invalid link: ${links[i]}`);
+		}
+	}
 }
 
-async function validateLinksInFile(file)
+async function getLinksInFile(file)
 {
 	const text = await read(file);
 
@@ -32,23 +46,42 @@ async function validateLinksInFile(file)
 		links.push($1);
 	});
 
-	const statuses = await Promise.all(links.map(validateLink));
-
-	for (let i = 0; i < statuses.length; i++)
-	{
-		if (!statuses[i])
-		{
-			console.error(`Invalid link in ${file} to ${links[i]}`);
-		}
-	}
+	return links;
 }
 
 async function validateLink(link)
 {
+	if (link.slice(0, 5) === "https")
+	{
+		const response = await fetch(link);
+
+		return response.status === 200;
+	}
+
 	if (link.slice(0, 4) === "http")
 	{
-		return true;
+		try
+		{
+			const httpsResponse = await fetch(link.replace(/^http/, "https"));
+
+			if (httpsResponse.status === 200)
+			{
+				console.warn(`Link should use https: ${link}`);
+				return true;
+			}
+		}
+
+		catch(ex)
+		{
+			// Link cannot use https.
+		}
+
+		const response = await fetch(link);
+
+		return response.status === 200;
 	}
+
+
 
 	link = link.replace(/\?.+$/, "");
 
@@ -61,3 +94,12 @@ async function validateLink(link)
 
 	return date != null;
 }
+
+
+
+async function test()
+{
+	await validateAllLinks(true);
+}
+
+test();
