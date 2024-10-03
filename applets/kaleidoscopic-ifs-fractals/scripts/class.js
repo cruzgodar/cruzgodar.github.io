@@ -1,7 +1,6 @@
 import anime from "/scripts/anime.js";
-import { Applet } from "/scripts/applets/applet.js";
+import { Applet, getVectorGlsl } from "/scripts/applets/applet.js";
 import { RaymarchApplet } from "/scripts/applets/raymarchApplet.js";
-import { changeOpacity } from "/scripts/src/animation.js";
 import { addTemporaryListener } from "/scripts/src/main.js";
 import { Wilson } from "/scripts/wilson.js";
 
@@ -27,18 +26,34 @@ export class KaleidoscopicIFSFractal extends RaymarchApplet
 	theta = this.startingAngle[2][0];
 	phi = this.startingAngle[2][1];
 
-	polyhedronIndex = 2;
+	tetrahedronAmount = 1;
+	cubeAmount = 0;
+	octahedronAmount = 0;
 
-	lightPos = [[0, 0, 5], [5, 5, 5], [0, 0, 5]];
+	nTetrahedron = [
+		[-.577350, 0, .816496],
+		[.288675, -.5, .816496],
+		[.288675, .5, .816496]
+	];
+	scaleCenterTetrahedron = [0, 0, 1];
+	lightPosTetrahedron = [0, 0, 5];
 
-	n1 = [[-.577350, 0, .816496],  [1, 0, 0], [.707107, 0, .707107]];
-	n2 = [[.288675, -.5, .816496], [0, 1, 0], [0, .707107, .707107]];
-	n3 = [[.288675, .5, .816496],  [0, 0, 1], [-.707107, 0, .707107]];
-	n4 = [[],                      [],        [0, -.707107, .707107]];
+	nCube = [
+		[1, 0, 0],
+		[0, 1, 0],
+		[0, 0, 1]
+	];
+	scaleCenterCube = [.577350, .577350, .577350];
+	lightPosCube = [5, 5, 5];
 
-	numNs = [3, 3, 4];
-
-	scaleCenter = [[0, 0, 1], [.577350, .577350, .577350], [0, 0, 1]];
+	nOctahedron = [
+		[.707107, 0, .707107],
+		[0, .707107, .707107],
+		[-.707107, 0, .707107],
+		[0, -.707107, .707107]
+	];
+	scaleCenterOctahedron = [0, 0, 1];
+	lightPosOctahedron = [0, 0, 5];
 
 	rotationAngleX1 = 0;
 	rotationAngleY1 = 0;
@@ -69,7 +84,6 @@ export class KaleidoscopicIFSFractal extends RaymarchApplet
 			
 			uniform float focalLength;
 			
-			uniform vec3 lightPos;
 			const float lightBrightness = 2.0;
 			
 			uniform int imageSize;
@@ -91,27 +105,37 @@ export class KaleidoscopicIFSFractal extends RaymarchApplet
 			
 			
 			
-			uniform vec3 scaleCenter;
+			const vec3 n1Tetrahedron = ${getVectorGlsl(this.nTetrahedron[0])};
+			const vec3 n2Tetrahedron = ${getVectorGlsl(this.nTetrahedron[1])};
+			const vec3 n3Tetrahedron = ${getVectorGlsl(this.nTetrahedron[2])};
+			const vec3 scaleCenterTetrahedron = ${getVectorGlsl(this.scaleCenterTetrahedron)};
+			const vec3 lightPosTetrahedron = ${getVectorGlsl(this.lightPosTetrahedron)};
+
+			const vec3 n1Cube = ${getVectorGlsl(this.nCube[0])};
+			const vec3 n2Cube = ${getVectorGlsl(this.nCube[1])};
+			const vec3 n3Cube = ${getVectorGlsl(this.nCube[2])};
+			const vec3 scaleCenterCube = ${getVectorGlsl(this.scaleCenterCube)};
+			const vec3 lightPosCube = ${getVectorGlsl(this.lightPosCube)};
+
+			const vec3 n1Octahedron = ${getVectorGlsl(this.nOctahedron[0])};
+			const vec3 n2Octahedron = ${getVectorGlsl(this.nOctahedron[1])};
+			const vec3 n3Octahedron = ${getVectorGlsl(this.nOctahedron[2])};
+			const vec3 n4Octahedron = ${getVectorGlsl(this.nOctahedron[3])};
+			const vec3 scaleCenterOctahedron = ${getVectorGlsl(this.scaleCenterOctahedron)};
+			const vec3 lightPosOctahedron = ${getVectorGlsl(this.lightPosOctahedron)};
+
+			uniform float tetrahedronAmount;
+			uniform float cubeAmount;
+			uniform float octahedronAmount;
 			
-			uniform int numNs;
-			
-			uniform vec3 n1;
-			uniform vec3 n2;
-			uniform vec3 n3;
-			uniform vec3 n4;
-			
-			
-			
-			const float scale = 2.0;
-			
-			
+			uniform float scale;
 			
 			uniform mat3 rotationMatrix1;
 			uniform mat3 rotationMatrix2;
 			
 			
 			
-			float distanceEstimator(vec3 pos)
+			float distanceEstimatorTetrahedron(vec3 pos)
 			{
 				vec3 mutablePos = pos;
 				
@@ -119,35 +143,25 @@ export class KaleidoscopicIFSFractal extends RaymarchApplet
 				for (int iteration = 0; iteration < maxIterations; iteration++)
 				{
 					//Fold space over on itself so that we can reference only the top vertex.
-					float t1 = dot(mutablePos, n1);
+					float t1 = dot(mutablePos, n1Tetrahedron);
 					
 					if (t1 < 0.0)
 					{
-						mutablePos -= 2.0 * t1 * n1;
+						mutablePos -= 2.0 * t1 * n1Tetrahedron;
 					}
 					
-					float t2 = dot(mutablePos, n2);
+					float t2 = dot(mutablePos, n2Tetrahedron);
 					
 					if (t2 < 0.0)
 					{
-						mutablePos -= 2.0 * t2 * n2;
+						mutablePos -= 2.0 * t2 * n2Tetrahedron;
 					}
 					
-					float t3 = dot(mutablePos, n3);
+					float t3 = dot(mutablePos, n3Tetrahedron);
 					
 					if (t3 < 0.0)
 					{
-						mutablePos -= 2.0 * t3 * n3;
-					}
-					
-					if (numNs >= 4)
-					{
-						float t4 = dot(mutablePos, n4);
-						
-						if (t4 < 0.0)
-						{
-							mutablePos -= 2.0 * t4 * n4;
-						}
+						mutablePos -= 2.0 * t3 * n3Tetrahedron;
 					}
 					
 					
@@ -155,66 +169,41 @@ export class KaleidoscopicIFSFractal extends RaymarchApplet
 					mutablePos = rotationMatrix1 * mutablePos;
 					
 					//Scale the system -- this one takes me a fair bit of thinking to get. What's happening here is that we're stretching from a vertex, but since we never scale the vertices, the four new ones are the four closest to the vertex we scaled from. Now (x, y, z) will get farther and farther away from the origin, but that makes sense -- we're really just zooming in on the tetrahedron.
-					mutablePos = scale * mutablePos - (scale - 1.0) * scaleCenter;
+					mutablePos = scale * mutablePos - (scale - 1.0) * scaleCenterTetrahedron;
 					
 					mutablePos = rotationMatrix2 * mutablePos;
 				}
 				
 				return length(mutablePos) * pow(1.0/scale, float(maxIterations));
 			}
-			
-			
-			
-			vec3 getColor(vec3 pos)
+
+			float distanceEstimatorCube(vec3 pos)
 			{
 				vec3 mutablePos = pos;
-				
-				vec3 color = vec3(1.0, 1.0, 1.0);
-				float colorScale = .5;
-				
-				
 				
 				//We'll find the closest vertex, scale everything by a factor of 2 centered on that vertex (so that we don't need to recalculate the vertices), and repeat.
 				for (int iteration = 0; iteration < maxIterations; iteration++)
 				{
 					//Fold space over on itself so that we can reference only the top vertex.
-					float t1 = dot(mutablePos, n1);
+					float t1 = dot(mutablePos, n1Cube);
 					
 					if (t1 < 0.0)
 					{
-						mutablePos -= 2.0 * t1 * n1;
-						
-						color = mix(color, color1, colorScale);
+						mutablePos -= 2.0 * t1 * n1Cube;
 					}
 					
-					float t2 = dot(mutablePos, n2);
+					float t2 = dot(mutablePos, n2Cube);
 					
 					if (t2 < 0.0)
 					{
-						mutablePos -= 2.0 * t2 * n2;
-						
-						color = mix(color, color2, colorScale);
+						mutablePos -= 2.0 * t2 * n2Cube;
 					}
 					
-					float t3 = dot(mutablePos, n3);
+					float t3 = dot(mutablePos, n3Cube);
 					
 					if (t3 < 0.0)
 					{
-						mutablePos -= 2.0 * t3 * n3;
-						
-						color = mix(color, color3, colorScale);
-					}
-					
-					if (numNs >= 4)
-					{
-						float t4 = dot(mutablePos, n4);
-						
-						if (t4 < 0.0)
-						{
-							mutablePos -= 2.0 * t4 * n4;
-							
-							color = mix(color, color4, colorScale);
-						}
+						mutablePos -= 2.0 * t3 * n3Cube;
 					}
 					
 					
@@ -222,15 +211,263 @@ export class KaleidoscopicIFSFractal extends RaymarchApplet
 					mutablePos = rotationMatrix1 * mutablePos;
 					
 					//Scale the system -- this one takes me a fair bit of thinking to get. What's happening here is that we're stretching from a vertex, but since we never scale the vertices, the four new ones are the four closest to the vertex we scaled from. Now (x, y, z) will get farther and farther away from the origin, but that makes sense -- we're really just zooming in on the tetrahedron.
-					mutablePos = scale * mutablePos - (scale - 1.0) * scaleCenter;
+					mutablePos = scale * mutablePos - (scale - 1.0) * scaleCenterCube;
+					
+					mutablePos = rotationMatrix2 * mutablePos;
+				}
+				
+				return length(mutablePos) * pow(1.0/scale, float(maxIterations));
+			}
+
+			float distanceEstimatorOctahedron(vec3 pos)
+			{
+				vec3 mutablePos = pos;
+				
+				//We'll find the closest vertex, scale everything by a factor of 2 centered on that vertex (so that we don't need to recalculate the vertices), and repeat.
+				for (int iteration = 0; iteration < maxIterations; iteration++)
+				{
+					//Fold space over on itself so that we can reference only the top vertex.
+					float t1 = dot(mutablePos, n1Octahedron);
+					
+					if (t1 < 0.0)
+					{
+						mutablePos -= 2.0 * t1 * n1Octahedron;
+					}
+					
+					float t2 = dot(mutablePos, n2Octahedron);
+					
+					if (t2 < 0.0)
+					{
+						mutablePos -= 2.0 * t2 * n2Octahedron;
+					}
+					
+					float t3 = dot(mutablePos, n3Octahedron);
+					
+					if (t3 < 0.0)
+					{
+						mutablePos -= 2.0 * t3 * n3Octahedron;
+					}
+
+					float t4 = dot(mutablePos, n4Octahedron);
+					
+					if (t4 < 0.0)
+					{
+						mutablePos -= 2.0 * t4 * n4Octahedron;
+					}
+					
+					
+					
+					mutablePos = rotationMatrix1 * mutablePos;
+					
+					//Scale the system -- this one takes me a fair bit of thinking to get. What's happening here is that we're stretching from a vertex, but since we never scale the vertices, the four new ones are the four closest to the vertex we scaled from. Now (x, y, z) will get farther and farther away from the origin, but that makes sense -- we're really just zooming in on the tetrahedron.
+					mutablePos = scale * mutablePos - (scale - 1.0) * scaleCenterOctahedron;
+					
+					mutablePos = rotationMatrix2 * mutablePos;
+				}
+				
+				return length(mutablePos) * pow(1.0/scale, float(maxIterations));
+			}
+
+			float distanceEstimator(vec3 pos)
+			{
+				float distance = 0.0;
+
+				if (tetrahedronAmount > 0.0)
+				{
+					distance += tetrahedronAmount * distanceEstimatorTetrahedron(pos);
+				}
+
+				if (cubeAmount > 0.0)
+				{
+					distance += cubeAmount * distanceEstimatorCube(pos);
+				}
+
+				if (octahedronAmount > 0.0)
+				{
+					distance += octahedronAmount * distanceEstimatorOctahedron(pos);
+				}
+
+				return distance;
+			}
+			
+			
+			
+			vec3 getColorTetrahedron(vec3 pos)
+			{
+				vec3 mutablePos = pos;
+
+				vec3 color = vec3(1.0, 1.0, 1.0);
+				float colorScale = .5;
+				
+				//We'll find the closest vertex, scale everything by a factor of 2 centered on that vertex (so that we don't need to recalculate the vertices), and repeat.
+				for (int iteration = 0; iteration < maxIterations; iteration++)
+				{
+					//Fold space over on itself so that we can reference only the top vertex.
+					float t1 = dot(mutablePos, n1Tetrahedron);
+					
+					if (t1 < 0.0)
+					{
+						mutablePos -= 2.0 * t1 * n1Tetrahedron;
+						color = mix(color, color1, colorScale);
+					}
+					
+					float t2 = dot(mutablePos, n2Tetrahedron);
+					
+					if (t2 < 0.0)
+					{
+						mutablePos -= 2.0 * t2 * n2Tetrahedron;
+						color = mix(color, color2, colorScale);
+					}
+					
+					float t3 = dot(mutablePos, n3Tetrahedron);
+					
+					if (t3 < 0.0)
+					{
+						mutablePos -= 2.0 * t3 * n3Tetrahedron;
+						color = mix(color, color3, colorScale);
+					}
+					
+					
+					
+					mutablePos = rotationMatrix1 * mutablePos;
+					
+					//Scale the system -- this one takes me a fair bit of thinking to get. What's happening here is that we're stretching from a vertex, but since we never scale the vertices, the four new ones are the four closest to the vertex we scaled from. Now (x, y, z) will get farther and farther away from the origin, but that makes sense -- we're really just zooming in on the tetrahedron.
+					mutablePos = scale * mutablePos - (scale - 1.0) * scaleCenterTetrahedron;
+					
+					mutablePos = rotationMatrix2 * mutablePos;
+					colorScale *= .5;
+				}
+				
+				return color;
+			}
+
+			vec3 getColorCube(vec3 pos)
+			{
+				vec3 mutablePos = pos;
+
+				vec3 color = vec3(1.0, 1.0, 1.0);
+				float colorScale = .5;
+				
+				//We'll find the closest vertex, scale everything by a factor of 2 centered on that vertex (so that we don't need to recalculate the vertices), and repeat.
+				for (int iteration = 0; iteration < maxIterations; iteration++)
+				{
+					//Fold space over on itself so that we can reference only the top vertex.
+					float t1 = dot(mutablePos, n1Cube);
+					
+					if (t1 < 0.0)
+					{
+						mutablePos -= 2.0 * t1 * n1Cube;
+						color = mix(color, color1, colorScale);
+					}
+					
+					float t2 = dot(mutablePos, n2Cube);
+					
+					if (t2 < 0.0)
+					{
+						mutablePos -= 2.0 * t2 * n2Cube;
+						color = mix(color, color2, colorScale);
+					}
+					
+					float t3 = dot(mutablePos, n3Cube);
+					
+					if (t3 < 0.0)
+					{
+						mutablePos -= 2.0 * t3 * n3Cube;
+						color = mix(color, color3, colorScale);
+					}
+					
+					
+					
+					mutablePos = rotationMatrix1 * mutablePos;
+					
+					//Scale the system -- this one takes me a fair bit of thinking to get. What's happening here is that we're stretching from a vertex, but since we never scale the vertices, the four new ones are the four closest to the vertex we scaled from. Now (x, y, z) will get farther and farther away from the origin, but that makes sense -- we're really just zooming in on the tetrahedron.
+					mutablePos = scale * mutablePos - (scale - 1.0) * scaleCenterCube;
 					
 					mutablePos = rotationMatrix2 * mutablePos;
 					
 					colorScale *= .5;
 				}
 				
+				return color;
+			}
+
+			vec3 getColorOctahedron(vec3 pos)
+			{
+				vec3 mutablePos = pos;
+
+				vec3 color = vec3(1.0, 1.0, 1.0);
+				float colorScale = .5;
 				
+				//We'll find the closest vertex, scale everything by a factor of 2 centered on that vertex (so that we don't need to recalculate the vertices), and repeat.
+				for (int iteration = 0; iteration < maxIterations; iteration++)
+				{
+					//Fold space over on itself so that we can reference only the top vertex.
+					float t1 = dot(mutablePos, n1Octahedron);
+					
+					if (t1 < 0.0)
+					{
+						mutablePos -= 2.0 * t1 * n1Octahedron;
+						color = mix(color, color1, colorScale);
+					}
+					
+					float t2 = dot(mutablePos, n2Octahedron);
+					
+					if (t2 < 0.0)
+					{
+						mutablePos -= 2.0 * t2 * n2Octahedron;
+						color = mix(color, color2, colorScale);
+					}
+					
+					float t3 = dot(mutablePos, n3Octahedron);
+					
+					if (t3 < 0.0)
+					{
+						mutablePos -= 2.0 * t3 * n3Octahedron;
+						color = mix(color, color3, colorScale);
+					}
+
+					float t4 = dot(mutablePos, n4Octahedron);
+					
+					if (t4 < 0.0)
+					{
+						mutablePos -= 2.0 * t4 * n4Octahedron;
+						color = mix(color, color4, colorScale);
+					}
+					
+					
+					
+					mutablePos = rotationMatrix1 * mutablePos;
+					
+					//Scale the system -- this one takes me a fair bit of thinking to get. What's happening here is that we're stretching from a vertex, but since we never scale the vertices, the four new ones are the four closest to the vertex we scaled from. Now (x, y, z) will get farther and farther away from the origin, but that makes sense -- we're really just zooming in on the tetrahedron.
+					mutablePos = scale * mutablePos - (scale - 1.0) * scaleCenterOctahedron;
+					
+					mutablePos = rotationMatrix2 * mutablePos;
+
+					colorScale *= .5;
+				}
 				
+				return color;
+			}
+
+			vec3 getColor(vec3 pos)
+			{
+				vec3 color = vec3(0.0, 0.0, 0.0);
+
+				if (tetrahedronAmount > 0.0)
+				{
+					color += tetrahedronAmount * getColorTetrahedron(pos);
+				}
+
+				if (cubeAmount > 0.0)
+				{
+					color += cubeAmount * getColorCube(pos);
+				}
+
+				if (octahedronAmount > 0.0)
+				{
+					color += octahedronAmount * getColorOctahedron(pos);
+				}
+
 				return color;
 			}
 			
@@ -248,6 +485,28 @@ export class KaleidoscopicIFSFractal extends RaymarchApplet
 				
 				return normalize(vec3(xStep1 - xStep2, yStep1 - yStep2, zStep1 - zStep2));
 			}
+
+			vec3 getLightPos()
+			{
+				vec3 lightPos = vec3(0.0);
+
+				if (tetrahedronAmount > 0.0)
+				{
+					lightPos += tetrahedronAmount * lightPosTetrahedron;
+				}
+
+				if (cubeAmount > 0.0)
+				{
+					lightPos += cubeAmount * lightPosCube;
+				}
+
+				if (octahedronAmount > 0.0)
+				{
+					lightPos += octahedronAmount * lightPosOctahedron;
+				}
+
+				return lightPos;
+			}
 			
 			
 			
@@ -255,7 +514,7 @@ export class KaleidoscopicIFSFractal extends RaymarchApplet
 			{
 				vec3 surfaceNormal = getSurfaceNormal(pos);
 				
-				vec3 lightDirection = normalize(lightPos - pos);
+				vec3 lightDirection = normalize(getLightPos() - pos);
 				
 				float dotProduct = dot(surfaceNormal, lightDirection);
 				
@@ -371,13 +630,10 @@ export class KaleidoscopicIFSFractal extends RaymarchApplet
 			"rightVec",
 			"upVec",
 			"focalLength",
-			"lightPos",
-			"scaleCenter",
-			"n1",
-			"n2",
-			"n3",
-			"n4",
-			"numNs",
+			"tetrahedronAmount",
+			"cubeAmount",
+			"octahedronAmount",
+			"scale",
 			"rotationMatrix1",
 			"rotationMatrix2"
 		]);
@@ -428,16 +684,6 @@ export class KaleidoscopicIFSFractal extends RaymarchApplet
 		);
 
 		this.wilson.gl.uniform3fv(
-			this.wilson.uniforms["lightPos"],
-			this.lightPos[this.polyhedronIndex]
-		);
-
-		this.wilson.gl.uniform3fv(
-			this.wilson.uniforms["scaleCenter"],
-			this.scaleCenter[this.polyhedronIndex]
-		);
-
-		this.wilson.gl.uniform3fv(
 			this.wilson.uniforms["forwardVec"],
 			this.forwardVec
 		);
@@ -457,29 +703,24 @@ export class KaleidoscopicIFSFractal extends RaymarchApplet
 			this.focalLength
 		);
 
-		this.wilson.gl.uniform3fv(
-			this.wilson.uniforms["n1"],
-			this.n1[this.polyhedronIndex]
+		this.wilson.gl.uniform1f(
+			this.wilson.uniforms["tetrahedronAmount"],
+			this.tetrahedronAmount
 		);
 
-		this.wilson.gl.uniform3fv(
-			this.wilson.uniforms["n2"],
-			this.n2[this.polyhedronIndex]
+		this.wilson.gl.uniform1f(
+			this.wilson.uniforms["cubeAmount"],
+			this.cubeAmount
 		);
 
-		this.wilson.gl.uniform3fv(
-			this.wilson.uniforms["n3"],
-			this.n3[this.polyhedronIndex]
+		this.wilson.gl.uniform1f(
+			this.wilson.uniforms["octahedronAmount"],
+			this.octahedronAmount
 		);
 
-		this.wilson.gl.uniform3fv(
-			this.wilson.uniforms["n4"],
-			this.n4[this.polyhedronIndex]
-		);
-
-		this.wilson.gl.uniform1i(
-			this.wilson.uniforms["numNs"],
-			this.numNs[this.polyhedronIndex]
+		this.wilson.gl.uniform1f(
+			this.wilson.uniforms["scale"],
+			this.scale
 		);
 
 		this.wilson.gl.uniformMatrix3fv(
@@ -535,49 +776,49 @@ export class KaleidoscopicIFSFractal extends RaymarchApplet
 
 
 
-	distanceEstimator(x, y, z)
+	distanceEstimatorSingular(x, y, z, ns, scaleCenter)
 	{
 		// We'll find the closest vertex, scale everything by a factor of 2
 		// centered on that vertex (so that we don't need to recalculate the vertices), and repeat.
 		for (let iteration = 0; iteration < this.numSierpinskiIterations; iteration++)
 		{
 			// Fold space over on itself so that we can reference only the top vertex.
-			const t1 = RaymarchApplet.dotProduct([x, y, z], this.n1[this.polyhedronIndex]);
+			const t1 = RaymarchApplet.dotProduct([x, y, z], ns[0]);
 
 			if (t1 < 0)
 			{
-				x -= 2 * t1 * this.n1[this.polyhedronIndex][0];
-				y -= 2 * t1 * this.n1[this.polyhedronIndex][1];
-				z -= 2 * t1 * this.n1[this.polyhedronIndex][2];
+				x -= 2 * t1 * ns[0][0];
+				y -= 2 * t1 * ns[0][1];
+				z -= 2 * t1 * ns[0][2];
 			}
 
-			const t2 = RaymarchApplet.dotProduct([x, y, z], this.n2[this.polyhedronIndex]);
+			const t2 = RaymarchApplet.dotProduct([x, y, z], ns[1]);
 
 			if (t2 < 0)
 			{
-				x -= 2 * t2 * this.n2[this.polyhedronIndex][0];
-				y -= 2 * t2 * this.n2[this.polyhedronIndex][1];
-				z -= 2 * t2 * this.n2[this.polyhedronIndex][2];
+				x -= 2 * t2 * ns[1][0];
+				y -= 2 * t2 * ns[1][1];
+				z -= 2 * t2 * ns[1][2];
 			}
 
-			const t3 = RaymarchApplet.dotProduct([x, y, z], this.n3[this.polyhedronIndex]);
+			const t3 = RaymarchApplet.dotProduct([x, y, z], ns[2]);
 
 			if (t3 < 0)
 			{
-				x -= 2 * t3 * this.n3[this.polyhedronIndex][0];
-				y -= 2 * t3 * this.n3[this.polyhedronIndex][1];
-				z -= 2 * t3 * this.n3[this.polyhedronIndex][2];
+				x -= 2 * t3 * ns[2][0];
+				y -= 2 * t3 * ns[2][1];
+				z -= 2 * t3 * ns[2][2];
 			}
 
-			if (this.numNs[this.polyhedronIndex] >= 4)
+			if (ns.length >= 4)
 			{
-				const t4 = RaymarchApplet.dotProduct([x, y, z], this.n4[this.polyhedronIndex]);
+				const t4 = RaymarchApplet.dotProduct([x, y, z], ns[3]);
 
 				if (t4 < 0)
 				{
-					x -= 2 * t4 * this.n4[this.polyhedronIndex][0];
-					y -= 2 * t4 * this.n4[this.polyhedronIndex][1];
-					z -= 2 * t4 * this.n4[this.polyhedronIndex][2];
+					x -= 2 * t4 * ns[3][0];
+					y -= 2 * t4 * ns[3][1];
+					z -= 2 * t4 * ns[3][2];
 				}
 			}
 
@@ -620,9 +861,9 @@ export class KaleidoscopicIFSFractal extends RaymarchApplet
 			// the four new ones are the four closest to the vertex we scaled from.
 			// Now (x, y, z) will get farther and farther away from the origin,
 			// but that makes sense -- we're really just zooming in on the tetrahedron.
-			x = this.scale * x - (this.scale - 1) * this.scaleCenter[this.polyhedronIndex][0];
-			y = this.scale * y - (this.scale - 1) * this.scaleCenter[this.polyhedronIndex][1];
-			z = this.scale * z - (this.scale - 1) * this.scaleCenter[this.polyhedronIndex][2];
+			x = this.scale * x - (this.scale - 1) * scaleCenter[0];
+			y = this.scale * y - (this.scale - 1) * scaleCenter[1];
+			z = this.scale * z - (this.scale - 1) * scaleCenter[2];
 
 
 
@@ -663,6 +904,49 @@ export class KaleidoscopicIFSFractal extends RaymarchApplet
 		// The final distance is therefore:
 		return Math.sqrt(x * x + y * y + z * z)
 			* Math.pow(this.scale, -this.numSierpinskiIterations);
+	}
+
+	distanceEstimator(x, y, z)
+	{
+		let distance = 0;
+
+		if (this.tetrahedronAmount > 0)
+		{
+			distance += this.tetrahedronAmount
+				* this.distanceEstimatorSingular(
+					x,
+					y,
+					z,
+					this.nTetrahedron,
+					this.scaleCenterTetrahedron
+				);
+		}
+
+		if (this.cubeAmount > 0)
+		{
+			distance += this.cubeAmount
+				* this.distanceEstimatorSingular(
+					x,
+					y,
+					z,
+					this.nCube,
+					this.scaleCenterCube
+				);
+		}
+
+		if (this.octahedronAmount > 0)
+		{
+			distance += this.octahedronAmount
+				* this.distanceEstimatorSingular(
+					x,
+					y,
+					z,
+					this.nOctahedron,
+					this.scaleCenterOctahedron
+				);
+		}
+
+		return distance;
 	}
 
 
@@ -830,58 +1114,68 @@ export class KaleidoscopicIFSFractal extends RaymarchApplet
 
 
 
-	async changePolyhedron(newPolyhedronIndex)
+	// newAmounts is an array of the form [tetrahedronAmount, cubeAmount, octahedronAmount].
+	async changePolyhedron(newAmounts, instant)
 	{
-		await changeOpacity({ element: this.wilson.canvas, opacity: 0 });
+		const oldAmounts = [
+			this.tetrahedronAmount,
+			this.cubeAmount,
+			this.octahedronAmount
+		];
 
-		this.polyhedronIndex = newPolyhedronIndex;
+		const dummy = { t: 0 };
 
-		this.cameraPos = this.startingCameraPos[this.polyhedronIndex];
-		this.wilson.worldCenterX = -this.startingAngle[this.polyhedronIndex][0];
-		this.wilson.worldCenterY = -this.startingAngle[this.polyhedronIndex][1];
+		anime({
+			targets: dummy,
+			t: 1,
+			duration: instant ? 0 : 1000,
+			easing: "easeOutQuad",
+			update: () =>
+			{
+				this.tetrahedronAmount = oldAmounts[0] * (1 - dummy.t) + newAmounts[0] * dummy.t;
+				this.cubeAmount = oldAmounts[1] * (1 - dummy.t) + newAmounts[1] * dummy.t;
+				this.octahedronAmount = oldAmounts[2] * (1 - dummy.t) + newAmounts[2] * dummy.t;
 
-		this.wilson.gl.uniform3fv(
-			this.wilson.uniforms["lightPos"],
-			this.lightPos[this.polyhedronIndex]
-		);
+				this.wilson.gl.uniform1f(
+					this.wilson.uniforms["tetrahedronAmount"],
+					this.tetrahedronAmount
+				);
 
-		this.wilson.gl.uniform3fv(
-			this.wilson.uniforms["scaleCenter"],
-			this.scaleCenter[this.polyhedronIndex]
-		);
+				this.wilson.gl.uniform1f(
+					this.wilson.uniforms["cubeAmount"],
+					this.cubeAmount
+				);
 
-		this.wilson.gl.uniform3fv(
-			this.wilson.uniforms["n1"],
-			this.n1[this.polyhedronIndex]
-		);
+				this.wilson.gl.uniform1f(
+					this.wilson.uniforms["octahedronAmount"],
+					this.octahedronAmount
+				);
 
-		this.wilson.gl.uniform3fv(
-			this.wilson.uniforms["n2"],
-			this.n2[this.polyhedronIndex]
-		);
+				this.needNewFrame = true;
+			},
+			complete: () =>
+			{
+				this.tetrahedronAmount = newAmounts[0];
+				this.cubeAmount = newAmounts[1];
+				this.octahedronAmount = newAmounts[2];
 
-		this.wilson.gl.uniform3fv(
-			this.wilson.uniforms["n3"],
-			this.n3[this.polyhedronIndex]
-		);
+				this.wilson.gl.uniform1f(
+					this.wilson.uniforms["tetrahedronAmount"],
+					this.tetrahedronAmount
+				);
 
-		if (this.numNs[this.polyhedronIndex] >= 4)
-		{
-			this.wilson.gl.uniform3fv(
-				this.wilson.uniforms["n4"],
-				this.n4[this.polyhedronIndex]
-			);
-		}
+				this.wilson.gl.uniform1f(
+					this.wilson.uniforms["cubeAmount"],
+					this.cubeAmount
+				);
 
-		this.wilson.gl.uniform1i(
-			this.wilson.uniforms["numNs"],
-			this.numNs[this.polyhedronIndex]
-		);
+				this.wilson.gl.uniform1f(
+					this.wilson.uniforms["octahedronAmount"],
+					this.octahedronAmount
+				);
 
-		// This dance is required to get all the uniforms over properly.
-		this.needNewFrame = true;
-		requestAnimationFrame(() => this.updateMatrices());
-
-		changeOpacity({ element: this.wilson.canvas, opacity: 1 });
+				this.needNewFrame = true;
+			}
+		});
 	}
 }

@@ -1,6 +1,5 @@
 import { showPage } from "../../../scripts/src/loadPage.js";
 import { KaleidoscopicIFSFractal } from "./class.js";
-import { opacityAnimationTime } from "/scripts/src/animation.js";
 import { DownloadButton } from "/scripts/src/buttons.js";
 import { Dropdown } from "/scripts/src/dropdowns.js";
 import { $ } from "/scripts/src/main.js";
@@ -68,8 +67,6 @@ export default function()
 
 	typesetMath();
 
-	applet.changePolyhedron(2);
-
 	showPage();
 
 	function onSliderInput()
@@ -81,62 +78,38 @@ export default function()
 		applet.updateMatrices();
 	}
 
-	function resetSliders()
-	{
-		rotationAngleX2Slider.setValue(0);
-		rotationAngleY2Slider.setValue(0);
-		rotationAngleZ2Slider.setValue(0);
-
-		onSliderInput();
-	}
-
 	function changeResolution()
 	{
 		applet.changeResolution(resolutionInput.value * siteSettings.resolutionMultiplier);
 	}
 
-	function onDropdownInput()
+	function onDropdownInput(fromOnClickHandler)
 	{
 		if (polyhedraDropdown.value === "tetrahedron")
 		{
-			applet.changePolyhedron(0);
+			applet.changePolyhedron([1, 0, 0], !fromOnClickHandler);
 
-			setTimeout(() =>
-			{
-				resetSliders();
-
-				rotationAngleX2Slider.setBounds({ max: 2 * Math.PI });
-				rotationAngleY2Slider.setBounds({ max: 2 * Math.PI });
-				rotationAngleZ2Slider.setBounds({ max: 2 * Math.PI / 3 });
-			}, opacityAnimationTime);
+			rotationAngleX2Slider.setBounds({ max: 2 * Math.PI });
+			rotationAngleY2Slider.setBounds({ max: 2 * Math.PI });
+			rotationAngleZ2Slider.setBounds({ max: 2 * Math.PI / 3 });
 		}
 
 		else if (polyhedraDropdown.value === "cube")
 		{
-			applet.changePolyhedron(1);
+			applet.changePolyhedron([0, 1, 0], !fromOnClickHandler);
 
-			setTimeout(() =>
-			{
-				resetSliders();
-
-				rotationAngleX2Slider.setBounds({ max: 2 * Math.PI / 2 });
-				rotationAngleY2Slider.setBounds({ max: 2 * Math.PI / 2 });
-				rotationAngleZ2Slider.setBounds({ max: 2 * Math.PI / 2 });
-			}, opacityAnimationTime);
+			rotationAngleX2Slider.setBounds({ max: 2 * Math.PI / 2 });
+			rotationAngleY2Slider.setBounds({ max: 2 * Math.PI / 2 });
+			rotationAngleZ2Slider.setBounds({ max: 2 * Math.PI / 2 });
 		}
 
 		else
 		{
-			applet.changePolyhedron(2);
+			applet.changePolyhedron([0, 0, 1], !fromOnClickHandler);
 			
-			setTimeout(() =>
-			{
-				resetSliders();
-
-				rotationAngleX2Slider.setBounds({ max: 2 * Math.PI / 2 });
-				rotationAngleY2Slider.setBounds({ max: 2 * Math.PI / 2 });
-				rotationAngleZ2Slider.setBounds({ max: 2 * Math.PI / 2 });
-			}, opacityAnimationTime);
+			rotationAngleX2Slider.setBounds({ max: 2 * Math.PI / 2 });
+			rotationAngleY2Slider.setBounds({ max: 2 * Math.PI / 2 });
+			rotationAngleZ2Slider.setBounds({ max: 2 * Math.PI / 2 });
 		}
 	}
 }

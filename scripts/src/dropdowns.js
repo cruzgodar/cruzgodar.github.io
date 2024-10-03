@@ -329,7 +329,7 @@ export class Dropdown extends InputElement
 
 		if (oldSelectedItem !== this.selectedItem && this.selectedItem)
 		{
-			try { this.onInput(); }
+			try { this.onInput(fromOnClickHandler); }
 			catch(ex) { /* No onInput */ }
 		}
 		
