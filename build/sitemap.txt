@@ -158,7 +158,6 @@ home Cruz Godar
 	
 	debug Debug
 		tests/glsl-test GLSL Tests
-		js-lines JS Line Counter
 		glsl-docs GLSL Docs
 	
 	teaching/uo/342/extra/eigenfaces-demo Eigenfaces

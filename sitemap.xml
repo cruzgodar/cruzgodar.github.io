@@ -874,19 +874,13 @@
 		
 	<url>
 		<loc>https://www.cruzgodar.com/debug/</loc>
-		<lastmod>2024-5-31</lastmod>
+		<lastmod>2024-10-4</lastmod>
 		<priority>0.0</priority>
 	</url>
 		
 	<url>
 		<loc>https://www.cruzgodar.com/debug/tests/glsl-test/</loc>
 		<lastmod>2024-7-20</lastmod>
-		<priority>0.0</priority>
-	</url>
-		
-	<url>
-		<loc>https://www.cruzgodar.com/debug/js-lines/</loc>
-		<lastmod>2024-5-29</lastmod>
 		<priority>0.0</priority>
 	</url>
 		

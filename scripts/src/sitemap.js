@@ -1709,7 +1709,6 @@ export const sitemap =
 		"children":
 		[
 			"/debug/tests/glsl-test/",
-			"/debug/js-lines/",
 			"/debug/glsl-docs/"
 		],
 
@@ -1719,15 +1718,6 @@ export const sitemap =
 	"/debug/tests/glsl-test/":
 	{
 		"title": "GLSL Tests",
-		
-		"parent": "/debug/",
-		
-		"children": []
-	},
-	
-	"/debug/js-lines/":
-	{
-		"title": "JS Line Counter",
 		
 		"parent": "/debug/",
 		
