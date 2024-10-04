@@ -196,11 +196,12 @@ const texDirectory = ".cgTexTesting";
 
 function testLatex(tex)
 {
-	write(texDirectory + "/file.tex", tex);
+	const filename = Math.random().toString(36).slice(2);
+	write(`${texDirectory}/${filename}.tex`, tex);
 
 	const proc = spawnSync(
 		"pdflatex",
-		["-interaction=nonstopmode", "-halt-on-error", `${root}/${texDirectory}/file.tex`],
+		["-interaction=nonstopmode", "-halt-on-error", `${root}/${texDirectory}/${filename}.tex`],
 		{
 			stdio: "pipe",
 			cwd: `${root}/${texDirectory}`
@@ -209,7 +210,7 @@ function testLatex(tex)
 
 	if (proc.stdout.toString().toLowerCase().includes("error"))
 	{
-		console.log(`Error in compiling tex: ${proc.stdout.toString()}`);
+		console.error(`Error in compiling tex: ${proc.stdout.toString()}`);
 	}
 }
 
