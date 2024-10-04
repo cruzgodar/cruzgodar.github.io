@@ -1,7 +1,7 @@
 import { launch } from "puppeteer";
-import { getModifiedDate, read } from "./file-io.js";
+import { getModifiedDate, read, write } from "./file-io.js";
 
-const { spawnSync } = require("child_process");
+const { spawnSync, spawn } = require("child_process");
 
 const excludeFiles =
 [
@@ -192,15 +192,35 @@ const latexFiles = {
 	],
 };
 
-async function testLatex(tex)
+const texDirectory = ".cgTexTesting";
+
+function testLatex(tex)
 {
-	console.log(tex);
+	write(texDirectory + "/file.tex", tex);
+
+	const proc = spawnSync(
+		"pdflatex",
+		["-interaction=nonstopmode", "-halt-on-error", `${root}/${texDirectory}/file.tex`],
+		{
+			stdio: "pipe",
+			cwd: `${root}/${texDirectory}`
+		}
+	);
+
+	if (proc.stdout.toString().toLowerCase().includes("error"))
+	{
+		console.log(`Error in compiling tex: ${proc.stdout.toString()}. Full tex: ${tex}`);
+	}
 }
 
-async function testAllLatex()
+async function testAllLatex(files)
 {
+	spawnSync("mkdir", ["-p", `${root}/${texDirectory}`]);
+
 	const browser = await launch({ headless: true });
 	const page = await browser.newPage();
+
+	const texSources = [];
 
 	page.on("console", async (e) =>
 	{
@@ -209,15 +229,15 @@ async function testAllLatex()
 
 		if (text.includes("\\documentclass{article}"))
 		{
-			await testLatex(text);
+			texSources.push(text);
 		}
 	});
 
-	for (const file in latexFiles)
+	for (const file in files)
 	{
 		const buttons = latexFiles[file];
 
-		await page.goto(`http://${ip}:${port}/${file}`);
+		await page.goto(`http://${ip}:${port}/${file}?debug=1`);
 		
 		for (const button of buttons)
 		{
@@ -225,19 +245,26 @@ async function testAllLatex()
 			{
 				setTimeout(async () =>
 				{
-					await page.evaluate(() =>
+					await page.evaluate((button) =>
 					{
 						document.querySelector(button).click();
-					});
+					}, button);
 
 					resolve();
-				}, 500);
+				}, 150);
 			});
 		}
 	}
 	
 	await page.close();
 	await browser.close();
+
+	for (const tex of texSources)
+	{
+		testLatex(tex);
+	}
+
+	spawnSync("rm", ["-rf", `${root}/${texDirectory}`]);
 }
 
 
@@ -259,9 +286,8 @@ async function test(clean)
 	await Promise.all([
 		validateAllLinks(files.filter(file => file.includes("data.html"))),
 		testPages(files.filter(file => file.includes("index.html"))),
+		testAllLatex(files.filter(file => latexFiles[file])),
 	]);
 }
 
 test(options.clean);
-
-testAllLatex();

@@ -85,4 +85,9 @@ function downloadTex(filename, text)
 	element.click();
 
 	document.body.removeChild(element);
+
+	if (window.DEBUG)
+	{
+		console.log(text);
+	}
 }
