@@ -1,10 +1,12 @@
 import { launch } from "puppeteer";
 import { getModifiedDate, read, write } from "./file-io.js";
+import { galleryImageData } from "/gallery/scripts/imageData.js";
 
 const { spawnSync } = require("child_process");
 
 const excludeFiles =
 [
+	"index.html",
 	"debug/glsl-docs/index.html",
 	"debug/index.html",
 	"teaching/uo/342/extra/eigenfaces-demo/index.html",
@@ -50,6 +52,9 @@ export async function validateAllLinks(files)
 		new Set(
 			(await Promise.all(files.map(getLinksInFile))).flat()
 		)
+	).concat(
+		Object.values(galleryImageData)
+			.map(item => `https://drive.google.com/uc?id=${item.driveId}&export=download`)
 	);
 
 	const statuses = await Promise.all(links.map(validateLink));
@@ -146,6 +151,7 @@ async function testPages(files)
 	for (const file of files)
 	{
 		currentFile = file;
+		console.log(`Testing ${file}...`);
 		await page.goto(`http://${ip}:${port}/${file}`);
 	}
 
@@ -246,6 +252,8 @@ async function testAllLatex(files)
 			{
 				setTimeout(async () =>
 				{
+					console.log(`Testing ${button} in ${file}...`);
+					
 					await page.evaluate((button) =>
 					{
 						document.querySelector(button).click();
@@ -268,8 +276,6 @@ async function testAllLatex(files)
 	spawnSync("rm", ["-rf", `${root}/${texDirectory}`]);
 }
 
-
-
 async function test(clean)
 {
 	const proc = spawnSync("git", [
@@ -284,13 +290,16 @@ async function test(clean)
 		.filter(file => file.slice(file.lastIndexOf(".")) === ".html")
 		.filter(file => !excludeFiles.includes(file));
 
-	await Promise.all([
-		validateAllLinks(files.filter(file => file.includes("data.html"))),
-		testPages(files.filter(file => file.includes("index.html"))),
-		testAllLatex(
-			files.map(file => file.replace("data.html", "")).filter(file => latexFiles[file])
-		),
-	]);
+	console.log("Validating links...");
+	await validateAllLinks(files.filter(file => file.includes("data.html")));
+
+	console.log("Testing pages for console errors...");
+	await testPages(files.filter(file => file.includes("index.html")));
+
+	console.log("Compiling LaTeX...");
+	await testAllLatex(
+		files.map(file => file.replace("data.html", "")).filter(file => latexFiles[file])
+	);
 }
 
 test(options.clean);

@@ -469,17 +469,6 @@ export const galleryImageData =
 		driveId: "1GfsC_gm0DU1j2X79Ros6lQY4HAUp-iy4"
 	},
 
-	"wilsons-algorithm-1":
-	{
-		title: "Wilson&#x2019;s Algorithm",
-
-		featured: "Featured in the Jordan Schnitzer Museum of Art",
-
-		appletLink: "wilsons-algorithm",
-
-		driveId: ""
-	},
-
 	"complex-map-2":
 	{
 		title: "A Complex Map",
