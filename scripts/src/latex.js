@@ -30,8 +30,6 @@ export function convertCardToLatex(element, title, course)
 	
 	const firstSection = clonedElement.querySelector("h2")
 		?? clonedElement.querySelector(".text-buttons").nextElementSibling;
-
-	console.log(firstSection);
 	
 	while (firstSection.previousElementSibling)
 	{

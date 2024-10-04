@@ -40,6 +40,9 @@ for (const name of Object.keys(nets))
 }
 
 const ip = results["en0"][0];
+const port = 5500;
+
+
 
 export async function validateAllLinks(files)
 {
@@ -143,9 +146,96 @@ async function testPages(files)
 	for (const file of files)
 	{
 		currentFile = file;
-		await page.goto(`http://${ip}:5500/${file}`);
+		await page.goto(`http://${ip}:${port}/${file}`);
 	}
 
+	await page.close();
+	await browser.close();
+}
+
+
+
+const latexFiles = {
+	"teaching/uo/256/": [
+		"#download-homework-1-button",
+		"#download-homework-2-button",
+		"#download-homework-3-button",
+		"#download-homework-4-button",
+		"#download-homework-5-button",
+		"#download-homework-6-button",
+		"#download-homework-7-button",
+		"#download-homework-8-button",
+		"#download-homework-9-button",
+	],
+
+	"teaching/uo/341/": [
+		"#download-homework-1-button",
+		"#download-homework-2-button",
+		"#download-homework-3-button",
+		"#download-homework-4-button",
+		"#download-homework-5-button",
+		"#download-homework-6-button",
+		"#download-homework-7-button",
+		"#download-homework-8-button",
+		"#download-homework-9-button",
+	],
+
+	"teaching/uo/342/": [
+		"#download-homework-1-button",
+		"#download-homework-2-button",
+		"#download-homework-3-button",
+		"#download-homework-4-button",
+		"#download-homework-5-button",
+		"#download-homework-6-button",
+		"#download-homework-7-button",
+		"#download-homework-8-button",
+	],
+};
+
+async function testLatex(tex)
+{
+	console.log(tex);
+}
+
+async function testAllLatex()
+{
+	const browser = await launch({ headless: true });
+	const page = await browser.newPage();
+
+	page.on("console", async (e) =>
+	{
+		const args = await Promise.all(e.args().map(a => a.jsonValue()));
+		const text = args.join(" ");
+
+		if (text.includes("\\documentclass{article}"))
+		{
+			await testLatex(text);
+		}
+	});
+
+	for (const file in latexFiles)
+	{
+		const buttons = latexFiles[file];
+
+		await page.goto(`http://${ip}:${port}/${file}`);
+		
+		for (const button of buttons)
+		{
+			await new Promise(resolve =>
+			{
+				setTimeout(async () =>
+				{
+					await page.evaluate(() =>
+					{
+						document.querySelector(button).click();
+					});
+
+					resolve();
+				}, 500);
+			});
+		}
+	}
+	
 	await page.close();
 	await browser.close();
 }
@@ -173,3 +263,5 @@ async function test(clean)
 }
 
 test(options.clean);
+
+testAllLatex();
