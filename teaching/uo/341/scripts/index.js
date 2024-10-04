@@ -15,7 +15,7 @@ export default function load()
 				convertCardToLatex(
 					document.body.querySelector(`#homework-${i}-card`),
 					`Homework ${i}`,
-					"Math 342"
+					"Math 341"
 				);
 			}
 		});

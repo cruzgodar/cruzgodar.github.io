@@ -202,6 +202,9 @@ const texDirectory = ".cgTexTesting";
 
 function testLatex(tex)
 {
+	const homeworkTitle = tex.match(/(Homework .+? Math .+?)\s/)[1];
+	console.log(`Compiling ${homeworkTitle}...`);
+
 	const filename = Math.random().toString(36).slice(2);
 	write(`${texDirectory}/${filename}.tex`, tex);
 
@@ -252,8 +255,8 @@ async function testAllLatex(files)
 			{
 				setTimeout(async () =>
 				{
-					console.log(`Testing ${button} in ${file}...`);
-					
+					console.log(`Downloading tex from ${button} in ${file}...`);
+
 					await page.evaluate((button) =>
 					{
 						document.querySelector(button).click();
@@ -296,7 +299,7 @@ async function test(clean)
 	console.log("Testing pages for console errors...");
 	await testPages(files.filter(file => file.includes("index.html")));
 
-	console.log("Compiling LaTeX...");
+	console.log("Testing LaTeX...");
 	await testAllLatex(
 		files.map(file => file.replace("data.html", "")).filter(file => latexFiles[file])
 	);
