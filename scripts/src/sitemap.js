@@ -44,6 +44,7 @@ export const sitemap =
 		
 		"children":
 		[
+			"/applets/raymarching-fundamentals/",
 			"/applets/curved-light/",
 			"/applets/hairy-ball-theorem/",
 			"/applets/hopf-fibration/",
@@ -90,6 +91,17 @@ export const sitemap =
 		]
 	},
 		
+	"/applets/raymarching-fundamentals/":
+	{
+		"title": "Raymarching Fundamentals",
+		
+		"parent": "/applets/",
+		
+		"children": [],
+
+		"customScript": true
+	},
+	
 	"/applets/curved-light/":
 	{
 		"title": "Curved Light",
