@@ -1731,9 +1731,7 @@ export const sitemap =
 		
 		"parent": "/debug/",
 		
-		"children": [],
-
-		"customScript": true
+		"children": []
 	},
 	
 	"/debug/glsl-docs/":
