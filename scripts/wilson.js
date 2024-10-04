@@ -1559,280 +1559,131 @@ export class Wilson
 
 
 
-		switchFullscreen()
+		enterFullscreen()
 		{
-			if (!this.currentlyFullscreen)
+			if (this.currentlyAnimating)
 			{
-				if (this.currentlyAnimating)
+				return;
+			}
+
+
+
+			this.currentlyFullscreen = true;
+
+			this.currentlyAnimating = true;
+
+			this.fullscreenOldScroll = window.scrollY;
+
+
+
+			document.body.appendChild(this.fullscreenComponentsContainer);
+
+			const header = document.body.querySelector("#header");
+			const headerContainer = document.body.querySelector("#header-container");
+
+			if (header && headerContainer)
+			{
+				header.style.zIndex = 90;
+				headerContainer.style.zIndex = 90;
+			}
+
+
+
+			this.parent.canvas.classList.add("wilson-fullscreen");
+			this.parent.canvas.parentNode.classList.add("wilson-fullscreen");
+			this.fullscreenComponentsContainer.classList.add("wilson-fullscreen");
+
+
+
+			if (this.enterFullscreenButton)
+			{
+				this.enterFullscreenButton.remove();
+			}
+
+
+
+			if (this.useFullscreenButton)
+			{
+				this.exitFullscreenButton = document.createElement("div");
+
+				this.exitFullscreenButton.classList.add("wilson-exit-fullscreen-button");
+				this.exitFullscreenButton.setAttribute("tabindex", "-1");
+
+				document.body.appendChild(this.exitFullscreenButton);
+
+				const img = document.createElement("img");
+				img.src = this.exitFullscreenButtonIconPath;
+				this.exitFullscreenButton.appendChild(img);
+
+				addHoverEventWithScale({
+					element: this.exitFullscreenButton,
+					scale: 1.1,
+					addBounceOnTouch: false
+				});
+
+				this.exitFullscreenButton.addEventListener("click", () =>
 				{
-					return;
-				}
+					this.switchFullscreen();
+				});
+			}
 
 
 
-				this.currentlyFullscreen = true;
-
-				this.currentlyAnimating = true;
-
-				this.fullscreenOldScroll = window.scrollY;
+			this.oldMetaThemeColor = metaThemeColorElement.getAttribute("content");
 
 
 
-				document.body.appendChild(this.fullscreenComponentsContainer);
+			document.documentElement.style.overflowY = "hidden";
+			document.body.style.overflowY = "hidden";
 
-				const header = document.body.querySelector("#header");
-				const headerContainer = document.body.querySelector("#header-container");
+			document.body.style.width = "100vw";
+			document.body.style.height = "100%";
 
-				if (header && headerContainer)
+			document.documentElement.style.userSelect = "none";
+			document.documentElement.style.WebkitUserSelect = "none";
+
+			document.addEventListener("gesturestart", this.preventGestures);
+			document.addEventListener("gesturechange", this.preventGestures);
+			document.addEventListener("gestureend", this.preventGestures);
+
+			metaThemeColorElement.setAttribute("content", "#000000");
+
+
+
+			if (this.trueFullscreen)
+			{
+				this.fullscreenComponentsContainer.classList.add("wilson-true-fullscreen-canvas");
+
+				for (let i = 0; i < this.canvasesToResize.length; i++)
 				{
-					header.style.zIndex = 90;
-					headerContainer.style.zIndex = 90;
-				}
+					this.canvasesToResize[i].classList.add("wilson-true-fullscreen-canvas");
 
-
-
-				this.parent.canvas.classList.add("wilson-fullscreen");
-				this.parent.canvas.parentNode.classList.add("wilson-fullscreen");
-				this.fullscreenComponentsContainer.classList.add("wilson-fullscreen");
-
-
-
-				if (this.enterFullscreenButton)
-				{
-					this.enterFullscreenButton.remove();
-				}
-
-
-
-				if (this.useFullscreenButton)
-				{
-					this.exitFullscreenButton = document.createElement("div");
-
-					this.exitFullscreenButton.classList.add("wilson-exit-fullscreen-button");
-					this.exitFullscreenButton.setAttribute("tabindex", "-1");
-
-					document.body.appendChild(this.exitFullscreenButton);
-
-					const img = document.createElement("img");
-					img.src = this.exitFullscreenButtonIconPath;
-					this.exitFullscreenButton.appendChild(img);
-
-					addHoverEventWithScale({
-						element: this.exitFullscreenButton,
-						scale: 1.1,
-						addBounceOnTouch: false
-					});
-
-					this.exitFullscreenButton.addEventListener("click", () =>
-					{
-						this.switchFullscreen();
-					});
-				}
-
-
-
-				this.oldMetaThemeColor = metaThemeColorElement.getAttribute("content");
-
-
-
-				document.documentElement.style.overflowY = "hidden";
-				document.body.style.overflowY = "hidden";
-
-				document.body.style.width = "100vw";
-				document.body.style.height = "100%";
-
-				document.documentElement.style.userSelect = "none";
-				document.documentElement.style.WebkitUserSelect = "none";
-
-				document.addEventListener("gesturestart", this.preventGestures);
-				document.addEventListener("gesturechange", this.preventGestures);
-				document.addEventListener("gestureend", this.preventGestures);
-
-				metaThemeColorElement.setAttribute("content", "#000000");
-
-
-
-				if (this.trueFullscreen)
-				{
-					this.fullscreenComponentsContainer.classList.add("wilson-true-fullscreen-canvas");
-
-					for (let i = 0; i < this.canvasesToResize.length; i++)
-					{
-						this.canvasesToResize[i].classList.add("wilson-true-fullscreen-canvas");
-
-						//We do this to accomodate weirdly-set-up applets like the ones with draggable inputs, since they rely on their canvas container to keep the content below flowing properly.
-						this.parent.canvas.parentNode.parentNode.classList.add("wilson-black-background");
-
-						try
-						{
-							this.switchFullscreenCallback();
-						}
-
-						catch(ex)
-						{
-							//No switch fullscreen callback
-						}
-
-						this.parent.draggables.onResize();
-					}
-
-					window.scroll(0, 0);
-				}
-
-
-
-				else
-				{
-					for (let i = 0; i < this.canvasesToResize.length; i++)
-					{
-						this.canvasesToResize[i].classList.add("wilson-letterboxed-fullscreen-canvas");
-
-						try
-						{
-							this.switchFullscreenCallback();
-						}
-
-						catch(ex)
-						{
-							//No switch fullscreen callback
-						}
-
-						this.parent.draggables.onResize();
-					}
-
-
-
-					//One of these is for vertical aspect ratios and the other is for horizontal ones, but we add both in case the user resizes the window while in applet is fullscreen.
-
-					this.parent.canvas.parentNode.parentNode.insertAdjacentHTML("beforebegin", "<div class='wilson-letterboxed-canvas-background'></div>");
-					this.parent.canvas.parentNode.parentNode.insertAdjacentHTML("afterend", "<div class='wilson-letterboxed-canvas-background'></div>");
-
+					//We do this to accomodate weirdly-set-up applets like the ones with draggable inputs, since they rely on their canvas container to keep the content below flowing properly.
 					this.parent.canvas.parentNode.parentNode.classList.add("wilson-black-background");
 
+					try
+					{
+						this.switchFullscreenCallback();
+					}
 
+					catch(ex)
+					{
+						//No switch fullscreen callback
+					}
 
-					this.onResize();
-				}
-
-
-
-				if (this.parent.useDraggables)
-				{
 					this.parent.draggables.onResize();
 				}
 
-
-
-				this.currentlyAnimating = false;
+				window.scroll(0, 0);
 			}
 
 
 
 			else
 			{
-				if (this.currentlyAnimating)
-				{
-					return;
-				}
-
-
-
-				this.currentlyFullscreen = false;
-
-				this.currentlyAnimating = true;
-
-				metaThemeColorElement.setAttribute("content", this.oldMetaThemeColor);
-
-				this.fullscreenComponentsContainerLocation.appendChild(this.fullscreenComponentsContainer);
-
-				const header = document.body.querySelector("#header");
-				const headerContainer = document.body.querySelector("#header-container");
-
-				if (header && headerContainer)
-				{
-					header.style.zIndex = 110;
-					headerContainer.style.zIndex = 105;
-				}
-
-
-
-				this.parent.canvas.classList.remove("wilson-fullscreen");
-				this.parent.canvas.parentNode.classList.remove("wilson-fullscreen");
-				this.fullscreenComponentsContainer.classList.remove("wilson-fullscreen");
-
-
-
-				document.documentElement.style.overflowY = "scroll";
-				document.body.style.overflowY = "visible";
-
-				document.body.style.width = "";
-				document.body.style.height = "";
-
-				document.documentElement.style.userSelect = "auto";
-				document.documentElement.style.WebkitUserSelect = "auto";
-
-				document.removeEventListener("gesturestart", this.preventGestures);
-				document.removeEventListener("gesturechange", this.preventGestures);
-				document.removeEventListener("gestureend", this.preventGestures);
-
-
-
-				if (this.exitFullscreenButton)
-				{
-					this.exitFullscreenButton.remove();
-				}
-
-
-
-				if (this.useFullscreenButton)
-				{
-					this.enterFullscreenButton = document.createElement("div");
-
-					this.enterFullscreenButton.classList.add("wilson-enter-fullscreen-button");
-					this.enterFullscreenButton.setAttribute("tabindex", "-1");
-
-					this.parent.canvas.parentNode.appendChild(this.enterFullscreenButton);
-
-					const img = document.createElement("img");
-					img.src = this.enterFullscreenButtonIconPath;
-					this.enterFullscreenButton.appendChild(img);
-
-					addHoverEventWithScale({
-						element: this.enterFullscreenButton,
-						scale: 1.1,
-						addBounceOnTouch: false
-					});
-
-					this.enterFullscreenButton.addEventListener("click", () =>
-					{
-						this.switchFullscreen();
-					});
-				}
-
-
-
-				this.fullscreenComponentsContainer.classList.remove("wilson-true-fullscreen-canvas");
-
 				for (let i = 0; i < this.canvasesToResize.length; i++)
 				{
-					this.canvasesToResize[i].classList.remove("wilson-true-fullscreen-canvas");
-					this.canvasesToResize[i].classList.remove("wilson-letterboxed-fullscreen-canvas");
-
-					this.parent.canvas.parentNode.parentNode.classList.remove("wilson-black-background");
-
-
-
-					const elements = document.querySelectorAll(".wilson-letterboxed-canvas-background");
-
-					for (let i = 0; i < elements.length; i++)
-					{
-						if (elements[i])
-						{
-							elements[i].remove();
-						}
-					}
-
-
+					this.canvasesToResize[i].classList.add("wilson-letterboxed-fullscreen-canvas");
 
 					try
 					{
@@ -1849,15 +1700,176 @@ export class Wilson
 
 
 
-				if (this.parent.useDraggables)
+				//One of these is for vertical aspect ratios and the other is for horizontal ones, but we add both in case the user resizes the window while in applet is fullscreen.
+
+				this.parent.canvas.parentNode.parentNode.insertAdjacentHTML("beforebegin", "<div class='wilson-letterboxed-canvas-background'></div>");
+				this.parent.canvas.parentNode.parentNode.insertAdjacentHTML("afterend", "<div class='wilson-letterboxed-canvas-background'></div>");
+
+				this.parent.canvas.parentNode.parentNode.classList.add("wilson-black-background");
+
+
+
+				this.onResize();
+			}
+
+
+
+			if (this.parent.useDraggables)
+			{
+				this.parent.draggables.onResize();
+			}
+
+
+
+			this.currentlyAnimating = false;	
+		},
+
+
+
+		exitFullscreen()
+		{
+			if (this.currentlyAnimating)
+			{
+				return;
+			}
+
+
+
+			this.currentlyFullscreen = false;
+
+			this.currentlyAnimating = true;
+
+			metaThemeColorElement.setAttribute("content", this.oldMetaThemeColor);
+
+			this.fullscreenComponentsContainerLocation.appendChild(this.fullscreenComponentsContainer);
+
+			const header = document.body.querySelector("#header");
+			const headerContainer = document.body.querySelector("#header-container");
+
+			if (header && headerContainer)
+			{
+				header.style.zIndex = 110;
+				headerContainer.style.zIndex = 105;
+			}
+
+
+
+			this.parent.canvas.classList.remove("wilson-fullscreen");
+			this.parent.canvas.parentNode.classList.remove("wilson-fullscreen");
+			this.fullscreenComponentsContainer.classList.remove("wilson-fullscreen");
+
+
+
+			document.documentElement.style.overflowY = "scroll";
+			document.body.style.overflowY = "visible";
+
+			document.body.style.width = "";
+			document.body.style.height = "";
+
+			document.documentElement.style.userSelect = "auto";
+			document.documentElement.style.WebkitUserSelect = "auto";
+
+			document.removeEventListener("gesturestart", this.preventGestures);
+			document.removeEventListener("gesturechange", this.preventGestures);
+			document.removeEventListener("gestureend", this.preventGestures);
+
+
+
+			if (this.exitFullscreenButton)
+			{
+				this.exitFullscreenButton.remove();
+			}
+
+
+
+			if (this.useFullscreenButton)
+			{
+				this.enterFullscreenButton = document.createElement("div");
+
+				this.enterFullscreenButton.classList.add("wilson-enter-fullscreen-button");
+				this.enterFullscreenButton.setAttribute("tabindex", "-1");
+
+				this.parent.canvas.parentNode.appendChild(this.enterFullscreenButton);
+
+				const img = document.createElement("img");
+				img.src = this.enterFullscreenButtonIconPath;
+				this.enterFullscreenButton.appendChild(img);
+
+				addHoverEventWithScale({
+					element: this.enterFullscreenButton,
+					scale: 1.1,
+					addBounceOnTouch: false
+				});
+
+				this.enterFullscreenButton.addEventListener("click", () =>
 				{
-					this.parent.draggables.onResize();
+					this.switchFullscreen();
+				});
+			}
+
+
+
+			this.fullscreenComponentsContainer.classList.remove("wilson-true-fullscreen-canvas");
+
+			for (let i = 0; i < this.canvasesToResize.length; i++)
+			{
+				this.canvasesToResize[i].classList.remove("wilson-true-fullscreen-canvas");
+				this.canvasesToResize[i].classList.remove("wilson-letterboxed-fullscreen-canvas");
+
+				this.parent.canvas.parentNode.parentNode.classList.remove("wilson-black-background");
+
+
+
+				const elements = document.querySelectorAll(".wilson-letterboxed-canvas-background");
+
+				for (let i = 0; i < elements.length; i++)
+				{
+					if (elements[i])
+					{
+						elements[i].remove();
+					}
 				}
 
 
-				window.scroll(0, this.fullscreenOldScroll);
 
-				this.currentlyAnimating = false;
+				try
+				{
+					this.switchFullscreenCallback();
+				}
+
+				catch(ex)
+				{
+					//No switch fullscreen callback
+				}
+
+				this.parent.draggables.onResize();
+			}
+
+
+
+			if (this.parent.useDraggables)
+			{
+				this.parent.draggables.onResize();
+			}
+
+
+			window.scroll(0, this.fullscreenOldScroll);
+
+			this.currentlyAnimating = false;
+		},
+
+
+
+		switchFullscreen()
+		{
+			if (!this.currentlyFullscreen)
+			{
+				this.enterFullscreen();
+			}
+
+			else
+			{
+				this.exitFullscreen();
 			}
 		},
 
