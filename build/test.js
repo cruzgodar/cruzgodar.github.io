@@ -1,7 +1,7 @@
 import { launch } from "puppeteer";
 import { getModifiedDate, read, write } from "./file-io.js";
 
-const { spawnSync, spawn } = require("child_process");
+const { spawnSync } = require("child_process");
 
 const excludeFiles =
 [
@@ -209,7 +209,7 @@ function testLatex(tex)
 
 	if (proc.stdout.toString().toLowerCase().includes("error"))
 	{
-		console.log(`Error in compiling tex: ${proc.stdout.toString()}. Full tex: ${tex}`);
+		console.log(`Error in compiling tex: ${proc.stdout.toString()}`);
 	}
 }
 
@@ -233,7 +233,7 @@ async function testAllLatex(files)
 		}
 	});
 
-	for (const file in files)
+	for (const file of files)
 	{
 		const buttons = latexFiles[file];
 
@@ -286,7 +286,9 @@ async function test(clean)
 	await Promise.all([
 		validateAllLinks(files.filter(file => file.includes("data.html"))),
 		testPages(files.filter(file => file.includes("index.html"))),
-		testAllLatex(files.filter(file => latexFiles[file])),
+		testAllLatex(
+			files.map(file => file.replace("data.html", "")).filter(file => latexFiles[file])
+		),
 	]);
 }
 
