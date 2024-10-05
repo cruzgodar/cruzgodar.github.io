@@ -1,3 +1,4 @@
+import anime from "/scripts/anime.js";
 import { Applet } from "/scripts/applets/applet.js";
 import { RaymarchApplet } from "/scripts/applets/raymarchApplet.js";
 import { addTemporaryListener } from "/scripts/src/main.js";
@@ -233,5 +234,26 @@ export class RaymarchingFundamentals extends RaymarchApplet
 
 
 		this.needNewFrame = true;
+	}
+
+	toggleUniform({
+		name,
+		show = true,
+		duration = 250
+	}) {
+		const dummy = { t: 0 };
+
+		anime({
+			targets: dummy,
+			t: 1,
+			duration,
+			easing: "easeOutQuint",
+			update: () =>
+			{
+				const t = show ? dummy.t : (1 - dummy.t);
+				this.wilson.gl.uniform1f(this.wilson.uniforms[name], t);
+				this.needNewFrame = true;
+			}
+		});
 	}
 }

@@ -40,6 +40,9 @@ export default function()
 
 	function test()
 	{
-		applet.showHideSphere(testCheckbox.checked);
+		applet.toggleUniform({
+			name: "ambientLightAmount",
+			show: testCheckbox.checked
+		});
 	}
 }

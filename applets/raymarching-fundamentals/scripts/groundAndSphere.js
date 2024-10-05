@@ -1,10 +1,7 @@
 import { RaymarchingFundamentals } from "./class.js";
-import anime from "/scripts/anime.js";
 
 export class GroundAndSphere extends RaymarchingFundamentals
 {
-	sphereRadius = 0;
-
 	constructor({ canvas })
 	{
 		const fragShaderSource = /* glsl */`
@@ -27,9 +24,12 @@ export class GroundAndSphere extends RaymarchingFundamentals
 			const float lightBrightness = 1.0;
 			uniform int imageSize;
 
-			uniform float sphereRadius;
-			
-			
+			uniform float showSphereAmount;
+			uniform float groundTextureAmount;
+			uniform float fogAmount;
+			uniform float ambientOcclusionAmount;
+			uniform float pointLightAmount;
+			uniform float ambientLightAmount;
 			
 			const float clipDistance = 1000.0;
 			const int maxMarches = 256;
@@ -48,7 +48,7 @@ export class GroundAndSphere extends RaymarchingFundamentals
 
 			float distanceEstimatorSphere(vec3 pos)
 			{
-				return length(pos - vec3(0.0, 0.0, 1.0)) - sphereRadius;
+				return length(pos - vec3(0.0, 0.0, 1.0)) - showSphereAmount * 0.5;
 			}
 			
 			float distanceEstimator(vec3 pos)
@@ -68,7 +68,9 @@ export class GroundAndSphere extends RaymarchingFundamentals
 
 				if (minDistance == distanceGround)
 				{
-					return vec3(0.5, 0.5, 0.5);
+					vec2 co = floor(pos.xy * 50.0);
+					return vec3(0.5, 0.5, 0.5)
+						* (1.0 + groundTextureAmount * .2 * (rand(co) - .5));
 				}
 
 				return vec3(0.5, 0.0, 1.0);
@@ -99,13 +101,15 @@ export class GroundAndSphere extends RaymarchingFundamentals
 				
 				float dotProduct = dot(surfaceNormal, lightDirection);
 				
-				float lightIntensity = lightBrightness * dotProduct;
+				float lightIntensity = max(lightBrightness * dotProduct * pointLightAmount, ambientLightAmount * .25); 
 				
 				//The last factor adds ambient occlusion.
-				vec3 color = getColor(pos) * lightIntensity * max((1.0 - float(iteration) / float(maxMarches)), 0.0);
+				vec3 color = getColor(pos)
+					* lightIntensity
+					* max((1.0 - ambientOcclusionAmount* float(iteration) / float(maxMarches)), 0.0);
 				
 				//Apply fog.
-				return mix(color, fogColor, 1.0 - exp(-distance(pos, cameraPos) * fogScaling));
+				return mix(color, fogColor, 1.0 - exp(-distance(pos, cameraPos) * fogScaling * fogAmount));
 			}
 			
 			
@@ -164,28 +168,20 @@ export class GroundAndSphere extends RaymarchingFundamentals
 			canvas,
 			fragShaderSource,
 			uniforms: [
-				"sphereRadius",
+				"showSphereAmount",
+				"groundTextureAmount",
+				"fogAmount",
+				"ambientOcclusionAmount",
+				"pointLightAmount",
+				"ambientLightAmount",
 			]
 		});
 
-		this.wilson.gl.uniform1f(this.wilson.uniforms["sphereRadius"], this.sphereRadius);
-	}
-
-	showHideSphere(show = true)
-	{
-		const dummy = { t: 0 };
-
-		anime({
-			targets: dummy,
-			t: 1,
-			duration: 250,
-			easing: "easeOutQuint",
-			update: () =>
-			{
-				this.sphereRadius = show ? dummy.t * .5 : (1 - dummy.t) * .5;
-				this.wilson.gl.uniform1f(this.wilson.uniforms["sphereRadius"], this.sphereRadius);
-				this.needNewFrame = true;
-			}
-		});
+		this.wilson.gl.uniform1f(this.wilson.uniforms.showSphereAmount, 1);
+		this.wilson.gl.uniform1f(this.wilson.uniforms.groundTextureAmount, 1);
+		this.wilson.gl.uniform1f(this.wilson.uniforms.fogAmount, 1);
+		this.wilson.gl.uniform1f(this.wilson.uniforms.ambientOcclusionAmount, 1);
+		this.wilson.gl.uniform1f(this.wilson.uniforms.pointLightAmount, 1);
+		this.wilson.gl.uniform1f(this.wilson.uniforms.ambientLightAmount, 1);
 	}
 }
