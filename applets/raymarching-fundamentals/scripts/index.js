@@ -41,7 +41,7 @@ export default function()
 	function test()
 	{
 		applet.toggleUniform({
-			name: "ambientLightAmount",
+			name: "pointLightAmount",
 			show: testCheckbox.checked
 		});
 	}

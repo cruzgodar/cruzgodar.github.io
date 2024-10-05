@@ -1,4 +1,5 @@
 import { RaymarchingFundamentals } from "./class.js";
+import { getMinGlslString } from "/scripts/applets/applet.js";
 
 export class GroundAndSphere extends RaymarchingFundamentals
 {
@@ -21,6 +22,9 @@ export class GroundAndSphere extends RaymarchingFundamentals
 			uniform float focalLength;
 			
 			const vec3 lightPos = vec3(5.0, 7.0, 10.0);
+			// The minimum distance between the light direction and a sky direction.
+			const float bloomPower = 0.1;
+
 			const float lightBrightness = 1.0;
 			const float maxShadowAmount = .25;
 			uniform int imageSize;
@@ -31,6 +35,7 @@ export class GroundAndSphere extends RaymarchingFundamentals
 			uniform float ambientOcclusionAmount;
 			uniform float pointLightAmount;
 			uniform float ambientLightAmount;
+			uniform float shadowAmount;
 			
 			const float clipDistance = 1000.0;
 			const int maxMarches = 256;
@@ -51,30 +56,38 @@ export class GroundAndSphere extends RaymarchingFundamentals
 			{
 				return length(pos - vec3(0.0, 0.0, 1.0)) - showSphereAmount * 0.5;
 			}
+
+			float distanceEstimatorLight(vec3 pos)
+			{
+				return length(pos - lightPos);
+			}
 			
 			float distanceEstimator(vec3 pos)
 			{
-				float distanceGround = distanceEstimatorGround(pos);
-				float distanceSphere = distanceEstimatorSphere(pos);
+				float distance1 = distanceEstimatorGround(pos);
+				float distance2 = distanceEstimatorSphere(pos);
 
-				return min(distanceGround, distanceSphere);
+				return ${getMinGlslString("distance", 2)};
 			}
 			
 			vec3 getColor(vec3 pos)
 			{
-				float distanceGround = distanceEstimatorGround(pos);
-				float distanceSphere = distanceEstimatorSphere(pos);
+				float distance1 = distanceEstimatorGround(pos);
+				float distance2 = distanceEstimatorSphere(pos);
 
-				float minDistance = min(distanceGround, distanceSphere);
+				float minDistance = ${getMinGlslString("distance", 2)};
 
-				if (minDistance == distanceGround)
+				if (minDistance == distance1)
 				{
 					vec2 co = floor(pos.xy * 50.0);
 					return vec3(0.5, 0.5, 0.5)
 						* (1.0 + groundTextureAmount * .2 * (rand(co) - .5));
 				}
 
-				return vec3(0.5, 0.0, 1.0);
+				if (minDistance == distance2)
+				{
+					return vec3(0.5, 0.0, 1.0);
+				}
 			}
 			
 			
@@ -92,28 +105,30 @@ export class GroundAndSphere extends RaymarchingFundamentals
 				return normalize(vec3(xStep1 - xStep2, yStep1 - yStep2, zStep1 - zStep2));
 			}
 
+			
+
 			// Nearly identical to raymarching, but it only marches toward the light.
 			float computeShadowIntensity(vec3 startPos, vec3 lightDirection)
 			{
 				//That factor of .9 is important -- without it, we're always stepping as far as possible, which results in artefacts and weirdness.
 				vec3 rayDirectionVec = normalize(lightDirection) * .95;
 				
-				float t = 0.0;
+				float t = 0.5;
 
 				for (int iteration = 0; iteration < maxMarches; iteration++)
 				{
 					vec3 pos = startPos + t * rayDirectionVec;
 					
 					float distanceToScene = distanceEstimator(pos);
-					
-					if (distanceToScene < 0.0)
-					{
-						return maxShadowAmount;
-					}
-					
-					else if (t > clipDistance)
+
+					if (t > clipDistance || length(pos - lightPos) < pointLightAmount * 0.2)
 					{
 						return 1.0;
+					}
+
+					if (distanceToScene < 0.1)
+					{
+						return maxShadowAmount;
 					}
 					
 					t += distanceToScene;
@@ -122,7 +137,7 @@ export class GroundAndSphere extends RaymarchingFundamentals
 				return 1.0;
 			}
 			
-			vec3 computeShading(vec3 pos, int iteration)
+			vec3 computeShading(vec3 pos, int iteration, float bloomAmount)
 			{
 				vec3 surfaceNormal = getSurfaceNormal(pos);
 				
@@ -132,7 +147,7 @@ export class GroundAndSphere extends RaymarchingFundamentals
 				
 				float lightIntensity = max(lightBrightness * dotProduct * pointLightAmount, ambientLightAmount * .25);
 
-				float shadowIntensity = computeShadowIntensity(pos, lightDirection);
+				float shadowIntensity = mix(1.0, computeShadowIntensity(pos, lightDirection), shadowAmount);
 				
 				//The last factor adds ambient occlusion.
 				vec3 color = getColor(pos)
@@ -141,7 +156,7 @@ export class GroundAndSphere extends RaymarchingFundamentals
 					* max((1.0 - ambientOcclusionAmount * float(iteration) / float(maxMarches)), 0.0);
 				
 				//Apply fog.
-				return mix(color, fogColor, 1.0 - exp(-distance(pos, cameraPos) * fogScaling * fogAmount));
+				return mix(color, fogColor * bloomAmount, 1.0 - exp(-distance(pos, cameraPos) * fogScaling * fogAmount));
 			}
 			
 			
@@ -155,35 +170,64 @@ export class GroundAndSphere extends RaymarchingFundamentals
 				
 				float t = 0.0;
 				
-				
-				
 				for (int iteration = 0; iteration < maxMarches; iteration++)
 				{
 					vec3 pos = startPos + t * rayDirectionVec;
 					
-					float distanceToScene = distanceEstimator(pos);
+					float distanceToScene = min(10.0, distanceEstimator(pos));
 					
 					//This lowers the detail far away, which makes everything run nice and fast.
 					epsilon = max(.0000006, 1.0 * t / float(imageSize));
 					
-					
-					
 					if (distanceToScene < epsilon)
 					{
-						return computeShading(pos, iteration);
+						float bloomAmount = mix(
+							1.0,
+							max(1.0, pow(
+								1.0 / distance(
+									normalize(rayDirectionVec),
+									normalize(lightPos - cameraPos)
+								),
+								bloomPower
+							)),
+							pointLightAmount
+						);
+						
+						return computeShading(pos, iteration, bloomAmount);
 					}
 					
 					else if (t > clipDistance)
 					{
-						return fogColor;
+						float bloomAmount = mix(
+							1.0,
+							max(1.0, pow(
+								1.0 / distance(
+									normalize(rayDirectionVec),
+									normalize(lightPos - cameraPos)
+								),
+								bloomPower
+							)),
+							pointLightAmount
+						);
+
+						return fogColor * bloomAmount;
 					}
-					
-					
 					
 					t += distanceToScene;
 				}
 				
-				return fogColor;
+				float bloomAmount = mix(
+					1.0,
+					max(1.0, pow(
+						1.0 / distance(
+							normalize(rayDirectionVec),
+							normalize(lightPos - cameraPos)
+						),
+						bloomPower
+					)),
+					pointLightAmount
+				);
+				return fogColor * bloomAmount;
 			}
 			
 			
@@ -206,6 +250,7 @@ export class GroundAndSphere extends RaymarchingFundamentals
 				"ambientOcclusionAmount",
 				"pointLightAmount",
 				"ambientLightAmount",
+				"shadowAmount",
 			]
 		});
 
@@ -215,5 +260,6 @@ export class GroundAndSphere extends RaymarchingFundamentals
 		this.wilson.gl.uniform1f(this.wilson.uniforms.ambientOcclusionAmount, 1);
 		this.wilson.gl.uniform1f(this.wilson.uniforms.pointLightAmount, 1);
 		this.wilson.gl.uniform1f(this.wilson.uniforms.ambientLightAmount, 1);
+		this.wilson.gl.uniform1f(this.wilson.uniforms.shadowAmount, 1);
 	}
 }
