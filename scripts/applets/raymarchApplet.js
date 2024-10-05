@@ -30,6 +30,7 @@ export class RaymarchApplet extends AnimationFrameApplet
 	upVec = [];
 
 	cameraPos = [0, 0, 0];
+	lockZ;
 
 	focalLength = 2;
 
@@ -64,8 +65,6 @@ export class RaymarchApplet extends AnimationFrameApplet
 	{
 		// Here comes the serious math. Theta is the angle in the xy-plane and
 		// phi the angle down from the z-axis. We can use them get a normalized forward vector:
-		const sign = this.lockedOnOrigin ? -1 : 1;
-
 		const theta = this.lockedOnOrigin ? -this.theta : this.theta;
 		const phi = this.lockedOnOrigin ? Math.PI - this.phi : this.phi;
 
@@ -180,19 +179,42 @@ export class RaymarchApplet extends AnimationFrameApplet
 				|| this.moveVelocity[1] !== 0
 				|| this.moveVelocity[2] !== 0
 		)) {
+			const usableForwardVec = this.lockZ !== undefined
+				? RaymarchApplet.scaleVector(
+					RaymarchApplet.magnitude(this.forwardVec),
+					RaymarchApplet.normalize([
+						this.forwardVec[0],
+						this.forwardVec[1],
+						0
+					]),
+				)
+				: this.forwardVec;
+
+			const usableRightVec = this.lockZ !== undefined
+				? RaymarchApplet.scaleVector(
+					RaymarchApplet.magnitude(this.rightVec),
+					RaymarchApplet.normalize([
+						this.rightVec[0],
+						this.rightVec[1],
+						0
+					]),
+				)
+				: this.rightVec;
+
 			const tangentVec = [
-				this.moveVelocity[0] * this.forwardVec[0]
-					+ this.moveVelocity[1] * this.rightVec[0],
-				this.moveVelocity[0] * this.forwardVec[1]
-					+ this.moveVelocity[1] * this.rightVec[1],
-				this.moveVelocity[0] * this.forwardVec[2]
-					+ this.moveVelocity[1] * this.rightVec[2]
+				this.moveVelocity[0] * usableForwardVec[0]
+					+ this.moveVelocity[1] * usableRightVec[0],
+				this.moveVelocity[0] * usableForwardVec[1]
+					+ this.moveVelocity[1] * usableRightVec[1],
+				this.moveVelocity[0] * usableForwardVec[2]
+					+ this.moveVelocity[1] * usableRightVec[2]
 					+ this.moveVelocity[2] * this.focalLength / 2
 			];
 
 			this.cameraPos[0] += this.movingSpeed * tangentVec[0] * (timeElapsed / 6.944);
 			this.cameraPos[1] += this.movingSpeed * tangentVec[1] * (timeElapsed / 6.944);
-			this.cameraPos[2] += this.movingSpeed * tangentVec[2] * (timeElapsed / 6.944);
+			this.cameraPos[2] = this.lockZ
+				?? this.cameraPos[2] + this.movingSpeed * tangentVec[2] * (timeElapsed / 6.944);
 
 			this.needNewFrame = true;
 		}

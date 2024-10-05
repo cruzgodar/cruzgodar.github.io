@@ -9,6 +9,7 @@ export class RaymarchingFundamentals extends RaymarchApplet
 	cameraPos = [1, 1, 1];
 	theta = 1.25 * Math.PI;
 	phi = Math.PI / 2;
+	lockZ = 1;
 
 
 
@@ -154,7 +155,6 @@ export class RaymarchingFundamentals extends RaymarchApplet
 		this.pan.update(timeElapsed);
 		this.zoom.update(timeElapsed);
 		this.moveUpdate(timeElapsed);
-		this.cameraPos[2] = 1;
 	}
 
 	drawFrame()

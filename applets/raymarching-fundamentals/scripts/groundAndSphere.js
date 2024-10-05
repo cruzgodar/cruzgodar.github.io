@@ -20,8 +20,9 @@ export class GroundAndSphere extends RaymarchingFundamentals
 			
 			uniform float focalLength;
 			
-			const vec3 lightPos = vec3(50.0, 70.0, 100.0);
+			const vec3 lightPos = vec3(5.0, 7.0, 10.0);
 			const float lightBrightness = 1.0;
+			const float maxShadowAmount = .25;
 			uniform int imageSize;
 
 			uniform float showSphereAmount;
@@ -90,8 +91,36 @@ export class GroundAndSphere extends RaymarchingFundamentals
 				
 				return normalize(vec3(xStep1 - xStep2, yStep1 - yStep2, zStep1 - zStep2));
 			}
-			
-			
+
+			// Nearly identical to raymarching, but it only marches toward the light.
+			float computeShadowIntensity(vec3 startPos, vec3 lightDirection)
+			{
+				//That factor of .9 is important -- without it, we're always stepping as far as possible, which results in artefacts and weirdness.
+				vec3 rayDirectionVec = normalize(lightDirection) * .95;
+				
+				float t = 0.0;
+
+				for (int iteration = 0; iteration < maxMarches; iteration++)
+				{
+					vec3 pos = startPos + t * rayDirectionVec;
+					
+					float distanceToScene = distanceEstimator(pos);
+					
+					if (distanceToScene < 0.0)
+					{
+						return maxShadowAmount;
+					}
+					
+					else if (t > clipDistance)
+					{
+						return 1.0;
+					}
+					
+					t += distanceToScene;
+				}
+
+				return 1.0;
+			}
 			
 			vec3 computeShading(vec3 pos, int iteration)
 			{
@@ -101,12 +130,15 @@ export class GroundAndSphere extends RaymarchingFundamentals
 				
 				float dotProduct = dot(surfaceNormal, lightDirection);
 				
-				float lightIntensity = max(lightBrightness * dotProduct * pointLightAmount, ambientLightAmount * .25); 
+				float lightIntensity = max(lightBrightness * dotProduct * pointLightAmount, ambientLightAmount * .25);
+
+				float shadowIntensity = computeShadowIntensity(pos, lightDirection);
 				
 				//The last factor adds ambient occlusion.
 				vec3 color = getColor(pos)
 					* lightIntensity
-					* max((1.0 - ambientOcclusionAmount* float(iteration) / float(maxMarches)), 0.0);
+					* shadowIntensity
+					* max((1.0 - ambientOcclusionAmount * float(iteration) / float(maxMarches)), 0.0);
 				
 				//Apply fog.
 				return mix(color, fogColor, 1.0 - exp(-distance(pos, cameraPos) * fogScaling * fogAmount));
@@ -117,7 +149,7 @@ export class GroundAndSphere extends RaymarchingFundamentals
 			vec3 raymarch(vec3 startPos)
 			{
 				//That factor of .9 is important -- without it, we're always stepping as far as possible, which results in artefacts and weirdness.
-				vec3 rayDirectionVec = normalize(startPos - cameraPos) * .9;
+				vec3 rayDirectionVec = normalize(startPos - cameraPos) * .95;
 				
 				float epsilon = .0000001;
 				
