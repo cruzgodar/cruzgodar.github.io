@@ -26,9 +26,9 @@ export class KaleidoscopicIFSFractal extends RaymarchApplet
 	theta = this.startingAngle[2][0];
 	phi = this.startingAngle[2][1];
 
-	tetrahedronAmount = 1;
+	tetrahedronAmount = 0;
 	cubeAmount = 0;
-	octahedronAmount = 0;
+	octahedronAmount = 1;
 
 	nTetrahedron = [
 		[-.577350, 0, .816496],
