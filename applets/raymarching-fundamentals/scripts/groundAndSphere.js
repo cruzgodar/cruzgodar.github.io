@@ -159,7 +159,25 @@ export class GroundAndSphere extends RaymarchingFundamentals
 				return mix(color, fogColor * bloomAmount, 1.0 - exp(-distance(pos, cameraPos) * fogScaling * fogAmount));
 			}
 			
-			
+			float computeBloom(vec3 rayDirectionVec)
+			{
+				float bloom = max(
+					1.0,
+					pow(
+						1.0 / distance(
+							normalize(rayDirectionVec),
+							normalize(lightPos - cameraPos)
+						),
+						bloomPower
+					)
+				);
+
+				return mix(
+					1.0,
+					bloom,
+					pointLightAmount
+				);
+			}
 			
 			vec3 raymarch(vec3 startPos)
 			{
@@ -181,53 +199,22 @@ export class GroundAndSphere extends RaymarchingFundamentals
 					
 					if (distanceToScene < epsilon)
 					{
-						float bloomAmount = mix(
-							1.0,
-							max(1.0, pow(
-								1.0 / distance(
-									normalize(rayDirectionVec),
-									normalize(lightPos - cameraPos)
-								),
-								bloomPower
-							)),
-							pointLightAmount
+						return computeShading(
+							pos,
+							iteration,
+							computeBloom(rayDirectionVec)
 						);
-						
-						return computeShading(pos, iteration, bloomAmount);
 					}
 					
 					else if (t > clipDistance)
 					{
-						float bloomAmount = mix(
-							1.0,
-							max(1.0, pow(
-								1.0 / distance(
-									normalize(rayDirectionVec),
-									normalize(lightPos - cameraPos)
-								),
-								bloomPower
-							)),
-							pointLightAmount
-						);
-
-						return fogColor * bloomAmount;
+						return fogColor * computeBloom(rayDirectionVec);
 					}
 					
 					t += distanceToScene;
 				}
 				
-				float bloomAmount = mix(
-					1.0,
-					max(1.0, pow(
-						1.0 / distance(
-							normalize(rayDirectionVec),
-							normalize(lightPos - cameraPos)
-						),
-						bloomPower
-					)),
-					pointLightAmount
-				);
-				return fogColor * bloomAmount;
+				return fogColor * computeBloom(rayDirectionVec);
 			}
 			
 			
