@@ -23,10 +23,10 @@ export class GroundAndSphere extends RaymarchingFundamentals
 			
 			const vec3 lightPos = vec3(5.0, 7.0, 10.0);
 			// The minimum distance between the light direction and a sky direction.
-			const float bloomPower = 0.1;
+			const float bloomPower = 0.11;
 
 			const float lightBrightness = 1.0;
-			const float maxShadowAmount = .25;
+			const float maxShadowAmount = .5;
 			uniform int imageSize;
 
 			uniform float showSphereAmount;
@@ -36,6 +36,7 @@ export class GroundAndSphere extends RaymarchingFundamentals
 			uniform float pointLightAmount;
 			uniform float ambientLightAmount;
 			uniform float shadowAmount;
+			uniform float softShadowAmount;
 			
 			const float clipDistance = 1000.0;
 			const int maxMarches = 256;
@@ -112,6 +113,8 @@ export class GroundAndSphere extends RaymarchingFundamentals
 			{
 				//That factor of .9 is important -- without it, we're always stepping as far as possible, which results in artefacts and weirdness.
 				vec3 rayDirectionVec = normalize(lightDirection) * .95;
+
+				float softShadowFactor = 100.0;
 				
 				float t = 0.5;
 
@@ -120,13 +123,18 @@ export class GroundAndSphere extends RaymarchingFundamentals
 					vec3 pos = startPos + t * rayDirectionVec;
 					
 					float distanceToScene = distanceEstimator(pos);
+					softShadowFactor = mix(
+						1.0,
+						min(softShadowFactor, max(distanceToScene, 0.0) / t * 5.0),
+						softShadowAmount
+					);
 
 					if (t > clipDistance || length(pos - lightPos) < pointLightAmount * 0.2)
 					{
-						return 1.0;
+						return clamp(softShadowFactor, maxShadowAmount, 1.0);
 					}
 
-					if (distanceToScene < 0.1)
+					if (distanceToScene < 0.01)
 					{
 						return maxShadowAmount;
 					}
@@ -134,8 +142,10 @@ export class GroundAndSphere extends RaymarchingFundamentals
 					t += distanceToScene;
 				}
 
-				return 1.0;
+				return clamp(softShadowFactor, maxShadowAmount, 1.0);
 			}
+
+
 			
 			vec3 computeShading(vec3 pos, int iteration, float bloomAmount)
 			{
@@ -145,7 +155,10 @@ export class GroundAndSphere extends RaymarchingFundamentals
 				
 				float dotProduct = dot(surfaceNormal, lightDirection);
 				
-				float lightIntensity = max(lightBrightness * dotProduct * pointLightAmount, ambientLightAmount * .25);
+				float lightIntensity = max(
+					lightBrightness * dotProduct * pointLightAmount,
+					ambientLightAmount * .25
+				);
 
 				float shadowIntensity = mix(1.0, computeShadowIntensity(pos, lightDirection), shadowAmount);
 				
@@ -158,6 +171,8 @@ export class GroundAndSphere extends RaymarchingFundamentals
 				//Apply fog.
 				return mix(color, fogColor * bloomAmount, 1.0 - exp(-distance(pos, cameraPos) * fogScaling * fogAmount));
 			}
+
+
 			
 			float computeBloom(vec3 rayDirectionVec)
 			{
@@ -178,6 +193,8 @@ export class GroundAndSphere extends RaymarchingFundamentals
 					pointLightAmount
 				);
 			}
+
+
 			
 			vec3 raymarch(vec3 startPos)
 			{
@@ -227,6 +244,8 @@ export class GroundAndSphere extends RaymarchingFundamentals
 			}
 		`;
 
+		console.log(fragShaderSource);
+
 		super({
 			canvas,
 			fragShaderSource,
@@ -238,6 +257,7 @@ export class GroundAndSphere extends RaymarchingFundamentals
 				"pointLightAmount",
 				"ambientLightAmount",
 				"shadowAmount",
+				"softShadowAmount",
 			]
 		});
 
@@ -248,5 +268,6 @@ export class GroundAndSphere extends RaymarchingFundamentals
 		this.wilson.gl.uniform1f(this.wilson.uniforms.pointLightAmount, 1);
 		this.wilson.gl.uniform1f(this.wilson.uniforms.ambientLightAmount, 1);
 		this.wilson.gl.uniform1f(this.wilson.uniforms.shadowAmount, 1);
+		this.wilson.gl.uniform1f(this.wilson.uniforms.softShadowAmount, 1);
 	}
 }

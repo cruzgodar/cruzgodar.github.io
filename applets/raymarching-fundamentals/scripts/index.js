@@ -41,7 +41,7 @@ export default function()
 	function test()
 	{
 		applet.toggleUniform({
-			name: "pointLightAmount",
+			name: "softShadowAmount",
 			show: testCheckbox.checked
 		});
 	}
