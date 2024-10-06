@@ -220,7 +220,7 @@ export class Mandelbulb extends RaymarchApplet
 					
 					
 					
-					vec3 pos = startPos + t * rayDirectionVec;
+					vec3 pos = cameraPos + t * rayDirectionVec;
 					
 					//This prevents overstepping, and is honestly a pretty clever fix.
 					float distance = min(distanceEstimator(pos), lastDistance);

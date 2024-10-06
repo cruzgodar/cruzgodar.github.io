@@ -55,7 +55,7 @@ export class RaymarchApplet extends AnimationFrameApplet
 					{
 						const dummy = { t: 0 };
 						const oldFovFactor = this.fovFactor;
-						const newFovFactor = pressed ? 4 : 1;
+						const newFovFactor = pressed ? 5 : 1;
 
 						anime({
 							targets: dummy,

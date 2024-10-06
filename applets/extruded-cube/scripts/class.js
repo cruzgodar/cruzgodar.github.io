@@ -191,7 +191,7 @@ export class ExtrudedCube extends RaymarchApplet
 				
 				for (int iteration = 0; iteration < maxMarches; iteration++)
 				{
-					vec3 pos = startPos + t * rayDirectionVec;
+					vec3 pos = cameraPos + t * rayDirectionVec;
 					
 					float distance = distanceEstimator(pos);
 					
