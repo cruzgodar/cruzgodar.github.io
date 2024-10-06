@@ -41,8 +41,18 @@ export default function()
 	function test()
 	{
 		applet.toggleUniform({
-			name: "reflectivityAmount",
-			show: testCheckbox.checked
+			name: "modPosAmount",
+			show: testCheckbox.checked,
+			duration: 1000
 		});
+
+		setTimeout(() =>
+		{
+			applet.toggleUniform({
+				name: "showRoomsAmount",
+				show: !testCheckbox.checked,
+				duration: 1000
+			});
+		}, 1000);
 	}
 }

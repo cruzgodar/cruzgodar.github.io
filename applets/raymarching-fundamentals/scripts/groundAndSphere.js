@@ -38,6 +38,8 @@ export class GroundAndSphere extends RaymarchingFundamentals
 			uniform float shadowAmount;
 			uniform float softShadowAmount;
 			uniform float reflectivityAmount;
+			uniform float showRoomsAmount;
+			uniform float modPosAmount;
 			
 			const float clipDistance = 1000.0;
 			const int maxMarches = 256;
@@ -56,18 +58,20 @@ export class GroundAndSphere extends RaymarchingFundamentals
 
 			float distanceEstimatorSphere(vec3 pos)
 			{
-				return length(pos - vec3(0.0, 0.0, 1.0)) - showSphereAmount * 0.5;
+				vec3 modPos = mix(pos, mod(pos + vec3(1.0, 1.0, 0.0), 2.0) - vec3(1.0, 1.0, 0.0), modPosAmount); 
+				return length(modPos - vec3(0.0, 0.0, 1.0)) - showSphereAmount * 0.5;
 			}
 
-			float distanceEstimatorLight(vec3 pos)
+			float distanceEstimatorRoom(vec3 pos)
 			{
-				return length(pos - lightPos);
+				vec3 modPos = mix(pos, mod(pos, 2.0), modPosAmount); 
+				return showSphereAmount * 1.25 - length(modPos - vec3(1.0, 1.0, 1.0));
 			}
 			
 			float distanceEstimator(vec3 pos)
 			{
 				float distance1 = distanceEstimatorGround(pos);
-				float distance2 = distanceEstimatorSphere(pos);
+				float distance2 = mix(distanceEstimatorSphere(pos), distanceEstimatorRoom(pos), showRoomsAmount);
 
 				return ${getMinGlslString("distance", 2)};
 			}
@@ -75,7 +79,7 @@ export class GroundAndSphere extends RaymarchingFundamentals
 			vec3 getColor(vec3 pos)
 			{
 				float distance1 = distanceEstimatorGround(pos);
-				float distance2 = distanceEstimatorSphere(pos);
+				float distance2 = mix(distanceEstimatorSphere(pos), distanceEstimatorRoom(pos), showRoomsAmount);
 
 				float minDistance = ${getMinGlslString("distance", 2)};
 
@@ -95,7 +99,7 @@ export class GroundAndSphere extends RaymarchingFundamentals
 			float getReflectivity(vec3 pos)
 			{
 				float distance1 = distanceEstimatorGround(pos);
-				float distance2 = distanceEstimatorSphere(pos);
+				float distance2 = mix(distanceEstimatorSphere(pos), distanceEstimatorRoom(pos), showRoomsAmount);
 
 				float minDistance = ${getMinGlslString("distance", 2)};
 
@@ -225,7 +229,7 @@ export class GroundAndSphere extends RaymarchingFundamentals
 					vec3 pos = startPos + t * rayDirectionVec;
 					
 					float distanceToScene = distanceEstimator(pos);
-					epsilon = max(.0000006, 1.0 * t / float(imageSize));
+					epsilon = max(.0000006, 10.0 * t / float(imageSize));
 
 					if (distanceToScene < epsilon)
 					{
@@ -265,7 +269,12 @@ export class GroundAndSphere extends RaymarchingFundamentals
 					ambientLightAmount * .25
 				);
 
-				float shadowIntensity = mix(1.0, computeShadowIntensity(pos, lightDirection), shadowAmount);
+				float shadowIntensity = 1.0;
+
+				if (shadowAmount >= 0.0)
+				{
+					shadowIntensity = mix(1.0, computeShadowIntensity(pos, lightDirection), shadowAmount);
+				}
 				
 				//The last factor adds ambient occlusion.
 				vec3 color = getColor(pos)
@@ -274,11 +283,14 @@ export class GroundAndSphere extends RaymarchingFundamentals
 					* max((1.0 - ambientOcclusionAmount * float(iteration) / float(maxMarches)), 0.0);
 
 				vec3 reflectedDirection = reflect(normalize(pos - cameraPos) * .95, surfaceNormal);
-				color = mix(
-					color,
-					computeReflection(pos, reflectedDirection, iteration),
-					getReflectivity(pos) * reflectivityAmount
-				);
+				if (reflectivityAmount > 0.0)
+				{
+					color = mix(
+						color,
+						computeReflection(pos, reflectedDirection, iteration),
+						getReflectivity(pos) * reflectivityAmount
+					);
+				}
 				
 				//Apply fog.
 				return mix(color, fogColor * bloomAmount, 1.0 - exp(-distance(pos, cameraPos) * fogScaling * fogAmount));
@@ -351,6 +363,8 @@ export class GroundAndSphere extends RaymarchingFundamentals
 				"shadowAmount",
 				"softShadowAmount",
 				"reflectivityAmount",
+				"showRoomsAmount",
+				"modPosAmount",
 			]
 		});
 
@@ -362,6 +376,8 @@ export class GroundAndSphere extends RaymarchingFundamentals
 		this.wilson.gl.uniform1f(this.wilson.uniforms.ambientLightAmount, 1);
 		this.wilson.gl.uniform1f(this.wilson.uniforms.shadowAmount, 1);
 		this.wilson.gl.uniform1f(this.wilson.uniforms.softShadowAmount, 1);
-		this.wilson.gl.uniform1f(this.wilson.uniforms.reflectivityAmount, 1);
+		this.wilson.gl.uniform1f(this.wilson.uniforms.reflectivityAmount, 0);
+		this.wilson.gl.uniform1f(this.wilson.uniforms.showRoomsAmount, 1);
+		this.wilson.gl.uniform1f(this.wilson.uniforms.modPosAmount, 1);
 	}
 }
