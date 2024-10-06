@@ -1,3 +1,4 @@
+import anime from "../anime.js";
 import { AnimationFrameApplet } from "./animationFrameApplet.js";
 
 export class RaymarchApplet extends AnimationFrameApplet
@@ -33,6 +34,7 @@ export class RaymarchApplet extends AnimationFrameApplet
 	lockZ;
 
 	focalLength = 2;
+	fovFactor = 1;
 
 	lockedOnOrigin = false;
 	distanceFromOrigin = 1;
@@ -45,7 +47,31 @@ export class RaymarchApplet extends AnimationFrameApplet
 		
 		if (!this.lockedOnOrigin)
 		{
-			this.listenForKeysPressed(["w", "s", "a", "d", "q", "e", " ", "shift"]);
+			this.listenForKeysPressed(
+				["w", "s", "a", "d", "q", "e", " ", "shift", "z"],
+				(key, pressed) =>
+				{
+					if (key === "z")
+					{
+						const dummy = { t: 0 };
+						const oldFovFactor = this.fovFactor;
+						const newFovFactor = pressed ? 4 : 1;
+
+						anime({
+							targets: dummy,
+							t: 1,
+							duration: 250,
+							easing: "easeOutCubic",
+							update: () =>
+							{
+								this.fovFactor = (1 - dummy.t) * oldFovFactor
+									+ dummy.t * newFovFactor;
+								this.needNewFrame = true;
+							}
+						});
+					}
+				}
+			);
 		}
 
 		const refreshId = setInterval(() =>
@@ -109,12 +135,12 @@ export class RaymarchApplet extends AnimationFrameApplet
 		this.forwardVec[1] *= this.focalLength / 2;
 		this.forwardVec[2] *= this.focalLength / 2;
 
-		this.rightVec[0] *= this.focalLength / 2;
-		this.rightVec[1] *= this.focalLength / 2;
+		this.rightVec[0] *= this.focalLength / (2 * this.fovFactor);
+		this.rightVec[1] *= this.focalLength / (2 * this.fovFactor);
 
-		this.upVec[0] *= this.focalLength / 2;
-		this.upVec[1] *= this.focalLength / 2;
-		this.upVec[2] *= this.focalLength / 2;
+		this.upVec[0] *= this.focalLength / (2 * this.fovFactor);
+		this.upVec[1] *= this.focalLength / (2 * this.fovFactor);
+		this.upVec[2] *= this.focalLength / (2 * this.fovFactor);
 
 		
 

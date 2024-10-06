@@ -1,0 +1,78 @@
+export const extrudedCubeDE = [
+	/* glsl */`
+		float distanceEstimatorExtrudedCube(vec3 pos)
+		{
+			float scaleCenter = 2.0 * extrudedCubeSeparation;
+
+			vec3 mutablePos = abs(pos - vec3(0.0, 0.0, 1.0));
+
+			float totalDistance = (max(max(mutablePos.x, mutablePos.y), mutablePos.z) - 1.0);
+
+			for (int iteration = 0; iteration < 16; iteration++)
+			{
+				if (mutablePos.x > max(mutablePos.y, mutablePos.z))
+				{
+					mutablePos = 3.0 * mutablePos - (3.0 - 1.0) * vec3(scaleCenter, 0.0, 0.0);
+				}
+
+				else if (mutablePos.y > max(mutablePos.x, mutablePos.z))
+				{
+					mutablePos = 3.0 * mutablePos - (3.0 - 1.0) * vec3(0.0, scaleCenter, 0.0);
+				}
+
+				else
+				{
+					mutablePos = 3.0 * mutablePos - (3.0 - 1.0) * vec3(0.0, 0.0, scaleCenter);
+				}
+
+				mutablePos = abs(mutablePos);
+
+				totalDistance = min(
+					totalDistance,
+					(max(max(mutablePos.x, mutablePos.y), mutablePos.z) - 1.0)
+						/ pow(3.0, float(iteration + 1))
+				);
+			}
+			
+			return totalDistance;
+		}
+	`,
+	/* glsl */`
+		vec3 getColorExtrudedCube(vec3 pos)
+		{
+			vec3 color = vec3(0.25);
+
+			float scaleCenter = 2.0 * extrudedCubeSeparation;
+
+			vec3 mutablePos = abs(pos - vec3(0.0, 0.0, 1.0));
+
+			for (int iteration = 0; iteration < 16; iteration++)
+			{
+				if (mutablePos.x > max(mutablePos.y, mutablePos.z))
+				{
+					mutablePos = 3.0 * mutablePos - (3.0 - 1.0) * vec3(scaleCenter, 0.0, 0.0);
+
+					color += vec3(0.0, 0.75, 1.0) * pow(2.0, -float(iteration + 1));
+				}
+
+				else if (mutablePos.y > max(mutablePos.x, mutablePos.z))
+				{
+					mutablePos = 3.0 * mutablePos - (3.0 - 1.0) * vec3(0.0, scaleCenter, 0.0);
+
+					color += vec3(0.75, 0.0, 1.0) * pow(2.0, -float(iteration + 1));
+				}
+
+				else
+				{
+					mutablePos = 3.0 * mutablePos - (3.0 - 1.0) * vec3(0.0, 0.0, scaleCenter);
+
+					color += vec3(0.0, 0.0, 1.0) * pow(2.0, -float(iteration + 1));
+				}
+
+				mutablePos = abs(mutablePos);
+			}
+			
+			return color;
+		}
+	`
+];

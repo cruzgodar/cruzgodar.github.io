@@ -1,4 +1,5 @@
 import { RaymarchingFundamentals } from "./class.js";
+import { extrudedCubeDE } from "./distanceEstimators.js";
 import { getMinGlslString } from "/scripts/applets/applet.js";
 
 export class GroundAndSphere extends RaymarchingFundamentals
@@ -40,6 +41,8 @@ export class GroundAndSphere extends RaymarchingFundamentals
 			uniform float reflectivityAmount;
 			uniform float showRoomsAmount;
 			uniform float modPosAmount;
+
+			uniform float extrudedCubeSeparation;
 			
 			const float clipDistance = 1000.0;
 			const int maxMarches = 256;
@@ -67,21 +70,27 @@ export class GroundAndSphere extends RaymarchingFundamentals
 				vec3 modPos = mix(pos, mod(pos, 2.0), modPosAmount); 
 				return showSphereAmount * 1.25 - length(modPos - vec3(1.0, 1.0, 1.0));
 			}
+
+			${extrudedCubeDE[0]}
 			
 			float distanceEstimator(vec3 pos)
 			{
 				float distance1 = distanceEstimatorGround(pos);
 				float distance2 = mix(distanceEstimatorSphere(pos), distanceEstimatorRoom(pos), showRoomsAmount);
+				float distance3 = distanceEstimatorExtrudedCube(pos);
 
-				return ${getMinGlslString("distance", 2)};
+				return ${getMinGlslString("distance", 3)};
 			}
+
+			${extrudedCubeDE[1]}
 			
 			vec3 getColor(vec3 pos)
 			{
 				float distance1 = distanceEstimatorGround(pos);
 				float distance2 = mix(distanceEstimatorSphere(pos), distanceEstimatorRoom(pos), showRoomsAmount);
+				float distance3 = distanceEstimatorExtrudedCube(pos);
 
-				float minDistance = ${getMinGlslString("distance", 2)};
+				float minDistance = ${getMinGlslString("distance", 3)};
 
 				if (minDistance == distance1)
 				{
@@ -94,14 +103,20 @@ export class GroundAndSphere extends RaymarchingFundamentals
 				{
 					return vec3(0.5, 0.0, 1.0);
 				}
+
+				if (minDistance == distance3)
+				{
+					return getColorExtrudedCube(pos);
+				}
 			}
 
 			float getReflectivity(vec3 pos)
 			{
 				float distance1 = distanceEstimatorGround(pos);
 				float distance2 = mix(distanceEstimatorSphere(pos), distanceEstimatorRoom(pos), showRoomsAmount);
+				float distance3 = distanceEstimatorExtrudedCube(pos);
 
-				float minDistance = ${getMinGlslString("distance", 2)};
+				float minDistance = ${getMinGlslString("distance", 3)};
 
 				if (minDistance == distance1)
 				{
@@ -111,6 +126,11 @@ export class GroundAndSphere extends RaymarchingFundamentals
 				if (minDistance == distance2)
 				{
 					return 0.75;
+				}
+
+				if (minDistance == distance3)
+				{
+					return 0.5;
 				}
 			}
 			
@@ -192,10 +212,14 @@ export class GroundAndSphere extends RaymarchingFundamentals
 
 			vec3 computeShadingWithoutReflection(
 				vec3 pos,
+				float correctionDistance,
 				int iteration,
 				float bloomAmount
 			) {
 				vec3 surfaceNormal = getSurfaceNormal(pos);
+
+				// This corrects the position so that it's exactly on the surface (we probably marched a little bit inside).
+				pos -= surfaceNormal * correctionDistance;
 				
 				vec3 lightDirection = normalize(lightPos - pos);
 				
@@ -222,7 +246,7 @@ export class GroundAndSphere extends RaymarchingFundamentals
 			vec3 computeReflection(vec3 startPos, vec3 rayDirectionVec, int startIteration)
 			{
 				float epsilon = 0.0;
-				float t = 0.05;
+				float t = .05;
 				
 				for (int iteration = 0; iteration < maxMarches; iteration++)
 				{
@@ -235,6 +259,7 @@ export class GroundAndSphere extends RaymarchingFundamentals
 					{
 						return computeShadingWithoutReflection(
 							pos,
+							distanceToScene - epsilon,
 							iteration + startIteration,
 							computeBloom(rayDirectionVec)
 						);
@@ -255,10 +280,14 @@ export class GroundAndSphere extends RaymarchingFundamentals
 			
 			vec3 computeShading(
 				vec3 pos,
+				float correctionDistance,
 				int iteration,
 				float bloomAmount
 			) {
 				vec3 surfaceNormal = getSurfaceNormal(pos);
+
+				// This corrects the position so that it's exactly on the surface (we probably marched a little bit inside).
+				pos -= surfaceNormal * correctionDistance;
 				
 				vec3 lightDirection = normalize(lightPos - pos);
 				
@@ -320,6 +349,7 @@ export class GroundAndSphere extends RaymarchingFundamentals
 					{
 						return computeShading(
 							pos,
+							distanceToScene - epsilon,
 							iteration,
 							computeBloom(rayDirectionVec)
 						);
@@ -365,6 +395,8 @@ export class GroundAndSphere extends RaymarchingFundamentals
 				"reflectivityAmount",
 				"showRoomsAmount",
 				"modPosAmount",
+
+				"extrudedCubeSeparation",
 			]
 		});
 
@@ -377,7 +409,9 @@ export class GroundAndSphere extends RaymarchingFundamentals
 		this.wilson.gl.uniform1f(this.wilson.uniforms.shadowAmount, 1);
 		this.wilson.gl.uniform1f(this.wilson.uniforms.softShadowAmount, 1);
 		this.wilson.gl.uniform1f(this.wilson.uniforms.reflectivityAmount, 0);
-		this.wilson.gl.uniform1f(this.wilson.uniforms.showRoomsAmount, 1);
-		this.wilson.gl.uniform1f(this.wilson.uniforms.modPosAmount, 1);
+		this.wilson.gl.uniform1f(this.wilson.uniforms.showRoomsAmount, 0);
+		this.wilson.gl.uniform1f(this.wilson.uniforms.modPosAmount, 0);
+
+		this.wilson.gl.uniform1f(this.wilson.uniforms.extrudedCubeSeparation, 1);
 	}
 }

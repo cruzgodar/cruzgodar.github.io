@@ -322,20 +322,59 @@ export class Applet
 	}
 
 
-	listenForKeysPressed(keys)
+	listenForKeysPressed(keys, callback = () => {})
 	{
+		function handleKeydownEvent(e)
+		{
+			if (
+				document.activeElement.tagName === "INPUT"
+				|| document.activeElement.tagName === "TEXTAREA"
+			) {
+				return;
+			}
+			
+			const key = e.key.toLowerCase();
+
+			if (Object.prototype.hasOwnProperty.call(this.keysPressed, key))
+			{
+				e.preventDefault();
+
+				if (!this.keysPressed[key])
+				{
+					this.keysPressed[key] = true;
+					callback(key, true);
+				}
+			}
+		}
+
+		function handleKeyupEvent(e)
+		{
+			const key = e.key.toLowerCase();
+
+			if (Object.prototype.hasOwnProperty.call(this.keysPressed, key))
+			{
+				e.preventDefault();
+
+				if (this.keysPressed[key])
+				{
+					this.keysPressed[key] = false;
+					callback(key, false);
+				}
+			}
+		}
+
 		keys.forEach(key => this.keysPressed[key] = false);
 
 		addTemporaryListener({
 			object: document.documentElement,
 			event: "keydown",
-			callback:  this.handleKeydownEvent.bind(this)
+			callback: handleKeydownEvent.bind(this)
 		});
 
 		addTemporaryListener({
 			object: document.documentElement,
 			event: "keyup",
-			callback: this.handleKeyupEvent.bind(this)
+			callback: handleKeyupEvent.bind(this)
 		});
 	}
 
