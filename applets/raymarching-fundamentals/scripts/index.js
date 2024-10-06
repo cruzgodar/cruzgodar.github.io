@@ -45,14 +45,5 @@ export default function()
 			show: testCheckbox.checked,
 			duration: 1000
 		});
-
-		setTimeout(() =>
-		{
-			applet.toggleUniform({
-				name: "showRoomsAmount",
-				show: !testCheckbox.checked,
-				duration: 1000
-			});
-		}, 1000);
 	}
 }
