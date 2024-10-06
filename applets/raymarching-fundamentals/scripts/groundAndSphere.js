@@ -1,6 +1,5 @@
 import { RaymarchingFundamentals } from "./class.js";
 import { extrudedCubeDE } from "./distanceEstimators.js";
-import { getMinGlslString } from "/scripts/applets/applet.js";
 
 export class GroundAndSphere extends RaymarchingFundamentals
 {
@@ -43,6 +42,8 @@ export class GroundAndSphere extends RaymarchingFundamentals
 			uniform float modPosAmount;
 
 			uniform float extrudedCubeSeparation;
+			uniform float sphereWeight;
+			uniform float extrudedCubeWeight;
 			
 			const float clipDistance = 1000.0;
 			const int maxMarches = 256;
@@ -59,78 +60,100 @@ export class GroundAndSphere extends RaymarchingFundamentals
 				return abs(pos.z);
 			}
 
-			float distanceEstimatorSphere(vec3 pos)
+			float distanceEstimatorRoomSphere(vec3 pos)
 			{
 				vec3 modPos = mix(pos, mod(pos + vec3(1.0, 1.0, 0.0), 2.0) - vec3(1.0, 1.0, 0.0), modPosAmount); 
-				return length(modPos - vec3(0.0, 0.0, 1.0)) - showSphereAmount * 0.5;
-			}
+				float sphereDistance = length(modPos - vec3(0.0, 0.0, 1.0)) - (-0.5 + showSphereAmount);
 
-			float distanceEstimatorRoom(vec3 pos)
-			{
-				vec3 modPos = mix(pos, mod(pos, 2.0), modPosAmount); 
-				return showSphereAmount * 1.25 - length(modPos - vec3(1.0, 1.0, 1.0));
+				modPos = mix(pos, mod(pos, 2.0), modPosAmount); 
+				float roomDistance = showSphereAmount * 1.25 - length(modPos - vec3(1.0, 1.0, 1.0));
+
+				return mix(sphereDistance, roomDistance, showRoomsAmount);
 			}
 
 			${extrudedCubeDE[0]}
+
+			float distanceEstimatorObject(vec3 pos)
+			{
+				float distanceObject = 0.0;
+
+				if (sphereWeight > 0.0)
+				{
+					distanceObject += sphereWeight * distanceEstimatorRoomSphere(pos);
+				}
+
+				if (extrudedCubeWeight > 0.0)
+				{
+					distanceObject += extrudedCubeWeight * distanceEstimatorExtrudedCube(pos);
+				}
+				
+				return distanceObject;
+			}
 			
 			float distanceEstimator(vec3 pos)
 			{
-				float distance1 = distanceEstimatorGround(pos);
-				float distance2 = mix(distanceEstimatorSphere(pos), distanceEstimatorRoom(pos), showRoomsAmount);
-				float distance3 = distanceEstimatorExtrudedCube(pos);
+				float distanceGround = distanceEstimatorGround(pos);
+				float distanceObject = distanceEstimatorObject(pos);
 
-				return ${getMinGlslString("distance", 2)};
+				return min(distanceGround, distanceObject);
 			}
 
+
+
 			${extrudedCubeDE[1]}
+
+			vec3 getColorObject(vec3 pos)
+			{
+				vec3 color = vec3(0.0, 0.0, 0.0);
+
+				if (sphereWeight > 0.0)
+				{
+					color += sphereWeight * vec3(0.5, 0.0, 1.0);
+				}
+
+				if (extrudedCubeWeight > 0.0)
+				{
+					color += extrudedCubeWeight * getColorExtrudedCube(pos);
+				}
+
+				return color;
+			}
 			
 			vec3 getColor(vec3 pos)
 			{
-				float distance1 = distanceEstimatorGround(pos);
-				float distance2 = mix(distanceEstimatorSphere(pos), distanceEstimatorRoom(pos), showRoomsAmount);
-				float distance3 = distanceEstimatorExtrudedCube(pos);
+				float distanceGround = distanceEstimatorGround(pos);
+				float distanceObject = distanceEstimatorObject(pos);
 
-				float minDistance = ${getMinGlslString("distance", 2)};
+				float minDistance = min(distanceGround, distanceObject);
 
-				if (minDistance == distance1)
+				if (minDistance == distanceGround)
 				{
 					vec2 co = floor(pos.xy * 50.0);
 					return vec3(0.5, 0.5, 0.5)
 						* (1.0 + groundTextureAmount * .2 * (rand(co) - .5));
 				}
 
-				if (minDistance == distance2)
+				if (minDistance == distanceObject)
 				{
-					return vec3(0.5, 0.0, 1.0);
-				}
-
-				if (minDistance == distance3)
-				{
-					return getColorExtrudedCube(pos);
+					return getColorObject(pos);
 				}
 			}
 
 			float getReflectivity(vec3 pos)
 			{
-				float distance1 = distanceEstimatorGround(pos);
-				float distance2 = mix(distanceEstimatorSphere(pos), distanceEstimatorRoom(pos), showRoomsAmount);
-				float distance3 = distanceEstimatorExtrudedCube(pos);
+				float distanceGround = distanceEstimatorGround(pos);
+				float distanceObject = distanceEstimatorObject(pos);
 
-				float minDistance = ${getMinGlslString("distance", 2)};
+				float minDistance = min(distanceGround, distanceObject);
 
-				if (minDistance == distance1)
+				if (minDistance == distanceGround)
 				{
 					return .05;
 				}
 
-				if (minDistance == distance2)
+				if (minDistance == distanceObject)
 				{
 					return 0.15;
-				}
-
-				if (minDistance == distance3)
-				{
-					return 0.5;
 				}
 			}
 			
@@ -247,7 +270,7 @@ export class GroundAndSphere extends RaymarchingFundamentals
 			vec3 computeReflection(vec3 startPos, vec3 rayDirectionVec, int startIteration)
 			{
 				float epsilon = 0.0;
-				float t = .05;
+				float t = .0001;
 				
 				for (int iteration = 0; iteration < maxMarches; iteration++)
 				{
@@ -400,6 +423,8 @@ export class GroundAndSphere extends RaymarchingFundamentals
 				"modPosAmount",
 
 				"extrudedCubeSeparation",
+				"sphereWeight",
+				"extrudedCubeWeight",
 			]
 		});
 
@@ -412,9 +437,11 @@ export class GroundAndSphere extends RaymarchingFundamentals
 		this.wilson.gl.uniform1f(this.wilson.uniforms.shadowAmount, 1);
 		this.wilson.gl.uniform1f(this.wilson.uniforms.softShadowAmount, 1);
 		this.wilson.gl.uniform1f(this.wilson.uniforms.reflectivityAmount, 1);
-		this.wilson.gl.uniform1f(this.wilson.uniforms.showRoomsAmount, 1);
-		this.wilson.gl.uniform1f(this.wilson.uniforms.modPosAmount, 1);
+		this.wilson.gl.uniform1f(this.wilson.uniforms.showRoomsAmount, 0);
+		this.wilson.gl.uniform1f(this.wilson.uniforms.modPosAmount, 0);
 
 		this.wilson.gl.uniform1f(this.wilson.uniforms.extrudedCubeSeparation, 1);
+		this.wilson.gl.uniform1f(this.wilson.uniforms.sphereWeight, 1);
+		this.wilson.gl.uniform1f(this.wilson.uniforms.extrudedCubeWeight, 0);
 	}
 }

@@ -41,7 +41,13 @@ export default function()
 	function test()
 	{
 		applet.toggleUniform({
-			name: "modPosAmount",
+			name: "sphereWeight",
+			show: !testCheckbox.checked,
+			duration: 1000
+		});
+
+		applet.toggleUniform({
+			name: "extrudedCubeWeight",
 			show: testCheckbox.checked,
 			duration: 1000
 		});

@@ -4,7 +4,7 @@ export const extrudedCubeDE = [
 		{
 			float scaleCenter = 2.0 * extrudedCubeSeparation;
 
-			vec3 mutablePos = abs(pos - vec3(0.0, 0.0, 1.0));
+			vec3 mutablePos = abs(pos * 2.0 - vec3(0.0, 0.0, 2.0));
 
 			float totalDistance = (max(max(mutablePos.x, mutablePos.y), mutablePos.z) - 1.0);
 
@@ -34,7 +34,7 @@ export const extrudedCubeDE = [
 				);
 			}
 			
-			return totalDistance;
+			return totalDistance * 0.5;
 		}
 	`,
 	/* glsl */`
@@ -44,7 +44,7 @@ export const extrudedCubeDE = [
 
 			float scaleCenter = 2.0 * extrudedCubeSeparation;
 
-			vec3 mutablePos = abs(pos - vec3(0.0, 0.0, 1.0));
+			vec3 mutablePos = abs(pos * 2.0 - vec3(0.0, 0.0, 2.0));
 
 			for (int iteration = 0; iteration < 16; iteration++)
 			{
