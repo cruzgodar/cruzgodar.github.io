@@ -153,6 +153,7 @@ async function testPages(files)
 		currentFile = file;
 		console.log(`Testing ${file}...`);
 		await page.goto(`http://${ip}:${port}/${file}`);
+		await new Promise(resolve => setTimeout(resolve, 1000));
 	}
 
 	await page.close();

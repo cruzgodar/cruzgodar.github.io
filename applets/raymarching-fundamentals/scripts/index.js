@@ -41,7 +41,7 @@ export default function()
 	function test()
 	{
 		applet.toggleUniform({
-			name: "softShadowAmount",
+			name: "reflectivityAmount",
 			show: testCheckbox.checked
 		});
 	}

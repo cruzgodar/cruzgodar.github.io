@@ -2436,14 +2436,14 @@ export class Wilson
 
 
 	//Downloads the current state of the canvas as a png. If using a WebGL canvas, another frame will be drawn before downloading.
-	downloadFrame(filename)
+	downloadFrame(filename, drawNewFrame = true)
 	{
-		if (this.render.renderType === 1)
+		if (this.render.renderType === 1 && drawNewFrame)
 		{
 			this.render.drawFrame(this.render.lastImage);
 		}
 
-		else if (this.render.renderType === 2)
+		else if (this.render.renderType === 2 && drawNewFrame)
 		{
 			this.render.drawFrame();
 		}
