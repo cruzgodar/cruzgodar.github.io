@@ -121,7 +121,7 @@ function getDistanceEstimatorGlsl(useForGetColor = false)
 			mutablePos = vec3(minAbsPos, sumAbsPos - minAbsPos - maxAbsPos, maxAbsPos);
 		}
 		
-		${useForGetColor ? "if (totalDistance < 0.0) {return vec3(1.0, 0.0, 0.0);} return abs(color);" : "return totalDistance / effectiveScale;"}
+		${useForGetColor ? "return abs(color);" : "return totalDistance / effectiveScale;"}
 	`;
 }
 

@@ -42,10 +42,9 @@ export class GroundAndSphere extends RaymarchingFundamentals
 			uniform float reflectivityAmount;
 			uniform float showRoomsAmount;
 			uniform float modPosAmount;
+			uniform float sphereWeight;
 
 			uniform float extrudedCubeSeparation;
-
-			uniform float sphereWeight;
 			uniform float extrudedCubeWeight;
 			
 			const float clipDistance = 1000.0;
@@ -242,8 +241,7 @@ export class GroundAndSphere extends RaymarchingFundamentals
 				vec3 pos,
 				float epsilon,
 				float correctionDistance,
-				int iteration,
-				float bloomAmount
+				int iteration
 			) {
 				vec3 surfaceNormal = getSurfaceNormal(pos, epsilon);
 
@@ -268,7 +266,7 @@ export class GroundAndSphere extends RaymarchingFundamentals
 					* max((1.0 - ambientOcclusionAmount * float(iteration) / float(maxMarches)), 0.0);
 				
 				//Apply fog.
-				return mix(color, fogColor * bloomAmount, 1.0 - exp(-distance(pos, cameraPos) * fogScaling * fogAmount));
+				return mix(color, fogColor, 1.0 - exp(-distance(pos, cameraPos) * fogScaling * fogAmount));
 			}
 
 			// Unlike in raymarch(), startPos is replacing cameraPos, and rayDirectionVec is precomputed.
@@ -290,8 +288,7 @@ export class GroundAndSphere extends RaymarchingFundamentals
 							pos,
 							epsilon,
 							distanceToScene,
-							iteration + startIteration,
-							computeBloom(rayDirectionVec)
+							iteration + startIteration
 						);
 					}
 					
@@ -312,8 +309,7 @@ export class GroundAndSphere extends RaymarchingFundamentals
 				vec3 pos,
 				float epsilon,
 				float correctionDistance,
-				int iteration,
-				float bloomAmount
+				int iteration
 			) {
 				vec3 surfaceNormal = getSurfaceNormal(pos, epsilon);
 
@@ -353,7 +349,7 @@ export class GroundAndSphere extends RaymarchingFundamentals
 				}
 				
 				//Apply fog.
-				return mix(color, fogColor * bloomAmount, 1.0 - exp(-distance(pos, cameraPos) * fogScaling * fogAmount));
+				return mix(color, fogColor, 1.0 - exp(-distance(pos, cameraPos) * fogScaling * fogAmount));
 			}
 
 
@@ -381,8 +377,7 @@ export class GroundAndSphere extends RaymarchingFundamentals
 							pos,
 							epsilon,
 							distanceToScene,
-							iteration,
-							computeBloom(rayDirectionVec)
+							iteration
 						);
 					}
 					
@@ -426,9 +421,9 @@ export class GroundAndSphere extends RaymarchingFundamentals
 				"reflectivityAmount",
 				"showRoomsAmount",
 				"modPosAmount",
+				"sphereWeight",
 
 				"extrudedCubeSeparation",
-				"sphereWeight",
 				"extrudedCubeWeight",
 			]
 		});
@@ -442,11 +437,11 @@ export class GroundAndSphere extends RaymarchingFundamentals
 		this.wilson.gl.uniform1f(this.wilson.uniforms.shadowAmount, 1);
 		this.wilson.gl.uniform1f(this.wilson.uniforms.softShadowAmount, 1);
 		this.wilson.gl.uniform1f(this.wilson.uniforms.reflectivityAmount, 0);
-		this.wilson.gl.uniform1f(this.wilson.uniforms.showRoomsAmount, 0);
-		this.wilson.gl.uniform1f(this.wilson.uniforms.modPosAmount, 0);
-		this.wilson.gl.uniform1f(this.wilson.uniforms.sphereWeight, 0);
+		this.wilson.gl.uniform1f(this.wilson.uniforms.showRoomsAmount, 1);
+		this.wilson.gl.uniform1f(this.wilson.uniforms.modPosAmount, 1);
+		this.wilson.gl.uniform1f(this.wilson.uniforms.sphereWeight, 1);
 
-		this.wilson.gl.uniform1f(this.wilson.uniforms.extrudedCubeWeight, 1);
-		this.wilson.gl.uniform1f(this.wilson.uniforms.extrudedCubeSeparation, 3);
+		this.wilson.gl.uniform1f(this.wilson.uniforms.extrudedCubeWeight, 0);
+		this.wilson.gl.uniform1f(this.wilson.uniforms.extrudedCubeSeparation, 2);
 	}
 }
