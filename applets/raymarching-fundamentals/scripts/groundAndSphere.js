@@ -436,9 +436,9 @@ export class GroundAndSphere extends RaymarchingFundamentals
 		this.wilson.gl.uniform1f(this.wilson.uniforms.ambientLightAmount, 1);
 		this.wilson.gl.uniform1f(this.wilson.uniforms.shadowAmount, 1);
 		this.wilson.gl.uniform1f(this.wilson.uniforms.softShadowAmount, 1);
-		this.wilson.gl.uniform1f(this.wilson.uniforms.reflectivityAmount, 0);
-		this.wilson.gl.uniform1f(this.wilson.uniforms.showRoomsAmount, 1);
-		this.wilson.gl.uniform1f(this.wilson.uniforms.modPosAmount, 1);
+		this.wilson.gl.uniform1f(this.wilson.uniforms.reflectivityAmount, 1);
+		this.wilson.gl.uniform1f(this.wilson.uniforms.showRoomsAmount, 0);
+		this.wilson.gl.uniform1f(this.wilson.uniforms.modPosAmount, 0);
 		this.wilson.gl.uniform1f(this.wilson.uniforms.sphereWeight, 1);
 
 		this.wilson.gl.uniform1f(this.wilson.uniforms.extrudedCubeWeight, 0);
