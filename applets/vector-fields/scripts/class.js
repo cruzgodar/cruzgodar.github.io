@@ -4,7 +4,7 @@ import {
 	loadGlsl
 } from "../../../scripts/src/complexGlsl.js";
 import { AnimationFrameApplet } from "/scripts/applets/animationFrameApplet.js";
-import { Applet, getFloatGlsl, getMaxGlslString } from "/scripts/applets/applet.js";
+import { Applet, getFloatGlsl, getMaxGlslString, tempShader } from "/scripts/applets/applet.js";
 import { addTemporaryListener } from "/scripts/src/main.js";
 import { Wilson } from "/scripts/wilson.js";
 
@@ -82,18 +82,6 @@ export class VectorField extends AnimationFrameApplet
 
 		this.updateCanvas = this.createHiddenCanvas();
 		this.dimCanvas = this.createHiddenCanvas();
-
-
-
-		const tempShader = /* glsl */`
-			precision highp float;
-			varying vec2 uv;
-			
-			void main(void)
-			{
-				gl_FragColor = vec4(0.0, 0.0, 0.0, 1.0);
-			}
-		`;
 
 		const optionsUpdate =
 		{

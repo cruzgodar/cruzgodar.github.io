@@ -1276,3 +1276,13 @@ export function getMatrixGlsl(matrix)
 	console.error("Invalid matrix shape!");
 	return "";
 }
+
+export const tempShader = /* glsl */`
+	precision highp float;
+	varying vec2 uv;
+	
+	void main(void)
+	{
+		gl_FragColor = vec4(0.0, 0.0, 0.0, 1.0);
+	}
+`;

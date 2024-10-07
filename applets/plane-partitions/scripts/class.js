@@ -50,6 +50,7 @@ import {
 	uncolorCubes
 } from "./styleCubes.js";
 import { AnimationFrameApplet } from "/scripts/applets/animationFrameApplet.js";
+import { tempShader } from "/scripts/applets/applet.js";
 import { convertColor } from "/scripts/src/browser.js";
 import { $$ } from "/scripts/src/main.js";
 import * as THREE from "/scripts/three.js";
@@ -195,6 +196,8 @@ export class PlanePartitions extends AnimationFrameApplet
 		const options =
 		{
 			renderer: "gpu",
+
+			shader: tempShader,
 
 			canvasWidth: this.resolution,
 			canvasHeight: this.resolution,

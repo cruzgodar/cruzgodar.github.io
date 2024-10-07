@@ -46,7 +46,25 @@ const port = 5500;
 
 
 
-export async function validateAllLinks(files)
+async function eslint()
+{
+	const proc = spawnSync("eslint", [
+		"--ext",
+		".js",
+		root
+	]);
+	
+	const text = proc.stdout.toString();
+
+	if (text)
+	{
+		console.warn(text);
+	}
+}
+
+
+
+async function validateAllLinks(files)
 {
 	const links = Array.from(
 		new Set(
@@ -144,8 +162,13 @@ async function testPages(files)
 			return;
 		}
 
-		const args = await Promise.all(e.args().map(a => a.jsonValue()));
-		console.error(`Error in ${currentFile}: ${args.join(" ")}`);
+		if (e.type() === "error")
+		{
+			console.error(`Error in ${currentFile}: ${e.text()}`);
+			return;
+		}
+
+		console.warn(`Error in ${currentFile}: ${e.text()}`);
 	});
 
 	for (const file of files)
@@ -293,6 +316,9 @@ async function test(clean)
 		.split("\n")
 		.filter(file => file.slice(file.lastIndexOf(".")) === ".html")
 		.filter(file => !excludeFiles.includes(file));
+
+	console.log("Linting...");
+	await eslint();
 
 	console.log("Validating links...");
 	await validateAllLinks(files.filter(file => file.includes("data.html")));

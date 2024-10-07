@@ -1,4 +1,4 @@
-import { Applet } from "../../../scripts/applets/applet.js";
+import { Applet, tempShader } from "../../../scripts/applets/applet.js";
 import { SolRooms, SolSpheres } from "./geometries/sol.js";
 import anime from "/scripts/anime.js";
 import { aspectRatio } from "/scripts/src/layout.js";
@@ -57,16 +57,6 @@ export class ThurstonGeometry extends Applet
 		canvas,
 	}) {
 		super(canvas);
-
-		const tempShader = /* glsl */`
-			precision highp float;
-			varying vec2 uv;
-			
-			void main(void)
-			{
-				gl_FragColor = vec4(0.0, 0.0, 0.0, 1.0);
-			}
-		`;
 
 		const options =
 		{

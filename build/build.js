@@ -20,7 +20,6 @@ const excludeFromBuild =
 const options =
 {
 	clean: process.argv.slice(2).includes("-c"),
-	fix: process.argv.slice(2).includes("-f"),
 };
 
 let sitemap;
@@ -29,11 +28,6 @@ let sitemap;
 
 async function buildSite()
 {
-	if (options.fix)
-	{
-		await eslint();
-	}
-
 	await buildSitemap();
 
 	const text = await read(sitemapPath);
@@ -162,23 +156,6 @@ function buildCSSFile(file)
 		"--output",
 		root + outputFile
 	]);
-}
-
-async function eslint()
-{
-	const proc = spawnSync("eslint", [
-		"--ext",
-		".js",
-		"--fix",
-		root
-	]);
-	
-	const text = proc.stdout.toString();
-
-	if (text)
-	{
-		console.log(text);
-	}
 }
 
 

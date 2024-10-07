@@ -1,5 +1,5 @@
 import anime from "/scripts/anime.js";
-import { Applet } from "/scripts/applets/applet.js";
+import { Applet, tempShader } from "/scripts/applets/applet.js";
 import { ThreeApplet } from "/scripts/applets/threeApplet.js";
 import { addTemporaryListener } from "/scripts/src/main.js";
 import * as THREE from "/scripts/three.js";
@@ -102,6 +102,8 @@ export class HopfFibration extends ThreeApplet
 		const options =
 		{
 			renderer: "gpu",
+
+			shader: tempShader,
 
 			canvasWidth: this.imageSize,
 			canvasHeight: this.imageSize,

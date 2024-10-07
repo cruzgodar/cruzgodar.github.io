@@ -1,5 +1,6 @@
 import { getGlslBundle, loadGlsl } from "../../../scripts/src/complexGlsl.js";
 import { AnimationFrameApplet } from "/scripts/applets/animationFrameApplet.js";
+import { tempShader } from "/scripts/applets/applet.js";
 import { addTemporaryListener } from "/scripts/src/main.js";
 import { Wilson } from "/scripts/wilson.js";
 
@@ -40,18 +41,6 @@ export class GeneralizedJuliaSet extends AnimationFrameApplet
 		this.switchJuliaModeButton = switchJuliaModeButton;
 
 		const hiddenCanvas = this.createHiddenCanvas();
-
-
-
-		const tempShader = /* glsl */`
-			precision highp float;
-			varying vec2 uv;
-			
-			void main(void)
-			{
-				gl_FragColor = vec4(0.0, 0.0, 0.0, 1.0);
-			}
-		`;
 
 		const options =
 		{
