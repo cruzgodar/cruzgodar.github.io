@@ -138,6 +138,20 @@ Beware! This course uses $\log$ to denote the base-$e$ logarithm --- what you've
 
 	Evaluate $$\frac{d}{dx} \left. \left[ \log \left( \cos\left( x^2 \right) \right) \right] \right|_{x = \sqrt{3\pi / 4}}$$.
 
+	**Solution:** Applying the chain rule multiple times, we have
+	
+	$$
+		\frac{d}{dx} \left[ \log \left( \cos\left( x^2 \right) \right) \right] &= \frac{1}{\cos\left( x^2 \right)} \left( -\sin\left( x^2 \right) \right) \left( 2x \right).
+
+		&= -2x \tan\left( x^2 \right).
+	$$
+
+	Plugging in $x = \sqrt{3\pi/4}$ results in
+
+	$$
+		-2\sqrt{3\pi/4} \tan\left( 3\pi / 4 \right) &= 2\sqrt{3\pi/4}.
+	$$
+
 ###
 
 We'll be using limits and derivatives quite a bit throughout the course --- derivatives are in the title, after all! I have a full set of interactive notes available for calculus I, so if you're feeling rusty, have a look at those.
