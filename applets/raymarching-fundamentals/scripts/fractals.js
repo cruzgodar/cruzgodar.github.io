@@ -1,4 +1,11 @@
-import{RaymarchingFundamentals}from"./class.min.js";import{extrudedCubeDE,roomSphereDE}from"./distanceEstimators.min.js";class GroundAndSphere extends RaymarchingFundamentals{constructor({canvas}){var t=`
+import { RaymarchingFundamentals } from "./class.js";
+import { extrudedCubeDE } from "./distanceEstimators.js";
+
+export class Fractals extends RaymarchingFundamentals
+{
+	constructor({ canvas })
+	{
+		const fragShaderSource = /* glsl */`
 			precision highp float;
 			
 			varying vec2 uv;
@@ -24,18 +31,8 @@ import{RaymarchingFundamentals}from"./class.min.js";import{extrudedCubeDE,roomSp
 			uniform float objectRotation;
 			uniform float objectFloat;
 
-			uniform float showSphereAmount;
-			uniform float groundTextureAmount;
-			uniform float fogAmount;
-			uniform float ambientOcclusionAmount;
-			uniform float pointLightAmount;
-			uniform float ambientLightAmount;
 			uniform float shadowAmount;
-			uniform float softShadowAmount;
 			uniform float reflectivityAmount;
-			uniform float showRoomsAmount;
-			uniform float modPosAmount;
-			uniform float sphereWeight;
 
 			uniform float extrudedCubeSeparation;
 			uniform float extrudedCubeWeight;
@@ -57,7 +54,6 @@ import{RaymarchingFundamentals}from"./class.min.js";import{extrudedCubeDE,roomSp
 				return abs(pos.z);
 			}
 
-			${roomSphereDE[0]}
 			${extrudedCubeDE[0]}
 
 			float distanceEstimatorObject(vec3 pos)
@@ -67,11 +63,6 @@ import{RaymarchingFundamentals}from"./class.min.js";import{extrudedCubeDE,roomSp
 				float c = cos(objectRotation);
 				float s = sin(objectRotation);
 				vec3 rotatedPos = mat3(c, s, 0.0, -s, c, 0.0, 0.0, 0.0, 1.0) * (pos + vec3(0.0, 0.0, objectFloat));
-
-				if (sphereWeight > 0.0)
-				{
-					distanceObject += sphereWeight * distanceEstimatorRoomSphere(rotatedPos);
-				}
 
 				if (extrudedCubeWeight > 0.0)
 				{
@@ -89,7 +80,6 @@ import{RaymarchingFundamentals}from"./class.min.js";import{extrudedCubeDE,roomSp
 				return min(distanceGround, distanceObject);
 			}
 
-			${roomSphereDE[1]}
 			${extrudedCubeDE[1]}
 
 			vec3 getColorObject(vec3 pos)
@@ -99,11 +89,6 @@ import{RaymarchingFundamentals}from"./class.min.js";import{extrudedCubeDE,roomSp
 				float c = cos(objectRotation);
 				float s = sin(objectRotation);
 				vec3 rotatedPos = mat3(c, s, 0.0, -s, c, 0.0, 0.0, 0.0, 1.0) * (pos + vec3(0.0, 0.0, objectFloat));
-
-				if (sphereWeight > 0.0)
-				{
-					color += sphereWeight * getColorRoomSphere(rotatedPos);
-				}
 
 				if (extrudedCubeWeight > 0.0)
 				{
@@ -124,7 +109,7 @@ import{RaymarchingFundamentals}from"./class.min.js";import{extrudedCubeDE,roomSp
 				{
 					vec2 co = floor(pos.xy * 50.0);
 					return vec3(0.5, 0.5, 0.5)
-						* (1.0 + groundTextureAmount * .2 * (rand(co) - .5));
+						* (1.0 + .2 * (rand(co) - .5));
 				}
 
 				if (minDistance == distanceObject)
@@ -168,7 +153,7 @@ import{RaymarchingFundamentals}from"./class.min.js";import{extrudedCubeDE,roomSp
 
 			float computeBloom(vec3 rayDirectionVec)
 			{
-				float bloom = max(
+				return max(
 					1.0,
 					pow(
 						1.0 / distance(
@@ -177,12 +162,6 @@ import{RaymarchingFundamentals}from"./class.min.js";import{extrudedCubeDE,roomSp
 						),
 						bloomPower
 					)
-				);
-
-				return mix(
-					1.0,
-					bloom,
-					pointLightAmount
 				);
 			}
 
@@ -206,13 +185,9 @@ import{RaymarchingFundamentals}from"./class.min.js";import{extrudedCubeDE,roomSp
 					float distanceToScene = distanceEstimator(pos);
 					epsilon = max(.0000006, 1.0 * t / float(imageSize));
 
-					softShadowFactor = mix(
-						1.0,
-						min(softShadowFactor, max(distanceToScene, 0.0) / t * 20.0),
-						softShadowAmount
-					);
+					softShadowFactor = min(softShadowFactor, max(distanceToScene, 0.0) / t * 20.0);
 
-					if (t > clipDistance || length(pos - lightPos) < pointLightAmount * 0.2)
+					if (t > clipDistance || length(pos - lightPos) < 0.2)
 					{
 						return clamp(softShadowFactor, maxShadowAmount, 1.0);
 					}
@@ -246,8 +221,8 @@ import{RaymarchingFundamentals}from"./class.min.js";import{extrudedCubeDE,roomSp
 				float dotProduct = dot(surfaceNormal, lightDirection);
 				
 				float lightIntensity = max(
-					lightBrightness * dotProduct * pointLightAmount,
-					ambientLightAmount * .4
+					lightBrightness * dotProduct,
+					.25
 				);
 
 				float shadowIntensity = mix(1.0, computeShadowIntensity(pos, lightDirection), shadowAmount);
@@ -256,10 +231,10 @@ import{RaymarchingFundamentals}from"./class.min.js";import{extrudedCubeDE,roomSp
 				vec3 color = getColor(pos)
 					* lightIntensity
 					* shadowIntensity
-					* max((1.0 - ambientOcclusionAmount * float(iteration) / float(maxMarches)), 0.0);
+					* max((1.0 - float(iteration) / float(maxMarches)), 0.0);
 				
 				//Apply fog.
-				return mix(color, fogColor, 1.0 - exp(-distance(pos, cameraPos) * fogScaling * fogAmount));
+				return mix(color, fogColor, 1.0 - exp(-distance(pos, cameraPos) * fogScaling));
 			}
 
 			// Unlike in raymarch(), startPos is replacing cameraPos, and rayDirectionVec is precomputed.
@@ -314,8 +289,8 @@ import{RaymarchingFundamentals}from"./class.min.js";import{extrudedCubeDE,roomSp
 				float dotProduct = dot(surfaceNormal, lightDirection);
 				
 				float lightIntensity = max(
-					lightBrightness * dotProduct * pointLightAmount,
-					ambientLightAmount * .25
+					lightBrightness * dotProduct,
+					.25
 				);
 
 				float shadowIntensity = 1.0;
@@ -329,7 +304,7 @@ import{RaymarchingFundamentals}from"./class.min.js";import{extrudedCubeDE,roomSp
 				vec3 color = getColor(pos)
 					* lightIntensity
 					* shadowIntensity
-					* max((1.0 - ambientOcclusionAmount * float(iteration) / float(maxMarches)), 0.0);
+					* max((1.0 - float(iteration) / float(maxMarches)), 0.0);
 
 				vec3 reflectedDirection = reflect(normalize(pos - cameraPos) * .95, surfaceNormal);
 				if (reflectivityAmount > 0.0)
@@ -342,7 +317,7 @@ import{RaymarchingFundamentals}from"./class.min.js";import{extrudedCubeDE,roomSp
 				}
 				
 				//Apply fog.
-				return mix(color, fogColor, 1.0 - exp(-distance(pos, cameraPos) * fogScaling * fogAmount));
+				return mix(color, fogColor, 1.0 - exp(-distance(pos, cameraPos) * fogScaling));
 			}
 
 
@@ -395,4 +370,26 @@ import{RaymarchingFundamentals}from"./class.min.js";import{extrudedCubeDE,roomSp
 				
 				gl_FragColor = vec4(finalColor.xyz, 1.0);
 			}
-		`;console.log(t),super({canvas:canvas,fragShaderSource:t,uniforms:["showSphereAmount","groundTextureAmount","fogAmount","ambientOcclusionAmount","pointLightAmount","ambientLightAmount","shadowAmount","softShadowAmount","reflectivityAmount","showRoomsAmount","modPosAmount","sphereWeight","extrudedCubeSeparation","extrudedCubeWeight"]}),this.wilson.gl.uniform1f(this.wilson.uniforms.showSphereAmount,1),this.wilson.gl.uniform1f(this.wilson.uniforms.groundTextureAmount,1),this.wilson.gl.uniform1f(this.wilson.uniforms.fogAmount,1),this.wilson.gl.uniform1f(this.wilson.uniforms.ambientOcclusionAmount,1),this.wilson.gl.uniform1f(this.wilson.uniforms.pointLightAmount,1),this.wilson.gl.uniform1f(this.wilson.uniforms.ambientLightAmount,1),this.wilson.gl.uniform1f(this.wilson.uniforms.shadowAmount,1),this.wilson.gl.uniform1f(this.wilson.uniforms.softShadowAmount,1),this.wilson.gl.uniform1f(this.wilson.uniforms.reflectivityAmount,0),this.wilson.gl.uniform1f(this.wilson.uniforms.showRoomsAmount,1),this.wilson.gl.uniform1f(this.wilson.uniforms.modPosAmount,1),this.wilson.gl.uniform1f(this.wilson.uniforms.sphereWeight,1),this.wilson.gl.uniform1f(this.wilson.uniforms.extrudedCubeWeight,0),this.wilson.gl.uniform1f(this.wilson.uniforms.extrudedCubeSeparation,2)}}export{GroundAndSphere};
+		`;
+
+		console.log(fragShaderSource);
+
+		super({
+			canvas,
+			fragShaderSource,
+			uniforms: [
+				"shadowAmount",
+				"reflectivityAmount",
+
+				"extrudedCubeSeparation",
+				"extrudedCubeWeight",
+			]
+		});
+
+		this.wilson.gl.uniform1f(this.wilson.uniforms.shadowAmount, 1);
+		this.wilson.gl.uniform1f(this.wilson.uniforms.reflectivityAmount, 0);
+
+		this.wilson.gl.uniform1f(this.wilson.uniforms.extrudedCubeWeight, 1);
+		this.wilson.gl.uniform1f(this.wilson.uniforms.extrudedCubeSeparation, 2);
+	}
+}
