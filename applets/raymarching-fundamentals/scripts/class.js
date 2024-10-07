@@ -11,6 +11,9 @@ export class RaymarchingFundamentals extends RaymarchApplet
 	phi = Math.PI / 2;
 	lockZ = 1;
 
+	objectRotation = 0;
+	objectFloat = 0;
+
 
 
 	constructor({ canvas, fragShaderSource, uniforms })
@@ -66,6 +69,8 @@ export class RaymarchingFundamentals extends RaymarchApplet
 			"rightVec",
 			"upVec",
 			"focalLength",
+			"objectRotation",
+			"objectFloat",
 			...uniforms
 		]);
 
@@ -134,6 +139,16 @@ export class RaymarchingFundamentals extends RaymarchApplet
 			this.focalLength
 		);
 
+		this.wilson.gl.uniform1f(
+			this.wilson.uniforms["objectRotation"],
+			this.objectRotation
+		);
+
+		this.wilson.gl.uniform1f(
+			this.wilson.uniforms["objectFloat"],
+			this.objectFloat
+		);
+
 
 
 		const boundFunction = () => this.changeResolution();
@@ -148,13 +163,23 @@ export class RaymarchingFundamentals extends RaymarchApplet
 		this.resume();
 	}
 
+	updateRotationAndFloat()
+	{
+		this.objectRotation += .003;
+		this.wilson.gl.uniform1f(this.wilson.uniforms.objectRotation, this.objectRotation);
 
+		this.objectFloat = .1 * Math.sin(3 * this.objectRotation);
+		this.wilson.gl.uniform1f(this.wilson.uniforms.objectFloat, this.objectFloat);
+
+		this.needNewFrame = true;
+	}
 
 	prepareFrame(timeElapsed)
 	{
 		this.pan.update(timeElapsed);
 		this.zoom.update(timeElapsed);
 		this.moveUpdate(timeElapsed);
+		this.updateRotationAndFloat();
 	}
 
 	drawFrame()
@@ -247,11 +272,35 @@ export class RaymarchingFundamentals extends RaymarchApplet
 			targets: dummy,
 			t: 1,
 			duration,
-			easing: "easeOutQuint",
+			easing: "easeInOutQuart",
 			update: () =>
 			{
 				const t = show ? dummy.t : (1 - dummy.t);
 				this.wilson.gl.uniform1f(this.wilson.uniforms[name], t);
+				this.needNewFrame = true;
+			}
+		});
+	}
+
+	animateUniform({
+		name,
+		startValue,
+		endValue,
+		duration = 2000
+	}) {
+		const dummy = { t: 0 };
+
+		return anime({
+			targets: dummy,
+			t: 1,
+			duration,
+			easing: "easeInOutQuad",
+			loop: true,
+			direction: "alternate",
+			update: () =>
+			{
+				const uniformValue = startValue + (endValue - startValue) * dummy.t;
+				this.wilson.gl.uniform1f(this.wilson.uniforms[name], uniformValue);
 				this.needNewFrame = true;
 			}
 		});

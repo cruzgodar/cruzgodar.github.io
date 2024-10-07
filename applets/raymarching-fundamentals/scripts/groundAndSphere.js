@@ -1,5 +1,5 @@
 import { RaymarchingFundamentals } from "./class.js";
-import { extrudedCubeDE } from "./distanceEstimators.js";
+import { extrudedCubeDE, roomSphereDE } from "./distanceEstimators.js";
 
 export class GroundAndSphere extends RaymarchingFundamentals
 {
@@ -28,6 +28,8 @@ export class GroundAndSphere extends RaymarchingFundamentals
 			const float lightBrightness = 1.0;
 			const float maxShadowAmount = .5;
 			uniform int imageSize;
+			uniform float objectRotation;
+			uniform float objectFloat;
 
 			uniform float showSphereAmount;
 			uniform float groundTextureAmount;
@@ -42,11 +44,14 @@ export class GroundAndSphere extends RaymarchingFundamentals
 			uniform float modPosAmount;
 
 			uniform float extrudedCubeSeparation;
+
 			uniform float sphereWeight;
 			uniform float extrudedCubeWeight;
 			
 			const float clipDistance = 1000.0;
 			const int maxMarches = 256;
+			const int maxShadowMarches = 128;
+			const int maxReflectionMarches = 256;
 			const vec3 fogColor = vec3(0.6, 0.73, 0.87);
 			const float fogScaling = .05;
 
@@ -60,31 +65,25 @@ export class GroundAndSphere extends RaymarchingFundamentals
 				return abs(pos.z);
 			}
 
-			float distanceEstimatorRoomSphere(vec3 pos)
-			{
-				vec3 modPos = mix(pos, mod(pos + vec3(1.0, 1.0, 0.0), 2.0) - vec3(1.0, 1.0, 0.0), modPosAmount); 
-				float sphereDistance = length(modPos - vec3(0.0, 0.0, 1.0)) - (-0.5 + showSphereAmount);
-
-				modPos = mix(pos, mod(pos, 2.0), modPosAmount); 
-				float roomDistance = showSphereAmount * 1.25 - length(modPos - vec3(1.0, 1.0, 1.0));
-
-				return mix(sphereDistance, roomDistance, showRoomsAmount);
-			}
-
+			${roomSphereDE[0]}
 			${extrudedCubeDE[0]}
 
 			float distanceEstimatorObject(vec3 pos)
 			{
 				float distanceObject = 0.0;
 
+				float c = cos(objectRotation);
+				float s = sin(objectRotation);
+				vec3 rotatedPos = mat3(c, s, 0.0, -s, c, 0.0, 0.0, 0.0, 1.0) * (pos + vec3(0.0, 0.0, objectFloat));
+
 				if (sphereWeight > 0.0)
 				{
-					distanceObject += sphereWeight * distanceEstimatorRoomSphere(pos);
+					distanceObject += sphereWeight * distanceEstimatorRoomSphere(rotatedPos);
 				}
 
 				if (extrudedCubeWeight > 0.0)
 				{
-					distanceObject += extrudedCubeWeight * distanceEstimatorExtrudedCube(pos);
+					distanceObject += extrudedCubeWeight * distanceEstimatorExtrudedCube(rotatedPos);
 				}
 				
 				return distanceObject;
@@ -98,22 +97,25 @@ export class GroundAndSphere extends RaymarchingFundamentals
 				return min(distanceGround, distanceObject);
 			}
 
-
-
+			${roomSphereDE[1]}
 			${extrudedCubeDE[1]}
 
 			vec3 getColorObject(vec3 pos)
 			{
 				vec3 color = vec3(0.0, 0.0, 0.0);
 
+				float c = cos(objectRotation);
+				float s = sin(objectRotation);
+				vec3 rotatedPos = mat3(c, s, 0.0, -s, c, 0.0, 0.0, 0.0, 1.0) * (pos + vec3(0.0, 0.0, objectFloat));
+
 				if (sphereWeight > 0.0)
 				{
-					color += sphereWeight * vec3(0.5, 0.0, 1.0);
+					color += sphereWeight * getColorRoomSphere(rotatedPos);
 				}
 
 				if (extrudedCubeWeight > 0.0)
 				{
-					color += extrudedCubeWeight * getColorExtrudedCube(pos);
+					color += extrudedCubeWeight * getColorExtrudedCube(rotatedPos);
 				}
 
 				return color;
@@ -202,16 +204,19 @@ export class GroundAndSphere extends RaymarchingFundamentals
 
 				float softShadowFactor = 100.0;
 				
-				float t = 0.5;
+				float t = 0.01;
+				float epsilon = 0.0;
 
-				for (int iteration = 0; iteration < maxMarches; iteration++)
+				for (int iteration = 0; iteration < maxShadowMarches; iteration++)
 				{
 					vec3 pos = startPos + t * rayDirectionVec;
 					
 					float distanceToScene = distanceEstimator(pos);
+					epsilon = max(.0000006, 1.0 * t / float(imageSize));
+
 					softShadowFactor = mix(
 						1.0,
-						min(softShadowFactor, max(distanceToScene, 0.0) / t * 5.0),
+						min(softShadowFactor, max(distanceToScene, 0.0) / t * 20.0),
 						softShadowAmount
 					);
 
@@ -220,7 +225,7 @@ export class GroundAndSphere extends RaymarchingFundamentals
 						return clamp(softShadowFactor, maxShadowAmount, 1.0);
 					}
 
-					if (distanceToScene < 0.01)
+					if (distanceToScene < epsilon)
 					{
 						return maxShadowAmount;
 					}
@@ -251,7 +256,7 @@ export class GroundAndSphere extends RaymarchingFundamentals
 				
 				float lightIntensity = max(
 					lightBrightness * dotProduct * pointLightAmount,
-					ambientLightAmount * .25
+					ambientLightAmount * .4
 				);
 
 				float shadowIntensity = mix(1.0, computeShadowIntensity(pos, lightDirection), shadowAmount);
@@ -272,7 +277,7 @@ export class GroundAndSphere extends RaymarchingFundamentals
 				float epsilon = 0.0;
 				float t = .0001;
 				
-				for (int iteration = 0; iteration < maxMarches; iteration++)
+				for (int iteration = 0; iteration < maxReflectionMarches; iteration++)
 				{
 					vec3 pos = startPos + t * rayDirectionVec;
 					
@@ -436,12 +441,12 @@ export class GroundAndSphere extends RaymarchingFundamentals
 		this.wilson.gl.uniform1f(this.wilson.uniforms.ambientLightAmount, 1);
 		this.wilson.gl.uniform1f(this.wilson.uniforms.shadowAmount, 1);
 		this.wilson.gl.uniform1f(this.wilson.uniforms.softShadowAmount, 1);
-		this.wilson.gl.uniform1f(this.wilson.uniforms.reflectivityAmount, 1);
+		this.wilson.gl.uniform1f(this.wilson.uniforms.reflectivityAmount, 0);
 		this.wilson.gl.uniform1f(this.wilson.uniforms.showRoomsAmount, 0);
 		this.wilson.gl.uniform1f(this.wilson.uniforms.modPosAmount, 0);
+		this.wilson.gl.uniform1f(this.wilson.uniforms.sphereWeight, 0);
 
-		this.wilson.gl.uniform1f(this.wilson.uniforms.extrudedCubeSeparation, 1);
-		this.wilson.gl.uniform1f(this.wilson.uniforms.sphereWeight, 1);
-		this.wilson.gl.uniform1f(this.wilson.uniforms.extrudedCubeWeight, 0);
+		this.wilson.gl.uniform1f(this.wilson.uniforms.extrudedCubeWeight, 1);
+		this.wilson.gl.uniform1f(this.wilson.uniforms.extrudedCubeSeparation, 3);
 	}
 }

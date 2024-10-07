@@ -43,13 +43,13 @@ export default function()
 		applet.toggleUniform({
 			name: "sphereWeight",
 			show: !testCheckbox.checked,
-			duration: 1000
+			duration: 1250
 		});
 
 		applet.toggleUniform({
 			name: "extrudedCubeWeight",
 			show: testCheckbox.checked,
-			duration: 1000
+			duration: 1250
 		});
 	}
 }
