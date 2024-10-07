@@ -38,17 +38,38 @@ export default function()
 		applet.changeResolution(resolutionInput.value * siteSettings.resolutionMultiplier);
 	}
 
-	function test()
+	// applet.loopUniform({
+	// 	name: "extrudedCubeSeparation",
+	// 	startValue: .4,
+	// 	endValue: 2,
+	// 	duration: 3000
+	// });
+
+	applet.loopUniform({
+		name: "mengerSpongeScale",
+		startValue: 1.5,
+		endValue: 3,
+		duration: 3000
+	});
+
+	async function test()
 	{
-		applet.toggleUniform({
-			name: "sphereWeight",
-			show: !testCheckbox.checked,
+		applet.animateUniform({
+			name: "extrudedCubeSeparation",
+			value: testCheckbox.checked ? .5 : 2,
 			duration: 1250
 		});
 
-		applet.toggleUniform({
+		await new Promise(resolve => setTimeout(resolve, 500));
+		applet.animateUniform({
 			name: "extrudedCubeWeight",
-			show: testCheckbox.checked,
+			value: testCheckbox.checked ? 0 : 1,
+			duration: 1250
+		});
+
+		applet.animateUniform({
+			name: "mengerSpongeWeight",
+			value: testCheckbox.checked ? 1 : 0,
 			duration: 1250
 		});
 	}

@@ -1,8 +1,14 @@
 import { RaymarchingFundamentals } from "./class.js";
-import { extrudedCubeDE } from "./distanceEstimators.js";
+import { extrudedCubeDE, mengerSpongeDE } from "./distanceEstimators.js";
 
 export class Fractals extends RaymarchingFundamentals
 {
+	extrudedCubeWeight = 1;
+	extrudedCubeSeparation = 2;
+
+	mengerSpongeWeight = 0;
+	mengerSpongeScale = 3;
+
 	constructor({
 		canvas,
 		useShadows = true,
@@ -114,6 +120,8 @@ export class Fractals extends RaymarchingFundamentals
 			}
 		` : "";
 
+
+
 		const fragShaderSource = /* glsl */`
 			precision highp float;
 			
@@ -142,6 +150,8 @@ export class Fractals extends RaymarchingFundamentals
 
 			uniform float extrudedCubeSeparation;
 			uniform float extrudedCubeWeight;
+			uniform float mengerSpongeWeight;
+			uniform float mengerSpongeScale;
 			
 			const float clipDistance = 1000.0;
 			const int maxMarches = 256;
@@ -161,6 +171,7 @@ export class Fractals extends RaymarchingFundamentals
 			}
 
 			${extrudedCubeDE[0]}
+			${mengerSpongeDE[0]}
 
 			float distanceEstimatorObject(vec3 pos)
 			{
@@ -175,6 +186,11 @@ export class Fractals extends RaymarchingFundamentals
 					distanceObject += extrudedCubeWeight * distanceEstimatorExtrudedCube(rotatedPos);
 				}
 				
+				if (mengerSpongeWeight > 0.0)
+				{
+					distanceObject += mengerSpongeWeight * distanceEstimatorMengerSponge(rotatedPos);
+				}
+				
 				return distanceObject;
 			}
 			
@@ -187,6 +203,7 @@ export class Fractals extends RaymarchingFundamentals
 			}
 
 			${extrudedCubeDE[1]}
+			${mengerSpongeDE[1]}
 
 			vec3 getColorObject(vec3 pos)
 			{
@@ -199,6 +216,11 @@ export class Fractals extends RaymarchingFundamentals
 				if (extrudedCubeWeight > 0.0)
 				{
 					color += extrudedCubeWeight * getColorExtrudedCube(rotatedPos);
+				}
+
+				if (mengerSpongeWeight > 0.0)
+				{
+					color += mengerSpongeWeight * getColorMengerSponge(rotatedPos);
 				}
 
 				return color;
@@ -369,18 +391,22 @@ export class Fractals extends RaymarchingFundamentals
 			}
 		`;
 
-		console.log(fragShaderSource);
-
 		super({
 			canvas,
 			fragShaderSource,
 			uniforms: [
 				"extrudedCubeSeparation",
 				"extrudedCubeWeight",
+
+				"mengerSpongeWeight",
+				"mengerSpongeScale",
 			]
 		});
 
 		this.wilson.gl.uniform1f(this.wilson.uniforms.extrudedCubeWeight, 1);
 		this.wilson.gl.uniform1f(this.wilson.uniforms.extrudedCubeSeparation, 2);
+
+		this.wilson.gl.uniform1f(this.wilson.uniforms.mengerSpongeWeight, 0);
+		this.wilson.gl.uniform1f(this.wilson.uniforms.mengerSpongeScale, 3);
 	}
 }

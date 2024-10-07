@@ -261,28 +261,29 @@ export class RaymarchingFundamentals extends RaymarchApplet
 		this.needNewFrame = true;
 	}
 
-	toggleUniform({
+	animateUniform({
 		name,
-		show = true,
+		oldValue = this[name],
+		value,
 		duration = 250
 	}) {
-		const dummy = { t: 0 };
+		const dummy = { t: oldValue };
 
-		anime({
+		return anime({
 			targets: dummy,
-			t: 1,
+			t: value,
 			duration,
 			easing: "easeInOutQuart",
 			update: () =>
 			{
-				const t = show ? dummy.t : (1 - dummy.t);
-				this.wilson.gl.uniform1f(this.wilson.uniforms[name], t);
+				this[name] = dummy.t;
+				this.wilson.gl.uniform1f(this.wilson.uniforms[name], this[name]);
 				this.needNewFrame = true;
 			}
-		});
+		}).finished;
 	}
 
-	animateUniform({
+	loopUniform({
 		name,
 		startValue,
 		endValue,

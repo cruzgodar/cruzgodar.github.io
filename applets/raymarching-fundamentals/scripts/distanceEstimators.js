@@ -113,7 +113,7 @@ function getMengerSpongeDE(useForGetColor = false)
 		float separation = 1.0;
 		float scale = mengerSpongeScale;
 
-		vec3 mutablePos = abs(pos);
+		vec3 mutablePos = abs(pos * 3.0 - vec3(0.0, 0.0, 2.5));
 		float maxAbsPos = max(max(mutablePos.x, mutablePos.y), mutablePos.z);
 		float minAbsPos = min(min(mutablePos.x, mutablePos.y), mutablePos.z);
 		float sumAbsPos = mutablePos.x + mutablePos.y + mutablePos.z;
@@ -212,7 +212,7 @@ function getMengerSpongeDE(useForGetColor = false)
 			mutablePos = vec3(minAbsPos, sumAbsPos - minAbsPos - maxAbsPos, maxAbsPos);
 		}
 		
-		${useForGetColor ? "return abs(color);" : "return totalDistance / effectiveScale;"}
+		${useForGetColor ? "return abs(color);" : "return totalDistance / 3.0 / effectiveScale;"}
 	`;
 }
 
