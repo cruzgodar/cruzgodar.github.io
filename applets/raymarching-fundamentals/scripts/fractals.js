@@ -3,8 +3,117 @@ import { extrudedCubeDE } from "./distanceEstimators.js";
 
 export class Fractals extends RaymarchingFundamentals
 {
-	constructor({ canvas })
-	{
+	constructor({
+		canvas,
+		useShadows = true,
+		useReflections = false,
+	}) {
+		const computeShadowIntensityGlsl = useShadows ? /* glsl */`
+			// Nearly identical to raymarching, but it only marches toward the light.
+			float computeShadowIntensity(vec3 startPos, vec3 lightDirection)
+			{
+				//That factor of .9 is important -- without it, we're always stepping as far as possible, which results in artefacts and weirdness.
+				vec3 rayDirectionVec = normalize(lightDirection) * .95;
+
+				float softShadowFactor = 100.0;
+				
+				float t = 0.01;
+				float epsilon = 0.0;
+
+				for (int iteration = 0; iteration < maxShadowMarches; iteration++)
+				{
+					vec3 pos = startPos + t * rayDirectionVec;
+					
+					float distanceToScene = distanceEstimator(pos);
+					epsilon = max(.0000006, 1.0 * t / float(imageSize));
+
+					softShadowFactor = min(softShadowFactor, max(distanceToScene, 0.0) / t * 20.0);
+
+					if (t > clipDistance || length(pos - lightPos) < 0.2)
+					{
+						return clamp(softShadowFactor, maxShadowAmount, 1.0);
+					}
+
+					if (distanceToScene < epsilon)
+					{
+						return maxShadowAmount;
+					}
+					
+					t += distanceToScene;
+				}
+
+				return clamp(softShadowFactor, maxShadowAmount, 1.0);
+			}
+		` : "";
+
+		const computeReflectionGlsl = useReflections ? /* glsl */`
+			vec3 computeShadingWithoutReflection(
+				vec3 pos,
+				float epsilon,
+				float correctionDistance,
+				int iteration
+			) {
+				vec3 surfaceNormal = getSurfaceNormal(pos, epsilon);
+
+				// This corrects the position so that it's exactly on the surface (we probably marched a little bit inside).
+				pos -= surfaceNormal * correctionDistance;
+				
+				vec3 lightDirection = normalize(lightPos - pos);
+				
+				float dotProduct = dot(surfaceNormal, lightDirection);
+				
+				float lightIntensity = max(
+					lightBrightness * dotProduct,
+					.25
+				);
+
+				float shadowIntensity = ${useShadows ? "computeShadowIntensity(pos, lightDirection)" : "1.0"};
+				
+				//The last factor adds ambient occlusion.
+				vec3 color = getColor(pos)
+					* lightIntensity
+					* shadowIntensity
+					* max((1.0 - float(iteration) / float(maxMarches)), 0.0);
+				
+				//Apply fog.
+				return mix(color, fogColor, 1.0 - exp(-distance(pos, cameraPos) * fogScaling));
+			}
+
+			// Unlike in raymarch(), startPos is replacing cameraPos, and rayDirectionVec is precomputed.
+			vec3 computeReflection(vec3 startPos, vec3 rayDirectionVec, int startIteration)
+			{
+				float epsilon = 0.0;
+				float t = .0001;
+				
+				for (int iteration = 0; iteration < maxReflectionMarches; iteration++)
+				{
+					vec3 pos = startPos + t * rayDirectionVec;
+					
+					float distanceToScene = distanceEstimator(pos);
+					epsilon = max(.0000006, 1.0 * t / float(imageSize));
+
+					if (distanceToScene < epsilon)
+					{
+						return computeShadingWithoutReflection(
+							pos,
+							epsilon,
+							distanceToScene,
+							iteration + startIteration
+						);
+					}
+					
+					else if (t > clipDistance)
+					{
+						return fogColor * computeBloom(rayDirectionVec);
+					}
+					
+					t += distanceToScene;
+				}
+				
+				return fogColor * computeBloom(rayDirectionVec);
+			}
+		` : "";
+
 		const fragShaderSource = /* glsl */`
 			precision highp float;
 			
@@ -30,9 +139,6 @@ export class Fractals extends RaymarchingFundamentals
 			uniform int imageSize;
 			uniform float objectRotation;
 			uniform float objectFloat;
-
-			uniform float shadowAmount;
-			uniform float reflectivityAmount;
 
 			uniform float extrudedCubeSeparation;
 			uniform float extrudedCubeWeight;
@@ -165,113 +271,9 @@ export class Fractals extends RaymarchingFundamentals
 				);
 			}
 
-			
+			${computeShadowIntensityGlsl}
 
-			// Nearly identical to raymarching, but it only marches toward the light.
-			float computeShadowIntensity(vec3 startPos, vec3 lightDirection)
-			{
-				//That factor of .9 is important -- without it, we're always stepping as far as possible, which results in artefacts and weirdness.
-				vec3 rayDirectionVec = normalize(lightDirection) * .95;
-
-				float softShadowFactor = 100.0;
-				
-				float t = 0.01;
-				float epsilon = 0.0;
-
-				for (int iteration = 0; iteration < maxShadowMarches; iteration++)
-				{
-					vec3 pos = startPos + t * rayDirectionVec;
-					
-					float distanceToScene = distanceEstimator(pos);
-					epsilon = max(.0000006, 1.0 * t / float(imageSize));
-
-					softShadowFactor = min(softShadowFactor, max(distanceToScene, 0.0) / t * 20.0);
-
-					if (t > clipDistance || length(pos - lightPos) < 0.2)
-					{
-						return clamp(softShadowFactor, maxShadowAmount, 1.0);
-					}
-
-					if (distanceToScene < epsilon)
-					{
-						return maxShadowAmount;
-					}
-					
-					t += distanceToScene;
-				}
-
-				return clamp(softShadowFactor, maxShadowAmount, 1.0);
-			}
-
-
-
-			vec3 computeShadingWithoutReflection(
-				vec3 pos,
-				float epsilon,
-				float correctionDistance,
-				int iteration
-			) {
-				vec3 surfaceNormal = getSurfaceNormal(pos, epsilon);
-
-				// This corrects the position so that it's exactly on the surface (we probably marched a little bit inside).
-				pos -= surfaceNormal * correctionDistance;
-				
-				vec3 lightDirection = normalize(lightPos - pos);
-				
-				float dotProduct = dot(surfaceNormal, lightDirection);
-				
-				float lightIntensity = max(
-					lightBrightness * dotProduct,
-					.25
-				);
-
-				float shadowIntensity = mix(1.0, computeShadowIntensity(pos, lightDirection), shadowAmount);
-				
-				//The last factor adds ambient occlusion.
-				vec3 color = getColor(pos)
-					* lightIntensity
-					* shadowIntensity
-					* max((1.0 - float(iteration) / float(maxMarches)), 0.0);
-				
-				//Apply fog.
-				return mix(color, fogColor, 1.0 - exp(-distance(pos, cameraPos) * fogScaling));
-			}
-
-			// Unlike in raymarch(), startPos is replacing cameraPos, and rayDirectionVec is precomputed.
-			vec3 computeReflection(vec3 startPos, vec3 rayDirectionVec, int startIteration)
-			{
-				float epsilon = 0.0;
-				float t = .0001;
-				
-				for (int iteration = 0; iteration < maxReflectionMarches; iteration++)
-				{
-					vec3 pos = startPos + t * rayDirectionVec;
-					
-					float distanceToScene = distanceEstimator(pos);
-					epsilon = max(.0000006, 1.0 * t / float(imageSize));
-
-					if (distanceToScene < epsilon)
-					{
-						return computeShadingWithoutReflection(
-							pos,
-							epsilon,
-							distanceToScene,
-							iteration + startIteration
-						);
-					}
-					
-					else if (t > clipDistance)
-					{
-						return fogColor * computeBloom(rayDirectionVec);
-					}
-					
-					t += distanceToScene;
-				}
-				
-				return fogColor * computeBloom(rayDirectionVec);
-			}
-
-
+			${computeReflectionGlsl}
 			
 			vec3 computeShading(
 				vec3 pos,
@@ -293,12 +295,7 @@ export class Fractals extends RaymarchingFundamentals
 					.25
 				);
 
-				float shadowIntensity = 1.0;
-
-				if (shadowAmount >= 0.0)
-				{
-					shadowIntensity = mix(1.0, computeShadowIntensity(pos, lightDirection), shadowAmount);
-				}
+				float shadowIntensity = ${useShadows ? "computeShadowIntensity(pos, lightDirection)" : "1.0"};
 				
 				//The last factor adds ambient occlusion.
 				vec3 color = getColor(pos)
@@ -307,14 +304,14 @@ export class Fractals extends RaymarchingFundamentals
 					* max((1.0 - float(iteration) / float(maxMarches)), 0.0);
 
 				vec3 reflectedDirection = reflect(normalize(pos - cameraPos) * .95, surfaceNormal);
-				if (reflectivityAmount > 0.0)
-				{
+
+				${useReflections ? `
 					color = mix(
 						color,
 						computeReflection(pos, reflectedDirection, iteration),
-						getReflectivity(pos) * reflectivityAmount
+						getReflectivity(pos)
 					);
-				}
+				` : ""}
 				
 				//Apply fog.
 				return mix(color, fogColor, 1.0 - exp(-distance(pos, cameraPos) * fogScaling));
@@ -378,16 +375,10 @@ export class Fractals extends RaymarchingFundamentals
 			canvas,
 			fragShaderSource,
 			uniforms: [
-				"shadowAmount",
-				"reflectivityAmount",
-
 				"extrudedCubeSeparation",
 				"extrudedCubeWeight",
 			]
 		});
-
-		this.wilson.gl.uniform1f(this.wilson.uniforms.shadowAmount, 1);
-		this.wilson.gl.uniform1f(this.wilson.uniforms.reflectivityAmount, 0);
 
 		this.wilson.gl.uniform1f(this.wilson.uniforms.extrudedCubeWeight, 1);
 		this.wilson.gl.uniform1f(this.wilson.uniforms.extrudedCubeSeparation, 2);
