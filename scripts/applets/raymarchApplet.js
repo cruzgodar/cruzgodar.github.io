@@ -36,7 +36,7 @@ export class RaymarchApplet extends AnimationFrameApplet
 	imageHeight = 400;
 
 	maxMarches = 256;
-	maxShadowMarches = 256;
+	maxShadowMarches = 128;
 	maxReflectionMarches = 256;
 	clipDistance = 1000;
 
@@ -55,7 +55,7 @@ export class RaymarchApplet extends AnimationFrameApplet
 	fogScaling = .05;
 
 	useShadows = false;
-	useSoftShadows = false;
+	useSoftShadows = true;
 	useReflections = false;
 	useBloom = true;
 
@@ -79,7 +79,7 @@ export class RaymarchApplet extends AnimationFrameApplet
 		canvas,
 		distanceEstimatorGlsl,
 		getColorGlsl,
-		getReflectivityGlsl = "return 0.5;",
+		getReflectivityGlsl = "return 0.15;",
 		addGlsl = "",
 		uniforms,
 		theta,
@@ -313,7 +313,7 @@ export class RaymarchApplet extends AnimationFrameApplet
 			// Unlike in raymarch(), startPos is replacing cameraPos, and rayDirectionVec is precomputed.
 			vec3 computeReflection(vec3 startPos, vec3 rayDirectionVec, int startIteration)
 			{
-				float t = .0001;
+				float t = 10.0 * epsilon;
 				
 				for (int iteration = 0; iteration < maxReflectionMarches; iteration++)
 				{
