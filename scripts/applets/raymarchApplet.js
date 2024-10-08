@@ -36,7 +36,7 @@ export class RaymarchApplet extends AnimationFrameApplet
 	imageHeight = 400;
 
 	maxMarches = 256;
-	maxShadowMarches = 128;
+	maxShadowMarches = 256;
 	maxReflectionMarches = 256;
 	clipDistance = 1000;
 
@@ -55,6 +55,7 @@ export class RaymarchApplet extends AnimationFrameApplet
 	fogScaling = .05;
 
 	useShadows = false;
+	useSoftShadows = false;
 	useReflections = false;
 	useBloom = true;
 
@@ -67,13 +68,18 @@ export class RaymarchApplet extends AnimationFrameApplet
 	lockedOnOrigin = false;
 	distanceFromOrigin = 1;
 
+	distanceEstimatorGlsl;
+	getColorGlsl;
+	getReflectivityGlsl;
+	addGlsl;
+
 
 
 	constructor({
 		canvas,
 		distanceEstimatorGlsl,
 		getColorGlsl,
-		getReflectivityGlsl,
+		getReflectivityGlsl = "return 0.5;",
 		addGlsl = "",
 		uniforms,
 		theta,
@@ -172,75 +178,7 @@ export class RaymarchApplet extends AnimationFrameApplet
 
 		this.wilson = new Wilson(canvas, options);
 
-		this.wilson.render.initUniforms([
-			"aspectRatioX",
-			"aspectRatioY",
-			"imageSize",
-			"cameraPos",
-			"imagePlaneCenterPos",
-			"forwardVec",
-			"rightVec",
-			"upVec",
-			"epsilon",
-			...Object.keys(this.uniforms),
-		]);
-
-		
-
-		this.calculateVectors();
-
-		this.wilson.gl.uniform1f(
-			this.wilson.uniforms.aspectRatioX,
-			Math.max(this.imageWidth / this.imageHeight, 1)
-		);
-
-		this.wilson.gl.uniform1f(
-			this.wilson.uniforms.aspectRatioY,
-			Math.min(this.imageWidth / this.imageHeight, 1)
-		);
-		
-		this.wilson.gl.uniform1i(
-			this.wilson.uniforms.imageSize,
-			this.imageSize
-		);
-
-		this.wilson.gl.uniform3fv(
-			this.wilson.uniforms.cameraPos,
-			this.cameraPos
-		);
-
-		this.wilson.gl.uniform3fv(
-			this.wilson.uniforms.imagePlaneCenterPos,
-			this.imagePlaneCenterPos
-		);
-
-		this.wilson.gl.uniform3fv(
-			this.wilson.uniforms.forwardVec,
-			this.forwardVec
-		);
-
-		this.wilson.gl.uniform3fv(
-			this.wilson.uniforms.rightVec,
-			this.rightVec
-		);
-
-		this.wilson.gl.uniform3fv(
-			this.wilson.uniforms.upVec,
-			this.upVec
-		);
-
-		this.wilson.gl.uniform1f(
-			this.wilson.uniforms.epsilon,
-			0.0001
-		);
-
-		for (const key in this.uniforms)
-		{
-			const value = this.uniforms[key];
-			this.wilson.gl[setUniformFunctions[value[0]]](
-				this.wilson.uniforms[key], value[1]
-			);
-		}
+		this.initUniforms();
 
 		const boundFunction = () => this.changeResolution();
 		addTemporaryListener({
@@ -253,38 +191,51 @@ export class RaymarchApplet extends AnimationFrameApplet
 	}
 
 
-
+	// Creates a shader and sets the default argument values so that they persist by default.
 	createShader({
-		distanceEstimatorGlsl,
-		getColorGlsl,
-		getReflectivityGlsl,
-		addGlsl,
+		distanceEstimatorGlsl = this.distanceEstimatorGlsl,
+		getColorGlsl = this.getColorGlsl,
+		getReflectivityGlsl = this.getReflectivityGlsl,
+		addGlsl = this.addGlsl,
 	}) {
-		const computeShadowIntensityGlsl = this.useShadows ? /* glsl */`
+		this.distanceEstimatorGlsl = distanceEstimatorGlsl;
+		this.getColorGlsl = getColorGlsl;
+		this.getReflectivityGlsl = getReflectivityGlsl;
+		this.addGlsl = addGlsl;
+
+		const computeShadowIntensityGlsl = this.useShadows && this.useSoftShadows ? /* glsl */`
 			// Nearly identical to raymarching, but it only marches toward the light.
 			float computeShadowIntensity(vec3 startPos, vec3 lightDirection)
 			{
-				//That factor of .9 is important -- without it, we're always stepping as far as possible, which results in artefacts and weirdness.
-				vec3 rayDirectionVec = normalize(lightDirection) * .95;
+				vec3 rayDirectionVec = normalize(lightDirection) * .9;
+				float softShadowFactor = 1.0;
+				float t = 0.001;
+				float shadowEpsilon = 0.0001;
 
-				float softShadowFactor = 100.0;
-				
-				float t = 0.01;
+				float lastDistanceToScene = 100000.0;
 
 				for (int iteration = 0; iteration < maxShadowMarches; iteration++)
 				{
 					vec3 pos = startPos + t * rayDirectionVec;
 					
+					// Use Sebastian Aaltonen's improvement to Inigo Quilez's soft shadow algorithm.
 					float distanceToScene = distanceEstimator(pos);
+					float y = distanceToScene * distanceToScene / (2.0 * lastDistanceToScene);
+        			float d = sqrt(distanceToScene * distanceToScene - y * y);
 
-					softShadowFactor = min(softShadowFactor, max(distanceToScene, 0.0) / t * 20.0);
+					softShadowFactor = min(
+						softShadowFactor,
+						d / (max(t - y, 0.0) * 0.05) 
+					);
+
+					lastDistanceToScene = distanceToScene;
 
 					if (t > clipDistance || length(pos - lightPos) < 0.2)
 					{
 						return clamp(softShadowFactor, maxShadowAmount, 1.0);
 					}
 
-					if (distanceToScene < epsilon)
+					if (distanceToScene < shadowEpsilon)
 					{
 						return maxShadowAmount;
 					}
@@ -293,6 +244,35 @@ export class RaymarchApplet extends AnimationFrameApplet
 				}
 
 				return clamp(softShadowFactor, maxShadowAmount, 1.0);
+			}
+		` : this.useShadows ? /* glsl */`
+			// Nearly identical to raymarching, but it only marches toward the light.
+			float computeShadowIntensity(vec3 startPos, vec3 lightDirection)
+			{
+				vec3 rayDirectionVec = normalize(lightDirection) * .9;
+				float t = 0.001;
+				float shadowEpsilon = 0.0001;
+
+				for (int iteration = 0; iteration < maxShadowMarches; iteration++)
+				{
+					vec3 pos = startPos + t * rayDirectionVec;
+					
+					float distanceToScene = distanceEstimator(pos);
+
+					if (t > clipDistance)
+					{
+						return 1.0;
+					}
+
+					if (distanceToScene < shadowEpsilon)
+					{
+						return maxShadowAmount;
+					}
+					
+					t += distanceToScene;
+				}
+
+				return 1.0;
 			}
 		` : "";
 
@@ -352,28 +332,25 @@ export class RaymarchApplet extends AnimationFrameApplet
 					
 					else if (t > clipDistance)
 					{
-						return fogColor${this.useBloom ? " * computeBloom(rayDirectionVec)" : ""};
+						return ${this.useBloom ? "mix(fogColor, vec3(1.0), computeBloom(rayDirectionVec))" : "fogColor"};
 					}
 					
 					t += distanceToScene;
 				}
 				
-				return fogColor${this.useBloom ? " * computeBloom(rayDirectionVec)" : ""};
+				return ${this.useBloom ? "mix(fogColor, vec3(1.0), computeBloom(rayDirectionVec))" : "fogColor"};
 			}
 		` : "";
 
 		const computeBloomGlsl = this.useBloom ? /* glsl */`
 			float computeBloom(vec3 rayDirectionVec)
 			{
-				return max(
-					1.0,
-					pow(
-						1.0 / distance(
-							normalize(rayDirectionVec),
-							normalize(lightPos - cameraPos)
-						),
-						bloomPower
-					)
+				return pow(
+					(3.0 - distance(
+						normalize(rayDirectionVec),
+						normalize(lightPos - cameraPos)
+					)) / 2.99,
+					20.0
 				);
 			}
 		` : "";
@@ -411,6 +388,7 @@ export class RaymarchApplet extends AnimationFrameApplet
 			const int maxReflectionMarches = ${this.maxReflectionMarches};
 			const vec3 fogColor = ${getVectorGlsl(this.fogColor)};
 			const float fogScaling = ${getFloatGlsl(this.fogScaling)};
+			const float maxShadowAmount = 0.5;
 
 			${addGlsl}
 			
@@ -520,13 +498,13 @@ export class RaymarchApplet extends AnimationFrameApplet
 					
 					else if (t > clipDistance)
 					{
-						return fogColor${this.useBloom ? " * computeBloom(rayDirectionVec)" : ""};
+						return ${this.useBloom ? "mix(fogColor, vec3(1.0), computeBloom(rayDirectionVec))" : "fogColor"};
 					}
 					
 					t += distanceToScene;
 				}
 				
-				return fogColor${this.useBloom ? " * computeBloom(rayDirectionVec)" : ""};
+				return ${this.useBloom ? "mix(fogColor, vec3(1.0), computeBloom(rayDirectionVec))" : "fogColor"};
 			}
 			
 			
@@ -548,6 +526,105 @@ export class RaymarchApplet extends AnimationFrameApplet
 
 		return shader;
 	}
+
+
+
+	initUniforms()
+	{
+		this.wilson.render.initUniforms([
+			"aspectRatioX",
+			"aspectRatioY",
+			"imageSize",
+			"cameraPos",
+			"imagePlaneCenterPos",
+			"forwardVec",
+			"rightVec",
+			"upVec",
+			"epsilon",
+			...Object.keys(this.uniforms),
+		]);
+
+		
+
+		this.calculateVectors();
+
+		this.wilson.gl.uniform1f(
+			this.wilson.uniforms.aspectRatioX,
+			Math.max(this.imageWidth / this.imageHeight, 1)
+		);
+
+		this.wilson.gl.uniform1f(
+			this.wilson.uniforms.aspectRatioY,
+			Math.min(this.imageWidth / this.imageHeight, 1)
+		);
+		
+		this.wilson.gl.uniform1i(
+			this.wilson.uniforms.imageSize,
+			this.imageSize
+		);
+
+		this.wilson.gl.uniform3fv(
+			this.wilson.uniforms.cameraPos,
+			this.cameraPos
+		);
+
+		this.wilson.gl.uniform3fv(
+			this.wilson.uniforms.imagePlaneCenterPos,
+			this.imagePlaneCenterPos
+		);
+
+		this.wilson.gl.uniform3fv(
+			this.wilson.uniforms.forwardVec,
+			this.forwardVec
+		);
+
+		this.wilson.gl.uniform3fv(
+			this.wilson.uniforms.rightVec,
+			this.rightVec
+		);
+
+		this.wilson.gl.uniform3fv(
+			this.wilson.uniforms.upVec,
+			this.upVec
+		);
+
+		this.wilson.gl.uniform1f(
+			this.wilson.uniforms.epsilon,
+			0.0001
+		);
+
+		for (const key in this.uniforms)
+		{
+			const value = this.uniforms[key];
+			this.wilson.gl[setUniformFunctions[value[0]]](
+				this.wilson.uniforms[key], value[1]
+			);
+		}
+	}
+
+
+
+	reloadShader({
+		distanceEstimatorGlsl,
+		getColorGlsl,
+		getReflectivityGlsl,
+		addGlsl
+	} = {}) {
+		this.wilson.render.shaderPrograms = [];
+		this.wilson.render.loadNewShader(this.createShader({
+			distanceEstimatorGlsl,
+			getColorGlsl,
+			getReflectivityGlsl,
+			addGlsl,
+		}));
+		this.wilson.gl.useProgram(this.wilson.render.shaderPrograms[0]);
+
+		this.initUniforms();
+
+		this.needNewFrame = true;
+	}
+
+
 
 	calculateVectors()
 	{
