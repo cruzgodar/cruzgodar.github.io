@@ -32,8 +32,7 @@ export class CurvedLight extends RaymarchApplet
 			uniform vec3 forwardVec;
 			uniform vec3 rightVec;
 			uniform vec3 upVec;
-			
-			uniform float focalLength;
+			uniform float epsilon;
 			
 			const vec3 lightPos = vec3(50.0, 70.0, 100.0);
 			const float lightBrightness = 1.0;
@@ -274,7 +273,7 @@ export class CurvedLight extends RaymarchApplet
 			"forwardVec",
 			"rightVec",
 			"upVec",
-			"focalLength",
+			"epsilon",
 			"radius",
 			"curvature",
 			"c0",
@@ -346,8 +345,8 @@ export class CurvedLight extends RaymarchApplet
 		);
 
 		this.wilson.gl.uniform1f(
-			this.wilson.uniforms["focalLength"],
-			this.focalLength
+			this.wilson.uniforms["epsilon"],
+			this.epsilon
 		);
 
 		this.wilson.gl.uniform1f(

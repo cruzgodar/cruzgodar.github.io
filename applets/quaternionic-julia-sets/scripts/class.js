@@ -34,7 +34,7 @@ export class QuaternionicJuliaSet extends RaymarchApplet
 			uniform vec3 rightVec;
 			uniform vec3 upVec;
 			
-			uniform float focalLength;
+			uniform float distanceToScene;
 			
 			uniform vec3 lightPos;
 			const float lightBrightness = 1.5;
@@ -273,7 +273,7 @@ export class QuaternionicJuliaSet extends RaymarchApplet
 			"forwardVec",
 			"rightVec",
 			"upVec",
-			"focalLength",
+			"distanceToScene",
 			"lightPos",
 			"c",
 			"juliaProportion",
@@ -349,8 +349,8 @@ export class QuaternionicJuliaSet extends RaymarchApplet
 		);
 
 		this.wilson.gl.uniform1f(
-			this.wilson.uniforms["focalLength"],
-			this.focalLength
+			this.wilson.uniforms["distanceToScene"],
+			this.distanceToScene
 		);
 
 		this.wilson.gl.uniform3fv(

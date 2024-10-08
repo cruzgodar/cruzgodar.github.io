@@ -68,7 +68,7 @@ export class RaymarchingFundamentals extends RaymarchApplet
 			"forwardVec",
 			"rightVec",
 			"upVec",
-			"focalLength",
+			"distanceToScene",
 			"objectRotation",
 			"objectFloat",
 			...uniforms
@@ -135,8 +135,8 @@ export class RaymarchingFundamentals extends RaymarchApplet
 		);
 
 		this.wilson.gl.uniform1f(
-			this.wilson.uniforms["focalLength"],
-			this.focalLength
+			this.wilson.uniforms["distanceToScene"],
+			this.distanceToScene
 		);
 
 		this.wilson.gl.uniform1f(

@@ -44,7 +44,7 @@ export class Mandelbulb extends RaymarchApplet
 			uniform vec3 rightVec;
 			uniform vec3 upVec;
 			
-			uniform float focalLength;
+			uniform float distanceToScene;
 			
 			uniform vec3 lightPos;
 			const float lightBrightness = 1.15;
@@ -322,7 +322,7 @@ export class Mandelbulb extends RaymarchApplet
 			"forwardVec",
 			"rightVec",
 			"upVec",
-			"focalLength",
+			"distanceToScene",
 			"lightPos",
 			"power",
 			"c",
@@ -400,8 +400,8 @@ export class Mandelbulb extends RaymarchApplet
 		);
 
 		this.wilson.gl.uniform1f(
-			this.wilson.uniforms["focalLength"],
-			this.focalLength
+			this.wilson.uniforms["distanceToScene"],
+			this.distanceToScene
 		);
 
 		this.wilson.gl.uniform1f(

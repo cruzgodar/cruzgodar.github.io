@@ -212,7 +212,7 @@ function getMengerSpongeDE(useForGetColor = false)
 			mutablePos = vec3(minAbsPos, sumAbsPos - minAbsPos - maxAbsPos, maxAbsPos);
 		}
 		
-		${useForGetColor ? "return abs(color);" : "return totalDistance / 3.0 / effectiveScale;"}
+		${useForGetColor ? "return abs(color);" : "return totalDistance * 0.333333 / effectiveScale;"}
 	`;
 }
 
@@ -228,5 +228,5 @@ export const mengerSpongeDE = [
 		{
 			${getMengerSpongeDE(true)}
 		}
-	`
+	`,
 ];

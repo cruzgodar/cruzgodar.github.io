@@ -19,7 +19,7 @@ export class GroundAndSphere extends RaymarchingFundamentals
 			uniform vec3 rightVec;
 			uniform vec3 upVec;
 			
-			uniform float focalLength;
+			uniform float distanceToScene;
 			
 			const vec3 lightPos = vec3(50.0, 70.0, 100.0);
 			// The minimum distance between the light direction and a sky direction.
@@ -53,6 +53,10 @@ export class GroundAndSphere extends RaymarchingFundamentals
 			const int maxReflectionMarches = 256;
 			const vec3 fogColor = vec3(0.6, 0.73, 0.87);
 			const float fogScaling = .05;
+
+			const float minEpsilon = .0000006;
+			const float maxEpsilon = .0005;
+			const float epsilonScaling = 0.5;
 
 			float rand(vec2 co)
 			{
@@ -211,7 +215,11 @@ export class GroundAndSphere extends RaymarchingFundamentals
 					vec3 pos = startPos + t * rayDirectionVec;
 					
 					float distanceToScene = distanceEstimator(pos);
-					epsilon = max(.0000006, 1.0 * t / float(imageSize));
+					epsilon = clamp(
+						epsilonScaling * t / float(imageSize),
+						minEpsilon,
+						maxEpsilon
+					);
 
 					softShadowFactor = mix(
 						1.0,
@@ -280,7 +288,11 @@ export class GroundAndSphere extends RaymarchingFundamentals
 					vec3 pos = startPos + t * rayDirectionVec;
 					
 					float distanceToScene = distanceEstimator(pos);
-					epsilon = max(.0000006, 1.0 * t / float(imageSize));
+					epsilon = clamp(
+						epsilonScaling * t / float(imageSize),
+						minEpsilon,
+						maxEpsilon
+					);
 
 					if (distanceToScene < epsilon)
 					{
@@ -369,7 +381,11 @@ export class GroundAndSphere extends RaymarchingFundamentals
 					float distanceToScene = distanceEstimator(pos);
 					
 					//This lowers the detail far away, which makes everything run nice and fast.
-					epsilon = max(.0000006, 1.0 * t / float(imageSize));
+					epsilon = clamp(
+						epsilonScaling * t / float(imageSize),
+						minEpsilon,
+						maxEpsilon
+					);
 					
 					if (distanceToScene < epsilon)
 					{

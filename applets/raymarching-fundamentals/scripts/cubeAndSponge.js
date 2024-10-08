@@ -1,10 +1,12 @@
 import { RaymarchingFundamentals } from "./class.js";
 import { extrudedCubeDE, mengerSpongeDE } from "./distanceEstimators.js";
 
-export class Fractals extends RaymarchingFundamentals
+export class CubeAndSponge extends RaymarchingFundamentals
 {
+	sphereWeight = 0;
+
 	extrudedCubeWeight = 1;
-	extrudedCubeSeparation = 2;
+	extrudedCubeSeparation = 1.5;
 
 	mengerSpongeWeight = 0;
 	mengerSpongeScale = 3;
@@ -24,14 +26,13 @@ export class Fractals extends RaymarchingFundamentals
 				float softShadowFactor = 100.0;
 				
 				float t = 0.01;
-				float epsilon = 0.0;
+				float epsilon = max(distanceToScene / 10.0, minEpsilon); 
 
 				for (int iteration = 0; iteration < maxShadowMarches; iteration++)
 				{
 					vec3 pos = startPos + t * rayDirectionVec;
 					
 					float distanceToScene = distanceEstimator(pos);
-					epsilon = max(.0000006, 1.0 * t / float(imageSize));
 
 					softShadowFactor = min(softShadowFactor, max(distanceToScene, 0.0) / t * 20.0);
 
@@ -88,7 +89,7 @@ export class Fractals extends RaymarchingFundamentals
 			// Unlike in raymarch(), startPos is replacing cameraPos, and rayDirectionVec is precomputed.
 			vec3 computeReflection(vec3 startPos, vec3 rayDirectionVec, int startIteration)
 			{
-				float epsilon = 0.0;
+				float epsilon = max(distanceToScene / 10.0, minEpsilon); 
 				float t = .0001;
 				
 				for (int iteration = 0; iteration < maxReflectionMarches; iteration++)
@@ -96,7 +97,6 @@ export class Fractals extends RaymarchingFundamentals
 					vec3 pos = startPos + t * rayDirectionVec;
 					
 					float distanceToScene = distanceEstimator(pos);
-					epsilon = max(.0000006, 1.0 * t / float(imageSize));
 
 					if (distanceToScene < epsilon)
 					{
@@ -136,7 +136,7 @@ export class Fractals extends RaymarchingFundamentals
 			uniform vec3 rightVec;
 			uniform vec3 upVec;
 			
-			uniform float focalLength;
+			uniform float distanceToScene;
 			
 			const vec3 lightPos = vec3(50.0, 70.0, 100.0);
 			// The minimum distance between the light direction and a sky direction.
@@ -148,6 +148,11 @@ export class Fractals extends RaymarchingFundamentals
 			uniform float objectRotation;
 			uniform float objectFloat;
 
+			const float modPosAmount = 1.0;
+			const float showRoomsAmount = 1.0;
+			const float showSphereAmount = 1.0;
+
+			uniform float sphereWeight;
 			uniform float extrudedCubeSeparation;
 			uniform float extrudedCubeWeight;
 			uniform float mengerSpongeWeight;
@@ -159,6 +164,8 @@ export class Fractals extends RaymarchingFundamentals
 			const int maxReflectionMarches = 256;
 			const vec3 fogColor = vec3(0.6, 0.73, 0.87);
 			const float fogScaling = .05;
+
+			const float minEpsilon = .0000006;
 
 			float rand(vec2 co)
 			{
@@ -346,7 +353,7 @@ export class Fractals extends RaymarchingFundamentals
 				//That factor of .9 is important -- without it, we're always stepping as far as possible, which results in artefacts and weirdness.
 				vec3 rayDirectionVec = normalize(startPos - cameraPos) * .95;
 				
-				float epsilon = 0.0;
+				float epsilon = max(distanceToScene / 10.0, minEpsilon); 
 				float t = 0.0;
 				
 				for (int iteration = 0; iteration < maxMarches; iteration++)
@@ -354,9 +361,6 @@ export class Fractals extends RaymarchingFundamentals
 					vec3 pos = cameraPos + t * rayDirectionVec;
 					
 					float distanceToScene = distanceEstimator(pos);
-					
-					//This lowers the detail far away, which makes everything run nice and fast.
-					epsilon = max(.0000006, 1.0 * t / float(imageSize));
 					
 					if (distanceToScene < epsilon)
 					{
@@ -391,10 +395,14 @@ export class Fractals extends RaymarchingFundamentals
 			}
 		`;
 
+		console.log(fragShaderSource);
+
 		super({
 			canvas,
 			fragShaderSource,
 			uniforms: [
+				"sphereWeight",
+
 				"extrudedCubeSeparation",
 				"extrudedCubeWeight",
 
@@ -403,10 +411,227 @@ export class Fractals extends RaymarchingFundamentals
 			]
 		});
 
-		this.wilson.gl.uniform1f(this.wilson.uniforms.extrudedCubeWeight, 1);
-		this.wilson.gl.uniform1f(this.wilson.uniforms.extrudedCubeSeparation, 2);
+		this.wilson.gl.uniform1f(this.wilson.uniforms.sphereWeight, this.sphereWeight);
 
-		this.wilson.gl.uniform1f(this.wilson.uniforms.mengerSpongeWeight, 0);
-		this.wilson.gl.uniform1f(this.wilson.uniforms.mengerSpongeScale, 3);
+		this.wilson.gl.uniform1f(this.wilson.uniforms.extrudedCubeWeight, this.extrudedCubeWeight);
+		this.wilson.gl.uniform1f(
+			this.wilson.uniforms.extrudedCubeSeparation,
+			this.extrudedCubeSeparation
+		);
+
+		this.wilson.gl.uniform1f(this.wilson.uniforms.mengerSpongeWeight, this.mengerSpongeWeight);
+		this.wilson.gl.uniform1f(this.wilson.uniforms.mengerSpongeScale, this.mengerSpongeScale);
+	}
+
+	distanceEstimator(x, y, z)
+	{
+		console.log(this.distanceEstimatorExtrudedCube(x, y, z),this.distanceEstimatorMengerSponge(x, y, z));
+		return this.extrudedCubeWeight * this.distanceEstimatorExtrudedCube(x, y, z)
+			+ this.mengerSpongeWeight * this.distanceEstimatorMengerSponge(x, y, z);
+	}
+
+	distanceEstimatorExtrudedCube(x, y, z)
+	{
+		const scaleCenter = (this.extrudedCubeScale + 1)
+			/ (this.extrudedCubeScale - 1) * this.extrudedCubeSeparation;
+
+		let mutablePos = [
+			Math.abs(x) * 3,
+			Math.abs(y) * 3,
+			Math.abs(z) * 3 - 2.5
+		];
+
+		let totalDistance = Math.max(
+			Math.max(mutablePos[0], mutablePos[1]),
+			mutablePos[2]
+		) - 1;
+
+		for (let iteration = 0; iteration < this.iterations; iteration++)
+		{
+			if (mutablePos[0] > Math.max(mutablePos[1], mutablePos[2]))
+			{
+				mutablePos = [
+					this.extrudedCubeScale * mutablePos[0]
+						- (this.extrudedCubeScale - 1) * scaleCenter,
+					this.extrudedCubeScale * mutablePos[1],
+					this.extrudedCubeScale * mutablePos[2]
+				];
+			}
+
+			else if (mutablePos[1] > Math.max(mutablePos[0], mutablePos[2]))
+			{
+				mutablePos = [
+					this.extrudedCubeScale * mutablePos[0],
+					this.extrudedCubeScale * mutablePos[1]
+						- (this.extrudedCubeScale - 1) * scaleCenter,
+					this.extrudedCubeScale * mutablePos[2]
+				];
+			}
+
+			else
+			{
+				mutablePos = [
+					this.extrudedCubeScale * mutablePos[0],
+					this.extrudedCubeScale * mutablePos[1],
+					this.extrudedCubeScale * mutablePos[2]
+						- (this.extrudedCubeScale - 1) * scaleCenter
+				];
+			}
+
+			mutablePos = [
+				Math.abs(mutablePos[0]),
+				Math.abs(mutablePos[1]),
+				Math.abs(mutablePos[2])
+			];
+
+			totalDistance = Math.min(
+				totalDistance,
+				(Math.max(Math.max(mutablePos[0], mutablePos[1]), mutablePos[2]) - 1)
+					/ Math.pow(this.extrudedCubeScale, iteration + 1)
+			);
+		}
+		
+		return Math.abs(totalDistance) / 3;
+	}
+
+	distanceEstimatorMengerSponge(x, y, z)
+	{
+		let mutablePos = [
+			Math.abs(x) * 3,
+			Math.abs(y) * 3,
+			Math.abs(z) * 3 - 2.5
+		];
+
+		let maxAbsPos = Math.max(Math.max(mutablePos[0], mutablePos[1]), mutablePos[2]);
+		let minAbsPos = Math.min(Math.min(mutablePos[0], mutablePos[1]), mutablePos[2]);
+		let sumAbsPos = mutablePos[0] + mutablePos[1] + mutablePos[2];
+		mutablePos = [minAbsPos, sumAbsPos - minAbsPos - maxAbsPos, maxAbsPos];
+
+		let totalDistance;
+		const totalScale = [1, 1, 1];
+		let effectiveScale;
+
+		const invScale = 1 / this.mengerSpongeScale;
+		const cornerFactor = 2 * this.mengerSpongeScale
+			/ (1 * this.mengerSpongeScale - 1);
+		const edgeFactor = 2 * this.mengerSpongeScale / (this.mengerSpongeScale - 1);
+
+		const cornerScaleCenter = [
+			(cornerFactor - 1) * (
+				(1 + 1 * this.mengerSpongeScale) / (1 + 2 * this.mengerSpongeScale
+				- 1 * this.mengerSpongeScale)
+			),
+
+			(cornerFactor - 1) * (
+				(1 + 1 * this.mengerSpongeScale) / (1 + 2 * this.mengerSpongeScale
+				- 1 * this.mengerSpongeScale)
+			),
+
+			(cornerFactor - 1) * (
+				(1 + 1 * this.mengerSpongeScale) / (1 + 2 * this.mengerSpongeScale
+				- 1 * this.mengerSpongeScale)
+			)
+		];
+		
+		const edgeScaleCenter = [0, edgeFactor - 1, edgeFactor - 1];
+
+		const cornerRadius = 0.5 * (1 - invScale);
+		const cornerCenter = 0.5 * (1 + invScale);
+
+		const edgeRadius = 0.5 * (1 - invScale);
+		const edgeCenter = 0.5 * (1 + invScale);
+
+		for (let iteration = 0; iteration < 16; iteration++)
+		{
+			const distanceToCornerX = Math.abs(mutablePos[0] - cornerCenter) - cornerRadius;
+			const distanceToCornerY = Math.abs(mutablePos[1] - cornerCenter) - cornerRadius;
+			const distanceToCornerZ = Math.abs(mutablePos[2] - cornerCenter) - cornerRadius;
+			const distanceToCorner = Math.max(
+				distanceToCornerX,
+				Math.max(distanceToCornerY, distanceToCornerZ)
+			);
+			
+			const distanceToEdgeX = mutablePos[0] - invScale;
+			const distanceToEdgeY = Math.abs(mutablePos[1] - edgeCenter) - edgeRadius;
+			const distanceToEdgeZ = Math.abs(mutablePos[2] - edgeCenter) - edgeRadius;
+			const distanceToEdge = Math.max(
+				distanceToEdgeX,
+				Math.max(distanceToEdgeY, distanceToEdgeZ)
+			);
+
+			if (distanceToCorner < distanceToEdge)
+			{
+				totalDistance = distanceToCorner;
+
+				if (distanceToCornerX > Math.max(distanceToCornerY, distanceToCornerZ))
+				{
+					effectiveScale = totalScale[0];
+				}
+
+				else if (distanceToCornerY > Math.max(distanceToCornerX, distanceToCornerZ))
+				{
+					effectiveScale = totalScale[1];
+				}
+
+				else
+				{
+					effectiveScale = totalScale[2];
+				}
+
+				// Scale all directions by 2s/(s-1) from (1, 1, 1) * separation.
+				mutablePos = [
+					cornerFactor * mutablePos[0] - cornerScaleCenter[0],
+					cornerFactor * mutablePos[1] - cornerScaleCenter[1],
+					cornerFactor * mutablePos[2] - cornerScaleCenter[2]
+				];
+
+				totalScale[0] *= cornerFactor;
+				totalScale[1] *= cornerFactor;
+				totalScale[2] *= cornerFactor;
+			}
+
+			else
+			{
+				totalDistance = distanceToEdge;
+				
+				if (distanceToEdgeX > Math.max(distanceToEdgeY, distanceToEdgeZ))
+				{
+					effectiveScale = totalScale[0];
+				}
+
+				else if (distanceToEdgeY > Math.max(distanceToEdgeX, distanceToEdgeZ))
+				{
+					effectiveScale = totalScale[1];
+				}
+
+				else
+				{
+					effectiveScale = totalScale[2];
+				}
+
+				mutablePos = [
+					this.mengerSpongeScale * mutablePos[0] - edgeScaleCenter[0],
+					edgeFactor * mutablePos[1] - edgeScaleCenter[1],
+					edgeFactor * mutablePos[2] - edgeScaleCenter[2]
+				];
+
+				totalScale[0] *= this.mengerSpongeScale;
+				totalScale[1] *= edgeFactor;
+				totalScale[2] *= edgeFactor;
+			}
+
+			mutablePos = [
+				Math.abs(mutablePos[0]),
+				Math.abs(mutablePos[1]),
+				Math.abs(mutablePos[2])
+			];
+
+			maxAbsPos = Math.max(Math.max(mutablePos[0], mutablePos[1]), mutablePos[2]);
+			minAbsPos = Math.min(Math.min(mutablePos[0], mutablePos[1]), mutablePos[2]);
+			sumAbsPos = mutablePos[0] + mutablePos[1] + mutablePos[2];
+			mutablePos = [minAbsPos, sumAbsPos - minAbsPos - maxAbsPos, maxAbsPos];
+		}
+		
+		return Math.abs(totalDistance) / effectiveScale * 0.333333;
 	}
 }

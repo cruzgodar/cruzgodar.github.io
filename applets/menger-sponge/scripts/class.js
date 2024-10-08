@@ -156,7 +156,7 @@ export class MengerSponge extends RaymarchApplet
 			uniform vec3 rightVec;
 			uniform vec3 upVec;
 			
-			uniform float focalLength;
+			uniform float distanceToScene;
 			
 			const vec3 lightPos = vec3(50.0, 70.0, 100.0);
 			const float lightBrightness = 2.5;
@@ -329,7 +329,7 @@ export class MengerSponge extends RaymarchApplet
 			"forwardVec",
 			"rightVec",
 			"upVec",
-			"focalLength",
+			"distanceToScene",
 			"iterations",
 			"scale",
 		]);
@@ -395,8 +395,8 @@ export class MengerSponge extends RaymarchApplet
 		);
 
 		this.wilson.gl.uniform1f(
-			this.wilson.uniforms["focalLength"],
-			this.focalLength
+			this.wilson.uniforms["distanceToScene"],
+			this.distanceToScene
 		);
 
 		this.wilson.gl.uniform1i(
@@ -587,7 +587,7 @@ export class MengerSponge extends RaymarchApplet
 			sumAbsPos = mutablePos[0] + mutablePos[1] + mutablePos[2];
 			mutablePos = [minAbsPos, sumAbsPos - minAbsPos - maxAbsPos, maxAbsPos];
 		}
-		
+
 		return Math.abs(totalDistance) / effectiveScale;
 	}
 

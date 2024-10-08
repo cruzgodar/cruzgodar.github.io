@@ -82,7 +82,7 @@ export class KaleidoscopicIFSFractal extends RaymarchApplet
 			uniform vec3 rightVec;
 			uniform vec3 upVec;
 			
-			uniform float focalLength;
+			uniform float distanceToScene;
 			
 			const float lightBrightness = 2.0;
 			
@@ -629,7 +629,7 @@ export class KaleidoscopicIFSFractal extends RaymarchApplet
 			"forwardVec",
 			"rightVec",
 			"upVec",
-			"focalLength",
+			"distanceToScene",
 			"tetrahedronAmount",
 			"cubeAmount",
 			"octahedronAmount",
@@ -699,8 +699,8 @@ export class KaleidoscopicIFSFractal extends RaymarchApplet
 		);
 
 		this.wilson.gl.uniform1f(
-			this.wilson.uniforms["focalLength"],
-			this.focalLength
+			this.wilson.uniforms["distanceToScene"],
+			this.distanceToScene
 		);
 
 		this.wilson.gl.uniform1f(

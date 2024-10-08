@@ -63,7 +63,7 @@ export class HairyBall extends RaymarchApplet
 			uniform vec3 forwardVec;
 			uniform vec3 rightVec;
 			uniform vec3 upVec;
-			uniform float focalLength;
+			uniform float distanceToScene;
 
 			uniform int imageSize;
 
@@ -221,7 +221,7 @@ export class HairyBall extends RaymarchApplet
 			"forwardVec",
 			"rightVec",
 			"upVec",
-			"focalLength",
+			"distanceToScene",
 		]);
 
 		this.wilson.render.createFramebufferTexturePair(this.wilson.gl.UNSIGNED_BYTE);
@@ -306,8 +306,8 @@ export class HairyBall extends RaymarchApplet
 		);
 
 		this.wilson.gl.uniform1f(
-			this.wilson.uniforms["focalLength"],
-			this.focalLength
+			this.wilson.uniforms["distanceToScene"],
+			this.distanceToScene
 		);
 
 
