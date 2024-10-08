@@ -12,6 +12,8 @@ const setUniformFunctions = {
 	vec4: "uniform4fv",
 };
 
+const minEpsilon = .0000003;
+
 export class RaymarchApplet extends AnimationFrameApplet
 {
 	movingSpeed = .1;
@@ -74,10 +76,16 @@ export class RaymarchApplet extends AnimationFrameApplet
 		getReflectivityGlsl,
 		addGlsl = "",
 		uniforms,
+		theta,
+		phi,
+		cameraPos
 	}) {
 		super(canvas);
 
 		this.uniforms = uniforms;
+		this.theta = theta;
+		this.phi = phi;
+		this.cameraPos = cameraPos;
 		
 		if (!this.lockedOnOrigin)
 		{
@@ -308,13 +316,15 @@ export class RaymarchApplet extends AnimationFrameApplet
 					.25
 				);
 
-				float shadowIntensity = ${this.useShadows ? "computeShadowIntensity(pos, lightDirection)" : "1.0"};
-				
-				//The last factor adds ambient occlusion.
 				vec3 color = getColor(pos)
 					* lightIntensity
-					* shadowIntensity
 					* max((1.0 - float(iteration) / float(maxMarches)), 0.0);
+
+				${this.useShadows ? `
+					float shadowIntensity = computeShadowIntensity(pos, lightDirection);
+
+					color *= shadowIntensity;
+				` : ""}
 				
 				//Apply fog.
 				return mix(color, fogColor, 1.0 - exp(-distance(pos, cameraPos) * fogScaling));
@@ -370,9 +380,7 @@ export class RaymarchApplet extends AnimationFrameApplet
 
 		const uniformsGlsl = Object.entries(this.uniforms).map(([key, value]) =>
 		{
-			return /* glsl */`
-				uniform ${value[0]} ${key};
-			`;
+			return /* glsl */`uniform ${value[0]} ${key};`;
 		}).join("\n");
 
 		const shader = /* glsl */`
@@ -397,7 +405,6 @@ export class RaymarchApplet extends AnimationFrameApplet
 			const float lightBrightness = ${getFloatGlsl(this.lightBrightness)};
 			const float bloomPower = ${getFloatGlsl(this.bloomPower)};
 			
-			const float minEpsilon = .0000006;
 			const float clipDistance = ${getFloatGlsl(this.clipDistance)};
 			const int maxMarches = ${this.maxMarches};
 			const int maxShadowMarches = ${this.maxShadowMarches};
@@ -464,17 +471,19 @@ export class RaymarchApplet extends AnimationFrameApplet
 					.25
 				);
 
-				float shadowIntensity = ${this.useShadows ? "computeShadowIntensity(pos, lightDirection)" : "1.0"};
-				
-				//The last factor adds ambient occlusion.
 				vec3 color = getColor(pos)
 					* lightIntensity
-					* shadowIntensity
 					* max((1.0 - float(iteration) / float(maxMarches)), 0.0);
 
-				vec3 reflectedDirection = reflect(normalize(pos - cameraPos) * .95, surfaceNormal);
+				${this.useShadows ? `
+					float shadowIntensity = computeShadowIntensity(pos, lightDirection);
+
+					color *= shadowIntensity;
+				` : ""}
 
 				${this.useReflections ? `
+					vec3 reflectedDirection = reflect(normalize(pos - cameraPos) * .95, surfaceNormal);
+
 					color = mix(
 						color,
 						computeReflection(pos, reflectedDirection, iteration),
@@ -579,8 +588,6 @@ export class RaymarchApplet extends AnimationFrameApplet
 			this.cameraPos[2]
 		);
 
-
-
 		this.focalLength = Math.min(this.distanceToScene, .5) / 2;
 
 		// The factor we divide by here sets the fov.
@@ -616,7 +623,10 @@ export class RaymarchApplet extends AnimationFrameApplet
 		this.wilson.gl.uniform3fv(this.wilson.uniforms.rightVec, this.rightVec);
 		this.wilson.gl.uniform3fv(this.wilson.uniforms.upVec, this.upVec);
 
-		this.wilson.gl.uniform1f(this.wilson.uniforms.epsilon, this.distanceToScene / 1000);
+		this.wilson.gl.uniform1f(
+			this.wilson.uniforms.epsilon,
+			Math.max(2 * this.distanceToScene / this.imageSize, minEpsilon)
+		);
 	}
 
 	distanceEstimator()
@@ -773,6 +783,18 @@ export class RaymarchApplet extends AnimationFrameApplet
 
 
 		this.needNewFrame = true;
+	}
+
+
+
+	setUniform(name, value)
+	{
+		this.uniforms[name][1] = value;
+
+		this.wilson.gl[setUniformFunctions[this.uniforms[name][0]]](
+			this.wilson.uniforms[name],
+			value
+		);
 	}
 
 

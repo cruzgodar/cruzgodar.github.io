@@ -64,14 +64,9 @@ export default function()
 
 	function onSliderInput()
 	{
-		applet.iterations = iterationsSlider.value;
-		applet.wilson.gl.uniform1i(applet.wilson.uniforms.iterations, applet.iterations);
-
-		applet.scale = scaleSlider.value;
-		applet.wilson.gl.uniform1f(applet.wilson.uniforms.scale, applet.scale);
-
-		applet.separation = separationSlider.value;
-		applet.wilson.gl.uniform1f(applet.wilson.uniforms.separation, applet.separation);
+		applet.setUniform("iterations", iterationsSlider.value);
+		applet.setUniform("scale", scaleSlider.value);
+		applet.setUniform("separation", separationSlider.value);
 
 		applet.calculateVectors();
 
