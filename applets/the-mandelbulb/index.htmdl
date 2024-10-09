@@ -25,6 +25,7 @@ Drag on the scene to look around. On a keyboard, use WASD to move, and on a touc
 ###
 
 ### checkboxes
+	lock-on-origin
 	shadows
 ###
 

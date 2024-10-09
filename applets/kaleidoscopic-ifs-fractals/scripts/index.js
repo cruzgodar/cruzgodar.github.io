@@ -29,7 +29,7 @@ export default function()
 		name: "$\\theta_x$",
 		value: 0,
 		min: 0,
-		max: Math.PI / 2,
+		max: Math.PI,
 		onInput: onSliderInput
 	});
 
@@ -38,7 +38,7 @@ export default function()
 		name: "$\\theta_y$",
 		value: 0,
 		min: 0,
-		max: Math.PI / 2,
+		max: Math.PI,
 		onInput: onSliderInput
 	});
 
@@ -47,7 +47,7 @@ export default function()
 		name: "$\\theta_z$",
 		value: 0,
 		min: 0,
-		max: Math.PI / 2,
+		max: Math.PI,
 		onInput: onSliderInput
 	});
 
@@ -69,6 +69,13 @@ export default function()
 		min: minScale,
 		max: 2,
 		onInput: onSliderInput
+	});
+
+	const lockOnOriginCheckbox = new Checkbox({
+		element: $("#lock-on-origin-checkbox"),
+		name: "Lock on origin",
+		checked: true,
+		onInput: onCheckboxInput
 	});
 
 	const shadowsCheckbox = new Checkbox({
@@ -116,32 +123,16 @@ export default function()
 	function onDropdownInput()
 	{
 		applet.changePolyhedron(polyhedraDropdown.value);
-
-		if (polyhedraDropdown.value === "tetrahedron")
-		{
-			rotationAngleX2Slider.setBounds({ max: 2 * Math.PI });
-			rotationAngleY2Slider.setBounds({ max: 2 * Math.PI });
-			rotationAngleZ2Slider.setBounds({ max: 2 * Math.PI / 3 });
-		}
-
-		else if (polyhedraDropdown.value === "cube")
-		{
-			rotationAngleX2Slider.setBounds({ max: 2 * Math.PI / 2 });
-			rotationAngleY2Slider.setBounds({ max: 2 * Math.PI / 2 });
-			rotationAngleZ2Slider.setBounds({ max: 2 * Math.PI / 2 });
-		}
-
-		else
-		{
-			rotationAngleX2Slider.setBounds({ max: 2 * Math.PI / 2 });
-			rotationAngleY2Slider.setBounds({ max: 2 * Math.PI / 2 });
-			rotationAngleZ2Slider.setBounds({ max: 2 * Math.PI / 2 });
-		}
 	}
 
 	function onCheckboxInput()
 	{
-		applet.useShadows = shadowsCheckbox.checked;
-		applet.reloadShader();
+		applet.setLockedOnOrigin(lockOnOriginCheckbox.checked);
+
+		if (applet.useShadows !== shadowsCheckbox.checked)
+		{
+			applet.useShadows = shadowsCheckbox.checked;
+			applet.reloadShader();
+		}
 	}
 }

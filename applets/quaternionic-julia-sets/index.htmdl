@@ -21,6 +21,7 @@ The <a href="/applets/julia-set-explorer/">Mandelbrot and Julia sets</a> are def
 ###
 
 ### checkboxes
+	lock-on-origin
 	shadows
 ###
 

@@ -73,6 +73,13 @@ export default function()
 		onInput: onSliderInput
 	});
 
+	const lockOnOriginCheckbox = new Checkbox({
+		element: $("#lock-on-origin-checkbox"),
+		name: "Lock on origin",
+		checked: true,
+		onInput: onCheckboxInput
+	});
+
 	const shadowsCheckbox = new Checkbox({
 		element: $("#shadows-checkbox"),
 		name: "Shadows",
@@ -105,7 +112,12 @@ export default function()
 
 	function onCheckboxInput()
 	{
-		applet.useShadows = shadowsCheckbox.checked;
-		applet.reloadShader();
+		applet.setLockedOnOrigin(lockOnOriginCheckbox.checked);
+
+		if (applet.useShadows !== shadowsCheckbox.checked)
+		{
+			applet.useShadows = shadowsCheckbox.checked;
+			applet.reloadShader();
+		}
 	}
 }

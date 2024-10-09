@@ -74,8 +74,6 @@ function getDistanceEstimatorGlsl(shape, useForGetColor = false)
 				}
 			` : ""}
 			
-			pos = rotationMatrix1 * pos;
-			
 			//Scale the system -- this one takes me a fair bit of thinking to get. What's happening here is that we're stretching from a vertex, but since we never scale the vertices, the four new ones are the four closest to the vertex we scaled from. Now (x, y, z) will get farther and farther away from the origin, but that makes sense -- we're really just zooming in on the tetrahedron.
 			pos = scale * pos - (scale - 1.0) * scaleCenter${variableName};
 			
@@ -90,9 +88,6 @@ function getDistanceEstimatorGlsl(shape, useForGetColor = false)
 
 export class KaleidoscopicIFSFractal extends RaymarchApplet
 {
-	rotationAngleX1 = 0;
-	rotationAngleY1 = 0;
-	rotationAngleZ1 = 0;
 	rotationAngleX2 = 0;
 	rotationAngleY2 = 0;
 	rotationAngleZ2 = 0;
@@ -134,7 +129,6 @@ export class KaleidoscopicIFSFractal extends RaymarchApplet
 
 		const uniforms = {
 			scale: ["float", 2],
-			rotationMatrix1: ["mat3", [1, 0, 0, 0, 1, 0, 0, 0, 1]],
 			rotationMatrix2: ["mat3", [1, 0, 0, 0, 1, 0, 0, 0, 1]],
 		};
 
@@ -150,6 +144,7 @@ export class KaleidoscopicIFSFractal extends RaymarchApplet
 			lightPos: [-50, -70, 100],
 			lightBrightness: 1.25,
 			epsilonScaling: .75,
+			stepFactor: .6,
 		});
 
 		this.shape = shape;
@@ -207,40 +202,6 @@ export class KaleidoscopicIFSFractal extends RaymarchApplet
 				}
 			}
 
-
-
-			// Apply the first rotation matrix.
-
-			let tempX = x;
-			let tempY = y;
-			let tempZ = z;
-
-			let matZ = [
-				[Math.cos(this.rotationAngleZ1), -Math.sin(this.rotationAngleZ1), 0],
-				[Math.sin(this.rotationAngleZ1), Math.cos(this.rotationAngleZ1), 0],
-				[0, 0, 1]
-			];
-
-			let matY = [
-				[Math.cos(this.rotationAngleY1), 0, -Math.sin(this.rotationAngleY1)],
-				[0, 1, 0],
-				[Math.sin(this.rotationAngleY1), 0, Math.cos(this.rotationAngleY1)]
-			];
-			
-			let matX = [
-				[1, 0, 0],
-				[0, Math.cos(this.rotationAngleX1), -Math.sin(this.rotationAngleX1)],
-				[0, Math.sin(this.rotationAngleX1), Math.cos(this.rotationAngleX1)]
-			];
-
-			let matTotal = RaymarchApplet.matMul(RaymarchApplet.matMul(matZ, matY), matX);
-
-			x = matTotal[0][0] * tempX + matTotal[0][1] * tempY + matTotal[0][2] * tempZ;
-			y = matTotal[1][0] * tempX + matTotal[1][1] * tempY + matTotal[1][2] * tempZ;
-			z = matTotal[2][0] * tempX + matTotal[2][1] * tempY + matTotal[2][2] * tempZ;
-
-
-
 			// This one takes a fair bit of thinking to get. What's happening here is that
 			// we're stretching from a vertex, but since we never scale the vertices,
 			// the four new ones are the four closest to the vertex we scaled from.
@@ -250,33 +211,29 @@ export class KaleidoscopicIFSFractal extends RaymarchApplet
 			y = scale * y - (scale - 1) * scaleCenter[1];
 			z = scale * z - (scale - 1) * scaleCenter[2];
 
-
-
-			// Apply the second rotation matrix.
-
-			tempX = x;
-			tempY = y;
-			tempZ = z;
-
-			matZ = [
+			const matZ = [
 				[Math.cos(this.rotationAngleZ2), -Math.sin(this.rotationAngleZ2), 0],
 				[Math.sin(this.rotationAngleZ2), Math.cos(this.rotationAngleZ2), 0],
 				[0, 0, 1]
 			];
 
-			matY = [
+			const matY = [
 				[Math.cos(this.rotationAngleY2), 0, -Math.sin(this.rotationAngleY2)],
 				[0, 1, 0],
 				[Math.sin(this.rotationAngleY2), 0, Math.cos(this.rotationAngleY2)]
 			];
 
-			matX = [
+			const matX = [
 				[1, 0, 0],
 				[0, Math.cos(this.rotationAngleX2), -Math.sin(this.rotationAngleX2)],
 				[0, Math.sin(this.rotationAngleX2), Math.cos(this.rotationAngleX2)]
 			];
 
-			matTotal = RaymarchApplet.matMul(RaymarchApplet.matMul(matZ, matY), matX);
+			const matTotal = RaymarchApplet.matMul(RaymarchApplet.matMul(matZ, matY), matX);
+
+			const tempX = x;
+			const tempY = y;
+			const tempZ = z;
 
 			x = matTotal[0][0] * tempX + matTotal[0][1] * tempY + matTotal[0][2] * tempZ;
 			y = matTotal[1][0] * tempX + matTotal[1][1] * tempY + matTotal[1][2] * tempZ;
@@ -293,57 +250,25 @@ export class KaleidoscopicIFSFractal extends RaymarchApplet
 
 	updateMatrices()
 	{
-		let matZ = [
-			[Math.cos(this.rotationAngleZ1), -Math.sin(this.rotationAngleZ1), 0],
-			[Math.sin(this.rotationAngleZ1), Math.cos(this.rotationAngleZ1), 0],
-			[0, 0, 1]
-		];
-
-		let matY = [
-			[Math.cos(this.rotationAngleY1), 0, -Math.sin(this.rotationAngleY1)],
-			[0, 1, 0],
-			[Math.sin(this.rotationAngleY1), 0, Math.cos(this.rotationAngleY1)]
-		];
-
-		let matX = [
-			[1, 0, 0],
-			[0, Math.cos(this.rotationAngleX1), -Math.sin(this.rotationAngleX1)],
-			[0, Math.sin(this.rotationAngleX1), Math.cos(this.rotationAngleX1)]
-		];
-
-		let matTotal = RaymarchApplet.matMul(RaymarchApplet.matMul(matZ, matY), matX);
-
-		this.setUniform("rotationMatrix1", [
-			matTotal[0][0],
-			matTotal[1][0],
-			matTotal[2][0],
-			matTotal[0][1],
-			matTotal[1][1],
-			matTotal[2][1],
-			matTotal[0][2],
-			matTotal[1][2],
-			matTotal[2][2]
-		]);
-
-		matZ = [
+		const matZ = [
 			[Math.cos(this.rotationAngleZ2), -Math.sin(this.rotationAngleZ2), 0],
 			[Math.sin(this.rotationAngleZ2), Math.cos(this.rotationAngleZ2), 0],
 			[0, 0, 1]
 		];
 
-		matY = [
+		const matY = [
 			[Math.cos(this.rotationAngleY2), 0, -Math.sin(this.rotationAngleY2)],
 			[0, 1, 0],
 			[Math.sin(this.rotationAngleY2), 0, Math.cos(this.rotationAngleY2)]
 		];
 
-		matX = [
+		const matX = [
 			[1, 0, 0],
 			[0, Math.cos(this.rotationAngleX2), -Math.sin(this.rotationAngleX2)],
 			[0, Math.sin(this.rotationAngleX2), Math.cos(this.rotationAngleX2)]
 		];
 
-		matTotal = RaymarchApplet.matMul(RaymarchApplet.matMul(matZ, matY), matX);
+		const matTotal = RaymarchApplet.matMul(RaymarchApplet.matMul(matZ, matY), matX);
 
 		this.setUniform("rotationMatrix2", [
 			matTotal[0][0],
@@ -366,7 +291,6 @@ export class KaleidoscopicIFSFractal extends RaymarchApplet
 		await changeOpacity({
 			element: this.canvas,
 			opacity: 0,
-			duration: 250,
 		});
 
 		this.shape = newShape;
@@ -381,7 +305,6 @@ export class KaleidoscopicIFSFractal extends RaymarchApplet
 		await changeOpacity({
 			element: this.canvas,
 			opacity: 1,
-			duration: 250,
 		});
 	}
 }

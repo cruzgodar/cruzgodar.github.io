@@ -108,6 +108,7 @@ export class CurvedLight extends RaymarchApplet
 			ambientLight: .25,
 			useBloom: false,
 			useReflections: true,
+			lockedOnOrigin: false
 		});
 	}
 

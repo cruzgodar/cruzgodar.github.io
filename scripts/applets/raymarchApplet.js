@@ -97,7 +97,7 @@ export class RaymarchApplet extends AnimationFrameApplet
 		minEpsilon = .0000003,
 
 		cameraPos = [0, 0, 0],
-		lockedOnOrigin = false,
+		lockedOnOrigin = true,
 
 		lightPos = [50, 70, 100],
 		lightBrightness = 1,
@@ -107,7 +107,7 @@ export class RaymarchApplet extends AnimationFrameApplet
 		bloomPower = 1,
 
 		useShadows = false,
-		useSoftShadows = false,
+		useSoftShadows = true,
 		useReflections = false,
 		useBloom = true,
 	}) {
@@ -135,39 +135,33 @@ export class RaymarchApplet extends AnimationFrameApplet
 		this.useReflections = useReflections;
 		this.useBloom = useBloom;
 		
-		if (!this.lockedOnOrigin)
-		{
-			this.listenForKeysPressed(
-				["w", "s", "a", "d", "q", "e", " ", "shift", "z"],
-				(key, pressed) =>
+		this.listenForKeysPressed(
+			["w", "s", "a", "d", "q", "e", " ", "shift", "z"],
+			(key, pressed) =>
+			{
+				if (key === "z")
 				{
-					if (key === "z")
-					{
-						const dummy = { t: 0 };
-						const oldFovFactor = this.fovFactor;
-						const newFovFactor = pressed ? 5 : 1;
+					const dummy = { t: 0 };
+					const oldFovFactor = this.fovFactor;
+					const newFovFactor = pressed ? 5 : 1;
 
-						anime({
-							targets: dummy,
-							t: 1,
-							duration: 250,
-							easing: "easeOutCubic",
-							update: () =>
-							{
-								this.fovFactor = (1 - dummy.t) * oldFovFactor
-									+ dummy.t * newFovFactor;
-								this.needNewFrame = true;
-							}
-						});
-					}
+					anime({
+						targets: dummy,
+						t: 1,
+						duration: 250,
+						easing: "easeOutCubic",
+						update: () =>
+						{
+							this.fovFactor = (1 - dummy.t) * oldFovFactor
+								+ dummy.t * newFovFactor;
+							this.needNewFrame = true;
+						}
+					});
 				}
-			);
-		}
+			}
+		);
 
-		else
-		{
-			this.distanceFromOrigin = RaymarchApplet.magnitude(this.cameraPos);
-		}
+		this.distanceFromOrigin = RaymarchApplet.magnitude(this.cameraPos);
 
 		const refreshId = setInterval(() =>
 		{
@@ -236,6 +230,12 @@ export class RaymarchApplet extends AnimationFrameApplet
 		});
 
 		this.resume();
+	}
+
+	onDragCanvas(x, y, xDelta, yDelta)
+	{
+		const sign = this.lockedOnOrigin ? -1 : 1;
+		this.pan.onDragCanvas(x, y, sign * xDelta, sign * yDelta);
 	}
 
 
@@ -700,13 +700,11 @@ export class RaymarchApplet extends AnimationFrameApplet
 	{
 		// Here comes the serious math. Theta is the angle in the xy-plane and
 		// phi the angle down from the z-axis. We can use them get a normalized forward vector:
-		const theta = this.lockedOnOrigin ? -this.theta : this.theta;
-		const phi = this.lockedOnOrigin ? Math.PI - this.phi : this.phi;
 
 		this.forwardVec = [
-			Math.cos(theta) * Math.sin(phi),
-			Math.sin(theta) * Math.sin(phi),
-			Math.cos(phi)
+			Math.cos(this.theta) * Math.sin(this.phi),
+			Math.sin(this.theta) * Math.sin(this.phi),
+			Math.cos(this.phi)
 		];
 
 		// Now the right vector needs to be constrained to the xy-plane,
@@ -793,6 +791,16 @@ export class RaymarchApplet extends AnimationFrameApplet
 			),
 			-.01
 		);
+
+		if (this.wilson.worldCenterX < -Math.PI)
+		{
+			this.wilson.worldCenterX += 2 * Math.PI;
+		}
+
+		else if (this.wilson.worldCenterX > Math.PI)
+		{
+			this.wilson.worldCenterX -= 2 * Math.PI;
+		}
 		
 		this.theta = -this.wilson.worldCenterX;
 		this.phi = -this.wilson.worldCenterY;
@@ -961,6 +969,46 @@ export class RaymarchApplet extends AnimationFrameApplet
 			this.wilson.uniforms.minEpsilon,
 			this.minEpsilon,
 		);
+	}
+
+	async setLockedOnOrigin(value)
+	{
+		if (value && !this.lockedOnOrigin)
+		{
+			// Convert to spherical coordinates.
+			const r = RaymarchApplet.magnitude(this.cameraPos);
+			const normalizedCameraPos = RaymarchApplet.normalize(this.cameraPos);
+			const phi = Math.PI - Math.acos(this.cameraPos[2] / r);
+			let theta = Math.atan2(this.cameraPos[1], this.cameraPos[0]) + Math.PI;
+			if (theta > Math.PI)
+			{
+				theta -= 2 * Math.PI;
+			}
+
+			const dummy = { r, theta: this.theta, phi: this.phi };
+
+			await anime({
+				targets: dummy,
+				theta,
+				phi,
+				r: this.distanceFromOrigin,
+				duration: 500,
+				easing: "easeOutCubic",
+				update: () =>
+				{
+					this.wilson.worldCenterX = -dummy.theta;
+					this.wilson.worldCenterY = -dummy.phi;
+					this.cameraPos = RaymarchApplet.scaleVector(
+						dummy.r,
+						normalizedCameraPos
+					);
+					
+					this.needNewFrame = true;
+				}
+			}).finished;
+		}
+
+		this.lockedOnOrigin = value;
 	}
 
 
