@@ -27,7 +27,7 @@ export default function()
 		name: "Download",
 		onClick: () =>
 		{
-			if (applet.juliaProportion < .5)
+			if (applet.uniforms.juliaProportion[1] < .5)
 			{
 				applet.wilson.downloadFrame("the-mandelbulb.png");
 			}

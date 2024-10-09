@@ -1,7 +1,4 @@
-import { Applet } from "/scripts/applets/applet.js";
 import { RaymarchApplet } from "/scripts/applets/raymarchApplet.js";
-import { addTemporaryListener } from "/scripts/src/main.js";
-import { Wilson } from "/scripts/wilson.js";
 
 const changeColorGlsl = /* glsl */`
 	vec3 colorAdd = abs(mutablePos / effectiveScale);
@@ -30,16 +27,14 @@ function getDistanceEstimatorGlsl(useForGetColor = false)
 		float effectiveScale;
 
 		float invScale = 1.0 / scale;
-		float cornerFactor = 2.0 * scale / (separation * scale - 1.0);
+		float cornerFactor = 2.0 * scale / (scale - 1.0);
 		float edgeFactor = 2.0 * scale / (scale - 1.0);
 
-		vec3 cornerScaleCenter = (cornerFactor - 1.0) * vec3(
-			(1.0 + separation * scale) / (1.0 + 2.0 * scale - separation * scale)
-		);
+		vec3 cornerScaleCenter = (cornerFactor - 1.0) * vec3(1.0);
 		vec3 edgeScaleCenter = vec3(0.0, edgeFactor - 1.0, edgeFactor - 1.0);
 
-		float cornerRadius = 0.5 * (separation - invScale);
-		float cornerCenter = 0.5 * (separation + invScale);
+		float cornerRadius = 0.5 * (1.0 - invScale);
+		float cornerCenter = 0.5 * (1.0 + invScale);
 
 		float edgeLongRadius = invScale;
 		float edgeShortRadius = 0.5 * (1.0 - invScale);
@@ -128,331 +123,42 @@ function getDistanceEstimatorGlsl(useForGetColor = false)
 
 export class MengerSponge extends RaymarchApplet
 {
-	iterations = 16;
-	scale = 3;
-	separation = 1;
-
-	cameraPos = [2.0160, 1.3095, 1.3729];
-	theta = 3.7518;
-	phi = 2.1482;
-
-
-
 	constructor({ canvas })
 	{
-		super(canvas);
+		const distanceEstimatorGlsl = getDistanceEstimatorGlsl();
+		const getColorGlsl = getDistanceEstimatorGlsl(true);
 
-		const fragShaderSource = /* glsl */`
-			precision highp float;
-			
-			varying vec2 uv;
-			
-			uniform float aspectRatioX;
-			uniform float aspectRatioY;
-			
-			uniform vec3 cameraPos;
-			uniform vec3 imagePlaneCenterPos;
-			uniform vec3 forwardVec;
-			uniform vec3 rightVec;
-			uniform vec3 upVec;
-			
-			uniform float distanceToScene;
-			
-			const vec3 lightPos = vec3(50.0, 70.0, 100.0);
-			const float lightBrightness = 2.5;
-			
-			uniform int imageSize;
-			
-			
-			
-			const float clipDistance = 1000.0;
-			const int maxMarches = 110;
-			const vec3 fogColor = vec3(0.0, 0.0, 0.0);
-			const float fogScaling = .05;
-			const int maxIterations = 32;
-			
-			uniform int iterations;
-			uniform float scale;
-			const float separation = 1.0;
-			
-
-			
-			float distanceEstimator(vec3 pos)
-			{
-				${getDistanceEstimatorGlsl()}
-			}
-			
-			
-			
-			vec3 getColor(vec3 pos)
-			{
-				${getDistanceEstimatorGlsl(true)}
-			}
-			
-			
-			
-			vec3 getSurfaceNormal(vec3 pos)
-			{
-				float xStep1 = distanceEstimator(pos + vec3(.00001, 0.0, 0.0));
-				float yStep1 = distanceEstimator(pos + vec3(0.0, .00001, 0.0));
-				float zStep1 = distanceEstimator(pos + vec3(0.0, 0.0, .00001));
-				
-				float xStep2 = distanceEstimator(pos - vec3(.00001, 0.0, 0.0));
-				float yStep2 = distanceEstimator(pos - vec3(0.0, .00001, 0.0));
-				float zStep2 = distanceEstimator(pos - vec3(0.0, 0.0, .00001));
-				
-				return normalize(vec3(xStep1 - xStep2, yStep1 - yStep2, zStep1 - zStep2));
-			}
-			
-			
-			
-			vec3 computeShading(vec3 pos, int iteration)
-			{
-				vec3 surfaceNormal = getSurfaceNormal(pos);
-				
-				vec3 lightDirection = normalize(lightPos - pos);
-				
-				float dotProduct = dot(surfaceNormal, lightDirection);
-				
-				float lightIntensity = lightBrightness * abs(dotProduct);
-				
-				//The last factor adds ambient occlusion.
-				vec3 color = getColor(pos) * lightIntensity * max((1.0 - float(iteration) / float(maxMarches)), 0.0);
-				
-				
-				
-				//Apply fog.
-				return mix(color, fogColor, 1.0 - exp(-distance(pos, cameraPos) * fogScaling));
-			}
-			
-			
-			
-			vec3 raymarch(vec3 startPos)
-			{
-				vec3 rayDirectionVec = normalize(startPos - cameraPos) * .5;
-				
-				float epsilon;
-				
-				float t = 0.0;
-				float oldT = 0.0;
-				vec3 oldPos = startPos;
-				
-				// This lets us stop a march early if it passes throughthe plane between the corner and the edge.
-				float boundaryX = 1.0 / scale;
-				
-				for (int iteration = 0; iteration < maxMarches; iteration++)
-				{
-					vec3 pos = cameraPos + t * rayDirectionVec;
-					
-					float distance = distanceEstimator(pos);
-					
-					//This lowers the detail far away, which makes everything run nice and fast.
-					epsilon = max(.0000006, 0.01 * scale * scale * scale * t / min(float(imageSize), 500.0));
-					
-					if (distance < epsilon)
-					{
-						return computeShading(pos, iteration);
-					}
-					
-					else if (t > clipDistance)
-					{
-						return fogColor;
-					}
-					
-					
-					oldT = t;
-					oldPos = pos;
-					
-					t += distance;
-				}
-				
-				return fogColor;
-			}
-			
-			
-			
-			void main(void)
-			{
-				vec3 finalColor = raymarch(imagePlaneCenterPos + rightVec * uv.x * aspectRatioX + upVec * uv.y / aspectRatioY);
-				
-				gl_FragColor = vec4(finalColor.xyz, 1.0);
-			}
+		const addGlsl = /* glsl */`
+			const int maxIterations = 16;
 		`;
 
-
-
-		const options =
-		{
-			renderer: "gpu",
-
-			shader: fragShaderSource,
-
-			canvasWidth: 500,
-			canvasHeight: 500,
-
-			worldCenterX: -this.theta,
-			worldCenterY: -this.phi,
-		
-
-
-			useFullscreen: true,
-
-			trueFullscreen: true,
-
-			useFullscreenButton: true,
-
-			enterFullscreenButtonIconPath: "/graphics/general-icons/enter-fullscreen.png",
-			exitFullscreenButtonIconPath: "/graphics/general-icons/exit-fullscreen.png",
-
-			switchFullscreenCallback: this.changeResolution.bind(this),
-
-
-
-			mousedownCallback: this.onGrabCanvas.bind(this),
-			touchstartCallback: this.onGrabCanvas.bind(this),
-
-			mousedragCallback: this.onDragCanvas.bind(this),
-			touchmoveCallback: this.onDragCanvas.bind(this),
-
-			mouseupCallback: this.onReleaseCanvas.bind(this),
-			touchendCallback: this.onReleaseCanvas.bind(this)
+		const uniforms = {
+			scale: ["float", 3],
+			iterations: ["int", 16],
 		};
 
-		this.wilson = new Wilson(canvas, options);
-
-		this.wilson.render.initUniforms([
-			"aspectRatioX",
-			"aspectRatioY",
-			"imageSize",
-			"cameraPos",
-			"imagePlaneCenterPos",
-			"forwardVec",
-			"rightVec",
-			"upVec",
-			"distanceToScene",
-			"iterations",
-			"scale",
-		]);
-
-		
-
-		this.calculateVectors();
-		
-		if (this.imageWidth >= this.imageHeight)
-		{
-			this.wilson.gl.uniform1f(
-				this.wilson.uniforms["aspectRatioX"],
-				this.imageWidth / this.imageHeight
-			);
-
-			this.wilson.gl.uniform1f(
-				this.wilson.uniforms["aspectRatioY"],
-				1
-			);
-		}
-
-		else
-		{
-			this.wilson.gl.uniform1f(
-				this.wilson.uniforms["aspectRatioX"],
-				1
-			);
-
-			this.wilson.gl.uniform1f(
-				this.wilson.uniforms["aspectRatioY"],
-				this.imageWidth / this.imageHeight
-			);
-		}
-		
-		this.wilson.gl.uniform1i(
-			this.wilson.uniforms["imageSize"],
-			this.imageSize
-		);
-
-		this.wilson.gl.uniform3fv(
-			this.wilson.uniforms["cameraPos"],
-			this.cameraPos
-		);
-
-		this.wilson.gl.uniform3fv(
-			this.wilson.uniforms["imagePlaneCenterPos"],
-			this.imagePlaneCenterPos
-		);
-
-		this.wilson.gl.uniform3fv(
-			this.wilson.uniforms["forwardVec"],
-			this.forwardVec
-		);
-
-		this.wilson.gl.uniform3fv(
-			this.wilson.uniforms["rightVec"],
-			this.rightVec
-		);
-
-		this.wilson.gl.uniform3fv(
-			this.wilson.uniforms["upVec"],
-			this.upVec
-		);
-
-		this.wilson.gl.uniform1f(
-			this.wilson.uniforms["distanceToScene"],
-			this.distanceToScene
-		);
-
-		this.wilson.gl.uniform1i(
-			this.wilson.uniforms["iterations"],
-			this.iterations
-		);
-
-		this.wilson.gl.uniform1f(
-			this.wilson.uniforms["scale"],
-			this.scale
-		);
-
-
-
-		const boundFunction = () => this.changeResolution();
-		addTemporaryListener({
-			object: window,
-			event: "resize",
-			callback: boundFunction
+		super({
+			canvas,
+			distanceEstimatorGlsl,
+			getColorGlsl,
+			addGlsl,
+			uniforms,
+			cameraPos: [2.0160, 1.3095, 1.3729],
+			theta: 3.7518,
+			phi: 2.1482,
+			stepFactor: .5,
+			epsilonScaling: 1.75,
+			lightBrightness: 1.75
 		});
-
-
-
-		this.resume();
-	}
-
-
-
-	prepareFrame(timeElapsed)
-	{
-		this.pan.update(timeElapsed);
-		this.zoom.update(timeElapsed);
-		this.moveUpdate(timeElapsed);
-	}
-
-	drawFrame()
-	{
-		
-		this.wilson.worldCenterY = Math.min(
-			Math.max(
-				this.wilson.worldCenterY,
-				-Math.PI + .01
-			),
-			-.01
-		);
-		
-		this.theta = -this.wilson.worldCenterX;
-		this.phi = -this.wilson.worldCenterY;
-
-		this.wilson.render.drawFrame();
 	}
 
 
 
 	distanceEstimator(x, y, z)
 	{
+		const scale = this.uniforms.scale[1];
+		const iterations = this.uniforms.iterations[1];
+
 		let mutablePos = [
 			Math.abs(x),
 			Math.abs(y),
@@ -468,36 +174,25 @@ export class MengerSponge extends RaymarchApplet
 		const totalScale = [1, 1, 1];
 		let effectiveScale;
 
-		const invScale = 1 / this.scale;
-		const cornerFactor = 2 * this.scale / (this.separation * this.scale - 1);
-		const edgeFactor = 2 * this.scale / (this.scale - 1);
+		const invScale = 1 / scale;
+		const cornerFactor = 2 * scale / (scale - 1);
+		const edgeFactor = 2 * scale / (scale - 1);
 
 		const cornerScaleCenter = [
-			(cornerFactor - 1) * (
-				(1 + this.separation * this.scale) / (1 + 2 * this.scale
-				- this.separation * this.scale)
-			),
-
-			(cornerFactor - 1) * (
-				(1 + this.separation * this.scale) / (1 + 2 * this.scale
-				- this.separation * this.scale)
-			),
-
-			(cornerFactor - 1) * (
-				(1 + this.separation * this.scale) / (1 + 2 * this.scale
-				- this.separation * this.scale)
-			)
+			cornerFactor - 1,
+			cornerFactor - 1,
+			cornerFactor - 1
 		];
 		
 		const edgeScaleCenter = [0, edgeFactor - 1, edgeFactor - 1];
 
-		const cornerRadius = 0.5 * (this.separation - invScale);
-		const cornerCenter = 0.5 * (this.separation + invScale);
+		const cornerRadius = 0.5 * (1 - invScale);
+		const cornerCenter = 0.5 * (1 + invScale);
 
 		const edgeRadius = 0.5 * (1 - invScale);
 		const edgeCenter = 0.5 * (1 + invScale);
 
-		for (let iteration = 0; iteration < this.iterations; iteration++)
+		for (let iteration = 0; iteration < iterations; iteration++)
 		{
 			const distanceToCornerX = Math.abs(mutablePos[0] - cornerCenter) - cornerRadius;
 			const distanceToCornerY = Math.abs(mutablePos[1] - cornerCenter) - cornerRadius;
@@ -566,12 +261,12 @@ export class MengerSponge extends RaymarchApplet
 				}
 
 				mutablePos = [
-					this.scale * mutablePos[0] - edgeScaleCenter[0],
+					scale * mutablePos[0] - edgeScaleCenter[0],
 					edgeFactor * mutablePos[1] - edgeScaleCenter[1],
 					edgeFactor * mutablePos[2] - edgeScaleCenter[2]
 				];
 
-				totalScale[0] *= this.scale;
+				totalScale[0] *= scale;
 				totalScale[1] *= edgeFactor;
 				totalScale[2] *= edgeFactor;
 			}
@@ -589,61 +284,5 @@ export class MengerSponge extends RaymarchApplet
 		}
 
 		return Math.abs(totalDistance) / effectiveScale;
-	}
-
-
-
-	changeResolution(resolution = this.imageSize)
-	{
-		this.imageSize = Math.max(100, resolution);
-
-		if (this.wilson.fullscreen.currentlyFullscreen)
-		{
-			[this.imageWidth, this.imageHeight] = Applet.getEqualPixelFullScreen(this.imageSize);
-		}
-
-		else
-		{
-			this.imageWidth = this.imageSize;
-			this.imageHeight = this.imageSize;
-		}
-
-
-
-		this.wilson.changeCanvasSize(this.imageWidth, this.imageHeight);
-
-
-
-		if (this.imageWidth >= this.imageHeight)
-		{
-			this.wilson.gl.uniform1f(
-				this.wilson.uniforms["aspectRatioX"],
-				this.imageWidth / this.imageHeight
-			);
-
-			this.wilson.gl.uniform1f(
-				this.wilson.uniforms["aspectRatioY"],
-				1
-			);
-		}
-
-		else
-		{
-			this.wilson.gl.uniform1f(
-				this.wilson.uniforms["aspectRatioX"],
-				1
-			);
-
-			this.wilson.gl.uniform1f(
-				this.wilson.uniforms["aspectRatioY"],
-				this.imageWidth / this.imageHeight
-			);
-		}
-
-		this.wilson.gl.uniform1i(this.wilson.uniforms["imageSize"], this.imageSize);
-
-
-
-		this.needNewFrame = true;
 	}
 }

@@ -49,11 +49,13 @@ export class RaymarchApplet extends AnimationFrameApplet
 
 	cameraPos;
 	lightPos;
-	lightBrightness = 1;
+	lightBrightness;
 	bloomPower = 0.11;
 
 	fogColor = [0, 0, 0];
 	fogScaling = .05;
+	stepFactor;
+	epsilonScaling;
 
 	useShadows = false;
 	useSoftShadows = true;
@@ -78,23 +80,34 @@ export class RaymarchApplet extends AnimationFrameApplet
 
 	constructor({
 		canvas,
+
 		distanceEstimatorGlsl,
 		getColorGlsl,
 		getReflectivityGlsl = "return 0.2;",
 		addGlsl = "",
+
 		uniforms,
+
 		theta,
 		phi,
+		stepFactor = .95,
+		epsilonScaling = 1.75,
+
 		cameraPos = [0, 0, 0],
+
 		lightPos = [50, 70, 100],
+		lightBrightness = 1,
 	}) {
 		super(canvas);
 
 		this.uniforms = uniforms;
 		this.theta = theta;
 		this.phi = phi;
+		this.stepFactor = stepFactor;
+		this.epsilonScaling = epsilonScaling;
 		this.cameraPos = cameraPos;
 		this.lightPos = lightPos;
+		this.lightBrightness = lightBrightness;
 		
 		if (!this.lockedOnOrigin)
 		{
@@ -232,7 +245,7 @@ export class RaymarchApplet extends AnimationFrameApplet
 
 					lastDistanceToScene = distanceToScene;
 
-					float epsilon = t / (float(imageSize) * 1.75);
+					float epsilon = max(t / (float(imageSize) * epsilonScaling), .0000003);
 
 					if (t > clipDistance || length(pos - lightPos) < 0.2)
 					{
@@ -262,7 +275,7 @@ export class RaymarchApplet extends AnimationFrameApplet
 					
 					float distanceToScene = distanceEstimator(pos);
 
-					float epsilon = t / (float(imageSize) * 1.75);
+					float epsilon = max(t / (float(imageSize) * epsilonScaling), .0000003);
 
 					if (t > clipDistance)
 					{
@@ -306,7 +319,7 @@ export class RaymarchApplet extends AnimationFrameApplet
 					* lightIntensity
 					* max((1.0 - float(iteration) / float(maxMarches)), 0.0);
 
-				${this.useShadows ? `
+				${this.useShadows ? /* glsl */`
 					float shadowIntensity = computeShadowIntensity(pos, lightDirection);
 
 					color *= shadowIntensity;
@@ -327,7 +340,7 @@ export class RaymarchApplet extends AnimationFrameApplet
 					
 					float distanceToScene = distanceEstimator(pos);
 
-					float epsilon = t / (float(imageSize) * 1.75);
+					float epsilon = max(t / (float(imageSize) * epsilonScaling), .0000003);
 
 					if (distanceToScene < epsilon)
 					{
@@ -383,6 +396,7 @@ export class RaymarchApplet extends AnimationFrameApplet
 			uniform vec3 rightVec;
 			uniform vec3 upVec;
 			uniform int imageSize;
+			uniform float epsilonScaling;
 
 			${uniformsGlsl}
 			
@@ -412,7 +426,7 @@ export class RaymarchApplet extends AnimationFrameApplet
 				${getColorGlsl}
 			}
 
-			${this.useReflections ? `float getReflectivity(vec3 pos)
+			${this.useReflections ? /* glsl */`float getReflectivity(vec3 pos)
 			{
 				${getReflectivityGlsl}
 			}` : ""}
@@ -462,14 +476,14 @@ export class RaymarchApplet extends AnimationFrameApplet
 					* lightIntensity
 					* max((1.0 - float(iteration) / float(maxMarches)), 0.0);
 
-				${this.useShadows ? `
+				${this.useShadows ? /* glsl */`
 					float shadowIntensity = computeShadowIntensity(pos, lightDirection);
 
 					color *= shadowIntensity;
 				` : ""}
 
-				${this.useReflections ? `
-					vec3 reflectedDirection = reflect(normalize(pos - cameraPos) * .95, surfaceNormal);
+				${this.useReflections ? /* glsl */`
+					vec3 reflectedDirection = reflect(normalize(pos - cameraPos) * ${getFloatGlsl(this.stepFactor)}, surfaceNormal);
 
 					color = mix(
 						color,
@@ -486,7 +500,7 @@ export class RaymarchApplet extends AnimationFrameApplet
 			
 			vec3 raymarch(vec3 startPos)
 			{
-				vec3 rayDirectionVec = normalize(startPos - cameraPos) * .95;
+				vec3 rayDirectionVec = normalize(startPos - cameraPos) * ${getFloatGlsl(this.stepFactor)};
 				
 				float t = 0.0;
 				
@@ -496,7 +510,7 @@ export class RaymarchApplet extends AnimationFrameApplet
 					
 					float distanceToScene = distanceEstimator(pos);
 
-					float epsilon = t / (float(imageSize) * 1.75);
+					float epsilon = max(t / (float(imageSize) * epsilonScaling), .0000003);
 					
 					if (distanceToScene < epsilon)
 					{
@@ -552,7 +566,7 @@ export class RaymarchApplet extends AnimationFrameApplet
 			"forwardVec",
 			"rightVec",
 			"upVec",
-			"epsilon",
+			"epsilonScaling",
 			...Object.keys(this.uniforms),
 		]);
 
@@ -598,6 +612,11 @@ export class RaymarchApplet extends AnimationFrameApplet
 		this.wilson.gl.uniform3fv(
 			this.wilson.uniforms.upVec,
 			this.upVec
+		);
+
+		this.wilson.gl.uniform1f(
+			this.wilson.uniforms.epsilonScaling,
+			this.epsilonScaling
 		);
 
 		for (const key in this.uniforms)
@@ -879,6 +898,16 @@ export class RaymarchApplet extends AnimationFrameApplet
 			this.wilson.uniforms[name],
 			...uniformFunction[1],
 			value
+		);
+	}
+
+	setEpsilonScaling(value)
+	{
+		this.epsilonScaling = value;
+
+		this.wilson.gl.uniform1f(
+			this.wilson.uniforms.epsilonScaling,
+			this.epsilonScaling
 		);
 	}
 
