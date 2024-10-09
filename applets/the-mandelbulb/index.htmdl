@@ -15,7 +15,6 @@ Drag on the scene to look around. On a keyboard, use WASD to move, and on a touc
 ###
 
 ### sliders
-	iterations
 	power
 	rotation-angle-x
 	rotation-angle-y
@@ -25,7 +24,9 @@ Drag on the scene to look around. On a keyboard, use WASD to move, and on a touc
 	c-z
 ###
 
-
+### checkboxes
+	shadows
+###
 
 ### buttons
 	switch-bulb

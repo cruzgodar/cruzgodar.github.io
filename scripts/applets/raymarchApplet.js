@@ -5,14 +5,15 @@ import { AnimationFrameApplet } from "./animationFrameApplet.js";
 import { Applet, getFloatGlsl, getVectorGlsl } from "./applet.js";
 
 const setUniformFunctions = {
-	int: "uniform1i",
-	float: "uniform1f",
-	vec2: "uniform2fv",
-	vec3: "uniform3fv",
-	vec4: "uniform4fv",
+	int: ["uniform1i", []],
+	float: ["uniform1f", []],
+	vec2: ["uniform2fv", []],
+	vec3: ["uniform3fv", []],
+	vec4: ["uniform4fv", []],
+	mat2: ["uniformMatrix2fv", [false]],
+	mat3: ["uniformMatrix3fv", [false]],
+	mat4: ["uniformMatrix4fv", [false]],
 };
-
-const minEpsilon = .0000003;
 
 export class RaymarchApplet extends AnimationFrameApplet
 {
@@ -35,9 +36,12 @@ export class RaymarchApplet extends AnimationFrameApplet
 	imageWidth = 400;
 	imageHeight = 400;
 
-	maxMarches = 256;
-	maxShadowMarches = 128;
-	maxReflectionMarches = 256;
+	minEpsilon;
+	maxEpsilon;
+
+	maxMarches = 128;
+	maxShadowMarches = 64;
+	maxReflectionMarches = 128;
 	clipDistance = 1000;
 
 	imagePlaneCenterPos = [];
@@ -46,8 +50,8 @@ export class RaymarchApplet extends AnimationFrameApplet
 	rightVec = [];
 	upVec = [];
 
-	cameraPos = [0, 0, 0];
-	lightPos = [50, 70, 100];
+	cameraPos;
+	lightPos;
 	lightBrightness = 1;
 	bloomPower = 0.11;
 
@@ -79,19 +83,25 @@ export class RaymarchApplet extends AnimationFrameApplet
 		canvas,
 		distanceEstimatorGlsl,
 		getColorGlsl,
-		getReflectivityGlsl = "return 0.15;",
+		getReflectivityGlsl = "return 0.2;",
 		addGlsl = "",
 		uniforms,
 		theta,
 		phi,
-		cameraPos
+		minEpsilon = .0000003,
+		maxEpsilon = .0025,
+		cameraPos = [0, 0, 0],
+		lightPos = [50, 70, 100],
 	}) {
 		super(canvas);
 
 		this.uniforms = uniforms;
 		this.theta = theta;
 		this.phi = phi;
+		this.minEpsilon = minEpsilon;
+		this.maxEpsilon = maxEpsilon;
 		this.cameraPos = cameraPos;
+		this.lightPos = lightPos;
 		
 		if (!this.lockedOnOrigin)
 		{
@@ -313,7 +323,7 @@ export class RaymarchApplet extends AnimationFrameApplet
 			// Unlike in raymarch(), startPos is replacing cameraPos, and rayDirectionVec is precomputed.
 			vec3 computeReflection(vec3 startPos, vec3 rayDirectionVec, int startIteration)
 			{
-				float t = 10.0 * epsilon;
+				float t = 3.0 * epsilon;
 				
 				for (int iteration = 0; iteration < maxReflectionMarches; iteration++)
 				{
@@ -325,7 +335,7 @@ export class RaymarchApplet extends AnimationFrameApplet
 					{
 						return computeShadingWithoutReflection(
 							pos,
-							distanceToScene,
+							distanceToScene - epsilon,
 							iteration + startIteration
 						);
 					}
@@ -486,12 +496,14 @@ export class RaymarchApplet extends AnimationFrameApplet
 					vec3 pos = cameraPos + t * rayDirectionVec;
 					
 					float distanceToScene = distanceEstimator(pos);
+
+					float effectiveEpsilon = t / (float(imageSize) * 1.75);
 					
-					if (distanceToScene < epsilon)
+					if (distanceToScene < effectiveEpsilon)
 					{
 						return computeShading(
 							pos,
-							distanceToScene,
+							distanceToScene - effectiveEpsilon,
 							iteration
 						);
 					}
@@ -590,14 +602,17 @@ export class RaymarchApplet extends AnimationFrameApplet
 
 		this.wilson.gl.uniform1f(
 			this.wilson.uniforms.epsilon,
-			0.0001
+			this.maxEpsilon
 		);
 
 		for (const key in this.uniforms)
 		{
 			const value = this.uniforms[key];
-			this.wilson.gl[setUniformFunctions[value[0]]](
-				this.wilson.uniforms[key], value[1]
+			const uniformFunction = setUniformFunctions[value[0]];
+			this.wilson.gl[uniformFunction[0]](
+				this.wilson.uniforms[key],
+				...uniformFunction[1],
+				value[1]
 			);
 		}
 	}
@@ -702,7 +717,12 @@ export class RaymarchApplet extends AnimationFrameApplet
 
 		this.wilson.gl.uniform1f(
 			this.wilson.uniforms.epsilon,
-			Math.max(2 * this.distanceToScene / this.imageSize, minEpsilon)
+			Math.min(
+				Math.max(
+					2 * this.distanceToScene / this.imageSize, this.minEpsilon
+				),
+				this.maxEpsilon
+			)
 		);
 	}
 
@@ -868,8 +888,11 @@ export class RaymarchApplet extends AnimationFrameApplet
 	{
 		this.uniforms[name][1] = value;
 
-		this.wilson.gl[setUniformFunctions[this.uniforms[name][0]]](
+		const uniformFunction = setUniformFunctions[this.uniforms[name][0]];
+
+		this.wilson.gl[uniformFunction[0]](
 			this.wilson.uniforms[name],
+			...uniformFunction[1],
 			value
 		);
 	}
