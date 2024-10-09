@@ -84,7 +84,7 @@ export class QuaternionicJuliaSet extends RaymarchApplet
 			uniforms,
 			theta: 1.3094,
 			phi: 1.9975,
-			cameraPos: [-0.5881, -1.5735, 0.7451],
+			cameraPos: [-0.6600, -1.8424, 0.8716],
 			lightPos: [-5, -5, 5],
 			lightBrightness: 1.25
 		});

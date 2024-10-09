@@ -22,6 +22,11 @@ Drag on the scene to look around. On a keyboard, use WASD to move, and on a touc
 	rotation-angle-x-2
 	rotation-angle-y-2
 	rotation-angle-z-2
+	scale
+###
+
+### checkboxes
+	shadows
 ###
 
 </div>

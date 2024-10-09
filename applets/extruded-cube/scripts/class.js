@@ -102,7 +102,7 @@ export class ExtrudedCube extends RaymarchApplet
 			getColorGlsl,
 			addGlsl,
 			uniforms,
-			cameraPos: [1.749, 1.75, 1.751],
+			cameraPos: [2.0538, 2.0548, 2.0354],
 			theta: 1.25 * Math.PI,
 			phi: 2.1539,
 		});

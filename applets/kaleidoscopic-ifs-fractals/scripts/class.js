@@ -1,70 +1,75 @@
-import anime from "/scripts/anime.js";
 import { getVectorGlsl } from "/scripts/applets/applet.js";
 import { RaymarchApplet } from "/scripts/applets/raymarchApplet.js";
+import { changeOpacity } from "/scripts/src/animation.js";
 
-const nTetrahedron = [
-	[-.577350, 0, .816496],
-	[.288675, -.5, .816496],
-	[.288675, .5, .816496]
-];
-const scaleCenterTetrahedron = [0, 0, 1];
+const ns = {
+	tetrahedron: [
+		[-.577350, 0, .816496],
+		[.288675, -.5, .816496],
+		[.288675, .5, .816496]
+	],
+	cube: [
+		[1, 0, 0],
+		[0, 1, 0],
+		[0, 0, 1]
+	],
+	octahedron: [
+		[.707107, 0, .707107],
+		[0, .707107, .707107],
+		[-.707107, 0, .707107],
+		[0, -.707107, .707107]
+	]
+};
 
-const nCube = [
-	[1, 0, 0],
-	[0, 1, 0],
-	[0, 0, 1]
-];
-const scaleCenterCube = [.577350, .577350, .577350];
+const scaleCenters = {
+	tetrahedron: [0, 0, 1],
+	cube: [.577350, .577350, .577350],
+	octahedron: [0, 0, 1]
+};
 
-const nOctahedron = [
-	[.707107, 0, .707107],
-	[0, .707107, .707107],
-	[-.707107, 0, .707107],
-	[0, -.707107, .707107]
-];
-const scaleCenterOctahedron = [0, 0, 1];
+const maxIterations = 48;
 
-const maxIterations = 22;
-
-// Shape is one of "Tetrahedron", "Cube", or "Octahedron".
 function getDistanceEstimatorGlsl(shape, useForGetColor = false)
 {
+	// Make the first letter uppercase.
+	const variableName = shape[0].toUpperCase() + shape.slice(1);
+
 	return /* glsl */`
 		${useForGetColor ? "vec3 color = vec3(1.0, 1.0, 1.0); float colorScale = .5;" : ""}
 		//We'll find the closest vertex, scale everything by a factor of 2 centered on that vertex (so that we don't need to recalculate the vertices), and repeat.
 		for (int iteration = 0; iteration < maxIterations; iteration++)
 		{
 			//Fold space over on itself so that we can reference only the top vertex.
-			float t1 = dot(pos, n1${shape});
+			float t1 = dot(pos, n1${variableName});
 			
 			if (t1 < 0.0)
 			{
-				pos -= 2.0 * t1 * n1${shape};
+				pos -= 2.0 * t1 * n1${variableName};
 				${useForGetColor ? "color = mix(color, color1, colorScale);" : ""}
 			}
 			
-			float t2 = dot(pos, n2${shape});
+			float t2 = dot(pos, n2${variableName});
 			
 			if (t2 < 0.0)
 			{
-				pos -= 2.0 * t2 * n2${shape};
+				pos -= 2.0 * t2 * n2${variableName};
 				${useForGetColor ? "color = mix(color, color2, colorScale);" : ""}
 			}
 			
-			float t3 = dot(pos, n3${shape});
+			float t3 = dot(pos, n3${variableName});
 			
 			if (t3 < 0.0)
 			{
-				pos -= 2.0 * t3 * n3${shape};
+				pos -= 2.0 * t3 * n3${variableName};
 				${useForGetColor ? "color = mix(color, color3, colorScale);" : ""}
 			}
 
-			${shape === "Octahedron" ? /* glsl */`
-				float t4 = dot(pos, n4${shape});
+			${variableName === "Octahedron" ? /* glsl */`
+				float t4 = dot(pos, n4${variableName});
 				
 				if (t4 < 0.0)
 				{
-					pos -= 2.0 * t4 * n4${shape};
+					pos -= 2.0 * t4 * n4${variableName};
 					${useForGetColor ? "color = mix(color, color4, colorScale);" : ""}
 				}
 			` : ""}
@@ -72,7 +77,7 @@ function getDistanceEstimatorGlsl(shape, useForGetColor = false)
 			pos = rotationMatrix1 * pos;
 			
 			//Scale the system -- this one takes me a fair bit of thinking to get. What's happening here is that we're stretching from a vertex, but since we never scale the vertices, the four new ones are the four closest to the vertex we scaled from. Now (x, y, z) will get farther and farther away from the origin, but that makes sense -- we're really just zooming in on the tetrahedron.
-			pos = scale * pos - (scale - 1.0) * scaleCenter${shape};
+			pos = scale * pos - (scale - 1.0) * scaleCenter${variableName};
 			
 			pos = rotationMatrix2 * pos;
 
@@ -92,8 +97,12 @@ export class KaleidoscopicIFSFractal extends RaymarchApplet
 	rotationAngleY2 = 0;
 	rotationAngleZ2 = 0;
 
-	constructor({ canvas })
-	{
+	shape = "octahedron";
+
+	constructor({
+		canvas,
+		shape = "octahedron",
+	}) {
 		const addGlsl = /* glsl */`
 			const int maxIterations = ${maxIterations};
 			
@@ -102,99 +111,28 @@ export class KaleidoscopicIFSFractal extends RaymarchApplet
 			const vec3 color3 = vec3(0.0, 0.0, 1.0);
 			const vec3 color4 = vec3(1.0, 1.0, 0.0);
 			
-			const vec3 n1Tetrahedron = ${getVectorGlsl(nTetrahedron[0])};
-			const vec3 n2Tetrahedron = ${getVectorGlsl(nTetrahedron[1])};
-			const vec3 n3Tetrahedron = ${getVectorGlsl(nTetrahedron[2])};
-			const vec3 scaleCenterTetrahedron = ${getVectorGlsl(scaleCenterTetrahedron)};
+			const vec3 n1Tetrahedron = ${getVectorGlsl(ns.tetrahedron[0])};
+			const vec3 n2Tetrahedron = ${getVectorGlsl(ns.tetrahedron[1])};
+			const vec3 n3Tetrahedron = ${getVectorGlsl(ns.tetrahedron[2])};
+			const vec3 scaleCenterTetrahedron = ${getVectorGlsl(scaleCenters.tetrahedron)};
 
-			const vec3 n1Cube = ${getVectorGlsl(nCube[0])};
-			const vec3 n2Cube = ${getVectorGlsl(nCube[1])};
-			const vec3 n3Cube = ${getVectorGlsl(nCube[2])};
-			const vec3 scaleCenterCube = ${getVectorGlsl(scaleCenterCube)};
+			const vec3 n1Cube = ${getVectorGlsl(ns.cube[0])};
+			const vec3 n2Cube = ${getVectorGlsl(ns.cube[1])};
+			const vec3 n3Cube = ${getVectorGlsl(ns.cube[2])};
+			const vec3 scaleCenterCube = ${getVectorGlsl(scaleCenters.cube)};
 
-			const vec3 n1Octahedron = ${getVectorGlsl(nOctahedron[0])};
-			const vec3 n2Octahedron = ${getVectorGlsl(nOctahedron[1])};
-			const vec3 n3Octahedron = ${getVectorGlsl(nOctahedron[2])};
-			const vec3 n4Octahedron = ${getVectorGlsl(nOctahedron[3])};
-			const vec3 scaleCenterOctahedron = ${getVectorGlsl(scaleCenterOctahedron)};
-
-			float distanceEstimatorTetrahedron(vec3 pos)
-			{
-				${getDistanceEstimatorGlsl("Tetrahedron")}
-			}
-
-			float distanceEstimatorCube(vec3 pos)
-			{
-				${getDistanceEstimatorGlsl("Cube")}
-			}
-
-			float distanceEstimatorOctahedron(vec3 pos)
-			{
-				${getDistanceEstimatorGlsl("Octahedron")}
-			}
-
-			vec3 getColorTetrahedron(vec3 pos)
-			{
-				${getDistanceEstimatorGlsl("Tetrahedron", true)}
-			}
-
-			vec3 getColorCube(vec3 pos)
-			{
-				${getDistanceEstimatorGlsl("Cube", true)}
-			}
-
-			vec3 getColorOctahedron(vec3 pos)
-			{
-				${getDistanceEstimatorGlsl("Octahedron", true)}
-			}
+			const vec3 n1Octahedron = ${getVectorGlsl(ns.octahedron[0])};
+			const vec3 n2Octahedron = ${getVectorGlsl(ns.octahedron[1])};
+			const vec3 n3Octahedron = ${getVectorGlsl(ns.octahedron[2])};
+			const vec3 n4Octahedron = ${getVectorGlsl(ns.octahedron[3])};
+			const vec3 scaleCenterOctahedron = ${getVectorGlsl(scaleCenters.octahedron)};
 		`;
 
-		const distanceEstimatorGlsl = /* glsl */`
-			float distanceToScene = 0.0;
+		const distanceEstimatorGlsl = getDistanceEstimatorGlsl(shape);
 
-			if (tetrahedronAmount > 0.0)
-			{
-				distanceToScene += tetrahedronAmount * distanceEstimatorTetrahedron(pos);
-			}
-
-			if (cubeAmount > 0.0)
-			{
-				distanceToScene += cubeAmount * distanceEstimatorCube(pos);
-			}
-
-			if (octahedronAmount > 0.0)
-			{
-				distanceToScene += octahedronAmount * distanceEstimatorOctahedron(pos);
-			}
-
-			return distanceToScene;
-		`;
-
-		const getColorGlsl = /* glsl */`
-			vec3 color = vec3(0.0, 0.0, 0.0);
-
-			if (tetrahedronAmount > 0.0)
-			{
-				color += tetrahedronAmount * getColorTetrahedron(pos);
-			}
-
-			if (cubeAmount > 0.0)
-			{
-				color += cubeAmount * getColorCube(pos);
-			}
-
-			if (octahedronAmount > 0.0)
-			{
-				color += octahedronAmount * getColorOctahedron(pos);
-			}
-
-			return color;
-		`;
+		const getColorGlsl = getDistanceEstimatorGlsl(shape, true);
 
 		const uniforms = {
-			tetrahedronAmount: ["float", 0],
-			cubeAmount: ["float", 0],
-			octahedronAmount: ["float", 1],
 			scale: ["float", 2],
 			rotationMatrix1: ["mat3", [1, 0, 0, 0, 1, 0, 0, 0, 1]],
 			rotationMatrix2: ["mat3", [1, 0, 0, 0, 1, 0, 0, 0, 1]],
@@ -210,58 +148,62 @@ export class KaleidoscopicIFSFractal extends RaymarchApplet
 			phi: 1.6538,
 			cameraPos: [-1.7346, -0.4485, 0.2596],
 			lightPos: [-50, -70, 100],
-			lightBrightness: 1.35,
+			lightBrightness: 1.25,
 			epsilonScaling: .75,
 		});
+
+		this.shape = shape;
 	}
 
 
 
-	distanceEstimatorSingular(x, y, z, ns, scaleCenter)
+	distanceEstimator(x, y, z)
 	{
 		const scale = this.uniforms.scale[1];
+		const shapeNs = ns[this.shape ?? "octahedron"];
+		const scaleCenter = scaleCenters[this.shape ?? "octahedron"];
 
 		// We'll find the closest vertex, scale everything by a factor of 2
 		// centered on that vertex (so that we don't need to recalculate the vertices), and repeat.
 		for (let iteration = 0; iteration < maxIterations; iteration++)
 		{
 			// Fold space over on itself so that we can reference only the top vertex.
-			const t1 = RaymarchApplet.dotProduct([x, y, z], ns[0]);
+			const t1 = RaymarchApplet.dotProduct([x, y, z], shapeNs[0]);
 
 			if (t1 < 0)
 			{
-				x -= 2 * t1 * ns[0][0];
-				y -= 2 * t1 * ns[0][1];
-				z -= 2 * t1 * ns[0][2];
+				x -= 2 * t1 * shapeNs[0][0];
+				y -= 2 * t1 * shapeNs[0][1];
+				z -= 2 * t1 * shapeNs[0][2];
 			}
 
-			const t2 = RaymarchApplet.dotProduct([x, y, z], ns[1]);
+			const t2 = RaymarchApplet.dotProduct([x, y, z], shapeNs[1]);
 
 			if (t2 < 0)
 			{
-				x -= 2 * t2 * ns[1][0];
-				y -= 2 * t2 * ns[1][1];
-				z -= 2 * t2 * ns[1][2];
+				x -= 2 * t2 * shapeNs[1][0];
+				y -= 2 * t2 * shapeNs[1][1];
+				z -= 2 * t2 * shapeNs[1][2];
 			}
 
-			const t3 = RaymarchApplet.dotProduct([x, y, z], ns[2]);
+			const t3 = RaymarchApplet.dotProduct([x, y, z], shapeNs[2]);
 
 			if (t3 < 0)
 			{
-				x -= 2 * t3 * ns[2][0];
-				y -= 2 * t3 * ns[2][1];
-				z -= 2 * t3 * ns[2][2];
+				x -= 2 * t3 * shapeNs[2][0];
+				y -= 2 * t3 * shapeNs[2][1];
+				z -= 2 * t3 * shapeNs[2][2];
 			}
 
 			if (ns.length >= 4)
 			{
-				const t4 = RaymarchApplet.dotProduct([x, y, z], ns[3]);
+				const t4 = RaymarchApplet.dotProduct([x, y, z], shapeNs[3]);
 
 				if (t4 < 0)
 				{
-					x -= 2 * t4 * ns[3][0];
-					y -= 2 * t4 * ns[3][1];
-					z -= 2 * t4 * ns[3][2];
+					x -= 2 * t4 * shapeNs[3][0];
+					y -= 2 * t4 * shapeNs[3][1];
+					z -= 2 * t4 * shapeNs[3][2];
 				}
 			}
 
@@ -349,54 +291,6 @@ export class KaleidoscopicIFSFractal extends RaymarchApplet
 			* Math.pow(scale, -maxIterations);
 	}
 
-	distanceEstimator(x, y, z)
-	{
-		let distance = 0;
-
-		const tetrahedronAmount = this.uniforms.tetrahedronAmount[1];
-		const cubeAmount = this.uniforms.cubeAmount[1];
-		const octahedronAmount = this.uniforms.octahedronAmount[1];
-
-		if (tetrahedronAmount > 0)
-		{
-			distance += tetrahedronAmount
-				* this.distanceEstimatorSingular(
-					x,
-					y,
-					z,
-					nTetrahedron,
-					scaleCenterTetrahedron
-				);
-		}
-
-		if (cubeAmount > 0)
-		{
-			distance += cubeAmount
-				* this.distanceEstimatorSingular(
-					x,
-					y,
-					z,
-					nCube,
-					scaleCenterCube
-				);
-		}
-
-		if (octahedronAmount > 0)
-		{
-			distance += octahedronAmount
-				* this.distanceEstimatorSingular(
-					x,
-					y,
-					z,
-					nOctahedron,
-					scaleCenterOctahedron
-				);
-		}
-
-		return distance;
-	}
-
-
 	updateMatrices()
 	{
 		let matZ = [
@@ -431,8 +325,6 @@ export class KaleidoscopicIFSFractal extends RaymarchApplet
 			matTotal[2][2]
 		]);
 
-
-
 		matZ = [
 			[Math.cos(this.rotationAngleZ2), -Math.sin(this.rotationAngleZ2), 0],
 			[Math.sin(this.rotationAngleZ2), Math.cos(this.rotationAngleZ2), 0],
@@ -465,56 +357,31 @@ export class KaleidoscopicIFSFractal extends RaymarchApplet
 			matTotal[2][2]
 		]);
 
-
-
 		this.needNewFrame = true;
 	}
 
-
-
 	// newAmounts is an array of the form [tetrahedronAmount, cubeAmount, octahedronAmount].
-	async changePolyhedron(newAmounts, instant)
+	async changePolyhedron(newShape)
 	{
-		const oldAmounts = [
-			this.uniforms.tetrahedronAmount[1],
-			this.uniforms.cubeAmount[1],
-			this.uniforms.octahedronAmount[1]
-		];
+		await changeOpacity({
+			element: this.canvas,
+			opacity: 0,
+			duration: 250,
+		});
 
-		const dummy = { t: 0 };
+		this.shape = newShape;
+		const distanceEstimatorGlsl = getDistanceEstimatorGlsl(this.shape);
+		const getColorGlsl = getDistanceEstimatorGlsl(this.shape, true);
 
-		anime({
-			targets: dummy,
-			t: 1,
-			duration: instant ? 0 : 1000,
-			easing: "easeOutQuad",
-			update: () =>
-			{
-				this.setUniform(
-					"tetrahedronAmount",
-					oldAmounts[0] * (1 - dummy.t) + newAmounts[0] * dummy.t
-				);
+		this.reloadShader({
+			distanceEstimatorGlsl,
+			getColorGlsl,
+		});
 
-				this.setUniform(
-					"cubeAmount",
-					oldAmounts[1] * (1 - dummy.t) + newAmounts[1] * dummy.t
-				);
-
-				this.setUniform(
-					"octahedronAmount",
-					oldAmounts[2] * (1 - dummy.t) + newAmounts[2] * dummy.t
-				);
-
-				this.needNewFrame = true;
-			},
-			complete: () =>
-			{
-				this.setUniform("tetrahedronAmount", newAmounts[0]);
-				this.setUniform("cubeAmount", newAmounts[1]);
-				this.setUniform("octahedronAmount", newAmounts[2]);
-
-				this.needNewFrame = true;
-			}
+		await changeOpacity({
+			element: this.canvas,
+			opacity: 1,
+			duration: 250,
 		});
 	}
 }

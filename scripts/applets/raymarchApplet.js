@@ -23,10 +23,6 @@ export class RaymarchApplet extends AnimationFrameApplet
 	moveFriction = .96;
 	moveStopThreshhold = .01;
 
-
-
-	distanceToScene = 1;
-
 	lastTimestamp = -1;
 
 	theta = 0;
@@ -56,6 +52,7 @@ export class RaymarchApplet extends AnimationFrameApplet
 	fogScaling = .05;
 	stepFactor;
 	epsilonScaling;
+	minEpsilon;
 
 	useShadows = false;
 	useSoftShadows = true;
@@ -65,7 +62,7 @@ export class RaymarchApplet extends AnimationFrameApplet
 	uniforms = {};
 	lockZ;
 
-	focalLength = 2;
+	speedFactor = 2;
 	fovFactor = 1;
 
 	lockedOnOrigin = false;
@@ -92,6 +89,7 @@ export class RaymarchApplet extends AnimationFrameApplet
 		phi,
 		stepFactor = .95,
 		epsilonScaling = 1.75,
+		minEpsilon = .0000003,
 
 		cameraPos = [0, 0, 0],
 
@@ -105,6 +103,7 @@ export class RaymarchApplet extends AnimationFrameApplet
 		this.phi = phi;
 		this.stepFactor = stepFactor;
 		this.epsilonScaling = epsilonScaling;
+		this.minEpsilon = minEpsilon;
 		this.cameraPos = cameraPos;
 		this.lightPos = lightPos;
 		this.lightBrightness = lightBrightness;
@@ -245,7 +244,7 @@ export class RaymarchApplet extends AnimationFrameApplet
 
 					lastDistanceToScene = distanceToScene;
 
-					float epsilon = max(t / (float(imageSize) * epsilonScaling), .0000003);
+					float epsilon = max(t / (float(imageSize) * epsilonScaling), minEpsilon);
 
 					if (t > clipDistance || length(pos - lightPos) < 0.2)
 					{
@@ -275,7 +274,7 @@ export class RaymarchApplet extends AnimationFrameApplet
 					
 					float distanceToScene = distanceEstimator(pos);
 
-					float epsilon = max(t / (float(imageSize) * epsilonScaling), .0000003);
+					float epsilon = max(t / (float(imageSize) * epsilonScaling), minEpsilon);
 
 					if (t > clipDistance)
 					{
@@ -340,7 +339,7 @@ export class RaymarchApplet extends AnimationFrameApplet
 					
 					float distanceToScene = distanceEstimator(pos);
 
-					float epsilon = max(t / (float(imageSize) * epsilonScaling), .0000003);
+					float epsilon = max(t / (float(imageSize) * epsilonScaling), minEpsilon);
 
 					if (distanceToScene < epsilon)
 					{
@@ -397,6 +396,7 @@ export class RaymarchApplet extends AnimationFrameApplet
 			uniform vec3 upVec;
 			uniform int imageSize;
 			uniform float epsilonScaling;
+			uniform float minEpsilon;
 
 			${uniformsGlsl}
 			
@@ -510,7 +510,7 @@ export class RaymarchApplet extends AnimationFrameApplet
 					
 					float distanceToScene = distanceEstimator(pos);
 
-					float epsilon = max(t / (float(imageSize) * epsilonScaling), .0000003);
+					float epsilon = max(t / (float(imageSize) * epsilonScaling), minEpsilon);
 					
 					if (distanceToScene < epsilon)
 					{
@@ -567,6 +567,7 @@ export class RaymarchApplet extends AnimationFrameApplet
 			"rightVec",
 			"upVec",
 			"epsilonScaling",
+			"minEpsilon",
 			...Object.keys(this.uniforms),
 		]);
 
@@ -617,6 +618,11 @@ export class RaymarchApplet extends AnimationFrameApplet
 		this.wilson.gl.uniform1f(
 			this.wilson.uniforms.epsilonScaling,
 			this.epsilonScaling
+		);
+
+		this.wilson.gl.uniform1f(
+			this.wilson.uniforms.minEpsilon,
+			this.minEpsilon
 		);
 
 		for (const key in this.uniforms)
@@ -688,32 +694,33 @@ export class RaymarchApplet extends AnimationFrameApplet
 
 		
 
-		this.distanceToScene = this.distanceEstimator(
-			this.cameraPos[0],
-			this.cameraPos[1],
-			this.cameraPos[2]
-		);
-
-		this.focalLength = Math.min(this.distanceToScene, .5) / 2;
+		this.speedFactor = Math.min(
+			this.distanceEstimator(
+				this.cameraPos[0],
+				this.cameraPos[1],
+				this.cameraPos[2]
+			),
+			.5
+		) / 4;
 
 		// The factor we divide by here sets the fov.
-		this.forwardVec[0] *= this.focalLength / 2;
-		this.forwardVec[1] *= this.focalLength / 2;
-		this.forwardVec[2] *= this.focalLength / 2;
+		this.forwardVec[0] *= this.speedFactor / 1.5;
+		this.forwardVec[1] *= this.speedFactor / 1.5;
+		this.forwardVec[2] *= this.speedFactor / 1.5;
 
-		this.rightVec[0] *= this.focalLength / (2 * this.fovFactor);
-		this.rightVec[1] *= this.focalLength / (2 * this.fovFactor);
+		this.rightVec[0] *= this.speedFactor / (this.fovFactor);
+		this.rightVec[1] *= this.speedFactor / (this.fovFactor);
 
-		this.upVec[0] *= this.focalLength / (2 * this.fovFactor);
-		this.upVec[1] *= this.focalLength / (2 * this.fovFactor);
-		this.upVec[2] *= this.focalLength / (2 * this.fovFactor);
+		this.upVec[0] *= this.speedFactor / (this.fovFactor);
+		this.upVec[1] *= this.speedFactor / (this.fovFactor);
+		this.upVec[2] *= this.speedFactor / (this.fovFactor);
 
-		
+		const focalLengthFactor = 2;
 
 		this.imagePlaneCenterPos = [
-			this.cameraPos[0] + this.forwardVec[0],
-			this.cameraPos[1] + this.forwardVec[1],
-			this.cameraPos[2] + this.forwardVec[2]
+			this.cameraPos[0] + this.forwardVec[0] * focalLengthFactor,
+			this.cameraPos[1] + this.forwardVec[1] * focalLengthFactor,
+			this.cameraPos[2] + this.forwardVec[2] * focalLengthFactor
 		];
 
 		
@@ -826,7 +833,7 @@ export class RaymarchApplet extends AnimationFrameApplet
 					+ this.moveVelocity[1] * usableRightVec[1],
 				this.moveVelocity[0] * usableForwardVec[2]
 					+ this.moveVelocity[1] * usableRightVec[2]
-					+ this.moveVelocity[2] * this.focalLength / 2
+					+ this.moveVelocity[2] * this.speedFactor / 1.5
 			];
 
 			this.cameraPos[0] += this.movingSpeed * tangentVec[0] * (timeElapsed / 6.944);
@@ -908,6 +915,16 @@ export class RaymarchApplet extends AnimationFrameApplet
 		this.wilson.gl.uniform1f(
 			this.wilson.uniforms.epsilonScaling,
 			this.epsilonScaling
+		);
+	}
+
+	setMinEpsilon(value)
+	{
+		this.minEpsilon = value;
+
+		this.wilson.gl.uniform1f(
+			this.wilson.uniforms.minEpsilon,
+			this.minEpsilon,
 		);
 	}
 
