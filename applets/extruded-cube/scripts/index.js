@@ -1,6 +1,7 @@
 import { showPage } from "../../../scripts/src/loadPage.js";
 import { ExtrudedCube } from "./class.js";
 import { DownloadButton } from "/scripts/src/buttons.js";
+import { Checkbox } from "/scripts/src/checkboxes.js";
 import { $ } from "/scripts/src/main.js";
 import { siteSettings } from "/scripts/src/settings.js";
 import { Slider } from "/scripts/src/sliders.js";
@@ -51,8 +52,20 @@ export default function()
 		value: 1,
 		min: 0.5,
 		max: 2,
-		snapPoints: [2 / 3, 1],
+		snapPoints: [2 / 3, 1, 1.5],
 		onInput: onSliderInput
+	});
+
+	const shadowsCheckbox = new Checkbox({
+		element: $("#shadows-checkbox"),
+		name: "Shadows",
+		onInput: onCheckboxInput
+	});
+
+	const reflectionsCheckbox = new Checkbox({
+		element: $("#reflections-checkbox"),
+		name: "Reflections",
+		onInput: onCheckboxInput
 	});
 
 	showPage();
@@ -64,17 +77,19 @@ export default function()
 
 	function onSliderInput()
 	{
-		applet.iterations = iterationsSlider.value;
-		applet.wilson.gl.uniform1i(applet.wilson.uniforms.iterations, applet.iterations);
-
-		applet.scale = scaleSlider.value;
-		applet.wilson.gl.uniform1f(applet.wilson.uniforms.scale, applet.scale);
-
-		applet.separation = separationSlider.value;
-		applet.wilson.gl.uniform1f(applet.wilson.uniforms.separation, applet.separation);
+		applet.setUniform("iterations", iterationsSlider.value);
+		applet.setUniform("scale", scaleSlider.value);
+		applet.setUniform("separation", separationSlider.value);
 
 		applet.calculateVectors();
 
 		applet.needNewFrame = true;
+	}
+
+	function onCheckboxInput()
+	{
+		applet.useShadows = shadowsCheckbox.checked;
+		applet.useReflections = reflectionsCheckbox.checked;
+		applet.reloadShader();
 	}
 }

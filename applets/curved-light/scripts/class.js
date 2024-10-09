@@ -1,61 +1,22 @@
-import { Applet } from "/scripts/applets/applet.js";
 import { RaymarchApplet } from "/scripts/applets/raymarchApplet.js";
-import { addTemporaryListener } from "/scripts/src/main.js";
-import { Wilson } from "/scripts/wilson.js";
 
 export class CurvedLight extends RaymarchApplet
 {
-	cameraPos = [1.749, 1.75, 1.751];
-	theta = 1.25 * Math.PI;
-	phi = 2.1539;
-
-	radius = 5;
-	curvature = 1;
-	cValues = [1, 0, 0, 0, 0, 0];
-
-
-
 	constructor({ canvas })
 	{
-		super(canvas);
+		const distanceEstimatorGlsl = /* glsl */`
+			return length(mod(pos, 2.0) - vec3(1.0, 1.0, 1.0)) - .5;
+		`;
 
-		const fragShaderSource = /* glsl */`
-			precision highp float;
-			
-			varying vec2 uv;
-			
-			uniform float aspectRatioX;
-			uniform float aspectRatioY;
-			
-			uniform vec3 cameraPos;
-			uniform vec3 imagePlaneCenterPos;
-			uniform vec3 forwardVec;
-			uniform vec3 rightVec;
-			uniform vec3 upVec;
-			
-			uniform float focalLength;
-			
-			const vec3 lightPos = vec3(50.0, 70.0, 100.0);
-			const float lightBrightness = 1.0;
-			
-			uniform int imageSize;
-			uniform float radius;
-			uniform float curvature;
+		const getColorGlsl = /* glsl */`
+			return vec3(
+				.25 + .75 * (.5 * (sin(floor(pos.x * .5) * 40.0) + 1.0)),
+				.25 + .75 * (.5 * (sin(floor(pos.y * .5) * 57.0) + 1.0)),
+				.25 + .75 * (.5 * (sin(floor(pos.z * .5) * 89.0) + 1.0))
+			);
+		`;
 
-			uniform float c0;
-			uniform float c1;
-			uniform float c2;
-			uniform float c3;
-			uniform float c4;
-			uniform float c5;
-			
-			
-			
-			const float clipDistance = 1000.0;
-			const int maxMarches = 256;
-			const vec3 fogColor = vec3(0.0, 0.0, 0.0);
-			const float fogScaling = .05;
-
+		const addGlsl = /* glsl */`
 			float rand(vec2 co)
 			{
 				return fract(sin(dot(co, vec2(12.9898, 78.233))) * 43758.5453);
@@ -117,294 +78,37 @@ export class CurvedLight extends RaymarchApplet
 
 				return pos + returnValue;
 			}
-			
-			
-			
-			float distanceEstimator(vec3 pos)
-			{
-				return length(mod(pos, 2.0) - vec3(1.0, 1.0, 1.0)) - .5;
-			}
-			
-			vec3 getColor(vec3 pos)
-			{
-				return vec3(
-					.25 + .75 * (.5 * (sin(floor(pos.x * .5) * 40.0) + 1.0)),
-					.25 + .75 * (.5 * (sin(floor(pos.y * .5) * 57.0) + 1.0)),
-					.25 + .75 * (.5 * (sin(floor(pos.z * .5) * 89.0) + 1.0))
-				);
-			}
-			
-			
-			
-			vec3 getSurfaceNormal(vec3 pos)
-			{
-				float xStep1 = distanceEstimator(pos + vec3(.000001, 0.0, 0.0));
-				float yStep1 = distanceEstimator(pos + vec3(0.0, .000001, 0.0));
-				float zStep1 = distanceEstimator(pos + vec3(0.0, 0.0, .000001));
-				
-				float xStep2 = distanceEstimator(pos - vec3(.000001, 0.0, 0.0));
-				float yStep2 = distanceEstimator(pos - vec3(0.0, .000001, 0.0));
-				float zStep2 = distanceEstimator(pos - vec3(0.0, 0.0, .000001));
-				
-				return normalize(vec3(xStep1 - xStep2, yStep1 - yStep2, zStep1 - zStep2));
-			}
-			
-			
-			
-			vec3 computeShading(vec3 pos, int iteration)
-			{
-				vec3 modPos = mod(pos, 2.0);
-
-				vec3 surfaceNormal = getSurfaceNormal(modPos);
-				
-				vec3 lightDirection = normalize(lightPos - modPos);
-				
-				float dotProduct = dot(surfaceNormal, lightDirection);
-				
-				float lightIntensity = lightBrightness * (.25 + dotProduct * dotProduct);
-				
-				//The last factor adds ambient occlusion.
-				vec3 color = getColor(pos) * lightIntensity * max((1.0 - float(iteration) / float(maxMarches)), 0.0);
-				
-				
-				
-				//Apply fog.
-				return mix(color, fogColor, 1.0 - exp(-distance(pos, cameraPos) * fogScaling));
-			}
-			
-			
-			
-			vec3 raymarch(vec3 startPos)
-			{
-				//That factor of .9 is important -- without it, we're always stepping as far as possible, which results in artefacts and weirdness.
-				vec3 rayDirectionVec = normalize(startPos - cameraPos) * .9;
-				
-				float epsilon = .0000001;
-				
-				float t = 0.0;
-				
-				
-				
-				for (int iteration = 0; iteration < maxMarches; iteration++)
-				{
-					vec3 pos = geodesic(startPos, rayDirectionVec, t);
-					
-					float distance = distanceEstimator(pos);
-					
-					//This lowers the detail far away, which makes everything run nice and fast.
-					epsilon = max(.0000006, 1.0 * t / float(imageSize));
-					
-					
-					
-					if (distance < epsilon)
-					{
-						return computeShading(pos, iteration);
-					}
-					
-					else if (t > clipDistance)
-					{
-						return fogColor;
-					}
-					
-					
-					
-					t += distance;
-				}
-				
-				return fogColor;
-			}
-			
-			
-			
-			void main(void)
-			{
-				vec3 finalColor = raymarch(imagePlaneCenterPos + rightVec * uv.x * aspectRatioX + upVec * uv.y / aspectRatioY);
-				
-				gl_FragColor = vec4(finalColor.xyz, 1.0);
-			}
 		`;
 
-
-
-		const options =
-		{
-			renderer: "gpu",
-
-			shader: fragShaderSource,
-
-			canvasWidth: 500,
-			canvasHeight: 500,
-
-			worldCenterX: -this.theta,
-			worldCenterY: -this.phi,
-		
-
-
-			useFullscreen: true,
-
-			trueFullscreen: true,
-
-			useFullscreenButton: true,
-
-			enterFullscreenButtonIconPath: "/graphics/general-icons/enter-fullscreen.png",
-			exitFullscreenButtonIconPath: "/graphics/general-icons/exit-fullscreen.png",
-
-			switchFullscreenCallback: this.changeResolution.bind(this),
-
-
-
-			mousedownCallback: this.onGrabCanvas.bind(this),
-			touchstartCallback: this.onGrabCanvas.bind(this),
-
-			mousedragCallback: this.onDragCanvas.bind(this),
-			touchmoveCallback: this.onDragCanvas.bind(this),
-
-			mouseupCallback: this.onReleaseCanvas.bind(this),
-			touchendCallback: this.onReleaseCanvas.bind(this)
+		const uniforms = {
+			radius: ["float", 5],
+			curvature: ["float", 1],
+			c0: ["float", 1],
+			c1: ["float", 0],
+			c2: ["float", 0],
+			c3: ["float", 0],
+			c4: ["float", 0],
+			c5: ["float", 0],
 		};
 
-		this.wilson = new Wilson(canvas, options);
-
-		this.wilson.render.initUniforms([
-			"aspectRatioX",
-			"aspectRatioY",
-			"imageSize",
-			"cameraPos",
-			"imagePlaneCenterPos",
-			"forwardVec",
-			"rightVec",
-			"upVec",
-			"focalLength",
-			"radius",
-			"curvature",
-			"c0",
-			"c1",
-			"c2",
-			"c3",
-			"c4",
-			"c5"
-		]);
-
-		
-
-		this.calculateVectors();
-		
-		if (this.imageWidth >= this.imageHeight)
-		{
-			this.wilson.gl.uniform1f(
-				this.wilson.uniforms["aspectRatioX"],
-				this.imageWidth / this.imageHeight
-			);
-
-			this.wilson.gl.uniform1f(
-				this.wilson.uniforms["aspectRatioY"],
-				1
-			);
-		}
-
-		else
-		{
-			this.wilson.gl.uniform1f(
-				this.wilson.uniforms["aspectRatioX"],
-				1
-			);
-
-			this.wilson.gl.uniform1f(
-				this.wilson.uniforms["aspectRatioY"],
-				this.imageWidth / this.imageHeight
-			);
-		}
-		
-		this.wilson.gl.uniform1i(
-			this.wilson.uniforms["imageSize"],
-			this.imageSize
-		);
-
-		this.wilson.gl.uniform3fv(
-			this.wilson.uniforms["cameraPos"],
-			this.cameraPos
-		);
-
-		this.wilson.gl.uniform3fv(
-			this.wilson.uniforms["imagePlaneCenterPos"],
-			this.imagePlaneCenterPos
-		);
-
-		this.wilson.gl.uniform3fv(
-			this.wilson.uniforms["forwardVec"],
-			this.forwardVec
-		);
-
-		this.wilson.gl.uniform3fv(
-			this.wilson.uniforms["rightVec"],
-			this.rightVec
-		);
-
-		this.wilson.gl.uniform3fv(
-			this.wilson.uniforms["upVec"],
-			this.upVec
-		);
-
-		this.wilson.gl.uniform1f(
-			this.wilson.uniforms["focalLength"],
-			this.focalLength
-		);
-
-		this.wilson.gl.uniform1f(
-			this.wilson.uniforms["radius"],
-			this.radius
-		);
-
-		this.wilson.gl.uniform1f(
-			this.wilson.uniforms["curvature"],
-			this.curvature
-		);
-
-		for (let i = 0; i < this.cValues.length; i++)
-		{
-			this.wilson.gl.uniform1f(
-				this.wilson.uniforms[`c${i}`],
-				this.cValues[i]
-			);
-		}
-
-
-
-		const boundFunction = () => this.changeResolution();
-		addTemporaryListener({
-			object: window,
-			event: "resize",
-			callback: boundFunction
+		super({
+			canvas,
+			distanceEstimatorGlsl,
+			getColorGlsl,
+			getGeodesicGlsl: (pos, dir) => `geodesic(${pos}, ${dir}, t)`,
+			getReflectivityGlsl: "return 0.35;",
+			addGlsl,
+			uniforms,
+			cameraPos: [2.0842, 2.0852, 2.0637],
+			theta: 1.25 * Math.PI,
+			phi: 2.1539,
+			lightBrightness: 1.25,
+			useOppositeLight: true,
+			oppositeLightBrightness: 1,
+			ambientLight: .25,
+			useBloom: false,
+			useReflections: true,
 		});
-
-
-
-		this.resume();
-	}
-
-
-
-	prepareFrame(timeElapsed)
-	{
-		this.pan.update(timeElapsed);
-		this.zoom.update(timeElapsed);
-		this.moveUpdate(timeElapsed);
-	}
-
-	drawFrame()
-	{
-		this.wilson.worldCenterY = Math.min(
-			Math.max(
-				this.wilson.worldCenterY,
-				-Math.PI + .01
-			),
-			-.01
-		);
-		
-		this.theta = -this.wilson.worldCenterX;
-		this.phi = -this.wilson.worldCenterY;
-
-		this.wilson.render.drawFrame();
 	}
 
 
@@ -412,61 +116,5 @@ export class CurvedLight extends RaymarchApplet
 	distanceEstimator()
 	{
 		return 1;
-	}
-
-
-
-	changeResolution(resolution = this.imageSize)
-	{
-		this.imageSize = Math.max(100, resolution);
-
-		if (this.wilson.fullscreen.currentlyFullscreen)
-		{
-			[this.imageWidth, this.imageHeight] = Applet.getEqualPixelFullScreen(this.imageSize);
-		}
-
-		else
-		{
-			this.imageWidth = this.imageSize;
-			this.imageHeight = this.imageSize;
-		}
-
-
-
-		this.wilson.changeCanvasSize(this.imageWidth, this.imageHeight);
-
-
-
-		if (this.imageWidth >= this.imageHeight)
-		{
-			this.wilson.gl.uniform1f(
-				this.wilson.uniforms["aspectRatioX"],
-				this.imageWidth / this.imageHeight
-			);
-
-			this.wilson.gl.uniform1f(
-				this.wilson.uniforms["aspectRatioY"],
-				1
-			);
-		}
-
-		else
-		{
-			this.wilson.gl.uniform1f(
-				this.wilson.uniforms["aspectRatioX"],
-				1
-			);
-
-			this.wilson.gl.uniform1f(
-				this.wilson.uniforms["aspectRatioY"],
-				this.imageWidth / this.imageHeight
-			);
-		}
-
-		this.wilson.gl.uniform1i(this.wilson.uniforms["imageSize"], this.imageSize);
-
-
-
-		this.needNewFrame = true;
 	}
 }

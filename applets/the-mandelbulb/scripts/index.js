@@ -1,6 +1,7 @@
 import { showPage } from "../../../scripts/src/loadPage.js";
 import { Mandelbulb } from "./class.js";
 import { Button, ToggleButton } from "/scripts/src/buttons.js";
+import { Checkbox } from "/scripts/src/checkboxes.js";
 import { $ } from "/scripts/src/main.js";
 import { typesetMath } from "/scripts/src/math.js";
 import { siteSettings } from "/scripts/src/settings.js";
@@ -26,10 +27,7 @@ export default function()
 		name: "Download",
 		onClick: () =>
 		{
-			applet.wilson.gl.uniform1i(applet.wilson.uniforms["maxMarches"], 1024);
-			applet.wilson.gl.uniform1f(applet.wilson.uniforms["stepFactor"], 12);
-
-			if (applet.juliaProportion < .5)
+			if (applet.uniforms.juliaProportion[1] < .5)
 			{
 				applet.wilson.downloadFrame("the-mandelbulb.png");
 			}
@@ -38,30 +36,16 @@ export default function()
 			{
 				applet.wilson.downloadFrame("a-juliabulb.png");
 			}
-
-			applet.wilson.gl.uniform1i(applet.wilson.uniforms["maxMarches"], applet.maxMarches);
-			applet.wilson.gl.uniform1f(applet.wilson.uniforms["stepFactor"], 1);
 		}
 	});
 
 	const resolutionInput = new TextBox({
 		element: $("#resolution-input"),
 		name: "Resolution",
-		value: 500,
+		value: 400,
 		minValue: 100,
 		maxValue: 750,
 		onInput: changeResolution
-	});
-
-	const iterationsSlider = new Slider({
-		element: $("#iterations-slider"),
-		name: "Iterations",
-		value: 16,
-		min: 0,
-		max: 32,
-		logarithmic: true,
-		integer: true,
-		onInput: onSliderInput
 	});
 
 	const powerSlider = new Slider({
@@ -128,28 +112,25 @@ export default function()
 		onInput: onSliderInput
 	});
 
+	const shadowsCheckbox = new Checkbox({
+		element: $("#shadows-checkbox"),
+		name: "Shadows",
+		onInput: onCheckboxInput
+	});
+
 	typesetMath();
 
 	showPage();
 
 	function onSliderInput()
 	{
-		const cx = cXSlider.value;
-		const cy = cYSlider.value;
-		const cz = cZSlider.value;
+		applet.setUniform("c", [cXSlider.value, cYSlider.value, cZSlider.value]);
 
-		applet.c = [cx, cy, cz];
-		applet.wilson.gl.uniform3fv(applet.wilson.uniforms["c"], applet.c);
+		applet.setUniform("power", powerSlider.value);
 
 		applet.rotationAngleX = rotationAngleXSlider.value;
 		applet.rotationAngleY = rotationAngleYSlider.value;
 		applet.rotationAngleZ = rotationAngleZSlider.value;
-
-		applet.power = powerSlider.value;
-		applet.wilson.gl.uniform1f(applet.wilson.uniforms["power"], applet.power);
-
-		applet.maxIterations = iterationsSlider.value;
-		applet.wilson.gl.uniform1i(applet.wilson.uniforms["maxIterations"], applet.maxIterations);
 
 		applet.updateRotationMatrix();
 	}
@@ -157,5 +138,11 @@ export default function()
 	function changeResolution()
 	{
 		applet.changeResolution(resolutionInput.value * siteSettings.resolutionMultiplier);
+	}
+
+	function onCheckboxInput()
+	{
+		applet.useShadows = shadowsCheckbox.checked;
+		applet.reloadShader();
 	}
 }

@@ -1,6 +1,7 @@
 import { showPage } from "../../../scripts/src/loadPage.js";
 import { KaleidoscopicIFSFractal } from "./class.js";
 import { DownloadButton } from "/scripts/src/buttons.js";
+import { Checkbox } from "/scripts/src/checkboxes.js";
 import { Dropdown } from "/scripts/src/dropdowns.js";
 import { $ } from "/scripts/src/main.js";
 import { typesetMath } from "/scripts/src/math.js";
@@ -10,14 +11,6 @@ import { TextBox } from "/scripts/src/textBoxes.js";
 
 export default function()
 {
-	const applet = new KaleidoscopicIFSFractal({ canvas: $("#output-canvas") });
-
-	new DownloadButton({
-		element: $("#download-button"),
-		wilson: applet.wilson,
-		filename: "a-kaleidoscopic-ifs-fractal.png"
-	});
-
 	const resolutionInput = new TextBox({
 		element: $("#resolution-input"),
 		name: "Resolution",
@@ -65,12 +58,44 @@ export default function()
 		onInput: onDropdownInput
 	});
 
+	const scaleSlider = new Slider({
+		element: $("#scale-slider"),
+		name: "Scale",
+		value: 2,
+		min: 1.2,
+		max: 2,
+		onInput: onSliderInput
+	});
+
+	const shadowsCheckbox = new Checkbox({
+		element: $("#shadows-checkbox"),
+		name: "Shadows",
+		onInput: onCheckboxInput
+	});
+
+	const applet = new KaleidoscopicIFSFractal({
+		canvas: $("#output-canvas"),
+		shape: polyhedraDropdown.value || "octahedron",
+	});
+
+	new DownloadButton({
+		element: $("#download-button"),
+		wilson: applet.wilson,
+		filename: "a-kaleidoscopic-ifs-fractal.png"
+	});
+
 	typesetMath();
 
 	showPage();
 
 	function onSliderInput()
 	{
+		applet.setUniform("scale", scaleSlider.value);
+
+		// Exponentially interpolate from .00003 to .0000003.
+		const power = (scaleSlider.value - 1.2) / (2 - 1.2) * 2;
+		applet.setMinEpsilon(.00003 / Math.pow(10, power));
+
 		applet.rotationAngleX2 = rotationAngleX2Slider.value;
 		applet.rotationAngleY2 = rotationAngleY2Slider.value;
 		applet.rotationAngleZ2 = rotationAngleZ2Slider.value;
@@ -83,12 +108,12 @@ export default function()
 		applet.changeResolution(resolutionInput.value * siteSettings.resolutionMultiplier);
 	}
 
-	function onDropdownInput(fromOnClickHandler)
+	function onDropdownInput()
 	{
+		applet.changePolyhedron(polyhedraDropdown.value);
+
 		if (polyhedraDropdown.value === "tetrahedron")
 		{
-			applet.changePolyhedron([1, 0, 0], !fromOnClickHandler);
-
 			rotationAngleX2Slider.setBounds({ max: 2 * Math.PI });
 			rotationAngleY2Slider.setBounds({ max: 2 * Math.PI });
 			rotationAngleZ2Slider.setBounds({ max: 2 * Math.PI / 3 });
@@ -96,8 +121,6 @@ export default function()
 
 		else if (polyhedraDropdown.value === "cube")
 		{
-			applet.changePolyhedron([0, 1, 0], !fromOnClickHandler);
-
 			rotationAngleX2Slider.setBounds({ max: 2 * Math.PI / 2 });
 			rotationAngleY2Slider.setBounds({ max: 2 * Math.PI / 2 });
 			rotationAngleZ2Slider.setBounds({ max: 2 * Math.PI / 2 });
@@ -105,11 +128,15 @@ export default function()
 
 		else
 		{
-			applet.changePolyhedron([0, 0, 1], !fromOnClickHandler);
-			
 			rotationAngleX2Slider.setBounds({ max: 2 * Math.PI / 2 });
 			rotationAngleY2Slider.setBounds({ max: 2 * Math.PI / 2 });
 			rotationAngleZ2Slider.setBounds({ max: 2 * Math.PI / 2 });
 		}
+	}
+
+	function onCheckboxInput()
+	{
+		applet.useShadows = shadowsCheckbox.checked;
+		applet.reloadShader();
 	}
 }
