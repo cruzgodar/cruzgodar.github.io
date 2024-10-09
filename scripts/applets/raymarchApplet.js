@@ -46,7 +46,8 @@ export class RaymarchApplet extends AnimationFrameApplet
 	cameraPos;
 	lightPos;
 	lightBrightness;
-	bloomPower = 0.11;
+	ambientLight;
+	bloomPower;
 
 	fogColor = [0, 0, 0];
 	fogScaling = .05;
@@ -83,7 +84,7 @@ export class RaymarchApplet extends AnimationFrameApplet
 		getReflectivityGlsl = "return 0.2;",
 		addGlsl = "",
 
-		uniforms,
+		uniforms = {},
 
 		theta,
 		phi,
@@ -92,9 +93,13 @@ export class RaymarchApplet extends AnimationFrameApplet
 		minEpsilon = .0000003,
 
 		cameraPos = [0, 0, 0],
+		lockedOnOrigin = false,
 
 		lightPos = [50, 70, 100],
 		lightBrightness = 1,
+		ambientLight = 0.25,
+		useBloom = true,
+		bloomPower = 1,
 	}) {
 		super(canvas);
 
@@ -105,8 +110,12 @@ export class RaymarchApplet extends AnimationFrameApplet
 		this.epsilonScaling = epsilonScaling;
 		this.minEpsilon = minEpsilon;
 		this.cameraPos = cameraPos;
+		this.lockedOnOrigin = lockedOnOrigin;
 		this.lightPos = lightPos;
 		this.lightBrightness = lightBrightness;
+		this.ambientLight = ambientLight;
+		this.useBloom = useBloom;
+		this.bloomPower = bloomPower;
 		
 		if (!this.lockedOnOrigin)
 		{
@@ -135,6 +144,11 @@ export class RaymarchApplet extends AnimationFrameApplet
 					}
 				}
 			);
+		}
+
+		else
+		{
+			this.distanceFromOrigin = RaymarchApplet.magnitude(this.cameraPos);
 		}
 
 		const refreshId = setInterval(() =>
@@ -311,7 +325,7 @@ export class RaymarchApplet extends AnimationFrameApplet
 				
 				float lightIntensity = max(
 					lightBrightness * dotProduct,
-					.25
+					${getFloatGlsl(this.ambientLight)}
 				);
 
 				vec3 color = getColor(pos)
@@ -371,7 +385,7 @@ export class RaymarchApplet extends AnimationFrameApplet
 						normalize(rayDirectionVec),
 						normalize(lightPos - cameraPos)
 					)) / 2.99,
-					20.0
+					${getFloatGlsl(20 / this.bloomPower)}
 				);
 			}
 		` : "";
@@ -469,7 +483,7 @@ export class RaymarchApplet extends AnimationFrameApplet
 				
 				float lightIntensity = max(
 					lightBrightness * dotProduct,
-					.25
+					${getFloatGlsl(this.ambientLight)}
 				);
 
 				vec3 color = getColor(pos)

@@ -93,7 +93,7 @@ export default function()
 		applet.setUniform("scale", scaleSlider.value);
 
 		// Exponentially interpolate from .00003 to .0000003.
-		const power = (scaleSlider.value - 1.2) / (2 - 1.2) * 2; 
+		const power = (scaleSlider.value - 1.2) / (2 - 1.2) * 2;
 		applet.setMinEpsilon(.00003 / Math.pow(10, power));
 
 		applet.rotationAngleX2 = rotationAngleX2Slider.value;
