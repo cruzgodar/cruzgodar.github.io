@@ -7,8 +7,6 @@ export class Mandelbulb extends RaymarchApplet
 	rotationAngleY = 0;
 	rotationAngleZ = 0;
 
-
-
 	constructor({
 		canvas,
 	}) {
@@ -229,11 +227,6 @@ export class Mandelbulb extends RaymarchApplet
 
 	switchBulb()
 	{
-		if (this.uniforms.juliaProportion[1] === 0)
-		{
-			this.setUniform("c", this.uniforms.c[1]);
-		}
-
 		const dummy = { t: 0 };
 
 		const oldJuliaProportion = this.uniforms.juliaProportion[1];
@@ -249,7 +242,7 @@ export class Mandelbulb extends RaymarchApplet
 				this.setUniform(
 					"juliaProportion",
 					(1 - dummy.t) * oldJuliaProportion + dummy.t * newJuliaProportion
-				); 
+				);
 
 				this.needNewFrame = true;
 			}

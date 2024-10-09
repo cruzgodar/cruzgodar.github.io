@@ -11,7 +11,6 @@ The <a href="/applets/julia-set-explorer/">Mandelbrot and Julia sets</a> are def
 ###
 
 ### sliders
-	iterations
 	rho
 	theta
 	phi
@@ -19,6 +18,10 @@ The <a href="/applets/julia-set-explorer/">Mandelbrot and Julia sets</a> are def
 
 ### buttons
 	switch-bulb
+###
+
+### checkboxes
+	shadows
 ###
 
 </div>

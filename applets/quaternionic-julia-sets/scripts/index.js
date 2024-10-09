@@ -1,6 +1,7 @@
 import { showPage } from "../../../scripts/src/loadPage.js";
 import { QuaternionicJuliaSet } from "./class.js";
 import { Button, ToggleButton } from "/scripts/src/buttons.js";
+import { Checkbox } from "/scripts/src/checkboxes.js";
 import { $ } from "/scripts/src/main.js";
 import { typesetMath } from "/scripts/src/math.js";
 import { siteSettings } from "/scripts/src/settings.js";
@@ -24,7 +25,7 @@ export default function()
 		name: "Download",
 		onClick: () =>
 		{
-			if (applet.juliaProportion === 0)
+			if (applet.uniforms.juliaProportion[1] < .5)
 			{
 				applet.wilson.downloadFrame("the-quaternionic-mandelbrot-set.png");
 			}
@@ -43,17 +44,6 @@ export default function()
 		minValue: 100,
 		maxValue: 800,
 		onInput: changeResolution
-	});
-
-	const iterationsSlider = new Slider({
-		element: $("#iterations-slider"),
-		name: "Iterations",
-		value: 16,
-		min: 0,
-		max: 32,
-		logarithmic: true,
-		integer: true,
-		onInput: onSliderInput
 	});
 
 	const rhoSlider = new Slider({
@@ -83,6 +73,12 @@ export default function()
 		onInput: onSliderInput
 	});
 
+	const shadowsCheckbox = new Checkbox({
+		element: $("#shadows-checkbox"),
+		name: "Shadows",
+		onInput: onCheckboxInput
+	});
+
 	typesetMath();
 
 	onSliderInput();
@@ -96,16 +92,20 @@ export default function()
 
 	function onSliderInput()
 	{
-		applet.maxIterations = iterationsSlider.value;
-
-		applet.wilson.gl.uniform1i(applet.wilson.uniforms["maxIterations"], applet.maxIterations);
-
 		const c = [
 			rhoSlider.value * Math.cos(thetaSlider.value) * Math.cos(phiSlider.value),
 			rhoSlider.value * Math.sin(thetaSlider.value) * Math.cos(phiSlider.value),
 			rhoSlider.value * Math.sin(phiSlider.value),
 		];
 
-		applet.updateC(c);
+		applet.setUniform("c", c);
+
+		applet.needNewFrame = true;
+	}
+
+	function onCheckboxInput()
+	{
+		applet.useShadows = shadowsCheckbox.checked;
+		applet.reloadShader();
 	}
 }
