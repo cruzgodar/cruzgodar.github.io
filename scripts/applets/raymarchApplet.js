@@ -36,11 +36,8 @@ export class RaymarchApplet extends AnimationFrameApplet
 	imageWidth = 400;
 	imageHeight = 400;
 
-	minEpsilon;
-	maxEpsilon;
-
 	maxMarches = 128;
-	maxShadowMarches = 64;
+	maxShadowMarches = 128;
 	maxReflectionMarches = 128;
 	clipDistance = 1000;
 
@@ -88,8 +85,6 @@ export class RaymarchApplet extends AnimationFrameApplet
 		uniforms,
 		theta,
 		phi,
-		minEpsilon = .0000003,
-		maxEpsilon = .0025,
 		cameraPos = [0, 0, 0],
 		lightPos = [50, 70, 100],
 	}) {
@@ -98,8 +93,6 @@ export class RaymarchApplet extends AnimationFrameApplet
 		this.uniforms = uniforms;
 		this.theta = theta;
 		this.phi = phi;
-		this.minEpsilon = minEpsilon;
-		this.maxEpsilon = maxEpsilon;
 		this.cameraPos = cameraPos;
 		this.lightPos = lightPos;
 		
@@ -217,10 +210,9 @@ export class RaymarchApplet extends AnimationFrameApplet
 			// Nearly identical to raymarching, but it only marches toward the light.
 			float computeShadowIntensity(vec3 startPos, vec3 lightDirection)
 			{
-				vec3 rayDirectionVec = normalize(lightDirection) * .9;
+				vec3 rayDirectionVec = normalize(lightDirection) * .25;
 				float softShadowFactor = 1.0;
-				float t = 0.001;
-				float shadowEpsilon = 0.0001;
+				float t = 0.0;
 
 				float lastDistanceToScene = 100000.0;
 
@@ -235,17 +227,19 @@ export class RaymarchApplet extends AnimationFrameApplet
 
 					softShadowFactor = min(
 						softShadowFactor,
-						d / (max(t - y, 0.0) * 0.05) 
+						d / (max(t - y, 0.0) * 0.025) 
 					);
 
 					lastDistanceToScene = distanceToScene;
+
+					float epsilon = t / (float(imageSize) * 1.75);
 
 					if (t > clipDistance || length(pos - lightPos) < 0.2)
 					{
 						return clamp(softShadowFactor, maxShadowAmount, 1.0);
 					}
 
-					if (distanceToScene < shadowEpsilon)
+					if (distanceToScene < epsilon)
 					{
 						return maxShadowAmount;
 					}
@@ -259,9 +253,8 @@ export class RaymarchApplet extends AnimationFrameApplet
 			// Nearly identical to raymarching, but it only marches toward the light.
 			float computeShadowIntensity(vec3 startPos, vec3 lightDirection)
 			{
-				vec3 rayDirectionVec = normalize(lightDirection) * .9;
-				float t = 0.001;
-				float shadowEpsilon = 0.0001;
+				vec3 rayDirectionVec = normalize(lightDirection) * .25;
+				float t = 0.0;
 
 				for (int iteration = 0; iteration < maxShadowMarches; iteration++)
 				{
@@ -269,12 +262,14 @@ export class RaymarchApplet extends AnimationFrameApplet
 					
 					float distanceToScene = distanceEstimator(pos);
 
+					float epsilon = t / (float(imageSize) * 1.75);
+
 					if (t > clipDistance)
 					{
 						return 1.0;
 					}
 
-					if (distanceToScene < shadowEpsilon)
+					if (distanceToScene < epsilon)
 					{
 						return maxShadowAmount;
 					}
@@ -289,10 +284,11 @@ export class RaymarchApplet extends AnimationFrameApplet
 		const computeReflectionGlsl = this.useReflections ? /* glsl */`
 			vec3 computeShadingWithoutReflection(
 				vec3 pos,
+				float epsilon,
 				float correctionDistance,
 				int iteration
 			) {
-				vec3 surfaceNormal = getSurfaceNormal(pos);
+				vec3 surfaceNormal = getSurfaceNormal(pos, epsilon);
 
 				// This corrects the position so that it's exactly on the surface (we probably marched a little bit inside).
 				pos -= surfaceNormal * correctionDistance;
@@ -323,7 +319,7 @@ export class RaymarchApplet extends AnimationFrameApplet
 			// Unlike in raymarch(), startPos is replacing cameraPos, and rayDirectionVec is precomputed.
 			vec3 computeReflection(vec3 startPos, vec3 rayDirectionVec, int startIteration)
 			{
-				float t = 3.0 * epsilon;
+				float t = 0.0;
 				
 				for (int iteration = 0; iteration < maxReflectionMarches; iteration++)
 				{
@@ -331,11 +327,14 @@ export class RaymarchApplet extends AnimationFrameApplet
 					
 					float distanceToScene = distanceEstimator(pos);
 
+					float epsilon = t / (float(imageSize) * 1.75);
+
 					if (distanceToScene < epsilon)
 					{
 						return computeShadingWithoutReflection(
 							pos,
-							distanceToScene - epsilon,
+							epsilon,
+							distanceToScene - 2.0 * epsilon,
 							iteration + startIteration
 						);
 					}
@@ -383,7 +382,6 @@ export class RaymarchApplet extends AnimationFrameApplet
 			uniform vec3 forwardVec;
 			uniform vec3 rightVec;
 			uniform vec3 upVec;
-			uniform float epsilon;
 			uniform int imageSize;
 
 			${uniformsGlsl}
@@ -421,7 +419,7 @@ export class RaymarchApplet extends AnimationFrameApplet
 			
 			
 			
-			vec3 getSurfaceNormal(vec3 pos)
+			vec3 getSurfaceNormal(vec3 pos, float epsilon)
 			{
 				float xStep1 = distanceEstimator(pos + vec3(epsilon, 0.0, 0.0));
 				float yStep1 = distanceEstimator(pos + vec3(0.0, epsilon, 0.0));
@@ -442,10 +440,11 @@ export class RaymarchApplet extends AnimationFrameApplet
 			
 			vec3 computeShading(
 				vec3 pos,
+				float epsilon,
 				float correctionDistance,
 				int iteration
 			) {
-				vec3 surfaceNormal = getSurfaceNormal(pos);
+				vec3 surfaceNormal = getSurfaceNormal(pos, epsilon);
 
 				// This corrects the position so that it's exactly on the surface (we probably marched a little bit inside).
 				pos -= surfaceNormal * correctionDistance;
@@ -497,13 +496,14 @@ export class RaymarchApplet extends AnimationFrameApplet
 					
 					float distanceToScene = distanceEstimator(pos);
 
-					float effectiveEpsilon = t / (float(imageSize) * 1.75);
+					float epsilon = t / (float(imageSize) * 1.75);
 					
-					if (distanceToScene < effectiveEpsilon)
+					if (distanceToScene < epsilon)
 					{
 						return computeShading(
 							pos,
-							distanceToScene - effectiveEpsilon,
+							epsilon,
+							distanceToScene - 2.0 * epsilon,
 							iteration
 						);
 					}
@@ -598,11 +598,6 @@ export class RaymarchApplet extends AnimationFrameApplet
 		this.wilson.gl.uniform3fv(
 			this.wilson.uniforms.upVec,
 			this.upVec
-		);
-
-		this.wilson.gl.uniform1f(
-			this.wilson.uniforms.epsilon,
-			this.maxEpsilon
 		);
 
 		for (const key in this.uniforms)
@@ -714,16 +709,6 @@ export class RaymarchApplet extends AnimationFrameApplet
 		this.wilson.gl.uniform3fv(this.wilson.uniforms.forwardVec, this.forwardVec);
 		this.wilson.gl.uniform3fv(this.wilson.uniforms.rightVec, this.rightVec);
 		this.wilson.gl.uniform3fv(this.wilson.uniforms.upVec, this.upVec);
-
-		this.wilson.gl.uniform1f(
-			this.wilson.uniforms.epsilon,
-			Math.min(
-				Math.max(
-					2 * this.distanceToScene / this.imageSize, this.minEpsilon
-				),
-				this.maxEpsilon
-			)
-		);
 	}
 
 	distanceEstimator()
