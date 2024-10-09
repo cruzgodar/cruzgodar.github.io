@@ -104,7 +104,8 @@ export class Mandelbulb extends RaymarchApplet
 			theta: 4.6601,
 			phi: 2.272,
 			cameraPos: [0.0718, 1.6264, 1.4416],
-			lightPos: [0, 0, 5]
+			lightPos: [2, 5, 50],
+			lightBrightness: 1.1
 		});
 	}
 

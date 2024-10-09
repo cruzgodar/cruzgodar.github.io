@@ -2,6 +2,7 @@ import { showPage } from "../../../scripts/src/loadPage.js";
 import { CurvedLight } from "./class.js";
 import anime from "/scripts/anime.js";
 import { DownloadButton } from "/scripts/src/buttons.js";
+import { Checkbox } from "/scripts/src/checkboxes.js";
 import { Dropdown } from "/scripts/src/dropdowns.js";
 import { $, $$ } from "/scripts/src/main.js";
 import { siteSettings } from "/scripts/src/settings.js";
@@ -70,6 +71,13 @@ export default function()
 		onInput: onSliderInput
 	});
 
+	const reflectionsCheckbox = new Checkbox({
+		element: $("#reflections-checkbox"),
+		name: "Reflections",
+		checked: true,
+		onInput: onCheckboxInput
+	});
+
 	showPage();
 
 	function changeResolution()
@@ -79,21 +87,17 @@ export default function()
 
 	function onSliderInput()
 	{
-		applet.radius = radiusSlider.value;
-		applet.wilson.gl.uniform1f(applet.wilson.uniforms.radius, applet.radius);
-
-		applet.curvature = curvatureSlider.value;
-		applet.wilson.gl.uniform1f(applet.wilson.uniforms.curvature, applet.curvature);
+		applet.setUniform("radius", radiusSlider.value);
+		applet.setUniform("curvature", curvatureSlider.value);
 
 		applet.needNewFrame = true;
 	}
 
 	function onDropdownInput()
 	{
-		const oldCValues = [...applet.cValues];
-		const newC = effects.indexOf(effectsDropdown.value);
+		const oldCValues = [0, 1, 2, 3, 4, 5].map(index => applet.uniforms[`c${index}`][1]);
 		const newCValues = Array(6).fill(0);
-
+		const newC = effects.indexOf(effectsDropdown.value);
 		newCValues[newC] = 1;
 
 		$$(".slider-container").forEach(element =>
@@ -115,14 +119,19 @@ export default function()
 			easing: "easeOutQuad",
 			update: () =>
 			{
-				for (let i = 0; i < applet.cValues.length; i++)
+				for (let i = 0; i < 6; i++)
 				{
-					applet.cValues[i] = dummy.t * newCValues[i] + (1 - dummy.t) * oldCValues[i];
-					applet.wilson.gl.uniform1f(applet.wilson.uniforms[`c${i}`], applet.cValues[i]);
+					applet.setUniform(`c${i}`, dummy.t * newCValues[i] + (1 - dummy.t) * oldCValues[i]);
 				}
 				
 				applet.needNewFrame = true;
 			}
 		});
+	}
+
+	function onCheckboxInput()
+	{
+		applet.useReflections = reflectionsCheckbox.checked;
+		applet.reloadShader();
 	}
 }

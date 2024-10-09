@@ -46,6 +46,8 @@ export class RaymarchApplet extends AnimationFrameApplet
 	cameraPos;
 	lightPos;
 	lightBrightness;
+	useOppositeLight;
+	oppositeLightBrightness;
 	ambientLight;
 	bloomPower;
 
@@ -72,6 +74,7 @@ export class RaymarchApplet extends AnimationFrameApplet
 	distanceEstimatorGlsl;
 	getColorGlsl;
 	getReflectivityGlsl;
+	getGeodesicGlsl;
 	addGlsl;
 
 
@@ -82,6 +85,7 @@ export class RaymarchApplet extends AnimationFrameApplet
 		distanceEstimatorGlsl,
 		getColorGlsl,
 		getReflectivityGlsl = "return 0.2;",
+		getGeodesicGlsl = (pos, dir) => `${pos} + t * ${dir}`,
 		addGlsl = "",
 
 		uniforms = {},
@@ -97,9 +101,14 @@ export class RaymarchApplet extends AnimationFrameApplet
 
 		lightPos = [50, 70, 100],
 		lightBrightness = 1,
+		useOppositeLight = false,
+		oppositeLightBrightness = 0.5,
 		ambientLight = 0.25,
 		useBloom = true,
 		bloomPower = 1,
+
+		useShadows = false,
+		useReflections = false,
 	}) {
 		super(canvas);
 
@@ -113,9 +122,13 @@ export class RaymarchApplet extends AnimationFrameApplet
 		this.lockedOnOrigin = lockedOnOrigin;
 		this.lightPos = lightPos;
 		this.lightBrightness = lightBrightness;
+		this.useOppositeLight = useOppositeLight;
+		this.oppositeLightBrightness = oppositeLightBrightness;
 		this.ambientLight = ambientLight;
 		this.useBloom = useBloom;
 		this.bloomPower = bloomPower;
+		this.useShadows = useShadows;
+		this.useReflections = useReflections;
 		
 		if (!this.lockedOnOrigin)
 		{
@@ -165,6 +178,7 @@ export class RaymarchApplet extends AnimationFrameApplet
 			distanceEstimatorGlsl,
 			getColorGlsl,
 			getReflectivityGlsl,
+			getGeodesicGlsl,
 			addGlsl,
 		});
 
@@ -225,11 +239,13 @@ export class RaymarchApplet extends AnimationFrameApplet
 		distanceEstimatorGlsl = this.distanceEstimatorGlsl,
 		getColorGlsl = this.getColorGlsl,
 		getReflectivityGlsl = this.getReflectivityGlsl,
+		getGeodesicGlsl = this.getGeodesicGlsl,
 		addGlsl = this.addGlsl,
 	}) {
 		this.distanceEstimatorGlsl = distanceEstimatorGlsl;
 		this.getColorGlsl = getColorGlsl;
 		this.getReflectivityGlsl = getReflectivityGlsl;
+		this.getGeodesicGlsl = getGeodesicGlsl;
 		this.addGlsl = addGlsl;
 
 		const computeShadowIntensityGlsl = this.useShadows && this.useSoftShadows ? /* glsl */`
@@ -244,7 +260,7 @@ export class RaymarchApplet extends AnimationFrameApplet
 
 				for (int iteration = 0; iteration < maxShadowMarches; iteration++)
 				{
-					vec3 pos = startPos + t * rayDirectionVec;
+					vec3 pos = ${getGeodesicGlsl("startPos", "rayDirectionVec")};
 					
 					// Use Sebastian Aaltonen's improvement to Inigo Quilez's soft shadow algorithm.
 					float distanceToScene = distanceEstimator(pos);
@@ -284,7 +300,7 @@ export class RaymarchApplet extends AnimationFrameApplet
 
 				for (int iteration = 0; iteration < maxShadowMarches; iteration++)
 				{
-					vec3 pos = startPos + t * rayDirectionVec;
+					vec3 pos = ${getGeodesicGlsl("startPos", "rayDirectionVec")};
 					
 					float distanceToScene = distanceEstimator(pos);
 
@@ -324,7 +340,7 @@ export class RaymarchApplet extends AnimationFrameApplet
 				float dotProduct = dot(surfaceNormal, lightDirection);
 				
 				float lightIntensity = max(
-					lightBrightness * dotProduct,
+					${this.useOppositeLight ? `lightBrightness * max(dotProduct, -${getFloatGlsl(this.oppositeLightBrightness)} * dotProduct)` : "lightBrightness * dotProduct"},
 					${getFloatGlsl(this.ambientLight)}
 				);
 
@@ -349,7 +365,7 @@ export class RaymarchApplet extends AnimationFrameApplet
 				
 				for (int iteration = 0; iteration < maxReflectionMarches; iteration++)
 				{
-					vec3 pos = startPos + t * rayDirectionVec;
+					vec3 pos = ${getGeodesicGlsl("startPos", "rayDirectionVec")};;
 					
 					float distanceToScene = distanceEstimator(pos);
 
@@ -482,7 +498,7 @@ export class RaymarchApplet extends AnimationFrameApplet
 				float dotProduct = dot(surfaceNormal, lightDirection);
 				
 				float lightIntensity = max(
-					lightBrightness * dotProduct,
+					${this.useOppositeLight ? `lightBrightness * max(dotProduct, -${getFloatGlsl(this.oppositeLightBrightness)} * dotProduct)` : "lightBrightness * dotProduct"},
 					${getFloatGlsl(this.ambientLight)}
 				);
 
@@ -520,7 +536,7 @@ export class RaymarchApplet extends AnimationFrameApplet
 				
 				for (int iteration = 0; iteration < maxMarches; iteration++)
 				{
-					vec3 pos = cameraPos + t * rayDirectionVec;
+					vec3 pos = ${getGeodesicGlsl("cameraPos", "rayDirectionVec")};;
 					
 					float distanceToScene = distanceEstimator(pos);
 

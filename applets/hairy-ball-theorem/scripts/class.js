@@ -43,7 +43,7 @@ export class HairyBall extends RaymarchApplet
 			lockedOnOrigin: true,
 			cameraPos: [2, 0, 0],
 			lightBrightness: 0,
-			ambientLight: 1.25,
+			ambientLight: 1.1,
 			minEpsilon: .0025,
 			useBloom: false,
 		});
