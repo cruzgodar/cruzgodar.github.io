@@ -271,11 +271,18 @@ export const galleryImageData =
 	{
 		title: "The Sierpinski Octahedron",
 
-		featured: "Featured in UO&#x2019;s Erb Memorial Union and University Hall",
+		appletLink: "kaleidoscopic-ifs-fractals",
+
+		driveId: "142FfsLHr4aJDbkwH0zPIBFtvtgCqvBgn"
+	},
+
+	"kaleidoscopic-ifs-2":
+	{
+		title: "The Sierpinski Octahedron",
 
 		appletLink: "kaleidoscopic-ifs-fractals",
 
-		driveId: "1XhywTt1u8SY8JR9GUiauZRBnLzzLUOxP"
+		driveId: "10Z3WG23_IowWw81UnvZ3ABnrJpzCVBbL"
 	},
 
 	"generalized-julia-set-1":
@@ -467,19 +474,6 @@ export const galleryImageData =
 		appletLink: "the-mandelbulb",
 
 		driveId: "1GfsC_gm0DU1j2X79Ros6lQY4HAUp-iy4"
-	},
-
-	"complex-map-2":
-	{
-		title: "A Complex Map",
-
-		parameters: /* html */`
-			Generated from $\\mathcal{p}\\left( z, \\frac{2\\pi}{3} \\right)$
-		`,
-
-		appletLink: "complex-maps",
-
-		driveId: "1ulWn8MMjzNTiTRuZKYWlqHoJOQBUwAnz"
 	},
 
 

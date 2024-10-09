@@ -51,6 +51,12 @@ It shouldn't be too surprising that we have the free parameter $c$ in our soluti
 ### exc "a simple DE"
 	
 	A buoy has a fixed horizontal position but bobs up and down with waves, and its acceleration after $t$ seconds is given by $a(t) = \cos\left( \frac{t}{5} \right)$. Set up and solve a DE for the function $v(t)$ that gives the vertical velocity of the buoy after $t$ seconds.
+
+	**Solution:** Since $v'(t) = a(t)$, we integrate $a(t)$ to find
+	
+	$$
+		v(t) = \int \cos\left( \frac{t}{5} \right)\,dt &= 5\sin\left( \frac{t}{5} \right) + c.
+	$$
 	
 ###
 
@@ -163,6 +169,8 @@ While direction fields are restricted to always pushing particles to the right, 
 ### exc "direction field"
 	
 	Draw a direction field for $(y^2 - 1)y' = t$ for $-5 \leq t \leq 5$ and $-5 \leq y \leq 5$.
+
+	**Solution:** This one has the rather chaotic field given by
 	
 ###
 

@@ -57,10 +57,10 @@ export class RaymarchApplet extends AnimationFrameApplet
 	epsilonScaling;
 	minEpsilon;
 
-	useShadows = false;
-	useSoftShadows = true;
-	useReflections = false;
-	useBloom = true;
+	useShadows;
+	useSoftShadows;
+	useReflections;
+	useBloom;
 
 	uniforms = {};
 	lockZ;
@@ -104,11 +104,12 @@ export class RaymarchApplet extends AnimationFrameApplet
 		useOppositeLight = false,
 		oppositeLightBrightness = 0.5,
 		ambientLight = 0.25,
-		useBloom = true,
 		bloomPower = 1,
 
 		useShadows = false,
+		useSoftShadows = false,
 		useReflections = false,
+		useBloom = true,
 	}) {
 		super(canvas);
 
@@ -118,17 +119,21 @@ export class RaymarchApplet extends AnimationFrameApplet
 		this.stepFactor = stepFactor;
 		this.epsilonScaling = epsilonScaling;
 		this.minEpsilon = minEpsilon;
+		
 		this.cameraPos = cameraPos;
 		this.lockedOnOrigin = lockedOnOrigin;
+
 		this.lightPos = lightPos;
 		this.lightBrightness = lightBrightness;
 		this.useOppositeLight = useOppositeLight;
 		this.oppositeLightBrightness = oppositeLightBrightness;
 		this.ambientLight = ambientLight;
-		this.useBloom = useBloom;
 		this.bloomPower = bloomPower;
+
 		this.useShadows = useShadows;
+		this.useSoftShadows = useSoftShadows;
 		this.useReflections = useReflections;
+		this.useBloom = useBloom;
 		
 		if (!this.lockedOnOrigin)
 		{
