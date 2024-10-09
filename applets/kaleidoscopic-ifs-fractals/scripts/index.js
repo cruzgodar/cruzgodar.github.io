@@ -9,6 +9,10 @@ import { siteSettings } from "/scripts/src/settings.js";
 import { Slider } from "/scripts/src/sliders.js";
 import { TextBox } from "/scripts/src/textBoxes.js";
 
+const minScale = 1.15;
+const minScaleEpsilon = .00015;
+const maxScaleEpsilon = .0000003;
+
 export default function()
 {
 	const resolutionInput = new TextBox({
@@ -62,7 +66,7 @@ export default function()
 		element: $("#scale-slider"),
 		name: "Scale",
 		value: 2,
-		min: 1.2,
+		min: minScale,
 		max: 2,
 		onInput: onSliderInput
 	});
@@ -92,9 +96,10 @@ export default function()
 	{
 		applet.setUniform("scale", scaleSlider.value);
 
-		// Exponentially interpolate from .00003 to .0000003.
-		const power = (scaleSlider.value - 1.2) / (2 - 1.2) * 2;
-		applet.setMinEpsilon(.00003 / Math.pow(10, power));
+		// Exponentially interpolate from .001 to .0000003.
+		const power = (scaleSlider.value - minScale) / (2 - minScale)
+			* Math.log10(minScaleEpsilon / maxScaleEpsilon);
+		applet.setMinEpsilon(minScaleEpsilon / Math.pow(10, power));
 
 		applet.rotationAngleX2 = rotationAngleX2Slider.value;
 		applet.rotationAngleY2 = rotationAngleY2Slider.value;
