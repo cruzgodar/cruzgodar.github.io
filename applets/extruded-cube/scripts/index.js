@@ -88,7 +88,7 @@ export default function()
 		applet.setUniform("scale", scaleSlider.value);
 		applet.setUniform("separation", separationSlider.value);
 
-		applet.distanceFromOrigin = 11.5 * separationSlider.value / scaleSlider.value;
+		applet.distanceFromOrigin = 10.6418 * separationSlider.value / scaleSlider.value;
 
 		applet.calculateVectors();
 

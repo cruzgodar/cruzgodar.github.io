@@ -7,9 +7,9 @@ export class ExtrudedCube extends RaymarchApplet
 		const distanceEstimatorGlsl = /* glsl */`
 			float scaleCenter = (scale + 1.0) / (scale - 1.0) * separation;
 
-			vec3 mutablePos = abs(pos);
+			pos = abs(pos);
 
-			float totalDistance = (max(max(mutablePos.x, mutablePos.y), mutablePos.z) - 1.0);
+			float totalDistance = (max(max(pos.x, pos.y), pos.z) - 1.0);
 
 			for (int iteration = 0; iteration < maxIterations; iteration++)
 			{
@@ -18,26 +18,26 @@ export class ExtrudedCube extends RaymarchApplet
 					break;
 				}
 
-				if (mutablePos.x > max(mutablePos.y, mutablePos.z))
+				if (pos.x > max(pos.y, pos.z))
 				{
-					mutablePos = scale * mutablePos - (scale - 1.0) * vec3(scaleCenter, 0.0, 0.0);
+					pos = scale * pos - (scale - 1.0) * vec3(scaleCenter, 0.0, 0.0);
 				}
 
-				else if (mutablePos.y > max(mutablePos.x, mutablePos.z))
+				else if (pos.y > max(pos.x, pos.z))
 				{
-					mutablePos = scale * mutablePos - (scale - 1.0) * vec3(0.0, scaleCenter, 0.0);
+					pos = scale * pos - (scale - 1.0) * vec3(0.0, scaleCenter, 0.0);
 				}
 
 				else
 				{
-					mutablePos = scale * mutablePos - (scale - 1.0) * vec3(0.0, 0.0, scaleCenter);
+					pos = scale * pos - (scale - 1.0) * vec3(0.0, 0.0, scaleCenter);
 				}
 
-				mutablePos = abs(mutablePos);
+				pos = abs(pos);
 
 				totalDistance = min(
 					totalDistance,
-					(max(max(mutablePos.x, mutablePos.y), mutablePos.z) - 1.0)
+					(max(max(pos.x, pos.y), pos.z) - 1.0)
 						/ pow(scale, float(iteration + 1))
 				);
 			}
@@ -50,7 +50,7 @@ export class ExtrudedCube extends RaymarchApplet
 
 			float scaleCenter = (scale + 1.0) / (scale - 1.0) * separation;
 
-			vec3 mutablePos = abs(pos);
+			pos = abs(pos);
 
 			for (int iteration = 0; iteration < maxIterations; iteration++)
 			{
@@ -59,28 +59,28 @@ export class ExtrudedCube extends RaymarchApplet
 					break;
 				}
 
-				if (mutablePos.x > max(mutablePos.y, mutablePos.z))
+				if (pos.x > max(pos.y, pos.z))
 				{
-					mutablePos = scale * mutablePos - (scale - 1.0) * vec3(scaleCenter, 0.0, 0.0);
+					pos = scale * pos - (scale - 1.0) * vec3(scaleCenter, 0.0, 0.0);
 
 					color += vec3(0.0, 0.75, 1.0) * pow(2.0, -float(iteration + 1));
 				}
 
-				else if (mutablePos.y > max(mutablePos.x, mutablePos.z))
+				else if (pos.y > max(pos.x, pos.z))
 				{
-					mutablePos = scale * mutablePos - (scale - 1.0) * vec3(0.0, scaleCenter, 0.0);
+					pos = scale * pos - (scale - 1.0) * vec3(0.0, scaleCenter, 0.0);
 
 					color += vec3(0.75, 0.0, 1.0) * pow(2.0, -float(iteration + 1));
 				}
 
 				else
 				{
-					mutablePos = scale * mutablePos - (scale - 1.0) * vec3(0.0, 0.0, scaleCenter);
+					pos = scale * pos - (scale - 1.0) * vec3(0.0, 0.0, scaleCenter);
 
 					color += vec3(0.0, 0.0, 1.0) * pow(2.0, -float(iteration + 1));
 				}
 
-				mutablePos = abs(mutablePos);
+				pos = abs(pos);
 			}
 			
 			return color;

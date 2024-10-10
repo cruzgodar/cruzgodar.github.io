@@ -129,7 +129,7 @@ export class KaleidoscopicIFSFractal extends RaymarchApplet
 
 		const uniforms = {
 			scale: ["float", 2],
-			rotationMatrix: ["mat3", [1, 0, 0, 0, 1, 0, 0, 0, 1]],
+			rotationMatrix: ["mat3", [[1, 0, 0], [0, 1, 0], [0, 0, 1]]],
 		};
 
 		super({
@@ -212,19 +212,7 @@ export class KaleidoscopicIFSFractal extends RaymarchApplet
 			y = scale * y - (scale - 1) * scaleCenter[1];
 			z = scale * z - (scale - 1) * scaleCenter[2];
 
-			const tempX = x;
-			const tempY = y;
-			const tempZ = z;
-
-			x = rotationMatrix[0] * tempX
-				+ rotationMatrix[3] * tempY
-				+ rotationMatrix[6] * tempZ;
-			y = rotationMatrix[1] * tempX
-				+ rotationMatrix[4] * tempY
-				+ rotationMatrix[7] * tempZ;
-			z = rotationMatrix[2] * tempX
-				+ rotationMatrix[5] * tempY
-				+ rotationMatrix[8] * tempZ;
+			[x, y, z] = RaymarchApplet.mat3TimesVector(rotationMatrix, [x, y, z]);
 		}
 
 		// So at this point we've scaled up by 2x a total of numIterations times.
@@ -235,23 +223,11 @@ export class KaleidoscopicIFSFractal extends RaymarchApplet
 
 	updateMatrices()
 	{
-		const rotationMatrix = RaymarchApplet.getRotationMatrix(
+		this.setUniform("rotationMatrix", RaymarchApplet.getRotationMatrix(
 			this.rotationAngleX,
 			this.rotationAngleY,
 			this.rotationAngleZ
-		);
-
-		this.setUniform("rotationMatrix", [
-			rotationMatrix[0][0],
-			rotationMatrix[1][0],
-			rotationMatrix[2][0],
-			rotationMatrix[0][1],
-			rotationMatrix[1][1],
-			rotationMatrix[2][1],
-			rotationMatrix[0][2],
-			rotationMatrix[1][2],
-			rotationMatrix[2][2]
-		]);
+		));
 
 		this.needNewFrame = true;
 	}

@@ -61,7 +61,7 @@ export default function()
 	const cXSlider = new Slider({
 		element: $("#c-x-slider"),
 		name: "$c_x$",
-		value: -0.54,
+		value: 0,
 		min: -1,
 		max: 1,
 		onInput: onSliderInput
@@ -70,7 +70,7 @@ export default function()
 	const cYSlider = new Slider({
 		element: $("#c-y-slider"),
 		name: "$c_y$",
-		value: -0.25,
+		value: 0,
 		min: -1,
 		max: 1,
 		onInput: onSliderInput
@@ -79,7 +79,7 @@ export default function()
 	const cZSlider = new Slider({
 		element: $("#c-z-slider"),
 		name: "$c_z$",
-		value: -0.668,
+		value: 0,
 		min: -1,
 		max: 1,
 		onInput: onSliderInput

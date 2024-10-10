@@ -3,6 +3,7 @@ import { MengerSponge } from "./class.js";
 import { DownloadButton } from "/scripts/src/buttons.js";
 import { Checkbox } from "/scripts/src/checkboxes.js";
 import { $ } from "/scripts/src/main.js";
+import { typesetMath } from "/scripts/src/math.js";
 import { siteSettings } from "/scripts/src/settings.js";
 import { Slider } from "/scripts/src/sliders.js";
 import { TextBox } from "/scripts/src/textBoxes.js";
@@ -40,8 +41,36 @@ export default function()
 		element: $("#scale-slider"),
 		name: "Scale",
 		value: 3,
-		min: 2,
+		min: 1.5,
 		max: 3,
+		snapPoints: [2],
+		onInput: onSliderInput
+	});
+
+	const rotationAngleXSlider = new Slider({
+		element: $("#rotation-angle-x-slider"),
+		name: "$\\theta_x$",
+		value: 0,
+		min: 0,
+		max: Math.PI / 2,
+		onInput: onSliderInput
+	});
+
+	const rotationAngleYSlider = new Slider({
+		element: $("#rotation-angle-y-slider"),
+		name: "$\\theta_y$",
+		value: 0,
+		min: 0,
+		max: Math.PI / 2,
+		onInput: onSliderInput
+	});
+
+	const rotationAngleZSlider = new Slider({
+		element: $("#rotation-angle-z-slider"),
+		name: "$\\theta_z$",
+		value: 0,
+		min: 0,
+		max: Math.PI / 2,
 		onInput: onSliderInput
 	});
 
@@ -64,6 +93,8 @@ export default function()
 		onInput: onCheckboxInput
 	});
 
+	typesetMath();
+
 	showPage();
 
 	function changeResolution()
@@ -78,6 +109,12 @@ export default function()
 
 		// Linearly interpolate from 5 at scale 2 to 1.75 at scale 3.
 		applet.setEpsilonScaling(5 - (scaleSlider.value - 2) * (5 - 1.75));
+
+		applet.rotationAngleX = rotationAngleXSlider.value;
+		applet.rotationAngleY = rotationAngleYSlider.value;
+		applet.rotationAngleZ = rotationAngleZSlider.value;
+
+		applet.updateMatrices();
 
 		applet.needNewFrame = true;
 	}

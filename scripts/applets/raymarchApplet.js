@@ -5,14 +5,26 @@ import { AnimationFrameApplet } from "./animationFrameApplet.js";
 import { Applet, getFloatGlsl, getVectorGlsl } from "./applet.js";
 
 const setUniformFunctions = {
-	int: ["uniform1i", []],
-	float: ["uniform1f", []],
-	vec2: ["uniform2fv", []],
-	vec3: ["uniform3fv", []],
-	vec4: ["uniform4fv", []],
-	mat2: ["uniformMatrix2fv", [false]],
-	mat3: ["uniformMatrix3fv", [false]],
-	mat4: ["uniformMatrix4fv", [false]],
+	int: (gl, location, value) => gl.uniform1i(location, value),
+	float: (gl, location, value) => gl.uniform1f(location, value),
+	vec2: (gl, location, value) => gl.uniform2fv(location, value),
+	vec3: (gl, location, value) => gl.uniform3fv(location, value),
+	vec4: (gl, location, value) => gl.uniform4fv(location, value),
+	mat2: (gl, location, value) => gl.uniformMatrix2fv(location, false, [
+		value[0][0], value[1][0],
+		value[0][1], value[1][1]
+	]),
+	mat3: (gl, location, value) => gl.uniformMatrix3fv(location, false, [
+		value[0][0], value[1][0], value[2][0],
+		value[0][1], value[1][1], value[2][1],
+		value[0][2], value[1][2], value[2][2]
+	]),
+	mat4: (gl, location, value) => gl.uniformMatrix4fv(location, false, [
+		value[0][0], value[1][0], value[2][0], value[3][0],
+		value[0][1], value[1][1], value[2][1], value[3][1],
+		value[0][2], value[1][2], value[2][2], value[3][2],
+		value[0][3], value[1][3], value[2][3], value[3][3]
+	]),
 };
 
 export class RaymarchApplet extends AnimationFrameApplet
@@ -664,11 +676,7 @@ export class RaymarchApplet extends AnimationFrameApplet
 		{
 			const value = this.uniforms[key];
 			const uniformFunction = setUniformFunctions[value[0]];
-			this.wilson.gl[uniformFunction[0]](
-				this.wilson.uniforms[key],
-				...uniformFunction[1],
-				value[1]
-			);
+			uniformFunction(this.wilson.gl, this.wilson.uniforms[key], value[1]);
 		}
 	}
 
@@ -944,11 +952,7 @@ export class RaymarchApplet extends AnimationFrameApplet
 
 		const uniformFunction = setUniformFunctions[this.uniforms[name][0]];
 
-		this.wilson.gl[uniformFunction[0]](
-			this.wilson.uniforms[name],
-			...uniformFunction[1],
-			value
-		);
+		uniformFunction(this.wilson.gl, this.wilson.uniforms[name], value);
 	}
 
 	setEpsilonScaling(value)
@@ -1129,5 +1133,14 @@ export class RaymarchApplet extends AnimationFrameApplet
 		];
 
 		return RaymarchApplet.matMul(RaymarchApplet.matMul(matZ, matY), matX);
+	}
+
+	static mat3TimesVector(mat, vec)
+	{
+		return [
+			mat[0][0] * vec[0] + mat[0][1] * vec[1] + mat[0][2] * vec[2],
+			mat[1][0] * vec[0] + mat[1][1] * vec[1] + mat[1][2] * vec[2],
+			mat[2][0] * vec[0] + mat[2][1] * vec[1] + mat[2][2] * vec[2]
+		];
 	}
 }

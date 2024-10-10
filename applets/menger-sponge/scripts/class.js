@@ -1,7 +1,7 @@
 import { RaymarchApplet } from "/scripts/applets/raymarchApplet.js";
 
 const changeColorGlsl = /* glsl */`
-	vec3 colorAdd = abs(mutablePos / effectiveScale);
+	vec3 colorAdd = abs(pos / effectiveScale);
 	color = normalize(color + colorAdd * colorScale);
 	colorScale *= 0.5;
 `;
@@ -14,11 +14,11 @@ function getDistanceEstimatorGlsl(useForGetColor = false)
 	// cheeky min and max business. That ensures that the nearest edge block is the one
 	// with scale center at (0, 1, 1).
 	return /* glsl */`
-		vec3 mutablePos = abs(pos);
-		float maxAbsPos = max(max(mutablePos.x, mutablePos.y), mutablePos.z);
-		float minAbsPos = min(min(mutablePos.x, mutablePos.y), mutablePos.z);
-		float sumAbsPos = mutablePos.x + mutablePos.y + mutablePos.z;
-		mutablePos = vec3(minAbsPos, sumAbsPos - minAbsPos - maxAbsPos, maxAbsPos);
+		pos = abs(pos);
+		float maxAbsPos = max(max(pos.x, pos.y), pos.z);
+		float minAbsPos = min(min(pos.x, pos.y), pos.z);
+		float sumAbsPos = pos.x + pos.y + pos.z;
+		pos = vec3(minAbsPos, sumAbsPos - minAbsPos - maxAbsPos, maxAbsPos);
 
 		${useForGetColor ? "vec3 color = vec3(0.25); float colorScale = 0.5;" : ""}
 
@@ -47,14 +47,14 @@ function getDistanceEstimatorGlsl(useForGetColor = false)
 				break;
 			}
 
-			float distanceToCornerX = abs(mutablePos.x - cornerCenter) - cornerRadius;
-			float distanceToCornerY = abs(mutablePos.y - cornerCenter) - cornerRadius;
-			float distanceToCornerZ = abs(mutablePos.z - cornerCenter) - cornerRadius;
+			float distanceToCornerX = abs(pos.x - cornerCenter) - cornerRadius;
+			float distanceToCornerY = abs(pos.y - cornerCenter) - cornerRadius;
+			float distanceToCornerZ = abs(pos.z - cornerCenter) - cornerRadius;
 			float distanceToCorner = max(distanceToCornerX, max(distanceToCornerY, distanceToCornerZ));
 			
-			float distanceToEdgeX = abs(mutablePos.x) - edgeLongRadius;
-			float distanceToEdgeY = abs(mutablePos.y - edgeCenter) - edgeShortRadius;
-			float distanceToEdgeZ = abs(mutablePos.z - edgeCenter) - edgeShortRadius;
+			float distanceToEdgeX = abs(pos.x) - edgeLongRadius;
+			float distanceToEdgeY = abs(pos.y - edgeCenter) - edgeShortRadius;
+			float distanceToEdgeZ = abs(pos.z - edgeCenter) - edgeShortRadius;
 			float distanceToEdge = max(distanceToEdgeX, max(distanceToEdgeY, distanceToEdgeZ));
 
 			if (distanceToCorner < distanceToEdge)
@@ -77,7 +77,7 @@ function getDistanceEstimatorGlsl(useForGetColor = false)
 				}
 
 				// Scale all directions by 2s/(s-1) from (1, 1, 1) * separation.
-				mutablePos = cornerFactor * mutablePos - cornerScaleCenter;
+				pos = cornerFactor * pos - cornerScaleCenter;
 
 				totalScale *= cornerFactor;
 			}
@@ -102,18 +102,19 @@ function getDistanceEstimatorGlsl(useForGetColor = false)
 				}
 
 				// Scale x by s and y and z by 2s/(s-1) from (0, 1, 1). The second term is equal to
-				mutablePos = vec3(1.0 / edgeLongRadius, edgeFactor, edgeFactor) * mutablePos - edgeScaleCenter;
+				pos = vec3(1.0 / edgeLongRadius, edgeFactor, edgeFactor) * pos - edgeScaleCenter;
 
 				totalScale *= vec3(1.0 / edgeLongRadius, edgeFactor, edgeFactor);
 			}
 
 			${useForGetColor ? changeColorGlsl : ""}
 
-			mutablePos = abs(mutablePos);
-			maxAbsPos = max(max(mutablePos.x, mutablePos.y), mutablePos.z);
-			minAbsPos = min(min(mutablePos.x, mutablePos.y), mutablePos.z);
-			sumAbsPos = mutablePos.x + mutablePos.y + mutablePos.z;
-			mutablePos = vec3(minAbsPos, sumAbsPos - minAbsPos - maxAbsPos, maxAbsPos);
+			pos = abs(pos);
+			pos = rotationMatrix * pos;
+			maxAbsPos = max(max(pos.x, pos.y), pos.z);
+			minAbsPos = min(min(pos.x, pos.y), pos.z);
+			sumAbsPos = pos.x + pos.y + pos.z;
+			pos = vec3(minAbsPos, sumAbsPos - minAbsPos - maxAbsPos, maxAbsPos);
 		}
 		
 		${useForGetColor ? "return abs(color);" : "return totalDistance / effectiveScale;"}
@@ -123,6 +124,10 @@ function getDistanceEstimatorGlsl(useForGetColor = false)
 
 export class MengerSponge extends RaymarchApplet
 {
+	rotationAngleX = 0;
+	rotationAngleY = 0;
+	rotationAngleZ = 0;
+
 	constructor({ canvas })
 	{
 		const distanceEstimatorGlsl = getDistanceEstimatorGlsl();
@@ -135,6 +140,7 @@ export class MengerSponge extends RaymarchApplet
 		const uniforms = {
 			scale: ["float", 3],
 			iterations: ["int", 16],
+			rotationMatrix: ["mat3", [[1, 0, 0], [0, 1, 0], [0, 0, 1]]],
 		};
 
 		super({
@@ -277,6 +283,11 @@ export class MengerSponge extends RaymarchApplet
 				Math.abs(mutablePos[2])
 			];
 
+			mutablePos = RaymarchApplet.mat3TimesVector(
+				this.uniforms.rotationMatrix[1],
+				mutablePos
+			);
+
 			maxAbsPos = Math.max(Math.max(mutablePos[0], mutablePos[1]), mutablePos[2]);
 			minAbsPos = Math.min(Math.min(mutablePos[0], mutablePos[1]), mutablePos[2]);
 			sumAbsPos = mutablePos[0] + mutablePos[1] + mutablePos[2];
@@ -284,5 +295,16 @@ export class MengerSponge extends RaymarchApplet
 		}
 
 		return Math.abs(totalDistance) / effectiveScale;
+	}
+
+	updateMatrices()
+	{
+		this.setUniform("rotationMatrix", RaymarchApplet.getRotationMatrix(
+			this.rotationAngleX,
+			this.rotationAngleY,
+			this.rotationAngleZ
+		));
+
+		this.needNewFrame = true;
 	}
 }
