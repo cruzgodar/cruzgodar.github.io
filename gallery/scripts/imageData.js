@@ -260,7 +260,7 @@ export const galleryImageData =
 
 	"kaleidoscopic-ifs-1":
 	{
-		title: "The Sierpinski Octahedron",
+		title: "A Kaleidoscopic IFS Fractal",
 
 		appletLink: "kaleidoscopic-ifs-fractals",
 
@@ -269,7 +269,7 @@ export const galleryImageData =
 
 	"kaleidoscopic-ifs-2":
 	{
-		title: "The Sierpinski Octahedron",
+		title: "A Kaleidoscopic IFS Fractal",
 
 		appletLink: "kaleidoscopic-ifs-fractals",
 
