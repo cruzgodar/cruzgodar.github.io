@@ -12,7 +12,7 @@
 	
 	### gallery-block
 		brownian-tree 1
-		pascals-triangle-coloring 1
+		chaos-game-2 1
 		strange-attractor 1
 		snowflake 2
 		julia-set-1 1
@@ -63,7 +63,7 @@
 		double-pendulum-fractal-2 2
 		newtons-method-extended 1
 		lyapunov-fractal 1
-		extruded-cube 1
+		menger-sponge-1 1
 		kaleidoscopic-ifs-2 1
 	###
 
@@ -75,9 +75,9 @@
 		vector-field 2
 		juliabulb-1 1
 		juliabulb-2 1
-		chaos-game-2 1
+		extruded-cube 1
 
-		menger-sponge 1
+		menger-sponge-2 1
 		juliabulb-3 1
 	###
 

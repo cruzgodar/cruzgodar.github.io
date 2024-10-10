@@ -92,15 +92,6 @@ export const galleryImageData =
 		driveId: "1yvG5KfAg7qiYjzBDuXDilaSV23X-KyzB"
 	},
 
-	"pascals-triangle-coloring":
-	{
-		title: "A Pascal&#x2019;s Triangle Coloring",
-
-		appletLink: "pascals-triangle-colorings",
-
-		driveId: "13sryJfjORay3ArQspZhgTvzQSbTs-osJ"
-	},
-
 	"newtons-method-2":
 	{
 		title: "Newton&#x2019;s Method",
@@ -505,12 +496,21 @@ export const galleryImageData =
 		driveId: "1udLVBsti2An9TUonpOKApHdpaz_A8ole"
 	},
 
-	"menger-sponge":
+	"menger-sponge-1":
 	{
 		title: "A Menger Sponge",
 
 		appletLink: "menger-sponge",
 		
-		driveId: "1x9MvudTiKCYzV8Lmkvf19a9CAlMdAE3R"
+		driveId: "1Va6pPNA0puYmqWaRtOeYsCVcGmonwgOF"
+	},
+
+	"menger-sponge-2":
+	{
+		title: "A Menger Sponge",
+
+		appletLink: "menger-sponge",
+		
+		driveId: "1UOp7iKfez9lYd94nvvI733xdB5MubN2T"
 	}
 };
