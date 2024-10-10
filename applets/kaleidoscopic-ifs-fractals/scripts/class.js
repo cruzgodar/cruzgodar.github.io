@@ -192,7 +192,7 @@ export class KaleidoscopicIFSFractal extends RaymarchApplet
 				z -= 2 * t3 * shapeNs[2][2];
 			}
 
-			if (ns.length >= 4)
+			if (shapeNs.length >= 4)
 			{
 				const t4 = RaymarchApplet.dotProduct([x, y, z], shapeNs[3]);
 
