@@ -32,6 +32,8 @@
 	/* --about-color: lch(90% 0 0); */
 
 	--contents-border-color: rgba(208, 208, 208, var(--theme));
+
+	--page-width: 1000px;
 }
 
 html
@@ -150,7 +152,7 @@ code
 pre code.highlightable
 {
 	position: relative;
-	max-width: 900px;
+	max-width: var(--page-width);
 	margin: 0 auto;
 	tab-size: 4;
 	-moz-tab-size: 4;
@@ -197,7 +199,7 @@ img
 .heading-text, .section-text, .body-text, .song-lyrics
 {
 	position: relative;
-	max-width: 900px;
+	max-width: var(--page-width);
 	margin: 0 auto;
 	margin-bottom: 16px;
 }
@@ -354,7 +356,7 @@ mjx-container
 	
 	opacity: 1;
 	
-	max-width: min(900px, calc(100vw - 64px));
+	max-width: min(var(--page-width), calc(100vw - 64px));
 	padding: 16px;
 	
 	margin-left: 16px;
@@ -643,7 +645,7 @@ body > .wilson-fullscreen-components-container .fps-canvas
 
 #canvas-landscape-left, #canvas-landscape-middle, #canvas-landscape-right
 {
-	width: 80%;
+	width: 90%;
 }
 
 .desmos-border .output-canvas
@@ -678,6 +680,12 @@ body > .wilson-fullscreen-components-container .fps-canvas
 	#canvas-landscape-left, #canvas-landscape-middle, #canvas-landscape-right
 	{
 		width: 33.33%;
+	}
+
+	#canvas-landscape-middle
+	{
+		margin-left: 16px;
+		margin-right: 16px;
 	}
 	
 	#canvas-landscape-left .body-text, #canvas-landscape-left .section-text, #canvas-landscape-middle .body-text, #canvas-landscape-middle .section-text, #canvas-landscape-right .body-text, #canvas-landscape-right .section-text
@@ -743,7 +751,7 @@ body > .wilson-fullscreen-components-container .fps-canvas
 	position: relative;
 	border-radius: 16px;
 	padding: 16px;
-	max-width: 900px;
+	max-width: var(--page-width);
 	box-shadow: 0px 0px 16px 4px rgba(0, 0, 0, .35);
 }
 
@@ -912,7 +920,7 @@ body > .wilson-fullscreen-components-container .fps-canvas
 	justify-content: center;
 	align-items: center;
 	
-	width: 70%;
+	width: 100%;
 	margin: 0 auto;
 	column-gap: 32px;
 	row-gap: 32px;
@@ -1293,11 +1301,11 @@ option
 
 
 
-@media (min-aspect-ratio: 1/1), (max-width: 900px)
+@media (min-aspect-ratio: 1/1), (max-width: 1000px)
 {
 	.text-boxes, .text-buttons, .sliders, .checkboxes
 	{
-		width: 90%;
+		width: 100%;
 	}
 }
 
@@ -1642,24 +1650,24 @@ option
 
 
 
-/* The minimum allowable size for an image link is 135x135 px. */
+/* The minimum allowable size for an image link is 150x150 px. */
 
 .image-links
 {
 	display: grid;
 	
-	row-gap: 18px;
-	column-gap: 18px;
+	row-gap: 20px;
+	column-gap: 20px;
 	grid-template-columns: repeat(6, 1fr);
 	justify-content: center;
 	
-	max-width: 900px;
+	max-width: var(--page-width);
 	margin: 0 auto;
 	
 	margin-top: 48px;
 }
 
-@media (max-width: 967px)
+@media (max-width: 1063px)
 {
 	.image-links
 	{
@@ -1667,7 +1675,7 @@ option
 	}
 }
 
-@media (max-width: 810px)
+@media (max-width: 893px)
 {
 	.image-links
 	{
@@ -1677,7 +1685,7 @@ option
 	}
 }
 
-@media (max-width: 648px)
+@media (max-width: 708px)
 {
 	.image-links
 	{
@@ -1685,7 +1693,7 @@ option
 	}
 }
 
-@media (max-width: 466px)
+@media (max-width: 543px)
 {
 	.image-links
 	{
@@ -1693,7 +1701,7 @@ option
 	}
 }
 
-@media (max-width: 316px)
+@media (max-width: 400px)
 {
 	.image-links
 	{
@@ -1706,7 +1714,7 @@ option
 	}
 }
 
-@media (max-width: 300px)
+@media (max-width: 291px)
 {
 	.image-links
 	{
@@ -1817,22 +1825,22 @@ img[src="/about/cover.webp"]
 
 .desmos-border, .desmos-container, .dcg-container
 {
-	width: min(min(calc(900px - 8px), calc(90vw - 8px)), calc(50vh - 8px)) !important;
+	width: min(min(calc(var(--page-width) - 8px), calc(90vw - 8px)), calc(50vh - 8px)) !important;
 }
 
 .desmos-border:not(.canvas-container), .desmos-container:not(.canvas-container), .dcg-container:not(.canvas-container)
 {
-	height: min(min(calc(900px - 8px), calc(90vw - 8px)), calc(50vh - 8px)) !important;
+	height: min(min(calc(var(--page-width) - 8px), calc(90vw - 8px)), calc(50vh - 8px)) !important;
 }
 
 .notes-environment .desmos-border, .notes-environment .desmos-container, .notes-environment .dcg-container
 {
-	width: min(min(calc(900px - 20px), calc(90vw - 20px)), calc(50vh - 20px)) !important;
+	width: min(min(calc(var(--page-width) - 20px), calc(90vw - 20px)), calc(50vh - 20px)) !important;
 }
 
 .notes-environment .desmos-border:not(.canvas-container), .notes-environment .desmos-container:not(.canvas-container), .notes-environment .dcg-container:not(.canvas-container)
 {
-	height: min(min(calc(900px - 20px), calc(90vw - 20px)), calc(50vh - 20px)) !important;
+	height: min(min(calc(var(--page-width) - 20px), calc(90vw - 20px)), calc(50vh - 20px)) !important;
 }
 
 
@@ -1843,12 +1851,12 @@ img[src="/about/cover.webp"]
 	margin: 0 auto;
 	flex-wrap: wrap;
 	column-gap: 16px;
-	max-width: min(900px, 100%);
+	max-width: min(var(--page-width), 100%);
 }
 
 .notes-image
 {
-	max-width: min(900px, 100%);
+	max-width: min(var(--page-width), 100%);
 	max-height: 30vh;
 	border-radius: 16px;
 	margin-bottom: 16px;
@@ -1866,7 +1874,7 @@ img[src="/about/cover.webp"]
 
 .notes-environment
 {
-	max-width: 888px;
+	max-width: calc(var(--page-width) - 12px);
 	margin: 0 auto;
 	margin-bottom: 16px;
 	border-width: 0 0 0 4px;

@@ -9,34 +9,6 @@ header
 	margin-bottom: 64px !important;
 }
 
-.quote-row
-{
-	display: flex;
-	width: 100%;
-	justify-content: space-between;
-	margin: 0 auto;
-}
-
-.quote-container
-{
-	width: 30%;
-}
-
-.quote-text
-{
-	font-size: 100%;
-	color: var(--normal-contrast);
-	text-align: justify;
-}
-
-.quote-attribution
-{
-	font-size: 100%;
-	color: var(--high-contrast);
-	text-align: right;
-}
-
-
 
 .name-text
 {
@@ -75,29 +47,11 @@ header
 	margin: 0 auto;
 	font-size: 150%;
 	color: var(--high-contrast);
-	max-width: 900px;
+	max-width: var(--page-width);
 	text-align: center;
 }
 
 .image-links
 {
 	margin-top: 32px !important;
-}
-
-
-
-
-/* Compact layout: stack the quote columns on top of one another. */
-@media (max-width: 900px)
-{
-	.quote-container
-	{
-		width: 100%;
-		margin-bottom: 32px;
-	}
-	
-	.quote-row
-	{
-		flex-direction: column;
-	}
 }

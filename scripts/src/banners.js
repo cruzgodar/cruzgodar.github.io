@@ -1,6 +1,6 @@
 import { changeOpacity } from "./animation.js";
 import { headerElement } from "./header.js";
-import { likelyWindowChromeHeight, onResize, viewportHeight } from "./layout.js";
+import { likelyWindowChromeHeight, onResize, pageWidth, viewportHeight } from "./layout.js";
 import {
 	$,
 	addStyle,
@@ -63,7 +63,7 @@ export function updateBanner(timestamp)
 
 	const additionalPadding = Math.min(
 		Math.max(
-			(window.innerWidth - 900 - minPadding * 2) / 2,
+			(window.innerWidth - pageWidth - minPadding * 2) / 2,
 			minPadding
 		),
 		16
