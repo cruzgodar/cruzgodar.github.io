@@ -77,7 +77,7 @@ function getDistanceEstimatorGlsl(shape, useForGetColor = false)
 			//Scale the system -- this one takes me a fair bit of thinking to get. What's happening here is that we're stretching from a vertex, but since we never scale the vertices, the four new ones are the four closest to the vertex we scaled from. Now (x, y, z) will get farther and farther away from the origin, but that makes sense -- we're really just zooming in on the tetrahedron.
 			pos = scale * pos - (scale - 1.0) * scaleCenter${variableName};
 			
-			pos = rotationMatrix2 * pos;
+			pos = rotationMatrix * pos;
 
 			${useForGetColor ? "colorScale *= .5;" : ""}
 		}
@@ -91,7 +91,6 @@ export class KaleidoscopicIFSFractal extends RaymarchApplet
 	rotationAngleX = 0;
 	rotationAngleY = 0;
 	rotationAngleZ = 0;
-	rotationMatrix = [[1, 0, 0], [0, 1, 0], [0, 0, 1]];
 
 	shape = "octahedron";
 
@@ -130,7 +129,7 @@ export class KaleidoscopicIFSFractal extends RaymarchApplet
 
 		const uniforms = {
 			scale: ["float", 2],
-			rotationMatrix2: ["mat3", [1, 0, 0, 0, 1, 0, 0, 0, 1]],
+			rotationMatrix: ["mat3", [1, 0, 0, 0, 1, 0, 0, 0, 1]],
 		};
 
 		super({
@@ -158,7 +157,7 @@ export class KaleidoscopicIFSFractal extends RaymarchApplet
 		const scale = this.uniforms.scale[1];
 		const shapeNs = ns[this.shape ?? "octahedron"];
 		const scaleCenter = scaleCenters[this.shape ?? "octahedron"];
-		const rotationMatrix = this.rotationMatrix ?? [[1, 0, 0], [0, 1, 0], [0, 0, 1]];
+		const rotationMatrix = this.uniforms.rotationMatrix[1];
 
 		// We'll find the closest vertex, scale everything by a factor of 2
 		// centered on that vertex (so that we don't need to recalculate the vertices), and repeat.
@@ -217,15 +216,15 @@ export class KaleidoscopicIFSFractal extends RaymarchApplet
 			const tempY = y;
 			const tempZ = z;
 
-			x = rotationMatrix[0][0] * tempX
-				+ rotationMatrix[0][1] * tempY
-				+ rotationMatrix[0][2] * tempZ;
-			y = rotationMatrix[1][0] * tempX
-				+ rotationMatrix[1][1] * tempY
-				+ rotationMatrix[1][2] * tempZ;
-			z = rotationMatrix[2][0] * tempX
-				+ rotationMatrix[2][1] * tempY
-				+ rotationMatrix[2][2] * tempZ;
+			x = rotationMatrix[0] * tempX
+				+ rotationMatrix[3] * tempY
+				+ rotationMatrix[6] * tempZ;
+			y = rotationMatrix[1] * tempX
+				+ rotationMatrix[4] * tempY
+				+ rotationMatrix[7] * tempZ;
+			z = rotationMatrix[2] * tempX
+				+ rotationMatrix[5] * tempY
+				+ rotationMatrix[8] * tempZ;
 		}
 
 		// So at this point we've scaled up by 2x a total of numIterations times.
@@ -236,22 +235,22 @@ export class KaleidoscopicIFSFractal extends RaymarchApplet
 
 	updateMatrices()
 	{
-		this.rotationMatrix = RaymarchApplet.getRotationMatrix(
+		const rotationMatrix = RaymarchApplet.getRotationMatrix(
 			this.rotationAngleX,
 			this.rotationAngleY,
 			this.rotationAngleZ
 		);
 
-		this.setUniform("rotationMatrix2", [
-			this.rotationMatrix[0][0],
-			this.rotationMatrix[1][0],
-			this.rotationMatrix[2][0],
-			this.rotationMatrix[0][1],
-			this.rotationMatrix[1][1],
-			this.rotationMatrix[2][1],
-			this.rotationMatrix[0][2],
-			this.rotationMatrix[1][2],
-			this.rotationMatrix[2][2]
+		this.setUniform("rotationMatrix", [
+			rotationMatrix[0][0],
+			rotationMatrix[1][0],
+			rotationMatrix[2][0],
+			rotationMatrix[0][1],
+			rotationMatrix[1][1],
+			rotationMatrix[2][1],
+			rotationMatrix[0][2],
+			rotationMatrix[1][2],
+			rotationMatrix[2][2]
 		]);
 
 		this.needNewFrame = true;

@@ -29,7 +29,7 @@ export default function()
 		name: "$\\theta_x$",
 		value: 0,
 		min: 0,
-		max: Math.PI,
+		max: 2 * Math.PI,
 		onInput: onSliderInput
 	});
 
@@ -38,7 +38,7 @@ export default function()
 		name: "$\\theta_y$",
 		value: 0,
 		min: 0,
-		max: Math.PI,
+		max: 2 * Math.PI,
 		onInput: onSliderInput
 	});
 
@@ -47,7 +47,7 @@ export default function()
 		name: "$\\theta_z$",
 		value: 0,
 		min: 0,
-		max: Math.PI,
+		max: 2 * Math.PI,
 		onInput: onSliderInput
 	});
 
