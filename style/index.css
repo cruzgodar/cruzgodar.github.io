@@ -1640,17 +1640,17 @@ option
 	}
 }
 
-/* Adds support for image links, the main form of navigation on the site. */
 
 
+/* The minimum allowable size for an image link is 135x135 px. */
 
 .image-links
 {
 	display: grid;
 	
 	row-gap: 18px;
-	column-gap: 30px;
-	grid-template-columns: repeat(5, 1fr);
+	column-gap: 18px;
+	grid-template-columns: repeat(6, 1fr);
 	justify-content: center;
 	
 	max-width: 900px;
@@ -1663,11 +1663,21 @@ option
 {
 	.image-links
 	{
-		grid-template-columns: repeat(4, 1fr);
+		grid-template-columns: repeat(5, 1fr);
 	}
 }
 
-@media (max-width: 776px)
+@media (max-width: 810px)
+{
+	.image-links
+	{
+		grid-template-columns: repeat(4, 1fr);
+		row-gap: 15px;
+		column-gap: 15px;
+	}
+}
+
+@media (max-width: 648px)
 {
 	.image-links
 	{
@@ -1675,7 +1685,7 @@ option
 	}
 }
 
-@media (max-width: 574px)
+@media (max-width: 466px)
 {
 	.image-links
 	{
@@ -1683,24 +1693,24 @@ option
 	}
 }
 
-@media (max-width: 330px)
+@media (max-width: 316px)
 {
 	.image-links
 	{
-		grid-template-columns: repeat(1, 200px);
-	}
-}
-
-@media (max-width: 222px)
-{
-	.image-links
-	{
-		grid-template-columns: repeat(1, 1fr);
+		column-gap: 10px;
 	}
 	
 	.image-link-subtext
 	{
-		font-size: 75%;
+		font-size: 85% !important;
+	}
+}
+
+@media (max-width: 300px)
+{
+	.image-links
+	{
+		grid-template-columns: repeat(1, 1fr);
 	}
 }
 
@@ -1739,7 +1749,7 @@ option
 
 .image-link-subtext
 {
-	margin-top: 10px;
+	margin-top: 5px;
 	width: calc(100% + 10px);
 	margin-left: -5px;
 	

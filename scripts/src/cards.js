@@ -178,6 +178,9 @@ export async function showCard(id, animationTime = cardAnimationTime)
 		}).finished,
 	]);
 
+	currentCard.setAttribute("tabindex", "0");
+	currentCard.focus();
+	container.scrollTo(0, 0);
 	cardIsAnimating = false;
 }
 
