@@ -1098,4 +1098,36 @@ export class RaymarchApplet extends AnimationFrameApplet
 
 		return [vec[0] / magnitude, vec[1] / magnitude, vec[2] / magnitude];
 	}
+
+
+
+	static getRotationMatrix(thetaX, thetaY, thetaZ)
+	{
+		const cX = Math.cos(thetaX);
+		const sX = Math.sin(thetaX);
+		const cY = Math.cos(thetaY);
+		const sY = Math.sin(thetaY);
+		const cZ = Math.cos(thetaZ);
+		const sZ = Math.sin(thetaZ);
+
+		const matZ = [
+			[cZ, -sZ, 0],
+			[sZ, cZ, 0],
+			[0, 0, 1]
+		];
+
+		const matY = [
+			[cY, 0, -sY],
+			[0, 1, 0],
+			[sY, 0, cY]
+		];
+
+		const matX = [
+			[1, 0, 0],
+			[0, cX, -sX],
+			[0, sX, cX]
+		];
+
+		return RaymarchApplet.matMul(RaymarchApplet.matMul(matZ, matY), matX);
+	}
 }

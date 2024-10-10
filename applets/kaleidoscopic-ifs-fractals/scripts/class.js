@@ -88,9 +88,9 @@ function getDistanceEstimatorGlsl(shape, useForGetColor = false)
 
 export class KaleidoscopicIFSFractal extends RaymarchApplet
 {
-	rotationAngleX2 = 0;
-	rotationAngleY2 = 0;
-	rotationAngleZ2 = 0;
+	rotationAngleX = 0;
+	rotationAngleY = 0;
+	rotationAngleZ = 0;
 	rotationMatrix = [[1, 0, 0], [0, 1, 0], [0, 0, 1]];
 
 	shape = "octahedron";
@@ -236,25 +236,11 @@ export class KaleidoscopicIFSFractal extends RaymarchApplet
 
 	updateMatrices()
 	{
-		const matZ = [
-			[Math.cos(this.rotationAngleZ2), -Math.sin(this.rotationAngleZ2), 0],
-			[Math.sin(this.rotationAngleZ2), Math.cos(this.rotationAngleZ2), 0],
-			[0, 0, 1]
-		];
-
-		const matY = [
-			[Math.cos(this.rotationAngleY2), 0, -Math.sin(this.rotationAngleY2)],
-			[0, 1, 0],
-			[Math.sin(this.rotationAngleY2), 0, Math.cos(this.rotationAngleY2)]
-		];
-
-		const matX = [
-			[1, 0, 0],
-			[0, Math.cos(this.rotationAngleX2), -Math.sin(this.rotationAngleX2)],
-			[0, Math.sin(this.rotationAngleX2), Math.cos(this.rotationAngleX2)]
-		];
-
-		this.rotationMatrix = RaymarchApplet.matMul(RaymarchApplet.matMul(matZ, matY), matX);
+		this.rotationMatrix = RaymarchApplet.getRotationMatrix(
+			this.rotationAngleX,
+			this.rotationAngleY,
+			this.rotationAngleZ
+		);
 
 		this.setUniform("rotationMatrix2", [
 			this.rotationMatrix[0][0],

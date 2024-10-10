@@ -24,8 +24,8 @@ export default function()
 		onInput: changeResolution
 	});
 
-	const rotationAngleX2Slider = new Slider({
-		element: $("#rotation-angle-x-2-slider"),
+	const rotationAngleXSlider = new Slider({
+		element: $("#rotation-angle-x-slider"),
 		name: "$\\theta_x$",
 		value: 0,
 		min: 0,
@@ -33,8 +33,8 @@ export default function()
 		onInput: onSliderInput
 	});
 
-	const rotationAngleY2Slider = new Slider({
-		element: $("#rotation-angle-y-2-slider"),
+	const rotationAngleYSlider = new Slider({
+		element: $("#rotation-angle-y-slider"),
 		name: "$\\theta_y$",
 		value: 0,
 		min: 0,
@@ -42,8 +42,8 @@ export default function()
 		onInput: onSliderInput
 	});
 
-	const rotationAngleZ2Slider = new Slider({
-		element: $("#rotation-angle-z-2-slider"),
+	const rotationAngleZSlider = new Slider({
+		element: $("#rotation-angle-z-slider"),
 		name: "$\\theta_z$",
 		value: 0,
 		min: 0,
@@ -108,9 +108,9 @@ export default function()
 			* Math.log10(minScaleEpsilon / maxScaleEpsilon);
 		applet.setMinEpsilon(minScaleEpsilon / Math.pow(10, power));
 
-		applet.rotationAngleX2 = rotationAngleX2Slider.value;
-		applet.rotationAngleY2 = rotationAngleY2Slider.value;
-		applet.rotationAngleZ2 = rotationAngleZ2Slider.value;
+		applet.rotationAngleX = rotationAngleXSlider.value;
+		applet.rotationAngleY = rotationAngleYSlider.value;
+		applet.rotationAngleZ = rotationAngleZSlider.value;
 
 		applet.updateMatrices();
 	}

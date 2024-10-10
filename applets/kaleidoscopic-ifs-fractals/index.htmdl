@@ -19,9 +19,9 @@ Drag on the scene to look around. On a keyboard, use WASD to move, and on a touc
 ###
 
 ### sliders
-	rotation-angle-x-2
-	rotation-angle-y-2
-	rotation-angle-z-2
+	rotation-angle-x
+	rotation-angle-y
+	rotation-angle-z
 	scale
 ###
 
