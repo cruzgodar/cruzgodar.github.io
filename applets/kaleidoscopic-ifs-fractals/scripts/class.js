@@ -91,7 +91,7 @@ export class KaleidoscopicIFSFractal extends RaymarchApplet
 	rotationAngleX2 = 0;
 	rotationAngleY2 = 0;
 	rotationAngleZ2 = 0;
-	rotationMatrix;
+	rotationMatrix = [[1, 0, 0], [0, 1, 0], [0, 0, 1]];
 
 	shape = "octahedron";
 
@@ -158,6 +158,7 @@ export class KaleidoscopicIFSFractal extends RaymarchApplet
 		const scale = this.uniforms.scale[1];
 		const shapeNs = ns[this.shape ?? "octahedron"];
 		const scaleCenter = scaleCenters[this.shape ?? "octahedron"];
+		const rotationMatrix = this.rotationMatrix ?? [[1, 0, 0], [0, 1, 0], [0, 0, 1]];
 
 		// We'll find the closest vertex, scale everything by a factor of 2
 		// centered on that vertex (so that we don't need to recalculate the vertices), and repeat.
@@ -216,15 +217,15 @@ export class KaleidoscopicIFSFractal extends RaymarchApplet
 			const tempY = y;
 			const tempZ = z;
 
-			x = this.rotationMatrix[0][0] * tempX
-				+ this.rotationMatrix[0][1] * tempY
-				+ this.rotationMatrix[0][2] * tempZ;
-			y = this.rotationMatrix[1][0] * tempX
-				+ this.rotationMatrix[1][1] * tempY
-				+ this.rotationMatrix[1][2] * tempZ;
-			z = this.rotationMatrix[2][0] * tempX
-				+ this.rotationMatrix[2][1] * tempY
-				+ this.rotationMatrix[2][2] * tempZ;
+			x = rotationMatrix[0][0] * tempX
+				+ rotationMatrix[0][1] * tempY
+				+ rotationMatrix[0][2] * tempZ;
+			y = rotationMatrix[1][0] * tempX
+				+ rotationMatrix[1][1] * tempY
+				+ rotationMatrix[1][2] * tempZ;
+			z = rotationMatrix[2][0] * tempX
+				+ rotationMatrix[2][1] * tempY
+				+ rotationMatrix[2][2] * tempZ;
 		}
 
 		// So at this point we've scaled up by 2x a total of numIterations times.
