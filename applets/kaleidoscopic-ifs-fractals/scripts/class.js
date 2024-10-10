@@ -27,7 +27,7 @@ const scaleCenters = {
 	octahedron: [0, 0, 1]
 };
 
-const maxIterations = 48;
+const maxIterations = 32;
 
 function getDistanceEstimatorGlsl(shape, useForGetColor = false)
 {
@@ -91,6 +91,7 @@ export class KaleidoscopicIFSFractal extends RaymarchApplet
 	rotationAngleX2 = 0;
 	rotationAngleY2 = 0;
 	rotationAngleZ2 = 0;
+	rotationMatrix;
 
 	shape = "octahedron";
 
@@ -211,36 +212,20 @@ export class KaleidoscopicIFSFractal extends RaymarchApplet
 			y = scale * y - (scale - 1) * scaleCenter[1];
 			z = scale * z - (scale - 1) * scaleCenter[2];
 
-			const matZ = [
-				[Math.cos(this.rotationAngleZ2), -Math.sin(this.rotationAngleZ2), 0],
-				[Math.sin(this.rotationAngleZ2), Math.cos(this.rotationAngleZ2), 0],
-				[0, 0, 1]
-			];
-
-			const matY = [
-				[Math.cos(this.rotationAngleY2), 0, -Math.sin(this.rotationAngleY2)],
-				[0, 1, 0],
-				[Math.sin(this.rotationAngleY2), 0, Math.cos(this.rotationAngleY2)]
-			];
-
-			const matX = [
-				[1, 0, 0],
-				[0, Math.cos(this.rotationAngleX2), -Math.sin(this.rotationAngleX2)],
-				[0, Math.sin(this.rotationAngleX2), Math.cos(this.rotationAngleX2)]
-			];
-
-			const matTotal = RaymarchApplet.matMul(RaymarchApplet.matMul(matZ, matY), matX);
-
 			const tempX = x;
 			const tempY = y;
 			const tempZ = z;
 
-			x = matTotal[0][0] * tempX + matTotal[0][1] * tempY + matTotal[0][2] * tempZ;
-			y = matTotal[1][0] * tempX + matTotal[1][1] * tempY + matTotal[1][2] * tempZ;
-			z = matTotal[2][0] * tempX + matTotal[2][1] * tempY + matTotal[2][2] * tempZ;
+			x = this.rotationMatrix[0][0] * tempX
+				+ this.rotationMatrix[0][1] * tempY
+				+ this.rotationMatrix[0][2] * tempZ;
+			y = this.rotationMatrix[1][0] * tempX
+				+ this.rotationMatrix[1][1] * tempY
+				+ this.rotationMatrix[1][2] * tempZ;
+			z = this.rotationMatrix[2][0] * tempX
+				+ this.rotationMatrix[2][1] * tempY
+				+ this.rotationMatrix[2][2] * tempZ;
 		}
-
-
 
 		// So at this point we've scaled up by 2x a total of numIterations times.
 		// The final distance is therefore:
@@ -268,18 +253,18 @@ export class KaleidoscopicIFSFractal extends RaymarchApplet
 			[0, Math.sin(this.rotationAngleX2), Math.cos(this.rotationAngleX2)]
 		];
 
-		const matTotal = RaymarchApplet.matMul(RaymarchApplet.matMul(matZ, matY), matX);
+		this.rotationMatrix = RaymarchApplet.matMul(RaymarchApplet.matMul(matZ, matY), matX);
 
 		this.setUniform("rotationMatrix2", [
-			matTotal[0][0],
-			matTotal[1][0],
-			matTotal[2][0],
-			matTotal[0][1],
-			matTotal[1][1],
-			matTotal[2][1],
-			matTotal[0][2],
-			matTotal[1][2],
-			matTotal[2][2]
+			this.rotationMatrix[0][0],
+			this.rotationMatrix[1][0],
+			this.rotationMatrix[2][0],
+			this.rotationMatrix[0][1],
+			this.rotationMatrix[1][1],
+			this.rotationMatrix[2][1],
+			this.rotationMatrix[0][2],
+			this.rotationMatrix[1][2],
+			this.rotationMatrix[2][2]
 		]);
 
 		this.needNewFrame = true;
