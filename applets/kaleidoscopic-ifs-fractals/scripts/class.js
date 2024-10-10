@@ -27,7 +27,7 @@ const scaleCenters = {
 	octahedron: [0, 0, 1]
 };
 
-const maxIterations = 32;
+const maxIterations = 56;
 
 function getDistanceEstimatorGlsl(shape, useForGetColor = false)
 {
