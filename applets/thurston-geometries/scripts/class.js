@@ -25,6 +25,7 @@ export class ThurstonGeometry extends Applet
 	aspectRatioY = 1;
 
 	fov = Math.tan(100 / 2 * Math.PI / 180);
+	fovFactor = 1;
 
 	geometryData;
 
@@ -106,7 +107,30 @@ export class ThurstonGeometry extends Applet
 			callback: boundFunction
 		});
 
-		this.listenForKeysPressed(["w", "s", "a", "d", "q", "e", " ", "shift"]);
+		this.listenForKeysPressed(
+			["w", "s", "a", "d", "q", "e", " ", "shift", "z"],
+			(key, pressed) =>
+			{
+				if (key === "z")
+				{
+					const dummy = { t: 0 };
+					const oldFovFactor = this.fovFactor;
+					const newFovFactor = pressed ? .25 : 1;
+
+					anime({
+						targets: dummy,
+						t: 1,
+						duration: 250,
+						easing: "easeOutCubic",
+						update: () =>
+						{
+							this.fovFactor = oldFovFactor * (1 - dummy.t) + dummy.t * newFovFactor;
+
+							this.needNewFrame = true;
+						}
+					});
+				}
+			});
 		this.listenForNumTouches();
 	}
 
@@ -371,7 +395,7 @@ export class ThurstonGeometry extends Applet
 
 		this.wilson.gl.uniform1f(
 			this.wilson.uniforms["fov"],
-			this.geometryData.fov ?? this.fov
+			(this.geometryData.fov ?? this.fov) * this.fovFactor
 		);
 
 		this.wilson.gl.uniform4fv(
@@ -565,7 +589,7 @@ export class ThurstonGeometry extends Applet
 
 		this.wilson.gl.uniform1f(
 			this.wilson.uniforms["fov"],
-			this.geometryData.fov ?? this.fov
+			(this.geometryData.fov ?? this.fov) * this.fovFactor
 		);
 
 		if (this.needNewFrame)

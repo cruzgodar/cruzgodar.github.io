@@ -1,7 +1,6 @@
 import { showPage } from "../../../scripts/src/loadPage.js";
 import { QuaternionicJuliaSet } from "./class.js";
 import { Button, ToggleButton } from "/scripts/src/buttons.js";
-import { showCard } from "/scripts/src/cards.js";
 import { Checkbox } from "/scripts/src/checkboxes.js";
 import { $ } from "/scripts/src/main.js";
 import { typesetMath } from "/scripts/src/math.js";
@@ -12,8 +11,6 @@ import { TextBox } from "/scripts/src/textBoxes.js";
 export default function()
 {
 	const applet = new QuaternionicJuliaSet({ canvas: $("#output-canvas") });
-
-	applet.addHelpButton(() => showCard("raymarch-controls"));
 
 	new ToggleButton({
 		element: $("#switch-bulb-button"),

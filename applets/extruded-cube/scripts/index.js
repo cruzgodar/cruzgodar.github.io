@@ -1,7 +1,6 @@
 import { showPage } from "../../../scripts/src/loadPage.js";
 import { ExtrudedCube } from "./class.js";
 import { DownloadButton } from "/scripts/src/buttons.js";
-import { showCard } from "/scripts/src/cards.js";
 import { Checkbox } from "/scripts/src/checkboxes.js";
 import { $ } from "/scripts/src/main.js";
 import { siteSettings } from "/scripts/src/settings.js";
@@ -11,8 +10,6 @@ import { TextBox } from "/scripts/src/textBoxes.js";
 export default function()
 {
 	const applet = new ExtrudedCube({ canvas: $("#output-canvas") });
-
-	applet.addHelpButton(() => showCard("raymarch-controls"));
 
 	new DownloadButton({
 		element: $("#download-button"),

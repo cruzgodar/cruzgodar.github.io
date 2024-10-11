@@ -1,5 +1,7 @@
+import { showCard } from "../src/cards.js";
 import { addHoverEventWithScale } from "../src/hoverEvents.js";
 import {
+	$,
 	addTemporaryListener,
 	pageElement,
 	pageUrl
@@ -55,6 +57,11 @@ export class Applet
 		if (window.DEBUG)
 		{
 			setTimeout(() => this.addFpsDisplay(), 500);
+		}
+
+		if ($("#applet-controls-card"))
+		{
+			setTimeout(() => this.addHelpButton(), 100);
 		}
 
 		Applet.current.push(this);
@@ -265,7 +272,7 @@ export class Applet
 
 
 
-	addHelpButton(callback)
+	addHelpButton()
 	{
 		const element = document.createElement("div");
 		element.classList.add("wilson-help-button");
@@ -282,7 +289,7 @@ export class Applet
 				bounceOnTouch: true,
 			});
 
-			element.addEventListener("click", (e) => callback(e));
+			element.addEventListener("click", () => showCard("applet-controls"));
 		}, 10);
 	}
 

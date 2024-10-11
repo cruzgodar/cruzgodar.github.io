@@ -110,3 +110,13 @@ This applet was a mathematically and computationally grueling project that spann
 <div class="info-text" id="sol-text">
 	Our final geometry is easily the strangest. Sol is the only Thurston geometry that isn't rotationally symmetric about the $z$-axis, meaning movement in different horizontal directions has fundamentally different effects. The geodesics are spiraled in the horizontal directions, and the space is compressed and stretched based on horizontal facing, making the camera's speed feel as though it's affected by its bearing. It's a chaotic scene, but the deformations remain measured enough that there's still beauty to be found, even as far from our home geometry as it gets.
 </div>
+
+### card applet-controls
+	Drag on the scene to look around. On a touchscreen, hold with two fingers to move forward and three to move back, and on a keyboard, use the following control scheme:
+	
+	`WASD`: Move forward, backward, left, and right.
+	Space and Shift: Move up and down.
+	`Q` and `E`: Roll the camera.
+	`Z`: Zoom in.
+	`F`: Toggle fullscreen.
+###

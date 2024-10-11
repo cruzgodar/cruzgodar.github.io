@@ -1,7 +1,6 @@
 import { showPage } from "../../../scripts/src/loadPage.js";
 import { KaleidoscopicIFSFractal } from "./class.js";
 import { DownloadButton } from "/scripts/src/buttons.js";
-import { showCard } from "/scripts/src/cards.js";
 import { Checkbox } from "/scripts/src/checkboxes.js";
 import { Dropdown } from "/scripts/src/dropdowns.js";
 import { $ } from "/scripts/src/main.js";
@@ -89,8 +88,6 @@ export default function()
 		canvas: $("#output-canvas"),
 		shape: polyhedraDropdown.value || "octahedron",
 	});
-
-	applet.addHelpButton(() => showCard("raymarch-controls"));
 
 	new DownloadButton({
 		element: $("#download-button"),
