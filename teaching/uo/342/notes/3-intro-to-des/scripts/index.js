@@ -7,6 +7,7 @@ import {
 } from "/scripts/src/desmos.js";
 import { showPage } from "/scripts/src/loadPage.js";
 import { $ } from "/scripts/src/main.js";
+import { siteSettings } from "/scripts/src/settings.js";
 
 export default function()
 {
@@ -65,7 +66,7 @@ export default function()
 	{
 		vectorFieldApplet.run({
 			generatingCode: "((x + 3.0 * y) / 8.0, (4.0 * x + 2.0 * y) / 8.0)",
-			resolution: 750,
+			resolution: 750 * siteSettings.resolutionMultiplier,
 			zoomLevel: 1
 		});
 		vectorFieldApplet.pauseWhenOffscreen();
@@ -85,7 +86,7 @@ export default function()
 	{
 		eigenvectorAxesApplet.run({
 			generatingCode: "(dot(draggableArg, vec2(x,y)), dot(draggableArg2, vec2(x,y)))",
-			resolution: 750,
+			resolution: 750 * siteSettings.resolutionMultiplier,
 			zoomLevel: -.75
 		});
 		eigenvectorAxesApplet.pauseWhenOffscreen();

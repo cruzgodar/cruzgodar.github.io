@@ -13,6 +13,7 @@ import {
 } from "/scripts/src/desmos.js";
 import { showPage } from "/scripts/src/loadPage.js";
 import { $ } from "/scripts/src/main.js";
+import { siteSettings } from "/scripts/src/settings.js";
 
 export default function()
 {
@@ -74,7 +75,7 @@ export default function()
 	{
 		vectorFieldApplet.run({
 			generatingCode: "(x - y, x + y)",
-			resolution: 750,
+			resolution: 750 * siteSettings.resolutionMultiplier,
 			zoomLevel: -0.5
 		});
 		vectorFieldApplet.pauseWhenOffscreen();

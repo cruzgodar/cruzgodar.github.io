@@ -2,13 +2,13 @@
 
 
 
-Our final topic will be **nonlinear systems**, like the Lotka-Volterra model for predator-prey relationships. Some of the methods we'll use to understand and classify them apply to linear systems too, and so we'll start there. First of all, we'll need a few definitions of vector field objects.
+For the final topic of the course, we'll explore **nonlinear** systems of DEs. Much of our understanding of these more general systems will hinge on vector fields, and so we'll first formalize a few notions we've seen in the previous sections.
 
 
 
-### def "sources, sinks, and saddles"
+### def "sources, sinks, saddles, and centers"
 	
-	In a vector field, a **critical point** is a point $(x, y)$ for which there is no motion. If the field around a critical point exclusively flows away from it, the point is called a **source**. If the surrounding field exclusively flows toward the point, it's called a **sink**. If some flows toward the point and some flows away, it's called a **saddle point**. Finally, if the field simply spirals around the point and none flows toward or away, it's called a **center**.
+	In a vector field, a **critical point** is a point $(x, y)$ for which there is no motion. If the field around $(x, y)$ exclusively flows away from it, then $(x, y)$ is called a **source**. If the surrounding field exclusively flows toward $(x, y)$, it's called a **sink**. If part of the field flows toward the point and some flows away, it's called a **saddle point**. Finally, if the field simply spirals around the point and none flows toward or away, it's called a **center**.
 	
 ###
 
@@ -18,9 +18,9 @@ In the field below, the top-right critical point is a source, the bottom-left is
 
 ### canvas vector-field
 
-Let's look at the system $**x**' = **Ax**$. As we touched on in homework 8, the eigenvalues of $**A**$ determine the general behavior of the system --- let's summarize the possibilities here.
+Let's recall a bit about the behavior of linear systems from the previous two sections. Let $**A**$ be a $2 \times 2$ matrix with real entries and consider the system $**x**' = **Ax**$. As we touched on in homework 8, the eigenvalues of $**A**$ determine the general behavior of the system --- let's summarize the possibilities here.
 
-If $**A**$ is a $2 \times 2$ matrix with real entries and nonzero eigenvalues $\lambda_1$ and $\lambda_2$, then there is a single critical point at the origin, and the system has the following characteristics:
+If $**A**$ has nonzero eigenvalues $\lambda_1$ and $\lambda_2$, then there is a single critical point at the origin, and the system has the following characteristics:
 
 	> 1. If $\lambda_1$ and $\lambda_2$ are real and positive, then the critical point is a source.
 
@@ -36,7 +36,7 @@ If $**A**$ is a $2 \times 2$ matrix with real entries and nonzero eigenvalues $\
 
 
 
-These six possibilities are explored thoroughly in homework 8, but it'd be nice to avoid memorizing all of this, and hopefully to understand the meaning behind it all a bit more. The eigenvectors of the matrix determine the lines along which the field flows to or from the source, and the sign of the real part of the corresponding eigenvalues determines whether that flow is toward the source (negative) or away (positive). Imaginary parts of eigenvalues introduce curl into the system, turning the field into a spiral.
+These six possibilities are explored thoroughly in homework 8, but it'd be nice to avoid memorizing all of this, and hopefully to understand the meaning behind it all a bit more. The eigenvectors of the matrix determine the lines along which the field flows to or from the origin, and the sign of the real part of the corresponding eigenvalues determines whether that flow is toward the origin (negative) or away (positive). Imaginary parts of eigenvalues introduce curl into the system, turning the field into a spiral.
 
 ### desmos vector-field
 
@@ -50,7 +50,7 @@ Drag the red point to change the eigenvalues and eigenvectors. The blue curves a
 	
 	### desmos vector-field-2
 	
-	Since all of the solutions approach straight lines as $t \to \infty$ or $t \to -\infty$, there is no curl in this system --- the eigenvalues and eigenvectors must be real. The eigenvectors are parallel to the straight-line solutions (being on a straight-line solution is what it means to be an eigenvector of $**A**$), so the eigenvectors appear to be
+	Since all of the solutions approach straight lines as $t \to \infty$ or $t \to -\infty$, there is no curl in this system --- the eigenvalues and eigenvectors must be real. The eigenvectors are parallel to the straight-line solutions (since being on a straight-line solution is exactly what it means to be an eigenvector of $**A**$), so the eigenvectors appear to be
 	
 	$$
 		**v_1** = [[ 1 ; 1 ]], \quad **v_2** = [[ -3 ; 1 ]].
@@ -72,7 +72,7 @@ Drag the red point to change the eigenvalues and eigenvectors. The blue curves a
 
 ## Autonomous Systems
 
-Let's take our first step into nonlinear systems. Since we were barely able to solve any nonlinear individual first-order DEs, we shouldn't expect to be able to solve any nonlinear system. Instead, we'll work with a particular kind of nonlinear system: one that doesn't involve $t$ at all.
+Let's take our first step into nonlinear systems. Since we were barely able to solve any nonlinear individual first-order DEs, it's probably too much to hope to find a general method of solving nonlinear system. Instead, we'll work with a special case: systems that don't involve $t$ at all.
 
 
 
@@ -92,7 +92,7 @@ Let's take our first step into nonlinear systems. Since we were barely able to s
 
 
 
-For a nonlinear system, we don't have nearly as nice of a classification of critical points. Instead, we'll just classify them as **stable** or **unstable**, depending on whether trajectories stay near the point or don't. Stable solutions are effectively sinks and centers, and unstable ones are all the rest. Analyzing autonomous systems can be quite hard in general, but for particularly nice functions $f$ and $g$, it's possible to solve explicitly --- typically, we'll hope to use a modified form of separation of variables.
+For a nonlinear system, we don't have nearly as nice of a classification of critical points as we did for linear systems. Instead, we'll just classify them as **stable** or **unstable**, depending on whether trajectories stay near the point or don't. Stable solutions are effectively sinks and centers, and unstable ones are all the rest. Analyzing autonomous systems can be brutally hard in general, but for particularly nice functions $f$ and $g$, they're possible to solve explicitly --- typically, we'll hope to use a modified form of separation of variables.
 
 
 
@@ -134,7 +134,7 @@ For a nonlinear system, we don't have nearly as nice of a classification of crit
 	
 	### desmos autonomous-system
 	
-	To find the critical points, we just solve $x' = y' = 0$. That means $y^2 = 0$ and $1 - x^2 = 0$, so $y = 0$ and $x = \pm 1$. Classifying them is more complex, and for us, it frequently requires inspecting the vector field. Here, we see that both critical points are unstable, since trajectories near the points don't fall into them.
+	To find the critical points, we solve $x' = y' = 0$. That means $y^2 = 0$ and $1 - x^2 = 0$, so $y = 0$ and $x = \pm 1$. Classifying them is more complex, and for us, it usually requires inspecting the vector field. Here, we see that both critical points are unstable, since trajectories near the points don't fall into them.
 	
 	### canvas autonomous-system
 	
@@ -158,7 +158,7 @@ For a nonlinear system, we don't have nearly as nice of a classification of crit
 
 ## Locally Linear Systems
 
-Compared to linear systems, where there's a single critical point at the origin and its behavior is well understood --- it's stable exactly when the real part of both eigenvalues are less than or equal to zero --- determining the stability of a critical point in a nonlinear system can be tricky without a vector field. Thankfully, we can use an analogue of linear approximation to almost completely fix the problem.
+Compared to linear systems, where there's a single critical point at the origin and its behavior is well understood --- it's stable exactly when the real parts of both eigenvalues are less than or equal to zero --- determining the stability of a critical point in a nonlinear system can be tricky without a vector field. Thankfully, we can use an analogue of linear approximation to almost completely fix the problem.
 
 
 
@@ -182,7 +182,7 @@ Compared to linear systems, where there's a single critical point at the origin 
 
 
 
-This definition is fine, but we'll barely use it --- for us, the most important facts about locally linear systems will be one result classifying their critical points and another giving an easy way to compute $**A**$ and determine if it exists.
+This definition is fine, but we'll barely use it --- for us, the most important facts about locally linear systems will be one result that classifies their critical points and another that gives an easy way to compute $**A**$ and determine if it exists.
 
 
 

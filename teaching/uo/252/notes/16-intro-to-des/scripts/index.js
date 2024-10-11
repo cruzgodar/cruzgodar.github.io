@@ -7,6 +7,7 @@ import {
 	setGetDesmosData
 } from "/scripts/src/desmos.js";
 import { $ } from "/scripts/src/main.js";
+import { siteSettings } from "/scripts/src/settings.js";
 
 export default function()
 {
@@ -120,7 +121,7 @@ export default function()
 	{
 		applet.run({
 			generatingCode: "(1.0, sin(y) / (x*x + 1.0))",
-			resolution: 750,
+			resolution: 750 * siteSettings.resolutionMultiplier,
 			zoomLevel: 1.3219
 		});
 		applet.pauseWhenOffscreen();

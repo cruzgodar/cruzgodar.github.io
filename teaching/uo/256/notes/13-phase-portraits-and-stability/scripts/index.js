@@ -9,6 +9,7 @@ import {
 	setGetDesmosData
 } from "/scripts/src/desmos.js";
 import { $ } from "/scripts/src/main.js";
+import { siteSettings } from "/scripts/src/settings.js";
 
 export default function()
 {
@@ -249,7 +250,7 @@ export default function()
 	{
 		applet.run({
 			generatingCode: "((x - 1.0) * (x + 1.0), (y + 1.0) * (y - 1.0))",
-			resolution: 750,
+			resolution: 750 * siteSettings.resolutionMultiplier,
 			dt: .002,
 			zoomLevel: -.15
 		});
@@ -266,7 +267,7 @@ export default function()
 	{
 		applet2.run({
 			generatingCode: "(y*y, 1.0 - x*x)",
-			resolution: 750,
+			resolution: 750 * siteSettings.resolutionMultiplier,
 			dt: .002,
 			zoomLevel: 0
 		});
@@ -283,7 +284,7 @@ export default function()
 	{
 		applet3.run({
 			generatingCode: "(y, -.5*y - sin(x))",
-			resolution: 750,
+			resolution: 750 * siteSettings.resolutionMultiplier,
 			dt: .002,
 			zoomLevel: 2
 		});
