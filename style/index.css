@@ -1730,11 +1730,11 @@ option
 	}
 }
 
-@media (max-width: 400px)
+@media (max-width: 350px)
 {
 	.image-link-subtext
 	{
-		font-size: 85% !important;
+		font-size: 90% !important;
 	}
 }
 
@@ -1743,6 +1743,11 @@ option
 	.image-links
 	{
 		grid-template-columns: repeat(1, 1fr);
+	}
+
+	.image-link-subtext
+	{
+		font-size: 100% !important;
 	}
 }
 
