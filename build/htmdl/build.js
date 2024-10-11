@@ -14,6 +14,7 @@ import { imageLinks } from "./components/image-links.js";
 import { image } from "./components/image.js";
 import { parseLatex } from "./components/latex.js";
 import { notesEnvironment, notesEnvironmentNames } from "./components/notes-environment.js";
+import { raymarchControls } from "./components/raymarch-controls.js";
 import { sliders } from "./components/sliders.js";
 import { textBoxes } from "./components/text-boxes.js";
 import { parseText } from "./components/text.js";
@@ -44,6 +45,7 @@ const singleLineComponents = [
 	"glsl-docs",
 	"image",
 	"nav-buttons",
+	"raymarch-controls",
 	"textarea",
 	"wilson"
 ];
@@ -64,6 +66,7 @@ const components = {
 	"image-links": imageLinks,
 	"nav-buttons": navButtons,
 	"notes-environment": notesEnvironment,
+	"raymarch-controls": raymarchControls,
 	"sliders": sliders,
 	"textarea": textarea,
 	"text-boxes": textBoxes,

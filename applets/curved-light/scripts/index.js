@@ -2,6 +2,7 @@ import { showPage } from "../../../scripts/src/loadPage.js";
 import { CurvedLight } from "./class.js";
 import anime from "/scripts/anime.js";
 import { DownloadButton } from "/scripts/src/buttons.js";
+import { showCard } from "/scripts/src/cards.js";
 import { Checkbox } from "/scripts/src/checkboxes.js";
 import { Dropdown } from "/scripts/src/dropdowns.js";
 import { $, $$ } from "/scripts/src/main.js";
@@ -12,6 +13,8 @@ import { TextBox } from "/scripts/src/textBoxes.js";
 export default function()
 {
 	const applet = new CurvedLight({ canvas: $("#output-canvas") });
+
+	applet.addHelpButton(() => showCard("raymarch-controls"));
 
 	const effects = ["none", "circle", "helix", "spiral", "square", "fuzzed"];
 

@@ -1,3 +1,4 @@
+import { addHoverEventWithScale } from "../src/hoverEvents.js";
 import {
 	addTemporaryListener,
 	pageElement,
@@ -260,6 +261,28 @@ export class Applet
 		this.hiddenCanvasContainer.appendChild(hiddenCanvas);
 
 		return hiddenCanvas;
+	}
+
+
+
+	addHelpButton(callback)
+	{
+		const element = document.createElement("div");
+		element.classList.add("wilson-help-button");
+		element.innerHTML = /* html */`
+			<img src="/graphics/general-icons/help.webp" alt="Help" tabindex="0"></img>
+		`;
+		this.wilson.outputCanvasContainer.appendChild(element);
+
+		setTimeout(() =>
+		{
+			addHoverEventWithScale({
+				element,
+				scale: 1.1,
+			});
+
+			element.addEventListener("click", (e) => callback(e));
+		}, 10);
 	}
 
 
