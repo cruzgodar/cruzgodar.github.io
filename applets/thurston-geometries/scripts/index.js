@@ -1445,4 +1445,4 @@ export default function()
 				);
 			}
 		
-`
+`;

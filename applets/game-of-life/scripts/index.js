@@ -151,7 +151,7 @@ export default function()
 		applet.onTorus = torusCheckbox.checked;
 
 		applet.wilsonHidden.gl.uniform1i(
-			applet.wilsonHidden.uniforms["torus"][1],
+			applet.wilsonHidden.uniforms.torus[1],
 			applet.onTorus
 		);
 	}

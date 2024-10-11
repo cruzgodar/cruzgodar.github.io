@@ -125,7 +125,7 @@ export class EllipticCurve extends AnimationFrameApplet
 		this.wilson.render.initUniforms(["step", "g2Arg", "g3Arg"]);
 
 		this.wilson.gl.uniform1f(
-			this.wilson.uniforms["step"],
+			this.wilson.uniforms.step,
 			this.wilson.worldWidth / this.resolution
 		);
 
@@ -133,7 +133,7 @@ export class EllipticCurve extends AnimationFrameApplet
 
 		this.wilson.render.initUniforms(["textureStep"]);
 
-		this.wilson.gl.uniform1f(this.wilson.uniforms["textureStep"], 1 / this.resolution);
+		this.wilson.gl.uniform1f(this.wilson.uniforms.textureStep, 1 / this.resolution);
 
 		this.wilson.render.createFramebufferTexturePair();
 
@@ -160,9 +160,9 @@ export class EllipticCurve extends AnimationFrameApplet
 	{
 		this.wilson.gl.useProgram(this.wilson.render.shaderPrograms[0]);
 
-		this.wilson.gl.uniform1f(this.wilson.uniforms["g2Arg"], this.g2);
+		this.wilson.gl.uniform1f(this.wilson.uniforms.g2Arg, this.g2);
 
-		this.wilson.gl.uniform1f(this.wilson.uniforms["g3Arg"], this.g3);
+		this.wilson.gl.uniform1f(this.wilson.uniforms.g3Arg, this.g3);
 
 		this.wilson.render.drawFrame();
 
@@ -394,13 +394,13 @@ export class EllipticCurve extends AnimationFrameApplet
 		this.wilson.gl.useProgram(this.wilson.render.shaderPrograms[0]);
 
 		this.wilson.gl.uniform1f(
-			this.wilson.uniforms["step"],
+			this.wilson.uniforms.step,
 			this.wilson.worldWidth / this.resolution
 		);
 
 		this.wilson.gl.useProgram(this.wilson.render.shaderPrograms[1]);
 
-		this.wilson.gl.uniform1f(this.wilson.uniforms["textureStep"], 1 / this.resolution);
+		this.wilson.gl.uniform1f(this.wilson.uniforms.textureStep, 1 / this.resolution);
 
 		this.needNewFrame = true;
 	}

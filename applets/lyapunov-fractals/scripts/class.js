@@ -209,7 +209,7 @@ export class LyapunovFractal extends AnimationFrameApplet
 			"seq"
 		]);
 
-		this.wilson.gl.uniform1f(this.wilson.uniforms["aspectRatio"], 1);
+		this.wilson.gl.uniform1f(this.wilson.uniforms.aspectRatio, 1);
 
 		this.wilsonHidden.render.shaderPrograms = [];
 		this.wilsonHidden.render.loadNewShader(fragShaderSource);
@@ -224,7 +224,7 @@ export class LyapunovFractal extends AnimationFrameApplet
 			"seq"
 		]);
 
-		this.wilsonHidden.gl.uniform1f(this.wilsonHidden.uniforms["aspectRatio"], 1);
+		this.wilsonHidden.gl.uniform1f(this.wilsonHidden.uniforms.aspectRatio, 1);
 
 
 
@@ -232,8 +232,8 @@ export class LyapunovFractal extends AnimationFrameApplet
 
 		this.zoom.init();
 
-		this.wilson.gl.uniform1iv(this.wilson.uniforms["seq"], generatingCode);
-		this.wilsonHidden.gl.uniform1iv(this.wilsonHidden.uniforms["seq"], generatingCode);
+		this.wilson.gl.uniform1iv(this.wilson.uniforms.seq, generatingCode);
+		this.wilsonHidden.gl.uniform1iv(this.wilsonHidden.uniforms.seq, generatingCode);
 
 
 
@@ -252,27 +252,27 @@ export class LyapunovFractal extends AnimationFrameApplet
 	drawFrame()
 	{
 		this.wilsonHidden.gl.uniform1f(
-			this.wilsonHidden.uniforms["aspectRatio"],
+			this.wilsonHidden.uniforms.aspectRatio,
 			this.aspectRatio
 		);
 
 		this.wilsonHidden.gl.uniform1f(
-			this.wilsonHidden.uniforms["worldCenterX"],
+			this.wilsonHidden.uniforms.worldCenterX,
 			this.wilson.worldCenterX
 		);
 
 		this.wilsonHidden.gl.uniform1f(
-			this.wilsonHidden.uniforms["worldCenterY"],
+			this.wilsonHidden.uniforms.worldCenterY,
 			this.wilson.worldCenterY
 		);
 
 		this.wilsonHidden.gl.uniform1f(
-			this.wilsonHidden.uniforms["worldSize"],
+			this.wilsonHidden.uniforms.worldSize,
 			Math.min(this.wilson.worldHeight, this.wilson.worldWidth) / 2
 		);
 
 		this.wilsonHidden.gl.uniform1f(
-			this.wilsonHidden.uniforms["brightnessScale"],
+			this.wilsonHidden.uniforms.brightnessScale,
 			20
 		);
 
@@ -310,27 +310,27 @@ export class LyapunovFractal extends AnimationFrameApplet
 
 
 		this.wilson.gl.uniform1f(
-			this.wilson.uniforms["aspectRatio"],
+			this.wilson.uniforms.aspectRatio,
 			this.aspectRatio
 		);
 
 		this.wilson.gl.uniform1f(
-			this.wilson.uniforms["worldCenterX"],
+			this.wilson.uniforms.worldCenterX,
 			this.wilson.worldCenterX
 		);
 
 		this.wilson.gl.uniform1f(
-			this.wilson.uniforms["worldCenterY"],
+			this.wilson.uniforms.worldCenterY,
 			this.wilson.worldCenterY
 		);
 
 		this.wilson.gl.uniform1f(
-			this.wilson.uniforms["worldSize"],
+			this.wilson.uniforms.worldSize,
 			Math.min(this.wilson.worldHeight, this.wilson.worldWidth) / 2
 		);
 
 		this.wilson.gl.uniform1f(
-			this.wilson.uniforms["brightnessScale"],
+			this.wilson.uniforms.brightnessScale,
 			brightnessScale
 		);
 

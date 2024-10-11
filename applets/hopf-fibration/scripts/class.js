@@ -462,12 +462,12 @@ export class HopfFibration extends ThreeApplet
 		if (this.imageWidth >= this.imageHeight)
 		{
 			this.wilson.gl.uniform1f(
-				this.wilson.uniforms["aspectRatioX"],
+				this.wilson.uniforms.aspectRatioX,
 				this.imageWidth / this.imageHeight
 			);
 
 			this.wilson.gl.uniform1f(
-				this.wilson.uniforms["aspectRatioY"],
+				this.wilson.uniforms.aspectRatioY,
 				1
 			);
 		}
@@ -475,12 +475,12 @@ export class HopfFibration extends ThreeApplet
 		else
 		{
 			this.wilson.gl.uniform1f(
-				this.wilson.uniforms["aspectRatioX"],
+				this.wilson.uniforms.aspectRatioX,
 				1
 			);
 
 			this.wilson.gl.uniform1f(
-				this.wilson.uniforms["aspectRatioY"],
+				this.wilson.uniforms.aspectRatioY,
 				this.imageWidth / this.imageHeight
 			);
 		}

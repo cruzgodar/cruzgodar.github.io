@@ -774,7 +774,7 @@ onmessage = async function(e)
 	importScripts("/applets/wilsons-algorithm/scripts/random-walk.js");
 
 	// eslint-disable-next-line no-undef
-	Module["onRuntimeInitialized"] = async function()
+	Module.onRuntimeInitialized = async function()
 	{
 		// eslint-disable-next-line no-undef
 		importScripts("/scripts/wasm-arrays.min.js");

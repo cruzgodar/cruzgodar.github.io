@@ -10,6 +10,7 @@ const excludeFiles =
 	"debug/glsl-docs/index.html",
 	"debug/index.html",
 	"teaching/uo/342/extra/eigenfaces-demo/index.html",
+	"teaching/uo/342/notes/9-singular-value-decompositions/scripts/data.js"
 ];
 
 const root = process.argv[1].replace(/(\/cruzgodar.github.io\/).+$/, (match, $1) => $1);
@@ -41,7 +42,7 @@ for (const name of Object.keys(nets))
 	}
 }
 
-const ip = results["en0"][0];
+const ip = results.en0[0];
 const port = 5500;
 
 
@@ -56,6 +57,7 @@ async function lintFile(file)
 	const proc = spawnSync("eslint", [
 		root + file,
 		"--no-warn-ignored",
+		"--fix",
 		"-c",
 		root + "eslint.config.mjs",
 	], {
@@ -130,7 +132,7 @@ async function validateLink(link)
 			}
 		}
 
-		catch(ex)
+		catch(_ex)
 		{
 			// Link cannot use https.
 		}

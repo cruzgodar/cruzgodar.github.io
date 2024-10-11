@@ -282,10 +282,10 @@ export class NewtonsMethodExtended extends AnimationFrameApplet
 			"brightnessScale"
 		]);
 
-		this.wilson.gl.uniform1f(this.wilson.uniforms["aspectRatio"], 1);
+		this.wilson.gl.uniform1f(this.wilson.uniforms.aspectRatio, 1);
 
 		this.wilson.gl.uniform1f(
-			this.wilson.uniforms["derivativePrecision"],
+			this.wilson.uniforms.derivativePrecision,
 			this.derivativePrecision
 		);
 
@@ -305,10 +305,10 @@ export class NewtonsMethodExtended extends AnimationFrameApplet
 			"brightnessScale"
 		]);
 
-		this.wilsonHidden.gl.uniform1f(this.wilsonHidden.uniforms["aspectRatio"], 1);
+		this.wilsonHidden.gl.uniform1f(this.wilsonHidden.uniforms.aspectRatio, 1);
 
 		this.wilsonHidden.gl.uniform1f(
-			this.wilsonHidden.uniforms["derivativePrecision"],
+			this.wilsonHidden.uniforms.derivativePrecision,
 			this.derivativePrecision
 		);
 
@@ -332,8 +332,8 @@ export class NewtonsMethodExtended extends AnimationFrameApplet
 
 		this.colors = this.generateNewPalette();
 
-		this.wilson.gl.uniform3fv(this.wilson.uniforms["colors"], this.colors);
-		this.wilsonHidden.gl.uniform3fv(this.wilsonHidden.uniforms["colors"], this.colors);
+		this.wilson.gl.uniform3fv(this.wilson.uniforms.colors, this.colors);
+		this.wilsonHidden.gl.uniform3fv(this.wilsonHidden.uniforms.colors, this.colors);
 
 
 
@@ -412,10 +412,10 @@ export class NewtonsMethodExtended extends AnimationFrameApplet
 				{
 					this.colors[i] = (1 - dummy.t) * oldColors[i] + dummy.t * newColors[i];
 
-					this.wilson.gl.uniform3fv(this.wilson.uniforms["colors"], this.colors);
+					this.wilson.gl.uniform3fv(this.wilson.uniforms.colors, this.colors);
 
 					this.wilsonHidden.gl.uniform3fv(
-						this.wilsonHidden.uniforms["colors"],
+						this.wilsonHidden.uniforms.colors,
 						this.colors
 					);
 
@@ -453,37 +453,37 @@ export class NewtonsMethodExtended extends AnimationFrameApplet
 	drawFrame()
 	{
 		this.wilsonHidden.gl.uniform1f(
-			this.wilsonHidden.uniforms["aspectRatio"],
+			this.wilsonHidden.uniforms.aspectRatio,
 			this.aspectRatio
 		);
 
 		this.wilsonHidden.gl.uniform1f(
-			this.wilsonHidden.uniforms["worldCenterX"],
+			this.wilsonHidden.uniforms.worldCenterX,
 			this.wilson.worldCenterX
 		);
 
 		this.wilsonHidden.gl.uniform1f(
-			this.wilsonHidden.uniforms["worldCenterY"],
+			this.wilsonHidden.uniforms.worldCenterY,
 			this.wilson.worldCenterY
 		);
 
 		this.wilsonHidden.gl.uniform1f(
-			this.wilsonHidden.uniforms["worldSize"],
+			this.wilsonHidden.uniforms.worldSize,
 			Math.min(this.wilson.worldHeight, this.wilson.worldWidth) / 2
 		);
 
 		this.wilsonHidden.gl.uniform2fv(
-			this.wilsonHidden.uniforms["a"],
+			this.wilsonHidden.uniforms.a,
 			this.a
 		);
 
 		this.wilsonHidden.gl.uniform2f(
-			this.wilsonHidden.uniforms["c"],
+			this.wilsonHidden.uniforms.c,
 			this.c[0] / 10, this.c[1] / 10
 		);
 		
 		this.wilsonHidden.gl.uniform1f(
-			this.wilsonHidden.uniforms["brightnessScale"],
+			this.wilsonHidden.uniforms.brightnessScale,
 			30
 		);
 
@@ -530,37 +530,37 @@ export class NewtonsMethodExtended extends AnimationFrameApplet
 
 
 		this.wilson.gl.uniform1f(
-			this.wilson.uniforms["aspectRatio"],
+			this.wilson.uniforms.aspectRatio,
 			this.aspectRatio
 		);
 
 		this.wilson.gl.uniform1f(
-			this.wilson.uniforms["worldCenterX"],
+			this.wilson.uniforms.worldCenterX,
 			this.wilson.worldCenterX
 		);
 
 		this.wilson.gl.uniform1f(
-			this.wilson.uniforms["worldCenterY"],
+			this.wilson.uniforms.worldCenterY,
 			this.wilson.worldCenterY
 		);
 
 		this.wilson.gl.uniform1f(
-			this.wilson.uniforms["worldSize"],
+			this.wilson.uniforms.worldSize,
 			Math.min(this.wilson.worldHeight, this.wilson.worldWidth) / 2
 		);
 
 		this.wilson.gl.uniform2fv(
-			this.wilson.uniforms["a"],
+			this.wilson.uniforms.a,
 			this.a
 		);
 
 		this.wilson.gl.uniform2f(
-			this.wilson.uniforms["c"],
+			this.wilson.uniforms.c,
 			this.c[0] / 10, this.c[1] / 10
 		);
 		
 		this.wilson.gl.uniform1f(
-			this.wilson.uniforms["brightnessScale"],
+			this.wilson.uniforms.brightnessScale,
 			brightnessScale
 		);
 

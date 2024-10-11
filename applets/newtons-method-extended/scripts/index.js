@@ -113,12 +113,12 @@ export default function()
 		applet.derivativePrecision = derivativePrecisionSlider.value;
 
 		applet.wilson.gl.uniform1f(
-			applet.wilson.uniforms["derivativePrecision"],
+			applet.wilson.uniforms.derivativePrecision,
 			applet.derivativePrecision
 		);
 
 		applet.wilsonHidden.gl.uniform1f(
-			applet.wilsonHidden.uniforms["derivativePrecision"],
+			applet.wilsonHidden.uniforms.derivativePrecision,
 			applet.derivativePrecision
 		);
 

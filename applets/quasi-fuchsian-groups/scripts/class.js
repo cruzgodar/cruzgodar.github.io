@@ -895,10 +895,10 @@ export class QuasiFuchsianGroups extends Applet
 		this.image = new Float32Array(this.imageWidth * this.imageHeight * 4);
 
 		this.wilson.gl.useProgram(this.wilson.render.shaderPrograms[0]);
-		this.wilson.gl.uniform1f(this.wilson.uniforms["textureStep"][0], 1 / this.imageSize);
+		this.wilson.gl.uniform1f(this.wilson.uniforms.textureStep[0], 1 / this.imageSize);
 
 		this.wilson.gl.useProgram(this.wilson.render.shaderPrograms[1]);
-		this.wilson.gl.uniform1f(this.wilson.uniforms["textureStep"][1], 1 / this.imageSize);
+		this.wilson.gl.uniform1f(this.wilson.uniforms.textureStep[1], 1 / this.imageSize);
 
 		for (let i = 0; i < this.imageHeight; i++)
 		{

@@ -425,7 +425,6 @@ export class CubeAndSponge extends RaymarchingFundamentals
 
 	distanceEstimator(x, y, z)
 	{
-		console.log(this.distanceEstimatorExtrudedCube(x, y, z),this.distanceEstimatorMengerSponge(x, y, z));
 		return this.extrudedCubeWeight * this.distanceEstimatorExtrudedCube(x, y, z)
 			+ this.mengerSpongeWeight * this.distanceEstimatorMengerSponge(x, y, z);
 	}

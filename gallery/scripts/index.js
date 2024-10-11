@@ -1,4 +1,4 @@
-/* eslint-disable max-len */
+ 
 import { showPage } from "../../scripts/src/loadPage.js";
 import { galleryImageData } from "./imageData.js";
 import { showCard } from "/scripts/src/cards.js";
@@ -20,13 +20,13 @@ export default function()
 	{
 		currentId = id;
 
-		titleElement.innerHTML = galleryImageData[id]["title"];
+		titleElement.innerHTML = galleryImageData[id].title;
 
 
 
-		if (galleryImageData[id]["parameters"])
+		if (galleryImageData[id].parameters)
 		{
-			descriptionTextElement.innerHTML = galleryImageData[id]["parameters"];
+			descriptionTextElement.innerHTML = galleryImageData[id].parameters;
 
 			descriptionTextElement.parentElement.style.display = "block";
 		}

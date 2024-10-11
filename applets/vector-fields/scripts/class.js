@@ -315,7 +315,7 @@ export class VectorField extends AnimationFrameApplet
 			"stepSizeY",
 		]);
 
-		this.wilson.gl.uniform1f(this.wilson.uniforms["maxBrightness"], this.lifetime / 255);
+		this.wilson.gl.uniform1f(this.wilson.uniforms.maxBrightness, this.lifetime / 255);
 
 		this.wilson.render.createFramebufferTexturePair(this.wilson.gl.UNSIGNED_BYTE);
 
@@ -451,15 +451,15 @@ export class VectorField extends AnimationFrameApplet
 			this.wilsonUpdate.render.initUniforms(["dt", "draggableArg", "draggableArg2"], i);
 
 			this.wilsonUpdate.gl.useProgram(this.wilsonUpdate.render.shaderPrograms[i]);
-			this.wilsonUpdate.gl.uniform1f(this.wilsonUpdate.uniforms["dt"][i], this.dt);
+			this.wilsonUpdate.gl.uniform1f(this.wilsonUpdate.uniforms.dt[i], this.dt);
 			
 			this.wilsonUpdate.gl.uniform2fv(
-				this.wilsonUpdate.uniforms["draggableArg"][i],
+				this.wilsonUpdate.uniforms.draggableArg[i],
 				this.wilson.draggables.worldCoordinates[0]
 			);
 
 			this.wilsonUpdate.gl.uniform2fv(
-				this.wilsonUpdate.uniforms["draggableArg2"][i],
+				this.wilsonUpdate.uniforms.draggableArg2[i],
 				this.wilson.draggables.worldCoordinates[1]
 			);
 		}
@@ -507,7 +507,7 @@ export class VectorField extends AnimationFrameApplet
 			"stepSizeY",
 		]);
 
-		this.wilson.gl.uniform1f(this.wilson.uniforms["maxBrightness"], this.lifetime / 255);
+		this.wilson.gl.uniform1f(this.wilson.uniforms.maxBrightness, this.lifetime / 255);
 
 
 
@@ -610,7 +610,7 @@ export class VectorField extends AnimationFrameApplet
 		this.zoomLevel = zoomLevel;
 		this.zoomCanvas();
 
-		this.wilson.gl.uniform1f(this.wilson.uniforms["maxBrightness"], this.lifetime / 255);
+		this.wilson.gl.uniform1f(this.wilson.uniforms.maxBrightness, this.lifetime / 255);
 
 		this.numParticles = 0;
 
@@ -686,7 +686,7 @@ export class VectorField extends AnimationFrameApplet
 				this.wilsonUpdate.gl.useProgram(this.wilsonUpdate.render.shaderPrograms[i]);
 				
 				this.wilsonUpdate.gl.uniform1f(
-					this.wilsonUpdate.uniforms["dt"][i],
+					this.wilsonUpdate.uniforms.dt[i],
 					this.dt * timeElapsed / 6.944
 				);
 			}
@@ -707,7 +707,7 @@ export class VectorField extends AnimationFrameApplet
 					}
 
 					this.wilsonDim.gl.uniform1f(
-						this.wilsonDim.uniforms["dimAmount"][0],
+						this.wilsonDim.uniforms.dimAmount[0],
 						(totalTimeElapsed / this.timeElapsedHistoryLength) / 6.944
 					);
 				}
@@ -865,7 +865,7 @@ export class VectorField extends AnimationFrameApplet
 			this.needNewFrame = true;
 		}
 
-		catch(ex)
+		catch(_ex)
 		{
 			this.generateNewField({});
 		}
@@ -1094,7 +1094,7 @@ export class VectorField extends AnimationFrameApplet
 		this.wilsonDim.gl.useProgram(this.wilsonDim.render.shaderPrograms[1]);
 
 		this.wilsonDim.gl.uniform2f(
-			this.wilsonDim.uniforms["pan"][1],
+			this.wilsonDim.uniforms.pan[1],
 			xDelta / this.wilson.worldWidth, -yDelta / this.wilson.worldHeight
 		);
 
@@ -1126,8 +1126,8 @@ export class VectorField extends AnimationFrameApplet
 
 		this.wilsonDim.gl.useProgram(this.wilsonDim.render.shaderPrograms[2]);
 
-		this.wilsonDim.gl.uniform1f(this.wilsonDim.uniforms["scale"][2], scale);
-		this.wilsonDim.gl.uniform2f(this.wilsonDim.uniforms["fixedPoint"][2], fixedX, fixedY);
+		this.wilsonDim.gl.uniform1f(this.wilsonDim.uniforms.scale[2], scale);
+		this.wilsonDim.gl.uniform2f(this.wilsonDim.uniforms.fixedPoint[2], fixedX, fixedY);
 
 		this.drawField();
 
@@ -1159,8 +1159,8 @@ export class VectorField extends AnimationFrameApplet
 		y = this.wilson.draggables.worldCoordinates[0][1]
 	) {
 		const uniforms = activeDraggable === 0
-			? this.wilsonUpdate.uniforms["draggableArg"]
-			: this.wilsonUpdate.uniforms["draggableArg2"];
+			? this.wilsonUpdate.uniforms.draggableArg
+			: this.wilsonUpdate.uniforms.draggableArg2;
 
 		for (let i = 0; i < 5; i++)
 		{
@@ -1378,12 +1378,12 @@ export class VectorField extends AnimationFrameApplet
 		}
 
 		this.wilson.gl.uniform1f(
-			this.wilson.uniforms["stepSizeX"],
+			this.wilson.uniforms.stepSizeX,
 			2 / this.wilson.canvasWidth
 		);
 
 		this.wilson.gl.uniform1f(
-			this.wilson.uniforms["stepSizeY"],
+			this.wilson.uniforms.stepSizeY,
 			2 / this.wilson.canvasHeight
 		);
 	}

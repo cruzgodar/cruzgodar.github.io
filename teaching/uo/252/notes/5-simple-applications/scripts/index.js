@@ -1,11 +1,11 @@
 import { showPage } from "../../../../../../scripts/src/loadPage.js";
 import {
-    createDesmosGraphs,
-    desmosBlue,
-    desmosGreen,
-    desmosPurple,
-    desmosRed,
-    setGetDesmosData
+	createDesmosGraphs,
+	desmosBlue,
+	desmosGreen,
+	desmosPurple,
+	desmosRed,
+	setGetDesmosData
 } from "/scripts/src/desmos.js";
 
 export default function()

@@ -907,42 +907,42 @@ export class JuliaSet extends AnimationFrameApplet
 		);
 
 		this.wilsonHidden.gl.uniform1f(
-			this.wilsonHidden.uniforms["aspectRatio"][shaderProgramIndex],
+			this.wilsonHidden.uniforms.aspectRatio[shaderProgramIndex],
 			1
 		);
 
 		this.wilsonHidden.gl.uniform2fv(
-			this.wilsonHidden.uniforms["worldCenterX"][shaderProgramIndex],
+			this.wilsonHidden.uniforms.worldCenterX[shaderProgramIndex],
 			cx
 		);
 
 		this.wilsonHidden.gl.uniform2fv(
-			this.wilsonHidden.uniforms["worldCenterY"][shaderProgramIndex],
+			this.wilsonHidden.uniforms.worldCenterY[shaderProgramIndex],
 			cy
 		);
 
 		this.wilsonHidden.gl.uniform1f(
-			this.wilsonHidden.uniforms["worldSize"][shaderProgramIndex],
+			this.wilsonHidden.uniforms.worldSize[shaderProgramIndex],
 			Math.min(this.wilson.worldHeight, this.wilson.worldWidth) / 2
 		);
 
 		this.wilsonHidden.gl.uniform1i(
-			this.wilsonHidden.uniforms["numIterations"][shaderProgramIndex],
+			this.wilsonHidden.uniforms.numIterations[shaderProgramIndex],
 			this.numIterations
 		);
 
 		this.wilsonHidden.gl.uniform1f(
-			this.wilsonHidden.uniforms["a"][shaderProgramIndex],
+			this.wilsonHidden.uniforms.a[shaderProgramIndex],
 			this.a
 		);
 
 		this.wilsonHidden.gl.uniform1f(
-			this.wilsonHidden.uniforms["b"][shaderProgramIndex],
+			this.wilsonHidden.uniforms.b[shaderProgramIndex],
 			this.b
 		);
 
 		this.wilsonHidden.gl.uniform1f(
-			this.wilsonHidden.uniforms["brightnessScale"][shaderProgramIndex],
+			this.wilsonHidden.uniforms.brightnessScale[shaderProgramIndex],
 			20 * (Math.abs(this.zoom.level) + 1)
 		);
 
@@ -984,42 +984,42 @@ export class JuliaSet extends AnimationFrameApplet
 		);
 
 		this.wilson.gl.uniform1f(
-			this.wilson.uniforms["aspectRatio"][shaderProgramIndex],
+			this.wilson.uniforms.aspectRatio[shaderProgramIndex],
 			this.aspectRatio
 		);
 
 		this.wilson.gl.uniform2fv(
-			this.wilson.uniforms["worldCenterX"][shaderProgramIndex],
+			this.wilson.uniforms.worldCenterX[shaderProgramIndex],
 			cx
 		);
 
 		this.wilson.gl.uniform2fv(
-			this.wilson.uniforms["worldCenterY"][shaderProgramIndex],
+			this.wilson.uniforms.worldCenterY[shaderProgramIndex],
 			cy
 		);
 
 		this.wilson.gl.uniform1f(
-			this.wilson.uniforms["worldSize"][shaderProgramIndex],
+			this.wilson.uniforms.worldSize[shaderProgramIndex],
 			Math.min(this.wilson.worldHeight, this.wilson.worldWidth) / 2
 		);
 
 		this.wilson.gl.uniform1i(
-			this.wilson.uniforms["numIterations"][shaderProgramIndex],
+			this.wilson.uniforms.numIterations[shaderProgramIndex],
 			this.numIterations
 		);
 
 		this.wilson.gl.uniform1f(
-			this.wilson.uniforms["a"][shaderProgramIndex],
+			this.wilson.uniforms.a[shaderProgramIndex],
 			this.a
 		);
 
 		this.wilson.gl.uniform1f(
-			this.wilson.uniforms["b"][shaderProgramIndex],
+			this.wilson.uniforms.b[shaderProgramIndex],
 			this.b
 		);
 		
 		this.wilson.gl.uniform1f(
-			this.wilson.uniforms["brightnessScale"][shaderProgramIndex],
+			this.wilson.uniforms.brightnessScale[shaderProgramIndex],
 			brightnessScale
 		);
 

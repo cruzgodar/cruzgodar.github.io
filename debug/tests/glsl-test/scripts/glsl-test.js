@@ -181,7 +181,7 @@ import { Wilson } from "/scripts/wilson.js";
 				`);
 			}
 			
-			catch(ex) {}
+			catch(_ex) {}
 			
 			
 			
@@ -243,7 +243,7 @@ import { Wilson } from "/scripts/wilson.js";
 			return 1;
 		}
 		
-		catch(ex)
+		catch(_ex)
 		{
 			return 2;
 		}

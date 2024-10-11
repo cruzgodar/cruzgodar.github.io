@@ -119,16 +119,16 @@ export default function()
 	{
 		ecApplet.run({ g2, g3 });
 
-		wpApplet.wilson.gl.uniform1f(wpApplet.wilson.uniforms["g2Arg"], g2);
-		wpApplet.wilson.gl.uniform1f(wpApplet.wilson.uniforms["g3Arg"], g3);
+		wpApplet.wilson.gl.uniform1f(wpApplet.wilson.uniforms.g2Arg, g2);
+		wpApplet.wilson.gl.uniform1f(wpApplet.wilson.uniforms.g3Arg, g3);
 		wpApplet.drawFrame();
 
-		wpprimeApplet.wilson.gl.uniform1f(wpprimeApplet.wilson.uniforms["g2Arg"], g2);
-		wpprimeApplet.wilson.gl.uniform1f(wpprimeApplet.wilson.uniforms["g3Arg"], g3);
+		wpprimeApplet.wilson.gl.uniform1f(wpprimeApplet.wilson.uniforms.g2Arg, g2);
+		wpprimeApplet.wilson.gl.uniform1f(wpprimeApplet.wilson.uniforms.g3Arg, g3);
 		wpprimeApplet.drawFrame();
 
-		g2Applet.wilson.gl.uniform1f(g2Applet.wilson.uniforms["g2Arg"], g2);
-		g2Applet.wilson.gl.uniform1f(g2Applet.wilson.uniforms["g3Arg"], g3);
+		g2Applet.wilson.gl.uniform1f(g2Applet.wilson.uniforms.g2Arg, g2);
+		g2Applet.wilson.gl.uniform1f(g2Applet.wilson.uniforms.g3Arg, g3);
 		g2Applet.drawFrame();
 	}
 

@@ -255,7 +255,7 @@ onmessage = () =>
 	importScripts("/applets/sudoku-generator/scripts/solver.js");
 
 	// eslint-disable-next-line no-undef
-	Module["onRuntimeInitialized"] = () =>
+	Module.onRuntimeInitialized = () =>
 	{
 		// eslint-disable-next-line no-undef
 		importScripts("/scripts/wasm-arrays.min.js");

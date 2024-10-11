@@ -194,7 +194,7 @@ async function loadGlslLogic()
 
 		if (dependencies.length === 0 && filename !== "main")
 		{
-			glslFiles["main"].parents.push(filename);
+			glslFiles.main.parents.push(filename);
 		}
 	});
 
@@ -262,7 +262,7 @@ export function getGlslBundle(codeString)
 	filenames.forEach(filename => filesToInclude[filename] = false);
 
 	// main is always required.
-	filesToInclude["main"] = true;
+	filesToInclude.main = true;
 
 
 
@@ -308,7 +308,7 @@ export function getGlslBundle(codeString)
 
 
 	// constants and main are always included.
-	bundle = glslFiles["constants"].content + glslFiles["main"].content;
+	bundle = glslFiles.constants.content + glslFiles.main.content;
 
 	for (let i = 1; i < glslFilesByDepth.length; i++)
 	{

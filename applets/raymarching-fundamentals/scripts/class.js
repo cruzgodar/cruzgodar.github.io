@@ -81,12 +81,12 @@ export class RaymarchingFundamentals extends RaymarchApplet
 		if (this.imageWidth >= this.imageHeight)
 		{
 			this.wilson.gl.uniform1f(
-				this.wilson.uniforms["aspectRatioX"],
+				this.wilson.uniforms.aspectRatioX,
 				this.imageWidth / this.imageHeight
 			);
 
 			this.wilson.gl.uniform1f(
-				this.wilson.uniforms["aspectRatioY"],
+				this.wilson.uniforms.aspectRatioY,
 				1
 			);
 		}
@@ -94,58 +94,58 @@ export class RaymarchingFundamentals extends RaymarchApplet
 		else
 		{
 			this.wilson.gl.uniform1f(
-				this.wilson.uniforms["aspectRatioX"],
+				this.wilson.uniforms.aspectRatioX,
 				1
 			);
 
 			this.wilson.gl.uniform1f(
-				this.wilson.uniforms["aspectRatioY"],
+				this.wilson.uniforms.aspectRatioY,
 				this.imageWidth / this.imageHeight
 			);
 		}
 		
 		this.wilson.gl.uniform1i(
-			this.wilson.uniforms["imageSize"],
+			this.wilson.uniforms.imageSize,
 			this.imageSize
 		);
 
 		this.wilson.gl.uniform3fv(
-			this.wilson.uniforms["cameraPos"],
+			this.wilson.uniforms.cameraPos,
 			this.cameraPos
 		);
 
 		this.wilson.gl.uniform3fv(
-			this.wilson.uniforms["imagePlaneCenterPos"],
+			this.wilson.uniforms.imagePlaneCenterPos,
 			this.imagePlaneCenterPos
 		);
 
 		this.wilson.gl.uniform3fv(
-			this.wilson.uniforms["forwardVec"],
+			this.wilson.uniforms.forwardVec,
 			this.forwardVec
 		);
 
 		this.wilson.gl.uniform3fv(
-			this.wilson.uniforms["rightVec"],
+			this.wilson.uniforms.rightVec,
 			this.rightVec
 		);
 
 		this.wilson.gl.uniform3fv(
-			this.wilson.uniforms["upVec"],
+			this.wilson.uniforms.upVec,
 			this.upVec
 		);
 
 		this.wilson.gl.uniform1f(
-			this.wilson.uniforms["distanceToScene"],
+			this.wilson.uniforms.distanceToScene,
 			this.distanceToScene
 		);
 
 		this.wilson.gl.uniform1f(
-			this.wilson.uniforms["objectRotation"],
+			this.wilson.uniforms.objectRotation,
 			this.objectRotation
 		);
 
 		this.wilson.gl.uniform1f(
-			this.wilson.uniforms["objectFloat"],
+			this.wilson.uniforms.objectFloat,
 			this.objectFloat
 		);
 
@@ -231,12 +231,12 @@ export class RaymarchingFundamentals extends RaymarchApplet
 		if (this.imageWidth >= this.imageHeight)
 		{
 			this.wilson.gl.uniform1f(
-				this.wilson.uniforms["aspectRatioX"],
+				this.wilson.uniforms.aspectRatioX,
 				this.imageWidth / this.imageHeight
 			);
 
 			this.wilson.gl.uniform1f(
-				this.wilson.uniforms["aspectRatioY"],
+				this.wilson.uniforms.aspectRatioY,
 				1
 			);
 		}
@@ -244,17 +244,17 @@ export class RaymarchingFundamentals extends RaymarchApplet
 		else
 		{
 			this.wilson.gl.uniform1f(
-				this.wilson.uniforms["aspectRatioX"],
+				this.wilson.uniforms.aspectRatioX,
 				1
 			);
 
 			this.wilson.gl.uniform1f(
-				this.wilson.uniforms["aspectRatioY"],
+				this.wilson.uniforms.aspectRatioY,
 				this.imageWidth / this.imageHeight
 			);
 		}
 
-		this.wilson.gl.uniform1i(this.wilson.uniforms["imageSize"], this.imageSize);
+		this.wilson.gl.uniform1i(this.wilson.uniforms.imageSize, this.imageSize);
 
 
 

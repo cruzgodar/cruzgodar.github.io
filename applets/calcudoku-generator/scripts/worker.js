@@ -696,7 +696,7 @@ onmessage = (e) =>
 	importScripts("/applets/calcudoku-generator/scripts/solver.js");
 
 	// eslint-disable-next-line no-undef
-	Module["onRuntimeInitialized"] = function()
+	Module.onRuntimeInitialized = function()
 	{
 		// eslint-disable-next-line no-undef
 		importScripts("/scripts/wasm-arrays.min.js");

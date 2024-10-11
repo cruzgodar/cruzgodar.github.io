@@ -366,8 +366,8 @@ export class FractalSounds extends AnimationFrameApplet
 
 
 		// Render the inital frame.
-		this.wilsonJulia.gl.uniform1f(this.wilsonJulia.uniforms["aspectRatio"][0], 1);
-		this.wilsonHidden.gl.uniform1f(this.wilsonHidden.uniforms["aspectRatio"][0], 1);
+		this.wilsonJulia.gl.uniform1f(this.wilsonJulia.uniforms.aspectRatio[0], 1);
+		this.wilsonHidden.gl.uniform1f(this.wilsonHidden.uniforms.aspectRatio[0], 1);
 
 		this.resume();
 	}
@@ -611,32 +611,32 @@ export class FractalSounds extends AnimationFrameApplet
 	drawFrame()
 	{
 		this.wilsonHidden.gl.uniform1f(
-			this.wilsonHidden.uniforms["worldCenterX"][0],
+			this.wilsonHidden.uniforms.worldCenterX[0],
 			this.wilson.worldCenterX
 		);
 
 		this.wilsonHidden.gl.uniform1f(
-			this.wilsonHidden.uniforms["worldCenterY"][0],
+			this.wilsonHidden.uniforms.worldCenterY[0],
 			this.wilson.worldCenterY
 		);
 		
 		this.wilsonHidden.gl.uniform1f(
-			this.wilsonHidden.uniforms["worldSize"][0],
+			this.wilsonHidden.uniforms.worldSize[0],
 			Math.min(this.wilson.worldHeight, this.wilson.worldWidth) / 2
 		);
 
 		this.wilsonHidden.gl.uniform1i(
-			this.wilsonHidden.uniforms["numIterations"][0],
+			this.wilsonHidden.uniforms.numIterations[0],
 			this.numIterations
 		);
 
 		this.wilsonHidden.gl.uniform1f(
-			this.wilsonHidden.uniforms["exposure"][0],
+			this.wilsonHidden.uniforms.exposure[0],
 			1
 		);
 
 		this.wilsonHidden.gl.uniform1f(
-			this.wilsonHidden.uniforms["brightnessScale"][0],
+			this.wilsonHidden.uniforms.brightnessScale[0],
 			20 * (Math.abs(this.zoom.level) + 1)
 		);
 
@@ -675,37 +675,37 @@ export class FractalSounds extends AnimationFrameApplet
 
 
 		this.wilsonJulia.gl.uniform1f(
-			this.wilsonJulia.uniforms["aspectRatio"][0],
+			this.wilsonJulia.uniforms.aspectRatio[0],
 			this.aspectRatio
 		);
 
 		this.wilsonJulia.gl.uniform1f(
-			this.wilsonJulia.uniforms["worldCenterX"][0],
+			this.wilsonJulia.uniforms.worldCenterX[0],
 			this.wilson.worldCenterX
 		);
 
 		this.wilsonJulia.gl.uniform1f(
-			this.wilsonJulia.uniforms["worldCenterY"][0],
+			this.wilsonJulia.uniforms.worldCenterY[0],
 			this.wilson.worldCenterY
 		);
 
 		this.wilsonJulia.gl.uniform1f(
-			this.wilsonJulia.uniforms["worldSize"][0],
+			this.wilsonJulia.uniforms.worldSize[0],
 			Math.min(this.wilson.worldHeight, this.wilson.worldWidth) / 2
 		);
 
 		this.wilsonJulia.gl.uniform1i(
-			this.wilsonJulia.uniforms["numIterations"][0],
+			this.wilsonJulia.uniforms.numIterations[0],
 			this.numIterations
 		);
 
 		this.wilsonJulia.gl.uniform1f(
-			this.wilsonJulia.uniforms["exposure"][0],
+			this.wilsonJulia.uniforms.exposure[0],
 			this.exposure
 		);
 
 		this.wilsonJulia.gl.uniform1f(
-			this.wilsonJulia.uniforms["brightnessScale"][0],
+			this.wilsonJulia.uniforms.brightnessScale[0],
 			brightnessScale
 		);
 

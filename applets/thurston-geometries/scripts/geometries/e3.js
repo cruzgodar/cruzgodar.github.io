@@ -149,9 +149,9 @@ export class E3Rooms extends E3Geometry
 	{
 		const wallThickness = 1.5 - (this.sliderValues.wallThickness + .85) / 2 * .2;
 
-		gl.uniform1f(uniformList["sceneTransition"], this.sliderValues.sceneTransition);
-		gl.uniform1f(uniformList["wallThickness"], wallThickness);
-		gl.uniform1f(uniformList["clipDistance"], this.sliderValues.clipDistance);
+		gl.uniform1f(uniformList.sceneTransition, this.sliderValues.sceneTransition);
+		gl.uniform1f(uniformList.wallThickness, wallThickness);
+		gl.uniform1f(uniformList.clipDistance, this.sliderValues.clipDistance);
 	}
 
 	uiElementsUsed = "#wall-thickness-slider, #switch-scene-button, #clip-distance-slider";

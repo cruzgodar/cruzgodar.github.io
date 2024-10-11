@@ -231,7 +231,7 @@ export class SortingAlgorithm extends AnimationFrameApplet
 				this.brightness[i] = 0;
 			}
 
-			this.wilson.gl.uniform1f(this.wilson.uniforms["dataLength"], this.dataLength);
+			this.wilson.gl.uniform1f(this.wilson.uniforms.dataLength, this.dataLength);
 		}
 
 

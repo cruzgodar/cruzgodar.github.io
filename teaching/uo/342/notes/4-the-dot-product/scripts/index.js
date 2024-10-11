@@ -1,11 +1,11 @@
 import {
-    createDesmosGraphs,
-    desmosBlue,
-    desmosGreen,
-    desmosPurple,
-    desmosRed,
-    getDesmosVector,
-    setGetDesmosData
+	createDesmosGraphs,
+	desmosBlue,
+	desmosGreen,
+	desmosPurple,
+	desmosRed,
+	getDesmosVector,
+	setGetDesmosData
 } from "/scripts/src/desmos.js";
 import { showPage } from "/scripts/src/loadPage.js";
 

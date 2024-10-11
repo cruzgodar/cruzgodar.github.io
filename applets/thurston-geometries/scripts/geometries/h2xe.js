@@ -575,13 +575,13 @@ export class H2xERooms extends H2xEGeometry
 
 	updateUniforms(gl, uniformList)
 	{
-		gl.uniform1f(uniformList["sceneTransition"], this.sliderValues.sceneTransition);
+		gl.uniform1f(uniformList.sceneTransition, this.sliderValues.sceneTransition);
 
 		const wallThickness = 1.145 - this.sliderValues.wallThickness / 10;
 
-		gl.uniform1f(uniformList["wallThickness"], wallThickness);
-		gl.uniform1f(uniformList["clipDistance"], this.sliderValues.clipDistance);
-		gl.uniform3fv(uniformList["baseColor"], this.baseColor);
+		gl.uniform1f(uniformList.wallThickness, wallThickness);
+		gl.uniform1f(uniformList.clipDistance, this.sliderValues.clipDistance);
+		gl.uniform3fv(uniformList.baseColor, this.baseColor);
 	}
 
 	uiElementsUsed = "#wall-thickness-slider, #switch-scene-button, #clip-distance-slider";

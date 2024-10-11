@@ -164,7 +164,7 @@ export class E3S2Demo extends E3Geometry
 
 	updateUniforms(gl, uniformList)
 	{
-		gl.uniform4fv(uniformList["cameraDotPos"], this.cameraDotPos);
+		gl.uniform4fv(uniformList.cameraDotPos, this.cameraDotPos);
 
 		for (let i = 0; i < this.numRays; i++)
 		{

@@ -312,7 +312,7 @@ export class GameOfLife extends AnimationFrameApplet
 		this.wilsonHidden.gl.useProgram(this.wilsonHidden.render.shaderPrograms[1]);
 
 		this.wilsonHidden.gl.uniform1i(
-			this.wilsonHidden.uniforms["torus"][1],
+			this.wilsonHidden.uniforms.torus[1],
 			this.onTorus ? 1 : 0
 		);
 
@@ -323,7 +323,7 @@ export class GameOfLife extends AnimationFrameApplet
 		);
 		
 		this.wilsonHidden.gl.uniform1f(
-			this.wilsonHidden.uniforms["step"][this.pauseUpdating ? 0 : 1],
+			this.wilsonHidden.uniforms.step[this.pauseUpdating ? 0 : 1],
 			1 / this.gridSize
 		);
 
@@ -455,7 +455,7 @@ export class GameOfLife extends AnimationFrameApplet
 		this.pauseUpdating = false;
 
 		this.wilsonHidden.gl.useProgram(this.wilsonHidden.render.shaderPrograms[1]);
-		this.wilsonHidden.gl.uniform1f(this.wilsonHidden.uniforms["step"][1], 1 / this.gridSize);
+		this.wilsonHidden.gl.uniform1f(this.wilsonHidden.uniforms.step[1], 1 / this.gridSize);
 	}
 
 

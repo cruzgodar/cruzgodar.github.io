@@ -297,10 +297,10 @@ export class AbelianSandpile extends AnimationFrameApplet
 		const grains1 = (Math.floor(this.numGrains / (256 * 256 * 256)) % 256) / 256;
 
 		this.wilson.gl.useProgram(this.wilson.render.shaderPrograms[0]);
-		this.wilson.gl.uniform1f(this.wilson.uniforms["step"][0], 1 / this.resolution);
+		this.wilson.gl.uniform1f(this.wilson.uniforms.step[0], 1 / this.resolution);
 		
 		this.wilson.gl.uniform4f(
-			this.wilson.uniforms["startGrains"][0],
+			this.wilson.uniforms.startGrains[0],
 			grains1,
 			grains2,
 			grains3,
@@ -308,12 +308,12 @@ export class AbelianSandpile extends AnimationFrameApplet
 		);
 
 		this.wilson.gl.uniform4fv(
-			this.wilson.uniforms["floodGrains"][0],
+			this.wilson.uniforms.floodGrains[0],
 			[0, 0, 0, this.floodGrains / 256]
 		);
 
 		this.wilson.gl.useProgram(this.wilson.render.shaderPrograms[1]);
-		this.wilson.gl.uniform1f(this.wilson.uniforms["step"][1], 1 / this.resolution);
+		this.wilson.gl.uniform1f(this.wilson.uniforms.step[1], 1 / this.resolution);
 
 
 

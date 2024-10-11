@@ -609,15 +609,15 @@ export class Snowflake extends AnimationFrameApplet
 		{
 			this.wilson.gl.useProgram(this.wilson.render.shaderPrograms[i]);
 
-			this.wilson.gl.uniform1f(this.wilson.uniforms["resolution"][i], this.resolution);
-			this.wilson.gl.uniform1f(this.wilson.uniforms["step"][i], 1 / this.resolution);
-			this.wilson.gl.uniform1f(this.wilson.uniforms["rho"][i], rho);
-			this.wilson.gl.uniform1f(this.wilson.uniforms["beta"][i], beta);
-			this.wilson.gl.uniform1f(this.wilson.uniforms["alpha"][i], alpha);
-			this.wilson.gl.uniform1f(this.wilson.uniforms["theta"][i], theta);
-			this.wilson.gl.uniform1f(this.wilson.uniforms["kappa"][i], kappa);
-			this.wilson.gl.uniform1f(this.wilson.uniforms["mu"][i], mu);
-			this.wilson.gl.uniform1f(this.wilson.uniforms["gamma"][i], gamma);
+			this.wilson.gl.uniform1f(this.wilson.uniforms.resolution[i], this.resolution);
+			this.wilson.gl.uniform1f(this.wilson.uniforms.step[i], 1 / this.resolution);
+			this.wilson.gl.uniform1f(this.wilson.uniforms.rho[i], rho);
+			this.wilson.gl.uniform1f(this.wilson.uniforms.beta[i], beta);
+			this.wilson.gl.uniform1f(this.wilson.uniforms.alpha[i], alpha);
+			this.wilson.gl.uniform1f(this.wilson.uniforms.theta[i], theta);
+			this.wilson.gl.uniform1f(this.wilson.uniforms.kappa[i], kappa);
+			this.wilson.gl.uniform1f(this.wilson.uniforms.mu[i], mu);
+			this.wilson.gl.uniform1f(this.wilson.uniforms.gamma[i], gamma);
 		}
 
 

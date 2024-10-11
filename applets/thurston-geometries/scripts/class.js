@@ -379,47 +379,47 @@ export class ThurstonGeometry extends Applet
 		this.lastWorldCenterY = this.wilson.worldCenterY;
 
 		this.wilson.gl.uniform1f(
-			this.wilson.uniforms["aspectRatioX"],
+			this.wilson.uniforms.aspectRatioX,
 			1
 		);
 
 		this.wilson.gl.uniform1f(
-			this.wilson.uniforms["aspectRatioY"],
+			this.wilson.uniforms.aspectRatioY,
 			1
 		);
 
 		this.wilson.gl.uniform1i(
-			this.wilson.uniforms["resolution"],
+			this.wilson.uniforms.resolution,
 			this.resolution
 		);
 
 		this.wilson.gl.uniform1f(
-			this.wilson.uniforms["fov"],
+			this.wilson.uniforms.fov,
 			(this.geometryData.fov ?? this.fov) * this.fovFactor
 		);
 
 		this.wilson.gl.uniform4fv(
-			this.wilson.uniforms["cameraPos"],
+			this.wilson.uniforms.cameraPos,
 			this.geometryData.cameraPos
 		);
 
 		this.wilson.gl.uniform4fv(
-			this.wilson.uniforms["normalVec"],
+			this.wilson.uniforms.normalVec,
 			this.geometryData.normalVec
 		);
 
 		this.wilson.gl.uniform4fv(
-			this.wilson.uniforms["upVec"],
+			this.wilson.uniforms.upVec,
 			this.geometryData.upVec
 		);
 		
 		this.wilson.gl.uniform4fv(
-			this.wilson.uniforms["rightVec"],
+			this.wilson.uniforms.rightVec,
 			this.geometryData.rightVec
 		);
 			
 		this.wilson.gl.uniform4fv(
-			this.wilson.uniforms["forwardVec"],
+			this.wilson.uniforms.forwardVec,
 			this.geometryData.forwardVec
 		);
 
@@ -563,32 +563,32 @@ export class ThurstonGeometry extends Applet
 
 
 		this.wilson.gl.uniform4fv(
-			this.wilson.uniforms["cameraPos"],
+			this.wilson.uniforms.cameraPos,
 			this.geometryData.cameraPos
 		);
 
 		this.wilson.gl.uniform4fv(
-			this.wilson.uniforms["normalVec"],
+			this.wilson.uniforms.normalVec,
 			this.geometryData.normalVec
 		);
 
 		this.wilson.gl.uniform4fv(
-			this.wilson.uniforms["upVec"],
+			this.wilson.uniforms.upVec,
 			this.geometryData.render1D ? [0, 0, 0, 0] : this.rotatedUpVec
 		);
 		
 		this.wilson.gl.uniform4fv(
-			this.wilson.uniforms["rightVec"],
+			this.wilson.uniforms.rightVec,
 			this.geometryData.rightVec
 		);
 			
 		this.wilson.gl.uniform4fv(
-			this.wilson.uniforms["forwardVec"],
+			this.wilson.uniforms.forwardVec,
 			this.rotatedForwardVec
 		);
 
 		this.wilson.gl.uniform1f(
-			this.wilson.uniforms["fov"],
+			this.wilson.uniforms.fov,
 			(this.geometryData.fov ?? this.fov) * this.fovFactor
 		);
 
@@ -920,10 +920,10 @@ export class ThurstonGeometry extends Applet
 			this.aspectRatioY = imageWidth / imageHeight;
 		}
 
-		this.wilson.gl.uniform1f(this.wilson.uniforms["aspectRatioX"], this.aspectRatioX);
-		this.wilson.gl.uniform1f(this.wilson.uniforms["aspectRatioY"], this.aspectRatioY);
+		this.wilson.gl.uniform1f(this.wilson.uniforms.aspectRatioX, this.aspectRatioX);
+		this.wilson.gl.uniform1f(this.wilson.uniforms.aspectRatioY, this.aspectRatioY);
 
-		this.wilson.gl.uniform1i(this.wilson.uniforms["resolution"], this.resolution);
+		this.wilson.gl.uniform1i(this.wilson.uniforms.resolution, this.resolution);
 
 		this.needNewFrame = true;
 	}
@@ -981,7 +981,7 @@ export class ThurstonGeometry extends Applet
 			this.run(geometryData);
 
 			try { $("#wall-thickness-slider").parentNode.style.display = "none"; }
-			catch(ex) { /* Element doesn't exist */ }
+			catch(_ex) { /* Element doesn't exist */ }
 
 			anime({
 				targets: this.canvas,
@@ -1008,7 +1008,7 @@ export class ThurstonGeometry extends Applet
 			this.run(geometryData);
 
 			try { $("#wall-thickness-slider").parentNode.style.display = ""; }
-			catch(ex) { /* Element doesn't exist */ }
+			catch(_ex) { /* Element doesn't exist */ }
 
 			anime({
 				targets: this.canvas,

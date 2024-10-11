@@ -207,7 +207,7 @@ export class JuliaSetMosaic extends AnimationFrameApplet
 			"numIterations",
 			"brightnessScale"
 		]);
-		this.wilson.gl.uniform1f(this.wilson.uniforms["aspectRatio"], 1);
+		this.wilson.gl.uniform1f(this.wilson.uniforms.aspectRatio, 1);
 
 		this.wilsonHidden.render.shaderPrograms = [];
 		this.wilsonHidden.render.loadNewShader(fragShaderSource);
@@ -224,7 +224,7 @@ export class JuliaSetMosaic extends AnimationFrameApplet
 			"numIterations",
 			"brightnessScale"
 		]);
-		this.wilsonHidden.gl.uniform1f(this.wilsonHidden.uniforms["aspectRatio"], 1);
+		this.wilsonHidden.gl.uniform1f(this.wilsonHidden.uniforms.aspectRatio, 1);
 
 		this.wilson.worldWidth = 4;
 		this.wilson.worldHeight = 4;
@@ -239,7 +239,7 @@ export class JuliaSetMosaic extends AnimationFrameApplet
 
 
 		// Render the inital frame.
-		this.wilsonHidden.gl.uniform1f(this.wilsonHidden.uniforms["aspectRatio"], 1);
+		this.wilsonHidden.gl.uniform1f(this.wilsonHidden.uniforms.aspectRatio, 1);
 		
 		this.resume();
 	}
@@ -255,47 +255,47 @@ export class JuliaSetMosaic extends AnimationFrameApplet
 		this.numIterations = (-this.zoomLevel * 30) + 200;
 
 		this.wilsonHidden.gl.uniform1f(
-			this.wilsonHidden.uniforms["setDensity"],
+			this.wilsonHidden.uniforms.setDensity,
 			this.setDensity
 		);
 
 		this.wilsonHidden.gl.uniform1f(
-			this.wilsonHidden.uniforms["worldCenterX"],
+			this.wilsonHidden.uniforms.worldCenterX,
 			this.wilson.worldCenterX
 		);
 
 		this.wilsonHidden.gl.uniform1f(
-			this.wilsonHidden.uniforms["worldCenterY"],
+			this.wilsonHidden.uniforms.worldCenterY,
 			this.wilson.worldCenterY
 		);
 
 		this.wilsonHidden.gl.uniform1f(
-			this.wilsonHidden.uniforms["worldSize"],
+			this.wilsonHidden.uniforms.worldSize,
 			Math.min(this.wilson.worldHeight, this.wilson.worldWidth) / 2
 		);
 
 		this.wilsonHidden.gl.uniform1i(
-			this.wilsonHidden.uniforms["numIterations"],
+			this.wilsonHidden.uniforms.numIterations,
 			this.numIterations
 		);
 
 		this.wilsonHidden.gl.uniform1f(
-			this.wilsonHidden.uniforms["exposure"],
+			this.wilsonHidden.uniforms.exposure,
 			1
 		);
 
 		this.wilsonHidden.gl.uniform1f(
-			this.wilsonHidden.uniforms["a"],
+			this.wilsonHidden.uniforms.a,
 			this.a
 		);
 
 		this.wilsonHidden.gl.uniform1f(
-			this.wilsonHidden.uniforms["b"],
+			this.wilsonHidden.uniforms.b,
 			this.b
 		);
 
 		this.wilsonHidden.gl.uniform1f(
-			this.wilsonHidden.uniforms["brightnessScale"],
+			this.wilsonHidden.uniforms.brightnessScale,
 			20 * (Math.abs(this.zoomLevel) + 1)
 		);
 
@@ -332,23 +332,23 @@ export class JuliaSetMosaic extends AnimationFrameApplet
 
 
 
-		this.wilson.gl.uniform1f(this.wilson.uniforms["setDensity"], this.setDensity);
+		this.wilson.gl.uniform1f(this.wilson.uniforms.setDensity, this.setDensity);
 
-		this.wilson.gl.uniform1f(this.wilson.uniforms["aspectRatio"], this.aspectRatio);
+		this.wilson.gl.uniform1f(this.wilson.uniforms.aspectRatio, this.aspectRatio);
 
-		this.wilson.gl.uniform1f(this.wilson.uniforms["worldCenterX"], this.wilson.worldCenterX);
-		this.wilson.gl.uniform1f(this.wilson.uniforms["worldCenterY"], this.wilson.worldCenterY);
+		this.wilson.gl.uniform1f(this.wilson.uniforms.worldCenterX, this.wilson.worldCenterX);
+		this.wilson.gl.uniform1f(this.wilson.uniforms.worldCenterY, this.wilson.worldCenterY);
 
 		this.wilson.gl.uniform1f(
-			this.wilson.uniforms["worldSize"],
+			this.wilson.uniforms.worldSize,
 			Math.min(this.wilson.worldHeight, this.wilson.worldWidth) / 2
 		);
 
-		this.wilson.gl.uniform1i(this.wilson.uniforms["numIterations"], this.numIterations);
-		this.wilson.gl.uniform1f(this.wilson.uniforms["exposure"], this.exposure);
-		this.wilson.gl.uniform1f(this.wilson.uniforms["a"], this.a);
-		this.wilson.gl.uniform1f(this.wilson.uniforms["b"], this.b);
-		this.wilson.gl.uniform1f(this.wilson.uniforms["brightnessScale"], brightnessScale);
+		this.wilson.gl.uniform1i(this.wilson.uniforms.numIterations, this.numIterations);
+		this.wilson.gl.uniform1f(this.wilson.uniforms.exposure, this.exposure);
+		this.wilson.gl.uniform1f(this.wilson.uniforms.a, this.a);
+		this.wilson.gl.uniform1f(this.wilson.uniforms.b, this.b);
+		this.wilson.gl.uniform1f(this.wilson.uniforms.brightnessScale, brightnessScale);
 
 		this.wilson.render.drawFrame();
 	}

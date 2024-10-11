@@ -256,7 +256,7 @@ export class ComplexMap extends AnimationFrameApplet
 			"draggableArg"
 		]);
 
-		this.wilson.gl.uniform1f(this.wilson.uniforms["aspectRatio"], 1);
+		this.wilson.gl.uniform1f(this.wilson.uniforms.aspectRatio, 1);
 
 		const needDraggable = addIndicatorDraggable
 			|| generatingCode.indexOf("draggableArg") !== -1;
@@ -265,7 +265,7 @@ export class ComplexMap extends AnimationFrameApplet
 		{
 			this.wilson.draggables.add(.5, .5, !addIndicatorDraggable);
 
-			this.wilson.gl.uniform2f(this.wilson.uniforms["draggableArg"], .5, .5);
+			this.wilson.gl.uniform2f(this.wilson.uniforms.draggableArg, .5, .5);
 		}
 
 		else if (!needDraggable && this.wilson.draggables.numDraggables !== 0)
@@ -364,7 +364,7 @@ export class ComplexMap extends AnimationFrameApplet
 			this.draggableCallback(activeDraggable, x, y, event);
 		}
 
-		this.wilson.gl.uniform2f(this.wilson.uniforms["draggableArg"], x, y);
+		this.wilson.gl.uniform2f(this.wilson.uniforms.draggableArg, x, y);
 
 		this.needNewFrame = true;
 	}
@@ -379,17 +379,17 @@ export class ComplexMap extends AnimationFrameApplet
 
 	drawFrame()
 	{
-		this.wilson.gl.uniform1f(this.wilson.uniforms["aspectRatio"], this.aspectRatio);
-		this.wilson.gl.uniform1f(this.wilson.uniforms["worldCenterX"], this.wilson.worldCenterX);
-		this.wilson.gl.uniform1f(this.wilson.uniforms["worldCenterY"], this.wilson.worldCenterY);
+		this.wilson.gl.uniform1f(this.wilson.uniforms.aspectRatio, this.aspectRatio);
+		this.wilson.gl.uniform1f(this.wilson.uniforms.worldCenterX, this.wilson.worldCenterX);
+		this.wilson.gl.uniform1f(this.wilson.uniforms.worldCenterY, this.wilson.worldCenterY);
 
 		this.wilson.gl.uniform1f(
-			this.wilson.uniforms["worldSize"],
+			this.wilson.uniforms.worldSize,
 			Math.min(this.wilson.worldHeight, this.wilson.worldWidth) / 2
 		);
 
-		this.wilson.gl.uniform1f(this.wilson.uniforms["blackPoint"], this.blackPoint);
-		this.wilson.gl.uniform1f(this.wilson.uniforms["whitePoint"], this.whitePoint);
+		this.wilson.gl.uniform1f(this.wilson.uniforms.blackPoint, this.blackPoint);
+		this.wilson.gl.uniform1f(this.wilson.uniforms.whitePoint, this.whitePoint);
 
 		this.wilson.render.drawFrame();
 	}

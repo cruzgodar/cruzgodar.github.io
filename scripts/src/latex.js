@@ -1,5 +1,5 @@
 
-/* eslint-disable @stylistic/semi */
+ 
 const preamble = String.raw`\documentclass{article}
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
