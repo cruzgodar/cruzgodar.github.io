@@ -8,7 +8,7 @@ import {
 } from "./main.js";
 import { siteSettings } from "./settings.js";
 
-export const pageWidth = 1000;
+export const pageWidth = 1150;
 
 export let aspectRatio = window.innerWidth / window.innerHeight;
 export let navigationAnimationDistanceVertical = Math.min(window.innerHeight / 20, 25);

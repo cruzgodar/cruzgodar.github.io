@@ -33,7 +33,8 @@
 
 	--contents-border-color: rgba(208, 208, 208, var(--theme));
 
-	--page-width: 1000px;
+	--page-width: 1150px;
+	--text-width: 800px;
 }
 
 html
@@ -152,7 +153,7 @@ code
 pre code.highlightable
 {
 	position: relative;
-	max-width: var(--page-width);
+	max-width: var(--text-width);
 	margin: 0 auto;
 	tab-size: 4;
 	-moz-tab-size: 4;
@@ -199,7 +200,7 @@ img
 .heading-text, .section-text, .body-text, .song-lyrics
 {
 	position: relative;
-	max-width: var(--page-width);
+	max-width: var(--text-width);
 	margin: 0 auto;
 	margin-bottom: 16px;
 }
@@ -1703,11 +1704,6 @@ option
 
 @media (max-width: 400px)
 {
-	.image-links
-	{
-		column-gap: 10px;
-	}
-	
 	.image-link-subtext
 	{
 		font-size: 85% !important;
@@ -1825,22 +1821,22 @@ img[src="/about/cover.webp"]
 
 .desmos-border, .desmos-container, .dcg-container
 {
-	width: min(min(calc(var(--page-width) - 8px), calc(90vw - 8px)), calc(50vh - 8px)) !important;
+	width: min(min(calc(var(--text-width) - 8px), calc(90vw - 8px)), calc(50vh - 8px)) !important;
 }
 
 .desmos-border:not(.canvas-container), .desmos-container:not(.canvas-container), .dcg-container:not(.canvas-container)
 {
-	height: min(min(calc(var(--page-width) - 8px), calc(90vw - 8px)), calc(50vh - 8px)) !important;
+	height: min(min(calc(var(--text-width) - 8px), calc(90vw - 8px)), calc(50vh - 8px)) !important;
 }
 
 .notes-environment .desmos-border, .notes-environment .desmos-container, .notes-environment .dcg-container
 {
-	width: min(min(calc(var(--page-width) - 20px), calc(90vw - 20px)), calc(50vh - 20px)) !important;
+	width: min(min(calc(var(--text-width) - 20px), calc(90vw - 20px)), calc(50vh - 20px)) !important;
 }
 
 .notes-environment .desmos-border:not(.canvas-container), .notes-environment .desmos-container:not(.canvas-container), .notes-environment .dcg-container:not(.canvas-container)
 {
-	height: min(min(calc(var(--page-width) - 20px), calc(90vw - 20px)), calc(50vh - 20px)) !important;
+	height: min(min(calc(var(--text-width) - 20px), calc(90vw - 20px)), calc(50vh - 20px)) !important;
 }
 
 
@@ -1851,12 +1847,12 @@ img[src="/about/cover.webp"]
 	margin: 0 auto;
 	flex-wrap: wrap;
 	column-gap: 16px;
-	max-width: min(var(--page-width), 100%);
+	max-width: min(var(--text-width), 100%);
 }
 
 .notes-image
 {
-	max-width: min(var(--page-width), 100%);
+	max-width: min(var(--text-width), 100%);
 	max-height: 30vh;
 	border-radius: 16px;
 	margin-bottom: 16px;
@@ -1874,7 +1870,7 @@ img[src="/about/cover.webp"]
 
 .notes-environment
 {
-	max-width: calc(var(--page-width) - 12px);
+	max-width: calc(var(--text-width) - 12px);
 	margin: 0 auto;
 	margin-bottom: 16px;
 	border-width: 0 0 0 4px;
