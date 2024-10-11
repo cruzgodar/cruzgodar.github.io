@@ -46,13 +46,21 @@ const port = 5500;
 
 
 
-async function eslint()
+async function eslint(files)
+{
+	files.map(lintFile);
+}
+
+async function lintFile(file)
 {
 	const proc = spawnSync("eslint", [
-		"--ext",
-		".js",
-		root
-	]);
+		root + file,
+		"--no-warn-ignored",
+		"-c",
+		root + "eslint.config.mjs",
+	], {
+		cwd: root,
+	});
 	
 	const text = proc.stdout.toString();
 
@@ -314,22 +322,33 @@ async function test(clean)
 
 	const files = proc.stdout.toString()
 		.split("\n")
-		.filter(file => file.slice(file.lastIndexOf(".")) === ".html")
 		.filter(file => !excludeFiles.includes(file));
 
+	const htmlFiles = files.filter(file => file.slice(file.lastIndexOf(".")) === ".html");
+	const htmlDataFiles = htmlFiles.filter(file => file.includes("data.html"));
+	const htmlIndexFiles = htmlFiles.filter(file => file.includes("index.html"));
+
+	const latexDataFiles = htmlDataFiles
+		.map(file => file.replace("data.html", ""))
+		.filter(file => latexFiles[file]);
+
+	const jsFiles = files.filter(file =>
+	{
+		return file.slice(file.lastIndexOf(".")) === ".js" && !file.includes(".min.");
+	});
+		
+
 	console.log("Linting...");
-	await eslint();
+	await eslint(jsFiles);
 
 	console.log("Validating links...");
-	await validateAllLinks(files.filter(file => file.includes("data.html")));
+	await validateAllLinks(htmlDataFiles);
 
 	console.log("Testing pages for console errors...");
-	await testPages(files.filter(file => file.includes("index.html")));
+	await testPages(files.filter(htmlIndexFiles));
 
 	console.log("Testing LaTeX...");
-	await testAllLatex(
-		files.map(file => file.replace("data.html", "")).filter(file => latexFiles[file])
-	);
+	await testAllLatex(latexDataFiles);
 }
 
 test(options.clean);
