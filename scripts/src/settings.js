@@ -141,6 +141,16 @@ export function setForcedTheme(newForcedTheme)
 
 
 
+export function initReduceMotion()
+{
+	window.reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+	window.matchMedia("(prefers-reduced-motion: reduce)").addListener((e) =>
+	{
+		window.reduceMotion = e.matches;
+	});
+}
+
 export function initDarkTheme()
 {
 	window.matchMedia("(prefers-color-scheme: dark)").addListener((e) =>

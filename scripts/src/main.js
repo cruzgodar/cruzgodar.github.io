@@ -2,7 +2,7 @@ import { addHeader } from "./header.js";
 import { initInteractionListeners } from "./interaction.js";
 import { initOnResize } from "./layout.js";
 import { redirect } from "./navigation.js";
-import { initDarkTheme } from "./settings.js";
+import { initDarkTheme, initReduceMotion } from "./settings.js";
 
 export let pageElement = document.createElement("div");
 
@@ -117,6 +117,7 @@ const scriptsLoaded =
 export async function loadSite(url = pageUrl)
 {
 	initDarkTheme();
+	initReduceMotion();
 
 	pageElement.classList.add("page");
 

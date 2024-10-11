@@ -87,6 +87,8 @@ export async function showCard(id, animationTime = cardAnimationTime)
 
 	container.scroll(0, 0);
 
+	const backgroundScale = window.reduceMotion ? 1 : .975;
+
 
 
 	const rect = currentCard.getBoundingClientRect();
@@ -141,10 +143,17 @@ export async function showCard(id, animationTime = cardAnimationTime)
 		pageElement.style.position = "fixed";
 	}
 
+	if (window.reduceMotion)
+	{
+		container.style.opacity = 0;
+		container.style.top = 0;
+	}
+
 	await Promise.all([
 		anime({
 			targets: container,
 			top: 0,
+			opacity: 1,
 			duration: animationTime,
 			easing,
 		}).finished,
@@ -155,7 +164,7 @@ export async function showCard(id, animationTime = cardAnimationTime)
 				document.querySelector("#header"),
 			],
 			filter: "brightness(.5)",
-			scale: .975,
+			scale: backgroundScale,
 			duration: animationTime,
 			easing,
 		}).finished,
@@ -163,7 +172,7 @@ export async function showCard(id, animationTime = cardAnimationTime)
 		anime({
 			targets: document.querySelector("#header-container"),
 			backgroundColor: color,
-			scale: .975,
+			scale: backgroundScale,
 			duration: animationTime,
 			easing,
 		}).finished,
@@ -217,6 +226,29 @@ export async function hideCard(animationTime = cardAnimationTime)
 	const containerOldScroll = container.scrollTop;
 	const totalHeightToMove = containerOldScroll + window.innerHeight + 64;
 
+	const hidePromise = window.reduceMotion
+		? anime({
+			targets: container,
+			opacity: 0,
+			duration: animationTime,
+			easing,
+		}).finished
+		: anime({
+			targets: dummy,
+			t: 1,
+			duration: animationTime,
+			easing,
+			update: () =>
+			{
+				const heightMoved = dummy.t * totalHeightToMove;
+				const scroll = Math.max(containerOldScroll - heightMoved, 0);
+				container.scrollTo(0, scroll);
+
+				const remainingHeight = Math.max(heightMoved - containerOldScroll, 0);
+				container.style.top = `${remainingHeight}px`;
+			}
+		}).finished;
+
 	await Promise.all([
 		anime({
 			targets: [
@@ -251,21 +283,7 @@ export async function hideCard(animationTime = cardAnimationTime)
 			easing,
 		}).finished,
 
-		anime({
-			targets: dummy,
-			t: 1,
-			duration: animationTime,
-			easing,
-			update: () =>
-			{
-				const heightMoved = dummy.t * totalHeightToMove;
-				const scroll = Math.max(containerOldScroll - heightMoved, 0);
-				container.scrollTo(0, scroll);
-
-				const remainingHeight = Math.max(heightMoved - containerOldScroll, 0);
-				container.style.top = `${remainingHeight}px`;
-			}
-		}).finished,
+		hidePromise
 	]);
 
 	if (!browserIsIos)

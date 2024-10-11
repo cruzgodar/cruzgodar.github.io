@@ -152,7 +152,7 @@ export async function redirect({
 // -2 for one to the left, and 0 for anything else.
 function getTransitionType(url)
 {
-	if (!(url in sitemap) || url === pageUrl || !pageUrl)
+	if (!(url in sitemap) || url === pageUrl || !pageUrl || window.reduceMotion)
 	{
 		return 0;
 	}

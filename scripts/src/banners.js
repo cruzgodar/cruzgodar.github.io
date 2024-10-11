@@ -61,13 +61,15 @@ export function updateBanner(timestamp)
 
 	const minPadding = window.innerWidth <= 500 ? 8 : 16;
 
-	const additionalPadding = Math.min(
-		Math.max(
-			(window.innerWidth - pageWidth - minPadding * 2) / 2,
-			minPadding
-		),
-		16
-	);
+	const additionalPadding = window.reduceMotion
+		? 0
+		: Math.min(
+			Math.max(
+				(window.innerWidth - pageWidth - minPadding * 2) / 2,
+				minPadding
+			),
+			16
+		);
 
 	contentElement.style.paddingLeft = `${minPadding + t * additionalPadding}px`;
 	contentElement.style.paddingRight = `${minPadding + t * additionalPadding}px`;
