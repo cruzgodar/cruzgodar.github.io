@@ -501,8 +501,8 @@ export const galleryImageData =
 		title: "A Menger Sponge",
 
 		appletLink: "menger-sponge",
-		
-		driveId: "1Va6pPNA0puYmqWaRtOeYsCVcGmonwgOF"
+
+		driveId: "10U01_WySYGeFe0iq5PA2uIBwQ4LQODh_"
 	},
 
 	"menger-sponge-2":
@@ -510,7 +510,7 @@ export const galleryImageData =
 		title: "A Menger Sponge",
 
 		appletLink: "menger-sponge",
-		
-		driveId: "1UOp7iKfez9lYd94nvvI733xdB5MubN2T"
+
+		driveId: "16fSQRq5Drql7SjmiuNOFvAEnJD7Z_QSe"
 	}
 };
