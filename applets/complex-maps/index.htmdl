@@ -1,6 +1,6 @@
-It's not a coincidence that many of the applets I've made revolve around the complex numbers --- a complete two-dimensional number system is ideal for making pictures. Two of the applets that support custom complex functions are the generalized <a href="/applets/generalized-julia-sets/">Julia set</a> and <a href="/applets/newtons-method-extended/">Newton's method</a> ones, but neither of them uses those functions directly --- the first draws the points that stay bounded when iterated by the function, and the second shows convergence to the function's roots. This applet is somewhat simpler --- it just plots the function itself. The color represents the argument of the output (the angle from the positive $x$-axis), and the saturation and brightness represent the modulus (the distance from the origin). Dark spots are roots of the function, where the modulus is zero, and white ones are singularities, where the modulus is infinite. To reference a draggable argument in the function, use `draggableArg` in the function body. As always, drag, pinch, and scroll to move around.
+It's not a coincidence that many of the applets I've made revolve around the complex numbers --- a complete two-dimensional number system is ideal for making pictures. Two of the applets that support custom complex functions are the generalized <a href="/applets/generalized-julia-sets/">Julia set</a> and <a href="/applets/newtons-method-extended/">Newton's method</a> ones, but neither of them uses those functions directly --- the first draws the points that stay bounded when iterated by the function, and the second shows convergence to the function's roots. This applet is somewhat simpler --- it just plots the function itself. The color represents the argument of the output (the angle from the positive $x$-axis), and the saturation and brightness represent the modulus (the distance from the origin). Dark spots are roots of the function, where the modulus is zero, and white ones are singularities, where the modulus is infinite.
 
-Much of the code implementing complex functions was contributed by <a href='https://ahuchala.com'>Andy Huchala.</a> (<a data-card-id='glsl-docs'>View the documentation!</a>)
+Much of the code implementing complex functions was contributed by <a href='https://ahuchala.com'>Andy Huchala</a> --- thank you!
 
 ### dropdown examples
 
@@ -51,3 +51,7 @@ Much of the code implementing complex functions was contributed by <a href='http
 
 
 ### glsl-docs
+
+### card applet-controls "Controls"
+	Drag on the scene to look around, and pinch or scroll to zoom. The Generating code box accepts a number of functions on complex numbers --- <a data-card-id='glsl-docs'>view the documentation</a> if you're interested! To reference a draggable argument in the function, use `draggableArg` in the function body.
+###

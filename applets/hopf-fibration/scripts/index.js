@@ -1,6 +1,7 @@
 import { showPage } from "../../../scripts/src/loadPage.js";
 import { HopfFibration } from "./class.js";
 import { Button, ToggleButton } from "/scripts/src/buttons.js";
+import { Checkbox } from "/scripts/src/checkboxes.js";
 import { $ } from "/scripts/src/main.js";
 import { siteSettings } from "/scripts/src/settings.js";
 import { Slider } from "/scripts/src/sliders.js";
@@ -59,6 +60,13 @@ export default function()
 		onInput: onSliderInput
 	});
 
+	const lockOnOriginCheckbox = new Checkbox({
+		element: $("#lock-on-origin-checkbox"),
+		name: "Lock on origin",
+		checked: true,
+		onInput: onCheckboxInput
+	});
+
 	new ToggleButton({
 		element: $("#toggle-compression-button"),
 		name0: "Show Compressed Fibration",
@@ -80,5 +88,10 @@ export default function()
 		applet.numLongitudesPerLatitude = longitudesSlider.value;
 		applet.numLongitudesShown = coreSlider.value * applet.numLongitudesPerLatitude;
 		applet.createAllFibers();
+	}
+
+	function onCheckboxInput()
+	{
+		applet.setLockedOnOrigin(lockOnOriginCheckbox.checked);
 	}
 }

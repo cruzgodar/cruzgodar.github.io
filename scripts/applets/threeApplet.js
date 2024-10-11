@@ -1,3 +1,4 @@
+import anime from "../anime.js";
 import { AnimationFrameApplet } from "./animationFrameApplet.js";
 import { RaymarchApplet } from "./raymarchApplet.js";
 import * as THREE from "/scripts/three.js";
@@ -14,6 +15,7 @@ export class ThreeApplet extends AnimationFrameApplet
 
 	theta = 0;
 	phi = 0;
+	fovFactor = 1;
 
 	imageSize = 400;
 	imageWidth = 400;
@@ -27,17 +29,53 @@ export class ThreeApplet extends AnimationFrameApplet
 
 	cameraPos = [0, 0, 0];
 
+	lockedOnOrigin = true;
+	distanceFromOrigin = 1;
+
 	renderer;
 	scene;
 	camera;
 
 
 
-	constructor(canvas)
-	{
+	constructor({
+		canvas,
+		lockedOnOrigin = true,
+		cameraPos = [0, 0, 0],
+	}) {
 		super(canvas);
 
-		this.listenForKeysPressed(["w", "s", "a", "d", "q", "e", " ", "shift"]);
+		this.lockedOnOrigin = lockedOnOrigin;
+		this.cameraPos = cameraPos;
+		this.distanceFromOrigin = RaymarchApplet.magnitude(this.cameraPos);
+
+		this.listenForKeysPressed(
+			["w", "s", "a", "d", "q", "e", " ", "shift", "z"],
+			(key, pressed) =>
+			{
+				if (key === "z")
+				{
+					const dummy = { t: 0 };
+					const oldFovFactor = this.fovFactor;
+					const newFovFactor = pressed ? .25 : 1;
+
+					anime({
+						targets: dummy,
+						t: 1,
+						duration: 250,
+						easing: "easeOutQuad",
+						update: () =>
+						{
+							this.fovFactor = (1 - dummy.t) * oldFovFactor + dummy.t * newFovFactor;
+							this.camera.fov = 100 * this.fovFactor;
+							this.camera.updateProjectionMatrix();
+
+							this.needNewFrame = true;
+						}
+					});
+				}
+			}
+		);
 
 		const refreshId = setInterval(() =>
 		{
@@ -48,6 +86,14 @@ export class ThreeApplet extends AnimationFrameApplet
 				clearInterval(refreshId);
 			}
 		}, 100);
+	}
+
+
+
+	onDragCanvas(x, y, xDelta, yDelta)
+	{
+		const sign = this.lockedOnOrigin ? -1 : 1;
+		this.pan.onDragCanvas(x, y, sign * xDelta, sign * yDelta);
 	}
 
 
@@ -95,6 +141,14 @@ export class ThreeApplet extends AnimationFrameApplet
 		// Finally, the upward vector is the cross product of the previous two.
 		this.upVec = RaymarchApplet.crossProduct(this.rightVec, this.forwardVec);
 
+		if (this.lockedOnOrigin)
+		{
+			this.cameraPos = RaymarchApplet.scaleVector(
+				-this.distanceFromOrigin,
+				this.forwardVec
+			);
+		}
+
 		this.camera.position.set(0, 0, 0);
 		this.camera.up.set(...this.upVec);
 		this.camera.lookAt(...this.forwardVec);
@@ -135,9 +189,12 @@ export class ThreeApplet extends AnimationFrameApplet
 			this.moveVelocity[2] = -1;
 		}
 
-		if (this.moveVelocity[0] !== 0
-			|| this.moveVelocity[1] !== 0
-			|| this.moveVelocity[2] !== 0
+		if (!this.lockedOnOrigin &&
+			(
+				this.moveVelocity[0] !== 0
+				|| this.moveVelocity[1] !== 0
+				|| this.moveVelocity[2] !== 0
+			)
 		) {
 			const tangentVec = [
 				this.moveVelocity[0] * this.forwardVec[0]
@@ -167,5 +224,47 @@ export class ThreeApplet extends AnimationFrameApplet
 				this.moveVelocity[i] = 0;
 			}
 		}
+	}
+
+
+
+	async setLockedOnOrigin(value)
+	{
+		if (value && !this.lockedOnOrigin)
+		{
+			// Convert to spherical coordinates.
+			const r = RaymarchApplet.magnitude(this.cameraPos);
+			const normalizedCameraPos = RaymarchApplet.normalize(this.cameraPos);
+			const phi = Math.PI - Math.acos(this.cameraPos[2] / r);
+			let theta = Math.atan2(this.cameraPos[1], this.cameraPos[0]) + Math.PI;
+			if (theta > Math.PI)
+			{
+				theta -= 2 * Math.PI;
+			}
+
+			const dummy = { r, theta: this.theta, phi: this.phi };
+
+			await anime({
+				targets: dummy,
+				theta,
+				phi,
+				r: this.distanceFromOrigin,
+				duration: 500,
+				easing: "easeOutCubic",
+				update: () =>
+				{
+					this.wilson.worldCenterX = -dummy.theta;
+					this.wilson.worldCenterY = -dummy.phi;
+					this.cameraPos = RaymarchApplet.scaleVector(
+						dummy.r,
+						normalizedCameraPos
+					);
+					
+					this.needNewFrame = true;
+				}
+			}).finished;
+		}
+
+		this.lockedOnOrigin = value;
 	}
 }

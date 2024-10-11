@@ -35,3 +35,7 @@ The <a href="/applets/julia-set-explorer/">Mandelbrot set and Julia sets</a> sha
 </div>
 
 </div>
+
+### card applet-controls "Controls"
+	Drag on the scene to look around, and pinch or scroll to zoom.
+###

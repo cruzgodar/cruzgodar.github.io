@@ -469,7 +469,7 @@ export class FractalSounds extends AnimationFrameApplet
 
 		this.wilson.canvas.style.opacity = 1;
 		this.wilson.ctx.strokeStyle = convertColor(255, 255, 255);
-		this.wilson.ctx.clearRect(0, 0, this.resolution, this.resolution);
+		this.wilson.ctx.clearRect(0, 0, this.wilson.canvasWidth, this.wilson.canvasHeight);
 
 		this.wilson.ctx.beginPath();
 		let coords = this.wilson.utils.interpolate.worldToCanvas(x0, y0);

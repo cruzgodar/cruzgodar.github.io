@@ -15,6 +15,7 @@ export class NewtonsMethodExtended extends AnimationFrameApplet
 
 	a = [1, 0];
 	c = [0, 0];
+	draggableArg = [.5, .5];
 
 	aspectRatio = 1;
 
@@ -175,6 +176,7 @@ export class NewtonsMethodExtended extends AnimationFrameApplet
 			
 			uniform vec2 a;
 			uniform vec2 c;
+			uniform vec2 draggableArg;
 			
 			uniform float brightnessScale;
 			
@@ -279,6 +281,7 @@ export class NewtonsMethodExtended extends AnimationFrameApplet
 			"colors",
 			"a",
 			"c",
+			"draggableArg",
 			"brightnessScale"
 		]);
 
@@ -302,6 +305,7 @@ export class NewtonsMethodExtended extends AnimationFrameApplet
 			"colors",
 			"a",
 			"c",
+			"draggableArg",
 			"brightnessScale"
 		]);
 
@@ -335,7 +339,23 @@ export class NewtonsMethodExtended extends AnimationFrameApplet
 		this.wilson.gl.uniform3fv(this.wilson.uniforms.colors, this.colors);
 		this.wilsonHidden.gl.uniform3fv(this.wilsonHidden.uniforms.colors, this.colors);
 
+		const needDraggable = generatingCode.indexOf("draggableArg") !== -1;
 
+		if (needDraggable && this.wilson.draggables.numDraggables === 2)
+		{
+			this.wilson.draggables.add(.5, .5);
+
+			this.wilson.gl.uniform2f(this.wilson.uniforms.draggableArg, .5, .5);
+		}
+
+		else if (!needDraggable && this.wilson.draggables.numDraggables > 2)
+		{
+			this.wilson.draggables.numDraggables--;
+
+			this.wilson.draggables.draggables[2].remove();
+
+			this.wilson.draggables.draggables.splice(2, 1);
+		}
 
 		this.resume();
 	}
@@ -434,9 +454,14 @@ export class NewtonsMethodExtended extends AnimationFrameApplet
 			this.a = [x, y];
 		}
 
-		else
+		else if (activeDraggable === 1)
 		{
 			this.c = [x, y];
+		}
+
+		else
+		{
+			this.draggableArg = [x, y];
 		}
 
 		this.needNewFrame = true;
@@ -480,6 +505,11 @@ export class NewtonsMethodExtended extends AnimationFrameApplet
 		this.wilsonHidden.gl.uniform2f(
 			this.wilsonHidden.uniforms.c,
 			this.c[0] / 10, this.c[1] / 10
+		);
+
+		this.wilsonHidden.gl.uniform2fv(
+			this.wilsonHidden.uniforms.draggableArg,
+			this.draggableArg
 		);
 		
 		this.wilsonHidden.gl.uniform1f(
@@ -557,6 +587,11 @@ export class NewtonsMethodExtended extends AnimationFrameApplet
 		this.wilson.gl.uniform2f(
 			this.wilson.uniforms.c,
 			this.c[0] / 10, this.c[1] / 10
+		);
+
+		this.wilson.gl.uniform2fv(
+			this.wilson.uniforms.draggableArg,
+			this.draggableArg
 		);
 		
 		this.wilson.gl.uniform1f(

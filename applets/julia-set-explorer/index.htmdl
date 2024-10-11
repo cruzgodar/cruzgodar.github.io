@@ -10,11 +10,7 @@ $$
 	f(-1 + i) = (-1 + i)^2 + i = -i
 $$
 
-again. The function will flip-flop between those two numbers forever, and what's relevant to us is that their magnitudes will never blow up to infinity. Starting points with that property are the ones in the Mandelbrot set, and we color them black. For all the points that do induce sequences with unbounded magnitude, we color them according to how quickly those sequence grow --- bright for slow and dark for fast.
-
-Using the same $c$ for every point results in a related type of fractal called a **Julia Set**, which resembles the Mandelbrot set at that point. Drag or hover on the Mandelbrot set to pick a Julia set after clicking the button, and click or release to explore that Julia set. You can also drag on the scene to look around, and use the scroll wheel or pinch to zoom.
-
-This applet runs on the GPU, which traditionally sacrifices precision in exchange for speeding up certain types of computations by hundreds of thousands of times. However, using techniques from <a href="http://blog.hvidtfeldts.net">Syntopia</a>, a great resource on fractals, I've been able to emulate the 64-bit precision of regular CPU code with two 32-bit numbers working in conjunction on the GPU. What this means for the applet is that it's possible to zoom twice as far into the fractals (on some operating systems only when they feel like it), but that new deeper half of the zoom range comes with a steep performance penalty. This is indicated by the gray border of the applet canvas turning red, but you'll probably be well-aware of the performance drop even without that.
+again. The function will flip-flop between those two numbers forever, and what's relevant to us is that their magnitudes will never blow up to infinity. Starting points with that property are the ones in the Mandelbrot set, and we color them black. For all the points that do induce sequences with unbounded magnitude, we color them according to how quickly those sequence grow --- bright for slow and dark for fast. Using the same $c$ for every point results in a related type of fractal called a **Julia Set**, which resembles the Mandelbrot set at that point.
 
 
 
@@ -61,3 +57,7 @@ This applet runs on the GPU, which traditionally sacrifices precision in exchang
 </div>
 
 </div>
+
+### card applet-controls "Controls"
+	Drag on the scene to look around, and pinch or scroll to zoom. Hover or drag on the Mandelbrot set to pick a Julia set after clicking the button, and click or release to explore that Julia set.
+###

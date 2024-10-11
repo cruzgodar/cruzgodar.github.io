@@ -1,5 +1,6 @@
 import anime from "/scripts/anime.js";
 import { Applet, tempShader } from "/scripts/applets/applet.js";
+import { RaymarchApplet } from "/scripts/applets/raymarchApplet.js";
 import { ThreeApplet } from "/scripts/applets/threeApplet.js";
 import { addTemporaryListener } from "/scripts/src/main.js";
 import * as THREE from "/scripts/three.js";
@@ -76,7 +77,6 @@ class Fiber extends THREE.Curve
 
 export class HopfFibration extends ThreeApplet
 {
-	cameraPos = [0, -4, 0];
 	theta = Math.PI / 2;
 	phi = Math.PI / 2;
 
@@ -97,7 +97,10 @@ export class HopfFibration extends ThreeApplet
 
 	constructor({ canvas })
 	{
-		super(canvas);
+		super({
+			canvas,
+			cameraPos: [0, -4, 0]
+		});
 
 		const options =
 		{
@@ -386,6 +389,8 @@ export class HopfFibration extends ThreeApplet
 					(1 - dummy.t) * oldCameraPos[2] + dummy.t * newCameraPos[2]
 				];
 
+				this.distanceFromOrigin = RaymarchApplet.magnitude(this.cameraPos);
+
 				this.createAllFibers();
 
 				this.needNewFrame = true;
@@ -411,6 +416,16 @@ export class HopfFibration extends ThreeApplet
 			),
 			-.01
 		);
+
+		if (this.wilson.worldCenterX < -Math.PI)
+		{
+			this.wilson.worldCenterX += 2 * Math.PI;
+		}
+
+		else if (this.wilson.worldCenterX > Math.PI)
+		{
+			this.wilson.worldCenterX -= 2 * Math.PI;
+		}
 		
 		this.theta = -this.wilson.worldCenterX;
 		this.phi = -this.wilson.worldCenterY;

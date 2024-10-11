@@ -59,9 +59,15 @@ export class Applet
 			setTimeout(() => this.addFpsDisplay(), 500);
 		}
 
-		if ($("#applet-controls-card"))
+		if ($("#applet-controls-card") && !this.addHelpButton())
 		{
-			setTimeout(() => this.addHelpButton(), 100);
+			const refreshId = setInterval(() =>
+			{
+				if (this.addHelpButton())
+				{
+					clearInterval(refreshId);
+				}
+			}, 50);
 		}
 
 		Applet.current.push(this);
@@ -274,6 +280,11 @@ export class Applet
 
 	addHelpButton()
 	{
+		if (!this?.wilson?.outputCanvasContainer)
+		{
+			return false;
+		}
+
 		const element = document.createElement("div");
 		element.classList.add("wilson-help-button");
 		element.innerHTML = /* html */`
@@ -291,6 +302,8 @@ export class Applet
 
 			element.addEventListener("click", () => showCard("applet-controls"));
 		}, 10);
+
+		return true;
 	}
 
 
