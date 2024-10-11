@@ -204,9 +204,28 @@ export class Applet
 
 		for (let i = 0; i < 100; i++)
 		{
-			const height = this.fpsTimestampHistory[i];
+			const height = Math.min(this.fpsTimestampHistory[i], 100);
+			const hue = (() =>
+			{
+				if (height < 8.333)
+				{
+					return 5 / 9 - (height / 8.333) * (5 / 9 - 1 / 3);
+				}
 
-			const rgb = hsvToRgb(Math.max(.3333 - (this.fpsTimestampHistory[i] - 6) / 50, 0), 1, 1);
+				if (height < 16.667)
+				{
+					return 1 / 3 - (height - 8.333) / (16.667 - 8.333) * (1 / 3 - 7 / 45);
+				}
+
+				if (height < 33.333)
+				{
+					return 7 / 45 - (height - 16.667) / (33.333 - 16.667) * (7 / 45 - 1 / 12);
+				}
+
+				return 1 / 12 - (height - 33.333) / (100 - 33.333) * 1 / 12;
+			})();
+
+			const rgb = hsvToRgb(hue, 1, 1);
 
 			this.fpsDisplayCtx.fillStyle = `rgb(${rgb[0]}, ${rgb[1]}, ${rgb[2]})`;
 
@@ -215,7 +234,7 @@ export class Applet
 
 		this.fpsDisplayCtx.fillStyle = "rgb(127, 127, 127)";
 
-		this.fpsDisplayCtx.fillRect(0, 100 - 6.944, 100, 2);
+		this.fpsDisplayCtx.fillRect(0, 100 - 8.333, 100, 2);
 		this.fpsDisplayCtx.fillRect(0, 100 - 16.667, 100, 2);
 		this.fpsDisplayCtx.fillRect(0, 100 - 33.333, 100, 2);
 

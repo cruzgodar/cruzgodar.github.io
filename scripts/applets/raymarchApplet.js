@@ -155,7 +155,12 @@ export class RaymarchApplet extends AnimationFrameApplet
 				{
 					const dummy = { t: 0 };
 					const oldFovFactor = this.fovFactor;
-					const newFovFactor = pressed ? 5 : 1;
+					const newFovFactor = pressed ? 4 : 1;
+
+					const oldEpsilonScaling = this.epsilonScaling;
+					const newEpsilonScaling = pressed
+						? this.epsilonScaling * 4
+						: this.epsilonScaling / 4;
 
 					anime({
 						targets: dummy,
@@ -166,6 +171,12 @@ export class RaymarchApplet extends AnimationFrameApplet
 						{
 							this.fovFactor = (1 - dummy.t) * oldFovFactor
 								+ dummy.t * newFovFactor;
+
+							this.setEpsilonScaling(
+								(1 - dummy.t) * oldEpsilonScaling
+									+ dummy.t * newEpsilonScaling
+							);
+
 							this.needNewFrame = true;
 						}
 					});
