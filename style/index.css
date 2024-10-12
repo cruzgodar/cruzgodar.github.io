@@ -1731,7 +1731,7 @@ option
 
 	#header-accessibility-button
 	{
-		right: 32.5px;
+		right: 37.5px;
 	}
 }
 
@@ -1760,7 +1760,7 @@ option
 		top: 4px;
 		padding: 4px;
 		height: calc(100% - 16px);
-		right: 30px;
+		right: 35px;
 	}
 }
 
@@ -1777,10 +1777,99 @@ option
 		transform-origin: 50% calc(30px + 100vh);
 	}
 
+	#header-logo
+	{
+		top: 2.5px;
+		left: 2.5px;
+		padding: 2.5px;
+		
+		height: calc(100% - 10px);
+	}
+
 	#header-links a
 	{
-		margin-left: .5px;
-		margin-right: .5px;
+		padding: 2.5px;
+		border-radius: 5px;
+		
+		margin-left: 1.25px;
+		margin-right: 1.25px;
+		margin-top: 2.5px;
+		margin-bottom: 2.5px;
+		
+		height: calc(100% - 10px);
+	}
+
+	#header-theme-button, #header-accessibility-button
+	{
+		top: 2.5px;
+	}
+
+	#header-theme-button
+	{
+		right: 2.5px;
+		padding: 5.5px;
+		height: calc(100% - 16px);
+	}
+
+	#header-accessibility-button
+	{
+		right: 27.5px;
+		height: calc(100% - 15px);
+		padding: 5px;
+	}
+}
+
+@media (max-width: 270px)
+{
+	#header
+	{
+		height: 25px;
+	}
+
+	#header-container
+	{
+		height: calc(25px + 50vh);
+		transform-origin: 50% calc(25px + 100vh);
+	}
+
+	#header-logo
+	{
+		top: 2px;
+		left: 2px;
+		padding: 2px;
+		
+		height: calc(100% - 8px);
+	}
+
+	#header-links a
+	{
+		padding: 2px;
+		
+		margin-left: 1px;
+		margin-right: 1px;
+		margin-top: 2px;
+		margin-bottom: 2px;
+		
+		height: calc(100% - 8px);
+	}
+
+	#header-theme-button, #header-accessibility-button
+	{
+		top: 2px;
+	}
+
+	#header-theme-button
+	{
+		right: 2px;
+		padding: 4.5px;
+		height: calc(100% - 13px);
+	}
+
+	#header-accessibility-button
+	{
+		right: 22.5px;
+		height: calc(100% - 12.5px);
+		padding: 4.25px;
 	}
 }
 
