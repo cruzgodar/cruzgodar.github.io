@@ -6,7 +6,6 @@ import {
 	$$,
 	pageElement
 } from "./main.js";
-import { siteSettings } from "./settings.js";
 
 export const pageWidth = 1150;
 
@@ -131,7 +130,7 @@ export function initOnResize()
 
 export function equalizeAppletColumns()
 {
-	if (siteSettings.condensedApplets || aspectRatio < 1 || window.innerWidth < 750)
+	if (aspectRatio < 1 || window.innerWidth < 750)
 	{
 		return;
 	}

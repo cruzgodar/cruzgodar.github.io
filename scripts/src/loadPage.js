@@ -31,7 +31,6 @@ import {
 } from "./navigation.js";
 import { initPageContents } from "./pageContent.js";
 import {
-	condenseApplet,
 	siteSettings
 } from "./settings.js";
 import { sitemap } from "./sitemap.js";
@@ -85,11 +84,6 @@ export async function loadPage()
 	onResize();
 
 	listenForFullscreenKey();
-
-	if (siteSettings.condensedApplets && sitemap[pageUrl].parent === "/applets/")
-	{
-		condenseApplet();
-	}
 
 	setTimeout(initFocusEvents, 50);
 	setTimeout(equalizeAppletColumns, 50);

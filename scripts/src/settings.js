@@ -2,7 +2,6 @@ import { opacityAnimationTime } from "./animation.js";
 import { cardIsOpen } from "./cards.js";
 import { recreateDesmosGraphs } from "./desmos.js";
 import {
-	$,
 	addStyle,
 	pageUrl
 } from "./main.js";
@@ -37,7 +36,7 @@ const darkTheme = (() =>
 {
 	if (params.get("theme") === null)
 	{
-		return window.matchMedia("(prefers-color-scheme: dark)").matches;
+		return matchMedia("(prefers-color-scheme: dark)").matches;
 	}
 
 	return params.get("theme") === "1";
@@ -47,19 +46,29 @@ const reduceMotion = (() =>
 {
 	if (params.get("reducemotion") === null)
 	{
-		return window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+		return matchMedia("(prefers-reduced-motion: reduce)").matches;
 	}
 
 	return params.get("reducemotion") === "1";
+})();
+
+const increaseContrast = (() =>
+{
+	if (params.get("increasecontrast") === null)
+	{
+		return matchMedia("(prefers-contrast: more)").matches;
+	}
+
+	return params.get("increasecontrast") === "1";
 })();
 
 export const siteSettings =
 {
 	darkTheme,
 	reduceMotion,
+	increaseContrast,
 	card: params.get("card"),
 	resolutionMultiplier: parseFloat(params.get("resmult") ?? "1"),
-	condensedApplets: params.get("condensedapplets") === "1"
 };
 
 
@@ -72,12 +81,12 @@ export function getQueryParams()
 
 	params.delete("page");
 
-	if (siteSettings.darkTheme && !window.matchMedia("(prefers-color-scheme: dark)").matches)
+	if (siteSettings.darkTheme && !matchMedia("(prefers-color-scheme: dark)").matches)
 	{
 		params.set("theme", "1");
 	}
 
-	else if (!siteSettings.darkTheme && window.matchMedia("(prefers-color-scheme: dark)").matches)
+	else if (!siteSettings.darkTheme && matchMedia("(prefers-color-scheme: dark)").matches)
 	{
 		params.set("theme", "0");
 	}
@@ -89,14 +98,14 @@ export function getQueryParams()
 
 
 
-	if (siteSettings.reduceMotion && !window.matchMedia("(prefers-reduced-motion: reduce)").matches)
+	if (siteSettings.reduceMotion && !matchMedia("(prefers-reduced-motion: reduce)").matches)
 	{
 		params.set("reducemotion", "1");
 	}
 
 	else if (
 		!siteSettings.reduceMotion
-		&& window.matchMedia("(prefers-reduced-motion: reduce)").matches
+		&& matchMedia("(prefers-reduced-motion: reduce)").matches
 	) {
 		params.set("reducemotion", "0");
 	}
@@ -173,15 +182,23 @@ export function setForcedTheme(newForcedTheme)
 
 export function initReduceMotion()
 {
-	window.matchMedia("(prefers-reduced-motion: reduce)").addListener((e) =>
+	matchMedia("(prefers-reduced-motion: reduce)").addEventListener("change", (e) =>
 	{
 		siteSettings.reduceMotion = e.matches;
 	});
 }
 
+export function initIncreaseContrast()
+{
+	matchMedia("(prefers-contrast: more)").addEventListener("change", (e) =>
+	{
+		siteSettings.increaseContrast = e.matches;
+	});
+}
+
 export function initDarkTheme()
 {
-	window.matchMedia("(prefers-color-scheme: dark)").addListener((e) =>
+	matchMedia("(prefers-color-scheme: dark)").addEventListener("change", (e) =>
 	{
 		if (cardIsOpen)
 		{
@@ -304,46 +321,6 @@ export async function toggleDarkTheme({
 		]);
 
 		element.remove();
-	}
-}
-
-
-
-export function condenseApplet()
-{
-	addStyle(`
-		p:not(.text-box-subtext, .checkbox-subtext, .radio-button-subtext, .slider-subtext), h1, h2, header, footer, br
-		{
-			display: none;
-		}
-		
-		section:first-of-type
-		{
-			margin-top: 0 !important;
-			margin-bottom: 0 !important;
-		}
-		
-		body
-		{
-			margin-top: -5vh;
-		}
-
-		#canvas-landscape
-		{
-			flex-direction: column !important;
-		}
-
-		#canvas-landscape-left, #canvas-landscape-middle, #canvas-landscape-right
-		{
-			width: 80% !important;
-		}
-	`);
-
-	const downloadButtonElement = $("#download-button");
-
-	if (downloadButtonElement?.parentNode?.parentNode)
-	{
-		downloadButtonElement.parentNode.parentNode.style.display = "none";
 	}
 }
 

@@ -135,7 +135,7 @@ export async function loadSite(url = pageUrl)
 	}
 
 	// When in PWA form, disable text selection and drag-and-drop.
-	if (window.matchMedia("(display-mode: standalone)").matches)
+	if (matchMedia("(display-mode: standalone)").matches)
 	{
 		document.documentElement.style.WebkitUserSelect = "none";
 		document.documentElement.style.userSelect = "none";

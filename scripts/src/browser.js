@@ -13,9 +13,9 @@ export const browserIsIos =
 	|| (navigator.userAgent.includes("Mac") && "ontouchend" in document)
 );
 
-const browserSupportsP3 = window.matchMedia("(color-gamut: p3)").matches;
+const browserSupportsP3 = matchMedia("(color-gamut: p3)").matches;
 
-const browserSupportsRec2020 = window.matchMedia("(color-gamut: rec2020)").matches;
+const browserSupportsRec2020 = matchMedia("(color-gamut: rec2020)").matches;
 
 // rgb is an array of integers in [0, 255], and a is a float in [0, 1]. The output is of the form
 // rgba(r, g, b, a) or color(display-p3 r g b / a).
