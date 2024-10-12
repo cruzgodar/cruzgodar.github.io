@@ -297,7 +297,7 @@ export class Applet
 			addHoverEventWithScale({
 				element,
 				scale: 1.1,
-				bounceOnTouch: true,
+				addBounceOnTouch: true,
 			});
 
 			element.addEventListener("click", () => showCard("applet-controls"));
