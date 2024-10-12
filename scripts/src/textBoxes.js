@@ -242,7 +242,6 @@ export class TextBox extends InputElement
 			object: document.documentElement,
 			event: "pointerdown",
 			callback: boundFunction,
-			log: true
 		});
 	}
 
@@ -301,7 +300,7 @@ export class TextBox extends InputElement
 
 		boundFunction();
 
-		dialog.style.transform = "scale(.95)";
+		dialog.style.transform = siteSettings.reduceMotion ? "scale(1)" : "scale(.95)";
 
 
 
@@ -366,7 +365,7 @@ function hideAllCapDialogs()
 		anime({
 			targets: dialogs,
 			opacity: 0,
-			scale: .95,
+			scale: siteSettings.reduceMotion ? 1 : .95,
 			duration: 250,
 			easing: "easeOutQuad",
 			complete: () =>

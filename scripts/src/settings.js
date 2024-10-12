@@ -326,6 +326,15 @@ export async function toggleDarkTheme({
 
 
 
+export async function toggleReduceMotion()
+{
+	siteSettings.reduceMotion = !siteSettings.reduceMotion;
+
+	history.replaceState({ url: pageUrl }, document.title, getDisplayUrl());
+}
+
+
+
 let timeoutId;
 
 let shownEasterEgg = false;
