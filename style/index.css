@@ -526,6 +526,14 @@ mjx-container
 	}
 }
 
+@media (prefers-contrast: more)
+{
+	#contents-indicator
+	{
+		filter: brightness(calc(var(--theme) * 10));
+	}
+}
+
 #contents-container
 {
 	position: fixed;
