@@ -1687,6 +1687,7 @@ option
 	outline: calc(-1px + var(--theme) * 3px) solid var(--normal-contrast);
 	
 	opacity: 0;
+	display: none;
 	z-index: 150;
 }
 
