@@ -53,4 +53,19 @@ export class Checkbox extends InputElement
 			this.onInput();
 		}
 	}
+
+	setDisabled(newDisabled)
+	{
+		this.disabled = newDisabled;
+
+		if (this.disabled)
+		{
+			this.element.parentNode.parentNode.classList.add("disabled");
+		}
+
+		else
+		{
+			this.element.parentNode.parentNode.classList.remove("disabled");
+		}
+	}
 }

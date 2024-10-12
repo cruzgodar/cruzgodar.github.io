@@ -190,7 +190,7 @@ export function setForcedTheme(newForcedTheme)
 
 	if (darkThemeCheckbox)
 	{
-		darkThemeCheckbox.disabled = true;
+		darkThemeCheckbox.setDisabled(true); 
 	}
 }
 
@@ -279,7 +279,7 @@ export async function revertTheme()
 
 	if (darkThemeCheckbox)
 	{
-		darkThemeCheckbox.disabled = false;
+		darkThemeCheckbox.setDisabled(false);
 	}
 
 	if (siteSettings.darkTheme !== revertThemeTo)

@@ -989,6 +989,11 @@ body > .wilson-fullscreen-components-container .wilson-help-button
 	justify-content: center;
 }
 
+.checkbox-row.disabled
+{
+	opacity: .5;
+}
+
 .checkbox-row p
 {
 	width: auto;
@@ -1013,7 +1018,16 @@ body > .wilson-fullscreen-components-container .wilson-help-button
 	border: 2px solid var(--normal-contrast);
 	border-radius: 6px;
 	padding: 2px;
+}
+
+.checkbox-row:not(.disabled) .checkbox-container
+{
 	cursor: pointer;
+}
+
+.checkbox-row.disabled .checkbox-container
+{
+	transform: scale(1) !important;
 }
 
 .checkbox-container:not(:hover):focus
@@ -1037,7 +1051,10 @@ body > .wilson-fullscreen-components-container .wilson-help-button
 	margin: 0;
 	
 	opacity: 0;
-	
+}
+
+.checkbox-row:not(.disabled) .checkbox-container > input
+{
 	cursor: pointer;
 }
 
@@ -1051,9 +1068,12 @@ body > .wilson-fullscreen-components-container .wilson-help-button
 	background: var(--normal-contrast);
 	opacity: 0;
 	
-	cursor: pointer;
-	
 	transition: opacity .125s ease-in-out;
+}
+
+.checkbox-row:not(.disabled) .checkbox-container > input ~ .checkbox
+{
+	cursor: pointer;
 }
 
 .checkbox-container > input:checked ~ .checkbox
