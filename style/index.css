@@ -15,8 +15,8 @@
 
 	--neutral-hover: color-mix(in srgb, rgb(208, 208, 208), rgb(64, 64, 64) calc(var(--theme) * 100%));
 
-	--link-normal-contrast: color-mix(in srgb, rgb(80, 192, 80), rgb(160, 224, 160) calc(var(--theme) * 100%));
-	--link-hover-normal-contrast: color-mix(in srgb, rgb(160, 224, 160), rgb(192, 255, 192) calc(var(--theme) * 100%));
+	--link-normal-contrast: color-mix(in srgb, rgb(0% 60.09% 3.61%), rgb(160, 224, 160) calc(var(--theme) * 100%));
+	--link-hover-normal-contrast: color-mix(in srgb, rgb(0% 96.4% 8.64%), rgb(127, 255, 127) calc(var(--theme) * 100%));
 
 	--link-high-contrast: color-mix(in srgb, rgb(0, 164, 0), rgb(127, 255, 127) calc(var(--theme) * 100%));
 	--link-hover-high-contrast: color-mix(in srgb, rgb(0, 255, 0), rgb(0, 192, 0) calc(var(--theme) * 100%));
@@ -49,9 +49,10 @@
 	--page-width: 1150px;
 	--text-width: 800px;
 
+	--dark-outline-color-partial: color-mix(in srgb, rgba(0, 0, 0, 0), var(--normal-contrast) calc(var(--theme) * 100%));
+	--dark-outline-color: color-mix(in srgb, var(--dark-outline-color-partial), var(--high-contrast) calc(var(--contrast) * 100%));
 
-
-	--contrast-border-width: calc(-1px + var(--contrast) * 3px);
+	--contrast-border-color: color-mix(in srgb, rgba(0, 0, 0, 0), var(--high-contrast) calc(var(--contrast) * 100%));
 }
 
 html
@@ -95,6 +96,13 @@ body
 		padding-left: 32px;
 		padding-right: 32px;
 	}
+}
+
+
+
+.hover-reduce-motion
+{
+	filter: brightness(.85);
 }
 
 
@@ -270,14 +278,6 @@ img
 
 
 
-/* Used on pages with nonstandard background colors to fade to the default. */
-.background-transition
-{
-	transition: background-color .5s ease-in-out !important;
-}
-
-
-
 #MathJax_Message
 {
 	display: none !important;
@@ -388,7 +388,7 @@ mjx-container
 	background-color: var(--background);
 	box-shadow: 0px 0px 16px 0px rgba(0, 0, 0, .3);
 
-	border: var(--contrast-border-width) solid var(--high-contrast);
+	border: 2px solid var(--contrast-border-color);
 }
 
 @media (max-width: 500px)
@@ -472,7 +472,7 @@ mjx-container
 {
 	background-color: var(--neutral-hover);
 
-	outline: var(--contrast-border-width) solid var(--high-contrast);
+	outline: 2px solid var(--contrast-border-color);
 }
 
 #card-close-button span
@@ -555,7 +555,7 @@ mjx-container
 	margin-right: 20px;
 	box-shadow: 0px 0px 16px 0px rgba(0, 0, 0, 0.35);
 
-	outline: calc(-1px + var(--theme) * 3px) solid var(--normal-contrast);
+	outline: 2px solid var(--dark-outline-color);
 
 	background-color: var(--background);
 }
@@ -872,7 +872,7 @@ body > .wilson-fullscreen-components-container .wilson-help-button
 .text-button
 {
 	color: var(--normal-contrast);
-	background-color: rgba(0, 0, 0, 0);
+	background-color: var(--background);
 	width: fit-content;
 	display: inline-block;
 	margin: auto;
@@ -960,7 +960,7 @@ body > .wilson-fullscreen-components-container .wilson-help-button
 	
 	background: var(--neutral-hover);
 
-	outline: var(--contrast-border-width) solid var(--high-contrast);
+	outline: 2px solid var(--contrast-border-color);
 }
 
 
@@ -1039,8 +1039,6 @@ body > .wilson-fullscreen-components-container .wilson-help-button
 	opacity: 0;
 	
 	cursor: pointer;
-	
-	transition: width .125s ease-in-out, height .125s ease-in-out;
 }
 
 .checkbox-container > input ~ .checkbox
@@ -1050,16 +1048,17 @@ body > .wilson-fullscreen-components-container .wilson-help-button
 	
 	border-radius: 2px;
 	
-	background: rgba(0, 0, 0, 0);
+	background: var(--normal-contrast);
+	opacity: 0;
 	
 	cursor: pointer;
 	
-	transition: background-color .125s ease-in-out, width .125s ease-in-out, height .125s ease-in-out;
+	transition: opacity .125s ease-in-out;
 }
 
 .checkbox-container > input:checked ~ .checkbox
 {
-	background-color: var(--normal-contrast);
+	opacity: 1;
 }
 
 
@@ -1165,7 +1164,7 @@ body > .wilson-fullscreen-components-container .wilson-help-button
 	padding-top: 10px;
 	border-radius: 12px;
 	box-shadow: 0px 0px 16px calc(var(--theme) * 8px) rgba(0, 0, 0, .4);
-	outline: calc(-1px + var(--theme) * 3px) solid var(--normal-contrast);
+	outline: 2px solid var(--dark-outline-color);
 	position: absolute;
 	z-index: 100;
 }
@@ -1421,7 +1420,7 @@ option
 {
 	background-color: var(--low-contrast);
 
-	outline: var(--contrast-border-width) solid var(--high-contrast);
+	outline: 2px solid var(--contrast-border-color);
 }
 
 .carousel-dot .fill
@@ -1454,7 +1453,7 @@ option
 	transform-origin: 50% calc(40px + 100vh);
 	transform: scale(1);
 
-	outline: var(--contrast-border-width) solid var(--high-contrast);
+	outline: 2px solid var(--contrast-border-color);
 }
 
 
@@ -1510,7 +1509,7 @@ option
 {
 	background-color: rgb(224, 224, 224);
 
-	outline: var(--contrast-border-width) solid var(--high-contrast);
+	outline: 2px solid var(--contrast-border-color);
 }
 
 #header-logo.hover span
@@ -1571,7 +1570,7 @@ option
 
 #header-links a.hover
 {
-	outline: var(--contrast-border-width) solid var(--high-contrast);
+	outline: 2px solid var(--contrast-border-color);
 }
 
 #header-links a.hover span
@@ -1616,10 +1615,13 @@ option
 
 
 
-#header-theme-button, #header-accessibility-button
+#header-settings-button
 {
 	position: absolute;
 	top: 5px;
+	right: 5px;
+	padding: 4px;
+	height: calc(100% - 18px);
 
 	aspect-ratio: 1;
 	
@@ -1633,35 +1635,21 @@ option
 	cursor: pointer;
 }
 
-#header-theme-button
-{
-	right: 5px;
-	padding: 6px;
-	height: calc(100% - 22px);
-}
-
-#header-accessibility-button
-{
-	right: 40px;
-	height: calc(100% - 20px);
-	padding: 5px;
-}
-
-#header-theme-button.hover, #header-accessibility-button.hover
+#header-settings-button.hover
 {
 	background-color: rgb(224, 224, 224);
 
-	outline: var(--contrast-border-width) solid var(--high-contrast);
+	outline: 2px solid var(--contrast-border-color);
 }
 
-#header-theme-button input, #header-accessibility-button input
+#header-settings-button input
 {
 	height: 100%;
 	
 	filter: invert(var(--theme));
 }
 
-#header-theme-button.hover input, #header-accessibility-button.hover input
+#header-settings-button.hover input
 {
 	filter: invert(0);
 }
@@ -1685,7 +1673,7 @@ option
 	padding-bottom: 16px;
 
 	box-shadow: 0px 0px 16px 0px rgba(0, 0, 0, .35);
-	outline: calc(-1px + var(--theme) * 3px) solid var(--normal-contrast);
+	outline: 2px solid var(--dark-outline-color);
 	
 	opacity: 0;
 	display: none;
@@ -1719,7 +1707,7 @@ option
 		display: block;
 	}
 
-	#header-logo, #header-links a, #header-theme-button, #header-accessibility-button
+	#header-logo, #header-links a, #header-settings-button
 	{
 		/* Wrap around the little image link glyphs nicely. */
 		border-radius: 7.5px;
@@ -1729,11 +1717,6 @@ option
 	{
 		padding: 2.5px;
 		height: calc(100% - 15px);
-	}
-
-	#header-accessibility-button
-	{
-		right: 37.5px;
 	}
 }
 
@@ -1750,19 +1733,12 @@ option
 		transform-origin: 50% calc(35px + 100vh);
 	}
 
-	#header-theme-button
+	#header-settings-button
 	{
-		top: 4px;
-		padding: 5px;
-		height: calc(100% - 18px);
-	}
-
-	#header-accessibility-button
-	{
-		top: 4px;
-		padding: 4px;
-		height: calc(100% - 16px);
-		right: 35px;
+		top: 4.5px;
+		right: 4.5px;
+		padding: 4.5px;
+		height: calc(100% - 17px);
 	}
 }
 
@@ -1801,23 +1777,12 @@ option
 		height: calc(100% - 10px);
 	}
 
-	#header-theme-button, #header-accessibility-button
+	#header-settings-button
 	{
-		top: 2.5px;
-	}
-
-	#header-theme-button
-	{
-		right: 2.5px;
-		padding: 5.5px;
-		height: calc(100% - 16px);
-	}
-
-	#header-accessibility-button
-	{
-		right: 27.5px;
-		height: calc(100% - 15px);
-		padding: 5px;
+		top: 2px;
+		right: 2px;
+		padding: 4.5px;
+		height: calc(100% - 13px);
 	}
 }
 
@@ -1855,23 +1820,12 @@ option
 		height: calc(100% - 8px);
 	}
 
-	#header-theme-button, #header-accessibility-button
+	#header-settings-button
 	{
 		top: 2px;
-	}
-
-	#header-theme-button
-	{
 		right: 2px;
-		padding: 4.5px;
-		height: calc(100% - 13px);
-	}
-
-	#header-accessibility-button
-	{
-		right: 22.5px;
-		height: calc(100% - 12.5px);
-		padding: 4.25px;
+		padding: 3.5px;
+		height: calc(100% - 11px);
 	}
 }
 
@@ -1970,7 +1924,7 @@ option
 	
 	box-shadow: 0px 0px 30px 0px rgba(0, 0, 0, .16);
 
-	outline: var(--contrast-border-width) solid var(--high-contrast);
+	outline: 2px solid var(--contrast-border-color);
 }
 
 .image-link img:not(:hover):focus

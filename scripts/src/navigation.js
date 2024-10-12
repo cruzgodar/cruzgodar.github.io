@@ -87,9 +87,30 @@ export async function redirect({
 	const [text] = await Promise.all([
 		asyncFetch(`${url}data.html`),
 		loadBanner(),
-		fadeOutPage({ url, noFadeOut }),
+		fadeOutPage(noFadeOut),
 		cardIsOpen ? hideCard() : Promise.resolve()
 	]);
+
+
+
+	if (forceThemePages[url])
+	{
+		setRevertThemeTo(siteSettings.darkTheme);
+
+		setForcedTheme(true);
+
+		if (siteSettings.darkTheme !== forceThemePages[url])
+		{
+			await toggleDarkTheme({ force: true });
+		}
+	}
+
+	else if (!forceThemePages[url])
+	{
+		await revertTheme();
+	}
+
+
 
 	unloadPage();
 
@@ -220,7 +241,7 @@ export function getDisplayUrl()
 
 
 
-async function fadeOutPage({ url, noFadeOut })
+async function fadeOutPage(noFadeOut)
 {
 	if (!opacityAnimationTime)
 	{
@@ -306,22 +327,6 @@ async function fadeOutPage({ url, noFadeOut })
 	})();
 
 	await new Promise(resolve => setTimeout(resolve, 33));
-
-	if (
-		forceThemePages[url]
-		&& siteSettings.darkTheme !== forceThemePages[url]
-	) {
-		setRevertThemeTo(siteSettings.darkTheme);
-
-		setForcedTheme(true);
-
-		await toggleDarkTheme({ force: true });
-	}
-
-	else if (!forceThemePages[url])
-	{
-		await revertTheme();
-	}
 }
 
 

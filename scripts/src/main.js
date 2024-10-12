@@ -119,7 +119,7 @@ export async function loadSite(url = pageUrl)
 	initDarkTheme();
 	initReduceMotion();
 	initIncreaseContrast();
-
+	
 	pageElement.classList.add("page");
 
 	document.body.insertBefore(pageElement, document.body.firstChild);

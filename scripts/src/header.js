@@ -12,6 +12,7 @@ import {
 export let headerElement;
 
 let accessibilityTooltipElement;
+export let darkThemeCheckbox;
 export let reduceMotionCheckbox;
 export let increaseContrastCheckbox;
 
@@ -59,18 +60,26 @@ export function addHeader()
 					<img src="/graphics/header-icons/about.webp"></img>
 				</a>
 			</div>
-			
-			<div id="header-accessibility-button" class="keep-accessibility-dialog-open">
-				<input type="image" src="/graphics/header-icons/accessibility.webp" class="keep-accessibility-dialog-open">
-			</div>
 
-			<div id="header-theme-button">
-				<input type="image" src="/graphics/header-icons/moon.webp">
+			<div id="header-settings-button">
+				<input type="image" src="/graphics/header-icons/gear.webp" class="keep-accessibility-dialog-open">
 			</div>
 		</div>
 
 		<div id="accessibility-tooltip" class="keep-accessibility-dialog-open">
-			<h2 class="section-text keep-accessibility-dialog-open">Accessibility Settings</h2>
+			<h2 class="section-text keep-accessibility-dialog-open">Site Settings</h2>
+
+			<div class="checkboxes keep-accessibility-dialog-open">
+				<div class="checkbox-row keep-accessibility-dialog-open">
+					<div class="checkbox-container keep-accessibility-dialog-open" tabindex="1">
+						<input type="checkbox" id="dark-theme-checkbox" class="keep-accessibility-dialog-open">
+						<div class="checkbox keep-accessibility-dialog-open"></div>
+					</div>
+					<label for="dark-theme-checkbox" style="margin-left: 10px" class="keep-accessibility-dialog-open">
+						<p class="body-text checkbox-subtext keep-accessibility-dialog-open"></p>
+					</label>
+				</div>
+			</div>
 
 			<div class="checkboxes keep-accessibility-dialog-open">
 				<div class="checkbox-row keep-accessibility-dialog-open">
@@ -129,24 +138,11 @@ export function addHeader()
 
 		
 
-		const themeButtonElement = document.body.querySelector("#header-theme-button");
+		const settingsButtonElement = document.body.querySelector("#header-settings-button");
 
-		addHoverEvent({ element: themeButtonElement, addBounceOnTouch: () => true });
+		addHoverEvent({ element: settingsButtonElement, addBounceOnTouch: () => true });
 
-		themeButtonElement.addEventListener("click", e =>
-		{
-			e.preventDefault();
-			toggleDarkTheme({});
-		});
-
-
-
-		const accessibilityButtonElement =
-			document.body.querySelector("#header-accessibility-button");
-
-		addHoverEvent({ element: accessibilityButtonElement, addBounceOnTouch: () => true });
-
-		accessibilityButtonElement.addEventListener("click", e =>
+		settingsButtonElement.addEventListener("click", e =>
 		{
 			e.preventDefault();
 
@@ -174,6 +170,21 @@ export function addHeader()
 			{
 				hideAccessibilityDialog();
 			}
+		});
+
+
+
+		darkThemeCheckbox = new Checkbox({
+			element: document.body.querySelector("#dark-theme-checkbox"),
+			name: "Dark theme",
+			checked: siteSettings.darkTheme,
+			onInput: () => toggleDarkTheme({})
+		});
+
+		addHoverEventWithScale({
+			element: darkThemeCheckbox.element.parentNode,
+			scale: 1.1,
+			addBounceOnTouch: () => true
 		});
 
 

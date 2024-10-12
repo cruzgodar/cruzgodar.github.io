@@ -2,6 +2,7 @@ import { changeScale } from "./animation.js";
 import { currentlyTouchDevice } from "./interaction.js";
 import { $$ } from "./main.js";
 import { prefetchPage } from "./navigation.js";
+import { siteSettings } from "./settings.js";
 
 const elementSelectors = [
 	["a", 1, () => false],
@@ -112,7 +113,7 @@ export function addHoverEvent({
 
 	element.addEventListener("touchstart", async () =>
 	{
-		if (addBounceOnTouch())
+		if (addBounceOnTouch() && !siteSettings.reduceMotion)
 		{
 			await changeScale({ element, scale, duration: 100 });
 			changeScale({ element, scale: 1, duration: 100 });
@@ -136,6 +137,13 @@ export function addHoverEventWithScale({
 
 			element.classList.add("hover");
 
+			if (siteSettings.reduceMotion)
+			{
+				element.classList.add("hover-reduce-motion");
+
+				return;
+			}
+
 			changeScale({ element, scale });
 		}
 	});
@@ -150,6 +158,7 @@ export function addHoverEventWithScale({
 			}
 
 			element.classList.remove("hover");
+			element.classList.remove("hover-reduce-motion");
 
 			changeScale({ element, scale: 1 });
 		}
@@ -157,9 +166,9 @@ export function addHoverEventWithScale({
 
 	element.addEventListener("touchstart", async () =>
 	{
-		if (addBounceOnTouch())
+		if (addBounceOnTouch() && !siteSettings.reduceMotion)
 		{
-			await changeScale({ element, scale: 1.1, duration: 100 });
+			await changeScale({ element, scale, duration: 100 });
 			changeScale({ element, scale: 1, duration: 100 });
 		}
 	});

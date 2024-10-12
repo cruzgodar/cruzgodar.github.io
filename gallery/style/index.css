@@ -81,7 +81,7 @@ section
 
 .gallery-image-1-1 img.hover, .gallery-image-2-2 img.hover, .gallery-image-3-3 img.hover
 {
-	outline: var(--contrast-border-width) solid var(--high-contrast);
+	outline: 2px solid var(--contrast-border-color);
 }
 
 

@@ -1,7 +1,6 @@
-import { opacityAnimationTime } from "./animation.js";
 import { cardIsOpen } from "./cards.js";
 import { recreateDesmosGraphs } from "./desmos.js";
-import { increaseContrastCheckbox, reduceMotionCheckbox } from "./header.js";
+import { darkThemeCheckbox, increaseContrastCheckbox, reduceMotionCheckbox } from "./header.js";
 import {
 	addStyle,
 	pageUrl
@@ -14,14 +13,6 @@ export const forceThemePages =
 	"/gallery/": true,
 	"/slides/oral-exam/": true
 };
-
-export const preventThemeChangePages =
-[
-	"/gallery/",
-	"/slides/oral-exam/",
-	"/writing/caracore/",
-	"/writing/caligo/"
-];
 
 const rootElement = document.querySelector(":root");
 
@@ -196,6 +187,11 @@ let forcedTheme = false;
 export function setForcedTheme(newForcedTheme)
 {
 	forcedTheme = newForcedTheme;
+
+	if (darkThemeCheckbox)
+	{
+		darkThemeCheckbox.disabled = true;
+	}
 }
 
 
@@ -206,7 +202,7 @@ export function initReduceMotion()
 	{
 		siteSettings.reduceMotion = e.matches;
 
-		reduceMotionCheckbox.setChecked(siteSettings.reduceMotion, false);
+		reduceMotionCheckbox && reduceMotionCheckbox.setChecked(siteSettings.reduceMotion, false);
 	});
 }
 
@@ -216,9 +212,10 @@ export function initIncreaseContrast()
 	{
 		if (e.matches !== siteSettings.increaseContrast)
 		{
-			toggleIncreaseContrast();
+			toggleIncreaseContrast({});
 
-			increaseContrastCheckbox.setChecked(siteSettings.increaseContrast, false);
+			increaseContrastCheckbox &&
+				increaseContrastCheckbox.setChecked(siteSettings.increaseContrast, false);
 		}
 	});
 
@@ -226,7 +223,7 @@ export function initIncreaseContrast()
 	{
 		siteSettings.increaseContrast = false;
 
-		toggleIncreaseContrast();
+		toggleIncreaseContrast({ noAnimation: true });
 	}
 }
 
@@ -280,6 +277,11 @@ export async function revertTheme()
 
 	revertThemeTo = null;
 
+	if (darkThemeCheckbox)
+	{
+		darkThemeCheckbox.disabled = false;
+	}
+
 	if (siteSettings.darkTheme !== revertThemeTo)
 	{
 		await toggleDarkTheme({ force: true });
@@ -291,9 +293,9 @@ export async function revertTheme()
 export async function toggleDarkTheme({
 	noAnimation = false,
 	force = false,
-	duration = opacityAnimationTime * 2
+	duration = 500
 }) {
-	if (!force && preventThemeChangePages.includes(pageUrl))
+	if (!force && pageUrl in forceThemePages)
 	{
 		return;
 	}
@@ -304,6 +306,8 @@ export async function toggleDarkTheme({
 	}
 
 	siteSettings.darkTheme = !siteSettings.darkTheme;
+
+	darkThemeCheckbox && darkThemeCheckbox.setChecked(siteSettings.darkTheme, false);
 
 	recreateDesmosGraphs();
 
@@ -369,13 +373,41 @@ export async function toggleReduceMotion()
 
 
 
-export async function toggleIncreaseContrast()
-{
+export async function toggleIncreaseContrast({
+	noAnimation = false,
+	duration = 150
+}) {
 	siteSettings.increaseContrast = !siteSettings.increaseContrast;
 
 	history.replaceState({ url: pageUrl }, document.title, getDisplayUrl());
 
-	rootElement.style.setProperty("--contrast", siteSettings.increaseContrast ? 1 : 0);
+	if (noAnimation)
+	{
+		rootElement.style.setProperty("--contrast", siteSettings.increaseContrast ? 1 : 0);
+	}
+
+	else
+	{
+		const dummy = { t: siteSettings.increaseContrast ? 0 : 1 };
+
+		await anime({
+			targets: dummy,
+			t: siteSettings.increaseContrast ? 1 : 0,
+			duration,
+			easing: "easeInOutSine",
+			update: () =>
+			{
+				rootElement.style.setProperty("--contrast", dummy.t);
+			},
+			complete: () =>
+			{
+				rootElement.style.setProperty(
+					"--contrast",
+					siteSettings.increaseContrast ? 1 : 0
+				);
+			},
+		}).finished;
+	}
 }
 
 
@@ -398,7 +430,7 @@ function handleEasterEgg()
 
 		clearTimeout(timeoutId);
 
-		document.body.querySelector("#header-theme-button").innerHTML = "boo";
+		document.body.querySelector("#header-settings-button").innerHTML = "boo";
 
 		addStyle(`
 			#banner, img, canvas

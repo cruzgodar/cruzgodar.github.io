@@ -22,12 +22,15 @@ export class Checkbox extends InputElement
 		this.element.addEventListener("input", () =>
 		{
 			this.element.blur();
-			this.checked = this.element.checked;
 
-			if (!this.disabled)
+			if (this.disabled)
 			{
-				this.onInput();
+				this.element.checked = !this.element.checked;
+				return;
 			}
+
+			this.checked = this.element.checked;
+			this.onInput();
 		});
 
 		this.element.parentNode.addEventListener("click", () =>
