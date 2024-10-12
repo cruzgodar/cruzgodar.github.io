@@ -190,7 +190,7 @@ export function setForcedTheme(newForcedTheme)
 
 	if (darkThemeCheckbox)
 	{
-		darkThemeCheckbox.setDisabled(true); 
+		darkThemeCheckbox.setDisabled(true);
 	}
 }
 
@@ -388,6 +388,13 @@ export async function toggleIncreaseContrast({
 
 	else
 	{
+		const element = addStyle(`
+			*:not(.checkbox)
+			{
+				transition: none !important;
+			}
+		`);
+
 		const dummy = { t: siteSettings.increaseContrast ? 0 : 1 };
 
 		await anime({
@@ -407,6 +414,8 @@ export async function toggleIncreaseContrast({
 				);
 			},
 		}).finished;
+
+		element.remove();
 	}
 }
 

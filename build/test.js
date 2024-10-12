@@ -347,7 +347,7 @@ async function test(clean)
 	await validateAllLinks(htmlDataFiles);
 
 	console.log("Testing pages for console errors...");
-	await testPages(files.filter(htmlIndexFiles));
+	await testPages(htmlIndexFiles);
 
 	console.log("Testing LaTeX...");
 	await testAllLatex(latexDataFiles);
