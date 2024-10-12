@@ -2,6 +2,7 @@ import anime from "../anime.js";
 import { cardAnimationTime } from "./animation.js";
 import { addHoverEventWithScale } from "./hoverEvents.js";
 import { $, $$, pageElement } from "./main.js";
+import { siteSettings } from "./settings.js";
 
 const contentsSelector = ".notes-title, .section-text, .heading-text";
 
@@ -90,7 +91,7 @@ function prepareContents()
 	});
 
 	contentsContainerElement.style.opacity = 0;
-	contentsContainerElement.style.marginRight = window.reduceMotion ? 0 : "-32px";
+	contentsContainerElement.style.marginRight = siteSettings.reduceMotion ? 0 : "-32px";
 	contentsContainerElement.style.display = "none";
 
 
@@ -158,7 +159,7 @@ async function hideContents()
 		anime({
 			targets: contentsContainerElement,
 			opacity: 0,
-			marginRight: window.reduceMotion ? 0 : "-32px",
+			marginRight: siteSettings.reduceMotion ? 0 : "-32px",
 			duration: cardAnimationTime,
 			easing: "easeOutQuint"
 		}).finished,

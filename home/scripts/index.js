@@ -4,6 +4,7 @@ import { nameTextOpacity } from "/scripts/src/banners.js";
 import {
 	$
 } from "/scripts/src/main.js";
+import { siteSettings } from "/scripts/src/settings.js";
 
 export default function()
 {
@@ -20,7 +21,7 @@ export default function()
 
 	updateNameTextOpacity();
 
-	if (window.reduceMotion)
+	if (siteSettings.reduceMotion)
 	{
 		cruzTextElement.style.transform = "translateX(0px)";
 		godarTextElement.style.transform = "translateX(0px)";

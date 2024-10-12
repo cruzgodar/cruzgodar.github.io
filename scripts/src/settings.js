@@ -43,9 +43,20 @@ const darkTheme = (() =>
 	return params.get("theme") === "1";
 })();
 
+const reduceMotion = (() =>
+{
+	if (params.get("reducemotion") === null)
+	{
+		return window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+	}
+
+	return params.get("reducemotion") === "1";
+})();
+
 export const siteSettings =
 {
 	darkTheme,
+	reduceMotion,
 	card: params.get("card"),
 	resolutionMultiplier: parseFloat(params.get("resmult") ?? "1"),
 	condensedApplets: params.get("condensedapplets") === "1"
@@ -74,6 +85,25 @@ export function getQueryParams()
 	else
 	{
 		params.delete("theme");
+	}
+
+
+
+	if (siteSettings.reduceMotion && !window.matchMedia("(prefers-reduced-motion: reduce)").matches)
+	{
+		params.set("reducemotion", "1");
+	}
+
+	else if (
+		!siteSettings.reduceMotion
+		&& window.matchMedia("(prefers-reduced-motion: reduce)").matches
+	) {
+		params.set("reducemotion", "0");
+	}
+
+	else
+	{
+		params.delete("reducemotion");
 	}
 
 
@@ -143,11 +173,9 @@ export function setForcedTheme(newForcedTheme)
 
 export function initReduceMotion()
 {
-	window.reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-
 	window.matchMedia("(prefers-reduced-motion: reduce)").addListener((e) =>
 	{
-		window.reduceMotion = e.matches;
+		siteSettings.reduceMotion = e.matches;
 	});
 }
 

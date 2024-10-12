@@ -87,7 +87,7 @@ export async function showCard(id, animationTime = cardAnimationTime)
 
 	container.scroll(0, 0);
 
-	const backgroundScale = window.reduceMotion ? 1 : .975;
+	const backgroundScale = siteSettings.reduceMotion ? 1 : .975;
 
 
 
@@ -143,7 +143,7 @@ export async function showCard(id, animationTime = cardAnimationTime)
 		pageElement.style.position = "fixed";
 	}
 
-	if (window.reduceMotion)
+	if (siteSettings.reduceMotion)
 	{
 		container.style.opacity = 0;
 		container.style.top = 0;
@@ -226,7 +226,7 @@ export async function hideCard(animationTime = cardAnimationTime)
 	const containerOldScroll = container.scrollTop;
 	const totalHeightToMove = containerOldScroll + window.innerHeight + 64;
 
-	const hidePromise = window.reduceMotion
+	const hidePromise = siteSettings.reduceMotion
 		? anime({
 			targets: container,
 			opacity: 0,

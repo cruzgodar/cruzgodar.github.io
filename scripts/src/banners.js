@@ -9,6 +9,7 @@ import {
 	pageElement,
 	pageUrl
 } from "./main.js";
+import { siteSettings } from "./settings.js";
 
 export let bannerElement;
 
@@ -68,7 +69,7 @@ export function updateBanner(timestamp)
 
 
 
-	if (window.reduceMotion)
+	if (siteSettings.reduceMotion)
 	{
 		contentElement.style.paddingLeft = `${minPadding}px`;
 		contentElement.style.paddingRight = `${minPadding}px`;
@@ -127,7 +128,7 @@ export function updateBanner(timestamp)
 		nameTextOpacity = 1 - Math.min(t * 1.5, 1);
 	}
 
-	
+
 
 	if (contentElement.offsetHeight < viewportHeight - headerElement.offsetHeight - 32)
 	{
