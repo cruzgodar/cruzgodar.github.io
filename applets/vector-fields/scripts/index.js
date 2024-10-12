@@ -21,7 +21,7 @@ export default function()
 		name: "Resolution",
 		value: 750,
 		minValue: 100,
-		maxValue: 2000,
+		maxValue: 1500,
 		onInput: run
 	});
 
