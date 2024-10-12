@@ -1,3 +1,4 @@
+import anime from "../anime.js";
 import { changeOpacity } from "./animation.js";
 import { headerElement } from "./header.js";
 import { likelyWindowChromeHeight, onResize, pageWidth, viewportHeight } from "./layout.js";
@@ -28,6 +29,8 @@ export let nameTextOpacity = 1;
 
 let lastBannerChangeTimestamp = -1;
 
+let lastT = 0;
+
 
 
 export function updateBanner(timestamp)
@@ -47,36 +50,84 @@ export function updateBanner(timestamp)
 
 	lastBannerChangeTimestamp = timestamp;
 
+	const minPadding = window.innerWidth <= 500 ? 8 : 16;
+
+	const additionalPadding = Math.min(
+		Math.max(
+			(window.innerWidth - pageWidth - minPadding * 2) / 2,
+			minPadding
+		),
+		16
+	);
+
 	// This denominator accounts for the total distance the content needs to scroll
 	// and the header's height.
 	const t0 = Math.min(Math.max(window.scrollY / bannerMaxScroll * 1.35, 0), 1);
 
 	const t = 0.5 + 0.5 * Math.sin(Math.PI * (Math.pow(t0, 0.5) - 0.5));
 
-	nameTextOpacity = 1 - Math.min(t * 1.5, 1);
-
-	bannerElement.style.opacity = 1 - t;
 
 
+	if (window.reduceMotion)
+	{
+		contentElement.style.paddingLeft = `${minPadding}px`;
+		contentElement.style.paddingRight = `${minPadding}px`;
+		contentElement.style.paddingTop = `${minPadding}px`;
 
-	const minPadding = window.innerWidth <= 500 ? 8 : 16;
+		contentElement.parentElement.style.marginLeft = 0;
+		contentElement.parentElement.style.marginRight = 0;
 
-	const additionalPadding = window.reduceMotion
-		? 0
-		: Math.min(
-			Math.max(
-				(window.innerWidth - pageWidth - minPadding * 2) / 2,
-				minPadding
-			),
-			16
-		);
+		if (t >= 1 && lastT < 1)
+		{
+			const dummy = { t: 0 };
 
-	contentElement.style.paddingLeft = `${minPadding + t * additionalPadding}px`;
-	contentElement.style.paddingRight = `${minPadding + t * additionalPadding}px`;
-	contentElement.style.paddingTop = `${minPadding + t * minPadding}px`;
+			anime({
+				targets: dummy,
+				t: 1,
+				duration: 300,
+				easing: "easeInOutSine",
+				update: () =>
+				{
+					bannerElement.style.opacity = 1 - dummy.t;
+					nameTextOpacity = 1 - dummy.t;
+				}
+			});
+		}
 
-	contentElement.parentElement.style.marginLeft = `-${minPadding + additionalPadding * t}px`;
-	contentElement.parentElement.style.marginRight = `-${minPadding + additionalPadding * t}px`;
+		else if (t < 1 && lastT >= 1)
+		{
+			const dummy = { t: 0 };
+
+			anime({
+				targets: dummy,
+				t: 1,
+				duration: 300,
+				easing: "easeInOutSine",
+				update: () =>
+				{
+					bannerElement.style.opacity = dummy.t;
+					nameTextOpacity = dummy.t;
+				}
+			});
+		}
+	}
+
+	
+
+	else
+	{
+		contentElement.style.paddingLeft = `${minPadding + t * additionalPadding}px`;
+		contentElement.style.paddingRight = `${minPadding + t * additionalPadding}px`;
+		contentElement.style.paddingTop = `${minPadding + t * minPadding}px`;
+
+		contentElement.parentElement.style.marginLeft = `-${minPadding + additionalPadding * t}px`;
+		contentElement.parentElement.style.marginRight = `-${minPadding + additionalPadding * t}px`;
+
+		bannerElement.style.opacity = 1 - t;
+		nameTextOpacity = 1 - Math.min(t * 1.5, 1);
+	}
+
+	
 
 	if (contentElement.offsetHeight < viewportHeight - headerElement.offsetHeight - 32)
 	{
@@ -94,6 +145,8 @@ export function updateBanner(timestamp)
 	contentElement.style.boxShadow = `0px 0px 16px 4px rgba(0, 0, 0, ${(1 - t) * .35})`;
 
 
+
+	lastT = t;
 
 	requestAnimationFrame(updateBanner);
 }

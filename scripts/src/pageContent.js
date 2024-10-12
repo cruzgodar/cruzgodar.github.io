@@ -90,7 +90,7 @@ function prepareContents()
 	});
 
 	contentsContainerElement.style.opacity = 0;
-	contentsContainerElement.style.marginRight = "-32px";
+	contentsContainerElement.style.marginRight = window.reduceMotion ? 0 : "-32px";
 	contentsContainerElement.style.display = "none";
 
 
@@ -158,7 +158,7 @@ async function hideContents()
 		anime({
 			targets: contentsContainerElement,
 			opacity: 0,
-			marginRight: "-32px",
+			marginRight: window.reduceMotion ? 0 : "-32px",
 			duration: cardAnimationTime,
 			easing: "easeOutQuint"
 		}).finished,

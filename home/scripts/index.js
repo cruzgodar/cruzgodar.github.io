@@ -1,9 +1,8 @@
 import { disableLinks, showPage } from "../../scripts/src/loadPage.js";
-import { fadeLeft, opacityAnimationTime } from "/scripts/src/animation.js";
+import { fadeIn, fadeLeft, opacityAnimationTime } from "/scripts/src/animation.js";
 import { nameTextOpacity } from "/scripts/src/banners.js";
 import {
-	$,
-	addTemporaryListener
+	$
 } from "/scripts/src/main.js";
 
 export default function()
@@ -11,29 +10,38 @@ export default function()
 	const cruzTextElement = $("#cruz-text");
 	const godarTextElement = $("#godar-text");
 
-	function onScroll()
+	function updateNameTextOpacity()
 	{
-		requestAnimationFrame(() =>
-		{
-			cruzTextElement.parentNode.style.opacity = nameTextOpacity;
-			godarTextElement.parentNode.style.opacity = nameTextOpacity;
-		});
+		cruzTextElement.parentNode.style.opacity = nameTextOpacity;
+		godarTextElement.parentNode.style.opacity = nameTextOpacity;
+
+		requestAnimationFrame(updateNameTextOpacity);
 	}
 
-	setTimeout(() =>
+	updateNameTextOpacity();
+
+	if (window.reduceMotion)
 	{
-		fadeLeft({ element: cruzTextElement });
+		cruzTextElement.style.transform = "translateX(0px)";
+		godarTextElement.style.transform = "translateX(0px)";
 
-		setTimeout(() => fadeLeft({ element: godarTextElement }), opacityAnimationTime);
-	}, opacityAnimationTime);
+		setTimeout(() =>
+		{
+			fadeIn({ element: cruzTextElement });
 
-	setTimeout(() => onScroll(1), 100);
+			setTimeout(() => fadeIn({ element: godarTextElement }), opacityAnimationTime);
+		}, opacityAnimationTime);
+	}
 
-	addTemporaryListener({
-		object: window,
-		event: "scroll",
-		callback: onScroll
-	});
+	else
+	{
+		setTimeout(() =>
+		{
+			fadeLeft({ element: cruzTextElement });
+
+			setTimeout(() => fadeLeft({ element: godarTextElement }), opacityAnimationTime);
+		}, opacityAnimationTime);
+	}
 
 	disableLinks();
 
