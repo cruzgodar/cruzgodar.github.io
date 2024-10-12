@@ -1,6 +1,7 @@
 import { opacityAnimationTime } from "./animation.js";
 import { cardIsOpen } from "./cards.js";
 import { recreateDesmosGraphs } from "./desmos.js";
+import { increaseContrastCheckbox, reduceMotionCheckbox } from "./header.js";
 import {
 	addStyle,
 	pageUrl
@@ -117,6 +118,25 @@ export function getQueryParams()
 
 
 
+	if (siteSettings.increaseContrast && !matchMedia("(prefers-contrast: more)").matches)
+	{
+		params.set("increasecontrast", "1");
+	}
+
+	else if (
+		!siteSettings.increaseContrast
+		&& matchMedia("(prefers-contrast: more)").matches
+	) {
+		params.set("increasecontrast", "0");
+	}
+
+	else
+	{
+		params.delete("increasecontrast");
+	}
+
+
+
 	if (siteSettings.card)
 	{
 		params.set("card", siteSettings.card);
@@ -185,6 +205,8 @@ export function initReduceMotion()
 	matchMedia("(prefers-reduced-motion: reduce)").addEventListener("change", (e) =>
 	{
 		siteSettings.reduceMotion = e.matches;
+
+		reduceMotionCheckbox.setChecked(siteSettings.reduceMotion, false);
 	});
 }
 
@@ -192,8 +214,20 @@ export function initIncreaseContrast()
 {
 	matchMedia("(prefers-contrast: more)").addEventListener("change", (e) =>
 	{
-		siteSettings.increaseContrast = e.matches;
+		if (e.matches !== siteSettings.increaseContrast)
+		{
+			toggleIncreaseContrast();
+
+			increaseContrastCheckbox.setChecked(siteSettings.increaseContrast, false);
+		}
 	});
+
+	if (siteSettings.increaseContrast)
+	{
+		siteSettings.increaseContrast = false;
+
+		toggleIncreaseContrast();
+	}
 }
 
 export function initDarkTheme()
@@ -331,6 +365,17 @@ export async function toggleReduceMotion()
 	siteSettings.reduceMotion = !siteSettings.reduceMotion;
 
 	history.replaceState({ url: pageUrl }, document.title, getDisplayUrl());
+}
+
+
+
+export async function toggleIncreaseContrast()
+{
+	siteSettings.increaseContrast = !siteSettings.increaseContrast;
+
+	history.replaceState({ url: pageUrl }, document.title, getDisplayUrl());
+
+	rootElement.style.setProperty("--contrast", siteSettings.increaseContrast ? 1 : 0);
 }
 
 

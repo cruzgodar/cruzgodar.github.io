@@ -79,14 +79,10 @@ section
 	grid-column: span 3;
 }
 
-@media (prefers-contrast: more)
+.gallery-image-1-1 img.hover, .gallery-image-2-2 img.hover, .gallery-image-3-3 img.hover
 {
-	.gallery-image-1-1 img.hover, .gallery-image-2-2 img.hover, .gallery-image-3-3 img.hover
-	{
-		outline: 2px solid var(--high-contrast);
-	}
+	outline: var(--contrast-border-width) solid var(--high-contrast);
 }
-
 
 
 #high-res-viewer-card img

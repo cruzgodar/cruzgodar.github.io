@@ -1,17 +1,30 @@
 :root
 {
 	--theme: 0;
+	--contrast: 0;
 
 	--background: color-mix(in srgb, rgb(255, 255, 255), rgb(24, 24, 24) calc(var(--theme) * 100%));
 
 	--high-contrast: color-mix(in srgb, rgb(0, 0, 0), rgb(255, 255, 255) calc(var(--theme) * 100%));
-	--normal-contrast: color-mix(in srgb, rgb(64, 64, 64), rgb(208, 208, 208) calc(var(--theme) * 100%));
-	--low-contrast: color-mix(in srgb, rgb(96, 96, 96), rgb(184, 184, 184) calc(var(--theme) * 100%));
+
+	--normal-contrast-partial: color-mix(in srgb, rgb(64, 64, 64), rgb(208, 208, 208) calc(var(--theme) * 100%));
+	--low-contrast-partial: color-mix(in srgb, rgb(96, 96, 96), rgb(184, 184, 184) calc(var(--theme) * 100%));
+
+	--normal-contrast: color-mix(in srgb, var(--normal-contrast-partial), var(--high-contrast) calc(var(--contrast) * 100%));
+	--low-contrast: color-mix(in srgb, var(--low-contrast-partial), var(--high-contrast) calc(var(--contrast) * 100%));
 
 	--neutral-hover: color-mix(in srgb, rgb(208, 208, 208), rgb(64, 64, 64) calc(var(--theme) * 100%));
 
-	--link: color-mix(in srgb, rgb(80, 192, 80), rgb(160, 224, 160) calc(var(--theme) * 100%));
-	--link-hover: color-mix(in srgb, rgb(160, 224, 160), rgb(192, 255, 192) calc(var(--theme) * 100%));
+	--link-normal-contrast: color-mix(in srgb, rgb(80, 192, 80), rgb(160, 224, 160) calc(var(--theme) * 100%));
+	--link-hover-normal-contrast: color-mix(in srgb, rgb(160, 224, 160), rgb(192, 255, 192) calc(var(--theme) * 100%));
+
+	--link-high-contrast: color-mix(in srgb, rgb(0, 164, 0), rgb(127, 255, 127) calc(var(--theme) * 100%));
+	--link-hover-high-contrast: color-mix(in srgb, rgb(0, 255, 0), rgb(0, 192, 0) calc(var(--theme) * 100%));
+
+	--link: color-mix(in srgb, var(--link-normal-contrast), var(--link-high-contrast) calc(var(--contrast) * 100%));
+	--link-hover: color-mix(in srgb, var(--link-hover-normal-contrast), var(--link-hover-high-contrast) calc(var(--contrast) * 100%));
+
+
 
 	--gallery-color: rgb(176, 238, 173);
 	/* --gallery-color: lch(90% 35 140); */
@@ -31,20 +44,14 @@
 	--about-color: rgb(222, 222, 222);
 	/* --about-color: lch(90% 0 0); */
 
+
+
 	--page-width: 1150px;
 	--text-width: 800px;
-}
 
-@media (prefers-contrast: more)
-{
-	:root
-	{
-		--normal-contrast: var(--high-contrast);
-		--low-contrast: var(--high-contrast);
 
-		--link: color-mix(in srgb, rgb(0, 164, 0), rgb(127, 255, 127) calc(var(--theme) * 100%));
-		--link-hover: color-mix(in srgb, rgb(0, 255, 0), rgb(0, 192, 0) calc(var(--theme) * 100%));
-	}
+
+	--contrast-border-width: calc(-1px + var(--contrast) * 3px);
 }
 
 html
@@ -380,14 +387,8 @@ mjx-container
 	
 	background-color: var(--background);
 	box-shadow: 0px 0px 16px 0px rgba(0, 0, 0, .3);
-}
 
-@media (prefers-contrast: more)
-{
-	.card
-	{
-		border: 2px solid var(--high-contrast);
-	}
+	border: var(--contrast-border-width) solid var(--high-contrast);
 }
 
 @media (max-width: 500px)
@@ -470,14 +471,8 @@ mjx-container
 #card-close-button.hover
 {
 	background-color: var(--neutral-hover);
-}
 
-@media (prefers-contrast: more)
-{
-	#card-close-button.hover
-	{
-		outline: 2px solid var(--high-contrast);
-	}
+	outline: var(--contrast-border-width) solid var(--high-contrast);
 }
 
 #card-close-button span
@@ -526,14 +521,6 @@ mjx-container
 	}
 }
 
-@media (prefers-contrast: more)
-{
-	#contents-indicator
-	{
-		filter: brightness(calc(var(--theme) * 10));
-	}
-}
-
 #contents-container
 {
 	position: fixed;
@@ -571,14 +558,6 @@ mjx-container
 	outline: calc(-1px + var(--theme) * 3px) solid var(--normal-contrast);
 
 	background-color: var(--background);
-}
-
-@media (prefers-contrast: more)
-{
-	#contents
-	{
-		outline: 2px solid var(--high-contrast);
-	}
 }
 
 #contents > *
@@ -980,14 +959,8 @@ body > .wilson-fullscreen-components-container .wilson-help-button
 	cursor: pointer;
 	
 	background: var(--neutral-hover);
-}
 
-@media (prefers-contrast: more)
-{
-	.text-button.dropdown.expanded .option-container > *:not(:first-child).hover
-	{
-		outline: 2px solid var(--high-contrast);
-	}
+	outline: var(--contrast-border-width) solid var(--high-contrast);
 }
 
 
@@ -1195,14 +1168,6 @@ body > .wilson-fullscreen-components-container .wilson-help-button
 	outline: calc(-1px + var(--theme) * 3px) solid var(--normal-contrast);
 	position: absolute;
 	z-index: 100;
-}
-
-@media (prefers-contrast: more)
-{
-	.input-cap-dialog
-	{
-		outline: 2px solid var(--high-contrast);
-	}
 }
 
 .input-cap-dialog .checkbox-row
@@ -1455,14 +1420,8 @@ option
 .carousel-dot:not(.active).hover
 {
 	background-color: var(--low-contrast);
-}
 
-@media (prefers-contrast: more)
-{
-	.carousel-dot:not(.active).hover
-	{
-		outline: 2px solid var(--high-contrast);
-	}
+	outline: var(--contrast-border-width) solid var(--high-contrast);
 }
 
 .carousel-dot .fill
@@ -1494,14 +1453,8 @@ option
 	
 	transform-origin: 50% calc(40px + 100vh);
 	transform: scale(1);
-}
 
-@media (prefers-contrast: more)
-{
-	#header-container
-	{
-		outline: 2px solid var(--high-contrast);
-	}
+	outline: var(--contrast-border-width) solid var(--high-contrast);
 }
 
 
@@ -1556,14 +1509,8 @@ option
 #header-logo.hover
 {
 	background-color: rgb(224, 224, 224);
-}
 
-@media (prefers-contrast: more)
-{
-	#header-logo.hover
-	{
-		outline: 2px solid var(--high-contrast);
-	}
+	outline: var(--contrast-border-width) solid var(--high-contrast);
 }
 
 #header-logo.hover span
@@ -1622,6 +1569,11 @@ option
 	filter: invert(var(--theme));
 }
 
+#header-links a.hover
+{
+	outline: var(--contrast-border-width) solid var(--high-contrast);
+}
+
 #header-links a.hover span
 {
 	color: rgb(0, 0, 0);
@@ -1630,14 +1582,6 @@ option
 #header-links a.hover img
 {
 	filter: invert(0);
-}
-
-@media (prefers-contrast: more)
-{
-	#header-links a.hover
-	{
-		outline: 2px solid var(--high-contrast);
-	}
 }
 
 #header-gallery-link.hover
@@ -1705,14 +1649,8 @@ option
 #header-theme-button.hover, #header-accessibility-button.hover
 {
 	background-color: rgb(224, 224, 224);
-}
 
-@media (prefers-contrast: more)
-{
-	#header-theme-button.hover, #header-accessibility-button.hover
-	{
-		outline: 2px solid var(--high-contrast);
-	}
+	outline: var(--contrast-border-width) solid var(--high-contrast);
 }
 
 #header-theme-button input, #header-accessibility-button input
@@ -1739,25 +1677,17 @@ option
 	
 	background-color: var(--background);
 
-	max-width: calc(100vw - 32px);
+	max-width: calc(100vw - 64px);
 	padding-top: 14px;
 	padding-left: 16px;
 	padding-right: 16px;
 	padding-bottom: 16px;
 
-	box-shadow: 0px 0px 24px 0px rgba(0, 0, 0, .4);
+	box-shadow: 0px 0px 16px 0px rgba(0, 0, 0, .35);
 	outline: calc(-1px + var(--theme) * 3px) solid var(--normal-contrast);
 	
 	opacity: 0;
 	z-index: 150;
-}
-
-@media (prefers-contrast: more)
-{
-	#accessibility-tooltip
-	{
-		outline: 2px solid var(--high-contrast);
-	}
 }
 
 #accessibility-tooltip .checkboxes
@@ -1922,14 +1852,8 @@ option
 	border-radius: 10%;
 	
 	box-shadow: 0px 0px 30px 0px rgba(0, 0, 0, .16);
-}
 
-@media (prefers-contrast: more)
-{
-	.image-link img
-	{
-		outline: var(--high-contrast) solid 2px;
-	}
+	outline: var(--contrast-border-width) solid var(--high-contrast);
 }
 
 .image-link img:not(:hover):focus

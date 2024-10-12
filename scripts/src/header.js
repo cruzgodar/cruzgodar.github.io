@@ -2,13 +2,18 @@ import anime from "../anime.js";
 import { Checkbox } from "./checkboxes.js";
 import { addHoverEvent, addHoverEventWithScale } from "./hoverEvents.js";
 import { redirect } from "./navigation.js";
-import { siteSettings, toggleDarkTheme, toggleReduceMotion } from "./settings.js";
+import {
+	siteSettings,
+	toggleDarkTheme,
+	toggleIncreaseContrast,
+	toggleReduceMotion
+} from "./settings.js";
 
 export let headerElement;
 
 let accessibilityTooltipElement;
-let reduceMotionCheckbox;
-let increaseContrastCheckbox;
+export let reduceMotionCheckbox;
+export let increaseContrastCheckbox;
 
 let accessibilityDialogOpen = false;
 
@@ -187,7 +192,7 @@ export function addHeader()
 			element: document.body.querySelector("#increase-contrast-checkbox"),
 			name: "Increase contrast",
 			checked: siteSettings.increaseContrast,
-			// onInput: () => toggleReduceMotion({})
+			onInput: () => toggleIncreaseContrast({})
 		});
 
 		addHoverEventWithScale({
