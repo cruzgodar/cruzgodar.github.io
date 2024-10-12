@@ -31,8 +31,12 @@ export let nameTextOpacity = 1;
 let lastBannerChangeTimestamp = -1;
 
 let lastT = 0;
+let lastT0 = 0;
 
-
+function easeInOutQuad(x)
+{
+	return x < 0.5 ? 2 * x * x : 1 - Math.pow(-2 * x + 2, 2) / 2;
+}
 
 export function updateBanner(timestamp)
 {
@@ -63,9 +67,10 @@ export function updateBanner(timestamp)
 
 	// This denominator accounts for the total distance the content needs to scroll
 	// and the header's height.
-	const t0 = Math.min(Math.max(window.scrollY / bannerMaxScroll * 1.35, 0), 1);
+	let t0 = Math.min(Math.max(window.scrollY / bannerMaxScroll * 1.3, 0), 1);
+	t0 = Math.min(Math.max(t0, lastT0 - .025), lastT0 + .0175);
 
-	const t = 0.5 + 0.5 * Math.sin(Math.PI * (Math.pow(t0, 0.5) - 0.5));
+	const t = easeInOutQuad(t0);
 
 
 
@@ -152,6 +157,7 @@ export function updateBanner(timestamp)
 
 
 	lastT = t;
+	lastT0 = t0;
 
 	requestAnimationFrame(updateBanner);
 }
