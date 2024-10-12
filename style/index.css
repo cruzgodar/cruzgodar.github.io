@@ -31,10 +31,20 @@
 	--about-color: rgb(222, 222, 222);
 	/* --about-color: lch(90% 0 0); */
 
-	--contents-border-color: rgba(208, 208, 208, var(--theme));
-
 	--page-width: 1150px;
 	--text-width: 800px;
+}
+
+@media (prefers-contrast: more)
+{
+	:root
+	{
+		--normal-contrast: var(--high-contrast);
+		--low-contrast: var(--high-contrast);
+
+		--link: color-mix(in srgb, rgb(0, 164, 0), rgb(127, 255, 127) calc(var(--theme) * 100%));
+		--link-hover: color-mix(in srgb, rgb(0, 255, 0), rgb(0, 192, 0) calc(var(--theme) * 100%));
+	}
 }
 
 html
@@ -372,6 +382,14 @@ mjx-container
 	box-shadow: 0px 0px 16px 0px rgba(0, 0, 0, .3);
 }
 
+@media (prefers-contrast: more)
+{
+	.card
+	{
+		border: 2px solid var(--high-contrast);
+	}
+}
+
 @media (max-width: 500px)
 {
 	.card
@@ -454,6 +472,14 @@ mjx-container
 	background-color: var(--neutral-hover);
 }
 
+@media (prefers-contrast: more)
+{
+	#card-close-button.hover
+	{
+		outline: 2px solid var(--high-contrast);
+	}
+}
+
 #card-close-button span
 {
 	margin-top: -1.35px;
@@ -533,8 +559,18 @@ mjx-container
 	/* This accounts for the total 4px of the border. */
 	margin-right: 20px;
 	box-shadow: 0px 0px 16px 0px rgba(0, 0, 0, 0.35);
-	border: 2px solid var(--contents-border-color);
+
+	outline: calc(var(--theme) * 2px) solid var(--normal-contrast);
+
 	background-color: var(--background);
+}
+
+@media (prefers-contrast: more)
+{
+	#contents
+	{
+		outline: 2px solid var(--high-contrast);
+	}
 }
 
 #contents > *
@@ -938,6 +974,14 @@ body > .wilson-fullscreen-components-container .wilson-help-button
 	background: var(--neutral-hover);
 }
 
+@media (prefers-contrast: more)
+{
+	.text-button.dropdown.expanded .option-container > *:not(:first-child).hover
+	{
+		outline: 2px solid var(--high-contrast);
+	}
+}
+
 
 
 .checkboxes
@@ -1140,8 +1184,17 @@ body > .wilson-fullscreen-components-container .wilson-help-button
 	padding-top: 10px;
 	border-radius: 12px;
 	box-shadow: 0px 0px 16px calc(var(--theme) * 8px) rgba(0, 0, 0, .4);
+	outline: calc(var(--theme) * 2px) solid var(--normal-contrast);
 	position: absolute;
 	z-index: 100;
+}
+
+@media (prefers-contrast: more)
+{
+	.input-cap-dialog
+	{
+		outline: 2px solid var(--high-contrast);
+	}
 }
 
 .input-cap-dialog .checkbox-row
@@ -1396,6 +1449,14 @@ option
 	background-color: var(--low-contrast);
 }
 
+@media (prefers-contrast: more)
+{
+	.carousel-dot:not(.active).hover
+	{
+		outline: 2px solid var(--high-contrast);
+	}
+}
+
 .carousel-dot .fill
 {
 	opacity: 0;
@@ -1425,6 +1486,14 @@ option
 	
 	transform-origin: 50% calc(40px + 100vh);
 	transform: scale(1);
+}
+
+@media (prefers-contrast: more)
+{
+	#header-container
+	{
+		outline: 2px solid var(--high-contrast);
+	}
 }
 
 
@@ -1479,6 +1548,14 @@ option
 #header-logo.hover
 {
 	background-color: rgb(224, 224, 224);
+}
+
+@media (prefers-contrast: more)
+{
+	#header-logo.hover
+	{
+		outline: 2px solid var(--high-contrast);
+	}
 }
 
 #header-logo.hover span
@@ -1547,6 +1624,14 @@ option
 	filter: invert(0);
 }
 
+@media (prefers-contrast: more)
+{
+	#header-links a.hover
+	{
+		outline: 2px solid var(--high-contrast);
+	}
+}
+
 #header-gallery-link.hover
 {
 	background-color: var(--gallery-color);
@@ -1600,6 +1685,14 @@ option
 #header-theme-button.hover
 {
 	background-color: rgb(224, 224, 224);
+}
+
+@media (prefers-contrast: more)
+{
+	#header-theme-button.hover
+	{
+		outline: 2px solid var(--high-contrast);
+	}
 }
 
 #header-theme-button input
@@ -1771,6 +1864,14 @@ option
 	border-radius: 10%;
 	
 	box-shadow: 0px 0px 30px 0px rgba(0, 0, 0, .16);
+}
+
+@media (prefers-contrast: more)
+{
+	.image-link img
+	{
+		outline: var(--high-contrast) solid 2px;
+	}
 }
 
 .image-link img:not(:hover):focus
