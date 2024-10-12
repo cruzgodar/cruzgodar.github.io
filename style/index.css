@@ -1717,7 +1717,7 @@ option
 		display: block;
 	}
 
-	#header-logo, #header-links a, #header-theme-button
+	#header-logo, #header-links a, #header-theme-button, #header-accessibility-button
 	{
 		/* Wrap around the little image link glyphs nicely. */
 		border-radius: 7.5px;
@@ -1727,6 +1727,40 @@ option
 	{
 		padding: 2.5px;
 		height: calc(100% - 15px);
+	}
+
+	#header-accessibility-button
+	{
+		right: 32.5px;
+	}
+}
+
+@media (max-width: 350px)
+{
+	#header
+	{
+		height: 35px;
+	}
+
+	#header-container
+	{
+		height: calc(35px + 50vh);
+		transform-origin: 50% calc(35px + 100vh);
+	}
+
+	#header-theme-button
+	{
+		top: 4px;
+		padding: 5px;
+		height: calc(100% - 18px);
+	}
+
+	#header-accessibility-button
+	{
+		top: 4px;
+		padding: 4px;
+		height: calc(100% - 16px);
+		right: 30px;
 	}
 }
 
@@ -1742,19 +1776,11 @@ option
 		height: calc(30px + 50vh);
 		transform-origin: 50% calc(30px + 100vh);
 	}
-}
 
-@media (max-width: 200px)
-{
-	#header
+	#header-links a
 	{
-		height: 20px;
-	}
-
-	#header-container
-	{
-		height: calc(20px + 50vh);
-		transform-origin: 50% calc(20px + 100vh);
+		margin-left: .5px;
+		margin-right: .5px;
 	}
 }
 
