@@ -71,14 +71,16 @@ export function updateBanner(timestamp)
 
 	if (siteSettings.reduceMotion)
 	{
-		contentElement.style.paddingLeft = `${minPadding}px`;
-		contentElement.style.paddingRight = `${minPadding}px`;
-		contentElement.style.paddingTop = `${minPadding}px`;
+		const maxPadding = minPadding + additionalPadding;
 
-		contentElement.parentElement.style.marginLeft = 0;
-		contentElement.parentElement.style.marginRight = 0;
+		contentElement.style.paddingLeft = `${maxPadding}px`;
+		contentElement.style.paddingRight = `${maxPadding}px`;
+		contentElement.style.paddingTop = `${maxPadding}px`;
 
-		if (t >= 1 && lastT < 1)
+		contentElement.parentElement.style.marginLeft = `-${maxPadding}px`;
+		contentElement.parentElement.style.marginRight = `-${maxPadding}px`;
+
+		if (t >= .8 && lastT < .8)
 		{
 			const dummy = { t: 0 };
 
@@ -91,11 +93,12 @@ export function updateBanner(timestamp)
 				{
 					bannerElement.style.opacity = 1 - dummy.t;
 					nameTextOpacity = 1 - dummy.t;
+					contentElement.style.boxShadow = `0px 0px 16px 4px rgba(0, 0, 0, ${(1 - dummy.t) * .35})`;
 				}
 			});
 		}
 
-		else if (t < 1 && lastT >= 1)
+		else if (t < .8 && lastT >= .8)
 		{
 			const dummy = { t: 0 };
 
@@ -108,6 +111,7 @@ export function updateBanner(timestamp)
 				{
 					bannerElement.style.opacity = dummy.t;
 					nameTextOpacity = dummy.t;
+					contentElement.style.boxShadow = `0px 0px 16px 4px rgba(0, 0, 0, ${(dummy.t) * .35})`;
 				}
 			});
 		}
@@ -123,6 +127,8 @@ export function updateBanner(timestamp)
 
 		contentElement.parentElement.style.marginLeft = `-${minPadding + additionalPadding * t}px`;
 		contentElement.parentElement.style.marginRight = `-${minPadding + additionalPadding * t}px`;
+
+		contentElement.style.boxShadow = `0px 0px 16px 4px rgba(0, 0, 0, ${(1 - t) * .35})`;
 
 		bannerElement.style.opacity = 1 - t;
 		nameTextOpacity = 1 - Math.min(t * 1.5, 1);
@@ -142,8 +148,6 @@ export function updateBanner(timestamp)
 	{
 		contentElement.parentElement.style.marginBottom = 0;
 	}
-
-	contentElement.style.boxShadow = `0px 0px 16px 4px rgba(0, 0, 0, ${(1 - t) * .35})`;
 
 
 

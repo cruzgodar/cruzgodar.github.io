@@ -1,5 +1,5 @@
 import { disableLinks, showPage } from "../../scripts/src/loadPage.js";
-import { fadeIn, fadeLeft, opacityAnimationTime } from "/scripts/src/animation.js";
+import { fadeLeft, opacityAnimationTime } from "/scripts/src/animation.js";
 import { nameTextOpacity } from "/scripts/src/banners.js";
 import {
 	$
@@ -26,12 +26,8 @@ export default function()
 		cruzTextElement.style.transform = "translateX(0px)";
 		godarTextElement.style.transform = "translateX(0px)";
 
-		setTimeout(() =>
-		{
-			fadeIn({ element: cruzTextElement });
-
-			setTimeout(() => fadeIn({ element: godarTextElement }), opacityAnimationTime);
-		}, opacityAnimationTime);
+		cruzTextElement.style.opacity = 1;
+		godarTextElement.style.opacity = 1;
 	}
 
 	else
