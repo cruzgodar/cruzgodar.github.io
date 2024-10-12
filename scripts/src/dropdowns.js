@@ -96,7 +96,7 @@ export class Dropdown extends InputElement
 		{
 			this.optionElements.slice(1).forEach(element =>
 			{
-				addHoverEvent(element);
+				addHoverEvent({ element });
 			});
 
 			this.optionElements[0].innerHTML +=

@@ -106,27 +106,32 @@ export function addHeader()
 
 
 
-		document.body.querySelectorAll("#header-logo, #header-links a").forEach(link =>
-		{
-			addHoverEvent(link);
-
-			const href = link.getAttribute("href");
-
-			link.setAttribute("href", "/index.html?page=" + encodeURIComponent(href));
-
-			link.addEventListener("click", e =>
+		document.body.querySelectorAll("#header-logo, #header-links a")
+			.forEach(link =>
 			{
-				e.preventDefault();
+				const addBounceOnTouch = link.id === "header-logo"
+					? () => window.innerWidth <= 700
+					: () => window.innerWidth <= 550;
 
-				redirect({ url: href, inNewTab: e.metaKey });
+				addHoverEvent({ element: link, addBounceOnTouch });
+
+				const href = link.getAttribute("href");
+
+				link.setAttribute("href", "/index.html?page=" + encodeURIComponent(href));
+
+				link.addEventListener("click", e =>
+				{
+					e.preventDefault();
+
+					redirect({ url: href, inNewTab: e.metaKey });
+				});
 			});
-		});
 
 		
 
 		const themeButtonElement = document.body.querySelector("#header-theme-button");
 
-		addHoverEvent(themeButtonElement);
+		addHoverEvent({ element: themeButtonElement, addBounceOnTouch: () => true });
 
 		themeButtonElement.addEventListener("click", e =>
 		{
@@ -139,7 +144,7 @@ export function addHeader()
 		const accessibilityButtonElement =
 			document.body.querySelector("#header-accessibility-button");
 
-		addHoverEvent(accessibilityButtonElement);
+		addHoverEvent({ element: accessibilityButtonElement, addBounceOnTouch: () => true });
 
 		accessibilityButtonElement.addEventListener("click", e =>
 		{
@@ -183,7 +188,7 @@ export function addHeader()
 		addHoverEventWithScale({
 			element: reduceMotionCheckbox.element.parentNode,
 			scale: 1.1,
-			addBounceOnTouch: true
+			addBounceOnTouch: () => true
 		});
 
 
@@ -198,7 +203,7 @@ export function addHeader()
 		addHoverEventWithScale({
 			element: increaseContrastCheckbox.element.parentNode,
 			scale: 1.1,
-			addBounceOnTouch: true
+			addBounceOnTouch: () => true
 		});
 
 

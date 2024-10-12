@@ -1524,7 +1524,6 @@ export class Wilson
 				addHoverEventWithScale({
 					element: this.enterFullscreenButton,
 					scale: 1.1,
-					addBounceOnTouch: false
 				});
 
 				this.enterFullscreenButton.addEventListener("click", () =>
@@ -1618,7 +1617,6 @@ export class Wilson
 				addHoverEventWithScale({
 					element: this.exitFullscreenButton,
 					scale: 1.1,
-					addBounceOnTouch: false
 				});
 
 				this.exitFullscreenButton.addEventListener("click", () =>
@@ -1798,7 +1796,6 @@ export class Wilson
 				addHoverEventWithScale({
 					element: this.enterFullscreenButton,
 					scale: 1.1,
-					addBounceOnTouch: false
 				});
 
 				this.enterFullscreenButton.addEventListener("click", () =>

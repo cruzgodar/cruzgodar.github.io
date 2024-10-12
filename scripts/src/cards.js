@@ -19,7 +19,7 @@ const closeButton = document.querySelector("#card-close-button");
 
 if (closeButton)
 {
-	addHoverEvent(closeButton);
+	addHoverEvent({ element: closeButton });
 
 	closeButton.addEventListener("click", () => hideCard());
 

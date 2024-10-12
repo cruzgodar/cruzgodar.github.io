@@ -1629,6 +1629,8 @@ option
 	
 	display: flex;
 	align-items: center;
+
+	cursor: pointer;
 }
 
 #header-theme-button
@@ -1636,7 +1638,6 @@ option
 	right: 5px;
 	padding: 6px;
 	height: calc(100% - 22px);
-	cursor: pointer;
 }
 
 #header-accessibility-button

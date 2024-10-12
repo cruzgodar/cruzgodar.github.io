@@ -3,24 +3,24 @@ import { currentlyTouchDevice } from "./interaction.js";
 import { $$ } from "./main.js";
 import { prefetchPage } from "./navigation.js";
 
-const elementSelectors = `
-	a,
-	.carousel-dot
-`;
+const elementSelectors = [
+	["a", 1, () => false],
+	[".carousel-dot", 1, () => false]
+];
 
 // These elements need to have their scale increased when hovered.
 const elementSelectorsWithScale =
 [
-	["#logo img", 1.05, false],
-	[".text-button:not(.dropdown)", 1.075, true],
-	[".checkbox-container", 1.1, true],
-	[".image-link a[data-card-id] img", 1.05, true],
-	[".image-link a:not([data-card-id]) img", 1.05, false],
-	["#enter-fullscreen-button", 1.1, false],
-	["#exit-fullscreen-button", 1.1, false],
-	[".gallery-image-1-1 img", 1.075, true],
-	[".gallery-image-2-2 img", 1.0375, true],
-	[".gallery-image-3-3 img", 1.025, true],
+	["#logo img", 1.05, () => false],
+	[".text-button:not(.dropdown)", 1.075, () => true],
+	[".checkbox-container", 1.1, () => true],
+	[".image-link a[data-card-id] img", 1.05, () => true],
+	[".image-link a:not([data-card-id]) img", 1.05, () => false],
+	["#enter-fullscreen-button", 1.1, () => false],
+	["#exit-fullscreen-button", 1.1, () => false],
+	[".gallery-image-1-1 img", 1.075, () => true],
+	[".gallery-image-2-2 img", 1.0375, () => true],
+	[".gallery-image-3-3 img", 1.025, () => true],
 ];
 
 
@@ -28,7 +28,17 @@ const elementSelectorsWithScale =
 // Adds a listener to every element that needs a hover event.
 export function initHoverEvents()
 {
-	$$(elementSelectors).forEach(element => addHoverEvent(element));
+	elementSelectors.forEach(selector =>
+	{
+		$$(selector[0]).forEach(element =>
+		{
+			addHoverEventWithScale({
+				element,
+				scale: selector[1],
+				addBounceOnTouch: selector[2]
+			});
+		});
+	});
 
 	elementSelectorsWithScale.forEach(selector =>
 	{
@@ -54,8 +64,11 @@ export function initHoverEvents()
 	});
 }
 
-export function addHoverEvent(element)
-{
+export function addHoverEvent({
+	element,
+	scale = 1.1,
+	addBounceOnTouch = () => false
+}) {
 	element.addEventListener("mouseenter", () =>
 	{
 		if (!currentlyTouchDevice)
@@ -96,10 +109,22 @@ export function addHoverEvent(element)
 			}
 		}
 	});
+
+	element.addEventListener("touchstart", async () =>
+	{
+		if (addBounceOnTouch())
+		{
+			await changeScale({ element, scale, duration: 100 });
+			changeScale({ element, scale: 1, duration: 100 });
+		}
+	});
 }
 
-export function addHoverEventWithScale({ element, scale, addBounceOnTouch = false })
-{
+export function addHoverEventWithScale({
+	element,
+	scale,
+	addBounceOnTouch = () => false
+}) {
 	element.addEventListener("mouseenter", () =>
 	{
 		if (!currentlyTouchDevice)
@@ -130,19 +155,24 @@ export function addHoverEventWithScale({ element, scale, addBounceOnTouch = fals
 		}
 	});
 
-	if (addBounceOnTouch)
+	element.addEventListener("touchstart", async () =>
 	{
-		element.addEventListener("touchstart", async () =>
+		if (addBounceOnTouch())
 		{
-			await changeScale({ element, scale, duration: 100 });
+			await changeScale({ element, scale: 1.1, duration: 100 });
 			changeScale({ element, scale: 1, duration: 100 });
-		});
-	}
+		}
+	});
 }
 
 export function removeHoverEvents()
 {
-	$$(elementSelectors).forEach(element => element.classList.remove("hover"));
+	const globalSelector = elementSelectors
+		.concat(elementSelectorsWithScale)
+		.map(selector => selector[0])
+		.join(", ");
+
+	$$(globalSelector).forEach(element => element.classList.remove("hover"));
 }
 
 export function initFocusEvents()

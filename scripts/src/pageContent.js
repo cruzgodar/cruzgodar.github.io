@@ -40,7 +40,7 @@ export function initPageContents()
 		addHoverEventWithScale({
 			element: contentButtonElement,
 			scale: 1.075,
-			addBounceOnTouch: false
+			addBounceOnTouch: () => true
 		});
 
 		contentButtonElement.addEventListener("click", showContents);
@@ -86,7 +86,7 @@ function prepareContents()
 		addHoverEventWithScale({
 			element: clonedElement,
 			scale: 1.025,
-			addBounceOnTouch: false
+			addBounceOnTouch: () => true
 		});
 	});
 
@@ -104,7 +104,6 @@ function prepareContents()
 	addHoverEventWithScale({
 		element: indicatorElement,
 		scale: 1.1,
-		addBounceOnTouch: false
 	});
 
 	indicatorElement.addEventListener("click", showContents);

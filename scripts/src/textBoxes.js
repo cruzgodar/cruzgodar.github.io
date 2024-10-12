@@ -330,7 +330,7 @@ export class TextBox extends InputElement
 			addHoverEventWithScale({
 				element: checkbox.element.parentNode,
 				scale: 1.1,
-				addBounceOnTouch: false
+				addBounceOnTouch: () => true
 			});
 
 			anime({
