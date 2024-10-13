@@ -3,6 +3,7 @@ import { buildSitemap, sitemapPath } from "./build-sitemap.js";
 import { buildXmlSitemap } from "./build-xml-sitemap.js";
 import { read, write } from "./file-io.js";
 import buildHTMLFile from "./htmdl/build.js";
+import { makeGalleryImage } from "./makeGalleryImage.js";
 
 const root = process.argv[1].replace(/(\/cruzgodar.github.io\/).+$/, (match, $1) => $1);
 
@@ -120,6 +121,13 @@ async function buildFile(file)
 
 			await buildCSSFile(file);
 		}
+	}
+
+	else if (file.includes("gallery/full-res"))
+	{
+		console.log(file);
+		
+		await makeGalleryImage(file);
 	}
 }
 

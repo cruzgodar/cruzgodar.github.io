@@ -64,6 +64,7 @@ export default function()
 		value: 0,
 		min: -1,
 		max: 1,
+		snapPoints: [0],
 		onInput: onSliderInput
 	});
 
@@ -73,6 +74,7 @@ export default function()
 		value: 0,
 		min: -1,
 		max: 1,
+		snapPoints: [0],
 		onInput: onSliderInput
 	});
 
@@ -82,6 +84,7 @@ export default function()
 		value: 0,
 		min: -1,
 		max: 1,
+		snapPoints: [0],
 		onInput: onSliderInput
 	});
 

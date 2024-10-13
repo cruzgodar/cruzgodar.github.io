@@ -25,7 +25,7 @@ export function addHeader()
 		
 		<div id="header" style="opacity: 0">
 			<a id="header-logo" href="/home/">
-				<img src="/graphics/header-icons/logo.webp"></img>
+				<img src="/graphics/header-icons/logo.webp" alt="Cruz Godar"></img>
 				<span>Cruz Godar</span>
 			</a>
 			
@@ -62,7 +62,7 @@ export function addHeader()
 			</div>
 
 			<div id="header-settings-button">
-				<input type="image" src="/graphics/header-icons/gear.webp" class="keep-accessibility-dialog-open">
+				<input type="image" src="/graphics/header-icons/gear.webp" alt="Settings" class="keep-accessibility-dialog-open">
 			</div>
 		</div>
 
