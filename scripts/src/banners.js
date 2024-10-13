@@ -72,6 +72,8 @@ export function updateBanner(timestamp)
 
 	const t = easeInOutQuad(t0);
 
+	console.log(t);
+
 
 
 	if (siteSettings.reduceMotion)
@@ -157,7 +159,7 @@ export function updateBanner(timestamp)
 
 
 	lastT = t;
-	lastT0 = t0;
+	lastT0 = isNaN(t0) ? 0 : t0;
 
 	requestAnimationFrame(updateBanner);
 }
