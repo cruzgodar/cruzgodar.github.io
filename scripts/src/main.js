@@ -116,7 +116,7 @@ const scriptsLoaded =
 
 export async function loadSite(url = pageUrl)
 {
-	initDarkTheme();
+	await initDarkTheme();
 	initReduceMotion();
 	initIncreaseContrast();
 	

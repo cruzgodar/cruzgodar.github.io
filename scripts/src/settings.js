@@ -65,6 +65,30 @@ export const siteSettings =
 
 
 
+// Set to false, true, or null for when a page has forced a theme and it needs to change back.
+let revertThemeTo = null;
+
+export function setRevertThemeTo(newRevertThemeTo)
+{
+	revertThemeTo = newRevertThemeTo;
+}
+
+
+
+let forcedTheme = false;
+
+export function setForcedTheme(newForcedTheme)
+{
+	forcedTheme = newForcedTheme;
+
+	if (darkThemeCheckbox)
+	{
+		darkThemeCheckbox.setDisabled(true);
+	}
+}
+
+
+
 export function getQueryParams()
 {
 	const params = new URLSearchParams(window.location.search);
@@ -73,19 +97,22 @@ export function getQueryParams()
 
 	params.delete("page");
 
-	if (siteSettings.darkTheme && !matchMedia("(prefers-color-scheme: dark)").matches)
+	if (!forcedTheme)
 	{
-		params.set("theme", "1");
-	}
+		if (siteSettings.darkTheme && !matchMedia("(prefers-color-scheme: dark)").matches)
+		{
+			params.set("theme", "1");
+		}
 
-	else if (!siteSettings.darkTheme && matchMedia("(prefers-color-scheme: dark)").matches)
-	{
-		params.set("theme", "0");
-	}
+		else if (!siteSettings.darkTheme && matchMedia("(prefers-color-scheme: dark)").matches)
+		{
+			params.set("theme", "0");
+		}
 
-	else
-	{
-		params.delete("theme");
+		else
+		{
+			params.delete("theme");
+		}
 	}
 
 
@@ -172,30 +199,6 @@ export function getQueryParams()
 
 
 
-// Set to false, true, or null for when a page has forced a theme and it needs to change back.
-let revertThemeTo = null;
-
-export function setRevertThemeTo(newRevertThemeTo)
-{
-	revertThemeTo = newRevertThemeTo;
-}
-
-
-
-let forcedTheme = false;
-
-export function setForcedTheme(newForcedTheme)
-{
-	forcedTheme = newForcedTheme;
-
-	if (darkThemeCheckbox)
-	{
-		darkThemeCheckbox.setDisabled(true);
-	}
-}
-
-
-
 export function initReduceMotion()
 {
 	matchMedia("(prefers-reduced-motion: reduce)").addEventListener("change", (e) =>
@@ -227,7 +230,7 @@ export function initIncreaseContrast()
 	}
 }
 
-export function initDarkTheme()
+export async function initDarkTheme()
 {
 	matchMedia("(prefers-color-scheme: dark)").addEventListener("change", (e) =>
 	{
@@ -244,11 +247,18 @@ export function initDarkTheme()
 
 	if (forceThemePages[pageUrl] !== undefined)
 	{
-		siteSettings.darkTheme = forceThemePages[pageUrl];
+		if (forceThemePages[pageUrl])
+		{
+			setForcedTheme(true);
+			setRevertThemeTo(siteSettings.darkTheme);
+			siteSettings.darkTheme = !forceThemePages[pageUrl];
+			await toggleDarkTheme({ noAnimation: true, force: true });
+		}
 
-		siteSettings.darkTheme = false;
-
-		toggleDarkTheme({ noAnimation: true, force: true });
+		else if (!forceThemePages[pageUrl])
+		{
+			revertTheme();
+		}
 
 		return;
 	}
@@ -257,7 +267,7 @@ export function initDarkTheme()
 	{
 		siteSettings.darkTheme = false;
 
-		toggleDarkTheme({ noAnimation: true });
+		await toggleDarkTheme({ noAnimation: true });
 	}
 }
 
@@ -270,22 +280,22 @@ export async function revertTheme()
 		forcedTheme = false;
 	}
 
-	if (revertThemeTo === null)
-	{
-		return;
-	}
-
-	revertThemeTo = null;
-
 	if (darkThemeCheckbox)
 	{
 		darkThemeCheckbox.setDisabled(false);
+	}
+
+	if (revertThemeTo === null)
+	{
+		return;
 	}
 
 	if (siteSettings.darkTheme !== revertThemeTo)
 	{
 		await toggleDarkTheme({ force: true });
 	}
+	
+	revertThemeTo = null;
 }
 
 

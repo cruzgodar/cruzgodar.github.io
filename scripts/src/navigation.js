@@ -95,12 +95,11 @@ export async function redirect({
 
 	if (forceThemePages[url])
 	{
-		setRevertThemeTo(siteSettings.darkTheme);
-
 		setForcedTheme(true);
 
 		if (siteSettings.darkTheme !== forceThemePages[url])
 		{
+			setRevertThemeTo(siteSettings.darkTheme);
 			await toggleDarkTheme({ force: true });
 		}
 	}
