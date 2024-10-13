@@ -4,6 +4,7 @@ import { headerElement } from "./header.js";
 import { addHoverEvent } from "./hoverEvents.js";
 import { InputElement } from "./inputElement.js";
 import { addTemporaryParam, pageUrl } from "./main.js";
+import { siteSettings } from "./settings.js";
 
 const maxSingleColumnOptions = 7;
 
@@ -149,7 +150,30 @@ export class Dropdown extends InputElement
 	{
 		this.isOpen = true;
 
+		if (siteSettings.reduceMotion)
+		{
+			await changeOpacity({
+				element: this.buttonElement,
+				opacity: 0,
+				duration: 75,
+			});
+
+			this.buttonElement.classList.remove("hover-reduce-motion");
+
+			animationTime = 10;
+		}
+
 		this.buttonElement.classList.add("expanded");
+		this.buttonElement.classList.add("no-hover");
+
+		const buttonElementTransformStyle = getComputedStyle(this.buttonElement).transform;
+		
+		const buttonElementScale = buttonElementTransformStyle === "none" ? 1 : parseFloat(
+			buttonElementTransformStyle.slice(
+				buttonElementTransformStyle.indexOf("(") + 1,
+				buttonElementTransformStyle.indexOf(",")
+			)
+		);
 
 		let titleWidth = 0;
 		let maxWidth1 = 0;
@@ -158,17 +182,23 @@ export class Dropdown extends InputElement
 		{
 			if (index === 0)
 			{
-				titleWidth = element.getBoundingClientRect().width;
+				titleWidth = element.getBoundingClientRect().width / buttonElementScale;
 			}
 
 			else if (index % 2 === 0)
 			{
-				maxWidth1 = Math.max(maxWidth1, element.getBoundingClientRect().width);
+				maxWidth1 = Math.max(
+					maxWidth1,
+					element.getBoundingClientRect().width / buttonElementScale
+				);
 			}
 
 			else
 			{
-				maxWidth2 = Math.max(maxWidth2, element.getBoundingClientRect().width);
+				maxWidth2 = Math.max(
+					maxWidth2,
+					element.getBoundingClientRect().width / buttonElementScale
+				);
 			}
 		});
 
@@ -179,7 +209,8 @@ export class Dropdown extends InputElement
 			titleWidth
 		);
 
-		const openHeight = this.optionContainerElement.getBoundingClientRect().height + 4;
+		const openHeight = this.optionContainerElement.getBoundingClientRect().height
+			/ buttonElementScale + 4;
 		const headerHeight = headerElement.getBoundingClientRect().height;
 		const totalUsableHeight = window.innerHeight - headerHeight - 20;
 
@@ -196,11 +227,15 @@ export class Dropdown extends InputElement
 
 		const rect = this.buttonElement.getBoundingClientRect();
 		
-		const topWhenOpen = (rect.top + rect.height / 2) - effectiveOpenHeight / 2;
-		const bottomWhenOpen = (rect.bottom - rect.height / 2) + effectiveOpenHeight / 2;
+		const topWhenOpen = (rect.top + rect.height / buttonElementScale / 2)
+			- effectiveOpenHeight / 2;
+		const bottomWhenOpen = (rect.bottom - rect.height / buttonElementScale / 2)
+			+ effectiveOpenHeight / 2;
 
-		const leftWhenOpen = (rect.left + rect.width / 2) - effectiveOpenWidth / 2;
-		const rightWhenOpen = (rect.right - rect.width / 2) + effectiveOpenWidth / 2;
+		const leftWhenOpen = (rect.left + rect.width / buttonElementScale / 2)
+			- effectiveOpenWidth / 2;
+		const rightWhenOpen = (rect.right - rect.width / buttonElementScale / 2)
+			+ effectiveOpenWidth / 2;
 
 
 
@@ -254,6 +289,15 @@ export class Dropdown extends InputElement
 		]);
 
 		document.documentElement.addEventListener("click", this.boundClose);
+
+		if (siteSettings.reduceMotion)
+		{
+			await changeOpacity({
+				element: this.buttonElement,
+				opacity: 1,
+				duration: 100
+			});
+		}
 	}
 
 	async close(e)
@@ -303,8 +347,6 @@ export class Dropdown extends InputElement
 		document.documentElement.removeEventListener("click", this.boundClose);
 
 		this.isOpen = false;
-
-		this.buttonElement.classList.remove("expanded");
 
 		const oldSelectedItem = this.selectedItem;
 		
@@ -377,6 +419,21 @@ export class Dropdown extends InputElement
 		
 
 
+		if (siteSettings.reduceMotion)
+		{
+			await changeOpacity({
+				element: this.buttonElement,
+				opacity: 0,
+				duration: 150,
+			});
+
+			this.buttonElement.classList.remove("hover-reduce-motion");
+
+			instant = true;
+		}
+
+		this.buttonElement.classList.remove("expanded");
+
 		await Promise.all([
 			anime({
 				targets: [this.buttonElement, this.buttonElement.parentNode.parentNode],
@@ -400,6 +457,15 @@ export class Dropdown extends InputElement
 			}).finished,
 		]);
 
+		if (siteSettings.reduceMotion)
+		{
+			await changeOpacity({
+				element: this.buttonElement,
+				opacity: 1,
+				duration: 100
+			});
+		}
+
 		if (needToOpen)
 		{
 			if (instant)
@@ -416,5 +482,7 @@ export class Dropdown extends InputElement
 				});
 			}
 		}
+
+		this.buttonElement.classList.remove("no-hover");
 	}
 }

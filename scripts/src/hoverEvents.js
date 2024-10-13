@@ -14,6 +14,7 @@ const elementSelectorsWithScale =
 [
 	["#logo img", 1.05, () => false],
 	[".text-button:not(.dropdown)", 1.075, () => true],
+	[".text-button.dropdown", 1.075, () => false],
 	[".checkbox-container", 1.1, () => true],
 	[".image-link a[data-card-id] img", 1.05, () => true],
 	[".image-link a:not([data-card-id]) img", 1.05, () => false],
@@ -72,7 +73,7 @@ export function addHoverEvent({
 }) {
 	element.addEventListener("mouseenter", () =>
 	{
-		if (!currentlyTouchDevice)
+		if (!currentlyTouchDevice && !element.classList.contains("no-hover"))
 		{
 			element.classList.add("hover");
 
@@ -90,7 +91,7 @@ export function addHoverEvent({
 
 	element.addEventListener("mouseleave", () =>
 	{
-		if (!currentlyTouchDevice)
+		if (!currentlyTouchDevice && !element.classList.contains("no-hover"))
 		{
 			element.classList.remove("hover");
 
@@ -113,8 +114,11 @@ export function addHoverEvent({
 
 	element.addEventListener("touchstart", async () =>
 	{
-		if (addBounceOnTouch() && !siteSettings.reduceMotion)
-		{
+		if (
+			addBounceOnTouch()
+				&& !siteSettings.reduceMotion
+				&& !element.classList.contains("no-hover")
+		) {
 			await changeScale({ element, scale, duration: 100 });
 			changeScale({ element, scale: 1, duration: 100 });
 		}
@@ -128,7 +132,7 @@ export function addHoverEventWithScale({
 }) {
 	element.addEventListener("mouseenter", () =>
 	{
-		if (!currentlyTouchDevice)
+		if (!currentlyTouchDevice && !element.classList.contains("no-hover"))
 		{
 			if (element.tagName === "SELECT")
 			{
@@ -150,7 +154,7 @@ export function addHoverEventWithScale({
 
 	element.addEventListener("mouseleave", () =>
 	{
-		if (!currentlyTouchDevice)
+		if (!currentlyTouchDevice && !element.classList.contains("no-hover"))
 		{
 			if (element.tagName === "SELECT")
 			{
@@ -166,8 +170,11 @@ export function addHoverEventWithScale({
 
 	element.addEventListener("touchstart", async () =>
 	{
-		if (addBounceOnTouch() && !siteSettings.reduceMotion)
-		{
+		if (
+			addBounceOnTouch()
+				&& !siteSettings.reduceMotion
+				&& !element.classList.contains("no-hover")
+		) {
 			await changeScale({ element, scale, duration: 100 });
 			changeScale({ element, scale: 1, duration: 100 });
 		}
