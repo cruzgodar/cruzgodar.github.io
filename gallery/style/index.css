@@ -24,7 +24,7 @@ section
 	overflow: hidden;
 	
 	display: grid;
-	grid-template-columns: repeat(2, 1fr);
+	grid-template-columns: repeat(4, 1fr);
 	
 	grid-gap: 10px;
 }
@@ -94,18 +94,27 @@ section
 
 
 
-@media (max-aspect-ratio: 9/16), (max-width: 700px)
-{
-	#gallery
-	{
-		grid-template-columns: 1fr;
-	}
-}
-
-@media (min-aspect-ratio: 16/9), (min-width: 1400px)
+@media (max-width: 2100px)
 {
 	#gallery
 	{
 		grid-template-columns: repeat(3, 1fr);
+	}
+}
+
+@media (max-width: 1400px)
+{
+	#gallery
+	{
+		grid-template-columns: repeat(2, 1fr);
+	}
+}
+
+
+@media (max-width: 700px)
+{
+	#gallery
+	{
+		grid-template-columns: 1fr;
 	}
 }
