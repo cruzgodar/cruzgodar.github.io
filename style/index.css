@@ -105,6 +105,11 @@ body
 	filter: brightness(.85);
 }
 
+.checkbox-row.disabled > .checkbox-container.hover-reduce-motion
+{
+	filter: unset;
+}
+
 
 
 header
