@@ -240,7 +240,7 @@ export const galleryImageData =
 
 		appletLink: "quaternionic-julia-sets",
 
-		driveId: "1092d-V4qcvcW5_lsf5xsyDQvlDs1LdO9"
+		driveId: "1x2ss96tGmo-IvT2H31tm1zHimm8p7CWz"
 	},
 
 	"kicked-rotator":
