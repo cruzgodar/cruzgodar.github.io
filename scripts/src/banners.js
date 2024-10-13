@@ -31,7 +31,6 @@ export let nameTextOpacity = 1;
 let lastBannerChangeTimestamp = -1;
 
 let lastT = 0;
-let lastT0 = 0;
 
 function easeInOutQuad(x)
 {
@@ -155,7 +154,6 @@ export function updateBanner(timestamp)
 
 
 	lastT = t;
-	lastT0 = isNaN(t0) ? 0 : t0;
 
 	requestAnimationFrame(updateBanner);
 }
