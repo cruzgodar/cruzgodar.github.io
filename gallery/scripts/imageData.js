@@ -1,4 +1,13 @@
+/* eslint-disable quotes */
 /* eslint-disable max-len */
+
+const bridges2022 = /* html */`the <a href='https://gallery.bridgesmathart.org/exhibitions/2022-bridges-conference'>2022 Bridges conference</a>`;
+const bridges2023 = /* html */`the <a href='https://gallery.bridgesmathart.org/exhibitions/2023-bridges-conference'>2023 Bridges conference</a>`;
+const bridges2024 = /* html */`the <a href='https://gallery.bridgesmathart.org/exhibitions/bridges-2024-exhibition-of-mathematical-art'>2024 Bridges conference</a>`;
+const jsma = /* html */`the <a href='https://mpembed.com/show/?m=FGvT8EzPQpy&mpu=885'>Jordan Schnitzer Museum of Art</a>`;
+const emu = /* html */`<a href='https://www.facebook.com/visualartsteam/videos/4909794042367446/'>UO&#x2019;s Erb Memorial Union</a>`;
+const researchAsArt = /* html */`<a href='https://www.artscioregon.com/2020-gallery'>UO&#x2019;s 2020 Research as Art Competition</a> `;
+const girlsAngle = /* html */`the <a href='https://www.girlsangle.org/page/bulletin-archive/GABv15n01E.pdf'>Girls&#x2019; Angle Bulletin magazine</a>`;
 
 export const galleryImageData =
 {
@@ -100,6 +109,8 @@ export const galleryImageData =
 			Roots at $(\\pm 1, 0), (0, \\pm 1.5), (\\pm 1.5, \\pm 1.5)$
 		`,
 
+		featured: `A prior version of this image was featured in ${emu}.`,
+
 		appletLink: "newtons-method",
 
 		driveId: "1T8X5JduKEg8BkakXzGXZzu3CFW_R88i6"
@@ -109,7 +120,7 @@ export const galleryImageData =
 	{
 		title: "An Abelian Sandpile",
 
-		featured: "Featured in UO&#x2019;s Erb Memorial Union and University Hall",
+		featured: `Featured in ${emu}`,
 
 		appletLink: "abelian-sandpiles",
 
@@ -131,7 +142,7 @@ export const galleryImageData =
 
 		parameters: "6 vertices, 6 iterations",
 
-		featured: "Featured in UO&#x2019;s Erb Memorial Union",
+		featured: `Featured in ${emu}`,
 
 		appletLink: "finite-subdivisions",
 
@@ -146,7 +157,7 @@ export const galleryImageData =
 			Generated from $z^2 - 0.05z^{-2} + c$
 		`,
 
-		featured: "Featured in UO&#x2019;s Erb Memorial Union and University Hall",
+		featured: `Featured in ${emu}`,
 
 		appletLink: "generalized-julia-sets",
 
@@ -168,7 +179,7 @@ export const galleryImageData =
 	{
 		title: "A Brownian Tree",
 
-		featured: "Featured in UO&#x2019;s Erb Memorial Union",
+		featured: `Featured in ${emu}`,
 
 		appletLink: "brownian-trees",
 
@@ -223,6 +234,8 @@ export const galleryImageData =
 
 		appletLink: "snowflakes",
 
+		featured: `A prior version of this image was featured in ${emu}.`,
+
 		driveId: "1G4GWlWJvQWlP04IxWpNGmVCfwj0RZnX0"
 	},
 
@@ -236,7 +249,7 @@ export const galleryImageData =
 			Generated with $c = (-0.54, -0.25, -0.668, 0)$
 		`,
 
-		featured: "Featured in the 2023 Bridges Conference",
+		featured: `A prior version of this image was featured in ${bridges2023}.`,
 
 		appletLink: "quaternionic-julia-sets",
 
@@ -251,7 +264,7 @@ export const galleryImageData =
 			Generated with $K = 0.75$
 		`,
 
-		featured: "Featured in the Jordan Schnitzer Museum of Art and UO&#x2019;s Erb Memorial Union and University Hall",
+		featured: `A prior version of this image was featured in ${jsma}. The current version was featured in ${emu}.`,
 
 		appletLink: "the-kicked-rotator",
 
@@ -284,7 +297,7 @@ export const galleryImageData =
 			Generated from $\\sin(cz)$
 		`,
 
-		featured: "Featured in UO&#x2019;s Erb Memorial Union and University Hall",
+		featured: `Featured in ${emu}`,
 
 		appletLink: "generalized-julia-sets",
 
@@ -295,7 +308,7 @@ export const galleryImageData =
 	{
 		title: "A Quasi-Fuchsian Group",
 
-		featured: "Featured in UO&#x2019;s Erb Memorial Union and University Hall",
+		featured: `A prior version of this image was featured in ${emu}.`,
 
 		appletLink: "quasi-fuchsian-groups",
 
@@ -306,7 +319,7 @@ export const galleryImageData =
 	{
 		title: "A Chaos Game",
 
-		featured: "Featured in UO&#x2019;s Erb Memorial Union",
+		featured: `Featured in ${emu}`,
 
 		appletLink: "the-chaos-game",
 
@@ -319,7 +332,7 @@ export const galleryImageData =
 	{
 		title: "Wilson&#x2019;s Algorithm",
 
-		featured: "Featured in UO&#x2019;s Erb Memorial Union and University Hall",
+		featured: `A prior version of this image was featured in ${jsma} and ${girlsAngle}. This version was featured in ${emu} and ${bridges2024}.`,
 
 		appletLink: "wilsons-algorithm",
 
@@ -332,7 +345,7 @@ export const galleryImageData =
 	{
 		title: "The Barnsley Fern",
 
-		featured: "Featured in the Jordan Schnitzer Museum of Art",
+		featured: `Featured in ${jsma} and ${girlsAngle}`,
 
 		appletLink: "the-barnsley-fern",
 
@@ -394,6 +407,8 @@ export const galleryImageData =
 
 		appletLink: "secant-method",
 
+		featured: `Featured in ${emu}`,
+
 		driveId: "1XaNHxtiX5oA9KcLGs8ZSPFJwpDWt4mPk"
 	},
 
@@ -401,7 +416,7 @@ export const galleryImageData =
 	{
 		title: "A Juliabulb",
 
-		featured: "Featured in UO&#x2019;s Erb Memorial Union",
+		featured: `A prior version of this image was featured in ${emu}.`,
 
 		appletLink: "the-mandelbulb",
 
@@ -412,7 +427,7 @@ export const galleryImageData =
 	{
 		title: "A Juliabulb",
 
-		featured: "Featured in UO&#x2019;s Erb Memorial Union",
+		featured: `A prior version of this image was featured in ${emu}.`,
 
 		appletLink: "the-mandelbulb",
 
@@ -436,8 +451,6 @@ export const galleryImageData =
 	{
 		title: "A Chaos Game",
 
-		featured: "Featured in UO&#x2019;s Erb Memorial Union",
-
 		appletLink: "the-chaos-game",
 
 		driveId: "14ADChQ4KHV426ySW_CIVvTAXe2irMKU0"
@@ -447,7 +460,7 @@ export const galleryImageData =
 	{
 		title: "A Juliabulb",
 
-		featured: "Featured in UO&#x2019;s Erb Memorial Union",
+		featured: `A prior version of this image was featured in ${emu}.`,
 
 		appletLink: "the-mandelbulb",
 
@@ -460,7 +473,7 @@ export const galleryImageData =
 	{
 		title: "The Mandelbulb",
 
-		featured: "Featured in the 2022 Bridges Conference, as well as UO&#x2019;s Erb Memorial Union and University Hall",
+		featured: `A prior version of this image was featured in ${jsma}, ${researchAsArt}, and ${bridges2022}. It is currently on display at the Eugene airport.`,
 
 		appletLink: "the-mandelbulb",
 
@@ -474,6 +487,8 @@ export const galleryImageData =
 		title: "A Double Pendulum Fractal",
 
 		appletLink: "double-pendulum-fractal",
+
+		featured: `Featured in ${bridges2024}`,
 
 		driveId: "1zkTbCjaQlwxsTdqDpyOVSUXcRRHjQ5eI"
 	},

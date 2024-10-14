@@ -16,9 +16,9 @@
 	--neutral-hover: color-mix(in srgb, rgb(208, 208, 208), rgb(64, 64, 64) calc(var(--theme) * 100%));
 
 	--link-normal-contrast: color-mix(in srgb, rgb(0% 60.09% 3.61%), rgb(160, 224, 160) calc(var(--theme) * 100%));
-	--link-hover-normal-contrast: color-mix(in srgb, rgb(0% 96.4% 8.64%), rgb(127, 255, 127) calc(var(--theme) * 100%));
+	--link-hover-normal-contrast: color-mix(in srgb, rgb(71, 220, 84), rgb(147, 255, 147) calc(var(--theme) * 100%));
 
-	--link-high-contrast: color-mix(in srgb, rgb(0, 164, 0), rgb(127, 255, 127) calc(var(--theme) * 100%));
+	--link-high-contrast: color-mix(in srgb, rgb(0, 192, 0), rgb(127, 255, 127) calc(var(--theme) * 100%));
 	--link-hover-high-contrast: color-mix(in srgb, rgb(0, 255, 0), rgb(0, 192, 0) calc(var(--theme) * 100%));
 
 	--link: color-mix(in srgb, var(--link-normal-contrast), var(--link-high-contrast) calc(var(--contrast) * 100%));
@@ -136,6 +136,11 @@ a
 	text-decoration: none;
 	
 	cursor: pointer;
+}
+
+:root[style*="--contrast: 1"] .body-text a
+{
+	text-decoration: underline;
 }
 
 a.hover
