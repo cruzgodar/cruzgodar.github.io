@@ -105,9 +105,8 @@ export default function()
 	{
 		applet.setUniform("scale", scaleSlider.value);
 		applet.setUniform("iterations", iterationsSlider.value);
-
 		// Linearly interpolate from 5 at scale 2 to 1.75 at scale 3.
-		applet.setEpsilonScaling(5 - (scaleSlider.value - 2) * (5 - 1.75));
+		applet.setUniform("epsilonScaling", 5 - (scaleSlider.value - 2) * (5 - 1.75));
 
 		applet.rotationAngleX = rotationAngleXSlider.value;
 		applet.rotationAngleY = rotationAngleYSlider.value;

@@ -1,5 +1,5 @@
 /* eslint-disable quotes */
-/* eslint-disable max-len */
+ 
 
 const bridges2022 = /* html */`the <a href='https://gallery.bridgesmathart.org/exhibitions/2022-bridges-conference'>2022 Bridges conference</a>`;
 const bridges2023 = /* html */`the <a href='https://gallery.bridgesmathart.org/exhibitions/2023-bridges-conference'>2023 Bridges conference</a>`;

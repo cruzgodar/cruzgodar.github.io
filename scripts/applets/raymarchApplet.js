@@ -44,10 +44,10 @@ export class RaymarchApplet extends AnimationFrameApplet
 	imageWidth = 400;
 	imageHeight = 400;
 
-	maxMarches = 128;
-	maxShadowMarches = 128;
-	maxReflectionMarches = 128;
-	clipDistance = 1000;
+	maxMarches;
+	maxShadowMarches;
+	maxReflectionMarches;
+	clipDistance;
 
 	imagePlaneCenterPos = [];
 
@@ -63,8 +63,8 @@ export class RaymarchApplet extends AnimationFrameApplet
 	ambientLight;
 	bloomPower;
 
-	fogColor = [0, 0, 0];
-	fogScaling = .05;
+	fogColor;
+	fogScaling;
 	stepFactor;
 	epsilonScaling;
 	minEpsilon;
@@ -108,8 +108,14 @@ export class RaymarchApplet extends AnimationFrameApplet
 		epsilonScaling = 1.75,
 		minEpsilon = .0000003,
 
+		maxMarches = 128,
+		maxShadowMarches = 128,
+		maxReflectionMarches = 128,
+		clipDistance = 1000,
+
 		cameraPos = [0, 0, 0],
 		lockedOnOrigin = true,
+		lockZ,
 
 		lightPos = [50, 70, 100],
 		lightBrightness = 1,
@@ -118,6 +124,9 @@ export class RaymarchApplet extends AnimationFrameApplet
 		ambientLight = 0.25,
 		bloomPower = 1,
 
+		fogColor = [0, 0, 0],
+		fogScaling = .1,
+
 		useShadows = false,
 		useSoftShadows = true,
 		useReflections = false,
@@ -125,15 +134,20 @@ export class RaymarchApplet extends AnimationFrameApplet
 	}) {
 		super(canvas);
 
-		this.uniforms = uniforms;
 		this.theta = theta;
 		this.phi = phi;
 		this.stepFactor = stepFactor;
 		this.epsilonScaling = epsilonScaling;
 		this.minEpsilon = minEpsilon;
+
+		this.maxMarches = maxMarches;
+		this.maxShadowMarches = maxShadowMarches;
+		this.maxReflectionMarches = maxReflectionMarches;
+		this.clipDistance = clipDistance;
 		
 		this.cameraPos = cameraPos;
 		this.lockedOnOrigin = lockedOnOrigin;
+		this.lockZ = lockZ;
 
 		this.lightPos = lightPos;
 		this.lightBrightness = lightBrightness;
@@ -142,10 +156,27 @@ export class RaymarchApplet extends AnimationFrameApplet
 		this.ambientLight = ambientLight;
 		this.bloomPower = bloomPower;
 
+		this.fogColor = fogColor;
+		this.fogScaling = fogScaling;
+
 		this.useShadows = useShadows;
 		this.useSoftShadows = useSoftShadows;
 		this.useReflections = useReflections;
 		this.useBloom = useBloom;
+
+		this.uniforms = {
+			aspectRatioX: ["float", Math.max(this.imageWidth / this.imageHeight, 1)],
+			aspectRatioY: ["float", Math.min(this.imageWidth / this.imageHeight, 1)],
+			imageSize: ["int", this.imageSize],
+			cameraPos: ["vec3", this.cameraPos],
+			imagePlaneCenterPos: ["vec3", this.imagePlaneCenterPos],
+			forwardVec: ["vec3", this.forwardVec],
+			rightVec: ["vec3", this.rightVec],
+			upVec: ["vec3", this.upVec],
+			epsilonScaling: ["float", this.epsilonScaling],
+			minEpsilon: ["float", this.minEpsilon],
+			...uniforms
+		};
 		
 		this.listenForKeysPressed(
 			["w", "s", "a", "d", "q", "e", " ", "shift", "z"],
@@ -157,10 +188,10 @@ export class RaymarchApplet extends AnimationFrameApplet
 					const oldFovFactor = this.fovFactor;
 					const newFovFactor = pressed ? 4 : 1;
 
-					const oldEpsilonScaling = this.epsilonScaling;
+					const oldEpsilonScaling = this.uniforms.epsilonScaling[1];
 					const newEpsilonScaling = pressed
-						? this.epsilonScaling * 4
-						: this.epsilonScaling / 4;
+						? this.uniforms.epsilonScaling[1] * 4
+						: this.uniforms.epsilonScaling[1] / 4;
 
 					anime({
 						targets: dummy,
@@ -172,7 +203,8 @@ export class RaymarchApplet extends AnimationFrameApplet
 							this.fovFactor = (1 - dummy.t) * oldFovFactor
 								+ dummy.t * newFovFactor;
 
-							this.setEpsilonScaling(
+							this.setUniform(
+								"epsilonScaling",
 								(1 - dummy.t) * oldEpsilonScaling
 									+ dummy.t * newEpsilonScaling
 							);
@@ -443,18 +475,6 @@ export class RaymarchApplet extends AnimationFrameApplet
 			precision highp float;
 			
 			varying vec2 uv;
-			
-			uniform float aspectRatioX;
-			uniform float aspectRatioY;
-			
-			uniform vec3 cameraPos;
-			uniform vec3 imagePlaneCenterPos;
-			uniform vec3 forwardVec;
-			uniform vec3 rightVec;
-			uniform vec3 upVec;
-			uniform int imageSize;
-			uniform float epsilonScaling;
-			uniform float minEpsilon;
 
 			${uniformsGlsl}
 			
@@ -633,56 +653,6 @@ export class RaymarchApplet extends AnimationFrameApplet
 
 		this.calculateVectors();
 
-		this.wilson.gl.uniform1f(
-			this.wilson.uniforms.aspectRatioX,
-			Math.max(this.imageWidth / this.imageHeight, 1)
-		);
-
-		this.wilson.gl.uniform1f(
-			this.wilson.uniforms.aspectRatioY,
-			Math.min(this.imageWidth / this.imageHeight, 1)
-		);
-		
-		this.wilson.gl.uniform1i(
-			this.wilson.uniforms.imageSize,
-			this.imageSize
-		);
-
-		this.wilson.gl.uniform3fv(
-			this.wilson.uniforms.cameraPos,
-			this.cameraPos
-		);
-
-		this.wilson.gl.uniform3fv(
-			this.wilson.uniforms.imagePlaneCenterPos,
-			this.imagePlaneCenterPos
-		);
-
-		this.wilson.gl.uniform3fv(
-			this.wilson.uniforms.forwardVec,
-			this.forwardVec
-		);
-
-		this.wilson.gl.uniform3fv(
-			this.wilson.uniforms.rightVec,
-			this.rightVec
-		);
-
-		this.wilson.gl.uniform3fv(
-			this.wilson.uniforms.upVec,
-			this.upVec
-		);
-
-		this.wilson.gl.uniform1f(
-			this.wilson.uniforms.epsilonScaling,
-			this.epsilonScaling
-		);
-
-		this.wilson.gl.uniform1f(
-			this.wilson.uniforms.minEpsilon,
-			this.minEpsilon
-		);
-
 		for (const key in this.uniforms)
 		{
 			const value = this.uniforms[key];
@@ -775,18 +745,11 @@ export class RaymarchApplet extends AnimationFrameApplet
 			this.cameraPos[2] + this.forwardVec[2] * focalLengthFactor
 		];
 
-		
-
-		this.wilson.gl.uniform3fv(this.wilson.uniforms.cameraPos, this.cameraPos);
-
-		this.wilson.gl.uniform3fv(
-			this.wilson.uniforms.imagePlaneCenterPos,
-			this.imagePlaneCenterPos
-		);
-
-		this.wilson.gl.uniform3fv(this.wilson.uniforms.forwardVec, this.forwardVec);
-		this.wilson.gl.uniform3fv(this.wilson.uniforms.rightVec, this.rightVec);
-		this.wilson.gl.uniform3fv(this.wilson.uniforms.upVec, this.upVec);
+		this.setUniform("cameraPos", this.cameraPos);
+		this.setUniform("imagePlaneCenterPos", this.imagePlaneCenterPos);
+		this.setUniform("forwardVec", this.forwardVec);
+		this.setUniform("rightVec", this.rightVec);
+		this.setUniform("upVec", this.upVec);
 	}
 
 	distanceEstimator()
@@ -823,6 +786,8 @@ export class RaymarchApplet extends AnimationFrameApplet
 		
 		this.theta = -this.wilson.worldCenterX;
 		this.phi = -this.wilson.worldCenterY;
+
+		this.calculateVectors();
 
 		this.wilson.render.drawFrame();
 	}
@@ -906,8 +871,6 @@ export class RaymarchApplet extends AnimationFrameApplet
 			this.needNewFrame = true;
 		}
 
-		this.calculateVectors();
-
 		for (let i = 0; i < 3; i++)
 		{
 			this.moveVelocity[i] *= this.moveFriction ** (timeElapsed / 6.944);
@@ -936,21 +899,9 @@ export class RaymarchApplet extends AnimationFrameApplet
 
 		this.wilson.changeCanvasSize(this.imageWidth, this.imageHeight);
 
-
-
-		this.wilson.gl.uniform1f(
-			this.wilson.uniforms.aspectRatioX,
-			Math.max(this.imageWidth / this.imageHeight, 1)
-		);
-
-		this.wilson.gl.uniform1f(
-			this.wilson.uniforms.aspectRatioY,
-			Math.min(this.imageWidth / this.imageHeight, 1)
-		);
-
-		this.wilson.gl.uniform1i(this.wilson.uniforms.imageSize, this.imageSize);
-
-
+		this.setUniform("aspectRatioX", Math.max(this.imageWidth / this.imageHeight, 1));
+		this.setUniform("aspectRatioY", Math.min(this.imageWidth / this.imageHeight, 1));
+		this.setUniform("imageSize", this.imageSize);
 
 		this.needNewFrame = true;
 	}
@@ -966,25 +917,51 @@ export class RaymarchApplet extends AnimationFrameApplet
 		uniformFunction(this.wilson.gl, this.wilson.uniforms[name], value);
 	}
 
-	setEpsilonScaling(value)
-	{
-		this.epsilonScaling = value;
+	animateUniform({
+		name,
+		oldValue = this[name],
+		value,
+		duration = 250
+	}) {
+		const dummy = { t: oldValue };
 
-		this.wilson.gl.uniform1f(
-			this.wilson.uniforms.epsilonScaling,
-			this.epsilonScaling
-		);
+		return anime({
+			targets: dummy,
+			t: value,
+			duration,
+			easing: "easeInOutQuart",
+			update: () =>
+			{
+				this.setUniform(name, dummy.t);
+				this.needNewFrame = true;
+			}
+		}).finished;
 	}
 
-	setMinEpsilon(value)
-	{
-		this.minEpsilon = value;
+	loopUniform({
+		name,
+		startValue,
+		endValue,
+		duration = 2000
+	}) {
+		const dummy = { t: 0 };
 
-		this.wilson.gl.uniform1f(
-			this.wilson.uniforms.minEpsilon,
-			this.minEpsilon,
-		);
+		return anime({
+			targets: dummy,
+			t: 1,
+			duration,
+			easing: "easeInOutQuad",
+			loop: true,
+			direction: "alternate",
+			update: () =>
+			{
+				this.setUniform(name, startValue + (endValue - startValue) * dummy.t);
+				this.needNewFrame = true;
+			}
+		});
 	}
+
+
 
 	async setLockedOnOrigin(value)
 	{
