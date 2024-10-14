@@ -526,8 +526,40 @@ Welcome to Math 256! We'll use this page for the interactive notes, the homework
 	### buttons
 		download-homework-4
 	###
+
 	
 	
+	## Section 5
+	
+	In problems 4#, solve the DE and verify that you've found the general solution with the Wronskian.
+	
+	#. $$y'' + 6y' + 9y = 0.$$
+	
+	#. $$y'' + 10y' + 26y = 0.$$
+	
+	#. $$y'' - 100y = 0.$$
+	
+	#. $$y'' + 100y = 0.$$
+	
+
+
+	- - -
+
+	In problems 2#, solve the initial value problem and determine the behavior of the solution as $t \to \infty$.
+	
+	#. $$y'' - 2y' + 17y = 0,$$ $$y(0) = 4,$$ $$y'(0) = -4.$$
+	
+	#. $$y'' + 8y' + 16y = 0,$$ $$y(0) = 1,$$ $$y'(0) = 0.$$
+	
+
+
+	- - -
+
+	#. One fundamental solution to $$ty'' - y' + t^3y = 0$$ is $y = \sin\left(\frac{t^2}{2}\right)$. Find the other.
+
+	#. One fundamental solution to $$t^2y'' + ty' + y = 0$$ is $y = \sin(\log(t))$. Find the other.
+
+
 	
 	## Section 6
 	
@@ -564,6 +596,55 @@ Welcome to Math 256! We'll use this page for the interactive notes, the homework
 	###
 	
 	
+	## Section 3
+	
+	In problems 3#, find the indicated derivative.
+	
+	#. $$\frac{\partial}{\partial t} \left[ 2ty + \sin(t) \right].$$
+	
+	#. $$\frac{\partial}{\partial y} \left[ \sin(xy^x) \right].$$
+	
+	#. $$\frac{\partial}{\partial x} \left[ \sin(xy^x) \right].$$
+	
+
+
+	- - -
+
+	#. Using the multivariable chain rule, find $$\frac{d f(x, y)}{dt}$$, where $$f(x, y) = 2x^2 + \sec(xy^2)$$, $x(t) = t$, and $y(t) = 5t^2$.
+	
+
+
+	- - -
+
+	In problems 3#, find the indicated integral. Make sure to express the constant as a function of the correct variable.
+	
+	#. $$\int f(x, y)\,dx$$ for $$f(x, y) = 2x\cos(y - x).$$
+	
+	#. $$\int f(x, y)\,dy$$ for $f$ as in the previous problem.
+	
+	#. $$\int g(x, y)\,dy$$ for $$g(x, y) = e^{x^2}.$$
+	
+
+
+	- - -
+
+	In problems 5#, solve the the given DE.
+	
+	#. $$2y + 1 + (2x + 1)y' = 0,$$ $$y(1) = 1.$$
+	
+	#. $$1 - \sin(t + y) + y'(-\sin(t + y)) = 0,$$ $$y(0) = 0.$$
+	
+	#. $$y' = -\frac{yx^{y - 1}}{x^y\log(x)},$$ $$y(2) = 1.$$
+	
+	#. $$(10t + t^2) - 2\sin(y)y' = 0,$$ $$y(0) = 1.$$
+	
+	#.
+	
+	$$
+		\sec^2(x)\sec(y) + \left( \tan(x) \tan(y) \sec(y) + \frac{1}{y} \right)y' = 0.
+	$$
+
+
 	
 	## Section 4
 	
@@ -630,38 +711,6 @@ Welcome to Math 256! We'll use this page for the interactive notes, the homework
 	$$
 	
 	is *not* a solution in general. Why does this not contradict the results of section 4?
-	
-	
-	
-	## Section 5
-	
-	In problems 4#, solve the DE and verify that you've found the general solution with the Wronskian.
-	
-	#. $$y'' + 6y' + 9y = 0.$$
-	
-	#. $$y'' + 10y' + 26y = 0.$$
-	
-	#. $$y'' - 100y = 0.$$
-	
-	#. $$y'' + 100y = 0.$$
-	
-
-
-	- - -
-
-	In problems 2#, solve the initial value problem and determine the behavior of the solution as $t \to \infty$.
-	
-	#. $$y'' - 2y' + 17y = 0,$$ $$y(0) = 4,$$ $$y'(0) = -4.$$
-	
-	#. $$y'' + 8y' + 16y = 0,$$ $$y(0) = 1,$$ $$y'(0) = 0.$$
-	
-
-
-	- - -
-
-	#. One fundamental solution to $$ty'' - y' + t^3y = 0$$ is $y = \sin\left(\frac{t^2}{2}\right)$. Find the other.
-
-	#. One fundamental solution to $$t^2y'' + ty' + y = 0$$ is $y = \sin(\log(t))$. Find the other.
 	
 ###
 
@@ -744,56 +793,6 @@ Welcome to Math 256! We'll use this page for the interactive notes, the homework
 	#. A tank is filled with $1\,\text{L}$ of water. We begin pouring in a salt solution with a concentration of $2\,\frac{\text{g}}{\text{mL}}$ at a rate of $10\,\frac{\text{mL}}{\text{s}}$, and also begin draining the tank at a rate of $10\,\frac{\text{mL}}{\text{s}}$. What will the concentration of salt be after an hour?
 	
 	#. A tank is filled with $100\,\text{L}$ of uncolored paint. We begin pouring in a solution of red paint, which contains $0.5\,\frac{\text{kg}}{\text{L}}$ of dye, at a rate of $1\,\frac{\text{L}}{\text{s}}$. We also begin draining the well-mixed paint from the bottom of the tank at a rate of $1\,\frac{\text{L}}{\text{s}}$. How long will it take for the paint in the tank to have half the concentration of dye that the incoming red paint does?
-	
-	
-	
-	## Section 3
-	
-	In problems 3#, find the indicated derivative.
-	
-	#. $$\frac{\partial}{\partial t} \left[ 2ty + \sin(t) \right].$$
-	
-	#. $$\frac{\partial}{\partial y} \left[ \sin(xy^x) \right].$$
-	
-	#. $$\frac{\partial}{\partial x} \left[ \sin(xy^x) \right].$$
-	
-
-
-	- - -
-
-	#. Using the multivariable chain rule, find $$\frac{d f(x, y)}{dt}$$, where $$f(x, y) = 2x^2 + \sec(xy^2)$$, $x(t) = t$, and $y(t) = 5t^2$.
-	
-
-
-	- - -
-
-	In problems 3#, find the indicated integral. Make sure to express the constant as a function of the correct variable.
-	
-	#. $$\int f(x, y)\,dx$$ for $$f(x, y) = 2x\cos(y - x).$$
-	
-	#. $$\int f(x, y)\,dy$$ for $f$ as in the previous problem.
-	
-	#. $$\int g(x, y)\,dy$$ for $$g(x, y) = e^{x^2}.$$
-	
-
-
-	- - -
-
-	In problems 5#, solve the the given DE.
-	
-	#. $$2y + 1 + (2x + 1)y' = 0,$$ $$y(1) = 1.$$
-	
-	#. $$1 - \sin(t + y) + y'(-\sin(t + y)) = 0,$$ $$y(0) = 0.$$
-	
-	#. $$y' = -\frac{yx^{y - 1}}{x^y\log(x)},$$ $$y(2) = 1.$$
-	
-	#. $$(10t + t^2) - 2\sin(y)y' = 0,$$ $$y(0) = 1.$$
-	
-	#.
-	
-	$$
-		\sec^2(x)\sec(y) + \left( \tan(x) \tan(y) \sec(y) + \frac{1}{y} \right)y' = 0.
-	$$
 	
 ###
 
