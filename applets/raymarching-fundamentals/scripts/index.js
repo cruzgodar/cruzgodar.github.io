@@ -45,6 +45,13 @@ export default function()
 		duration: 3000
 	});
 
+	applet.loopUniform({
+		name: "extrudedCubeSeparation",
+		startValue: 1,
+		endValue: 1.75,
+		duration: 3000
+	});
+
 	async function test()
 	{
 		applet.animateUniform({

@@ -919,11 +919,10 @@ export class RaymarchApplet extends AnimationFrameApplet
 
 	animateUniform({
 		name,
-		oldValue = this[name],
 		value,
-		duration = 250
+		duration = 1000
 	}) {
-		const dummy = { t: oldValue };
+		const dummy = { t: this.uniforms[name][1] };
 
 		return anime({
 			targets: dummy,

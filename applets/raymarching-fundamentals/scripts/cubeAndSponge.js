@@ -142,7 +142,7 @@ export class CubeAndSponge extends RaymarchApplet
 			lockedOnOrigin: false,
 			lockZ: 1,
 			fogColor: [0.6, 0.73, 0.87],
-			useShadows: true,
+			useShadows: false,
 		});
 	}
 
@@ -151,213 +151,26 @@ export class CubeAndSponge extends RaymarchApplet
 		return 1;
 	}
 
-	distanceEstimatorExtrudedCube(x, y, z)
+	updateRotationAndFloat()
 	{
-		const scale = this.uniforms.extrudedCubeScale[1];
-		const separation = this.uniforms.extrudedCubeSeparation[1];
+		this.setUniform(
+			"objectRotation",
+			this.uniforms.objectRotation[1] + .003
+		);
 
-		const scaleCenter = (scale + 1)
-			/ (scale - 1) * separation;
+		this.setUniform(
+			"objectFloat",
+			.1 * Math.sin(3 * this.uniforms.objectRotation[1])
+		);
 
-		let mutablePos = [
-			Math.abs(x) * 3,
-			Math.abs(y) * 3,
-			Math.abs(z) * 3 - 2.5
-		];
-
-		let totalDistance = Math.max(
-			Math.max(mutablePos[0], mutablePos[1]),
-			mutablePos[2]
-		) - 1;
-
-		for (let iteration = 0; iteration < this.iterations; iteration++)
-		{
-			if (mutablePos[0] > Math.max(mutablePos[1], mutablePos[2]))
-			{
-				mutablePos = [
-					scale * mutablePos[0]
-						- (scale - 1) * scaleCenter,
-					scale * mutablePos[1],
-					scale * mutablePos[2]
-				];
-			}
-
-			else if (mutablePos[1] > Math.max(mutablePos[0], mutablePos[2]))
-			{
-				mutablePos = [
-					scale * mutablePos[0],
-					scale * mutablePos[1]
-						- (scale - 1) * scaleCenter,
-					scale * mutablePos[2]
-				];
-			}
-
-			else
-			{
-				mutablePos = [
-					scale * mutablePos[0],
-					scale * mutablePos[1],
-					scale * mutablePos[2]
-						- (scale - 1) * scaleCenter
-				];
-			}
-
-			mutablePos = [
-				Math.abs(mutablePos[0]),
-				Math.abs(mutablePos[1]),
-				Math.abs(mutablePos[2])
-			];
-
-			totalDistance = Math.min(
-				totalDistance,
-				(Math.max(Math.max(mutablePos[0], mutablePos[1]), mutablePos[2]) - 1)
-					/ Math.pow(scale, iteration + 1)
-			);
-		}
-		
-		return Math.abs(totalDistance) / 3;
+		this.needNewFrame = true;
 	}
 
-	distanceEstimatorMengerSponge(x, y, z)
+	prepareFrame(timeElapsed)
 	{
-		const scale = this.uniforms.mengerSpongeScale[1];
-
-		let mutablePos = [
-			Math.abs(x) * 3,
-			Math.abs(y) * 3,
-			Math.abs(z) * 3 - 2.5
-		];
-
-		let maxAbsPos = Math.max(Math.max(mutablePos[0], mutablePos[1]), mutablePos[2]);
-		let minAbsPos = Math.min(Math.min(mutablePos[0], mutablePos[1]), mutablePos[2]);
-		let sumAbsPos = mutablePos[0] + mutablePos[1] + mutablePos[2];
-		mutablePos = [minAbsPos, sumAbsPos - minAbsPos - maxAbsPos, maxAbsPos];
-
-		let totalDistance;
-		const totalScale = [1, 1, 1];
-		let effectiveScale;
-
-		const invScale = 1 / scale;
-		const cornerFactor = 2 * scale
-			/ (1 * scale - 1);
-		const edgeFactor = 2 * scale / (scale - 1);
-
-		const cornerScaleCenter = [
-			(cornerFactor - 1) * (
-				(1 + 1 * scale) / (1 + 2 * scale
-				- 1 * scale)
-			),
-
-			(cornerFactor - 1) * (
-				(1 + 1 * scale) / (1 + 2 * scale
-				- 1 * scale)
-			),
-
-			(cornerFactor - 1) * (
-				(1 + 1 * scale) / (1 + 2 * scale
-				- 1 * scale)
-			)
-		];
-		
-		const edgeScaleCenter = [0, edgeFactor - 1, edgeFactor - 1];
-
-		const cornerRadius = 0.5 * (1 - invScale);
-		const cornerCenter = 0.5 * (1 + invScale);
-
-		const edgeRadius = 0.5 * (1 - invScale);
-		const edgeCenter = 0.5 * (1 + invScale);
-
-		for (let iteration = 0; iteration < 16; iteration++)
-		{
-			const distanceToCornerX = Math.abs(mutablePos[0] - cornerCenter) - cornerRadius;
-			const distanceToCornerY = Math.abs(mutablePos[1] - cornerCenter) - cornerRadius;
-			const distanceToCornerZ = Math.abs(mutablePos[2] - cornerCenter) - cornerRadius;
-			const distanceToCorner = Math.max(
-				distanceToCornerX,
-				Math.max(distanceToCornerY, distanceToCornerZ)
-			);
-			
-			const distanceToEdgeX = mutablePos[0] - invScale;
-			const distanceToEdgeY = Math.abs(mutablePos[1] - edgeCenter) - edgeRadius;
-			const distanceToEdgeZ = Math.abs(mutablePos[2] - edgeCenter) - edgeRadius;
-			const distanceToEdge = Math.max(
-				distanceToEdgeX,
-				Math.max(distanceToEdgeY, distanceToEdgeZ)
-			);
-
-			if (distanceToCorner < distanceToEdge)
-			{
-				totalDistance = distanceToCorner;
-
-				if (distanceToCornerX > Math.max(distanceToCornerY, distanceToCornerZ))
-				{
-					effectiveScale = totalScale[0];
-				}
-
-				else if (distanceToCornerY > Math.max(distanceToCornerX, distanceToCornerZ))
-				{
-					effectiveScale = totalScale[1];
-				}
-
-				else
-				{
-					effectiveScale = totalScale[2];
-				}
-
-				// Scale all directions by 2s/(s-1) from (1, 1, 1) * separation.
-				mutablePos = [
-					cornerFactor * mutablePos[0] - cornerScaleCenter[0],
-					cornerFactor * mutablePos[1] - cornerScaleCenter[1],
-					cornerFactor * mutablePos[2] - cornerScaleCenter[2]
-				];
-
-				totalScale[0] *= cornerFactor;
-				totalScale[1] *= cornerFactor;
-				totalScale[2] *= cornerFactor;
-			}
-
-			else
-			{
-				totalDistance = distanceToEdge;
-				
-				if (distanceToEdgeX > Math.max(distanceToEdgeY, distanceToEdgeZ))
-				{
-					effectiveScale = totalScale[0];
-				}
-
-				else if (distanceToEdgeY > Math.max(distanceToEdgeX, distanceToEdgeZ))
-				{
-					effectiveScale = totalScale[1];
-				}
-
-				else
-				{
-					effectiveScale = totalScale[2];
-				}
-
-				mutablePos = [
-					scale * mutablePos[0] - edgeScaleCenter[0],
-					edgeFactor * mutablePos[1] - edgeScaleCenter[1],
-					edgeFactor * mutablePos[2] - edgeScaleCenter[2]
-				];
-
-				totalScale[0] *= scale;
-				totalScale[1] *= edgeFactor;
-				totalScale[2] *= edgeFactor;
-			}
-
-			mutablePos = [
-				Math.abs(mutablePos[0]),
-				Math.abs(mutablePos[1]),
-				Math.abs(mutablePos[2])
-			];
-
-			maxAbsPos = Math.max(Math.max(mutablePos[0], mutablePos[1]), mutablePos[2]);
-			minAbsPos = Math.min(Math.min(mutablePos[0], mutablePos[1]), mutablePos[2]);
-			sumAbsPos = mutablePos[0] + mutablePos[1] + mutablePos[2];
-			mutablePos = [minAbsPos, sumAbsPos - minAbsPos - maxAbsPos, maxAbsPos];
-		}
-		
-		return Math.abs(totalDistance) / effectiveScale * 0.333333;
+		this.pan.update(timeElapsed);
+		this.zoom.update(timeElapsed);
+		this.moveUpdate(timeElapsed);
+		this.updateRotationAndFloat();
 	}
 }
