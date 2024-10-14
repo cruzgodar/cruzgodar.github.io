@@ -1,4 +1,4 @@
-import { PlanePartitions } from "./class.js";
+import { verifyPp } from "./parseAndVerify.js";
 
 const absoluteMinAEntry = -5;
 
@@ -9,7 +9,7 @@ export function isValidABConfig({
 	A,
 	B
 }) {
-	if (!PlanePartitions.verifyPp(A) || !PlanePartitions.verifyPp(B))
+	if (!verifyPp(A) || !verifyPp(B))
 	{
 		return false;
 	}

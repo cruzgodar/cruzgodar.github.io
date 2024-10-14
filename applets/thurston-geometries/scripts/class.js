@@ -17,6 +17,89 @@ const animationStartFrame = 0;
 const animationMovingSpeed = 0.001;
 const animationMovingDirection = [0.54025, 0.8415, 0, 0];
 
+
+
+const moveFriction = .96;
+const moveStopThreshhold = .01;
+
+const rollingFriction = .92;
+const rollingStopThreshhold = .01;
+
+export function rotateVectors(vec1, vec2, theta)
+{
+	const cosine = Math.cos(theta);
+	const sine = Math.sin(theta);
+
+	return [
+		[
+			vec1[0] * cosine + vec2[0] * sine,
+			vec1[1] * cosine + vec2[1] * sine,
+			vec1[2] * cosine + vec2[2] * sine,
+			vec1[3] * cosine + vec2[3] * sine
+		],
+		[
+			-vec1[0] * sine + vec2[0] * cosine,
+			-vec1[1] * sine + vec2[1] * cosine,
+			-vec1[2] * sine + vec2[2] * cosine,
+			-vec1[3] * sine + vec2[3] * cosine
+		],
+	];
+}
+
+function addVectors(vec1, vec2)
+{
+	return [vec1[0] + vec2[0], vec1[1] + vec2[1], vec1[2] + vec2[2], vec1[3] + vec2[3]];
+}
+
+function scaleVector(c, vec)
+{
+	return [c * vec[0], c * vec[1], c * vec[2], c * vec[3]];
+}
+
+export function magnitude(vec)
+{
+	return Math.sqrt(vec[0] * vec[0] + vec[1] * vec[1] + vec[2] * vec[2] + vec[3] * vec[3]);
+}
+
+export function normalize(vec)
+{
+	const mag = magnitude(vec);
+
+	return [vec[0] / mag, vec[1] / mag, vec[2] / mag, vec[3] / mag];
+}
+
+export function dotProduct(vec1, vec2)
+{
+	return vec1[0] * vec2[0] + vec1[1] * vec2[1] + vec1[2] * vec2[2] + vec1[3] * vec2[3];
+}
+
+export function mat4TimesVector(mat, vec)
+{
+	return [
+		mat[0][0] * vec[0]
+			+ mat[0][1] * vec[1]
+			+ mat[0][2] * vec[2]
+			+ mat[0][3] * vec[3],
+		
+		mat[1][0] * vec[0]
+			+ mat[1][1] * vec[1]
+			+ mat[1][2] * vec[2]
+			+ mat[1][3] * vec[3],
+		
+		mat[2][0] * vec[0]
+			+ mat[2][1] * vec[1]
+			+ mat[2][2] * vec[2]
+			+ mat[2][3] * vec[3],
+
+		mat[3][0] * vec[0]
+			+ mat[3][1] * vec[1]
+			+ mat[3][2] * vec[2]
+			+ mat[3][3] * vec[3]
+	];
+}
+
+
+
 export class ThurstonGeometry extends Applet
 {
 	resolution = 500;
@@ -540,9 +623,9 @@ export class ThurstonGeometry extends Applet
 			
 			for (let i = 0; i < 3; i++)
 			{
-				this.movingAmount[i] *= ThurstonGeometry.moveFriction ** (timeElapsed / 6.944);
+				this.movingAmount[i] *= moveFriction ** (timeElapsed / 6.944);
 
-				if (Math.abs(this.movingAmount[i]) < ThurstonGeometry.moveStopThreshhold)
+				if (Math.abs(this.movingAmount[i]) < moveStopThreshhold)
 				{
 					this.movingAmount[i] = 0;
 				}
@@ -716,21 +799,21 @@ export class ThurstonGeometry extends Applet
 	// we'll comute what the new rotation should be when teleporting.
 	recomputeRotation(newRotatedForwardVec)
 	{
-		const normalizedForwardVec = ThurstonGeometry.scaleVector(
-			1 / ThurstonGeometry.magnitude(this.geometryData.forwardVec),
+		const normalizedForwardVec = scaleVector(
+			1 / magnitude(this.geometryData.forwardVec),
 			this.geometryData.forwardVec
 		);
 
-		const normalizedUpVec = ThurstonGeometry.scaleVector(
-			1 / ThurstonGeometry.magnitude(this.geometryData.upVec),
+		const normalizedUpVec = scaleVector(
+			1 / magnitude(this.geometryData.upVec),
 			this.geometryData.upVec
 		);
 
 		// First, get a vector orthogonal to the forward vector.
-		const orthogonalToForwardVec = ThurstonGeometry.addVectors(
+		const orthogonalToForwardVec = addVectors(
 			normalizedUpVec,
-			ThurstonGeometry.scaleVector(
-				-ThurstonGeometry.dotProduct(normalizedForwardVec, normalizedUpVec),
+			scaleVector(
+				-dotProduct(normalizedForwardVec, normalizedUpVec),
 				normalizedForwardVec
 			)
 		);
@@ -738,8 +821,8 @@ export class ThurstonGeometry extends Applet
 		// The rotated forward vector is cos(t) forward + sin(t) up.
 		// We'll dot this with the vector orthogonal to the forward one.
 		const angle = Math.asin(
-			ThurstonGeometry.dotProduct(newRotatedForwardVec, orthogonalToForwardVec)
-			/ (ThurstonGeometry.dotProduct(this.geometryData.upVec, orthogonalToForwardVec))
+			dotProduct(newRotatedForwardVec, orthogonalToForwardVec)
+			/ (dotProduct(this.geometryData.upVec, orthogonalToForwardVec))
 		);
 		
 		this.wilson.worldCenterY = angle;
@@ -771,7 +854,7 @@ export class ThurstonGeometry extends Applet
 			Math.PI / 2 - .01
 		);
 
-		const result = ThurstonGeometry.rotateVectors(
+		const result = rotateVectors(
 			this.geometryData.forwardVec,
 			this.geometryData.rightVec,
 			sign * this.wilson.worldCenterX
@@ -784,7 +867,7 @@ export class ThurstonGeometry extends Applet
 
 		this.wilson.worldCenterX = 0;
 
-		const result2 = ThurstonGeometry.rotateVectors(
+		const result2 = rotateVectors(
 			this.geometryData.forwardVec,
 			this.geometryData.upVec,
 			sign * this.wilson.worldCenterY
@@ -805,7 +888,7 @@ export class ThurstonGeometry extends Applet
 
 		if (this.geometryData.lockedOnOrigin)
 		{
-			this.geometryData.cameraPos = ThurstonGeometry.scaleVector(
+			this.geometryData.cameraPos = scaleVector(
 				-2.5,
 				this.rotatedForwardVec
 			);
@@ -835,7 +918,7 @@ export class ThurstonGeometry extends Applet
 		
 		const angle = timeElapsed * this.rollingAmount * .0015;
 
-		[this.geometryData.rightVec, this.geometryData.upVec] = ThurstonGeometry.rotateVectors(
+		[this.geometryData.rightVec, this.geometryData.upVec] = rotateVectors(
 			this.geometryData.rightVec,
 			this.geometryData.upVec,
 			angle
@@ -843,9 +926,9 @@ export class ThurstonGeometry extends Applet
 
 		this.rotatedUpVec = [...this.geometryData.upVec];
 
-		this.rollingAmount *= ThurstonGeometry.rollingFriction ** (timeElapsed / 6.944);
+		this.rollingAmount *= rollingFriction ** (timeElapsed / 6.944);
 
-		if (Math.abs(this.rollingAmount) < ThurstonGeometry.rollingStopThreshhold)
+		if (Math.abs(this.rollingAmount) < rollingStopThreshhold)
 		{
 			this.rollingAmount = 0;
 		}
@@ -1120,112 +1203,5 @@ export class ThurstonGeometry extends Applet
 				this.needNewFrame = true;
 			}
 		}).finished;
-	}
-
-
-
-	static moveFriction = .96;
-	static moveStopThreshhold = .01;
-
-	static rollingFriction = .92;
-	static rollingStopThreshhold = .01;
-
-	static rotateVectors(vec1, vec2, theta)
-	{
-		const cosine = Math.cos(theta);
-		const sine = Math.sin(theta);
-
-		return [
-			[
-				vec1[0] * cosine + vec2[0] * sine,
-				vec1[1] * cosine + vec2[1] * sine,
-				vec1[2] * cosine + vec2[2] * sine,
-				vec1[3] * cosine + vec2[3] * sine
-			],
-			[
-				-vec1[0] * sine + vec2[0] * cosine,
-				-vec1[1] * sine + vec2[1] * cosine,
-				-vec1[2] * sine + vec2[2] * cosine,
-				-vec1[3] * sine + vec2[3] * cosine
-			],
-		];
-	}
-
-	static addVectors(vec1, vec2)
-	{
-		return [vec1[0] + vec2[0], vec1[1] + vec2[1], vec1[2] + vec2[2], vec1[3] + vec2[3]];
-	}
-
-	static scaleVector(c, vec)
-	{
-		return [c * vec[0], c * vec[1], c * vec[2], c * vec[3]];
-	}
-
-	static magnitude(vec)
-	{
-		return Math.sqrt(vec[0] * vec[0] + vec[1] * vec[1] + vec[2] * vec[2] + vec[3] * vec[3]);
-	}
-
-	static normalize(vec)
-	{
-		const mag = ThurstonGeometry.magnitude(vec);
-
-		return [vec[0] / mag, vec[1] / mag, vec[2] / mag, vec[3] / mag];
-	}
-
-	static dotProduct(vec1, vec2)
-	{
-		return vec1[0] * vec2[0] + vec1[1] * vec2[1] + vec1[2] * vec2[2] + vec1[3] * vec2[3];
-	}
-
-	static crossProduct(vec1, vec2)
-	{
-		return [
-			vec1[1] * vec2[2] - vec1[2] * vec2[1],
-			vec1[2] * vec2[0] - vec1[0] * vec2[2],
-			vec1[0] * vec2[1] - vec1[1] * vec2[0]
-		];
-	}
-
-	static mat3TimesVector(mat, vec)
-	{
-		return [
-			mat[0][0] * vec[0]
-				+ mat[0][1] * vec[1]
-				+ mat[0][2] * vec[2],
-			
-			mat[1][0] * vec[0]
-				+ mat[1][1] * vec[1]
-				+ mat[1][2] * vec[2],
-			
-			mat[2][0] * vec[0]
-				+ mat[2][1] * vec[1]
-				+ mat[2][2] * vec[2]
-		];
-	}
-
-	static mat4TimesVector(mat, vec)
-	{
-		return [
-			mat[0][0] * vec[0]
-				+ mat[0][1] * vec[1]
-				+ mat[0][2] * vec[2]
-				+ mat[0][3] * vec[3],
-			
-			mat[1][0] * vec[0]
-				+ mat[1][1] * vec[1]
-				+ mat[1][2] * vec[2]
-				+ mat[1][3] * vec[3],
-			
-			mat[2][0] * vec[0]
-				+ mat[2][1] * vec[1]
-				+ mat[2][2] * vec[2]
-				+ mat[2][3] * vec[3],
-
-			mat[3][0] * vec[0]
-				+ mat[3][1] * vec[1]
-				+ mat[3][2] * vec[2]
-				+ mat[3][3] * vec[3]
-		];
 	}
 }

@@ -1,5 +1,5 @@
 import { getMinGlslString } from "../../../../scripts/applets/applet.js";
-import { ThurstonGeometry } from "../class.js";
+import { magnitude } from "../class.js";
 import { BaseGeometry } from "./base.js";
 
 export class E3Geometry extends BaseGeometry {}
@@ -184,7 +184,7 @@ export class E3Rooms extends E3Geometry
 
 		for (let i = 0; i < centers.length; i++)
 		{
-			const distance = ThurstonGeometry.magnitude(
+			const distance = magnitude(
 				[
 					cameraPosModded[0] - centers[i][0],
 					cameraPosModded[1] - centers[i][1],
@@ -233,7 +233,7 @@ export class E3Rooms extends E3Geometry
 
 		for (let i = 0; i < corners.length; i++)
 		{
-			const distance = ThurstonGeometry.magnitude(
+			const distance = magnitude(
 				[
 					cameraPosModded[0] - corners[i][0],
 					cameraPosModded[1] - corners[i][1],

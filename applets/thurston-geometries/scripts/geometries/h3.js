@@ -1,5 +1,5 @@
 import { getMinGlslString, getVectorGlsl } from "../../../../scripts/applets/applet.js";
-import { ThurstonGeometry } from "../class.js";
+import { dotProduct, mat4TimesVector } from "../class.js";
 import { BaseGeometry } from "./base.js";
 
 const teleportVectors = [
@@ -311,29 +311,29 @@ class H3Geometry extends BaseGeometry
 
 		for (let i = 0; i < teleportMatrices.length; i++)
 		{
-			if (ThurstonGeometry.dotProduct(this.cameraPos, teleportVectors[i]) < 0)
+			if (dotProduct(this.cameraPos, teleportVectors[i]) < 0)
 			{
-				this.cameraPos = ThurstonGeometry.mat4TimesVector(
+				this.cameraPos = mat4TimesVector(
 					teleportMatrices[i],
 					this.cameraPos
 				);
 
-				this.forwardVec = ThurstonGeometry.mat4TimesVector(
+				this.forwardVec = mat4TimesVector(
 					teleportMatrices[i],
 					this.forwardVec
 				);
 
-				this.rightVec = ThurstonGeometry.mat4TimesVector(
+				this.rightVec = mat4TimesVector(
 					teleportMatrices[i],
 					this.rightVec
 				);
 
-				this.upVec = ThurstonGeometry.mat4TimesVector(
+				this.upVec = mat4TimesVector(
 					teleportMatrices[i],
 					this.upVec
 				);
 
-				const newRotatedForwardVec = ThurstonGeometry.mat4TimesVector(
+				const newRotatedForwardVec = mat4TimesVector(
 					teleportMatrices[i],
 					rotatedForwardVec
 				);

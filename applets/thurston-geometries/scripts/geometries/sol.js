@@ -1,5 +1,5 @@
 import { getMatrixGlsl, getMinGlslString } from "../../../../scripts/applets/applet.js";
-import { ThurstonGeometry, makeAnimation } from "../class.js";
+import { makeAnimation, mat4TimesVector } from "../class.js";
 import { BaseGeometry } from "./base.js";
 
 const numericalStepDistance = 0.0001;
@@ -957,7 +957,7 @@ class SolGeometry extends BaseGeometry
 		{
 			if (mElement[i] < -0.5)
 			{
-				this.cameraPos = ThurstonGeometry.mat4TimesVector(
+				this.cameraPos = mat4TimesVector(
 					teleportationMatrices[2 * i],
 					this.cameraPos
 				);
@@ -989,7 +989,7 @@ class SolGeometry extends BaseGeometry
 
 			else if (mElement[i] > 0.5)
 			{
-				this.cameraPos = ThurstonGeometry.mat4TimesVector(
+				this.cameraPos = mat4TimesVector(
 					teleportationMatrices[2 * i + 1],
 					this.cameraPos
 				);

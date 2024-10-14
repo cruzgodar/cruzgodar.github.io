@@ -1,4 +1,5 @@
-import { PlanePartitions } from "./class.js";
+import { generateRandomPlanePartition, generateRandomTableau } from "./generateRandomData.js";
+import { parseArray, verifyPp, verifySsyt } from "./parseAndVerify.js";
 
 export async function runExample(index)
 {
@@ -12,20 +13,20 @@ export async function runExample(index)
 
 		if (this.arrays.length === 0)
 		{
-			const planePartition = PlanePartitions.parseArray(
-				PlanePartitions.generateRandomPlanePartition()
+			const planePartition = parseArray(
+				generateRandomPlanePartition()
 			);
 
 			await this.addNewArray(this.arrays.length, planePartition);
 		}
 
-		else if (!PlanePartitions.verifyPp(this.arrays[0].numbers))
+		else if (!verifyPp(this.arrays[0].numbers))
 		{
 			await this.removeArray(0);
 			await new Promise(resolve => setTimeout(resolve, this.animationTime / 2));
 
-			const planePartition = PlanePartitions.parseArray(
-				PlanePartitions.generateRandomPlanePartition()
+			const planePartition = parseArray(
+				generateRandomPlanePartition()
 			);
 
 			await this.addNewArray(this.arrays.length, planePartition);
@@ -66,7 +67,7 @@ export async function runExample(index)
 			await new Promise(resolve => setTimeout(resolve, this.animationTime / 2));
 		}
 
-		await this.addNewArray(this.arrays.length, PlanePartitions.generateRandomTableau());
+		await this.addNewArray(this.arrays.length, generateRandomTableau());
 
 
 
@@ -123,7 +124,7 @@ export async function runAlgorithm(name, index, subAlgorithm = false)
 	{
 		const type = data.inputType[i];
 
-		if (type === "pp" && !PlanePartitions.verifyPp(this.arrays[index + i].numbers))
+		if (type === "pp" && !verifyPp(this.arrays[index + i].numbers))
 		{
 			console.log(`Array at index ${index + i} is not a plane partition!`);
 
@@ -132,7 +133,7 @@ export async function runAlgorithm(name, index, subAlgorithm = false)
 			return;
 		}
 
-		if (type === "ssyt" && !PlanePartitions.verifySsyt(this.arrays[index + i].numbers))
+		if (type === "ssyt" && !verifySsyt(this.arrays[index + i].numbers))
 		{
 			console.log(`Array at index ${index + i} is not an SSYT!`);
 

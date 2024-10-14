@@ -1,5 +1,7 @@
 import { showPage } from "../../../scripts/src/loadPage.js";
 import { PlanePartitions } from "./class.js";
+import { generateRandomPlanePartition } from "./generateRandomData.js";
+import { arrayToAscii, parseArray } from "./parseAndVerify.js";
 import { Button, ToggleButton, equalizeTextButtons } from "/scripts/src/buttons.js";
 import { Checkbox } from "/scripts/src/checkboxes.js";
 import { Dropdown } from "/scripts/src/dropdowns.js";
@@ -239,8 +241,8 @@ export default function()
 	sectionElements[visibleSection]
 		.forEach(element => canvasLandscapeLeftElement.appendChild(element));
 
-	const planePartition = PlanePartitions.generateRandomPlanePartition();
-	addArrayTextarea.setValue(PlanePartitions.arrayToAscii(planePartition));
+	const planePartition = generateRandomPlanePartition();
+	addArrayTextarea.setValue(arrayToAscii(planePartition));
 	applet.addNewArray(0, planePartition);
 
 	// testABConfigs();
@@ -260,7 +262,7 @@ export default function()
 	{
 		applet.addNewArray(
 			applet.arrays.length,
-			PlanePartitions.parseArray(addArrayTextarea.value)
+			parseArray(addArrayTextarea.value)
 		);
 	}
 
@@ -268,10 +270,10 @@ export default function()
 	{
 		await applet.editArray(
 			editArrayIndexInput.value,
-			PlanePartitions.parseArray(editArrayTextarea.value)
+			parseArray(editArrayTextarea.value)
 		);
 
-		editArrayTextarea.value = PlanePartitions.arrayToAscii(
+		editArrayTextarea.value = arrayToAscii(
 			applet.arrays[editArrayIndexInput.value].numbers
 		);
 	}
@@ -286,7 +288,7 @@ export default function()
 		}
 
 		editArrayTextarea.setValue(
-			PlanePartitions.arrayToAscii(applet.arrays[index].numbers)
+			arrayToAscii(applet.arrays[index].numbers)
 		);
 	}
 

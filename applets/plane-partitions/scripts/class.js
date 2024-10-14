@@ -23,11 +23,6 @@ import {
 } from "./cameraControls.js";
 import { addNewArray, editArray, removeArray, trimArray } from "./editArrays.js";
 import {
-	generateRandomPlanePartition,
-	generateRandomSsyt,
-	generateRandomTableau
-} from "./generateRandomData.js";
-import {
 	drawAll2dViewText,
 	drawSingleCell2dViewText,
 	hideFloor,
@@ -36,7 +31,6 @@ import {
 	showFloor
 } from "./miscUtils.js";
 import { drawBoundary, drawBoundaryRect, drawNQuotient } from "./nQuotients.js";
-import { arrayToAscii, parseArray, verifyPp, verifySsyt } from "./parseAndVerify.js";
 import { runAlgorithm, runExample } from "./runAlgorithm.js";
 import {
 	colorCubes,
@@ -498,15 +492,6 @@ export class PlanePartitions extends AnimationFrameApplet
 
 		this.wilsonNumbers.fullscreen.switchFullscreen();
 	}
-
-	static generateRandomPlanePartition = generateRandomPlanePartition;
-	static generateRandomTableau = generateRandomTableau;
-	static generateRandomSsyt = generateRandomSsyt;
-
-	static parseArray = parseArray;
-	static arrayToAscii = arrayToAscii;
-	static verifyPp = verifyPp;
-	static verifySsyt = verifySsyt;
 
 	isValidABConfig = isValidABConfig;
 	getMinimalABConfig = getMinimalABConfig;

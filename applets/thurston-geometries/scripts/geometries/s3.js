@@ -3,7 +3,7 @@ import {
 	getMaxGlslString,
 	getMinGlslString
 } from "../../../../scripts/applets/applet.js";
-import { ThurstonGeometry } from "../class.js";
+import { dotProduct, normalize } from "../class.js";
 import { BaseGeometry } from "./base.js";
 
 class S3Geometry extends BaseGeometry
@@ -21,7 +21,7 @@ class S3Geometry extends BaseGeometry
 
 	correctPosition(pos)
 	{
-		return ThurstonGeometry.normalize(pos);
+		return this.normalize(pos);
 	}
 
 	getNormalVec(cameraPos)
@@ -381,7 +381,7 @@ export class S3Rooms extends S3Geometry
 
 		for (let i = 0; i < centers.length; i++)
 		{
-			const distance = Math.acos(ThurstonGeometry.dotProduct(
+			const distance = Math.acos(dotProduct(
 				centers[i], this.cameraPos
 			));
 
@@ -421,7 +421,7 @@ export class S3Rooms extends S3Geometry
 
 		for (let i = 0; i < corners.length; i++)
 		{
-			const distance = Math.acos(ThurstonGeometry.dotProduct(
+			const distance = Math.acos(dotProduct(
 				corners[i], this.cameraPos
 			));
 
@@ -462,8 +462,8 @@ function getHopfFiber(index, numFibers, theta, startingFiber)
 
 	/*	normalize(vec4(1.0 + p.z, -p.y, p.x, 0.0)),
 					normalize(vec4(0.0, p.x, p.y, 1.0 + p.z)), */
-	const vec1 = ThurstonGeometry.normalize([1 + p[2], -p[1], p[0], 0]);
-	const vec2 = ThurstonGeometry.normalize([0, p[0], p[1], 1 + p[2]]);
+	const vec1 = normalize([1 + p[2], -p[1], p[0], 0]);
+	const vec2 = normalize([0, p[0], p[1], 1 + p[2]]);
 
 	return [/* glsl */`
 		float distance${index + 1 + startingFiber} = greatCircleDistance(

@@ -1,5 +1,5 @@
 import { getMatrixGlsl, getMinGlslString } from "../../../../scripts/applets/applet.js";
-import { ThurstonGeometry } from "../class.js";
+import { magnitude, mat4TimesVector } from "../class.js";
 import { BaseGeometry } from "./base.js";
 
 const loopRoomColors = false;
@@ -350,7 +350,7 @@ class NilGeometry extends BaseGeometry
 		const a = Math.sqrt(dir[0] * dir[0] + dir[1] * dir[1]);
 		const c = dir[2];
 
-		const newPos = ThurstonGeometry.mat4TimesVector(A,
+		const newPos = mat4TimesVector(A,
 			Math.abs(c) < 0.01
 				? [
 					a * Math.cos(alpha) * t,
@@ -400,7 +400,7 @@ class NilGeometry extends BaseGeometry
 		{
 			if (this.cameraPos[i] < -0.5)
 			{
-				this.cameraPos = ThurstonGeometry.mat4TimesVector(
+				this.cameraPos = mat4TimesVector(
 					teleportationMatrices[2 * i],
 					this.cameraPos
 				);
@@ -430,7 +430,7 @@ class NilGeometry extends BaseGeometry
 
 			else if (this.cameraPos[i] > 0.5)
 			{
-				this.cameraPos = ThurstonGeometry.mat4TimesVector(
+				this.cameraPos = mat4TimesVector(
 					teleportationMatrices[2 * i + 1],
 					this.cameraPos
 				);
@@ -743,7 +743,7 @@ export class NilRooms extends NilGeometry
 
 		for (let i = 0; i < corners.length; i++)
 		{
-			const distance = ThurstonGeometry.magnitude(
+			const distance = magnitude(
 				[
 					this.cameraPos[0] - corners[i][0],
 					this.cameraPos[1] - corners[i][1],

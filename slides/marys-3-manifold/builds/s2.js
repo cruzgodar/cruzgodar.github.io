@@ -1,5 +1,5 @@
 import { applet, canvasBundle, demoApplet } from "../index.js";
-import { ThurstonGeometry } from "/applets/thurston-geometries/scripts/class.js";
+import { rotateVectors } from "/applets/thurston-geometries/scripts/class.js";
 import { E3S2Demo, S2xES2Demo } from "/applets/thurston-geometries/scripts/geometries/s2.js";
 import { changeOpacity } from "/scripts/src/animation.js";
 
@@ -45,7 +45,7 @@ async function reset({ slide, duration })
 			[
 				applet.geometryData.rayDirs[i],
 				applet.geometryData.testVecs[i]
-			] = ThurstonGeometry.rotateVectors(
+			] = rotateVectors(
 				demoApplet.geometryData.forwardVec,
 				demoApplet.geometryData.rightVec,
 				angle

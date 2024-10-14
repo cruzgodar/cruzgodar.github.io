@@ -4,7 +4,7 @@ import {
 	getMinGlslString,
 	getVectorGlsl
 } from "../../../../scripts/applets/applet.js";
-import { ThurstonGeometry } from "../class.js";
+import { mat4TimesVector } from "../class.js";
 import {
 	BaseGeometry
 } from "./base.js";
@@ -732,7 +732,7 @@ class SL2RGeometry extends BaseGeometry
 		// of the alpha expression -- without this, movement in the space is extremely
 		// glitchy.
 
-		eta = ThurstonGeometry.mat4TimesVector([
+		eta = mat4TimesVector([
 			[1, 0, 0, 0],
 			[0, 1, 0, 0],
 			[0, 0, dir[0], -dir[1]],
@@ -741,7 +741,7 @@ class SL2RGeometry extends BaseGeometry
 
 		this.cameraFiber += fiber;
 
-		return ThurstonGeometry.mat4TimesVector([
+		return mat4TimesVector([
 			[pos[0], -pos[1], pos[2], pos[3]],
 			[pos[1], pos[0], pos[3], -pos[2]],
 			[pos[2], pos[3], pos[0], -pos[1]],
@@ -768,7 +768,7 @@ class SL2RGeometry extends BaseGeometry
 
 			if (dotProduct > teleportVectors[i][1])
 			{
-				this.cameraPos = ThurstonGeometry.mat4TimesVector(
+				this.cameraPos = mat4TimesVector(
 					teleportMatrices[i][0],
 					this.cameraPos
 				);
@@ -802,7 +802,7 @@ class SL2RGeometry extends BaseGeometry
 
 			else if (dotProduct < -teleportVectors[i][1])
 			{
-				this.cameraPos = ThurstonGeometry.mat4TimesVector(
+				this.cameraPos = mat4TimesVector(
 					teleportMatrices[i][1],
 					this.cameraPos
 				);
