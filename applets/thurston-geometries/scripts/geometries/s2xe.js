@@ -44,24 +44,24 @@ export class S2xEGeometry extends BaseGeometry
 
 
 
+const axesDistances = /* glsl */`
+	float distance1 = length(vec2(acos(sqrt(1.0 - pos.y * pos.y)), pos.w)) - .1;
+	float distance2 = length(vec2(acos(sqrt(1.0 - pos.x * pos.x)), pos.w)) - .1;
+	float distance3 = acos(pos.z) - .1;
+
+	float minDistance = ${getMinGlslString("distance", 3)};
+`;
+
 export class S2xEAxes extends S2xEGeometry
 {
-	static distances = /* glsl */`
-		float distance1 = length(vec2(acos(sqrt(1.0 - pos.y * pos.y)), pos.w)) - .1;
-		float distance2 = length(vec2(acos(sqrt(1.0 - pos.x * pos.x)), pos.w)) - .1;
-		float distance3 = acos(pos.z) - .1;
-
-		float minDistance = ${getMinGlslString("distance", 3)};
-	`;
-
 	distanceEstimatorGlsl = /* glsl */`
-		${S2xEAxes.distances}
+		${axesDistances}
 
 		return minDistance;
 	`;
 
 	getColorGlsl = /* glsl */`
-		${S2xEAxes.distances}
+		${axesDistances}
 
 		if (minDistance == distance1)
 		{
@@ -102,83 +102,85 @@ export class S2xEAxes extends S2xEGeometry
 	forwardVec = [0.07120, 0.07685, 0.99449, 0];
 }
 
+
+
+const roomsDistances = /* glsl */`
+	float spacing = 1.09;
+
+	float minRoomDistance = 1000000.0;
+	float minSphereDistance = 1000000.0;
+
+	float acosX = acos(pos.x);
+	float acosNegX = pi - acosX;
+	float acosY = acos(pos.y);
+	float acosNegY = pi - acosY;
+	float acosZ = acos(pos.z);
+	float acosNegZ = pi - acosZ;
+
+	float modPosW = mod(pos.w + spacing / 2.0, spacing) - spacing / 2.0;
+
+	float roomDistance1 = maxT * 2.0;
+	float roomDistance2 = maxT * 2.0;
+	float roomDistance3 = maxT * 2.0;
+	float roomDistance4 = maxT * 2.0;
+	float roomDistance5 = maxT * 2.0;
+	float roomDistance6 = maxT * 2.0;
+
+	if (sceneTransition < 1.0)
+	{
+		float scale = exp(max(sceneTransition - 0.8, 0.0) * 5.0);
+
+		float effectiveWallThickness = wallThickness + sceneTransition * .225 / .75;
+
+		roomDistance1 = effectiveWallThickness - length(vec2(acosX, modPosW));
+		roomDistance2 = effectiveWallThickness - length(vec2(acosNegX, modPosW));
+		roomDistance3 = effectiveWallThickness - length(vec2(acosY, modPosW));
+		roomDistance4 = effectiveWallThickness - length(vec2(acosNegY, modPosW));
+		roomDistance5 = effectiveWallThickness - length(vec2(acosZ, modPosW));
+		roomDistance6 = effectiveWallThickness - length(vec2(acosNegZ, modPosW));
+
+		minRoomDistance = ${getMaxGlslString("roomDistance", 6)} * scale;
+	}
+
+	float sphereDistance1 = maxT * 2.0;
+	float sphereDistance2 = maxT * 2.0;
+	float sphereDistance3 = maxT * 2.0;
+	float sphereDistance4 = maxT * 2.0;
+	float sphereDistance5 = maxT * 2.0;
+
+	if (sceneTransition > 0.0)
+	{
+		float scale = exp(max(0.2 - sceneTransition, 0.0) * 5.0);
+
+		float effectiveRadius = .3 - .3 / .75 * (1.0 - sceneTransition);
+
+		sphereDistance1 = length(vec2(acosX, modPosW)) - effectiveRadius;
+		sphereDistance2 = length(vec2(acosNegX, modPosW)) - effectiveRadius;
+		sphereDistance3 = length(vec2(acosY, modPosW)) - effectiveRadius;
+		sphereDistance4 = length(vec2(acosNegY, modPosW)) - effectiveRadius;
+		sphereDistance5 = length(vec2(acosZ, modPosW)) - effectiveRadius;
+
+		minSphereDistance = ${getMinGlslString("sphereDistance", 5)} * scale;
+	}
+
+	float minDistance = min(minRoomDistance, minSphereDistance);
+
+	if (totalT < clipDistance)
+	{
+		minDistance = max(minDistance, clipDistance - length(vec2(acos(dot(pos.xyz, cameraPos.xyz)), abs(pos.w - cameraPos.w))));
+	}
+`;
+
 export class S2xERooms extends S2xEGeometry
 {
-	static distances = /* glsl */`
-		float spacing = 1.09;
-
-		float minRoomDistance = 1000000.0;
-		float minSphereDistance = 1000000.0;
-
-		float acosX = acos(pos.x);
-		float acosNegX = pi - acosX;
-		float acosY = acos(pos.y);
-		float acosNegY = pi - acosY;
-		float acosZ = acos(pos.z);
-		float acosNegZ = pi - acosZ;
-
-		float modPosW = mod(pos.w + spacing / 2.0, spacing) - spacing / 2.0;
-
-		float roomDistance1 = maxT * 2.0;
-		float roomDistance2 = maxT * 2.0;
-		float roomDistance3 = maxT * 2.0;
-		float roomDistance4 = maxT * 2.0;
-		float roomDistance5 = maxT * 2.0;
-		float roomDistance6 = maxT * 2.0;
-
-		if (sceneTransition < 1.0)
-		{
-			float scale = exp(max(sceneTransition - 0.8, 0.0) * 5.0);
-
-			float effectiveWallThickness = wallThickness + sceneTransition * .225 / .75;
-
-			roomDistance1 = effectiveWallThickness - length(vec2(acosX, modPosW));
-			roomDistance2 = effectiveWallThickness - length(vec2(acosNegX, modPosW));
-			roomDistance3 = effectiveWallThickness - length(vec2(acosY, modPosW));
-			roomDistance4 = effectiveWallThickness - length(vec2(acosNegY, modPosW));
-			roomDistance5 = effectiveWallThickness - length(vec2(acosZ, modPosW));
-			roomDistance6 = effectiveWallThickness - length(vec2(acosNegZ, modPosW));
-
-			minRoomDistance = ${getMaxGlslString("roomDistance", 6)} * scale;
-		}
-
-		float sphereDistance1 = maxT * 2.0;
-		float sphereDistance2 = maxT * 2.0;
-		float sphereDistance3 = maxT * 2.0;
-		float sphereDistance4 = maxT * 2.0;
-		float sphereDistance5 = maxT * 2.0;
-
-		if (sceneTransition > 0.0)
-		{
-			float scale = exp(max(0.2 - sceneTransition, 0.0) * 5.0);
-
-			float effectiveRadius = .3 - .3 / .75 * (1.0 - sceneTransition);
-
-			sphereDistance1 = length(vec2(acosX, modPosW)) - effectiveRadius;
-			sphereDistance2 = length(vec2(acosNegX, modPosW)) - effectiveRadius;
-			sphereDistance3 = length(vec2(acosY, modPosW)) - effectiveRadius;
-			sphereDistance4 = length(vec2(acosNegY, modPosW)) - effectiveRadius;
-			sphereDistance5 = length(vec2(acosZ, modPosW)) - effectiveRadius;
-
-			minSphereDistance = ${getMinGlslString("sphereDistance", 5)} * scale;
-		}
-	
-		float minDistance = min(minRoomDistance, minSphereDistance);
-
-		if (totalT < clipDistance)
-		{
-			minDistance = max(minDistance, clipDistance - length(vec2(acos(dot(pos.xyz, cameraPos.xyz)), abs(pos.w - cameraPos.w))));
-		}
-	`;
-
 	distanceEstimatorGlsl = /* glsl */`
-		${S2xERooms.distances}
+		${roomsDistances}
 
 		return minDistance;
 	`;
 
 	getColorGlsl = /* glsl */`
-		${S2xERooms.distances}
+		${roomsDistances}
 
 		float wColor = floor((pos.w + spacing / 2.0) / spacing);
 

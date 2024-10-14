@@ -837,6 +837,18 @@ class SL2RGeometry extends BaseGeometry
 	}
 }
 
+
+
+const axesDistances = /* glsl */`
+	vec3 h2Element = getH2Element(pos);
+
+	float distance1 = length(vec2(acosh(sqrt(1.0 + h2Element.y * h2Element.y)), fiber)) - .05;
+	float distance2 = length(vec2(acosh(sqrt(1.0 + h2Element.x * h2Element.x)), fiber)) - .05;
+	float distance3 = acosh(h2Element.z) - .05;
+
+	float minDistance = ${getMinGlslString("distance", 3)};
+`;
+
 export class SL2RAxes extends SL2RGeometry
 {
 	geodesicGlsl = /* glsl */`
@@ -1007,24 +1019,14 @@ export class SL2RAxes extends SL2RGeometry
 
 	teleportCamera() {}
 
-	static distances = /* glsl */`
-		vec3 h2Element = getH2Element(pos);
-
-		float distance1 = length(vec2(acosh(sqrt(1.0 + h2Element.y * h2Element.y)), fiber)) - .05;
-		float distance2 = length(vec2(acosh(sqrt(1.0 + h2Element.x * h2Element.x)), fiber)) - .05;
-		float distance3 = acosh(h2Element.z) - .05;
-
-		float minDistance = ${getMinGlslString("distance", 3)};
-	`;
-
 	distanceEstimatorGlsl = /* glsl */`
-		${SL2RAxes.distances}
+		${axesDistances}
 
 		return minDistance;
 	`;
 
 	getColorGlsl = /* glsl */`
-		${SL2RAxes.distances}
+		${axesDistances}
 		
 		if (minDistance == distance1)
 		{
@@ -1081,25 +1083,28 @@ export class SL2RAxes extends SL2RGeometry
 	}
 }
 
+
+
+
+const roomsDistances = /* glsl */`
+	vec3 h2Element = getH2Element(pos);
+
+	float distance1 = length(vec2(acosh(h2Element.z), fiber)) - wallThickness;
+
+	// The fundamental domain has height 2pi, so to evenly space three balls,
+	// we want the gap between them to be (2pi - 6 * radius) / 3.
+	// Solving for the center of the other spheres gives +/- 2pi/3.
+
+	float distance2 = length(vec2(acosh(h2Element.z), fiber - 0.66667 * pi)) - wallThickness;
+	float distance3 = length(vec2(acosh(h2Element.z), fiber + 0.66667 * pi)) - wallThickness;
+
+	float minDistance = -${getMinGlslString("distance", 3)};
+`;
+
 export class SL2RRooms extends SL2RGeometry
 {
-	static distances = /* glsl */`
-		vec3 h2Element = getH2Element(pos);
-
-		float distance1 = length(vec2(acosh(h2Element.z), fiber)) - wallThickness;
-
-		// The fundamental domain has height 2pi, so to evenly space three balls,
-		// we want the gap between them to be (2pi - 6 * radius) / 3.
-		// Solving for the center of the other spheres gives +/- 2pi/3.
-
-		float distance2 = length(vec2(acosh(h2Element.z), fiber - 0.66667 * pi)) - wallThickness;
-		float distance3 = length(vec2(acosh(h2Element.z), fiber + 0.66667 * pi)) - wallThickness;
-
-		float minDistance = -${getMinGlslString("distance", 3)};
-	`;
-
 	distanceEstimatorGlsl = /* glsl */`
-		${SL2RRooms.distances}
+		${roomsDistances}
 
 		return minDistance;
 	`;
@@ -1156,23 +1161,25 @@ export class SL2RRooms extends SL2RGeometry
 	wallThicknessData = [0.1, 0.05, 0.15];
 }
 
+
+
+const spheresDistances = /* glsl */`
+	vec3 h2Element = getH2Element(pos);
+
+	float distance1 = length(vec2(acosh(h2Element.z), fiber)) - .5;
+
+	// The fundamental domain has height 2pi, so to evenly space three balls,
+	// we want the gap between them to be (2pi - 6 * radius) / 3.
+	// Solving for the center of the other spheres gives +/- 2pi/3.
+
+	float distance2 = length(vec2(acosh(h2Element.z), fiber - 0.66667 * pi)) - .5;
+	float distance3 = length(vec2(acosh(h2Element.z), fiber + 0.66667 * pi)) - .5;
+
+	float minDistance = ${getMinGlslString("distance", 3)};
+`;
+
 export class SL2RSpheres extends SL2RGeometry
 {
-	static distances = /* glsl */`
-		vec3 h2Element = getH2Element(pos);
-
-		float distance1 = length(vec2(acosh(h2Element.z), fiber)) - .5;
-
-		// The fundamental domain has height 2pi, so to evenly space three balls,
-		// we want the gap between them to be (2pi - 6 * radius) / 3.
-		// Solving for the center of the other spheres gives +/- 2pi/3.
-
-		float distance2 = length(vec2(acosh(h2Element.z), fiber - 0.66667 * pi)) - .5;
-		float distance3 = length(vec2(acosh(h2Element.z), fiber + 0.66667 * pi)) - .5;
-
-		float minDistance = ${getMinGlslString("distance", 3)};
-	`;
-
 	geodesicGlsl = /* glsl */`
 		vec4 pos;
 		float fiber;
@@ -1217,7 +1224,7 @@ export class SL2RSpheres extends SL2RGeometry
 	`;
 
 	distanceEstimatorGlsl = /* glsl */`
-		${SL2RSpheres.distances}
+		${spheresDistances}
 
 		return minDistance;
 	`;

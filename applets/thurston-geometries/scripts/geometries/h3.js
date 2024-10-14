@@ -348,6 +348,16 @@ class H3Geometry extends BaseGeometry
 	}
 }
 
+
+
+const axesDistances = /* glsl */`
+	float distance1 = acosh(sqrt(pos.w * pos.w - pos.x * pos.x)) - .05;
+	float distance2 = acosh(sqrt(pos.w * pos.w - pos.y * pos.y)) - .05;
+	float distance3 = acosh(sqrt(pos.w * pos.w - pos.z * pos.z)) - .05;
+
+	float minDistance = ${getMinGlslString("distance", 3)};
+`;
+
 export class H3Axes extends H3Geometry
 {
 	geodesicGlsl = /* glsl */`
@@ -378,22 +388,14 @@ export class H3Axes extends H3Geometry
 
 	teleportCamera() {}
 
-	static distances = /* glsl */`
-		float distance1 = acosh(sqrt(pos.w * pos.w - pos.x * pos.x)) - .05;
-		float distance2 = acosh(sqrt(pos.w * pos.w - pos.y * pos.y)) - .05;
-		float distance3 = acosh(sqrt(pos.w * pos.w - pos.z * pos.z)) - .05;
-
-		float minDistance = ${getMinGlslString("distance", 3)};
-	`;
-
 	distanceEstimatorGlsl = /* glsl */`
-		${H3Axes.distances}
+		${axesDistances}
 
 		return minDistance;
 	`;
 
 	getColorGlsl = /* glsl */`
-		${H3Axes.distances}
+		${axesDistances}
 		
 		if (minDistance == distance1)
 		{
@@ -448,85 +450,87 @@ export class H3Axes extends H3Geometry
 	movingSpeed = 1;
 }
 
+
+
+const roomsDistances = /* glsl */`
+	float distance1 = maxT * 2.0;
+	float distance2 = maxT * 2.0;
+
+	if (sceneTransition < 1.0)
+	{
+		float scale = exp(max(sceneTransition - 0.8, 0.0) * 5.0);
+
+		float effectiveWallThickness = wallThickness + sceneTransition * 4.0 / .75;
+
+		distance1 = effectiveWallThickness - acosh(pos.w);
+	}
+
+	if (sceneTransition > 0.0)
+	{
+		float scale = exp(max(0.2 - sceneTransition, 0.0) * 5.0);
+
+		float effectiveRadius = .425 - .425 / .75 * (1.0 - sceneTransition);
+
+		distance2 = acosh(pos.w) - effectiveRadius;
+	}
+
+	if (totalT < clipDistance)
+	{
+		distance1 = maxT * 2.0;
+		distance2 = maxT * 2.0;
+	}
+
+	// Translate the reflection plane to the x = 0 plane, then get the distance to it.
+	// The DE to x = 0 is abs(asinh(pos.x)).
+	float distance3 = abs(asinh(
+		dot(
+			vec4(1.23188, 0.0, 0.0, 0.71939),
+			pos
+		)
+	));
+	
+	float distance4 = abs(asinh(
+		dot(
+			vec4(1.23188, 0.0, 0.0, -0.71939),
+			pos
+		)
+	));
+
+	float distance5 = abs(asinh(
+		dot(
+			vec4(0.0, 1.23188, 0.0, 0.71939),
+			pos
+		)
+	));
+	
+	float distance6 = abs(asinh(
+		dot(
+			vec4(0.0, -1.23188, 0.0, 0.71939),
+			pos
+		)
+	));
+
+	float distance7 = abs(asinh(
+		dot(
+			vec4(0.0, 0.0, 1.23188, 0.71939),
+			pos
+		)
+	));
+	
+	float distance8 = abs(asinh(
+		dot(
+			vec4(0.0, 0.0, -1.23188, 0.71939),
+			pos
+		)
+	));
+
+	float minDistance = ${getMinGlslString("distance", 8)};
+`;
+
 export class H3Rooms extends H3Geometry
 {
-	static distances = /* glsl */`
-		float distance1 = maxT * 2.0;
-		float distance2 = maxT * 2.0;
-
-		if (sceneTransition < 1.0)
-		{
-			float scale = exp(max(sceneTransition - 0.8, 0.0) * 5.0);
-
-			float effectiveWallThickness = wallThickness + sceneTransition * 4.0 / .75;
-
-			distance1 = effectiveWallThickness - acosh(pos.w);
-		}
-
-		if (sceneTransition > 0.0)
-		{
-			float scale = exp(max(0.2 - sceneTransition, 0.0) * 5.0);
-
-			float effectiveRadius = .425 - .425 / .75 * (1.0 - sceneTransition);
-
-			distance2 = acosh(pos.w) - effectiveRadius;
-		}
-
-		if (totalT < clipDistance)
-		{
-			distance1 = maxT * 2.0;
-			distance2 = maxT * 2.0;
-		}
-
-		// Translate the reflection plane to the x = 0 plane, then get the distance to it.
-		// The DE to x = 0 is abs(asinh(pos.x)).
-		float distance3 = abs(asinh(
-			dot(
-				vec4(1.23188, 0.0, 0.0, 0.71939),
-				pos
-			)
-		));
-		
-		float distance4 = abs(asinh(
-			dot(
-				vec4(1.23188, 0.0, 0.0, -0.71939),
-				pos
-			)
-		));
-
-		float distance5 = abs(asinh(
-			dot(
-				vec4(0.0, 1.23188, 0.0, 0.71939),
-				pos
-			)
-		));
-		
-		float distance6 = abs(asinh(
-			dot(
-				vec4(0.0, -1.23188, 0.0, 0.71939),
-				pos
-			)
-		));
-
-		float distance7 = abs(asinh(
-			dot(
-				vec4(0.0, 0.0, 1.23188, 0.71939),
-				pos
-			)
-		));
-		
-		float distance8 = abs(asinh(
-			dot(
-				vec4(0.0, 0.0, -1.23188, 0.71939),
-				pos
-			)
-		));
-
-		float minDistance = ${getMinGlslString("distance", 8)};
-	`;
-
 	distanceEstimatorGlsl = /* glsl */`
-		${H3Rooms.distances}
+		${roomsDistances}
 
 		return minDistance;
 	`;

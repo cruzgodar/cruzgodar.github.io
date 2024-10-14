@@ -341,6 +341,16 @@ class H2xEGeometry extends BaseGeometry
 	}
 }
 
+
+
+const axesDistances = /* glsl */`
+	float distance1 = length(vec2(acosh(sqrt(1.0 + pos.y * pos.y)), pos.w)) - .05;
+	float distance2 = length(vec2(acosh(sqrt(1.0 + pos.x * pos.x)), pos.w)) - .05;
+	float distance3 = acosh(pos.z) - .05;
+
+	float minDistance = ${getMinGlslString("distance", 3)};
+`;
+
 export class H2xEAxes extends H2xEGeometry
 {
 	geodesicGlsl = /* glsl */`
@@ -380,22 +390,14 @@ export class H2xEAxes extends H2xEGeometry
 
 	teleportCamera() {}
 
-	static distances = /* glsl */`
-		float distance1 = length(vec2(acosh(sqrt(1.0 + pos.y * pos.y)), pos.w)) - .05;
-		float distance2 = length(vec2(acosh(sqrt(1.0 + pos.x * pos.x)), pos.w)) - .05;
-		float distance3 = acosh(pos.z) - .05;
-
-		float minDistance = ${getMinGlslString("distance", 3)};
-	`;
-
 	distanceEstimatorGlsl = /* glsl */`
-		${H2xEAxes.distances}
+		${axesDistances}
 
 		return minDistance;
 	`;
 
 	getColorGlsl = /* glsl */`
-		${H2xEAxes.distances}
+		${axesDistances}
 
 		if (minDistance == distance1)
 		{
@@ -438,80 +440,82 @@ export class H2xEAxes extends H2xEGeometry
 	movingSpeed = 1.25;
 }
 
+
+
+const roomsDistances = /* glsl */`
+	float spacing = 1.875;
+
+	float distance1 = maxT * 2.0;
+	float distance2 = maxT * 2.0;
+
+	if (sceneTransition < 1.0)
+	{
+		float scale = exp(max(sceneTransition - 0.8, 0.0) * 5.0);
+
+		float effectiveWallThickness = wallThickness + sceneTransition * .48 / .75;
+
+		distance1 = effectiveWallThickness - length(vec2(acosh(pos.z), mod(pos.w + spacing / 2.0, spacing) - spacing / 2.0));
+	}
+
+	if (sceneTransition > 0.0)
+	{
+		float scale = exp(max(0.2 - sceneTransition, 0.0) * 5.0);
+
+		float effectiveRadius = .4 - .4 / .75 * (1.0 - sceneTransition);
+
+		distance2 = (length(vec2(acosh(pos.z), mod(pos.w + spacing / 2.0, spacing) - spacing / 2.0)) - effectiveRadius) * scale;
+	}
+
+	if (totalT < clipDistance)
+	{
+		distance1 = maxT * 2.0;
+		distance2 = maxT * 2.0;
+	}
+	
+
+	// Translate the reflection plane to the x = 0 plane, then get the distance to it.
+	// The DE to x = 0 is abs(asinh(pos.x)).
+	float distance3 = abs(asinh(
+		dot(
+			vec4(1.23188, 0.0, 0.71939, 0),
+			pos
+		)
+	));
+	
+	float distance4 = abs(asinh(
+		dot(
+			vec4(1.23188, 0.0, -0.71939, 0),
+			pos
+		)
+	));
+
+	float distance5 = abs(asinh(
+		dot(
+			vec4(0.0, 1.23188, 0.71939, 0),
+			pos
+		)
+	));
+	
+	float distance6 = abs(asinh(
+		dot(
+			vec4(0.0, -1.23188, 0.71939, 0),
+			pos
+		)
+	));
+
+	float minDistance = ${getMinGlslString("distance", 6)};
+`;
+
 export class H2xERooms extends H2xEGeometry
 {
-	static distances = /* glsl */`
-		float spacing = 1.875;
-
-		float distance1 = maxT * 2.0;
-		float distance2 = maxT * 2.0;
-
-		if (sceneTransition < 1.0)
-		{
-			float scale = exp(max(sceneTransition - 0.8, 0.0) * 5.0);
-
-			float effectiveWallThickness = wallThickness + sceneTransition * .48 / .75;
-
-			distance1 = effectiveWallThickness - length(vec2(acosh(pos.z), mod(pos.w + spacing / 2.0, spacing) - spacing / 2.0));
-		}
-
-		if (sceneTransition > 0.0)
-		{
-			float scale = exp(max(0.2 - sceneTransition, 0.0) * 5.0);
-
-			float effectiveRadius = .4 - .4 / .75 * (1.0 - sceneTransition);
-
-			distance2 = (length(vec2(acosh(pos.z), mod(pos.w + spacing / 2.0, spacing) - spacing / 2.0)) - effectiveRadius) * scale;
-		}
-
-		if (totalT < clipDistance)
-		{
-			distance1 = maxT * 2.0;
-			distance2 = maxT * 2.0;
-		}
-		
-
-		// Translate the reflection plane to the x = 0 plane, then get the distance to it.
-		// The DE to x = 0 is abs(asinh(pos.x)).
-		float distance3 = abs(asinh(
-			dot(
-				vec4(1.23188, 0.0, 0.71939, 0),
-				pos
-			)
-		));
-		
-		float distance4 = abs(asinh(
-			dot(
-				vec4(1.23188, 0.0, -0.71939, 0),
-				pos
-			)
-		));
-
-		float distance5 = abs(asinh(
-			dot(
-				vec4(0.0, 1.23188, 0.71939, 0),
-				pos
-			)
-		));
-		
-		float distance6 = abs(asinh(
-			dot(
-				vec4(0.0, -1.23188, 0.71939, 0),
-				pos
-			)
-		));
-
-		float minDistance = ${getMinGlslString("distance", 6)};
-	`;
-
 	distanceEstimatorGlsl = /* glsl */`
-		${H2xERooms.distances}
+		${roomsDistances}
 
 		return minDistance;
 	`;
 
 	getColorGlsl = /* glsl */`
-		${H2xERooms.distances}
+		${roomsDistances}
 
 		vec3 roomColor = globalColor + baseColor;
 

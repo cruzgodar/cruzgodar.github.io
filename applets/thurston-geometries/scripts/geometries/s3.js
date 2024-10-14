@@ -38,23 +38,24 @@ class S3Geometry extends BaseGeometry
 
 
 
+const axesDistances = /* glsl */`
+	float distance1 = acos(length(pos.xw)) - .05;
+	float distance2 = acos(length(pos.yw)) - .05;
+	float distance3 = acos(length(pos.zw)) - .05;
+
+	float minDistance = ${getMinGlslString("distance", 3)};
+`;
+
 export class S3Axes extends S3Geometry
 {
-	static distances = /* glsl */`
-		float distance1 = acos(length(pos.xw)) - .05;
-		float distance2 = acos(length(pos.yw)) - .05;
-		float distance3 = acos(length(pos.zw)) - .05;
-
-		float minDistance = ${getMinGlslString("distance", 3)};
-	`;
 	distanceEstimatorGlsl = /* glsl */`
-		${S3Axes.distances}
+		${axesDistances}
 
 		return minDistance;
 	`;
 
 	getColorGlsl = /* glsl */`
-		${S3Axes.distances}
+		${axesDistances}
 
 		if (minDistance == distance1)
 		{
@@ -100,82 +101,82 @@ export class S3Axes extends S3Geometry
 
 
 
+const roomsDistances = /* glsl */`
+	float minRoomDistance = 1000000.0;
+	float minSphereDistance = 1000000.0;
+
+	float acosX = acos(pos.x);
+	float acosNegX = pi - acosX;
+	float acosY = acos(pos.y);
+	float acosNegY = pi - acosY;
+	float acosZ = acos(pos.z);
+	float acosNegZ = pi - acosZ;
+	float acosW = acos(pos.w);
+	float acosNegW = pi - acosW;
+
+	float roomDistance1 = maxT * 2.0;
+	float roomDistance2 = maxT * 2.0;
+	float roomDistance3 = maxT * 2.0;
+	float roomDistance4 = maxT * 2.0;
+	float roomDistance5 = maxT * 2.0;
+	float roomDistance6 = maxT * 2.0;
+	float roomDistance7 = maxT * 2.0;
+	float roomDistance8 = maxT * 2.0;
+
+	if (sceneTransition < 1.0)
+	{
+		float scale = exp(max(sceneTransition - 0.8, 0.0) * 5.0);
+
+		float effectiveWallThickness = wallThickness + sceneTransition * .125 / .75;
+		roomDistance1 = effectiveWallThickness - acosX;
+		roomDistance2 = effectiveWallThickness - acosNegX;
+		roomDistance3 = effectiveWallThickness - acosY;
+		roomDistance4 = effectiveWallThickness - acosNegY;
+		roomDistance5 = effectiveWallThickness - acosZ;
+		roomDistance6 = effectiveWallThickness - acosNegZ;
+		roomDistance7 = effectiveWallThickness - acosW;
+		roomDistance8 = effectiveWallThickness - acosNegW;
+
+		minRoomDistance = ${getMaxGlslString("roomDistance", 8)} * scale;
+	}
+
+	float sphereDistance1 = maxT * 2.0;
+	float sphereDistance2 = maxT * 2.0;
+	float sphereDistance3 = maxT * 2.0;
+	float sphereDistance4 = maxT * 2.0;
+	float sphereDistance5 = maxT * 2.0;
+	float sphereDistance6 = maxT * 2.0;
+	float sphereDistance7 = maxT * 2.0;
+
+	if (sceneTransition > 0.0)
+	{
+		float scale = exp(max(0.2 - sceneTransition, 0.0) * 5.0);
+
+		float effectiveRadius = .3 - .3 / .75 * (1.0 - sceneTransition);
+		sphereDistance1 = acosX - effectiveRadius;
+		sphereDistance2 = acosNegX - effectiveRadius;
+		sphereDistance3 = acosY - effectiveRadius;
+		sphereDistance4 = acosNegY - effectiveRadius;
+		sphereDistance5 = acosZ - effectiveRadius;
+		sphereDistance6 = acosNegZ - effectiveRadius;
+		sphereDistance7 = acosW - effectiveRadius;
+
+		minSphereDistance = ${getMinGlslString("sphereDistance", 7)} * scale;
+	}
+	
+	float minDistance = min(minRoomDistance, minSphereDistance);
+`;
+
 export class S3Rooms extends S3Geometry
 {
-	static distances = /* glsl */`
-		float minRoomDistance = 1000000.0;
-		float minSphereDistance = 1000000.0;
-
-		float acosX = acos(pos.x);
-		float acosNegX = pi - acosX;
-		float acosY = acos(pos.y);
-		float acosNegY = pi - acosY;
-		float acosZ = acos(pos.z);
-		float acosNegZ = pi - acosZ;
-		float acosW = acos(pos.w);
-		float acosNegW = pi - acosW;
-
-		float roomDistance1 = maxT * 2.0;
-		float roomDistance2 = maxT * 2.0;
-		float roomDistance3 = maxT * 2.0;
-		float roomDistance4 = maxT * 2.0;
-		float roomDistance5 = maxT * 2.0;
-		float roomDistance6 = maxT * 2.0;
-		float roomDistance7 = maxT * 2.0;
-		float roomDistance8 = maxT * 2.0;
-
-		if (sceneTransition < 1.0)
-		{
-			float scale = exp(max(sceneTransition - 0.8, 0.0) * 5.0);
-
-			float effectiveWallThickness = wallThickness + sceneTransition * .125 / .75;
-			roomDistance1 = effectiveWallThickness - acosX;
-			roomDistance2 = effectiveWallThickness - acosNegX;
-			roomDistance3 = effectiveWallThickness - acosY;
-			roomDistance4 = effectiveWallThickness - acosNegY;
-			roomDistance5 = effectiveWallThickness - acosZ;
-			roomDistance6 = effectiveWallThickness - acosNegZ;
-			roomDistance7 = effectiveWallThickness - acosW;
-			roomDistance8 = effectiveWallThickness - acosNegW;
-
-			minRoomDistance = ${getMaxGlslString("roomDistance", 8)} * scale;
-		}
-
-		float sphereDistance1 = maxT * 2.0;
-		float sphereDistance2 = maxT * 2.0;
-		float sphereDistance3 = maxT * 2.0;
-		float sphereDistance4 = maxT * 2.0;
-		float sphereDistance5 = maxT * 2.0;
-		float sphereDistance6 = maxT * 2.0;
-		float sphereDistance7 = maxT * 2.0;
-
-		if (sceneTransition > 0.0)
-		{
-			float scale = exp(max(0.2 - sceneTransition, 0.0) * 5.0);
-
-			float effectiveRadius = .3 - .3 / .75 * (1.0 - sceneTransition);
-			sphereDistance1 = acosX - effectiveRadius;
-			sphereDistance2 = acosNegX - effectiveRadius;
-			sphereDistance3 = acosY - effectiveRadius;
-			sphereDistance4 = acosNegY - effectiveRadius;
-			sphereDistance5 = acosZ - effectiveRadius;
-			sphereDistance6 = acosNegZ - effectiveRadius;
-			sphereDistance7 = acosW - effectiveRadius;
-
-			minSphereDistance = ${getMinGlslString("sphereDistance", 7)} * scale;
-		}
-		
-		float minDistance = min(minRoomDistance, minSphereDistance);
-	`;
-
 	distanceEstimatorGlsl = /* glsl */`
-		${S3Rooms.distances}
+		${roomsDistances}
 
 		return minDistance;
 	`;
 
 	getColorGlsl = /* glsl */`
-		${S3Rooms.distances}
+		${roomsDistances}
 
 		float roomVariation = .075;
 		float sphereVariation = .25;

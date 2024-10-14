@@ -23,6 +23,16 @@ function getSphereBandGlsl(index)
 	`;
 }
 
+const e3DemoDistances = /* glsl */`
+	// The sphere itself.
+	float distance1 = length(pos.xyz) - 1.0;
+
+	// The camera.
+	float distance2 = length(pos.xyz - cameraDotPos.xyz) - 0.05;
+
+	float minDistance =  ${getMinGlslString("distance", 2)};
+`;
+
 // This renders a white sphere, a black camera dot on it,
 // polka dot circles, and the light rays.
 export class E3S2Demo extends E3Geometry
@@ -37,24 +47,14 @@ export class E3S2Demo extends E3Geometry
 
 	rayColors = Array(this.numRays).fill([0, 0, 0]);
 
-	static distances = /* glsl */`
-		// The sphere itself.
-		float distance1 = length(pos.xyz) - 1.0;
-
-		// The camera.
-		float distance2 = length(pos.xyz - cameraDotPos.xyz) - 0.05;
-
-		float minDistance =  ${getMinGlslString("distance", 2)};
-	`;
-
 	distanceEstimatorGlsl = /* glsl */`
-		${E3S2Demo.distances}
+		${e3DemoDistances}
 
 		return minDistance;
 	`;
 
 	getColorGlsl = /* glsl */`
-		${E3S2Demo.distances}
+		${e3DemoDistances}
 
 		if (minDistance == distance2)
 		{
@@ -176,28 +176,30 @@ export class E3S2Demo extends E3Geometry
 	}
 }
 
+
+
+const s2xeDemoDistances = /* glsl */`
+	float radius = .35;
+
+	float distance1 = acos(pos.x) - radius;
+	float distance2 = acos(pos.y) - radius;
+	float distance3 = acos(-pos.x) - radius;
+	float distance4 = acos(-pos.y) - radius;
+	float distance5 = acos(-pos.z) - radius;
+
+	float minDistance = ${getMinGlslString("distance", 5)};
+`;
+
 export class S2xES2Demo extends S2xEGeometry
 {
-	static distances = /* glsl */`
-		float radius = .35;
-
-		float distance1 = acos(pos.x) - radius;
-		float distance2 = acos(pos.y) - radius;
-		float distance3 = acos(-pos.x) - radius;
-		float distance4 = acos(-pos.y) - radius;
-		float distance5 = acos(-pos.z) - radius;
-
-		float minDistance = ${getMinGlslString("distance", 5)};
-	`;
-
 	distanceEstimatorGlsl = /* glsl */`
-		${S2xES2Demo.distances}
+		${s2xeDemoDistances}
 
 		return minDistance;
 	`;
 
 	getColorGlsl = /* glsl */`
-		${S2xES2Demo.distances}
+		${s2xeDemoDistances}
 
 		float variation = .175;
 		

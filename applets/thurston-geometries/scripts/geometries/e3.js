@@ -4,24 +4,26 @@ import { BaseGeometry } from "./base.js";
 
 export class E3Geometry extends BaseGeometry {}
 
+const axesDistances = /* glsl */`
+	float distance1 = length(pos.yz) - .25;
+	float distance2 = length(pos.xz) - .25;
+	float distance3 = length(pos.xy) - .25;
+
+	float minDistance = ${getMinGlslString("distance", 3)};
+`;
+
+
+
 export class E3Axes extends E3Geometry
 {
-	static distances = /* glsl */`
-		float distance1 = length(pos.yz) - .25;
-		float distance2 = length(pos.xz) - .25;
-		float distance3 = length(pos.xy) - .25;
-
-		float minDistance = ${getMinGlslString("distance", 3)};
-	`;
-
 	distanceEstimatorGlsl = /* glsl */`
-		${E3Axes.distances}
+		${axesDistances}
 
 		return minDistance;
 	`;
 
 	getColorGlsl = /* glsl */`
-		${E3Axes.distances}
+		${axesDistances}
 
 		if (minDistance == distance1)
 		{
@@ -64,38 +66,40 @@ export class E3Axes extends E3Geometry
 	movingSpeed = 4;
 }
 
+
+
+const roomsDistances = /* glsl */`
+	float roomDistance = 1000000.0;
+	float sphereDistance = 1000000.0;
+
+	if (sceneTransition < 1.0)
+	{
+		float scale = exp(max(sceneTransition - 0.8, 0.0) * 5.0);
+
+		float effectiveWallThickness = wallThickness + sceneTransition * .471 / .75;
+
+		roomDistance = (effectiveWallThickness - length(mod(pos.xyz, 2.0) - vec3(1.0, 1.0, 1.0))) * scale;
+	}
+
+	if (sceneTransition > 0.0)
+	{
+		float scale = exp(max(0.2 - sceneTransition, 0.0) * 5.0);
+
+		float effectiveRadius = .5 - .5 / .75 * (1.0 - sceneTransition);
+
+		sphereDistance = (length(mod(pos.xyz, 2.0) - vec3(1.0, 1.0, 1.0)) - effectiveRadius) * scale;
+	}
+	
+	float minDistance = max(
+		min(roomDistance, sphereDistance),
+		clipDistance - length(pos.xyz - cameraPos.xyz)
+	);
+`;
+
 export class E3Rooms extends E3Geometry
 {
-	static distances = /* glsl */`
-		float roomDistance = 1000000.0;
-		float sphereDistance = 1000000.0;
-
-		if (sceneTransition < 1.0)
-		{
-			float scale = exp(max(sceneTransition - 0.8, 0.0) * 5.0);
-
-			float effectiveWallThickness = wallThickness + sceneTransition * .471 / .75;
-
-			roomDistance = (effectiveWallThickness - length(mod(pos.xyz, 2.0) - vec3(1.0, 1.0, 1.0))) * scale;
-		}
-
-		if (sceneTransition > 0.0)
-		{
-			float scale = exp(max(0.2 - sceneTransition, 0.0) * 5.0);
-
-			float effectiveRadius = .5 - .5 / .75 * (1.0 - sceneTransition);
-
-			sphereDistance = (length(mod(pos.xyz, 2.0) - vec3(1.0, 1.0, 1.0)) - effectiveRadius) * scale;
-		}
-		
-		float minDistance = max(
-			min(roomDistance, sphereDistance),
-			clipDistance - length(pos.xyz - cameraPos.xyz)
-		);
-	`;
-
 	distanceEstimatorGlsl = /* glsl */`
-		${E3Rooms.distances}
+		${roomsDistances}
 
 		return minDistance;
 	`;

@@ -461,6 +461,16 @@ class NilGeometry extends BaseGeometry
 	}
 }
 
+
+
+const axesDistances = /* glsl */`
+	float distance1 = metricToOrigin(vec4(0.0, pos.yz, 1.0)) - .05;
+	float distance2 = metricToOrigin(vec4(pos.x, 0.0, pos.z, 1.0)) - .05;
+	float distance3 = metricToOrigin(vec4(pos.xy, 0.0, 1.0)) - .05;
+
+	float minDistance = ${getMinGlslString("distance", 3)};
+`;
+
 export class NilAxes extends NilGeometry
 {
 	geodesicGlsl = /* glsl */`
@@ -526,22 +536,14 @@ export class NilAxes extends NilGeometry
 
 	teleportCamera() {}
 
-	static distances = /* glsl */`
-		float distance1 = metricToOrigin(vec4(0.0, pos.yz, 1.0)) - .05;
-		float distance2 = metricToOrigin(vec4(pos.x, 0.0, pos.z, 1.0)) - .05;
-		float distance3 = metricToOrigin(vec4(pos.xy, 0.0, 1.0)) - .05;
-
-		float minDistance = ${getMinGlslString("distance", 3)};
-	`;
-
 	distanceEstimatorGlsl = /* glsl */`
-		${NilAxes.distances}
+		${axesDistances}
 
 		return minDistance;
 	`;
 
 	getColorGlsl = /* glsl */`
-		${NilAxes.distances}
+		${axesDistances}
 
 		if (minDistance == distance1)
 		{
@@ -586,68 +588,70 @@ export class NilAxes extends NilGeometry
 	forwardVec = [0.7327, -0.6803, 0.0112, 0];
 }
 
+
+
+const roomsDistances = /* glsl */`
+	float distance1 = maxT * 2.0;
+	float distance2 = maxT * 2.0;
+	
+	if (sceneTransition < 1.0)
+	{
+		float scale = exp(max(sceneTransition - 0.8, 0.0) * 5.0);
+
+		float effectiveWallThickness = wallThickness + sceneTransition * .24 / .75;
+
+		distance1 = (effectiveWallThickness - metricToOrigin(pos)) * scale;
+	}
+
+	if (sceneTransition > 0.0)
+	{
+		float scale = exp(max(0.2 - sceneTransition, 0.0) * 5.0);
+
+		float effectiveRadius = .2 - .2 / .75 * (1.0 - sceneTransition);
+
+		distance2 = (metricToOrigin(pos) - effectiveRadius) * scale;
+	}
+
+	if (totalT < clipDistance)
+	{
+		distance1 = maxT * 2.0;
+		distance2 = maxT * 2.0;
+	}
+
+	// The distance to the x and y teleportation planes is the distance between the projections
+	// to E^2. Unfortunately for our performance, the tolerances really do need to be this tight
+	// to avoid artifacts.
+	float distance3;
+	float distance4;
+	float distance5;
+	float distance6;
+
+	if (sceneTransition < 0.75)
+	{
+		distance3 = abs(pos.x - 0.5002);
+		distance4 = abs(pos.x + 0.5002);
+
+		distance5 = abs(pos.y - 0.5002);
+		distance6 = abs(pos.y + 0.5002);
+	}
+
+	else
+	{
+		float tolerance = mix(0.5002, 0.5125, (sceneTransition - .75) * 5.0);
+
+		distance3 = abs(pos.x - tolerance);
+		distance4 = abs(pos.x + tolerance);
+		distance5 = abs(pos.y - tolerance);
+		distance6 = abs(pos.y + tolerance);
+	}
+
+	float minDistance = ${getMinGlslString("distance", 6)};
+`;
+
 export class NilRooms extends NilGeometry
 {
-	static distances = /* glsl */`
-		float distance1 = maxT * 2.0;
-		float distance2 = maxT * 2.0;
-		
-		if (sceneTransition < 1.0)
-		{
-			float scale = exp(max(sceneTransition - 0.8, 0.0) * 5.0);
-
-			float effectiveWallThickness = wallThickness + sceneTransition * .24 / .75;
-
-			distance1 = (effectiveWallThickness - metricToOrigin(pos)) * scale;
-		}
-
-		if (sceneTransition > 0.0)
-		{
-			float scale = exp(max(0.2 - sceneTransition, 0.0) * 5.0);
-
-			float effectiveRadius = .2 - .2 / .75 * (1.0 - sceneTransition);
-
-			distance2 = (metricToOrigin(pos) - effectiveRadius) * scale;
-		}
-
-		if (totalT < clipDistance)
-		{
-			distance1 = maxT * 2.0;
-			distance2 = maxT * 2.0;
-		}
-
-		// The distance to the x and y teleportation planes is the distance between the projections
-		// to E^2. Unfortunately for our performance, the tolerances really do need to be this tight
-		// to avoid artifacts.
-		float distance3;
-		float distance4;
-		float distance5;
-		float distance6;
-
-		if (sceneTransition < 0.75)
-		{
-			distance3 = abs(pos.x - 0.5002);
-			distance4 = abs(pos.x + 0.5002);
-
-			distance5 = abs(pos.y - 0.5002);
-			distance6 = abs(pos.y + 0.5002);
-		}
-
-		else
-		{
-			float tolerance = mix(0.5002, 0.5125, (sceneTransition - .75) * 5.0);
-
-			distance3 = abs(pos.x - tolerance);
-			distance4 = abs(pos.x + tolerance);
-			distance5 = abs(pos.y - tolerance);
-			distance6 = abs(pos.y + tolerance);
-		}
-
-		float minDistance = ${getMinGlslString("distance", 6)};
-	`;
-
 	distanceEstimatorGlsl = /* glsl */`
-		${NilRooms.distances}
+		${roomsDistances}
 
 		return minDistance;
 	`;

@@ -1022,6 +1022,16 @@ class SolGeometry extends BaseGeometry
 	}
 }
 
+
+
+const axesDistances = /* glsl */`
+	float distance1 = length(pos.yz) - .025;
+	float distance2 = length(pos.xz) - .025;
+	float distance3 = length(pos.xy) - .025;
+
+	float minDistance = ${getMinGlslString("distance", 3)};
+`;
+
 export class SolAxes extends SolGeometry
 {
 	geodesicGlsl = /* glsl */`
@@ -1030,22 +1040,14 @@ export class SolAxes extends SolGeometry
 
 	teleportCamera() {}
 
-	static distances = /* glsl */`
-		float distance1 = length(pos.yz) - .025;
-		float distance2 = length(pos.xz) - .025;
-		float distance3 = length(pos.xy) - .025;
-
-		float minDistance = ${getMinGlslString("distance", 3)};
-	`;
-
 	distanceEstimatorGlsl = /* glsl */`
-		${SolAxes.distances}
+		${axesDistances}
 
 		return minDistance;
 	`;
 
 	getColorGlsl = /* glsl */`
-		${SolAxes.distances}
+		${axesDistances}
 
 		if (minDistance == distance1)
 		{
@@ -1099,20 +1101,22 @@ export class SolAxes extends SolGeometry
 	`;
 }
 
+
+
+const roomsDistances = /* glsl */`
+	float distance1 = wallThickness - length(pos.xyz * vec3(1.0, 1.0, 0.55));
+`;
+
 export class SolRooms extends SolGeometry
 {
-	static distances = /* glsl */`
-		float distance1 = wallThickness - length(pos.xyz * vec3(1.0, 1.0, 0.55));
-	`;
-
 	distanceEstimatorGlsl = /* glsl */`
-		${SolRooms.distances}
+		${roomsDistances}
 
 		return distance1;
 	`;
 
 	getColorGlsl = /* glsl */`
-		${SolRooms.distances}
+		${roomsDistances}
 
 		vec3 roomColor = baseColor + globalColor;
 
@@ -1165,20 +1169,22 @@ export class SolRooms extends SolGeometry
 	wallThicknessData = [0.3, -0.18, 0.6];
 }
 
+
+
+const spheresDistances = /* glsl */`
+	float distance1 = length(pos.xyz) - .125;
+`;
+
 export class SolSpheres extends SolGeometry
 {
-	static distances = /* glsl */`
-		float distance1 = length(pos.xyz) - .125;
-	`;
-
 	distanceEstimatorGlsl = /* glsl */`
-		${SolSpheres.distances}
+		${spheresDistances}
 
 		return distance1;
 	`;
 
 	getColorGlsl = /* glsl */`
-		${SolSpheres.distances}
+		${spheresDistances}
 
 		vec3 roomColor = baseColor + globalColor;
 
