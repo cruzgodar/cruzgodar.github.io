@@ -3,7 +3,7 @@ export const roomSphereDE = [
 		float distanceEstimatorRoomSphere(vec3 pos)
 		{
 			vec3 modPos = mix(pos, mod(pos + vec3(1.0, 1.0, 0.0), 2.0) - vec3(1.0, 1.0, 0.0), modPosAmount); 
-			float sphereDistance = length(modPos - vec3(0.0, 0.0, .833333)) - (-0.5 + showSphereAmount);
+			float sphereDistance = length(modPos - vec3(0.0, 0.0, .833333)) - (-0.1 + .6 * showSphereAmount);
 
 			modPos = mix(pos, mod(pos, 2.0), modPosAmount); 
 			float roomDistance = showSphereAmount * 1.25 - length(modPos - vec3(1.0, 1.0, 1.0));
@@ -26,7 +26,7 @@ export const extrudedCubeDE = [
 		{
 			float scaleCenter = 2.0 * extrudedCubeSeparation;
 
-			vec3 mutablePos = abs(pos * 3.0 - vec3(0.0, 0.0, 2.5));
+			vec3 mutablePos = abs(pos * 3.0 - vec3(0.0, 0.0, 3.0));
 
 			float totalDistance = (max(max(mutablePos.x, mutablePos.y), mutablePos.z) - 1.0);
 
@@ -66,7 +66,7 @@ export const extrudedCubeDE = [
 
 			float scaleCenter = 2.0 * extrudedCubeSeparation;
 
-			vec3 mutablePos = abs(pos * 3.0 - vec3(0.0, 0.0, 2.5));
+			vec3 mutablePos = abs(pos * 3.0 - vec3(0.0, 0.0, 3.0));
 
 			for (int iteration = 0; iteration < 16; iteration++)
 			{

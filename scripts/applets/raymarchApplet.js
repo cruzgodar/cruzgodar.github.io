@@ -93,6 +93,7 @@ export class RaymarchApplet extends AnimationFrameApplet
 
 	constructor({
 		canvas,
+		shader,
 
 		distanceEstimatorGlsl,
 		getColorGlsl,
@@ -102,8 +103,8 @@ export class RaymarchApplet extends AnimationFrameApplet
 
 		uniforms = {},
 
-		theta,
-		phi,
+		theta = 0,
+		phi = Math.PI / 2,
 		stepFactor = .95,
 		epsilonScaling = 1.75,
 		minEpsilon = .0000003,
@@ -125,7 +126,7 @@ export class RaymarchApplet extends AnimationFrameApplet
 		bloomPower = 1,
 
 		fogColor = [0, 0, 0],
-		fogScaling = .1,
+		fogScaling = .05,
 
 		useShadows = false,
 		useSoftShadows = true,
@@ -228,7 +229,7 @@ export class RaymarchApplet extends AnimationFrameApplet
 			}
 		}, 100);
 
-		const fragShaderSource = this.createShader({
+		const fragShaderSource = shader ?? this.createShader({
 			distanceEstimatorGlsl,
 			getColorGlsl,
 			getReflectivityGlsl,

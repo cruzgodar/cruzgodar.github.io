@@ -1,5 +1,5 @@
 import { showPage } from "../../../scripts/src/loadPage.js";
-import { CubeAndSponge } from "./cubeAndSponge.js";
+import { GroundAndSphere } from "./groundAndSphere.js";
 import { DownloadButton } from "/scripts/src/buttons.js";
 import { Checkbox } from "/scripts/src/checkboxes.js";
 import { $ } from "/scripts/src/main.js";
@@ -8,7 +8,7 @@ import { TextBox } from "/scripts/src/textBoxes.js";
 
 export default function()
 {
-	const applet = new CubeAndSponge({ canvas: $("#output-canvas") });
+	const applet = new GroundAndSphere({ canvas: $("#output-canvas") });
 
 	new DownloadButton({
 		element: $("#download-button"),
@@ -38,32 +38,32 @@ export default function()
 		applet.changeResolution(resolutionInput.value * siteSettings.resolutionMultiplier);
 	}
 
-	applet.loopUniform({
-		name: "mengerSpongeScale",
-		startValue: 1.5,
-		endValue: 3,
-		duration: 3000
-	});
+	// applet.loopUniform({
+	// 	name: "mengerSpongeScale",
+	// 	startValue: 1.5,
+	// 	endValue: 3,
+	// 	duration: 3000
+	// });
 
-	applet.loopUniform({
-		name: "extrudedCubeSeparation",
-		startValue: 1,
-		endValue: 1.75,
-		duration: 3000
-	});
+	// applet.loopUniform({
+	// 	name: "extrudedCubeSeparation",
+	// 	startValue: 1,
+	// 	endValue: 1.75,
+	// 	duration: 3000
+	// });
 
 	async function test()
 	{
 		applet.animateUniform({
-			name: "extrudedCubeWeight",
+			name: "sphereWeight",
 			value: testCheckbox.checked ? 0 : 1,
-			duration: 2000
+			duration: 1000
 		});
 
 		applet.animateUniform({
-			name: "mengerSpongeWeight",
+			name: "extrudedCubeWeight",
 			value: testCheckbox.checked ? 1 : 0,
-			duration: 2000
+			duration: 1000
 		});
 	}
 }

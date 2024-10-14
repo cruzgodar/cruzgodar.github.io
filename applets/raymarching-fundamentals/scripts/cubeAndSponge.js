@@ -142,7 +142,9 @@ export class CubeAndSponge extends RaymarchApplet
 			lockedOnOrigin: false,
 			lockZ: 1,
 			fogColor: [0.6, 0.73, 0.87],
-			useShadows: false,
+			fogScaling: 0.075,
+			useShadows: true,
+			useReflections: true
 		});
 	}
 
