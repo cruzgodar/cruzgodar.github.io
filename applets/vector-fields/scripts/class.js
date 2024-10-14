@@ -870,6 +870,7 @@ export class VectorField extends AnimationFrameApplet
 			this.needNewFrame = true;
 		}
 
+		// eslint-disable-next-line no-unused-vars
 		catch(_ex)
 		{
 			this.generateNewField({});

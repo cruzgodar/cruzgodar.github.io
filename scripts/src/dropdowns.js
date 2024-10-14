@@ -372,6 +372,8 @@ export class Dropdown extends InputElement
 		if (oldSelectedItem !== this.selectedItem && this.selectedItem)
 		{
 			try { this.onInput(fromOnClickHandler); }
+			
+			// eslint-disable-next-line no-unused-vars
 			catch(_ex) { /* No onInput */ }
 		}
 		

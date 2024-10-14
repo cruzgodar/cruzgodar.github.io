@@ -132,6 +132,7 @@ async function validateLink(link)
 			}
 		}
 
+		// eslint-disable-next-line no-unused-vars
 		catch(_ex)
 		{
 			// Link cannot use https.
@@ -165,6 +166,8 @@ async function testPages(files)
 
 	let currentFile = "";
 
+	const errors = [];
+
 	page.on("console", async (e) =>
 	{
 		if (e.type() === "log")
@@ -172,21 +175,25 @@ async function testPages(files)
 			return;
 		}
 
-		if (e.type() === "error")
-		{
-			console.error(`Error in ${currentFile}: ${e.text()}`);
-			return;
-		}
-
-		console.warn(`Error in ${currentFile}: ${e.text()}`);
+		errors.push(`Error in ${currentFile}: ${e.text()}`);
 	});
 
-	for (const file of files)
+	for (let i = 0; i < files.length; i++)
 	{
+		const file = files[i];
 		currentFile = file;
-		console.log(`Testing ${file}...`);
+
+		process.stdout.moveCursor(0, -1); // Move cursor up one line
+		process.stdout.clearLine();
+		console.log(`Testing pages for console errors (${i + 1}/${files.length})...`);
+
 		await page.goto(`http://${ip}:${port}/${file}`);
 		await new Promise(resolve => setTimeout(resolve, 1000));
+	}
+
+	for (const error of errors)
+	{
+		console.error(error);
 	}
 
 	await page.close();
@@ -236,9 +243,6 @@ const texDirectory = ".cgTexTesting";
 
 function testLatex(tex)
 {
-	const homeworkTitle = tex.match(/(Homework .+? Math .+?)\s/)[1];
-	console.log(`Compiling ${homeworkTitle}...`);
-
 	const filename = Math.random().toString(36).slice(2);
 	write(`${texDirectory}/${filename}.tex`, tex);
 
@@ -277,6 +281,8 @@ async function testAllLatex(files)
 		}
 	});
 
+	console.log("Downloading Latex...");
+
 	for (const file of files)
 	{
 		const buttons = latexFiles[file];
@@ -289,8 +295,6 @@ async function testAllLatex(files)
 			{
 				setTimeout(async () =>
 				{
-					console.log(`Downloading tex from ${button} in ${file}...`);
-
 					await page.evaluate((button) =>
 					{
 						document.querySelector(button).click();
@@ -304,6 +308,8 @@ async function testAllLatex(files)
 	
 	await page.close();
 	await browser.close();
+
+	console.log("Compiling Latex...");
 
 	for (const tex of texSources)
 	{
@@ -349,7 +355,6 @@ async function test(clean)
 	console.log("Testing pages for console errors...");
 	await testPages(htmlIndexFiles);
 
-	console.log("Testing LaTeX...");
 	await testAllLatex(latexDataFiles);
 }
 

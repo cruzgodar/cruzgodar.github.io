@@ -1064,6 +1064,7 @@ export class ThurstonGeometry extends Applet
 			this.run(geometryData);
 
 			try { $("#wall-thickness-slider").parentNode.style.display = "none"; }
+			// eslint-disable-next-line no-unused-vars
 			catch(_ex) { /* Element doesn't exist */ }
 
 			anime({
@@ -1091,6 +1092,7 @@ export class ThurstonGeometry extends Applet
 			this.run(geometryData);
 
 			try { $("#wall-thickness-slider").parentNode.style.display = ""; }
+			// eslint-disable-next-line no-unused-vars
 			catch(_ex) { /* Element doesn't exist */ }
 
 			anime({

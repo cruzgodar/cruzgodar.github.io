@@ -1085,7 +1085,6 @@ export class SL2RAxes extends SL2RGeometry
 
 
 
-
 const roomsDistances = /* glsl */`
 	vec3 h2Element = getH2Element(pos);
 

@@ -181,6 +181,7 @@ import { Wilson } from "/scripts/wilson.js";
 				`);
 			}
 			
+			// eslint-disable-next-line no-unused-vars
 			catch(_ex) {}
 			
 			
@@ -243,6 +244,7 @@ import { Wilson } from "/scripts/wilson.js";
 			return 1;
 		}
 		
+		// eslint-disable-next-line no-unused-vars
 		catch(_ex)
 		{
 			return 2;
