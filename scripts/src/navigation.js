@@ -1,4 +1,4 @@
-import { Applet } from "../applets/applet.js";
+import { clearCurrentlyLoadedApplets, currentlyLoadedApplets } from "../applets/applet.js";
 import {
 	fadeDownOut,
 	fadeLeftOut,
@@ -393,7 +393,7 @@ function unloadPage()
 
 
 
-	Applet.current.forEach(applet =>
+	currentlyLoadedApplets.forEach(applet =>
 	{
 		if (applet?.destroy)
 		{
@@ -401,7 +401,7 @@ function unloadPage()
 		}
 	});
 
-	Applet.current = [];
+	clearCurrentlyLoadedApplets();
 
 	pageElement.remove();
 }

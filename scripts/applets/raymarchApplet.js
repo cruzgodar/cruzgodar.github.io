@@ -2,7 +2,7 @@ import anime from "../anime.js";
 import { addTemporaryListener } from "../src/main.js";
 import { Wilson } from "../wilson.js";
 import { AnimationFrameApplet } from "./animationFrameApplet.js";
-import { Applet, getFloatGlsl, getVectorGlsl } from "./applet.js";
+import { getEqualPixelFullScreen, getFloatGlsl, getVectorGlsl } from "./applet.js";
 
 const setUniformFunctions = {
 	int: (gl, location, value) => gl.uniform1i(location, value),
@@ -925,7 +925,7 @@ export class RaymarchApplet extends AnimationFrameApplet
 
 		if (this.wilson.fullscreen.currentlyFullscreen)
 		{
-			[this.imageWidth, this.imageHeight] = Applet.getEqualPixelFullScreen(this.imageSize);
+			[this.imageWidth, this.imageHeight] = getEqualPixelFullScreen(this.imageSize);
 		}
 
 		else

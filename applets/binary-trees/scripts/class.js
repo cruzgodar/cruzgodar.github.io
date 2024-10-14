@@ -1,4 +1,4 @@
-import { Applet } from "../../../scripts/applets/applet.js";
+import { Applet, getEqualPixelFullScreen } from "../../../scripts/applets/applet.js";
 import { opacityAnimationTime } from "/scripts/src/animation.js";
 import { convertColor } from "/scripts/src/browser.js";
 import {
@@ -319,7 +319,7 @@ export class BinaryTree extends Applet
 		if (this.wilson.fullscreen.currentlyFullscreen)
 		{
 			this.wilson.changeCanvasSize(
-				...Applet.getEqualPixelFullScreen(2000)
+				...getEqualPixelFullScreen(2000)
 			);
 		}
 

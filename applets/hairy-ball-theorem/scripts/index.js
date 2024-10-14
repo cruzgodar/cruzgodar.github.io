@@ -1,6 +1,6 @@
 import { showPage } from "../../../scripts/src/loadPage.js";
 import { HairyBall } from "./class.js";
-import { Applet } from "/scripts/applets/applet.js";
+import { parseNaturalGlsl } from "/scripts/applets/applet.js";
 import { DownloadButton, GenerateButton } from "/scripts/src/buttons.js";
 import { Checkbox } from "/scripts/src/checkboxes.js";
 import { Dropdown } from "/scripts/src/dropdowns.js";
@@ -91,7 +91,7 @@ export default function()
 		canvas: $("#output-canvas"),
 		vectorFieldGeneratingCode: rawGlslCheckbox.checked
 			? glslTextarea.value
-			: Applet.parseNaturalGlsl(glslTextarea.value),
+			: parseNaturalGlsl(glslTextarea.value),
 		vectorFieldAppletResolution: vectorFieldResolutionInput.value
 			* siteSettings.resolutionMultiplier,
 		vectorFieldDilation: vectorFieldDilationInput.value
@@ -119,7 +119,7 @@ export default function()
 	{
 		const generatingCode = rawGlslCheckbox.checked
 			? glslTextarea.value
-			: Applet.parseNaturalGlsl(glslTextarea.value);
+			: parseNaturalGlsl(glslTextarea.value);
 
 		applet.vectorFieldAppletResolution = vectorFieldResolutionInput.value
 			* siteSettings.resolutionMultiplier;

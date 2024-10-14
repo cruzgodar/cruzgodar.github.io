@@ -1,6 +1,6 @@
 import { showPage } from "../../../scripts/src/loadPage.js";
 import { GeneralizedJuliaSet } from "./class.js";
-import { Applet } from "/scripts/applets/applet.js";
+import { getRandomGlsl } from "/scripts/applets/applet.js";
 import { DownloadButton, GenerateButton, ToggleButton } from "/scripts/src/buttons.js";
 import { Dropdown } from "/scripts/src/dropdowns.js";
 import { $ } from "/scripts/src/main.js";
@@ -117,7 +117,7 @@ export default function()
 	{
 		if (examplesDropdown.value === "random")
 		{
-			const glsl = Applet.getRandomGlsl({
+			const glsl = getRandomGlsl({
 				variables: ["z", "c"]
 			});
 

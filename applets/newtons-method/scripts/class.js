@@ -1,4 +1,4 @@
-import { Applet } from "../../../scripts/applets/applet.js";
+import { hexToRgb, rgbToHex } from "../../../scripts/applets/applet.js";
 import anime from "/scripts/anime.js";
 import { AnimationFrameApplet } from "/scripts/applets/animationFrameApplet.js";
 import { changeOpacity } from "/scripts/src/animation.js";
@@ -557,7 +557,7 @@ export class NewtonsMethod extends AnimationFrameApplet
 
 		const index = this.lastActiveRoot - 2;
 
-		const result = Applet.hexToRgb(hex);
+		const result = hexToRgb(hex);
 
 		const r = result.r / 255;
 		const g = result.g / 255;
@@ -650,7 +650,7 @@ export class NewtonsMethod extends AnimationFrameApplet
 					false
 				);
 
-				this.colorSetterElement.value = Applet.rgbToHex(
+				this.colorSetterElement.value = rgbToHex(
 					this.colors[3 * index] * 255,
 					this.colors[3 * index + 1] * 255,
 					this.colors[3 * index + 2] * 255

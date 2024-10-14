@@ -4,7 +4,7 @@ import {
 	loadGlsl
 } from "../../../scripts/src/complexGlsl.js";
 import { AnimationFrameApplet } from "/scripts/applets/animationFrameApplet.js";
-import { Applet, getFloatGlsl, getMaxGlslString, tempShader } from "/scripts/applets/applet.js";
+import { getEqualPixelFullScreen, getFloatGlsl, getMaxGlslString, tempShader } from "/scripts/applets/applet.js";
 import { addTemporaryListener } from "/scripts/src/main.js";
 import { Wilson } from "/scripts/wilson.js";
 
@@ -1346,11 +1346,11 @@ export class VectorField extends AnimationFrameApplet
 			this.aspectRatio = window.innerWidth / window.innerHeight;
 
 			this.wilson.changeCanvasSize(
-				...Applet.getEqualPixelFullScreen(this.resolution)
+				...getEqualPixelFullScreen(this.resolution)
 			);
 
 			this.wilsonDim.changeCanvasSize(
-				...Applet.getEqualPixelFullScreen(this.resolution)
+				...getEqualPixelFullScreen(this.resolution)
 			);
 			
 			if (this.aspectRatio >= 1)

@@ -1,4 +1,4 @@
-import { Applet } from "../applets/applet.js";
+import { currentlyLoadedApplets } from "../applets/applet.js";
 import { removeHoverEvents } from "./hoverEvents.js";
 import { addTemporaryListener } from "./main.js";
 
@@ -123,9 +123,9 @@ export function listenForFullscreenKey()
 				let minDistance = Infinity;
 				let minIndex = 0;
 
-				for (let i = 0; i < Applet.current.length; i++)
+				for (let i = 0; i < currentlyLoadedApplets.length; i++)
 				{
-					const applet = Applet.current[i];
+					const applet = currentlyLoadedApplets[i];
 
 					if (!applet.allowFullscreenWithKeyboard)
 					{
@@ -151,8 +151,8 @@ export function listenForFullscreenKey()
 					}
 				}
 
-				const wilson = Applet.current[minIndex].wilsonForFullscreen
-					?? Applet.current[minIndex].wilson;
+				const wilson = currentlyLoadedApplets[minIndex].wilsonForFullscreen
+					?? currentlyLoadedApplets[minIndex].wilson;
 
 				wilson.fullscreen.switchFullscreen();
 			}

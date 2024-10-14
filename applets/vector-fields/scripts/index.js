@@ -1,4 +1,4 @@
-import { Applet } from "../../../scripts/applets/applet.js";
+import { parseNaturalGlsl } from "../../../scripts/applets/applet.js";
 import { showPage } from "../../../scripts/src/loadPage.js";
 import { VectorField } from "./class.js";
 import { DownloadButton, GenerateButton } from "/scripts/src/buttons.js";
@@ -125,7 +125,7 @@ export default function()
 	{
 		const generatingCode = rawGlslCheckbox.checked
 			? glslTextarea.value
-			: Applet.parseNaturalGlsl(glslTextarea.value);
+			: parseNaturalGlsl(glslTextarea.value);
 		
 		applet.run({
 			generatingCode,

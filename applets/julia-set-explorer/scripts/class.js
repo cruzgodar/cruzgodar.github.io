@@ -1,4 +1,4 @@
-import { Applet } from "../../../scripts/applets/applet.js";
+import { doubleToDf } from "../../../scripts/applets/applet.js";
 import { doubleEmulationGlsl, loadGlsl } from "../../../scripts/src/complexGlsl.js";
 import { AnimationFrameApplet } from "/scripts/applets/animationFrameApplet.js";
 import { addTemporaryListener } from "/scripts/src/main.js";
@@ -891,8 +891,8 @@ export class JuliaSet extends AnimationFrameApplet
 
 
 
-		const cx = Applet.doubleToDf(this.wilson.worldCenterX);
-		const cy = Applet.doubleToDf(this.wilson.worldCenterY);
+		const cx = doubleToDf(this.wilson.worldCenterX);
+		const cy = doubleToDf(this.wilson.worldCenterY);
 
 		const shaderProgramIndex = this.juliaMode + 3 * this.doublePrecision;
 

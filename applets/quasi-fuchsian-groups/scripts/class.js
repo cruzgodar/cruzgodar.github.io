@@ -1,4 +1,4 @@
-import { Applet } from "../../../scripts/applets/applet.js";
+import { Applet, getEqualPixelFullScreen } from "../../../scripts/applets/applet.js";
 import { aspectRatio } from "/scripts/src/layout.js";
 import { addTemporaryWorker, loadScript } from "/scripts/src/main.js";
 import { Wilson } from "/scripts/wilson.js";
@@ -917,7 +917,7 @@ export class QuasiFuchsianGroups extends Applet
 
 		if (this.wilson.fullscreen.currentlyFullscreen)
 		{
-			[this.imageWidth, this.imageHeight] = Applet.getEqualPixelFullScreen(this.imageSize);
+			[this.imageWidth, this.imageHeight] = getEqualPixelFullScreen(this.imageSize);
 		}
 
 		else

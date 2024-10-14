@@ -1,5 +1,5 @@
 import anime from "/scripts/anime.js";
-import { Applet } from "/scripts/applets/applet.js";
+import { getEqualPixelFullScreen } from "/scripts/applets/applet.js";
 import { RaymarchApplet } from "/scripts/applets/raymarchApplet.js";
 import { addTemporaryListener } from "/scripts/src/main.js";
 import { Wilson } from "/scripts/wilson.js";
@@ -213,7 +213,7 @@ export class RaymarchingFundamentals extends RaymarchApplet
 
 		if (this.wilson.fullscreen.currentlyFullscreen)
 		{
-			[this.imageWidth, this.imageHeight] = Applet.getEqualPixelFullScreen(this.imageSize);
+			[this.imageWidth, this.imageHeight] = getEqualPixelFullScreen(this.imageSize);
 		}
 
 		else

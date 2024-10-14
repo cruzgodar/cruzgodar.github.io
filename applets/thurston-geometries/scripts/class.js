@@ -1,4 +1,4 @@
-import { Applet, tempShader } from "../../../scripts/applets/applet.js";
+import { Applet, getEqualPixelFullScreen, tempShader } from "../../../scripts/applets/applet.js";
 import { SolRooms, SolSpheres } from "./geometries/sol.js";
 import anime from "/scripts/anime.js";
 import { aspectRatio } from "/scripts/src/layout.js";
@@ -942,7 +942,7 @@ export class ThurstonGeometry extends Applet
 
 		if (this.wilson.fullscreen.currentlyFullscreen)
 		{
-			[imageWidth, imageHeight] = Applet.getEqualPixelFullScreen(resolution);
+			[imageWidth, imageHeight] = getEqualPixelFullScreen(resolution);
 
 			this.wilson.worldWidth = Math.max(2, 2 * aspectRatio);
 			this.wilson.worldHeight = Math.max(2, 2 / aspectRatio);

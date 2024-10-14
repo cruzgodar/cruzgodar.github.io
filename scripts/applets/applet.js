@@ -10,7 +10,7 @@ import {
 // Each entry is an array beginning with the return type,
 // followed by the parameter types. The types are either "float" or "vec2",
 // or "float | vec2" to indicate that the function can return either.
-const glslFunctions = {
+const randomGlslFunctions = {
 	cadd: ["vec2", "vec2", "vec2"],
 	csub: ["vec2", "vec2", "vec2"],
 	cmul: ["vec2", "vec2", "vec2"],
@@ -24,6 +24,15 @@ const glslFunctions = {
 	// ctan: ["vec2", "vec2"],
 };
 
+export let currentlyLoadedApplets = [];
+
+export function clearCurrentlyLoadedApplets()
+{
+	currentlyLoadedApplets = [];
+}
+
+
+
 export class Applet
 {
 	canvas;
@@ -32,8 +41,6 @@ export class Applet
 	allowFullscreenWithKeyboard = true;
 
 	fpsDisplayCtx;
-
-	// Temporary things that should be destroyed when calling Applet.destroy.
 
 	workers = [];
 	timeoutIds = [];
@@ -70,7 +77,7 @@ export class Applet
 			}, 50);
 		}
 
-		Applet.current.push(this);
+		currentlyLoadedApplets.push(this);
 	}
 
 	destroy()
@@ -465,7 +472,7 @@ export class Applet
 			if (wilson.fullscreen.currentlyFullscreen)
 			{
 				wilson.changeCanvasSize(
-					...Applet.getEqualPixelFullScreen(this.resolution)
+					...getEqualPixelFullScreen(this.resolution)
 				);
 
 				this.aspectRatio = window.innerWidth / window.innerHeight;
@@ -1044,161 +1051,6 @@ export class Applet
 			pageElement.appendChild(text);
 		}
 	}
-
-
-
-	static current = [];
-
-
-
-	static listenToInputElements(elements, run)
-	{
-		elements.forEach(element =>
-		{
-			element.addEventListener("keydown", (e) =>
-			{
-				if (e.key === "Enter")
-				{
-					e.preventDefault();
-					run();
-				}
-			});
-		});
-	}
-
-
-
-	// Turns expressions like 2(3x^2+1) into something equivalent
-	// to 2.0 * (3.0 * pow(x, 2.0) + 1.0).
-	static parseNaturalGlsl(glsl)
-	{
-		let newGlsl = glsl.replaceAll(/\s/g, ""); // Remove spaces
-
-		while (newGlsl.match(/([^.0-9])([0-9]+)([^.0-9])/g))
-		{
-			newGlsl = newGlsl.replaceAll(/([^.0-9])([0-9]+)([^.0-9])/g, (match, $1, $2, $3) => `${$1}${$2}.0${$3}`); // Convert ints to floats
-		}
-
-		newGlsl = newGlsl.replaceAll(/([^0-9])(\.[0-9])/g, (match, $1, $2) => `${$1}0${$2}`) // Lead decimals with zeros
-			.replaceAll(/([0-9]\.)([^0-9])/g, (match, $1, $2) => `${$1}0${$2}`) // End decimals with zeros
-			.replaceAll(/([0-9)])([a-z(])/g, (match, $1, $2) => `${$1} * ${$2}`); // Juxtaposition to multiplication
-
-		while (newGlsl.match(/([xyz])([xyz])/g))
-		{
-			newGlsl = newGlsl.replaceAll(/([xyz])([xyz])/g, (match, $1, $2) => `${$1} * ${$2}`); // Particular juxtaposition to multiplication
-		}
-
-		newGlsl = newGlsl.replaceAll(/([a-z0-9.]+)\^([a-z0-9.]+)/g, (match, $1, $2) => `pow(${$1}, ${$2})`); // Carats to power
-
-		if (window.DEBUG)
-		{
-			console.log(newGlsl);
-		}
-
-		return newGlsl;
-	}
-
-	static getRandomGlsl({
-		depth = 0,
-		maxDepth,
-		variables = [],
-		returnType = "vec2"
-	}) {
-		if (!maxDepth)
-		{
-			maxDepth = Math.floor(Math.random() * 3) + 2;
-		}
-
-		if (depth >= maxDepth)
-		{
-			if (Math.random() < 0.8)
-			{
-				const variable = variables[Math.floor(Math.random() * variables.length)];
-
-				return variable;
-			}
-
-			const x = Math.random() < 0.99
-				? `${variables[Math.floor(Math.random() * variables.length)]}.${Math.random() < 0.5 ? "x" : "y"}`
-				: `${Math.round((Math.random()) * 100) / 100}`;
-			
-			const y = Math.random() < 0.99
-				? `${variables[Math.floor(Math.random() * variables.length)]}.${Math.random() < 0.5 ? "x" : "y"}`
-				: `${Math.round((Math.random()) * 100) / 100}`;
-
-			return `vec2(${x}, ${y})`;
-		}
-
-		// Otherwise, select a function with the correct return type.
-		const possibleFunctions = Object.keys(glslFunctions)
-			.filter(key => glslFunctions[key][0] === returnType);
-		
-		const functionName = possibleFunctions[
-			Math.floor(Math.random() * possibleFunctions.length)
-		];
-		
-		const parameterTypes = glslFunctions[functionName].slice(1);
-
-		const parameters = parameterTypes.map(type =>
-		{
-			return Applet.getRandomGlsl({
-				depth: depth + 1,
-				maxDepth,
-				variables,
-				returnType: type
-			});
-		});
-
-		return `${functionName}(${parameters.join(",")})`;
-	}
-
-
-
-	static doubleToDf(d)
-	{
-		const df = new Float32Array(2);
-		const split = (1 << 29) + 1;
-
-		const a = d * split;
-		const hi = a - (a - d);
-		const lo = d - hi;
-
-		df[0] = hi;
-		df[1] = lo;
-
-		return [df[0], df[1]];
-	}
-
-
-
-	static hexToRgb(hex)
-	{
-		const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
-
-		return result ? {
-			r: parseInt(result[1], 16),
-			g: parseInt(result[2], 16),
-			b: parseInt(result[3], 16)
-		} : null;
-	}
-
-	static componentToHex(c)
-	{
-		const hex = Math.floor(c).toString(16);
-		return hex.length == 1 ? "0" + hex : hex;
-	}
-
-	static rgbToHex(r, g, b)
-	{
-		return "#" + Applet.componentToHex(r) + Applet.componentToHex(g) + Applet.componentToHex(b);
-	}
-
-	static getEqualPixelFullScreen(resolution)
-	{
-		const sqrtAspectRatio = Math.sqrt(window.innerWidth / window.innerHeight);
-
-		return [Math.round(resolution * sqrtAspectRatio), Math.round(resolution / sqrtAspectRatio)];
-	}
 }
 
 
@@ -1338,6 +1190,138 @@ export function getMatrixGlsl(matrix)
 
 	console.error("Invalid matrix shape!");
 	return "";
+}
+
+export function doubleToDf(d)
+{
+	const df = new Float32Array(2);
+	const split = (1 << 29) + 1;
+
+	const a = d * split;
+	const hi = a - (a - d);
+	const lo = d - hi;
+
+	df[0] = hi;
+	df[1] = lo;
+
+	return [df[0], df[1]];
+}
+
+
+
+export function hexToRgb(hex)
+{
+	const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+
+	return result ? {
+		r: parseInt(result[1], 16),
+		g: parseInt(result[2], 16),
+		b: parseInt(result[3], 16)
+	} : null;
+}
+
+function componentToHex(c)
+{
+	const hex = Math.floor(c).toString(16);
+	return hex.length == 1 ? "0" + hex : hex;
+}
+
+export function rgbToHex(r, g, b)
+{
+	return "#" + componentToHex(r) + componentToHex(g) + componentToHex(b);
+}
+
+export function getEqualPixelFullScreen(resolution)
+{
+	const sqrtAspectRatio = Math.sqrt(window.innerWidth / window.innerHeight);
+
+	return [Math.round(resolution * sqrtAspectRatio), Math.round(resolution / sqrtAspectRatio)];
+}
+
+// Turns expressions like 2(3x^2+1) into something equivalent
+// to 2.0 * (3.0 * pow(x, 2.0) + 1.0).
+export function parseNaturalGlsl(glsl)
+{
+	let newGlsl = glsl.replaceAll(/\s/g, ""); // Remove spaces
+
+	while (newGlsl.match(/([^.0-9])([0-9]+)([^.0-9])/g))
+	{
+		newGlsl = newGlsl.replaceAll(/([^.0-9])([0-9]+)([^.0-9])/g, (match, $1, $2, $3) => `${$1}${$2}.0${$3}`); // Convert ints to floats
+	}
+
+	newGlsl = newGlsl.replaceAll(/([^0-9])(\.[0-9])/g, (match, $1, $2) => `${$1}0${$2}`) // Lead decimals with zeros
+		.replaceAll(/([0-9]\.)([^0-9])/g, (match, $1, $2) => `${$1}0${$2}`) // End decimals with zeros
+		.replaceAll(/([0-9)])([a-z(])/g, (match, $1, $2) => `${$1} * ${$2}`); // Juxtaposition to multiplication
+
+	while (newGlsl.match(/([xyz])([xyz])/g))
+	{
+		newGlsl = newGlsl.replaceAll(/([xyz])([xyz])/g, (match, $1, $2) => `${$1} * ${$2}`); // Particular juxtaposition to multiplication
+	}
+
+	newGlsl = newGlsl.replaceAll(/([a-z0-9.]+)\^([a-z0-9.]+)/g, (match, $1, $2) => `pow(${$1}, ${$2})`); // Carats to power
+
+	if (window.DEBUG)
+	{
+		console.log(newGlsl);
+	}
+
+	return newGlsl;
+}
+
+
+
+export function getRandomGlsl({
+	depth = 0,
+	maxDepth,
+	variables = [],
+	returnType = "vec2"
+}) {
+	if (!maxDepth)
+	{
+		maxDepth = Math.floor(Math.random() * 3) + 2;
+	}
+
+	if (depth >= maxDepth)
+	{
+		if (Math.random() < 0.8)
+		{
+			const variable = variables[Math.floor(Math.random() * variables.length)];
+
+			return variable;
+		}
+
+		const x = Math.random() < 0.99
+			? `${variables[Math.floor(Math.random() * variables.length)]}.${Math.random() < 0.5 ? "x" : "y"}`
+			: `${Math.round((Math.random()) * 100) / 100}`;
+		
+		const y = Math.random() < 0.99
+			? `${variables[Math.floor(Math.random() * variables.length)]}.${Math.random() < 0.5 ? "x" : "y"}`
+			: `${Math.round((Math.random()) * 100) / 100}`;
+
+		return `vec2(${x}, ${y})`;
+	}
+
+	// Otherwise, select a function with the correct return type.
+	const possibleFunctions = Object.keys(randomGlslFunctions)
+		.filter(key => randomGlslFunctions[key][0] === returnType);
+	
+	const functionName = possibleFunctions[
+		Math.floor(Math.random() * possibleFunctions.length)
+	];
+	
+	const parameterTypes = randomGlslFunctions[functionName].slice(1);
+
+	const parameters = parameterTypes.map(type =>
+	{
+		return getRandomGlsl({
+			depth: depth + 1,
+			maxDepth,
+			variables,
+			returnType: type
+		});
+	});
+
+	return `${functionName}(${parameters.join(",")})`;
 }
 
 export const tempShader = /* glsl */`
