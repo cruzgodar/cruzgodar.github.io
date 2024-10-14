@@ -1,5 +1,10 @@
 import anime from "/scripts/anime.js";
-import { RaymarchApplet } from "/scripts/applets/raymarchApplet.js";
+import {
+	getRotationMatrix,
+	magnitude,
+	mat3TimesVector,
+	RaymarchApplet
+} from "/scripts/applets/raymarchApplet.js";
 
 export class Mandelbulb extends RaymarchApplet
 {
@@ -112,7 +117,7 @@ export class Mandelbulb extends RaymarchApplet
 
 	updateRotationMatrix()
 	{
-		this.setUniform("rotationMatrix", RaymarchApplet.getRotationMatrix(
+		this.setUniform("rotationMatrix", getRotationMatrix(
 			this.rotationAngleX,
 			this.rotationAngleY,
 			this.rotationAngleZ
@@ -137,7 +142,7 @@ export class Mandelbulb extends RaymarchApplet
 
 		for (let iteration = 0; iteration < 16; iteration++)
 		{
-			r = Math.sqrt(RaymarchApplet.dotProduct(mutableZ, mutableZ));
+			r = magnitude(mutableZ);
 
 			if (r > 16.0)
 			{
@@ -166,7 +171,7 @@ export class Mandelbulb extends RaymarchApplet
 				+ ((1 - juliaProportion) * z + juliaProportion * c[2]);
 
 			// Apply the rotation matrix.
-			mutableZ = RaymarchApplet.mat3TimesVector(rotationMatrix, mutableZ);
+			mutableZ = mat3TimesVector(rotationMatrix, mutableZ);
 		}
 
 		return 0.5 * Math.log(r) * r / dr;

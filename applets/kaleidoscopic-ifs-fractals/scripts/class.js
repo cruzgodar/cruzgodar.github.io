@@ -1,5 +1,10 @@
 import { getVectorGlsl } from "/scripts/applets/applet.js";
-import { RaymarchApplet } from "/scripts/applets/raymarchApplet.js";
+import {
+	dotProduct,
+	getRotationMatrix,
+	mat3TimesVector,
+	RaymarchApplet
+} from "/scripts/applets/raymarchApplet.js";
 import { changeOpacity } from "/scripts/src/animation.js";
 
 const ns = {
@@ -164,7 +169,7 @@ export class KaleidoscopicIFSFractal extends RaymarchApplet
 		for (let iteration = 0; iteration < maxIterations; iteration++)
 		{
 			// Fold space over on itself so that we can reference only the top vertex.
-			const t1 = RaymarchApplet.dotProduct([x, y, z], shapeNs[0]);
+			const t1 = dotProduct([x, y, z], shapeNs[0]);
 
 			if (t1 < 0)
 			{
@@ -173,7 +178,7 @@ export class KaleidoscopicIFSFractal extends RaymarchApplet
 				z -= 2 * t1 * shapeNs[0][2];
 			}
 
-			const t2 = RaymarchApplet.dotProduct([x, y, z], shapeNs[1]);
+			const t2 = dotProduct([x, y, z], shapeNs[1]);
 
 			if (t2 < 0)
 			{
@@ -182,7 +187,7 @@ export class KaleidoscopicIFSFractal extends RaymarchApplet
 				z -= 2 * t2 * shapeNs[1][2];
 			}
 
-			const t3 = RaymarchApplet.dotProduct([x, y, z], shapeNs[2]);
+			const t3 = dotProduct([x, y, z], shapeNs[2]);
 
 			if (t3 < 0)
 			{
@@ -193,7 +198,7 @@ export class KaleidoscopicIFSFractal extends RaymarchApplet
 
 			if (shapeNs.length >= 4)
 			{
-				const t4 = RaymarchApplet.dotProduct([x, y, z], shapeNs[3]);
+				const t4 = dotProduct([x, y, z], shapeNs[3]);
 
 				if (t4 < 0)
 				{
@@ -212,7 +217,7 @@ export class KaleidoscopicIFSFractal extends RaymarchApplet
 			y = scale * y - (scale - 1) * scaleCenter[1];
 			z = scale * z - (scale - 1) * scaleCenter[2];
 
-			[x, y, z] = RaymarchApplet.mat3TimesVector(rotationMatrix, [x, y, z]);
+			[x, y, z] = mat3TimesVector(rotationMatrix, [x, y, z]);
 		}
 
 		// So at this point we've scaled up by 2x a total of numIterations times.
@@ -223,7 +228,7 @@ export class KaleidoscopicIFSFractal extends RaymarchApplet
 
 	updateMatrices()
 	{
-		this.setUniform("rotationMatrix", RaymarchApplet.getRotationMatrix(
+		this.setUniform("rotationMatrix", getRotationMatrix(
 			this.rotationAngleX,
 			this.rotationAngleY,
 			this.rotationAngleZ

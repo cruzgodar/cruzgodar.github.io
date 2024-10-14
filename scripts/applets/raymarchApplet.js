@@ -184,7 +184,7 @@ export class RaymarchApplet extends AnimationFrameApplet
 			}
 		);
 
-		this.distanceFromOrigin = RaymarchApplet.magnitude(this.cameraPos);
+		this.distanceFromOrigin = magnitude(this.cameraPos);
 
 		const refreshId = setInterval(() =>
 		{
@@ -731,14 +731,14 @@ export class RaymarchApplet extends AnimationFrameApplet
 		// the orthogonal plane that passes through the origin is ax + by + cz = 0,
 		// so we want ax + by = 0. One solution is (b, -a), and that's the one that
 		// goes to the "right" of the forward vector (when looking down).
-		this.rightVec = RaymarchApplet.normalize([this.forwardVec[1], -this.forwardVec[0], 0]);
+		this.rightVec = normalize([this.forwardVec[1], -this.forwardVec[0], 0]);
 
 		// Finally, the upward vector is the cross product of the previous two.
-		this.upVec = RaymarchApplet.crossProduct(this.rightVec, this.forwardVec);
+		this.upVec = crossProduct(this.rightVec, this.forwardVec);
 
 		if (this.lockedOnOrigin)
 		{
-			this.cameraPos = RaymarchApplet.scaleVector(
+			this.cameraPos = scaleVector(
 				-this.distanceFromOrigin,
 				this.forwardVec
 			);
@@ -867,9 +867,9 @@ export class RaymarchApplet extends AnimationFrameApplet
 				|| this.moveVelocity[2] !== 0
 		)) {
 			const usableForwardVec = this.lockZ !== undefined
-				? RaymarchApplet.scaleVector(
-					RaymarchApplet.magnitude(this.forwardVec),
-					RaymarchApplet.normalize([
+				? scaleVector(
+					magnitude(this.forwardVec),
+					normalize([
 						this.forwardVec[0],
 						this.forwardVec[1],
 						0
@@ -878,9 +878,9 @@ export class RaymarchApplet extends AnimationFrameApplet
 				: this.forwardVec;
 
 			const usableRightVec = this.lockZ !== undefined
-				? RaymarchApplet.scaleVector(
-					RaymarchApplet.magnitude(this.rightVec),
-					RaymarchApplet.normalize([
+				? scaleVector(
+					magnitude(this.rightVec),
+					normalize([
 						this.rightVec[0],
 						this.rightVec[1],
 						0
@@ -991,8 +991,8 @@ export class RaymarchApplet extends AnimationFrameApplet
 		if (value && !this.lockedOnOrigin)
 		{
 			// Convert to spherical coordinates.
-			const r = RaymarchApplet.magnitude(this.cameraPos);
-			const normalizedCameraPos = RaymarchApplet.normalize(this.cameraPos);
+			const r = magnitude(this.cameraPos);
+			const normalizedCameraPos = normalize(this.cameraPos);
 			const phi = Math.PI - Math.acos(this.cameraPos[2] / r);
 			let theta = Math.atan2(this.cameraPos[1], this.cameraPos[0]) + Math.PI;
 			if (theta > Math.PI)
@@ -1013,7 +1013,7 @@ export class RaymarchApplet extends AnimationFrameApplet
 				{
 					this.wilson.worldCenterX = -dummy.theta;
 					this.wilson.worldCenterY = -dummy.phi;
-					this.cameraPos = RaymarchApplet.scaleVector(
+					this.cameraPos = scaleVector(
 						dummy.r,
 						normalizedCameraPos
 					);
@@ -1025,133 +1025,133 @@ export class RaymarchApplet extends AnimationFrameApplet
 
 		this.lockedOnOrigin = value;
 	}
+}
 
 
 
-	static magnitude(vec)
-	{
-		return Math.sqrt(vec[0] * vec[0] + vec[1] * vec[1] + vec[2] * vec[2]);
-	}
+export function magnitude(vec)
+{
+	return Math.sqrt(vec[0] * vec[0] + vec[1] * vec[1] + vec[2] * vec[2]);
+}
 
 
 
-	static addVectors(vec1, vec2)
-	{
-		return [vec1[0] + vec2[0], vec1[1] + vec2[1], vec1[2] + vec2[2]];
-	}
+export function addVectors(vec1, vec2)
+{
+	return [vec1[0] + vec2[0], vec1[1] + vec2[1], vec1[2] + vec2[2]];
+}
 
-	static scaleVector(c, vec)
-	{
-		return [c * vec[0], c * vec[1], c * vec[2]];
-	}
-
-
-
-	static dotProduct(vec1, vec2)
-	{
-		return vec1[0] * vec2[0] + vec1[1] * vec2[1] + vec1[2] * vec2[2];
-	}
-
-	static dotProduct4(vec1, vec2)
-	{
-		return vec1[0] * vec2[0] + vec1[1] * vec2[1] + vec1[2] * vec2[2] + vec1[3] * vec2[3];
-	}
+export function scaleVector(c, vec)
+{
+	return [c * vec[0], c * vec[1], c * vec[2]];
+}
 
 
 
-	static crossProduct(vec1, vec2)
-	{
-		return [
-			vec1[1] * vec2[2] - vec1[2] * vec2[1],
-			vec1[2] * vec2[0] - vec1[0] * vec2[2],
-			vec1[0] * vec2[1] - vec1[1] * vec2[0]
-		];
-	}
+export function dotProduct(vec1, vec2)
+{
+	return vec1[0] * vec2[0] + vec1[1] * vec2[1] + vec1[2] * vec2[2];
+}
+
+export function dotProduct4(vec1, vec2)
+{
+	return vec1[0] * vec2[0] + vec1[1] * vec2[1] + vec1[2] * vec2[2] + vec1[3] * vec2[3];
+}
 
 
 
-	static matMul(mat1, mat2)
-	{
-		return [
-			[
-				mat1[0][0] * mat2[0][0] + mat1[0][1] * mat2[1][0] + mat1[0][2] * mat2[2][0],
-				mat1[0][0] * mat2[0][1] + mat1[0][1] * mat2[1][1] + mat1[0][2] * mat2[2][1],
-				mat1[0][0] * mat2[0][2] + mat1[0][1] * mat2[1][2] + mat1[0][2] * mat2[2][2]
-			],
-
-			[
-				mat1[1][0] * mat2[0][0] + mat1[1][1] * mat2[1][0] + mat1[1][2] * mat2[2][0],
-				mat1[1][0] * mat2[0][1] + mat1[1][1] * mat2[1][1] + mat1[1][2] * mat2[2][1],
-				mat1[1][0] * mat2[0][2] + mat1[1][1] * mat2[1][2] + mat1[1][2] * mat2[2][2]
-			],
-
-			[
-				mat1[2][0] * mat2[0][0] + mat1[2][1] * mat2[1][0] + mat1[2][2] * mat2[2][0],
-				mat1[2][0] * mat2[0][1] + mat1[2][1] * mat2[1][1] + mat1[2][2] * mat2[2][1],
-				mat1[2][0] * mat2[0][2] + mat1[2][1] * mat2[1][2] + mat1[2][2] * mat2[2][2]
-			]
-		];
-	}
+export function crossProduct(vec1, vec2)
+{
+	return [
+		vec1[1] * vec2[2] - vec1[2] * vec2[1],
+		vec1[2] * vec2[0] - vec1[0] * vec2[2],
+		vec1[0] * vec2[1] - vec1[1] * vec2[0]
+	];
+}
 
 
 
-	static qmul(x1, y1, z1, w1, x2, y2, z2, w2)
-	{
-		return [
-			x1 * x2 - y1 * y2 - z1 * z1 - w1 * w2,
-			x1 * y2 + y1 * x2 + z1 * w2 - w1 * z2,
-			x1 * z2 - y1 * w2 + z1 * x2 + w1 * y2,
-			x1 * w2 + y1 * z2 - z1 * y2 + w1 * x2
-		];
-	}
+export function matMul(mat1, mat2)
+{
+	return [
+		[
+			mat1[0][0] * mat2[0][0] + mat1[0][1] * mat2[1][0] + mat1[0][2] * mat2[2][0],
+			mat1[0][0] * mat2[0][1] + mat1[0][1] * mat2[1][1] + mat1[0][2] * mat2[2][1],
+			mat1[0][0] * mat2[0][2] + mat1[0][1] * mat2[1][2] + mat1[0][2] * mat2[2][2]
+		],
+
+		[
+			mat1[1][0] * mat2[0][0] + mat1[1][1] * mat2[1][0] + mat1[1][2] * mat2[2][0],
+			mat1[1][0] * mat2[0][1] + mat1[1][1] * mat2[1][1] + mat1[1][2] * mat2[2][1],
+			mat1[1][0] * mat2[0][2] + mat1[1][1] * mat2[1][2] + mat1[1][2] * mat2[2][2]
+		],
+
+		[
+			mat1[2][0] * mat2[0][0] + mat1[2][1] * mat2[1][0] + mat1[2][2] * mat2[2][0],
+			mat1[2][0] * mat2[0][1] + mat1[2][1] * mat2[1][1] + mat1[2][2] * mat2[2][1],
+			mat1[2][0] * mat2[0][2] + mat1[2][1] * mat2[1][2] + mat1[2][2] * mat2[2][2]
+		]
+	];
+}
 
 
 
-	static normalize(vec)
-	{
-		const magnitude = RaymarchApplet.magnitude(vec);
+export function qmul(x1, y1, z1, w1, x2, y2, z2, w2)
+{
+	return [
+		x1 * x2 - y1 * y2 - z1 * z1 - w1 * w2,
+		x1 * y2 + y1 * x2 + z1 * w2 - w1 * z2,
+		x1 * z2 - y1 * w2 + z1 * x2 + w1 * y2,
+		x1 * w2 + y1 * z2 - z1 * y2 + w1 * x2
+	];
+}
 
-		return [vec[0] / magnitude, vec[1] / magnitude, vec[2] / magnitude];
-	}
+
+
+export function normalize(vec)
+{
+	const mag = magnitude(vec);
+
+	return [vec[0] / mag, vec[1] / mag, vec[2] / mag];
+}
 
 
 
-	static getRotationMatrix(thetaX, thetaY, thetaZ)
-	{
-		const cX = Math.cos(thetaX);
-		const sX = Math.sin(thetaX);
-		const cY = Math.cos(thetaY);
-		const sY = Math.sin(thetaY);
-		const cZ = Math.cos(thetaZ);
-		const sZ = Math.sin(thetaZ);
+export function getRotationMatrix(thetaX, thetaY, thetaZ)
+{
+	const cX = Math.cos(thetaX);
+	const sX = Math.sin(thetaX);
+	const cY = Math.cos(thetaY);
+	const sY = Math.sin(thetaY);
+	const cZ = Math.cos(thetaZ);
+	const sZ = Math.sin(thetaZ);
 
-		const matZ = [
-			[cZ, -sZ, 0],
-			[sZ, cZ, 0],
-			[0, 0, 1]
-		];
+	const matZ = [
+		[cZ, -sZ, 0],
+		[sZ, cZ, 0],
+		[0, 0, 1]
+	];
 
-		const matY = [
-			[cY, 0, -sY],
-			[0, 1, 0],
-			[sY, 0, cY]
-		];
+	const matY = [
+		[cY, 0, -sY],
+		[0, 1, 0],
+		[sY, 0, cY]
+	];
 
-		const matX = [
-			[1, 0, 0],
-			[0, cX, -sX],
-			[0, sX, cX]
-		];
+	const matX = [
+		[1, 0, 0],
+		[0, cX, -sX],
+		[0, sX, cX]
+	];
 
-		return RaymarchApplet.matMul(RaymarchApplet.matMul(matZ, matY), matX);
-	}
+	return matMul(matMul(matZ, matY), matX);
+}
 
-	static mat3TimesVector(mat, vec)
-	{
-		return [
-			mat[0][0] * vec[0] + mat[0][1] * vec[1] + mat[0][2] * vec[2],
-			mat[1][0] * vec[0] + mat[1][1] * vec[1] + mat[1][2] * vec[2],
-			mat[2][0] * vec[0] + mat[2][1] * vec[1] + mat[2][2] * vec[2]
-		];
-	}
+export function mat3TimesVector(mat, vec)
+{
+	return [
+		mat[0][0] * vec[0] + mat[0][1] * vec[1] + mat[0][2] * vec[2],
+		mat[1][0] * vec[0] + mat[1][1] * vec[1] + mat[1][2] * vec[2],
+		mat[2][0] * vec[0] + mat[2][1] * vec[1] + mat[2][2] * vec[2]
+	];
 }

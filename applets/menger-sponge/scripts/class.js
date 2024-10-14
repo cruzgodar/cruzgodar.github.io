@@ -1,4 +1,8 @@
-import { RaymarchApplet } from "/scripts/applets/raymarchApplet.js";
+import {
+	getRotationMatrix,
+	mat3TimesVector,
+	RaymarchApplet
+} from "/scripts/applets/raymarchApplet.js";
 
 const changeColorGlsl = /* glsl */`
 	vec3 colorAdd = abs(pos / effectiveScale);
@@ -283,7 +287,7 @@ export class MengerSponge extends RaymarchApplet
 				Math.abs(mutablePos[2])
 			];
 
-			mutablePos = RaymarchApplet.mat3TimesVector(
+			mutablePos = mat3TimesVector(
 				this.uniforms.rotationMatrix[1],
 				mutablePos
 			);
@@ -299,7 +303,7 @@ export class MengerSponge extends RaymarchApplet
 
 	updateMatrices()
 	{
-		this.setUniform("rotationMatrix", RaymarchApplet.getRotationMatrix(
+		this.setUniform("rotationMatrix", getRotationMatrix(
 			this.rotationAngleX,
 			this.rotationAngleY,
 			this.rotationAngleZ

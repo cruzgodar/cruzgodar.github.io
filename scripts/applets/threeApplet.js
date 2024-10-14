@@ -1,6 +1,6 @@
 import anime from "../anime.js";
 import { AnimationFrameApplet } from "./animationFrameApplet.js";
-import { RaymarchApplet } from "./raymarchApplet.js";
+import { crossProduct, magnitude, normalize, RaymarchApplet } from "./raymarchApplet.js";
 import * as THREE from "/scripts/three.js";
 
 export class ThreeApplet extends AnimationFrameApplet
@@ -47,7 +47,7 @@ export class ThreeApplet extends AnimationFrameApplet
 
 		this.lockedOnOrigin = lockedOnOrigin;
 		this.cameraPos = cameraPos;
-		this.distanceFromOrigin = RaymarchApplet.magnitude(this.cameraPos);
+		this.distanceFromOrigin = magnitude(this.cameraPos);
 
 		this.listenForKeysPressed(
 			["w", "s", "a", "d", "q", "e", " ", "shift", "z"],
@@ -136,10 +136,10 @@ export class ThreeApplet extends AnimationFrameApplet
 		// the orthogonal plane that passes through the origin is ax + by + cz = 0,
 		// so we want ax + by = 0. One solution is (b, -a), and that's the one that
 		// goes to the "right" of the forward vector (when looking down).
-		this.rightVec = RaymarchApplet.normalize([this.forwardVec[1], -this.forwardVec[0], 0]);
+		this.rightVec = normalize([this.forwardVec[1], -this.forwardVec[0], 0]);
 
 		// Finally, the upward vector is the cross product of the previous two.
-		this.upVec = RaymarchApplet.crossProduct(this.rightVec, this.forwardVec);
+		this.upVec = crossProduct(this.rightVec, this.forwardVec);
 
 		if (this.lockedOnOrigin)
 		{
@@ -233,8 +233,8 @@ export class ThreeApplet extends AnimationFrameApplet
 		if (value && !this.lockedOnOrigin)
 		{
 			// Convert to spherical coordinates.
-			const r = RaymarchApplet.magnitude(this.cameraPos);
-			const normalizedCameraPos = RaymarchApplet.normalize(this.cameraPos);
+			const r = magnitude(this.cameraPos);
+			const normalizedCameraPos = normalize(this.cameraPos);
 			const phi = Math.PI - Math.acos(this.cameraPos[2] / r);
 			let theta = Math.atan2(this.cameraPos[1], this.cameraPos[0]) + Math.PI;
 			if (theta > Math.PI)

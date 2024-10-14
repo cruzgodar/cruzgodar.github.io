@@ -1,5 +1,5 @@
 import anime from "/scripts/anime.js";
-import { RaymarchApplet } from "/scripts/applets/raymarchApplet.js";
+import { dotProduct4, qmul, RaymarchApplet } from "/scripts/applets/raymarchApplet.js";
 
 export class QuaternionicJuliaSet extends RaymarchApplet
 {
@@ -103,27 +103,27 @@ export class QuaternionicJuliaSet extends RaymarchApplet
 
 		for (let iteration = 0; iteration < 16; iteration++)
 		{
-			r = Math.sqrt(RaymarchApplet.dotProduct4(mutableZ, mutableZ));
+			r = Math.sqrt(dotProduct4(mutableZ, mutableZ));
 
 			if (r > 16.0)
 			{
 				break;
 			}
 
-			zPrime = RaymarchApplet.qmul(...mutableZ, ...zPrime);
+			zPrime = qmul(...mutableZ, ...zPrime);
 			zPrime[0] *= 2;
 			zPrime[1] *= 2;
 			zPrime[2] *= 2;
 			zPrime[3] *= 2;
 
-			mutableZ = RaymarchApplet.qmul(...mutableZ, ...mutableZ);
+			mutableZ = qmul(...mutableZ, ...mutableZ);
 
 			mutableZ[0] += ((1 - juliaProportion) * x + juliaProportion * c[0]);
 			mutableZ[1] += ((1 - juliaProportion) * y + juliaProportion * c[1]);
 			mutableZ[2] += ((1 - juliaProportion) * z + juliaProportion * c[2]);
 		}
 
-		return 0.5 * Math.log(r) * r / Math.sqrt(RaymarchApplet.dotProduct4(zPrime, zPrime));
+		return 0.5 * Math.log(r) * r / Math.sqrt(dotProduct4(zPrime, zPrime));
 	}
 
 

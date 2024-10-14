@@ -1,6 +1,6 @@
 import anime from "/scripts/anime.js";
 import { getEqualPixelFullScreen, tempShader } from "/scripts/applets/applet.js";
-import { RaymarchApplet } from "/scripts/applets/raymarchApplet.js";
+import { magnitude } from "/scripts/applets/raymarchApplet.js";
 import { ThreeApplet } from "/scripts/applets/threeApplet.js";
 import { addTemporaryListener } from "/scripts/src/main.js";
 import * as THREE from "/scripts/three.js";
@@ -389,7 +389,7 @@ export class HopfFibration extends ThreeApplet
 					(1 - dummy.t) * oldCameraPos[2] + dummy.t * newCameraPos[2]
 				];
 
-				this.distanceFromOrigin = RaymarchApplet.magnitude(this.cameraPos);
+				this.distanceFromOrigin = magnitude(this.cameraPos);
 
 				this.createAllFibers();
 

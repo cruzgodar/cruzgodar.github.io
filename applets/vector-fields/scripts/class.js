@@ -4,7 +4,12 @@ import {
 	loadGlsl
 } from "../../../scripts/src/complexGlsl.js";
 import { AnimationFrameApplet } from "/scripts/applets/animationFrameApplet.js";
-import { getEqualPixelFullScreen, getFloatGlsl, getMaxGlslString, tempShader } from "/scripts/applets/applet.js";
+import {
+	getEqualPixelFullScreen,
+	getFloatGlsl,
+	getMaxGlslString,
+	tempShader
+} from "/scripts/applets/applet.js";
 import { addTemporaryListener } from "/scripts/src/main.js";
 import { Wilson } from "/scripts/wilson.js";
 
