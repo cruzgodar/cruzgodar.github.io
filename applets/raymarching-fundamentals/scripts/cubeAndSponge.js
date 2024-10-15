@@ -11,7 +11,11 @@ export class CubeAndSponge extends RaymarchApplet
 	mengerSpongeWeight = 0;
 	mengerSpongeScale = 3;
 
-	constructor({ canvas }) {
+	constructor({
+		canvas,
+		useShadows = false,
+		useReflections = false
+	}) {
 		const addGlsl = /* glsl */`
 			float rand(vec2 co)
 			{
@@ -143,8 +147,8 @@ export class CubeAndSponge extends RaymarchApplet
 			lockZ: 1,
 			fogColor: [0.6, 0.73, 0.87],
 			fogScaling: 0.075,
-			useShadows: true,
-			useReflections: true
+			useShadows,
+			useReflections
 		});
 	}
 

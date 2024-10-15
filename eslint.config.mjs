@@ -89,7 +89,7 @@ export default [{
 			ignoreTemplateLiterals: true,
 		}],
 
-		"quote-props": ["error", "consistent-as-needed"],
+		"quote-props": ["warn", "consistent-as-needed"],
 
 		"no-multiple-empty-lines": ["warn", {
 			max: 3,

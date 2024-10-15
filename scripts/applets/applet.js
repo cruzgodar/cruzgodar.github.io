@@ -50,6 +50,7 @@ export class Applet
 	needNewFrame = false;
 
 	aspectRatio = 1;
+	nonFullscreenAspectRatio = 1;
 
 	state = {};
 	defaultState = {};
@@ -469,43 +470,29 @@ export class Applet
 	{
 		wilsons.forEach(wilson =>
 		{
-			if (wilson.fullscreen.currentlyFullscreen)
+			this.aspectRatio = wilson.fullscreen.currentlyFullscreen
+				? window.innerWidth / window.innerHeight
+				: this.nonFullscreenAspectRatio;
+
+			wilson.changeCanvasSize(
+				...getEqualPixelFullScreen(this.resolution, this.aspectRatio)
+			);
+
+			if (this.aspectRatio >= 1)
 			{
-				wilson.changeCanvasSize(
-					...getEqualPixelFullScreen(this.resolution)
-				);
-
-				this.aspectRatio = window.innerWidth / window.innerHeight;
-
-				if (this.aspectRatio >= 1)
+				if (useZoomLevel)
 				{
-					if (useZoomLevel)
-					{
-						wilson.worldWidth = 3 * Math.pow(2, this.zoom.level) * this.aspectRatio;
-						wilson.worldHeight = 3 * Math.pow(2, this.zoom.level);
-					}
-				}
-
-				else
-				{
-					if (useZoomLevel)
-					{
-						wilson.worldWidth = 3 * Math.pow(2, this.zoom.level);
-						wilson.worldHeight = 3 * Math.pow(2, this.zoom.level) / this.aspectRatio;
-					}
+					wilson.worldWidth = 3 * Math.pow(2, this.zoom.level) * this.aspectRatio;
+					wilson.worldHeight = 3 * Math.pow(2, this.zoom.level);
 				}
 			}
 
 			else
 			{
-				this.aspectRatio = 1;
-
-				wilson.changeCanvasSize(this.resolution, this.resolution);
-
 				if (useZoomLevel)
 				{
 					wilson.worldWidth = 3 * Math.pow(2, this.zoom.level);
-					wilson.worldHeight = 3 * Math.pow(2, this.zoom.level);
+					wilson.worldHeight = 3 * Math.pow(2, this.zoom.level) / this.aspectRatio;
 				}
 			}
 		});
@@ -1231,9 +1218,9 @@ export function rgbToHex(r, g, b)
 	return "#" + componentToHex(r) + componentToHex(g) + componentToHex(b);
 }
 
-export function getEqualPixelFullScreen(resolution)
+export function getEqualPixelFullScreen(resolution, aspectRatio)
 {
-	const sqrtAspectRatio = Math.sqrt(window.innerWidth / window.innerHeight);
+	const sqrtAspectRatio = Math.sqrt(aspectRatio ?? (window.innerWidth / window.innerHeight));
 
 	return [Math.round(resolution * sqrtAspectRatio), Math.round(resolution / sqrtAspectRatio)];
 }

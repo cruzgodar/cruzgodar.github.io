@@ -1,6 +1,6 @@
 import anime from "../anime.js";
 import { AnimationFrameApplet } from "./animationFrameApplet.js";
-import { crossProduct, magnitude, normalize, RaymarchApplet } from "./raymarchApplet.js";
+import { crossProduct, magnitude, normalize, scaleVector } from "./raymarchApplet.js";
 import * as THREE from "/scripts/three.js";
 
 export class ThreeApplet extends AnimationFrameApplet
@@ -143,7 +143,7 @@ export class ThreeApplet extends AnimationFrameApplet
 
 		if (this.lockedOnOrigin)
 		{
-			this.cameraPos = RaymarchApplet.scaleVector(
+			this.cameraPos = scaleVector(
 				-this.distanceFromOrigin,
 				this.forwardVec
 			);
@@ -255,7 +255,7 @@ export class ThreeApplet extends AnimationFrameApplet
 				{
 					this.wilson.worldCenterX = -dummy.theta;
 					this.wilson.worldCenterY = -dummy.phi;
-					this.cameraPos = RaymarchApplet.scaleVector(
+					this.cameraPos = scaleVector(
 						dummy.r,
 						normalizedCameraPos
 					);

@@ -39,6 +39,7 @@ body
 .lapsa-slide p
 {
 	color: rgb(192, 192, 192) !important;
+	z-index: 10;
 }
 
 .lapsa-slide p dfn
@@ -80,9 +81,14 @@ body
 	margin-bottom: 0 !important;
 }
 
+.lapsa-slide .wilson-output-canvas-container
+{
+	font-size: 0 !important;
+}
+
 .lapsa-slide canvas
 {
-	border-radius: 3vw;
+	border-top-left-radius: 2.5vw;
 }
 
 .medium-canvas canvas
@@ -195,7 +201,7 @@ body
 
 	.lapsa-slide canvas
 	{
-		border-radius: calc(3 * var(--safe-vh) * 152 / 89);
+		border-top-left-radius: calc(2.5 * var(--safe-vh) * 152 / 89);
 	}
 	
 	.medium-canvas canvas

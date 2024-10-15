@@ -887,21 +887,19 @@ export class RaymarchApplet extends AnimationFrameApplet
 	{
 		this.imageSize = Math.max(50, resolution);
 
-		if (this.wilson.fullscreen.currentlyFullscreen)
-		{
-			[this.imageWidth, this.imageHeight] = getEqualPixelFullScreen(this.imageSize);
-		}
+		this.aspectRatio = this.wilson.fullscreen.currentlyFullscreen
+			? window.innerWidth / window.innerHeight
+			: this.nonFullscreenAspectRatio;
 
-		else
-		{
-			this.imageWidth = this.imageSize;
-			this.imageHeight = this.imageSize;
-		}
+		[this.imageWidth, this.imageHeight] = getEqualPixelFullScreen(
+			this.imageSize,
+			this.aspectRatio
+		);
 
 		this.wilson.changeCanvasSize(this.imageWidth, this.imageHeight);
 
-		this.setUniform("aspectRatioX", Math.max(this.imageWidth / this.imageHeight, 1));
-		this.setUniform("aspectRatioY", Math.min(this.imageWidth / this.imageHeight, 1));
+		this.setUniform("aspectRatioX", Math.max(this.aspectRatio, 1));
+		this.setUniform("aspectRatioY", Math.min(this.aspectRatio, 1));
 		this.setUniform("imageSize", this.imageSize);
 
 		this.needNewFrame = true;

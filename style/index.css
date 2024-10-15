@@ -630,6 +630,7 @@ mjx-container
 .wilson-output-canvas-container
 {
 	width: 100% !important;
+	font-size: 0 !important;
 }
 
 .wilson-applet-canvas-container
