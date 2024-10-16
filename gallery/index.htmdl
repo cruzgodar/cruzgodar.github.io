@@ -3,9 +3,9 @@
 <div id="gallery">
 	### gallery-block
 		double-pendulum-fractal-2 2
-		finite-subdivision-1 1
+		finite-subdivision 1
 		generalized-julia-set-2 1
-		hitomezashi-pattern-2 1
+		hitomezashi-pattern 1
 		aztec-diamond 1
 		quasi-fuchsian-group 1
 	###
@@ -14,22 +14,22 @@
 		brownian-tree 1
 		chaos-game-2 1
 		strange-attractor 1
-		menger-sponge-1 2
+		menger-sponge 2
 		kaleidoscopic-ifs-2 1
 		abelian-sandpile 1
 	###
 	
 	### gallery-block
-		quaternionic-julia-set-1 3
+		quaternionic-julia-set 3
 	###
 	
 	### gallery-block
 		voronoi-diagram-2 1
-		kaleidoscopic-ifs-1 2
+		kaleidoscopic-ifs 2
 		kicked-rotator 1
 		secant-method 1
-		generalized-julia-set-1 1
-		chaos-game-1 1
+		generalized-julia-set 1
+		chaos-game 1
 	###
 	
 	### gallery-block
@@ -37,10 +37,10 @@
 	###
 	
 	### gallery-block
-		newtons-method-2 2
+		newtons-method 2
 		barnsley-fern 1
 		generalized-julia-set-3 1
-		complex-map-1 1
+		complex-map 1
 		magic-carpet 1
 		hopf-fibration 1
 	###
@@ -55,11 +55,11 @@
 	###
 	
 	### gallery-block
-		wilsons-algorithm-2 3
+		wilsons-algorithm 3
 	###
 	
 	### gallery-block
-		voronoi-diagram-1 1
+		voronoi-diagram 1
 		thurston-geometry-h3 2
 		newtons-method-extended 1
 		lyapunov-fractal 1
@@ -73,7 +73,7 @@
 
 	### gallery-block
 		snowflake 2
-		juliabulb-1 1
+		juliabulb 1
 		juliabulb-2 1
 		extruded-cube 1
 		menger-sponge-2 1
