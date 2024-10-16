@@ -2,7 +2,7 @@
 
 <div id="gallery">
 	### gallery-block
-		thurston-geometry-h3 2
+		double-pendulum-fractal-2 2
 		finite-subdivision-1 1
 		generalized-julia-set-2 1
 		hitomezashi-pattern-2 1
@@ -14,8 +14,8 @@
 		brownian-tree 1
 		chaos-game-2 1
 		strange-attractor 1
-		snowflake 2
-		julia-set-1 1
+		menger-sponge-1 2
+		kaleidoscopic-ifs-2 1
 		abelian-sandpile 1
 	###
 	
@@ -60,11 +60,11 @@
 	
 	### gallery-block
 		voronoi-diagram-1 1
-		double-pendulum-fractal-2 2
+		thurston-geometry-h3 2
 		newtons-method-extended 1
 		lyapunov-fractal 1
-		menger-sponge-1 1
-		kaleidoscopic-ifs-2 1
+		vector-field 1
+		julia-set 1
 	###
 
 	### gallery-block
@@ -72,11 +72,10 @@
 	###
 
 	### gallery-block
-		vector-field 2
+		snowflake 2
 		juliabulb-1 1
 		juliabulb-2 1
 		extruded-cube 1
-
 		menger-sponge-2 1
 		juliabulb-3 1
 	###
