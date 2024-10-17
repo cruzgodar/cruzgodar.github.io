@@ -52,6 +52,11 @@ const options =
 	builds:
 	{
 		"title": titleBuilds
+	},
+
+	setupBuild: () =>
+	{
+		applet?.pause && applet.pause();
 	}
 };
 

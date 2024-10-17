@@ -5,8 +5,9 @@ import { CubeAndSponge } from "/applets/raymarching-fundamentals/scripts/cubeAnd
 
 async function reset({ slide, duration })
 {
-	if (slide.contains(canvasBundle))
+	if (applet && slide.contains(canvasBundle))
 	{
+		applet.resume();
 		return;
 	}
 
