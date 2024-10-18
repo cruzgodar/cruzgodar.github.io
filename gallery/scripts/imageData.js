@@ -111,7 +111,7 @@ export const galleryImageData =
 
 		appletLink: "extruded-cube",
 		
-		driveId: "1hvfpRt6StCVqoCizzGTMHFrEpfZow4g0"
+		driveId: "130jI2YEQehE_VENFUDplZNSZHgbX_GN2"
 	},
 	
 	"finite-subdivision":
@@ -205,7 +205,7 @@ export const galleryImageData =
 
 		appletLink: "the-mandelbulb",
 
-		driveId: "16LaSCsDam08PBt_IuvK_EEq7sGWclUOW"
+		driveId: "1s0hdeBUkJ1-ENlX7r78D-j5TjdLFt1rh"
 	},
 
 	"juliabulb-2":
@@ -216,7 +216,7 @@ export const galleryImageData =
 
 		appletLink: "the-mandelbulb",
 
-		driveId: "1kz4oy8A82NZsbtm2JcWmpKUEBkMfpjfa"
+		driveId: "1SvGDDc0Mz9Qv67GdIhy_5dfhHoP9thQd"
 	},
 
 	"juliabulb-3":
@@ -227,7 +227,7 @@ export const galleryImageData =
 
 		appletLink: "the-mandelbulb",
 
-		driveId: "1H1Rn6_RU9SWfFLPqo184EQ_otYxYKAlA"
+		driveId: "1mZ7hmt6z1Iq0POqgSXSh7NrmiOIdtYxC"
 	},
 
 	"kaleidoscopic-ifs":
@@ -291,7 +291,7 @@ export const galleryImageData =
 
 		appletLink: "the-mandelbulb",
 
-		driveId: "1TsrHd6sEB3Wg2mxdFUiZwHxPhUsH7ZJv"
+		driveId: "1aOwjMPuzRhguc7Q0x90uQFnIr61mkA7_"
 	},
 
 	"menger-sponge":
@@ -300,7 +300,7 @@ export const galleryImageData =
 
 		appletLink: "menger-sponge",
 
-		driveId: "10U01_WySYGeFe0iq5PA2uIBwQ4LQODh_"
+		driveId: "1UlE8wy-gUUuTA-areWOJiKkCABcK1YqN"
 	},
 
 	"menger-sponge-2":
@@ -309,7 +309,7 @@ export const galleryImageData =
 
 		appletLink: "menger-sponge",
 
-		driveId: "16fSQRq5Drql7SjmiuNOFvAEnJD7Z_QSe"
+		driveId: "1hRXwXnD7g1DQ7QepwqicbguoFXQRLy4s"
 	},
 
 	"newtons-method":
@@ -363,7 +363,7 @@ export const galleryImageData =
 
 		appletLink: "quaternionic-julia-sets",
 
-		driveId: "1x2ss96tGmo-IvT2H31tm1zHimm8p7CWz"
+		driveId: "1L2juSwwawdW322PyVNIej1DM0m0vHekk"
 	},
 		
 	"secant-method":

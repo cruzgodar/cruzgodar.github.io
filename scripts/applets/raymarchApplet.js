@@ -799,7 +799,7 @@ export class RaymarchApplet extends AnimationFrameApplet
 			if (value[0].slice(0, 3) === "vec" && value[1].length === 0)
 			{
 				continue;
-			} 
+			}
 			
 			const uniformFunction = setUniformFunctions[value[0]];
 			uniformFunction(this.wilson.gl, this.wilson.uniforms[key][programIndex], value[1]);
@@ -1059,6 +1059,7 @@ export class RaymarchApplet extends AnimationFrameApplet
 	{
 		this.drawFrame();
 		this.wilson.downloadFrame(filename, false);
+		// this.download4xMosaic(filename);
 	}
 
 	async download4xMosaic(filename)
@@ -1078,7 +1079,7 @@ export class RaymarchApplet extends AnimationFrameApplet
 				canvases[i].push(document.createElement("canvas"));
 				canvases[i][j].width = this.imageWidth;
 				canvases[i][j].height = this.imageHeight;
-				const ctx = canvases[i][j].getContext("2d");
+				const ctx = canvases[i][j].getContext("2d", { colorSpace: "display-p3" });
 
 				this.setUniform("uvCenter", [centerPoints[i], centerPoints[j]]);
 				this.drawFrame();
@@ -1097,7 +1098,7 @@ export class RaymarchApplet extends AnimationFrameApplet
 		const combinedCanvas = document.createElement("canvas");
 		combinedCanvas.width = this.imageWidth * centerPoints.length;
 		combinedCanvas.height = this.imageHeight * centerPoints.length;
-		const combinedCtx = combinedCanvas.getContext("2d");
+		const combinedCtx = combinedCanvas.getContext("2d", { colorSpace: "display-p3" });
 
 		for (let i = 0; i < centerPoints.length; i++)
 		{
