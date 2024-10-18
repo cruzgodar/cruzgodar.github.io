@@ -5,7 +5,6 @@ import { AnimationFrameApplet } from "./animationFrameApplet.js";
 import {
 	getEqualPixelFullScreen,
 	getFloatGlsl,
-	getMaxGlslString,
 	getVectorGlsl
 } from "./applet.js";
 
@@ -530,7 +529,7 @@ export class RaymarchApplet extends AnimationFrameApplet
 					vec2 texCoord = (uv + vec2(1.0)) * 0.5;
 					vec4 sample = texture2D(uTexture, texCoord);
 					
-					if (sample.w > 0.01)
+					if (sample.w > 0.0)
 					{
 						vec3 aaSample = (
 							sample.xyz
@@ -538,11 +537,7 @@ export class RaymarchApplet extends AnimationFrameApplet
 							+ raymarchHelper(vec2(0.0, stepSize))
 							+ raymarchHelper(vec2(-stepSize, 0.0))
 							+ raymarchHelper(vec2(0.0, -stepSize))
-							+ raymarchHelper(vec2(stepSize, stepSize))
-							+ raymarchHelper(vec2(-stepSize, stepSize))
-							+ raymarchHelper(vec2(stepSize, -stepSize))
-							+ raymarchHelper(vec2(-stepSize, -stepSize))
-						) / 9.0;
+						) / 5.0;
 						
 						gl_FragColor = vec4(aaSample, 1.0);
 						return;
@@ -733,26 +728,30 @@ export class RaymarchApplet extends AnimationFrameApplet
 
 			uniform float stepSize;
 
-			const vec3 one = vec3(1.0);
+			float getSampleLuminance(vec2 texCoord)
+			{
+				vec3 sample = texture2D(uTexture, texCoord).xyz;
+				return 0.299 * sample.x + 0.587 * sample.y + 0.114 * sample.z;
+			}
 
 			void main(void)
 			{
 				vec2 texCoord = (uv + vec2(1.0)) * 0.5;
-				vec4 sample = texture2D(uTexture, texCoord);
-				float brightness0 = dot(sample.xyz, one);
+				float sample = getSampleLuminance(texCoord);
+				float sampleN = getSampleLuminance(texCoord + vec2(0.0, stepSize));
+				float sampleS = getSampleLuminance(texCoord + vec2(0.0, -stepSize));
+				float sampleE = getSampleLuminance(texCoord + vec2(stepSize, 0.0));
+				float sampleW = getSampleLuminance(texCoord + vec2(-stepSize, 0.0));
 
-				float brightness1 = dot(texture2D(uTexture, texCoord + vec2(stepSize, 0.0)).xyz, one);
-				float brightness2 = dot(texture2D(uTexture, texCoord + vec2(0.0, stepSize)).xyz, one);
-				float brightness3 = dot(texture2D(uTexture, texCoord + vec2(-stepSize, 0.0)).xyz, one);
-				float brightness4 = dot(texture2D(uTexture, texCoord + vec2(0.0, -stepSize)).xyz, one);
-				float brightness5 = dot(texture2D(uTexture, texCoord + vec2(stepSize, stepSize)).xyz, one);
-				float brightness6 = dot(texture2D(uTexture, texCoord + vec2(-stepSize, stepSize)).xyz, one);
-				float brightness7 = dot(texture2D(uTexture, texCoord + vec2(stepSize, -stepSize)).xyz, one);
-				float brightness8 = dot(texture2D(uTexture, texCoord + vec2(-stepSize, -stepSize)).xyz, one);
-
-				float adjacentBrightness = ${getMaxGlslString("brightness", 8)};
+				float luminance = max(
+					max(abs(sample - sampleN), abs(sample - sampleS)),
+					max(abs(sample - sampleE), abs(sample - sampleW))
+				);
 				
-				gl_FragColor = vec4(sample.xyz, abs(adjacentBrightness - brightness0) / 6.0);
+				gl_FragColor = vec4(
+					texture2D(uTexture, texCoord).xyz,
+					luminance
+				);
 			}
 		`;
 	}
