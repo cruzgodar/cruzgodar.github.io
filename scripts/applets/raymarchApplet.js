@@ -189,6 +189,8 @@ export class RaymarchApplet extends AnimationFrameApplet
 			upVec: ["vec3", this.upVec],
 			epsilonScaling: ["float", this.epsilonScaling],
 			minEpsilon: ["float", this.minEpsilon],
+			uvCenter: ["vec2", [0, 0]],
+			uvScale: ["float", 1],
 			...uniforms
 		};
 		
@@ -288,6 +290,8 @@ export class RaymarchApplet extends AnimationFrameApplet
 		};
 
 		this.wilson = new Wilson(canvas, options);
+
+		
 
 		this.initUniforms(0);
 
@@ -526,8 +530,8 @@ export class RaymarchApplet extends AnimationFrameApplet
 				{
 					return raymarch(
 						imagePlaneCenterPos
-							+ rightVec * (uv.x + uvAdjust.x) * aspectRatioX
-							+ upVec * (uv.y + uvAdjust.y) / aspectRatioY
+							+ rightVec * (uvScale * (uv.x + uvAdjust.x) + uvCenter.x) * aspectRatioX
+							+ upVec * (uvScale * (uv.y + uvAdjust.y) + uvCenter.y) / aspectRatioY
 					);
 				}
 				
@@ -557,7 +561,9 @@ export class RaymarchApplet extends AnimationFrameApplet
 				void main(void)
 				{
 					vec3 finalColor = raymarch(
-						imagePlaneCenterPos + rightVec * uv.x * aspectRatioX + upVec * uv.y / aspectRatioY
+						imagePlaneCenterPos
+							+ rightVec * (uvScale * uv.x + uvCenter.x) * aspectRatioX
+							+ upVec * (uvScale * uv.y + uvCenter.y) / aspectRatioY
 					);
 
 					gl_FragColor = vec4(finalColor.xyz, 1.0);
@@ -778,6 +784,8 @@ export class RaymarchApplet extends AnimationFrameApplet
 			"upVec",
 			"epsilonScaling",
 			"minEpsilon",
+			"uvCenter",
+			"uvScale",
 			...Object.keys(this.uniforms),
 		];
 
@@ -818,6 +826,8 @@ export class RaymarchApplet extends AnimationFrameApplet
 
 		this.initUniforms(0);
 
+		
+
 		if (this.useAntialiasing)
 		{
 			this.wilson.render.loadNewShader(this.getEdgeDetectShader());
@@ -838,6 +848,8 @@ export class RaymarchApplet extends AnimationFrameApplet
 
 			this.wilson.render.loadNewShader(aaShaderSource);
 
+			this.initUniforms(2);
+
 			this.wilson.render.initUniforms([
 				"stepSize",
 			], 2);
@@ -845,9 +857,6 @@ export class RaymarchApplet extends AnimationFrameApplet
 
 
 			this.createTextures();
-
-			this.initUniforms(0);
-			this.initUniforms(2);
 
 			this.wilson.gl.useProgram(this.wilson.render.shaderPrograms[0]);
 		}
@@ -1052,6 +1061,81 @@ export class RaymarchApplet extends AnimationFrameApplet
 		this.wilson.downloadFrame(filename, false);
 	}
 
+	async download4xMosaic(filename)
+	{
+		this.setUniform("uvScale", .25);
+		this.setUniform("imageSize", this.imageSize * 4);
+
+		const centerPoints = [-0.75, -0.25, 0.25, 0.75];
+		const canvases = [];
+
+		for (let i = 0; i < centerPoints.length; i++)
+		{
+			canvases.push([]);
+
+			for (let j = 0; j < centerPoints.length; j++)
+			{
+				canvases[i].push(document.createElement("canvas"));
+				canvases[i][j].width = this.imageWidth;
+				canvases[i][j].height = this.imageHeight;
+				const ctx = canvases[i][j].getContext("2d");
+
+				this.setUniform("uvCenter", [centerPoints[i], centerPoints[j]]);
+				this.drawFrame();
+				const imageData = new ImageData(
+					new Uint8ClampedArray(this.wilson.render.getPixelData()),
+					this.imageWidth,
+					this.imageHeight
+				);
+
+				ctx.putImageData(imageData, 0, 0);
+
+				await new Promise(resolve => setTimeout(resolve, 5000));
+			}
+		}
+
+		const combinedCanvas = document.createElement("canvas");
+		combinedCanvas.width = this.imageWidth * centerPoints.length;
+		combinedCanvas.height = this.imageHeight * centerPoints.length;
+		const combinedCtx = combinedCanvas.getContext("2d");
+
+		for (let i = 0; i < centerPoints.length; i++)
+		{
+			for (let j = 0; j < centerPoints.length; j++)
+			{
+				combinedCtx.drawImage(
+					canvases[i][j],
+					i * this.imageWidth,
+					j * this.imageHeight
+				);
+			}
+		}
+
+		combinedCtx.translate(0, this.imageSize * centerPoints.length);
+		combinedCtx.scale(1, -1);
+
+		combinedCtx.drawImage(
+			combinedCanvas,
+			0,
+			0
+		);
+
+		combinedCanvas.toBlob((blob) =>
+		{
+			const link = document.createElement("a");
+			link.href = URL.createObjectURL(blob);
+			link.download = filename;
+			link.click();
+		});
+
+		await new Promise(resolve => setTimeout(resolve, 100));
+
+		this.setUniform("uvScale", 1);
+		this.setUniform("uvCenter", [0, 0]);
+		this.setUniform("imageSize", this.imageSize);
+		this.needNewFrame = true;
+	}
+
 
 
 	moveUpdate(timeElapsed)
@@ -1162,8 +1246,10 @@ export class RaymarchApplet extends AnimationFrameApplet
 		this.setUniform("imageSize", this.imageSize);
 
 
-
-		this.createTextures();
+		if (this.useAntialiasing)
+		{
+			this.createTextures();
+		}
 
 		this.needNewFrame = true;
 	}
