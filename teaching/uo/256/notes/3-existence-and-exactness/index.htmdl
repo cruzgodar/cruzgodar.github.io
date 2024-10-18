@@ -50,7 +50,7 @@ When a first-order DE $y' = f(t, y)$ is nonlinear, we don't have a general solvi
 
 
 
-We're now faced with the question of what a partial derivative is --- it's a topic from calculus IV, so you may have seen it already, but it's thankfully not complicated if you haven't. When we have a function of a single variable like $g(x)$, we can only differentiate it with respect to $x$. But say we define $f$ as
+We're now faced with the question of what a partial derivative is --- it's a topic from calculus IV, so you may have seen it already, but it's thankfully not complicated if you haven't. When we have a function of a single variable like $g(x)$, we can only differentiate it with respect to $x$. But say we define $g$ as
 
 $$
 	g(x) = cx^2
