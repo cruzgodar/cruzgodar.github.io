@@ -291,36 +291,37 @@ export class RaymarchApplet extends AnimationFrameApplet
 
 		this.initUniforms(0);
 
+		if (this.useAntialiasing)
+		{
+			this.wilson.render.loadNewShader(this.getEdgeDetectShader());
 
-
-		this.wilson.render.loadNewShader(this.getEdgeDetectShader());
-
-		this.wilson.render.initUniforms([
-			"stepSize",
-		], 1);
-
-
-
-		const aaShaderSource = shader ?? this.createShader({
-			distanceEstimatorGlsl,
-			getColorGlsl,
-			getReflectivityGlsl,
-			getGeodesicGlsl,
-			addGlsl,
-			antialiasing: !addGlsl.includes("sampler2D")
-		});
-
-		this.wilson.render.loadNewShader(aaShaderSource);
-
-		this.wilson.render.initUniforms([
-			"stepSize",
-		], 2);
-
-		this.initUniforms(2);
+			this.wilson.render.initUniforms([
+				"stepSize",
+			], 1);
 
 
 
-		this.createTextures();
+			const aaShaderSource = shader ?? this.createShader({
+				distanceEstimatorGlsl,
+				getColorGlsl,
+				getReflectivityGlsl,
+				getGeodesicGlsl,
+				addGlsl,
+				antialiasing: !addGlsl.includes("sampler2D")
+			});
+
+			this.wilson.render.loadNewShader(aaShaderSource);
+
+			this.wilson.render.initUniforms([
+				"stepSize",
+			], 2);
+
+			this.initUniforms(2);
+
+
+
+			this.createTextures();
+		}
 
 
 
@@ -787,6 +788,11 @@ export class RaymarchApplet extends AnimationFrameApplet
 		for (const key in this.uniforms)
 		{
 			const value = this.uniforms[key];
+			if (value[0].slice(0, 3) === "vec" && value[1].length === 0)
+			{
+				continue;
+			} 
+			
 			const uniformFunction = setUniformFunctions[value[0]];
 			uniformFunction(this.wilson.gl, this.wilson.uniforms[key][programIndex], value[1]);
 		}
@@ -810,38 +816,41 @@ export class RaymarchApplet extends AnimationFrameApplet
 			addGlsl,
 		}));
 
-
-
-		this.wilson.render.loadNewShader(this.getEdgeDetectShader());
-
-		this.wilson.render.initUniforms([
-			"stepSize",
-		], 1);
-
-
-
-		const aaShaderSource = this.createShader({
-			distanceEstimatorGlsl,
-			getColorGlsl,
-			getReflectivityGlsl,
-			addGlsl,
-			antialiasing: true
-		});
-
-		this.wilson.render.loadNewShader(aaShaderSource);
-
-		this.wilson.render.initUniforms([
-			"stepSize",
-		], 2);
-
-
-
-		this.createTextures();
-
 		this.initUniforms(0);
-		this.initUniforms(2);
 
-		this.wilson.gl.useProgram(this.wilson.render.shaderPrograms[0]);
+		if (this.useAntialiasing)
+		{
+			this.wilson.render.loadNewShader(this.getEdgeDetectShader());
+
+			this.wilson.render.initUniforms([
+				"stepSize",
+			], 1);
+
+
+
+			const aaShaderSource = this.createShader({
+				distanceEstimatorGlsl,
+				getColorGlsl,
+				getReflectivityGlsl,
+				addGlsl,
+				antialiasing: true
+			});
+
+			this.wilson.render.loadNewShader(aaShaderSource);
+
+			this.wilson.render.initUniforms([
+				"stepSize",
+			], 2);
+
+
+
+			this.createTextures();
+
+			this.initUniforms(0);
+			this.initUniforms(2);
+
+			this.wilson.gl.useProgram(this.wilson.render.shaderPrograms[0]);
+		}
 
 		this.needNewFrame = true;
 	}
@@ -989,10 +998,13 @@ export class RaymarchApplet extends AnimationFrameApplet
 
 
 
-		this.wilson.gl.bindFramebuffer(
-			this.wilson.gl.FRAMEBUFFER,
-			this.useAntialiasing ? this.wilson.render.framebuffers[0].framebuffer : null
-		);
+		if (this.useAntialiasing)
+		{
+			this.wilson.gl.bindFramebuffer(
+				this.wilson.gl.FRAMEBUFFER,
+				this.wilson.render.framebuffers[0].framebuffer
+			);
+		}
 
 		this.wilson.render.drawFrame();
 
@@ -1166,10 +1178,13 @@ export class RaymarchApplet extends AnimationFrameApplet
 
 		uniformFunction(this.wilson.gl, this.wilson.uniforms[name][0], value);
 
-		this.wilson.gl.useProgram(this.wilson.render.shaderPrograms[2]);
-		uniformFunction(this.wilson.gl, this.wilson.uniforms[name][2], value);
+		if (this.useAntialiasing)
+		{
+			this.wilson.gl.useProgram(this.wilson.render.shaderPrograms[2]);
+			uniformFunction(this.wilson.gl, this.wilson.uniforms[name][2], value);
 
-		this.wilson.gl.useProgram(this.wilson.render.shaderPrograms[0]);
+			this.wilson.gl.useProgram(this.wilson.render.shaderPrograms[0]);
+		}
 	}
 
 	animateUniform({
