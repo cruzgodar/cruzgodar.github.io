@@ -44,9 +44,9 @@ export class RaymarchApplet extends AnimationFrameApplet
 	theta = 0;
 	phi = 0;
 
-	imageSize = 400;
-	imageWidth = 400;
-	imageHeight = 400;
+	imageSize = 500;
+	imageWidth = 500;
+	imageHeight = 500;
 
 	maxMarches;
 	maxShadowMarches;
@@ -100,6 +100,8 @@ export class RaymarchApplet extends AnimationFrameApplet
 		canvas,
 		shader,
 
+		resolution = 500,
+
 		distanceEstimatorGlsl,
 		getColorGlsl,
 		getReflectivityGlsl = "return 0.2;",
@@ -140,6 +142,10 @@ export class RaymarchApplet extends AnimationFrameApplet
 		useAntialiasing = false,
 	}) {
 		super(canvas);
+
+		this.imageSize = resolution;
+		this.imageWidth = resolution;
+		this.imageHeight = resolution;
 
 		this.theta = theta;
 		this.phi = phi;

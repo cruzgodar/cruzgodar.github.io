@@ -35,6 +35,7 @@ export class HairyBall extends RaymarchApplet
 
 		super({
 			canvas,
+			resolution: 1000,
 			distanceEstimatorGlsl,
 			getColorGlsl,
 			addGlsl,

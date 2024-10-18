@@ -103,6 +103,7 @@ export class Mandelbulb extends RaymarchApplet
 
 		super({
 			canvas,
+			resolution: 400,
 			distanceEstimatorGlsl,
 			getColorGlsl,
 			uniforms,
