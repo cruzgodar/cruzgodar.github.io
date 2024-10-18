@@ -331,6 +331,40 @@ Welcome to Math 256! We'll use this page for the interactive notes, the homework
 	### buttons
 		download-homework-6
 	###
+
+
+
+	## Section 8
+	
+	In problems 5#, evaluate the product.
+	
+	#. $$[[3, 0 ; 6, -2]][[1 ; -1]].$$
+	
+	#. $$[[1, 2, 3]][[4 ; 5 ; 6]].$$
+	
+	#. $$[[4 ; 5 ; 6]][[1, 2, 3]].$$
+	
+	#. $$[[1 ; 2 ; 3]][[4 ; 5 ; 6]].$$
+	
+	#. $$[[1, 0 ; 0, 1 ; 1, 1]][[1, -1, 1, -1 ; -1, 1, -1, 1]].$$
+	
+
+
+	- - -
+
+	#. Suppose that for a square matrix $**A**$, there are matrices $**B**$ and $**C**$ so that $**AB** = **I**$ and $**CA** = **I**$. Show that it must be the case that $**B** = **C**$. Hint: multiply both sides of the second equation by something.
+	
+
+
+	- - -
+
+	#. Let $A$ be an $n \times n$ matrix with entries $a_{ij}$.
+	
+	> a) For the products $AI$ and $IA$ to make sense, what dimension must $I$ have?
+	
+	> b) The $i$th row of $A$ is $[[a_{i1}, a_{i2}, \cdots, a_{in}]]$. If the $j$th column of $I$ is denoted $\vec{e_j}$, what is the entry in row $i$ and column $j$ of $AI$? Your answer should be in terms of $i$ and $j$.
+	
+	> c) What does part b) imply $AI$ is equal to? Why does this make sense in the context of function composition?
 	
 	
 	
@@ -437,6 +471,28 @@ Welcome to Math 256! We'll use this page for the interactive notes, the homework
 	### buttons
 		download-homework-5
 	###
+
+
+
+	## Section 6
+	
+	In problems 8#, find the general solution to the DE.
+	
+	#. $$y'' - 2y' - 3y = 8e^t.$$
+	
+	#. $$y'' - 2y' - 3y = 8e^{3t}.$$
+	
+	#. $$y'' + y = 3\sin(t) + e^t.$$
+	
+	#. $$y'' + 6y' + 9y = 120t^2e^{-3t}.$$
+	
+	#. $$4y'' + y = \sec\left(\frac{t}{2}\right).$$
+	
+	#. $$y'' + 2y' + y = 2t\sin(t).$$
+	
+	#. $$y'' + 4y' + 4y = t^{-2} e^{-2t}.$$
+	
+	#. $$y'' + 3y' + 2y = \frac{1}{1 + e^t}.$$
 	
 	
 	
@@ -480,40 +536,6 @@ Welcome to Math 256! We'll use this page for the interactive notes, the homework
 	
 	> d) Interpret the Wronskian: did you successfully find the general solution in part a)?
 	
-	
-	
-	## Section 8
-	
-	In problems 5#, evaluate the product.
-	
-	#. $$[[3, 0 ; 6, -2]][[1 ; -1]].$$
-	
-	#. $$[[1, 2, 3]][[4 ; 5 ; 6]].$$
-	
-	#. $$[[4 ; 5 ; 6]][[1, 2, 3]].$$
-	
-	#. $$[[1 ; 2 ; 3]][[4 ; 5 ; 6]].$$
-	
-	#. $$[[1, 0 ; 0, 1 ; 1, 1]][[1, -1, 1, -1 ; -1, 1, -1, 1]].$$
-	
-
-
-	- - -
-
-	#. Suppose that for a square matrix $**A**$, there are matrices $**B**$ and $**C**$ so that $**AB** = **I**$ and $**CA** = **I**$. Show that it must be the case that $**B** = **C**$. Hint: multiply both sides of the second equation by something.
-	
-
-
-	- - -
-
-	#. Let $A$ be an $n \times n$ matrix with entries $a_{ij}$.
-	
-	> a) For the products $AI$ and $IA$ to make sense, what dimension must $I$ have?
-	
-	> b) The $i$th row of $A$ is $[[a_{i1}, a_{i2}, \cdots, a_{in}]]$. If the $j$th column of $I$ is denoted $\vec{e_j}$, what is the entry in row $i$ and column $j$ of $AI$? Your answer should be in terms of $i$ and $j$.
-	
-	> c) What does part b) imply $AI$ is equal to? Why does this make sense in the context of function composition?
-	
 ###
 
 
@@ -527,6 +549,74 @@ Welcome to Math 256! We'll use this page for the interactive notes, the homework
 	### buttons
 		download-homework-4
 	###
+
+
+
+	## Section 4
+	
+	In problems 5#, solve the DE and verify that you've found the general solution with the Wronskian.
+	
+	#. $$y'' + 2y' - 3y = 0.$$
+	
+	#. $$y'' + 3y' = 0.$$
+	
+	#. $$4y'' - 9y = 0.$$
+	
+	#. $$y'' - y' - y = 0.$$
+	
+	#. $$y'' = y'.$$
+	
+
+
+	- - -
+
+	In problems 3#, solve the initial value problem.
+	
+	#. $$y'' + y' - 20y = 0,$$ $$y(0) = 9,$$ $$y'(0) = 18.$$
+	
+	#. $$2y'' + 6y' = 20y,$$ $$y(0) = 14,$$ $$y'(0) = 0.$$
+	
+	#. $$y'' - y = 0,$$ $$y(0) = 4,$$ $$y'(0) = 2.$$
+	
+
+
+	- - -
+
+	#. Consider the DE $$2t^2y'' - ty' + y = 0.$$
+
+	> a) Show that a solution is $$y = c_1t + c_2\sqrt{t}.$$
+	
+	> b) Compute $$W\left[t, \sqrt{t}\right].$$ For which value $t = t_0$ is it zero?
+	
+	> c) Why is $t = t_0$ a problem?
+	
+
+
+	- - -
+
+	#. Define a linear operator $L$ by
+	
+	$$
+		L[y] = y'' + p(t)y' + q(t)y
+	$$
+	
+	for continuous functions $p$ and $q$ and consider the DE $L[y] = 0$. Suppose a solution $y$ is a function with complex-valued outputs, and that it splits as $y(t) = a(t) + ib(t)$, where $a$ and $b$ are real-valued functions. Show that both $a$ and $b$ must be solutions to $L[y] = 0$ themselves.
+	
+
+
+	- - -
+
+	#. Consider the DE $$y'' - yy' = 0.$$
+
+	> a) Show that both $$y = \tan\left(\frac{x}{2}\right)$$ and $$y = 2\tan\left(x + 1\right)$$ are solutions.
+	
+	> b) Show that
+	
+	$$
+		y = c_1\tan\left(\frac{x}{2}\right) + 2c_2\tan\left(x + 1\right)
+	$$
+	
+	is *not* a solution in general. Why does this not contradict the results of section 4?
 
 	
 	
@@ -559,28 +649,6 @@ Welcome to Math 256! We'll use this page for the interactive notes, the homework
 	#. One fundamental solution to $$ty'' - y' + t^3y = 0$$ is $y = \sin\left(\frac{t^2}{2}\right)$. Find the other.
 
 	#. One fundamental solution to $$t^2y'' + ty' + y = 0$$ is $y = \sin(\log(t))$. Find the other.
-
-
-	
-	## Section 6
-	
-	In problems 8#, find the general solution to the DE.
-	
-	#. $$y'' - 2y' - 3y = 8e^t.$$
-	
-	#. $$y'' - 2y' - 3y = 8e^{3t}.$$
-	
-	#. $$y'' + y = 3\sin(t) + e^t.$$
-	
-	#. $$y'' + 6y' + 9y = 120t^2e^{-3t}.$$
-	
-	#. $$4y'' + y = \sec\left(\frac{t}{2}\right).$$
-	
-	#. $$y'' + 2y' + y = 2t\sin(t).$$
-	
-	#. $$y'' + 4y' + 4y = t^{-2} e^{-2t}.$$
-	
-	#. $$y'' + 3y' + 2y = \frac{1}{1 + e^t}.$$
 	
 ###
 
@@ -648,74 +716,6 @@ Welcome to Math 256! We'll use this page for the interactive notes, the homework
 	$$
 		\sec^2(x)\sec(y) + \left( \tan(x) \tan(y) \sec(y) + \frac{1}{y} \right)y' = 0.
 	$$
-
-
-	
-	## Section 4
-	
-	In problems 5#, solve the DE and verify that you've found the general solution with the Wronskian.
-	
-	#. $$y'' + 2y' - 3y = 0.$$
-	
-	#. $$y'' + 3y' = 0.$$
-	
-	#. $$4y'' - 9y = 0.$$
-	
-	#. $$y'' - y' - y = 0.$$
-	
-	#. $$y'' = y'.$$
-	
-
-
-	- - -
-
-	In problems 3#, solve the initial value problem.
-	
-	#. $$y'' + y' - 20y = 0,$$ $$y(0) = 9,$$ $$y'(0) = 18.$$
-	
-	#. $$2y'' + 6y' = 20y,$$ $$y(0) = 14,$$ $$y'(0) = 0.$$
-	
-	#. $$y'' - y = 0,$$ $$y(0) = 4,$$ $$y'(0) = 2.$$
-	
-
-
-	- - -
-
-	#. Consider the DE $$2t^2y'' - ty' + y = 0.$$
-
-	> a) Show that a solution is $$y = c_1t + c_2\sqrt{t}.$$
-	
-	> b) Compute $$W\left[t, \sqrt{t}\right].$$ For which value $t = t_0$ is it zero?
-	
-	> c) Why is $t = t_0$ a problem?
-	
-
-
-	- - -
-
-	#. Define a linear operator $L$ by
-	
-	$$
-		L[y] = y'' + p(t)y' + q(t)y
-	$$
-	
-	for continuous functions $p$ and $q$ and consider the DE $L[y] = 0$. Suppose a solution $y$ is a function with complex-valued outputs, and that it splits as $y(t) = a(t) + ib(t)$, where $a$ and $b$ are real-valued functions. Show that both $a$ and $b$ must be solutions to $L[y] = 0$ themselves.
-	
-
-
-	- - -
-
-	#. Consider the DE $$y'' - yy' = 0.$$
-
-	> a) Show that both $$y = \tan\left(\frac{x}{2}\right)$$ and $$y = 2\tan\left(x + 1\right)$$ are solutions.
-	
-	> b) Show that
-	
-	$$
-		y = c_1\tan\left(\frac{x}{2}\right) + 2c_2\tan\left(x + 1\right)
-	$$
-	
-	is *not* a solution in general. Why does this not contradict the results of section 4?
 	
 ###
 
