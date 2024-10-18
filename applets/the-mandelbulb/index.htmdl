@@ -25,6 +25,7 @@ The typical Mandelbulb uses a power-8 formula, but any power larger than 1 works
 ### checkboxes
 	lock-on-origin
 	shadows
+	antialiasing
 ###
 
 ### buttons

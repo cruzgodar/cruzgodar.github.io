@@ -14,7 +14,7 @@ export default function()
 
 	new DownloadButton({
 		element: $("#download-button"),
-		wilson: applet.wilson,
+		applet,
 		filename: "a-menger-sponge.png"
 	});
 
@@ -92,6 +92,12 @@ export default function()
 		onInput: onCheckboxInput
 	});
 
+	const antialiasingCheckbox = new Checkbox({
+		element: $("#antialiasing-checkbox"),
+		name: "Antialiasing",
+		onInput: onCheckboxInput
+	});
+
 	typesetMath();
 
 	showPage();
@@ -124,9 +130,11 @@ export default function()
 		if (
 			applet.useShadows !== shadowsCheckbox.checked
 			|| applet.useReflections !== reflectionsCheckbox.checked
+			|| applet.useAntialiasing !== antialiasingCheckbox.checked
 		) {
 			applet.useShadows = shadowsCheckbox.checked;
 			applet.useReflections = reflectionsCheckbox.checked;
+			applet.useAntialiasing = antialiasingCheckbox.checked;
 			applet.reloadShader();
 		}
 	}

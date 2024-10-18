@@ -28,7 +28,7 @@ export default function()
 
 	new DownloadButton({
 		element: $("#download-button"),
-		wilson: applet.wilson,
+		applet,
 		filename: "a-magic-carpet.png"
 	});
 

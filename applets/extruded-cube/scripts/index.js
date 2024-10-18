@@ -13,7 +13,7 @@ export default function()
 
 	new DownloadButton({
 		element: $("#download-button"),
-		wilson: applet.wilson,
+		applet,
 		filename: "an-extruded-cube.png"
 	});
 
@@ -31,7 +31,7 @@ export default function()
 		name: "Iterations",
 		value: 16,
 		min: 1,
-		max: 32,
+		max: 16,
 		integer: true,
 		onInput: onSliderInput
 	});
@@ -75,6 +75,12 @@ export default function()
 		onInput: onCheckboxInput
 	});
 
+	const antialiasingCheckbox = new Checkbox({
+		element: $("#antialiasing-checkbox"),
+		name: "Antialiasing",
+		onInput: onCheckboxInput
+	});
+
 	showPage();
 
 	function changeResolution()
@@ -102,9 +108,11 @@ export default function()
 		if (
 			applet.useShadows !== shadowsCheckbox.checked
 			|| applet.useReflections !== reflectionsCheckbox.checked
+			|| applet.useAntialiasing !== antialiasingCheckbox.checked
 		) {
 			applet.useShadows = shadowsCheckbox.checked;
 			applet.useReflections = reflectionsCheckbox.checked;
+			applet.useAntialiasing = antialiasingCheckbox.checked;
 			applet.reloadShader();
 		}
 	}

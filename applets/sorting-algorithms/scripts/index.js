@@ -26,7 +26,7 @@ export default function()
 
 	new DownloadButton({
 		element: $("#download-button"),
-		wilson: applet.wilson,
+		applet,
 		filename: "a-sorting-algorithm.png"
 	});
 

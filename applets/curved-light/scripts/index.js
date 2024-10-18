@@ -40,7 +40,7 @@ export default function()
 
 	new DownloadButton({
 		element: $("#download-button"),
-		wilson: applet.wilson,
+		applet,
 		filename: "curved-light.png"
 	});
 
@@ -75,6 +75,12 @@ export default function()
 		element: $("#reflections-checkbox"),
 		name: "Reflections",
 		checked: true,
+		onInput: onCheckboxInput
+	});
+
+	const antialiasingCheckbox = new Checkbox({
+		element: $("#antialiasing-checkbox"),
+		name: "Antialiasing",
 		onInput: onCheckboxInput
 	});
 
@@ -132,6 +138,7 @@ export default function()
 	function onCheckboxInput()
 	{
 		applet.useReflections = reflectionsCheckbox.checked;
+		applet.useAntialiasing = antialiasingCheckbox.checked;
 		applet.reloadShader();
 	}
 }

@@ -31,12 +31,12 @@ export default function()
 		{
 			if (applet.juliaMode === 0)
 			{
-				applet.wilson.downloadFrame("the-mandelbrot-set.png");
+				applet.downloadFrame("the-mandelbrot-set.png");
 			}
 
 			else
 			{
-				applet.wilson.downloadFrame("a-julia-set.png");
+				applet.downloadFrame("a-julia-set.png");
 			}
 		}
 	});

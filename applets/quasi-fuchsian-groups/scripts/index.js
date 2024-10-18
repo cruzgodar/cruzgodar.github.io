@@ -60,7 +60,7 @@ export default function()
 			maxPixelBrightnessInput.value
 		);
 
-		applet.wilson.downloadFrame("a-quasi-fuchsian-group.png");
+		applet.downloadFrame("a-quasi-fuchsian-group.png");
 	}
 
 	function changeResolution()

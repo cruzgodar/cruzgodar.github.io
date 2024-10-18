@@ -22,6 +22,7 @@ When the scale is exactly 2, the Sierpinski octahedron returns once again, and w
 	lock-on-origin
 	shadows
 	reflections
+	antialiasing
 ###
 
 </div>

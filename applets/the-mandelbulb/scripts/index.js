@@ -29,12 +29,12 @@ export default function()
 		{
 			if (applet.uniforms.juliaProportion[1] < .5)
 			{
-				applet.wilson.downloadFrame("the-mandelbulb.png");
+				applet.downloadFrame("the-mandelbulb.png");
 			}
 
 			else
 			{
-				applet.wilson.downloadFrame("a-juliabulb.png");
+				applet.downloadFrame("a-juliabulb.png");
 			}
 		}
 	});
@@ -128,6 +128,12 @@ export default function()
 		onInput: onCheckboxInput
 	});
 
+	const antialiasingCheckbox = new Checkbox({
+		element: $("#antialiasing-checkbox"),
+		name: "Antialiasing",
+		onInput: onCheckboxInput
+	});
+
 	typesetMath();
 
 	showPage();
@@ -154,9 +160,12 @@ export default function()
 	{
 		applet.setLockedOnOrigin(lockOnOriginCheckbox.checked);
 
-		if (applet.useShadows !== shadowsCheckbox.checked)
-		{
+		if (
+			applet.useShadows !== shadowsCheckbox.checked
+			|| applet.useAntialiasing !== antialiasingCheckbox.checked
+		) {
 			applet.useShadows = shadowsCheckbox.checked;
+			applet.useAntialiasing = antialiasingCheckbox.checked;
 			applet.reloadShader();
 		}
 	}

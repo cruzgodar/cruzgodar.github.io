@@ -62,13 +62,13 @@ export class DownloadButton extends Button
 	constructor({
 		element,
 		linked = true,
-		wilson,
+		applet,
 		filename
 	}) {
 		super({
 			element,
 			name: "Download",
-			onClick: () => wilson.downloadFrame(filename),
+			onClick: () => applet.downloadFrame(filename),
 			linked
 		});
 	}

@@ -19,7 +19,7 @@ export default function()
 		onClick: () =>
 		{
 			applet.drawGrid(true);
-			applet.wilson.downloadFrame("a-calcudoku-puzzle.png");
+			applet.downloadFrame("a-calcudoku-puzzle.png");
 			applet.drawGrid(false);
 		}
 	});

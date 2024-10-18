@@ -125,6 +125,8 @@ export class HairyBall extends RaymarchApplet
 		this.theta = -this.wilson.worldCenterX;
 		this.phi = -this.wilson.worldCenterY;
 
+		this.calculateVectors();
+
 		this.wilson.render.drawFrame();
 	}
 

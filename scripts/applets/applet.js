@@ -507,6 +507,13 @@ export class Applet
 
 
 
+	downloadFrame(filename)
+	{
+		this.wilson.downloadFrame(filename);
+	}
+
+
+
 	makeVideo(time)
 	{
 		const record = () =>

@@ -19,6 +19,7 @@ Raymarching is an extraordinarily versatile method for rendering 3D scenes of al
 
 ### checkboxes
 	reflections
+	antialiasing
 ###
 
 </div>

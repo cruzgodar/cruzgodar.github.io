@@ -16,7 +16,7 @@ export default function()
 
 	new DownloadButton({
 		element: $("#download-button"),
-		wilson: applet.wilson,
+		applet,
 		filename: "a-pascals-triangle-coloring.png"
 	});
 

@@ -27,12 +27,12 @@ export default function()
 		{
 			if (applet.uniforms.juliaProportion[1] < .5)
 			{
-				applet.wilson.downloadFrame("the-quaternionic-mandelbrot-set.png");
+				applet.downloadFrame("the-quaternionic-mandelbrot-set.png");
 			}
 
 			else
 			{
-				applet.wilson.downloadFrame("a-quaternionic-julia-set.png");
+				applet.downloadFrame("a-quaternionic-julia-set.png");
 			}
 		}
 	});
@@ -86,6 +86,12 @@ export default function()
 		onInput: onCheckboxInput
 	});
 
+	const antialiasingCheckbox = new Checkbox({
+		element: $("#antialiasing-checkbox"),
+		name: "Antialiasing",
+		onInput: onCheckboxInput
+	});
+
 	typesetMath();
 
 	onSliderInput();
@@ -114,9 +120,12 @@ export default function()
 	{
 		applet.setLockedOnOrigin(lockOnOriginCheckbox.checked);
 
-		if (applet.useShadows !== shadowsCheckbox.checked)
-		{
+		if (
+			applet.useShadows !== shadowsCheckbox.checked
+			|| applet.useAntialiasing !== antialiasingCheckbox.checked
+		) {
 			applet.useShadows = shadowsCheckbox.checked;
+			applet.useAntialiasing = antialiasingCheckbox.checked;
 			applet.reloadShader();
 		}
 	}
