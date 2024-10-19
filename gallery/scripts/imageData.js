@@ -298,6 +298,10 @@ export const galleryImageData =
 	{
 		title: "A Menger Sponge",
 
+		parameters: /* html */`
+			Generated with scale $2.263$, $\theta_x = 0.776$, $\theta_y = 0.159$, and $\theta_z = 1.477$
+		`,
+
 		appletLink: "menger-sponge",
 
 		driveId: "1UlE8wy-gUUuTA-areWOJiKkCABcK1YqN"
@@ -306,6 +310,10 @@ export const galleryImageData =
 	"menger-sponge-2":
 	{
 		title: "A Menger Sponge",
+
+		parameters: /* html */`
+			Generated with scale $2.267$, $\theta_x = 0.923$, $\theta_y = 0.113$, and $\theta_z = 0.957$
+		`,
 
 		appletLink: "menger-sponge",
 

@@ -102,6 +102,25 @@ async function testImageData(files)
 	}
 }
 
+function testColorProfile(file)
+{
+	const thumbnail = file.slice(0, file.lastIndexOf("."));
+
+	const proc = spawnSync("identify", [
+		"-verbose",
+		`${root}gallery/thumbnails/${thumbnail}.webp`,
+	]);
+
+	const output = proc.stdout.toString();
+
+	const profileLine = output.match(/icc:description:\s(.+)/);
+	
+	if (!profileLine || !(profileLine[1].includes("P3")))
+	{
+		console.error(`${thumbnail} is not P3`);
+	}
+}
+
 export async function buildGallery()
 {
 	const proc = spawnSync("ls", [], { cwd: `${root}gallery/full-res/` });
@@ -112,7 +131,10 @@ export async function buildGallery()
 		files.map(file => makeGalleryImage(`gallery/full-res/${file}`))
 	);
 
-	await testImageData(files);
+	await Promise.all([
+		testImageData(files),
+		files.map(file => testColorProfile(file))
+	]);
 }
 
 buildGallery();
