@@ -93,7 +93,7 @@ export const galleryImageData =
 
 		featured: `Featured in ${bridges2024}`,
 
-		driveId: "1zkTbCjaQlwxsTdqDpyOVSUXcRRHjQ5eI"
+		driveId: "1HO44mUVDz0A-A6xeY-uzUBahzwrNAdik"
 	},
 
 	"double-pendulum-fractal-2":
@@ -102,7 +102,7 @@ export const galleryImageData =
 
 		appletLink: "double-pendulum-fractal",
 
-		driveId: "1Mo-R78eX10oNCc1Ywo9NlIpywK0Zfzxe"
+		driveId: "1VGx8gfIrp2gfKms7KOgWNdLeCEwfE0XE"
 	},
 
 	"extruded-cube":
