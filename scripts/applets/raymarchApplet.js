@@ -1059,82 +1059,119 @@ export class RaymarchApplet extends AnimationFrameApplet
 	{
 		this.drawFrame();
 		this.wilson.downloadFrame(filename, false);
-		// this.download4xMosaic(filename);
+		// this.downloadMosaic(filename, 4);
 	}
 
-	async download4xMosaic(filename)
+	async downloadMosaic(filename, size)
 	{
-		this.setUniform("uvScale", .25);
-		this.setUniform("imageSize", this.imageSize * 4);
+		this.setUniform("uvScale", 1 / size);
+		this.setUniform("imageSize", this.imageSize * size);
 
-		const centerPoints = [-0.75, -0.25, 0.25, 0.75];
+		const centerPoints = [];
+		for (let i = 0; i < size; i++)
+		{
+			centerPoints.push(-1 + (1 + 2 * i) / size);
+		}
 		const canvases = [];
 
-		for (let i = 0; i < centerPoints.length; i++)
+		for (let i = 0; i < size; i++)
 		{
 			canvases.push([]);
 
-			for (let j = 0; j < centerPoints.length; j++)
+			for (let j = 0; j < size; j++)
 			{
 				canvases[i].push(document.createElement("canvas"));
 				canvases[i][j].width = this.imageWidth;
 				canvases[i][j].height = this.imageHeight;
-				const ctx = canvases[i][j].getContext("2d", { colorSpace: "display-p3" });
-
-				this.setUniform("uvCenter", [centerPoints[i], centerPoints[j]]);
-				this.drawFrame();
-				const imageData = new ImageData(
-					new Uint8ClampedArray(this.wilson.render.getPixelData()),
-					this.imageWidth,
-					this.imageHeight
-				);
-
-				ctx.putImageData(imageData, 0, 0);
-
-				await new Promise(resolve => setTimeout(resolve, 5000));
 			}
 		}
 
-		const combinedCanvas = document.createElement("canvas");
-		combinedCanvas.width = this.imageWidth * centerPoints.length;
-		combinedCanvas.height = this.imageHeight * centerPoints.length;
-		const combinedCtx = combinedCanvas.getContext("2d", { colorSpace: "display-p3" });
 
-		for (let i = 0; i < centerPoints.length; i++)
+
+		const combineCanvas = async () =>
 		{
-			for (let j = 0; j < centerPoints.length; j++)
+			const combinedCanvas = document.createElement("canvas");
+			combinedCanvas.width = this.imageWidth * size;
+			combinedCanvas.height = this.imageHeight * size;
+			const combinedCtx = combinedCanvas.getContext("2d", { colorSpace: "display-p3" });
+
+			for (let i = 0; i < size; i++)
 			{
-				combinedCtx.drawImage(
-					canvases[i][j],
-					i * this.imageWidth,
-					j * this.imageHeight
-				);
+				for (let j = 0; j < size; j++)
+				{
+					combinedCtx.drawImage(
+						canvases[i][j],
+						i * this.imageWidth,
+						j * this.imageHeight
+					);
+				}
 			}
-		}
 
-		combinedCtx.translate(0, this.imageSize * centerPoints.length);
-		combinedCtx.scale(1, -1);
+			combinedCtx.translate(0, this.imageSize * size);
+			combinedCtx.scale(1, -1);
 
-		combinedCtx.drawImage(
-			combinedCanvas,
-			0,
-			0
-		);
+			combinedCtx.drawImage(
+				combinedCanvas,
+				0,
+				0
+			);
 
-		combinedCanvas.toBlob((blob) =>
+			combinedCanvas.toBlob((blob) =>
+			{
+				const link = document.createElement("a");
+				link.href = URL.createObjectURL(blob);
+				link.download = filename;
+				link.click();
+			});
+
+			await new Promise(resolve => setTimeout(resolve, 100));
+
+			this.setUniform("uvScale", 1);
+			this.setUniform("uvCenter", [0, 0]);
+			this.setUniform("imageSize", this.imageSize);
+			this.needNewFrame = true;
+		};
+
+
+
+		let i = 0;
+		let j = 0;
+
+		const drawMosaicPart = async () =>
 		{
-			const link = document.createElement("a");
-			link.href = URL.createObjectURL(blob);
-			link.download = filename;
-			link.click();
-		});
+			const ctx = canvases[i][j].getContext("2d", { colorSpace: "display-p3" });
 
-		await new Promise(resolve => setTimeout(resolve, 100));
+			this.setUniform("uvCenter", [centerPoints[i], centerPoints[j]]);
+			this.drawFrame();
+			const imageData = new ImageData(
+				new Uint8ClampedArray(this.wilson.render.getPixelData()),
+				this.imageWidth,
+				this.imageHeight
+			);
 
-		this.setUniform("uvScale", 1);
-		this.setUniform("uvCenter", [0, 0]);
-		this.setUniform("imageSize", this.imageSize);
-		this.needNewFrame = true;
+			ctx.putImageData(imageData, 0, 0);
+
+			await new Promise(resolve => setTimeout(resolve, 500));
+
+			j++;
+			if (j === size)
+			{
+				j = 0;
+				i++;
+			}
+
+			if (i !== size)
+			{
+				requestAnimationFrame(drawMosaicPart);
+			}
+
+			else
+			{
+				combineCanvas();
+			}
+		};
+
+		requestAnimationFrame(drawMosaicPart);
 	}
 
 
