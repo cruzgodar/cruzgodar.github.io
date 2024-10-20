@@ -2,6 +2,7 @@ import { Applet, getEqualPixelFullScreen, tempShader } from "../../../scripts/ap
 import { createShader } from "./createShader.js";
 import { SolRooms, SolSpheres } from "./geometries/sol.js";
 import anime from "/scripts/anime.js";
+import { edgeDetectShader } from "/scripts/applets/raymarchApplet.js";
 import { aspectRatio } from "/scripts/src/layout.js";
 import { $, addTemporaryListener } from "/scripts/src/main.js";
 import { Wilson } from "/scripts/wilson.js";
@@ -209,7 +210,7 @@ export class ThurstonGeometry extends Applet
 
 
 
-	run(geometryData)
+	run(geometryData, resetWorldCenter = true)
 	{
 		this.geometryData = geometryData;
 
@@ -249,18 +250,40 @@ export class ThurstonGeometry extends Applet
 		const fragShaderSource = createShader(shaderParameters);
 		
 
-
-		this.wilson.worldCenterX = 0;
-		this.wilson.worldCenterY = 0;
-		
-		this.lastWorldCenterX = this.wilson.worldCenterX;
-		this.lastWorldCenterY = this.wilson.worldCenterY;
+		if (resetWorldCenter)
+		{
+			this.wilson.worldCenterX = 0;
+			this.wilson.worldCenterY = 0;
+			
+			this.lastWorldCenterX = this.wilson.worldCenterX;
+			this.lastWorldCenterY = this.wilson.worldCenterY;
+		}
 		
 		this.wilson.render.shaderPrograms = [];
 		this.wilson.render.loadNewShader(fragShaderSource);
 		this.wilson.gl.useProgram(this.wilson.render.shaderPrograms[0]);
 
 		this.initUniforms(0);
+
+		if (this.useAntialiasing)
+		{
+			this.wilson.render.loadNewShader(edgeDetectShader);
+
+			this.wilson.render.initUniforms([
+				"stepSize",
+			], 1);
+
+			const aaShaderSource = createShader({
+				...shaderParameters,
+				antialiasing: true
+			});
+
+			this.wilson.render.loadNewShader(aaShaderSource);
+
+			this.initUniforms(2);
+
+			this.createTextures();
+		}
 
 
 
@@ -287,8 +310,6 @@ export class ThurstonGeometry extends Applet
 			"forwardVec",
 		].concat(this.geometryData.uniformNames ?? []), programIndex);
 
-		
-
 		this.wilson.gl.uniform1f(
 			this.wilson.uniforms.aspectRatioX[programIndex],
 			1
@@ -297,6 +318,16 @@ export class ThurstonGeometry extends Applet
 		this.wilson.gl.uniform1f(
 			this.wilson.uniforms.aspectRatioY[programIndex],
 			1
+		);
+
+		this.wilson.gl.uniform1f(
+			this.wilson.uniforms.uvScale[programIndex],
+			1
+		);
+
+		this.wilson.gl.uniform2fv(
+			this.wilson.uniforms.uvCenter[programIndex],
+			[0, 0]
 		);
 
 		this.wilson.gl.uniform1i(
@@ -335,6 +366,39 @@ export class ThurstonGeometry extends Applet
 		);
 	}
 
+	createTextures()
+	{
+		this.wilson.render.framebuffers = [];
+
+		this.wilson.render.createFramebufferTexturePair();
+		this.wilson.render.createFramebufferTexturePair();
+
+		this.wilson.gl.bindTexture(
+			this.wilson.gl.TEXTURE_2D,
+			this.wilson.render.framebuffers[0].texture
+		);
+
+		this.wilson.gl.bindFramebuffer(this.wilson.gl.FRAMEBUFFER, null);
+
+
+
+		this.wilson.gl.useProgram(this.wilson.render.shaderPrograms[1]);
+
+		this.wilson.gl.uniform1f(this.wilson.uniforms.stepSize[1], 1 / this.resolution);
+
+
+
+		this.wilson.gl.useProgram(this.wilson.render.shaderPrograms[2]);
+
+
+
+		// Here and throughout, we need to end with this so that uniform
+		// calls reference the right program.
+		this.wilson.gl.useProgram(this.wilson.render.shaderPrograms[0]);
+	}
+
+
+
 	resume()
 	{
 		this.needNewFrame = true;
@@ -367,11 +431,15 @@ export class ThurstonGeometry extends Applet
 
 		if (this.useAntialiasing)
 		{
+			this.wilson.gl.useProgram(this.wilson.render.shaderPrograms[2]);
+
 			this.geometryData.updateUniforms(
 				this.wilson.gl,
 				this.wilson.uniforms,
 				2
 			);
+
+			this.wilson.gl.useProgram(this.wilson.render.shaderPrograms[0]);
 		}
 
 		this.pan.update(timeElapsed);
@@ -485,16 +553,63 @@ export class ThurstonGeometry extends Applet
 		this.updateUniforms(0);
 		if (this.useAntialiasing)
 		{
+			this.wilson.gl.useProgram(this.wilson.render.shaderPrograms[2]);
 			this.updateUniforms(2);
+			this.wilson.gl.useProgram(this.wilson.render.shaderPrograms[0]);
 		}
 
 		
 
 		if (this.needNewFrame)
 		{
+			if (this.useAntialiasing)
+			{
+				this.wilson.gl.bindFramebuffer(
+					this.wilson.gl.FRAMEBUFFER,
+					this.wilson.render.framebuffers[0].framebuffer
+				);
+			}
+
 			this.wilson.render.drawFrame();
 
 			this.geometryData.drawFrameCallback();
+
+			if (this.useAntialiasing)
+			{
+				this.wilson.gl.useProgram(this.wilson.render.shaderPrograms[1]);
+
+				this.wilson.gl.bindTexture(
+					this.wilson.gl.TEXTURE_2D,
+					this.wilson.render.framebuffers[0].texture
+				);
+
+				this.wilson.gl.bindFramebuffer(
+					this.wilson.gl.FRAMEBUFFER,
+					this.wilson.render.framebuffers[1].framebuffer
+				);
+
+				this.wilson.render.drawFrame();
+
+
+
+				this.wilson.gl.useProgram(this.wilson.render.shaderPrograms[2]);
+
+				this.wilson.gl.bindTexture(
+					this.wilson.gl.TEXTURE_2D,
+					this.wilson.render.framebuffers[1].texture
+				);
+
+				this.wilson.gl.bindFramebuffer(
+					this.wilson.gl.FRAMEBUFFER,
+					null
+				);
+
+				this.wilson.render.drawFrame();
+
+
+
+				this.wilson.gl.useProgram(this.wilson.render.shaderPrograms[0]);
+			}
 
 			this.needNewFrame = false;
 		}
@@ -503,6 +618,13 @@ export class ThurstonGeometry extends Applet
 		{
 			requestAnimationFrame(this.drawFrame.bind(this));
 		}
+	}
+
+	downloadFrame(filename)
+	{
+		this.needNewFrame = true;
+		this.drawFrame();
+		this.wilson.downloadFrame(filename, false);
 	}
 
 
@@ -831,6 +953,8 @@ export class ThurstonGeometry extends Applet
 
 		if (this.useAntialiasing)
 		{
+			this.wilson.gl.useProgram(this.wilson.render.shaderPrograms[2]);
+
 			this.wilson.gl.uniform1f(
 				this.wilson.uniforms.aspectRatioX[2],
 				this.aspectRatioX
@@ -845,6 +969,10 @@ export class ThurstonGeometry extends Applet
 				this.wilson.uniforms.resolution[2],
 				this.resolution
 			);
+
+			this.wilson.gl.useProgram(this.wilson.render.shaderPrograms[0]);
+
+			this.createTextures();
 		}
 
 		this.needNewFrame = true;

@@ -132,10 +132,10 @@ export function createShader({
 				vec4 sample = texture2D(uTexture, texCoord);
 				float stepSize = 2.0 / (float(resolution * 3));
 				
-				if (sample.w > 0.0)
+				if (sample.w > 0.1)
 				{
 					vec3 aaSample = (
-						sample.xyz
+						sample.xyz	
 						+ raymarchHelper(vec2(stepSize, 0.0))
 						+ raymarchHelper(vec2(0.0, stepSize))
 						+ raymarchHelper(vec2(-stepSize, 0.0))
@@ -156,8 +156,8 @@ export function createShader({
 					raymarch(
 						geometryNormalize(
 							forwardVec
-							+ rightVec * uv.x * aspectRatioX * fov
-							+ upVec * uv.y / aspectRatioY * fov
+							+ rightVec * (uvScale * uv.x + uvCenter.x) * aspectRatioX * fov
+							+ upVec * (uvScale * uv.y + uvCenter.y) / aspectRatioY * fov
 						)
 					),
 					1.0
@@ -237,10 +237,6 @@ export function createShader({
 		
 		vec3 getColor(${posSignature}, vec3 globalColor, float totalT)
 		{
-			if (distanceEstimator(pos${addFiberArgument}, totalT) < 0.0)
-			{
-				return vec3(1.0, 0.0, 0.0);
-			}
 			${getColorGlsl}
 		}
 		
