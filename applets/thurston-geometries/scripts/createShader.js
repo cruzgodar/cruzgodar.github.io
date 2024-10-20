@@ -20,7 +20,7 @@ export function createShader({
 	finalTeleportationGlsl,
 	updateTGlsl,
 
-	useReflections = true,
+	useReflections = false,
 }) {
 	const computeReflectionGlsl = useReflections ? /* glsl */`
 		vec3 computeShadingWithoutReflection(
