@@ -6,6 +6,7 @@ export function createShader({
 	uniformGlsl,
 	dotProductGlsl,
 	normalizeGlsl,
+	getNormalVecGlsl,
 	functionGlsl,
 	posSignature,
 	distanceEstimatorGlsl,
@@ -17,10 +18,11 @@ export function createShader({
 	fogGlsl,
 	raymarchSetupGlsl,
 	geodesicGlsl,
+	correctPosGlsl,
 	finalTeleportationGlsl,
 	updateTGlsl,
 
-	useReflections = true,
+	useReflections = false,
 }) {
 	const computeReflectionGlsl = useReflections ? /* glsl */`
 		vec3 computeShadingWithoutReflection(
@@ -35,7 +37,7 @@ export function createShader({
 				totalT
 			);
 
-			pos -= surfaceNormal * correctionDistance;
+			${correctPosGlsl}
 			
 			${lightGlsl}
 
@@ -52,6 +54,7 @@ export function createShader({
 		vec3 computeReflection(
 			vec4 startPos,
 			vec4 rayDirectionVec,
+			vec3 globalColor,
 			int startIteration,
 			float startT
 		) {
@@ -61,8 +64,6 @@ export function createShader({
 			float totalT = 0.0;
 			
 			float lastTIncrease = 0.0;
-
-			vec3 globalColor = vec3(0.0, 0.0, 0.0);
 
 			${raymarchSetupGlsl ?? ""}
 			
@@ -174,6 +175,11 @@ export function createShader({
 		}
 		
 		
+
+		vec4 getNormalVec(${posSignature})
+		{
+			${getNormalVecGlsl}
+		}
 		
 		vec4 getSurfaceNormal(${posSignature}, float totalT)
 		{
@@ -211,12 +217,18 @@ export function createShader({
 				totalT
 			);
 			
-			return normalize(vec4(
+			vec4 surfaceNormal = normalize(vec4(
 				xStep1 - xStep2,
 				yStep1 - yStep2,
 				zStep1 - zStep2,
 				wStep1 - wStep2
 			));
+
+			vec4 manifoldNormal = getNormalVec(pos${addFiberArgument});
+
+			return normalize(
+				surfaceNormal - dot(surfaceNormal, manifoldNormal) * manifoldNormal
+			);
 		}
 
 
@@ -237,7 +249,7 @@ export function createShader({
 		) {
 			vec4 surfaceNormal = getSurfaceNormal(pos${addFiberArgument}, totalT);
 
-			pos -= surfaceNormal * correctionDistance;
+			${correctPosGlsl}
 			
 			${lightGlsl}
 
@@ -261,6 +273,7 @@ export function createShader({
 					computeReflection(
 						pos${addFiberArgument},
 						reflectedDirection,
+						globalColor,
 						iteration,
 						totalT
 					),

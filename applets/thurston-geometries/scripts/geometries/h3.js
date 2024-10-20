@@ -31,6 +31,14 @@ class H3Geometry extends BaseGeometry
 		return mix(color, fogColor, 1.0 - exp(0.5 - totalT * 0.075));
 	`;
 
+	getNormalVecGlsl = /* glsl */`
+		return normalize(vec4(-pos.xyz, pos.w));
+	`;
+
+	correctPosGlsl = /* glsl */`
+		pos = cosh(correctionDistance) * pos - sinh(correctionDistance) * surfaceNormal;
+	`;
+
 	functionGlsl = /* glsl */`
 		float sinh(float x)
 		{

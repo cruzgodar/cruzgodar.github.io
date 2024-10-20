@@ -228,6 +228,7 @@ export class ThurstonGeometry extends Applet
 			uniformGlsl: this.geometryData.uniformGlsl ?? "",
 			dotProductGlsl: this.geometryData.dotProductGlsl,
 			normalizeGlsl: this.geometryData.normalizeGlsl,
+			getNormalVecGlsl: this.geometryData.getNormalVecGlsl,
 			functionGlsl: this.geometryData.functionGlsl ?? "",
 			posSignature,
 			distanceEstimatorGlsl: this.geometryData.distanceEstimatorGlsl,
@@ -239,6 +240,7 @@ export class ThurstonGeometry extends Applet
 			fogGlsl: this.geometryData.fogGlsl,
 			raymarchSetupGlsl: this.geometryData.raymarchSetupGlsl ?? "",
 			geodesicGlsl: this.geometryData.geodesicGlsl,
+			correctPosGlsl: this.geometryData.correctPosGlsl,
 			finalTeleportationGlsl: this.geometryData.finalTeleportationGlsl ?? "",
 			updateTGlsl: this.geometryData.updateTGlsl,
 		});

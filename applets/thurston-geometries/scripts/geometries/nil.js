@@ -87,6 +87,14 @@ class NilGeometry extends BaseGeometry
 		return mix(color, fogColor, 1.0 - exp(-totalT * 0.2));
 	`;
 
+	getNormalVecGlsl = /* glsl */`
+		return getTransformationMatrix(pos) * vec4(0.0, 0.0, 0.0, 0.0);
+	`;
+
+	correctPosGlsl = /* glsl */`
+		// vec4 pos = getUpdatedPos(pos, -surfaceNormal, correctionDistance);
+	`;
+
 	functionGlsl = /* glsl */`
 		mat4 getTransformationMatrix(vec4 pos)
 		{

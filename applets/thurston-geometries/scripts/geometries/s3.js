@@ -16,6 +16,14 @@ class S3Geometry extends BaseGeometry
 		return mix(color, fogColor, 1.0 - exp(-acos(dot(pos, cameraPos)) * fogScaling));
 	`;
 
+	getNormalVecGlsl = /* glsl */`
+		return normalize(-pos);
+	`;
+
+	correctPosGlsl = /* glsl */`
+		pos = cos(correctionDistance) * pos - sin(correctionDistance) * surfaceNormal;
+	`;
+
 	maxMarches = "100";
 	maxT = "6.283";
 
