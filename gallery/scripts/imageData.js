@@ -256,6 +256,19 @@ export const galleryImageData =
 		driveId: "13b99_5HrSgXamfVtAOPz5IGfiSdK19KC"
 	},
 
+	"kaleidoscopic-ifs-3":
+	{
+		title: "A Kaleidoscopic IFS Fractal",
+
+		parameters: /* html */`
+			Generated from a tetrahedron with scale $1.3299$, $\\theta_x = 0.068$, $\\theta_y = 2.468$, and $\\theta_z = 0.448$
+		`,
+
+		appletLink: "kaleidoscopic-ifs-fractals",
+
+		driveId: "1xXGP5T566_nSHjF3_kRmBHNl73qJfsq-"
+	},
+
 	"kicked-rotator":
 	{
 		title: "A Kicked Rotator",
