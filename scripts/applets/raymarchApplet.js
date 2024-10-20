@@ -31,6 +31,42 @@ const setUniformFunctions = {
 	]),
 };
 
+export const edgeDetectShader = /* glsl */`
+	precision highp float;
+	
+	varying vec2 uv;
+
+	uniform sampler2D uTexture;
+
+	uniform float stepSize;
+
+	float getSampleLuminance(vec2 texCoord)
+	{
+		vec3 sample = texture2D(uTexture, texCoord).xyz;
+		return 0.299 * sample.x + 0.587 * sample.y + 0.114 * sample.z;
+	}
+
+	void main(void)
+	{
+		vec2 texCoord = (uv + vec2(1.0)) * 0.5;
+		float sample = getSampleLuminance(texCoord);
+		float sampleN = getSampleLuminance(texCoord + vec2(0.0, stepSize));
+		float sampleS = getSampleLuminance(texCoord + vec2(0.0, -stepSize));
+		float sampleE = getSampleLuminance(texCoord + vec2(stepSize, 0.0));
+		float sampleW = getSampleLuminance(texCoord + vec2(-stepSize, 0.0));
+
+		float luminance = max(
+			max(abs(sample - sampleN), abs(sample - sampleS)),
+			max(abs(sample - sampleE), abs(sample - sampleW))
+		);
+		
+		gl_FragColor = vec4(
+			texture2D(uTexture, texCoord).xyz,
+			luminance
+		);
+	}
+`;
+
 export class RaymarchApplet extends AnimationFrameApplet
 {
 	movingSpeed = .1;
@@ -297,7 +333,7 @@ export class RaymarchApplet extends AnimationFrameApplet
 
 		if (this.useAntialiasing)
 		{
-			this.wilson.render.loadNewShader(this.getEdgeDetectShader());
+			this.wilson.render.loadNewShader(edgeDetectShader);
 
 			this.wilson.render.initUniforms([
 				"stepSize",
@@ -736,47 +772,6 @@ export class RaymarchApplet extends AnimationFrameApplet
 
 
 
-	getEdgeDetectShader()
-	{
-		return /* glsl */`
-			precision highp float;
-			
-			varying vec2 uv;
-
-			uniform sampler2D uTexture;
-
-			uniform float stepSize;
-
-			float getSampleLuminance(vec2 texCoord)
-			{
-				vec3 sample = texture2D(uTexture, texCoord).xyz;
-				return 0.299 * sample.x + 0.587 * sample.y + 0.114 * sample.z;
-			}
-
-			void main(void)
-			{
-				vec2 texCoord = (uv + vec2(1.0)) * 0.5;
-				float sample = getSampleLuminance(texCoord);
-				float sampleN = getSampleLuminance(texCoord + vec2(0.0, stepSize));
-				float sampleS = getSampleLuminance(texCoord + vec2(0.0, -stepSize));
-				float sampleE = getSampleLuminance(texCoord + vec2(stepSize, 0.0));
-				float sampleW = getSampleLuminance(texCoord + vec2(-stepSize, 0.0));
-
-				float luminance = max(
-					max(abs(sample - sampleN), abs(sample - sampleS)),
-					max(abs(sample - sampleE), abs(sample - sampleW))
-				);
-				
-				gl_FragColor = vec4(
-					texture2D(uTexture, texCoord).xyz,
-					luminance
-				);
-			}
-		`;
-	}
-
-
-
 	initUniforms(programIndex)
 	{
 		const uniformList = [
@@ -836,7 +831,7 @@ export class RaymarchApplet extends AnimationFrameApplet
 
 		if (this.useAntialiasing)
 		{
-			this.wilson.render.loadNewShader(this.getEdgeDetectShader());
+			this.wilson.render.loadNewShader(edgeDetectShader);
 
 			this.wilson.render.initUniforms([
 				"stepSize",

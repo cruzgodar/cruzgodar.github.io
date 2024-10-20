@@ -587,16 +587,30 @@ export class H3Rooms extends H3Geometry
 
 	uniformNames = ["sceneTransition", "wallThickness", "baseColor"];
 
-	updateUniforms(gl, uniformList)
+	updateUniforms(gl, uniformList, programIndex)
 	{
-		gl.uniform1f(uniformList.sceneTransition, this.sliderValues.sceneTransition);
+		gl.uniform1f(
+			uniformList.sceneTransition[programIndex],
+			this.sliderValues.sceneTransition
+		);
 
 		const wallThickness = 1.5 -
 			(this.sliderValues.wallThickness - (-.357)) / (.143 - (-.357)) * (1.5 - 1);
 
-		gl.uniform1f(uniformList.wallThickness, wallThickness);
-		gl.uniform1f(uniformList.clipDistance, this.sliderValues.clipDistance);
-		gl.uniform3fv(uniformList.baseColor, this.baseColor);
+		gl.uniform1f(
+			uniformList.wallThickness[programIndex],
+			wallThickness
+		);
+
+		gl.uniform1f(
+			uniformList.clipDistance[programIndex],
+			this.sliderValues.clipDistance
+		);
+
+		gl.uniform3fv(
+			uniformList.baseColor[programIndex],
+			this.baseColor
+		);
 	}
 
 	uiElementsUsed = "#wall-thickness-slider, #switch-scene-button, #clip-distance-slider";

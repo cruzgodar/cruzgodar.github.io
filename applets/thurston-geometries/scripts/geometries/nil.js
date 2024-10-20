@@ -720,12 +720,27 @@ export class NilRooms extends NilGeometry
 
 	uniformNames = ["sceneTransition", "wallThickness", "baseColor"];
 
-	updateUniforms(gl, uniformList)
+	updateUniforms(gl, uniformList, programIndex)
 	{
-		gl.uniform1f(uniformList.sceneTransition, this.sliderValues.sceneTransition);
-		gl.uniform1f(uniformList.wallThickness, .703 - this.sliderValues.wallThickness / 10);
-		gl.uniform1f(uniformList.clipDistance, this.sliderValues.clipDistance);
-		gl.uniform3fv(uniformList.baseColor, this.baseColor);
+		gl.uniform1f(
+			uniformList.sceneTransition[programIndex],
+			this.sliderValues.sceneTransition
+		);
+
+		gl.uniform1f(
+			uniformList.wallThickness[programIndex],
+			.703 - this.sliderValues.wallThickness / 10
+		);
+
+		gl.uniform1f(
+			uniformList.clipDistance[programIndex],
+			this.sliderValues.clipDistance
+		);
+
+		gl.uniform3fv(
+			uniformList.baseColor[programIndex],
+			this.baseColor
+		);
 	}
 
 	uiElementsUsed = "#wall-thickness-slider, #switch-scene-button, #clip-distance-slider";

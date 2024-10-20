@@ -22,7 +22,8 @@ export function createShader({
 	finalTeleportationGlsl,
 	updateTGlsl,
 
-	useReflections = true,
+	useReflections = false,
+	antialiasing = false,
 }) {
 	const computeReflectionGlsl = useReflections ? /* glsl */`
 		vec3 computeShadingWithoutReflection(
@@ -111,11 +112,66 @@ export function createShader({
 			return fogColor;
 		}
 	` : "";
+
+	const mainFunctionGlsl = antialiasing
+		? /* glsl */`${""}
+			vec3 raymarchHelper(vec2 uvAdjust)
+			{
+				return raymarch(
+					geometryNormalize(
+						forwardVec
+						+ rightVec * (uvScale * (uv.x + uvAdjust.x) + uvCenter.x) * aspectRatioX * fov
+						+ upVec * (uvScale * (uv.y + uvAdjust.y) + uvCenter.y) / aspectRatioY * fov
+					)
+				);
+			}
+			
+			void main(void)
+			{
+				vec2 texCoord = (uv + vec2(1.0)) * 0.5;
+				vec4 sample = texture2D(uTexture, texCoord);
+				float stepSize = 2.0 / (float(resolution * 3));
+				
+				if (sample.w > 0.0)
+				{
+					vec3 aaSample = (
+						sample.xyz
+						+ raymarchHelper(vec2(stepSize, 0.0))
+						+ raymarchHelper(vec2(0.0, stepSize))
+						+ raymarchHelper(vec2(-stepSize, 0.0))
+						+ raymarchHelper(vec2(0.0, -stepSize))
+					) / 5.0;
+					
+					gl_FragColor = vec4(aaSample, 1.0);
+					return;
+				}
+
+				gl_FragColor = vec4(sample.xyz, 1.0);
+			}
+		`
+		: /* glsl */`${""}
+			void main(void)
+			{
+				gl_FragColor = vec4(
+					raymarch(
+						geometryNormalize(
+							forwardVec
+							+ rightVec * uv.x * aspectRatioX * fov
+							+ upVec * uv.y / aspectRatioY * fov
+						)
+					),
+					1.0
+				);
+			}
+		`;
 	
 	const shader = /* glsl */`
 		precision highp float;
 		
 		varying vec2 uv;
+
+		uniform float uvScale;
+		uniform vec2 uvCenter;
 		
 		uniform float aspectRatioX;
 		uniform float aspectRatioY;
@@ -127,6 +183,10 @@ export function createShader({
 		uniform vec4 forwardVec;
 		
 		uniform int resolution;
+
+		${antialiasing ? /* glsl */`
+			uniform sampler2D uTexture;
+		` : ""}
 		
 		const float pi = ${Math.PI};
 		const float epsilon = 0.00005;
@@ -355,19 +415,7 @@ export function createShader({
 		
 		
 		
-		void main(void)
-		{
-			gl_FragColor = vec4(
-				raymarch(
-					geometryNormalize(
-						forwardVec
-						+ rightVec * uv.x * aspectRatioX * fov
-						+ upVec * uv.y / aspectRatioY * fov
-					)
-				),
-				1.0
-			);
-		}
+		${mainFunctionGlsl}
 	`;
 
 	if (window.DEBUG)

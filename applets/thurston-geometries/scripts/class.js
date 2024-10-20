@@ -92,6 +92,7 @@ export function mat4TimesVector(mat, vec)
 export class ThurstonGeometry extends Applet
 {
 	resolution = 500;
+	useAntialiasing = false;
 
 	aspectRatioX = 1;
 	aspectRatioY = 1;
@@ -221,7 +222,7 @@ export class ThurstonGeometry extends Applet
 		
 		const addFiberArgument = this.geometryData.usesFiberComponent ? ", fiber" : "";
 
-		const fragShaderSource = createShader({
+		const shaderParameters = {
 			maxMarches: this.geometryData.maxMarches,
 			maxT: this.geometryData.maxT,
 			stepFactor: this.geometryData.stepFactor,
@@ -243,19 +244,38 @@ export class ThurstonGeometry extends Applet
 			correctPosGlsl: this.geometryData.correctPosGlsl,
 			finalTeleportationGlsl: this.geometryData.finalTeleportationGlsl ?? "",
 			updateTGlsl: this.geometryData.updateTGlsl,
-		});
+		};
 
-		setTimeout(() => window.dispatchEvent(new Event("resize")), 16);
+		const fragShaderSource = createShader(shaderParameters);
 		
 
+
+		this.wilson.worldCenterX = 0;
+		this.wilson.worldCenterY = 0;
+		
+		this.lastWorldCenterX = this.wilson.worldCenterX;
+		this.lastWorldCenterY = this.wilson.worldCenterY;
 		
 		this.wilson.render.shaderPrograms = [];
 		this.wilson.render.loadNewShader(fragShaderSource);
 		this.wilson.gl.useProgram(this.wilson.render.shaderPrograms[0]);
 
+		this.initUniforms(0);
+
+
+
+		setTimeout(() => window.dispatchEvent(new Event("resize")), 16);
+
+		this.resume();
+	}
+
+	initUniforms(programIndex)
+	{
 		this.wilson.render.initUniforms([
 			"aspectRatioX",
 			"aspectRatioY",
+			"uvScale",
+			"uvCenter",
 			"resolution",
 			"clipDistance",
 			"fov",
@@ -265,60 +285,54 @@ export class ThurstonGeometry extends Applet
 			"upVec",
 			"rightVec",
 			"forwardVec",
-		].concat(this.geometryData.uniformNames ?? []));
+		].concat(this.geometryData.uniformNames ?? []), programIndex);
 
-		this.wilson.worldCenterX = 0;
-		this.wilson.worldCenterY = 0;
 		
-		this.lastWorldCenterX = this.wilson.worldCenterX;
-		this.lastWorldCenterY = this.wilson.worldCenterY;
 
 		this.wilson.gl.uniform1f(
-			this.wilson.uniforms.aspectRatioX,
+			this.wilson.uniforms.aspectRatioX[programIndex],
 			1
 		);
 
 		this.wilson.gl.uniform1f(
-			this.wilson.uniforms.aspectRatioY,
+			this.wilson.uniforms.aspectRatioY[programIndex],
 			1
 		);
 
 		this.wilson.gl.uniform1i(
-			this.wilson.uniforms.resolution,
+			this.wilson.uniforms.resolution[programIndex],
 			this.resolution
 		);
 
 		this.wilson.gl.uniform1f(
-			this.wilson.uniforms.fov,
+			this.wilson.uniforms.fov[programIndex],
 			(this.geometryData.fov ?? this.fov) * this.fovFactor
 		);
 
 		this.wilson.gl.uniform4fv(
-			this.wilson.uniforms.cameraPos,
+			this.wilson.uniforms.cameraPos[programIndex],
 			this.geometryData.cameraPos
 		);
 
 		this.wilson.gl.uniform4fv(
-			this.wilson.uniforms.normalVec,
+			this.wilson.uniforms.normalVec[programIndex],
 			this.geometryData.normalVec
 		);
 
 		this.wilson.gl.uniform4fv(
-			this.wilson.uniforms.upVec,
+			this.wilson.uniforms.upVec[programIndex],
 			this.geometryData.upVec
 		);
 		
 		this.wilson.gl.uniform4fv(
-			this.wilson.uniforms.rightVec,
+			this.wilson.uniforms.rightVec[programIndex],
 			this.geometryData.rightVec
 		);
 			
 		this.wilson.gl.uniform4fv(
-			this.wilson.uniforms.forwardVec,
+			this.wilson.uniforms.forwardVec[programIndex],
 			this.geometryData.forwardVec
 		);
-
-		this.resume();
 	}
 
 	resume()
@@ -345,7 +359,20 @@ export class ThurstonGeometry extends Applet
 			this.recomputeRotation.bind(this)
 		);
 
-		this.geometryData.updateUniforms(this.wilson.gl, this.wilson.uniforms);
+		this.geometryData.updateUniforms(
+			this.wilson.gl,
+			this.wilson.uniforms,
+			0
+		);
+
+		if (this.useAntialiasing)
+		{
+			this.geometryData.updateUniforms(
+				this.wilson.gl,
+				this.wilson.uniforms,
+				2
+			);
+		}
 
 		this.pan.update(timeElapsed);
 
@@ -455,37 +482,13 @@ export class ThurstonGeometry extends Applet
 
 		this.handleRolling(timeElapsed);
 
+		this.updateUniforms(0);
+		if (this.useAntialiasing)
+		{
+			this.updateUniforms(2);
+		}
 
-
-		this.wilson.gl.uniform4fv(
-			this.wilson.uniforms.cameraPos,
-			this.geometryData.cameraPos
-		);
-
-		this.wilson.gl.uniform4fv(
-			this.wilson.uniforms.normalVec,
-			this.geometryData.normalVec
-		);
-
-		this.wilson.gl.uniform4fv(
-			this.wilson.uniforms.upVec,
-			this.geometryData.render1D ? [0, 0, 0, 0] : this.rotatedUpVec
-		);
 		
-		this.wilson.gl.uniform4fv(
-			this.wilson.uniforms.rightVec,
-			this.geometryData.rightVec
-		);
-			
-		this.wilson.gl.uniform4fv(
-			this.wilson.uniforms.forwardVec,
-			this.rotatedForwardVec
-		);
-
-		this.wilson.gl.uniform1f(
-			this.wilson.uniforms.fov,
-			(this.geometryData.fov ?? this.fov) * this.fovFactor
-		);
 
 		if (this.needNewFrame)
 		{
@@ -500,6 +503,41 @@ export class ThurstonGeometry extends Applet
 		{
 			requestAnimationFrame(this.drawFrame.bind(this));
 		}
+	}
+
+
+
+	updateUniforms(programIndex)
+	{
+		this.wilson.gl.uniform4fv(
+			this.wilson.uniforms.cameraPos[programIndex],
+			this.geometryData.cameraPos
+		);
+
+		this.wilson.gl.uniform4fv(
+			this.wilson.uniforms.normalVec[programIndex],
+			this.geometryData.normalVec
+		);
+
+		this.wilson.gl.uniform4fv(
+			this.wilson.uniforms.upVec[programIndex],
+			this.geometryData.render1D ? [0, 0, 0, 0] : this.rotatedUpVec
+		);
+		
+		this.wilson.gl.uniform4fv(
+			this.wilson.uniforms.rightVec[programIndex],
+			this.geometryData.rightVec
+		);
+			
+		this.wilson.gl.uniform4fv(
+			this.wilson.uniforms.forwardVec[programIndex],
+			this.rotatedForwardVec
+		);
+
+		this.wilson.gl.uniform1f(
+			this.wilson.uniforms.fov[programIndex],
+			(this.geometryData.fov ?? this.fov) * this.fovFactor
+		);
 	}
 
 
@@ -774,10 +812,40 @@ export class ThurstonGeometry extends Applet
 			this.aspectRatioY = imageWidth / imageHeight;
 		}
 
-		this.wilson.gl.uniform1f(this.wilson.uniforms.aspectRatioX, this.aspectRatioX);
-		this.wilson.gl.uniform1f(this.wilson.uniforms.aspectRatioY, this.aspectRatioY);
 
-		this.wilson.gl.uniform1i(this.wilson.uniforms.resolution, this.resolution);
+
+		this.wilson.gl.uniform1f(
+			this.wilson.uniforms.aspectRatioX[0],
+			this.aspectRatioX
+		);
+
+		this.wilson.gl.uniform1f(
+			this.wilson.uniforms.aspectRatioY[0],
+			this.aspectRatioY
+		);
+
+		this.wilson.gl.uniform1i(
+			this.wilson.uniforms.resolution[0],
+			this.resolution
+		);
+
+		if (this.useAntialiasing)
+		{
+			this.wilson.gl.uniform1f(
+				this.wilson.uniforms.aspectRatioX[2],
+				this.aspectRatioX
+			);
+
+			this.wilson.gl.uniform1f(
+				this.wilson.uniforms.aspectRatioY[2],
+				this.aspectRatioY
+			);
+
+			this.wilson.gl.uniform1i(
+				this.wilson.uniforms.resolution[2],
+				this.resolution
+			);
+		}
 
 		this.needNewFrame = true;
 	}

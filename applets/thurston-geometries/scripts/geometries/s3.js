@@ -359,13 +359,20 @@ export class S3Rooms extends S3Geometry
 
 	uniformNames = ["sceneTransition", "wallThickness"];
 
-	updateUniforms(gl, uniformList)
+	updateUniforms(gl, uniformList, programIndex)
 	{
 		const wallThickness = .97 -
 			(this.sliderValues.wallThickness - (-.15)) / (.35 - (-.15)) * (.97 - .92);
 
-		gl.uniform1f(uniformList.sceneTransition, this.sliderValues.sceneTransition);
-		gl.uniform1f(uniformList.wallThickness, wallThickness);
+		gl.uniform1f(
+			uniformList.sceneTransition[programIndex],
+			this.sliderValues.sceneTransition
+		);
+
+		gl.uniform1f(
+			uniformList.wallThickness[programIndex],
+			wallThickness
+		);
 	}
 
 	uiElementsUsed = "#wall-thickness-slider, #switch-scene-button";
@@ -581,8 +588,11 @@ export class S3HopfFibration extends S3Geometry
 
 	uniformNames = ["fiberThickness"];
 
-	updateUniforms(gl, uniformList)
+	updateUniforms(gl, uniformList, programIndex)
 	{
-		gl.uniform1f(uniformList.fiberThickness, this.sliderValues.fiberThickness);
+		gl.uniform1f(
+			uniformList.fiberThickness[programIndex],
+			this.sliderValues.fiberThickness
+		);
 	}
 }
