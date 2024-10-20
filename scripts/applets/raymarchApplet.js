@@ -472,13 +472,16 @@ export class RaymarchApplet extends AnimationFrameApplet
 			}
 
 			// Unlike in raymarch(), startPos is replacing cameraPos, and rayDirectionVec is precomputed.
-			vec3 computeReflection(vec3 startPos, vec3 rayDirectionVec, int startIteration)
-			{
+			vec3 computeReflection(
+				vec3 startPos,
+				vec3 rayDirectionVec,
+				int startIteration
+			) {
 				float t = 0.0;
 				
 				for (int iteration = 0; iteration < maxReflectionMarches; iteration++)
 				{
-					vec3 pos = ${getGeodesicGlsl("startPos", "rayDirectionVec")};;
+					vec3 pos = ${getGeodesicGlsl("startPos", "rayDirectionVec")};
 					
 					float distanceToScene = distanceEstimator(pos);
 

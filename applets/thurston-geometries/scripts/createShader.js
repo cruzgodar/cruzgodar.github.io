@@ -1,3 +1,4 @@
+
 export function createShader({
 	maxMarches,
 	maxT,
@@ -18,8 +19,89 @@ export function createShader({
 	geodesicGlsl,
 	finalTeleportationGlsl,
 	updateTGlsl,
+
+	useReflections = true,
 }) {
-	return /* glsl */`
+	const computeReflectionGlsl = useReflections ? /* glsl */`
+		vec3 computeShadingWithoutReflection(
+			${posSignature},
+			int iteration,
+			vec3 globalColor,
+			float totalT
+		) {
+			vec4 surfaceNormal = getSurfaceNormal(
+				pos${addFiberArgument},
+				totalT
+			);
+			
+			${lightGlsl}
+
+			vec3 color = getColor(pos${addFiberArgument}, globalColor, totalT)
+				* lightIntensity
+				* max(
+					1.0 - float(iteration) / ${ambientOcclusionDenominator},
+					0.0)
+				${doClipBrightening ? "* (1.0 + clipDistance / 5.0)" : ""};
+
+			${fogGlsl}
+		}
+
+		vec3 computeReflection(
+			vec4 startPos,
+			vec4 rayDirectionVec,
+			int startIteration,
+			float startT
+		) {
+			vec3 finalColor = fogColor;
+			
+			float t = 0.0;
+			float totalT = 0.0;
+			
+			float lastTIncrease = 0.0;
+
+			vec3 globalColor = vec3(0.0, 0.0, 0.0);
+
+			${raymarchSetupGlsl ?? ""}
+			
+			for (int iteration = 0; iteration < maxMarches; iteration++)
+			{
+				${geodesicGlsl}
+				
+				float distanceToScene = distanceEstimator(
+					pos${addFiberArgument},
+					totalT
+				);
+				
+				if (distanceToScene < epsilon)
+				{
+					${finalTeleportationGlsl ?? ""}
+
+					if (totalT == 0.0 && clipDistance > 0.0)
+					{
+						totalT = t;
+					}
+					
+					return computeShadingWithoutReflection(
+						pos${addFiberArgument},
+						iteration + startIteration,
+						globalColor,
+						totalT + startT
+					);
+				}
+
+				${updateTGlsl}
+
+				if (t > maxT || totalT > maxT)
+				{
+					return fogColor;
+				}
+			}
+			
+			return fogColor;
+		}
+	` : "";
+	
+	const shader = /* glsl */`
 		precision highp float;
 		
 		varying vec2 uv;
@@ -42,6 +124,7 @@ export function createShader({
 		const float stepFactor = ${stepFactor};
 		const vec3 fogColor = vec3(0.0, 0.0, 0.0);
 		const float fogScaling = .05;
+		const float reflectivity = .2;
 
 		uniform float clipDistance;
 		uniform float fov;
@@ -90,15 +173,39 @@ export function createShader({
 		
 		vec4 getSurfaceNormal(${posSignature}, float totalT)
 		{
-			float xStep1 = distanceEstimator(pos + vec4(epsilon, 0.0, 0.0, 0.0)${addFiberArgument}, totalT);
-			float yStep1 = distanceEstimator(pos + vec4(0.0, epsilon, 0.0, 0.0)${addFiberArgument}, totalT);
-			float zStep1 = distanceEstimator(pos + vec4(0.0, 0.0, epsilon, 0.0)${addFiberArgument}, totalT);
-			float wStep1 = distanceEstimator(pos + vec4(0.0, 0.0, 0.0, epsilon)${addFiberArgument}, totalT);
+			float xStep1 = distanceEstimator(
+				pos + vec4(epsilon, 0.0, 0.0, 0.0)${addFiberArgument},
+				totalT
+			);
+			float yStep1 = distanceEstimator(
+				pos + vec4(0.0, epsilon, 0.0, 0.0)${addFiberArgument},
+				totalT
+			);
+			float zStep1 = distanceEstimator(
+				pos + vec4(0.0, 0.0, epsilon, 0.0)${addFiberArgument},
+				totalT
+			);
+			float wStep1 = distanceEstimator(
+				pos + vec4(0.0, 0.0, 0.0, epsilon)${addFiberArgument},
+				totalT
+			);
 			
-			float xStep2 = distanceEstimator(pos - vec4(epsilon, 0.0, 0.0, 0.0)${addFiberArgument}, totalT);
-			float yStep2 = distanceEstimator(pos - vec4(0.0, epsilon, 0.0, 0.0)${addFiberArgument}, totalT);
-			float zStep2 = distanceEstimator(pos - vec4(0.0, 0.0, epsilon, 0.0)${addFiberArgument}, totalT);
-			float wStep2 = distanceEstimator(pos - vec4(0.0, 0.0, 0.0, epsilon)${addFiberArgument}, totalT);
+			float xStep2 = distanceEstimator(
+				pos - vec4(epsilon, 0.0, 0.0, 0.0)${addFiberArgument},
+				totalT
+			);
+			float yStep2 = distanceEstimator(
+				pos - vec4(0.0, epsilon, 0.0, 0.0)${addFiberArgument},
+				totalT
+			);
+			float zStep2 = distanceEstimator(
+				pos - vec4(0.0, 0.0, epsilon, 0.0)${addFiberArgument},
+				totalT
+			);
+			float wStep2 = distanceEstimator(
+				pos - vec4(0.0, 0.0, 0.0, epsilon)${addFiberArgument},
+				totalT
+			);
 			
 			return normalize(vec4(
 				xStep1 - xStep2,
@@ -107,11 +214,22 @@ export function createShader({
 				wStep1 - wStep2
 			));
 		}
+
+
+
+		${computeReflectionGlsl}
 		
 		
 		
-		vec3 computeShading(${posSignature}, int iteration, vec3 globalColor, float totalT)
-		{
+		vec3 computeShading(
+			${posSignature},
+			// This is the direction in which the ray is marching
+			// at the moment of impact.
+			vec4 rayDirectionVec,
+			int iteration,
+			vec3 globalColor,
+			float totalT
+		) {
 			vec4 surfaceNormal = getSurfaceNormal(pos${addFiberArgument}, totalT);
 			
 			${lightGlsl}
@@ -124,20 +242,31 @@ export function createShader({
 					0.0)
 				${doClipBrightening ? "* (1.0 + clipDistance / 5.0)" : ""};
 
-			//Apply fog.
+			${useReflections ? /* glsl */`
+				vec4 reflectedDirection = reflect(
+					rayDirectionVec * stepFactor,
+					surfaceNormal
+				);
+
+				color = mix(
+					color,
+					computeReflection(
+						pos${addFiberArgument},
+						reflectedDirection,
+						iteration,
+						totalT
+					),
+					reflectivity
+				);
+			` : ""}
+
 			${fogGlsl}
 		}
 		
 		
 		
-		vec3 raymarch(float u, float v)
+		vec3 raymarch(vec4 rayDirectionVec)
 		{
-			vec4 rayDirectionVec = geometryNormalize(
-				forwardVec
-				+ rightVec * u * aspectRatioX * fov
-				+ upVec * v / aspectRatioY * fov
-			);
-
 			vec3 finalColor = fogColor;
 			
 			float t = 0.0;
@@ -146,6 +275,7 @@ export function createShader({
 			float lastTIncrease = 0.0;
 
 			vec4 startPos = cameraPos;
+			vec4 lastPos = cameraPos;
 
 			vec3 globalColor = vec3(0.0, 0.0, 0.0);
 
@@ -155,7 +285,10 @@ export function createShader({
 			{
 				${geodesicGlsl}
 				
-				float distanceToScene = distanceEstimator(pos${addFiberArgument}, totalT);
+				float distanceToScene = distanceEstimator(
+					pos${addFiberArgument},
+					totalT
+				);
 				
 				if (distanceToScene < epsilon)
 				{
@@ -166,10 +299,18 @@ export function createShader({
 						totalT = t;
 					}
 					
-					return computeShading(pos${addFiberArgument}, iteration, globalColor, totalT);
+					return computeShading(
+						pos${addFiberArgument},
+						normalize(pos - lastPos),
+						iteration,
+						globalColor,
+						totalT
+					);
 				}
 
 				${updateTGlsl}
+
+				lastPos = pos;
 
 				if (t > maxT || totalT > maxT)
 				{
@@ -185,9 +326,22 @@ export function createShader({
 		void main(void)
 		{
 			gl_FragColor = vec4(
-				raymarch(uv.x, uv.y),
+				raymarch(
+					geometryNormalize(
+						forwardVec
+						+ rightVec * uv.x * aspectRatioX * fov
+						+ upVec * uv.y / aspectRatioY * fov
+					)
+				),
 				1.0
 			);
 		}
 	`;
+
+	if (window.DEBUG)
+	{
+		console.log(shader);
+	}
+
+	return shader;
 }

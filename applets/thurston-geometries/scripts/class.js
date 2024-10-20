@@ -243,11 +243,6 @@ export class ThurstonGeometry extends Applet
 			updateTGlsl: this.geometryData.updateTGlsl,
 		});
 
-		if (window.DEBUG)
-		{
-			console.log(fragShaderSource);
-		}
-
 		setTimeout(() => window.dispatchEvent(new Event("resize")), 16);
 		
 
