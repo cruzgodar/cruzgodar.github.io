@@ -668,7 +668,10 @@ export class RaymarchApplet extends AnimationFrameApplet
 				` : ""}
 
 				${this.useReflections ? /* glsl */`
-					vec3 reflectedDirection = reflect(normalize(pos - cameraPos) * ${getFloatGlsl(this.stepFactor)}, surfaceNormal);
+					vec3 reflectedDirection = reflect(
+						normalize(pos - cameraPos) * ${getFloatGlsl(this.stepFactor)},
+						surfaceNormal
+					);
 
 					color = mix(
 						color,
@@ -691,7 +694,7 @@ export class RaymarchApplet extends AnimationFrameApplet
 				
 				for (int iteration = 0; iteration < maxMarches; iteration++)
 				{
-					vec3 pos = ${getGeodesicGlsl("cameraPos", "rayDirectionVec")};;
+					vec3 pos = ${getGeodesicGlsl("cameraPos", "rayDirectionVec")};
 					
 					float distanceToScene = distanceEstimator(pos);
 

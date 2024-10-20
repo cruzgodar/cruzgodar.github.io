@@ -25,6 +25,7 @@ export function createShader({
 	const computeReflectionGlsl = useReflections ? /* glsl */`
 		vec3 computeShadingWithoutReflection(
 			${posSignature},
+			float correctionDistance,
 			int iteration,
 			vec3 globalColor,
 			float totalT
@@ -33,6 +34,8 @@ export function createShader({
 				pos${addFiberArgument},
 				totalT
 			);
+
+			pos -= surfaceNormal * correctionDistance;
 			
 			${lightGlsl}
 
@@ -42,7 +45,7 @@ export function createShader({
 					1.0 - float(iteration) / ${ambientOcclusionDenominator},
 					0.0)
 				${doClipBrightening ? "* (1.0 + clipDistance / 5.0)" : ""};
-
+			
 			${fogGlsl}
 		}
 
@@ -83,6 +86,7 @@ export function createShader({
 					
 					return computeShadingWithoutReflection(
 						pos${addFiberArgument},
+						distanceToScene - 2.0 * epsilon,
 						iteration + startIteration,
 						globalColor,
 						totalT + startT
@@ -118,7 +122,7 @@ export function createShader({
 		uniform int resolution;
 		
 		const float pi = ${Math.PI};
-		const float epsilon = 0.00001;
+		const float epsilon = 0.0005;
 		const int maxMarches = ${maxMarches};
 		const float maxT = ${maxT};
 		const float stepFactor = ${stepFactor};
@@ -226,11 +230,14 @@ export function createShader({
 			// This is the direction in which the ray is marching
 			// at the moment of impact.
 			vec4 rayDirectionVec,
+			float correctionDistance,
 			int iteration,
 			vec3 globalColor,
 			float totalT
 		) {
 			vec4 surfaceNormal = getSurfaceNormal(pos${addFiberArgument}, totalT);
+
+			pos -= surfaceNormal * correctionDistance;
 			
 			${lightGlsl}
 
@@ -239,7 +246,8 @@ export function createShader({
 				* lightIntensity
 				* max(
 					1.0 - float(iteration) / ${ambientOcclusionDenominator},
-					0.0)
+					0.0
+				)
 				${doClipBrightening ? "* (1.0 + clipDistance / 5.0)" : ""};
 
 			${useReflections ? /* glsl */`
@@ -302,6 +310,7 @@ export function createShader({
 					return computeShading(
 						pos${addFiberArgument},
 						normalize(pos - lastPos),
+						distanceToScene - 2.0 * epsilon,
 						iteration,
 						globalColor,
 						totalT
