@@ -543,7 +543,7 @@ export class RaymarchApplet extends AnimationFrameApplet
 					vec2 texCoord = (uv + vec2(1.0)) * 0.5;
 					vec4 sample = texture2D(uTexture, texCoord);
 					
-					if (sample.w > 0.0)
+					if (sample.w > 0.2)
 					{
 						vec3 aaSample = (
 							sample.xyz
