@@ -1059,7 +1059,7 @@ export class RaymarchApplet extends AnimationFrameApplet
 	{
 		this.drawFrame();
 		this.wilson.downloadFrame(filename, false);
-		// this.downloadMosaic(filename, 4);
+		// this.downloadMosaic(filename, 8);
 	}
 
 	async downloadMosaic(filename, size)

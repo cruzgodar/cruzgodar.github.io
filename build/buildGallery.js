@@ -17,7 +17,7 @@ async function makeGalleryImage(file)
 		throw new Error(`Could not find ${filename} in gallery/index.htmdl`);
 	}
 
-	await Promise.all([
+	const [, , proc] = await Promise.all([
 		spawn("cwebp", [
 			root + file,
 			"-q",
@@ -44,8 +44,23 @@ async function makeGalleryImage(file)
 			"all",
 			"-o",
 			`${root}gallery/thumbnails/${filename}.webp`,
+		]),
+
+		spawn("identify", [
+			"-verbose",
+			`${root}gallery/thumbnails/${filename}.webp`,
 		])
 	]);
+
+	proc.stdout.on("data", data =>
+	{
+		const profileLine = data.toString().match(/icc:description:\s(.+)/);
+	
+		if (!profileLine || !(profileLine[1].includes("P3")))
+		{
+			console.error(`${filename} is not P3`);
+		}
+	});
 
 	console.log(filename);
 }
@@ -101,26 +116,6 @@ async function testImageData(files)
 		}
 	}
 }
-
-function testColorProfile(file)
-{
-	const thumbnail = file.slice(0, file.lastIndexOf("."));
-
-	const proc = spawnSync("identify", [
-		"-verbose",
-		`${root}gallery/thumbnails/${thumbnail}.webp`,
-	]);
-
-	const output = proc.stdout.toString();
-
-	const profileLine = output.match(/icc:description:\s(.+)/);
-	
-	if (!profileLine || !(profileLine[1].includes("P3")))
-	{
-		console.error(`${thumbnail} is not P3`);
-	}
-}
-
 export async function buildGallery()
 {
 	const proc = spawnSync("ls", [], { cwd: `${root}gallery/full-res/` });
@@ -131,10 +126,7 @@ export async function buildGallery()
 		files.map(file => makeGalleryImage(`gallery/full-res/${file}`))
 	);
 
-	await Promise.all([
-		testImageData(files),
-		files.map(file => testColorProfile(file))
-	]);
+	await testImageData(files);
 }
 
 buildGallery();

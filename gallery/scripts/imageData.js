@@ -234,18 +234,26 @@ export const galleryImageData =
 	{
 		title: "A Kaleidoscopic IFS Fractal",
 
+		parameters: /* html */`
+			Generated from a tetrahedron with scale $1.1679$, $\\theta_x = 1.762$, $\\theta_y = 1.377$, and $\\theta_z = 3.845$
+		`,
+
 		appletLink: "kaleidoscopic-ifs-fractals",
 
-		driveId: "142FfsLHr4aJDbkwH0zPIBFtvtgCqvBgn"
+		driveId: "164SyXm3-le_Le1QuM_mDJoOZLChzTCDD"
 	},
 
 	"kaleidoscopic-ifs-2":
 	{
 		title: "A Kaleidoscopic IFS Fractal",
 
+		parameters: /* html */`
+			Generated from a cube with scale $1.2046$, $\\theta_x = 3.438$, $\\theta_y = 0.336$, and $\\theta_z = 2.396$
+		`,
+
 		appletLink: "kaleidoscopic-ifs-fractals",
 
-		driveId: "10Z3WG23_IowWw81UnvZ3ABnrJpzCVBbL"
+		driveId: "13b99_5HrSgXamfVtAOPz5IGfiSdK19KC"
 	},
 
 	"kicked-rotator":
@@ -299,7 +307,7 @@ export const galleryImageData =
 		title: "A Menger Sponge",
 
 		parameters: /* html */`
-			Generated with scale $2.263$, $\theta_x = 0.776$, $\theta_y = 0.159$, and $\theta_z = 1.477$
+			Generated with scale $2.263$, $\\theta_x = 0.776$, $\\theta_y = 0.159$, and $\\theta_z = 1.477$
 		`,
 
 		appletLink: "menger-sponge",
@@ -312,7 +320,7 @@ export const galleryImageData =
 		title: "A Menger Sponge",
 
 		parameters: /* html */`
-			Generated with scale $2.267$, $\theta_x = 0.923$, $\theta_y = 0.113$, and $\theta_z = 0.957$
+			Generated with scale $2.267$, $\\theta_x = 0.923$, $\\theta_y = 0.113$, and $\\theta_z = 0.957$
 		`,
 
 		appletLink: "menger-sponge",
