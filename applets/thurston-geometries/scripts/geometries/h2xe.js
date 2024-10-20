@@ -58,7 +58,10 @@ class H2xEGeometry extends BaseGeometry
 		));
 		
 		vec4 pos = vec4(
-			cosh(h2Mag * t) * startPos.xyz + sinh(h2Mag * t) * rayDirectionVec.xyz / h2Mag,
+			cosh(h2Mag * t)
+				* startPos.xyz
+			+ sinh(h2Mag * t)
+				* rayDirectionVec.xyz / h2Mag,
 			startPos.w + t * rayDirectionVec.w
 		);
 		
@@ -75,6 +78,26 @@ class H2xEGeometry extends BaseGeometry
 
 	fogGlsl = /* glsl */`
 		return mix(color, fogColor, 1.0 - exp(-totalT * 0.25));
+	`;
+
+	getNormalVecGlsl = /* glsl */`
+		return normalize(vec4(-pos.xy, pos.z, 0.0));
+	`;
+
+	correctPosGlsl = /* glsl */`
+		float h2Mag = sqrt(abs(
+			surfaceNormal.x * surfaceNormal.x
+			+ surfaceNormal.y * surfaceNormal.y
+			- surfaceNormal.z * surfaceNormal.z
+		));
+		
+		pos = vec4(
+			cosh(h2Mag * correctionDistance)
+				* pos.xyz
+			- sinh(h2Mag * correctionDistance)
+				* surfaceNormal.xyz / h2Mag,
+			pos.w - correctionDistance * surfaceNormal.w
+		);
 	`;
 
 	functionGlsl = /* glsl */`

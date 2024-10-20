@@ -92,7 +92,7 @@ class NilGeometry extends BaseGeometry
 	`;
 
 	correctPosGlsl = /* glsl */`
-		// vec4 pos = getUpdatedPos(pos, -surfaceNormal, correctionDistance);
+		vec4 pos = getUpdatedPos(pos, surfaceNormal, correctionDistance);
 	`;
 
 	functionGlsl = /* glsl */`
@@ -636,11 +636,13 @@ const roomsDistances = /* glsl */`
 
 	if (sceneTransition < 0.75)
 	{
-		distance3 = abs(pos.x - 0.5002);
-		distance4 = abs(pos.x + 0.5002);
+		float tolerance = 0.5 + epsilon * 100.0;
 
-		distance5 = abs(pos.y - 0.5002);
-		distance6 = abs(pos.y + 0.5002);
+		distance3 = abs(pos.x - tolerance);
+		distance4 = abs(pos.x + tolerance);
+
+		distance5 = abs(pos.y - tolerance);
+		distance6 = abs(pos.y + tolerance);
 	}
 
 	else

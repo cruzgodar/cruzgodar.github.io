@@ -22,7 +22,7 @@ export function createShader({
 	finalTeleportationGlsl,
 	updateTGlsl,
 
-	useReflections = false,
+	useReflections = true,
 }) {
 	const computeReflectionGlsl = useReflections ? /* glsl */`
 		vec3 computeShadingWithoutReflection(
@@ -58,6 +58,12 @@ export function createShader({
 			int startIteration,
 			float startT
 		) {
+			vec4 manifoldNormal = getNormalVec(startPos);
+
+			rayDirectionVec = stepFactor * normalize(
+				rayDirectionVec - dot(rayDirectionVec, manifoldNormal) * manifoldNormal
+			);
+
 			vec3 finalColor = fogColor;
 			
 			float t = 0.0;
@@ -123,7 +129,7 @@ export function createShader({
 		uniform int resolution;
 		
 		const float pi = ${Math.PI};
-		const float epsilon = 0.0005;
+		const float epsilon = 0.00005;
 		const int maxMarches = ${maxMarches};
 		const float maxT = ${maxT};
 		const float stepFactor = ${stepFactor};
@@ -171,6 +177,10 @@ export function createShader({
 		
 		vec3 getColor(${posSignature}, vec3 globalColor, float totalT)
 		{
+			if (distanceEstimator(pos${addFiberArgument}, totalT) < 0.0)
+			{
+				return vec3(1.0, 0.0, 0.0);
+			}
 			${getColorGlsl}
 		}
 		
@@ -264,7 +274,7 @@ export function createShader({
 
 			${useReflections ? /* glsl */`
 				vec4 reflectedDirection = reflect(
-					rayDirectionVec * stepFactor,
+					rayDirectionVec,
 					surfaceNormal
 				);
 
