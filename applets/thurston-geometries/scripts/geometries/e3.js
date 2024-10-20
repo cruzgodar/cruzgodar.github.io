@@ -85,7 +85,7 @@ const roomsDistances = /* glsl */`
 	{
 		float scale = exp(max(0.2 - sceneTransition, 0.0) * 5.0);
 
-		float effectiveRadius = .5 - .5 / .75 * (1.0 - sceneTransition);
+		float effectiveRadius = .49 - .49 / .75 * (1.0 - sceneTransition);
 
 		sphereDistance = (length(mod(pos.xyz, 2.0) - vec3(1.0, 1.0, 1.0)) - effectiveRadius) * scale;
 	}
