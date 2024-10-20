@@ -1,4 +1,5 @@
 import { Applet, getEqualPixelFullScreen, tempShader } from "../../../scripts/applets/applet.js";
+import { createShader } from "./createShader.js";
 import { SolRooms, SolSpheres } from "./geometries/sol.js";
 import anime from "/scripts/anime.js";
 import { aspectRatio } from "/scripts/src/layout.js";
@@ -242,191 +243,29 @@ export class ThurstonGeometry extends Applet
 			? "vec4 pos, float fiber"
 			: "vec4 pos";
 		
-		const addfiberArgument = this.geometryData.usesFiberComponent ? ", fiber" : "";
+		const addFiberArgument = this.geometryData.usesFiberComponent ? ", fiber" : "";
 
-		const fragShaderSource = /* glsl */`
-			precision highp float;
-			
-			varying vec2 uv;
-			
-			uniform float aspectRatioX;
-			uniform float aspectRatioY;
-			
-			uniform vec4 cameraPos;
-			uniform vec4 normalVec;
-			uniform vec4 upVec;
-			uniform vec4 rightVec;
-			uniform vec4 forwardVec;
-			
-			uniform int resolution;
-			
-			const float pi = ${Math.PI};
-			const float epsilon = 0.00001;
-			const int maxMarches = ${this.geometryData.maxMarches};
-			const float maxT = ${this.geometryData.maxT};
-			const float stepFactor = ${this.geometryData.stepFactor};
-			const vec3 fogColor = vec3(0.0, 0.0, 0.0);
-			const float fogScaling = .05;
-
-			uniform float clipDistance;
-			uniform float fov;
-
-			${this.geometryData.uniformGlsl ?? ""}
-
-			float geometryDot(vec4 v, vec4 w)
-			{
-				${this.geometryData.dotProductGlsl}
-			}
-
-			vec4 geometryNormalize(vec4 dir)
-			{
-				${this.geometryData.normalizeGlsl}
-			}
-
-			${this.geometryData.functionGlsl ?? ""}
-
-
-
-			float getBanding(float amount, float numBands)
-			{
-				return 1.0 - floor(mod(abs(amount) * numBands, 2.0)) * 0.5;
-			}
-
-			vec3 hsv2rgb(vec3 c)
-			{
-				vec4 K = vec4(1.0, 2.0 / 3.0, 1.0 / 3.0, 3.0);
-				vec3 p = abs(fract(c.xxx + K.xyz) * 6.0 - K.www);
-				return c.z * mix(K.xxx, clamp(p - K.xxx, 0.0, 1.0), c.y);
-			}
-			
-			
-			
-			float distanceEstimator(${posSignature}, float totalT)
-			{
-				${this.geometryData.distanceEstimatorGlsl}
-			}
-			
-			vec3 getColor(${posSignature}, vec3 globalColor, float totalT)
-			{
-				${this.geometryData.getColorGlsl}
-			}
-			
-			
-			
-			vec4 getSurfaceNormal(${posSignature}, float totalT)
-			{
-				float xStep1 = distanceEstimator(pos + vec4(epsilon, 0.0, 0.0, 0.0)${addfiberArgument}, totalT);
-				float yStep1 = distanceEstimator(pos + vec4(0.0, epsilon, 0.0, 0.0)${addfiberArgument}, totalT);
-				float zStep1 = distanceEstimator(pos + vec4(0.0, 0.0, epsilon, 0.0)${addfiberArgument}, totalT);
-				float wStep1 = distanceEstimator(pos + vec4(0.0, 0.0, 0.0, epsilon)${addfiberArgument}, totalT);
-				
-				float xStep2 = distanceEstimator(pos - vec4(epsilon, 0.0, 0.0, 0.0)${addfiberArgument}, totalT);
-				float yStep2 = distanceEstimator(pos - vec4(0.0, epsilon, 0.0, 0.0)${addfiberArgument}, totalT);
-				float zStep2 = distanceEstimator(pos - vec4(0.0, 0.0, epsilon, 0.0)${addfiberArgument}, totalT);
-				float wStep2 = distanceEstimator(pos - vec4(0.0, 0.0, 0.0, epsilon)${addfiberArgument}, totalT);
-				
-				return normalize(vec4(
-					xStep1 - xStep2,
-					yStep1 - yStep2,
-					zStep1 - zStep2,
-					wStep1 - wStep2
-				));
-			}
-			
-			
-			
-			vec3 computeShading(${posSignature}, int iteration, vec3 globalColor, float totalT)
-			{
-				vec4 surfaceNormal = getSurfaceNormal(pos${addfiberArgument}, totalT);
-				
-				${this.geometryData.lightGlsl}
-
-				//The last factor adds ambient occlusion.
-				vec3 color = getColor(pos${addfiberArgument}, globalColor, totalT)
-					* lightIntensity
-					* max(
-						1.0 - float(iteration) / ${this.geometryData.ambientOcclusionDenominator},
-						0.0)
-					${this.geometryData.doClipBrightening ? "* (1.0 + clipDistance / 5.0)" : ""};
-
-				//Apply fog.
-				${this.geometryData.fogGlsl}
-			}
-			
-			
-			
-			vec3 raymarch(float u, float v)
-			{
-				vec4 rayDirectionVec = geometryNormalize(
-					forwardVec
-					+ rightVec * u * aspectRatioX * fov
-					+ upVec * v / aspectRatioY * fov
-				);
-
-				vec3 finalColor = fogColor;
-				
-				float t = 0.0;
-				float totalT = 0.0;
-				
-				float lastTIncrease = 0.0;
-
-				vec4 startPos = cameraPos;
-
-				vec3 globalColor = vec3(0.0, 0.0, 0.0);
-
-				${this.geometryData.raymarchSetupGlsl ?? ""}
-				
-				for (int iteration = 0; iteration < maxMarches; iteration++)
-				{
-					${this.geometryData.geodesicGlsl}
-					
-					float distanceToScene = distanceEstimator(pos${addfiberArgument}, totalT);
-					
-					if (distanceToScene < epsilon)
-					{
-						${this.geometryData.finalTeleportationGlsl ?? ""}
-
-						if (totalT == 0.0 && clipDistance > 0.0)
-						{
-							totalT = t;
-						}
-						
-						return computeShading(pos${addfiberArgument}, iteration, globalColor, totalT);
-					}
-
-					${this.geometryData.updateTGlsl}
-
-					if (t > maxT || totalT > maxT)
-					{
-						return fogColor;
-					}
-				}
-				
-				return fogColor;
-			}
-			
-			
-			
-			void main(void)
-			{
-				// float stepSize = 0.5 / 4000.0;
-
-				// gl_FragColor = vec4(
-				// 	.25 * (
-				// 		raymarch(uv.x - stepSize, uv.y - stepSize)
-				// 		+ raymarch(uv.x - stepSize, uv.y + stepSize)
-				// 		+ raymarch(uv.x + stepSize, uv.y - stepSize)
-				// 		+ raymarch(uv.x + stepSize, uv.y + stepSize)
-				// 	),
-				// 	1.0
-				// );
-
-				gl_FragColor = vec4(
-					raymarch(uv.x, uv.y),
-					1.0
-				);
-			}
-		`;
+		const fragShaderSource = createShader({
+			maxMarches: this.geometryData.maxMarches,
+			maxT: this.geometryData.maxT,
+			stepFactor: this.geometryData.stepFactor,
+			uniformGlsl: this.geometryData.uniformGlsl ?? "",
+			dotProductGlsl: this.geometryData.dotProductGlsl,
+			normalizeGlsl: this.geometryData.normalizeGlsl,
+			functionGlsl: this.geometryData.functionGlsl ?? "",
+			posSignature,
+			distanceEstimatorGlsl: this.geometryData.distanceEstimatorGlsl,
+			getColorGlsl: this.geometryData.getColorGlsl,
+			addFiberArgument,
+			lightGlsl: this.geometryData.lightGlsl,
+			ambientOcclusionDenominator: this.geometryData.ambientOcclusionDenominator,
+			doClipBrightening: this.geometryData.doClipBrightening,
+			fogGlsl: this.geometryData.fogGlsl,
+			raymarchSetupGlsl: this.geometryData.raymarchSetupGlsl ?? "",
+			geodesicGlsl: this.geometryData.geodesicGlsl,
+			finalTeleportationGlsl: this.geometryData.finalTeleportationGlsl ?? "",
+			updateTGlsl: this.geometryData.updateTGlsl,
+		});
 
 		if (window.DEBUG)
 		{
