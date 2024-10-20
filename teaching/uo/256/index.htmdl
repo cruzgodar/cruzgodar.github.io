@@ -703,7 +703,7 @@ Welcome to Math 256! We'll use this page for the interactive notes, the homework
 	
 	#. $$1 - \sin(t + y) + y'(-\sin(t + y)) = 0,$$ $$y(0) = 0.$$
 
-	#. $$te^t\sin(y)y' - cos(y) = 0.$$
+	#. $$\sin(y)y' - te^tcos(y) = 0.$$
 	
 	#. $$y' = -\frac{yx^{y - 1}}{x^y\log(x)},$$ $$y(2) = 1.$$
 
