@@ -192,7 +192,6 @@ export default function()
 
 		if (geometryData.maxClipDistance)
 		{
-			console.log(geometryData.maxClipDistance);
 			clipDistanceSlider.setBounds({
 				min: 0,
 				max: geometryData.maxClipDistance
