@@ -22,7 +22,7 @@ export function createShader({
 	finalTeleportationGlsl,
 	updateTGlsl,
 
-	useReflections = true,
+	useReflections = false,
 	antialiasing = false,
 }) {
 	const computeReflectionGlsl = useReflections ? /* glsl */`
@@ -132,7 +132,7 @@ export function createShader({
 				vec4 sample = texture2D(uTexture, texCoord);
 				float stepSize = 2.0 / (float(resolution * 3));
 				
-				if (sample.w > 0.2)
+				if (sample.w > 0.15)
 				{
 					vec3 aaSample = (
 						sample.xyz	
@@ -189,7 +189,7 @@ export function createShader({
 		` : ""}
 		
 		const float pi = ${Math.PI};
-		const float epsilon = 0.0005;
+		const float epsilon = 0.00001;
 		const int maxMarches = ${maxMarches};
 		const float maxT = ${maxT};
 		const float stepFactor = ${stepFactor};
@@ -218,7 +218,7 @@ export function createShader({
 
 		float getBanding(float amount, float numBands)
 		{
-			return 1.0;// - floor(mod(abs(amount) * numBands, 2.0)) * 0.5;
+			return 1.0 - floor(mod(abs(amount) * numBands, 2.0)) * 0.5;
 		}
 
 		vec3 hsv2rgb(vec3 c)
@@ -283,18 +283,12 @@ export function createShader({
 				totalT
 			);
 			
-			vec4 surfaceNormal = normalize(vec4(
+			return normalize(vec4(
 				xStep1 - xStep2,
 				yStep1 - yStep2,
 				zStep1 - zStep2,
 				wStep1 - wStep2
 			));
-
-			vec4 manifoldNormal = getNormalVec(pos${addFiberArgument});
-
-			return normalize(
-				surfaceNormal - dot(surfaceNormal, manifoldNormal) * manifoldNormal
-			);
 		}
 
 

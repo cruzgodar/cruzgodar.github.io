@@ -14,7 +14,7 @@ const elementSelectorsWithScale =
 [
 	["#logo img", 1.05, () => false],
 	[".text-button:not(.dropdown)", 1.075, () => true],
-	[".text-button.dropdown", 1.05, () => false],
+	[".text-button.dropdown", 1.075, () => false],
 	[".checkbox-container", 1.1, () => true],
 	[".image-link a[data-card-id] img", 1.05, () => true],
 	[".image-link a:not([data-card-id]) img", 1.05, () => false],

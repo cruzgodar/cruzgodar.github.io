@@ -581,7 +581,7 @@ export class RaymarchApplet extends AnimationFrameApplet
 					vec2 texCoord = (uv + vec2(1.0)) * 0.5;
 					vec4 sample = texture2D(uTexture, texCoord);
 					
-					if (sample.w > 0.2)
+					if (sample.w > 0.15)
 					{
 						vec3 aaSample = (
 							sample.xyz
@@ -1060,9 +1060,9 @@ export class RaymarchApplet extends AnimationFrameApplet
 
 	downloadFrame(filename)
 	{
-		// this.drawFrame();
-		// this.wilson.downloadFrame(filename, false);
-		this.downloadMosaic(filename, 4);
+		this.drawFrame();
+		this.wilson.downloadFrame(filename, false);
+		// this.downloadMosaic(filename, 4);
 	}
 
 	async downloadMosaic(filename, size)
