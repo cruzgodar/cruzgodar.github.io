@@ -14,7 +14,8 @@ const excludeFromBuild =
 	/scripts\/anime\.js/,
 	/scripts\/math\.js/,
 	/teaching\/uo\/342\/extra\/eigenfaces-demo\/scripts\/data\.js/,
-	/teaching\/uo\/342\/notes\/9-singular-value-decompositions\/scripts\/data.js/
+	/teaching\/uo\/342\/notes\/9-singular-value-decompositions\/scripts\/data.js/,
+	/teaching\/uo\/342\/notes\/9-singular-value-decompositions\/scripts\/vData.js/
 ];
 
 const options =
@@ -121,6 +122,13 @@ async function buildFile(file)
 			await buildCSSFile(file);
 		}
 	}
+
+	else if (extension === "pdf")
+	{
+		console.log(file);
+
+		await buildPDFFile(file);
+	}
 }
 
 async function buildJSFile(file)
@@ -155,6 +163,33 @@ function buildCSSFile(file)
 		root + file,
 		"--output",
 		root + outputFile
+	]);
+}
+
+function buildPDFFile(file)
+{
+	const index = file.lastIndexOf("/");
+	const outputFile = (index === -1 ? file : file.slice(0, index + 1)) + "cover.webp";
+
+	spawnSync("magick", [
+		`${root}${file}[0]`,
+		"-resize",
+		"2000x",
+		"-gravity",
+		"north",
+		"-background",
+		"white",
+		"-flatten",
+		"-crop",
+		"2000x2000+0+0",
+		"-morphology",
+		"Erode",
+		"Diamond",
+		"-resize",
+		"500x500",
+		"-quality",
+		"85",
+		`${root}${outputFile}`
 	]);
 }
 
