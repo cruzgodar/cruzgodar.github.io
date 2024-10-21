@@ -87,6 +87,14 @@ class NilGeometry extends BaseGeometry
 		return mix(color, fogColor, 1.0 - exp(-totalT * 0.2));
 	`;
 
+	getNormalVecGlsl = /* glsl */`
+		return getTransformationMatrix(pos) * vec4(0.0, 0.0, 0.0, 0.0);
+	`;
+
+	correctPosGlsl = /* glsl */`
+		vec4 pos = getUpdatedPos(pos, surfaceNormal, correctionDistance);
+	`;
+
 	functionGlsl = /* glsl */`
 		mat4 getTransformationMatrix(vec4 pos)
 		{
@@ -628,11 +636,13 @@ const roomsDistances = /* glsl */`
 
 	if (sceneTransition < 0.75)
 	{
-		distance3 = abs(pos.x - 0.5002);
-		distance4 = abs(pos.x + 0.5002);
+		float tolerance = 0.5 + epsilon * 100.0;
 
-		distance5 = abs(pos.y - 0.5002);
-		distance6 = abs(pos.y + 0.5002);
+		distance3 = abs(pos.x - tolerance);
+		distance4 = abs(pos.x + tolerance);
+
+		distance5 = abs(pos.y - tolerance);
+		distance6 = abs(pos.y + tolerance);
 	}
 
 	else
@@ -710,12 +720,27 @@ export class NilRooms extends NilGeometry
 
 	uniformNames = ["sceneTransition", "wallThickness", "baseColor"];
 
-	updateUniforms(gl, uniformList)
+	updateUniforms(gl, uniformList, programIndex)
 	{
-		gl.uniform1f(uniformList.sceneTransition, this.sliderValues.sceneTransition);
-		gl.uniform1f(uniformList.wallThickness, .703 - this.sliderValues.wallThickness / 10);
-		gl.uniform1f(uniformList.clipDistance, this.sliderValues.clipDistance);
-		gl.uniform3fv(uniformList.baseColor, this.baseColor);
+		gl.uniform1f(
+			uniformList.sceneTransition[programIndex],
+			this.sliderValues.sceneTransition
+		);
+
+		gl.uniform1f(
+			uniformList.wallThickness[programIndex],
+			.703 - this.sliderValues.wallThickness / 10
+		);
+
+		gl.uniform1f(
+			uniformList.clipDistance[programIndex],
+			this.sliderValues.clipDistance
+		);
+
+		gl.uniform3fv(
+			uniformList.baseColor[programIndex],
+			this.baseColor
+		);
 	}
 
 	uiElementsUsed = "#wall-thickness-slider, #switch-scene-button, #clip-distance-slider";

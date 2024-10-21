@@ -31,6 +31,44 @@ const setUniformFunctions = {
 	]),
 };
 
+export const edgeDetectShader = /* glsl */`
+	precision highp float;
+	
+	varying vec2 uv;
+
+	uniform sampler2D uTexture;
+
+	uniform float stepSize;
+
+	float getSampleLuminanceDelta(vec3 color, vec2 texCoord)
+	{
+		vec3 sample = texture2D(uTexture, texCoord).xyz;
+		return 0.299 * abs(sample.x - color.x)
+			+ 0.587 * abs(sample.y - color.y)
+			+ 0.114 * abs(sample.z - color.z);
+	}
+
+	void main(void)
+	{
+		vec2 texCoord = (uv + vec2(1.0)) * 0.5;
+		vec3 sample = texture2D(uTexture, texCoord).xyz;
+		float sampleN = getSampleLuminanceDelta(sample, texCoord + vec2(0.0, stepSize));
+		float sampleS = getSampleLuminanceDelta(sample, texCoord + vec2(0.0, -stepSize));
+		float sampleE = getSampleLuminanceDelta(sample, texCoord + vec2(stepSize, 0.0));
+		float sampleW = getSampleLuminanceDelta(sample, texCoord + vec2(-stepSize, 0.0));
+
+		float luminance = max(
+			max(sampleN, sampleS),
+			max(sampleE, sampleW)
+		);
+		
+		gl_FragColor = vec4(
+			texture2D(uTexture, texCoord).xyz,
+			luminance
+		);
+	}
+`;
+
 export class RaymarchApplet extends AnimationFrameApplet
 {
 	movingSpeed = .1;
@@ -297,7 +335,7 @@ export class RaymarchApplet extends AnimationFrameApplet
 
 		if (this.useAntialiasing)
 		{
-			this.wilson.render.loadNewShader(this.getEdgeDetectShader());
+			this.wilson.render.loadNewShader(edgeDetectShader);
 
 			this.wilson.render.initUniforms([
 				"stepSize",
@@ -543,7 +581,7 @@ export class RaymarchApplet extends AnimationFrameApplet
 					vec2 texCoord = (uv + vec2(1.0)) * 0.5;
 					vec4 sample = texture2D(uTexture, texCoord);
 					
-					if (sample.w > 0.2)
+					if (sample.w > 0.15)
 					{
 						vec3 aaSample = (
 							sample.xyz
@@ -668,7 +706,10 @@ export class RaymarchApplet extends AnimationFrameApplet
 				` : ""}
 
 				${this.useReflections ? /* glsl */`
-					vec3 reflectedDirection = reflect(normalize(pos - cameraPos) * ${getFloatGlsl(this.stepFactor)}, surfaceNormal);
+					vec3 reflectedDirection = reflect(
+						normalize(pos - cameraPos) * ${getFloatGlsl(this.stepFactor)},
+						surfaceNormal
+					);
 
 					color = mix(
 						color,
@@ -691,7 +732,7 @@ export class RaymarchApplet extends AnimationFrameApplet
 				
 				for (int iteration = 0; iteration < maxMarches; iteration++)
 				{
-					vec3 pos = ${getGeodesicGlsl("cameraPos", "rayDirectionVec")};;
+					vec3 pos = ${getGeodesicGlsl("cameraPos", "rayDirectionVec")};
 					
 					float distanceToScene = distanceEstimator(pos);
 
@@ -729,49 +770,6 @@ export class RaymarchApplet extends AnimationFrameApplet
 		}
 
 		return shader;
-	}
-
-
-
-	getEdgeDetectShader()
-	{
-		return /* glsl */`
-			precision highp float;
-			
-			varying vec2 uv;
-
-			uniform sampler2D uTexture;
-
-			uniform float stepSize;
-
-			float getSampleLuminanceDelta(vec3 color, vec2 texCoord)
-			{
-				vec3 sample = texture2D(uTexture, texCoord).xyz;
-				return 0.299 * abs(sample.x - color.x)
-					+ 0.587 * abs(sample.y - color.y)
-					+ 0.114 * abs(sample.z - color.z);
-			}
-
-			void main(void)
-			{
-				vec2 texCoord = (uv + vec2(1.0)) * 0.5;
-				vec3 sample = texture2D(uTexture, texCoord).xyz;
-				float sampleN = getSampleLuminanceDelta(sample, texCoord + vec2(0.0, stepSize));
-				float sampleS = getSampleLuminanceDelta(sample, texCoord + vec2(0.0, -stepSize));
-				float sampleE = getSampleLuminanceDelta(sample, texCoord + vec2(stepSize, 0.0));
-				float sampleW = getSampleLuminanceDelta(sample, texCoord + vec2(-stepSize, 0.0));
-
-				float luminance = max(
-					max(sampleN, sampleS),
-					max(sampleE, sampleW)
-				);
-				
-				gl_FragColor = vec4(
-					texture2D(uTexture, texCoord).xyz,
-					luminance
-				);
-			}
-		`;
 	}
 
 
@@ -835,7 +833,7 @@ export class RaymarchApplet extends AnimationFrameApplet
 
 		if (this.useAntialiasing)
 		{
-			this.wilson.render.loadNewShader(this.getEdgeDetectShader());
+			this.wilson.render.loadNewShader(edgeDetectShader);
 
 			this.wilson.render.initUniforms([
 				"stepSize",
@@ -1062,9 +1060,9 @@ export class RaymarchApplet extends AnimationFrameApplet
 
 	downloadFrame(filename)
 	{
-		// this.drawFrame();
-		// this.wilson.downloadFrame(filename, false);
-		this.downloadMosaic(filename, 8);
+		this.drawFrame();
+		this.wilson.downloadFrame(filename, false);
+		// this.downloadMosaic(filename, 4);
 	}
 
 	async downloadMosaic(filename, size)

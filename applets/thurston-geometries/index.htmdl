@@ -21,6 +21,10 @@ This applet was a mathematically and computationally grueling project that spann
 	fov
 ###
 
+### checkboxes
+	antialiasing
+###
+
 ### buttons
 	switch-scene
 ###

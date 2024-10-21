@@ -5,13 +5,30 @@ export class S2xEGeometry extends BaseGeometry
 {
 	geodesicGlsl = /* glsl */`
 		vec4 pos = vec4(
-			cos(length(rayDirectionVec.xyz) * t) * startPos.xyz + sin(length(rayDirectionVec.xyz) * t) * normalize(rayDirectionVec.xyz),
+			cos(length(rayDirectionVec.xyz) * t)
+				* startPos.xyz
+			+ sin(length(rayDirectionVec.xyz) * t)
+				* normalize(rayDirectionVec.xyz),
 			startPos.w + t * rayDirectionVec.w
 		);
 	`;
 
 	fogGlsl = /* glsl */`
 		return mix(color, fogColor, 1.0 - exp(-totalT * fogScaling * 1.0));
+	`;
+
+	getNormalVecGlsl = /* glsl */`
+		return normalize(vec4(-pos.xyz, 0.0));
+	`;
+
+	correctPosGlsl = /* glsl */`
+		pos = vec4(
+			cos(length(surfaceNormal.xyz) * correctionDistance)
+				* pos.xyz
+			- sin(length(surfaceNormal.xyz) * correctionDistance)
+				* normalize(surfaceNormal.xyz),
+			pos.w - correctionDistance * surfaceNormal.w
+		);
 	`;
 
 	correctPosition(pos)
@@ -322,13 +339,24 @@ export class S2xERooms extends S2xEGeometry
 
 	uniformNames = ["sceneTransition", "wallThickness"];
 
-	updateUniforms(gl, uniformList)
+	updateUniforms(gl, uniformList, programIndex)
 	{
 		const wallThickness = .9557 - this.sliderValues.wallThickness / 10;
 
-		gl.uniform1f(uniformList.sceneTransition, this.sliderValues.sceneTransition);
-		gl.uniform1f(uniformList.clipDistance, this.sliderValues.clipDistance);
-		gl.uniform1f(uniformList.wallThickness, wallThickness);
+		gl.uniform1f(
+			uniformList.sceneTransition[programIndex],
+			this.sliderValues.sceneTransition
+		);
+
+		gl.uniform1f(
+			uniformList.clipDistance[programIndex],
+			this.sliderValues.clipDistance
+		);
+
+		gl.uniform1f(
+			uniformList.wallThickness[programIndex],
+			wallThickness
+		);
 	}
 
 	uiElementsUsed = "#wall-thickness-slider, #switch-scene-button, #clip-distance-slider";

@@ -85,7 +85,7 @@ const roomsDistances = /* glsl */`
 	{
 		float scale = exp(max(0.2 - sceneTransition, 0.0) * 5.0);
 
-		float effectiveRadius = .5 - .5 / .75 * (1.0 - sceneTransition);
+		float effectiveRadius = .49 - .49 / .75 * (1.0 - sceneTransition);
 
 		sphereDistance = (length(mod(pos.xyz, 2.0) - vec3(1.0, 1.0, 1.0)) - effectiveRadius) * scale;
 	}
@@ -149,13 +149,24 @@ export class E3Rooms extends E3Geometry
 
 	uniformNames = ["sceneTransition", "wallThickness"];
 
-	updateUniforms(gl, uniformList)
+	updateUniforms(gl, uniformList, programIndex)
 	{
 		const wallThickness = 1.5 - (this.sliderValues.wallThickness + .85) / 2 * .2;
 
-		gl.uniform1f(uniformList.sceneTransition, this.sliderValues.sceneTransition);
-		gl.uniform1f(uniformList.wallThickness, wallThickness);
-		gl.uniform1f(uniformList.clipDistance, this.sliderValues.clipDistance);
+		gl.uniform1f(
+			uniformList.sceneTransition[programIndex],
+			this.sliderValues.sceneTransition
+		);
+		
+		gl.uniform1f(
+			uniformList.wallThickness[programIndex],
+			wallThickness
+		);
+		
+		gl.uniform1f(
+			uniformList.clipDistance[programIndex],
+			this.sliderValues.clipDistance
+		);
 	}
 
 	uiElementsUsed = "#wall-thickness-slider, #switch-scene-button, #clip-distance-slider";

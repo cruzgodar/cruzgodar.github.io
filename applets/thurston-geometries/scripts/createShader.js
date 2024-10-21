@@ -6,6 +6,7 @@ export function createShader({
 	uniformGlsl,
 	dotProductGlsl,
 	normalizeGlsl,
+	getNormalVecGlsl,
 	functionGlsl,
 	posSignature,
 	distanceEstimatorGlsl,
@@ -17,14 +18,17 @@ export function createShader({
 	fogGlsl,
 	raymarchSetupGlsl,
 	geodesicGlsl,
+	correctPosGlsl,
 	finalTeleportationGlsl,
 	updateTGlsl,
 
 	useReflections = false,
+	antialiasing = false,
 }) {
 	const computeReflectionGlsl = useReflections ? /* glsl */`
 		vec3 computeShadingWithoutReflection(
 			${posSignature},
+			float correctionDistance,
 			int iteration,
 			vec3 globalColor,
 			float totalT
@@ -33,6 +37,8 @@ export function createShader({
 				pos${addFiberArgument},
 				totalT
 			);
+
+			${correctPosGlsl}
 			
 			${lightGlsl}
 
@@ -42,24 +48,29 @@ export function createShader({
 					1.0 - float(iteration) / ${ambientOcclusionDenominator},
 					0.0)
 				${doClipBrightening ? "* (1.0 + clipDistance / 5.0)" : ""};
-
+			
 			${fogGlsl}
 		}
 
 		vec3 computeReflection(
 			vec4 startPos,
 			vec4 rayDirectionVec,
+			vec3 globalColor,
 			int startIteration,
 			float startT
 		) {
+			vec4 manifoldNormal = getNormalVec(startPos);
+
+			rayDirectionVec = stepFactor * normalize(
+				rayDirectionVec - dot(rayDirectionVec, manifoldNormal) * manifoldNormal
+			);
+
 			vec3 finalColor = fogColor;
 			
 			float t = 0.0;
 			float totalT = 0.0;
 			
 			float lastTIncrease = 0.0;
-
-			vec3 globalColor = vec3(0.0, 0.0, 0.0);
 
 			${raymarchSetupGlsl ?? ""}
 			
@@ -83,6 +94,7 @@ export function createShader({
 					
 					return computeShadingWithoutReflection(
 						pos${addFiberArgument},
+						distanceToScene - 2.0 * epsilon,
 						iteration + startIteration,
 						globalColor,
 						totalT + startT
@@ -100,11 +112,66 @@ export function createShader({
 			return fogColor;
 		}
 	` : "";
+
+	const mainFunctionGlsl = antialiasing
+		? /* glsl */`${""}
+			vec3 raymarchHelper(vec2 uvAdjust)
+			{
+				return raymarch(
+					geometryNormalize(
+						forwardVec
+						+ rightVec * (uvScale * (uv.x + uvAdjust.x) + uvCenter.x) * aspectRatioX * fov
+						+ upVec * (uvScale * (uv.y + uvAdjust.y) + uvCenter.y) / aspectRatioY * fov
+					)
+				);
+			}
+			
+			void main(void)
+			{
+				vec2 texCoord = (uv + vec2(1.0)) * 0.5;
+				vec4 sample = texture2D(uTexture, texCoord);
+				float stepSize = 2.0 / (float(resolution * 3));
+				
+				if (sample.w > 0.15)
+				{
+					vec3 aaSample = (
+						sample.xyz	
+						+ raymarchHelper(vec2(stepSize, 0.0))
+						+ raymarchHelper(vec2(0.0, stepSize))
+						+ raymarchHelper(vec2(-stepSize, 0.0))
+						+ raymarchHelper(vec2(0.0, -stepSize))
+					) / 5.0;
+					
+					gl_FragColor = vec4(aaSample, 1.0);
+					return;
+				}
+
+				gl_FragColor = vec4(sample.xyz, 1.0);
+			}
+		`
+		: /* glsl */`${""}
+			void main(void)
+			{
+				gl_FragColor = vec4(
+					raymarch(
+						geometryNormalize(
+							forwardVec
+							+ rightVec * (uvScale * uv.x + uvCenter.x) * aspectRatioX * fov
+							+ upVec * (uvScale * uv.y + uvCenter.y) / aspectRatioY * fov
+						)
+					),
+					1.0
+				);
+			}
+		`;
 	
 	const shader = /* glsl */`
 		precision highp float;
 		
 		varying vec2 uv;
+
+		uniform float uvScale;
+		uniform vec2 uvCenter;
 		
 		uniform float aspectRatioX;
 		uniform float aspectRatioY;
@@ -116,6 +183,10 @@ export function createShader({
 		uniform vec4 forwardVec;
 		
 		uniform int resolution;
+
+		${antialiasing ? /* glsl */`
+			uniform sampler2D uTexture;
+		` : ""}
 		
 		const float pi = ${Math.PI};
 		const float epsilon = 0.00001;
@@ -170,6 +241,11 @@ export function createShader({
 		}
 		
 		
+
+		vec4 getNormalVec(${posSignature})
+		{
+			${getNormalVecGlsl}
+		}
 		
 		vec4 getSurfaceNormal(${posSignature}, float totalT)
 		{
@@ -226,11 +302,14 @@ export function createShader({
 			// This is the direction in which the ray is marching
 			// at the moment of impact.
 			vec4 rayDirectionVec,
+			float correctionDistance,
 			int iteration,
 			vec3 globalColor,
 			float totalT
 		) {
 			vec4 surfaceNormal = getSurfaceNormal(pos${addFiberArgument}, totalT);
+
+			${correctPosGlsl}
 			
 			${lightGlsl}
 
@@ -239,12 +318,13 @@ export function createShader({
 				* lightIntensity
 				* max(
 					1.0 - float(iteration) / ${ambientOcclusionDenominator},
-					0.0)
+					0.0
+				)
 				${doClipBrightening ? "* (1.0 + clipDistance / 5.0)" : ""};
 
 			${useReflections ? /* glsl */`
 				vec4 reflectedDirection = reflect(
-					rayDirectionVec * stepFactor,
+					rayDirectionVec,
 					surfaceNormal
 				);
 
@@ -253,6 +333,7 @@ export function createShader({
 					computeReflection(
 						pos${addFiberArgument},
 						reflectedDirection,
+						globalColor,
 						iteration,
 						totalT
 					),
@@ -302,6 +383,7 @@ export function createShader({
 					return computeShading(
 						pos${addFiberArgument},
 						normalize(pos - lastPos),
+						distanceToScene - 2.0 * epsilon,
 						iteration,
 						globalColor,
 						totalT
@@ -323,19 +405,7 @@ export function createShader({
 		
 		
 		
-		void main(void)
-		{
-			gl_FragColor = vec4(
-				raymarch(
-					geometryNormalize(
-						forwardVec
-						+ rightVec * uv.x * aspectRatioX * fov
-						+ upVec * uv.y / aspectRatioY * fov
-					)
-				),
-				1.0
-			);
-		}
+		${mainFunctionGlsl}
 	`;
 
 	if (window.DEBUG)

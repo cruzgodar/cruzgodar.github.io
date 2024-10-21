@@ -1077,9 +1077,12 @@ export class SL2RAxes extends SL2RGeometry
 
 	uniformNames = ["cameraFiber"];
 
-	updateUniforms(gl, uniformList)
+	updateUniforms(gl, uniformList, programIndex)
 	{
-		gl.uniform1f(uniformList.cameraFiber, this.cameraFiber);
+		gl.uniform1f(
+			uniformList.cameraFiber[programIndex],
+			this.cameraFiber
+		);
 	}
 }
 
@@ -1147,12 +1150,27 @@ export class SL2RRooms extends SL2RGeometry
 
 	uniformNames = ["cameraFiber", "wallThickness", "baseColor"];
 
-	updateUniforms(gl, uniformList)
+	updateUniforms(gl, uniformList, programIndex)
 	{
-		gl.uniform1f(uniformList.cameraFiber, this.cameraFiber);
-		gl.uniform1f(uniformList.wallThickness, 1.85 - this.sliderValues.wallThickness);
-		gl.uniform1f(uniformList.clipDistance, this.sliderValues.clipDistance);
-		gl.uniform3fv(uniformList.baseColor, this.baseColor);
+		gl.uniform1f(
+			uniformList.cameraFiber[programIndex],
+			this.cameraFiber
+		);
+
+		gl.uniform1f(
+			uniformList.wallThickness[programIndex],
+			1.85 - this.sliderValues.wallThickness
+		);
+
+		gl.uniform1f(
+			uniformList.clipDistance[programIndex],
+			this.sliderValues.clipDistance
+		);
+
+		gl.uniform3fv(
+			uniformList.baseColor[programIndex],
+			this.baseColor
+		);
 	}
 
 	uiElementsUsed = "#wall-thickness-slider";
@@ -1268,9 +1286,16 @@ export class SL2RSpheres extends SL2RGeometry
 
 	uniformNames = ["cameraFiber", "baseColor"];
 
-	updateUniforms(gl, uniformList)
+	updateUniforms(gl, uniformList, programIndex)
 	{
-		gl.uniform1f(uniformList.cameraFiber, this.cameraFiber);
-		gl.uniform3fv(uniformList.baseColor, this.baseColor);
+		gl.uniform1f(
+			uniformList.cameraFiber[programIndex],
+			this.cameraFiber
+		);
+
+		gl.uniform3fv(
+			uniformList.baseColor[programIndex],
+			this.baseColor
+		);
 	}
 }

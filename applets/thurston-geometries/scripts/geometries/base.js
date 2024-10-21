@@ -22,6 +22,15 @@ export class BaseGeometry
 		t += lastTIncrease;
 	`;
 
+	getNormalVecGlsl = /* glsl */`
+		return vec4(0.0, 0.0, 0.0, 1.0);
+	`;
+
+	// Given pos, move it -correctionDistance in the direction of surfaceNormal.
+	correctPosGlsl = /* glsl */`
+		pos -= surfaceNormal * correctionDistance;
+	`;
+
 	maxMarches = "200";
 	maxT = "50.0";
 	ambientOcclusionDenominator = "100.0";

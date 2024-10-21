@@ -58,7 +58,10 @@ class H2xEGeometry extends BaseGeometry
 		));
 		
 		vec4 pos = vec4(
-			cosh(h2Mag * t) * startPos.xyz + sinh(h2Mag * t) * rayDirectionVec.xyz / h2Mag,
+			cosh(h2Mag * t)
+				* startPos.xyz
+			+ sinh(h2Mag * t)
+				* rayDirectionVec.xyz / h2Mag,
 			startPos.w + t * rayDirectionVec.w
 		);
 		
@@ -75,6 +78,26 @@ class H2xEGeometry extends BaseGeometry
 
 	fogGlsl = /* glsl */`
 		return mix(color, fogColor, 1.0 - exp(-totalT * 0.25));
+	`;
+
+	getNormalVecGlsl = /* glsl */`
+		return normalize(vec4(-pos.xy, pos.z, 0.0));
+	`;
+
+	correctPosGlsl = /* glsl */`
+		float h2Mag = sqrt(abs(
+			surfaceNormal.x * surfaceNormal.x
+			+ surfaceNormal.y * surfaceNormal.y
+			- surfaceNormal.z * surfaceNormal.z
+		));
+		
+		pos = vec4(
+			cosh(h2Mag * correctionDistance)
+				* pos.xyz
+			- sinh(h2Mag * correctionDistance)
+				* surfaceNormal.xyz / h2Mag,
+			pos.w - correctionDistance * surfaceNormal.w
+		);
 	`;
 
 	functionGlsl = /* glsl */`
@@ -577,15 +600,29 @@ export class H2xERooms extends H2xEGeometry
 
 	uniformNames = ["sceneTransition", "wallThickness", "baseColor"];
 
-	updateUniforms(gl, uniformList)
+	updateUniforms(gl, uniformList, programIndex)
 	{
-		gl.uniform1f(uniformList.sceneTransition, this.sliderValues.sceneTransition);
+		gl.uniform1f(
+			uniformList.sceneTransition[programIndex],
+			this.sliderValues.sceneTransition
+		);
 
 		const wallThickness = 1.145 - this.sliderValues.wallThickness / 10;
 
-		gl.uniform1f(uniformList.wallThickness, wallThickness);
-		gl.uniform1f(uniformList.clipDistance, this.sliderValues.clipDistance);
-		gl.uniform3fv(uniformList.baseColor, this.baseColor);
+		gl.uniform1f(
+			uniformList.wallThickness[programIndex],
+			wallThickness
+		);
+
+		gl.uniform1f(
+			uniformList.clipDistance[programIndex],
+			this.sliderValues.clipDistance
+		);
+
+		gl.uniform3fv(
+			uniformList.baseColor[programIndex],
+			this.baseColor
+		);
 	}
 
 	uiElementsUsed = "#wall-thickness-slider, #switch-scene-button, #clip-distance-slider";
