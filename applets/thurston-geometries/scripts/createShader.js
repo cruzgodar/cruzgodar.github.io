@@ -308,8 +308,6 @@ export function createShader({
 			float totalT
 		) {
 			vec4 surfaceNormal = getSurfaceNormal(pos${addFiberArgument}, totalT);
-
-			${correctPosGlsl}
 			
 			${lightGlsl}
 
