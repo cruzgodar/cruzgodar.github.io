@@ -625,6 +625,154 @@ export class ThurstonGeometry extends Applet
 		this.needNewFrame = true;
 		this.drawFrame();
 		this.wilson.downloadFrame(filename, false);
+
+		// this.downloadMosaic(filename, 8);
+	}
+
+	async downloadMosaic(filename, size)
+	{
+		this.wilson.gl.uniform1f(this.wilson.uniforms.uvScale[0], 1 / size);
+
+		if (this.useAntialiasing)
+		{
+			this.wilson.gl.useProgram(this.wilson.render.shaderPrograms[2]);
+			this.wilson.gl.uniform1f(this.wilson.uniforms.uvScale[2], 1 / size);
+			this.wilson.gl.useProgram(this.wilson.render.shaderPrograms[0]);
+		}
+
+		const centerPoints = [];
+		for (let i = 0; i < size; i++)
+		{
+			centerPoints.push(-1 + (1 + 2 * i) / size);
+		}
+		const canvases = [];
+
+		for (let i = 0; i < size; i++)
+		{
+			canvases.push([]);
+
+			for (let j = 0; j < size; j++)
+			{
+				canvases[i].push(document.createElement("canvas"));
+				canvases[i][j].width = this.resolution;
+				canvases[i][j].height = this.resolution;
+			}
+		}
+
+
+
+		const combineCanvas = async () =>
+		{
+			const combinedCanvas = document.createElement("canvas");
+			combinedCanvas.width = this.resolution * size;
+			combinedCanvas.height = this.resolution * size;
+			const combinedCtx = combinedCanvas.getContext("2d", { colorSpace: "display-p3" });
+
+			for (let i = 0; i < size; i++)
+			{
+				for (let j = 0; j < size; j++)
+				{
+					combinedCtx.drawImage(
+						canvases[i][j],
+						i * this.resolution,
+						j * this.resolution
+					);
+				}
+			}
+
+			combinedCtx.translate(0, this.resolution * size);
+			combinedCtx.scale(1, -1);
+
+			combinedCtx.drawImage(
+				combinedCanvas,
+				0,
+				0
+			);
+
+			combinedCanvas.toBlob((blob) =>
+			{
+				const link = document.createElement("a");
+				link.href = URL.createObjectURL(blob);
+				link.download = filename;
+				link.click();
+			});
+
+			await new Promise(resolve => setTimeout(resolve, 100));
+
+			this.wilson.gl.uniform1f(this.wilson.uniforms.uvScale[0], 1);
+			this.wilson.gl.uniform2fv(this.wilson.uniforms.uvCenter[0], [0, 0]);
+
+			if (this.useAntialiasing)
+			{
+				this.wilson.gl.useProgram(this.wilson.render.shaderPrograms[2]);
+
+				this.wilson.gl.uniform1f(this.wilson.uniforms.uvScale[2], 1);
+				this.wilson.gl.uniform2fv(this.wilson.uniforms.uvCenter[2], [0, 0]);
+
+				this.wilson.gl.useProgram(this.wilson.render.shaderPrograms[0]);
+			}
+
+			this.needNewFrame = true;
+		};
+
+
+
+		let i = 0;
+		let j = 0;
+
+		const drawMosaicPart = async () =>
+		{
+			const ctx = canvases[i][j].getContext("2d", { colorSpace: "display-p3" });
+
+			this.wilson.gl.uniform2fv(
+				this.wilson.uniforms.uvCenter[0],
+				[centerPoints[i], centerPoints[j]]
+			);
+
+			if (this.useAntialiasing)
+			{
+				this.wilson.gl.useProgram(this.wilson.render.shaderPrograms[2]);
+
+				this.wilson.gl.uniform2fv(
+					this.wilson.uniforms.uvCenter[2],
+					[centerPoints[i], centerPoints[j]]
+				);
+
+				this.wilson.gl.useProgram(this.wilson.render.shaderPrograms[0]);
+			}
+
+			this.needNewFrame = true;
+			this.drawFrame();
+
+			const imageData = new ImageData(
+				new Uint8ClampedArray(this.wilson.render.getPixelData()),
+				this.resolution,
+				this.resolution
+			);
+
+			ctx.putImageData(imageData, 0, 0);
+
+			await new Promise(resolve => setTimeout(resolve, 500));
+
+			j++;
+			if (j === size)
+			{
+				j = 0;
+				i++;
+			}
+
+			if (i !== size)
+			{
+				requestAnimationFrame(drawMosaicPart);
+			}
+
+			else
+			{
+				combineCanvas();
+			}
+		};
+
+		requestAnimationFrame(drawMosaicPart);
 	}
 
 
