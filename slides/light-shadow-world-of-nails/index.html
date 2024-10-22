@@ -37,10 +37,26 @@
 			<p class="lapsa-align-bottom">Made with <a href="/about/index.html"><img class="inline-image" src="/graphics/general-icons/heart.webp"></img></a> and <a href="/slides/lapsa/index.html"><img class="inline-image" src="/graphics/general-icons/lapsa.webp"></img></a></p>
 		</div>
 
-		<div id="3d-worlds">
+		<div>
 			<h1>Rendering 3D Worlds</h1>
 			
-			<p class="build"></p>
+			<p class="build">Making a computer make images isn&#x2019;t easy at the best of times, but 3D graphics are a substantial step up in difficulty. Balancing speed with quality is a challenge, especially when the objects we want to render are complex and detailed.</p>
+		</div>
+
+		<div>
+			<h1>Raster Graphics</h1>
+
+			<p class="build">The leading realtime rendering method (i.e. for video games) is <strong>raster graphics</strong>, which stores 3D objects as a collection of triangles, then projects those triangles onto a 2D screen. We can use the relative depths of triangles to cull any obscured triangles, greatly speeding up rendering time, and we can use the normal vectors of the triangles to shade the resulting image.</p>
+
+			<p class="build">However, effects like soft shadows, reflections, and antialiasing (smoothing jagged edges) are prohibitively difficult to implement with raster graphics, and the complexity of the objects we can render is limited by the number of triangles that make them up.</p>
+		</div>
+
+		<div>
+			<h1>Ray Tracing</h1>
+
+			<p class="build">An alternative to raster graphics is <strong>ray tracing</strong>, which more closely matches our physical world. We emit &#x201C;light&#x201D; rays from the camera and compute their intersection with the entire scene. We can then continue with the reflected ray, intersecting and bouncing it until it reaches a light source. In effect, we simulate only the light rays that eventually reach the camera.</p>
+
+			<p class="build">Unfortunately, computing those intersections is extraordinarily taxing, and although fancy effects are possible, they are also quite expensive to implement. Outside of limited use in modern video games with cutting-edge hardware, ray tracing is still constrained to non-realtime rendering (e.g. 3D movies).</p>
 		</div>
 	</div>
 
