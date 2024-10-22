@@ -1,12 +1,15 @@
 ### banner
 
-I grew up in San Luis Obispo, a small town in California almost exactly halfway between San Francisco and Los Angeles. I was homeschooled and took to math at an early age, and by the time I was eleven, I was interested in taking a few classes at the local community college. I was surprised to find it wasn't completely out of the question --- I was able to register as an enrichment student, and although I was limited to eleven units a semester, that was plenty. Being surrounded by students five or ten or forty years older than me was a unique experience, and one that took a little while to adapt to, but I settled in before too long. Over the next four years, I took twenty-one classes, worked as a tutor, and eventually transfered to Cal Poly. It demanded a lot more of me, but I made it through two years of classes and research and found a community in the math lounge. Toward the end of my first year, I started thinking about writing a book, and I whittled an outline in my spare time over the following year. I graduated in Spring 2018 with honors, and I chose to take a gap year to travel to Germany, where I attended a language school for three months and traveled the country. I returned and relaxed --- and worked on this site --- over the following summer, before packing up my life and moving to Oregon to attend grad school. For the next six years, I'm here to stay.
+I grew up in San Luis Obispo, a small town in California almost exactly halfway between San Francisco and Los Angeles. I took to math at an early age, and by the time I was eleven, I was interested in taking a few classes at the local community college. I was surprised to find it wasn't completely out of the question --- I was able to register as an enrichment student, and the eleven credits that I was limited to per semester was plenty. Being surrounded by students five or ten or forty years older than me was a unique experience, and one that took a little while to adapt to, but I settled in before too long. After four years, I was ready to transfer to Cal Poly, the local four-year university. I graduated in Spring 2018 with honors, and I chose to take a gap year to travel to Germany, where I attended a language school for three months and traveled the country. I packed up my life that fall and moved to Eugene, Oregon to attend grad school. For the next six years, I'm here to stay.
+
+In my spare time, I love hiking, paddleboarding, city walks, and anything else outside, and I've learned to settle for weightlifting when it's raining. I put quite a bit of time into making this site the best it can be, and in what little free time I have left, I love 2D indie games --- particularly Celeste, in which I became one of the first 850 people in the world to collect the <a href="https://www.youtube.com/watch?v=ejvRmGgVbcQ">Farewell golden strawberry</a>.
 
 
 
 ## Education
 
 **Ph.D. in Mathematics:** University of Oregon (2019&ndash;Present)
+	> *Advisor: Benjamin Young*
 
 **M.S. in Mathematics:** University of Oregon (2021)
 
@@ -16,93 +19,23 @@ I grew up in San Luis Obispo, a small town in California almost exactly halfway 
 
 
 
-## Interests
-
-Standard, reverse, and asymptotic plane partitions, their connections to the single and double dimer models, and the RSK, Hillman-Grassl, and Pak-Sulzgruber correspondences between them. (<a href="/applets/plane-partitions/">Plane partitions applet</a>)
-
-Data visualization and mathematical illustration, particularly with direct user interaction.
-
-Machine learning and other processing of large data sets.
-
-Graph theory, particularly large networks with power-law degree distributions.
-
-
-
-## Technical Skills
-
-**Programming Languages**
-
-> . JavaScript and TypeScript
-
-> . C
-
-> . Python
-
-**Tools and Packages**
-
-> . React and Remix
-
-> . MongoDB
-
-> . Tailwind
-
-> . WebGL (examples: <a href="/applets/the-mandelbulb/">the Mandelbulb</a>, <a href="/applets/double-pendulum-fractal/">the double pendulum fractal</a>, <a href="/applets/newtons-method/">Newton's method fractals</a>)
-
-> . WebAssembly (examples: <a href="/applets/wilsons-algorithm/">Wilson's algorithm</a>, <a href="/applets/calcudoku-generator/">Calcudoku generator</a>)
-
-> . CUDA
-
-> . numpy
-
-> . Keras and TensorFlow
-
-
-
-## Industry Experience
-
-**Web Development Intern** (<a href="https://udisc.com">UDisc</a>, June--September 2023). Built features on the full web stack, including detailed course reviews, displaying course layout difficulty, and extensive improvements to internal tools.
-
-
-
-## Projects
-
-**<a href="/applets/">Interactive Math Applets</a>**: created more than 40 interactive JavaScript applets for exploring fractals and other beautiful objects in math. Whenever possible, the applets use WebGL and WebAssembly for extremely high performance, and modern tools like WebWorkers and promises for simple and organized code. Still images and animations from them have been featured in five exhibitions, including the <a href="https://gallery.bridgesmathart.org/exhibitions/2022-bridges-conference">2022</a> and <a href="https://gallery.bridgesmathart.org/exhibitions/2023-bridges-conference">2023</a> Bridges conferences.
-
-**<a href="/teaching/">Interactive Class Notes</a>**: written full class notes for Calculus I, II, and III, Differential Equations I, and Linear Algebra I, incorporating MathJax to render equations and the Desmos API to include graphs. The design is fully responsive, so students can just as easily view them with a phone as with a laptop.
-
-**<a href="https://github.com/cruzgodar/cruzgodar.github.io">Personal Website</a>**: written a website from scratch without using large libraries like jQuery and Bootstrap. Everything from the single-page site logic to the graphic design was made custom from the ground up, and the site currently contains a total of over 50000 lines of JavaScript.
-
-**<a href="https://github.com/cruzgodar/lapsa">Lapsa</a>**: created an HTML-based presentation engine, featuring easy building-in of both HTML elements and JS functions, a table view that integrates with both kinds of builds, and easy and powerful customization with CSS.
-
-
-
-## Research Experience and Presentations
-
-**Speaker: Nordic Congress of Mathematicians** (Aalto University, August 2022). Presented a talk on bijectivizing the PT-DT correspondence for plane partitions. Also presented an expanded version of the talk in the student combinatorics seminar at UO in November 2022.
-
-**Graduate Research Assistant** (University of Oregon, June&ndash;September 2022). Worked with Professor Benjamin Young to investigate a bijective map between plane-partition-like objects.
-
-**Summer Research Program** (California Polytechnic State University, June&ndash;September 2017). Worked with Professor Robert Easton to investigate a potential version of conic duality in tropical geometry.
-
-
-
 ## Teaching Experience
 
 **Graduate Educator** (University of Oregon, October 2019&ndash;Present)
 
 > . **Instructor of Record**
 
->> - Math 342: Elementary Linear Algebra II (Spring 2024)
+>> - <a href="/teaching/uo/342/">Math 342: Elementary Linear Algebra II</a> (Spring 2024)
 
->> - Math 341: Elementary Linear Algebra I (Fall 2023)
+>> - <a href="/teaching/uo/341/">Math 341: Elementary Linear Algebra I</a> (Fall 2023)
 
->> - Math 256: Intro to Differential Equations and Linear Algebra (Spring 2023)
+>> - <a href="/teaching/uo/256/">Math 256: Intro to Differential Equations and Linear Algebra</a> (Fall 2024, Spring 2023)
 
->> - Math 253: Calculus III (Fall 2022)
+>> - <a href="/teaching/uo/253/">Math 253: Calculus III</a> (Fall 2022)
 
->> - Math 252: Calculus II (Winter 2023, Winter 2022, Spring 2021)
+>> - <a href="/teaching/uo/252/">Math 252: Calculus II</a> (Winter 2023, Winter 2022, Spring 2021)
 
->> - Math 251: Calculus I (Spring 2022)
+>> - <a href="/teaching/uo/251/">Math 251: Calculus I</a> (Spring 2022)
 
 >> - Math 243: Intro to Probability and Statistics (Summer 2021)
 
@@ -118,9 +51,93 @@ Graph theory, particularly large networks with power-law degree distributions.
 
 >> - Math 111: College Algebra (Fall 2019)
 
-**Student Counting Seminar** (University of Oregon, September 2022&ndash;Present). Student-run seminar focusing on combinatorics and its applications. Given a presentation at least once per term and have served as the organizer since April 2023.
 
-**Student Teaching Seminar** (University of Oregon, September 2021&ndash;Present). Student-run seminar exploring scientific methods to improve teaching and student outcomes. Given a presentation at least once per term and have served as the organizer since April 2023.
+
+## Research
+
+**Bijectivizing the PT--DT Correspondence** (in preparation, expected 2024). Joint work with Benjamin Young.
+
+
+
+## Industry Experience
+
+**Web Development Intern** (<a href="https://udisc.com">UDisc</a>, June--September 2024). Overhauled the tools for disc golf course owners with extensive data aggregation and visualization, using a new PostgreSQL backend.
+
+**Web Development Intern** (<a href="https://udisc.com">UDisc</a>, June--September 2023). Built tools for detailed reviews and wide-ranging internal tools, using MongoDB, TypeScript, and React + Remix.
+
+
+
+## Art Exhibitions
+
+**<a href="https://gallery.bridgesmathart.org/exhibitions/bridges-2024-exhibition-of-mathematical-art/cruz-godar">Bridges Conference 2024</a>** (August 2024) Virginia Commonwealth University; Richmond, Virginia
+
+**<a href="https://gallery.bridgesmathart.org/exhibitions/2023-bridges-conference/cruz-godar">Bridges Conference 2023</a>** (August 2023) Dalhousie University; Halifax, Nova Scotia
+
+**<a href="https://gallery.bridgesmathart.org/exhibitions/2022-bridges-conference/90259025">Bridges Conference 2022</a>** (August 2022) Aalto University; Helsinki, Finland
+
+**<a href="https://www.girlsangle.org/page/bulletin-archive/GABv15n01E.pdf">Girls’ Angle Bulletin</a>** (October 2021) *Magazine to foster girls’ interest in mathematics.*
+
+**<a href="https://calendar.uoregon.edu/event/generative_art_the_beautiful_side_of_math_-_exhibition_by_cruz_godar">Generative Art: The Beautiful Side of Math</a>** (September--October 2021) Solo Exhibition: Adell McMillan Gallery, University of Oregon
+
+**<a href="https://www.artscioregon.com/2020-gallery">Research as Art Competition</a>** (December 2020--Present) *Displayed permanently in the Eugene airport and chosen as the cover image to represent the entire exhibit.*
+
+**<a href="https://mpembed.com/show/?m=FGvT8EzPQpy&mpu=885">Creativity Counts</a>** (April--July 2020) Jordan Schnitzer Museum of Art, University of Oregon
+
+
+
+## Projects
+
+**<a href="/applets/thurston-geometries/">Immersive Thurston Geometry Applet</a>** (February 2024) A WebGL renderer to experience the perspective of living inside any possible curved space.
+
+**<a href="/slides/lapsa/" data-in-new-tab="1">Lapsa</a>** (January 2023) A simple and elegant HTML-based presentation engine.
+
+**<a href="/teaching/">Interactive Class Notes</a>** (January 2022--Present) Comprehensive notes for six courses, incorporating MathJax, the Desmos API, and my own applets.
+
+**<a href="/applets/kaleidoscopic-ifs-fractals/">Kaleidoscopic IFS Fractals Applet</a>** (October 2020) A WebGL renderer to view strikingly complex 3D fractals.
+
+**<a href="/applets/wilsons-algorithm/">Wilson's Algorithm Applet</a>** (October 2019) An applet to create and color random mazes of any size.
+
+**<a href="/applets/">Additional Applets</a>** (January 2019--Present) 40 more mathematical visualization projects ranging across disciplines, formats, and web technologies.
+
+**<a href="https://github.com/cruzgodar/cruzgodar.github.io">Personal Website</a>** (August 2018--Present) A website written from scratch without using any large libraries; everything from the single-page site logic
+to the graphic design was made custom on my own, and the site currently contains a total of over 50000
+lines of JavaScript.
+
+
+
+## Technical Skills
+
+**Programming Languages**
+
+> . JavaScript and TypeScript
+
+> . C
+
+> . GLSL
+
+> . Julia
+
+> . Python and SageMath
+
+**Tools and Packages**
+
+> . WebGL (examples: <a href="/applets/the-mandelbulb/">the Mandelbulb</a>, <a href="/applets/double-pendulum-fractal/">the double pendulum fractal</a>, <a href="/applets/newtons-method/">Newton's method fractals</a>)
+
+> . WebAssembly (examples: <a href="/applets/wilsons-algorithm/">Wilson's algorithm</a>, <a href="/applets/calcudoku-generator/">Calcudoku generator</a>)
+
+> . CUDA
+
+> . React and Remix
+
+> . Tailwind CSS
+
+> . MongoDB
+
+> . Gurobi
+
+> . Keras and TensorFlow
+
+
 
 ## Selected Anonymous Teaching Feedback
 

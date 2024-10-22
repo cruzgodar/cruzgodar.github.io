@@ -46,10 +46,10 @@
 	###
 
 	### gallery-block
-		thurston-geometry-sl2r 2
+		thurston-geometry-sol 2
 		thurston-geometry-nil 1
 		thurston-geometry-h2xe 1
-		thurston-geometry-sol 1
+		thurston-geometry-h3 1
 		thurston-geometry-s2xe 1
 		thurston-geometry-s3 1
 	###
@@ -60,7 +60,7 @@
 	
 	### gallery-block
 		voronoi-diagram 1
-		thurston-geometry-h3 2
+		thurston-geometry-sl2r 2
 		newtons-method-extended 1
 		lyapunov-fractal 1
 		vector-field 1
