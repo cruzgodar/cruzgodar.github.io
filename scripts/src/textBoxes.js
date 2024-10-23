@@ -2,7 +2,7 @@ import anime from "../anime.js";
 import { Checkbox } from "./checkboxes.js";
 import { addHoverEventWithScale } from "./hoverEvents.js";
 import { InputElement } from "./inputElement.js";
-import { $$, addTemporaryListener, pageElement } from "./main.js";
+import { $$, addTemporaryListener, addTemporaryParam, pageElement, pageUrl } from "./main.js";
 import { siteSettings } from "./settings.js";
 
 let uncapEverything = false;
@@ -11,7 +11,7 @@ export class TextBox extends InputElement
 {
 	defaultValue;
 	valueTypeIsString = false;
-	affectedByResMult = false;
+	persistState;
 
 	constructor({
 		element,
@@ -19,6 +19,7 @@ export class TextBox extends InputElement
 		value,
 		maxValue = Infinity,
 		minValue = -Infinity,
+		persistState = true,
 		onInput = () => {},
 		onEnter = () => {},
 	}) {
@@ -29,6 +30,7 @@ export class TextBox extends InputElement
 		this.onEnter = onEnter;
 		this.maxValue = maxValue;
 		this.minValue = minValue;
+		this.persistState = persistState;
 		
 		this.element.value = this.value;
 		this.element.nextElementSibling.textContent = this.name;
@@ -38,17 +40,15 @@ export class TextBox extends InputElement
 			this.valueTypeIsString = true;
 		}
 
-		this.element.addEventListener("input", () => this.inputCallback());
+		this.element.addEventListener("input", () => this.setValue(this.element.value, true));
 
 		this.element.addEventListener("focusout", () =>
 		{
 			if (this.element.value === "")
 			{
 				this.element.value = this.defaultValue;
-				
-				this.value = this.valueTypeIsString
-					? this.element.value
-					: parseFloat(this.element.value);
+
+				this.setValue(this.element.value, false);
 			}
 
 			this.updateCaps();
@@ -62,9 +62,7 @@ export class TextBox extends InputElement
 				{
 					this.element.value = this.defaultValue;
 					
-					this.value = this.valueTypeIsString
-						? this.element.value
-						: parseFloat(this.element.value);
+					this.setValue(this.element.value, false);
 				}
 				
 				this.updateCaps();
@@ -84,39 +82,18 @@ export class TextBox extends InputElement
 		) {
 			setTimeout(() => this.onInput());
 		}
-	}
 
-	inputCallback()
-	{
-		if (this.disabled)
+		if (this.persistState)
 		{
-			return;
+			const value = new URLSearchParams(window.location.search).get(this.element.id);
+			
+			if (value)
+			{
+				setTimeout(() => this.setValue(decodeURIComponent(value), true), 10);
+			}
+
+			addTemporaryParam(this.element.id);
 		}
-
-		this.value = this.valueTypeIsString
-			? this.element.value || this.defaultValue
-			: parseFloat(this.element.value || this.defaultValue);
-
-		if (!this.valueTypeIsString)
-		{
-			if (this.value > this.maxValue && !uncapEverything)
-			{
-				this.value = this.maxValue;
-			}
-
-			else if (this.value < this.minValue && !uncapEverything)
-			{
-				this.value = this.minValue;
-			}
-
-			else
-			{
-				this.element.parentNode.classList.remove("capped-input-max");
-				this.element.parentNode.classList.remove("capped-input-min");
-			}
-		}
-
-		this.onInput();
 	}
 
 	updateCaps()
@@ -155,12 +132,60 @@ export class TextBox extends InputElement
 
 	setValue(newValue, callOnInput = false)
 	{
-		this.value = newValue;
-		this.element.value = this.value;
+		if (this.disabled)
+		{
+			return;
+		}
+
+		this.element.value = newValue;
+
+		this.value = this.valueTypeIsString
+			? newValue || this.defaultValue
+			: parseFloat(newValue || this.defaultValue);
+
+		if (!this.valueTypeIsString)
+		{
+			if (this.value > this.maxValue && !uncapEverything)
+			{
+				this.value = this.maxValue;
+			}
+
+			else if (this.value < this.minValue && !uncapEverything)
+			{
+				this.value = this.minValue;
+			}
+
+			else
+			{
+				this.element.parentNode.classList.remove("capped-input-max");
+				this.element.parentNode.classList.remove("capped-input-min");
+			}
+		}
+
+		if (this.persistState)
+		{
+			const searchParams = new URLSearchParams(window.location.search);
+
+			if (this.value !== undefined)
+			{
+				searchParams.set(
+					this.element.id,
+					encodeURIComponent(this.value)
+				);
+			}
+
+			const string = searchParams.toString();
+
+			window.history.replaceState(
+				{ url: pageUrl },
+				"",
+				pageUrl.replace(/\/home\//, "/") + (string ? `?${string}` : "")
+			);
+		}
 
 		if (callOnInput)
 		{
-			this.inputCallback();
+			this.onInput();
 		}
 	}
 
