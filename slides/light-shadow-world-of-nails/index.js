@@ -51,7 +51,7 @@ const options =
 
 	builds:
 	{
-		"title": titleBuilds
+		title: titleBuilds
 	},
 
 	setupBuild: () =>
