@@ -178,6 +178,7 @@ export function addHeader()
 			element: document.body.querySelector("#dark-theme-checkbox"),
 			name: "Dark theme",
 			checked: siteSettings.darkTheme,
+			persistState: false,
 			onInput: () => toggleDarkTheme({})
 		});
 
@@ -193,6 +194,7 @@ export function addHeader()
 			element: document.body.querySelector("#reduce-motion-checkbox"),
 			name: "Reduce motion",
 			checked: siteSettings.reduceMotion,
+			persistState: false,
 			onInput: () => toggleReduceMotion()
 		});
 
@@ -208,6 +210,7 @@ export function addHeader()
 			element: document.body.querySelector("#increase-contrast-checkbox"),
 			name: "Increase contrast",
 			checked: siteSettings.increaseContrast,
+			persistState: false,
 			onInput: () => toggleIncreaseContrast({})
 		});
 
