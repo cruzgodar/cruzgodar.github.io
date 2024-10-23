@@ -50,7 +50,7 @@ export class Textarea extends InputElement
 			
 			if (value)
 			{
-				this.setValue(decodeURIComponent(value));
+				setTimeout(() => this.setValue(decodeURIComponent(value)), 10);
 			}
 
 			addTemporaryParam(this.element.id);

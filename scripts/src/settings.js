@@ -205,7 +205,9 @@ export function initReduceMotion()
 	{
 		siteSettings.reduceMotion = e.matches;
 
-		reduceMotionCheckbox && reduceMotionCheckbox.setChecked(siteSettings.reduceMotion, false);
+		reduceMotionCheckbox && reduceMotionCheckbox.setChecked({
+			newChecked: siteSettings.reduceMotion
+		});
 	});
 }
 
@@ -218,7 +220,9 @@ export function initIncreaseContrast()
 			toggleIncreaseContrast({});
 
 			increaseContrastCheckbox &&
-				increaseContrastCheckbox.setChecked(siteSettings.increaseContrast, false);
+				increaseContrastCheckbox.setChecked({
+					newChecked: siteSettings.increaseContrast
+				});
 		}
 	});
 
@@ -317,7 +321,9 @@ export async function toggleDarkTheme({
 
 	siteSettings.darkTheme = !siteSettings.darkTheme;
 
-	darkThemeCheckbox && darkThemeCheckbox.setChecked(siteSettings.darkTheme, false);
+	darkThemeCheckbox && darkThemeCheckbox.setChecked({
+		newChecked: siteSettings.darkTheme
+	});
 
 	recreateDesmosGraphs();
 

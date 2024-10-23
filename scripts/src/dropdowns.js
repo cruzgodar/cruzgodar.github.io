@@ -135,10 +135,13 @@ export class Dropdown extends InputElement
 				
 				if (value)
 				{
-					this.setValue({
-						newValue: decodeURIComponent(value),
-						instant: true,
-					});
+					setTimeout(() =>
+					{
+						this.setValue({
+							newValue: decodeURIComponent(value),
+							instant: true,
+						});
+					}, 10);
 				}
 
 				addTemporaryParam(this.element.id);

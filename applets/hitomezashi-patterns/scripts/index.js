@@ -95,7 +95,9 @@ export default function()
 	{
 		if (!drawBoundariesCheckbox.checked && !drawRegionsCheckbox.checked)
 		{
-			drawRegionsCheckbox.setChecked(true);
+			drawRegionsCheckbox.setChecked({
+				newChecked: true
+			});
 		}
 	}
 
@@ -103,7 +105,9 @@ export default function()
 	{
 		if (!drawBoundariesCheckbox.checked && !drawRegionsCheckbox.checked)
 		{
-			drawBoundariesCheckbox.setChecked(true);
+			drawBoundariesCheckbox.setChecked({
+				newChecked: true
+			});
 		}
 	}
 }
