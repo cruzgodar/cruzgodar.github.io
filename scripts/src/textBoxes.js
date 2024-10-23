@@ -335,6 +335,7 @@ export class TextBox extends InputElement
 				element: dialog.querySelector(".uncap-inputs-checkbox"),
 				name: "Uncap all inputs",
 				checked: uncapEverything,
+				persistState: false,
 				onInput: removeCaps
 			});
 
