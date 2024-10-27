@@ -52,7 +52,7 @@ export default function()
 
 
 
-		appletLinkElement.setAttribute("href", `/applets/${galleryImageData[id].appletLink}/`);
+		appletLinkElement.setAttribute("href", galleryImageData[id].appletLink);
 
 		fullResLinkElement.setAttribute("href", `https://drive.google.com/uc?id=${galleryImageData[id].driveId}&export=download`);
 
@@ -88,7 +88,7 @@ export default function()
 
 	appletLinkElement.addEventListener("click", () =>
 	{
-		redirect({ url: `/applets/${galleryImageData[currentId].appletLink}/` });
+		redirect({ url: galleryImageData[currentId].appletLink });
 	});
 
 	fullResLinkElement.addEventListener("click", () =>

@@ -16,7 +16,7 @@ export const galleryImageData =
 
 		featured: `Featured in ${emu}`,
 
-		appletLink: "abelian-sandpiles",
+		appletLink: "/applets/abelian-sandpiles/",
 
 		driveId: "1pqpf8z08AgJ9oFXQLU0J6eWaJvgg6oME"
 	},
@@ -25,7 +25,7 @@ export const galleryImageData =
 	{
 		title: "An Aztec Diamond",
 
-		appletLink: "domino-shuffling",
+		appletLink: "/applets/domino-shuffling/",
 
 		driveId: "1XaoTpV0dKscPtOvrjU6sUuD1Mo-pyQzH"
 	},
@@ -36,7 +36,7 @@ export const galleryImageData =
 
 		featured: `Featured in ${jsma} and ${girlsAngle}`,
 
-		appletLink: "barnsley-fern",
+		appletLink: "/applets/barnsley-fern/",
 
 		driveId: "1ED5_vAUhFEF0E3fcnY4NOEYJSVf1P7cA"
 	},
@@ -47,7 +47,7 @@ export const galleryImageData =
 
 		featured: `Featured in ${emu}`,
 
-		appletLink: "brownian-trees",
+		appletLink: "/applets/brownian-trees/",
 
 		driveId: "1BSuYpCW9jQKqu8NOu6f_6omr_LVMXprh"
 	},
@@ -58,7 +58,7 @@ export const galleryImageData =
 
 		featured: `Featured in ${emu}`,
 
-		appletLink: "chaos-game",
+		appletLink: "/applets/chaos-game/",
 
 		driveId: "15NZyBmIqZxCaTrT9C9m87bqfM1sUmY5i"
 	},
@@ -67,7 +67,7 @@ export const galleryImageData =
 	{
 		title: "A Chaos Game",
 
-		appletLink: "chaos-game",
+		appletLink: "/applets/chaos-game/",
 
 		driveId: "14ADChQ4KHV426ySW_CIVvTAXe2irMKU0"
 	},
@@ -80,7 +80,7 @@ export const galleryImageData =
 			Generated from $e^{1/z}$
 		`,
 
-		appletLink: "complex-maps",
+		appletLink: "/applets/complex-maps/",
 
 		driveId: "1rcF2qy4gGCJ3lg3X8jQW0Z0_OcFYKv8Q"
 	},
@@ -89,7 +89,7 @@ export const galleryImageData =
 	{
 		title: "A Double Pendulum Fractal",
 
-		appletLink: "double-pendulum-fractal",
+		appletLink: "/applets/double-pendulum-fractal/",
 
 		featured: `Featured in ${bridges2024}`,
 
@@ -100,7 +100,7 @@ export const galleryImageData =
 	{
 		title: "A Double Pendulum Fractal",
 
-		appletLink: "double-pendulum-fractal",
+		appletLink: "/applets/double-pendulum-fractal/?center-unstable-equilibrium-checkbox=1",
 
 		driveId: "1VGx8gfIrp2gfKms7KOgWNdLeCEwfE0XE"
 	},
@@ -109,7 +109,7 @@ export const galleryImageData =
 	{
 		title: "An Extruded Cube",
 
-		appletLink: "extruded-cube",
+		appletLink: "/applets/extruded-cube/",
 		
 		driveId: "130jI2YEQehE_VENFUDplZNSZHgbX_GN2"
 	},
@@ -122,7 +122,7 @@ export const galleryImageData =
 
 		featured: `Featured in ${emu}`,
 
-		appletLink: "finite-subdivisions",
+		appletLink: "/applets/finite-subdivisions/",
 
 		driveId: "1ohpmOx1bVGszGolKGxphW4qc15fghyIc"
 	},
@@ -137,7 +137,7 @@ export const galleryImageData =
 
 		featured: `Featured in ${emu}`,
 
-		appletLink: "generalized-julia-sets",
+		appletLink: "/applets/generalized-julia-sets/",
 
 		driveId: "1rgAIVr9Ztfs2EiVtY_39-GQ91ayeMJXu"
 	},
@@ -152,7 +152,7 @@ export const galleryImageData =
 
 		featured: `Featured in ${emu}`,
 
-		appletLink: "generalized-julia-sets",
+		appletLink: "/applets/generalized-julia-sets/",
 
 		driveId: "16LcsF7n7w329sO4T-IwWb-p7ykpglNQO"
 	},
@@ -165,7 +165,7 @@ export const galleryImageData =
 			Generated from $\\left( \\left| \\operatorname{Re} z \\right| - \\left| \\operatorname{Im} z \\right| \\right)^2 + c$
 		`,
 
-		appletLink: "generalized-julia-sets",
+		appletLink: "/applets/generalized-julia-sets/",
 
 		driveId: "1ZOh2bya7QzuvSQqkM55cLxV3v-0MlET3"
 	},
@@ -174,7 +174,7 @@ export const galleryImageData =
 	{
 		title: "A Hitomezashi Pattern",
 
-		appletLink: "hitomezashi-patterns",
+		appletLink: "/applets/hitomezashi-patterns/",
 
 		driveId: "1JkngUmUdSEJvzYMRTTUIa3jy26F0c6m8"
 	},
@@ -183,7 +183,7 @@ export const galleryImageData =
 	{
 		title: "The Hopf Fibration",
 
-		appletLink: "hopf-fibration",
+		appletLink: "/applets/hopf-fibration/",
 
 		driveId: "1h8kmCtONHyUEX28IF2JzFNL-Qgn-TFEX"
 	},
@@ -192,7 +192,7 @@ export const galleryImageData =
 	{
 		title: "A Julia Set",
 
-		appletLink: "julia-set-explorer",
+		appletLink: "/applets/julia-set-explorer/",
 
 		driveId: "1She5ljhYilPIXpiSN80QyZEspWbnz6mu"
 	},
@@ -203,7 +203,7 @@ export const galleryImageData =
 
 		featured: `A prior version of this image was featured in ${emu}.`,
 
-		appletLink: "the-mandelbulb",
+		appletLink: "/applets/the-mandelbulb/",
 
 		driveId: "1s0hdeBUkJ1-ENlX7r78D-j5TjdLFt1rh"
 	},
@@ -214,7 +214,7 @@ export const galleryImageData =
 
 		featured: `A prior version of this image was featured in ${emu}.`,
 
-		appletLink: "the-mandelbulb",
+		appletLink: "/applets/the-mandelbulb/",
 
 		driveId: "1SvGDDc0Mz9Qv67GdIhy_5dfhHoP9thQd"
 	},
@@ -225,7 +225,7 @@ export const galleryImageData =
 
 		featured: `A prior version of this image was featured in ${emu}.`,
 
-		appletLink: "the-mandelbulb",
+		appletLink: "/applets/the-mandelbulb/",
 
 		driveId: "1mZ7hmt6z1Iq0POqgSXSh7NrmiOIdtYxC"
 	},
@@ -238,7 +238,7 @@ export const galleryImageData =
 			Generated from a tetrahedron with scale $1.1679$, $\\theta_x = 1.762$, $\\theta_y = 1.377$, and $\\theta_z = 3.845$
 		`,
 
-		appletLink: "kaleidoscopic-ifs-fractals",
+		appletLink: "/applets/kaleidoscopic-ifs-fractals/",
 
 		driveId: "164SyXm3-le_Le1QuM_mDJoOZLChzTCDD"
 	},
@@ -251,7 +251,7 @@ export const galleryImageData =
 			Generated from a cube with scale $1.2046$, $\\theta_x = 3.438$, $\\theta_y = 0.336$, and $\\theta_z = 2.396$
 		`,
 
-		appletLink: "kaleidoscopic-ifs-fractals",
+		appletLink: "/applets/kaleidoscopic-ifs-fractals/",
 
 		driveId: "13b99_5HrSgXamfVtAOPz5IGfiSdK19KC"
 	},
@@ -264,7 +264,7 @@ export const galleryImageData =
 			Generated from a tetrahedron with scale $1.3299$, $\\theta_x = 0.068$, $\\theta_y = 2.468$, and $\\theta_z = 0.448$
 		`,
 
-		appletLink: "kaleidoscopic-ifs-fractals",
+		appletLink: "/applets/kaleidoscopic-ifs-fractals/",
 
 		driveId: "1xXGP5T566_nSHjF3_kRmBHNl73qJfsq-"
 	},
@@ -279,7 +279,7 @@ export const galleryImageData =
 
 		featured: `A prior version of this image was featured in ${jsma}. The current version was featured in ${emu}.`,
 
-		appletLink: "kicked-rotator",
+		appletLink: "/applets/kicked-rotator/",
 
 		driveId: "1vXP_8ArZg7F2o7rbFCsksoHDT3nw8y66"
 	},
@@ -290,7 +290,7 @@ export const galleryImageData =
 
 		parameters: "Generating string <code>AABB</code>",
 
-		appletLink: "lyapunov-fractals",
+		appletLink: "/applets/lyapunov-fractals/",
 
 		driveId: "1Xb5BMuz-iB9f-CN4l5wyZtbCLLOXrz80"
 	},
@@ -299,7 +299,7 @@ export const galleryImageData =
 	{
 		title: "A Magic Carpet",
 
-		appletLink: "magic-carpets",
+		appletLink: "/applets/magic-carpets/",
 
 		driveId: "1bD3P4pzIU7M6Ni_lp9oSjtrwoAJQpJ98"
 	},
@@ -310,7 +310,7 @@ export const galleryImageData =
 
 		featured: `A prior version of this image was featured in ${jsma}, ${researchAsArt}, and ${bridges2022}. It is currently on display at the Eugene airport.`,
 
-		appletLink: "the-mandelbulb",
+		appletLink: "/applets/the-mandelbulb/",
 
 		driveId: "1aOwjMPuzRhguc7Q0x90uQFnIr61mkA7_"
 	},
@@ -323,7 +323,7 @@ export const galleryImageData =
 			Generated with scale $2.263$, $\\theta_x = 0.776$, $\\theta_y = 0.159$, and $\\theta_z = 1.477$
 		`,
 
-		appletLink: "menger-sponge",
+		appletLink: "/applets/menger-sponge/",
 
 		driveId: "1UlE8wy-gUUuTA-areWOJiKkCABcK1YqN"
 	},
@@ -336,7 +336,7 @@ export const galleryImageData =
 			Generated with scale $2.267$, $\\theta_x = 0.923$, $\\theta_y = 0.113$, and $\\theta_z = 0.957$
 		`,
 
-		appletLink: "menger-sponge",
+		appletLink: "/applets/menger-sponge/",
 
 		driveId: "1hRXwXnD7g1DQ7QepwqicbguoFXQRLy4s"
 	},
@@ -351,7 +351,7 @@ export const galleryImageData =
 
 		featured: `A prior version of this image was featured in ${emu}.`,
 
-		appletLink: "newtons-method",
+		appletLink: "/applets/newtons-method/",
 
 		driveId: "1T8X5JduKEg8BkakXzGXZzu3CFW_R88i6"
 	},
@@ -364,7 +364,7 @@ export const galleryImageData =
 			Generated from $\\sin(z)\\left( -\\sin\\left( \\operatorname{Im}(z) \\right) + i\\sin \\left( \\operatorname{Re} z \\right) \\right)$
 		`,
 
-		appletLink: "newtons-method-extended",
+		appletLink: "/applets/newtons-method-extended/",
 
 		driveId: "1yQCt0FaiBzQKM5h9RKh5akHs3wihil7B"
 	},
@@ -375,7 +375,7 @@ export const galleryImageData =
 
 		featured: `A prior version of this image was featured in ${emu}.`,
 
-		appletLink: "quasi-fuchsian-groups",
+		appletLink: "/applets/quasi-fuchsian-groups/",
 
 		driveId: "1mAQCyO3bHIL7yAV1I8uxVFmLBGbhQwRQ"
 	},
@@ -390,7 +390,7 @@ export const galleryImageData =
 
 		featured: `A prior version of this image was featured in ${bridges2023}.`,
 
-		appletLink: "quaternionic-julia-sets",
+		appletLink: "/applets/quaternionic-julia-sets/",
 
 		driveId: "1L2juSwwawdW322PyVNIej1DM0m0vHekk"
 	},
@@ -403,7 +403,7 @@ export const galleryImageData =
 			Generated from the polynomial $z^6 - 1$ with $a = 1.5$
 		`,
 
-		appletLink: "newtons-method",
+		appletLink: "/applets/newtons-method/",
 
 		featured: `Featured in ${emu}`,
 
@@ -414,7 +414,7 @@ export const galleryImageData =
 	{
 		title: "A Gravner-Griffeath Snowflake",
 
-		appletLink: "snowflakes",
+		appletLink: "/applets/snowflakes/",
 
 		featured: `A prior version of this image was featured in ${emu}.`,
 
@@ -425,7 +425,7 @@ export const galleryImageData =
 	{
 		title: "A Lorenz Attractor",
 
-		appletLink: "strange-attractors",
+		appletLink: "/applets/strange-attractors/",
 
 		driveId: "1sRCKC-WE8a2iYNW942uKgAJbHVkAYDrQ"
 	},
@@ -434,7 +434,7 @@ export const galleryImageData =
 	{
 		title: "The Thurston Geometry $\\mathbb{E}^3$",
 
-		appletLink: "thurston-geometries",
+		appletLink: "/applets/thurston-geometries/",
 
 		driveId: "1XqXEVoe82btwYcTolWTKT3tlsWz_98c0"
 	},
@@ -443,7 +443,7 @@ export const galleryImageData =
 	{
 		title: "The Thurston Geometry $\\mathbb{H}^2 \\times \\mathbb{E}$",
 
-		appletLink: "thurston-geometries",
+		appletLink: "/applets/thurston-geometries/",
 
 		driveId: "1LCBMWW4n8IcF3_bGo4up4dcO0ISDqH0n"
 	},
@@ -452,7 +452,7 @@ export const galleryImageData =
 	{
 		title: "The Thurston Geometry $\\mathbb{H}^3$",
 
-		appletLink: "thurston-geometries",
+		appletLink: "/applets/thurston-geometries/",
 
 		driveId: "1wm59bChDwRgm91lONQR1bVKTCBKGWien"
 	},
@@ -461,7 +461,7 @@ export const galleryImageData =
 	{
 		title: "The Thurston Geometry Nil",
 
-		appletLink: "thurston-geometries",
+		appletLink: "/applets/thurston-geometries/",
 
 		driveId: "1-1h44Q9CEVGqyCkkxAQ-ykODsVzWYKwE"
 	},
@@ -470,7 +470,7 @@ export const galleryImageData =
 	{
 		title: "The Thurston Geometry $S^2 \\times \\mathbb{E}$",
 
-		appletLink: "thurston-geometries",
+		appletLink: "/applets/thurston-geometries/",
 
 		driveId: "1bA57Lhq12oJ1W611UkRjOwuTs8mIXtm-"
 	},
@@ -479,7 +479,7 @@ export const galleryImageData =
 	{
 		title: "The Thurston Geometry $S^3$",
 
-		appletLink: "thurston-geometries",
+		appletLink: "/applets/thurston-geometries/",
 
 		driveId: "1yvG5KfAg7qiYjzBDuXDilaSV23X-KyzB"
 	},
@@ -488,7 +488,7 @@ export const galleryImageData =
 	{
 		title: "The Thurston Geometry $\\widetilde{\\operatorname{SL}}(2, \\mathbb{R})$",
 
-		appletLink: "thurston-geometries",
+		appletLink: "/applets/thurston-geometries/",
 
 		driveId: "1XBJVX2kWVWz1dH06DIAVlDeqr21ei8Ty"
 	},
@@ -497,7 +497,7 @@ export const galleryImageData =
 	{
 		title: "The Thurston Geometry Sol",
 
-		appletLink: "thurston-geometries",
+		appletLink: "/applets/thurston-geometries/",
 
 		driveId: "1Pz0IUsM43_-qEXIf27CWzjOkTnMyLXz6"
 	},
@@ -510,7 +510,7 @@ export const galleryImageData =
 			Generated from $\\left( \\sin\\left( \\frac{y}{2.5} \\right), \\tan\\left( \\frac{x}{2.5} \\right) \\right)$
 		`,
 
-		appletLink: "vector-fields",
+		appletLink: "/applets/vector-fields/",
 
 		driveId: "1DyYo2hLpJ-9NjwW_akmmmq3pmnS9VKPa"
 	},
@@ -519,7 +519,7 @@ export const galleryImageData =
 	{
 		title: "A Voronoi Diagram",
 
-		appletLink: "voronoi-diagrams",
+		appletLink: "/applets/voronoi-diagrams/",
 
 		driveId: "1J1dfHbqx1tX1qkkuJF0ZUp-OPlRezEsV"
 	},
@@ -528,7 +528,7 @@ export const galleryImageData =
 	{
 		title: "A Voronoi Diagram",
 
-		appletLink: "voronoi-diagrams",
+		appletLink: "/applets/voronoi-diagrams/",
 
 		driveId: "1TrBXxbjYeHMbznxnT1NiNXWSj8jVBthA"
 	},
@@ -539,7 +539,7 @@ export const galleryImageData =
 
 		featured: `A prior version of this image was featured in ${jsma} and ${girlsAngle}. This version was featured in ${emu} and ${bridges2024}.`,
 
-		appletLink: "wilsons-algorithm",
+		appletLink: "/applets/wilsons-algorithm/",
 
 		driveId: "1EJD5tYppybnvAxK1bWpLEXK2gjKAnMqZ"
 	},

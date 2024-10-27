@@ -63,6 +63,21 @@ export async function redirect({
 	restoreScroll = false,
 	noFadeOut = false
 }) {
+	const queryParams = (() =>
+	{
+		if (url.indexOf("?") !== -1)
+		{
+			const [trimmedUrl, params] = url.split("?");
+
+			url = trimmedUrl;
+			return params;
+		}
+
+		return "";
+	})();
+
+	console.log(queryParams);
+
 	if (currentlyRedirecting || url === pageUrl)
 	{
 		return;
@@ -129,12 +144,12 @@ export async function redirect({
 	// Record the page change in the url bar and in the browser history.
 	if (noStatePush)
 	{
-		history.replaceState({ url }, document.title, getDisplayUrl());
+		history.replaceState({ url }, document.title, getDisplayUrl(queryParams));
 	}
 
 	else
 	{
-		history.pushState({ url }, document.title, getDisplayUrl());
+		history.pushState({ url }, document.title, getDisplayUrl(queryParams));
 	}
 
 
@@ -224,9 +239,9 @@ function getTransitionType(url)
 
 
 
-export function getDisplayUrl()
+export function getDisplayUrl(additionalQueryParams)
 {
-	const queryParams = getQueryParams();
+	const queryParams = getQueryParams() + (additionalQueryParams ? `&${additionalQueryParams}` : "");
 
 	let displayUrl = pageUrl.replace(/\/home\//, "/") + (queryParams ? `?${queryParams}` : "");
 
