@@ -67,7 +67,7 @@ export const galleryImageData =
 	{
 		title: "A Chaos Game",
 
-		appletLink: "/applets/chaos-game/",
+		appletLink: "/applets/chaos-game/?num-vertices-input=6",
 
 		driveId: "14ADChQ4KHV426ySW_CIVvTAXe2irMKU0"
 	},
@@ -122,7 +122,7 @@ export const galleryImageData =
 
 		featured: `Featured in ${emu}`,
 
-		appletLink: "/applets/finite-subdivisions/",
+		appletLink: "/applets/finite-subdivisions/?num-iterations-input=6",
 
 		driveId: "1ohpmOx1bVGszGolKGxphW4qc15fghyIc"
 	},
@@ -137,7 +137,7 @@ export const galleryImageData =
 
 		featured: `Featured in ${emu}`,
 
-		appletLink: "/applets/generalized-julia-sets/",
+		appletLink: "/applets/generalized-julia-sets/?examples-dropdown=trig",
 
 		driveId: "1rgAIVr9Ztfs2EiVtY_39-GQ91ayeMJXu"
 	},
@@ -152,7 +152,7 @@ export const galleryImageData =
 
 		featured: `Featured in ${emu}`,
 
-		appletLink: "/applets/generalized-julia-sets/",
+		appletLink: "/applets/generalized-julia-sets/?examples-dropdown=rationalMap",
 
 		driveId: "16LcsF7n7w329sO4T-IwWb-p7ykpglNQO"
 	},
@@ -165,7 +165,7 @@ export const galleryImageData =
 			Generated from $\\left( \\left| \\operatorname{Re} z \\right| - \\left| \\operatorname{Im} z \\right| \\right)^2 + c$
 		`,
 
-		appletLink: "/applets/generalized-julia-sets/",
+		appletLink: "/applets/generalized-julia-sets/?examples-dropdown=burningShip",
 
 		driveId: "1ZOh2bya7QzuvSQqkM55cLxV3v-0MlET3"
 	},
@@ -183,7 +183,8 @@ export const galleryImageData =
 	{
 		title: "The Hopf Fibration",
 
-		appletLink: "/applets/hopf-fibration/",
+		// eslint-disable-next-line max-len
+		appletLink: "/applets/hopf-fibration/?latitudes-slider=4.947382&toggle-compression-button=1&core-slider=0.75&longitudes-slider=94.195608",
 
 		driveId: "1h8kmCtONHyUEX28IF2JzFNL-Qgn-TFEX"
 	},
@@ -203,7 +204,7 @@ export const galleryImageData =
 
 		featured: `A prior version of this image was featured in ${emu}.`,
 
-		appletLink: "/applets/the-mandelbulb/",
+		appletLink: "/applets/the-mandelbulb/?switch-bulb-button=1&c-x-slider=0.8",
 
 		driveId: "1s0hdeBUkJ1-ENlX7r78D-j5TjdLFt1rh"
 	},
@@ -214,7 +215,7 @@ export const galleryImageData =
 
 		featured: `A prior version of this image was featured in ${emu}.`,
 
-		appletLink: "/applets/the-mandelbulb/",
+		appletLink: "/applets/the-mandelbulb/?switch-bulb-button=1&c-y-slider=0.8",
 
 		driveId: "1SvGDDc0Mz9Qv67GdIhy_5dfhHoP9thQd"
 	},
@@ -225,7 +226,7 @@ export const galleryImageData =
 
 		featured: `A prior version of this image was featured in ${emu}.`,
 
-		appletLink: "/applets/the-mandelbulb/",
+		appletLink: "/applets/the-mandelbulb/?switch-bulb-button=1&c-z-slider=-0.8",
 
 		driveId: "1mZ7hmt6z1Iq0POqgSXSh7NrmiOIdtYxC"
 	},
@@ -238,7 +239,8 @@ export const galleryImageData =
 			Generated from a tetrahedron with scale $1.1679$, $\\theta_x = 1.762$, $\\theta_y = 1.377$, and $\\theta_z = 3.845$
 		`,
 
-		appletLink: "/applets/kaleidoscopic-ifs-fractals/",
+		// eslint-disable-next-line max-len
+		appletLink: "/applets/kaleidoscopic-ifs-fractals/?polyhedra-dropdown=tetrahedron&rotation-angle-x-slider=1.762&rotation-angle-y-slider=1.377&rotation-angle-z-slider=3.845&scale-slider=1.1679",
 
 		driveId: "164SyXm3-le_Le1QuM_mDJoOZLChzTCDD"
 	},
@@ -251,7 +253,8 @@ export const galleryImageData =
 			Generated from a cube with scale $1.2046$, $\\theta_x = 3.438$, $\\theta_y = 0.336$, and $\\theta_z = 2.396$
 		`,
 
-		appletLink: "/applets/kaleidoscopic-ifs-fractals/",
+		// eslint-disable-next-line max-len
+		appletLink: "/applets/kaleidoscopic-ifs-fractals/?polyhedra-dropdown=cube&rotation-angle-x-slider=3.438&rotation-angle-y-slider=0.336&rotation-angle-z-slider=2.396&scale-slider=1.2046",
 
 		driveId: "13b99_5HrSgXamfVtAOPz5IGfiSdK19KC"
 	},
@@ -264,7 +267,8 @@ export const galleryImageData =
 			Generated from a tetrahedron with scale $1.3299$, $\\theta_x = 0.068$, $\\theta_y = 2.468$, and $\\theta_z = 0.448$
 		`,
 
-		appletLink: "/applets/kaleidoscopic-ifs-fractals/",
+		// eslint-disable-next-line max-len
+		appletLink: "/applets/kaleidoscopic-ifs-fractals/?polyhedra-dropdown=tetrahedron&rotation-angle-x-slider=0.068&rotation-angle-y-slider=2.468&rotation-angle-z-slider=0.448&scale-slider=1.3299",
 
 		driveId: "1xXGP5T566_nSHjF3_kRmBHNl73qJfsq-"
 	},
@@ -290,7 +294,7 @@ export const galleryImageData =
 
 		parameters: "Generating string <code>AABB</code>",
 
-		appletLink: "/applets/lyapunov-fractals/",
+		appletLink: "/applets/lyapunov-fractals/?generating-string-input=AABB",
 
 		driveId: "1Xb5BMuz-iB9f-CN4l5wyZtbCLLOXrz80"
 	},
@@ -320,10 +324,11 @@ export const galleryImageData =
 		title: "A Menger Sponge",
 
 		parameters: /* html */`
-			Generated with scale $2.263$, $\\theta_x = 0.776$, $\\theta_y = 0.159$, and $\\theta_z = 1.477$
+			Generated with scale $2.267$, $\\theta_x = 0.923$, $\\theta_y = 0.113$, and $\\theta_z = 0.957$
 		`,
 
-		appletLink: "/applets/menger-sponge/",
+		// eslint-disable-next-line max-len
+		appletLink: "/applets/menger-sponge/?scale-slider=2.267&rotation-angle-x-slider=0.923&rotation-angle-z-slider=0.957&rotation-angle-y-slider=0.113",
 
 		driveId: "1UlE8wy-gUUuTA-areWOJiKkCABcK1YqN"
 	},
@@ -333,10 +338,11 @@ export const galleryImageData =
 		title: "A Menger Sponge",
 
 		parameters: /* html */`
-			Generated with scale $2.267$, $\\theta_x = 0.923$, $\\theta_y = 0.113$, and $\\theta_z = 0.957$
+			Generated with scale $2.263$, $\\theta_x = 0.776$, $\\theta_y = 0.159$, and $\\theta_z = 1.477$
 		`,
 
-		appletLink: "/applets/menger-sponge/",
+		// eslint-disable-next-line max-len
+		appletLink: "/applets/menger-sponge/?scale-slider=2.263&rotation-angle-x-slider=0.776&rotation-angle-z-slider=1.477&rotation-angle-y-slider=0.159",
 
 		driveId: "1hRXwXnD7g1DQ7QepwqicbguoFXQRLy4s"
 	},
@@ -403,7 +409,7 @@ export const galleryImageData =
 			Generated from the polynomial $z^6 - 1$ with $a = 1.5$
 		`,
 
-		appletLink: "/applets/newtons-method/",
+		appletLink: "/applets/newtons-method/?switch-method-button=1",
 
 		featured: `Featured in ${emu}`,
 
@@ -434,7 +440,7 @@ export const galleryImageData =
 	{
 		title: "The Thurston Geometry $\\mathbb{E}^3$",
 
-		appletLink: "/applets/thurston-geometries/",
+		appletLink: "/applets/thurston-geometries/?geometries-dropdown=e3",
 
 		driveId: "1XqXEVoe82btwYcTolWTKT3tlsWz_98c0"
 	},
@@ -443,7 +449,7 @@ export const galleryImageData =
 	{
 		title: "The Thurston Geometry $\\mathbb{H}^2 \\times \\mathbb{E}$",
 
-		appletLink: "/applets/thurston-geometries/",
+		appletLink: "/applets/thurston-geometries/?geometries-dropdown=h2xe&switch-scene-button=1",
 
 		driveId: "1LCBMWW4n8IcF3_bGo4up4dcO0ISDqH0n"
 	},
@@ -452,7 +458,7 @@ export const galleryImageData =
 	{
 		title: "The Thurston Geometry $\\mathbb{H}^3$",
 
-		appletLink: "/applets/thurston-geometries/",
+		appletLink: "/applets/thurston-geometries/?geometries-dropdown=h3&switch-scene-button=1",
 
 		driveId: "1wm59bChDwRgm91lONQR1bVKTCBKGWien"
 	},
@@ -461,7 +467,7 @@ export const galleryImageData =
 	{
 		title: "The Thurston Geometry Nil",
 
-		appletLink: "/applets/thurston-geometries/",
+		appletLink: "/applets/thurston-geometries/?geometries-dropdown=nil&switch-scene-button=1",
 
 		driveId: "1-1h44Q9CEVGqyCkkxAQ-ykODsVzWYKwE"
 	},
@@ -470,16 +476,16 @@ export const galleryImageData =
 	{
 		title: "The Thurston Geometry $S^2 \\times \\mathbb{E}$",
 
-		appletLink: "/applets/thurston-geometries/",
+		appletLink: "/applets/thurston-geometries/?geometries-dropdown=s2xe&switch-scene-button=1",
 
 		driveId: "1bA57Lhq12oJ1W611UkRjOwuTs8mIXtm-"
 	},
 
 	"thurston-geometry-s3":
 	{
-		title: "The Thurston Geometry $S^3$",
+		title: "The Hopf Fibration in $S^3$",
 
-		appletLink: "/applets/thurston-geometries/",
+		appletLink: "/applets/thurston-geometries/?geometries-dropdown=s3",
 
 		driveId: "1yvG5KfAg7qiYjzBDuXDilaSV23X-KyzB"
 	},
@@ -488,7 +494,7 @@ export const galleryImageData =
 	{
 		title: "The Thurston Geometry $\\widetilde{\\operatorname{SL}}(2, \\mathbb{R})$",
 
-		appletLink: "/applets/thurston-geometries/",
+		appletLink: "/applets/thurston-geometries/?geometries-dropdown=sl2r",
 
 		driveId: "1XBJVX2kWVWz1dH06DIAVlDeqr21ei8Ty"
 	},
@@ -497,7 +503,7 @@ export const galleryImageData =
 	{
 		title: "The Thurston Geometry Sol",
 
-		appletLink: "/applets/thurston-geometries/",
+		appletLink: "/applets/thurston-geometries/?geometries-dropdown=sol&switch-scene-button=1",
 
 		driveId: "1Pz0IUsM43_-qEXIf27CWzjOkTnMyLXz6"
 	},
@@ -510,7 +516,7 @@ export const galleryImageData =
 			Generated from $\\left( \\sin\\left( \\frac{y}{2.5} \\right), \\tan\\left( \\frac{x}{2.5} \\right) \\right)$
 		`,
 
-		appletLink: "/applets/vector-fields/",
+		appletLink: "/applets/vector-fields/?examples-dropdown=divergingDiamond",
 
 		driveId: "1DyYo2hLpJ-9NjwW_akmmmq3pmnS9VKPa"
 	},
@@ -528,7 +534,11 @@ export const galleryImageData =
 	{
 		title: "A Voronoi Diagram",
 
-		appletLink: "/applets/voronoi-diagrams/",
+		parameters: /* html */`
+			Generated with metric $1$
+		`,
+
+		appletLink: "/applets/voronoi-diagrams/?metric-slider=0",
 
 		driveId: "1TrBXxbjYeHMbznxnT1NiNXWSj8jVBthA"
 	},
