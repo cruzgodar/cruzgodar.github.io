@@ -90,11 +90,12 @@ export default function()
 		element: $("#switch-view-button"),
 		name0: "Show 2D View",
 		name1: "Show Hex View",
+		persistState: false,
 		onClick0: () =>
 		{
 			if (applet.dimersShown)
 			{
-				switchDimersButton.setState(0);
+				switchDimersButton.setState({ newState: false });
 			}
 
 			applet.show2dView();
@@ -109,11 +110,12 @@ export default function()
 		element: $("#show-dimers-button"),
 		name0: "Show Dimers",
 		name1: "Hide Dimers",
+		persistState: false,
 		onClick0: () =>
 		{
 			if (applet.in2dView)
 			{
-				switchViewButton.setState(0);
+				switchViewButton.setState({ newState: false });
 			}
 
 			applet.showDimers();

@@ -352,7 +352,7 @@ export class HopfFibration extends ThreeApplet
 		this.needNewFrame = true;
 	}
 
-	async toggleCompression()
+	async toggleCompression(instant)
 	{
 		const dummy = { t: 0 };
 
@@ -377,7 +377,7 @@ export class HopfFibration extends ThreeApplet
 		await anime({
 			targets: dummy,
 			t: 1,
-			duration: 750,
+			duration: instant ? 10 : 750,
 			easing: "easeOutQuad",
 			update: () =>
 			{

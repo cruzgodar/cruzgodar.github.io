@@ -71,8 +71,8 @@ export default function()
 		element: $("#toggle-compression-button"),
 		name0: "Show Compressed Fibration",
 		name1: "Show Projected Fibration",
-		onClick0: () => applet.toggleCompression(),
-		onClick1: () => applet.toggleCompression()
+		onClick0: (instant) => applet.toggleCompression(instant),
+		onClick1: (instant) => applet.toggleCompression(instant)
 	});
 
 	showPage();

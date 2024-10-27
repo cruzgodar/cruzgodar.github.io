@@ -18,8 +18,8 @@ export default function()
 		element: $("#switch-bulb-button"),
 		name0: "Switch to Juliabulb",
 		name1: "Return to Mandelbulb",
-		onClick0: () => applet.switchBulb(),
-		onClick1: () => applet.switchBulb()
+		onClick0: (instant) => applet.switchBulb(instant),
+		onClick1: (instant) => applet.switchBulb(instant)
 	});
 
 	new Button({

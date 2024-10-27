@@ -15,6 +15,7 @@ export default function()
 		element: $("#switch-julia-mode-button"),
 		name0: "Pick Julia Set",
 		name1: "Return to Mandelbrot",
+		persistState: false,
 		onClick0: () => applet.advanceJuliaMode(),
 		onClick1: () => applet.advanceJuliaMode(),
 	});

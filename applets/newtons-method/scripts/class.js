@@ -376,7 +376,7 @@ export class NewtonsMethod extends AnimationFrameApplet
 
 
 
-	switchMethod()
+	switchMethod(instant)
 	{
 		const dummy = { t: this.secantProportion };
 
@@ -385,7 +385,7 @@ export class NewtonsMethod extends AnimationFrameApplet
 		anime({
 			targets: dummy,
 			t: newSecantProportion,
-			duration: 1000,
+			duration: instant ? 10 : 1000,
 			easing: "easeInOutQuad",
 			update: () =>
 			{

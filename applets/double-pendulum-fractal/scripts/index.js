@@ -22,6 +22,7 @@ export default function()
 		element: $("#switch-pendulum-canvas-button"),
 		name0: "Pick Pendulum",
 		name1: "Return to Fractal",
+		persistState: false,
 		onClick0: () => applet.drawingFractal = false,
 		onClick1: () =>
 		{

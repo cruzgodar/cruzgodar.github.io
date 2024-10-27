@@ -3,6 +3,7 @@ import { InputElement } from "./inputElement.js";
 import {
 	$$,
 	addTemporaryListener,
+	addTemporaryParam,
 	pageUrl
 } from "./main.js";
 import { redirect } from "./navigation.js";
@@ -77,9 +78,11 @@ export class DownloadButton extends Button
 // Starts on name0 and toggles when clicked.
 export class ToggleButton extends Button
 {
-	state = 0;
+	state = false;
+	persistState;
 	name0;
 	name1;
+	// Both onClick methods have the signature (instant) => {}.
 	onClick0;
 	onClick1;
 	currentlyAnimating = false;
@@ -88,6 +91,7 @@ export class ToggleButton extends Button
 		element,
 		name0,
 		name1,
+		persistState = true,
 		onClick0,
 		onClick1,
 		linked = true
@@ -101,13 +105,31 @@ export class ToggleButton extends Button
 
 			this.currentlyAnimating = true;
 
-			(this.state ? this.onClick1 : this.onClick0)();
+			(this.state ? this.onClick1 : this.onClick0)(false);
 
 			this.state = !this.state;
 
 			await changeOpacity({ element: this.element, opacity: 0 });
 
 			this.element.textContent = this.state ? this.name1 : this.name0;
+
+			if (this.persistState)
+			{
+				const searchParams = new URLSearchParams(window.location.search);
+				
+				searchParams.set(
+					this.element.id,
+					this.state ? "1" : "0"
+				);
+
+				const string = searchParams.toString();
+
+				window.history.replaceState(
+					{ url: pageUrl },
+					"",
+					pageUrl.replace(/\/home\//, "/") + (string ? `?${string}` : "")
+				);
+			}
 
 			await changeOpacity({ element: this.element, opacity: 1 });
 
@@ -123,20 +145,80 @@ export class ToggleButton extends Button
 
 		this.name0 = name0;
 		this.name1 = name1;
+		this.persistState = persistState;
 		this.onClick0 = onClick0;
 		this.onClick1 = onClick1;
+
+		if (this.persistState)
+		{
+			const value = new URLSearchParams(window.location.search).get(this.element.id);
+			
+			if (value === "1")
+			{
+				setTimeout(() =>
+				{
+					this.setState({
+						newState: true,
+						callOnInput: true
+					});
+				}, 10);
+			}
+
+			else if (value === "0")
+			{
+				setTimeout(() =>
+				{
+					this.setState({
+						newState: false,
+						callOnInput: true
+					});
+				}, 10);
+			}
+
+			addTemporaryParam(this.element.id);
+		}
 	}
 
-	async setState(newState)
-	{
+	async setState({
+		newState,
+		callOnInput = false
+	}) {
 		if (this.state !== newState)
 		{
+			this.state = newState;
+
+			if (callOnInput)
+			{
+				(this.state ? this.onClick1 : this.onClick0)(true);
+			}
+
+			if (this.persistState)
+			{
+				const searchParams = new URLSearchParams(window.location.search);
+				
+				searchParams.set(
+					this.element.id,
+					this.state ? "1" : "0"
+				);
+
+				const string = searchParams.toString();
+
+				window.history.replaceState(
+					{ url: pageUrl },
+					"",
+					pageUrl.replace(/\/home\//, "/") + (string ? `?${string}` : "")
+				);
+			}
+
+			this.currentlyAnimating = true;
+
 			await changeOpacity({ element: this.element, opacity: 0 });
 			
-			this.state = newState;
 			this.element.textContent = this.state ? this.name1 : this.name0;
 
 			await changeOpacity({ element: this.element, opacity: 1 });
+
+			this.currentlyAnimating = false;
 		}
 	}
 }

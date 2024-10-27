@@ -128,7 +128,7 @@ export class QuaternionicJuliaSet extends RaymarchApplet
 
 
 
-	switchBulb()
+	switchBulb(instant)
 	{
 		const juliaProportion = this.uniforms.juliaProportion[1];
 
@@ -145,7 +145,7 @@ export class QuaternionicJuliaSet extends RaymarchApplet
 		anime({
 			targets: dummy,
 			t: 1,
-			duration: 1000,
+			duration: instant ? 10 : 1000,
 			easing: "easeOutQuad",
 			update: () =>
 			{

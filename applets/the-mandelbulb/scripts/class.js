@@ -178,7 +178,7 @@ export class Mandelbulb extends RaymarchApplet
 		return 0.5 * Math.log(r) * r / dr;
 	}
 
-	switchBulb()
+	switchBulb(instant)
 	{
 		const dummy = { t: 0 };
 
@@ -188,7 +188,7 @@ export class Mandelbulb extends RaymarchApplet
 		anime({
 			targets: dummy,
 			t: 1,
-			duration: 1000,
+			duration: instant ? 10 : 1000,
 			easing: "easeOutSine",
 			update: () =>
 			{

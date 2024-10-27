@@ -37,8 +37,8 @@ export default function()
 		element: $("#switch-method-button"),
 		name0: "Switch to Secant Method",
 		name1: "Switch to Newton's Method",
-		onClick0: () => applet.switchMethod(),
-		onClick1: () => applet.switchMethod()
+		onClick0: (instant) => applet.switchMethod(instant),
+		onClick1: (instant) => applet.switchMethod(instant)
 	});
 
 	new Button({

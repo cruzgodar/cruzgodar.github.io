@@ -72,8 +72,14 @@ export default function()
 		element: $("#switch-scene-button"),
 		name0: "Switch to Spheres",
 		name1: "Switch to Rooms",
-		onClick0: () => applet.switchScene(),
-		onClick1: () => applet.switchScene()
+		onClick0: (instant) => setTimeout(
+			() => applet.switchScene({ duration: instant ? 20 : 500 }),
+			instant ? 100 : 0
+		),
+		onClick1: (instant) => setTimeout(
+			() => applet.switchScene({ duration: instant ? 20 : 500 }),
+			instant ? 100 : 0
+		),
 	});
 
 	const demoCanvas = $("#demo-canvas");
@@ -322,11 +328,11 @@ export default function()
 		applet.needNewFrame = true;
 	}
 
-	function onDropdownInput()
+	function onDropdownInput(fromOnClickHandler)
 	{
-		if (switchSceneButton.state)
+		if (switchSceneButton.state && fromOnClickHandler)
 		{
-			switchSceneButton.setState(0);
+			switchSceneButton.setState({ newState: false });
 		}
 		
 		run();
