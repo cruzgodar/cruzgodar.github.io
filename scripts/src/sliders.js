@@ -1,4 +1,5 @@
 import { InputElement } from "./inputElement.js";
+import { addTemporaryParam, pageUrl } from "./main.js";
 
 export class Slider extends InputElement
 {
@@ -12,6 +13,7 @@ export class Slider extends InputElement
 	precision;
 	logarithmic;
 	integer;
+	persistState;
 	onInput;
 
 	constructor({
@@ -24,6 +26,7 @@ export class Slider extends InputElement
 		snapPoints = [],
 		logarithmic = false,
 		integer = false,
+		persistState = true,
 		onInput = () => {}
 	}) {
 		super({ element, name });
@@ -45,6 +48,7 @@ export class Slider extends InputElement
 			this.max = Math.log10(this.max);
 		}
 
+		this.persistState = persistState;
 		this.onInput = onInput;
 
 		// The number of decimal places to round to to get 4 significant figures.
@@ -108,6 +112,42 @@ export class Slider extends InputElement
 				this.onInput();
 			}
 		});
+
+		this.element.addEventListener("pointerup", () =>
+		{
+			if (this.persistState)
+			{
+				const searchParams = new URLSearchParams(window.location.search);
+
+				if (this.element.value !== undefined)
+				{
+					searchParams.set(
+						this.element.id,
+						encodeURIComponent(this.element.value)
+					);
+				}
+
+				const string = searchParams.toString();
+
+				window.history.replaceState(
+					{ url: pageUrl },
+					"",
+					pageUrl.replace(/\/home\//, "/") + (string ? `?${string}` : "")
+				);
+			}
+		});
+
+		if (this.persistState)
+		{
+			const value = new URLSearchParams(window.location.search).get(this.element.id);
+			
+			if (value)
+			{
+				setTimeout(() => this.setValue(parseFloat(decodeURIComponent(value)), true), 10);
+			}
+
+			addTemporaryParam(this.element.id);
+		}
 	}
 
 	setValue(newValue, callOnInput = false)
@@ -123,6 +163,27 @@ export class Slider extends InputElement
 			: this.value.toFixed(this.precision);
 
 		this.valueElement.textContent = this.value;
+
+		if (this.persistState)
+		{
+			const searchParams = new URLSearchParams(window.location.search);
+
+			if (this.element.value !== undefined)
+			{
+				searchParams.set(
+					this.element.id,
+					encodeURIComponent(this.element.value)
+				);
+			}
+
+			const string = searchParams.toString();
+
+			window.history.replaceState(
+				{ url: pageUrl },
+				"",
+				pageUrl.replace(/\/home\//, "/") + (string ? `?${string}` : "")
+			);
+		}
 
 		if (callOnInput)
 		{
