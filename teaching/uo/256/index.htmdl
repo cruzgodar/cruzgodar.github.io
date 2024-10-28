@@ -150,12 +150,76 @@ Welcome to Math 256! We'll use this page for the interactive notes, the homework
 	### buttons
 		download-homework-8
 	###
+
+
+
+	## Section 10
+	
+	In problems 5#, find the determinant of the given matrix.
+	
+	#. $$**A** = [[2, -1 ; 3, -2]].$$
+	
+	#. $$**B** = [[1, -1 ; 1, 3]].$$
+	
+	#. $$**C** = [[19, -4, 8 ; -8, 5, -10 ; -1, -2, 4]].$$
+	
+	#. $$**D** = [[2, 2, -2 ; -3, 7, 3 ; -5, 5, 5]].$$
+	
+	#. $$**E** = [[5, 6, 4, -4 ; 3, 8, -2, 2 ; 3, -3, 9, 2 ; 0, 0, 0, 11]].$$
+	
+
+
+	- - -
+
+	In problems 5#, find the eigenvalues and eigenvectors of the given matrix, and verify that the product of the eigenvalues is the determinant you found before.
+	
+	#. $**A**$ from problem 1.
+	
+	#. $**B**$ from problem 2.
+	
+	#. $**C**$ from problem 3.
+	
+	#. $**D**$ from problem 4.
+	
+	#. $**E**$ from problem 5. Hint: you may it useful to know that $(x - 11)^3 = x^3 - 33x^2 + 363x - 1331$.
+	
+
+
+	- - -
+
+	#. With $**A**$ from problem 1, find the following:
+	
+	> a) $$**A**^{100} [[1 ; 3]].$$
+	
+	> b) $$**A**^{100} [[-2 ; -6]].$$
+	
+	> c) $$**A**^{100} [[0 ; -4]].$$
+	
+
+
+	- - -
+
+	#. A remarkable property of the determinant is that it's **multiplicative**: for any two $n \times n$ matrices $**A**$ and $**B**$, $\det (**AB**) = \left( \det **A** \right)\left( \det **B** \right)$. Use this property to answer the following questions.
+	
+	> a) What is $\det **I**$? Hint: $**IA** = **A**$ for any matrix $**A**$ for which the product makes sense.
+	
+	> b) Let $**A**$ be an invertible matrix. What is $\det \left(**A**^{-1}\right)$ in terms of $\det **A**$?
+	
+
+
+	- - -
+
+	#. Suppose $**A**$ is an invertible matrix with eigenvectors $**v_1**, ..., **v_n**$ with corresponding eigenvalues $\lambda_1, ..., \lambda_n$.
+	
+	> a) For $**A**$ to be invertible, none of the $\lambda_i$ can be zero. Why is this?
+	
+	> b) What are the eigenvectors and eigenvalues of $**A**^{-1}$? Hint: start with $**Av_i** = \lambda_i **v_i**$ and find a way to introduce $**A**^{-1}$ into the equation.
 	
 	
 	
 	## Section 11
 	
-	In problems 4#, solve the system of DEs. Note: each of these matrices appeared in homework 7.
+	In problems 4#, solve the system of DEs.
 	
 	#.
 	
@@ -254,121 +318,9 @@ Welcome to Math 256! We'll use this page for the interactive notes, the homework
 	### buttons
 		download-homework-7
 	###
-	
-	
-	
-	## Section 10
-	
-	In problems 5#, find the determinant of the given matrix.
-	
-	#. $$**A** = [[2, -1 ; 3, -2]].$$
-	
-	#. $$**B** = [[1, -1 ; 1, 3]].$$
-	
-	#. $$**C** = [[19, -4, 8 ; -8, 5, -10 ; -1, -2, 4]].$$
-	
-	#. $$**D** = [[2, 2, -2 ; -3, 7, 3 ; -5, 5, 5]].$$
-	
-	#. $$**E** = [[5, 6, 4, -4 ; 3, 8, -2, 2 ; 3, -3, 9, 2 ; 0, 0, 0, 11]].$$
-	
-
-
-	- - -
-
-	In problems 5#, find the eigenvalues and eigenvectors of the given matrix, and verify that the product of the eigenvalues is the determinant you found before.
-	
-	#. $**A**$ from problem 1.
-	
-	#. $**B**$ from problem 2.
-	
-	#. $**C**$ from problem 3.
-	
-	#. $**D**$ from problem 4.
-	
-	#. $**E**$ from problem 5. Hint: you may it useful to know that $(x - 11)^3 = x^3 - 33x^2 + 363x - 1331$.
-	
-
-
-	- - -
-
-	#. With $**A**$ from problem 1, find the following:
-	
-	> a) $$**A**^{100} [[1 ; 3]].$$
-	
-	> b) $$**A**^{100} [[-2 ; -6]].$$
-	
-	> c) $$**A**^{100} [[0 ; -4]].$$
-	
-
-
-	- - -
-
-	#. A remarkable property of the determinant is that it's **multiplicative**: for any two $n \times n$ matrices $**A**$ and $**B**$, $\det (**AB**) = \left( \det **A** \right)\left( \det **B** \right)$. Use this property to answer the following questions.
-	
-	> a) What is $\det **I**$? Hint: $**IA** = **A**$ for any matrix $**A**$ for which the product makes sense.
-	
-	> b) Let $**A**$ be an invertible matrix. What is $\det \left(**A**^{-1}\right)$ in terms of $\det **A**$?
-	
-
-
-	- - -
-
-	#. Suppose $**A**$ is an invertible matrix with eigenvectors $**v_1**, ..., **v_n**$ with corresponding eigenvalues $\lambda_1, ..., \lambda_n$.
-	
-	> a) For $**A**$ to be invertible, none of the $\lambda_i$ can be zero. Why is this?
-	
-	> b) What are the eigenvectors and eigenvalues of $**A**^{-1}$? Hint: start with $**Av_i** = \lambda_i **v_i**$ and find a way to introduce $**A**^{-1}$ into the equation.
-
-###
 
 
 
-### card homework-6 "Homework 6"
-	
-	*Due Wednesday of Week 7 at the start of class*
-	
-	Complete the following problems and submit them as a pdf to Canvas. 8 points are awarded for thoroughly attempting every problem, and I'll select three problems to grade on correctness for 4 points each. Enough work should be shown that there is no question about the mathematical process used to obtain your answers.
-
-	### buttons
-		download-homework-6
-	###
-
-
-
-	## Section 8
-	
-	In problems 5#, evaluate the product.
-	
-	#. $$[[3, 0 ; 6, -2]][[1 ; -1]].$$
-	
-	#. $$[[1, 2, 3]][[4 ; 5 ; 6]].$$
-	
-	#. $$[[4 ; 5 ; 6]][[1, 2, 3]].$$
-	
-	#. $$[[1 ; 2 ; 3]][[4 ; 5 ; 6]].$$
-	
-	#. $$[[1, 0 ; 0, 1 ; 1, 1]][[1, -1, 1, -1 ; -1, 1, -1, 1]].$$
-	
-
-
-	- - -
-
-	#. Suppose that for a square matrix $**A**$, there are matrices $**B**$ and $**C**$ so that $**AB** = **I**$ and $**CA** = **I**$. Show that it must be the case that $**B** = **C**$. Hint: multiply both sides of the second equation by something.
-	
-
-
-	- - -
-
-	#. Let $A$ be an $n \times n$ matrix with entries $a_{ij}$.
-	
-	> a) For the products $AI$ and $IA$ to make sense, what dimension must $I$ have?
-	
-	> b) The $i$th row of $A$ is $[[a_{i1}, a_{i2}, \cdots, a_{in}]]$. If the $j$th column of $I$ is denoted $\vec{e_j}$, what is the entry in row $i$ and column $j$ of $AI$? Your answer should be in terms of $i$ and $j$.
-	
-	> c) What does part b) imply $AI$ is equal to? Why does this make sense in the context of function composition?
-	
-	
-	
 	## Section 9
 	
 	In problems 5#, write the system as an augmented matrix and row reduce it, indicating every elementary row operation you perform. Then use the reduced matrix to write the solution to the system.
@@ -463,40 +415,18 @@ Welcome to Math 256! We'll use this page for the interactive notes, the homework
 
 
 
-### card homework-5 "Homework 5"
+### card homework-6 "Homework 6"
 	
-	*Due Wednesday of Week 6 at the start of class*
+	*Due Wednesday of Week 7 at the start of class*
 	
 	Complete the following problems and submit them as a pdf to Canvas. 8 points are awarded for thoroughly attempting every problem, and I'll select three problems to grade on correctness for 4 points each. Enough work should be shown that there is no question about the mathematical process used to obtain your answers.
 
 	### buttons
-		download-homework-5
+		download-homework-6
 	###
 
 
 
-	## Section 6
-	
-	In problems 8#, find the general solution to the DE.
-	
-	#. $$y'' - 2y' - 3y = 8e^t.$$
-	
-	#. $$y'' - 2y' - 3y = 8e^{3t}.$$
-	
-	#. $$y'' + y = 3\sin(t) + e^t.$$
-	
-	#. $$y'' + 6y' + 9y = 120t^2e^{-3t}.$$
-	
-	#. $$4y'' + y = \sec\left(\frac{t}{2}\right).$$
-	
-	#. $$y'' + 2y' + y = 2t\sin(t).$$
-	
-	#. $$y'' + 4y' + 4y = t^{-2} e^{-2t}.$$
-	
-	#. $$y'' + 3y' + 2y = \frac{1}{1 + e^t}.$$
-	
-	
-	
 	## Section 7
 	
 	In problems 5#, find the general solution of the given DE.
@@ -536,6 +466,108 @@ Welcome to Math 256! We'll use this page for the interactive notes, the homework
 	> where $**A_{ij}**$ is the $2 \times 2$ matrix formed by crossing off row $i$ and column $j$ from $**A**$. With this method, evaluate $W[y_1, y_2, y_3]$. Hint: there's one choice of column that should be much better than the others!
 	
 	> d) Interpret the Wronskian: did you successfully find the general solution in part a)?
+
+
+
+	## Section 8
+	
+	In problems 5#, evaluate the product.
+	
+	#. $$[[3, 0 ; 6, -2]][[1 ; -1]].$$
+	
+	#. $$[[1, 2, 3]][[4 ; 5 ; 6]].$$
+	
+	#. $$[[4 ; 5 ; 6]][[1, 2, 3]].$$
+	
+	#. $$[[1 ; 2 ; 3]][[4 ; 5 ; 6]].$$
+	
+	#. $$[[1, 0 ; 0, 1 ; 1, 1]][[1, -1, 1, -1 ; -1, 1, -1, 1]].$$
+	
+
+
+	- - -
+
+	#. Suppose that for a square matrix $**A**$, there are matrices $**B**$ and $**C**$ so that $**AB** = **I**$ and $**CA** = **I**$. Show that it must be the case that $**B** = **C**$. Hint: multiply both sides of the second equation by something.
+	
+
+
+	- - -
+
+	#. Let $A$ be an $n \times n$ matrix with entries $a_{ij}$.
+	
+	> a) For the products $AI$ and $IA$ to make sense, what dimension must $I$ have?
+	
+	> b) The $i$th row of $A$ is $[[a_{i1}, a_{i2}, \cdots, a_{in}]]$. If the $j$th column of $I$ is denoted $\vec{e_j}$, what is the entry in row $i$ and column $j$ of $AI$? Your answer should be in terms of $i$ and $j$.
+	
+	> c) What does part b) imply $AI$ is equal to? Why does this make sense in the context of function composition?
+
+###
+
+
+
+### card homework-5 "Homework 5"
+	
+	*Due Wednesday of Week 6 at the start of class*
+	
+	Complete the following problems and submit them as a pdf to Canvas. 8 points are awarded for thoroughly attempting every problem, and I'll select three problems to grade on correctness for 4 points each. Enough work should be shown that there is no question about the mathematical process used to obtain your answers.
+
+	### buttons
+		download-homework-5
+	###
+
+
+
+	## Section 5
+	
+	In problems 4#, solve the DE and verify that you've found the general solution with the Wronskian.
+	
+	#. $$y'' + 6y' + 9y = 0.$$
+	
+	#. $$y'' + 10y' + 26y = 0.$$
+	
+	#. $$y'' - 100y = 0.$$
+	
+	#. $$y'' + 100y = 0.$$
+	
+
+
+	- - -
+
+	In problems 2#, solve the initial value problem and determine the behavior of the solution as $t \to \infty$.
+	
+	#. $$y'' - 2y' + 17y = 0,$$ $$y(0) = 4,$$ $$y'(0) = -4.$$
+	
+	#. $$y'' + 8y' + 16y = 0,$$ $$y(0) = 1,$$ $$y'(0) = 0.$$
+	
+
+
+	- - -
+
+	#. One fundamental solution to $$ty'' - y' + t^3y = 0$$ is $y = \sin\left(\frac{t^2}{2}\right)$. Find the other.
+
+	#. One fundamental solution to $$t^2y'' + ty' + y = 0$$ is $y = \sin(\log(t))$. Find the other.
+
+
+
+	## Section 6
+	
+	In problems 8#, find the general solution to the DE.
+	
+	#. $$y'' - 2y' - 3y = 8e^t.$$
+	
+	#. $$y'' - 2y' - 3y = 8e^{3t}.$$
+	
+	#. $$y'' + y = 3\sin(t) + e^t.$$
+	
+	#. $$y'' + 6y' + 9y = 120t^2e^{-3t}.$$
+	
+	#. $$4y'' + y = \sec\left(\frac{t}{2}\right).$$
+	
+	#. $$y'' + 2y' + y = 2t\sin(t).$$
+	
+	#. $$y'' + 4y' + 4y = t^{-2} e^{-2t}.$$
+	
+	#. $$y'' + 3y' + 2y = \frac{1}{1 + e^t}.$$
 	
 ###
 
@@ -618,38 +650,6 @@ Welcome to Math 256! We'll use this page for the interactive notes, the homework
 	$$
 	
 	is *not* a solution in general. Why does this not contradict the results of section 4?
-
-	
-	
-	## Section 5
-	
-	In problems 4#, solve the DE and verify that you've found the general solution with the Wronskian.
-	
-	#. $$y'' + 6y' + 9y = 0.$$
-	
-	#. $$y'' + 10y' + 26y = 0.$$
-	
-	#. $$y'' - 100y = 0.$$
-	
-	#. $$y'' + 100y = 0.$$
-	
-
-
-	- - -
-
-	In problems 2#, solve the initial value problem and determine the behavior of the solution as $t \to \infty$.
-	
-	#. $$y'' - 2y' + 17y = 0,$$ $$y(0) = 4,$$ $$y'(0) = -4.$$
-	
-	#. $$y'' + 8y' + 16y = 0,$$ $$y(0) = 1,$$ $$y'(0) = 0.$$
-	
-
-
-	- - -
-
-	#. One fundamental solution to $$ty'' - y' + t^3y = 0$$ is $y = \sin\left(\frac{t^2}{2}\right)$. Find the other.
-
-	#. One fundamental solution to $$t^2y'' + ty' + y = 0$$ is $y = \sin(\log(t))$. Find the other.
 	
 ###
 
