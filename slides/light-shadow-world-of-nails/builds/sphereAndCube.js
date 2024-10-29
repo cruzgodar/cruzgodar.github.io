@@ -8,8 +8,8 @@ async function reset({ slide, forward, duration })
 	await initializeApplet({
 		Class: ComposedFractals,
 		parameters: {
-			useShadows: true,
-			useReflections: true,
+			useShadows: false,
+			useReflections: false,
 			includeSphere: true,
 			includeExtrudedCube: true,
 		},
