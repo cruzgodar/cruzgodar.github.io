@@ -8,7 +8,7 @@ async function reset({ slide, duration })
 	await initializeApplet({
 		Class: ComposedFractals,
 		parameters: {
-			useShadows: false,
+			useShadows: true,
 			useReflections: false,
 			includeMandelbulb: true,
 		},
