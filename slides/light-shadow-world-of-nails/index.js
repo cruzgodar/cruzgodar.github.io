@@ -1,11 +1,15 @@
 import { cubeAndSpongeBuilds } from "./builds/cubeAndSponge.js";
+import { curvedSpaceBuilds } from "./builds/curvedSpace.js";
+import { e3Builds } from "./builds/e3.js";
 import { foldingSpaceBuilds } from "./builds/foldingSpace.js";
 import { groundAndSphereBuilds } from "./builds/groundAndSphere.js";
+import { h2xeBuilds } from "./builds/h2xe.js";
 import { kIFSBuilds } from "./builds/kIFS.js";
 import { lightingBuilds } from "./builds/lighting.js";
 import { mandelbulbBuilds } from "./builds/mandelbulb.js";
 import { qJuliaBuilds } from "./builds/qJulia.js";
 import { shadowsBuilds } from "./builds/shadows.js";
+import { sl2rBuilds } from "./builds/sl2r.js";
 import { sphereAndCubeBuilds } from "./builds/sphereAndCube.js";
 import { titleBuilds } from "./builds/title.js";
 import Lapsa from "/scripts/lapsa.js";
@@ -43,7 +47,9 @@ export async function initializeApplet({
 		...parameters
 	});
 	applet.nonFullscreenAspectRatio = 16 / 9;
-	applet.changeResolution(resolution);
+
+	try {applet.changeResolution(resolution);}
+	catch(ex) {/* Thurston Geometries don't have this */}
 
 	document.body.querySelectorAll(".wilson-draggables-container")
 		.forEach(element => element.classList.add("lapsa-interactable"));
@@ -71,6 +77,10 @@ const options =
 		"kifs": kIFSBuilds,
 		"mandelbulb": mandelbulbBuilds,
 		"qjulia": qJuliaBuilds,
+		"curved-space": curvedSpaceBuilds,
+		"e3": e3Builds,
+		"h2xe": h2xeBuilds,
+		"sl2r": sl2rBuilds,
 	},
 
 	setupBuild: () =>

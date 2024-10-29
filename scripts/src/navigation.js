@@ -63,19 +63,6 @@ export async function redirect({
 	restoreScroll = false,
 	noFadeOut = false
 }) {
-	const queryParams = (() =>
-	{
-		if (url.indexOf("?") !== -1)
-		{
-			const [trimmedUrl, params] = url.split("?");
-
-			url = trimmedUrl;
-			return params;
-		}
-
-		return "";
-	})();
-
 	if (currentlyRedirecting || url === pageUrl)
 	{
 		return;
@@ -88,6 +75,19 @@ export async function redirect({
 		window.open(url, "_blank");
 		return;
 	}
+
+	const queryParams = (() =>
+	{
+		if (url.indexOf("?") !== -1)
+		{
+			const [trimmedUrl, params] = url.split("?");
+
+			url = trimmedUrl;
+			return params;
+		}
+
+		return "";
+	})();
 
 	currentlyRedirecting = true;
 

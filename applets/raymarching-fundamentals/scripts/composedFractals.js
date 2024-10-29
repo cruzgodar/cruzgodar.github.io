@@ -1,4 +1,10 @@
-import { extrudedCubeDE, kIFSCubeDE, mandelbulbDE, mengerSpongeDE, qJuliaDE } from "./distanceEstimators.js";
+import {
+	extrudedCubeDE,
+	kIFSCubeDE,
+	mandelbulbDE,
+	mengerSpongeDE,
+	qJuliaDE
+} from "./distanceEstimators.js";
 import { getRotationMatrix, RaymarchApplet } from "/scripts/applets/raymarchApplet.js";
 
 export class ComposedFractals extends RaymarchApplet
