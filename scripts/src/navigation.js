@@ -76,8 +76,6 @@ export async function redirect({
 		return "";
 	})();
 
-	console.log(queryParams);
-
 	if (currentlyRedirecting || url === pageUrl)
 	{
 		return;

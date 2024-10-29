@@ -23,10 +23,11 @@ export class GroundAndSphere extends RaymarchApplet
 
 
 			uniform float showSphereAmount;
+			uniform float lightAmount;
+			uniform float ambientOcclusionAmount;
 			uniform float groundTextureAmount;
 			uniform float fogAmount;
 			uniform float pointLightAmount;
-			uniform float ambientLightAmount;
 			uniform float shadowAmount;
 			uniform float softShadowAmount;
 			uniform float reflectivityAmount;
@@ -41,7 +42,7 @@ export class GroundAndSphere extends RaymarchApplet
 			const float bloomPower = float(1);
 			
 			const float clipDistance = float(1000);
-			const int maxMarches = 192;
+			const int maxMarches = 256;
 			const int maxShadowMarches = 128;
 			const int maxReflectionMarches = 128;
 			const vec3 fogColor = vec3(0.6, 0.73, 0.87);
@@ -248,12 +249,16 @@ export class GroundAndSphere extends RaymarchApplet
 				
 				float lightIntensity = max(
 					lightBrightness * dotProduct,
-					0.25 * ambientLightAmount
+					0.25
 				);
 
 				vec3 color = getColor(pos)
-					* lightIntensity
-					* max((1.0 - float(iteration) / float(maxMarches)), 0.0);
+					* mix(1.0, lightIntensity, lightAmount)
+					* mix(
+						1.0,
+						max((1.0 - float(iteration) / float(maxMarches)), 0.0),
+						ambientOcclusionAmount
+					);
 
 				
 					float shadowIntensity = mix(
@@ -321,12 +326,16 @@ export class GroundAndSphere extends RaymarchApplet
 				
 				float lightIntensity = max(
 					lightBrightness * dotProduct,
-					0.25 * ambientLightAmount
+					0.25
 				);
 
 				vec3 color = getColor(pos)
-					* lightIntensity
-					* max((1.0 - float(iteration) / float(maxMarches)), 0.0);
+					* mix(1.0, lightIntensity, lightAmount)
+					* mix(
+						1.0,
+						max((1.0 - float(iteration) / float(maxMarches)), 0.0),
+						ambientOcclusionAmount
+					);
 
 				
 					float shadowIntensity = mix(
@@ -406,19 +415,20 @@ export class GroundAndSphere extends RaymarchApplet
 		`;
 
 		const uniforms = {
-			showSphereAmount: ["float", 1],
-			groundTextureAmount: ["float", 1],
-			fogAmount: ["float", 1],
-			pointLightAmount: ["float", 1],
-			ambientLightAmount: ["float", 1],
+			showSphereAmount: ["float", 0],
+			lightAmount: ["float", 0],
+			ambientOcclusionAmount: ["float", 0],
+			groundTextureAmount: ["float", 0],
+			fogAmount: ["float", 0],
+			pointLightAmount: ["float", 0],
 			shadowAmount: ["float", 0],
-			softShadowAmount: ["float", 1],
+			softShadowAmount: ["float", 0],
 			reflectivityAmount: ["float", 0],
-			modPosAmount: ["float", 1],
-			showRoomsAmount: ["float", 1],
+			modPosAmount: ["float", 0],
+			showRoomsAmount: ["float", 0],
 
-			sphereWeight: ["float", 0],
-			extrudedCubeWeight: ["float", 1],
+			sphereWeight: ["float", 1],
+			extrudedCubeWeight: ["float", 0],
 			extrudedCubeSeparation: ["float", 1.5],
 		};
 

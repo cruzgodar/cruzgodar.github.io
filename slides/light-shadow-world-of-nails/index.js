@@ -1,3 +1,4 @@
+import { groundAndSphereBuilds } from "./builds/groundAndSphere.js";
 import { titleBuilds } from "./builds/title.js";
 import Lapsa from "/scripts/lapsa.js";
 import { changeOpacity } from "/scripts/src/animation.js";
@@ -15,6 +16,12 @@ export let useReflections = false;
 export function setUseReflections(newUseReflections)
 {
 	useReflections = newUseReflections;
+}
+
+export let uniformLoop;
+export function setUniformLoop(newUniformLoop)
+{
+	uniformLoop = newUniformLoop;
 }
 
 export let applet;
@@ -38,6 +45,9 @@ export async function initializeApplet(Class, slide, duration)
 	applet.nonFullscreenAspectRatio = 16 / 9;
 	applet.changeResolution(1000);
 
+	document.body.querySelectorAll(".wilson-draggables-container")
+		.forEach(element => element.classList.add("lapsa-interactable"));
+
 	changeOpacity({
 		element: canvasBundle,
 		opacity: 1,
@@ -51,11 +61,13 @@ const options =
 
 	builds:
 	{
-		title: titleBuilds
+		"title": titleBuilds,
+		"ground-and-sphere": groundAndSphereBuilds,
 	},
 
 	setupBuild: () =>
 	{
+		uniformLoop?.pause && uniformLoop.pause();
 		applet?.pause && applet.pause();
 	}
 };

@@ -3,8 +3,7 @@ import { addHoverEventWithScale } from "../src/hoverEvents.js";
 import {
 	$,
 	addTemporaryListener,
-	pageElement,
-	pageUrl
+	pageElement
 } from "../src/main.js";
 
 // Each entry is an array beginning with the return type,
@@ -51,9 +50,6 @@ export class Applet
 
 	aspectRatio = 1;
 	nonFullscreenAspectRatio = 1;
-
-	state = {};
-	defaultState = {};
 
 	constructor(canvas)
 	{
@@ -106,20 +102,15 @@ export class Applet
 			this.hiddenCanvasContainer.remove();
 		}
 
-		const params = new URLSearchParams(window.location.search);
-
-		for (const key in this.state)
+		if (this.wilson)
 		{
-			params.delete(key);
+			this.wilson.fullscreen.fullscreenComponentsContainerLocation.parentNode.insertBefore(
+				this.canvas,
+				this.wilson.fullscreen.fullscreenComponentsContainerLocation
+			);
+
+			this.wilson.fullscreen.fullscreenComponentsContainerLocation.remove();
 		}
-
-		const string = params.toString();
-
-		window.history.replaceState(
-			{ url: pageUrl },
-			document.title,
-			pageUrl.replace(/\/home\//, "/") + (string ? `?${string}` : "")
-		);
 
 		const vowel = ["a", "e", "i", "o", "u", "y"]
 			.includes(this.constructor.name[0].toLowerCase())
@@ -127,28 +118,6 @@ export class Applet
 			: "";
 
 		console.log(`Destroyed a${vowel} ${this.constructor.name} applet`);
-	}
-
-	initState()
-	{
-		const searchParams = new URLSearchParams(window.location.search);
-
-		for (const key in this.defaultState)
-		{
-			this.state[key] = searchParams.get(key);
-		}
-	}
-
-	setState(key, value)
-	{
-		this.state[key] = value;
-
-		const searchParams = new URLSearchParams(window.location.search);
-		searchParams.set(key, value);
-
-		const string = searchParams.toString();
-
-		window.history.replaceState({ url: pageUrl }, "", pageUrl.replace(/\/home\//, "/") + (string ? `?${string}` : ""));
 	}
 
 	runWhenOnscreen(data)

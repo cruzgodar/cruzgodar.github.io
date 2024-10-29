@@ -60,6 +60,43 @@
 		</div>
 
 		<div>
+			<h1>Distance Estimators</h1>
+
+			<p class="build">How can we get the effects of ray tracing without having to compute those intersections?</p>
+
+			<p class="build">We could avoid having to calculate the geometry of an object if we instead knew a <strong>distance estimator</strong>, or DE, for it: a function that takes in a point in $\mathbb{R}^3$ and outputs (no more than) the minimum distance to the surface of the object, with negative outputs indicating the point is inside.</p>
+		</div>
+		
+		<div>
+			<p>Sphere of radius $r$ at the origin: $d(p) = |p| - r$</p>
+
+			<p class="build">Plane $z = 0$: $d(p) = |p_z|$</p>
+
+			<p class="build">Cube of side length $2r$ at the origin: $d(p) = \max\{|p_x| - r, |p_y| - r, |p_z| - r\}$</p>
+
+			<p class="build">Union of objects with DEs $d_1$ and $d_2$: $d(p) = \min\{d_1(p), d_2(p)\}$</p>
+
+			<p class="build">Intersection of objects with DEs $d_1$ and $d_2$: $d(p) = \max\{d_1(p), d_2(p)\}$</p>
+
+			<p class="build">Set difference of objects with DEs $d_1$ and $d_2$: $d(p) = d_1(p) - d_2(p)$</p>
+		</div>
+
+		<div>
+			<h1>Ray Marching</h1>
+
+			<p class="build">Given a camera position $c \in \mathbb{R}^3$ and a unit vector $v \in T_c\mathbb{R}^3$, we can &#x201C;march&#x201D; a ray from $c$ in the direction of $v$.</p>
+
+			<p class="build">Since there are no objects within $d(c)$ of the camera, we can move to $p_1 = c + d(c)v$ without marching inside an object.</p>
+
+			<p class="build">We can then march safely to $p_1 + d(p_1)v$, and repeat until the DE is below some threshold $\varepsilon$ or above some clip distance &mdash; lower values of $\varepsilon$ will result in a more accurate image.</p>
+
+			<p class="build">Repeating this process for every pixel in a grid, using a different direction for each, we can render an image by coloring pixels based on whether they reach the object.</p>
+		</div>
+
+		<div id="ground-and-sphere" class="full-canvas"></div>
+
+		<div>
+			
 		</div>
 	</div>
 
