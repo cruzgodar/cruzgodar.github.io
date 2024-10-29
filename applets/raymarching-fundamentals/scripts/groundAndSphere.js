@@ -118,7 +118,7 @@ export class GroundAndSphere extends RaymarchApplet
 
 				if (minDistance == distanceGround)
 				{
-					vec2 co = floor(pos.xy * 50.0);
+					vec2 co = floor(pos.xy * groundTextureAmount * 50.0);
 					return vec3(0.5, 0.5, 0.5)
 						* (1.0 + groundTextureAmount * .2 * (rand(co) - .5));
 				}

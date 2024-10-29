@@ -2,12 +2,19 @@ import { applet, initializeApplet } from "../index.js";
 import { GroundAndSphere } from "/applets/raymarching-fundamentals/scripts/groundAndSphere.js";
 
 const uniforms = [
-	"showSphereAmount",
+	"lightAmount",
+	"ambientOcclusionAmount",
+	"groundTextureAmount",
+	"fogAmount",
 ];
 
 async function reset({ slide, forward, duration })
 {
 	await initializeApplet(GroundAndSphere, slide, duration);
+
+	[
+		"showSphereAmount",
+	].forEach(name => applet.setUniform(name, 1));
 
 	if (!forward)
 	{
@@ -33,7 +40,7 @@ const builds = Object.fromEntries(
 	)
 );
 
-export const groundAndSphereBuilds =
+export const lightingBuilds =
 {
 	reset,
 	...builds

@@ -96,8 +96,28 @@
 		<div id="ground-and-sphere" class="full-canvas"></div>
 
 		<div>
-			
+			<h1>Lighting</h1>
+
+			<p class="build">What else can we do with DEs? Everything might look a nail to our hammer, but this world might genuinely be made of nails.</p>
+
+			<p class="build">Once we hit an object, we can find the normal vector to the surface by computing the gradient of the DE numerically. By taking the normal vector&#x2019;s dot product with a vector pointing to a light source, we can approximate shading.</p>
+
+			<p class="build">We can also slightly darken the color based on the number of marches taken to simulate ambient occlusion, and by blending the final color with the sky color based on distance from the camera, we can simulate fog.</p>
 		</div>
+
+		<div id="lighting" class="full-canvas"></div>
+
+		<div>
+			<h1>Shadows and Reflections</h1>
+
+			<p class="build">Once we hit an object, we can use the surface normal to bump the position back outside of the object, then turn and march straight toward the light source. If we hit something else along the way, we darken the pixel.</p>
+
+			<p class="build">Amazingly, we also get soft shadows for free with this method. If we don&#x2019;t hit anything on the way to the light source, we darken the pixel based on how close it came to hitting something.</p>
+
+			<p class="build">Reflections are even simpler: by reflecting the direction through the surface normal, we can start a new march and mix it with our current color.</p>
+		</div>
+
+		<div id="shadows" class="full-canvas"></div>
 	</div>
 
 

@@ -1,4 +1,6 @@
 import { groundAndSphereBuilds } from "./builds/groundAndSphere.js";
+import { lightingBuilds } from "./builds/lighting.js";
+import { shadowsBuilds } from "./builds/shadows.js";
 import { titleBuilds } from "./builds/title.js";
 import Lapsa from "/scripts/lapsa.js";
 import { changeOpacity } from "/scripts/src/animation.js";
@@ -63,6 +65,8 @@ const options =
 	{
 		"title": titleBuilds,
 		"ground-and-sphere": groundAndSphereBuilds,
+		"lighting": lightingBuilds,
+		"shadows": shadowsBuilds,
 	},
 
 	setupBuild: () =>
