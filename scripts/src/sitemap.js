@@ -1620,6 +1620,7 @@ export const sitemap =
 		
 		"children":
 		[
+			"/slides/light-shadow-world-of-nails/",
 			"/slides/marys-3-manifold/",
 			"/slides/grandmas-recipe/",
 			"/slides/oral-exam/",
@@ -1627,6 +1628,15 @@ export const sitemap =
 		]
 	},
 		
+	"/slides/light-shadow-world-of-nails/":
+	{
+		"title": "Light, Shadow, and a World of Nails",
+		
+		"parent": "/slides/",
+		
+		"children": []
+	},
+	
 	"/slides/marys-3-manifold/":
 	{
 		"title": "Mary's 3-Manifold: The Value of Mathematical Visualization",
