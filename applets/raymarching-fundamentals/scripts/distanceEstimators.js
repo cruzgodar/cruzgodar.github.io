@@ -427,14 +427,7 @@ export const qJuliaDE = [
 				
 				z = qmul(z, z);
 				
-				z += vec4(-.54, -.25, -.668, 0.0);
-
-				z = mat4(
-					vec4(rotationMatrix[0], 0.0),
-					vec4(rotationMatrix[1], 0.0),
-					vec4(rotationMatrix[2], 0.0),
-					vec4(0.0, 0.0, 0.0, 1.0)
-				) * z;
+				z += vec4(rotationMatrix * vec3(-.54, -.25, -.668), 0.0);
 			}
 			
 			r = length(z);
@@ -466,14 +459,7 @@ export const qJuliaDE = [
 				
 				z = qmul(z, z);
 				
-				z += vec4(-.54, -.25, -.668, 0.0);
-
-				z = mat4(
-					vec4(rotationMatrix[0], 0.0),
-					vec4(rotationMatrix[1], 0.0),
-					vec4(rotationMatrix[2], 0.0),
-					vec4(0.0, 0.0, 0.0, 1.0)
-				) * z;
+				z += vec4(rotationMatrix * vec3(-.54, -.25, -.668), 0.0);
 				
 				color = mix(color, abs(normalize(z.xyz)), colorScale);
 				
