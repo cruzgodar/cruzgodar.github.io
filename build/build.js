@@ -45,10 +45,24 @@ async function buildSite()
 		"-C",
 		root,
 		"ls-files",
-		...(options.clean ? [] : ["-m", "-o"])
+		...(options.clean ? [] : ["-m"])
 	]);
 
-	await parseModifiedFiles(proc.stdout.toString().split("\n"));
+	const files = proc.stdout.toString().split("\n");
+
+	const directories = Array.from(new Set(
+		files.map(file => file.slice(0, file.lastIndexOf("/")))
+	));
+
+	const expandedFiles = directories.map(directory =>
+		spawnSync("ls", [
+			"-p",
+		], {
+			cwd: root + directory
+		}).stdout.toString().split("\n").map(file => `${directory}/${file}`)
+	).flat();
+
+	await parseModifiedFiles(expandedFiles);
 	
 	await buildXmlSitemap();
 
