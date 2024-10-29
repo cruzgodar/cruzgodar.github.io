@@ -1,7 +1,5 @@
-import { applet, canvasBundle, initializeApplet, setUniformLoop } from "../index.js";
+import { addUniformLoop, applet, canvasBundle, initializeApplet } from "../index.js";
 import { CubeAndSponge } from "/applets/raymarching-fundamentals/scripts/cubeAndSponge.js";
-
-
 
 async function reset({ slide, duration })
 {
@@ -12,13 +10,20 @@ async function reset({ slide, duration })
 
 	await initializeApplet({
 		Class: CubeAndSponge,
+		parameters: {
+			useShadows: false,
+			useReflections: false,
+			includeExtrudedCube: true,
+		},
 		slide,
 		duration
 	});
 
+	applet.setUniform("extrudedCubeWeight", 1);
+
 	applet.wilson.worldCenterY = -Math.PI / 2;
 
-	setUniformLoop(
+	addUniformLoop(
 		applet.loopUniform({
 			name: "extrudedCubeSeparation",
 			startValue: 1,

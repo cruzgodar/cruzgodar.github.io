@@ -51,7 +51,14 @@ async function buildSite()
 	const files = proc.stdout.toString().split("\n");
 
 	const directories = Array.from(new Set(
-		files.map(file => file.slice(0, file.lastIndexOf("/")))
+		files.map(file => {
+			if (file.indexOf("/") === -1)
+			{
+				return "";
+			}
+
+			return file.slice(0, file.lastIndexOf("/"));
+		})
 	));
 
 	const expandedFiles = directories.map(directory =>

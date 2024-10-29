@@ -14,7 +14,10 @@ export class CubeAndSponge extends RaymarchApplet
 	constructor({
 		canvas,
 		useShadows = false,
-		useReflections = false
+		useReflections = false,
+		includeSphere = false,
+		includeExtrudedCube = false,
+		includeMengerSponge = false
 	}) {
 		const addGlsl = /* glsl */`
 			float rand(vec2 co)
@@ -22,11 +25,28 @@ export class CubeAndSponge extends RaymarchApplet
 				return fract(sin(dot(co, vec2(12.9898, 78.233))) * 43758.5453);
 			}
 
-			${extrudedCubeDE[0]}
-			${mengerSpongeDE[0]}
+			${includeSphere ? /* glsl */`
+				float distanceEstimatorRoomSphere(vec3 pos)
+				{
+					vec3 modPos = mod(pos, 2.0);
+					return 1.25 - length(modPos - vec3(1.0, 1.0, 1.0));
+				}
 
-			${extrudedCubeDE[1]}
-			${mengerSpongeDE[1]}
+				vec3 getColorRoomSphere(vec3 pos)
+				{
+					return vec3(0.5, 0.0, 1.0);
+				}
+			` : ""}
+
+			${includeExtrudedCube ? /* glsl */`
+				${extrudedCubeDE[0]}
+				${extrudedCubeDE[1]}
+			` : ""}
+
+			${includeMengerSponge ? /* glsl */`
+				${mengerSpongeDE[0]}
+				${mengerSpongeDE[1]}
+			` : ""}
 
 			float distanceEstimatorGround(vec3 pos)
 			{
@@ -40,16 +60,27 @@ export class CubeAndSponge extends RaymarchApplet
 				float c = cos(objectRotation);
 				float s = sin(objectRotation);
 				vec3 rotatedPos = mat3(c, s, 0.0, -s, c, 0.0, 0.0, 0.0, 1.0) * (pos + vec3(0.0, 0.0, objectFloat));
-
-				if (extrudedCubeWeight > 0.0)
-				{
-					distanceObject += extrudedCubeWeight * distanceEstimatorExtrudedCube(rotatedPos);
-				}
 				
-				if (mengerSpongeWeight > 0.0)
-				{
-					distanceObject += mengerSpongeWeight * distanceEstimatorMengerSponge(rotatedPos);
-				}
+				${includeSphere ? /* glsl */`
+					if (sphereWeight > 0.0)
+					{
+						distanceObject += sphereWeight * distanceEstimatorRoomSphere(pos);
+					}
+				` : ""}
+
+				${includeExtrudedCube ? /* glsl */`
+					if (extrudedCubeWeight > 0.0)
+					{
+						distanceObject += extrudedCubeWeight * distanceEstimatorExtrudedCube(rotatedPos);
+					}
+				` : ""}
+
+				${includeMengerSponge ? /* glsl */`
+					if (mengerSpongeWeight > 0.0)
+					{
+						distanceObject += mengerSpongeWeight * distanceEstimatorMengerSponge(rotatedPos);
+					}
+				` : ""}
 				
 				return distanceObject;
 			}
@@ -62,15 +93,26 @@ export class CubeAndSponge extends RaymarchApplet
 				float s = sin(objectRotation);
 				vec3 rotatedPos = mat3(c, s, 0.0, -s, c, 0.0, 0.0, 0.0, 1.0) * (pos + vec3(0.0, 0.0, objectFloat));
 
-				if (extrudedCubeWeight > 0.0)
-				{
-					color += extrudedCubeWeight * getColorExtrudedCube(rotatedPos);
-				}
+				${includeSphere ? /* glsl */`
+					if (sphereWeight > 0.0)
+					{
+						color += sphereWeight * getColorRoomSphere(pos);
+					}
+				` : ""}
 
-				if (mengerSpongeWeight > 0.0)
-				{
-					color += mengerSpongeWeight * getColorMengerSponge(rotatedPos);
-				}
+				${includeExtrudedCube ? /* glsl */`
+					if (extrudedCubeWeight > 0.0)
+					{
+						color += extrudedCubeWeight * getColorExtrudedCube(rotatedPos);
+					}
+				` : ""}
+
+				${includeMengerSponge ? /* glsl */`
+					if (mengerSpongeWeight > 0.0)
+					{
+						color += mengerSpongeWeight * getColorMengerSponge(rotatedPos);
+					}
+				` : ""}
 
 				return color;
 			}
@@ -123,9 +165,9 @@ export class CubeAndSponge extends RaymarchApplet
 			objectRotation: ["float", 0],
 			objectFloat: ["float", 0],
 
-			sphereWeight: ["float", 0],
+			sphereWeight: ["float", 1],
 
-			extrudedCubeWeight: ["float", 1],
+			extrudedCubeWeight: ["float", 0],
 			extrudedCubeSeparation: ["float", 1.5],
 
 			mengerSpongeWeight: ["float", 0],

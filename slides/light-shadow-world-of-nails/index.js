@@ -1,7 +1,9 @@
+import { cubeAndSpongeBuilds } from "./builds/cubeAndSponge.js";
 import { foldingSpaceBuilds } from "./builds/foldingSpace.js";
 import { groundAndSphereBuilds } from "./builds/groundAndSphere.js";
 import { lightingBuilds } from "./builds/lighting.js";
 import { shadowsBuilds } from "./builds/shadows.js";
+import { sphereAndCubeBuilds } from "./builds/sphereAndCube.js";
 import { titleBuilds } from "./builds/title.js";
 import Lapsa from "/scripts/lapsa.js";
 import { changeOpacity } from "/scripts/src/animation.js";
@@ -9,27 +11,16 @@ import { changeOpacity } from "/scripts/src/animation.js";
 export const canvasBundle = document.body.querySelector("#canvas-bundle");
 const outputCanvas = document.body.querySelector("#output-canvas");
 
-export let useShadows = false;
-export function setUseShadows(newUseShadows)
+export let uniformLoop = [];
+export function addUniformLoop(newUniformLoop)
 {
-	useShadows = newUseShadows;
-}
-
-export let useReflections = false;
-export function setUseReflections(newUseReflections)
-{
-	useReflections = newUseReflections;
-}
-
-export let uniformLoop;
-export function setUniformLoop(newUniformLoop)
-{
-	uniformLoop = newUniformLoop;
+	uniformLoop.push(newUniformLoop);
 }
 
 export let applet;
 export async function initializeApplet({
 	Class,
+	parameters = {},
 	slide,
 	duration,
 	resolution = 1000
@@ -46,8 +37,7 @@ export async function initializeApplet({
 
 	applet = new Class({
 		canvas: outputCanvas,
-		useShadows,
-		useReflections
+		...parameters
 	});
 	applet.nonFullscreenAspectRatio = 16 / 9;
 	applet.changeResolution(resolution);
@@ -73,11 +63,14 @@ const options =
 		"lighting": lightingBuilds,
 		"shadows": shadowsBuilds,
 		"folding-space": foldingSpaceBuilds,
+		"sphere-and-cube": sphereAndCubeBuilds,
+		"cube-and-sponge": cubeAndSpongeBuilds,
 	},
 
 	setupBuild: () =>
 	{
-		uniformLoop?.pause && uniformLoop.pause();
+		uniformLoop.forEach(uniformLoop => uniformLoop?.pause && uniformLoop.pause());
+		uniformLoop = [];
 		applet?.pause && applet.pause();
 	}
 };
