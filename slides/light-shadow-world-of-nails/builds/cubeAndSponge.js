@@ -16,6 +16,7 @@ async function reset({ slide, forward, duration })
 	});
 
 	applet.setUniform("extrudedCubeWeight", 1);
+	applet.setUniform("mengerSpongeScale", 2.25);
 
 	if (!forward)
 	{

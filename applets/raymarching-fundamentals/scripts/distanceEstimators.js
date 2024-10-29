@@ -206,6 +206,7 @@ function getMengerSpongeDE(useForGetColor = false)
 			${useForGetColor ? changeColorGlsl : ""}
 
 			mutablePos = abs(mutablePos);
+			mutablePos = rotationMatrix * mutablePos;
 			maxAbsPos = max(max(mutablePos.x, mutablePos.y), mutablePos.z);
 			minAbsPos = min(min(mutablePos.x, mutablePos.y), mutablePos.z);
 			sumAbsPos = mutablePos.x + mutablePos.y + mutablePos.z;

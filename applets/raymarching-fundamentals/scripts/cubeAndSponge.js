@@ -1,5 +1,5 @@
 import { extrudedCubeDE, mengerSpongeDE } from "./distanceEstimators.js";
-import { RaymarchApplet } from "/scripts/applets/raymarchApplet.js";
+import { getRotationMatrix, RaymarchApplet } from "/scripts/applets/raymarchApplet.js";
 
 export class CubeAndSponge extends RaymarchApplet
 {
@@ -172,6 +172,7 @@ export class CubeAndSponge extends RaymarchApplet
 
 			mengerSpongeWeight: ["float", 0],
 			mengerSpongeScale: ["float", 3],
+			rotationMatrix: ["mat3", [[1, 0, 0], [0, 1, 0], [0, 0, 1]]],
 		};
 
 		super({
@@ -189,6 +190,7 @@ export class CubeAndSponge extends RaymarchApplet
 			lockZ: 1,
 			fogColor: [0.6, 0.73, 0.87],
 			fogScaling: 0.075,
+			epsilonScaling: 0.75,
 			useShadows,
 			useReflections
 		});
@@ -210,6 +212,12 @@ export class CubeAndSponge extends RaymarchApplet
 			"objectFloat",
 			.1 * Math.sin(3 * this.uniforms.objectRotation[1])
 		);
+
+		this.setUniform("rotationMatrix", getRotationMatrix(
+			(Math.sin(3 * this.uniforms.objectRotation[1] + 1.013) + 1) / 6,
+			(Math.sin(2 * this.uniforms.objectRotation[1]) + 1) / 6,
+			(Math.sin(5 * this.uniforms.objectRotation[1] + .53) + 1) / 6,
+		));
 
 		this.needNewFrame = true;
 	}
