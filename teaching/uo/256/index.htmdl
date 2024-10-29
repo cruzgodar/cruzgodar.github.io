@@ -537,7 +537,7 @@ Welcome to Math 256! We'll use this page for the interactive notes, the homework
 
 	- - -
 
-	In problems 3#, solve the initial value problem and determine the behavior of the solution as $t \to \infty$.
+	In problems 2#, solve the initial value problem and determine the behavior of the solution as $t \to \infty$.
 	
 	#. $$y'' - 2y' + 17y = 0,$$ $$y(0) = 4,$$ $$y'(0) = -4.$$
 	
@@ -631,13 +631,13 @@ Welcome to Math 256! We'll use this page for the interactive notes, the homework
 
 	- - -
 
-	#. Define a linear operator $L$ by
+	#. Let $y = a(t) + b(t)i$ be a solution to
 	
 	$$
-		L[y] = y'' + p(t)y' + q(t)y
+		y'' + p(t)y' + q(t)y = 0,
 	$$
 	
-	for continuous functions $p$ and $q$ and consider the DE $L[y] = 0$. Suppose a solution $y$ is a function with complex-valued outputs, and that it splits as $y(t) = a(t) + ib(t)$, where $a$ and $b$ are real-valued functions. Show that both $a$ and $b$ must be solutions to $L[y] = 0$ themselves.
+	where $a$, $b$, $p$, and $q$ are all real-valued functions. Show that both $a$ and $b$ must be solutions to $y'' + p(t)y' + q(t)y = 0$ themselves.
 	
 
 
