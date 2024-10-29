@@ -231,3 +231,83 @@ export const mengerSpongeDE = [
 		}
 	`,
 ];
+
+
+
+const kIFSScale = 1.15;
+
+function getKIFSDistanceEstimator(shape, useForGetColor = false)
+{
+	// Make the first letter uppercase.
+	const variableName = shape[0].toUpperCase() + shape.slice(1);
+
+	return /* glsl */`
+		pos = (pos - vec3(0.0, 0.0, 1.0));
+
+		${useForGetColor ? "vec3 color = vec3(1.0, 1.0, 1.0); float colorScale = .5;" : ""}
+		//We'll find the closest vertex, scale everything by a factor of 2 centered on that vertex (so that we don't need to recalculate the vertices), and repeat.
+		for (int iteration = 0; iteration < 56; iteration++)
+		{
+			//Fold space over on itself so that we can reference only the top vertex.
+			float t1 = dot(pos, n1${variableName});
+			
+			if (t1 < 0.0)
+			{
+				pos -= 2.0 * t1 * n1${variableName};
+				${useForGetColor ? "color = mix(color, color1, colorScale);" : ""}
+			}
+			
+			float t2 = dot(pos, n2${variableName});
+			
+			if (t2 < 0.0)
+			{
+				pos -= 2.0 * t2 * n2${variableName};
+				${useForGetColor ? "color = mix(color, color2, colorScale);" : ""}
+			}
+			
+			float t3 = dot(pos, n3${variableName});
+			
+			if (t3 < 0.0)
+			{
+				pos -= 2.0 * t3 * n3${variableName};
+				${useForGetColor ? "color = mix(color, color3, colorScale);" : ""}
+			}
+
+			${variableName === "Octahedron" ? /* glsl */`
+				float t4 = dot(pos, n4${variableName});
+				
+				if (t4 < 0.0)
+				{
+					pos -= 2.0 * t4 * n4${variableName};
+					${useForGetColor ? "color = mix(color, color4, colorScale);" : ""}
+				}
+			` : ""}
+			
+			//Scale the system -- this one takes me a fair bit of thinking to get. What's happening here is that we're stretching from a vertex, but since we never scale the vertices, the four new ones are the four closest to the vertex we scaled from. Now (x, y, z) will get farther and farther away from the origin, but that makes sense -- we're really just zooming in on the tetrahedron.
+			pos = ${kIFSScale} * pos - (${kIFSScale} - 1.0) * scaleCenter${variableName};
+			
+			pos = rotationMatrix * pos;
+
+			${useForGetColor ? "colorScale *= .5;" : ""}
+		}
+
+		float totalDistance = length(pos) * pow(1.0/${kIFSScale}, float(56));
+		
+		return ${useForGetColor ? "color" : "totalDistance"};
+	`;
+}
+
+export const kIFSCubeDE = [
+	/* glsl */`
+		float distanceEstimatorKIFS(vec3 pos)
+		{
+			${getKIFSDistanceEstimator("tetrahedron")}
+		}
+	`,
+	/* glsl */`
+		vec3 getColorKIFS(vec3 pos)
+		{
+			${getKIFSDistanceEstimator("tetrahedron", true)}
+		}
+	`,
+];

@@ -1,10 +1,12 @@
+import {
+	ComposedFractals
+} from "../../../applets/raymarching-fundamentals/scripts/composedFractals.js";
 import { addUniformLoop, applet, initializeApplet } from "../index.js";
-import { CubeAndSponge } from "/applets/raymarching-fundamentals/scripts/cubeAndSponge.js";
 
 async function reset({ slide, forward, duration })
 {
 	await initializeApplet({
-		Class: CubeAndSponge,
+		Class: ComposedFractals,
 		parameters: {
 			useShadows: false,
 			useReflections: false,

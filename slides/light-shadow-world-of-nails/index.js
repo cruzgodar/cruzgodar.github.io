@@ -1,6 +1,7 @@
 import { cubeAndSpongeBuilds } from "./builds/cubeAndSponge.js";
 import { foldingSpaceBuilds } from "./builds/foldingSpace.js";
 import { groundAndSphereBuilds } from "./builds/groundAndSphere.js";
+import { kIFSBuilds } from "./builds/kIFS.js";
 import { lightingBuilds } from "./builds/lighting.js";
 import { shadowsBuilds } from "./builds/shadows.js";
 import { sphereAndCubeBuilds } from "./builds/sphereAndCube.js";
@@ -65,6 +66,7 @@ const options =
 		"folding-space": foldingSpaceBuilds,
 		"sphere-and-cube": sphereAndCubeBuilds,
 		"cube-and-sponge": cubeAndSpongeBuilds,
+		"kifs": kIFSBuilds,
 	},
 
 	setupBuild: () =>

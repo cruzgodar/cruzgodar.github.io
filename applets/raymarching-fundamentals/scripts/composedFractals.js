@@ -1,7 +1,7 @@
-import { extrudedCubeDE, mengerSpongeDE } from "./distanceEstimators.js";
+import { extrudedCubeDE, kIFSCubeDE, mengerSpongeDE } from "./distanceEstimators.js";
 import { getRotationMatrix, RaymarchApplet } from "/scripts/applets/raymarchApplet.js";
 
-export class CubeAndSponge extends RaymarchApplet
+export class ComposedFractals extends RaymarchApplet
 {
 	sphereWeight = 0;
 
@@ -17,9 +17,19 @@ export class CubeAndSponge extends RaymarchApplet
 		useReflections = false,
 		includeSphere = false,
 		includeExtrudedCube = false,
-		includeMengerSponge = false
+		includeMengerSponge = false,
+		includeKIFS = false
 	}) {
 		const addGlsl = /* glsl */`
+			const vec3 color1 = vec3(1.0, 0.0, 0.0);
+			const vec3 color2 = vec3(0.0, 1.0, 0.0);
+			const vec3 color3 = vec3(0.0, 0.0, 1.0);
+
+			const vec3 n1Tetrahedron = vec3(-.577350, 0, .816496);
+			const vec3 n2Tetrahedron = vec3(.288675, -.5, .816496);
+			const vec3 n3Tetrahedron = vec3(.288675, .5, .816496);
+			const vec3 scaleCenterTetrahedron = vec3(0.0, 0.0, 1.0);
+
 			float rand(vec2 co)
 			{
 				return fract(sin(dot(co, vec2(12.9898, 78.233))) * 43758.5453);
@@ -46,6 +56,11 @@ export class CubeAndSponge extends RaymarchApplet
 			${includeMengerSponge ? /* glsl */`
 				${mengerSpongeDE[0]}
 				${mengerSpongeDE[1]}
+			` : ""}
+
+			${includeKIFS ? /* glsl */`
+				${kIFSCubeDE[0]}
+				${kIFSCubeDE[1]}
 			` : ""}
 
 			float distanceEstimatorGround(vec3 pos)
@@ -81,6 +96,13 @@ export class CubeAndSponge extends RaymarchApplet
 						distanceObject += mengerSpongeWeight * distanceEstimatorMengerSponge(rotatedPos);
 					}
 				` : ""}
+
+				${includeKIFS ? /* glsl */`
+					if (kIFSWeight > 0.0)
+					{
+						distanceObject += kIFSWeight * distanceEstimatorKIFS(rotatedPos);
+					}
+				` : ""}
 				
 				return distanceObject;
 			}
@@ -111,6 +133,13 @@ export class CubeAndSponge extends RaymarchApplet
 					if (mengerSpongeWeight > 0.0)
 					{
 						color += mengerSpongeWeight * getColorMengerSponge(rotatedPos);
+					}
+				` : ""}
+
+				${includeKIFS ? /* glsl */`
+					if (kIFSWeight > 0.0)
+					{
+						color += kIFSWeight * getColorKIFS(rotatedPos);
 					}
 				` : ""}
 
@@ -173,6 +202,8 @@ export class CubeAndSponge extends RaymarchApplet
 			mengerSpongeWeight: ["float", 0],
 			mengerSpongeScale: ["float", 3],
 			rotationMatrix: ["mat3", [[1, 0, 0], [0, 1, 0], [0, 0, 1]]],
+
+			kIFSWeight: ["float", 0],
 		};
 
 		super({

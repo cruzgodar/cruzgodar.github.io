@@ -764,7 +764,7 @@ export class RaymarchApplet extends AnimationFrameApplet
 			${mainFunctionGlsl}
 		`;
 
-		if (window.DEBUG)
+		// if (window.DEBUG)
 		{
 			console.log(shader);
 		}
