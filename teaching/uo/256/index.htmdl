@@ -519,11 +519,15 @@ Welcome to Math 256! We'll use this page for the interactive notes, the homework
 
 	## Section 5
 	
-	In problems 4#, solve the DE and verify that you've found the general solution with the Wronskian.
+	In problems 6#, solve the DE. If possible, verify that you've found the general solution with the Wronskian.
 	
 	#. $$y'' + 6y' + 9y = 0.$$
+
+	#. $$ty'' + y' = 0.$$
 	
 	#. $$y'' + 10y' + 26y = 0.$$
+
+	#. $$y'' - 2y' - 8y = 0.$$
 	
 	#. $$y'' - 100y = 0.$$
 	
@@ -533,7 +537,7 @@ Welcome to Math 256! We'll use this page for the interactive notes, the homework
 
 	- - -
 
-	In problems 2#, solve the initial value problem and determine the behavior of the solution as $t \to \infty$.
+	In problems 3#, solve the initial value problem and determine the behavior of the solution as $t \to \infty$.
 	
 	#. $$y'' - 2y' + 17y = 0,$$ $$y(0) = 4,$$ $$y'(0) = -4.$$
 	
