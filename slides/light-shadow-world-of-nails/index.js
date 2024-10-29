@@ -1,3 +1,4 @@
+import { foldingSpaceBuilds } from "./builds/foldingSpace.js";
 import { groundAndSphereBuilds } from "./builds/groundAndSphere.js";
 import { lightingBuilds } from "./builds/lighting.js";
 import { shadowsBuilds } from "./builds/shadows.js";
@@ -27,8 +28,12 @@ export function setUniformLoop(newUniformLoop)
 }
 
 export let applet;
-export async function initializeApplet(Class, slide, duration)
-{
+export async function initializeApplet({
+	Class,
+	slide,
+	duration,
+	resolution = 1000
+}) {
 	await changeOpacity({
 		element: canvasBundle,
 		opacity: 0,
@@ -45,7 +50,7 @@ export async function initializeApplet(Class, slide, duration)
 		useReflections
 	});
 	applet.nonFullscreenAspectRatio = 16 / 9;
-	applet.changeResolution(1000);
+	applet.changeResolution(resolution);
 
 	document.body.querySelectorAll(".wilson-draggables-container")
 		.forEach(element => element.classList.add("lapsa-interactable"));
@@ -67,6 +72,7 @@ const options =
 		"ground-and-sphere": groundAndSphereBuilds,
 		"lighting": lightingBuilds,
 		"shadows": shadowsBuilds,
+		"folding-space": foldingSpaceBuilds,
 	},
 
 	setupBuild: () =>

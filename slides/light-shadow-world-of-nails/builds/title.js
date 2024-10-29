@@ -10,7 +10,11 @@ async function reset({ slide, duration })
 		applet.resume();
 	}
 
-	await initializeApplet(CubeAndSponge, slide, duration);
+	await initializeApplet({
+		Class: CubeAndSponge,
+		slide,
+		duration
+	});
 
 	applet.wilson.worldCenterY = -Math.PI / 2;
 

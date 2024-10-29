@@ -7,7 +7,11 @@ const uniforms = [
 
 async function reset({ slide, forward, duration })
 {
-	await initializeApplet(GroundAndSphere, slide, duration);
+	await initializeApplet({
+		Class: GroundAndSphere,
+		slide,
+		duration
+	});
 
 	if (!forward)
 	{
