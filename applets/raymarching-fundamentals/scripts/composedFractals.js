@@ -1,4 +1,4 @@
-import { extrudedCubeDE, kIFSCubeDE, mengerSpongeDE } from "./distanceEstimators.js";
+import { extrudedCubeDE, kIFSCubeDE, mandelbulbDE, mengerSpongeDE, qJuliaDE } from "./distanceEstimators.js";
 import { getRotationMatrix, RaymarchApplet } from "/scripts/applets/raymarchApplet.js";
 
 export class ComposedFractals extends RaymarchApplet
@@ -18,7 +18,9 @@ export class ComposedFractals extends RaymarchApplet
 		includeSphere = false,
 		includeExtrudedCube = false,
 		includeMengerSponge = false,
-		includeKIFS = false
+		includeKIFS = false,
+		includeMandelbulb = false,
+		includeQJulia = false,
 	}) {
 		const addGlsl = /* glsl */`
 			const vec3 color1 = vec3(1.0, 0.0, 0.0);
@@ -33,6 +35,11 @@ export class ComposedFractals extends RaymarchApplet
 			float rand(vec2 co)
 			{
 				return fract(sin(dot(co, vec2(12.9898, 78.233))) * 43758.5453);
+			}
+
+			vec4 qmul(vec4 z, vec4 w)
+			{
+				return vec4(z.x*w.x - z.y*w.y - z.z*w.z - z.w*w.w, z.x*w.y + z.y*w.x + z.z*w.w - z.w*w.z, z.x*w.z - z.y*w.w + z.z*w.x + z.w*w.y, z.x*w.w + z.y*w.z - z.z*w.y + z.w*w.x);
 			}
 
 			${includeSphere ? /* glsl */`
@@ -61,6 +68,16 @@ export class ComposedFractals extends RaymarchApplet
 			${includeKIFS ? /* glsl */`
 				${kIFSCubeDE[0]}
 				${kIFSCubeDE[1]}
+			` : ""}
+
+			${includeMandelbulb ? /* glsl */`
+				${mandelbulbDE[0]}
+				${mandelbulbDE[1]}
+			` : ""}
+
+			${includeQJulia ? /* glsl */`
+				${qJuliaDE[0]}
+				${qJuliaDE[1]}
 			` : ""}
 
 			float distanceEstimatorGround(vec3 pos)
@@ -103,6 +120,20 @@ export class ComposedFractals extends RaymarchApplet
 						distanceObject += kIFSWeight * distanceEstimatorKIFS(rotatedPos);
 					}
 				` : ""}
+
+				${includeMandelbulb ? /* glsl */`
+					if (mandelbulbWeight > 0.0)
+					{
+						distanceObject += mandelbulbWeight * distanceEstimatorMandelbulb(rotatedPos);
+					}
+				` : ""}
+
+				${includeQJulia ? /* glsl */`
+					if (qJuliaWeight > 0.0)
+					{
+						distanceObject += qJuliaWeight * distanceEstimatorQJulia(rotatedPos);
+					}
+				` : ""}
 				
 				return distanceObject;
 			}
@@ -140,6 +171,20 @@ export class ComposedFractals extends RaymarchApplet
 					if (kIFSWeight > 0.0)
 					{
 						color += kIFSWeight * getColorKIFS(rotatedPos);
+					}
+				` : ""}
+
+				${includeMandelbulb ? /* glsl */`
+					if (mandelbulbWeight > 0.0)
+					{
+						color += mandelbulbWeight * getColorMandelbulb(rotatedPos);
+					}
+				` : ""}
+
+				${includeQJulia ? /* glsl */`
+					if (qJuliaWeight > 0.0)
+					{
+						color += qJuliaWeight * getColorQJulia(rotatedPos);
 					}
 				` : ""}
 
@@ -204,6 +249,10 @@ export class ComposedFractals extends RaymarchApplet
 			rotationMatrix: ["mat3", [[1, 0, 0], [0, 1, 0], [0, 0, 1]]],
 
 			kIFSWeight: ["float", 0],
+
+			mandelbulbWeight: ["float", 0],
+
+			qJuliaWeight: ["float", 0],
 		};
 
 		super({
@@ -221,7 +270,7 @@ export class ComposedFractals extends RaymarchApplet
 			lockZ: 1,
 			fogColor: [0.6, 0.73, 0.87],
 			fogScaling: 0.075,
-			epsilonScaling: 0.75,
+			epsilonScaling: 0.9,
 			useShadows,
 			useReflections
 		});

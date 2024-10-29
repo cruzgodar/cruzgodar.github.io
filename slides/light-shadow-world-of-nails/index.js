@@ -3,6 +3,7 @@ import { foldingSpaceBuilds } from "./builds/foldingSpace.js";
 import { groundAndSphereBuilds } from "./builds/groundAndSphere.js";
 import { kIFSBuilds } from "./builds/kIFS.js";
 import { lightingBuilds } from "./builds/lighting.js";
+import { mandelbulbAndQJuliaBuilds } from "./builds/mandelbulbAndQJulia.js";
 import { shadowsBuilds } from "./builds/shadows.js";
 import { sphereAndCubeBuilds } from "./builds/sphereAndCube.js";
 import { titleBuilds } from "./builds/title.js";
@@ -67,6 +68,7 @@ const options =
 		"sphere-and-cube": sphereAndCubeBuilds,
 		"cube-and-sponge": cubeAndSpongeBuilds,
 		"kifs": kIFSBuilds,
+		"mandelbulb-and-qjulia": mandelbulbAndQJuliaBuilds,
 	},
 
 	setupBuild: () =>

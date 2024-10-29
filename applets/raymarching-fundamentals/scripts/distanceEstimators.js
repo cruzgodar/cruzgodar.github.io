@@ -311,3 +311,178 @@ export const kIFSCubeDE = [
 		}
 	`,
 ];
+
+
+
+export const mandelbulbDE = [
+	/* glsl */`
+		float distanceEstimatorMandelbulb(vec3 pos)
+		{
+			pos = pos * 2.0 - vec3(0.0, 0.0, 2.0);
+			vec3 z = pos;
+			
+			float r = length(z);
+			float dr = 1.0;
+			
+			for (int iteration = 0; iteration < 16; iteration++)
+			{
+				if (r > 16.0)
+				{
+					break;
+				}
+				
+				float theta = acos(z.z / r);
+				
+				float phi = atan(z.y, z.x);
+				
+				dr = pow(r, 8.0 - 1.0) * 8.0 * dr + 1.0;
+				
+				theta *= 8.0;
+				
+				phi *= 8.0;
+				
+				z = pow(r, 8.0) * vec3(sin(theta)*cos(phi), sin(phi)*sin(theta), cos(theta));
+				
+				z += pos;
+				
+				z = rotationMatrix * z;
+				
+				r = length(z);
+			}
+			
+			return .5 * log(r) * r / dr / 2.0;
+		}
+	`,
+
+	/* glsl */`
+		vec3 getColorMandelbulb(vec3 pos)
+		{
+			pos = pos * 2.0 - vec3(0.0, 0.0, 2.0);
+			vec3 z = pos;
+			
+			float r = length(z);
+			float dr = 1.0;
+			
+			vec3 color = vec3(1.0, 1.0, 1.0);
+			float colorScale = .5;
+			
+			for (int iteration = 0; iteration < 100; iteration++)
+			{
+				if (r > 16.0)
+				{
+					break;
+				}
+				
+				float theta = acos(z.z / r);
+				
+				float phi = atan(z.y, z.x);
+				
+				dr = pow(r, 8.0 - 1.0) * 8.0 * dr + 1.0;
+				
+				theta *= 8.0;
+				
+				phi *= 8.0;
+				
+				z = pow(r, 8.0) * vec3(sin(theta)*cos(phi), sin(phi)*sin(theta), cos(theta));
+				
+				z += pos;
+				
+				z = rotationMatrix * z;
+				
+				r = length(z);
+				
+				color = mix(color, abs(z / r), colorScale);
+				
+				colorScale *= .5;
+			}
+			
+			color /= max(max(color.x, color.y), color.z);
+			
+			return color;
+		}
+	`
+];
+
+
+
+export const qJuliaDE = [
+	/* glsl */`
+		float distanceEstimatorQJulia(vec3 pos)
+		{
+			pos = pos * 2.0 - vec3(0.0, 0.0, 2.0);
+			vec4 z = vec4(pos, 0.0);
+			vec4 zPrime = vec4(1.0, 0.0, 0.0, 0.0);
+			float r;
+			
+			for (int iteration = 0; iteration < 16; iteration++)
+			{
+				r = length(z);
+				
+				if (r > 16.0)
+				{
+					break;
+				}
+				
+				zPrime = 2.0 * qmul(z, zPrime);
+				
+				z = qmul(z, z);
+				
+				z += vec4(-.54, -.25, -.668, 0.0);
+
+				z = mat4(
+					vec4(rotationMatrix[0], 0.0),
+					vec4(rotationMatrix[1], 0.0),
+					vec4(rotationMatrix[2], 0.0),
+					vec4(0.0, 0.0, 0.0, 1.0)
+				) * z;
+			}
+			
+			r = length(z);
+			return .5 * r * log(r) / length(zPrime) / 2.0;
+		}
+	`,
+
+	/* glsl */`
+		vec3 getColorQJulia(vec3 pos)
+		{
+			pos = pos * 2.0 - vec3(0.0, 0.0, 2.0);
+			vec4 z = vec4(pos, 0.0);
+			vec4 zPrime = vec4(1.0, 0.0, 0.0, 0.0);
+			float r;
+			
+			vec3 color = vec3(1.0, 1.0, 1.0);
+			float colorScale = .5;
+			
+			for (int iteration = 0; iteration < 16; iteration++)
+			{
+				r = length(z);
+				
+				if (r > 16.0)
+				{
+					break;
+				}
+				
+				zPrime = 2.0 * qmul(z, zPrime);
+				
+				z = qmul(z, z);
+				
+				z += vec4(-.54, -.25, -.668, 0.0);
+
+				z = mat4(
+					vec4(rotationMatrix[0], 0.0),
+					vec4(rotationMatrix[1], 0.0),
+					vec4(rotationMatrix[2], 0.0),
+					vec4(0.0, 0.0, 0.0, 1.0)
+				) * z;
+				
+				color = mix(color, abs(normalize(z.xyz)), colorScale);
+				
+				colorScale *= .5;
+			}
+			
+			color /= max(max(color.x, color.y), color.z);
+			
+			return color;
+		}
+	`
+];
