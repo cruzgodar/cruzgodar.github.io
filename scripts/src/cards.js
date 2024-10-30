@@ -46,7 +46,10 @@ export function initCards()
 		{
 			if (!e.metaKey)
 			{
-				showCard(element.getAttribute("data-card-id"));
+				showCard({
+					id: element.getAttribute("data-card-id"),
+					fromElement: element
+				});
 			}
 		});
 	});
