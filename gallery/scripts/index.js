@@ -2,6 +2,7 @@
 import { showPage } from "../../scripts/src/loadPage.js";
 import { galleryImageData } from "./imageData.js";
 import { showCard } from "/scripts/src/cards.js";
+import { addHoverEvent } from "/scripts/src/hoverEvents.js";
 import { $, $$ } from "/scripts/src/main.js";
 import { typesetMath } from "/scripts/src/math.js";
 import { redirect } from "/scripts/src/navigation.js";
@@ -43,6 +44,16 @@ export default function()
 			featuredTextElement.innerHTML = galleryImageData[id].featured;
 
 			featuredTextElement.parentElement.style.display = "block";
+
+			setTimeout(() =>
+			{
+				const links = featuredTextElement.querySelectorAll("a");
+
+				for (const element of Array.from(links))
+				{
+					addHoverEvent({ element });
+				}
+			}, 10);
 		}
 
 		else
