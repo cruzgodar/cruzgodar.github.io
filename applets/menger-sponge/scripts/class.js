@@ -154,7 +154,6 @@ export class MengerSponge extends RaymarchApplet
 			addGlsl,
 			uniforms,
 			cameraPos: [2.1978, 1.4366, 1.5174],
-			fogColor: [0.6, 0.73, 0.87],
 			theta: 3.7518,
 			phi: 2.1482,
 			stepFactor: .5,

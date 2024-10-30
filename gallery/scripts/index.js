@@ -1,7 +1,7 @@
  
 import { showPage } from "../../scripts/src/loadPage.js";
 import { galleryImageData } from "./imageData.js";
-import { showCard } from "/scripts/src/cards.js";
+import { showZoomCard } from "/scripts/src/cards.js";
 import { addHoverEvent } from "/scripts/src/hoverEvents.js";
 import { $, $$ } from "/scripts/src/main.js";
 import { typesetMath } from "/scripts/src/math.js";
@@ -79,10 +79,11 @@ export default function()
 
 		highResImageElement.onload = () =>
 		{
-			setTimeout(() => showCard({
+			setTimeout(() => showZoomCard({
 				id: "high-res-viewer",
-				fromElement
-			}), 10);
+				fromElement,
+				toElement: highResImageElement
+			}), 30);
 		};
 
 		highResImageElement.src = `/gallery/high-res/${id}.webp`;
