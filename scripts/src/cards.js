@@ -360,6 +360,8 @@ async function getClosedContainerStyle({
 
 	container.style.transform = "";
 
+	await new Promise(resolve => setTimeout(resolve, 0));
+
 	return [translateX, translateY, scale];
 }
 
@@ -584,6 +586,7 @@ export async function hideZoomCard(animationTime = cardAnimationTime)
 		fromElement: lastFromElement,
 		toElement: lastToElement
 	});
+
 
 
 	await Promise.all([
