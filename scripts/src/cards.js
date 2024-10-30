@@ -88,9 +88,6 @@ export async function showCard({
 	container.style.top = "100vh";
 	container.style.transform = "";
 
-	// Makes the animation look a little nicer (since it doesn't cut off the bottom of long cards).
-	container.style.display = "flex";
-
 	currentCard = document.querySelector(`#${id}-card`);
 
 	container.appendChild(currentCard);
@@ -124,6 +121,19 @@ export async function showCard({
 		const margin = window.innerWidth <= 500 ? 8 : 16;
 
 		image.style.maxHeight = `calc(100vh - ${rect.height - imageHeight + 2 * margin}px)`;
+
+		if (!(image.complete && image.naturalHeight))
+		{
+			await new Promise(resolve =>
+			{
+				image.onload = () => setTimeout(resolve, 100);
+			});
+		}
+
+		else
+		{
+			await new Promise(resolve => setTimeout(resolve, 100));
+		}
 	}
 
 
@@ -394,12 +404,9 @@ export async function showZoomCard({
 
 
 	container.style.display = "flex";
-	container.style.opacity = 0;
+	container.style.opacity = 0.0001;
 	container.style.top = 0;
 	container.style.transform = "";
-
-	// Makes the animation look a little nicer (since it doesn't cut off the bottom of long cards).
-	container.style.display = "flex";
 
 	currentCard = document.querySelector(`#${id}-card`);
 
@@ -437,6 +444,19 @@ export async function showZoomCard({
 		const margin = window.innerWidth <= 500 ? 8 : 16;
 
 		image.style.maxHeight = `calc(100vh - ${rect.height - imageHeight + 2 * margin}px)`;
+
+		if (!(image.complete && image.naturalHeight))
+		{
+			await new Promise(resolve =>
+			{
+				image.onload = () => setTimeout(resolve, 100);
+			});
+		}
+
+		else
+		{
+			await new Promise(resolve => setTimeout(resolve, 100));
+		}
 	}
 
 
