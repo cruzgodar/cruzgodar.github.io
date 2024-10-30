@@ -88,6 +88,10 @@ const options =
 		uniformLoop.forEach(uniformLoop => uniformLoop?.pause && uniformLoop.pause());
 		uniformLoop = [];
 		applet?.pause && applet.pause();
+		if (applet)
+		{
+			applet.animationPaused = true;
+		}
 	}
 };
 

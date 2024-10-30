@@ -8,6 +8,7 @@ async function reset({ slide, forward, duration })
 		Class: CurvedLight,
 		slide,
 		duration,
+		resolution: 750
 	});
 
 	if (!forward)
@@ -50,9 +51,8 @@ function changeCurvature({ forward, duration = 1000, newC })
 export const curvedSpaceBuilds =
 {
 	reset,
-	0: ({ forward, duration }) => changeCurvature({ forward, duration, newC: 0 }),
-	1: ({ forward, duration }) => changeCurvature({ forward, duration, newC: 1 }),
-	2: ({ forward, duration }) => changeCurvature({ forward, duration, newC: 2 }),
-	3: ({ forward, duration }) => changeCurvature({ forward, duration, newC: 3 }),
-	4: ({ forward, duration }) => changeCurvature({ forward, duration, newC: 4 }),
+	0: ({ forward, duration }) => changeCurvature({ forward, duration, newC: 1 }),
+	1: ({ forward, duration }) => changeCurvature({ forward, duration, newC: 2 }),
+	2: ({ forward, duration }) => changeCurvature({ forward, duration, newC: 3 }),
+	3: ({ forward, duration }) => changeCurvature({ forward, duration, newC: 4 }),
 };
