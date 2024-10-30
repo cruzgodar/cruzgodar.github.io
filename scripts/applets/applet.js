@@ -277,7 +277,10 @@ export class Applet
 				addBounceOnTouch: () => true,
 			});
 
-			element.addEventListener("click", () => showCard("applet-controls"));
+			element.addEventListener("click", () => showCard({
+				id: "applet-controls",
+				fromElement: element
+			}));
 		}, 10);
 
 		return true;

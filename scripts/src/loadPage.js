@@ -100,7 +100,11 @@ export async function showPage()
 	{
 		if (!blockCardPages.includes(pageUrl))
 		{
-			showCard(siteSettings.card, 10);
+			showCard({
+				id: siteSettings.card,
+				fromElement: pageElement,
+				animationTime: 10
+			});
 		}
 
 		else

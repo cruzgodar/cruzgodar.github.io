@@ -17,7 +17,7 @@ export default function()
 
 	let currentId = "";
 
-	function showGalleryCard(id)
+	function showGalleryCard({ id, fromElement })
 	{
 		currentId = id;
 
@@ -79,7 +79,10 @@ export default function()
 
 		highResImageElement.onload = () =>
 		{
-			setTimeout(() => showCard("high-res-viewer"), 10);
+			setTimeout(() => showCard({
+				id: "high-res-viewer",
+				fromElement
+			}), 10);
 		};
 
 		highResImageElement.src = `/gallery/high-res/${id}.webp`;
@@ -93,7 +96,10 @@ export default function()
 	{
 		element.addEventListener(
 			"click",
-			e => showGalleryCard(e.target.getAttribute("data-image-id"))
+			e => showGalleryCard({
+				id: e.target.getAttribute("data-image-id"),
+				fromElement: element
+			})
 		);
 	});
 

@@ -52,8 +52,11 @@ export function initCards()
 	});
 }
 
-export async function showCard(id, animationTime = cardAnimationTime)
-{
+export async function showCard({
+	id,
+	fromElement,
+	animationTime = cardAnimationTime
+}) {
 	if (cardIsOpen)
 	{
 		await hideCard();
