@@ -22,7 +22,10 @@ if (closeButton)
 {
 	addHoverEvent({ element: closeButton });
 
-	closeButton.addEventListener("click", () => hideCard());
+	closeButton.addEventListener("click", () =>
+	{
+		cardIsZoom ? hideZoomCard() : hideCard();
+	});
 
 	document.documentElement.addEventListener("keydown", (e) =>
 	{
