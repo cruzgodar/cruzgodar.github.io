@@ -83,7 +83,7 @@ export default function()
 				id: "high-res-viewer",
 				fromElement,
 				toElement: highResImageElement
-			}), 30);
+			}), 10);
 		};
 
 		highResImageElement.src = `/gallery/high-res/${id}.webp`;

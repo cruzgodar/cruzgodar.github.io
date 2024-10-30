@@ -7,6 +7,7 @@ import { metaThemeColorElement, siteSettings } from "./settings.js";
 import anime from "/scripts/anime.js";
 
 export let cardIsOpen = false;
+let cardIsZoom = false;
 export let cardIsAnimating = false;
 
 const easing = "cubicBezier(.25, 1, .25, 1)";
@@ -27,7 +28,7 @@ if (closeButton)
 	{
 		if (e.key === "Escape" && cardIsOpen)
 		{
-			hideCard();
+			cardIsZoom ? hideZoomCard() : hideCard();
 		}
 	});
 }
@@ -74,6 +75,7 @@ export async function showCard({
 	scrollBeforeCard = window.scrollY;
 
 	cardIsOpen = true;
+	cardIsZoom = false;
 	
 	siteSettings.card = id;
 	history.replaceState({ url: pageUrl }, document.title, getDisplayUrl());
@@ -379,6 +381,7 @@ export async function showZoomCard({
 	scrollBeforeCard = window.scrollY;
 
 	cardIsOpen = true;
+	cardIsZoom = true;
 	
 	siteSettings.card = id;
 	history.replaceState({ url: pageUrl }, document.title, getDisplayUrl());

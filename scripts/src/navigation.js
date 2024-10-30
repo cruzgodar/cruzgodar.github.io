@@ -70,7 +70,7 @@ export async function redirect({
 
 	// If we're going somewhere outside of the site,
 	// open it in a new tab and don't screw with the opacity.
-	if (inNewTab || url.indexOf(".") !== -1)
+	if (inNewTab || url.indexOf("http") !== -1)
 	{
 		window.open(url, "_blank");
 		return;
