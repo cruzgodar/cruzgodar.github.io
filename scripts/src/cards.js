@@ -493,7 +493,7 @@ export async function showZoomCard({
 
 	container.style.transform = `translateX(${translateX}px) translateY(${translateY}px) scale(${scale})`;
 
-	container.style.opacity = .5;
+	container.style.opacity = .75;
 
 	await Promise.all([
 		anime({
