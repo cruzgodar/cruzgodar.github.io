@@ -450,13 +450,13 @@ export async function showZoomCard({
 		{
 			await new Promise(resolve =>
 			{
-				image.onload = () => setTimeout(resolve, 70);
+				image.onload = () => setTimeout(resolve, 90);
 			});
 		}
 
 		else
 		{
-			await new Promise(resolve => setTimeout(resolve, 70));
+			await new Promise(resolve => setTimeout(resolve, 90));
 		}
 	}
 
