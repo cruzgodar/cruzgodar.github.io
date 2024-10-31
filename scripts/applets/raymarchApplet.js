@@ -397,18 +397,25 @@ export class RaymarchApplet extends AnimationFrameApplet
 
 	async make3DPrintable()
 	{
+		const preview = false;
+
 		const resolution = 1500;
-		this.setUniform("uvScale", 2.5);
+		this.setUniform("uvScale", 1.5);
 		this.setUniform("epsilonScaling", 0.0015);
 
 		this.changeResolution(resolution);
+
+		this.setUniform("uvCenter", [-0.5, 0]);
+		this.drawFrame();
+
+		await new Promise(resolve => setTimeout(resolve, 500));
 
 		for (let i = 1; i <= resolution; i++)
 		{
 			this.setUniform("uvCenter", [i / resolution - 0.5, 0]);
 			this.drawFrame();
-			this.wilson.downloadFrame(i.toString().padStart(4, "0"), false);
-			await new Promise(resolve => setTimeout(resolve, 150));
+			!preview && this.wilson.downloadFrame(i.toString().padStart(4, "0"), false);
+			await new Promise(resolve => setTimeout(resolve, preview ? 0 : 150));
 		}
 	}
 
