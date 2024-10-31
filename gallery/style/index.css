@@ -88,8 +88,14 @@ section
 #high-res-viewer-card img
 {
 	max-width: 100%;
-	max-height: calc(100vh - 300px);
+	width: calc(100vh - 300px);
+	aspect-ratio: 1;
 	border-radius: 16px;
+}
+
+.card
+{
+	max-width: none !important;
 }
 
 

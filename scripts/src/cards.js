@@ -405,7 +405,7 @@ export async function showZoomCard({
 
 
 	container.style.display = "flex";
-	container.style.opacity = 0.0001;
+	container.style.opacity = 0.002;
 	container.style.top = 0;
 	container.style.transform = "";
 

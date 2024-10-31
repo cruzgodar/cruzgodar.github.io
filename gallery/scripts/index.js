@@ -79,11 +79,11 @@ export default function()
 
 		highResImageElement.onload = () =>
 		{
-			showZoomCard({
+			setTimeout(() => showZoomCard({
 				id: "high-res-viewer",
 				fromElement,
 				toElement: highResImageElement
-			});
+			}), 10);
 		};
 
 		highResImageElement.src = `/gallery/high-res/${id}.webp`;
