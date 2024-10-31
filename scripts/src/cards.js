@@ -338,8 +338,6 @@ async function getClosedContainerStyle({
 	fromElement,
 	toElement
 }) {
-	await new Promise(resolve => setTimeout(resolve, 0));
-
 	const fromElementRect = fromElement.getBoundingClientRect();
 	let toElementRect = toElement.getBoundingClientRect();
 
@@ -349,8 +347,6 @@ async function getClosedContainerStyle({
 	const scale = computedScale * fromElementRect.width / toElementRect.width;
 
 	container.style.transform = `scale(${scale})`;
-
-	await new Promise(resolve => setTimeout(resolve, 0));
 	
 	toElementRect = toElement.getBoundingClientRect();
 	const translateX = fromElementRect.left - toElementRect.left
@@ -358,7 +354,7 @@ async function getClosedContainerStyle({
 	const translateY = fromElementRect.top - toElementRect.top
 		- (computedScale - 1) / 2 * fromElementRect.height;
 
-	container.style.transform = "";
+	container.style.transform = "translateX(0) translateY(0) scale(1)";
 
 	await new Promise(resolve => setTimeout(resolve, 0));
 
