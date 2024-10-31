@@ -7,7 +7,7 @@ import { metaThemeColorElement, siteSettings } from "./settings.js";
 import anime from "/scripts/anime.js";
 
 export let cardIsOpen = false;
-let cardIsZoom = false;
+export let cardIsZoom = false;
 export let cardIsAnimating = false;
 
 const easing = "cubicBezier(.25, 1, .25, 1)";
@@ -22,16 +22,13 @@ if (closeButton)
 {
 	addHoverEvent({ element: closeButton });
 
-	closeButton.addEventListener("click", () =>
-	{
-		cardIsZoom ? hideZoomCard() : hideCard();
-	});
+	closeButton.addEventListener("click", () => hideCard());
 
 	document.documentElement.addEventListener("keydown", (e) =>
 	{
 		if (e.key === "Escape" && cardIsOpen)
 		{
-			cardIsZoom ? hideZoomCard() : hideCard();
+			hideCard();
 		}
 	});
 }
@@ -221,6 +218,11 @@ export async function showCard({
 
 export async function hideCard(animationTime = cardAnimationTime)
 {
+	if (cardIsZoom)
+	{
+		return hideZoomCard(animationTime);
+	}
+
 	if (cardIsAnimating)
 	{
 		return;
@@ -331,9 +333,6 @@ export async function hideCard(animationTime = cardAnimationTime)
 
 
 
-let lastFromElement;
-let lastToElement;
-
 async function getClosedContainerStyle({
 	fromElement,
 	toElement
@@ -367,7 +366,7 @@ export async function showZoomCard({
 	id,
 	fromElement,
 	toElement,
-	animationTime = cardAnimationTime
+	animationTime = cardAnimationTime * .85
 }) {
 	if (siteSettings.reduceMotion)
 	{
@@ -447,13 +446,13 @@ export async function showZoomCard({
 		{
 			await new Promise(resolve =>
 			{
-				image.onload = () => setTimeout(resolve, 100);
+				image.onload = () => setTimeout(resolve, 70);
 			});
 		}
 
 		else
 		{
-			await new Promise(resolve => setTimeout(resolve, 100));
+			await new Promise(resolve => setTimeout(resolve, 70));
 		}
 	}
 
@@ -544,12 +543,9 @@ export async function showZoomCard({
 	currentCard.focus();
 	container.scrollTo(0, 0);
 	cardIsAnimating = false;
-
-	lastFromElement = fromElement;
-	lastToElement = toElement;
 }
 
-export async function hideZoomCard(animationTime = cardAnimationTime)
+export async function hideZoomCard(animationTime = cardAnimationTime * .75)
 {
 	if (siteSettings.reduceMotion)
 	{
@@ -577,13 +573,6 @@ export async function hideZoomCard(animationTime = cardAnimationTime)
 	{
 		pageElement.style.transformOrigin = `50% calc(50vh + ${window.scrollY}px)`;
 	}
-
-	const [translateX, translateY, scale] = await getClosedContainerStyle({
-		fromElement: lastFromElement,
-		toElement: lastToElement
-	});
-
-
 
 	await Promise.all([
 		anime({
@@ -622,9 +611,7 @@ export async function hideZoomCard(animationTime = cardAnimationTime)
 		anime({
 			targets: container,
 			opacity: 0,
-			translateX,
-			translateY,
-			scale,
+			scale: siteSettings.reduceMotion ? 1 : .925,
 			duration: animationTime,
 			easing,
 		}).finished,
