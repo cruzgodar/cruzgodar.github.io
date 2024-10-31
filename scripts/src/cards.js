@@ -117,7 +117,7 @@ export async function showCard({
 		const imageHeight = image.getBoundingClientRect().height;
 		const margin = window.innerWidth <= 500 ? 8 : 16;
 
-		image.style.maxHeight = `calc(100vh - ${rect.height - imageHeight + 2 * margin}px)`;
+		image.style.width = `calc(100vh - ${rect.height - imageHeight + 2 * margin}px)`;
 
 		if (!(image.complete && image.naturalHeight))
 		{
@@ -444,7 +444,7 @@ export async function showZoomCard({
 		const imageHeight = image.getBoundingClientRect().height;
 		const margin = window.innerWidth <= 500 ? 8 : 16;
 
-		image.style.maxHeight = `calc(100vh - ${rect.height - imageHeight + 2 * margin}px)`;
+		image.style.width = `calc(100vh - ${rect.height - imageHeight + 2 * margin}px)`;
 
 		if (!(image.complete && image.naturalHeight))
 		{

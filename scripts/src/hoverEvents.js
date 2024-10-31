@@ -11,20 +11,63 @@ const elementSelectors = [
 
 // These elements need to have their scale increased when hovered.
 const elementSelectorsWithScale =
-[
-	["#logo img", 1.05, () => false],
-	[".text-button:not(.dropdown)", 1.075, () => true],
-	[".text-button.dropdown", 1.075, () => false],
-	[".checkbox-container", 1.1, () => true],
-	[".image-link a[data-card-id] img", 1.05, () => true],
-	[".image-link a:not([data-card-id]) img", 1.05, () => false],
-	["#enter-fullscreen-button", 1.1, () => false],
-	["#exit-fullscreen-button", 1.1, () => false],
-	[".gallery-image-1-1 img", 1.075, () => true],
-	[".gallery-image-2-2 img", 1.0375, () => true],
-	[".gallery-image-3-3 img", 1.025, () => true],
-];
-
+{
+	"#logo img": {
+		scale: 1.05,
+		addBounceOnTouch: () => false,
+		preventScaleWithIncreasedContrast: false
+	},
+	".text-button:not(.dropdown)": {
+		scale: 1.075,
+		addBounceOnTouch: () => true,
+		preventScaleWithIncreasedContrast: false
+	},
+	".text-button.dropdown": {
+		scale: 1.075,
+		addBounceOnTouch: () => false,
+		preventScaleWithIncreasedContrast: false
+	},
+	".checkbox-container": {
+		scale: 1.1,
+		addBounceOnTouch: () => true,
+		preventScaleWithIncreasedContrast: false
+	},
+	".image-link a[data-card-id] img": {
+		scale: 1.05,
+		addBounceOnTouch: () => true,
+		preventScaleWithIncreasedContrast: false
+	},
+	".image-link a:not([data-card-id]) img": {
+		scale: 1.05,
+		addBounceOnTouch: () => false,
+		preventScaleWithIncreasedContrast: false
+	},
+	"#enter-fullscreen-button": {
+		scale: 1.1,
+		addBounceOnTouch: () => false,
+		preventScaleWithIncreasedContrast: false
+	},
+	"#exit-fullscreen-button": {
+		scale: 1.1,
+		addBounceOnTouch: () => false,
+		preventScaleWithIncreasedContrast: false
+	},
+	".gallery-image-1-1 img": {
+		scale: 1.075,
+		addBounceOnTouch: () => true,
+		preventScaleWithIncreasedContrast: true
+	},
+	".gallery-image-2-2 img": {
+		scale: 1.0375,
+		addBounceOnTouch: () => true,
+		preventScaleWithIncreasedContrast: true
+	},
+	".gallery-image-3-3 img": {
+		scale: 1.025,
+		addBounceOnTouch: () => true,
+		preventScaleWithIncreasedContrast: true
+	},
+};
 
 
 // Adds a listener to every element that needs a hover event.
@@ -42,14 +85,16 @@ export function initHoverEvents()
 		});
 	});
 
-	elementSelectorsWithScale.forEach(selector =>
+	Object.keys(elementSelectorsWithScale).forEach(selector =>
 	{
-		$$(selector[0]).forEach(element =>
+		$$(selector).forEach(element =>
 		{
 			addHoverEventWithScale({
 				element,
-				scale: selector[1],
-				addBounceOnTouch: selector[2]
+				scale: elementSelectorsWithScale[selector].scale,
+				addBounceOnTouch: elementSelectorsWithScale[selector].addBounceOnTouch,
+				preventScaleWithIncreasedContrast:
+					elementSelectorsWithScale[selector].preventScaleWithIncreasedContrast
 			});
 		});
 	});
@@ -128,7 +173,8 @@ export function addHoverEvent({
 export function addHoverEventWithScale({
 	element,
 	scale,
-	addBounceOnTouch = () => false
+	addBounceOnTouch = () => false,
+	preventScaleWithIncreasedContrast = false
 }) {
 	element.addEventListener("mouseenter", () =>
 	{
@@ -145,6 +191,11 @@ export function addHoverEventWithScale({
 			{
 				element.classList.add("hover-reduce-motion");
 
+				return;
+			}
+
+			if (siteSettings.increaseContrast && preventScaleWithIncreasedContrast)
+			{
 				return;
 			}
 
