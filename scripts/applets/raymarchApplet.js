@@ -116,6 +116,7 @@ export class RaymarchApplet extends AnimationFrameApplet
 	useReflections;
 	useBloom;
 	useAntialiasing;
+	useFor3DPrinting;
 
 	uniforms = {};
 	lockZ;
@@ -178,6 +179,7 @@ export class RaymarchApplet extends AnimationFrameApplet
 		useReflections = false,
 		useBloom = true,
 		useAntialiasing = false,
+		useFor3DPrinting = false,
 	}) {
 		super(canvas);
 
@@ -215,6 +217,7 @@ export class RaymarchApplet extends AnimationFrameApplet
 		this.useReflections = useReflections;
 		this.useBloom = useBloom;
 		this.useAntialiasing = useAntialiasing;
+		this.useFor3DPrinting = useFor3DPrinting;
 
 		this.uniforms = {
 			aspectRatioX: ["float", Math.max(this.imageWidth / this.imageHeight, 1)],
@@ -367,6 +370,13 @@ export class RaymarchApplet extends AnimationFrameApplet
 
 
 
+		if (this.useFor3DPrinting)
+		{
+			this.make3DPrintable();
+		}
+
+
+
 		const boundFunction = () => this.changeResolution();
 		addTemporaryListener({
 			object: window,
@@ -381,6 +391,24 @@ export class RaymarchApplet extends AnimationFrameApplet
 	{
 		const sign = this.lockedOnOrigin ? -1 : 1;
 		this.pan.onDragCanvas(x, y, sign * xDelta, sign * yDelta);
+	}
+
+
+
+	async make3DPrintable()
+	{
+		const resolution = 2000;
+		this.setUniform("uvScale", 2.5);
+		this.setUniform("epsilonScaling", 0.001);
+
+		this.changeResolution(resolution);
+
+		for (let i = 0; i < resolution; i++)
+		{
+			this.setUniform("uvCenter", [i / resolution - 0.5, 0]);
+			this.downloadFrame(i.toString().padStart(4, "0"));
+			await new Promise(resolve => setTimeout(resolve, 100));
+		}
 	}
 
 
@@ -565,40 +593,60 @@ export class RaymarchApplet extends AnimationFrameApplet
 			return /* glsl */`uniform ${value[0]} ${key};`;
 		}).join("\n");
 
-		const mainFunctionGlsl = antialiasing
-			? /* glsl */`${""}
-				vec3 raymarchHelper(vec2 uvAdjust)
-				{
-					return raymarch(
-						imagePlaneCenterPos
-							+ rightVec * (uvScale * (uv.x + uvAdjust.x) + uvCenter.x) * aspectRatioX
-							+ upVec * (uvScale * (uv.y + uvAdjust.y) + uvCenter.y) / aspectRatioY
-					);
-				}
-				
-				void main(void)
-				{
-					vec2 texCoord = (uv + vec2(1.0)) * 0.5;
-					vec4 sample = texture2D(uTexture, texCoord);
-					
-					if (sample.w > 0.15)
+		const mainFunctionGlsl = (() =>
+		{
+			if (this.useFor3DPrinting)
+			{
+				return /* glsl */`${""}
+					void main(void)
 					{
-						vec3 aaSample = (
-							sample.xyz
-							+ raymarchHelper(vec2(stepSize, 0.0))
-							+ raymarchHelper(vec2(0.0, stepSize))
-							+ raymarchHelper(vec2(-stepSize, 0.0))
-							+ raymarchHelper(vec2(0.0, -stepSize))
-						) / 5.0;
-						
-						gl_FragColor = vec4(aaSample, 1.0);
-						return;
-					}
+						gl_FragColor = vec4(0.0, 0.0, 0.0, 1.0);
 
-					gl_FragColor = vec4(sample.xyz, 1.0);
-				}
-			`
-			: /* glsl */`${""}
+						if (distanceEstimator(vec3(uv.x, uv.y, uvCenter.x) * uvScale) < epsilonScaling)
+						{
+							gl_FragColor = vec4(1.0);
+						}
+					}
+				`;
+			}
+
+			if (antialiasing)
+			{
+				return /* glsl */`${""}
+					vec3 raymarchHelper(vec2 uvAdjust)
+					{
+						return raymarch(
+							imagePlaneCenterPos
+								+ rightVec * (uvScale * (uv.x + uvAdjust.x) + uvCenter.x) * aspectRatioX
+								+ upVec * (uvScale * (uv.y + uvAdjust.y) + uvCenter.y) / aspectRatioY
+						);
+					}
+					
+					void main(void)
+					{
+						vec2 texCoord = (uv + vec2(1.0)) * 0.5;
+						vec4 sample = texture2D(uTexture, texCoord);
+						
+						if (sample.w > 0.15)
+						{
+							vec3 aaSample = (
+								sample.xyz
+								+ raymarchHelper(vec2(stepSize, 0.0))
+								+ raymarchHelper(vec2(0.0, stepSize))
+								+ raymarchHelper(vec2(-stepSize, 0.0))
+								+ raymarchHelper(vec2(0.0, -stepSize))
+							) / 5.0;
+							
+							gl_FragColor = vec4(aaSample, 1.0);
+							return;
+						}
+
+						gl_FragColor = vec4(sample.xyz, 1.0);
+					}
+				`;
+			}
+
+			return /* glsl */`${""}
 				void main(void)
 				{
 					vec3 finalColor = raymarch(
@@ -610,6 +658,7 @@ export class RaymarchApplet extends AnimationFrameApplet
 					gl_FragColor = vec4(finalColor.xyz, 1.0);
 				}
 			`;
+		})();
 
 		const shader = /* glsl */`
 			precision highp float;
