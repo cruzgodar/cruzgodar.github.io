@@ -96,17 +96,6 @@ section
 .card
 {
 	max-width: none !important;
-	margin-top: 16px !important;
-	margin-bottom: 16px !important;
-}
-
-@media (max-width: 500px)
-{
-	.card
-	{
-		margin-top: 8px !important;
-		margin-bottom: 8px !important;
-	}
 }
 
 
