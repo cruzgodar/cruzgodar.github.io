@@ -73,7 +73,7 @@ async function buildSite()
 	
 	await buildXmlSitemap();
 
-	console.log("\nDone!");
+	process.exit(0);
 }
 
 async function parseModifiedFiles(files)

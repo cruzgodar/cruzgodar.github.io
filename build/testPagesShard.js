@@ -16,7 +16,6 @@ onmessage = async function(e)
 	const [ip, port, fileChunk] = e.data;
 	await testFiles(ip, port, fileChunk);
 	postMessage(["done"]);
-	process.exit(0);
 };
 
 async function testFiles(ip, port, files)

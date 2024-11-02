@@ -3,7 +3,7 @@ import { Worker } from "worker_threads";
 import { getModifiedDate, read, write } from "./file-io.js";
 import { galleryImageData } from "/gallery/scripts/imageData.js";
 
-const { spawnSync } = require("child_process");
+const { spawnSync, execSync } = require("child_process");
 
 const excludeFiles =
 [
@@ -182,15 +182,10 @@ async function testPages(files)
 
 					if (workersFinished === threads)
 					{
+						spawnSync("pkill", ["-f", "-i", "\"google chrome for testing\""]);
+
 						resolve();
 					}
-				}
-
-				else
-				{
-					numFiles++;
-					// process.stdout.moveCursor(0, -1); // Move cursor up one line
-					// process.stdout.clearLine();
 				}
 			});
 
@@ -315,12 +310,16 @@ async function testAllLatex(files)
 
 	console.log("Compiling Latex...");
 
-	for (const tex of texSources)
+	for (let i = 0; i < texSources.length; i++)
 	{
-		testLatex(tex);
+		process.stdout.moveCursor(0, -1); // Move cursor up one line
+		process.stdout.clearLine();
+		console.log(`Compiling Latex (${i + 1}/${texSources.length})...`);
+		testLatex(texSources[i]);
 	}
 
-	spawnSync("rm", ["-rf", `${root}/${texDirectory}`]);
+	const proc = spawnSync("rm", ["-rf", `${root}/${texDirectory}`]);
+	console.log(proc.stdout.toString());
 }
 
 async function test(clean)
@@ -360,6 +359,8 @@ async function test(clean)
 	await testPages(htmlIndexFiles);
 
 	await testAllLatex(latexDataFiles);
+
+	process.exit(0);
 }
 
 test(options.clean);
