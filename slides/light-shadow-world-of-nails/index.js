@@ -49,6 +49,7 @@ export async function initializeApplet({
 	applet.nonFullscreenAspectRatio = 16 / 9;
 
 	try {applet.changeResolution(resolution);}
+	// eslint-disable-next-line no-unused-vars
 	catch(ex) {/* Thurston Geometries don't have this */}
 
 	document.body.querySelectorAll(".wilson-draggables-container")

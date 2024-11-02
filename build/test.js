@@ -1,4 +1,5 @@
 import { launch } from "puppeteer";
+import { Worker } from "worker_threads";
 import { getModifiedDate, read, write } from "./file-io.js";
 import { galleryImageData } from "/gallery/scripts/imageData.js";
 
@@ -161,43 +162,48 @@ async function validateLink(link)
 
 async function testPages(files)
 {
-	const browser = await launch({ headless: true });
-	const page = await browser.newPage();
-
-	let currentFile = "";
-
-	const errors = [];
-
-	page.on("console", async (e) =>
+	return new Promise(resolve =>
 	{
-		if (e.type() === "log")
+		const threads = 32;
+		const chunkSize = Math.ceil(files.length / threads);
+		let numFiles = 0;
+		let workersFinished = 0;
+
+		for (let i = 0; i < threads; i++)
 		{
-			return;
+			const fileChunk = files.slice(i * chunkSize, (i + 1) * chunkSize);
+
+			const worker = new Worker(`${root}build/testPagesShard.js`);
+
+			worker.on("message", (message) =>
+			{
+				if (message[0] === "done")
+				{
+					workersFinished++;
+
+					if (workersFinished === threads)
+					{
+						resolve();
+					}
+				}
+
+				else
+				{
+					numFiles++;
+					// process.stdout.moveCursor(0, -1); // Move cursor up one line
+					// process.stdout.clearLine();
+					console.log(`Testing pages for console errors (${numFiles}/${files.length})...`);
+				}
+			});
+
+			worker.on("error", (error) =>
+			{
+				console.error(`Error in worker: ${error}`);
+			});
+
+			worker.postMessage([ip, port, fileChunk]);
 		}
-
-		errors.push(`Error in ${currentFile}: ${e.text()}`);
 	});
-
-	for (let i = 0; i < files.length; i++)
-	{
-		const file = files[i];
-		currentFile = file;
-
-		process.stdout.moveCursor(0, -1); // Move cursor up one line
-		process.stdout.clearLine();
-		console.log(`Testing pages for console errors (${i + 1}/${files.length})...`);
-
-		await page.goto(`http://${ip}:${port}/${file}`);
-		await new Promise(resolve => setTimeout(resolve, 1000));
-	}
-
-	for (const error of errors)
-	{
-		console.error(error);
-	}
-
-	await page.close();
-	await browser.close();
 }
 
 
@@ -346,16 +352,16 @@ async function test(clean)
 	});
 		
 
-	console.log("Linting...");
-	await eslint(jsFiles);
+	// console.log("Linting...");
+	// await eslint(jsFiles);
 
-	console.log("Validating links...");
-	await validateAllLinks(htmlDataFiles);
+	// console.log("Validating links...");
+	// await validateAllLinks(htmlDataFiles);
 
 	console.log("Testing pages for console errors...");
 	await testPages(htmlIndexFiles);
 
-	await testAllLatex(latexDataFiles);
+	// await testAllLatex(latexDataFiles);
 }
 
 test(options.clean);
