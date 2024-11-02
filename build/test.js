@@ -166,7 +166,6 @@ async function testPages(files)
 	{
 		const threads = 32;
 		const chunkSize = Math.ceil(files.length / threads);
-		let numFiles = 0;
 		let workersFinished = 0;
 
 		for (let i = 0; i < threads; i++)
@@ -192,7 +191,6 @@ async function testPages(files)
 					numFiles++;
 					// process.stdout.moveCursor(0, -1); // Move cursor up one line
 					// process.stdout.clearLine();
-					console.log(`Testing pages for console errors (${numFiles}/${files.length})...`);
 				}
 			});
 
@@ -352,16 +350,16 @@ async function test(clean)
 	});
 		
 
-	// console.log("Linting...");
-	// await eslint(jsFiles);
+	console.log("Linting...");
+	await eslint(jsFiles);
 
-	// console.log("Validating links...");
-	// await validateAllLinks(htmlDataFiles);
+	console.log("Validating links...");
+	await validateAllLinks(htmlDataFiles);
 
 	console.log("Testing pages for console errors...");
 	await testPages(htmlIndexFiles);
 
-	// await testAllLatex(latexDataFiles);
+	await testAllLatex(latexDataFiles);
 }
 
 test(options.clean);
