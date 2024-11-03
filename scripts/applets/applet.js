@@ -1,4 +1,4 @@
-import { showCard } from "../src/cards.js";
+import { showZoomCard } from "../src/cards.js";
 import { addHoverEventWithScale } from "../src/hoverEvents.js";
 import {
 	$,
@@ -277,9 +277,10 @@ export class Applet
 				addBounceOnTouch: () => true,
 			});
 
-			element.addEventListener("click", () => showCard({
+			element.addEventListener("click", () => showZoomCard({
 				id: "applet-controls",
-				fromElement: element
+				fromElement: element,
+				toElement: document.body.querySelector("#applet-controls-card"),
 			}));
 		}, 10);
 
