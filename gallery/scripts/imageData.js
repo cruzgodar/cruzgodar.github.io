@@ -231,6 +231,16 @@ export const galleryImageData =
 		driveId: "1mZ7hmt6z1Iq0POqgSXSh7NrmiOIdtYxC"
 	},
 
+	"juliabulb-power-2":
+	{
+		title: "A Juliabulb",
+
+		// eslint-disable-next-line max-len
+		appletLink: "/applets/the-mandelbulb/?debug=1&switch-bulb-button=1&c-x-slider=1&c-z-slider=-.336&power-slider=2",
+
+		driveId: "1PNVXqlPub0RNvj3EpyYj0kiLi3YwnPvj"
+	},
+
 	"kaleidoscopic-ifs":
 	{
 		title: "A Kaleidoscopic IFS Fractal",
@@ -522,15 +532,6 @@ export const galleryImageData =
 	},
 
 	"voronoi-diagram":
-	{
-		title: "A Voronoi Diagram",
-
-		appletLink: "/applets/voronoi-diagrams/",
-
-		driveId: "1J1dfHbqx1tX1qkkuJF0ZUp-OPlRezEsV"
-	},
-
-	"voronoi-diagram-2":
 	{
 		title: "A Voronoi Diagram",
 

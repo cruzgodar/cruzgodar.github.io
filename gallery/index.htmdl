@@ -24,7 +24,7 @@
 	###
 	
 	### gallery-block
-		voronoi-diagram-2 1
+		voronoi-diagram 1
 		kaleidoscopic-ifs 2
 		kicked-rotator 1
 		secant-method 1
@@ -59,12 +59,12 @@
 	###
 	
 	### gallery-block
-		voronoi-diagram 1
+		vector-field 1
 		thurston-geometry-sl2r 2
 		newtons-method-extended 1
 		lyapunov-fractal 1
-		vector-field 1
 		julia-set 1
+		juliabulb-power-2 1
 	###
 
 	### gallery-block

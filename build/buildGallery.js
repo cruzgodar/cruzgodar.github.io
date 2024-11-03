@@ -94,7 +94,13 @@ async function testImageData(files)
 			console.error(`${file} has no driveId`);
 		}
 
-		const applet = await getModifiedDate(`applets/${imageData.appletLink}/index.htmdl`);
+		let appletLink = imageData.appletLink.slice(1);
+		if (appletLink.indexOf("?" !== -1))
+		{
+			appletLink = appletLink.slice(0, appletLink.indexOf("?"));
+		}
+
+		const applet = await getModifiedDate(`${appletLink}/index.htmdl`);
 		if (!applet)
 		{
 			console.error(`${file} has an invalid applet link`);
