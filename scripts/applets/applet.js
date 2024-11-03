@@ -280,7 +280,6 @@ export class Applet
 			element.addEventListener("click", () => showZoomCard({
 				id: "applet-controls",
 				fromElement: element,
-				toElement: document.body.querySelector("#applet-controls-card"),
 			}));
 		}, 10);
 
