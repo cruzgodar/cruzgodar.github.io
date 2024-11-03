@@ -53,8 +53,8 @@ export default function()
 		name: "Power",
 		value: 8,
 		min: 2,
-		max: 16,
-		snapPoints: [8],
+		max: 12,
+		snapPoints: [3, 4, 5, 6, 7, 8, 9, 10, 11],
 		onInput: onSliderInput
 	});
 
