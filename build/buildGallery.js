@@ -56,7 +56,7 @@ async function makeGalleryImage(file)
 	{
 		const profileLine = data.toString().match(/icc:description:\s(.+)/);
 	
-		if (!profileLine || !(profileLine[1].includes("P3")))
+		if (profileLine && !(profileLine[1].includes("P3")))
 		{
 			console.error(`${filename} is not P3`);
 		}

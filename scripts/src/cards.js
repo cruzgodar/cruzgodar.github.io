@@ -2,7 +2,7 @@ import { cardAnimationTime } from "./animation.js";
 import { browserIsIos } from "./browser.js";
 import { addHoverEvent } from "./hoverEvents.js";
 import { $$, pageElement, pageUrl } from "./main.js";
-import { getDisplayUrl } from "./navigation.js";
+import { currentlyRedirecting, getDisplayUrl } from "./navigation.js";
 import { metaThemeColorElement, siteSettings } from "./settings.js";
 import anime from "/scripts/anime.js";
 
@@ -282,7 +282,7 @@ export async function hideCard(animationTime = cardAnimationTime)
 			],
 			filter: "brightness(1)",
 			scale: 1,
-			opacity: 1,
+			...(siteSettings.increaseContrast && !currentlyRedirecting && { opacity: 1 }),
 			duration: animationTime,
 			easing,
 		}).finished,
@@ -291,7 +291,7 @@ export async function hideCard(animationTime = cardAnimationTime)
 			targets: document.querySelector("#header-container"),
 			backgroundColor: color,
 			scale: 1,
-			opacity: 1,
+			...(siteSettings.increaseContrast && !currentlyRedirecting && { opacity: 1 }),
 			duration: animationTime,
 			easing,
 		}).finished,
@@ -588,7 +588,7 @@ export async function hideZoomCard(animationTime = cardAnimationTime * .75)
 			],
 			filter: "brightness(1)",
 			scale: 1,
-			opacity: 1,
+			...(siteSettings.increaseContrast && !currentlyRedirecting && { opacity: 1 }),
 			duration: animationTime,
 			easing,
 		}).finished,
@@ -597,7 +597,7 @@ export async function hideZoomCard(animationTime = cardAnimationTime * .75)
 			targets: document.querySelector("#header-container"),
 			backgroundColor: color,
 			scale: 1,
-			opacity: 1,
+			...(siteSettings.increaseContrast && !currentlyRedirecting && { opacity: 1 }),
 			duration: animationTime,
 			easing,
 		}).finished,

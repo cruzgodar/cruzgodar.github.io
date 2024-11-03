@@ -5,7 +5,7 @@ const bridges2023 = /* html */`the <a href='https://gallery.bridgesmathart.org/e
 const bridges2024 = /* html */`the <a href='https://gallery.bridgesmathart.org/exhibitions/bridges-2024-exhibition-of-mathematical-art'>2024 Bridges conference</a>`;
 const jsma = /* html */`the <a href='https://mpembed.com/show/?m=FGvT8EzPQpy&mpu=885'>Jordan Schnitzer Museum of Art</a>`;
 const emu = /* html */`<a href='https://www.facebook.com/visualartsteam/videos/4909794042367446/'>UO&#x2019;s Erb Memorial Union</a>`;
-const researchAsArt = /* html */`<a href='https://www.artscioregon.com/2020-gallery'>UO&#x2019;s 2020 Research as Art Competition</a> `;
+const researchAsArt = /* html */`<a href='https://www.artscioregon.com/2020-gallery'>UO&#x2019;s 2020 Research as Art Competition</a>`;
 const girlsAngle = /* html */`the <a href='https://www.girlsangle.org/page/bulletin-archive/GABv15n01E.pdf'>Girls&#x2019; Angle Bulletin magazine</a>`;
 
 export const galleryImageData =

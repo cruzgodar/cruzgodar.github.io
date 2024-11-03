@@ -40,7 +40,7 @@ import {
 } from "./settings.js";
 import { sitemap } from "./sitemap.js";
 
-let currentlyRedirecting = false;
+export let currentlyRedirecting = false;
 
 export function setCurrentlyRedirecting(newCurrentlyRedirecting)
 {
