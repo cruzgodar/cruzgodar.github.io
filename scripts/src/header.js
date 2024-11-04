@@ -68,7 +68,7 @@ export function addHeader()
 
 		<div id="accessibility-tooltip" class="keep-accessibility-dialog-open">
 			<h2 class="section-text keep-accessibility-dialog-open">Site Settings</h2>
-
+			
 			<div class="checkboxes keep-accessibility-dialog-open">
 				<div class="checkbox-row keep-accessibility-dialog-open">
 					<div class="checkbox-container keep-accessibility-dialog-open" tabindex="1">

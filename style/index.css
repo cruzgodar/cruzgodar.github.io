@@ -1693,7 +1693,7 @@ option
 	top: 56px;
 	right: 16px;
 	
-	border-radius: 16px;
+	border-radius: 20px;
 	
 	background-color: var(--background);
 
@@ -1709,6 +1709,12 @@ option
 	opacity: 0;
 	display: none;
 	z-index: 150;
+}
+
+#accessibility-tooltip .checkbox-row
+{
+	justify-content: flex-start;
+	width: 100%;
 }
 
 #accessibility-tooltip .checkboxes
