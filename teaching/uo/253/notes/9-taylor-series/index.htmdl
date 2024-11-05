@@ -530,7 +530,7 @@ There's one final question before our basic theory of Taylor series is complete:
 	
 	### desmos taylor-series-comparison
 	
-	Here, the green and purple functions are degree-5 Taylor polynomials for $\sin$ centered at $0$ and $3\pi$, respectively. The actual value of $\sin(10)$ is approximately $-.544021$, but while the purple function predicts a value of $-.544025$, the green function has stopped tracking with $\sin(x)$ long before $x = 10$, and it predicts a garbage value of $676.7$. We can increase the degree of the polynomials to help fix this problem, but there's often no substitute for centering them in the right place to begin with!
+	Here, the blue and red functions are degree-5 Taylor polynomials for $\sin$ centered at $0$ and $3\pi$, respectively. The actual value of $\sin(10)$ is approximately $-.544021$, but while the red function predicts a value of $-.544025$, the blue function has stopped tracking with $\sin(x)$ long before $x = 10$, and it predicts a garbage value of $676.7$. We can increase the degree of the polynomials to help fix this problem, but there's often no substitute for centering them in the right place to begin with!
 
 ###
 
