@@ -130,7 +130,7 @@ Critically, this definition says nothing about convergence: the Taylor series fo
 		p_5 &= x - \frac{x^3}{3!} + \frac{x^5}{5!}.
 	$$
 	
-	Plotting these polynomials shows that they really do seem to converge to $\sin$: plotted in green is $p_N$, and increasing $N$ increases the interval where $p_N$ is almost identical to $\sin$. You can also change $a$ to see the effect recentering has.
+	Plotting these polynomials shows that they really do seem to converge to $\sin$: plotted in purple is $p_N$, and increasing $N$ increases the interval where $p_N$ is almost identical to $\sin$. You can also change $a$ to see the effect recentering has.
 	
 	### desmos taylor-series
 
