@@ -17,6 +17,7 @@ export let reduceMotionCheckbox;
 export let increaseContrastCheckbox;
 
 let accessibilityDialogOpen = false;
+let accessibilityDialogAnimating = false;
 
 export function addHeader()
 {
@@ -228,11 +229,12 @@ export function addHeader()
 
 async function showAccessibilityDialog()
 {
-	if (accessibilityDialogOpen)
+	if (accessibilityDialogAnimating)
 	{
 		return;
 	}
 
+	accessibilityDialogAnimating = true;
 	accessibilityDialogOpen = true;
 
 	accessibilityTooltipElement.style.transform = siteSettings.reduceMotion
@@ -250,15 +252,18 @@ async function showAccessibilityDialog()
 		duration: 150,
 		easing: "easeOutQuad"
 	}).finished;
+
+	accessibilityDialogAnimating = false;
 }
 
 async function hideAccessibilityDialog()
 {
-	if (!accessibilityDialogOpen)
+	if (accessibilityDialogAnimating)
 	{
 		return;
 	}
-
+	
+	accessibilityDialogAnimating = true;
 	accessibilityDialogOpen = false;
 	
 	await anime({
@@ -272,4 +277,6 @@ async function hideAccessibilityDialog()
 	}).finished;
 
 	accessibilityTooltipElement.style.display = "none";
+
+	accessibilityDialogAnimating = false;
 }
