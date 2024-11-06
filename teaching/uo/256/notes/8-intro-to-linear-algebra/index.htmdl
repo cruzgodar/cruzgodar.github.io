@@ -212,13 +212,13 @@ $$
 where the $1$ is in position $j$. When we evaluate $**Be_j**$ by turning $**e_j**$ sideways, only column $j$ of $**B**$ is picked out --- in other words, if we write
 
 $$
-	**B** = [[ **|**, **|**,, **|**, **|** ; **b_1**, **b_2**, \cdots, **b_{k - 1}**, **b_k** ; **|**, **|**,, **|**, **|** ]],
+	**B** = [[ **\mid**, **\mid**,, **\mid**, **\mid** ; **b_1**, **b_2**, \cdots, **b_{k - 1}**, **b_k** ; **\mid**, **\mid**, , **\mid**, **\mid** ]],
 $$
 
 so that $**b_j**$ is the $j$th column of $**B**$, then $**Be_j** = **b_j**$. By the same token, $(**AB**)**e_j** = **Ab_j**$ is the $j$th column of $**AB**$. So the matrix product $**AB**$ is defined by
 
 $$
-	**AB** = [[ **|**, **|**,, **|**, **|** ; **Ab_1**, **Ab_2**, \cdots, **Ab_{k - 1}**, **Ab_k** ; **|**, **|**,, **|**, **|** ]].
+	**AB** = [[ **\mid**, **\mid**,, **\mid**, **\mid** ; **Ab_1**, **Ab_2**, \cdots, **Ab_{k - 1}**, **Ab_k** ; **\mid**, **\mid**, , **\mid**, **\mid** ]].
 $$
 
 Thankfully, we can streamline this formula a little to make it easier to remember. To get the $i$th entry of $**Ab_j**$, we turn $**b_j**$ sideways and look at its product with the $i$th row of $**A**$. So we can get a formula for $**AB**$ one entry at a time.
