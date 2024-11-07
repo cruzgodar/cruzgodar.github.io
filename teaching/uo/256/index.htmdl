@@ -426,48 +426,46 @@ Welcome to Math 256! We'll use this page for the interactive notes, the homework
 	###
 
 
-
-	## Section 7
 	
-	In problems 5#, find the general solution of the given DE.
+	<!-- ## Section 7 -->
 	
-	#. $$y''' + 4y' = 0.$$
+	<!-- In problems 5#, find the general solution of the given DE. -->
 	
-	#. $$y^{(5)} + 4y^{(4)} + 4y^{(3)} = 0.$$
+	<!-- #. $$y''' + 4y' = 0.$$ -->
 	
-	#. $$y^{(4)} = -16y.$$
+	<!-- #. $$y^{(5)} + 4y^{(4)} + 4y^{(3)} = 0.$$ -->
 	
-	#. $$y^{(8)} - 2y^{(4)} + y = 0.$$
+	<!-- #. $$y^{(4)} = -16y.$$ -->
 	
-	#. $$y'''' + 4y''' + 6y'' + 4y' + y = 0.$$ Hint: if factoring is proving difficult, try setting $u = r^2 + 2r$.
+	<!-- #. $$y^{(8)} - 2y^{(4)} + y = 0.$$ -->
 	
-
-
-	- - -
-
-	#. Consider the DE $$y''' + y' = 0$$.
+	<!-- #. $$y'''' + 4y''' + 6y'' + 4y' + y = 0.$$ Hint: if factoring is proving difficult, try setting $u = r^2 + 2r$. -->
 	
-	> a) Find the general solution $$y = c_1 y_1 + c_2 y_2 + c_3 y_3.$$
-	
-	> b) The Wronskian for a third-order DE is defined as
-	
-	$$
-		W[y_1, y_2, y_3] = \det [[y_1, y_2, y_3 ; y_1', y_2', y_3' ; y_1'', y_2'', y_3'' ]].
-	$$
-	
-	> Write out this matrix (but don't take any determinants yet).
-	
-	> c) For a $3 \times 3$ matrix $**A**$, we can find $\det **A**$ by taking column $j$ with entries $a_{1j}$, $a_{2j}$, and $a_{3j}$, and writing
-	
-	$$
-		\det **A** = (-1)^{j + 1} (a_{1j} \det **A_{1j}** - a_{2j} \det **A_{2j}** + a_{3j} \det **A_{3j}**),
-	$$
-	
-	> where $**A_{ij}**$ is the $2 \times 2$ matrix formed by crossing off row $i$ and column $j$ from $**A**$. With this method, evaluate $W[y_1, y_2, y_3]$. Hint: there's one choice of column that should be much better than the others!
-	
-	> d) Interpret the Wronskian: did you successfully find the general solution in part a)?
 
 
+	<!-- - - - -->
+
+	<!-- #. Consider the DE $$y''' + y' = 0$$. -->
+	
+	<!-- > a) Find the general solution $$y = c_1 y_1 + c_2 y_2 + c_3 y_3.$$ -->
+	
+	<!-- > b) The Wronskian for a third-order DE is defined as -->
+	
+	<!-- $$ -->
+	<!-- 	W[y_1, y_2, y_3] = \det [[y_1, y_2, y_3 ; y_1', y_2', y_3' ; y_1'', y_2'', y_3'' ]]. -->
+	<!-- $$ -->
+	
+	<!-- > Write out this matrix (but don't take any determinants yet). -->
+	
+	<!-- > c) For a $3 \times 3$ matrix $**A**$, we can find $\det **A**$ by taking column $j$ with entries $a_{1j}$, $a_{2j}$, and $a_{3j}$, and writing -->
+	
+	<!-- $$ -->
+	<!-- 	\det **A** = (-1)^{j + 1} (a_{1j} \det **A_{1j}** - a_{2j} \det **A_{2j}** + a_{3j} \det **A_{3j}**), -->
+	<!-- $$ -->
+	
+	<!-- > where $**A_{ij}**$ is the $2 \times 2$ matrix formed by crossing off row $i$ and column $j$ from $**A**$. With this method, evaluate $W[y_1, y_2, y_3]$. Hint: there's one choice of column that should be much better than the others! -->
+	
+	<!-- > d) Interpret the Wronskian: did you successfully find the general solution in part a)? -->
 
 	## Section 8
 	
