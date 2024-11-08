@@ -14,6 +14,7 @@ import { initNavButtons, initTextButtons } from "./buttons.js";
 import { initCards, showCard } from "./cards.js";
 import { initCarousels } from "./carousels.js";
 import { initFocusEvents, initHoverEvents } from "./hoverEvents.js";
+import { loadImages } from "./images.js";
 import { listenForFullscreenKey } from "./interaction.js";
 import { equalizeAppletColumns, onResize } from "./layout.js";
 import {
@@ -39,10 +40,14 @@ const blockCardPages = [
 	"/gallery/"
 ];
 
+export let pageShown = true;
+
 // The big one. Gets a page ready to be shown but doesn't
 // do anything that requires it to be visible.
 export async function loadPage()
 {
+	pageShown = false;
+
 	window.dispatchEvent(new Event("scroll"));
 
 	updatePageElement();
@@ -76,6 +81,8 @@ export async function loadPage()
 	initPageContents();
 
 	initCarousels();
+
+	loadImages();
 
 	typesetMath();
 
@@ -236,6 +243,8 @@ async function fadeInPage()
 				: fadeIn({ element: pageElement });
 		}
 	})();
+
+	pageShown = true;
 }
 
 

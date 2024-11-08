@@ -30,7 +30,7 @@ function imageLink(options, url, name)
 		return /* html */`
 			<div class="image-link">
 				<a href="${slicedUrl}/?card=${id}" data-card-id="${id}" tabindex="-1">
-					<img src="${src}" alt="${name}" tabindex="1"></img>
+					<img src="/graphics/general-icons/placeholder.png" data-src="${src}" alt="${name}" tabindex="1"></img>
 				</a>
 				
 				<p class="image-link-subtext">${name}</p>
@@ -46,7 +46,7 @@ function imageLink(options, url, name)
 	return /* html */`
 		<div class="image-link">
 			<a href="${url}"${options.includes("t") ? " data-in-new-tab='1'" : ""} tabindex="-1">
-				<img src="${imgSrc}" alt="${name}" tabindex="1"></img>
+				<img src="/graphics/general-icons/placeholder.png" data-src="${imgSrc}" alt="${name}" tabindex="1"></img>
 			</a>
 			
 			<p class="image-link-subtext">${name}</p>

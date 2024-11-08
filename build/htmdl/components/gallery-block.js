@@ -4,7 +4,7 @@ function galleryImage(options, id, size, name)
 {
 	return /* html */`
 		<div class="gallery-image-${size}-${size}">
-			<img src="/gallery/thumbnails/${id}.webp" data-image-id="${id}" alt="${name}"></img>
+			<img src="/graphics/general-icons/placeholder.png" data-src="/gallery/thumbnails/${id}.webp" data-image-id="${id}" alt="${name}"></img>
 		</div>
 	`;
 }
