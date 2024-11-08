@@ -9,20 +9,21 @@ export function loadImages()
 	for (const image of images)
 	{
 		image.style.opacity = 0;
-		image.src = image.getAttribute("data-src");
 
 		const imageLoadElement = document.createElement("img");
 		imageLoadElement.onload = () =>
 		{
+			image.src = image.getAttribute("data-src");
+			
 			anime({
 				targets: image,
 				opacity: 1,
-				duration: pageShown ? 300 : 10,
-				delay: pageShown ? 0 : 50,
+				duration: pageShown ? 250 : 0,
+				delay: pageShown ? 0 : 100,
 				easing: "easeInOutQuad"
 			});
 		};
 
-		imageLoadElement.src = image.getAttribute("data-src");
+		setTimeout(() => imageLoadElement.src = image.getAttribute("data-src"), 0);
 	}
 }

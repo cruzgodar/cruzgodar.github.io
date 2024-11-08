@@ -169,6 +169,8 @@ async function fadeInPage()
 	fadeIn({ element: document.querySelector("#header") });
 	document.querySelector("#header-container").style.opacity = 1;
 
+	setTimeout(() => pageShown = true, 10);
+
 	if (!opacityAnimationTime)
 	{
 		pageElement.style.opacity = 1;
@@ -243,8 +245,6 @@ async function fadeInPage()
 				: fadeIn({ element: pageElement });
 		}
 	})();
-
-	pageShown = true;
 }
 
 
