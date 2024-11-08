@@ -17,8 +17,8 @@ export function loadImages()
 			anime({
 				targets: image,
 				opacity: 1,
-				duration: pageShown ? 200 : 10,
-				delay: pageShown ? 0 : 25,
+				duration: pageShown ? 300 : 10,
+				delay: pageShown ? 0 : 50,
 				easing: "easeInOutQuad"
 			});
 		};

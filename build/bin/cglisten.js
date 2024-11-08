@@ -44,7 +44,7 @@ function listenToChanges()
 
 	spawnSync(
 		"entr",
-		["-c", "bun", root + "build/build.js"],
+		["-c", "bun", root + "build/bin/cgbuild.js"],
 		{ input: files, stdio: "inherit" }
 	);
 }
