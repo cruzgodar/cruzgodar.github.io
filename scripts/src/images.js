@@ -19,7 +19,6 @@ export function loadImages()
 				targets: image,
 				opacity: 1,
 				duration: pageShown ? 250 : 0,
-				delay: pageShown ? 0 : 100,
 				easing: "easeInOutQuad"
 			});
 		};
