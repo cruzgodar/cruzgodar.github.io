@@ -1,9 +1,11 @@
+#!/usr/bin/env bun
+
 import { launch } from "puppeteer";
 import { Worker } from "worker_threads";
-import { getModifiedDate, read, write } from "./file-io.js";
+import { getModifiedDate, read, write } from "../file-io.js";
 import { galleryImageData } from "/gallery/scripts/imageData.js";
 
-const { spawnSync, execSync } = require("child_process");
+const { spawnSync } = require("child_process");
 
 const excludeFiles =
 [

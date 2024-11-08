@@ -1,8 +1,10 @@
+#!/usr/bin/env bun
+
 import { spawnSync } from "child_process";
-import { buildSitemap, sitemapPath } from "./build-sitemap.js";
-import { buildXmlSitemap } from "./build-xml-sitemap.js";
-import { read, write } from "./file-io.js";
-import buildHTMLFile from "./htmdl/build.js";
+import { buildSitemap, sitemapPath } from "../build-sitemap.js";
+import { buildXmlSitemap } from "../build-xml-sitemap.js";
+import { read, write } from "../file-io.js";
+import buildHTMLFile from "../htmdl/build.js";
 
 const root = process.argv[1].replace(/(\/cruzgodar.github.io\/).+$/, (match, $1) => $1);
 

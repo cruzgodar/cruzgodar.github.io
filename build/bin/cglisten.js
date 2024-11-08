@@ -1,3 +1,5 @@
+#!/usr/bin/env bun
+
 import { spawnSync } from "child_process";
 
 const root = process.argv[1].replace(/(\/cruzgodar.github.io\/).+$/, (match, $1) => $1);

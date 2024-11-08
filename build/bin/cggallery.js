@@ -1,5 +1,7 @@
+#!/usr/bin/env bun
+
 import { spawn, spawnSync } from "child_process";
-import { getModifiedDate, read } from "./file-io.js";
+import { getModifiedDate, read } from "../file-io.js";
 import { galleryImageData } from "/gallery/scripts/imageData.js";
 
 const root = process.argv[1].replace(/(\/cruzgodar.github.io\/).+$/, (match, $1) => $1);
