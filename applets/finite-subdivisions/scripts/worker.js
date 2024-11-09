@@ -2,98 +2,16 @@
 
 
 
-let numVertices;
 let numIterations;
-let gridSize;
 let maximumSpeed;
-
-let polygons = [];
-
+let polygons;
 
 
 async function drawFiniteSubdivisions()
 {
-	polygons = [[]];
-
-
-
-	// This makes the size of the black bars on the top and bottom equal.
-	const middleAngle = Math.floor(numVertices / 2) * 2 * Math.PI / numVertices;
-
-	const topRow = gridSize / 2 - gridSize / 2.5;
-	const bottomRow = gridSize / 2 - gridSize / 2.5 * Math.cos(middleAngle);
-
-	const totalMargin = topRow + (gridSize - bottomRow);
-
-	const centerRow = Math.floor(totalMargin / 2 + gridSize / 2.5);
-	const centerCol = Math.floor(gridSize / 2);
-
-	for (let i = 0; i < numVertices; i++)
-	{
-		const angle = i / numVertices * 2 * Math.PI;
-
-		const row = Math.floor(-Math.cos(angle) * gridSize / 2.5 + centerRow);
-		const col = Math.floor(Math.sin(angle) * gridSize / 2.5 + centerCol);
-
-		polygons[0].push([row, col]);
-	}
-
-
-
-	await drawOuterPolygon();
-
-
-
 	for (let i = 0; i < numIterations; i++)
 	{
 		await drawLines(calculateLines());
-	}
-}
-
-
-
-async function drawOuterPolygon()
-{
-	if (!maximumSpeed)
-	{
-		for (let i = 0; i < 120; i++)
-		{
-			// Draw 1/120 of each line.
-			for (let j = 0; j < numVertices; j++)
-			{
-				const rgb = HSVtoRGB((2 * j + 1) / (2 * numVertices), 1, 1);
-
-				postMessage([
-					polygons[0][j][0],
-					polygons[0][j][1],
-					polygons[0][j][0]
-						+ ((i + 1) / 120)
-							* (polygons[0][(j + 1) % numVertices][0] - polygons[0][j][0]),
-					polygons[0][j][1]
-						+ ((i + 1) / 120)
-							* (polygons[0][(j + 1) % numVertices][1] - polygons[0][j][1]),
-					rgb
-				]);
-			}
-
-			await new Promise(resolve => setTimeout(resolve, 8));
-		}
-	}
-
-	else
-	{
-		for (let j = 0; j < numVertices; j++)
-		{
-			const rgb = HSVtoRGB((2 * j + 1) / (2 * numVertices), 1, 1);
-
-			postMessage([
-				polygons[0][j][0],
-				polygons[0][j][1],
-				polygons[0][(j + 1) % numVertices][0],
-				polygons[0][(j + 1) % numVertices][1],
-				rgb
-			]);
-		}
 	}
 }
 
@@ -211,10 +129,9 @@ function HSVtoRGB(h, s, v)
 
 onmessage = (e) =>
 {
-	numVertices = e.data[0];
-	numIterations = e.data[1];
-	gridSize = e.data[2];
-	maximumSpeed = e.data[3];
+	numIterations = e.data[0];
+	maximumSpeed = e.data[1];
+	polygons = e.data[2];
 
 	drawFiniteSubdivisions();
 };
