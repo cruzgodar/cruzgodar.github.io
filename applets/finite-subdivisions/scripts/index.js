@@ -1,7 +1,6 @@
 import { showPage } from "../../../scripts/src/loadPage.js";
 import { FiniteSubdivision } from "./class.js";
-import { DownloadButton, GenerateButton } from "/scripts/src/buttons.js";
-import { Checkbox } from "/scripts/src/checkboxes.js";
+import { Button, DownloadButton } from "/scripts/src/buttons.js";
 import { $ } from "/scripts/src/main.js";
 import { TextBox } from "/scripts/src/textBoxes.js";
 
@@ -9,9 +8,10 @@ export default function()
 {
 	const applet = new FiniteSubdivision({ canvas: $("#output-canvas") });
 
-	new GenerateButton({
+	new Button({
 		element: $("#generate-button"),
-		onClick: run
+		name: "Animate",
+		onClick: () => applet.animate()
 	});
 
 	new DownloadButton({
@@ -27,6 +27,7 @@ export default function()
 		minValue: 3,
 		maxValue: 10,
 		onEnter: run,
+		onInput: run
 	});
 
 	const numIterationsInput = new TextBox({
@@ -34,14 +35,12 @@ export default function()
 		name: "Iterations",
 		value: 5,
 		minValue: 0,
-		maxValue: 7,
+		maxValue: 8,
 		onEnter: run,
+		onInput: run
 	});
 
-	const maximumSpeedCheckbox = new Checkbox({
-		element: $("#maximum-speed-checkbox"),
-		name: "Maximum speed"
-	});
+	run();
 
 	showPage();
 
@@ -50,7 +49,6 @@ export default function()
 		applet.run({
 			numVertices: numVerticesInput.value,
 			numIterations: numIterationsInput.value,
-			maximumSpeed: maximumSpeedCheckbox.checked
 		});
 	}
 }

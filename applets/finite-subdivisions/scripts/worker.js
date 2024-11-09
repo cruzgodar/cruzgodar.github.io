@@ -2,16 +2,46 @@
 
 
 
+let numVertices;
 let numIterations;
-let maximumSpeed;
 let polygons;
 
 
 async function drawFiniteSubdivisions()
 {
+	await drawOuterPolygon();
+
 	for (let i = 0; i < numIterations; i++)
 	{
 		await drawLines(calculateLines());
+	}
+}
+
+
+
+async function drawOuterPolygon()
+{
+	for (let i = 0; i < 120; i++)
+	{
+		// Draw 1/120 of each line.
+		for (let j = 0; j < numVertices; j++)
+		{
+			const rgb = HSVtoRGB((2 * j + 1) / (2 * numVertices), 1, 1);
+
+			postMessage([
+				polygons[0][j][0],
+				polygons[0][j][1],
+				polygons[0][j][0]
+					+ ((i + 1) / 120)
+						* (polygons[0][(j + 1) % numVertices][0] - polygons[0][j][0]),
+				polygons[0][j][1]
+					+ ((i + 1) / 120)
+						* (polygons[0][(j + 1) % numVertices][1] - polygons[0][j][1]),
+				rgb
+			]);
+		}
+
+		await new Promise(resolve => setTimeout(resolve, 8));
 	}
 }
 
@@ -58,45 +88,25 @@ function calculateLines()
 
 async function drawLines(newLines)
 {
-	if (maximumSpeed === false)
+	for (let i = 0; i < 120; i++)
 	{
-		for (let i = 0; i < 120; i++)
-		{
-			// Draw 1/120 of each line.
-			for (let j = 0; j < newLines.length; j++)
-			{
-				const rgb = HSVtoRGB(j / (newLines.length - 1), 1, 1);
-
-				postMessage([
-					newLines[j][0][0],
-					newLines[j][0][1],
-					newLines[j][0][0]
-						+ ((i + 1) / 120) * (newLines[j][1][0] - newLines[j][0][0]) + 1,
-					newLines[j][0][1]
-						+ ((i + 1) / 120) * (newLines[j][1][1] - newLines[j][0][1]),
-					rgb
-				]);
-			}
-
-			await new Promise(resolve => setTimeout(resolve, 8));
-		}
-	}
-
-
-	else
-	{
+		// Draw 1/120 of each line.
 		for (let j = 0; j < newLines.length; j++)
 		{
-			const rgb = HSVtoRGB(j / (newLines.length - 1), 1, 1);
+			const rgb = HSVtoRGB(j / newLines.length, 1, 1);
 
 			postMessage([
 				newLines[j][0][0],
 				newLines[j][0][1],
-				newLines[j][1][0],
-				newLines[j][1][1],
+				newLines[j][0][0]
+					+ ((i + 1) / 120) * (newLines[j][1][0] - newLines[j][0][0]) + 1,
+				newLines[j][0][1]
+					+ ((i + 1) / 120) * (newLines[j][1][1] - newLines[j][0][1]),
 				rgb
 			]);
 		}
+
+		await new Promise(resolve => setTimeout(resolve, 8));
 	}
 }
 
@@ -129,8 +139,8 @@ function HSVtoRGB(h, s, v)
 
 onmessage = (e) =>
 {
-	numIterations = e.data[0];
-	maximumSpeed = e.data[1];
+	numVertices = e.data[0];
+	numIterations = e.data[1];
 	polygons = e.data[2];
 
 	drawFiniteSubdivisions();

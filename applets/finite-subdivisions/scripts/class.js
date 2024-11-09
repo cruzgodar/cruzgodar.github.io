@@ -9,9 +9,9 @@ export class FiniteSubdivision extends Applet
 
 	numVertices = 6;
 	numIterations = 5;
+	numPreviewIterations = 5;
 
 	webWorker;
-
 	polygons;
 
 
@@ -33,16 +33,15 @@ export class FiniteSubdivision extends Applet
 			draggablesMousemoveCallback: this.onDragDraggable.bind(this),
 			draggablesTouchmoveCallback: this.onDragDraggable.bind(this),
 
-			draggablesMouseupCallback: this.onReleaseDraggable.bind(this),
-			draggablesTouchendCallback: this.onReleaseDraggable.bind(this),
-
 
 			useFullscreen: true,
 
 			useFullscreenButton: true,
 
 			enterFullscreenButtonIconPath: "/graphics/general-icons/enter-fullscreen.png",
-			exitFullscreenButtonIconPath: "/graphics/general-icons/exit-fullscreen.png"
+			exitFullscreenButtonIconPath: "/graphics/general-icons/exit-fullscreen.png",
+
+			switchFullscreenCallback: () => this.wilson.draggables.recalculateLocations()
 		};
 
 		this.wilson = new Wilson(canvas, options);
@@ -53,23 +52,20 @@ export class FiniteSubdivision extends Applet
 	run({
 		numVertices,
 		numIterations,
-		maximumSpeed
 	}) {
 		try {this.webWorker.terminate();}
 		catch(ex) {/* No web worker */}
 
 		this.numVertices = numVertices;
-		this.numIterations = Math.min(numIterations, 9);
+		this.numIterations = numIterations;
 
 		this.resolution = 3000;
-
-		this.maximumSpeed = maximumSpeed;
 
 
 
 		this.wilson.changeCanvasSize(this.resolution, this.resolution);
 
-		this.wilson.ctx.lineWidth = 10 - this.numIterations;
+		this.wilson.ctx.lineWidth = Math.max(10 - this.numIterations, 1);
 
 
 
@@ -80,6 +76,7 @@ export class FiniteSubdivision extends Applet
 
 		this.wilson.draggables.numDraggables = 0;
 		this.wilson.draggables.draggables = [];
+		this.wilson.draggables.worldCoordinates = [];
 
 		this.polygons = this.getDefaultPolygons();
 
@@ -90,23 +87,14 @@ export class FiniteSubdivision extends Applet
 			);
 		}
 
-		this.drawOuterPolygon();
-
-		this.onReleaseDraggable();
+		this.drawPreviewPolygon();
 	}
 
-	onDragDraggable(activeDraggable, x, y)
+	animate()
 	{
-		try {this.webWorker.terminate();}
-		catch(ex) {/* No web worker */}
+		this.wilson.ctx.fillStyle = convertColor(0, 0, 0);
+		this.wilson.ctx.fillRect(0, 0, this.resolution, this.resolution);
 
-		this.polygons[0][activeDraggable] = this.wilson.utils.interpolate.worldToCanvas(x, y);
-
-		this.drawOuterPolygon();
-	}
-
-	onReleaseDraggable()
-	{
 		this.webWorker = addTemporaryWorker("/applets/finite-subdivisions/scripts/worker.js");
 		
 		this.webWorker.onmessage = (e) =>
@@ -120,10 +108,22 @@ export class FiniteSubdivision extends Applet
 		};
 
 		this.webWorker.postMessage([
+			this.numVertices,
 			this.numIterations,
-			this.maximumSpeed,
 			this.polygons
 		]);
+	}
+
+
+
+	onDragDraggable(activeDraggable, x, y)
+	{
+		try {this.webWorker.terminate();}
+		catch(ex) {/* No web worker */}
+
+		this.polygons[0][activeDraggable] = this.wilson.utils.interpolate.worldToCanvas(x, y);
+
+		this.drawPreviewPolygon();
 	}
 
 
@@ -156,7 +156,7 @@ export class FiniteSubdivision extends Applet
 		return polygons;
 	}
 
-	drawOuterPolygon()
+	drawPreviewPolygon()
 	{
 		this.wilson.ctx.fillStyle = convertColor(0, 0, 0);
 		this.wilson.ctx.fillRect(0, 0, this.resolution, this.resolution);
@@ -175,5 +175,64 @@ export class FiniteSubdivision extends Applet
 			);
 			this.wilson.ctx.stroke();
 		}
+
+		let polygons = structuredClone(this.polygons);
+
+		for (let i = 0; i < this.numIterations; i++)
+		{
+			polygons = this.drawLines(polygons);
+		}
+	}
+
+
+
+	drawLines(polygons)
+	{
+		const newLines = [];
+
+		const newPolygons = [];
+
+		for (let i = 0; i < polygons.length; i++)
+		{
+			let barycenterRow = 0;
+			let barycenterCol = 0;
+
+			for (let j = 0; j < polygons[i].length; j++)
+			{
+				barycenterRow += polygons[i][j][0];
+				barycenterCol += polygons[i][j][1];
+			}
+
+			barycenterRow /= polygons[i].length;
+			barycenterCol /= polygons[i].length;
+
+			for (let j = 0; j < polygons[i].length; j++)
+			{
+				newLines.push([polygons[i][j], [barycenterRow, barycenterCol]]);
+
+				newPolygons.push([
+					[barycenterRow, barycenterCol],
+					polygons[i][j],
+					polygons[i][(j + 1) % polygons[i].length]
+				]);
+			}
+		}
+
+		for (let j = 0; j < newLines.length; j++)
+		{
+			const rgb = this.wilson.utils.hsvToRgb(j / newLines.length, 1, 1);
+
+			this.wilson.ctx.strokeStyle = convertColor(...rgb);
+
+			this.wilson.ctx.beginPath();
+			this.wilson.ctx.moveTo(newLines[j][0][1], newLines[j][0][0]);
+			this.wilson.ctx.lineTo(
+				newLines[j][1][1],
+				newLines[j][1][0]
+			);
+			this.wilson.ctx.stroke();
+		}
+
+		return newPolygons;
 	}
 }

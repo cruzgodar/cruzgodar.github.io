@@ -11,10 +11,6 @@ This one isn't too complicated! Draw a polygon and connect its center of mass to
 	num-iterations
 ###
 
-### checkboxes
-	maximum-speed
-###
-
 ### buttons
 	generate
 ###
