@@ -5,11 +5,10 @@ import { Wilson } from "/scripts/wilson.js";
 
 export class FiniteSubdivision extends Applet
 {
-	resolution = 1000;
+	resolution = 3000;
 
-	numVertices = 6;
-	numIterations = 5;
-	numPreviewIterations = 5;
+	numVertices;
+	numIterations;
 
 	webWorker;
 	polygons;
@@ -56,36 +55,36 @@ export class FiniteSubdivision extends Applet
 		try {this.webWorker.terminate();}
 		catch(ex) {/* No web worker */}
 
-		this.numVertices = numVertices;
-		this.numIterations = numIterations;
+		if (this.numVertices !== numVertices)
+		{
+			this.numVertices = numVertices;
+			
+			for (const draggable of this.wilson.draggables.draggables)
+			{
+				draggable.remove();
+			}
 
-		this.resolution = 3000;
+			this.wilson.draggables.numDraggables = 0;
+			this.wilson.draggables.draggables = [];
+			this.wilson.draggables.worldCoordinates = [];
+
+			this.polygons = this.getDefaultPolygons();
+
+			for (const vertex of this.polygons[0])
+			{
+				this.wilson.draggables.add(
+					...this.wilson.utils.interpolate.canvasToWorld(vertex[0], vertex[1])
+				);
+			}
+		}
+
+		this.numIterations = numIterations;
 
 
 
 		this.wilson.changeCanvasSize(this.resolution, this.resolution);
 
 		this.wilson.ctx.lineWidth = Math.max(10 - this.numIterations, 1);
-
-
-
-		for (const draggable of this.wilson.draggables.draggables)
-		{
-			draggable.remove();
-		}
-
-		this.wilson.draggables.numDraggables = 0;
-		this.wilson.draggables.draggables = [];
-		this.wilson.draggables.worldCoordinates = [];
-
-		this.polygons = this.getDefaultPolygons();
-
-		for (const vertex of this.polygons[0])
-		{
-			this.wilson.draggables.add(
-				...this.wilson.utils.interpolate.canvasToWorld(vertex[0], vertex[1])
-			);
-		}
 
 		this.drawPreviewPolygon();
 	}
