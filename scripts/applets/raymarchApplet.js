@@ -390,7 +390,10 @@ export class RaymarchApplet extends AnimationFrameApplet
 	onDragCanvas(x, y, xDelta, yDelta)
 	{
 		const sign = this.lockedOnOrigin ? -1 : 1;
-		this.pan.onDragCanvas(x, y, sign * xDelta, sign * yDelta);
+		const aspectRatioX = Math.max(this.imageWidth / this.imageHeight, 1);
+		const aspectRatioY = Math.min(this.imageWidth / this.imageHeight, 1);
+
+		this.pan.onDragCanvas(x, y, sign * xDelta * aspectRatioX, sign * yDelta / aspectRatioY);
 	}
 
 
