@@ -1534,13 +1534,6 @@ export class Wilson
 
 
 
-			const onResizeBound = this.onResize.bind(this);
-			addTemporaryListener({
-				object: window,
-				event: "resize",
-				callback: onResizeBound
-			});
-
 			const onScrollBound = this.onScroll.bind(this);
 			addTemporaryListener({
 				object: window,
@@ -1732,7 +1725,6 @@ export class Wilson
 			}
 
 
-
 			this.currentlyFullscreen = false;
 
 			this.currentlyAnimating = true;
@@ -1849,8 +1841,7 @@ export class Wilson
 				this.parent.draggables.onResize();
 			}
 
-
-			window.scroll(0, this.fullscreenOldScroll);
+			setTimeout(() => window.scroll(0, this.fullscreenOldScroll), 10);
 
 			this.currentlyAnimating = false;
 		},
@@ -1868,27 +1859,6 @@ export class Wilson
 			{
 				this.exitFullscreen();
 			}
-		},
-
-
-
-		onResize()
-		{
-			if (!this.currentlyFullscreen)
-			{
-				return;
-			}
-
-
-
-			window.scroll(0, 0);
-
-
-
-			setTimeout(() =>
-			{
-				window.scroll(0, 0);
-			}, 500);
 		},
 
 
