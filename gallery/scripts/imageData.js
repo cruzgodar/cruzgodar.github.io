@@ -56,17 +56,6 @@ export const galleryImageData =
 	{
 		title: "A Chaos Game",
 
-		featured: `Featured in ${emu}`,
-
-		appletLink: "/applets/chaos-game/",
-
-		driveId: "15NZyBmIqZxCaTrT9C9m87bqfM1sUmY5i"
-	},
-
-	"chaos-game-2":
-	{
-		title: "A Chaos Game",
-
 		appletLink: "/applets/chaos-game/?num-vertices-input=6",
 
 		driveId: "14ADChQ4KHV426ySW_CIVvTAXe2irMKU0"
@@ -239,6 +228,26 @@ export const galleryImageData =
 		appletLink: "/applets/the-mandelbulb/?debug=1&switch-bulb-button=1&c-x-slider=1&c-z-slider=-.336&power-slider=2",
 
 		driveId: "1PNVXqlPub0RNvj3EpyYj0kiLi3YwnPvj"
+	},
+
+	"juliabulb-zoom":
+	{
+		title: "A Juliabulb",
+
+		// eslint-disable-next-line max-len
+		appletLink: "/applets/the-mandelbulb/?switch-bulb-button=1&c-x-slider=0.8&lock-on-origin-checkbox=0",
+
+		driveId: "1AAENn9-QgCVjTYaFP_HcPcDjakM0pBYc"
+	},
+
+	"juliabulb-zoom-2":
+	{
+		title: "A Juliabulb",
+
+		// eslint-disable-next-line max-len
+		appletLink: "/applets/the-mandelbulb/?switch-bulb-button=1&c-z-slider=-0.825591&switch-bulb-button=1&c-x-slider=-0.062753&lock-on-origin-checkbox=0",
+
+		driveId: "1i7jSyoBnkKF0CG-PdrwBFPccIgyzJbFh"
 	},
 
 	"kaleidoscopic-ifs":
@@ -516,19 +525,6 @@ export const galleryImageData =
 		appletLink: "/applets/thurston-geometries/?geometries-dropdown=sol&switch-scene-button=1",
 
 		driveId: "1Pz0IUsM43_-qEXIf27CWzjOkTnMyLXz6"
-	},
-
-	"vector-field":
-	{
-		title: "A Vector Field",
-
-		parameters: /* html */`
-			Generated from $\\left( \\sin\\left( \\frac{y}{2.5} \\right), \\tan\\left( \\frac{x}{2.5} \\right) \\right)$
-		`,
-
-		appletLink: "/applets/vector-fields/?examples-dropdown=divergingDiamond",
-
-		driveId: "1DyYo2hLpJ-9NjwW_akmmmq3pmnS9VKPa"
 	},
 
 	"voronoi-diagram":
