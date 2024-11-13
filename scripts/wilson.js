@@ -1697,10 +1697,6 @@ export class Wilson
 				this.parent.canvas.parentNode.parentNode.insertAdjacentHTML("afterend", "<div class='wilson-letterboxed-canvas-background'></div>");
 
 				this.parent.canvas.parentNode.parentNode.classList.add("wilson-black-background");
-
-
-
-				this.onResize();
 			}
 
 
