@@ -1836,8 +1836,9 @@ export class Wilson
 			{
 				this.parent.draggables.onResize();
 			}
-
-			setTimeout(() => window.scroll(0, this.fullscreenOldScroll), 10);
+			
+			window.scrollTo(0, this.fullscreenOldScroll);
+			setTimeout(() => window.scrollTo(0, this.fullscreenOldScroll), 10);
 
 			this.currentlyAnimating = false;
 		},
