@@ -10,7 +10,8 @@ import {
 import {
 	bannerElement,
 	bannerPages,
-	loadBanner
+	loadBanner,
+	preloadBanner
 } from "./banners.js";
 import { cardIsOpen, hideCard } from "./cards.js";
 import { clearDesmosGraphs, desmosGraphs } from "./desmos.js";
@@ -99,12 +100,14 @@ export async function redirect({
 	// When all of those things are successfully done, replace the current html with the new stuff.
 	const [text] = await Promise.all([
 		asyncFetch(`${url}data.html`),
-		loadBanner({ url }),
+		preloadBanner(url),
 		fadeOutPage(noFadeOut),
 		cardIsOpen ? hideCard() : Promise.resolve()
 	]);
 
+	
 
+	loadBanner({ url });
 
 	if (forceThemePages[url])
 	{

@@ -186,6 +186,35 @@ export const multibannerPages =
 
 
 
+export async function preloadBanner(url)
+{
+	if (!(bannerPages.includes(url)))
+	{
+		return;
+	}
+
+	bannerFilename = "small.webp";
+	bannerFilepath = url + "banners/";
+
+	if (url in multibannerPages)
+	{
+		bannerFilepath += multibannerPages[url].currentBanner + "/";
+	}
+
+	await new Promise(resolve =>
+	{
+		const imageLoadElement = document.createElement("img");
+		imageLoadElement.onload = () =>
+		{
+			resolve();
+		};
+
+		setTimeout(() => imageLoadElement.src = bannerFilepath + bannerFilename, 0);
+	});
+}
+
+
+
 export async function loadBanner({
 	url,
 	large = false
