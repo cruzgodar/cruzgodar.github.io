@@ -17,12 +17,17 @@ const elementSelectorsWithScale =
 		addBounceOnTouch: () => false,
 		preventScaleWithIncreasedContrast: false
 	},
-	".text-button:not(.dropdown)": {
+	".text-button:not(.dropdown, .nav-button)": {
 		scale: 1.075,
 		addBounceOnTouch: () => true,
 		preventScaleWithIncreasedContrast: false
 	},
 	".text-button.dropdown": {
+		scale: 1.075,
+		addBounceOnTouch: () => false,
+		preventScaleWithIncreasedContrast: false
+	},
+	".text-button.nav-button": {
 		scale: 1.075,
 		addBounceOnTouch: () => false,
 		preventScaleWithIncreasedContrast: false
