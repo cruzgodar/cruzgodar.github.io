@@ -47,7 +47,14 @@ async function buildSite()
 		"-C",
 		root,
 		"ls-files",
-		...(options.clean ? [] : ["-m"])
+		...(options.clean
+			? []
+			: [
+				"--modified",
+				"--deleted",
+				"--others",
+				"--exclude-standard"
+			])
 	]);
 
 	const files = proc.stdout.toString().split("\n");
