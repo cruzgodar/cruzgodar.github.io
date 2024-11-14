@@ -1,12 +1,10 @@
 import anime from "../anime.js";
 import { changeOpacity } from "./animation.js";
 import { headerElement } from "./header.js";
-import { likelyWindowChromeHeight, onResize, pageWidth, viewportHeight } from "./layout.js";
+import { onResize, pageWidth, viewportHeight } from "./layout.js";
 import {
 	$,
 	addStyle,
-	asyncFetch,
-	pageElement,
 	pageUrl
 } from "./main.js";
 import { siteSettings } from "./settings.js";
@@ -188,10 +186,12 @@ export const multibannerPages =
 
 
 
-export async function loadBanner(large = false)
-{
+export async function loadBanner({
+	url,
+	large = false
+}) {
 	// Only do banner things if the banner things are in the standard places.
-	if (!(bannerPages.includes(pageUrl)))
+	if (!(bannerPages.includes(url)))
 	{
 		return;
 	}
@@ -199,15 +199,15 @@ export async function loadBanner(large = false)
 	bannerElement = $("#banner");
 	contentElement = $("#content");
 
-	contentElement.parentElement.style.marginTop = `calc(100vh - ${likelyWindowChromeHeight + 40}px)`;
+	// contentElement.parentElement.style.marginTop
+	// = `calc(100vh - ${likelyWindowChromeHeight + 40}px)`;
 
 	bannerFilename = `${large ? "large" : "small"}.webp`;
+	bannerFilepath = url + "banners/";
 
-	bannerFilepath = pageUrl + "banners/";
-
-	if (pageUrl in multibannerPages)
+	if (url in multibannerPages)
 	{
-		bannerFilepath += multibannerPages[pageUrl].currentBanner + "/";
+		bannerFilepath += multibannerPages[url].currentBanner + "/";
 	}
 
 	addStyle(`
@@ -223,34 +223,17 @@ export async function loadBanner(large = false)
 			background-size: cover;
 		}
 	`);
-	
-	await asyncFetch(bannerFilepath + bannerFilename);
 
-	const img = new Image();
-
-	const promise = new Promise(resolve =>
+	await new Promise(resolve =>
 	{
-		img.onload = () =>
+		const imageLoadElement = document.createElement("img");
+		imageLoadElement.onload = () =>
 		{
-			img.remove();
-
 			resolve();
 		};
+
+		setTimeout(() => imageLoadElement.src = bannerFilepath + bannerFilename, 0);
 	});
-
-	img.style.opacity = 0;
-	img.style.position = "fixed";
-	img.style.top = "-100vh";
-	img.style.left = "-100vw";
-
-	pageElement.appendChild(img);
-
-	setTimeout(() =>
-	{
-		img.src = bannerFilepath + bannerFilename;
-	}, 20);
-
-	await promise;
 }
 
 
@@ -260,7 +243,7 @@ export function initBanner()
 {
 	if (bannerPages.includes(pageUrl))
 	{
-		loadBanner(true)
+		loadBanner({ url: pageUrl, large: true })
 			.then(() =>
 			{
 				changeOpacity({

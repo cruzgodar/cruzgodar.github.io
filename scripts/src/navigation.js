@@ -99,7 +99,7 @@ export async function redirect({
 	// When all of those things are successfully done, replace the current html with the new stuff.
 	const [text] = await Promise.all([
 		asyncFetch(`${url}data.html`),
-		loadBanner(),
+		loadBanner({ url }),
 		fadeOutPage(noFadeOut),
 		cardIsOpen ? hideCard() : Promise.resolve()
 	]);
