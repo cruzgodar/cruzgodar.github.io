@@ -178,7 +178,7 @@ just like functions. Therefore, we need $**A**$ and $**B**$ to have the same num
 $$
 	[[ 5, 0, 2 ; 2, 3, 0 ]] + [[ -1, 2, 0 ; -5, 0, 2 ]] &= [[ 5 - 1, 0 + 2, 2 + 0 ; 2 - 5, 3 + 0, 0 + 2 ]]
 	
-	&= [[ 5, 2, 2 ; -3, 3, 2 ]].
+	&= [[ 4, 2, 2 ; -3, 3, 2 ]].
 $$
 
 For exactly the same reason, scalar multiplication works the same way: for a number $c$, the matrix $c**A**$ is created by multiplying every entry by $c$. For example,
