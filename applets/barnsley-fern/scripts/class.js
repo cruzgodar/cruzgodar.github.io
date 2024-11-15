@@ -6,6 +6,7 @@ import { Wilson } from "/scripts/wilson.js";
 export class BarnsleyFern extends AnimationFrameApplet
 {
 	resolution = 1000;
+	computeResolution = 1000;
 
 	wilsonUpdate;
 	loadPromise;
@@ -30,8 +31,8 @@ export class BarnsleyFern extends AnimationFrameApplet
 
 			shader: tempShader,
 
-			canvasWidth: this.resolution,
-			canvasHeight: this.resolution,
+			canvasWidth: this.computeResolution,
+			canvasHeight: this.computeResolution,
 
 			worldWidth: 12,
 			worldHeight: 12,
@@ -92,8 +93,9 @@ export class BarnsleyFern extends AnimationFrameApplet
 	run({ resolution = 1000 })
 	{
 		this.resolution = resolution;
+		this.computeResolution = Math.round(resolution / 3);
 
-		this.wilsonUpdate.changeCanvasSize(this.resolution, this.resolution);
+		this.wilsonUpdate.changeCanvasSize(this.computeResolution, this.computeResolution);
 
 		this.wilsonUpdate.render.framebuffers = [];
 		this.wilsonUpdate.render.createFramebufferTexturePair();
@@ -185,17 +187,17 @@ export class BarnsleyFern extends AnimationFrameApplet
 			}
 		`;
 
-		this.texture = new Float32Array(this.resolution * this.resolution * 4);
+		this.texture = new Float32Array(this.computeResolution * this.computeResolution * 4);
 		this.imageData = new Float32Array(this.resolution * this.resolution * 4);
 
 		this.maxBrightness = 1;
 		this.wilson.gl.uniform1f(this.wilson.uniforms.maxBrightness, 1);
 
-		for (let i = 0; i < this.resolution; i++)
+		for (let i = 0; i < this.computeResolution; i++)
 		{
-			for (let j = 0; j < this.resolution; j++)
+			for (let j = 0; j < this.computeResolution; j++)
 			{
-				const index = this.resolution * i + j;
+				const index = this.computeResolution * i + j;
 				const worldCoordinates = this.wilsonUpdate.utils.interpolate.canvasToWorld(i, j);
 
 				this.texture[4 * index] = worldCoordinates[0];
@@ -213,7 +215,7 @@ export class BarnsleyFern extends AnimationFrameApplet
 
 
 		this.frame = 0;
-		this.numIterations = 100;
+		this.numIterations = 150;
 		
 		this.resume();
 	}
@@ -230,8 +232,8 @@ export class BarnsleyFern extends AnimationFrameApplet
 			this.wilsonUpdate.gl.TEXTURE_2D,
 			0,
 			this.wilsonUpdate.gl.RGBA,
-			this.resolution,
-			this.resolution,
+			this.computeResolution,
+			this.computeResolution,
 			0,
 			this.wilsonUpdate.gl.RGBA,
 			this.wilsonUpdate.gl.FLOAT,
@@ -246,9 +248,9 @@ export class BarnsleyFern extends AnimationFrameApplet
 		this.wilsonUpdate.render.drawFrame();
 		const floatsY = new Float32Array(this.wilsonUpdate.render.getPixelData().buffer);
 
-		for (let i = 0; i < this.resolution; i++)
+		for (let i = 0; i < this.computeResolution; i++)
 		{
-			for (let j = 0; j < this.resolution; j++)
+			for (let j = 0; j < this.computeResolution; j++)
 			{
 				const index = this.resolution * i + j;
 				this.texture[4 * index] = floatsX[index];
@@ -296,7 +298,10 @@ export class BarnsleyFern extends AnimationFrameApplet
 			this.imageData
 		);
 
-		this.wilson.gl.uniform1f(this.wilson.uniforms.maxBrightness, this.maxBrightness);
+		this.wilson.gl.uniform1f(
+			this.wilson.uniforms.maxBrightness,
+			this.maxBrightness / (this.resolution / 1250)
+		);
 
 		this.wilson.render.drawFrame();
 	}
