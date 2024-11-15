@@ -236,15 +236,20 @@ export class Applet
 
 	hiddenCanvasContainer;
 
-	createHiddenCanvas()
+	createHiddenCanvas(hidden = true)
 	{
 		const hiddenCanvas = document.createElement("canvas");
-		hiddenCanvas.classList.add("hidden-canvas");
+		hiddenCanvas.classList.add(hidden ? "hidden-canvas" : "output-canvas");
 
 		if (!this.hiddenCanvasContainer)
 		{
 			this.hiddenCanvasContainer = document.createElement("div");
-			this.hiddenCanvasContainer.style.display = "none";
+
+			if (hidden)
+			{
+				this.hiddenCanvasContainer.style.display = "none";
+			}
+			
 			pageElement.appendChild(this.hiddenCanvasContainer);
 		}
 

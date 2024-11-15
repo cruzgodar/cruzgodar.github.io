@@ -19,12 +19,11 @@ export default function()
 		filename: "the-barnsley-fern.png"
 	});
 
-	const numIterationsInput = new TextBox({
-		element: $("#num-iterations-input"),
-		name: "Iterations (x1000)",
-		value: 10000,
-		minValue: 100,
-		maxValue: 100000,
+	const resolutionInput = new TextBox({
+		element: $("#resolution-input"),
+		name: "Resolution",
+		value: 1000,
+		maxValue: 3000,
 		onEnter: run,
 	});
 
@@ -32,6 +31,6 @@ export default function()
 
 	function run()
 	{
-		applet.run({ numIterations: 1000 * numIterationsInput.value });
+		applet.run({ resolution: resolutionInput.value });
 	}
 }
