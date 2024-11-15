@@ -1,7 +1,7 @@
 import anime from "../anime.js";
 import { changeOpacity } from "./animation.js";
 import { headerElement } from "./header.js";
-import { onResize, pageWidth, viewportHeight } from "./layout.js";
+import { likelyWindowChromeHeight, onResize, pageWidth, viewportHeight } from "./layout.js";
 import {
 	$,
 	addStyle,
@@ -228,8 +228,11 @@ export async function loadBanner({
 	bannerElement = $("#banner");
 	contentElement = $("#content");
 
-	// contentElement.parentElement.style.marginTop
-	// = `calc(100vh - ${likelyWindowChromeHeight + 40}px)`;
+	if (contentElement?.parentElement)
+	{
+		contentElement.parentElement.style.marginTop
+			= `calc(100vh - ${likelyWindowChromeHeight + 40}px)`;
+	}
 
 	bannerFilename = `${large ? "large" : "small"}.webp`;
 	bannerFilepath = url + "banners/";
