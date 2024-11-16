@@ -22,7 +22,7 @@ export default function()
 	const resolutionInput = new TextBox({
 		element: $("#resolution-input"),
 		name: "Resolution",
-		value: 1000,
+		value: 1500,
 		maxValue: 4000,
 		onEnter: run,
 	});
