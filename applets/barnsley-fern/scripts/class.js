@@ -99,9 +99,17 @@ export class BarnsleyFern extends AnimationFrameApplet
 		this.wilson.render.initUniforms(["maxBrightness"]);
 		this.wilson.gl.uniform1f(this.wilson.uniforms.maxBrightness, 1);
 
-		this.wilson.draggables.add(...this.b2);
+		this.wilson.draggables.add(2.6556, 9.95851);
 
+		let p = [0, 1];
+		console.log(p);
+	
+		for (let i = 0; i < 10000; i++)
+		{
+			p = [.85 * p[0] + .04 * p[1] + this.b2[0], -.04 * p[0] + .85 * p[1] + this.b2[1]];
+		}
 
+		console.log(p);
 
 		this.loadPromise = loadGlsl();
 	}
@@ -337,10 +345,14 @@ export class BarnsleyFern extends AnimationFrameApplet
 		this.animationPaused = true;
 		this.needNewFrame = false;
 
-		this.b2[0] = x;
-		this.b2[1] = y;
+		// Apply an inverse transformation I computed manually to convert the tip of the fern
+		// back to the first stem point.
 
-		const theta = Math.atan2(-x, y);
+
+		this.b2[0] = .15 * x - 0.04 * y;
+		this.b2[1] = .04 * x + 0.15 * y;
+
+		const theta = Math.atan2(-this.b2[0], this.b2[1]);
 		const c = Math.cos(theta);
 		const s = Math.sin(theta);
 		// An affine transformation that points toward the draggable.
