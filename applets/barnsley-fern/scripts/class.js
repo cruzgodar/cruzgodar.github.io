@@ -8,6 +8,7 @@ export class BarnsleyFern extends AnimationFrameApplet
 	resolution = 1000;
 	computeResolution = 1000;
 	A1 = [0, 0, 0, .16];
+	A4 = [-.15, .26, .28, .24];
 	b2 = [0, 1.6];
 
 	wilsonUpdate;
@@ -82,6 +83,9 @@ export class BarnsleyFern extends AnimationFrameApplet
 			draggablesMousemoveCallback: this.onDragDraggable.bind(this),
 			draggablesTouchmoveCallback: this.onDragDraggable.bind(this),
 
+			draggablesMouseupCallback: this.onReleaseDraggable.bind(this),
+			draggablesTouchendCallback: this.onReleaseDraggable.bind(this),
+
 			useFullscreen: true,
 
 			useFullscreenButton: true,
@@ -135,8 +139,6 @@ export class BarnsleyFern extends AnimationFrameApplet
 
 
 
-		
-
 		const fragShaderSourceUpdateBase = /* glsl */`
 			precision highp float;
 			precision highp sampler2D;
@@ -148,12 +150,9 @@ export class BarnsleyFern extends AnimationFrameApplet
 			uniform mat2 A1;
 			const mat2 A2 = mat2(.85, -.04, .04, .85);
 			const mat2 A3 = mat2(.2, .23, -.26, .22);
-			const mat2 A4 = mat2(-.15, .26, .28, .24);
+			uniform mat2 A4;
 
-			const vec2 b1 = vec2(0.0, 0.0);
 			uniform vec2 b2;
-			const vec2 b3 = vec2(0.0, 1.6);
-			const vec2 b4 = vec2(0.0, .44);
 
 			${doubleEncodingGlsl}
 
@@ -170,7 +169,7 @@ export class BarnsleyFern extends AnimationFrameApplet
 
 				if (r < .01)
 				{
-					state = A1 * state + b1;
+					state = A1 * state;
 				}
 
 				else if (r < .86)
@@ -226,19 +225,21 @@ export class BarnsleyFern extends AnimationFrameApplet
 		this.wilsonUpdate.render.shaderPrograms = [];
 
 		this.wilsonUpdate.render.loadNewShader(fragShaderSourceUpdateX);
-		this.wilsonUpdate.render.initUniforms(["A1", "b2"], 0);
+		this.wilsonUpdate.render.initUniforms(["A1", "A4", "b2"], 0);
 		this.wilsonUpdate.gl.uniformMatrix2fv(this.wilsonUpdate.uniforms.A1[0], false, this.A1);
+		this.wilsonUpdate.gl.uniformMatrix2fv(this.wilsonUpdate.uniforms.A4[0], false, this.A4);
 		this.wilsonUpdate.gl.uniform2fv(this.wilsonUpdate.uniforms.b2[0], this.b2);
 
 		this.wilsonUpdate.render.loadNewShader(fragShaderSourceUpdateY);
-		this.wilsonUpdate.render.initUniforms(["A1", "b2"], 1);
+		this.wilsonUpdate.render.initUniforms(["A1", "A4", "b2"], 1);
 		this.wilsonUpdate.gl.uniformMatrix2fv(this.wilsonUpdate.uniforms.A1[1], false, this.A1);
+		this.wilsonUpdate.gl.uniformMatrix2fv(this.wilsonUpdate.uniforms.A4[1], false, this.A4);
 		this.wilsonUpdate.gl.uniform2fv(this.wilsonUpdate.uniforms.b2[1], this.b2);
 
-
+		
 
 		this.frame = 0;
-		this.numIterations = 150;
+		this.numIterations = 125;
 		
 		this.resume();
 	}
@@ -321,9 +322,11 @@ export class BarnsleyFern extends AnimationFrameApplet
 			this.imageData
 		);
 
+		const maxBrightnessAdjust = this.resolution / 1000 * Math.min(this.frame / 25, 1);
+
 		this.wilson.gl.uniform1f(
 			this.wilson.uniforms.maxBrightness,
-			this.maxBrightness / (this.resolution / 1250)
+			this.maxBrightness / maxBrightnessAdjust
 		);
 
 		this.wilson.render.drawFrame();
@@ -331,23 +334,44 @@ export class BarnsleyFern extends AnimationFrameApplet
 
 	onDragDraggable(activeDraggable, x, y)
 	{
-		if (activeDraggable === 0)
-		{
-			this.b2[0] = x;
-			this.b2[1] = y;
+		this.animationPaused = true;
+		this.needNewFrame = false;
 
-			const theta = Math.atan2(-x, y);
-			this.A1 = [0, 0, -.16 * Math.sin(theta), .16 * Math.cos(theta)];
+		this.b2[0] = x;
+		this.b2[1] = y;
 
-			this.wilsonUpdate.gl.useProgram(this.wilsonUpdate.render.shaderPrograms[0]);
-			this.wilsonUpdate.gl.uniformMatrix2fv(this.wilsonUpdate.uniforms.A1[0], false, this.A1);
-			this.wilsonUpdate.gl.uniform2fv(this.wilsonUpdate.uniforms.b2[0], this.b2);
+		const theta = Math.atan2(-x, y);
+		const c = Math.cos(theta);
+		const s = Math.sin(theta);
+		// An affine transformation that points toward the draggable.
+		this.A1 = [0, 0, -.16 * s, .16 * c];
 
-			this.wilsonUpdate.gl.useProgram(this.wilsonUpdate.render.shaderPrograms[1]);
-			this.wilsonUpdate.gl.uniformMatrix2fv(this.wilsonUpdate.uniforms.A1[1], false, this.A1);
-			this.wilsonUpdate.gl.uniform2fv(this.wilsonUpdate.uniforms.b2[1], this.b2);
+		const c2 = Math.cos(2 * theta);
+		// The default transformation for this one is orientation-reversing, so we
+		// rotate to vertical, apply the usual one, then rotate back.
+		this.A4 = [
+			0.045 - 0.195 * c2 - 0.54 * c * s,
+			-0.01 + 0.27 * c2 - 0.39 * c * s,
+			0.01 + 0.27 * c2 - 0.39 * c * s,
+			0.045 + 0.195 * c2 + 0.54 * c * s
+		];
 
-			this.run({ resolution: this.resolution });
-		}
+		this.wilsonUpdate.gl.useProgram(this.wilsonUpdate.render.shaderPrograms[0]);
+		this.wilsonUpdate.gl.uniformMatrix2fv(this.wilsonUpdate.uniforms.A1[0], false, this.A1);
+		this.wilsonUpdate.gl.uniformMatrix2fv(this.wilsonUpdate.uniforms.A4[0], false, this.A4);
+		this.wilsonUpdate.gl.uniform2fv(this.wilsonUpdate.uniforms.b2[0], this.b2);
+
+		this.wilsonUpdate.gl.useProgram(this.wilsonUpdate.render.shaderPrograms[1]);
+		this.wilsonUpdate.gl.uniformMatrix2fv(this.wilsonUpdate.uniforms.A1[1], false, this.A1);
+		this.wilsonUpdate.gl.uniformMatrix2fv(this.wilsonUpdate.uniforms.A4[1], false, this.A4);
+		this.wilsonUpdate.gl.uniform2fv(this.wilsonUpdate.uniforms.b2[1], this.b2);
+	}
+
+	onReleaseDraggable()
+	{
+		this.wilsonUpdate.gl.useProgram(this.wilsonUpdate.render.shaderPrograms[0]);
+		this.wilsonUpdate.gl.useProgram(this.wilsonUpdate.render.shaderPrograms[1]);
+
+		this.run({ resolution: this.resolution });
 	}
 }

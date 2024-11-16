@@ -23,7 +23,7 @@ export default function()
 		element: $("#resolution-input"),
 		name: "Resolution",
 		value: 1000,
-		maxValue: 3000,
+		maxValue: 4000,
 		onEnter: run,
 	});
 
