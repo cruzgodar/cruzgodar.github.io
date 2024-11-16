@@ -101,16 +101,6 @@ export class BarnsleyFern extends AnimationFrameApplet
 
 		this.wilson.draggables.add(2.6556, 9.95851);
 
-		let p = [0, 1];
-		console.log(p);
-	
-		for (let i = 0; i < 10000; i++)
-		{
-			p = [.85 * p[0] + .04 * p[1] + this.b2[0], -.04 * p[0] + .85 * p[1] + this.b2[1]];
-		}
-
-		console.log(p);
-
 		this.loadPromise = loadGlsl();
 	}
 
