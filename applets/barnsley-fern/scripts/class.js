@@ -7,6 +7,8 @@ export class BarnsleyFern extends AnimationFrameApplet
 {
 	resolution = 1000;
 	computeResolution = 1000;
+	A1 = [0, 0, 0, .16];
+	b2 = [0, 1.6];
 
 	wilsonUpdate;
 	loadPromise;
@@ -70,6 +72,16 @@ export class BarnsleyFern extends AnimationFrameApplet
 			canvasWidth: this.resolution,
 			canvasHeight: this.resolution,
 
+			worldWidth: 12,
+			worldHeight: 12,
+			worldCenterX: 0,
+			worldCenterY: 5,
+
+			useDraggables: true,
+
+			draggablesMousemoveCallback: this.onDragDraggable.bind(this),
+			draggablesTouchmoveCallback: this.onDragDraggable.bind(this),
+
 			useFullscreen: true,
 
 			useFullscreenButton: true,
@@ -82,6 +94,8 @@ export class BarnsleyFern extends AnimationFrameApplet
 
 		this.wilson.render.initUniforms(["maxBrightness"]);
 		this.wilson.gl.uniform1f(this.wilson.uniforms.maxBrightness, 1);
+
+		this.wilson.draggables.add(...this.b2);
 
 
 
@@ -119,6 +133,8 @@ export class BarnsleyFern extends AnimationFrameApplet
 			this.wilson.render.framebuffers[0].texture
 		);
 
+
+
 		
 
 		const fragShaderSourceUpdateBase = /* glsl */`
@@ -129,13 +145,13 @@ export class BarnsleyFern extends AnimationFrameApplet
 			
 			uniform sampler2D uTexture;
 
-			const mat2 A1 = mat2(0.0, 0.0, 0.0, .16);
+			uniform mat2 A1;
 			const mat2 A2 = mat2(.85, -.04, .04, .85);
 			const mat2 A3 = mat2(.2, .23, -.26, .22);
 			const mat2 A4 = mat2(-.15, .26, .28, .24);
 
 			const vec2 b1 = vec2(0.0, 0.0);
-			const vec2 b2 = vec2(0.0, 1.6);
+			uniform vec2 b2;
 			const vec2 b3 = vec2(0.0, 1.6);
 			const vec2 b4 = vec2(0.0, .44);
 
@@ -164,12 +180,12 @@ export class BarnsleyFern extends AnimationFrameApplet
 
 				else if (r < .93)
 				{
-					state = A3 * state + b3;
+					state = A3 * state + b2 * 0.75;
 				}
 
 				else
 				{
-					state = A4 * state + b4;
+					state = A4 * state + b2 * 0.25;
 				}
 		`;
 
@@ -210,7 +226,14 @@ export class BarnsleyFern extends AnimationFrameApplet
 		this.wilsonUpdate.render.shaderPrograms = [];
 
 		this.wilsonUpdate.render.loadNewShader(fragShaderSourceUpdateX);
+		this.wilsonUpdate.render.initUniforms(["A1", "b2"], 0);
+		this.wilsonUpdate.gl.uniformMatrix2fv(this.wilsonUpdate.uniforms.A1[0], false, this.A1);
+		this.wilsonUpdate.gl.uniform2fv(this.wilsonUpdate.uniforms.b2[0], this.b2);
+
 		this.wilsonUpdate.render.loadNewShader(fragShaderSourceUpdateY);
+		this.wilsonUpdate.render.initUniforms(["A1", "b2"], 1);
+		this.wilsonUpdate.gl.uniformMatrix2fv(this.wilsonUpdate.uniforms.A1[1], false, this.A1);
+		this.wilsonUpdate.gl.uniform2fv(this.wilsonUpdate.uniforms.b2[1], this.b2);
 
 
 
@@ -304,5 +327,27 @@ export class BarnsleyFern extends AnimationFrameApplet
 		);
 
 		this.wilson.render.drawFrame();
+	}
+
+	onDragDraggable(activeDraggable, x, y)
+	{
+		if (activeDraggable === 0)
+		{
+			this.b2[0] = x;
+			this.b2[1] = y;
+
+			const theta = Math.atan2(-x, y);
+			this.A1 = [0, 0, -.16 * Math.sin(theta), .16 * Math.cos(theta)];
+
+			this.wilsonUpdate.gl.useProgram(this.wilsonUpdate.render.shaderPrograms[0]);
+			this.wilsonUpdate.gl.uniformMatrix2fv(this.wilsonUpdate.uniforms.A1[0], false, this.A1);
+			this.wilsonUpdate.gl.uniform2fv(this.wilsonUpdate.uniforms.b2[0], this.b2);
+
+			this.wilsonUpdate.gl.useProgram(this.wilsonUpdate.render.shaderPrograms[1]);
+			this.wilsonUpdate.gl.uniformMatrix2fv(this.wilsonUpdate.uniforms.A1[1], false, this.A1);
+			this.wilsonUpdate.gl.uniform2fv(this.wilsonUpdate.uniforms.b2[1], this.b2);
+
+			this.run({ resolution: this.resolution });
+		}
 	}
 }
