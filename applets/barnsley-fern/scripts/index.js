@@ -29,6 +29,8 @@ export default function()
 
 	showPage();
 
+	applet.loadPromise.then(() => run());
+
 	function run()
 	{
 		applet.run({ resolution: resolutionInput.value });
