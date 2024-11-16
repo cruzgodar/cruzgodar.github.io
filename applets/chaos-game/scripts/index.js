@@ -23,9 +23,9 @@ export default function()
 	const resolutionInput = new TextBox({
 		element: $("#resolution-input"),
 		name: "Resolution",
-		value: 500,
+		value: 1500,
 		minValue: 100,
-		maxValue: 2000,
+		maxValue: 3000,
 		onEnter: run,
 	});
 
@@ -34,6 +34,7 @@ export default function()
 		name: "Vertices",
 		value: 5,
 		minValue: 3,
+		maxValue: 7,
 		onEnter: run,
 	});
 	
