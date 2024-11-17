@@ -19,6 +19,8 @@ export class CurvedLight extends RaymarchApplet
 		const addGlsl = /* glsl */`
 			float rand(vec2 co)
 			{
+				co += vec2(${Math.random()}, ${Math.random()});
+				
 				return fract(sin(dot(co, vec2(12.9898, 78.233))) * 43758.5453);
 			}
 

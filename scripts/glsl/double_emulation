@@ -99,6 +99,8 @@ vec2 set(float a)
 
 float rand(vec2 co)
 {
+	co += vec2(${Math.random()}, ${Math.random()});
+	
 	// implementation found at: lumina.sourceforge.net/Tutorials/Noise.html
 	return fract(sin(dot(co.xy ,vec2(12.9898,78.233))) * 43758.5453);
 }
