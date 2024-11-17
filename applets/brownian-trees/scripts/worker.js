@@ -110,9 +110,9 @@ function drawBrownianTree()
 				const newColor = HSVtoRGB(newHue, 1, 1);
 
 				color[currentRow][currentCol] = [
-					.9925 * color[newRow][newCol][0] + .0075 * newColor[0],
-					.9925 * color[newRow][newCol][1] + .0075 * newColor[1],
-					.9925 * color[newRow][newCol][2] + .0075 * newColor[2]
+					.9975 * color[newRow][newCol][0] + .0025 * newColor[0],
+					.9975 * color[newRow][newCol][1] + .0025 * newColor[1],
+					.9975 * color[newRow][newCol][2] + .0025 * newColor[2]
 				];
 
 				postMessage([
@@ -128,27 +128,18 @@ function drawBrownianTree()
 
 
 
-				if ((
-					spawnRadius * spawnRadius
-					- (currentRow - gridSize / 2) * (currentRow - gridSize / 2)
-					- (currentCol - gridSize / 2) * (currentCol - gridSize / 2)
-				) <= 5)
-				{
+				if (
+					(
+						spawnRadius * spawnRadius
+						- (currentRow - gridSize / 2) * (currentRow - gridSize / 2)
+						- (currentCol - gridSize / 2) * (currentCol - gridSize / 2)
+					) <= 5
+				) {
 					spawnRadius++;
 
 					currentBrightness = Math.floor(
 						255 * (gridSize / 2 - 10 - spawnRadius) / (gridSize / 2 - 10)
 					);
-
-					// We raise the progress to 2.71 to keep the speed effectively constant.
-					const progress = Math.pow((255 - currentBrightness) / 255, 2.71) * 100;
-
-					if (progress > progressThreshhold)
-					{
-						postMessage([0, progressThreshhold]);
-
-						progressThreshhold += 5;
-					}
 				}
 
 
@@ -160,15 +151,6 @@ function drawBrownianTree()
 			currentCol = newCol;
 		}
 	}
-
-
-
-	postMessage([0, 100]);
-
-	setTimeout(() =>
-	{
-		postMessage([1]);
-	}, 500);
 }
 
 
