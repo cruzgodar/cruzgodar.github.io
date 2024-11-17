@@ -102,7 +102,7 @@ export class ChaosGame extends AnimationFrameApplet
 	run({ resolution = 1000, numVertices = 5 })
 	{
 		this.resolution = resolution;
-		this.computeResolution = Math.round(resolution / 3);
+		this.computeResolution = Math.round(resolution / 2);
 
 		this.numVertices = numVertices;
 
@@ -292,7 +292,7 @@ export class ChaosGame extends AnimationFrameApplet
 		{
 			for (let j = 0; j < this.computeResolution; j++)
 			{
-				const index = this.resolution * i + j;
+				const index = this.computeResolution * i + j;
 				this.texture[4 * index] = floatsX[index];
 				this.texture[4 * index + 1] = floatsY[index];
 

@@ -245,7 +245,7 @@ export class KickedRotator extends AnimationFrameApplet
 		{
 			for (let j = 0; j < this.computeResolution; j++)
 			{
-				const index = this.resolution * i + j;
+				const index = this.computeResolution * i + j;
 				this.texture[4 * index] = floatsX[index];
 				this.texture[4 * index + 1] = floatsY[index];
 

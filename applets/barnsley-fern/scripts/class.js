@@ -109,7 +109,7 @@ export class BarnsleyFern extends AnimationFrameApplet
 	run({ resolution = 1000 })
 	{
 		this.resolution = resolution;
-		this.computeResolution = Math.round(resolution / 3);
+		this.computeResolution = Math.round(resolution / 4);
 
 		this.wilsonUpdate.changeCanvasSize(this.computeResolution, this.computeResolution);
 
@@ -237,7 +237,7 @@ export class BarnsleyFern extends AnimationFrameApplet
 		
 
 		this.frame = 0;
-		this.numIterations = 125;
+		this.numIterations = 150;
 		
 		this.resume();
 	}
@@ -274,7 +274,7 @@ export class BarnsleyFern extends AnimationFrameApplet
 		{
 			for (let j = 0; j < this.computeResolution; j++)
 			{
-				const index = this.resolution * i + j;
+				const index = this.computeResolution * i + j;
 				this.texture[4 * index] = floatsX[index];
 				this.texture[4 * index + 1] = floatsY[index];
 
