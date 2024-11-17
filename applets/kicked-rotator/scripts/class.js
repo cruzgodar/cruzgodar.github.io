@@ -1,29 +1,89 @@
-import { Applet } from "../../../scripts/applets/applet.js";
-import { convertColor } from "/scripts/src/browser.js";
-import { addTemporaryWorker } from "/scripts/src/main.js";
+import { getFloatGlsl, tempShader } from "../../../scripts/applets/applet.js";
+import { AnimationFrameApplet } from "/scripts/applets/animationFrameApplet.js";
+import { doubleEncodingGlsl, loadGlsl } from "/scripts/src/complexGlsl.js";
 import { Wilson } from "/scripts/wilson.js";
 
-export class KickedRotator extends Applet
+export class KickedRotator extends AnimationFrameApplet
 {
-	webWorker;
+	resolution = 1000;
+	computeResolution = 1000;
 
-	hues = [];
-	values = [];
-	numWrites = [];
+	wilsonUpdate;
+	loadPromise;
+	texture;
+
+	imageData;
+	maxBrightness = 1;
+	frame;
+	numIterations;
 
 
 
 	constructor({ canvas })
 	{
 		super(canvas);
+
+		const hiddenCanvas = this.createHiddenCanvas();
+
+		const optionsUpdate =
+		{
+			renderer: "gpu",
+
+			shader: tempShader,
+
+			canvasWidth: this.computeResolution,
+			canvasHeight: this.computeResolution,
+
+			worldCenterX: Math.PI,
+			worldCenterY: Math.PI,
+
+			worldWidth: 2 * Math.PI,
+			worldHeight: 2 * Math.PI,
+		};
+
+		this.wilsonUpdate = new Wilson(hiddenCanvas, optionsUpdate);
+
+
+
+		const fragShaderSource = /* glsl */`
+			precision highp float;
+			precision highp sampler2D;
+			
+			varying vec2 uv;
+			
+			uniform sampler2D uTexture;
+			uniform float maxBrightness;
+
+			vec3 hsv2rgb(vec3 c)
+			{
+				vec4 K = vec4(1.0, 2.0 / 3.0, 1.0 / 3.0, 3.0);
+				vec3 p = abs(fract(c.xxx + K.xyz) * 6.0 - K.www);
+				return c.z * mix(K.xxx, clamp(p - K.xxx, 0.0, 1.0), c.y);
+			}
+			
+			void main(void)
+			{
+				float state = pow(
+					texture2D(uTexture, (uv + vec2(1.0)) * 0.5).x / (maxBrightness * 2.25),
+					0.475
+				) * 2.25;
+				
+				gl_FragColor = vec4(hsv2rgb(vec3(
+					atan(uv.x, uv.y) / 6.283,
+					min(length(uv) * 1.5, 1.0),
+					state))
+				, 1.0);
+			}
+		`;
+
 		const options =
 		{
-			renderer: "cpu",
+			renderer: "gpu",
 
-			canvasWidth: 1000,
-			canvasHeight: 1000,
+			shader: fragShaderSource,
 
-
+			canvasWidth: this.resolution,
+			canvasHeight: this.resolution,
 
 			useFullscreen: true,
 
@@ -34,67 +94,210 @@ export class KickedRotator extends Applet
 		};
 
 		this.wilson = new Wilson(canvas, options);
+
+		this.wilson.render.initUniforms(["maxBrightness"]);
+		this.wilson.gl.uniform1f(this.wilson.uniforms.maxBrightness, 1);
+
+		this.loadPromise = loadGlsl();
 	}
 
 
 
-	run({
-		resolution,
-		K,
-		orbitSeparation
-	}) {
-		const values = new Array(resolution * resolution);
+	run({ resolution = 1000, k = 0.75 })
+	{
+		this.resolution = resolution;
+		this.computeResolution = resolution;
 
-		for (let i = 0; i < resolution; i++)
-		{
-			for (let j = 0; j < resolution; j++)
+		this.wilsonUpdate.changeCanvasSize(this.computeResolution, this.computeResolution);
+
+		this.wilsonUpdate.render.framebuffers = [];
+		this.wilsonUpdate.render.createFramebufferTexturePair();
+
+		this.wilsonUpdate.gl.bindFramebuffer(this.wilsonUpdate.gl.FRAMEBUFFER, null);
+		this.wilsonUpdate.gl.bindTexture(
+			this.wilsonUpdate.gl.TEXTURE_2D,
+			this.wilsonUpdate.render.framebuffers[0].texture
+		);
+
+		
+
+		this.wilson.changeCanvasSize(this.resolution, this.resolution);
+
+		this.wilson.render.framebuffers = [];
+		this.wilson.render.createFramebufferTexturePair();
+
+		this.wilson.gl.bindFramebuffer(this.wilson.gl.FRAMEBUFFER, null);
+		this.wilson.gl.bindTexture(
+			this.wilson.gl.TEXTURE_2D,
+			this.wilson.render.framebuffers[0].texture
+		);
+
+
+
+		const fragShaderSourceUpdateBase = /* glsl */`
+			precision highp float;
+			precision highp sampler2D;
+			
+			varying vec2 uv;
+			
+			uniform sampler2D uTexture;
+
+			const float pi = ${Math.PI};
+
+			${doubleEncodingGlsl}
+
+			float rand(vec2 co)
 			{
-				values[resolution * i + j] = 0;
+				return fract(sin(dot(co, vec2(12.9898, 78.233))) * 43758.5453);
+			}
+			
+			void main(void)
+			{
+				vec2 state = texture2D(uTexture, (uv + vec2(1.0)) * 0.5).xy;
+
+				float newY = state.y + ${getFloatGlsl(k)} * sin(state.x);
+
+				state = mod(
+					vec2(
+						state.x + newY,
+						newY
+					),
+					2.0 * pi
+				);
+			`;
+
+		const fragShaderSourceUpdateX = /* glsl */`
+				${fragShaderSourceUpdateBase}
+
+				gl_FragColor = encodeFloat(state.x);
+			}
+		`;
+
+		const fragShaderSourceUpdateY = /* glsl */`
+				${fragShaderSourceUpdateBase}
+
+				gl_FragColor = encodeFloat(state.y);
+			}
+		`;
+
+		this.texture = new Float32Array(this.computeResolution * this.computeResolution * 4);
+		this.imageData = new Float32Array(this.resolution * this.resolution * 4);
+
+		this.maxBrightness = 1;
+		this.wilson.gl.uniform1f(this.wilson.uniforms.maxBrightness, 1);
+
+		for (let i = 0; i < this.computeResolution; i++)
+		{
+			for (let j = 0; j < this.computeResolution; j++)
+			{
+				const index = this.computeResolution * i + j;
+				const worldCoordinates = this.wilsonUpdate.utils.interpolate.canvasToWorld(i, j);
+
+				this.texture[4 * index] = (worldCoordinates[0] - Math.PI) / 22 + Math.PI
+					+ (Math.random() - 0.5) * 0.2;
+
+				this.texture[4 * index + 1] = worldCoordinates[1];
+				this.texture[4 * index + 2] = 0;
+				this.texture[4 * index + 3] = 1;
 			}
 		}
 
+		this.wilsonUpdate.render.shaderPrograms = [];
 
+		this.wilsonUpdate.render.loadNewShader(fragShaderSourceUpdateX);
+		this.wilsonUpdate.render.loadNewShader(fragShaderSourceUpdateY);
 
-		this.wilson.changeCanvasSize(resolution, resolution);
+		this.frame = 0;
+		this.numIterations = 100;
+		
+		this.resume();
+	}
 
-		this.wilson.ctx.fillStyle = convertColor(0, 0, 0);
-		this.wilson.ctx.fillRect(0, 0, resolution, resolution);
+	prepareFrame()
+	{
+		this.frame++;
+		this.needNewFrame = this.frame < this.numIterations;
+	}
 
+	drawFrame()
+	{
+		this.wilsonUpdate.gl.texImage2D(
+			this.wilsonUpdate.gl.TEXTURE_2D,
+			0,
+			this.wilsonUpdate.gl.RGBA,
+			this.computeResolution,
+			this.computeResolution,
+			0,
+			this.wilsonUpdate.gl.RGBA,
+			this.wilsonUpdate.gl.FLOAT,
+			this.texture
+		);
 
+		this.wilsonUpdate.gl.useProgram(this.wilsonUpdate.render.shaderPrograms[0]);
+		this.wilsonUpdate.render.drawFrame();
+		const floatsX = new Float32Array(this.wilsonUpdate.render.getPixelData().buffer);
 
-		this.webWorker = addTemporaryWorker("/applets/kicked-rotator/scripts/worker.js");
+		this.wilsonUpdate.gl.useProgram(this.wilsonUpdate.render.shaderPrograms[1]);
+		this.wilsonUpdate.render.drawFrame();
+		const floatsY = new Float32Array(this.wilsonUpdate.render.getPixelData().buffer);
 
-
-
-		this.webWorker.onmessage = (e) =>
+		for (let i = 0; i < this.computeResolution; i++)
 		{
-			const valueDelta = e.data[0];
-			const hue = e.data[1];
-
-			for (let i = 0; i < resolution; i++)
+			for (let j = 0; j < this.computeResolution; j++)
 			{
-				for (let j = 0; j < resolution; j++)
-				{
-					if (valueDelta[resolution * i + j] > values[resolution * i + j])
-					{
-						const rgb = this.wilson.utils.hsvToRgb(
-							hue,
-							1,
-							valueDelta[resolution * i + j] / 255
-						);
+				const index = this.resolution * i + j;
+				this.texture[4 * index] = floatsX[index];
+				this.texture[4 * index + 1] = floatsY[index];
 
-						this.wilson.ctx.fillStyle = convertColor(...rgb);
+				const row = Math.round(
+					(
+						(floatsY[index] - this.wilsonUpdate.worldCenterY)
+							/ this.wilsonUpdate.worldHeight + .5
+					) * this.resolution);
 
-						this.wilson.ctx.fillRect(j, i, 1, 1);
+				const col = Math.round(
+					(
+						(floatsX[index] - this.wilsonUpdate.worldCenterX)
+							/ this.wilsonUpdate.worldWidth + .5
+					) * this.resolution
+				);
 
-						values[resolution * i + j] = valueDelta[resolution * i + j];
-					}
+				if (
+					row >= 0
+					&& row < this.resolution
+					&& col >= 0
+					&& col < this.resolution
+				) {
+					const newIndex = row * this.resolution + col;
+
+					this.imageData[4 * newIndex]++;
+					this.maxBrightness = Math.max(
+						this.maxBrightness,
+						this.imageData[4 * newIndex]
+					);
 				}
 			}
-		};
+		}
 
+		this.wilson.gl.texImage2D(
+			this.wilson.gl.TEXTURE_2D,
+			0,
+			this.wilson.gl.RGBA,
+			this.resolution,
+			this.resolution,
+			0,
+			this.wilson.gl.RGBA,
+			this.wilson.gl.FLOAT,
+			this.imageData
+		);
 
+		const maxBrightnessAdjust = Math.min(this.frame / 15, 1);
 
-		this.webWorker.postMessage([resolution, K, orbitSeparation]);
+		this.wilson.gl.uniform1f(
+			this.wilson.uniforms.maxBrightness,
+			this.maxBrightness / maxBrightnessAdjust
+		);
+
+		this.wilson.render.drawFrame();
 	}
 }

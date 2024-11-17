@@ -241,9 +241,6 @@ export class ChaosGame extends AnimationFrameApplet
 
 		this.wilsonUpdate.render.shaderPrograms = [];
 
-		console.log(fragShaderSourceUpdateX);
-		console.log(fragShaderSourceUpdateY);
-
 		this.wilsonUpdate.render.loadNewShader(fragShaderSourceUpdateX);
 		this.wilsonUpdate.render.loadNewShader(fragShaderSourceUpdateY);
 

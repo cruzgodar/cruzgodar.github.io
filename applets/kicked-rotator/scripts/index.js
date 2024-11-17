@@ -2,7 +2,6 @@ import { showPage } from "../../../scripts/src/loadPage.js";
 import { KickedRotator } from "./class.js";
 import { DownloadButton, GenerateButton } from "/scripts/src/buttons.js";
 import { $ } from "/scripts/src/main.js";
-import { siteSettings } from "/scripts/src/settings.js";
 import { TextBox } from "/scripts/src/textBoxes.js";
 
 export default function()
@@ -32,9 +31,9 @@ export default function()
 	const kInput = new TextBox({
 		element: $("#k-input"),
 		name: "K",
-		value: 0.75,
+		value: 1,
 		minValue: 0,
-		maxValue: 2,
+		maxValue: 4,
 		onEnter: run
 	});
 
@@ -43,9 +42,8 @@ export default function()
 	function run()
 	{
 		applet.run({
-			resolution: resolutionInput.value * siteSettings.resolutionMultiplier,
-			K: kInput.value,
-			orbitSeparation: 0
+			resolution: resolutionInput.value,
+			k: kInput.value,
 		});
 	}
 }
