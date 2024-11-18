@@ -39,6 +39,7 @@ export function convertCardToLatex(element, title, course)
 	const tex = preamble
 		+ `${title} | ${course} | Cruz Godar \\vspace{4pt} \\normalsize\n\n`
 		+ clonedElement.innerHTML
+			.replaceAll(/<!--.*?-->/g, "")
 			.replaceAll(/<p.*?>(.+?)<\/p>/g, (match, $1) => `${$1}\n\n`)
 			.replaceAll(
 				/<span[^>]*?inline-math[^>]*?data-source-tex="(.*?)"[^>]*?>(.*?)<\/span>/g,
