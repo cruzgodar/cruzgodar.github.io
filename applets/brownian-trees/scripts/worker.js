@@ -12,8 +12,6 @@ let color = [];
 
 let currentBrightness = 255;
 
-let progressThreshhold = 5;
-
 let currentRow;
 let currentCol;
 

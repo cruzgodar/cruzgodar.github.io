@@ -52,8 +52,7 @@ export class FiniteSubdivision extends Applet
 		numVertices,
 		numIterations,
 	}) {
-		try {this.webWorker.terminate();}
-		catch(ex) {/* No web worker */}
+		this.webWorker?.terminate && this.webWorker.terminate();
 
 		if (this.numVertices !== numVertices)
 		{
@@ -117,8 +116,7 @@ export class FiniteSubdivision extends Applet
 
 	onDragDraggable(activeDraggable, x, y)
 	{
-		try {this.webWorker.terminate();}
-		catch(ex) {/* No web worker */}
+		this.webWorker?.terminate && this.webWorker.terminate();
 
 		this.polygons[0][activeDraggable] = this.wilson.utils.interpolate.worldToCanvas(x, y);
 

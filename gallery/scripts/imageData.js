@@ -61,19 +61,6 @@ export const galleryImageData =
 		driveId: "14ADChQ4KHV426ySW_CIVvTAXe2irMKU0"
 	},
 
-	"complex-map":
-	{
-		title: "A Complex Map",
-
-		parameters: /* html */`
-			Generated from $e^{1/z}$
-		`,
-
-		appletLink: "/applets/complex-maps/",
-
-		driveId: "1rcF2qy4gGCJ3lg3X8jQW0Z0_OcFYKv8Q"
-	},
-
 	"double-pendulum-fractal":
 	{
 		title: "A Double Pendulum Fractal",
