@@ -9,7 +9,7 @@ import { siteSettings } from "/scripts/src/settings.js";
 import { Slider } from "/scripts/src/sliders.js";
 import { TextBox } from "/scripts/src/textBoxes.js";
 
-const minScale = 1.15;
+const minScale = 1.125;
 const minScaleEpsilon = .00006;
 const maxScaleEpsilon = .0000003;
 
