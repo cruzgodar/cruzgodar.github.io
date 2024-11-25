@@ -149,7 +149,7 @@ $$
 	
 	&= 4[[ 1 ; 1 ]]
 	
-	**A** [[ -2 ; 3 ]] &= [ 2, 2 ; 3, 1 ]] [[ -2 ; 3 ]]
+	**A** [[ -2 ; 3 ]] &= [[ 2, 2 ; 3, 1 ]] [[ -2 ; 3 ]]
 	
 	&= [[ 2 ; -3 ]]
 	
@@ -162,7 +162,7 @@ Although it might not seem like a pivotal topic at first, vectors like these pla
 
 ### def "eigenvalues and eigenvectors"
 	
-	Let $**A**$ be a square matrix. An **eigenvector of $**A**$** is a vector $**v**$ with $**Av** = \lambda**v**$ for some nonzero value $\lambda$, called the **eigenvalue** corresponding to $**v**$.
+	Let $**A**$ be a square matrix. An **eigenvector of $**A**$** is a nonzero vector $**v**$ with $**Av** = \lambda**v**$ for some value $\lambda$, called the **eigenvalue** corresponding to $**v**$.
 	
 ###
 
