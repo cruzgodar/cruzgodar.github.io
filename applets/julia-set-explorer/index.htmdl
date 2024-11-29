@@ -22,10 +22,6 @@ again. The function will flip-flop between those two numbers forever, and what's
 	resolution
 ###
 
-### checkboxes
-	double-precision
-###
-
 ### buttons
 	switch-julia-mode
 ###

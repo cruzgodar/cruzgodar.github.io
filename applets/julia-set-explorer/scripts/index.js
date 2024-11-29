@@ -1,7 +1,6 @@
 import { showPage } from "../../../scripts/src/loadPage.js";
 import { JuliaSet } from "./class.js";
 import { Button, ToggleButton } from "/scripts/src/buttons.js";
-import { Checkbox } from "/scripts/src/checkboxes.js";
 import { $ } from "/scripts/src/main.js";
 import { siteSettings } from "/scripts/src/settings.js";
 import { TextBox } from "/scripts/src/textBoxes.js";
@@ -49,12 +48,6 @@ export default function()
 		minValue: 100,
 		maxValue: 2000,
 		onInput: changeResolution
-	});
-
-	new Checkbox({
-		element: $("#double-precision-checkbox"),
-		name: "Allow double precision",
-		onInput: () => applet.toggleUseDoublePrecision()
 	});
 
 	showPage();

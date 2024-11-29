@@ -1,5 +1,4 @@
-import { doubleToDf } from "../../../scripts/applets/applet.js";
-import { doubleEmulationGlsl, loadGlsl } from "../../../scripts/src/complexGlsl.js";
+import { loadGlsl } from "../../../scripts/src/complexGlsl.js";
 import { AnimationFrameApplet } from "/scripts/applets/animationFrameApplet.js";
 import { addTemporaryListener } from "/scripts/src/main.js";
 import { Wilson } from "/scripts/wilson.js";
@@ -14,14 +13,7 @@ export class JuliaSet extends AnimationFrameApplet
 
 	numIterations = 100;
 
-	useDoublePrecision = false;
-	doublePrecision = false;
-
 	switchJuliaModeButton;
-
-	// Experimentally, the level at which a 2k x 2k
-	// canvas can see the grain of single precision rendering.
-	doublePrecisionZoomThreshhold = -16;
 
 	pastBrightnessScales = [];
 
@@ -53,8 +45,8 @@ export class JuliaSet extends AnimationFrameApplet
 			
 			uniform float aspectRatio;
 			
-			uniform vec2 worldCenterX;
-			uniform vec2 worldCenterY;
+			uniform float worldCenterX;
+			uniform float worldCenterY;
 			uniform float worldSize;
 			
 			uniform float a;
@@ -70,12 +62,12 @@ export class JuliaSet extends AnimationFrameApplet
 				
 				if (aspectRatio >= 1.0)
 				{
-					z = vec2(uv.x * aspectRatio * worldSize + worldCenterX.x, uv.y * worldSize + worldCenterY.x);
+					z = vec2(uv.x * aspectRatio * worldSize + worldCenterX, uv.y * worldSize + worldCenterY);
 				}
 				
 				else
 				{
-					z = vec2(uv.x * worldSize + worldCenterX.x, uv.y / aspectRatio * worldSize + worldCenterY.x);
+					z = vec2(uv.x * worldSize + worldCenterX, uv.y / aspectRatio * worldSize + worldCenterY);
 				}
 				
 				vec2 c = z;
@@ -118,8 +110,8 @@ export class JuliaSet extends AnimationFrameApplet
 			
 			uniform float aspectRatio;
 			
-			uniform vec2 worldCenterX;
-			uniform vec2 worldCenterY;
+			uniform float worldCenterX;
+			uniform float worldCenterY;
 			uniform float worldSize;
 			
 			uniform float a;
@@ -135,12 +127,12 @@ export class JuliaSet extends AnimationFrameApplet
 				
 				if (aspectRatio >= 1.0)
 				{
-					z = vec2(uv.x * aspectRatio * worldSize + worldCenterX.x, uv.y * worldSize + worldCenterY.x);
+					z = vec2(uv.x * aspectRatio * worldSize + worldCenterX, uv.y * worldSize + worldCenterY);
 				}
 				
 				else
 				{
-					z = vec2(uv.x * worldSize + worldCenterX.x, uv.y / aspectRatio * worldSize + worldCenterY.x);
+					z = vec2(uv.x * worldSize + worldCenterX, uv.y / aspectRatio * worldSize + worldCenterY);
 				}
 				
 				vec2 c = vec2(a, b);
@@ -183,8 +175,8 @@ export class JuliaSet extends AnimationFrameApplet
 			
 			uniform float aspectRatio;
 			
-			uniform vec2 worldCenterX;
-			uniform vec2 worldCenterY;
+			uniform float worldCenterX;
+			uniform float worldCenterY;
 			uniform float worldSize;
 			
 			uniform float a;
@@ -200,12 +192,12 @@ export class JuliaSet extends AnimationFrameApplet
 				
 				if (aspectRatio >= 1.0)
 				{
-					z = vec2(uv.x * aspectRatio * worldSize + worldCenterX.x, uv.y * worldSize + worldCenterY.x);
+					z = vec2(uv.x * aspectRatio * worldSize + worldCenterX, uv.y * worldSize + worldCenterY);
 				}
 				
 				else
 				{
-					z = vec2(uv.x * worldSize + worldCenterX.x, uv.y / aspectRatio * worldSize + worldCenterY.x);
+					z = vec2(uv.x * worldSize + worldCenterX, uv.y / aspectRatio * worldSize + worldCenterY);
 				}
 				
 				vec2 c = z;
@@ -288,257 +280,6 @@ export class JuliaSet extends AnimationFrameApplet
 
 
 
-		const fragShaderSourceDouble0 = /* glsl */`
-			precision highp float;
-			
-			varying vec2 uv;
-			
-			uniform float aspectRatio;
-			
-			uniform vec2 worldCenterX;
-			uniform vec2 worldCenterY;
-			uniform float worldSize;
-			
-			uniform float a;
-			uniform float b;
-			uniform int numIterations;
-			uniform float brightnessScale;
-			
-			
-			
-			${doubleEmulationGlsl}
-			
-			
-			
-			void main(void)
-			{
-				vec4 z;
-				
-				if (aspectRatio >= 1.0)
-				{
-					z = dcAdd(dcMul(vec4(uv.x * aspectRatio, 0.0, uv.y, 0.0), vec2(worldSize, 0.0)), vec4(worldCenterX, worldCenterY));
-				}
-				
-				else
-				{
-					z = dcAdd(dcMul(vec4(uv.x, 0.0, uv.y / aspectRatio, 0.0), vec2(worldSize, 0.0)), vec4(worldCenterX, worldCenterY));
-				}
-				
-				vec4 c = z;
-				
-				vec3 color = normalize(vec3(abs(z.x + z.z) / 2.0, abs(z.x) / 2.0, abs(z.z) / 2.0) + .1 / length(z) * vec3(1.0, 1.0, 1.0));
-				
-				float brightness = exp(-length(z));
-				
-				for (int iteration = 0; iteration < 3001; iteration++)
-				{
-					if (iteration == numIterations)
-					{
-						gl_FragColor = vec4(0.0, 0.0, 0.0, 1.0);
-						return;
-					}
-					
-					if (length(z) >= 4.0)
-					{
-						break;
-					}
-					
-					z = dcAdd(dcMul(z, z), c);
-					
-					brightness += exp(-length(z));
-				}
-				
-				gl_FragColor = vec4(brightness / brightnessScale * color, 1.0);
-			}
-		`;
-
-
-
-		const fragShaderSourceDouble1 = /* glsl */`
-			precision highp float;
-			
-			varying vec2 uv;
-			
-			uniform float aspectRatio;
-			
-			uniform vec2 worldCenterX;
-			uniform vec2 worldCenterY;
-			uniform float worldSize;
-			
-			uniform float a;
-			uniform float b;
-			uniform int numIterations;
-			uniform float brightnessScale;
-			
-			
-			
-			${doubleEmulationGlsl}
-			
-			
-			
-			void main(void)
-			{
-				vec4 z;
-				
-				if (aspectRatio >= 1.0)
-				{
-					z = dcAdd(dcMul(vec4(uv.x * aspectRatio, 0.0, uv.y, 0.0), vec2(worldSize, 0.0)), vec4(worldCenterX, worldCenterY));
-				}
-				
-				else
-				{
-					z = dcAdd(dcMul(vec4(uv.x, 0.0, uv.y / aspectRatio, 0.0), vec2(worldSize, 0.0)), vec4(worldCenterX, worldCenterY));
-				}
-				
-				vec4 c = vec4(a, 0.0, b, 0.0);
-				
-				vec3 color = normalize(vec3(abs(z.x + z.z) / 2.0, abs(z.x) / 2.0, abs(z.z) / 2.0) + .1 / length(z) * vec3(1.0, 1.0, 1.0));
-				
-				float brightness = exp(-length(z));
-				
-				
-				
-				for (int iteration = 0; iteration < 3001; iteration++)
-				{
-					if (iteration == numIterations)
-					{
-						gl_FragColor = vec4(0.0, 0.0, 0.0, 1.0);
-						return;
-					}
-					
-					if (length(z) >= 4.0)
-					{
-						break;
-					}
-					
-					z = dcAdd(dcMul(z, z), c);
-					
-					brightness += exp(-length(z));
-				}
-				
-				
-				gl_FragColor = vec4(brightness / brightnessScale * color, 1.0);
-			}
-		`;
-
-
-
-		const fragShaderSourceDouble2 = /* glsl */`
-			precision highp float;
-			
-			varying vec2 uv;
-			
-			uniform float aspectRatio;
-			
-			uniform vec2 worldCenterX;
-			uniform vec2 worldCenterY;
-			uniform float worldSize;
-			
-			uniform float a;
-			uniform float b;
-			uniform int numIterations;
-			uniform float brightnessScale;
-			
-			
-			
-			${doubleEmulationGlsl}
-			
-			
-			
-			void main(void)
-			{
-				vec4 z;
-				
-				if (aspectRatio >= 1.0)
-				{
-					z = dcAdd(dcMul(vec4(uv.x * aspectRatio, 0.0, uv.y, 0.0), vec2(worldSize, 0.0)), vec4(worldCenterX, worldCenterY));
-				}
-				
-				else
-				{
-					z = dcAdd(dcMul(vec4(uv.x, 0.0, uv.y / aspectRatio, 0.0), vec2(worldSize, 0.0)), vec4(worldCenterX, worldCenterY));
-				}
-				
-				vec4 c = z;
-				
-				vec3 color = normalize(vec3(abs(z.x + z.z) / 2.0, abs(z.x) / 2.0, abs(z.z) / 2.0) + .1 / length(z) * vec3(1.0, 1.0, 1.0));
-				
-				float brightness = exp(-length(z));
-				
-				
-				
-				bool broken = false;
-				
-				for (int iteration = 0; iteration < 3001; iteration++)
-				{
-					if (iteration == numIterations)
-					{
-						gl_FragColor = vec4(0.0, 0.0, 0.0, 1.0);
-						
-						broken = true;
-						
-						break;
-					}
-					
-					if (length(z) >= 4.0)
-					{
-						break;
-					}
-					
-					z = dcAdd(dcMul(z, z), c);
-					
-					brightness += exp(-length(z));
-				}
-				
-				
-				
-				if (!broken)
-				{
-					gl_FragColor = vec4(.5 * brightness / brightnessScale * color, 1.0);
-				}
-				
-				
-				
-				z = c;
-				
-				c = vec4(a, 0.0, b, 0.0);
-				
-				color = normalize(vec3(abs(z.x + z.z) / 2.0, abs(z.x) / 2.0, abs(z.z) / 2.0) + .1 / length(z) * vec3(1.0, 1.0, 1.0));
-				
-				brightness = exp(-length(z));
-				
-				broken = false;
-				
-				for (int iteration = 0; iteration < 3001; iteration++)
-				{
-					if (iteration == numIterations)
-					{
-						gl_FragColor.xyz /= 4.0;
-						
-						broken = true;
-						
-						break;
-					}
-					
-					if (length(z) >= 4.0)
-					{
-						break;
-					}
-					
-					z = dcAdd(dcMul(z, z), c);
-					
-					brightness += exp(-length(z));
-				}
-				
-				if (!broken)
-				{
-					gl_FragColor += vec4(brightness / brightnessScale * color, 0.0);
-				}
-			}
-		`;
-
-
-
 		const options =
 		{
 			renderer: "gpu",
@@ -598,11 +339,8 @@ export class JuliaSet extends AnimationFrameApplet
 
 		this.wilson.render.loadNewShader(fragShaderSourceSingle1);
 		this.wilson.render.loadNewShader(fragShaderSourceSingle2);
-		this.wilson.render.loadNewShader(fragShaderSourceDouble0);
-		this.wilson.render.loadNewShader(fragShaderSourceDouble1);
-		this.wilson.render.loadNewShader(fragShaderSourceDouble2);
 
-		for (let i = 0; i < 6; i++)
+		for (let i = 0; i < 3; i++)
 		{
 			this.wilson.render.initUniforms([
 				"aspectRatio",
@@ -624,11 +362,8 @@ export class JuliaSet extends AnimationFrameApplet
 
 		this.wilsonHidden.render.loadNewShader(fragShaderSourceSingle1);
 		this.wilsonHidden.render.loadNewShader(fragShaderSourceSingle2);
-		this.wilsonHidden.render.loadNewShader(fragShaderSourceDouble0);
-		this.wilsonHidden.render.loadNewShader(fragShaderSourceDouble1);
-		this.wilsonHidden.render.loadNewShader(fragShaderSourceDouble2);
 
-		for (let i = 0; i < 6; i++)
+		for (let i = 0; i < 3; i++)
 		{
 			this.wilsonHidden.render.initUniforms([
 				"aspectRatio",
@@ -660,34 +395,6 @@ export class JuliaSet extends AnimationFrameApplet
 			event: "resize",
 			callback: boundFunction
 		});
-	}
-
-
-
-	toggleUseDoublePrecision()
-	{
-		this.useDoublePrecision = !this.useDoublePrecision;
-
-		this.zoomCanvas();
-
-		this.needNewFrame = true;
-	}
-
-
-
-	toggleDoublePrecision()
-	{
-		this.doublePrecision = !this.doublePrecision;
-
-		if (this.doublePrecision)
-		{
-			this.wilson.canvas.style.borderColor = "rgb(127, 0, 0)";
-		}
-
-		else
-		{
-			this.wilson.canvas.style.borderColor = "rgb(127, 127, 127)";
-		}
 	}
 
 
@@ -873,76 +580,51 @@ export class JuliaSet extends AnimationFrameApplet
 
 	drawFrame()
 	{
-		if (
-			(
-				!this.doublePrecision
-				&& this.zoom.level < this.doublePrecisionZoomThreshhold
-				&& this.useDoublePrecision
-			) || (
-				this.doublePrecision
-				&& (
-					this.zoom.level > this.doublePrecisionZoomThreshhold
-					|| !this.useDoublePrecision
-				)
-			)
-		) {
-			this.toggleDoublePrecision();
-		}
-
-
-
-		const cx = doubleToDf(this.wilson.worldCenterX);
-		const cy = doubleToDf(this.wilson.worldCenterY);
-
-		const shaderProgramIndex = this.juliaMode + 3 * this.doublePrecision;
-
-
-
 		this.numIterations = (-this.zoom.level * 30) + 200;
 
 
 
 		this.wilsonHidden.gl.useProgram(
-			this.wilsonHidden.render.shaderPrograms[shaderProgramIndex]
+			this.wilsonHidden.render.shaderPrograms[this.juliaMode]
 		);
 
 		this.wilsonHidden.gl.uniform1f(
-			this.wilsonHidden.uniforms.aspectRatio[shaderProgramIndex],
+			this.wilsonHidden.uniforms.aspectRatio[this.juliaMode],
 			1
 		);
 
-		this.wilsonHidden.gl.uniform2fv(
-			this.wilsonHidden.uniforms.worldCenterX[shaderProgramIndex],
-			cx
-		);
-
-		this.wilsonHidden.gl.uniform2fv(
-			this.wilsonHidden.uniforms.worldCenterY[shaderProgramIndex],
-			cy
+		this.wilsonHidden.gl.uniform1f(
+			this.wilsonHidden.uniforms.worldCenterX[this.juliaMode],
+			this.wilson.worldCenterX
 		);
 
 		this.wilsonHidden.gl.uniform1f(
-			this.wilsonHidden.uniforms.worldSize[shaderProgramIndex],
+			this.wilsonHidden.uniforms.worldCenterY[this.juliaMode],
+			this.wilson.worldCenterY
+		);
+
+		this.wilsonHidden.gl.uniform1f(
+			this.wilsonHidden.uniforms.worldSize[this.juliaMode],
 			Math.min(this.wilson.worldHeight, this.wilson.worldWidth) / 2
 		);
 
 		this.wilsonHidden.gl.uniform1i(
-			this.wilsonHidden.uniforms.numIterations[shaderProgramIndex],
+			this.wilsonHidden.uniforms.numIterations[this.juliaMode],
 			this.numIterations
 		);
 
 		this.wilsonHidden.gl.uniform1f(
-			this.wilsonHidden.uniforms.a[shaderProgramIndex],
+			this.wilsonHidden.uniforms.a[this.juliaMode],
 			this.a
 		);
 
 		this.wilsonHidden.gl.uniform1f(
-			this.wilsonHidden.uniforms.b[shaderProgramIndex],
+			this.wilsonHidden.uniforms.b[this.juliaMode],
 			this.b
 		);
 
 		this.wilsonHidden.gl.uniform1f(
-			this.wilsonHidden.uniforms.brightnessScale[shaderProgramIndex],
+			this.wilsonHidden.uniforms.brightnessScale[this.juliaMode],
 			20 * (Math.abs(this.zoom.level) + 1)
 		);
 
@@ -980,46 +662,46 @@ export class JuliaSet extends AnimationFrameApplet
 
 
 		this.wilson.gl.useProgram(
-			this.wilson.render.shaderPrograms[shaderProgramIndex]
+			this.wilson.render.shaderPrograms[this.juliaMode]
 		);
 
 		this.wilson.gl.uniform1f(
-			this.wilson.uniforms.aspectRatio[shaderProgramIndex],
+			this.wilson.uniforms.aspectRatio[this.juliaMode],
 			this.aspectRatio
 		);
 
-		this.wilson.gl.uniform2fv(
-			this.wilson.uniforms.worldCenterX[shaderProgramIndex],
-			cx
-		);
-
-		this.wilson.gl.uniform2fv(
-			this.wilson.uniforms.worldCenterY[shaderProgramIndex],
-			cy
+		this.wilson.gl.uniform1f(
+			this.wilson.uniforms.worldCenterX[this.juliaMode],
+			this.wilson.worldCenterX
 		);
 
 		this.wilson.gl.uniform1f(
-			this.wilson.uniforms.worldSize[shaderProgramIndex],
+			this.wilson.uniforms.worldCenterY[this.juliaMode],
+			this.wilson.worldCenterY
+		);
+
+		this.wilson.gl.uniform1f(
+			this.wilson.uniforms.worldSize[this.juliaMode],
 			Math.min(this.wilson.worldHeight, this.wilson.worldWidth) / 2
 		);
 
 		this.wilson.gl.uniform1i(
-			this.wilson.uniforms.numIterations[shaderProgramIndex],
+			this.wilson.uniforms.numIterations[this.juliaMode],
 			this.numIterations
 		);
 
 		this.wilson.gl.uniform1f(
-			this.wilson.uniforms.a[shaderProgramIndex],
+			this.wilson.uniforms.a[this.juliaMode],
 			this.a
 		);
 
 		this.wilson.gl.uniform1f(
-			this.wilson.uniforms.b[shaderProgramIndex],
+			this.wilson.uniforms.b[this.juliaMode],
 			this.b
 		);
 		
 		this.wilson.gl.uniform1f(
-			this.wilson.uniforms.brightnessScale[shaderProgramIndex],
+			this.wilson.uniforms.brightnessScale[this.juliaMode],
 			brightnessScale
 		);
 
