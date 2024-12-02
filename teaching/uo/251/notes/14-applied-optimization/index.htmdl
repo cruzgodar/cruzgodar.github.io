@@ -36,7 +36,7 @@ In a real-world senario, you won't usually be given the function to optimize out
 
 
 
-This pattern of optimizing with respect to a constaint applies to all sorts of problems, even ones that on first glance aren't related to calculus at all.
+This pattern of optimizing with respect to a constant applies to all sorts of problems, even ones that on first glance aren't related to calculus at all.
 
 
 
