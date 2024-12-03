@@ -1,4 +1,5 @@
 import anime from "../anime.js";
+import { doubleEncodingGlsl, loadGlsl } from "../src/complexGlsl.js";
 import { addTemporaryListener } from "../src/main.js";
 import { Wilson } from "../wilson.js";
 import { AnimationFrameApplet } from "./animationFrameApplet.js";
@@ -431,6 +432,7 @@ export class RaymarchApplet extends AnimationFrameApplet
 		getGeodesicGlsl = this.getGeodesicGlsl,
 		addGlsl = this.addGlsl,
 		antialiasing = false,
+		useForDepthBuffer = false,
 	}) {
 		this.distanceEstimatorGlsl = distanceEstimatorGlsl;
 		this.getColorGlsl = getColorGlsl;
@@ -599,13 +601,214 @@ export class RaymarchApplet extends AnimationFrameApplet
 			}
 		` : "";
 
+		const computeShadingGlsl = useForDepthBuffer
+			? /* glsl */`
+				vec3 computeShading(
+					vec3 pos,
+					float epsilon,
+					float correctionDistance,
+					int iteration
+				) {
+					gl_FragColor = encodeFloat(length(pos - cameraPos));
+					return vec3(0.0);
+				}
+			`
+			: /* glsl */`
+				vec3 computeShading(
+					vec3 pos,
+					float epsilon,
+					float correctionDistance,
+					int iteration
+				) {
+					vec3 surfaceNormal = getSurfaceNormal(pos, epsilon);
+
+					// This corrects the position so that it's exactly on the surface (we probably marched a little bit inside).
+					pos -= surfaceNormal * correctionDistance;
+					
+					vec3 lightDirection = normalize(lightPos - pos);
+					
+					float dotProduct = dot(surfaceNormal, lightDirection);
+					
+					float lightIntensity = max(
+						${this.useOppositeLight ? `lightBrightness * max(dotProduct, -${getFloatGlsl(this.oppositeLightBrightness)} * dotProduct)` : "lightBrightness * dotProduct"},
+						${getFloatGlsl(this.ambientLight)}
+					);
+
+					vec3 color = getColor(pos)
+						* lightIntensity
+						* max((1.0 - float(iteration) / float(maxMarches)), 0.0);
+
+					${this.useShadows ? /* glsl */`
+						float shadowIntensity = computeShadowIntensity(pos, lightDirection);
+
+						color *= shadowIntensity;
+					` : ""}
+
+					${this.useReflections ? /* glsl */`
+						vec3 reflectedDirection = reflect(
+							normalize(pos - cameraPos) * ${getFloatGlsl(this.stepFactor)},
+							surfaceNormal
+						);
+
+						color = mix(
+							color,
+							computeReflection(pos, reflectedDirection, iteration),
+							getReflectivity(pos)
+						);
+					` : ""}
+					
+					//Apply fog.
+					return mix(color, fogColor, 1.0 - exp(-distance(pos, cameraPos) * fogScaling));
+				}
+			`;
+
 		const uniformsGlsl = Object.entries(this.uniforms).map(([key, value]) =>
 		{
 			return /* glsl */`uniform ${value[0]} ${key};`;
 		}).join("\n");
 
+
+
+		const raymarchGlsl = (() =>
+		{
+			if (useForDepthBuffer)
+			{
+				return /* glsl */`
+					vec3 raymarch(vec3 startPos)
+					{
+						vec3 rayDirectionVec = normalize(startPos - cameraPos) * ${getFloatGlsl(this.stepFactor)};
+						
+						float t = 0.0;
+						
+						for (int iteration = 0; iteration < maxMarches; iteration++)
+						{
+							vec3 pos = ${getGeodesicGlsl("cameraPos", "rayDirectionVec")};
+							
+							float distanceToScene = distanceEstimator(pos);
+
+							float epsilon = max(t / (float(imageSize) * epsilonScaling), minEpsilon);
+							
+							if (distanceToScene < epsilon)
+							{
+								return computeShading(
+									pos,
+									epsilon,
+									distanceToScene - 2.0 * epsilon,
+									iteration
+								);
+							}
+							
+							else if (t > clipDistance)
+							{
+								gl_FragColor = encodeFloat(clipDistance);
+								return vec3(0.0);
+							}
+							
+							t += distanceToScene;
+						}
+						
+						gl_FragColor = encodeFloat(clipDistance);
+						return vec3(0.0);
+					}
+				`;
+			}
+
+			if (this.useBloom)
+			{
+				return /* glsl */`
+					vec3 raymarch(vec3 startPos)
+					{
+						vec3 rayDirectionVec = normalize(startPos - cameraPos) * ${getFloatGlsl(this.stepFactor)};
+						
+						float t = 0.0;
+						
+						for (int iteration = 0; iteration < maxMarches; iteration++)
+						{
+							vec3 pos = ${getGeodesicGlsl("cameraPos", "rayDirectionVec")};
+							
+							float distanceToScene = distanceEstimator(pos);
+
+							float epsilon = max(t / (float(imageSize) * epsilonScaling), minEpsilon);
+							
+							if (distanceToScene < epsilon)
+							{
+								return computeShading(
+									pos,
+									epsilon,
+									distanceToScene - 2.0 * epsilon,
+									iteration
+								);
+							}
+							
+							else if (t > clipDistance)
+							{
+								return mix(fogColor, vec3(1.0), computeBloom(rayDirectionVec));
+							}
+							
+							t += distanceToScene;
+						}
+						
+						return mix(fogColor, vec3(1.0), computeBloom(rayDirectionVec));
+					}
+				`;
+			}
+
+			return /* glsl */`
+				vec3 raymarch(vec3 startPos)
+				{
+					vec3 rayDirectionVec = normalize(startPos - cameraPos) * ${getFloatGlsl(this.stepFactor)};
+					
+					float t = 0.0;
+					
+					for (int iteration = 0; iteration < maxMarches; iteration++)
+					{
+						vec3 pos = ${getGeodesicGlsl("cameraPos", "rayDirectionVec")};
+						
+						float distanceToScene = distanceEstimator(pos);
+
+						float epsilon = max(t / (float(imageSize) * epsilonScaling), minEpsilon);
+						
+						if (distanceToScene < epsilon)
+						{
+							return computeShading(
+								pos,
+								epsilon,
+								distanceToScene - 2.0 * epsilon,
+								iteration
+							);
+						}
+						
+						else if (t > clipDistance)
+						{
+							return fogColor;
+						}
+						
+						t += distanceToScene;
+					}
+					
+					return fogColor;
+				}
+			`;
+		})();
+
+
+
 		const mainFunctionGlsl = (() =>
 		{
+			if (useForDepthBuffer)
+			{
+				return /* glsl */`${""}
+					void main(void)
+					{
+						raymarch(
+							imagePlaneCenterPos
+								+ rightVec * (uvScale * uv.x + uvCenter.x) * aspectRatioX
+								+ upVec * (uvScale * uv.y + uvCenter.y) / aspectRatioY
+						);
+					}
+				`;
+			}
+
 			if (this.useFor3DPrinting)
 			{
 				return /* glsl */`${""}
@@ -695,6 +898,8 @@ export class RaymarchApplet extends AnimationFrameApplet
 			const float fogScaling = ${getFloatGlsl(this.fogScaling)};
 			const float maxShadowAmount = 0.5;
 
+			${useForDepthBuffer ? doubleEncodingGlsl : ""}
+
 			${addGlsl}
 			
 			
@@ -735,91 +940,9 @@ export class RaymarchApplet extends AnimationFrameApplet
 
 			${computeReflectionGlsl}
 			
-			vec3 computeShading(
-				vec3 pos,
-				float epsilon,
-				float correctionDistance,
-				int iteration
-			) {
-				vec3 surfaceNormal = getSurfaceNormal(pos, epsilon);
+			${computeShadingGlsl}
 
-				// This corrects the position so that it's exactly on the surface (we probably marched a little bit inside).
-				pos -= surfaceNormal * correctionDistance;
-				
-				vec3 lightDirection = normalize(lightPos - pos);
-				
-				float dotProduct = dot(surfaceNormal, lightDirection);
-				
-				float lightIntensity = max(
-					${this.useOppositeLight ? `lightBrightness * max(dotProduct, -${getFloatGlsl(this.oppositeLightBrightness)} * dotProduct)` : "lightBrightness * dotProduct"},
-					${getFloatGlsl(this.ambientLight)}
-				);
-
-				vec3 color = getColor(pos)
-					* lightIntensity
-					* max((1.0 - float(iteration) / float(maxMarches)), 0.0);
-
-				${this.useShadows ? /* glsl */`
-					float shadowIntensity = computeShadowIntensity(pos, lightDirection);
-
-					color *= shadowIntensity;
-				` : ""}
-
-				${this.useReflections ? /* glsl */`
-					vec3 reflectedDirection = reflect(
-						normalize(pos - cameraPos) * ${getFloatGlsl(this.stepFactor)},
-						surfaceNormal
-					);
-
-					color = mix(
-						color,
-						computeReflection(pos, reflectedDirection, iteration),
-						getReflectivity(pos)
-					);
-				` : ""}
-				
-				//Apply fog.
-				return mix(color, fogColor, 1.0 - exp(-distance(pos, cameraPos) * fogScaling));
-			}
-
-
-			
-			vec3 raymarch(vec3 startPos)
-			{
-				vec3 rayDirectionVec = normalize(startPos - cameraPos) * ${getFloatGlsl(this.stepFactor)};
-				
-				float t = 0.0;
-				
-				for (int iteration = 0; iteration < maxMarches; iteration++)
-				{
-					vec3 pos = ${getGeodesicGlsl("cameraPos", "rayDirectionVec")};
-					
-					float distanceToScene = distanceEstimator(pos);
-
-					float epsilon = max(t / (float(imageSize) * epsilonScaling), minEpsilon);
-					
-					if (distanceToScene < epsilon)
-					{
-						return computeShading(
-							pos,
-							epsilon,
-							distanceToScene - 2.0 * epsilon,
-							iteration
-						);
-					}
-					
-					else if (t > clipDistance)
-					{
-						return ${this.useBloom ? "mix(fogColor, vec3(1.0), computeBloom(rayDirectionVec))" : "fogColor"};
-					}
-					
-					t += distanceToScene;
-				}
-				
-				return ${this.useBloom ? "mix(fogColor, vec3(1.0), computeBloom(rayDirectionVec))" : "fogColor"};
-			}
-			
-			
+			${raymarchGlsl}
 			
 			${mainFunctionGlsl}
 		`;
@@ -875,7 +998,8 @@ export class RaymarchApplet extends AnimationFrameApplet
 		distanceEstimatorGlsl,
 		getColorGlsl,
 		getReflectivityGlsl,
-		addGlsl
+		addGlsl,
+		useForDepthBuffer
 	} = {}) {
 		this.calculateVectors();
 
@@ -885,6 +1009,7 @@ export class RaymarchApplet extends AnimationFrameApplet
 			getColorGlsl,
 			getReflectivityGlsl,
 			addGlsl,
+			useForDepthBuffer,
 		}));
 
 		this.initUniforms(0);
@@ -906,6 +1031,7 @@ export class RaymarchApplet extends AnimationFrameApplet
 				getColorGlsl,
 				getReflectivityGlsl,
 				addGlsl,
+				useForDepthBuffer,
 				antialiasing: true
 			});
 
@@ -1235,6 +1361,15 @@ export class RaymarchApplet extends AnimationFrameApplet
 		};
 
 		requestAnimationFrame(drawMosaicPart);
+	}
+
+	async drawBokehFrame()
+	{
+		await loadGlsl();
+
+		this.reloadShader({
+			useForDepthBuffer: true
+		});
 	}
 
 

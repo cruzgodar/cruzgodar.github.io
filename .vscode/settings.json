@@ -28,5 +28,5 @@
 	"editor.formatOnSave": false,
 	"editor.maxTokenizationLineLength": 200000,
 	"editor.autoIndent": "advanced",
-	"liveServer.settings.port": 5501,
+	"liveServer.settings.port": 5500,
 }
