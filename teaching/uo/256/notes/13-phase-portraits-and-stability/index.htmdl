@@ -28,11 +28,11 @@ If $**A**$ has nonzero eigenvalues $\lambda_1$ and $\lambda_2$, then there is a 
 
 	> 3. If $\lambda_1$ and $\lambda_2$ are real and have opposite signs, then the critical point is a saddle point.
 
-	> 4. If $\lambda_1$ and $\lambda_2$ are complex conjugates and the real part is positive, then the critical point is a center.
+	> 4. If $\lambda_1$ and $\lambda_2$ are complex conjugates and the real part is zero, then the critical point is a center.
 
-	> 5. If $\lambda_1$ and $\lambda_2$ are complex conjugates and the real part is negative, then the critical point is a sink about which the field spirals.
+	> 5. If $\lambda_1$ and $\lambda_2$ are complex conjugates and the real part is positive, then the critical point is a source about which the field spirals.
 
-	> 6. If $\lambda_1$ and $\lambda_2$ are complex conjugates and the real part is zero, then the field simply spirals about the critical point.
+	> 6. If $\lambda_1$ and $\lambda_2$ are complex conjugates and the real part is negative, then the critical point is a sink about which the field spirals.
 
 
 
