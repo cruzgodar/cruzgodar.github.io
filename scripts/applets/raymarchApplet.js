@@ -999,8 +999,11 @@ export class RaymarchApplet extends AnimationFrameApplet
 		getColorGlsl,
 		getReflectivityGlsl,
 		addGlsl,
+		useAntialiasing = this.useAntialiasing,
 		useForDepthBuffer
 	} = {}) {
+		this.useAntialiasing = useAntialiasing;
+
 		this.calculateVectors();
 
 		this.wilson.render.shaderPrograms = [];
@@ -1363,13 +1366,106 @@ export class RaymarchApplet extends AnimationFrameApplet
 		requestAnimationFrame(drawMosaicPart);
 	}
 
-	async drawBokehFrame()
+	async downloadBokehFrame()
 	{
-		await loadGlsl();
+		this.drawFrame();
+		const colors = this.wilson.render.getPixelData();
 
+		await loadGlsl();
 		this.reloadShader({
 			useForDepthBuffer: true
 		});
+
+		this.drawFrame();
+		const depths = new Float32Array(this.wilson.render.getPixelData().buffer);
+
+		const canvas = this.createHiddenCanvas();
+		const wilsonHidden = new Wilson(canvas, {
+			renderer: "cpu",
+			canvasWidth: this.imageSize,
+			canvasHeight: this.imageSize,
+		});
+		wilsonHidden.ctx.fillStyle = "rgb(0, 0, 0)";
+		wilsonHidden.ctx.fillRect(0, 0, this.imageSize, this.imageSize);
+
+		const pixelsByDepth = Array.from(depths).map((depth, i) =>
+		{
+			const col = i % this.imageSize;
+			const row = this.imageSize - Math.floor(i / this.imageSize) - 1;
+
+			return [
+				depth,
+				col,
+				row,
+				colors[4 * i],
+				colors[4 * i + 1],
+				colors[4 * i + 2],
+			];
+		}).sort((a, b) => b[0] - a[0]);
+
+		const minDepth = pixelsByDepth[pixelsByDepth.length - 1][0];
+		
+		let maxDepthIndex = 0;
+		for (let i = 0; i < pixelsByDepth.length; i++)
+		{
+			if (pixelsByDepth[i][0] < this.clipDistance)
+			{
+				maxDepthIndex = i;
+				break;
+			}
+		}
+		maxDepthIndex = Math.floor(
+			maxDepthIndex
+			+ .1 * (pixelsByDepth.length - maxDepthIndex)
+		);
+		const maxDepth = pixelsByDepth[maxDepthIndex][0];
+		
+
+
+		for (const pixel of pixelsByDepth)
+		{
+			const depth = pixel[0];
+
+			if (depth === this.clipDistance)
+			{
+				continue;
+			}
+
+			const col = pixel[1];
+			const row = pixel[2];
+
+			const radius = Math.min(
+				Math.max(
+					(depth - minDepth) / (maxDepth - minDepth),
+					0,
+				),
+				1
+			) * 7 + 1;
+
+			const opacity = Math.max(1 / (radius * radius), 0.04);
+			
+			wilsonHidden.ctx.globalAlpha = opacity;
+			wilsonHidden.ctx.fillStyle = `rgb(${pixel[3]}, ${pixel[4]}, ${pixel[5]})`;
+
+			wilsonHidden.ctx.beginPath();
+			wilsonHidden.ctx.arc(col, row, radius, 0, 2 * Math.PI);
+			wilsonHidden.ctx.fill();
+
+			if (radius < 1.1)
+			{
+				wilsonHidden.ctx.fillRect(col, row, 1, 1);
+			}
+		}
+
+		wilsonHidden.downloadFrame("bokeh-render.png");
+
+		this.reloadShader({
+			useForDepthBuffer: false
+		});
+
+		this.drawFrame();
+
+		canvas.remove();
 	}
 
 
