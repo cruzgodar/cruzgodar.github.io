@@ -98,6 +98,9 @@ export class RaymarchApplet extends AnimationFrameApplet
 	rightVec = [];
 	upVec = [];
 
+	// This controls the amount of fish-eye and is a delicate balance.
+	// Changing it also requires upating the camera position.
+	focalLengthFactor;
 	cameraPos;
 	lightPos;
 	lightBrightness;
@@ -160,7 +163,8 @@ export class RaymarchApplet extends AnimationFrameApplet
 		maxShadowMarches = 128,
 		maxReflectionMarches = 128,
 		clipDistance = 1000,
-
+		
+		focalLengthFactor = 2.5,
 		cameraPos = [0, 0, 0],
 		lockedOnOrigin = true,
 		lockZ,
@@ -199,6 +203,7 @@ export class RaymarchApplet extends AnimationFrameApplet
 		this.maxReflectionMarches = maxReflectionMarches;
 		this.clipDistance = clipDistance;
 		
+		this.focalLengthFactor = focalLengthFactor;
 		this.cameraPos = cameraPos;
 		this.lockedOnOrigin = lockedOnOrigin;
 		this.lockZ = lockZ;
@@ -1145,12 +1150,10 @@ export class RaymarchApplet extends AnimationFrameApplet
 		this.upVec[1] *= this.speedFactor / (this.fovFactor);
 		this.upVec[2] *= this.speedFactor / (this.fovFactor);
 
-		const focalLengthFactor = 2;
-
 		this.imagePlaneCenterPos = [
-			this.cameraPos[0] + this.forwardVec[0] * focalLengthFactor,
-			this.cameraPos[1] + this.forwardVec[1] * focalLengthFactor,
-			this.cameraPos[2] + this.forwardVec[2] * focalLengthFactor
+			this.cameraPos[0] + this.forwardVec[0] * this.focalLengthFactor,
+			this.cameraPos[1] + this.forwardVec[1] * this.focalLengthFactor,
+			this.cameraPos[2] + this.forwardVec[2] * this.focalLengthFactor
 		];
 
 		this.setUniform("cameraPos", this.cameraPos);

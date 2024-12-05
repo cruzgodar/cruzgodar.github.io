@@ -85,7 +85,7 @@ export class QuaternionicJuliaSet extends RaymarchApplet
 			stepFactor: .75,
 			theta: 1.3094,
 			phi: 1.9975,
-			cameraPos: [-0.6265, -2.3421, 1.1022],
+			cameraPos: [-0.736138, -2.75197, 1.29509],
 			lightPos: [-5, -5, 5],
 			lightBrightness: 1.25,
 		});

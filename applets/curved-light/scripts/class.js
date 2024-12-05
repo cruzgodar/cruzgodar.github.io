@@ -101,6 +101,7 @@ export class CurvedLight extends RaymarchApplet
 			getReflectivityGlsl: "return 0.35;",
 			addGlsl,
 			uniforms,
+			focalLengthFactor: 2,
 			cameraPos: [2.0842, 2.0852, 2.0637],
 			theta: 1.25 * Math.PI,
 			phi: 2.1539,
