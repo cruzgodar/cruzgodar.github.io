@@ -472,53 +472,5 @@ export class JuliaSet extends Applet
 		}
 
 		this.wilson.drawFrame();
-
-
-
-		// this.wilson.gl.useProgram(
-		// 	this.wilson.render.shaderPrograms[this.juliaMode]
-		// );
-
-		// this.wilson.gl.uniform1f(
-		// 	this.wilson.uniforms.aspectRatio[this.juliaMode],
-		// 	this.aspectRatio
-		// );
-
-		// this.wilson.gl.uniform1f(
-		// 	this.wilson.uniforms.worldCenterX[this.juliaMode],
-		// 	this.wilson.worldCenterX
-		// );
-
-		// this.wilson.gl.uniform1f(
-		// 	this.wilson.uniforms.worldCenterY[this.juliaMode],
-		// 	this.wilson.worldCenterY
-		// );
-
-		// this.wilson.gl.uniform1f(
-		// 	this.wilson.uniforms.worldSize[this.juliaMode],
-		// 	Math.min(this.wilson.worldHeight, this.wilson.worldWidth) / 2
-		// );
-
-		// this.wilson.gl.uniform1i(
-		// 	this.wilson.uniforms.numIterations[this.juliaMode],
-		// 	this.numIterations
-		// );
-
-		// this.wilson.gl.uniform1f(
-		// 	this.wilson.uniforms.a[this.juliaMode],
-		// 	this.a
-		// );
-
-		// this.wilson.gl.uniform1f(
-		// 	this.wilson.uniforms.b[this.juliaMode],
-		// 	this.b
-		// );
-		
-		// this.wilson.gl.uniform1f(
-		// 	this.wilson.uniforms.brightnessScale[this.juliaMode],
-		// 	brightnessScale
-		// );
-
-		// this.wilson.render.drawFrame();
 	}
 }
