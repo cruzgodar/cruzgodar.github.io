@@ -239,10 +239,9 @@ export function addHoverEventWithScale({
 
 export function removeHoverEvents()
 {
-	const globalSelector = elementSelectors
-		.concat(elementSelectorsWithScale)
-		.map(selector => selector[0])
-		.join(", ");
+	const globalSelector = elementSelectors.map(selector => selector[0])
+		.concat(Object.keys(elementSelectorsWithScale))
+		.join(",");
 
 	$$(globalSelector).forEach(element => element.classList.remove("hover"));
 }

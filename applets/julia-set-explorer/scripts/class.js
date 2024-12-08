@@ -6,16 +6,16 @@ export class JuliaSet extends Applet
 {
 	wilsonHidden;
 
-	juliaMode = 0;
+	juliaMode = "mandelbrot";
 
 	numIterations = 100;
 
 	switchJuliaModeButton;
 	pastBrightnessScales = [];
-	c = [0, 1];
+	c = [0, 0];
 
 	resolution = 1000;
-	resolutionHidden = 100;
+	resolutionHidden = 50;
 
 
 
@@ -276,6 +276,12 @@ export class JuliaSet extends Applet
 			interactionOptions: {
 				useForPanAndZoom: true,
 				onPanAndZoom: this.drawFrame.bind(this),
+				callbacks: {
+					mousemove: this.onMousemove.bind(this),
+					mousedown: this.onMousedown.bind(this),
+					touchmove: this.onTouchmove.bind(this),
+					touchend: this.onTouchend.bind(this),
+				},
 			},
 
 			fullscreenOptions: {
@@ -291,7 +297,7 @@ export class JuliaSet extends Applet
 
 
 
-		const hiddenCanvas = this.createHiddenCanvas(false);
+		const hiddenCanvas = this.createHiddenCanvas();
 
 		this.wilsonHidden = new WilsonGPU(hiddenCanvas, {
 			...options,
@@ -306,157 +312,88 @@ export class JuliaSet extends Applet
 
 	advanceJuliaMode()
 	{
-		if (this.juliaMode === 0)
+		if (this.juliaMode === "mandelbrot")
 		{
-			this.juliaMode = 2;
+			this.juliaMode = "juliaPicker";
 
-			this.a = 0;
-			this.b = 0;
-
-			this.pastBrightnessScales = [];
-
-			if (this.switchJuliaModeButton)
-			{
-				this.switchJuliaModeButton.disabled = true;
-			}
+			this.c = [0, 0];
 		}
 
-		else if (this.juliaMode === 1)
+		else if (this.juliaMode === "julia")
 		{
-			this.juliaMode = 0;
+			this.juliaMode = "mandelbrot";
 
 			this.wilson.worldCenterX = -.75;
 			this.wilson.worldCenterY = 0;
 			this.wilson.worldWidth = 4;
 			this.wilson.worldHeight = 4;
-
-			this.pan.setBounds({
-				minX: -2.75,
-				maxX: 1.25,
-				minY: -2,
-				maxY: 2,
-			});
-
-			this.zoom.init();
-
-			this.pastBrightnessScales = [];
 		}
 
-		this.needNewFrame = true;
-	}
-
-
-
-	onGrabCanvas(x, y, event)
-	{
-		this.pan.onGrabCanvas();
-		this.zoom.onGrabCanvas();
-
-
-
-		if (this.juliaMode === 2 && event.type === "mousedown")
+		else
 		{
-			this.juliaMode = 1;
+			this.juliaMode = "julia";
 
 			this.wilson.worldCenterX = 0;
 			this.wilson.worldCenterY = 0;
 			this.wilson.worldWidth = 4;
 			this.wilson.worldHeight = 4;
-
-			this.pan.setBounds({
-				minX: -2,
-				maxX: 2,
-				minY: -2,
-				maxY: 2,
-			});
-
-			this.zoom.init();
-
-			this.pastBrightnessScales = [];
-
-			if (this.switchJuliaModeButton)
-			{
-				this.switchJuliaModeButton.disabled = false;
-			}
 		}
 
-		this.needNewFrame = true;
+		this.pastBrightnessScales = [];
+
+		this.wilson.useShader(this.juliaMode);
+		this.wilsonHidden.useShader(this.juliaMode);
+		this.wilson.useInteractionForPanAndZoom = this.juliaMode !== "juliaPicker";
+		if (this.switchJuliaModeButton)
+		{
+			this.switchJuliaModeButton.disabled = this.juliaMode === "juliaPicker";
+		}
+
+		this.drawFrame();
 	}
 
+	
 
-
-	onDragCanvas(x, y, xDelta, yDelta, event)
+	onMousemove({ x, y })
 	{
-		if (this.juliaMode === 2 && event.type === "touchmove")
+		if (this.juliaMode === "juliaPicker")
 		{
-			this.a = x;
-			this.b = y;
-		}
+			this.c = [x, y];
 
-		else
-		{
-			this.pan.onDragCanvas(x, y, xDelta, yDelta);
-		}
-
-		this.needNewFrame = true;
-	}
-
-
-
-	onHoverCanvas(x, y, xDelta, yDelta, event)
-	{
-		if (this.juliaMode === 2 && event.type === "mousemove")
-		{
-			this.a = x;
-			this.b = y;
-
-			this.needNewFrame = true;
+			requestAnimationFrame(() => this.drawFrame());
 		}
 	}
 
-
-
-	onReleaseCanvas(x, y, event)
+	onMousedown()
 	{
-		if (this.juliaMode === 2 && event.type === "touchend")
+		if (this.juliaMode === "juliaPicker")
 		{
-			this.juliaMode = 1;
-
-			this.wilson.worldCenterX = 0;
-			this.wilson.worldCenterY = 0;
-			this.wilson.worldWidth = 4;
-			this.wilson.worldHeight = 4;
-
-			this.pan.setBounds({
-				minX: -2,
-				maxX: 2,
-				minY: -2,
-				maxY: 2,
-			});
-
-			this.zoom.init();
-
-			this.pastBrightnessScales = [];
-
-			if (this.switchJuliaModeButton)
-			{
-				this.switchJuliaModeButton.disabled = false;
-			}
+			this.advanceJuliaMode();
 		}
+	}
 
-		else
+	onTouchmove({ x, y })
+	{
+		if (this.juliaMode === "juliaPicker")
 		{
-			this.pan.onReleaseCanvas();
-			this.zoom.onReleaseCanvas();
-		}
+			this.c = [x, y];
 
-		this.needNewFrame = true;
+			requestAnimationFrame(() => this.drawFrame());
+		}
+	}
+
+	onTouchend()
+	{
+		if (this.juliaMode === "juliaPicker")
+		{
+			this.advanceJuliaMode();
+		}
 	}
 
 	drawFrame()
 	{
-		const zoomLevel = -Math.log2(this.wilson.worldWidth);
-		this.numIterations = Math.ceil(200 + zoomLevel * 50);
+		const zoomLevel = -Math.log2(this.wilson.worldWidth) + 3;
+		this.numIterations = Math.ceil(200 + zoomLevel * 40);
 
 		this.wilsonHidden.setUniform({
 			name: "worldSize",
@@ -471,6 +408,11 @@ export class JuliaSet extends Applet
 			name: "brightnessScale",
 			value: 20 + zoomLevel
 		});
+
+		if (this.juliaMode !== "mandelbrot")
+		{
+			this.wilsonHidden.setUniform({ name: "c", value: this.c });
+		}
 
 		this.wilsonHidden.drawFrame();
 		const pixels = this.wilsonHidden.readPixels();
@@ -487,7 +429,7 @@ export class JuliaSet extends Applet
 		const brightnessScale = (
 			brightnesses[Math.floor(this.resolutionHidden * this.resolutionHidden * .96)]
 			+ brightnesses[Math.floor(this.resolutionHidden * this.resolutionHidden * .98)]
-		) / 25 + Math.max(zoomLevel, 1) * 2;
+		) / 25 + zoomLevel * 2;
 
 		this.pastBrightnessScales.push(brightnessScale);
 
@@ -523,6 +465,11 @@ export class JuliaSet extends Applet
 			name: "brightnessScale",
 			value: averageBrightnessScale
 		});
+
+		if (this.juliaMode !== "mandelbrot")
+		{
+			this.wilson.setUniform({ name: "c", value: this.c });
+		}
 
 		this.wilson.drawFrame();
 

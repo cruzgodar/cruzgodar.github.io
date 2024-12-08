@@ -375,13 +375,6 @@ export class Applet
 			callback: this.handleTouchEndEvent.bind(this)
 		});
 	}
-
-
-
-	downloadFrame(filename)
-	{
-		this.wilson.downloadFrame(filename);
-	}
 }
 
 
