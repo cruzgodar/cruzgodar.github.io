@@ -8,14 +8,10 @@ export class JuliaSet extends Applet
 
 	juliaMode = 0;
 
-	aspectRatio = 1;
-
 	numIterations = 100;
 
 	switchJuliaModeButton;
-
 	pastBrightnessScales = [];
-
 	c = [0, 1];
 
 	resolution = 1000;
@@ -270,9 +266,9 @@ export class JuliaSet extends Applet
 			maxWorldCenterX: 2,
 			minWorldCenterY: -2,
 			maxWorldCenterY: 2,
-			minWorldWidth: 0.000003,
+			minWorldWidth: 0.00001,
 			maxWorldWidth: 4,
-			minWorldHeight: 0.000003,
+			minWorldHeight: 0.00001,
 			maxWorldHeight: 4,
 
 			onResizeCanvas: this.drawFrame.bind(this),
@@ -295,26 +291,13 @@ export class JuliaSet extends Applet
 
 
 
-		// const hiddenCanvas = this.createHiddenCanvas();
+		const hiddenCanvas = this.createHiddenCanvas(false);
 
-		// this.wilsonHidden = new Wilson(hiddenCanvas, optionsHidden);
-
-		// this.wilsonHidden.render.loadNewShader(fragShaderSource1);
-		// this.wilsonHidden.render.loadNewShader(fragShaderSource2);
-
-		// for (let i = 0; i < 3; i++)
-		// {
-		// 	this.wilsonHidden.render.initUniforms([
-		// 		"aspectRatio",
-		// 		"worldCenterX",
-		// 		"worldCenterY",
-		// 		"worldSize",
-		// 		"a",
-		// 		"b",
-		// 		"numIterations",
-		// 		"brightnessScale"
-		// 	], i);
-		// }
+		this.wilsonHidden = new WilsonGPU(hiddenCanvas, {
+			...options,
+			canvasWidth: this.resolutionHidden,
+		});
+		this.wilsonHidden.useShader("mandelbrot");
 
 		this.drawFrame();
 	}
@@ -472,10 +455,60 @@ export class JuliaSet extends Applet
 
 	drawFrame()
 	{
-		// TODO: fix
-		this.numIterations = 200;
+		const zoomLevel = -Math.log2(this.wilson.worldWidth);
+		this.numIterations = Math.ceil(200 + zoomLevel * 50);
 
-		this.wilson.useShader("mandelbrot");
+		this.wilsonHidden.setUniform({
+			name: "worldSize",
+			value: [this.wilson.worldWidth, this.wilson.worldHeight]
+		});
+		this.wilsonHidden.setUniform({
+			name: "worldCenter",
+			value: [this.wilson.worldCenterX, this.wilson.worldCenterY]
+		});
+		this.wilsonHidden.setUniform({ name: "numIterations", value: this.numIterations });
+		this.wilsonHidden.setUniform({
+			name: "brightnessScale",
+			value: 20 + zoomLevel
+		});
+
+		this.wilsonHidden.drawFrame();
+		const pixels = this.wilsonHidden.readPixels();
+
+		const brightnesses = new Array(this.resolutionHidden * this.resolutionHidden);
+		
+		for (let i = 0; i < this.resolutionHidden * this.resolutionHidden; i++)
+		{
+			brightnesses[i] = pixels[4 * i] + pixels[4 * i + 1] + pixels[4 * i + 2];
+		}
+
+		brightnesses.sort((a, b) => a - b);
+
+		const brightnessScale = (
+			brightnesses[Math.floor(this.resolutionHidden * this.resolutionHidden * .96)]
+			+ brightnesses[Math.floor(this.resolutionHidden * this.resolutionHidden * .98)]
+		) / 25 + Math.max(zoomLevel, 1) * 2;
+
+		this.pastBrightnessScales.push(brightnessScale);
+
+		if (this.pastBrightnessScales.length > 10)
+		{
+			this.pastBrightnessScales.shift();
+		}
+
+		let averageBrightnessScale = 0;
+
+		for (let i = 0; i < this.pastBrightnessScales.length; i++)
+		{
+			averageBrightnessScale += this.pastBrightnessScales[i];
+		}
+
+		averageBrightnessScale = Math.max(
+			averageBrightnessScale / this.pastBrightnessScales.length,
+			.5
+		);
+
+
 
 		this.wilson.setUniform({
 			name: "worldSize",
@@ -486,86 +519,12 @@ export class JuliaSet extends Applet
 			value: [this.wilson.worldCenterX, this.wilson.worldCenterY]
 		});
 		this.wilson.setUniform({ name: "numIterations", value: this.numIterations });
-		this.wilson.setUniform({ name: "brightnessScale", value: 10 });
+		this.wilson.setUniform({
+			name: "brightnessScale",
+			value: averageBrightnessScale
+		});
 
 		this.wilson.drawFrame();
-
-
-
-		// this.wilsonHidden.gl.useProgram(
-		// 	this.wilsonHidden.render.shaderPrograms[this.juliaMode]
-		// );
-
-		// this.wilsonHidden.gl.uniform1f(
-		// 	this.wilsonHidden.uniforms.aspectRatio[this.juliaMode],
-		// 	1
-		// );
-
-		// this.wilsonHidden.gl.uniform1f(
-		// 	this.wilsonHidden.uniforms.worldCenterX[this.juliaMode],
-		// 	this.wilson.worldCenterX
-		// );
-
-		// this.wilsonHidden.gl.uniform1f(
-		// 	this.wilsonHidden.uniforms.worldCenterY[this.juliaMode],
-		// 	this.wilson.worldCenterY
-		// );
-
-		// this.wilsonHidden.gl.uniform1f(
-		// 	this.wilsonHidden.uniforms.worldSize[this.juliaMode],
-		// 	Math.min(this.wilson.worldHeight, this.wilson.worldWidth) / 2
-		// );
-
-		// this.wilsonHidden.gl.uniform1i(
-		// 	this.wilsonHidden.uniforms.numIterations[this.juliaMode],
-		// 	this.numIterations
-		// );
-
-		// this.wilsonHidden.gl.uniform1f(
-		// 	this.wilsonHidden.uniforms.a[this.juliaMode],
-		// 	this.a
-		// );
-
-		// this.wilsonHidden.gl.uniform1f(
-		// 	this.wilsonHidden.uniforms.b[this.juliaMode],
-		// 	this.b
-		// );
-
-		// this.wilsonHidden.gl.uniform1f(
-		// 	this.wilsonHidden.uniforms.brightnessScale[this.juliaMode],
-		// 	20 * (Math.abs(this.zoom.level) + 1)
-		// );
-
-		// this.wilsonHidden.render.drawFrame();
-
-
-
-		// const pixelData = this.wilsonHidden.render.getPixelData();
-
-		// const brightnesses = new Array(this.resolutionHidden * this.resolutionHidden);
-
-		// for (let i = 0; i < this.resolutionHidden * this.resolutionHidden; i++)
-		// {
-		// 	brightnesses[i] = pixelData[4 * i] + pixelData[4 * i + 1] + pixelData[4 * i + 2];
-		// }
-
-		// brightnesses.sort((a, b) => a - b);
-
-		// let brightnessScale = (
-		// 	brightnesses[Math.floor(this.resolutionHidden * this.resolutionHidden * .96)]
-		// 	+ brightnesses[Math.floor(this.resolutionHidden * this.resolutionHidden * .98)]
-		// ) / 255 * 15 * (Math.abs(this.zoom.level / 2) + 1);
-
-		// this.pastBrightnessScales.push(brightnessScale);
-
-		// const denom = this.pastBrightnessScales.length;
-
-		// if (denom > 10)
-		// {
-		// 	this.pastBrightnessScales.shift();
-		// }
-
-		// brightnessScale = Math.max(this.pastBrightnessScales.reduce((a, b) => a + b) / denom, .5);
 
 
 

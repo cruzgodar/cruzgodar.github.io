@@ -1174,6 +1174,7 @@ export class WilsonGPU extends Wilson {
         this.useShader(__classPrivateFieldGet(this, _WilsonGPU_currentShaderId, "f"));
     }
     useShader(id) {
+        __classPrivateFieldSet(this, _WilsonGPU_currentShaderId, id, "f");
         this.gl.useProgram(__classPrivateFieldGet(this, _WilsonGPU_shaderPrograms, "f")[id]);
     }
     createFramebufferTexturePair({ id, textureType }) {

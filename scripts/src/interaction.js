@@ -154,7 +154,7 @@ export function listenForFullscreenKey()
 				const wilson = currentlyLoadedApplets[minIndex].wilsonForFullscreen
 					?? currentlyLoadedApplets[minIndex].wilson;
 
-				wilson.enterFullScreen();
+				wilson.enterFullscreen();
 			}
 		}
 	});

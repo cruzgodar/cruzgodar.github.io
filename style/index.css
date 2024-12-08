@@ -609,7 +609,7 @@ mjx-container
 
 .output-canvas
 {
-	width: calc(100% - 8px) !important;
+	width: calc(100% - 8px);
 	aspect-ratio: 1;
 	
 	border: 2px solid var(--normal-contrast);
