@@ -55,9 +55,6 @@ export class Applet
 	{
 		this.canvas = canvas;
 
-		this.pan.parent = this;
-		this.zoom.parent = this;
-
 		if (window.DEBUG)
 		{
 			setTimeout(() => this.addFpsDisplay(), 500);
@@ -257,7 +254,7 @@ export class Applet
 
 	addHelpButton()
 	{
-		const outputCanvasContainer = this.wilson.canvas.parentElement;
+		const outputCanvasContainer = this.wilson?.canvas?.parentElement;
 
 		if (!outputCanvasContainer)
 		{

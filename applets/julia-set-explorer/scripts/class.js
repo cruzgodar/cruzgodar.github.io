@@ -1,9 +1,8 @@
 import { loadGlsl } from "../../../scripts/src/complexGlsl.js";
-import { AnimationFrameApplet } from "/scripts/applets/animationFrameApplet.js";
-import { addTemporaryListener } from "/scripts/src/main.js";
-import { Wilson } from "/scripts/wilson.js";
+import { Applet } from "/scripts/applets/applet.js";
+import { WilsonGPU } from "/scripts/wilson.js";
 
-export class JuliaSet extends AnimationFrameApplet
+export class JuliaSet extends Applet
 {
 	wilsonHidden;
 
@@ -17,8 +16,7 @@ export class JuliaSet extends AnimationFrameApplet
 
 	pastBrightnessScales = [];
 
-	a = 0;
-	b = 1;
+	c = [0, 1];
 
 	resolution = 1000;
 	resolutionHidden = 100;
@@ -38,19 +36,14 @@ export class JuliaSet extends AnimationFrameApplet
 
 	run({ canvas })
 	{
-		const fragShaderSourceSingle0 = /* glsl */`
+		const fragShaderSourceMandelbrot = /* glsl */`
 			precision highp float;
 			
 			varying vec2 uv;
 			
-			uniform float aspectRatio;
+			uniform vec2 worldCenter;
+			uniform vec2 worldSize;
 			
-			uniform float worldCenterX;
-			uniform float worldCenterY;
-			uniform float worldSize;
-			
-			uniform float a;
-			uniform float b;
 			uniform int numIterations;
 			uniform float brightnessScale;
 			
@@ -58,17 +51,7 @@ export class JuliaSet extends AnimationFrameApplet
 			
 			void main(void)
 			{
-				vec2 z;
-				
-				if (aspectRatio >= 1.0)
-				{
-					z = vec2(uv.x * aspectRatio * worldSize + worldCenterX, uv.y * worldSize + worldCenterY);
-				}
-				
-				else
-				{
-					z = vec2(uv.x * worldSize + worldCenterX, uv.y / aspectRatio * worldSize + worldCenterY);
-				}
+				vec2 z = uv * worldSize * 0.5 + worldCenter;
 				
 				vec2 c = z;
 				
@@ -103,19 +86,15 @@ export class JuliaSet extends AnimationFrameApplet
 
 
 
-		const fragShaderSourceSingle1 = /* glsl */`
+		const fragShaderSourceJulia = /* glsl */`
 			precision highp float;
 			
 			varying vec2 uv;
 			
-			uniform float aspectRatio;
+			uniform vec2 worldCenter;
+			uniform vec2 worldSize;
 			
-			uniform float worldCenterX;
-			uniform float worldCenterY;
-			uniform float worldSize;
-			
-			uniform float a;
-			uniform float b;
+			uniform vec2 c;
 			uniform int numIterations;
 			uniform float brightnessScale;
 			
@@ -123,19 +102,7 @@ export class JuliaSet extends AnimationFrameApplet
 			
 			void main(void)
 			{
-				vec2 z;
-				
-				if (aspectRatio >= 1.0)
-				{
-					z = vec2(uv.x * aspectRatio * worldSize + worldCenterX, uv.y * worldSize + worldCenterY);
-				}
-				
-				else
-				{
-					z = vec2(uv.x * worldSize + worldCenterX, uv.y / aspectRatio * worldSize + worldCenterY);
-				}
-				
-				vec2 c = vec2(a, b);
+				vec2 z = uv * worldSize * 0.5 + worldCenter;
 				
 				vec3 color = normalize(vec3(abs(z.x + z.y) / 2.0, abs(z.x) / 2.0, abs(z.y) / 2.0) + .1 / length(z) * vec3(1.0, 1.0, 1.0));
 				
@@ -168,19 +135,15 @@ export class JuliaSet extends AnimationFrameApplet
 
 
 
-		const fragShaderSourceSingle2 = /* glsl */`
+		const fragShaderSourceJuliaPicker = /* glsl */`
 			precision highp float;
 			
 			varying vec2 uv;
 			
-			uniform float aspectRatio;
+			uniform vec2 worldCenter;
+			uniform vec2 worldSize;
 			
-			uniform float worldCenterX;
-			uniform float worldCenterY;
-			uniform float worldSize;
-			
-			uniform float a;
-			uniform float b;
+			uniform vec2 c;
 			uniform int numIterations;
 			uniform float brightnessScale;
 			
@@ -188,19 +151,9 @@ export class JuliaSet extends AnimationFrameApplet
 			
 			void main(void)
 			{
-				vec2 z;
+				vec2 z = uv * worldSize * 0.5 + worldCenter;
 				
-				if (aspectRatio >= 1.0)
-				{
-					z = vec2(uv.x * aspectRatio * worldSize + worldCenterX, uv.y * worldSize + worldCenterY);
-				}
-				
-				else
-				{
-					z = vec2(uv.x * worldSize + worldCenterX, uv.y / aspectRatio * worldSize + worldCenterY);
-				}
-				
-				vec2 c = z;
+				vec2 mandelbrotC = z;
 				
 				vec3 color = normalize(vec3(abs(z.x + z.y) / 2.0, abs(z.x) / 2.0, abs(z.y) / 2.0) + .1 / length(z) * vec3(1.0, 1.0, 1.0));
 				
@@ -226,7 +179,7 @@ export class JuliaSet extends AnimationFrameApplet
 						break;
 					}
 					
-					z = vec2(z.x * z.x - z.y * z.y, 2.0 * z.x * z.y) + c;
+					z = vec2(z.x * z.x - z.y * z.y, 2.0 * z.x * z.y) + mandelbrotC;
 					
 					brightness += exp(-length(z));
 				}
@@ -240,15 +193,13 @@ export class JuliaSet extends AnimationFrameApplet
 				
 				
 				
-				z = vec2(uv.x * aspectRatio * 2.0, uv.y * 2.0);
+				z = uv * 2.0;
 				
 				color = normalize(vec3(abs(z.x + z.y) / 2.0, abs(z.x) / 2.0, abs(z.y) / 2.0) + .1 / length(z) * vec3(1.0, 1.0, 1.0));
 				
 				brightness = exp(-length(z));
 				
 				broken = false;
-				
-				c = vec2(a, b);
 				
 				for (int iteration = 0; iteration < 3001; iteration++)
 				{
@@ -278,123 +229,94 @@ export class JuliaSet extends AnimationFrameApplet
 			}
 		`;
 
+		const options = {
+			shaders: {
+				mandelbrot: fragShaderSourceMandelbrot,
+				julia: fragShaderSourceJulia,
+				juliaPicker: fragShaderSourceJuliaPicker,
+			},
 
+			uniforms: {
+				mandelbrot: {
+					worldCenter: [-0.75, 0],
+					worldSize: [4, 4],
+					numIterations: this.numIterations,
+					brightnessScale: 10,
+				},
+				julia: {
+					worldCenter: [-0.75, 0],
+					worldSize: [4, 4],
+					c: this.c,
+					numIterations: this.numIterations,
+					brightnessScale: 10,
+				},
+				juliaPicker: {
+					worldCenter: [-0.75, 0],
+					worldSize: [4, 4],
+					c: this.c,
+					numIterations: this.numIterations,
+					brightnessScale: 10,
+				},
+			},
 
-		const options =
-		{
-			renderer: "gpu",
-
-			shader: fragShaderSourceSingle0,
-
-			canvasWidth: 1000,
-			canvasHeight: 1000,
+			canvasWidth: this.resolution,
 
 			worldWidth: 4,
 			worldHeight: 4,
 			worldCenterX: -.75,
 			worldCenterY: 0,
 
+			minWorldCenterX: -2,
+			maxWorldCenterX: 2,
+			minWorldCenterY: -2,
+			maxWorldCenterY: 2,
+			minWorldWidth: 0.000003,
+			maxWorldWidth: 4,
+			minWorldHeight: 0.000003,
+			maxWorldHeight: 4,
 
+			onResizeCanvas: this.drawFrame.bind(this),
 
-			useFullscreen: true,
+			interactionOptions: {
+				useForPanAndZoom: true,
+				onPanAndZoom: this.drawFrame.bind(this),
+			},
 
-			trueFullscreen: true,
-
-			useFullscreenButton: true,
-
-			enterFullscreenButtonIconPath: "/graphics/general-icons/enter-fullscreen.png",
-			exitFullscreenButtonIconPath: "/graphics/general-icons/exit-fullscreen.png",
-
-			switchFullscreenCallback: () => this.changeAspectRatio(true),
-
-
-
-			mousedownCallback: this.onGrabCanvas.bind(this),
-			touchstartCallback: this.onGrabCanvas.bind(this),
-
-			mousemoveCallback: this.onHoverCanvas.bind(this),
-			mousedragCallback: this.onDragCanvas.bind(this),
-			touchmoveCallback: this.onDragCanvas.bind(this),
-
-			mouseupCallback: this.onReleaseCanvas.bind(this),
-			touchendCallback: this.onReleaseCanvas.bind(this),
-
-			wheelCallback: this.onWheelCanvas.bind(this),
-			pinchCallback: this.onPinchCanvas.bind(this)
+			fullscreenOptions: {
+				fillScreen: true,
+				useFullscreenButton: true,
+				enterFullscreenButtonIconPath: "/graphics/general-icons/enter-fullscreen.png",
+				exitFullscreenButtonIconPath: "/graphics/general-icons/exit-fullscreen.png",
+			},
 		};
 
-		const optionsHidden =
-		{
-			renderer: "gpu",
-
-			shader: fragShaderSourceSingle0,
-
-			canvasWidth: 100,
-			canvasHeight: 100
-		};
+		this.wilson = new WilsonGPU(canvas, options);
+		this.wilson.useShader("mandelbrot");
 
 
 
-		this.wilson = new Wilson(canvas, options);
+		// const hiddenCanvas = this.createHiddenCanvas();
 
-		this.wilson.render.loadNewShader(fragShaderSourceSingle1);
-		this.wilson.render.loadNewShader(fragShaderSourceSingle2);
+		// this.wilsonHidden = new Wilson(hiddenCanvas, optionsHidden);
 
-		for (let i = 0; i < 3; i++)
-		{
-			this.wilson.render.initUniforms([
-				"aspectRatio",
-				"worldCenterX",
-				"worldCenterY",
-				"worldSize",
-				"a",
-				"b",
-				"numIterations",
-				"brightnessScale"
-			], i);
-		}
+		// this.wilsonHidden.render.loadNewShader(fragShaderSource1);
+		// this.wilsonHidden.render.loadNewShader(fragShaderSource2);
 
+		// for (let i = 0; i < 3; i++)
+		// {
+		// 	this.wilsonHidden.render.initUniforms([
+		// 		"aspectRatio",
+		// 		"worldCenterX",
+		// 		"worldCenterY",
+		// 		"worldSize",
+		// 		"a",
+		// 		"b",
+		// 		"numIterations",
+		// 		"brightnessScale"
+		// 	], i);
+		// }
 
-
-		const hiddenCanvas = this.createHiddenCanvas();
-
-		this.wilsonHidden = new Wilson(hiddenCanvas, optionsHidden);
-
-		this.wilsonHidden.render.loadNewShader(fragShaderSourceSingle1);
-		this.wilsonHidden.render.loadNewShader(fragShaderSourceSingle2);
-
-		for (let i = 0; i < 3; i++)
-		{
-			this.wilsonHidden.render.initUniforms([
-				"aspectRatio",
-				"worldCenterX",
-				"worldCenterY",
-				"worldSize",
-				"a",
-				"b",
-				"numIterations",
-				"brightnessScale"
-			], i);
-		}
-
-		this.pan.setBounds({
-			minX: -2.75,
-			maxX: 1.25,
-			minY: -2,
-			maxY: 2,
-		});
-
-		this.zoom.init();
-
-		this.resume();
-
-
-		const boundFunction = () => this.changeAspectRatio(true);
-		addTemporaryListener({
-			object: window,
-			event: "resize",
-			callback: boundFunction
-		});
+		this.drawFrame();
 	}
 
 
@@ -548,163 +470,149 @@ export class JuliaSet extends AnimationFrameApplet
 		this.needNewFrame = true;
 	}
 
-
-
-	onWheelCanvas(x, y, scrollAmount)
-	{
-		if (this.juliaMode !== 2)
-		{
-			this.zoom.onWheelCanvas(x, y, scrollAmount);
-
-			this.needNewFrame = true;
-		}
-	}
-
-
-
-	onPinchCanvas(x, y, touchDistanceDelta)
-	{
-		if (this.juliaMode !== 2)
-		{
-			this.zoom.onPinchCanvas(x, y, touchDistanceDelta);
-
-			this.needNewFrame = true;
-		}
-	}
-
-	prepareFrame(timeElapsed)
-	{
-		this.pan.update(timeElapsed);
-		this.zoom.update(timeElapsed);
-	}
-
 	drawFrame()
 	{
-		this.numIterations = (-this.zoom.level * 30) + 200;
+		// TODO: fix
+		this.numIterations = 200;
+
+		this.wilson.useShader("mandelbrot");
+
+		this.wilson.setUniform({
+			name: "worldSize",
+			value: [this.wilson.worldWidth, this.wilson.worldHeight]
+		});
+		this.wilson.setUniform({
+			name: "worldCenter",
+			value: [this.wilson.worldCenterX, this.wilson.worldCenterY]
+		});
+		this.wilson.setUniform({ name: "numIterations", value: this.numIterations });
+		this.wilson.setUniform({ name: "brightnessScale", value: 10 });
+
+		this.wilson.drawFrame();
 
 
 
-		this.wilsonHidden.gl.useProgram(
-			this.wilsonHidden.render.shaderPrograms[this.juliaMode]
-		);
+		// this.wilsonHidden.gl.useProgram(
+		// 	this.wilsonHidden.render.shaderPrograms[this.juliaMode]
+		// );
 
-		this.wilsonHidden.gl.uniform1f(
-			this.wilsonHidden.uniforms.aspectRatio[this.juliaMode],
-			1
-		);
+		// this.wilsonHidden.gl.uniform1f(
+		// 	this.wilsonHidden.uniforms.aspectRatio[this.juliaMode],
+		// 	1
+		// );
 
-		this.wilsonHidden.gl.uniform1f(
-			this.wilsonHidden.uniforms.worldCenterX[this.juliaMode],
-			this.wilson.worldCenterX
-		);
+		// this.wilsonHidden.gl.uniform1f(
+		// 	this.wilsonHidden.uniforms.worldCenterX[this.juliaMode],
+		// 	this.wilson.worldCenterX
+		// );
 
-		this.wilsonHidden.gl.uniform1f(
-			this.wilsonHidden.uniforms.worldCenterY[this.juliaMode],
-			this.wilson.worldCenterY
-		);
+		// this.wilsonHidden.gl.uniform1f(
+		// 	this.wilsonHidden.uniforms.worldCenterY[this.juliaMode],
+		// 	this.wilson.worldCenterY
+		// );
 
-		this.wilsonHidden.gl.uniform1f(
-			this.wilsonHidden.uniforms.worldSize[this.juliaMode],
-			Math.min(this.wilson.worldHeight, this.wilson.worldWidth) / 2
-		);
+		// this.wilsonHidden.gl.uniform1f(
+		// 	this.wilsonHidden.uniforms.worldSize[this.juliaMode],
+		// 	Math.min(this.wilson.worldHeight, this.wilson.worldWidth) / 2
+		// );
 
-		this.wilsonHidden.gl.uniform1i(
-			this.wilsonHidden.uniforms.numIterations[this.juliaMode],
-			this.numIterations
-		);
+		// this.wilsonHidden.gl.uniform1i(
+		// 	this.wilsonHidden.uniforms.numIterations[this.juliaMode],
+		// 	this.numIterations
+		// );
 
-		this.wilsonHidden.gl.uniform1f(
-			this.wilsonHidden.uniforms.a[this.juliaMode],
-			this.a
-		);
+		// this.wilsonHidden.gl.uniform1f(
+		// 	this.wilsonHidden.uniforms.a[this.juliaMode],
+		// 	this.a
+		// );
 
-		this.wilsonHidden.gl.uniform1f(
-			this.wilsonHidden.uniforms.b[this.juliaMode],
-			this.b
-		);
+		// this.wilsonHidden.gl.uniform1f(
+		// 	this.wilsonHidden.uniforms.b[this.juliaMode],
+		// 	this.b
+		// );
 
-		this.wilsonHidden.gl.uniform1f(
-			this.wilsonHidden.uniforms.brightnessScale[this.juliaMode],
-			20 * (Math.abs(this.zoom.level) + 1)
-		);
+		// this.wilsonHidden.gl.uniform1f(
+		// 	this.wilsonHidden.uniforms.brightnessScale[this.juliaMode],
+		// 	20 * (Math.abs(this.zoom.level) + 1)
+		// );
 
-		this.wilsonHidden.render.drawFrame();
-
-
-
-		const pixelData = this.wilsonHidden.render.getPixelData();
-
-		const brightnesses = new Array(this.resolutionHidden * this.resolutionHidden);
-
-		for (let i = 0; i < this.resolutionHidden * this.resolutionHidden; i++)
-		{
-			brightnesses[i] = pixelData[4 * i] + pixelData[4 * i + 1] + pixelData[4 * i + 2];
-		}
-
-		brightnesses.sort((a, b) => a - b);
-
-		let brightnessScale = (
-			brightnesses[Math.floor(this.resolutionHidden * this.resolutionHidden * .96)]
-			+ brightnesses[Math.floor(this.resolutionHidden * this.resolutionHidden * .98)]
-		) / 255 * 15 * (Math.abs(this.zoom.level / 2) + 1);
-
-		this.pastBrightnessScales.push(brightnessScale);
-
-		const denom = this.pastBrightnessScales.length;
-
-		if (denom > 10)
-		{
-			this.pastBrightnessScales.shift();
-		}
-
-		brightnessScale = Math.max(this.pastBrightnessScales.reduce((a, b) => a + b) / denom, .5);
+		// this.wilsonHidden.render.drawFrame();
 
 
 
-		this.wilson.gl.useProgram(
-			this.wilson.render.shaderPrograms[this.juliaMode]
-		);
+		// const pixelData = this.wilsonHidden.render.getPixelData();
 
-		this.wilson.gl.uniform1f(
-			this.wilson.uniforms.aspectRatio[this.juliaMode],
-			this.aspectRatio
-		);
+		// const brightnesses = new Array(this.resolutionHidden * this.resolutionHidden);
 
-		this.wilson.gl.uniform1f(
-			this.wilson.uniforms.worldCenterX[this.juliaMode],
-			this.wilson.worldCenterX
-		);
+		// for (let i = 0; i < this.resolutionHidden * this.resolutionHidden; i++)
+		// {
+		// 	brightnesses[i] = pixelData[4 * i] + pixelData[4 * i + 1] + pixelData[4 * i + 2];
+		// }
 
-		this.wilson.gl.uniform1f(
-			this.wilson.uniforms.worldCenterY[this.juliaMode],
-			this.wilson.worldCenterY
-		);
+		// brightnesses.sort((a, b) => a - b);
 
-		this.wilson.gl.uniform1f(
-			this.wilson.uniforms.worldSize[this.juliaMode],
-			Math.min(this.wilson.worldHeight, this.wilson.worldWidth) / 2
-		);
+		// let brightnessScale = (
+		// 	brightnesses[Math.floor(this.resolutionHidden * this.resolutionHidden * .96)]
+		// 	+ brightnesses[Math.floor(this.resolutionHidden * this.resolutionHidden * .98)]
+		// ) / 255 * 15 * (Math.abs(this.zoom.level / 2) + 1);
 
-		this.wilson.gl.uniform1i(
-			this.wilson.uniforms.numIterations[this.juliaMode],
-			this.numIterations
-		);
+		// this.pastBrightnessScales.push(brightnessScale);
 
-		this.wilson.gl.uniform1f(
-			this.wilson.uniforms.a[this.juliaMode],
-			this.a
-		);
+		// const denom = this.pastBrightnessScales.length;
 
-		this.wilson.gl.uniform1f(
-			this.wilson.uniforms.b[this.juliaMode],
-			this.b
-		);
+		// if (denom > 10)
+		// {
+		// 	this.pastBrightnessScales.shift();
+		// }
+
+		// brightnessScale = Math.max(this.pastBrightnessScales.reduce((a, b) => a + b) / denom, .5);
+
+
+
+		// this.wilson.gl.useProgram(
+		// 	this.wilson.render.shaderPrograms[this.juliaMode]
+		// );
+
+		// this.wilson.gl.uniform1f(
+		// 	this.wilson.uniforms.aspectRatio[this.juliaMode],
+		// 	this.aspectRatio
+		// );
+
+		// this.wilson.gl.uniform1f(
+		// 	this.wilson.uniforms.worldCenterX[this.juliaMode],
+		// 	this.wilson.worldCenterX
+		// );
+
+		// this.wilson.gl.uniform1f(
+		// 	this.wilson.uniforms.worldCenterY[this.juliaMode],
+		// 	this.wilson.worldCenterY
+		// );
+
+		// this.wilson.gl.uniform1f(
+		// 	this.wilson.uniforms.worldSize[this.juliaMode],
+		// 	Math.min(this.wilson.worldHeight, this.wilson.worldWidth) / 2
+		// );
+
+		// this.wilson.gl.uniform1i(
+		// 	this.wilson.uniforms.numIterations[this.juliaMode],
+		// 	this.numIterations
+		// );
+
+		// this.wilson.gl.uniform1f(
+		// 	this.wilson.uniforms.a[this.juliaMode],
+		// 	this.a
+		// );
+
+		// this.wilson.gl.uniform1f(
+		// 	this.wilson.uniforms.b[this.juliaMode],
+		// 	this.b
+		// );
 		
-		this.wilson.gl.uniform1f(
-			this.wilson.uniforms.brightnessScale[this.juliaMode],
-			brightnessScale
-		);
+		// this.wilson.gl.uniform1f(
+		// 	this.wilson.uniforms.brightnessScale[this.juliaMode],
+		// 	brightnessScale
+		// );
 
-		this.wilson.render.drawFrame();
+		// this.wilson.render.drawFrame();
 	}
 }

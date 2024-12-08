@@ -610,7 +610,7 @@ mjx-container
 .output-canvas
 {
 	width: calc(100% - 8px) !important;
-	height: auto;
+	aspect-ratio: 1;
 	
 	border: 2px solid var(--normal-contrast);
 	border-radius: 16px;
@@ -627,23 +627,17 @@ mjx-container
 
 
 
-.wilson-output-canvas-container
+.WILSON_canvas-container
 {
-	width: 100% !important;
-	font-size: 0 !important;
+	width: 100%;
+	font-size: 0;
 }
 
-.wilson-applet-canvas-container
+.WILSON_applet-container
 {
-	margin-top: 32px !important;
-	margin-bottom: 0 !important;
-	line-height: 0 !important;
-}
-
-.wilson-applet-canvas-container.black-background
-{
-	margin-top: 0 !important;
-	margin-bottom: 0 !important;
+	margin-top: 32px;
+	margin-bottom: 0;
+	line-height: 0;
 }
 
 .fps-canvas
@@ -657,7 +651,7 @@ mjx-container
 	border-bottom-right-radius: 12px;
 }
 
-body > .wilson-fullscreen-components-container .fps-canvas
+body > .WILSON_fullscreen-container .fps-canvas
 {
 	bottom: 0px;
 	right: 0px;
@@ -687,7 +681,7 @@ body > .wilson-fullscreen-components-container .fps-canvas
 	filter: invert(calc(.25 + var(--theme)* .5657));
 }
 
-body > .wilson-fullscreen-components-container .wilson-help-button
+body > .WILSON_fullscreen-container .wilson-help-button
 {
 	display: none;
 }
@@ -719,12 +713,12 @@ body > .wilson-fullscreen-components-container .wilson-help-button
 	width: 100% !important;
 }
 
-.desmos-border .wilson-applet-canvas-container
+.desmos-border .WILSON_applet-container
 {
-	margin-top: 0 !important;
+	margin-top: 0;
 }
 
-.desmos-border .wilson-enter-fullscreen-button
+.desmos-border .WILSON_enter-fullscreen-button
 {
 	right: 4px;
 	top: 4px;
