@@ -270,7 +270,7 @@ export class Applet
 			const enterFullscreenButton = this.canvas.parentElement.querySelector(
 				".WILSON_enter-fullscreen-button"
 			);
-			
+
 			const exitFullscreenButton = this.canvas.parentElement.querySelector(
 				".WILSON_exit-fullscreen-button"
 			);
@@ -280,13 +280,13 @@ export class Applet
 				addHoverEventWithScale({
 					element: enterFullscreenButton,
 					scale: 1.1,
-					addBounceOnTouch: () => false
+					addBounceOnTouch: () => true
 				});
 
 				addHoverEventWithScale({
 					element: exitFullscreenButton,
 					scale: 1.1,
-					addBounceOnTouch: () => false
+					addBounceOnTouch: () => true
 				});
 
 				clearInterval(refreshId);
