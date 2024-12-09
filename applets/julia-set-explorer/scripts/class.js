@@ -1,5 +1,6 @@
 import { loadGlsl } from "../../../scripts/src/complexGlsl.js";
 import { Applet } from "/scripts/applets/applet.js";
+import { siteSettings } from "/scripts/src/settings.js";
 import { WilsonGPU } from "/scripts/wilson.js";
 
 export class JuliaSet extends Applet
@@ -272,6 +273,8 @@ export class JuliaSet extends Applet
 			maxWorldHeight: 4,
 
 			onResizeCanvas: this.drawFrame.bind(this),
+
+			reduceMotion: siteSettings.reduceMotion,
 
 			interactionOptions: {
 				useForPanAndZoom: true,
