@@ -69,7 +69,7 @@ export class DownloadButton extends Button
 		super({
 			element,
 			name: "Download",
-			onClick: () => applet.downloadFrame(filename),
+			onClick: () => applet.wilson.downloadFrame(filename),
 			linked
 		});
 	}
