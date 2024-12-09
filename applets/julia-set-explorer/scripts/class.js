@@ -323,20 +323,24 @@ export class JuliaSet extends Applet
 		{
 			this.juliaMode = "mandelbrot";
 
-			this.wilson.worldCenterX = -.75;
-			this.wilson.worldCenterY = 0;
-			this.wilson.worldWidth = 4;
-			this.wilson.worldHeight = 4;
+			this.wilson.resizeWorld({
+				width: 4,
+				height: 4,
+				centerX: -.75,
+				centerY: 0
+			});
 		}
 
 		else
 		{
 			this.juliaMode = "julia";
 
-			this.wilson.worldCenterX = 0;
-			this.wilson.worldCenterY = 0;
-			this.wilson.worldWidth = 4;
-			this.wilson.worldHeight = 4;
+			this.wilson.resizeWorld({
+				width: 4,
+				height: 4,
+				centerX: 0,
+				centerY: 0
+			});
 		}
 
 		this.pastBrightnessScales = [];

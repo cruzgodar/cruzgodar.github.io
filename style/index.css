@@ -640,6 +640,17 @@ mjx-container
 	line-height: 0;
 }
 
+.WILSON_enter-fullscreen-button, .WILSON_exit-fullscreen-button
+{
+	background: var(--background);
+	border: 2px solid var(--normal-contrast);
+}
+
+.WILSON_enter-fullscreen-button img, .WILSON_exit-fullscreen-button img
+{
+	filter: invert(calc(.25 + var(--theme)* .5657));
+}
+
 .fps-canvas
 {
 	width: 100px;

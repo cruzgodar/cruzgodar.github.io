@@ -71,6 +71,8 @@ export class Applet
 			}, 50);
 		}
 
+		this.addHoverEventOnFullscreenButton();
+
 		currentlyLoadedApplets.push(this);
 	}
 
@@ -250,7 +252,47 @@ export class Applet
 		return hiddenCanvas;
 	}
 
+	
 
+	addHoverEventOnFullscreenButton()
+	{
+		let attempts = 0;
+
+		const refreshId = setInterval(() =>
+		{
+			if (attempts > 40)
+			{
+				return;
+			}
+
+			attempts++;
+
+			const enterFullscreenButton = this.canvas.parentElement.querySelector(
+				".WILSON_enter-fullscreen-button"
+			);
+			
+			const exitFullscreenButton = this.canvas.parentElement.querySelector(
+				".WILSON_exit-fullscreen-button"
+			);
+
+			if (enterFullscreenButton && exitFullscreenButton)
+			{
+				addHoverEventWithScale({
+					element: enterFullscreenButton,
+					scale: 1.1,
+					addBounceOnTouch: () => false
+				});
+
+				addHoverEventWithScale({
+					element: exitFullscreenButton,
+					scale: 1.1,
+					addBounceOnTouch: () => false
+				});
+
+				clearInterval(refreshId);
+			}
+		}, 50);
+	}
 
 	addHelpButton()
 	{
