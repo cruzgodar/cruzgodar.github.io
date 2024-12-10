@@ -156,7 +156,16 @@ export class AbelianSandpile extends AnimationFrameApplet
 			}
 		`;
 
+		
 
+		const palettes = [
+			[[229, 190, 237], [149, 147, 217], [124, 144, 219]],
+			[[124, 106, 10], [186, 189, 141], [255, 218, 198]],
+			[[32, 44, 57], [40, 56, 69], [184, 176, 141]],
+			[[232, 247, 238], [184, 196, 187], [102, 63, 70]],
+			[[35, 44, 51], [90, 125, 124], [218, 223, 247]]
+		];
+		const palette = palettes[0];//palettes[Math.floor(Math.random() * palettes.length)];
 
 		const fragShaderSourceDraw = /* glsl */`
 			precision highp float;
@@ -165,6 +174,10 @@ export class AbelianSandpile extends AnimationFrameApplet
 			varying vec2 uv;
 			
 			uniform sampler2D uTexture;
+
+			const vec4 color1 = vec4(${palette[0].join(", ")}, 255) / 255.0;
+			const vec4 color2 = vec4(${palette[1].join(", ")}, 255) / 255.0;
+			const vec4 color3 = vec4(${palette[2].join(", ")}, 255) / 255.0;
 			
 			void main(void)
 			{
@@ -178,19 +191,19 @@ export class AbelianSandpile extends AnimationFrameApplet
 				
 				if (state.y == 1.0)
 				{
-					gl_FragColor = vec4(0.0, 0.25, 1.0, 1.0);
+					gl_FragColor = color1;
 					return;
 				}
 				
 				if (state.y == 2.0)
 				{
-					gl_FragColor = vec4(0.5, 0.0, 1.0, 1.0);
+					gl_FragColor = color2;
 					return;
 				}
 				
 				if (state.y == 3.0)
 				{
-					gl_FragColor = vec4(1.0, 1.0, 0.0, 1.0);
+					gl_FragColor = color3;
 					return;
 				}
 				
