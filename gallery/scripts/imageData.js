@@ -16,9 +16,14 @@ export const galleryImageData =
 
 		featured: `Featured in ${emu}`,
 
-		appletLink: "/applets/abelian-sandpiles/",
+		// eslint-disable-next-line max-len
+		appletLink: "/applets/abelian-sandpiles/?palettes-dropdown=nectarine&surrounding-grains-input=2",
 
-		driveId: "1pqpf8z08AgJ9oFXQLU0J6eWaJvgg6oME"
+		parameters: /* html */`
+			Generated with 4000000 center grains, 2 surrounding grains, and a grid size of 3001.
+		`,
+
+		driveId: "1YKzPisfXzOYcovQFJgB4XYR7gMVVHNpz"
 	},
 
 	"aztec-diamond":

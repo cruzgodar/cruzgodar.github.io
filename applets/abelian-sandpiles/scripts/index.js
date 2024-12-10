@@ -60,7 +60,7 @@ export default function()
 	const computationsPerFrameInput = new TextBox({
 		element: $("#computations-per-frame-input"),
 		name: "Computation Speed",
-		value: 10,
+		value: 1,
 		minValue: 1,
 		maxValue: 100,
 		onEnter: run,

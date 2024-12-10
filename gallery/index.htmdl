@@ -16,7 +16,7 @@
 		strange-attractor 1
 		menger-sponge 2
 		kaleidoscopic-ifs-2 1
-		abelian-sandpile 1
+		julia-set 1
 	###
 	
 	### gallery-block
@@ -63,7 +63,7 @@
 		thurston-geometry-sl2r 2
 		newtons-method-extended 1
 		lyapunov-fractal 1
-		julia-set 1
+		abelian-sandpile 1
 		juliabulb-power-2 1
 	###
 
