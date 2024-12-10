@@ -156,17 +156,6 @@ export class AbelianSandpile extends AnimationFrameApplet
 			}
 		`;
 
-		
-
-		const palettes = [
-			[[229, 190, 237], [149, 147, 217], [124, 144, 219]],
-			[[124, 106, 10], [186, 189, 141], [255, 218, 198]],
-			[[32, 44, 57], [40, 56, 69], [184, 176, 141]],
-			[[232, 247, 238], [184, 196, 187], [102, 63, 70]],
-			[[35, 44, 51], [90, 125, 124], [218, 223, 247]]
-		];
-		const palette = palettes[0];//palettes[Math.floor(Math.random() * palettes.length)];
-
 		const fragShaderSourceDraw = /* glsl */`
 			precision highp float;
 			precision highp sampler2D;
@@ -175,9 +164,9 @@ export class AbelianSandpile extends AnimationFrameApplet
 			
 			uniform sampler2D uTexture;
 
-			const vec4 color1 = vec4(${palette[0].join(", ")}, 255) / 255.0;
-			const vec4 color2 = vec4(${palette[1].join(", ")}, 255) / 255.0;
-			const vec4 color3 = vec4(${palette[2].join(", ")}, 255) / 255.0;
+			uniform vec3 color1;
+			uniform vec3 color2;
+			uniform vec3 color3;
 			
 			void main(void)
 			{
@@ -191,19 +180,19 @@ export class AbelianSandpile extends AnimationFrameApplet
 				
 				if (state.y == 1.0)
 				{
-					gl_FragColor = color1;
+					gl_FragColor = vec4(color1, 1.0);
 					return;
 				}
 				
 				if (state.y == 2.0)
 				{
-					gl_FragColor = color2;
+					gl_FragColor = vec4(color2, 1.0);
 					return;
 				}
 				
 				if (state.y == 3.0)
 				{
-					gl_FragColor = color3;
+					gl_FragColor = vec4(color3, 1.0);
 					return;
 				}
 				
@@ -234,6 +223,11 @@ export class AbelianSandpile extends AnimationFrameApplet
 				update: {
 					stepSize: 0,
 				},
+				draw: {
+					color1: [0, 0, 0],
+					color2: [0, 0, 0],
+					color3: [0, 0, 0],
+				}
 			},
 
 			canvasWidth: this.resolution,
@@ -257,7 +251,8 @@ export class AbelianSandpile extends AnimationFrameApplet
 		resolution = 100,
 		numGrains = 10000,
 		floodGrains = 0,
-		computationsPerFrame = 25
+		computationsPerFrame = 25,
+		palette = [[229, 190, 237], [149, 147, 217], [124, 144, 219]],
 	}) {
 		this.resolution = resolution;
 		this.numGrains = numGrains;
@@ -293,6 +288,36 @@ export class AbelianSandpile extends AnimationFrameApplet
 			shader: "update",
 			name: "stepSize",
 			value: 1 / this.resolution
+		});
+
+		this.wilson.setUniform({
+			shader: "draw",
+			name: "color1",
+			value: [
+				palette[0][0] / 255,
+				palette[0][1] / 255,
+				palette[0][2] / 255
+			]
+		});
+
+		this.wilson.setUniform({
+			shader: "draw",
+			name: "color2",
+			value: [
+				palette[1][0] / 255,
+				palette[1][1] / 255,
+				palette[1][2] / 255
+			]
+		});
+
+		this.wilson.setUniform({
+			shader: "draw",
+			name: "color3",
+			value: [
+				palette[2][0] / 255,
+				palette[2][1] / 255,
+				palette[2][2] / 255
+			]
 		});
 
 		this.wilson.resizeCanvas({ width: this.resolution });
