@@ -4,6 +4,7 @@ import { WilsonGPU } from "/scripts/wilson.js";
 
 export class AbelianSandpile extends AnimationFrameApplet
 {
+	wilsonUpdate;
 	numGrains = 10000;
 	floodGrains = 0;
 	resolution = 319;
@@ -173,7 +174,14 @@ export class AbelianSandpile extends AnimationFrameApplet
 			
 			void main(void)
 			{
-				vec2 state = floor(256.0 * texture2D(uTexture, (uv + vec2(1.0, 1.0)) / 2.0).zw);
+				vec2 modUv = abs(uv);
+
+				if (modUv.y > modUv.x)
+				{
+					modUv = vec2(modUv.y, modUv.x);
+				}
+
+				vec2 state = floor(256.0 * texture2D(uTexture, (modUv + vec2(1.0, 1.0)) / 2.0).zw);
 				
 				if (state.x != 0.0)
 				{
@@ -210,11 +218,12 @@ export class AbelianSandpile extends AnimationFrameApplet
 			}
 		`;
 
-		const options = {
+		const hiddenCanvas = this.createHiddenCanvas(false);
+
+		const optionsUpdate = {
 			shaders: {
 				init: fragShaderSourceInit,
 				update: fragShaderSourceUpdate,
-				draw: fragShaderSourceDraw,
 			},
 
 			uniforms: {
@@ -225,12 +234,21 @@ export class AbelianSandpile extends AnimationFrameApplet
 				},
 				update: {
 					stepSize: 0,
-				},
-				draw: {
-					color1: [0, 0, 0],
-					color2: [0, 0, 0],
-					color3: [0, 0, 0],
 				}
+			},
+
+			canvasWidth: Math.ceil(this.resolution / 2),
+		};
+
+		this.wilsonUpdate = new WilsonGPU(hiddenCanvas, optionsUpdate);
+
+		const options = {
+			shader: fragShaderSourceDraw,
+
+			uniforms: {
+				color1: [0, 0, 0],
+				color2: [0, 0, 0],
+				color3: [0, 0, 0],
 			},
 
 			canvasWidth: this.resolution,
@@ -269,32 +287,35 @@ export class AbelianSandpile extends AnimationFrameApplet
 			(this.numGrains % 256) / 256
 		];
 
-		this.wilson.setUniform({
+		this.wilsonUpdate.setUniform({
 			shader: "init",
 			name: "stepSize",
 			value: 1 / this.resolution
 		});
 
-		this.wilson.setUniform({
+		this.wilsonUpdate.setUniform({
 			shader: "init",
 			name: "startGrains",
 			value: grains
 		});
 
-		this.wilson.setUniform({
+		this.wilsonUpdate.setUniform({
 			shader: "init",
 			name: "floodGrains",
 			value: [0, 0, 0, this.floodGrains / 256]
 		});
 
-		this.wilson.setUniform({
+		this.wilsonUpdate.setUniform({
 			shader: "update",
 			name: "stepSize",
 			value: 1 / this.resolution
 		});
 
+		this.wilsonUpdate.resizeCanvas({ width: this.resolution });
+
+
+
 		this.wilson.setUniform({
-			shader: "draw",
 			name: "color1",
 			value: [
 				palette[0][0] / 255,
@@ -304,7 +325,6 @@ export class AbelianSandpile extends AnimationFrameApplet
 		});
 
 		this.wilson.setUniform({
-			shader: "draw",
 			name: "color2",
 			value: [
 				palette[1][0] / 255,
@@ -314,7 +334,6 @@ export class AbelianSandpile extends AnimationFrameApplet
 		});
 
 		this.wilson.setUniform({
-			shader: "draw",
 			name: "color3",
 			value: [
 				palette[2][0] / 255,
@@ -325,37 +344,44 @@ export class AbelianSandpile extends AnimationFrameApplet
 
 		this.wilson.resizeCanvas({ width: this.resolution });
 
-
-
 		this.wilson.createFramebufferTexturePair({
-			id: "0",
+			id: "output",
 			textureType: "float"
 		});
 
-		this.wilson.createFramebufferTexturePair({
-			id: "1",
-			textureType: "float"
-		});
-
-		this.wilson.useTexture("0");
 		this.wilson.useFramebuffer(null);
 
-		this.wilson.useShader("update");
-		this.wilson.setTexture({
+
+
+		this.wilsonUpdate.createFramebufferTexturePair({
+			id: "0",
+			textureType: "float"
+		});
+
+		this.wilsonUpdate.createFramebufferTexturePair({
+			id: "1",
+			textureType: "float"
+		});
+
+		this.wilsonUpdate.useTexture("0");
+		this.wilsonUpdate.useFramebuffer(null);
+
+		this.wilsonUpdate.useShader("update");
+		this.wilsonUpdate.setTexture({
 			id: "0",
 			data: null
 		});
-		this.wilson.setTexture({
+		this.wilsonUpdate.setTexture({
 			id: "1",
 			data: null
 		});
 
-		this.wilson.useShader("init");
-		this.wilson.useTexture("1");
-		this.wilson.useFramebuffer("0");
-		this.wilson.drawFrame();
+		this.wilsonUpdate.useShader("init");
+		this.wilsonUpdate.useTexture("1");
+		this.wilsonUpdate.useFramebuffer("0");
+		this.wilsonUpdate.drawFrame();
 
-		this.wilson.useTexture("0");
+		this.wilsonUpdate.useTexture("0");
 
 		this.resume();
 	}
@@ -364,49 +390,54 @@ export class AbelianSandpile extends AnimationFrameApplet
 
 	drawFrame()
 	{
-		this.wilson.useShader("update");
+		this.wilsonUpdate.useShader("update");
 
 		for (let i = 0; i < this.computationsPerFrame; i++)
 		{
-			this.wilson.useFramebuffer("1");
-			this.wilson.drawFrame();
+			this.wilsonUpdate.useFramebuffer("1");
+			this.wilsonUpdate.drawFrame();
 
-			this.wilson.useTexture("1");
-			this.wilson.useFramebuffer("0");
-			this.wilson.drawFrame();
+			this.wilsonUpdate.useTexture("1");
+			this.wilsonUpdate.useFramebuffer("0");
+			this.wilsonUpdate.drawFrame();
 
-			this.wilson.useTexture("0");
+			this.wilsonUpdate.useTexture("0");
 		}
 
-		this.wilson.useShader("draw");
-		this.wilson.useFramebuffer(null);
+		const pixels = this.wilsonUpdate.readPixels("float");
+
+		this.wilson.setTexture({
+			id: "output",
+			data: pixels
+		});
+
 		this.wilson.drawFrame();
 
 
 
-		const pixelData = this.wilson.readPixels();
+		// const pixelData = this.wilson.readPixels();
 
-		if (this.lastPixelData)
-		{
-			let foundDiff = false;
+		// if (this.lastPixelData)
+		// {
+		// 	let foundDiff = false;
 
-			for (let i = Math.floor(pixelData.length / 2 - 4); i < pixelData.length; i++)
-			{
-				if (pixelData[i] !== this.lastPixelData[i])
-				{
-					foundDiff = true;
-					break;
-				}
-			}
+		// 	for (let i = Math.floor(pixelData.length / 2 - 4); i < pixelData.length; i++)
+		// 	{
+		// 		if (pixelData[i] !== this.lastPixelData[i])
+		// 		{
+		// 			foundDiff = true;
+		// 			break;
+		// 		}
+		// 	}
 
-			if (!foundDiff)
-			{
-				this.pause();
-				return;
-			}
-		}
+		// 	if (!foundDiff)
+		// 	{
+		// 		this.pause();
+		// 		return;
+		// 	}
+		// }
 
-		this.lastPixelData = pixelData;
+		// this.lastPixelData = pixelData;
 
 		this.needNewFrame = true;
 	}

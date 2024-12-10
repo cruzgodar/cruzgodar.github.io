@@ -21,9 +21,9 @@ export default function()
 		element: $("#palettes-dropdown"),
 		name: "Palettes",
 		options: {
-			sakura: "Sakura",
-			desert: "Desert",
 			nectarine: "Nectarine",
+			desert: "Desert",
+			sakura: "Sakura",
 			ivory: "Ivory",
 			lichen: "Lichen"
 		},
@@ -94,7 +94,7 @@ export default function()
 			numGrains: centerGrainsInput.value,
 			floodGrains: surroundingGrainsInput.value,
 			computationsPerFrame: computationsPerFrameInput.value,
-			palette: palettes[palettesDropdown.value]
+			palette: palettes[palettesDropdown.value || "nectarine"]
 		});
 	}
 }
