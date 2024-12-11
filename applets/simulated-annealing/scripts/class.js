@@ -1,13 +1,14 @@
 import { Applet } from "../../../scripts/applets/applet.js";
 import { convertColor } from "/scripts/src/browser.js";
 import { addTemporaryWorker } from "/scripts/src/main.js";
-import { Wilson } from "/scripts/wilson.js";
+import { siteSettings } from "/scripts/src/settings.js";
+import { WilsonCPU } from "/scripts/wilson.js";
 
 export class SimulatedAnnealing extends Applet
 {
 	webWorker;
 
-	resolution;
+	resolution = 1000;
 	numNodes;
 	maximumSpeed;
 
@@ -19,22 +20,17 @@ export class SimulatedAnnealing extends Applet
 
 		const options =
 		{
-			renderer: "cpu",
+			canvasWidth: this.resolution,
+			reduceMotion: siteSettings.reduceMotion,
 
-			canvasWidth: 1000,
-			canvasHeight: 1000,
-
-
-
-			useFullscreen: true,
-
-			useFullscreenButton: true,
-
-			enterFullscreenButtonIconPath: "/graphics/general-icons/enter-fullscreen.png",
-			exitFullscreenButtonIconPath: "/graphics/general-icons/exit-fullscreen.png"
+			fullscreenOptions: {
+				useFullscreenButton: true,
+				enterFullscreenButtonIconPath: "/graphics/general-icons/enter-fullscreen.png",
+				exitFullscreenButtonIconPath: "/graphics/general-icons/exit-fullscreen.png",
+			},
 		};
 
-		this.wilson = new Wilson(canvas, options);
+		this.wilson = new WilsonCPU(canvas, options);
 	}
 
 
@@ -50,7 +46,7 @@ export class SimulatedAnnealing extends Applet
 
 		const scalingFactor = resolution / 1000;
 
-		this.wilson.changeCanvasSize(resolution, resolution);
+		this.wilson.resizeCanvas({ width: resolution });
 
 		this.wilson.ctx.fillStyle = convertColor(0, 0, 0);
 		this.wilson.ctx.fillRect(0, 0, resolution, resolution);
@@ -61,14 +57,12 @@ export class SimulatedAnnealing extends Applet
 
 		this.webWorker = addTemporaryWorker("/applets/simulated-annealing/scripts/worker.js");
 
-
-
 		this.webWorker.onmessage = (e) =>
 		{
 			// A circle with arguments (x, y, r, color).
 			if (e.data[0] === 0)
 			{
-				this.wilson.ctx.fillStyle = convertColor(...(e.data[4]));
+				this.wilson.ctx.fillStyle = convertColor(...e.data[4]);
 
 				this.wilson.ctx.beginPath();
 				this.wilson.ctx.moveTo(e.data[1], e.data[2]);
