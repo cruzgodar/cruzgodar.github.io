@@ -67,27 +67,22 @@ export class AbelianSandpile extends AnimationFrameApplet
 			
 			uniform float stepSize;
 
-			const float amountNearby = 4.0;
-			const float divisor = 256.0 / amountNearby;
-
 			
-
-			// The general idea: this is carrying in reverse. The largest place is supposed to be divided by four, so we
-			// start by extracting the portion that is too small for it to see and adding it to the next place down (not
-			// dividing by 256 effectively multiplies it by 256). Then what's left is divided by 4 and effectively floored.
 
 			void quotientState(inout vec4 state)
 			{
-				state.y += mod(floor(state.x * 256.0), amountNearby);
-				state.x = floor(state.x * divisor) / 256.0;
+				state = floor(state * 255.0);
+
+				state.y += mod(state.x, 4.0) * 256.0;
+				state.x = floor(state.x / 4.0);
 				
-				state.z += mod(floor(state.y * 256.0), amountNearby);
-				state.y = floor(state.y * divisor) / 256.0;
+				state.z += mod(state.y, 4.0) * 256.0;
+				state.y = floor(state.y / 4.0);
 				
-				state.w += mod(floor(state.z * 256.0), amountNearby);
-				state.z = floor(state.z * divisor) / 256.0;
+				state.w += mod(state.z, 4.0) * 256.0;
+				state.z = floor(state.z / 4.0);
 				
-				state.w = floor(state.w * divisor) / 256.0;
+				state.w = floor(state.w / 4.0);
 			}
 			
 			void main(void)
@@ -102,8 +97,8 @@ export class AbelianSandpile extends AnimationFrameApplet
 					return;
 				}
 
-				vec4 state = texture2D(uTexture, center);
-				float leftover = mod(floor(256.0 * state.w), amountNearby) / 256.0;
+				vec4 state = floor(texture2D(uTexture, center) * 255.0);
+				float leftover = mod(state.w, 4.0);
 
 				vec4 stateUp;
 				vec4 stateDown;
@@ -115,9 +110,6 @@ export class AbelianSandpile extends AnimationFrameApplet
 					stateDown = stateRight;
 					stateUp = stateRight;
 					stateLeft = stateRight;
-
-					// gl_FragColor = vec4(1.0, 0.0, 0.0, 1.0);
-					// return;
 				}
 
 				else if (abs(center.y) < stepSize)
@@ -125,9 +117,6 @@ export class AbelianSandpile extends AnimationFrameApplet
 					stateUp = texture2D(uTexture, center + vec2(0.0, stepSize));
 					stateDown = stateUp;
 					stateLeft = texture2D(uTexture, center + vec2(-stepSize, 0.0));
-
-					// gl_FragColor = vec4(0.0, 1.0, 0.0, 1.0);
-					// return;
 				}
 
 				else if (abs(center.x - center.y) < stepSize / 4.0)
@@ -135,9 +124,6 @@ export class AbelianSandpile extends AnimationFrameApplet
 					stateDown = texture2D(uTexture, center + vec2(0.0, -stepSize));
 					stateUp = stateDown;
 					stateLeft = stateRight;
-
-					// gl_FragColor = vec4(0.0, 0.0, 1.0, 1.0);
-					// return;
 				}
 
 				else
@@ -145,9 +131,6 @@ export class AbelianSandpile extends AnimationFrameApplet
 					stateUp = texture2D(uTexture, center + vec2(0.0, stepSize));
 					stateDown = texture2D(uTexture, center + vec2(0.0, -stepSize));
 					stateLeft = texture2D(uTexture, center + vec2(-stepSize, 0.0));
-
-					// gl_FragColor = vec4(1.0, 1.0, 1.0, 1.0);
-					// return;
 				}
 
 				quotientState(stateUp);
@@ -159,16 +142,16 @@ export class AbelianSandpile extends AnimationFrameApplet
 				//The new state should be what used to be here, mod 4, plus the floor of 1/4 of each of the neighbors.
 				vec4 newState = vec4(0.0, 0.0, 0.0, leftover) + stateUp + stateDown + stateLeft + stateRight;
 				
-				newState.z += floor(newState.w) / 256.0;
-				newState.w = mod(newState.w, 1.0);
+				newState.z += floor(newState.w / 256.0);
+				newState.w = mod(newState.w, 256.0);
 				
-				newState.y += floor(newState.z) / 256.0;
-				newState.z = mod(newState.z, 1.0);
+				newState.y += floor(newState.z / 256.0);
+				newState.z = mod(newState.z, 256.0);
+
+				newState.x += floor(newState.y / 256.0);
+				newState.y = mod(newState.y, 256.0);
 				
-				newState.x += floor(newState.y) / 256.0;
-				newState.y = mod(newState.y, 1.0);
-				
-				gl_FragColor = newState;
+				gl_FragColor = newState / 255.0;
 			}
 		`;
 
@@ -230,7 +213,7 @@ export class AbelianSandpile extends AnimationFrameApplet
 			}
 		`;
 
-		const hiddenCanvas = this.createHiddenCanvas(false);
+		const hiddenCanvas = this.createHiddenCanvas();
 
 		const optionsUpdate = {
 			shaders: {
@@ -294,10 +277,10 @@ export class AbelianSandpile extends AnimationFrameApplet
 		this.computationsPerFrame = computationsPerFrame;
 
 		const grains = [
-			(Math.floor(this.numGrains / (256 * 256 * 256)) % 256) / 256,
-			(Math.floor(this.numGrains / (256 * 256)) % 256) / 256,
-			(Math.floor(this.numGrains / 256) % 256) / 256,
-			(this.numGrains % 256) / 256
+			(Math.floor(this.numGrains / (256 * 256 * 256)) % 256) / 255,
+			(Math.floor(this.numGrains / (256 * 256)) % 256) / 255,
+			(Math.floor(this.numGrains / 256) % 256) / 255,
+			(this.numGrains % 256) / 255
 		];
 
 		this.wilsonUpdate.setUniform({
@@ -315,7 +298,7 @@ export class AbelianSandpile extends AnimationFrameApplet
 		this.wilsonUpdate.setUniform({
 			shader: "init",
 			name: "floodGrains",
-			value: [0, 0, 0, this.floodGrains / 256]
+			value: [0, 0, 0, this.floodGrains / 255]
 		});
 
 		this.wilsonUpdate.setUniform({
