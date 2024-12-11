@@ -2,8 +2,8 @@ import { hexToRgb, rgbToHex } from "../../../scripts/applets/applet.js";
 import anime from "/scripts/anime.js";
 import { AnimationFrameApplet } from "/scripts/applets/animationFrameApplet.js";
 import { changeOpacity } from "/scripts/src/animation.js";
-import { addTemporaryListener } from "/scripts/src/main.js";
-import { Wilson } from "/scripts/wilson.js";
+import { siteSettings } from "/scripts/src/settings.js";
+import { WilsonGPU } from "/scripts/wilson.js";
 
 export class NewtonsMethod extends AnimationFrameApplet
 {
@@ -14,18 +14,20 @@ export class NewtonsMethod extends AnimationFrameApplet
 	rootBInput;
 	colorSetterElement;
 
-	a = [1, 0];
-	c = [0, 0];
+	colors = {
+		root0: [216 / 255, 1 / 255, 42 / 255],
+		root1: [255 / 255, 139 / 255,56 / 255],
+		root2: [249 / 255, 239 / 255, 20 / 255],
+		root3: [27 / 255, 181 / 255, 61 / 255],
+		root4: [0 / 255, 86 / 255, 195 / 255],
+		root5: [154 / 255, 82 / 255, 164 / 255],
+		root6: [32 / 255, 32 / 255, 32 / 255],
+		root7: [155 / 255, 92 / 255, 15 / 255],
+	};
 
-	colors = [];
-
-	currentRoots = [];
-
-	lastActiveRoot = 0;
+	lastActiveRoot = "root0";
 
 	numRoots = 0;
-
-	aspectRatio = 1;
 
 	numIterations = 100;
 
@@ -61,17 +63,28 @@ export class NewtonsMethod extends AnimationFrameApplet
 			
 			varying vec2 uv;
 			
-			uniform float aspectRatio;
-			
-			uniform float worldCenterX;
-			uniform float worldCenterY;
-			uniform float worldSize;
+			uniform vec2 worldCenter;
+			uniform vec2 worldSize;
 			
 			uniform int numRoots;
 			
-			uniform vec2 roots[11];
+			uniform vec2 root0;
+			uniform vec2 root1;
+			uniform vec2 root2;
+			uniform vec2 root3;
+			uniform vec2 root4;
+			uniform vec2 root5;
+			uniform vec2 root6;
+			uniform vec2 root7;
 			
-			uniform vec3 colors[11];
+			uniform vec3 color0;
+			uniform vec3 color1;
+			uniform vec3 color2;
+			uniform vec3 color3;
+			uniform vec3 color4;
+			uniform vec3 color5;
+			uniform vec3 color6;
+			uniform vec3 color7;
 			
 			uniform vec2 a;
 			uniform vec2 c;
@@ -108,16 +121,48 @@ export class NewtonsMethod extends AnimationFrameApplet
 			vec2 cpoly(vec2 z)
 			{
 				vec2 result = vec2(1.0, 0.0);
-				
-				for (int i = 0; i <= 11; i++)
+
+				if (numRoots >= 1)
 				{
-					if (i == numRoots)
-					{
-						return result;
-					}
-					
-					result = cmul(result, z - roots[i]);
+					result = cmul(result, z - root0);
 				}
+
+				if (numRoots >= 2)
+				{
+					result = cmul(result, z - root1);
+				}
+
+				if (numRoots >= 3)
+				{
+					result = cmul(result, z - root2);
+				}
+
+				if (numRoots >= 4)
+				{
+					result = cmul(result, z - root3);
+				}
+
+				if (numRoots >= 5)
+				{
+					result = cmul(result, z - root4);
+				}
+
+				if (numRoots >= 6)
+				{
+					result = cmul(result, z - root5);
+				}
+
+				if (numRoots >= 7)
+				{
+					result = cmul(result, z - root6);
+				}
+
+				if (numRoots >= 8)
+				{
+					result = cmul(result, z - root7);
+				}
+
+				return result;
 			}
 			
 			
@@ -127,23 +172,31 @@ export class NewtonsMethod extends AnimationFrameApplet
 			{
 				return derivativePrecision * (cpoly(z + vec2(1.0 / (2.0*derivativePrecision), 0.0)) - cpoly(z - vec2(1.0 / (2.0*derivativePrecision), 0.0)));
 			}
+
+
+
+			void computeColor(
+				vec2 lastZ,
+				vec2 root,
+				vec3 color,
+				float d0,
+				int iteration
+			) {
+				float d1 = length(lastZ - root);
+				
+				float brightnessAdjust = (log(threshhold) - log(d0)) / (log(d1) - log(d0));
+				
+				float brightness = 1.0 - (float(iteration) - brightnessAdjust) / brightnessScale;
+				
+				gl_FragColor = vec4(color * brightness, 1.0);
+			}
 			
 			
 			
 			void main(void)
 			{
-				vec2 z;
+				vec2 z = uv * worldSize * 0.5 + worldCenter;
 				vec2 lastZ = vec2(0.0, 0.0);
-				
-				if (aspectRatio >= 1.0)
-				{
-					z = vec2(uv.x * aspectRatio * worldSize + worldCenterX, uv.y * worldSize + worldCenterY);
-				}
-				
-				else
-				{
-					z = vec2(uv.x * worldSize + worldCenterX, uv.y / aspectRatio * worldSize + worldCenterY);
-				}
 				
 				gl_FragColor = vec4(0.0, 0.0, 0.0, 1.0);
 				
@@ -160,28 +213,91 @@ export class NewtonsMethod extends AnimationFrameApplet
 					lastZ = z;
 					
 					z -= temp;
-					
-					
-					
-					for (int i = 0; i <= 11; i++)
+
+					if (numRoots >= 1)
 					{
-						if (i == numRoots)
-						{
-							break;
-						}
-						
-						float d0 = length(z - roots[i]);
-						
+						float d0 = length(z - root0);
+
 						if (d0 < threshhold)
 						{
-							float d1 = length(lastZ - roots[i]);
-							
-							float brightnessAdjust = (log(threshhold) - log(d0)) / (log(d1) - log(d0));
-							
-							float brightness = 1.0 - (float(iteration) - brightnessAdjust) / brightnessScale;
-							
-							gl_FragColor = vec4(colors[i] * brightness, 1.0);
-							
+							computeColor(lastZ, root0, color0, d0, iteration);
+							return;
+						}
+					}
+
+					if (numRoots >= 2)
+					{
+						float d0 = length(z - root1);
+
+						if (d0 < threshhold)
+						{
+							computeColor(lastZ, root1, color1, d0, iteration);
+							return;
+						}
+					}
+
+					if (numRoots >= 3)
+					{
+						float d0 = length(z - root2);
+
+						if (d0 < threshhold)
+						{
+							computeColor(lastZ, root2, color2, d0, iteration);
+							return;
+						}
+					}
+
+					if (numRoots >= 4)
+					{
+						float d0 = length(z - root3);
+
+						if (d0 < threshhold)
+						{
+							computeColor(lastZ, root3, color3, d0, iteration);
+							return;
+						}
+					}
+
+					if (numRoots >= 5)
+					{
+						float d0 = length(z - root4);
+
+						if (d0 < threshhold)
+						{
+							computeColor(lastZ, root4, color4, d0, iteration);
+							return;
+						}
+					}
+
+					if (numRoots >= 6)
+					{
+						float d0 = length(z - root5);
+
+						if (d0 < threshhold)
+						{
+							computeColor(lastZ, root5, color5, d0, iteration);
+							return;
+						}
+					}
+
+					if (numRoots >= 7)
+					{
+						float d0 = length(z - root6);
+
+						if (d0 < threshhold)
+						{
+							computeColor(lastZ, root6, color6, d0, iteration);
+							return;
+						}
+					}
+
+					if (numRoots >= 8)
+					{
+						float d0 = length(z - root7);
+
+						if (d0 < threshhold)
+						{
+							computeColor(lastZ, root7, color7, d0, iteration);
 							return;
 						}
 					}
@@ -191,185 +307,103 @@ export class NewtonsMethod extends AnimationFrameApplet
 
 
 
-		const options =
-		{
-			renderer: "gpu",
-
+		const options = {
 			shader: fragShaderSource,
 
-			canvasWidth: 500,
-			canvasHeight: 500,
+			uniforms: {
+				worldCenter: [0, 0],
+				worldSize: [2, 2],
+				
+				numRoots: 3,
+				
+				root0: [0, 0],
+				root1: [0, 0],
+				root2: [0, 0],
+				root3: [0, 0],
+				root4: [0, 0],
+				root5: [0, 0],
+				root6: [0, 0],
+				root7: [0, 0],
+				
+				color0: this.colors.root0,
+				color1: this.colors.root1,
+				color2: this.colors.root2,
+				color3: this.colors.root3,
+				color4: this.colors.root4,
+				color5: this.colors.root5,
+				color6: this.colors.root6,
+				color7: this.colors.root7,
+				
+				a: [1, 0],
+				c: [0, 0],
+				
+				brightnessScale: this.brightnessScale,
 
-			worldWidth: 3,
-			worldHeight: 3,
+				secantProportion: this.secantProportion,
+			},
+
+			canvasWidth: this.resolution,
+
+			worldWidth: 4,
+			worldHeight: 4,
 			worldCenterX: 0,
 			worldCenterY: 0,
 
+			minWorldWidth: 0.00001,
+			maxWorldWidth: 40,
+			minWorldHeight: 0.00001,
+			maxWorldHeight: 40,
 
+			onResizeCanvas: this.drawFrame.bind(this),
 
-			useDraggables: true,
+			reduceMotion: siteSettings.reduceMotion,
 
-			draggablesMousemoveCallback: this.onDragDraggable.bind(this),
-			draggablesTouchmoveCallback: this.onDragDraggable.bind(this),
+			interactionOptions: {
+				useForPanAndZoom: true,
+				onPanAndZoom: this.drawFrame.bind(this),
+			},
 
-			draggablesMouseupCallback: this.onReleaseDraggable.bind(this),
-			draggablesTouchendCallback: this.onReleaseDraggable.bind(this),
+			draggableOptions: {
+				draggables: {
+					a: [1, 0],
+					c: [0, 0],
+					root0: [0, 0],
+					root1: [0, 0],
+					root2: [0, 0],
+					root3: [0, 0],
+					root4: [0, 0],
+					root5: [0, 0],
+					root6: [0, 0],
+					root7: [0, 0],
+				},
+				callbacks: {
+					onrelease: this.onReleaseDraggable.bind(this),
+				}
+			},
 
-
-
-			useFullscreen: true,
-
-			trueFullscreen: true,
-
-			useFullscreenButton: true,
-
-			enterFullscreenButtonIconPath: "/graphics/general-icons/enter-fullscreen.png",
-			exitFullscreenButtonIconPath: "/graphics/general-icons/exit-fullscreen.png",
-
-			switchFullscreenCallback: () => this.changeAspectRatio(true),
-
-
-
-			mousedownCallback: this.onGrabCanvas.bind(this),
-			touchstartCallback: this.onGrabCanvas.bind(this),
-
-			mousedragCallback: this.onDragCanvas.bind(this),
-			touchmoveCallback: this.onDragCanvas.bind(this),
-
-			mouseupCallback: this.onReleaseCanvas.bind(this),
-			touchendCallback: this.onReleaseCanvas.bind(this),
-
-			wheelCallback: this.onWheelCanvas.bind(this),
-			pinchCallback: this.onPinchCanvas.bind(this)
+			fullscreenOptions: {
+				fillScreen: true,
+				useFullscreenButton: true,
+				enterFullscreenButtonIconPath: "/graphics/general-icons/enter-fullscreen.png",
+				exitFullscreenButtonIconPath: "/graphics/general-icons/exit-fullscreen.png",
+			},
 		};
 
-		const optionsHidden =
-		{
-			renderer: "gpu",
 
-			shader: fragShaderSource,
 
+		this.wilson = new WilsonGPU(canvas, options);
+
+		this.wilsonHidden = new WilsonGPU(hiddenCanvas, {
+			...options,
 			canvasWidth: this.resolutionHidden,
-			canvasHeight: this.resolutionHidden
-		};
-
-
-
-		this.wilson = new Wilson(canvas, options);
-
-		this.wilson.render.initUniforms([
-			"aspectRatio",
-			"worldCenterX",
-			"worldCenterY",
-			"worldSize",
-			"numRoots",
-			"roots",
-			"colors",
-			"a",
-			"c",
-			"brightnessScale",
-			"secantProportion"
-		]);
-
-
-
-		this.wilsonHidden = new Wilson(hiddenCanvas, optionsHidden);
-
-		this.wilsonHidden.render.initUniforms([
-			"aspectRatio",
-			"worldCenterX",
-			"worldCenterY",
-			"worldSize",
-			"numRoots",
-			"roots",
-			"colors",
-			"a",
-			"c",
-			"brightnessScale",
-			"secantProportion"
-		]);
-
-
-
-		const boundFunction = () => this.changeAspectRatio(true);
-		addTemporaryListener({
-			object: window,
-			event: "resize",
-			callback: boundFunction
 		});
 
-
-
-		let element = this.wilson.draggables.add(1, 0);
-
-		element.classList.add("a-marker");
-
-		element = this.wilson.draggables.add(0, 0);
-
-		element.classList.add("c-marker");
-
-
-
-		this.addRoot();
-		this.addRoot();
-		this.addRoot();
+		for (let i = 3; i < 8; i++)
+		{
+			this.wilson.draggables[`root${i}`].element.style.display = "none";
+		}
 
 		this.spreadRoots(true);
-
-
-
-		this.zoom.init();
-
-		this.wilson.gl.uniform1f(this.wilson.uniforms.aspectRatio, 1);
-		this.wilsonHidden.gl.uniform1f(this.wilsonHidden.uniforms.aspectRatio, 1);
-
-		this.colors = [
-			216 / 255,
-			1 / 255,
-			42 / 255,
-			
-			255 / 255,
-			139 / 255,
-			56 / 255,
-			
-			249 / 255,
-			239 / 255,
-			20 / 255,
-			
-			27 / 255,
-			181 / 255,
-			61 / 255,
-			
-			0 / 255,
-			86 / 255,
-			195 / 255,
-			
-			154 / 255,
-			82 / 255,
-			164 / 255,
-			
-			32 / 255,
-			32 / 255,
-			32 / 255,
-			
-			155 / 255,
-			92 / 255,
-			15 / 255,
-			
-			182 / 255,
-			228 / 255,
-			254 / 255,
-			
-			250 / 255,
-			195 / 255,
-			218 / 255,
-			
-			255 / 255,
-			255 / 255,
-			255 / 255];
-
-		this.wilson.gl.uniform3fv(this.wilson.uniforms.colors, this.colors);
-		this.wilsonHidden.gl.uniform3fv(this.wilsonHidden.uniforms.colors, this.colors);
 
 		this.resume();
 	}
@@ -399,22 +433,31 @@ export class NewtonsMethod extends AnimationFrameApplet
 
 	addRoot()
 	{
-		if (this.numRoots === 11)
+		if (this.numRoots === 8)
 		{
 			return;
 		}
 
-
-
 		const x = Math.random() * 3 - 1.5;
 		const y = Math.random() * 3 - 1.5;
 
-		this.wilson.draggables.add(x, y);
+		this.wilson.setDraggablePosition({
+			id: `root${this.numRoots}`,
+			location: [x, y]
+		});
 
-		this.currentRoots.push(x);
-		this.currentRoots.push(y);
-
+		this.wilson.draggables[`root${this.numRoots}`].element.style.display = "block";
 		this.numRoots++;
+
+		this.wilson.setUniform({
+			name: `root${this.numRoots}`,
+			value: this.draggables[`root${this.numRoots}`].worldCoordinates
+		});
+
+		this.wilson.setUniform({
+			name: "numRoots",
+			value: this.numRoots
+		});
 
 		this.needNewFrame = true;
 	}
@@ -428,18 +471,14 @@ export class NewtonsMethod extends AnimationFrameApplet
 			return;
 		}
 
-
 		this.numRoots--;
 
-		this.currentRoots.pop();
-		this.currentRoots.pop();
+		this.wilson.draggables[`root${this.numRoots}`].element.style.display = "none";
 
-		this.wilson.draggables.draggables[this.numRoots + 2].remove();
-
-		this.wilson.draggables.draggables.pop();
-		this.wilson.draggables.worldCoordinates.pop();
-
-		this.wilson.draggables.numDraggables--;
+		this.wilson.setUniform({
+			name: "numRoots",
+			value: this.numRoots
+		});
 
 		this.needNewFrame = true;
 	}
@@ -448,15 +487,20 @@ export class NewtonsMethod extends AnimationFrameApplet
 
 	spreadRoots(noAnimation = false, randomize = false)
 	{
-		const oldRoots = [...this.currentRoots];
-		const newRoots = new Array(2 * this.numRoots);
+		const oldRoots = Object.fromEntries(
+			Object.entries(this.wilson.draggables)
+				.map(([id, draggable]) => [id, draggable.location])
+		);
+		const newRoots = {};
 
-		for (let i = 0; i < this.numRoots; i++)
+		for (let i = 0; i < 8; i++)
 		{
 			const mag = 1 + randomize * .75 * Math.random();
 
-			newRoots[2 * i] = mag * Math.cos(2 * Math.PI * i / this.numRoots);
-			newRoots[2 * i + 1] = mag * Math.sin(2 * Math.PI * i / this.numRoots);
+			newRoots[`root${i}`] = [
+				mag * Math.cos(2 * Math.PI * i / this.numRoots),
+				mag * Math.sin(2 * Math.PI * i / this.numRoots)
+			];
 		}
 
 		const dummy = { t: 0 };
@@ -464,43 +508,27 @@ export class NewtonsMethod extends AnimationFrameApplet
 		anime({
 			targets: dummy,
 			t: 1,
-			duration: 1000 * !noAnimation,
+			duration: noAnimation ? 10 : 1000,
 			easing: "easeInOutQuad",
 			update: () =>
 			{
-				for (let i = 0; i < this.numRoots; i++)
+				for (const id of Object.keys(newRoots))
 				{
-					this.currentRoots[2 * i] =
-						(1 - dummy.t) * oldRoots[2 * i]
-						+ dummy.t * newRoots[2 * i];
+					const oldRoot = oldRoots[id];
+					const newRoot = newRoots[id];
 
-					this.currentRoots[2 * i + 1] =
-						(1 - dummy.t) * oldRoots[2 * i + 1]
-						+ dummy.t * newRoots[2 * i + 1];
-
-					this.wilson.draggables.worldCoordinates[i + 2] = [
-						this.currentRoots[2 * i],
-						this.currentRoots[2 * i + 1]
+					const location = [
+						(1 - dummy.t) * oldRoot
+							+ dummy.t * newRoot,
+						(1 - dummy.t) * oldRoot
+							+ dummy.t * newRoot
 					];
+
+					this.wilson.setDraggablePosition({ id, location });
 				}
 
 				this.needNewFrame = true;
 			},
-			complete: () =>
-			{
-				for (let i = 0; i < this.numRoots; i++)
-				{
-					this.currentRoots[2 * i] = newRoots[2 * i];
-					this.currentRoots[2 * i + 1] = newRoots[2 * i + 1];
-
-					this.wilson.draggables.worldCoordinates[i + 2] = [
-						this.currentRoots[2 * i],
-						this.currentRoots[2 * i + 1]
-					];
-				}
-
-				this.needNewFrame = true;
-			}
 		});
 	}
 
@@ -508,40 +536,10 @@ export class NewtonsMethod extends AnimationFrameApplet
 
 	setRoot(x, y)
 	{
-		if (this.lastActiveRoot === 0)
-		{
-			this.a[0] = x;
-			this.a[1] = y;
-
-			this.wilson.draggables.worldCoordinates[0] = [this.a[0], this.a[1]];
-		}
-
-
-
-		else if (this.lastActiveRoot === 1)
-		{
-			this.c[0] = x;
-			this.c[1] = y;
-
-			this.wilson.draggables.worldCoordinates[1] = [this.c[0], this.c[1]];
-		}
-
-
-
-		else
-		{
-			this.currentRoots[2 * (this.lastActiveRoot - 2)] = x;
-			this.currentRoots[2 * (this.lastActiveRoot - 2) + 1] = y;
-
-			this.wilson.draggables.worldCoordinates[this.lastActiveRoot] = [
-				this.currentRoots[2 * (this.lastActiveRoot - 2)],
-				this.currentRoots[2 * (this.lastActiveRoot - 2) + 1]
-			];
-		}
-
-
-
-		this.wilson.draggables.recalculateLocations();
+		this.wilson.setDraggablePosition({
+			id: this.lastActiveRoot,
+			location: [x, y]
+		});
 
 		this.needNewFrame = true;
 	}
@@ -550,12 +548,10 @@ export class NewtonsMethod extends AnimationFrameApplet
 
 	setColor(hex)
 	{
-		if (this.lastActiveRoot < 2)
+		if (!(this.lastActiveRoot in this.colors))
 		{
 			return;
 		}
-
-		const index = this.lastActiveRoot - 2;
 
 		const result = hexToRgb(hex);
 
@@ -563,9 +559,12 @@ export class NewtonsMethod extends AnimationFrameApplet
 		const g = result.g / 255;
 		const b = result.b / 255;
 
-		result.r = this.colors[3 * index];
-		result.g = this.colors[3 * index + 1];
-		result.b = this.colors[3 * index + 2];
+		result.r = this.colors[this.lastActiveRoot][0];
+		result.g = this.colors[this.lastActiveRoot][1];
+		result.b = this.colors[this.lastActiveRoot][2];
+
+		const index = this.lastActiveRoot.slice(4);
+		const uniformName = `color${index}`;
 
 		anime({
 			targets: result,
@@ -576,46 +575,28 @@ export class NewtonsMethod extends AnimationFrameApplet
 			duration: 250,
 			update: () =>
 			{
-				this.colors[3 * index] = result.r;
-				this.colors[3 * index + 1] = result.g;
-				this.colors[3 * index + 2] = result.b;
+				this.colors[this.lastActiveRoot][0] = result.r;
+				this.colors[this.lastActiveRoot][1] = result.g;
+				this.colors[this.lastActiveRoot][2] = result.b;
 
-				this.wilson.gl.uniform3fv(this.wilson.uniforms.colors, this.colors);
-				this.wilsonHidden.gl.uniform3fv(this.wilsonHidden.uniforms.colors, this.colors);
+				this.wilson.setUniform({
+					name: uniformName,
+					value: this.colors[this.lastActiveRoot]
+				});
+
+				this.wilsonHidden.setUniform({
+					name: uniformName,
+					value: this.colors[this.lastActiveRoot]
+				});
 
 				this.needNewFrame = true;
 			}
 		});
 	}
 
-
-
-	onDragDraggable(activeDraggable, x, y)
+	async onReleaseDraggable({ id, x, y, event })
 	{
-		if (activeDraggable === 0)
-		{
-			this.a = [x, y];
-		}
-
-		else if (activeDraggable === 1)
-		{
-			this.c = [x, y];
-		}
-
-		else
-		{
-			this.currentRoots[2 * (activeDraggable - 2)] = x;
-			this.currentRoots[2 * (activeDraggable - 2) + 1] = y;
-		}
-
-		this.needNewFrame = true;
-	}
-
-
-
-	async onReleaseDraggable(activeDraggable)
-	{
-		this.lastActiveRoot = activeDraggable;
+		this.lastActiveRoot = id;
 
 		if (this.rootSetterElement && this.colorSetterElement)
 		{
@@ -624,36 +605,24 @@ export class NewtonsMethod extends AnimationFrameApplet
 				changeOpacity({ element: this.colorSetterElement, opacity: 0 })
 			]);
 
-			if (this.lastActiveRoot === 0)
+			this.rootAInput.setValue(
+				Math.round(this.wilson.draggables[this.lastActiveRoot].location[0] * 1000) / 1000,
+				false
+			);
+			
+			this.rootBInput.setValue(
+				Math.round(this.wilson.draggables[this.lastActiveRoot].location[1] * 1000) / 1000,
+				false
+			);
+
+			if (this.lastActiveRoot in this.colors)
 			{
-				this.rootAInput.setValue(Math.round(this.a[0] * 1000) / 1000, false);
-				this.rootBInput.setValue(Math.round(this.a[1] * 1000) / 1000, false);
-			}
-
-			else if (this.lastActiveRoot === 1)
-			{
-				this.rootAInput.setValue(Math.round(this.c[0] * 1000) / 10000, false);
-				this.rootBInput.setValue(Math.round(this.c[1] * 1000) / 10000, false);
-			}
-
-			else
-			{
-				const index = this.lastActiveRoot - 2;
-
-				this.rootAInput.setValue(
-					Math.round(this.currentRoots[2 * index] * 1000) / 1000,
-					false
-				);
-
-				this.rootBInput.setValue(
-					Math.round(this.currentRoots[2 * index + 1] * 1000) / 1000,
-					false
-				);
+				const color = this.colors[this.lastActiveRoot];
 
 				this.colorSetterElement.value = rgbToHex(
-					this.colors[3 * index] * 255,
-					this.colors[3 * index + 1] * 255,
-					this.colors[3 * index + 2] * 255
+					color[0] * 255,
+					color[1] * 255,
+					color[2] * 255
 				);
 			}
 
@@ -664,158 +633,109 @@ export class NewtonsMethod extends AnimationFrameApplet
 
 
 
-	prepareFrame(timeElapsed)
-	{
-		this.pan.update(timeElapsed);
-		this.zoom.update(timeElapsed);
-	}
-
 	drawFrame()
 	{
-		this.wilson.draggables.recalculateLocations();
+		this.wilson.setUniform({
+			name: "worldSize",
+			value: [this.wilson.worldWidth, this.wilson.worldHeight]
+		});
+		this.wilson.setUniform({
+			name: "worldCenter",
+			value: [this.wilson.worldCenterX, this.wilson.worldCenterY]
+		});
 
-		this.wilsonHidden.gl.uniform1f(
-			this.wilsonHidden.uniforms.aspectRatio,
-			this.aspectRatio
-		);
-
-		this.wilsonHidden.gl.uniform1f(
-			this.wilsonHidden.uniforms.worldCenterX,
-			this.wilson.worldCenterX
-		);
-
-		this.wilsonHidden.gl.uniform1f(
-			this.wilsonHidden.uniforms.worldCenterY,
-			this.wilson.worldCenterY
-		);
-
-		this.wilsonHidden.gl.uniform1f(
-			this.wilsonHidden.uniforms.worldSize,
-			Math.min(this.wilson.worldHeight, this.wilson.worldWidth) / 2
-		);
-
-		this.wilsonHidden.gl.uniform1i(
-			this.wilsonHidden.uniforms.numRoots,
-			this.numRoots
-		);
-
-		this.wilsonHidden.gl.uniform2fv(
-			this.wilsonHidden.uniforms.roots,
-			this.currentRoots
-		);
-
-		this.wilsonHidden.gl.uniform2fv(
-			this.wilsonHidden.uniforms.a,
-			this.a
-		);
-
-		this.wilsonHidden.gl.uniform2f(
-			this.wilsonHidden.uniforms.c,
-			this.c[0] / 10, this.c[1] / 10
-		);
-
-		this.wilsonHidden.gl.uniform1f(
-			this.wilsonHidden.uniforms.brightnessScale,
-			30
-		);
-
-		this.wilsonHidden.gl.uniform1f(
-			this.wilsonHidden.uniforms.secantProportion,
-			this.secantProportion
-		);
-
-		this.wilsonHidden.render.drawFrame();
+		this.wilson.drawFrame();
 
 
 
-		const pixelData = this.wilsonHidden.render.getPixelData();
+		// const pixelData = this.wilsonHidden.render.getPixelData();
 
-		const brightnesses = new Array(this.resolutionHidden * this.resolutionHidden);
+		// const brightnesses = new Array(this.resolutionHidden * this.resolutionHidden);
 
-		for (let i = 0; i < this.resolutionHidden * this.resolutionHidden; i++)
-		{
-			brightnesses[i] = Math.max(
-				Math.max(
-					pixelData[4 * i],
-					pixelData[4 * i + 1]
-				),
-				pixelData[4 * i + 2]
-			);
-		}
+		// for (let i = 0; i < this.resolutionHidden * this.resolutionHidden; i++)
+		// {
+		// 	brightnesses[i] = Math.max(
+		// 		Math.max(
+		// 			pixelData[4 * i],
+		// 			pixelData[4 * i + 1]
+		// 		),
+		// 		pixelData[4 * i + 2]
+		// 	);
+		// }
 
-		brightnesses.sort((a, b) => a - b);
+		// brightnesses.sort((a, b) => a - b);
 
-		let brightnessScale = Math.min(
-			10000 / (
-				brightnesses[Math.floor(this.resolutionHidden * this.resolutionHidden * .96)]
-				+ brightnesses[Math.floor(this.resolutionHidden * this.resolutionHidden * .98)]
-			),
-			200
-		);
+		// let brightnessScale = Math.min(
+		// 	10000 / (
+		// 		brightnesses[Math.floor(this.resolutionHidden * this.resolutionHidden * .96)]
+		// 		+ brightnesses[Math.floor(this.resolutionHidden * this.resolutionHidden * .98)]
+		// 	),
+		// 	200
+		// );
 
-		this.pastBrightnessScales.push(brightnessScale);
+		// this.pastBrightnessScales.push(brightnessScale);
 
-		const denom = this.pastBrightnessScales.length;
+		// const denom = this.pastBrightnessScales.length;
 
-		if (denom > 10)
-		{
-			this.pastBrightnessScales.shift();
-		}
+		// if (denom > 10)
+		// {
+		// 	this.pastBrightnessScales.shift();
+		// }
 
-		brightnessScale = Math.max(this.pastBrightnessScales.reduce((a, b) => a + b) / denom, .5);
+		// brightnessScale = Math.max(this.pastBrightnessScales.reduce((a, b) => a + b) / denom, .5);
 
 
 
-		this.wilson.gl.uniform1f(
-			this.wilson.uniforms.aspectRatio,
-			this.aspectRatio
-		);
+		// this.wilson.gl.uniform1f(
+		// 	this.wilson.uniforms.aspectRatio,
+		// 	this.aspectRatio
+		// );
 
-		this.wilson.gl.uniform1f(
-			this.wilson.uniforms.worldCenterX,
-			this.wilson.worldCenterX
-		);
+		// this.wilson.gl.uniform1f(
+		// 	this.wilson.uniforms.worldCenterX,
+		// 	this.wilson.worldCenterX
+		// );
 
-		this.wilson.gl.uniform1f(
-			this.wilson.uniforms.worldCenterY,
-			this.wilson.worldCenterY
-		);
+		// this.wilson.gl.uniform1f(
+		// 	this.wilson.uniforms.worldCenterY,
+		// 	this.wilson.worldCenterY
+		// );
 
-		this.wilson.gl.uniform1f(
-			this.wilson.uniforms.worldSize,
-			Math.min(this.wilson.worldHeight, this.wilson.worldWidth) / 2
-		);
+		// this.wilson.gl.uniform1f(
+		// 	this.wilson.uniforms.worldSize,
+		// 	Math.min(this.wilson.worldHeight, this.wilson.worldWidth) / 2
+		// );
 
-		this.wilson.gl.uniform1i(
-			this.wilson.uniforms.numRoots,
-			this.numRoots
-		);
+		// this.wilson.gl.uniform1i(
+		// 	this.wilson.uniforms.numRoots,
+		// 	this.numRoots
+		// );
 
-		this.wilson.gl.uniform2fv(
-			this.wilson.uniforms.roots,
-			this.currentRoots
-		);
+		// this.wilson.gl.uniform2fv(
+		// 	this.wilson.uniforms.roots,
+		// 	this.roots
+		// );
 
-		this.wilson.gl.uniform2fv(
-			this.wilson.uniforms.a,
-			this.a
-		);
+		// this.wilson.gl.uniform2fv(
+		// 	this.wilson.uniforms.a,
+		// 	this.a
+		// );
 
-		this.wilson.gl.uniform2f(
-			this.wilson.uniforms.c,
-			this.c[0] / 10, this.c[1] / 10
-		);
+		// this.wilson.gl.uniform2f(
+		// 	this.wilson.uniforms.c,
+		// 	this.c[0] / 10, this.c[1] / 10
+		// );
 
-		this.wilson.gl.uniform1f(
-			this.wilson.uniforms.brightnessScale,
-			brightnessScale
-		);
+		// this.wilson.gl.uniform1f(
+		// 	this.wilson.uniforms.brightnessScale,
+		// 	brightnessScale
+		// );
 
-		this.wilson.gl.uniform1f(
-			this.wilson.uniforms.secantProportion,
-			this.secantProportion
-		);
+		// this.wilson.gl.uniform1f(
+		// 	this.wilson.uniforms.secantProportion,
+		// 	this.secantProportion
+		// );
 
-		this.wilson.render.drawFrame();
+		// this.wilson.render.drawFrame();
 	}
 }
