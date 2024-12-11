@@ -336,7 +336,7 @@ export class NewtonsMethod extends AnimationFrameApplet
 				a: [1, 0],
 				c: [0, 0],
 				
-				brightnessScale: 10,
+				brightnessScale: 12.75,
 
 				secantProportion: this.secantProportion,
 			},
