@@ -81,14 +81,6 @@ export default function()
 
 	function run()
 	{
-		let resolution = Math.max(
-			resolutionInput.value,
-			Math.floor(Math.sqrt(centerGrainsInput.value)) + 2
-		);
-		resolution = resolution + 1 - (resolution % 2);
-
-		resolutionInput.setValue(resolution);
-
 		applet.run({
 			resolution: resolutionInput.value,
 			numGrains: centerGrainsInput.value,

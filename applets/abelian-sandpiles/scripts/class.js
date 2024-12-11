@@ -5,9 +5,10 @@ import { WilsonGPU } from "/scripts/wilson.js";
 export class AbelianSandpile extends AnimationFrameApplet
 {
 	wilsonUpdate;
-	numGrains = 10000;
-	floodGrains = 0;
+	numGrains;
+	floodGrains;
 	resolution = 319;
+	resolutionUpdate;
 
 	computationsPerFrame = 20;
 
@@ -37,11 +38,16 @@ export class AbelianSandpile extends AnimationFrameApplet
 			void main(void)
 			{
 				vec2 center = (uv + vec2(1.0, 1.0)) / 2.0;
-				
-				if (length(center - vec2(.5, .5)) < stepSize / 2.0)
+
+				if (center.y - center.x > stepSize / 4.0)
+				{
+					gl_FragColor = vec4(0.0, 0.0, 0.0, 1.0);
+					return;
+				}
+
+				if (length(center) < stepSize)
 				{
 					gl_FragColor = startGrains;
-					
 					return;
 				}
 				
@@ -63,89 +69,95 @@ export class AbelianSandpile extends AnimationFrameApplet
 
 			const float amountNearby = 4.0;
 			const float divisor = 256.0 / amountNearby;
+
 			
-			
+
+			// The general idea: this is carrying in reverse. The largest place is supposed to be divided by four, so we
+			// start by extracting the portion that is too small for it to see and adding it to the next place down (not
+			// dividing by 256 effectively multiplies it by 256). Then what's left is divided by 4 and effectively floored.
+
+			void quotientState(inout vec4 state)
+			{
+				state.y += mod(floor(state.x * 256.0), amountNearby);
+				state.x = floor(state.x * divisor) / 256.0;
+				
+				state.z += mod(floor(state.y * 256.0), amountNearby);
+				state.y = floor(state.y * divisor) / 256.0;
+				
+				state.w += mod(floor(state.z * 256.0), amountNearby);
+				state.z = floor(state.z * divisor) / 256.0;
+				
+				state.w = floor(state.w * divisor) / 256.0;
+			}
 			
 			void main(void)
 			{
 				vec2 center = (uv + vec2(1.0, 1.0)) / 2.0;
-				vec4 state = texture2D(uTexture, center);
-				float leftover = mod(floor(256.0 * state.w), amountNearby) / 256.0;
-				
-				if (center.x <= stepSize || center.x >= 1.0 - stepSize || center.y <= stepSize || center.y >= 1.0 - stepSize)
-				{
+
+				if (
+					center.y > center.x + stepSize / 2.0
+					|| abs(center.x - 1.0) < stepSize
+				) {
 					gl_FragColor = vec4(0.0, 0.0, 0.0, 0.0);
 					return;
 				}
-				
-				vec4 state1 = texture2D(uTexture, center + vec2(stepSize, 0.0));
-				vec4 state2 = texture2D(uTexture, center + vec2(-stepSize, 0.0));
-				vec4 state3 = texture2D(uTexture, center + vec2(0.0, stepSize));
-				vec4 state4 = texture2D(uTexture, center + vec2(0.0, -stepSize));
-				
-				
-				
-				/*
-					The general idea: this is carrying in reverse. The largest place is supposed to be divided by four, so we
-					start by extracting the portion that is too small for it to see and adding it to the next place down (not
-					dividing by 256 effectively multiplies it by 256). Then what's left is divided by 4 and effectively floored.
-				*/
 
-				state1.y += mod(floor(state1.x * 256.0), amountNearby);
-				state1.x = floor(state1.x * divisor) / 256.0;
+				vec4 state = texture2D(uTexture, center);
+				float leftover = mod(floor(256.0 * state.w), amountNearby) / 256.0;
+
+				vec4 stateUp;
+				vec4 stateDown;
+				vec4 stateLeft;
+				vec4 stateRight = texture2D(uTexture, center + vec2(stepSize, 0.0));
+
+				if (length(center) < stepSize)
+				{
+					stateDown = stateRight;
+					stateUp = stateRight;
+					stateLeft = stateRight;
+
+					// gl_FragColor = vec4(1.0, 0.0, 0.0, 1.0);
+					// return;
+				}
+
+				else if (abs(center.y) < stepSize)
+				{
+					stateUp = texture2D(uTexture, center + vec2(0.0, stepSize));
+					stateDown = stateUp;
+					stateLeft = texture2D(uTexture, center + vec2(-stepSize, 0.0));
+
+					// gl_FragColor = vec4(0.0, 1.0, 0.0, 1.0);
+					// return;
+				}
+
+				else if (abs(center.x - center.y) < stepSize / 4.0)
+				{
+					stateDown = texture2D(uTexture, center + vec2(0.0, -stepSize));
+					stateUp = stateDown;
+					stateLeft = stateRight;
+
+					// gl_FragColor = vec4(0.0, 0.0, 1.0, 1.0);
+					// return;
+				}
+
+				else
+				{
+					stateUp = texture2D(uTexture, center + vec2(0.0, stepSize));
+					stateDown = texture2D(uTexture, center + vec2(0.0, -stepSize));
+					stateLeft = texture2D(uTexture, center + vec2(-stepSize, 0.0));
+
+					// gl_FragColor = vec4(1.0, 1.0, 1.0, 1.0);
+					// return;
+				}
+
+				quotientState(stateUp);
+				quotientState(stateDown);
+				quotientState(stateLeft);
+				quotientState(stateRight);
 				
-				state1.z += mod(floor(state1.y * 256.0), amountNearby);
-				state1.y = floor(state1.y * divisor) / 256.0;
 				
-				state1.w += mod(floor(state1.z * 256.0), amountNearby);
-				state1.z = floor(state1.z * divisor) / 256.0;
-				
-				state1.w = floor(state1.w * divisor) / 256.0;
-				
-				
-				
-				state2.y += mod(floor(state2.x * 256.0), amountNearby);
-				state2.x = floor(state2.x * divisor) / 256.0;
-				
-				state2.z += mod(floor(state2.y * 256.0), amountNearby);
-				state2.y = floor(state2.y * divisor) / 256.0;
-				
-				state2.w += mod(floor(state2.z * 256.0), amountNearby);
-				state2.z = floor(state2.z * divisor) / 256.0;
-				
-				state2.w = floor(state2.w * divisor) / 256.0;
-				
-				
-				
-				state3.y += mod(floor(state3.x * 256.0), amountNearby);
-				state3.x = floor(state3.x * divisor) / 256.0;
-				
-				state3.z += mod(floor(state3.y * 256.0), amountNearby);
-				state3.y = floor(state3.y * divisor) / 256.0;
-				
-				state3.w += mod(floor(state3.z * 256.0), amountNearby);
-				state3.z = floor(state3.z * divisor) / 256.0;
-				
-				state3.w = floor(state3.w * divisor) / 256.0;
-				
-				
-				
-				state4.y += mod(floor(state4.x * 256.0), amountNearby);
-				state4.x = floor(state4.x * divisor) / 256.0;
-				
-				state4.z += mod(floor(state4.y * 256.0), amountNearby);
-				state4.y = floor(state4.y * divisor) / 256.0;
-				
-				state4.w += mod(floor(state4.z * 256.0), amountNearby);
-				state4.z = floor(state4.z * divisor) / 256.0;
-				
-				state4.w = floor(state4.w * divisor) / 256.0;
-				
-				
-				
-				
-				//The new state should be what used to be here, mod 4, plus the floor of 1/8 of each of the neighbors.
-				vec4 newState = vec4(0.0, 0.0, 0.0, leftover) + state1 + state2 + state3 + state4;
+				//The new state should be what used to be here, mod 4, plus the floor of 1/4 of each of the neighbors.
+				vec4 newState = vec4(0.0, 0.0, 0.0, leftover) + stateUp + stateDown + stateLeft + stateRight;
 				
 				newState.z += floor(newState.w) / 256.0;
 				newState.w = mod(newState.w, 1.0);
@@ -181,7 +193,7 @@ export class AbelianSandpile extends AnimationFrameApplet
 					modUv = vec2(modUv.y, modUv.x);
 				}
 
-				vec2 state = floor(256.0 * texture2D(uTexture, (modUv + vec2(1.0, 1.0)) / 2.0).zw);
+				vec2 state = floor(256.0 * texture2D(uTexture, modUv).zw);
 				
 				if (state.x != 0.0)
 				{
@@ -275,7 +287,8 @@ export class AbelianSandpile extends AnimationFrameApplet
 		computationsPerFrame = 25,
 		palette = [[229, 190, 237], [149, 147, 217], [124, 144, 219]],
 	}) {
-		this.resolution = resolution;
+		this.resolution = resolution + 1 - (resolution % 2);
+		this.resolutionUpdate = Math.ceil(this.resolution / 2);
 		this.numGrains = numGrains;
 		this.floodGrains = floodGrains;
 		this.computationsPerFrame = computationsPerFrame;
@@ -290,7 +303,7 @@ export class AbelianSandpile extends AnimationFrameApplet
 		this.wilsonUpdate.setUniform({
 			shader: "init",
 			name: "stepSize",
-			value: 1 / this.resolution
+			value: 1 / this.resolutionUpdate
 		});
 
 		this.wilsonUpdate.setUniform({
@@ -308,10 +321,10 @@ export class AbelianSandpile extends AnimationFrameApplet
 		this.wilsonUpdate.setUniform({
 			shader: "update",
 			name: "stepSize",
-			value: 1 / this.resolution
+			value: 1 / this.resolutionUpdate
 		});
 
-		this.wilsonUpdate.resizeCanvas({ width: this.resolution });
+		this.wilsonUpdate.resizeCanvas({ width: this.resolutionUpdate });
 
 
 
@@ -346,7 +359,9 @@ export class AbelianSandpile extends AnimationFrameApplet
 
 		this.wilson.createFramebufferTexturePair({
 			id: "output",
-			textureType: "float"
+			width: this.resolutionUpdate,
+			height: this.resolutionUpdate,
+			textureType: "unsignedByte"
 		});
 
 		this.wilson.useFramebuffer(null);
@@ -355,12 +370,12 @@ export class AbelianSandpile extends AnimationFrameApplet
 
 		this.wilsonUpdate.createFramebufferTexturePair({
 			id: "0",
-			textureType: "float"
+			textureType: "unsignedByte"
 		});
 
 		this.wilsonUpdate.createFramebufferTexturePair({
 			id: "1",
-			textureType: "float"
+			textureType: "unsignedByte"
 		});
 
 		this.wilsonUpdate.useTexture("0");
@@ -404,40 +419,38 @@ export class AbelianSandpile extends AnimationFrameApplet
 			this.wilsonUpdate.useTexture("0");
 		}
 
-		const pixels = this.wilsonUpdate.readPixels("float");
+		const pixelData = this.wilsonUpdate.readPixels();
 
 		this.wilson.setTexture({
 			id: "output",
-			data: pixels
+			data: pixelData
 		});
 
 		this.wilson.drawFrame();
 
 
 
-		// const pixelData = this.wilson.readPixels();
+		if (this.lastPixelData)
+		{
+			let foundDiff = false;
 
-		// if (this.lastPixelData)
-		// {
-		// 	let foundDiff = false;
+			for (let i = 0; i < pixelData.length; i++)
+			{
+				if (pixelData[i] !== this.lastPixelData[i])
+				{
+					foundDiff = true;
+					break;
+				}
+			}
 
-		// 	for (let i = Math.floor(pixelData.length / 2 - 4); i < pixelData.length; i++)
-		// 	{
-		// 		if (pixelData[i] !== this.lastPixelData[i])
-		// 		{
-		// 			foundDiff = true;
-		// 			break;
-		// 		}
-		// 	}
+			if (!foundDiff)
+			{
+				this.pause();
+				return;
+			}
+		}
 
-		// 	if (!foundDiff)
-		// 	{
-		// 		this.pause();
-		// 		return;
-		// 	}
-		// }
-
-		// this.lastPixelData = pixelData;
+		this.lastPixelData = pixelData;
 
 		this.needNewFrame = true;
 	}
