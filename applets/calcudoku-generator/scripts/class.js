@@ -3,7 +3,7 @@ import { changeOpacity, opacityAnimationTime } from "/scripts/src/animation.js";
 import { convertColor } from "/scripts/src/browser.js";
 import { addTemporaryWorker } from "/scripts/src/main.js";
 import { siteSettings } from "/scripts/src/settings.js";
-import { Wilson } from "/scripts/wilson.js";
+import { WilsonCPU } from "/scripts/wilson.js";
 
 export class CalcudokuGenerator extends Applet
 {
@@ -25,13 +25,11 @@ export class CalcudokuGenerator extends Applet
 
 		const options =
 		{
-			renderer: "cpu",
-
 			canvasWidth: 500,
-			canvasHeight: 500
+			reduceMotion: siteSettings.reduceMotion,
 		};
 
-		this.wilson = new Wilson(canvas, options);
+		this.wilson = new WilsonCPU(canvas, options);
 	}
 
 
@@ -67,7 +65,7 @@ export class CalcudokuGenerator extends Applet
 		{
 			const canvasSize = this.gridSize * 200 + 9;
 
-			this.wilson.changeCanvasSize(canvasSize, canvasSize);
+			this.wilson.resizeCanvas({ width: canvasSize });
 
 			this.wilson.ctx.clearRect(0, 0, canvasSize, canvasSize);
 		}, opacityAnimationTime);

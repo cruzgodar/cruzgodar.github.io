@@ -7,15 +7,6 @@
 #output-canvas
 {
 	width: 100%;
+	aspect-ratio: 1/1;
 	opacity: 0;
-}
-
-
-
-@media (min-aspect-ratio: 1/1)
-{
-	#output-canvas
-	{	
-		width: 100%;
-	}
 }
