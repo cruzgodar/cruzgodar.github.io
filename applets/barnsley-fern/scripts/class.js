@@ -1,7 +1,8 @@
 import { tempShader } from "../../../scripts/applets/applet.js";
 import { AnimationFrameApplet } from "/scripts/applets/animationFrameApplet.js";
 import { doubleEncodingGlsl, loadGlsl } from "/scripts/src/complexGlsl.js";
-import { Wilson } from "/scripts/wilson.js";
+import { siteSettings } from "/scripts/src/settings.js";
+import { WilsonGPU } from "/scripts/wilson.js";
 
 export class BarnsleyFern extends AnimationFrameApplet
 {
@@ -30,12 +31,9 @@ export class BarnsleyFern extends AnimationFrameApplet
 
 		const optionsUpdate =
 		{
-			renderer: "gpu",
-
 			shader: tempShader,
 
 			canvasWidth: this.computeResolution,
-			canvasHeight: this.computeResolution,
 
 			worldWidth: 12,
 			worldHeight: 12,
@@ -43,7 +41,7 @@ export class BarnsleyFern extends AnimationFrameApplet
 			worldCenterY: 5,
 		};
 
-		this.wilsonUpdate = new Wilson(hiddenCanvas, optionsUpdate);
+		this.wilsonUpdate = new WilsonGPU(hiddenCanvas, optionsUpdate);
 
 
 
@@ -64,42 +62,40 @@ export class BarnsleyFern extends AnimationFrameApplet
 			}
 		`;
 
-		const options =
-		{
-			renderer: "gpu",
-
+		const options = {
 			shader: fragShaderSource,
 
+			uniforms: {
+				maxBrightness: 1
+			},
+
 			canvasWidth: this.resolution,
-			canvasHeight: this.resolution,
 
 			worldWidth: 12,
 			worldHeight: 12,
 			worldCenterX: 0,
 			worldCenterY: 5,
 
-			useDraggables: true,
+			reduceMotion: siteSettings.reduceMotion,
 
-			draggablesMousemoveCallback: this.onDragDraggable.bind(this),
-			draggablesTouchmoveCallback: this.onDragDraggable.bind(this),
+			draggableOptions: {
+				draggables: {
+					tip: [2.6556, 9.95851]
+				},
+				callbacks: {
+					ondrag: this.onDragDraggable.bind(this),
+					onrelease: this.onReleaseDraggable.bind(this)
+				}
+			},
 
-			draggablesMouseupCallback: this.onReleaseDraggable.bind(this),
-			draggablesTouchendCallback: this.onReleaseDraggable.bind(this),
-
-			useFullscreen: true,
-
-			useFullscreenButton: true,
-
-			enterFullscreenButtonIconPath: "/graphics/general-icons/enter-fullscreen.png",
-			exitFullscreenButtonIconPath: "/graphics/general-icons/exit-fullscreen.png"
+			fullscreenOptions: {
+				useFullscreenButton: true,
+				enterFullscreenButtonIconPath: "/graphics/general-icons/enter-fullscreen.png",
+				exitFullscreenButtonIconPath: "/graphics/general-icons/exit-fullscreen.png",
+			},
 		};
 
-		this.wilson = new Wilson(canvas, options);
-
-		this.wilson.render.initUniforms(["maxBrightness"]);
-		this.wilson.gl.uniform1f(this.wilson.uniforms.maxBrightness, 1);
-
-		this.wilson.draggables.add(2.6556, 9.95851);
+		this.wilson = new WilsonGPU(canvas, options);
 
 		this.loadPromise = loadGlsl();
 	}
@@ -111,29 +107,25 @@ export class BarnsleyFern extends AnimationFrameApplet
 		this.resolution = resolution;
 		this.computeResolution = Math.round(resolution / 4);
 
-		this.wilsonUpdate.changeCanvasSize(this.computeResolution, this.computeResolution);
+		this.wilsonUpdate.resizeCanvas({ width: this.computeResolution });
+		this.wilsonUpdate.createFramebufferTexturePair({
+			id: "update",
+			textureType: "float"
+		});
 
-		this.wilsonUpdate.render.framebuffers = [];
-		this.wilsonUpdate.render.createFramebufferTexturePair();
-
-		this.wilsonUpdate.gl.bindFramebuffer(this.wilsonUpdate.gl.FRAMEBUFFER, null);
-		this.wilsonUpdate.gl.bindTexture(
-			this.wilsonUpdate.gl.TEXTURE_2D,
-			this.wilsonUpdate.render.framebuffers[0].texture
-		);
+		this.wilsonUpdate.useFramebuffer(null);
+		this.wilsonUpdate.useTexture("update");
 
 		
 
-		this.wilson.changeCanvasSize(this.resolution, this.resolution);
+		this.wilson.resizeCanvas({ width: this.resolution });
+		this.wilson.createFramebufferTexturePair({
+			id: "output",
+			textureType: "float"
+		});
 
-		this.wilson.render.framebuffers = [];
-		this.wilson.render.createFramebufferTexturePair();
-
-		this.wilson.gl.bindFramebuffer(this.wilson.gl.FRAMEBUFFER, null);
-		this.wilson.gl.bindTexture(
-			this.wilson.gl.TEXTURE_2D,
-			this.wilson.render.framebuffers[0].texture
-		);
+		this.wilson.useFramebuffer(null);
+		this.wilson.useTexture("output");
 
 
 
@@ -205,14 +197,17 @@ export class BarnsleyFern extends AnimationFrameApplet
 		this.imageData = new Float32Array(this.resolution * this.resolution * 4);
 
 		this.maxBrightness = 1;
-		this.wilson.gl.uniform1f(this.wilson.uniforms.maxBrightness, 1);
+		this.wilson.setUniform({
+			name: "maxBrightness",
+			value: 1
+		});
 
 		for (let i = 0; i < this.computeResolution; i++)
 		{
 			for (let j = 0; j < this.computeResolution; j++)
 			{
 				const index = this.computeResolution * i + j;
-				const worldCoordinates = this.wilsonUpdate.utils.interpolate.canvasToWorld(i, j);
+				const worldCoordinates = this.wilsonUpdate.interpolateCanvasToWorld([i, j]);
 
 				this.texture[4 * index] = worldCoordinates[0];
 				this.texture[4 * index + 1] = worldCoordinates[1];
@@ -221,21 +216,25 @@ export class BarnsleyFern extends AnimationFrameApplet
 			}
 		}
 
-		this.wilsonUpdate.render.shaderPrograms = [];
+		this.wilsonUpdate.loadShader({
+			id: "updateX",
+			source: fragShaderSourceUpdateX,
+			uniforms: {
+				A1: this.A1,
+				A4: this.A4,
+				b2: this.b2
+			}
+		});
 
-		this.wilsonUpdate.render.loadNewShader(fragShaderSourceUpdateX);
-		this.wilsonUpdate.render.initUniforms(["A1", "A4", "b2"], 0);
-		this.wilsonUpdate.gl.uniformMatrix2fv(this.wilsonUpdate.uniforms.A1[0], false, this.A1);
-		this.wilsonUpdate.gl.uniformMatrix2fv(this.wilsonUpdate.uniforms.A4[0], false, this.A4);
-		this.wilsonUpdate.gl.uniform2fv(this.wilsonUpdate.uniforms.b2[0], this.b2);
-
-		this.wilsonUpdate.render.loadNewShader(fragShaderSourceUpdateY);
-		this.wilsonUpdate.render.initUniforms(["A1", "A4", "b2"], 1);
-		this.wilsonUpdate.gl.uniformMatrix2fv(this.wilsonUpdate.uniforms.A1[1], false, this.A1);
-		this.wilsonUpdate.gl.uniformMatrix2fv(this.wilsonUpdate.uniforms.A4[1], false, this.A4);
-		this.wilsonUpdate.gl.uniform2fv(this.wilsonUpdate.uniforms.b2[1], this.b2);
-
-		
+		this.wilsonUpdate.loadShader({
+			id: "updateY",
+			source: fragShaderSourceUpdateY,
+			uniforms: {
+				A1: this.A1,
+				A4: this.A4,
+				b2: this.b2
+			}
+		});
 
 		this.frame = 0;
 		this.numIterations = 150;
@@ -251,25 +250,18 @@ export class BarnsleyFern extends AnimationFrameApplet
 
 	drawFrame()
 	{
-		this.wilsonUpdate.gl.texImage2D(
-			this.wilsonUpdate.gl.TEXTURE_2D,
-			0,
-			this.wilsonUpdate.gl.RGBA,
-			this.computeResolution,
-			this.computeResolution,
-			0,
-			this.wilsonUpdate.gl.RGBA,
-			this.wilsonUpdate.gl.FLOAT,
-			this.texture
-		);
+		this.wilsonUpdate.setTexture({
+			id: "update",
+			data: this.texture
+		});
 
-		this.wilsonUpdate.gl.useProgram(this.wilsonUpdate.render.shaderPrograms[0]);
-		this.wilsonUpdate.render.drawFrame();
-		const floatsX = new Float32Array(this.wilsonUpdate.render.getPixelData().buffer);
+		this.wilsonUpdate.useShader("updateX");
+		this.wilsonUpdate.drawFrame();
+		const floatsX = new Float32Array(this.wilsonUpdate.readPixels().buffer);
 
-		this.wilsonUpdate.gl.useProgram(this.wilsonUpdate.render.shaderPrograms[1]);
-		this.wilsonUpdate.render.drawFrame();
-		const floatsY = new Float32Array(this.wilsonUpdate.render.getPixelData().buffer);
+		this.wilsonUpdate.useShader("updateY");
+		this.wilsonUpdate.drawFrame();
+		const floatsY = new Float32Array(this.wilsonUpdate.readPixels().buffer);
 
 		for (let i = 0; i < this.computeResolution; i++)
 		{
@@ -309,29 +301,21 @@ export class BarnsleyFern extends AnimationFrameApplet
 			}
 		}
 
-		this.wilson.gl.texImage2D(
-			this.wilson.gl.TEXTURE_2D,
-			0,
-			this.wilson.gl.RGBA,
-			this.resolution,
-			this.resolution,
-			0,
-			this.wilson.gl.RGBA,
-			this.wilson.gl.FLOAT,
-			this.imageData
-		);
+		this.wilson.setTexture({
+			id: "output",
+			data: this.imageData
+		});
 
 		const maxBrightnessAdjust = this.resolution / 1000 * Math.min(this.frame / 25, 1);
+		this.wilson.setUniform({
+			name: "maxBrightness",
+			value: this.maxBrightness / maxBrightnessAdjust
+		});
 
-		this.wilson.gl.uniform1f(
-			this.wilson.uniforms.maxBrightness,
-			this.maxBrightness / maxBrightnessAdjust
-		);
-
-		this.wilson.render.drawFrame();
+		this.wilson.drawFrame();
 	}
 
-	onDragDraggable(activeDraggable, x, y)
+	onDragDraggable({ x, y })
 	{
 		this.animationPaused = true;
 		this.needNewFrame = false;
@@ -339,13 +323,13 @@ export class BarnsleyFern extends AnimationFrameApplet
 		// Apply an inverse transformation I computed manually to convert the tip of the fern
 		// back to the first stem point.
 
-
 		this.b2[0] = .15 * x - 0.04 * y;
 		this.b2[1] = .04 * x + 0.15 * y;
 
 		const theta = Math.atan2(-this.b2[0], this.b2[1]);
 		const c = Math.cos(theta);
 		const s = Math.sin(theta);
+		
 		// An affine transformation that points toward the draggable.
 		this.A1 = [0, 0, -.16 * s, .16 * c];
 
@@ -359,22 +343,45 @@ export class BarnsleyFern extends AnimationFrameApplet
 			0.045 + 0.195 * c2 + 0.54 * c * s
 		];
 
-		this.wilsonUpdate.gl.useProgram(this.wilsonUpdate.render.shaderPrograms[0]);
-		this.wilsonUpdate.gl.uniformMatrix2fv(this.wilsonUpdate.uniforms.A1[0], false, this.A1);
-		this.wilsonUpdate.gl.uniformMatrix2fv(this.wilsonUpdate.uniforms.A4[0], false, this.A4);
-		this.wilsonUpdate.gl.uniform2fv(this.wilsonUpdate.uniforms.b2[0], this.b2);
+		this.wilsonUpdate.setUniform({
+			shader: "updateX",
+			name: "A1",
+			value: this.A1
+		});
 
-		this.wilsonUpdate.gl.useProgram(this.wilsonUpdate.render.shaderPrograms[1]);
-		this.wilsonUpdate.gl.uniformMatrix2fv(this.wilsonUpdate.uniforms.A1[1], false, this.A1);
-		this.wilsonUpdate.gl.uniformMatrix2fv(this.wilsonUpdate.uniforms.A4[1], false, this.A4);
-		this.wilsonUpdate.gl.uniform2fv(this.wilsonUpdate.uniforms.b2[1], this.b2);
+		this.wilsonUpdate.setUniform({
+			shader: "updateX",
+			name: "A4",
+			value: this.A4
+		});
+
+		this.wilsonUpdate.setUniform({
+			shader: "updateX",
+			name: "b2",
+			value: this.b2
+		});
+
+		this.wilsonUpdate.setUniform({
+			shader: "updateY",
+			name: "A1",
+			value: this.A1
+		});
+
+		this.wilsonUpdate.setUniform({
+			shader: "updateY",
+			name: "A4",
+			value: this.A4
+		});
+
+		this.wilsonUpdate.setUniform({
+			shader: "updateY",
+			name: "b2",
+			value: this.b2
+		});
 	}
 
 	onReleaseDraggable()
 	{
-		this.wilsonUpdate.gl.useProgram(this.wilsonUpdate.render.shaderPrograms[0]);
-		this.wilsonUpdate.gl.useProgram(this.wilsonUpdate.render.shaderPrograms[1]);
-
 		this.run({ resolution: this.resolution });
 	}
 }
