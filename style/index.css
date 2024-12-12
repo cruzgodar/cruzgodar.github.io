@@ -662,6 +662,11 @@ mjx-container
 	border-bottom-right-radius: 12px;
 }
 
+.WILSON_fullscreen-container:not(.WILSON_fullscreen-fill-screen) .fps-canvas
+{
+	view-transition-name: fps-canvas;
+}
+
 body > .WILSON_fullscreen-container .fps-canvas
 {
 	bottom: 0px;
