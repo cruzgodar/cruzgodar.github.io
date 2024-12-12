@@ -23,13 +23,23 @@ const ns = {
 		[0, .707107, .707107],
 		[-.707107, 0, .707107],
 		[0, -.707107, .707107]
+	],
+	dodecahedron: [
+		[0.809016, -0.5, 0.309017],
+		[0.309017, 0.809016, -0.5],
+		[-0.5, 0.309017, 0.809016],
+		[0.809016, -0.5, 0.309017],
+		[0.309017, 0.809016, -0.5],
+		[-0.5, 0.309017, 0.809016],
+		[0.809016, -0.5, 0.309017],
 	]
 };
 
 const scaleCenters = {
 	tetrahedron: [0, 0, 1],
 	cube: [.577350, .577350, .577350],
-	octahedron: [0, 0, 1]
+	octahedron: [0, 0, 1],
+	dodecahedron: [.577350, .577350, .577350]
 };
 
 const maxIterations = 56;
@@ -38,6 +48,8 @@ function getDistanceEstimatorGlsl(shape, useForGetColor = false)
 {
 	// Make the first letter uppercase.
 	const variableName = shape[0].toUpperCase() + shape.slice(1);
+
+	const numNs = ns[shape].length;
 
 	return /* glsl */`
 		${useForGetColor ? "vec3 color = vec3(1.0, 1.0, 1.0); float colorScale = .5;" : ""}
@@ -69,13 +81,43 @@ function getDistanceEstimatorGlsl(shape, useForGetColor = false)
 				${useForGetColor ? "color = mix(color, color3, colorScale);" : ""}
 			}
 
-			${variableName === "Octahedron" ? /* glsl */`
+			${numNs >= 4 ? /* glsl */`
 				float t4 = dot(pos, n4${variableName});
 				
 				if (t4 < 0.0)
 				{
 					pos -= 2.0 * t4 * n4${variableName};
 					${useForGetColor ? "color = mix(color, color4, colorScale);" : ""}
+				}
+			` : ""}
+
+			${numNs >= 5 ? /* glsl */`
+				float t5 = dot(pos, n5${variableName});
+				
+				if (t5 < 0.0)
+				{
+					pos -= 2.0 * t5 * n5${variableName};
+					${useForGetColor ? "color = mix(color, color5, colorScale);" : ""}
+				}
+			` : ""}
+
+			${numNs >= 6 ? /* glsl */`
+				float t6 = dot(pos, n6${variableName});
+				
+				if (t6 < 0.0)
+				{
+					pos -= 2.0 * t6 * n6${variableName};
+					${useForGetColor ? "color = mix(color, color6, colorScale);" : ""}
+				}
+			` : ""}
+
+			${numNs >= 7 ? /* glsl */`
+				float t7 = dot(pos, n7${variableName});
+				
+				if (t7 < 0.0)
+				{
+					pos -= 2.0 * t7 * n7${variableName};
+					${useForGetColor ? "color = mix(color, color7, colorScale);" : ""}
 				}
 			` : ""}
 			
@@ -87,7 +129,7 @@ function getDistanceEstimatorGlsl(shape, useForGetColor = false)
 			${useForGetColor ? "colorScale *= .5;" : ""}
 		}
 		
-		return ${useForGetColor ? "color" : "length(pos) * pow(1.0/scale, float(maxIterations))"};
+		return ${useForGetColor ? "color" : "length(pos) * pow(1.0 / scale, float(maxIterations))"};
 	`;
 }
 
@@ -110,6 +152,9 @@ export class KaleidoscopicIFSFractal extends RaymarchApplet
 			const vec3 color2 = vec3(0.0, 1.0, 0.0);
 			const vec3 color3 = vec3(0.0, 0.0, 1.0);
 			const vec3 color4 = vec3(1.0, 1.0, 0.0);
+			const vec3 color5 = vec3(0.5, 0.0, 1.0);
+			const vec3 color6 = vec3(1.0, 0.5, 0.0);
+			const vec3 color7 = vec3(0.0, 1.0, 1.0);
 			
 			const vec3 n1Tetrahedron = ${getVectorGlsl(ns.tetrahedron[0])};
 			const vec3 n2Tetrahedron = ${getVectorGlsl(ns.tetrahedron[1])};
@@ -126,6 +171,16 @@ export class KaleidoscopicIFSFractal extends RaymarchApplet
 			const vec3 n3Octahedron = ${getVectorGlsl(ns.octahedron[2])};
 			const vec3 n4Octahedron = ${getVectorGlsl(ns.octahedron[3])};
 			const vec3 scaleCenterOctahedron = ${getVectorGlsl(scaleCenters.octahedron)};
+
+			const vec3 n1Dodecahedron = ${getVectorGlsl(ns.dodecahedron[0])};
+			const vec3 n2Dodecahedron = ${getVectorGlsl(ns.dodecahedron[1])};
+			const vec3 n3Dodecahedron = ${getVectorGlsl(ns.dodecahedron[2])};
+			const vec3 n4Dodecahedron = ${getVectorGlsl(ns.dodecahedron[3])};
+			const vec3 n5Dodecahedron = ${getVectorGlsl(ns.dodecahedron[4])};
+			const vec3 n6Dodecahedron = ${getVectorGlsl(ns.dodecahedron[5])};
+			const vec3 n7Dodecahedron = ${getVectorGlsl(ns.dodecahedron[6])};
+			
+			const vec3 scaleCenterDodecahedron = ${getVectorGlsl(scaleCenters.dodecahedron)};
 		`;
 
 		const distanceEstimatorGlsl = getDistanceEstimatorGlsl(shape);
@@ -168,43 +223,17 @@ export class KaleidoscopicIFSFractal extends RaymarchApplet
 		// centered on that vertex (so that we don't need to recalculate the vertices), and repeat.
 		for (let iteration = 0; iteration < maxIterations; iteration++)
 		{
-			// Fold space over on itself so that we can reference only the top vertex.
-			const t1 = dotProduct([x, y, z], shapeNs[0]);
-
-			if (t1 < 0)
+			for (let i = 0; i < shapeNs.length; i++)
 			{
-				x -= 2 * t1 * shapeNs[0][0];
-				y -= 2 * t1 * shapeNs[0][1];
-				z -= 2 * t1 * shapeNs[0][2];
-			}
+				// Fold space over on itself so that we can reference only the top vertex.
 
-			const t2 = dotProduct([x, y, z], shapeNs[1]);
+				const t = dotProduct([x, y, z], shapeNs[i]);
 
-			if (t2 < 0)
-			{
-				x -= 2 * t2 * shapeNs[1][0];
-				y -= 2 * t2 * shapeNs[1][1];
-				z -= 2 * t2 * shapeNs[1][2];
-			}
-
-			const t3 = dotProduct([x, y, z], shapeNs[2]);
-
-			if (t3 < 0)
-			{
-				x -= 2 * t3 * shapeNs[2][0];
-				y -= 2 * t3 * shapeNs[2][1];
-				z -= 2 * t3 * shapeNs[2][2];
-			}
-
-			if (shapeNs.length >= 4)
-			{
-				const t4 = dotProduct([x, y, z], shapeNs[3]);
-
-				if (t4 < 0)
+				if (t < 0)
 				{
-					x -= 2 * t4 * shapeNs[3][0];
-					y -= 2 * t4 * shapeNs[3][1];
-					z -= 2 * t4 * shapeNs[3][2];
+					x -= 2 * t * shapeNs[i][0];
+					y -= 2 * t * shapeNs[i][1];
+					z -= 2 * t * shapeNs[i][2];
 				}
 			}
 

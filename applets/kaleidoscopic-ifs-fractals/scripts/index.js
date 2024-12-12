@@ -58,6 +58,7 @@ export default function()
 			octahedron: "Octahedron",
 			tetrahedron: "Tetrahedron",
 			cube: "Cube",
+			dodecahedron: "Dodecahedron",
 		},
 		onInput: onDropdownInput
 	});
