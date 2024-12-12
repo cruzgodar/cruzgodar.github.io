@@ -32,6 +32,14 @@ const ns = {
 		[0.309017, 0.809016, -0.5],
 		[-0.5, 0.309017, 0.809016],
 		[0.809016, -0.5, 0.309017],
+	],
+	icosahedron: [
+		[0, 1, 0],
+		[-0.5, -0.309017, 0.809016],
+		[0.5, -0.309017, 0.809016],
+		[-0.809016, 0.5, 0.309017],
+		[0.809016, 0.5, 0.309017],
+		[0, 1, 0],
 	]
 };
 
@@ -39,7 +47,8 @@ const scaleCenters = {
 	tetrahedron: [0, 0, 1],
 	cube: [.577350, .577350, .577350],
 	octahedron: [0, 0, 1],
-	dodecahedron: [.577350, .577350, .577350]
+	dodecahedron: [.577350, .577350, .577350],
+	icosahedron: [0, 0.525731, 0.850651]
 };
 
 const maxIterations = 56;
@@ -47,79 +56,45 @@ const maxIterations = 56;
 function getDistanceEstimatorGlsl(shape, useForGetColor = false)
 {
 	// Make the first letter uppercase.
-	const variableName = shape[0].toUpperCase() + shape.slice(1);
+	const variableName = shape.charAt(0).toUpperCase() + shape.slice(1);
 
 	const numNs = ns[shape].length;
+
+	const loopInternals = Array(numNs).fill(0).map((_, i) =>
+	{
+		if (useForGetColor)
+		{
+			// Reflect along perpendicular bisector planes to the edges connected to
+			// the scale center vertex so that we can compute only the distance
+			// to that single vertex.
+
+			return /* glsl */`
+				float t${i} = dot(pos, n${i}${variableName});
+				
+				if (t${i} < 0.0)
+				{
+					pos -= 2.0 * t${i} * n${i}${variableName};
+					color = mix(color, color${i}, colorScale);
+				}
+			`;
+		}
+
+		return /* glsl */`
+			float t${i} = dot(pos, n${i}${variableName});
+			
+			if (t${i} < 0.0)
+			{
+				pos -= 2.0 * t${i} * n${i}${variableName};
+			}
+		`;
+	}).join("\n");
 
 	return /* glsl */`
 		${useForGetColor ? "vec3 color = vec3(1.0, 1.0, 1.0); float colorScale = .5;" : ""}
 		//We'll find the closest vertex, scale everything by a factor of 2 centered on that vertex (so that we don't need to recalculate the vertices), and repeat.
 		for (int iteration = 0; iteration < maxIterations; iteration++)
 		{
-			//Fold space over on itself so that we can reference only the top vertex.
-			float t1 = dot(pos, n1${variableName});
-			
-			if (t1 < 0.0)
-			{
-				pos -= 2.0 * t1 * n1${variableName};
-				${useForGetColor ? "color = mix(color, color1, colorScale);" : ""}
-			}
-			
-			float t2 = dot(pos, n2${variableName});
-			
-			if (t2 < 0.0)
-			{
-				pos -= 2.0 * t2 * n2${variableName};
-				${useForGetColor ? "color = mix(color, color2, colorScale);" : ""}
-			}
-			
-			float t3 = dot(pos, n3${variableName});
-			
-			if (t3 < 0.0)
-			{
-				pos -= 2.0 * t3 * n3${variableName};
-				${useForGetColor ? "color = mix(color, color3, colorScale);" : ""}
-			}
-
-			${numNs >= 4 ? /* glsl */`
-				float t4 = dot(pos, n4${variableName});
-				
-				if (t4 < 0.0)
-				{
-					pos -= 2.0 * t4 * n4${variableName};
-					${useForGetColor ? "color = mix(color, color4, colorScale);" : ""}
-				}
-			` : ""}
-
-			${numNs >= 5 ? /* glsl */`
-				float t5 = dot(pos, n5${variableName});
-				
-				if (t5 < 0.0)
-				{
-					pos -= 2.0 * t5 * n5${variableName};
-					${useForGetColor ? "color = mix(color, color5, colorScale);" : ""}
-				}
-			` : ""}
-
-			${numNs >= 6 ? /* glsl */`
-				float t6 = dot(pos, n6${variableName});
-				
-				if (t6 < 0.0)
-				{
-					pos -= 2.0 * t6 * n6${variableName};
-					${useForGetColor ? "color = mix(color, color6, colorScale);" : ""}
-				}
-			` : ""}
-
-			${numNs >= 7 ? /* glsl */`
-				float t7 = dot(pos, n7${variableName});
-				
-				if (t7 < 0.0)
-				{
-					pos -= 2.0 * t7 * n7${variableName};
-					${useForGetColor ? "color = mix(color, color7, colorScale);" : ""}
-				}
-			` : ""}
+			${loopInternals}
 			
 			//Scale the system -- this one takes me a fair bit of thinking to get. What's happening here is that we're stretching from a vertex, but since we never scale the vertices, the four new ones are the four closest to the vertex we scaled from. Now (x, y, z) will get farther and farther away from the origin, but that makes sense -- we're really just zooming in on the tetrahedron.
 			pos = scale * pos - (scale - 1.0) * scaleCenter${variableName};
@@ -145,42 +120,40 @@ export class KaleidoscopicIFSFractal extends RaymarchApplet
 		canvas,
 		shape = "octahedron",
 	}) {
+		const constantsGlsl = [];
+
+		for (const key in ns)
+		{
+			const uppercaseKey = key.charAt(0).toUpperCase() + key.slice(1);
+
+			const glsl = Array(ns[key].length).fill(0).map((_, i) =>
+			{
+				return /* glsl */`
+					const vec3 n${i}${uppercaseKey} = ${getVectorGlsl(ns[key][i])};
+				`;
+			}).join("\n")
+			+ /* glsl */`
+				const vec3 scaleCenter${uppercaseKey} = ${getVectorGlsl(scaleCenters[key])};
+			`;
+
+			constantsGlsl.push(glsl);
+		}
+
 		const addGlsl = /* glsl */`
 			const int maxIterations = ${maxIterations};
 			
-			const vec3 color1 = vec3(1.0, 0.0, 0.0);
-			const vec3 color2 = vec3(0.0, 1.0, 0.0);
-			const vec3 color3 = vec3(0.0, 0.0, 1.0);
-			const vec3 color4 = vec3(1.0, 1.0, 0.0);
-			const vec3 color5 = vec3(0.5, 0.0, 1.0);
-			const vec3 color6 = vec3(1.0, 0.5, 0.0);
-			const vec3 color7 = vec3(0.0, 1.0, 1.0);
+			const vec3 color0 = vec3(1.0, 0.0, 0.0);
+			const vec3 color1 = vec3(0.0, 1.0, 0.0);
+			const vec3 color2 = vec3(0.0, 0.0, 1.0);
+			const vec3 color3 = vec3(1.0, 1.0, 0.0);
+			const vec3 color4 = color0;
+			const vec3 color5 = color1;
+			const vec3 color6 = color2;
+			const vec3 color7 = color3;
+			const vec3 color8 = color0;
+			const vec3 color9 = color1;
 			
-			const vec3 n1Tetrahedron = ${getVectorGlsl(ns.tetrahedron[0])};
-			const vec3 n2Tetrahedron = ${getVectorGlsl(ns.tetrahedron[1])};
-			const vec3 n3Tetrahedron = ${getVectorGlsl(ns.tetrahedron[2])};
-			const vec3 scaleCenterTetrahedron = ${getVectorGlsl(scaleCenters.tetrahedron)};
-
-			const vec3 n1Cube = ${getVectorGlsl(ns.cube[0])};
-			const vec3 n2Cube = ${getVectorGlsl(ns.cube[1])};
-			const vec3 n3Cube = ${getVectorGlsl(ns.cube[2])};
-			const vec3 scaleCenterCube = ${getVectorGlsl(scaleCenters.cube)};
-
-			const vec3 n1Octahedron = ${getVectorGlsl(ns.octahedron[0])};
-			const vec3 n2Octahedron = ${getVectorGlsl(ns.octahedron[1])};
-			const vec3 n3Octahedron = ${getVectorGlsl(ns.octahedron[2])};
-			const vec3 n4Octahedron = ${getVectorGlsl(ns.octahedron[3])};
-			const vec3 scaleCenterOctahedron = ${getVectorGlsl(scaleCenters.octahedron)};
-
-			const vec3 n1Dodecahedron = ${getVectorGlsl(ns.dodecahedron[0])};
-			const vec3 n2Dodecahedron = ${getVectorGlsl(ns.dodecahedron[1])};
-			const vec3 n3Dodecahedron = ${getVectorGlsl(ns.dodecahedron[2])};
-			const vec3 n4Dodecahedron = ${getVectorGlsl(ns.dodecahedron[3])};
-			const vec3 n5Dodecahedron = ${getVectorGlsl(ns.dodecahedron[4])};
-			const vec3 n6Dodecahedron = ${getVectorGlsl(ns.dodecahedron[5])};
-			const vec3 n7Dodecahedron = ${getVectorGlsl(ns.dodecahedron[6])};
-			
-			const vec3 scaleCenterDodecahedron = ${getVectorGlsl(scaleCenters.dodecahedron)};
+			${constantsGlsl.join("\n")}
 		`;
 
 		const distanceEstimatorGlsl = getDistanceEstimatorGlsl(shape);

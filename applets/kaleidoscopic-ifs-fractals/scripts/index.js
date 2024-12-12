@@ -55,10 +55,11 @@ export default function()
 		element: $("#polyhedra-dropdown"),
 		name: "Polyhedra",
 		options: {
-			octahedron: "Octahedron",
 			tetrahedron: "Tetrahedron",
 			cube: "Cube",
+			octahedron: "Octahedron",
 			dodecahedron: "Dodecahedron",
+			icosahedron: "Icosahedron"
 		},
 		onInput: onDropdownInput
 	});
