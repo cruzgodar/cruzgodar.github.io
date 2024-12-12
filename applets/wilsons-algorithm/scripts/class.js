@@ -1,14 +1,17 @@
-import { Applet } from "../../../scripts/applets/applet.js";
-import { convertColor } from "/scripts/src/browser.js";
+import { AnimationFrameApplet } from "/scripts/applets/animationFrameApplet.js";
 import { addTemporaryWorker } from "/scripts/src/main.js";
 import { siteSettings } from "/scripts/src/settings.js";
 import { WilsonCPU } from "/scripts/wilson.js";
 
 
-export class WilsonsAlgorithm extends Applet
+export class WilsonsAlgorithm extends AnimationFrameApplet
 {
 	webWorker;
+	maximumSpeed = false;
+	gridSize;
 	resolution = 1000;
+	imageData;
+	pixels = [];
 
 	constructor({ canvas })
 	{
@@ -37,31 +40,34 @@ export class WilsonsAlgorithm extends Applet
 	}) {
 		let timeoutId;
 
+		this.gridSize = gridSize;
 		this.resolution = noBorders ? gridSize : 2 * gridSize + 1;
+		this.maximumSpeed = maximumSpeed;
 
 		this.wilson.resizeCanvas({ width: this.resolution });
 
-		this.wilson.ctx.fillStyle = convertColor(0, 0, 0);
-		this.wilson.ctx.fillRect(
-			0,
-			0,
-			this.resolution,
-			this.resolution
-		);
+		this.imageData = new Uint8ClampedArray(this.resolution * this.resolution * 4);
+		for (let i = 0; i < this.resolution * this.resolution; i++)
+		{
+			this.imageData[4 * i + 3] = 255;
+		}
+
+		this.pixels = [];
+
+		if (this.webWorker)
+		{
+			this.webWorker.terminate();
+		}
 
 		this.webWorker = addTemporaryWorker("/applets/wilsons-algorithm/scripts/worker.js");
 
 		this.webWorker.onmessage = e =>
 		{
 			clearTimeout(timeoutId);
-			this.wilson.ctx.fillStyle = convertColor(...(e.data[4] ?? [255, 255, 255]));
 
-			this.wilson.ctx.fillRect(
-				e.data[0],
-				e.data[1],
-				e.data[2],
-				e.data[3]
-			);
+			this.pixels.push(...e.data);
+
+			this.needNewFrame = true;
 		};
 
 		// The worker has three seconds to draw its initial line.
@@ -83,5 +89,31 @@ export class WilsonsAlgorithm extends Applet
 		}
 
 		this.webWorker.postMessage([gridSize, maximumSpeed, noBorders, reverseGenerateSkeleton]);
+
+		this.resume();
+	}
+
+	drawFrame()
+	{
+		const numPixelsToDraw = this.maximumSpeed
+			? this.pixels.length
+			: Math.min(Math.ceil(this.gridSize * this.gridSize / 100), this.pixels.length);
+
+		for (let i = 0; i < numPixelsToDraw; i++)
+		{
+			const index = this.pixels[i][0] * this.resolution + this.pixels[i][1];
+			this.imageData[4 * index] = this.pixels[i][2][0];
+			this.imageData[4 * index + 1] = this.pixels[i][2][1];
+			this.imageData[4 * index + 2] = this.pixels[i][2][2];
+		}
+
+		this.pixels.splice(0, numPixelsToDraw);
+
+		this.wilson.drawFrame(this.imageData);
+
+		if (this.pixels.length !== 0)
+		{
+			this.needNewFrame = true;
+		}
 	}
 }

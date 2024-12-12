@@ -42,7 +42,7 @@ function drawBrownianTree()
 	brownianTreeGraph[Math.floor(gridSize / 2)][Math.floor(gridSize / 2)] = 1;
 	color[Math.floor(gridSize / 2)][Math.floor(gridSize / 2)] = [255, 255, 255];
 
-	postMessage([2, Math.floor(gridSize / 2), Math.floor(gridSize / 2), [255, 255, 255]]);
+	postMessage([Math.floor(gridSize / 2), Math.floor(gridSize / 2), [255, 255, 255]]);
 
 
 
@@ -108,13 +108,12 @@ function drawBrownianTree()
 				const newColor = HSVtoRGB(newHue, 1, 1);
 
 				color[currentRow][currentCol] = [
-					.9975 * color[newRow][newCol][0] + .0025 * newColor[0],
-					.9975 * color[newRow][newCol][1] + .0025 * newColor[1],
-					.9975 * color[newRow][newCol][2] + .0025 * newColor[2]
+					.9935 * color[newRow][newCol][0] + .0065 * newColor[0],
+					.9935 * color[newRow][newCol][1] + .0065 * newColor[1],
+					.9935 * color[newRow][newCol][2] + .0065 * newColor[2]
 				];
 
 				postMessage([
-					2,
 					currentCol,
 					currentRow,
 					[

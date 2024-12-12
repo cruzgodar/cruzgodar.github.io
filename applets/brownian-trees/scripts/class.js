@@ -1,12 +1,12 @@
-import { Applet } from "../../../scripts/applets/applet.js";
-import { convertColor } from "/scripts/src/browser.js";
+import { AnimationFrameApplet } from "/scripts/applets/animationFrameApplet.js";
 import { addTemporaryWorker } from "/scripts/src/main.js";
-import { Wilson } from "/scripts/wilson.js";
+import { siteSettings } from "/scripts/src/settings.js";
+import { WilsonCPU } from "/scripts/wilson.js";
 
-export class BrownianTree extends Applet
+export class BrownianTree extends AnimationFrameApplet
 {
 	resolution = 500;
-
+	imageData;
 	webWorker;
 
 
@@ -15,24 +15,18 @@ export class BrownianTree extends Applet
 	{
 		super(canvas);
 
-		const options =
-		{
-			renderer: "cpu",
-
+		const options = {
 			canvasWidth: this.resolution,
-			canvasHeight: this.resolution,
+			reduceMotion: siteSettings.reduceMotion,
 
-
-
-			useFullscreen: true,
-
-			useFullscreenButton: true,
-
-			enterFullscreenButtonIconPath: "/graphics/general-icons/enter-fullscreen.png",
-			exitFullscreenButtonIconPath: "/graphics/general-icons/exit-fullscreen.png"
+			fullscreenOptions: {
+				useFullscreenButton: true,
+				enterFullscreenButtonIconPath: "/graphics/general-icons/enter-fullscreen.png",
+				exitFullscreenButtonIconPath: "/graphics/general-icons/exit-fullscreen.png",
+			},
 		};
 
-		this.wilson = new Wilson(canvas, options);
+		this.wilson = new WilsonCPU(canvas, options);
 	}
 
 
@@ -41,25 +35,42 @@ export class BrownianTree extends Applet
 	{
 		this.resolution = resolution;
 
-		this.wilson.changeCanvasSize(this.resolution, this.resolution);
+		this.wilson.resizeCanvas({ width: this.resolution });
 
-		this.wilson.ctx.fillStyle = convertColor(0, 0, 0);
-		this.wilson.ctx.fillRect(0, 0, this.resolution, this.resolution);
+		this.imageData = new Uint8ClampedArray(this.resolution * this.resolution * 4);
 
+		for (let i = 0; i < this.resolution * this.resolution; i++)
+		{
+			this.imageData[4 * i + 3] = 255;
+		}
 
+		this.wilson.drawFrame(this.imageData);
+
+		
+
+		if (this.webWorker)
+		{
+			this.webWorker.terminate();
+		}
 
 		this.webWorker = addTemporaryWorker("/applets/brownian-trees/scripts/worker.js");
 
 		this.webWorker.onmessage = (e) =>
 		{
-			if (e.data[0] !== 0 && e.data[0] !== 1)
-			{
-				this.wilson.ctx.fillStyle = convertColor(...e.data[3]);
-
-				this.wilson.ctx.fillRect(e.data[1], e.data[2], 1, 1);
-			}
+			const index = e.data[0] * this.resolution + e.data[1];
+			this.imageData[4 * index] = e.data[2][0];
+			this.imageData[4 * index + 1] = e.data[2][1];
+			this.imageData[4 * index + 2] = e.data[2][2];
+			this.needNewFrame = true;
 		};
 
 		this.webWorker.postMessage([this.resolution]);
+
+		this.resume();
+	}
+
+	drawFrame()
+	{
+		this.wilson.drawFrame(this.imageData);
 	}
 }
