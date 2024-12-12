@@ -425,13 +425,12 @@ export class NewtonsMethod extends AnimationFrameApplet
 			{
 				this.secantProportion = dummy.t;
 
-				this.wilson.setUniform({
-					name: "secantProportion",
-					value: this.secantProportion
+				this.wilson.setUniforms({
+					secantProportion: this.secantProportion
 				});
-				this.wilsonHidden.setUniform({
-					name: "secantProportion",
-					value: this.secantProportion
+
+				this.wilsonHidden.setUniforms({
+					secantProportion: this.secantProportion
 				});
 
 				this.needNewFrame = true;
@@ -458,24 +457,22 @@ export class NewtonsMethod extends AnimationFrameApplet
 
 		this.wilson.draggables[`root${this.numRoots}`].element.style.display = "block";
 
-		this.wilson.setUniform({
-			name: `root${this.numRoots}`,
-			value: this.wilson.draggables[`root${this.numRoots}`].location
+		this.wilson.setUniforms({
+			[`root${this.numRoots}`]: this.wilson.draggables[`root${this.numRoots}`].location
 		});
-		this.wilsonHidden.setUniform({
-			name: `root${this.numRoots}`,
-			value: this.wilson.draggables[`root${this.numRoots}`].location
+
+		this.wilsonHidden.setUniforms({
+			[`root${this.numRoots}`]: this.wilson.draggables[`root${this.numRoots}`].location
 		});
 
 		this.numRoots++;
 
-		this.wilson.setUniform({
-			name: "numRoots",
-			value: this.numRoots
+		this.wilson.setUniforms({
+			numRoots: this.numRoots
 		});
-		this.wilsonHidden.setUniform({
-			name: "numRoots",
-			value: this.numRoots
+
+		this.wilsonHidden.setUniforms({
+			numRoots: this.numRoots
 		});
 
 		this.needNewFrame = true;
@@ -494,13 +491,12 @@ export class NewtonsMethod extends AnimationFrameApplet
 
 		this.wilson.draggables[`root${this.numRoots}`].element.style.display = "none";
 
-		this.wilson.setUniform({
-			name: "numRoots",
-			value: this.numRoots
+		this.wilson.setUniforms({
+			numRoots: this.numRoots
 		});
-		this.wilsonHidden.setUniform({
-			name: "numRoots",
-			value: this.numRoots
+
+		this.wilsonHidden.setUniforms({
+			numRoots: this.numRoots
 		});
 
 		this.needNewFrame = true;
@@ -548,13 +544,13 @@ export class NewtonsMethod extends AnimationFrameApplet
 					];
 
 					this.wilson.setDraggablePosition({ id, location });
-					this.wilson.setUniform({
-						name: id,
-						value: location
+
+					this.wilson.setUniforms({
+						[id]: location
 					});
-					this.wilsonHidden.setUniform({
-						name: id,
-						value: location
+
+					this.wilsonHidden.setUniforms({
+						[id]: location
 					});
 				}
 
@@ -565,13 +561,13 @@ export class NewtonsMethod extends AnimationFrameApplet
 				for (const id of Object.keys(newRoots))
 				{
 					this.wilson.setDraggablePosition({ id, location: newRoots[id] });
-					this.wilson.setUniform({
-						name: id,
-						value: newRoots[id]
+
+					this.wilson.setUniforms({
+						[id]: newRoots[id]
 					});
-					this.wilsonHidden.setUniform({
-						name: id,
-						value: newRoots[id]
+
+					this.wilsonHidden.setUniforms({
+						[id]: newRoots[id]
 					});
 				}
 
@@ -589,13 +585,12 @@ export class NewtonsMethod extends AnimationFrameApplet
 			location: [x, y]
 		});
 
-		this.wilson.setUniform({
-			name: this.lastActiveRoot,
-			value: [x, y]
+		this.wilson.setUniforms({
+			[this.lastActiveRoot]: [x, y]
 		});
-		this.wilsonHidden.setUniform({
-			name: this.lastActiveRoot,
-			value: [x, y]
+
+		this.wilsonHidden.setUniforms({
+			[this.lastActiveRoot]: [x, y]
 		});
 
 		this.needNewFrame = true;
@@ -636,13 +631,12 @@ export class NewtonsMethod extends AnimationFrameApplet
 				this.colors[this.lastActiveRoot][1] = result.g;
 				this.colors[this.lastActiveRoot][2] = result.b;
 
-				this.wilson.setUniform({
-					name: uniformName,
-					value: this.colors[this.lastActiveRoot]
+				this.wilson.setUniforms({
+					[uniformName]: this.colors[this.lastActiveRoot]
 				});
-				this.wilsonHidden.setUniform({
-					name: uniformName,
-					value: this.colors[this.lastActiveRoot]
+
+				this.wilsonHidden.setUniforms({
+					[uniformName]: this.colors[this.lastActiveRoot]
 				});
 
 				this.needNewFrame = true;
@@ -652,13 +646,12 @@ export class NewtonsMethod extends AnimationFrameApplet
 
 	onDragDraggable({ id, x, y })
 	{
-		this.wilson.setUniform({
-			name: id,
-			value: [x, y]
+		this.wilson.setUniforms({
+			[id]: [x, y]
 		});
-		this.wilsonHidden.setUniform({
-			name: id,
-			value: [x, y]
+
+		this.wilsonHidden.setUniforms({
+			[id]: [x, y]
 		});
 
 		this.needNewFrame = true;
@@ -697,13 +690,9 @@ export class NewtonsMethod extends AnimationFrameApplet
 
 	drawFrame()
 	{
-		this.wilsonHidden.setUniform({
-			name: "worldSize",
-			value: [this.wilson.worldWidth, this.wilson.worldHeight]
-		});
-		this.wilsonHidden.setUniform({
-			name: "worldCenter",
-			value: [this.wilson.worldCenterX, this.wilson.worldCenterY]
+		this.wilsonHidden.setUniforms({
+			worldSize: [this.wilson.worldWidth, this.wilson.worldHeight],
+			worldCenter: [this.wilson.worldCenterX, this.wilson.worldCenterY]
 		});
 
 		this.wilsonHidden.drawFrame();
@@ -753,17 +742,11 @@ export class NewtonsMethod extends AnimationFrameApplet
 
 		brightnessScale = Math.max(brightnessScale / denom, .5);
 
-
-
-		this.wilson.setUniform({
-			name: "worldSize",
-			value: [this.wilson.worldWidth, this.wilson.worldHeight]
+		this.wilson.setUniforms({
+			worldSize: [this.wilson.worldWidth, this.wilson.worldHeight],
+			worldCenter: [this.wilson.worldCenterX, this.wilson.worldCenterY],
+			brightnessScale
 		});
-		this.wilson.setUniform({
-			name: "worldCenter",
-			value: [this.wilson.worldCenterX, this.wilson.worldCenterY]
-		});
-		this.wilson.setUniform({ name: "brightnessScale", value: brightnessScale });
 
 		this.wilson.drawFrame();
 	}

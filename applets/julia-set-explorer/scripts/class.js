@@ -402,23 +402,16 @@ export class JuliaSet extends Applet
 		const zoomLevel = -Math.log2(this.wilson.worldWidth) + 3;
 		this.numIterations = Math.ceil(200 + zoomLevel * 40);
 
-		this.wilsonHidden.setUniform({
-			name: "worldSize",
-			value: [this.wilson.worldWidth, this.wilson.worldHeight]
-		});
-		this.wilsonHidden.setUniform({
-			name: "worldCenter",
-			value: [this.wilson.worldCenterX, this.wilson.worldCenterY]
-		});
-		this.wilsonHidden.setUniform({ name: "numIterations", value: this.numIterations });
-		this.wilsonHidden.setUniform({
-			name: "brightnessScale",
-			value: 20 + zoomLevel
+		this.wilsonHidden.setUniforms({
+			worldSize: [this.wilson.worldWidth, this.wilson.worldHeight],
+			worldCenter: [this.wilson.worldCenterX, this.wilson.worldCenterY],
+			numIterations: this.numIterations,
+			brightnessScale: 20 + zoomLevel
 		});
 
 		if (this.juliaMode !== "mandelbrot")
 		{
-			this.wilsonHidden.setUniform({ name: "c", value: this.c });
+			this.wilsonHidden.setUniforms({ c: this.c });
 		}
 
 		this.wilsonHidden.drawFrame();
@@ -457,25 +450,16 @@ export class JuliaSet extends Applet
 			.5
 		);
 
-
-
-		this.wilson.setUniform({
-			name: "worldSize",
-			value: [this.wilson.worldWidth, this.wilson.worldHeight]
-		});
-		this.wilson.setUniform({
-			name: "worldCenter",
-			value: [this.wilson.worldCenterX, this.wilson.worldCenterY]
-		});
-		this.wilson.setUniform({ name: "numIterations", value: this.numIterations });
-		this.wilson.setUniform({
-			name: "brightnessScale",
-			value: averageBrightnessScale
+		this.wilson.setUniforms({
+			worldSize: [this.wilson.worldWidth, this.wilson.worldHeight],
+			worldCenter: [this.wilson.worldCenterX, this.wilson.worldCenterY],
+			numIterations: this.numIterations,
+			brightnessScale: averageBrightnessScale
 		});
 
 		if (this.juliaMode !== "mandelbrot")
 		{
-			this.wilson.setUniform({ name: "c", value: this.c });
+			this.wilson.setUniforms({ c: this.c });
 		}
 
 		this.wilson.drawFrame();

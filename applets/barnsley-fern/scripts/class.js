@@ -197,9 +197,8 @@ export class BarnsleyFern extends AnimationFrameApplet
 		this.imageData = new Float32Array(this.resolution * this.resolution * 4);
 
 		this.maxBrightness = 1;
-		this.wilson.setUniform({
-			name: "maxBrightness",
-			value: 1
+		this.wilson.setUniforms({
+			maxBrightness: 1
 		});
 
 		for (let i = 0; i < this.computeResolution; i++)
@@ -307,9 +306,8 @@ export class BarnsleyFern extends AnimationFrameApplet
 		});
 
 		const maxBrightnessAdjust = this.resolution / 1000 * Math.min(this.frame / 25, 1);
-		this.wilson.setUniform({
-			name: "maxBrightness",
-			value: this.maxBrightness / maxBrightnessAdjust
+		this.wilson.setUniforms({
+			maxBrightness: this.maxBrightness / maxBrightnessAdjust
 		});
 
 		this.wilson.drawFrame();
@@ -343,41 +341,17 @@ export class BarnsleyFern extends AnimationFrameApplet
 			0.045 + 0.195 * c2 + 0.54 * c * s
 		];
 
-		this.wilsonUpdate.setUniform({
-			shader: "updateX",
-			name: "A1",
-			value: this.A1
-		});
+		this.wilsonUpdate.setUniforms({
+			A1: this.A1,
+			A4: this.A4,
+			b2: this.b2
+		}, "updateX");
 
-		this.wilsonUpdate.setUniform({
-			shader: "updateX",
-			name: "A4",
-			value: this.A4
-		});
-
-		this.wilsonUpdate.setUniform({
-			shader: "updateX",
-			name: "b2",
-			value: this.b2
-		});
-
-		this.wilsonUpdate.setUniform({
-			shader: "updateY",
-			name: "A1",
-			value: this.A1
-		});
-
-		this.wilsonUpdate.setUniform({
-			shader: "updateY",
-			name: "A4",
-			value: this.A4
-		});
-
-		this.wilsonUpdate.setUniform({
-			shader: "updateY",
-			name: "b2",
-			value: this.b2
-		});
+		this.wilsonUpdate.setUniforms({
+			A1: this.A1,
+			A4: this.A4,
+			b2: this.b2
+		}, "updateY");
 	}
 
 	onReleaseDraggable()

@@ -283,55 +283,30 @@ export class AbelianSandpile extends AnimationFrameApplet
 			(this.numGrains % 256) / 255
 		];
 
-		this.wilsonUpdate.setUniform({
-			shader: "init",
-			name: "stepSize",
-			value: 1 / this.resolutionUpdate
-		});
+		this.wilsonUpdate.setUniforms({
+			stepSize: 1 / this.resolutionUpdate,
+			startGrains: grains,
+			floodGrains: [0, 0, 0, this.floodGrains / 255]
+		}, "init");
 
-		this.wilsonUpdate.setUniform({
-			shader: "init",
-			name: "startGrains",
-			value: grains
-		});
-
-		this.wilsonUpdate.setUniform({
-			shader: "init",
-			name: "floodGrains",
-			value: [0, 0, 0, this.floodGrains / 255]
-		});
-
-		this.wilsonUpdate.setUniform({
-			shader: "update",
-			name: "stepSize",
-			value: 1 / this.resolutionUpdate
-		});
+		this.wilsonUpdate.setUniforms({
+			stepSize: 1 / this.resolutionUpdate
+		}, "update");
 
 		this.wilsonUpdate.resizeCanvas({ width: this.resolutionUpdate });
 
-
-
-		this.wilson.setUniform({
-			name: "color1",
-			value: [
+		this.wilson.setUniforms({
+			color1: [
 				palette[0][0] / 255,
 				palette[0][1] / 255,
 				palette[0][2] / 255
-			]
-		});
-
-		this.wilson.setUniform({
-			name: "color2",
-			value: [
+			],
+			color2: [
 				palette[1][0] / 255,
 				palette[1][1] / 255,
 				palette[1][2] / 255
-			]
-		});
-
-		this.wilson.setUniform({
-			name: "color3",
-			value: [
+			],
+			color3: [
 				palette[2][0] / 255,
 				palette[2][1] / 255,
 				palette[2][2] / 255
