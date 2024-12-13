@@ -54,11 +54,6 @@ export class WilsonsAlgorithm extends AnimationFrameApplet
 
 		this.pixels = [];
 
-		if (this.webWorker)
-		{
-			this.webWorker.terminate();
-		}
-
 		this.webWorker = addTemporaryWorker("/applets/wilsons-algorithm/scripts/worker.js");
 
 		this.webWorker.onmessage = e =>
@@ -77,8 +72,6 @@ export class WilsonsAlgorithm extends AnimationFrameApplet
 		{
 			timeoutId = setTimeout(() =>
 			{
-				this.webWorker?.terminate && this.webWorker.terminate();
-
 				this.run({
 					gridSize,
 					maximumSpeed,

@@ -1,13 +1,15 @@
 import { Applet } from "../../../scripts/applets/applet.js";
-import { opacityAnimationTime } from "/scripts/src/animation.js";
+import { changeOpacity } from "/scripts/src/animation.js";
 import { convertColor } from "/scripts/src/browser.js";
 import { addTemporaryWorker } from "/scripts/src/main.js";
 import { siteSettings } from "/scripts/src/settings.js";
-import { Wilson } from "/scripts/wilson.js";
+import { WilsonCPU } from "/scripts/wilson.js";
 
 export class SudokuGenerator extends Applet
 {
 	grid = [];
+
+	resolution = 9 * 200 + 9;
 
 	webWorker;
 
@@ -21,19 +23,17 @@ export class SudokuGenerator extends Applet
 
 		const options =
 		{
-			renderer: "cpu",
-
-			canvasWidth: 1000,
-			canvasHeight: 1000
+			canvasWidth: this.resolution,
+			reduceMotion: siteSettings.reduceMotion,
 		};
 
-		this.wilson = new Wilson(canvas, options);
+		this.wilson = new WilsonCPU(canvas, options);
 
 	}
 
 
 
-	run()
+	async run()
 	{
 		this.grid = new Array(9);
 
@@ -47,35 +47,14 @@ export class SudokuGenerator extends Applet
 			}
 		}
 
-
-
 		if (this.generatedFirstPuzzle)
 		{
-			this.wilson.canvas.style.opacity = 0;
-
-			setTimeout(() =>
-			{
-				const canvasSize = 9 * 200 + 9;
-
-				this.wilson.ctx.clearRect(0, 0, canvasSize, canvasSize);
-			}, opacityAnimationTime);
+			await changeOpacity({ element: this.canvas, opacity: 0 });
 		}
 
-		else
-		{
-			const canvasSize = 9 * 200 + 9;
-
-			this.wilson.canvas.setAttribute("width", canvasSize);
-			this.wilson.canvas.setAttribute("height", canvasSize);
-
-			this.wilson.ctx.clearRect(0, 0, canvasSize, canvasSize);
-		}
-
-
+		this.wilson.ctx.clearRect(0, 0, this.resolution, this.resolution);
 
 		this.webWorker = addTemporaryWorker("/applets/sudoku-generator/scripts/worker.js");
-
-
 
 		this.webWorker.onmessage = e =>
 		{
@@ -83,45 +62,31 @@ export class SudokuGenerator extends Applet
 
 			this.drawGrid(false);
 
-			this.wilson.canvas.style.opacity = 1;
+			if (!this.generatedFirstPuzzle)
+			{
+				changeOpacity({ element: this.canvas, opacity: 1 });
+			}
 
 			this.generatedFirstPuzzle = true;
 		};
-
-
-
-		if (this.generatedFirstPuzzle)
-		{
-			setTimeout(() =>
-			{
-				this.webWorker.postMessage([]);
-			}, opacityAnimationTime);
-		}
-
-		else
-		{
-			this.webWorker.postMessage([]);
-		}
+		
+		this.webWorker.postMessage([]);
 	}
 
 
 
 	drawGrid(printMode)
 	{
-		const canvasSize = 9 * 200 + 9;
-
-
-
 		if (printMode)
 		{
 			this.wilson.ctx.fillStyle = convertColor(255, 255, 255);
-			this.wilson.ctx.fillRect(0, 0, canvasSize, canvasSize);
+			this.wilson.ctx.fillRect(0, 0, this.resolution, this.resolution);
 			this.wilson.ctx.fillStyle = convertColor(0, 0, 0);
 		}
 
 		else
 		{
-			this.wilson.ctx.clearRect(0, 0, canvasSize, canvasSize);
+			this.wilson.ctx.clearRect(0, 0, this.resolution, this.resolution);
 
 			if (siteSettings.darkTheme)
 			{
@@ -141,12 +106,12 @@ export class SudokuGenerator extends Applet
 		{
 			if (i % 3 === 0)
 			{
-				this.wilson.ctx.fillRect(200 * i, 0, 10, canvasSize + 9);
-				this.wilson.ctx.fillRect(0, 200 * i, canvasSize + 9, 10);
+				this.wilson.ctx.fillRect(200 * i, 0, 10, this.resolution + 9);
+				this.wilson.ctx.fillRect(0, 200 * i, this.resolution + 9, 10);
 			}
 
-			this.wilson.ctx.fillRect(200 * i + 4, 0, 2, canvasSize + 9);
-			this.wilson.ctx.fillRect(0, 200 * i + 4, canvasSize + 9, 2);
+			this.wilson.ctx.fillRect(200 * i + 4, 0, 2, this.resolution + 9);
+			this.wilson.ctx.fillRect(0, 200 * i + 4, this.resolution + 9, 2);
 		}
 
 

@@ -46,13 +46,6 @@ export class BrownianTree extends AnimationFrameApplet
 
 		this.wilson.drawFrame(this.imageData);
 
-		
-
-		if (this.webWorker)
-		{
-			this.webWorker.terminate();
-		}
-
 		this.webWorker = addTemporaryWorker("/applets/brownian-trees/scripts/worker.js");
 
 		this.webWorker.onmessage = (e) =>
