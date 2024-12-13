@@ -1,4 +1,3 @@
-import { loadGlsl } from "../../../scripts/src/complexGlsl.js";
 import { Applet } from "/scripts/applets/applet.js";
 import { siteSettings } from "/scripts/src/settings.js";
 import { WilsonGPU } from "/scripts/wilson.js";
@@ -26,13 +25,6 @@ export class JuliaSet extends Applet
 
 		this.switchJuliaModeButton = switchJuliaModeButton;
 
-		loadGlsl().then(() => this.run({ canvas }));
-	}
-
-
-
-	run({ canvas })
-	{
 		const fragShaderSourceMandelbrot = /* glsl */`
 			precision highp float;
 			

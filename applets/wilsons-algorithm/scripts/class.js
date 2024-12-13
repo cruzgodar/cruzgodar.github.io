@@ -90,7 +90,7 @@ export class WilsonsAlgorithm extends AnimationFrameApplet
 	{
 		const numPixelsToDraw = this.maximumSpeed
 			? this.pixels.length
-			: Math.min(Math.ceil(this.gridSize * this.gridSize / 100), this.pixels.length);
+			: Math.min(Math.ceil(this.gridSize * this.gridSize / 200), this.pixels.length);
 
 		for (let i = 0; i < numPixelsToDraw; i++)
 		{
