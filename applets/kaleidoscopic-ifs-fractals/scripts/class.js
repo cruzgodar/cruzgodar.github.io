@@ -51,8 +51,6 @@ const scaleCenters = {
 	icosahedron: [0, 0.525731, 0.850651]
 };
 
-const maxIterations = 56;
-
 function getDistanceEstimatorGlsl(shape, useForGetColor = false)
 {
 	// Make the first letter uppercase.
@@ -92,8 +90,13 @@ function getDistanceEstimatorGlsl(shape, useForGetColor = false)
 	return /* glsl */`
 		${useForGetColor ? "vec3 color = vec3(1.0, 1.0, 1.0); float colorScale = .5;" : ""}
 		//We'll find the closest vertex, scale everything by a factor of 2 centered on that vertex (so that we don't need to recalculate the vertices), and repeat.
-		for (int iteration = 0; iteration < maxIterations; iteration++)
+		for (int iteration = 0; iteration < 72; iteration++)
 		{
+			if (iteration >= numIterations)
+			{
+				break;
+			}
+
 			${loopInternals}
 			
 			//Scale the system -- this one takes me a fair bit of thinking to get. What's happening here is that we're stretching from a vertex, but since we never scale the vertices, the four new ones are the four closest to the vertex we scaled from. Now (x, y, z) will get farther and farther away from the origin, but that makes sense -- we're really just zooming in on the tetrahedron.
@@ -104,7 +107,7 @@ function getDistanceEstimatorGlsl(shape, useForGetColor = false)
 			${useForGetColor ? "colorScale *= .5;" : ""}
 		}
 		
-		return ${useForGetColor ? "color" : "length(pos) * pow(1.0 / scale, float(maxIterations))"};
+		return ${useForGetColor ? "color" : "length(pos) * pow(1.0 / scale, float(numIterations))"};
 	`;
 }
 
@@ -140,8 +143,6 @@ export class KaleidoscopicIFSFractal extends RaymarchApplet
 		}
 
 		const addGlsl = /* glsl */`
-			const int maxIterations = ${maxIterations};
-			
 			const vec3 color0 = vec3(1.0, 0.0, 0.0);
 			const vec3 color1 = vec3(0.0, 1.0, 0.0);
 			const vec3 color2 = vec3(0.0, 0.0, 1.0);
@@ -163,6 +164,7 @@ export class KaleidoscopicIFSFractal extends RaymarchApplet
 		const uniforms = {
 			scale: ["float", 2],
 			rotationMatrix: ["mat3", [[1, 0, 0], [0, 1, 0], [0, 0, 1]]],
+			numIterations: ["int", 56],
 		};
 
 		super({
@@ -194,7 +196,7 @@ export class KaleidoscopicIFSFractal extends RaymarchApplet
 
 		// We'll find the closest vertex, scale everything by a factor of 2
 		// centered on that vertex (so that we don't need to recalculate the vertices), and repeat.
-		for (let iteration = 0; iteration < maxIterations; iteration++)
+		for (let iteration = 0; iteration < 56; iteration++)
 		{
 			for (let i = 0; i < shapeNs.length; i++)
 			{
@@ -225,7 +227,7 @@ export class KaleidoscopicIFSFractal extends RaymarchApplet
 		// So at this point we've scaled up by 2x a total of numIterations times.
 		// The final distance is therefore:
 		return Math.sqrt(x * x + y * y + z * z)
-			* Math.pow(scale, -maxIterations);
+			* Math.pow(scale, -56);
 	}
 
 	updateMatrices()

@@ -10,7 +10,7 @@ import { Slider } from "/scripts/src/sliders.js";
 import { TextBox } from "/scripts/src/textBoxes.js";
 
 const minScale = 1.125;
-const minScaleEpsilon = .00006;
+const minScaleEpsilon = .00003;
 const maxScaleEpsilon = .0000003;
 
 export default function()
@@ -69,7 +69,7 @@ export default function()
 		name: "Scale",
 		value: 2,
 		min: minScale,
-		max: 2,
+		max: 8 / 3,
 		onInput: onSliderInput
 	});
 
@@ -111,10 +111,19 @@ export default function()
 	{
 		applet.setUniform("scale", scaleSlider.value);
 
-		// Exponentially interpolate from .001 to .0000003.
+		// Exponentially interpolate from minScaleEpsilon to maxScaleEpsilon.
 		const power = (scaleSlider.value - minScale) / (2 - minScale)
 			* Math.log10(minScaleEpsilon / maxScaleEpsilon);
 		applet.setUniform("minEpsilon", minScaleEpsilon / Math.pow(10, power));
+
+		// Interpolate from 44 at 8/3 to 56 at 2.
+		const numIterations = Math.floor(
+			44 - (56 - 44) * (scaleSlider.value - 8 / 3) / (8 / 3 - 2)
+		);
+
+		applet.setUniform("numIterations", numIterations);
+
+		console.log(numIterations);
 
 		applet.rotationAngleX = rotationAngleXSlider.value;
 		applet.rotationAngleY = rotationAngleYSlider.value;
