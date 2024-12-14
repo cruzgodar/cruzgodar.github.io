@@ -351,7 +351,7 @@ export class GeneralizedJuliaSet extends AnimationFrameApplet
 		this.wilson.draggables.draggableArg.element.style.display =
 			generatingCode.indexOf("draggableArg") !== -1 ? "block" : "none";
 
-		this.wilson.setDraggablePosition({ id: "draggableArg", location: [0, 0] });
+		this.wilson.setDraggables({ draggableArg: [0, 0] });
 
 		this.wilson.resizeWorld({
 			width: 4,

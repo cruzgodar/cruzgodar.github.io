@@ -421,7 +421,7 @@ export class Applet
 
 
 
-function hsvToRgb(h, s, v)
+export function hsvToRgb(h, s, v)
 {
 	function f(n)
 	{

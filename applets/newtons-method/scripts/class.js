@@ -450,10 +450,7 @@ export class NewtonsMethod extends AnimationFrameApplet
 		const x = Math.random() * 3 - 1.5;
 		const y = Math.random() * 3 - 1.5;
 
-		this.wilson.setDraggablePosition({
-			id: `root${this.numRoots}`,
-			location: [x, y]
-		});
+		this.wilson.setDraggables({ [`root${this.numRoots}`]: [x, y] });
 
 		this.wilson.draggables[`root${this.numRoots}`].element.style.display = "block";
 
@@ -543,15 +540,10 @@ export class NewtonsMethod extends AnimationFrameApplet
 							+ dummy.t * newRoot[1]
 					];
 
-					this.wilson.setDraggablePosition({ id, location });
+					this.wilson.setDraggables({ [id]: location });
 
-					this.wilson.setUniforms({
-						[id]: location
-					});
-
-					this.wilsonHidden.setUniforms({
-						[id]: location
-					});
+					this.wilson.setUniforms({ [id]: location });
+					this.wilsonHidden.setUniforms({ [id]: location });
 				}
 
 				this.needNewFrame = true;
@@ -560,15 +552,10 @@ export class NewtonsMethod extends AnimationFrameApplet
 			{
 				for (const id of Object.keys(newRoots))
 				{
-					this.wilson.setDraggablePosition({ id, location: newRoots[id] });
+					this.wilson.setDraggables({ [id]: newRoots[id] });
 
-					this.wilson.setUniforms({
-						[id]: newRoots[id]
-					});
-
-					this.wilsonHidden.setUniforms({
-						[id]: newRoots[id]
-					});
+					this.wilson.setUniforms({ [id]: newRoots[id] });
+					this.wilsonHidden.setUniforms({ [id]: newRoots[id] });
 				}
 
 				this.needNewFrame = true;
@@ -580,18 +567,10 @@ export class NewtonsMethod extends AnimationFrameApplet
 
 	setRoot(x, y)
 	{
-		this.wilson.setDraggablePosition({
-			id: this.lastActiveRoot,
-			location: [x, y]
-		});
+		this.wilson.setDraggables({ [this.lastActiveRoot]: [x, y] });
 
-		this.wilson.setUniforms({
-			[this.lastActiveRoot]: [x, y]
-		});
-
-		this.wilsonHidden.setUniforms({
-			[this.lastActiveRoot]: [x, y]
-		});
+		this.wilson.setUniforms({ [this.lastActiveRoot]: [x, y] });
+		this.wilsonHidden.setUniforms({ [this.lastActiveRoot]: [x, y] });
 
 		this.needNewFrame = true;
 	}
