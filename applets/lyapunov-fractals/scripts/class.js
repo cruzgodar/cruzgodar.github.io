@@ -120,7 +120,7 @@ export class LyapunovFractal extends AnimationFrameApplet
 
 
 
-		const fragShaderSource = /* glsl */`
+		const shader = /* glsl */`
 			precision highp float;
 			
 			varying vec2 uv;
@@ -197,7 +197,7 @@ export class LyapunovFractal extends AnimationFrameApplet
 		`;
 
 		this.wilson.render.shaderPrograms = [];
-		this.wilson.render.loadNewShader(fragShaderSource);
+		this.wilson.render.loadNewShader(shader);
 		this.wilson.gl.useProgram(this.wilson.render.shaderPrograms[0]);
 
 		this.wilson.render.initUniforms([
@@ -212,7 +212,7 @@ export class LyapunovFractal extends AnimationFrameApplet
 		this.wilson.gl.uniform1f(this.wilson.uniforms.aspectRatio, 1);
 
 		this.wilsonHidden.render.shaderPrograms = [];
-		this.wilsonHidden.render.loadNewShader(fragShaderSource);
+		this.wilsonHidden.render.loadNewShader(shader);
 		this.wilsonHidden.gl.useProgram(this.wilsonHidden.render.shaderPrograms[0]);
 
 		this.wilsonHidden.render.initUniforms([

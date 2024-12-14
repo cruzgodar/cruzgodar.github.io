@@ -166,7 +166,7 @@ export class FractalSounds extends AnimationFrameApplet
 		this.exposure = exposure;
 		this.numIterations = numIterations;
 
-		const fragShaderSource = /* glsl */`
+		const shader = /* glsl */`
 			precision highp float;
 			
 			varying vec2 uv;
@@ -316,7 +316,7 @@ export class FractalSounds extends AnimationFrameApplet
 		`;
 
 		this.wilsonJulia.render.shaderPrograms = [];
-		this.wilsonJulia.render.loadNewShader(fragShaderSource);
+		this.wilsonJulia.render.loadNewShader(shader);
 		this.wilsonJulia.gl.useProgram(this.wilsonJulia.render.shaderPrograms[0]);
 
 		this.wilsonJulia.render.initUniforms([
@@ -335,7 +335,7 @@ export class FractalSounds extends AnimationFrameApplet
 
 
 		this.wilsonHidden.render.shaderPrograms = [];
-		this.wilsonHidden.render.loadNewShader(fragShaderSource);
+		this.wilsonHidden.render.loadNewShader(shader);
 		this.wilsonHidden.gl.useProgram(this.wilsonHidden.render.shaderPrograms[0]);
 
 		this.wilsonHidden.render.initUniforms([

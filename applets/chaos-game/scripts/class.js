@@ -54,7 +54,7 @@ export class ChaosGame extends AnimationFrameApplet
 
 
 
-		const fragShaderSource = /* glsl */`
+		const shader = /* glsl */`
 			precision highp float;
 			precision highp sampler2D;
 			
@@ -86,7 +86,7 @@ export class ChaosGame extends AnimationFrameApplet
 		`;
 
 		const options = {
-			shader: fragShaderSource,
+			shader,
 
 			uniforms: {
 				maxBrightness: 1,
@@ -186,7 +186,7 @@ export class ChaosGame extends AnimationFrameApplet
 
 
 
-		const fragShaderSourceUpdateBase = /* glsl */`
+		const shaderUpdateBase = /* glsl */`
 			precision highp float;
 			precision highp sampler2D;
 			
@@ -214,15 +214,15 @@ export class ChaosGame extends AnimationFrameApplet
 				${updateGlsl}
 		`;
 
-		const fragShaderSourceUpdateX = /* glsl */`
-				${fragShaderSourceUpdateBase}
+		const shaderUpdateX = /* glsl */`
+				${shaderUpdateBase}
 
 				gl_FragColor = encodeFloat(state.x);
 			}
 		`;
 
-		const fragShaderSourceUpdateY = /* glsl */`
-				${fragShaderSourceUpdateBase}
+		const shaderUpdateY = /* glsl */`
+				${shaderUpdateBase}
 
 				gl_FragColor = encodeFloat(state.y);
 			}
@@ -250,12 +250,12 @@ export class ChaosGame extends AnimationFrameApplet
 
 		this.wilsonUpdate.loadShader({
 			id: "updateX",
-			source: fragShaderSourceUpdateX,
+			source: shaderUpdateX,
 		});
 
 		this.wilsonUpdate.loadShader({
 			id: "updateY",
-			source: fragShaderSourceUpdateY,
+			source: shaderUpdateY,
 		});
 
 		

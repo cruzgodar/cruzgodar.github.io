@@ -61,7 +61,7 @@ export class SortingAlgorithm extends AnimationFrameApplet
 		this.numReadsElement = numReadsElement;
 		this.numWritesElement = numWritesElement;
 
-		const fragShaderSource = /* glsl */`
+		const shader = /* glsl */`
 			precision highp float;
 			
 			varying vec2 uv;
@@ -129,7 +129,7 @@ export class SortingAlgorithm extends AnimationFrameApplet
 		{
 			renderer: "gpu",
 
-			shader: fragShaderSource,
+			shader,
 
 			canvasWidth: this.resolution,
 			canvasHeight: this.resolution,

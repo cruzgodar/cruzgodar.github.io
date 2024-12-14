@@ -100,7 +100,7 @@ export class GeneralizedJuliaSet extends AnimationFrameApplet
 
 		const needDraggable = generatingCode.indexOf("draggableArg") !== -1;
 
-		const fragShaderSourceMandelbrot = /* glsl */`
+		const shaderMandelbrot = /* glsl */`
 			precision highp float;
 			
 			varying vec2 uv;
@@ -152,7 +152,7 @@ export class GeneralizedJuliaSet extends AnimationFrameApplet
 
 
 
-		const fragShaderSourceJulia = /* glsl */`
+		const shaderJulia = /* glsl */`
 			precision highp float;
 			
 			varying vec2 uv;
@@ -203,7 +203,7 @@ export class GeneralizedJuliaSet extends AnimationFrameApplet
 
 
 
-		const fragShaderSourceJuliaPicker = /* glsl */`
+		const shaderJuliaPicker = /* glsl */`
 			precision highp float;
 			
 			varying vec2 uv;
@@ -305,7 +305,7 @@ export class GeneralizedJuliaSet extends AnimationFrameApplet
 		{
 			wilson.loadShader({
 				id: "mandelbrot",
-				source: fragShaderSourceMandelbrot,
+				source: shaderMandelbrot,
 				uniforms: {
 					worldCenter: [0, 0],
 					worldSize: [4, 4],
@@ -317,7 +317,7 @@ export class GeneralizedJuliaSet extends AnimationFrameApplet
 
 			wilson.loadShader({
 				id: "julia",
-				source: fragShaderSourceJulia,
+				source: shaderJulia,
 				uniforms: {
 					worldCenter: [0, 0],
 					worldSize: [4, 4],
@@ -330,7 +330,7 @@ export class GeneralizedJuliaSet extends AnimationFrameApplet
 
 			wilson.loadShader({
 				id: "juliaPicker",
-				source: fragShaderSourceJuliaPicker,
+				source: shaderJuliaPicker,
 				uniforms: {
 					worldCenter: [0, 0],
 					worldSize: [4, 4],

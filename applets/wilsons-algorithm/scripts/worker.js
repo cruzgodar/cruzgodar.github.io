@@ -3,7 +3,6 @@
 
 
 let gridSize;
-let maximumSpeed;
 let noBorders;
 let reverseGenerateSkeleton;
 
@@ -706,9 +705,8 @@ function HSVtoRGB(h, s, v)
 onmessage = (e) =>
 {
 	gridSize = e.data[0];
-	maximumSpeed = e.data[1];
-	noBorders = e.data[2];
-	reverseGenerateSkeleton = e.data[3];
+	noBorders = e.data[1];
+	reverseGenerateSkeleton = e.data[2];
 
 	// eslint-disable-next-line no-undef
 	importScripts("/applets/wilsons-algorithm/scripts/random-walk.js");

@@ -48,7 +48,7 @@ export class DoublePendulumFractal extends Applet
 
 
 
-		const fragShaderSourceInit = /* glsl */`
+		const shaderInit = /* glsl */`
 			precision highp float;
 			
 			varying vec2 uv;
@@ -65,7 +65,7 @@ export class DoublePendulumFractal extends Applet
 
 
 
-		const fragShaderSourceUpdate = /* glsl */`
+		const shaderUpdate = /* glsl */`
 			precision highp float;
 			precision highp sampler2D;
 			
@@ -101,7 +101,7 @@ export class DoublePendulumFractal extends Applet
 
 
 
-		const fragShaderSourceDraw = /* glsl */`
+		const shaderDraw = /* glsl */`
 			precision highp float;
 			precision highp sampler2D;
 			
@@ -145,7 +145,7 @@ export class DoublePendulumFractal extends Applet
 		{
 			renderer: "gpu",
 
-			shader: fragShaderSourceInit,
+			shader: shaderInit,
 
 			canvasWidth: this.resolution,
 			canvasHeight: this.resolution,
@@ -165,8 +165,8 @@ export class DoublePendulumFractal extends Applet
 		this.wilson.render.initUniforms(["movementAdjust"], 0);
 		this.wilson.gl.uniform1f(this.wilson.uniforms.movementAdjust[0], 0);
 
-		this.wilson.render.loadNewShader(fragShaderSourceUpdate);
-		this.wilson.render.loadNewShader(fragShaderSourceDraw);
+		this.wilson.render.loadNewShader(shaderUpdate);
+		this.wilson.render.loadNewShader(shaderDraw);
 		this.wilson.render.initUniforms(["movementAdjust"], 2);
 		this.wilson.gl.uniform1f(this.wilson.uniforms.movementAdjust[2], 0);
 

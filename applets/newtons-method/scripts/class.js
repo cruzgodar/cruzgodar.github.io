@@ -57,7 +57,7 @@ export class NewtonsMethod extends AnimationFrameApplet
 
 
 
-		const fragShaderSource = /* glsl */`
+		const shader = /* glsl */`
 			precision highp float;
 			
 			varying vec2 uv;
@@ -307,7 +307,7 @@ export class NewtonsMethod extends AnimationFrameApplet
 
 
 		const options = {
-			shader: fragShaderSource,
+			shader,
 
 			uniforms: {
 				worldCenter: [0, 0],

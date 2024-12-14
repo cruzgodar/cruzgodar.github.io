@@ -167,7 +167,7 @@ export class ComplexMap extends AnimationFrameApplet
 
 
 
-		const fragShaderSource = /* glsl */`
+		const shader = /* glsl */`
 			precision highp float;
 			
 			varying vec2 uv;
@@ -243,7 +243,7 @@ export class ComplexMap extends AnimationFrameApplet
 		`;
 		
 		this.wilson.render.shaderPrograms = [];
-		this.wilson.render.loadNewShader(fragShaderSource);
+		this.wilson.render.loadNewShader(shader);
 		this.wilson.gl.useProgram(this.wilson.render.shaderPrograms[0]);
 		
 		this.wilson.render.initUniforms([

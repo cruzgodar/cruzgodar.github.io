@@ -14,7 +14,7 @@ export class EllipticCurve extends AnimationFrameApplet
 	{
 		super(canvas);
 
-		const fragShaderSource = /* glsl */`
+		const shader = /* glsl */`
 			precision highp float;
 			
 			varying vec2 uv;
@@ -70,7 +70,7 @@ export class EllipticCurve extends AnimationFrameApplet
 
 
 
-		const fragShaderSource2 = /* glsl */`
+		const shader2 = /* glsl */`
 			precision highp float;
 			precision highp sampler2D;
 			
@@ -108,7 +108,7 @@ export class EllipticCurve extends AnimationFrameApplet
 		{
 			renderer: "gpu",
 
-			shader: fragShaderSource,
+			shader,
 
 			canvasWidth: this.resolution,
 			canvasHeight: this.resolution,
@@ -129,7 +129,7 @@ export class EllipticCurve extends AnimationFrameApplet
 			this.wilson.worldWidth / this.resolution
 		);
 
-		this.wilson.render.loadNewShader(fragShaderSource2);
+		this.wilson.render.loadNewShader(shader2);
 
 		this.wilson.render.initUniforms(["textureStep"]);
 

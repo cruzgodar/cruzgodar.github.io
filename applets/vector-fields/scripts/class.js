@@ -113,7 +113,7 @@ export class VectorField extends AnimationFrameApplet
 
 
 
-		const fragShaderSourceDim = /* glsl */`
+		const shaderDim = /* glsl */`
 			precision highp float;
 			precision highp sampler2D;
 			
@@ -130,7 +130,7 @@ export class VectorField extends AnimationFrameApplet
 			}
 		`;
 
-		const fragShaderSourcePan = /* glsl */`
+		const shaderPan = /* glsl */`
 			precision highp float;
 			precision highp sampler2D;
 			
@@ -157,7 +157,7 @@ export class VectorField extends AnimationFrameApplet
 			}
 		`;
 
-		const fragShaderSourceZoom = /* glsl */`
+		const shaderZoom = /* glsl */`
 			precision highp float;
 			precision highp sampler2D;
 			
@@ -189,7 +189,7 @@ export class VectorField extends AnimationFrameApplet
 		{
 			renderer: "gpu",
 
-			shader: fragShaderSourceDim,
+			shader: shaderDim,
 
 			canvasWidth: this.resolution,
 			canvasHeight: this.resolution,
@@ -201,7 +201,7 @@ export class VectorField extends AnimationFrameApplet
 
 
 
-		this.wilsonDim.render.loadNewShader(fragShaderSourcePan);
+		this.wilsonDim.render.loadNewShader(shaderPan);
 
 		this.wilsonDim.render.initUniforms(["pan"], 1);
 
@@ -209,7 +209,7 @@ export class VectorField extends AnimationFrameApplet
 
 
 
-		this.wilsonDim.render.loadNewShader(fragShaderSourceZoom);
+		this.wilsonDim.render.loadNewShader(shaderZoom);
 
 		this.wilsonDim.render.initUniforms(["scale", "fixedPoint"], 2);
 
@@ -230,7 +230,7 @@ export class VectorField extends AnimationFrameApplet
 
 
 
-		const fragShaderSourceDraw = /* glsl */`
+		const shaderDraw = /* glsl */`
 			precision highp float;
 			precision highp sampler2D;
 			
@@ -267,7 +267,7 @@ export class VectorField extends AnimationFrameApplet
 		{
 			renderer: "gpu",
 
-			shader: fragShaderSourceDraw,
+			shader: shaderDraw,
 
 			canvasWidth: this.resolution,
 			canvasHeight: this.resolution,
@@ -368,7 +368,7 @@ export class VectorField extends AnimationFrameApplet
 		this.resolution = resolution;
 		this.particleDilation = particleDilation;
 
-		const fragShaderSourceUpdateBase = /* glsl */`
+		const shaderUpdateBase = /* glsl */`
 			precision highp float;
 			precision highp sampler2D;
 			
@@ -408,36 +408,36 @@ export class VectorField extends AnimationFrameApplet
 				vec2 d = f(sample.x, sample.y);
 		`;
 
-		const fragShaderSourceUpdateX = /* glsl */`
-				${fragShaderSourceUpdateBase}
+		const shaderUpdateX = /* glsl */`
+				${shaderUpdateBase}
 				
 				gl_FragColor = encodeFloat(dt * d.x + sample.x);
 			}
 		`;
 
-		const fragShaderSourceUpdateY = /* glsl */`
-				${fragShaderSourceUpdateBase}
+		const shaderUpdateY = /* glsl */`
+				${shaderUpdateBase}
 				
 				gl_FragColor = encodeFloat(dt * d.y + sample.y);
 			}
 		`;
 
-		const fragShaderSourceUpdateH = /* glsl */`
-				${fragShaderSourceUpdateBase}
+		const shaderUpdateH = /* glsl */`
+				${shaderUpdateBase}
 				
 				gl_FragColor = encodeFloat((atan(d.y, d.x) + 3.14159265) / 6.28318531);
 			}
 		`;
 
-		const fragShaderSourceUpdateS = /* glsl */`
-				${fragShaderSourceUpdateBase}
+		const shaderUpdateS = /* glsl */`
+				${shaderUpdateBase}
 				
 				gl_FragColor = encodeFloat(1.0 - exp(-1.2 * (d.x * d.x + d.y * d.y)));
 			}
 		`;
 
-		const fragShaderSourceUpdateS2 = /* glsl */`
-				${fragShaderSourceUpdateBase}
+		const shaderUpdateS2 = /* glsl */`
+				${shaderUpdateBase}
 				
 				gl_FragColor = encodeFloat(1.0 - exp(-1.2 * .9 * (d.x * d.x + d.y * d.y)));
 			}
@@ -445,11 +445,11 @@ export class VectorField extends AnimationFrameApplet
 
 		this.wilsonUpdate.render.shaderPrograms = [];
 
-		this.wilsonUpdate.render.loadNewShader(fragShaderSourceUpdateX);
-		this.wilsonUpdate.render.loadNewShader(fragShaderSourceUpdateY);
-		this.wilsonUpdate.render.loadNewShader(fragShaderSourceUpdateH);
-		this.wilsonUpdate.render.loadNewShader(fragShaderSourceUpdateS);
-		this.wilsonUpdate.render.loadNewShader(fragShaderSourceUpdateS2);
+		this.wilsonUpdate.render.loadNewShader(shaderUpdateX);
+		this.wilsonUpdate.render.loadNewShader(shaderUpdateY);
+		this.wilsonUpdate.render.loadNewShader(shaderUpdateH);
+		this.wilsonUpdate.render.loadNewShader(shaderUpdateS);
+		this.wilsonUpdate.render.loadNewShader(shaderUpdateS2);
 
 		for (let i = 0; i < 5; i++)
 		{
@@ -471,7 +471,7 @@ export class VectorField extends AnimationFrameApplet
 
 
 
-		const fragShaderSourceDraw = /* glsl */`
+		const shaderDraw = /* glsl */`
 			precision highp float;
 			precision highp sampler2D;
 			
@@ -504,7 +504,7 @@ export class VectorField extends AnimationFrameApplet
 			}
 		`;
 
-		this.wilson.render.loadNewShader(fragShaderSourceDraw);
+		this.wilson.render.loadNewShader(shaderDraw);
 
 		this.wilson.render.initUniforms([
 			"maxBrightness",

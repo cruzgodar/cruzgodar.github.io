@@ -45,7 +45,7 @@ export class BarnsleyFern extends AnimationFrameApplet
 
 
 
-		const fragShaderSource = /* glsl */`
+		const shader = /* glsl */`
 			precision highp float;
 			precision highp sampler2D;
 			
@@ -63,7 +63,7 @@ export class BarnsleyFern extends AnimationFrameApplet
 		`;
 
 		const options = {
-			shader: fragShaderSource,
+			shader,
 
 			uniforms: {
 				maxBrightness: 1
@@ -129,7 +129,7 @@ export class BarnsleyFern extends AnimationFrameApplet
 
 
 
-		const fragShaderSourceUpdateBase = /* glsl */`
+		const shaderUpdateBase = /* glsl */`
 			precision highp float;
 			precision highp sampler2D;
 			
@@ -179,15 +179,15 @@ export class BarnsleyFern extends AnimationFrameApplet
 				}
 		`;
 
-		const fragShaderSourceUpdateX = /* glsl */`
-				${fragShaderSourceUpdateBase}
+		const shaderUpdateX = /* glsl */`
+				${shaderUpdateBase}
 
 				gl_FragColor = encodeFloat(state.x);
 			}
 		`;
 
-		const fragShaderSourceUpdateY = /* glsl */`
-				${fragShaderSourceUpdateBase}
+		const shaderUpdateY = /* glsl */`
+				${shaderUpdateBase}
 
 				gl_FragColor = encodeFloat(state.y);
 			}
@@ -217,7 +217,7 @@ export class BarnsleyFern extends AnimationFrameApplet
 
 		this.wilsonUpdate.loadShader({
 			id: "updateX",
-			source: fragShaderSourceUpdateX,
+			source: shaderUpdateX,
 			uniforms: {
 				A1: this.A1,
 				A4: this.A4,
@@ -227,7 +227,7 @@ export class BarnsleyFern extends AnimationFrameApplet
 
 		this.wilsonUpdate.loadShader({
 			id: "updateY",
-			source: fragShaderSourceUpdateY,
+			source: shaderUpdateY,
 			uniforms: {
 				A1: this.A1,
 				A4: this.A4,

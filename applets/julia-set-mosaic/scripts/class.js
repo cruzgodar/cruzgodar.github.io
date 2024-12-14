@@ -23,7 +23,7 @@ export class JuliaSetMosaic extends AnimationFrameApplet
 	{
 		super(canvas);
 
-		const fragShaderSource = /* glsl */`
+		const shader = /* glsl */`
 			precision highp float;
 			
 			varying vec2 uv;
@@ -66,7 +66,7 @@ export class JuliaSetMosaic extends AnimationFrameApplet
 		`;
 
 		const options = {
-			shader: fragShaderSource,
+			shader,
 
 			uniforms: {
 				worldCenter: [-0.75, 0],

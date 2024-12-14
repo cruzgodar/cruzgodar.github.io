@@ -247,7 +247,7 @@ export class ThurstonGeometry extends Applet
 			updateTGlsl: this.geometryData.updateTGlsl,
 		};
 
-		const fragShaderSource = createShader(shaderParameters);
+		const shader = createShader(shaderParameters);
 		
 
 		if (resetWorldCenter)
@@ -260,7 +260,7 @@ export class ThurstonGeometry extends Applet
 		}
 		
 		this.wilson.render.shaderPrograms = [];
-		this.wilson.render.loadNewShader(fragShaderSource);
+		this.wilson.render.loadNewShader(shader);
 		this.wilson.gl.useProgram(this.wilson.render.shaderPrograms[0]);
 
 		this.initUniforms(0);

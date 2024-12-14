@@ -1,5 +1,6 @@
 import { AnimationFrameApplet } from "/scripts/applets/animationFrameApplet.js";
-import { Wilson } from "/scripts/wilson.js";
+import { siteSettings } from "/scripts/src/settings.js";
+import { WilsonGPU } from "/scripts/wilson.js";
 
 export class Snowflake extends AnimationFrameApplet
 {
@@ -13,9 +14,7 @@ export class Snowflake extends AnimationFrameApplet
 	{
 		super(canvas);
 
-
-
-		const fragShaderSourceInit = /* glsl */`
+		const shaderInit = /* glsl */`
 			precision highp float;
 			precision highp sampler2D;
 			
@@ -24,15 +23,7 @@ export class Snowflake extends AnimationFrameApplet
 			uniform sampler2D uTexture;
 			
 			uniform float rho;
-			uniform float beta;
-			uniform float alpha;
-			uniform float theta;
-			uniform float kappa;
-			uniform float mu;
-			uniform float gamma;
-			
-			uniform float resolution;
-			uniform float step;
+			uniform float stepSize;
 			
 			
 			
@@ -40,7 +31,7 @@ export class Snowflake extends AnimationFrameApplet
 			{
 				vec2 center = (uv + vec2(1.0, 1.0)) / 2.0;
 				
-				if (length(center - vec2(.5, .5)) < step)
+				if (length(center - vec2(.5, .5)) < stepSize)
 				{
 					gl_FragColor = vec4(1.0, 0.0, 1.0, 0.0);
 					
@@ -51,9 +42,7 @@ export class Snowflake extends AnimationFrameApplet
 			}
 		`;
 
-
-
-		const fragShaderSourceDiffuse = /* glsl */`
+		const shaderDiffuse = /* glsl */`
 			precision highp float;
 			precision highp sampler2D;
 			
@@ -61,16 +50,8 @@ export class Snowflake extends AnimationFrameApplet
 			
 			uniform sampler2D uTexture;
 			
-			uniform float rho;
-			uniform float beta;
-			uniform float alpha;
-			uniform float theta;
-			uniform float kappa;
-			uniform float mu;
-			uniform float gamma;
-			
 			uniform float resolution;
-			uniform float step;
+			uniform float stepSize;
 			
 			
 			
@@ -80,29 +61,29 @@ export class Snowflake extends AnimationFrameApplet
 				vec4 state = texture2D(uTexture, center);
 				vec4 newState = state;
 				
-				if (center.x <= step || center.x >= 1.0 - step || center.y <= step || center.y >= 1.0 - step)
+				if (center.x <= stepSize || center.x >= 1.0 - stepSize || center.y <= stepSize || center.y >= 1.0 - stepSize)
 				{
 					gl_FragColor = vec4(0.0, 0.0, 0.0, newState.w);
 					return;
 				}
 				
-				vec4 state1 = texture2D(uTexture, center + vec2(step, 0.0));
-				vec4 state2 = texture2D(uTexture, center + vec2(-step, 0.0));
-				vec4 state3 = texture2D(uTexture, center + vec2(0.0, step));
-				vec4 state4 = texture2D(uTexture, center + vec2(0.0, -step));
+				vec4 state1 = texture2D(uTexture, center + vec2(stepSize, 0.0));
+				vec4 state2 = texture2D(uTexture, center + vec2(-stepSize, 0.0));
+				vec4 state3 = texture2D(uTexture, center + vec2(0.0, stepSize));
+				vec4 state4 = texture2D(uTexture, center + vec2(0.0, -stepSize));
 				vec4 state5;
 				vec4 state6;
 				
 				if (mod(floor(center.x * resolution), 2.0) == 0.0)
 				{
-					state5 = texture2D(uTexture, center + vec2(-step, -step));
-					state6 = texture2D(uTexture, center + vec2(step, -step));
+					state5 = texture2D(uTexture, center + vec2(-stepSize, -stepSize));
+					state6 = texture2D(uTexture, center + vec2(stepSize, -stepSize));
 				}
 				
 				else
 				{
-					state5 = texture2D(uTexture, center + vec2(-step, step));
-					state6 = texture2D(uTexture, center + vec2(step, step));
+					state5 = texture2D(uTexture, center + vec2(-stepSize, stepSize));
+					state6 = texture2D(uTexture, center + vec2(stepSize, stepSize));
 				}
 				
 				
@@ -193,9 +174,7 @@ export class Snowflake extends AnimationFrameApplet
 			}
 		`;
 
-
-
-		const fragShaderSourceFreeze = /* glsl */`
+		const shaderFreeze = /* glsl */`
 			precision highp float;
 			precision highp sampler2D;
 			
@@ -203,16 +182,10 @@ export class Snowflake extends AnimationFrameApplet
 			
 			uniform sampler2D uTexture;
 			
-			uniform float rho;
-			uniform float beta;
-			uniform float alpha;
-			uniform float theta;
 			uniform float kappa;
-			uniform float mu;
-			uniform float gamma;
 			
 			uniform float resolution;
-			uniform float step;
+			uniform float stepSize;
 			
 			
 			
@@ -222,29 +195,29 @@ export class Snowflake extends AnimationFrameApplet
 				vec4 state = texture2D(uTexture, center);
 				vec4 newState = state;
 				
-				if (center.x <= step || center.x >= 1.0 - step || center.y <= step || center.y >= 1.0 - step)
+				if (center.x <= stepSize || center.x >= 1.0 - stepSize || center.y <= stepSize || center.y >= 1.0 - stepSize)
 				{
 					gl_FragColor = vec4(0.0, 0.0, 0.0, newState.w);
 					return;
 				}
 				
-				vec4 state1 = texture2D(uTexture, center + vec2(step, 0.0));
-				vec4 state2 = texture2D(uTexture, center + vec2(-step, 0.0));
-				vec4 state3 = texture2D(uTexture, center + vec2(0.0, step));
-				vec4 state4 = texture2D(uTexture, center + vec2(0.0, -step));
+				vec4 state1 = texture2D(uTexture, center + vec2(stepSize, 0.0));
+				vec4 state2 = texture2D(uTexture, center + vec2(-stepSize, 0.0));
+				vec4 state3 = texture2D(uTexture, center + vec2(0.0, stepSize));
+				vec4 state4 = texture2D(uTexture, center + vec2(0.0, -stepSize));
 				vec4 state5;
 				vec4 state6;
 				
 				if (mod(floor(center.x * resolution), 2.0) == 0.0)
 				{
-					state5 = texture2D(uTexture, center + vec2(-step, -step));
-					state6 = texture2D(uTexture, center + vec2(step, -step));
+					state5 = texture2D(uTexture, center + vec2(-stepSize, -stepSize));
+					state6 = texture2D(uTexture, center + vec2(stepSize, -stepSize));
 				}
 				
 				else
 				{
-					state5 = texture2D(uTexture, center + vec2(-step, step));
-					state6 = texture2D(uTexture, center + vec2(step, step));
+					state5 = texture2D(uTexture, center + vec2(-stepSize, stepSize));
+					state6 = texture2D(uTexture, center + vec2(stepSize, stepSize));
 				}
 				
 				
@@ -262,9 +235,7 @@ export class Snowflake extends AnimationFrameApplet
 			}
 		`;
 
-
-
-		const fragShaderSourceAttach = /* glsl */`
+		const shaderAttach = /* glsl */`
 			precision highp float;
 			precision highp sampler2D;
 			
@@ -272,16 +243,12 @@ export class Snowflake extends AnimationFrameApplet
 			
 			uniform sampler2D uTexture;
 			
-			uniform float rho;
 			uniform float beta;
 			uniform float alpha;
 			uniform float theta;
-			uniform float kappa;
-			uniform float mu;
-			uniform float gamma;
 			
 			uniform float resolution;
-			uniform float step;
+			uniform float stepSize;
 			
 			
 			
@@ -291,29 +258,29 @@ export class Snowflake extends AnimationFrameApplet
 				vec4 state = texture2D(uTexture, center);
 				vec4 newState = state;
 				
-				if (center.x <= step || center.x >= 1.0 - step || center.y <= step || center.y >= 1.0 - step)
+				if (center.x <= stepSize || center.x >= 1.0 - stepSize || center.y <= stepSize || center.y >= 1.0 - stepSize)
 				{
 					gl_FragColor = vec4(0.0, 0.0, 0.0, newState.w);
 					return;
 				}
 				
-				vec4 state1 = texture2D(uTexture, center + vec2(step, 0.0));
-				vec4 state2 = texture2D(uTexture, center + vec2(-step, 0.0));
-				vec4 state3 = texture2D(uTexture, center + vec2(0.0, step));
-				vec4 state4 = texture2D(uTexture, center + vec2(0.0, -step));
+				vec4 state1 = texture2D(uTexture, center + vec2(stepSize, 0.0));
+				vec4 state2 = texture2D(uTexture, center + vec2(-stepSize, 0.0));
+				vec4 state3 = texture2D(uTexture, center + vec2(0.0, stepSize));
+				vec4 state4 = texture2D(uTexture, center + vec2(0.0, -stepSize));
 				vec4 state5;
 				vec4 state6;
 				
 				if (mod(floor(center.x * resolution), 2.0) == 0.0)
 				{
-					state5 = texture2D(uTexture, center + vec2(-step, -step));
-					state6 = texture2D(uTexture, center + vec2(step, -step));
+					state5 = texture2D(uTexture, center + vec2(-stepSize, -stepSize));
+					state6 = texture2D(uTexture, center + vec2(stepSize, -stepSize));
 				}
 				
 				else
 				{
-					state5 = texture2D(uTexture, center + vec2(-step, step));
-					state6 = texture2D(uTexture, center + vec2(step, step));
+					state5 = texture2D(uTexture, center + vec2(-stepSize, stepSize));
+					state6 = texture2D(uTexture, center + vec2(stepSize, stepSize));
 				}
 				
 				
@@ -404,7 +371,7 @@ export class Snowflake extends AnimationFrameApplet
 
 
 
-		const fragShaderSourceMelt = /* glsl */`
+		const shaderMelt = /* glsl */`
 			precision highp float;
 			precision highp sampler2D;
 			
@@ -412,16 +379,11 @@ export class Snowflake extends AnimationFrameApplet
 			
 			uniform sampler2D uTexture;
 			
-			uniform float rho;
-			uniform float beta;
-			uniform float alpha;
-			uniform float theta;
-			uniform float kappa;
 			uniform float mu;
 			uniform float gamma;
 			
 			uniform float resolution;
-			uniform float step;
+			uniform float stepSize;
 			
 			
 			
@@ -431,29 +393,29 @@ export class Snowflake extends AnimationFrameApplet
 				vec4 state = texture2D(uTexture, center);
 				vec4 newState = state;
 				
-				if (center.x <= step || center.x >= 1.0 - step || center.y <= step || center.y >= 1.0 - step)
+				if (center.x <= stepSize || center.x >= 1.0 - stepSize || center.y <= stepSize || center.y >= 1.0 - stepSize)
 				{
 					gl_FragColor = vec4(0.0, 0.0, 0.0, newState.w);
 					return;
 				}
 				
-				vec4 state1 = texture2D(uTexture, center + vec2(step, 0.0));
-				vec4 state2 = texture2D(uTexture, center + vec2(-step, 0.0));
-				vec4 state3 = texture2D(uTexture, center + vec2(0.0, step));
-				vec4 state4 = texture2D(uTexture, center + vec2(0.0, -step));
+				vec4 state1 = texture2D(uTexture, center + vec2(stepSize, 0.0));
+				vec4 state2 = texture2D(uTexture, center + vec2(-stepSize, 0.0));
+				vec4 state3 = texture2D(uTexture, center + vec2(0.0, stepSize));
+				vec4 state4 = texture2D(uTexture, center + vec2(0.0, -stepSize));
 				vec4 state5;
 				vec4 state6;
 				
 				if (mod(floor(center.x * resolution), 2.0) == 0.0)
 				{
-					state5 = texture2D(uTexture, center + vec2(-step, -step));
-					state6 = texture2D(uTexture, center + vec2(step, -step));
+					state5 = texture2D(uTexture, center + vec2(-stepSize, -stepSize));
+					state6 = texture2D(uTexture, center + vec2(stepSize, -stepSize));
 				}
 				
 				else
 				{
-					state5 = texture2D(uTexture, center + vec2(-step, step));
-					state6 = texture2D(uTexture, center + vec2(step, step));
+					state5 = texture2D(uTexture, center + vec2(-stepSize, stepSize));
+					state6 = texture2D(uTexture, center + vec2(stepSize, stepSize));
 				}
 				
 				
@@ -473,7 +435,7 @@ export class Snowflake extends AnimationFrameApplet
 
 
 
-		const fragShaderSourceDraw = /* glsl */`
+		const shaderDraw = /* glsl */`
 			precision highp float;
 			precision highp sampler2D;
 			
@@ -490,103 +452,56 @@ export class Snowflake extends AnimationFrameApplet
 			}
 		`;
 
-		const options =
-		{
-			renderer: "gpu",
+		const options = {
+			shaders: {
+				init: shaderInit,
+				diffuse: shaderDiffuse,
+				freeze: shaderFreeze,
+				attach: shaderAttach,
+				melt: shaderMelt,
+				draw: shaderDraw,
+			},
 
-			shader: fragShaderSourceInit,
+			uniforms: {
+				init: {
+					rho: 0,
+					stepSize: 1 / this.resolution,
+				},
+				diffuse: {
+					resolution: this.resolution,
+					stepSize: 1 / this.resolution,
+				},
+				freeze: {
+					kappa: 0,
+					resolution: this.resolution,
+					stepSize: 1 / this.resolution,
+				},
+				attach: {
+					beta: 0,
+					alpha: 0,
+					theta: 0,
+					resolution: this.resolution,
+					stepSize: 1 / this.resolution,
+				},
+				melt: {
+					mu: 0,
+					gamma: 0,
+					resolution: this.resolution,
+					stepSize: 1 / this.resolution,
+				},
+			},
 
 			canvasWidth: this.resolution,
-			canvasHeight: this.resolution,
+			reduceMotion: siteSettings.reduceMotion,
 
-
-
-			useFullscreen: true,
-
-			useFullscreenButton: true,
-
-			enterFullscreenButtonIconPath: "/graphics/general-icons/enter-fullscreen.png",
-			exitFullscreenButtonIconPath: "/graphics/general-icons/exit-fullscreen.png"
+			fullscreenOptions: {
+				useFullscreenButton: true,
+				enterFullscreenButtonIconPath: "/graphics/general-icons/enter-fullscreen.png",
+				exitFullscreenButtonIconPath: "/graphics/general-icons/exit-fullscreen.png",
+			},
 		};
 
-		this.wilson = new Wilson(canvas, options);
-
-		this.wilson.render.loadNewShader(fragShaderSourceDiffuse);
-		this.wilson.render.loadNewShader(fragShaderSourceFreeze);
-		this.wilson.render.loadNewShader(fragShaderSourceAttach);
-		this.wilson.render.loadNewShader(fragShaderSourceMelt);
-		this.wilson.render.loadNewShader(fragShaderSourceDraw);
-
-		this.wilson.render.initUniforms([
-			"rho",
-			"beta",
-			"alpha",
-			"theta",
-			"kappa",
-			"mu",
-			"gamma",
-			"resolution",
-			"step"
-		], 0);
-		
-		this.wilson.render.initUniforms([
-			"rho",
-			"beta",
-			"alpha",
-			"theta",
-			"kappa",
-			"mu",
-			"gamma",
-			"resolution",
-			"step"
-		], 1);
-		
-		this.wilson.render.initUniforms([
-			"rho",
-			"beta",
-			"alpha",
-			"theta",
-			"kappa",
-			"mu",
-			"gamma",
-			"resolution",
-			"step"
-		], 2);
-		
-		this.wilson.render.initUniforms([
-			"rho",
-			"beta",
-			"alpha",
-			"theta",
-			"kappa",
-			"mu",
-			"gamma",
-			"resolution",
-			"step"
-		], 3);
-		
-		this.wilson.render.initUniforms([
-			"rho",
-			"beta",
-			"alpha",
-			"theta",
-			"kappa",
-			"mu",
-			"gamma",
-			"resolution",
-			"step"
-		], 4);
-		
-
-		this.wilson.render.createFramebufferTexturePair();
-		this.wilson.render.createFramebufferTexturePair();
-
-		this.wilson.gl.bindTexture(
-			this.wilson.gl.TEXTURE_2D,
-			this.wilson.render.framebuffers[0].texture
-		);
-
-		this.wilson.gl.bindFramebuffer(this.wilson.gl.FRAMEBUFFER, null);
+		this.wilson = new WilsonGPU(canvas, options);
 	}
 
 
@@ -605,76 +520,53 @@ export class Snowflake extends AnimationFrameApplet
 		this.resolution = resolution;
 		this.computationsPerFrame = computationsPerFrame;
 
-		for (let i = 0; i <= 4; i++)
-		{
-			this.wilson.gl.useProgram(this.wilson.render.shaderPrograms[i]);
+		this.wilson.setUniforms({
+			rho,
+			stepSize: 1 / this.resolution,
+		}, "init");
 
-			this.wilson.gl.uniform1f(this.wilson.uniforms.resolution[i], this.resolution);
-			this.wilson.gl.uniform1f(this.wilson.uniforms.step[i], 1 / this.resolution);
-			this.wilson.gl.uniform1f(this.wilson.uniforms.rho[i], rho);
-			this.wilson.gl.uniform1f(this.wilson.uniforms.beta[i], beta);
-			this.wilson.gl.uniform1f(this.wilson.uniforms.alpha[i], alpha);
-			this.wilson.gl.uniform1f(this.wilson.uniforms.theta[i], theta);
-			this.wilson.gl.uniform1f(this.wilson.uniforms.kappa[i], kappa);
-			this.wilson.gl.uniform1f(this.wilson.uniforms.mu[i], mu);
-			this.wilson.gl.uniform1f(this.wilson.uniforms.gamma[i], gamma);
-		}
+		this.wilson.setUniforms({
+			resolution: this.resolution,
+			stepSize: 1 / this.resolution,
+		}, "diffuse");
 
+		this.wilson.setUniforms({
+			kappa,
+			resolution: this.resolution,
+			stepSize: 1 / this.resolution,
+		}, "freeze");
 
+		this.wilson.setUniforms({
+			beta,
+			alpha,
+			theta,
+			resolution: this.resolution,
+			stepSize: 1 / this.resolution,
+		}, "attach");
 
-		this.wilson.changeCanvasSize(this.resolution, this.resolution);
+		this.wilson.setUniforms({
+			mu,
+			gamma,
+			resolution: this.resolution,
+			stepSize: 1 / this.resolution,
+		}, "melt");
 
-		this.wilson.gl.bindTexture(
-			this.wilson.gl.TEXTURE_2D,
-			this.wilson.render.framebuffers[0].texture
-		);
+		this.wilson.resizeCanvas({ width: this.resolution });
 
-		this.wilson.gl.texImage2D(
-			this.wilson.gl.TEXTURE_2D,
-			0,
-			this.wilson.gl.RGBA,
-			this.wilson.canvasWidth,
-			this.wilson.canvasHeight,
-			0,
-			this.wilson.gl.RGBA,
-			this.wilson.gl.FLOAT,
-			null
-		);
+		this.wilson.createFramebufferTexturePair({
+			id: "0",
+			textureType: "float"
+		});
 
-		this.wilson.gl.bindTexture(
-			this.wilson.gl.TEXTURE_2D,
-			this.wilson.render.framebuffers[1].texture
-		);
+		this.wilson.createFramebufferTexturePair({
+			id: "1",
+			textureType: "float"
+		});
 
-		this.wilson.gl.texImage2D(
-			this.wilson.gl.TEXTURE_2D,
-			0,
-			this.wilson.gl.RGBA,
-			this.wilson.canvasWidth,
-			this.wilson.canvasHeight,
-			0,
-			this.wilson.gl.RGBA,
-			this.wilson.gl.FLOAT,
-			null
-		);
-
-
-
-		this.wilson.gl.useProgram(this.wilson.render.shaderPrograms[0]);
-
-		this.wilson.gl.bindTexture(
-			this.wilson.gl.TEXTURE_2D,
-			this.wilson.render.framebuffers[0].texture
-		);
-
-		this.wilson.gl.bindFramebuffer(
-			this.wilson.gl.FRAMEBUFFER,
-			this.wilson.render.framebuffers[0].framebuffer
-		);
-
-		this.wilson.render.drawFrame();
-
-
+		this.wilson.useShader("init");
+		this.wilson.useFramebuffer("0");
+		this.wilson.useTexture("0");
+		this.wilson.drawFrame();
 
 		this.resume();
 	}
@@ -685,80 +577,35 @@ export class Snowflake extends AnimationFrameApplet
 	{
 		for (let i = 0; i < this.computationsPerFrame; i++)
 		{
-			this.wilson.gl.useProgram(this.wilson.render.shaderPrograms[1]);
+			this.wilson.useShader("diffuse");
+			this.wilson.useFramebuffer("1");
+			this.wilson.drawFrame();
 
-			this.wilson.gl.bindFramebuffer(
-				this.wilson.gl.FRAMEBUFFER,
-				this.wilson.render.framebuffers[1].framebuffer
-			);
+			this.wilson.useShader("freeze");
+			this.wilson.useFramebuffer("0");
+			this.wilson.useTexture("1");
+			this.wilson.drawFrame();
 
-			this.wilson.render.drawFrame();
+			this.wilson.useShader("attach");
+			this.wilson.useFramebuffer("1");
+			this.wilson.useTexture("0");
+			this.wilson.drawFrame();
 
+			this.wilson.useShader("melt");
+			this.wilson.useFramebuffer("0");
+			this.wilson.useTexture("1");
+			this.wilson.drawFrame();
 
-
-			this.wilson.gl.useProgram(this.wilson.render.shaderPrograms[2]);
-
-			this.wilson.gl.bindTexture(
-				this.wilson.gl.TEXTURE_2D,
-				this.wilson.render.framebuffers[1].texture
-			);
-
-			this.wilson.gl.bindFramebuffer(
-				this.wilson.gl.FRAMEBUFFER,
-				this.wilson.render.framebuffers[0].framebuffer
-			);
-
-			this.wilson.render.drawFrame();
-
-
-
-			this.wilson.gl.useProgram(this.wilson.render.shaderPrograms[3]);
-
-			this.wilson.gl.bindTexture(
-				this.wilson.gl.TEXTURE_2D,
-				this.wilson.render.framebuffers[0].texture
-			);
-
-			this.wilson.gl.bindFramebuffer(
-				this.wilson.gl.FRAMEBUFFER,
-				this.wilson.render.framebuffers[1].framebuffer
-			);
-
-			this.wilson.render.drawFrame();
-
-
-
-			this.wilson.gl.useProgram(this.wilson.render.shaderPrograms[4]);
-
-			this.wilson.gl.bindTexture(
-				this.wilson.gl.TEXTURE_2D,
-				this.wilson.render.framebuffers[1].texture
-			);
-
-			this.wilson.gl.bindFramebuffer(
-				this.wilson.gl.FRAMEBUFFER,
-				this.wilson.render.framebuffers[0].framebuffer
-			);
-
-			this.wilson.render.drawFrame();
-
-
-
-			this.wilson.gl.bindTexture(
-				this.wilson.gl.TEXTURE_2D,
-				this.wilson.render.framebuffers[0].texture
-			);
+			this.wilson.useTexture("0");
 		}
 
-		this.wilson.gl.useProgram(this.wilson.render.shaderPrograms[5]);
-
-		this.wilson.gl.bindFramebuffer(this.wilson.gl.FRAMEBUFFER, null);
-
-		this.wilson.render.drawFrame();
+		this.wilson.useShader("draw");
+		this.wilson.useFramebuffer(null);
+		this.wilson.drawFrame();
 
 
 
-		const pixels = this.wilson.render.getPixelData();
+		const pixels = this.wilson.readPixels();
 
 		const threshhold = Math.floor(this.resolution / 10);
 

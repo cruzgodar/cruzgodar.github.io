@@ -81,7 +81,7 @@ export class WilsonsAlgorithm extends AnimationFrameApplet
 			}, 3000);
 		}
 
-		this.webWorker.postMessage([gridSize, maximumSpeed, noBorders, reverseGenerateSkeleton]);
+		this.webWorker.postMessage([gridSize, noBorders, reverseGenerateSkeleton]);
 
 		this.resume();
 	}

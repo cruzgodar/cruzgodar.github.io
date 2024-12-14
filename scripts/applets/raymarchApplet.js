@@ -291,7 +291,7 @@ export class RaymarchApplet extends AnimationFrameApplet
 			}
 		}, 100);
 
-		const fragShaderSource = shader ?? this.createShader({
+		const useableShader = shader ?? this.createShader({
 			distanceEstimatorGlsl,
 			getColorGlsl,
 			getReflectivityGlsl,
@@ -303,7 +303,7 @@ export class RaymarchApplet extends AnimationFrameApplet
 		{
 			renderer: "gpu",
 
-			shader: fragShaderSource,
+			shader: useableShader,
 
 			canvasWidth: this.imageWidth,
 			canvasHeight: this.imageHeight,

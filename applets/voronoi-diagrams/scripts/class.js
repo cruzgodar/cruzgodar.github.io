@@ -33,7 +33,7 @@ export class VoronoiDiagram extends Applet
 	{
 		super(canvas);
 
-		const fragShaderSource = /* glsl */`
+		const shader = /* glsl */`
 			precision highp float;
 			
 			varying vec2 uv;
@@ -48,7 +48,7 @@ export class VoronoiDiagram extends Applet
 		{
 			renderer: "gpu",
 
-			shader: fragShaderSource,
+			shader,
 
 			canvasWidth: this.resolution,
 			canvasHeight: this.resolution,
@@ -75,7 +75,7 @@ export class VoronoiDiagram extends Applet
 		{
 			renderer: "gpu",
 
-			shader: fragShaderSource,
+			shader,
 
 			canvasWidth: this.resolutionHidden,
 			canvasHeight: this.resolutionHidden,
@@ -113,7 +113,7 @@ export class VoronoiDiagram extends Applet
 
 
 		this.wilsonHidden.render.shaderPrograms = [];
-		this.wilsonHidden.render.loadNewShader(this.getFragShaderSource(true));
+		this.wilsonHidden.render.loadNewShader(this.getshader(true));
 		this.wilsonHidden.gl.useProgram(this.wilsonHidden.render.shaderPrograms[0]);
 
 		this.wilsonHidden.render.initUniforms([
@@ -150,7 +150,7 @@ export class VoronoiDiagram extends Applet
 
 
 		this.wilson.render.shaderPrograms = [];
-		this.wilson.render.loadNewShader(this.getFragShaderSource());
+		this.wilson.render.loadNewShader(this.getshader());
 		this.wilson.gl.useProgram(this.wilson.render.shaderPrograms[0]);
 		
 		this.wilson.render.initUniforms([
@@ -235,7 +235,7 @@ export class VoronoiDiagram extends Applet
 		});
 	}
 
-	getFragShaderSource(forHiddenCanvas = false)
+	getshader(forHiddenCanvas = false)
 	{
 		const testDirections = [
 			"boundaryWidth / 4.0, 0",

@@ -20,7 +20,7 @@ export class AbelianSandpile extends AnimationFrameApplet
 	{
 		super(canvas);
 
-		const fragShaderSourceInit = /* glsl */`
+		const shaderInit = /* glsl */`
 			precision highp float;
 			precision highp sampler2D;
 			
@@ -57,7 +57,7 @@ export class AbelianSandpile extends AnimationFrameApplet
 
 
 
-		const fragShaderSourceUpdate = /* glsl */`
+		const shaderUpdate = /* glsl */`
 			precision highp float;
 			precision highp sampler2D;
 			
@@ -155,7 +155,7 @@ export class AbelianSandpile extends AnimationFrameApplet
 			}
 		`;
 
-		const fragShaderSourceDraw = /* glsl */`
+		const shaderDraw = /* glsl */`
 			precision highp float;
 			precision highp sampler2D;
 			
@@ -217,8 +217,8 @@ export class AbelianSandpile extends AnimationFrameApplet
 
 		const optionsUpdate = {
 			shaders: {
-				init: fragShaderSourceInit,
-				update: fragShaderSourceUpdate,
+				init: shaderInit,
+				update: shaderUpdate,
 			},
 
 			uniforms: {
@@ -238,7 +238,7 @@ export class AbelianSandpile extends AnimationFrameApplet
 		this.wilsonUpdate = new WilsonGPU(hiddenCanvas, optionsUpdate);
 
 		const options = {
-			shader: fragShaderSourceDraw,
+			shader: shaderDraw,
 
 			uniforms: {
 				color1: [0, 0, 0],

@@ -1296,7 +1296,7 @@ export class WilsonGPU extends Wilson {
         for (const [name, value] of Object.entries(uniforms)) {
             const location = this.gl.getUniformLocation(__classPrivateFieldGet(this, _WilsonGPU_shaderPrograms, "f")[id], name);
             if (location === null) {
-                throw new Error(`[Wilson] Couldn't get uniform location for ${name}. Check that it is used in the shader (so that it is not compiled away). Full shader source: ${source}`);
+                throw new Error(`[Wilson] Couldn't get uniform location for ${name} in shader ${id}. Check that it is used in the shader (so that it is not compiled away). Full shader source: ${source}`);
             }
             // Match strings like "uniform int foo;" to "int".
             const match = source.match(new RegExp(`uniform\\s+(\\S+?)\\s+${name}\\s*;`));

@@ -27,7 +27,7 @@ export class GameOfLife extends AnimationFrameApplet
 		const hiddenCanvas = this.createHiddenCanvas();
 
 		// Writes out the current state without iterating it.
-		const fragShaderSourceNoUpdate = /* glsl */`
+		const shaderNoUpdate = /* glsl */`
 			precision highp float;
 			precision highp sampler2D;
 			
@@ -57,7 +57,7 @@ export class GameOfLife extends AnimationFrameApplet
 		`;
 
 		// Iterates the game one step.
-		const fragShaderSourceUpdate = /* glsl */`
+		const shaderUpdate = /* glsl */`
 			precision highp float;
 			precision highp sampler2D;
 			
@@ -149,7 +149,7 @@ export class GameOfLife extends AnimationFrameApplet
 		{
 			renderer: "gpu",
 
-			shader: fragShaderSourceNoUpdate,
+			shader: shaderNoUpdate,
 
 			canvasWidth: this.resolution,
 			canvasHeight: this.resolution
@@ -157,7 +157,7 @@ export class GameOfLife extends AnimationFrameApplet
 
 		this.wilsonHidden = new Wilson(hiddenCanvas, optionsHidden);
 
-		this.wilsonHidden.render.loadNewShader(fragShaderSourceUpdate);
+		this.wilsonHidden.render.loadNewShader(shaderUpdate);
 
 		this.wilsonHidden.render.initUniforms(["step"], 0);
 		this.wilsonHidden.render.initUniforms(["step", "torus"], 1);
@@ -174,7 +174,7 @@ export class GameOfLife extends AnimationFrameApplet
 
 
 		
-		const fragShaderSourceUpscale = /* glsl */`
+		const shaderUpscale = /* glsl */`
 			precision highp float;
 			precision highp sampler2D;
 			
@@ -228,7 +228,7 @@ export class GameOfLife extends AnimationFrameApplet
 		{
 			renderer: "gpu",
 
-			shader: fragShaderSourceUpscale,
+			shader: shaderUpscale,
 
 			canvasWidth: this.resolution,
 			canvasHeight: this.resolution,

@@ -25,7 +25,7 @@ export class JuliaSet extends Applet
 
 		this.switchJuliaModeButton = switchJuliaModeButton;
 
-		const fragShaderSourceMandelbrot = /* glsl */`
+		const shaderMandelbrot = /* glsl */`
 			precision highp float;
 			
 			varying vec2 uv;
@@ -75,7 +75,7 @@ export class JuliaSet extends Applet
 
 
 
-		const fragShaderSourceJulia = /* glsl */`
+		const shaderJulia = /* glsl */`
 			precision highp float;
 			
 			varying vec2 uv;
@@ -124,7 +124,7 @@ export class JuliaSet extends Applet
 
 
 
-		const fragShaderSourceJuliaPicker = /* glsl */`
+		const shaderJuliaPicker = /* glsl */`
 			precision highp float;
 			
 			varying vec2 uv;
@@ -220,9 +220,9 @@ export class JuliaSet extends Applet
 
 		const options = {
 			shaders: {
-				mandelbrot: fragShaderSourceMandelbrot,
-				julia: fragShaderSourceJulia,
-				juliaPicker: fragShaderSourceJuliaPicker,
+				mandelbrot: shaderMandelbrot,
+				julia: shaderJulia,
+				juliaPicker: shaderJuliaPicker,
 			},
 
 			uniforms: {
