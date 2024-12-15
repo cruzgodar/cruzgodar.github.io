@@ -224,6 +224,8 @@ export class BinaryTrees extends AnimationFrameApplet
 			this.wilson.ctx.lineTo(line[2], line[3]);
 			this.wilson.ctx.stroke();
 		}
+
+		this.linesToDraw = [];
 	}
 
 

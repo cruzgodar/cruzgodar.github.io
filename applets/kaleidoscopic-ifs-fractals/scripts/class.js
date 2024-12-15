@@ -161,16 +161,23 @@ export class KaleidoscopicIFSFractals extends RaymarchApplet
 
 		const getColorGlsl = getDistanceEstimatorGlsl(shape, true);
 
+		const uniformsGlsl = /* glsl */`
+			uniform float scale;
+			uniform mat3 rotationMatrix;
+			uniform int numIterations;
+		`;
+
 		const uniforms = {
-			scale: ["float", 2],
-			rotationMatrix: ["mat3", [[1, 0, 0], [0, 1, 0], [0, 0, 1]]],
-			numIterations: ["int", 56],
+			scale: 2,
+			rotationMatrix: [1, 0, 0, 0, 1, 0, 0, 0, 1],
+			numIterations: 56
 		};
 
 		super({
 			canvas,
 			distanceEstimatorGlsl,
 			getColorGlsl,
+			uniformsGlsl,
 			addGlsl,
 			uniforms,
 			theta: 0.2004,
