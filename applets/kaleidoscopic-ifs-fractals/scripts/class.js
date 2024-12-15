@@ -1,7 +1,6 @@
 import { getVectorGlsl } from "/scripts/applets/applet.js";
 import {
 	dotProduct,
-	getRotationMatrix,
 	mat3TimesVector,
 	RaymarchApplet
 } from "/scripts/applets/raymarchApplet.js";
@@ -113,11 +112,11 @@ function getDistanceEstimatorGlsl(shape, useForGetColor = false)
 
 export class KaleidoscopicIFSFractals extends RaymarchApplet
 {
-	rotationAngleX = 0;
-	rotationAngleY = 0;
-	rotationAngleZ = 0;
-
 	shape = "octahedron";
+
+	scale = 2;
+	rotationMatrix = [[1, 0, 0], [0, 1, 0], [0, 0, 1]];
+	numIterations = 56;
 
 	constructor({
 		canvas,
@@ -169,7 +168,7 @@ export class KaleidoscopicIFSFractals extends RaymarchApplet
 
 		const uniforms = {
 			scale: 2,
-			rotationMatrix: [1, 0, 0, 0, 1, 0, 0, 0, 1],
+			rotationMatrix: [[1, 0, 0], [0, 1, 0], [0, 0, 1]],
 			numIterations: 56
 		};
 
@@ -196,10 +195,8 @@ export class KaleidoscopicIFSFractals extends RaymarchApplet
 
 	distanceEstimator(x, y, z)
 	{
-		const scale = this.uniforms.scale[1];
 		const shapeNs = ns[this.shape ?? "octahedron"];
 		const scaleCenter = scaleCenters[this.shape ?? "octahedron"];
-		const rotationMatrix = this.uniforms.rotationMatrix[1];
 
 		// We'll find the closest vertex, scale everything by a factor of 2
 		// centered on that vertex (so that we don't need to recalculate the vertices), and repeat.
@@ -224,28 +221,17 @@ export class KaleidoscopicIFSFractals extends RaymarchApplet
 			// the four new ones are the four closest to the vertex we scaled from.
 			// Now (x, y, z) will get farther and farther away from the origin,
 			// but that makes sense -- we're really just zooming in on the tetrahedron.
-			x = scale * x - (scale - 1) * scaleCenter[0];
-			y = scale * y - (scale - 1) * scaleCenter[1];
-			z = scale * z - (scale - 1) * scaleCenter[2];
+			x = this.scale * x - (this.scale - 1) * scaleCenter[0];
+			y = this.scale * y - (this.scale - 1) * scaleCenter[1];
+			z = this.scale * z - (this.scale - 1) * scaleCenter[2];
 
-			[x, y, z] = mat3TimesVector(rotationMatrix, [x, y, z]);
+			[x, y, z] = mat3TimesVector(this.rotationMatrix, [x, y, z]);
 		}
 
 		// So at this point we've scaled up by 2x a total of numIterations times.
 		// The final distance is therefore:
 		return Math.sqrt(x * x + y * y + z * z)
-			* Math.pow(scale, -56);
-	}
-
-	updateMatrices()
-	{
-		this.setUniform("rotationMatrix", getRotationMatrix(
-			this.rotationAngleX,
-			this.rotationAngleY,
-			this.rotationAngleZ
-		));
-
-		this.needNewFrame = true;
+			* Math.pow(this.scale, -this.numIterations);
 	}
 
 	// newAmounts is an array of the form [tetrahedronAmount, cubeAmount, octahedronAmount].

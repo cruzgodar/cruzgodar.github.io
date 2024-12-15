@@ -8,28 +8,7 @@ import {
 	tempShader
 } from "./applet.js";
 
-const setUniformFunctions = {
-	int: (gl, location, value) => gl.uniform1i(location, value),
-	float: (gl, location, value) => gl.uniform1f(location, value),
-	vec2: (gl, location, value) => gl.uniform2fv(location, value),
-	vec3: (gl, location, value) => gl.uniform3fv(location, value),
-	vec4: (gl, location, value) => gl.uniform4fv(location, value),
-	mat2: (gl, location, value) => gl.uniformMatrix2fv(location, false, [
-		value[0][0], value[1][0],
-		value[0][1], value[1][1]
-	]),
-	mat3: (gl, location, value) => gl.uniformMatrix3fv(location, false, [
-		value[0][0], value[1][0], value[2][0],
-		value[0][1], value[1][1], value[2][1],
-		value[0][2], value[1][2], value[2][2]
-	]),
-	mat4: (gl, location, value) => gl.uniformMatrix4fv(location, false, [
-		value[0][0], value[1][0], value[2][0], value[3][0],
-		value[0][1], value[1][1], value[2][1], value[3][1],
-		value[0][2], value[1][2], value[2][2], value[3][2],
-		value[0][3], value[1][3], value[2][3], value[3][3]
-	]),
-};
+const worldSize = 2.5;
 
 export const edgeDetectShader = /* glsl */`
 	precision highp float;
@@ -89,11 +68,11 @@ export class RaymarchApplet extends AnimationFrameApplet
 	maxReflectionMarches;
 	clipDistance;
 
-	imagePlaneCenterPos = [];
+	imagePlaneCenterPos = [0, 0, 0];
 
-	forwardVec = [];
-	rightVec = [];
-	upVec = [];
+	forwardVec = [0, 0, 0];
+	rightVec = [0, 0, 0];
+	upVec = [0, 0, 0];
 
 	// This controls the amount of fish-eye and is a delicate balance.
 	// Changing it also requires upating the camera position.
@@ -227,7 +206,6 @@ export class RaymarchApplet extends AnimationFrameApplet
 			uniform float resolution;
 			uniform vec3 cameraPos;
 			uniform vec3 imagePlaneCenterPos;
-			uniform vec3 forwardVec;
 			uniform vec3 rightVec;
 			uniform vec3 upVec;
 			uniform float epsilonScaling;
@@ -242,7 +220,6 @@ export class RaymarchApplet extends AnimationFrameApplet
 			resolution: this.resolution,
 			cameraPos: this.cameraPos,
 			imagePlaneCenterPos: this.imagePlaneCenterPos,
-			forwardVec: this.forwardVec,
 			rightVec: this.rightVec,
 			upVec: this.upVec,
 			epsilonScaling: this.epsilonScaling,
@@ -301,20 +278,24 @@ export class RaymarchApplet extends AnimationFrameApplet
 			canvasWidth: this.resolution,
 
 			// This lets us use the world size as an aspect ratio.
-			worldWidth: 1,
-			worldHeight: 1,
+			worldWidth: worldSize,
+			worldHeight: worldSize,
 
-			worldCenterX: -this.theta,
-			worldCenterY: -this.phi,
-			minWorldCenterY: -Math.PI / 2,
-			maxWorldCenterY: Math.PI / 2,
+			worldCenterX: this.theta,
+			worldCenterY: this.phi,
+			minWorldCenterY: 0.001,
+			maxWorldCenterY: Math.PI - 0.001,
 
 			onResizeCanvas: this.onResizeCanvas.bind(this),
 
 			interactionOptions: {
 				useForPanAndZoom: true,
 				disallowZooming: true,
-				onPanAndZoom: this.drawFrame.bind(this),
+				onPanAndZoom: () =>
+				{
+					this.calculateVectors();
+					this.drawFrame();
+				}
 			},
 
 			fullscreenOptions: {
@@ -330,7 +311,7 @@ export class RaymarchApplet extends AnimationFrameApplet
 		this.wilson.loadShader({
 			id: "draw",
 			source: useableShader,
-			uniforms
+			uniforms: this.uniforms
 		});
 
 		if (this.useAntialiasing)
@@ -356,9 +337,12 @@ export class RaymarchApplet extends AnimationFrameApplet
 				id: "antialias",
 				source: aaShader,
 				uniforms: {
+					...this.uniforms,
 					stepSize: 2 / (this.resolution * 3)
 				}
 			});
+
+			this.wilson.useShader("draw");
 
 			this.createTextures();
 		}
@@ -369,6 +353,8 @@ export class RaymarchApplet extends AnimationFrameApplet
 		{
 			this.make3DPrintable();
 		}
+
+		this.needNewFrame = true;
 
 		this.resume();
 	}
@@ -977,6 +963,7 @@ export class RaymarchApplet extends AnimationFrameApplet
 				id: "antialias",
 				source: aaShader,
 				uniforms: {
+					...this.uniforms,
 					stepSize: 2 / (this.resolution * 3)
 				}
 			});
@@ -1007,6 +994,20 @@ export class RaymarchApplet extends AnimationFrameApplet
 		this.wilson.setUniforms({ stepSize: 2 / (this.resolution * 3) }, "antialias");
 
 		this.wilson.useShader("draw");
+	}
+
+
+
+	setUniforms(uniforms)
+	{
+		this.wilson.setUniforms(uniforms, "draw");
+
+		if (this.useAntialiasing)
+		{
+			this.wilson.setUniforms(uniforms, "antialias");
+		}
+
+		this.needNewFrame = true;
 	}
 
 
@@ -1069,24 +1070,14 @@ export class RaymarchApplet extends AnimationFrameApplet
 			this.cameraPos[2] + this.forwardVec[2] * this.focalLengthFactor
 		];
 
-		this.wilson.setUniforms({
+		this.setUniforms({
 			cameraPos: this.cameraPos,
 			imagePlaneCenterPos: this.imagePlaneCenterPos,
-			forwardVec: this.forwardVec,
 			rightVec: this.rightVec,
 			upVec: this.upVec,
-		}, "draw");
+		});
 
-		if (this.useAntialiasing)
-		{
-			this.wilson.setUniforms({
-				cameraPos: this.cameraPos,
-				imagePlaneCenterPos: this.imagePlaneCenterPos,
-				forwardVec: this.forwardVec,
-				rightVec: this.rightVec,
-				upVec: this.upVec,
-			}, "antialias");
-		}
+		this.needNewFrame = false;
 	}
 
 	distanceEstimator()
@@ -1101,12 +1092,11 @@ export class RaymarchApplet extends AnimationFrameApplet
 
 	drawFrame()
 	{
-		this.theta = -this.wilson.worldCenterX;
-		this.phi = -this.wilson.worldCenterY;
+		this.theta = this.lockedOnOrigin ? this.wilson.worldCenterX : -this.wilson.worldCenterX;
+		this.phi = this.lockedOnOrigin ? this.wilson.worldCenterY : -this.wilson.worldCenterY;
 
 		this.calculateVectors();
-
-
+		
 
 		if (this.useAntialiasing)
 		{
@@ -1140,18 +1130,10 @@ export class RaymarchApplet extends AnimationFrameApplet
 
 	async downloadMosaic(filename, size)
 	{
-		this.wilson.setUniforms({
+		this.setUniforms({
 			uvScale: 1 / size,
 			resolution: this.resolution * size
-		}, "draw");
-
-		if (this.useAntialiasing)
-		{
-			this.wilson.setUniforms({
-				uvScale: 1 / size,
-				resolution: this.resolution * size
-			}, "antialias");
-		}
+		});
 
 		const centerPoints = [];
 		for (let i = 0; i < size; i++)
@@ -1208,20 +1190,11 @@ export class RaymarchApplet extends AnimationFrameApplet
 
 			await new Promise(resolve => setTimeout(resolve, 100));
 
-			this.wilson.setUniforms({
+			this.setUniforms({
 				uvScale: 1,
 				uvCenter: [0, 0],
 				resolution: this.resolution
-			}, "draw");
-
-			if (this.useAntialiasing)
-			{
-				this.wilson.setUniforms({
-					uvScale: 1,
-					uvCenter: [0, 0],
-					resolution: this.resolution
-				}, "antialias");
-			}
+			});
 
 			this.needNewFrame = true;
 		};
@@ -1235,7 +1208,7 @@ export class RaymarchApplet extends AnimationFrameApplet
 		{
 			const ctx = canvases[i][j].getContext("2d", { colorSpace: "display-p3" });
 
-			this.setUniform("uvCenter", [centerPoints[i], centerPoints[j]]);
+			this.setUniforms({ uvCenter: [centerPoints[i], centerPoints[j]] });
 			this.drawFrame();
 			const imageData = new ImageData(
 				new Uint8ClampedArray(this.wilson.readPixels()),
@@ -1362,18 +1335,16 @@ export class RaymarchApplet extends AnimationFrameApplet
 	{
 		this.resolution = Math.sqrt(this.wilson.canvasWidth * this.wilson.canvasHeight);
 
-		this.wilson.setUniforms({
-			aspectRatio: [this.wilson.worldWidth, this.wilson.worldHeight],
+		this.setUniforms({
+			aspectRatio: [
+				this.wilson.worldWidth / worldSize,
+				this.wilson.worldHeight / worldSize
+			],
 			resolution: this.resolution
-		}, "draw");
+		});
 
 		if (this.useAntialiasing)
 		{
-			this.wilson.setUniforms({
-				aspectRatio: [this.wilson.worldWidth, this.wilson.worldHeight],
-				resolution: this.resolution
-			}, "antialias");
-
 			this.createTextures();
 		}
 
@@ -1571,21 +1542,21 @@ export function getRotationMatrix(thetaX, thetaY, thetaZ)
 	const sZ = Math.sin(thetaZ);
 
 	const matZ = [
-		[cZ, -sZ, 0],
-		[sZ, cZ, 0],
-		[0, 0, 1]
+		cZ, -sZ, 0,
+		sZ, cZ, 0,
+		0, 0, 1
 	];
 
 	const matY = [
-		[cY, 0, -sY],
-		[0, 1, 0],
-		[sY, 0, cY]
+		cY, 0, -sY,
+		0, 1, 0,
+		sY, 0, cY
 	];
 
 	const matX = [
-		[1, 0, 0],
-		[0, cX, -sX],
-		[0, sX, cX]
+		1, 0, 0,
+		0, cX, -sX,
+		0, sX, cX
 	];
 
 	return matMul(matMul(matZ, matY), matX);

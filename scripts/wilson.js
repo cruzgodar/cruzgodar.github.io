@@ -1196,9 +1196,9 @@ const uniformFunctions = {
     vec2: (gl, location, value) => gl.uniform2fv(location, value),
     vec3: (gl, location, value) => gl.uniform3fv(location, value),
     vec4: (gl, location, value) => gl.uniform4fv(location, value),
-    mat2: (gl, location, value) => gl.uniformMatrix2fv(location, false, value),
-    mat3: (gl, location, value) => gl.uniformMatrix3fv(location, false, value),
-    mat4: (gl, location, value) => gl.uniformMatrix4fv(location, false, value),
+    mat2: (gl, location, value) => gl.uniformMatrix2fv(location, false, [value[0][0], value[1][0], value[0][1], value[1][1]]),
+    mat3: (gl, location, value) => gl.uniformMatrix3fv(location, false, [value[0][0], value[1][0], value[2][0], value[0][1], value[1][1], value[2][1], value[0][2], value[1][2], value[2][2]]),
+    mat4: (gl, location, value) => gl.uniformMatrix4fv(location, false, [value[0][0], value[1][0], value[2][0], value[3][0], value[0][1], value[1][1], value[2][1], value[3][1], value[0][2], value[1][2], value[2][2], value[3][2], value[0][3], value[1][3], value[2][3], value[3][3]]),
 };
 export class WilsonGPU extends Wilson {
     constructor(canvas, options) {
@@ -1304,6 +1304,7 @@ export class WilsonGPU extends Wilson {
         this.gl.viewport(0, 0, this.canvasWidth, this.canvasHeight);
         // Initialize the uniforms.
         __classPrivateFieldGet(this, _WilsonGPU_uniforms, "f")[id] = {};
+        console.log(uniforms);
         for (const [name, value] of Object.entries(uniforms)) {
             const location = this.gl.getUniformLocation(__classPrivateFieldGet(this, _WilsonGPU_shaderPrograms, "f")[id], name);
             if (location === null) {
