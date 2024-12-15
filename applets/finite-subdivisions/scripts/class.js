@@ -4,7 +4,7 @@ import { addTemporaryWorker } from "/scripts/src/main.js";
 import { siteSettings } from "/scripts/src/settings.js";
 import { WilsonCPU } from "/scripts/wilson.js";
 
-export class FiniteSubdivision extends Applet
+export class FiniteSubdivisions extends Applet
 {
 	resolution = 3000;
 

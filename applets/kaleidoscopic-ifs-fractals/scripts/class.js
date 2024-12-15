@@ -111,7 +111,7 @@ function getDistanceEstimatorGlsl(shape, useForGetColor = false)
 	`;
 }
 
-export class KaleidoscopicIFSFractal extends RaymarchApplet
+export class KaleidoscopicIFSFractals extends RaymarchApplet
 {
 	rotationAngleX = 0;
 	rotationAngleY = 0;

@@ -3,7 +3,7 @@ import { convertColor } from "/scripts/src/browser.js";
 import { addTemporaryWorker } from "/scripts/src/main.js";
 import { Wilson } from "/scripts/wilson.js";
 
-export class MagicCarpet extends Applet
+export class MagicCarpets extends Applet
 {
 	gridSize;
 	maxCageSize;

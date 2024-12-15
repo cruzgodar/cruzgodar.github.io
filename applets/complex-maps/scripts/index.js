@@ -1,5 +1,5 @@
 import { showPage } from "../../../scripts/src/loadPage.js";
-import { ComplexMap } from "./class.js";
+import { ComplexMaps } from "./class.js";
 import { DownloadButton, GenerateButton } from "/scripts/src/buttons.js";
 import { Dropdown } from "/scripts/src/dropdowns.js";
 import { $ } from "/scripts/src/main.js";
@@ -9,7 +9,7 @@ import { Textarea } from "/scripts/src/textareas.js";
 
 export default function()
 {
-	const applet = new ComplexMap({
+	const applet = new ComplexMaps({
 		canvas: $("#output-canvas"),
 		generatingCode: "cexp(cinv(z))"
 	});

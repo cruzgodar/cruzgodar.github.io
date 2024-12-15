@@ -1,4 +1,4 @@
-import { VectorField } from "/applets/vector-fields/scripts/class.js";
+import { VectorFields } from "/applets/vector-fields/scripts/class.js";
 import { RaymarchApplet } from "/scripts/applets/raymarchApplet.js";
 
 export class HairyBall extends RaymarchApplet
@@ -61,7 +61,7 @@ export class HairyBall extends RaymarchApplet
 		// hiddenCanvas.classList.add("output-canvas");
 		// pageElement.appendChild(hiddenCanvas);
 
-		this.vectorFieldApplet = new VectorField({
+		this.vectorFieldApplet = new VectorFields({
 			canvas: hiddenCanvas,
 			loopEdges: true,
 		});

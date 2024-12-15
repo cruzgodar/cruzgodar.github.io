@@ -1,7 +1,7 @@
 import anime from "/scripts/anime.js";
 import { dotProduct4, qmul, RaymarchApplet } from "/scripts/applets/raymarchApplet.js";
 
-export class QuaternionicJuliaSet extends RaymarchApplet
+export class QuaternionicJuliaSets extends RaymarchApplet
 {
 	constructor({ canvas })
 	{

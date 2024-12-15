@@ -1,12 +1,12 @@
 import { showPage } from "../../../scripts/src/loadPage.js";
-import { FiniteSubdivision } from "./class.js";
+import { FiniteSubdivisions } from "./class.js";
 import { Button, DownloadButton } from "/scripts/src/buttons.js";
 import { $ } from "/scripts/src/main.js";
 import { TextBox } from "/scripts/src/textBoxes.js";
 
 export default function()
 {
-	const applet = new FiniteSubdivision({ canvas: $("#output-canvas") });
+	const applet = new FiniteSubdivisions({ canvas: $("#output-canvas") });
 
 	new Button({
 		element: $("#generate-button"),

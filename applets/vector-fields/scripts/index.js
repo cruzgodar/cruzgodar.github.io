@@ -1,6 +1,6 @@
 import { parseNaturalGlsl } from "../../../scripts/applets/applet.js";
 import { showPage } from "../../../scripts/src/loadPage.js";
-import { VectorField } from "./class.js";
+import { VectorFields } from "./class.js";
 import { DownloadButton, GenerateButton } from "/scripts/src/buttons.js";
 import { Checkbox } from "/scripts/src/checkboxes.js";
 import { Dropdown } from "/scripts/src/dropdowns.js";
@@ -12,7 +12,7 @@ import { Textarea } from "/scripts/src/textareas.js";
 
 export default function()
 {
-	const applet = new VectorField({ canvas: $("#output-canvas") });
+	const applet = new VectorFields({ canvas: $("#output-canvas") });
 
 	applet.loadPromise.then(() => run());
 

@@ -1,5 +1,5 @@
 import { showPage } from "../../../scripts/src/loadPage.js";
-import { AbelianSandpile } from "./class.js";
+import { AbelianSandpiles } from "./class.js";
 import { DownloadButton, GenerateButton } from "/scripts/src/buttons.js";
 import { Dropdown } from "/scripts/src/dropdowns.js";
 import { $ } from "/scripts/src/main.js";
@@ -15,7 +15,7 @@ const palettes = {
 
 export default function()
 {
-	const applet = new AbelianSandpile({ canvas: $("#output-canvas") });
+	const applet = new AbelianSandpiles({ canvas: $("#output-canvas") });
 
 	const palettesDropdown = new Dropdown({
 		element: $("#palettes-dropdown"),

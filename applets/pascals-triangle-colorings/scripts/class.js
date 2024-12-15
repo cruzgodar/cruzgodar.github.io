@@ -2,7 +2,7 @@ import { AnimationFrameApplet } from "/scripts/applets/animationFrameApplet.js";
 import { convertColor } from "/scripts/src/browser.js";
 import { Wilson } from "/scripts/wilson.js";
 
-export class PascalsTriangleColoring extends AnimationFrameApplet
+export class PascalsTriangleColorings extends AnimationFrameApplet
 {
 	gridSize = 20;
 	pixelsPerRow = 0;

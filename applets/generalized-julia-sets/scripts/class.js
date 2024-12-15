@@ -4,7 +4,7 @@ import { tempShader } from "/scripts/applets/applet.js";
 import { siteSettings } from "/scripts/src/settings.js";
 import { WilsonGPU } from "/scripts/wilson.js";
 
-export class GeneralizedJuliaSet extends AnimationFrameApplet
+export class GeneralizedJuliaSets extends AnimationFrameApplet
 {
 	loadPromise;
 	generatingCode = "cadd(cpow(z, 2.0), c)";

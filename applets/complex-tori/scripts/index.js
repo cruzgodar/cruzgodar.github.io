@@ -1,5 +1,5 @@
 import { showPage } from "../../../scripts/src/loadPage.js";
-import { ComplexMap } from "../../complex-maps/scripts/class.js";
+import { ComplexMaps } from "../../complex-maps/scripts/class.js";
 import { EllipticCurve } from "./class.js";
 import { $, $$ } from "/scripts/src/main.js";
 import { typesetMath } from "/scripts/src/math.js";
@@ -17,7 +17,7 @@ export default function()
 
 	const uniformCode = "uniform float g2Arg; uniform float g3Arg;";
 
-	const wpApplet = new ComplexMap({
+	const wpApplet = new ComplexMaps({
 		canvas: $("#wp-canvas"),
 		generatingCode: "wp(z, inverse_g2_g3(g2Arg, g3Arg))",
 		uniformCode
@@ -27,7 +27,7 @@ export default function()
 		() => wpApplet.wilson.render.initUniforms(["g2Arg", "g3Arg"])
 	);
 
-	const wpprimeApplet = new ComplexMap({
+	const wpprimeApplet = new ComplexMaps({
 		canvas: $("#wpprime-canvas"),
 		generatingCode: "wpprime(z, inverse_g2_g3(g2Arg, g3Arg))",
 		uniformCode
@@ -37,14 +37,14 @@ export default function()
 		() => wpprimeApplet.wilson.render.initUniforms(["g2Arg", "g3Arg"])
 	);
 
-	const kleinjApplet = new ComplexMap({
+	const kleinjApplet = new ComplexMaps({
 		canvas: $("#kleinj-canvas"),
 		generatingCode: "kleinJ(z)",
 		worldCenterX: 0,
 		worldCenterY: 1
 	});
 
-	const g2Applet = new ComplexMap({
+	const g2Applet = new ComplexMaps({
 		canvas: $("#g2-canvas"),
 		generatingCode: "kleinj_from_g2_g3(z.x, z.y) * ONE",
 		uniformCode,

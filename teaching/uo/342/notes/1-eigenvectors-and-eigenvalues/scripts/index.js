@@ -1,15 +1,15 @@
 import { BarnsleyFern } from "/applets/barnsley-fern/scripts/class.js";
-import { ThurstonGeometry } from "/applets/thurston-geometries/scripts/class.js";
+import { ThurstonGeometries } from "/applets/thurston-geometries/scripts/class.js";
 import { H3Rooms } from "/applets/thurston-geometries/scripts/geometries/h3.js";
-import { VectorField } from "/applets/vector-fields/scripts/class.js";
+import { VectorFields } from "/applets/vector-fields/scripts/class.js";
 import {
-	createDesmosGraphs,
-	desmosBlue,
-	desmosGreen,
-	desmosPurple,
-	desmosRed,
-	getDesmosVector,
-	setGetDesmosData
+    createDesmosGraphs,
+    desmosBlue,
+    desmosGreen,
+    desmosPurple,
+    desmosRed,
+    getDesmosVector,
+    setGetDesmosData
 } from "/scripts/src/desmos.js";
 import { showPage } from "/scripts/src/loadPage.js";
 import { $ } from "/scripts/src/main.js";
@@ -48,7 +48,7 @@ export default function()
 
 	const h3GeometryCanvas = $("#h3-geometry-canvas");
 
-	const h3GeometryApplet = new ThurstonGeometry({ canvas: h3GeometryCanvas });
+	const h3GeometryApplet = new ThurstonGeometries({ canvas: h3GeometryCanvas });
 
 	const geometryData = new H3Rooms();
 	geometryData.sliderValues.wallThickness = .143;
@@ -69,7 +69,7 @@ export default function()
 
 	const vectorFieldCanvas = $("#vector-field-canvas");
 
-	const vectorFieldApplet = new VectorField({ canvas: vectorFieldCanvas });
+	const vectorFieldApplet = new VectorFields({ canvas: vectorFieldCanvas });
 
 	vectorFieldApplet.loadPromise.then(() =>
 	{

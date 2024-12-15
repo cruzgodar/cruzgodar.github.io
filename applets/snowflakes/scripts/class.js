@@ -2,7 +2,7 @@ import { AnimationFrameApplet } from "/scripts/applets/animationFrameApplet.js";
 import { siteSettings } from "/scripts/src/settings.js";
 import { WilsonGPU } from "/scripts/wilson.js";
 
-export class Snowflake extends AnimationFrameApplet
+export class Snowflakes extends AnimationFrameApplet
 {
 	resolution = 500;
 

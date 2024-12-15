@@ -1,5 +1,5 @@
 import { showPage } from "../../../scripts/src/loadPage.js";
-import { ThurstonGeometry, rotateVectors } from "./class.js";
+import { ThurstonGeometries, rotateVectors } from "./class.js";
 import { E3Rooms } from "./geometries/e3.js";
 import { H2xERooms } from "./geometries/h2xe.js";
 import { H3Rooms } from "./geometries/h3.js";
@@ -21,7 +21,7 @@ import { TextBox } from "/scripts/src/textBoxes.js";
 
 export default function()
 {
-	const applet = new ThurstonGeometry({
+	const applet = new ThurstonGeometries({
 		canvas: $("#output-canvas"),
 	});
 
@@ -234,7 +234,7 @@ export default function()
 
 		if (demoApplet === undefined)
 		{
-			demoApplet = new ThurstonGeometry({
+			demoApplet = new ThurstonGeometries({
 				canvas: demoCanvas,
 			});
 

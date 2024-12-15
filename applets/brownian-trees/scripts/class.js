@@ -3,7 +3,7 @@ import { addTemporaryWorker } from "/scripts/src/main.js";
 import { siteSettings } from "/scripts/src/settings.js";
 import { WilsonCPU } from "/scripts/wilson.js";
 
-export class BrownianTree extends AnimationFrameApplet
+export class BrownianTrees extends AnimationFrameApplet
 {
 	resolution = 500;
 	imageData;

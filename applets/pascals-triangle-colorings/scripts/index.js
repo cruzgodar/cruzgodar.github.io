@@ -1,5 +1,5 @@
 import { showPage } from "../../../scripts/src/loadPage.js";
-import { PascalsTriangleColoring } from "./class.js";
+import { PascalsTriangleColorings } from "./class.js";
 import { DownloadButton, GenerateButton } from "/scripts/src/buttons.js";
 import { $ } from "/scripts/src/main.js";
 import { siteSettings } from "/scripts/src/settings.js";
@@ -7,7 +7,7 @@ import { TextBox } from "/scripts/src/textBoxes.js";
 
 export default function()
 {
-	const applet = new PascalsTriangleColoring({ canvas: $("#output-canvas") });
+	const applet = new PascalsTriangleColorings({ canvas: $("#output-canvas") });
 
 	new GenerateButton({
 		element: $("#generate-button"),

@@ -17,14 +17,14 @@ import { sl2rBuilds } from "./builds/sl2r.js";
 import { solAxesBuilds } from "./builds/sol-axes.js";
 import { solBuilds } from "./builds/sol.js";
 import { titleBuilds } from "./builds/title.js";
-import { ThurstonGeometry } from "/applets/thurston-geometries/scripts/class.js";
+import { ThurstonGeometries } from "/applets/thurston-geometries/scripts/class.js";
 import Lapsa from "/scripts/lapsa.js";
 
-export const applet = new ThurstonGeometry({
+export const applet = new ThurstonGeometries({
 	canvas: document.body.querySelector("#output-canvas")
 });
 
-export const demoApplet = new ThurstonGeometry({
+export const demoApplet = new ThurstonGeometries({
 	canvas: document.body.querySelector("#demo-canvas")
 });
 

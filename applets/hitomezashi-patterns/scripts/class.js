@@ -2,7 +2,7 @@ import { Applet } from "../../../scripts/applets/applet.js";
 import { convertColor } from "/scripts/src/browser.js";
 import { Wilson } from "/scripts/wilson.js";
 
-export class HitomezashiPattern extends Applet
+export class HitomezashiPatterns extends Applet
 {
 	doDrawBoundaries = true;
 	doDrawRegions = true;

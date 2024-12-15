@@ -1,5 +1,5 @@
 import { showPage } from "../../../scripts/src/loadPage.js";
-import { HitomezashiPattern } from "./class.js";
+import { HitomezashiPatterns } from "./class.js";
 import { DownloadButton, GenerateButton } from "/scripts/src/buttons.js";
 import { Checkbox } from "/scripts/src/checkboxes.js";
 import { $ } from "/scripts/src/main.js";
@@ -8,7 +8,7 @@ import { TextBox } from "/scripts/src/textBoxes.js";
 
 export default function()
 {
-	const applet = new HitomezashiPattern({ canvas: $("#output-canvas") });
+	const applet = new HitomezashiPatterns({ canvas: $("#output-canvas") });
 
 	new GenerateButton({
 		element: $("#generate-button"),

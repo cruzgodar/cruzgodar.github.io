@@ -1,5 +1,5 @@
 import { showPage } from "../../../scripts/src/loadPage.js";
-import { KaleidoscopicIFSFractal } from "./class.js";
+import { KaleidoscopicIFSFractals } from "./class.js";
 import { DownloadButton } from "/scripts/src/buttons.js";
 import { Checkbox } from "/scripts/src/checkboxes.js";
 import { Dropdown } from "/scripts/src/dropdowns.js";
@@ -92,7 +92,7 @@ export default function()
 		onInput: onCheckboxInput
 	});
 
-	const applet = new KaleidoscopicIFSFractal({
+	const applet = new KaleidoscopicIFSFractals({
 		canvas: $("#output-canvas"),
 		shape: polyhedraDropdown.value || "octahedron",
 	});

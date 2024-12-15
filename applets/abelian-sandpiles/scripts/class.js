@@ -2,7 +2,7 @@ import { AnimationFrameApplet } from "/scripts/applets/animationFrameApplet.js";
 import { siteSettings } from "/scripts/src/settings.js";
 import { WilsonGPU } from "/scripts/wilson.js";
 
-export class AbelianSandpile extends AnimationFrameApplet
+export class AbelianSandpiles extends AnimationFrameApplet
 {
 	wilsonUpdate;
 	numGrains;

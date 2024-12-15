@@ -1,7 +1,7 @@
 import { AnimationFrameApplet } from "/scripts/applets/animationFrameApplet.js";
 import { Wilson } from "/scripts/wilson.js";
 
-export class SortingAlgorithm extends AnimationFrameApplet
+export class SortingAlgorithms extends AnimationFrameApplet
 {
 	resolution = 2000;
 

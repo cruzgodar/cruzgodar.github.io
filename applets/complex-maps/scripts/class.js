@@ -4,7 +4,7 @@ import { tempShader } from "/scripts/applets/applet.js";
 import { addTemporaryListener } from "/scripts/src/main.js";
 import { Wilson } from "/scripts/wilson.js";
 
-export class ComplexMap extends AnimationFrameApplet
+export class ComplexMaps extends AnimationFrameApplet
 {
 	loadPromise;
 

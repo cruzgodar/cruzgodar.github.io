@@ -1,12 +1,12 @@
 import { showPage } from "../../../../../../scripts/src/loadPage.js";
-import { VectorField } from "/applets/vector-fields/scripts/class.js";
+import { VectorFields } from "/applets/vector-fields/scripts/class.js";
 import {
-	createDesmosGraphs,
-	desmosBlack,
-	desmosBlue,
-	desmosPurple,
-	desmosRed,
-	setGetDesmosData
+    createDesmosGraphs,
+    desmosBlack,
+    desmosBlue,
+    desmosPurple,
+    desmosRed,
+    setGetDesmosData
 } from "/scripts/src/desmos.js";
 import { $ } from "/scripts/src/main.js";
 import { siteSettings } from "/scripts/src/settings.js";
@@ -244,7 +244,7 @@ export default function()
 
 	const outputCanvas = $("#vector-field-canvas");
 
-	const applet = new VectorField({ canvas: outputCanvas });
+	const applet = new VectorFields({ canvas: outputCanvas });
 
 	applet.loadPromise.then(() =>
 	{
@@ -261,7 +261,7 @@ export default function()
 
 	const outputCanvas2 = $("#autonomous-system-canvas");
 
-	const applet2 = new VectorField({ canvas: outputCanvas2 });
+	const applet2 = new VectorFields({ canvas: outputCanvas2 });
 
 	applet2.loadPromise.then(() =>
 	{
@@ -278,7 +278,7 @@ export default function()
 
 	const outputCanvas3 = $("#pendulum-canvas");
 
-	const applet3 = new VectorField({ canvas: outputCanvas3 });
+	const applet3 = new VectorFields({ canvas: outputCanvas3 });
 
 	applet3.loadPromise.then(() =>
 	{

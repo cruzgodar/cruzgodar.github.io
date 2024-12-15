@@ -8,7 +8,7 @@ import {
 } from "/scripts/src/main.js";
 import { Wilson } from "/scripts/wilson.js";
 
-export class BinaryTree extends Applet
+export class BinaryTrees extends Applet
 {
 	root = [];
 	branchPoints = [];

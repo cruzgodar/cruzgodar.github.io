@@ -1,5 +1,5 @@
 import { showPage } from "../../../scripts/src/loadPage.js";
-import { SortingAlgorithm } from "./class.js";
+import { SortingAlgorithms } from "./class.js";
 import { Button, DownloadButton } from "/scripts/src/buttons.js";
 import { Checkbox } from "/scripts/src/checkboxes.js";
 import { Dropdown } from "/scripts/src/dropdowns.js";
@@ -12,7 +12,7 @@ export default function()
 	const numReadsElement = $("#num-reads");
 	const numWritesElement = $("#num-writes");
 
-	const applet = new SortingAlgorithm({
+	const applet = new SortingAlgorithms({
 		canvas: $("#output-canvas"),
 		numReadsElement,
 		numWritesElement

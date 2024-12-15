@@ -90,7 +90,7 @@ export function mat4TimesVector(mat, vec)
 
 
 
-export class ThurstonGeometry extends Applet
+export class ThurstonGeometries extends Applet
 {
 	resolution = 500;
 	useAntialiasing = false;

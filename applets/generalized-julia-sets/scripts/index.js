@@ -1,5 +1,5 @@
 import { showPage } from "../../../scripts/src/loadPage.js";
-import { GeneralizedJuliaSet } from "./class.js";
+import { GeneralizedJuliaSets } from "./class.js";
 import { getRandomGlsl } from "/scripts/applets/applet.js";
 import { DownloadButton, GenerateButton, ToggleButton } from "/scripts/src/buttons.js";
 import { Dropdown } from "/scripts/src/dropdowns.js";
@@ -22,7 +22,7 @@ export default function()
 		onClick1: () => applet.advanceJuliaMode(),
 	});
 
-	applet = new GeneralizedJuliaSet({
+	applet = new GeneralizedJuliaSets({
 		canvas: $("#output-canvas"),
 		switchJuliaModeButton
 	});

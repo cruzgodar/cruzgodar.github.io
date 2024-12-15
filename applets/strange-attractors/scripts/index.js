@@ -1,5 +1,5 @@
 import { showPage } from "../../../scripts/src/loadPage.js";
-import { StrangeAttractor } from "./class.js";
+import { StrangeAttractors } from "./class.js";
 import { DownloadButton, GenerateButton } from "/scripts/src/buttons.js";
 import { Checkbox } from "/scripts/src/checkboxes.js";
 import { $ } from "/scripts/src/main.js";
@@ -9,7 +9,7 @@ import { TextBox } from "/scripts/src/textBoxes.js";
 
 export default function()
 {
-	const applet = new StrangeAttractor({ canvas: $("#output-canvas") });
+	const applet = new StrangeAttractors({ canvas: $("#output-canvas") });
 
 	new GenerateButton({
 		element: $("#generate-button"),

@@ -1,5 +1,5 @@
 import { showPage } from "../../../scripts/src/loadPage.js";
-import { VoronoiDiagram } from "./class.js";
+import { VoronoiDiagrams } from "./class.js";
 import { DownloadButton, GenerateButton } from "/scripts/src/buttons.js";
 import { Checkbox } from "/scripts/src/checkboxes.js";
 import { $ } from "/scripts/src/main.js";
@@ -9,7 +9,7 @@ import { TextBox } from "/scripts/src/textBoxes.js";
 
 export default function()
 {
-	const applet = new VoronoiDiagram({ canvas: $("#output-canvas") });
+	const applet = new VoronoiDiagrams({ canvas: $("#output-canvas") });
 
 	const resolutionInput = new TextBox({
 		element: $("#resolution-input"),

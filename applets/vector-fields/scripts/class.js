@@ -13,7 +13,7 @@ import {
 import { addTemporaryListener } from "/scripts/src/main.js";
 import { Wilson } from "/scripts/wilson.js";
 
-export class VectorField extends AnimationFrameApplet
+export class VectorFields extends AnimationFrameApplet
 {
 	loadPromise;
 

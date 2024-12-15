@@ -5,7 +5,7 @@ import { WilsonCPU } from "/scripts/wilson.js";
 
 const brightnessScale = 10;
 
-export class StrangeAttractor extends AnimationFrameApplet
+export class StrangeAttractors extends AnimationFrameApplet
 {
 	webWorker;
 	brightnesses;

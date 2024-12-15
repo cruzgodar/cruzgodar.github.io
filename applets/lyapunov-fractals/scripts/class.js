@@ -3,7 +3,7 @@ import { tempShader } from "/scripts/applets/applet.js";
 import { addTemporaryListener } from "/scripts/src/main.js";
 import { Wilson } from "/scripts/wilson.js";
 
-export class LyapunovFractal extends AnimationFrameApplet
+export class LyapunovFractals extends AnimationFrameApplet
 {
 	wilsonHidden;
 

@@ -1,5 +1,5 @@
 import { showPage } from "../../../scripts/src/loadPage.js";
-import { MagicCarpet } from "./class.js";
+import { MagicCarpets } from "./class.js";
 import { Button, DownloadButton, GenerateButton } from "/scripts/src/buttons.js";
 import { Checkbox } from "/scripts/src/checkboxes.js";
 import { $ } from "/scripts/src/main.js";
@@ -7,7 +7,7 @@ import { TextBox } from "/scripts/src/textBoxes.js";
 
 export default function()
 {
-	const applet = new MagicCarpet({ canvas: $("#output-canvas") });
+	const applet = new MagicCarpets({ canvas: $("#output-canvas") });
 
 	new GenerateButton({
 		element: $("#generate-button"),

@@ -2,7 +2,7 @@ import { Applet, getMinGlslString, getVectorGlsl } from "../../../scripts/applet
 import anime from "/scripts/anime.js";
 import { Wilson } from "/scripts/wilson.js";
 
-export class VoronoiDiagram extends Applet
+export class VoronoiDiagrams extends Applet
 {
 	wilsonHidden;
 
