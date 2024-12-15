@@ -1,10 +1,11 @@
-import { Applet, hsvToRgb } from "../../../scripts/applets/applet.js";
+import { hsvToRgb } from "../../../scripts/applets/applet.js";
+import { AnimationFrameApplet } from "/scripts/applets/animationFrameApplet.js";
 import { convertColor } from "/scripts/src/browser.js";
 import { addTemporaryWorker } from "/scripts/src/main.js";
 import { siteSettings } from "/scripts/src/settings.js";
 import { WilsonCPU } from "/scripts/wilson.js";
 
-export class FiniteSubdivisions extends Applet
+export class FiniteSubdivisions extends AnimationFrameApplet
 {
 	resolution = 3000;
 
@@ -13,6 +14,7 @@ export class FiniteSubdivisions extends Applet
 
 	webWorker;
 	polygons;
+	linesToDraw = [];
 
 
 
@@ -47,6 +49,7 @@ export class FiniteSubdivisions extends Applet
 		numIterations,
 	}) {
 		this.webWorker?.terminate && this.webWorker.terminate();
+		this.pause();
 
 		this.numVertices = numVertices;
 
@@ -80,16 +83,14 @@ export class FiniteSubdivisions extends Applet
 		this.wilson.ctx.fillStyle = convertColor(0, 0, 0);
 		this.wilson.ctx.fillRect(0, 0, this.resolution, this.resolution);
 
+		this.linesToDraw = [];
+
 		this.webWorker = addTemporaryWorker("/applets/finite-subdivisions/scripts/worker.js");
 		
 		this.webWorker.onmessage = (e) =>
 		{
-			this.wilson.ctx.strokeStyle = convertColor(...e.data[4]);
-
-			this.wilson.ctx.beginPath();
-			this.wilson.ctx.moveTo(e.data[1], e.data[0]);
-			this.wilson.ctx.lineTo(e.data[3], e.data[2]);
-			this.wilson.ctx.stroke();
+			this.linesToDraw.push(e.data);
+			this.needNewFrame = true;
 		};
 
 		this.webWorker.postMessage([
@@ -97,6 +98,23 @@ export class FiniteSubdivisions extends Applet
 			this.numIterations,
 			this.polygons
 		]);
+
+		this.resume();
+	}
+
+	drawFrame()
+	{
+		for (const line of this.linesToDraw)
+		{
+			this.wilson.ctx.strokeStyle = convertColor(...line[4]);
+
+			this.wilson.ctx.beginPath();
+			this.wilson.ctx.moveTo(line[1], line[0]);
+			this.wilson.ctx.lineTo(line[3], line[2]);
+			this.wilson.ctx.stroke();
+		}
+
+		this.linesToDraw = [];
 	}
 
 

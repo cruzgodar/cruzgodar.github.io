@@ -1,19 +1,21 @@
-import { Applet } from "../../../scripts/applets/applet.js";
+import { AnimationFrameApplet } from "/scripts/applets/animationFrameApplet.js";
 import { changeOpacity, opacityAnimationTime } from "/scripts/src/animation.js";
 import { convertColor } from "/scripts/src/browser.js";
 import {
-	addTemporaryInterval
+	addTemporaryInterval,
+	addTemporaryWorker
 } from "/scripts/src/main.js";
 import { siteSettings } from "/scripts/src/settings.js";
 import { WilsonCPU } from "/scripts/wilson.js";
 
-export class BinaryTrees extends Applet
+export class BinaryTrees extends AnimationFrameApplet
 {
 	resolution = 3000;
 	root = [];
 	branchPoints = [];
+	linesToDraw = [];
 
-	numPreviewIterations = 5;
+	numPreviewIterations = 10;
 
 	webWorker;
 
@@ -60,14 +62,14 @@ export class BinaryTrees extends Applet
 		this.branchPoints[1] = this.wilson.interpolateWorldToCanvas(
 			this.wilson.draggables.branch1.location
 		);
+
+		this.run(10);
 	}
 
 
 
-	run({
-		startIteration = 0,
-		numIterations = this.numPreviewIterations
-	}) {
+	run(numIterations = this.numPreviewIterations)
+	{
 		this.wilson.ctx.fillStyle = convertColor(0, 0, 0);
 		this.wilson.ctx.fillRect(0, 0, this.wilson.canvasWidth, this.wilson.canvasHeight);
 
@@ -107,7 +109,7 @@ export class BinaryTrees extends Applet
 
 
 
-		for (let iteration = 0; iteration < this.numPreviewIterations; iteration++)
+		for (let iteration = 0; iteration < numIterations; iteration++)
 		{
 			const newStartingPoints = [];
 
@@ -173,7 +175,55 @@ export class BinaryTrees extends Applet
 
 	animate()
 	{
-		
+		this.linesToDraw = [];
+
+		this.webWorker = addTemporaryWorker("/applets/binary-trees/scripts/worker.js");
+
+		this.webWorker.onmessage = (e) =>
+		{
+			if (e.data[0] === "done")
+			{
+				const timeoutId = setTimeout(() =>
+				{
+					changeOpacity({
+						element: this.wilson.draggables.branch0.element,
+						opacity: 1,
+						duration: opacityAnimationTime
+					});
+					
+					changeOpacity({
+						element: this.wilson.draggables.branch1.element,
+						opacity: 1,
+						duration: opacityAnimationTime
+					});
+				}, 500);
+
+				this.timeoutIds.push(timeoutId);
+				this.pause();
+
+				return;
+			}
+
+			this.linesToDraw.push(e.data);
+			this.needNewFrame = true;
+		};
+
+		this.webWorker.postMessage([this.root, this.branchPoints]);
+		this.resume();
+	}
+
+	drawFrame()
+	{
+		for (const line of this.linesToDraw)
+		{
+			this.wilson.ctx.strokeStyle = convertColor(...line[4]);
+			this.wilson.ctx.lineWidth = line[5];
+
+			this.wilson.ctx.beginPath();
+			this.wilson.ctx.moveTo(line[0], line[1]);
+			this.wilson.ctx.lineTo(line[2], line[3]);
+			this.wilson.ctx.stroke();
+		}
 	}
 
 
@@ -197,7 +247,7 @@ export class BinaryTrees extends Applet
 	onDragDraggable({ id, x, y })
 	{
 		const index = id.slice(6);
-		this.branchPoints[index] = this.wilson.utils.interpolateWorldToCanvas([x, y]);
+		this.branchPoints[index] = this.wilson.interpolateWorldToCanvas([x, y]);
 		this.run();
 	}
 
@@ -267,6 +317,6 @@ export class BinaryTrees extends Applet
 			this.wilson.draggables.branch1.location
 		);
 
-		this.preview();
+		this.run();
 	}
 }

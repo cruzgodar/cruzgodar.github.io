@@ -26,7 +26,7 @@ export default function()
 		value: 6,
 		minValue: 3,
 		maxValue: 10,
-		onEnter: run,
+		onEnter: () => applet.animate(),
 		onInput: run
 	});
 
@@ -36,7 +36,7 @@ export default function()
 		value: 5,
 		minValue: 0,
 		maxValue: 8,
-		onEnter: run,
+		onEnter: () => applet.animate(),
 		onInput: run
 	});
 
