@@ -224,7 +224,7 @@ export class RaymarchApplet extends AnimationFrameApplet
 
 		this.uniformsGlsl = /* glsl */`
 			uniform vec2 aspectRatio;
-			uniform int resolution;
+			uniform float resolution;
 			uniform vec3 cameraPos;
 			uniform vec3 imagePlaneCenterPos;
 			uniform vec3 forwardVec;
@@ -329,7 +329,7 @@ export class RaymarchApplet extends AnimationFrameApplet
 
 		this.wilson.loadShader({
 			id: "draw",
-			shader: useableShader,
+			source: useableShader,
 			uniforms
 		});
 
@@ -337,7 +337,7 @@ export class RaymarchApplet extends AnimationFrameApplet
 		{
 			this.wilson.loadShader({
 				id: "edgeDetect",
-				shader: edgeDetectShader,
+				source: edgeDetectShader,
 				uniforms: {
 					stepSize: 1 / this.resolution
 				}
@@ -354,7 +354,7 @@ export class RaymarchApplet extends AnimationFrameApplet
 
 			this.wilson.loadShader({
 				id: "antialias",
-				shader: aaShader,
+				source: aaShader,
 				uniforms: {
 					stepSize: 2 / (this.resolution * 3)
 				}
@@ -442,7 +442,7 @@ export class RaymarchApplet extends AnimationFrameApplet
 
 					lastDistanceToScene = distanceToScene;
 
-					float epsilon = max(t / (float(imageSize) * epsilonScaling), minEpsilon);
+					float epsilon = max(t / (resolution * epsilonScaling), minEpsilon);
 
 					if (t > clipDistance || length(pos - lightPos) < 0.2)
 					{
@@ -472,7 +472,7 @@ export class RaymarchApplet extends AnimationFrameApplet
 					
 					float distanceToScene = distanceEstimator(pos);
 
-					float epsilon = max(t / (float(imageSize) * epsilonScaling), minEpsilon);
+					float epsilon = max(t / (resolution * epsilonScaling), minEpsilon);
 
 					if (t > clipDistance)
 					{
@@ -540,7 +540,7 @@ export class RaymarchApplet extends AnimationFrameApplet
 					
 					float distanceToScene = distanceEstimator(pos);
 
-					float epsilon = max(t / (float(imageSize) * epsilonScaling), minEpsilon);
+					float epsilon = max(t / (resolution * epsilonScaling), minEpsilon);
 
 					if (distanceToScene < epsilon)
 					{
@@ -657,7 +657,7 @@ export class RaymarchApplet extends AnimationFrameApplet
 							
 							float distanceToScene = distanceEstimator(pos);
 
-							float epsilon = max(t / (float(imageSize) * epsilonScaling), minEpsilon);
+							float epsilon = max(t / (resolution * epsilonScaling), minEpsilon);
 							
 							if (distanceToScene < epsilon)
 							{
@@ -699,7 +699,7 @@ export class RaymarchApplet extends AnimationFrameApplet
 							
 							float distanceToScene = distanceEstimator(pos);
 
-							float epsilon = max(t / (float(imageSize) * epsilonScaling), minEpsilon);
+							float epsilon = max(t / (resolution * epsilonScaling), minEpsilon);
 							
 							if (distanceToScene < epsilon)
 							{
@@ -737,7 +737,7 @@ export class RaymarchApplet extends AnimationFrameApplet
 						
 						float distanceToScene = distanceEstimator(pos);
 
-						float epsilon = max(t / (float(imageSize) * epsilonScaling), minEpsilon);
+						float epsilon = max(t / (resolution * epsilonScaling), minEpsilon);
 						
 						if (distanceToScene < epsilon)
 						{
@@ -772,9 +772,9 @@ export class RaymarchApplet extends AnimationFrameApplet
 					void main(void)
 					{
 						raymarch(
-							imagePlaneCenterPos
-								+ rightVec * (uvScale * uv.x + uvCenter.x) * aspectRatioX
-								+ upVec * (uvScale * uv.y + uvCenter.y) / aspectRatioY
+							imagePlaneCenterPos)
+								+ rightVec * (uvScale * uv.x + uvCenter.x) * aspectRatio.x
+								+ upVec * (uvScale * uv.y + uvCenter.y) / aspectRatio.y
 						);
 					}
 				`;
@@ -802,8 +802,8 @@ export class RaymarchApplet extends AnimationFrameApplet
 					{
 						return raymarch(
 							imagePlaneCenterPos
-								+ rightVec * (uvScale * (uv.x + uvAdjust.x) + uvCenter.x) * aspectRatioX
-								+ upVec * (uvScale * (uv.y + uvAdjust.y) + uvCenter.y) / aspectRatioY
+								+ rightVec * (uvScale * (uv.x + uvAdjust.x) + uvCenter.x) * aspectRatio.x
+								+ upVec * (uvScale * (uv.y + uvAdjust.y) + uvCenter.y) / aspectRatio.y
 						);
 					}
 					
@@ -836,8 +836,8 @@ export class RaymarchApplet extends AnimationFrameApplet
 				{
 					vec3 finalColor = raymarch(
 						imagePlaneCenterPos
-							+ rightVec * (uvScale * uv.x + uvCenter.x) * aspectRatioX
-							+ upVec * (uvScale * uv.y + uvCenter.y) / aspectRatioY
+							+ rightVec * (uvScale * uv.x + uvCenter.x) * aspectRatio.x
+							+ upVec * (uvScale * uv.y + uvCenter.y) / aspectRatio.y
 					);
 
 					gl_FragColor = vec4(finalColor.xyz, 1.0);
@@ -942,7 +942,7 @@ export class RaymarchApplet extends AnimationFrameApplet
 
 		this.wilson.loadShader({
 			id: "draw",
-			shader: this.createShader({
+			source: this.createShader({
 				distanceEstimatorGlsl,
 				getColorGlsl,
 				getReflectivityGlsl,
@@ -958,7 +958,7 @@ export class RaymarchApplet extends AnimationFrameApplet
 		{
 			this.wilson.loadShader({
 				id: "edgeDetect",
-				shader: edgeDetectShader,
+				source: edgeDetectShader,
 				uniforms: {
 					stepSize: 1 / this.resolution
 				}
@@ -975,7 +975,7 @@ export class RaymarchApplet extends AnimationFrameApplet
 
 			this.wilson.loadShader({
 				id: "antialias",
-				shader: aaShader,
+				source: aaShader,
 				uniforms: {
 					stepSize: 2 / (this.resolution * 3)
 				}
