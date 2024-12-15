@@ -71,7 +71,7 @@ export class DownloadButton extends Button
 		super({
 			element,
 			name: "Download",
-			onClick: () => downloadFrame(filename),
+			onClick: () => downloadFrame.bind(applet)(filename),
 			linked
 		});
 	}
