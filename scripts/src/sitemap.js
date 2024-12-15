@@ -414,9 +414,7 @@ export const sitemap =
 		
 		"children": [],
 
-		"customScript": true,
-
-		"customStyle": true
+		"customScript": true
 	},
 	
 	"/applets/snowflakes/":
