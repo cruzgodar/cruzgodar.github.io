@@ -249,7 +249,7 @@ export class RaymarchApplet extends AnimationFrameApplet
 							this.fovFactor = (1 - dummy.t) * oldFactor
 								+ dummy.t * newFactor;
 
-							this.wilson.setUniforms({
+							this.setUniforms({
 								epsilonScaling: this.epsilonScaling *
 									((1 - dummy.t) * oldFactor + dummy.t * newFactor)
 							});
@@ -924,8 +924,6 @@ export class RaymarchApplet extends AnimationFrameApplet
 	} = {}) {
 		this.useAntialiasing = useAntialiasing;
 
-		this.calculateVectors();
-
 		this.wilson.loadShader({
 			id: "draw",
 			source: this.createShader({
@@ -970,6 +968,8 @@ export class RaymarchApplet extends AnimationFrameApplet
 
 			this.createTextures();
 		}
+
+		this.calculateVectors();
 
 		this.needNewFrame = true;
 	}
@@ -1072,8 +1072,6 @@ export class RaymarchApplet extends AnimationFrameApplet
 			this.cameraPos[1] + this.forwardVec[1] * this.focalLengthFactor,
 			this.cameraPos[2] + this.forwardVec[2] * this.focalLengthFactor
 		];
-
-		console.log(this, this.cameraPos)
 
 		this.setUniforms({
 			cameraPos: this.cameraPos,
@@ -1420,6 +1418,10 @@ export class RaymarchApplet extends AnimationFrameApplet
 			{
 				theta -= 2 * Math.PI;
 			}
+			if (theta < -Math.PI)
+			{
+				theta += 2 * Math.PI;
+			}
 
 			const dummy = {
 				r,
@@ -1430,6 +1432,10 @@ export class RaymarchApplet extends AnimationFrameApplet
 			if (dummy.theta > Math.PI)
 			{
 				dummy.theta -= 2 * Math.PI;
+			}
+			if (dummy.theta < -Math.PI)
+			{
+				dummy.theta += 2 * Math.PI;
 			}
 
 			await anime({
