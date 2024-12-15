@@ -58,7 +58,7 @@ export class RaymarchApplet extends AnimationFrameApplet
 
 	theta = 0;
 	phi = 0;
-	worldSize = 2.5;
+	worldSize = 2.25;
 
 	resolution = 500;
 
@@ -181,7 +181,7 @@ export class RaymarchApplet extends AnimationFrameApplet
 		this.focalLengthFactor = focalLengthFactor;
 		this.cameraPos = cameraPos;
 		this.lockedOnOrigin = lockedOnOrigin;
-		this.worldSize = this.lockedOnOrigin ? 2.5 : 1.5;
+		this.worldSize = this.lockedOnOrigin ? 2.25 : 1.5;
 		this.lockZ = lockZ;
 
 		this.lightPos = lightPos;
@@ -1463,7 +1463,7 @@ export class RaymarchApplet extends AnimationFrameApplet
 		}
 
 		this.lockedOnOrigin = value;
-		this.worldSize = this.lockedOnOrigin ? 2.5 : 1.5;
+		this.worldSize = this.lockedOnOrigin ? 2.25 : 1.5;
 
 		this.wilson.resizeWorld({
 			width: this.worldSize,
