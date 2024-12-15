@@ -184,7 +184,7 @@ export class KaleidoscopicIFSFractals extends RaymarchApplet
 			cameraPos: [-2.03816, -0.526988, 0.30503],
 			lightPos: [-50, -70, 100],
 			lightBrightness: 1.25,
-			epsilonScaling: .75,
+			epsilonScaling: 1,
 			stepFactor: .6,
 		});
 
@@ -200,7 +200,7 @@ export class KaleidoscopicIFSFractals extends RaymarchApplet
 
 		// We'll find the closest vertex, scale everything by a factor of 2
 		// centered on that vertex (so that we don't need to recalculate the vertices), and repeat.
-		for (let iteration = 0; iteration < 56; iteration++)
+		for (let iteration = 0; iteration < this.numIterations; iteration++)
 		{
 			for (let i = 0; i < shapeNs.length; i++)
 			{

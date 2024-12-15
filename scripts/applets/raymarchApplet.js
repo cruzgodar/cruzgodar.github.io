@@ -51,6 +51,9 @@ export class RaymarchApplet extends AnimationFrameApplet
 	movingSpeed = .1;
 	moveVelocity = [0, 0, 0];
 
+	moveFriction = .96;
+	moveStopThreshhold = .01;
+
 	lastTimestamp = -1;
 
 	theta = 0;
@@ -100,7 +103,7 @@ export class RaymarchApplet extends AnimationFrameApplet
 	speedFactor = 2;
 	fovFactor = 1;
 
-	lockedOnOrigin = false;
+	lockedOnOrigin;
 	distanceFromOrigin = 1;
 
 	distanceEstimatorGlsl;
@@ -997,6 +1000,11 @@ export class RaymarchApplet extends AnimationFrameApplet
 
 	setUniforms(uniforms)
 	{
+		this.uniforms = {
+			...this.uniforms,
+			...uniforms
+		};
+
 		this.wilson.setUniforms(uniforms, "draw");
 
 		if (this.useAntialiasing)
@@ -1064,6 +1072,8 @@ export class RaymarchApplet extends AnimationFrameApplet
 			this.cameraPos[1] + this.forwardVec[1] * this.focalLengthFactor,
 			this.cameraPos[2] + this.forwardVec[2] * this.focalLengthFactor
 		];
+
+		console.log(this, this.cameraPos)
 
 		this.setUniforms({
 			cameraPos: this.cameraPos,
@@ -1404,14 +1414,23 @@ export class RaymarchApplet extends AnimationFrameApplet
 			// Convert to spherical coordinates.
 			const r = magnitude(this.cameraPos);
 			const normalizedCameraPos = normalize(this.cameraPos);
-			const phi = Math.PI - Math.acos(this.cameraPos[2] / r);
-			let theta = Math.atan2(this.cameraPos[1], this.cameraPos[0]) + Math.PI;
+			const phi = Math.acos(this.cameraPos[2] / r);
+			let theta = Math.PI - Math.atan2(this.cameraPos[1], this.cameraPos[0]);
 			if (theta > Math.PI)
 			{
 				theta -= 2 * Math.PI;
 			}
 
-			const dummy = { r, theta: this.theta, phi: this.phi };
+			const dummy = {
+				r,
+				theta: 2 * Math.PI - this.theta,
+				phi: Math.PI - this.phi
+			};
+
+			if (dummy.theta > Math.PI)
+			{
+				dummy.theta -= 2 * Math.PI;
+			}
 
 			await anime({
 				targets: dummy,
@@ -1423,8 +1442,8 @@ export class RaymarchApplet extends AnimationFrameApplet
 				update: () =>
 				{
 					this.wilson.resizeWorld({
-						centerX: -dummy.theta,
-						centerY: -dummy.phi
+						centerX: dummy.theta,
+						centerY: dummy.phi
 					});
 					
 					this.cameraPos = scaleVector(
@@ -1441,8 +1460,10 @@ export class RaymarchApplet extends AnimationFrameApplet
 		this.worldSize = this.lockedOnOrigin ? 2.5 : 1.5;
 
 		this.wilson.resizeWorld({
-			worldWidth: this.worldSize,
-			worldHeight: this.worldSize
+			width: this.worldSize,
+			height: this.worldSize,
+			centerX: this.lockedOnOrigin ? this.theta : 2 * Math.PI - this.theta,
+			centerY: this.lockedOnOrigin ? this.phi : Math.PI - this.phi,
 		});
 	}
 }
@@ -1547,21 +1568,21 @@ export function getRotationMatrix(thetaX, thetaY, thetaZ)
 	const sZ = Math.sin(thetaZ);
 
 	const matZ = [
-		cZ, -sZ, 0,
-		sZ, cZ, 0,
-		0, 0, 1
+		[cZ, -sZ, 0],
+		[sZ, cZ, 0],
+		[0, 0, 1]
 	];
 
 	const matY = [
-		cY, 0, -sY,
-		0, 1, 0,
-		sY, 0, cY
+		[cY, 0, -sY],
+		[0, 1, 0],
+		[sY, 0, cY]
 	];
 
 	const matX = [
-		1, 0, 0,
-		0, cX, -sX,
-		0, sX, cX
+		[1, 0, 0],
+		[0, cX, -sX],
+		[0, sX, cX]
 	];
 
 	return matMul(matMul(matZ, matY), matX);

@@ -852,7 +852,7 @@ _Wilson_destroyed = new WeakMap(), _Wilson_canvasWidth = new WeakMap(), _Wilson_
     this.worldCenterY = __classPrivateFieldGet(this, _Wilson_worldCenterY, "f");
     __classPrivateFieldSet(this, _Wilson_needPanAndZoomUpdate, true, "f");
 }, _Wilson_onWheel = function _Wilson_onWheel(e) {
-    if (this.useInteractionForPanAndZoom) {
+    if (this.useInteractionForPanAndZoom && !this.disallowZooming) {
         e.preventDefault();
     }
     const [x, y] = __classPrivateFieldGet(this, _Wilson_instances, "m", _Wilson_interpolatePageToWorld).call(this, [e.clientY, e.clientX]);
