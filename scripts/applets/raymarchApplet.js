@@ -8,8 +8,6 @@ import {
 	tempShader
 } from "./applet.js";
 
-const worldSize = 2.5;
-
 export const edgeDetectShader = /* glsl */`
 	precision highp float;
 	
@@ -53,13 +51,11 @@ export class RaymarchApplet extends AnimationFrameApplet
 	movingSpeed = .1;
 	moveVelocity = [0, 0, 0];
 
-	moveFriction = .96;
-	moveStopThreshhold = .01;
-
 	lastTimestamp = -1;
 
 	theta = 0;
 	phi = 0;
+	worldSize = 2.5;
 
 	resolution = 500;
 
@@ -182,6 +178,7 @@ export class RaymarchApplet extends AnimationFrameApplet
 		this.focalLengthFactor = focalLengthFactor;
 		this.cameraPos = cameraPos;
 		this.lockedOnOrigin = lockedOnOrigin;
+		this.worldSize = this.lockedOnOrigin ? 2.5 : 1.5;
 		this.lockZ = lockZ;
 
 		this.lightPos = lightPos;
@@ -278,8 +275,8 @@ export class RaymarchApplet extends AnimationFrameApplet
 			canvasWidth: this.resolution,
 
 			// This lets us use the world size as an aspect ratio.
-			worldWidth: worldSize,
-			worldHeight: worldSize,
+			worldWidth: this.worldSize,
+			worldHeight: this.worldSize,
 
 			worldCenterX: this.theta,
 			worldCenterY: this.phi,
@@ -760,7 +757,7 @@ export class RaymarchApplet extends AnimationFrameApplet
 						raymarch(
 							imagePlaneCenterPos)
 								+ rightVec * (uvScale * uv.x + uvCenter.x) * aspectRatio.x
-								+ upVec * (uvScale * uv.y + uvCenter.y) / aspectRatio.y
+								+ upVec * (uvScale * uv.y + uvCenter.y) * aspectRatio.y
 						);
 					}
 				`;
@@ -789,7 +786,7 @@ export class RaymarchApplet extends AnimationFrameApplet
 						return raymarch(
 							imagePlaneCenterPos
 								+ rightVec * (uvScale * (uv.x + uvAdjust.x) + uvCenter.x) * aspectRatio.x
-								+ upVec * (uvScale * (uv.y + uvAdjust.y) + uvCenter.y) / aspectRatio.y
+								+ upVec * (uvScale * (uv.y + uvAdjust.y) + uvCenter.y) * aspectRatio.y
 						);
 					}
 					
@@ -823,7 +820,7 @@ export class RaymarchApplet extends AnimationFrameApplet
 					vec3 finalColor = raymarch(
 						imagePlaneCenterPos
 							+ rightVec * (uvScale * uv.x + uvCenter.x) * aspectRatio.x
-							+ upVec * (uvScale * uv.y + uvCenter.y) / aspectRatio.y
+							+ upVec * (uvScale * uv.y + uvCenter.y) * aspectRatio.y
 					);
 
 					gl_FragColor = vec4(finalColor.xyz, 1.0);
@@ -1041,8 +1038,6 @@ export class RaymarchApplet extends AnimationFrameApplet
 			);
 		}
 
-		
-
 		this.speedFactor = Math.min(
 			this.distanceEstimator(
 				this.cameraPos[0],
@@ -1057,12 +1052,12 @@ export class RaymarchApplet extends AnimationFrameApplet
 		this.forwardVec[1] *= this.speedFactor / 1.5;
 		this.forwardVec[2] *= this.speedFactor / 1.5;
 
-		this.rightVec[0] *= this.speedFactor / (this.fovFactor);
-		this.rightVec[1] *= this.speedFactor / (this.fovFactor);
+		this.rightVec[0] *= this.speedFactor / this.fovFactor;
+		this.rightVec[1] *= this.speedFactor / this.fovFactor;
 
-		this.upVec[0] *= this.speedFactor / (this.fovFactor);
-		this.upVec[1] *= this.speedFactor / (this.fovFactor);
-		this.upVec[2] *= this.speedFactor / (this.fovFactor);
+		this.upVec[0] *= this.speedFactor / this.fovFactor;
+		this.upVec[1] *= this.speedFactor / this.fovFactor;
+		this.upVec[2] *= this.speedFactor / this.fovFactor;
 
 		this.imagePlaneCenterPos = [
 			this.cameraPos[0] + this.forwardVec[0] * this.focalLengthFactor,
@@ -1092,11 +1087,15 @@ export class RaymarchApplet extends AnimationFrameApplet
 
 	drawFrame()
 	{
-		this.theta = this.lockedOnOrigin ? this.wilson.worldCenterX : -this.wilson.worldCenterX;
-		this.phi = this.lockedOnOrigin ? this.wilson.worldCenterY : -this.wilson.worldCenterY;
+		this.theta = this.lockedOnOrigin
+			? this.wilson.worldCenterX
+			: 2 * Math.PI - this.wilson.worldCenterX;
+		this.phi = this.lockedOnOrigin
+			? this.wilson.worldCenterY
+			: Math.PI - this.wilson.worldCenterY;
 
 		this.calculateVectors();
-		
+
 
 		if (this.useAntialiasing)
 		{
@@ -1337,8 +1336,8 @@ export class RaymarchApplet extends AnimationFrameApplet
 
 		this.setUniforms({
 			aspectRatio: [
-				this.wilson.worldWidth / worldSize,
-				this.wilson.worldHeight / worldSize
+				this.wilson.worldWidth / this.worldSize,
+				this.wilson.worldHeight / this.worldSize
 			],
 			resolution: this.resolution
 		});
@@ -1439,6 +1438,12 @@ export class RaymarchApplet extends AnimationFrameApplet
 		}
 
 		this.lockedOnOrigin = value;
+		this.worldSize = this.lockedOnOrigin ? 2.5 : 1.5;
+
+		this.wilson.resizeWorld({
+			worldWidth: this.worldSize,
+			worldHeight: this.worldSize
+		});
 	}
 }
 

@@ -1304,7 +1304,6 @@ export class WilsonGPU extends Wilson {
         this.gl.viewport(0, 0, this.canvasWidth, this.canvasHeight);
         // Initialize the uniforms.
         __classPrivateFieldGet(this, _WilsonGPU_uniforms, "f")[id] = {};
-        console.log(uniforms);
         for (const [name, value] of Object.entries(uniforms)) {
             const location = this.gl.getUniformLocation(__classPrivateFieldGet(this, _WilsonGPU_shaderPrograms, "f")[id], name);
             if (location === null) {
