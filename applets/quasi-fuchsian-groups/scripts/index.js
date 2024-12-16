@@ -68,6 +68,8 @@ export default function()
 		applet.resolutionSmall = resolutionInput.value * siteSettings.resolutionMultiplier;
 		applet.resolutionLarge = resolutionInput.value * siteSettings.resolutionMultiplier * 3;
 
-		applet.changeAspectRatio();
+		applet.wilson.resizeCanvas({
+			width: applet.resolutionSmall
+		});
 	}
 }

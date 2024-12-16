@@ -1,28 +1,27 @@
-import { Applet, getEqualPixelFullScreen } from "../../../scripts/applets/applet.js";
+import { AnimationFrameApplet } from "/scripts/applets/animationFrameApplet.js";
 import { aspectRatio } from "/scripts/src/layout.js";
 import { addTemporaryWorker, loadScript } from "/scripts/src/main.js";
-import { Wilson } from "/scripts/wilson.js";
+import { WilsonGPU } from "/scripts/wilson.js";
 
-export class QuasiFuchsianGroups extends Applet
+export class QuasiFuchsianGroups extends AnimationFrameApplet
 {
 	wilsonHidden;
 
 	resolutionSmall = 400;
 	resolutionLarge = 1200;
 
-	imageSize = this.resolutionSmall;
-	imageWidth = this.resolutionSmall;
-	imageHeight = this.resolutionSmall;
-
 	boxSize = 4;
 
 	webWorker;
 
-	lastTimestamp = -1;
-
 	t = [[2, 0], [2, 0]];
 
-	coefficients = [[[0, 0], [0, 0], [0, 0], [0, 0]], [[0, 0], [0, 0], [0, 0], [0, 0]], [], []];
+	coefficients = [
+		[[0, 0], [0, 0], [0, 0], [0, 0]],
+		[[0, 0], [0, 0], [0, 0], [0, 0]],
+		[],
+		[]
+	];
 
 	drawAnotherFrame = false;
 	needToRestart = true;
@@ -46,7 +45,7 @@ export class QuasiFuchsianGroups extends Applet
 
 
 
-		const fragShaderTrim = /* glsl */`
+		const shaderTrim = /* glsl */`
 			precision highp float;
 			precision highp sampler2D;
 			
@@ -54,7 +53,7 @@ export class QuasiFuchsianGroups extends Applet
 			
 			uniform sampler2D uTexture;
 			
-			uniform float textureStep;
+			uniform vec2 stepSize;
 			
 			
 			
@@ -64,14 +63,14 @@ export class QuasiFuchsianGroups extends Applet
 				vec2 center = (uv + vec2(1.0, 1.0)) / 2.0;
 				
 				float brightness =
-					texture2D(uTexture, center + vec2(textureStep, 0.0)).z +
-					texture2D(uTexture, center - vec2(textureStep, 0.0)).z +
-					texture2D(uTexture, center + vec2(0.0, textureStep)).z +
-					texture2D(uTexture, center - vec2(0.0, textureStep)).z +
-					texture2D(uTexture, center + vec2(textureStep, textureStep)).z +
-					texture2D(uTexture, center + vec2(textureStep, -textureStep)).z +
-					texture2D(uTexture, center + vec2(-textureStep, textureStep)).z +
-					texture2D(uTexture, center + vec2(-textureStep, -textureStep)).z;
+					texture2D(uTexture, center + vec2(stepSize.x, 0.0)).z +
+					texture2D(uTexture, center - vec2(stepSize.x, 0.0)).z +
+					texture2D(uTexture, center + vec2(0.0, stepSize.y)).z +
+					texture2D(uTexture, center - vec2(0.0, stepSize.y)).z +
+					texture2D(uTexture, center + vec2(stepSize.x, stepSize.y)).z +
+					texture2D(uTexture, center + vec2(stepSize.x, -stepSize.y)).z +
+					texture2D(uTexture, center + vec2(-stepSize.x, stepSize.y)).z +
+					texture2D(uTexture, center + vec2(-stepSize.x, -stepSize.y)).z;
 				
 				if (brightness < 0.1)
 				{
@@ -87,7 +86,7 @@ export class QuasiFuchsianGroups extends Applet
 
 
 
-		const fragShaderDilate = /* glsl */`
+		const shaderDilate = /* glsl */`
 			precision highp float;
 			precision highp sampler2D;
 			
@@ -95,7 +94,7 @@ export class QuasiFuchsianGroups extends Applet
 			
 			uniform sampler2D uTexture;
 			
-			uniform float textureStep;
+			uniform vec2 stepSize;
 			
 			
 			
@@ -105,15 +104,15 @@ export class QuasiFuchsianGroups extends Applet
 				vec2 center = (uv + vec2(1.0, 1.0)) / 2.0;
 				
 				float brightness =
-					max(max(max(texture2D(uTexture, center + vec2(textureStep, 0.0)).z,
-					texture2D(uTexture, center - vec2(textureStep, 0.0)).z),
-					max(texture2D(uTexture, center + vec2(0.0, textureStep)).z,
-					texture2D(uTexture, center - vec2(0.0, textureStep)).z)),
+					max(max(max(texture2D(uTexture, center + vec2(stepSize.x, 0.0)).z,
+					texture2D(uTexture, center - vec2(stepSize.x, 0.0)).z),
+					max(texture2D(uTexture, center + vec2(0.0, stepSize.y)).z,
+					texture2D(uTexture, center - vec2(0.0, stepSize.y)).z)),
 					
-					max(max(texture2D(uTexture, center + vec2(textureStep, textureStep)).z,
-					texture2D(uTexture, center + vec2(textureStep, -textureStep)).z),
-					max(texture2D(uTexture, center + vec2(-textureStep, textureStep)).z,
-					texture2D(uTexture, center + vec2(-textureStep, -textureStep)).z)));
+					max(max(texture2D(uTexture, center + vec2(stepSize.x, stepSize.y)).z,
+					texture2D(uTexture, center + vec2(stepSize.x, -stepSize.y)).z),
+					max(texture2D(uTexture, center + vec2(-stepSize.x, stepSize.y)).z,
+					texture2D(uTexture, center + vec2(-stepSize.x, -stepSize.y)).z)));
 					
 				brightness = max(brightness, texture2D(uTexture, center).z);
 				
@@ -123,20 +122,22 @@ export class QuasiFuchsianGroups extends Applet
 
 
 
-		const fragShaderColor = /* glsl */`
+		const shaderColor = /* glsl */`
 			precision highp float;
 			precision highp sampler2D;
 			
 			varying vec2 uv;
 			
 			uniform sampler2D uTexture;
+
+			uniform vec2 aspectRatio;
 			
 			void main(void)
 			{
 				//Dilate the pixels to make a thicker line.
 				vec2 center = (uv + vec2(1.0, 1.0)) / 2.0;
 				
-				vec2 z = 3.0 * uv;
+				vec2 z = 3.0 * uv * aspectRatio;
 				vec3 color = 1.5 * normalize(vec3(abs(z.x + z.y) / 2.0, abs(z.x) / 2.0, abs(z.y) / 2.0) + .1 / length(z) * vec3(1.0, 1.0, 1.0));
 				
 				gl_FragColor = vec4(color * texture2D(uTexture, center).z, 1.0);
@@ -147,65 +148,50 @@ export class QuasiFuchsianGroups extends Applet
 
 		const options =
 		{
-			renderer: "gpu",
+			shaders: {
+				trim: shaderTrim,
+				dilate: shaderDilate,
+				color: shaderColor
+			},
 
-			shader: fragShaderTrim,
+			uniforms: {
+				trim: { stepSize: [1 / this.resolutionSmall, 1 / this.resolutionSmall] },
+				dilate: { stepSize: [1 / this.resolutionSmall, 1 / this.resolutionSmall] },
+				color: { aspectRatio: [1, 1] },
+			},
 
 			canvasWidth: this.resolutionSmall,
-			canvasHeight: this.resolutionSmall,
 
 			worldWidth: 1,
 			worldHeight: 4,
 			worldCenterX: 2,
 			worldCenterY: 0,
 
+			onResizeCanvas: this.onResizeCanvas.bind(this),
 
+			draggableOptions: {
+				draggables: {
+					ta: [2, 0],
+					tb: [2, 0],
+					tab: [2, -2]
+				},
+				callbacks: {
+					grab: this.onGrabDraggable.bind(this),
+					drag: this.onDragDraggable.bind(this),
+					release: this.onReleaseDraggable.bind(this),
+				}
+			},
 
-			useDraggables: true,
+			fullscreenOptions: {
+				fillScreen: true,
+				useFullscreenButton: true,
 
-			draggablesMousedownCallback: this.onGrabDraggable.bind(this),
-			draggablesTouchstartCallback: this.onGrabDraggable.bind(this),
-
-			draggablesMousemoveCallback: this.onDragDraggable.bind(this),
-			draggablesTouchmoveCallback: this.onDragDraggable.bind(this),
-
-			draggablesMouseupCallback: this.onReleaseDraggable.bind(this),
-			draggablesTouchendCallback: this.onReleaseDraggable.bind(this),
-
-
-
-			useFullscreen: true,
-
-			trueFullscreen: true,
-
-			useFullscreenButton: true,
-
-			enterFullscreenButtonIconPath: "/graphics/general-icons/enter-fullscreen.png",
-			exitFullscreenButtonIconPath: "/graphics/general-icons/exit-fullscreen.png",
-
-			switchFullscreenCallback: this.changeAspectRatio.bind(this)
+				enterFullscreenButtonIconPath: "/graphics/general-icons/enter-fullscreen.png",
+				exitFullscreenButtonIconPath: "/graphics/general-icons/exit-fullscreen.png",
+			}
 		};
 
-		this.wilson = new Wilson(canvas, options);
-
-		this.wilson.render.loadNewShader(fragShaderDilate);
-		this.wilson.render.loadNewShader(fragShaderColor);
-
-		this.wilson.gl.useProgram(this.wilson.render.shaderPrograms[0]);
-		this.wilson.render.initUniforms(["textureStep"], 0);
-
-		this.wilson.gl.useProgram(this.wilson.render.shaderPrograms[1]);
-		this.wilson.render.initUniforms(["textureStep"], 1);
-
-
-		this.wilson.render.createFramebufferTexturePair();
-		this.wilson.render.createFramebufferTexturePair(this.wilson.gl.UNSIGNED_BYTE);
-
-		this.image = new Float32Array(this.imageWidth * this.imageHeight * 4);
-
-
-
-		this.regenerateHueAndBrightness();
+		this.wilson = new WilsonGPU(canvas, options);
 
 
 
@@ -215,23 +201,24 @@ export class QuasiFuchsianGroups extends Applet
 				// eslint-disable-next-line no-undef
 				this.Complex = Complex;
 
-				this.initDraggables();
+				this.resume();
 
-				this.changeRecipe(0);
+				this.onResizeCanvas();
+
+				this.changeRecipe("grandma");
+
 			});
 	}
 
 
 
 	grandmaCoefficients(
-		x1 = this.wilson.draggables.worldCoordinates[0][0],
-		y1 = this.wilson.draggables.worldCoordinates[0][1],
-		x2 = this.wilson.draggables.worldCoordinates[1][0],
-		y2 = this.wilson.draggables.worldCoordinates[1][1]
+		p1 = this.wilson.draggables.ta.location,
+		p2 = this.wilson.draggables.tb.location,
 	) {
 		// Use Grandma's recipe, canidate for the worst-named algorithm of the last two decades.
-		const ta = new this.Complex(x1, y1);
-		const tb = new this.Complex(x2, y2);
+		const ta = new this.Complex(p1[0], p1[1]);
+		const tb = new this.Complex(p2[0], p2[1]);
 
 		const b = ta.mul(tb);
 
@@ -318,8 +305,7 @@ export class QuasiFuchsianGroups extends Applet
 
 
 	rileyCoefficients(
-		x1 = this.wilson.draggables.worldCoordinates[0][0],
-		y1 = this.wilson.draggables.worldCoordinates[0][1]
+		p = this.wilson.draggables.ta.location
 	) {
 		this.coefficients[0][0][0] = 1;
 		this.coefficients[0][0][1] = 0;
@@ -327,8 +313,8 @@ export class QuasiFuchsianGroups extends Applet
 		this.coefficients[0][1][0] = 0;
 		this.coefficients[0][1][1] = 0;
 
-		this.coefficients[0][2][0] = x1;
-		this.coefficients[0][2][1] = y1;
+		this.coefficients[0][2][0] = p[0];
+		this.coefficients[0][2][1] = p[1];
 
 		this.coefficients[0][3][0] = 1;
 		this.coefficients[0][3][1] = 0;
@@ -364,17 +350,13 @@ export class QuasiFuchsianGroups extends Applet
 
 
 	grandmaSpecialCoefficients(
-		x1 = this.wilson.draggables.worldCoordinates[0][0],
-		y1 = this.wilson.draggables.worldCoordinates[0][1],
-		x2 = this.wilson.draggables.worldCoordinates[1][0],
-		y2 = this.wilson.draggables.worldCoordinates[1][1],
-		x3 = this.wilson.draggables.worldCoordinates[2][0],
-		y3 = this.wilson.draggables.worldCoordinates[2][1]
+		p1 = this.wilson.draggables.ta.location,
+		p2 = this.wilson.draggables.tb.location,
+		p3 = this.wilson.draggables.tc.location
 	) {
-		// Use Grandma's recipe, canidate for the worst-named algorithm of the last two decades.
-		const ta = new this.Complex(x1, y1);
-		const tb = new this.Complex(x2, y2);
-		const tab = new this.Complex(x3, y3);
+		const ta = new this.Complex(p1[0], p1[1]);
+		const tb = new this.Complex(p2[0], p2[1]);
+		const tab = new this.Complex(p3[0], p3[1]);
 		const I = new this.Complex(0, 1);
 		const TWO = new this.Complex(2, 0);
 
@@ -449,53 +431,43 @@ export class QuasiFuchsianGroups extends Applet
 
 
 
-	changeRecipe(index)
+	// recipe is "grandma", "riley", or "grandmaSpecial"
+	changeRecipe(recipe)
 	{
-		if (index === 0)
+		if (recipe === "grandma")
 		{
 			this.bakeCoefficients = this.grandmaCoefficients;
 
-			this.wilson.draggables.draggables[1].style.display = "block";
-			this.wilson.draggables.draggables[2].style.display = "none";
+			this.wilson.draggables.tb.element.style.display = "block";
+			this.wilson.draggables.tab.element.style.display = "none";
 		}
 
-		else if (index === 1)
+		else if (recipe === "riley")
 		{
 			this.bakeCoefficients = this.rileyCoefficients;
 
-			this.wilson.draggables.draggables[1].style.display = "none";
-			this.wilson.draggables.draggables[2].style.display = "none";
+			this.wilson.draggables.tb.element.style.display = "none";
+			this.wilson.draggables.tab.element.style.display = "none";
 		}
 
-		else if (index === 2)
+		else if (recipe === "grandmaSpecial")
 		{
 			this.bakeCoefficients = this.grandmaSpecialCoefficients;
 
-			this.wilson.draggables.draggables[1].style.display = "block";
-			this.wilson.draggables.draggables[2].style.display = "block";
+			this.wilson.draggables.tb.element.style.display = "block";
+			this.wilson.draggables.tab.element.style.display = "block";
 		}
 	}
 
 
 
-	drawFrame(timestamp)
+	drawFrame()
 	{
-		const timeElapsed = timestamp - this.lastTimestamp;
-
-		this.lastTimestamp = timestamp;
-
-		if (timeElapsed === 0)
-		{
-			return;
-		}
-
-
-
 		this.bakeCoefficients();
 
 		for (let i = 0; i < 4; i++)
 		{
-			this.searchStep(0, 0, i, -1, -1, 1);
+			this.searchStep(0, 0, i, 1);
 		}
 
 
@@ -509,17 +481,12 @@ export class QuasiFuchsianGroups extends Applet
 
 
 
-		for (let i = 0; i < this.imageHeight; i++)
+		for (let i = 0; i < this.wilson.canvasHeight * this.wilson.canvasWidth; i++)
 		{
-			for (let j = 0; j < this.imageWidth; j++)
-			{
-				const index = i * this.imageWidth + j;
-
-				this.image[4 * index] = 0;
-				this.image[4 * index + 1] = 1;
-				this.image[4 * index + 2] = Math.pow(this.brightness[index] / maxBrightness, .15);
-				this.image[4 * index + 3] = 1;
-			}
+			this.image[4 * i] = 0;
+			this.image[4 * i + 1] = 1;
+			this.image[4 * i + 2] = Math.pow(this.brightness[i] / maxBrightness, .15);
+			this.image[4 * i + 3] = 1;
 		}
 
 
@@ -531,92 +498,42 @@ export class QuasiFuchsianGroups extends Applet
 
 	renderShaderStack()
 	{
-		this.wilson.gl.useProgram(this.wilson.render.shaderPrograms[0]);
+		this.wilson.useShader("trim");
+		this.wilson.useFramebuffer(null);
+		this.wilson.useTexture("image");
+		this.wilson.setTexture({
+			id: "image",
+			data: this.image
+		});
+		this.wilson.drawFrame();
 
-		this.wilson.gl.bindTexture(
-			this.wilson.gl.TEXTURE_2D,
-			this.wilson.render.framebuffers[0].texture
-		);
+		this.wilson.useShader("dilate");
+		this.wilson.useTexture("dilated");
 
-		this.wilson.gl.bindFramebuffer(this.wilson.gl.FRAMEBUFFER, null);
-
-		this.wilson.gl.texImage2D(
-			this.wilson.gl.TEXTURE_2D,
-			0,
-			this.wilson.gl.RGBA,
-			this.imageWidth,
-			this.imageHeight,
-			0,
-			this.wilson.gl.RGBA,
-			this.wilson.gl.FLOAT,
-			this.image
-		);
-
-		this.wilson.render.drawFrame();
-
-
-
-		this.wilson.gl.useProgram(this.wilson.render.shaderPrograms[1]);
-
-		this.wilson.gl.bindTexture(
-			this.wilson.gl.TEXTURE_2D,
-			this.wilson.render.framebuffers[1].texture
-		);
-
-
-
-		// Dilate the image.
-
-		const numDilations = this.imageSize >= 1000 ? 1 : 0;
+		const numDilations = this.wilson.canvasWidth * this.wilson.canvasHeight >= 1000000 ? 1 : 0;
 
 		for (let i = 0; i < numDilations; i++)
 		{
-			const pixelData = this.wilson.render.getPixelData();
-
-			this.wilson.gl.texImage2D(
-				this.wilson.gl.TEXTURE_2D,
-				0,
-				this.wilson.gl.RGBA,
-				this.imageWidth,
-				this.imageHeight,
-				0,
-				this.wilson.gl.RGBA,
-				this.wilson.gl.UNSIGNED_BYTE,
-				pixelData
-			);
-
-			this.wilson.render.drawFrame();
+			const pixelData = this.wilson.readPixels();
+			this.wilson.setTexture({
+				id: "dilated",
+				data: pixelData
+			});
+			this.wilson.drawFrame();
 		}
 
-
-
-		this.wilson.gl.useProgram(this.wilson.render.shaderPrograms[2]);
-
-		this.wilson.gl.bindTexture(
-			this.wilson.gl.TEXTURE_2D,
-			this.wilson.render.framebuffers[1].texture
-		);
-
-		const pixelData = this.wilson.render.getPixelData();
-
-		this.wilson.gl.texImage2D(
-			this.wilson.gl.TEXTURE_2D,
-			0,
-			this.wilson.gl.RGBA,
-			this.imageWidth,
-			this.imageHeight,
-			0,
-			this.wilson.gl.RGBA,
-			this.wilson.gl.UNSIGNED_BYTE,
-			pixelData
-		);
-
-		this.wilson.render.drawFrame();
+		this.wilson.useShader("color");
+		const pixelData = this.wilson.readPixels();
+		this.wilson.setTexture({
+			id: "dilated",
+			data: pixelData
+		});
+		this.wilson.drawFrame();
 	}
 
 
 
-	searchStep(startX, startY, lastTransformationIndex, lastRow, lastCol, depth)
+	searchStep(startX, startY, lastTransformationIndex, depth)
 	{
 		if (depth === this.maxDepth)
 		{
@@ -634,37 +551,46 @@ export class QuasiFuchsianGroups extends Applet
 
 
 
-			const row = this.imageWidth >= this.imageHeight
-				? Math.floor((-this.y + this.boxSize / 2) / this.boxSize * this.imageHeight)
+			const row = this.wilson.canvasWidth >= this.wilson.canvasHeight
+				? Math.floor((-this.y + this.boxSize / 2) / this.boxSize * this.wilson.canvasHeight)
 				: Math.floor(
-					(-this.y * (this.imageWidth / this.imageHeight) + this.boxSize / 2)
-						/ this.boxSize * this.imageHeight
+					(
+						-this.y * (this.wilson.canvasWidth / this.wilson.canvasHeight)
+						+ this.boxSize / 2
+					) / this.boxSize * this.wilson.canvasHeight
 				);
 
-			const col = this.imageWidth >= this.imageHeight
+			const col = this.wilson.canvasWidth >= this.wilson.canvasHeight
 				? Math.floor(
-					(this.x / (this.imageWidth / this.imageHeight) + this.boxSize / 2)
-						/ this.boxSize * this.imageWidth)
-				: Math.floor((this.x + this.boxSize / 2) / this.boxSize * this.imageWidth);
+					(
+						this.x / (this.wilson.canvasWidth / this.wilson.canvasHeight)
+						+ this.boxSize / 2
+					) / this.boxSize * this.wilson.canvasWidth)
+				: Math.floor((this.x + this.boxSize / 2) / this.boxSize * this.wilson.canvasWidth);
 
 
 
-			if (row >= 0 && row < this.imageHeight && col >= 0 && col < this.imageWidth)
-			{
-				if (this.brightness[this.imageWidth * row + col] === this.maxPixelBrightness)
-				{
+			if (
+				row >= 0
+				&& row < this.wilson.canvasHeight
+				&& col >= 0
+				&& col < this.wilson.canvasWidth
+			) {
+				if (
+					this.brightness[this.wilson.canvasWidth * row + col] === this.maxPixelBrightness
+				) {
 					continue;
 				}
 
 				if (depth > 10 || this.imageSize !== this.resolutionSmall)
 				{
-					this.brightness[this.imageWidth * row + col]++;
+					this.brightness[this.wilson.canvasWidth * row + col]++;
 				}
 			}
 
 
 
-			this.searchStep(this.x, this.y, transformationIndex, row, col, depth + 1);
+			this.searchStep(this.x, this.y, transformationIndex, depth + 1);
 		}
 	}
 
@@ -700,110 +626,38 @@ export class QuasiFuchsianGroups extends Applet
 
 
 
-	initDraggables()
-	{
-		this.wilson.draggables.add(2, 0);
-		this.wilson.draggables.add(2, 0);
-		this.wilson.draggables.add(2, -2);
-
-		requestAnimationFrame(this.drawFrame.bind(this));
-	}
-
-
-
 	onGrabDraggable()
 	{
-		this.imageSize = this.resolutionSmall;
-
-		if (this.wilson.fullscreen.currentlyFullscreen)
-		{
-			if (aspectRatio >= 1)
-			{
-				this.imageWidth = Math.floor(this.imageSize * aspectRatio);
-				this.imageHeight = this.imageSize;
-			}
-
-			else
-			{
-				this.imageWidth = this.imageSize;
-				this.imageHeight = Math.floor(this.imageSize / aspectRatio);
-			}
-		}
-
-		else
-		{
-			this.imageWidth = this.imageSize;
-			this.imageHeight = this.imageSize;
-		}
-
-
+		this.wilson.resizeCanvas({
+			width: this.resolutionSmall,
+		});
 
 		this.maxDepth = 200;
 		this.maxPixelBrightness = 50;
 
-		this.wilson.changeCanvasSize(this.imageWidth, this.imageHeight);
-
-		this.regenerateHueAndBrightness();
-
-
-
-		requestAnimationFrame(this.drawFrame.bind(this));
+		this.needNewFrame = true;
 	}
-
-
 
 	onReleaseDraggable()
 	{
-		this.imageSize = this.resolutionLarge;
+		this.wilson.resizeCanvas({
+			width: this.resolutionLarge,
+		});
 
-		if (this.wilson.fullscreen.currentlyFullscreen)
-		{
-			if (aspectRatio >= 1)
-			{
-				this.imageWidth = Math.floor(this.imageSize * aspectRatio);
-				this.imageHeight = this.imageSize;
-			}
+		this.maxDepth = 100;
+		this.maxPixelBrightness = 200;
 
-			else
-			{
-				this.imageWidth = this.imageSize;
-				this.imageHeight = Math.floor(this.imageSize / aspectRatio);
-			}
-		}
-
-		else
-		{
-			this.imageWidth = this.imageSize;
-			this.imageHeight = this.imageSize;
-		}
-
-
-
-		this.maxDepth = 200;
-		this.maxPixelBrightness = 50;
-
-		this.wilson.changeCanvasSize(this.imageWidth, this.imageHeight);
-
-		this.regenerateHueAndBrightness();
-
-
-
-		requestAnimationFrame(this.drawFrame.bind(this));
+		this.needNewFrame = true;
 	}
-
-
 
 	onDragDraggable()
 	{
-		for (let i = 0; i < this.imageHeight; i++)
+		for (let i = 0; i < this.wilson.canvasHeight * this.wilson.canvasWidth; i++)
 		{
-			for (let j = 0; j < this.imageWidth; j++)
-			{
-				this.brightness[this.imageWidth * i + j] = 0;
-			}
+			this.brightness[i] = 0;
 		}
 
-		requestAnimationFrame(this.drawFrame.bind(this));
+		this.needNewFrame = true;
 	}
 
 
@@ -889,49 +743,41 @@ export class QuasiFuchsianGroups extends Applet
 
 
 
-	regenerateHueAndBrightness()
+	onResizeCanvas()
 	{
-		this.brightness = new Float32Array(this.imageWidth * this.imageHeight);
-		this.image = new Float32Array(this.imageWidth * this.imageHeight * 4);
+		this.wilson.createFramebufferTexturePair({
+			id: "image",
+			textureType: "float"
+		});
 
-		this.wilson.gl.useProgram(this.wilson.render.shaderPrograms[0]);
-		this.wilson.gl.uniform1f(this.wilson.uniforms.textureStep[0], 1 / this.imageSize);
+		this.wilson.createFramebufferTexturePair({
+			id: "dilated",
+			textureType: "unsignedByte"
+		});
 
-		this.wilson.gl.useProgram(this.wilson.render.shaderPrograms[1]);
-		this.wilson.gl.uniform1f(this.wilson.uniforms.textureStep[1], 1 / this.imageSize);
+		this.image = new Float32Array(this.wilson.canvasWidth * this.wilson.canvasHeight * 4);
+		this.brightness = new Float32Array(this.wilson.canvasWidth * this.wilson.canvasHeight);
 
-		for (let i = 0; i < this.imageHeight; i++)
+		this.wilson.setUniforms({
+			stepSize: [1 / this.wilson.canvasWidth, 1 / this.wilson.canvasHeight]
+		}, "trim");
+		
+		this.wilson.setUniforms({
+			stepSize: [1 / this.wilson.canvasWidth, 1 / this.wilson.canvasHeight]
+		}, "dilate");
+
+		this.wilson.setUniforms({
+			aspectRatio: [
+				Math.max(this.wilson.canvasWidth / this.wilson.canvasHeight, 1),
+				Math.max(this.wilson.canvasHeight / this.wilson.canvasWidth, 1)
+			]
+		}, "color");
+
+		for (let i = 0; i < this.wilson.canvasWidth * this.wilson.canvasHeight; i++)
 		{
-			for (let j = 0; j < this.imageWidth; j++)
-			{
-				this.brightness[this.imageWidth * i + j] = 0;
-			}
-		}
-	}
-
-
-
-	changeAspectRatio()
-	{
-		this.imageSize = this.resolutionSmall;
-
-		if (this.wilson.fullscreen.currentlyFullscreen)
-		{
-			[this.imageWidth, this.imageHeight] = getEqualPixelFullScreen(this.imageSize);
-		}
-
-		else
-		{
-			this.imageWidth = this.imageSize;
-			this.imageHeight = this.imageSize;
+			this.brightness[i] = 0;
 		}
 
-
-
-		this.wilson.changeCanvasSize(this.imageWidth, this.imageHeight);
-
-		this.regenerateHueAndBrightness();
-
-		requestAnimationFrame(this.drawFrame.bind(this));
+		this.needNewFrame = true;
 	}
 }
