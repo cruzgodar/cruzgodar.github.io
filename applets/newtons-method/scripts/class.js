@@ -376,8 +376,8 @@ export class NewtonsMethod extends AnimationFrameApplet
 					root7: [0, 0],
 				},
 				callbacks: {
-					ondrag: this.onDragDraggable.bind(this),
-					onrelease: this.onReleaseDraggable.bind(this),
+					drag: this.onDragDraggable.bind(this),
+					release: this.onReleaseDraggable.bind(this),
 				}
 			},
 

@@ -28,7 +28,7 @@ export class FiniteSubdivisions extends AnimationFrameApplet
 
 			draggableOptions: {
 				callbacks: {
-					ondrag: this.onDragDraggable.bind(this),
+					drag: this.onDragDraggable.bind(this),
 				}
 			},
 

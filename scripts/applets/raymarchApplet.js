@@ -295,6 +295,10 @@ export class RaymarchApplet extends AnimationFrameApplet
 				{
 					this.calculateVectors();
 					this.drawFrame();
+				},
+				callbacks: {
+					touchstart: this.onTouchStart.bind(this),
+					touchend: this.onTouchEnd.bind(this),
 				}
 			},
 
@@ -1090,6 +1094,8 @@ export class RaymarchApplet extends AnimationFrameApplet
 
 	prepareFrame(timeElapsed)
 	{
+		this.touchDelay = Math.max(0, this.touchDelay - timeElapsed);
+
 		this.moveUpdate(timeElapsed);
 	}
 
@@ -1249,9 +1255,53 @@ export class RaymarchApplet extends AnimationFrameApplet
 	}
 
 
+	touchDelay = 0;
+	numTouches = 0;
+
+	onTouchStart({ event })
+	{
+		if (this.numTouches <= 1 && event.touches.length === 2)
+		{
+			this.numTouches = 2;
+			this.touchDelay = 100;
+		}
+
+		else if (this.numTouches <= 2 && event.touches.length === 3)
+		{
+			this.numTouches = 3;
+		}
+
+		else
+		{
+			this.numTouches = 0;
+		}
+	}
+
+	onTouchEnd({ event })
+	{
+		if (event.touches.length < 2)
+		{
+			this.numTouches = 0;
+		}
+	}
 
 	moveUpdate(timeElapsed)
 	{
+		if (this.touchDelay === 0)
+		{
+			if (this.numTouches === 2)
+			{
+				this.moveVelocity[0] = 1;
+			}
+
+			else if (this.numTouches === 3)
+			{
+				this.moveVelocity[0] = -1;
+			}
+		}
+
+
+
 		if (this.keysPressed.w || this.numTouches === 2)
 		{
 			this.moveVelocity[0] = 1;

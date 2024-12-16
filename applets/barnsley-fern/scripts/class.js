@@ -83,8 +83,8 @@ export class BarnsleyFern extends AnimationFrameApplet
 					tip: [2.6556, 9.95851]
 				},
 				callbacks: {
-					ondrag: this.onDragDraggable.bind(this),
-					onrelease: this.onReleaseDraggable.bind(this)
+					drag: this.onDragDraggable.bind(this),
+					release: this.onReleaseDraggable.bind(this)
 				}
 			},
 

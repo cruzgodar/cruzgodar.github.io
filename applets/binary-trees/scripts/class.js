@@ -36,9 +36,9 @@ export class BinaryTrees extends AnimationFrameApplet
 					branch1: [1 / 7, -1 / 3],
 				},
 				callbacks: {
-					ongrab: this.onGrabDraggable.bind(this),
-					ondrag: this.onDragDraggable.bind(this),
-					onrelease: this.onReleaseDraggable.bind(this)
+					grab: this.onGrabDraggable.bind(this),
+					drag: this.onDragDraggable.bind(this),
+					release: this.onReleaseDraggable.bind(this)
 				}
 			},
 

@@ -55,7 +55,7 @@ export class GeneralizedJuliaSets extends AnimationFrameApplet
 					draggableArg: [0, 0],
 				},
 				callbacks: {
-					ondrag: this.onDragDraggable.bind(this),
+					drag: this.onDragDraggable.bind(this),
 				}
 			},
 
