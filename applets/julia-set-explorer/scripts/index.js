@@ -1,5 +1,5 @@
 import { showPage } from "../../../scripts/src/loadPage.js";
-import { JuliaSet } from "./class.js";
+import { JuliaSetExplorer } from "./class.js";
 import { Button, ToggleButton } from "/scripts/src/buttons.js";
 import { $ } from "/scripts/src/main.js";
 import { siteSettings } from "/scripts/src/settings.js";
@@ -16,7 +16,7 @@ export default function()
 		onClick1: advanceJuliaMode
 	});
 
-	const applet = new JuliaSet({
+	const applet = new JuliaSetExplorer({
 		canvas: $("#output-canvas"),
 		switchJuliaModeButton
 	});

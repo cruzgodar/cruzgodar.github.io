@@ -2,7 +2,7 @@ import { Applet } from "/scripts/applets/applet.js";
 import { siteSettings } from "/scripts/src/settings.js";
 import { WilsonGPU } from "/scripts/wilson.js";
 
-export class JuliaSet extends Applet
+export class JuliaSetExplorer extends Applet
 {
 	wilsonHidden;
 
