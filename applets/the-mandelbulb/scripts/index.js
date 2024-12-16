@@ -1,5 +1,6 @@
 import { showPage } from "../../../scripts/src/loadPage.js";
 import { Mandelbulb } from "./class.js";
+import { getRotationMatrix } from "/scripts/applets/raymarchApplet.js";
 import { Button, ToggleButton } from "/scripts/src/buttons.js";
 import { Checkbox } from "/scripts/src/checkboxes.js";
 import { $ } from "/scripts/src/main.js";
@@ -140,20 +141,22 @@ export default function()
 
 	function onSliderInput()
 	{
-		applet.setUniform("c", [cXSlider.value, cYSlider.value, cZSlider.value]);
-
-		applet.setUniform("power", powerSlider.value);
-
-		applet.rotationAngleX = rotationAngleXSlider.value;
-		applet.rotationAngleY = rotationAngleYSlider.value;
-		applet.rotationAngleZ = rotationAngleZSlider.value;
-
-		applet.updateRotationMatrix();
+		applet.setUniforms({
+			power: powerSlider.value,
+			c: [cXSlider.value, cYSlider.value, cZSlider.value],
+			rotationMatrix: getRotationMatrix(
+				rotationAngleXSlider.value,
+				rotationAngleYSlider.value,
+				rotationAngleZSlider.value
+			)
+		});
 	}
 
 	function changeResolution()
 	{
-		applet.changeResolution(resolutionInput.value * siteSettings.resolutionMultiplier);
+		applet.wilson.resizeCanvas({
+			width: resolutionInput.value * siteSettings.resolutionMultiplier
+		});
 	}
 
 	function onCheckboxInput()

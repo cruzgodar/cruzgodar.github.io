@@ -114,10 +114,6 @@ export class KaleidoscopicIFSFractals extends RaymarchApplet
 {
 	shape = "octahedron";
 
-	scale = 2;
-	rotationMatrix = [[1, 0, 0], [0, 1, 0], [0, 0, 1]];
-	numIterations = 56;
-
 	constructor({
 		canvas,
 		shape = "octahedron",
@@ -200,7 +196,7 @@ export class KaleidoscopicIFSFractals extends RaymarchApplet
 
 		// We'll find the closest vertex, scale everything by a factor of 2
 		// centered on that vertex (so that we don't need to recalculate the vertices), and repeat.
-		for (let iteration = 0; iteration < this.numIterations; iteration++)
+		for (let iteration = 0; iteration < this.uniforms.numIterations; iteration++)
 		{
 			for (let i = 0; i < shapeNs.length; i++)
 			{
@@ -221,17 +217,17 @@ export class KaleidoscopicIFSFractals extends RaymarchApplet
 			// the four new ones are the four closest to the vertex we scaled from.
 			// Now (x, y, z) will get farther and farther away from the origin,
 			// but that makes sense -- we're really just zooming in on the tetrahedron.
-			x = this.scale * x - (this.scale - 1) * scaleCenter[0];
-			y = this.scale * y - (this.scale - 1) * scaleCenter[1];
-			z = this.scale * z - (this.scale - 1) * scaleCenter[2];
+			x = this.uniforms.scale * x - (this.uniforms.scale - 1) * scaleCenter[0];
+			y = this.uniforms.scale * y - (this.uniforms.scale - 1) * scaleCenter[1];
+			z = this.uniforms.scale * z - (this.uniforms.scale - 1) * scaleCenter[2];
 
-			[x, y, z] = mat3TimesVector(this.rotationMatrix, [x, y, z]);
+			[x, y, z] = mat3TimesVector(this.uniforms.rotationMatrix, [x, y, z]);
 		}
 
 		// So at this point we've scaled up by 2x a total of numIterations times.
 		// The final distance is therefore:
 		return Math.sqrt(x * x + y * y + z * z)
-			* Math.pow(this.scale, -this.numIterations);
+			* Math.pow(this.uniforms.scale, -this.uniforms.numIterations);
 	}
 
 	// newAmounts is an array of the form [tetrahedronAmount, cubeAmount, octahedronAmount].

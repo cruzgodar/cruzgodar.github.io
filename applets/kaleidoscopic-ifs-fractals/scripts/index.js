@@ -119,21 +119,15 @@ export default function()
 			44 - (56 - 44) * (scaleSlider.value - 8 / 3) / (8 / 3 - 2)
 		);
 
-		applet.scale = scaleSlider.value;
-
-		applet.numIterations = numIterations;
-
-		applet.rotationMatrix = getRotationMatrix(
-			rotationAngleXSlider.value,
-			rotationAngleYSlider.value,
-			rotationAngleZSlider.value
-		);
-
 		applet.setUniforms({
 			scale: scaleSlider.value,
 			minEpsilon: minScaleEpsilon / Math.pow(10, power),
 			numIterations,
-			rotationMatrix: applet.rotationMatrix
+			rotationMatrix: getRotationMatrix(
+				rotationAngleXSlider.value,
+				rotationAngleYSlider.value,
+				rotationAngleZSlider.value
+			)
 		});
 	}
 
