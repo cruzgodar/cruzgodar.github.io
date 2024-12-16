@@ -1,20 +1,15 @@
 import { AnimationFrameApplet } from "/scripts/applets/animationFrameApplet.js";
-import { aspectRatio } from "/scripts/src/layout.js";
 import { addTemporaryWorker, loadScript } from "/scripts/src/main.js";
 import { WilsonGPU } from "/scripts/wilson.js";
 
+const boxSize = 4;
+
 export class QuasiFuchsianGroups extends AnimationFrameApplet
 {
-	wilsonHidden;
-
-	resolutionSmall = 400;
-	resolutionLarge = 1200;
-
-	boxSize = 4;
+	resolutionSmall = 500;
+	resolutionLarge = 1500;
 
 	webWorker;
-
-	t = [[2, 0], [2, 0]];
 
 	coefficients = [
 		[[0, 0], [0, 0], [0, 0], [0, 0]],
@@ -23,11 +18,8 @@ export class QuasiFuchsianGroups extends AnimationFrameApplet
 		[]
 	];
 
-	drawAnotherFrame = false;
-	needToRestart = true;
-
-	maxDepth = 200;
-	maxPixelBrightness = 50;
+	maxDepth = 500;
+	maxPixelBrightness = 200;
 
 	x = 0;
 	y = 0;
@@ -162,7 +154,7 @@ export class QuasiFuchsianGroups extends AnimationFrameApplet
 
 			canvasWidth: this.resolutionSmall,
 
-			worldWidth: 1,
+			worldWidth: 0.5,
 			worldHeight: 4,
 			worldCenterX: 2,
 			worldCenterY: 0,
@@ -206,7 +198,6 @@ export class QuasiFuchsianGroups extends AnimationFrameApplet
 				this.onResizeCanvas();
 
 				this.changeRecipe("grandma");
-
 			});
 	}
 
@@ -552,23 +543,21 @@ export class QuasiFuchsianGroups extends AnimationFrameApplet
 
 
 			const row = this.wilson.canvasWidth >= this.wilson.canvasHeight
-				? Math.floor((-this.y + this.boxSize / 2) / this.boxSize * this.wilson.canvasHeight)
+				? Math.floor((-this.y + boxSize / 2) / boxSize * this.wilson.canvasHeight)
 				: Math.floor(
 					(
 						-this.y * (this.wilson.canvasWidth / this.wilson.canvasHeight)
-						+ this.boxSize / 2
-					) / this.boxSize * this.wilson.canvasHeight
+						+ boxSize / 2
+					) / boxSize * this.wilson.canvasHeight
 				);
 
 			const col = this.wilson.canvasWidth >= this.wilson.canvasHeight
 				? Math.floor(
 					(
 						this.x / (this.wilson.canvasWidth / this.wilson.canvasHeight)
-						+ this.boxSize / 2
-					) / this.boxSize * this.wilson.canvasWidth)
-				: Math.floor((this.x + this.boxSize / 2) / this.boxSize * this.wilson.canvasWidth);
-
-
+						+ boxSize / 2
+					) / boxSize * this.wilson.canvasWidth)
+				: Math.floor((this.x + boxSize / 2) / boxSize * this.wilson.canvasWidth);
 
 			if (
 				row >= 0
@@ -577,18 +566,16 @@ export class QuasiFuchsianGroups extends AnimationFrameApplet
 				&& col < this.wilson.canvasWidth
 			) {
 				if (
-					this.brightness[this.wilson.canvasWidth * row + col] === this.maxPixelBrightness
+					this.brightness[this.wilson.canvasWidth * row + col] >= this.maxPixelBrightness
 				) {
 					continue;
 				}
 
-				if (depth > 10 || this.imageSize !== this.resolutionSmall)
+				if (depth > 10)
 				{
 					this.brightness[this.wilson.canvasWidth * row + col]++;
 				}
 			}
-
-
 
 			this.searchStep(this.x, this.y, transformationIndex, depth + 1);
 		}
@@ -644,7 +631,7 @@ export class QuasiFuchsianGroups extends AnimationFrameApplet
 			width: this.resolutionLarge,
 		});
 
-		this.maxDepth = 100;
+		this.maxDepth = 500;
 		this.maxPixelBrightness = 200;
 
 		this.needNewFrame = true;
@@ -662,45 +649,16 @@ export class QuasiFuchsianGroups extends AnimationFrameApplet
 
 
 
-	async requestHighResFrame(imageSize, maxDepth, maxPixelBrightness, boxSize = this.boxSize)
+	async requestHighResFrame(resolution, maxDepth, maxPixelBrightness)
 	{
-		this.imageSize = imageSize;
 		this.maxDepth = maxDepth;
 		this.maxPixelBrightness = maxPixelBrightness;
-		this.boxSize = boxSize;
 
-
-
-		if (this.wilson.fullscreen.currentlyFullscreen)
-		{
-			if (aspectRatio >= 1)
-			{
-				this.imageWidth = Math.floor(this.imageSize * aspectRatio);
-				this.imageHeight = this.imageSize;
-			}
-
-			else
-			{
-				this.imageWidth = this.imageSize;
-				this.imageHeight = Math.floor(this.imageSize / aspectRatio);
-			}
-		}
-
-		else
-		{
-			this.imageWidth = this.imageSize;
-			this.imageHeight = this.imageSize;
-		}
-
-
-
-		this.regenerateHueAndBrightness();
-
-
+		this.wilson.resizeCanvas({
+			width: resolution
+		});
 
 		this.webWorker = addTemporaryWorker("/applets/quasi-fuchsian-groups/scripts/worker.js");
-
-
 
 		const workerPromise = new Promise(resolve =>
 		{
@@ -708,19 +666,12 @@ export class QuasiFuchsianGroups extends AnimationFrameApplet
 			{
 				this.brightness = e.data[0];
 
-				this.wilson.changeCanvasSize(this.imageWidth, this.imageHeight);
-
-				for (let i = 0; i < this.imageHeight; i++)
+				for (let i = 0; i < this.wilson.canvasHeight * this.wilson.canvasWidth; i++)
 				{
-					for (let j = 0; j < this.imageWidth; j++)
-					{
-						const index = i * this.imageWidth + j;
-
-						this.image[4 * index] = 0;
-						this.image[4 * index + 1] = 0;
-						this.image[4 * index + 2] = this.brightness[index];
-						this.image[4 * index + 3] = 0;
-					}
+					this.image[4 * i] = 0;
+					this.image[4 * i + 1] = 1;
+					this.image[4 * i + 2] = this.brightness[i];
+					this.image[4 * i + 3] = 1;
 				}
 
 				this.renderShaderStack();
@@ -730,11 +681,9 @@ export class QuasiFuchsianGroups extends AnimationFrameApplet
 		});
 
 		this.webWorker.postMessage([
-			this.imageWidth,
-			this.imageHeight,
+			resolution,
 			this.maxDepth,
 			this.maxPixelBrightness,
-			this.boxSize,
 			this.coefficients
 		]);
 

@@ -2,11 +2,10 @@
 
 
 
-let canvasWidth;
-let canvasHeight;
+let resolution;
 let maxDepth;
 let maxPixelBrightness;
-let boxSize;
+const boxSize = 4;
 
 let coefficients = [];
 
@@ -19,21 +18,17 @@ let y = 0;
 
 function drawQuasiFuchsianGroup()
 {
-	brightness = new Array(canvasWidth * canvasHeight);
+	brightness = new Array(resolution * resolution);
 
 	for (let i = 0; i < brightness.length; i++)
 	{
 		brightness[i] = 0;
 	}
 
-
-
 	for (let i = 0; i < 4; i++)
 	{
-		searchStep(0, 0, i, -1, -1, 1);
+		searchStep(0, 0, i, 1);
 	}
-
-
 
 	let maxBrightness = 0;
 
@@ -42,28 +37,22 @@ function drawQuasiFuchsianGroup()
 		maxBrightness = Math.max(maxBrightness, brightness[i]);
 	}
 
-
-
 	for (let i = 0; i < brightness.length; i++)
 	{
 		brightness[i] = Math.pow(brightness[i] / maxBrightness, .15);
 	}
-
-
 
 	postMessage([brightness]);
 }
 
 
 
-function searchStep(startX, startY, lastTransformationIndex, lastRow, lastCol, depth)
+function searchStep(startX, startY, lastTransformationIndex, depth)
 {
 	if (depth === maxDepth)
 	{
 		return;
 	}
-
-
 
 	for (let i = 3; i < 6; i++)
 	{
@@ -74,46 +63,20 @@ function searchStep(startX, startY, lastTransformationIndex, lastRow, lastCol, d
 
 		applyTransformation(transformationIndex);
 
+		const row = Math.floor((-y + boxSize / 2) / boxSize * resolution);
+		const col = Math.floor((x + boxSize / 2) / boxSize * resolution);
 
-
-		let row = 0;
-		let col = 0;
-
-		if (canvasWidth >= canvasHeight)
+		if (row >= 0 && row < resolution && col >= 0 && col < resolution)
 		{
-			row = Math.floor((-y + boxSize / 2) / boxSize * canvasHeight);
-
-			col = Math.floor(
-				(x / (canvasWidth / canvasHeight) + boxSize / 2)
-					/ boxSize * canvasWidth
-			);
-		}
-
-		else
-		{
-			row = Math.floor(
-				(-y * (canvasWidth / canvasHeight) + boxSize / 2)
-					/ boxSize * canvasHeight
-			);
-
-			col = Math.floor((x + boxSize / 2) / boxSize * canvasWidth);
-		}
-
-
-
-		if (row >= 0 && row < canvasHeight && col >= 0 && col < canvasWidth)
-		{
-			if (brightness[canvasWidth * row + col] === maxPixelBrightness)
+			if (brightness[resolution * row + col] === maxPixelBrightness)
 			{
 				continue;
 			}
 
-			brightness[canvasWidth * row + col]++;
+			brightness[resolution * row + col]++;
 		}
 
-
-
-		searchStep(x, y, transformationIndex, row, col, depth + 1);
+		searchStep(x, y, transformationIndex, depth + 1);
 	}
 }
 
@@ -149,13 +112,10 @@ function applyTransformation(index)
 
 onmessage = (e) =>
 {
-	canvasWidth = e.data[0];
-	canvasHeight = e.data[1];
-	maxDepth = e.data[2];
-	maxPixelBrightness = e.data[3];
-	boxSize = e.data[4];
-
-	coefficients = e.data[5];
+	resolution = e.data[0];
+	maxDepth = e.data[1];
+	maxPixelBrightness = e.data[2];
+	coefficients = e.data[3];
 
 	drawQuasiFuchsianGroup();
 };
