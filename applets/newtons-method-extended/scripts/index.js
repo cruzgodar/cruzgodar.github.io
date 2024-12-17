@@ -96,9 +96,9 @@ export default function()
 
 	function changeResolution()
 	{
-		applet.resolution = resolutionInput.value * siteSettings.resolutionMultiplier;
-
-		applet.changeAspectRatio(true);
+		applet.wilson.resizeCanvas({
+			width: resolutionInput.value * siteSettings.resolutionMultiplier
+		});
 	}
 
 	function onDropdownInput()
@@ -112,15 +112,13 @@ export default function()
 	{
 		applet.derivativePrecision = derivativePrecisionSlider.value;
 
-		applet.wilson.gl.uniform1f(
-			applet.wilson.uniforms.derivativePrecision,
-			applet.derivativePrecision
-		);
+		applet.wilson.setUniforms({
+			derivativePrecision: applet.derivativePrecision
+		});
 
-		applet.wilsonHidden.gl.uniform1f(
-			applet.wilsonHidden.uniforms.derivativePrecision,
-			applet.derivativePrecision
-		);
+		applet.wilsonHidden.setUniforms({
+			derivativePrecision: applet.derivativePrecision
+		});
 
 		applet.needNewFrame = true;
 	}

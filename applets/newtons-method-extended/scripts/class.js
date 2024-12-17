@@ -1,9 +1,9 @@
 import { getGlslBundle, loadGlsl } from "../../../scripts/src/complexGlsl.js";
 import anime from "/scripts/anime.js";
 import { AnimationFrameApplet } from "/scripts/applets/animationFrameApplet.js";
-import { tempShader } from "/scripts/applets/applet.js";
-import { addTemporaryListener } from "/scripts/src/main.js";
-import { Wilson } from "/scripts/wilson.js";
+import { hsvToRgb, tempShader } from "/scripts/applets/applet.js";
+import { siteSettings } from "/scripts/src/settings.js";
+import { WilsonGPU } from "/scripts/wilson.js";
 
 export class NewtonsMethodExtended extends AnimationFrameApplet
 {
@@ -36,120 +36,59 @@ export class NewtonsMethodExtended extends AnimationFrameApplet
 	{
 		super(canvas);
 
-		const options =
-		{
-			renderer: "gpu",
-
+		const hiddenCanvas = this.createHiddenCanvas();
+		
+		const options = {
 			shader: tempShader,
 
-			canvasWidth: 500,
-			canvasHeight: 500,
+			canvasWidth: this.resolution,
 
 			worldWidth: 32,
 			worldHeight: 32,
 			worldCenterX: 0,
 			worldCenterY: 0,
 
+			minWorldWidth: 0.00005,
+			maxWorldWidth: 300,
+			minWorldHeight: 0.00005,
+			maxWorldHeight: 300,
 
+			onResizeCanvas: this.drawFrame.bind(this),
 
-			useDraggables: true,
+			reduceMotion: siteSettings.reduceMotion,
 
-			draggablesMousemoveCallback: this.onDragDraggable.bind(this),
-			draggablesTouchmoveCallback: this.onDragDraggable.bind(this),
+			draggableOptions: {
+				draggables: {
+					a: this.a,
+					c: this.c,
+					draggableArg: [.5, .5],
+				},
+				callbacks: {
+					drag: this.onDragDraggable.bind(this),
+				}
+			},
 
+			interactionOptions: {
+				useForPanAndZoom: true,
+				onPanAndZoom: this.drawFrame.bind(this),
+			},
 
-
-			useFullscreen: true,
-
-			trueFullscreen: true,
-
-			useFullscreenButton: true,
-
-			enterFullscreenButtonIconPath: "/graphics/general-icons/enter-fullscreen.png",
-			exitFullscreenButtonIconPath: "/graphics/general-icons/exit-fullscreen.png",
-
-			switchFullscreenCallback: () => this.changeAspectRatio(true),
-
-
-
-			mousedownCallback: this.onGrabCanvas.bind(this),
-			touchstartCallback: this.onGrabCanvas.bind(this),
-
-			mousedragCallback: this.onDragCanvas.bind(this),
-			touchmoveCallback: this.onDragCanvas.bind(this),
-
-			mouseupCallback: this.onReleaseCanvas.bind(this),
-			touchendCallback: this.onReleaseCanvas.bind(this),
-
-			wheelCallback: this.onWheelCanvas.bind(this),
-			pinchCallback: this.onPinchCanvas.bind(this)
+			fullscreenOptions: {
+				fillScreen: true,
+				useFullscreenButton: true,
+				enterFullscreenButtonIconPath: "/graphics/general-icons/enter-fullscreen.png",
+				exitFullscreenButtonIconPath: "/graphics/general-icons/exit-fullscreen.png",
+			},
 		};
 
-		const optionsHidden =
-		{
-			renderer: "gpu",
-
-			shader: tempShader,
-
+		this.wilson = new WilsonGPU(canvas, options);
+		this.wilsonHidden = new WilsonGPU(hiddenCanvas, {
+			...options,
+			draggableOptions: {},
 			canvasWidth: this.resolutionHidden,
-			canvasHeight: this.resolutionHidden
-		};
-
-
-
-		this.wilson = new Wilson(canvas, options);
-
-		this.wilson.render.initUniforms([
-			"aspectRatio",
-			"derivativePrecision",
-			"worldCenterX",
-			"worldCenterY",
-			"worldSize",
-			"colors",
-			"a",
-			"c",
-			"brightnessScale"
-		]);
-
-
-
-		const hiddenCanvas = this.createHiddenCanvas();
-		hiddenCanvas.classList.remove("hidden-canvas");
-		hiddenCanvas.classList.add("output-canvas");
-		this.wilsonHidden = new Wilson(hiddenCanvas, optionsHidden);
-
-		this.wilsonHidden.render.initUniforms([
-			"aspectRatio",
-			"derivativePrecision",
-			"worldCenterX",
-			"worldCenterY",
-			"worldSize",
-			"colors",
-			"a",
-			"c",
-			"brightnessScale"
-		]);
-
-
-
-		let element = this.wilson.draggables.add(1, 0);
-
-		element.classList.add("a-marker");
-
-		element = this.wilson.draggables.add(0, 0);
-
-		element.classList.add("c-marker");
-
-
-
-		const boundFunction = () => this.changeAspectRatio(true);
-		addTemporaryListener({
-			object: window,
-			event: "resize",
-			callback: boundFunction
 		});
 
-
+		this.wilson.draggables.draggableArg.element.style.display = "none";
 
 		this.loadPromise = loadGlsl();
 	}
@@ -158,25 +97,26 @@ export class NewtonsMethodExtended extends AnimationFrameApplet
 
 	run({ generatingCode })
 	{
+		const needDraggable = generatingCode.indexOf("draggableArg") !== -1;
+
 		const shader = /* glsl */`
 			precision highp float;
 			
 			varying vec2 uv;
 			
-			uniform float aspectRatio;
-			
-			uniform float worldCenterX;
-			uniform float worldCenterY;
-			uniform float worldSize;
+			uniform vec2 worldCenter;
+			uniform vec2 worldSize;
 			
 			uniform float derivativePrecision;
 			
-			
-			uniform vec3 colors[4];
+			uniform vec3 color0;
+			uniform vec3 color1;
+			uniform vec3 color2;
+			uniform vec3 color3;
 			
 			uniform vec2 a;
 			uniform vec2 c;
-			uniform vec2 draggableArg;
+			${needDraggable ? "uniform vec2 draggableArg;" : ""}
 			
 			uniform float brightnessScale;
 			
@@ -206,19 +146,9 @@ export class NewtonsMethodExtended extends AnimationFrameApplet
 			
 			void main(void)
 			{
-				vec2 z;
+				vec2 z = uv * worldSize * 0.5 + worldCenter;
 				vec2 lastZ = vec2(0.0, 0.0);
 				vec2 oldZ = vec2(0.0, 0.0);
-				
-				if (aspectRatio >= 1.0)
-				{
-					z = vec2(uv.x * aspectRatio * worldSize + worldCenterX, uv.y * worldSize + worldCenterY);
-				}
-				
-				else
-				{
-					z = vec2(uv.x * worldSize + worldCenterX, uv.y / aspectRatio * worldSize + worldCenterY);
-				}
 				
 				gl_FragColor = vec4(0.0, 0.0, 0.0, 1.0);
 				
@@ -260,7 +190,7 @@ export class NewtonsMethodExtended extends AnimationFrameApplet
 						float c3 = sin((theoreticalRoot.x - theoreticalRoot.y) * 3.258342) + cos((theoreticalRoot.x - theoreticalRoot.y) * 4.20957) + 2.0;
 						
 						//Pick an interpolated color between the 4 that we chose earlier.
-						gl_FragColor = vec4((c0 * colors[0] + c1 * colors[1] + c2 * colors[2] + c3 * colors[3]) / (c0 + c1 + c2 + c3) * brightness, 1.0);
+						gl_FragColor = vec4((c0 * color0 + c1 * color1 + c2 * color2 + c3 * color3) / (c0 + c1 + c2 + c3) * brightness, 1.0);
 						
 						return;
 					}
@@ -268,94 +198,55 @@ export class NewtonsMethodExtended extends AnimationFrameApplet
 			}
 		`;
 
-		this.wilson.render.shaderPrograms = [];
-		this.wilson.render.loadNewShader(shader);
-		this.wilson.gl.useProgram(this.wilson.render.shaderPrograms[0]);
-
-		this.wilson.render.initUniforms([
-			"aspectRatio",
-			"derivativePrecision",
-			"worldCenterX",
-			"worldCenterY",
-			"worldSize",
-			"colors",
-			"a",
-			"c",
-			"draggableArg",
-			"brightnessScale"
-		]);
-
-		this.wilson.gl.uniform1f(this.wilson.uniforms.aspectRatio, 1);
-
-		this.wilson.gl.uniform1f(
-			this.wilson.uniforms.derivativePrecision,
-			this.derivativePrecision
-		);
-
-		this.wilsonHidden.render.shaderPrograms = [];
-		this.wilsonHidden.render.loadNewShader(shader);
-		this.wilsonHidden.gl.useProgram(this.wilsonHidden.render.shaderPrograms[0]);
-
-		this.wilsonHidden.render.initUniforms([
-			"aspectRatio",
-			"derivativePrecision",
-			"worldCenterX",
-			"worldCenterY",
-			"worldSize",
-			"colors",
-			"a",
-			"c",
-			"draggableArg",
-			"brightnessScale"
-		]);
-
-		this.wilsonHidden.gl.uniform1f(this.wilsonHidden.uniforms.aspectRatio, 1);
-
-		this.wilsonHidden.gl.uniform1f(
-			this.wilsonHidden.uniforms.derivativePrecision,
-			this.derivativePrecision
-		);
-
-		this.wilson.worldCenterX = 0;
-		this.wilson.worldCenterY = 0;
-		this.wilson.worldWidth = 32;
-		this.wilson.worldHeight = 32;
-
-		this.zoom.init();
-
-
-
 		this.pastBrightnessScales = [];
-
-
 
 		this.a = [1, 0];
 		this.c = [0, 0];
 
-
-
 		this.colors = this.generateNewPalette();
 
-		this.wilson.gl.uniform3fv(this.wilson.uniforms.colors, this.colors);
-		this.wilsonHidden.gl.uniform3fv(this.wilsonHidden.uniforms.colors, this.colors);
+		this.wilson.loadShader({
+			source: shader,
+			uniforms: {
+				worldCenter: [this.wilson.worldCenterX, this.wilson.worldCenterY],
+				worldSize: [this.wilson.worldWidth, this.wilson.worldHeight],
+				derivativePrecision: this.derivativePrecision,
+				color0: [this.colors[0], this.colors[1], this.colors[2]],
+				color1: [this.colors[3], this.colors[4], this.colors[5]],
+				color2: [this.colors[6], this.colors[7], this.colors[8]],
+				color3: [this.colors[9], this.colors[10], this.colors[11]],
+				a: this.a,
+				c: this.c,
+				brightnessScale: 12.75,
+				...(needDraggable ? { draggableArg: [0, 0] } : {}),
+			},
+		});
 
-		const needDraggable = generatingCode.indexOf("draggableArg") !== -1;
+		this.wilsonHidden.loadShader({
+			source: shader,
+			uniforms: {
+				worldCenter: [this.wilson.worldCenterX, this.wilson.worldCenterY],
+				worldSize: [this.wilson.worldWidth, this.wilson.worldHeight],
+				derivativePrecision: this.derivativePrecision,
+				color0: [this.colors[0], this.colors[1], this.colors[2]],
+				color1: [this.colors[3], this.colors[4], this.colors[5]],
+				color2: [this.colors[6], this.colors[7], this.colors[8]],
+				color3: [this.colors[9], this.colors[10], this.colors[11]],
+				a: this.a,
+				c: this.c,
+				brightnessScale: 10,
+			},
+		});
 
-		if (needDraggable && this.wilson.draggables.numDraggables === 2)
-		{
-			this.wilson.draggables.add(.5, .5);
+		this.wilson.resizeWorld({
+			width: 32,
+			height: 32,
+			centerX: 0,
+			centerY: 0
+		});
 
-			this.wilson.gl.uniform2f(this.wilson.uniforms.draggableArg, .5, .5);
-		}
-
-		else if (!needDraggable && this.wilson.draggables.numDraggables > 2)
-		{
-			this.wilson.draggables.numDraggables--;
-
-			this.wilson.draggables.draggables[2].remove();
-
-			this.wilson.draggables.draggables.splice(2, 1);
-		}
+		this.wilson.draggables.draggableArg.element.style.display =
+			needDraggable ? "block" : "none";
 
 		this.resume();
 	}
@@ -374,17 +265,17 @@ export class NewtonsMethodExtended extends AnimationFrameApplet
 
 		let hue = 0;
 
-		const restrictions = [];
+		const restrictions = [.275];
 
-		const restrictionWidth = .1;
+		const restrictionWidth = .15;
 
 
 
 		for (let i = 0; i < 4; i++)
 		{
-			hue = Math.random() * (1 - i * 2 * restrictionWidth);
+			hue = Math.random() * (1 - (i + 1) * 2 * restrictionWidth);
 
-			for (let j = 0; j < i; j++)
+			for (let j = 0; j <= i; j++)
 			{
 				if (hue > restrictions[j])
 				{
@@ -398,10 +289,10 @@ export class NewtonsMethodExtended extends AnimationFrameApplet
 
 
 
-			const rgb = this.wilson.utils.hsvToRgb(
+			const rgb = hsvToRgb(
 				hue,
-				Math.random() * .25 + .75,
-				Math.random() * .25 + .75
+				Math.random() * .35 + .3,
+				Math.random() * .2 + .8
 			);
 
 			newColors[3 * i] = rgb[0] / 255;
@@ -432,12 +323,19 @@ export class NewtonsMethodExtended extends AnimationFrameApplet
 				{
 					this.colors[i] = (1 - dummy.t) * oldColors[i] + dummy.t * newColors[i];
 
-					this.wilson.gl.uniform3fv(this.wilson.uniforms.colors, this.colors);
+					this.wilson.setUniforms({
+						color0: [this.colors[0], this.colors[1], this.colors[2]],
+						color1: [this.colors[3], this.colors[4], this.colors[5]],
+						color2: [this.colors[6], this.colors[7], this.colors[8]],
+						color3: [this.colors[9], this.colors[10], this.colors[11]],
+					});
 
-					this.wilsonHidden.gl.uniform3fv(
-						this.wilsonHidden.uniforms.colors,
-						this.colors
-					);
+					this.wilsonHidden.setUniforms({
+						color0: [this.colors[0], this.colors[1], this.colors[2]],
+						color1: [this.colors[3], this.colors[4], this.colors[5]],
+						color2: [this.colors[6], this.colors[7], this.colors[8]],
+						color3: [this.colors[9], this.colors[10], this.colors[11]],
+					});
 
 					this.needNewFrame = true;
 				}
@@ -447,81 +345,30 @@ export class NewtonsMethodExtended extends AnimationFrameApplet
 
 
 
-	onDragDraggable(activeDraggable, x, y)
+	onDragDraggable({ id, x, y })
 	{
-		if (activeDraggable === 0)
-		{
-			this.a = [x, y];
-		}
+		this[id] = [x, y];
 
-		else if (activeDraggable === 1)
-		{
-			this.c = [x, y];
-		}
-
-		else
-		{
-			this.draggableArg = [x, y];
-		}
+		this.wilson.setUniforms({ [id]: this[id] });
+		this.wilsonHidden.setUniforms({ [id]: this[id] });
 
 		this.needNewFrame = true;
 	}
 
 
 
-	prepareFrame(timeElapsed)
-	{
-		this.pan.update(timeElapsed);
-		this.zoom.update(timeElapsed);
-	}
-
 	drawFrame()
 	{
-		this.wilsonHidden.gl.uniform1f(
-			this.wilsonHidden.uniforms.aspectRatio,
-			this.aspectRatio
-		);
+		this.wilsonHidden.setUniforms({
+			worldSize: [this.wilson.worldWidth, this.wilson.worldHeight],
+			worldCenter: [this.wilson.worldCenterX, this.wilson.worldCenterY],
+		});
 
-		this.wilsonHidden.gl.uniform1f(
-			this.wilsonHidden.uniforms.worldCenterX,
-			this.wilson.worldCenterX
-		);
-
-		this.wilsonHidden.gl.uniform1f(
-			this.wilsonHidden.uniforms.worldCenterY,
-			this.wilson.worldCenterY
-		);
-
-		this.wilsonHidden.gl.uniform1f(
-			this.wilsonHidden.uniforms.worldSize,
-			Math.min(this.wilson.worldHeight, this.wilson.worldWidth) / 2
-		);
-
-		this.wilsonHidden.gl.uniform2fv(
-			this.wilsonHidden.uniforms.a,
-			this.a
-		);
-
-		this.wilsonHidden.gl.uniform2f(
-			this.wilsonHidden.uniforms.c,
-			this.c[0] / 10, this.c[1] / 10
-		);
-
-		this.wilsonHidden.gl.uniform2fv(
-			this.wilsonHidden.uniforms.draggableArg,
-			this.draggableArg
-		);
-		
-		this.wilsonHidden.gl.uniform1f(
-			this.wilsonHidden.uniforms.brightnessScale,
-			30
-		);
-
-		this.wilsonHidden.render.drawFrame();
+		this.wilsonHidden.drawFrame();
 
 
 
-		const pixelData = this.wilsonHidden.render.getPixelData();
+		const pixelData = this.wilsonHidden.readPixels();
 
 		const brightnesses = new Array(this.resolutionHidden * this.resolutionHidden);
 
@@ -539,11 +386,11 @@ export class NewtonsMethodExtended extends AnimationFrameApplet
 		brightnesses.sort((a, b) => a - b);
 
 		let brightnessScale = Math.min(
-			10000 / (
+			7000 / (
 				brightnesses[Math.floor(this.resolutionHidden * this.resolutionHidden * .96)]
 				+ brightnesses[Math.floor(this.resolutionHidden * this.resolutionHidden * .98)]
 			),
-			200
+			30
 		);
 
 		this.pastBrightnessScales.push(brightnessScale);
@@ -555,50 +402,23 @@ export class NewtonsMethodExtended extends AnimationFrameApplet
 			this.pastBrightnessScales.shift();
 		}
 
-		brightnessScale = Math.max(this.pastBrightnessScales.reduce((a, b) => a + b) / denom, .5);
+		brightnessScale = 0;
+
+		for (let i = 0; i < this.pastBrightnessScales.length; i++)
+		{
+			brightnessScale += this.pastBrightnessScales[i];
+		}
+
+		brightnessScale = Math.max(brightnessScale / denom, .5);
 
 
 
-		this.wilson.gl.uniform1f(
-			this.wilson.uniforms.aspectRatio,
-			this.aspectRatio
-		);
-
-		this.wilson.gl.uniform1f(
-			this.wilson.uniforms.worldCenterX,
-			this.wilson.worldCenterX
-		);
-
-		this.wilson.gl.uniform1f(
-			this.wilson.uniforms.worldCenterY,
-			this.wilson.worldCenterY
-		);
-
-		this.wilson.gl.uniform1f(
-			this.wilson.uniforms.worldSize,
-			Math.min(this.wilson.worldHeight, this.wilson.worldWidth) / 2
-		);
-
-		this.wilson.gl.uniform2fv(
-			this.wilson.uniforms.a,
-			this.a
-		);
-
-		this.wilson.gl.uniform2f(
-			this.wilson.uniforms.c,
-			this.c[0] / 10, this.c[1] / 10
-		);
-
-		this.wilson.gl.uniform2fv(
-			this.wilson.uniforms.draggableArg,
-			this.draggableArg
-		);
-		
-		this.wilson.gl.uniform1f(
-			this.wilson.uniforms.brightnessScale,
+		this.wilson.setUniforms({
+			worldSize: [this.wilson.worldWidth, this.wilson.worldHeight],
+			worldCenter: [this.wilson.worldCenterX, this.wilson.worldCenterY],
 			brightnessScale
-		);
+		});
 
-		this.wilson.render.drawFrame();
+		this.wilson.drawFrame();
 	}
 }

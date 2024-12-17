@@ -349,7 +349,7 @@ export class GeneralizedJuliaSets extends AnimationFrameApplet
 		this.pastBrightnessScales = [];
 
 		this.wilson.draggables.draggableArg.element.style.display =
-			generatingCode.indexOf("draggableArg") !== -1 ? "block" : "none";
+			needDraggable ? "block" : "none";
 
 		this.wilson.setDraggables({ draggableArg: [0, 0] });
 
