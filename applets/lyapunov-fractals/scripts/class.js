@@ -1,22 +1,17 @@
 import { AnimationFrameApplet } from "/scripts/applets/animationFrameApplet.js";
 import { tempShader } from "/scripts/applets/applet.js";
-import { addTemporaryListener } from "/scripts/src/main.js";
-import { Wilson } from "/scripts/wilson.js";
+import { WilsonGPU } from "/scripts/wilson.js";
 
 export class LyapunovFractals extends AnimationFrameApplet
 {
 	wilsonHidden;
-
-
-
-	aspectRatio = 1;
 
 	numIterations = 100;
 
 	pastBrightnessScales = [];
 
 	resolution = 500;
-	resolutionHidden = 100;
+	resolutionHidden = 50;
 
 
 
@@ -28,108 +23,66 @@ export class LyapunovFractals extends AnimationFrameApplet
 
 		const options =
 		{
-			renderer: "gpu",
-
 			shader: tempShader,
 
 			canvasWidth: 500,
-			canvasHeight: 500,
 
 			worldWidth: 4,
 			worldHeight: 4,
 			worldCenterX: 2,
 			worldCenterY: 2,
 
+			minWorldWidth: 0.00001,
+			minWorldHeight: 0.00001,
+			maxWorldWidth: 4,
+			maxWorldHeight: 4,
+			minWorldCenterX: 0,
+			minWorldCenterY: 0,
+			maxWorldCenterX: 4,
+			maxWorldCenterY: 4,
 
+			onResizeCanvas: this.drawFrame.bind(this),
 
-			useFullscreen: true,
+			interactionOptions: {
+				useForPanAndZoom: true,
+				onPanAndZoom: this.drawFrame.bind(this),
+			},
 
-			trueFullscreen: true,
-
-			useFullscreenButton: true,
-
-			enterFullscreenButtonIconPath: "/graphics/general-icons/enter-fullscreen.png",
-			exitFullscreenButtonIconPath: "/graphics/general-icons/exit-fullscreen.png",
-
-			switchFullscreenCallback: () => this.changeAspectRatio(true),
-
-
-
-			mousedownCallback: this.onGrabCanvas.bind(this),
-			touchstartCallback: this.onGrabCanvas.bind(this),
-
-			mousedragCallback: this.onDragCanvas.bind(this),
-			touchmoveCallback: this.onDragCanvas.bind(this),
-
-			mouseupCallback: this.onReleaseCanvas.bind(this),
-			touchendCallback: this.onReleaseCanvas.bind(this),
-
-			wheelCallback: this.onWheelCanvas.bind(this),
-			pinchCallback: this.onPinchCanvas.bind(this)
+			fullscreenOptions: {
+				fillScreen: true,
+				useFullscreenButton: true,
+				enterFullscreenButtonIconPath: "/graphics/general-icons/enter-fullscreen.png",
+				exitFullscreenButtonIconPath: "/graphics/general-icons/exit-fullscreen.png",
+			},
 		};
+
+		this.wilson = new WilsonGPU(canvas, options);
 
 		const optionsHidden =
 		{
-			renderer: "gpu",
-
 			shader: tempShader,
 
-			canvasWidth: 100,
-			canvasHeight: 100
+			canvasWidth: this.resolutionHidden,
 		};
 
-		this.wilson = new Wilson(canvas, options);
+		this.wilsonHidden = new WilsonGPU(hiddenCanvas, optionsHidden);
 
-		this.wilsonHidden = new Wilson(hiddenCanvas, optionsHidden);
-
-		this.pan.setBounds({
-			minX: 0,
-			maxX: 4,
-			minY: 0,
-			maxY: 4,
-		});
-
-		this.zoom.init();
-
-		const boundFunction = () => this.changeAspectRatio(true);
-		addTemporaryListener({
-			object: window,
-			event: "resize",
-			callback: boundFunction
-		});
+		this.resume();
 	}
 
 
 
 	run({ generatingString })
 	{
-		const generatingCode = [];
-
-		for (let i = 0; i < generatingString.length; i++)
-		{
-			if (generatingString[i] === "B")
-			{
-				generatingCode.push(1);
-			}
-
-			else
-			{
-				generatingCode.push(0);
-			}
-		}
-
-
+		const generatingCode = generatingString.split("").map(l => l === "B" ? 1 : 0);
 
 		const shader = /* glsl */`
 			precision highp float;
 			
 			varying vec2 uv;
 			
-			uniform float aspectRatio;
-			
-			uniform float worldCenterX;
-			uniform float worldCenterY;
-			uniform float worldSize;
+			uniform vec2 worldCenter;
+			uniform vec2 worldSize;
 			
 			uniform float brightnessScale;
 			
@@ -139,17 +92,7 @@ export class LyapunovFractals extends AnimationFrameApplet
 			
 			void main(void)
 			{
-				vec2 z;
-				
-				if (aspectRatio >= 1.0)
-				{
-					z = vec2(uv.x * aspectRatio * worldSize + worldCenterX, uv.y * worldSize + worldCenterY);
-				}
-				
-				else
-				{
-					z = vec2(uv.x * worldSize + worldCenterX, uv.y / aspectRatio * worldSize + worldCenterY);
-				}
+				vec2 z = uv * worldSize * 0.5 + worldCenter;
 				
 				gl_FragColor = vec4(0.0, 0.0, 0.0, 1.0);
 				
@@ -185,7 +128,7 @@ export class LyapunovFractals extends AnimationFrameApplet
 					}
 				}
 				
-				lambda /= 10000.0;
+				lambda *= 0.0001;
 				
 				if (lambda <= 0.0)
 				{
@@ -196,91 +139,41 @@ export class LyapunovFractals extends AnimationFrameApplet
 			}
 		`;
 
-		this.wilson.render.shaderPrograms = [];
-		this.wilson.render.loadNewShader(shader);
-		this.wilson.gl.useProgram(this.wilson.render.shaderPrograms[0]);
+		this.wilsonHidden.loadShader({
+			source: shader,
+			uniforms: {
+				worldCenter: [this.wilson.worldCenterX, this.wilson.worldCenterY],
+				worldSize: [this.wilson.worldWidth, this.wilson.worldHeight],
+				brightnessScale: 20,
+				seq: generatingCode,
+			},
+		});
 
-		this.wilson.render.initUniforms([
-			"aspectRatio",
-			"worldCenterX",
-			"worldCenterY",
-			"worldSize",
-			"brightnessScale",
-			"seq"
-		]);
+		this.wilson.loadShader({
+			source: shader,
+			uniforms: {
+				worldCenter: [this.wilson.worldCenterX, this.wilson.worldCenterY],
+				worldSize: [this.wilson.worldWidth, this.wilson.worldHeight],
+				brightnessScale: 20,
+				seq: generatingCode,
+			},
+		});
 
-		this.wilson.gl.uniform1f(this.wilson.uniforms.aspectRatio, 1);
-
-		this.wilsonHidden.render.shaderPrograms = [];
-		this.wilsonHidden.render.loadNewShader(shader);
-		this.wilsonHidden.gl.useProgram(this.wilsonHidden.render.shaderPrograms[0]);
-
-		this.wilsonHidden.render.initUniforms([
-			"aspectRatio",
-			"worldCenterX",
-			"worldCenterY",
-			"worldSize",
-			"brightnessScale",
-			"seq"
-		]);
-
-		this.wilsonHidden.gl.uniform1f(this.wilsonHidden.uniforms.aspectRatio, 1);
-
-
-
-		this.pastBrightnessScales = [];
-
-		this.zoom.init();
-
-		this.wilson.gl.uniform1iv(this.wilson.uniforms.seq, generatingCode);
-		this.wilsonHidden.gl.uniform1iv(this.wilsonHidden.uniforms.seq, generatingCode);
-
-
-
-		this.resume();
+		this.needNewFrame = true;
 	}
-
-
-
-	prepareFrame(timeElapsed)
-	{
-		this.pan.update(timeElapsed);
-		this.zoom.update(timeElapsed);
-	}
-
 
 	drawFrame()
 	{
-		this.wilsonHidden.gl.uniform1f(
-			this.wilsonHidden.uniforms.aspectRatio,
-			this.aspectRatio
-		);
+		this.wilsonHidden.setUniforms({
+			worldSize: [this.wilson.worldWidth, this.wilson.worldHeight],
+			worldCenter: [this.wilson.worldCenterX, this.wilson.worldCenterY],
+		});
 
-		this.wilsonHidden.gl.uniform1f(
-			this.wilsonHidden.uniforms.worldCenterX,
-			this.wilson.worldCenterX
-		);
-
-		this.wilsonHidden.gl.uniform1f(
-			this.wilsonHidden.uniforms.worldCenterY,
-			this.wilson.worldCenterY
-		);
-
-		this.wilsonHidden.gl.uniform1f(
-			this.wilsonHidden.uniforms.worldSize,
-			Math.min(this.wilson.worldHeight, this.wilson.worldWidth) / 2
-		);
-
-		this.wilsonHidden.gl.uniform1f(
-			this.wilsonHidden.uniforms.brightnessScale,
-			20
-		);
-
-		this.wilsonHidden.render.drawFrame();
+		this.wilsonHidden.drawFrame();
 
 
 
-		const pixelData = this.wilsonHidden.render.getPixelData();
+		const pixelData = this.wilsonHidden.readPixels();
 
 		const brightnesses = new Array(this.resolutionHidden * this.resolutionHidden);
 
@@ -305,35 +198,23 @@ export class LyapunovFractals extends AnimationFrameApplet
 			this.pastBrightnessScales.shift();
 		}
 
-		brightnessScale = Math.max(this.pastBrightnessScales.reduce((a, b) => a + b) / denom, .5);
+		brightnessScale = 0;
+
+		for (let i = 0; i < this.pastBrightnessScales.length; i++)
+		{
+			brightnessScale += this.pastBrightnessScales[i];
+		}
+
+		brightnessScale = Math.max(brightnessScale / denom, .5);
 
 
 
-		this.wilson.gl.uniform1f(
-			this.wilson.uniforms.aspectRatio,
-			this.aspectRatio
-		);
-
-		this.wilson.gl.uniform1f(
-			this.wilson.uniforms.worldCenterX,
-			this.wilson.worldCenterX
-		);
-
-		this.wilson.gl.uniform1f(
-			this.wilson.uniforms.worldCenterY,
-			this.wilson.worldCenterY
-		);
-
-		this.wilson.gl.uniform1f(
-			this.wilson.uniforms.worldSize,
-			Math.min(this.wilson.worldHeight, this.wilson.worldWidth) / 2
-		);
-
-		this.wilson.gl.uniform1f(
-			this.wilson.uniforms.brightnessScale,
+		this.wilson.setUniforms({
+			worldSize: [this.wilson.worldWidth, this.wilson.worldHeight],
+			worldCenter: [this.wilson.worldCenterX, this.wilson.worldCenterY],
 			brightnessScale
-		);
+		});
 
-		this.wilson.render.drawFrame();
+		this.wilson.drawFrame();
 	}
 }
