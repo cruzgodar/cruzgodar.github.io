@@ -82,14 +82,12 @@ export class JuliaSetMosaic extends AnimationFrameApplet
 			worldCenterX: -.75,
 			worldCenterY: 0,
 
-			minWorldCenterX: -2,
-			maxWorldCenterX: 2,
-			minWorldCenterY: -2,
-			maxWorldCenterY: 2,
+			minWorldX: -3 - .75,
+			maxWorldX: 3 - .75,
+			minWorldY: -3,
+			maxWorldY: 3,
 			minWorldWidth: 0.00001,
-			maxWorldWidth: 4,
 			minWorldHeight: 0.00001,
-			maxWorldHeight: 4,
 
 			onResizeCanvas: this.drawFrame.bind(this),
 

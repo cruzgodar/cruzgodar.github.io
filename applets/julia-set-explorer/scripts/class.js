@@ -255,14 +255,12 @@ export class JuliaSetExplorer extends Applet
 			worldCenterX: -.75,
 			worldCenterY: 0,
 
-			minWorldCenterX: -2,
-			maxWorldCenterX: 2,
-			minWorldCenterY: -2,
-			maxWorldCenterY: 2,
+			minWorldX: -2.5,
+			maxWorldX: 2.5,
+			minWorldY: -2.5,
+			maxWorldY: 2.5,
 			minWorldWidth: 0.00001,
-			maxWorldWidth: 4,
 			minWorldHeight: 0.00001,
-			maxWorldHeight: 4,
 
 			onResizeCanvas: this.drawFrame.bind(this),
 

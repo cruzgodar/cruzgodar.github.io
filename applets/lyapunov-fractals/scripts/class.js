@@ -34,12 +34,12 @@ export class LyapunovFractals extends AnimationFrameApplet
 
 			minWorldWidth: 0.00001,
 			minWorldHeight: 0.00001,
-			maxWorldWidth: 4,
-			maxWorldHeight: 4,
-			minWorldCenterX: 0,
-			minWorldCenterY: 0,
-			maxWorldCenterX: 4,
-			maxWorldCenterY: 4,
+			minWorldX: 0,
+			minWorldY: 0,
+			maxWorldX: 4,
+			maxWorldY: 4,
+
+			clampWorldCoordinatesMode: "both",
 
 			onResizeCanvas: this.drawFrame.bind(this),
 
