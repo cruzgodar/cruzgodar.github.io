@@ -1,8 +1,8 @@
-import { Applet } from "/scripts/applets/applet.js";
+import { AnimationFrameApplet } from "/scripts/applets/animationFrameApplet.js";
 import { siteSettings } from "/scripts/src/settings.js";
 import { WilsonGPU } from "/scripts/wilson.js";
 
-export class JuliaSetExplorer extends Applet
+export class JuliaSetExplorer extends AnimationFrameApplet
 {
 	wilsonHidden;
 
@@ -262,13 +262,13 @@ export class JuliaSetExplorer extends Applet
 			minWorldWidth: 0.00001,
 			minWorldHeight: 0.00001,
 
-			onResizeCanvas: this.drawFrame.bind(this),
+			onResizeCanvas: () => this.needNewFrame = true,
 
 			reduceMotion: siteSettings.reduceMotion,
 
 			interactionOptions: {
 				useForPanAndZoom: true,
-				onPanAndZoom: this.drawFrame.bind(this),
+				onPanAndZoom: () => this.needNewFrame = true,
 				callbacks: {
 					mousemove: this.onMousemove.bind(this),
 					mousedown: this.onMousedown.bind(this),
@@ -298,7 +298,8 @@ export class JuliaSetExplorer extends Applet
 		});
 		this.wilsonHidden.useShader("mandelbrot");
 
-		this.drawFrame();
+		this.needNewFrame = true,
+		this.resume();
 	}
 
 
@@ -346,7 +347,7 @@ export class JuliaSetExplorer extends Applet
 			this.switchJuliaModeButton.disabled = this.juliaMode === "juliaPicker";
 		}
 
-		this.drawFrame();
+		this.needNewFrame = true;
 	}
 
 	
@@ -357,7 +358,7 @@ export class JuliaSetExplorer extends Applet
 		{
 			this.c = [x, y];
 
-			requestAnimationFrame(() => this.drawFrame());
+			this.needNewFrame = true;
 		}
 	}
 
@@ -375,7 +376,7 @@ export class JuliaSetExplorer extends Applet
 		{
 			this.c = [x, y];
 
-			requestAnimationFrame(() => this.drawFrame());
+			this.needNewFrame = true;
 		}
 	}
 

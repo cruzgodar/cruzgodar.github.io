@@ -353,13 +353,13 @@ export class NewtonsMethod extends AnimationFrameApplet
 			minWorldHeight: 0.00001,
 			maxWorldHeight: 100,
 
-			onResizeCanvas: this.drawFrame.bind(this),
+			onResizeCanvas: () => this.needNewFrame = true,
 
 			reduceMotion: siteSettings.reduceMotion,
 
 			interactionOptions: {
 				useForPanAndZoom: true,
-				onPanAndZoom: this.drawFrame.bind(this),
+				onPanAndZoom: () => this.needNewFrame = true,
 			},
 
 			draggableOptions: {

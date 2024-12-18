@@ -41,11 +41,11 @@ export class LyapunovFractals extends AnimationFrameApplet
 
 			clampWorldCoordinatesMode: "both",
 
-			onResizeCanvas: this.drawFrame.bind(this),
+			onResizeCanvas: () => this.needNewFrame = true,
 
 			interactionOptions: {
 				useForPanAndZoom: true,
-				onPanAndZoom: this.drawFrame.bind(this),
+				onPanAndZoom: () => this.needNewFrame = true,
 			},
 
 			fullscreenOptions: {

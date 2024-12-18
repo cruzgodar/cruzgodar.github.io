@@ -283,8 +283,8 @@ export class RaymarchApplet extends AnimationFrameApplet
 
 			worldCenterX: this.theta,
 			worldCenterY: this.phi,
-			minWorldCenterY: 0.001,
-			maxWorldCenterY: Math.PI - 0.001,
+			minWorldY: 0.001 - this.worldSize / 2,
+			maxWorldY: Math.PI - 0.001 + this.worldSize / 2,
 
 			onResizeCanvas: this.onResizeCanvas.bind(this),
 
@@ -294,7 +294,7 @@ export class RaymarchApplet extends AnimationFrameApplet
 				onPanAndZoom: () =>
 				{
 					this.calculateVectors();
-					this.drawFrame();
+					this.needNewFrame = true;
 				},
 				callbacks: {
 					touchstart: this.onTouchStart.bind(this),
@@ -1499,7 +1499,7 @@ export class RaymarchApplet extends AnimationFrameApplet
 				{
 					this.wilson.resizeWorld({
 						centerX: dummy.theta,
-						centerY: dummy.phi
+						centerY: dummy.phi,
 					});
 					
 					this.cameraPos = scaleVector(
@@ -1520,6 +1520,8 @@ export class RaymarchApplet extends AnimationFrameApplet
 			height: this.worldSize,
 			centerX: this.lockedOnOrigin ? this.theta : 2 * Math.PI - this.theta,
 			centerY: this.lockedOnOrigin ? this.phi : Math.PI - this.phi,
+			minY: 0.001 - this.worldSize / 2,
+			maxY: Math.PI - 0.001 + this.worldSize / 2,
 		});
 	}
 }

@@ -89,13 +89,13 @@ export class JuliaSetMosaic extends AnimationFrameApplet
 			minWorldWidth: 0.00001,
 			minWorldHeight: 0.00001,
 
-			onResizeCanvas: this.drawFrame.bind(this),
+			onResizeCanvas: () => this.needNewFrame = true,
 
 			reduceMotion: siteSettings.reduceMotion,
 
 			interactionOptions: {
 				useForPanAndZoom: true,
-				onPanAndZoom: this.drawFrame.bind(this),
+				onPanAndZoom: () => this.needNewFrame = true,
 			},
 
 			fullscreenOptions: {
