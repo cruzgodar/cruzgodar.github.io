@@ -20,7 +20,6 @@ import { equalizeAppletColumns, onResize } from "./layout.js";
 import {
 	$$,
 	asyncFetch,
-	loadScript,
 	pageElement,
 	pageUrl,
 	updatePageElement
@@ -96,10 +95,6 @@ export async function loadPage()
 	setTimeout(initFocusEvents, 50);
 	setTimeout(equalizeAppletColumns, 50);
 	setTimeout(equalizeAppletColumns, 100);
-
-
-
-	loadScript("//static.getclicky.com/101473159.js");
 }
 
 
