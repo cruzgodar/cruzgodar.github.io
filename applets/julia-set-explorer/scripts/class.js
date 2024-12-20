@@ -254,10 +254,10 @@ export class JuliaSetExplorer extends AnimationFrameApplet
 			worldCenterX: -.75,
 			worldCenterY: 0,
 
-			minWorldX: -2.5,
-			maxWorldX: 2.5,
-			minWorldY: -2.5,
-			maxWorldY: 2.5,
+			minWorldX: -2 - 0.75,
+			maxWorldX: 2 - 0.75,
+			minWorldY: -2,
+			maxWorldY: 2,
 			minWorldWidth: 0.00001,
 			minWorldHeight: 0.00001,
 
@@ -320,7 +320,9 @@ export class JuliaSetExplorer extends AnimationFrameApplet
 				width: 4,
 				height: 4,
 				centerX: -.75,
-				centerY: 0
+				centerY: 0,
+				minX: -2 - 0.75,
+				maxX: 2 - 0.75,
 			});
 		}
 
@@ -332,7 +334,9 @@ export class JuliaSetExplorer extends AnimationFrameApplet
 				width: 4,
 				height: 4,
 				centerX: 0,
-				centerY: 0
+				centerY: 0,
+				minX: -2,
+				maxX: 2,
 			});
 		}
 

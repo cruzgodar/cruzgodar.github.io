@@ -78,14 +78,22 @@ export default function()
 
 	function run()
 	{
-		applet.run({ generatingCode: glslTextarea.value });
+		applet.loadPromise.then(() =>
+		{
+			applet.run({
+				generatingCode: glslTextarea.value,
+				worldWidth: 4,
+				worldCenterX: 0,
+				worldCenterY: 0,
+			});
+		});
 	}
 
 	function changeResolution()
 	{
 		applet.resolution = resolutionInput.value * siteSettings.resolutionMultiplier;
 
-		applet.changeAspectRatio(true);
+		applet.wilson.resizeCanvas({ width: applet.resolution });
 	}
 
 	function onDropdownInput()

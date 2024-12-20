@@ -26,10 +26,12 @@ export class ComplexMaps extends AnimationFrameApplet
 		canvas,
 		generatingCode,
 		uniformCode = "",
+		worldWidth = 4,
+		worldHeight,
 		worldCenterX = 0,
 		worldCenterY = 0,
 		addIndicatorDraggable = false,
-		draggableCallback,
+		draggableCallback = () => {},
 		selectorMode = false
 	}) {
 		super(canvas);
@@ -40,18 +42,22 @@ export class ComplexMaps extends AnimationFrameApplet
 
 			canvasWidth: this.resolution,
 
-			worldWidth: 4,
+			worldWidth,
+			worldHeight,
 			worldCenterX: 0,
 			worldCenterY: 0,
 
-			minWorldWidth: 0.00001,
+			minWorldWidth: 0.00002,
 			maxWorldWidth: 100,
-			minWorldHeight: 0.00001,
+			minWorldHeight: 0.00002,
 			maxWorldHeight: 100,
 
 			onResizeCanvas: () => this.needNewFrame = true,
 
 			draggableOptions: {
+				draggables: {
+					draggableArg: [1, 1],
+				},
 				callbacks: {
 					drag: this.onDragDraggable.bind(this),
 				}
@@ -76,6 +82,8 @@ export class ComplexMaps extends AnimationFrameApplet
 
 		this.wilson = new WilsonGPU(canvas, options);
 
+		this.wilson.draggables.draggableArg.element.style.display = "none";
+
 		this.loadPromise = new Promise(resolve =>
 		{
 			loadGlsl()
@@ -84,9 +92,10 @@ export class ComplexMaps extends AnimationFrameApplet
 					this.run({
 						generatingCode,
 						uniformCode,
+						worldWidth,
+						worldHeight,
 						worldCenterX,
 						worldCenterY,
-						zoomLevel,
 						addIndicatorDraggable,
 						draggableCallback,
 						selectorMode
@@ -100,34 +109,33 @@ export class ComplexMaps extends AnimationFrameApplet
 
 
 	run({
-		generatingCode,
-		uniformCode = "",
-		worldCenterX = 0,
-		worldCenterY = 0,
-		zoomLevel = -.585,
-		addIndicatorDraggable = false,
-		draggableCallback,
+		generatingCode = this.generatingCode,
+		uniformCode = this.uniformCode,
+		worldWidth,
+		worldHeight,
+		worldCenterX,
+		worldCenterY,
+		addIndicatorDraggable = this.addIndicatorDraggable,
+		draggableCallback = this.draggableCallback,
 		selectorMode = false
 	}) {
 		this.generatingCode = generatingCode;
 		this.uniformCode = uniformCode;
 
-		this.zoom.level = zoomLevel;
-
-		this.wilson.worldWidth = 3 * Math.pow(2, this.zoom.level);
-		this.wilson.worldHeight = this.wilson.worldWidth;
-
-		this.wilson.worldCenterX = worldCenterX;
-		this.wilson.worldCenterY = worldCenterY;
+		this.wilson.resizeWorld({
+			width: worldWidth,
+			height: worldHeight,
+			centerX: worldCenterX,
+			centerY: worldCenterY,
+		});
 
 		this.addIndicatorDraggable = addIndicatorDraggable;
 		this.draggableCallback = draggableCallback;
 
-		let selectorModeString = "";
+		const needDraggable = generatingCode.indexOf("draggableArg") !== -1;
 
-		if (selectorMode)
-		{
-			selectorModeString = /* glsl */`
+		const selectorModeString = selectorMode
+			? /* glsl */`
 				imageZ.x += 127.0;
 				imageZ.y += 127.0;
 				
@@ -140,8 +148,8 @@ export class ComplexMaps extends AnimationFrameApplet
 				gl_FragColor = vec4(whole1 / 256.0, fract1, whole2 / 256.0, fract2);
 				
 				return;
-			`;
-		}
+			`
+			: "";
 
 
 
@@ -149,25 +157,18 @@ export class ComplexMaps extends AnimationFrameApplet
 			precision highp float;
 			
 			varying vec2 uv;
-			
-			uniform float aspectRatio;
-			
-			uniform float worldCenterX;
-			uniform float worldCenterY;
-			uniform float worldSize;
+
+			uniform vec2 worldSize;
+			uniform vec2 worldCenter;
 			
 			uniform float blackPoint;
 			uniform float whitePoint;
 			
-			uniform vec2 draggableArg;
+			${needDraggable ? "uniform vec2 draggableArg;" : ""}
 			
 			${uniformCode}
 			
-			
-			
 			${getGlslBundle(generatingCode)}
-			
-			
 			
 			vec3 hsv2rgb(vec3 c)
 			{
@@ -176,39 +177,18 @@ export class ComplexMaps extends AnimationFrameApplet
 				return c.z * mix(K.xxx, clamp(p - K.xxx, 0.0, 1.0), c.y);
 			}
 			
-			
-			
-			//Returns f(z) for a polynomial f with given roots.
 			vec2 f(vec2 z)
 			{
 				return ${generatingCode};
 			}
 			
-			
-			
 			void main(void)
 			{
-				vec2 z;
-				
-				if (aspectRatio >= 1.0)
-				{
-					z = vec2(uv.x * aspectRatio * worldSize + worldCenterX, uv.y * worldSize + worldCenterY);
-				}
-				
-				else
-				{
-					z = vec2(uv.x * worldSize + worldCenterX, uv.y / aspectRatio * worldSize + worldCenterY);
-				}
-				
-				
+				vec2 z = uv * worldSize * 0.5 + worldCenter;
 				
 				vec2 imageZ = f(z);
 				
-				
-				
 				${selectorModeString}
-				
-				
 				
 				float modulus = length(imageZ);
 				
@@ -219,110 +199,62 @@ export class ComplexMaps extends AnimationFrameApplet
 				gl_FragColor = vec4(hsv2rgb(vec3(h, s, v)), 1.0);
 			}
 		`;
-		
-		this.wilson.render.shaderPrograms = [];
-		this.wilson.render.loadNewShader(shader);
-		this.wilson.gl.useProgram(this.wilson.render.shaderPrograms[0]);
-		
-		this.wilson.render.initUniforms([
-			"aspectRatio",
-			"worldCenterX",
-			"worldCenterY",
-			"worldSize",
-			"blackPoint",
-			"whitePoint",
-			"draggableArg"
-		]);
 
-		this.wilson.gl.uniform1f(this.wilson.uniforms.aspectRatio, 1);
+		this.wilson.loadShader({
+			source: shader,
+			uniforms: {
+				worldSize: [this.wilson.worldWidth, this.wilson.worldHeight],
+				worldCenter: [this.wilson.worldCenterX, this.wilson.worldCenterY],
+				blackPoint: this.blackPoint,
+				whitePoint: this.whitePoint,
+				...(needDraggable ? {
+					draggableArg: this.wilson.draggables.draggableArg.location
+				} : {}),
+			},
+		});
 
-		const needDraggable = addIndicatorDraggable
-			|| generatingCode.indexOf("draggableArg") !== -1;
-
-		if (needDraggable && this.wilson.draggables.numDraggables === 0)
-		{
-			this.wilson.draggables.add(.5, .5, !addIndicatorDraggable);
-
-			this.wilson.gl.uniform2f(this.wilson.uniforms.draggableArg, .5, .5);
-		}
-
-		else if (!needDraggable && this.wilson.draggables.numDraggables !== 0)
-		{
-			this.wilson.draggables.numDraggables--;
-
-			this.wilson.draggables.draggables[0].remove();
-
-			this.wilson.draggables.draggables = [];
-		}
+		this.wilson.draggables.draggableArg.element.style.display =
+			(needDraggable || addIndicatorDraggable) ? "block" : "none";
 		
 		this.resume();
+
+		this.needNewFrame = true;
 	}
 
 
 
-	onGrabCanvas(x, y)
+	onGrabCanvas({ x, y })
 	{
-		this.pan.onGrabCanvas();
-		this.zoom.onGrabCanvas();
-
 		if (this.useSelectorMode)
 		{
 			this.run({
-				generatingCode: this.generatingCode,
-				uniformCode: this.uniformCode,
-				worldCenterX: this.wilson.worldCenterX,
-				worldCenterY: this.wilson.worldCenterY,
-				zoomLevel: this.zoom.level,
-				addIndicatorDraggable: this.forceAddDraggable,
 				selectorMode: true
 			});
 
 			const timeoutId = setTimeout(() =>
 			{
-				this.wilson.render.drawFrame();
+				this.wilson.drawFrame();
 
-				const coordinates = this.wilson.utils.interpolate.worldToCanvas(x, y);
+				const coordinates = this.wilson.interpolateWorldToCanvas([x, y]);
 
-				const pixel = new Uint8Array(4);
-
-				this.wilson.gl.readPixels(
-					coordinates[1],
-					this.wilson.canvasHeight - coordinates[0],
-					1,
-					1,
-					this.wilson.gl.RGBA,
-					this.wilson.gl.UNSIGNEDBYTE,
-					pixel
-				);
+				const pixel = this.wilson.readPixels({
+					row: this.wilson.canvasHeight - coordinates[0],
+					col: coordinates[1],
+					width: 1,
+					height: 1,
+				});
 
 				const zX = (pixel[0] - 127) + pixel[1] / 256;
 				const zY = (pixel[2] - 127) + pixel[3] / 256;
 
 
 
-				let plus1 = "+";
-
-				if (y < 0)
-				{
-					plus1 = "-";
-				}
-
-				let plus2 = "+";
-
-				if (zY < 0)
-				{
-					plus2 = "-";
-				}
+				const plus1 = (y < 0) ? "-" : "+";
+				const plus2 = (zY < 0) ? "-" : "+";
 
 				console.log(`${x} ${plus1} ${Math.abs(y)}i |---> ${zX} ${plus2} ${Math.abs(zY)}i`);
 
 				this.run({
-					generatingCode: this.generatingCode,
-					uniformCode: this.uniformCode,
-					worldCenterX: this.wilson.worldCenterX,
-					worldCenterY: this.wilson.worldCenterY,
-					zoomLevel: this.zoom.level,
-					addIndicatorDraggable: this.forceAddDraggable,
 					selectorMode: false
 				});
 
@@ -335,40 +267,22 @@ export class ComplexMaps extends AnimationFrameApplet
 
 
 
-	onDragDraggable(activeDraggable, x, y, event)
+	onDragDraggable({ x, y })
 	{
-		if (this.draggableCallback)
-		{
-			this.draggableCallback(activeDraggable, x, y, event);
-		}
+		this.draggableCallback({ x, y });
 
-		this.wilson.gl.uniform2f(this.wilson.uniforms.draggableArg, x, y);
+		this.wilson.setUniforms({ draggableArg: [x, y] });
 
 		this.needNewFrame = true;
 	}
 
-
-
-	prepareFrame(timeElapsed)
-	{
-		this.pan.update(timeElapsed);
-		this.zoom.update(timeElapsed);
-	}
-
 	drawFrame()
 	{
-		this.wilson.gl.uniform1f(this.wilson.uniforms.aspectRatio, this.aspectRatio);
-		this.wilson.gl.uniform1f(this.wilson.uniforms.worldCenterX, this.wilson.worldCenterX);
-		this.wilson.gl.uniform1f(this.wilson.uniforms.worldCenterY, this.wilson.worldCenterY);
+		this.wilson.setUniforms({
+			worldSize: [this.wilson.worldWidth, this.wilson.worldHeight],
+			worldCenter: [this.wilson.worldCenterX, this.wilson.worldCenterY],
+		});
 
-		this.wilson.gl.uniform1f(
-			this.wilson.uniforms.worldSize,
-			Math.min(this.wilson.worldHeight, this.wilson.worldWidth) / 2
-		);
-
-		this.wilson.gl.uniform1f(this.wilson.uniforms.blackPoint, this.blackPoint);
-		this.wilson.gl.uniform1f(this.wilson.uniforms.whitePoint, this.whitePoint);
-
-		this.wilson.render.drawFrame();
+		this.wilson.drawFrame();
 	}
 }
