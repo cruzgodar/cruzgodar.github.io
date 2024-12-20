@@ -9,6 +9,7 @@ export class ComplexMaps extends AnimationFrameApplet
 
 	generatingCode = "";
 	uniformCode = "";
+	uniforms = {};
 
 	resolution = 500;
 
@@ -26,6 +27,7 @@ export class ComplexMaps extends AnimationFrameApplet
 		canvas,
 		generatingCode,
 		uniformCode = "",
+		uniforms = {},
 		worldWidth = 4,
 		worldHeight,
 		worldCenterX = 0,
@@ -92,6 +94,7 @@ export class ComplexMaps extends AnimationFrameApplet
 					this.run({
 						generatingCode,
 						uniformCode,
+						uniforms,
 						worldWidth,
 						worldHeight,
 						worldCenterX,
@@ -111,6 +114,7 @@ export class ComplexMaps extends AnimationFrameApplet
 	run({
 		generatingCode = this.generatingCode,
 		uniformCode = this.uniformCode,
+		uniforms = this.uniforms,
 		worldWidth,
 		worldHeight,
 		worldCenterX,
@@ -121,6 +125,7 @@ export class ComplexMaps extends AnimationFrameApplet
 	}) {
 		this.generatingCode = generatingCode;
 		this.uniformCode = uniformCode;
+		this.uniforms = uniforms;
 
 		this.wilson.resizeWorld({
 			width: worldWidth,
@@ -207,6 +212,7 @@ export class ComplexMaps extends AnimationFrameApplet
 				worldCenter: [this.wilson.worldCenterX, this.wilson.worldCenterY],
 				blackPoint: this.blackPoint,
 				whitePoint: this.whitePoint,
+				...uniforms,
 				...(needDraggable ? {
 					draggableArg: this.wilson.draggables.draggableArg.location
 				} : {}),
@@ -270,8 +276,11 @@ export class ComplexMaps extends AnimationFrameApplet
 	onDragDraggable({ x, y })
 	{
 		this.draggableCallback({ x, y });
-
-		this.wilson.setUniforms({ draggableArg: [x, y] });
+		
+		if (!this.addIndicatorDraggable)
+		{
+			this.wilson.setUniforms({ draggableArg: [x, y] });
+		}
 
 		this.needNewFrame = true;
 	}

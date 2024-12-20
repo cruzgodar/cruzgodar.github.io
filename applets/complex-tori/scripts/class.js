@@ -1,12 +1,12 @@
 import { AnimationFrameApplet } from "/scripts/applets/animationFrameApplet.js";
-import { Wilson } from "/scripts/wilson.js";
+import { WilsonGPU } from "/scripts/wilson.js";
 
 export class EllipticCurve extends AnimationFrameApplet
 {
 	resolution = 500;
 
 	g2 = -2;
-	g3 = 0;
+	g3 = 2;
 
 
 
@@ -106,39 +106,37 @@ export class EllipticCurve extends AnimationFrameApplet
 
 		const options =
 		{
-			renderer: "gpu",
+			shaders: {
+				shader,
+				shader2
+			},
 
-			shader,
+			uniforms: {
+				shader: {
+					step: 8 / this.resolution,
+					g2Arg: this.g2,
+					g3Arg: this.g3
+				},
+				shader2: {
+					textureStep: 1 / this.resolution
+				}
+			},
 
 			canvasWidth: this.resolution,
-			canvasHeight: this.resolution,
 
 			worldWidth: 8,
 			worldCenterX: 0,
 			worldCenterY: 0
 		};
 
+		this.wilson = new WilsonGPU(canvas, options);
 
-		this.wilson = new Wilson(canvas, options);
+		this.wilson.createFramebufferTexturePair({
+			id: "0",
+			textureType: "unsignedByte"
+		});
 
-		this.wilson.render.initUniforms(["step", "g2Arg", "g3Arg"]);
-
-		this.wilson.gl.uniform1f(
-			this.wilson.uniforms.step,
-			this.wilson.worldWidth / this.resolution
-		);
-
-		this.wilson.render.loadNewShader(shader2);
-
-		this.wilson.render.initUniforms(["textureStep"]);
-
-		this.wilson.gl.uniform1f(this.wilson.uniforms.textureStep, 1 / this.resolution);
-
-		this.wilson.render.createFramebufferTexturePair();
-
-		this.wilson.gl.bindFramebuffer(this.wilson.gl.FRAMEBUFFER, null);
-
-
+		this.wilson.useFramebuffer(null);
 
 		this.resume();
 	}
@@ -157,25 +155,18 @@ export class EllipticCurve extends AnimationFrameApplet
 
 	drawFrame()
 	{
-		this.wilson.gl.useProgram(this.wilson.render.shaderPrograms[0]);
+		this.wilson.useShader("shader");
+		this.wilson.setUniforms({
+			g2Arg: this.g2,
+			g3Arg: this.g3
+		});
+		this.wilson.drawFrame();
 
-		this.wilson.gl.uniform1f(this.wilson.uniforms.g2Arg, this.g2);
-
-		this.wilson.gl.uniform1f(this.wilson.uniforms.g3Arg, this.g3);
-
-		this.wilson.render.drawFrame();
-
-
-
-		const pixels = this.wilson.render.getPixelData();
-
+		const pixels = this.wilson.readPixels();
 		const endpoints = [];
-
 		const width = this.resolution;
-
 		const maxInterpolationDistance = this.wilson.canvasWidth;
-
-		// This means a 5x5 square will be searched around each endpoint...
+		// This means a 5x5 square will be searched around each endpoint.
 		const isolationSearchRadius = 2;
 
 		for (
@@ -253,7 +244,7 @@ export class EllipticCurve extends AnimationFrameApplet
 			let minOpenJ = -1;
 			let minOpenDistance = maxInterpolationDistance;
 
-			if ( !(endpoints[i][2]) )
+			if (!(endpoints[i][2]))
 			{
 				minOpenDistance = maxInterpolationDistance / 20;
 			}
@@ -363,23 +354,13 @@ export class EllipticCurve extends AnimationFrameApplet
 			}
 		}
 
+		this.wilson.useShader("shader2");
+		this.wilson.setTexture({
+			id: "0",
+			data: pixels
+		});
 
-
-		this.wilson.gl.texImage2D(
-			this.wilson.gl.TEXTURE_2D,
-			0,
-			this.wilson.gl.RGBA,
-			this.wilson.canvasWidth,
-			this.wilson.canvasHeight,
-			0,
-			this.wilson.gl.RGBA,
-			this.wilson.gl.UNSIGNED_BYTE,
-			pixels
-		);
-
-		this.wilson.gl.useProgram(this.wilson.render.shaderPrograms[1]);
-
-		this.wilson.render.drawFrame(pixels);
+		this.wilson.drawFrame();
 	}
 
 
@@ -388,18 +369,22 @@ export class EllipticCurve extends AnimationFrameApplet
 	{
 		this.resolution = resolution;
 
-		this.wilson.changeCanvasSize(this.resolution, this.resolution);
+		this.wilson.resizeCanvas({ width: this.resolution });
 
-		this.wilson.gl.useProgram(this.wilson.render.shaderPrograms[0]);
+		this.wilson.setUniforms({
+			step: this.wilson.worldWidth / this.resolution
+		}, "shader");
 
-		this.wilson.gl.uniform1f(
-			this.wilson.uniforms.step,
-			this.wilson.worldWidth / this.resolution
-		);
+		this.wilson.setUniforms({
+			textureStep: 1 / this.resolution
+		}, "shader2");
 
-		this.wilson.gl.useProgram(this.wilson.render.shaderPrograms[1]);
+		this.wilson.createFramebufferTexturePair({
+			id: "0",
+			textureType: "unsignedByte"
+		});
 
-		this.wilson.gl.uniform1f(this.wilson.uniforms.textureStep, 1 / this.resolution);
+		this.wilson.useFramebuffer(null);
 
 		this.needNewFrame = true;
 	}
