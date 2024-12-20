@@ -1,6 +1,6 @@
-import { Applet } from "../../../scripts/applets/applet.js";
+import { Applet, hsvToRgb } from "../../../scripts/applets/applet.js";
 import { convertColor } from "/scripts/src/browser.js";
-import { Wilson } from "/scripts/wilson.js";
+import { WilsonCPU } from "/scripts/wilson.js";
 
 export class HitomezashiPatterns extends Applet
 {
@@ -36,22 +36,16 @@ export class HitomezashiPatterns extends Applet
 
 		const options =
 		{
-			renderer: "cpu",
-
 			canvasWidth: 1000,
-			canvasHeight: 1000,
 
-
-
-			useFullscreen: true,
-
-			useFullscreenButton: true,
-
-			enterFullscreenButtonIconPath: "/graphics/general-icons/enter-fullscreen.png",
-			exitFullscreenButtonIconPath: "/graphics/general-icons/exit-fullscreen.png"
+			fullscreenOptions: {
+				useFullscreenButton: true,
+				enterFullscreenButtonIconPath: "/graphics/general-icons/enter-fullscreen.png",
+				exitFullscreenButtonIconPath: "/graphics/general-icons/exit-fullscreen.png"
+			}
 		};
 
-		this.wilson = new Wilson(canvas, options);
+		this.wilson = new WilsonCPU(canvas, options);
 	}
 
 
@@ -73,17 +67,14 @@ export class HitomezashiPatterns extends Applet
 		this.doDrawRegions = doDrawRegions;
 		this.maximumSpeed = maximumSpeed;
 
-		this.wilson.changeCanvasSize(this.resolution, this.resolution);
+		this.wilson.resizeCanvas({ width: this.resolution });
 
 
 
 		this.wilson.ctx.fillStyle = convertColor(0, 0, 0);
 		this.wilson.ctx.fillRect(0, 0, this.resolution, this.resolution);
-
 		this.wilson.ctx.strokeStyle = convertColor(127, 127, 127);
-
 		this.lineWidth = this.resolution / this.gridSize / 20;
-
 		this.wilson.ctx.lineWidth = this.lineWidth;
 
 
@@ -178,8 +169,6 @@ export class HitomezashiPatterns extends Applet
 				this.drawRegions();
 			}
 		}
-
-
 
 		else
 		{
@@ -347,7 +336,7 @@ export class HitomezashiPatterns extends Applet
 
 	identifyRegions()
 	{
-		// This is kind of a mess, but we're just going to floodfill one region at a time
+		// This is kind of a mess, but we're going to floodfill one region at a time
 		// and just use constant colors that range from red in the top left to magenta
 		// in the bottom right. That's the goal at least.
 
@@ -470,7 +459,7 @@ export class HitomezashiPatterns extends Applet
 
 
 		// Get unique values.
-		this.regionSizes = [...new Set(this.regionSizes)];
+		this.regionSizes = Array.from(new Set(this.regionSizes));
 
 		// Sort descending.
 		this.regionSizes.sort((a, b) => b - a);
@@ -484,8 +473,6 @@ export class HitomezashiPatterns extends Applet
 	{
 		this.wilson.ctx.fillStyle = convertColor(0, 0, 0);
 		this.wilson.ctx.fillRect(0, 0, this.resolution, this.resolution);
-
-
 
 		for (let i = 0; i < this.numRegions; i++)
 		{
@@ -503,11 +490,9 @@ export class HitomezashiPatterns extends Applet
 					this.regionSizes.indexOf(regionLength) / (this.numUniqueRegionSizes - 2)
 				);
 
-			const rgb = this.wilson.utils.hsvToRgb(h, 1, v);
+			const rgb = hsvToRgb(h, 1, v);
 
 			this.wilson.ctx.fillStyle = convertColor(...rgb);
-
-
 
 			for (let j = 0; j < regionLength; j++)
 			{
@@ -544,8 +529,7 @@ export class HitomezashiPatterns extends Applet
 					this.regionSizes.indexOf(regionLength) / (this.numUniqueRegionSizes - 2)
 				);
 
-			const rgb = this.wilson.utils.hsvToRgb(h, 1, v);
-
+			const rgb = hsvToRgb(h, 1, v);
 
 			this.wilson.ctx.fillStyle = convertColor(0, 0, 0);
 
