@@ -69,19 +69,19 @@ In my spare time, I love hiking, paddleboarding, city walks, disc golf, and anyt
 
 ## Art Exhibitions
 
-**<a href="https://gallery.bridgesmathart.org/exhibitions/bridges-2024-exhibition-of-mathematical-art/cruz-godar">Bridges Conference 2024</a>** (August 2024) Virginia Commonwealth University; Richmond, Virginia
+**<a href="https://gallery.bridgesmathart.org/exhibitions/bridges-2024-exhibition-of-mathematical-art/cruz-godar">Bridges Conference 2024</a>** (August 2024). Virginia Commonwealth University; Richmond, Virginia.
 
-**<a href="https://gallery.bridgesmathart.org/exhibitions/2023-bridges-conference/cruz-godar">Bridges Conference 2023</a>** (August 2023) Dalhousie University; Halifax, Nova Scotia
+**<a href="https://gallery.bridgesmathart.org/exhibitions/2023-bridges-conference/cruz-godar">Bridges Conference 2023</a>** (August 2023). Dalhousie University; Halifax, Nova Scotia.
 
-**<a href="https://gallery.bridgesmathart.org/exhibitions/2022-bridges-conference/90259025">Bridges Conference 2022</a>** (August 2022) Aalto University; Helsinki, Finland
+**<a href="https://gallery.bridgesmathart.org/exhibitions/2022-bridges-conference/90259025">Bridges Conference 2022</a>** (August 2022). Aalto University; Helsinki, Finland.
 
-**<a href="https://www.girlsangle.org/page/bulletin-archive/GABv15n01E.pdf">Girls’ Angle Bulletin</a>** (October 2021) *Magazine to foster girls’ interest in mathematics.*
+**<a href="https://www.girlsangle.org/page/bulletin-archive/GABv15n01E.pdf">Girls’ Angle Bulletin</a>** (October 2021). *Magazine to foster girls’ interest in mathematics.*
 
-**<a href="https://calendar.uoregon.edu/event/generative_art_the_beautiful_side_of_math_-_exhibition_by_cruz_godar">Generative Art: The Beautiful Side of Math</a>** (September--October 2021) Solo Exhibition: Adell McMillan Gallery, University of Oregon
+**<a href="https://calendar.uoregon.edu/event/generative_art_the_beautiful_side_of_math_-_exhibition_by_cruz_godar">Generative Art: The Beautiful Side of Math</a>** (September--October 2021). Solo Exhibition: Adell McMillan Gallery, University of Oregon.
 
-**<a href="https://www.artscioregon.com/2020-gallery">Research as Art Competition</a>** (December 2020--Present) *Displayed permanently in the Eugene airport and chosen as the cover image to represent the entire exhibit.*
+**<a href="https://www.artscioregon.com/2020-gallery">Research as Art Competition</a>** (December 2020--Present). *Displayed permanently in the Eugene airport and chosen as the cover image to represent the entire exhibit.*
 
-**<a href="https://mpembed.com/show/?m=FGvT8EzPQpy&mpu=885">Creativity Counts</a>** (April--July 2020) Jordan Schnitzer Museum of Art, University of Oregon
+**<a href="https://mpembed.com/show/?m=FGvT8EzPQpy&mpu=885">Creativity Counts</a>** (April--July 2020). Jordan Schnitzer Museum of Art, University of Oregon.
 
 
 
@@ -89,9 +89,11 @@ In my spare time, I love hiking, paddleboarding, city walks, disc golf, and anyt
 
 **<a href="/applets/thurston-geometries/">Immersive Thurston Geometry Applet</a>** (February 2024) A WebGL renderer to experience the perspective of living inside any possible curved space.
 
-**<a href="/slides/lapsa/" data-in-new-tab="1">Lapsa</a>** (January 2023) A simple and elegant HTML-based presentation engine.
+**<a href="/slides/lapsa/" data-in-new-tab="1">Lapsa</a>** (January 2023) A simple and elegant HTML-based presentation engine written in TypeScript.
 
 **<a href="/teaching/">Interactive Class Notes</a>** (January 2022--Present) Comprehensive notes for six courses, incorporating MathJax, the Desmos API, and my own applets.
+
+**<a href="https://github.com/cruzgodar/wilson">Wilson</a>** (August 2021) A JavaScript and TypeScript library for creating interactive and parallelized web applets. Every applet on this site is built using Wilson.
 
 **<a href="/applets/kaleidoscopic-ifs-fractals/">Kaleidoscopic IFS Fractals Applet</a>** (October 2020) A WebGL renderer to view strikingly complex 3D fractals.
 
@@ -99,9 +101,7 @@ In my spare time, I love hiking, paddleboarding, city walks, disc golf, and anyt
 
 **<a href="/applets/">Additional Applets</a>** (January 2019--Present) 40 more mathematical visualization projects ranging across disciplines, formats, and web technologies.
 
-**<a href="https://github.com/cruzgodar/cruzgodar.github.io">Personal Website</a>** (August 2018--Present) A website written from scratch without using any large libraries; everything from the single-page site logic
-to the graphic design was made custom on my own, and the site currently contains a total of over 50000
-lines of JavaScript.
+**<a href="https://github.com/cruzgodar/cruzgodar.github.io">Personal Website</a>** (August 2018--Present) A website written from scratch without using any large libraries; everything from the single-page site logic to the graphic design was made custom on my own, and the site currently contains a total of over 50000 lines of JavaScript.
 
 
 
