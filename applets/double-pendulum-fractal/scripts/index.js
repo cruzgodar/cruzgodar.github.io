@@ -27,7 +27,7 @@ export default function()
 		onClick1: () =>
 		{
 			applet.drawingFractal = true;
-			applet.hidePendulumDrawerCanvas(); // :(
+			applet.hidePendulumCanvas(); // :(
 		}
 	});
 
