@@ -36,7 +36,6 @@ export class KickedRotator extends AnimationFrameApplet
 			worldCenterY: Math.PI,
 
 			worldWidth: 2 * Math.PI,
-			worldHeight: 2 * Math.PI,
 		};
 
 		this.wilsonUpdate = new WilsonGPU(hiddenCanvas, optionsUpdate);

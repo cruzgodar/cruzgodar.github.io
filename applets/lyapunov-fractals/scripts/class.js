@@ -28,7 +28,6 @@ export class LyapunovFractals extends AnimationFrameApplet
 			canvasWidth: 500,
 
 			worldWidth: 4,
-			worldHeight: 4,
 			worldCenterX: 2,
 			worldCenterY: 2,
 

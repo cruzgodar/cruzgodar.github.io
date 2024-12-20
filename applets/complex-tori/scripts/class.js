@@ -114,7 +114,6 @@ export class EllipticCurve extends AnimationFrameApplet
 			canvasHeight: this.resolution,
 
 			worldWidth: 8,
-			worldHeight: 8,
 			worldCenterX: 0,
 			worldCenterY: 0
 		};

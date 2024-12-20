@@ -95,7 +95,6 @@ export class FractalSounds extends AnimationFrameApplet
 			canvasHeight: this.resolution,
 
 			worldWidth: 4,
-			worldHeight: 4,
 			worldCenterX: 0,
 			worldCenterY: 0,
 

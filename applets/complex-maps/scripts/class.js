@@ -1,8 +1,7 @@
 import { getGlslBundle, loadGlsl } from "../../../scripts/src/complexGlsl.js";
 import { AnimationFrameApplet } from "/scripts/applets/animationFrameApplet.js";
 import { tempShader } from "/scripts/applets/applet.js";
-import { addTemporaryListener } from "/scripts/src/main.js";
-import { Wilson } from "/scripts/wilson.js";
+import { WilsonGPU } from "/scripts/wilson.js";
 
 export class ComplexMaps extends AnimationFrameApplet
 {
@@ -10,10 +9,6 @@ export class ComplexMaps extends AnimationFrameApplet
 
 	generatingCode = "";
 	uniformCode = "";
-
-	aspectRatio = 1;
-
-	pastBrightnessScales = [];
 
 	resolution = 500;
 
@@ -25,11 +20,6 @@ export class ComplexMaps extends AnimationFrameApplet
 	addIndicatorDraggable = false;
 	useSelectorMode = false;
 
-	totalBenchmarkTime = 0;
-	benchmarksLeft = 0;
-	benchmarkCycles = 10;
-	benchmarkResolution = 4000;
-
 
 
 	constructor({
@@ -38,7 +28,6 @@ export class ComplexMaps extends AnimationFrameApplet
 		uniformCode = "",
 		worldCenterX = 0,
 		worldCenterY = 0,
-		zoomLevel = -.585,
 		addIndicatorDraggable = false,
 		draggableCallback,
 		selectorMode = false
@@ -47,56 +36,45 @@ export class ComplexMaps extends AnimationFrameApplet
 
 		const options =
 		{
-			renderer: "gpu",
-
 			shader: tempShader,
 
 			canvasWidth: this.resolution,
-			canvasHeight: this.resolution,
 
+			worldWidth: 4,
+			worldCenterX: 0,
+			worldCenterY: 0,
 
+			minWorldWidth: 0.00001,
+			maxWorldWidth: 100,
+			minWorldHeight: 0.00001,
+			maxWorldHeight: 100,
 
-			useDraggables: true,
+			onResizeCanvas: () => this.needNewFrame = true,
 
-			draggablesMousemoveCallback: this.onDragDraggable.bind(this),
-			draggablesTouchmoveCallback: this.onDragDraggable.bind(this),
+			draggableOptions: {
+				callbacks: {
+					drag: this.onDragDraggable.bind(this),
+				}
+			},
 
+			interactionOptions: {
+				useForPanAndZoom: true,
+				onPanAndZoom: () => this.needNewFrame = true,
+				callbacks: {
+					mousedown: this.onGrabCanvas.bind(this),
+					touchstart: this.onGrabCanvas.bind(this),
+				},
+			},
 
-
-			useFullscreen: true,
-
-			trueFullscreen: true,
-
-			useFullscreenButton: true,
-
-			enterFullscreenButtonIconPath: "/graphics/general-icons/enter-fullscreen.png",
-			exitFullscreenButtonIconPath: "/graphics/general-icons/exit-fullscreen.png",
-
-			switchFullscreenCallback: () => this.changeAspectRatio(true),
-
-
-
-			mousedownCallback: this.onGrabCanvas.bind(this),
-			touchstartCallback: this.onGrabCanvas.bind(this),
-
-			mousedragCallback: this.onDragCanvas.bind(this),
-			touchmoveCallback: this.onDragCanvas.bind(this),
-
-			mouseupCallback: this.onReleaseCanvas.bind(this),
-			touchendCallback: this.onReleaseCanvas.bind(this),
-
-			wheelCallback: this.onWheelCanvas.bind(this),
-			pinchCallback: this.onPinchCanvas.bind(this)
+			fullscreenOptions: {
+				fillScreen: true,
+				useFullscreenButton: true,
+				enterFullscreenButtonIconPath: "/graphics/general-icons/enter-fullscreen.png",
+				exitFullscreenButtonIconPath: "/graphics/general-icons/exit-fullscreen.png",
+			}
 		};
 
-		this.wilson = new Wilson(canvas, options);
-
-		const boundFunction = () => this.changeAspectRatio(true);
-		addTemporaryListener({
-			object: window,
-			event: "resize",
-			callback: boundFunction
-		});
+		this.wilson = new WilsonGPU(canvas, options);
 
 		this.loadPromise = new Promise(resolve =>
 		{
@@ -390,40 +368,6 @@ export class ComplexMaps extends AnimationFrameApplet
 
 		this.wilson.gl.uniform1f(this.wilson.uniforms.blackPoint, this.blackPoint);
 		this.wilson.gl.uniform1f(this.wilson.uniforms.whitePoint, this.whitePoint);
-
-		this.wilson.render.drawFrame();
-	}
-
-
-
-	runBenchmark()
-	{
-		this.wilson.changeCanvasSize(this.benchmarkResolution, this.benchmarkResolution);
-
-		const startTime = Date.now();
-
-		const pixel = new Uint8Array(4);
-
-		for (let i = 0; i < this.benchmarkCycles; i++)
-		{
-			this.wilson.render.drawFrame();
-
-			this.wilson.gl.readPixels(
-				0,
-				0,
-				1,
-				1,
-				this.wilson.gl.RGBA,
-				this.wilson.gl.UNSIGNEDBYTE,
-				pixel
-			);
-		}
-
-		const averageTime = (Date.now() - startTime) / this.benchmarkCycles;
-
-		console.log(`Finished benchmark --- average time to draw a ${this.benchmarkResolution}x${this.benchmarkResolution} frame is ${averageTime}ms`);
-
-		this.wilson.changeCanvasSize(this.resolution, this.resolution);
 
 		this.wilson.render.drawFrame();
 	}

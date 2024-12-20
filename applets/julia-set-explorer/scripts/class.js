@@ -251,7 +251,6 @@ export class JuliaSetExplorer extends AnimationFrameApplet
 			canvasWidth: this.resolution,
 
 			worldWidth: 4,
-			worldHeight: 4,
 			worldCenterX: -.75,
 			worldCenterY: 0,
 

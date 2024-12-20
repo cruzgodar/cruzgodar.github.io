@@ -234,7 +234,6 @@ export class GameOfLife extends AnimationFrameApplet
 			canvasHeight: this.resolution,
 
 			worldWidth: 2.2,
-			worldHeight: 2.2,
 
 			useFullscreen: true,
 			trueFullscreen: true,

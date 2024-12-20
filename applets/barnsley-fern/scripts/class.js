@@ -36,7 +36,6 @@ export class BarnsleyFern extends AnimationFrameApplet
 			canvasWidth: this.computeResolution,
 
 			worldWidth: 12,
-			worldHeight: 12,
 			worldCenterX: 0,
 			worldCenterY: 5,
 		};
@@ -72,7 +71,6 @@ export class BarnsleyFern extends AnimationFrameApplet
 			canvasWidth: this.resolution,
 
 			worldWidth: 12,
-			worldHeight: 12,
 			worldCenterX: 0,
 			worldCenterY: 5,
 

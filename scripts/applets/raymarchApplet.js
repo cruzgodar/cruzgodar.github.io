@@ -1392,6 +1392,11 @@ export class RaymarchApplet extends AnimationFrameApplet
 	{
 		this.resolution = Math.sqrt(this.wilson.canvasWidth * this.wilson.canvasHeight);
 
+		this.wilson.resizeWorld({
+			minY: 0.001 - this.wilson.worldHeight / 2,
+			maxY: Math.PI - 0.001 + this.wilson.worldHeight / 2,
+		});
+
 		this.setUniforms({
 			aspectRatio: [
 				this.wilson.worldWidth / this.worldSize,
