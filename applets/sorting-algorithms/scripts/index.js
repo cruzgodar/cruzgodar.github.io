@@ -51,7 +51,8 @@ export default function()
 	const playSoundCheckbox = new Checkbox({
 		element: $("#play-sound-checkbox"),
 		name: "Play sound",
-		checked: true
+		checked: true,
+		onInput: onCheckboxInput
 	});
 
 	const algorithmsDropdown = new Dropdown({
@@ -94,5 +95,10 @@ export default function()
 		const element = $(`#${value}-info`);
 
 		element.style.display = "block";
+	}
+
+	function onCheckboxInput()
+	{
+		applet.setDoPlaySound(playSoundCheckbox.checked);
 	}
 }

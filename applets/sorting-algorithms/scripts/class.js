@@ -1,5 +1,5 @@
 import { AnimationFrameApplet } from "/scripts/applets/animationFrameApplet.js";
-import { Wilson } from "/scripts/wilson.js";
+import { WilsonGPU } from "/scripts/wilson.js";
 
 export class SortingAlgorithms extends AnimationFrameApplet
 {
@@ -48,6 +48,7 @@ export class SortingAlgorithms extends AnimationFrameApplet
 	changingSound = false;
 
 	audioNodes = [];
+	timeoutId;
 
 
 
@@ -127,58 +128,23 @@ export class SortingAlgorithms extends AnimationFrameApplet
 
 		const options =
 		{
-			renderer: "gpu",
-
 			shader,
 
+			uniforms: {
+				dataLength: this.dataLength
+			},
+
 			canvasWidth: this.resolution,
-			canvasHeight: this.resolution,
 
+			fullscreenOptions: {
+				useFullscreenButton: true,
 
-
-			useFullscreen: true,
-
-			useFullscreenButton: true,
-
-			enterFullscreenButtonIconPath: "/graphics/general-icons/enter-fullscreen.png",
-			exitFullscreenButtonIconPath: "/graphics/general-icons/exit-fullscreen.png"
+				enterFullscreenButtonIconPath: "/graphics/general-icons/enter-fullscreen.png",
+				exitFullscreenButtonIconPath: "/graphics/general-icons/exit-fullscreen.png"
+			}
 		};
 
-		this.wilson = new Wilson(canvas, options);
-
-		this.wilson.render.initUniforms(["dataLength"]);
-
-
-
-		const texture = this.wilson.gl.createTexture();
-
-		this.wilson.gl.bindTexture(this.wilson.gl.TEXTURE_2D, texture);
-
-		this.wilson.gl.texParameteri(
-			this.wilson.gl.TEXTURE_2D,
-			this.wilson.gl.TEXTURE_MAG_FILTER,
-			this.wilson.gl.NEAREST
-		);
-
-		this.wilson.gl.texParameteri(
-			this.wilson.gl.TEXTURE_2D,
-			this.wilson.gl.TEXTURE_MIN_FILTER,
-			this.wilson.gl.NEAREST
-		);
-
-		this.wilson.gl.texParameteri(
-			this.wilson.gl.TEXTURE_2D,
-			this.wilson.gl.TEXTURE_WRAP_S,
-			this.wilson.gl.CLAMP_TO_EDGE
-		);
-
-		this.wilson.gl.texParameteri(
-			this.wilson.gl.TEXTURE_2D,
-			this.wilson.gl.TEXTURE_WRAP_T,
-			this.wilson.gl.CLAMP_TO_EDGE
-		);
-
-		this.wilson.gl.disable(this.wilson.gl.DEPTH_TEST);
+		this.wilson = new WilsonGPU(canvas, options);
 	}
 
 
@@ -206,17 +172,10 @@ export class SortingAlgorithms extends AnimationFrameApplet
 
 
 
-		if (this.audioNodes[this.currentGeneratorIndex])
-		{
-			this.audioNodes[this.currentGeneratorIndex][2].gain
-				.linearRampToValueAtTime(
-					.0001,
-					this.audioNodes[this.currentGeneratorIndex][0].currentTime
-						+ this.timeElapsed / 1000
-				);
-		}
+		this.destroyAudioNodes();
+		clearTimeout(this.timeoutId);
 
-		this.wilson.changeCanvasSize(this.resolution, this.resolution);
+		this.wilson.resizeCanvas({ width: this.resolution });
 
 
 
@@ -231,7 +190,18 @@ export class SortingAlgorithms extends AnimationFrameApplet
 				this.brightness[i] = 0;
 			}
 
-			this.wilson.gl.uniform1f(this.wilson.uniforms.dataLength, this.dataLength);
+			this.wilson.createFramebufferTexturePair({
+				id: "data",
+				width: this.dataLength,
+				height: 1,
+				textureType: "unsignedByte"
+			});
+
+			this.wilson.useFramebuffer(null);
+
+			this.wilson.setUniforms({
+				dataLength: this.dataLength
+			});
 		}
 
 
@@ -248,14 +218,18 @@ export class SortingAlgorithms extends AnimationFrameApplet
 			this.numWritesElement.textContent = "0";
 		}
 
+		
 
-
-		this.audioNodes = [];
 		this.createAudioNodes();
+		this.audioNodes[this.currentGeneratorIndex][1].start(0);
 
-		if (this.doPlaySound)
+		if (!this.doPlaySound)
 		{
-			this.audioNodes[this.currentGeneratorIndex][1].start(0);
+			this.audioNodes[this.currentGeneratorIndex][2].gain
+				.linearRampToValueAtTime(
+					.0001,
+					this.audioNodes[this.currentGeneratorIndex][0].currentTime + 0.00001
+				);
 		}
 
 		this.currentGenerator = this.generators[0]();
@@ -282,19 +256,12 @@ export class SortingAlgorithms extends AnimationFrameApplet
 			textureData[4 * i + 2] = Math.floor(this.brightness[i] / this.maxBrightness * 256);
 		}
 
-		this.wilson.gl.texImage2D(
-			this.wilson.gl.TEXTURE_2D,
-			0,
-			this.wilson.gl.RGBA,
-			this.dataLength,
-			1,
-			0,
-			this.wilson.gl.RGBA,
-			this.wilson.gl.UNSIGNED_BYTE,
-			textureData
-		);
+		this.wilson.setTexture({
+			id: "data",
+			data: textureData
+		});
 
-		this.wilson.render.drawFrame();
+		this.wilson.drawFrame();
 
 		this.decreaseBrightness();
 
@@ -312,21 +279,6 @@ export class SortingAlgorithms extends AnimationFrameApplet
 			this.currentGenerator.next();
 		}
 
-
-
-		if (this.animationPaused)
-		{
-			if (this.audioNodes[this.currentGeneratorIndex])
-			{
-				this.audioNodes[this.currentGeneratorIndex][2].gain
-					.linearRampToValueAtTime(
-						.0001,
-						this.audioNodes[this.currentGeneratorIndex][0].currentTime
-							+ this.timeElapsed / 1000
-					);
-			}
-		}
-
 		this.needNewFrame = true;
 	}
 
@@ -334,28 +286,49 @@ export class SortingAlgorithms extends AnimationFrameApplet
 
 	createAudioNodes()
 	{
-		if (this.doPlaySound)
+		for (let i = 0; i < this.generators.length; i++)
 		{
-			for (let i = 0; i < this.generators.length; i++)
-			{
-				const audioContext = new AudioContext();
+			const audioContext = new AudioContext();
 
-				const audioOscillator = audioContext.createOscillator();
+			const audioOscillator = audioContext.createOscillator();
 
-				audioOscillator.type = "sine";
+			audioOscillator.type = "sine";
 
-				audioOscillator.frequency.value = 50;
+			audioOscillator.frequency.value = 50;
 
-				const audioGainNode = audioContext.createGain();
+			const audioGainNode = audioContext.createGain();
 
-				audioOscillator.connect(audioGainNode);
+			audioOscillator.connect(audioGainNode);
 
-				audioGainNode.connect(audioContext.destination);
+			audioGainNode.connect(audioContext.destination);
 
+			this.audioNodes.push([audioContext, audioOscillator, audioGainNode]);
+		}
+	}
 
+	destroyAudioNodes()
+	{
+		for (const audioNode of this.audioNodes)
+		{
+			audioNode[0].close();
+		}
 
-				this.audioNodes.push([audioContext, audioOscillator, audioGainNode]);
-			}
+		this.audioNodes = [];
+		this.changingSound = false;
+	}
+
+	setDoPlaySound(newDoPlaySound)
+	{
+		this.doPlaySound = newDoPlaySound;
+
+		if (this.audioNodes[this.currentGeneratorIndex])
+		{
+			this.audioNodes[this.currentGeneratorIndex][2].gain
+				.linearRampToValueAtTime(
+					this.doPlaySound ? 1 : 0.0001,
+					this.audioNodes[this.currentGeneratorIndex][0].currentTime
+						+ this.timeElapsed / 1000
+				);
 		}
 	}
 
@@ -416,25 +389,27 @@ export class SortingAlgorithms extends AnimationFrameApplet
 	{
 		this.changingSound = true;
 
-		if (this.doPlaySound)
-		{
-			this.audioNodes[this.currentGeneratorIndex][2].gain
-				.linearRampToValueAtTime(
-					.0001,
-					this.audioNodes[this.currentGeneratorIndex][0].currentTime
-						+ this.timeElapsed / 1000
-				);
-		}
+		this.audioNodes[this.currentGeneratorIndex][2].gain
+			.linearRampToValueAtTime(
+				0.0001,
+				this.audioNodes[this.currentGeneratorIndex][0].currentTime + this.timeElapsed / 1000
+			);
 
 		this.currentGeneratorIndex++;
 
 		if (this.currentGeneratorIndex < this.generators.length)
 		{
-			setTimeout(() =>
+			this.timeoutId = setTimeout(() =>
 			{
-				if (this.doPlaySound)
+				this.audioNodes[this.currentGeneratorIndex][1].start(0);
+
+				if (!this.doPlaySound)
 				{
-					this.audioNodes[this.currentGeneratorIndex][1].start(0);
+					this.audioNodes[this.currentGeneratorIndex][2].gain
+						.linearRampToValueAtTime(
+							.0001,
+							this.audioNodes[this.currentGeneratorIndex][0].currentTime + 0.00001
+						);
 				}
 
 				this.currentGenerator = this.generators[this.currentGeneratorIndex]();
@@ -489,15 +464,7 @@ export class SortingAlgorithms extends AnimationFrameApplet
 			}
 		}
 
-		if (this.doPlaySound)
-		{
-			this.audioNodes[this.currentGeneratorIndex][2].gain
-				.linearRampToValueAtTime(
-					.0001,
-					this.audioNodes[this.currentGeneratorIndex][0].currentTime
-						+ this.timeElapsed / 1000
-				);
-		}
+		this.advanceGenerator();
 	}
 
 
