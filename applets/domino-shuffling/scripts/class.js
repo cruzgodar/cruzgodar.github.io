@@ -1,6 +1,7 @@
 import { AnimationFrameApplet } from "/scripts/applets/animationFrameApplet.js";
 import { hsvToRgb } from "/scripts/applets/applet.js";
 import { convertColor } from "/scripts/src/browser.js";
+import { siteSettings } from "/scripts/src/settings.js";
 import { WilsonCPU } from "/scripts/wilson.js";
 
 export class DominoShuffling extends AnimationFrameApplet
@@ -35,6 +36,8 @@ export class DominoShuffling extends AnimationFrameApplet
 		const options =
 		{
 			canvasWidth: this.resolution,
+
+			reduceMotion: siteSettings.reduceMotion,
 
 			fullscreenOptions: {
 				useFullscreenButton: true,

@@ -1,4 +1,5 @@
 import { AnimationFrameApplet } from "/scripts/applets/animationFrameApplet.js";
+import { siteSettings } from "/scripts/src/settings.js";
 import { WilsonGPU } from "/scripts/wilson.js";
 
 export class SortingAlgorithms extends AnimationFrameApplet
@@ -135,6 +136,8 @@ export class SortingAlgorithms extends AnimationFrameApplet
 			},
 
 			canvasWidth: this.resolution,
+
+			reduceMotion: siteSettings.reduceMotion,
 
 			fullscreenOptions: {
 				useFullscreenButton: true,

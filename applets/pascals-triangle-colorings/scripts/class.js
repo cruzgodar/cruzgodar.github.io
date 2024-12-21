@@ -1,6 +1,7 @@
 import { AnimationFrameApplet } from "/scripts/applets/animationFrameApplet.js";
 import { hsvToRgb } from "/scripts/applets/applet.js";
 import { convertColor } from "/scripts/src/browser.js";
+import { siteSettings } from "/scripts/src/settings.js";
 import { WilsonCPU } from "/scripts/wilson.js";
 
 export class PascalsTriangleColorings extends AnimationFrameApplet
@@ -33,6 +34,8 @@ export class PascalsTriangleColorings extends AnimationFrameApplet
 		const options =
 		{
 			canvasWidth: 2000,
+
+			reduceMotion: siteSettings.reduceMotion,
 
 			fullscreenOptions: {
 				useFullscreenButton: true,

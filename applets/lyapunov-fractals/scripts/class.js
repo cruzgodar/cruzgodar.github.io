@@ -1,5 +1,6 @@
 import { AnimationFrameApplet } from "/scripts/applets/animationFrameApplet.js";
 import { tempShader } from "/scripts/applets/applet.js";
+import { siteSettings } from "/scripts/src/settings.js";
 import { WilsonGPU } from "/scripts/wilson.js";
 
 export class LyapunovFractals extends AnimationFrameApplet
@@ -26,6 +27,8 @@ export class LyapunovFractals extends AnimationFrameApplet
 			shader: tempShader,
 
 			canvasWidth: 500,
+
+			reduceMotion: siteSettings.reduceMotion,
 
 			worldWidth: 4,
 			worldCenterX: 2,

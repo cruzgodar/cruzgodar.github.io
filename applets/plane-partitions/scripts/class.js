@@ -47,6 +47,7 @@ import { AnimationFrameApplet } from "/scripts/applets/animationFrameApplet.js";
 import { tempShader } from "/scripts/applets/applet.js";
 import { convertColor } from "/scripts/src/browser.js";
 import { $$ } from "/scripts/src/main.js";
+import { siteSettings } from "/scripts/src/settings.js";
 import * as THREE from "/scripts/three.js";
 import { WilsonCPU, WilsonGPU } from "/scripts/wilson.js";
 
@@ -145,6 +146,8 @@ export class PlanePartitions extends AnimationFrameApplet
 
 			canvasWidth: this.resolution,
 
+			reduceMotion: siteSettings.reduceMotion,
+
 			fullscreenOptions: {
 				animate: false,
 				closeWithEscape: false,
@@ -163,6 +166,8 @@ export class PlanePartitions extends AnimationFrameApplet
 
 			maxWorldY: 1,
 			minWorldY: -1,
+
+			reduceMotion: siteSettings.reduceMotion,
 
 			interactionOptions: {
 				useForPanAndZoom: true,
