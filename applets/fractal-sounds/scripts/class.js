@@ -4,7 +4,6 @@ import { tempShader } from "/scripts/applets/applet.js";
 import { changeOpacity } from "/scripts/src/animation.js";
 import { convertColor } from "/scripts/src/browser.js";
 import { $$ } from "/scripts/src/main.js";
-import { siteSettings } from "/scripts/src/settings.js";
 import { WilsonCPU, WilsonGPU } from "/scripts/wilson.js";
 
 export class FractalSounds extends AnimationFrameApplet
@@ -49,8 +48,6 @@ export class FractalSounds extends AnimationFrameApplet
 
 			canvasWidth: this.resolution,
 
-			reduceMotion: siteSettings.reduceMotion,
-
 			fullscreenOptions: {
 				fillScreen: true,
 				animate: false,
@@ -85,8 +82,6 @@ export class FractalSounds extends AnimationFrameApplet
 			maxWorldX: 3,
 			minWorldY: -3,
 			maxWorldY: 3,
-
-			reduceMotion: siteSettings.reduceMotion,
 
 			onResizeCanvas: () => this.needNewFrame = true,
 

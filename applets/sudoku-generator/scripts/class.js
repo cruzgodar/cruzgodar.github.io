@@ -23,9 +23,7 @@ export class SudokuGenerator extends Applet
 
 		const options =
 		{
-			canvasWidth: this.resolution,
-			reduceMotion: siteSettings.reduceMotion,
-		};
+			canvasWidth: this.resolution,		};
 
 		this.wilson = new WilsonCPU(canvas, options);
 

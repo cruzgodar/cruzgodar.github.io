@@ -387,12 +387,10 @@ export async function toggleReduceMotion()
 
 	currentlyLoadedApplets.forEach(applet =>
 	{
-		if (!applet.wilson)
+		for (const wilson of applet.wilsonsForReduceMotion)
 		{
-			return;
+			wilson.reduceMotion = siteSettings.reduceMotion;
 		}
-
-		applet.wilson.reduceMotion = siteSettings.reduceMotion;
 	});
 
 	history.replaceState({ url: pageUrl }, document.title, getDisplayUrl());

@@ -2,10 +2,9 @@ import { AnimationFrameApplet } from "/scripts/applets/animationFrameApplet.js";
 import { changeOpacity, opacityAnimationTime } from "/scripts/src/animation.js";
 import { convertColor } from "/scripts/src/browser.js";
 import {
-	addTemporaryInterval,
-	addTemporaryWorker
+    addTemporaryInterval,
+    addTemporaryWorker
 } from "/scripts/src/main.js";
-import { siteSettings } from "/scripts/src/settings.js";
 import { WilsonCPU } from "/scripts/wilson.js";
 
 export class BinaryTrees extends AnimationFrameApplet
@@ -26,8 +25,6 @@ export class BinaryTrees extends AnimationFrameApplet
 
 		const options = {
 			canvasWidth: this.resolution,
-			reduceMotion: siteSettings.reduceMotion,
-
 			onResizeCanvas: this.onResizeCanvas.bind(this),
 
 			draggableOptions: {

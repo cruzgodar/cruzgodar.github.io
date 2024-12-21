@@ -1,6 +1,5 @@
 import anime from "../anime.js";
 import { doubleEncodingGlsl } from "../src/complexGlsl.js";
-import { siteSettings } from "../src/settings.js";
 import { WilsonGPU } from "../wilson.js";
 import { AnimationFrameApplet } from "./animationFrameApplet.js";
 import {
@@ -286,8 +285,6 @@ export class RaymarchApplet extends AnimationFrameApplet
 			worldCenterY: this.phi,
 			minWorldY: 0.001 - this.worldSize / 2,
 			maxWorldY: Math.PI - 0.001 + this.worldSize / 2,
-
-			reduceMotion: siteSettings.reduceMotion,
 
 			onResizeCanvas: this.onResizeCanvas.bind(this),
 

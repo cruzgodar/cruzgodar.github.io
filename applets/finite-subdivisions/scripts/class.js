@@ -2,7 +2,6 @@ import { hsvToRgb } from "../../../scripts/applets/applet.js";
 import { AnimationFrameApplet } from "/scripts/applets/animationFrameApplet.js";
 import { convertColor } from "/scripts/src/browser.js";
 import { addTemporaryWorker } from "/scripts/src/main.js";
-import { siteSettings } from "/scripts/src/settings.js";
 import { WilsonCPU } from "/scripts/wilson.js";
 
 export class FiniteSubdivisions extends AnimationFrameApplet
@@ -24,8 +23,6 @@ export class FiniteSubdivisions extends AnimationFrameApplet
 
 		const options = {
 			canvasWidth: this.resolution,
-			reduceMotion: siteSettings.reduceMotion,
-
 			draggableOptions: {
 				callbacks: {
 					drag: this.onDragDraggable.bind(this),

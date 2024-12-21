@@ -1,7 +1,6 @@
 import { getVectorGlsl, tempShader } from "../../../scripts/applets/applet.js";
 import { AnimationFrameApplet } from "/scripts/applets/animationFrameApplet.js";
 import { doubleEncodingGlsl, loadGlsl } from "/scripts/src/complexGlsl.js";
-import { siteSettings } from "/scripts/src/settings.js";
 import { WilsonGPU } from "/scripts/wilson.js";
 
 const numIterationsByNumVertices = {
@@ -94,8 +93,6 @@ export class ChaosGame extends AnimationFrameApplet
 			},
 
 			canvasWidth: this.resolution,
-			reduceMotion: siteSettings.reduceMotion,
-
 			fullscreenOptions: {
 				useFullscreenButton: true,
 				enterFullscreenButtonIconPath: "/graphics/general-icons/enter-fullscreen.png",

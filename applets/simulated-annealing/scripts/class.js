@@ -1,7 +1,6 @@
 import { Applet } from "../../../scripts/applets/applet.js";
 import { convertColor } from "/scripts/src/browser.js";
 import { addTemporaryWorker } from "/scripts/src/main.js";
-import { siteSettings } from "/scripts/src/settings.js";
 import { WilsonCPU } from "/scripts/wilson.js";
 
 export class SimulatedAnnealing extends Applet
@@ -21,8 +20,6 @@ export class SimulatedAnnealing extends Applet
 		const options =
 		{
 			canvasWidth: this.resolution,
-			reduceMotion: siteSettings.reduceMotion,
-
 			fullscreenOptions: {
 				useFullscreenButton: true,
 				enterFullscreenButtonIconPath: "/graphics/general-icons/enter-fullscreen.png",

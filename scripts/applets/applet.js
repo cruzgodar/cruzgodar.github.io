@@ -6,6 +6,8 @@ import {
 	addTemporaryListener,
 	pageElement
 } from "../src/main.js";
+import { siteSettings } from "../src/settings.js";
+import { WilsonCPU, WilsonGPU } from "../wilson.js";
 
 // Each entry is an array beginning with the return type,
 // followed by the parameter types. The types are either "float" or "vec2",
@@ -38,6 +40,7 @@ export class Applet
 	canvas;
 	wilson;
 	wilsonForFullscreen;
+	wilsonsForReduceMotion = [];
 	allowFullscreenWithKeyboard = true;
 
 	fpsDisplayCtx;
@@ -48,9 +51,6 @@ export class Applet
 	keysPressed = {};
 	numTouches = 0;
 	needNewFrame = false;
-
-	aspectRatio = 1;
-	nonFullscreenAspectRatio = 1;
 
 	constructor(canvas)
 	{
@@ -256,6 +256,36 @@ export class Applet
 	
 
 	addHoverEventOnFullscreenButton()
+	{
+		let attempts = 0;
+
+		const refreshId = setInterval(() =>
+		{
+			if (attempts > 40)
+			{
+				return;
+			}
+
+			attempts++;
+
+			this.wilsonsForReduceMotion = Object.values(this).filter(field =>
+			{
+				return field instanceof WilsonCPU || field instanceof WilsonGPU;
+			});
+
+			if (this.wilsonsForReduceMotion.length !== 0)
+			{
+				clearInterval(refreshId);
+
+				for (const wilson of this.wilsonsForReduceMotion)
+				{
+					wilson.reduceMotion = siteSettings.reduceMotion;
+				}
+			}
+		}, 50);
+	}
+
+	setReduceMotionOnWilsons()
 	{
 		let attempts = 0;
 
@@ -589,13 +619,6 @@ function componentToHex(c)
 export function rgbToHex(r, g, b)
 {
 	return "#" + componentToHex(r) + componentToHex(g) + componentToHex(b);
-}
-
-export function getEqualPixelFullScreen(resolution, aspectRatio)
-{
-	const sqrtAspectRatio = Math.sqrt(aspectRatio ?? (window.innerWidth / window.innerHeight));
-
-	return [Math.round(resolution * sqrtAspectRatio), Math.round(resolution / sqrtAspectRatio)];
 }
 
 // Turns expressions like 2(3x^2+1) into something equivalent

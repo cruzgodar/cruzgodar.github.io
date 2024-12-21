@@ -1,5 +1,4 @@
 import { AnimationFrameApplet } from "/scripts/applets/animationFrameApplet.js";
-import { siteSettings } from "/scripts/src/settings.js";
 import { WilsonGPU } from "/scripts/wilson.js";
 
 export class JuliaSetMosaic extends AnimationFrameApplet
@@ -89,8 +88,6 @@ export class JuliaSetMosaic extends AnimationFrameApplet
 			minWorldHeight: 0.00001,
 
 			onResizeCanvas: () => this.needNewFrame = true,
-
-			reduceMotion: siteSettings.reduceMotion,
 
 			interactionOptions: {
 				useForPanAndZoom: true,

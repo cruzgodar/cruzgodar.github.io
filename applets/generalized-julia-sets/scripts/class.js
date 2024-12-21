@@ -1,7 +1,6 @@
 import { getGlslBundle, loadGlsl } from "../../../scripts/src/complexGlsl.js";
 import { AnimationFrameApplet } from "/scripts/applets/animationFrameApplet.js";
 import { tempShader } from "/scripts/applets/applet.js";
-import { siteSettings } from "/scripts/src/settings.js";
 import { WilsonGPU } from "/scripts/wilson.js";
 
 export class GeneralizedJuliaSets extends AnimationFrameApplet
@@ -44,8 +43,6 @@ export class GeneralizedJuliaSets extends AnimationFrameApplet
 			maxWorldHeight: 100,
 
 			onResizeCanvas: () => this.needNewFrame = true,
-
-			reduceMotion: siteSettings.reduceMotion,
 
 			draggableOptions: {
 				draggables: {

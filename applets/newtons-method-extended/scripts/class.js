@@ -2,7 +2,6 @@ import { getGlslBundle, loadGlsl } from "../../../scripts/src/complexGlsl.js";
 import anime from "/scripts/anime.js";
 import { AnimationFrameApplet } from "/scripts/applets/animationFrameApplet.js";
 import { hsvToRgb, tempShader } from "/scripts/applets/applet.js";
-import { siteSettings } from "/scripts/src/settings.js";
 import { WilsonGPU } from "/scripts/wilson.js";
 
 export class NewtonsMethodExtended extends AnimationFrameApplet
@@ -53,8 +52,6 @@ export class NewtonsMethodExtended extends AnimationFrameApplet
 			maxWorldHeight: 300,
 
 			onResizeCanvas: () => this.needNewFrame = true,
-
-			reduceMotion: siteSettings.reduceMotion,
 
 			draggableOptions: {
 				draggables: {

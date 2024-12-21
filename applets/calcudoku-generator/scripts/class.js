@@ -25,9 +25,7 @@ export class CalcudokuGenerator extends Applet
 
 		const options =
 		{
-			canvasWidth: 500,
-			reduceMotion: siteSettings.reduceMotion,
-		};
+			canvasWidth: 500,		};
 
 		this.wilson = new WilsonCPU(canvas, options);
 	}

@@ -2,7 +2,6 @@ import { AnimationFrameApplet } from "/scripts/applets/animationFrameApplet.js";
 import { hsvToRgb } from "/scripts/applets/applet.js";
 import { buttonAnimationTime, changeOpacity } from "/scripts/src/animation.js";
 import { convertColor } from "/scripts/src/browser.js";
-import { siteSettings } from "/scripts/src/settings.js";
 import { WilsonCPU, WilsonGPU } from "/scripts/wilson.js";
 
 export class DoublePendulumFractal extends AnimationFrameApplet
@@ -155,8 +154,6 @@ export class DoublePendulumFractal extends AnimationFrameApplet
 
 			canvasWidth: this.resolution,
 
-			reduceMotion: siteSettings.reduceMotion,
-
 			fullscreenOptions: {
 				useFullscreenButton: true,
 				enterFullscreenButtonIconPath: "/graphics/general-icons/enter-fullscreen.png",
@@ -172,8 +169,6 @@ export class DoublePendulumFractal extends AnimationFrameApplet
 		const optionsPendulum =
 		{
 			canvasWidth: this.resolutionPendulum,
-
-			reduceMotion: siteSettings.reduceMotion,
 
 			interactionOptions: {
 				callbacks: {

@@ -1,6 +1,5 @@
 import { AnimationFrameApplet } from "/scripts/applets/animationFrameApplet.js";
 import { addTemporaryWorker } from "/scripts/src/main.js";
-import { siteSettings } from "/scripts/src/settings.js";
 import { WilsonCPU } from "/scripts/wilson.js";
 
 const brightnessScale = 10;
@@ -20,8 +19,6 @@ export class StrangeAttractors extends AnimationFrameApplet
 
 		const options = {
 			canvasWidth: 500,
-			reduceMotion: siteSettings.reduceMotion,
-
 			fullscreenOptions: {
 				useFullscreenButton: true,
 				enterFullscreenButtonIconPath: "/graphics/general-icons/enter-fullscreen.png",

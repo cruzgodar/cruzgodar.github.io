@@ -1,5 +1,4 @@
 import { AnimationFrameApplet } from "/scripts/applets/animationFrameApplet.js";
-import { siteSettings } from "/scripts/src/settings.js";
 import { WilsonGPU } from "/scripts/wilson.js";
 
 export class Snowflakes extends AnimationFrameApplet
@@ -492,8 +491,6 @@ export class Snowflakes extends AnimationFrameApplet
 			},
 
 			canvasWidth: this.resolution,
-			reduceMotion: siteSettings.reduceMotion,
-
 			fullscreenOptions: {
 				useFullscreenButton: true,
 				enterFullscreenButtonIconPath: "/graphics/general-icons/enter-fullscreen.png",

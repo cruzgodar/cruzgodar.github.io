@@ -1,6 +1,5 @@
 import { Applet, hsvToRgb } from "../../../scripts/applets/applet.js";
 import { convertColor } from "/scripts/src/browser.js";
-import { siteSettings } from "/scripts/src/settings.js";
 import { WilsonCPU } from "/scripts/wilson.js";
 
 export class HitomezashiPatterns extends Applet
@@ -38,8 +37,6 @@ export class HitomezashiPatterns extends Applet
 		const options =
 		{
 			canvasWidth: 1000,
-
-			reduceMotion: siteSettings.reduceMotion,
 
 			fullscreenOptions: {
 				useFullscreenButton: true,

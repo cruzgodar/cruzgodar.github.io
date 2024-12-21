@@ -1,7 +1,6 @@
 import { tempShader } from "../../../scripts/applets/applet.js";
 import { AnimationFrameApplet } from "/scripts/applets/animationFrameApplet.js";
 import { doubleEncodingGlsl, loadGlsl } from "/scripts/src/complexGlsl.js";
-import { siteSettings } from "/scripts/src/settings.js";
 import { WilsonGPU } from "/scripts/wilson.js";
 
 export class BarnsleyFern extends AnimationFrameApplet
@@ -73,8 +72,6 @@ export class BarnsleyFern extends AnimationFrameApplet
 			worldWidth: 12,
 			worldCenterX: 0,
 			worldCenterY: 5,
-
-			reduceMotion: siteSettings.reduceMotion,
 
 			draggableOptions: {
 				draggables: {

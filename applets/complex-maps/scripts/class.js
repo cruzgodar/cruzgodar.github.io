@@ -1,7 +1,6 @@
 import { getGlslBundle, loadGlsl } from "../../../scripts/src/complexGlsl.js";
 import { AnimationFrameApplet } from "/scripts/applets/animationFrameApplet.js";
 import { tempShader } from "/scripts/applets/applet.js";
-import { siteSettings } from "/scripts/src/settings.js";
 import { WilsonGPU } from "/scripts/wilson.js";
 
 export class ComplexMaps extends AnimationFrameApplet
@@ -44,8 +43,6 @@ export class ComplexMaps extends AnimationFrameApplet
 			shader: tempShader,
 
 			canvasWidth: this.resolution,
-
-			reduceMotion: siteSettings.reduceMotion,
 
 			worldWidth,
 			worldHeight,

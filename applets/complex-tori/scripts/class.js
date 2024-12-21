@@ -1,5 +1,4 @@
 import { AnimationFrameApplet } from "/scripts/applets/animationFrameApplet.js";
-import { siteSettings } from "/scripts/src/settings.js";
 import { WilsonGPU } from "/scripts/wilson.js";
 
 export class EllipticCurve extends AnimationFrameApplet
@@ -124,8 +123,6 @@ export class EllipticCurve extends AnimationFrameApplet
 			},
 
 			canvasWidth: this.resolution,
-
-			reduceMotion: siteSettings.reduceMotion,
 
 			worldWidth: 8,
 		};

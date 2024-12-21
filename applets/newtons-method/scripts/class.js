@@ -1,7 +1,6 @@
 import { hexToRgb, rgbToHex } from "../../../scripts/applets/applet.js";
 import anime from "/scripts/anime.js";
 import { AnimationFrameApplet } from "/scripts/applets/animationFrameApplet.js";
-import { siteSettings } from "/scripts/src/settings.js";
 import { WilsonGPU } from "/scripts/wilson.js";
 
 export class NewtonsMethod extends AnimationFrameApplet
@@ -351,8 +350,6 @@ export class NewtonsMethod extends AnimationFrameApplet
 			maxWorldHeight: 100,
 
 			onResizeCanvas: () => this.needNewFrame = true,
-
-			reduceMotion: siteSettings.reduceMotion,
 
 			interactionOptions: {
 				useForPanAndZoom: true,
