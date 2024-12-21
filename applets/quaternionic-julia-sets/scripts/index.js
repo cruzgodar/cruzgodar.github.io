@@ -100,7 +100,9 @@ export default function()
 
 	function changeResolution()
 	{
-		applet.changeResolution(resolutionInput.value * siteSettings.resolutionMultiplier);
+		applet.wilson.resizeCanvas({
+			width: resolutionInput.value * siteSettings.resolutionMultiplier
+		});
 	}
 
 	function onSliderInput()
@@ -111,7 +113,7 @@ export default function()
 			rhoSlider.value * Math.sin(phiSlider.value),
 		];
 
-		applet.setUniform("c", c);
+		applet.setUniforms({ c });
 
 		applet.needNewFrame = true;
 	}
