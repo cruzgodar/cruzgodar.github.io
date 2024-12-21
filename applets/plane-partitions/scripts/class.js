@@ -103,15 +103,6 @@ export class PlanePartitions extends AnimationFrameApplet
 
 	pointLight;
 
-	rotationY = 0;
-	rotationYVelocity = 0;
-	nextRotationYVelocity = 0;
-	lastRotationYVelocities = [];
-
-	rotationYVelocityFriction = .94;
-	rotationYVelocityStartThreshhold = .005;
-	rotationYVelocityStopThreshhold = .0005;
-
 	in2dView = false;
 	inExactHexView = true;
 
@@ -143,12 +134,24 @@ export class PlanePartitions extends AnimationFrameApplet
 
 		this.useFullscreenButton = useFullscreenButton;
 
-
-
 		const hiddenCanvas = this.createHiddenCanvas();
 		const hiddenCanvas2 = this.createHiddenCanvas();
 		const hiddenCanvas3 = this.createHiddenCanvas();
 		const hiddenCanvas4 = this.createHiddenCanvas();
+
+		const options =
+		{
+			shader: tempShader,
+
+			canvasWidth: this.resolution,
+
+			fullscreenOptions: {
+				animate: false,
+				closeWithEscape: false,
+			}
+		};
+
+		this.wilson = new WilsonGPU(canvas, options);
 
 
 
@@ -183,23 +186,13 @@ export class PlanePartitions extends AnimationFrameApplet
 
 
 
-		const options =
-		{
-			shader: tempShader,
-
-			canvasWidth: this.resolution,
-
-			fullscreenOptions: {
-				closeWithEscape: false,
-			}
-		};
-
-		this.wilson = new WilsonGPU(canvas, options);
-
 		const elements = $$(".WILSON_fullscreen-container");
 		elements[0].style.zIndex = 200;
 		elements[1].style.zIndex = 300;
 		elements[1].style.backgroundColor = convertColor(0, 0, 0, 0);
+
+		// Not totally sure what's going on here.
+		this.wilsonNumbers.exitFullscreen();
 
 
 
@@ -323,6 +316,8 @@ export class PlanePartitions extends AnimationFrameApplet
 
 	drawFrame()
 	{
+		this.inExactHexView = this.wilsonNumbers.worldCenterX === 0;
+
 		this.scene.children.forEach(object =>
 			object.rotation.y = -1.5 * this.wilsonNumbers.worldCenterX
 		);

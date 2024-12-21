@@ -525,7 +525,7 @@ class Wilson {
             }
         }
         // @ts-ignore
-        if (document.startViewTransition && this.animateFullscreen) {
+        if (document.startViewTransition) {
             if (!__classPrivateFieldGet(this, _Wilson_fullscreenFillScreen, "f") && !this.reduceMotion) {
                 if (__classPrivateFieldGet(this, _Wilson_fullscreenEnterFullscreenButton, "f")) {
                     __classPrivateFieldGet(this, _Wilson_fullscreenEnterFullscreenButton, "f").style.setProperty("view-transition-name", `WILSON_fullscreen-button-${__classPrivateFieldGet(this, _Wilson_salt, "f")}`);
@@ -538,8 +538,13 @@ class Wilson {
                     data.element.style.setProperty("view-transition-name", `WILSON_draggable-${id}-${__classPrivateFieldGet(this, _Wilson_salt, "f")}`);
                 }
             }
-            // @ts-ignore
-            document.startViewTransition(() => __classPrivateFieldGet(this, _Wilson_instances, "m", _Wilson_enterFullscreen).call(this));
+            if (this.animateFullscreen) {
+                // @ts-ignore
+                document.startViewTransition(() => __classPrivateFieldGet(this, _Wilson_instances, "m", _Wilson_enterFullscreen).call(this));
+            }
+            else {
+                __classPrivateFieldGet(this, _Wilson_instances, "m", _Wilson_enterFullscreen).call(this);
+            }
         }
         else {
             __classPrivateFieldGet(this, _Wilson_instances, "m", _Wilson_enterFullscreen).call(this);
@@ -547,12 +552,17 @@ class Wilson {
     }
     exitFullscreen() {
         // @ts-ignore
-        if (document.startViewTransition && this.animateFullscreen) {
+        if (document.startViewTransition) {
             if (!__classPrivateFieldGet(this, _Wilson_fullscreenFillScreen, "f") && !this.reduceMotion) {
                 this.canvas.style.setProperty("view-transition-name", `WILSON_canvas-${__classPrivateFieldGet(this, _Wilson_salt, "f")}`);
             }
-            // @ts-ignore
-            document.startViewTransition(() => __classPrivateFieldGet(this, _Wilson_instances, "m", _Wilson_exitFullscreen).call(this));
+            if (this.animateFullscreen) {
+                // @ts-ignore
+                document.startViewTransition(() => __classPrivateFieldGet(this, _Wilson_instances, "m", _Wilson_exitFullscreen).call(this));
+            }
+            else {
+                __classPrivateFieldGet(this, _Wilson_instances, "m", _Wilson_exitFullscreen).call(this);
+            }
         }
         else {
             __classPrivateFieldGet(this, _Wilson_instances, "m", _Wilson_exitFullscreen).call(this);

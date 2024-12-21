@@ -23,6 +23,7 @@ export class WilsonsAlgorithm extends AnimationFrameApplet
 
 			fullscreenOptions: {
 				useFullscreenButton: true,
+				animate: false,
 				enterFullscreenButtonIconPath: "/graphics/general-icons/enter-fullscreen.png",
 				exitFullscreenButtonIconPath: "/graphics/general-icons/exit-fullscreen.png",
 			},

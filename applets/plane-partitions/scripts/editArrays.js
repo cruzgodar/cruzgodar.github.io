@@ -122,7 +122,7 @@ export async function addNewArray(
 		}
 	}
 
-	array.cubeGroup.rotation.y = this.rotationY;
+	array.cubeGroup.rotation.y = -1.5 * this.wilsonNumbers.worldCenterX;
 
 
 
