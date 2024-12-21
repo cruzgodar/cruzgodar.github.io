@@ -318,6 +318,8 @@ export async function addNewArray(
 		this.currentlyAnimatingCamera = false;
 	}
 
+	this.needNewFrame = true;
+
 	return array;
 }
 

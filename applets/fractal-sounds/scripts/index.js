@@ -142,8 +142,8 @@ export default function()
 
 		applet.wilson.resizeCanvas({
 			width: Math.min(
-				Math.floor(resolutionInput.value * siteSettings.resolutionMultiplier * 2),
-				1500
+				Math.floor(resolutionInput.value * siteSettings.resolutionMultiplier * 3),
+				2000
 			)
 		});
 	}

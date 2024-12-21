@@ -74,7 +74,7 @@ export class FractalSounds extends AnimationFrameApplet
 
 		const options =
 		{
-			canvasWidth: this.resolution,
+			canvasWidth: 1500,
 
 			worldWidth: 4,
 
@@ -83,7 +83,7 @@ export class FractalSounds extends AnimationFrameApplet
 			minWorldY: -3,
 			maxWorldY: 3,
 
-			onResizeCanvas: this.onResizeCanvas.bind(this),
+			onResizeCanvas: () => this.needNewFrame = true,
 
 			interactionOptions: {
 				useForPanAndZoom: true,
@@ -102,6 +102,7 @@ export class FractalSounds extends AnimationFrameApplet
 
 			fullscreenOptions: {
 				fillScreen: true,
+				onSwitch: this.onSwitchFullscreen.bind(this),
 				useFullscreenButton: true,
 				enterFullscreenButtonIconPath: "/graphics/general-icons/enter-fullscreen.png",
 				exitFullscreenButtonIconPath: "/graphics/general-icons/exit-fullscreen.png",
@@ -593,30 +594,25 @@ export class FractalSounds extends AnimationFrameApplet
 
 
 
-	onResizeCanvas()
+	onSwitchFullscreen(isFullscreen)
 	{
-		if (this.wilson.currentlyFullscreen !== this.wilsonJulia.currentlyFullscreen)
+		document.body.querySelectorAll(".WILSON_fullscreen-container")
+			.forEach(element => element.style.setProperty(
+				"background-color",
+				"rgba(0, 0, 0, 0)",
+				"important"
+			));
+
+
+		if (isFullscreen)
 		{
-			document.body.querySelectorAll(".WILSON_fullscreen-container")
-				.forEach(element => element.style.setProperty(
-					"background-color",
-					"rgba(0, 0, 0, 0)",
-					"important"
-				));
-
-
-			if (this.wilson.currentlyFullscreen)
-			{
-				this.wilsonJulia.enterFullscreen();
-			}
-
-			else
-			{
-				this.wilsonJulia.exitFullscreen();
-			}
+			this.wilsonJulia.enterFullscreen();
 		}
 
-		this.needNewFrame = true;
+		else
+		{
+			this.wilsonJulia.exitFullscreen();
+		}
 	}
 
 	downloadFrame(filename)

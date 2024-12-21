@@ -48,7 +48,7 @@ import { tempShader } from "/scripts/applets/applet.js";
 import { convertColor } from "/scripts/src/browser.js";
 import { $$ } from "/scripts/src/main.js";
 import * as THREE from "/scripts/three.js";
-import { Wilson } from "/scripts/wilson.js";
+import { WilsonCPU, WilsonGPU } from "/scripts/wilson.js";
 
 export class PlanePartitions extends AnimationFrameApplet
 {
@@ -154,76 +154,66 @@ export class PlanePartitions extends AnimationFrameApplet
 
 		const optionsNumbers =
 		{
-			renderer: "cpu",
-
 			canvasWidth: this.resolution,
-			canvasHeight: this.resolution,
 
-			useFullscreen: true,
+			worldWidth: 2,
 
-			useFullscreenButton: false,
+			maxWorldY: 1,
+			minWorldY: -1,
 
-			mousedownCallback: this.onGrabCanvas.bind(this),
-			touchstartCallback: this.onGrabCanvas.bind(this),
+			interactionOptions: {
+				useForPanAndZoom: true,
+				disallowZooming: true,
+				onPanAndZoom: () => this.needNewFrame = true,
+			},
 
-			mousedragCallback: this.onDragCanvas.bind(this),
-			touchmoveCallback: this.onDragCanvas.bind(this),
+			fullscreenOptions: {
+				onSwitch: this.onSwitchFullscreen.bind(this),
+				useFullscreenButton: this.useFullscreenButton,
 
-			mouseupCallback: this.onReleaseCanvas.bind(this),
-			touchendCallback: this.onReleaseCanvas.bind(this)
+				enterFullscreenButtonIconPath: "/graphics/general-icons/enter-fullscreen.png",
+				exitFullscreenButtonIconPath: "/graphics/general-icons/exit-fullscreen.png",
+			},
 		};
 
-		this.wilsonNumbers = new Wilson(numbersCanvas, optionsNumbers);
+		this.wilsonNumbers = new WilsonCPU(numbersCanvas, optionsNumbers);
+		this.wilsonForFullscreen = this.wilsonNumbers;
 
 		this.wilsonNumbers.ctx.fillStyle = convertColor(255, 255, 255);
-
-		document.body.querySelector(".wilson-fullscreen-components-container").style
-			.setProperty("z-index", 200, "important");
-
-		$$(".wilson-applet-canvas-container")
-			.forEach(element => element.style
-				.setProperty("background-color", convertColor(0, 0, 0, 0), "important")
-			);
 
 
 
 		const options =
 		{
-			renderer: "gpu",
-
 			shader: tempShader,
 
 			canvasWidth: this.resolution,
-			canvasHeight: this.resolution,
 
-			useFullscreen: true,
-
-			useFullscreenButton: this.useFullscreenButton,
-
-			enterFullscreenButtonIconPath: "/graphics/general-icons/enter-fullscreen.png",
-			exitFullscreenButtonIconPath: "/graphics/general-icons/exit-fullscreen.png",
-
-			switchFullscreenCallback: this.switchFullscreen.bind(this)
+			fullscreenOptions: {
+				closeWithEscape: false,
+			}
 		};
 
-		this.wilson = new Wilson(canvas, options);
+		this.wilson = new WilsonGPU(canvas, options);
+
+		const elements = $$(".WILSON_fullscreen-container");
+		elements[0].style.zIndex = 200;
+		elements[1].style.zIndex = 300;
+		elements[1].style.backgroundColor = convertColor(0, 0, 0, 0);
 
 
 
 		const optionsHidden =
 		{
-			renderer: "cpu",
-
 			canvasWidth: 64,
-			canvasHeight: 64
 		};
 
-		this.wilsonHidden = new Wilson(hiddenCanvas, optionsHidden);
-		this.wilsonHidden2 = new Wilson(hiddenCanvas2, optionsHidden);
-		this.wilsonHidden3 = new Wilson(hiddenCanvas3, optionsHidden);
-		this.wilsonHidden4 = new Wilson(hiddenCanvas4, optionsHidden);
+		this.wilsonHidden = new WilsonCPU(hiddenCanvas, optionsHidden);
+		this.wilsonHidden2 = new WilsonCPU(hiddenCanvas2, optionsHidden);
+		this.wilsonHidden3 = new WilsonCPU(hiddenCanvas3, optionsHidden);
+		this.wilsonHidden4 = new WilsonCPU(hiddenCanvas4, optionsHidden);
 
-		this.wilsonHidden.ctx.strokeStyle = "rgba(255, 255, 255, 0)";
+		this.wilsonHidden.ctx.strokeStyle = convertColor(255, 255, 255, 0);
 		this.wilsonHidden.ctx._alpha = 1;
 
 		this.wilsonHidden.ctx.fillStyle = convertColor(64, 64, 64);
@@ -234,7 +224,7 @@ export class PlanePartitions extends AnimationFrameApplet
 
 		this.wilsonHidden.ctx.lineWidth = 6;
 
-		this.wilsonHidden2.ctx.strokeStyle = "rgba(255, 255, 255, 0)";
+		this.wilsonHidden2.ctx.strokeStyle = convertColor(255, 255, 255, 0);
 		this.wilsonHidden2.ctx._alpha = 1;
 
 		this.wilsonHidden2.ctx.fillStyle = convertColor(64, 64, 64);
@@ -247,7 +237,7 @@ export class PlanePartitions extends AnimationFrameApplet
 
 
 
-		this.wilsonHidden3.ctx.strokeStyle = "rgba(255, 255, 255, 0)";
+		this.wilsonHidden3.ctx.strokeStyle = convertColor(255, 255, 255, 0);
 		this.wilsonHidden3.ctx._alpha = 1;
 
 		this.wilsonHidden3.ctx.fillStyle = convertColor(32, 32, 32, this.abConfigMode ? 1 : 0);
@@ -260,7 +250,7 @@ export class PlanePartitions extends AnimationFrameApplet
 
 
 
-		this.wilsonHidden4.ctx.strokeStyle = "rgba(255, 255, 255, 0)";
+		this.wilsonHidden4.ctx.strokeStyle = convertColor(255, 255, 255, 0);
 		this.wilsonHidden4.ctx._alpha = 1;
 
 		this.wilsonHidden4.ctx.fillStyle = convertColor(32, 32, 32, this.abConfigMode ? 1 : 0);
@@ -331,166 +321,26 @@ export class PlanePartitions extends AnimationFrameApplet
 		this.resume();
 	}
 
-
-
-	onGrabCanvas()
-	{
-		if (this.abConfigMode)
-		{
-			return;
-		}
-
-		this.inExactHexView = false;
-
-		this.rotationYVelocity = 0;
-
-		this.lastRotationYVelocities = [0, 0, 0, 0];
-
-		this.needNewFrame = true;
-	}
-
-	onDragCanvas(x, y, xDelta)
-	{
-		if (this.in2dView || this.abConfigMode)
-		{
-			return;
-		}
-
-		this.rotationY += xDelta;
-
-		if (this.rotationY > Math.PI)
-		{
-			this.rotationY -= 2 * Math.PI;
-		}
-
-		else if (this.rotationY < -Math.PI)
-		{
-			this.rotationY += 2 * Math.PI;
-		}
-
-		this.scene.children.forEach(object => object.rotation.y = this.rotationY);
-
-		this.nextRotationYVelocity = xDelta;
-
-		this.needNewFrame = true;
-	}
-
-	onReleaseCanvas()
-	{
-		if (!this.in2dView && !this.abConfigMode)
-		{
-			let maxIndex = 0;
-
-			this.lastRotationYVelocities.forEach((velocity, index) =>
-			{
-				if (Math.abs(velocity) > this.rotationYVelocity)
-				{
-					this.rotationYVelocity = Math.abs(velocity);
-					maxIndex = index;
-				}
-			});
-
-			if (this.rotationYVelocity < this.rotationYVelocityStartThreshhold)
-			{
-				this.rotationYVelocity = 0;
-				return;
-			}
-
-			this.rotationYVelocity = this.lastRotationYVelocities[maxIndex];
-		}
-
-		this.lastRotationYVelocities = [0, 0, 0, 0];
-	}
-
-	prepareFrame()
-	{
-		this.lastRotationYVelocities.push(this.nextRotationYVelocity);
-		this.lastRotationYVelocities.shift();
-
-		this.nextRotationYVelocity = 0;
-
-		if (this.rotationYVelocity !== 0)
-		{
-			this.rotationY += this.rotationYVelocity;
-
-			this.scene.children.forEach(object => object.rotation.y = this.rotationY);
-
-			this.rotationYVelocity *= this.rotationYVelocityFriction;
-
-			if (Math.abs(this.rotationYVelocity) < this.rotationYVelocityStopThreshhold)
-			{
-				this.rotationYVelocity = 0;
-			}
-
-			else
-			{
-				this.needNewFrame = true;
-			}
-		}
-
-		if (this.currentlyAnimatingCamera)
-		{
-			this.needNewFrame = true;
-		}
-	}
-
 	drawFrame()
 	{
+		this.scene.children.forEach(object =>
+			object.rotation.y = -1.5 * this.wilsonNumbers.worldCenterX
+		);
+
 		this.renderer.render(this.scene, this.orthographicCamera);
-
-		if (this.rotationY > Math.PI)
-		{
-			this.rotationY -= 2 * Math.PI;
-		}
-
-		else if (this.rotationY < -Math.PI)
-		{
-			this.rotationY += 2 * Math.PI;
-		}
-
-		if (this.needDownload)
-		{
-			this.needDownload = false;
-
-			this.wilson.canvas.toBlob(blob =>
-			{
-				const link = document.createElement("a");
-
-				link.download = "a-plane-partition.png";
-
-				link.href = window.URL.createObjectURL(blob);
-
-				link.click();
-
-				link.remove();
-			});
-		}
 	}
 
-	switchFullscreen()
+	onSwitchFullscreen(isFullscreen)
 	{
-		if (this.useFullscreenButton)
+		if (isFullscreen)
 		{
-			const exitFullscreenButtonElement =
-				document.body.querySelector(".wilson-exit-fullscreen-button");
-
-			if (exitFullscreenButtonElement)
-			{
-				exitFullscreenButtonElement.style.setProperty("z-index", "300", "important");
-			}
+			this.wilson.enterFullscreen();
 		}
 
-		if (!this.in2dView)
+		else
 		{
-			this.wilsonNumbers.ctx.clearRect(
-				0,
-				0,
-				this.wilsonNumbers.canvasWidth,
-				this.wilsonNumbers.canvasHeight
-			);
+			this.wilson.exitFullscreen();
 		}
-
-		this.wilsonNumbers.fullscreen.switchFullscreen();
 	}
 
 	isValidABConfig = isValidABConfig;
