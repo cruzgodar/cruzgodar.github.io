@@ -133,8 +133,6 @@ export default function()
 			maxParticles: Math.max(maxParticlesInput.value, 100),
 			dt: speedSlider.value / 300,
 			lifetime: Math.min(lifetimeInput.value, 255),
-			worldCenterX: 0,
-			worldCenterY: 0,
 			zoomLevel: .5
 		});
 	}

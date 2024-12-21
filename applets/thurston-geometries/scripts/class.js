@@ -142,9 +142,6 @@ export class ThurstonGeometries extends Applet
 			canvasWidth: this.resolution,
 			canvasHeight: this.resolution,
 
-			worldCenterX: 0,
-			worldCenterY: 0,
-
 
 
 			useFullscreen: true,

@@ -344,8 +344,6 @@ export class NewtonsMethod extends AnimationFrameApplet
 			canvasWidth: this.resolution,
 
 			worldWidth: 4,
-			worldCenterX: 0,
-			worldCenterY: 0,
 
 			minWorldWidth: 0.00001,
 			maxWorldWidth: 100,

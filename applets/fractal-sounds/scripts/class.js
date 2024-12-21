@@ -3,8 +3,8 @@ import { AnimationFrameApplet } from "/scripts/applets/animationFrameApplet.js";
 import { tempShader } from "/scripts/applets/applet.js";
 import { changeOpacity } from "/scripts/src/animation.js";
 import { convertColor } from "/scripts/src/browser.js";
-import { $$, addTemporaryListener } from "/scripts/src/main.js";
-import { Wilson } from "/scripts/wilson.js";
+import { $$ } from "/scripts/src/main.js";
+import { WilsonCPU, WilsonGPU } from "/scripts/wilson.js";
 
 export class FractalSounds extends AnimationFrameApplet
 {
@@ -19,14 +19,12 @@ export class FractalSounds extends AnimationFrameApplet
 
 	numIterations = 200;
 
-	exposure = 1;
-
 	zoomLevel = 0;
 
 	pastBrightnessScales = [];
 
 	resolution = 500;
-	resolutionHidden = 200;
+	resolutionHidden = 100;
 
 	needToClear = false;
 
@@ -37,7 +35,6 @@ export class FractalSounds extends AnimationFrameApplet
 
 	lastX = 0;
 	lastY = 0;
-	zoomingWithMouse = false;
 
 
 
@@ -47,27 +44,18 @@ export class FractalSounds extends AnimationFrameApplet
 
 		const optionsJulia =
 		{
-			renderer: "gpu",
-
 			shader: tempShader,
 
 			canvasWidth: this.resolution,
-			canvasHeight: this.resolution,
 
-			useFullscreen: true,
-
-			trueFullscreen: true,
-
-			useFullscreenButton: true,
-
-			enterFullscreenButtonIconPath: "/graphics/general-icons/enter-fullscreen.png",
-			exitFullscreenButtonIconPath: "/graphics/general-icons/exit-fullscreen.png",
-
-			switchFullscreenCallback: this.switchFullscreen.bind(this)
+			fullscreenOptions: {
+				fillScreen: true,
+				animate: false,
+				closeWithEscape: false,
+			}
 		};
 
-		this.wilsonJulia = new Wilson(canvas, optionsJulia);
-		this.wilsonForFullscreen = this.wilsonJulia;
+		this.wilsonJulia = new WilsonGPU(canvas, optionsJulia);
 
 
 
@@ -75,77 +63,61 @@ export class FractalSounds extends AnimationFrameApplet
 
 		const optionsHidden =
 		{
-			renderer: "gpu",
-
 			shader: tempShader,
 
 			canvasWidth: this.resolutionHidden,
-			canvasHeight: this.resolutionHidden
 		};
 
-		this.wilsonHidden = new Wilson(hiddenCanvas, optionsHidden);
+		this.wilsonHidden = new WilsonGPU(hiddenCanvas, optionsHidden);
 
 
 
 		const options =
 		{
-			renderer: "cpu",
-
 			canvasWidth: this.resolution,
-			canvasHeight: this.resolution,
 
 			worldWidth: 4,
-			worldCenterX: 0,
-			worldCenterY: 0,
 
-			mousemoveCallback: this.onHoverCanvas.bind(this),
-			mousedownCallback: this.onGrabCanvas.bind(this),
-			touchstartCallback: this.onGrabCanvas.bind(this),
+			minWorldX: -3,
+			maxWorldX: 3,
+			minWorldY: -3,
+			maxWorldY: 3,
 
-			mousedragCallback: this.onDragCanvas.bind(this),
-			touchmoveCallback: this.onDragCanvas.bind(this),
+			onResizeCanvas: this.onResizeCanvas.bind(this),
 
-			mouseupCallback: this.onReleaseCanvas.bind(this),
-			touchendCallback: this.onReleaseCanvas.bind(this),
+			interactionOptions: {
+				useForPanAndZoom: true,
+				onPanAndZoom: () => this.needNewFrame = true,
+				callbacks: {
+					mousemove: this.onHoverCanvas.bind(this),
+					mousedown: this.onGrabCanvas.bind(this),
+					touchstart: this.onGrabCanvas.bind(this),
+					mousedrag: this.onDragCanvas.bind(this),
+					touchmove: this.onDragCanvas.bind(this),
+					mouseup: this.onReleaseCanvas.bind(this),
+					touchend: this.onReleaseCanvas.bind(this),
+					wheel: this.onWheelCanvas.bind(this),
+				}
+			},
 
-			wheelCallback: this.onWheelCanvas.bind(this),
-			pinchCallback: this.onPinchCanvas.bind(this),
-
-			useFullscreen: true,
-
-			trueFullscreen: true,
-
-			useFullscreenButton: false
+			fullscreenOptions: {
+				fillScreen: true,
+				useFullscreenButton: true,
+				enterFullscreenButtonIconPath: "/graphics/general-icons/enter-fullscreen.png",
+				exitFullscreenButtonIconPath: "/graphics/general-icons/exit-fullscreen.png",
+			},
 		};
 
-		this.wilson = new Wilson(lineDrawerCanvas, options);
+		this.wilson = new WilsonCPU(lineDrawerCanvas, options);
+		this.wilsonForFullscreen = this.wilson;
+		this.addHoverEventOnFullscreenButton();
 
-		const elements = $$(".wilson-fullscreen-components-container");
+		const elements = $$(".WILSON_fullscreen-container");
 
 		elements[0].style.setProperty("z-index", 200, "important");
 		elements[1].style.setProperty("z-index", 300, "important");
 
 		this.wilson.ctx.lineWidth = 40;
-
-
-
-		this.pan.setBounds({
-			minX: -3,
-			maxX: 3,
-			minY: -3,
-			maxY: 3,
-		});
-
-		this.zoom.init();
-
-		this.listenForNumTouches();
-
-		const boundFunction = () => this.changeAspectRatio(true, [this.wilson, this.wilsonJulia]);
-		addTemporaryListener({
-			object: window,
-			event: "resize",
-			callback: boundFunction
-		});
 
 		this.loadPromise = loadGlsl();
 	}
@@ -156,13 +128,11 @@ export class FractalSounds extends AnimationFrameApplet
 		glslCode,
 		jsCode,
 		resolution,
-		exposure,
 		numIterations
 	}) {
 		this.currentFractalFunction = jsCode;
 
 		this.resolution = resolution;
-		this.exposure = exposure;
 		this.numIterations = numIterations;
 
 		const shader = /* glsl */`
@@ -170,13 +140,9 @@ export class FractalSounds extends AnimationFrameApplet
 			
 			varying vec2 uv;
 			
-			uniform float aspectRatio;
+			uniform vec2 worldSize;
+			uniform vec2 worldCenter;
 			
-			uniform float worldCenterX;
-			uniform float worldCenterY;
-			uniform float worldSize;
-			
-			uniform float exposure;
 			uniform int numIterations;
 			uniform float brightnessScale;
 			
@@ -213,17 +179,7 @@ export class FractalSounds extends AnimationFrameApplet
 			
 			void main(void)
 			{
-				vec2 z;
-				
-				if (aspectRatio >= 1.0)
-				{
-					z = vec2(uv.x * aspectRatio * worldSize + worldCenterX, uv.y * worldSize + worldCenterY);
-				}
-				
-				else
-				{
-					z = vec2(uv.x * worldSize + worldCenterX, uv.y / aspectRatio * worldSize + worldCenterY);
-				}
+				vec2 z = uv * worldSize * 0.5 + worldCenter;
 				
 				float brightness = exp(-max(length(z), .5));
 				
@@ -267,8 +223,21 @@ export class FractalSounds extends AnimationFrameApplet
 				{
 					if (iteration == numIterations)
 					{
-						vec3 color = hue1 * color1 + hue2 * color2 + hue3 * color3 + hue4 * color4 + hue5 * color5 + hue6 * color6 + hue7 * color7 + hue8 * color8 + hue9 * color9 + hue10 * color10 + hue11 * color11 + hue12 * color12 + hue13 * color13;
-						gl_FragColor = vec4(brightness / brightnessScale * exposure * normalize(color), 1.0);
+						vec3 color = hue1 * color1
+							+ hue2 * color2
+							+ hue3 * color3
+							+ hue4 * color4
+							+ hue5 * color5
+							+ hue6 * color6
+							+ hue7 * color7
+							+ hue8 * color8
+							+ hue9 * color9
+							+ hue10 * color10
+							+ hue11 * color11
+							+ hue12 * color12
+							+ hue13 * color13;
+						
+						gl_FragColor = vec4(brightness / brightnessScale * normalize(color), 1.0);
 						return;
 					}
 					
@@ -314,73 +283,52 @@ export class FractalSounds extends AnimationFrameApplet
 			}
 		`;
 
-		this.wilsonJulia.render.shaderPrograms = [];
-		this.wilsonJulia.render.loadNewShader(shader);
-		this.wilsonJulia.gl.useProgram(this.wilsonJulia.render.shaderPrograms[0]);
+		this.wilsonJulia.loadShader({
+			source: shader,
+			uniforms: {
+				worldSize: [this.wilson.worldWidth, this.wilson.worldHeight],
+				worldCenter: [this.wilson.worldCenterX, this.wilson.worldCenterY],
+				numIterations: this.numIterations,
+				brightnessScale: 1,
+			},
+		});
 
-		this.wilsonJulia.render.initUniforms([
-			"juliaMode",
-			"aspectRatio",
-			"worldCenterX",
-			"worldCenterY",
-			"worldSize",
-			"a",
-			"b",
-			"numIterations",
-			"exposure",
-			"brightnessScale"
-		], 0);
-
-
-
-		this.wilsonHidden.render.shaderPrograms = [];
-		this.wilsonHidden.render.loadNewShader(shader);
-		this.wilsonHidden.gl.useProgram(this.wilsonHidden.render.shaderPrograms[0]);
-
-		this.wilsonHidden.render.initUniforms([
-			"juliaMode",
-			"aspectRatio",
-			"worldCenterX",
-			"worldCenterY",
-			"worldSize",
-			"a",
-			"b",
-			"numIterations",
-			"exposure",
-			"brightnessScale"
-		], 0);
-
+		this.wilsonHidden.loadShader({
+			source: shader,
+			uniforms: {
+				worldSize: [this.wilson.worldWidth, this.wilson.worldHeight],
+				worldCenter: [this.wilson.worldCenterX, this.wilson.worldCenterY],
+				numIterations: this.numIterations,
+				brightnessScale: 1,
+			},
+		});
 
 		this.juliaMode = 0;
 
 		this.pastBrightnessScales = [];
 
-		this.wilson.worldWidth = 4;
-		this.wilson.worldHeight = 4;
-		this.wilson.worldCenterX = 0;
-		this.wilson.worldCenterY = 0;
-
-		this.zoom.init();
-
-
-
-		// Render the inital frame.
-		this.wilsonJulia.gl.uniform1f(this.wilsonJulia.uniforms.aspectRatio[0], 1);
-		this.wilsonHidden.gl.uniform1f(this.wilsonHidden.uniforms.aspectRatio[0], 1);
+		this.wilson.resizeWorld({
+			width: 4,
+			height: 4,
+			centerX: 0,
+			centerY: 0
+		});
 
 		this.resume();
 	}
 
 
 
-	onGrabCanvas(x, y, event)
+	onHoverCanvas({ x, y })
 	{
-		this.pan.onGrabCanvas();
-		this.zoom.onGrabCanvas();
+		this.showOrbit(x, y);
 
+		this.moved = 0;
+	}
+
+	onGrabCanvas({ x, y, event })
+	{
 		this.wilson.canvas.style.opacity = 1;
-
-
 
 		if (event.type === "touchstart")
 		{
@@ -404,62 +352,42 @@ export class FractalSounds extends AnimationFrameApplet
 		}
 	}
 
-
-
-	onDragCanvas(x, y, xDelta, yDelta, event)
+	onDragCanvas({ x, y })
 	{
-		if (event.type === "mousemove" || (event.type === "touchmove" && this.numTouches >= 2))
+		this.moved++;
+
+		if (this.moved >= 10)
 		{
-			this.pan.onDragCanvas(x, y, xDelta, yDelta);
-
-			this.moved++;
-
-			if (this.moved >= 10)
-			{
-				this.wilson.ctx.clearRect(0, 0, this.resolution, this.resolution);
-			}
-
-			this.needNewFrame = true;
+			changeOpacity({ element: this.wilson.canvas, opacity: 0 });
 		}
 
-		else
-		{
-			this.showOrbit(x, y);
-		}
-	}
-
-
-
-	onHoverCanvas(x, y)
-	{
 		this.showOrbit(x, y);
-
-		this.moved = 0;
 	}
 
-
-
-	onReleaseCanvas(x, y, event)
+	onReleaseCanvas({ x, y, event })
 	{
-		this.pan.onReleaseCanvas();
-		this.zoom.onReleaseCanvas();
-
-
-		if ((event.type === "touchend" && this.numTouches === 1) || this.moved < 10)
+		if (this.moved < 10)
 		{
 			this.playSound(x, y);
 
 			setTimeout(() => this.numTouches = 0, 50);
 		}
 
-		else
+		if (event.type === "touchend")
 		{
-			changeOpacity({ element: this.wilson.canvas, opacity: 0 });
+			setTimeout(() =>
+			{
+				changeOpacity({ element: this.wilson.canvas, opacity: 0 });
+			}, 150);
 		}
 
 		this.moved = 0;
 	}
 
+	onWheelCanvas({ x, y })
+	{
+		this.showOrbit(x, y);
+	}
 
 
 	showOrbit(x0, y0)
@@ -471,7 +399,7 @@ export class FractalSounds extends AnimationFrameApplet
 		this.wilson.ctx.clearRect(0, 0, this.wilson.canvasWidth, this.wilson.canvasHeight);
 
 		this.wilson.ctx.beginPath();
-		let coords = this.wilson.utils.interpolate.worldToCanvas(x0, y0);
+		const coords = this.wilson.interpolateWorldToCanvas([x0, y0]);
 		this.wilson.ctx.moveTo(coords[1], coords[0]);
 
 		let x = x0;
@@ -496,7 +424,7 @@ export class FractalSounds extends AnimationFrameApplet
 
 			next = this.currentFractalFunction(x, y, a, b);
 
-			coords = this.wilson.utils.interpolate.worldToCanvas(x, y);
+			const coords = this.wilson.interpolateWorldToCanvas([x, y]);
 			this.wilson.ctx.lineTo(coords[1], coords[0]);
 		}
 
@@ -601,50 +529,22 @@ export class FractalSounds extends AnimationFrameApplet
 
 
 
-	prepareFrame(timeElapsed)
-	{
-		this.pan.update(timeElapsed);
-		this.zoom.update(timeElapsed);
-	}
-
 	drawFrame()
 	{
-		this.wilsonHidden.gl.uniform1f(
-			this.wilsonHidden.uniforms.worldCenterX[0],
-			this.wilson.worldCenterX
-		);
+		const zoomLevel = -Math.log2(this.wilson.worldWidth) + 3;
 
-		this.wilsonHidden.gl.uniform1f(
-			this.wilsonHidden.uniforms.worldCenterY[0],
-			this.wilson.worldCenterY
-		);
-		
-		this.wilsonHidden.gl.uniform1f(
-			this.wilsonHidden.uniforms.worldSize[0],
-			Math.min(this.wilson.worldHeight, this.wilson.worldWidth) / 2
-		);
+		this.wilsonHidden.setUniforms({
+			worldSize: [this.wilson.worldWidth, this.wilson.worldHeight],
+			worldCenter: [this.wilson.worldCenterX, this.wilson.worldCenterY],
+			numIterations: this.numIterations,
+			brightnessScale: 20,
+		});
 
-		this.wilsonHidden.gl.uniform1i(
-			this.wilsonHidden.uniforms.numIterations[0],
-			this.numIterations
-		);
-
-		this.wilsonHidden.gl.uniform1f(
-			this.wilsonHidden.uniforms.exposure[0],
-			1
-		);
-
-		this.wilsonHidden.gl.uniform1f(
-			this.wilsonHidden.uniforms.brightnessScale[0],
-			20 * (Math.abs(this.zoom.level) + 1)
-		);
-
-
-		this.wilsonHidden.render.drawFrame();
+		this.wilsonHidden.drawFrame();
 
 
 
-		const pixelData = this.wilsonHidden.render.getPixelData();
+		const pixelData = this.wilsonHidden.readPixels();
 
 		const brightnesses = new Array(this.resolutionHidden * this.resolutionHidden);
 
@@ -655,83 +555,72 @@ export class FractalSounds extends AnimationFrameApplet
 
 		brightnesses.sort((a, b) => a - b);
 
-		let brightnessScale = (
+		const brightnessScale = (
 			brightnesses[Math.floor(this.resolutionHidden * this.resolutionHidden * .96)]
 			+ brightnesses[Math.floor(this.resolutionHidden * this.resolutionHidden * .98)]
-		) / 255 * 15 * (Math.abs(this.zoom.level / 2) + 1);
+		) / 20 + zoomLevel * 2;
 
 		this.pastBrightnessScales.push(brightnessScale);
 
-		const denom = this.pastBrightnessScales.length;
-
-		if (denom > 10)
+		if (this.pastBrightnessScales.length > 10)
 		{
 			this.pastBrightnessScales.shift();
 		}
 
-		brightnessScale = Math.max(this.pastBrightnessScales.reduce((a, b) => a + b) / denom, .5);
+		let averageBrightnessScale = 0;
 
+		for (let i = 0; i < this.pastBrightnessScales.length; i++)
+		{
+			averageBrightnessScale += this.pastBrightnessScales[i];
+		}
 
-
-		this.wilsonJulia.gl.uniform1f(
-			this.wilsonJulia.uniforms.aspectRatio[0],
-			this.aspectRatio
+		averageBrightnessScale = Math.max(
+			averageBrightnessScale / this.pastBrightnessScales.length,
+			.5
 		);
 
-		this.wilsonJulia.gl.uniform1f(
-			this.wilsonJulia.uniforms.worldCenterX[0],
-			this.wilson.worldCenterX
-		);
 
-		this.wilsonJulia.gl.uniform1f(
-			this.wilsonJulia.uniforms.worldCenterY[0],
-			this.wilson.worldCenterY
-		);
 
-		this.wilsonJulia.gl.uniform1f(
-			this.wilsonJulia.uniforms.worldSize[0],
-			Math.min(this.wilson.worldHeight, this.wilson.worldWidth) / 2
-		);
+		this.wilsonJulia.setUniforms({
+			worldSize: [this.wilson.worldWidth, this.wilson.worldHeight],
+			worldCenter: [this.wilson.worldCenterX, this.wilson.worldCenterY],
+			numIterations: this.numIterations,
+			brightnessScale: averageBrightnessScale
+		});
 
-		this.wilsonJulia.gl.uniform1i(
-			this.wilsonJulia.uniforms.numIterations[0],
-			this.numIterations
-		);
-
-		this.wilsonJulia.gl.uniform1f(
-			this.wilsonJulia.uniforms.exposure[0],
-			this.exposure
-		);
-
-		this.wilsonJulia.gl.uniform1f(
-			this.wilsonJulia.uniforms.brightnessScale[0],
-			brightnessScale
-		);
-
-		this.wilsonJulia.render.drawFrame();
+		this.wilsonJulia.drawFrame();
 	}
 
 
 
-	switchFullscreen()
+	onResizeCanvas()
 	{
-		document.body.querySelectorAll(".wilson-applet-canvas-container")
-			.forEach(element => element.style.setProperty(
-				"background-color",
-				"rgba(0, 0, 0, 0)",
-				"important"
-			));
-
-		const exitFullScreenButtonElement =
-			document.body.querySelector(".wilson-exit-fullscreen-button");
-
-		if (exitFullScreenButtonElement)
+		if (this.wilson.currentlyFullscreen !== this.wilsonJulia.currentlyFullscreen)
 		{
-			exitFullScreenButtonElement.style.setProperty("z-index", "300", "important");
+			document.body.querySelectorAll(".WILSON_fullscreen-container")
+				.forEach(element => element.style.setProperty(
+					"background-color",
+					"rgba(0, 0, 0, 0)",
+					"important"
+				));
+
+
+			if (this.wilson.currentlyFullscreen)
+			{
+				this.wilsonJulia.enterFullscreen();
+			}
+
+			else
+			{
+				this.wilsonJulia.exitFullscreen();
+			}
 		}
 
-		this.wilson.fullscreen.switchFullscreen();
+		this.needNewFrame = true;
+	}
 
-		this.changeAspectRatio(true, [this.wilson, this.wilsonJulia]);
+	downloadFrame(filename)
+	{
+		this.wilsonJulia.downloadFrame(filename);
 	}
 }

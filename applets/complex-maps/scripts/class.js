@@ -46,8 +46,8 @@ export class ComplexMaps extends AnimationFrameApplet
 
 			worldWidth,
 			worldHeight,
-			worldCenterX: 0,
-			worldCenterY: 0,
+			worldCenterX,
+			worldCenterY,
 
 			minWorldWidth: 0.00002,
 			maxWorldWidth: 100,

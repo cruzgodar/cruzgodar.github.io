@@ -139,8 +139,6 @@ export class HairyBall extends RaymarchApplet
 			maxParticles: 10000,
 			dt: .003,
 			lifetime: 150,
-			worldCenterX: 0,
-			worldCenterY: 0,
 			zoomLevel: .6515,
 			particleDilation: this.vectorFieldDilation,
 			appendGlsl: /* glsl */`

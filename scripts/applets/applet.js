@@ -2,6 +2,7 @@ import { showZoomCard } from "../src/cards.js";
 import { addHoverEventWithScale } from "../src/hoverEvents.js";
 import {
 	$,
+	$$,
 	addTemporaryListener,
 	pageElement
 } from "../src/main.js";
@@ -267,28 +268,21 @@ export class Applet
 
 			attempts++;
 
-			const enterFullscreenButton = this.canvas.parentElement.querySelector(
-				".WILSON_enter-fullscreen-button"
+			const fullscreenButtons = $$(
+				".WILSON_enter-fullscreen-button, .WILSON_exit-fullscreen-button"
 			);
 
-			const exitFullscreenButton = this.canvas.parentElement.querySelector(
-				".WILSON_exit-fullscreen-button"
-			);
-
-			if (enterFullscreenButton && exitFullscreenButton)
+			for (const button of fullscreenButtons)
 			{
 				addHoverEventWithScale({
-					element: enterFullscreenButton,
+					element: button,
 					scale: 1.1,
 					addBounceOnTouch: () => true
 				});
+			}
 
-				addHoverEventWithScale({
-					element: exitFullscreenButton,
-					scale: 1.1,
-					addBounceOnTouch: () => true
-				});
-
+			if (fullscreenButtons.length !== 0)
+			{
 				clearInterval(refreshId);
 			}
 		}, 50);

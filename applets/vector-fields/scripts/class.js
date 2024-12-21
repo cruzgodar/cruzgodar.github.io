@@ -273,8 +273,6 @@ export class VectorFields extends AnimationFrameApplet
 			canvasHeight: this.resolution,
 
 			worldWidth: 2 * Math.PI,
-			worldCenterX: 0,
-			worldCenterY: 0,
 
 
 
