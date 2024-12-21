@@ -8,8 +8,8 @@ export class BarnsleyFern extends AnimationFrameApplet
 {
 	resolution = 1000;
 	computeResolution = 1000;
-	A1 = [0, 0, 0, .16];
-	A4 = [-.15, .26, .28, .24];
+	A1 = [[0, 0], [0, .16]];
+	A4 = [[-.15, .28], [.26, .24]];
 	b2 = [0, 1.6];
 
 	wilsonUpdate;
@@ -327,16 +327,20 @@ export class BarnsleyFern extends AnimationFrameApplet
 		const s = Math.sin(theta);
 		
 		// An affine transformation that points toward the draggable.
-		this.A1 = [0, 0, -.16 * s, .16 * c];
+		this.A1 = [[0, -.16 * s], [0, .16 * c]];
 
 		const c2 = Math.cos(2 * theta);
 		// The default transformation for this one is orientation-reversing, so we
 		// rotate to vertical, apply the usual one, then rotate back.
 		this.A4 = [
-			0.045 - 0.195 * c2 - 0.54 * c * s,
-			-0.01 + 0.27 * c2 - 0.39 * c * s,
-			0.01 + 0.27 * c2 - 0.39 * c * s,
-			0.045 + 0.195 * c2 + 0.54 * c * s
+			[
+				0.045 - 0.195 * c2 - 0.54 * c * s,
+				0.01 + 0.27 * c2 - 0.39 * c * s,
+			],
+			[
+				-0.01 + 0.27 * c2 - 0.39 * c * s,
+				0.045 + 0.195 * c2 + 0.54 * c * s
+			]
 		];
 
 		this.wilsonUpdate.setUniforms({
