@@ -14,8 +14,6 @@ export default function()
 {
 	const applet = new VectorFields({ canvas: $("#output-canvas") });
 
-	applet.loadPromise.then(() => run());
-
 	const resolutionInput = new TextBox({
 		element: $("#resolution-input"),
 		name: "Resolution",
@@ -118,6 +116,8 @@ export default function()
 		logarithmic: true,
 		onInput: onSliderInput
 	});
+
+	applet.loadPromise.then(() => run());
 
 	showPage();
 

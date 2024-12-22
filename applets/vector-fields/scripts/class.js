@@ -59,8 +59,8 @@ export class VectorFields extends AnimationFrameApplet
 
 		this.loopEdges = loopEdges;
 
-		this.updateCanvas = this.createHiddenCanvas(false);
-		this.dimCanvas = this.createHiddenCanvas(false);
+		this.updateCanvas = this.createHiddenCanvas();
+		this.dimCanvas = this.createHiddenCanvas();
 
 		const optionsUpdate =
 		{
@@ -71,15 +71,6 @@ export class VectorFields extends AnimationFrameApplet
 		};
 
 		this.wilsonUpdate = new WilsonGPU(this.updateCanvas, optionsUpdate);
-
-
-
-		this.wilsonUpdate.createFramebufferTexturePair({
-			id: "update",
-			textureType: "float"
-		});
-		this.wilsonUpdate.useFramebuffer(null);
-		this.wilsonUpdate.useTexture("update");
 
 
 
@@ -125,57 +116,11 @@ export class VectorFields extends AnimationFrameApplet
 
 		this.wilsonDim = new WilsonGPU(this.dimCanvas, optionsDim);
 
-		this.wilsonDim.createFramebufferTexturePair({
-			id: "dim",
-			textureType: "unsignedByte"
-		});
-		this.wilsonDim.useFramebuffer(null);
-		this.wilsonDim.useTexture("dim");
 
-		this.dimTexture = new Uint8Array(this.resolution * this.resolution * 4);
-
-
-
-		const shaderDraw = /* glsl */`
-			precision highp float;
-			precision highp sampler2D;
-			
-			varying vec2 uv;
-			
-			uniform sampler2D uTexture;
-			
-			uniform float maxBrightness;
-
-			uniform vec2 stepSize;
-			
-			vec3 hsv2rgb(vec3 c)
-			{
-				vec4 K = vec4(1.0, 2.0 / 3.0, 1.0 / 3.0, 3.0);
-				vec3 p = abs(fract(c.xxx + K.xyz) * 6.0 - K.www);
-				return c.z * mix(K.xxx, clamp(p - K.xxx, 0.0, 1.0), c.y);
-			}
-
-			vec3 getPixel(vec2 uv)
-			{
-				vec3 v = texture2D(uTexture, (vec2(1.0 + uv.x, 1.0 - uv.y)) / 2.0).xyz;
-
-				return hsv2rgb(vec3(v.y, v.z, v.x / maxBrightness));
-			}
-			
-			void main(void)
-			{
-				${this.getSamplingGlsl()}
-			}
-		`;
 
 		const options =
 		{
-			shader: shaderDraw,
-
-			uniforms: {
-				maxBrightness: this.lifetime / 255,
-				stepSize: [2 / this.resolution, 2 / this.resolution],
-			},
+			shader: tempShader,
 
 			canvasWidth: this.resolution,
 
@@ -207,17 +152,6 @@ export class VectorFields extends AnimationFrameApplet
 
 		this.wilson = new WilsonGPU(canvas, options);
 
-		this.lastWorldCenterX = this.wilson.worldCenterX;
-		this.lastWorldCenterY = this.wilson.worldCenterY;
-		this.lastWorldWidth = this.wilson.worldWidth;
-
-		this.wilson.createFramebufferTexturePair({
-			id: "draw",
-			textureType: "unsignedByte"
-		});
-		this.wilson.useFramebuffer(null);
-		this.wilson.useTexture("draw");
-
 		this.loadPromise = loadGlsl();
 	}
 
@@ -238,6 +172,8 @@ export class VectorFields extends AnimationFrameApplet
 		this.dt = dt;
 		this.resolution = resolution;
 		this.particleDilation = particleDilation;
+
+
 
 		const shaderUpdateBase = /* glsl */`
 			precision highp float;
@@ -345,6 +281,49 @@ export class VectorFields extends AnimationFrameApplet
 			source: shaderUpdateS2,
 		});
 
+
+
+		const shaderDraw = /* glsl */`
+			precision highp float;
+			precision highp sampler2D;
+			
+			varying vec2 uv;
+			
+			uniform sampler2D uTexture;
+			
+			uniform float maxBrightness;
+
+			uniform vec2 stepSize;
+			
+			vec3 hsv2rgb(vec3 c)
+			{
+				vec4 K = vec4(1.0, 2.0 / 3.0, 1.0 / 3.0, 3.0);
+				vec3 p = abs(fract(c.xxx + K.xyz) * 6.0 - K.www);
+				return c.z * mix(K.xxx, clamp(p - K.xxx, 0.0, 1.0), c.y);
+			}
+
+			vec3 getPixel(vec2 uv)
+			{
+				vec3 v = texture2D(uTexture, (vec2(1.0 + uv.x, 1.0 - uv.y)) / 2.0).xyz;
+
+				return hsv2rgb(vec3(v.y, v.z, v.x / maxBrightness));
+			}
+			
+			void main(void)
+			{
+				${this.getSamplingGlsl()}
+			}
+		`;
+
+		this.wilson.loadShader({
+			id: "draw",
+			source: shaderDraw,
+			uniforms: {
+				maxBrightness: this.lifetime / 255,
+				stepSize: [2 / this.resolution, 2 / this.resolution],
+			}
+		});
+
 		this.wilson.setUniforms({ maxBrightness: this.lifetime / 255 });
 
 
@@ -443,7 +422,8 @@ export class VectorFields extends AnimationFrameApplet
 		this.dt = dt;
 		this.lifetime = lifetime;
 
-		this.wilson.resizeCanvas({ width: resolution });
+		this.wilson.resizeCanvas({ width: this.resolution });
+		this.wilsonDim.resizeCanvas({ width: this.resolution });
 
 		this.wilson.setUniforms({
 			maxBrightness: this.lifetime / 255,
@@ -460,6 +440,33 @@ export class VectorFields extends AnimationFrameApplet
 
 		const updateResolution = Math.ceil(Math.sqrt(maxParticles));
 		this.wilsonUpdate.resizeCanvas({ width: updateResolution });
+
+
+
+		this.wilsonUpdate.createFramebufferTexturePair({
+			id: "update",
+			textureType: "float"
+		});
+		this.wilsonUpdate.useFramebuffer(null);
+		this.wilsonUpdate.useTexture("update");
+
+		this.wilsonDim.createFramebufferTexturePair({
+			id: "dim",
+			textureType: "unsignedByte"
+		});
+		this.wilsonDim.useFramebuffer(null);
+		this.wilsonDim.useTexture("dim");
+
+		this.wilson.createFramebufferTexturePair({
+			id: "draw",
+			textureType: "unsignedByte"
+		});
+		this.wilson.useFramebuffer(null);
+		this.wilson.useTexture("draw");
+
+		this.lastWorldCenterX = this.wilson.worldCenterX;
+		this.lastWorldCenterY = this.wilson.worldCenterY;
+		this.lastWorldWidth = this.wilson.worldWidth;
 
 
 
@@ -873,15 +880,13 @@ export class VectorFields extends AnimationFrameApplet
 			id: "dim",
 			data: this.dimTexture
 		});
-
 		this.wilsonDim.drawFrame();
-		this.dimTexture = this.wilsonDim.readPixels();
 
+		this.dimTexture = this.wilsonDim.readPixels();
 		this.wilson.setTexture({
 			id: "draw",
 			data: this.dimTexture
 		});
-
 		this.wilson.drawFrame();
 	}
 
