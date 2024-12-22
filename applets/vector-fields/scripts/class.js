@@ -35,12 +35,12 @@ export class VectorFields extends AnimationFrameApplet
 	freeParticleSlots = [];
 
 	updateTexture;
-	dimTexture;
+	panZoomDimTexture;
 
 	updateCanvas;
-	dimCanvas;
+	panZoomDimCanvas;
 	wilsonUpdate;
-	wilsonDim;
+	wilsonPanZoomDim;
 
 	timeElapsedHistoryLength = 60;
 	lastTimeElapsed = new Array(this.timeElapsedHistoryLength);
@@ -61,7 +61,7 @@ export class VectorFields extends AnimationFrameApplet
 		this.loopEdges = loopEdges;
 
 		this.updateCanvas = this.createHiddenCanvas();
-		this.dimCanvas = this.createHiddenCanvas();
+		this.panZoomDimCanvas = this.createHiddenCanvas();
 
 		const optionsUpdate =
 		{
@@ -75,7 +75,7 @@ export class VectorFields extends AnimationFrameApplet
 
 
 
-		const shaderPanAndZoom = /* glsl */`
+		const shaderPanZoomDim = /* glsl */`
 			precision highp float;
 			precision highp sampler2D;
 			
@@ -84,11 +84,12 @@ export class VectorFields extends AnimationFrameApplet
 			uniform sampler2D uTexture;
 			
 			uniform float dimAmount;
-			uniform mat2 transform;
+			uniform float scale;
+			uniform vec2 worldCenterChange;
 			
 			void main(void)
 			{
-				vec2 texCoord = transform * ((uv + vec2(1.0, 1.0)) / 2.0);
+				vec2 texCoord = scale * ((uv + vec2(1.0, 1.0)) / 2.0) + worldCenterChange;
 				
 				if (texCoord.x >= 0.0 && texCoord.x < 1.0 && texCoord.y >= 0.0 && texCoord.y < 1.0)
 				{
@@ -103,19 +104,20 @@ export class VectorFields extends AnimationFrameApplet
 			}
 		`;
 
-		const optionsDim =
+		const optionsPanZoomDim =
 		{
-			shader: shaderPanAndZoom,
+			shader: shaderPanZoomDim,
 
 			uniforms: {
 				dimAmount: 1 / 255,
-				transform: [[1, 0], [0, 1]]
+				scale: 1,
+				worldCenterChange: [0, 0]
 			},
 
 			canvasWidth: this.resolution,
 		};
 
-		this.wilsonDim = new WilsonGPU(this.dimCanvas, optionsDim);
+		this.wilsonPanZoomDim = new WilsonGPU(this.panZoomDimCanvas, optionsPanZoomDim);
 
 
 
@@ -434,7 +436,7 @@ export class VectorFields extends AnimationFrameApplet
 		this.lifetime = lifetime;
 
 		this.wilson.resizeCanvas({ width: this.resolution });
-		this.wilsonDim.resizeCanvas({ width: this.resolution });
+		this.wilsonPanZoomDim.resizeCanvas({ width: this.resolution });
 
 		this.wilson.setUniforms({
 			maxBrightness: this.lifetime / 255,
@@ -465,12 +467,12 @@ export class VectorFields extends AnimationFrameApplet
 		this.wilsonUpdate.useFramebuffer(null);
 		this.wilsonUpdate.useTexture("update");
 
-		this.wilsonDim.createFramebufferTexturePair({
-			id: "dim",
+		this.wilsonPanZoomDim.createFramebufferTexturePair({
+			id: "panZoomDim",
 			textureType: "unsignedByte"
 		});
-		this.wilsonDim.useFramebuffer(null);
-		this.wilsonDim.useTexture("dim");
+		this.wilsonPanZoomDim.useFramebuffer(null);
+		this.wilsonPanZoomDim.useTexture("panZoomDim");
 
 		this.wilson.createFramebufferTexturePair({
 			id: "draw",
@@ -516,7 +518,9 @@ export class VectorFields extends AnimationFrameApplet
 
 
 
-		this.dimTexture = new Uint8Array(this.wilson.canvasWidth * this.wilson.canvasHeight * 4);
+		this.panZoomDimTexture = new Uint8Array(
+			this.wilson.canvasWidth * this.wilson.canvasHeight * 4
+		);
 
 		for (let i = 0; i < this.wilson.canvasHeight; i++)
 		{
@@ -524,13 +528,11 @@ export class VectorFields extends AnimationFrameApplet
 			{
 				const index = this.wilson.canvasWidth * i + j;
 
-				this.dimTexture[4 * index] = 0;
-				this.dimTexture[4 * index + 1] = 0;
-				this.dimTexture[4 * index + 2] = 0;
+				this.panZoomDimTexture[4 * index] = 0;
+				this.panZoomDimTexture[4 * index + 1] = 0;
+				this.panZoomDimTexture[4 * index + 2] = 0;
 			}
 		}
-
-
 
 		this.resume();
 	}
@@ -539,197 +541,69 @@ export class VectorFields extends AnimationFrameApplet
 
 	drawFrame(timeElapsed)
 	{
-		// Wrapping everything in a try block and eating the occasional error is pretty gross,
-		// but it's actually a decent solution: everything is fine unless the user
-		// resizes the window faster than the screen refresh rate, meaning we access out of bounds
-		// in the middle of this function. We can fix that by just restarting whenever it happens.
-		// try
-		// {
-			this.wilsonUpdate.setUniforms({
-				dt: this.dt * timeElapsed / 6.944
-			}, "updateX");
+		this.wilsonUpdate.setUniforms({
+			dt: this.dt * timeElapsed / 6.944
+		}, "updateX");
 
-			this.wilsonUpdate.setUniforms({
-				dt: this.dt * timeElapsed / 6.944
-			}, "updateY");
+		this.wilsonUpdate.setUniforms({
+			dt: this.dt * timeElapsed / 6.944
+		}, "updateY");
 
-			if (this.frame < this.timeElapsedHistoryLength)
+		if (this.frame < this.timeElapsedHistoryLength)
+		{
+			this.lastTimeElapsed[this.frame] = Math.min(timeElapsed, 16);
+
+			if (this.frame === this.timeElapsedHistoryLength - 1)
 			{
-				this.lastTimeElapsed[this.frame] = Math.min(timeElapsed, 16);
+				let totalTimeElapsed = 0;
 
-				if (this.frame === this.timeElapsedHistoryLength - 1)
+				for (let i = 0; i < this.timeElapsedHistoryLength; i++)
 				{
-					let totalTimeElapsed = 0;
-
-					for (let i = 0; i < this.timeElapsedHistoryLength; i++)
-					{
-						totalTimeElapsed += this.lastTimeElapsed[i];
-					}
-
-					this.wilsonDim.setUniforms({
-						dimAmount: (totalTimeElapsed / this.timeElapsedHistoryLength)
-							/ (6.944 * 255)
-					});
+					totalTimeElapsed += this.lastTimeElapsed[i];
 				}
 
-				this.frame++;
+				this.wilsonPanZoomDim.setUniforms({
+					dimAmount: (totalTimeElapsed / this.timeElapsedHistoryLength)
+						/ (6.944 * 255)
+				});
 			}
 
+			this.frame++;
+		}
 
 
-			// If there's not enough particles, we add what's missing,
-			// capped at 1% of the total particle count.
-			if (this.numParticles < this.maxParticles)
-			{
-				// We find the first open slot we can and search from the end
-				// of the list so that we can slice more efficiently.
-				const numToAdd = Math.min(
-					Math.ceil(this.maxParticles / 80),
-					this.maxParticles - this.numParticles
-				);
 
-				for (
-					let i = this.freeParticleSlots.length - numToAdd;
-					i < this.freeParticleSlots.length;
-					i++
-				) {
-					this.createParticle(this.freeParticleSlots[i]);
-				}
+		// If there's not enough particles, we add what's missing,
+		// capped at 1% of the total particle count.
+		if (this.numParticles < this.maxParticles)
+		{
+			// We find the first open slot we can and search from the end
+			// of the list so that we can slice more efficiently.
+			const numToAdd = Math.min(
+				Math.ceil(this.maxParticles / 80),
+				this.maxParticles - this.numParticles
+			);
 
-				this.freeParticleSlots.splice(this.freeParticleSlots.length - numToAdd, numToAdd);
+			for (
+				let i = this.freeParticleSlots.length - numToAdd;
+				i < this.freeParticleSlots.length;
+				i++
+			) {
+				this.createParticle(this.freeParticleSlots[i]);
 			}
 
-
-
-			// this.lastPanVelocitiesX.push(this.nextPanVelocityX);
-			// this.lastPanVelocitiesY.push(this.nextPanVelocityY);
-			// this.lastPanVelocitiesX.shift();
-			// this.lastPanVelocitiesY.shift();
-
-			// // This lets us only move the canvas when we have at least one pixel to move.
-			// if (this.nextPanVelocityX !== 0 || this.nextPanVelocityY !== 0)
-			// {
-			// 	let xDelta = -this.nextPanVelocityX;
-			// 	let yDelta = -this.nextPanVelocityY;
+			this.freeParticleSlots.splice(this.freeParticleSlots.length - numToAdd, numToAdd);
+		}
 
 
 
-			// 	if (Math.abs(xDelta / this.wilson.worldWidth * this.wilson.canvasWidth) < 1)
-			// 	{
-			// 		xDelta = 0;
-			// 	}
+		this.updateParticles(timeElapsed);
 
-			// 	else
-			// 	{
-			// 		this.nextPanVelocityX = 0;
-			// 	}
+		this.drawField();
 
+		this.drawFrameCallback();
 
-
-			// 	if (Math.abs(yDelta / this.wilson.worldHeight * this.wilson.canvasHeight) < 1)
-			// 	{
-			// 		yDelta = 0;
-			// 	}
-
-			// 	else
-			// 	{
-			// 		this.nextPanVelocityY = 0;
-			// 	}
-
-
-
-			// 	if (xDelta !== 0 || yDelta !== 0)
-			// 	{
-			// 		this.panGrid(xDelta, yDelta);
-
-			// 		this.wilson.worldCenterY -= yDelta;
-			// 		this.wilson.worldCenterX -= xDelta;
-			// 	}
-			// }
-
-			// else if (this.panVelocityX !== 0 || this.panVelocityY !== 0)
-			// {
-			// 	let xDelta = -this.panVelocityX * timeElapsed / 6.944;
-			// 	let yDelta = -this.panVelocityY * timeElapsed / 6.944;
-
-			// 	if (Math.abs(xDelta / this.wilson.worldWidth * this.wilson.canvasWidth) < 1)
-			// 	{
-			// 		xDelta = 0;
-			// 	}
-
-			// 	if (Math.abs(yDelta / this.wilson.worldHeight * this.wilson.canvasHeight) < 1)
-			// 	{
-			// 		yDelta = 0;
-			// 	}
-
-			// 	this.panGrid(xDelta, yDelta);
-
-			// 	this.wilson.worldCenterY -= yDelta;
-			// 	this.panVelocityY *= this.panFriction ** (timeElapsed / 6.944);
-
-			// 	this.wilson.worldCenterX -= xDelta;
-			// 	this.panVelocityX *= this.panFriction ** (timeElapsed / 6.944);
-
-			// 	if (this.panVelocityX ** 2 + this.panVelocityY ** 2 <
-			// 		this.panVelocityStopThreshhold ** 2)
-			// 	{
-			// 		this.panVelocityX = 0;
-			// 		this.panVelocityY = 0;
-			// 	}
-			// }
-
-
-
-			// this.lastZoomVelocities.push(this.nextZoomVelocity);
-			// this.lastZoomVelocities.shift();
-
-			// if (this.nextZoomVelocity !== 0)
-			// {
-			// 	this.zoomCanvas();
-
-			// 	this.zoomGrid(this.fixedPointX, this.fixedPointY, this.nextZoomVelocity);
-
-			// 	this.nextZoomVelocity = 0;
-			// }
-
-			// if (this.zoomVelocity !== 0)
-			// {
-			// 	this.zoomCanvas(this.fixedPointX, this.fixedPointY);
-
-			// 	this.zoomGrid(this.fixedPointX, this.fixedPointY, this.zoomVelocity);
-
-			// 	this.zoomLevel = Math.min(
-			// 		Math.max(
-			// 			this.zoomLevel + this.zoomVelocity * timeElapsed / 6.944,
-			// 			-3
-			// 		),
-			// 		3
-			// 	);
-
-			// 	this.zoomVelocity *= this.zoomFriction ** (timeElapsed / 6.944);
-
-			// 	if (Math.abs(this.zoomVelocity) < this.zoomVelocityStopThreshhold)
-			// 	{
-			// 		this.zoomVelocity = 0;
-			// 	}
-			// }
-
-
-
-			this.updateParticles(timeElapsed);
-
-			this.drawField();
-
-			this.drawFrameCallback();
-
-			this.needNewFrame = true;
-		// }
-
-		// // eslint-disable-next-line no-unused-vars
-		// catch(_ex)
-		// {
-		// 	this.generateNewField({});
-		// }
+		this.needNewFrame = true;
 	}
 
 
@@ -864,10 +738,10 @@ export class VectorFields extends AnimationFrameApplet
 					) {
 						const newIndex = row * this.wilson.canvasWidth + col;
 
-						this.dimTexture[4 * newIndex] = this.lifetime;
-						this.dimTexture[4 * newIndex + 1] = floatsH[index] * 255;
+						this.panZoomDimTexture[4 * newIndex] = this.lifetime;
+						this.panZoomDimTexture[4 * newIndex + 1] = floatsH[index] * 255;
 
-						this.dimTexture[4 * newIndex + 2] =
+						this.panZoomDimTexture[4 * newIndex + 2] =
 							Math.max(floatsS[index], floatsS2[index]) * 255;
 
 						this.particles[index][2]--;
@@ -891,268 +765,17 @@ export class VectorFields extends AnimationFrameApplet
 
 	drawField()
 	{
-		this.wilsonDim.setTexture({
-			id: "dim",
-			data: this.dimTexture
+		this.wilsonPanZoomDim.setTexture({
+			id: "panZoomDim",
+			data: this.panZoomDimTexture
 		});
-		this.wilsonDim.drawFrame();
+		this.wilsonPanZoomDim.drawFrame();
 
-		this.dimTexture = this.wilsonDim.readPixels();
+		this.panZoomDimTexture = this.wilsonPanZoomDim.readPixels();
 		this.wilson.setTexture({
 			id: "draw",
-			data: this.dimTexture
+			data: this.panZoomDimTexture
 		});
 		this.wilson.drawFrame();
 	}
-
-
-
-	// // Call this before changing the world parameters!
-	// panGrid(xDelta, yDelta)
-	// {
-	// 	this.wilsonDim.gl.useProgram(this.wilsonDim.render.shaderPrograms[1]);
-
-	// 	this.wilsonDim.gl.uniform2f(
-	// 		this.wilsonDim.uniforms.pan[1],
-	// 		xDelta / this.wilson.worldWidth, -yDelta / this.wilson.worldHeight
-	// 	);
-
-	// 	this.drawField();
-
-	// 	this.wilsonDim.gl.useProgram(this.wilsonDim.render.shaderPrograms[0]);
-
-	// 	this.wilson.draggables.recalculateLocations();
-	// }
-
-
-
-	// // Call this before changing the world parameters!
-	// zoomGrid(fixedPointX, fixedPointY, zoomDelta)
-	// {
-	// 	if (this.zoomLevel <= -3 || this.zoomLevel >= 3)
-	// 	{
-	// 		return;
-	// 	}
-
-	// 	// Ex: if the scale is 2 and goes to 3, the delta is +1,
-	// 	// so we actually want to multiply things by 2^(-1) to get the source places.
-	// 	const scale = Math.pow(2, zoomDelta);
-
-	// 	const fixedX = (fixedPointX - this.wilson.worldCenterX) / this.wilson.worldWidth + .5;
-	// 	const fixedY = (this.wilson.worldCenterY - fixedPointY) / this.wilson.worldHeight + .5;
-
-
-
-	// 	this.wilsonDim.gl.useProgram(this.wilsonDim.render.shaderPrograms[2]);
-
-	// 	this.wilsonDim.gl.uniform1f(this.wilsonDim.uniforms.scale[2], scale);
-	// 	this.wilsonDim.gl.uniform2f(this.wilsonDim.uniforms.fixedPoint[2], fixedX, fixedY);
-
-	// 	this.drawField();
-
-	// 	this.wilsonDim.gl.useProgram(this.wilsonDim.render.shaderPrograms[0]);
-
-	// 	this.wilson.draggables.recalculateLocations();
-
-
-	// 	// When we zoom out, we also cull the particles a little.
-	// 	if (zoomDelta > 0)
-	// 	{
-	// 		const chance = Math.pow(2, zoomDelta * 1.5);
-
-	// 		for (let i = 0; i < this.particles.length; i++)
-	// 		{
-	// 			if (this.particles[i][2] && (i % chance >= 1))
-	// 			{
-	// 				this.destroyParticle(i);
-	// 			}
-	// 		}
-	// 	}
-	// }
-
-
-
-	// onDragDraggable(
-	// 	activeDraggable = 0,
-	// 	x = this.wilson.draggables.worldCoordinates[0][0],
-	// 	y = this.wilson.draggables.worldCoordinates[0][1]
-	// ) {
-	// 	const uniforms = activeDraggable === 0
-	// 		? this.wilsonUpdate.uniforms.draggableArg
-	// 		: this.wilsonUpdate.uniforms.draggableArg2;
-
-	// 	for (let i = 0; i < 5; i++)
-	// 	{
-	// 		this.wilsonUpdate.gl.useProgram(this.wilsonUpdate.render.shaderPrograms[i]);
-	// 		this.wilsonUpdate.gl.uniform2f(uniforms[i], x, y);
-	// 	}
-	// }
-
-
-
-	// onGrabCanvas()
-	// {
-	// 	this.panVelocityX = 0;
-	// 	this.panVelocityY = 0;
-	// 	this.zoomVelocity = 0;
-
-	// 	this.lastPanVelocitiesX = [0, 0, 0, 0];
-	// 	this.lastPanVelocitiesY = [0, 0, 0, 0];
-	// 	this.lastZoomVelocities = [0, 0, 0, 0];
-	// }
-
-	// onDragCanvas(x, y, xDelta, yDelta)
-	// {
-	// 	// The += here lets us only move the canvas when we have at least one pixel to move.
-	// 	this.nextPanVelocityX += -xDelta;
-	// 	this.nextPanVelocityY += -yDelta;
-	// }
-
-	// onReleaseCanvas()
-	// {
-	// 	let maxIndex = 0;
-
-	// 	this.lastPanVelocitiesX.forEach((velocity, index) =>
-	// 	{
-	// 		if (Math.abs(velocity) > this.panVelocityX)
-	// 		{
-	// 			this.panVelocityX = Math.abs(velocity);
-	// 			maxIndex = index;
-	// 		}
-	// 	});
-
-	// 	if (this.panVelocityX < this.panVelocityStartThreshhold)
-	// 	{
-	// 		this.panVelocityX = 0;
-	// 	}
-
-	// 	else
-	// 	{
-	// 		this.panVelocityX = this.lastPanVelocitiesX[maxIndex];
-	// 	}
-
-
-
-	// 	this.lastPanVelocitiesY.forEach((velocity, index) =>
-	// 	{
-	// 		if (Math.abs(velocity) > this.panVelocityY)
-	// 		{
-	// 			this.panVelocityY = Math.abs(velocity);
-	// 			maxIndex = index;
-	// 		}
-	// 	});
-
-	// 	if (this.panVelocityY < this.panVelocityStartThreshhold)
-	// 	{
-	// 		this.panVelocityY = 0;
-	// 	}
-
-	// 	else
-	// 	{
-	// 		this.panVelocityY = this.lastPanVelocitiesY[maxIndex];
-	// 	}
-
-
-
-	// 	this.lastZoomVelocities.forEach((velocity, index) =>
-	// 	{
-	// 		if (Math.abs(velocity) > this.zoomVelocity)
-	// 		{
-	// 			this.zoomVelocity = Math.abs(velocity);
-	// 			maxIndex = index;
-	// 		}
-	// 	});
-
-	// 	if (this.zoomVelocity < this.zoomVelocityStartThreshhold)
-	// 	{
-	// 		this.zoomVelocity = 0;
-	// 	}
-
-	// 	else
-	// 	{
-	// 		this.zoomVelocity = this.lastZoomVelocities[maxIndex];
-	// 	}
-	// }
-
-
-
-	// onWheelCanvas(x, y, scrollAmount)
-	// {
-	// 	this.fixedPointX = x;
-	// 	this.fixedPointY = y;
-
-	// 	if (Math.abs(scrollAmount / 100) < .3)
-	// 	{
-	// 		this.nextZoomVelocity = scrollAmount / 100;
-
-	// 		this.zoomLevel = Math.min(Math.max(this.zoomLevel + scrollAmount / 100, -3), 3);
-	// 	}
-
-	// 	else
-	// 	{
-	// 		this.zoomVelocity += Math.sign(scrollAmount) * .05;
-	// 	}
-	// }
-
-
-
-	// onPinchCanvas(x, y, touchDistanceDelta)
-	// {
-	// 	let zoomDelta;
-
-	// 	if (this.aspectRatio >= 1)
-	// 	{
-	// 		zoomDelta = touchDistanceDelta / this.wilson.worldWidth * 10;
-	// 	}
-
-	// 	else
-	// 	{
-	// 		zoomDelta = touchDistanceDelta / this.wilson.worldHeight * 10;
-	// 	}
-
-	// 	this.zoomLevel = Math.min(Math.max(this.zoomLevel - zoomDelta, -3), 3);
-	// 	this.nextZoomVelocity = -zoomDelta;
-
-	// 	this.fixedPointX = x;
-	// 	this.fixedPointY = y;
-	// }
-
-
-
-	// zoomCanvas()
-	// {
-	// 	if (this.aspectRatio >= 1)
-	// 	{
-	// 		const newWorldCenter = this.wilson.input.getZoomedWorldCenter(
-	// 			this.fixedPointX,
-	// 			this.fixedPointY,
-	// 			4 * Math.pow(2, this.zoomLevel) * this.aspectRatio,
-	// 			4 * Math.pow(2, this.zoomLevel)
-	// 		);
-
-	// 		this.wilson.worldWidth = 4 * Math.pow(2, this.zoomLevel) * this.aspectRatio;
-	// 		this.wilson.worldHeight = 4 * Math.pow(2, this.zoomLevel);
-
-	// 		this.wilson.worldCenterX = newWorldCenter[0];
-	// 		this.wilson.worldCenterY = newWorldCenter[1];
-	// 	}
-
-	// 	else
-	// 	{
-	// 		const newWorldCenter = this.wilson.input.getZoomedWorldCenter(
-	// 			this.fixedPointX,
-	// 			this.fixedPointY,
-	// 			4 * Math.pow(2, this.zoomLevel),
-	// 			4 * Math.pow(2, this.zoomLevel) / this.aspectRatio
-	// 		);
-
-	// 		this.wilson.worldWidth = 4 * Math.pow(2, this.zoomLevel);
-	// 		this.wilson.worldHeight = 4 * Math.pow(2, this.zoomLevel) / this.aspectRatio;
-
-	// 		this.wilson.worldCenterX = newWorldCenter[0];
-	// 		this.wilson.worldCenterY = newWorldCenter[1];
-	// 	}
-
-	// 	this.wilson.draggables.recalculateLocations();
-	// }
 }
