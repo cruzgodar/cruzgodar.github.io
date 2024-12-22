@@ -5,13 +5,11 @@ import {
 } from "../../../scripts/src/complexGlsl.js";
 import { AnimationFrameApplet } from "/scripts/applets/animationFrameApplet.js";
 import {
-	getEqualPixelFullScreen,
 	getFloatGlsl,
 	getMaxGlslString,
 	tempShader
 } from "/scripts/applets/applet.js";
-import { addTemporaryListener } from "/scripts/src/main.js";
-import { Wilson } from "/scripts/wilson.js";
+import { WilsonGPU } from "/scripts/wilson.js";
 
 export class VectorFields extends AnimationFrameApplet
 {
@@ -19,23 +17,20 @@ export class VectorFields extends AnimationFrameApplet
 
 	resolution = 500;
 
+	lastWorldCenterX;
+	lastWorldCenterY;
+	lastWorldWidth;
+
 	numParticles = 0;
 	maxParticles = 5000;
 	loopEdges = false;
 	particleDilation;
 
-	aspectRatio = 1;
-	zoomLevel = .6515;
-	fixedPointX = 0;
-	fixedPointY = 0;
-
 	dt = .00375;
-
 	lifetime = 150;
 
 	// A long array of particles of the form [x, y, remaining lifetime].
 	particles = [];
-
 	freeParticleSlots = [];
 
 	updateTexture;
@@ -45,26 +40,6 @@ export class VectorFields extends AnimationFrameApplet
 	dimCanvas;
 	wilsonUpdate;
 	wilsonDim;
-
-	panVelocityX = 0;
-	panVelocityY = 0;
-	zoomVelocity = 0;
-
-	nextPanVelocityX = 0;
-	nextPanVelocityY = 0;
-	nextZoomVelocity = 0;
-
-	lastPanVelocitiesX = [];
-	lastPanVelocitiesY = [];
-	lastZoomVelocities = [];
-
-	panFriction = .96;
-	panVelocityStartThreshhold = .00025;
-	panVelocityStopThreshhold = .00025;
-
-	zoomFriction = .9;
-	zoomVelocityStartThreshhold = .002;
-	zoomVelocityStopThreshhold = .002;
 
 	timeElapsedHistoryLength = 60;
 	lastTimeElapsed = new Array(this.timeElapsedHistoryLength);
@@ -77,106 +52,57 @@ export class VectorFields extends AnimationFrameApplet
 
 	constructor({
 		canvas,
-		draggable1Location = [1, 0],
-		draggable2Location = [-1, 0],
+		// draggables = {},
 		loopEdges = false,
 	}) {
 		super(canvas);
 
 		this.loopEdges = loopEdges;
 
-		this.updateCanvas = this.createHiddenCanvas();
-		this.dimCanvas = this.createHiddenCanvas();
+		this.updateCanvas = this.createHiddenCanvas(false);
+		this.dimCanvas = this.createHiddenCanvas(false);
 
 		const optionsUpdate =
 		{
-			renderer: "gpu",
-
 			shader: tempShader,
 
 			canvasWidth: 100,
 			canvasHeight: 100,
 		};
 
-		this.wilsonUpdate = new Wilson(this.updateCanvas, optionsUpdate);
+		this.wilsonUpdate = new WilsonGPU(this.updateCanvas, optionsUpdate);
 
 
 
-		this.wilsonUpdate.render.createFramebufferTexturePair();
-
-		this.wilsonUpdate.gl.bindTexture(
-			this.wilsonUpdate.gl.TEXTURE_2D,
-			this.wilsonUpdate.render.framebuffers[0].texture
-		);
-
-		this.wilsonUpdate.gl.bindFramebuffer(this.wilsonUpdate.gl.FRAMEBUFFER, null);
+		this.wilsonUpdate.createFramebufferTexturePair({
+			id: "update",
+			textureType: "float"
+		});
+		this.wilsonUpdate.useFramebuffer(null);
+		this.wilsonUpdate.useTexture("update");
 
 
 
-		const shaderDim = /* glsl */`
+		const shaderPanAndZoom = /* glsl */`
 			precision highp float;
 			precision highp sampler2D;
 			
 			varying vec2 uv;
 			
 			uniform sampler2D uTexture;
+			
 			uniform float dimAmount;
+			uniform mat2 transform;
 			
 			void main(void)
 			{
-				vec3 v = texture2D(uTexture, (uv + vec2(1.0, 1.0)) / 2.0).xyz;
-				
-				gl_FragColor = vec4(v.x - dimAmount / 255.0, v.y, v.z, 1.0);
-			}
-		`;
-
-		const shaderPan = /* glsl */`
-			precision highp float;
-			precision highp sampler2D;
-			
-			varying vec2 uv;
-			
-			uniform sampler2D uTexture;
-			
-			uniform vec2 pan;
-			
-			void main(void)
-			{
-				vec2 texCoord = (uv + vec2(1.0, 1.0)) / 2.0 - pan;
+				vec2 texCoord = transform * ((uv + vec2(1.0, 1.0)) / 2.0);
 				
 				if (texCoord.x >= 0.0 && texCoord.x < 1.0 && texCoord.y >= 0.0 && texCoord.y < 1.0)
 				{
 					vec3 v = texture2D(uTexture, texCoord).xyz;
 					
-					gl_FragColor = vec4(v.x, v.y, v.z, 1.0);
-					
-					return;
-				}
-				
-				gl_FragColor = vec4(0.0, 0.0, 0.0, 1.0);
-			}
-		`;
-
-		const shaderZoom = /* glsl */`
-			precision highp float;
-			precision highp sampler2D;
-			
-			varying vec2 uv;
-			
-			uniform sampler2D uTexture;
-			
-			uniform float scale;
-			uniform vec2 fixedPoint;
-			
-			void main(void)
-			{
-				vec2 texCoord = ((uv + vec2(1.0, 1.0)) / 2.0 - fixedPoint) * scale + fixedPoint;
-				
-				if (texCoord.x >= 0.0 && texCoord.x < 1.0 && texCoord.y >= 0.0 && texCoord.y < 1.0)
-				{
-					vec3 v = texture2D(uTexture, texCoord).xyz;
-					
-					gl_FragColor = vec4(v.x / 1.06, v.y, v.z, 1.0);
+					gl_FragColor = vec4(v.x - dimAmount, v.y, v.z, 1.0);
 					
 					return;
 				}
@@ -187,44 +113,24 @@ export class VectorFields extends AnimationFrameApplet
 
 		const optionsDim =
 		{
-			renderer: "gpu",
+			shader: shaderPanAndZoom,
 
-			shader: shaderDim,
+			uniforms: {
+				dimAmount: 1 / 255,
+				transform: [[1, 0], [0, 1]]
+			},
 
 			canvasWidth: this.resolution,
-			canvasHeight: this.resolution,
 		};
 
-		this.wilsonDim = new Wilson(this.dimCanvas, optionsDim);
+		this.wilsonDim = new WilsonGPU(this.dimCanvas, optionsDim);
 
-		this.wilsonDim.render.initUniforms(["dimAmount"], 0);
-
-
-
-		this.wilsonDim.render.loadNewShader(shaderPan);
-
-		this.wilsonDim.render.initUniforms(["pan"], 1);
-
-		this.wilsonDim.gl.useProgram(this.wilsonDim.render.shaderPrograms[0]);
-
-
-
-		this.wilsonDim.render.loadNewShader(shaderZoom);
-
-		this.wilsonDim.render.initUniforms(["scale", "fixedPoint"], 2);
-
-		this.wilsonDim.gl.useProgram(this.wilsonDim.render.shaderPrograms[0]);
-
-
-
-		this.wilsonDim.render.createFramebufferTexturePair(this.wilsonDim.gl.UNSIGNED_BYTE);
-
-		this.wilsonDim.gl.bindTexture(
-			this.wilsonDim.gl.TEXTURE_2D,
-			this.wilsonDim.render.framebuffers[0].texture
-		);
-
-		this.wilsonDim.gl.bindFramebuffer(this.wilsonDim.gl.FRAMEBUFFER, null);
+		this.wilsonDim.createFramebufferTexturePair({
+			id: "dim",
+			textureType: "unsignedByte"
+		});
+		this.wilsonDim.useFramebuffer(null);
+		this.wilsonDim.useTexture("dim");
 
 		this.dimTexture = new Uint8Array(this.resolution * this.resolution * 4);
 
@@ -240,8 +146,7 @@ export class VectorFields extends AnimationFrameApplet
 			
 			uniform float maxBrightness;
 
-			uniform float stepSizeX;
-			uniform float stepSizeY;
+			uniform vec2 stepSize;
 			
 			vec3 hsv2rgb(vec3 c)
 			{
@@ -265,84 +170,53 @@ export class VectorFields extends AnimationFrameApplet
 
 		const options =
 		{
-			renderer: "gpu",
-
 			shader: shaderDraw,
 
+			uniforms: {
+				maxBrightness: this.lifetime / 255,
+				stepSize: [2 / this.resolution, 2 / this.resolution],
+			},
+
 			canvasWidth: this.resolution,
-			canvasHeight: this.resolution,
 
 			worldWidth: 2 * Math.PI,
 
+			minWorldWidth: 0.0001,
+			maxWorldWidth: 100,
+			minWorldHeight: 0.0001,
+			maxWorldHeight: 100,
 
+			interactionOptions: {
+				useForPanAndZoom: true,
+				onPanAndZoom: () => this.needNewFrame = true,
+			},
 
-			useFullscreen: true,
+			fullscreenOptions: {
+				fillScreen: true,
+				onSwitch: this.generateNewField.bind(this, {}),
+				useFullscreenButton: true,
+				enterFullscreenButtonIconPath: "/graphics/general-icons/enter-fullscreen.png",
+				exitFullscreenButtonIconPath: "/graphics/general-icons/exit-fullscreen.png",
+			}
 
-			trueFullscreen: true,
+			// useDraggables: true,
 
-			useFullscreenButton: true,
-
-			enterFullscreenButtonIconPath: "/graphics/general-icons/enter-fullscreen.png",
-			exitFullscreenButtonIconPath: "/graphics/general-icons/exit-fullscreen.png",
-
-			switchFullscreenCallback: this.generateNewField.bind(this, {}),
-
-
-
-			useDraggables: true,
-
-			draggablesMousemoveCallback: this.onDragDraggable.bind(this),
-			draggablesTouchmoveCallback: this.onDragDraggable.bind(this),
-
-
-
-			mousedownCallback: this.onGrabCanvas.bind(this),
-			touchstartCallback: this.onGrabCanvas.bind(this),
-
-			mousedragCallback: this.onDragCanvas.bind(this),
-			touchmoveCallback: this.onDragCanvas.bind(this),
-
-			mouseupCallback: this.onReleaseCanvas.bind(this),
-			touchendCallback: this.onReleaseCanvas.bind(this),
-
-			wheelCallback: this.onWheelCanvas.bind(this),
-			pinchCallback: this.onPinchCanvas.bind(this)
+			// draggablesMousemoveCallback: this.onDragDraggable.bind(this),
+			// draggablesTouchmoveCallback: this.onDragDraggable.bind(this),
 		};
 
-		this.wilson = new Wilson(canvas, options);
+		this.wilson = new WilsonGPU(canvas, options);
 
-		this.wilson.render.initUniforms([
-			"maxBrightness",
-			"stepSizeX",
-			"stepSizeY",
-		]);
+		this.lastWorldCenterX = this.wilson.worldCenterX;
+		this.lastWorldCenterY = this.wilson.worldCenterY;
+		this.lastWorldWidth = this.wilson.worldWidth;
 
-		this.wilson.gl.uniform1f(this.wilson.uniforms.maxBrightness, this.lifetime / 255);
-
-		this.wilson.render.createFramebufferTexturePair(this.wilson.gl.UNSIGNED_BYTE);
-
-		this.wilson.gl.bindTexture(
-			this.wilson.gl.TEXTURE_2D,
-			this.wilson.render.framebuffers[0].texture
-		);
-
-		this.wilson.gl.bindFramebuffer(this.wilson.gl.FRAMEBUFFER, null);
-
-
-
-		this.wilson.draggables.add(...draggable1Location);
-		this.wilson.draggables.add(...draggable2Location);
-
-
-
-		const boundFunction = this.handleResizeEvent.bind(this);
-		addTemporaryListener({
-			object: window,
-			event: "resize",
-			callback: boundFunction
+		this.wilson.createFramebufferTexturePair({
+			id: "draw",
+			textureType: "unsignedByte"
 		});
-
-
+		this.wilson.useFramebuffer(null);
+		this.wilson.useTexture("draw");
 
 		this.loadPromise = loadGlsl();
 	}
@@ -355,9 +229,9 @@ export class VectorFields extends AnimationFrameApplet
 		maxParticles = 10000,
 		dt = .00375,
 		lifetime = 150,
+		worldWidth = 2 * Math.PI,
 		worldCenterX = 0,
 		worldCenterY = 0,
-		zoomLevel = .6515,
 		particleDilation = undefined,
 		appendGlsl = ""
 	}) {
@@ -375,8 +249,8 @@ export class VectorFields extends AnimationFrameApplet
 			
 			uniform float dt;
 			
-			uniform vec2 draggableArg;
-			uniform vec2 draggableArg2;
+			// uniform vec2 draggableArg;
+			// uniform vec2 draggableArg2;
 			
 			
 			
@@ -440,84 +314,46 @@ export class VectorFields extends AnimationFrameApplet
 			}
 		`;
 
-		this.wilsonUpdate.render.shaderPrograms = [];
-
-		this.wilsonUpdate.render.loadNewShader(shaderUpdateX);
-		this.wilsonUpdate.render.loadNewShader(shaderUpdateY);
-		this.wilsonUpdate.render.loadNewShader(shaderUpdateH);
-		this.wilsonUpdate.render.loadNewShader(shaderUpdateS);
-		this.wilsonUpdate.render.loadNewShader(shaderUpdateS2);
-
-		for (let i = 0; i < 5; i++)
-		{
-			this.wilsonUpdate.render.initUniforms(["dt", "draggableArg", "draggableArg2"], i);
-
-			this.wilsonUpdate.gl.useProgram(this.wilsonUpdate.render.shaderPrograms[i]);
-			this.wilsonUpdate.gl.uniform1f(this.wilsonUpdate.uniforms.dt[i], this.dt);
-			
-			this.wilsonUpdate.gl.uniform2fv(
-				this.wilsonUpdate.uniforms.draggableArg[i],
-				this.wilson.draggables.worldCoordinates[0]
-			);
-
-			this.wilsonUpdate.gl.uniform2fv(
-				this.wilsonUpdate.uniforms.draggableArg2[i],
-				this.wilson.draggables.worldCoordinates[1]
-			);
-		}
-
-
-
-		const shaderDraw = /* glsl */`
-			precision highp float;
-			precision highp sampler2D;
-			
-			varying vec2 uv;
-			
-			uniform sampler2D uTexture;
-			
-			uniform float maxBrightness;
-
-			uniform float stepSizeX;
-			uniform float stepSizeY;
-			
-			vec3 hsv2rgb(vec3 c)
-			{
-				vec4 K = vec4(1.0, 2.0 / 3.0, 1.0 / 3.0, 3.0);
-				vec3 p = abs(fract(c.xxx + K.xyz) * 6.0 - K.www);
-				return c.z * mix(K.xxx, clamp(p - K.xxx, 0.0, 1.0), c.y);
+		this.wilsonUpdate.loadShader({
+			id: "updateX",
+			source: shaderUpdateX,
+			uniforms: {
+				dt: this.dt,
 			}
+		});
 
-			vec3 getPixel(vec2 uv)
-			{
-				vec3 v = texture2D(uTexture, (vec2(1.0 + uv.x, 1.0 - uv.y)) / 2.0).xyz;
-
-				return hsv2rgb(vec3(v.y, v.z, v.x / maxBrightness));
+		this.wilsonUpdate.loadShader({
+			id: "updateY",
+			source: shaderUpdateY,
+			uniforms: {
+				dt: this.dt,
 			}
-			
-			void main(void)
-			{
-				${this.getSamplingGlsl()}
-			}
-		`;
+		});
 
-		this.wilson.render.loadNewShader(shaderDraw);
+		this.wilsonUpdate.loadShader({
+			id: "updateH",
+			source: shaderUpdateH,
+		});
 
-		this.wilson.render.initUniforms([
-			"maxBrightness",
-			"stepSizeX",
-			"stepSizeY",
-		]);
+		this.wilsonUpdate.loadShader({
+			id: "updateS",
+			source: shaderUpdateS,
+		});
 
-		this.wilson.gl.uniform1f(this.wilson.uniforms.maxBrightness, this.lifetime / 255);
+		this.wilsonUpdate.loadShader({
+			id: "updateS2",
+			source: shaderUpdateS2,
+		});
+
+		this.wilson.setUniforms({ maxBrightness: this.lifetime / 255 });
 
 
 
-		this.wilson.draggables.draggables[0].style.display =
-			generatingCode.indexOf("draggableArg") !== -1 ? "block" : "none";
+		// this.wilson.draggables.draggables[0].style.display =
+		// 	generatingCode.indexOf("draggableArg") !== -1 ? "block" : "none";
 		
-		this.wilson.draggables.draggables[1].style.display =
-			generatingCode.indexOf("draggableArg2") !== -1 ? "block" : "none";
+		// this.wilson.draggables.draggables[1].style.display =
+		// 	generatingCode.indexOf("draggableArg2") !== -1 ? "block" : "none";
 
 
 
@@ -526,9 +362,9 @@ export class VectorFields extends AnimationFrameApplet
 			maxParticles,
 			dt,
 			lifetime,
+			worldWidth,
 			worldCenterX,
 			worldCenterY,
-			zoomLevel
 		});
 	}
 
@@ -550,9 +386,9 @@ export class VectorFields extends AnimationFrameApplet
 				vec3 distance1 = getPixel(uv);
 
 				// Make a 2x2 square down and right.
-				vec3 distance2 = getPixel(uv + vec2(stepSizeX, 0.0));
-				vec3 distance3 = getPixel(uv + vec2(0.0, stepSizeY));
-				vec3 distance4 = getPixel(uv + vec2(stepSizeX, stepSizeY));
+				vec3 distance2 = getPixel(uv + vec2(stepSize.x, 0.0));
+				vec3 distance3 = getPixel(uv + vec2(0.0, stepSize.y));
+				vec3 distance4 = getPixel(uv + stepSize);
 
 				gl_FragColor = vec4(${getMaxGlslString("distance", 4)}, 1.0);
 			`;
@@ -576,8 +412,8 @@ export class VectorFields extends AnimationFrameApplet
 				glsl += /* glsl */`
 					vec3 distance${numDistances} = getPixel(
 						uv + vec2(
-							${getFloatGlsl(i)} * stepSizeX,
-							${getFloatGlsl(j)} * stepSizeY
+							${getFloatGlsl(i)} * stepSize.x,
+							${getFloatGlsl(j)} * stepSize.y
 						)
 					);
 				`;
@@ -598,28 +434,32 @@ export class VectorFields extends AnimationFrameApplet
 		maxParticles = this.maxParticles,
 		dt = this.dt,
 		lifetime = this.lifetime,
+		worldWidth = this.wilson.worldWidth,
 		worldCenterX = this.wilson.worldCenterX,
 		worldCenterY = this.wilson.worldCenterY,
-		zoomLevel = this.zoomLevel
 	}) {
 		this.resolution = resolution;
 		this.maxParticles = maxParticles;
 		this.dt = dt;
 		this.lifetime = lifetime;
 
-		this.wilson.worldCenterX = worldCenterX;
-		this.wilson.worldCenterY = worldCenterY;
-		this.zoomLevel = zoomLevel;
-		this.zoomCanvas();
+		this.wilson.resizeCanvas({ width: resolution });
 
-		this.wilson.gl.uniform1f(this.wilson.uniforms.maxBrightness, this.lifetime / 255);
+		this.wilson.setUniforms({
+			maxBrightness: this.lifetime / 255,
+			stepSize: [2 / this.wilson.canvasWidth, 2 / this.wilson.canvasHeight]
+		});
+
+		this.wilson.resizeWorld({
+			width: worldWidth,
+			centerX: worldCenterX,
+			centerY: worldCenterY
+		});
 
 		this.numParticles = 0;
 
 		const updateResolution = Math.ceil(Math.sqrt(maxParticles));
-		this.wilsonUpdate.changeCanvasSize(updateResolution, updateResolution);
-
-		this.changeAspectRatio();
+		this.wilsonUpdate.resizeCanvas({ width: updateResolution });
 
 
 
@@ -681,19 +521,15 @@ export class VectorFields extends AnimationFrameApplet
 		// but it's actually a decent solution: everything is fine unless the user
 		// resizes the window faster than the screen refresh rate, meaning we access out of bounds
 		// in the middle of this function. We can fix that by just restarting whenever it happens.
-		try
-		{
-			for (let i = 0; i < 5; i++)
-			{
-				this.wilsonUpdate.gl.useProgram(this.wilsonUpdate.render.shaderPrograms[i]);
-				
-				this.wilsonUpdate.gl.uniform1f(
-					this.wilsonUpdate.uniforms.dt[i],
-					this.dt * timeElapsed / 6.944
-				);
-			}
+		// try
+		// {
+			this.wilsonUpdate.setUniforms({
+				dt: this.dt * timeElapsed / 6.944
+			}, "updateX");
 
-			this.wilsonDim.gl.useProgram(this.wilsonDim.render.shaderPrograms[0]);
+			this.wilsonUpdate.setUniforms({
+				dt: this.dt * timeElapsed / 6.944
+			}, "updateY");
 
 			if (this.frame < this.timeElapsedHistoryLength)
 			{
@@ -708,10 +544,10 @@ export class VectorFields extends AnimationFrameApplet
 						totalTimeElapsed += this.lastTimeElapsed[i];
 					}
 
-					this.wilsonDim.gl.uniform1f(
-						this.wilsonDim.uniforms.dimAmount[0],
-						(totalTimeElapsed / this.timeElapsedHistoryLength) / 6.944
-					);
+					this.wilsonDim.setUniforms({
+						dimAmount: (totalTimeElapsed / this.timeElapsedHistoryLength)
+							/ (6.944 * 255)
+					});
 				}
 
 				this.frame++;
@@ -743,118 +579,118 @@ export class VectorFields extends AnimationFrameApplet
 
 
 
-			this.lastPanVelocitiesX.push(this.nextPanVelocityX);
-			this.lastPanVelocitiesY.push(this.nextPanVelocityY);
-			this.lastPanVelocitiesX.shift();
-			this.lastPanVelocitiesY.shift();
+			// this.lastPanVelocitiesX.push(this.nextPanVelocityX);
+			// this.lastPanVelocitiesY.push(this.nextPanVelocityY);
+			// this.lastPanVelocitiesX.shift();
+			// this.lastPanVelocitiesY.shift();
 
-			// This lets us only move the canvas when we have at least one pixel to move.
-			if (this.nextPanVelocityX !== 0 || this.nextPanVelocityY !== 0)
-			{
-				let xDelta = -this.nextPanVelocityX;
-				let yDelta = -this.nextPanVelocityY;
-
-
-
-				if (Math.abs(xDelta / this.wilson.worldWidth * this.wilson.canvasWidth) < 1)
-				{
-					xDelta = 0;
-				}
-
-				else
-				{
-					this.nextPanVelocityX = 0;
-				}
+			// // This lets us only move the canvas when we have at least one pixel to move.
+			// if (this.nextPanVelocityX !== 0 || this.nextPanVelocityY !== 0)
+			// {
+			// 	let xDelta = -this.nextPanVelocityX;
+			// 	let yDelta = -this.nextPanVelocityY;
 
 
 
-				if (Math.abs(yDelta / this.wilson.worldHeight * this.wilson.canvasHeight) < 1)
-				{
-					yDelta = 0;
-				}
+			// 	if (Math.abs(xDelta / this.wilson.worldWidth * this.wilson.canvasWidth) < 1)
+			// 	{
+			// 		xDelta = 0;
+			// 	}
 
-				else
-				{
-					this.nextPanVelocityY = 0;
-				}
-
-
-
-				if (xDelta !== 0 || yDelta !== 0)
-				{
-					this.panGrid(xDelta, yDelta);
-
-					this.wilson.worldCenterY -= yDelta;
-					this.wilson.worldCenterX -= xDelta;
-				}
-			}
-
-			else if (this.panVelocityX !== 0 || this.panVelocityY !== 0)
-			{
-				let xDelta = -this.panVelocityX * timeElapsed / 6.944;
-				let yDelta = -this.panVelocityY * timeElapsed / 6.944;
-
-				if (Math.abs(xDelta / this.wilson.worldWidth * this.wilson.canvasWidth) < 1)
-				{
-					xDelta = 0;
-				}
-
-				if (Math.abs(yDelta / this.wilson.worldHeight * this.wilson.canvasHeight) < 1)
-				{
-					yDelta = 0;
-				}
-
-				this.panGrid(xDelta, yDelta);
-
-				this.wilson.worldCenterY -= yDelta;
-				this.panVelocityY *= this.panFriction ** (timeElapsed / 6.944);
-
-				this.wilson.worldCenterX -= xDelta;
-				this.panVelocityX *= this.panFriction ** (timeElapsed / 6.944);
-
-				if (this.panVelocityX ** 2 + this.panVelocityY ** 2 <
-					this.panVelocityStopThreshhold ** 2)
-				{
-					this.panVelocityX = 0;
-					this.panVelocityY = 0;
-				}
-			}
+			// 	else
+			// 	{
+			// 		this.nextPanVelocityX = 0;
+			// 	}
 
 
 
-			this.lastZoomVelocities.push(this.nextZoomVelocity);
-			this.lastZoomVelocities.shift();
+			// 	if (Math.abs(yDelta / this.wilson.worldHeight * this.wilson.canvasHeight) < 1)
+			// 	{
+			// 		yDelta = 0;
+			// 	}
 
-			if (this.nextZoomVelocity !== 0)
-			{
-				this.zoomCanvas();
+			// 	else
+			// 	{
+			// 		this.nextPanVelocityY = 0;
+			// 	}
 
-				this.zoomGrid(this.fixedPointX, this.fixedPointY, this.nextZoomVelocity);
 
-				this.nextZoomVelocity = 0;
-			}
 
-			if (this.zoomVelocity !== 0)
-			{
-				this.zoomCanvas(this.fixedPointX, this.fixedPointY);
+			// 	if (xDelta !== 0 || yDelta !== 0)
+			// 	{
+			// 		this.panGrid(xDelta, yDelta);
 
-				this.zoomGrid(this.fixedPointX, this.fixedPointY, this.zoomVelocity);
+			// 		this.wilson.worldCenterY -= yDelta;
+			// 		this.wilson.worldCenterX -= xDelta;
+			// 	}
+			// }
 
-				this.zoomLevel = Math.min(
-					Math.max(
-						this.zoomLevel + this.zoomVelocity * timeElapsed / 6.944,
-						-3
-					),
-					3
-				);
+			// else if (this.panVelocityX !== 0 || this.panVelocityY !== 0)
+			// {
+			// 	let xDelta = -this.panVelocityX * timeElapsed / 6.944;
+			// 	let yDelta = -this.panVelocityY * timeElapsed / 6.944;
 
-				this.zoomVelocity *= this.zoomFriction ** (timeElapsed / 6.944);
+			// 	if (Math.abs(xDelta / this.wilson.worldWidth * this.wilson.canvasWidth) < 1)
+			// 	{
+			// 		xDelta = 0;
+			// 	}
 
-				if (Math.abs(this.zoomVelocity) < this.zoomVelocityStopThreshhold)
-				{
-					this.zoomVelocity = 0;
-				}
-			}
+			// 	if (Math.abs(yDelta / this.wilson.worldHeight * this.wilson.canvasHeight) < 1)
+			// 	{
+			// 		yDelta = 0;
+			// 	}
+
+			// 	this.panGrid(xDelta, yDelta);
+
+			// 	this.wilson.worldCenterY -= yDelta;
+			// 	this.panVelocityY *= this.panFriction ** (timeElapsed / 6.944);
+
+			// 	this.wilson.worldCenterX -= xDelta;
+			// 	this.panVelocityX *= this.panFriction ** (timeElapsed / 6.944);
+
+			// 	if (this.panVelocityX ** 2 + this.panVelocityY ** 2 <
+			// 		this.panVelocityStopThreshhold ** 2)
+			// 	{
+			// 		this.panVelocityX = 0;
+			// 		this.panVelocityY = 0;
+			// 	}
+			// }
+
+
+
+			// this.lastZoomVelocities.push(this.nextZoomVelocity);
+			// this.lastZoomVelocities.shift();
+
+			// if (this.nextZoomVelocity !== 0)
+			// {
+			// 	this.zoomCanvas();
+
+			// 	this.zoomGrid(this.fixedPointX, this.fixedPointY, this.nextZoomVelocity);
+
+			// 	this.nextZoomVelocity = 0;
+			// }
+
+			// if (this.zoomVelocity !== 0)
+			// {
+			// 	this.zoomCanvas(this.fixedPointX, this.fixedPointY);
+
+			// 	this.zoomGrid(this.fixedPointX, this.fixedPointY, this.zoomVelocity);
+
+			// 	this.zoomLevel = Math.min(
+			// 		Math.max(
+			// 			this.zoomLevel + this.zoomVelocity * timeElapsed / 6.944,
+			// 			-3
+			// 		),
+			// 		3
+			// 	);
+
+			// 	this.zoomVelocity *= this.zoomFriction ** (timeElapsed / 6.944);
+
+			// 	if (Math.abs(this.zoomVelocity) < this.zoomVelocityStopThreshhold)
+			// 	{
+			// 		this.zoomVelocity = 0;
+			// 	}
+			// }
 
 
 
@@ -865,13 +701,13 @@ export class VectorFields extends AnimationFrameApplet
 			this.drawFrameCallback();
 
 			this.needNewFrame = true;
-		}
+		// }
 
-		// eslint-disable-next-line no-unused-vars
-		catch(_ex)
-		{
-			this.generateNewField({});
-		}
+		// // eslint-disable-next-line no-unused-vars
+		// catch(_ex)
+		// {
+		// 	this.generateNewField({});
+		// }
 	}
 
 
@@ -921,56 +757,31 @@ export class VectorFields extends AnimationFrameApplet
 			}
 		}
 
+		this.wilsonUpdate.setTexture({
+			id: "update",
+			data: this.updateTexture
+		});
 
+		this.wilsonUpdate.useShader("updateX");
+		this.wilsonUpdate.drawFrame();
+		const floatsX = new Float32Array(this.wilsonUpdate.readPixels().buffer);
 
-		this.wilsonUpdate.gl.texImage2D(
-			this.wilsonUpdate.gl.TEXTURE_2D,
-			0,
-			this.wilsonUpdate.gl.RGBA,
-			this.wilsonUpdate.canvasWidth,
-			this.wilsonUpdate.canvasHeight,
-			0,
-			this.wilsonUpdate.gl.RGBA,
-			this.wilsonUpdate.gl.FLOAT,
-			this.updateTexture
-		);
+		this.wilsonUpdate.useShader("updateY");
+		this.wilsonUpdate.drawFrame();
+		const floatsY = new Float32Array(this.wilsonUpdate.readPixels().buffer);
 
-		this.wilsonUpdate.gl.useProgram(this.wilsonUpdate.render.shaderPrograms[0]);
-		this.wilsonUpdate.render.drawFrame();
+		this.wilsonUpdate.useShader("updateH");
+		this.wilsonUpdate.drawFrame();
+		const floatsH = new Float32Array(this.wilsonUpdate.readPixels().buffer);
 
-		const floatsX = new Float32Array(this.wilsonUpdate.render.getPixelData().buffer);
-
-
-
-		this.wilsonUpdate.gl.useProgram(this.wilsonUpdate.render.shaderPrograms[1]);
-		this.wilsonUpdate.render.drawFrame();
-
-		const floatsY = new Float32Array(this.wilsonUpdate.render.getPixelData().buffer);
-
-
-
-		this.wilsonUpdate.gl.useProgram(this.wilsonUpdate.render.shaderPrograms[2]);
-		this.wilsonUpdate.render.drawFrame();
-
-		const floatsH = new Float32Array(this.wilsonUpdate.render.getPixelData().buffer);
-
-
-
-		this.wilsonUpdate.gl.useProgram(this.wilsonUpdate.render.shaderPrograms[3]);
-		this.wilsonUpdate.render.drawFrame();
-
-		const floatsS = new Float32Array(this.wilsonUpdate.render.getPixelData().buffer);
-
-
+		this.wilsonUpdate.useShader("updateS");
+		this.wilsonUpdate.drawFrame();
+		const floatsS = new Float32Array(this.wilsonUpdate.readPixels().buffer);
 
 		// Extremely hacky way to fix the saturation bug on iOS.
-
-		this.wilsonUpdate.gl.useProgram(this.wilsonUpdate.render.shaderPrograms[4]);
-		this.wilsonUpdate.render.drawFrame();
-
-		const floatsS2 = new Float32Array(this.wilsonUpdate.render.getPixelData().buffer);
-
-
+		this.wilsonUpdate.useShader("updateS2");
+		this.wilsonUpdate.drawFrame();
+		const floatsS2 = new Float32Array(this.wilsonUpdate.readPixels().buffer);
 
 		for (let i = 0; i < this.wilsonUpdate.canvasHeight; i++)
 		{
@@ -1058,346 +869,270 @@ export class VectorFields extends AnimationFrameApplet
 
 	drawField()
 	{
-		this.wilsonDim.gl.texImage2D(
-			this.wilsonDim.gl.TEXTURE_2D,
-			0,
-			this.wilsonDim.gl.RGBA,
-			this.wilsonDim.canvasWidth,
-			this.wilsonDim.canvasHeight,
-			0,
-			this.wilsonDim.gl.RGBA,
-			this.wilsonDim.gl.UNSIGNED_BYTE,
-			this.dimTexture
-		);
-
-		this.wilsonDim.render.drawFrame();
-
-		this.dimTexture = this.wilsonDim.render.getPixelData();
-
-		this.wilson.gl.texImage2D(
-			this.wilson.gl.TEXTURE_2D,
-			0,
-			this.wilson.gl.RGBA,
-			this.wilson.canvasWidth,
-			this.wilson.canvasHeight,
-			0,
-			this.wilson.gl.RGBA,
-			this.wilson.gl.UNSIGNED_BYTE,
-			this.dimTexture
-		);
-
-		this.wilson.render.drawFrame();
-	}
-
-
-
-	// Call this before changing the world parameters!
-	panGrid(xDelta, yDelta)
-	{
-		this.wilsonDim.gl.useProgram(this.wilsonDim.render.shaderPrograms[1]);
-
-		this.wilsonDim.gl.uniform2f(
-			this.wilsonDim.uniforms.pan[1],
-			xDelta / this.wilson.worldWidth, -yDelta / this.wilson.worldHeight
-		);
-
-		this.drawField();
-
-		this.wilsonDim.gl.useProgram(this.wilsonDim.render.shaderPrograms[0]);
-
-		this.wilson.draggables.recalculateLocations();
-	}
-
-
-
-	// Call this before changing the world parameters!
-	zoomGrid(fixedPointX, fixedPointY, zoomDelta)
-	{
-		if (this.zoomLevel <= -3 || this.zoomLevel >= 3)
-		{
-			return;
-		}
-
-		// Ex: if the scale is 2 and goes to 3, the delta is +1,
-		// so we actually want to multiply things by 2^(-1) to get the source places.
-		const scale = Math.pow(2, zoomDelta);
-
-		const fixedX = (fixedPointX - this.wilson.worldCenterX) / this.wilson.worldWidth + .5;
-		const fixedY = (this.wilson.worldCenterY - fixedPointY) / this.wilson.worldHeight + .5;
-
-
-
-		this.wilsonDim.gl.useProgram(this.wilsonDim.render.shaderPrograms[2]);
-
-		this.wilsonDim.gl.uniform1f(this.wilsonDim.uniforms.scale[2], scale);
-		this.wilsonDim.gl.uniform2f(this.wilsonDim.uniforms.fixedPoint[2], fixedX, fixedY);
-
-		this.drawField();
-
-		this.wilsonDim.gl.useProgram(this.wilsonDim.render.shaderPrograms[0]);
-
-		this.wilson.draggables.recalculateLocations();
-
-
-		// When we zoom out, we also cull the particles a little.
-		if (zoomDelta > 0)
-		{
-			const chance = Math.pow(2, zoomDelta * 1.5);
-
-			for (let i = 0; i < this.particles.length; i++)
-			{
-				if (this.particles[i][2] && (i % chance >= 1))
-				{
-					this.destroyParticle(i);
-				}
-			}
-		}
-	}
-
-
-
-	onDragDraggable(
-		activeDraggable = 0,
-		x = this.wilson.draggables.worldCoordinates[0][0],
-		y = this.wilson.draggables.worldCoordinates[0][1]
-	) {
-		const uniforms = activeDraggable === 0
-			? this.wilsonUpdate.uniforms.draggableArg
-			: this.wilsonUpdate.uniforms.draggableArg2;
-
-		for (let i = 0; i < 5; i++)
-		{
-			this.wilsonUpdate.gl.useProgram(this.wilsonUpdate.render.shaderPrograms[i]);
-			this.wilsonUpdate.gl.uniform2f(uniforms[i], x, y);
-		}
-	}
-
-
-
-	onGrabCanvas()
-	{
-		this.panVelocityX = 0;
-		this.panVelocityY = 0;
-		this.zoomVelocity = 0;
-
-		this.lastPanVelocitiesX = [0, 0, 0, 0];
-		this.lastPanVelocitiesY = [0, 0, 0, 0];
-		this.lastZoomVelocities = [0, 0, 0, 0];
-	}
-
-	onDragCanvas(x, y, xDelta, yDelta)
-	{
-		// The += here lets us only move the canvas when we have at least one pixel to move.
-		this.nextPanVelocityX += -xDelta;
-		this.nextPanVelocityY += -yDelta;
-	}
-
-	onReleaseCanvas()
-	{
-		let maxIndex = 0;
-
-		this.lastPanVelocitiesX.forEach((velocity, index) =>
-		{
-			if (Math.abs(velocity) > this.panVelocityX)
-			{
-				this.panVelocityX = Math.abs(velocity);
-				maxIndex = index;
-			}
+		this.wilsonDim.setTexture({
+			id: "dim",
+			data: this.dimTexture
 		});
 
-		if (this.panVelocityX < this.panVelocityStartThreshhold)
-		{
-			this.panVelocityX = 0;
-		}
+		this.wilsonDim.drawFrame();
+		this.dimTexture = this.wilsonDim.readPixels();
 
-		else
-		{
-			this.panVelocityX = this.lastPanVelocitiesX[maxIndex];
-		}
-
-
-
-		this.lastPanVelocitiesY.forEach((velocity, index) =>
-		{
-			if (Math.abs(velocity) > this.panVelocityY)
-			{
-				this.panVelocityY = Math.abs(velocity);
-				maxIndex = index;
-			}
+		this.wilson.setTexture({
+			id: "draw",
+			data: this.dimTexture
 		});
 
-		if (this.panVelocityY < this.panVelocityStartThreshhold)
-		{
-			this.panVelocityY = 0;
-		}
-
-		else
-		{
-			this.panVelocityY = this.lastPanVelocitiesY[maxIndex];
-		}
-
-
-
-		this.lastZoomVelocities.forEach((velocity, index) =>
-		{
-			if (Math.abs(velocity) > this.zoomVelocity)
-			{
-				this.zoomVelocity = Math.abs(velocity);
-				maxIndex = index;
-			}
-		});
-
-		if (this.zoomVelocity < this.zoomVelocityStartThreshhold)
-		{
-			this.zoomVelocity = 0;
-		}
-
-		else
-		{
-			this.zoomVelocity = this.lastZoomVelocities[maxIndex];
-		}
+		this.wilson.drawFrame();
 	}
 
 
 
-	onWheelCanvas(x, y, scrollAmount)
-	{
-		this.fixedPointX = x;
-		this.fixedPointY = y;
+	// // Call this before changing the world parameters!
+	// panGrid(xDelta, yDelta)
+	// {
+	// 	this.wilsonDim.gl.useProgram(this.wilsonDim.render.shaderPrograms[1]);
 
-		if (Math.abs(scrollAmount / 100) < .3)
-		{
-			this.nextZoomVelocity = scrollAmount / 100;
+	// 	this.wilsonDim.gl.uniform2f(
+	// 		this.wilsonDim.uniforms.pan[1],
+	// 		xDelta / this.wilson.worldWidth, -yDelta / this.wilson.worldHeight
+	// 	);
 
-			this.zoomLevel = Math.min(Math.max(this.zoomLevel + scrollAmount / 100, -3), 3);
-		}
+	// 	this.drawField();
 
-		else
-		{
-			this.zoomVelocity += Math.sign(scrollAmount) * .05;
-		}
-	}
+	// 	this.wilsonDim.gl.useProgram(this.wilsonDim.render.shaderPrograms[0]);
 
-
-
-	onPinchCanvas(x, y, touchDistanceDelta)
-	{
-		let zoomDelta;
-
-		if (this.aspectRatio >= 1)
-		{
-			zoomDelta = touchDistanceDelta / this.wilson.worldWidth * 10;
-		}
-
-		else
-		{
-			zoomDelta = touchDistanceDelta / this.wilson.worldHeight * 10;
-		}
-
-		this.zoomLevel = Math.min(Math.max(this.zoomLevel - zoomDelta, -3), 3);
-		this.nextZoomVelocity = -zoomDelta;
-
-		this.fixedPointX = x;
-		this.fixedPointY = y;
-	}
+	// 	this.wilson.draggables.recalculateLocations();
+	// }
 
 
 
-	zoomCanvas()
-	{
-		if (this.aspectRatio >= 1)
-		{
-			const newWorldCenter = this.wilson.input.getZoomedWorldCenter(
-				this.fixedPointX,
-				this.fixedPointY,
-				4 * Math.pow(2, this.zoomLevel) * this.aspectRatio,
-				4 * Math.pow(2, this.zoomLevel)
-			);
+	// // Call this before changing the world parameters!
+	// zoomGrid(fixedPointX, fixedPointY, zoomDelta)
+	// {
+	// 	if (this.zoomLevel <= -3 || this.zoomLevel >= 3)
+	// 	{
+	// 		return;
+	// 	}
 
-			this.wilson.worldWidth = 4 * Math.pow(2, this.zoomLevel) * this.aspectRatio;
-			this.wilson.worldHeight = 4 * Math.pow(2, this.zoomLevel);
+	// 	// Ex: if the scale is 2 and goes to 3, the delta is +1,
+	// 	// so we actually want to multiply things by 2^(-1) to get the source places.
+	// 	const scale = Math.pow(2, zoomDelta);
 
-			this.wilson.worldCenterX = newWorldCenter[0];
-			this.wilson.worldCenterY = newWorldCenter[1];
-		}
-
-		else
-		{
-			const newWorldCenter = this.wilson.input.getZoomedWorldCenter(
-				this.fixedPointX,
-				this.fixedPointY,
-				4 * Math.pow(2, this.zoomLevel),
-				4 * Math.pow(2, this.zoomLevel) / this.aspectRatio
-			);
-
-			this.wilson.worldWidth = 4 * Math.pow(2, this.zoomLevel);
-			this.wilson.worldHeight = 4 * Math.pow(2, this.zoomLevel) / this.aspectRatio;
-
-			this.wilson.worldCenterX = newWorldCenter[0];
-			this.wilson.worldCenterY = newWorldCenter[1];
-		}
-
-		this.wilson.draggables.recalculateLocations();
-	}
+	// 	const fixedX = (fixedPointX - this.wilson.worldCenterX) / this.wilson.worldWidth + .5;
+	// 	const fixedY = (this.wilson.worldCenterY - fixedPointY) / this.wilson.worldHeight + .5;
 
 
 
-	changeAspectRatio()
-	{
-		if (this.wilson.fullscreen.currentlyFullscreen)
-		{
-			this.aspectRatio = window.innerWidth / window.innerHeight;
+	// 	this.wilsonDim.gl.useProgram(this.wilsonDim.render.shaderPrograms[2]);
 
-			this.wilson.changeCanvasSize(
-				...getEqualPixelFullScreen(this.resolution)
-			);
+	// 	this.wilsonDim.gl.uniform1f(this.wilsonDim.uniforms.scale[2], scale);
+	// 	this.wilsonDim.gl.uniform2f(this.wilsonDim.uniforms.fixedPoint[2], fixedX, fixedY);
 
-			this.wilsonDim.changeCanvasSize(
-				...getEqualPixelFullScreen(this.resolution)
-			);
-			
-			if (this.aspectRatio >= 1)
-			{
-				this.wilson.worldWidth = 4 * Math.pow(2, this.zoomLevel) * this.aspectRatio;
-				this.wilson.worldHeight = 4 * Math.pow(2, this.zoomLevel);
-			}
+	// 	this.drawField();
 
-			else
-			{
-				this.wilson.worldWidth = 4 * Math.pow(2, this.zoomLevel);
-				this.wilson.worldHeight = 4 * Math.pow(2, this.zoomLevel) / this.aspectRatio;
-			}
-		}
+	// 	this.wilsonDim.gl.useProgram(this.wilsonDim.render.shaderPrograms[0]);
 
-		else
-		{
-			this.aspectRatio = 1;
+	// 	this.wilson.draggables.recalculateLocations();
 
-			this.wilson.changeCanvasSize(this.resolution, this.resolution);
-			this.wilsonDim.changeCanvasSize(this.resolution, this.resolution);
 
-			this.wilson.worldWidth = 4 * Math.pow(2, this.zoomLevel);
-			this.wilson.worldHeight = 4 * Math.pow(2, this.zoomLevel);
-		}
+	// 	// When we zoom out, we also cull the particles a little.
+	// 	if (zoomDelta > 0)
+	// 	{
+	// 		const chance = Math.pow(2, zoomDelta * 1.5);
 
-		this.wilson.gl.uniform1f(
-			this.wilson.uniforms.stepSizeX,
-			2 / this.wilson.canvasWidth
-		);
-
-		this.wilson.gl.uniform1f(
-			this.wilson.uniforms.stepSizeY,
-			2 / this.wilson.canvasHeight
-		);
-	}
+	// 		for (let i = 0; i < this.particles.length; i++)
+	// 		{
+	// 			if (this.particles[i][2] && (i % chance >= 1))
+	// 			{
+	// 				this.destroyParticle(i);
+	// 			}
+	// 		}
+	// 	}
+	// }
 
 
 
-	handleResizeEvent()
-	{
-		if (this.wilson.fullscreen.currentlyFullscreen)
-		{
-			this.generateNewField({});
-		}
-	}
+	// onDragDraggable(
+	// 	activeDraggable = 0,
+	// 	x = this.wilson.draggables.worldCoordinates[0][0],
+	// 	y = this.wilson.draggables.worldCoordinates[0][1]
+	// ) {
+	// 	const uniforms = activeDraggable === 0
+	// 		? this.wilsonUpdate.uniforms.draggableArg
+	// 		: this.wilsonUpdate.uniforms.draggableArg2;
+
+	// 	for (let i = 0; i < 5; i++)
+	// 	{
+	// 		this.wilsonUpdate.gl.useProgram(this.wilsonUpdate.render.shaderPrograms[i]);
+	// 		this.wilsonUpdate.gl.uniform2f(uniforms[i], x, y);
+	// 	}
+	// }
+
+
+
+	// onGrabCanvas()
+	// {
+	// 	this.panVelocityX = 0;
+	// 	this.panVelocityY = 0;
+	// 	this.zoomVelocity = 0;
+
+	// 	this.lastPanVelocitiesX = [0, 0, 0, 0];
+	// 	this.lastPanVelocitiesY = [0, 0, 0, 0];
+	// 	this.lastZoomVelocities = [0, 0, 0, 0];
+	// }
+
+	// onDragCanvas(x, y, xDelta, yDelta)
+	// {
+	// 	// The += here lets us only move the canvas when we have at least one pixel to move.
+	// 	this.nextPanVelocityX += -xDelta;
+	// 	this.nextPanVelocityY += -yDelta;
+	// }
+
+	// onReleaseCanvas()
+	// {
+	// 	let maxIndex = 0;
+
+	// 	this.lastPanVelocitiesX.forEach((velocity, index) =>
+	// 	{
+	// 		if (Math.abs(velocity) > this.panVelocityX)
+	// 		{
+	// 			this.panVelocityX = Math.abs(velocity);
+	// 			maxIndex = index;
+	// 		}
+	// 	});
+
+	// 	if (this.panVelocityX < this.panVelocityStartThreshhold)
+	// 	{
+	// 		this.panVelocityX = 0;
+	// 	}
+
+	// 	else
+	// 	{
+	// 		this.panVelocityX = this.lastPanVelocitiesX[maxIndex];
+	// 	}
+
+
+
+	// 	this.lastPanVelocitiesY.forEach((velocity, index) =>
+	// 	{
+	// 		if (Math.abs(velocity) > this.panVelocityY)
+	// 		{
+	// 			this.panVelocityY = Math.abs(velocity);
+	// 			maxIndex = index;
+	// 		}
+	// 	});
+
+	// 	if (this.panVelocityY < this.panVelocityStartThreshhold)
+	// 	{
+	// 		this.panVelocityY = 0;
+	// 	}
+
+	// 	else
+	// 	{
+	// 		this.panVelocityY = this.lastPanVelocitiesY[maxIndex];
+	// 	}
+
+
+
+	// 	this.lastZoomVelocities.forEach((velocity, index) =>
+	// 	{
+	// 		if (Math.abs(velocity) > this.zoomVelocity)
+	// 		{
+	// 			this.zoomVelocity = Math.abs(velocity);
+	// 			maxIndex = index;
+	// 		}
+	// 	});
+
+	// 	if (this.zoomVelocity < this.zoomVelocityStartThreshhold)
+	// 	{
+	// 		this.zoomVelocity = 0;
+	// 	}
+
+	// 	else
+	// 	{
+	// 		this.zoomVelocity = this.lastZoomVelocities[maxIndex];
+	// 	}
+	// }
+
+
+
+	// onWheelCanvas(x, y, scrollAmount)
+	// {
+	// 	this.fixedPointX = x;
+	// 	this.fixedPointY = y;
+
+	// 	if (Math.abs(scrollAmount / 100) < .3)
+	// 	{
+	// 		this.nextZoomVelocity = scrollAmount / 100;
+
+	// 		this.zoomLevel = Math.min(Math.max(this.zoomLevel + scrollAmount / 100, -3), 3);
+	// 	}
+
+	// 	else
+	// 	{
+	// 		this.zoomVelocity += Math.sign(scrollAmount) * .05;
+	// 	}
+	// }
+
+
+
+	// onPinchCanvas(x, y, touchDistanceDelta)
+	// {
+	// 	let zoomDelta;
+
+	// 	if (this.aspectRatio >= 1)
+	// 	{
+	// 		zoomDelta = touchDistanceDelta / this.wilson.worldWidth * 10;
+	// 	}
+
+	// 	else
+	// 	{
+	// 		zoomDelta = touchDistanceDelta / this.wilson.worldHeight * 10;
+	// 	}
+
+	// 	this.zoomLevel = Math.min(Math.max(this.zoomLevel - zoomDelta, -3), 3);
+	// 	this.nextZoomVelocity = -zoomDelta;
+
+	// 	this.fixedPointX = x;
+	// 	this.fixedPointY = y;
+	// }
+
+
+
+	// zoomCanvas()
+	// {
+	// 	if (this.aspectRatio >= 1)
+	// 	{
+	// 		const newWorldCenter = this.wilson.input.getZoomedWorldCenter(
+	// 			this.fixedPointX,
+	// 			this.fixedPointY,
+	// 			4 * Math.pow(2, this.zoomLevel) * this.aspectRatio,
+	// 			4 * Math.pow(2, this.zoomLevel)
+	// 		);
+
+	// 		this.wilson.worldWidth = 4 * Math.pow(2, this.zoomLevel) * this.aspectRatio;
+	// 		this.wilson.worldHeight = 4 * Math.pow(2, this.zoomLevel);
+
+	// 		this.wilson.worldCenterX = newWorldCenter[0];
+	// 		this.wilson.worldCenterY = newWorldCenter[1];
+	// 	}
+
+	// 	else
+	// 	{
+	// 		const newWorldCenter = this.wilson.input.getZoomedWorldCenter(
+	// 			this.fixedPointX,
+	// 			this.fixedPointY,
+	// 			4 * Math.pow(2, this.zoomLevel),
+	// 			4 * Math.pow(2, this.zoomLevel) / this.aspectRatio
+	// 		);
+
+	// 		this.wilson.worldWidth = 4 * Math.pow(2, this.zoomLevel);
+	// 		this.wilson.worldHeight = 4 * Math.pow(2, this.zoomLevel) / this.aspectRatio;
+
+	// 		this.wilson.worldCenterX = newWorldCenter[0];
+	// 		this.wilson.worldCenterY = newWorldCenter[1];
+	// 	}
+
+	// 	this.wilson.draggables.recalculateLocations();
+	// }
 }
