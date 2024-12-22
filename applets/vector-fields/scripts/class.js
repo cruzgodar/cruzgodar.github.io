@@ -25,6 +25,7 @@ export class VectorFields extends AnimationFrameApplet
 	maxParticles = 5000;
 	loopEdges = false;
 	particleDilation;
+	needStepSize = true;
 
 	dt = .00375;
 	lifetime = 150;
@@ -126,10 +127,10 @@ export class VectorFields extends AnimationFrameApplet
 
 			worldWidth: 2 * Math.PI,
 
-			minWorldWidth: 0.0001,
-			maxWorldWidth: 100,
-			minWorldHeight: 0.0001,
-			maxWorldHeight: 100,
+			minWorldWidth: 0.5,
+			maxWorldWidth: 20,
+			minWorldHeight: 0.5,
+			maxWorldHeight: 20,
 
 			interactionOptions: {
 				useForPanAndZoom: true,
@@ -157,7 +158,7 @@ export class VectorFields extends AnimationFrameApplet
 
 
 
-	run({
+	async run({
 		generatingCode,
 		resolution = 500,
 		maxParticles = 10000,
@@ -169,6 +170,8 @@ export class VectorFields extends AnimationFrameApplet
 		particleDilation = undefined,
 		appendGlsl = ""
 	}) {
+		await this.loadPromise;
+
 		this.dt = dt;
 		this.resolution = resolution;
 		this.particleDilation = particleDilation;
@@ -281,7 +284,9 @@ export class VectorFields extends AnimationFrameApplet
 			source: shaderUpdateS2,
 		});
 
+		
 
+		const samplingGlsl = this.getSamplingGlsl();
 
 		const shaderDraw = /* glsl */`
 			precision highp float;
@@ -311,16 +316,22 @@ export class VectorFields extends AnimationFrameApplet
 			
 			void main(void)
 			{
-				${this.getSamplingGlsl()}
+				${samplingGlsl}
 			}
 		`;
+
+		this.needStepSize = samplingGlsl.indexOf("stepSize") !== -1;
 
 		this.wilson.loadShader({
 			id: "draw",
 			source: shaderDraw,
 			uniforms: {
 				maxBrightness: this.lifetime / 255,
-				stepSize: [2 / this.resolution, 2 / this.resolution],
+				...(
+					this.needStepSize
+						? { stepSize: [2 / this.resolution, 2 / this.resolution] }
+						: {}
+				),
 			}
 		});
 
@@ -427,7 +438,11 @@ export class VectorFields extends AnimationFrameApplet
 
 		this.wilson.setUniforms({
 			maxBrightness: this.lifetime / 255,
-			stepSize: [2 / this.wilson.canvasWidth, 2 / this.wilson.canvasHeight]
+			...(
+				this.needStepSize
+					? { stepSize: [2 / this.wilson.canvasWidth, 2 / this.wilson.canvasHeight] }
+					: {}
+			),
 		});
 
 		this.wilson.resizeWorld({

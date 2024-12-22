@@ -117,7 +117,7 @@ export default function()
 		onInput: onSliderInput
 	});
 
-	applet.loadPromise.then(() => run());
+	run();
 
 	showPage();
 
