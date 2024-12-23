@@ -578,9 +578,9 @@ class Wilson {
     }
     interpolateWorldToCanvas([x, y]) {
         return [
-            Math.floor((.5 - (y - __classPrivateFieldGet(this, _Wilson_worldCenterY, "f")) / __classPrivateFieldGet(this, _Wilson_worldHeight, "f"))
+            Math.round((.5 - (y - __classPrivateFieldGet(this, _Wilson_worldCenterY, "f")) / __classPrivateFieldGet(this, _Wilson_worldHeight, "f"))
                 * __classPrivateFieldGet(this, _Wilson_canvasHeight, "f")),
-            Math.floor(((x - __classPrivateFieldGet(this, _Wilson_worldCenterX, "f")) / __classPrivateFieldGet(this, _Wilson_worldWidth, "f") + .5)
+            Math.round(((x - __classPrivateFieldGet(this, _Wilson_worldCenterX, "f")) / __classPrivateFieldGet(this, _Wilson_worldWidth, "f") + .5)
                 * __classPrivateFieldGet(this, _Wilson_canvasWidth, "f"))
         ];
     }

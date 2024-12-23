@@ -17,6 +17,9 @@ export class VectorFields extends AnimationFrameApplet
 
 	resolution = 500;
 
+	// Tracks the subpixels from panning and zooming.
+	// Whenever either is at least 1, we need to move the canvas.
+	subpixelWorldCenterMovement = [0, 0];
 	lastWorldCenterX;
 	lastWorldCenterY;
 	lastWorldWidth;
@@ -60,8 +63,8 @@ export class VectorFields extends AnimationFrameApplet
 
 		this.loopEdges = loopEdges;
 
-		this.updateCanvas = this.createHiddenCanvas();
 		this.panZoomDimCanvas = this.createHiddenCanvas();
+		this.updateCanvas = this.createHiddenCanvas();
 
 		const optionsUpdate =
 		{
@@ -85,11 +88,11 @@ export class VectorFields extends AnimationFrameApplet
 			
 			uniform float dimAmount;
 			uniform float scale;
-			uniform vec2 worldCenterChange;
+			uniform vec2 uvStep;
 			
 			void main(void)
 			{
-				vec2 texCoord = scale * ((uv + vec2(1.0, 1.0)) / 2.0) + worldCenterChange;
+				vec2 texCoord = ((scale * uv + vec2(1.0, 1.0)) / 2.0) + uvStep;
 				
 				if (texCoord.x >= 0.0 && texCoord.x < 1.0 && texCoord.y >= 0.0 && texCoord.y < 1.0)
 				{
@@ -111,7 +114,7 @@ export class VectorFields extends AnimationFrameApplet
 			uniforms: {
 				dimAmount: 1 / 255,
 				scale: 1,
-				worldCenterChange: [0, 0]
+				uvStep: [0, 0]
 			},
 
 			canvasWidth: this.resolution,
@@ -421,7 +424,7 @@ export class VectorFields extends AnimationFrameApplet
 
 
 
-	generateNewField({
+	async generateNewField({
 		resolution = this.resolution,
 		maxParticles = this.maxParticles,
 		dt = this.dt,
@@ -430,6 +433,8 @@ export class VectorFields extends AnimationFrameApplet
 		worldCenterX = this.wilson.worldCenterX,
 		worldCenterY = this.wilson.worldCenterY,
 	}) {
+		await this.loadPromise;
+
 		this.resolution = resolution;
 		this.maxParticles = maxParticles;
 		this.dt = dt;
@@ -595,11 +600,38 @@ export class VectorFields extends AnimationFrameApplet
 			this.freeParticleSlots.splice(this.freeParticleSlots.length - numToAdd, numToAdd);
 		}
 
+		this.subpixelWorldCenterMovement[0] += (this.wilson.worldCenterX - this.lastWorldCenterX)
+			/ this.wilson.worldWidth * this.wilson.canvasWidth;
+		this.subpixelWorldCenterMovement[1] += (this.wilson.worldCenterY - this.lastWorldCenterY)
+			/ this.wilson.worldHeight * this.wilson.canvasHeight;
+
+		const uvStepX = Math.sign(this.subpixelWorldCenterMovement[0])
+			* Math.floor(Math.abs(this.subpixelWorldCenterMovement[0]));
+		const uvStepY = Math.sign(this.subpixelWorldCenterMovement[1])
+			* Math.floor(Math.abs(this.subpixelWorldCenterMovement[1]));
+
+		this.subpixelWorldCenterMovement[0] = Math.sign(this.subpixelWorldCenterMovement[0])
+			* (Math.abs(this.subpixelWorldCenterMovement[0]) - Math.abs(uvStepX));
+		this.subpixelWorldCenterMovement[1] = Math.sign(this.subpixelWorldCenterMovement[1])
+			* (Math.abs(this.subpixelWorldCenterMovement[1]) - Math.abs(uvStepY));
+
+		this.wilsonPanZoomDim.setUniforms({
+			uvStep: [
+				uvStepX / this.wilson.canvasWidth,
+				-uvStepY / this.wilson.canvasHeight,
+			],
+			scale: this.wilson.worldWidth / this.lastWorldWidth
+		});
 
 
-		this.updateParticles(timeElapsed);
 
-		this.drawField();
+		this.lastWorldCenterX = this.wilson.worldCenterX;
+		this.lastWorldCenterY = this.wilson.worldCenterY;
+		this.lastWorldWidth = this.wilson.worldWidth;
+
+
+
+		this.drawField(timeElapsed);
 
 		this.drawFrameCallback();
 
@@ -690,20 +722,22 @@ export class VectorFields extends AnimationFrameApplet
 					this.particles[index][0] = floatsX[index];
 					this.particles[index][1] = floatsY[index];
 
-					let row = Math.round(
-						(
-							.5 - (
-								this.particles[index][1] - this.wilson.worldCenterY
-							) / this.wilson.worldHeight
-						) * this.wilson.canvasHeight);
+					let [row, col] = this.wilson.interpolateWorldToCanvas(this.particles[index]);
 
-					let col = Math.round(
-						(
-							(this.particles[index][0] - this.wilson.worldCenterX)
-								/ this.wilson.worldWidth
-								+ .5
-						) * this.wilson.canvasWidth
-					);
+					// let row = Math.round(
+					// 	(
+					// 		.5 - (
+					// 			this.particles[index][1] - this.lastWorldCenterY
+					// 		) / this.wilson.worldHeight
+					// 	) * this.wilson.canvasHeight);
+
+					// let col = Math.round(
+					// 	(
+					// 		(this.particles[index][0] - this.lastWorldCenterX)
+					// 			/ this.wilson.worldWidth
+					// 			+ .5
+					// 	) * this.wilson.canvasWidth
+					// );
 
 					if (this.loopEdges)
 					{
@@ -744,7 +778,7 @@ export class VectorFields extends AnimationFrameApplet
 						this.panZoomDimTexture[4 * newIndex + 2] =
 							Math.max(floatsS[index], floatsS2[index]) * 255;
 
-						this.particles[index][2]--;
+						// this.particles[index][2]--;
 
 						if (this.particles[index][2] <= 0)
 						{
@@ -763,19 +797,26 @@ export class VectorFields extends AnimationFrameApplet
 
 
 
-	drawField()
+	drawField(timeElapsed)
 	{
 		this.wilsonPanZoomDim.setTexture({
 			id: "panZoomDim",
 			data: this.panZoomDimTexture
 		});
+
 		this.wilsonPanZoomDim.drawFrame();
 
 		this.panZoomDimTexture = this.wilsonPanZoomDim.readPixels();
+
+		this.updateParticles(timeElapsed);
+
+
+
 		this.wilson.setTexture({
 			id: "draw",
 			data: this.panZoomDimTexture
 		});
+
 		this.wilson.drawFrame();
 	}
 }
