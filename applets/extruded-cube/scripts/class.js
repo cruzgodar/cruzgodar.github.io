@@ -90,10 +90,16 @@ export class ExtrudedCube extends RaymarchApplet
 			const int maxIterations = 32;
 		`;
 
+		const uniformsGlsl = /* glsl */`
+			uniform int iterations;
+			uniform float scale;
+			uniform float separation;
+		`;
+
 		const uniforms = {
-			iterations: ["int", 16],
-			scale: ["float", 3],
-			separation: ["float", 1],
+			iterations: 16,
+			scale: 3,
+			separation: 1,
 		};
 
 		super({
@@ -101,6 +107,7 @@ export class ExtrudedCube extends RaymarchApplet
 			distanceEstimatorGlsl,
 			getColorGlsl,
 			addGlsl,
+			uniformsGlsl,
 			uniforms,
 			cameraPos: [2.41322, 2.41439, 2.3916],
 			theta: 1.25 * Math.PI,
@@ -110,9 +117,9 @@ export class ExtrudedCube extends RaymarchApplet
 
 	distanceEstimator(x, y, z)
 	{
-		const scale = this.uniforms.scale[1];
-		const separation = this.uniforms.separation[1];
-		const iterations = this.uniforms.iterations[1];
+		const scale = this.uniforms.scale;
+		const separation = this.uniforms.separation;
+		const iterations = this.uniforms.iterations;
 
 		const scaleCenter = (scale + 1) / (scale - 1) * separation;
 
