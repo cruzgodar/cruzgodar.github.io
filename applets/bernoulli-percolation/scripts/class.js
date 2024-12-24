@@ -1,7 +1,8 @@
 import anime from "/scripts/anime.js";
 import { AnimationFrameApplet } from "/scripts/applets/animationFrameApplet.js";
+import { hsvToRgb } from "/scripts/applets/applet.js";
 import { convertColor } from "/scripts/src/browser.js";
-import { Wilson } from "/scripts/wilson.js";
+import { WilsonCPU } from "/scripts/wilson.js";
 
 export class BernoulliPercolation extends AnimationFrameApplet
 {
@@ -51,20 +52,17 @@ export class BernoulliPercolation extends AnimationFrameApplet
 
 		const options =
 		{
-			renderer: "cpu",
-
 			canvasWidth: this.resolution,
-			canvasHeight: this.resolution,
 
-			useFullscreen: true,
+			fullscreenOptions: {
+				useFullscreenButton: true,
 
-			useFullscreenButton: true,
-
-			enterFullscreenButtonIconPath: "/graphics/general-icons/enter-fullscreen.png",
-			exitFullscreenButtonIconPath: "/graphics/general-icons/exit-fullscreen.png"
+				enterFullscreenButtonIconPath: "/graphics/general-icons/enter-fullscreen.png",
+				exitFullscreenButtonIconPath: "/graphics/general-icons/exit-fullscreen.png"
+			}
 		};
 
-		this.wilson = new Wilson(canvas, options);
+		this.wilson = new WilsonCPU(canvas, options);
 	}
 
 
@@ -103,8 +101,8 @@ export class BernoulliPercolation extends AnimationFrameApplet
 		this.edgeWidthPixels = Math.floor(this.resolution / this.gridSize * this.edgeWidthFraction);
 		this.edgeLengthPixels = Math.floor(this.resolution / this.gridSize);
 
-		this.wilson.changeCanvasSize(this.resolution, this.resolution);
-		this.wilson.ctx.fillStyle = "rgb(0, 0, 0)";
+		this.wilson.resizeCanvas({ width: this.resolution });
+		this.wilson.ctx.fillStyle = convertColor(0, 0, 0);
 		this.wilson.ctx.fillRect(0, 0, this.resolution, this.resolution);
 
 		this.hueRangeStart = Math.random();
@@ -122,7 +120,7 @@ export class BernoulliPercolation extends AnimationFrameApplet
 
 	getRandomColor()
 	{
-		return this.wilson.utils.hsvToRgb(
+		return hsvToRgb(
 			(this.hueRangeStart + Math.random() * this.hueRangeLength) % 1,
 			0.3 + 0.1 * Math.random(),
 			0.7 + 0.3 * Math.random()
@@ -590,8 +588,8 @@ export class BernoulliPercolation extends AnimationFrameApplet
 
 	redrawEverything(forceRectangles = false)
 	{
-		this.wilson.changeCanvasSize(this.resolution, this.resolution);
-		this.wilson.ctx.fillStyle = "rgb(0, 0, 0)";
+		this.wilson.resizeCanvas({ width: this.resolution });
+		this.wilson.ctx.fillStyle = convertColor(0, 0, 0);
 		this.wilson.ctx.fillRect(0, 0, this.resolution, this.resolution);
 
 		this.dotRadiusPixels = Math.floor(this.resolution / this.gridSize * this.dotRadiusFraction);
