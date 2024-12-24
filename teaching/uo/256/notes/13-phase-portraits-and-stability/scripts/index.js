@@ -1,12 +1,12 @@
 import { showPage } from "../../../../../../scripts/src/loadPage.js";
 import { VectorFields } from "/applets/vector-fields/scripts/class.js";
 import {
-    createDesmosGraphs,
-    desmosBlack,
-    desmosBlue,
-    desmosPurple,
-    desmosRed,
-    setGetDesmosData
+	createDesmosGraphs,
+	desmosBlack,
+	desmosBlue,
+	desmosPurple,
+	desmosRed,
+	setGetDesmosData
 } from "/scripts/src/desmos.js";
 import { $ } from "/scripts/src/main.js";
 import { siteSettings } from "/scripts/src/settings.js";
@@ -252,7 +252,7 @@ export default function()
 			generatingCode: "((x - 1.0) * (x + 1.0), (y + 1.0) * (y - 1.0))",
 			resolution: 750 * siteSettings.resolutionMultiplier,
 			dt: .002,
-			zoomLevel: -.15
+			worldWidth: 3
 		});
 		applet.pauseWhenOffscreen();
 	});
@@ -269,7 +269,7 @@ export default function()
 			generatingCode: "(y*y, 1.0 - x*x)",
 			resolution: 750 * siteSettings.resolutionMultiplier,
 			dt: .002,
-			zoomLevel: 0
+			worldWidth: 4
 		});
 		applet2.pauseWhenOffscreen();
 	});
@@ -286,7 +286,7 @@ export default function()
 			generatingCode: "(y, -.5*y - sin(x))",
 			resolution: 750 * siteSettings.resolutionMultiplier,
 			dt: .002,
-			zoomLevel: 2
+			worldWidth: 12
 		});
 		applet3.pauseWhenOffscreen();
 	});

@@ -9,7 +9,6 @@ import {
 	getMaxGlslString,
 	tempShader
 } from "/scripts/applets/applet.js";
-import { $$ } from "/scripts/src/main.js";
 import { WilsonGPU } from "/scripts/wilson.js";
 
 export class VectorFields extends AnimationFrameApplet
@@ -138,13 +137,11 @@ export class VectorFields extends AnimationFrameApplet
 
 		this.wilsonPanZoomDim = new WilsonGPU(this.panZoomDimCanvas, optionsPanZoomDim);
 
-		$$(".WILSON_fullscreen-container")[0].style.setProperty(
+		this.wilsonPanZoomDim.canvas.parentElement.parentElement.parentElement.style.setProperty(
 			"display",
 			"none",
 			"important"
 		);
-
-		console.log($$(".WILSON_fullscreen-container"));
 
 
 
@@ -470,8 +467,6 @@ export class VectorFields extends AnimationFrameApplet
 		worldCenterX = this.wilson.worldCenterX,
 		worldCenterY = this.wilson.worldCenterY,
 	}) {
-		await this.loadPromise;
-
 		this.resolution = resolution;
 		this.maxParticles = maxParticles;
 		this.dt = dt;
@@ -876,8 +871,6 @@ export class VectorFields extends AnimationFrameApplet
 		{
 			this.wilsonPanZoomDim.exitFullscreen();
 		}
-
-		console.log(this.wilsonPanZoomDim.canvasWidth, this.wilsonPanZoomDim.canvasHeight);
 
 		this.generateNewField({});
 	}

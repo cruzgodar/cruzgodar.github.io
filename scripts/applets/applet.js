@@ -268,19 +268,22 @@ export class Applet
 
 			attempts++;
 
-			this.wilsonsForReduceMotion = Object.values(this).filter(field =>
-			{
-				return field instanceof WilsonCPU || field instanceof WilsonGPU;
-			});
+			const fullscreenButtons = $$(
+				".WILSON_enter-fullscreen-button, .WILSON_exit-fullscreen-button"
+			);
 
-			if (this.wilsonsForReduceMotion.length !== 0)
+			for (const button of fullscreenButtons)
+			{
+				addHoverEventWithScale({
+					element: button,
+					scale: 1.1,
+					addBounceOnTouch: () => true
+				});
+			}
+
+			if (fullscreenButtons.length !== 0)
 			{
 				clearInterval(refreshId);
-
-				for (const wilson of this.wilsonsForReduceMotion)
-				{
-					wilson.reduceMotion = siteSettings.reduceMotion;
-				}
 			}
 		}, 50);
 	}
@@ -298,22 +301,19 @@ export class Applet
 
 			attempts++;
 
-			const fullscreenButtons = $$(
-				".WILSON_enter-fullscreen-button, .WILSON_exit-fullscreen-button"
-			);
-
-			for (const button of fullscreenButtons)
+			this.wilsonsForReduceMotion = Object.values(this).filter(field =>
 			{
-				addHoverEventWithScale({
-					element: button,
-					scale: 1.1,
-					addBounceOnTouch: () => true
-				});
-			}
+				return field instanceof WilsonCPU || field instanceof WilsonGPU;
+			});
 
-			if (fullscreenButtons.length !== 0)
+			if (this.wilsonsForReduceMotion.length !== 0)
 			{
 				clearInterval(refreshId);
+
+				for (const wilson of this.wilsonsForReduceMotion)
+				{
+					wilson.reduceMotion = siteSettings.reduceMotion;
+				}
 			}
 		}, 50);
 	}

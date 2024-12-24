@@ -111,7 +111,6 @@ export class FractalSounds extends AnimationFrameApplet
 
 		this.wilson = new WilsonCPU(lineDrawerCanvas, options);
 		this.wilsonForFullscreen = this.wilson;
-		this.addHoverEventOnFullscreenButton();
 
 		const elements = $$(".WILSON_fullscreen-container");
 
