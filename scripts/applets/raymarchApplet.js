@@ -281,8 +281,14 @@ export class RaymarchApplet extends AnimationFrameApplet
 			worldWidth: this.worldSize,
 			worldHeight: this.worldSize,
 
-			worldCenterX: this.theta,
-			worldCenterY: this.phi,
+			worldCenterX: this.lockedOnOrigin
+				? this.theta
+				: 2 * Math.PI - this.theta,
+
+			worldCenterY: this.lockedOnOrigin
+				? this.phi
+				: Math.PI - this.phi,
+
 			minWorldY: 0.001 - this.worldSize / 2,
 			maxWorldY: Math.PI - 0.001 + this.worldSize / 2,
 
