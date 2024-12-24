@@ -22,10 +22,11 @@ export class HairyBall extends RaymarchApplet
 			vec3 normalizedPos = normalize(pos);
 			float phi = acos(normalizedPos.z);
 			float theta = atan(normalizedPos.y, normalizedPos.x) + 3.14159265;
+
 			return texture2D(
 				uTexture,
 				vec2(theta / 6.28318531, phi / 3.14159265)
-					* (float(imageSize) - 1.0) / float(imageSize) 
+					* (float(resolution) - 1.0) / float(resolution) 
 			).xyz;
 		`;
 
@@ -56,26 +57,24 @@ export class HairyBall extends RaymarchApplet
 
 		const hiddenCanvas = this.createHiddenCanvas();
 
-		// hiddenCanvas.style.display = "block";
-		// hiddenCanvas.classList.remove("hidden-canvas");
-		// hiddenCanvas.classList.add("output-canvas");
-		// pageElement.appendChild(hiddenCanvas);
-
 		this.vectorFieldApplet = new VectorFields({
 			canvas: hiddenCanvas,
 			loopEdges: true,
 		});
 
-		this.vectorFieldApplet.drawFrameCallback = this.drawFrame.bind(this);
-
-		this.vectorFieldApplet.loadPromise.then(() =>
+		this.vectorFieldApplet.drawFrameCallback = () =>
 		{
-			this.runVectorField(vectorFieldGeneratingCode);
-		});
+			this.wilson.setTexture({
+				id: "draw",
+				data: this.vectorFieldApplet.wilson.readPixels()
+			});
 
+			this.needNewFrame = true;
+		};
+		
+		this.runVectorField(vectorFieldGeneratingCode);
 
-
-		this.wilson.render.createFramebufferTexturePair(this.wilson.gl.UNSIGNED_BYTE);
+		this.onResizeCanvas();
 
 		this.wilson.gl.texParameteri(
 			this.wilson.gl.TEXTURE_2D,
@@ -88,47 +87,6 @@ export class HairyBall extends RaymarchApplet
 			this.wilson.gl.TEXTURE_MIN_FILTER,
 			this.wilson.gl.LINEAR
 		);
-
-		this.wilson.gl.bindTexture(
-			this.wilson.gl.TEXTURE_2D,
-			this.wilson.render.framebuffers[0].texture
-		);
-
-		this.wilson.gl.bindFramebuffer(this.wilson.gl.FRAMEBUFFER, null);
-	}
-
-
-
-	drawFrame()
-	{
-		const texture = this.vectorFieldApplet.wilson.render.getPixelData();
-
-		this.wilson.gl.texImage2D(
-			this.wilson.gl.TEXTURE_2D,
-			0,
-			this.wilson.gl.RGBA,
-			this.vectorFieldApplet.wilson.canvasWidth,
-			this.vectorFieldApplet.wilson.canvasHeight,
-			0,
-			this.wilson.gl.RGBA,
-			this.wilson.gl.UNSIGNED_BYTE,
-			texture
-		);
-
-		this.wilson.worldCenterY = Math.min(
-			Math.max(
-				this.wilson.worldCenterY,
-				-Math.PI + .01
-			),
-			-.01
-		);
-		
-		this.theta = -this.wilson.worldCenterX;
-		this.phi = -this.wilson.worldCenterY;
-
-		this.calculateVectors();
-
-		this.wilson.render.drawFrame();
 	}
 
 	runVectorField(generatingCode)
@@ -153,6 +111,16 @@ export class HairyBall extends RaymarchApplet
 				float z = c.z;
 			`
 		});
+
+		this.wilson.createFramebufferTexturePair({
+			id: "draw",
+			width: this.vectorFieldAppletResolution,
+			height: this.vectorFieldAppletResolution,
+			textureType: "unsignedByte"
+		});
+
+		this.wilson.useTexture("draw");
+		this.wilson.useFramebuffer(null);
 	}
 
 	distanceEstimator()

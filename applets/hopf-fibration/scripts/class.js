@@ -1,10 +1,9 @@
 import anime from "/scripts/anime.js";
-import { getEqualPixelFullScreen, tempShader } from "/scripts/applets/applet.js";
+import { tempShader } from "/scripts/applets/applet.js";
 import { magnitude } from "/scripts/applets/raymarchApplet.js";
 import { ThreeApplet } from "/scripts/applets/threeApplet.js";
-import { addTemporaryListener } from "/scripts/src/main.js";
 import * as THREE from "/scripts/three.js";
-import { Wilson } from "/scripts/wilson.js";
+import { WilsonGPU } from "/scripts/wilson.js";
 
 function hsvToRgb(h, s, v)
 {
@@ -79,6 +78,7 @@ export class HopfFibration extends ThreeApplet
 {
 	theta = Math.PI / 2;
 	phi = Math.PI / 2;
+	worldSize = 1.5;
 
 	movingSpeed = .01;
 	imageSize = 1000;
@@ -87,8 +87,8 @@ export class HopfFibration extends ThreeApplet
 
 	// This is in addition to the north and south poles.
 	numLatitudes = 3;
-	numLongitudesPerLatitude = 30;
-	numLongitudesShown = 30;
+	numLongitudesPerLatitude = 50;
+	numLongitudesShown = 50 * .75;
 
 	fibers = [];
 
@@ -104,42 +104,36 @@ export class HopfFibration extends ThreeApplet
 
 		const options =
 		{
-			renderer: "gpu",
-
 			shader: tempShader,
 
 			canvasWidth: this.imageSize,
-			canvasHeight: this.imageSize,
 
-			worldCenterX: -this.theta,
-			worldCenterY: -this.phi,
-		
+			worldWidth: this.worldSize,
+			worldHeight: this.worldSize,
 
+			worldCenterX: this.theta,
+			worldCenterY: this.phi,
 
-			useFullscreen: true,
+			minWorldY: 0.001 - this.worldSize / 2,
+			maxWorldY: Math.PI - 0.001 + this.worldSize / 2,
 
-			trueFullscreen: true,
+			onResizeCanvas: this.onResizeCanvas.bind(this),
 
-			useFullscreenButton: true,
+			interactionOptions: {
+				useForPanAndZoom: true,
+				disallowZooming: true,
+				onPanAndZoom: () => this.needNewFrame = true,
+			},
 
-			enterFullscreenButtonIconPath: "/graphics/general-icons/enter-fullscreen.png",
-			exitFullscreenButtonIconPath: "/graphics/general-icons/exit-fullscreen.png",
-
-			switchFullscreenCallback: this.changeResolution.bind(this),
-
-
-
-			mousedownCallback: this.onGrabCanvas.bind(this),
-			touchstartCallback: this.onGrabCanvas.bind(this),
-
-			mousedragCallback: this.onDragCanvas.bind(this),
-			touchmoveCallback: this.onDragCanvas.bind(this),
-
-			mouseupCallback: this.onReleaseCanvas.bind(this),
-			touchendCallback: this.onReleaseCanvas.bind(this)
+			fullscreenOptions: {
+				fillScreen: true,
+				useFullscreenButton: true,
+				enterFullscreenButtonIconPath: "/graphics/general-icons/enter-fullscreen.png",
+				exitFullscreenButtonIconPath: "/graphics/general-icons/exit-fullscreen.png",
+			}
 		};
 
-		this.wilson = new Wilson(canvas, options);
+		this.wilson = new WilsonGPU(canvas, options);
 
 		this.initThree();
 
@@ -151,14 +145,7 @@ export class HopfFibration extends ThreeApplet
 		pointLight2.position.set(750, 1000, 500);
 		this.scene.add(pointLight2);
 
-		const boundFunction = () => this.changeResolution();
-		addTemporaryListener({
-			object: window,
-			event: "resize",
-			callback: boundFunction
-		});
-
-		this.createAllFibers();
+		this.toggleCompression(true);
 
 		this.resume();
 	}
@@ -317,12 +304,12 @@ export class HopfFibration extends ThreeApplet
 
 	createAllFibers()
 	{
-		this.fibers.forEach(fiber =>
+		for (const fiber of this.fibers)
 		{
 			fiber.geometry.dispose();
 			fiber.material.dispose();
 			this.scene.remove(fiber);
-		});
+		}
 
 		this.fibers = [];
 
@@ -377,7 +364,7 @@ export class HopfFibration extends ThreeApplet
 		await anime({
 			targets: dummy,
 			t: 1,
-			duration: instant ? 10 : 750,
+			duration: instant ? 0 : 750,
 			easing: "easeOutQuad",
 			update: () =>
 			{
@@ -394,6 +381,16 @@ export class HopfFibration extends ThreeApplet
 				this.createAllFibers();
 
 				this.needNewFrame = true;
+			},
+			complete: () =>
+			{
+				this.compression = newCompression;
+
+				this.cameraPos = newCameraPos;
+				this.distanceFromOrigin = magnitude(this.cameraPos);
+				this.createAllFibers();
+
+				this.needNewFrame = true;
 			}
 		}).finished;
 	}
@@ -402,33 +399,17 @@ export class HopfFibration extends ThreeApplet
 
 	prepareFrame(timeElapsed)
 	{
-		this.pan.update(timeElapsed);
-		this.zoom.update(timeElapsed);
 		this.moveUpdate(timeElapsed);
 	}
 
 	drawFrame()
 	{
-		this.wilson.worldCenterY = Math.min(
-			Math.max(
-				this.wilson.worldCenterY,
-				-Math.PI + .01
-			),
-			-.01
-		);
-
-		if (this.wilson.worldCenterX < -Math.PI)
-		{
-			this.wilson.worldCenterX += 2 * Math.PI;
-		}
-
-		else if (this.wilson.worldCenterX > Math.PI)
-		{
-			this.wilson.worldCenterX -= 2 * Math.PI;
-		}
-		
-		this.theta = -this.wilson.worldCenterX;
-		this.phi = -this.wilson.worldCenterY;
+		this.theta = this.lockedOnOrigin
+			? this.wilson.worldCenterX
+			: 2 * Math.PI - this.wilson.worldCenterX;
+		this.phi = this.lockedOnOrigin
+			? this.wilson.worldCenterY
+			: Math.PI - this.wilson.worldCenterY;
 
 		this.renderer.render(this.scene, this.camera);
 
@@ -453,56 +434,20 @@ export class HopfFibration extends ThreeApplet
 
 
 
-	changeResolution(resolution = this.imageSize)
+	onResizeCanvas()
 	{
-		this.imageSize = Math.max(100, resolution);
-
-		if (this.wilson.fullscreen.currentlyFullscreen)
-		{
-			[this.imageWidth, this.imageHeight] = getEqualPixelFullScreen(this.imageSize);
-		}
-
-		else
-		{
-			this.imageWidth = this.imageSize;
-			this.imageHeight = this.imageSize;
-		}
-
-
-
-		this.wilson.changeCanvasSize(this.imageWidth, this.imageHeight);
-
-
-
-		if (this.imageWidth >= this.imageHeight)
-		{
-			this.wilson.gl.uniform1f(
-				this.wilson.uniforms.aspectRatioX,
-				this.imageWidth / this.imageHeight
-			);
-
-			this.wilson.gl.uniform1f(
-				this.wilson.uniforms.aspectRatioY,
-				1
-			);
-		}
-
-		else
-		{
-			this.wilson.gl.uniform1f(
-				this.wilson.uniforms.aspectRatioX,
-				1
-			);
-
-			this.wilson.gl.uniform1f(
-				this.wilson.uniforms.aspectRatioY,
-				this.imageWidth / this.imageHeight
-			);
-		}
-
-		this.renderer.setSize(this.imageWidth, this.imageHeight, false);
-		this.camera.aspect = this.imageWidth / this.imageHeight;
+		this.renderer.setSize(
+			this.wilson.canvasWidth,
+			this.wilson.canvasHeight,
+			false
+		);
+		this.camera.aspect = this.wilson.canvasWidth / this.wilson.canvasHeight;
 		this.camera.updateProjectionMatrix();
+
+		this.wilson.resizeWorld({
+			minWorldY: 0.001 - this.wilson.worldHeight / 2,
+			maxWorldY: Math.PI - 0.001 + this.wilson.worldHeight / 2,
+		});
 
 		this.needNewFrame = true;
 	}

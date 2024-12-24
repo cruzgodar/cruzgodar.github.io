@@ -43,7 +43,7 @@ export default function()
 	const longitudesSlider = new Slider({
 		element: $("#longitudes-slider"),
 		name: "Longitudes",
-		value: 30,
+		value: 50,
 		min: 8,
 		max: 100,
 		integer: true,
@@ -53,7 +53,7 @@ export default function()
 	const coreSlider = new Slider({
 		element: $("#core-slider"),
 		name: "Core Amount",
-		value: 1,
+		value: .75,
 		min: .75,
 		max: 1,
 		snapPoints: [.8, .85, .9, .95],
@@ -69,8 +69,8 @@ export default function()
 
 	new ToggleButton({
 		element: $("#toggle-compression-button"),
-		name0: "Show Compressed Fibration",
-		name1: "Show Projected Fibration",
+		name0: "Show Projected Fibration",
+		name1: "Show Compressed Fibration",
 		onClick0: (instant) => setTimeout(
 			() => applet.toggleCompression(instant),
 			instant ? 10 : 0

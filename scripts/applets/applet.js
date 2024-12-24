@@ -161,6 +161,11 @@ export class Applet
 		this.canvas.parentNode.insertBefore(fpsDisplayElement, this.canvas.nextElementSibling);
 
 		this.fpsDisplayCtx = fpsDisplayElement.getContext("2d");
+		
+		fpsDisplayElement.style.setProperty(
+			"view-transition-name",
+			"fps-canvas" + Math.random().toString(36).slice(2)
+		);
 
 		requestAnimationFrame(this.updateFpsDisplay.bind(this));
 	}
