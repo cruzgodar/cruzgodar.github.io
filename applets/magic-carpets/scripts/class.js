@@ -1,7 +1,7 @@
-import { Applet } from "../../../scripts/applets/applet.js";
+import { Applet, hsvToRgb } from "../../../scripts/applets/applet.js";
 import { convertColor } from "/scripts/src/browser.js";
 import { addTemporaryWorker } from "/scripts/src/main.js";
-import { Wilson } from "/scripts/wilson.js";
+import { WilsonCPU } from "/scripts/wilson.js";
 
 export class MagicCarpets extends Applet
 {
@@ -15,6 +15,10 @@ export class MagicCarpets extends Applet
 
 	cellSize = 200;
 
+	delay;
+	cagesPerDraw;
+	cageIndex;
+
 	webWorker;
 
 
@@ -25,13 +29,10 @@ export class MagicCarpets extends Applet
 
 		const options =
 		{
-			renderer: "cpu",
-
 			canvasWidth: 500,
-			canvasHeight: 500
 		};
 
-		this.wilson = new Wilson(canvas, options);
+		this.wilson = new WilsonCPU(canvas, options);
 
 		this.run();
 	}
@@ -55,19 +56,17 @@ export class MagicCarpets extends Applet
 
 		const canvasSize = this.gridSize * this.cellSize + 9;
 
-		this.wilson.changeCanvasSize(canvasSize, canvasSize);
-
-		this.wilson.ctx.clearRect(0, 0, canvasSize, canvasSize);
+		this.wilson.resizeCanvas({ width: canvasSize });
 
 
 
 		this.webWorker = addTemporaryWorker("/applets/magic-carpets/scripts/worker.js");
 
-
-
 		this.webWorker.onmessage = (e) =>
 		{
 			this.cages = e.data[0];
+
+			this.wilson.ctx.clearRect(0, 0, canvasSize, canvasSize);
 
 			this.drawGrid();
 		};
@@ -197,14 +196,17 @@ export class MagicCarpets extends Applet
 
 		this.drawGrid(rectanglesOnly);
 
-		const delay = 500 / this.cages.length;
+		this.delay = Math.floor(250 / this.cages.length);
+		this.cagesPerDraw = Math.ceil(this.cages.length / 250);
+		this.cageIndex = 0;
 
-		this.drawCage(0, delay, rectanglesOnly);
+		this.drawCage(0, rectanglesOnly);
+
 	}
 
 
 
-	drawCage(index, delay, rectanglesOnly)
+	drawCage(index, rectanglesOnly)
 	{
 		if (index === this.cages.length)
 		{
@@ -215,7 +217,7 @@ export class MagicCarpets extends Applet
 
 
 
-		let rgb = this.wilson.utils.hsvToRgb(index / this.cages.length * 6 / 7, 1, 1);
+		let rgb = hsvToRgb(index / this.cages.length * 6 / 7, 1, 1);
 
 		this.wilson.ctx.fillStyle = convertColor(...rgb, rectanglesOnly ? .5 : .2);
 
@@ -228,7 +230,7 @@ export class MagicCarpets extends Applet
 
 
 
-		rgb = this.wilson.utils.hsvToRgb(index / this.cages.length * 6 / 7, 1, .9);
+		rgb = hsvToRgb(index / this.cages.length * 6 / 7, 1, .9);
 
 		this.wilson.ctx.fillStyle = convertColor(...rgb);
 
@@ -283,8 +285,17 @@ export class MagicCarpets extends Applet
 			10
 		);
 
+		
+		this.cageIndex++;
 
+		if (this.cageIndex % this.cagesPerDraw === 0)
+		{
+			setTimeout(() => this.drawCage(index + 1, rectanglesOnly), this.delay);
+		}
 
-		setTimeout(() => this.drawCage(index + 1, delay, rectanglesOnly), delay);
+		else
+		{
+			this.drawCage(index + 1, rectanglesOnly);
+		}
 	}
 }

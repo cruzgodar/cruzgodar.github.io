@@ -63,5 +63,7 @@ export default function()
 		});
 	}
 
+	run();
+
 	showPage();
 }
