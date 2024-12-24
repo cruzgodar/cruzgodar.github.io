@@ -578,9 +578,9 @@ class Wilson {
     }
     interpolateWorldToCanvas([x, y]) {
         return [
-            Math.round((.5 - (y - __classPrivateFieldGet(this, _Wilson_worldCenterY, "f")) / __classPrivateFieldGet(this, _Wilson_worldHeight, "f"))
+            Math.floor((.5 - (y - __classPrivateFieldGet(this, _Wilson_worldCenterY, "f")) / __classPrivateFieldGet(this, _Wilson_worldHeight, "f"))
                 * __classPrivateFieldGet(this, _Wilson_canvasHeight, "f")),
-            Math.round(((x - __classPrivateFieldGet(this, _Wilson_worldCenterX, "f")) / __classPrivateFieldGet(this, _Wilson_worldWidth, "f") + .5)
+            Math.floor(((x - __classPrivateFieldGet(this, _Wilson_worldCenterX, "f")) / __classPrivateFieldGet(this, _Wilson_worldWidth, "f") + .5)
                 * __classPrivateFieldGet(this, _Wilson_canvasWidth, "f"))
         ];
     }
@@ -1495,6 +1495,9 @@ export class WilsonGPU extends Wilson {
     setUniforms(uniforms, shader = __classPrivateFieldGet(this, _WilsonGPU_currentShaderId, "f")) {
         this.gl.useProgram(__classPrivateFieldGet(this, _WilsonGPU_shaderPrograms, "f")[shader]);
         for (const [name, value] of Object.entries(uniforms)) {
+            if (__classPrivateFieldGet(this, _WilsonGPU_uniforms, "f")[shader][name] === undefined) {
+                throw new Error(`Uniform ${name} not found in shader ${shader}`);
+            }
             const { location, type } = __classPrivateFieldGet(this, _WilsonGPU_uniforms, "f")[shader][name];
             const uniformFunction = uniformFunctions[type];
             uniformFunction(this.gl, location, value);

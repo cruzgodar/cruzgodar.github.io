@@ -1121,19 +1121,12 @@ export class SolRooms extends SolGeometry
 
 	uniformNames = ["wallThickness", "baseColor"];
 
-	updateUniforms(gl, uniformList, programIndex)
+	getUpdatedUniforms()
 	{
-		const wallThickness = .372 - this.sliderValues.wallThickness / 10;
-
-		gl.uniform1f(
-			uniformList.wallThickness[programIndex],
-			wallThickness
-		);
-
-		gl.uniform3fv(
-			uniformList.baseColor[programIndex],
-			this.baseColor
-		);
+		return {
+			wallThickness: .372 - this.sliderValues.wallThickness / 10,
+			baseColor: this.baseColor
+		};
 	}
 
 	uiElementsUsed = "#wall-thickness-slider, #switch-scene-button";
@@ -1195,12 +1188,9 @@ export class SolSpheres extends SolGeometry
 
 	uniformNames = ["wallThickness", "baseColor"];
 
-	updateUniforms(gl, uniformList, programIndex)
+	getUpdatedUniforms()
 	{
-		gl.uniform3fv(
-			uniformList.baseColor[programIndex],
-			this.baseColor
-		);
+		return { baseColor: this.baseColor };
 	}
 
 	uiElementsUsed = "#switch-scene-button";

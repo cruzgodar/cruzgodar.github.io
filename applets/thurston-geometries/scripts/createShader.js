@@ -120,8 +120,8 @@ export function createShader({
 				return raymarch(
 					geometryNormalize(
 						forwardVec
-						+ rightVec * (uvScale * (uv.x + uvAdjust.x) + uvCenter.x) * aspectRatioX * fov
-						+ upVec * (uvScale * (uv.y + uvAdjust.y) + uvCenter.y) / aspectRatioY * fov
+						+ rightVec * (uvScale * (uv.x + uvAdjust.x) + uvCenter.x) * worldSize.x * fov
+						+ upVec * (uvScale * (uv.y + uvAdjust.y) + uvCenter.y) / worldSize.y * fov
 					)
 				);
 			}
@@ -130,16 +130,15 @@ export function createShader({
 			{
 				vec2 texCoord = (uv + vec2(1.0)) * 0.5;
 				vec4 sample = texture2D(uTexture, texCoord);
-				float stepSize = 2.0 / (float(resolution * 3));
 				
 				if (sample.w > 0.15)
 				{
 					vec3 aaSample = (
 						sample.xyz	
-						+ raymarchHelper(vec2(stepSize, 0.0))
-						+ raymarchHelper(vec2(0.0, stepSize))
-						+ raymarchHelper(vec2(-stepSize, 0.0))
-						+ raymarchHelper(vec2(0.0, -stepSize))
+						+ raymarchHelper(vec2(stepSize.x, 0.0))
+						+ raymarchHelper(vec2(0.0, stepSize.y))
+						+ raymarchHelper(vec2(-stepSize.x, 0.0))
+						+ raymarchHelper(vec2(0.0, -stepSize.y))
 					) / 5.0;
 					
 					gl_FragColor = vec4(aaSample, 1.0);
@@ -156,8 +155,8 @@ export function createShader({
 					raymarch(
 						geometryNormalize(
 							forwardVec
-							+ rightVec * (uvScale * uv.x + uvCenter.x) * aspectRatioX * fov
-							+ upVec * (uvScale * uv.y + uvCenter.y) / aspectRatioY * fov
+							+ rightVec * (uvScale * uv.x + uvCenter.x) * worldSize.x * fov
+							+ upVec * (uvScale * uv.y + uvCenter.y) / worldSize.y * fov
 						)
 					),
 					1.0
@@ -173,18 +172,16 @@ export function createShader({
 		uniform float uvScale;
 		uniform vec2 uvCenter;
 		
-		uniform float aspectRatioX;
-		uniform float aspectRatioY;
+		uniform vec2 worldSize;
 		
 		uniform vec4 cameraPos;
-		uniform vec4 normalVec;
+		// uniform vec4 normalVec;
 		uniform vec4 upVec;
 		uniform vec4 rightVec;
 		uniform vec4 forwardVec;
-		
-		uniform int resolution;
 
 		${antialiasing ? /* glsl */`
+			uniform vec2 stepSize;
 			uniform sampler2D uTexture;
 		` : ""}
 		

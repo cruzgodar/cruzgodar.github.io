@@ -151,7 +151,7 @@ export class BaseGeometry
 
 	uniformGlsl;
 	uniformNames;
-	updateUniforms() {}
+	getUpdatedUniforms() {}
 
 	wallThicknessData;
 	maxClipDistance = 5;

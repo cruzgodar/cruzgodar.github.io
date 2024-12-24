@@ -207,7 +207,7 @@ export default function()
 				Math.min(geometryData.maxClipDistance, clipDistanceSlider.value)
 			);
 
-			geometryData.sliderValues.clipDistance = clipDistanceSlider.value;
+			geometryData.sliderValues.clipDistance = parseFloat(clipDistanceSlider.value);
 		}
 
 		applet.run(geometryData);
@@ -240,7 +240,7 @@ export default function()
 
 			demoApplet.allowFullscreenWithKeyboard = false;
 
-			$$(".wilson-enter-fullscreen-button")[1].remove();
+			$$(".WILSON_enter-fullscreen-button")[1].remove();
 		}
 
 		else
@@ -301,7 +301,7 @@ export default function()
 
 		demoCanvasContainer.style.display = "";
 		
-		demoCanvasContainer.querySelector(".wilson-applet-canvas-container").style.setProperty(
+		demoCanvasContainer.querySelector(".WILSON_applet-container").style.setProperty(
 			"margin-top",
 			"4px",
 			"important"
