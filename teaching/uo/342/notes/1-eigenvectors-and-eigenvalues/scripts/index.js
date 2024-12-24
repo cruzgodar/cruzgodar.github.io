@@ -3,13 +3,13 @@ import { ThurstonGeometries } from "/applets/thurston-geometries/scripts/class.j
 import { H3Rooms } from "/applets/thurston-geometries/scripts/geometries/h3.js";
 import { VectorFields } from "/applets/vector-fields/scripts/class.js";
 import {
-    createDesmosGraphs,
-    desmosBlue,
-    desmosGreen,
-    desmosPurple,
-    desmosRed,
-    getDesmosVector,
-    setGetDesmosData
+	createDesmosGraphs,
+	desmosBlue,
+	desmosGreen,
+	desmosPurple,
+	desmosRed,
+	getDesmosVector,
+	setGetDesmosData
 } from "/scripts/src/desmos.js";
 import { showPage } from "/scripts/src/loadPage.js";
 import { $ } from "/scripts/src/main.js";
@@ -55,7 +55,7 @@ export default function()
 
 	h3GeometryApplet.run(geometryData);
 
-	h3GeometryApplet.changeResolution(1000);
+	h3GeometryApplet.wilson.resizeCanvas({ width: 1000 });
 
 
 
@@ -71,15 +71,12 @@ export default function()
 
 	const vectorFieldApplet = new VectorFields({ canvas: vectorFieldCanvas });
 
-	vectorFieldApplet.loadPromise.then(() =>
-	{
-		vectorFieldApplet.run({
-			generatingCode: "(x - y, x + y)",
-			resolution: 750 * siteSettings.resolutionMultiplier,
-			zoomLevel: -0.5
-		});
-		vectorFieldApplet.pauseWhenOffscreen();
+	vectorFieldApplet.run({
+		generatingCode: "(x - y, x + y)",
+		resolution: 750 * siteSettings.resolutionMultiplier,
+		worldWidth: 2
 	});
+	vectorFieldApplet.pauseWhenOffscreen();
 
 
 
