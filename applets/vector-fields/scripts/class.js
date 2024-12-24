@@ -23,6 +23,7 @@ export class VectorFields extends AnimationFrameApplet
 	lastWorldCenterX;
 	lastWorldCenterY;
 	lastWorldWidth;
+	lastScale = 1;
 
 	numParticles = 0;
 	maxParticles = 5000;
@@ -98,7 +99,12 @@ export class VectorFields extends AnimationFrameApplet
 				{
 					vec3 v = texture2D(uTexture, texCoord).xyz;
 					
-					gl_FragColor = vec4(v.x - dimAmount, v.y, v.z, 1.0);
+					gl_FragColor = vec4(
+						(v.x - dimAmount) * min(scale, 1.0) * min(scale, 1.0),
+						v.y,
+						v.z,
+						1.0
+					);
 					
 					return;
 				}
@@ -615,12 +621,14 @@ export class VectorFields extends AnimationFrameApplet
 		this.subpixelWorldCenterMovement[1] = Math.sign(this.subpixelWorldCenterMovement[1])
 			* (Math.abs(this.subpixelWorldCenterMovement[1]) - Math.abs(uvStepY));
 
+		const scale = this.wilson.worldWidth / this.lastWorldWidth;
+
 		this.wilsonPanZoomDim.setUniforms({
 			uvStep: [
 				uvStepX / this.wilson.canvasWidth,
 				-uvStepY / this.wilson.canvasHeight,
 			],
-			scale: this.wilson.worldWidth / this.lastWorldWidth
+			scale
 		});
 
 
@@ -628,6 +636,7 @@ export class VectorFields extends AnimationFrameApplet
 		this.lastWorldCenterX = this.wilson.worldCenterX;
 		this.lastWorldCenterY = this.wilson.worldCenterY;
 		this.lastWorldWidth = this.wilson.worldWidth;
+		this.lastScale = scale;
 
 
 
@@ -665,6 +674,8 @@ export class VectorFields extends AnimationFrameApplet
 
 	updateParticles()
 	{
+		const lifetimeDecrease = Math.max(this.lastScale - 1, 0) * 100 + 1;
+
 		for (let i = 0; i < this.wilsonUpdate.canvasHeight; i++)
 		{
 			for (let j = 0; j < this.wilsonUpdate.canvasWidth; j++)
@@ -724,21 +735,6 @@ export class VectorFields extends AnimationFrameApplet
 
 					let [row, col] = this.wilson.interpolateWorldToCanvas(this.particles[index]);
 
-					// let row = Math.round(
-					// 	(
-					// 		.5 - (
-					// 			this.particles[index][1] - this.lastWorldCenterY
-					// 		) / this.wilson.worldHeight
-					// 	) * this.wilson.canvasHeight);
-
-					// let col = Math.round(
-					// 	(
-					// 		(this.particles[index][0] - this.lastWorldCenterX)
-					// 			/ this.wilson.worldWidth
-					// 			+ .5
-					// 	) * this.wilson.canvasWidth
-					// );
-
 					if (this.loopEdges)
 					{
 						if (row >= this.wilson.canvasHeight)
@@ -778,7 +774,7 @@ export class VectorFields extends AnimationFrameApplet
 						this.panZoomDimTexture[4 * newIndex + 2] =
 							Math.max(floatsS[index], floatsS2[index]) * 255;
 
-						// this.particles[index][2]--;
+						this.particles[index][2] -= lifetimeDecrease;
 
 						if (this.particles[index][2] <= 0)
 						{
