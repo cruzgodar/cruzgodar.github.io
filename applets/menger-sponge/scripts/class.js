@@ -1,5 +1,4 @@
 import {
-	getRotationMatrix,
 	mat3TimesVector,
 	RaymarchApplet
 } from "/scripts/applets/raymarchApplet.js";
@@ -141,10 +140,16 @@ export class MengerSponge extends RaymarchApplet
 			const int maxIterations = 16;
 		`;
 
+		const uniformsGlsl = /* glsl */`
+			uniform float scale;
+			uniform int iterations;
+			uniform mat3 rotationMatrix;
+		`;
+
 		const uniforms = {
-			scale: ["float", 3],
-			iterations: ["int", 16],
-			rotationMatrix: ["mat3", [[1, 0, 0], [0, 1, 0], [0, 0, 1]]],
+			scale: 3,
+			iterations: 16,
+			rotationMatrix: [[1, 0, 0], [0, 1, 0], [0, 0, 1]],
 		};
 
 		super({
@@ -152,10 +157,11 @@ export class MengerSponge extends RaymarchApplet
 			distanceEstimatorGlsl,
 			getColorGlsl,
 			addGlsl,
+			uniformsGlsl,
 			uniforms,
-			cameraPos: [2.58242, 1.68801, 1.78295],
-			theta: 3.7518,
-			phi: 2.1482,
+			cameraPos: [3.5, 0, 0],
+			theta: 3 * Math.PI / 2,
+			phi: Math.PI / 2,
 			stepFactor: .5,
 			epsilonScaling: 1.75,
 			lightBrightness: 1.75
@@ -166,8 +172,8 @@ export class MengerSponge extends RaymarchApplet
 
 	distanceEstimator(x, y, z)
 	{
-		const scale = this.uniforms.scale[1];
-		const iterations = this.uniforms.iterations[1];
+		const scale = this.uniforms.scale;
+		const iterations = this.uniforms.iterations;
 
 		let mutablePos = [
 			Math.abs(x),
@@ -288,7 +294,7 @@ export class MengerSponge extends RaymarchApplet
 			];
 
 			mutablePos = mat3TimesVector(
-				this.uniforms.rotationMatrix[1],
+				this.uniforms.rotationMatrix,
 				mutablePos
 			);
 
@@ -299,16 +305,5 @@ export class MengerSponge extends RaymarchApplet
 		}
 
 		return Math.abs(totalDistance) / effectiveScale;
-	}
-
-	updateMatrices()
-	{
-		this.setUniform("rotationMatrix", getRotationMatrix(
-			this.rotationAngleX,
-			this.rotationAngleY,
-			this.rotationAngleZ
-		));
-
-		this.needNewFrame = true;
 	}
 }

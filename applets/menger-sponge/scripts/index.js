@@ -1,5 +1,6 @@
 import { showPage } from "../../../scripts/src/loadPage.js";
 import { MengerSponge } from "./class.js";
+import { getRotationMatrix } from "/scripts/applets/raymarchApplet.js";
 import { DownloadButton } from "/scripts/src/buttons.js";
 import { Checkbox } from "/scripts/src/checkboxes.js";
 import { $ } from "/scripts/src/main.js";
@@ -109,16 +110,17 @@ export default function()
 
 	function onSliderInput()
 	{
-		applet.setUniform("scale", scaleSlider.value);
-		applet.setUniform("iterations", iterationsSlider.value);
-		// Linearly interpolate from 5 at scale 2 to 1.75 at scale 3.
-		applet.setUniform("epsilonScaling", 5 - (scaleSlider.value - 2) * (5 - 1.75));
-
-		applet.rotationAngleX = rotationAngleXSlider.value;
-		applet.rotationAngleY = rotationAngleYSlider.value;
-		applet.rotationAngleZ = rotationAngleZSlider.value;
-
-		applet.updateMatrices();
+		applet.setUniforms({
+			scale: scaleSlider.value,
+			iterations: iterationsSlider.value,
+			// Linearly interpolate from 5 at scale 2 to 1.75 at scale 3.
+			epsilonScaling: 5 - (scaleSlider.value - 2) * (5 - 1.75),
+			rotationMatrix: getRotationMatrix(
+				rotationAngleXSlider.value,
+				rotationAngleYSlider.value,
+				rotationAngleZSlider.value
+			),
+		});
 
 		applet.needNewFrame = true;
 	}
