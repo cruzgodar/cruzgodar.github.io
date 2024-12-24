@@ -9,6 +9,7 @@ import {
 	getMaxGlslString,
 	tempShader
 } from "/scripts/applets/applet.js";
+import { $$ } from "/scripts/src/main.js";
 import { WilsonGPU } from "/scripts/wilson.js";
 
 export class VectorFields extends AnimationFrameApplet
@@ -24,6 +25,7 @@ export class VectorFields extends AnimationFrameApplet
 	lastWorldCenterY;
 	lastWorldWidth;
 	lastScale = 1;
+	needTemporaryDim = false;
 
 	numParticles = 0;
 	maxParticles = 5000;
@@ -90,6 +92,7 @@ export class VectorFields extends AnimationFrameApplet
 			uniform float dimAmount;
 			uniform float scale;
 			uniform vec2 uvStep;
+			uniform float temporaryDimFactor;
 			
 			void main(void)
 			{
@@ -100,7 +103,7 @@ export class VectorFields extends AnimationFrameApplet
 					vec3 v = texture2D(uTexture, texCoord).xyz;
 					
 					gl_FragColor = vec4(
-						(v.x - dimAmount) * min(scale, 1.0) * min(scale, 1.0),
+						(v.x - dimAmount) * temporaryDimFactor,
 						v.y,
 						v.z,
 						1.0
@@ -120,13 +123,28 @@ export class VectorFields extends AnimationFrameApplet
 			uniforms: {
 				dimAmount: 1 / 255,
 				scale: 1,
-				uvStep: [0, 0]
+				uvStep: [0, 0],
+				temporaryDimFactor: 1
 			},
 
 			canvasWidth: this.resolution,
+
+			fullscreenOptions: {
+				fillScreen: true,
+				animate: false,
+				closeWithEscape: false,
+			}
 		};
 
 		this.wilsonPanZoomDim = new WilsonGPU(this.panZoomDimCanvas, optionsPanZoomDim);
+
+		$$(".WILSON_fullscreen-container")[0].style.setProperty(
+			"display",
+			"none",
+			"important"
+		);
+
+		console.log($$(".WILSON_fullscreen-container"));
 
 
 
@@ -143,26 +161,34 @@ export class VectorFields extends AnimationFrameApplet
 			minWorldHeight: 0.5,
 			maxWorldHeight: 20,
 
+			onResizeCanvas: this.generateNewField.bind(this, {}),
+
 			interactionOptions: {
 				useForPanAndZoom: true,
 				onPanAndZoom: () => this.needNewFrame = true,
 			},
 
+			draggableOptions: {
+				draggables: {
+					draggableArg: [0, 0],
+				},
+				callbacks: {
+					drag: this.onDragDraggable.bind(this),
+				}
+			},
+
 			fullscreenOptions: {
 				fillScreen: true,
-				onSwitch: this.generateNewField.bind(this, {}),
+				onSwitch: this.switchFullscreen.bind(this),
 				useFullscreenButton: true,
 				enterFullscreenButtonIconPath: "/graphics/general-icons/enter-fullscreen.png",
 				exitFullscreenButtonIconPath: "/graphics/general-icons/exit-fullscreen.png",
 			}
-
-			// useDraggables: true,
-
-			// draggablesMousemoveCallback: this.onDragDraggable.bind(this),
-			// draggablesTouchmoveCallback: this.onDragDraggable.bind(this),
 		};
 
 		this.wilson = new WilsonGPU(canvas, options);
+
+		this.wilson.draggables.draggableArg.element.style.display = "none";
 
 		this.loadPromise = loadGlsl();
 	}
@@ -187,6 +213,8 @@ export class VectorFields extends AnimationFrameApplet
 		this.resolution = resolution;
 		this.particleDilation = particleDilation;
 
+		const needDraggable = generatingCode.indexOf("draggableArg") !== -1;
+
 
 
 		const shaderUpdateBase = /* glsl */`
@@ -199,8 +227,7 @@ export class VectorFields extends AnimationFrameApplet
 			
 			uniform float dt;
 			
-			// uniform vec2 draggableArg;
-			// uniform vec2 draggableArg2;
+			uniform vec2 draggableArg;
 			
 			
 			
@@ -269,6 +296,7 @@ export class VectorFields extends AnimationFrameApplet
 			source: shaderUpdateX,
 			uniforms: {
 				dt: this.dt,
+				...(needDraggable ? { draggableArg: [0, 0] } : {}),
 			}
 		});
 
@@ -277,22 +305,32 @@ export class VectorFields extends AnimationFrameApplet
 			source: shaderUpdateY,
 			uniforms: {
 				dt: this.dt,
+				...(needDraggable ? { draggableArg: [0, 0] } : {}),
 			}
 		});
 
 		this.wilsonUpdate.loadShader({
 			id: "updateH",
 			source: shaderUpdateH,
+			uniforms: {
+				...(needDraggable ? { draggableArg: [0, 0] } : {}),
+			}
 		});
 
 		this.wilsonUpdate.loadShader({
 			id: "updateS",
 			source: shaderUpdateS,
+			uniforms: {
+				...(needDraggable ? { draggableArg: [0, 0] } : {}),
+			}
 		});
 
 		this.wilsonUpdate.loadShader({
 			id: "updateS2",
 			source: shaderUpdateS2,
+			uniforms: {
+				...(needDraggable ? { draggableArg: [0, 0] } : {}),
+			}
 		});
 
 		
@@ -348,15 +386,8 @@ export class VectorFields extends AnimationFrameApplet
 
 		this.wilson.setUniforms({ maxBrightness: this.lifetime / 255 });
 
-
-
-		// this.wilson.draggables.draggables[0].style.display =
-		// 	generatingCode.indexOf("draggableArg") !== -1 ? "block" : "none";
-		
-		// this.wilson.draggables.draggables[1].style.display =
-		// 	generatingCode.indexOf("draggableArg2") !== -1 ? "block" : "none";
-
-
+		this.wilson.draggables.draggableArg.element.style.display =
+			needDraggable ? "block" : "none";
 
 		this.generateNewField({
 			resolution,
@@ -628,7 +659,8 @@ export class VectorFields extends AnimationFrameApplet
 				uvStepX / this.wilson.canvasWidth,
 				-uvStepY / this.wilson.canvasHeight,
 			],
-			scale
+			scale,
+			temporaryDimFactor: (Math.min(scale, 1) ** 2) * (this.needTemporaryDim ? 0.96 : 1),
 		});
 
 
@@ -637,6 +669,7 @@ export class VectorFields extends AnimationFrameApplet
 		this.lastWorldCenterY = this.wilson.worldCenterY;
 		this.lastWorldWidth = this.wilson.worldWidth;
 		this.lastScale = scale;
+		this.needTemporaryDim = false;
 
 
 
@@ -814,5 +847,38 @@ export class VectorFields extends AnimationFrameApplet
 		});
 
 		this.wilson.drawFrame();
+	}
+
+
+
+	onDragDraggable({ x, y })
+	{
+		for (const shader of ["updateX", "updateY", "updateH", "updateS", "updateS2"])
+		{
+			this.wilsonUpdate.setUniforms({
+				draggableArg: [x, y]
+			}, shader);
+		}
+
+		this.needTemporaryDim = true;
+	}
+
+
+
+	switchFullscreen(isFullscreen)
+	{
+		if (isFullscreen)
+		{
+			this.wilsonPanZoomDim.enterFullscreen();
+		}
+
+		else
+		{
+			this.wilsonPanZoomDim.exitFullscreen();
+		}
+
+		console.log(this.wilsonPanZoomDim.canvasWidth, this.wilsonPanZoomDim.canvasHeight);
+
+		this.generateNewField({});
 	}
 }
