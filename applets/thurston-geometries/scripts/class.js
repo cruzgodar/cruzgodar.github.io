@@ -141,14 +141,15 @@ export class ThurstonGeometries extends Applet
 			worldHeight: this.worldSize,
 
 			worldCenterX: 0,
-			worldCenterY: Math.PI / 2,
-			minWorldY: 0.001 - this.worldSize / 2,
-			maxWorldY: Math.PI - 0.001 + this.worldSize / 2,
+			worldCenterY: 0,
+			minWorldY: -Math.PI / 2 + (0.001 - this.worldSize / 2),
+			maxWorldY: Math.PI / 2 - (0.001 - this.worldSize / 2),
 
 			onResizeCanvas: this.onResizeCanvas.bind(this),
 
 			interactionOptions: {
 				useForPanAndZoom: true,
+				disallowZooming: true,
 				onPanAndZoom: () => this.needNewFrame = true,
 				callbacks: {
 					touchstart: this.onTouchStart.bind(this),
@@ -176,8 +177,8 @@ export class ThurstonGeometries extends Applet
 				if (key === "z")
 				{
 					const dummy = { t: 0 };
-					const oldFactor = pressed ? 1 : 4;
-					const newFactor = pressed ? 4 : 1;
+					const oldFactor = pressed ? 1 : 0.4;
+					const newFactor = pressed ? 0.4 : 1;
 
 					anime({
 						targets: dummy,
@@ -201,6 +202,11 @@ export class ThurstonGeometries extends Applet
 	run(geometryData, resetWorldCenter = true)
 	{
 		this.geometryData = geometryData;
+
+		if (this.geometryData.aspectRatio)
+		{
+			this.wilson.canvas.style.aspectRatio = this.geometryData.aspectRatio;
+		}
 
 		this.updateAutomaticMoving = () => {};
 		this.movingAmount = [0, 0, 0];
@@ -243,7 +249,7 @@ export class ThurstonGeometries extends Applet
 		{
 			this.wilson.resizeWorld({
 				centerX: 0,
-				centerY: Math.PI / 2,
+				centerY: 0,
 			});
 			
 			this.lastWorldCenterX = this.wilson.worldCenterX;
@@ -298,6 +304,13 @@ export class ThurstonGeometries extends Applet
 			});
 
 			this.createTextures();
+		}
+
+
+
+		if (this.geometryData.aspectRatio)
+		{
+			this.wilson.resizeCanvas({ width: this.wilson.canvasWidth });
 		}
 
 
@@ -783,7 +796,7 @@ export class ThurstonGeometries extends Applet
 		if (this.geometryData.render1D)
 		{
 			this.wilson.resizeWorld({
-				centerY: Math.PI / 2
+				centerY: 0
 			});
 		}
 
@@ -821,7 +834,7 @@ export class ThurstonGeometries extends Applet
 		if (!this.restrictCamera)
 		{
 			this.wilson.resizeWorld({
-				centerY: Math.PI / 2
+				centerY: 0
 			});
 
 			this.geometryData.forwardVec = result2[0];
@@ -856,7 +869,7 @@ export class ThurstonGeometries extends Applet
 		if (this.wilson.worldCenterY)
 		{
 			this.wilson.resizeWorld({
-				centerY: Math.PI / 2
+				centerY: 0
 			});
 
 			this.geometryData.upVec = [...this.rotatedUpVec];
@@ -977,7 +990,7 @@ export class ThurstonGeometries extends Applet
 		if (this.geometryData instanceof SolRooms)
 		{
 			await anime({
-				targets: this.canvas,
+				targets: this.canvas.parentElement,
 				opacity: 0,
 				duration: duration / 2,
 				easing: "easeOutQuad"
@@ -992,7 +1005,7 @@ export class ThurstonGeometries extends Applet
 			catch(_ex) { /* Element doesn't exist */ }
 
 			anime({
-				targets: this.canvas,
+				targets: this.canvas.parentElement,
 				opacity: 1,
 				duration: duration / 2,
 				easing: "easeOutQuad",
@@ -1004,7 +1017,7 @@ export class ThurstonGeometries extends Applet
 		if (this.geometryData instanceof SolSpheres)
 		{
 			await anime({
-				targets: this.canvas,
+				targets: this.canvas.parentElement,
 				opacity: 0,
 				duration: duration / 2,
 				easing: "easeOutQuad"
@@ -1020,7 +1033,7 @@ export class ThurstonGeometries extends Applet
 			catch(_ex) { /* Element doesn't exist */ }
 
 			anime({
-				targets: this.canvas,
+				targets: this.canvas.parentElement,
 				opacity: 1,
 				duration: duration / 2,
 				easing: "easeOutQuad",

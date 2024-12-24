@@ -234,6 +234,8 @@ export default function()
 
 		if (demoApplet === undefined)
 		{
+			demoCanvasContainer.style.display = "";
+
 			demoApplet = new ThurstonGeometries({
 				canvas: demoCanvas,
 			});
@@ -246,6 +248,7 @@ export default function()
 		else
 		{
 			demoApplet.animationPaused = false;
+			demoApplet.needNewFrame = true;
 
 			demoApplet.drawFrame();
 		}
@@ -261,8 +264,10 @@ export default function()
 		applet.run(geometryDataE3);
 
 		applet.restrictCamera = false;
-		applet.wilson.worldCenterY = Math.PI / 4.5;
-		applet.wilson.worldCenterX = 3 * Math.PI / 4;
+		applet.wilson.resizeWorld({
+			centerX: 3 * Math.PI / 4,
+			centerY: Math.PI / 4.5,
+		});
 
 
 
@@ -297,7 +302,9 @@ export default function()
 
 		demoApplet.run(geometryDataS2xE);
 
-		demoApplet.wilson.worldCenterX = Math.PI / 4;
+		demoApplet.wilson.resizeWorld({
+			centerX: Math.PI / 4,
+		});
 
 		demoCanvasContainer.style.display = "";
 		
@@ -315,8 +322,10 @@ export default function()
 	function changeResolution()
 	{
 		applet.needNewFrame = true;
-		
-		applet.changeResolution(resolutionInput.value * siteSettings.resolutionMultiplier);
+
+		applet.wilson.resizeCanvas({
+			width: resolutionInput.value * siteSettings.resolutionMultiplier
+		});
 	}
 
 	function onSliderInput()

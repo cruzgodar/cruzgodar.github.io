@@ -156,7 +156,7 @@ export function createShader({
 						geometryNormalize(
 							forwardVec
 							+ rightVec * (uvScale * uv.x + uvCenter.x) * worldSize.x * fov
-							+ upVec * (uvScale * uv.y + uvCenter.y) / worldSize.y * fov
+							+ upVec * (uvScale * uv.y + uvCenter.y) * worldSize.y * fov
 						)
 					),
 					1.0
