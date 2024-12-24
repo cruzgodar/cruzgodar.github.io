@@ -1,6 +1,5 @@
 import { AnimationFrameApplet } from "/scripts/applets/animationFrameApplet.js";
-import { addTemporaryListener } from "/scripts/src/main.js";
-import { Wilson } from "/scripts/wilson.js";
+import { WilsonGPU } from "/scripts/wilson.js";
 
 export class GameOfLife extends AnimationFrameApplet
 {
@@ -14,7 +13,7 @@ export class GameOfLife extends AnimationFrameApplet
 	frame = 0;
 	onTorus = false;
 
-	currentFramebuffer = 0;
+	currentFramebuffer = "0";
 
 	pauseUpdating = true;
 
@@ -34,7 +33,7 @@ export class GameOfLife extends AnimationFrameApplet
 			varying vec2 uv;
 			
 			uniform sampler2D uTexture;
-			uniform float step;
+			uniform float stepSize;
 			
 			
 			
@@ -42,7 +41,7 @@ export class GameOfLife extends AnimationFrameApplet
 			{
 				vec2 center = (uv + vec2(1.0, 1.0)) / 2.0;
 				
-				if (center.x <= step || center.x >= 1.0 - step || center.y <= step || center.y >= 1.0 - step)
+				if (center.x <= stepSize || center.x >= 1.0 - stepSize || center.y <= stepSize || center.y >= 1.0 - stepSize)
 				{
 					gl_FragColor = vec4(0.0, 0.0, 0.0, 0.0);
 					return;
@@ -64,21 +63,21 @@ export class GameOfLife extends AnimationFrameApplet
 			varying vec2 uv;
 			
 			uniform sampler2D uTexture;
-			uniform float step;
-			uniform int torus;
+			uniform float stepSize;
+			uniform int onTorus;
 
 			const float glowChangeSpeed = 0.15;
 			
 			vec2 getModdedPos(vec2 xy)
 			{
-				return mod(xy - vec2(step), 1.0 - 2.0 * step) + vec2(step);
+				return mod(xy - vec2(stepSize), 1.0 - 2.0 * stepSize) + vec2(stepSize);
 			}
 			
 			void main(void)
 			{
 				vec2 center = (uv + vec2(1.0, 1.0)) / 2.0;
 				
-				if (center.x <= step || center.x >= 1.0 - step || center.y <= step || center.y >= 1.0 - step)
+				if (center.x <= stepSize || center.x >= 1.0 - stepSize || center.y <= stepSize || center.y >= 1.0 - stepSize)
 				{
 					gl_FragColor = vec4(0.0, 0.0, 0.0, 0.0);
 					return;
@@ -90,31 +89,31 @@ export class GameOfLife extends AnimationFrameApplet
 
 				float surroundingState;
 
-				if (torus != 0)
+				if (onTorus != 0)
 				{
 					surroundingState = (
-						texture2D(uTexture, getModdedPos(center + vec2(step, 0.0))).z
-						+ texture2D(uTexture, getModdedPos(center + vec2(-step, 0.0))).z
-						+ texture2D(uTexture, getModdedPos(center + vec2(0.0, step))).z
-						+ texture2D(uTexture, getModdedPos(center + vec2(0.0, -step))).z
-						+ texture2D(uTexture, getModdedPos(center + vec2(step, step))).z
-						+ texture2D(uTexture, getModdedPos(center + vec2(step, -step))).z
-						+ texture2D(uTexture, getModdedPos(center + vec2(-step, step))).z
-						+ texture2D(uTexture, getModdedPos(center + vec2(-step, -step))).z
+						texture2D(uTexture, getModdedPos(center + vec2(stepSize, 0.0))).z
+						+ texture2D(uTexture, getModdedPos(center + vec2(-stepSize, 0.0))).z
+						+ texture2D(uTexture, getModdedPos(center + vec2(0.0, stepSize))).z
+						+ texture2D(uTexture, getModdedPos(center + vec2(0.0, -stepSize))).z
+						+ texture2D(uTexture, getModdedPos(center + vec2(stepSize, stepSize))).z
+						+ texture2D(uTexture, getModdedPos(center + vec2(stepSize, -stepSize))).z
+						+ texture2D(uTexture, getModdedPos(center + vec2(-stepSize, stepSize))).z
+						+ texture2D(uTexture, getModdedPos(center + vec2(-stepSize, -stepSize))).z
 					);
 				}
 
 				else
 				{
 					surroundingState = (
-						texture2D(uTexture, center + vec2(step, 0.0)).z
-						+ texture2D(uTexture, center + vec2(-step, 0.0)).z
-						+ texture2D(uTexture, center + vec2(0.0, step)).z
-						+ texture2D(uTexture, center + vec2(0.0, -step)).z
-						+ texture2D(uTexture, center + vec2(step, step)).z
-						+ texture2D(uTexture, center + vec2(step, -step)).z
-						+ texture2D(uTexture, center + vec2(-step, step)).z
-						+ texture2D(uTexture, center + vec2(-step, -step)).z
+						texture2D(uTexture, center + vec2(stepSize, 0.0)).z
+						+ texture2D(uTexture, center + vec2(-stepSize, 0.0)).z
+						+ texture2D(uTexture, center + vec2(0.0, stepSize)).z
+						+ texture2D(uTexture, center + vec2(0.0, -stepSize)).z
+						+ texture2D(uTexture, center + vec2(stepSize, stepSize)).z
+						+ texture2D(uTexture, center + vec2(stepSize, -stepSize)).z
+						+ texture2D(uTexture, center + vec2(-stepSize, stepSize)).z
+						+ texture2D(uTexture, center + vec2(-stepSize, -stepSize)).z
 					);
 				}
 
@@ -147,30 +146,25 @@ export class GameOfLife extends AnimationFrameApplet
 
 		const optionsHidden =
 		{
-			renderer: "gpu",
+			shaders: {
+				noUpdate: shaderNoUpdate,
+				update: shaderUpdate
+			},
 
-			shader: shaderNoUpdate,
+			uniforms: {
+				noUpdate: {
+					stepSize: 1 / this.gridSize,
+				},
+				update: {
+					stepSize: 1 / this.gridSize,
+					onTorus: this.onTorus ? 1 : 0
+				}
+			},
 
 			canvasWidth: this.resolution,
-			canvasHeight: this.resolution
 		};
 
-		this.wilsonHidden = new Wilson(hiddenCanvas, optionsHidden);
-
-		this.wilsonHidden.render.loadNewShader(shaderUpdate);
-
-		this.wilsonHidden.render.initUniforms(["step"], 0);
-		this.wilsonHidden.render.initUniforms(["step", "torus"], 1);
-
-		this.wilsonHidden.render.createFramebufferTexturePair(this.wilsonHidden.gl.UNSIGNED_BYTE);
-		this.wilsonHidden.render.createFramebufferTexturePair(this.wilsonHidden.gl.UNSIGNED_BYTE);
-
-		this.wilsonHidden.gl.bindTexture(
-			this.wilsonHidden.gl.TEXTURE_2D,
-			this.wilsonHidden.render.framebuffers[0].texture
-		);
-
-		this.wilsonHidden.gl.bindFramebuffer(this.wilsonHidden.gl.FRAMEBUFFER, null);
+		this.wilsonHidden = new WilsonGPU(hiddenCanvas, optionsHidden);
 
 
 		
@@ -183,9 +177,7 @@ export class GameOfLife extends AnimationFrameApplet
 			uniform sampler2D uTexture;
 
 			uniform vec2 worldCenter;
-			uniform float worldRadius;
-
-			uniform float aspectRatio;
+			uniform vec2 worldSize;
 
 			const vec4 aliveColor = vec4(1.0, 1.0, 1.0, 1.0);
 			const vec4 growingColor = vec4(0.5, 0.0, 1.0, 1.0);
@@ -194,9 +186,7 @@ export class GameOfLife extends AnimationFrameApplet
 			
 			void main(void)
 			{
-				vec2 aspectRatio = vec2(max(aspectRatio, 1.0), max(1.0 / aspectRatio, 1.0));
-				
-				vec2 xy = (uv * aspectRatio * worldRadius + worldCenter) / 2.0 + vec2(0.5, 0.5);
+				vec2 xy = (uv * worldSize / 2.0 + worldCenter) + vec2(0.5, 0.5);
 
 				if (max(xy.x, xy.y) >= 1.0 || min(xy.x, xy.y) <= 0.0)
 				{
@@ -226,68 +216,37 @@ export class GameOfLife extends AnimationFrameApplet
 
 		const options =
 		{
-			renderer: "gpu",
-
 			shader: shaderUpscale,
 
+			uniforms: {
+				worldCenter: [0, 0],
+				worldSize: [1.2, 1.2],
+			},
+
 			canvasWidth: this.resolution,
-			canvasHeight: this.resolution,
 
-			worldWidth: 2.2,
+			worldWidth: 1.2,
+			minWorldX: -0.6,
+			maxWorldX: 0.6,
+			minWorldY: -0.6,
+			maxWorldY: 0.6,
+			minWorldWidth: 0.05,
+			minWorldHeight: 0.05,
 
-			useFullscreen: true,
-			trueFullscreen: true,
+			interactionOptions: {
+				useForPanAndZoom: true,
+				onPanAndZoom: () => this.needNewFrame = true,
+			},
 
-			useFullscreenButton: true,
-
-			enterFullscreenButtonIconPath: "/graphics/general-icons/enter-fullscreen.png",
-			exitFullscreenButtonIconPath: "/graphics/general-icons/exit-fullscreen.png",
-
-			switchFullscreenCallback: () => this.changeAspectRatio(true),
-
-
-
-			mousedownCallback: this.onGrabCanvas.bind(this),
-			touchstartCallback: this.onGrabCanvas.bind(this),
-
-			mousedragCallback: this.onDragCanvas.bind(this),
-			touchmoveCallback: this.onDragCanvas.bind(this),
-
-			mouseupCallback: this.onReleaseCanvas.bind(this),
-			touchendCallback: this.onReleaseCanvas.bind(this),
-
-			wheelCallback: this.onWheelCanvas.bind(this),
-			pinchCallback: this.onPinchCanvas.bind(this)
+			fullscreenOptions: {
+				fillScreen: true,
+				useFullscreenButton: true,
+				enterFullscreenButtonIconPath: "/graphics/general-icons/enter-fullscreen.png",
+				exitFullscreenButtonIconPath: "/graphics/general-icons/exit-fullscreen.png",
+			}
 		};
 
-		this.wilson = new Wilson(canvas, options);
-
-		this.wilson.render.initUniforms([
-			"worldCenter",
-			"worldRadius",
-			"aspectRatio",
-		]);
-
-		this.zoom.init();
-
-		this.zoom.minLevel = -5;
-
-		this.pan.setBounds({
-			minX: -1.1,
-			maxX: 1.1,
-			minY: -1.1,
-			maxY: 1.1,
-		});
-
-		this.changeAspectRatio(true);
-
-		this.wilson.render.createFramebufferTexturePair(this.wilson.gl.UNSIGNED_BYTE);
-
-		addTemporaryListener({
-			object: window,
-			event: "resize",
-			callback: () => this.changeAspectRatio(true)
-		});
+		this.wilson = new WilsonGPU(canvas, options);
 	}
 
 
@@ -300,58 +259,54 @@ export class GameOfLife extends AnimationFrameApplet
 		pauseUpdating = true,
 		onTorus = this.onTorus
 	}) {
-		this.resolution = resolution;
 		this.gridSize = gridSize;
+		this.resolution = Math.max(resolution, this.gridSize * 2);
 		this.onTorus = onTorus;
 
 		this.pauseUpdating = pauseUpdating;
 
+		this.wilsonHidden.setUniforms({
+			stepSize: 1 / this.gridSize
+		}, "noUpdate");
 
+		this.wilsonHidden.setUniforms({
+			stepSize: 1 / this.gridSize,
+			onTorus: this.onTorus ? 1 : 0
+		}, "update");
 
-		this.wilsonHidden.gl.useProgram(this.wilsonHidden.render.shaderPrograms[1]);
+		this.wilsonHidden.useShader(this.pauseUpdating ? "noUpdate" : "update");
 
-		this.wilsonHidden.gl.uniform1i(
-			this.wilsonHidden.uniforms.torus[1],
-			this.onTorus ? 1 : 0
-		);
+		this.wilsonHidden.resizeCanvas({ width: this.gridSize });
+		this.wilson.resizeCanvas({ width: this.resolution });
 
+		this.wilson.createFramebufferTexturePair({
+			id: "draw",
+			width: this.gridSize,
+			height: this.gridSize,
+			textureType: "unsignedByte"
+		});
 
+		this.wilsonHidden.createFramebufferTexturePair({
+			id: "0",
+			textureType: "unsignedByte"
+		});
 
-		this.wilsonHidden.gl.useProgram(
-			this.wilsonHidden.render.shaderPrograms[this.pauseUpdating ? 0 : 1]
-		);
+		this.wilsonHidden.createFramebufferTexturePair({
+			id: "1",
+			textureType: "unsignedByte"
+		});
+
+		this.wilsonHidden.useTexture("0");
+		this.wilsonHidden.useFramebuffer(null);
+
+		this.wilsonHidden.setTexture({
+			id: "1",
+			data: null
+		});
+
+		this.wilsonHidden.useTexture("0");
+
 		
-		this.wilsonHidden.gl.uniform1f(
-			this.wilsonHidden.uniforms.step[this.pauseUpdating ? 0 : 1],
-			1 / this.gridSize
-		);
-
-
-
-		this.wilsonHidden.changeCanvasSize(this.gridSize, this.gridSize);
-		this.wilson.changeCanvasSize(this.resolution, this.resolution);
-
-		this.wilsonHidden.gl.bindTexture(
-			this.wilsonHidden.gl.TEXTURE_2D,
-			this.wilsonHidden.render.framebuffers[1].texture
-		);
-
-		this.wilsonHidden.gl.texImage2D(
-			this.wilsonHidden.gl.TEXTURE_2D,
-			0,
-			this.wilsonHidden.gl.RGBA,
-			this.wilsonHidden.canvasWidth,
-			this.wilsonHidden.canvasHeight,
-			0,
-			this.wilsonHidden.gl.RGBA,
-			this.wilsonHidden.gl.UNSIGNED_BYTE,
-			null
-		);
-
-		this.wilsonHidden.gl.bindTexture(
-			this.wilsonHidden.gl.TEXTURE_2D,
-			this.wilsonHidden.render.framebuffers[0].texture
-		);
 
 		this.loadState(state);
 
@@ -359,18 +314,12 @@ export class GameOfLife extends AnimationFrameApplet
 
 		this.frame = 0;
 
-		this.currentFramebuffer = 1;
+		this.currentFramebuffer = "1";
 
 		this.resume();
 	}
 
 
-
-	prepareFrame(timeElapsed)
-	{
-		this.pan.update(timeElapsed);
-		this.zoom.update(timeElapsed);
-	}
 
 	drawFrame()
 	{
@@ -380,23 +329,12 @@ export class GameOfLife extends AnimationFrameApplet
 			this.updateGame();
 		}
 
-		this.wilson.gl.uniform2f(
-			this.wilson.uniforms.worldCenter,
-			this.wilson.worldCenterX,
-			this.wilson.worldCenterY
-		);
+		this.wilson.setUniforms({
+			worldCenter: [this.wilson.worldCenterX, this.wilson.worldCenterY],
+			worldSize: [this.wilson.worldWidth, this.wilson.worldHeight]
+		});
 
-		this.wilson.gl.uniform1f(
-			this.wilson.uniforms.worldRadius,
-			Math.min(this.wilson.worldWidth, this.wilson.worldHeight) / 2
-		);
-
-		this.wilson.gl.uniform1f(
-			this.wilson.uniforms.aspectRatio,
-			this.aspectRatio
-		);
-
-		this.wilson.render.drawFrame();
+		this.wilson.drawFrame();
 
 		this.frame++;
 		this.needNewFrame = true;
@@ -411,50 +349,32 @@ export class GameOfLife extends AnimationFrameApplet
 
 		for (let i = 0; i < this.updatesPerFrame * !this.pauseUpdating; i++)
 		{
-			this.wilsonHidden.gl.bindFramebuffer(
-				this.wilsonHidden.gl.FRAMEBUFFER,
-				this.wilsonHidden.render.framebuffers[this.currentFramebuffer].framebuffer
-			);
+			this.wilsonHidden.useFramebuffer(this.currentFramebuffer);
+			this.wilsonHidden.drawFrame();
 
-			this.wilsonHidden.render.drawFrame();
-
-			this.wilsonHidden.gl.bindTexture(
-				this.wilsonHidden.gl.TEXTURE_2D,
-				this.wilsonHidden.render.framebuffers[this.currentFramebuffer].texture
-			);
-
-			this.currentFramebuffer = 1 - this.currentFramebuffer;
+			this.wilsonHidden.useTexture(this.currentFramebuffer);
+			this.currentFramebuffer = this.currentFramebuffer === "0" ? "1" : "0";
 		}
 
-		this.wilsonHidden.gl.bindFramebuffer(this.wilsonHidden.gl.FRAMEBUFFER, null);
+		this.wilsonHidden.useFramebuffer(null);
+		this.wilsonHidden.drawFrame();
 
-		this.wilsonHidden.render.drawFrame();
+		this.wilson.setTexture({
+			id: "draw",
+			data: this.wilsonHidden.readPixels()
+		});
 
-
-
-		const pixelData = this.wilsonHidden.render.getPixelData();
-
-		this.wilson.gl.texImage2D(
-			this.wilson.gl.TEXTURE_2D,
-			0,
-			this.wilson.gl.RGBA,
-			this.wilsonHidden.canvasWidth,
-			this.wilsonHidden.canvasHeight,
-			0,
-			this.wilson.gl.RGBA,
-			this.wilson.gl.UNSIGNED_BYTE,
-			pixelData
-		);
-
-		this.wilson.gl.bindFramebuffer(this.wilson.gl.FRAMEBUFFER, null);
+		this.wilson.useFramebuffer(null);
 	}
 
 	resumeUpdating()
 	{
 		this.pauseUpdating = false;
 
-		this.wilsonHidden.gl.useProgram(this.wilsonHidden.render.shaderPrograms[1]);
-		this.wilsonHidden.gl.uniform1f(this.wilsonHidden.uniforms.step[1], 1 / this.gridSize);
+		this.wilsonHidden.useShader("update");
+		this.wilsonHidden.setUniforms({
+			stepSize: 1 / this.gridSize,
+		}, "update");
 	}
 
 
@@ -481,22 +401,14 @@ export class GameOfLife extends AnimationFrameApplet
 			pixelData[4 * i + 3] = state[i] * 255;
 		}
 
-		this.wilsonHidden.gl.texImage2D(
-			this.wilsonHidden.gl.TEXTURE_2D,
-			0,
-			this.wilsonHidden.gl.RGBA,
-			this.wilsonHidden.canvasWidth,
-			this.wilsonHidden.canvasHeight,
-			0,
-			this.wilsonHidden.gl.RGBA,
-			this.wilsonHidden.gl.UNSIGNED_BYTE,
-			pixelData
-		);
-	}
+		this.wilsonHidden.setTexture({
+			id: "0",
+			data: pixelData
+		});
 
-	changeResolution(newResolution)
-	{
-		this.resolution = newResolution;
-		this.wilson.changeCanvasSize(this.resolution, this.resolution);
+		this.wilsonHidden.setTexture({
+			id: "1",
+			data: pixelData
+		});
 	}
 }
