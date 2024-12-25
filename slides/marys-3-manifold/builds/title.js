@@ -20,7 +20,7 @@ async function reset({ slide, duration })
 
 	await new Promise(resolve => setTimeout(resolve, 50));
 
-	applet.changeResolution(1000);
+	applet.wilson.resizeCanvas({ width: 1000 });
 	applet.moveForever({
 		speed: .5,
 		direction: () => [0, 0, -1, 0]

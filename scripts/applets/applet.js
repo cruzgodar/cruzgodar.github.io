@@ -3,8 +3,7 @@ import { addHoverEventWithScale } from "../src/hoverEvents.js";
 import {
 	$,
 	$$,
-	addTemporaryListener,
-	pageElement
+	addTemporaryListener
 } from "../src/main.js";
 import { siteSettings } from "../src/settings.js";
 import { WilsonCPU, WilsonGPU } from "../wilson.js";
@@ -40,7 +39,7 @@ export class Applet
 	canvas;
 	wilson;
 	wilsonForFullscreen;
-	wilsonsForReduceMotion = [];
+	wilsons = [];
 	allowFullscreenWithKeyboard = true;
 
 	fpsDisplayCtx;
@@ -102,9 +101,9 @@ export class Applet
 			this.hiddenCanvasContainer.remove();
 		}
 
-		if (this.wilson)
+		for (const wilson of this.wilsons)
 		{
-			this.wilson.destroy();
+			wilson.destroy();
 		}
 
 		const vowel = ["a", "e", "i", "o", "u", "y"]
@@ -241,16 +240,19 @@ export class Applet
 		const hiddenCanvas = document.createElement("canvas");
 		hiddenCanvas.classList.add(hidden ? "hidden-canvas" : "output-canvas");
 
+		hiddenCanvas.style.width = "10px";
+		hiddenCanvas.style.height = "10px";
+
 		if (!this.hiddenCanvasContainer)
 		{
 			this.hiddenCanvasContainer = document.createElement("div");
-
-			if (hidden)
-			{
-				this.hiddenCanvasContainer.style.display = "none";
-			}
+			this.hiddenCanvasContainer.classList.add("temporary-element");
 			
-			pageElement.appendChild(this.hiddenCanvasContainer);
+			this.hiddenCanvasContainer.style.position = "fixed";
+			this.hiddenCanvasContainer.style.top = "0";
+			this.hiddenCanvasContainer.style.left = "-200vw";
+			
+			document.body.appendChild(this.hiddenCanvasContainer);
 		}
 
 		this.hiddenCanvasContainer.appendChild(hiddenCanvas);
@@ -311,11 +313,11 @@ export class Applet
 				return field instanceof WilsonCPU || field instanceof WilsonGPU;
 			});
 
-			if (this.wilsonsForReduceMotion.length !== 0)
+			if (this.wilsons.length !== 0)
 			{
 				clearInterval(refreshId);
 
-				for (const wilson of this.wilsonsForReduceMotion)
+				for (const wilson of this.wilsons)
 				{
 					wilson.reduceMotion = siteSettings.reduceMotion;
 				}

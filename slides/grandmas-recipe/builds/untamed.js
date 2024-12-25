@@ -2,7 +2,7 @@
 import { applet, canvasBundle } from "../index.js";
 import { changeOpacity } from "/scripts/src/animation.js";
 
-const resolution = 1500;
+const resolution = 1000;
 const maxDepth = 250;
 const maxPixelBrightness = 50;
 
@@ -21,8 +21,8 @@ async function reset({ slide, duration })
 
 	slide.appendChild(canvasBundle);
 
-	applet.changeRecipe(0);
-	applet.bakeCoefficients(1, -2, 3, 2);
+	applet.changeRecipe("grandma");
+	applet.bakeCoefficients();
 
 
 	await applet.requestHighResFrame(resolution, maxDepth, maxPixelBrightness, 4);

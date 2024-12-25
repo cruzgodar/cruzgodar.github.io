@@ -12,8 +12,6 @@ async function reset({ slide, duration })
 
 	slide.appendChild(canvasBundle);
 
-	applet.wilsonNumbers.draggables.onResize();
-
 	const app =
 	[
 		[Infinity, Infinity, Infinity, 9, 5],

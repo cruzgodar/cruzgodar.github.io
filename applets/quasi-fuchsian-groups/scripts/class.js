@@ -165,7 +165,7 @@ export class QuasiFuchsianGroups extends AnimationFrameApplet
 				draggables: {
 					ta: [2, 0],
 					tb: [2, 0],
-					tab: [2, -2]
+					tc: [2, -2]
 				},
 				callbacks: {
 					grab: this.onGrabDraggable.bind(this),
@@ -430,7 +430,7 @@ export class QuasiFuchsianGroups extends AnimationFrameApplet
 			this.bakeCoefficients = this.grandmaCoefficients;
 
 			this.wilson.draggables.tb.element.style.display = "block";
-			this.wilson.draggables.tab.element.style.display = "none";
+			this.wilson.draggables.tc.element.style.display = "none";
 		}
 
 		else if (recipe === "riley")
@@ -438,7 +438,7 @@ export class QuasiFuchsianGroups extends AnimationFrameApplet
 			this.bakeCoefficients = this.rileyCoefficients;
 
 			this.wilson.draggables.tb.element.style.display = "none";
-			this.wilson.draggables.tab.element.style.display = "none";
+			this.wilson.draggables.tc.element.style.display = "none";
 		}
 
 		else if (recipe === "grandmaSpecial")
@@ -446,7 +446,7 @@ export class QuasiFuchsianGroups extends AnimationFrameApplet
 			this.bakeCoefficients = this.grandmaSpecialCoefficients;
 
 			this.wilson.draggables.tb.element.style.display = "block";
-			this.wilson.draggables.tab.element.style.display = "block";
+			this.wilson.draggables.tc.element.style.display = "block";
 		}
 	}
 

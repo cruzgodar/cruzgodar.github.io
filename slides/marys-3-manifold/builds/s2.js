@@ -23,11 +23,13 @@ async function reset({ slide, duration })
 	};
 
 	applet.run(geometryDataE3);
-	applet.changeResolution(1000);
+	applet.wilson.resizeCanvas({ width: 1000 });
 
 	applet.restrictCamera = false;
-	applet.wilson.worldCenterY = Math.PI / 4.5;
-	applet.wilson.worldCenterX = 3 * Math.PI / 4;
+	applet.wilson.resizeWorld({
+		centerX: 3 * Math.PI / 4,
+		centerY: Math.PI / 4.5,
+	});
 
 
 
@@ -62,7 +64,11 @@ async function reset({ slide, duration })
 
 	demoApplet.run(geometryDataS2xE);
 
-	demoApplet.wilson.worldCenterX = Math.PI / 4;
+	demoApplet.wilson.resizeWorld({
+		centerX: Math.PI / 4,
+	});
+
+	demoApplet.needNewFrame = true;
 
 	await changeOpacity({
 		element: canvasBundle,

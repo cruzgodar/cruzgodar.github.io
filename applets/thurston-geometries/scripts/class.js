@@ -257,7 +257,10 @@ export class ThurstonGeometries extends Applet
 		}
 
 		const uniforms = {
-			worldSize: [1, 1],
+			worldSize: (this.geometryData.aspectRatio && !this.geometryData.ignoreAspectRatio) ? [
+				Math.max(1, geometryData.aspectRatio),
+				Math.max(1, 1 / geometryData.aspectRatio)
+			] : [1, 1],
 			uvScale: 1,
 			uvCenter: [0, 0],
 			clipDistance: 1000,
@@ -896,10 +899,15 @@ export class ThurstonGeometries extends Applet
 
 	onResizeCanvas()
 	{
-		const worldSize = [
-			Math.max(this.wilson.worldWidth / this.wilson.worldHeight, 1),
-			Math.max(this.wilson.worldHeight / this.wilson.worldWidth, 1)
-		];
+		const worldSize = (
+			this.geometryData.aspectRatio && !this.geometryData.ignoreAspectRatio
+		) ? [
+				Math.max(1, this.geometryData.aspectRatio),
+				Math.max(1, 1 / this.geometryData.aspectRatio)
+			] : [
+				Math.max(this.wilson.worldWidth / this.wilson.worldHeight, 1),
+				Math.max(this.wilson.worldHeight / this.wilson.worldWidth, 1)
+			];
 
 		this.wilson.setUniforms({ worldSize }, "draw");
 		

@@ -46,7 +46,6 @@ import {
 import { AnimationFrameApplet } from "/scripts/applets/animationFrameApplet.js";
 import { tempShader } from "/scripts/applets/applet.js";
 import { convertColor } from "/scripts/src/browser.js";
-import { $$ } from "/scripts/src/main.js";
 import * as THREE from "/scripts/three.js";
 import { WilsonCPU, WilsonGPU } from "/scripts/wilson.js";
 
@@ -65,7 +64,7 @@ export class PlanePartitions extends AnimationFrameApplet
 
 	resolution = 2000;
 
-	animationTime = 600;
+	animationTime = 500;
 
 	asymptoteLightness = .6;
 	cubeLightness = .4;
@@ -183,13 +182,14 @@ export class PlanePartitions extends AnimationFrameApplet
 		this.wilsonForFullscreen = this.wilsonNumbers;
 
 		this.wilsonNumbers.ctx.fillStyle = convertColor(255, 255, 255);
-
-
-
-		const elements = $$(".WILSON_fullscreen-container");
-		elements[0].style.zIndex = 200;
-		elements[1].style.zIndex = 300;
-		elements[1].style.backgroundColor = convertColor(0, 0, 0, 0);
+		
+		setTimeout(() =>
+		{
+			const elements = document.body.querySelectorAll(".WILSON_fullscreen-container");
+			elements[0].style.zIndex = 200;
+			elements[1].style.zIndex = 300;
+			elements[1].style.backgroundColor = convertColor(0, 0, 0, 0);
+		}, 50);
 
 		// Not totally sure what's going on here.
 		this.wilsonNumbers.exitFullscreen();

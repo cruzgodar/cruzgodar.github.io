@@ -617,14 +617,6 @@ mjx-container
 	padding: 2px;
 }
 
-.hidden-canvas
-{
-	position: fixed;
-	left: -200vw;
-	width: 10px;
-	height: 10px;
-}
-
 
 
 .WILSON_canvas-container

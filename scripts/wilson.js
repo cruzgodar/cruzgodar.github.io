@@ -237,8 +237,14 @@ class Wilson {
         _Wilson_canvasOldWidthStyle.set(this, "");
         _Wilson_canvasOldHeightStyle.set(this, "");
         this.canvas = canvas;
-        const computedStyle = getComputedStyle(canvas);
+        const computedStyle = getComputedStyle(this.canvas);
         __classPrivateFieldSet(this, _Wilson_canvasAspectRatio, parseFloat(computedStyle.width) / parseFloat(computedStyle.height), "f");
+        if (!__classPrivateFieldGet(this, _Wilson_canvasAspectRatio, "f") || __classPrivateFieldGet(this, _Wilson_canvasAspectRatio, "f") <= 0 || __classPrivateFieldGet(this, _Wilson_canvasAspectRatio, "f") === Infinity) {
+            throw new Error("[Wilson] Could not get canvas aspect ratio. Check that the canvas has a nonzero width and height and is displayed on the page.");
+        }
+        if (options.canvasWidth === undefined && options.canvasHeight === undefined) {
+            throw new Error("[Wilson] Exactly one of canvasWidth and canvasHeight must be specified.");
+        }
         if (options.canvasWidth !== undefined) {
             __classPrivateFieldSet(this, _Wilson_canvasWidth, Math.round(options.canvasWidth), "f");
             this.canvasWidth = __classPrivateFieldGet(this, _Wilson_canvasWidth, "f");
@@ -255,6 +261,10 @@ class Wilson {
         __classPrivateFieldSet(this, _Wilson_lastCanvasHeight, __classPrivateFieldGet(this, _Wilson_canvasHeight, "f"), "f");
         this.canvas.setAttribute("width", __classPrivateFieldGet(this, _Wilson_canvasWidth, "f").toString());
         this.canvas.setAttribute("height", __classPrivateFieldGet(this, _Wilson_canvasHeight, "f").toString());
+        const resizeObserver = new ResizeObserver(() => {
+            __classPrivateFieldSet(this, _Wilson_needDraggablesContainerSizeUpdate, true, "f");
+        });
+        resizeObserver.observe(this.canvas);
         if (options.worldWidth !== undefined && options.worldHeight !== undefined) {
             __classPrivateFieldSet(this, _Wilson_worldWidth, options.worldWidth, "f");
             this.worldWidth = __classPrivateFieldGet(this, _Wilson_worldWidth, "f");
@@ -402,6 +412,10 @@ class Wilson {
         __classPrivateFieldGet(this, _Wilson_fullscreenContainerLocation, "f").remove();
     }
     resizeCanvas(dimensions) {
+        if (!__classPrivateFieldGet(this, _Wilson_currentlyFullscreen, "f")) {
+            const computedStyle = getComputedStyle(this.canvas);
+            __classPrivateFieldSet(this, _Wilson_canvasAspectRatio, parseFloat(computedStyle.width) / parseFloat(computedStyle.height), "f");
+        }
         if (__classPrivateFieldGet(this, _Wilson_instances, "m", _Wilson_resizeCanvas).call(this, dimensions)) {
             __classPrivateFieldGet(this, _Wilson_onResizeCanvasCallback, "f").call(this);
         }

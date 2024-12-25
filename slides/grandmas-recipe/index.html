@@ -29,17 +29,17 @@
 	<link rel="stylesheet" type="text/css" href="/style/lapsa-dark.css">
 
 	<style>
-		.lapsa-slide:not(.visible-draggables) .wilson-enter-fullscreen-button, .lapsa-slide:not(.visible-draggables) .wilson-draggable
+		.lapsa-slide:not(.visible-draggables) .WILSON_enter-fullscreen-button, .lapsa-slide:not(.visible-draggables) .WILSON_draggable
 		{
 			display: none !important;
 		}
 
-		.lapsa-slide.grandma-draggables .wilson-draggable-2
+		.lapsa-slide.grandma-draggables #WILSON_draggable-tc
 		{
 			display: none !important;
 		}
 
-		.lapsa-slide.riley-draggables .wilson-draggable-1, .lapsa-slide.riley-draggables .wilson-draggable-2
+		.lapsa-slide.riley-draggables #WILSON_draggable-tb, .lapsa-slide.riley-draggables #WILSON_draggable-tc
 		{
 			display: none !important;
 		}
@@ -54,6 +54,10 @@
 			<h2>Cruz Godar</h2>
 			
 			<p class="lapsa-align-bottom">Made with <a href="/about/index.html"><img class="inline-image" src="/graphics/general-icons/heart.webp"></img></a> and <a href="/slides/lapsa/index.html"><img class="inline-image" src="/graphics/general-icons/lapsa.webp"></img></a></p>
+
+			<div id="canvas-bundle">
+				<canvas id="output-canvas"></canvas>
+			</div>
 		</div>
 		
 		
@@ -218,10 +222,6 @@
 	</div>
 
 
-
-	<div id="canvas-bundle" style="opacity: 0">
-		<canvas id="output-canvas"></canvas>
-	</div>
 	
 	<script>
 		window.MathJax =

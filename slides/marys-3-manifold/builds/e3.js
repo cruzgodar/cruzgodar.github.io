@@ -18,7 +18,7 @@ async function reset({ slide, forward, duration })
 	geometryData.cameraPos = [1, 1, 1, 1];
 
 	applet.run(geometryData);
-	applet.changeResolution(1500);
+	applet.wilson.resizeCanvas({ width: 1500 });
 	applet.moveForever({
 		speed: .5,
 		direction: () => [0, 1, 0, 0]

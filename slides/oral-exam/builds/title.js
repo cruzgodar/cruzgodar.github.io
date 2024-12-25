@@ -4,22 +4,20 @@ import { changeOpacity } from "/scripts/src/animation.js";
 
 async function reset({ slide, duration })
 {
-	if (slide.contains(canvasBundle))
+	if (!slide.contains(canvasBundle))
 	{
-		return;
-	}
+		await changeOpacity({
+			element: canvasBundle,
+			opacity: 0,
+			duration: duration / 2
+		});
 
-	await changeOpacity({
-		element: canvasBundle,
-		opacity: 0,
-		duration: duration / 2
-	});
+		slide.appendChild(canvasBundle);
+	}
 
 	applet.animationTime = 0;
 
 	slide.appendChild(canvasBundle);
-
-	applet.wilsonNumbers.draggables.onResize();
 
 	const planePartition = [
 		[6, 5, 4, 3, 2, 1],

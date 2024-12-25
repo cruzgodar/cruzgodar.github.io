@@ -12,8 +12,6 @@ async function reset({ slide, forward, duration })
 
 	slide.appendChild(canvasBundle);
 
-	applet.wilsonNumbers.draggables.onResize();
-
 	const rpp =
 	[
 		[0, 2, 2, 4],
@@ -56,7 +54,7 @@ async function reset({ slide, forward, duration })
 
 async function build0({
 	forward,
-	duration = 600
+	duration = 400
 }) {
 	applet.animationTime = duration;
 

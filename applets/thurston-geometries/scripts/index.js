@@ -232,14 +232,13 @@ export default function()
 
 		const geometryDataE3 = new E3S2Demo();
 
+		demoCanvasContainer.style.display = "";
+
 		if (demoApplet === undefined)
 		{
-			demoCanvasContainer.style.display = "";
-
 			demoApplet = new ThurstonGeometries({
 				canvas: demoCanvas,
 			});
-
 			demoApplet.allowFullscreenWithKeyboard = false;
 
 			$$(".WILSON_enter-fullscreen-button")[1].remove();
