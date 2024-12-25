@@ -89,15 +89,43 @@ export class WilsonsAlgorithm extends AnimationFrameApplet
 			? this.pixels.length
 			: Math.min(Math.ceil(this.gridSize * this.gridSize / 200), this.pixels.length);
 
-		for (let i = 0; i < numPixelsToDraw; i++)
+		if (this.pixels.length === 0)
+		{
+			return;
+		}
+
+		const firstColor = [
+			this.pixels[0][2][0],
+			this.pixels[0][2][1],
+			this.pixels[0][2][2]
+		];
+
+		if (
+			firstColor[0] !== 255
+			|| firstColor[1] !== 255
+			|| firstColor[2] !== 255
+		) {
+			this.maximumSpeed = true;
+		}
+
+		
+		let i;
+		for (i = 0; i < numPixelsToDraw; i++)
 		{
 			const index = this.pixels[i][0] * this.resolution + this.pixels[i][1];
 			this.imageData[4 * index] = this.pixels[i][2][0];
 			this.imageData[4 * index + 1] = this.pixels[i][2][1];
 			this.imageData[4 * index + 2] = this.pixels[i][2][2];
+
+			if (this.pixels[i][2][0] !== firstColor[0]
+				|| this.pixels[i][2][1] !== firstColor[1]
+				|| this.pixels[i][2][2] !== firstColor[2]
+			) {
+				break;
+			}
 		}
 
-		this.pixels.splice(0, numPixelsToDraw);
+		this.pixels.splice(0, i);
 
 		this.wilson.drawFrame(this.imageData);
 

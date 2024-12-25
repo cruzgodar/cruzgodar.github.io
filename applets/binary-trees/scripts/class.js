@@ -2,8 +2,8 @@ import { AnimationFrameApplet } from "/scripts/applets/animationFrameApplet.js";
 import { changeOpacity, opacityAnimationTime } from "/scripts/src/animation.js";
 import { convertColor } from "/scripts/src/browser.js";
 import {
-    addTemporaryInterval,
-    addTemporaryWorker
+	addTemporaryInterval,
+	addTemporaryWorker
 } from "/scripts/src/main.js";
 import { WilsonCPU } from "/scripts/wilson.js";
 
