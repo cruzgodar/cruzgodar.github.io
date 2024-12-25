@@ -491,7 +491,10 @@ export class Snowflakes extends AnimationFrameApplet
 			},
 
 			canvasWidth: this.resolution,
+
 			fullscreenOptions: {
+				onSwitch: this.switchFullscreen.bind(this),
+				beforeSwitch: this.beforeSwitchFullscreen.bind(this),
 				useFullscreenButton: true,
 				enterFullscreenButtonIconPath: "/graphics/general-icons/enter-fullscreen.png",
 				exitFullscreenButtonIconPath: "/graphics/general-icons/exit-fullscreen.png",
@@ -624,5 +627,17 @@ export class Snowflakes extends AnimationFrameApplet
 		}
 
 		this.needNewFrame = true;
+	}
+
+	switchFullscreen()
+	{
+		this.resume();
+	}
+
+	async beforeSwitchFullscreen()
+	{
+		this.pause();
+
+		await new Promise(resolve => setTimeout(resolve, 16));
 	}
 }

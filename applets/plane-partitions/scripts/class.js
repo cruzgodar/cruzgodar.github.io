@@ -171,6 +171,7 @@ export class PlanePartitions extends AnimationFrameApplet
 
 			fullscreenOptions: {
 				onSwitch: this.onSwitchFullscreen.bind(this),
+				beforeSwitch: this.beforeSwitchFullscreen.bind(this),
 				useFullscreenButton: this.useFullscreenButton,
 
 				enterFullscreenButtonIconPath: "/graphics/general-icons/enter-fullscreen.png",
@@ -336,6 +337,8 @@ export class PlanePartitions extends AnimationFrameApplet
 		{
 			this.wilson.exitFullscreen();
 		}
+
+		this.resume();
 	}
 
 	isValidABConfig = isValidABConfig;
@@ -464,4 +467,11 @@ export class PlanePartitions extends AnimationFrameApplet
 			inputType: ["pp", "pp"]
 		}
 	};
+
+	async beforeSwitchFullscreen()
+	{
+		this.pause();
+
+		await new Promise(resolve => setTimeout(resolve, 16));
+	}
 }

@@ -87,6 +87,11 @@ export class HairyBall extends RaymarchApplet
 			this.wilson.gl.TEXTURE_MIN_FILTER,
 			this.wilson.gl.LINEAR
 		);
+
+		this.wilson.onSwitchFullscreen = this.switchFullscreen.bind(this);
+		this.wilson.beforeSwitchFullscreen = this.beforeSwitchFullscreen.bind(this);
+
+		this.wilsonForFullscreen = this.wilson;
 	}
 
 	runVectorField(generatingCode)
@@ -126,5 +131,17 @@ export class HairyBall extends RaymarchApplet
 	distanceEstimator()
 	{
 		return 1.55 - 1;
+	}
+
+	switchFullscreen()
+	{
+		this.resume();
+	}
+
+	async beforeSwitchFullscreen()
+	{
+		this.pause();
+
+		await new Promise(resolve => setTimeout(resolve, 16));
 	}
 }

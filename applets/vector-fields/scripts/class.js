@@ -176,6 +176,7 @@ export class VectorFields extends AnimationFrameApplet
 
 			fullscreenOptions: {
 				fillScreen: true,
+				beforeSwitch: this.beforeSwitchFullscreen.bind(this),
 				onSwitch: this.switchFullscreen.bind(this),
 				useFullscreenButton: true,
 				enterFullscreenButtonIconPath: "/graphics/general-icons/enter-fullscreen.png",
@@ -467,6 +468,8 @@ export class VectorFields extends AnimationFrameApplet
 		worldCenterX = this.wilson.worldCenterX,
 		worldCenterY = this.wilson.worldCenterY,
 	}) {
+		await this.loadPromise;
+
 		this.resolution = resolution;
 		this.maxParticles = maxParticles;
 		this.dt = dt;
@@ -474,7 +477,7 @@ export class VectorFields extends AnimationFrameApplet
 
 		this.wilson.resizeCanvas({ width: this.resolution });
 		this.wilsonPanZoomDim.resizeCanvas({ width: this.resolution });
-
+		
 		this.wilson.setUniforms({
 			maxBrightness: this.lifetime / 255,
 			...(
@@ -655,7 +658,7 @@ export class VectorFields extends AnimationFrameApplet
 				-uvStepY / this.wilson.canvasHeight,
 			],
 			scale,
-			temporaryDimFactor: (Math.min(scale, 1) ** 2) * (this.needTemporaryDim ? 0.96 : 1),
+			temporaryDimFactor: Math.min(scale, 1) * (this.needTemporaryDim ? 0.96 : 1),
 		});
 
 
@@ -873,5 +876,12 @@ export class VectorFields extends AnimationFrameApplet
 		}
 
 		this.generateNewField({});
+	}
+
+	async beforeSwitchFullscreen()
+	{
+		this.pause();
+
+		await new Promise(resolve => setTimeout(resolve, 16));
 	}
 }

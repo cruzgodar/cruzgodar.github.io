@@ -93,7 +93,10 @@ export class ChaosGame extends AnimationFrameApplet
 			},
 
 			canvasWidth: this.resolution,
+
 			fullscreenOptions: {
+				onSwitch: this.switchFullscreen.bind(this),
+				beforeSwitch: this.beforeSwitchFullscreen.bind(this),
 				useFullscreenButton: true,
 				enterFullscreenButtonIconPath: "/graphics/general-icons/enter-fullscreen.png",
 				exitFullscreenButtonIconPath: "/graphics/general-icons/exit-fullscreen.png",
@@ -333,5 +336,17 @@ export class ChaosGame extends AnimationFrameApplet
 		this.wilson.setUniforms({ maxBrightness: this.maxBrightness / maxBrightnessAdjust });
 
 		this.wilson.drawFrame();
+	}
+
+	switchFullscreen()
+	{
+		this.resume();
+	}
+
+	async beforeSwitchFullscreen()
+	{
+		this.pause();
+
+		await new Promise(resolve => setTimeout(resolve, 16));
 	}
 }
