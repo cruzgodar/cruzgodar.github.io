@@ -21,7 +21,9 @@ async function reset({ slide, duration })
 		duration
 	});
 
-	applet.setUniform("extrudedCubeWeight", 1);
+	applet.setUniforms({
+		extrudedCubeWeight: 1,
+	});
 
 	applet.wilson.worldCenterY = -Math.PI / 2;
 

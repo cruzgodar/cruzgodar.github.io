@@ -376,19 +376,23 @@ export class RaymarchApplet extends AnimationFrameApplet
 		const preview = false;
 
 		const resolution = 1500;
-		this.setUniform("uvScale", 1.5);
-		this.setUniform("epsilonScaling", 0.0015);
+		this.setUniforms({
+			uvScale: 1.5,
+			uvCenter: [-0.5, 0],
+			epsilonScaling: 0.0015,
+		});
 
-		this.changeResolution(resolution);
+		this.wilson.changeResolution({ width: resolution });
 
-		this.setUniform("uvCenter", [-0.5, 0]);
 		this.drawFrame();
 
 		await new Promise(resolve => setTimeout(resolve, 500));
 
 		for (let i = 1; i <= resolution; i++)
 		{
-			this.setUniform("uvCenter", [i / resolution - 0.5, 0]);
+			this.setUniforms({
+				uvCenter: [i / resolution - 0.5, 0],
+			});
 			this.drawFrame();
 			!preview && this.wilson.downloadFrame(i.toString().padStart(4, "0"), false);
 			await new Promise(resolve => setTimeout(resolve, preview ? 0 : 150));
@@ -1435,7 +1439,7 @@ export class RaymarchApplet extends AnimationFrameApplet
 			easing: "easeInOutQuart",
 			update: () =>
 			{
-				this.setUniform(name, dummy.t);
+				this.setUniforms({ [name]: dummy.t });
 				this.needNewFrame = true;
 			}
 		}).finished;
@@ -1458,7 +1462,7 @@ export class RaymarchApplet extends AnimationFrameApplet
 			direction: "alternate",
 			update: () =>
 			{
-				this.setUniform(name, startValue + (endValue - startValue) * dummy.t);
+				this.setUniforms({ [name]: startValue + (endValue - startValue) * dummy.t });
 				this.needNewFrame = true;
 			}
 		});

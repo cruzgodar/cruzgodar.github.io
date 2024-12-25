@@ -17,6 +17,8 @@ export class ComposedFractals extends RaymarchApplet
 	mengerSpongeWeight = 0;
 	mengerSpongeScale = 3;
 
+	includeRotationMatrix = false;
+
 	constructor({
 		canvas,
 		useShadows = false,
@@ -243,24 +245,43 @@ export class ComposedFractals extends RaymarchApplet
 			}
 		`;
 
+		const uniformsGlsl = /* glsl */`
+			uniform float objectRotation;
+			uniform float objectFloat;
+			uniform float sphereWeight;
+			uniform float extrudedCubeWeight;
+			uniform float extrudedCubeSeparation;
+			uniform float mengerSpongeWeight;
+			uniform float mengerSpongeScale;
+			uniform float rotationMatrix;
+			uniform float kIFSWeight;
+			uniform float mandelbulbWeight;
+			uniform float qJuliaWeight;
+		`;
+
+		const includeRotationMatrix = includeMengerSponge
+			|| includeKIFS
+			|| includeMandelbulb
+			|| includeQJulia;
+
 		const uniforms = {
-			objectRotation: ["float", 0],
-			objectFloat: ["float", 0],
+			objectRotation: 0,
+			objectFloat: 0,
 
-			sphereWeight: ["float", 1],
+			...(includeSphere ? { sphereWeight: 1 } : {}),
 
-			extrudedCubeWeight: ["float", 0],
-			extrudedCubeSeparation: ["float", 1.5],
+			extrudedCubeWeight: 0,
+			extrudedCubeSeparation: 1.5,
 
-			mengerSpongeWeight: ["float", 0],
-			mengerSpongeScale: ["float", 3],
-			rotationMatrix: ["mat3", [[1, 0, 0], [0, 1, 0], [0, 0, 1]]],
+			...(includeMengerSponge ? { mengerSpongeWeight: 1, mengerSpongeScale: 3 } : {}),
+			
+			...(includeRotationMatrix ? { rotationMatrix: [[1, 0, 0], [0, 1, 0], [0, 0, 1]] } : {}),
 
-			kIFSWeight: ["float", 0],
+			...(includeKIFS ? { kIFSWeight: 0 } : {}),
 
-			mandelbulbWeight: ["float", 0],
+			...(includeMandelbulb ? { mandelbulbWeight: 0 } : {}),
 
-			qJuliaWeight: ["float", 0],
+			...(includeQJulia ? { qJuliaWeight: 0 } : {}),
 		};
 
 		super({
@@ -269,6 +290,7 @@ export class ComposedFractals extends RaymarchApplet
 			getColorGlsl,
 			getReflectivityGlsl,
 			addGlsl,
+			uniformsGlsl,
 			uniforms,
 			maxMarches: 192,
 			cameraPos: [1, 1, 1],
@@ -282,6 +304,15 @@ export class ComposedFractals extends RaymarchApplet
 			useShadows,
 			useReflections
 		});
+
+		this.includeRotationMatrix = includeRotationMatrix;
+
+		this.wilson.setUniforms({
+			aspectRatio: [
+				Math.max(1, this.wilson.canvasWidth / this.wilson.canvasHeight),
+				Math.max(1, 1 / this.wilson.canvasWidth / this.wilson.canvasHeight)
+			],
+		});
 	}
 
 	distanceEstimator()
@@ -291,29 +322,23 @@ export class ComposedFractals extends RaymarchApplet
 
 	updateRotationAndFloat()
 	{
-		this.setUniform(
-			"objectRotation",
-			this.uniforms.objectRotation[1] + .003
-		);
-
-		this.setUniform(
-			"objectFloat",
-			.1 * Math.sin(3 * this.uniforms.objectRotation[1])
-		);
-
-		this.setUniform("rotationMatrix", getRotationMatrix(
-			(Math.sin(3 * this.uniforms.objectRotation[1] + 1.013) + 1) / 6,
-			(Math.sin(2 * this.uniforms.objectRotation[1]) + 1) / 6,
-			(Math.sin(5 * this.uniforms.objectRotation[1] + .53) + 1) / 6,
-		));
+		this.setUniforms({
+			objectRotation: this.uniforms.objectRotation + .003,
+			objectFloat: .1 * Math.sin(3 * this.uniforms.objectRotation),
+			...(this.includeRotationMatrix ? {
+				rotationMatrix: getRotationMatrix(
+					(Math.sin(3 * this.uniforms.objectRotation + 1.013) + 1) / 6,
+					(Math.sin(2 * this.uniforms.objectRotation) + 1) / 6,
+					(Math.sin(5 * this.uniforms.objectRotation + .53) + 1) / 6,
+				),
+			} : {}),
+		});
 
 		this.needNewFrame = true;
 	}
 
 	prepareFrame(timeElapsed)
 	{
-		this.pan.update(timeElapsed);
-		this.zoom.update(timeElapsed);
 		this.moveUpdate(timeElapsed);
 		this.updateRotationAndFloat();
 	}
