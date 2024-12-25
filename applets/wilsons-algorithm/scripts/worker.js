@@ -3,7 +3,6 @@
 
 
 let gridSize;
-let maximumSpeed;
 let noBorders;
 let reverseGenerateSkeleton;
 
@@ -29,11 +28,9 @@ let randomWalkFromEndpointAttmepts = 0;
 let randomWalk = wasmRandomWalk;
 let numShortPathsInARow = 0;
 
-let percentStep = 1;
 
 
-
-async function drawWilsonGraph()
+function drawWilsonGraph()
 {
 	edgesInTree = [];
 
@@ -54,30 +51,13 @@ async function drawWilsonGraph()
 
 	while (verticesNotInTree.length > 0)
 	{
-		if (maximumSpeed)
-		{
-			wilsonStep();
-		}
-
-		else
-		{
-			await wilsonStep();
-		}
-
-
-
-		if (verticesInTree.length >= (gridSize * gridSize / 100) * percentStep)
-		{
-			postMessage(["progress", percentStep]);
-
-			percentStep++;
-		}
+		wilsonStep();
 	}
 }
 
 
 
-async function wilsonStep()
+function wilsonStep()
 {
 	newVertices = [];
 
@@ -158,8 +138,6 @@ async function wilsonStep()
 		if (numSkeletonLines === Math.floor(gridSize / 5))
 		{
 			reverseGenerateSkeleton = false;
-
-			postMessage(["log", "Going back to regular LERWs"]);
 		}
 	}
 
@@ -188,8 +166,6 @@ async function wilsonStep()
 			}
 
 			randomWalk(walkLength);
-
-			postMessage(["log", "Got it in time!"]);
 		}
 
 		else
@@ -203,29 +179,13 @@ async function wilsonStep()
 	// Draw this walk.
 	for (let i = 0; i < newVertices.length - 1; i++)
 	{
-		if (maximumSpeed)
-		{
-			drawLine(
-				newVertices[i][0],
-				newVertices[i][1],
-				newVertices[i + 1][0],
-				newVertices[i + 1][1],
-				[255, 255, 255],
-				0
-			);
-		}
-
-		else
-		{
-			await drawLine(
-				newVertices[i][0],
-				newVertices[i][1],
-				newVertices[i + 1][0],
-				newVertices[i + 1][1],
-				[255, 255, 255],
-				300 / gridSize
-			);
-		}
+		drawLine(
+			newVertices[i][0],
+			newVertices[i][1],
+			newVertices[i + 1][0],
+			newVertices[i + 1][1],
+			[255, 255, 255],
+		);
 	}
 
 
@@ -300,8 +260,6 @@ function wasmRandomWalk(fixedLength = 0)
 		if (numShortPathsInARow == 10)
 		{
 			randomWalk = jsRandomWalk;
-
-			postMessage(["log", "Switching to JS..."]);
 		}
 	}
 
@@ -638,7 +596,7 @@ async function colorGraph(linearColoring = false)
 
 		const rgb = HSVtoRGB(hue, 1, 1);
 
-		for (j = distanceBreaks[i]; j < distanceBreaks[i + 1] - 1; j++)
+		for (j = distanceBreaks[i]; j < distanceBreaks[i + 1]; j++)
 		{
 			drawLine(
 				edgesByDistance[j][0][0],
@@ -646,37 +604,6 @@ async function colorGraph(linearColoring = false)
 				edgesByDistance[j][1][0],
 				edgesByDistance[j][1][1],
 				rgb,
-				0
-			);
-		}
-
-		if (!edgesByDistance[j])
-		{
-			continue;
-		}
-
-		// We only wait for this one.
-		if (maximumSpeed)
-		{
-			drawLine(
-				edgesByDistance[j][0][0],
-				edgesByDistance[j][0][1],
-				edgesByDistance[j][1][0],
-				edgesByDistance[j][1][1],
-				rgb,
-				24
-			);
-		}
-
-		else
-		{
-			await drawLine(
-				edgesByDistance[j][0][0],
-				edgesByDistance[j][0][1],
-				edgesByDistance[j][1][0],
-				edgesByDistance[j][1][1],
-				rgb,
-				24
 			);
 		}
 	}
@@ -684,7 +611,7 @@ async function colorGraph(linearColoring = false)
 
 
 
-async function drawLine(row1, column1, row2, column2, rgb, delay)
+function drawLine(row1, column1, row2, column2, rgb)
 {
 	if (column1 === column2)
 	{
@@ -693,12 +620,19 @@ async function drawLine(row1, column1, row2, column2, rgb, delay)
 
 		if (noBorders)
 		{
-			postMessage([x, y, 1, 2, rgb]);
+			postMessage([
+				[x, y, rgb],
+				[x, y + 1, rgb]
+			]);
 		}
 
 		else
 		{
-			postMessage([2 * x + 1, 2 * y + 1, 1, 3, rgb]);
+			postMessage([
+				[2 * x + 1, 2 * y + 1, rgb],
+				[2 * x + 1, 2 * y + 2, rgb],
+				[2 * x + 1, 2 * y + 3, rgb]
+			]);
 		}
 	}
 
@@ -709,16 +643,21 @@ async function drawLine(row1, column1, row2, column2, rgb, delay)
 
 		if (noBorders)
 		{
-			postMessage([x, y, 2, 1, rgb]);
+			postMessage([
+				[x, y, rgb],
+				[x + 1, y, rgb]
+			]);
 		}
 
 		else
 		{
-			postMessage([2 * x + 1, 2 * y + 1, 3, 1, rgb]);
+			postMessage([
+				[2 * x + 1, 2 * y + 1, rgb],
+				[2 * x + 2, 2 * y + 1, rgb],
+				[2 * x + 3, 2 * y + 1, rgb]
+			]);
 		}
 	}
-
-	await new Promise(resolve => setTimeout(resolve, delay));
 }
 
 
@@ -763,26 +702,23 @@ function HSVtoRGB(h, s, v)
 
 
 
-onmessage = async function(e)
+onmessage = (e) =>
 {
 	gridSize = e.data[0];
-	maximumSpeed = e.data[1];
-	noBorders = e.data[2];
-	reverseGenerateSkeleton = e.data[3];
+	noBorders = e.data[1];
+	reverseGenerateSkeleton = e.data[2];
 
 	// eslint-disable-next-line no-undef
 	importScripts("/applets/wilsons-algorithm/scripts/random-walk.js");
 
 	// eslint-disable-next-line no-undef
-	Module.onRuntimeInitialized = async function()
+	Module.onRuntimeInitialized = function()
 	{
 		// eslint-disable-next-line no-undef
 		importScripts("/scripts/wasm-arrays.min.js");
 
-		await drawWilsonGraph();
+		drawWilsonGraph();
 
-		await colorGraph();
-
-		postMessage(["done"]);
+		colorGraph();
 	};
 };

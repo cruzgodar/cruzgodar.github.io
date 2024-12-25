@@ -1,12 +1,12 @@
 import { applet, canvasBundle, initializeApplet } from "../index.js";
-import { ThurstonGeometry } from "/applets/thurston-geometries/scripts/class.js";
+import { ThurstonGeometries } from "/applets/thurston-geometries/scripts/class.js";
 import { E3Rooms } from "/applets/thurston-geometries/scripts/geometries/e3.js";
 import { changeOpacity } from "/scripts/src/animation.js";
 
 async function reset({ slide, forward, duration })
 {
 	await initializeApplet({
-		Class: ThurstonGeometry,
+		Class: ThurstonGeometries,
 		slide,
 		duration,
 	});
@@ -17,7 +17,7 @@ async function reset({ slide, forward, duration })
 	geometryData.cameraPos = [1, 1, 1, 1];
 
 	applet.run(geometryData);
-	applet.changeResolution(1500);
+	applet.wilson.resizeCanvas({ width: 1500 });
 	applet.moveForever({
 		speed: .5,
 		direction: () => [0, 1, 0, 0]

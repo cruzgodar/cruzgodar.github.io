@@ -1,5 +1,5 @@
 import { showPage } from "../../../scripts/src/loadPage.js";
-import { ThurstonGeometry, rotateVectors } from "./class.js";
+import { ThurstonGeometries, rotateVectors } from "./class.js";
 import { E3Rooms } from "./geometries/e3.js";
 import { H2xERooms } from "./geometries/h2xe.js";
 import { H3Rooms } from "./geometries/h3.js";
@@ -21,7 +21,7 @@ import { TextBox } from "/scripts/src/textBoxes.js";
 
 export default function()
 {
-	const applet = new ThurstonGeometry({
+	const applet = new ThurstonGeometries({
 		canvas: $("#output-canvas"),
 	});
 
@@ -207,7 +207,7 @@ export default function()
 				Math.min(geometryData.maxClipDistance, clipDistanceSlider.value)
 			);
 
-			geometryData.sliderValues.clipDistance = clipDistanceSlider.value;
+			geometryData.sliderValues.clipDistance = parseFloat(clipDistanceSlider.value);
 		}
 
 		applet.run(geometryData);
@@ -232,20 +232,22 @@ export default function()
 
 		const geometryDataE3 = new E3S2Demo();
 
+		demoCanvasContainer.style.display = "";
+
 		if (demoApplet === undefined)
 		{
-			demoApplet = new ThurstonGeometry({
+			demoApplet = new ThurstonGeometries({
 				canvas: demoCanvas,
 			});
-
 			demoApplet.allowFullscreenWithKeyboard = false;
 
-			$$(".wilson-enter-fullscreen-button")[1].remove();
+			$$(".WILSON_enter-fullscreen-button")[1].remove();
 		}
 
 		else
 		{
 			demoApplet.animationPaused = false;
+			demoApplet.needNewFrame = true;
 
 			demoApplet.drawFrame();
 		}
@@ -261,8 +263,10 @@ export default function()
 		applet.run(geometryDataE3);
 
 		applet.restrictCamera = false;
-		applet.wilson.worldCenterY = Math.PI / 4.5;
-		applet.wilson.worldCenterX = 3 * Math.PI / 4;
+		applet.wilson.resizeWorld({
+			centerX: 3 * Math.PI / 4,
+			centerY: Math.PI / 4.5,
+		});
 
 
 
@@ -297,11 +301,13 @@ export default function()
 
 		demoApplet.run(geometryDataS2xE);
 
-		demoApplet.wilson.worldCenterX = Math.PI / 4;
+		demoApplet.wilson.resizeWorld({
+			centerX: Math.PI / 4,
+		});
 
 		demoCanvasContainer.style.display = "";
 		
-		demoCanvasContainer.querySelector(".wilson-applet-canvas-container").style.setProperty(
+		demoCanvasContainer.querySelector(".WILSON_applet-container").style.setProperty(
 			"margin-top",
 			"4px",
 			"important"
@@ -315,8 +321,10 @@ export default function()
 	function changeResolution()
 	{
 		applet.needNewFrame = true;
-		
-		applet.changeResolution(resolutionInput.value * siteSettings.resolutionMultiplier);
+
+		applet.wilson.resizeCanvas({
+			width: resolutionInput.value * siteSettings.resolutionMultiplier
+		});
 	}
 
 	function onSliderInput()

@@ -10,9 +10,10 @@ export class GroundAndSphere extends RaymarchApplet
 			
 			varying vec2 uv;
 
-			uniform float aspectRatioX;
-			uniform float aspectRatioY;
-			uniform int imageSize;
+			uniform vec2 aspectRatio;
+			uniform int resolution;
+			uniform float uvScale;
+			uniform vec2 uvCenter;
 			uniform vec3 cameraPos;
 			uniform vec3 imagePlaneCenterPos;
 			uniform vec3 forwardVec;
@@ -206,7 +207,7 @@ export class GroundAndSphere extends RaymarchApplet
 
 					lastDistanceToScene = distanceToScene;
 
-					float epsilon = max(t / (float(imageSize) * epsilonScaling), minEpsilon);
+					float epsilon = max(t / (float(resolution) * epsilonScaling), minEpsilon);
 
 					if (t > clipDistance || length(pos - lightPos) < 0.2)
 					{
@@ -287,7 +288,7 @@ export class GroundAndSphere extends RaymarchApplet
 					
 					float distanceToScene = distanceEstimator(pos);
 
-					float epsilon = max(t / (float(imageSize) * epsilonScaling), minEpsilon);
+					float epsilon = max(t / (float(resolution) * epsilonScaling), minEpsilon);
 
 					if (distanceToScene < epsilon)
 					{
@@ -377,11 +378,11 @@ export class GroundAndSphere extends RaymarchApplet
 				
 				for (int iteration = 0; iteration < maxMarches; iteration++)
 				{
-					vec3 pos = cameraPos + t * rayDirectionVec;;
+					vec3 pos = cameraPos + t * rayDirectionVec;
 					
 					float distanceToScene = distanceEstimator(pos);
 
-					float epsilon = max(t / (float(imageSize) * epsilonScaling), minEpsilon);
+					float epsilon = max(t / (float(resolution) * epsilonScaling), minEpsilon);
 					
 					if (distanceToScene < epsilon)
 					{
@@ -409,7 +410,9 @@ export class GroundAndSphere extends RaymarchApplet
 			void main(void)
 			{
 				vec3 finalColor = raymarch(
-					imagePlaneCenterPos + rightVec * uv.x * aspectRatioX + upVec * uv.y / aspectRatioY
+					imagePlaneCenterPos
+						+ rightVec * (uvScale * uv.x + uvCenter.x) * aspectRatio.x
+						+ upVec * (uvScale * uv.y + uvCenter.y) * aspectRatio.y
 				);
 				
 				gl_FragColor = vec4(finalColor.xyz, 1.0);
@@ -417,21 +420,21 @@ export class GroundAndSphere extends RaymarchApplet
 		`;
 
 		const uniforms = {
-			showSphereAmount: ["float", 0],
-			lightAmount: ["float", 0],
-			ambientOcclusionAmount: ["float", 0],
-			groundTextureAmount: ["float", 0],
-			fogAmount: ["float", 0],
-			pointLightAmount: ["float", 0],
-			shadowAmount: ["float", 0],
-			softShadowAmount: ["float", 0],
-			reflectivityAmount: ["float", 0],
-			modPosAmount: ["float", 0],
-			showRoomsAmount: ["float", 0],
+			showSphereAmount: 0,
+			lightAmount: 0,
+			ambientOcclusionAmount: 0,
+			groundTextureAmount: 0,
+			fogAmount: 0,
+			pointLightAmount: 0,
+			shadowAmount: 0,
+			softShadowAmount: 0,
+			reflectivityAmount: 0,
+			modPosAmount: 0,
+			showRoomsAmount: 0,
 
-			sphereWeight: ["float", 1],
-			extrudedCubeWeight: ["float", 0],
-			extrudedCubeSeparation: ["float", 1.5],
+			sphereWeight: 1,
+			extrudedCubeWeight: 0,
+			extrudedCubeSeparation: 1.5,
 		};
 
 		super({

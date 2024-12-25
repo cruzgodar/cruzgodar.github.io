@@ -19,8 +19,6 @@ async function reset({ slide, duration })
 
 	slide.appendChild(canvasBundle);
 
-	applet.wilsonNumbers.draggables.onResize();
-
 	const planePartition = [
 		[6, 4, 3, 1, 1],
 		[4, 3, 2, 0, 0],
@@ -48,7 +46,7 @@ async function reset({ slide, duration })
 	});
 }
 
-async function build0({ forward, duration = 600 })
+async function build0({ forward, duration = 400 })
 {
 	applet.animationTime = duration;
 
@@ -63,7 +61,7 @@ async function build0({ forward, duration = 600 })
 	}
 }
 
-async function build1({ forward, duration = 600 })
+async function build1({ forward, duration = 400 })
 {
 	applet.animationTime = duration;
 

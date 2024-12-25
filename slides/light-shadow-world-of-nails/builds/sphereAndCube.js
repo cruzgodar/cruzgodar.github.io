@@ -19,8 +19,10 @@ async function reset({ slide, forward, duration })
 
 	if (!forward)
 	{
-		applet.setUniform("sphereWeight", 0);
-		applet.setUniform("extrudedCubeWeight", 1);
+		applet.setUniforms({
+			sphereWeight: 0,
+			extrudedCubeWeight: 1,
+		});
 	}
 
 	addUniformLoop(
@@ -31,8 +33,6 @@ async function reset({ slide, forward, duration })
 			duration: 3000
 		})
 	);
-
-	applet.wilson.worldCenterY = -Math.PI / 2;
 }
 
 function showCube({ forward, duration })

@@ -82,15 +82,26 @@ export class CurvedLight extends RaymarchApplet
 			}
 		`;
 
+		const uniformsGlsl = /* glsl */`
+			uniform float radius;
+			uniform float curvature;
+			uniform float c0;
+			uniform float c1;
+			uniform float c2;
+			uniform float c3;
+			uniform float c4;
+			uniform float c5;
+		`;
+
 		const uniforms = {
-			radius: ["float", 5],
-			curvature: ["float", 1],
-			c0: ["float", 1],
-			c1: ["float", 0],
-			c2: ["float", 0],
-			c3: ["float", 0],
-			c4: ["float", 0],
-			c5: ["float", 0],
+			radius: 5,
+			curvature: 1,
+			c0: 1,
+			c1: 0,
+			c2: 0,
+			c3: 0,
+			c4: 0,
+			c5: 0,
 		};
 
 		super({
@@ -100,6 +111,7 @@ export class CurvedLight extends RaymarchApplet
 			getGeodesicGlsl: (pos, dir) => `geodesic(${pos}, ${dir}, t)`,
 			getReflectivityGlsl: "return 0.35;",
 			addGlsl,
+			uniformsGlsl,
 			uniforms,
 			focalLengthFactor: 2,
 			cameraPos: [2.0842, 2.0852, 2.0637],

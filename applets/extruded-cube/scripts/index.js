@@ -85,16 +85,20 @@ export default function()
 
 	function changeResolution()
 	{
-		applet.changeResolution(resolutionInput.value * siteSettings.resolutionMultiplier);
+		applet.wilson.resizeCanvas({
+			width: resolutionInput.value * siteSettings.resolutionMultiplier
+		});
 	}
 
 	function onSliderInput()
 	{
-		applet.setUniform("iterations", iterationsSlider.value);
-		applet.setUniform("scale", scaleSlider.value);
-		applet.setUniform("separation", separationSlider.value);
+		applet.setUniforms({
+			iterations: iterationsSlider.value,
+			scale: scaleSlider.value,
+			separation: separationSlider.value
+		});
 
-		applet.distanceFromOrigin = 10.6418 * separationSlider.value / scaleSlider.value;
+		applet.distanceFromOrigin = 13 * separationSlider.value / scaleSlider.value;
 
 		applet.calculateVectors();
 

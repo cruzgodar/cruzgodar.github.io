@@ -1,5 +1,5 @@
 import { showPage } from "../../../../../../scripts/src/loadPage.js";
-import { VectorField } from "/applets/vector-fields/scripts/class.js";
+import { VectorFields } from "/applets/vector-fields/scripts/class.js";
 import {
 	createDesmosGraphs,
 	desmosBlue,
@@ -60,14 +60,13 @@ export default function()
 
 	const outputCanvas = $("#vector-field-canvas");
 
-	const applet = new VectorField({ canvas: outputCanvas });
+	const applet = new VectorFields({ canvas: outputCanvas });
 
 	applet.loadPromise.then(() =>
 	{
 		applet.run({
 			generatingCode: "((x + 3.0 * y) / 8.0, (4.0 * x + 2.0 * y) / 8.0)",
 			resolution: 750 * siteSettings.resolutionMultiplier,
-			zoomLevel: 1
 		});
 		applet.pauseWhenOffscreen();
 	});

@@ -17,7 +17,7 @@ async function reset({ slide, duration })
 	geometryData.aspectRatio = 95 / 55.625;
 
 	applet.run(geometryData);
-	applet.changeResolution(500);
+	applet.wilson.resizeCanvas({ width: 500 });
 	applet.fov = Math.tan(130 / 2 * Math.PI / 180);
 
 	await changeOpacity({

@@ -134,9 +134,9 @@ export function listenForFullscreenKey()
 
 					const wilson = applet.wilsonForFullscreen ?? applet.wilson;
 					
-					if (wilson.fullscreen.currentlyFullscreen)
+					if (wilson.currentlyFullscreen)
 					{
-						wilson.fullscreen.switchFullscreen();
+						wilson.exitFullscreen();
 						return;
 					}
 
@@ -154,7 +154,7 @@ export function listenForFullscreenKey()
 				const wilson = currentlyLoadedApplets[minIndex].wilsonForFullscreen
 					?? currentlyLoadedApplets[minIndex].wilson;
 
-				wilson.fullscreen.switchFullscreen();
+				wilson.enterFullscreen();
 			}
 		}
 	});

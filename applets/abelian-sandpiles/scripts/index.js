@@ -1,12 +1,34 @@
 import { showPage } from "../../../scripts/src/loadPage.js";
-import { AbelianSandpile } from "./class.js";
+import { AbelianSandpiles } from "./class.js";
 import { DownloadButton, GenerateButton } from "/scripts/src/buttons.js";
+import { Dropdown } from "/scripts/src/dropdowns.js";
 import { $ } from "/scripts/src/main.js";
 import { TextBox } from "/scripts/src/textBoxes.js";
 
+const palettes = {
+	sakura: [[229, 190, 237], [149, 147, 217], [124, 144, 219]],
+	desert: [[124, 106, 10], [186, 189, 141], [255, 218, 198]],
+	nectarine: [[232, 247, 238], [184, 196, 187], [102, 63, 70]],
+	ivory: [[32, 44, 57], [40, 56, 69], [184, 176, 141]],
+	lichen: [[35, 44, 51], [90, 125, 124], [218, 223, 247]]
+};
+
 export default function()
 {
-	const applet = new AbelianSandpile({ canvas: $("#output-canvas") });
+	const applet = new AbelianSandpiles({ canvas: $("#output-canvas") });
+
+	const palettesDropdown = new Dropdown({
+		element: $("#palettes-dropdown"),
+		name: "Palettes",
+		options: {
+			nectarine: "Nectarine",
+			desert: "Desert",
+			sakura: "Sakura",
+			ivory: "Ivory",
+			lichen: "Lichen"
+		},
+		onChange: run
+	});
 
 	const resolutionInput = new TextBox({
 		element: $("#resolution-input"),
@@ -38,7 +60,7 @@ export default function()
 	const computationsPerFrameInput = new TextBox({
 		element: $("#computations-per-frame-input"),
 		name: "Computation Speed",
-		value: 10,
+		value: 1,
 		minValue: 1,
 		maxValue: 100,
 		onEnter: run,
@@ -59,19 +81,12 @@ export default function()
 
 	function run()
 	{
-		let resolution = Math.max(
-			resolutionInput.value,
-			Math.floor(Math.sqrt(centerGrainsInput.value)) + 2
-		);
-		resolution = resolution + 1 - (resolution % 2);
-
-		resolutionInput.setValue(resolution);
-
 		applet.run({
 			resolution: resolutionInput.value,
 			numGrains: centerGrainsInput.value,
 			floodGrains: surroundingGrainsInput.value,
-			computationsPerFrame: computationsPerFrameInput.value
+			computationsPerFrame: computationsPerFrameInput.value,
+			palette: palettes[palettesDropdown.value || "nectarine"]
 		});
 	}
 }

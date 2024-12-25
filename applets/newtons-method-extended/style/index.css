@@ -1,36 +1,10 @@
-#root-setter
+#WILSON_draggable-a
 {
-	transition: opacity .3s ease-in-out;
-}
-
-
-.a-marker
-{
-	background-color: rgb(255, 127, 127) !important;
+	background-color: rgb(255, 127, 127);
 	
 }
 
-.a-marker:active
+#WILSON_draggable-c
 {
-	background-color: rgb(127, 64, 64) !important;
-}
-
-
-
-.c-marker
-{
-	background-color: rgb(127, 192, 255) !important;
-	
-}
-
-.c-marker:active
-{
-	background-color: rgb(64, 96, 127) !important;
-}
-
-#code-input
-{
-	width: 250px;
-	
-	font-family: "Source Code Pro", monospace;
+	background-color: rgb(127, 192, 255);
 }

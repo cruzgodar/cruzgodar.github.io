@@ -15,7 +15,7 @@ async function reset({ slide, duration })
 	const geometryData = new S3Axes();
 
 	applet.run(geometryData);
-	applet.changeResolution(2000);
+	applet.wilson.resizeCanvas({ width: 2000 });
 
 	await changeOpacity({
 		element: canvasBundle,

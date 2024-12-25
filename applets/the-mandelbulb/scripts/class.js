@@ -1,6 +1,5 @@
 import anime from "/scripts/anime.js";
 import {
-	getRotationMatrix,
 	magnitude,
 	mat3TimesVector,
 	RaymarchApplet
@@ -8,10 +7,6 @@ import {
 
 export class Mandelbulb extends RaymarchApplet
 {
-	rotationAngleX = 0;
-	rotationAngleY = 0;
-	rotationAngleZ = 0;
-
 	constructor({
 		canvas,
 	}) {
@@ -94,11 +89,18 @@ export class Mandelbulb extends RaymarchApplet
 			return color;
 		`;
 
+		const uniformsGlsl = /* glsl */`
+			uniform float power;
+			uniform vec3 c;
+			uniform float juliaProportion;
+			uniform mat3 rotationMatrix;
+		`;
+
 		const uniforms = {
-			power: ["float", 8],
-			c: ["vec3", [0, 0, 0]],
-			juliaProportion: ["float", 0],
-			rotationMatrix: ["mat3", [[1, 0, 0], [0, 1, 0], [0, 0, 1]]],
+			power: 8,
+			c: [0, 0, 0],
+			juliaProportion: 0,
+			rotationMatrix: [[1, 0, 0], [0, 1, 0], [0, 0, 1]],
 		};
 
 		super({
@@ -106,6 +108,7 @@ export class Mandelbulb extends RaymarchApplet
 			resolution: 400,
 			distanceEstimatorGlsl,
 			getColorGlsl,
+			uniformsGlsl,
 			uniforms,
 			theta: 4.6601,
 			phi: 2.272,
@@ -113,18 +116,6 @@ export class Mandelbulb extends RaymarchApplet
 			lightPos: [-10, 0, 15],
 			lightBrightness: 1.25,
 		});
-	}
-
-
-	updateRotationMatrix()
-	{
-		this.setUniform("rotationMatrix", getRotationMatrix(
-			this.rotationAngleX,
-			this.rotationAngleY,
-			this.rotationAngleZ
-		));
-
-		this.needNewFrame = true;
 	}
 
 
@@ -136,10 +127,10 @@ export class Mandelbulb extends RaymarchApplet
 		let r = 0.0;
 		let dr = 1.0;
 
-		const c = this.uniforms.c[1];
-		const juliaProportion = this.uniforms.juliaProportion[1];
-		const power = this.uniforms.power[1];
-		const rotationMatrix = this.uniforms.rotationMatrix[1];
+		const c = this.uniforms.c;
+		const juliaProportion = this.uniforms.juliaProportion;
+		const power = this.uniforms.power;
+		const rotationMatrix = this.uniforms.rotationMatrix;
 
 		for (let iteration = 0; iteration < 16; iteration++)
 		{
@@ -182,8 +173,8 @@ export class Mandelbulb extends RaymarchApplet
 	{
 		const dummy = { t: 0 };
 
-		const oldJuliaProportion = this.uniforms.juliaProportion[1];
-		const newJuliaProportion = this.uniforms.juliaProportion[1] === 0 ? 1 : 0;
+		const oldJuliaProportion = this.uniforms.juliaProportion;
+		const newJuliaProportion = this.uniforms.juliaProportion === 0 ? 1 : 0;
 
 		anime({
 			targets: dummy,
@@ -192,10 +183,10 @@ export class Mandelbulb extends RaymarchApplet
 			easing: "easeOutSine",
 			update: () =>
 			{
-				this.setUniform(
-					"juliaProportion",
-					(1 - dummy.t) * oldJuliaProportion + dummy.t * newJuliaProportion
-				);
+				this.setUniforms({
+					juliaProportion:
+						(1 - dummy.t) * oldJuliaProportion + dummy.t * newJuliaProportion
+				});
 
 				this.needNewFrame = true;
 			}

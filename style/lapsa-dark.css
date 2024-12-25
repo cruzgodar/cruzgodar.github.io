@@ -52,7 +52,7 @@ body
 	box-shadow: 0px 0px 2vw 0px rgb(127, 127, 127) !important;
 }
 
-.wilson-enter-fullscreen-button
+.WILSON_enter-fullscreen-button
 {
 	display: none;
 }
@@ -73,26 +73,14 @@ body
 	width: 45vw !important;
 }
 
-
-
-.lapsa-slide .wilson-applet-canvas-container
-{
-	margin-top: 0 !important;
-	margin-bottom: 0 !important;
-}
-
-.lapsa-slide .wilson-output-canvas-container
+.lapsa-slide .WILSON_output-container
 {
 	font-size: 0 !important;
 }
 
-.lapsa-slide canvas
-{
-	border-top-left-radius: 2.5vw;
-}
-
 .medium-canvas canvas
 {
+	border-top-left-radius: 2.5vw;
 	width: 45vw;
 	height: 45vw;
 }

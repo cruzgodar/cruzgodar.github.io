@@ -162,35 +162,19 @@ export class E3S2Demo extends E3Geometry
 		...(this.rayLengths.map((_, index) => "rayColor" + (index + 1))),
 	];
 
-	updateUniforms(gl, uniformList, programIndex)
+	getUpdatedUniforms()
 	{
-		gl.uniform4fv(
-			uniformList.cameraDotPos[programIndex],
-			this.cameraDotPos
-		);
+		const uniforms = { cameraDotPos: this.cameraDotPos };
 
 		for (let i = 0; i < this.numRays; i++)
 		{
-			gl.uniform4fv(
-				uniformList[`rayDir${i + 1}`][programIndex],
-				this.rayDirs[i]
-			);
-
-			gl.uniform4fv(
-				uniformList[`testVec${i + 1}`][programIndex],
-				this.testVecs[i]
-			);
-
-			gl.uniform1f(
-				uniformList[`rayLength${i + 1}`][programIndex],
-				this.rayLengths[i]
-			);
-
-			gl.uniform3fv(
-				uniformList[`rayColor${i + 1}`][programIndex],
-				this.rayColors[i]
-			);
+			uniforms[`rayDir${i + 1}`] = this.rayDirs[i];
+			uniforms[`testVec${i + 1}`] = this.testVecs[i];
+			uniforms[`rayLength${i + 1}`] = this.rayLengths[i];
+			uniforms[`rayColor${i + 1}`] = this.rayColors[i];
 		}
+
+		return uniforms;
 	}
 }
 

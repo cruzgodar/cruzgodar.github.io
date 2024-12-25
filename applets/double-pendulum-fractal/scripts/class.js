@@ -1,9 +1,10 @@
-import { Applet } from "../../../scripts/applets/applet.js";
+import { AnimationFrameApplet } from "/scripts/applets/animationFrameApplet.js";
+import { hsvToRgb } from "/scripts/applets/applet.js";
 import { buttonAnimationTime, changeOpacity } from "/scripts/src/animation.js";
 import { convertColor } from "/scripts/src/browser.js";
-import { Wilson } from "/scripts/wilson.js";
+import { WilsonCPU, WilsonGPU } from "/scripts/wilson.js";
 
-export class DoublePendulumFractal extends Applet
+export class DoublePendulumFractal extends AnimationFrameApplet
 {
 	resolution = 1000;
 	centerUnstableEquilibrium = false;
@@ -11,22 +12,15 @@ export class DoublePendulumFractal extends Applet
 	dt = .005;
 
 	drawnFractal = false;
-
 	pendulumCanvas;
-
-	lastTimestamp = -1;
-
 	drawingFractal = true;
 
 
 
 	wilsonPendulum;
-
 	resolutionPendulum = 2000;
-
+	pendulumCanvasVisibility = 0;
 	lastTimestampPendulum = -1;
-
-	pendulumCanvasVisible = 0;
 
 	theta1 = 0;
 	theta2 = 0;
@@ -48,7 +42,7 @@ export class DoublePendulumFractal extends Applet
 
 
 
-		const fragShaderSourceInit = /* glsl */`
+		const shaderInit = /* glsl */`
 			precision highp float;
 			
 			varying vec2 uv;
@@ -65,7 +59,7 @@ export class DoublePendulumFractal extends Applet
 
 
 
-		const fragShaderSourceUpdate = /* glsl */`
+		const shaderUpdate = /* glsl */`
 			precision highp float;
 			precision highp sampler2D;
 			
@@ -101,7 +95,7 @@ export class DoublePendulumFractal extends Applet
 
 
 
-		const fragShaderSourceDraw = /* glsl */`
+		const shaderDraw = /* glsl */`
 			precision highp float;
 			precision highp sampler2D;
 			
@@ -143,73 +137,68 @@ export class DoublePendulumFractal extends Applet
 
 		const options =
 		{
-			renderer: "gpu",
+			shaders: {
+				init: shaderInit,
+				update: shaderUpdate,
+				draw: shaderDraw
+			},
 
-			shader: fragShaderSourceInit,
+			uniforms: {
+				init: {
+					movementAdjust: 0
+				},
+				draw: {
+					movementAdjust: 0
+				}
+			},
 
 			canvasWidth: this.resolution,
-			canvasHeight: this.resolution,
 
-
-
-			useFullscreen: true,
-
-			useFullscreenButton: true,
-
-			enterFullscreenButtonIconPath: "/graphics/general-icons/enter-fullscreen.png",
-			exitFullscreenButtonIconPath: "/graphics/general-icons/exit-fullscreen.png"
+			fullscreenOptions: {
+				useFullscreenButton: true,
+				enterFullscreenButtonIconPath: "/graphics/general-icons/enter-fullscreen.png",
+				exitFullscreenButtonIconPath: "/graphics/general-icons/exit-fullscreen.png"
+			}
 		};
 
-		this.wilson = new Wilson(canvas, options);
-
-		this.wilson.render.initUniforms(["movementAdjust"], 0);
-		this.wilson.gl.uniform1f(this.wilson.uniforms.movementAdjust[0], 0);
-
-		this.wilson.render.loadNewShader(fragShaderSourceUpdate);
-		this.wilson.render.loadNewShader(fragShaderSourceDraw);
-		this.wilson.render.initUniforms(["movementAdjust"], 2);
-		this.wilson.gl.uniform1f(this.wilson.uniforms.movementAdjust[2], 0);
-
-		this.wilson.render.createFramebufferTexturePair();
-		this.wilson.render.createFramebufferTexturePair();
+		this.wilson = new WilsonGPU(canvas, options);
+		this.wilsonForFullscreen = this.wilson;
 
 
 
 		const optionsPendulum =
 		{
-			renderer: "cpu",
-
 			canvasWidth: this.resolutionPendulum,
-			canvasHeight: this.resolutionPendulum,
 
-			mousemoveCallback: this.drawPreviewPendulum.bind(this),
-			touchmoveCallback: this.drawPreviewPendulum.bind(this),
+			interactionOptions: {
+				callbacks: {
+					mousemove: this.drawPreviewPendulum.bind(this),
+					touchmove: this.drawPreviewPendulum.bind(this),
+					mousedown: this.startPendulumAnimation.bind(this),
+					touchend: this.startPendulumAnimation.bind(this),
 
-			mousedownCallback: this.startPendulumAnimation.bind(this),
-			touchendCallback: this.startPendulumAnimation.bind(this)
+					mouseleave: () =>
+					{
+						if (this.pendulumCanvasVisibility === 1 || this.frame < 3)
+						{
+							changeOpacity({
+								element: this.pendulumCanvas,
+								opacity: 0,
+								duration: buttonAnimationTime
+							});
+
+							this.pendulumCanvasVisibility = 0;
+						}
+					}
+				}
+			}
 		};
 
-		this.wilsonPendulum = new Wilson(this.pendulumCanvas, optionsPendulum);
+		this.wilsonPendulum = new WilsonCPU(this.pendulumCanvas, optionsPendulum);
 
 		this.wilsonPendulum.ctx.lineWidth = this.resolutionPendulum / 100;
-
 		this.wilsonPendulum.ctx.strokeStyle = convertColor(127, 0, 255);
-
 		this.wilsonPendulum.ctx.fillStyle = convertColor(0, 0, 0);
-
-		this.wilsonPendulum.draggables.container.addEventListener("mouseleave", () =>
-		{
-			if (this.pendulumCanvasVisible === 1 || this.frame < 3)
-			{
-				changeOpacity({
-					element: this.pendulumCanvas,
-					opacity: 0,
-					duration: buttonAnimationTime
-				});
-
-				this.pendulumCanvasVisible = 0;
-			}
-		});
 	}
 
 
@@ -222,149 +211,69 @@ export class DoublePendulumFractal extends Applet
 		this.resolution = resolution;
 		this.centerUnstableEquilibrium = centerUnstableEquilibrium;
 		
-		this.wilson.changeCanvasSize(this.resolution, this.resolution);
+		this.wilson.resizeCanvas({ width: this.resolution });
 
+		this.wilson.createFramebufferTexturePair({
+			id: "0",
+			textureType: "float"
+		});
 
+		this.wilson.createFramebufferTexturePair({
+			id: "1",
+			textureType: "float"
+		});
 
-		this.wilson.gl.bindTexture(
-			this.wilson.gl.TEXTURE_2D,
-			this.wilson.render.framebuffers[0].texture
-		);
+		this.wilson.setUniforms({
+			movementAdjust: this.centerUnstableEquilibrium ? 1 : 0
+		}, "init");
 
-		this.wilson.gl.texImage2D(
-			this.wilson.gl.TEXTURE_2D,
-			0,
-			this.wilson.gl.RGBA,
-			this.wilson.canvasWidth,
-			this.wilson.canvasHeight,
-			0,
-			this.wilson.gl.RGBA,
-			this.wilson.gl.FLOAT,
-			null
-		);
+		this.wilson.setUniforms({
+			movementAdjust: this.centerUnstableEquilibrium ? 1 : 0
+		}, "draw");
 
-		this.wilson.gl.bindTexture(
-			this.wilson.gl.TEXTURE_2D,
-			this.wilson.render.framebuffers[1].texture
-		);
+		this.wilson.useShader("init");
+		this.wilson.useTexture("0");
+		this.wilson.useFramebuffer("0");
+		this.wilson.drawFrame();
 
-		this.wilson.gl.texImage2D(
-			this.wilson.gl.TEXTURE_2D,
-			0,
-			this.wilson.gl.RGBA,
-			this.wilson.canvasWidth,
-			this.wilson.canvasHeight,
-			0,
-			this.wilson.gl.RGBA,
-			this.wilson.gl.FLOAT,
-			null
-		);
-
-		this.wilson.gl.useProgram(this.wilson.render.shaderPrograms[2]);
-
-		this.wilson.gl.uniform1f(
-			this.wilson.uniforms.movementAdjust[2],
-			this.centerUnstableEquilibrium ? 1 : 0
-		);
-
-
-
-		this.wilson.gl.useProgram(this.wilson.render.shaderPrograms[0]);
-
-		this.wilson.gl.uniform1f(
-			this.wilson.uniforms.movementAdjust[0],
-			this.centerUnstableEquilibrium ? 1 : 0
-		);
-
-		this.wilson.gl.bindTexture(
-			this.wilson.gl.TEXTURE_2D,
-			this.wilson.render.framebuffers[0].texture
-		);
-
-		this.wilson.gl.bindFramebuffer(
-			this.wilson.gl.FRAMEBUFFER,
-			this.wilson.render.framebuffers[0].framebuffer
-		);
-
-		this.wilson.render.drawFrame();
-
-
-
-		requestAnimationFrame(this.drawFrame.bind(this));
-
-
-
+		this.resume();
+		this.needNewFrame = true;
 		this.drawnFractal = true;
 	}
 
 
 
-	drawFrame(timestamp)
+	drawFrame(timeElapsed)
 	{
-		const timeElapsed = timestamp - this.lastTimestamp;
-
-		this.lastTimestamp = timestamp;
-
-		if (timeElapsed === 0)
-		{
-			return;
-		}
-
 		const numInternalFrames = timeElapsed > 10 ? 3 : 1;
 
-		this.wilson.gl.useProgram(this.wilson.render.shaderPrograms[1]);
+		this.wilson.useShader("update");
 
 		for (let i = 0; i < numInternalFrames; i++)
 		{
-			this.wilson.gl.bindTexture(
-				this.wilson.gl.TEXTURE_2D,
-				this.wilson.render.framebuffers[0].texture
-			);
+			this.wilson.useTexture("0");
+			this.wilson.useFramebuffer("1");
+			this.wilson.drawFrame();
 
-			this.wilson.gl.bindFramebuffer(
-				this.wilson.gl.FRAMEBUFFER,
-				this.wilson.render.framebuffers[1].framebuffer
-			);
-
-			this.wilson.render.drawFrame();
-
-			this.wilson.gl.bindTexture(
-				this.wilson.gl.TEXTURE_2D,
-				this.wilson.render.framebuffers[1].texture
-			);
-
-			this.wilson.gl.bindFramebuffer(
-				this.wilson.gl.FRAMEBUFFER,
-				this.wilson.render.framebuffers[0].framebuffer
-			);
-
-			this.wilson.render.drawFrame();
+			this.wilson.useTexture("1");
+			this.wilson.useFramebuffer("0");
+			this.wilson.drawFrame();
 		}
 
+		this.wilson.useShader("draw");
+		this.wilson.useTexture("0");
+		this.wilson.useFramebuffer(null);
+		this.wilson.drawFrame();
 
-
-		this.wilson.gl.useProgram(this.wilson.render.shaderPrograms[2]);
-
-		this.wilson.gl.bindTexture(
-			this.wilson.gl.TEXTURE_2D,
-			this.wilson.render.framebuffers[0].texture
-		);
-
-		this.wilson.gl.bindFramebuffer(this.wilson.gl.FRAMEBUFFER, null);
-
-		this.wilson.render.drawFrame();
-
-
-
-		if (this.drawingFractal && !this.animationPaused)
+		if (this.drawingFractal)
 		{
-			requestAnimationFrame(this.drawFrame.bind(this));
+			this.needNewFrame = true;
 		}
 	}
 
 
 
-	drawPreviewPendulum(x, y)
+	drawPreviewPendulum({ x, y })
 	{
 		if (this.drawingFractal)
 		{
@@ -377,12 +286,12 @@ export class DoublePendulumFractal extends Applet
 			y = (y + 2) % 2 - 1;
 		}
 		
-		if (this.pendulumCanvasVisible === 0)
+		if (this.pendulumCanvasVisibility === 0)
 		{
 			this.showPendulumCanvasPreview();
 		}
 
-		if (this.pendulumCanvasVisible !== 2)
+		if (this.pendulumCanvasVisibility !== 2)
 		{
 			this.theta1 = x * Math.PI;
 			this.theta2 = y * Math.PI;
@@ -398,7 +307,7 @@ export class DoublePendulumFractal extends Applet
 
 	startPendulumAnimation()
 	{
-		if (this.pendulumCanvasVisible === 1)
+		if (this.pendulumCanvasVisibility === 1)
 		{
 			this.initialTheta1 = this.theta1;
 			this.initialTheta2 = this.theta2;
@@ -429,7 +338,7 @@ export class DoublePendulumFractal extends Applet
 			duration: buttonAnimationTime
 		});
 
-		this.pendulumCanvasVisible = 1;
+		this.pendulumCanvasVisibility = 1;
 	}
 
 	showPendulumCanvas()
@@ -439,18 +348,20 @@ export class DoublePendulumFractal extends Applet
 			return;
 		}
 
+		this.wilsonForFullscreen = this.wilsonPendulum;
+
 		changeOpacity({
 			element: this.pendulumCanvas,
 			opacity: 1,
 			duration: buttonAnimationTime
 		});
 
-		this.pendulumCanvasVisible = 2;
+		this.pendulumCanvasVisibility = 2;
 
 		requestAnimationFrame(this.drawFramePendulum.bind(this));
 	}
 
-	hidePendulumDrawerCanvas()
+	hidePendulumCanvas()
 	{
 		if (!this.drawnFractal)
 		{
@@ -459,13 +370,15 @@ export class DoublePendulumFractal extends Applet
 
 		this.drawingFractal = true;
 
+		this.wilsonForFullscreen = this.wilson;
+
 		changeOpacity({
 			element: this.pendulumCanvas,
 			opacity: 0,
 			duration: buttonAnimationTime
 		});
 
-		this.pendulumCanvasVisible = 0;
+		this.pendulumCanvasVisibility = 0;
 
 		requestAnimationFrame(this.drawFrame.bind(this));
 	}
@@ -475,10 +388,7 @@ export class DoublePendulumFractal extends Applet
 	drawFramePendulum(timestamp)
 	{
 		const timeElapsed = timestamp - this.lastTimestampPendulum;
-
 		this.lastTimestampPendulum = timestamp;
-
-
 
 		if (timeElapsed === 0)
 		{
@@ -516,25 +426,15 @@ export class DoublePendulumFractal extends Applet
 		) * 4;
 
 		const value = Math.min(Math.pow(z * z + w * w, .5) + valueAdd, 1);
-
-		const rgb = this.wilsonPendulum.utils.hsvToRgb(hue, saturation, value);
-
+		const rgb = hsvToRgb(hue, saturation, value);
 		this.wilsonPendulum.ctx.strokeStyle = convertColor(...rgb);
-
-
 
 		this.wilsonPendulum.ctx.beginPath();
 		this.wilsonPendulum.ctx.moveTo(this.resolutionPendulum / 2, this.resolutionPendulum / 2);
-
 		this.wilsonPendulum.ctx.lineTo(
 			this.resolutionPendulum / 2 + this.resolutionPendulum / 6 * Math.sin(this.theta1),
 			this.resolutionPendulum / 2 + this.resolutionPendulum / 6 * Math.cos(this.theta1)
 		);
-
-		this.wilsonPendulum.ctx.stroke();
-
-		this.wilsonPendulum.ctx.beginPath();
-		
 		this.wilsonPendulum.ctx.moveTo(
 			this.resolutionPendulum / 2
 				+ (this.resolutionPendulum / 6 - this.resolutionPendulum / 200)
@@ -543,7 +443,6 @@ export class DoublePendulumFractal extends Applet
 				+ (this.resolutionPendulum / 6 - this.resolutionPendulum / 200)
 					* Math.cos(this.theta1)
 		);
-
 		this.wilsonPendulum.ctx.lineTo(
 			this.resolutionPendulum / 2
 				+ this.resolutionPendulum / 6 * Math.sin(this.theta1)
@@ -552,12 +451,9 @@ export class DoublePendulumFractal extends Applet
 				+ this.resolutionPendulum / 6 * Math.cos(this.theta1)
 				+ this.resolutionPendulum / 6 * Math.cos(this.theta2)
 		);
-
 		this.wilsonPendulum.ctx.stroke();
 
-
-
-		if (this.pendulumCanvasVisible === 2)
+		if (this.pendulumCanvasVisibility === 2)
 		{
 			this.updateAngles();
 

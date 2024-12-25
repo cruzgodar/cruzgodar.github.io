@@ -1077,12 +1077,9 @@ export class SL2RAxes extends SL2RGeometry
 
 	uniformNames = ["cameraFiber"];
 
-	updateUniforms(gl, uniformList, programIndex)
+	getUpdatedUniforms()
 	{
-		gl.uniform1f(
-			uniformList.cameraFiber[programIndex],
-			this.cameraFiber
-		);
+		return { cameraFiber: this.cameraFiber };
 	}
 }
 
@@ -1150,27 +1147,14 @@ export class SL2RRooms extends SL2RGeometry
 
 	uniformNames = ["cameraFiber", "wallThickness", "baseColor"];
 
-	updateUniforms(gl, uniformList, programIndex)
+	getUpdatedUniforms()
 	{
-		gl.uniform1f(
-			uniformList.cameraFiber[programIndex],
-			this.cameraFiber
-		);
-
-		gl.uniform1f(
-			uniformList.wallThickness[programIndex],
-			1.85 - this.sliderValues.wallThickness
-		);
-
-		gl.uniform1f(
-			uniformList.clipDistance[programIndex],
-			this.sliderValues.clipDistance
-		);
-
-		gl.uniform3fv(
-			uniformList.baseColor[programIndex],
-			this.baseColor
-		);
+		return {
+			cameraFiber: this.cameraFiber,
+			wallThickness: 1.85 - this.sliderValues.wallThickness,
+			clipDistance: this.sliderValues.clipDistance,
+			baseColor: this.baseColor
+		};
 	}
 
 	uiElementsUsed = "#wall-thickness-slider";
@@ -1286,16 +1270,11 @@ export class SL2RSpheres extends SL2RGeometry
 
 	uniformNames = ["cameraFiber", "baseColor"];
 
-	updateUniforms(gl, uniformList, programIndex)
+	getUpdatedUniforms()
 	{
-		gl.uniform1f(
-			uniformList.cameraFiber[programIndex],
-			this.cameraFiber
-		);
-
-		gl.uniform3fv(
-			uniformList.baseColor[programIndex],
-			this.baseColor
-		);
+		return {
+			cameraFiber: this.cameraFiber,
+			baseColor: this.baseColor
+		};
 	}
 }

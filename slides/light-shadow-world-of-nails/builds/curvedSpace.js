@@ -13,8 +13,10 @@ async function reset({ slide, forward, duration })
 
 	if (!forward)
 	{
-		applet.setUniform("c0", 0);
-		applet.setUniform("c4", 1);
+		applet.setUniforms({
+			c0: 0,
+			c4: 1
+		});
 	}
 }
 
@@ -25,7 +27,7 @@ function changeCurvature({ forward, duration = 1000, newC })
 		newC--;
 	}
 
-	const oldCValues = [0, 1, 2, 3, 4, 5].map(index => applet.uniforms[`c${index}`][1]);
+	const oldCValues = [0, 1, 2, 3, 4, 5].map(index => applet.uniforms[`c${index}`]);
 	const newCValues = Array(6).fill(0);
 	newCValues[newC] = 1;
 
@@ -38,13 +40,17 @@ function changeCurvature({ forward, duration = 1000, newC })
 		easing: "easeOutQuad",
 		update: () =>
 		{
-			for (let i = 0; i < 6; i++)
-			{
-				applet.setUniform(`c${i}`, dummy.t * newCValues[i] + (1 - dummy.t) * oldCValues[i]);
-			}
-			
+			applet.setUniforms({
+				c0: dummy.t * newCValues[0] + (1 - dummy.t) * oldCValues[0],
+				c1: dummy.t * newCValues[1] + (1 - dummy.t) * oldCValues[1],
+				c2: dummy.t * newCValues[2] + (1 - dummy.t) * oldCValues[2],
+				c3: dummy.t * newCValues[3] + (1 - dummy.t) * oldCValues[3],
+				c4: dummy.t * newCValues[4] + (1 - dummy.t) * oldCValues[4],
+				c5: dummy.t * newCValues[5] + (1 - dummy.t) * oldCValues[5],
+			});
+
 			applet.needNewFrame = true;
-		}
+		},
 	});
 }
 

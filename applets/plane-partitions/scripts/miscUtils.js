@@ -1,4 +1,5 @@
 import anime from "/scripts/anime.js";
+import { convertColor } from "/scripts/src/browser.js";
 
 export async function showFloor(opacity = 1)
 {
@@ -115,6 +116,8 @@ export function drawAll2dViewText()
 	const numCharacters = Math.max(`${this.totalArrayHeight}`.length, 2);
 
 	this.wilsonNumbers.ctx.font = `${this.fontSize / numCharacters}px monospace`;
+
+	this.wilsonNumbers.ctx.fillStyle = convertColor(255, 255, 255);
 
 	this.wilsonNumbers.ctx.clearRect(
 		0,

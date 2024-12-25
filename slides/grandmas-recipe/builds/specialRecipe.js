@@ -21,15 +21,15 @@ async function reset({ slide, duration })
 
 	slide.appendChild(canvasBundle);
 
-	applet.wilson.draggables.worldCoordinates = [
-		[1.737, -0.224],
-		[2.337, 0.987],
-		[2.329, -1.673]
-	];
-	applet.wilson.draggables.onResize();
+	applet.wilson.setDraggables({
+		ta: [1.737, -0.224],
+		tb: [2.337, 0.987],
+		tc: [2.329, -1.673]
+	});
 
-	applet.changeRecipe(2);
-	applet.grandmaSpecialCoefficients(1.737, -0.224, 2.337, 0.987, 2.329, -1.673);
+	applet.changeRecipe("grandmaSpecial");
+	applet.bakeCoefficients();
+
 
 	await applet.requestHighResFrame(resolution, maxDepth, maxPixelBrightness, 4);
 

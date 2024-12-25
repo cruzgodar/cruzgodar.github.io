@@ -8,8 +8,6 @@ let sigma;
 let rho;
 let beta;
 
-let maximumSpeed;
-
 let pixels = [];
 
 const boxSize = 50;
@@ -30,7 +28,7 @@ let currentCol;
 
 
 
-async function drawLorenzAttractor()
+function drawLorenzAttractor()
 {
 	let step = 0;
 
@@ -44,7 +42,8 @@ async function drawLorenzAttractor()
 	{
 		if (step === stepsPerColor)
 		{
-			postMessage([pixels, HSVtoRGB(color / numColors / 6.5, 1, 1)]);
+			const rgb = HSVtoRGB(color / numColors / 6.5, 1, 1);
+			postMessage(pixels.map(p => [p[0], p[1], rgb]));
 
 			pixels = [];
 
@@ -53,11 +52,6 @@ async function drawLorenzAttractor()
 			step = 0;
 
 			stepsPerColor -= 2 * Math.floor(5000 / numColors);
-
-			if (!maximumSpeed)
-			{
-				await new Promise(resolve => setTimeout(resolve, 8));
-			}
 		}
 
 
@@ -118,8 +112,6 @@ onmessage = (e) =>
 	sigma = e.data[1];
 	rho = e.data[2];
 	beta = e.data[3];
-
-	maximumSpeed = e.data[4];
 
 	drawLorenzAttractor();
 };

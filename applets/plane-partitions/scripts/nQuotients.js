@@ -1,4 +1,5 @@
 import anime from "/scripts/anime.js";
+import { hsvToRgb } from "/scripts/applets/applet.js";
 import { changeOpacity } from "/scripts/src/animation.js";
 import { convertColor } from "/scripts/src/browser.js";
 
@@ -48,7 +49,7 @@ export async function drawBoundary(index, n)
 			{
 				const h = (hueIndex % n) / n;
 
-				const rgb = this.wilson.utils.hsvToRgb(h, 1, 1);
+				const rgb = hsvToRgb(h, 1, 1);
 
 				rects.push([i, j, true, rgb]);
 
@@ -61,7 +62,7 @@ export async function drawBoundary(index, n)
 		// Add a vertical edge.
 		const h = (hueIndex % n) / n;
 
-		const rgb = this.wilson.utils.hsvToRgb(h, 1, 1);
+		const rgb = hsvToRgb(h, 1, 1);
 
 		rects.push([i, j, false, rgb]);
 
@@ -77,7 +78,7 @@ export async function drawBoundary(index, n)
 		{
 			const h = (hueIndex % n) / n;
 
-			const rgb = this.wilson.utils.hsvToRgb(h, 1, 1);
+			const rgb = hsvToRgb(h, 1, 1);
 
 			rects.push([i, j, true, rgb]);
 

@@ -339,24 +339,13 @@ export class S2xERooms extends S2xEGeometry
 
 	uniformNames = ["sceneTransition", "wallThickness"];
 
-	updateUniforms(gl, uniformList, programIndex)
+	getUpdatedUniforms()
 	{
-		const wallThickness = .9557 - this.sliderValues.wallThickness / 10;
-
-		gl.uniform1f(
-			uniformList.sceneTransition[programIndex],
-			this.sliderValues.sceneTransition
-		);
-
-		gl.uniform1f(
-			uniformList.clipDistance[programIndex],
-			this.sliderValues.clipDistance
-		);
-
-		gl.uniform1f(
-			uniformList.wallThickness[programIndex],
-			wallThickness
-		);
+		return {
+			wallThickness: .9557 - this.sliderValues.wallThickness / 10,
+			clipDistance: this.sliderValues.clipDistance,
+			sceneTransition: this.sliderValues.sceneTransition
+		};
 	}
 
 	uiElementsUsed = "#wall-thickness-slider, #switch-scene-button, #clip-distance-slider";

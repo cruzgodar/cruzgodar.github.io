@@ -19,8 +19,6 @@ async function reset({ slide, duration })
 
 	slide.appendChild(canvasBundle);
 
-	applet.wilsonNumbers.draggables.onResize();
-
 	const planePartition = [
 		[1, 1, 1, 1, 1],
 		[1, 1, 1, 0, 0],

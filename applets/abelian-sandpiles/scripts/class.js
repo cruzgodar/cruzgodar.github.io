@@ -1,13 +1,13 @@
 import { AnimationFrameApplet } from "/scripts/applets/animationFrameApplet.js";
-import { Wilson } from "/scripts/wilson.js";
+import { WilsonGPU } from "/scripts/wilson.js";
 
-export class AbelianSandpile extends AnimationFrameApplet
+export class AbelianSandpiles extends AnimationFrameApplet
 {
-	wilsonUpscale;
-
-	numGrains = 10000;
-	floodGrains = 0;
-	resolution = 500;
+	wilsonUpdate;
+	numGrains;
+	floodGrains;
+	resolution = 319;
+	resolutionUpdate;
 
 	computationsPerFrame = 20;
 
@@ -19,9 +19,7 @@ export class AbelianSandpile extends AnimationFrameApplet
 	{
 		super(canvas);
 
-		const hiddenCanvas = this.createHiddenCanvas();
-
-		const fragShaderSourceInit = /* glsl */`
+		const shaderInit = /* glsl */`
 			precision highp float;
 			precision highp sampler2D;
 			
@@ -29,7 +27,7 @@ export class AbelianSandpile extends AnimationFrameApplet
 			
 			uniform sampler2D uTexture;
 			
-			uniform float step;
+			uniform float stepSize;
 			
 			uniform vec4 startGrains;
 			uniform vec4 floodGrains;
@@ -39,11 +37,16 @@ export class AbelianSandpile extends AnimationFrameApplet
 			void main(void)
 			{
 				vec2 center = (uv + vec2(1.0, 1.0)) / 2.0;
-				
-				if (length(center - vec2(.5, .5)) < step / 2.0)
+
+				if (center.y - center.x > stepSize / 4.0)
+				{
+					gl_FragColor = vec4(0.0, 0.0, 0.0, 1.0);
+					return;
+				}
+
+				if (length(center) < stepSize)
 				{
 					gl_FragColor = startGrains;
-					
 					return;
 				}
 				
@@ -53,7 +56,7 @@ export class AbelianSandpile extends AnimationFrameApplet
 
 
 
-		const fragShaderSourceUpdate = /* glsl */`
+		const shaderUpdate = /* glsl */`
 			precision highp float;
 			precision highp sampler2D;
 			
@@ -61,117 +64,118 @@ export class AbelianSandpile extends AnimationFrameApplet
 			
 			uniform sampler2D uTexture;
 			
-			uniform float step;
+			uniform float stepSize;
+
 			
-			
+
+			void quotientState(inout vec4 state)
+			{
+				state = floor(state * 255.0);
+
+				state.y += mod(state.x, 4.0) * 256.0;
+				state.x = floor(state.x / 4.0);
+				
+				state.z += mod(state.y, 4.0) * 256.0;
+				state.y = floor(state.y / 4.0);
+				
+				state.w += mod(state.z, 4.0) * 256.0;
+				state.z = floor(state.z / 4.0);
+				
+				state.w = floor(state.w / 4.0);
+			}
 			
 			void main(void)
 			{
 				vec2 center = (uv + vec2(1.0, 1.0)) / 2.0;
-				vec4 state = texture2D(uTexture, center);
-				float leftover = mod(floor(256.0 * state.w), 4.0) / 256.0;
-				
-				if (center.x <= step || center.x >= 1.0 - step || center.y <= step || center.y >= 1.0 - step)
-				{
+
+				if (
+					center.y > center.x + stepSize / 2.0
+					|| abs(center.x - 1.0) < stepSize
+				) {
 					gl_FragColor = vec4(0.0, 0.0, 0.0, 0.0);
 					return;
 				}
-				
-				vec4 state1 = texture2D(uTexture, center + vec2(step, 0.0));
-				vec4 state2 = texture2D(uTexture, center + vec2(-step, 0.0));
-				vec4 state3 = texture2D(uTexture, center + vec2(0.0, step));
-				vec4 state4 = texture2D(uTexture, center + vec2(0.0, -step));
-				
-				
-				
-				/*
-					The general idea: this is carrying in reverse. The largest place is supposed to be divided by four, so we
-					start by extracting the portion that is too small for it to see and adding it to the next place down (not
-					dividing by 256 effectively multiplies it by 256). Then what's left is divided by 4 and effectively floored.
-				*/
 
-				state1.y += mod(floor(state1.x * 256.0), 4.0);
-				state1.x = floor(state1.x * 64.0) / 256.0;
-				
-				state1.z += mod(floor(state1.y * 256.0), 4.0);
-				state1.y = floor(state1.y * 64.0) / 256.0;
-				
-				state1.w += mod(floor(state1.z * 256.0), 4.0);
-				state1.z = floor(state1.z * 64.0) / 256.0;
-				
-				state1.w = floor(state1.w * 64.0) / 256.0;
-				
-				
-				
-				state2.y += mod(floor(state2.x * 256.0), 4.0);
-				state2.x = floor(state2.x * 64.0) / 256.0;
-				
-				state2.z += mod(floor(state2.y * 256.0), 4.0);
-				state2.y = floor(state2.y * 64.0) / 256.0;
-				
-				state2.w += mod(floor(state2.z * 256.0), 4.0);
-				state2.z = floor(state2.z * 64.0) / 256.0;
-				
-				state2.w = floor(state2.w * 64.0) / 256.0;
-				
-				
-				
-				state3.y += mod(floor(state3.x * 256.0), 4.0);
-				state3.x = floor(state3.x * 64.0) / 256.0;
-				
-				state3.z += mod(floor(state3.y * 256.0), 4.0);
-				state3.y = floor(state3.y * 64.0) / 256.0;
-				
-				state3.w += mod(floor(state3.z * 256.0), 4.0);
-				state3.z = floor(state3.z * 64.0) / 256.0;
-				
-				state3.w = floor(state3.w * 64.0) / 256.0;
-				
-				
-				
-				state4.y += mod(floor(state4.x * 256.0), 4.0);
-				state4.x = floor(state4.x * 64.0) / 256.0;
-				
-				state4.z += mod(floor(state4.y * 256.0), 4.0);
-				state4.y = floor(state4.y * 64.0) / 256.0;
-				
-				state4.w += mod(floor(state4.z * 256.0), 4.0);
-				state4.z = floor(state4.z * 64.0) / 256.0;
-				
-				state4.w = floor(state4.w * 64.0) / 256.0;
-				
-				
+				vec4 state = floor(texture2D(uTexture, center) * 255.0);
+				float leftover = mod(state.w, 4.0);
+
+				vec4 stateUp;
+				vec4 stateDown;
+				vec4 stateLeft;
+				vec4 stateRight = texture2D(uTexture, center + vec2(stepSize, 0.0));
+
+				if (length(center) < stepSize)
+				{
+					stateDown = stateRight;
+					stateUp = stateRight;
+					stateLeft = stateRight;
+				}
+
+				else if (abs(center.y) < stepSize)
+				{
+					stateUp = texture2D(uTexture, center + vec2(0.0, stepSize));
+					stateDown = stateUp;
+					stateLeft = texture2D(uTexture, center + vec2(-stepSize, 0.0));
+				}
+
+				else if (abs(center.x - center.y) < stepSize / 4.0)
+				{
+					stateDown = texture2D(uTexture, center + vec2(0.0, -stepSize));
+					stateUp = stateDown;
+					stateLeft = stateRight;
+				}
+
+				else
+				{
+					stateUp = texture2D(uTexture, center + vec2(0.0, stepSize));
+					stateDown = texture2D(uTexture, center + vec2(0.0, -stepSize));
+					stateLeft = texture2D(uTexture, center + vec2(-stepSize, 0.0));
+				}
+
+				quotientState(stateUp);
+				quotientState(stateDown);
+				quotientState(stateLeft);
+				quotientState(stateRight);
 				
 				
 				//The new state should be what used to be here, mod 4, plus the floor of 1/4 of each of the neighbors.
-				vec4 newState = vec4(0.0, 0.0, 0.0, leftover) + state1 + state2 + state3 + state4;
+				vec4 newState = vec4(0.0, 0.0, 0.0, leftover) + stateUp + stateDown + stateLeft + stateRight;
 				
-				newState.z += floor(newState.w) / 256.0;
-				newState.w = mod(newState.w, 1.0);
+				newState.z += floor(newState.w / 256.0);
+				newState.w = mod(newState.w, 256.0);
 				
-				newState.y += floor(newState.z) / 256.0;
-				newState.z = mod(newState.z, 1.0);
+				newState.y += floor(newState.z / 256.0);
+				newState.z = mod(newState.z, 256.0);
+
+				newState.x += floor(newState.y / 256.0);
+				newState.y = mod(newState.y, 256.0);
 				
-				newState.x += floor(newState.y) / 256.0;
-				newState.y = mod(newState.y, 1.0);
-				
-				gl_FragColor = newState;
+				gl_FragColor = newState / 255.0;
 			}
 		`;
 
-
-
-		const fragShaderSourceDraw = /* glsl */`
+		const shaderDraw = /* glsl */`
 			precision highp float;
 			precision highp sampler2D;
 			
 			varying vec2 uv;
 			
 			uniform sampler2D uTexture;
+
+			uniform vec3 color1;
+			uniform vec3 color2;
+			uniform vec3 color3;
 			
 			void main(void)
 			{
-				vec2 state = floor(256.0 * texture2D(uTexture, (uv + vec2(1.0, 1.0)) / 2.0).zw);
+				vec2 modUv = abs(uv);
+
+				if (modUv.y > modUv.x)
+				{
+					modUv = vec2(modUv.y, modUv.x);
+				}
+
+				vec2 state = floor(256.0 * texture2D(uTexture, modUv).zw);
 				
 				if (state.x != 0.0)
 				{
@@ -181,19 +185,19 @@ export class AbelianSandpile extends AnimationFrameApplet
 				
 				if (state.y == 1.0)
 				{
-					gl_FragColor = vec4(0.0, 0.25, 1.0, 1.0);
+					gl_FragColor = vec4(color1, 1.0);
 					return;
 				}
 				
 				if (state.y == 2.0)
 				{
-					gl_FragColor = vec4(0.5, 0.0, 1.0, 1.0);
+					gl_FragColor = vec4(color2, 1.0);
 					return;
 				}
 				
 				if (state.y == 3.0)
 				{
-					gl_FragColor = vec4(1.0, 1.0, 0.0, 1.0);
+					gl_FragColor = vec4(color3, 1.0);
 					return;
 				}
 				
@@ -208,74 +212,50 @@ export class AbelianSandpile extends AnimationFrameApplet
 			}
 		`;
 
-		const options =
-		{
-			renderer: "gpu",
+		const hiddenCanvas = this.createHiddenCanvas();
 
-			shader: fragShaderSourceInit,
+		const optionsUpdate = {
+			shaders: {
+				init: shaderInit,
+				update: shaderUpdate,
+			},
 
-			canvasWidth: this.resolution,
-			canvasHeight: this.resolution
+			uniforms: {
+				init: {
+					stepSize: 0,
+					startGrains: [0, 0, 0, 0],
+					floodGrains: [0, 0, 0, 0],
+				},
+				update: {
+					stepSize: 0,
+				}
+			},
+
+			canvasWidth: Math.ceil(this.resolution / 2),
 		};
 
-		this.wilson = new Wilson(hiddenCanvas, options);
+		this.wilsonUpdate = new WilsonGPU(hiddenCanvas, optionsUpdate);
 
-		this.wilson.render.loadNewShader(fragShaderSourceUpdate);
-		this.wilson.render.loadNewShader(fragShaderSourceDraw);
+		const options = {
+			shader: shaderDraw,
 
-		this.wilson.render.initUniforms(["step", "startGrains", "floodGrains"], 0);
-		this.wilson.render.initUniforms(["step"], 1);
-
-		this.wilson.render.createFramebufferTexturePair();
-		this.wilson.render.createFramebufferTexturePair();
-
-		this.wilson.gl.bindTexture(
-			this.wilson.gl.TEXTURE_2D,
-			this.wilson.render.framebuffers[0].texture
-		);
-
-		this.wilson.gl.bindFramebuffer(this.wilson.gl.FRAMEBUFFER, null);
-
-
-
-		const fragShaderSourceUpscale = /* glsl */`
-			precision highp float;
-			precision highp sampler2D;
-			
-			varying vec2 uv;
-			
-			uniform sampler2D uTexture;
-			
-			void main(void)
-			{
-				gl_FragColor = texture2D(uTexture, (uv + vec2(1.0, 1.0)) / 2.0);
-			}
-		`;
-
-		const optionsUpscale =
-		{
-			renderer: "gpu",
-
-			shader: fragShaderSourceUpscale,
+			uniforms: {
+				color1: [0, 0, 0],
+				color2: [0, 0, 0],
+				color3: [0, 0, 0],
+			},
 
 			canvasWidth: this.resolution,
-			canvasHeight: this.resolution,
 
-
-
-			useFullscreen: true,
-
-			useFullscreenButton: true,
-
-			enterFullscreenButtonIconPath: "/graphics/general-icons/enter-fullscreen.png",
-			exitFullscreenButtonIconPath: "/graphics/general-icons/exit-fullscreen.png"
+			fullscreenOptions: {
+				useFullscreenButton: true,
+				enterFullscreenButtonIconPath: "/graphics/general-icons/enter-fullscreen.png",
+				exitFullscreenButtonIconPath: "/graphics/general-icons/exit-fullscreen.png",
+			},
 		};
 
-		this.wilsonUpscale = new Wilson(canvas, optionsUpscale);
-		this.wilsonForFullscreen = this.wilsonUpscale;
-
-		this.wilsonUpscale.render.createFramebufferTexturePair(this.wilsonUpscale.gl.UNSIGNED_BYTE);
-
+		this.wilson = new WilsonGPU(canvas, options);
+		this.canvas.style.imageRendering = "pixelated";
 	}
 
 
@@ -284,108 +264,94 @@ export class AbelianSandpile extends AnimationFrameApplet
 		resolution = 100,
 		numGrains = 10000,
 		floodGrains = 0,
-		computationsPerFrame = 25
+		computationsPerFrame = 25,
+		palette = [[229, 190, 237], [149, 147, 217], [124, 144, 219]],
 	}) {
-		this.resolution = resolution;
+		this.resolution = resolution + 1 - (resolution % 2);
+		this.resolutionUpdate = Math.ceil(this.resolution / 2);
 		this.numGrains = numGrains;
 		this.floodGrains = floodGrains;
 		this.computationsPerFrame = computationsPerFrame;
 
-		const grains4 = (this.numGrains % 256) / 256;
-		const grains3 = (Math.floor(this.numGrains / 256) % 256) / 256;
-		const grains2 = (Math.floor(this.numGrains / (256 * 256)) % 256) / 256;
-		const grains1 = (Math.floor(this.numGrains / (256 * 256 * 256)) % 256) / 256;
+		const grains = [
+			(Math.floor(this.numGrains / (256 * 256 * 256)) % 256) / 255,
+			(Math.floor(this.numGrains / (256 * 256)) % 256) / 255,
+			(Math.floor(this.numGrains / 256) % 256) / 255,
+			(this.numGrains % 256) / 255
+		];
 
-		this.wilson.gl.useProgram(this.wilson.render.shaderPrograms[0]);
-		this.wilson.gl.uniform1f(this.wilson.uniforms.step[0], 1 / this.resolution);
-		
-		this.wilson.gl.uniform4f(
-			this.wilson.uniforms.startGrains[0],
-			grains1,
-			grains2,
-			grains3,
-			grains4
-		);
+		this.wilsonUpdate.setUniforms({
+			stepSize: 1 / this.resolutionUpdate,
+			startGrains: grains,
+			floodGrains: [0, 0, 0, this.floodGrains / 255]
+		}, "init");
 
-		this.wilson.gl.uniform4fv(
-			this.wilson.uniforms.floodGrains[0],
-			[0, 0, 0, this.floodGrains / 256]
-		);
+		this.wilsonUpdate.setUniforms({
+			stepSize: 1 / this.resolutionUpdate
+		}, "update");
 
-		this.wilson.gl.useProgram(this.wilson.render.shaderPrograms[1]);
-		this.wilson.gl.uniform1f(this.wilson.uniforms.step[1], 1 / this.resolution);
+		this.wilsonUpdate.resizeCanvas({ width: this.resolutionUpdate });
 
+		this.wilson.setUniforms({
+			color1: [
+				palette[0][0] / 255,
+				palette[0][1] / 255,
+				palette[0][2] / 255
+			],
+			color2: [
+				palette[1][0] / 255,
+				palette[1][1] / 255,
+				palette[1][2] / 255
+			],
+			color3: [
+				palette[2][0] / 255,
+				palette[2][1] / 255,
+				palette[2][2] / 255
+			]
+		});
 
+		this.wilson.resizeCanvas({ width: this.resolution });
 
-		this.wilson.changeCanvasSize(this.resolution, this.resolution);
+		this.wilson.createFramebufferTexturePair({
+			id: "output",
+			width: this.resolutionUpdate,
+			height: this.resolutionUpdate,
+			textureType: "unsignedByte"
+		});
 
-		this.wilson.gl.bindTexture(
-			this.wilson.gl.TEXTURE_2D,
-			this.wilson.render.framebuffers[0].texture
-		);
-
-		this.wilson.gl.texImage2D(
-			this.wilson.gl.TEXTURE_2D,
-			0,
-			this.wilson.gl.RGBA,
-			this.wilson.canvasWidth,
-			this.wilson.canvasHeight,
-			0,
-			this.wilson.gl.RGBA,
-			this.wilson.gl.FLOAT,
-			null
-		);
-
-		this.wilson.gl.bindTexture(
-			this.wilson.gl.TEXTURE_2D,
-			this.wilson.render.framebuffers[1].texture
-		);
-
-		this.wilson.gl.texImage2D(
-			this.wilson.gl.TEXTURE_2D,
-			0,
-			this.wilson.gl.RGBA,
-			this.wilson.canvasWidth,
-			this.wilson.canvasHeight,
-			0,
-			this.wilson.gl.RGBA,
-			this.wilson.gl.FLOAT,
-			null
-		);
+		this.wilson.useFramebuffer(null);
 
 
 
-		const outputResolution = Math.min(4000,
-			Math.max(
-				this.resolution,
-				Math.min(window.innerWidth, window.innerHeight)
-			)
-		);
+		this.wilsonUpdate.createFramebufferTexturePair({
+			id: "0",
+			textureType: "unsignedByte"
+		});
 
-		this.wilsonUpscale.gl.bindTexture(
-			this.wilsonUpscale.gl.TEXTURE_2D,
-			this.wilsonUpscale.render.framebuffers[0].texture
-		);
+		this.wilsonUpdate.createFramebufferTexturePair({
+			id: "1",
+			textureType: "unsignedByte"
+		});
 
-		this.wilsonUpscale.changeCanvasSize(outputResolution, outputResolution);
+		this.wilsonUpdate.useTexture("0");
+		this.wilsonUpdate.useFramebuffer(null);
 
+		this.wilsonUpdate.useShader("update");
+		this.wilsonUpdate.setTexture({
+			id: "0",
+			data: null
+		});
+		this.wilsonUpdate.setTexture({
+			id: "1",
+			data: null
+		});
 
+		this.wilsonUpdate.useShader("init");
+		this.wilsonUpdate.useTexture("1");
+		this.wilsonUpdate.useFramebuffer("0");
+		this.wilsonUpdate.drawFrame();
 
-		this.wilson.gl.useProgram(this.wilson.render.shaderPrograms[0]);
-
-		this.wilson.gl.bindTexture(
-			this.wilson.gl.TEXTURE_2D,
-			this.wilson.render.framebuffers[0].texture
-		);
-
-		this.wilson.gl.bindFramebuffer(
-			this.wilson.gl.FRAMEBUFFER,
-			this.wilson.render.framebuffers[0].framebuffer
-		);
-
-		this.wilson.render.drawFrame();
-
-
+		this.wilsonUpdate.useTexture("0");
 
 		this.resume();
 	}
@@ -394,52 +360,30 @@ export class AbelianSandpile extends AnimationFrameApplet
 
 	drawFrame()
 	{
-		// this.wilson.gl.viewport(0, 0, this.resolution, this.resolution);
+		this.wilsonUpdate.useShader("update");
 
 		for (let i = 0; i < this.computationsPerFrame; i++)
 		{
-			this.wilson.gl.useProgram(this.wilson.render.shaderPrograms[1]);
+			this.wilsonUpdate.useFramebuffer("1");
+			this.wilsonUpdate.drawFrame();
 
-			this.wilson.gl.bindFramebuffer(
-				this.wilson.gl.FRAMEBUFFER,
-				this.wilson.render.framebuffers[1].framebuffer
-			);
+			this.wilsonUpdate.useTexture("1");
+			this.wilsonUpdate.useFramebuffer("0");
+			this.wilsonUpdate.drawFrame();
 
-			this.wilson.render.drawFrame();
-
-
-
-			this.wilson.gl.bindTexture(
-				this.wilson.gl.TEXTURE_2D,
-				this.wilson.render.framebuffers[1].texture
-			);
-
-			this.wilson.gl.bindFramebuffer(
-				this.wilson.gl.FRAMEBUFFER,
-				this.wilson.render.framebuffers[0].framebuffer
-			);
-
-			this.wilson.render.drawFrame();
-
-
-
-			this.wilson.gl.bindTexture(
-				this.wilson.gl.TEXTURE_2D,
-				this.wilson.render.framebuffers[0].texture
-			);
+			this.wilsonUpdate.useTexture("0");
 		}
 
+		const pixelData = this.wilsonUpdate.readPixels();
+
+		this.wilson.setTexture({
+			id: "output",
+			data: pixelData
+		});
+
+		this.wilson.drawFrame();
 
 
-		this.wilson.gl.useProgram(this.wilson.render.shaderPrograms[2]);
-
-		this.wilson.gl.bindFramebuffer(this.wilson.gl.FRAMEBUFFER, null);
-
-		this.wilson.render.drawFrame();
-
-
-
-		const pixelData = this.wilson.render.getPixelData();
 
 		if (this.lastPixelData)
 		{
@@ -462,22 +406,6 @@ export class AbelianSandpile extends AnimationFrameApplet
 		}
 
 		this.lastPixelData = pixelData;
-
-		this.wilsonUpscale.gl.texImage2D(
-			this.wilsonUpscale.gl.TEXTURE_2D,
-			0,
-			this.wilsonUpscale.gl.RGBA,
-			this.wilson.canvasWidth,
-			this.wilson.canvasHeight,
-			0,
-			this.wilsonUpscale.gl.RGBA,
-			this.wilsonUpscale.gl.UNSIGNED_BYTE,
-			pixelData
-		);
-
-		this.wilsonUpscale.gl.bindFramebuffer(this.wilsonUpscale.gl.FRAMEBUFFER, null);
-
-		this.wilsonUpscale.render.drawFrame();
 
 		this.needNewFrame = true;
 	}

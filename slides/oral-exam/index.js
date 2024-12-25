@@ -24,7 +24,7 @@ export const applet = new PlanePartitions({
 
 export const canvasBundle = document.body.querySelector("#canvas-bundle");
 
-document.body.querySelectorAll(".wilson-draggables-container")
+document.body.querySelectorAll(".WILSON_draggables-container")
 	.forEach(element => element.classList.add("lapsa-interactable"));
 
 

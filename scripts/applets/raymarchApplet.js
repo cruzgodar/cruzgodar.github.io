@@ -1,36 +1,12 @@
 import anime from "../anime.js";
-import { doubleEncodingGlsl, loadGlsl } from "../src/complexGlsl.js";
-import { addTemporaryListener } from "../src/main.js";
-import { Wilson } from "../wilson.js";
+import { doubleEncodingGlsl } from "../src/complexGlsl.js";
+import { WilsonGPU } from "../wilson.js";
 import { AnimationFrameApplet } from "./animationFrameApplet.js";
 import {
-	getEqualPixelFullScreen,
 	getFloatGlsl,
-	getVectorGlsl
+	getVectorGlsl,
+	tempShader
 } from "./applet.js";
-
-const setUniformFunctions = {
-	int: (gl, location, value) => gl.uniform1i(location, value),
-	float: (gl, location, value) => gl.uniform1f(location, value),
-	vec2: (gl, location, value) => gl.uniform2fv(location, value),
-	vec3: (gl, location, value) => gl.uniform3fv(location, value),
-	vec4: (gl, location, value) => gl.uniform4fv(location, value),
-	mat2: (gl, location, value) => gl.uniformMatrix2fv(location, false, [
-		value[0][0], value[1][0],
-		value[0][1], value[1][1]
-	]),
-	mat3: (gl, location, value) => gl.uniformMatrix3fv(location, false, [
-		value[0][0], value[1][0], value[2][0],
-		value[0][1], value[1][1], value[2][1],
-		value[0][2], value[1][2], value[2][2]
-	]),
-	mat4: (gl, location, value) => gl.uniformMatrix4fv(location, false, [
-		value[0][0], value[1][0], value[2][0], value[3][0],
-		value[0][1], value[1][1], value[2][1], value[3][1],
-		value[0][2], value[1][2], value[2][2], value[3][2],
-		value[0][3], value[1][3], value[2][3], value[3][3]
-	]),
-};
 
 export const edgeDetectShader = /* glsl */`
 	precision highp float;
@@ -82,21 +58,20 @@ export class RaymarchApplet extends AnimationFrameApplet
 
 	theta = 0;
 	phi = 0;
+	worldSize = 2.5;
 
-	imageSize = 500;
-	imageWidth = 500;
-	imageHeight = 500;
+	resolution = 500;
 
 	maxMarches;
 	maxShadowMarches;
 	maxReflectionMarches;
 	clipDistance;
 
-	imagePlaneCenterPos = [];
+	imagePlaneCenterPos = [0, 0, 0];
 
-	forwardVec = [];
-	rightVec = [];
-	upVec = [];
+	forwardVec = [0, 0, 0];
+	rightVec = [0, 0, 0];
+	upVec = [0, 0, 0];
 
 	// This controls the amount of fish-eye and is a delicate balance.
 	// Changing it also requires upating the camera position.
@@ -128,11 +103,12 @@ export class RaymarchApplet extends AnimationFrameApplet
 	speedFactor = 2;
 	fovFactor = 1;
 
-	lockedOnOrigin = false;
+	lockedOnOrigin;
 	distanceFromOrigin = 1;
 
 	distanceEstimatorGlsl;
 	getColorGlsl;
+	uniformsGlsl;
 	getReflectivityGlsl;
 	getGeodesicGlsl;
 	addGlsl;
@@ -147,6 +123,7 @@ export class RaymarchApplet extends AnimationFrameApplet
 
 		distanceEstimatorGlsl,
 		getColorGlsl,
+		uniformsGlsl = "",
 		getReflectivityGlsl = "return 0.2;",
 		getGeodesicGlsl = (pos, dir) => `${pos} + t * ${dir}`,
 		addGlsl = "",
@@ -188,9 +165,7 @@ export class RaymarchApplet extends AnimationFrameApplet
 	}) {
 		super(canvas);
 
-		this.imageSize = resolution;
-		this.imageWidth = resolution;
-		this.imageHeight = resolution;
+		this.resolution = resolution;
 
 		this.theta = theta;
 		this.phi = phi;
@@ -206,6 +181,7 @@ export class RaymarchApplet extends AnimationFrameApplet
 		this.focalLengthFactor = focalLengthFactor;
 		this.cameraPos = cameraPos;
 		this.lockedOnOrigin = lockedOnOrigin;
+		this.worldSize = this.lockedOnOrigin ? 2.5 : 1.5;
 		this.lockZ = lockZ;
 
 		this.lightPos = lightPos;
@@ -225,19 +201,31 @@ export class RaymarchApplet extends AnimationFrameApplet
 		this.useAntialiasing = useAntialiasing;
 		this.useFor3DPrinting = useFor3DPrinting;
 
+		this.uniformsGlsl = /* glsl */`
+			uniform vec2 aspectRatio;
+			uniform float resolution;
+			uniform vec3 cameraPos;
+			uniform vec3 imagePlaneCenterPos;
+			uniform vec3 rightVec;
+			uniform vec3 upVec;
+			uniform float epsilonScaling;
+			uniform float minEpsilon;
+			uniform vec2 uvCenter;
+			uniform float uvScale;
+			${uniformsGlsl}
+		`;
+
 		this.uniforms = {
-			aspectRatioX: ["float", Math.max(this.imageWidth / this.imageHeight, 1)],
-			aspectRatioY: ["float", Math.min(this.imageWidth / this.imageHeight, 1)],
-			imageSize: ["int", this.imageSize],
-			cameraPos: ["vec3", this.cameraPos],
-			imagePlaneCenterPos: ["vec3", this.imagePlaneCenterPos],
-			forwardVec: ["vec3", this.forwardVec],
-			rightVec: ["vec3", this.rightVec],
-			upVec: ["vec3", this.upVec],
-			epsilonScaling: ["float", this.epsilonScaling],
-			minEpsilon: ["float", this.minEpsilon],
-			uvCenter: ["vec2", [0, 0]],
-			uvScale: ["float", 1],
+			aspectRatio: [1, 1],
+			resolution: this.resolution,
+			cameraPos: this.cameraPos,
+			imagePlaneCenterPos: this.imagePlaneCenterPos,
+			rightVec: this.rightVec,
+			upVec: this.upVec,
+			epsilonScaling: this.epsilonScaling,
+			minEpsilon: this.minEpsilon,
+			uvCenter: [0, 0],
+			uvScale: 1,
 			...uniforms
 		};
 		
@@ -248,13 +236,8 @@ export class RaymarchApplet extends AnimationFrameApplet
 				if (key === "z")
 				{
 					const dummy = { t: 0 };
-					const oldFovFactor = this.fovFactor;
-					const newFovFactor = pressed ? 4 : 1;
-
-					const oldEpsilonScaling = this.uniforms.epsilonScaling[1];
-					const newEpsilonScaling = pressed
-						? this.uniforms.epsilonScaling[1] * 4
-						: this.uniforms.epsilonScaling[1] / 4;
+					const oldFactor = pressed ? 1 : 4;
+					const newFactor = pressed ? 4 : 1;
 
 					anime({
 						targets: dummy,
@@ -263,14 +246,13 @@ export class RaymarchApplet extends AnimationFrameApplet
 						easing: "easeOutCubic",
 						update: () =>
 						{
-							this.fovFactor = (1 - dummy.t) * oldFovFactor
-								+ dummy.t * newFovFactor;
+							this.fovFactor = (1 - dummy.t) * oldFactor
+								+ dummy.t * newFactor;
 
-							this.setUniform(
-								"epsilonScaling",
-								(1 - dummy.t) * oldEpsilonScaling
-									+ dummy.t * newEpsilonScaling
-							);
+							this.setUniforms({
+								epsilonScaling: this.epsilonScaling *
+									((1 - dummy.t) * oldFactor + dummy.t * newFactor)
+							});
 
 							this.needNewFrame = true;
 						}
@@ -281,17 +263,7 @@ export class RaymarchApplet extends AnimationFrameApplet
 
 		this.distanceFromOrigin = magnitude(this.cameraPos);
 
-		const refreshId = setInterval(() =>
-		{
-			if (this?.wilson?.draggables?.container)
-			{
-				this.listenForNumTouches();
-
-				clearInterval(refreshId);
-			}
-		}, 100);
-
-		const fragShaderSource = shader ?? this.createShader({
+		const useableShader = shader ?? this.createShader({
 			distanceEstimatorGlsl,
 			getColorGlsl,
 			getReflectivityGlsl,
@@ -301,58 +273,68 @@ export class RaymarchApplet extends AnimationFrameApplet
 
 		const options =
 		{
-			renderer: "gpu",
+			shader: tempShader,
 
-			shader: fragShaderSource,
+			canvasWidth: this.resolution,
 
-			canvasWidth: this.imageWidth,
-			canvasHeight: this.imageHeight,
+			// This lets us use the world size as an aspect ratio.
+			worldWidth: this.worldSize,
+			worldHeight: this.worldSize,
 
-			worldCenterX: -this.theta,
-			worldCenterY: -this.phi,
-		
+			worldCenterX: this.lockedOnOrigin
+				? this.theta
+				: 2 * Math.PI - this.theta,
 
+			worldCenterY: this.lockedOnOrigin
+				? this.phi
+				: Math.PI - this.phi,
 
-			useFullscreen: true,
+			minWorldY: 0.001 - this.worldSize / 2,
+			maxWorldY: Math.PI - 0.001 + this.worldSize / 2,
 
-			trueFullscreen: true,
+			onResizeCanvas: this.onResizeCanvas.bind(this),
 
-			useFullscreenButton: true,
+			interactionOptions: {
+				useForPanAndZoom: true,
+				disallowZooming: true,
+				onPanAndZoom: () =>
+				{
+					this.calculateVectors();
+					this.needNewFrame = true;
+				},
+				callbacks: {
+					touchstart: this.onTouchStart.bind(this),
+					touchend: this.onTouchEnd.bind(this),
+				}
+			},
 
-			enterFullscreenButtonIconPath: "/graphics/general-icons/enter-fullscreen.png",
-			exitFullscreenButtonIconPath: "/graphics/general-icons/exit-fullscreen.png",
-
-			switchFullscreenCallback: this.changeResolution.bind(this),
-
-
-
-			mousedownCallback: this.onGrabCanvas.bind(this),
-			touchstartCallback: this.onGrabCanvas.bind(this),
-
-			mousedragCallback: this.onDragCanvas.bind(this),
-			touchmoveCallback: this.onDragCanvas.bind(this),
-
-			mouseupCallback: this.onReleaseCanvas.bind(this),
-			touchendCallback: this.onReleaseCanvas.bind(this)
+			fullscreenOptions: {
+				fillScreen: true,
+				useFullscreenButton: true,
+				enterFullscreenButtonIconPath: "/graphics/general-icons/enter-fullscreen.png",
+				exitFullscreenButtonIconPath: "/graphics/general-icons/exit-fullscreen.png",
+			}
 		};
 
-		this.wilson = new Wilson(canvas, options);
+		this.wilson = new WilsonGPU(canvas, options);
 
-		
-
-		this.initUniforms(0);
+		this.wilson.loadShader({
+			id: "draw",
+			source: useableShader,
+			uniforms: this.uniforms
+		});
 
 		if (this.useAntialiasing)
 		{
-			this.wilson.render.loadNewShader(edgeDetectShader);
+			this.wilson.loadShader({
+				id: "edgeDetect",
+				source: edgeDetectShader,
+				uniforms: {
+					stepSize: 1 / this.resolution
+				}
+			});
 
-			this.wilson.render.initUniforms([
-				"stepSize",
-			], 1);
-
-
-
-			const aaShaderSource = shader ?? this.createShader({
+			const aaShader = shader ?? this.createShader({
 				distanceEstimatorGlsl,
 				getColorGlsl,
 				getReflectivityGlsl,
@@ -361,15 +343,16 @@ export class RaymarchApplet extends AnimationFrameApplet
 				antialiasing: !addGlsl.includes("sampler2D")
 			});
 
-			this.wilson.render.loadNewShader(aaShaderSource);
+			this.wilson.loadShader({
+				id: "antialias",
+				source: aaShader,
+				uniforms: {
+					...this.uniforms,
+					stepSize: 2 / (this.resolution * 3)
+				}
+			});
 
-			this.wilson.render.initUniforms([
-				"stepSize",
-			], 2);
-
-			this.initUniforms(2);
-
-
+			this.wilson.useShader("draw");
 
 			this.createTextures();
 		}
@@ -381,25 +364,9 @@ export class RaymarchApplet extends AnimationFrameApplet
 			this.make3DPrintable();
 		}
 
-
-
-		const boundFunction = () => this.changeResolution();
-		addTemporaryListener({
-			object: window,
-			event: "resize",
-			callback: boundFunction
-		});
+		this.needNewFrame = true;
 
 		this.resume();
-	}
-
-	onDragCanvas(x, y, xDelta, yDelta)
-	{
-		const sign = this.lockedOnOrigin ? -1 : 1;
-		const aspectRatioX = Math.max(this.imageWidth / this.imageHeight, 1);
-		const aspectRatioY = Math.min(this.imageWidth / this.imageHeight, 1);
-
-		this.pan.onDragCanvas(x, y, sign * xDelta * aspectRatioX, sign * yDelta / aspectRatioY);
 	}
 
 
@@ -409,19 +376,23 @@ export class RaymarchApplet extends AnimationFrameApplet
 		const preview = false;
 
 		const resolution = 1500;
-		this.setUniform("uvScale", 1.5);
-		this.setUniform("epsilonScaling", 0.0015);
+		this.setUniforms({
+			uvScale: 1.5,
+			uvCenter: [-0.5, 0],
+			epsilonScaling: 0.0015,
+		});
 
-		this.changeResolution(resolution);
+		this.wilson.changeResolution({ width: resolution });
 
-		this.setUniform("uvCenter", [-0.5, 0]);
 		this.drawFrame();
 
 		await new Promise(resolve => setTimeout(resolve, 500));
 
 		for (let i = 1; i <= resolution; i++)
 		{
-			this.setUniform("uvCenter", [i / resolution - 0.5, 0]);
+			this.setUniforms({
+				uvCenter: [i / resolution - 0.5, 0],
+			});
 			this.drawFrame();
 			!preview && this.wilson.downloadFrame(i.toString().padStart(4, "0"), false);
 			await new Promise(resolve => setTimeout(resolve, preview ? 0 : 150));
@@ -471,7 +442,7 @@ export class RaymarchApplet extends AnimationFrameApplet
 
 					lastDistanceToScene = distanceToScene;
 
-					float epsilon = max(t / (float(imageSize) * epsilonScaling), minEpsilon);
+					float epsilon = max(t / (resolution * epsilonScaling), minEpsilon);
 
 					if (t > clipDistance || length(pos - lightPos) < 0.2)
 					{
@@ -501,7 +472,7 @@ export class RaymarchApplet extends AnimationFrameApplet
 					
 					float distanceToScene = distanceEstimator(pos);
 
-					float epsilon = max(t / (float(imageSize) * epsilonScaling), minEpsilon);
+					float epsilon = max(t / (resolution * epsilonScaling), minEpsilon);
 
 					if (t > clipDistance)
 					{
@@ -569,7 +540,7 @@ export class RaymarchApplet extends AnimationFrameApplet
 					
 					float distanceToScene = distanceEstimator(pos);
 
-					float epsilon = max(t / (float(imageSize) * epsilonScaling), minEpsilon);
+					float epsilon = max(t / (resolution * epsilonScaling), minEpsilon);
 
 					if (distanceToScene < epsilon)
 					{
@@ -667,11 +638,6 @@ export class RaymarchApplet extends AnimationFrameApplet
 				}
 			`;
 
-		const uniformsGlsl = Object.entries(this.uniforms).map(([key, value]) =>
-		{
-			return /* glsl */`uniform ${value[0]} ${key};`;
-		}).join("\n");
-
 
 
 		const raymarchGlsl = (() =>
@@ -691,7 +657,7 @@ export class RaymarchApplet extends AnimationFrameApplet
 							
 							float distanceToScene = distanceEstimator(pos);
 
-							float epsilon = max(t / (float(imageSize) * epsilonScaling), minEpsilon);
+							float epsilon = max(t / (resolution * epsilonScaling), minEpsilon);
 							
 							if (distanceToScene < epsilon)
 							{
@@ -733,7 +699,7 @@ export class RaymarchApplet extends AnimationFrameApplet
 							
 							float distanceToScene = distanceEstimator(pos);
 
-							float epsilon = max(t / (float(imageSize) * epsilonScaling), minEpsilon);
+							float epsilon = max(t / (resolution * epsilonScaling), minEpsilon);
 							
 							if (distanceToScene < epsilon)
 							{
@@ -771,7 +737,7 @@ export class RaymarchApplet extends AnimationFrameApplet
 						
 						float distanceToScene = distanceEstimator(pos);
 
-						float epsilon = max(t / (float(imageSize) * epsilonScaling), minEpsilon);
+						float epsilon = max(t / (resolution * epsilonScaling), minEpsilon);
 						
 						if (distanceToScene < epsilon)
 						{
@@ -806,9 +772,9 @@ export class RaymarchApplet extends AnimationFrameApplet
 					void main(void)
 					{
 						raymarch(
-							imagePlaneCenterPos
-								+ rightVec * (uvScale * uv.x + uvCenter.x) * aspectRatioX
-								+ upVec * (uvScale * uv.y + uvCenter.y) / aspectRatioY
+							imagePlaneCenterPos)
+								+ rightVec * (uvScale * uv.x + uvCenter.x) * aspectRatio.x
+								+ upVec * (uvScale * uv.y + uvCenter.y) * aspectRatio.y
 						);
 					}
 				`;
@@ -836,8 +802,8 @@ export class RaymarchApplet extends AnimationFrameApplet
 					{
 						return raymarch(
 							imagePlaneCenterPos
-								+ rightVec * (uvScale * (uv.x + uvAdjust.x) + uvCenter.x) * aspectRatioX
-								+ upVec * (uvScale * (uv.y + uvAdjust.y) + uvCenter.y) / aspectRatioY
+								+ rightVec * (uvScale * (uv.x + uvAdjust.x) + uvCenter.x) * aspectRatio.x
+								+ upVec * (uvScale * (uv.y + uvAdjust.y) + uvCenter.y) * aspectRatio.y
 						);
 					}
 					
@@ -870,8 +836,8 @@ export class RaymarchApplet extends AnimationFrameApplet
 				{
 					vec3 finalColor = raymarch(
 						imagePlaneCenterPos
-							+ rightVec * (uvScale * uv.x + uvCenter.x) * aspectRatioX
-							+ upVec * (uvScale * uv.y + uvCenter.y) / aspectRatioY
+							+ rightVec * (uvScale * uv.x + uvCenter.x) * aspectRatio.x
+							+ upVec * (uvScale * uv.y + uvCenter.y) * aspectRatio.y
 					);
 
 					gl_FragColor = vec4(finalColor.xyz, 1.0);
@@ -884,7 +850,7 @@ export class RaymarchApplet extends AnimationFrameApplet
 			
 			varying vec2 uv;
 
-			${uniformsGlsl}
+			${this.uniformsGlsl}
 
 			${antialiasing ? /* glsl */`
 				uniform sampler2D uTexture;
@@ -962,43 +928,6 @@ export class RaymarchApplet extends AnimationFrameApplet
 
 
 
-	initUniforms(programIndex)
-	{
-		const uniformList = [
-			"aspectRatioX",
-			"aspectRatioY",
-			"imageSize",
-			"cameraPos",
-			"imagePlaneCenterPos",
-			"forwardVec",
-			"rightVec",
-			"upVec",
-			"epsilonScaling",
-			"minEpsilon",
-			"uvCenter",
-			"uvScale",
-			...Object.keys(this.uniforms),
-		];
-
-		this.wilson.render.initUniforms(uniformList, programIndex);
-
-		this.wilson.gl.useProgram(this.wilson.render.shaderPrograms[programIndex]);
-
-		for (const key in this.uniforms)
-		{
-			const value = this.uniforms[key];
-			if (value[0].slice(0, 3) === "vec" && value[1].length === 0)
-			{
-				continue;
-			}
-			
-			const uniformFunction = setUniformFunctions[value[0]];
-			uniformFunction(this.wilson.gl, this.wilson.uniforms[key][programIndex], value[1]);
-		}
-	}
-
-
-
 	reloadShader({
 		distanceEstimatorGlsl,
 		getColorGlsl,
@@ -1009,32 +938,31 @@ export class RaymarchApplet extends AnimationFrameApplet
 	} = {}) {
 		this.useAntialiasing = useAntialiasing;
 
-		this.calculateVectors();
-
-		this.wilson.render.shaderPrograms = [];
-		this.wilson.render.loadNewShader(this.createShader({
-			distanceEstimatorGlsl,
-			getColorGlsl,
-			getReflectivityGlsl,
-			addGlsl,
-			useForDepthBuffer,
-		}));
-
-		this.initUniforms(0);
+		this.wilson.loadShader({
+			id: "draw",
+			source: this.createShader({
+				distanceEstimatorGlsl,
+				getColorGlsl,
+				getReflectivityGlsl,
+				addGlsl,
+				useForDepthBuffer,
+			}),
+			uniforms: this.uniforms,
+		});
 
 		
 
 		if (this.useAntialiasing)
 		{
-			this.wilson.render.loadNewShader(edgeDetectShader);
+			this.wilson.loadShader({
+				id: "edgeDetect",
+				source: edgeDetectShader,
+				uniforms: {
+					stepSize: 1 / this.resolution
+				}
+			});
 
-			this.wilson.render.initUniforms([
-				"stepSize",
-			], 1);
-
-
-
-			const aaShaderSource = this.createShader({
+			const aaShader = this.createShader({
 				distanceEstimatorGlsl,
 				getColorGlsl,
 				getReflectivityGlsl,
@@ -1043,20 +971,19 @@ export class RaymarchApplet extends AnimationFrameApplet
 				antialiasing: true
 			});
 
-			this.wilson.render.loadNewShader(aaShaderSource);
-
-			this.initUniforms(2);
-
-			this.wilson.render.initUniforms([
-				"stepSize",
-			], 2);
-
-
+			this.wilson.loadShader({
+				id: "antialias",
+				source: aaShader,
+				uniforms: {
+					...this.uniforms,
+					stepSize: 2 / (this.resolution * 3)
+				}
+			});
 
 			this.createTextures();
-
-			this.wilson.gl.useProgram(this.wilson.render.shaderPrograms[0]);
 		}
+
+		this.calculateVectors();
 
 		this.needNewFrame = true;
 	}
@@ -1065,35 +992,41 @@ export class RaymarchApplet extends AnimationFrameApplet
 
 	createTextures()
 	{
-		this.wilson.render.framebuffers = [];
+		this.wilson.createFramebufferTexturePair({
+			id: "0",
+			textureType: "float"
+		});
+		this.wilson.createFramebufferTexturePair({
+			id: "1",
+			textureType: "float"
+		});
+		
+		this.wilson.useFramebuffer(null);
+		this.wilson.useTexture("0");
 
-		this.wilson.render.createFramebufferTexturePair();
-		this.wilson.render.createFramebufferTexturePair();
+		this.wilson.setUniforms({ stepSize: 1 / this.resolution }, "edgeDetect");
+		this.wilson.setUniforms({ stepSize: 2 / (this.resolution * 3) }, "antialias");
 
-		this.wilson.gl.bindTexture(
-			this.wilson.gl.TEXTURE_2D,
-			this.wilson.render.framebuffers[0].texture
-		);
-
-		this.wilson.gl.bindFramebuffer(this.wilson.gl.FRAMEBUFFER, null);
-
-
-
-		this.wilson.gl.useProgram(this.wilson.render.shaderPrograms[1]);
-
-		this.wilson.gl.uniform1f(this.wilson.uniforms.stepSize[1], 1 / this.imageSize);
-
-
-
-		this.wilson.gl.useProgram(this.wilson.render.shaderPrograms[2]);
-
-		this.wilson.gl.uniform1f(this.wilson.uniforms.stepSize[2], 2 / (this.imageSize * 3));
+		this.wilson.useShader("draw");
+	}
 
 
 
-		// Here and throughout, we need to end with this so that uniform
-		// calls reference the right program.
-		this.wilson.gl.useProgram(this.wilson.render.shaderPrograms[0]);
+	setUniforms(uniforms)
+	{
+		this.uniforms = {
+			...this.uniforms,
+			...uniforms
+		};
+
+		this.wilson.setUniforms(uniforms, "draw");
+
+		if (this.useAntialiasing)
+		{
+			this.wilson.setUniforms(uniforms, "antialias");
+		}
+
+		this.needNewFrame = true;
 	}
 
 
@@ -1127,8 +1060,6 @@ export class RaymarchApplet extends AnimationFrameApplet
 			);
 		}
 
-		
-
 		this.speedFactor = Math.min(
 			this.distanceEstimator(
 				this.cameraPos[0],
@@ -1143,12 +1074,12 @@ export class RaymarchApplet extends AnimationFrameApplet
 		this.forwardVec[1] *= this.speedFactor / 1.5;
 		this.forwardVec[2] *= this.speedFactor / 1.5;
 
-		this.rightVec[0] *= this.speedFactor / (this.fovFactor);
-		this.rightVec[1] *= this.speedFactor / (this.fovFactor);
+		this.rightVec[0] *= this.speedFactor / this.fovFactor;
+		this.rightVec[1] *= this.speedFactor / this.fovFactor;
 
-		this.upVec[0] *= this.speedFactor / (this.fovFactor);
-		this.upVec[1] *= this.speedFactor / (this.fovFactor);
-		this.upVec[2] *= this.speedFactor / (this.fovFactor);
+		this.upVec[0] *= this.speedFactor / this.fovFactor;
+		this.upVec[1] *= this.speedFactor / this.fovFactor;
+		this.upVec[2] *= this.speedFactor / this.fovFactor;
 
 		this.imagePlaneCenterPos = [
 			this.cameraPos[0] + this.forwardVec[0] * this.focalLengthFactor,
@@ -1156,11 +1087,14 @@ export class RaymarchApplet extends AnimationFrameApplet
 			this.cameraPos[2] + this.forwardVec[2] * this.focalLengthFactor
 		];
 
-		this.setUniform("cameraPos", this.cameraPos);
-		this.setUniform("imagePlaneCenterPos", this.imagePlaneCenterPos);
-		this.setUniform("forwardVec", this.forwardVec);
-		this.setUniform("rightVec", this.rightVec);
-		this.setUniform("upVec", this.upVec);
+		this.setUniforms({
+			cameraPos: this.cameraPos,
+			imagePlaneCenterPos: this.imagePlaneCenterPos,
+			rightVec: this.rightVec,
+			upVec: this.upVec,
+		});
+
+		this.needNewFrame = false;
 	}
 
 	distanceEstimator()
@@ -1170,83 +1104,43 @@ export class RaymarchApplet extends AnimationFrameApplet
 
 	prepareFrame(timeElapsed)
 	{
-		this.pan.update(timeElapsed);
-		this.zoom.update(timeElapsed);
+		this.touchDelay = Math.max(0, this.touchDelay - timeElapsed);
+
 		this.moveUpdate(timeElapsed);
 	}
 
 	drawFrame()
 	{
-		this.wilson.worldCenterY = Math.min(
-			Math.max(
-				this.wilson.worldCenterY,
-				-Math.PI + .01
-			),
-			-.01
-		);
-
-		if (this.wilson.worldCenterX < -Math.PI)
-		{
-			this.wilson.worldCenterX += 2 * Math.PI;
-		}
-
-		else if (this.wilson.worldCenterX > Math.PI)
-		{
-			this.wilson.worldCenterX -= 2 * Math.PI;
-		}
-		
-		this.theta = -this.wilson.worldCenterX;
-		this.phi = -this.wilson.worldCenterY;
+		this.theta = this.lockedOnOrigin
+			? this.wilson.worldCenterX
+			: 2 * Math.PI - this.wilson.worldCenterX;
+		this.phi = this.lockedOnOrigin
+			? this.wilson.worldCenterY
+			: Math.PI - this.wilson.worldCenterY;
 
 		this.calculateVectors();
 
 
-
 		if (this.useAntialiasing)
 		{
-			this.wilson.gl.bindFramebuffer(
-				this.wilson.gl.FRAMEBUFFER,
-				this.wilson.render.framebuffers[0].framebuffer
-			);
+			this.wilson.useFramebuffer("0");
 		}
 
-		this.wilson.render.drawFrame();
+		this.wilson.drawFrame();
 
 		if (this.useAntialiasing)
 		{
-			this.wilson.gl.useProgram(this.wilson.render.shaderPrograms[1]);
+			this.wilson.useShader("edgeDetect");
+			this.wilson.useTexture("0");
+			this.wilson.useFramebuffer("1");
+			this.wilson.drawFrame();
 
-			this.wilson.gl.bindTexture(
-				this.wilson.gl.TEXTURE_2D,
-				this.wilson.render.framebuffers[0].texture
-			);
+			this.wilson.useShader("antialias");
+			this.wilson.useTexture("1");
+			this.wilson.useFramebuffer(null);
+			this.wilson.drawFrame();
 
-			this.wilson.gl.bindFramebuffer(
-				this.wilson.gl.FRAMEBUFFER,
-				this.wilson.render.framebuffers[1].framebuffer
-			);
-
-			this.wilson.render.drawFrame();
-
-
-
-			this.wilson.gl.useProgram(this.wilson.render.shaderPrograms[2]);
-
-			this.wilson.gl.bindTexture(
-				this.wilson.gl.TEXTURE_2D,
-				this.wilson.render.framebuffers[1].texture
-			);
-
-			this.wilson.gl.bindFramebuffer(
-				this.wilson.gl.FRAMEBUFFER,
-				null
-			);
-
-			this.wilson.render.drawFrame();
-
-
-
-			this.wilson.gl.useProgram(this.wilson.render.shaderPrograms[0]);
+			this.wilson.useShader("draw");
 		}
 	}
 
@@ -1254,13 +1148,15 @@ export class RaymarchApplet extends AnimationFrameApplet
 	{
 		this.drawFrame();
 		this.wilson.downloadFrame(filename, false);
-		// this.downloadMosaic(filename, 4);
+		// this.downloadMosaic(filename, 10);
 	}
 
 	async downloadMosaic(filename, size)
 	{
-		this.setUniform("uvScale", 1 / size);
-		this.setUniform("imageSize", this.imageSize * size);
+		this.setUniforms({
+			uvScale: 1 / size,
+			resolution: this.resolution * size
+		});
 
 		const centerPoints = [];
 		for (let i = 0; i < size; i++)
@@ -1276,8 +1172,8 @@ export class RaymarchApplet extends AnimationFrameApplet
 			for (let j = 0; j < size; j++)
 			{
 				canvases[i].push(document.createElement("canvas"));
-				canvases[i][j].width = this.imageWidth;
-				canvases[i][j].height = this.imageHeight;
+				canvases[i][j].width = this.resolution;
+				canvases[i][j].height = this.resolution;
 			}
 		}
 
@@ -1286,8 +1182,8 @@ export class RaymarchApplet extends AnimationFrameApplet
 		const combineCanvas = async () =>
 		{
 			const combinedCanvas = document.createElement("canvas");
-			combinedCanvas.width = this.imageWidth * size;
-			combinedCanvas.height = this.imageHeight * size;
+			combinedCanvas.width = this.resolution * size;
+			combinedCanvas.height = this.resolution * size;
 			const combinedCtx = combinedCanvas.getContext("2d", { colorSpace: "display-p3" });
 
 			for (let i = 0; i < size; i++)
@@ -1296,20 +1192,16 @@ export class RaymarchApplet extends AnimationFrameApplet
 				{
 					combinedCtx.drawImage(
 						canvases[i][j],
-						i * this.imageWidth,
-						j * this.imageHeight
+						i * this.resolution,
+						j * this.resolution
 					);
 				}
 			}
 
-			combinedCtx.translate(0, this.imageSize * size);
+			combinedCtx.translate(0, this.resolution * size);
 			combinedCtx.scale(1, -1);
 
-			combinedCtx.drawImage(
-				combinedCanvas,
-				0,
-				0
-			);
+			combinedCtx.drawImage(combinedCanvas, 0, 0);
 
 			combinedCanvas.toBlob((blob) =>
 			{
@@ -1321,9 +1213,12 @@ export class RaymarchApplet extends AnimationFrameApplet
 
 			await new Promise(resolve => setTimeout(resolve, 100));
 
-			this.setUniform("uvScale", 1);
-			this.setUniform("uvCenter", [0, 0]);
-			this.setUniform("imageSize", this.imageSize);
+			this.setUniforms({
+				uvScale: 1,
+				uvCenter: [0, 0],
+				resolution: this.resolution
+			});
+
 			this.needNewFrame = true;
 		};
 
@@ -1336,12 +1231,12 @@ export class RaymarchApplet extends AnimationFrameApplet
 		{
 			const ctx = canvases[i][j].getContext("2d", { colorSpace: "display-p3" });
 
-			this.setUniform("uvCenter", [centerPoints[i], centerPoints[j]]);
+			this.setUniforms({ uvCenter: [centerPoints[i], centerPoints[j]] });
 			this.drawFrame();
 			const imageData = new ImageData(
-				new Uint8ClampedArray(this.wilson.render.getPixelData()),
-				this.imageWidth,
-				this.imageHeight
+				new Uint8ClampedArray(this.wilson.readPixels()),
+				this.resolution,
+				this.resolution
 			);
 
 			ctx.putImageData(imageData, 0, 0);
@@ -1369,112 +1264,54 @@ export class RaymarchApplet extends AnimationFrameApplet
 		requestAnimationFrame(drawMosaicPart);
 	}
 
-	async downloadBokehFrame()
+
+	touchDelay = 0;
+	numTouches = 0;
+
+	onTouchStart({ event })
 	{
-		this.drawFrame();
-		const colors = this.wilson.render.getPixelData();
-
-		await loadGlsl();
-		this.reloadShader({
-			useForDepthBuffer: true
-		});
-
-		this.drawFrame();
-		const depths = new Float32Array(this.wilson.render.getPixelData().buffer);
-
-		const canvas = this.createHiddenCanvas();
-		const wilsonHidden = new Wilson(canvas, {
-			renderer: "cpu",
-			canvasWidth: this.imageSize,
-			canvasHeight: this.imageSize,
-		});
-		wilsonHidden.ctx.fillStyle = "rgb(0, 0, 0)";
-		wilsonHidden.ctx.fillRect(0, 0, this.imageSize, this.imageSize);
-
-		const pixelsByDepth = Array.from(depths).map((depth, i) =>
+		if (this.numTouches <= 1 && event.touches.length === 2)
 		{
-			const col = i % this.imageSize;
-			const row = this.imageSize - Math.floor(i / this.imageSize) - 1;
-
-			return [
-				depth,
-				col,
-				row,
-				colors[4 * i],
-				colors[4 * i + 1],
-				colors[4 * i + 2],
-			];
-		}).sort((a, b) => b[0] - a[0]);
-
-		const minDepth = pixelsByDepth[pixelsByDepth.length - 1][0];
-		
-		let maxDepthIndex = 0;
-		for (let i = 0; i < pixelsByDepth.length; i++)
-		{
-			if (pixelsByDepth[i][0] < this.clipDistance)
-			{
-				maxDepthIndex = i;
-				break;
-			}
-		}
-		maxDepthIndex = Math.floor(
-			maxDepthIndex
-			+ .1 * (pixelsByDepth.length - maxDepthIndex)
-		);
-		const maxDepth = pixelsByDepth[maxDepthIndex][0];
-		
-
-
-		for (const pixel of pixelsByDepth)
-		{
-			const depth = pixel[0];
-
-			if (depth === this.clipDistance)
-			{
-				continue;
-			}
-
-			const col = pixel[1];
-			const row = pixel[2];
-
-			const radius = Math.min(
-				Math.max(
-					(depth - minDepth) / (maxDepth - minDepth),
-					0,
-				),
-				1
-			) * 7 + 1;
-
-			const opacity = Math.max(1 / (radius * radius), 0.04);
-			
-			wilsonHidden.ctx.globalAlpha = opacity;
-			wilsonHidden.ctx.fillStyle = `rgb(${pixel[3]}, ${pixel[4]}, ${pixel[5]})`;
-
-			wilsonHidden.ctx.beginPath();
-			wilsonHidden.ctx.arc(col, row, radius, 0, 2 * Math.PI);
-			wilsonHidden.ctx.fill();
-
-			if (radius < 1.1)
-			{
-				wilsonHidden.ctx.fillRect(col, row, 1, 1);
-			}
+			this.numTouches = 2;
+			this.touchDelay = 100;
 		}
 
-		wilsonHidden.downloadFrame("bokeh-render.png");
+		else if (this.numTouches <= 2 && event.touches.length === 3)
+		{
+			this.numTouches = 3;
+		}
 
-		this.reloadShader({
-			useForDepthBuffer: false
-		});
-
-		this.drawFrame();
-
-		canvas.remove();
+		else
+		{
+			this.numTouches = 0;
+		}
 	}
 
-
+	onTouchEnd({ event })
+	{
+		if (event.touches.length < 2)
+		{
+			this.numTouches = 0;
+		}
+	}
 
 	moveUpdate(timeElapsed)
 	{
+		if (this.touchDelay === 0)
+		{
+			if (this.numTouches === 2)
+			{
+				this.moveVelocity[0] = 1;
+			}
+
+			else if (this.numTouches === 3)
+			{
+				this.moveVelocity[0] = -1;
+			}
+		}
+
+
+
 		if (this.keysPressed.w || this.numTouches === 2)
 		{
 			this.moveVelocity[0] = 1;
@@ -1561,25 +1398,22 @@ export class RaymarchApplet extends AnimationFrameApplet
 		}
 	}
 
-	changeResolution(resolution = this.imageSize)
+	onResizeCanvas()
 	{
-		this.imageSize = Math.max(50, resolution);
+		this.resolution = Math.sqrt(this.wilson.canvasWidth * this.wilson.canvasHeight);
 
-		this.aspectRatio = this.wilson.fullscreen.currentlyFullscreen
-			? window.innerWidth / window.innerHeight
-			: this.nonFullscreenAspectRatio;
+		this.wilson.resizeWorld({
+			minY: 0.001 - this.wilson.worldHeight / 2,
+			maxY: Math.PI - 0.001 + this.wilson.worldHeight / 2,
+		});
 
-		[this.imageWidth, this.imageHeight] = getEqualPixelFullScreen(
-			this.imageSize,
-			this.aspectRatio
-		);
-
-		this.wilson.changeCanvasSize(this.imageWidth, this.imageHeight);
-
-		this.setUniform("aspectRatioX", Math.max(this.aspectRatio, 1));
-		this.setUniform("aspectRatioY", Math.min(this.aspectRatio, 1));
-		this.setUniform("imageSize", this.imageSize);
-
+		this.setUniforms({
+			aspectRatio: [
+				this.wilson.worldWidth / this.worldSize,
+				this.wilson.worldHeight / this.worldSize
+			],
+			resolution: this.resolution
+		});
 
 		if (this.useAntialiasing)
 		{
@@ -1589,31 +1423,14 @@ export class RaymarchApplet extends AnimationFrameApplet
 		this.needNewFrame = true;
 	}
 
-
-
-	setUniform(name, value)
-	{
-		this.uniforms[name][1] = value;
-
-		const uniformFunction = setUniformFunctions[this.uniforms[name][0]];
-
-		uniformFunction(this.wilson.gl, this.wilson.uniforms[name][0], value);
-
-		if (this.useAntialiasing)
-		{
-			this.wilson.gl.useProgram(this.wilson.render.shaderPrograms[2]);
-			uniformFunction(this.wilson.gl, this.wilson.uniforms[name][2], value);
-
-			this.wilson.gl.useProgram(this.wilson.render.shaderPrograms[0]);
-		}
-	}
+	
 
 	animateUniform({
 		name,
 		value,
 		duration = 1000
 	}) {
-		const dummy = { t: this.uniforms[name][1] };
+		const dummy = { t: this.uniforms[name] };
 
 		return anime({
 			targets: dummy,
@@ -1622,7 +1439,7 @@ export class RaymarchApplet extends AnimationFrameApplet
 			easing: "easeInOutQuart",
 			update: () =>
 			{
-				this.setUniform(name, dummy.t);
+				this.setUniforms({ [name]: dummy.t });
 				this.needNewFrame = true;
 			}
 		}).finished;
@@ -1645,7 +1462,7 @@ export class RaymarchApplet extends AnimationFrameApplet
 			direction: "alternate",
 			update: () =>
 			{
-				this.setUniform(name, startValue + (endValue - startValue) * dummy.t);
+				this.setUniforms({ [name]: startValue + (endValue - startValue) * dummy.t });
 				this.needNewFrame = true;
 			}
 		});
@@ -1660,14 +1477,31 @@ export class RaymarchApplet extends AnimationFrameApplet
 			// Convert to spherical coordinates.
 			const r = magnitude(this.cameraPos);
 			const normalizedCameraPos = normalize(this.cameraPos);
-			const phi = Math.PI - Math.acos(this.cameraPos[2] / r);
-			let theta = Math.atan2(this.cameraPos[1], this.cameraPos[0]) + Math.PI;
+			const phi = Math.acos(this.cameraPos[2] / r);
+			let theta = Math.PI - Math.atan2(this.cameraPos[1], this.cameraPos[0]);
 			if (theta > Math.PI)
 			{
 				theta -= 2 * Math.PI;
 			}
+			if (theta < -Math.PI)
+			{
+				theta += 2 * Math.PI;
+			}
 
-			const dummy = { r, theta: this.theta, phi: this.phi };
+			const dummy = {
+				r,
+				theta: 2 * Math.PI - this.theta,
+				phi: Math.PI - this.phi
+			};
+
+			if (dummy.theta > Math.PI)
+			{
+				dummy.theta -= 2 * Math.PI;
+			}
+			if (dummy.theta < -Math.PI)
+			{
+				dummy.theta += 2 * Math.PI;
+			}
 
 			await anime({
 				targets: dummy,
@@ -1678,8 +1512,11 @@ export class RaymarchApplet extends AnimationFrameApplet
 				easing: "easeOutCubic",
 				update: () =>
 				{
-					this.wilson.worldCenterX = -dummy.theta;
-					this.wilson.worldCenterY = -dummy.phi;
+					this.wilson.resizeWorld({
+						centerX: dummy.theta,
+						centerY: dummy.phi,
+					});
+					
 					this.cameraPos = scaleVector(
 						dummy.r,
 						normalizedCameraPos
@@ -1691,6 +1528,16 @@ export class RaymarchApplet extends AnimationFrameApplet
 		}
 
 		this.lockedOnOrigin = value;
+		this.worldSize = this.lockedOnOrigin ? 2.5 : 1.5;
+
+		this.wilson.resizeWorld({
+			width: this.worldSize,
+			height: this.worldSize,
+			centerX: this.lockedOnOrigin ? this.theta : 2 * Math.PI - this.theta,
+			centerY: this.lockedOnOrigin ? this.phi : Math.PI - this.phi,
+			minY: 0.001 - this.worldSize / 2,
+			maxY: Math.PI - 0.001 + this.worldSize / 2,
+		});
 	}
 }
 

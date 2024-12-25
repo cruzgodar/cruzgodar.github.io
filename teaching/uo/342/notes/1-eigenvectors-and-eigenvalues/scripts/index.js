@@ -1,7 +1,7 @@
 import { BarnsleyFern } from "/applets/barnsley-fern/scripts/class.js";
-import { ThurstonGeometry } from "/applets/thurston-geometries/scripts/class.js";
+import { ThurstonGeometries } from "/applets/thurston-geometries/scripts/class.js";
 import { H3Rooms } from "/applets/thurston-geometries/scripts/geometries/h3.js";
-import { VectorField } from "/applets/vector-fields/scripts/class.js";
+import { VectorFields } from "/applets/vector-fields/scripts/class.js";
 import {
 	createDesmosGraphs,
 	desmosBlue,
@@ -48,14 +48,14 @@ export default function()
 
 	const h3GeometryCanvas = $("#h3-geometry-canvas");
 
-	const h3GeometryApplet = new ThurstonGeometry({ canvas: h3GeometryCanvas });
+	const h3GeometryApplet = new ThurstonGeometries({ canvas: h3GeometryCanvas });
 
 	const geometryData = new H3Rooms();
 	geometryData.sliderValues.wallThickness = .143;
 
 	h3GeometryApplet.run(geometryData);
 
-	h3GeometryApplet.changeResolution(1000);
+	h3GeometryApplet.wilson.resizeCanvas({ width: 1000 });
 
 
 
@@ -69,17 +69,14 @@ export default function()
 
 	const vectorFieldCanvas = $("#vector-field-canvas");
 
-	const vectorFieldApplet = new VectorField({ canvas: vectorFieldCanvas });
+	const vectorFieldApplet = new VectorFields({ canvas: vectorFieldCanvas });
 
-	vectorFieldApplet.loadPromise.then(() =>
-	{
-		vectorFieldApplet.run({
-			generatingCode: "(x - y, x + y)",
-			resolution: 750 * siteSettings.resolutionMultiplier,
-			zoomLevel: -0.5
-		});
-		vectorFieldApplet.pauseWhenOffscreen();
+	vectorFieldApplet.run({
+		generatingCode: "(x - y, x + y)",
+		resolution: 750 * siteSettings.resolutionMultiplier,
+		worldWidth: 2
 	});
+	vectorFieldApplet.pauseWhenOffscreen();
 
 
 

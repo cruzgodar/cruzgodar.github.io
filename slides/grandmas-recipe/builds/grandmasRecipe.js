@@ -1,30 +1,31 @@
 import { applet, canvasBundle } from "../index.js";
 import { changeOpacity } from "/scripts/src/animation.js";
 
-const resolution = 1500;
+const resolution = 1000;
 const maxDepth = 250;
 const maxPixelBrightness = 50;
 
 async function reset({ slide, duration })
 {
-	if (slide.contains(canvasBundle))
+	if (!slide.contains(canvasBundle))
 	{
-		return;
+		await changeOpacity({
+			element: canvasBundle,
+			opacity: 0,
+			duration: duration / 2
+		});
+
+		slide.appendChild(canvasBundle);
 	}
 
-	await changeOpacity({
-		element: canvasBundle,
-		opacity: 0,
-		duration: duration / 2
+	applet.wilson.setDraggables({
+		ta: [2, 0],
+		tb: [2, 0],
+		tc: [2, -2]
 	});
 
-	slide.appendChild(canvasBundle);
-
-	applet.wilson.draggables.worldCoordinates = [[2, 0], [2, 0], [2, -2]];
-	applet.wilson.draggables.onResize();
-
-	applet.changeRecipe(0);
-	applet.grandmaCoefficients(2, 0, 2, 0);
+	applet.changeRecipe("grandma");
+	applet.bakeCoefficients([2, 0], [2, 0]);
 
 	await applet.requestHighResFrame(resolution, maxDepth, maxPixelBrightness, 4);
 

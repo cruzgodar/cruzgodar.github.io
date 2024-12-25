@@ -124,22 +124,27 @@ export default function()
 		const glslCode = examples[value][0];
 		const jsCode = examples[value][1];
 		const resolution = resolutionInput.value * siteSettings.resolutionMultiplier;
-		const exposure = 1;
 		const numIterations = 200;
 
 		applet.run({
 			glslCode,
 			jsCode,
 			resolution,
-			exposure,
 			numIterations
 		});
 	}
 
 	function changeResolution()
 	{
-		applet.resolution = resolutionInput.value * siteSettings.resolutionMultiplier;
+		applet.wilsonJulia.resizeCanvas({
+			width: resolutionInput.value * siteSettings.resolutionMultiplier
+		});
 
-		applet.changeAspectRatio(true);
+		applet.wilson.resizeCanvas({
+			width: Math.min(
+				Math.floor(resolutionInput.value * siteSettings.resolutionMultiplier * 3),
+				2000
+			)
+		});
 	}
 }

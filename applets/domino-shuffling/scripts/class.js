@@ -1,6 +1,7 @@
 import { AnimationFrameApplet } from "/scripts/applets/animationFrameApplet.js";
+import { hsvToRgb } from "/scripts/applets/applet.js";
 import { convertColor } from "/scripts/src/browser.js";
-import { Wilson } from "/scripts/wilson.js";
+import { WilsonCPU } from "/scripts/wilson.js";
 
 export class DominoShuffling extends AnimationFrameApplet
 {
@@ -24,7 +25,6 @@ export class DominoShuffling extends AnimationFrameApplet
 	currentDiamondSize = 1;
 	frame = 0;
 	framesPerAnimationStep = 1;
-	drawDiamondWithHoles = true;
 
 
 
@@ -34,22 +34,16 @@ export class DominoShuffling extends AnimationFrameApplet
 
 		const options =
 		{
-			renderer: "cpu",
-
 			canvasWidth: this.resolution,
-			canvasHeight: this.resolution,
 
-
-
-			useFullscreen: true,
-
-			useFullscreenButton: true,
-
-			enterFullscreenButtonIconPath: "/graphics/general-icons/enter-fullscreen.png",
-			exitFullscreenButtonIconPath: "/graphics/general-icons/exit-fullscreen.png"
+			fullscreenOptions: {
+				useFullscreenButton: true,
+				enterFullscreenButtonIconPath: "/graphics/general-icons/enter-fullscreen.png",
+				exitFullscreenButtonIconPath: "/graphics/general-icons/exit-fullscreen.png"
+			}
 		};
 
-		this.wilson = new Wilson(this.canvas, options);
+		this.wilson = new WilsonCPU(this.canvas, options);
 	}
 
 
@@ -61,22 +55,10 @@ export class DominoShuffling extends AnimationFrameApplet
 	}) {
 		this.resolution = resolution;
 
-		this.wilson.changeCanvasSize(this.resolution, this.resolution);
+		this.wilson.resizeCanvas({ width: this.resolution });
 
 		this.diamondSize = diamondSize;
-
 		this.framesPerAnimationStep = Math.ceil(100 / this.diamondSize);
-
-		if (this.diamondSize > 30)
-		{
-			this.drawDiamondWithHoles = false;
-		}
-
-		else
-		{
-			this.drawDiamondWithHoles = true;
-		}
-
 		this.useSmoothColors = useSmoothColors;
 
 
@@ -189,8 +171,6 @@ export class DominoShuffling extends AnimationFrameApplet
 			this.drawDiamond();
 		}
 
-
-
 		if (this.frame === 0 && this.currentDiamondSize === this.diamondSize - 1)
 		{
 			this.wilson.ctx.fillStyle = convertColor(0, 0, 0);
@@ -240,7 +220,7 @@ export class DominoShuffling extends AnimationFrameApplet
 
 		const s = 1 - .8 * Math.pow((this.age[row][col] - 1) / this.currentDiamondSize, 4);
 
-		const rgb = this.wilson.utils.hsvToRgb(h, s, 1);
+		const rgb = hsvToRgb(h, s, 1);
 
 		this.wilson.ctx.fillStyle = convertColor(...rgb);
 

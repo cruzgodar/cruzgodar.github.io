@@ -66,10 +66,12 @@ export class DownloadButton extends Button
 		applet,
 		filename
 	}) {
+		const downloadFrame = applet.downloadFrame ?? applet.wilson.downloadFrame;
+
 		super({
 			element,
 			name: "Download",
-			onClick: () => applet.downloadFrame(filename),
+			onClick: () => downloadFrame.bind(applet)(filename),
 			linked
 		});
 	}

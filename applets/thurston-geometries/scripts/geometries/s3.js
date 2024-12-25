@@ -359,20 +359,13 @@ export class S3Rooms extends S3Geometry
 
 	uniformNames = ["sceneTransition", "wallThickness"];
 
-	updateUniforms(gl, uniformList, programIndex)
+	getUpdatedUniforms()
 	{
-		const wallThickness = .97 -
-			(this.sliderValues.wallThickness - (-.15)) / (.35 - (-.15)) * (.97 - .92);
-
-		gl.uniform1f(
-			uniformList.sceneTransition[programIndex],
-			this.sliderValues.sceneTransition
-		);
-
-		gl.uniform1f(
-			uniformList.wallThickness[programIndex],
-			wallThickness
-		);
+		return {
+			wallThickness: .97 -
+				(this.sliderValues.wallThickness - (-.15)) / (.35 - (-.15)) * (.97 - .92),
+			sceneTransition: this.sliderValues.sceneTransition
+		};
 	}
 
 	uiElementsUsed = "#wall-thickness-slider, #switch-scene-button";
@@ -587,12 +580,11 @@ export class S3HopfFibration extends S3Geometry
 	`;
 
 	uniformNames = ["fiberThickness"];
-
-	updateUniforms(gl, uniformList, programIndex)
+	
+	getUpdatedUniforms()
 	{
-		gl.uniform1f(
-			uniformList.fiberThickness[programIndex],
-			this.sliderValues.fiberThickness
-		);
+		return {
+			fiberThickness: this.sliderValues.fiberThickness
+		};
 	}
 }

@@ -1,5 +1,5 @@
 import { showPage } from "../../../scripts/src/loadPage.js";
-import { Snowflake } from "./class.js";
+import { Snowflakes } from "./class.js";
 import { Button, DownloadButton, GenerateButton } from "/scripts/src/buttons.js";
 import { $ } from "/scripts/src/main.js";
 import { typesetMath } from "/scripts/src/math.js";
@@ -8,7 +8,7 @@ import { TextBox } from "/scripts/src/textBoxes.js";
 
 export default function()
 {
-	const applet = new Snowflake({ canvas: $("#output-canvas") });
+	const applet = new Snowflakes({ canvas: $("#output-canvas") });
 
 	const resolutionInput = new TextBox({
 		element: $("#resolution-input"),

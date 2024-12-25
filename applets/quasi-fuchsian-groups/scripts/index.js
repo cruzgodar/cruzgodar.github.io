@@ -12,17 +12,17 @@ export default function()
 	const resolutionInput = new TextBox({
 		element: $("#resolution-input"),
 		name: "Resolution",
-		value: 400,
+		value: 500,
 		minValue: 100,
-		maxValue: 800,
+		maxValue: 1000,
 		onInput: changeResolution
 	});
 
 	const highResolutionInput = new TextBox({
 		element: $("#high-resolution-input"),
 		name: "Resolution",
-		value: 1000,
-		minValue: 100,
+		value: 1500,
+		minValue: 500,
 		maxValue: 3000,
 		onEnter: run
 	});
@@ -30,16 +30,16 @@ export default function()
 	const maxDepthInput = new TextBox({
 		element: $("#max-depth-input"),
 		name: "Iterations",
-		value: 500,
-		minValue: 50,
-		maxValue: 1000,
+		value: 1000,
+		minValue: 200,
+		maxValue: 2000,
 		onEnter: run
 	});
 
 	const maxPixelBrightnessInput = new TextBox({
 		element: $("#max-pixel-brightness-input"),
 		name: "Quality",
-		value: 100,
+		value: 200,
 		minValue: 50,
 		maxValue: 500,
 		onEnter: run
@@ -60,7 +60,7 @@ export default function()
 			maxPixelBrightnessInput.value
 		);
 
-		applet.downloadFrame("a-quasi-fuchsian-group.png");
+		applet.wilson.downloadFrame("a-quasi-fuchsian-group.png");
 	}
 
 	function changeResolution()
@@ -68,6 +68,8 @@ export default function()
 		applet.resolutionSmall = resolutionInput.value * siteSettings.resolutionMultiplier;
 		applet.resolutionLarge = resolutionInput.value * siteSettings.resolutionMultiplier * 3;
 
-		applet.changeAspectRatio();
+		applet.wilson.resizeCanvas({
+			width: applet.resolutionSmall
+		});
 	}
 }

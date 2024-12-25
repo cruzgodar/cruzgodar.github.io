@@ -143,16 +143,22 @@ export default function()
 
 	function changeResolution()
 	{
-		applet.changeResolution(resolutionInput.value * siteSettings.resolutionMultiplier);
+		applet.resolution = Math.max(
+			resolutionInput.value * siteSettings.resolutionMultiplier,
+			applet.gridSize * 2
+		);
+
+		applet.wilson.resizeCanvas({
+			width: applet.resolution
+		});
 	}
 
 	function onTorusCheckboxInput()
 	{
 		applet.onTorus = torusCheckbox.checked;
 
-		applet.wilsonHidden.gl.uniform1i(
-			applet.wilsonHidden.uniforms.torus[1],
-			applet.onTorus
-		);
+		applet.wilsonHidden.setUniforms({
+			onTorus: torusCheckbox.checked ? 1 : 0
+		});
 	}
 }

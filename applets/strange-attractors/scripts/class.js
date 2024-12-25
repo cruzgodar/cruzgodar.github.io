@@ -1,15 +1,15 @@
-import { Applet } from "../../../scripts/applets/applet.js";
-import { convertColor } from "/scripts/src/browser.js";
+import { AnimationFrameApplet } from "/scripts/applets/animationFrameApplet.js";
 import { addTemporaryWorker } from "/scripts/src/main.js";
-import { Wilson } from "/scripts/wilson.js";
+import { WilsonCPU } from "/scripts/wilson.js";
 
-export class StrangeAttractor extends Applet
+const brightnessScale = 10;
+
+export class StrangeAttractors extends AnimationFrameApplet
 {
 	webWorker;
-
-	image = [];
-
-	brightnessScale = 10;
+	brightnesses;
+	imageData;
+	pixels;
 
 
 
@@ -17,24 +17,16 @@ export class StrangeAttractor extends Applet
 	{
 		super(canvas);
 
-		const options =
-		{
-			renderer: "cpu",
-
-			canvasWidth: 1000,
-			canvasHeight: 1000,
-
-
-
-			useFullscreen: true,
-
-			useFullscreenButton: true,
-
-			enterFullscreenButtonIconPath: "/graphics/general-icons/enter-fullscreen.png",
-			exitFullscreenButtonIconPath: "/graphics/general-icons/exit-fullscreen.png"
+		const options = {
+			canvasWidth: 500,
+			fullscreenOptions: {
+				useFullscreenButton: true,
+				enterFullscreenButtonIconPath: "/graphics/general-icons/enter-fullscreen.png",
+				exitFullscreenButtonIconPath: "/graphics/general-icons/exit-fullscreen.png",
+			},
 		};
 
-		this.wilson = new Wilson(canvas, options);
+		this.wilson = new WilsonCPU(canvas, options);
 	}
 
 
@@ -44,58 +36,63 @@ export class StrangeAttractor extends Applet
 		sigma,
 		rho,
 		beta,
-		maximumSpeed
+		maximumSpeed,
 	}) {
-		this.wilson.changeCanvasSize(resolution, resolution);
+		this.resolution = resolution;
+		this.maximumSpeed = maximumSpeed;
+		
+		this.wilson.resizeCanvas({ width: this.resolution });
 
-		this.wilson.ctx.fillStyle = convertColor(0, 0, 0);
-		this.wilson.ctx.fillRect(0, 0, resolution, resolution);
+		this.pixels = [];
+		this.imageData = new Uint8ClampedArray(this.resolution * this.resolution * 4);
 
-
-
-		this.image = new Array(resolution * resolution);
-
-		for (let i = 0; i < resolution; i++)
+		for (let i = 0; i < this.resolution * this.resolution; i++)
 		{
-			for (let j = 0; j < resolution; j++)
-			{
-				this.image[resolution * i + j] = 0;
-			}
+			this.imageData[4 * i + 3] = 255;
 		}
+
+		this.brightnesses = new Uint8ClampedArray(this.resolution * this.resolution);
 
 
 
 		this.webWorker = addTemporaryWorker("/applets/strange-attractors/scripts/worker.js");
 
-
-
 		this.webWorker.onmessage = e =>
 		{
-			const pixels = e.data[0];
+			this.pixels.push(...e.data);
 
-			const rgb = e.data[1];
-
-
-
-			for (let i = 0; i < pixels.length; i++)
-			{
-				this.image[resolution * pixels[i][0] + pixels[i][1]]++;
-
-				const brightnessAdjust = this.image[resolution * pixels[i][0] + pixels[i][1]]
-					/ this.brightnessScale;
-
-				this.wilson.ctx.fillStyle = convertColor(
-					rgb[0] * brightnessAdjust,
-					rgb[1] * brightnessAdjust,
-					rgb[2] * brightnessAdjust
-				);
-
-				this.wilson.ctx.fillRect(pixels[i][1], pixels[i][0], 1, 1);
-			}
+			this.needNewFrame = true;
 		};
 
+		this.webWorker.postMessage([resolution, sigma, rho, beta]);
+		this.resume();
+	}
 
+	drawFrame()
+	{
+		const numPixelsToDraw = this.maximumSpeed
+			? this.pixels.length
+			: Math.min(Math.ceil(this.resolution * this.resolution / 100), this.pixels.length);
 
-		this.webWorker.postMessage([resolution, sigma, rho, beta, maximumSpeed]);
+		for (let i = 0; i < numPixelsToDraw; i++)
+		{
+			const index = this.pixels[i][0] * this.resolution + this.pixels[i][1];
+
+			this.brightnesses[index]++;
+			const brightnessAdjust = this.brightnesses[index] / brightnessScale;
+			
+			this.imageData[4 * index] = this.pixels[i][2][0] * brightnessAdjust;
+			this.imageData[4 * index + 1] = this.pixels[i][2][1] * brightnessAdjust;
+			this.imageData[4 * index + 2] = this.pixels[i][2][2] * brightnessAdjust;
+		}
+
+		this.pixels.splice(0, numPixelsToDraw);
+
+		this.wilson.drawFrame(this.imageData);
+
+		if (this.pixels.length !== 0)
+		{
+			this.needNewFrame = true;
+		}
 	}
 }

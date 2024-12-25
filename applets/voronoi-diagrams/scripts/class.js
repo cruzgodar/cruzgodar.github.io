@@ -1,8 +1,14 @@
-import { Applet, getMinGlslString, getVectorGlsl } from "../../../scripts/applets/applet.js";
+import {
+	Applet,
+	getMinGlslString,
+	getVectorGlsl,
+	hsvToRgb,
+	tempShader
+} from "../../../scripts/applets/applet.js";
 import anime from "/scripts/anime.js";
-import { Wilson } from "/scripts/wilson.js";
+import { WilsonGPU } from "/scripts/wilson.js";
 
-export class VoronoiDiagram extends Applet
+export class VoronoiDiagrams extends Applet
 {
 	wilsonHidden;
 
@@ -33,55 +39,40 @@ export class VoronoiDiagram extends Applet
 	{
 		super(canvas);
 
-		const fragShaderSource = /* glsl */`
-			precision highp float;
-			
-			varying vec2 uv;
-			
-			void main(void)
-			{
-				gl_FragColor = vec4(0, 0, 0, 1);
-			}
-		`;
-
 		const options =
 		{
-			renderer: "gpu",
-
-			shader: fragShaderSource,
+			shader: tempShader,
 
 			canvasWidth: this.resolution,
-			canvasHeight: this.resolution,
 
-			useDraggables: true,
+			draggableOptions: {
+				draggables: {
+					point0: [0, 0],
+				},
+				callbacks: {
+					drag: this.onDragDraggable.bind(this),
+				}
+			},
 
-			draggablesMousemoveCallback: this.onDragDraggable.bind(this),
-			draggablesTouchmoveCallback: this.onDragDraggable.bind(this),
-
-			useFullscreen: true,
-
-			useFullscreenButton: true,
-
-			enterFullscreenButtonIconPath: "/graphics/general-icons/enter-fullscreen.png",
-			exitFullscreenButtonIconPath: "/graphics/general-icons/exit-fullscreen.png"
+			fullscreenOptions: {
+				useFullscreenButton: true,
+				enterFullscreenButtonIconPath: "/graphics/general-icons/enter-fullscreen.png",
+				exitFullscreenButtonIconPath: "/graphics/general-icons/exit-fullscreen.png"
+			}
 		};
 
-		this.wilson = new Wilson(this.canvas, options);
+		this.wilson = new WilsonGPU(this.canvas, options);
 
-		this.wilson.draggables.add(0, 0);
-		this.wilson.draggables.draggables[0].style.display = "none";
+		this.wilson.draggables.point0.element.style.display = "none";
 
 		const optionsHidden =
 		{
-			renderer: "gpu",
-
-			shader: fragShaderSource,
+			shader: tempShader,
 
 			canvasWidth: this.resolutionHidden,
-			canvasHeight: this.resolutionHidden,
 		};
 
-		this.wilsonHidden = new Wilson(this.createHiddenCanvas(), optionsHidden);
+		this.wilsonHidden = new WilsonGPU(this.createHiddenCanvas(), optionsHidden);
 	}
 
 
@@ -106,36 +97,18 @@ export class VoronoiDiagram extends Applet
 		this.pointOpacity = 1;
 		this.lastTimestamp = -1;
 
-		this.wilson.changeCanvasSize(this.resolution, this.resolution);
+		this.wilson.resizeCanvas({ width: this.resolution });
 
 		this.generatePoints();
 
-
-
-		this.wilsonHidden.render.shaderPrograms = [];
-		this.wilsonHidden.render.loadNewShader(this.getFragShaderSource(true));
-		this.wilsonHidden.gl.useProgram(this.wilsonHidden.render.shaderPrograms[0]);
-
-		this.wilsonHidden.render.initUniforms([
-			"radius",
-			"pointOpacity",
-			"metric",
-			"point0"
-		]);
-
-		this.wilsonHidden.gl.uniform1f(this.wilsonHidden.uniforms.radius, this.radius);
-		this.wilsonHidden.gl.uniform1f(this.wilsonHidden.uniforms.pointOpacity, 1);
-		this.wilsonHidden.gl.uniform1f(this.wilsonHidden.uniforms.metric, this.metric);
-
-		if (this.useDraggable)
-		{
-			this.wilsonHidden.gl.uniform2fv(
-				this.wilsonHidden.uniforms.point0,
-				this.wilson.draggables.worldCoordinates[0]
-			);
-		}
-
-
+		this.wilsonHidden.loadShader({
+			source: this.getShader(true),
+			uniforms: {
+				radius: this.radius,
+				metric: this.metric,
+				...(this.useDraggable ? { point0: this.wilson.draggables.point0.location } : {})
+			}
+		});
 
 		if (!this.maximumSpeed)
 		{
@@ -147,37 +120,17 @@ export class VoronoiDiagram extends Applet
 			this.maxRadius = 8;
 		}
 
+		this.wilson.loadShader({
+			source: this.getShader(false),
+			uniforms: {
+				radius: this.radius,
+				pointOpacity: this.pointOpacity,
+				metric: this.metric,
+				...(this.useDraggable ? { point0: this.wilson.draggables.point0.location } : {})
+			}
+		});
 
-
-		this.wilson.render.shaderPrograms = [];
-		this.wilson.render.loadNewShader(this.getFragShaderSource());
-		this.wilson.gl.useProgram(this.wilson.render.shaderPrograms[0]);
-		
-		this.wilson.render.initUniforms([
-			"radius",
-			"pointOpacity",
-			"metric",
-			"point0"
-		]);
-
-		this.wilson.gl.uniform1f(this.wilson.uniforms.radius, this.radius);
-		this.wilson.gl.uniform1f(this.wilson.uniforms.pointOpacity, 1);
-		this.wilson.gl.uniform1f(this.wilson.uniforms.metric, this.metric);
-
-		if (this.useDraggable)
-		{
-			this.wilson.draggables.draggables[0].style.display = "";
-
-			this.wilson.gl.uniform2fv(
-				this.wilson.uniforms.point0,
-				this.wilson.draggables.worldCoordinates[0]
-			);
-		}
-
-		else
-		{
-			this.wilson.draggables.draggables[0].style.display = "none";
-		}
+		this.wilson.draggables.point0.element.style.display = this.useDraggable ? "block" : "none";
 
 
 
@@ -235,7 +188,7 @@ export class VoronoiDiagram extends Applet
 		});
 	}
 
-	getFragShaderSource(forHiddenCanvas = false)
+	getShader(forHiddenCanvas = false)
 	{
 		const testDirections = [
 			"boundaryWidth / 4.0, 0",
@@ -516,7 +469,7 @@ export class VoronoiDiagram extends Applet
 
 		for (let i = 0; i < this.numPoints; i++)
 		{
-			this.colors[i] = this.wilson.utils.hsvToRgb(
+			this.colors[i] = hsvToRgb(
 				Math.random(),
 				0.5 + 0.25 * Math.random(),
 				0.5 + 0.5 * Math.random()
@@ -562,11 +515,10 @@ export class VoronoiDiagram extends Applet
 
 	testRadius(radius)
 	{
-		this.wilsonHidden.gl.uniform1f(this.wilsonHidden.uniforms.radius, radius);
+		this.wilsonHidden.setUniforms({ radius });
+		this.wilsonHidden.drawFrame();
 
-		this.wilsonHidden.render.drawFrame();
-
-		const pixelData = this.wilsonHidden.render.getPixelData();
+		const pixelData = this.wilsonHidden.readPixels();
 
 		for (let i = 0; i < pixelData.length; i += 4)
 		{
@@ -588,10 +540,12 @@ export class VoronoiDiagram extends Applet
 	{
 		this.radius = this.t * this.maxRadius;
 
-		this.wilson.gl.uniform1f(this.wilson.uniforms.radius, this.radius);
-		this.wilson.gl.uniform1f(this.wilson.uniforms.pointOpacity, this.pointOpacity);
+		this.wilson.setUniforms({
+			radius: this.radius,
+			pointOpacity: this.pointOpacity
+		});
 		
-		this.wilson.render.drawFrame();
+		this.wilson.drawFrame();
 	}
 
 	updateMetric()
@@ -599,13 +553,13 @@ export class VoronoiDiagram extends Applet
 		this.cancelAnimaton();
 
 		this.t = 2;
-		this.wilson.gl.uniform1f(this.wilson.uniforms.metric, this.metric);
+		this.wilson.setUniforms({ metric: this.metric });
 		this.drawFrame();
 	}
 
-	onDragDraggable(activeDraggable, x, y)
+	onDragDraggable({ x, y })
 	{
-		this.wilson.gl.uniform2f(this.wilson.uniforms.point0, x, y);
+		this.wilson.setUniforms({ point0: [x, y] });
 
 		if (!this.currentlyAnimating)
 		{

@@ -1,8 +1,9 @@
 import { AnimationFrameApplet } from "/scripts/applets/animationFrameApplet.js";
+import { hsvToRgb } from "/scripts/applets/applet.js";
 import { convertColor } from "/scripts/src/browser.js";
-import { Wilson } from "/scripts/wilson.js";
+import { WilsonCPU } from "/scripts/wilson.js";
 
-export class PascalsTriangleColoring extends AnimationFrameApplet
+export class PascalsTriangleColorings extends AnimationFrameApplet
 {
 	gridSize = 20;
 	pixelsPerRow = 0;
@@ -31,22 +32,16 @@ export class PascalsTriangleColoring extends AnimationFrameApplet
 
 		const options =
 		{
-			renderer: "cpu",
-
 			canvasWidth: 2000,
-			canvasHeight: 2000,
 
-
-
-			useFullscreen: true,
-
-			useFullscreenButton: true,
-
-			enterFullscreenButtonIconPath: "/graphics/general-icons/enter-fullscreen.png",
-			exitFullscreenButtonIconPath: "/graphics/general-icons/exit-fullscreen.png"
+			fullscreenOptions: {
+				useFullscreenButton: true,
+				enterFullscreenButtonIconPath: "/graphics/general-icons/enter-fullscreen.png",
+				exitFullscreenButtonIconPath: "/graphics/general-icons/exit-fullscreen.png"
+			}
 		};
 
-		this.wilson = new Wilson(canvas, options);
+		this.wilson = new WilsonCPU(canvas, options);
 	}
 
 
@@ -60,12 +55,10 @@ export class PascalsTriangleColoring extends AnimationFrameApplet
 		this.gridSize = gridSize;
 		this.numColors = numColors;
 
-		this.wilson.changeCanvasSize(this.resolution, this.resolution);
+		this.wilson.resizeCanvas({ width: this.resolution });
 
 		this.pixelsPerFrame = Math.ceil(this.resolution / 200);
-
 		this.pixelsPerRow = Math.round(this.resolution / (this.gridSize + 2));
-
 		this.delayOnMeet = 2 * this.pixelsPerRow;
 
 		this.yOffset = (
@@ -96,7 +89,7 @@ export class PascalsTriangleColoring extends AnimationFrameApplet
 		}
 
 		this.parities[0][0] = 1;
-		this.colors[0][0] = this.wilson.utils.hsvToRgb(1 / this.numColors, 1, 1);
+		this.colors[0][0] = hsvToRgb(1 / this.numColors, 1, 1);
 
 
 
@@ -114,15 +107,13 @@ export class PascalsTriangleColoring extends AnimationFrameApplet
 					this.parities[i - 1][j - 1] + this.parities[i - 1][j]
 				) % this.numColors;
 
-				this.colors[i][j] = this.wilson.utils.hsvToRgb(
+				this.colors[i][j] = hsvToRgb(
 					this.parities[i][j] / this.numColors,
 					1,
 					1
 				);
 			}
 		}
-
-
 
 		for (let i = 0; i < this.gridSize; i++)
 		{
@@ -132,13 +123,9 @@ export class PascalsTriangleColoring extends AnimationFrameApplet
 			}
 		}
 
-
-
 		this.wilson.ctx.fillStyle = convertColor(0, 0, 0);
 		this.wilson.ctx.fillRect(0, 0, this.resolution, this.resolution);
-
 		this.wilson.ctx.lineWidth = Math.sqrt(this.pixelsPerRow / 150) * 10;
-
 		this.resume();
 	}
 
@@ -198,8 +185,6 @@ export class PascalsTriangleColoring extends AnimationFrameApplet
 							}
 						}
 
-
-
 						if (
 							!this.isFinished[this.activeNodes[j][0] + 1][this.activeNodes[j][1] + 1]
 						) {
@@ -233,16 +218,12 @@ export class PascalsTriangleColoring extends AnimationFrameApplet
 						}
 					}
 
-
-
 					this.isFinished[this.activeNodes[j][0]][this.activeNodes[j][1]] = true;
 
 					this.activeNodes.splice(j, 1);
 				}
 			}
 		}
-
-
 
 		if (this.activeNodes.length !== 0)
 		{

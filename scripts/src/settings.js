@@ -1,3 +1,4 @@
+import { currentlyLoadedApplets } from "../applets/applet.js";
 import { cardIsOpen } from "./cards.js";
 import { recreateDesmosGraphs } from "./desmos.js";
 import { darkThemeCheckbox, increaseContrastCheckbox, reduceMotionCheckbox } from "./header.js";
@@ -383,6 +384,14 @@ export async function toggleDarkTheme({
 export async function toggleReduceMotion()
 {
 	siteSettings.reduceMotion = !siteSettings.reduceMotion;
+
+	currentlyLoadedApplets.forEach(applet =>
+	{
+		for (const wilson of applet.wilsonsForReduceMotion)
+		{
+			wilson.reduceMotion = siteSettings.reduceMotion;
+		}
+	});
 
 	history.replaceState({ url: pageUrl }, document.title, getDisplayUrl());
 }

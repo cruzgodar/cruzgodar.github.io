@@ -23,13 +23,11 @@ export async function showHexView()
 	this.in2dView = false;
 	this.inExactHexView = true;
 
-	this.rotationYVelocity = 0;
-
-	this.lastRotationYVelocities = [0, 0, 0, 0];
-
 
 
 	this.updateCameraHeight(true);
+
+	const dummy = { t: this.wilsonNumbers.worldCenterX };
 
 	await Promise.all([
 		anime({
@@ -39,6 +37,19 @@ export async function showHexView()
 			z: 0.523598775,
 			duration: this.animationTime,
 			easing: "easeInOutQuad",
+		}).finished,
+
+		anime({
+			targets: dummy,
+			t: 0,
+			duration: this.animationTime,
+			easing: "easeInOutQuad",
+			update: () =>
+			{
+				this.wilsonNumbers.resizeWorld({
+					centerX: dummy.t
+				});
+			}
 		}).finished
 	]
 		.concat(
@@ -66,9 +77,9 @@ export async function showHexView()
 		)
 	);
 
-	this.currentlyAnimatingCamera = false;
+	this.wilsonNumbers.useInteractionForPanAndZoom = true;
 
-	this.rotationY = 0;
+	this.currentlyAnimatingCamera = false;
 }
 
 export async function show2dView()
@@ -91,13 +102,11 @@ export async function show2dView()
 	this.in2dView = true;
 	this.inExactHexView = false;
 
-	this.rotationYVelocity = 0;
-
-	this.lastRotationYVelocities = [0, 0, 0, 0];
-
 
 
 	this.updateCameraHeight(true);
+
+	const dummy = { t: this.wilsonNumbers.worldCenterX };
 
 	await Promise.all([
 		anime({
@@ -107,6 +116,19 @@ export async function show2dView()
 			z: 0,
 			duration: this.animationTime,
 			easing: "easeInOutQuad"
+		}).finished,
+
+		anime({
+			targets: dummy,
+			t: 0,
+			duration: this.animationTime,
+			easing: "easeInOutQuad",
+			update: () =>
+			{
+				this.wilsonNumbers.resizeWorld({
+					centerX: dummy.t
+				});
+			}
 		}).finished
 	]
 		.concat(
@@ -134,6 +156,8 @@ export async function show2dView()
 		)
 	);
 
+	this.wilsonNumbers.useInteractionForPanAndZoom = false;
+
 
 
 	this.drawAll2dViewText();
@@ -145,8 +169,6 @@ export async function show2dView()
 	});
 
 	this.currentlyAnimatingCamera = false;
-
-	this.rotationY = 0;
 }
 
 

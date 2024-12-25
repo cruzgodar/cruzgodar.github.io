@@ -12,8 +12,6 @@ async function reset({ slide, duration })
 
 	slide.appendChild(canvasBundle);
 
-	applet.wilsonNumbers.draggables.onResize();
-
 	const rpp =
 	[
 		[6, 6, 6, 2],
@@ -43,7 +41,7 @@ async function reset({ slide, duration })
 	});
 }
 
-async function build0({ forward, duration = 600 })
+async function build0({ forward, duration = 400 })
 {
 	if (forward)
 	{
@@ -60,7 +58,7 @@ async function build0({ forward, duration = 600 })
 	}
 }
 
-async function build1({ forward, duration = 600 })
+async function build1({ forward, duration = 400 })
 {
 	applet.animationTime = duration;
 
@@ -75,7 +73,7 @@ async function build1({ forward, duration = 600 })
 	}
 }
 
-async function build2({ forward, duration = 600 })
+async function build2({ forward, duration = 400 })
 {
 	applet.animationTime = duration;
 
@@ -90,7 +88,7 @@ async function build2({ forward, duration = 600 })
 	}
 }
 
-async function build3({ forward, duration = 600 })
+async function build3({ forward, duration = 200 })
 {
 	if (forward)
 	{

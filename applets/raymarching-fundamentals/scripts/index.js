@@ -1,5 +1,5 @@
 import { showPage } from "../../../scripts/src/loadPage.js";
-import { GroundAndSphere } from "./groundAndSphere.js";
+import { ComposedFractals } from "./composedFractals.js";
 import { DownloadButton } from "/scripts/src/buttons.js";
 import { Checkbox } from "/scripts/src/checkboxes.js";
 import { $ } from "/scripts/src/main.js";
@@ -8,7 +8,11 @@ import { TextBox } from "/scripts/src/textBoxes.js";
 
 export default function()
 {
-	const applet = new GroundAndSphere({ canvas: $("#output-canvas") });
+	const applet = new ComposedFractals({
+		canvas: $("#output-canvas"),
+		includeExtrudedCube: true,
+		includeMengerSponge: true
+	});
 
 	new DownloadButton({
 		element: $("#download-button"),
@@ -35,7 +39,9 @@ export default function()
 
 	function changeResolution()
 	{
-		applet.changeResolution(resolutionInput.value * siteSettings.resolutionMultiplier);
+		applet.wilson.resizeCanvas({
+			width: resolutionInput.value * siteSettings.resolutionMultiplier
+		});
 	}
 
 	// applet.loopUniform({
@@ -55,13 +61,13 @@ export default function()
 	async function test()
 	{
 		applet.animateUniform({
-			name: "sphereWeight",
+			name: "extrudedCubeWeight",
 			value: testCheckbox.checked ? 0 : 1,
 			duration: 1000
 		});
 
 		applet.animateUniform({
-			name: "extrudedCubeWeight",
+			name: "mengerSpongeWeight",
 			value: testCheckbox.checked ? 1 : 0,
 			duration: 1000
 		});

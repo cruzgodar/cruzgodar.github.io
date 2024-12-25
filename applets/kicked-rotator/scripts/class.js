@@ -1,7 +1,7 @@
 import { getFloatGlsl, tempShader } from "../../../scripts/applets/applet.js";
 import { AnimationFrameApplet } from "/scripts/applets/animationFrameApplet.js";
 import { doubleEncodingGlsl, loadGlsl } from "/scripts/src/complexGlsl.js";
-import { Wilson } from "/scripts/wilson.js";
+import { WilsonGPU } from "/scripts/wilson.js";
 
 export class KickedRotator extends AnimationFrameApplet
 {
@@ -27,25 +27,21 @@ export class KickedRotator extends AnimationFrameApplet
 
 		const optionsUpdate =
 		{
-			renderer: "gpu",
-
 			shader: tempShader,
 
 			canvasWidth: this.computeResolution,
-			canvasHeight: this.computeResolution,
 
 			worldCenterX: Math.PI,
 			worldCenterY: Math.PI,
 
 			worldWidth: 2 * Math.PI,
-			worldHeight: 2 * Math.PI,
 		};
 
-		this.wilsonUpdate = new Wilson(hiddenCanvas, optionsUpdate);
+		this.wilsonUpdate = new WilsonGPU(hiddenCanvas, optionsUpdate);
 
 
 
-		const fragShaderSource = /* glsl */`
+		const shader = /* glsl */`
 			precision highp float;
 			precision highp sampler2D;
 			
@@ -76,27 +72,22 @@ export class KickedRotator extends AnimationFrameApplet
 			}
 		`;
 
-		const options =
-		{
-			renderer: "gpu",
+		const options = {
+			shader,
 
-			shader: fragShaderSource,
+			uniforms: {
+				maxBrightness: 1
+			},
 
 			canvasWidth: this.resolution,
-			canvasHeight: this.resolution,
-
-			useFullscreen: true,
-
-			useFullscreenButton: true,
-
-			enterFullscreenButtonIconPath: "/graphics/general-icons/enter-fullscreen.png",
-			exitFullscreenButtonIconPath: "/graphics/general-icons/exit-fullscreen.png"
+			fullscreenOptions: {
+				useFullscreenButton: true,
+				enterFullscreenButtonIconPath: "/graphics/general-icons/enter-fullscreen.png",
+				exitFullscreenButtonIconPath: "/graphics/general-icons/exit-fullscreen.png",
+			},
 		};
 
-		this.wilson = new Wilson(canvas, options);
-
-		this.wilson.render.initUniforms(["maxBrightness"]);
-		this.wilson.gl.uniform1f(this.wilson.uniforms.maxBrightness, 1);
+		this.wilson = new WilsonGPU(canvas, options);
 
 		this.loadPromise = loadGlsl();
 	}
@@ -108,33 +99,29 @@ export class KickedRotator extends AnimationFrameApplet
 		this.resolution = resolution;
 		this.computeResolution = resolution;
 
-		this.wilsonUpdate.changeCanvasSize(this.computeResolution, this.computeResolution);
+		this.wilsonUpdate.resizeCanvas({ width: this.computeResolution });
+		this.wilsonUpdate.createFramebufferTexturePair({
+			id: "update",
+			textureType: "float"
+		});
 
-		this.wilsonUpdate.render.framebuffers = [];
-		this.wilsonUpdate.render.createFramebufferTexturePair();
-
-		this.wilsonUpdate.gl.bindFramebuffer(this.wilsonUpdate.gl.FRAMEBUFFER, null);
-		this.wilsonUpdate.gl.bindTexture(
-			this.wilsonUpdate.gl.TEXTURE_2D,
-			this.wilsonUpdate.render.framebuffers[0].texture
-		);
+		this.wilsonUpdate.useFramebuffer(null);
+		this.wilsonUpdate.useTexture("update");
 
 		
 
-		this.wilson.changeCanvasSize(this.resolution, this.resolution);
+		this.wilson.resizeCanvas({ width: this.resolution });
+		this.wilson.createFramebufferTexturePair({
+			id: "output",
+			textureType: "float"
+		});
 
-		this.wilson.render.framebuffers = [];
-		this.wilson.render.createFramebufferTexturePair();
-
-		this.wilson.gl.bindFramebuffer(this.wilson.gl.FRAMEBUFFER, null);
-		this.wilson.gl.bindTexture(
-			this.wilson.gl.TEXTURE_2D,
-			this.wilson.render.framebuffers[0].texture
-		);
+		this.wilson.useFramebuffer(null);
+		this.wilson.useTexture("output");
 
 
 
-		const fragShaderSourceUpdateBase = /* glsl */`
+		const shaderUpdateBase = /* glsl */`
 			precision highp float;
 			precision highp sampler2D;
 			
@@ -168,15 +155,15 @@ export class KickedRotator extends AnimationFrameApplet
 				);
 			`;
 
-		const fragShaderSourceUpdateX = /* glsl */`
-				${fragShaderSourceUpdateBase}
+		const shaderUpdateX = /* glsl */`
+				${shaderUpdateBase}
 
 				gl_FragColor = encodeFloat(state.x);
 			}
 		`;
 
-		const fragShaderSourceUpdateY = /* glsl */`
-				${fragShaderSourceUpdateBase}
+		const shaderUpdateY = /* glsl */`
+				${shaderUpdateBase}
 
 				gl_FragColor = encodeFloat(state.y);
 			}
@@ -186,14 +173,16 @@ export class KickedRotator extends AnimationFrameApplet
 		this.imageData = new Float32Array(this.resolution * this.resolution * 4);
 
 		this.maxBrightness = 1;
-		this.wilson.gl.uniform1f(this.wilson.uniforms.maxBrightness, 1);
+		this.wilson.setUniforms({
+			maxBrightness: 1
+		});
 
 		for (let i = 0; i < this.computeResolution; i++)
 		{
 			for (let j = 0; j < this.computeResolution; j++)
 			{
 				const index = this.computeResolution * i + j;
-				const worldCoordinates = this.wilsonUpdate.utils.interpolate.canvasToWorld(i, j);
+				const worldCoordinates = this.wilsonUpdate.interpolateCanvasToWorld([i, j]);
 
 				this.texture[4 * index] = (worldCoordinates[0] - Math.PI) / 22 + Math.PI
 					+ (Math.random() - 0.5) * 0.2;
@@ -204,10 +193,15 @@ export class KickedRotator extends AnimationFrameApplet
 			}
 		}
 
-		this.wilsonUpdate.render.shaderPrograms = [];
+		this.wilsonUpdate.loadShader({
+			id: "updateX",
+			source: shaderUpdateX,
+		});
 
-		this.wilsonUpdate.render.loadNewShader(fragShaderSourceUpdateX);
-		this.wilsonUpdate.render.loadNewShader(fragShaderSourceUpdateY);
+		this.wilsonUpdate.loadShader({
+			id: "updateY",
+			source: shaderUpdateY,
+		});
 
 		this.frame = 0;
 		this.numIterations = 100;
@@ -223,25 +217,18 @@ export class KickedRotator extends AnimationFrameApplet
 
 	drawFrame()
 	{
-		this.wilsonUpdate.gl.texImage2D(
-			this.wilsonUpdate.gl.TEXTURE_2D,
-			0,
-			this.wilsonUpdate.gl.RGBA,
-			this.computeResolution,
-			this.computeResolution,
-			0,
-			this.wilsonUpdate.gl.RGBA,
-			this.wilsonUpdate.gl.FLOAT,
-			this.texture
-		);
+		this.wilsonUpdate.setTexture({
+			id: "update",
+			data: this.texture
+		});
 
-		this.wilsonUpdate.gl.useProgram(this.wilsonUpdate.render.shaderPrograms[0]);
-		this.wilsonUpdate.render.drawFrame();
-		const floatsX = new Float32Array(this.wilsonUpdate.render.getPixelData().buffer);
+		this.wilsonUpdate.useShader("updateX");
+		this.wilsonUpdate.drawFrame();
+		const floatsX = new Float32Array(this.wilsonUpdate.readPixels().buffer);
 
-		this.wilsonUpdate.gl.useProgram(this.wilsonUpdate.render.shaderPrograms[1]);
-		this.wilsonUpdate.render.drawFrame();
-		const floatsY = new Float32Array(this.wilsonUpdate.render.getPixelData().buffer);
+		this.wilsonUpdate.useShader("updateY");
+		this.wilsonUpdate.drawFrame();
+		const floatsY = new Float32Array(this.wilsonUpdate.readPixels().buffer);
 
 		for (let i = 0; i < this.computeResolution; i++)
 		{
@@ -281,25 +268,17 @@ export class KickedRotator extends AnimationFrameApplet
 			}
 		}
 
-		this.wilson.gl.texImage2D(
-			this.wilson.gl.TEXTURE_2D,
-			0,
-			this.wilson.gl.RGBA,
-			this.resolution,
-			this.resolution,
-			0,
-			this.wilson.gl.RGBA,
-			this.wilson.gl.FLOAT,
-			this.imageData
-		);
+		this.wilson.setTexture({
+			id: "output",
+			data: this.imageData
+		});
 
 		const maxBrightnessAdjust = Math.min(this.frame / 15, 1);
 
-		this.wilson.gl.uniform1f(
-			this.wilson.uniforms.maxBrightness,
-			this.maxBrightness / maxBrightnessAdjust
-		);
+		this.wilson.setUniforms({
+			maxBrightness: this.maxBrightness / maxBrightnessAdjust
+		});
 
-		this.wilson.render.drawFrame();
+		this.wilson.drawFrame();
 	}
 }

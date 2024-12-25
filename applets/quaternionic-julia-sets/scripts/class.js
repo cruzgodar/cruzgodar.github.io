@@ -1,7 +1,7 @@
 import anime from "/scripts/anime.js";
 import { dotProduct4, qmul, RaymarchApplet } from "/scripts/applets/raymarchApplet.js";
 
-export class QuaternionicJuliaSet extends RaymarchApplet
+export class QuaternionicJuliaSets extends RaymarchApplet
 {
 	constructor({ canvas })
 	{
@@ -71,9 +71,14 @@ export class QuaternionicJuliaSet extends RaymarchApplet
 			}
 		`;
 
+		const uniformsGlsl = /* glsl */`
+			uniform vec3 c;
+			uniform float juliaProportion;
+		`;
+
 		const uniforms = {
-			c: ["vec3", [-.54, -.25, -.668]],
-			juliaProportion: ["float", 1],
+			c: [-.54, -.25, -.668],
+			juliaProportion: 1,
 		};
 
 		super({
@@ -81,6 +86,7 @@ export class QuaternionicJuliaSet extends RaymarchApplet
 			distanceEstimatorGlsl,
 			getColorGlsl,
 			addGlsl,
+			uniformsGlsl,
 			uniforms,
 			stepFactor: .75,
 			theta: 1.3094,
@@ -93,8 +99,8 @@ export class QuaternionicJuliaSet extends RaymarchApplet
 
 	distanceEstimator(x, y, z)
 	{
-		const c = this.uniforms.c[1];
-		const juliaProportion = this.uniforms.juliaProportion[1];
+		const c = this.uniforms.c;
+		const juliaProportion = this.uniforms.juliaProportion;
 
 		let mutableZ = [x, y, z, 0];
 		let zPrime = [1.0, 0.0, 0.0, 0.0];
@@ -130,7 +136,7 @@ export class QuaternionicJuliaSet extends RaymarchApplet
 
 	switchBulb(instant)
 	{
-		const juliaProportion = this.uniforms.juliaProportion[1];
+		const juliaProportion = this.uniforms.juliaProportion;
 
 		if (Math.floor(juliaProportion) !== juliaProportion)
 		{
@@ -149,10 +155,10 @@ export class QuaternionicJuliaSet extends RaymarchApplet
 			easing: "easeOutQuad",
 			update: () =>
 			{
-				this.setUniform(
-					"juliaProportion",
-					(1 - dummy.t) * oldJuliaProportion + dummy.t * newJuliaProportion
-				);
+				this.setUniforms({
+					juliaProportion: (1 - dummy.t) * oldJuliaProportion
+						+ dummy.t * newJuliaProportion
+				});
 
 				this.needNewFrame = true;
 			}

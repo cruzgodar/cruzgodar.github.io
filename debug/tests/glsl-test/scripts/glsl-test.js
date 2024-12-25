@@ -186,7 +186,7 @@ import { Wilson } from "/scripts/wilson.js";
 			
 			
 			
-			let fragShaderSource = /* glsl */`
+			let shader = /* glsl */`
 				precision highp float;
 				
 				varying vec2 uv;
@@ -222,7 +222,7 @@ import { Wilson } from "/scripts/wilson.js";
 			{
 				renderer: "gpu",
 				
-				shader: fragShaderSource,
+				shader: shader,
 				
 				canvasWidth: 1,
 				canvasHeight: 1

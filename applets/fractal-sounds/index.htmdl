@@ -44,5 +44,5 @@ Half the reason I made the <a href="/applets/sorting-algorithms/">sorting algori
 </div>
 
 ### card applet-controls "Controls"
-	Drag on the scene with the mouse or two fingers to look around, and pinch or scroll to zoom. Click or tap to play a sound --- the colors roughly indicate the fundamental frequencies of each point.
+	Drag on the scene to look around, and pinch or scroll to zoom. Click or tap to play a sound --- the colors roughly indicate the fundamental frequencies of each point.
 ###

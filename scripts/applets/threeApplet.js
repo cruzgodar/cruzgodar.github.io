@@ -90,14 +90,6 @@ export class ThreeApplet extends AnimationFrameApplet
 
 
 
-	onDragCanvas(x, y, xDelta, yDelta)
-	{
-		const sign = this.lockedOnOrigin ? -1 : 1;
-		this.pan.onDragCanvas(x, y, sign * xDelta, sign * yDelta);
-	}
-
-
-
 	initThree()
 	{
 		this.scene = new THREE.Scene();
@@ -235,14 +227,31 @@ export class ThreeApplet extends AnimationFrameApplet
 			// Convert to spherical coordinates.
 			const r = magnitude(this.cameraPos);
 			const normalizedCameraPos = normalize(this.cameraPos);
-			const phi = Math.PI - Math.acos(this.cameraPos[2] / r);
-			let theta = Math.atan2(this.cameraPos[1], this.cameraPos[0]) + Math.PI;
+			const phi = Math.acos(this.cameraPos[2] / r);
+			let theta = Math.PI - Math.atan2(this.cameraPos[1], this.cameraPos[0]);
 			if (theta > Math.PI)
 			{
 				theta -= 2 * Math.PI;
 			}
+			if (theta < -Math.PI)
+			{
+				theta += 2 * Math.PI;
+			}
 
-			const dummy = { r, theta: this.theta, phi: this.phi };
+			const dummy = {
+				r,
+				theta: 2 * Math.PI - this.theta,
+				phi: Math.PI - this.phi
+			};
+
+			if (dummy.theta > Math.PI)
+			{
+				dummy.theta -= 2 * Math.PI;
+			}
+			if (dummy.theta < -Math.PI)
+			{
+				dummy.theta += 2 * Math.PI;
+			}
 
 			await anime({
 				targets: dummy,
@@ -253,8 +262,11 @@ export class ThreeApplet extends AnimationFrameApplet
 				easing: "easeOutCubic",
 				update: () =>
 				{
-					this.wilson.worldCenterX = -dummy.theta;
-					this.wilson.worldCenterY = -dummy.phi;
+					this.wilson.resizeWorld({
+						centerX: dummy.theta,
+						centerY: dummy.phi,
+					});
+					
 					this.cameraPos = scaleVector(
 						dummy.r,
 						normalizedCameraPos
@@ -266,5 +278,15 @@ export class ThreeApplet extends AnimationFrameApplet
 		}
 
 		this.lockedOnOrigin = value;
+		this.worldSize = this.lockedOnOrigin ? 2.5 : 1.5;
+
+		this.wilson.resizeWorld({
+			width: this.worldSize,
+			height: this.worldSize,
+			centerX: this.lockedOnOrigin ? this.theta : 2 * Math.PI - this.theta,
+			centerY: this.lockedOnOrigin ? this.phi : Math.PI - this.phi,
+			minY: 0.001 - this.worldSize / 2,
+			maxY: Math.PI - 0.001 + this.worldSize / 2,
+		});
 	}
 }

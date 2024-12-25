@@ -15,7 +15,7 @@ async function reset({ slide, duration })
 	const geometryData = new SL2RAxes();
 
 	applet.run(geometryData);
-	applet.changeResolution(1000);
+	applet.wilson.resizeCanvas({ width: 1000 });
 
 	await changeOpacity({
 		element: canvasBundle,

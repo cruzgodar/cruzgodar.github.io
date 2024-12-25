@@ -17,13 +17,17 @@ async function reset({ slide, forward, duration })
 		duration,
 	});
 
-	applet.setUniform("extrudedCubeWeight", 1);
-	applet.setUniform("mengerSpongeScale", 2.25);
+	applet.setUniforms({
+		extrudedCubeWeight: 1,
+		mengerSpongeScale: 2.25,
+	});
 
 	if (!forward)
 	{
-		applet.setUniform("extrudedCubeWeight", 0);
-		applet.setUniform("mengerSpongeWeight", 1);
+		applet.setUniforms({
+			extrudedCubeWeight: 0,
+			mengerSpongeWeight: 1,
+		});
 	}
 
 	addUniformLoop(
@@ -34,8 +38,6 @@ async function reset({ slide, forward, duration })
 			duration: 3000
 		})
 	);
-
-	applet.wilson.worldCenterY = -Math.PI / 2;
 }
 
 function showSponge({ forward, duration })

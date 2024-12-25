@@ -1,5 +1,5 @@
 import { applet, canvasBundle, initializeApplet } from "../index.js";
-import { ThurstonGeometry } from "/applets/thurston-geometries/scripts/class.js";
+import { ThurstonGeometries } from "/applets/thurston-geometries/scripts/class.js";
 import { H2xERooms } from "/applets/thurston-geometries/scripts/geometries/h2xe.js";
 import anime from "/scripts/anime.js";
 import { changeOpacity } from "/scripts/src/animation.js";
@@ -9,7 +9,7 @@ let geometryData;
 async function reset({ slide, forward, duration })
 {
 	await initializeApplet({
-		Class: ThurstonGeometry,
+		Class: ThurstonGeometries,
 		slide,
 		duration,
 	});
@@ -19,7 +19,7 @@ async function reset({ slide, forward, duration })
 	geometryData.aspectRatio = 95 / 55.625;
 
 	applet.run(geometryData);
-	applet.changeResolution(1000);
+	applet.wilson.resizeCanvas({ width: 1000 });
 	applet.moveForever({
 		speed: .5,
 		direction: forward ? () => [0, 1, 0, 0] : () => [0, 0, 0, 1]

@@ -68,7 +68,6 @@ export default [{
 		}],
 
 		"object-curly-spacing": ["warn", "always", {
-			arraysInObjects: false,
 			objectsInObjects: true,
 		}],
 

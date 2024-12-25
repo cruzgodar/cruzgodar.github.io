@@ -1,5 +1,5 @@
 import { showPage } from "../../../scripts/src/loadPage.js";
-import { ComplexMap } from "./class.js";
+import { ComplexMaps } from "./class.js";
 import { DownloadButton, GenerateButton } from "/scripts/src/buttons.js";
 import { Dropdown } from "/scripts/src/dropdowns.js";
 import { $ } from "/scripts/src/main.js";
@@ -9,7 +9,7 @@ import { Textarea } from "/scripts/src/textareas.js";
 
 export default function()
 {
-	const applet = new ComplexMap({
+	const applet = new ComplexMaps({
 		canvas: $("#output-canvas"),
 		generatingCode: "cexp(cinv(z))"
 	});
@@ -78,14 +78,22 @@ export default function()
 
 	function run()
 	{
-		applet.run({ generatingCode: glslTextarea.value });
+		applet.loadPromise.then(() =>
+		{
+			applet.run({
+				generatingCode: glslTextarea.value,
+				worldWidth: 4,
+				worldCenterX: 0,
+				worldCenterY: 0,
+			});
+		});
 	}
 
 	function changeResolution()
 	{
 		applet.resolution = resolutionInput.value * siteSettings.resolutionMultiplier;
 
-		applet.changeAspectRatio(true);
+		applet.wilson.resizeCanvas({ width: applet.resolution });
 	}
 
 	function onDropdownInput()

@@ -20,7 +20,7 @@ async function reset({ slide, forward, duration })
 	geometryData.aspectRatio = 95 / 55.625;
 
 	applet.run(geometryData);
-	applet.changeResolution(forward ? 800 : 400);
+	applet.wilson.resizeCanvas({ width: forward ? 800 : 400 });
 	applet.moveForever({
 		speed: .5,
 		direction: forward ? () => [0.525731, 0.850651, 0, 0] : () => [0, 0, 1, 0]
@@ -162,7 +162,7 @@ async function build3({ forward })
 
 	geometryData = applet.geometryData;
 
-	applet.changeResolution(forward ? 400 : 800);
+	applet.wilson.resizeCanvas({ width: forward ? 400 : 800 });
 
 	applet.moveForever({
 		speed: .4,

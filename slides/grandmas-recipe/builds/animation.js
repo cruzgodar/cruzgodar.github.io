@@ -16,16 +16,20 @@ async function reset({ lapsa, slide, duration })
 
 	slide.appendChild(canvasBundle);
 
-	applet.wilson.draggables.worldCoordinates = [[2, 0], [2, 0], [2, -2]];
-	applet.wilson.draggables.onResize();
+	applet.wilson.setDraggables({
+		ta: [2, 0],
+		tb: [2, 0],
+		tc: [2, -2]
+	});
 
-	applet.changeRecipe(0);
-
-
+	applet.changeRecipe("grandma");
 
 	applet.resolutionSmall = 500;
 	applet.resolutionLarge = 1500;
-	applet.changeAspectRatio();
+
+	applet.wilson.resizeCanvas({
+		width: applet.resolutionSmall
+	});
 
 
 
@@ -73,7 +77,11 @@ async function reset({ lapsa, slide, duration })
 			coordinate2[1] += keyFrames2[i][1] * scale;
 		}
 
-		applet.wilson.draggables.worldCoordinates = [coordinate1, coordinate2, [2, -2]];
+		applet.wilson.setDraggables({
+			ta: coordinate1,
+			tb: coordinate2,
+			tc: [2, -2]
+		});
 
 		frame++;
 

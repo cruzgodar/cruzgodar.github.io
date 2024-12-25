@@ -1,5 +1,5 @@
 import { showPage } from "../../../scripts/src/loadPage.js";
-import { GeneralizedJuliaSet } from "./class.js";
+import { GeneralizedJuliaSets } from "./class.js";
 import { getRandomGlsl } from "/scripts/applets/applet.js";
 import { DownloadButton, GenerateButton, ToggleButton } from "/scripts/src/buttons.js";
 import { Dropdown } from "/scripts/src/dropdowns.js";
@@ -18,11 +18,11 @@ export default function()
 		name0: "Pick Julia Set",
 		name1: "Return to Mandelbrot",
 		persistState: false,
-		onClick0: () => applet.switchJuliaMode(),
-		onClick1: () => applet.switchJuliaMode(),
+		onClick0: () => applet.advanceJuliaMode(),
+		onClick1: () => applet.advanceJuliaMode(),
 	});
 
-	applet = new GeneralizedJuliaSet({
+	applet = new GeneralizedJuliaSets({
 		canvas: $("#output-canvas"),
 		switchJuliaModeButton
 	});
@@ -43,13 +43,13 @@ export default function()
 	const examples =
 	{
 		mandelbrot: "cadd(cpow(z, 2.0), c)",
-		variedExponent: "cadd(cpow(z, 4.0), c)",
+		variedExponent: "cadd(cpow(z, draggableArg + vec2(3.0, 0.0)), c)",
 		trig: "csin(cmul(z, c))",
 		burningShip: "cadd(cpow(vec2(abs(z.x), -abs(z.y)), 2.0), c)",
 		rationalMap: "cadd(csub(cpow(z, 2.0), cmul(.05, cpow(z, -2.0))), c)",
 		mandelbrotDust: "cadd(csub(cpow(z, 2.0), vec2(0.0, cmul(.05, cpow(z, -2.0).y))), c)",
 		// eslint-disable-next-line max-len
-		vertebrae: "cdiv(cadd(cexp(cmul(c, z)), csub(cadd(z, z), cdiv(c, z))), ccos(csin(cdiv(c, vec2(z.y, z.x)))))"
+		vertebrae: "cdiv(cadd(cexp(cmul(c, z)), csub(cadd(z, z), cdiv(c, z))), ccos(csin(cdiv(c, vec2(z.y, z.x)))))",
 	};
 
 	const examplesDropdown = new Dropdown({
@@ -85,7 +85,7 @@ export default function()
 	const resolutionInput = new TextBox({
 		element: $("#resolution-input"),
 		name: "Resolution",
-		value: 500,
+		value: 1000,
 		minValue: 100,
 		maxValue: 2000,
 		onEnter: run,
@@ -102,16 +102,13 @@ export default function()
 		applet.run({
 			generatingCode: glslTextarea.value,
 			resolution: resolutionInput.value * siteSettings.resolutionMultiplier,
-			exposure: 1,
-			numIterations: 200
 		});
 	}
 
 	function changeResolution()
 	{
 		applet.resolution = resolutionInput.value * siteSettings.resolutionMultiplier;
-
-		applet.changeAspectRatio(true);
+		applet.wilson && applet.wilson.resizeCanvas({ width: applet.resolution });
 	}
 
 	function onDropdownInput()

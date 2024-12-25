@@ -2,9 +2,11 @@ import { showZoomCard } from "../src/cards.js";
 import { addHoverEventWithScale } from "../src/hoverEvents.js";
 import {
 	$,
-	addTemporaryListener,
-	pageElement
+	$$,
+	addTemporaryListener
 } from "../src/main.js";
+import { siteSettings } from "../src/settings.js";
+import { WilsonCPU, WilsonGPU } from "../wilson.js";
 
 // Each entry is an array beginning with the return type,
 // followed by the parameter types. The types are either "float" or "vec2",
@@ -37,6 +39,7 @@ export class Applet
 	canvas;
 	wilson;
 	wilsonForFullscreen;
+	wilsons = [];
 	allowFullscreenWithKeyboard = true;
 
 	fpsDisplayCtx;
@@ -48,15 +51,9 @@ export class Applet
 	numTouches = 0;
 	needNewFrame = false;
 
-	aspectRatio = 1;
-	nonFullscreenAspectRatio = 1;
-
 	constructor(canvas)
 	{
 		this.canvas = canvas;
-
-		this.pan.parent = this;
-		this.zoom.parent = this;
 
 		if (window.DEBUG)
 		{
@@ -73,6 +70,10 @@ export class Applet
 				}
 			}, 50);
 		}
+
+		this.addHoverEventOnFullscreenButton();
+
+		this.setReduceMotionOnWilsons();
 
 		currentlyLoadedApplets.push(this);
 	}
@@ -102,14 +103,9 @@ export class Applet
 			this.hiddenCanvasContainer.remove();
 		}
 
-		if (this.wilson)
+		for (const wilson of this.wilsons)
 		{
-			this.wilson.fullscreen.fullscreenComponentsContainerLocation.parentNode.insertBefore(
-				this.canvas,
-				this.wilson.fullscreen.fullscreenComponentsContainerLocation
-			);
-
-			this.wilson.fullscreen.fullscreenComponentsContainerLocation.remove();
+			wilson.destroy();
 		}
 
 		const vowel = ["a", "e", "i", "o", "u", "y"]
@@ -166,6 +162,11 @@ export class Applet
 		this.canvas.parentNode.insertBefore(fpsDisplayElement, this.canvas.nextElementSibling);
 
 		this.fpsDisplayCtx = fpsDisplayElement.getContext("2d");
+		
+		fpsDisplayElement.style.setProperty(
+			"view-transition-name",
+			"fps-canvas" + Math.random().toString(36).slice(2)
+		);
 
 		requestAnimationFrame(this.updateFpsDisplay.bind(this));
 	}
@@ -241,16 +242,19 @@ export class Applet
 		const hiddenCanvas = document.createElement("canvas");
 		hiddenCanvas.classList.add(hidden ? "hidden-canvas" : "output-canvas");
 
+		hiddenCanvas.style.width = "10px";
+		hiddenCanvas.style.height = "10px";
+
 		if (!this.hiddenCanvasContainer)
 		{
 			this.hiddenCanvasContainer = document.createElement("div");
-
-			if (hidden)
-			{
-				this.hiddenCanvasContainer.style.display = "none";
-			}
+			this.hiddenCanvasContainer.classList.add("temporary-element");
 			
-			pageElement.appendChild(this.hiddenCanvasContainer);
+			this.hiddenCanvasContainer.style.position = "fixed";
+			this.hiddenCanvasContainer.style.top = "0";
+			this.hiddenCanvasContainer.style.left = "-200vw";
+			
+			document.body.appendChild(this.hiddenCanvasContainer);
 		}
 
 		this.hiddenCanvasContainer.appendChild(hiddenCanvas);
@@ -258,13 +262,78 @@ export class Applet
 		return hiddenCanvas;
 	}
 
+	
 
+	addHoverEventOnFullscreenButton()
+	{
+		let attempts = 0;
+
+		const refreshId = setInterval(() =>
+		{
+			if (attempts > 40)
+			{
+				return;
+			}
+
+			attempts++;
+
+			const fullscreenButtons = $$(
+				".WILSON_enter-fullscreen-button, .WILSON_exit-fullscreen-button"
+			);
+
+			for (const button of fullscreenButtons)
+			{
+				addHoverEventWithScale({
+					element: button,
+					scale: 1.1,
+					addBounceOnTouch: () => true
+				});
+			}
+
+			if (fullscreenButtons.length !== 0)
+			{
+				clearInterval(refreshId);
+			}
+		}, 50);
+	}
+
+	setReduceMotionOnWilsons()
+	{
+		let attempts = 0;
+
+		const refreshId = setInterval(() =>
+		{
+			if (attempts > 40)
+			{
+				return;
+			}
+
+			attempts++;
+
+			this.wilsons = Object.values(this).filter(field =>
+			{
+				return field instanceof WilsonCPU || field instanceof WilsonGPU;
+			});
+
+			if (this.wilsons.length !== 0)
+			{
+				clearInterval(refreshId);
+
+				for (const wilson of this.wilsons)
+				{
+					wilson.reduceMotion = siteSettings.reduceMotion;
+				}
+			}
+		}, 50);
+	}
 
 	addHelpButton()
 	{
-		if (!this?.wilson?.outputCanvasContainer)
+		const outputCanvasContainer = this.wilson?.canvas?.parentElement;
+
+		if (!outputCanvasContainer)
 		{
-			return false;
+			return null;
 		}
 
 		const element = document.createElement("div");
@@ -272,7 +341,7 @@ export class Applet
 		element.innerHTML = /* html */`
 			<img src="/graphics/general-icons/help.webp" alt="Help" tabindex="0"></img>
 		`;
-		this.wilson.outputCanvasContainer.appendChild(element);
+		outputCanvasContainer.appendChild(element);
 
 		setTimeout(() =>
 		{
@@ -288,74 +357,15 @@ export class Applet
 			}));
 		}, 10);
 
-		return true;
+		return element;
 	}
 
-
-	onGrabCanvas()
-	{
-		this.pan.onGrabCanvas();
-		this.zoom.onGrabCanvas();
-	}
-
-	onDragCanvas(x, y, xDelta, yDelta)
-	{
-		this.pan.onDragCanvas(x, y, xDelta, yDelta);
-	}
-
-	onReleaseCanvas()
-	{
-		this.pan.onReleaseCanvas();
-		this.zoom.onReleaseCanvas();
-	}
-
-	onWheelCanvas(x, y, scrollAmount)
-	{
-		this.zoom.onWheelCanvas(x, y, scrollAmount);
-	}
-
-	onPinchCanvas(x, y, touchDistanceDelta)
-	{
-		this.zoom.onPinchCanvas(x, y, touchDistanceDelta);
-	}
-
-	handleKeydownEvent(e)
-	{
-		if (
-			document.activeElement.tagName === "INPUT"
-			|| document.activeElement.tagName === "TEXTAREA"
-		) {
-			return;
-		}
-		
-		const key = e.key.toLowerCase();
-
-		if (Object.prototype.hasOwnProperty.call(this.keysPressed, key))
-		{
-			e.preventDefault();
-
-			this.keysPressed[key] = true;
-		}
-	}
-
-	handleKeyupEvent(e)
-	{
-		const key = e.key.toLowerCase();
-
-		if (Object.prototype.hasOwnProperty.call(this.keysPressed, key))
-		{
-			e.preventDefault();
-
-			this.keysPressed[key] = false;
-		}
-	}
-
-	handleTouchStartEvent(e)
+	handleTouchstart(e)
 	{
 		this.numTouches = e.touches.length;
 	}
 
-	handleTouchEndEvent(e)
+	handleTouchend(e)
 	{
 		// Prevents abruptly moving back then forward.
 		if (this.numTouches >= 3 && e.touches.length === 2)
@@ -372,7 +382,7 @@ export class Applet
 
 	listenForKeysPressed(keys, callback = () => {})
 	{
-		function handleKeydownEvent(e)
+		function handleKeydown(e)
 		{
 			if (
 				document.activeElement.tagName === "INPUT"
@@ -395,7 +405,7 @@ export class Applet
 			}
 		}
 
-		function handleKeyupEvent(e)
+		function handleKeyup(e)
 		{
 			const key = e.key.toLowerCase();
 
@@ -416,13 +426,13 @@ export class Applet
 		addTemporaryListener({
 			object: document.documentElement,
 			event: "keydown",
-			callback: handleKeydownEvent.bind(this)
+			callback: handleKeydown.bind(this)
 		});
 
 		addTemporaryListener({
 			object: document.documentElement,
 			event: "keyup",
-			callback: handleKeyupEvent.bind(this)
+			callback: handleKeyup.bind(this)
 		});
 	}
 
@@ -440,593 +450,11 @@ export class Applet
 			callback: this.handleTouchEndEvent.bind(this)
 		});
 	}
-	
-	
-
-	changeAspectRatio(useZoomLevel = false, wilsons = [this.wilson])
-	{
-		wilsons.forEach(wilson =>
-		{
-			this.aspectRatio = wilson.fullscreen.currentlyFullscreen
-				? window.innerWidth / window.innerHeight
-				: this.nonFullscreenAspectRatio;
-
-			wilson.changeCanvasSize(
-				...getEqualPixelFullScreen(this.resolution, this.aspectRatio)
-			);
-
-			if (this.aspectRatio >= 1)
-			{
-				if (useZoomLevel)
-				{
-					wilson.worldWidth = 3 * Math.pow(2, this.zoom.level) * this.aspectRatio;
-					wilson.worldHeight = 3 * Math.pow(2, this.zoom.level);
-				}
-			}
-
-			else
-			{
-				if (useZoomLevel)
-				{
-					wilson.worldWidth = 3 * Math.pow(2, this.zoom.level);
-					wilson.worldHeight = 3 * Math.pow(2, this.zoom.level) / this.aspectRatio;
-				}
-			}
-		});
-
-		if (useZoomLevel)
-		{
-			this.zoom.clamp();
-		}
-
-		this.needNewFrame = true;
-	}
-
-
-
-	downloadFrame(filename)
-	{
-		this.wilson.downloadFrame(filename);
-	}
-
-
-
-	makeVideo(time)
-	{
-		const record = () =>
-		{
-			const recordedChunks = [];
-			return new Promise(resolve =>
-			{
-				const stream = this.canvas.captureStream(120);
-				const mediaRecorder = new MediaRecorder(
-					stream,
-					{ mimeType: "video/mp4", videoBitsPerSecond: Infinity }
-				);
-				
-				// ondataavailable will fire in interval of `time || 4000 ms`
-				mediaRecorder.start(time || 4000);
-
-				mediaRecorder.ondataavailable = function(event)
-				{
-					recordedChunks.push(event.data);
-					// after stop `dataavilable` event run one more time
-					if (mediaRecorder.state === "recording")
-					{
-						mediaRecorder.stop();
-					}
-
-				};
-
-				mediaRecorder.onstop = function()
-				{
-					const blob = new Blob(recordedChunks, { type: "video/mp4" });
-					const url = URL.createObjectURL(blob);
-					resolve(url);
-				};
-			});
-		};
-
-		const recording = record(10000);
-
-		const video = document.createElement("video");
-		pageElement.appendChild(video);
-		recording.then(url => video.setAttribute("src", url));
-
-		const link = document.createElement("a");
-		link.setAttribute("download","recordingVideo");
-		recording.then(url =>
-		{
-			link.setAttribute("href", url);
-			link.click();
-		});
-	}
-
-
-
-	pan = {
-		parent: null,
-
-		frame: 0,
-
-		minX: -Infinity,
-		maxX: Infinity,
-		minY: -Infinity,
-		maxY: Infinity,
-
-		velocityX: 0,
-		velocityY: 0,
-		nextVelocityX: 0,
-		nextVelocityY: 0,
-		velocityListLength: 4,
-		lastVelocitiesX: new Array(this.velocityListLength),
-		lastVelocitiesY: new Array(this.velocityListLength),
-
-		friction: .93,
-		velocityStartThreshhold: .005,
-		velocityStopThreshhold: .0005,
-
-		setBounds({
-			minX,
-			maxX,
-			minY,
-			maxY
-		}) {
-			this.minX = minX;
-			this.maxX = maxX;
-			this.minY = minY;
-			this.maxY = maxY;
-
-			this.parent.zoom.maxLevel = Math.log2(
-				Math.min(this.maxX - this.minX, this.maxY - this.minY) / 3
-			);
-
-			this.parent.zoom.clamp();
-		},
-
-		clamp()
-		{
-			if (this.parent.wilson.worldWidth > this.maxX - this.minX)
-			{
-				this.parent.wilson.worldCenterX = (this.maxX + this.minX) / 2;
-			}
-
-			else
-			{
-				const minWorldCenterX = this.minX + this.parent.wilson.worldWidth / 2;
-				const maxWorldCenterX = this.maxX - this.parent.wilson.worldWidth / 2;
-
-				this.parent.wilson.worldCenterX = Math.min(
-					Math.max(
-						this.parent.wilson.worldCenterX,
-						minWorldCenterX
-					),
-					maxWorldCenterX
-				);
-			}
-
-			if (this.parent.wilson.worldHeight > this.maxY - this.minY)
-			{
-				this.parent.wilson.worldCenterY = (this.maxY + this.minY) / 2;
-			}
-
-			else
-			{
-				const minWorldCenterY = this.minY + this.parent.wilson.worldHeight / 2;
-				const maxWorldCenterY = this.maxY - this.parent.wilson.worldHeight / 2;
-
-				this.parent.wilson.worldCenterY = Math.min(
-					Math.max(
-						this.parent.wilson.worldCenterY,
-						minWorldCenterY
-					),
-					maxWorldCenterY
-				);
-			}
-		},
-
-		onGrabCanvas()
-		{
-			this.velocityX = 0;
-			this.velocityY = 0;
-
-			for (let i = 0; i < this.velocityListLength; i++)
-			{
-				this.lastVelocitiesX[i] = 0;
-				this.lastVelocitiesY[i] = 0;
-			}
-
-			this.frame = 0;
-		},
-
-		onDragCanvas(x, y, xDelta, yDelta)
-		{
-			this.parent.wilson.worldCenterX -= xDelta;
-			this.parent.wilson.worldCenterY -= yDelta;
-
-			this.parent.needNewFrame = true;
-
-			this.clamp();
-
-			this.nextVelocityX = -xDelta / this.parent.wilson.worldWidth;
-			this.nextVelocityY = -yDelta / this.parent.wilson.worldHeight;
-		},
-
-		onReleaseCanvas()
-		{
-			// Find the max absolute value.
-			for (let i = 0; i < this.velocityListLength; i++)
-			{
-				if (Math.abs(this.lastVelocitiesX[i]) > Math.abs(this.velocityX))
-				{
-					this.velocityX = this.lastVelocitiesX[i];
-				}
-
-				if (Math.abs(this.lastVelocitiesY[i]) > Math.abs(this.velocityY))
-				{
-					this.velocityY = this.lastVelocitiesY[i];
-				}
-			}
-
-			const magnitude = this.velocityX * this.velocityX + this.velocityY * this.velocityY;
-
-			if (magnitude < this.velocityStartThreshhold * this.velocityStartThreshhold)
-			{
-				this.velocityX = 0;
-				this.velocityY = 0;
-				this.nextVelocityX = 0;
-				this.nextVelocityY = 0;
-
-				for (let i = 0; i < this.velocityListLength; i++)
-				{
-					this.lastVelocitiesX[i] = 0;
-					this.lastVelocitiesY[i] = 0;
-				}
-			}
-		},
-
-		// Call this in the drawFrame loop.
-		update(timeElapsed)
-		{
-			this.lastVelocitiesX[this.frame] = this.nextVelocityX;
-			this.lastVelocitiesY[this.frame] = this.nextVelocityY;
-
-			this.frame = (this.frame + 1) % this.velocityListLength;
-
-			// This ensures that velocities don't get double-counted.
-			this.nextVelocityX = 0;
-			this.nextVelocityY = 0;
-
-			const magnitude = this.velocityX * this.velocityX + this.velocityY * this.velocityY;
-
-			if (magnitude < this.velocityStopThreshhold * this.velocityStopThreshhold)
-			{
-				this.velocityX = 0;
-				this.velocityY = 0;
-			}
-
-			else
-			{
-				this.parent.needNewFrame = true;
-
-				this.parent.wilson.worldCenterX += this.velocityX
-					* this.parent.wilson.worldWidth * timeElapsed / 6.944;
-
-				this.parent.wilson.worldCenterY += this.velocityY
-					* this.parent.wilson.worldHeight * timeElapsed / 6.944;
-
-				this.clamp();
-
-				this.velocityX *= this.friction ** (timeElapsed / 6.944);
-				this.velocityY *= this.friction ** (timeElapsed / 6.944);
-			}
-
-			if (this.parent?.wilson?.draggables?.recalculateLocations)
-			{
-				this.parent.wilson.draggables.recalculateLocations();
-			}
-		}
-	};
-
-
-
-	zoom = {
-		parent: null,
-		frame: 0,
-
-		pinchMultiplier: 9,
-
-		level: 0,
-		maxLevel: Infinity,
-		minLevel: -Infinity,
-
-		fixedPointX: 0,
-		fixedPointY: 0,
-
-		velocity: 0,
-		nextVelocity: 0,
-		velocityListLength: 4,
-		lastVelocities: new Array(this.velocityListLength),
-
-		friction: .9,
-		velocityStartThreshhold: .001,
-		velocityStopThreshhold: .001,
-
-		init()
-		{
-			this.level = Math.log2(
-				Math.min(this.parent.wilson.worldWidth, this.parent.wilson.worldHeight) / 3
-			);
-		},
-
-		clamp()
-		{
-			const aspectRatio = this.parent.wilson.worldWidth / this.parent.wilson.worldHeight;
-			const maxWidth = this.parent.pan.maxX - this.parent.pan.minX;
-			const maxHeight = this.parent.pan.maxY - this.parent.pan.minY;
-
-			if (
-				this.parent.wilson.worldWidth > maxWidth
-				&& this.parent.wilson.worldHeight > maxHeight
-			) {
-				if (aspectRatio >= 1)
-				{
-					this.parent.wilson.worldWidth = maxWidth;
-
-					this.parent.wilson.worldHeight = this.parent.wilson.worldWidth / aspectRatio;
-				}
-				
-				else
-				{
-					this.parent.wilson.worldHeight = maxHeight;
-
-					this.parent.wilson.worldWidth = this.parent.wilson.worldHeight * aspectRatio;
-				}
-
-				this.level = Math.log2(
-					Math.min(this.parent.wilson.worldWidth, this.parent.wilson.worldHeight) / 3
-				);
-			}
-
-			this.level = Math.min(Math.max(this.level, this.minLevel), this.maxLevel);
-
-			this.parent.pan.clamp();
-		},
-
-		onGrabCanvas()
-		{
-			this.velocity = 0;
-
-			for (let i = 0; i < this.velocityListLength; i++)
-			{
-				this.lastVelocities[i] = 0;
-			}
-
-			this.frame = 0;
-		},
-
-		onWheelCanvas(x, y, scrollAmount)
-		{
-			this.parent.needNewFrame = true;
-
-			this.fixedPointX = x;
-			this.fixedPointY = y;
-
-			if (Math.abs(scrollAmount / 100) < .3)
-			{
-				this.level += scrollAmount / 100;
-			}
-
-			else
-			{
-				this.velocity += Math.sign(scrollAmount) * .085;
-			}
-
-			this.zoomCanvas();
-		},
-
-		onPinchCanvas(x, y, touchDistanceDelta)
-		{
-			this.parent.needNewFrame = true;
-			
-			if (this.parent.wilson.worldWidth >= this.parent.wilson.worldHeight)
-			{
-				this.level -= touchDistanceDelta / this.parent.wilson.worldWidth
-					* this.pinchMultiplier;
-
-				this.nextVelocity = -touchDistanceDelta / this.parent.wilson.worldWidth
-					* this.pinchMultiplier;
-			}
-
-			else
-			{
-				this.level -= touchDistanceDelta / this.parent.wilson.worldHeight
-					* this.pinchMultiplier;
-
-				this.nextVelocity = -touchDistanceDelta / this.parent.wilson.worldHeight
-					* this.pinchMultiplier;
-			}
-
-			this.fixedPointX = x;
-			this.fixedPointY = y;
-
-			this.zoomCanvas();
-		},
-
-		onReleaseCanvas()
-		{
-			// Find the max absolute value.
-			for (let i = 0; i < this.velocityListLength; i++)
-			{
-				if (Math.abs(this.lastVelocities[i]) > Math.abs(this.velocity))
-				{
-					this.velocity = this.lastVelocities[i];
-				}
-			}
-
-			if (Math.abs(this.velocity) < this.velocityStartThreshhold)
-			{
-				this.velocity = 0;
-				this.nextVelocity = 0;
-
-				for (let i = 0; i < this.velocityListLength; i++)
-				{
-					this.lastVelocities[i] = 0;
-				}
-			}
-		},
-
-		zoomCanvas()
-		{
-			this.clamp();
-
-			const aspectRatio = this.parent.wilson.worldWidth / this.parent.wilson.worldHeight;
-
-			if (aspectRatio >= 1)
-			{
-				const newWorldCenter = this.parent.wilson.input.getZoomedWorldCenter(
-					this.fixedPointX,
-					this.fixedPointY,
-					3 * Math.pow(2, this.level) * aspectRatio,
-					3 * Math.pow(2, this.level)
-				);
-
-				this.parent.wilson.worldWidth = 3 * Math.pow(2, this.level) * aspectRatio;
-				this.parent.wilson.worldHeight = 3 * Math.pow(2, this.level);
-
-				this.parent.wilson.worldCenterX = newWorldCenter[0];
-				this.parent.wilson.worldCenterY = newWorldCenter[1];
-			}
-
-			else
-			{
-				const newWorldCenter = this.parent.wilson.input.getZoomedWorldCenter(
-					this.fixedPointX,
-					this.fixedPointY,
-					3 * Math.pow(2, this.level),
-					3 * Math.pow(2, this.level) / aspectRatio
-				);
-
-				this.parent.wilson.worldWidth = 3 * Math.pow(2, this.level);
-				this.parent.wilson.worldHeight = 3 * Math.pow(2, this.level) / aspectRatio;
-
-				this.parent.wilson.worldCenterX = newWorldCenter[0];
-				this.parent.wilson.worldCenterY = newWorldCenter[1];
-			}
-		},
-
-		// Call this in the drawFrame loop.
-		update(timeElapsed)
-		{
-			this.lastVelocities[this.frame] = this.nextVelocity;
-
-			this.frame = (this.frame + 1) % this.velocityListLength;
-
-			// This ensures that velocities don't get double-counted.
-			this.nextVelocity = 0;
-
-			if (Math.abs(this.velocity) < this.velocityStopThreshhold)
-			{
-				this.velocity = 0;
-			}
-
-			else
-			{
-				this.level += this.velocity * timeElapsed / 6.944;
-
-				this.zoomCanvas();
-
-				this.velocity *= this.friction ** (timeElapsed / 6.944);
-
-				this.parent.needNewFrame = true;
-			}
-
-			if (this.parent?.wilson?.draggables?.recalculateLocations)
-			{
-				this.parent.wilson.draggables.recalculateLocations();
-			}
-		}
-	};
-
-
-
-	async createVideo({
-		perFrameCallback,
-		totalFrames,
-		fps
-	}) {
-		const module = await import("https://unpkg.com/mp4-wasm@1.0.6");
-		const MP4 = await module.loadMP4Module();
-		const encoder = MP4.createWebCodecsEncoder({
-			width: this.wilson.canvasWidth,
-			height: this.wilson.canvasHeight,
-			fps,
-			bitrate: 50_000_000
-		});
-
-		let frame = 0;
-
-		requestAnimationFrame(loop.bind(this));
-
-		async function loop()
-		{
-			if (frame < totalFrames)
-			{
-				console.log(`Encoding frame ${frame + 1} of ${totalFrames}`);
-
-				perFrameCallback(frame);
-
-				// Create a bitmap out of the frame
-				const bitmap = await createImageBitmap(this.canvas);
-
-				// Add bitmap to encoder
-				await encoder.addFrame(bitmap);
-
-				// Trigger next frame loop
-				frame++;
-				requestAnimationFrame(loop.bind(this));
-			}
-			
-			else
-			{
-				// Get an Uint8Array buffer
-				const buf = await encoder.end();
-				show(buf, this.wilson.canvasWidth, this.wilson.canvasHeight);
-				return;
-			}
-		}
-
-		function show(data, width, height)
-		{
-			const url = URL.createObjectURL(new Blob([data], { type: "video/mp4" }));
-			const video = document.createElement("video");
-			video.setAttribute("muted", "muted");
-			video.setAttribute("autoplay", "autoplay");
-			video.setAttribute("controls", "controls");
-			const min = Math.min(width, window.innerWidth, window.innerHeight);
-			const aspect = width / height;
-			const size = min * 0.75;
-			video.style.width = `${size}px`;
-			video.style.height = `${size / aspect}px`;
-
-			pageElement.appendChild(video);
-			video.src = url;
-
-			const text = document.createElement("div");
-			const anchor = document.createElement("a");
-			text.appendChild(anchor);
-			anchor.href = url;
-			anchor.id = "download";
-			anchor.textContent = "Click here to download MP4 file...";
-			anchor.download = "download.mp4";
-			pageElement.appendChild(text);
-		}
-	}
 }
 
 
 
-function hsvToRgb(h, s, v)
+export function hsvToRgb(h, s, v)
 {
 	function f(n)
 	{
@@ -1200,13 +628,6 @@ function componentToHex(c)
 export function rgbToHex(r, g, b)
 {
 	return "#" + componentToHex(r) + componentToHex(g) + componentToHex(b);
-}
-
-export function getEqualPixelFullScreen(resolution, aspectRatio)
-{
-	const sqrtAspectRatio = Math.sqrt(aspectRatio ?? (window.innerWidth / window.innerHeight));
-
-	return [Math.round(resolution * sqrtAspectRatio), Math.round(resolution / sqrtAspectRatio)];
 }
 
 // Turns expressions like 2(3x^2+1) into something equivalent

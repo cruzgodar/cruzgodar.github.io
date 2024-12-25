@@ -1,5 +1,5 @@
 import { showPage } from "../../../scripts/src/loadPage.js";
-import { QuaternionicJuliaSet } from "./class.js";
+import { QuaternionicJuliaSets } from "./class.js";
 import { Button, ToggleButton } from "/scripts/src/buttons.js";
 import { Checkbox } from "/scripts/src/checkboxes.js";
 import { $ } from "/scripts/src/main.js";
@@ -10,7 +10,7 @@ import { TextBox } from "/scripts/src/textBoxes.js";
 
 export default function()
 {
-	const applet = new QuaternionicJuliaSet({ canvas: $("#output-canvas") });
+	const applet = new QuaternionicJuliaSets({ canvas: $("#output-canvas") });
 
 	new ToggleButton({
 		element: $("#switch-bulb-button"),
@@ -100,7 +100,9 @@ export default function()
 
 	function changeResolution()
 	{
-		applet.changeResolution(resolutionInput.value * siteSettings.resolutionMultiplier);
+		applet.wilson.resizeCanvas({
+			width: resolutionInput.value * siteSettings.resolutionMultiplier
+		});
 	}
 
 	function onSliderInput()
@@ -111,7 +113,7 @@ export default function()
 			rhoSlider.value * Math.sin(phiSlider.value),
 		];
 
-		applet.setUniform("c", c);
+		applet.setUniforms({ c });
 
 		applet.needNewFrame = true;
 	}

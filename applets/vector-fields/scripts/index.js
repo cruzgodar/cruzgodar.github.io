@@ -1,6 +1,6 @@
 import { parseNaturalGlsl } from "../../../scripts/applets/applet.js";
 import { showPage } from "../../../scripts/src/loadPage.js";
-import { VectorField } from "./class.js";
+import { VectorFields } from "./class.js";
 import { DownloadButton, GenerateButton } from "/scripts/src/buttons.js";
 import { Checkbox } from "/scripts/src/checkboxes.js";
 import { Dropdown } from "/scripts/src/dropdowns.js";
@@ -12,9 +12,7 @@ import { Textarea } from "/scripts/src/textareas.js";
 
 export default function()
 {
-	const applet = new VectorField({ canvas: $("#output-canvas") });
-
-	applet.loadPromise.then(() => run());
+	const applet = new VectorFields({ canvas: $("#output-canvas") });
 
 	const resolutionInput = new TextBox({
 		element: $("#resolution-input"),
@@ -119,6 +117,8 @@ export default function()
 		onInput: onSliderInput
 	});
 
+	run();
+
 	showPage();
 
 	function run()
@@ -133,8 +133,6 @@ export default function()
 			maxParticles: Math.max(maxParticlesInput.value, 100),
 			dt: speedSlider.value / 300,
 			lifetime: Math.min(lifetimeInput.value, 255),
-			worldCenterX: 0,
-			worldCenterY: 0,
 			zoomLevel: .5
 		});
 	}

@@ -12,6 +12,7 @@ import { shadowsBuilds } from "./builds/shadows.js";
 import { sl2rBuilds } from "./builds/sl2r.js";
 import { sphereAndCubeBuilds } from "./builds/sphereAndCube.js";
 import { titleBuilds } from "./builds/title.js";
+import { ThurstonGeometries } from "/applets/thurston-geometries/scripts/class.js";
 import Lapsa from "/scripts/lapsa.js";
 import { changeOpacity } from "/scripts/src/animation.js";
 
@@ -30,7 +31,7 @@ export async function initializeApplet({
 	parameters = {},
 	slide,
 	duration,
-	resolution = 1000
+	resolution = 1000,
 }) {
 	await changeOpacity({
 		element: canvasBundle,
@@ -38,21 +39,32 @@ export async function initializeApplet({
 		duration: duration / 2
 	});
 
-	slide.appendChild(canvasBundle);
-
 	applet?.destroy && applet.destroy();
+
+	slide.appendChild(canvasBundle);
 
 	applet = new Class({
 		canvas: outputCanvas,
 		...parameters
 	});
-	applet.nonFullscreenAspectRatio = 16 / 9;
 
-	try {applet.changeResolution(resolution);}
-	// eslint-disable-next-line no-unused-vars
-	catch(ex) {/* Thurston Geometries don't have this */}
+	requestAnimationFrame(() =>
+	{
+		applet.wilson.resizeCanvas({ width: resolution });
+		applet.wilson.resizeWorld({ width: 2.5 });
 
-	document.body.querySelectorAll(".wilson-draggables-container")
+		if (!(applet instanceof ThurstonGeometries))
+		{
+			applet.wilson.setUniforms({
+				aspectRatio: [
+					95 / 55.625,
+					1,
+				],
+			});
+		}
+	});
+
+	document.body.querySelectorAll(".WILSON_draggables-container")
 		.forEach(element => element.classList.add("lapsa-interactable"));
 
 	changeOpacity({

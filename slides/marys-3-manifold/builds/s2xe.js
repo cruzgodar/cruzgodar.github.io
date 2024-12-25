@@ -22,7 +22,7 @@ async function reset({ slide, forward, duration })
 	}
 
 	applet.run(geometryData);
-	applet.changeResolution(1000);
+	applet.wilson.resizeCanvas({ width: 1000 });
 	
 	applet.moveForever({
 		speed: .5,

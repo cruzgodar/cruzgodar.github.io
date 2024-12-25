@@ -2,9 +2,17 @@ The <a href="/applets/barnsley-fern/">Barnsley fern</a> is an example of math im
 
 
 
+<div id="canvas-landscape">
+
+<div id="canvas-landscape-left"></div>
+
 <div id="canvas-landscape-middle">
 
 ### canvas
+
+</div>
+
+<div id="canvas-landscape-right"></div>
 
 </div>
 

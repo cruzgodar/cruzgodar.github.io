@@ -16,9 +16,7 @@ async function reset({ slide, duration })
 		duration,
 	});
 
-	applet.setUniform("mandelbulbWeight", 1);
-
-	applet.wilson.worldCenterY = -Math.PI / 2;
+	applet.setUniforms({ mandelbulbWeight: 1 });
 }
 
 export const mandelbulbBuilds =

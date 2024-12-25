@@ -253,6 +253,11 @@ export function getGlslBundle(codeString)
 	// First, we need to identify the keywords in the provided string.
 	const keywords = codeString.match(/[a-zA-Z_][a-zA-Z0-9_]*/g);
 
+	if (!keywords)
+	{
+		return "";
+	}
+
 	let bundle = "";
 
 	const filenames = Object.keys(glslFiles);

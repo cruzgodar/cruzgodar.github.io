@@ -1,40 +1,33 @@
-import { Applet } from "../../../scripts/applets/applet.js";
-import { convertColor } from "/scripts/src/browser.js";
+import { AnimationFrameApplet } from "/scripts/applets/animationFrameApplet.js";
 import { addTemporaryWorker } from "/scripts/src/main.js";
-import { Wilson } from "/scripts/wilson.js";
+import { WilsonCPU } from "/scripts/wilson.js";
 
 
-export class WilsonsAlgorithm extends Applet
+export class WilsonsAlgorithm extends AnimationFrameApplet
 {
 	webWorker;
-
-
+	maximumSpeed = false;
+	gridSize;
+	resolution = 1000;
+	imageData;
+	pixels = [];
 
 	constructor({ canvas })
 	{
 		super(canvas);
 
-		const options =
-		{
-			renderer: "cpu",
-
-			canvasWidth: 1000,
-			canvasHeight: 1000,
-
-
-
-			useFullscreen: true,
-
-			useFullscreenButton: true,
-
-			enterFullscreenButtonIconPath: "/graphics/general-icons/enter-fullscreen.png",
-			exitFullscreenButtonIconPath: "/graphics/general-icons/exit-fullscreen.png"
+		const options = {
+			canvasWidth: this.resolution,
+			fullscreenOptions: {
+				useFullscreenButton: true,
+				enterFullscreenButtonIconPath: "/graphics/general-icons/enter-fullscreen.png",
+				exitFullscreenButtonIconPath: "/graphics/general-icons/exit-fullscreen.png",
+			},
 		};
 
-		this.wilson = new Wilson(canvas, options);
+		this.wilson = new WilsonCPU(canvas, options);
+		this.canvas.style.imageRendering = "pixelated";
 	}
-
-
 
 	run({
 		gridSize,
@@ -44,53 +37,30 @@ export class WilsonsAlgorithm extends Applet
 	}) {
 		let timeoutId;
 
+		this.gridSize = gridSize;
+		this.resolution = noBorders ? gridSize : 2 * gridSize + 1;
+		this.maximumSpeed = maximumSpeed;
 
+		this.wilson.resizeCanvas({ width: this.resolution });
 
-		const canvasDim = noBorders ? gridSize : 2 * gridSize + 1;
-
-		// Make sure that there is a proper density of pixels
-		// so that the canvas doesn't look blurry.
-		const canvasPixels = Math.min(window.innerWidth, window.innerHeight);
-
-		let canvasScaleFactor = Math.ceil(canvasPixels / canvasDim) * 2;
-		
-		if (canvasScaleFactor * canvasDim > 5000)
+		this.imageData = new Uint8ClampedArray(this.resolution * this.resolution * 4);
+		for (let i = 0; i < this.resolution * this.resolution; i++)
 		{
-			canvasScaleFactor = 5000 / canvasDim;
+			this.imageData[4 * i + 3] = 255;
 		}
 
-		const resolution = canvasDim * canvasScaleFactor;
-
-		this.wilson.changeCanvasSize(resolution, resolution);
-
-		this.wilson.ctx.fillStyle = convertColor(0, 0, 0);
-		this.wilson.ctx.fillRect(
-			0,
-			0,
-			resolution,
-			resolution
-		);
-
-
+		this.pixels = [];
 
 		this.webWorker = addTemporaryWorker("/applets/wilsons-algorithm/scripts/worker.js");
-
-
 
 		this.webWorker.onmessage = e =>
 		{
 			clearTimeout(timeoutId);
-			this.wilson.ctx.fillStyle = convertColor(...(e.data[4] ?? [255, 255, 255]));
 
-			this.wilson.ctx.fillRect(
-				e.data[0] * canvasScaleFactor,
-				e.data[1] * canvasScaleFactor,
-				e.data[2] * canvasScaleFactor,
-				e.data[3] * canvasScaleFactor
-			);
+			this.pixels.push(...e.data);
+
+			this.needNewFrame = true;
 		};
-
-
 
 		// The worker has three seconds to draw its initial line.
 		// If it can't do that, we cancel it and spawn a new worker
@@ -99,11 +69,6 @@ export class WilsonsAlgorithm extends Applet
 		{
 			timeoutId = setTimeout(() =>
 			{
-				if (this.webWorker?.terminate)
-				{
-					this.webWorker.terminate();
-				}
-
 				this.run({
 					gridSize,
 					maximumSpeed,
@@ -113,8 +78,60 @@ export class WilsonsAlgorithm extends Applet
 			}, 3000);
 		}
 
+		this.webWorker.postMessage([gridSize, noBorders, reverseGenerateSkeleton]);
 
+		this.resume();
+	}
 
-		this.webWorker.postMessage([gridSize, maximumSpeed, noBorders, reverseGenerateSkeleton]);
+	drawFrame()
+	{
+		const numPixelsToDraw = this.maximumSpeed
+			? this.pixels.length
+			: Math.min(Math.ceil(this.gridSize * this.gridSize / 200), this.pixels.length);
+
+		if (this.pixels.length === 0)
+		{
+			return;
+		}
+
+		const firstColor = [
+			this.pixels[0][2][0],
+			this.pixels[0][2][1],
+			this.pixels[0][2][2]
+		];
+
+		if (
+			firstColor[0] !== 255
+			|| firstColor[1] !== 255
+			|| firstColor[2] !== 255
+		) {
+			this.maximumSpeed = true;
+		}
+
+		
+		let i;
+		for (i = 0; i < numPixelsToDraw; i++)
+		{
+			const index = this.pixels[i][0] * this.resolution + this.pixels[i][1];
+			this.imageData[4 * index] = this.pixels[i][2][0];
+			this.imageData[4 * index + 1] = this.pixels[i][2][1];
+			this.imageData[4 * index + 2] = this.pixels[i][2][2];
+
+			if (this.pixels[i][2][0] !== firstColor[0]
+				|| this.pixels[i][2][1] !== firstColor[1]
+				|| this.pixels[i][2][2] !== firstColor[2]
+			) {
+				break;
+			}
+		}
+
+		this.pixels.splice(0, i);
+
+		this.wilson.drawFrame(this.imageData);
+
+		if (this.pixels.length !== 0)
+		{
+			this.needNewFrame = true;
+		}
 	}
 }

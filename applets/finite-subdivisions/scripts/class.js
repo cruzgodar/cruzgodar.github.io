@@ -1,9 +1,10 @@
-import { Applet } from "../../../scripts/applets/applet.js";
+import { hsvToRgb } from "../../../scripts/applets/applet.js";
+import { AnimationFrameApplet } from "/scripts/applets/animationFrameApplet.js";
 import { convertColor } from "/scripts/src/browser.js";
 import { addTemporaryWorker } from "/scripts/src/main.js";
-import { Wilson } from "/scripts/wilson.js";
+import { WilsonCPU } from "/scripts/wilson.js";
 
-export class FiniteSubdivision extends Applet
+export class FiniteSubdivisions extends AnimationFrameApplet
 {
 	resolution = 3000;
 
@@ -12,6 +13,7 @@ export class FiniteSubdivision extends Applet
 
 	webWorker;
 	polygons;
+	linesToDraw = [];
 
 
 
@@ -19,31 +21,22 @@ export class FiniteSubdivision extends Applet
 	{
 		super(canvas);
 
-		const options =
-		{
-			renderer: "cpu",
-
+		const options = {
 			canvasWidth: this.resolution,
-			canvasHeight: this.resolution,
+			draggableOptions: {
+				callbacks: {
+					drag: this.onDragDraggable.bind(this),
+				}
+			},
 
-
-			useDraggables: true,
-
-			draggablesMousemoveCallback: this.onDragDraggable.bind(this),
-			draggablesTouchmoveCallback: this.onDragDraggable.bind(this),
-
-
-			useFullscreen: true,
-
-			useFullscreenButton: true,
-
-			enterFullscreenButtonIconPath: "/graphics/general-icons/enter-fullscreen.png",
-			exitFullscreenButtonIconPath: "/graphics/general-icons/exit-fullscreen.png",
-
-			switchFullscreenCallback: () => this.wilson.draggables.recalculateLocations()
+			fullscreenOptions: {
+				useFullscreenButton: true,
+				enterFullscreenButtonIconPath: "/graphics/general-icons/enter-fullscreen.png",
+				exitFullscreenButtonIconPath: "/graphics/general-icons/exit-fullscreen.png",
+			},
 		};
 
-		this.wilson = new Wilson(canvas, options);
+		this.wilson = new WilsonCPU(canvas, options);
 	}
 
 
@@ -53,36 +46,30 @@ export class FiniteSubdivision extends Applet
 		numIterations,
 	}) {
 		this.webWorker?.terminate && this.webWorker.terminate();
+		this.pause();
 
-		if (this.numVertices !== numVertices)
-		{
-			this.numVertices = numVertices;
-			
-			for (const draggable of this.wilson.draggables.draggables)
+		this.numVertices = numVertices;
+
+		const vertexIds = Array(this.numVertices).fill(0).map((_, i) => `vertex${i}`);
+
+		const draggableIdsToRemove = Object.keys(this.wilson.draggables)
+			.filter(id => !vertexIds.includes(id));
+		this.wilson.removeDraggables(draggableIdsToRemove);
+		
+		
+		
+		this.polygons = this.getDefaultPolygons();
+
+		const vertices = Object.fromEntries(
+			vertexIds.map((id, index) =>
 			{
-				draggable.remove();
-			}
+				return [id, this.wilson.interpolateCanvasToWorld(this.polygons[0][index])];
+			})
+		);
 
-			this.wilson.draggables.numDraggables = 0;
-			this.wilson.draggables.draggables = [];
-			this.wilson.draggables.worldCoordinates = [];
-
-			this.polygons = this.getDefaultPolygons();
-
-			for (const vertex of this.polygons[0])
-			{
-				this.wilson.draggables.add(
-					...this.wilson.utils.interpolate.canvasToWorld(vertex[0], vertex[1])
-				);
-			}
-		}
+		this.wilson.setDraggables(vertices);
 
 		this.numIterations = numIterations;
-
-
-
-		this.wilson.changeCanvasSize(this.resolution, this.resolution);
-
 		this.wilson.ctx.lineWidth = Math.max(10 - this.numIterations, 1);
 
 		this.drawPreviewPolygon();
@@ -93,16 +80,14 @@ export class FiniteSubdivision extends Applet
 		this.wilson.ctx.fillStyle = convertColor(0, 0, 0);
 		this.wilson.ctx.fillRect(0, 0, this.resolution, this.resolution);
 
+		this.linesToDraw = [];
+
 		this.webWorker = addTemporaryWorker("/applets/finite-subdivisions/scripts/worker.js");
 		
 		this.webWorker.onmessage = (e) =>
 		{
-			this.wilson.ctx.strokeStyle = convertColor(...e.data[4]);
-
-			this.wilson.ctx.beginPath();
-			this.wilson.ctx.moveTo(e.data[1], e.data[0]);
-			this.wilson.ctx.lineTo(e.data[3], e.data[2]);
-			this.wilson.ctx.stroke();
+			this.linesToDraw.push(e.data);
+			this.needNewFrame = true;
 		};
 
 		this.webWorker.postMessage([
@@ -110,15 +95,33 @@ export class FiniteSubdivision extends Applet
 			this.numIterations,
 			this.polygons
 		]);
+
+		this.resume();
+	}
+
+	drawFrame()
+	{
+		for (const line of this.linesToDraw)
+		{
+			this.wilson.ctx.strokeStyle = convertColor(...line[4]);
+
+			this.wilson.ctx.beginPath();
+			this.wilson.ctx.moveTo(line[1], line[0]);
+			this.wilson.ctx.lineTo(line[3], line[2]);
+			this.wilson.ctx.stroke();
+		}
+
+		this.linesToDraw = [];
 	}
 
 
 
-	onDragDraggable(activeDraggable, x, y)
+	onDragDraggable({ id, x, y })
 	{
 		this.webWorker?.terminate && this.webWorker.terminate();
 
-		this.polygons[0][activeDraggable] = this.wilson.utils.interpolate.worldToCanvas(x, y);
+		const index = id.slice(6);
+		this.polygons[0][index] = this.wilson.interpolateWorldToCanvas([x, y]);
 
 		this.drawPreviewPolygon();
 	}
@@ -160,7 +163,7 @@ export class FiniteSubdivision extends Applet
 
 		for (let j = 0; j < this.numVertices; j++)
 		{
-			const rgb = this.wilson.utils.hsvToRgb((2 * j + 1) / (2 * this.numVertices), 1, 1);
+			const rgb = hsvToRgb((2 * j + 1) / (2 * this.numVertices), 1, 1);
 
 			this.wilson.ctx.strokeStyle = convertColor(...rgb);
 
@@ -217,7 +220,7 @@ export class FiniteSubdivision extends Applet
 
 		for (let j = 0; j < newLines.length; j++)
 		{
-			const rgb = this.wilson.utils.hsvToRgb(j / newLines.length, 1, 1);
+			const rgb = hsvToRgb(j / newLines.length, 1, 1);
 
 			this.wilson.ctx.strokeStyle = convertColor(...rgb);
 
