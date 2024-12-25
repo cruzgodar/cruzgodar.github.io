@@ -369,6 +369,6 @@ export class BarnsleyFern extends AnimationFrameApplet
 	{
 		this.pause();
 
-		await new Promise(resolve => setTimeout(resolve, 16));
+		await new Promise(resolve => setTimeout(resolve, 33));
 	}
 }

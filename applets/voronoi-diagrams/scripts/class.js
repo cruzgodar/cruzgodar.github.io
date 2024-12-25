@@ -11,6 +11,7 @@ import { WilsonGPU } from "/scripts/wilson.js";
 export class VoronoiDiagrams extends Applet
 {
 	wilsonHidden;
+	anime;
 
 	lastTimestamp = -1;
 	currentlyAnimating = false;
@@ -55,6 +56,8 @@ export class VoronoiDiagrams extends Applet
 			},
 
 			fullscreenOptions: {
+				onSwitch: this.switchFullscreen.bind(this),
+				beforeSwitch: this.beforeSwitchFullscreen.bind(this),
 				useFullscreenButton: true,
 				enterFullscreenButtonIconPath: "/graphics/general-icons/enter-fullscreen.png",
 				exitFullscreenButtonIconPath: "/graphics/general-icons/exit-fullscreen.png"
@@ -157,7 +160,7 @@ export class VoronoiDiagrams extends Applet
 			return;
 		}
 
-		anime({
+		this.anime = anime({
 			targets: dummy,
 			t: 1,
 			pointOpacity: this.drawPoints ? 1 : -0.5,
@@ -182,6 +185,8 @@ export class VoronoiDiagrams extends Applet
 				{
 					return;
 				}
+
+				this.anime = null;
 
 				this.currentlyAnimating = false;
 			}
@@ -565,5 +570,17 @@ export class VoronoiDiagrams extends Applet
 		{
 			this.drawFrame();
 		}
+	}
+
+	switchFullscreen()
+	{
+		this.anime?.play && this.anime.play();
+	}
+
+	async beforeSwitchFullscreen()
+	{
+		this.anime?.pause && this.anime.pause();
+
+		await new Promise(resolve => setTimeout(resolve, 33));
 	}
 }
