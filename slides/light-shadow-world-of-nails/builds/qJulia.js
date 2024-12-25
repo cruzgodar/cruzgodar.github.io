@@ -16,9 +16,7 @@ async function reset({ slide, duration })
 		duration,
 	});
 
-	applet.setUniform("qJuliaWeight", 1);
-
-	applet.wilson.worldCenterY = -Math.PI / 2;
+	applet.setUniforms({ qJuliaWeight: 1 });
 }
 
 export const qJuliaBuilds =

@@ -407,8 +407,9 @@ class Wilson {
         document.removeEventListener("gesturestart", __classPrivateFieldGet(this, _Wilson_preventGestures, "f"));
         document.removeEventListener("gesturechange", __classPrivateFieldGet(this, _Wilson_preventGestures, "f"));
         document.removeEventListener("gestureend", __classPrivateFieldGet(this, _Wilson_preventGestures, "f"));
-        __classPrivateFieldGet(this, _Wilson_fullscreenContainerLocation, "f").parentElement
-            && __classPrivateFieldGet(this, _Wilson_fullscreenContainerLocation, "f").parentElement.insertBefore(this.canvas, __classPrivateFieldGet(this, _Wilson_fullscreenContainerLocation, "f"));
+        if (__classPrivateFieldGet(this, _Wilson_fullscreenContainerLocation, "f") && __classPrivateFieldGet(this, _Wilson_fullscreenContainerLocation, "f").parentElement) {
+            __classPrivateFieldGet(this, _Wilson_fullscreenContainerLocation, "f").parentElement.insertBefore(this.canvas, __classPrivateFieldGet(this, _Wilson_fullscreenContainerLocation, "f"));
+        }
         __classPrivateFieldGet(this, _Wilson_fullscreenContainerLocation, "f").remove();
     }
     resizeCanvas(dimensions) {

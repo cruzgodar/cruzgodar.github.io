@@ -24,17 +24,15 @@ async function reset({ slide, forward, duration })
 		"pointLightAmount",
 		"softShadowAmount",
 		"reflectivityAmount",
-	].forEach(name => applet.setUniform(name, 1));
+	].forEach(name => applet.setUniforms({ [name]: 1 }));
 
 	if (!forward)
 	{
 		for (const name of uniforms)
 		{
-			applet.setUniform(name, 1);
+			applet.setUniforms({ [name]: 1 });
 		}
 	}
-
-	applet.wilson.worldCenterY = -Math.PI / 2;
 }
 
 const builds = Object.fromEntries(

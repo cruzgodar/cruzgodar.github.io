@@ -1430,7 +1430,7 @@ export class RaymarchApplet extends AnimationFrameApplet
 		value,
 		duration = 1000
 	}) {
-		const dummy = { t: this.uniforms[name][1] };
+		const dummy = { t: this.uniforms[name] };
 
 		return anime({
 			targets: dummy,

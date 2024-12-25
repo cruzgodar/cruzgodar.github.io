@@ -73,6 +73,8 @@ export class Applet
 
 		this.addHoverEventOnFullscreenButton();
 
+		this.setReduceMotionOnWilsons();
+
 		currentlyLoadedApplets.push(this);
 	}
 
@@ -308,7 +310,7 @@ export class Applet
 
 			attempts++;
 
-			this.wilsonsForReduceMotion = Object.values(this).filter(field =>
+			this.wilsons = Object.values(this).filter(field =>
 			{
 				return field instanceof WilsonCPU || field instanceof WilsonGPU;
 			});

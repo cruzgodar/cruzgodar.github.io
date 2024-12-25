@@ -25,8 +25,6 @@ async function reset({ slide, duration })
 		extrudedCubeWeight: 1,
 	});
 
-	applet.wilson.worldCenterY = -Math.PI / 2;
-
 	addUniformLoop(
 		applet.loopUniform({
 			name: "extrudedCubeSeparation",

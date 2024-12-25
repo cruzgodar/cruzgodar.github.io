@@ -16,9 +16,7 @@ async function reset({ slide, duration })
 		duration,
 	});
 
-	applet.setUniform("kIFSWeight", 1);
-
-	applet.wilson.worldCenterY = -Math.PI / 2;
+	applet.setUniforms({ kIFSWeight: 1 });
 }
 
 export const kIFSBuilds =

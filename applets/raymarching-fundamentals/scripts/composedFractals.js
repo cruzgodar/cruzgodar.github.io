@@ -253,7 +253,7 @@ export class ComposedFractals extends RaymarchApplet
 			uniform float extrudedCubeSeparation;
 			uniform float mengerSpongeWeight;
 			uniform float mengerSpongeScale;
-			uniform float rotationMatrix;
+			uniform mat3 rotationMatrix;
 			uniform float kIFSWeight;
 			uniform float mandelbulbWeight;
 			uniform float qJuliaWeight;
@@ -270,10 +270,9 @@ export class ComposedFractals extends RaymarchApplet
 
 			...(includeSphere ? { sphereWeight: 1 } : {}),
 
-			extrudedCubeWeight: 0,
-			extrudedCubeSeparation: 1.5,
+			...(includeExtrudedCube ? { extrudedCubeWeight: 0, extrudedCubeSeparation: 1.5 } : {}),
 
-			...(includeMengerSponge ? { mengerSpongeWeight: 1, mengerSpongeScale: 3 } : {}),
+			...(includeMengerSponge ? { mengerSpongeWeight: 0, mengerSpongeScale: 3 } : {}),
 			
 			...(includeRotationMatrix ? { rotationMatrix: [[1, 0, 0], [0, 1, 0], [0, 0, 1]] } : {}),
 
@@ -295,7 +294,7 @@ export class ComposedFractals extends RaymarchApplet
 			maxMarches: 192,
 			cameraPos: [1, 1, 1],
 			theta: 1.25 * Math.PI,
-			phi: 2.1539,
+			phi: Math.PI / 2,
 			lockedOnOrigin: false,
 			lockZ: 1,
 			fogColor: [0.6, 0.73, 0.87],
@@ -306,13 +305,6 @@ export class ComposedFractals extends RaymarchApplet
 		});
 
 		this.includeRotationMatrix = includeRotationMatrix;
-
-		this.wilson.setUniforms({
-			aspectRatio: [
-				Math.max(1, this.wilson.canvasWidth / this.wilson.canvasHeight),
-				Math.max(1, 1 / this.wilson.canvasWidth / this.wilson.canvasHeight)
-			],
-		});
 	}
 
 	distanceEstimator()
