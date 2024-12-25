@@ -425,8 +425,10 @@ export class GeneralizedJuliaSets extends AnimationFrameApplet
 		}
 	}
 
-	onTouchmove({ x, y })
+	onTouchmove({ x, y, event })
 	{
+		event.preventDefault();
+		
 		if (this.juliaMode === "juliaPicker")
 		{
 			this.c = [x, y];

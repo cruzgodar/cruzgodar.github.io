@@ -387,7 +387,7 @@ export async function toggleReduceMotion()
 
 	currentlyLoadedApplets.forEach(applet =>
 	{
-		for (const wilson of applet.wilsonsForReduceMotion)
+		for (const wilson of applet.wilsons)
 		{
 			wilson.reduceMotion = siteSettings.reduceMotion;
 		}
