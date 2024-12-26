@@ -71,8 +71,12 @@ export async function redirect({
 
 	// If we're going somewhere outside of the site,
 	// open it in a new tab and don't screw with the opacity.
-	if (inNewTab || url.indexOf("http") !== -1 || url.slice(-4) == ".pdf")
-	{
+	if (
+		inNewTab
+		|| url.indexOf("http") !== -1
+		|| url.indexOf("mailto:") !== -1
+		|| url.slice(-4) == ".pdf"
+	) {
 		window.open(url, "_blank");
 		return;
 	}
