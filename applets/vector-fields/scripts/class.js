@@ -391,7 +391,6 @@ export class VectorFields extends AnimationFrameApplet
 			needDraggable ? "block" : "none";
 
 		this.generateNewField({
-			resolution,
 			maxParticles,
 			dt,
 			lifetime,
@@ -463,7 +462,6 @@ export class VectorFields extends AnimationFrameApplet
 
 
 	async generateNewField({
-		resolution = this.resolution,
 		maxParticles = this.maxParticles,
 		dt = this.dt,
 		lifetime = this.lifetime,
@@ -473,7 +471,6 @@ export class VectorFields extends AnimationFrameApplet
 	}) {
 		await this.loadPromise;
 
-		this.resolution = resolution;
 		this.maxParticles = maxParticles;
 		this.dt = dt;
 		this.lifetime = lifetime;
