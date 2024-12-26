@@ -139,7 +139,10 @@ home Cruz Godar
 			notes/15-newtons-method Section 15: Newton's Method
 			
 		uo/243 Math 243
+		
 		uo/112 Math 112
+			notes/1-transformations Section 1: Transformations
+		
 		uo/111 Math 111
 		uo/105 Math 105
 	

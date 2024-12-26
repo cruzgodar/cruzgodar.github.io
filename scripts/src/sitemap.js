@@ -1589,7 +1589,21 @@ export const sitemap =
 		
 		"parent": "/teaching/",
 		
-		"children": []
+		"children":
+		[
+			"/teaching/uo/112/notes/1-transformations/"
+		]
+	},
+		
+	"/teaching/uo/112/notes/1-transformations/":
+	{
+		"title": "Section 1: Transformations",
+		
+		"parent": "/teaching/uo/112/",
+		
+		"children": [],
+
+		"customScript": true
 	},
 	
 	"/teaching/uo/111/":

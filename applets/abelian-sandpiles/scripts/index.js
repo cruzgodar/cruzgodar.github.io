@@ -9,8 +9,8 @@ const palettes = {
 	sakura: [[229, 190, 237], [149, 147, 217], [124, 144, 219]],
 	desert: [[124, 106, 10], [186, 189, 141], [255, 218, 198]],
 	nectarine: [[232, 247, 238], [184, 196, 187], [102, 63, 70]],
-	ivory: [[32, 44, 57], [40, 56, 69], [184, 176, 141]],
-	lichen: [[35, 44, 51], [90, 125, 124], [218, 223, 247]]
+	parchment: [[32, 44, 57], [40, 56, 69], [184, 176, 141]],
+	ivory: [[35, 44, 51], [90, 125, 124], [218, 223, 247]]
 };
 
 export default function()
@@ -24,8 +24,8 @@ export default function()
 			nectarine: "Nectarine",
 			desert: "Desert",
 			sakura: "Sakura",
-			ivory: "Ivory",
-			lichen: "Lichen"
+			parchment: "Parchment",
+			ivory: "Ivory"
 		},
 		onChange: run
 	});
