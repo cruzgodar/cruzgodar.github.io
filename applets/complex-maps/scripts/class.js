@@ -175,7 +175,7 @@ export class ComplexMaps extends AnimationFrameApplet
 			
 			${getGlslBundle(generatingCode)}
 			
-			vec3 hsv2rgb(vec3 c)
+			vec3 hsvToRgb(vec3 c)
 			{
 				vec4 K = vec4(1.0, 2.0 / 3.0, 1.0 / 3.0, 3.0);
 				vec3 p = abs(fract(c.xxx + K.xyz) * 6.0 - K.www);
@@ -201,7 +201,7 @@ export class ComplexMaps extends AnimationFrameApplet
 				float s = clamp(1.0 / (1.0 + .01 * (modulus / whitePoint / whitePoint)), 0.0, 1.0);
 				float v = clamp(1.0 / (1.0 + .01 / (modulus * blackPoint * blackPoint)), 0.0, 1.0);
 				
-				gl_FragColor = vec4(hsv2rgb(vec3(h, s, v)), 1.0);
+				gl_FragColor = vec4(hsvToRgb(vec3(h, s, v)), 1.0);
 			}
 		`;
 

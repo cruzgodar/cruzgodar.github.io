@@ -50,7 +50,7 @@ export class KickedRotator extends AnimationFrameApplet
 			uniform sampler2D uTexture;
 			uniform float maxBrightness;
 
-			vec3 hsv2rgb(vec3 c)
+			vec3 hsvToRgb(vec3 c)
 			{
 				vec4 K = vec4(1.0, 2.0 / 3.0, 1.0 / 3.0, 3.0);
 				vec3 p = abs(fract(c.xxx + K.xyz) * 6.0 - K.www);
@@ -64,7 +64,7 @@ export class KickedRotator extends AnimationFrameApplet
 					0.475
 				) * 2.25;
 				
-				gl_FragColor = vec4(hsv2rgb(vec3(
+				gl_FragColor = vec4(hsvToRgb(vec3(
 					atan(uv.x, uv.y) / 6.283,
 					min(length(uv) * 1.5, 1.0),
 					state))

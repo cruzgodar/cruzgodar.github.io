@@ -350,7 +350,7 @@ export class VectorFields extends AnimationFrameApplet
 
 			uniform vec2 stepSize;
 			
-			vec3 hsv2rgb(vec3 c)
+			vec3 hsvToRgb(vec3 c)
 			{
 				vec4 K = vec4(1.0, 2.0 / 3.0, 1.0 / 3.0, 3.0);
 				vec3 p = abs(fract(c.xxx + K.xyz) * 6.0 - K.www);
@@ -361,7 +361,7 @@ export class VectorFields extends AnimationFrameApplet
 			{
 				vec3 v = texture2D(uTexture, (vec2(1.0 + uv.x, 1.0 - uv.y)) / 2.0).xyz;
 
-				return hsv2rgb(vec3(v.y, v.z, v.x / maxBrightness));
+				return hsvToRgb(vec3(v.y, v.z, v.x / maxBrightness));
 			}
 			
 			void main(void)
@@ -872,7 +872,7 @@ export class VectorFields extends AnimationFrameApplet
 			this.wilsonPanZoomDim.exitFullscreen();
 		}
 
-		this.generateNewField({});
+		requestAnimationFrame(() => this.generateNewField({}));
 	}
 
 	async beforeSwitchFullscreen()

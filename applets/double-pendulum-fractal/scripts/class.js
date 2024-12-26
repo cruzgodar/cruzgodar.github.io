@@ -106,7 +106,7 @@ export class DoublePendulumFractal extends AnimationFrameApplet
 			
 			
 			
-			vec3 hsv2rgb(vec3 c)
+			vec3 hsvToRgb(vec3 c)
 			{
 				vec4 K = vec4(1.0, 2.0 / 3.0, 1.0 / 3.0, 3.0);
 				vec3 p = abs(fract(c.xxx + K.xyz) * 6.0 - K.www);
@@ -127,7 +127,7 @@ export class DoublePendulumFractal extends AnimationFrameApplet
 				
 				float v = min(2.0 * length(state.zw) + vAdd * (1.0 - movementAdjust), 1.0);
 				
-				vec3 rgb = hsv2rgb(vec3(h, s, v));
+				vec3 rgb = hsvToRgb(vec3(h, s, v));
 				
 				gl_FragColor = vec4(rgb, 1.0);
 			}

@@ -75,7 +75,7 @@ export class SortingAlgorithms extends AnimationFrameApplet
 			
 			
 			
-			vec3 hsv2rgb(vec3 c)
+			vec3 hsvToRgb(vec3 c)
 			{
 				vec4 K = vec4(1.0, 2.0 / 3.0, 1.0 / 3.0, 3.0);
 				vec3 p = abs(fract(c.xxx + K.xyz) * 6.0 - K.www);
@@ -121,7 +121,7 @@ export class SortingAlgorithms extends AnimationFrameApplet
 					
 					float v = clamp((1.0 - length(uv) / circleSize) * 300.0, 0.0, 1.0);
 					
-					gl_FragColor = vec4(hsv2rgb(vec3(h, s, v)), 1.0);
+					gl_FragColor = vec4(hsvToRgb(vec3(h, s, v)), 1.0);
 				}
 			}
 		`;
