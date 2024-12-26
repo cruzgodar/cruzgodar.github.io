@@ -37,7 +37,7 @@ export default function()
 	const resolutionInput = new TextBox({
 		element: $("#resolution-input"),
 		name: "Resolution",
-		value: 1000,
+		value: 500,
 		minValue: 100,
 		maxValue: 2000,
 		onInput: changeResolution

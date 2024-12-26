@@ -17,7 +17,7 @@ export default function()
 	const resolutionInput = new TextBox({
 		element: $("#resolution-input"),
 		name: "Resolution",
-		value: 750,
+		value: 500,
 		minValue: 100,
 		maxValue: 1500,
 		onInput: run
@@ -26,7 +26,7 @@ export default function()
 	const maxParticlesInput = new TextBox({
 		element: $("#max-particles-input"),
 		name: "Particles",
-		value: 10000,
+		value: 6000,
 		minValue: 1000,
 		maxValue: 20000,
 		onInput: generateNewField

@@ -196,7 +196,7 @@ export class VectorFields extends AnimationFrameApplet
 	async run({
 		generatingCode,
 		resolution = 500,
-		maxParticles = 10000,
+		maxParticles = 6000,
 		dt = .00375,
 		lifetime = 150,
 		worldWidth = 2 * Math.PI,

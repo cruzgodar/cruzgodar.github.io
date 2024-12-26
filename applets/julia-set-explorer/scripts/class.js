@@ -13,7 +13,7 @@ export class JuliaSetExplorer extends AnimationFrameApplet
 	pastBrightnessScales = [];
 	c = [0, 0];
 
-	resolution = 1000;
+	resolution = 500;
 	resolutionHidden = 50;
 
 
