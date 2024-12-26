@@ -1,6 +1,6 @@
-Some of the coding projects that I've made and thought others might enjoy. Have a look at the <a href="https://github.com/cruzgodar/cruzgodar.github.io/tree/main/applets">code</a> if you're interested in how these work.
+Some of the coding projects that I've made and thought others might enjoy. Have a look at the <a href="https://github.com/cruzgodar/cruzgodar.github.io/tree/main/applets">code</a> if you're interested in how these work. Everything here was made with <a href="https://github.com/cruzgodar/wilson">Wilson</a>, a library I wrote to make polished, interactive, parallized web applets easier to create.
 	
-Stills and animations from these applets have been featured in the <a href="https://gallery.bridgesmathart.org/exhibitions/2022-bridges-conference">2022</a>, <a href="https://gallery.bridgesmathart.org/exhibitions/2023-bridges-conference">2023</a>, and <a href="https://gallery.bridgesmathart.org/exhibitions/bridges-2024-exhibition-of-mathematical-art">2024</a> Bridges conferences, the <a href="https://mpembed.com/show/?m=FGvT8EzPQpy&mpu=885">Jordan Schnitzer Museum of Art</a>, the <a href="https://www.facebook.com/visualartsteam/videos/4909794042367446/">Erb Memorial Union</a>, the <a href="https://www.artscioregon.com/2020-gallery">2020 UO Research as Art Competition</a>, the <a href="https://www.girlsangle.org/page/bulletin-archive/GABv15n01E.pdf">Girls' Angle Bulletin magazine</a>, and UO's University Hall. 
+Stills and animations from these applets have been featured in the <a href="https://gallery.bridgesmathart.org/exhibitions/2022-bridges-conference">2022</a>, <a href="https://gallery.bridgesmathart.org/exhibitions/2023-bridges-conference">2023</a>, and <a href="https://gallery.bridgesmathart.org/exhibitions/bridges-2024-exhibition-of-mathematical-art">2024</a> Bridges conferences, the <a href="https://mpembed.com/show/?m=FGvT8EzPQpy&mpu=885">Jordan Schnitzer Museum of Art</a>, the <a href="https://www.facebook.com/visualartsteam/videos/4909794042367446/">Erb Memorial Union</a>, the <a href="https://www.artscioregon.com/2020-gallery">2020 UO Research as Art Competition</a>, the <a href="https://www.girlsangle.org/page/bulletin-archive/GABv15n01E.pdf">Girls' Angle Bulletin magazine</a>, and UO's University Hall.
 
 
 
@@ -87,3 +87,14 @@ Stills and animations from these applets have been featured in the <a href="http
 	wilsons-algorithm/	
 	julia-set-explorer/	
 ###
+
+## The Library
+
+<div class="image-links one-image-link">
+	<div class="image-link">
+		<a href="https://github.com/cruzgodar/wilson" data-in-new-tab="1" tabindex="-1">
+			<img src="/graphics/general-icons/placeholder.png" data-src="/graphics/general-icons/wilson.webp" alt="Wilson" tabindex="1" style="opacity: 0">
+		</a>
+		<p class="image-link-subtext">Wilson</p>
+	</div>
+</div>
