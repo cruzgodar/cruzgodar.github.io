@@ -600,12 +600,12 @@ Welcome to Math 342! We'll use this page for the interactive notes, the homework
 	
 	Your grade is determined by your scores on a number of different assignments, weighted as follows:
 	
-	> . In-class participation: 5%
-	> . Reading quizzes: 5%
-	> . In-class quizzes: 10%
-	> . Homework: 15%
-	> . Midterms: 20% each (40% total)
-	> . Final: 25%
+	> - In-class participation: 5%
+	> - Reading quizzes: 5%
+	> - In-class quizzes: 10%
+	> - Homework: 15%
+	> - Midterms: 20% each (40% total)
+	> - Final: 25%
 	
 	More on all of these in the coming sections! Your final class grade will be rounded up to the next integer --- for example, a final grade of 88.2% will be rounded to 89% and awarded a B+.
 	
@@ -664,21 +664,21 @@ Welcome to Math 342! We'll use this page for the interactive notes, the homework
 	
 	We will learn how to:
 	
-	> . Find and apply change-of-basis matrices
+	> - Find and apply change-of-basis matrices
 	
-	> . Find eigenvectors, eigenvalues, and eigenspaces of matrices
+	> - Find eigenvectors, eigenvalues, and eigenspaces of matrices
 	
-	> . Diagonalize matrices and use the process to solve systems of equations
+	> - Diagonalize matrices and use the process to solve systems of equations
 	
-	> . Apply and understand inner products on vector spaces, and use them to understand notions of length, distance, and angle as they apply to vectors
+	> - Apply and understand inner products on vector spaces, and use them to understand notions of length, distance, and angle as they apply to vectors
 	
-	> . Understand and generate orthonormal bases for vector spaces
+	> - Understand and generate orthonormal bases for vector spaces
 	
-	> . Apply and understand the Real Spectral Theorem
+	> - Apply and understand the Real Spectral Theorem
 
-	> . Apply and understand the singular value decomposition of a matrix
+	> - Apply and understand the singular value decomposition of a matrix
 
-	> . Apply and understand the Complex Spectral Theorem (if time permits)
+	> - Apply and understand the Complex Spectral Theorem (if time permits)
 	
 	
 	

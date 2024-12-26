@@ -1,12 +1,20 @@
-Welcome to Math 112! We'll use this page for all of the homework and any other files we may need. You might want to bookmark this page --- you don't need to sign into Canvas to get to it.
+Welcome to Math 112! We'll use this page for the interactive notes, the homework, the syllabus, and any other files we'll need. You don't need to sign into Canvas to get here, so you might want to bookmark the page.
+
+
 
 ## General Resources
 
 ### image-links
 	
-	syllabus/syllabus.pdf "Syllabus"
+	syllabus -c "Syllabus"
 	
-	extra/final-worksheet/final-worksheet.pdf "Final Review Worksheet"
+###
+
+
+
+## Interactive Notes
+
+### image-links
 	
 ###
 
@@ -16,68 +24,133 @@ Welcome to Math 112! We'll use this page for all of the homework and any other f
 
 ### image-links
 	
-	homework/1/homework-1.pdf "Homework 1"
+	homework-1 -c "Homework 1"
+
+###
+
+
+
+### card homework-1 "Homework 1"
 	
-	homework/2/homework-2.pdf "Homework 2"
+	*Due Wednesday of Week 2 at the start of class*
 	
-	homework/3/homework-3.pdf "Homework 3"
-	
-	homework/4/homework-4.pdf "Homework 4"
-	
-	homework/5/homework-5.pdf "Homework 5"
-	
-	homework/6/homework-6.pdf "Homework 6"
-	
-	homework/7/homework-7.pdf "Homework 7"
+	Complete the following problems and submit them as a pdf to Canvas. 8 points are awarded for thoroughly attempting every problem, and I'll select three problems to grade on correctness for 4 points each. Enough work should be shown that there is no question about the mathematical process used to obtain your answers.
+
+	### buttons
+		download-homework-1
+	###
 	
 ###
 
 
 
-## Quizzes and Exams
+### card syllabus "Math 112Z: Trigonometry"
+	
+	Instructor: Cruz Godar (cgodar@uoregon.edu)
 
-### image-links
+	Class meetings: 11--11:50 MTWF in Straub 254
 	
-	quizzes/0/quiz-0.pdf "Quiz 0"
+	Office hours: TBD in the Fenton Hall atrium (the middle of the third floor).
 	
-	quizzes/1/quiz-1.pdf "Quiz 1"
 	
-	quizzes/2/quiz-2.pdf "Quiz 2"
 	
-	exams/1/midterm-1.pdf "Midterm 1"
+	## What materials will I need?
 	
-	quizzes/3/quiz-3.pdf "Quiz 3"
+	Not many! While we have a textbook for this class, it is completely optional. Between the notes and homework on the website, we have everything the textbook would provide, but with the benefit of staying much more in sync with the course. If you'd like the book regardless, either for extra practice problems beyond the homework or just a different perspective on the course material, it's *Functions, Trigonometry, and Their Applications, version 3.0*, by Dan Raies.
 	
-	quizzes/4/quiz-4.pdf "Quiz 4"
+	You might find a scientific calculator useful for simple calculations on the homework; I heartily endorse the free online <a href="https://www.desmos.com/scientific">Desmos scientific calculator</a>. On quizzes and exams, **no calculators of any sort are allowed.** The quizzes and exams are written so that necessary computations are doable by hand.
 	
-	quizzes/5/quiz-5.pdf "Quiz 5"
 	
-###
+	
+	## What will I be graded on?
+	
+	Your grade is determined by your class participation and scores on a number of different assignments, weighted as follows:
+	
+	> In-class participation: 5%
+	> Reading quizzes: 5%
+	> In-class quizzes: 10%
+	> Homework: 20%
+	> Midterms: 20% each (40% total)
+	> Final: 20%
+	
+	More on all of these in the coming sections! Your final class grade will be rounded up to the next integer --- for example, a final grade of 88.2% will be rounded to 89% and awarded a B+.
+	
+	
+	
+	## What will classes be like?
+	
+	We'll spend our class time covering the material from the notes. You'll need to read the notes on your own *before* coming to class, since there will be reading quizzes on Canvas. These ask for easy-to-find knowledge from the notes like definitions, theorem statements, and exam and are there so that you've seen the material at least once before lecture.
+	
+	Many of the examples in the notes have exercises following them. We'll do these in class as group work --- you'll work together in pairs on separate sheets of paper from your notebook, and then turn it in at the end of class with your name and your partner's for participation credit (i.e. you won't be graded on correctness). After a few minutes, we'll reconvene as a class and go through the solution together. As we progress through the notes, I'll also update them with solutions to past exercises to help with reviewing material.
+	
+	
+	
+	## What will the homework be like?
+	
+	The homework is available on this site, and there will be roughly 30 problems due each week. Your grade is out of 16 points --- 4 are for thoroughly attempting every problem regardless of whether your answers are correct, and I'll select three problems per homework to grade on correctness for 4 points each.
+	
+	All of our homework is submitted through Canvas. One option is to handwrite your work and then scan it with a scanning app that produces PDFs (e.g. the scanner in the Files app on iOS or Adobe Scan on Android). Another option that I highly recommend is to try typing your homework with Latex. This is how scientific papers and books (and our notes and homework) are written, and it has the benefit of being easily editable if you make a mistake part of the way through a problem. The simplest way to get started is to make an account at <a href="https://www.overleaf.com">Overleaf</a>, and to make things as easy as possible, there's an option to download every homework as a Latex file. Typing your homework is completely optional, but I encourage you to give it a shot! If you plan to go into any STEM field, this is something you'll have to learn eventually, and it's a lot easier than you might expect.
+	
+	
+	
+	## What should I expect from the quizzes and exams?
+	
+	We have quizzes on Wednesdays during the last 20 minutes of class. The goal of the quizzes is to be a barometer for the exams --- if you're doing well on the quizzes, you can expect to do well on the exams, and if not, it's an early indication that you may want to adjust your study strategies.
+	
+	Our midterm exams are on the Wednesdays of weeks 4 and 8 and take up the full 50 minutes of class. The midterms are cumulative and typically have multiple-choice and short-answer portions, as well as longer multi-part questions. You can use a handwritten, two-sided, $3 \times 5$ inch index card for notes on the midterms and final.
+	
+	Our final exam is also cumulative and is from 10:15 AM to 12:15 PM on Monday, March 17th.
+	
+	
+	
+	## What are the best things I can do to succeed?
+	
+	The most important things to focus on are (fittingly) the ones worth credit: coming to class and completing the homework early are crucial to staying on top of all the material. Beyond that, the single best thing you can do is **show up to every office hour that fits in your schedule**. You should expect to spend 8 hours per week studying and completing the homework if you're fully comfortable with all of the prerequisites for the class, and more if not. Regularly coming to office hours is a great way to make sure you're putting in that time --- even if you don't have any questions, it's an environment where you can focus on homework and get help if any questions do come up.
+	
+	I also recommend studying and working on homework in groups. While the final work you submit must be your own, it can be helpful to work with others --- part of the reason we have group work is to help build those friendships!
+	
+	
+	
+	## What is the policy regarding late work, make-ups, and dropped assignments?
+	
+	The out-of-class assignments (homework and reading quizzes) can be submitted up to about two days late --- Canvas is set to deduct 1% per hour after the due date. The quizzes can't be taken late, but they can be taken early --- if you won't be available one Wednesday, just let me know a few days in advance. Due to UO's reason-neutral excuse policy, no make-ups will be offered for any assignment. However, your lowest two homeworks, two quizzes, two reading quizzes, and two weeks of participation grades will be dropped, and your final exam score will replace the lower of your two midterm scores if it helps.
+	
+	
+	
+	## What if I'm registered with the AEC or think I should be?
+	
+	Please have the AEC send me the accommodations email as soon as possible, ideally in week 1. If you think you should be registered with the AEC, it's a good idea to start the process as soon as possible --- it can take a few weeks before everything goes through, so the sooner the better.
+	
+	
+	
+	## What are the skills I can expect to learn from this course?
+	
+	We will learn how to:
+	
+	> - Identify, apply and analyze transformations of functions
+	
+	> - Recognize and construct periodic functions
+	
+	> - Determine the coordinates of points on the unit circle
+	
+	> - Use trigonometric functions to determine lengths and angles of right triangles
+	
+	> - Understand sine, cosine, and tangent as coordinates, ratios, and graphs
+	
+	> - Solve trigonometric equations
 
+	> - Determine lengths and angles of non-right triangles
 
+	> - Apply and analyze vectors to represent velocities and forces
 
-## Notes
-
-### image-links
+	> - Use the dot product to compute work and the angle between vectors
 	
-	notes/1/week-1-notes.pdf "Week 1"
 	
-	notes/2/week-2-notes.pdf "Week 2"
 	
-	notes/3/week-3-notes.pdf "Week 3"
+	## Is there anything else I should know?
 	
-	notes/4/week-4-notes.pdf "Week 4"
+	Like most graduate students, I am a <a href="https://investigations.uoregon.edu/employee-responsibilities">designated reporter</a>, which means I am required to report many types of sensitive information. Please see the link for more details.
 	
-	notes/5/week-5-notes.pdf "Week 5"
-	
-	notes/6/week-6-notes.pdf "Week 6"
-	
-	notes/7/week-7-notes.pdf "Week 7"
-	
-	notes/8/week-8-notes.pdf "Week 8"
-	
-	notes/9/week-9-notes.pdf "Week 9"
-	
-	notes/10/week-10-notes.pdf "Week 10"
+	A brief word on conduct: this university exists for your benefit! If there is something that could be improved, please don't hesitate to let me know. In turn, university students are also held to a high standard. Academic dishonesty in any form --- submitting others' work as your own, using prohibited materials on quizzes or exams, etc. --- will not be tolerated.
 	
 ###

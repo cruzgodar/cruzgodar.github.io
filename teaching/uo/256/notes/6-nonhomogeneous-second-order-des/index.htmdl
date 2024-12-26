@@ -146,13 +146,13 @@ This method, called **undetermined coefficients**, can work when the right side 
 	
 	where $g(t)$ is a product of exponentials, sines and cosines, and polynomials, first determine the form of $Y$.
 	
-	> . If $g(t) = e^{\alpha t}$, assume $Y = Ae^{\alpha t}$.
+	> - If $g(t) = e^{\alpha t}$, assume $Y = Ae^{\alpha t}$.
 	
-	> . If $g(t) = \sin(\beta t)$ or $\cos(\beta t)$, then assume $Y = A\sin(\beta t) + B\cos(\beta t)$.
+	> - If $g(t) = \sin(\beta t)$ or $\cos(\beta t)$, then assume $Y = A\sin(\beta t) + B\cos(\beta t)$.
 	
-	> . If $g(t) = p(t)$ for a polynomial $p$ of degree $n$, then assume $Y = A_0 + A_1t + \cdots + A_n t^n$.
+	> - If $g(t) = p(t)$ for a polynomial $p$ of degree $n$, then assume $Y = A_0 + A_1t + \cdots + A_n t^n$.
 	
-	> . If $g(t)$ is a product of any of the previous possibilities, then assume $Y$ is a product of the corresponding forms. For example, if $g(t) = e^{2t}\sin(4t)$, then assume
+	> - If $g(t)$ is a product of any of the previous possibilities, then assume $Y$ is a product of the corresponding forms. For example, if $g(t) = e^{2t}\sin(4t)$, then assume
 	
 	$$
 		Y = Ae^{2t}\sin(4t) + Be^{2t}\cos(4t).

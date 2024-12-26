@@ -68,19 +68,19 @@ Intuitively, a vector space is a set of elements that can be added together and 
 
 It's worth going back over the notation for some of the most common vector spaces, which usually contain literal column vectors, matrices, or functions.
 
-> . $#R#$: the vector space of all real numbers.
+> - $#R#$: the vector space of all real numbers.
 
-> . $#R#^n$: the vector space of length-$n$ column vectors.
+> - $#R#^n$: the vector space of length-$n$ column vectors.
 
-> . $#R#^#R#$: the vector space of all functions $f : #R# \to #R#$.
+> - $#R#^#R#$: the vector space of all functions $f : #R# \to #R#$.
 
-> . $C^0(#R#)$: the vector space of continuous functions $f : #R# \to #R#$.
+> - $C^0(#R#)$: the vector space of continuous functions $f : #R# \to #R#$.
 
-> . $#R#[x]$: the vector space of polynomials in $x$ with coefficients in $#R#$.
+> - $#R#[x]$: the vector space of polynomials in $x$ with coefficients in $#R#$.
 
-> . $M_{m \times n}(#R#)$: the vector space of $m \times n$ matrices with entries in $#R#$.
+> - $M_{m \times n}(#R#)$: the vector space of $m \times n$ matrices with entries in $#R#$.
 
-> . $\mathcal{L}(V, W)$: the vector space of linear transformations $T : V \to W$.
+> - $\mathcal{L}(V, W)$: the vector space of linear transformations $T : V \to W$.
 
 
 

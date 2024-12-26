@@ -258,15 +258,15 @@ That last line is the most critical: $\mathcal{L}(V, W)$ is a vector space in it
 
 As a section wrap-up, let's recap the new notation we've defined. There aren't too many new symbols, but they're all probably unfamiliar, so it's worth gathering them together.
 
-> . $#R#^#R#$: the vector space of all functions (not necessarily linear transformations) $f : #R# \to #R#$.
+> - $#R#^#R#$: the vector space of all functions (not necessarily linear transformations) $f : #R# \to #R#$.
 
-> . $C^0(#R#)$: the vector space of continuous functions $f : #R# \to #R#$.
+> - $C^0(#R#)$: the vector space of continuous functions $f : #R# \to #R#$.
 
-> . $#R#[x]$: the vector space of polynomials in $x$ with coefficients in $#R#$.
+> - $#R#[x]$: the vector space of polynomials in $x$ with coefficients in $#R#$.
 
-> . $M_{m \times n}(#R#)$: the vector space of $m \times n$ matrices with entries in $#R#$.
+> - $M_{m \times n}(#R#)$: the vector space of $m \times n$ matrices with entries in $#R#$.
 
-> . $\mathcal{L}(V, W)$: the vector space of linear transformations $T : V \to W$.
+> - $\mathcal{L}(V, W)$: the vector space of linear transformations $T : V \to W$.
 
 These vector spaces will be the main ones we study over the next few sections --- while there are plenty more, these are among the most important.
 

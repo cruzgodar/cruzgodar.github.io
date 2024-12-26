@@ -114,7 +114,7 @@ export function parseText(text)
 
 		html = html.slice(sliceStart);
 
-		if (html[0] === "." && html[1] === " ")
+		if (html[0] === "-" && html[1] === " ")
 		{
 			html = /* html */`<strong>&#8226;</strong> ${html.slice(2)}`;
 		}
