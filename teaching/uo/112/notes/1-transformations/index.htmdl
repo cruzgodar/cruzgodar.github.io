@@ -12,11 +12,19 @@ $$
 
 If anything doesn't appear correctly, update your browser and then reach out if that doesn't work.
 
-Trigonometry is Latin for the study of triangles, but it goes quite a bit further. During our course, we'll learn how to transform functions to vastly extend their possible applications, introduce functions to measure points on the unit circle, and use vectors to represent quantities with magnitudes and directions. This is one of the most broadly-useful math courses there is, and its tools and techniques extend to dozens of other math courses.
+Trigonometry is Latin for the study of triangles, but it goes quite a bit further. During our course, we'll learn how to transform functions to vastly extend their possible applications, introduce functions to measure points on the unit circle, and use vectors to represent quantities with magnitudes and directions. This is one of the most broadly-used math courses there is, and its tools and techniques extend to dozens of other math courses.
 
 
 
-## Vertical Transformations
+## Individual Transformations
+
+We'll begin with a review of function **transformations**, which are straightforward ways in which we can modify the input or output of a function $y = f(x)$ to change its behavior. Before we can talk about graph transformations, though, we'll need to know a handful of graphs of simple functions to start from. We'll call these **parent functions**, and they'll form the foundation for this section.
+
+**Lines:** the classic equation for a line is $f(x) = mx + b$ for a slope $m$ and $y$-intercept $b$. We can also use **point-slope** form: a line with slope $m$ passing through $(x_0, y_0)$ has equation $f(x) = m(x - x_0) + y_0$ (this may look more familiar when we replace $f(x)$ with $y$ and write $y - y_0 = m(x - x_0)$).
+
+**Power functions:** the graph of $f(x) = x^a$ for an integer $a \geq 1$ is a line when $a = 1$, a parabola when $a = 2$, a cubic S-shape when $a = 3$, and similar but more angular shapes for larger values $a$, depending on whether $a$ is even or odd.
+
+### desmos power-functions
 
 
 
