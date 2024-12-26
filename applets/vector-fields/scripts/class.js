@@ -213,6 +213,9 @@ export class VectorFields extends AnimationFrameApplet
 
 		const needDraggable = generatingCode.indexOf("draggableArg") !== -1;
 
+		this.wilson.resizeCanvas({ width: this.resolution });
+		this.wilsonPanZoomDim.resizeCanvas({ width: this.resolution });
+
 
 
 		const shaderUpdateBase = /* glsl */`
@@ -474,9 +477,6 @@ export class VectorFields extends AnimationFrameApplet
 		this.maxParticles = maxParticles;
 		this.dt = dt;
 		this.lifetime = lifetime;
-
-		this.wilson.resizeCanvas({ width: this.resolution });
-		this.wilsonPanZoomDim.resizeCanvas({ width: this.resolution });
 		
 		this.wilson.setUniforms({
 			maxBrightness: this.lifetime / 255,
