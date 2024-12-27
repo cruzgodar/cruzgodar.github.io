@@ -275,7 +275,7 @@ export class ThurstonGeometries extends Applet
 
 		this.wilson.loadShader({
 			id: "draw",
-			source: shader,
+			shader: shader,
 			uniforms
 		});
 
@@ -283,7 +283,7 @@ export class ThurstonGeometries extends Applet
 		{
 			this.wilson.loadShader({
 				id: "edgeDetect",
-				source: edgeDetectShader,
+				shader: edgeDetectShader,
 				uniforms: {
 					stepSize: 1 / this.resolution
 				}
@@ -296,7 +296,7 @@ export class ThurstonGeometries extends Applet
 
 			this.wilson.loadShader({
 				id: "antialias",
-				source: aaShaderSource,
+				shader: aaShaderSource,
 				uniforms: {
 					...uniforms,
 					stepSize: [

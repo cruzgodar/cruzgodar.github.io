@@ -206,7 +206,7 @@ export class ComplexMaps extends AnimationFrameApplet
 		`;
 
 		this.wilson.loadShader({
-			source: shader,
+			shader: shader,
 			uniforms: {
 				worldSize: [this.wilson.worldWidth, this.wilson.worldHeight],
 				worldCenter: [this.wilson.worldCenterX, this.wilson.worldCenterY],

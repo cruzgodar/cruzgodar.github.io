@@ -139,7 +139,7 @@ export class LyapunovFractals extends AnimationFrameApplet
 		`;
 
 		this.wilsonHidden.loadShader({
-			source: shader,
+			shader: shader,
 			uniforms: {
 				worldCenter: [this.wilson.worldCenterX, this.wilson.worldCenterY],
 				worldSize: [this.wilson.worldWidth, this.wilson.worldHeight],
@@ -149,7 +149,7 @@ export class LyapunovFractals extends AnimationFrameApplet
 		});
 
 		this.wilson.loadShader({
-			source: shader,
+			shader: shader,
 			uniforms: {
 				worldCenter: [this.wilson.worldCenterX, this.wilson.worldCenterY],
 				worldSize: [this.wilson.worldWidth, this.wilson.worldHeight],

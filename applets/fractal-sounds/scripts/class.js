@@ -284,7 +284,7 @@ export class FractalSounds extends AnimationFrameApplet
 		`;
 
 		this.wilsonJulia.loadShader({
-			source: shader,
+			shader: shader,
 			uniforms: {
 				worldSize: [this.wilson.worldWidth, this.wilson.worldHeight],
 				worldCenter: [this.wilson.worldCenterX, this.wilson.worldCenterY],
@@ -294,7 +294,7 @@ export class FractalSounds extends AnimationFrameApplet
 		});
 
 		this.wilsonHidden.loadShader({
-			source: shader,
+			shader: shader,
 			uniforms: {
 				worldSize: [this.wilson.worldWidth, this.wilson.worldHeight],
 				worldCenter: [this.wilson.worldCenterX, this.wilson.worldCenterY],

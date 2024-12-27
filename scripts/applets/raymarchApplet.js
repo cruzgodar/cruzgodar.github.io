@@ -3,9 +3,9 @@ import { doubleEncodingGlsl } from "../src/complexGlsl.js";
 import { WilsonGPU } from "../wilson.js";
 import { AnimationFrameApplet } from "./animationFrameApplet.js";
 import {
-	getFloatGlsl,
-	getVectorGlsl,
-	tempShader
+    getFloatGlsl,
+    getVectorGlsl,
+    tempShader
 } from "./applet.js";
 
 export const edgeDetectShader = /* glsl */`
@@ -320,7 +320,7 @@ export class RaymarchApplet extends AnimationFrameApplet
 
 		this.wilson.loadShader({
 			id: "draw",
-			source: useableShader,
+			shader: useableShader,
 			uniforms: this.uniforms
 		});
 
@@ -328,7 +328,7 @@ export class RaymarchApplet extends AnimationFrameApplet
 		{
 			this.wilson.loadShader({
 				id: "edgeDetect",
-				source: edgeDetectShader,
+				shader: edgeDetectShader,
 				uniforms: {
 					stepSize: 1 / this.resolution
 				}
@@ -345,7 +345,7 @@ export class RaymarchApplet extends AnimationFrameApplet
 
 			this.wilson.loadShader({
 				id: "antialias",
-				source: aaShader,
+				shader: aaShader,
 				uniforms: {
 					...this.uniforms,
 					stepSize: 2 / (this.resolution * 3)
@@ -940,7 +940,7 @@ export class RaymarchApplet extends AnimationFrameApplet
 
 		this.wilson.loadShader({
 			id: "draw",
-			source: this.createShader({
+			shader: this.createShader({
 				distanceEstimatorGlsl,
 				getColorGlsl,
 				getReflectivityGlsl,
@@ -956,7 +956,7 @@ export class RaymarchApplet extends AnimationFrameApplet
 		{
 			this.wilson.loadShader({
 				id: "edgeDetect",
-				source: edgeDetectShader,
+				shader: edgeDetectShader,
 				uniforms: {
 					stepSize: 1 / this.resolution
 				}
@@ -973,7 +973,7 @@ export class RaymarchApplet extends AnimationFrameApplet
 
 			this.wilson.loadShader({
 				id: "antialias",
-				source: aaShader,
+				shader: aaShader,
 				uniforms: {
 					...this.uniforms,
 					stepSize: 2 / (this.resolution * 3)

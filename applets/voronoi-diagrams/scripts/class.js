@@ -105,7 +105,7 @@ export class VoronoiDiagrams extends Applet
 		this.generatePoints();
 
 		this.wilsonHidden.loadShader({
-			source: this.getShader(true),
+			shader: this.getShader(true),
 			uniforms: {
 				radius: this.radius,
 				metric: this.metric,
@@ -124,7 +124,7 @@ export class VoronoiDiagrams extends Applet
 		}
 
 		this.wilson.loadShader({
-			source: this.getShader(false),
+			shader: this.getShader(false),
 			uniforms: {
 				radius: this.radius,
 				pointOpacity: this.pointOpacity,

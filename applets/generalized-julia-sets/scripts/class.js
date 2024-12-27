@@ -299,7 +299,7 @@ export class GeneralizedJuliaSets extends AnimationFrameApplet
 		{
 			wilson.loadShader({
 				id: "mandelbrot",
-				source: shaderMandelbrot,
+				shader: shaderMandelbrot,
 				uniforms: {
 					worldCenter: [0, 0],
 					worldSize: [4, 4],
@@ -311,7 +311,7 @@ export class GeneralizedJuliaSets extends AnimationFrameApplet
 
 			wilson.loadShader({
 				id: "julia",
-				source: shaderJulia,
+				shader: shaderJulia,
 				uniforms: {
 					worldCenter: [0, 0],
 					worldSize: [4, 4],
@@ -324,7 +324,7 @@ export class GeneralizedJuliaSets extends AnimationFrameApplet
 
 			wilson.loadShader({
 				id: "juliaPicker",
-				source: shaderJuliaPicker,
+				shader: shaderJuliaPicker,
 				uniforms: {
 					worldCenter: [0, 0],
 					worldSize: [4, 4],

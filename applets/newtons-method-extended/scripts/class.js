@@ -202,7 +202,7 @@ export class NewtonsMethodExtended extends AnimationFrameApplet
 		this.colors = this.generateNewPalette();
 
 		this.wilson.loadShader({
-			source: shader,
+			shader: shader,
 			uniforms: {
 				worldCenter: [this.wilson.worldCenterX, this.wilson.worldCenterY],
 				worldSize: [this.wilson.worldWidth, this.wilson.worldHeight],
@@ -219,7 +219,7 @@ export class NewtonsMethodExtended extends AnimationFrameApplet
 		});
 
 		this.wilsonHidden.loadShader({
-			source: shader,
+			shader: shader,
 			uniforms: {
 				worldCenter: [this.wilson.worldCenterX, this.wilson.worldCenterY],
 				worldSize: [this.wilson.worldWidth, this.wilson.worldHeight],

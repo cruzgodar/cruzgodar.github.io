@@ -297,7 +297,7 @@ export class VectorFields extends AnimationFrameApplet
 
 		this.wilsonUpdate.loadShader({
 			id: "updateX",
-			source: shaderUpdateX,
+			shader: shaderUpdateX,
 			uniforms: {
 				dt: this.dt,
 				...(needDraggable ? { draggableArg: [0, 0] } : {}),
@@ -306,7 +306,7 @@ export class VectorFields extends AnimationFrameApplet
 
 		this.wilsonUpdate.loadShader({
 			id: "updateY",
-			source: shaderUpdateY,
+			shader: shaderUpdateY,
 			uniforms: {
 				dt: this.dt,
 				...(needDraggable ? { draggableArg: [0, 0] } : {}),
@@ -315,7 +315,7 @@ export class VectorFields extends AnimationFrameApplet
 
 		this.wilsonUpdate.loadShader({
 			id: "updateH",
-			source: shaderUpdateH,
+			shader: shaderUpdateH,
 			uniforms: {
 				...(needDraggable ? { draggableArg: [0, 0] } : {}),
 			}
@@ -323,7 +323,7 @@ export class VectorFields extends AnimationFrameApplet
 
 		this.wilsonUpdate.loadShader({
 			id: "updateS",
-			source: shaderUpdateS,
+			shader: shaderUpdateS,
 			uniforms: {
 				...(needDraggable ? { draggableArg: [0, 0] } : {}),
 			}
@@ -331,7 +331,7 @@ export class VectorFields extends AnimationFrameApplet
 
 		this.wilsonUpdate.loadShader({
 			id: "updateS2",
-			source: shaderUpdateS2,
+			shader: shaderUpdateS2,
 			uniforms: {
 				...(needDraggable ? { draggableArg: [0, 0] } : {}),
 			}
@@ -377,7 +377,7 @@ export class VectorFields extends AnimationFrameApplet
 
 		this.wilson.loadShader({
 			id: "draw",
-			source: shaderDraw,
+			shader: shaderDraw,
 			uniforms: {
 				maxBrightness: this.lifetime / 255,
 				...(

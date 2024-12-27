@@ -250,12 +250,12 @@ export class ChaosGame extends AnimationFrameApplet
 
 		this.wilsonUpdate.loadShader({
 			id: "updateX",
-			source: shaderUpdateX,
+			shader: shaderUpdateX,
 		});
 
 		this.wilsonUpdate.loadShader({
 			id: "updateY",
-			source: shaderUpdateY,
+			shader: shaderUpdateY,
 		});
 
 		

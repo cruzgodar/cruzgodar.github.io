@@ -214,7 +214,7 @@ export class BarnsleyFern extends AnimationFrameApplet
 
 		this.wilsonUpdate.loadShader({
 			id: "updateX",
-			source: shaderUpdateX,
+			shader: shaderUpdateX,
 			uniforms: {
 				A1: this.A1,
 				A4: this.A4,
@@ -224,7 +224,7 @@ export class BarnsleyFern extends AnimationFrameApplet
 
 		this.wilsonUpdate.loadShader({
 			id: "updateY",
-			source: shaderUpdateY,
+			shader: shaderUpdateY,
 			uniforms: {
 				A1: this.A1,
 				A4: this.A4,
