@@ -710,7 +710,7 @@ body > .WILSON_fullscreen-container .wilson-help-button
 
 #canvas-landscape-left, #canvas-landscape-middle, #canvas-landscape-right
 {
-	width: 90%;
+	width: 100%;
 }
 
 .desmos-border .output-canvas
@@ -858,7 +858,7 @@ body > .WILSON_fullscreen-container .wilson-help-button
 
 .sliders
 {
-	grid-template-columns: repeat(auto-fit, 200px);
+	grid-template-columns: repeat(auto-fit, 170px);
 }
 
 .text-boxes
