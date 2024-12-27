@@ -16,9 +16,9 @@ Trigonometry is Latin for the study of triangles, but it goes quite a bit furthe
 
 
 
-## Individual Transformations
+## Parent Functions
 
-We'll begin with a review of function **transformations**, which are straightforward ways in which we can modify the input or output of a function $y = f(x)$ to change its behavior. Before we can talk about graph transformations, though, we'll need to know a handful of graphs of simple functions to start from. We'll call these **parent functions**, and they'll form the foundation for this section.
+We'll begin with a review of function transformations, which are straightforward ways in which we can modify the input or output of a function $y = f(x)$ to change its behavior. Before we can talk about transforming graphs, though, we'll need to know a handful of graphs of simple functions to start from. We'll call these **parent functions**, and they'll form the foundation for this section.
 
 **Lines:** the classic equation for a line is $f(x) = mx + b$ for a slope $m$ and $y$-intercept $b$. We can also use **point-slope** form: a line with slope $m$ passing through $(x_0, y_0)$ has equation $f(x) = m(x - x_0) + y_0$ (this may look more familiar when we replace $f(x)$ with $y$ and write $y - y_0 = m(x - x_0)$).
 
@@ -39,6 +39,32 @@ If you haven't already, use the chevron button to expand the list of equations i
 The graph of $x^{1/a}$ looks quite a bit like the graph of $x^a$, and that's no coincidence: if $f(x) = x^a$ for $x \geq 0$, then $f^{-1}(x) = x^{1/a}$ is the **inverse function** to $f$, meaning $f^{-1}(f(x)) = x$ and $f(f^{-1}(x)) = x$ --- in other words, the two functions undo one another. When $a$ is odd, we don't need to insist that $x \geq 0$, but for even values, like $a = 2$, we run into a problem if we don't. For example, $4^2 = (-4)^2 = 16$, and so if we're trying to define $f^{-1}(16)$, we don't know which value to pick. The fundamental issue with $f(x) = x^2$ is that it's not **one-to-one**, meaning there are multiple inputs (like $4$ and $-4$) that are sent to the same output. Visually, that means there are two points with different $x$-coordinates but the same $y$-coordinate, so the function fails the horizontal line test. For any one-to-one function $y = f(x)$, we can solve for $x$ to write $x = f^{-1}(y)$, and so $y = f^{-1}(x)$ just reverses the role of $x$ and $y$. That means the graph of $y = f^{-1}(x)$ is the same as the graph of $y = f(x)$, but flipped about the diagonal line $y = x$. Any function $f$ that failed the horizontal line test would then have an inverse that failed the **vertical** line test, meaning it's not a function at all.
 
 ### desmos inverses
+
+**Exponentials and logarithms:** we'll briefly touch on one more group of parent functions. The function $f(x) = e^x$ is an **exponential function** --- it's always positive, approaches $y = 0$ as $x$ decreases, and rapidly increases when $x$ is positive and increasing. The base $e$ is an irrational mathematical constant, like $\pi$, and is roughly equal to $2.71828$. It has a stunning amount of mathematical significance, but unfortunately, that importance is not revealed until calculus. For our purposes, we won't often need to use exponentials in general or $e$ in particular, and so we won't spend too much time on it.
+
+### desmos exponentials
+
+Logarithms are infamous in algebra, but they don't need to be! When we say that the square root function $\sqrt{x}$ *undoes* the square function $x^2$, we can think of it as extracting the base of a number that's been squared: for example, $25 = 5^2$, and so the square root function extracts the base of $5$. A **logarithm** is an inverse function to an exponential, like $5^x$, and so rather than extract a base, it extracts a power. For example, $\log_5(25) = \log_5\left( 5^2 \right) = 2$, $\log_5(5) = \log_5\left( 5^1 \right) = 1$, and $\log_5\left( \frac{1}{5} \right) = \log_5\left( 5^{-1} \right) = -1$. When the base of a logarithm is $e$, we typically write it as $\ln$ instead of $\log_e$.
+
+### exc logarithms
+
+	1. Evaluate $\log_3(8)$, $\log_2\left( \frac{1}{4} \right)$, and $\ln(e)$.
+
+	2. Let $b > 0$ be a real number. What is $\log_b\left( b^x \right)$ for any value of $x$? What about $b^{\log_b(x)}$? Briefly explain your answers.
+
+	3. What does the graph of $\ln(x)$ look like? Plot a few points and sketch a graph. Does it make sense with the context of the graph of $e^x$?
+
+	4. Can all real numbers $x$ can be plugged into $\ln(x)$? If not, which types of numbers are okay to plug in?
+
+###
+
+
+
+## Single Transformations
+
+Let's take a close look at the function $f(x) = x^2$. Much like the formula $y = mx + b$ for a line, we can add a constant value $b$ to $x^2$ to produce $f(x) = x^2 + b$. Any point $(x, x^2)$ in the graph is now $(x, x^2 + b)$, so the graph has been shifted upward by $b$ units. There's nothing particularly special about $x^2$ in this example, and in fact, any function $y = f(x) + b$ has a graph that is equal to the graph of $y = f(x)$, but shifted up by $b$.
+
+### desmos vertical-shift
 
 
 

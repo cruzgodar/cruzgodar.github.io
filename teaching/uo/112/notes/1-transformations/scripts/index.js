@@ -80,6 +80,16 @@ export default function()
 					{ latex: String.raw`f(x) = x^{1/3}`, color: desmosBlue },
 					{ latex: String.raw`y = x`, color: desmosBlack, secret: true, lineStyle: "DASHED" },
 				]
+			},
+
+			"exponentials":
+			{
+				bounds: { left: -3, right: 3, bottom: -1, top: 5 },
+
+				expressions:
+				[
+					{ latex: String.raw`f(x) = e^x`, color: desmosPurple },
+				]
 			}
 		};
 
