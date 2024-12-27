@@ -708,9 +708,14 @@ body > .WILSON_fullscreen-container .wilson-help-button
 	align-items: center;
 }
 
-#canvas-landscape-left, #canvas-landscape-middle, #canvas-landscape-right
+#canvas-landscape-left, #canvas-landscape-right
 {
 	width: 100%;
+}
+
+#canvas-landscape-middle
+{
+	width: 60%;
 }
 
 .desmos-border .output-canvas
@@ -730,6 +735,25 @@ body > .WILSON_fullscreen-container .wilson-help-button
 {
 	right: 4px;
 	top: 4px;
+}
+
+
+
+@media (max-aspect-ratio: 12/16)
+{
+	#canvas-landscape-middle
+	{
+		width: 80%;
+	}
+}
+
+
+@media (max-aspect-ratio: 9/16)
+{
+	#canvas-landscape-middle
+	{
+		width: 100%;
+	}
 }
 
 
