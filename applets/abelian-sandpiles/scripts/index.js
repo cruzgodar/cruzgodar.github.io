@@ -3,6 +3,7 @@ import { AbelianSandpiles } from "./class.js";
 import { DownloadButton, GenerateButton } from "/scripts/src/buttons.js";
 import { Dropdown } from "/scripts/src/dropdowns.js";
 import { $ } from "/scripts/src/main.js";
+import { Slider } from "/scripts/src/sliders.js";
 import { TextBox } from "/scripts/src/textBoxes.js";
 
 const palettes = {
@@ -57,13 +58,15 @@ export default function()
 		onEnter: run,
 	});
 
-	const computationsPerFrameInput = new TextBox({
-		element: $("#computations-per-frame-input"),
+	const computationsPerFrameSlider = new Slider({
+		element: $("#computations-per-frame-slider"),
 		name: "Computation Speed",
 		value: 1,
-		minValue: 1,
-		maxValue: 100,
-		onEnter: run,
+		min: 1,
+		max: 500,
+		logarithmic: true,
+		integer: true,
+		onInput: onSliderInput,
 	});
 
 	new GenerateButton({
@@ -85,8 +88,13 @@ export default function()
 			resolution: resolutionInput.value,
 			numGrains: centerGrainsInput.value,
 			floodGrains: surroundingGrainsInput.value,
-			computationsPerFrame: computationsPerFrameInput.value,
+			computationsPerFrame: computationsPerFrameSlider.value,
 			palette: palettes[palettesDropdown.value || "nectarine"]
 		});
+	}
+
+	function onSliderInput()
+	{
+		applet.computationsPerFrame = computationsPerFrameSlider.value;
 	}
 }

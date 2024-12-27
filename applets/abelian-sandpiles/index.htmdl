@@ -12,11 +12,14 @@ Important: running this applet with a nonzero amount of surrounding grains can r
 	resolution
 	center-grains
 	surrounding-grains
-	computations-per-frame
 ###
 
 ### buttons
 	generate
+###
+
+### sliders
+	computations-per-frame
 ###
 
 </div>

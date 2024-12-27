@@ -45,7 +45,7 @@ export default function()
 		name: "Metric",
 		value: 2,
 		min: 1,
-		max: 16,
+		max: 24,
 		snapPoints: [2],
 		logarithmic: true,
 		onInput: onSliderInput

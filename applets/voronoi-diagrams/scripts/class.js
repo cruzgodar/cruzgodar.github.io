@@ -309,6 +309,11 @@ export class VoronoiDiagrams extends Applet
 			
 			float metricDistance(vec2 p, vec2 q)
 			{
+				if (metric == 24.0)
+				{
+					return max(abs(p.x - q.x), abs(p.y - q.y));
+				}
+
 				return pow(
 					pow(abs(p.x - q.x), metric)
 					+ pow(abs(p.y - q.y), metric),
