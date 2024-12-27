@@ -12,7 +12,7 @@ export default function()
 	{
 		const data =
 		{
-			"coordinate-systems":
+			coordinateSystems:
 			{
 				bounds: { left: -5, right: 5, bottom: -5, top: 5 },
 

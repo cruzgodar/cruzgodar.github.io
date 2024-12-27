@@ -16,7 +16,7 @@ export default function()
 	{
 		const data =
 		{
-			"plane-vectors":
+			planeVectors:
 			{
 				bounds: { left: -5, right: 5, bottom: -5, top: 5 },
 
@@ -29,7 +29,7 @@ export default function()
 				]
 			},
 
-			"vector-addition":
+			vectorAddition:
 			{
 				bounds: { left: -5, right: 5, bottom: -5, top: 5 },
 

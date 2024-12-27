@@ -12,7 +12,7 @@ export default function()
 	{
 		const data =
 		{
-			"test-graph":
+			testGraph:
 			{
 				bounds: { left: -1, right: 3, bottom: -1, top: 3 },
 
@@ -29,7 +29,7 @@ export default function()
 
 
 
-			"limit-example":
+			limitExample:
 			{
 				bounds: { left: -20, right: 20, bottom: -2, top: 2 },
 
@@ -42,7 +42,7 @@ export default function()
 
 
 
-			"secant-line-example":
+			secantLineExample:
 			{
 				bounds: { left: -2.5, right: 2.5, bottom: -1, top: 4 },
 
@@ -61,7 +61,7 @@ export default function()
 
 
 
-			"definite-integral-example":
+			definiteIntegralExample:
 			{
 				bounds: { left: -5, right: 5, bottom: -100, top: 100 },
 
@@ -83,7 +83,7 @@ export default function()
 
 
 
-			"u-sub-example":
+			uSubExample:
 			{
 				bounds: { left: -5, right: 5, bottom: -5, top: 5 },
 

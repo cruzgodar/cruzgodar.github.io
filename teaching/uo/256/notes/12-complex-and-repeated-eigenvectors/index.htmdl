@@ -150,7 +150,7 @@ With individual DEs, we were able to extract two fundamental solutions immediate
 	
 	Sketching a direction field, we can see a distinct spiral shape. When a $2 \times 2$ system of DEs has complex conjugate eigenvalues, we see either a spiral into or out from the origin, depending on whether the sign of the real part of the eigenvalues is positive or negative.
 	
-	### desmos vector-field
+	### desmos vectorField
 	
 	### canvas vector-field
 	

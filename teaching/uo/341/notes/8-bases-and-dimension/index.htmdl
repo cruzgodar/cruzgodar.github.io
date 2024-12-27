@@ -122,7 +122,7 @@ This basis is so common that we'll want a name for it --- it's called the **stan
 
 Let's dig into that coordinate system idea a little more. In $#R#^2$, the standard basis produces the typical coordinate system we're used to, while other bases produce coordinate systems that are stretched and scaled, but still perfectly functional at assigning a unique coordinate pair to every point. 
 
-### desmos coordinate-systems
+### desmos coordinateSystems
 
 Here, the purple grid shows the coordinates assigned by the basis $\left\{ [[ -1 ; 1 ]], [[ 2 ; 1 ]] \right\}$. The blue point is called $(3, 3)$ in the standard basis, but $(1, 2)$ in this alternate one.
 

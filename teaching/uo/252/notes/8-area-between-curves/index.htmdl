@@ -22,7 +22,7 @@ Up to this point, we've defined integrals via Riemann sums, related them to anti
 	
 	First, we need to actually figure out where that area is, so that we know the limits of integration.
 	
-	### desmos area-between-curves
+	### desmos areaBetweenCurves
 	
 	To find those limits, we set the two functions equal and solve for $x$. If $x = x^2$, then $x^2 - x = 0$, so $x(x-1) = 0$, and therefore $x = 0$ or $x = 1$. This reflects what we see in the graph. Since $f(x)$ is the function with the larger $y$-value on the region, our integral becomes
 	
@@ -70,7 +70,7 @@ Up to this point, we've defined integrals via Riemann sums, related them to anti
 		&= 2\sqrt{2}.
 	$$
 	
-	### desmos area-between-curves-2
+	### desmos areaBetweenCurves2
 	
 ###
 
@@ -80,7 +80,7 @@ Up to this point, we've defined integrals via Riemann sums, related them to anti
 	
 	Find the area of the shaded region bounded by $y = 1$, $y = 3 - x$, and $y = x^2 + 1$, as pictured.
 	
-	### desmos area-between-curves-3
+	### desmos areaBetweenCurves3
 	
 	First, let's find the limits of integration. The left one is the intersection of $y = x^2 + 1$ with $y = 1$: then $x^2 + 1 = 1$, so $x = 0$. The right endpoint is the intersection of $y = 3 - x$ with $y = 1$, so $x = 2$. Like the last example, though, the bounding functions change as we move left to right along the interval. The point where we switch from $x^2 + 1$ to $3 - x$ being the top function is the intersection of the two: $x^2 + 1 = 3 - x$, so $x^2 + x - 2 = 0$. Factoring this gives $x = 1$ or $x = -2$, and we clearly want $x = 1$. Now the integral becomes
 	
@@ -98,7 +98,7 @@ Up to this point, we've defined integrals via Riemann sums, related them to anti
 	
 	Find the area of the shaded region bounded by $y = 1 - x$, $y = x^2$, and $y = \sqrt{x}$, as pictured.
 	
-	### desmos area-between-curves-4
+	### desmos areaBetweenCurves4
 	
 	**Solution:** $f$ and $h$ intersect at $x = \frac{3}{2} - \frac{\sqrt{5}}{2}$, $g$ and $h$ intersect at $x = 1$, and $f$ and $g$ intersect at $x = \frac{\sqrt{5}}{2} - \frac{1}{2}$. To save notation, let's call the first number $a$, the second one $b$, and the third one $c$. Then the integral becomes $\int_a^c (h(x) - f(x))\,dx + \int_c^b (h(x) - g(x))\,dx$. This comes out to
 	
@@ -118,7 +118,7 @@ Sometimes --- particularly in cases like the previous example with multiple boun
 	
 	Find the area of the shaded region bounded by $y = 1$, $y = 3 - x$, and $y = x^2 + 1$ by integrating with respect to $y$.
 	
-	### desmos area-between-curves-5
+	### desmos areaBetweenCurves5
 	
 	The first thing to do is rewrite the functions as **functions of $y$**. That means solving each one for $x$: $y = 3 - x$ becomes $x = 3 - y$, and $y = x^2 + 1$ becomes $x = \sqrt{y - 1}$. Since there is no $x$ in $y = 1$, we can't solve it for $x$, but we'll see that that won't be a problem momentarily.
 	
@@ -152,7 +152,7 @@ Sometimes --- particularly in cases like the previous example with multiple boun
 	
 	Find the area of the shaded region bounded by $y = 1 - x$, $y = x^2$, and $y = \sqrt{x}$ by integrating with respect to $y$.
 	
-	### desmos area-between-curves-6
+	### desmos areaBetweenCurves6
 	
 	**Solution:** the functions are now $1 - y$, $\sqrt{y}$, and $y^2$. The integrals are actually exactly the same, since they intersect at the same $y$-coordinates as the previous $x$-coordinates.
 	

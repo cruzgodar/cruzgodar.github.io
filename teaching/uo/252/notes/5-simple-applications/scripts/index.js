@@ -14,7 +14,7 @@ export default function()
 	{
 		const data =
 		{
-			"displacement":
+			displacement:
 			{
 				bounds: { left: -1, right: 4, bottom: -7, top: 8 },
 
@@ -29,7 +29,7 @@ export default function()
 
 
 
-			"even-and-odd-functions":
+			evenAndOddFunctions:
 			{
 				bounds: { left: -5, right: 5, bottom: -2.5, top: 2.5 },
 

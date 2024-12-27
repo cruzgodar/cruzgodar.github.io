@@ -14,7 +14,7 @@ export default function()
 	{
 		const data =
 		{
-			"line-arc-length":
+			lineArcLength:
 			{
 				bounds: { left: -2, right: 4, bottom: 0, top: 6 },
 
@@ -31,7 +31,7 @@ export default function()
 
 
 
-			"arc-length-approximation":
+			arcLengthApproximation:
 			{
 				bounds: { left: -25, right: 25, bottom: -2, top: 2 },
 
@@ -54,7 +54,7 @@ export default function()
 
 
 
-			"surface-area":
+			surfaceArea:
 			{
 				bounds: { left: -10, right: 10, bottom: -10, top: 10 },
 

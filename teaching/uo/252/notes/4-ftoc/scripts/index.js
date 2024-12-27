@@ -13,7 +13,7 @@ export default function()
 	{
 		const data =
 		{
-			"ftc-part-1":
+			ftcPart1:
 			{
 				bounds: { left: -7, right: 10, bottom: -5, top: 12 },
 
@@ -35,7 +35,7 @@ export default function()
 
 
 
-			"ftc-part-2":
+			ftcPart2:
 			{
 				bounds: { left: -2.5, right: 2.5, bottom: -2.5, top: 2.5 },
 

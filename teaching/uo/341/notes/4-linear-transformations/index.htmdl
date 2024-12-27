@@ -38,7 +38,7 @@ $$
 
 so as soon as we know what $T(1)$ is, every other output of $T$ is fixed. If $a = T(1)$, then $T(x) = ax$, so linear transformations $#R# \to #R#$ are just lines through the origin. It might seem like needless attention to detail, but let's take a moment to graph these.
 
-### desmos 1d-linear-transformation
+### desmos 1dLinearTransformation
 
 Here, the input vector (i.e. the number $1$) is colored purple, and the output vector colored blue. The value of $a$ is given by the red point. While we normally plot functions with inputs on one axis and outputs on another, we're using the $x$-axis here for both input and output. That's for two reasons: first, it's foreshadowing for the two-dimensional case we're about to consider, and more importantly, it reflects the fact that we don't need to see other input-output pairs to completely understand the effects of a linear map. Any other input, like $-2$, is sent to $-2$ times whatever $1$ is sent to --- that's what it means to be a linear map.
 
@@ -56,7 +56,7 @@ $$
 
 So as soon as we know where $T$ sends $[[ 1 ; 0 ]]$ and $[[ 0 ; 1 ]]$, finding where it sends any other vector is as simple as taking a linear combination of those two outputs.
 
-### desmos 2d-linear-transformation
+### desmos 2dLinearTransformation
 
 There's a lot going on in this graph, so let's go through it carefully. The red and blue vectors that can't be dragged are $[[ 1 ; 0 ]]$ and $[[ 0 ; 1 ]]$, and the ones that can be dragged are the corresponding outputs --- i.e. $T \left( [[ 1 ; 0 ]] \right)$ and $T \left( [[ 0 ; 1 ]] \right)$. To give them names, let's say those output vectors are
 

@@ -116,7 +116,7 @@ The example we talked about in the last section --- $g(h) = \frac{h^2}{h}$ --- i
 	
 	Now this is just a polynomial, so we can just plug in $x = 1$ to get that the limit is $2$.
 	
-	### desmos limit-example
+	### desmos limitExample
 	
 ###
 
@@ -196,7 +196,7 @@ Another example that arises involves getting a common denominator for rational f
 	
 	This one-sided limit is telling us to consider only numbers smaller than $2$. But if $t < 2$, then $t - 2$ is negative, so the function $\sqrt{t - 2}$ is undefined! Therefore, the limit must be undefined. Visually, we're trying to approach the point $(2, 0)$ from the left in this graph, but there is no graph to the left, so there's no way to approach.
 	
-	### desmos limit-example-2
+	### desmos limitExample2
 	
 	On the other hand, the limit $\lim_{t \to 2^+} \sqrt{t - 2}$ exists and is equal to zero. Since this function is only defined from one direction near $t = 2$, we write $\lim_{t \to 2} \sqrt{t - 2}$ to mean $\lim_{t \to 2^+} \sqrt{t - 2}$, so the total limit exists and is equal to $2$.
 	
@@ -284,7 +284,7 @@ The squeeze theorem is a little complicated to state, but it's a straightforward
 	
 	We need to have the absolute value because otherwise the signs will be switched when $x$ is negative. Graphing the functions, we can see $x\sin(x)$ being squeezed between the other two functions.
 	
-	### desmos squeeze-theorem
+	### desmos squeezeTheorem
 	
 	Since $\lim_{x \to 0} |x| = 0$ and $\lim_{x \to 0} -|x| = 0$, we must have that
 	

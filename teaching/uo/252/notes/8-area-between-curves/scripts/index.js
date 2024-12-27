@@ -14,7 +14,7 @@ export default function()
 	{
 		const data =
 		{
-			"area-between-curves":
+			areaBetweenCurves:
 			{
 				bounds: { left: -1, right: 2, bottom: -1, top: 2 },
 
@@ -31,7 +31,7 @@ export default function()
 
 
 
-			"area-between-curves-2":
+			areaBetweenCurves2:
 			{
 				bounds: { left: -1, right: 4.14, bottom: -2.57, top: 2.57 },
 
@@ -48,7 +48,7 @@ export default function()
 
 
 
-			"area-between-curves-3":
+			areaBetweenCurves3:
 			{
 				bounds: { left: -2, right: 4, bottom: -2, top: 4 },
 
@@ -65,7 +65,7 @@ export default function()
 
 
 
-			"area-between-curves-4":
+			areaBetweenCurves4:
 			{
 				bounds: { left: -1, right: 2, bottom: -1, top: 2 },
 
@@ -82,7 +82,7 @@ export default function()
 
 
 
-			"area-between-curves-5":
+			areaBetweenCurves5:
 			{
 				bounds: { left: -2, right: 4, bottom: -2, top: 4 },
 
@@ -99,7 +99,7 @@ export default function()
 
 
 
-			"area-between-curves-6":
+			areaBetweenCurves6:
 			{
 				bounds: { left: -1, right: 2, bottom: -1, top: 2 },
 

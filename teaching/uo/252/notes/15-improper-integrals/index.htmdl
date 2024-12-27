@@ -70,7 +70,7 @@ In order to compute the first type of improper integral, we'll leave the bounds 
 	
 	Therefore, although the area we're computing extends infinitely to the right, it's shrinking so quickly that there's actually only a finite total amount.
 	
-	### desmos improper-integral
+	### desmos improperIntegral
 	
 ###
 
@@ -94,7 +94,7 @@ In order to compute the first type of improper integral, we'll leave the bounds 
 	
 	So the integral diverges --- there's enough area to the left that it adds up to infinity, even though it slopes to zero.
 	
-	### desmos improper-integral-2
+	### desmos improperIntegral2
 	
 ###
 
@@ -212,7 +212,7 @@ The second kind of improper integral is an integral in which the function spikes
 	
 	So even though the function spikes to infinity, it does so fast enough that there's only a finite amount of area.
 	
-	### desmos improper-integral-3
+	### desmos improperIntegral3
 	
 ###
 
@@ -236,7 +236,7 @@ The second kind of improper integral is an integral in which the function spikes
 	
 	The first limit is $-\infty$, so the entire integral diverges. Now it's true that the second limit is $\infty$, so the entire integral could be written as $\infty - \infty$, but it is not equal to $0$, since the limits are taken individually, and not at the same time.
 	
-	### desmos improper-integral-4
+	### desmos improperIntegral4
 	
 ###
 

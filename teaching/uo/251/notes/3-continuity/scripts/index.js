@@ -14,7 +14,7 @@ export default function()
 	{
 		const data =
 		{
-			"continuity-example":
+			continuityExample:
 			{
 				bounds: { left: -6, right: 6, bottom: -6, top: 6 },
 
@@ -29,7 +29,7 @@ export default function()
 
 
 
-			"continuity-limit":
+			continuityLimit:
 			{
 				bounds: { left: -10, right: 10, bottom: -10, top: 10 },
 
@@ -41,7 +41,7 @@ export default function()
 
 
 
-			"ivt-example":
+			ivtExample:
 			{
 				bounds: { left: -1, right: 4, bottom: -1, top: 4 },
 
@@ -57,7 +57,7 @@ export default function()
 
 
 
-			"ivt-example-2":
+			ivtExample2:
 			{
 				bounds: { left: -15, right: 15, bottom: -15, top: 15 },
 

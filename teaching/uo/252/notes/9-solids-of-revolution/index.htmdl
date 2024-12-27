@@ -16,7 +16,7 @@ Fundamentally, definite integrals calculate area under curves. If you stick arou
 	
 	With $f(x) = \sin(x) + 2$ on $[0, 10]$, the solid of revolution of $f$ about the $x$-axis is plotted below.
 	
-	### desmos disk-method-x-axis
+	### desmos diskMethodXAxis
 	
 	Desmos is obviously not a 3D graphing engine, but it still does a pretty great job of plotting these things. Even if you don't normally, **please take the time to poke around with this one** --- there's a lot to digest. First of all, note that the solid is shown properly when $n = 1$ --- other values of $n$ are to demonstrate the process of revolution. Change $f$ and/or $g$, along with $a$ and $b$, and see what happens. Most importantly, drag the black point to look around.
 	
@@ -28,7 +28,7 @@ Our goal is to find the volume of these things. We'll have two ways to do this -
 
 When we rotate a graph about the $x$-axis, cross sections of the solid taken perpendicular to the $x$-axis are always circles. The example below highlights those cross sections in red --- slide $x_0$ to change which cross section is shown.
 
-### desmos disk-method-x-axis-2
+### desmos diskMethodXAxis2
 
 Now a definite integral just adds up whatever is inside of it over an interval, creating an area. If we instead add up the areas of all those circles, we'll get the volume of that region. And what is that red area? Well, it's a circle, so we just need its radius. But we can see from the picture that the radius is given by the height of the function, which is $f(x)$, and so the area is $\pi r^2 = \pi (f(x))^2$. This leads us to the following result:
 
@@ -100,7 +100,7 @@ That wasn't so bad! We can also use the same method for functions revolved about
 		&= \pi \frac{2^{5/3}}{5/3}.
 	$$
 	
-	### desmos disk-method-y-axis
+	### desmos diskMethodYAxis
 	
 ###
 
@@ -132,7 +132,7 @@ The disk method can be extended to work with problems where we're taking the dif
 	
 	So what does this look like when it's revolved about the $x$-axis? Well, both the inner function and outer function produce circles, so cross sections look like large circles with smaller circles cut out of them.
 	
-	### desmos disk-method-x-axis-3
+	### desmos diskMethodXAxis3
 	
 	In order to find the area of one of those slices, we just need to take the area of the larger circle and subtract the area of the hole. Since the outer area is $\pi (\sqrt{x})^2$ and the inner one is $\pi x^2$, we have
 	
@@ -170,13 +170,13 @@ The disk method can be extended to work with problems where we're taking the dif
 
 Sometimes, the disk method just won't work: it'll produce an integral we cannot solve. But not all hope is lost! Just like with finding the area between curves, we can integrate with respect to a different variable to find the volume. That's a little more complicated than it used to be, though. Let's look at some pictures to walk through this carefully.
 
-### desmos disk-method-y-axis-2
+### desmos diskMethodYAxis2
 
 Here's the disk method applied to the function from two examples ago. Since it's revolved about the $y$-axis, the disk method integrates with respect to $y$. That means we take a horizontal line at height $y$ and revolve it about the $y$-axis to produce a circle. The function $x = \sqrt[3]{y}$ tells us the radius of that circle.
 
 What we're going to do instead is integrate with respect to $x$. That means each slice will have no thickness in the $x$-direction, so we take a **vertical** line and revolve it about the $y$-axis. This produces a hollow cylinder instead, called a **shell.**
 
-### desmos shell-method-y-axis
+### desmos shellMethodYAxis
 
 The principle is the same: add up all the areas of those cylinders to produce the volume. A good analogy for the difference between the methods is that the disk method expresses the volume as a stack of pancakes of varying width, while the shell method expresses it as a sequence of nesting dolls that are open on the top and bottom.
 
@@ -208,7 +208,7 @@ Before we do more examples, let's write down when to apply all of these methods.
 	
 	Following the previous instructions, the first step is to notice that we're revolving about the $y$-axis, so the disk method will integrate $dy$ and the shell method will integrate $dx$. Since our function is currently a function of $x$, we'll try the shell method first.
 	
-	### desmos shell-method-y-axis-2
+	### desmos shellMethodYAxis2
 	
 	To use the shell method, we need to know two things: the range of radii and the height of each shell. Since $x$ is the radius of the shell and it ranges from $1$ to $3$, those will be our limits of integration. And the height of a cylinder with radius $x$ is just $y = \frac{1}{x}$. In total, the integral becomes
 	
@@ -242,7 +242,7 @@ Before we do more examples, let's write down when to apply all of these methods.
 	
 	Since we're revolving about the $x$-axis, the disk method with integrate $dx$ and the shell method $dy$. Our functions are in terms of $x$, so let's do the disk method first --- it'll be easier to set up.
 	
-	### desmos disk-method-x-axis-4
+	### desmos diskMethodXAxis4
 	
 	We need to know the limits of our integral, so we solve for that intersection point on the left. That gives $\ln(x) = 1$, so $x = e^1 = e$. Now applying the disk method, the outer radius is $\ln(x)$, the inner radius is $1$, and the integral runs from $x = e$ to $x = e^2$. The integral is therefore
 	
@@ -252,7 +252,7 @@ Before we do more examples, let's write down when to apply all of these methods.
 	
 	It's good that we don't need to continue with this, because we have no idea how to integrate $(\ln(x))^2$! $u$-sub doesn't work, and we have no other options at the moment. Let's move on to the shell method and see if it's any different.
 	
-	### desmos shell-method-x-axis
+	### desmos shellMethodXAxis
 	
 	Since it integrates $dy$, we need to rewrite everything in terms of $y$. First of all, $y = \ln(x)$ becomes $x = e^y$. Drawing a shell, we can see that its height is $e^2 - e^y$, and all that's left is to figure out the range of radii. The smallest is $y = 1$, and the largest is the $y$-coordinate of the intersection of $x = e^2$ with $y = \ln(x)$ --- and that's just $\ln(e^2) = 2$. Finally, we now have
 	
@@ -294,7 +294,7 @@ As one final example, let's take a look at a solid of revolution about a line th
 	
 	The key observation is that revolving about the line $x = 6$ is extremely similar to revolving about $x = 0$, i.e. the $y$-axis. The disk method will still produce a vertical stack of pancakes and the shell method a sequence of nested vertical cylinders. The only difference is where they're centered, and therefore their radii.
 	
-	### desmos a-different-axis-1
+	### desmos aDifferentAxis1
 	
 	Let's start with the disk method. Plotted in purple is the region, in red a slice taken $dy$, and in green the line we're revolving about. As usual, that red line will revolve into concentric circles, with the outside circle given by $y = x^2$ and the inner one by $x = 4$. Since we're integrating $dy$, we need the first function in terms of $y$, so we solve for $x$ to get $x = \sqrt{y}$. The $y$-limits are $0$ to $16$ since the $x$ limits are $0$ to $4$, and so we wind up with
 	
@@ -306,7 +306,7 @@ As one final example, let's take a look at a solid of revolution about a line th
 	
 	The shell method also functions a lot like usual: we're taking slices $dx$, which are vertical lines.
 	
-	### desmos a-different-axis-2
+	### desmos aDifferentAxis2
 	
 	These revolve into cylinders, and so we need to find their radius and height. The height is just the length of the red line, which is $x^2$. As before, the radius is slightly more complicated: it's the horizontal distance from the red line to the green one. We can find that by taking the difference of the larger and smaller $x$-coordinates, which is $6 - x$. In total, the surface area of a shell produced from a vertical slice at $x$ is
 	

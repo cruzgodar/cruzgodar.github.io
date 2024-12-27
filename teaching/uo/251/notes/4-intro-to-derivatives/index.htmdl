@@ -6,7 +6,7 @@ $$
 	\frac{f(a + h) - f(a)}{h}.
 $$
 
-### desmos secant-lines
+### desmos secantLines
 
 We want to get the tangent line by setting $h = 0$, but since the slope will be $\frac{0}{0}$ then, we need to take a limit instead.
 
@@ -50,7 +50,7 @@ We want to get the tangent line by setting $h = 0$, but since the slope will be 
 	
 	This tells us that the slope of the graph (i.e. the slope of the tangent line) at $x = 1$ is $2$.
 	
-	### desmos tangent-lines
+	### desmos tangentLines
 	
 ###
 
@@ -108,7 +108,7 @@ One more notational quirk: sometimes, we don't want to give a function a name ju
 	
 	Let's sketch a graph of these two.
 	
-	### desmos derivative-example
+	### desmos derivativeExample
 	
 	Where the blue function is negative, the slope of the purple function is negative, and vice versa. Where the blue function is zero, the slope of the purple function is flat.
 	
@@ -126,7 +126,7 @@ One more notational quirk: sometimes, we don't want to give a function a name ju
 	
 	Given this graph, sketch a graph of the derivative.
 	
-	### desmos derivative-example-2
+	### desmos derivativeExample2
 	
 	Whenever the purple graph is flat, the derivative is zero. It's positive when the graph slopes upward and negative when it slopes downward, and so in total, we wind up with the blue graph (click the circle next to $f'(x)$ to see it).
 	
@@ -136,7 +136,7 @@ One more notational quirk: sometimes, we don't want to give a function a name ju
 	
 	Given this graph, sketch a graph of the derivative.
 	
-	### desmos derivative-example-3
+	### desmos derivativeExample3
 	
 ###
 
@@ -164,7 +164,7 @@ Because of this theorem, if a function is not continuous at $a$, it's not possib
 	
 	The graph of the function $f(x) = |x|$ is V-shaped, since the negative part gets reflected over the $x$-axis.
 	
-	### desmos derivative-example-4
+	### desmos derivativeExample4
 	
 	At $x = 0$, the graph has a corner --- a sharp point. It's not really clear what a tangent line at that point would look like, but we can take the limit anyway and see what happens.
 	

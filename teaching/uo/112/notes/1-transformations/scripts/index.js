@@ -15,7 +15,7 @@ export default function()
 	{
 		const data =
 		{
-			"test-graph":
+			testGraph:
 			{
 				bounds: { left: -1, right: 3, bottom: -1, top: 3 },
 
@@ -30,7 +30,7 @@ export default function()
 				]
 			},
 
-			"power-functions":
+			powerFunctions:
 			{
 				bounds: { left: -5, right: 5, bottom: -5, top: 5 },
 
@@ -44,7 +44,7 @@ export default function()
 				]
 			},
 
-			"negative-power-functions":
+			negativePowerFunctions:
 			{
 				bounds: { left: -5, right: 5, bottom: -5, top: 5 },
 
@@ -57,7 +57,7 @@ export default function()
 				]
 			},
 
-			"fractional-power-functions":
+			fractionalPowerFunctions:
 			{
 				bounds: { left: -5, right: 5, bottom: -5, top: 5 },
 
@@ -70,7 +70,7 @@ export default function()
 				]
 			},
 
-			"inverses":
+			inverses:
 			{
 				bounds: { left: -5, right: 5, bottom: -5, top: 5 },
 
@@ -82,7 +82,7 @@ export default function()
 				]
 			},
 
-			"exponentials":
+			exponentials:
 			{
 				bounds: { left: -3, right: 3, bottom: -1, top: 5 },
 

@@ -114,7 +114,7 @@ Let's finish the section with something a little easier. You might have seen eve
 
 Geometrically, even functions are ones whose graphs are symmetric about the $y$-axis, and odd functions are ones whose graphs are symmetric when rotated 180 degrees about the origin. For example, $x^4 - x^2$ is even, while $\sin(x)$ is odd.
 
-### desmos even-and-odd-functions
+### desmos evenAndOddFunctions
 
 
 

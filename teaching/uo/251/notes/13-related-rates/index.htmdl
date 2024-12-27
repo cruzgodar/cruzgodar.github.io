@@ -24,7 +24,7 @@ The technology behind related rates is just implicit differentiation, except tha
 		s = \sqrt{x^2 + 100^2}.
 	$$
 	
-	### desmos related-rates
+	### desmos relatedRates
 	
 	Now we can differentiate both sides implicitly.
 	

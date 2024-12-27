@@ -12,7 +12,7 @@ export default function()
 	{
 		const data =
 		{
-			"secant-lines":
+			secantLines:
 			{
 				bounds: { left: -2.5, right: 2.5, bottom: -1.5, top: 3.5 },
 
@@ -30,7 +30,7 @@ export default function()
 
 
 
-			"tangent-lines":
+			tangentLines:
 			{
 				bounds: { left: -2.5, right: 2.5, bottom: -1.5, top: 3.5 },
 
@@ -45,7 +45,7 @@ export default function()
 
 
 
-			"derivative-example":
+			derivativeExample:
 			{
 				bounds: { left: -2.5, right: 2.5, bottom: -1.5, top: 3.5 },
 
@@ -58,7 +58,7 @@ export default function()
 
 
 
-			"derivative-example-2":
+			derivativeExample2:
 			{
 				bounds: { left: -5, right: 5, bottom: -5, top: 5 },
 
@@ -71,7 +71,7 @@ export default function()
 
 
 
-			"derivative-example-3":
+			derivativeExample3:
 			{
 				bounds: { left: -1.5, right: 3, bottom: -2, top: 2.5 },
 
@@ -83,7 +83,7 @@ export default function()
 
 
 
-			"derivative-example-4":
+			derivativeExample4:
 			{
 				bounds: { left: -5, right: 5, bottom: -5, top: 5 },
 

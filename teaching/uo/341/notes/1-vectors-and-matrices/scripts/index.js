@@ -12,7 +12,7 @@ export default function()
 	{
 		const data =
 		{
-			"test-graph":
+			testGraph:
 			{
 				bounds: { left: -1, right: 3, bottom: -1, top: 3 },
 
@@ -27,7 +27,7 @@ export default function()
 				]
 			},
 			
-			"linear-system":
+			linearSystem:
 			{
 				bounds: { left: -5, right: 5, bottom: -5, top: 5 },
 

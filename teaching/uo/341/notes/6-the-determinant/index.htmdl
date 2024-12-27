@@ -272,7 +272,7 @@ This result definitely needs some examples to explain it, so let's start there.
 
 	obtained by replacing $x$ and $y$ with their images under $T$. Geometrically, $T(X)$ is an ellipse:
 
-	### desmos determinant-scaling
+	### desmos determinantScaling
 
 	The area of that ellipse doesn't look pleasant to compute, but since it's the image of the circle under $T$, its area is just the area of the circle times the magnitude of the determinant (i.e. $5$). Since the circle's area is $\pi(1^2) = \pi$, the ellipse has area $5\pi$.
 

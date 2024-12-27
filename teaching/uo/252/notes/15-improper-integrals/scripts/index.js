@@ -11,7 +11,7 @@ export default function()
 	{
 		const data =
 		{
-			"improper-integral":
+			improperIntegral:
 			{
 				bounds: { left: -5, right: 5, bottom: -5, top: 5 },
 
@@ -30,7 +30,7 @@ export default function()
 
 
 
-			"improper-integral-2":
+			improperIntegral2:
 			{
 				bounds: { left: -5, right: 5, bottom: -5, top: 5 },
 
@@ -49,7 +49,7 @@ export default function()
 
 
 
-			"improper-integral-3":
+			improperIntegral3:
 			{
 				bounds: { left: -5, right: 5, bottom: -5, top: 5 },
 
@@ -68,7 +68,7 @@ export default function()
 
 
 
-			"improper-integral-4":
+			improperIntegral4:
 			{
 				bounds: { left: -4, right: 4, bottom: -4, top: 4 },
 

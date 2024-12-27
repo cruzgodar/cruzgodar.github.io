@@ -13,7 +13,7 @@ export default function()
 	{
 		const data =
 		{
-			"limit-example":
+			limitExample:
 			{
 				bounds: { left: -5, right: 5, bottom: -5, top: 5 },
 
@@ -26,7 +26,7 @@ export default function()
 
 
 
-			"limit-example-2":
+			limitExample2:
 			{
 				bounds: { left: 0, right: 8, bottom: -3, top: 5 },
 
@@ -38,7 +38,7 @@ export default function()
 
 
 
-			"squeeze-theorem":
+			squeezeTheorem:
 			{
 				bounds: {
 					left: -25 * Math.PI / 2,

@@ -13,7 +13,7 @@ export default function()
 	{
 		const data =
 		{
-			"alternating-harmonic-series":
+			alternatingHarmonicSeries:
 			{
 				bounds: { left: .9, right: 2.1, bottom: -.1, top: 1.1 },
 
@@ -52,7 +52,7 @@ export default function()
 
 
 
-			"alternating-harmonic-series-2":
+			alternatingHarmonicSeries2:
 			{
 				bounds: { left: -.25, right: 1.25, bottom: -.75, top: .75 },
 
@@ -74,7 +74,7 @@ export default function()
 
 
 
-			"alternating-harmonic-series-3":
+			alternatingHarmonicSeries3:
 			{
 				bounds: { left: -.25, right: 1.25, bottom: -.75, top: .75 },
 

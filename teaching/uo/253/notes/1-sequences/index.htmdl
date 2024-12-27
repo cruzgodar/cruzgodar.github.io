@@ -6,7 +6,7 @@ Throughout all of calculus I and II, the easiest type of functions to work with 
 
 It goes without saying that not all functions are polynomials. $\sin(x)$, $\ln(x)$, and $2^x$ are all substantially more complicated, and there is no way to write any as a sum of monomials. But we're not as far off as you might think --- let's take a close look at $\sin(x)$.
 
-### desmos taylor-series
+### desmos taylorSeries
 
 Drag the blue point around, and try increasing $N$. The blue function is always a polynomial, and it is almost exactly equal to $\sin(x)$, as long as you only look near the blue point. As $N$ increases, so does the length of the interval where the two functions agree. It will turn out that as $N \to \infty$, that interval becomes infinitely long, and the functions become exactly equal to one another. So $\sin$ may not be a polynomial, but it is a *limit* of polynomials. This is a very different kind of limit from the one we're used to, though --- rather than a sequence of numbers approaching another number, what we have here is a sequence of *functions* approaching another function. The upshot of this intricate construction is that many of the best properties of polynomials will carry over to their limits, so working with $\sin$ --- and more importantly, other more complicated functions --- will be made much easier.
 
@@ -350,7 +350,7 @@ Let's unpack this carefully. First, we start with a candidate $a$ that we think 
 	
 	If we plot this sequence like a function, putting values of $n$ on the horizontal axis and $a_n$ on the vertical axis, convergence means that for any thin band around the horizontal line at height $L$, we can find an $N$ so that all the points to the right of $N$ stay in that band.
 	
-	### desmos epsilon-definition-of-convergence
+	### desmos epsilonDefinitionOfConvergence
 	
 ###
 
@@ -474,7 +474,7 @@ Just like with functions, there is a Squeeze theorem for sequences. While the fu
 	
 	Now we know that both of the outer sequences converge to zero, so since they share a limit, the Squeeze theorem guarantees that $\lim \left( \frac{\cos(n)}{n} \right) = 0$ too.
 	
-	### desmos squeeze-theorem
+	### desmos squeezeTheorem
 	
 ###
 

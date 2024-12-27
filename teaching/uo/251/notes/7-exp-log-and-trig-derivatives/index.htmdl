@@ -50,7 +50,7 @@ The notation $\sec^2(x)$ just means $(\sec(x))^2$ --- we use it to distinguish f
 
 Let's take a closer look at what the relationship between $\sin$ and $\cos$ means. At any point on the two waves, the height of $\cos(x)$ gives the slope of $\sin(x)$, and the height of $\cos(x)$ is the opposite of the slope of $\sin(x)$. It's a fundamental fact of waves that their slopes are given by other wave functions.
 
-### desmos sin-and-cos
+### desmos sinAndCos
 
 
 
@@ -112,7 +112,7 @@ The final functions to talk about are exponential functions ($y = b^x$) and loga
 
 This is really important: $y = e^x$ is the unique function that is its own derivative. In other words, the slope of the graph of $y = e^x$ is exactly its height.
 
-### desmos exp-derivative
+### desmos expDerivative
 
 This is one reason why we care so much about the number $e$: derivatives involving it are incredibly simple.
 

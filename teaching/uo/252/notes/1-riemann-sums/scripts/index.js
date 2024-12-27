@@ -13,7 +13,7 @@ export default function()
 	{
 		const data =
 		{
-			"test-graph":
+			testGraph:
 			{
 				bounds: { left: -1, right: 3, bottom: -1, top: 3 },
 
@@ -30,7 +30,7 @@ export default function()
 
 
 
-			"partitions":
+			partitions:
 			{
 				bounds: { left: -1, right: 11, bottom: -1, top: 1 },
 
@@ -51,7 +51,7 @@ export default function()
 
 
 
-			"riemann-sum":
+			riemannSum:
 			{
 				bounds: { left: 0, right: 8, bottom: -2.5, top: 4.5 },
 
@@ -63,7 +63,7 @@ export default function()
 
 
 
-			"riemann-sum-2":
+			riemannSum2:
 			{
 				bounds: { left: -7, right: 7, bottom: -7, top: 32 },
 

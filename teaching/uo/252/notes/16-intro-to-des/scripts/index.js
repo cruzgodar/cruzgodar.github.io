@@ -7,7 +7,6 @@ import {
 	setGetDesmosData
 } from "/scripts/src/desmos.js";
 import { $ } from "/scripts/src/main.js";
-import { siteSettings } from "/scripts/src/settings.js";
 
 export default function()
 {
@@ -15,7 +14,7 @@ export default function()
 	{
 		const data =
 		{
-			"direction-field":
+			directionField:
 			{
 				bounds: { left: -10, right: 10, bottom: -10, top: 10 },
 
@@ -33,7 +32,7 @@ export default function()
 
 
 
-			"direction-field-2":
+			directionField2:
 			{
 				bounds: { left: -10, right: 10, bottom: -10, top: 10 },
 
@@ -51,7 +50,7 @@ export default function()
 
 
 
-			"de-solution":
+			deSolution:
 			{
 				bounds: { left: -10, right: 10, bottom: -10, top: 10 },
 
@@ -71,7 +70,7 @@ export default function()
 
 
 
-			"direction-field-3":
+			directionField3:
 			{
 				bounds: { left: -10, right: 10, bottom: -10, top: 10 },
 
@@ -89,7 +88,7 @@ export default function()
 
 
 
-			"direction-field-4":
+			directionField4:
 			{
 				bounds: { left: -5, right: 5, bottom: -5, top: 5 },
 
@@ -119,7 +118,6 @@ export default function()
 
 	applet.run({
 		generatingCode: "(1.0, sin(y) / (x*x + 1.0))",
-		resolution: 750 * siteSettings.resolutionMultiplier,
 		worldWidth: 8
 	});
 

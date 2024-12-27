@@ -15,7 +15,7 @@ export default function()
 	{
 		const data =
 		{
-			"rotation-matrix":
+			rotationMatrix:
 			{
 				bounds: { left: -10, right: 10, bottom: -10, top: 10 },
 

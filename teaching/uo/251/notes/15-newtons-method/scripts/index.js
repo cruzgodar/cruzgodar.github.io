@@ -16,7 +16,7 @@ export default function()
 	{
 		const data =
 		{
-			"newtons-method":
+			newtonsMethod:
 			{
 				bounds: { left: -5, right: 5, bottom: -5, top: 5 },
 

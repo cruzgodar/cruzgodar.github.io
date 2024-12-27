@@ -357,7 +357,7 @@ Although it's a little frustrating that we'll have to work with complex numbers 
 
 	So in total, this matrix scales its inputs by $\sqrt{45} \approx 6.71$ and rotates them by about $0.4636$ radians (about $22.6^\circ$) clockwise.
 
-	### desmos rotation-matrix
+	### desmos rotationMatrix
 
 	Here, the blue vector is the output of multiplying the purple one by this matrix.
 

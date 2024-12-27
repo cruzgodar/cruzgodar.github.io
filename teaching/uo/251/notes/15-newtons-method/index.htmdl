@@ -68,7 +68,7 @@ This process is called **Newton's method**, named after the same Newton that dis
 	
 	Here's what this process actually looks like --- drag the blue point to change the initial guess.
 	
-	### desmos newtons-method
+	### desmos newtonsMethod
 	
 	One important thing to notice: the closer the starting guess is to an actual root, the better the approximation is, and the farther away, the worse. Especially troublesome is when the starting guess $x_0$ is at a nearly equal distance from two roots --- here, that means near zero. This will come up a little bit later, and it's an important caveat of Newton's method: it doesn't always work or work well (i.e. converge to a root quickly).
 	

@@ -12,7 +12,7 @@ export default function()
 	{
 		const data =
 		{
-			"velocity-example":
+			velocityExample:
 			{
 				bounds: { left: -10, right: 10, bottom: -10, top: 10 },
 
@@ -25,7 +25,7 @@ export default function()
 
 
 
-			"secant-lines":
+			secantLines:
 			{
 				bounds: { left: -2.5, right: 2.5, bottom: -2.5, top: 2.5 },
 
@@ -42,7 +42,7 @@ export default function()
 
 
 
-			"tangent-lines":
+			tangentLines:
 			{
 				bounds: { left: -2.5, right: 2.5, bottom: -2.5, top: 2.5 },
 
@@ -57,7 +57,7 @@ export default function()
 
 
 
-			"tangent-lines-2":
+			tangentLines2:
 			{
 				bounds: { left: -2.5, right: 2.5, bottom: -2.5, top: 2.5 },
 
@@ -72,7 +72,7 @@ export default function()
 
 
 
-			"limit-example":
+			limitExample:
 			{
 				bounds: { left: -20, right: 20, bottom: -2, top: 2 },
 
@@ -85,7 +85,7 @@ export default function()
 
 
 
-			"limit-example-2":
+			limitExample2:
 			{
 				bounds: { left: -3, right: 3, bottom: -10, top: 10 },
 
@@ -100,7 +100,7 @@ export default function()
 
 
 
-			"dne-limit":
+			dneLimit:
 			{
 				bounds: { left: -.5, right: .5, bottom: -1.5, top: 1.5 },
 
@@ -112,7 +112,7 @@ export default function()
 
 
 
-			"dne-limit-2":
+			dneLimit2:
 			{
 				bounds: { left: -5, right: 5, bottom: -2, top: 2 },
 
@@ -127,7 +127,7 @@ export default function()
 
 
 
-			"infinite-limit":
+			infiniteLimit:
 			{
 				bounds: { left: -5, right: 5, bottom: -5, top: 5 },
 
@@ -139,7 +139,7 @@ export default function()
 
 
 
-			"complicated-limit":
+			complicatedLimit:
 			{
 				bounds: { left: -5, right: 5, bottom: -5, top: 5 },
 

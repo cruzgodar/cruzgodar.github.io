@@ -13,7 +13,7 @@ export default function()
 	{
 		const data =
 		{
-			"derivative-interpretation":
+			derivativeInterpretation:
 			{
 				bounds: { left: -5, right: 5, bottom: -5, top: 5 },
 

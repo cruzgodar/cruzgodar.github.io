@@ -16,7 +16,7 @@ We're going to take a welcome break from 3D objects to talk about a simpler appl
 	
 	The arc length of $f(x) = 2x + 1$ on $[0, 2]$ is $\sqrt{2^2 + 4^2} = \sqrt{20}$.
 	
-	### desmos line-arc-length
+	### desmos lineArcLength
 	
 ###
 
@@ -24,7 +24,7 @@ We're going to take a welcome break from 3D objects to talk about a simpler appl
 
 As is quickly becoming standard, we don't really know how to do anything but the simplest case of straight lines, but as long as the function is smooth, we can approximate it with a bunch of tiny lines, each of whose length we can compute.
 
-### desmos arc-length-approximation
+### desmos arcLengthApproximation
 
 Let's take a look at one of those small line segments. If it has rise $\Delta y$ and run $\Delta x$, then its length is
 
@@ -112,7 +112,7 @@ and $\Delta x \to dx$. Since we're adding up all of these shrinking segment leng
 
 By know, we know how to find the volume of a solid of revolution, but what about its surface area? This is thankfully much easier --- repeating our same straight-line argument but scaling by $2 \pi f(x)$ --- the circumference of a circle --- changes the integral to adding up lots of thin circles around the outside of the solid, which is exactly what we need.
 
-### desmos surface-area
+### desmos surfaceArea
 
 
 

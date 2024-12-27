@@ -42,7 +42,7 @@ At this point, we're in desperate need of examples. Let's start with something w
 	
 	Especially with integrals, it's always a good idea to draw a picture of what's going on before digging into the equations.
 	
-	### desmos geometric-integral
+	### desmos geometricIntegral
 	
 	The integral we're trying to calculate is by definition the area of the shaded region. That region consists of two triangles --- the left one has base and height $1$, while the right one has base and height $3$. The total area is therefore
 	
@@ -60,7 +60,7 @@ At this point, we're in desperate need of examples. Let's start with something w
 	
 	**Solution:** the area in question looks like the following:
 	
-	### desmos geometric-integral-2
+	### desmos geometricIntegral2
 	
 	This can be split into a square with side length $2$ and a triangle with base $2$ and height $4$. In total, the area is therefore $4 + \frac{1}{2} \cdot 2 \cdot 4 = 8$.
 	
@@ -76,7 +76,7 @@ At this point, we're in desperate need of examples. Let's start with something w
 	
 	We need to start with a Riemann sum. Since $f(t) = t^2$ is a continuous function, it's integrable, so it doesn't matter if we choose a left sum, a right one, an upper one, a lower one, or any other type. In general, right Riemann sums have the simplest formulas, so let's choose to use one of them. Since we're eventually going to limit the number of subintervals to infinity, we need to leave that number (i.e. $n$) as a variable. If we have $n$ subintervals, then we're dividing the interval $[0, 2]$ into $n$ equal-sized pieces, so each one has width $\frac{2}{n}$.
 	
-	### desmos integral-from-limit-def
+	### desmos integralFromLimitDef
 	
 	In the $i$th subinterval, the right endpoint has $x$-coordinate $\frac{2}{n} i$. That's because the right endpoint of the first interval is $\frac{2}{n}$, the right endpoint of the second is $\frac{2}{n}(2)$, and so on. We're trying to find the value of the Riemann sum, so we need to add up the area of all $n$ rectangles. The height of the $i$th one is
 	
@@ -148,7 +148,7 @@ Let's look at one more type of integral that we can handle geometrically, and th
 	
 	As always, it's good to draw a picture. Our function is $y = \sqrt{9 - (x - 3)^2}$, so $(x-3)^2 + y^2 = 3^2$. This is a circle of radius $3$ centered at $(3, 0)$, and since $\sqrt{9 - (x - 3)^2}$ is always positive, so the graph is only the top half of the circle.
 	
-	### desmos geometric-integral-3
+	### desmos geometricIntegral3
 	
 	The shaded area is just a quarter of the area of a full circle with radius $3$, so in total, it's $\frac{1}{4} \cdot 9\pi$.
 	
@@ -172,7 +172,7 @@ So far, we've only defined integrals for functions that are nonnegative. We'll n
 	
 	$$\int_{-2}^2 x^3\,dx = 0$$, since the areas above (red) and below (blue) the $x$-axis are equal.
 	
-	### desmos signed-area
+	### desmos signedArea
 	
 ###
 

@@ -11,7 +11,7 @@ export default function()
 	{
 		const data =
 		{
-			"related-rates":
+			relatedRates:
 			{
 				bounds: { left: -10, right: 110, bottom: -10, top: 110 },
 

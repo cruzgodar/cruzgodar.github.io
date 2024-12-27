@@ -11,7 +11,7 @@ export default function()
 	{
 		const data =
 		{
-			"test-graph":
+			testGraph:
 			{
 				bounds: { left: -1, right: 3, bottom: -1, top: 3 },
 

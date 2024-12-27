@@ -13,7 +13,7 @@ export default function()
 	{
 		const data =
 		{
-			"circle":
+			circle:
 			{
 				bounds: { left: -2, right: 2, bottom: -2, top: 2 },
 
@@ -31,7 +31,7 @@ export default function()
 
 
 
-			"braids":
+			braids:
 			{
 				bounds: {
 					left: -3.5 * Math.PI,
@@ -48,7 +48,7 @@ export default function()
 
 
 
-			"sin-thing":
+			sinThing:
 			{
 				bounds: { left: -10, right: 10, bottom: -10, top: 10 },
 

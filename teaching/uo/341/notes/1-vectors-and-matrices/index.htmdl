@@ -8,7 +8,7 @@ $$
 	x = \dfrac{-b \pm \sqrt{b^2 - 4ac}}{2a}
 $$
 
-### desmos test-graph
+### desmos testGraph
 
 If anything doesn't appear correctly, update your browser and then reach out if that doesn't work.
 
@@ -94,7 +94,7 @@ Now that we've worked through an example, we're prepared to define linear system
 
 Much of the intuition we have for small linear systems helps us understand the behavior of large ones. Depending on the particular equations, a system can have a single solution, no solutions, or infinitely many. Geometrically, linear equations form straight lines (or planes in higher dimensions), and the points where they all intersect are the solutions. In the example below, setting $a = 1$ results in the two lines being parallel, so there are no intersection points and therefore no solutions. When $a = 0$, the lines are the same (we sometimes say they **coincide**), and so there are infinitely many solutions. For all other values of $a$, the lines intersect at exactly one point, meaning there is a unique solution.
 
-### desmos linear-system
+### desmos linearSystem
 
 We'll develop vocabulary to describe all of these situations shortly, but the most pressing issue is that it's unwieldy to deal with $m$ different equations at once. If we could consolidate them into a single equation that still contained all the data, it would make the discussion of linear systems quite a bit simpler.
 

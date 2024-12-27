@@ -13,7 +13,7 @@ export default function()
 	{
 		const data =
 		{
-			"test-graph":
+			testGraph:
 			{
 				bounds: { left: -1, right: 3, bottom: -1, top: 3 },
 
@@ -30,7 +30,7 @@ export default function()
 
 
 
-			"limit-example":
+			limitExample:
 			{
 				bounds: { left: -20, right: 20, bottom: -2, top: 2 },
 
@@ -44,7 +44,7 @@ export default function()
 
 
 
-			"continuity-example":
+			continuityExample:
 			{
 				bounds: { left: -2, right: 7, bottom: -2, top: 3 },
 
@@ -61,7 +61,7 @@ export default function()
 
 
 
-			"derivative-example":
+			derivativeExample:
 			{
 				bounds: { left: -2.333, right: 3.667, bottom: -1.667, top: 4.333 },
 
@@ -78,7 +78,7 @@ export default function()
 
 
 
-			"second-derivative-test":
+			secondDerivativeTest:
 			{
 				bounds: { left: -2.333, right: 3.667, bottom: -1.667, top: 4.333 },
 

@@ -36,7 +36,7 @@ export default function()
 	{
 		const data =
 		{
-			"taylor-series":
+			taylorSeries:
 			{
 				bounds: { left: -10, right: 10, bottom: -10, top: 10 },
 
@@ -54,7 +54,7 @@ export default function()
 
 
 
-			"taylor-series-comparison":
+			taylorSeriesComparison:
 			{
 				bounds: { left: -5, right: 15, bottom: -10, top: 10 },
 
@@ -74,7 +74,7 @@ export default function()
 
 
 
-			"problematic-taylor-series":
+			problematicTaylorSeries:
 			{
 				bounds: { left: -2.5, right: 2.5, bottom: -2.5, top: 2.5 },
 

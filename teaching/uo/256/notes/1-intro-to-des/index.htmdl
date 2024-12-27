@@ -134,7 +134,7 @@ $$
 
 so we know exactly what the slopes of tangent lines of a solution $y(t)$ must be. In order to represent all possible solutions at once, we can draw those tangent lines: for a grid of points $(t, y)$, we'll create what's called a **direction field** by drawing a small line segment with slope $y'$ at every point. Then solutions to the DE are tangent to all the line segments they intersect --- in other words, they follow the flow.
 
-### desmos direction-field
+### desmos directionField
 
 By changing $c$, we can see a handful of different solutions $y(t)$, all of which follow the flow.
 
@@ -198,7 +198,7 @@ In our running example, the equilibria occur at $y = k\pi$ for any integer $k$. 
 	
 	When $y' = 0$, we have $y = 2$, $y = -2$, $y = 4$, or $t = 3$. Solutions are always $y$ as a function of $t$ and not $t$ as a function of anything, so we only want the first three. To classify their stability, we'll draw a direction field.
 	
-	### desmos direction-field-2
+	### desmos directionField2
 	
 	In general, we should draw it large enough to include all the equilibria and any other times $y' = 0$ (like when $t = 3$). Now we can see that $y = 2$ is unstable, $y = -2$ is stable, and $y = 4$ is neither stable nor unstable.
 	

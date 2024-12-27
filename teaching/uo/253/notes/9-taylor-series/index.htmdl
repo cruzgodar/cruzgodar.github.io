@@ -132,7 +132,7 @@ Critically, this definition says nothing about convergence: the Taylor series fo
 	
 	Plotting these polynomials shows that they really do seem to converge to $\sin$: plotted in purple is $p_N$, and increasing $N$ increases the interval where $p_N$ is almost identical to $\sin$. You can also change $a$ to see the effect recentering has.
 	
-	### desmos taylor-series
+	### desmos taylorSeries
 
 ###
 
@@ -528,7 +528,7 @@ There's one final question before our basic theory of Taylor series is complete:
 	
 	Since the limit is zero no matter what $x$ is, the series converges to $\sin(x)$ *everywhere*. This doesn't mean that we should always use a series centered at $x = 0$ to approximate any value of $\sin$, though --- as we've seen from the graph, Taylor polynomials are better approximations closer to where they're centered, so we should always take the cloest center we can (i.e. a center where we can easily calculate all the derivatives). For example, if we're trying to approximate $\sin(10)$, a good center would be $x = 3\pi \approx 9.425$, since we know the values of $\sin$ and all its derivatives at $3\pi$. Let's briefly draw a graph to illustrate this.
 	
-	### desmos taylor-series-comparison
+	### desmos taylorSeriesComparison
 	
 	Here, the blue and red functions are degree-5 Taylor polynomials for $\sin$ centered at $0$ and $3\pi$, respectively. The actual value of $\sin(10)$ is approximately $-.544021$, but while the red function predicts a value of $-.544025$, the blue function has stopped tracking with $\sin(x)$ long before $x = 10$, and it predicts a garbage value of $676.7$. We can increase the degree of the polynomials to help fix this problem, but there's often no substitute for centering them in the right place to begin with!
 
@@ -546,7 +546,7 @@ $$
 
 This function is differentiable, but it is *extremely* flat at $x = 0$ --- so flat that every single derivative is zero.
 
-### desmos problematic-taylor-series
+### desmos problematicTaylorSeries
 
 The Maclaurin series for $f$ is then just
 

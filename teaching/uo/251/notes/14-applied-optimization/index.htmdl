@@ -12,7 +12,7 @@ In a real-world senario, you won't usually be given the function to optimize out
 	
 	If the premise isn't quite clear, here are a couple of examples. You could make the side opposite the wall 18 feet and the other two sides 1 foot each, for a total of 18 square feet, or you could make all three non-wall sides $\frac{20}{3} \approx 6.67$ feet each, resulting in an area of about 44.44 square feet. In the graph below, you can drag the indicated point up and down to change the vertical side length.
 	
-	### desmos walled-garden
+	### desmos walledGarden
 	
 	Since we're trying to optimize area, we need to write it as a function. The challenge of these applied optimization problems is often integrating the constraint (here, the limit of 20 feet of fencing) into that function. The simplest strategy is just to make every value its own variable and then to use the constraint to relate some of them.
 	

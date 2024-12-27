@@ -185,7 +185,7 @@ $$
 
 has eigenvectors $\vec{v_1} = [[ 1 ; 1 ]]$ and $\vec{v_2} = [[ 2 ; 1 ]]$, with corresponding eigenvalues $\lambda_1 = 3$ and $\lambda_2 = 2$. Using these vectors and their images as sides of parallelograms shows exactly how $A$ scales area: the purple and blue vectors are $\vec{v_1}$ and $\vec{v_2}$, and the red and green ones are $A\vec{v_1} = 3\vec{v_1}$ and $A\vec{v_2} = 2\vec{v_2}$, respectively.
 
-### desmos area-scaling
+### desmos areaScaling
 
 As is becoming increasingly clear, we'd always like a *basis* of eigenvectors for a matrix. The characteristic polynomial $\chi_A(\lambda)$ of an $n \times n$ matrix is always of degree $n$, since there's exactly one term in the determinant expansion that involves multiplying together every diagonal entry of $A - \lambda I$, each of which is of the form $a_{ii} - \lambda$. That means that we'll at least have $n$ eigenvalues $\lambda$, but that number is counted with multiplicity --- the eigenvalues could be repeated or even complex numbers. We'll dig more into those possibilities in future sections, but for now, we can at least verify that when all the eigenvalues are distinct, we get the basis of eigenvectors we're looking for.
 

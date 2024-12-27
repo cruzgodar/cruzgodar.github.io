@@ -6,7 +6,7 @@ $$
 	x = \dfrac{-b \pm \sqrt{b^2 - 4ac}}{2a}
 $$
 
-### desmos test-graph
+### desmos testGraph
 
 If anything doesn't appear correctly, update your browser and then reach out if that doesn't work. There's also a non-interactive pdf version of each document available for compatibility --- let me know if you need them.
 
@@ -16,7 +16,7 @@ If anything doesn't appear correctly, update your browser and then reach out if 
 
 Let's begin by briefly reviewing the two most important topics from calculus I: limits and derivatives. We'll skip the formal definition of a limit in favor of the intuitive one: $\lim_{x \to a} f(x)$ is the value that $f(a)$ "should" have, regardless of the value $f(a)$ actually has, if it's even defined at all. We take a limit by sliding $x$ closer and closer to $a$, from both the right and the left, and seeing what value $f(x)$ gets close to. In the graph below, $f(0) = -1$, since there's a hole in the graph at $(0, 1)$. But as $x$ gets closer to $0$ from the right or the left, $f(x)$ gets closer to $1$, so $\lim_{x \to 0} f(x) = 1$.
 
-### desmos limit-example
+### desmos limitExample
 
 There's a sense in which that function is poorly behaved at $x = 0$. "Nice" functions shouldn't have holes in their graphs or similar issues --- and it turns out that what we mean by "nice" is **continuous**.
 
@@ -32,7 +32,7 @@ There's a sense in which that function is poorly behaved at $x = 0$. "Nice" func
 
 Continuous functions are the ones whose graphs can be drawn without lifting up your pencil: there are no holes or jumps. Recall that the **domain** of a function is the collection of $x$-values for which $f(x)$ is defined --- we need that in the definition so that $f(a)$ makes sense to write. In the example below, the purple function $f(x)$ is continuous while the blue function $g(x)$ is not.
 
-### desmos continuity-example
+### desmos continuityExample
 
 
 
@@ -70,7 +70,7 @@ The **derivative** of a function $f(x)$ is another function that's written $f'(x
 
 Not every function is differentiable --- in order for one to be, it must be continuous and not have any sharp corners. The purple function in the graph below is differentiable, while both functions in the previous graph aren't. Drag the blue point around below to show the tangent line to $f$ --- its slope is the value of $f'(x)$.
 
-### desmos derivative-example
+### desmos derivativeExample
 
 Now's a good time to mention that most of the graphs are editable --- for example, you can change the formula for $f(x)$ to any other differentiable function in the previous graph. Try changing it to $\sin(x)$!
 
@@ -184,7 +184,7 @@ Derivatives are often used to find **extrema** of functions, which are local max
 
 Speaking of the second derivative, $x$-values that make *it* zero are called **inflection points**, and indicate a change in concavity. In the example below, $f(x)$ is concave down to the left of the inflection point (marked in red) and concave up to the right of it.
 
-### desmos second-derivative-test
+### desmos secondDerivativeTest
 
 You can click the colored circles next to functions in the menu to temporarily hide them if the graphs get too crowded.
 

@@ -12,7 +12,7 @@ export default function()
 	{
 		const data =
 		{
-			"determinant-scaling":
+			determinantScaling:
 			{
 				bounds: { left: -8, right: 8, bottom: -10, top: 6 },
 

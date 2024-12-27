@@ -13,7 +13,7 @@ export default function()
 	{
 		const data =
 		{
-			"walled-garden":
+			walledGarden:
 			{
 				options: { showXAxis: false, showYAxis: false, showGrid: false },
 
@@ -32,7 +32,7 @@ export default function()
 
 
 
-			"ellipse":
+			ellipse:
 			{
 				bounds: { left: -4, right: 4, bottom: -4, top: 4 },
 
@@ -49,7 +49,7 @@ export default function()
 
 
 
-			"river":
+			river:
 			{
 				options: { showGrid: false },
 

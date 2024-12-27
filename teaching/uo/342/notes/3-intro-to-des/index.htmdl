@@ -24,7 +24,7 @@ $$
 
 has the following vector field plot.
 
-### desmos vector-field
+### desmos vectorField
 
 Solutions to the system are curves that follow the field at every point, like the blue curve here. Alternatively, we can represent systems of two DEs as a field of flowing particles, moving according to the velocity given by $(x', y')$.
 

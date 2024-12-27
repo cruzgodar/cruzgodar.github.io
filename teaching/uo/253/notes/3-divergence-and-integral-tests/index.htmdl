@@ -64,7 +64,7 @@ There's a good chance you'd already seen series before this course: Riemann sums
 
 As a brief refresher, Riemann sums are an approximation of the area under a curve. Given a function $f$ on an interval $[a, b]$, we choose a width $\Delta x$ and divide $[a, b]$ into pieces of size $\Delta x$. Every piece forms the base of a rectangle whose height is determined by the value of $f$ at some point in the interval.
 
-### desmos riemann-sum
+### desmos riemannSum
 
 Let's fix $\Delta x = 1$, so that every rectangle's area is equal to its height. Rather than thinking of that Riemann sum as an approximation of the integral, we can treat the integral as an approximation of the sum. Sure, it's not a great approximation, but if all we care about is whether the sum is infinite or not, it will be good enough.
 
@@ -82,7 +82,7 @@ Our goal is to find a function whose integral is approximated by a Riemann sum o
 
 You may remember from calculus II that a Riemann sum is allowed to sample its function value from anywhere in the intervals. Two particular kinds of Riemann sums are called **left** and **right Riemann sums**, named for the way they choose the point to sample: either the left or the right endpoint of each interval.
 
-### desmos riemann-sum-2
+### desmos riemannSum2
 
 Here the function $f(x)$ is shown in purple, the rectangles of a left Riemann sum on $[1, \infty)$ in blue, and the rectangles of a right Riemann sum on $[0, \infty)$ in red. Here's the crucial takeaway: Since $\frac{1}{x + 4}$ is a decreasing function for $x \geq 0$, the left endpoint of every interval is where $f$ reaches its maximum on that interval, and the right endpoint is where it reaches its minimum. Therefore, the blue rectangles are always above the graph of the function, and the red rectangles are always below. But because of the way the two Riemann sums are staggered, with the blue startng at $x = 1$ and the red at $x = 0$, they both have exactly the same total area --- namely,
 

@@ -13,7 +13,7 @@ export default function()
 	{
 		const data =
 		{
-			"sin-and-cos":
+			sinAndCos:
 			{
 				bounds: { left: -10, right: 10, bottom: -10, top: 10 },
 
@@ -30,7 +30,7 @@ export default function()
 
 
 
-			"exp-derivative":
+			expDerivative:
 			{
 				bounds: { left: -2.5, right: 2.5, bottom: -.5, top: 4.5 },
 

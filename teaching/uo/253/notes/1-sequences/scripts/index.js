@@ -36,7 +36,7 @@ export default function()
 	{
 		const data =
 		{
-			"taylor-series":
+			taylorSeries:
 			{
 				bounds: { left: -10, right: 10, bottom: -10, top: 10 },
 
@@ -54,7 +54,7 @@ export default function()
 
 
 
-			"epsilon-definition-of-convergence":
+			epsilonDefinitionOfConvergence:
 			{
 				bounds: { left: -1, right: 13, bottom: -.5, top: 2.5 },
 
@@ -75,7 +75,7 @@ export default function()
 
 
 
-			"squeeze-theorem":
+			squeezeTheorem:
 			{
 				bounds: { left: -1, right: 101, bottom: -1.5, top: 1.5 },
 

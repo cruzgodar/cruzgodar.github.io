@@ -15,7 +15,7 @@ export default function()
 	{
 		const data =
 		{
-			"disk-method-x-axis":
+			diskMethodXAxis:
 			{
 				bounds: { left: -10, right: 10, bottom: -10, top: 10 },
 
@@ -91,7 +91,7 @@ export default function()
 
 
 
-			"disk-method-x-axis-2":
+			diskMethodXAxis2:
 			{
 				bounds: { left: -10, right: 10, bottom: -10, top: 10 },
 
@@ -173,7 +173,7 @@ export default function()
 
 
 
-			"disk-method-y-axis":
+			diskMethodYAxis:
 			{
 				bounds: { left: -2.5, right: 2.5, bottom: -2.5, top: 2.5 },
 
@@ -255,7 +255,7 @@ export default function()
 
 
 
-			"disk-method-x-axis-3":
+			diskMethodXAxis3:
 			{
 				bounds: { left: -2.5, right: 2.5, bottom: -2.5, top: 2.5 },
 
@@ -337,7 +337,7 @@ export default function()
 
 
 
-			"disk-method-y-axis-2":
+			diskMethodYAxis2:
 			{
 				bounds: { left: -2.5, right: 2.5, bottom: -2.5, top: 2.5 },
 
@@ -419,7 +419,7 @@ export default function()
 
 
 
-			"shell-method-y-axis":
+			shellMethodYAxis:
 			{
 				bounds: { left: -3.5, right: 3.5, bottom: -3.5, top: 3.5 },
 
@@ -501,7 +501,7 @@ export default function()
 
 
 
-			"shell-method-y-axis-2":
+			shellMethodYAxis2:
 			{
 				bounds: { left: -5, right: 5, bottom: -5, top: 5 },
 
@@ -583,7 +583,7 @@ export default function()
 
 
 
-			"disk-method-x-axis-4":
+			diskMethodXAxis4:
 			{
 				bounds: { left: -10, right: 10, bottom: -10, top: 10 },
 
@@ -665,7 +665,7 @@ export default function()
 
 
 
-			"shell-method-x-axis":
+			shellMethodXAxis:
 			{
 				bounds: { left: -10, right: 10, bottom: -10, top: 10 },
 
@@ -747,7 +747,7 @@ export default function()
 
 
 
-			"a-different-axis-1":
+			aDifferentAxis1:
 			{
 				bounds: { left: -1, right: 15, bottom: -1, top: 17 },
 
@@ -765,7 +765,7 @@ export default function()
 
 
 
-			"a-different-axis-2":
+			aDifferentAxis2:
 			{
 				bounds: { left: -1, right: 15, bottom: -1, top: 17 },
 

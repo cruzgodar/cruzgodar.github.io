@@ -66,7 +66,7 @@ A direction field lets us visualize how a DE acts over time. To draw one, we sol
 	
 	We have $y' = \frac{1}{30}xy$, so on both the $x$- and $y$-axes, $y' = 0$. That means we draw horizontal line segments there. When $x$ and $y$ are both positive or negative, the slope is positive, and when one is positive and the other negative, the slope is negative. The farther away from the axes we get, the larger the slope becomes in absolute value.
 	
-	### desmos direction-field
+	### desmos directionField
 	
 ###
 
@@ -74,7 +74,7 @@ A direction field lets us visualize how a DE acts over time. To draw one, we sol
 	
 	Draw a direction field for $$y' = \frac{1}{20}(x^2 - 1)\sin(y)$$.
 	
-	### desmos direction-field-2
+	### desmos directionField2
 	
 ###
 
@@ -88,7 +88,7 @@ By definition, a solution to the DE is a function whose slope matches the direct
 	
 	For any value of $c$, $$y = c e^{x^2}$$ is a solution to $$y' - xy = 0$$.
 	
-	### desmos de-solution
+	### desmos deSolution
 	
 	As we can see, this function follows the direction field. When $c = 0$, the solution is $y = 0$, and this one has a special name:
 	
@@ -110,7 +110,7 @@ By definition, a solution to the DE is a function whose slope matches the direct
 	
 	If $y = c$, then $y' = 0$, so to find the equilibrium solutions, we just need to set $(x-3)(y^2 - 4) = 0$. Then $x = 3$, $y = -2$, or $y = 2$, and we only want the solutions of the form $y = c$, so we want $y = \pm 2$.
 	
-	### desmos direction-field-3
+	### desmos directionField3
 	
 ###
 
@@ -422,7 +422,7 @@ As one final application, let's talk about temperature.
 
 Let's end the course on a high note. When we say that direction fields show the solutions to a differential equation because they "follow the flow", we owe it to ourselves to actually see that flow. If we plot the direction field for a DE like $y' = \frac{\sin(y)}{x^2 + 1}$ and then flood the field with particles that are moved by the field as if it were a wind current, we can finally *see* the flow.
 
-### desmos direction-field-4
+### desmos directionField4
 
 ### canvas vector-field
 

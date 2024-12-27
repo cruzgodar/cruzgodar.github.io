@@ -30,7 +30,7 @@ $$
 
 which is the area under the curve of $f$ between $x$ and $x + 1$.
 
-### desmos ftc-part-1
+### desmos ftcPart1
 
 To put it concisely, the red rectangle in the graph has base $1$ and height $f(x)$, so its area is $f(x)$. On the other hand, it's aproximately equal to $\int_x^{x + 1} f(t)\,dt$, which is by definition equal to $F(x + 1) - F(x)$. That in turn is approximately equal to $F'(x)$. As the width of the rectangle shrinks to zero, these approximations become better and better, and in the limit, they're equal.
 
@@ -178,7 +178,7 @@ In that example, we calculated our antiderivative with the constant $C$, but it 
 
 Just like the geometric interpretation of a derivative is the slope of a tangent line, the geometric interpretation of an antiderivative is a function that gives the area under the curve when two successive values are subtracted. In the graph below, the difference in $y$-values of the two blue points is equal to the area of the shaded purplr region. Remember that area below the $x$-axis counts as negative!
 
-### desmos ftc-part-2
+### desmos ftcPart2
 
 Let's wrap this section up with one more example.
 

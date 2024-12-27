@@ -15,7 +15,7 @@ export default function()
 	{
 		const data =
 		{
-			"vector-subtraction":
+			vectorSubtraction:
 			{
 				bounds: { left: -4, right: 4, bottom: -3, top: 5 },
 
@@ -27,7 +27,7 @@ export default function()
 				]
 			},
 
-			"gram-schmidt":
+			gramSchmidt:
 			{
 				bounds: { left: -5, right: 5, bottom: -5, top: 5 },
 

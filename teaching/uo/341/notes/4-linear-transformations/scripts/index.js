@@ -16,7 +16,7 @@ export default function()
 	{
 		const data =
 		{
-			"1d-linear-transformation":
+			"1dLinearTransformation":
 			{
 				bounds: { left: -5, right: 5, bottom: -5, top: 5 },
 
@@ -29,7 +29,7 @@ export default function()
 				]
 			},
 
-			"2d-linear-transformation":
+			"2dLinearTransformation":
 			{
 				bounds: { left: -5, right: 5, bottom: -5, top: 5 },
 

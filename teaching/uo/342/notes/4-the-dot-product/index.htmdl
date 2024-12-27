@@ -72,7 +72,7 @@ The magnitude of a vector is implicitly its distance from the zero vector, and t
 
 Again, this is exactly the usual distance between points in $#R#^n$.
 
-### desmos vector-subtraction
+### desmos vectorSubtraction
 
 Here, the purple vector is $\vec{v} = [[ 3 ; 2 ]]$, the blue one is $\vec{w} = [[ -2 ; 1 ]]$, and the distance between them is the magnitude of the red vector, which is
 
@@ -374,7 +374,7 @@ Now that we've seen some of the nice properties of orthonormal bases, the natura
 
 Intuitively, every step of the Gram-Schmidt process begins with $\vec{x_i}$ and removes any component of the previous vectors, leaving behind a vector that's orthogonal to every one that came before.
 
-### desmos gram-schmidt
+### desmos gramSchmidt
 
 In this Desmos graph, the purple and blue vectors are
 

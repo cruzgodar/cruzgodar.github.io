@@ -14,7 +14,7 @@ export default function()
 	{
 		const data =
 		{
-			"extrema":
+			extrema:
 			{
 				bounds: { left: -3.5, right: 3.5, bottom: -3.5, top: 3.5 },
 
@@ -29,7 +29,7 @@ export default function()
 
 
 
-			"saddle-point":
+			saddlePoint:
 			{
 				bounds: { left: -3, right: 3, bottom: -3, top: 3 },
 
@@ -42,7 +42,7 @@ export default function()
 
 
 
-			"critical-points":
+			criticalPoints:
 			{
 				bounds: { left: -2.5, right: 2.5, bottom: -15, top: 10 },
 
@@ -54,7 +54,7 @@ export default function()
 
 
 
-			"concavity":
+			concavity:
 			{
 				bounds: { left: -2.5, right: 2.5, bottom: -2.5, top: 2.5 },
 
@@ -71,7 +71,7 @@ export default function()
 
 
 
-			"first-derivative-test":
+			firstDerivativeTest:
 			{
 				bounds: { left: -2.5, right: 2.5, bottom: -2.5, top: 2.5 },
 

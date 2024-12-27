@@ -32,7 +32,7 @@ $$
 
 While the standard Harmonic series diverges, the alternating version converges --- in fact, it converges to a rather surprising number. Later in the course, we'll have a very slick way to find that number, but we can bootstrap it right now with a geometric argument.
 
-### desmos alternating-harmonic-series
+### desmos alternatingHarmonicSeries
 
 Here, we have the function $f(x) = \frac{1}{x}$ graphed on the interval $[1, 2]$. We're going to construct a left Riemann sum for $f$ in a rather strange way --- first, we'll start with a single rectangle, which is a square with area $1$. Rather than jumping straight to two rectangles, our next step (set $n = 2$ to see it) is to prepare the way for the second rectangle by removing the entire right half of the square. The total area is the $1$ we started with, minus the $\frac{1}{2}$ we just removed. Now we'll actually add in the next rectangle. It's built on $\left[ \frac{3}{2}, 2 \right]$, and this is a left Riemann sum, so since $f \left( \frac{3}{2} \right) = \frac{2}{3}$, that's our height. The area is therefore $\frac{1}{2} \cdot \frac{2}{3} = \frac{1}{3}$, and so our total area is now
 
@@ -56,7 +56,7 @@ Rather shockingly, the Alternating Harmonic series converges to $\ln(2)$!
 
 If we don't care about the value, it's not hard to see that this series converges. Every term is less in absolute value than the last, so anything we subtract is always less than the last thing we added. Similarly, anything we add is less than the last thing we subtracted. The result is a series that is constantly doubling back on itself, but with less distance every time, and so it must eventually converge. Drag $M$ to increase the terms of the sequence --- the intersections with the $x$-axis are the partial sums.
 
-### desmos alternating-harmonic-series-2
+### desmos alternatingHarmonicSeries2
 
 The result of this reasoning is that alternating series converge much more easily than series with all positive terms. Specifically:
 
@@ -122,7 +122,7 @@ This is absolutely not true for non-alternating series! The Harmonic series itse
 
 Much like the integral test, the alternating series test provides an estimate on remainders $R_n$, and therefore an estimate on the value of convergent series. To see how, let's return to the diagram of partial sums of the Alternating Harmonic series homing in on the actual value.
 
-### desmos alternating-harmonic-series-3
+### desmos alternatingHarmonicSeries3
 
 This diagram pertains specifically to the Alternating Harmonic series, but any series $\sum_{n = 1}^\infty (-1)^n a_n$ satisfying the hypotheses of the alternating series test functions the same way. Every partial sum $S_n$ gets closer to the actual sum $S$, so when we move from $S_n$ to $S_{n + 1}$, $S$ must lie between the two of them. Put another way, the distance between $S_n$ and $S$ must be smaller than the distance between $S_n$ and $S_{n + 1}$. In symbols, that looks like
 

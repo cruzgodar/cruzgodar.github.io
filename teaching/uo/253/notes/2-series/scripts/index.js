@@ -12,7 +12,7 @@ export default function()
 	{
 		const data =
 		{
-			"geometric-series":
+			geometricSeries:
 			{
 				options: { showGrid: false, showXAxis: false, showYAxis: false },
 

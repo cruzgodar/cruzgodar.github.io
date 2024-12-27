@@ -13,7 +13,7 @@ export default function()
 	{
 		const data =
 		{
-			"riemann-sum":
+			riemannSum:
 			{
 				bounds: { left: 0, right: 8, bottom: -2.5, top: 5.5 },
 
@@ -36,7 +36,7 @@ export default function()
 
 
 
-			"riemann-sum-2":
+			riemannSum2:
 			{
 				bounds: { left: -1, right: 9, bottom: -.025, top: .225 },
 

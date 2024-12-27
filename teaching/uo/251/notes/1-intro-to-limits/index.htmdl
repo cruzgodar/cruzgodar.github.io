@@ -4,11 +4,11 @@ Up to this point in your experience with math, most topics and problems have pro
 
 If you're moving at a constant rate --- say 2 meters per second (written $\frac{m}{s}$), then your position function $s(t)$, which just measures total distance from where you started, is a straight line with slope 2.
 
-### desmos velocity-example
+### desmos velocityExample
 
 The slope of a line is informally its rise over its run, and if the run is $1$, that means the slope is how much the output changes when the input increases by 1. For our position example, that's literally meters moved per second, which is velocity. That rise over run definition means that if we want to figure out the rate of change of a function, we should look at slopes of lines. Let's see how well this idea works in practice with the function $f(t) = t^2$ --- starting from $t = 0$, we'll divide rise by run, where run is exactly $1$.
 
-### desmos secant-lines
+### desmos secantLines
 
 If it seems strange to talk about the slope of something that's not a curve, you might find it easier to think about the blue line: if we draw it to pass through the two points we're looking at on the red curve, then its slope is the rise over run between those two points, which is the same quantity we're thinking about. Since one point is at $t = 0$ and the other is at $t = 1$, the run is $1$, and the rise is also $1$, since $f(0) = 0^2 = 0$ and $f(1) = 1^2 = 1$. Therefore, the slope of that blue line is $\frac{1}{1} = 1$.
 
@@ -36,7 +36,7 @@ Better! Since our approximations improve as we have a smaller and smaller run, t
 
 So far, we've been dealing with secant lines, but what we want is a tangent line, which appears when both points are at $(0, 0)$.
 
-### desmos tangent-lines
+### desmos tangentLines
 
 As you might be able to predict, that line is totally flat! So our velocity at time $t = 0$ is zero, because although we pick up speed later, we don't have any right at the start. If this seems strange, think of dropping a ball above the ground: gravity speeds it up over time, but at the exact moment you let go, it has zero velocity.
 
@@ -68,7 +68,7 @@ $$
 
 which is just the slope of a secant line passing through the points $(0, f(0))$ and $(h, f(h))$. The function $g$ is undefined at zero, but **there is a clear value it should have.** To illustrate what we mean, let's graph $g(h)$.
 
-### desmos tangent-lines-2
+### desmos tangentLines2
 
 Since $f(h) = h^2$, we have that
 
@@ -140,7 +140,7 @@ In practice, we can calculate $\lim_{x \to a} f(x)$ by making a table that conta
 	
 	Let's see what this looks like visually.
 	
-	### desmos limit-example
+	### desmos limitExample
 	
 	The graph has a hole in it at $x = 0$, but by taking the limit, we found where the hole is: $(0, 1)$. That doesn't make the function any less undefined there, but as we talked about with slopes of tangent lines, limit values are useful despite --- and often because of --- the function being undefined.
 	
@@ -164,7 +164,7 @@ In this next example, let's start with the graph.
 	
 	Find $$\lim_{x \to 1} g(x)$$ and $$\lim_{x \to -1} g(x)$$.
 	
-	### desmos limit-example-2
+	### desmos limitExample2
 	
 	At $x = 1$, the hole and filled-in dot indicate that $g(1) = 2$. However, $\lim_{x \to 1} g(x)$ is determined only by what the points on the graph right next to $x = 1$ are doing. From both sides, the $y$-values get closer and closer to $y = 0$, so the limit is $\lim_{x \to 1} g(x) = 0$. In this sense, the limit is what you would expect a function's value to be, without actually knowing what that value is. Knowing everything about $g(x)$ except what $g(1)$ is, our best guess is $g(1) = 0$, since that's what the values near $x = 1$ indicate.
 	
@@ -216,7 +216,7 @@ How could a limit not exist? There are two possibilities for this, generally spe
 	
 	Let's back this up with a graph.
 	
-	### desmos dne-limit
+	### desmos dneLimit
 	
 	As $x \to 0$ even just from the right, the $y$-values never settle down to anything --- in fact, they just get more and more chaotic. Using the previous example's metaphor, there isn't any $y$-value that it would make sense to expect the graph to have at $x = 0$.
 	
@@ -244,7 +244,7 @@ How could a limit not exist? There are two possibilities for this, generally spe
 	
 	These values tell a different story --- that the limit really ought to be $-1$. So what do we do? The limit can't be two values at once, so we just say it doesn't exist. But look at this graph --- it's so much more well-behaved than the previous one we looked at, and we should be able to say something, at least.
 	
-	### desmos dne-limit-2
+	### desmos dneLimit2
 	
 ###
 
@@ -329,7 +329,7 @@ There's one possibility we haven't mentioned yet: what if the function values ju
 	
 	Similarly, $\lim_{x \to 0^-} f(x) = \infty$. Since the limits from above and below agree, we have that $\lim_{x \to 0} f(x) = \infty$. Graphically, limits equalling $\pm \infty$ correspond to vertical asymptotes in the graph.
 	
-	### desmos infinite-limit
+	### desmos infiniteLimit
 	
 ###
 
@@ -337,7 +337,7 @@ There's one possibility we haven't mentioned yet: what if the function values ju
 	
 	Let $f(x)$ be defined by the following graph.
 	
-	### desmos complicated-limit
+	### desmos complicatedLimit
 	
 	Find the following quantities:
 	

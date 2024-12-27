@@ -46,7 +46,7 @@ These are in fact the *only* ways local extrema occur. Let's give the idea a nam
 
 All local extrema occur at critical points, but not all critical points are extrema. For example, $g(x) = x^3$ has $g'(x) = 3x^2$, so $x = 0$ is a critical point, but that is neither a local maximum nor minimum of $g$: instead, it's something called a **saddle point**.
 
-### desmos saddle-point
+### desmos saddlePoint
 
 
 
@@ -84,7 +84,7 @@ All local extrema occur at critical points, but not all critical points are extr
 	
 	Assuming the function has a global max and min, the max is at $x = -1.297$ and the min is at $x = -2$. Looking at the graph backs this up.
 	
-	### desmos critical-points
+	### desmos criticalPoints
 	
 ###
 
@@ -200,7 +200,7 @@ Back to optimization. Thankfully, even if the second derivative test is inconclu
 	
 	In order to figure out what's going on there, we can use the first derivative test. Since $\sqrt{2/3} \approx .816$, we just need to pick points in between $0$ and $.816$ and between $0$ and $-.816$. Let's just take $\pm .5$. Evaluating $g'$ there, we have $g'(-.5) = .3125$ and $g'(.5) = -.3125$. Since the derivative is positive before $t = 0$ and negative after, $t = 0$ must be a local maximum of $g$.
 	
-	### desmos first-derivative-test
+	### desmos firstDerivativeTest
 	
 ###
 

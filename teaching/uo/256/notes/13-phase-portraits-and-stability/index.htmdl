@@ -38,7 +38,7 @@ If $**A**$ has nonzero eigenvalues $\lambda_1$ and $\lambda_2$, then there is a 
 
 These six possibilities are explored thoroughly in homework 8, but it'd be nice to avoid memorizing all of this, and hopefully to understand the meaning behind it all a bit more. The eigenvectors of the matrix determine the lines along which the field flows to or from the origin, and the sign of the real part of the corresponding eigenvalues determines whether that flow is toward the origin (negative) or away (positive). Imaginary parts of eigenvalues introduce curl into the system, turning the field into a spiral.
 
-### desmos vector-field
+### desmos vectorField
 
 Drag the red point to change the eigenvalues and eigenvectors. The blue curves are sample solutions, and the ones marked in black are the two fundamental solutions --- all together, we call this a **phase portrait** of the system.
 
@@ -48,7 +48,7 @@ Drag the red point to change the eigenvalues and eigenvectors. The blue curves a
 	
 	Given the following phase portrait for $**x**' = **Ax**$, what can we determine about the eigenvalues and eigenvectors of $**A**$?
 	
-	### desmos vector-field-2
+	### desmos vectorField2
 	
 	Since all of the solutions approach straight lines as $t \to \infty$ or $t \to -\infty$, there is no curl in this system --- the eigenvalues and eigenvectors must be real. The eigenvectors are parallel to the straight-line solutions (since being on a straight-line solution is exactly what it means to be an eigenvector of $**A**$), so the eigenvectors appear to be
 	
@@ -64,7 +64,7 @@ Drag the red point to change the eigenvalues and eigenvectors. The blue curves a
 	
 	Given the following phase portrait for $**x**' = **Ax**$, what can we determine about the eigenvalues and eigenvectors of $**A**$?
 	
-	### desmos vector-field-3
+	### desmos vectorField3
 	
 ###
 
@@ -132,7 +132,7 @@ For a nonlinear system, we don't have nearly as nice of a classification of crit
 	
 	Varying $c$, we can see all of the different trajectories a point can follow in the field.
 	
-	### desmos autonomous-system
+	### desmos autonomousSystem
 	
 	To find the critical points, we solve $x' = y' = 0$. That means $y^2 = 0$ and $1 - x^2 = 0$, so $y = 0$ and $x = \pm 1$. Classifying them is more complex, and for us, it usually requires inspecting the vector field. Here, we see that both critical points are unstable, since trajectories near the points don't fall into them.
 	

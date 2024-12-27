@@ -15,7 +15,7 @@ export default function()
 	{
 		const data =
 		{
-			"test-graph":
+			testGraph:
 			{
 				bounds: { left: -1, right: 3, bottom: -1, top: 3 },
 
@@ -32,7 +32,7 @@ export default function()
 
 
 
-			"functions":
+			functions:
 			{
 				bounds: { left: -10, right: 10, bottom: -10, top: 10 },
 
@@ -52,7 +52,7 @@ export default function()
 
 
 
-			"trig-review":
+			trigReview:
 			{
 				bounds: { left: -1.25, right: 1.25, bottom: -1.25, top: 1.25 },
 
@@ -74,7 +74,7 @@ export default function()
 
 
 
-			"trig-graphs":
+			trigGraphs:
 			{
 				bounds: { left: -10, right: 10, bottom: -10, top: 10 },
 

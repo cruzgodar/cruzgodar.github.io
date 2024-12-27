@@ -13,7 +13,7 @@ export default function()
 	{
 		const data =
 		{
-			"geometric-integral":
+			geometricIntegral:
 			{
 				bounds: { left: -2, right: 4, bottom: -2, top: 4 },
 
@@ -30,7 +30,7 @@ export default function()
 
 
 
-			"geometric-integral-2":
+			geometricIntegral2:
 			{
 				bounds: { left: -1, right: 4, bottom: -2, top: 8 },
 
@@ -48,7 +48,7 @@ export default function()
 
 
 
-			"integral-from-limit-def":
+			integralFromLimitDef:
 			{
 				bounds: { left: -.25, right: 2.25, bottom: -.25, top: 4.25 },
 
@@ -71,7 +71,7 @@ export default function()
 
 
 
-			"geometric-integral-3":
+			geometricIntegral3:
 			{
 				bounds: { left: -1, right: 7, bottom: -2.5, top: 5.5 },
 
@@ -88,7 +88,7 @@ export default function()
 
 
 
-			"signed-area":
+			signedArea:
 			{
 				bounds: { left: -3, right: 3, bottom: -10, top: 10 },
 

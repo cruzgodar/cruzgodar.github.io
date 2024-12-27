@@ -13,7 +13,6 @@ import {
 } from "/scripts/src/desmos.js";
 import { showPage } from "/scripts/src/loadPage.js";
 import { $ } from "/scripts/src/main.js";
-import { siteSettings } from "/scripts/src/settings.js";
 
 export default function()
 {
@@ -21,7 +20,7 @@ export default function()
 	{
 		const data =
 		{
-			"area-scaling":
+			areaScaling:
 			{
 				bounds: { left: -1, right: 8, bottom: -1, top: 8 },
 
@@ -73,7 +72,6 @@ export default function()
 
 	vectorFieldApplet.run({
 		generatingCode: "(x - y, x + y)",
-		resolution: 750 * siteSettings.resolutionMultiplier,
 		worldWidth: 2
 	});
 	vectorFieldApplet.pauseWhenOffscreen();

@@ -6,7 +6,7 @@ $$
 	x = \dfrac{-b \pm \sqrt{b^2 - 4ac}}{2a}
 $$
 
-### desmos test-graph
+### desmos testGraph
 
 If anything doesn't appear correctly, update your browser and then reach out if that doesn't work. There's also a non-interactive pdf version of each document available for compatibility --- let me know if you need them.
 
@@ -28,11 +28,11 @@ The **domain** of a function is the set of numbers we can plug into it. For exam
 
 The **unit circle** is the circle with radius $1$ centered at $(0, 0)$. Given an angle $\theta$ measured counter-clockwise from the positive $x$-axis, we define $\cos(\theta)$ and $\sin(\theta)$ to be the $x$- and $y$-coordinates of the point on the unit circle with that angle.
 
-### desmos trig-review
+### desmos trigReview
 
 Try sliding the value of $t$ (representing $\theta$) around. Since radians run from $0$ to $2\pi$ to complete one revolution around the circle, we have that $\sin\left(\frac{\pi}{2}\right) = 1$ and $\cos\left(\frac{\pi}{2}\right) = 0$, for example. If we graph $y = \sin(x)$ and $y = \cos(\theta)$, we get wave-like graphs.
 
-### desmos trig-graphs
+### desmos trigGraphs
 
 Also present in the graph are $\tan(x)$, $\csc(x)$, $\sec(x)$, and $\cot(x)$, which are defined in the following ways:
 

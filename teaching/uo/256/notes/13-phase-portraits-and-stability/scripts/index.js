@@ -9,7 +9,6 @@ import {
 	setGetDesmosData
 } from "/scripts/src/desmos.js";
 import { $ } from "/scripts/src/main.js";
-import { siteSettings } from "/scripts/src/settings.js";
 
 export default function()
 {
@@ -17,7 +16,7 @@ export default function()
 	{
 		const data =
 		{
-			"vector-field":
+			vectorField:
 			{
 				bounds: { left: -10, right: 10, bottom: -10, top: 10 },
 
@@ -84,7 +83,7 @@ export default function()
 
 
 
-			"vector-field-2":
+			vectorField2:
 			{
 				bounds: { left: -10, right: 10, bottom: -10, top: 10 },
 
@@ -142,7 +141,7 @@ export default function()
 
 
 
-			"vector-field-3":
+			vectorField3:
 			{
 				bounds: { left: -10, right: 10, bottom: -10, top: 10 },
 
@@ -200,7 +199,7 @@ export default function()
 
 
 
-			"autonomous-system":
+			autonomousSystem:
 			{
 				bounds: { left: -10, right: 10, bottom: -10, top: 10 },
 
@@ -250,7 +249,6 @@ export default function()
 	{
 		applet.run({
 			generatingCode: "((x - 1.0) * (x + 1.0), (y + 1.0) * (y - 1.0))",
-			resolution: 750 * siteSettings.resolutionMultiplier,
 			dt: .002,
 			worldWidth: 3
 		});
@@ -267,7 +265,6 @@ export default function()
 	{
 		applet2.run({
 			generatingCode: "(y*y, 1.0 - x*x)",
-			resolution: 750 * siteSettings.resolutionMultiplier,
 			dt: .002,
 			worldWidth: 4
 		});
@@ -284,7 +281,6 @@ export default function()
 	{
 		applet3.run({
 			generatingCode: "(y, -.5*y - sin(x))",
-			resolution: 750 * siteSettings.resolutionMultiplier,
 			dt: .002,
 			worldWidth: 12
 		});

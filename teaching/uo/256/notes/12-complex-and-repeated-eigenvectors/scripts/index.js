@@ -6,7 +6,6 @@ import {
 	setGetDesmosData
 } from "/scripts/src/desmos.js";
 import { $ } from "/scripts/src/main.js";
-import { siteSettings } from "/scripts/src/settings.js";
 
 export default function()
 {
@@ -14,7 +13,7 @@ export default function()
 	{
 		const data =
 		{
-			"vector-field":
+			vectorField:
 			{
 				bounds: { left: -10, right: 10, bottom: -10, top: 10 },
 
@@ -61,7 +60,6 @@ export default function()
 	{
 		applet.run({
 			generatingCode: "(.23 * (x + y), .23 * (-2.0 * x + 3.0 * y))",
-			resolution: 750 * siteSettings.resolutionMultiplier,
 		});
 		applet.pauseWhenOffscreen();
 	});

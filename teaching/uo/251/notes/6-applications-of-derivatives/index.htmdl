@@ -7,7 +7,7 @@ The most important thing to mention is an alternate way to interpret derivatives
 
 The derivative $f'(a)$ is the slope of a tangent line, which is just rise over run. When run is exactly $1$, the slope is just the rise. Since the tangent line by definition touches the graph at $(a, f(a))$, the tangent line can't get *that* far away from the graph when $x$ increases by just $1$. In total, the derivative $f'(a)$ is approximately the difference between $f(a)$ and $f(a + 1)$.
 
-### desmos derivative-interpretation
+### desmos derivativeInterpretation
 
 Here, the two red points indicate show where the tangent line predicts the point on the graph will be, and also where it actually is. When $a = 0$, $g'(a) = -\frac{1}{2}$, so $g(1) - g(0) \approx -\frac{1}{2}$. In reality, it's actually $-\frac{3}{8}$, but that's not too far off. The point is this:
 

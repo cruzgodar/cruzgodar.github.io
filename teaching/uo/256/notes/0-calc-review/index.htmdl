@@ -8,7 +8,7 @@ $$
 	x = \dfrac{-b \pm \sqrt{b^2 - 4ac}}{2a}
 $$
 
-### desmos test-graph
+### desmos testGraph
 
 If anything doesn't appear correctly, update your browser and then reach out if that doesn't work.
 
@@ -50,7 +50,7 @@ $$
 
 Even though $g(0)$ is undefined, the value we'd expect it to take is $1$.
 
-### desmos limit-example
+### desmos limitExample
 
 Limits split across addition, subtraction, multiplication, division, exponentiation, and even function composition. Moreover, most functions we commonly work with are **continuous** wherever they're defined. A function $f$ is continuous at $x = a$ if $\lim_{x \to a} f(x) = f(a)$; in other words, the value is what we would expect.
 
@@ -68,7 +68,7 @@ $$
 
 if the limit exists. The function inside the limit is the slope of a secant line passing through the points $(a, f(a))$ and $(a + h, f(a + h))$, and as $h \to 0$, that secant line approaches a tangent line.
 
-### desmos secant-line-example
+### desmos secantLineExample
 
 For a function to be differentiable, it must be continuous, but not all continuous functions are differentiable: for example, $f(x) = |x|$ is not differentiable at $x = 0$ due to the sharp corner.
 
@@ -186,7 +186,7 @@ $$
 
 we mean that the shaded region in the graph below has an area of 60. Remember that area below the $x$-axis (here, the $t$-axis) counts as negative.
 
-### desmos definite-integral-example
+### desmos definiteIntegralExample
 
 The two types of integrals are connected through the **Fundamental Theorem of Calculus**, which relates area under curves to antiderivatives.
 
@@ -240,7 +240,7 @@ Much of the study of integrals is devoted to their applications, but we won't ne
 	
 	Therefore, the area under the graph is exactly 1.
 	
-	### desmos u-sub-example
+	### desmos uSubExample
 
 ###
 
