@@ -26,6 +26,9 @@ export class VectorFields extends AnimationFrameApplet
 	lastScale = 1;
 	needTemporaryDim = false;
 
+	lastGeneratedCanvasWidth;
+	lastGeneratedCanvasHeight;
+
 	numParticles = 0;
 	maxParticles = 5000;
 	loopEdges = false;
@@ -158,7 +161,7 @@ export class VectorFields extends AnimationFrameApplet
 			minWorldHeight: 0.5,
 			maxWorldHeight: 20,
 
-			onResizeCanvas: this.generateNewField.bind(this, {}),
+			onResizeCanvas: () => requestAnimationFrame(() => this.generateNewField({})),
 
 			interactionOptions: {
 				useForPanAndZoom: true,
@@ -469,7 +472,21 @@ export class VectorFields extends AnimationFrameApplet
 		worldCenterX = this.wilson.worldCenterX,
 		worldCenterY = this.wilson.worldCenterY,
 	}) {
+		if (
+			this.wilson.canvasWidth !== this.wilsonPanZoomDim.canvasWidth
+			|| this.wilson.canvasHeight !== this.wilsonPanZoomDim.canvasHeight
+			|| this.wilson.canvasWidth === this.lastGeneratedCanvasWidth
+			|| this.wilson.canvasHeight === this.lastGeneratedCanvasHeight
+		) {
+			return;
+		}
+
 		await this.loadPromise;
+
+		this.lastGeneratedCanvasWidth = this.wilson.canvasWidth;
+		this.lastGeneratedCanvasHeight = this.wilson.canvasHeight;
+
+		console.log("generating new field", this.wilson.canvasWidth, this.wilsonPanZoomDim.canvasWidth, this.wilson.canvasHeight, this.wilsonPanZoomDim.canvasHeight);
 
 		this.maxParticles = maxParticles;
 		this.dt = dt;
