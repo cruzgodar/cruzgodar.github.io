@@ -14,8 +14,6 @@ export const galleryImageData =
 	{
 		title: "An Abelian Sandpile",
 
-		featured: `Featured in ${emu}`,
-
 		// eslint-disable-next-line max-len
 		appletLink: "/applets/abelian-sandpiles/?palettes-dropdown=nectarine&surrounding-grains-input=2",
 
