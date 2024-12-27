@@ -486,8 +486,6 @@ export class VectorFields extends AnimationFrameApplet
 		this.lastGeneratedCanvasWidth = this.wilson.canvasWidth;
 		this.lastGeneratedCanvasHeight = this.wilson.canvasHeight;
 
-		console.log("generating new field", this.wilson.canvasWidth, this.wilsonPanZoomDim.canvasWidth, this.wilson.canvasHeight, this.wilsonPanZoomDim.canvasHeight);
-
 		this.maxParticles = maxParticles;
 		this.dt = dt;
 		this.lifetime = lifetime;
