@@ -46,7 +46,7 @@ The graph of $x^{1/a}$ looks quite a bit like the graph of $x^a$, and that's no 
 
 Logarithms are infamous in algebra, but they don't need to be! When we say that the square root function $\sqrt{x}$ *undoes* the square function $x^2$, we can think of it as extracting the base of a number that's been squared: for example, $25 = 5^2$, and so the square root function extracts the base of $5$. A **logarithm** is an inverse function to an exponential, like $5^x$, and so rather than extract a base, it extracts a power. For example, $\log_5(25) = \log_5\left( 5^2 \right) = 2$, $\log_5(5) = \log_5\left( 5^1 \right) = 1$, and $\log_5\left( \frac{1}{5} \right) = \log_5\left( 5^{-1} \right) = -1$. When the base of a logarithm is $e$, we typically write it as $\ln$ instead of $\log_e$.
 
-### exc logarithms
+### exc "logarithms"
 
 	1. Evaluate $\log_3(8)$, $\log_2\left( \frac{1}{4} \right)$, and $\ln(e)$.
 
@@ -65,6 +65,22 @@ Logarithms are infamous in algebra, but they don't need to be! When we say that 
 Let's take a close look at the function $f(x) = x^2$. Much like the formula $y = mx + b$ for a line, we can add a constant value $b$ to $x^2$ to produce $f(x) = x^2 + b$. Any point $(x, x^2)$ in the graph is now $(x, x^2 + b)$, so the graph has been shifted upward by $b$ units. There's nothing particularly special about $x^2$ in this example, and in fact, any function $y = f(x) + b$ has a graph that is equal to the graph of $y = f(x)$, but shifted up by $b$.
 
 ### desmos verticalShift
+
+Similarly, if we multiply a function $y = f(x)$ by a factor $a$ to produce $y = a \cdot f(x)$, the result is that every point $(x, f(x))$ is replaced with $(x, a \cdot f(x))$, and so the graph is *stretched* vertically by a factor of $a$. If $a$ is less than $1$, then the stretch is more of a squish, and if $a$ is negative, then the graph is flipped vertically in addition to being stretched.
+
+### desmos verticalStretch
+
+### exc "vertical transformations"
+	
+	1. Let $P(c)$ give the total profit made from selling $c$ cookies at a bakery (in dollars), including factors like operating costs and ingredient prices, and assuming the bakery sells nothing else. Sketch a rough picture of what the graph of $P(c)$ might look like.
+
+	2. In terms of $P(c)$, what is an equation for a function whose graph is the same as the graph of $P$, but shifted down $4$ units? What about vertically stretched by a factor of $2$?
+
+	3. What might be plausible real-world effects that could lead to the profit function being transformed in these two ways?
+
+###
+
+Combining transformations 
 
 
 

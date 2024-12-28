@@ -6,6 +6,8 @@ import {
 	desmosGreen,
 	desmosPurple,
 	desmosRed,
+	getDesmosPoint,
+	getDesmosSlider,
 	setGetDesmosData
 } from "/scripts/src/desmos.js";
 
@@ -66,7 +68,13 @@ export default function()
 					{ latex: String.raw`f(x) = x^{1/2}`, color: desmosPurple },
 					{ latex: String.raw`f(x) = x^{1/3}`, color: desmosBlue },
 					{ latex: String.raw`f(x) = x^{1/a}`, color: desmosRed },
-					{ latex: String.raw`a = 4`, sliderBounds: { min: 4, max: 10, step: 1 } },
+					...getDesmosSlider({
+						expression: "a = 4",
+						min: 4,
+						max: 10,
+						step: 1,
+						secret: false
+					}),
 				]
 			},
 
@@ -89,6 +97,50 @@ export default function()
 				expressions:
 				[
 					{ latex: String.raw`f(x) = e^x`, color: desmosPurple },
+				]
+			},
+
+			verticalShift:
+			{
+				bounds: { left: -5, right: 5, bottom: -5, top: 5 },
+
+				expressions:
+				[
+					{ latex: String.raw`f(x) = x^2`, color: desmosPurple },
+					{ latex: String.raw`g(x) = f(x) + b`, color: desmosBlue },
+					...getDesmosSlider({
+						expression: "b = 1",
+						min: -5,
+						max: 5,
+						secret: false
+					}),
+					...getDesmosPoint({
+						point: ["0", "b"],
+						color: desmosRed,
+						dragMode: "Y",
+					}),
+				]
+			},
+
+			verticalStretch:
+			{
+				bounds: { left: -5, right: 5, bottom: -5, top: 5 },
+
+				expressions:
+				[
+					{ latex: String.raw`f(x) = x^2`, color: desmosPurple },
+					{ latex: String.raw`g(x) = af(x)`, color: desmosBlue },
+					...getDesmosSlider({
+						expression: "a = 2",
+						min: -5,
+						max: 5,
+						secret: false
+					}),
+					...getDesmosPoint({
+						point: ["1", "a"],
+						color: desmosRed,
+						dragMode: "Y",
+					}),
 				]
 			}
 		};
