@@ -60,7 +60,7 @@ Logarithms are infamous in algebra, but they don't need to be! When we say that 
 
 
 
-## Single Transformations
+## Vertical Transformations
 
 Let's take a close look at the function $f(x) = x^2$. Much like the formula $y = mx + b$ for a line, we can add a constant value $b$ to $x^2$ to produce $f(x) = x^2 + b$. Any point $(x, x^2)$ in the graph is now $(x, x^2 + b)$, so the graph has been shifted upward by $b$ units. There's nothing particularly special about $x^2$ in this example, and in fact, any function $y = f(x) + b$ has a graph that is equal to the graph of $y = f(x)$, but shifted up by $b$.
 
@@ -80,7 +80,13 @@ Similarly, if we multiply a function $y = f(x)$ by a factor $a$ to produce $y = 
 
 ###
 
-Combining transformations 
+We can combine both types of vertical transformations by applying both a factor $a$ and a shift $b$. We follow the order of operations, so the graph of $y = af(x) + b$ is the same as the graph of $y = f(x)$, but first stretched by a factor of $a$, and then moved up by $b$ units. We could just as well write it as $y = a\left( f(x) + \frac{1}{b} \right)$, but then the stretch involves something that's already been moved vertically, and it ends up being quite a bit more error-prone.
+
+### ex "combined transformations"
+
+
+
+###
 
 
 
