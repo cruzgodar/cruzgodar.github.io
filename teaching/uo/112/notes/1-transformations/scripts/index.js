@@ -142,7 +142,49 @@ export default function()
 						dragMode: "Y",
 					}),
 				]
-			}
+			},
+
+			combinedTransformations:
+			{
+				bounds: { left: -5, right: 5, bottom: -5, top: 5 },
+
+				expressions:
+				[
+					{ latex: String.raw`f(x) = e^x`, color: desmosPurple },
+					...getDesmosPoint({
+						point: ["0", "f(0)"],
+						color: desmosPurple,
+						dragMode: "",
+					}),
+					...getDesmosPoint({
+						point: ["1", "f(1)"],
+						color: desmosPurple,
+						dragMode: "",
+					}),
+					{ latex: String.raw`g(x) = \frac{1}{5}f(x)`, color: desmosBlue },
+					...getDesmosPoint({
+						point: ["0", "g(0)"],
+						color: desmosBlue,
+						dragMode: "",
+					}),
+					...getDesmosPoint({
+						point: ["1", "g(1)"],
+						color: desmosBlue,
+						dragMode: "",
+					}),
+					{ latex: String.raw`h(x) = g(x) - 2`, color: desmosRed },
+					...getDesmosPoint({
+						point: ["0", "h(0)"],
+						color: desmosRed,
+						dragMode: "",
+					}),
+					...getDesmosPoint({
+						point: ["1", "h(1)"],
+						color: desmosRed,
+						dragMode: "",
+					}),
+				]
+			},
 		};
 
 		return data;

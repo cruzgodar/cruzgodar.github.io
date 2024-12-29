@@ -80,13 +80,35 @@ Similarly, if we multiply a function $y = f(x)$ by a factor $a$ to produce $y = 
 
 ###
 
-We can combine both types of vertical transformations by applying both a factor $a$ and a shift $b$. We follow the order of operations, so the graph of $y = af(x) + b$ is the same as the graph of $y = f(x)$, but first stretched by a factor of $a$, and then moved up by $b$ units. We could just as well write it as $y = a\left( f(x) + \frac{1}{b} \right)$, but then the stretch involves something that's already been moved vertically, and it ends up being quite a bit more error-prone.
+We can combine both types of vertical transformations by applying both a factor $a$ and a shift $b$. We follow the order of operations, so the graph of $y = af(x) + b$ is the same as the graph of $y = f(x)$, but first stretched by a factor of $a$, and then moved up by $b$ units. We could just as well write it as $y = a\left( f(x) + \frac{1}{b} \right)$, but then the stretch involves something that's already been shifted vertically, and it ends up being quite a bit more error-prone.
 
 ### ex "combined transformations"
 
+	Sketch a graph of $f(x) = \frac{1}{5}e^x - 2$, plotting one transformation at a time and tracking at least two points through each.
 
+	Beginning with $y = e^x$ (in purple below), we might choose the points $(0, 1)$ and $(1, e)$ to plot. First, we vertically stretch the graph by a factor of $\frac{1}{5}$, producing the graph in blue and the points $\left( 0, \frac{1}{5} \right)$ and $\left( 1, \frac{e}{5} \right) \approx \left( 1, 0.5436 \right)$. Finally, we shift the graph down $2$ units, producing the red graph and the points $\left( 0, \frac{1}{5} - 2 \right)$ and $\left( 1, \frac{e}{5} - 2 \right) \approx \left( 1, -1.4564 \right)$.
+
+	### desmos combinedTransformations
 
 ###
+
+
+
+## Horizontal Transformations
+
+For the most part, vertical transformations work as we'd like them to: multiply and/or add to an entire function, and the $y$-coordinates are transformed accordingly, following the order of operations if necessary. We might expect that horizontal transformations work in a similar manner, but by modifying the $x$-coordinate.
+
+### exc "horizontal transformations"
+
+	1. Let $f(t) = t^{-2}$. Sketch a graph of $f$.
+
+	2. Sketch a graph of $(t + 2)^{-2}$ by plotting 3--5 points and connecting them. How has the graph been transformed?
+
+	3. Do the same for $(4t)^{-2}$.
+
+###
+
+The fundamental complication with horizontal transformations compared to vertical ones is that beginning with an equation $y = f(x)$ and transforming it to $y = a \cdot f(x) + b$ genuinely replaces each point $(x, f(x))$ with $(x, a \cdot f(x) + b)$. In contrast, replacing $x$ with $c \cdot x + d$ does *not* change each point's $x$-coordinate in the same way, as the previous exercise shows. To tackle how horizontal transformations ought 
 
 
 

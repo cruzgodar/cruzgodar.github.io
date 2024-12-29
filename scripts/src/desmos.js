@@ -172,6 +172,7 @@ let uid = 0;
 export function getDesmosPoint({
 	point, // ["a", "b"]
 	color,
+	// "", "X", "Y", "XY"
 	dragMode = "XY",
 	secret = true
 }) {
