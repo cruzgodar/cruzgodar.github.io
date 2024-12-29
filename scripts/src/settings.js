@@ -303,8 +303,6 @@ export async function revertTheme()
 	revertThemeTo = null;
 }
 
-
-
 export async function toggleDarkTheme({
 	noAnimation = false,
 	force = false,
@@ -319,6 +317,8 @@ export async function toggleDarkTheme({
 	{
 		return;
 	}
+
+	updateCode(0);
 
 	siteSettings.darkTheme = !siteSettings.darkTheme;
 
@@ -383,6 +383,8 @@ export async function toggleDarkTheme({
 
 export async function toggleReduceMotion()
 {
+	updateCode(1);
+
 	siteSettings.reduceMotion = !siteSettings.reduceMotion;
 
 	currentlyLoadedApplets.forEach(applet =>
@@ -402,6 +404,8 @@ export async function toggleIncreaseContrast({
 	noAnimation = false,
 	duration = 150
 }) {
+	updateCode(2);
+
 	siteSettings.increaseContrast = !siteSettings.increaseContrast;
 
 	history.replaceState({ url: pageUrl }, document.title, getDisplayUrl());
@@ -441,6 +445,29 @@ export async function toggleIncreaseContrast({
 		}).finished;
 
 		element.remove();
+	}
+}
+
+let settingsCode = [];
+const streetlightsCode = [0, 1, 2, 1, 0, 1, 2, 1, 0];
+
+function updateCode(digit)
+{
+	settingsCode.push(digit);
+	
+	if (settingsCode.length >= streetlightsCode.length)
+	{
+		settingsCode = settingsCode.slice(-streetlightsCode.length);
+
+		if (settingsCode.join("") === streetlightsCode.join(""))
+		{
+			addStyle(`
+				#logo img
+				{
+					background: linear-gradient(180deg, rgba(0,0,0,1) 0%, rgba(0,0,0,1) 14.2857142857%, rgba(185,185,185,1) 14.2857142857%, rgba(185,185,185,1) 28.5714285714%, rgba(255,255,255,1) 28.5714285714%, rgba(255,255,255,1) 42.8571428571%, rgba(184,244,131,1) 42.8571428571%, rgba(184,244,131,1) 57.1428571429%, rgba(255,255,255,1) 57.1428571429%, rgba(255,255,255,1) 71.4285714286%, rgba(185,185,185,1) 71.4285714286%, rgba(185,185,185,1) 85.7142857143%, rgba(0,0,0,1) 85.7142857143%, rgba(0,0,0,1) 100%);
+				}
+			`);
+		}
 	}
 }
 

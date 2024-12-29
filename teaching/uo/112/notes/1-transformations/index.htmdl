@@ -108,7 +108,7 @@ For the most part, vertical transformations work as we'd like them to: multiply 
 
 ###
 
-The fundamental complication with horizontal transformations compared to vertical ones is that beginning with an equation $y = f(x)$ and transforming it to $y = a \cdot f(x) + b$ genuinely replaces each point $(x, f(x))$ with $(x, a \cdot f(x) + b)$. In contrast, replacing $x$ with $c \cdot x + d$ does *not* change each point's $x$-coordinate in the same way, as the previous exercise shows. To tackle how horizontal transformations ought 
+The fundamental complication with horizontal transformations compared to vertical ones is that beginning with an equation $y = f(x)$ and transforming it to $y = a \cdot f(x) + b$ genuinely replaces each point $(x, f(x))$ with $(x, a \cdot f(x) + b)$. In contrast, replacing $x$ with $c \cdot x + d$ does *not* change each point's $x$-coordinate in the same way, as the previous exercise shows. However, if we expressed $x$ as a function of $y$, then we could apply the same logic. 
 
 
 
