@@ -400,6 +400,7 @@ export class VectorFields extends AnimationFrameApplet
 			worldWidth,
 			worldCenterX,
 			worldCenterY,
+			forceRegenerate: true
 		});
 	}
 
@@ -471,12 +472,15 @@ export class VectorFields extends AnimationFrameApplet
 		worldWidth = this.wilson.worldWidth,
 		worldCenterX = this.wilson.worldCenterX,
 		worldCenterY = this.wilson.worldCenterY,
+		forceRegenerate = false
 	}) {
 		if (
-			this.wilson.canvasWidth !== this.wilsonPanZoomDim.canvasWidth
-			|| this.wilson.canvasHeight !== this.wilsonPanZoomDim.canvasHeight
-			|| this.wilson.canvasWidth === this.lastGeneratedCanvasWidth
-			|| this.wilson.canvasHeight === this.lastGeneratedCanvasHeight
+			!forceRegenerate && (
+				this.wilson.canvasWidth !== this.wilsonPanZoomDim.canvasWidth
+				|| this.wilson.canvasHeight !== this.wilsonPanZoomDim.canvasHeight
+				|| this.wilson.canvasWidth === this.lastGeneratedCanvasWidth
+				|| this.wilson.canvasHeight === this.lastGeneratedCanvasHeight
+			)
 		) {
 			return;
 		}

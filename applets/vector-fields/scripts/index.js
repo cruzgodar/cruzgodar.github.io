@@ -29,7 +29,7 @@ export default function()
 		value: 6000,
 		minValue: 1000,
 		maxValue: 20000,
-		onInput: generateNewField
+		onInput: run
 	});
 
 	const lifetimeInput = new TextBox({
@@ -37,7 +37,7 @@ export default function()
 		name: "Particle Lifetime",
 		value: 150,
 		minValue: 50,
-		onInput: generateNewField
+		onInput: run
 	});
 
 	const rawGlslCheckbox = new Checkbox({
@@ -133,7 +133,6 @@ export default function()
 			maxParticles: Math.max(maxParticlesInput.value, 100),
 			dt: speedSlider.value / 300,
 			lifetime: Math.min(lifetimeInput.value, 255),
-			zoomLevel: .5
 		});
 	}
 
@@ -144,16 +143,6 @@ export default function()
 		const dt = speedSlider.value / 300;
 		
 		applet.dt = dt;
-	}
-
-	function generateNewField()
-	{
-		applet.generateNewField({
-			resolution: resolutionInput.value * siteSettings.resolutionMultiplier,
-			maxParticles: Math.max(maxParticlesInput.value, 100),
-			dt: speedSlider.value / 300,
-			lifetime: Math.min(lifetimeInput.value, 255)
-		});
 	}
 
 	function onDropdownInput()
