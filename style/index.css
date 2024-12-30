@@ -220,10 +220,12 @@ img
 	position: absolute;
 	width: 100px;
 	height: 100px;
-	
+}
+
+#logo img.transparent, #logo-no-link img.transparent
+{
 	border-radius: 50px;
-	background: rgb(255, 255, 255);
-};
+}
 
 #logo img:not(:hover):focus
 {
