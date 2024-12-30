@@ -185,6 +185,29 @@ export default function()
 					}),
 				]
 			},
+
+			intuitiveHorizontalTransformations:
+			{
+				bounds: { left: -5, right: 5, bottom: -5, top: 5 },
+
+				expressions:
+				[
+					{ latex: String.raw`x = y^3`, color: desmosPurple },
+					{ latex: String.raw`x = cy^3 + d`, color: desmosBlue },
+					...getDesmosSlider({
+						expression: "c = 2",
+						min: -5,
+						max: 5,
+						secret: false
+					}),
+					...getDesmosSlider({
+						expression: "d = 1",
+						min: -5,
+						max: 5,
+						secret: false
+					}),
+				]
+			}
 		};
 
 		return data;
