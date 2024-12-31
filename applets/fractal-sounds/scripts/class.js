@@ -101,8 +101,9 @@ export class FractalSounds extends AnimationFrameApplet
 			},
 
 			fullscreenOptions: {
-				fillScreen: true,
 				onSwitch: this.onSwitchFullscreen.bind(this),
+				beforeSwitch: this.beforeSwitchFullscreen.bind(this),
+				fillScreen: true,
 				useFullscreenButton: true,
 				enterFullscreenButtonIconPath: "/graphics/general-icons/enter-fullscreen.png",
 				exitFullscreenButtonIconPath: "/graphics/general-icons/exit-fullscreen.png",
@@ -284,7 +285,7 @@ export class FractalSounds extends AnimationFrameApplet
 		`;
 
 		this.wilsonJulia.loadShader({
-			shader: shader,
+			shader,
 			uniforms: {
 				worldSize: [this.wilson.worldWidth, this.wilson.worldHeight],
 				worldCenter: [this.wilson.worldCenterX, this.wilson.worldCenterY],
@@ -294,7 +295,7 @@ export class FractalSounds extends AnimationFrameApplet
 		});
 
 		this.wilsonHidden.loadShader({
-			shader: shader,
+			shader,
 			uniforms: {
 				worldSize: [this.wilson.worldWidth, this.wilson.worldHeight],
 				worldCenter: [this.wilson.worldCenterX, this.wilson.worldCenterY],
@@ -612,6 +613,15 @@ export class FractalSounds extends AnimationFrameApplet
 		{
 			this.wilsonJulia.exitFullscreen();
 		}
+
+		this.resume();
+	}
+
+	async beforeSwitchFullscreen()
+	{
+		this.animationPaused = true;
+
+		await new Promise(resolve => setTimeout(resolve, 33));
 	}
 
 	downloadFrame(filename)

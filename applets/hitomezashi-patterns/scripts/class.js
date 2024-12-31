@@ -39,6 +39,8 @@ export class HitomezashiPatterns extends Applet
 			canvasWidth: 1000,
 
 			fullscreenOptions: {
+				onSwitch: this.switchFullscreen.bind(this),
+				beforeSwitch: this.beforeSwitchFullscreen.bind(this),
 				useFullscreenButton: true,
 				enterFullscreenButtonIconPath: "/graphics/general-icons/enter-fullscreen.png",
 				exitFullscreenButtonIconPath: "/graphics/general-icons/exit-fullscreen.png"
@@ -579,5 +581,17 @@ export class HitomezashiPatterns extends Applet
 				requestAnimationFrame(this.drawRegionsStep.bind(this));
 			}
 		}
+	}
+
+	switchFullscreen()
+	{
+		this.resume();
+	}
+
+	async beforeSwitchFullscreen()
+	{
+		this.animationPaused = true;
+
+		await new Promise(resolve => setTimeout(resolve, 33));
 	}
 }

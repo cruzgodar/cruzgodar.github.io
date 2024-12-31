@@ -158,6 +158,9 @@ export class ThurstonGeometries extends Applet
 			},
 
 			fullscreenOptions: {
+				onSwitch: this.switchFullscreen.bind(this),
+				beforeSwitch: this.beforeSwitchFullscreen.bind(this),
+
 				fillScreen: true,
 				useFullscreenButton: true,
 
@@ -275,7 +278,7 @@ export class ThurstonGeometries extends Applet
 
 		this.wilson.loadShader({
 			id: "draw",
-			shader: shader,
+			shader,
 			uniforms
 		});
 
@@ -1150,5 +1153,17 @@ export class ThurstonGeometries extends Applet
 				this.needNewFrame = true;
 			}
 		}).finished;
+	}
+
+	switchFullscreen()
+	{
+		this.resume();
+	}
+
+	async beforeSwitchFullscreen()
+	{
+		this.animationPaused = true;
+
+		await new Promise(resolve => setTimeout(resolve, 33));
 	}
 }

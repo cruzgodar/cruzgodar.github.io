@@ -3,9 +3,9 @@ import { doubleEncodingGlsl } from "../src/complexGlsl.js";
 import { WilsonGPU } from "../wilson.js";
 import { AnimationFrameApplet } from "./animationFrameApplet.js";
 import {
-    getFloatGlsl,
-    getVectorGlsl,
-    tempShader
+	getFloatGlsl,
+	getVectorGlsl,
+	tempShader
 } from "./applet.js";
 
 export const edgeDetectShader = /* glsl */`
@@ -309,6 +309,8 @@ export class RaymarchApplet extends AnimationFrameApplet
 			},
 
 			fullscreenOptions: {
+				onSwitch: this.switchFullscreen.bind(this),
+				beforeSwitch: this.beforeSwitchFullscreen.bind(this),
 				fillScreen: true,
 				useFullscreenButton: true,
 				enterFullscreenButtonIconPath: "/graphics/general-icons/enter-fullscreen.png",
@@ -367,6 +369,18 @@ export class RaymarchApplet extends AnimationFrameApplet
 		this.needNewFrame = true;
 
 		this.resume();
+	}
+
+	switchFullscreen()
+	{
+		this.resume();
+	}
+
+	async beforeSwitchFullscreen()
+	{
+		this.pause();
+
+		await new Promise(resolve => setTimeout(resolve, 33));
 	}
 
 

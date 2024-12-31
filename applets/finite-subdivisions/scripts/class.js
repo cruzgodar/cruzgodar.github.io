@@ -30,6 +30,8 @@ export class FiniteSubdivisions extends AnimationFrameApplet
 			},
 
 			fullscreenOptions: {
+				onSwitch: this.switchFullscreen.bind(this),
+				beforeSwitch: this.beforeSwitchFullscreen.bind(this),
 				useFullscreenButton: true,
 				enterFullscreenButtonIconPath: "/graphics/general-icons/enter-fullscreen.png",
 				exitFullscreenButtonIconPath: "/graphics/general-icons/exit-fullscreen.png",
@@ -234,5 +236,17 @@ export class FiniteSubdivisions extends AnimationFrameApplet
 		}
 
 		return newPolygons;
+	}
+
+	switchFullscreen()
+	{
+		this.resume();
+	}
+
+	async beforeSwitchFullscreen()
+	{
+		this.animationPaused = true;
+
+		await new Promise(resolve => setTimeout(resolve, 33));
 	}
 }

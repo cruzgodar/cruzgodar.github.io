@@ -70,6 +70,8 @@ export class NewtonsMethodExtended extends AnimationFrameApplet
 			},
 
 			fullscreenOptions: {
+				onSwitch: this.switchFullscreen.bind(this),
+				beforeSwitch: this.beforeSwitchFullscreen.bind(this),
 				fillScreen: true,
 				useFullscreenButton: true,
 				enterFullscreenButtonIconPath: "/graphics/general-icons/enter-fullscreen.png",
@@ -202,7 +204,7 @@ export class NewtonsMethodExtended extends AnimationFrameApplet
 		this.colors = this.generateNewPalette();
 
 		this.wilson.loadShader({
-			shader: shader,
+			shader,
 			uniforms: {
 				worldCenter: [this.wilson.worldCenterX, this.wilson.worldCenterY],
 				worldSize: [this.wilson.worldWidth, this.wilson.worldHeight],
@@ -219,7 +221,7 @@ export class NewtonsMethodExtended extends AnimationFrameApplet
 		});
 
 		this.wilsonHidden.loadShader({
-			shader: shader,
+			shader,
 			uniforms: {
 				worldCenter: [this.wilson.worldCenterX, this.wilson.worldCenterY],
 				worldSize: [this.wilson.worldWidth, this.wilson.worldHeight],
@@ -416,5 +418,17 @@ export class NewtonsMethodExtended extends AnimationFrameApplet
 		});
 
 		this.wilson.drawFrame();
+	}
+
+	switchFullscreen()
+	{
+		this.resume();
+	}
+
+	async beforeSwitchFullscreen()
+	{
+		this.animationPaused = true;
+
+		await new Promise(resolve => setTimeout(resolve, 33));
 	}
 }

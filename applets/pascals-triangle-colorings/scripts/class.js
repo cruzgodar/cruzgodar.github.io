@@ -35,6 +35,8 @@ export class PascalsTriangleColorings extends AnimationFrameApplet
 			canvasWidth: 2000,
 
 			fullscreenOptions: {
+				onSwitch: this.switchFullscreen.bind(this),
+				beforeSwitch: this.beforeSwitchFullscreen.bind(this),
 				useFullscreenButton: true,
 				enterFullscreenButtonIconPath: "/graphics/general-icons/enter-fullscreen.png",
 				exitFullscreenButtonIconPath: "/graphics/general-icons/exit-fullscreen.png"
@@ -359,5 +361,17 @@ export class PascalsTriangleColorings extends AnimationFrameApplet
 		);
 
 		this.wilson.ctx.stroke();
+	}
+
+	switchFullscreen()
+	{
+		this.resume();
+	}
+
+	async beforeSwitchFullscreen()
+	{
+		this.animationPaused = true;
+
+		await new Promise(resolve => setTimeout(resolve, 33));
 	}
 }

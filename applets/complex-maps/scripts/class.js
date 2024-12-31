@@ -75,6 +75,8 @@ export class ComplexMaps extends AnimationFrameApplet
 			},
 
 			fullscreenOptions: {
+				onSwitch: this.switchFullscreen.bind(this),
+				beforeSwitch: this.beforeSwitchFullscreen.bind(this),
 				fillScreen: true,
 				useFullscreenButton: true,
 				enterFullscreenButtonIconPath: "/graphics/general-icons/enter-fullscreen.png",
@@ -206,7 +208,7 @@ export class ComplexMaps extends AnimationFrameApplet
 		`;
 
 		this.wilson.loadShader({
-			shader: shader,
+			shader,
 			uniforms: {
 				worldSize: [this.wilson.worldWidth, this.wilson.worldHeight],
 				worldCenter: [this.wilson.worldCenterX, this.wilson.worldCenterY],
@@ -293,5 +295,17 @@ export class ComplexMaps extends AnimationFrameApplet
 		});
 
 		this.wilson.drawFrame();
+	}
+
+	switchFullscreen()
+	{
+		this.resume();
+	}
+
+	async beforeSwitchFullscreen()
+	{
+		this.animationPaused = true;
+
+		await new Promise(resolve => setTimeout(resolve, 33));
 	}
 }
