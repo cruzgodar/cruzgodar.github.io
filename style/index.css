@@ -83,18 +83,18 @@ body
 .page
 {
 	overflow-x: hidden;
-	width: calc(100% - 32px);
-	padding-left: 16px;
-	padding-right: 16px;
+	width: min(100% - 32px, 100% - env(safe-area-inset-left) - env(safe-area-inset-right));
+	padding-left: max(16px, env(safe-area-inset-left));
+	padding-right: max(16px, env(safe-area-inset-right));
 }
 
 @media (min-width: 501px)
 {
 	.page
 	{
-		width: calc(100% - 64px);
-		padding-left: 32px;
-		padding-right: 32px;
+		width: min(100% - 64px, 100% - env(safe-area-inset-left) - env(safe-area-inset-right));
+		padding-left: max(32px, env(safe-area-inset-left));
+		padding-right: max(32px, env(safe-area-inset-right));
 	}
 }
 
@@ -1521,11 +1521,11 @@ option
 {
 	position: fixed;
 	top: 0;
-	left: 0;
+	left: env(safe-area-inset-left);
 	
 	height: 40px;
 	
-	width: 100%;
+	width: calc(100% - env(safe-area-inset-left) - env(safe-area-inset-right));
 	
 	z-index: 110;
 	
