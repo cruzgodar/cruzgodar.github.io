@@ -207,6 +207,25 @@ export default function()
 						secret: false
 					}),
 				]
+			},
+
+			identifyFormulaFromGraph: {
+				bounds: { left: -10, right: 10, bottom: -10, top: 10 },
+
+				expressions:
+				[
+					{ latex: String.raw`f(x) = \ln(x - 2)`, secret: true, hidden: true },
+					{ latex: String.raw`f(x)`, color: desmosPurple },
+
+					{ latex: String.raw`g(x) = \ln(\frac{1}{3}(x + 1))`, secret: true, hidden: true },
+					{ latex: String.raw`g(x)`, color: desmosBlue, hidden: true },
+
+					{ latex: String.raw`h(x) = 2\ln(-2x)`, secret: true, hidden: true },
+					{ latex: String.raw`h(x)`, color: desmosRed, hidden: true },
+
+					{ latex: String.raw`l(x) = -2\ln(-\frac{1}{2}(x + 1)) + 1`, secret: true, hidden: true },
+					{ latex: String.raw`l(x)`, color: desmosGreen, hidden: true },
+				]
 			}
 		};
 
