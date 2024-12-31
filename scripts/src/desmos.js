@@ -40,7 +40,7 @@ export async function createDesmosGraphs(recreating = false)
 	}
 	
 	await loadScript(
-		"https://www.desmos.com/api/v1.9/calculator.js?apiKey=dcb31709b452b1cf9dc26972add0fda6"
+		"https://www.desmos.com/api/v1.11/calculator.js?apiKey=dcb31709b452b1cf9dc26972add0fda6"
 	);
 
 	for (const key in desmosGraphs)
