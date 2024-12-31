@@ -5,14 +5,14 @@ section
 
 .body-text:first-of-type
 {
-	width: calc(100% - 64px);
+	width: min(100% - 64px, 100% - env(safe-area-inset-left) - env(safe-area-inset-right));
 }
 
 @media (max-width: 500px)
 {
 	.body-text:first-of-type
 	{
-		width: calc(100% - 32px);
+		width: min(100% - 32px, 100% - env(safe-area-inset-left) - env(safe-area-inset-right));
 	}
 }
 
@@ -31,9 +31,9 @@ section
 
 .page
 {
-	width: 100% !important;
-	padding-left: 0 !important;
-	padding-right: 0 !important;
+	width: calc(100% - env(safe-area-inset-left) - env(safe-area-inset-right)) !important;
+	padding-left: env(safe-area-inset-left) !important;
+	padding-right: env(safe-area-inset-right) !important;
 }
 
 .gallery-block

@@ -24,12 +24,12 @@ header
 
 #cruz-text
 {
-	margin-top: calc(2.1875vmin + 25px);
+	margin-top: calc(2.1875vmin + 25px + env(safe-area-inset-top));
 }
 
 #godar-text
 {
-	margin-top: calc(19.6875vmin + 25px);
+	margin-top: calc(19.6875vmin + 25px + env(safe-area-inset-top));
 }
 
 @media (max-width: 500px)

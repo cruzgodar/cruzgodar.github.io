@@ -86,6 +86,7 @@ body
 	width: min(100% - 32px, 100% - env(safe-area-inset-left) - env(safe-area-inset-right));
 	padding-left: max(16px, env(safe-area-inset-left));
 	padding-right: max(16px, env(safe-area-inset-right));
+	padding-bottom: env(safe-area-inset-bottom);
 }
 
 @media (min-width: 501px)
@@ -114,7 +115,7 @@ body
 
 header
 {
-	margin-top: 80px;
+	margin-top: calc(80px + env(safe-area-inset-top));
 	margin-bottom: 32px;
 }
 
@@ -397,8 +398,8 @@ mjx-container
 	margin-left: max(16px, env(safe-area-inset-left));
 	margin-right: max(16px, env(safe-area-inset-right));
 
-	margin-top: calc(16px + 5vh);
-	margin-bottom: calc(16px + 5vh);
+	margin-top: calc(16px + 5vh + env(safe-area-inset-top));
+	margin-bottom: calc(16px + 5vh + env(safe-area-inset-bottom));
 	
 	padding: 16px;
 	border-radius: 16px;
@@ -421,8 +422,8 @@ mjx-container
 		margin-left: max(8px, env(safe-area-inset-left));
 		margin-right: max(8px, env(safe-area-inset-right));
 
-		margin-top: calc(8px + 5vh);
-		margin-bottom: calc(8px + 5vh);
+		margin-top: calc(8px + 5vh + env(safe-area-inset-top));
+		margin-bottom: calc(8px + 5vh + env(safe-area-inset-bottom));
 	}
 }
 
@@ -1510,7 +1511,7 @@ option
 	top: -50vh;
 	left: -50vw;
 	
-	height: calc(40px + 50vh);
+	height: calc(40px + 50vh + env(safe-area-inset-top));
 	width: calc(100% + 100vw);
 	
 	background-color: var(--background);
@@ -1529,7 +1530,7 @@ option
 #header
 {
 	position: fixed;
-	top: 0;
+	top: env(safe-area-inset-top);
 	left: env(safe-area-inset-left);
 	
 	height: 40px;
@@ -1727,14 +1728,17 @@ option
 #accessibility-tooltip
 {
 	position: fixed;
-	top: 56px;
-	right: 16px;
+	top: calc(56px + env(safe-area-inset-top));
+	right: max(16px, env(safe-area-inset-right));
 	
 	border-radius: 20px;
 	
 	background-color: var(--background);
 
-	max-width: calc(100vw - 64px);
+	max-width: min(
+		calc(100vw - 64px),
+		calc(100vw - env(safe-area-inset-left) - env(safe-area-inset-right))
+	);
 	padding-top: 14px;
 	padding-left: 16px;
 	padding-right: 16px;
@@ -1795,9 +1799,12 @@ option
 
 	#accessibility-tooltip
 	{
-		top: 48px;
-		right: 8px;
-		max-width: calc(100vw - 48px);
+		top: calc(48px + env(safe-area-inset-top));
+		right: max(8px, env(safe-area-inset-right));
+		max-width: min(
+			calc(100vw - 48px),
+			calc(100vw - env(safe-area-inset-left) - env(safe-area-inset-right))
+		);
 		padding-top: 14px;
 		padding-left: 16px;
 		padding-right: 16px;
