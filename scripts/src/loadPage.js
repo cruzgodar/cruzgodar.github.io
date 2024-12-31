@@ -32,7 +32,6 @@ import {
 } from "./navigation.js";
 import { initPageContents } from "./pageContent.js";
 import {
-	applyStreetLightsCode,
 	siteSettings
 } from "./settings.js";
 import { sitemap } from "./sitemap.js";
@@ -92,8 +91,6 @@ export async function loadPage()
 	onResize();
 
 	listenForFullscreenKey();
-
-	applyStreetLightsCode();
 
 	setTimeout(initFocusEvents, 50);
 	setTimeout(equalizeAppletColumns, 50);

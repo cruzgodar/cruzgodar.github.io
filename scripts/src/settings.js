@@ -3,7 +3,6 @@ import { cardIsOpen } from "./cards.js";
 import { recreateDesmosGraphs } from "./desmos.js";
 import { darkThemeCheckbox, increaseContrastCheckbox, reduceMotionCheckbox } from "./header.js";
 import {
-	$$,
 	addStyle,
 	pageUrl
 } from "./main.js";
@@ -451,7 +450,6 @@ export async function toggleIncreaseContrast({
 
 let settingsCode = [];
 const streetlightsCode = [0, 1, 2, 1, 0, 1, 2, 1, 0];
-let streetLightsCodeMet = false;
 
 function updateCode(digit)
 {
@@ -463,10 +461,6 @@ function updateCode(digit)
 
 		if (settingsCode.join("") === streetlightsCode.join(""))
 		{
-			streetLightsCodeMet = true;
-
-			applyStreetLightsCode();
-
 			addStyle(`
 				#logo img, #logo-no-link img
 				{
@@ -475,20 +469,6 @@ function updateCode(digit)
 			`, false);
 		}
 	}
-}
-
-export function applyStreetLightsCode()
-{
-	if (!streetLightsCodeMet)
-	{
-		return;
-	}
-
-	$$("#logo img, #logo-no-link img").forEach(element =>
-	{
-		element.classList.add("transparent");
-		element.setAttribute("src", "/graphics/general-icons/logo-transparent.webp");
-	});
 }
 
 
