@@ -386,15 +386,21 @@ mjx-container
 	
 	opacity: 1;
 	
-	max-width: min(var(--page-width), calc(100vw - 64px));
-	padding: 16px;
+	max-width: min(
+		var(--page-width),
+		min(
+			calc(100vw - 64px),
+			calc(100vw - env(safe-area-inset-left) - env(safe-area-inset-right))
+		)
+	);
 	
-	margin-left: 16px;
-	margin-right: 16px;
+	margin-left: max(16px, env(safe-area-inset-left));
+	margin-right: max(16px, env(safe-area-inset-right));
 
 	margin-top: calc(16px + 5vh);
 	margin-bottom: calc(16px + 5vh);
 	
+	padding: 16px;
 	border-radius: 16px;
 	
 	background-color: var(--background);
@@ -407,13 +413,16 @@ mjx-container
 {
 	.card
 	{
-		margin-left: 8px;
-		margin-right: 8px;
+		max-width: min(
+			calc(100vw - 48px),
+			calc(100vw - env(safe-area-inset-left) - env(safe-area-inset-right))
+		);
+
+		margin-left: max(8px, env(safe-area-inset-left));
+		margin-right: max(8px, env(safe-area-inset-right));
 
 		margin-top: calc(8px + 5vh);
 		margin-bottom: calc(8px + 5vh);
-
-		max-width: calc(100vw - 48px);
 	}
 }
 
