@@ -145,7 +145,19 @@ Of note here is that we not only stretch by dividing and shift right with negati
 
 ## Even and Odd Functions
 
+When we vertically or horizontally stretch a function by a negative factor, we reflect its graph either vertically or horizontally, or potentially both. If we stretch by specifically a factor of $-1$ (producing $y = -f(x)$ or $y = f(-x)$), then we exclusively reflect, and don't stretch at all. We'll occasionally have use for functions that interact nicely with reflections; let's take a moment to look into them.
 
+### exc "functions and reflections"
+
+	1. What is an example of a function $f$ for which $f(-x) = f(x)$? What does its graph look like?
+
+	2. What is an example of a function $f$ for which $-f(x) = f(x)$? What does its graph look like?
+
+	3. What is an example of a function $f$ for which $-f(-x) = f(x)$? What does its graph look like?
+
+	4. Which of the past three types of functions would be interesting to look more into? Why?
+
+###
 
 
 
