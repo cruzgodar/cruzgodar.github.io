@@ -393,13 +393,16 @@ export class VectorFields extends AnimationFrameApplet
 		this.wilson.draggables.draggableArg.element.style.display =
 			needDraggable ? "block" : "none";
 
+		this.wilson.resizeWorld({
+			width: worldWidth,
+			centerX: worldCenterX,
+			centerY: worldCenterY
+		});
+
 		this.generateNewField({
 			maxParticles,
 			dt,
 			lifetime,
-			worldWidth,
-			worldCenterX,
-			worldCenterY,
 			forceRegenerate: true
 		});
 	}
@@ -469,9 +472,6 @@ export class VectorFields extends AnimationFrameApplet
 		maxParticles = this.maxParticles,
 		dt = this.dt,
 		lifetime = this.lifetime,
-		worldWidth = this.wilson.worldWidth,
-		worldCenterX = this.wilson.worldCenterX,
-		worldCenterY = this.wilson.worldCenterY,
 		forceRegenerate = false
 	}) {
 		if (
@@ -501,12 +501,6 @@ export class VectorFields extends AnimationFrameApplet
 					? { stepSize: [2 / this.wilson.canvasWidth, 2 / this.wilson.canvasHeight] }
 					: {}
 			),
-		});
-
-		this.wilson.resizeWorld({
-			width: worldWidth,
-			centerX: worldCenterX,
-			centerY: worldCenterY
 		});
 
 		this.numParticles = 0;
