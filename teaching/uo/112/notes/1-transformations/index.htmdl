@@ -151,11 +151,31 @@ When we vertically or horizontally stretch a function by a negative factor, we r
 
 	1. What is an example of a function $f$ for which $f(-x) = f(x)$? What does its graph look like?
 
-	2. What is an example of a function $f$ for which $-f(x) = f(x)$? What does its graph look like?
+	2. What is an example of a function $f$ for which $f(x) = -f(x)$? What does its graph look like?
 
-	3. What is an example of a function $f$ for which $-f(-x) = f(x)$? What does its graph look like?
+	3. What is an example of a function $f$ for which $f(-x) = -f(x)$? What does its graph look like?
 
 	4. Which of the past three types of functions would be interesting to look more into? Why?
+
+###
+
+With the results of this exercise in mind, let's define a few terms and see some examples.
+
+### def "even and odd functions"
+
+	A function $f(x)$ is **even** if $f(-x) = f(x)$ for all valid values of $x$ where both are defined, and **odd** if $f(-x) = -f(x)$. In other words, even functions are those that whose graphs are the same when horizontally reflected, and odd ones are those whose graphs are the same when horizontally and vertically reflected.
+
+###
+
+These are certainly some strange names! As a very brief example, $f(x) = x^2$ is even since $f(-x) = (-x)^2 = x^2$, and $g(x) = x^3$ is odd since $g(-x) = (-x)^3 = -x^3$.
+
+### exc "even and odd functions"
+
+	1. Give another example of an even function and an odd one.
+
+	2. Let $p$ be an integer. When is $f(x) = x^p$ even, odd, and neither? Does this help explain why we call functions even and odd?
+
+	3. If $a$ and $b$ are integers, describe when $a + b$ is even or odd based on whether $a$ and $b$ are even or odd. Is the same true for adding functions? What about multiplying them?
 
 ###
 
