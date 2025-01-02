@@ -240,32 +240,56 @@ export class Dropdown extends InputElement
 		const rightWhenOpen = (rect.right - rect.width / buttonElementScale / 2)
 			+ effectiveOpenWidth / 2;
 
+		
 
+		const safeAreaInsetTop = parseFloat(
+			window.getComputedStyle(document.documentElement)
+				.getPropertyValue("--safe-area-inset-top")
+				.slice(0, -2)
+		);
+		
+		const safeAreaInsetBottom = parseFloat(
+			window.getComputedStyle(document.documentElement)
+				.getPropertyValue("--safe-area-inset-bottom")
+				.slice(0, -2)
+		);
+
+		const safeAreaInsetLeft = parseFloat(
+			window.getComputedStyle(document.documentElement)
+				.getPropertyValue("--safe-area-inset-left")
+				.slice(0, -2)
+		);
+
+		const safeAreaInsetRight = parseFloat(
+			window.getComputedStyle(document.documentElement)
+				.getPropertyValue("--safe-area-inset-right")
+				.slice(0, -2)
+		);
 
 		let translateY = 0;
 
-		if (bottomWhenOpen > window.innerHeight - 10)
+		if (bottomWhenOpen > window.innerHeight - 10 - safeAreaInsetBottom)
 		{
-			translateY = window.innerHeight - 10 - bottomWhenOpen;
+			translateY = window.innerHeight - 10 - safeAreaInsetBottom - bottomWhenOpen;
 		}
 
-		else if (topWhenOpen < 10 + headerHeight)
+		else if (topWhenOpen < 10 + headerHeight + safeAreaInsetTop)
 		{
-			translateY = 10 + headerHeight - topWhenOpen;
+			translateY = 10 + headerHeight + safeAreaInsetTop - topWhenOpen;
 		}
 
 
 
 		let translateX = 0;
 
-		if (rightWhenOpen > window.innerWidth - 10)
+		if (rightWhenOpen > window.innerWidth - 10 - safeAreaInsetRight)
 		{
-			translateX = window.innerWidth - 10 - rightWhenOpen;
+			translateX = window.innerWidth - 10 - safeAreaInsetRight - rightWhenOpen;
 		}
 
-		else if (leftWhenOpen < 10)
+		else if (leftWhenOpen < 10 + safeAreaInsetLeft)
 		{
-			translateX = 10 - leftWhenOpen;
+			translateX = 10 + safeAreaInsetLeft - leftWhenOpen;
 		}
 
 

@@ -53,6 +53,11 @@
 	--dark-outline-color: color-mix(in srgb, var(--dark-outline-color-partial), var(--high-contrast) calc(var(--contrast) * 100%));
 
 	--contrast-border-color: color-mix(in srgb, rgba(0, 0, 0, 0), var(--high-contrast) calc(var(--contrast) * 100%));
+
+	--safe-area-inset-top: env(safe-area-inset-top);
+	--safe-area-inset-bottom: env(safe-area-inset-bottom);
+	--safe-area-inset-left: env(safe-area-inset-left);
+	--safe-area-inset-right: env(safe-area-inset-right);
 }
 
 html
