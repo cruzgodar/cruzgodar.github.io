@@ -288,7 +288,7 @@ export class ThurstonGeometries extends Applet
 				id: "edgeDetect",
 				shader: edgeDetectShader,
 				uniforms: {
-					stepSize: 1 / this.resolution
+					stepSize: [1 / this.wilson.canvasWidth, 1 / this.wilson.canvasHeight]
 				}
 			});
 
@@ -341,7 +341,13 @@ export class ThurstonGeometries extends Applet
 		this.wilson.useFramebuffer("0");
 		this.wilson.useTexture("0");
 
-		this.wilson.setUniforms({ stepSize: 1 / this.resolution }, "edgeDetect");
+		this.wilson.setUniforms({
+			stepSize: [1 / this.wilson.canvasWidth, 1 / this.wilson.canvasHeight]
+		}, "edgeDetect");
+
+		this.wilson.setUniforms({
+			stepSize: [2 / (this.wilson.canvasWidth * 3), 2 / (this.wilson.canvasHeight * 3)]
+		}, "antialias");
 
 		this.wilson.useShader("draw");
 	}

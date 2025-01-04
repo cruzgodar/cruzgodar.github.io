@@ -15,7 +15,7 @@ export const edgeDetectShader = /* glsl */`
 
 	uniform sampler2D uTexture;
 
-	uniform float stepSize;
+	uniform vec2 stepSize;
 
 	float getSampleLuminanceDelta(vec3 color, vec2 texCoord)
 	{
@@ -29,10 +29,10 @@ export const edgeDetectShader = /* glsl */`
 	{
 		vec2 texCoord = (uv + vec2(1.0)) * 0.5;
 		vec3 sample = texture2D(uTexture, texCoord).xyz;
-		float sampleN = getSampleLuminanceDelta(sample, texCoord + vec2(0.0, stepSize));
-		float sampleS = getSampleLuminanceDelta(sample, texCoord + vec2(0.0, -stepSize));
-		float sampleE = getSampleLuminanceDelta(sample, texCoord + vec2(stepSize, 0.0));
-		float sampleW = getSampleLuminanceDelta(sample, texCoord + vec2(-stepSize, 0.0));
+		float sampleN = getSampleLuminanceDelta(sample, texCoord + vec2(0.0, stepSize.y));
+		float sampleS = getSampleLuminanceDelta(sample, texCoord + vec2(0.0, -stepSize.y));
+		float sampleE = getSampleLuminanceDelta(sample, texCoord + vec2(stepSize.x, 0.0));
+		float sampleW = getSampleLuminanceDelta(sample, texCoord + vec2(-stepSize.x, 0.0));
 
 		float luminance = max(
 			max(sampleN, sampleS),
@@ -332,7 +332,7 @@ export class RaymarchApplet extends AnimationFrameApplet
 				id: "edgeDetect",
 				shader: edgeDetectShader,
 				uniforms: {
-					stepSize: 1 / this.resolution
+					stepSize: [1 / this.wilson.canvasWidth, 1 / this.wilson.canvasHeight]
 				}
 			});
 
@@ -350,7 +350,10 @@ export class RaymarchApplet extends AnimationFrameApplet
 				shader: aaShader,
 				uniforms: {
 					...this.uniforms,
-					stepSize: 2 / (this.resolution * 3)
+					stepSize: [
+						2 / (this.wilson.canvasWidth * 3),
+						2 / (this.wilson.canvasHeight * 3)
+					]
 				}
 			});
 
@@ -830,10 +833,10 @@ export class RaymarchApplet extends AnimationFrameApplet
 						{
 							vec3 aaSample = (
 								sample.xyz
-								+ raymarchHelper(vec2(stepSize, 0.0))
-								+ raymarchHelper(vec2(0.0, stepSize))
-								+ raymarchHelper(vec2(-stepSize, 0.0))
-								+ raymarchHelper(vec2(0.0, -stepSize))
+								+ raymarchHelper(vec2(stepSize.x, 0.0))
+								+ raymarchHelper(vec2(0.0, stepSize.y))
+								+ raymarchHelper(vec2(-stepSize.x, 0.0))
+								+ raymarchHelper(vec2(0.0, -stepSize.y))
 							) / 5.0;
 							
 							gl_FragColor = vec4(aaSample, 1.0);
@@ -868,7 +871,7 @@ export class RaymarchApplet extends AnimationFrameApplet
 
 			${antialiasing ? /* glsl */`
 				uniform sampler2D uTexture;
-				uniform float stepSize;
+				uniform vec2 stepSize;
 			` : ""}
 			
 			const vec3 lightPos = ${getVectorGlsl(this.lightPos)};
@@ -972,7 +975,7 @@ export class RaymarchApplet extends AnimationFrameApplet
 				id: "edgeDetect",
 				shader: edgeDetectShader,
 				uniforms: {
-					stepSize: 1 / this.resolution
+					stepSize: [1 / this.wilson.canvasWidth, 1 / this.wilson.canvasHeight]
 				}
 			});
 
@@ -990,7 +993,10 @@ export class RaymarchApplet extends AnimationFrameApplet
 				shader: aaShader,
 				uniforms: {
 					...this.uniforms,
-					stepSize: 2 / (this.resolution * 3)
+					stepSize: [
+						2 / (this.wilson.canvasWidth * 3),
+						2 / (this.wilson.canvasHeight * 3)
+					]
 				}
 			});
 
@@ -1018,8 +1024,13 @@ export class RaymarchApplet extends AnimationFrameApplet
 		this.wilson.useFramebuffer(null);
 		this.wilson.useTexture("0");
 
-		this.wilson.setUniforms({ stepSize: 1 / this.resolution }, "edgeDetect");
-		this.wilson.setUniforms({ stepSize: 2 / (this.resolution * 3) }, "antialias");
+		this.wilson.setUniforms({
+			stepSize:[1 / this.wilson.canvasWidth, 1 / this.wilson.canvasHeight]
+		}, "edgeDetect");
+
+		this.wilson.setUniforms({
+			stepSize: [2 / (this.wilson.canvasWidth * 3), 2 / (this.wilson.canvasHeight * 3)]
+		}, "antialias");
 
 		this.wilson.useShader("draw");
 	}

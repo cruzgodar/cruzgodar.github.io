@@ -80,7 +80,7 @@ export class VoronoiDiagrams extends Applet
 
 
 
-	run({
+	async run({
 		resolution = 500,
 		numPoints = 20,
 		metric = 2,
@@ -104,8 +104,11 @@ export class VoronoiDiagrams extends Applet
 
 		this.generatePoints();
 
+		const shaderHidden = this.getShader(true);
+		const shader = this.getShader(false);
+
 		this.wilsonHidden.loadShader({
-			shader: this.getShader(true),
+			shader: shaderHidden,
 			uniforms: {
 				radius: this.radius,
 				metric: this.metric,
@@ -124,7 +127,7 @@ export class VoronoiDiagrams extends Applet
 		}
 
 		this.wilson.loadShader({
-			shader: this.getShader(false),
+			shader,
 			uniforms: {
 				radius: this.radius,
 				pointOpacity: this.pointOpacity,
