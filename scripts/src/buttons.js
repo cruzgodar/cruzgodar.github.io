@@ -30,11 +30,11 @@ export class Button extends InputElement
 			element.classList.add("linked-text-button");
 		}
 
-		this.element.addEventListener("click", () =>
+		this.element.addEventListener("click", (e) =>
 		{
 			if (!this.disabled)
 			{
-				this.onClick();
+				this.onClick(e);
 			}
 		});
 
@@ -71,8 +71,20 @@ export class DownloadButton extends Button
 		super({
 			element,
 			name: "Download",
-			onClick: () => downloadFrame.bind(applet)(filename),
-			linked
+			linked,
+			onClick: (e) =>
+			{
+				if (e.metaKey || e.ctrlKey)
+				{
+					if (applet.downloadBokehFrame)
+					{
+						applet.downloadBokehFrame();
+						return;
+					}
+				}
+
+				downloadFrame.bind(applet)(filename);
+			},
 		});
 	}
 }

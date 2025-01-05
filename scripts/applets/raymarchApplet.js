@@ -1,6 +1,6 @@
 import anime from "../anime.js";
-import { doubleEncodingGlsl } from "../src/complexGlsl.js";
-import { WilsonGPU } from "../wilson.js";
+import { doubleEncodingGlsl, loadGlsl } from "../src/complexGlsl.js";
+import { WilsonCPU, WilsonGPU } from "../wilson.js";
 import { AnimationFrameApplet } from "./animationFrameApplet.js";
 import {
 	getFloatGlsl,
@@ -789,7 +789,7 @@ export class RaymarchApplet extends AnimationFrameApplet
 					void main(void)
 					{
 						raymarch(
-							imagePlaneCenterPos)
+							imagePlaneCenterPos
 								+ rightVec * (uvScale * uv.x + uvCenter.x) * aspectRatio.x
 								+ upVec * (uvScale * uv.y + uvCenter.y) * aspectRatio.y
 						);
@@ -934,11 +934,6 @@ export class RaymarchApplet extends AnimationFrameApplet
 			
 			${mainFunctionGlsl}
 		`;
-
-		if (window.DEBUG)
-		{
-			console.log(shader);
-		}
 
 		return shader;
 	}
@@ -1287,6 +1282,165 @@ export class RaymarchApplet extends AnimationFrameApplet
 		};
 
 		requestAnimationFrame(drawMosaicPart);
+	}
+
+	async downloadBokehFrame()
+	{
+		const returnToAntialiasing = this.useAntialiasing;
+		await loadGlsl();
+
+		this.reloadShader({
+			useAntialiasing: true,
+			useForDepthBuffer: false
+		});
+		this.drawFrame();
+		const colors = this.wilson.readPixels();
+		
+		this.reloadShader({
+			useAntialiasing: false,
+			useForDepthBuffer: true
+		});
+
+		this.drawFrame();
+		const depths = new Float32Array(this.wilson.readPixels().buffer);
+
+		const canvas = this.createHiddenCanvas();
+		const options = { canvasWidth: this.resolution };
+		const wilsonHidden = new WilsonCPU(canvas, options);
+
+		wilsonHidden.ctx.fillStyle = "rgb(0, 0, 0)";
+		wilsonHidden.ctx.fillRect(0, 0, this.resolution, this.resolution);
+
+		const pixelsByDepth = Array.from(depths).map((depth, i) =>
+		{
+			const col = i % this.resolution;
+			const row = this.resolution - Math.floor(i / this.resolution) - 1;
+
+			return [
+				depth,
+				col,
+				row,
+				colors[4 * i],
+				colors[4 * i + 1],
+				colors[4 * i + 2],
+			];
+		}).sort((a, b) => b[0] - a[0]);
+
+		const minDepth = pixelsByDepth[pixelsByDepth.length - 1][0];
+		
+		let maxDepthIndex = 0;
+		for (let i = 0; i < pixelsByDepth.length; i++)
+		{
+			if (pixelsByDepth[i][0] < this.clipDistance)
+			{
+				maxDepthIndex = i;
+				break;
+			}
+		}
+		maxDepthIndex = Math.floor(
+			maxDepthIndex
+			+ .1 * (pixelsByDepth.length - maxDepthIndex)
+		);
+		const maxDepth = pixelsByDepth[maxDepthIndex][0];
+
+		const minRadius = 0.5;
+		const maxRadius = this.resolution / 150;
+
+		const imageData = new Array(this.resolution * this.resolution * 4).fill(0);
+		
+
+
+		for (const pixel of pixelsByDepth)
+		{
+			const depth = pixel[0];
+
+			if (depth === this.clipDistance)
+			{
+				continue;
+			}
+
+			const col = pixel[1];
+			const row = pixel[2];
+
+			const radius = Math.min(
+				Math.max(
+					(depth - minDepth) / (maxDepth - minDepth),
+					0,
+				),
+				1
+			) * (maxRadius - minRadius) + minRadius;
+
+
+
+			// First we have to compute the total opacity spread over
+			// all the pixels hit by this circle. There's unfortunately not a good
+			// way to compute this other than taking a full pass over the pixels.
+
+			let totalValue = 0;
+
+			for (let y = Math.floor(-radius); y <= Math.ceil(radius); y++)
+			{
+				for (let x = Math.floor(-radius); x <= Math.ceil(radius); x++)
+				{
+					if (x * x + y * y <= radius * radius)
+					{
+						const value = Math.min(radius - Math.sqrt(x * x + y * y), 1);
+
+						totalValue += value;
+					}
+				}
+			}
+
+			const opacity = 1 / totalValue;
+
+			for (let y = Math.floor(-radius); y <= Math.ceil(radius); y++)
+			{
+				for (let x = Math.floor(-radius); x <= Math.ceil(radius); x++)
+				{
+					if (x * x + y * y <= radius * radius)
+					{
+						const row2 = row + y;
+						const col2 = col + x;
+
+						if (
+							row2 < 0
+							|| row2 >= this.resolution
+							|| col2 < 0
+							|| col2 >= this.resolution
+						) {
+							continue;
+						}
+
+						const index = row2 * this.resolution + col2;
+						const value = opacity * Math.min(radius - Math.sqrt(x * x + y * y), 1);
+
+						imageData[4 * index] += pixel[3] * value;
+						imageData[4 * index + 1] += pixel[4] * value;
+						imageData[4 * index + 2] += pixel[5] * value;
+					}
+				}
+			}
+		}
+
+		const normalizedImageData = new Uint8ClampedArray(imageData);
+
+		for (let i = 0; i < this.resolution * this.resolution; i++)
+		{
+			normalizedImageData[4 * i + 3] = 255;
+		}
+
+		wilsonHidden.drawFrame(normalizedImageData);
+
+		wilsonHidden.downloadFrame("bokeh-render.png");
+
+		this.reloadShader({
+			useAntialiasing: returnToAntialiasing,
+			useForDepthBuffer: false
+		});
+
+		this.drawFrame();
+
+		canvas.remove();
 	}
 
 

@@ -192,4 +192,19 @@ export class Mandelbulb extends RaymarchApplet
 			}
 		});
 	}
+
+	downloadFrame()
+	{
+		this.drawFrame();
+
+		if (this.uniforms.juliaProportion < .5)
+		{
+			this.wilson.downloadFrame("the-mandelbulb.png", false);
+		}
+
+		else
+		{
+			this.wilson.downloadFrame("a-juliabulb.png", false);
+		}
+	}
 }
