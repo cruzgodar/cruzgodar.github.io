@@ -1169,7 +1169,7 @@ export class RaymarchApplet extends AnimationFrameApplet
 		this.drawFrame();
 		this.wilson.downloadFrame(filename, false);
 		
-		// this.makeMosaic({ filename, sie: 4 });
+		// this.makeMosaic({ filename, size: 4 });
 	}
 
 	async makeMosaic({
@@ -1213,20 +1213,31 @@ export class RaymarchApplet extends AnimationFrameApplet
 			{
 				if (useForDepthBuffer)
 				{
-					// Concatenate all the depth buffers and return.
+					// Concatenate all the depth buffers and return. This is unfortunately
+					// kinda hellish since we need to list all the depths one *row* at a time,
+					// but the data format is a bunch of small blocks.
 					const combinedDepthBuffer = new Float32Array(
 						this.resolution * this.resolution * size * size
 					);
 					
-					for (let i = 0; i < size; i++)
+					for (let row = 0; row < size; row++)
 					{
-						for (let j = 0; j < size; j++)
+						for (let i = 0; i < this.resolution; i++)
 						{
-							combinedDepthBuffer.set(
-								depthArrays[i][j],
-								i * size * this.resolution * this.resolution
-									+ j * this.resolution * this.resolution
-							);
+							for (let col = 0; col < size; col++)
+							{
+								combinedDepthBuffer.set(
+									// This should be [row][col], but the order in which the blocks
+									// are computed is also transposed weirdly.
+									depthArrays[col][row].subarray(
+										i * this.resolution,
+										(i + 1) * this.resolution
+									),
+									row * this.resolution * this.resolution * size
+										+ i * this.resolution * size
+										+ col * this.resolution
+								);
+							}
 						}
 					}
 
@@ -1345,7 +1356,7 @@ export class RaymarchApplet extends AnimationFrameApplet
 
 	async downloadBokehFrame()
 	{
-		const mosaicSize = 2;
+		const mosaicSize = 8;
 
 		const returnToAntialiasing = this.useAntialiasing;
 		await loadGlsl();
@@ -1369,6 +1380,10 @@ export class RaymarchApplet extends AnimationFrameApplet
 		});
 
 		const resolution = this.resolution * mosaicSize;
+
+		// A minimum radius of 0 is just one pixel, but it causes weird sharpness artifacts.
+		const minRadius = 0.5;
+		const maxRadius = resolution / 250;
 
 		const canvas = this.createHiddenCanvas();
 		const options = { canvasWidth: resolution };
@@ -1408,10 +1423,6 @@ export class RaymarchApplet extends AnimationFrameApplet
 			+ .1 * (pixelsByDepth.length - maxDepthIndex)
 		);
 		const maxDepth = pixelsByDepth[maxDepthIndex][0];
-
-		// A minimum radius of 0 is just one pixel, but it causes weird sharpness artifacts.
-		const minRadius = 0.5;
-		const maxRadius = resolution / 125;
 
 		const imageData = new Array(resolution * resolution * 4).fill(0);
 		
