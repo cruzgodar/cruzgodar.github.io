@@ -74,7 +74,7 @@ export class DownloadButton extends Button
 			linked,
 			onClick: (e) =>
 			{
-				if (e.metaKey || e.ctrlKey)
+				if (window.DEBUG && (e.metaKey || e.ctrlKey))
 				{
 					if (applet.downloadBokehFrame)
 					{

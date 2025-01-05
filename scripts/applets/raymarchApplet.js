@@ -1164,128 +1164,189 @@ export class RaymarchApplet extends AnimationFrameApplet
 		}
 	}
 
-	downloadFrame(filename)
+	async downloadFrame(filename)
 	{
 		this.drawFrame();
 		this.wilson.downloadFrame(filename, false);
-		// this.downloadMosaic(filename, 10);
+		
+		// this.makeMosaic({ filename, sie: 4 });
 	}
 
-	async downloadMosaic(filename, size)
-	{
-		this.setUniforms({
-			uvScale: 1 / size,
-			resolution: this.resolution * size
-		});
-
-		const centerPoints = [];
-		for (let i = 0; i < size; i++)
+	async makeMosaic({
+		filename,
+		size,
+		returnPixels = false,
+		useForDepthBuffer = false
+	}) {
+		return new Promise(outerResolve =>
 		{
-			centerPoints.push(-1 + (1 + 2 * i) / size);
-		}
-		const canvases = [];
+			this.setUniforms({
+				uvScale: 1 / size,
+				resolution: this.resolution * size
+			});
 
-		for (let i = 0; i < size; i++)
-		{
-			canvases.push([]);
-
-			for (let j = 0; j < size; j++)
+			const centerPoints = [];
+			for (let i = 0; i < size; i++)
 			{
-				canvases[i].push(document.createElement("canvas"));
-				canvases[i][j].width = this.resolution;
-				canvases[i][j].height = this.resolution;
+				centerPoints.push(-1 + (1 + 2 * i) / size);
 			}
-		}
+			const canvases = [];
 
-
-
-		const combineCanvas = async () =>
-		{
-			const combinedCanvas = document.createElement("canvas");
-			combinedCanvas.width = this.resolution * size;
-			combinedCanvas.height = this.resolution * size;
-			const combinedCtx = combinedCanvas.getContext("2d", { colorSpace: "display-p3" });
+			const depthArrays = new Array(size);
 
 			for (let i = 0; i < size; i++)
 			{
+				canvases.push([]);
+				depthArrays[i] = new Array(size);
+
 				for (let j = 0; j < size; j++)
 				{
-					combinedCtx.drawImage(
-						canvases[i][j],
-						i * this.resolution,
-						j * this.resolution
-					);
+					canvases[i].push(document.createElement("canvas"));
+					canvases[i][j].width = this.resolution;
+					canvases[i][j].height = this.resolution;
 				}
 			}
 
-			combinedCtx.translate(0, this.resolution * size);
-			combinedCtx.scale(1, -1);
 
-			combinedCtx.drawImage(combinedCanvas, 0, 0);
 
-			combinedCanvas.toBlob((blob) =>
+			const combineCanvas = async () =>
 			{
-				const link = document.createElement("a");
-				link.href = URL.createObjectURL(blob);
-				link.download = filename;
-				link.click();
-			});
+				if (useForDepthBuffer)
+				{
+					// Concatenate all the depth buffers and return.
+					const combinedDepthBuffer = new Float32Array(
+						this.resolution * this.resolution * size * size
+					);
+					
+					for (let i = 0; i < size; i++)
+					{
+						for (let j = 0; j < size; j++)
+						{
+							combinedDepthBuffer.set(
+								depthArrays[i][j],
+								i * size * this.resolution * this.resolution
+									+ j * this.resolution * this.resolution
+							);
+						}
+					}
 
-			await new Promise(resolve => setTimeout(resolve, 100));
+					outerResolve(combinedDepthBuffer);
+					return;
+				}
 
-			this.setUniforms({
-				uvScale: 1,
-				uvCenter: [0, 0],
-				resolution: this.resolution
-			});
+				const combinedCanvas = document.createElement("canvas");
+				combinedCanvas.width = this.resolution * size;
+				combinedCanvas.height = this.resolution * size;
+				const combinedCtx = combinedCanvas.getContext("2d", { colorSpace: "display-p3" });
 
-			this.needNewFrame = true;
-		};
+				for (let i = 0; i < size; i++)
+				{
+					for (let j = 0; j < size; j++)
+					{
+						combinedCtx.drawImage(
+							canvases[i][j],
+							i * this.resolution,
+							j * this.resolution
+						);
+					}
+				}
+
+				// We need to flip the canvas visually if we're actually downloading
+				// it, but not if we're returning the pixel data.
+				if (!returnPixels)
+				{
+					combinedCtx.translate(0, this.resolution * size);
+					combinedCtx.scale(1, -1);
+				}
+
+				combinedCtx.drawImage(combinedCanvas, 0, 0);
+
+				const pixels = returnPixels
+					? combinedCtx.getImageData(
+						0,
+						0,
+						this.resolution * size,
+						this.resolution * size
+					).data
+					: undefined;
+
+				if (!returnPixels)
+				{
+					combinedCanvas.toBlob((blob) =>
+					{
+						const link = document.createElement("a");
+						link.href = URL.createObjectURL(blob);
+						link.download = filename;
+						link.click();
+					});
+				}
+
+				await new Promise(resolve => setTimeout(resolve, 100));
+
+				this.setUniforms({
+					uvScale: 1,
+					uvCenter: [0, 0],
+					resolution: this.resolution
+				});
+
+				this.needNewFrame = true;
+
+				outerResolve(pixels);
+			};
 
 
 
-		let i = 0;
-		let j = 0;
+			let i = 0;
+			let j = 0;
 
-		const drawMosaicPart = async () =>
-		{
-			const ctx = canvases[i][j].getContext("2d", { colorSpace: "display-p3" });
-
-			this.setUniforms({ uvCenter: [centerPoints[i], centerPoints[j]] });
-			this.drawFrame();
-			const imageData = new ImageData(
-				new Uint8ClampedArray(this.wilson.readPixels()),
-				this.resolution,
-				this.resolution
-			);
-
-			ctx.putImageData(imageData, 0, 0);
-
-			await new Promise(resolve => setTimeout(resolve, 500));
-
-			j++;
-			if (j === size)
+			const drawMosaicPart = async () =>
 			{
-				j = 0;
-				i++;
-			}
+				const ctx = canvases[i][j].getContext("2d", { colorSpace: "display-p3" });
 
-			if (i !== size)
-			{
-				requestAnimationFrame(drawMosaicPart);
-			}
+				this.setUniforms({ uvCenter: [centerPoints[i], centerPoints[j]] });
+				this.drawFrame();
 
-			else
-			{
-				combineCanvas();
-			}
-		};
+				if (useForDepthBuffer)
+				{
+					depthArrays[i][j] = new Float32Array(this.wilson.readPixels().buffer);
+				}
 
-		requestAnimationFrame(drawMosaicPart);
+				const imageData = new ImageData(
+					new Uint8ClampedArray(this.wilson.readPixels()),
+					this.resolution,
+					this.resolution
+				);
+
+				ctx.putImageData(imageData, 0, 0);
+
+				await new Promise(resolve => setTimeout(resolve, 500));
+
+				j++;
+				if (j === size)
+				{
+					j = 0;
+					i++;
+				}
+
+				if (i !== size)
+				{
+					requestAnimationFrame(drawMosaicPart);
+				}
+
+				else
+				{
+					combineCanvas();
+				}
+			};
+
+			requestAnimationFrame(drawMosaicPart);
+		});
 	}
 
 	async downloadBokehFrame()
 	{
+		const mosaicSize = 2;
+
 		const returnToAntialiasing = this.useAntialiasing;
 		await loadGlsl();
 
@@ -1293,28 +1354,33 @@ export class RaymarchApplet extends AnimationFrameApplet
 			useAntialiasing: true,
 			useForDepthBuffer: false
 		});
-		this.drawFrame();
-		const colors = this.wilson.readPixels();
+		const colors = await this.makeMosaic({
+			size: mosaicSize,
+			returnPixels: true
+		});
 		
 		this.reloadShader({
 			useAntialiasing: false,
 			useForDepthBuffer: true
 		});
+		const depths = await this.makeMosaic({
+			size: mosaicSize,
+			useForDepthBuffer: true
+		});
 
-		this.drawFrame();
-		const depths = new Float32Array(this.wilson.readPixels().buffer);
+		const resolution = this.resolution * mosaicSize;
 
 		const canvas = this.createHiddenCanvas();
-		const options = { canvasWidth: this.resolution };
+		const options = { canvasWidth: resolution };
 		const wilsonHidden = new WilsonCPU(canvas, options);
 
 		wilsonHidden.ctx.fillStyle = "rgb(0, 0, 0)";
-		wilsonHidden.ctx.fillRect(0, 0, this.resolution, this.resolution);
+		wilsonHidden.ctx.fillRect(0, 0, resolution, resolution);
 
 		const pixelsByDepth = Array.from(depths).map((depth, i) =>
 		{
-			const col = i % this.resolution;
-			const row = this.resolution - Math.floor(i / this.resolution) - 1;
+			const col = i % resolution;
+			const row = resolution - Math.floor(i / resolution) - 1;
 
 			return [
 				depth,
@@ -1343,10 +1409,11 @@ export class RaymarchApplet extends AnimationFrameApplet
 		);
 		const maxDepth = pixelsByDepth[maxDepthIndex][0];
 
+		// A minimum radius of 0 is just one pixel, but it causes weird sharpness artifacts.
 		const minRadius = 0.5;
-		const maxRadius = this.resolution / 150;
+		const maxRadius = resolution / 125;
 
-		const imageData = new Array(this.resolution * this.resolution * 4).fill(0);
+		const imageData = new Array(resolution * resolution * 4).fill(0);
 		
 
 
@@ -1404,14 +1471,14 @@ export class RaymarchApplet extends AnimationFrameApplet
 
 						if (
 							row2 < 0
-							|| row2 >= this.resolution
+							|| row2 >= resolution
 							|| col2 < 0
-							|| col2 >= this.resolution
+							|| col2 >= resolution
 						) {
 							continue;
 						}
 
-						const index = row2 * this.resolution + col2;
+						const index = row2 * resolution + col2;
 						const value = opacity * Math.min(radius - Math.sqrt(x * x + y * y), 1);
 
 						imageData[4 * index] += pixel[3] * value;
@@ -1424,7 +1491,7 @@ export class RaymarchApplet extends AnimationFrameApplet
 
 		const normalizedImageData = new Uint8ClampedArray(imageData);
 
-		for (let i = 0; i < this.resolution * this.resolution; i++)
+		for (let i = 0; i < resolution * resolution; i++)
 		{
 			normalizedImageData[4 * i + 3] = 255;
 		}

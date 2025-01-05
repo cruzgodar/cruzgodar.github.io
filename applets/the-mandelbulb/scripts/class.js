@@ -195,16 +195,14 @@ export class Mandelbulb extends RaymarchApplet
 
 	downloadFrame()
 	{
-		this.drawFrame();
-
 		if (this.uniforms.juliaProportion < .5)
 		{
-			this.wilson.downloadFrame("the-mandelbulb.png", false);
+			super.downloadFrame("the-mandelbulb.png");
 		}
 
 		else
 		{
-			this.wilson.downloadFrame("a-juliabulb.png", false);
+			super.downloadFrame("a-juliabulb.png");
 		}
 	}
 }
