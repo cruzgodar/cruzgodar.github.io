@@ -9,7 +9,6 @@ import { checkboxes } from "./components/checkboxes.js";
 import { desmos } from "./components/desmos.js";
 import { dropdown } from "./components/dropdown.js";
 import { galleryBlock } from "./components/gallery-block.js";
-import { glslDocs } from "./components/glsl-docs.js";
 import { imageLinks } from "./components/image-links.js";
 import { image } from "./components/image.js";
 import { parseLatex } from "./components/latex.js";
@@ -61,7 +60,6 @@ const components = {
 	"desmos": desmos,
 	"dropdown": dropdown,
 	"gallery-block": galleryBlock,
-	"glsl-docs": glslDocs,
 	"image": image,
 	"image-links": imageLinks,
 	"nav-buttons": navButtons,
