@@ -421,10 +421,13 @@ export class JuliaSetExplorer extends AnimationFrameApplet
 
 		brightnesses.sort((a, b) => a - b);
 
-		const brightnessScale = (
-			brightnesses[Math.floor(this.resolutionHidden * this.resolutionHidden * .96)]
-			+ brightnesses[Math.floor(this.resolutionHidden * this.resolutionHidden * .98)]
-		) / 25 + zoomLevel * 2;
+		const brightnessScale = Math.max(
+			(
+				brightnesses[Math.floor(this.resolutionHidden * this.resolutionHidden * .96)]
+				+ brightnesses[Math.floor(this.resolutionHidden * this.resolutionHidden * .98)]
+			) / 25,
+			4
+		);
 
 		this.pastBrightnessScales.push(brightnessScale);
 

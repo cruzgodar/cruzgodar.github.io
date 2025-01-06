@@ -15,7 +15,7 @@ export class GeneralizedJuliaSets extends AnimationFrameApplet
 	numIterations = 200;
 	c = [0, 0];
 
-	resolution = 1000;
+	resolution = 500;
 	resolutionHidden = 50;
 
 
@@ -495,10 +495,13 @@ export class GeneralizedJuliaSets extends AnimationFrameApplet
 
 		brightnesses.sort((a, b) => a - b);
 
-		const brightnessScale = (
-			brightnesses[Math.floor(this.resolutionHidden * this.resolutionHidden * .96)]
-			+ brightnesses[Math.floor(this.resolutionHidden * this.resolutionHidden * .98)]
-		) / 25 + zoomLevel * 2;
+		const brightnessScale = Math.max(
+			(
+				brightnesses[Math.floor(this.resolutionHidden * this.resolutionHidden * .96)]
+				+ brightnesses[Math.floor(this.resolutionHidden * this.resolutionHidden * .98)]
+			) / 25,
+			4
+		);
 
 		this.pastBrightnessScales.push(brightnessScale);
 
