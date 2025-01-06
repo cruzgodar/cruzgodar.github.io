@@ -50,7 +50,137 @@ Much of the code implementing complex functions was contributed by <a href='http
 
 
 
-### glsl-docs
+### card glsl-docs "Complex GLSL Documentation"
+			
+	These functions implement many common operations on complex numbers, as well as a handful of more complicated number-theoretic functions. Unless otherwise specified, `float`s refer to real numbers and `vec2`s to complex ones.
+	
+	## Constants
+	
+	`<strong>ZERO</strong> = vec2(0.0, 0.0)`.
+	
+	`<strong>ONE</strong> = vec2(1.0, 0.0)`.
+	
+	`<strong>I</strong> = <strong>i</strong> = vec2(0.0, 1.0)`.
+	
+	
+	
+	## Arithmetic Functions
+	
+	`[float | vec2] <strong>cadd</strong>([float | vec2] z, [float | vec2] w)`: returns $z + w$.
+	
+	`[float | vec2] <strong>csub</strong>([float | vec2] z, [float | vec2] w)`: returns $z - w$.
+	
+	`[float | vec2] <strong>cmul</strong>([float | vec2] z, [float | vec2] w)`: returns $zw$.
+	
+	`[float | vec2] <strong>cdiv</strong>([float | vec2] z, [float | vec2] w)`: returns $\dfrac{z}{w}$.
+	
+	`[float | vec2] <strong>cinv</strong>([float | vec2] z)`: returns $\frac{1}{z}$.
+	
+	`float <strong>cabs</strong>([float | vec2] z)`: returns $|z|$, where e.g. $|3 + 4i| = 5$.
+	
+	`float <strong>cmag</strong>([float | vec2] z)`: returns $|z|^2$. Avoids taking a square root to compute $|z|$.
+	
+	`float <strong>carg</strong>([float | vec2] z)`: returns the principal argument of $z$, i.e. the angle in $(-\pi, \pi]$ that $z$ makes with the positive $x$-axis.
+	
+	`[float | vec2] <strong>cconj</strong>([float | vec2] z)`: returns $\overline{z}$, the complex conjugate of $z$.
+	
+	`[float | vec2] <strong>csign</strong>([float | vec2] z)`: returns the normalized vector $\dfrac{z}{|z|}$, generalizing the sign function on the real numbers.
+
+	`vec2 agm(vec2 x, vec2 y)`: returns the arithmetic-geometric mean of $x$ and $y$.
+
+	...
+	
+	
+	
+	## Exponential Functions
+	
+	`[float | vec2] <strong>cpow</strong>([float | vec2] z, [float | vec2] w)`: returns $z^w$. If both $z$ and $w$ are real but the power is complex, at least one of the two must be passed in as a `vec2`.
+	
+	`vec2 <strong>cpow_logz</strong>(float z, float logz, float w)`: returns $z^w$. Saves operations in the case $\log(z)$ is already known. Requires $z > 0$.
+	
+	`vec2 <strong>csqrt</strong>([float | vec2] z)`: returns $\sqrt{z}$.
+	
+	`[float | vec2] <strong>cexp</strong>([float | vec2] z)`: returns $e^z$.
+	
+	`[float | vec2] <strong>clog</strong>([float | vec2] z)`: returns $\log(z)$, the natural log of $z$.
+	
+	`[float | vec2] <strong>ctet</strong>([float | vec2] z, float w)`: returns $z \uparrow\uparrow w$, e.g. $2 \uparrow\uparrow 3 = 2^{2^2} = 16$.
+	
+	`int <strong>powermod</strong>(int a, int b, int c)`: returns $a^b \mod c$.
+	
+	
+	
+	## Trigonometric Functions
+	
+	All six standard trigonometric functions are implemented, along with their inverses, hyperbolic versions, and hyperbolic inverses. For example, `csin(z)` returns $\sin(z)$, `casin(z)` returns $\arcsin(z)$, `csinh(z)` returns $\sinh(z)$, and `casinh(z)` returns $\operatorname{arcsinh}(z)$.
+	
+	`[float | vec2] <strong>c[a]sin[h]</strong>([float | vec2] z)`.
+	
+	`[float | vec2] <strong>c[a]cos[h]</strong>([float | vec2] z)`.
+	
+	`[float | vec2] <strong>c[a]tan[h]</strong>([float | vec2] z)`.
+	
+	`[float | vec2] <strong>c[a]csc[h]</strong>([float | vec2] z)`.
+	
+	`[float | vec2] <strong>c[a]sec[h]</strong>([float | vec2] z)`.
+	
+	`[float | vec2] <strong>c[a]cot[h]</strong>([float | vec2] z)`.
+	
+	
+	
+	## Combinatorial Functions
+	
+	`float <strong>factorial</strong>([int | float] n)`: returns $n!$.
+	
+	`float <strong>binomial</strong>([int | float] n, [int | float] k)`: returns $\displaystyle \binom{n}{k}$.
+	
+	`float <strong>divisor</strong>(float n, float k = 1.0)`: returns the sum of all $k$th powers of divisors of $n$.
+	
+	`float <strong>bernoulli</strong>(float n)`: returns the $n$th Bernoulli number $B_n$.
+	
+	`float <strong>rising_factorial</strong>(float a, [int | float] n)`: returns $(a)(a + 1)\cdots(a+n-1)$.
+	
+	
+	
+	## Number-Theoretic Functions
+
+	`vec2 <strong>theta[1-4]</strong>(vec2 z, vec2 q)`: returns the <a href="https://mathworld.wolfram.com/JacobiThetaFunctions.html">theta function</a> $\vartheta_i(z, q)$.
+
+	`vec2 <strong>g2</strong>(vec2 z)`: returns the function $g_2(z) = 60G_4(z)$, where $$G_{2k}(z) = \sum_{(m, n) \in \mathbb{Z}^2 \setminus \left\{ (0, 0) \right\}} \frac{1}{(m + nz)^{2k}}$$.
+
+	`vec2 <strong>g3</strong>(vec2 z)` returns $g_3(z) = 140G_6(z)$, where $G_{2k}(z)$ is as before.
+
+	`vec2 <strong>delta</strong>(vec2 z)`: returns the modular discriminant $\Delta(z) = g_2(z)^3 - 27g_3(z)^2$, i.e. $(2\pi)^{12} e^{2\pi i z} \prod_{n = 1}^\infty \left( 1 - e^{2\pi i n z} \right)^{24}$.
+
+	`vec2 <strong>deltaq</strong>(vec2 q)`: returns $$(2\pi)^{12} q \prod_{n = 1}^\infty \left( 1 - q^n \right)^{24}$$.
+
+	`vec2 <strong>wp</strong>(vec2 z, vec2 tau)`: returns the Weierstrass $\wp$-function $$\wp(z) = \frac{1}{z^2} + \sum_\lambda \left( \frac{1}{(z - \lambda)^2} - \frac{1}{\lambda^2} \right)$$, where the sum is over the lattice spanned by $1$ and $\tau$.
+
+	`vec2 <strong>wpprime</strong>(vec2 z, vec2 tau)`: returns the derivative $\wp'(z)$.
+
+	`vec2 <strong>kleinj</strong>(vec2 tau)`: returns the $j$-invariant $$j(\tau) = 1728 \frac{g_2(\tau)^3}{g_2(\tau)^3 - 27g_3(\tau)^2}$$.
+	
+	`[float | vec2] <strong>zeta</strong>([float | vec2] z)`: returns $\zeta(z)$, where $\zeta$ is the Riemann zeta function.
+	
+	`vec2 <strong>hurwitz_zeta</strong>(vec2 z, [float | vec2] a)`: returns $\zeta(z, a)$, where $\zeta$ is the Hurwitz zeta function, a generalization of the Riemann zeta function.
+	
+	`vec2 <strong>su3_character</strong>([int | float] p, [int | float] p, vec2 z)`: returns the character of the irreducible $SU(3)$ representation with highest weight $(p, q)$.
+	
+	`[float | vec2] <strong>gamma</strong>([int | float | vec2] a)`: returns $\Gamma(a)$, where $\Gamma$ is the gamma function, a generalization of the factorial operation.
+	
+	`vec2 <strong>digamma</strong>(vec2 a)`: returns the logarithmic derivative of the $\Gamma$ function, i.e. $\dfrac{\Gamma'(a)}{\Gamma(a)}$.
+	
+	`vec2 <strong>polygamma</strong>([int | float] n, vec2 a)`: returns the $(n + 1)$st logarithmic derivative of the $\Gamma$ function at $a$.
+	
+	`vec2 <strong>hypergeometric2f1</strong>(float a, float b, float c, [float | vec2] z)`: returns the hypergeometric function $_2F_1(a, b; c; z)$.
+	
+	`vec2 <strong>hypergeometricf2</strong>(float a, float b1, float b2, float c1, float c2, [float | vec2] x, [float | vec2] y)`: returns the hypergeometric function $F_2(a, b_1, b_2; c_1, c_2; x, y)$. The types of $x$ and $y$ must match.
+	
+	`vec2 <strong>hypergeometricg2</strong>(float b1, float b2, float c1, float c2, [float | vec2] x, [float | vec2] y)`: returns the hypergeometric function $G_2(b_1, b_2; c_1, c_2; x, y)$. The types of $x$ and $y$ must match.
+	
+	`vec2 <strong>hypergeometricf1</strong>(float a, float b1, float b2, float c, [float | vec2] x, [float | vec2] y)`: returns the hypergeometric function $F_1(b_1, b_2; c_1, c_2; x, y)$. The types of $x$ and $y$ must match.
+	
+###
 
 ### card applet-controls "Controls"
 	Drag on the scene to look around, and pinch or scroll to zoom. The Generating code box accepts a number of functions on complex numbers --- <a data-card-id='glsl-docs'>view the documentation</a> if you're interested! To reference a draggable argument in the function, use `draggableArg` in the function body.
