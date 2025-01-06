@@ -1764,9 +1764,7 @@ export const sitemap =
 		
 		"parent": "/debug/",
 		
-		"children": [],
-
-		"customScript": true
+		"children": []
 	},
 	
 	"/teaching/uo/342/extra/eigenfaces-demo/":
