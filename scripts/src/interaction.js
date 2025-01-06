@@ -117,6 +117,7 @@ export function listenForFullscreenKey()
 		{
 			if (
 				e.key === "f"
+				&& !(e.ctrlKey || e.metaKey || e.altKey || e.shiftKey)
 				&& document.activeElement.tagName !== "INPUT"
 				&& document.activeElement.tagName !== "TEXTAREA"
 			) {
