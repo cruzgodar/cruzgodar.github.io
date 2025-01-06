@@ -253,38 +253,38 @@ function setLinks()
 {
 	$$("a:not([data-card-id])").forEach(link =>
 	{
-		const href = link.getAttribute("href");
-
-		if (!href)
-		{
-			return;
-		}
-
-		const inNewTab = !(
-			href.slice(0, 5) !== "https"
-			&& href.slice(0, 4) !== "data"
-			&& link.getAttribute("data-in-new-tab") != 1
-		);
-
 		link.addEventListener("click", (e) =>
 		{
+			const href = link.getAttribute("href");
+
+			if (!href)
+			{
+				return;
+			}
+
+			const inNewTab = !(
+				href.slice(0, 5) !== "https"
+				&& href.slice(0, 4) !== "data"
+				&& link.getAttribute("data-in-new-tab") != 1
+			);
+			
 			redirect({ url: href, inNewTab: inNewTab || e.metaKey });
 		});
 	});
 
 	$$("a[data-card-id]").forEach(link =>
 	{
-		const href = link.getAttribute("href");
-
-		if (!href)
-		{
-			return;
-		}
-
 		link.addEventListener("click", (e) =>
 		{
 			if (e.metaKey)
 			{
+				const href = link.getAttribute("href");
+
+				if (!href)
+				{
+					return;
+				}
+				
 				redirect({ url: href, inNewTab: true });
 			}
 		});

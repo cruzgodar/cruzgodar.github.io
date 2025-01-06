@@ -4,13 +4,34 @@ import { sitemap } from "/scripts/src/sitemap.js";
 // Options:
 // -c: A card. Pulls its cover from /cards/<id>.webp and opens a card with its id.
 // -t: Open in new tab.
-function imageLink(options, url, name)
+// -e: External. Adds a third agument slot for the manual cover path.
+function imageLink(options, url, name, coverPath)
 {
 	url = parseUrl(url);
 
 	let id = url.split(".")[0].split("/");
 
 	id = id[id.length - 1];
+
+	if (options.includes("e"))
+	{
+		if (url.indexOf("http") === -1)
+		{
+			throw new Error("External images must be http(s) links!");
+		}
+
+		const slicedUrl = url.slice(url.indexOf("http"));
+
+		return /* html */`
+			<div class="image-link">
+				<a href="${slicedUrl}" tabindex="-1">
+					<img src="/graphics/general-icons/placeholder.png" data-src="${coverPath}" alt="${name}" tabindex="1"></img>
+				</a>
+				
+				<p class="image-link-subtext">${name}</p>
+			</div>
+		`;
+	}
 
 	if (!name)
 	{
