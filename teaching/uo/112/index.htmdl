@@ -19,29 +19,6 @@ Welcome to Math 112! We'll use this page for the interactive notes, the homework
 ###
 
 
-
-## Homework
-
-### image-links
-	homework-1 -c "Homework 1"
-###
-
-
-
-### card homework-1 "Homework 1"
-	
-	*Due Wednesday of Week 2 at the start of class*
-	
-	Complete the following problems and submit them as a pdf to Canvas. 8 points are awarded for thoroughly attempting every problem, and I'll select three problems to grade on correctness for 4 points each. Enough work should be shown that there is no question about the mathematical process used to obtain your answers.
-
-	### buttons
-		download-homework-1
-	###
-	
-###
-
-
-
 ### card syllabus "Math 112Z: Trigonometry"
 	
 	Instructor: Cruz Godar (<a href="mailto:cgodar@uoregon.edu">cgodar@uoregon.edu</a>)
@@ -83,25 +60,15 @@ Welcome to Math 112! We'll use this page for the interactive notes, the homework
 	
 	
 	
-	## What will the written homework be like?
+	## What will the WebWork be like?
 	
-	The homework is available on this site, and there will be roughly 30 problems due each week. Your grade is out of 16 points --- 4 are for thoroughly attempting every problem regardless of whether your answers are correct, and I'll select three problems per homework to grade on correctness for 4 points each.
-	
-	All of our homework is submitted through Canvas. One option is to handwrite your work and then scan it with a scanning app that produces PDFs (e.g. the scanner in the Files app on iOS or Adobe Scan on Android). Another option that I highly recommend is to try typing your homework with Latex. This is how scientific papers and books (and our notes and homework) are written, and it has the benefit of being easily editable if you make a mistake part of the way through a problem. The simplest way to get started is to make an account at <a href="https://www.overleaf.com">Overleaf</a>, and to make things as easy as possible, there's an option to download every homework as a Latex file. Typing your homework is completely optional, but I encourage you to give it a shot! If you plan to go into any STEM field, this is something you'll have to learn eventually, and it's a lot easier than you might expect.
-
-
-
-	## What about the WeBWorK?
-	
-	The homework is available on this site, and there will be roughly 30 problems due each week. Your grade is out of 16 points --- 4 are for thoroughly attempting every problem regardless of whether your answers are correct, and I'll select three problems per homework to grade on correctness for 4 points each.
-	
-	All of our homework is submitted through Canvas. One option is to handwrite your work and then scan it with a scanning app that produces PDFs (e.g. the scanner in the Files app on iOS or Adobe Scan on Android). Another option that I highly recommend is to try typing your homework with Latex. This is how scientific papers and books (and our notes and homework) are written, and it has the benefit of being easily editable if you make a mistake part of the way through a problem. The simplest way to get started is to make an account at <a href="https://www.overleaf.com">Overleaf</a>, and to make things as easy as possible, there's an option to download every homework as a Latex file. Typing your homework is completely optional, but I encourage you to give it a shot! If you plan to go into any STEM field, this is something you'll have to learn eventually, and it's a lot easier than you might expect.
+	Our homework is via an online system called WebWork. The upside to this system is that you'll get instant feedback on your work, but if you're already confident with a section's material, I want to avoid bogging you down with work. To that end, only **the first half** of each section's WebWork problems are required. The second half are all extra credit --- if you're struggling with material or interested in getting a small grade boost, definitely complete them! The point values are set so that completing every single problem on a WebWork assignment is worth 110% credit.
 	
 	
 	
 	## What should I expect from the quizzes and exams?
 	
-	We have quizzes on Wednesdays during the last 20 minutes of class. The goal of the quizzes is to be a barometer for the exams --- if you're doing well on the quizzes, you can expect to do well on the exams, and if not, it's an early indication that you may want to adjust your study strategies.
+	We have quizzes on Wednesdays during the last 20 minutes of class, starting in week 2. The goal of the quizzes is to be a barometer for the exams --- if you're doing well on the quizzes, you can expect to do well on the exams, and if not, it's an early indication that you may want to adjust your study strategies.
 	
 	Our midterm exams are on the Wednesdays of weeks 4 and 8 and take up the full 50 minutes of class. The midterms are cumulative and typically have multiple-choice and short-answer portions, as well as longer multi-part questions. You can use a handwritten, two-sided, $3 \times 5$ inch index card for notes on the midterms and final.
 	
@@ -119,13 +86,13 @@ Welcome to Math 112! We'll use this page for the interactive notes, the homework
 	
 	## What is the policy regarding late work, make-ups, and dropped assignments?
 	
-	The out-of-class assignments (homework and reading quizzes) can be submitted up to about two days late --- Canvas is set to deduct 1% per hour after the due date. The quizzes can't be taken late, but they can be taken early --- if you won't be available one Wednesday, just let me know a few days in advance. Due to UO's reason-neutral excuse policy, no make-ups will be offered for any assignment. However, your lowest two homeworks, two quizzes, two reading quizzes, and two weeks of participation grades will be dropped, and your final exam score will replace the lower of your two midterm scores if it helps.
+	The out-of-class assignments (homework and reading quizzes) can be submitted up to about two days late: Canvas is set to deduct 1% per hour after the due date. WebWork unfortunately has no such automatic option, but if you  The quizzes can't be taken late, but they can be taken early --- if you won't be available one Wednesday, just let me know a few days in advance. Due to UO's reason-neutral excuse policy, no make-ups will be offered for any assignment. However, your lowest two homeworks, two quizzes, two reading quizzes, and two weeks of participation grades will be dropped, and your final exam score will replace the lower of your two midterm scores if it helps.
 	
 	
 	
 	## What if I'm registered with the AEC or think I should be?
 	
-	Please have the AEC send me the accommodations email as soon as possible, ideally in week 1. If you think you should be registered with the AEC, it's a good idea to start the process as soon as possible --- it can take a few weeks before everything goes through, so the sooner the better.
+	The Accessible Education Center is an excellent resource that helps students with varied learning challenges succeed and thrive academically. If you're already registered with the AEC, please have them send me the accommodations email as soon as possible, ideally in week 1. If you think the AEC could be a benefit to you, please reach out to them --- it can take a few weeks before everything goes through, so the sooner the better.
 	
 	
 	
