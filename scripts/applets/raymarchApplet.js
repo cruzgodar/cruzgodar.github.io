@@ -216,14 +216,21 @@ export class RaymarchApplet extends AnimationFrameApplet
 		`;
 
 		this.uniforms = {
-			aspectRatio: [1, 1],
-			resolution: this.resolution,
-			cameraPos: this.cameraPos,
-			imagePlaneCenterPos: this.imagePlaneCenterPos,
-			rightVec: this.rightVec,
-			upVec: this.upVec,
+			...(this.useFor3DPrinting
+				? {}
+				: {
+					aspectRatio: [1, 1],
+					resolution: this.resolution,
+					cameraPos: this.cameraPos,
+					imagePlaneCenterPos: this.imagePlaneCenterPos,
+					rightVec: this.rightVec,
+					upVec: this.upVec,
+					minEpsilon: this.minEpsilon,
+				}
+			),
+			
 			epsilonScaling: this.epsilonScaling,
-			minEpsilon: this.minEpsilon,
+			
 			uvCenter: [0, 0],
 			uvScale: 1,
 			...uniforms
@@ -390,25 +397,25 @@ export class RaymarchApplet extends AnimationFrameApplet
 
 	async make3DPrintable()
 	{
-		const preview = false;
+		const preview = true;
 
 		const resolution = 1500;
 		this.setUniforms({
-			uvScale: 1.5,
-			uvCenter: [-0.5, 0],
+			uvScale: 3,
+			uvCenter: [0, 0],
 			epsilonScaling: 0.0015,
 		});
 
-		this.wilson.changeResolution({ width: resolution });
+		this.wilson.resizeCanvas({ width: resolution });
 
 		this.drawFrame();
 
-		await new Promise(resolve => setTimeout(resolve, 500));
+		await new Promise(resolve => setTimeout(resolve, 1000));
 
 		for (let i = 1; i <= resolution; i++)
 		{
 			this.setUniforms({
-				uvCenter: [i / resolution - 0.5, 0],
+				uvCenter: [2 * i / resolution - 1, 0],
 			});
 			this.drawFrame();
 			!preview && this.wilson.downloadFrame(i.toString().padStart(4, "0"), false);
@@ -1053,6 +1060,11 @@ export class RaymarchApplet extends AnimationFrameApplet
 
 	calculateVectors()
 	{
+		if (this.useFor3DPrinting)
+		{
+			return;
+		}
+
 		// Here comes the serious math. Theta is the angle in the xy-plane and
 		// phi the angle down from the z-axis. We can use them get a normalized forward vector:
 
@@ -1657,6 +1669,11 @@ export class RaymarchApplet extends AnimationFrameApplet
 
 	onResizeCanvas()
 	{
+		if (this.useFor3DPrinting)
+		{
+			return;
+		}
+
 		this.resolution = Math.sqrt(this.wilson.canvasWidth * this.wilson.canvasHeight);
 
 		this.wilson.resizeWorld({
