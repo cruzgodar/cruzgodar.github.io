@@ -18,6 +18,26 @@ With some results from this exercise in mind, let's dig a bit more into the fina
 
 ### desmos periodicFunction
 
+Let's define a few terms so that these functions are a bit easier to talk about.
 
+### def "periodic function"
+
+	A function $f$ is **periodic** if for some value $a$, called the **period** of $f$, $f(x + a) = f(x)$ for all inputs $x$ for which both $f(x)$ and $f(x + a)$ are defined. We typically take $a$ to be the minimum possible positive value --- for example, if $f$ is periodic with period $3$, then it is also periodic with period $6$, since $f(x + 6) = f(x + 3) = f(x)$ for all $x$, but it is more informative to specify that the period is $3$.
+
+###
+
+In the previous graph, $f$ is periodic with period $2$. We can determine that by looking at the graph, but we can also go the other way, and sketch a complete graph of a periodic function given its period and a portion of its graph.
+
+### exc "graphing a periodic function"
+
+	1. Given that the function $g$ graphed below is periodic with period $3$, sketch a complete graph of it.
+
+	### desmos periodicFunction2
+
+	2. Given that the function $h$ graphed below is periodic with period $2$, sketch a complete graph of it.
+
+	### desmos periodicFunction3
+
+###
 
 ### nav-buttons

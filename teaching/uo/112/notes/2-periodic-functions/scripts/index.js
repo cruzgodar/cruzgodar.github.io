@@ -1,4 +1,3 @@
-import { showPage } from "../../../../../../scripts/src/loadPage.js";
 import {
 	createDesmosGraphs,
 	desmosBlue,
@@ -7,6 +6,7 @@ import {
 	getDesmosSlider,
 	setGetDesmosData
 } from "/scripts/src/desmos.js";
+import { showPage } from "/scripts/src/loadPage.js";
 
 export default function()
 {
@@ -35,6 +35,48 @@ export default function()
 						color: desmosBlue,
 						dragMode: "X",
 					})
+				]
+			},
+
+			periodicFunction2:
+			{
+				bounds: { left: -5, right: 5, bottom: -5, top: 5 },
+
+				expressions:
+				[
+					{ latex: String.raw`g(x) = \{ 0 \leq x \leq 1: x^2, 1 \leq x \leq 3: 1.5 - \frac{x}{2} \}`, secret: true, color: desmosPurple },
+				]
+			},
+
+			periodicFunction3:
+			{
+				bounds: { left: -5, right: 5, bottom: -5, top: 5 },
+
+				expressions:
+				[
+					{ latex: String.raw`h(x) = \{ -2 \leq x \leq -1: 2 + x, 3 \leq x \leq 4: 2 - (x - 3)^2 \}`, secret: true, color: desmosPurple },
+					...getDesmosPoint({
+						point: ["-2", "0"],
+						color: desmosPurple,
+						dragMode: "",
+						style: "OPEN",
+					}),
+					...getDesmosPoint({
+						point: ["-1", "1"],
+						color: desmosPurple,
+						dragMode: "",
+					}),
+					...getDesmosPoint({
+						point: ["3", "2"],
+						color: desmosPurple,
+						dragMode: "",
+						style: "OPEN",
+					}),
+					...getDesmosPoint({
+						point: ["4", "1"],
+						color: desmosPurple,
+						dragMode: "",
+					}),
 				]
 			},
 		};

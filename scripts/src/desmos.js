@@ -174,10 +174,12 @@ export function getDesmosPoint({
 	color,
 	// "", "X", "Y", "XY"
 	dragMode = "XY",
+	// "POINT", "OPEN", "CROSS"
+	style = "POINT",
 	secret = true
 }) {
 	return [
-		{ latex: String.raw`(${point[0]}, ${point[1]})`, dragMode, color, secret },
+		{ latex: String.raw`(${point[0]}, ${point[1]})`, dragMode, pointStyle: style, color, secret },
 	];
 }
 
