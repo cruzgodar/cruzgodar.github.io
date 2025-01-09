@@ -802,13 +802,19 @@
 		
 	<url>
 		<loc>https://www.cruzgodar.com/teaching/uo/112/</loc>
-		<lastmod>2025-1-6</lastmod>
+		<lastmod>2025-1-8</lastmod>
 		<priority>0.5</priority>
 	</url>
 		
 	<url>
 		<loc>https://www.cruzgodar.com/teaching/uo/112/notes/1-transformations/</loc>
 		<lastmod>2025-1-6</lastmod>
+		<priority>0.5</priority>
+	</url>
+		
+	<url>
+		<loc>https://www.cruzgodar.com/teaching/uo/112/notes/2-periodic-functions/</loc>
+		<lastmod>2025-1-9</lastmod>
 		<priority>0.5</priority>
 	</url>
 		

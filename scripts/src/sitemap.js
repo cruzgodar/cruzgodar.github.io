@@ -1591,13 +1591,25 @@ export const sitemap =
 		
 		"children":
 		[
-			"/teaching/uo/112/notes/1-transformations/"
+			"/teaching/uo/112/notes/1-transformations/",
+			"/teaching/uo/112/notes/2-periodic-functions/"
 		]
 	},
 		
 	"/teaching/uo/112/notes/1-transformations/":
 	{
 		"title": "Section 1: Transformations",
+		
+		"parent": "/teaching/uo/112/",
+		
+		"children": [],
+
+		"customScript": true
+	},
+	
+	"/teaching/uo/112/notes/2-periodic-functions/":
+	{
+		"title": "Section 2: Periodic Functions",
 		
 		"parent": "/teaching/uo/112/",
 		

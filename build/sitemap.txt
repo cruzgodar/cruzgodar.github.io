@@ -142,6 +142,7 @@ home Cruz Godar
 		
 		uo/112 Math 112
 			notes/1-transformations Section 1: Transformations
+			notes/2-periodic-functions Section 2: Periodic Functions
 		
 		uo/111 Math 111
 		uo/105 Math 105

@@ -1,0 +1,23 @@
+### nav-buttons
+
+
+
+In the last section, we introduced even and odd functions as those whose graphs didn't change after applying different types of reflections. We might also wonder if there are functions that are preserved by other kinds of transformations, like shifts and stretches --- let's investigate!
+
+### exc "functions unchanged by transformations"
+
+	1. Let $f$ be a function so that $f(x) = f(3x)$ for all $x$; in other words, $f$ is unchanged after a horizontal stretch by a factor of $\frac{1}{3}$. What kind of a function does $f$ have to be? Is this an interesting type of function to study? What if we change the $3$ to a different number?
+
+	2. What about for vertical stretches instead of horizontal ones?
+
+	3. How about vertical shifts? Horizontal shifts?
+
+###
+
+With some results from this exercise in mind, let's dig a bit more into the final type of function: those that are preserved by particular horizontal shifts. If $f$ is a function whose graph is the same as when it's shifted to the left by $2$ units, then the graph needs to exactly line up with itself $2$ units over.
+
+### desmos periodicFunction
+
+
+
+### nav-buttons
