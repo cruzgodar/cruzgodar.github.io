@@ -79,6 +79,29 @@ export default function()
 					}),
 				]
 			},
+
+			carEngine:
+			{
+				bounds: { left: -1 / 1200, right: 3 / 1200, bottom: -5, top: 50 },
+
+				expressions:
+				[
+					{ latex: String.raw`N(t) = N_0(\mod(t, \frac{1}{600}))\left\{ t \geq 0 \right\}`, secret: true, hidden: true },
+					{ latex: String.raw`N(x)`, color: desmosBlue },
+					{ latex: String.raw`N_0(t) = \left\{ 0 \leq t \leq \frac{1}{1200}: 20 + 12000t, \frac{1}{1200} \leq t \leq \frac{1}{600}: 40 - 12000t \right\}`, color: desmosPurple },
+				]
+			},
+
+			wave:
+			{
+				bounds: { left: -3, right: 3, bottom: -3, top: 3 },
+
+				expressions:
+				[
+					{ latex: String.raw`f(x) = \cos(\pi x)`, secret: true, hidden: true },
+					{ latex: String.raw`f(x)`, color: desmosPurple },
+				]
+			},
 		};
 
 		return data;

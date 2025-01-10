@@ -42,4 +42,36 @@ In the previous graph, $f$ is periodic with period $2$. We can determine that by
 
 ###
 
+We'll have quite a bit more to say about particular periodic functions in the next section, but for now, let's look at a few examples of some of them.
+
+### ex "a car engine"
+
+	An idling car has an engine whose noise $N(t)$ in decibels after $t$ seconds is given by
+	$$
+		N(t) = \begin{cases} 20 + 12000t, & 0 \leq t \leq \frac{1}{1200} \\ 40 - 12000t, & \frac{1}{1200} \leq t \leq \frac{1}{600} \end{cases}.
+	$$
+	$N$ is periodic with period $\frac{1}{600}$.
+
+	1. Sketch a graph of $N$ for $t \geq 0$.
+
+	2. What is the physical meaning of the period of this graph in context?
+
+	The numbers in this example are somewhat extreme, but we can sketch a graph as long as we take care to draw the $t$-axis quite small.
+
+	### desmos carEngine
+
+	Since the function is periodic with a period equal to the width of this interval, we can extend it to produce a graph of the entire function (graphed in blue). To address the physical meaning, this is a car engine whose noise level is repeating 600 times a second --- that's reasonable for the rate at which an engine rotates, particularly at idle! It's fair to say that this function is periodic because the physical state of the engine is periodic.
+
+###
+
+### exc "periodic functions"
+
+	What could be a physical interpretation for the following periodic function, graphed as a function of time? With this interpretation, what does the period represent?
+
+	### desmos wave
+
+###
+
+
+
 ### nav-buttons
