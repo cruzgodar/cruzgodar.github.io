@@ -289,11 +289,6 @@ vec2 deltaq(vec2 z) {
 #requires cexp cpow
 
 vec2 wpHelper(vec2 z, vec2 t) {
-
-	// Shift z to be in the fundamental parallelogram
-	z -= floor(z.y/t.y)*t;
-	z.x = fract(z.x);
-
 	// Manually compute thetas here since you can reuse variables instead of calling separately
 	vec2 q = cexp(PI * vec2(-t.y,t.x));
 	vec2 q4 = cexp(PI/4.0 * vec2(-t.y,t.x));
@@ -336,14 +331,25 @@ vec2 wpHelper(vec2 z, vec2 t) {
 }
 
 vec2 wp(vec2 z, vec2 t) {
+	// Shift z to be in the fundamental parallelogram
+	z -= floor(z.y/t.y)*t;
+	z.x = fract(z.x);
+
 	// extend domain to allow strange tau values
 	if (t.y < 0.0) {
 		t = -t;
 	}
 	float t_magnitude = length(t); // |t|
-    if (t_magnitude > 1.0) { // Threshold for "large"
-        return cmul(wpHelper(cdiv(z, t), cdiv(-1.0, t)), cmul(t, t)); // wp(z; t) = t^2 * wp(z/t; -1/t)
-    } else {
+	if (t_magnitude > 1.0) { // Threshold for "large"
+		vec2 t_prime = cdiv(-1.0, t);
+
+		// Transform z: z' = z / t
+		vec2 z_prime = cdiv(z, t);
+
+		vec2 wp_transformed = wpHelper(z_prime, t_prime);
+
+		return cdiv(wp_transformed,cmul(t, t)); // wp(z; t) = t^-2 * wp(z/t; -1/t)
+	} else {
 		return wpHelper(z,t);
 	}
 }
